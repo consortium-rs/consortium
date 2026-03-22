@@ -1,5 +1,5 @@
-m8_target := "thumbv8m.main-none-eabihf"
-m7_target := "thumbv7em-none-eabihf"
+a_target := "aarch64-unknown-linux-gnu"
+m_target  := "thumbv7em-none-eabihf"
 
 # List available recipes
 default:
@@ -7,7 +7,7 @@ default:
 
 # ── Host (dev / CI) ──────────────────────────────────────────────────────────
 
-# Check all crates on the host
+# Check all crates on the host (std feature for consortium-core)
 check:
     cargo check --workspace --features consortium-core/std
 
@@ -19,30 +19,30 @@ test:
 clippy:
     cargo clippy --workspace --features consortium-core/std -- -D warnings
 
-# Check consortium-uio on the host (cross-compilation is handled by Yocto)
+# ── A-core (aarch64-unknown-linux-gnu) ───────────────────────────────────────
+
+# Check consortium-uio for the A-core target
 check-uio:
-    cargo check -p consortium-uio
+    cargo check -p consortium-uio --target {{ a_target }}
 
-# ── M-core (thumbv8) ─────────────────────────────────────────────────────────
+# Build consortium-uio for the A-core target
+build-uio:
+    cargo build -p consortium-uio --release --target {{ a_target }}
 
-check-m8:
-    cargo check -p consortium-core --target {{ m8_target }}
+# ── M-core (thumbv7em-none-eabihf) ───────────────────────────────────────────
 
-build-m8:
-    cargo build -p consortium-core --release --target {{ m8_target }}
+# Check consortium-core for the M-core target (no_std)
+check-m:
+    cargo check -p consortium-core --target {{ m_target }}
 
-# ── M-core (thumbv7) ─────────────────────────────────────────────────────────
-
-check-m7:
-    cargo check -p consortium-core --target {{ m7_target }}
-
-build-m7:
-    cargo build -p consortium-core --release --target {{ m7_target }}
+# Build consortium-core for the M-core target
+build-m:
+    cargo build -p consortium-core --release --target {{ m_target }}
 
 # ── Combined ─────────────────────────────────────────────────────────────────
 
-check-m: check-m8 check-m7
-
-build-m: build-m8 build-m7
-
+# Check all targets (requires cross-toolchains in PATH)
 check-all: check check-uio check-m
+
+# Build all release artefacts
+build-all: build-uio build-m
