@@ -1,0 +1,6 @@
+[package]
+name = "consortium-rt"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
