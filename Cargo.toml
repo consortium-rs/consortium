@@ -3,6 +3,7 @@ members = [
     "crates/consortium-core",
     "crates/consortium-cli",
     "crates/consortium-uio",
+    "crates/consortium-mem",
 ]
 resolver = "2"
 

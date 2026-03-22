@@ -27,17 +27,21 @@ check-uio:
 
 check-m8:
     cargo check -p consortium-core --target {{ m8_target }}
+    cargo check -p consortium-mem --target {{ m8_target }}
 
 build-m8:
     cargo build -p consortium-core --release --target {{ m8_target }}
+    cargo build -p consortium-mem --release --target {{ m8_target }}
 
 # ── M-core (thumbv7) ─────────────────────────────────────────────────────────
 
 check-m7:
     cargo check -p consortium-core --target {{ m7_target }}
+    cargo check -p consortium-mem --target {{ m7_target }}
 
 build-m7:
     cargo build -p consortium-core --release --target {{ m7_target }}
+    cargo build -p consortium-mem --release --target {{ m7_target }}
 
 # ── Combined ─────────────────────────────────────────────────────────────────
 
