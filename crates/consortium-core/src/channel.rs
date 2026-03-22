@@ -273,3 +273,69 @@ where
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde::{Deserialize, Serialize};
+
+    #[derive(Debug, PartialEq, Serialize, Deserialize)]
+    struct Point {
+        x: i32,
+        y: i32,
+    }
+
+    #[test]
+    fn roundtrip_struct() {
+        let mut buf = [0u8; 64];
+        let msg = Point { x: 42, y: -7 };
+        let n = PostcardCodec::encode(&msg, &mut buf).unwrap();
+        let decoded: Point = PostcardCodec::decode(&buf[..n]).unwrap();
+        assert_eq!(msg, decoded);
+    }
+
+    #[test]
+    fn roundtrip_u32() {
+        let mut buf = [0u8; 16];
+        let n = PostcardCodec::encode(&0xDEAD_BEEFu32, &mut buf).unwrap();
+        let v: u32 = PostcardCodec::decode(&buf[..n]).unwrap();
+        assert_eq!(v, 0xDEAD_BEEF);
+    }
+
+    #[test]
+    fn roundtrip_bool() {
+        let mut buf = [0u8; 4];
+        let n = PostcardCodec::encode(&true, &mut buf).unwrap();
+        let v: bool = PostcardCodec::decode(&buf[..n]).unwrap();
+        assert!(v);
+    }
+
+    #[test]
+    fn encode_writes_nonzero_bytes() {
+        let mut buf = [0u8; 32];
+        let n = PostcardCodec::encode(&Point { x: 1, y: 2 }, &mut buf).unwrap();
+        assert!(n > 0);
+        assert!(n <= buf.len());
+    }
+
+    #[test]
+    fn decode_error_on_garbage() {
+        let bad = [0xFF_u8; 5];
+        let result = PostcardCodec::decode::<Point>(&bad);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn encode_error_on_undersized_buffer() {
+        // Point encodes to more than 1 byte; a 1-byte buf must fail.
+        let mut buf = [0u8; 1];
+        let result = PostcardCodec::encode(&Point { x: 1000, y: 2000 }, &mut buf);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn decode_empty_slice_is_error() {
+        let result = PostcardCodec::decode::<Point>(&[]);
+        assert!(result.is_err());
+    }
+}

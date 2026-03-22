@@ -56,3 +56,94 @@ pub unsafe fn is_consumed(base: *const u8) -> bool {
         flags == 0 || (flags & FLAG_CONSUMED != 0)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn make_slot(mtu: usize) -> Vec<u8> {
+        vec![0u8; SLOT_HEADER + mtu]
+    }
+
+    #[test]
+    fn write_then_read_roundtrip() {
+        let payload = b"hello world";
+        let mut slot = make_slot(64);
+        unsafe { write(slot.as_mut_ptr(), payload) };
+
+        let mut buf = [0u8; 64];
+        let n = unsafe { try_read(slot.as_mut_ptr(), &mut buf) };
+        assert_eq!(n, Some(payload.len()));
+        assert_eq!(&buf[..payload.len()], payload);
+    }
+
+    #[test]
+    fn try_read_returns_none_on_fresh_slot() {
+        let mut slot = make_slot(64);
+        let mut buf = [0u8; 64];
+        // All zeros → FLAG_VALID not set
+        assert_eq!(unsafe { try_read(slot.as_mut_ptr(), &mut buf) }, None);
+    }
+
+    #[test]
+    fn try_read_marks_slot_consumed() {
+        let payload = b"test";
+        let mut slot = make_slot(64);
+        unsafe { write(slot.as_mut_ptr(), payload) };
+
+        let mut buf = [0u8; 64];
+        unsafe { try_read(slot.as_mut_ptr(), &mut buf) };
+
+        assert!(unsafe { is_consumed(slot.as_ptr()) });
+    }
+
+    #[test]
+    fn is_consumed_true_on_fresh_slot() {
+        let slot = make_slot(64);
+        // flags == 0 → considered free for reuse
+        assert!(unsafe { is_consumed(slot.as_ptr()) });
+    }
+
+    #[test]
+    fn is_consumed_false_after_write() {
+        let mut slot = make_slot(64);
+        unsafe { write(slot.as_mut_ptr(), b"data") };
+        // flags == FLAG_VALID → not yet consumed
+        assert!(!unsafe { is_consumed(slot.as_ptr()) });
+    }
+
+    #[test]
+    fn try_read_truncates_to_buf_length() {
+        let payload = b"abcdefgh"; // 8 bytes
+        let mut slot = make_slot(64);
+        unsafe { write(slot.as_mut_ptr(), payload) };
+
+        let mut buf = [0u8; 4];
+        let n = unsafe { try_read(slot.as_mut_ptr(), &mut buf) };
+        assert_eq!(n, Some(4));
+        assert_eq!(&buf[..], b"abcd");
+    }
+
+    #[test]
+    fn write_zero_length_payload() {
+        let mut slot = make_slot(64);
+        unsafe { write(slot.as_mut_ptr(), &[]) };
+
+        let mut buf = [0u8; 64];
+        let n = unsafe { try_read(slot.as_mut_ptr(), &mut buf) };
+        assert_eq!(n, Some(0));
+    }
+
+    #[test]
+    fn double_read_returns_none_second_time() {
+        let payload = b"once";
+        let mut slot = make_slot(64);
+        unsafe { write(slot.as_mut_ptr(), payload) };
+
+        let mut buf = [0u8; 64];
+        // First read succeeds
+        assert!(unsafe { try_read(slot.as_mut_ptr(), &mut buf) }.is_some());
+        // Second read sees CONSUMED flag, not VALID → None
+        assert_eq!(unsafe { try_read(slot.as_mut_ptr(), &mut buf) }, None);
+    }
+}

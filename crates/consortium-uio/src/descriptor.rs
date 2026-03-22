@@ -127,3 +127,127 @@ unsafe fn rv_u32(base: *const u8, offset: usize) -> u32 {
 unsafe fn rv_u8(base: *const u8, offset: usize) -> u8 {
     unsafe { base.add(offset).read_volatile() }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Build a minimal in-memory descriptor buffer for testing.
+    fn make_desc(
+        magic: u32,
+        version: u8,
+        num_channels: u8,
+        effective_mtu: u32,
+        state: u32,
+        channels: &[(u32, u32, u32, u32)],
+    ) -> Vec<u8> {
+        let size = CHAN_TABLE_BASE + channels.len() * CHAN_ENTRY_SIZE;
+        let mut buf = vec![0u8; size];
+
+        buf[0x00..0x04].copy_from_slice(&magic.to_le_bytes());
+        buf[0x04] = version;
+        buf[0x05] = num_channels;
+        buf[0x10..0x14].copy_from_slice(&effective_mtu.to_le_bytes());
+        buf[0x14..0x18].copy_from_slice(&state.to_le_bytes());
+
+        for (i, &(tx_off, tx_sz, rx_off, rx_sz)) in channels.iter().enumerate() {
+            let base = CHAN_TABLE_BASE + i * CHAN_ENTRY_SIZE;
+            buf[base..base + 4].copy_from_slice(&tx_off.to_le_bytes());
+            buf[base + 4..base + 8].copy_from_slice(&tx_sz.to_le_bytes());
+            buf[base + 8..base + 12].copy_from_slice(&rx_off.to_le_bytes());
+            buf[base + 12..base + 16].copy_from_slice(&rx_sz.to_le_bytes());
+        }
+        buf
+    }
+
+    #[test]
+    fn parse_valid_single_channel() {
+        let buf = make_desc(
+            MAGIC,
+            VERSION,
+            1,
+            512,
+            DescState::Ready as u32,
+            &[(0x100, 0x208, 0x400, 0x208)],
+        );
+        let desc = unsafe { parse(buf.as_ptr()) }.unwrap();
+        assert_eq!(desc.num_channels, 1);
+        assert_eq!(desc.effective_mtu, 512);
+        assert_eq!(desc.channels.len(), 1);
+        assert_eq!(desc.channels[0].tx_offset, 0x100);
+        assert_eq!(desc.channels[0].tx_size, 0x208);
+        assert_eq!(desc.channels[0].rx_offset, 0x400);
+        assert_eq!(desc.channels[0].rx_size, 0x208);
+    }
+
+    #[test]
+    fn parse_valid_multiple_channels() {
+        let channels = [(0x100, 0x108, 0x300, 0x108), (0x500, 0x108, 0x700, 0x108)];
+        let buf = make_desc(MAGIC, VERSION, 2, 256, DescState::Ready as u32, &channels);
+        let desc = unsafe { parse(buf.as_ptr()) }.unwrap();
+        assert_eq!(desc.num_channels, 2);
+        assert_eq!(desc.channels.len(), 2);
+        assert_eq!(desc.channels[1].tx_offset, 0x500);
+        assert_eq!(desc.channels[1].rx_offset, 0x700);
+    }
+
+    #[test]
+    fn parse_zero_channels() {
+        let buf = make_desc(MAGIC, VERSION, 0, 1024, DescState::Ready as u32, &[]);
+        let desc = unsafe { parse(buf.as_ptr()) }.unwrap();
+        assert_eq!(desc.num_channels, 0);
+        assert!(desc.channels.is_empty());
+        assert_eq!(desc.effective_mtu, 1024);
+    }
+
+    #[test]
+    fn parse_bad_magic() {
+        let buf = make_desc(0xDEAD_BEEF, VERSION, 0, 0, DescState::Ready as u32, &[]);
+        let err = unsafe { parse(buf.as_ptr()) }.unwrap_err();
+        assert!(matches!(
+            err,
+            DescriptorError::BadMagic { got: 0xDEAD_BEEF }
+        ));
+    }
+
+    #[test]
+    fn parse_bad_version() {
+        let buf = make_desc(MAGIC, 2, 0, 0, DescState::Ready as u32, &[]);
+        let err = unsafe { parse(buf.as_ptr()) }.unwrap_err();
+        assert!(matches!(err, DescriptorError::BadVersion(2)));
+    }
+
+    #[test]
+    fn parse_not_ready_rejects_all_non_ready_states() {
+        for state in [
+            DescState::KernelInit,
+            DescState::Proposed,
+            DescState::MReady,
+            DescState::Suspended,
+            DescState::Error,
+        ] {
+            let buf = make_desc(MAGIC, VERSION, 0, 0, state as u32, &[]);
+            let err = unsafe { parse(buf.as_ptr()) }.unwrap_err();
+            assert!(
+                matches!(err, DescriptorError::NotReady(_)),
+                "expected NotReady for {state:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn desc_state_from_u32_all_variants() {
+        assert_eq!(DescState::from_u32(0), DescState::KernelInit);
+        assert_eq!(DescState::from_u32(1), DescState::Proposed);
+        assert_eq!(DescState::from_u32(2), DescState::MReady);
+        assert_eq!(DescState::from_u32(3), DescState::Ready);
+        assert_eq!(DescState::from_u32(4), DescState::Suspended);
+        assert_eq!(DescState::from_u32(5), DescState::Error);
+    }
+
+    #[test]
+    fn desc_state_unknown_maps_to_error() {
+        assert_eq!(DescState::from_u32(99), DescState::Error);
+        assert_eq!(DescState::from_u32(u32::MAX), DescState::Error);
+    }
+}

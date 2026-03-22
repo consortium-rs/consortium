@@ -216,3 +216,118 @@ impl Region for SerialRegion {
         true
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::region::Region;
+
+    // -----------------------------------------------------------------------
+    // SramRegion
+    // -----------------------------------------------------------------------
+
+    #[test]
+    fn sram_len_and_ptr() {
+        let mut buf = [0u8; 64];
+        let ptr = buf.as_mut_ptr();
+        let r = unsafe { SramRegion::new(ptr, 64) };
+        assert_eq!(r.len(), 64);
+        assert_eq!(unsafe { r.as_ptr() }, ptr);
+    }
+
+    #[test]
+    fn sram_is_not_empty() {
+        let mut buf = [0u8; 8];
+        let r = unsafe { SramRegion::new(buf.as_mut_ptr(), 8) };
+        assert!(!r.is_empty());
+    }
+
+    #[test]
+    fn sram_zero_len_is_empty() {
+        let r = unsafe { SramRegion::new(core::ptr::null_mut(), 0) };
+        assert!(r.is_empty());
+    }
+
+    #[test]
+    fn sram_is_coherent() {
+        let mut buf = [0u8; 8];
+        let r = unsafe { SramRegion::new(buf.as_mut_ptr(), 8) };
+        assert!(r.is_coherent());
+    }
+
+    #[test]
+    fn sram_flush_and_invalidate_do_not_panic() {
+        let mut buf = [0u8; 128];
+        let r = unsafe { SramRegion::new(buf.as_mut_ptr(), 128) };
+        r.flush();
+        r.invalidate();
+    }
+
+    // -----------------------------------------------------------------------
+    // DdrRegion
+    // -----------------------------------------------------------------------
+
+    #[test]
+    fn ddr_len_and_ptr() {
+        let mut buf = [0u8; 32];
+        let ptr = buf.as_mut_ptr();
+        let r = unsafe { DdrRegion::new(ptr, 32) };
+        assert_eq!(r.len(), 32);
+        assert_eq!(unsafe { r.as_ptr() }, ptr);
+    }
+
+    #[test]
+    fn ddr_is_not_coherent() {
+        let mut buf = [0u8; 8];
+        let r = unsafe { DdrRegion::new(buf.as_mut_ptr(), 8) };
+        assert!(!r.is_coherent());
+    }
+
+    // dc cvac / dc ivac are privileged on macOS/AArch64 and will SIGILL in
+    // userspace, so only run the cache-ops test on non-AArch64 hosts where the
+    // operations compile to noops.
+    #[cfg(not(target_arch = "aarch64"))]
+    #[test]
+    fn ddr_flush_and_invalidate_do_not_panic() {
+        let mut buf = [0u8; 128];
+        let r = unsafe { DdrRegion::new(buf.as_mut_ptr(), 128) };
+        r.flush();
+        r.invalidate();
+    }
+
+    // -----------------------------------------------------------------------
+    // SerialRegion
+    // -----------------------------------------------------------------------
+
+    #[test]
+    fn serial_len_equals_max_frame() {
+        let r = SerialRegion::new(256);
+        assert_eq!(r.len(), 256);
+        assert!(!r.is_empty());
+    }
+
+    #[test]
+    fn serial_zero_max_frame_is_empty() {
+        let r = SerialRegion::new(0);
+        assert!(r.is_empty());
+    }
+
+    #[test]
+    fn serial_is_coherent() {
+        let r = SerialRegion::new(64);
+        assert!(r.is_coherent());
+    }
+
+    #[test]
+    fn serial_ptr_is_null() {
+        let r = SerialRegion::new(64);
+        assert!(unsafe { r.as_ptr() }.is_null());
+    }
+
+    #[test]
+    fn serial_flush_and_invalidate_do_not_panic() {
+        let r = SerialRegion::new(64);
+        r.flush();
+        r.invalidate();
+    }
+}
