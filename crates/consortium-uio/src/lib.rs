@@ -15,7 +15,7 @@ use std::{
 use tokio::{io::unix::AsyncFd, sync::Notify};
 use uio::UioError;
 
-use consortium_core::{Chan, Transport};
+use consortium_core::{chan::Chan, transport::Transport};
 pub use descriptor::{DescState, Descriptor, DescriptorError};
 
 // ── Error ────────────────────────────────────────────────────────────────────
