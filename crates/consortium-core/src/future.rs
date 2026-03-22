@@ -1,4 +1,4 @@
-// The MaybeSend helper trait
+//! The MaybeSend helper trait
 #[cfg(feature = "std")]
 pub trait MaybeSend: Send {}
 #[cfg(feature = "std")]

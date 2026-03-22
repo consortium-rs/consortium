@@ -1,3 +1,5 @@
+//! Memory region abstractions for transport buffers and frame buffers.
+
 /// Describes a contiguous memory area.
 /// Does not imply ownership — just describes what exists.
 ///

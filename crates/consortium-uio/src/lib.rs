@@ -1,3 +1,4 @@
+#![cfg(target_os = "linux")]
 mod descriptor;
 mod slot;
 
@@ -44,9 +45,9 @@ impl From<UioError> for Error {
 
 struct Inner {
     region_base: *mut u8,
-    descriptor:  Descriptor,
+    descriptor: Descriptor,
     /// Fires on every M→A IRQ.  All pending `RecvFut`s wake and re-check.
-    irq_notify:  Arc<Notify>,
+    irq_notify: Arc<Notify>,
 }
 
 // SAFETY: raw pointer into a DMA-coherent mmap that outlives `Inner`.
@@ -85,7 +86,11 @@ impl UioDevice {
         tokio::spawn(async move { irq_loop(async_fd, notify).await });
 
         Ok(Self {
-            inner: Arc::new(Inner { region_base, descriptor, irq_notify }),
+            inner: Arc::new(Inner {
+                region_base,
+                descriptor,
+                irq_notify,
+            }),
             _uio: uio,
         })
     }
@@ -110,9 +115,13 @@ impl UioDevice {
                 self.inner.descriptor.num_channels,
             ));
         }
-        let layout        = self.inner.descriptor.channels[id].clone();
+        let layout = self.inner.descriptor.channels[id].clone();
         let effective_mtu = self.inner.descriptor.effective_mtu;
-        Ok(UioChannel { inner: Arc::clone(&self.inner), layout, effective_mtu })
+        Ok(UioChannel {
+            inner: Arc::clone(&self.inner),
+            layout,
+            effective_mtu,
+        })
     }
 }
 
@@ -146,8 +155,8 @@ fn unmask_irq(f: &File) -> std::io::Result<()> {
 ///
 /// Implements [`Transport`]; obtain via [`UioDevice::channel`].
 pub struct UioChannel {
-    inner:         Arc<Inner>,
-    layout:        descriptor::ChannelLayout,
+    inner: Arc<Inner>,
+    layout: descriptor::ChannelLayout,
     effective_mtu: usize,
 }
 
@@ -158,15 +167,21 @@ impl Transport for UioChannel {
     type Error = Error;
     // Futures own all state via Arc; PhantomData carries the GAT lifetime
     // without imposing any borrow from `self`.
-    type SendFut<'a> = SendFut<'a> where Self: 'a;
-    type RecvFut<'a> = RecvFut<'a> where Self: 'a;
+    type SendFut<'a>
+        = SendFut<'a>
+    where
+        Self: 'a;
+    type RecvFut<'a>
+        = RecvFut<'a>
+    where
+        Self: 'a;
 
     fn send<'a>(&mut self, _ch: Chan, data: &[u8]) -> SendFut<'a> {
         SendFut {
-            inner:     Arc::clone(&self.inner),
+            inner: Arc::clone(&self.inner),
             tx_offset: self.layout.tx_offset,
-            data:      data.to_vec(),
-            _ph:       PhantomData,
+            data: data.to_vec(),
+            _ph: PhantomData,
         }
     }
 
@@ -175,11 +190,11 @@ impl Transport for UioChannel {
         // (the `Channel` struct stores `buf: &'static mut [u8]`).
         // The raw pointer is valid for the lifetime of the caller's borrow.
         RecvFut {
-            inner:     Arc::clone(&self.inner),
+            inner: Arc::clone(&self.inner),
             rx_offset: self.layout.rx_offset,
-            buf_ptr:   buf.as_mut_ptr(),
-            buf_len:   buf.len(),
-            _ph:       PhantomData,
+            buf_ptr: buf.as_mut_ptr(),
+            buf_len: buf.len(),
+            _ph: PhantomData,
         }
     }
 
@@ -192,10 +207,10 @@ impl Transport for UioChannel {
 
 /// Future returned by [`UioChannel::send`].
 pub struct SendFut<'a> {
-    inner:     Arc<Inner>,
+    inner: Arc<Inner>,
     tx_offset: usize,
-    data:      Vec<u8>,
-    _ph:       PhantomData<&'a ()>,
+    data: Vec<u8>,
+    _ph: PhantomData<&'a ()>,
 }
 
 // SAFETY: raw pointer in Inner is to DMA-coherent memory; Arc is Send.
@@ -209,7 +224,7 @@ impl Future for SendFut<'_> {
 
         if !unsafe { slot::is_consumed(base) } {
             let notify = Arc::clone(&self.inner.irq_notify);
-            let waker  = cx.waker().clone();
+            let waker = cx.waker().clone();
             tokio::spawn(async move {
                 notify.notified().await;
                 waker.wake();
@@ -231,7 +246,7 @@ impl Future for SendFut<'_> {
 
 /// Future returned by [`UioChannel::recv`].
 pub struct RecvFut<'a> {
-    inner:     Arc<Inner>,
+    inner: Arc<Inner>,
     rx_offset: usize,
     /// Pointer to the caller's receive buffer.
     ///
@@ -241,7 +256,7 @@ pub struct RecvFut<'a> {
     /// and `async fn recv(&mut self)` holds `&mut self` across the `.await`.
     buf_ptr: *mut u8,
     buf_len: usize,
-    _ph:     PhantomData<&'a ()>,
+    _ph: PhantomData<&'a ()>,
 }
 
 // SAFETY: documented above; the pointer is exclusively owned by this future.
@@ -252,14 +267,14 @@ impl Future for RecvFut<'_> {
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         let base = unsafe { self.inner.region_base.add(self.rx_offset) };
-        let buf  = unsafe { core::slice::from_raw_parts_mut(self.buf_ptr, self.buf_len) };
+        let buf = unsafe { core::slice::from_raw_parts_mut(self.buf_ptr, self.buf_len) };
 
         if let Some(n) = unsafe { slot::try_read(base, buf) } {
             return Poll::Ready(Ok(n));
         }
 
         let notify = Arc::clone(&self.inner.irq_notify);
-        let waker  = cx.waker().clone();
+        let waker = cx.waker().clone();
         tokio::spawn(async move {
             notify.notified().await;
             waker.wake();

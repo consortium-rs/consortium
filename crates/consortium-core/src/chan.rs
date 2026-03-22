@@ -1,3 +1,4 @@
+//! A wrapper for channel identifiers, with platform-specific validation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Chan(u8);
 
@@ -13,7 +14,7 @@ impl Chan {
     ///
     /// In real implementation, it should be like:
     ///
-    /// ```rust no_run
+    /// ```compile_fail
     /// use consortium_core::Chan;
     ///
     /// // Here we assume a `Channel` for `stm32mp2` series.

@@ -1,3 +1,4 @@
+//! The `Transport` trait and related types.
 use crate::{chan::Chan, future::MaybeSend};
 
 /// Moves raw bytes between cores over a specific medium.

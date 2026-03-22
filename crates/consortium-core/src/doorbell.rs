@@ -1,3 +1,4 @@
+//! Doorbell API for signaling events between cores. This is a low-level primitive used by higher-level channel and transport implementations.
 use crate::{chan::Chan, future::MaybeSend};
 
 /// Notifies the remote core that something has happened.
