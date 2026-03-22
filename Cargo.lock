@@ -42,6 +42,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-mem"
+version = "0.1.0"
+dependencies = [
+ "consortium-core",
+]
+
+[[package]]
 name = "consortium-uio"
 version = "0.1.0"
 dependencies = [

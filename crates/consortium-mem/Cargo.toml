@@ -1,0 +1,7 @@
+[package]
+name = "consortium-mem"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+consortium-core = { path = "../consortium-core" }
