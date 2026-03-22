@@ -1,0 +1,29 @@
+use crate::{chan::Chan, future::MaybeSend};
+
+/// Moves raw bytes between cores over a specific medium.
+/// Knows nothing about message types — that's Channel's job.
+///
+/// Owns a Doorbell internally — callers never ring/wait directly.
+/// The Transport decides when to notify and when to wait.
+pub trait Transport {
+    type Error;
+    type SendFut<'a>: Future<Output = Result<(), Self::Error>> + MaybeSend
+    where
+        Self: 'a;
+    type RecvFut<'a>: Future<Output = Result<usize, Self::Error>> + MaybeSend
+    where
+        Self: 'a;
+
+    /// Send bytes to the remote side.
+    /// Internally handles doorbell ring after write.
+    fn send<'a>(&mut self, ch: Chan, data: &[u8]) -> Self::SendFut<'a>;
+
+    /// Receive bytes from the remote side into buf.
+    /// Internally awaits doorbell before reading.
+    /// Returns number of bytes written into buf.
+    fn recv<'a>(&mut self, ch: Chan, buf: &mut [u8]) -> Self::RecvFut<'a>;
+
+    /// Maximum bytes transferable in a single send/recv.
+    /// Channel uses this to size its serialization scratch buffer.
+    fn max_message_size(&self) -> usize;
+}
