@@ -103,6 +103,7 @@
             pkgs.gcc-arm-embedded
 
             # Useful extras
+            pkgs.just
             pkgs.gdb
             pkgs.openocd
           ];
@@ -112,8 +113,7 @@
             echo "  A-core : aarch64-unknown-linux-gnu  (UIO userspace)"
             echo "  M-core : thumbv7em-none-eabihf      (bare-metal firmware)"
             echo ""
-            echo "  cargo build -p consortium-uio    --target aarch64-unknown-linux-gnu"
-            echo "  cargo build -p consortium-core   --target thumbv7em-none-eabihf"
+            echo "  just --list"
           '';
         });
       }
