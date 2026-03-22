@@ -1,5 +1,9 @@
 [workspace]
-members = ["crates/consortium-core","crates/consortium-cli"]
+members = [
+    "crates/consortium-core",
+    "crates/consortium-cli",
+    "crates/consortium-uio",
+]
 resolver = "2"
 
 [workspace.package]
