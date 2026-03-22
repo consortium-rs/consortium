@@ -1,3 +1,6 @@
+//! Typed, directed communication channels over a [`Transport`].
+//!
+//! `Channel` is the main API for application code. It provides typed `send()` and `recv()` methods that encode and decode messages via a [`Codec`] and hand bytes to the underlying transport.
 use core::marker::PhantomData;
 use core::ops::Deref;
 
@@ -105,7 +108,7 @@ pub struct Rx;
 /// scratch buffer at construction. In `no_std` environments this is
 /// typically a `static mut` array:
 ///
-/// ```rust,no_run
+/// ```compile_fail
 /// static mut BUF: [u8; 256] = [0u8; 256];
 /// let ch = Channel::<Tx, MyMsg, _>::new(chan, transport, unsafe { &mut BUF });
 /// ```

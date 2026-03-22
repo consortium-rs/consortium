@@ -2,17 +2,10 @@
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
-mod chan;
-mod channel;
-mod doorbell;
-mod future;
-mod region;
-mod regions;
-mod transport;
-
-pub use chan::Chan;
-pub use channel::Channel;
-pub use doorbell::Doorbell;
-pub use region::Region;
-pub use regions::{DdrRegion, SerialRegion, SramRegion};
-pub use transport::Transport;
+pub mod chan;
+pub mod channel;
+pub mod doorbell;
+pub(crate) mod future;
+pub mod region;
+pub mod regions;
+pub mod transport;

@@ -6,7 +6,7 @@
 //! | [`DdrRegion`]  | DDR slice     | real dcache insns    | `false`       |
 //! | [`SerialRegion`]| none         | noops                | `true`        |
 
-use crate::Region;
+use crate::region::Region;
 
 /// AArch64 data-cache line size (bytes).  Cortex-A35/A55 all use 64 B lines.
 #[cfg(target_arch = "aarch64")]
