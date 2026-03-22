@@ -210,6 +210,7 @@ pub struct SendFut<'a> {
     inner: Arc<Inner>,
     tx_offset: usize,
     data: Vec<u8>,
+    notified: Option<tokio::sync::futures::Notified<'a>>,
     _ph: PhantomData<&'a ()>,
 }
 
@@ -223,12 +224,13 @@ impl Future for SendFut<'_> {
         let base = unsafe { self.inner.region_base.add(self.tx_offset) };
 
         if !unsafe { slot::is_consumed(base) } {
-            let notify = Arc::clone(&self.inner.irq_notify);
-            let waker = cx.waker().clone();
-            tokio::spawn(async move {
-                notify.notified().await;
-                waker.wake();
-            });
+            // Only create the Notified handle once
+            if self.notified.is_none() {
+                self.notified = Some(self.inner.irq_notify.notified());
+            }
+            // Poll the existing handle — no new spawns
+            let notified = Pin::new(self.notified.as_mut().unwrap());
+            let _ = notified.poll(cx); // registers the waker properly
             return Poll::Pending;
         }
 
@@ -256,6 +258,7 @@ pub struct RecvFut<'a> {
     /// and `async fn recv(&mut self)` holds `&mut self` across the `.await`.
     buf_ptr: *mut u8,
     buf_len: usize,
+    notified: Option<tokio::sync::futures::Notified<'a>>,
     _ph: PhantomData<&'a ()>,
 }
 
@@ -273,12 +276,13 @@ impl Future for RecvFut<'_> {
             return Poll::Ready(Ok(n));
         }
 
-        let notify = Arc::clone(&self.inner.irq_notify);
-        let waker = cx.waker().clone();
-        tokio::spawn(async move {
-            notify.notified().await;
-            waker.wake();
-        });
+        // Only create the Notified handle once
+        if self.notified.is_none() {
+            self.notified = Some(self.inner.irq_notify.notified());
+        }
+        // Poll the existing handle — no new spawns
+        let notified = Pin::new(self.notified.as_mut().unwrap());
+        let _ = notified.poll(cx); // registers the waker properly
 
         Poll::Pending
     }
