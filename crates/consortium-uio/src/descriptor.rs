@@ -32,11 +32,11 @@ const CHAN_ENTRY_SIZE: usize = 16;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DescState {
     KernelInit = 0,
-    Proposed = 1,
-    MReady = 2,
-    Ready = 3,
-    Suspended = 4,
-    Error = 5,
+    Proposed   = 1,
+    MReady     = 2,
+    Ready      = 3,
+    Suspended  = 4,
+    Error      = 5,
 }
 
 impl DescState {
@@ -55,16 +55,16 @@ impl DescState {
 #[derive(Debug, Clone)]
 pub struct ChannelLayout {
     pub tx_offset: usize,
-    pub tx_size: usize,
+    pub tx_size:   usize,
     pub rx_offset: usize,
-    pub rx_size: usize,
+    pub rx_size:   usize,
 }
 
 #[derive(Debug)]
 pub struct Descriptor {
-    pub num_channels: u8,
+    pub num_channels:  u8,
     pub effective_mtu: usize,
-    pub channels: Vec<ChannelLayout>,
+    pub channels:      Vec<ChannelLayout>,
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -85,11 +85,11 @@ pub enum DescriptorError {
 /// `base` must be valid for at least `CHAN_TABLE_BASE + num_channels * 16` bytes.
 /// All accesses use `read_volatile`; the region must be DMA-coherent.
 pub unsafe fn parse(base: *const u8) -> Result<Descriptor, DescriptorError> {
-    let magic = unsafe { rv_u32(base, 0x00) };
-    let version = unsafe { rv_u8(base, 0x04) };
-    let num_ch = unsafe { rv_u8(base, 0x05) };
+    let magic   = unsafe { rv_u32(base, 0x00) };
+    let version = unsafe { rv_u8(base,  0x04) };
+    let num_ch  = unsafe { rv_u8(base,  0x05) };
     let eff_mtu = unsafe { rv_u32(base, 0x10) } as usize;
-    let state = DescState::from_u32(unsafe { rv_u32(base, 0x14) });
+    let state   = DescState::from_u32(unsafe { rv_u32(base, 0x14) });
 
     if magic != MAGIC {
         return Err(DescriptorError::BadMagic { got: magic });
@@ -105,19 +105,15 @@ pub unsafe fn parse(base: *const u8) -> Result<Descriptor, DescriptorError> {
         .map(|i| {
             let off = CHAN_TABLE_BASE + i * CHAN_ENTRY_SIZE;
             ChannelLayout {
-                tx_offset: unsafe { rv_u32(base, off) } as usize,
-                tx_size: unsafe { rv_u32(base, off + 4) } as usize,
-                rx_offset: unsafe { rv_u32(base, off + 8) } as usize,
-                rx_size: unsafe { rv_u32(base, off + 12) } as usize,
+                tx_offset: unsafe { rv_u32(base, off)      } as usize,
+                tx_size:   unsafe { rv_u32(base, off +  4) } as usize,
+                rx_offset: unsafe { rv_u32(base, off +  8) } as usize,
+                rx_size:   unsafe { rv_u32(base, off + 12) } as usize,
             }
         })
         .collect();
 
-    Ok(Descriptor {
-        num_channels: num_ch,
-        effective_mtu: eff_mtu,
-        channels,
-    })
+    Ok(Descriptor { num_channels: num_ch, effective_mtu: eff_mtu, channels })
 }
 
 unsafe fn rv_u32(base: *const u8, offset: usize) -> u32 {

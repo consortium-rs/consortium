@@ -5,7 +5,6 @@ edition.workspace = true
 
 [dependencies]
 consortium-core = { path = "../consortium-core", features = ["std", "futures"] }
-uio = "0.5.2"
+uio = "0.3"
 tokio = { version = "1", features = ["rt", "sync", "net"] }
 thiserror = "2"
-pin-project = "1.1.11"

@@ -1,4 +1,3 @@
-#![cfg(target_os = "linux")]
 mod descriptor;
 mod slot;
 
@@ -6,6 +5,7 @@ use std::{
     fs::File,
     future::Future,
     io::Write as _,
+    marker::PhantomData,
     pin::Pin,
     sync::Arc,
     task::{Context, Poll},
@@ -14,9 +14,8 @@ use std::{
 use tokio::{io::unix::AsyncFd, sync::Notify};
 use uio::UioError;
 
-use consortium_core::{chan::Chan, transport::Transport};
+use consortium_core::{Chan, Transport};
 pub use descriptor::{DescState, Descriptor, DescriptorError};
-use pin_project::pin_project;
 
 // ── Error ────────────────────────────────────────────────────────────────────
 
@@ -45,9 +44,9 @@ impl From<UioError> for Error {
 
 struct Inner {
     region_base: *mut u8,
-    descriptor: Descriptor,
+    descriptor:  Descriptor,
     /// Fires on every M→A IRQ.  All pending `RecvFut`s wake and re-check.
-    irq_notify: Arc<Notify>,
+    irq_notify:  Arc<Notify>,
 }
 
 // SAFETY: raw pointer into a DMA-coherent mmap that outlives `Inner`.
@@ -86,11 +85,7 @@ impl UioDevice {
         tokio::spawn(async move { irq_loop(async_fd, notify).await });
 
         Ok(Self {
-            inner: Arc::new(Inner {
-                region_base,
-                descriptor,
-                irq_notify,
-            }),
+            inner: Arc::new(Inner { region_base, descriptor, irq_notify }),
             _uio: uio,
         })
     }
@@ -115,13 +110,9 @@ impl UioDevice {
                 self.inner.descriptor.num_channels,
             ));
         }
-        let layout = self.inner.descriptor.channels[id].clone();
+        let layout        = self.inner.descriptor.channels[id].clone();
         let effective_mtu = self.inner.descriptor.effective_mtu;
-        Ok(UioChannel {
-            inner: Arc::clone(&self.inner),
-            layout,
-            effective_mtu,
-        })
+        Ok(UioChannel { inner: Arc::clone(&self.inner), layout, effective_mtu })
     }
 }
 
@@ -155,8 +146,8 @@ fn unmask_irq(f: &File) -> std::io::Result<()> {
 ///
 /// Implements [`Transport`]; obtain via [`UioDevice::channel`].
 pub struct UioChannel {
-    inner: Arc<Inner>,
-    layout: descriptor::ChannelLayout,
+    inner:         Arc<Inner>,
+    layout:        descriptor::ChannelLayout,
     effective_mtu: usize,
 }
 
@@ -167,34 +158,28 @@ impl Transport for UioChannel {
     type Error = Error;
     // Futures own all state via Arc; PhantomData carries the GAT lifetime
     // without imposing any borrow from `self`.
-    type SendFut<'a>
-        = SendFut
-    where
-        Self: 'a;
-    type RecvFut<'a>
-        = RecvFut
-    where
-        Self: 'a;
+    type SendFut<'a> = SendFut<'a> where Self: 'a;
+    type RecvFut<'a> = RecvFut<'a> where Self: 'a;
 
-    fn send<'a>(&mut self, _ch: Chan, data: &[u8]) -> Self::SendFut<'a> {
+    fn send<'a>(&mut self, _ch: Chan, data: &[u8]) -> SendFut<'a> {
         SendFut {
-            inner: Arc::clone(&self.inner),
+            inner:     Arc::clone(&self.inner),
             tx_offset: self.layout.tx_offset,
-            data: data.to_vec(),
-            notified: None,
+            data:      data.to_vec(),
+            _ph:       PhantomData,
         }
     }
 
-    fn recv<'a>(&mut self, _ch: Chan, buf: &mut [u8]) -> Self::RecvFut<'a> {
+    fn recv<'a>(&mut self, _ch: Chan, buf: &mut [u8]) -> RecvFut<'a> {
         // SAFETY: `buf` is always `&'static mut [u8]` inside `Channel`
         // (the `Channel` struct stores `buf: &'static mut [u8]`).
         // The raw pointer is valid for the lifetime of the caller's borrow.
         RecvFut {
-            inner: Arc::clone(&self.inner),
+            inner:     Arc::clone(&self.inner),
             rx_offset: self.layout.rx_offset,
-            buf_ptr: buf.as_mut_ptr(),
-            buf_len: buf.len(),
-            notified: None,
+            buf_ptr:   buf.as_mut_ptr(),
+            buf_len:   buf.len(),
+            _ph:       PhantomData,
         }
     }
 
@@ -206,49 +191,34 @@ impl Transport for UioChannel {
 // ── SendFut ──────────────────────────────────────────────────────────────────
 
 /// Future returned by [`UioChannel::send`].
-#[pin_project]
-pub struct SendFut {
-    inner: Arc<Inner>,
+pub struct SendFut<'a> {
+    inner:     Arc<Inner>,
     tx_offset: usize,
-    data: Vec<u8>,
-    #[pin]
-    notified: Option<tokio::sync::futures::Notified<'static>>,
+    data:      Vec<u8>,
+    _ph:       PhantomData<&'a ()>,
 }
 
 // SAFETY: raw pointer in Inner is to DMA-coherent memory; Arc is Send.
-unsafe impl Send for SendFut {}
+unsafe impl Send for SendFut<'_> {}
 
-impl Future for SendFut {
+impl Future for SendFut<'_> {
     type Output = Result<(), Error>;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        let mut this = self.project();
-        let base = unsafe { this.inner.region_base.add(*this.tx_offset) };
+        let base = unsafe { self.inner.region_base.add(self.tx_offset) };
 
         if !unsafe { slot::is_consumed(base) } {
-            // Initialise the Notified handle exactly once, then poll it via
-            // pin-projection so we get Pin<&mut Notified> — not Pin<&mut &mut Notified>.
-            if this.notified.is_none() {
-                // SAFETY: `inner` holds an Arc to the Notify, so it
-                // outlives the future. We can safely erase the borrow lifetime.
-                let notified = this.inner.irq_notify.notified();
-                let notified = unsafe {
-                    std::mem::transmute::<
-                        tokio::sync::futures::Notified<'_>,
-                        tokio::sync::futures::Notified<'static>,
-                    >(notified)
-                };
-                this.notified.set(Some(notified));
-            }
-            // as_pin_mut() gives Pin<&mut Notified<'_>>, satisfying Future::poll.
-            if let Some(notified) = this.notified.as_pin_mut() {
-                let _ = notified.poll(cx);
-            }
+            let notify = Arc::clone(&self.inner.irq_notify);
+            let waker  = cx.waker().clone();
+            tokio::spawn(async move {
+                notify.notified().await;
+                waker.wake();
+            });
             return Poll::Pending;
         }
 
         // SAFETY: tx_offset is valid per the descriptor.
-        unsafe { slot::write(base, this.data) };
+        unsafe { slot::write(base, &self.data) };
 
         // TODO: write channel ID to MU TX data register (UIO map1) to
         // let M-core skip scanning all slots.
@@ -260,9 +230,8 @@ impl Future for SendFut {
 // ── RecvFut ──────────────────────────────────────────────────────────────────
 
 /// Future returned by [`UioChannel::recv`].
-#[pin_project]
-pub struct RecvFut {
-    inner: Arc<Inner>,
+pub struct RecvFut<'a> {
+    inner:     Arc<Inner>,
     rx_offset: usize,
     /// Pointer to the caller's receive buffer.
     ///
@@ -272,43 +241,29 @@ pub struct RecvFut {
     /// and `async fn recv(&mut self)` holds `&mut self` across the `.await`.
     buf_ptr: *mut u8,
     buf_len: usize,
-    #[pin]
-    notified: Option<tokio::sync::futures::Notified<'static>>,
+    _ph:     PhantomData<&'a ()>,
 }
 
 // SAFETY: documented above; the pointer is exclusively owned by this future.
-unsafe impl Send for RecvFut {}
+unsafe impl Send for RecvFut<'_> {}
 
-impl Future for RecvFut {
+impl Future for RecvFut<'_> {
     type Output = Result<usize, Error>;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        let mut this = self.project();
-        let base = unsafe { this.inner.region_base.add(*this.rx_offset) };
-        let buf = unsafe { core::slice::from_raw_parts_mut(*this.buf_ptr, *this.buf_len) };
+        let base = unsafe { self.inner.region_base.add(self.rx_offset) };
+        let buf  = unsafe { core::slice::from_raw_parts_mut(self.buf_ptr, self.buf_len) };
 
         if let Some(n) = unsafe { slot::try_read(base, buf) } {
             return Poll::Ready(Ok(n));
         }
 
-        // Initialise the Notified handle exactly once, then poll it via
-        // pin-projection so we get Pin<&mut Notified> — not Pin<&mut &mut Notified>.
-        if this.notified.is_none() {
-            // SAFETY: `inner` holds an Arc to the Notify, so it
-            // outlives the future. We can safely erase the borrow lifetime.
-            let notified = this.inner.irq_notify.notified();
-            let notified = unsafe {
-                std::mem::transmute::<
-                    tokio::sync::futures::Notified<'_>,
-                    tokio::sync::futures::Notified<'static>,
-                >(notified)
-            };
-            this.notified.set(Some(notified));
-        }
-        // as_pin_mut() gives Pin<&mut Notified<'_>>, satisfying Future::poll.
-        if let Some(notified) = this.notified.as_pin_mut() {
-            let _ = notified.poll(cx);
-        }
+        let notify = Arc::clone(&self.inner.irq_notify);
+        let waker  = cx.waker().clone();
+        tokio::spawn(async move {
+            notify.notified().await;
+            waker.wake();
+        });
 
         Poll::Pending
     }

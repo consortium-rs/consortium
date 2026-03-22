@@ -11,7 +11,7 @@
 
 pub const SLOT_HEADER: usize = 8;
 
-pub const FLAG_VALID: u32 = 1 << 0;
+pub const FLAG_VALID:    u32 = 1 << 0;
 pub const FLAG_CONSUMED: u32 = 1 << 1;
 
 /// Write `payload` into the slot and mark it VALID.
