@@ -181,6 +181,7 @@ impl Transport for UioChannel {
             inner: Arc::clone(&self.inner),
             tx_offset: self.layout.tx_offset,
             data: data.to_vec(),
+            notified: None,
             _ph: PhantomData,
         }
     }
