@@ -1,0 +1,6 @@
+[package]
+name = "consortium-app"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]

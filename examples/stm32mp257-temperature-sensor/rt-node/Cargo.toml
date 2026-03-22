@@ -1,0 +1,26 @@
+[package]
+name = "rt-node"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+embassy-sync = "0.8.0"
+embassy-time = { version = "0.5.1", features = [
+  "defmt",
+  "defmt-timestamp-uptime",
+  "tick-hz-48_000_000",
+] }
+cortex-m = { version = "0.7.7", features = [
+  "inline-asm",
+  "critical-section-single-core",
+] }
+cortex-m-rt = "0.7.5"
+defmt = { version = "1.0.1" }
+defmt-rtt = { version = "1.1.0" }
+embassy-executor = { version = "0.9.1", features = [
+  "arch-cortex-m",
+  "executor-thread",
+  "defmt",
+] }
+embassy-futures = "0.1.2"
+shared = { path = "../shared" }

@@ -30,6 +30,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-app"
+version = "0.1.0"
+
+[[package]]
 name = "consortium-cli"
 version = "0.1.0"
 
@@ -47,6 +51,10 @@ version = "0.1.0"
 dependencies = [
  "consortium-core",
 ]
+
+[[package]]
+name = "consortium-rt"
+version = "0.1.0"
 
 [[package]]
 name = "consortium-uio"
