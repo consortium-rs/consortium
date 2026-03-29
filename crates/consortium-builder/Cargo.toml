@@ -1,0 +1,9 @@
+[package]
+name = "consortium-builder"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+consortium-common = { path = "../consortium-common" }
+tokio = { version = "1.50.0", features = ["full"] }
+toml = "1.1.0"

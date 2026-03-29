@@ -5,7 +5,7 @@ members = [
   "crates/consortium-uio",
   "crates/consortium-mem",
   "crates/consortium-rt",
-  "crates/consortium-app",
+  "crates/consortium-app", "crates/consortium-builder", "crates/consortium-common",
 ]
 resolver = "2"
 
