@@ -14,15 +14,15 @@ default:
 
 # Check all crates on the host
 check:
-    cargo check --workspace --features consortium-core/std
+    cargo check --workspace --features consortium-ipc/std
 
 # Run all host-side tests
 test:
-    cargo test --workspace --features consortium-core/std
+    cargo test --workspace --features consortium-ipc/std
 
 # Clippy across the workspace (deny warnings)
 clippy:
-    cargo clippy --workspace --features consortium-core/std -- -D warnings
+    cargo clippy --workspace --features consortium-ipc/std -- -D warnings
 
 # Check consortium-uio on the host (cross-compilation is handled by Yocto)
 check-uio:
@@ -31,57 +31,57 @@ check-uio:
 # ── A-core (aarch64) ─────────────────────────────────────────────────────────
 
 check-a8:
-    cargo check -p consortium-core --target {{ a8_target }}
+    cargo check -p consortium-ipc --target {{ a8_target }}
     cargo check -p consortium-uio --target {{ a8_target }}
 
 build-a8:
-    cargo build -p consortium-core --release --target {{ a8_target }}
+    cargo build -p consortium-ipc --release --target {{ a8_target }}
     cargo build -p consortium-uio --release --target {{ a8_target }}
 
 # ── A-core (armv7) ───────────────────────────────────────────────────────────
 
 check-a7:
-    cargo check -p consortium-core --target {{ a7_target }}
+    cargo check -p consortium-ipc --target {{ a7_target }}
     cargo check -p consortium-uio --target {{ a7_target }}
 
 build-a7:
-    cargo build -p consortium-core --release --target {{ a7_target }}
+    cargo build -p consortium-ipc --release --target {{ a7_target }}
     cargo build -p consortium-uio --release --target {{ a7_target }}
 
 # ── M-core (thumbv8) ─────────────────────────────────────────────────────────
 
 check-m8:
-    cargo check -p consortium-core --target {{ m8_target }}
+    cargo check -p consortium-ipc --target {{ m8_target }}
     cargo check -p consortium-mem --target {{ m8_target }}
 
 build-m8:
-    cargo build -p consortium-core --release --target {{ m8_target }}
+    cargo build -p consortium-ipc --release --target {{ m8_target }}
     cargo build -p consortium-mem --release --target {{ m8_target }}
 
 # ── M-core (thumbv7) ─────────────────────────────────────────────────────────
 
 check-m7:
-    cargo check -p consortium-core --target {{ m7_target }}
+    cargo check -p consortium-ipc --target {{ m7_target }}
     cargo check -p consortium-mem --target {{ m7_target }}
 
 build-m7:
-    cargo build -p consortium-core --release --target {{ m7_target }}
+    cargo build -p consortium-ipc --release --target {{ m7_target }}
     cargo build -p consortium-mem --release --target {{ m7_target }}
 
 # ── RISC-V (rv32imc) ─────────────────────────────────────────────────────────
 
 check-rv32imc:
-    cargo check -p consortium-core --target {{ rvimc_target }}
+    cargo check -p consortium-ipc --target {{ rvimc_target }}
 
 # ── RISC-V (rv32imac) ────────────────────────────────────────────────────────
 
 check-rv32imac:
-    cargo check -p consortium-core --target {{ rvimac_target }}
+    cargo check -p consortium-ipc --target {{ rvimac_target }}
 
 # ── RISC-V (rv32imafcp) ───────────────────────────────────────────────────────
 
 check-rv32imafcp:
-    cargo check -p consortium-core --target {{ rvimafcp_target }}
+    cargo check -p consortium-ipc --target {{ rvimafcp_target }}
 
 # ── Combined ─────────────────────────────────────────────────────────────────
 
