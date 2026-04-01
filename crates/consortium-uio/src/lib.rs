@@ -14,7 +14,7 @@ use std::{
 use tokio::{io::unix::AsyncFd, sync::Notify};
 use uio::UioError;
 
-use consortium_core::{chan::Chan, transport::Transport};
+use consortium_ipc::{chan::Chan, transport::Transport};
 pub use descriptor::{DescState, Descriptor, DescriptorError};
 use pin_project::pin_project;
 

@@ -1,10 +1,11 @@
 [package]
 name = "consortium-uio"
+description = "UIO-based IPC transport for Consortium"
 version.workspace = true
 edition.workspace = true
 
 [dependencies]
-consortium-core = { path = "../consortium-core", features = ["std", "futures"] }
+consortium-ipc = { path = "../consortium-ipc", features = ["std", "futures"] }
 uio = "0.5.2"
 tokio = { version = "1", features = ["rt", "sync", "net"] }
 thiserror = "2"

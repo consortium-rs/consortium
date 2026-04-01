@@ -1,5 +1,6 @@
 [package]
 name = "consortium-common"
+description = "Common utilities and types for Consortium"
 version.workspace = true
 edition.workspace = true
 

@@ -1,5 +1,6 @@
 [package]
-name = "consortium-core"
+name = "consortium-ipc"
+description = "Core IPC primitives for Consortium"
 version.workspace = true
 edition.workspace = true
 
