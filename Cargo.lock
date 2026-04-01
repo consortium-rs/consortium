@@ -63,7 +63,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-core"
+name = "consortium-ipc"
 version = "0.1.0"
 dependencies = [
  "postcard",
@@ -74,7 +74,7 @@ dependencies = [
 name = "consortium-mem"
 version = "0.1.0"
 dependencies = [
- "consortium-core",
+ "consortium-ipc",
 ]
 
 [[package]]
@@ -82,10 +82,14 @@ name = "consortium-rt"
 version = "0.1.0"
 
 [[package]]
+name = "consortium-tee"
+version = "0.1.0"
+
+[[package]]
 name = "consortium-uio"
 version = "0.1.0"
 dependencies = [
- "consortium-core",
+ "consortium-ipc",
  "pin-project",
  "thiserror",
  "tokio",

@@ -1,5 +1,6 @@
 [package]
 name = "consortium-builder"
+description = "Build system for Consortium applications and runtimes"
 version.workspace = true
 edition.workspace = true
 

@@ -1,6 +1,0 @@
-chip = "stm32mp257fak3"
-name = "stm32mp257-temperature-sensor"
-
-[architecture]
-rt = "rt-node"
-app = "app-node"

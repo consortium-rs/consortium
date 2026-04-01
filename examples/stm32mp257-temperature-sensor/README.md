@@ -1,1 +1,0 @@
-# Consortium Example: STM32MP257 Temperature Sensor

@@ -1,11 +1,14 @@
 [workspace]
 members = [
-  "crates/consortium-core",
+  "crates/consortium-ipc",
   "crates/consortium-cli",
   "crates/consortium-uio",
   "crates/consortium-mem",
   "crates/consortium-rt",
-  "crates/consortium-app", "crates/consortium-builder", "crates/consortium-common",
+  "crates/consortium-app",
+  "crates/consortium-builder",
+  "crates/consortium-common",
+  "crates/consortium-tee",
 ]
 resolver = "2"
 

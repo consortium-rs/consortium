@@ -1,0 +1,7 @@
+[package]
+name = "consortium-tee"
+description = "Trusted Execution Environment (TEE) support for Consortium"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]

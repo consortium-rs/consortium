@@ -1,9 +1,0 @@
-[package]
-name = "app-node"
-version.workspace = true
-edition.workspace = true
-
-[dependencies]
-tokio = { version = "1.50.0", features = ["full"] }
-tracing = "0.1.44"
-shared = { path = "../shared", features = ["std"] }
