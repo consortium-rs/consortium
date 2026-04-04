@@ -40,11 +40,11 @@ The complexity lives in the layers below. The application developer sees none of
                ▼
 ┌─────────────────────────────────────────────────┐
 │  Transport                                      │
-│  send(chan, &[u8])   recv(chan, &mut [u8])       │
+│  send(chan, &[u8])   recv(chan, &mut [u8])      │
 │  owns Doorbell; drives slot protocol            │
 │  ┌──────────────────┬────────────────────────┐  │
-│  │  MemTransport    │  UioChannel             │  │
-│  │  bare-metal      │  Linux / Tokio          │  │
+│  │  MemTransport    │  UioChannel            │  │
+│  │  bare-metal      │  Linux / Tokio         │  │
 │  └──────────────────┴────────────────────────┘  │
 └───────┬──────────────────────────┬──────────────┘
         │                          │
