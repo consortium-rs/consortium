@@ -59,6 +59,8 @@ impl ApplicationBuilder {
         cmd.arg("build")
             .arg("--target")
             .arg(TARGET_TRIPLE)
+            .arg("--config")
+            .arg("aarch64-unknown-linux-gnu.linker=".to_string() + &sdk.cc_abs)
             .current_dir(&self.path)
             // Sanitized PATH: ST rustc/tools no longer shadow upstream
             .env("PATH", &clean_path)
