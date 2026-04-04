@@ -8,7 +8,8 @@ members = [
   "crates/consortium-app",
   "crates/consortium-builder",
   "crates/consortium-common",
-  "crates/consortium-tee", "crates/consortium-tee-proc-macros",
+  "crates/consortium-tee",
+  "crates/consortium-tee-proc-macros",
 ]
 resolver = "2"
 

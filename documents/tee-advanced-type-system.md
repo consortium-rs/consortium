@@ -17,8 +17,8 @@ The `fee_function` proc-macro provides a zero-boilerplate bridge between Trusted
 └────────────────────┬────────────────────────────────────┘
                      │  macro expands to
           ┌──────────┴───────────┐
-          │                     │
-          ▼                     ▼
+          │                      │
+          ▼                      ▼
   process_dispatched()      call_process()        [cfg(feature="ca")]
   (TA side)                 (CA side)
   unpack params             pack params
