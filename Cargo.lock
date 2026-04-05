@@ -3,6 +3,12 @@
 version = 4
 
 [[package]]
+name = "atomic-waker"
+version = "1.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1505bd5d3d116872e7271a6d4e16d81d0c8570876c8de68093a09ac269d8aac0"
+
+[[package]]
 name = "bitflags"
 version = "2.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -59,6 +65,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-ffi"
+version = "0.1.0"
+
+[[package]]
+name = "consortium-hmi"
+version = "0.1.0"
+
+[[package]]
 name = "consortium-ipc"
 version = "0.1.0"
 dependencies = [
@@ -85,6 +99,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-ort"
+version = "0.1.0"
+
+[[package]]
 name = "consortium-runtime-app"
 version = "0.1.0"
 dependencies = [
@@ -95,6 +113,11 @@ dependencies = [
 [[package]]
 name = "consortium-runtime-rt"
 version = "0.1.0"
+dependencies = [
+ "atomic-waker",
+ "consortium-ipc",
+ "consortium-ipc-mem",
+]
 
 [[package]]
 name = "consortium-tee"

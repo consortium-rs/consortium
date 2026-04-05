@@ -22,7 +22,9 @@ pub trait Doorbell {
     /// Await a signal from the remote core.
     /// Returns which channel fired — relevant when one
     /// Doorbell covers multiple channels (e.g. MU has 4).
-    fn wait<'a>(&self, ch: Chan) -> Self::WaitFut<'a>;
+    fn wait<'a>(&'a self, ch: Chan) -> Self::WaitFut<'a>
+    where
+        Self: 'a;
 
     /// Non-blocking check — has a signal arrived?
     fn pending(&self, ch: Chan) -> bool;

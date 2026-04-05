@@ -9,3 +9,12 @@ pub(crate) mod future;
 pub mod region;
 pub mod regions;
 pub mod transport;
+
+pub use {
+    chan::Chan,
+    channel::Channel,
+    doorbell::Doorbell,
+    region::Region,
+    regions::{DdrRegion, SerialRegion, SramRegion},
+    transport::Transport,
+};

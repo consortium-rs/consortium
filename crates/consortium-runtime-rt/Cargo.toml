@@ -4,4 +4,12 @@ description = "Consortium real-time runtime library"
 version.workspace = true
 edition.workspace = true
 
+[features]
+stm32mp2xx = []
+imx9x = []
+default = ["stm32mp2xx", "imx9x"]
+
 [dependencies]
+atomic-waker = "1.1.2"
+consortium-ipc = { path = "../consortium-ipc", default-features = false }
+consortium-ipc-mem = { path = "../consortium-ipc-mem", default-features = false }
