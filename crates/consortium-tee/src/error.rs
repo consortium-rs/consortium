@@ -58,6 +58,8 @@ pub enum TeeError {
     TooManyParams(usize),
 
     /// CA-side `postcard` serialization of a `TeeParam` argument failed.
+    /// Only present when the `serde` feature is enabled.
+    #[cfg(feature = "serde")]
     #[error("failed to encode TEE parameter: {0}")]
     Encode(String),
 

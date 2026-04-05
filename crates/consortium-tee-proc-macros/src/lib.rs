@@ -326,6 +326,10 @@ pub fn tee_command(_attr: TokenStream, item: TokenStream) -> TokenStream {
 ///
 /// Override `MAX_SIZE` with a manual `impl` if the type's worst-case serialized size
 /// is larger (or you want to save memory with a smaller value).
+///
+/// Only available when the `serde` feature of `consortium-tee-proc-macros` is enabled
+/// (activated automatically by `consortium-tee`'s `serde` feature).
+#[cfg(feature = "serde")]
 #[proc_macro_derive(TeeParam)]
 pub fn derive_tee_param(item: TokenStream) -> TokenStream {
     let input = parse_macro_input!(item as syn::DeriveInput);
@@ -463,6 +467,8 @@ fn is_context_ref(ty: &syn::Type) -> bool {
 
 /// Returns `true` if `ty` is a Path type that is not a known primitive or `Vec<u8>`.
 /// These types are routed through the `TeeParam` / postcard path.
+/// Only compiled when the `serde` feature is active.
+#[cfg(feature = "serde")]
 fn is_tee_param_path(ty: &syn::Type) -> bool {
     if let syn::Type::Path(tp) = ty {
         if tp.qself.is_some() {
@@ -486,6 +492,8 @@ fn is_tee_param_path(ty: &syn::Type) -> bool {
 
 /// Returns `true` if `ty` is `&mut T` where T is a Path that is not a primitive scalar.
 /// These are routed through `TeeParam` MemrefInout.
+/// Only compiled when the `serde` feature is active.
+#[cfg(feature = "serde")]
 fn is_mut_tee_param_ref(ty: &syn::Type) -> bool {
     if let syn::Type::Reference(r) = ty
         && r.mutability.is_some()
@@ -635,6 +643,8 @@ fn gen_unpack(
     }
 
     // Priority 9: &mut T: TeeParam  (MemrefInout, postcard round-trip)
+    // Requires the `serde` feature.
+    #[cfg(feature = "serde")]
     if is_mut_tee_param_ref(ty) {
         let inner_ty = if let syn::Type::Reference(r) = ty {
             r.elem.as_ref()
@@ -658,6 +668,8 @@ fn gen_unpack(
     }
 
     // Priority 10: T: TeeParam  (MemrefInput, postcard deserialize)
+    // Requires the `serde` feature.
+    #[cfg(feature = "serde")]
     if is_tee_param_path(ty) {
         let stmt = quote! {
             // SAFETY: slot #idx is MemrefInput — type match guaranteed by #[tee_command]
@@ -707,16 +719,18 @@ fn gen_flush_ta(slot: usize, ty: &syn::Type) -> proc_macro2::TokenStream {
             let mut __p_out = unsafe { params.#idx.as_memref()? };
             __p_out.buffer()[..__ret_val.len()].copy_from_slice(&__ret_val);
         }
-    } else if is_tee_param_path(ty) {
-        // T: TeeParam — serialize into the MemrefOutput buffer.
-        quote! {
-            // SAFETY: slot #idx is MemrefOutput — type match guaranteed by #[tee_command]
-            let mut __p_out = unsafe { params.#idx.as_memref()? };
-            ::postcard::to_slice(&__ret_val, __p_out.buffer())
-                .map_err(|_| optee_utee::Error::new(optee_utee::ErrorKind::BadParameters))?;
-        }
     } else {
-        quote! { compile_error!("Unsupported TEE return type for output parameter (supported: u32, u64, bool, Vec<u8>, T: TeeParam)"); }
+        #[cfg(feature = "serde")]
+        if is_tee_param_path(ty) {
+            // T: TeeParam — serialize into the MemrefOutput buffer.
+            return quote! {
+                // SAFETY: slot #idx is MemrefOutput — type match guaranteed by #[tee_command]
+                let mut __p_out = unsafe { params.#idx.as_memref()? };
+                ::postcard::to_slice(&__ret_val, __p_out.buffer())
+                    .map_err(|_| optee_utee::Error::new(optee_utee::ErrorKind::BadParameters))?;
+            };
+        }
+        quote! { compile_error!("Unsupported TEE return type for output parameter (supported: u32, u64, bool, Vec<u8>, T: TeeParam requires `serde` feature)"); }
     }
 }
 
@@ -811,6 +825,8 @@ fn gen_pack_ca(
     }
 
     // Priority 9: &mut T: TeeParam  (MemrefInout, serialize → invoke → deserialize back)
+    // Requires the `serde` feature.
+    #[cfg(feature = "serde")]
     if is_mut_tee_param_ref(ty) {
         let inner_ty = if let syn::Type::Reference(r) = ty {
             r.elem.as_ref()
@@ -836,6 +852,8 @@ fn gen_pack_ca(
     }
 
     // Priority 10: T: TeeParam  (MemrefInput, serialize to Vec then pass)
+    // Requires the `serde` feature.
+    #[cfg(feature = "serde")]
     if is_tee_param_path(ty) {
         let ser_ident = Ident::new(&format!("__ser_{}", slot), Span::call_site());
         let pack = quote! {
@@ -847,7 +865,7 @@ fn gen_pack_ca(
     }
 
     (
-        quote! { compile_error!("Unsupported TEE parameter type"); },
+        quote! { compile_error!("Unsupported TEE parameter type (for serialized types, enable the `serde` feature of `consortium-tee`)"); },
         None,
     )
 }
@@ -862,14 +880,16 @@ fn gen_output_pack_ca(slot_ident: &Ident, ty: &syn::Type, slot: usize) -> proc_m
             let mut #buf_ident = vec![0u8; 4096];
             let #slot_ident = ParamTmpRef::new_output(&mut #buf_ident);
         }
-    } else if is_tee_param_path(ty) {
-        let buf_ident = Ident::new(&format!("__out_buf_{}", slot), Span::call_site());
-        quote! {
-            let mut #buf_ident = vec![0u8; <#ty as consortium_tee::TeeParam>::MAX_SIZE];
-            let #slot_ident = ParamTmpRef::new_output(&mut #buf_ident);
-        }
     } else {
-        quote! { compile_error!("Unsupported TEE return type for output parameter (supported: u32, u64, bool, Vec<u8>, T: TeeParam)"); }
+        #[cfg(feature = "serde")]
+        if is_tee_param_path(ty) {
+            let buf_ident = Ident::new(&format!("__out_buf_{}", slot), Span::call_site());
+            return quote! {
+                let mut #buf_ident = vec![0u8; <#ty as consortium_tee::TeeParam>::MAX_SIZE];
+                let #slot_ident = ParamTmpRef::new_output(&mut #buf_ident);
+            };
+        }
+        quote! { compile_error!("Unsupported TEE return type for output parameter (supported: u32, u64, bool, Vec<u8>, T: TeeParam requires `serde` feature)"); }
     }
 }
 
@@ -893,15 +913,17 @@ fn gen_output_read_ca(slot: usize, ty: &syn::Type) -> proc_macro2::TokenStream {
                 __m.buffer()[..__m.size()].to_vec()
             }
         }
-    } else if is_tee_param_path(ty) {
-        quote! {
-            {
-                let __m = _operation.#s().as_memref();
-                ::postcard::from_bytes::<#ty>(&__m.buffer()[..__m.size()])
-                    .map_err(|_| consortium_tee::TeeError::ParamMismatch)?
-            }
-        }
     } else {
-        quote! { compile_error!("Unsupported TEE return type") }
+        #[cfg(feature = "serde")]
+        if is_tee_param_path(ty) {
+            return quote! {
+                {
+                    let __m = _operation.#s().as_memref();
+                    ::postcard::from_bytes::<#ty>(&__m.buffer()[..__m.size()])
+                        .map_err(|_| consortium_tee::TeeError::ParamMismatch)?
+                }
+            };
+        }
+        quote! { compile_error!("Unsupported TEE return type (for serialized types, enable the `serde` feature of `consortium-tee`)") }
     }
 }

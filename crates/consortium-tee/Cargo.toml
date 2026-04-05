@@ -4,11 +4,18 @@ description = "Trusted Execution Environment (TEE) support for Consortium"
 version.workspace = true
 edition.workspace = true
 
+[features]
+## Enable serialized-type (`T: TeeParam`, `&mut T: TeeParam`) support in `#[tee_command]`.
+## Pulls in `serde` and `postcard` and activates the matching code-generation path in the
+## proc-macro crate.  Types must derive `serde::Serialize + serde::Deserialize` and
+## `TeeParam` (for the `MAX_SIZE` constant).
+serde = ["dep:serde", "dep:postcard", "consortium-tee-proc-macros/serde"]
+
 [dependencies]
 thiserror = "2.0.18"
 consortium-tee-proc-macros = { path = "../consortium-tee-proc-macros" }
-serde = { version = "1", default-features = false }
-postcard = { version = "1", default-features = false, features = ["alloc"] }
+serde = { version = "1", default-features = false, optional = true }
+postcard = { version = "1", default-features = false, features = ["alloc"], optional = true }
 
 [target.'cfg(target_os = "linux")'.dependencies]
 optee-teec = "0.8.0"
