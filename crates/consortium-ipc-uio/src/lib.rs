@@ -3,7 +3,9 @@ mod descriptor;
 mod slot;
 
 #[cfg(not(target_os = "linux"))]
-compile_error!("`consortium-uio` is only supported on Linux (requires /dev/uioN and compatible UIO driver)");
+compile_error!(
+    "`consortium-uio` is only supported on Linux (requires /dev/uioN and compatible UIO driver)"
+);
 
 use std::{
     fs::File,

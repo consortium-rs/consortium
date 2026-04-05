@@ -1,0 +1,9 @@
+[package]
+name = "consortium-runtime-app"
+description = "Consortium application (nonsecure) runtime library on Linux side"
+version.workspace = true
+edition.workspace = true
+
+[target.'cfg(target_os = "linux")'.dependencies]
+consortium-ipc-uio = { path = "../consortium-ipc-uio" }
+consortium-tee = { path = "../consortium-tee" }

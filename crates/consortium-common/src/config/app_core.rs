@@ -50,7 +50,9 @@ impl CortexAppCore {
             // ARMv7-A (32-bit)
             Self::CortexA7 | Self::CortexA9 => "armv7-unknown-linux-gnueabihf",
             // ARMv8-A (64-bit)
-            Self::CortexA53 | Self::CortexA35 | Self::CortexA55 | Self::CortexA72 => "aarch64-unknown-linux-gnu",
+            Self::CortexA53 | Self::CortexA35 | Self::CortexA55 | Self::CortexA72 => {
+                "aarch64-unknown-linux-gnu"
+            }
         }
     }
 }
