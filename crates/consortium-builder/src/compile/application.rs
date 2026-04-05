@@ -1,27 +1,270 @@
 use std::path::PathBuf;
+use thiserror::Error;
 use tokio::process::Command;
 
-use crate::compile::utils::{
-    clean_path, elf_path, resolve_cargo, resolve_cross_tool, resolve_rustc, verify_elf,
-};
+use crate::compile::utils::{clean_path, elf_path, resolve_cargo, resolve_cross_tool, resolve_rustc, verify_elf};
+use super::Compiler;
 
-/// Builds a Cargo application targeting the STM32MP2 Cortex-A35 (OpenSTLinux).
+/// Error type for application compilation.
+#[derive(Error, Debug)]
+pub enum ApplicationCompileError {
+    #[error("Failed to resolve sysroot: {0}")]
+    SysrootError(String),
+
+    #[error("Failed to resolve rustup tool: {0}")]
+    RustupError(String),
+
+    #[error("Cargo build failed: {0}")]
+    BuildFailed(String),
+
+    #[error("ELF not found at expected path: {0:?}")]
+    ElfNotFound(PathBuf),
+
+    #[error("{0}")]
+    UtilityError(String),
+}
+
+/// Result of cross-compiler detection, including whether an explicit compiler was found.
+struct CrossCompiler {
+    /// Absolute path to the C cross-compiler, or `None` when falling back to the generic linker.
+    cc: Option<String>,
+    /// Absolute path to the C++ cross-compiler, or `None` when falling back to the generic linker.
+    cxx: Option<String>,
+}
+
+impl CrossCompiler {
+    /// Detect the cross-compiler in priority order:
+    /// 1. `CC` / `CXX` env vars (explicit, platform-agnostic)
+    /// 2. STM32MP2 / OpenSTLinux pattern (`aarch64-ostl-linux-gcc`)
+    /// 3. i.MX Yocto pattern (`aarch64-poky-linux-gcc`)
+    /// 4. `None` → generic Rust linker (warning emitted at build time)
+    fn detect() -> Self {
+        // 1. Explicit CC/CXX — honour whatever the user or SDK set
+        if let Ok(cc) = std::env::var("CC") {
+            let cxx = std::env::var("CXX").unwrap_or_else(|_| cc.clone());
+            return CrossCompiler { cc: Some(cc), cxx: Some(cxx) };
+        }
+
+        // 2. STM32MP2 / OpenSTLinux
+        if let (Ok(cc), Ok(cxx)) = (
+            resolve_cross_tool("aarch64-ostl-linux-gcc"),
+            resolve_cross_tool("aarch64-ostl-linux-g++"),
+        ) {
+            return CrossCompiler { cc: Some(cc), cxx: Some(cxx) };
+        }
+
+        // 3. i.MX Yocto (Poky)
+        if let (Ok(cc), Ok(cxx)) = (
+            resolve_cross_tool("aarch64-poky-linux-gcc"),
+            resolve_cross_tool("aarch64-poky-linux-g++"),
+        ) {
+            return CrossCompiler { cc: Some(cc), cxx: Some(cxx) };
+        }
+
+        // 4. Nothing found — generic fallback with warning
+        CrossCompiler { cc: None, cxx: None }
+    }
+
+    fn has_explicit(&self) -> bool {
+        self.cc.is_some()
+    }
+}
+
+struct SdkEnv {
+    sysroot: String,
+    cross: CrossCompiler,
+    /// Tune flags from `OECORE_TUNE_CCARGS`
+    arch_flags: String,
+    /// Native sysroot used to strip SDK entries from PATH
+    native_sysroot: String,
+    /// Optional extra RUSTFLAGS (`OSTL_SDK_EXTRA_FLAGS`)
+    extra_flags: String,
+}
+
+impl SdkEnv {
+    fn resolve() -> Result<Self, ApplicationCompileError> {
+        let sysroot = std::env::var("OSTL_SDK_SYSROOT")
+            .or_else(|_| std::env::var("SDKTARGETSYSROOT"))
+            .or_else(|_| std::env::var("OECORE_TARGET_SYSROOT"))
+            .map_err(|_| ApplicationCompileError::SysrootError(
+                "Could not determine target sysroot. \
+                 Set OSTL_SDK_SYSROOT or source a Yocto environment-setup script."
+                    .to_string(),
+            ))?;
+
+        if !PathBuf::from(&sysroot).exists() {
+            return Err(ApplicationCompileError::SysrootError(format!(
+                "Target sysroot does not exist: {sysroot}"
+            )));
+        }
+
+        // OECORE_NATIVE_SYSROOT is optional; only needed for PATH sanitization
+        let native_sysroot = std::env::var("OECORE_NATIVE_SYSROOT").unwrap_or_default();
+
+        let arch_flags = std::env::var("OECORE_TUNE_CCARGS")
+            .unwrap_or_else(|_| "-mcpu=cortex-a35+crc -mbranch-protection=standard".to_string());
+
+        let extra_flags = std::env::var("OSTL_SDK_EXTRA_FLAGS").unwrap_or_default();
+
+        Ok(SdkEnv {
+            sysroot,
+            cross: CrossCompiler::detect(),
+            arch_flags,
+            native_sysroot,
+            extra_flags,
+        })
+    }
+
+    fn rustflags(&self) -> String {
+        let arch_link_args: String = self
+            .arch_flags
+            .split_whitespace()
+            .map(|f| format!(" -C link-arg={f}"))
+            .collect();
+
+        let mut flags = match &self.cross.cc {
+            Some(cc) => format!(
+                "-C linker={cc} -C link-arg=--sysroot={sysroot}{arch_link_args}",
+                sysroot = self.sysroot,
+            ),
+            None => format!(
+                "-C link-arg=--sysroot={sysroot}{arch_link_args}",
+                sysroot = self.sysroot,
+            ),
+        };
+
+        if !self.extra_flags.is_empty() {
+            flags.push(' ');
+            flags.push_str(&self.extra_flags);
+        }
+
+        flags
+    }
+}
+
+/// Build parameters for a Linux application (typically targeting an OpenSTLinux / Yocto A-core).
 ///
-/// # Environment
+/// # Environment variables (in priority order)
 ///
-/// Source the ST SDK environment-setup script before running:
-///   `source /opt/st/.../environment-setup-cortexa35-ostl-linux`
+/// Cross-compiler detection:
+///   `CC` / `CXX` — explicit cross-compiler (any Yocto flavor)
+///   Auto-detected: `aarch64-ostl-linux-gcc` (STM32MP2) or `aarch64-poky-linux-gcc` (i.MX Yocto)
+///   Fallback: generic Rust linker (emits a warning)
 ///
-/// This exports all required variables (`SDKTARGETSYSROOT`, `OECORE_NATIVE_SYSROOT`,
-/// `OECORE_TUNE_CCARGS`, etc.) automatically.
+/// Sysroot:
+///   `OSTL_SDK_SYSROOT` > `SDKTARGETSYSROOT` > `OECORE_TARGET_SYSROOT`
 ///
-/// Optional overrides:
-///   `CONSORTIUM_RUSTC`        — absolute path to upstream rustc (default: resolved via rustup)
-///   `CONSORTIUM_CARGO`        — absolute path to upstream cargo (default: resolved via rustup)
-///   `OSTL_SDK_SYSROOT`  — override target sysroot
-///   `OSTL_SDK_EXTRA_FLAGS` — extra RUSTFLAGS appended verbatim
+/// Rustup overrides:
+///   `CONSORTIUM_RUSTC`, `CONSORTIUM_CARGO`
 ///
-/// TODO: Add support for NXP i.MX 9x series (i.MX 93, i.MX 95, etc.) by detecting environment-setup script for those platforms and adjusting tool names and flags accordingly.
+/// Extra flags:
+///   `OSTL_SDK_EXTRA_FLAGS` — appended verbatim to RUSTFLAGS
+#[derive(Clone)]
+pub struct ApplicationConfiguration {
+    /// Path to the Cargo project root.
+    pub path: PathBuf,
+    /// Rust target triple (e.g. `"aarch64-unknown-linux-gnu"`).
+    pub target: String,
+    /// Build in release mode.
+    pub release: bool,
+}
+
+/// Compiler for Linux applications targeting Yocto / OpenSTLinux A-cores.
+pub struct ApplicationCompiler;
+
+impl Compiler for ApplicationCompiler {
+    type Configuration = ApplicationConfiguration;
+    type Error = ApplicationCompileError;
+    type Output = PathBuf;
+
+    async fn build(config: Self::Configuration) -> Result<Self::Output, Self::Error> {
+        let sdk = SdkEnv::resolve()?;
+
+        if !sdk.cross.has_explicit() {
+            eprintln!(
+                "warning: no cross-compiler found (CC not set, aarch64-ostl-linux-gcc and \
+                 aarch64-poky-linux-gcc not on PATH); using generic target linker. \
+                 Hardware-specific optimizations may be missing."
+            );
+        }
+
+        let rustc = resolve_rustc()
+            .await
+            .map_err(ApplicationCompileError::RustupError)?;
+        let cargo = resolve_cargo()
+            .await
+            .map_err(ApplicationCompileError::RustupError)?;
+
+        let rustflags = sdk.rustflags();
+        let sanitized_path = clean_path(&sdk.native_sysroot);
+
+        let mut cmd = Command::new(&cargo);
+        cmd.arg("build")
+            .arg("--target")
+            .arg(&config.target)
+            .current_dir(&config.path)
+            .env("PATH", &sanitized_path)
+            .env("RUSTC", &rustc)
+            .env("RUSTFLAGS", &rustflags)
+            .env("SYSROOT", &sdk.sysroot)
+            .env("PKG_CONFIG_SYSROOT_DIR", &sdk.sysroot)
+            .env(
+                "PKG_CONFIG_PATH",
+                format!(
+                    "{s}/usr/lib/pkgconfig:{s}/usr/share/pkgconfig",
+                    s = sdk.sysroot,
+                ),
+            );
+
+        if let Some(ref cc) = sdk.cross.cc {
+            cmd.arg("--config")
+                .arg(format!("{}.linker={cc}", config.target));
+            cmd.env("CC", format!("{cc} --sysroot={}", sdk.sysroot));
+        }
+
+        if let Some(ref cxx) = sdk.cross.cxx {
+            cmd.env("CXX", format!("{cxx} --sysroot={}", sdk.sysroot));
+        }
+
+        if config.release {
+            cmd.arg("--release");
+        }
+
+        let status = cmd
+            .status()
+            .await
+            .map_err(|e| ApplicationCompileError::BuildFailed(e.to_string()))?;
+
+        if !status.success() {
+            return Err(ApplicationCompileError::BuildFailed(format!(
+                "cargo build failed with status: {status}"
+            )));
+        }
+
+        let elf = Self::output_path(&config).await?;
+
+        if !elf.exists() {
+            return Err(ApplicationCompileError::ElfNotFound(elf));
+        }
+
+        verify_elf(&elf)
+            .await
+            .map_err(ApplicationCompileError::UtilityError)?;
+
+        Ok(elf)
+    }
+
+    async fn output_path(config: &Self::Configuration) -> Result<PathBuf, Self::Error> {
+        elf_path(&config.path, &config.target, config.release)
+            .await
+            .map_err(ApplicationCompileError::UtilityError)
+    }
+}
+
+/// Backward-compatible builder; delegates to [`ApplicationCompiler`].
+///
+/// Cross-compiler detection and environment handling is identical to
+/// [`ApplicationCompiler`] — see [`ApplicationConfiguration`] for env var docs.
 pub struct ApplicationBuilder {
     /// Path to the Cargo project root.
     pub path: PathBuf,
@@ -29,146 +272,24 @@ pub struct ApplicationBuilder {
     pub target: String,
 }
 
-struct SdkEnv {
-    /// cortexa35-ostl-linux target sysroot
-    sysroot: String,
-    /// Absolute path to aarch64-ostl-linux-gcc (resolved before PATH sanitization)
-    cc_abs: String,
-    /// Absolute path to aarch64-ostl-linux-g++ (resolved before PATH sanitization)
-    cxx_abs: String,
-    /// Tune flags from OECORE_TUNE_CCARGS, e.g. "-mcpu=cortex-a35+crc -mbranch-protection=standard"
-    arch_flags: String,
-    /// ST SDK native sysroot, used to sanitize PATH
-    native_sysroot: String,
-    /// Optional extra RUSTFLAGS
-    extra_flags: String,
-}
-
 impl ApplicationBuilder {
     pub async fn build(&self) -> Result<PathBuf, String> {
-        let sdk = Self::sdk_env()?;
-
-        let rustc = resolve_rustc().await?;
-        let cargo = resolve_cargo().await?;
-
-        let rustflags = Self::build_rustflags(&sdk);
-        let clean_path = clean_path(&sdk.native_sysroot);
-
-        let mut cmd = Command::new(&cargo);
-        cmd.arg("build")
-            .arg("--target")
-            .arg(&self.target)
-            .arg("--config")
-            .arg("aarch64-unknown-linux-gnu.linker=".to_string() + &sdk.cc_abs)
-            .current_dir(&self.path)
-            // Sanitized PATH: ST rustc/tools no longer shadow upstream
-            .env("PATH", &clean_path)
-            // Explicit upstream rustc, not whatever PATH resolves
-            .env("RUSTC", &rustc)
-            .env("RUSTFLAGS", &rustflags)
-            // For cc-rs based deps (openssl-sys, ring, etc.)
-            .env("SYSROOT", &sdk.sysroot)
-            .env("CC", format!("{} --sysroot={}", sdk.cc_abs, sdk.sysroot))
-            .env("CXX", format!("{} --sysroot={}", sdk.cxx_abs, sdk.sysroot))
-            // For deps that use pkg-config to find target libraries
-            .env("PKG_CONFIG_SYSROOT_DIR", &sdk.sysroot)
-            .env(
-                "PKG_CONFIG_PATH",
-                format!(
-                    "{sysroot}/usr/lib/pkgconfig:{sysroot}/usr/share/pkgconfig",
-                    sysroot = sdk.sysroot,
-                ),
-            );
-
-        if self.release {
-            cmd.arg("--release");
-        }
-
-        let status = cmd
-            .status()
-            .await
-            .map_err(|e| format!("Failed to execute cargo build: {}", e))?;
-
-        if !status.success() {
-            return Err(format!("cargo build failed with status: {}", status));
-        }
-
-        let elf = elf_path(&self.path, &self.target, self.release).await?;
-
-        if !elf.exists() {
-            return Err(format!("ELF not found at expected path: {:?}", elf));
-        }
-
-        verify_elf(&elf).await?;
-
-        Ok(elf)
-    }
-
-    /// Resolves and validates all SDK environment variables.
-    /// Must be called while the ST SDK PATH is still intact so cross tools
-    /// can be resolved to absolute paths before sanitization.
-    fn sdk_env() -> Result<SdkEnv, String> {
-        let sysroot = std::env::var("OSTL_SDK_SYSROOT")
-            .or_else(|_| std::env::var("SDKTARGETSYSROOT"))
-            .or_else(|_| std::env::var("OECORE_TARGET_SYSROOT"))
-            .map_err(|_| {
-                "Could not determine target sysroot. \
-                 Source the ST environment-setup script or set OSTL_SDK_SYSROOT."
-                    .to_string()
-            })?;
-
-        let native_sysroot = std::env::var("OECORE_NATIVE_SYSROOT").map_err(|_| {
-            "OECORE_NATIVE_SYSROOT is not set. \
-                 Source the ST environment-setup script first."
-                .to_string()
-        })?;
-
-        // Resolve cross tools to absolute paths NOW, before PATH is sanitized
-        let cc_abs = resolve_cross_tool("aarch64-ostl-linux-gcc")?;
-        let cxx_abs = resolve_cross_tool("aarch64-ostl-linux-g++")?;
-
-        // Derive tune flags from ST's own variable; fall back to known-good defaults
-        let arch_flags = std::env::var("OECORE_TUNE_CCARGS")
-            .unwrap_or_else(|_| "-mcpu=cortex-a35+crc -mbranch-protection=standard".to_string());
-
-        let extra_flags = std::env::var("OSTL_SDK_EXTRA_FLAGS").unwrap_or_default();
-
-        if !PathBuf::from(&sysroot).exists() {
-            return Err(format!("Target sysroot does not exist: {}", sysroot));
-        }
-
-        Ok(SdkEnv {
-            sysroot,
-            cc_abs,
-            cxx_abs,
-            arch_flags,
-            native_sysroot,
-            extra_flags,
+        ApplicationCompiler::build(ApplicationConfiguration {
+            path: self.path.clone(),
+            target: self.target.clone(),
+            release: self.release,
         })
+        .await
+        .map_err(|e| e.to_string())
     }
 
-    /// Builds the RUSTFLAGS string for cross-compilation.
-    fn build_rustflags(sdk: &SdkEnv) -> String {
-        // Map each space-separated GCC tune flag to a -C link-arg so the
-        // linker driver passes them through to the assembler/linker correctly.
-        let arch_link_args: String = sdk
-            .arch_flags
-            .split_whitespace()
-            .map(|f| format!(" -C link-arg={}", f))
-            .collect();
-
-        let mut flags = format!(
-            "-C linker={cc} -C link-arg=--sysroot={sysroot}{arch_link_args}",
-            cc = sdk.cc_abs,
-            sysroot = sdk.sysroot,
-            arch_link_args = arch_link_args,
-        );
-
-        if !sdk.extra_flags.is_empty() {
-            flags.push(' ');
-            flags.push_str(&sdk.extra_flags);
-        }
-
-        flags
+    pub async fn elf_path(&self) -> Result<PathBuf, String> {
+        ApplicationCompiler::output_path(&ApplicationConfiguration {
+            path: self.path.clone(),
+            target: self.target.clone(),
+            release: self.release,
+        })
+        .await
+        .map_err(|e| e.to_string())
     }
 }

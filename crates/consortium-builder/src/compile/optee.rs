@@ -1,13 +1,175 @@
 use std::path::PathBuf;
-
+use thiserror::Error;
 use tokio::process::Command;
 use uuid::Uuid;
 
 use crate::compile::utils::{elf_path, resolve_cargo, verify_elf};
+use super::Compiler;
 
-// Only aarch64-unknown-linux-gnu is currently supported for OP-TEE builds. Armv7 targets (Cortex-A7) are not supported by the OP-TEE SDK, and Cortex-M targets are out of scope for now.
+// Only aarch64-unknown-linux-gnu is currently supported for OP-TEE builds.
+// Armv7 targets (Cortex-A7) are not supported by the OP-TEE SDK, and
+// Cortex-M targets are out of scope for now.
 pub const OPTEE_TARGET: &str = "aarch64-unknown-linux-gnu";
 
+/// Error type for OP-TEE compilation and signing.
+#[derive(Error, Debug)]
+pub enum OpteeCompileError {
+    #[error("TA_DEV_KIT_DIR does not exist: {0:?}")]
+    TaDevKitNotFound(PathBuf),
+
+    #[error("OP-TEE signer not found at: {0:?}")]
+    SignerNotFound(PathBuf),
+
+    #[error("TA signing key not found at: {0:?}")]
+    SigningKeyNotFound(PathBuf),
+
+    #[error("Python interpreter not found on PATH (tried: python, python3)")]
+    PythonNotFound,
+
+    #[error("Cargo build failed: {0}")]
+    BuildFailed(String),
+
+    #[error("ELF not found at expected path: {0:?}")]
+    ElfNotFound(PathBuf),
+
+    #[error("OP-TEE signing failed: {0}")]
+    SigningFailed(String),
+
+    #[error("Signed TA not found after signing: {0:?}")]
+    SignedTaNotFound(PathBuf),
+
+    #[error("{0}")]
+    UtilityError(String),
+}
+
+/// All build + signing parameters for an OP-TEE Trusted Application.
+pub struct OpteeConfiguration {
+    /// Path to the Cargo project root.
+    pub path: PathBuf,
+    /// Build in release mode.
+    pub release: bool,
+    /// Optional explicit linker (e.g. the cross-compiler from the OP-TEE SDK).
+    pub linker: Option<String>,
+    /// Path to the OP-TEE TA dev-kit directory (`TA_DEV_KIT_DIR`).
+    pub ta_dev_kit_dir: PathBuf,
+    /// Path to the OP-TEE signer script (e.g. `sign_encrypt.py`).
+    pub optee_signer: PathBuf,
+    /// UUID assigned to this Trusted Application.
+    pub ta_uuid: Uuid,
+}
+
+/// Compiler for OP-TEE Trusted Applications: builds the ELF then signs it.
+pub struct OpteeCompiler;
+
+impl Compiler for OpteeCompiler {
+    type Configuration = OpteeConfiguration;
+    type Error = OpteeCompileError;
+    type Output = PathBuf;
+
+    async fn build(config: Self::Configuration) -> Result<Self::Output, Self::Error> {
+        // ── Step 1: build ───────────────────────────────────────────────────
+        if !config.ta_dev_kit_dir.exists() {
+            return Err(OpteeCompileError::TaDevKitNotFound(config.ta_dev_kit_dir));
+        }
+
+        let cargo = resolve_cargo()
+            .await
+            .map_err(OpteeCompileError::UtilityError)?;
+
+        let mut cmd = Command::new(&cargo);
+        cmd.arg("build")
+            .arg("--target")
+            .arg(OPTEE_TARGET)
+            .current_dir(&config.path)
+            .env("TA_DEV_KIT_DIR", &config.ta_dev_kit_dir);
+
+        if config.release {
+            cmd.arg("--release");
+        }
+
+        if let Some(ref linker) = config.linker {
+            cmd.arg("--config")
+                .arg(format!("{OPTEE_TARGET}.linker={linker}"));
+        }
+
+        let status = cmd
+            .status()
+            .await
+            .map_err(|e| OpteeCompileError::BuildFailed(e.to_string()))?;
+
+        if !status.success() {
+            return Err(OpteeCompileError::BuildFailed(format!(
+                "cargo build failed with status: {status}"
+            )));
+        }
+
+        let elf = Self::output_path(&config).await?;
+
+        if !elf.exists() {
+            return Err(OpteeCompileError::ElfNotFound(elf));
+        }
+
+        verify_elf(&elf)
+            .await
+            .map_err(OpteeCompileError::UtilityError)?;
+
+        // ── Step 2: sign ────────────────────────────────────────────────────
+        if !config.optee_signer.exists() {
+            return Err(OpteeCompileError::SignerNotFound(config.optee_signer));
+        }
+
+        let ta_key = config.ta_dev_kit_dir.join("keys").join("default_ta.pem");
+        if !ta_key.exists() {
+            return Err(OpteeCompileError::SigningKeyNotFound(ta_key));
+        }
+
+        let python = resolve_python().await?;
+
+        let ta = elf
+            .parent()
+            .ok_or_else(|| OpteeCompileError::UtilityError(format!(
+                "Could not determine output directory for ELF: {elf:?}"
+            )))?
+            .join(format!("{}.ta", config.ta_uuid));
+
+        let status = Command::new(&python)
+            .arg(&config.optee_signer)
+            .arg("--uuid")
+            .arg(config.ta_uuid.to_string())
+            .arg("--key")
+            .arg(&ta_key)
+            .arg("--in")
+            .arg(&elf)
+            .arg("--out")
+            .arg(&ta)
+            .env("TA_DEV_KIT_DIR", &config.ta_dev_kit_dir)
+            .status()
+            .await
+            .map_err(|e| OpteeCompileError::SigningFailed(
+                format!("Failed to execute OP-TEE signer via {python}: {e}")
+            ))?;
+
+        if !status.success() {
+            return Err(OpteeCompileError::SigningFailed(format!(
+                "OP-TEE signing failed with status: {status}"
+            )));
+        }
+
+        if !ta.exists() {
+            return Err(OpteeCompileError::SignedTaNotFound(ta));
+        }
+
+        Ok(ta)
+    }
+
+    async fn output_path(config: &Self::Configuration) -> Result<PathBuf, Self::Error> {
+        elf_path(&config.path, OPTEE_TARGET, config.release)
+            .await
+            .map_err(OpteeCompileError::UtilityError)
+    }
+}
+
+/// Backward-compatible builder; delegates to [`OpteeCompiler`].
 pub struct OpteeBuilder {
     /// Path to the Cargo project root.
     pub path: PathBuf,
@@ -15,6 +177,7 @@ pub struct OpteeBuilder {
     pub linker: Option<String>,
 }
 
+/// Backward-compatible environment for [`OpteeBuilder`].
 pub struct OpteeEnvironment {
     pub ta_dev_kit_dir: PathBuf,
     pub optee_signer: PathBuf,
@@ -23,115 +186,26 @@ pub struct OpteeEnvironment {
 
 impl OpteeBuilder {
     pub async fn build(&self, env: &OpteeEnvironment) -> Result<PathBuf, String> {
-        // Step 1: Build the TA using cargo with the OP-TEE target and custom linker if provided.
-        let cargo = resolve_cargo().await?;
-        let mut cmd = Command::new(&cargo);
-
-        if !env.ta_dev_kit_dir.exists() {
-            return Err(format!(
-                "TA_DEV_KIT_DIR does not exist: {:?}",
-                env.ta_dev_kit_dir
-            ));
-        }
-
-        cmd.arg("build")
-            .arg("--target")
-            .arg(OPTEE_TARGET)
-            .current_dir(&self.path)
-            .env("TA_DEV_KIT_DIR", &env.ta_dev_kit_dir);
-
-        if self.release {
-            cmd.arg("--release");
-        }
-
-        if let Some(linker) = &self.linker {
-            cmd.arg("--config")
-                .arg(format!("aarch64-unknown-linux-gnu.linker={linker}"));
-        }
-
-        let status = cmd
-            .status()
-            .await
-            .map_err(|e| format!("Failed to execute cargo build: {}", e))?;
-
-        if !status.success() {
-            return Err(format!("Cargo build failed with status: {}", status));
-        }
-
-        let elf = elf_path(&self.path, OPTEE_TARGET, self.release).await?;
-
-        if !elf.exists() {
-            return Err(format!("ELF not found at expected path: {:?}", elf));
-        }
-
-        verify_elf(&elf).await?;
-
-        // Step 2. Sign the TA using the OP-TEE signer tool and the provided UUID.
-        if !env.optee_signer.exists() {
-            return Err(format!(
-                "OP-TEE signer script not found at expected path: {:?}",
-                env.optee_signer
-            ));
-        }
-
-        let ta_key = env.ta_dev_kit_dir.join("keys").join("default_ta.pem");
-        if !ta_key.exists() {
-            return Err(format!(
-                "TA signing key not found at expected path: {:?}",
-                ta_key
-            ));
-        }
-
-        // Step 2.1. Check if python exists (python, python3, ...)
-        let python = resolve_python().await?;
-
-        // Step 2.2. Run `python <script> --uuid <uuid> --key <key> --in <in> --out <out>`
-        // <out> is <uuid>.ta
-        let ta = elf
-            .parent()
-            .ok_or_else(|| format!("Could not determine output directory for ELF: {:?}", elf))?
-            .join(format!("{}.ta", env.ta_uuid));
-
-        let status = Command::new(&python)
-            .arg(&env.optee_signer)
-            .arg("--uuid")
-            .arg(env.ta_uuid.to_string())
-            .arg("--key")
-            .arg(&ta_key)
-            .arg("--in")
-            .arg(&elf)
-            .arg("--out")
-            .arg(&ta)
-            .env("TA_DEV_KIT_DIR", &env.ta_dev_kit_dir)
-            .status()
-            .await
-            .map_err(|e| format!("Failed to execute OP-TEE signer via {python}: {e}"))?;
-
-        if !status.success() {
-            return Err(format!("OP-TEE signing failed with status: {}", status));
-        }
-
-        if !ta.exists() {
-            return Err(format!(
-                "Signed TA not found at expected path after signing: {:?}",
-                ta
-            ));
-        }
-
-        Ok(ta)
+        OpteeCompiler::build(OpteeConfiguration {
+            path: self.path.clone(),
+            release: self.release,
+            linker: self.linker.clone(),
+            ta_dev_kit_dir: env.ta_dev_kit_dir.clone(),
+            optee_signer: env.optee_signer.clone(),
+            ta_uuid: env.ta_uuid,
+        })
+        .await
+        .map_err(|e| e.to_string())
     }
 }
 
-async fn resolve_python() -> Result<String, String> {
+async fn resolve_python() -> Result<String, OpteeCompileError> {
     for candidate in ["python", "python3"] {
-        let status = Command::new(candidate).arg("--version").status().await;
-
-        if let Ok(status) = status {
+        if let Ok(status) = Command::new(candidate).arg("--version").status().await {
             if status.success() {
                 return Ok(candidate.to_string());
             }
         }
     }
-
-    Err("Could not find a working Python interpreter on PATH (tried: python, python3)".to_string())
+    Err(OpteeCompileError::PythonNotFound)
 }
