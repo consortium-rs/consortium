@@ -24,8 +24,12 @@ pub trait Compiler: Sized {
     type Output;
 
     /// Run the full build and return the path to the primary artifact.
-    async fn build(config: Self::Configuration) -> Result<Self::Output, Self::Error>;
+    fn build(
+        config: Self::Configuration,
+    ) -> impl std::future::Future<Output = Result<Self::Output, Self::Error>> + Send;
 
     /// Return the expected output path without building.
-    async fn output_path(config: &Self::Configuration) -> Result<PathBuf, Self::Error>;
+    fn output_path(
+        config: &Self::Configuration,
+    ) -> impl std::future::Future<Output = Result<PathBuf, Self::Error>> + Send;
 }

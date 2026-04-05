@@ -3,8 +3,8 @@ use thiserror::Error;
 use tokio::process::Command;
 use uuid::Uuid;
 
-use crate::compile::utils::{elf_path, resolve_cargo, verify_elf};
 use super::Compiler;
+use crate::compile::utils::{elf_path, resolve_cargo, verify_elf};
 
 // Only aarch64-unknown-linux-gnu is currently supported for OP-TEE builds.
 // Armv7 targets (Cortex-A7) are not supported by the OP-TEE SDK, and
@@ -127,9 +127,11 @@ impl Compiler for OpteeCompiler {
 
         let ta = elf
             .parent()
-            .ok_or_else(|| OpteeCompileError::UtilityError(format!(
-                "Could not determine output directory for ELF: {elf:?}"
-            )))?
+            .ok_or_else(|| {
+                OpteeCompileError::UtilityError(format!(
+                    "Could not determine output directory for ELF: {elf:?}"
+                ))
+            })?
             .join(format!("{}.ta", config.ta_uuid));
 
         let status = Command::new(&python)
@@ -145,9 +147,11 @@ impl Compiler for OpteeCompiler {
             .env("TA_DEV_KIT_DIR", &config.ta_dev_kit_dir)
             .status()
             .await
-            .map_err(|e| OpteeCompileError::SigningFailed(
-                format!("Failed to execute OP-TEE signer via {python}: {e}")
-            ))?;
+            .map_err(|e| {
+                OpteeCompileError::SigningFailed(format!(
+                    "Failed to execute OP-TEE signer via {python}: {e}"
+                ))
+            })?;
 
         if !status.success() {
             return Err(OpteeCompileError::SigningFailed(format!(

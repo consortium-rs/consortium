@@ -9,6 +9,8 @@ pub use compile::firmware::FirmwareBuilder;
 pub use compile::optee::{OpteeBuilder, OpteeEnvironment};
 
 // Typed compiler API
-pub use compile::application::{ApplicationCompileError, ApplicationCompiler, ApplicationConfiguration};
+pub use compile::application::{
+    ApplicationCompileError, ApplicationCompiler, ApplicationConfiguration,
+};
 pub use compile::firmware::{FirmwareCompileError, FirmwareCompiler, FirmwareConfiguration};
-pub use compile::optee::{OpteeCompileError, OpteeCompiler, OpteeConfiguration, OPTEE_TARGET};
+pub use compile::optee::{OPTEE_TARGET, OpteeCompileError, OpteeCompiler, OpteeConfiguration};

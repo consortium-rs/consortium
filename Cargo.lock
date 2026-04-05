@@ -98,6 +98,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-ipc-driver-mu"
+version = "0.1.0"
+dependencies = [
+ "atomic-waker",
+ "consortium-ipc",
+ "tokio",
+]
+
+[[package]]
 name = "consortium-ipc-mem"
 version = "0.1.0"
 dependencies = [

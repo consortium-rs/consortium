@@ -3,8 +3,8 @@ use std::path::PathBuf;
 use thiserror::Error;
 use tokio::process::Command;
 
-use crate::compile::utils::{elf_path, resolve_cargo, verify_elf};
 use super::Compiler;
+use crate::compile::utils::{elf_path, resolve_cargo, verify_elf};
 
 /// Error type for firmware compilation.
 #[derive(Error, Debug)]
