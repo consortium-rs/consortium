@@ -73,15 +73,15 @@ The descriptor version field (currently `1`) bumps to `2` to signal the new layo
 
 ---
 
-### 3. Rate Limiter (Token Bucket)
+### 3. Rate Limiter
 
-A `TokenBucket` is a `no_std`, no-alloc rate limiter. The caller supplies a monotonic tick source as a type parameter.
+A `RateLimiter` is a `no_std`, no-alloc leaky-bucket rate limiter. The caller supplies a monotonic tick source as a type parameter.
 
 ```rust
-pub struct TokenBucket<C: Clock> {
-    tokens: u32,          // current token count (scaled by 1000 to avoid floats)
-    capacity: u32,        // max tokens
-    refill_rate: u32,     // tokens per millisecond × 1000
+pub struct RateLimiter<C: Clock> {
+    allowance: u32,       // remaining byte budget (scaled by 1000 to avoid floats)
+    capacity: u32,        // max burst bytes
+    refill_rate: u32,     // bytes per millisecond × 1000
     last_tick: u64,       // last refill timestamp (ms)
     _clock: PhantomData<C>,
 }
@@ -90,21 +90,21 @@ pub trait Clock {
     fn now_ms() -> u64;
 }
 
-impl<C: Clock> TokenBucket<C> {
-    /// Returns true if `bytes` tokens are available and consumes them.
+impl<C: Clock> RateLimiter<C> {
+    /// Returns true if `bytes` fit within the current allowance and deducts them.
     pub fn try_consume(&mut self, bytes: u32) -> bool;
 
-    /// Refills bucket based on elapsed time since last call.
+    /// Refills allowance based on elapsed time since last call.
     pub fn refill(&mut self);
 }
 ```
 
-A `RateLimitedTransport<Tr, C>` wraps any `Transport` and calls `bucket.try_consume(data.len())` before forwarding a send. If the bucket is empty, `SendFut` yields and retries after a platform-supplied delay tick.
+A `RateLimitedTransport<Tr, C>` wraps any `Transport` and calls `limiter.try_consume(data.len())` before forwarding a send. If the allowance is exhausted, `SendFut` yields and retries after a platform-supplied delay tick.
 
 ```rust
 pub struct RateLimitedTransport<Tr: Transport, C: Clock> {
     inner: Tr,
-    bucket: TokenBucket<C>,
+    limiter: RateLimiter<C>,
 }
 
 impl<Tr: Transport, C: Clock> Transport for RateLimitedTransport<Tr, C> {
@@ -200,14 +200,14 @@ Total header overhead: 12 bytes (up from 8).
 | `consortium-ipc` | Add `Priority` enum; bump `Transport::send` signature; add `FLAG_BACKPRESSURE` |
 | `consortium-ipc-mem` | Write priority byte in slot; check backpressure flag |
 | `consortium-ipc-uio` | Read priority byte; expose it from `UioChannel::recv` |
-| `consortium-ipc` (new module `qos`) | `TokenBucket`, `RateLimitedTransport`, `PriorityMux` |
+| `consortium-ipc` (new module `qos`) | `RateLimiter`, `RateLimitedTransport`, `PriorityMux` |
 | Descriptor (UIO) | Version field: `1 → 2`; slot header size: `8 → 12` |
 
 ---
 
 ## Open Questions
 
-1. **Clock source on M-core**: `TokenBucket` needs a monotonic millisecond source. The M-core crate must provide a `Clock` impl (SysTick, TIM2, etc.). This is platform-specific and should be injected, not hard-coded.
+1. **Clock source on M-core**: `RateLimiter` needs a monotonic millisecond source. The M-core crate must provide a `Clock` impl (SysTick, TIM2, etc.). This is platform-specific and should be injected, not hard-coded.
 
 2. **PriorityMux and pinning**: `N` channel handles in a `const`-generic array require the handles to be `Unpin`. Verify `UioChannel` satisfies this or wrap in `Pin<Box<_>>` (std-only path).
 
