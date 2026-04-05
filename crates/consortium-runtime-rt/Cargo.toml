@@ -5,11 +5,12 @@ version.workspace = true
 edition.workspace = true
 
 [features]
-stm32mp2xx = []
-imx9x = []
+stm32mp2xx = ["consortium-ipc-driver-hsem"]
+imx9x = ["consortium-ipc-driver-mu"]
 default = ["stm32mp2xx", "imx9x"]
 
 [dependencies]
 consortium-ipc = { path = "../consortium-ipc", default-features = false }
-consortium-ipc-driver-hsem = { path = "../consortium-ipc-driver-hsem", default-features = false }
+consortium-ipc-driver-hsem = { path = "../consortium-ipc-driver-hsem", default-features = false, optional = true }
+consortium-ipc-driver-mu = { path = "../consortium-ipc-driver-mu", default-features = false, optional = true }
 consortium-ipc-mem = { path = "../consortium-ipc-mem", default-features = false }

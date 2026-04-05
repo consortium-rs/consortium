@@ -187,10 +187,6 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 
 **Platform support:** i.MX 9x series (i.MX 93, i.MX 95, etc.).
 
-### STM32MP2 / STM32MP25 (STMicroelectronics)
-
-HSEM is the primary IPC signaling mechanism; no additional doorbell implementations planned.
-
 To add a new doorbell:
 1. Create a new crate `consortium-ipc-driver-<name>` (or add module to existing crate)
 2. Implement the `Doorbell` trait (`ring()`, `wait()`, `pending()`)
@@ -219,16 +215,17 @@ Partially implemented (RemoteProc sysfs wrapper only). Must add:
 
 ### 4. Full Compilation Pipeline
 
-The system requires an 8-step build pipeline (see implementation-status.md):
+The system requires an 9-step build pipeline (see implementation-status.md):
 
 1. **Config → Device Tree + PAC:** Rust config code generates device tree and peripheral access crate
 2. **TF-M/NS-M compilation:** Compile Trusted/Non-Secure M-core firmware, bundle per remoteproc
 3. **TF-A/OP-TEE compilation:** Compile ARM Trusted Firmware and OP-TEE, optionally sign
 4. **HMI Web UI:** Compile Vite/React web interface, bundle static assets
 5. **Application binary:** Compile Cortex-A Linux application
-6. **Configuration generation:** Output systemd services, supervisor configs, nginx configs
-7. **Installer script:** Attach setup and deployment scripts
-8. **Package:** Bundle everything into `.tar.gz` for deployment
+6. **Quantize models:** If applicable, quantize ML models for embedded inference
+7. **Configuration generation:** Output systemd services, supervisor configs, nginx configs
+8. **Installer script:** Attach setup and deployment scripts
+9. **Package:** Bundle everything into `.tar.gz` for deployment
 
 Status: Not started. Requires orchestration in `consortium-builder` or separate build tool.
 
@@ -236,7 +233,7 @@ Status: Not started. Requires orchestration in `consortium-builder` or separate 
 
 ## Getting Started: Platform Ports
 
-### For STM32MP2/STM32MP25 with HSEM
+### For STM32MP2x Series (HSEM Doorbell)
 
 The HSEM doorbell is ready to use. To create a firmware application:
 

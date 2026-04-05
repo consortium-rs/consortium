@@ -4,6 +4,25 @@ description = "Consortium application (nonsecure) runtime library on Linux side"
 version.workspace = true
 edition.workspace = true
 
+[features]
+stm32mp2xx = ["consortium-ipc-driver-hsem"]
+imx9x = ["consortium-ipc-driver-mu"]
+default = ["stm32mp2xx", "imx9x", "tee"]
+tee = ["consortium-tee"]
+hmi = ["consortium-hmi"]
+ffi = ["consortium-ffi"]
+ort = ["consortium-ort"]
+
 [target.'cfg(target_os = "linux")'.dependencies]
 consortium-ipc-uio = { path = "../consortium-ipc-uio" }
-consortium-tee = { path = "../consortium-tee" }
+consortium-tee = { path = "../consortium-tee", optional = true }
+consortium-ipc = { path = "../consortium-ipc", features = ["std"] }
+consortium-ipc-driver-hsem = { path = "../consortium-ipc-driver-hsem", features = [
+  "std",
+], optional = true }
+consortium-ipc-driver-mu = { path = "../consortium-ipc-driver-mu", features = [
+  "std",
+], optional = true }
+consortium-hmi = { path = "../consortium-hmi", optional = true }
+consortium-ffi = { path = "../consortium-ffi", optional = true }
+consortium-ort = { path = "../consortium-ort", optional = true }

@@ -1,6 +1,15 @@
 [package]
 name = "consortium-ort"
+description = "ONNX Runtime (ORT) library for Consortium"
 version.workspace = true
 edition.workspace = true
 
+[features]
+tracing = ["ort/tracing"]
+
 [dependencies]
+ort = { version = "2.0.0-rc.12", features = [
+  "std",
+  "ndarray",
+  "api-24",
+], default-features = false }
