@@ -6,7 +6,9 @@ edition.workspace = true
 
 [dependencies]
 consortium-ipc = { path = "../consortium-ipc", features = ["std", "futures"] }
-consortium-ipc-driver-hsem = { path = "../consortium-ipc-driver-hsem", features = ["std"] }
+consortium-ipc-driver-hsem = { path = "../consortium-ipc-driver-hsem", features = [
+  "std",
+] }
 uio = "0.5.2"
 tokio = { version = "1", features = ["rt", "sync", "net"] }
 thiserror = "2"
