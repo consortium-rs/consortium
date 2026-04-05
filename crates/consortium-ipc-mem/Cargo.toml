@@ -6,3 +6,4 @@ edition.workspace = true
 
 [dependencies]
 consortium-ipc = { path = "../consortium-ipc" }
+consortium-ipc-driver-hsem = { path = "../consortium-ipc-driver-hsem" }

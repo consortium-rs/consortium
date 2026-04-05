@@ -1,6 +1,6 @@
 use consortium_ipc::chan::ChanValidate;
 
-use crate::hsem::error::HsemError;
+use crate::error::HsemError;
 
 pub struct HsemChanValidate;
 
