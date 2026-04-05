@@ -1,8 +1,23 @@
 # TEE Rust Macro System — Advanced Type System
 
-## Overview
+## Status
 
-The `fee_function` proc-macro provides a zero-boilerplate bridge between Trusted Application (TA) and Client Application (CA) code in a TEE environment. This document covers the full type system: from primitive scalars through to arbitrary serializable types.
+This document describes the **next implementation milestone** for `#[tee_command]`. The features below are not yet implemented.
+
+### What is already implemented
+
+See `tee-sdk-design.md` for the current state. In brief:
+
+| Category | Implemented types |
+|---|---|
+| Input parameters | `bool`, `u32`, `&[u8]`, `&mut [u8]` |
+| Return / output | `u32`, `u64`, `bool`, `Vec<u8>` |
+
+### What this document covers
+
+- `i32`, `(u32, u32)` value pairs
+- `&mut u32` / `&mut u64` output parameters (inout slots)
+- Arbitrary serializable types via `TeeParam` + `postcard`
 
 ---
 
@@ -12,7 +27,7 @@ The `fee_function` proc-macro provides a zero-boilerplate bridge between Trusted
 ┌─────────────────────────────────────────────────────────┐
 │  Developer writes one function signature                │
 │                                                         │
-│  #[fee_function]                                        │
+│  #[tee_command]                                         │
 │  fn process(ctx: &mut Ctx, cfg: MyConfig) -> Result<()> │
 └────────────────────┬────────────────────────────────────┘
                      │  macro expands to
@@ -35,42 +50,23 @@ The macro classifies each parameter by its Rust type and maps it to a TEE parame
 
 ### Context Parameter
 
-A leading `&mut SomePath` parameter (where `SomePath` is not a primitive) is treated as the TA context. It is forwarded directly to the inner function and never packed into a TEE slot.
-
-```rust
-#[fee_function]
-fn my_fn(ctx: &mut AppContext, value: u32) -> Result<()> { ... }
-//       ^^^^^^^^^^^^^^^^^^^^^^^^
-//       context — not a TEE slot
-```
+A leading `&mut SomePath` parameter (where `SomePath` is not a primitive or slice) is treated as the TA context. It is forwarded directly to the inner function and never packed into a TEE slot. This is already implemented — documented here for completeness.
 
 ---
 
-## Supported Types
+## Planned Types
 
-### Primitive Values (`ParamValue` slot)
+### Additional Primitive Values (`ParamValue` slot)
 
-These fit into the `a` and `b` fields of a single `ParamValue` TEE slot.
+| Rust type    | Slot kind        | Encoding                                 | Status |
+|--------------|------------------|------------------------------------------|--------|
+| `u32`        | `ValueInput`     | `a = value`, `b = 0`                     | ✅ done |
+| `bool`       | `ValueInput`     | `a = value as u32` (0 or 1), `b = 0`    | ✅ done |
+| `u64`        | Return only      | `a = low 32`, `b = high 32`             | ✅ done (return only) |
+| `i32`        | `ValueInput`     | `a = value as u32`, `b = 0`              | planned |
+| `(u32, u32)` | `ValueInput`     | `a = .0`, `b = .1`                       | planned |
 
-| Rust type    | Slot kind        | Encoding                                 |
-|--------------|------------------|------------------------------------------|
-| `u32`        | `ValueInput`     | `a = value`, `b = 0`                     |
-| `i32`        | `ValueInput`     | `a = value as u32`, `b = 0`              |
-| `bool`       | `ValueInput`     | `a = value as u32` (0 or 1), `b = 0`    |
-| `u64`        | `ValueInput`     | `a = low 32 bits`, `b = high 32 bits`   |
-| `(u32, u32)` | `ValueInput`     | `a = .0`, `b = .1`                       |
-
-> **Note:** `u64` consumes only **one** TEE slot by splitting across `a` and `b`.
-
-#### Example
-
-```rust
-#[fee_function]
-fn set_threshold(ctx: &mut Ctx, limit: u64, flags: (u32, u32)) -> Result<()> {
-    // limit  → slot 0: a = low bits, b = high bits
-    // flags  → slot 1: a = flags.0,  b = flags.1
-}
-```
+> `u64` is currently supported as a **return type** only (split across `a`/`b`). Support as an input parameter is planned.
 
 ---
 
@@ -78,58 +74,39 @@ fn set_threshold(ctx: &mut Ctx, limit: u64, flags: (u32, u32)) -> Result<()> {
 
 A `&mut T` where `T` is a primitive scalar is treated as an **output parameter**. The TA writes a result back through the pointer; the CA reads it after `invoke_command` returns.
 
-| Rust type   | Slot kind      | TA behaviour                          | CA behaviour                          |
-|-------------|----------------|---------------------------------------|---------------------------------------|
-| `&mut u32`  | `ValueInout`   | reads `a`, writes back via `set_a`    | reads `a` into `*ptr` after call      |
-| `&mut i32`  | `ValueInout`   | reads `a as i32`, writes back cast    | reads `a as i32` into `*ptr` after call |
-| `&mut u64`  | `ValueInout`   | reconstructs from `a`/`b`, writes back | reconstructs from `a`/`b` after call |
+| Rust type   | Slot kind      | TA behaviour                          | CA behaviour                          | Status |
+|-------------|----------------|---------------------------------------|---------------------------------------|--------|
+| `&mut u32`  | `ValueInout`   | reads `a`, writes back via `set_a`    | reads `a` into `*ptr` after call      | planned |
+| `&mut i32`  | `ValueInout`   | reads `a as i32`, writes back cast    | reads `a as i32` into `*ptr` after call | planned |
+| `&mut u64`  | `ValueInout`   | reconstructs from `a`/`b`, writes back | reconstructs from `a`/`b` after call | planned |
 
 #### Example
 
 ```rust
-#[fee_function]
+#[tee_command]
 fn compute(ctx: &mut Ctx, input: u32, result: &mut u64) -> Result<()> {
     *result = (input as u64) * 0xDEAD_BEEF;
+    Ok(())
 }
 
 // CA side (generated):
 // #[cfg(feature = "ca")]
-// fn call_compute(input: u32, result: &mut u64) -> Result<()> {
+// fn call_compute(input: u32, result: &mut u64) -> consortium_tee::TeeResult<()> {
 //     let _p0 = ParamValue::new(input, 0, ParamType::ValueInput);
 //     let _p1 = ParamValue::new(0u32, 0u32, ParamType::ValueInout);
-//     invoke_command(Command::Compute, &mut Parameters::new(_p0, _p1, None, None))?;
-//     // read back:
-//     *result = ((v.b() as u64) << 32) | (v.a() as u64);
+//     let mut _params = Parameters::new(_p0, _p1, ParamNone, ParamNone);
+//     invoke_command(Command::Compute, &mut _params)?;
+//     *result = ((_params.param_1().as_value().b() as u64) << 32)
+//              | (_params.param_1().as_value().a() as u64);
 //     Ok(())
 // }
 ```
 
 ---
 
-### Memory Buffer Parameters (`ParamMemref` slot)
-
-Byte slices are passed as shared memory references.
-
-| Rust type    | Slot kind       | Direction        |
-|--------------|-----------------|------------------|
-| `&[u8]`      | `MemrefInput`   | CA → TA (read)   |
-| `&mut [u8]`  | `MemrefInout`   | CA ↔ TA (r/w)    |
-
-#### Example
-
-```rust
-#[fee_function]
-fn encrypt(ctx: &mut Ctx, plaintext: &[u8], ciphertext: &mut [u8]) -> Result<()> {
-    // plaintext  → slot 0: MemrefInput
-    // ciphertext → slot 1: MemrefInout
-}
-```
-
----
-
 ### Serialized Types (`TeeParam` — `ParamMemref` slot)
 
-Any type implementing `serde::Serialize + serde::Deserialize` can be passed through a memref slot. The macro serializes it using [`postcard`](https://docs.rs/postcard) (a compact, `no_std`-friendly binary format).
+Any type implementing `serde::Serialize + serde::Deserialize` can be passed through a memref slot. The macro serializes it using [`postcard`](https://docs.rs/postcard) (compact, `no_std`-friendly binary format).
 
 Derive `TeeParam` on your type to opt in:
 
@@ -143,45 +120,10 @@ struct MyConfig {
 }
 ```
 
-| Rust type    | Slot kind       | TA behaviour                             | CA behaviour                              |
-|--------------|-----------------|------------------------------------------|-------------------------------------------|
-| `T: TeeParam`     | `MemrefInput`   | deserialize from buffer with `postcard`  | serialize to `Vec<u8>`, pass as memref    |
-| `&mut T: TeeParam`| `MemrefInout`   | deserialize, pass `&mut`, re-serialize   | serialize, pass as memref, deserialize back |
-
-#### Example
-
-```rust
-#[derive(TeeParam, Serialize, Deserialize)]
-struct SessionConfig {
-    timeout_ms: u32,
-    retry_limit: u8,
-    key_id: u64,
-}
-
-#[fee_function]
-fn open_session(ctx: &mut Ctx, cfg: SessionConfig) -> Result<()> {
-    // cfg is deserialized from a MemrefInput slot on the TA side
-    // caller serialized it with postcard on the CA side
-}
-```
-
-#### Inout (Read-Modify-Write)
-
-```rust
-#[derive(TeeParam, Serialize, Deserialize)]
-struct Counter {
-    value: u64,
-    overflows: u32,
-}
-
-#[fee_function]
-fn increment(ctx: &mut Ctx, counter: &mut Counter) -> Result<()> {
-    counter.value = counter.value.wrapping_add(1);
-    if counter.value == 0 { counter.overflows += 1; }
-}
-// TA deserializes Counter from the slot, calls increment(), then re-serializes back.
-// CA sends current state, then reads updated state after invoke_command returns.
-```
+| Rust type          | Slot kind       | TA behaviour                             | CA behaviour                              | Status |
+|--------------------|-----------------|------------------------------------------|-------------------------------------------|--------|
+| `T: TeeParam`      | `MemrefInput`   | deserialize from buffer with `postcard`  | serialize to `Vec<u8>`, pass as memref    | planned |
+| `&mut T: TeeParam` | `MemrefInout`   | deserialize, pass `&mut`, re-serialize   | serialize, pass as memref, deserialize back | planned |
 
 ---
 
@@ -191,169 +133,71 @@ fn increment(ctx: &mut Ctx, counter: &mut Counter) -> Result<()> {
 pub trait TeeParam: Serialize + for<'de> Deserialize<'de> {
     /// Maximum serialized size in bytes.
     /// Used to pre-size the inout buffer on the CA side.
-    /// Override this to match the worst-case postcard output for your type.
     const MAX_SIZE: usize;
 }
 ```
 
-The `MAX_SIZE` associated constant solves the inout buffer sizing problem: since the TA may return a value larger than what the CA sent, the CA must pre-allocate a buffer sized for the response. Defining it on the type means the size contract lives next to the type definition.
+`MAX_SIZE` solves the inout buffer sizing problem: since the TA may return a value larger than what the CA sent, the CA must pre-allocate a buffer sized for the response. Defining it on the type means the size contract lives next to the type definition.
 
-```rust
-#[derive(TeeParam, Serialize, Deserialize)]
-struct Counter {
-    value: u64,
-    overflows: u32,
-}
-
-impl TeeParam for Counter {
-    // u64 (8) + u32 (4) + postcard framing (≤4) = 16 bytes, rounded up generously
-    const MAX_SIZE: usize = 32;
-}
-```
-
-If you use `#[derive(TeeParam)]` without a manual `impl`, the macro emits a compile-time assertion that the type is `Serialize + Deserialize`, and uses a conservative default of `1024` bytes for `MAX_SIZE`. Override it with a manual impl when the default is wasteful or insufficient.
+If `#[derive(TeeParam)]` is used without a manual `impl`, the macro uses a conservative default of `1024` bytes.
 
 ---
 
 ## Slot Limit Enforcement
 
-TEE permits at most **4 parameter slots** per call (the context never counts as a slot). The macro enforces this at compile time:
+TEE permits at most **4 parameter slots** per call (the context never counts as a slot). This is already enforced for current types via `compile_error!`. The enforcement will extend to cover all planned types.
 
-```
-error: fee_function: too many TEE parameter slots used (5), maximum is 4
-```
-
-If you exceed 4 slots, restructure your parameters into a serialized struct instead:
+If you exceed 4 slots, restructure parameters into a serialized struct instead:
 
 ```rust
-// ❌ Too many slots
-#[fee_function]
+// Too many slots
+#[tee_command]
 fn bad(ctx: &mut Ctx, a: u32, b: u64, c: u32, d: &[u8], e: &mut [u8]) -> Result<()> { ... }
 //                   [0]    [1]    [2]   [3]          [4]  ← 5 slots, compile error
 
-// ✅ Pack logically related scalars into a struct
+// Pack logically related scalars into a struct
 #[derive(TeeParam, Serialize, Deserialize)]
 struct Params { a: u32, b: u64, c: u32 }
 
-#[fee_function]
+#[tee_command]
 fn good(ctx: &mut Ctx, params: Params, input: &[u8], output: &mut [u8]) -> Result<()> { ... }
 //                     [0]             [1]            [2]   ← 3 slots
 ```
 
 ---
 
-## Type Classification Priority
+## Type Classification Priority (planned full order)
 
-When the macro inspects a parameter type, it tests these rules **in order** and uses the first match:
+When the macro inspects a parameter type, it will test these rules **in order**:
 
 ```
-1. &[u8]              → MemrefIn
+1. &[u8]              → MemrefInput
 2. &mut [u8]          → MemrefInout
-3. &mut u32/i32/u64   → OutputU32/OutputI32/OutputU64
-4. u32                → ValueA(U32)
-5. i32                → ValueA(I32)
-6. bool               → ValueA(Bool)
-7. u64                → ValueU64
-8. (u32, u32)         → ValuePair
-9. &mut T (Path)      → SerializedInout
-10. T (Path)          → SerializedIn
+3. &mut u32/i32/u64   → ValueInout output
+4. u32                → ValueInput (a)
+5. i32                → ValueInput (a, bit-cast)
+6. bool               → ValueInput (a, 0/1)
+7. u64                → ValueInput (a=low, b=high)    [currently return-only]
+8. (u32, u32)         → ValueInput (a=.0, b=.1)
+9. &mut T (Path)      → MemrefInout (TeeParam, postcard round-trip)
+10. T (Path)          → MemrefInput (TeeParam, postcard serialize)
 11. anything else     → compile error
 ```
 
-This means a `&mut MyStruct` is never confused with a `&mut [u8]` (caught by rule 2 first), and `&mut u32` is never confused with `&mut SomeStruct` (caught by rule 3 first).
+Currently implemented: rules 1–2 as inputs, plus the return-type variants of 4/5/6/`Vec<u8>`.
 
 ---
 
 ## Serialization Format: `postcard`
 
-[`postcard`](https://docs.rs/postcard) was chosen over alternatives for the following reasons:
+[`postcard`](https://docs.rs/postcard) is chosen over alternatives for the following reasons:
 
 | Property             | `postcard` | `bincode` | `serde_json` |
 |----------------------|-----------|-----------|--------------|
 | `no_std` support     | ✅        | partial   | ❌           |
 | Output size          | minimal   | small     | large        |
-| Schema evolution     | manual    | manual    | flexible     |
 | Allocation-free mode | ✅ (heapless) | ❌    | ❌           |
 
 On the TA side (no allocator), `postcard::from_bytes` deserializes directly from the shared memref buffer. On the CA side, `postcard::to_allocvec` serializes into a `Vec<u8>` which is handed to `ParamMemref`.
 
-> **Warning:** `postcard` is not self-describing. If you change a `TeeParam` type (add/remove/reorder fields), both CA and TA must be recompiled together. There is no forward compatibility.
-
----
-
-## Complete Example
-
-```rust
-// Shared between CA and TA (e.g. in a common crate)
-#[derive(TeeParam, Serialize, Deserialize)]
-pub struct EncryptRequest {
-    pub algorithm: u8,
-    pub key_id: u32,
-    pub nonce: [u8; 12],
-}
-
-impl TeeParam for EncryptRequest {
-    const MAX_SIZE: usize = 64;
-}
-
-// TA crate
-tee_service! {
-    context TaContext
-    commands { encrypt_data, get_counter }
-}
-
-#[fee_function]
-pub fn encrypt_data(
-    ctx:       &mut TaContext,
-    request:   EncryptRequest,   // slot 0 — SerializedIn
-    plaintext: &[u8],            // slot 1 — MemrefInput
-    output:    &mut [u8],        // slot 2 — MemrefInout
-) -> Result<()> {
-    let key = ctx.key_store.get(request.key_id)?;
-    cipher::encrypt(request.algorithm, &key, &request.nonce, plaintext, output)
-}
-
-#[fee_function]
-pub fn get_counter(
-    ctx:     &mut TaContext,
-    counter: &mut u64,           // slot 0 — ValueInout (output)
-) -> Result<()> {
-    *counter = ctx.invocation_count;
-    ctx.invocation_count += 1;
-    Ok(())
-}
-
-// CA crate (feature = "ca")
-fn main() -> Result<()> {
-    let req = EncryptRequest { algorithm: 1, key_id: 42, nonce: [0u8; 12] };
-    let plaintext = b"hello world";
-    let mut ciphertext = vec![0u8; 64];
-
-    call_encrypt_data(&req, plaintext, &mut ciphertext)?;
-
-    let mut counter = 0u64;
-    call_get_counter(&mut counter)?;
-    println!("invocation #{counter}");
-
-    Ok(())
-}
-```
-
----
-
-## Summary Table
-
-| Type            | Direction | TEE Slot Kind    | Notes                                  |
-|-----------------|-----------|------------------|----------------------------------------|
-| `u32`           | in        | `ValueInput`     | `a` field                             |
-| `i32`           | in        | `ValueInput`     | `a` field, bit-cast                   |
-| `bool`          | in        | `ValueInput`     | `a` = 0 or 1                          |
-| `u64`           | in        | `ValueInput`     | `a` = low, `b` = high                 |
-| `(u32, u32)`    | in        | `ValueInput`     | `a` = `.0`, `b` = `.1`               |
-| `&mut u32`      | out       | `ValueInout`     | written back via `a`                  |
-| `&mut i32`      | out       | `ValueInout`     | written back via `a`, bit-cast        |
-| `&mut u64`      | out       | `ValueInout`     | written back via `a`/`b`             |
-| `&[u8]`         | in        | `MemrefInput`    | raw bytes, zero-copy                  |
-| `&mut [u8]`     | in/out    | `MemrefInout`    | raw bytes, zero-copy                  |
-| `T: TeeParam`   | in        | `MemrefInput`    | postcard-serialized                   |
-| `&mut T: TeeParam` | in/out | `MemrefInout`   | postcard round-trip, `T::MAX_SIZE` pre-allocated |
+> **Warning:** `postcard` is not self-describing. If you change a `TeeParam` type (add/remove/reorder fields), both CA and TA must be recompiled together.
