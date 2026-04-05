@@ -1,0 +1,6 @@
+[package]
+name = "consortium-ort"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]

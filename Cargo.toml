@@ -10,6 +10,9 @@ members = [
   "crates/consortium-common",
   "crates/consortium-tee",
   "crates/consortium-tee-proc-macros",
+  "crates/consortium-ffi",
+  "crates/consortium-hmi",
+  "crates/consortium-ort",
 ]
 resolver = "2"
 

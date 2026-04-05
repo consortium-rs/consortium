@@ -13,8 +13,8 @@ cargo test
 
 # Run tests for a specific crate
 cargo test -p consortium-ipc
-cargo test -p consortium-mem
-cargo test -p consortium-uio
+cargo test -p consortium-ipc-mem
+cargo test -p consortium-ipc-uio
 
 # Run a single test by name
 cargo test -p consortium-ipc <test_name>
@@ -26,7 +26,10 @@ cargo clippy
 cargo fmt
 ```
 
-`consortium-uio` and `consortium-tee` only build on Linux. Tests for them must be run on a Linux host.
+**Platform notes:**
+- `consortium-ipc-uio`, `consortium-tee`, and `consortium-runtime-app` only build on Linux.
+- `consortium-ipc-mem` and `consortium-runtime-rt` must compile for bare-metal (Cortex-M).
+- Tests for Linux-only crates must be run on a Linux host.
 
 ## Architecture
 
@@ -34,16 +37,23 @@ This is a Rust workspace providing an async abstraction for inter-processor comm
 
 ### Crates
 
-- **`consortium-ipc`** — `no_std`-compatible core traits and types. Feature-gated: `std`, `alloc`, `futures`.
-- **`consortium-mem`** — Bare-metal shared-memory transport for M-core (`no_std`, no async). Implements `Transport` via volatile slot reads/writes.
-- **`consortium-uio`** — Linux UIO transport (`/dev/uioN`). Linux-only, async via Tokio (features: `rt`, `sync`, `net`).
-- **`consortium-app`** — Linux-side `remoteproc` sysfs wrapper. Exports `RemoteProc` (index-based constructor, `state()` reader) and `RemoteProcState` enum (Offline, Suspended, Running, Crashed, Deleted, Attached, Detached) plus `RemoteProcCoredump` enum (Enabled, Disabled, Inline).
-- **`consortium-builder`** — SDK-aware cross-compilation helpers: `ApplicationBuilder` (Cortex-A35/OpenSTLinux) and `FirmwareBuilder` (Cortex-M MCUs). Async via Tokio (features: `full`).
-- **`consortium-common`** — Shared configuration types: `Config`, `Chip` enum, `CortexMcuCore` enum, chip-to-core mappings.
-- **`consortium-tee`** — Trusted Execution Environment support. Linux-only (links `optee-teec`). Provides error types (`TeeError`, `TeeErrorOrigin`, `TeeResult`).
-- **`consortium-tee-proc-macros`** — Proc-macro crate for TEE. Provides `tee_service!` (generates `Command` enum + `invoke_command` dispatcher) and `#[tee_command]` (generates CA `call_*` wrappers and TA `*_dispatched` handlers). Max 4 TEE parameter slots.
+**Core IPC (production-ready):**
+- **`consortium-ipc`** — `no_std`-compatible core traits and types. Feature-gated: `std`, `alloc`, `futures`. Exports `Channel<D, T, Tr, C>`, `Doorbell`, `Transport`, `Region`, `Codec`.
+- **`consortium-ipc-mem`** — Bare-metal shared-memory transport for M-core (`no_std`). Implements `Transport` via volatile slot reads/writes. Requires platform-specific `Doorbell` implementation.
+- **`consortium-ipc-uio`** — Linux UIO transport (`/dev/uioN`). Linux-only, async via Tokio. `UioDevice::open()` mmaps shared memory and spawns background interrupt handler.
+
+**Configuration & Build (partial):**
+- **`consortium-common`** — Shared configuration types: `Config`, `Chip` enum, `CortexMcuCore` enum, chip-to-core mappings. Enums for STM32MP2x and i.MX 9x families.
+- **`consortium-builder`** — SDK-aware cross-compilation helpers (stub). Planned: `ApplicationBuilder` (Cortex-A35/OpenSTLinux) and `FirmwareBuilder` (Cortex-M MCUs).
 - **`consortium-cli`** — Debug CLI tool (stub).
-- **`consortium-rt`** — Real-time runtime library (stub).
+
+**Runtime (minimal implementation, expanding):**
+- **`consortium-runtime-rt`** — Real-time runtime library for M-core firmware (stub). Must provide: bootstrap, async executor, MemTransport integration.
+- **`consortium-runtime-app`** — Linux-side application harness. Exports `RemoteProc` sysfs wrapper with state readers and controls (`start`, `stop`, `set_firmware`, etc.). Linux-only.
+
+**Trusted Execution Environment (complete):**
+- **`consortium-tee`** — OP-TEE integration. Provides error types (`TeeError`, `TeeErrorOrigin`, `TeeResult`). Linux-only.
+- **`consortium-tee-proc-macros`** — Proc-macro crate for TEE. Provides `tee_service!` (generates `Command` enum + `invoke_command` dispatcher) and `#[tee_command]` (generates CA `call_*` wrappers and TA `*_dispatched` handlers with advanced type support).
 
 ### Core trait hierarchy
 
@@ -70,13 +80,15 @@ Channel addressing uses `Chan(u8)`; platforms implement `ChanValidate` to enforc
 
 ### Transport implementations
 
-**`consortium-mem` (bare-metal `MemTransport<D, R>`):**
+**`consortium-ipc-mem` (bare-metal `MemTransport<D: Doorbell, R: Region>`):**
+- Generic over platform-specific `Doorbell` (HSEM, MU, GPIO) and `Region` (SRAM, DDR, Serial)
 - Unsafe constructor takes raw pointers to tx/rx slots in shared DMA memory
 - `SendFut` completes eagerly: writes payload then rings doorbell synchronously
 - `RecvFut` polls slot; if empty, awaits the `Doorbell::wait()` future
 - Slot protocol: `[len: u32][flags: u32][payload: [u8]]`; `FLAG_VALID (0x01)` / `FLAG_CONSUMED (0x02)`
+- **⚠️ Requires platform-specific Doorbell implementation (see Missing Hardware Doorbells below)**
 
-**`consortium-uio` (`UioDevice` / `UioChannel`):**
+**`consortium-ipc-uio` (`UioDevice` / `UioChannel`):**
 - `UioDevice::open(uio_num)` mmaps resource 0 of `/dev/uioN`, parses a binary descriptor from its start, and spawns a background Tokio task that waits for M→A IRQs (via a second fd) and broadcasts wakeups via `tokio::sync::Notify`
 - Call `UioDevice::channel(chan)` to get a `UioChannel` which implements `Transport`
 - The shared-memory descriptor layout (magic `0x434F_4E53` / "CONS", version 1) must be in `DescState::Ready` before `open` will succeed
@@ -127,9 +139,94 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 
 ### Build system (`consortium-builder`)
 
+**Status:** Stub (19 LOC). Planned features:
+
 `ApplicationBuilder` cross-compiles for `aarch64-unknown-linux-gnu` using the ST OpenSTLinux SDK. It reads standard ST environment variables (`SDKTARGETSYSROOT`, `OECORE_NATIVE_SYSROOT`, `OECORE_TUNE_CCARGS`) and supports overrides (`OSTL_RUSTC`, `OSTL_CARGO`, `OSTL_SDK_SYSROOT`, `OSTL_SDK_EXTRA_FLAGS`). It sanitizes `PATH` to prevent the ST SDK toolchain from shadowing rustup.
 
 `FirmwareBuilder` maps `CortexMcuCore` variants to Rust targets (via `to_rust_target()`), reads binary name from `[[bin]]` or `[package]`, verifies ELF magic after build, and supports a `release` flag:
 - `CortexM0p` → `thumbv6m-none-eabi`
 - `CortexM33` → `thumbv8m.main-none-eabi`
 - `CortexM4` / `CortexM4f` / `CortexM7` → `thumbv7em-none-eabi`
+
+---
+
+## Missing Hardware & Runtime Implementations ⚠️
+
+### 1. Platform-Specific Doorbells
+
+The `Doorbell` trait is generic; concrete implementations must be provided per platform:
+
+**STM32MP2 / STM32MP25:**
+- **HSEM (Hardware Semaphore):** Implement `Doorbell` with HSEM register access (ring semaphore, wait for interrupt)
+- **MU (Message Unit):** Implement `Doorbell` with MU mailbox protocol (write TX register, poll RX interrupt)
+
+**i.MX 95:**
+- **MU (Message Unit):** Implement variant specific to i.MX 95 register layout
+
+Each doorbell should:
+1. Implement the `Doorbell` trait (`ring()`, `wait()`, `pending()`)
+2. Handle platform-specific register access and interrupt routing
+3. Be tested with real hardware or a simulation
+
+### 2. M-Core Runtime (`consortium-runtime-rt`)
+
+Currently a stub. Must provide:
+- **Bootstrap code:** Stack setup, BSS initialization, relocation
+- **Async executor:** Cooperative executor or RTIC integration for `await` support
+- **MemTransport integration:** Initialize shared memory slots, create channels
+- **Interrupt handlers:** Register and dispatch M→A and A→M interrupts
+- **Example firmware:** Minimal app that sends/receives messages via IPC
+
+### 3. A-Core Runtime (`consortium-runtime-app`)
+
+Partially implemented (RemoteProc sysfs wrapper only). Must add:
+- **Firmware loading:** Map firmware ELF into memory via remoteproc
+- **Lifecycle management:** Start/stop firmware, handle state transitions
+- **UioDevice integration:** Initialize shared memory descriptor, open UIO device
+- **Example application:** Minimal app that loads firmware and exchanges messages
+- **Error recovery:** Handle firmware crashes, timeouts, channel failures
+
+### 4. Full Compilation Pipeline
+
+The system requires an 8-step build pipeline (see implementation-status.md):
+
+1. **Config → Device Tree + PAC:** Rust config code generates device tree and peripheral access crate
+2. **TF-M/NS-M compilation:** Compile Trusted/Non-Secure M-core firmware, bundle per remoteproc
+3. **TF-A/OP-TEE compilation:** Compile ARM Trusted Firmware and OP-TEE, optionally sign
+4. **HMI Web UI:** Compile Vite/React web interface, bundle static assets
+5. **Application binary:** Compile Cortex-A Linux application
+6. **Configuration generation:** Output systemd services, supervisor configs, nginx configs
+7. **Installer script:** Attach setup and deployment scripts
+8. **Package:** Bundle everything into `.tar.gz` for deployment
+
+Status: Not started. Requires orchestration in `consortium-builder` or separate build tool.
+
+---
+
+## Getting Started: Platform Ports
+
+To bring up the IPC system on a new platform:
+
+1. **Implement `Doorbell` trait** for your platform's interrupt mechanism
+   - File: `consortium-ipc/src/doorbell.rs` (or new module)
+   - Example: `struct MuDoorbell { base_addr: *mut u32 }`
+
+2. **Implement M-core runtime bootstrap** in `consortium-runtime-rt`
+   - File: `consortium-runtime-rt/src/lib.rs`
+   - Initialize shared memory descriptor
+   - Wire up async executor and MemTransport
+   - Create sample firmware
+
+3. **Expand A-core runtime** in `consortium-runtime-app`
+   - File: `consortium-runtime-app/src/lib.rs`
+   - Implement RemoteProc lifecycle
+   - Initialize UioDevice
+   - Create sample application
+
+4. **Test integration:**
+   - Load firmware on M-core
+   - Open UIO on A-core
+   - Exchange messages
+   - Verify correctness
+
+See `documents/implementation-status.md` for detailed roadmap and effort estimates.
