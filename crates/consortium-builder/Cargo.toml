@@ -9,3 +9,4 @@ consortium-common = { path = "../consortium-common" }
 tokio = { version = "1.50.0", features = ["full"] }
 toml = "1.1.0"
 uuid = "1.23.0"
+thiserror = "1.0"
