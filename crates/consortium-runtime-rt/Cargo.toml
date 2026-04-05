@@ -1,5 +1,5 @@
 [package]
-name = "consortium-rt"
+name = "consortium-runtime-rt"
 description = "Consortium real-time runtime library"
 version.workspace = true
 edition.workspace = true

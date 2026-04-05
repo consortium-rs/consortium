@@ -1,5 +1,5 @@
 [package]
-name = "consortium-mem"
+name = "consortium-ipc-mem"
 description = "Bare-metal memory management-based IPC transport for Consortium"
 version.workspace = true
 edition.workspace = true

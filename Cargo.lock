@@ -36,10 +36,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-app"
-version = "0.1.0"
-
-[[package]]
 name = "consortium-builder"
 version = "0.1.0"
 dependencies = [
@@ -71,14 +67,33 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-mem"
+name = "consortium-ipc-mem"
 version = "0.1.0"
 dependencies = [
  "consortium-ipc",
 ]
 
 [[package]]
-name = "consortium-rt"
+name = "consortium-ipc-uio"
+version = "0.1.0"
+dependencies = [
+ "consortium-ipc",
+ "pin-project",
+ "thiserror",
+ "tokio",
+ "uio",
+]
+
+[[package]]
+name = "consortium-runtime-app"
+version = "0.1.0"
+dependencies = [
+ "consortium-ipc-uio",
+ "consortium-tee",
+]
+
+[[package]]
+name = "consortium-runtime-rt"
 version = "0.1.0"
 
 [[package]]
@@ -101,17 +116,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "consortium-uio"
-version = "0.1.0"
-dependencies = [
- "consortium-ipc",
- "pin-project",
- "thiserror",
- "tokio",
- "uio",
 ]
 
 [[package]]

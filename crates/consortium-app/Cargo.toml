@@ -1,7 +1,0 @@
-[package]
-name = "consortium-app"
-description = "Consortium application (nonsecure) runtime library on Linux side"
-version.workspace = true
-edition.workspace = true
-
-[dependencies]

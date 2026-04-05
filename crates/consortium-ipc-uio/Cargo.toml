@@ -1,5 +1,5 @@
 [package]
-name = "consortium-uio"
+name = "consortium-ipc-uio"
 description = "UIO-based IPC transport for Consortium"
 version.workspace = true
 edition.workspace = true

@@ -3,9 +3,9 @@ use std::collections::HashMap;
 use crate::config::chip_map::Chip;
 use crate::config::mcu_core::CortexMcuCore;
 
+pub mod app_core;
 pub mod chip_map;
 pub mod mcu_core;
-pub mod app_core;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]
