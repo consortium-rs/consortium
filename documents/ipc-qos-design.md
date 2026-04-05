@@ -1,22 +1,19 @@
 # IPC QoS Design
 
-**Date:** 2026-04-05
-
 ---
 
 ## Problem
 
-All channels in the current design are equal. A log-spam channel can starve a safety alarm. There's no way to express "this message is urgent" or "this sender should not exceed N bytes/sec."
+All channels in the current design are equal. A log-spam channel can starve a safety alarm. There's no way to express "this message is urgent."
 
 ---
 
 ## Goals
 
 1. **Priority**: High-priority messages preempt low-priority ones at the receiver.
-2. **Rate limiting**: Per-channel token bucket so a chatty sender cannot starve others.
-3. **Back-pressure**: Receiver can signal "slow down" without dropping messages.
-4. **Zero allocation**: All data structures are statically sized; no `alloc` required.
-5. **no_std compatible**: Works on bare-metal M-core.
+2. **Back-pressure**: Receiver can signal "slow down" without dropping messages.
+3. **Zero allocation**: All data structures are statically sized; no `alloc` required.
+4. **no_std compatible**: Works on bare-metal M-core.
 
 ---
 
@@ -73,49 +70,7 @@ The descriptor version field (currently `1`) bumps to `2` to signal the new layo
 
 ---
 
-### 3. Rate Limiter
-
-A `RateLimiter` is a `no_std`, no-alloc leaky-bucket rate limiter. The caller supplies a monotonic tick source as a type parameter.
-
-```rust
-pub struct RateLimiter<C: Clock> {
-    allowance: u32,       // remaining byte budget (scaled by 1000 to avoid floats)
-    capacity: u32,        // max burst bytes
-    refill_rate: u32,     // bytes per millisecond × 1000
-    last_tick: u64,       // last refill timestamp (ms)
-    _clock: PhantomData<C>,
-}
-
-pub trait Clock {
-    fn now_ms() -> u64;
-}
-
-impl<C: Clock> RateLimiter<C> {
-    /// Returns true if `bytes` fit within the current allowance and deducts them.
-    pub fn try_consume(&mut self, bytes: u32) -> bool;
-
-    /// Refills allowance based on elapsed time since last call.
-    pub fn refill(&mut self);
-}
-```
-
-A `RateLimitedTransport<Tr, C>` wraps any `Transport` and calls `limiter.try_consume(data.len())` before forwarding a send. If the allowance is exhausted, `SendFut` yields and retries after a platform-supplied delay tick.
-
-```rust
-pub struct RateLimitedTransport<Tr: Transport, C: Clock> {
-    inner: Tr,
-    limiter: RateLimiter<C>,
-}
-
-impl<Tr: Transport, C: Clock> Transport for RateLimitedTransport<Tr, C> {
-    // send() checks bucket before delegating to inner.send()
-    // recv() passes through unchanged
-}
-```
-
----
-
-### 4. Priority Scheduler (A-core)
+### 3. Priority Scheduler (A-core)
 
 On the A-core (Tokio), multiple channels may have pending data simultaneously. `PriorityMux` polls all registered channels and always returns the highest-priority pending message.
 
@@ -145,7 +100,7 @@ The scheduler is optional. Callers who only care about a single channel use `Cha
 
 ---
 
-### 5. Back-Pressure
+### 4. Back-Pressure
 
 When the A-core receiver cannot keep up (e.g., processing takes too long), it sets `FLAG_BACKPRESSURE` in the rx slot it has just consumed but not yet recycled.
 
@@ -155,7 +110,7 @@ This is advisory, not blocking. The flag is best-effort; it does not prevent the
 
 ---
 
-### 6. Type-Level Integration
+### 5. Type-Level Integration
 
 QoS priority is stamped as a const generic on `Channel` so misconfiguration is caught at compile time:
 
@@ -200,17 +155,15 @@ Total header overhead: 12 bytes (up from 8).
 | `consortium-ipc` | Add `Priority` enum; bump `Transport::send` signature; add `FLAG_BACKPRESSURE` |
 | `consortium-ipc-mem` | Write priority byte in slot; check backpressure flag |
 | `consortium-ipc-uio` | Read priority byte; expose it from `UioChannel::recv` |
-| `consortium-ipc` (new module `qos`) | `RateLimiter`, `RateLimitedTransport`, `PriorityMux` |
+| `consortium-ipc` (new module `qos`) | `PriorityMux` |
 | Descriptor (UIO) | Version field: `1 → 2`; slot header size: `8 → 12` |
 
 ---
 
 ## Open Questions
 
-1. **Clock source on M-core**: `RateLimiter` needs a monotonic millisecond source. The M-core crate must provide a `Clock` impl (SysTick, TIM2, etc.). This is platform-specific and should be injected, not hard-coded.
+1. **PriorityMux and pinning**: `N` channel handles in a `const`-generic array require the handles to be `Unpin`. Verify `UioChannel` satisfies this or wrap in `Pin<Box<_>>` (std-only path).
 
-2. **PriorityMux and pinning**: `N` channel handles in a `const`-generic array require the handles to be `Unpin`. Verify `UioChannel` satisfies this or wrap in `Pin<Box<_>>` (std-only path).
+2. **Version negotiation**: The descriptor version bump is backward-incompatible. A migration shim (read old v1 layout, write v2) may be needed during rollout.
 
-3. **Version negotiation**: The descriptor version bump is backward-incompatible. A migration shim (read old v1 layout, write v2) may be needed during rollout.
-
-4. **Scheduler fairness under saturation**: Round-robin tie-breaking within a priority band is simple but not starvation-proof if a `RealTime` channel fires continuously. Consider a debt-based scheduler (DRR) if saturation is a realistic scenario.
+3. **Scheduler fairness under saturation**: Round-robin tie-breaking within a priority band is simple but not starvation-proof if a `RealTime` channel fires continuously. Consider a debt-based scheduler (DRR) if saturation is a realistic scenario.
