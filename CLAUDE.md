@@ -170,11 +170,11 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 
 The `Doorbell` trait is generic; additional doorbell implementations can be added per platform:
 
-**STM32MP2 / STM32MP25:**
-- **MU (Message Unit):** Implement `Doorbell` with MU mailbox protocol (write TX register, poll RX interrupt) — similar structure to HSEM
+**i.MX 9x Series (NXP):**
+- **MU (Message Unit):** Implement `Doorbell` with MU mailbox protocol (write TX register, poll RX interrupt) — similar structure to HSEM. Supported on i.MX 93, i.MX 95, and i.MX 97 variants.
 
-**i.MX 95:**
-- **MU (Message Unit):** Implement variant specific to i.MX 95 register layout
+**STM32MP2 / STM32MP25 (STMicroelectronics):**
+- HSEM is the primary IPC signaling mechanism; no additional doorbell implementations planned.
 
 To add a new doorbell:
 1. Create a new crate `consortium-ipc-driver-<name>` (or add module to existing crate)
@@ -243,20 +243,23 @@ The HSEM doorbell is ready to use. To create a firmware application:
    - Exchange messages bidirectionally
    - Verify error handling and timeouts
 
-### For Other Platforms (MU, GPIO, etc.)
+### For NXP i.MX 9x Series (MU Doorbell)
 
-To add support for additional doorbell mechanisms:
+To add support for the Message Unit (MU) on i.MX 93, i.MX 95, i.MX 97:
 
 1. **Create doorbell crate** following the HSEM pattern
-   - File: `crates/consortium-ipc-driver-<name>/src/lib.rs`
-   - Export: `Doorbell`, `DoorBellError`, `ChanValidate` (optional)
+   - File: `crates/consortium-ipc-driver-mu/src/lib.rs`
+   - Support NXP variants via feature flags or runtime chip detection
+   - Export: `MuDoorbell`, `MuError`, `MuChanValidate`
    - Support both `#[cfg(not(feature = "std"))]` (M-core) and `#[cfg(feature = "std")]` (A-core)
 
 2. **Integrate with MemTransport and UioDevice**
    - Re-export from `consortium-ipc-mem` for bare-metal usage
    - Re-export from `consortium-ipc-uio` for Linux usage
-   - Update `consortium-runtime-rt` if needed for backward compatibility
 
-3. **Document platform-specific details** (register addresses, interrupt routing, lock IDs, etc.)
+3. **Document platform-specific details:**
+   - MU register layout for each i.MX variant
+   - GIC interrupt routing
+   - Lock IDs and channel configuration
 
 See `documents/implementation-status.md` for detailed roadmap and effort estimates.

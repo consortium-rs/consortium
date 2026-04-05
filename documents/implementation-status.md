@@ -120,20 +120,17 @@ HSEM is now fully implemented in `consortium-ipc-driver-hsem` with:
 
 ### Required Additional Implementations
 
-**STM32MP2 / STM32MP25 targets:**
-- **MU (Message Unit):** For M→A signaling
+**i.MX 9x Series (NXP) targets (i.MX 93, i.MX 95, i.MX 97):**
+- **MU (Message Unit):** Primary signaling mechanism
   - Register layout: TX/RX mailboxes, interrupt enable/status
+  - Interrupt routing via GIC (Generic Interrupt Controller)
+  - Platform-specific register definitions for each variant
   - Interrupt handler registration
   - Tests on actual hardware
   - Implementation pattern: follow `consortium-ipc-driver-hsem` structure
 
-**i.MX 95 targets:**
-- **MU (Message Unit):** Primary signaling
-  - Register definitions for i.MX 95 variant
-  - Potentially different register layout than STM32
-  - Interrupt routing via GIC
-  - Tests on actual hardware
-  - Implementation pattern: follow `consortium-ipc-driver-hsem` structure
+**STM32MP2 / STM32MP25 (STMicroelectronics):**
+- HSEM is the sole IPC signaling mechanism on these platforms; no additional doorbell implementations required
 
 #### Implementation Pattern (for each Doorbell type)
 
@@ -290,10 +287,10 @@ Application (user code)
    - Exchange messages via HSEM signaling
    - Verify correctness on real hardware
 
-### Phase 2: Additional Doorbell Implementations
-1. Implement MU Doorbell (STM32MP2/STM32MP25) following HSEM pattern
-2. Implement MU Doorbell (i.MX 95) with variant-specific registers
-3. Test cross-core coordination
+### Phase 2: NXP i.MX 9x Port (MU Doorbell)
+1. Implement MU Doorbell for i.MX 93, i.MX 95, i.MX 97 following HSEM pattern
+2. Extend M-core and A-core runtimes for NXP platform
+3. Test cross-core coordination on NXP hardware
 
 ### Phase 3: Build Pipeline
 1. Implement `consortium-builder` for firmware compilation
@@ -333,14 +330,14 @@ The CLAUDE.md file references outdated crate names and needs immediate updates:
 | MemTransport (bare-metal) | ✅ Done | — | Doorbell trait |
 | UioTransport (Linux) | ✅ Done | — | Kernel UIO driver |
 | **Doorbell: HSEM (STM32MP2/MP25)** | ✅ Done | — | — |
-| **Doorbell: MU (STM32MP2/i.MX95)** | ❌ TODO | Medium | Hardware knowledge |
-| **M-core runtime + executor** | ❌ TODO | High | HSEM (now available) |
-| **A-core runtime + lifecycle** | ❌ TODO | High | RemoteProc + UIO expansion |
+| **Doorbell: MU (i.MX 9x series)** | ❌ TODO | Medium | Hardware knowledge |
+| **M-core runtime + executor (STM32MP2)** | ❌ TODO | High | HSEM (now available) |
+| **A-core runtime + lifecycle (STM32MP2)** | ❌ TODO | High | RemoteProc + UIO expansion |
 | **Build pipeline (8-step)** | ❌ TODO | High | All prior phases |
 | TEE support (macros) | ✅ Done | — | — |
 | Configuration types | ✅ Done | — | — |
 
-**Total estimated effort for M-core + A-core runtime (STM32MP2 with HSEM):** 2–3 weeks once HSEM is available (now complete).
+**Total estimated effort for M-core + A-core runtime (STM32MP2 with HSEM):** 2–3 weeks (HSEM now complete).
 
-**Total estimated effort for full system with MU + build pipeline:** 6–8 weeks additional time for multi-doorbell support and production hardening.
+**Total estimated effort for NXP i.MX 9x port (MU + runtimes + build pipeline):** 4–6 weeks additional time after STM32MP2 is complete.
 
