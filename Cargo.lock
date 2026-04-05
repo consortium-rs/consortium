@@ -52,7 +52,10 @@ dependencies = [
 name = "consortium-cli"
 version = "0.1.0"
 dependencies = [
+ "consortium-app",
+ "consortium-common",
  "serde",
+ "toml",
 ]
 
 [[package]]

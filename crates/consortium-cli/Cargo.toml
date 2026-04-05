@@ -5,4 +5,7 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
+consortium-app = { path = "../consortium-app" }
+consortium-common = { path = "../consortium-common" }
 serde = { version = "1.0.228", features = ["derive"] }
+toml = "1.1.0"
