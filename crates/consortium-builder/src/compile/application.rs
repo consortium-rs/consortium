@@ -2,8 +2,10 @@ use std::path::PathBuf;
 use thiserror::Error;
 use tokio::process::Command;
 
-use crate::compile::utils::{clean_path, elf_path, resolve_cargo, resolve_cross_tool, resolve_rustc, verify_elf};
 use super::Compiler;
+use crate::compile::utils::{
+    clean_path, elf_path, resolve_cargo, resolve_cross_tool, resolve_rustc, verify_elf,
+};
 
 /// Error type for application compilation.
 #[derive(Error, Debug)]
@@ -42,7 +44,10 @@ impl CrossCompiler {
         // 1. Explicit CC/CXX — honour whatever the user or SDK set
         if let Ok(cc) = std::env::var("CC") {
             let cxx = std::env::var("CXX").unwrap_or_else(|_| cc.clone());
-            return CrossCompiler { cc: Some(cc), cxx: Some(cxx) };
+            return CrossCompiler {
+                cc: Some(cc),
+                cxx: Some(cxx),
+            };
         }
 
         // 2. STM32MP2 / OpenSTLinux
@@ -50,7 +55,10 @@ impl CrossCompiler {
             resolve_cross_tool("aarch64-ostl-linux-gcc"),
             resolve_cross_tool("aarch64-ostl-linux-g++"),
         ) {
-            return CrossCompiler { cc: Some(cc), cxx: Some(cxx) };
+            return CrossCompiler {
+                cc: Some(cc),
+                cxx: Some(cxx),
+            };
         }
 
         // 3. i.MX Yocto (Poky)
@@ -58,11 +66,17 @@ impl CrossCompiler {
             resolve_cross_tool("aarch64-poky-linux-gcc"),
             resolve_cross_tool("aarch64-poky-linux-g++"),
         ) {
-            return CrossCompiler { cc: Some(cc), cxx: Some(cxx) };
+            return CrossCompiler {
+                cc: Some(cc),
+                cxx: Some(cxx),
+            };
         }
 
         // 4. Nothing found — generic fallback with warning
-        CrossCompiler { cc: None, cxx: None }
+        CrossCompiler {
+            cc: None,
+            cxx: None,
+        }
     }
 
     fn has_explicit(&self) -> bool {
@@ -86,11 +100,13 @@ impl SdkEnv {
         let sysroot = std::env::var("OSTL_SDK_SYSROOT")
             .or_else(|_| std::env::var("SDKTARGETSYSROOT"))
             .or_else(|_| std::env::var("OECORE_TARGET_SYSROOT"))
-            .map_err(|_| ApplicationCompileError::SysrootError(
-                "Could not determine target sysroot. \
+            .map_err(|_| {
+                ApplicationCompileError::SysrootError(
+                    "Could not determine target sysroot. \
                  Set OSTL_SDK_SYSROOT or source a Yocto environment-setup script."
-                    .to_string(),
-            ))?;
+                        .to_string(),
+                )
+            })?;
 
         if !PathBuf::from(&sysroot).exists() {
             return Err(ApplicationCompileError::SysrootError(format!(

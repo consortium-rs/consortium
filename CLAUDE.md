@@ -166,15 +166,30 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 
 **Platform support:** STM32MP2x and STM32MP25x SoCs.
 
-### Planned Doorbells
+### ✅ Completed: MU (Message Unit)
 
-The `Doorbell` trait is generic; additional doorbell implementations can be added per platform:
+**Status:** Fully implemented in `consortium-ipc-driver-mu`
 
-**i.MX 9x Series (NXP):**
-- **MU (Message Unit):** Implement `Doorbell` with MU mailbox protocol (write TX register, poll RX interrupt) — similar structure to HSEM. Supported on i.MX 93, i.MX 95, and other variants.
+**Features:**
+- **M-core (bare-metal, no_std):** Zero-size type using `AtomicWaker` for async waiting. Rings MU TX registers and registers MU1/MU2 IRQ handlers. Two separate handler functions for two MU instances.
+- **A-core (Linux, std):** `MuDoorbell` holds base addresses and `Arc<tokio::sync::Notify>` for wake coordination. Exposes `.notifier()` method for external IRQ loop integration.
+- **Validates channels** via `MuChanValidate` (max 8 channels across 2 MU instances; channels 0–1 reserved).
+- **Multi-instance support:** Designed for up to 2 MU instances (MU1, MU2) with flexible base address configuration.
+- **No const generic** for side/processor: Determined by `std` feature flag and base address configuration.
 
-**STM32MP2 / STM32MP25 (STMicroelectronics):**
-- HSEM is the primary IPC signaling mechanism; no additional doorbell implementations planned.
+**Platform support:** i.MX 93, i.MX 95, and other NXP i.MX 9x SoCs.
+
+**Key differences from HSEM:**
+- **Signal mechanism:** Writes TX register (data transfer) instead of semaphore lock
+- **Interrupt clear:** Reading RRn clears RSR (destructive) instead of dedicated ICR
+- **IRQ handlers:** Two independent handlers (MU1/MU2) instead of one per processor
+- **Channel encoding:** Channels 0–7 map across 2 instances with 4 TX/RX pairs each
+
+**Platform support:** i.MX 9x series (i.MX 93, i.MX 95, etc.).
+
+### STM32MP2 / STM32MP25 (STMicroelectronics)
+
+HSEM is the primary IPC signaling mechanism; no additional doorbell implementations planned.
 
 To add a new doorbell:
 1. Create a new crate `consortium-ipc-driver-<name>` (or add module to existing crate)
@@ -246,21 +261,32 @@ The HSEM doorbell is ready to use. To create a firmware application:
 
 ### For NXP i.MX 9x Series (MU Doorbell)
 
-To add support for the Message Unit (MU) on i.MX 93, i.MX 95, etc.:
+The MU doorbell is ready to use. To create a firmware application:
 
-1. **Create doorbell crate** following the HSEM pattern
-   - File: `crates/consortium-ipc-driver-mu/src/lib.rs`
-   - Support NXP variants via feature flags or runtime chip detection
-   - Export: `MuDoorbell`, `MuError`, `MuChanValidate`
-   - Support both `#[cfg(not(feature = "std"))]` (M-core) and `#[cfg(feature = "std")]` (A-core)
+1. **Create M-core firmware** in `consortium-runtime-rt`
+   - Use `MuDoorbell` from the crate (`consortium-ipc-driver-mu::MuDoorbell`)
+   - Construct with `MuDoorbell::new(MU1_BASE, MU2_BASE)` or platform-specific base addresses
+   - Initialize shared memory slots using `MemTransport::new(doorbell, region)`
+   - Create `Channel<Tx, YourMessage, MemTransport<MuDoorbell, SramRegion>, PostcardCodec>`
+   - Register `MU1_IRQHandler` and `MU2_IRQHandler` in interrupt vector table
+   - Implement bootstrap and async executor integration
 
-2. **Integrate with MemTransport and UioDevice**
-   - Re-export from `consortium-ipc-mem` for bare-metal usage
-   - Re-export from `consortium-ipc-uio` for Linux usage
+2. **Create A-core application** in `consortium-runtime-app`
+   - Open UIO device: `UioDevice::open(uio_num)`
+   - Get channel: `device.channel::<YourMessage>(Chan(2))` (use channels 2–7; 0–1 reserved)
+   - Send/receive via `channel.send(&msg)` and `channel.recv()`
+   - Integrate the MU doorbell's notifier: `doorbell.notifier()` → pass to UIO IRQ loop
 
-3. **Document platform-specific details:**
-   - MU register layout for each i.MX variant
-   - GIC interrupt routing
-   - Lock IDs and channel configuration
+3. **Test integration:**
+   - Build firmware for M-core target (e.g., Cortex-M7)
+   - Build application for A-core (Linux, aarch64)
+   - Load firmware via remoteproc
+   - Exchange messages bidirectionally via MU signaling
+   - Verify error handling and timeouts
+
+**Note:** MU base addresses are platform-specific. For i.MX 93:
+- MU1 typically at `0x4422_0000` (A-side) and `0x4423_0000` (B-side)
+- MU2 typically at `0x4243_0000` (A-side) and similar offset for B-side
+- Consult your SoC's reference manual for exact addresses.
 
 See `documents/implementation-status.md` for detailed roadmap and effort estimates.
