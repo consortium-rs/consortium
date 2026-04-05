@@ -40,8 +40,8 @@ This is a Rust workspace providing an async abstraction for inter-processor comm
 - **`consortium-app`** — Linux-side `remoteproc` sysfs wrapper. Exports `RemoteProc` (index-based constructor, `state()` reader) and `RemoteProcState` enum (Offline, Suspended, Running, Crashed, Deleted, Attached, Detached) plus `RemoteProcCoredump` enum (Enabled, Disabled, Inline).
 - **`consortium-builder`** — SDK-aware cross-compilation helpers: `ApplicationBuilder` (Cortex-A35/OpenSTLinux) and `FirmwareBuilder` (Cortex-M MCUs). Async via Tokio (features: `full`).
 - **`consortium-common`** — Shared configuration types: `Config`, `Chip` enum, `CortexMcuCore` enum, chip-to-core mappings.
-- **`consortium-tee`** — Trusted Execution Environment support. Linux-only (links `optee-teec`). Provides error types (`TeeError`, `TeeErrorOrigin`, `TeeResult`) and parameter marshaling (`TeeParam`, `IntoTeeParam`, `FromTeeParam`, `MaterialisedParams`).
-- **`consortium-tee-proc-macros`** — Proc-macro crate for TEE. Provides `#[tee_service]` (generates `Command` enum + `invoke_command` dispatcher) and `#[fee_function]` (generates CA `call_*` wrappers and TA `*_dispatched` handlers). Max 4 TEE parameters.
+- **`consortium-tee`** — Trusted Execution Environment support. Linux-only (links `optee-teec`). Provides error types (`TeeError`, `TeeErrorOrigin`, `TeeResult`).
+- **`consortium-tee-proc-macros`** — Proc-macro crate for TEE. Provides `tee_service!` (generates `Command` enum + `invoke_command` dispatcher) and `#[tee_command]` (generates CA `call_*` wrappers and TA `*_dispatched` handlers). Max 4 TEE parameter slots.
 - **`consortium-cli`** — Debug CLI tool (stub).
 - **`consortium-rt`** — Real-time runtime library (stub).
 
@@ -116,15 +116,14 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 - `TeeError` — `Context`, `Session`, `Invoke`, `ParamMismatch`, `BufferTooSmall`, `TooManyParams`, `JoinError`, `Busy`. Methods: `is_transient()`, `ta_error_code()`.
 - `TeeResult<T>` — alias for `Result<T, TeeError>`
 
-**Parameter marshaling:**
-- `TeeParam<'a>` — enum for TEE parameter types
-- `IntoTeeParam` — implemented for `&[u8]`, `Vec<u8>`, `u32`, `u64`, `bool`
-- `FromTeeParam` — implemented for `Vec<u8>`, `u32`, `u64`, `bool`
-- `MaterialisedParams` — raw TEEC parameter materialization
-
 **Proc macros (`consortium-tee-proc-macros`):**
-- `#[tee_service]` — takes optional `context ContextStruct` + `commands { func_a, func_b }` block; generates a `Command` enum (function names → CamelCase variants) and `invoke_command()` dispatcher
-- `#[fee_function]` — wraps a function to generate a `_dispatched` variant (TA side) and a `call_` variant (CA side, feature-gated); handles up to 4 parameters; auto-packs/unpacks `bool`, `u32`, `&[u8]`, `&mut [u8]`; treats first `&mut` argument as context
+- `tee_service!` — takes optional `context ContextStruct` + `commands { func_a, func_b }` block; generates a `#[repr(u64)] Command` enum (function names → CamelCase variants, `#[default] Unknown` catch-all) and `invoke_command(ctx, cmd: u32, params)` dispatcher that does `Command::from(cmd)` inside, matching the `#[ta_invoke_command]` hook signature
+- `#[tee_command]` — wraps a function to generate a `_dispatched` variant (TA side) and a `call_` variant (CA side, `#[cfg(feature = "ca")]`); treats first `&mut SomePath` argument as context (forwarded to inner fn, not a TEE slot)
+  - Input types: `bool`, `u32`, `&[u8]`, `&mut [u8]` — TA unpacks via `unsafe { params.N.as_value()?.a() }` / `unsafe { params.N.as_memref()? }.buffer()`; all `unsafe` blocks carry SAFETY comments
+  - Return types (output slot, appended after inputs): `u32`, `u64`, `bool`, `Vec<u8>`
+  - TA flushes output via `let mut __p_out = unsafe { params.N.as_value()? }; __p_out.set_a(...)`
+  - CA packs via `ParamValue` / `ParamTmpRef`, wraps in `optee_teec::Operation::new(0, ...)`, calls `session.invoke_command(Command::Variant as u32, &mut _operation)`
+  - `Vec<u8>` return: CA pre-allocates 4096-byte `ParamTmpRef::new_output` buffer; TA writes into it; CA reads back `buffer()[..size()]`
 
 ### Build system (`consortium-builder`)
 

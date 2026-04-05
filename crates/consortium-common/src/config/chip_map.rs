@@ -1,4 +1,4 @@
-use crate::config::mcu_core::CortexMcuCore;
+use crate::config::{app_core::CortexAppCore, mcu_core::CortexMcuCore};
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields, rename_all = "snake_case")]
@@ -27,6 +27,25 @@ impl Chip {
                 let cortex = CortexMcuCore::from_abbr(name);
                 cortex.and_then(|c| self.remoteproc_name(&c, 0)).is_some()
             }
+        }
+    }
+
+    pub fn app_cpu(&self) -> Vec<(CortexAppCore, usize)> {
+        match self {
+            Self::Stm32mp21x | Self::Stm32mp23x | Self::Stm32mp25x => vec![(CortexAppCore::CortexA35, 2)],
+            Self::Imx93 | Self::Imx93w => vec![(CortexAppCore::CortexA55, 2)],
+            Self::Imx937 | Self::Imx94 | Self::Imx952 => vec![(CortexAppCore::CortexA55, 4)],
+            Self::Imx95 => vec![(CortexAppCore::CortexA55, 6)],
+        }
+    }
+
+    pub fn app_compile_target(&self) -> &'static str {
+        let cpus = self.app_cpu().iter().map(|(core, _)| core.to_rust_target()).collect::<Vec<_>>();
+        // If all CPUs have the same target, return that target. Otherwise, return a panic message since we don't support heterogeneous CPU targets yet.
+        if cpus.iter().all(|&t| t == cpus[0]) {
+            cpus[0]
+        } else {
+            panic!("Heterogeneous CPU targets are not supported yet")
         }
     }
 

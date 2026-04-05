@@ -58,10 +58,10 @@ pub fn tee_service(input: TokenStream) -> TokenStream {
             #[invoke_command]
             pub(crate) fn invoke_command(
                 ctx: &mut #ctx_ident,
-                cmd: Command,
+                cmd: u32,
                 params: &mut optee_utee::Parameters,
             ) -> Result<()> {
-                match cmd {
+                match Command::from(cmd) {
                     #(Command::#variant_idents => #dispatch_fns(ctx, params),)*
                     Command::Unknown => Err(Error::UnknownCommand),
                 }
@@ -71,10 +71,10 @@ pub fn tee_service(input: TokenStream) -> TokenStream {
         quote! {
             #[invoke_command]
             pub(crate) fn invoke_command(
-                cmd: Command,
+                cmd: u32,
                 params: &mut optee_utee::Parameters,
             ) -> Result<()> {
-                match cmd {
+                match Command::from(cmd) {
                     #(Command::#variant_idents => #dispatch_fns(params),)*
                     Command::Unknown => Err(Error::UnknownCommand),
                 }
@@ -103,15 +103,16 @@ pub fn tee_service(input: TokenStream) -> TokenStream {
 /// The original function body is emitted unchanged.
 ///
 /// # Parameter type support
-/// | Rust type    | TEE encoding                        |
-/// |--------------|-------------------------------------|
-/// | `u32`        | `ValueInput` / `ValueInout` — `a`   |
-/// | `u64`        | `ValueInput` — `(a << 32) \| b`     |
-/// | `bool`       | `ValueInput` — `a` (0/1)            |
-/// | `&[u8]`      | `MemrefInput`                       |
-/// | `&mut [u8]`  | `MemrefInout`                       |
+/// | Rust type    | TEE encoding   | TA unpack                                  |
+/// |--------------|----------------|--------------------------------------------|
+/// | `u32`        | `ValueInput`   | `unsafe { params.N.as_value()?.a() }`      |
+/// | `bool`       | `ValueInput`   | `unsafe { params.N.as_value()?.a() } != 0` |
+/// | `&[u8]`      | `MemrefInput`  | `unsafe { params.N.as_memref()? }.buffer()`|
+/// | `&mut [u8]`  | `MemrefInout`  | `unsafe { params.N.as_memref()? }.buffer()`|
 ///
-/// Return values (`u32`, `u64`, `bool`) are flushed via `ValueOutput`/`ValueInout`.
+/// Return values (`u32`, `u64`, `bool`, `Vec<u8>`) are flushed into a trailing output slot.
+/// All `unsafe` blocks carry a `// SAFETY:` comment noting that the type match is
+/// guaranteed by the macro's slot assignment.
 #[proc_macro_attribute]
 pub fn tee_command(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let input = parse_macro_input!(item as ItemFn);
@@ -249,22 +250,20 @@ pub fn tee_command(_attr: TokenStream, item: TokenStream) -> TokenStream {
         let read_back = gen_output_read_ca(tee_params.len(), out_ty);
         quote! {
             #[cfg(feature = "ca")]
-            fn #call_name(#(#ca_sig_args),*) -> consortium_tee::TeeResult<#out_ty> {
+            fn #call_name(session: &mut optee_teec::Session, #(#ca_sig_args),*) -> consortium_tee::TeeResult<#out_ty> {
                 #(#pack_stmts)*
-                let mut _params = optee_utee::Parameters::new(#(#new_params_args),*);
-                invoke_command(Command::#command_variant, &mut _params)?;
+                let mut _operation = optee_teec::Operation::new(0, #(#new_params_args),*);
+                session.invoke_command(Command::#command_variant as u32, &mut _operation)?;
                 Ok(#read_back)
             }
         }
     } else {
         quote! {
             #[cfg(feature = "ca")]
-            fn #call_name(#(#ca_sig_args),*) -> consortium_tee::TeeResult<()> {
+            fn #call_name(session: &mut optee_teec::Session, #(#ca_sig_args),*) -> consortium_tee::TeeResult<()> {
                 #(#pack_stmts)*
-                invoke_command(
-                    Command::#command_variant,
-                    &mut optee_utee::Parameters::new(#(#new_params_args),*),
-                )
+                let mut _operation = optee_teec::Operation::new(0, #(#new_params_args),*);
+                session.invoke_command(Command::#command_variant as u32, &mut _operation)
             }
         }
     };
@@ -384,15 +383,31 @@ fn gen_unpack(
             slot,
         );
     }
-    let s = quote::format_ident!("param_{}", slot);
+    let idx = syn::Index::from(slot);
+    // Temporary ident for holding the memref guard across two statements.
+    let tmp = Ident::new(&format!("__p_{}", slot), Span::call_site());
     let stmt = if is_primitive(ty, "bool") {
-        quote! { let #pat: bool = params.#s().as_value().a() != 0; }
+        quote! {
+            // SAFETY: slot #idx is ValueInput — type match guaranteed by #[tee_command]
+            let #pat: bool = unsafe { params.#idx.as_value()?.a() } != 0;
+        }
     } else if is_primitive(ty, "u32") {
-        quote! { let #pat: u32 = params.#s().as_value().a(); }
+        quote! {
+            // SAFETY: slot #idx is ValueInput — type match guaranteed by #[tee_command]
+            let #pat: u32 = unsafe { params.#idx.as_value()?.a() };
+        }
     } else if is_slice_ref(ty, false) {
-        quote! { let #pat: &[u8] = params.#s().as_memref().buffer(); }
+        quote! {
+            // SAFETY: slot #idx is MemrefInput — type match guaranteed by #[tee_command]
+            let mut #tmp = unsafe { params.#idx.as_memref()? };
+            let #pat: &[u8] = #tmp.buffer();
+        }
     } else if is_slice_ref(ty, true) {
-        quote! { let #pat: &mut [u8] = params.#s().as_memref_mut().buffer(); }
+        quote! {
+            // SAFETY: slot #idx is MemrefInout — type match guaranteed by #[tee_command]
+            let mut #tmp = unsafe { params.#idx.as_memref()? };
+            let #pat: &mut [u8] = #tmp.buffer();
+        }
     } else {
         quote! { compile_error!("Unsupported TEE parameter type"); }
     };
@@ -405,22 +420,31 @@ fn gen_flush_ta(slot: usize, ty: &syn::Type) -> proc_macro2::TokenStream {
     if slot >= 4 {
         return quote! { compile_error!("Too many parameters: no room for the output slot (TEE max 4)"); };
     }
-    let s = quote::format_ident!("param_{}", slot);
+    let idx = syn::Index::from(slot);
     if is_primitive(ty, "u32") {
-        quote! { params.#s().as_value_mut().set_a(__ret_val); }
+        quote! {
+            // SAFETY: slot #idx is ValueOutput — type match guaranteed by #[tee_command]
+            let mut __p_out = unsafe { params.#idx.as_value()? };
+            __p_out.set_a(__ret_val);
+        }
     } else if is_primitive(ty, "u64") {
         quote! {
-            params.#s().as_value_mut().set_a((__ret_val >> 32) as u32);
-            params.#s().as_value_mut().set_b(__ret_val as u32);
+            // SAFETY: slot #idx is ValueOutput — type match guaranteed by #[tee_command]
+            let mut __p_out = unsafe { params.#idx.as_value()? };
+            __p_out.set_a((__ret_val >> 32) as u32);
+            __p_out.set_b(__ret_val as u32);
         }
     } else if is_primitive(ty, "bool") {
-        quote! { params.#s().as_value_mut().set_a(__ret_val as u32); }
+        quote! {
+            // SAFETY: slot #idx is ValueOutput — type match guaranteed by #[tee_command]
+            let mut __p_out = unsafe { params.#idx.as_value()? };
+            __p_out.set_a(__ret_val as u32);
+        }
     } else if is_vec_u8(ty) {
         quote! {
-            {
-                let __out = params.#s().as_memref_mut();
-                __out.buffer()[..__ret_val.len()].copy_from_slice(&__ret_val);
-            }
+            // SAFETY: slot #idx is MemrefOutput — type match guaranteed by #[tee_command]
+            let mut __p_out = unsafe { params.#idx.as_memref()? };
+            __p_out.buffer()[..__ret_val.len()].copy_from_slice(&__ret_val);
         }
     } else {
         quote! { compile_error!("Unsupported TEE return type for output parameter (supported: u32, u64, bool, Vec<u8>)"); }
@@ -439,9 +463,9 @@ fn gen_pack_ca(
     } else if is_primitive(ty, "u32") {
         quote! { let #slot_ident = ParamValue::new(#pat, 0, ParamType::ValueInput); }
     } else if is_slice_ref(ty, false) {
-        quote! { let #slot_ident = ParamMemref::new(#pat, ParamType::MemrefInput); }
+        quote! { let #slot_ident = ParamTmpRef::new_input(#pat); }
     } else if is_slice_ref(ty, true) {
-        quote! { let #slot_ident = ParamMemref::new(#pat, ParamType::MemrefInout); }
+        quote! { let #slot_ident = ParamTmpRef::new_inout(#pat); }
     } else {
         quote! { compile_error!("Unsupported TEE parameter type"); }
     }
@@ -458,7 +482,7 @@ fn gen_output_pack_ca(slot_ident: &Ident, ty: &syn::Type, slot: usize) -> proc_m
         let buf_ident = Ident::new(&format!("__out_buf_{}", slot), Span::call_site());
         quote! {
             let mut #buf_ident = vec![0u8; 4096];
-            let #slot_ident = ParamMemref::new(&mut #buf_ident, ParamType::MemrefOutput);
+            let #slot_ident = ParamTmpRef::new_output(&mut #buf_ident);
         }
     } else {
         quote! { compile_error!("Unsupported TEE return type for output parameter (supported: u32, u64, bool, Vec<u8>)"); }
@@ -470,19 +494,19 @@ fn gen_output_pack_ca(slot_ident: &Ident, ty: &syn::Type, slot: usize) -> proc_m
 fn gen_output_read_ca(slot: usize, ty: &syn::Type) -> proc_macro2::TokenStream {
     let s = quote::format_ident!("param_{}", slot);
     if is_primitive(ty, "u32") {
-        quote! { _params.#s().as_value().a() }
+        quote! { _operation.#s().as_value().a() }
     } else if is_primitive(ty, "u64") {
         quote! {
-            ((_params.#s().as_value().a() as u64) << 32)
-                | (_params.#s().as_value().b() as u64)
+            ((_operation.#s().as_value().a() as u64) << 32)
+                | (_operation.#s().as_value().b() as u64)
         }
     } else if is_primitive(ty, "bool") {
-        quote! { _params.#s().as_value().a() != 0 }
+        quote! { _operation.#s().as_value().a() != 0 }
     } else if is_vec_u8(ty) {
         // The TA updates the memref's size to the number of bytes written.
         quote! {
             {
-                let __m = _params.#s().as_memref();
+                let __m = _operation.#s().as_memref();
                 __m.buffer()[..__m.size()].to_vec()
             }
         }
