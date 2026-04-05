@@ -6,6 +6,12 @@ edition.workspace = true
 [lib]
 proc-macro = true
 
+[features]
+## Enable serialized-type support (`T: TeeParam`, `&mut T: TeeParam`) in `#[tee_command]`
+## via `postcard`. Requires the consuming crate to depend on `postcard` with `features =
+## ["alloc"]`. Automatically enabled by `consortium-tee`'s `serde` feature.
+serde = []
+
 [dependencies]
 heck = "0.5.0"
 proc-macro2 = "1.0.106"

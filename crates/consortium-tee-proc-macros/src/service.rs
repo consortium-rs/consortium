@@ -1,4 +1,8 @@
-use syn::{Ident, Token, braced, parse::{Parse, ParseStream}, punctuated::Punctuated};
+use syn::{
+    Ident, Token, braced,
+    parse::{Parse, ParseStream},
+    punctuated::Punctuated,
+};
 
 pub(crate) struct TeeServiceInput {
     pub(crate) commands: Vec<Ident>,
@@ -26,14 +30,23 @@ impl Parse for TeeServiceInput {
                 context = Some(ctx_ident);
             } else if lookahead.peek(keywords::commands) {
                 if commands.is_some() {
-                    return Err(syn::Error::new(input.span(), "Duplicate 'commands' section"));
+                    return Err(syn::Error::new(
+                        input.span(),
+                        "Duplicate 'commands' section",
+                    ));
                 }
                 input.parse::<keywords::commands>()?;
                 let content;
                 braced!(content in input);
                 let idents = Punctuated::<Ident, Token![,]>::parse_terminated(&content)?;
-                if idents.iter().any(|ident| ident.to_string().eq_ignore_ascii_case("unknown")) {
-                    return Err(syn::Error::new(input.span(), "Command name 'Unknown' is reserved for the default case"));
+                if idents
+                    .iter()
+                    .any(|ident| ident.to_string().eq_ignore_ascii_case("unknown"))
+                {
+                    return Err(syn::Error::new(
+                        input.span(),
+                        "Command name 'Unknown' is reserved for the default case",
+                    ));
                 }
                 commands = Some(idents.into_iter().collect());
             } else {

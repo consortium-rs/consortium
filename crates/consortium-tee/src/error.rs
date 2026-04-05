@@ -57,6 +57,12 @@ pub enum TeeError {
     #[error("TEE commands accept at most 4 parameters, got {0}")]
     TooManyParams(usize),
 
+    /// CA-side `postcard` serialization of a `TeeParam` argument failed.
+    /// Only present when the `serde` feature is enabled.
+    #[cfg(feature = "serde")]
+    #[error("failed to encode TEE parameter: {0}")]
+    Encode(String),
+
     /// The `spawn_blocking` task panicked or was cancelled.
     #[error("TEE async task failed: {0}")]
     JoinError(#[from] tokio::task::JoinError),
