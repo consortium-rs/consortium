@@ -1,42 +1,5 @@
-use std::fmt;
-use std::io;
+use std::io::Result;
 use std::path::PathBuf;
-
-/// Errors produced by `RemoteProc` operations.
-#[derive(Debug)]
-pub enum RemoteProcError {
-    /// The sysfs file could not be read or written.
-    Io(io::Error),
-    /// The state string read from sysfs was not recognised.
-    UnknownState(String),
-    /// The coredump string read from sysfs was not recognised.
-    UnknownCoredump(String),
-}
-
-impl fmt::Display for RemoteProcError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Io(e) => write!(f, "I/O error: {e}"),
-            Self::UnknownState(s) => write!(f, "unknown remoteproc state: {s:?}"),
-            Self::UnknownCoredump(s) => write!(f, "unknown coredump mode: {s:?}"),
-        }
-    }
-}
-
-impl std::error::Error for RemoteProcError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        match self {
-            Self::Io(e) => Some(e),
-            _ => None,
-        }
-    }
-}
-
-impl From<io::Error> for RemoteProcError {
-    fn from(e: io::Error) -> Self {
-        Self::Io(e)
-    }
-}
 
 #[derive(Debug)]
 pub struct RemoteProc {
@@ -54,57 +17,46 @@ pub enum RemoteProcState {
     Detached = 6,
 }
 
-impl TryFrom<u8> for RemoteProcState {
-    type Error = RemoteProcError;
-
-    fn try_from(value: u8) -> Result<Self, Self::Error> {
+impl From<u8> for RemoteProcState {
+    fn from(value: u8) -> Self {
         match value {
-            0 => Ok(RemoteProcState::Offline),
-            1 => Ok(RemoteProcState::Suspended),
-            2 => Ok(RemoteProcState::Running),
-            3 => Ok(RemoteProcState::Crashed),
-            4 => Ok(RemoteProcState::Deleted),
-            5 => Ok(RemoteProcState::Attached),
-            6 => Ok(RemoteProcState::Detached),
-            _ => Err(RemoteProcError::UnknownState(value.to_string())),
+            0 => RemoteProcState::Offline,
+            1 => RemoteProcState::Suspended,
+            2 => RemoteProcState::Running,
+            3 => RemoteProcState::Crashed,
+            4 => RemoteProcState::Deleted,
+            5 => RemoteProcState::Attached,
+            6 => RemoteProcState::Detached,
+            _ => panic!("Invalid value for RemoteProcState: {}", value),
         }
     }
 }
 
-impl TryFrom<String> for RemoteProcState {
-    type Error = RemoteProcError;
-
-    fn try_from(value: String) -> Result<Self, Self::Error> {
+impl From<String> for RemoteProcState {
+    fn from(value: String) -> Self {
         match value.as_str() {
-            "offline" => Ok(RemoteProcState::Offline),
-            "suspended" => Ok(RemoteProcState::Suspended),
-            "running" => Ok(RemoteProcState::Running),
-            "crashed" => Ok(RemoteProcState::Crashed),
-            "deleted" => Ok(RemoteProcState::Deleted),
-            "attached" => Ok(RemoteProcState::Attached),
-            "detached" => Ok(RemoteProcState::Detached),
-            _ => Err(RemoteProcError::UnknownState(value)),
+            "offline" => RemoteProcState::Offline,
+            "suspended" => RemoteProcState::Suspended,
+            "running" => RemoteProcState::Running,
+            "crashed" => RemoteProcState::Crashed,
+            "deleted" => RemoteProcState::Deleted,
+            "attached" => RemoteProcState::Attached,
+            "detached" => RemoteProcState::Detached,
+            _ => panic!("Invalid value for RemoteProcState: {}", value),
         }
     }
 }
 
-impl fmt::Display for RemoteProcState {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str(self.as_str())
-    }
-}
-
-impl RemoteProcState {
-    /// Returns the sysfs string representation of the state.
-    pub fn as_str(&self) -> &'static str {
+impl ToString for RemoteProcState {
+    fn to_string(&self) -> String {
         match self {
-            RemoteProcState::Offline => "offline",
-            RemoteProcState::Suspended => "suspended",
-            RemoteProcState::Running => "running",
-            RemoteProcState::Crashed => "crashed",
-            RemoteProcState::Deleted => "deleted",
-            RemoteProcState::Attached => "attached",
-            RemoteProcState::Detached => "detached",
+            RemoteProcState::Offline => "offline".to_string(),
+            RemoteProcState::Suspended => "suspended".to_string(),
+            RemoteProcState::Running => "running".to_string(),
+            RemoteProcState::Crashed => "crashed".to_string(),
+            RemoteProcState::Deleted => "deleted".to_string(),
+            RemoteProcState::Attached => "attached".to_string(),
+            RemoteProcState::Detached => "detached".to_string(),
         }
     }
 }
@@ -116,32 +68,23 @@ pub enum RemoteProcCoredump {
     Inline,
 }
 
-impl TryFrom<String> for RemoteProcCoredump {
-    type Error = RemoteProcError;
-
-    fn try_from(value: String) -> Result<Self, Self::Error> {
+impl From<String> for RemoteProcCoredump {
+    fn from(value: String) -> Self {
         match value.as_str() {
-            "enabled" => Ok(RemoteProcCoredump::Enabled),
-            "disabled" => Ok(RemoteProcCoredump::Disabled),
-            "inline" => Ok(RemoteProcCoredump::Inline),
-            _ => Err(RemoteProcError::UnknownCoredump(value)),
+            "enabled" => RemoteProcCoredump::Enabled,
+            "disabled" => RemoteProcCoredump::Disabled,
+            "inline" => RemoteProcCoredump::Inline,
+            _ => panic!("Invalid value for RemoteProcCoredump: {}", value),
         }
     }
 }
 
-impl fmt::Display for RemoteProcCoredump {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str(self.as_str())
-    }
-}
-
-impl RemoteProcCoredump {
-    /// Returns the sysfs string representation of the coredump mode.
-    pub fn as_str(&self) -> &'static str {
+impl ToString for RemoteProcCoredump {
+    fn to_string(&self) -> String {
         match self {
-            RemoteProcCoredump::Enabled => "enabled",
-            RemoteProcCoredump::Disabled => "disabled",
-            RemoteProcCoredump::Inline => "inline",
+            RemoteProcCoredump::Enabled => "enabled".to_string(),
+            RemoteProcCoredump::Disabled => "disabled".to_string(),
+            RemoteProcCoredump::Inline => "inline".to_string(),
         }
     }
 }
@@ -152,37 +95,37 @@ impl RemoteProc {
         Self { path }
     }
 
-    pub fn state(&self) -> Result<RemoteProcState, RemoteProcError> {
+    pub fn state(&self) -> Result<RemoteProcState> {
         let state_path = self.path.join("state");
         let state_str = std::fs::read_to_string(state_path)?.trim().to_string();
-        RemoteProcState::try_from(state_str)
+        Ok(RemoteProcState::from(state_str))
     }
 
-    pub fn start(&self) -> Result<(), RemoteProcError> {
+    pub fn start(&self) -> Result<()> {
         let state_path = self.path.join("state");
         std::fs::write(state_path, "start")?;
         Ok(())
     }
 
-    pub fn stop(&self) -> Result<(), RemoteProcError> {
+    pub fn stop(&self) -> Result<()> {
         let state_path = self.path.join("state");
         std::fs::write(state_path, "stop")?;
         Ok(())
     }
 
-    pub fn set_firmware(&self, firmware: &str) -> Result<(), RemoteProcError> {
+    pub fn set_firmware(&self, firmware: &str) -> Result<()> {
         let firmware_path = self.path.join("firmware");
         std::fs::write(firmware_path, firmware)?;
         Ok(())
     }
 
-    pub fn set_coredump(&self, coredump: RemoteProcCoredump) -> Result<(), RemoteProcError> {
+    pub fn set_coredump(&self, coredump: RemoteProcCoredump) -> Result<()> {
         let coredump_path = self.path.join("coredump");
-        std::fs::write(coredump_path, coredump.as_str())?;
+        std::fs::write(coredump_path, coredump.to_string())?;
         Ok(())
     }
 
-    pub fn set_recovery(&self, recovery: bool) -> Result<(), RemoteProcError> {
+    pub fn set_recovery(&self, recovery: bool) -> Result<()> {
         let recovery_path = self.path.join("recovery");
         std::fs::write(recovery_path, if recovery { "enabled" } else { "disabled" })?;
         Ok(())
