@@ -163,6 +163,7 @@ HSEM is now fully implemented in `consortium-ipc-driver-hsem` with:
    - Integration with MemTransport for IPC
    - Reset/panic handlers
    - Example: minimal firmware that spins up a Channel and sends data
+   - Current design: use `Embassy` for async runtime with `no_std` support. When the project is targeting wider market, try to support Zephyr RTOS as well, which is widely used in embedded space and has good support for STM32 and NXP platforms.
 
 2. **Application harness (A-core Linux):**
    - RemoteProc lifecycle management
@@ -179,17 +180,18 @@ HSEM is now fully implemented in `consortium-ipc-driver-hsem` with:
 
 ### Full Compilation & Deployment Pipeline
 
-The user specified an 8-step pipeline:
+The user specified an 9-step pipeline:
 
 ```
 1. Meta crate: Config → device tree + PAC
 2. Compile TF-M (NS-M) + bundle into firmware ELF per remoteproc
 3. Compile TF-A (OP-TEE) + optionally sign
 4. Compile HMI web interface (Vite) + bundle into app
-5. Compile application
-6. Generate config files (systemd, supervisor, nginx, etc.)
-7. Attach installer script
-8. Bundle into .tar.gz
+5. Quantize ONNX models + bundle into app
+6. Compile application
+7. Generate config files (systemd, supervisor, nginx, etc.)
+8. Attach installer script
+9. Bundle into .tar.gz
 ```
 
 **Status:** Not started. Requires:

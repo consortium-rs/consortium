@@ -1,7 +1,9 @@
 use std::path::PathBuf;
-use tokio::{io::AsyncReadExt, process::Command};
+use tokio::process::Command;
 
-const TARGET_TRIPLE: &str = "aarch64-unknown-linux-gnu";
+use crate::compile::utils::{
+    clean_path, elf_path, resolve_cargo, resolve_cross_tool, resolve_rustc, verify_elf,
+};
 
 /// Builds a Cargo application targeting the STM32MP2 Cortex-A35 (OpenSTLinux).
 ///
@@ -14,14 +16,17 @@ const TARGET_TRIPLE: &str = "aarch64-unknown-linux-gnu";
 /// `OECORE_TUNE_CCARGS`, etc.) automatically.
 ///
 /// Optional overrides:
-///   `OSTL_RUSTC`        — absolute path to upstream rustc (default: resolved via rustup)
-///   `OSTL_CARGO`        — absolute path to upstream cargo (default: resolved via rustup)
+///   `CONSORTIUM_RUSTC`        — absolute path to upstream rustc (default: resolved via rustup)
+///   `CONSORTIUM_CARGO`        — absolute path to upstream cargo (default: resolved via rustup)
 ///   `OSTL_SDK_SYSROOT`  — override target sysroot
 ///   `OSTL_SDK_EXTRA_FLAGS` — extra RUSTFLAGS appended verbatim
+///
+/// TODO: Add support for NXP i.MX 9x series (i.MX 93, i.MX 95, etc.) by detecting environment-setup script for those platforms and adjusting tool names and flags accordingly.
 pub struct ApplicationBuilder {
     /// Path to the Cargo project root.
     pub path: PathBuf,
     pub release: bool,
+    pub target: String,
 }
 
 struct SdkEnv {
@@ -43,22 +48,16 @@ impl ApplicationBuilder {
     pub async fn build(&self) -> Result<PathBuf, String> {
         let sdk = Self::sdk_env()?;
 
-        let rustc = match std::env::var("OSTL_RUSTC") {
-            Ok(v) => v,
-            Err(_) => Self::resolve_rustup("rustc").await?,
-        };
-        let cargo = match std::env::var("OSTL_CARGO") {
-            Ok(v) => v,
-            Err(_) => Self::resolve_rustup("cargo").await?,
-        };
+        let rustc = resolve_rustc().await?;
+        let cargo = resolve_cargo().await?;
 
         let rustflags = Self::build_rustflags(&sdk);
-        let clean_path = Self::clean_path(&sdk.native_sysroot);
+        let clean_path = clean_path(&sdk.native_sysroot);
 
         let mut cmd = Command::new(&cargo);
         cmd.arg("build")
             .arg("--target")
-            .arg(TARGET_TRIPLE)
+            .arg(&self.target)
             .arg("--config")
             .arg("aarch64-unknown-linux-gnu.linker=".to_string() + &sdk.cc_abs)
             .current_dir(&self.path)
@@ -94,28 +93,15 @@ impl ApplicationBuilder {
             return Err(format!("cargo build failed with status: {}", status));
         }
 
-        let elf = self.elf_path().await?;
+        let elf = elf_path(&self.path, &self.target, self.release).await?;
 
         if !elf.exists() {
             return Err(format!("ELF not found at expected path: {:?}", elf));
         }
 
-        Self::verify_elf(&elf).await?;
+        verify_elf(&elf).await?;
 
         Ok(elf)
-    }
-
-    /// Returns the expected ELF output path after a successful build.
-    pub async fn elf_path(&self) -> Result<PathBuf, String> {
-        let binary_name = self.binary_name().await?;
-        let profile = if self.release { "release" } else { "debug" };
-
-        Ok(self
-            .path
-            .join("target")
-            .join(TARGET_TRIPLE)
-            .join(profile)
-            .join(binary_name))
     }
 
     /// Resolves and validates all SDK environment variables.
@@ -138,8 +124,8 @@ impl ApplicationBuilder {
         })?;
 
         // Resolve cross tools to absolute paths NOW, before PATH is sanitized
-        let cc_abs = Self::resolve_cross_tool("aarch64-ostl-linux-gcc")?;
-        let cxx_abs = Self::resolve_cross_tool("aarch64-ostl-linux-g++")?;
+        let cc_abs = resolve_cross_tool("aarch64-ostl-linux-gcc")?;
+        let cxx_abs = resolve_cross_tool("aarch64-ostl-linux-g++")?;
 
         // Derive tune flags from ST's own variable; fall back to known-good defaults
         let arch_flags = std::env::var("OECORE_TUNE_CCARGS")
@@ -184,115 +170,5 @@ impl ApplicationBuilder {
         }
 
         flags
-    }
-
-    /// Strips ST SDK path entries from PATH using OECORE_NATIVE_SYSROOT as the
-    /// anchor. All ST-injected entries are subdirectories of the native sysroot,
-    /// so this is precise — upstream rustup/cargo/rustc remain reachable.
-    fn clean_path(native_sysroot: &str) -> String {
-        let path = std::env::var("PATH").unwrap_or_default();
-
-        std::env::split_paths(&path)
-            .filter(|p| {
-                if native_sysroot.is_empty() {
-                    // Fallback heuristic if OECORE_NATIVE_SYSROOT was somehow empty
-                    let s = p.to_string_lossy();
-                    !s.contains("aarch64-ostl_sdk-linux") && !s.contains("aarch64-ostl-linux")
-                } else {
-                    !p.starts_with(native_sysroot)
-                }
-            })
-            .map(|p| p.to_string_lossy().into_owned())
-            .collect::<Vec<_>>()
-            .join(":")
-    }
-
-    /// Resolves a cross-tool binary to its absolute path by walking PATH.
-    /// Must be called before PATH is sanitized.
-    fn resolve_cross_tool(tool: &str) -> Result<String, String> {
-        let path = std::env::var("PATH").unwrap_or_default();
-
-        for dir in std::env::split_paths(&path) {
-            let candidate = dir.join(tool);
-            if candidate.is_file() {
-                return Ok(candidate.to_string_lossy().into_owned());
-            }
-        }
-
-        Err(format!(
-            "Cross tool '{}' not found on PATH. \
-             Is the ST environment-setup script sourced?",
-            tool
-        ))
-    }
-
-    /// Resolves upstream cargo or rustc via `rustup which --toolchain stable`.
-    async fn resolve_rustup(tool: &str) -> Result<String, String> {
-        let output = Command::new("rustup")
-            .args(["which", "--toolchain", "stable", tool])
-            .output()
-            .await
-            .map_err(|e| format!("Failed to run rustup: {}", e))?;
-
-        if !output.status.success() {
-            return Err(format!(
-                "rustup could not resolve '{}' for the stable toolchain: {}",
-                tool,
-                String::from_utf8_lossy(&output.stderr).trim(),
-            ));
-        }
-
-        Ok(String::from_utf8_lossy(&output.stdout).trim().to_string())
-    }
-
-    /// Reads the binary name from Cargo.toml, preferring [[bin]] over [package].
-    async fn binary_name(&self) -> Result<String, String> {
-        let cargo_toml_path = self.path.join("Cargo.toml");
-        let content = tokio::fs::read_to_string(&cargo_toml_path)
-            .await
-            .map_err(|e| format!("Failed to read Cargo.toml at {:?}: {}", cargo_toml_path, e))?;
-
-        let manifest: toml::Value =
-            toml::from_str(&content).map_err(|e| format!("Failed to parse Cargo.toml: {}", e))?;
-
-        // 1. Prefer [[bin]] name if explicitly declared
-        if let Some(name) = manifest
-            .get("bin")
-            .and_then(|b| b.as_array())
-            .and_then(|arr| arr.first())
-            .and_then(|b| b.get("name"))
-            .and_then(|n| n.as_str())
-        {
-            return Ok(name.to_string());
-        }
-
-        // 2. Fall back to [package] name (default binary)
-        manifest
-            .get("package")
-            .and_then(|p| p.get("name"))
-            .and_then(|n| n.as_str())
-            .map(|n| n.to_string())
-            .ok_or_else(|| "Could not determine binary name from Cargo.toml".to_string())
-    }
-
-    /// Verifies that the output file has a valid ELF magic header.
-    async fn verify_elf(path: &PathBuf) -> Result<(), String> {
-        let mut file = tokio::fs::File::open(path)
-            .await
-            .map_err(|e| format!("Failed to open ELF file {:?}: {}", path, e))?;
-
-        let mut magic = [0u8; 4];
-        file.read_exact(&mut magic)
-            .await
-            .map_err(|e| format!("Failed to read ELF magic bytes: {}", e))?;
-
-        if magic != [0x7f, b'E', b'L', b'F'] {
-            return Err(format!(
-                "File {:?} is not a valid ELF binary (magic: {:02x?})",
-                path, magic
-            ));
-        }
-
-        Ok(())
     }
 }
