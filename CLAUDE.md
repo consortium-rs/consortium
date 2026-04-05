@@ -15,6 +15,7 @@ cargo test
 cargo test -p consortium-ipc
 cargo test -p consortium-ipc-mem
 cargo test -p consortium-ipc-uio
+cargo test -p consortium-ipc-driver-hsem
 
 # Run a single test by name
 cargo test -p consortium-ipc <test_name>
@@ -39,8 +40,9 @@ This is a Rust workspace providing an async abstraction for inter-processor comm
 
 **Core IPC (production-ready):**
 - **`consortium-ipc`** — `no_std`-compatible core traits and types. Feature-gated: `std`, `alloc`, `futures`. Exports `Channel<D, T, Tr, C>`, `Doorbell`, `Transport`, `Region`, `Codec`.
-- **`consortium-ipc-mem`** — Bare-metal shared-memory transport for M-core (`no_std`). Implements `Transport` via volatile slot reads/writes. Requires platform-specific `Doorbell` implementation.
-- **`consortium-ipc-uio`** — Linux UIO transport (`/dev/uioN`). Linux-only, async via Tokio. `UioDevice::open()` mmaps shared memory and spawns background interrupt handler.
+- **`consortium-ipc-mem`** — Bare-metal shared-memory transport for M-core (`no_std`). Implements `Transport` via volatile slot reads/writes. Re-exports HSEM doorbell via `consortium-ipc-driver-hsem`.
+- **`consortium-ipc-uio`** — Linux UIO transport (`/dev/uioN`). Linux-only, async via Tokio. `UioDevice::open()` mmaps shared memory and spawns background interrupt handler. Re-exports HSEM doorbell via `consortium-ipc-driver-hsem`.
+- **`consortium-ipc-driver-hsem`** — Hardware Semaphore (HSEM) doorbell for STM32MP2/STM32MP25. Supports both no_std (M-core with `AtomicWaker` + HSEM_IRQHandler) and std (A-core with `tokio::sync::Notify`). Implements `Doorbell` trait and `HsemChanValidate`.
 
 **Configuration & Build (partial):**
 - **`consortium-common`** — Shared configuration types: `Config`, `Chip` enum, `CortexMcuCore` enum, chip-to-core mappings. Enums for STM32MP2x and i.MX 9x families.
@@ -81,12 +83,12 @@ Channel addressing uses `Chan(u8)`; platforms implement `ChanValidate` to enforc
 ### Transport implementations
 
 **`consortium-ipc-mem` (bare-metal `MemTransport<D: Doorbell, R: Region>`):**
-- Generic over platform-specific `Doorbell` (HSEM, MU, GPIO) and `Region` (SRAM, DDR, Serial)
+- Generic over platform-specific `Doorbell` (HSEM via `consortium-ipc-driver-hsem`, or custom MU, GPIO, etc.) and `Region` (SRAM, DDR, Serial)
 - Unsafe constructor takes raw pointers to tx/rx slots in shared DMA memory
 - `SendFut` completes eagerly: writes payload then rings doorbell synchronously
 - `RecvFut` polls slot; if empty, awaits the `Doorbell::wait()` future
 - Slot protocol: `[len: u32][flags: u32][payload: [u8]]`; `FLAG_VALID (0x01)` / `FLAG_CONSUMED (0x02)`
-- **⚠️ Requires platform-specific Doorbell implementation (see Missing Hardware Doorbells below)**
+- **HSEM doorbell is implemented via `consortium-ipc-driver-hsem` for STM32MP2/STM32MP25; MU and other doorbell implementations can be added similarly**
 
 **`consortium-ipc-uio` (`UioDevice` / `UioChannel`):**
 - `UioDevice::open(uio_num)` mmaps resource 0 of `/dev/uioN`, parses a binary descriptor from its start, and spawns a background Tokio task that waits for M→A IRQs (via a second fd) and broadcasts wakeups via `tokio::sync::Notify`
@@ -150,23 +152,37 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 
 ---
 
-## Missing Hardware & Runtime Implementations ⚠️
+## Hardware Doorbell Implementations
 
-### 1. Platform-Specific Doorbells
+### ✅ Completed: HSEM (Hardware Semaphore)
 
-The `Doorbell` trait is generic; concrete implementations must be provided per platform:
+**Status:** Fully implemented in `consortium-ipc-driver-hsem`
 
-**STM32MP2 / STM32MP25:**
-- **HSEM (Hardware Semaphore):** Implement `Doorbell` with HSEM register access (ring semaphore, wait for interrupt)
-- **MU (Message Unit):** Implement `Doorbell` with MU mailbox protocol (write TX register, poll RX interrupt)
+**Features:**
+- **M-core (bare-metal, no_std):** Zero-size type using `AtomicWaker` for async waiting. Rings HSEM directly and registers HSEM IRQ handler. Uses lock ID `M_CORE_LOCKID`.
+- **A-core (Linux, std):** `HsemDoorbell<PROC>` holds `Arc<tokio::sync::Notify>` for wake coordination. Exposes `.notifier()` method for external IRQ loop integration. Uses lock ID `A_CORE_LOCKID` (MASTERID 2).
+- **Re-exported from:** Both `consortium-ipc-mem` and `consortium-ipc-uio` for convenience; `consortium-runtime-rt` re-exports as `hsem` for backward compatibility.
+- **Validates channels** via `HsemChanValidate` (max 64 channels per core).
 
-**i.MX 95:**
-- **MU (Message Unit):** Implement variant specific to i.MX 95 register layout
+**Platform support:** STM32MP2x and STM32MP25x SoCs.
 
-Each doorbell should:
-1. Implement the `Doorbell` trait (`ring()`, `wait()`, `pending()`)
-2. Handle platform-specific register access and interrupt routing
-3. Be tested with real hardware or a simulation
+### Planned Doorbells
+
+The `Doorbell` trait is generic; additional doorbell implementations can be added per platform:
+
+**i.MX 9x Series (NXP):**
+- **MU (Message Unit):** Implement `Doorbell` with MU mailbox protocol (write TX register, poll RX interrupt) — similar structure to HSEM. Supported on i.MX 93, i.MX 95, and other variants.
+
+**STM32MP2 / STM32MP25 (STMicroelectronics):**
+- HSEM is the primary IPC signaling mechanism; no additional doorbell implementations planned.
+
+To add a new doorbell:
+1. Create a new crate `consortium-ipc-driver-<name>` (or add module to existing crate)
+2. Implement the `Doorbell` trait (`ring()`, `wait()`, `pending()`)
+3. Handle platform-specific register access and interrupt routing
+4. Optionally implement `ChanValidate` for channel validation
+5. Test with real hardware or simulation
+- Unless Technical Reference Manual and register map are available in context, you shouldn't implement a doorbell from scratch.
 
 ### 2. M-Core Runtime (`consortium-runtime-rt`)
 
@@ -205,28 +221,46 @@ Status: Not started. Requires orchestration in `consortium-builder` or separate 
 
 ## Getting Started: Platform Ports
 
-To bring up the IPC system on a new platform:
+### For STM32MP2/STM32MP25 with HSEM
 
-1. **Implement `Doorbell` trait** for your platform's interrupt mechanism
-   - File: `consortium-ipc/src/doorbell.rs` (or new module)
-   - Example: `struct MuDoorbell { base_addr: *mut u32 }`
+The HSEM doorbell is ready to use. To create a firmware application:
 
-2. **Implement M-core runtime bootstrap** in `consortium-runtime-rt`
-   - File: `consortium-runtime-rt/src/lib.rs`
-   - Initialize shared memory descriptor
-   - Wire up async executor and MemTransport
-   - Create sample firmware
+1. **Create M-core firmware** in `consortium-runtime-rt`
+   - Use `HsemDoorbell` from the re-export (`hsem::HsemDoorbell`)
+   - Initialize shared memory slots using `MemTransport::new(doorbell, region)`
+   - Create `Channel<Tx, YourMessage, MemTransport<HsemDoorbell, SramRegion>, PostcardCodec>`
+   - Implement bootstrap and async executor integration
 
-3. **Expand A-core runtime** in `consortium-runtime-app`
-   - File: `consortium-runtime-app/src/lib.rs`
-   - Implement RemoteProc lifecycle
-   - Initialize UioDevice
-   - Create sample application
+2. **Create A-core application** in `consortium-runtime-app`
+   - Open UIO device: `UioDevice::open(uio_num)`
+   - Get channel: `device.channel::<YourMessage>(Chan(0))`
+   - Send/receive via `channel.send(&msg)` and `channel.recv()`
+   - Handle `UioDevice::with_notify()` to integrate HSEM interrupt notifications
 
-4. **Test integration:**
-   - Load firmware on M-core
-   - Open UIO on A-core
-   - Exchange messages
-   - Verify correctness
+3. **Test integration:**
+   - Build firmware for M-core target
+   - Build application for A-core (Linux)
+   - Load firmware via remoteproc
+   - Exchange messages bidirectionally
+   - Verify error handling and timeouts
+
+### For NXP i.MX 9x Series (MU Doorbell)
+
+To add support for the Message Unit (MU) on i.MX 93, i.MX 95, etc.:
+
+1. **Create doorbell crate** following the HSEM pattern
+   - File: `crates/consortium-ipc-driver-mu/src/lib.rs`
+   - Support NXP variants via feature flags or runtime chip detection
+   - Export: `MuDoorbell`, `MuError`, `MuChanValidate`
+   - Support both `#[cfg(not(feature = "std"))]` (M-core) and `#[cfg(feature = "std")]` (A-core)
+
+2. **Integrate with MemTransport and UioDevice**
+   - Re-export from `consortium-ipc-mem` for bare-metal usage
+   - Re-export from `consortium-ipc-uio` for Linux usage
+
+3. **Document platform-specific details:**
+   - MU register layout for each i.MX variant
+   - GIC interrupt routing
+   - Lock IDs and channel configuration
 
 See `documents/implementation-status.md` for detailed roadmap and effort estimates.
