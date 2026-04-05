@@ -171,7 +171,7 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 The `Doorbell` trait is generic; additional doorbell implementations can be added per platform:
 
 **i.MX 9x Series (NXP):**
-- **MU (Message Unit):** Implement `Doorbell` with MU mailbox protocol (write TX register, poll RX interrupt) — similar structure to HSEM. Supported on i.MX 93, i.MX 95, and i.MX 97 variants.
+- **MU (Message Unit):** Implement `Doorbell` with MU mailbox protocol (write TX register, poll RX interrupt) — similar structure to HSEM. Supported on i.MX 93, i.MX 95, and other variants.
 
 **STM32MP2 / STM32MP25 (STMicroelectronics):**
 - HSEM is the primary IPC signaling mechanism; no additional doorbell implementations planned.
@@ -182,6 +182,7 @@ To add a new doorbell:
 3. Handle platform-specific register access and interrupt routing
 4. Optionally implement `ChanValidate` for channel validation
 5. Test with real hardware or simulation
+- Unless Technical Reference Manual and register map are available in context, you shouldn't implement a doorbell from scratch.
 
 ### 2. M-Core Runtime (`consortium-runtime-rt`)
 
@@ -245,7 +246,7 @@ The HSEM doorbell is ready to use. To create a firmware application:
 
 ### For NXP i.MX 9x Series (MU Doorbell)
 
-To add support for the Message Unit (MU) on i.MX 93, i.MX 95, i.MX 97:
+To add support for the Message Unit (MU) on i.MX 93, i.MX 95, etc.:
 
 1. **Create doorbell crate** following the HSEM pattern
    - File: `crates/consortium-ipc-driver-mu/src/lib.rs`

@@ -120,7 +120,7 @@ HSEM is now fully implemented in `consortium-ipc-driver-hsem` with:
 
 ### Required Additional Implementations
 
-**i.MX 9x Series (NXP) targets (i.MX 93, i.MX 95, i.MX 97):**
+**i.MX 9x Series (NXP) targets (i.MX 93, i.MX 95, etc.):**
 - **MU (Message Unit):** Primary signaling mechanism
   - Register layout: TX/RX mailboxes, interrupt enable/status
   - Interrupt routing via GIC (Generic Interrupt Controller)
@@ -288,7 +288,7 @@ Application (user code)
    - Verify correctness on real hardware
 
 ### Phase 2: NXP i.MX 9x Port (MU Doorbell)
-1. Implement MU Doorbell for i.MX 93, i.MX 95, i.MX 97 following HSEM pattern
+1. Implement MU Doorbell for i.MX 93, i.MX 95, etc., following HSEM pattern
 2. Extend M-core and A-core runtimes for NXP platform
 3. Test cross-core coordination on NXP hardware
 
