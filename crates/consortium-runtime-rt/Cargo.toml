@@ -10,6 +10,6 @@ imx9x = []
 default = ["stm32mp2xx", "imx9x"]
 
 [dependencies]
-atomic-waker = "1.1.2"
 consortium-ipc = { path = "../consortium-ipc", default-features = false }
+consortium-ipc-driver-hsem = { path = "../consortium-ipc-driver-hsem", default-features = false }
 consortium-ipc-mem = { path = "../consortium-ipc-mem", default-features = false }

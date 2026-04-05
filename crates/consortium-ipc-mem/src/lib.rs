@@ -2,6 +2,8 @@
 
 mod slot;
 
+pub use consortium_ipc_driver_hsem::{HsemChanValidate, HsemDoorbell, HsemError};
+
 use core::{
     future::Future,
     marker::PhantomData,

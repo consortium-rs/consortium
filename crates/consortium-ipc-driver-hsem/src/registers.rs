@@ -29,6 +29,7 @@ macro_rules! hsem_addr {
 pub mod semaphore_r {
     use super::HSEM_BASE;
 
+    #[allow(clippy::identity_op)]
     pub const HSEM_R0: u32 = HSEM_BASE + 0x000;
     pub const HSEM_R1: u32 = HSEM_BASE + 0x004;
     pub const HSEM_R2: u32 = HSEM_BASE + 0x008;

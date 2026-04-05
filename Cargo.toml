@@ -3,6 +3,7 @@ members = [
   "crates/consortium-ipc",
   "crates/consortium-cli",
   "crates/consortium-ipc-uio",
+  "crates/consortium-ipc-driver-hsem",
   "crates/consortium-ipc-mem",
   "crates/consortium-runtime-rt",
   "crates/consortium-runtime-app",
