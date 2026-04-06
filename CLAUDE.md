@@ -13,9 +13,9 @@ cargo test
 
 # Run tests for a specific crate
 cargo test -p consortium-ipc
-cargo test -p consortium-ipc-mem
-cargo test -p consortium-ipc-uio
-cargo test -p consortium-ipc-driver-hsem
+cargo test -p consortium-ipc-transport-mem
+cargo test -p consortium-ipc-transport-uio
+cargo test -p consortium-ipc-doorbell-hsem
 
 # Run a single test by name
 cargo test -p consortium-ipc <test_name>
@@ -28,8 +28,8 @@ cargo fmt
 ```
 
 **Platform notes:**
-- `consortium-ipc-uio`, `consortium-tee`, and `consortium-runtime-app` only build on Linux.
-- `consortium-ipc-mem` and `consortium-runtime-rt` must compile for bare-metal (Cortex-M).
+- `consortium-ipc-transport-uio`, `consortium-tee`, and `consortium-runtime-app` only build on Linux.
+- `consortium-ipc-transport-mem` and `consortium-runtime-mcu` must compile for bare-metal (Cortex-M).
 - Tests for Linux-only crates must be run on a Linux host.
 
 ## Architecture
@@ -40,9 +40,10 @@ This is a Rust workspace providing an async abstraction for inter-processor comm
 
 **Core IPC (production-ready):**
 - **`consortium-ipc`** — `no_std`-compatible core traits and types. Feature-gated: `std`, `alloc`, `futures`. Exports `Channel<D, T, Tr, C>`, `Doorbell`, `Transport`, `Region`, `Codec`.
-- **`consortium-ipc-mem`** — Bare-metal shared-memory transport for M-core (`no_std`). Implements `Transport` via volatile slot reads/writes. Re-exports HSEM doorbell via `consortium-ipc-driver-hsem`.
-- **`consortium-ipc-uio`** — Linux UIO transport (`/dev/uioN`). Linux-only, async via Tokio. `UioDevice::open()` mmaps shared memory and spawns background interrupt handler. Re-exports HSEM doorbell via `consortium-ipc-driver-hsem`.
-- **`consortium-ipc-driver-hsem`** — Hardware Semaphore (HSEM) doorbell for STM32MP2/STM32MP25. Supports both no_std (M-core with `AtomicWaker` + HSEM_IRQHandler) and std (A-core with `tokio::sync::Notify`). Implements `Doorbell` trait and `HsemChanValidate`.
+- **`consortium-ipc-transport-mem`** — Bare-metal shared-memory transport for M-core (`no_std`). Implements `Transport` via volatile slot reads/writes. Re-exports HSEM doorbell via `consortium-ipc-doorbell-hsem`.
+- **`consortium-ipc-transport-uio`** — Linux UIO transport (`/dev/uioN`). Linux-only, async via Tokio. `UioDevice::open()` mmaps shared memory and spawns background interrupt handler. Re-exports HSEM doorbell via `consortium-ipc-doorbell-hsem`.
+- **`consortium-ipc-doorbell-hsem`** — Hardware Semaphore (HSEM) doorbell for STM32MP2/STM32MP25. Supports both no_std (M-core with `AtomicWaker` + HSEM_IRQHandler) and std (A-core with `tokio::sync::Notify`). Implements `Doorbell` trait and `HsemChanValidate`.
+- **`consortium-ipc-doorbell-mu`** — Message Unit (MU) doorbell for i.MX 9x series. Supports both no_std and std paths with two independent IRQ handlers (MU1/MU2). Implements `Doorbell` trait and `MuChanValidate`.
 
 **Configuration & Build (partial):**
 - **`consortium-common`** — Shared configuration types: `Config`, `Chip` enum, `CortexMcuCore` enum, chip-to-core mappings. Enums for STM32MP2x and i.MX 9x families.
@@ -50,7 +51,7 @@ This is a Rust workspace providing an async abstraction for inter-processor comm
 - **`consortium-cli`** — Debug CLI tool (stub).
 
 **Runtime (minimal implementation, expanding):**
-- **`consortium-runtime-rt`** — Real-time runtime library for M-core firmware (stub). Must provide: bootstrap, async executor, MemTransport integration.
+- **`consortium-runtime-mcu`** — Real-time runtime library for M-core firmware (stub). Must provide: bootstrap, async executor, MemTransport integration.
 - **`consortium-runtime-app`** — Linux-side application harness. Exports `RemoteProc` sysfs wrapper with state readers and controls (`start`, `stop`, `set_firmware`, etc.). Linux-only.
 
 **Trusted Execution Environment (complete):**
@@ -82,15 +83,14 @@ Channel addressing uses `Chan(u8)`; platforms implement `ChanValidate` to enforc
 
 ### Transport implementations
 
-**`consortium-ipc-mem` (bare-metal `MemTransport<D: Doorbell, R: Region>`):**
-- Generic over platform-specific `Doorbell` (HSEM via `consortium-ipc-driver-hsem`, or custom MU, GPIO, etc.) and `Region` (SRAM, DDR, Serial)
+**`consortium-ipc-transport-mem` (bare-metal `MemTransport<D: Doorbell, R: Region>`):**
+- Generic over platform-specific `Doorbell` (HSEM via `consortium-ipc-doorbell-hsem`, MU via `consortium-ipc-doorbell-mu`, or custom) and `Region` (SRAM, DDR, Serial)
 - Unsafe constructor takes raw pointers to tx/rx slots in shared DMA memory
 - `SendFut` completes eagerly: writes payload then rings doorbell synchronously
 - `RecvFut` polls slot; if empty, awaits the `Doorbell::wait()` future
 - Slot protocol: `[len: u32][flags: u32][payload: [u8]]`; `FLAG_VALID (0x01)` / `FLAG_CONSUMED (0x02)`
-- **HSEM doorbell is implemented via `consortium-ipc-driver-hsem` for STM32MP2/STM32MP25; MU and other doorbell implementations can be added similarly**
 
-**`consortium-ipc-uio` (`UioDevice` / `UioChannel`):**
+**`consortium-ipc-transport-uio` (`UioDevice` / `UioChannel`):**
 - `UioDevice::open(uio_num)` mmaps resource 0 of `/dev/uioN`, parses a binary descriptor from its start, and spawns a background Tokio task that waits for M→A IRQs (via a second fd) and broadcasts wakeups via `tokio::sync::Notify`
 - Call `UioDevice::channel(chan)` to get a `UioChannel` which implements `Transport`
 - The shared-memory descriptor layout (magic `0x434F_4E53` / "CONS", version 1) must be in `DescState::Ready` before `open` will succeed
@@ -112,7 +112,7 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 - `alloc` — enables allocator support in serde/postcard
 - `futures` — placeholder
 
-`consortium-mem` inherits `no_std` from `consortium-ipc`. `consortium-uio` requires `std` + Tokio.
+`consortium-ipc-transport-mem` inherits `no_std` from `consortium-ipc`. `consortium-ipc-transport-uio` requires `std` + Tokio.
 
 ### Configuration types (`consortium-common`)
 
@@ -156,19 +156,19 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 
 ### ✅ Completed: HSEM (Hardware Semaphore)
 
-**Status:** Fully implemented in `consortium-ipc-driver-hsem`
+**Status:** Fully implemented in `consortium-ipc-doorbell-hsem`
 
 **Features:**
 - **M-core (bare-metal, no_std):** Zero-size type using `AtomicWaker` for async waiting. Rings HSEM directly and registers HSEM IRQ handler. Uses lock ID `M_CORE_LOCKID`.
 - **A-core (Linux, std):** `HsemDoorbell<PROC>` holds `Arc<tokio::sync::Notify>` for wake coordination. Exposes `.notifier()` method for external IRQ loop integration. Uses lock ID `A_CORE_LOCKID` (MASTERID 2).
-- **Re-exported from:** Both `consortium-ipc-mem` and `consortium-ipc-uio` for convenience; `consortium-runtime-rt` re-exports as `hsem` for backward compatibility.
+- **Re-exported from:** Both `consortium-ipc-transport-mem` and `consortium-ipc-transport-uio` for convenience; `consortium-runtime-mcu` re-exports as `hsem` for backward compatibility.
 - **Validates channels** via `HsemChanValidate` (max 64 channels per core).
 
 **Platform support:** STM32MP2x and STM32MP25x SoCs.
 
 ### ✅ Completed: MU (Message Unit)
 
-**Status:** Fully implemented in `consortium-ipc-driver-mu`
+**Status:** Fully implemented in `consortium-ipc-doorbell-mu`
 
 **Features:**
 - **M-core (bare-metal, no_std):** Zero-size type using `AtomicWaker` for async waiting. Rings MU TX registers and registers MU1/MU2 IRQ handlers. Two separate handler functions for two MU instances.
@@ -188,14 +188,14 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 **Platform support:** i.MX 9x series (i.MX 93, i.MX 95, etc.).
 
 To add a new doorbell:
-1. Create a new crate `consortium-ipc-driver-<name>` (or add module to existing crate)
+1. Create a new crate `consortium-ipc-doorbell-<name>` (or add module to existing crate)
 2. Implement the `Doorbell` trait (`ring()`, `wait()`, `pending()`)
 3. Handle platform-specific register access and interrupt routing
 4. Optionally implement `ChanValidate` for channel validation
 5. Test with real hardware or simulation
 - Unless Technical Reference Manual and register map are available in context, you shouldn't implement a doorbell from scratch.
 
-### 2. M-Core Runtime (`consortium-runtime-rt`)
+### 2. M-Core Runtime (`consortium-runtime-mcu`)
 
 Currently a stub. Must provide:
 - **Bootstrap code:** Stack setup, BSS initialization, relocation
@@ -237,7 +237,7 @@ Status: Not started. Requires orchestration in `consortium-builder` or separate 
 
 The HSEM doorbell is ready to use. To create a firmware application:
 
-1. **Create M-core firmware** in `consortium-runtime-rt`
+1. **Create M-core firmware** in `consortium-runtime-mcu`
    - Use `HsemDoorbell` from the re-export (`hsem::HsemDoorbell`)
    - Initialize shared memory slots using `MemTransport::new(doorbell, region)`
    - Create `Channel<Tx, YourMessage, MemTransport<HsemDoorbell, SramRegion>, PostcardCodec>`
@@ -260,8 +260,8 @@ The HSEM doorbell is ready to use. To create a firmware application:
 
 The MU doorbell is ready to use. To create a firmware application:
 
-1. **Create M-core firmware** in `consortium-runtime-rt`
-   - Use `MuDoorbell` from the crate (`consortium-ipc-driver-mu::MuDoorbell`)
+1. **Create M-core firmware** in `consortium-runtime-mcu`
+   - Use `MuDoorbell` from the crate (`consortium-ipc-doorbell-mu::MuDoorbell`)
    - Construct with `MuDoorbell::new(MU1_BASE, MU2_BASE)` or platform-specific base addresses
    - Initialize shared memory slots using `MemTransport::new(doorbell, region)`
    - Create `Channel<Tx, YourMessage, MemTransport<MuDoorbell, SramRegion>, PostcardCodec>`
