@@ -23,14 +23,14 @@ What remains is **hardware-specific glue** and the **application runtime layer**
 - **Testing:** Unit tests for trait contracts
 
 ### Transport Implementations
-- **`consortium-ipc-mem` (bare-metal):**
+- **`consortium-ipc-transport-mem` (bare-metal):**
   - `MemTransport<D: Doorbell, R: Region>` generic over doorbell and region types
   - Slot protocol (len/flags/payload) with volatile I/O
   - SendFut (eager, synchronous doorbell.ring)
   - RecvFut (polling with async doorbell.wait)
   - ~225 LOC, production-ready
 
-- **`consortium-ipc-uio` (Linux/Tokio):**
+- **`consortium-ipc-transport-uio` (Linux/Tokio):**
   - `UioDevice::open(uio_num)` parsing binary descriptor
   - Channel multiplexing via `uio.channel(id)`
   - Background Tokio task for M→A interrupt handling
@@ -70,11 +70,11 @@ What remains is **hardware-specific glue** and the **application runtime layer**
   - Controls: `start()`, `stop()`, `set_firmware()`, `set_coredump()`, `set_recovery()`
   - `RemoteProcCoredump` enum: `Enabled`, `Disabled`, `Inline`
 
-### Hardware Doorbell: HSEM (`consortium-ipc-driver-hsem`)
+### Hardware Doorbell: HSEM (`consortium-ipc-doorbell-hsem`)
 - **M-core (bare-metal, no_std):** `HsemDoorbell<PROC>` as zero-size type with `AtomicWaker`. HSEM register access and IRQ handler registration.
 - **A-core (Linux, std):** `HsemDoorbell<PROC>` holds `Arc<tokio::sync::Notify>`. Exposes `.notifier()` for UIO IRQ loop integration.
 - **Channel validation:** `HsemChanValidate` for max 64 channels per core.
-- **Re-exports:** From `consortium-ipc-mem` and `consortium-ipc-uio` for convenience; from `consortium-runtime-rt` as `hsem` for backward compatibility.
+- **Re-exports:** From `consortium-ipc-transport-mem` and `consortium-ipc-transport-uio` for convenience; from `consortium-runtime-mcu` as `hsem` for backward compatibility.
 - **Platform support:** STM32MP2x and STM32MP25x SoCs
 - **Status:** Production-ready with test coverage
 
@@ -112,7 +112,7 @@ What remains is **hardware-specific glue** and the **application runtime layer**
 
 ### ✅ Completed: HSEM (Hardware Semaphore) for STM32MP2/STM32MP25
 
-HSEM is fully implemented in `consortium-ipc-driver-hsem` with:
+HSEM is fully implemented in `consortium-ipc-doorbell-hsem` with:
 - Bare-metal M-core support (no_std + AtomicWaker)
 - Linux A-core support (std + tokio::sync::Notify)
 - Channel validation and error handling (16 channels max)
@@ -121,7 +121,7 @@ HSEM is fully implemented in `consortium-ipc-driver-hsem` with:
 
 ### ✅ Completed: MU (Message Unit) for i.MX 9x Series
 
-MU is fully implemented in `consortium-ipc-driver-mu` with:
+MU is fully implemented in `consortium-ipc-doorbell-mu` with:
 - Bare-metal M-core support (no_std + 2× AtomicWaker for MU1/MU2)
 - Linux A-core support (std + tokio::sync::Notify)
 - Channel validation via `MuChanValidate` (8 channels across 2 MU instances; 0–1 reserved)
@@ -154,9 +154,9 @@ Existing implementations (`HsemDoorbell` and `MuDoorbell`) follow this structure
    - HSEM: Const generic `PROC: u8` for processor-specific interrupt lines
    - MU: Flexible base address configuration (no const generic needed)
 
-See `consortium-ipc-driver-hsem` and `consortium-ipc-driver-mu` for complete working examples.
+See `consortium-ipc-doorbell-hsem` and `consortium-ipc-doorbell-mu` for complete working examples.
 
-### Application Runtime Layer (`consortium-runtime-rt`)
+### Application Runtime Layer (`consortium-runtime-mcu`)
 
 **Status:** Stub, just a dummy `add()` function
 **Critical gaps:**
@@ -222,17 +222,20 @@ No current test harness for:
 | Name | Status | Description |
 |------|--------|-----------|
 | `consortium-ipc` | ✅ Core traits | Doorbell, Region, Transport, Channel, Codec |
-| `consortium-ipc-mem` | ✅ Bare-metal transport | MemTransport with generic doorbell/region |
-| `consortium-ipc-uio` | ✅ Linux UIO transport | UioDevice and UioChannel via Tokio |
-| `consortium-ipc-driver-hsem` | ✅ HSEM doorbell | Hardware Semaphore for STM32MP2/MP25 |
-| `consortium-ipc-driver-mu` | ✅ MU doorbell | Message Unit for i.MX 9x series |
+| `consortium-ipc-transport-mem` | ✅ Bare-metal transport | MemTransport with generic doorbell/region |
+| `consortium-ipc-transport-uio` | ✅ Linux UIO transport | UioDevice and UioChannel via Tokio |
+| `consortium-ipc-doorbell-hsem` | ✅ HSEM doorbell | Hardware Semaphore for STM32MP2/MP25 |
+| `consortium-ipc-doorbell-mu` | ✅ MU doorbell | Message Unit for i.MX 9x series |
 | `consortium-runtime-app` | 🟡 A-core runtime | RemoteProc sysfs wrapper (requires expansion) |
-| `consortium-runtime-rt` | ❌ M-core runtime | Stub (requires bootstrap + executor) |
+| `consortium-runtime-mcu` | ❌ M-core runtime | Stub (requires bootstrap + executor) |
 | `consortium-builder` | 🟡 Build system | Minimal (requires cross-compilation helpers) |
 | `consortium-common` | ✅ Configuration | Config, Chip, CortexMcuCore types |
 | `consortium-tee` | ✅ TEE support | TeeError, TeeResult types |
 | `consortium-tee-proc-macros` | ✅ TEE macros | tee_service!, #[tee_command] with advanced types |
 | `consortium-cli` | ❌ Debug tool | Stub (requires IPC monitoring) |
+| `consortium-hmi` | ❌ HMI library | Stub (web-based GUI integration) |
+| `consortium-ffi` | ❌ FFI bindings | Stub (cross-language interop) |
+| `consortium-ort` | ✅ ONNX Runtime | Wrapper for embedded ONNX model inference |
 
 ---
 
@@ -241,13 +244,16 @@ No current test harness for:
 ```
 Application (user code)
 ├── consortium-runtime-app
-│   ├── consortium-ipc-uio
-│   │   └── consortium-ipc (with std feature)
+│   ├── consortium-ipc-transport-uio
+│   │   ├── consortium-ipc (with std feature)
+│   │   └── consortium-ipc-doorbell-hsem / consortium-ipc-doorbell-mu
 │   └── consortium-tee (for CA-side calls)
 │
 └── Firmware (user code)
-    └── consortium-ipc-mem
-        └── consortium-ipc (with no_std)
+    └── consortium-runtime-mcu
+        └── consortium-ipc-transport-mem
+            ├── consortium-ipc (with no_std)
+            └── consortium-ipc-doorbell-hsem / consortium-ipc-doorbell-mu
 ```
 
 ---
@@ -260,8 +266,8 @@ Application (user code)
 | `consortium-ipc-mem` | ✅ Transport tests | Slot protocol, doorbell mocking |
 | `consortium-ipc-uio` | ✅ Descriptor parsing | Linux-only; no real UIO device tests |
 | `consortium-tee-proc-macros` | ✅ Macro expansion | Compile-time correctness |
-| `consortium-ipc-driver-hsem` | ✅ HSEM tests | Register access, async wakeup, channel validation |
-| `consortium-ipc-driver-mu` | ✅ Builds (no std + std) | Compiles on both no_std and std paths; ready for hardware tests |
+| `consortium-ipc-doorbell-hsem` | ✅ HSEM tests | Register access, async wakeup, channel validation |
+| `consortium-ipc-doorbell-mu` | ✅ Builds (no std + std) | Compiles on both no_std and std paths; ready for hardware tests |
 | Runtime (M-core) | ❌ None | Not implemented |
 | Runtime (A-core) | ⚠️ Partial | RemoteProc methods exist but not tested |
 | E2E (firmware ↔ app) | ❌ None | Would require actual hardware or simulation |
@@ -277,7 +283,7 @@ Application (user code)
    - Platform support for STM32MP2x and STM32MP25x
 
 ### Phase 1: M-Core & A-Core Runtime (using HSEM)
-1. **M-core bootstrap** (`consortium-runtime-rt/src/lib.rs`)
+1. **M-core bootstrap** (`consortium-runtime-mcu/src/lib.rs`)
    - Stack/BSS setup
    - Simple polling executor or RTIC integration
    - MemTransport initialization with HsemDoorbell
@@ -319,14 +325,12 @@ Application (user code)
 The CLAUDE.md file references outdated crate names and needs immediate updates:
 
 **Changes:**
-- `consortium-mem` → `consortium-ipc-mem`
-- `consortium-uio` → `consortium-ipc-uio`
-- `consortium-app` → `consortium-runtime-app`
-- `consortium-rt` → `consortium-runtime-rt`
-- Update test commands to match new names
-- Add note: "Hardware-specific Doorbell implementations (HSEM, MU) must be provided by platform"
-- Add note: "M-core and A-core runtimes are stubs; require implementation per platform"
-- Update section on "what's left": doorbells, runtimes, build pipeline
+Crate names have been updated throughout all docs:
+- `consortium-ipc-mem` → `consortium-ipc-transport-mem`
+- `consortium-ipc-uio` → `consortium-ipc-transport-uio`
+- `consortium-ipc-driver-hsem` → `consortium-ipc-doorbell-hsem`
+- `consortium-ipc-driver-mu` → `consortium-ipc-doorbell-mu`
+- `consortium-runtime-rt` → `consortium-runtime-mcu`
 
 ---
 
@@ -339,7 +343,7 @@ The CLAUDE.md file references outdated crate names and needs immediate updates:
 | UioTransport (Linux) | ✅ Done | — | Kernel UIO driver |
 | **Doorbell: HSEM (STM32MP2/MP25)** | ✅ Done | — | — |
 | **Doorbell: MU (i.MX 9x series)** | ✅ Done | — | — |
-| **M-core runtime + executor (STM32MP2)** | ❌ TODO | High | HSEM (available) |
+| **M-core runtime + executor (STM32MP2)** | ❌ TODO | High | `consortium-runtime-mcu` |
 | **A-core runtime + lifecycle (STM32MP2)** | ❌ TODO | High | RemoteProc + UIO expansion |
 | **Build pipeline (8-step)** | ❌ TODO | High | All prior phases |
 | TEE support (macros) | ✅ Done | — | — |
