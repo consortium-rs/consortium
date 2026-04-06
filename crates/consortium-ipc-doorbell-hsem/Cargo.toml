@@ -1,5 +1,5 @@
 [package]
-name = "consortium-ipc-driver-hsem"
+name = "consortium-ipc-doorbell-hsem"
 description = "HSEM (Hardware Semaphore) Doorbell driver for Consortium IPC"
 version.workspace = true
 edition.workspace = true
