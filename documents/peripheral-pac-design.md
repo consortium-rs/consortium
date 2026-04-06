@@ -9,9 +9,11 @@
 
 This document proposes a system for declaring peripheral ownership in `Consortium.toml` and automatically generating:
 
-1. **RIF/RIFSC security configuration** for STM32MP2x (or equivalent isolation units on i.MX 9x) in M-core secure firmware.
-2. **PAC peripheral objects** (`p.I2C1`, `p.SPI2`, …) for M-core firmware, exposed in `embedded-hal`-compatible format backed by `embassy-stm32` or `imxrt-hal`.
-3. **Device Tree Source (DTS) fragments** assigning the remaining peripherals to Linux or OP-TEE.
+1. **RIF/RIFSC security configuration** — derived entirely by the builder from the chip mapping already in `consortium-common`; not user-specified.
+2. **PAC peripheral objects** (`p.i2c1`, `p.spi2`, …) for M-core firmware, exposed in `embedded-hal`-compatible format backed by `embassy-stm32` or `imxrt-hal`.
+3. **Device Tree Source (DTS) fragments** assigning peripherals owned by `"linux"` or `"optee"` to their respective domains.
+
+RIF compartment IDs and DMA routing are derived automatically: the builder knows the chip, the chip mapping knows which CID each core occupies, and the DMA controllers on both STM32MP2x (RISAB) and i.MX 9x (TRDC) are RIF-aware — so claiming a peripheral implicitly covers its DMA access.
 
 The goal is that a developer declares intent once and the build system derives safe, non-overlapping peripheral access across all execution environments.
 
@@ -19,24 +21,48 @@ The goal is that a developer declares intent once and the build system derives s
 
 ## Motivation
 
-On a heterogeneous SoC such as the STM32MP257 (Cortex-A35 + Cortex-M33 + Cortex-M0+) or i.MX 93 (Cortex-A55 + Cortex-M33), each peripheral must be owned by exactly one execution domain:
+On a heterogeneous SoC such as the STM32MP257 (Cortex-A35 + Cortex-M33 + Cortex-M0+) or i.MX 94 (Cortex-A55 + 2× Cortex-M7 + Cortex-M33), each peripheral must be owned by exactly one execution domain:
 
 | Domain | Mechanism | Current approach |
 |--------|-----------|-----------------|
 | Linux (NS) | DTS `status = "okay"` | Manual |
 | OP-TEE (S) | DTS `secure-status = "okay"` | Manual |
-| M-core NS firmware | PAC + HAL + RIFSC | Manual |
-| M-core S firmware (TF-M) | PAC + HAL + RIFSC | Manual |
+| M-core NS firmware | PAC + HAL + RIFSC/TRDC | Manual |
+| M-core S firmware (TF-M) | PAC + HAL + RIFSC/TRDC | Manual |
 
-Today all four configurations are written by hand and must stay in sync. A mismatch causes silent mis-attribution of interrupts, broken DMA, or a security violation trap at runtime.
+Today all four configurations are written by hand and must stay in sync. A mismatch causes silent interrupt mis-attribution, broken DMA, or a security violation trap at runtime.
 
-Consortium.toml should become the single source of truth.
+`Consortium.toml` becomes the single source of truth.
 
 ---
 
 ## Consortium.toml Schema
 
-### Example
+Peripherals are declared as named subsections `[peripheral.<NAME>]`, where `<NAME>` is the peripheral identifier in lower-snake-case matching the chip's PAC (e.g. `i2c1`, `spi2`, `lptim1`). This mirrors TOML idioms like `[dependencies.<crate>]` and avoids the ordering noise of `[[peripherals]]` arrays.
+
+### Field reference
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `master` | string | yes | Who owns this peripheral: a core abbreviation (`"cm33"`, `"cm0p"`, `"cm7_0"`), `"linux"`, or `"optee"` |
+| `secure` | bool | when master is M-core or `"optee"` | `true` → secure-world (RIFSC SEC bit / TRDC); `false` → non-secure. Defaults to `false` for M-core, must be `true` for `"optee"` |
+
+No `rif_cid` — the builder derives each core's compartment ID from `Chip::programmable_rt_cores()` and `Chip::remoteproc_name()` in `consortium-common`. No `dma` — DMA is RIF-aware on both STM32MP2x (RISAB) and i.MX 9x (TRDC); assigning a peripheral automatically covers its DMA paths.
+
+### Core abbreviations
+
+`master` for M-core owners uses `CortexMcuCore::abbr()`:
+
+| Core | Single instance | Multiple instances (indexed) |
+|------|----------------|------------------------------|
+| Cortex-M0+ | `"cm0p"` | `"cm0p_0"`, `"cm0p_1"` |
+| Cortex-M33 | `"cm33"` | `"cm33_0"`, `"cm33_1"` |
+| Cortex-M7 | `"cm7"` | `"cm7_0"`, `"cm7_1"` |
+| Cortex-M4 | `"cm4"` | `"cm4_0"`, `"cm4_1"` |
+
+When a chip has only one instance of a core type, the plain abbreviation is used. When it has multiple (e.g. i.MX 94 with two Cortex-M7 cores), an underscore-index suffix disambiguates. The builder resolves these against `Chip::programmable_rt_cores()` to validate correctness.
+
+### Example — STM32MP257
 
 ```toml
 [general]
@@ -45,183 +71,168 @@ chip = "stm32mp257"
 [project]
 name = "my-app"
 
-# ── M-core firmware entries (existing) ────────────────────────────────────────
 [project.firmware.sensor_fw]
-core     = "CortexM33"
-index    = 0
-path     = "firmware/sensor"
+core  = "CortexM33"
+index = 0
+path  = "firmware/sensor"
 
 [project.firmware.motor_fw]
-core     = "CortexM0p"
-index    = 1
-path     = "firmware/motor"
+core  = "CortexM0p"
+index = 0
+path  = "firmware/motor"
 
-# ── Peripheral assignments (new) ──────────────────────────────────────────────
+# ── Peripheral assignments ─────────────────────────────────────────────────────
 
-[[peripherals]]
-name      = "I2C1"
-owner     = "CortexM33"          # firmware key or "linux" / "optee"
-security  = "non-secure"         # "secure" | "non-secure" | "secure-privileged"
-rif_cid   = 2                    # RIF Compartment ID (STM32MP2x only; omit for i.MX)
-dma       = ["GPDMA1_CH0"]       # optional: claim DMA channels alongside
+[peripheral.i2c1]
+master = "cm33"
+secure = false
 
-[[peripherals]]
-name      = "SPI2"
-owner     = "CortexM0p"
-security  = "non-secure"
-rif_cid   = 3
+[peripheral.lptim1]
+master = "cm33"
+secure = true          # claimed by the TF-M secure partition on M33
 
-[[peripherals]]
-name      = "UART4"
-owner     = "linux"
-# No rif_cid/security needed; will appear in DTS only
+[peripheral.spi2]
+master = "cm0p"
+secure = false
 
-[[peripherals]]
-name      = "I2C5"
-owner     = "optee"
-security  = "secure"
-rif_cid   = 1
+[peripheral.uart4]
+master = "linux"       # appears in DTS only; no RIFSC entry
 
-[[peripherals]]
-name      = "LPTIM1"
-owner     = "CortexM33"
-security  = "secure"             # TF-M / secure M-core partition
-rif_cid   = 2
+[peripheral.i2c5]
+master = "optee"
+secure = true          # enforced: optee always requires secure = true
 ```
 
-### Field reference
+### Example — i.MX 94 (dual Cortex-M7)
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `name` | string | yes | Peripheral name matching the chip's PAC (case-insensitive, e.g. `"I2C1"`) |
-| `owner` | string | yes | `"linux"`, `"optee"`, or the firmware key from `[project.firmware.*]` |
-| `security` | string | when owner is M-core | `"non-secure"` \| `"secure"` \| `"secure-privileged"` |
-| `rif_cid` | u8 | STM32MP2x only | RIF Compartment ID (1–7); must match the CID assigned to the owning core |
-| `dma` | [string] | no | DMA channel names to co-assign alongside the peripheral |
+```toml
+[general]
+chip = "imx94"
+
+[project.firmware.dsp_fw]
+core  = "CortexM7"
+index = 0
+path  = "firmware/dsp"
+
+[project.firmware.motor_fw]
+core  = "CortexM7"
+index = 1
+path  = "firmware/motor"
+
+[peripheral.lpi2c1]
+master = "cm7_0"       # first M7 (index 0)
+secure = false
+
+[peripheral.lpspi3]
+master = "cm7_1"       # second M7 (index 1)
+secure = false
+
+[peripheral.lpuart2]
+master = "linux"
+```
 
 ---
 
 ## Output Artifacts
 
-### 1. RIFSC / RIF Configuration (`consortium-pac` / `consortium-runtime-mcu`)
+### 1. RIFSC / TRDC Configuration (generated into `consortium-runtime-mcu`)
 
-For STM32MP2x, the RIFSC (Resource Isolation Framework Security Controller) controls per-peripheral:
-- `RIFSC_PRIVx` — privileged access bit
-- `RISFSC_SECx` — secure-world bit  
-- `RIFSC_CIDCFGRx` — compartment ID assignments
+The builder derives each core's RIF Compartment ID from `Chip::remoteproc_name()`, then emits a startup function. Users never write CIDs.
 
-The generator will emit a Rust init function (called from `consortium-runtime-mcu` startup):
+For STM32MP2x (RIFSC):
 
 ```rust
-// Generated: src/rif_config.rs
+// Generated: generated/rif_config.rs
 // DO NOT EDIT — regenerated by `consortium build`
 
 use crate::pac::RIFSC;
 
-pub fn configure_rifsc(rifsc: &mut RIFSC) {
-    // I2C1: owner=CortexM33, cid=2, non-secure
-    rifsc.privcfgr1().modify(|_, w| w.priv8().clear_bit());
+pub fn configure_rif(rifsc: &mut RIFSC) {
+    // i2c1: master=cm33 (CID=2), secure=false
     rifsc.seccfgr1().modify(|_, w| w.sec8().clear_bit());
     rifsc.risc_cidcfgr8().write(|w| unsafe {
         w.cfen().set_bit().scid().bits(2)
     });
 
-    // SPI2: owner=CortexM0p, cid=3, non-secure
-    rifsc.privcfgr1().modify(|_, w| w.priv15().clear_bit());
-    rifsc.seccfgr1().modify(|_, w| w.sec15().clear_bit());
-    rifsc.risc_cidcfgr15().write(|w| unsafe {
-        w.cfen().set_bit().scid().bits(3)
-    });
-
-    // LPTIM1: owner=CortexM33, cid=2, secure
-    rifsc.privcfgr5().modify(|_, w| w.priv40().clear_bit());
+    // lptim1: master=cm33 (CID=2), secure=true
     rifsc.seccfgr5().modify(|_, w| w.sec40().set_bit());
     rifsc.risc_cidcfgr40().write(|w| unsafe {
         w.cfen().set_bit().scid().bits(2)
     });
+
+    // spi2: master=cm0p (CID=3), secure=false
+    rifsc.seccfgr1().modify(|_, w| w.sec15().clear_bit());
+    rifsc.risc_cidcfgr15().write(|w| unsafe {
+        w.cfen().set_bit().scid().bits(3)
+    });
 }
 ```
 
-For i.MX 9x, the equivalent TRDC (Trusted Resource Domain Controller) configuration will be emitted instead.
+For i.MX 9x (TRDC), the equivalent domain controller registers are emitted instead.
 
-### 2. PAC Peripheral Tokens (`consortium-pac`)
+### 2. Per-Firmware PAC Wrapper (`generated/pac/<fw_key>/`)
 
-A new crate `consortium-pac` is generated per chip/config combination. It wraps the upstream PAC (e.g., `stm32mp257-pac` or `imxrt1060`) and exposes only the peripherals owned by each firmware target as a `Peripherals` struct:
+A thin generated crate per firmware entry exposes only the peripherals owned by that firmware as a `Peripherals` struct, wrapping `embassy-stm32` or `imxrt-hal` tokens. This gives the firmware typed, compile-time-verified access — it cannot reference a peripheral assigned to another core.
 
 ```rust
-// Generated for firmware/sensor (CortexM33)
-// consortium-pac/src/sensor_fw.rs
+// Generated: generated/pac/sensor_fw/src/lib.rs
+// Chip: stm32mp257 | Firmware: sensor_fw (CortexM33)
+// DO NOT EDIT — regenerated by `consortium build`
 
 pub struct Peripherals {
     pub i2c1:   embassy_stm32::peripherals::I2C1,
     pub lptim1: embassy_stm32::peripherals::LPTIM1,
-    // DMA channel claimed alongside I2C1:
-    pub gpdma1_ch0: embassy_stm32::peripherals::GPDMA1_CH0,
 }
 
 impl Peripherals {
     /// # Safety
-    /// Must be called exactly once, after `configure_rifsc()`.
+    /// Must be called exactly once, after `configure_rif()`.
     pub unsafe fn steal() -> Self {
         let p = embassy_stm32::Peripherals::steal();
-        Self {
-            i2c1:        p.I2C1,
-            lptim1:      p.LPTIM1,
-            gpdma1_ch0:  p.GPDMA1_CH0,
-        }
+        Self { i2c1: p.I2C1, lptim1: p.LPTIM1 }
     }
 }
 ```
 
-Access in firmware:
+Usage in firmware:
 
 ```rust
 #[embassy_executor::main]
 async fn main(_spawner: Spawner) {
-    consortium_runtime_mcu::init_rifsc();  // generated call
+    consortium_runtime_mcu::init();   // calls configure_rif() internally
 
     let p = unsafe { sensor_fw::Peripherals::steal() };
-
-    let mut i2c = I2c::new(
-        p.i2c1,
-        p.gpdma1_ch0,
-        Config::default(),
-    );
+    let mut i2c = I2c::new(p.i2c1, Config::default());
 
     loop {
         let mut buf = [0u8; 2];
         i2c.read(0x48, &mut buf).await.unwrap();
-        // ...
     }
 }
 ```
 
-For i.MX 9x the types are drawn from `imxrt-hal` instead of `embassy-stm32`.
+For i.MX 9x, types come from `imxrt-hal` instead of `embassy-stm32`.
 
-### 3. Device Tree Fragments
+### 3. Device Tree Fragments (`generated/dts/`)
 
-The generator appends `&fragment { status = "okay"; }` (or `secure-status`) stanzas to a base DTS for the peripherals assigned to Linux or OP-TEE.
-
-Example output for the config above:
+Only peripherals with `master = "linux"` or `master = "optee"` appear here.
 
 ```dts
-/* Generated: overlay/linux-peripherals.dtsi */
-/* DO NOT EDIT — regenerated by `consortium build` */
+/* Generated: generated/dts/linux-peripherals.dtsi */
+/* DO NOT EDIT — regenerated by `consortium build`  */
 
 &uart4 {
     status = "okay";
-    pinctrl-names = "default";
-    /* pinctrl left to base board file */
 };
 
-/* Generated: overlay/optee-peripherals.dtsi */
+/* Generated: generated/dts/optee-peripherals.dtsi */
 
 &i2c5 {
     secure-status = "okay";
 };
 ```
 
-These fragments are included by the top-level DTS via `#include`.
+Include these from the top-level board DTS via `#include`.
 
 ---
 
@@ -231,49 +242,143 @@ These fragments are included by the top-level DTS via `#include`.
 Consortium.toml
       │
       ▼
-consortium-common (parse + validate PeripheralEntry list)
+consortium-common
+  ├── parse [peripheral.*] → HashMap<String, PeripheralEntry>
+  ├── Chip::programmable_rt_cores()  — resolve master abbr → (CortexMcuCore, index)
+  └── validate_peripherals()         — run all rules, emit structured errors
       │
-      ├──▶ consortium-pac-gen  (new crate, build-time binary)
-      │          │
-      │          ├── rif_config.rs  ──▶ consortium-runtime-mcu (M-core startup)
-      │          ├── <fw_key>.rs    ──▶ consortium-pac/<fw_key>  (per-firmware PAC wrapper)
-      │          └── linux-peripherals.dtsi / optee-peripherals.dtsi
+      ├──▶ consortium-pac-gen  (build-time binary)
+      │       ├── derive CID from chip mapping        (no user input)
+      │       ├── derive DMA routing from chip DB     (no user input)
+      │       ├── emit generated/rif_config.rs
+      │       ├── emit generated/pac/<fw_key>/src/lib.rs  (per firmware)
+      │       └── emit generated/dts/{linux,optee}-peripherals.dtsi
       │
-      └──▶ consortium-builder (orchestrates code generation as a build step)
+      ├──▶ consortium-builder  (orchestrates pac-gen as build step 1)
+      │
+      └──▶ consortium-cli  (human-facing inspection & integration tooling)
 ```
 
 ### New crate: `consortium-pac-gen`
 
-A build-time binary (or `build.rs` helper library) that:
+A build-time binary (and library API consumed by `consortium-builder`) that:
 
 1. Reads `Consortium.toml` via `consortium-common`.
-2. Validates ownership uniqueness (no peripheral claimed by two owners).
-3. Validates that all referenced peripheral names exist in the chip's register map (using metadata from a chip-specific database, see below).
-4. Emits the three artifact types described above into `OUT_DIR` or a designated `generated/` directory.
+2. Resolves each `master` abbreviation to `(CortexMcuCore, index)` using `Chip::programmable_rt_cores()`.
+3. Derives the RIF Compartment ID per core from `Chip::remoteproc_name()`.
+4. Looks up each peripheral name in the chip database to get RIFSC/TRDC index, DTS node, and HAL type path.
+5. Emits the three artifact families into `generated/`.
 
 ### Chip peripheral database
 
-A lightweight JSON/TOML file per supported chip enumerating peripheral names, their RIFSC index, their DTS node name, and their HAL type path. Initially provided for:
+A TOML file per chip embedded via `include_str!` in `consortium-pac-gen/data/<chip>.toml`:
 
-- STM32MP257 (via `stm32mp-data` or extracted from CubeMX IP database)
-- i.MX 93 (via NXP SDK metadata or `imxrt-ral`)
+```toml
+# consortium-pac-gen/data/stm32mp257.toml
+[[peripheral]]
+name       = "i2c1"
+rifsc_idx  = 8
+dts_node   = "i2c1"
+hal_type   = "embassy_stm32::peripherals::I2C1"
 
-The database lives in `consortium-pac-gen/data/<chip>.toml` and is embedded at compile time via `include_str!`.
+[[peripheral]]
+name       = "lptim1"
+rifsc_idx  = 40
+dts_node   = "lptim1"
+hal_type   = "embassy_stm32::peripherals::LPTIM1"
+```
 
 ---
 
 ## Validation Rules
 
-The generator enforces at build time:
+All rules run inside `consortium-common`'s `Config::validate_peripherals()`, shared by both the build pipeline and the CLI:
 
-1. **Uniqueness:** Each peripheral has exactly one owner.
-2. **CID consistency:** All peripherals owned by the same firmware key use the same `rif_cid`.
-3. **Security consistency:** A peripheral marked `secure` cannot be owned by a Linux or non-secure firmware owner.
-4. **DMA co-ownership:** DMA channels claimed under `dma = [...]` must not be claimed by any other peripheral entry.
-5. **Name validity:** All names must exist in the chip database.
-6. **Core availability:** The owning firmware's `core` field must be compatible with the chip (e.g., a CortexM0p cannot exist on a chip that only has a CortexM33).
+1. **Uniqueness:** Each `[peripheral.*]` key is unique (TOML guarantees this syntactically; validated semantically against the chip DB).
+2. **Name validity:** All keys must exist in the chip peripheral database for the configured `chip`.
+3. **Master validity:** Each `master` value is either `"linux"`, `"optee"`, or a core abbreviation (with optional index) present in `Chip::programmable_rt_cores()`.
+4. **Security consistency:** `secure = false` is rejected for `"optee"` masters; `secure = true` is rejected for `"linux"` masters.
+5. **Core availability:** A `master` abbreviation must correspond to a core that actually exists on the chip (e.g. `"cm0p"` is invalid on i.MX 94).
 
-Errors are emitted as `cargo:error=` messages and abort the build with a human-readable description.
+Errors are emitted as `cargo:error=` messages during build and as structured output from `consortium peripheral validate`.
+
+---
+
+## CLI Integration (`consortium-cli`)
+
+`consortium-cli` gains a `peripheral` subcommand group. All subcommands read `Consortium.toml` from the working directory (or `--config <path>`). These are read-only inspection and validation tools; no code is generated from the CLI.
+
+### `consortium peripheral list`
+
+```
+$ consortium peripheral list
+
+Peripheral  Master   Secure  Domain
+──────────  ───────  ──────  ──────────
+i2c1        cm33     no      M-core (sensor_fw)
+lptim1      cm33     yes     M-core/S (sensor_fw)
+spi2        cm0p     no      M-core (motor_fw)
+uart4       linux    —       Linux DTS
+i2c5        optee    yes     OP-TEE DTS
+
+5 peripherals — 3 M-core, 1 Linux, 1 OP-TEE
+```
+
+`--json` emits machine-readable output for IDE integration.
+
+### `consortium peripheral show <name>`
+
+```
+$ consortium peripheral show i2c1
+
+[peripheral.i2c1]
+  Master     : cm33  → sensor_fw (CortexM33, index 0)
+  Secure     : false
+  RIF CID    : 2  (derived from chip mapping)
+
+Chip database (stm32mp257):
+  RIFSC index : 8
+  DTS node    : &i2c1
+  HAL type    : embassy_stm32::peripherals::I2C1
+  DMA         : covered by RISAB (RIF-aware, no explicit config needed)
+
+Generated artifacts:
+  rif_config.rs : rifsc.risc_cidcfgr8() → cid=2, sec=0
+  PAC struct    : generated/pac/sensor_fw/src/lib.rs :: Peripherals.i2c1
+  DTS           : (not emitted — M-core peripheral)
+```
+
+### `consortium peripheral validate`
+
+```
+$ consortium peripheral validate
+
+✓ All peripheral names exist in chip database (stm32mp257)
+✓ All master values resolve to known cores or linux/optee
+✓ Security consistency: no conflicts
+✓ Core availability: cm33 and cm0p both present on stm32mp257
+
+Validation passed. 5 peripherals, 0 errors.
+```
+
+Exits non-zero on failure with one line per error. Suitable for CI pre-build checks.
+
+### `consortium peripheral chip-info [--unassigned]`
+
+```
+$ consortium peripheral chip-info --unassigned
+
+Chip: stm32mp257
+
+RIFSC  Peripheral  Status
+─────  ──────────  ──────────────
+0      tim1        (unassigned)
+1      tim2        (unassigned)
+...
+(137 unassigned peripherals shown; use without --unassigned to see all)
+```
+
+Useful when starting a project to see what peripherals are available for assignment.
 
 ---
 
@@ -281,29 +386,20 @@ Errors are emitted as `cargo:error=` messages and abort the build with a human-r
 
 ### STM32MP2x — embassy-stm32
 
-`embassy-stm32` already supports STM32MP2x and provides `embassy_executor`, peripheral types, and async HAL drivers. The generated `Peripherals::steal()` calls `embassy_stm32::Peripherals::steal()` and destructures only the owned subset.
-
-Dependency in firmware's `Cargo.toml`:
+The generated `Peripherals::steal()` destructures `embassy_stm32::Peripherals::steal()` into only the owned subset. The firmware's `Cargo.toml` only needs:
 
 ```toml
 [dependencies]
-embassy-executor   = { version = "0.7", features = ["arch-cortex-m", "executor-thread"] }
-embassy-stm32      = { version = "0.2", features = ["stm32mp257fai", "time-driver-any"] }
-consortium-pac     = { path = "../../generated/pac/sensor_fw" }
+embassy-executor = { version = "0.7", features = ["arch-cortex-m", "executor-thread"] }
+embassy-stm32    = { version = "0.2", features = ["stm32mp257fai", "time-driver-any"] }
+# pac wrapper is path-referenced from generated/
 ```
+
+The correct `embassy-stm32` chip feature (`stm32mp257fai`, etc.) is propagated automatically from `Chip` enum via `consortium-builder`.
 
 ### i.MX 9x — imxrt-hal
 
-`imxrt-hal` (and `imxrt-ral`) provide register-level and HAL-level access for NXP i.MX RT/9x series. The generated struct wraps `imxrt_hal::instance::*` tokens.
-
-Dependency in firmware's `Cargo.toml`:
-
-```toml
-[dependencies]
-imxrt-hal  = { version = "0.5", features = ["imxrt93"] }
-imxrt-ral  = { version = "0.5", features = ["imxrt93"] }
-consortium-pac = { path = "../../generated/pac/sensor_fw" }
-```
+The generated struct wraps `imxrt_hal::instance::*` tokens. `imxrt-ral` instance stealing follows the same pattern as embassy-stm32's `Peripherals::steal()`.
 
 ---
 
@@ -311,59 +407,62 @@ consortium-pac = { path = "../../generated/pac/sensor_fw" }
 
 ### Phase 1 — Schema & Validation (1 week)
 
-- [ ] Add `PeripheralEntry` struct to `consortium-common`.
-- [ ] Parse `[[peripherals]]` table in `Config::from_toml()`.
-- [ ] Implement validation rules 1–6 in `Config::validate_peripherals()`.
-- [ ] Unit tests for each error case.
+- [ ] Add `PeripheralEntry { master: String, secure: Option<bool> }` to `consortium-common`.
+- [ ] Parse `[peripheral.*]` as `HashMap<String, PeripheralEntry>` in `Config::from_toml()`.
+- [ ] Implement `Config::validate_peripherals()` with rules 1–5.
+- [ ] Extend `CortexMcuCore::from_abbr()` to handle indexed variants (`"cm7_0"`, `"cm7_1"`).
+- [ ] Unit tests for each validation rule and index-suffix resolution.
 
 ### Phase 2 — Chip Database (1 week)
 
-- [ ] Define `ChipPeripheralDb` schema (TOML, embedded).
-- [ ] Populate STM32MP257 database (RIFSC index, DTS node, HAL type path, DMA channels).
-- [ ] Populate i.MX 93 database (TRDC index, DTS node, HAL type path).
-- [ ] CLI helper: `consortium list-peripherals --chip stm32mp257` to dump DB.
+- [ ] Define `ChipPeripheralDb` + `ChipPeripheralEntry` structs (TOML, embedded in `consortium-pac-gen`).
+- [ ] Populate STM32MP257 database (RIFSC index, DTS node name, HAL type path).
+- [ ] Populate i.MX 93 and i.MX 94 databases (TRDC domain index, DTS node, HAL type path).
+- [ ] Expose DB lookup via `consortium-common` API so CLI and pac-gen share it.
 
-### Phase 3 — Code Generation (2 weeks)
+### Phase 3 — CLI Subcommands (1 week)
 
-- [ ] Create `consortium-pac-gen` crate (binary + library API).
-- [ ] Implement RIFSC config emitter (STM32MP2x path).
-- [ ] Implement TRDC config emitter (i.MX 9x path).
-- [ ] Implement per-firmware PAC wrapper emitter.
-- [ ] Implement DTS fragment emitter (linux + optee overlays).
-- [ ] Wire into `consortium-builder` as a pre-build step.
+- [ ] Add `peripheral` subcommand group to `consortium-cli` (using `clap`).
+- [ ] Implement `list`, `show`, `validate`, `chip-info` with `--json` and `--unassigned` flags.
+- [ ] Test with STM32MP257 and i.MX 94 fixture configs.
 
-### Phase 4 — Runtime Integration (1 week)
+### Phase 4 — Code Generation (2 weeks)
 
-- [ ] `consortium-runtime-mcu`: call generated `init_rifsc()` / `init_trdc()` during startup.
-- [ ] Example firmware using generated `Peripherals` struct with embassy-stm32.
-- [ ] Example firmware using generated `Peripherals` struct with imxrt-hal.
-- [ ] Integration test: build full config, verify generated files compile.
+- [ ] Create `consortium-pac-gen` crate (binary + library).
+- [ ] Implement CID derivation from `Chip::remoteproc_name()`.
+- [ ] Implement RIFSC emitter (STM32MP2x).
+- [ ] Implement TRDC emitter (i.MX 9x).
+- [ ] Implement per-firmware `Peripherals` struct emitter (embassy-stm32 / imxrt-hal).
+- [ ] Implement DTS fragment emitter.
+- [ ] Wire into `consortium-builder` as build pipeline step 1.
 
-### Phase 5 — DTS Integration (1 week)
+### Phase 5 — Runtime Integration (1 week)
+
+- [ ] `consortium-runtime-mcu`: call generated `configure_rif()` from `init()`.
+- [ ] Example firmware (STM32MP257) using generated `Peripherals` with embassy-stm32.
+- [ ] Example firmware (i.MX 94) using generated `Peripherals` with imxrt-hal.
+- [ ] Integration test: build full config, verify generated files compile for target.
+
+### Phase 6 — DTS Integration (1 week)
 
 - [ ] Hook DTS fragment generation into `consortium-builder` build pipeline step 1.
-- [ ] Verify DTS overlays compile with `dtc`.
-- [ ] Document how to include overlays in the base board DTS.
+- [ ] Verify generated overlays compile with `dtc`.
+- [ ] Document how to `#include` overlays in the base board DTS.
 
 ---
 
 ## Open Questions
 
-1. **Pin multiplexing (pinctrl):** Should Consortium.toml also declare pin assignments so that DTS `pinctrl` nodes can be generated? This is a significant scope increase but would eliminate another manual sync point.
-
-2. **Clock configuration:** Peripherals often require specific clock sources to be enabled. Should the generator also emit RCC/CCM clock enable calls?
-
-3. **Interrupt routing:** On STM32MP2x, EXTI and NVIC routing for M-core peripherals must be configured. Should this be part of the generated init code?
-
-4. **Version-locked chip databases:** The peripheral DB must match the exact silicon revision. How do we handle multi-revision chips (e.g., STM32MP257 rev A vs rev B)?
-
-5. **embassy-stm32 feature alignment:** `embassy-stm32` requires a feature flag per chip variant. The build system must propagate the correct feature from `Chip` enum to the downstream crate.
+1. **Pin multiplexing (pinctrl):** Should `Consortium.toml` also declare pin assignments? Eliminates another manual sync point but is a significant scope increase.
+2. **Clock configuration:** Peripherals require specific clock sources. Should `configure_rif()` also emit RCC/CCM clock enable calls, or is that left to the firmware?
+3. **Interrupt routing:** On STM32MP2x, NVIC and EXTI routing for M-core must be configured. In scope for generated init code?
+4. **Silicon revisions:** The peripheral DB must match the exact die revision. Strategy TBD.
 
 ---
 
 ## Non-Goals
 
-- This proposal does **not** aim to replace `embassy-stm32` or `imxrt-hal`; it wraps them.
-- This proposal does **not** generate full DTS board files; it generates peripheral assignment overlays that include into an existing board DTS.
-- This proposal does **not** handle clock tree configuration in this iteration (see open questions).
-- This proposal does **not** support arbitration of shared peripherals (e.g., a bus shared between cores at runtime); each peripheral must have a single static owner.
+- Does **not** replace `embassy-stm32` or `imxrt-hal`; wraps them.
+- Does **not** generate full DTS board files; generates peripheral assignment overlays only.
+- Does **not** handle clock tree configuration (see open questions).
+- Does **not** support shared peripherals — each peripheral has exactly one static owner.
