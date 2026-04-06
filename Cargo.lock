@@ -95,7 +95,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-ipc-driver-hsem"
+name = "consortium-ipc-doorbell-hsem"
 version = "0.1.0"
 dependencies = [
  "atomic-waker",
@@ -104,7 +104,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-ipc-driver-mu"
+name = "consortium-ipc-doorbell-mu"
 version = "0.1.0"
 dependencies = [
  "atomic-waker",
@@ -113,19 +113,17 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-ipc-mem"
+name = "consortium-ipc-transport-mem"
 version = "0.1.0"
 dependencies = [
  "consortium-ipc",
- "consortium-ipc-driver-hsem",
 ]
 
 [[package]]
-name = "consortium-ipc-uio"
+name = "consortium-ipc-transport-uio"
 version = "0.1.0"
 dependencies = [
  "consortium-ipc",
- "consortium-ipc-driver-hsem",
  "pin-project",
  "thiserror 2.0.18",
  "tokio",
@@ -146,21 +144,21 @@ dependencies = [
  "consortium-ffi",
  "consortium-hmi",
  "consortium-ipc",
- "consortium-ipc-driver-hsem",
- "consortium-ipc-driver-mu",
- "consortium-ipc-uio",
+ "consortium-ipc-doorbell-hsem",
+ "consortium-ipc-doorbell-mu",
+ "consortium-ipc-transport-uio",
  "consortium-ort",
  "consortium-tee",
 ]
 
 [[package]]
-name = "consortium-runtime-rt"
+name = "consortium-runtime-mcu"
 version = "0.1.0"
 dependencies = [
  "consortium-ipc",
- "consortium-ipc-driver-hsem",
- "consortium-ipc-driver-mu",
- "consortium-ipc-mem",
+ "consortium-ipc-doorbell-hsem",
+ "consortium-ipc-doorbell-mu",
+ "consortium-ipc-transport-mem",
 ]
 
 [[package]]

@@ -20,7 +20,6 @@ use tokio::{io::unix::AsyncFd, sync::Notify};
 use uio::UioError;
 
 use consortium_ipc::{chan::Chan, transport::Transport};
-pub use consortium_ipc_driver_hsem::{HsemChanValidate, HsemDoorbell, HsemError};
 pub use descriptor::{DescState, Descriptor, DescriptorError};
 use pin_project::pin_project;
 

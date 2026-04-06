@@ -1,9 +1,8 @@
 [package]
-name = "consortium-ipc-mem"
+name = "consortium-ipc-transport-mem"
 description = "Bare-metal memory management-based IPC transport for Consortium"
 version.workspace = true
 edition.workspace = true
 
 [dependencies]
 consortium-ipc = { path = "../consortium-ipc" }
-consortium-ipc-driver-hsem = { path = "../consortium-ipc-driver-hsem" }

@@ -2,10 +2,11 @@
 members = [
   "crates/consortium-ipc",
   "crates/consortium-cli",
-  "crates/consortium-ipc-uio",
-  "crates/consortium-ipc-driver-hsem",
-  "crates/consortium-ipc-mem",
-  "crates/consortium-runtime-rt",
+  "crates/consortium-ipc-transport-uio",
+  "crates/consortium-ipc-transport-mem",
+  "crates/consortium-ipc-doorbell-hsem",
+  "crates/consortium-ipc-doorbell-mu",
+  "crates/consortium-runtime-mcu",
   "crates/consortium-runtime-app",
   "crates/consortium-builder",
   "crates/consortium-common",
@@ -14,7 +15,6 @@ members = [
   "crates/consortium-ffi",
   "crates/consortium-hmi",
   "crates/consortium-ort",
-  "crates/consortium-ipc-driver-mu",
 ]
 resolver = "2"
 
