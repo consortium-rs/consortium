@@ -1,6 +1,6 @@
 # HSEM vs MU — Inconsistencies & Resolution
 
-| Aspect | HSEM | MU | How Resolved |
+| Aspect | HSEM | MU (v1) | How Resolved |
 |--------|------|----|--------------|
 | **Signal mechanism** | 1-step read-lock on semaphore (stateful) | Write 1 to TRn (data transfer) | `ring()` uses `write_volatile(1)` instead of `read_lock()` |
 | **ring() guard** | LOCKID ownership check (MASTERID) | TSR bit set (TRn empty) | `tx_empty()` replaces `read_lock()` + LOCKID comparison |
