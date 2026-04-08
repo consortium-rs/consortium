@@ -44,6 +44,7 @@ This is a Rust workspace providing an async abstraction for inter-processor comm
 - **`consortium-ipc-transport-uio`** — Linux UIO transport (`/dev/uioN`). Linux-only, async via Tokio. `UioDevice::open()` mmaps shared memory and spawns background interrupt handler. Re-exports HSEM doorbell via `consortium-ipc-doorbell-hsem`.
 - **`consortium-ipc-doorbell-hsem`** — Hardware Semaphore (HSEM) doorbell for STM32MP2/STM32MP25. Supports both no_std (M-core with `AtomicWaker` + HSEM_IRQHandler) and std (A-core with `tokio::sync::Notify`). Implements `Doorbell` trait and `HsemChanValidate`.
 - **`consortium-ipc-doorbell-mu`** — Message Unit (MU) doorbell for i.MX 9x series. Supports both no_std and std paths with two independent IRQ handlers (MU1/MU2). Implements `Doorbell` trait and `MuChanValidate`.
+- **`consortium-ipc-doorbell-mu-v2`** — Message Unit (MU) V2 doorbell for i.MX 94/95 series, which differs from i.MX 93 in register layout and its mechanism. In V2 MU, it has GCR/GSR registers that can implement doorbells more straightforwardly without relying on the destructive read behavior of RRn. This crate is designed to support both i.MX 94 and 95, which share the same MU design.
 
 **Configuration & Build (partial):**
 - **`consortium-common`** — Shared configuration types: `Config`, `Chip` enum, `CortexMcuCore` enum, chip-to-core mappings. Enums for STM32MP2x and i.MX 9x families.
@@ -166,7 +167,7 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 
 **Platform support:** STM32MP2x and STM32MP25x SoCs.
 
-### ✅ Completed: MU (Message Unit)
+### ✅ Completed: MU (Message Unit) V1
 
 **Status:** Fully implemented in `consortium-ipc-doorbell-mu`
 
@@ -177,7 +178,7 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 - **Multi-instance support:** Designed for up to 2 MU instances (MU1, MU2) with flexible base address configuration.
 - **No const generic** for side/processor: Determined by `std` feature flag and base address configuration.
 
-**Platform support:** i.MX 93, i.MX 95, and other NXP i.MX 9x SoCs.
+**Platform support:** i.MX 93, i.MX 8M Plus, and other i.MX series with the same MU design.
 
 **Key differences from HSEM:**
 - **Signal mechanism:** Writes TX register (data transfer) instead of semaphore lock
@@ -185,7 +186,18 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 - **IRQ handlers:** Two independent handlers (MU1/MU2) instead of one per processor
 - **Channel encoding:** Channels 0–7 map across 2 instances with 4 TX/RX pairs each
 
-**Platform support:** i.MX 9x series (i.MX 93, i.MX 95, etc.).
+**Platform support:** i.MX 9x series (i.MX 93, i.MX 8M Plus, etc.)
+
+### ⚠️ Implementing: Messaging Unit (MU) V2 for i.MX 94/95
+
+**Status:** Stub in `consortium-ipc-doorbell-mu-v2`. The MU V2 design in i.MX 94/95 differs significantly from the V1 design in i.MX 93, with a more flexible register layout and additional features like GCR/GSR that can be used for doorbell functionality without relying on destructive reads. This crate will need to be designed to support both i.MX 94 and 95, which share the same MU design.
+
+**Features**:
+- **M-core (bare-metal, no_std):** Zero-size type using `AtomicWaker` for async waiting. Rings MU TX registers and registers MU1/MU2 IRQ handlers. Two separate handler functions for two MU instances.
+- **A-core (Linux, std):** `MuDoorbell` holds base addresses and `Arc<tokio::sync::Notify>` for wake coordination. Exposes `.notifier()` method for external IRQ loop integration.
+- **Validates channels** via `MuChanValidate` (max 8 channels across 8 MU instances; channels 0–1 reserved).
+- **Multi-instance support:** Designed for up to 8 MU instances (MU1, MU2, MU3, ..., MU8) with flexible base address configuration.
+- **No const generic** for side/processor: Determined by `std` feature flag and base address configuration.
 
 To add a new doorbell:
 1. Create a new crate `consortium-ipc-doorbell-<name>` (or add module to existing crate)
