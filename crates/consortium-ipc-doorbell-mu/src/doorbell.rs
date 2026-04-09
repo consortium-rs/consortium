@@ -9,11 +9,11 @@ use consortium_ipc::{Chan, Doorbell};
 use crate::{
     chan::{MU_CHAN_COUNT, MU_INSTANCE_COUNT, MuChanInfo},
     error::MuError,
-    registers::mua,
+    registers::side,
 };
 
 // Default (no_std / bare-metal) on i.MX93 uses compile-time base addresses.
-#[cfg(all(not(feature = "std"), feature = "imx93"))]
+#[cfg(all(not(feature = "std")))]
 use crate::registers::MU_BASES;
 
 // ── Struct ────────────────────────────────────────────────────────────────────
@@ -72,31 +72,31 @@ impl MuDoorbell {
     /// Address of TRn (Transmit Register n).
     #[inline]
     fn tr_addr(base: u32, reg_idx: u8) -> *mut u32 {
-        (base + mua::TR0 + reg_idx as u32 * 4) as *mut u32
+        (base + side::TR0 + reg_idx as u32 * 4) as *mut u32
     }
 
     /// Address of RRn (Receive Register n).
     #[inline]
     fn rr_addr(base: u32, reg_idx: u8) -> *mut u32 {
-        (base + mua::RR0 + reg_idx as u32 * 4) as *mut u32
+        (base + side::RR0 + reg_idx as u32 * 4) as *mut u32
     }
 
     /// Address of TSR (TX Status Register).
     #[inline]
     fn tsr_addr(base: u32) -> *const u32 {
-        (base + mua::TSR) as *const u32
+        (base + side::TSR) as *const u32
     }
 
     /// Address of RSR (RX Status Register).
     #[inline]
     fn rsr_addr(base: u32) -> *const u32 {
-        (base + mua::RSR) as *const u32
+        (base + side::RSR) as *const u32
     }
 
     /// Address of RCR (RX Control Register — per-channel RX interrupt enable).
     #[inline]
     fn rcr_addr(base: u32) -> *mut u32 {
-        (base + mua::RCR) as *mut u32
+        (base + side::RCR) as *mut u32
     }
 
     /// Returns `true` if TRn is empty (TSR bit `reg_idx` set — ready to send).
@@ -156,7 +156,7 @@ impl MuDoorbell {
 /// `Default` is only available for `imx93` (no_std) where the physical base
 /// addresses are known at compile time.  For other chips, construct explicitly
 /// with `MuDoorbell::new(bases)`.
-#[cfg(all(not(feature = "std"), feature = "imx93"))]
+#[cfg(not(feature = "std"))]
 impl Default for MuDoorbell {
     fn default() -> Self {
         Self::new(MU_BASES)
