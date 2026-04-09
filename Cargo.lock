@@ -113,15 +113,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-ipc-doorbell-mu-v2"
-version = "0.1.0"
-dependencies = [
- "atomic-waker",
- "consortium-ipc",
- "tokio",
-]
-
-[[package]]
 name = "consortium-ipc-transport-mem"
 version = "0.1.0"
 dependencies = [

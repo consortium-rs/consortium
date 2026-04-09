@@ -15,7 +15,6 @@ members = [
   "crates/consortium-ffi",
   "crates/consortium-hmi",
   "crates/consortium-ort",
-  "crates/consortium-ipc-doorbell-mu-v2",
 ]
 resolver = "2"
 

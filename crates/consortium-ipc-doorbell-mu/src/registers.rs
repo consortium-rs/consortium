@@ -11,16 +11,43 @@
 // the virtual addresses returned by mmap to `MuDoorbell::new()`.
 // ============================================================================
 
-/// Physical base addresses for i.MX 93 / i.MX 8M Plus MU instances (MUA side).
-#[cfg(feature = "imx93")]
-pub const MU1_BASE: u32 = 0x4422_0000;
-#[cfg(feature = "imx93")]
-pub const MU2_BASE: u32 = 0x4243_0000;
+/// Physical base addresses for i.MX 95 MU instances (MUA side).
+#[cfg(all(feature = "imx95", feature = "mua"))]
+pub const MU_BASES: [u32; crate::chan::MU_INSTANCE_COUNT] = [
+    0x4422_0000, // MU1
+    0x445B_0000, // MU2
+    0x445D_0000, // MU3
+    0x445F_0000, // MU4
+    0x4461_0000, // MU5
+    0x4463_0000, // MU6
+    0x4243_0000, // MU7
+    0x4273_0000, // MU8
+];
 
-/// Convenience array of all MU base addresses for i.MX 93, ordered by
-/// instance index.  Suitable for use with `MuDoorbell::new()` on bare-metal.
-#[cfg(feature = "imx93")]
-pub const MU_BASES: [u32; crate::chan::MU_INSTANCE_COUNT] = [MU1_BASE, MU2_BASE];
+/// Physical base addresses for i.MX 93 MU instances (MUA side).
+#[cfg(all(feature = "imx93", feature = "mua"))]
+pub const MU_BASES: [u32; crate::chan::MU_INSTANCE_COUNT] = [
+    0x4422_0000, // MU1
+    0x4243_0000, // MU2
+];
+
+#[cfg(all(feature = "imx95", feature = "mub"))]
+pub const MU_BASES: [u32; crate::chan::MU_INSTANCE_COUNT] = [
+    0x4423_0000, // MU1
+    0x445C_0000, // MU2
+    0x445E_0000, // MU3
+    0x4460_0000, // MU4
+    0x4462_0000, // MU5
+    0x4464_0000, // MU6
+    0x4244_0000, // MU7
+    0x4274_0000, // MU8
+];
+
+#[cfg(all(feature = "imx93", feature = "mub"))]
+pub const MU_BASES: [u32; crate::chan::MU_INSTANCE_COUNT] = [
+    0x4423_0000, // MU1
+    0x4244_0000, // MU2
+];
 
 // i.MX 95 has 8 MU instances.  Physical base addresses must be taken from the
 // i.MX 95 Reference Manual and supplied by the caller via `MuDoorbell::new()`.
@@ -30,6 +57,7 @@ pub const MU_BASES: [u32; crate::chan::MU_INSTANCE_COUNT] = [MU1_BASE, MU2_BASE]
 // ============================================================================
 // MU Side A (MUA) Registers (Relative Offsets)
 // ============================================================================
+#[cfg(feature = "mua")]
 pub mod mua {
     // Version ID Register
     pub const VER: u32 = 0x000;
@@ -45,6 +73,9 @@ pub mod mua {
     pub const CIER0: u32 = 0x014;
     // Core Sticky Status 0 Register
     pub const CSSR0: u32 = 0x018;
+    // Core Status 0 Register
+    #[cfg(feature = "imx95")]
+    pub const CSR0: u32 = 0x01C;
 
     // Flag Control Register
     pub const FCR: u32 = 0x100;
@@ -106,6 +137,7 @@ pub mod mua {
 // ============================================================================
 // MU Side B (MUB) Registers (Relative Offsets)
 // ============================================================================
+#[cfg(feature = "mub")]
 pub mod mub {
     // Version ID Register
     pub const VER: u32 = 0x000;
@@ -178,6 +210,11 @@ pub mod mub {
         pub const MU_BOOT_MASK: u32 = 0x3 << 5;
     }
 }
+
+#[cfg(feature = "mua")]
+pub use self::mua as side;
+#[cfg(feature = "mub")]
+pub use self::mub as side;
 
 // ============================================================================
 // Reset Values (TRM Verified)
