@@ -9,8 +9,11 @@ use consortium_ipc::{Chan, Doorbell};
 use crate::{
     chan::{MU_CHAN_COUNT, MuChanInfo},
     error::MuError,
-    registers::{MU1_BASE, MU2_BASE, mua},
+    registers::mua,
 };
+// Physical-address constants are only needed by the no_std Default impl.
+#[cfg(not(feature = "std"))]
+use crate::registers::{MU1_BASE, MU2_BASE};
 
 // ── Struct ────────────────────────────────────────────────────────────────────
 
@@ -339,18 +342,13 @@ pub extern "C" fn MU2_IRQHandler() {
 // ── std (A-core / Linux) ──────────────────────────────────────────────────────
 
 #[cfg(feature = "std")]
-impl Default for MuDoorbell {
-    fn default() -> Self {
-        Self::new(MU1_BASE, MU2_BASE)
-    }
-}
-
-#[cfg(feature = "std")]
 impl MuDoorbell {
     /// Create a doorbell with the given MU instance base addresses.
     ///
-    /// On A-core (Linux), pass the **MUA** (Side A) base addresses as mapped
-    /// by the UIO driver (typically via `mmap` of the MU peripheral resource).
+    /// On A-core (Linux), `mu1_base` and `mu2_base` must be the **virtual**
+    /// base addresses returned by `mmap` for each MU instance (e.g. via a UIO
+    /// resource or `/dev/mem`).  Passing raw physical addresses here is
+    /// **undefined behaviour** on Linux.
     pub fn new(mu1_base: u32, mu2_base: u32) -> Self {
         Self {
             base_addrs: [mu1_base, mu2_base],
