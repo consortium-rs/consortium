@@ -6,14 +6,14 @@ use core::{
 
 use consortium_ipc::{Chan, Doorbell};
 
-use crate::{
-    error::HsemError,
-    registers::{
-        interrupt_nonsecure,
-        semaphore_r::{self, fields as r_fields},
-        semaphore_rlr,
-    },
-};
+use crate::error::HsemError;
+use crate::registers::semaphore_r::fields as r_fields;
+
+#[cfg(not(feature = "std"))]
+use crate::registers::{interrupt_nonsecure, semaphore_r, semaphore_rlr};
+
+// The std path computes all offsets inline from self.base; it does not need
+// the physical-address constants from the registers module.
 
 // ── Struct definition ────────────────────────────────────────────────────────
 
@@ -25,20 +25,29 @@ use crate::{
 ///   - 3 = C3
 ///
 /// Without the `std` feature (M-core/bare-metal): uses `AtomicWaker` and the
-/// `HSEM_IRQHandler` interrupt vector.
+/// `HSEM_IRQHandler` interrupt vector.  Register addresses are resolved at
+/// compile time from the constants in [`crate::registers`].
 ///
-/// With the `std` feature (A-core/Linux): holds a `tokio::sync::Notify` that
-/// external code (e.g. the UIO IRQ loop) must call `notify_waiters()` on when
-/// the HSEM interrupt fires.  Obtain the `Arc<Notify>` via [`notifier()`].
+/// With the `std` feature (A-core/Linux): the HSEM peripheral registers must
+/// be mapped into the process's virtual address space before constructing this
+/// type (e.g. via `/dev/mem` or a UIO resource).  Pass the resulting virtual
+/// base address to [`new`].  Holds a `tokio::sync::Notify` that external code
+/// (e.g. the UIO IRQ loop) must call `notify_waiters()` on when the HSEM
+/// interrupt fires; obtain the `Arc<Notify>` via [`notifier()`].
 ///
+/// [`new`]: HsemDoorbell::new
 /// [`notifier()`]: HsemDoorbell::notifier
 pub struct HsemDoorbell<const PROC: u8> {
     #[cfg(feature = "std")]
     notify: std::sync::Arc<tokio::sync::Notify>,
+    /// Virtual base address of the mmap'd HSEM peripheral (std/A-core only).
+    #[cfg(feature = "std")]
+    base: usize,
 }
 
-// ── Shared low-level register accessors ─────────────────────────────────────
+// ── Register helpers — no_std (compile-time constants) ───────────────────────
 
+#[cfg(not(feature = "std"))]
 impl<const PROC: u8> HsemDoorbell<PROC> {
     #[inline]
     fn rx_addr(sem: u8) -> *mut u32 {
@@ -50,15 +59,12 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
         (semaphore_rlr::HSEM_RLR0 + sem as u32 * 4) as *const u32
     }
 
-    /// Read the raw value of HSEM_Rx.
     #[inline]
     unsafe fn read_rx(sem: u8) -> u32 {
         // SAFETY: caller must ensure sem is valid and access is hardware-synchronized.
         unsafe { Self::rx_addr(sem).read_volatile() }
     }
 
-    /// Attempt a 1-step read lock via HSEM_RLRx. Returns the register value.
-    /// If LOCK=1 and LOCKID matches us → we got the lock.
     #[inline]
     unsafe fn read_lock(sem: u8) -> u32 {
         // SAFETY: caller must ensure sem is valid and access is hardware-synchronized.
@@ -71,8 +77,6 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
         // SAFETY: sem is caller-validated; volatile read is hardware-synchronized.
         unsafe { Self::read_rx(sem) & r_fields::LOCK_BIT != 0 }
     }
-
-    // ── Interrupt register helpers ───────────────────────────────────────────
 
     #[inline]
     pub(crate) fn ier_addr() -> *mut u32 {
@@ -133,6 +137,106 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
     pub fn interrupt_pending(sem: u8) -> bool {
         // SAFETY: volatile read is hardware-synchronized.
         unsafe { Self::misr_addr().read_volatile() & (1 << sem) != 0 }
+    }
+}
+
+// ── Register helpers — std (mmap'd virtual base address) ─────────────────────
+
+#[cfg(feature = "std")]
+impl<const PROC: u8> HsemDoorbell<PROC> {
+    // Offsets from HSEM base per RM0457 §22:
+    //   Rx    = 0x000 + 4*x
+    //   RLRx  = 0x080 + 4*x
+    //   CnIER = 0x100 + 0x10*(n-1)
+    //   CnICR = 0x104 + 0x10*(n-1)
+    //   CnMISR= 0x10C + 0x10*(n-1)
+
+    #[inline]
+    fn rx_addr(&self, sem: u8) -> *mut u32 {
+        (self.base + sem as usize * 4) as *mut u32
+    }
+
+    #[inline]
+    fn rlr_addr(&self, sem: u8) -> *const u32 {
+        (self.base + 0x080 + sem as usize * 4) as *const u32
+    }
+
+    #[inline]
+    unsafe fn read_lock(&self, sem: u8) -> u32 {
+        // SAFETY: caller must ensure sem is valid; self.base is a valid mmap'd address.
+        unsafe { self.rlr_addr(sem).read_volatile() }
+    }
+
+    /// Returns true if the semaphore is currently locked (LOCK bit set).
+    ///
+    /// Reads `HSEM_Rx` via the mmap'd virtual base.
+    #[inline]
+    pub fn is_locked(&self, sem: u8) -> bool {
+        // SAFETY: self.base is a valid mmap'd HSEM address; volatile read.
+        unsafe { self.rx_addr(sem).read_volatile() & r_fields::LOCK_BIT != 0 }
+    }
+
+    #[inline]
+    pub(crate) fn ier_addr(&self) -> *mut u32 {
+        let offset = match PROC {
+            1 => 0x100usize,
+            2 => 0x110,
+            3 => 0x120,
+            _ => unreachable!(),
+        };
+        (self.base + offset) as *mut u32
+    }
+
+    #[inline]
+    pub(crate) fn icr_addr(&self) -> *mut u32 {
+        let offset = match PROC {
+            1 => 0x104usize,
+            2 => 0x114,
+            3 => 0x124,
+            _ => unreachable!(),
+        };
+        (self.base + offset) as *mut u32
+    }
+
+    #[inline]
+    fn misr_addr(&self) -> *const u32 {
+        let offset = match PROC {
+            1 => 0x10Cusize,
+            2 => 0x11C,
+            3 => 0x12C,
+            _ => unreachable!(),
+        };
+        (self.base + offset) as *const u32
+    }
+
+    /// Enable the interrupt for semaphore `sem` on our processor's IER.
+    ///
+    /// # Safety
+    /// Caller must ensure `sem` is a valid semaphore index (0–15) and that the
+    /// read-modify-write is not racing with other accesses to the IER register.
+    #[inline]
+    pub unsafe fn enable_interrupt(&self, sem: u8) {
+        let ier = self.ier_addr();
+        // SAFETY: caller must ensure sem is valid; self.base is a valid mmap'd address.
+        unsafe { ier.write_volatile(ier.read_volatile() | (1 << sem)) };
+    }
+
+    /// Clear the interrupt status for semaphore `sem` (write 1 to ICR bit).
+    ///
+    /// # Safety
+    /// Caller must ensure `sem` is a valid semaphore index (0–15).
+    #[inline]
+    pub unsafe fn clear_interrupt(&self, sem: u8) {
+        // SAFETY: caller must ensure sem is valid; self.base is a valid mmap'd address.
+        unsafe { self.icr_addr().write_volatile(1 << sem) };
+    }
+
+    /// Check the masked interrupt status — has semaphore `sem` fired an
+    /// interrupt that is both pending AND enabled?
+    #[inline]
+    pub fn interrupt_pending(&self, sem: u8) -> bool {
+        // SAFETY: self.base is a valid mmap'd HSEM address; volatile read.
+        unsafe { self.misr_addr().read_volatile() & (1 << sem) != 0 }
     }
 }
 
@@ -288,18 +392,25 @@ pub extern "C" fn HSEM_IRQHandler() {
 // ── std (A-core / Linux) ──────────────────────────────────────────────────────
 
 #[cfg(feature = "std")]
-impl<const PROC: u8> Default for HsemDoorbell<PROC> {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-#[cfg(feature = "std")]
 impl<const PROC: u8> HsemDoorbell<PROC> {
-    pub fn new() -> Self {
+    /// Create a doorbell using the mmap'd virtual base address of the HSEM
+    /// peripheral.
+    ///
+    /// # Arguments
+    ///
+    /// * `hsem_base` — virtual address returned by `mmap` of the HSEM
+    ///   peripheral range (e.g. resource 0 of a UIO device, or a `/dev/mem`
+    ///   mapping of the physical base address from the SoC TRM).  Passing a
+    ///   raw physical address here is **undefined behaviour** on Linux.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `PROC` is not in the range `1..=3`.
+    pub fn new(hsem_base: usize) -> Self {
         assert!(PROC >= 1 && PROC <= 3, "PROC must be 1, 2, or 3");
         Self {
             notify: std::sync::Arc::new(tokio::sync::Notify::new()),
+            base: hsem_base,
         }
     }
 
@@ -307,6 +418,9 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
     ///
     /// Pass this to the UIO IRQ loop (or any other interrupt source) so it can
     /// wake waiting [`wait()`] futures by calling `notify.notify_waiters()`.
+    ///
+    /// Interrupt enable/disable (IER/ICR) on the A-core side is managed by the
+    /// kernel driver; userspace should not modify those registers directly.
     ///
     /// [`wait()`]: Doorbell::wait
     pub fn notifier(&self) -> std::sync::Arc<tokio::sync::Notify> {
@@ -324,7 +438,8 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
 
     /// Signal the remote core by locking semaphore `ch`.
     ///
-    /// Uses 1-step read lock (HSEM_RLRx). Sync-safe.
+    /// Performs a 1-step read lock via `HSEM_RLRx`, accessed through the
+    /// mmap'd virtual base address stored in `self.base`.
     fn ring(&self, ch: Chan) -> Result<(), Self::Error> {
         let sem = ch.id();
         if sem >= 16 {
@@ -335,7 +450,8 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
         // semaphore lock that signals the other core.
         compiler_fence(Ordering::Release);
 
-        let result = unsafe { Self::read_lock(sem) };
+        // SAFETY: self.base is a valid mmap'd HSEM virtual address; sem < 16.
+        let result = unsafe { self.read_lock(sem) };
 
         let lock_bit = result & r_fields::LOCK_BIT;
         let lockid = ((result & r_fields::LOCKID_MASK) >> r_fields::LOCKID_SHIFT) as u8;
@@ -359,7 +475,7 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
         if sem >= 16 {
             return false;
         }
-        Self::interrupt_pending(sem)
+        self.interrupt_pending(sem)
     }
 }
 
@@ -367,14 +483,20 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
 
 /// Future returned by `HsemDoorbell::wait()` on the A-core (std/Linux) path.
 ///
-/// Arms the HSEM interrupt registers on first poll, then waits for the
-/// `Notify` held in [`HsemDoorbell`] to fire (driven by the UIO IRQ loop or
-/// another external notifier).
+/// On first poll, subscribes to the doorbell's internal `Notify` before
+/// returning `Pending`, so that a concurrent `notify_waiters()` call cannot
+/// be missed.  Resolves as soon as `notify_waiters()` is called on that
+/// `Notify` (typically from a UIO IRQ loop or kernel-triggered callback).
+///
+/// Interrupt enable/disable (IER/ICR) is deliberately not touched here: on
+/// Linux the kernel driver owns the HSEM interrupt state, and userspace must
+/// not modify those registers directly.  Wire the doorbell's `Notify` to your
+/// interrupt source via [`HsemDoorbell::notifier()`].
 #[cfg(feature = "std")]
 pub struct HsemWaitFut<'a, const PROC: u8> {
     doorbell: &'a HsemDoorbell<PROC>,
     ch: Chan,
-    interrupt_armed: bool,
+    armed: bool,
     /// Lifetime-erased `Notified` future.
     ///
     /// # Safety
@@ -390,7 +512,7 @@ impl<'a, const PROC: u8> HsemWaitFut<'a, PROC> {
         Self {
             doorbell,
             ch,
-            interrupt_armed: false,
+            armed: false,
             notified: None,
         }
     }
@@ -410,15 +532,10 @@ impl<'a, const PROC: u8> core::future::Future for HsemWaitFut<'a, PROC> {
             return Poll::Ready(Err(HsemError::ChanOutOfRange));
         }
 
-        // First poll: clear any stale interrupt status, arm the interrupt, and
-        // create the Notified handle so we get woken when the notify fires.
-        if !this.interrupt_armed {
-            unsafe {
-                HsemDoorbell::<PROC>::clear_interrupt(sem);
-                HsemDoorbell::<PROC>::enable_interrupt(sem);
-            }
-            this.interrupt_armed = true;
-
+        // First poll: subscribe to the Notify before doing anything else so
+        // that a concurrent notify_waiters() call cannot be missed.
+        if !this.armed {
+            this.armed = true;
             // SAFETY: `doorbell` is borrowed for `'a` which outlives this
             // future.  The Arc inside keeps the Notify allocation alive.
             let notified = this.doorbell.notify.notified();
@@ -431,22 +548,13 @@ impl<'a, const PROC: u8> core::future::Future for HsemWaitFut<'a, PROC> {
             this.notified = Some(notified);
         }
 
-        if HsemDoorbell::<PROC>::interrupt_pending(sem) {
-            compiler_fence(Ordering::Acquire);
-
-            unsafe {
-                let ier = HsemDoorbell::<PROC>::ier_addr();
-                ier.write_volatile(ier.read_volatile() & !(1 << sem));
-                HsemDoorbell::<PROC>::clear_interrupt(sem);
-            }
-
-            return Poll::Ready(Ok(this.ch));
-        }
-
-        // Poll the Notified future to register our waker with the Notify.
+        // Poll the Notified future to register our waker and detect completion.
         if let Some(notified) = this.notified.as_mut() {
             // SAFETY: `notified` lives inside `this` which is pinned.
-            let _ = unsafe { Pin::new_unchecked(notified) }.poll(cx);
+            if unsafe { Pin::new_unchecked(notified) }.poll(cx).is_ready() {
+                compiler_fence(Ordering::Acquire);
+                return Poll::Ready(Ok(this.ch));
+            }
         }
 
         Poll::Pending
