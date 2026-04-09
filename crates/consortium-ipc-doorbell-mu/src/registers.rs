@@ -5,11 +5,27 @@
 //! Usage: BASE_ADDR + register_offset
 
 // ============================================================================
-// MU Instance Base Addresses (i.MX93)
-// It should be feature flagged in the future for multi-platform support.
+// MU Instance Base Addresses (physical, no_std / bare-metal use only)
+//
+// On A-core (Linux / std), do NOT use these constants directly.  Instead pass
+// the virtual addresses returned by mmap to `MuDoorbell::new()`.
 // ============================================================================
+
+/// Physical base addresses for i.MX 93 / i.MX 8M Plus MU instances (MUA side).
+#[cfg(feature = "imx93")]
 pub const MU1_BASE: u32 = 0x4422_0000;
+#[cfg(feature = "imx93")]
 pub const MU2_BASE: u32 = 0x4243_0000;
+
+/// Convenience array of all MU base addresses for i.MX 93, ordered by
+/// instance index.  Suitable for use with `MuDoorbell::new()` on bare-metal.
+#[cfg(feature = "imx93")]
+pub const MU_BASES: [u32; crate::chan::MU_INSTANCE_COUNT] = [MU1_BASE, MU2_BASE];
+
+// i.MX 95 has 8 MU instances.  Physical base addresses must be taken from the
+// i.MX 95 Reference Manual and supplied by the caller via `MuDoorbell::new()`.
+// No compile-time constants are provided here to avoid embedding unverified
+// addresses in the crate.  Consult the TRM for your board revision.
 
 // ============================================================================
 // MU Side A (MUA) Registers (Relative Offsets)

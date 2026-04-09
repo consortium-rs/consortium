@@ -5,6 +5,13 @@ version.workspace = true
 edition.workspace = true
 
 [features]
+# Chip selection — choose exactly one.  Defaults to imx93 for backwards
+# compatibility.  Enabling both is a compile error.
+default = ["imx93"]
+imx93 = []   # 2 MU instances (i.MX 93, i.MX 8M Plus, same V1 register layout)
+imx95 = []   # 8 MU instances (i.MX 95 with MU V1-compatible peripherals;
+             # for the GCR/GSR-based V2 design see consortium-ipc-doorbell-mu-v2)
+
 std = ["dep:tokio", "consortium-ipc/std"]
 
 [dependencies]
