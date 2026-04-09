@@ -1,11 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(wc -l /Users/ethangoh/Developer/consortium/crates/*/src/*.rs)",
+      "Bash(wc -l ~/Developer/consortium/crates/*/src/*.rs)",
       "Bash(cargo test:*)",
       "Bash(cargo build:*)",
       "Bash(cargo check:*)",
-      "Bash(pdftotext '/Users/ethangoh/Downloads/Messaging Unit.pdf' -)",
       "Bash(export PATH=/opt/homebrew/bin:$PATH)"
     ]
   }
