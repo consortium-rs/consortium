@@ -13,19 +13,21 @@ use crate::{
 };
 
 // Default (no_std / bare-metal) on i.MX93 uses compile-time base addresses.
-#[cfg(all(not(feature = "std")))]
+#[cfg(not(feature = "std"))]
 use crate::registers::MU_BASES;
 
 // ── Struct ────────────────────────────────────────────────────────────────────
 
-/// MU-backed doorbell.
+/// MU-backed doorbell using the general-purpose interrupt (GI) mechanism.
 ///
-/// Signaling uses MU TX/RX register pairs:
-/// - [`ring()`] writes a sentinel value to the local TRn register, which sets
-///   RSR bit n on the remote side and (if enabled) fires their RFP interrupt.
-/// - [`wait()`] enables the RCR interrupt for the channel, then polls RSR until
-///   the remote core writes to their TRn. RRn is read to clear RSR (reading
-///   is the clearing mechanism — there is no separate ICR register).
+/// Signaling uses the GCR/GSR/GIER register group:
+/// - [`ring()`] sets `GCR[GIRn]` on the local side; the hardware propagates
+///   this to `GSR[GIPn]` on the remote side and fires their GI interrupt if
+///   `GIER[GIEn]` is enabled.
+/// - [`wait()`] enables `GIER[GIEn]`, then polls `GSR[GIPn]` until the remote
+///   core has set it. Clears the pending bit by writing 1 to `GSR[GIPn]`
+///   (write-1-to-clear), which also clears `GCR[GIRn]` on the sender.
+/// - [`pending()`] reads `GSR[GIPn]` non-destructively.
 ///
 /// **Base addresses** must match the side being accessed: MUA for the A-core
 /// (Linux), MUB for the M-core (bare-metal).  On Linux the addresses must be
@@ -41,16 +43,18 @@ use crate::registers::MU_BASES;
 ///
 /// # Difference from HSEM
 ///
-/// | Aspect              | HSEM                              | MU                                     |
-/// |---------------------|-----------------------------------|----------------------------------------|
-/// | Signal mechanism    | 1-step read-lock on semaphore reg | Write 1 to TX register (TRn)          |
-/// | `ring()` check      | LOCKID ownership (MASTERID)       | TSR bit set (TRn empty/ready)          |
-/// | Interrupt clear     | Dedicated ICR (write-1-to-clear)  | Read RRn (destructive read clears RSR) |
-/// | Interrupt enable    | IER bit per semaphore             | RCR bit per RX register               |
-/// | IRQ handlers        | `HSEM_IRQHandler`                 | `MU1_IRQHandler` … `MUN_IRQHandler`   |
+/// | Aspect              | HSEM                              | MU (GI)                                  |
+/// |---------------------|-----------------------------------|------------------------------------------|
+/// | Signal mechanism    | 1-step read-lock on semaphore reg | Set `GCR[GIRn]` (idempotent flag)        |
+/// | `ring()` guard      | LOCKID ownership (MASTERID)       | None — GCR set is always valid           |
+/// | Interrupt clear     | Dedicated ICR (write-1-to-clear)  | Write 1 to `GSR[GIPn]` (W1C)            |
+/// | Interrupt enable    | IER bit per semaphore             | `GIER[GIEn]` bit per channel             |
+/// | Interrupt status    | MISR (masked)                     | `GSR[GIPn]` (non-destructive read)       |
+/// | IRQ handlers        | `HSEM_IRQHandler`                 | `MU1_IRQHandler` … `MUN_IRQHandler`     |
 ///
 /// [`ring()`]: Doorbell::ring
 /// [`wait()`]: Doorbell::wait
+/// [`pending()`]: Doorbell::pending
 pub struct MuDoorbell {
     /// Base addresses for each MU instance, ordered by instance index
     /// (index 0 = MU1, index 1 = MU2, …).  Size is determined by the
@@ -69,85 +73,87 @@ impl MuDoorbell {
         base_addrs[ch.mu_id() as usize]
     }
 
-    /// Address of TRn (Transmit Register n).
+    /// Address of GCR (General-purpose Control Register).
     #[inline]
-    fn tr_addr(base: u32, reg_idx: u8) -> *mut u32 {
-        (base + side::TR0 + reg_idx as u32 * 4) as *mut u32
+    fn gcr_addr(base: u32) -> *mut u32 {
+        (base + side::GCR) as *mut u32
     }
 
-    /// Address of RRn (Receive Register n).
+    /// Address of GSR (General-purpose Status Register).
     #[inline]
-    fn rr_addr(base: u32, reg_idx: u8) -> *mut u32 {
-        (base + side::RR0 + reg_idx as u32 * 4) as *mut u32
+    fn gsr_addr(base: u32) -> *mut u32 {
+        (base + side::GSR) as *mut u32
     }
 
-    /// Address of TSR (TX Status Register).
+    /// Address of GIER (General-purpose Interrupt Enable Register).
     #[inline]
-    fn tsr_addr(base: u32) -> *const u32 {
-        (base + side::TSR) as *const u32
+    fn gier_addr(base: u32) -> *mut u32 {
+        (base + side::GIER) as *mut u32
     }
 
-    /// Address of RSR (RX Status Register).
-    #[inline]
-    fn rsr_addr(base: u32) -> *const u32 {
-        (base + side::RSR) as *const u32
-    }
-
-    /// Address of RCR (RX Control Register — per-channel RX interrupt enable).
-    #[inline]
-    fn rcr_addr(base: u32) -> *mut u32 {
-        (base + side::RCR) as *mut u32
-    }
-
-    /// Returns `true` if TRn is empty (TSR bit `reg_idx` set — ready to send).
+    /// Set `GCR[GIRn]` (bit `gi_idx`) to signal the remote core.
     ///
-    /// TSR reset value = `0x0000_000F` → all 4 TX slots initially empty.
+    /// This sets `GSR[GIPn]` on the remote side and fires their GI interrupt
+    /// if `GIER[GIEn]` is enabled. Setting the bit again while already pending
+    /// is idempotent — the remote will see one pending signal.
+    ///
+    /// # Safety
+    /// Caller must ensure `base` is a valid mapped MU peripheral address and
+    /// `gi_idx` < 4.
     #[inline]
-    pub fn tx_empty(base: u32, reg_idx: u8) -> bool {
+    pub unsafe fn set_gcr_gir(base: u32, gi_idx: u8) {
+        let gcr = Self::gcr_addr(base);
+        // SAFETY: caller guarantees.
+        unsafe { gcr.write_volatile(gcr.read_volatile() | (1 << gi_idx)) };
+    }
+
+    /// Returns `true` if `GSR[GIPn]` (bit `gi_idx`) is set — the remote core
+    /// has signaled this channel and the interrupt is pending.
+    ///
+    /// Non-destructive: reading GSR does not clear the pending bit.
+    #[inline]
+    pub fn gsr_pending(base: u32, gi_idx: u8) -> bool {
         // SAFETY: base is a valid mapped MU peripheral address; volatile read.
-        unsafe { Self::tsr_addr(base).read_volatile() & (1 << reg_idx) != 0 }
+        unsafe { Self::gsr_addr(base).read_volatile() & (1 << gi_idx) != 0 }
     }
 
-    /// Returns `true` if RRn has data (RSR bit `reg_idx` set).
-    #[inline]
-    pub fn rx_full(base: u32, reg_idx: u8) -> bool {
-        // SAFETY: base is a valid mapped MU peripheral address; volatile read.
-        unsafe { Self::rsr_addr(base).read_volatile() & (1 << reg_idx) != 0 }
-    }
-
-    /// Enable RX interrupt for `reg_idx` (set RCR bit).
+    /// Clear `GSR[GIPn]` (bit `gi_idx`) by writing 1 (write-1-to-clear).
+    ///
+    /// Also clears `GCR[GIRn]` on the sender side. Only the target bit is
+    /// written — other pending GI channels are unaffected.
     ///
     /// # Safety
-    /// Caller must ensure `base` is valid and not racing other RCR writes.
+    /// Caller must ensure `base` is valid, `gi_idx` < 4, and `GSR[GIPn]` is
+    /// actually set (i.e. call only after [`gsr_pending`] returns `true`).
+    ///
+    /// [`gsr_pending`]: Self::gsr_pending
     #[inline]
-    pub unsafe fn enable_rx_interrupt(base: u32, reg_idx: u8) {
-        let rcr = Self::rcr_addr(base);
+    pub unsafe fn clear_gsr_gip(base: u32, gi_idx: u8) {
+        // W1C: write only the target bit; do NOT read-modify-write.
         // SAFETY: caller guarantees.
-        unsafe { rcr.write_volatile(rcr.read_volatile() | (1 << reg_idx)) };
+        unsafe { Self::gsr_addr(base).write_volatile(1 << gi_idx) };
     }
 
-    /// Disable RX interrupt for `reg_idx` (clear RCR bit).
+    /// Enable `GIER[GIEn]` (bit `gi_idx`) — arm the GI interrupt for this channel.
     ///
     /// # Safety
-    /// Caller must ensure `base` is valid and not racing other RCR writes.
+    /// Caller must ensure `base` is valid and not racing other GIER writes.
     #[inline]
-    pub unsafe fn disable_rx_interrupt(base: u32, reg_idx: u8) {
-        let rcr = Self::rcr_addr(base);
+    pub unsafe fn enable_gi_interrupt(base: u32, gi_idx: u8) {
+        let gier = Self::gier_addr(base);
         // SAFETY: caller guarantees.
-        unsafe { rcr.write_volatile(rcr.read_volatile() & !(1 << reg_idx)) };
+        unsafe { gier.write_volatile(gier.read_volatile() | (1 << gi_idx)) };
     }
 
-    /// Read RRn, which clears the RSR bit (the only clearing mechanism for MU).
-    ///
-    /// Unlike HSEM (dedicated ICR), the MU clears RX status only by reading RRn.
-    /// Call only when the corresponding RSR bit is set.
+    /// Disable `GIER[GIEn]` (bit `gi_idx`).
     ///
     /// # Safety
-    /// Caller must ensure `base` is valid and `reg_idx` < 4.
+    /// Caller must ensure `base` is valid and not racing other GIER writes.
     #[inline]
-    pub unsafe fn consume_rr(base: u32, reg_idx: u8) -> u32 {
+    pub unsafe fn disable_gi_interrupt(base: u32, gi_idx: u8) {
+        let gier = Self::gier_addr(base);
         // SAFETY: caller guarantees.
-        unsafe { Self::rr_addr(base, reg_idx).read_volatile() }
+        unsafe { gier.write_volatile(gier.read_volatile() & !(1 << gi_idx)) };
     }
 }
 
@@ -181,31 +187,28 @@ impl Doorbell for MuDoorbell {
     where
         Self: 'a;
 
-    /// Signal the remote core by writing a sentinel value to TRn.
+    /// Signal the remote core by setting `GCR[GIRn]`.
     ///
-    /// Checks TSR to ensure TRn is empty (remote consumed the last signal)
-    /// before writing. Returns [`MuError::AlreadyLocked`] if the TX register
-    /// is still full — the remote hasn't consumed the previous signal yet.
+    /// The hardware propagates this to `GSR[GIPn]` on the remote side and
+    /// fires their GI interrupt if `GIER[GIEn]` is enabled.  Setting the bit
+    /// while the previous signal is still pending is idempotent — the remote
+    /// will see one pending signal regardless.
     fn ring(&self, ch: Chan) -> Result<(), MuError> {
         if ch.id() >= MU_CHAN_COUNT {
             return Err(MuError::ChanOutOfRange);
         }
 
         let base = Self::base_for(&self.base_addrs, ch);
-        let reg_idx = ch.tx_rx_id();
+        let gi_idx = ch.gi_id();
 
         // Ensure preceding slot writes are visible to the remote before
-        // the TX write that signals it.
+        // the GCR write that signals it.
         compiler_fence(Ordering::Release);
 
-        if !Self::tx_empty(base, reg_idx) {
-            return Err(MuError::AlreadyLocked);
-        }
-
-        // Write sentinel. This sets RSR on the remote side and fires their
-        // RFP interrupt if RCR is enabled.
-        // SAFETY: base is a valid MU peripheral address; reg_idx < 4.
-        unsafe { Self::tr_addr(base, reg_idx).write_volatile(1) };
+        // Set GCR[GIRn]. This sets GSR[GIPn] on the remote side and fires
+        // their GI interrupt if GIER[GIEn] is enabled.
+        // SAFETY: base is a valid MU peripheral address; gi_idx < 4.
+        unsafe { Self::set_gcr_gir(base, gi_idx) };
 
         Ok(())
     }
@@ -222,7 +225,7 @@ impl Doorbell for MuDoorbell {
             return false;
         }
         let base = Self::base_for(&self.base_addrs, ch);
-        Self::rx_full(base, ch.tx_rx_id())
+        Self::gsr_pending(base, ch.gi_id())
     }
 }
 
@@ -232,12 +235,12 @@ impl Doorbell for MuDoorbell {
 ///
 /// State machine:
 ///
-///   Init → enable RCR bit → register waker → poll RSR
-///        ↓ RSR bit set (RRn has data)
-///   read RRn (clears RSR) → disable RCR → compiler_fence(Acquire) → return Ok(ch)
+///   Init → enable `GIER[GIEn]` → register waker → poll `GSR[GIPn]`
+///        ↓ `GSR[GIPn]` set
+///   write 1 to `GSR[GIPn]` (W1C) → disable `GIER[GIEn]` → compiler_fence(Acquire) → return Ok(ch)
 ///
-/// RSR is checked eagerly; if already set on first poll the future completes
-/// without waiting for an interrupt.
+/// `GSR[GIPn]` is checked eagerly; if already set on the first poll the future
+/// completes without waiting for an interrupt.
 #[cfg(not(feature = "std"))]
 pub struct MuWaitFut<'a> {
     doorbell: &'a MuDoorbell,
@@ -266,25 +269,25 @@ impl<'a> core::future::Future for MuWaitFut<'a> {
         }
 
         let base = MuDoorbell::base_for(&self.doorbell.base_addrs, self.ch);
-        let reg_idx = self.ch.tx_rx_id();
+        let gi_idx = self.ch.gi_id();
         let mu_id = self.ch.mu_id();
 
         if !self.interrupt_armed {
-            // SAFETY: base is valid; reg_idx < 4; called from single executor task.
-            unsafe { MuDoorbell::enable_rx_interrupt(base, reg_idx) };
+            // SAFETY: base is valid; gi_idx < 4; called from single executor task.
+            unsafe { MuDoorbell::enable_gi_interrupt(base, gi_idx) };
             self.interrupt_armed = true;
 
             waker_for(mu_id).register(cx.waker());
         }
 
-        if MuDoorbell::rx_full(base, reg_idx) {
-            // Acquire fence: RSR set → remote's TRn write → our slot reads
+        if MuDoorbell::gsr_pending(base, gi_idx) {
+            // Acquire fence: GSR[GIPn] set → remote's GCR write → our slot reads
             // must see all preceding writes the remote made before ring().
             compiler_fence(Ordering::Acquire);
 
-            // SAFETY: RSR bit confirmed set; base and reg_idx are valid.
-            let _ = unsafe { MuDoorbell::consume_rr(base, reg_idx) };
-            unsafe { MuDoorbell::disable_rx_interrupt(base, reg_idx) };
+            // SAFETY: GSR[GIPn] confirmed set; base and gi_idx are valid.
+            unsafe { MuDoorbell::clear_gsr_gip(base, gi_idx) };
+            unsafe { MuDoorbell::disable_gi_interrupt(base, gi_idx) };
 
             Poll::Ready(Ok(self.ch))
         } else {
@@ -310,11 +313,11 @@ static MU_WAKERS: [atomic_waker::AtomicWaker; MU_INSTANCE_COUNT] =
 
 // IRQ handlers — one per MU instance, chip-gated.
 //
-// Each handler wakes the futures waiting on that instance's RX interrupt.
+// Each handler wakes the futures waiting on that instance's GI interrupt.
 // Register these in your interrupt vector table.
 
 /// # Safety
-/// Must be called only from the MU1 receive IRQ handler.
+/// Must be called only from the MU1 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), any(feature = "imx93", feature = "imx95")))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU1_IRQHandler() {
@@ -322,7 +325,7 @@ pub extern "C" fn MU1_IRQHandler() {
 }
 
 /// # Safety
-/// Must be called only from the MU2 receive IRQ handler.
+/// Must be called only from the MU2 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), any(feature = "imx93", feature = "imx95")))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU2_IRQHandler() {
@@ -330,7 +333,7 @@ pub extern "C" fn MU2_IRQHandler() {
 }
 
 /// # Safety
-/// Must be called only from the MU3 receive IRQ handler.
+/// Must be called only from the MU3 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), feature = "imx95"))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU3_IRQHandler() {
@@ -338,7 +341,7 @@ pub extern "C" fn MU3_IRQHandler() {
 }
 
 /// # Safety
-/// Must be called only from the MU4 receive IRQ handler.
+/// Must be called only from the MU4 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), feature = "imx95"))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU4_IRQHandler() {
@@ -346,7 +349,7 @@ pub extern "C" fn MU4_IRQHandler() {
 }
 
 /// # Safety
-/// Must be called only from the MU5 receive IRQ handler.
+/// Must be called only from the MU5 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), feature = "imx95"))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU5_IRQHandler() {
@@ -354,7 +357,7 @@ pub extern "C" fn MU5_IRQHandler() {
 }
 
 /// # Safety
-/// Must be called only from the MU6 receive IRQ handler.
+/// Must be called only from the MU6 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), feature = "imx95"))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU6_IRQHandler() {
@@ -362,7 +365,7 @@ pub extern "C" fn MU6_IRQHandler() {
 }
 
 /// # Safety
-/// Must be called only from the MU7 receive IRQ handler.
+/// Must be called only from the MU7 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), feature = "imx95"))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU7_IRQHandler() {
@@ -370,7 +373,7 @@ pub extern "C" fn MU7_IRQHandler() {
 }
 
 /// # Safety
-/// Must be called only from the MU8 receive IRQ handler.
+/// Must be called only from the MU8 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), feature = "imx95"))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU8_IRQHandler() {
@@ -401,7 +404,7 @@ impl MuDoorbell {
     /// Returns a cloned `Arc` to the internal `Notify`.
     ///
     /// Pass this to the UIO IRQ loop so it can wake waiting [`wait()`] futures
-    /// by calling `notify.notify_waiters()` when a MU receive interrupt fires.
+    /// by calling `notify.notify_waiters()` when a MU GI interrupt fires.
     ///
     /// [`wait()`]: Doorbell::wait
     pub fn notifier(&self) -> std::sync::Arc<tokio::sync::Notify> {
@@ -423,16 +426,12 @@ impl Doorbell for MuDoorbell {
         }
 
         let base = Self::base_for(&self.base_addrs, ch);
-        let reg_idx = ch.tx_rx_id();
+        let gi_idx = ch.gi_id();
 
         compiler_fence(Ordering::Release);
 
-        if !Self::tx_empty(base, reg_idx) {
-            return Err(MuError::AlreadyLocked);
-        }
-
-        // SAFETY: base is a valid mmap'd MU peripheral address; reg_idx < 4.
-        unsafe { Self::tr_addr(base, reg_idx).write_volatile(1) };
+        // SAFETY: base is a valid mmap'd MU peripheral address; gi_idx < 4.
+        unsafe { Self::set_gcr_gir(base, gi_idx) };
 
         Ok(())
     }
@@ -449,7 +448,7 @@ impl Doorbell for MuDoorbell {
             return false;
         }
         let base = Self::base_for(&self.base_addrs, ch);
-        Self::rx_full(base, ch.tx_rx_id())
+        Self::gsr_pending(base, ch.gi_id())
     }
 }
 
@@ -457,8 +456,9 @@ impl Doorbell for MuDoorbell {
 
 /// Future returned by [`MuDoorbell::wait()`] on the A-core (std/Linux) path.
 ///
-/// Arms the RCR interrupt on first poll, then waits for the `Notify` held in
-/// [`MuDoorbell`] to fire (driven by the UIO IRQ loop or other external notifier).
+/// Arms `GIER[GIEn]` on first poll, then waits for the `Notify` held in
+/// [`MuDoorbell`] to fire (driven by the UIO IRQ loop or other external
+/// notifier).  Clears `GSR[GIPn]` (W1C) once the signal is detected.
 #[cfg(feature = "std")]
 pub struct MuWaitFut<'a> {
     doorbell: &'a MuDoorbell,
@@ -499,11 +499,11 @@ impl<'a> core::future::Future for MuWaitFut<'a> {
         }
 
         let base = MuDoorbell::base_for(&this.doorbell.base_addrs, this.ch);
-        let reg_idx = this.ch.tx_rx_id();
+        let gi_idx = this.ch.gi_id();
 
         if !this.interrupt_armed {
-            // SAFETY: base is valid (mmap'd); reg_idx < 4; single tokio task.
-            unsafe { MuDoorbell::enable_rx_interrupt(base, reg_idx) };
+            // SAFETY: base is valid (mmap'd); gi_idx < 4; single tokio task.
+            unsafe { MuDoorbell::enable_gi_interrupt(base, gi_idx) };
             this.interrupt_armed = true;
 
             // SAFETY: `doorbell` is borrowed for `'a` which outlives this
@@ -518,12 +518,12 @@ impl<'a> core::future::Future for MuWaitFut<'a> {
             this.notified = Some(notified);
         }
 
-        if MuDoorbell::rx_full(base, reg_idx) {
+        if MuDoorbell::gsr_pending(base, gi_idx) {
             compiler_fence(Ordering::Acquire);
 
-            // SAFETY: RSR bit confirmed set; base and reg_idx are valid.
-            let _ = unsafe { MuDoorbell::consume_rr(base, reg_idx) };
-            unsafe { MuDoorbell::disable_rx_interrupt(base, reg_idx) };
+            // SAFETY: GSR[GIPn] confirmed set; base and gi_idx are valid.
+            unsafe { MuDoorbell::clear_gsr_gip(base, gi_idx) };
+            unsafe { MuDoorbell::disable_gi_interrupt(base, gi_idx) };
 
             return Poll::Ready(Ok(this.ch));
         }
