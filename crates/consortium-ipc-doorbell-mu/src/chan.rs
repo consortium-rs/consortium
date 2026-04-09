@@ -40,7 +40,7 @@ pub const MU_INSTANCE_COUNT: usize = if cfg!(feature = "imx93") {
 
 // ── Channel counts ────────────────────────────────────────────────────────────
 
-/// Total number of virtual channels across all MU instances (4 tx/rx pairs × MU count).
+/// Total number of virtual channels across all MU instances (4 GI channels × MU count).
 pub const MU_CHAN_COUNT: u8 = (MU_INSTANCE_COUNT * 4) as u8;
 
 /// Channels 0 and 1 are reserved for system/firmware use across all chips.
@@ -65,20 +65,20 @@ impl ChanValidate for MuChanValidate {
 // ── Channel-to-MU-instance mapping ───────────────────────────────────────────
 
 /// Extension methods for mapping a [`Chan`] to a physical MU instance and
-/// its tx/rx register pair index.
+/// its general-purpose interrupt index.
 ///
 /// Channels are laid out as 4 consecutive IDs per MU instance:
-/// - channels `[0, 4)` → MU1 (index 0), register pairs 0–3
-/// - channels `[4, 8)` → MU2 (index 1), register pairs 0–3
+/// - channels `[0, 4)` → MU1 (index 0), GI channels 0–3
+/// - channels `[4, 8)` → MU2 (index 1), GI channels 0–3
 /// - ...
-/// - channels `[4*(N-1), 4*N)` → MU_N (index N-1), register pairs 0–3
+/// - channels `[4*(N-1), 4*N)` → MU_N (index N-1), GI channels 0–3
 ///
 /// [`Chan`]: consortium_ipc::Chan
 pub trait MuChanInfo {
     /// Zero-based MU instance index (0 = MU1, 1 = MU2, …).
     fn mu_id(&self) -> u8;
-    /// TX/RX register pair index within the MU instance (0–3).
-    fn tx_rx_id(&self) -> u8;
+    /// General-purpose interrupt index within the MU instance (0–3).
+    fn gi_id(&self) -> u8;
 }
 
 impl MuChanInfo for consortium_ipc::Chan {
@@ -88,7 +88,7 @@ impl MuChanInfo for consortium_ipc::Chan {
     }
 
     #[inline]
-    fn tx_rx_id(&self) -> u8 {
+    fn gi_id(&self) -> u8 {
         self.id() % 4
     }
 }
