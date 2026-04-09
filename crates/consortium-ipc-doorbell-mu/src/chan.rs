@@ -28,7 +28,15 @@ compile_error!("no chip feature selected; enable exactly one of: `imx93`, `imx95
 ///
 /// Defined as a single const using `cfg!` so enabling both features produces
 /// the `compile_error!` message above rather than a duplicate-definition error.
-pub const MU_INSTANCE_COUNT: usize = if cfg!(feature = "imx93") { 2 } else if cfg!(feature = "imx95") { 8 } else if cfg!(feature = "imx8mp") { 1 } else { 0 };
+pub const MU_INSTANCE_COUNT: usize = if cfg!(feature = "imx93") {
+    2
+} else if cfg!(feature = "imx95") {
+    8
+} else if cfg!(feature = "imx8mp") {
+    1
+} else {
+    0
+};
 
 // ── Channel counts ────────────────────────────────────────────────────────────
 
