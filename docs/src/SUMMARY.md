@@ -1,6 +1,12 @@
 # Summary
 
 - [Development Logs](dev/index.md)
+    - [Architecture](arch/index.md)
+        - [IPC](arch/ipc.md)
+        - [TEE](arch/tee.md)
+        - [ORT](arch/ort.md)
+        - [HMI](arch/hmi.md)
+        - [FFI](arch/ffi.md)
     - [IPC Subsystem](dev/ipc/index.md)
         - [IPC QoS Design](dev/ipc/ipc-qos-design.md)
         - [IPC Design](dev/ipc/ipc-design.md)
@@ -11,4 +17,3 @@
     - [TEE Subsystem](dev/tee/index.md)
         - [TEE SDK Design](dev/tee/tee-sdk-design.md)
         - [TEE Advanced Type System](dev/tee/tee-advanced-type-system.md)
-    
