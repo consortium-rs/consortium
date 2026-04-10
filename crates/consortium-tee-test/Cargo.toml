@@ -1,0 +1,46 @@
+[package]
+name = "consortium-tee-test"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[features]
+ca = ["dep:optee-teec"]
+ta = ["dep:optee-utee", "dep:optee-utee-sys"]
+default = ["ta"]
+
+[lib]
+name = "consortium_tee_test"
+path = "src/lib.rs"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "consortium_tee_test"
+path = "src/main.rs"
+required-features = ["ta"]
+
+[dependencies]
+consortium-tee = { path = "../consortium-tee", default-features = false, features = [
+  "ta",
+] }
+num_enum = { version = "0.7.6", default-features = false }
+optee-teec = { version = "0.8.0", optional = true }
+optee-utee = { version = "0.8.0", optional = true, default-features = false }
+optee-utee-sys = { version = "0.8.0", optional = true, default-features = false }
+tokio = { version = "1.51.1", features = ["rt"] }
+
+[build-dependencies]
+optee-utee-build = "0.8.0"
+
+[profile.dev]
+panic = "abort"
+lto = true
+opt-level = 1
+
+[profile.release]
+panic = "abort"
+lto = true
+opt-level = 1
+
+[lints]
+workspace = true

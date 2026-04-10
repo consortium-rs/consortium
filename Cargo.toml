@@ -19,6 +19,7 @@ members = [
   "crates/consortium-codec-prost",
   "crates/consortium-codec-rkyv",
   "crates/consortium-ipc-doorbell-gpio",
+  "crates/consortium-tee-test",
 ]
 resolver = "2"
 
