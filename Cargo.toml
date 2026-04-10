@@ -16,7 +16,9 @@ members = [
   "crates/consortium-hmi",
   "crates/consortium-ort",
   "crates/consortium-codec-postcard",
-  "crates/consortium-codec-prost", "crates/consortium-codec-rkyv",
+  "crates/consortium-codec-prost",
+  "crates/consortium-codec-rkyv",
+  "crates/consortium-ipc-doorbell-gpio",
 ]
 resolver = "2"
 

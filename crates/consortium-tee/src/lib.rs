@@ -31,7 +31,7 @@ pub trait TeeParam {
     const MAX_SIZE: usize;
 }
 
-pub use consortium_tee_proc_macros::{tee_command, tee_service, TeeParam};
+pub use consortium_tee_proc_macros::{TeeParam, tee_command, tee_service};
 
 #[cfg(target_os = "linux")]
 pub mod error;

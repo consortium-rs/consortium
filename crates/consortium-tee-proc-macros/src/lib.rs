@@ -731,7 +731,11 @@ fn gen_unpack(
 }
 
 /// Emits statements that write `__ret_val` into the output parameter slot at `slot`.
-fn gen_flush_ta(slot: usize, ty: &syn::Type, codec: Option<&syn::Path>) -> proc_macro2::TokenStream {
+fn gen_flush_ta(
+    slot: usize,
+    ty: &syn::Type,
+    codec: Option<&syn::Path>,
+) -> proc_macro2::TokenStream {
     if slot >= 4 {
         return quote! { compile_error!("Too many parameters: no room for the output slot (TEE max 4)"); };
     }
@@ -949,7 +953,11 @@ fn gen_output_pack_ca(slot_ident: &Ident, ty: &syn::Type, slot: usize) -> proc_m
 
 /// Emits the expression that reads the return value back from `_operation` after
 /// `invoke_command` completes on the CA side.
-fn gen_output_read_ca(slot: usize, ty: &syn::Type, codec: Option<&syn::Path>) -> proc_macro2::TokenStream {
+fn gen_output_read_ca(
+    slot: usize,
+    ty: &syn::Type,
+    codec: Option<&syn::Path>,
+) -> proc_macro2::TokenStream {
     let s = quote::format_ident!("param_{}", slot);
     if is_primitive(ty, "u32") {
         quote! { _operation.#s().as_value().a() }
