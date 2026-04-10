@@ -5,7 +5,8 @@
       "Bash(cargo test:*)",
       "Bash(cargo build:*)",
       "Bash(cargo check:*)",
-      "Bash(export PATH=/opt/homebrew/bin:$PATH)"
+      "Bash(export PATH=/opt/homebrew/bin:$PATH)",
+      "Bash(grep -r \"libc\" crates/*/Cargo.toml)"
     ]
   }
 }

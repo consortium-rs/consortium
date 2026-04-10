@@ -1,5 +1,6 @@
 use std::io::Result;
 use std::path::PathBuf;
+use std::time::Duration;
 
 #[derive(Debug)]
 pub struct RemoteProc {
@@ -129,5 +130,43 @@ impl RemoteProc {
         let recovery_path = self.path.join("recovery");
         std::fs::write(recovery_path, if recovery { "enabled" } else { "disabled" })?;
         Ok(())
+    }
+
+    /// Wait for the remoteproc to reach a specific state, with timeout.
+    ///
+    /// Polls the state file at regular intervals until the target state is reached or timeout occurs.
+    ///
+    /// # Arguments
+    ///
+    /// * `target` — the desired state
+    /// * `timeout` — maximum time to wait
+    ///
+    /// # Errors
+    ///
+    /// Returns an I/O error if reading the state file fails, or a timeout error if the state
+    /// is not reached within the timeout duration.
+    pub async fn wait_state(&self, target: RemoteProcState, timeout: Duration) -> Result<()> {
+        let start = std::time::Instant::now();
+        let interval = Duration::from_millis(100);
+
+        loop {
+            match self.state() {
+                Ok(state) if state == target => return Ok(()),
+                Ok(_) => {
+                    if start.elapsed() > timeout {
+                        return Err(std::io::Error::new(
+                            std::io::ErrorKind::TimedOut,
+                            format!(
+                                "remoteproc did not reach state {} within {:?}",
+                                target.to_string(),
+                                timeout
+                            ),
+                        ));
+                    }
+                    tokio::time::sleep(interval).await;
+                }
+                Err(e) => return Err(e),
+            }
+        }
     }
 }
