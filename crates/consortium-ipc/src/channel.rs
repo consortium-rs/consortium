@@ -1,91 +1,12 @@
 //! Typed, directed communication channels over a [`Transport`].
 //!
 //! `Channel` is the main API for application code. It provides typed `send()` and `recv()` methods that encode and decode messages via a [`Codec`] and hand bytes to the underlying transport.
+use consortium_common::codec::{Codec, CodecFor};
 use core::marker::PhantomData;
 use core::ops::Deref;
 
 use crate::chan::Chan;
 use crate::transport::Transport;
-
-/// Serializes and deserializes messages into/from byte slices.
-///
-/// Implemented today by [`PostcardCodec`].
-/// Can be implemented by a zero-copy backend (e.g. rkyv) later
-/// without changing [`Channel`] or application code.
-///
-/// # Contract
-///
-/// - `encode` writes into a caller-provided buffer and returns
-///   the number of bytes written. Buffer is sized from
-///   [`Transport::max_message_size`].
-///
-/// - `decode` borrows from the input slice and returns a handle
-///   whose lifetime is tied to that slice. No allocation required.
-///
-/// Both operations must be usable in `no_std` without a global
-/// allocator.
-pub trait Codec {
-    /// The decoded view of a message.
-    ///
-    /// `PostcardCodec`  → owned `T`  (copied off the wire)
-    /// Future RkyvCodec → `&'buf T::Archived` (zero-copy borrow)
-    ///
-    /// The `'buf` lifetime allows zero-copy codecs to tie the
-    /// decoded value's lifetime to the receive buffer, while
-    /// postcard just ignores it and returns an owned value.
-    type Decoded<'buf, T: 'buf>
-    where
-        T: 'buf;
-
-    type Error: core::fmt::Debug;
-
-    /// Serialize `msg` into `buf`.
-    /// Returns the number of bytes written.
-    fn encode<T>(msg: &T, buf: &mut [u8]) -> Result<usize, Self::Error>
-    where
-        T: serde::Serialize;
-
-    /// Deserialize a `T` from `buf`.
-    fn decode<'buf, T>(buf: &'buf [u8]) -> Result<Self::Decoded<'buf, T>, Self::Error>
-    where
-        T: serde::de::DeserializeOwned + 'buf;
-}
-
-/// [`Codec`] implementation backed by `postcard`.
-///
-/// - `no_std`, no alloc required
-/// - compact wire format
-/// - any `Serialize + DeserializeOwned` type works out of the box
-///
-/// Switching to a zero-copy codec later only requires defining a
-/// new `Codec` implementor and changing the `C` type parameter on
-/// [`Channel`]. Transport, Doorbell, and application logic are
-/// untouched.
-pub struct PostcardCodec;
-
-impl Codec for PostcardCodec {
-    type Decoded<'buf, T: 'buf>
-        = T
-    where
-        T: 'buf;
-
-    type Error = postcard::Error;
-
-    fn encode<T>(msg: &T, buf: &mut [u8]) -> Result<usize, Self::Error>
-    where
-        T: serde::Serialize,
-    {
-        let written = postcard::to_slice(msg, buf)?;
-        Ok(written.len())
-    }
-
-    fn decode<'buf, T>(buf: &'buf [u8]) -> Result<Self::Decoded<'buf, T>, Self::Error>
-    where
-        T: serde::de::DeserializeOwned + 'buf,
-    {
-        postcard::from_bytes(buf)
-    }
-}
 
 /// Marker: this channel can only send.
 pub struct Tx;
@@ -114,7 +35,7 @@ pub struct Rx;
 /// ```
 ///
 /// The buffer must be at least `transport.max_message_size()` bytes.
-pub struct Channel<D, T, Tr: Transport, C: Codec = PostcardCodec> {
+pub struct Channel<D, T, Tr: Transport, C: CodecFor<T>> {
     chan: Chan,
     transport: Tr,
     buf: &'static mut [u8],
@@ -123,7 +44,7 @@ pub struct Channel<D, T, Tr: Transport, C: Codec = PostcardCodec> {
     _codec: PhantomData<C>,
 }
 
-impl<D, T, Tr: Transport, C: Codec> Channel<D, T, Tr, C> {
+impl<D, T, Tr: Transport, C: CodecFor<T>> Channel<D, T, Tr, C> {
     /// Construct a [`Channel`].
     ///
     /// `chan`      — validated channel identifier  
@@ -150,7 +71,7 @@ impl<T, Tr, C> Channel<Tx, T, Tr, C>
 where
     T: serde::Serialize,
     Tr: Transport,
-    C: Codec,
+    C: CodecFor<T>,
 {
     /// Encode `msg` with the codec and hand the bytes to the transport.
     ///
@@ -161,7 +82,7 @@ where
         let n = C::encode(msg, self.buf).map_err(ChannelError::Codec)?;
 
         self.transport
-            .send(self.chan, &self.buf[..n])
+            .send(self.chan, self.buf[..n].as_ref())
             .await
             .map_err(ChannelError::Transport)
     }
@@ -171,7 +92,7 @@ impl<T, Tr, C> Channel<Rx, T, Tr, C>
 where
     T: serde::de::DeserializeOwned,
     Tr: Transport,
-    C: Codec,
+    C: CodecFor<T>,
 {
     /// Await the next message from the transport and decode it.
     ///
@@ -190,7 +111,7 @@ where
             .await
             .map_err(ChannelError::Transport)?;
 
-        let decoded = C::decode::<T>(&self.buf[..n]).map_err(ChannelError::Codec)?;
+        let decoded = C::decode(&self.buf[..n]).map_err(ChannelError::Codec)?;
 
         Ok(ReceivedMessage {
             value: decoded,
@@ -209,16 +130,14 @@ where
 /// internal receive buffer, preventing a second `recv()` call
 /// while this handle is live. Application code using [`Deref`]
 /// does not need to change.
-pub struct ReceivedMessage<'a, T: 'a, C: Codec> {
-    value: C::Decoded<'a, T>,
-    /// Carries the `'a` lifetime for zero-copy codecs.
-    /// Unused by PostcardCodec but harmless.
-    _marker: PhantomData<&'a ()>,
+pub struct ReceivedMessage<'a, T: 'a, C: CodecFor<T>> {
+    value: C::Decoded<'a>,
+    _marker: PhantomData<&'a T>,
 }
 
-impl<'a, T, C: Codec> ReceivedMessage<'a, T, C> {
+impl<'a, T, C: CodecFor<T>> ReceivedMessage<'a, T, C> {
     /// Consume the handle and return the inner decoded value.
-    pub fn into_inner(self) -> C::Decoded<'a, T> {
+    pub fn into_inner(self) -> C::Decoded<'a> {
         self.value
     }
 }
@@ -231,7 +150,8 @@ impl<'a, T, C: Codec> ReceivedMessage<'a, T, C> {
 // a separate impl block or a newtype once that codec is written.
 impl<'a, T, C> Deref for ReceivedMessage<'a, T, C>
 where
-    C: Codec<Decoded<'a, T> = T>,
+    C: CodecFor<T>,
+    C::Decoded<'a>: core::ops::Deref<Target = T>,
     T: 'a,
 {
     type Target = T;
@@ -243,8 +163,8 @@ where
 
 impl<'a, T, C> core::fmt::Debug for ReceivedMessage<'a, T, C>
 where
-    C: Codec,
-    C::Decoded<'a, T>: core::fmt::Debug,
+    C: CodecFor<T>,
+    C::Decoded<'a>: core::fmt::Debug,
 {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         self.value.fmt(f)
@@ -271,71 +191,5 @@ where
             Self::Codec(e) => write!(f, "codec error: {e}"),
             Self::Transport(e) => write!(f, "transport error: {e}"),
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use serde::{Deserialize, Serialize};
-
-    #[derive(Debug, PartialEq, Serialize, Deserialize)]
-    struct Point {
-        x: i32,
-        y: i32,
-    }
-
-    #[test]
-    fn roundtrip_struct() {
-        let mut buf = [0u8; 64];
-        let msg = Point { x: 42, y: -7 };
-        let n = PostcardCodec::encode(&msg, &mut buf).unwrap();
-        let decoded: Point = PostcardCodec::decode(&buf[..n]).unwrap();
-        assert_eq!(msg, decoded);
-    }
-
-    #[test]
-    fn roundtrip_u32() {
-        let mut buf = [0u8; 16];
-        let n = PostcardCodec::encode(&0xDEAD_BEEFu32, &mut buf).unwrap();
-        let v: u32 = PostcardCodec::decode(&buf[..n]).unwrap();
-        assert_eq!(v, 0xDEAD_BEEF);
-    }
-
-    #[test]
-    fn roundtrip_bool() {
-        let mut buf = [0u8; 4];
-        let n = PostcardCodec::encode(&true, &mut buf).unwrap();
-        let v: bool = PostcardCodec::decode(&buf[..n]).unwrap();
-        assert!(v);
-    }
-
-    #[test]
-    fn encode_writes_nonzero_bytes() {
-        let mut buf = [0u8; 32];
-        let n = PostcardCodec::encode(&Point { x: 1, y: 2 }, &mut buf).unwrap();
-        assert!(n > 0);
-        assert!(n <= buf.len());
-    }
-
-    #[test]
-    fn decode_error_on_garbage() {
-        let bad = [0xFF_u8; 5];
-        let result = PostcardCodec::decode::<Point>(&bad);
-        assert!(result.is_err());
-    }
-
-    #[test]
-    fn encode_error_on_undersized_buffer() {
-        // Point encodes to more than 1 byte; a 1-byte buf must fail.
-        let mut buf = [0u8; 1];
-        let result = PostcardCodec::encode(&Point { x: 1000, y: 2000 }, &mut buf);
-        assert!(result.is_err());
-    }
-
-    #[test]
-    fn decode_empty_slice_is_error() {
-        let result = PostcardCodec::decode::<Point>(&[]);
-        assert!(result.is_err());
     }
 }

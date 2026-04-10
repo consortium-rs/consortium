@@ -38,12 +38,7 @@ pub fn slot_pair_ptrs(
 ) -> (*mut u8, *mut u8) {
     let tx_offset = slot_idx * 2 * slot_size;
     let rx_offset = slot_idx * 2 * slot_size + slot_size;
-    unsafe {
-        (
-            region_base.add(tx_offset),
-            region_base.add(rx_offset),
-        )
-    }
+    unsafe { (region_base.add(tx_offset), region_base.add(rx_offset)) }
 }
 
 /// Macro for declaring a static scratch buffer with proper alignment.

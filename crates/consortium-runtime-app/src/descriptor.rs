@@ -67,7 +67,9 @@ impl DescriptorMmap {
         // Query the resource size from sysfs
         let sysfs_path = format!("/sys/class/uio/uio{}/maps/map0/size", uio_num);
         let size_str = std::fs::read_to_string(&sysfs_path)?;
-        let size: usize = size_str.trim().parse()
+        let size: usize = size_str
+            .trim()
+            .parse()
             .map_err(|_| WaitError::Io(std::io::ErrorKind::InvalidData))?;
 
         // Mmap the resource

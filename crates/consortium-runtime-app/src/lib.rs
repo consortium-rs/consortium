@@ -3,8 +3,8 @@
 pub mod descriptor;
 pub mod remoteproc;
 
-pub use consortium_ipc_transport_uio as ipc_uio;
 pub use consortium_ipc as ipc;
+pub use consortium_ipc_transport_uio as ipc_uio;
 pub use consortium_tee as tee;
 
 #[cfg(feature = "stm32mp2xx")]
