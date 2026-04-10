@@ -66,6 +66,12 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
     }
 
     #[inline]
+    unsafe fn write_rx(sem: u8, value: u32) {
+        // SAFETY: caller must ensure sem is valid and access is hardware-synchronized.
+        unsafe { Self::rx_addr(sem).write_volatile(value) }
+    }
+
+    #[inline]
     unsafe fn read_lock(sem: u8) -> u32 {
         // SAFETY: caller must ensure sem is valid and access is hardware-synchronized.
         unsafe { Self::rlr_addr(sem).read_volatile() }
@@ -167,6 +173,17 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
         unsafe { self.rlr_addr(sem).read_volatile() }
     }
 
+    #[inline]
+    fn rx_addr(&self, sem: u8) -> *mut u32 {
+        (self.base + sem as usize * 4) as *mut u32
+    }
+
+    #[inline]
+    unsafe fn write_rx(&self, sem: u8, value: u32) {
+        // SAFETY: caller must ensure sem is valid; self.base is a valid mmap'd address.
+        unsafe { self.rx_addr(sem).write_volatile(value) }
+    }
+
     /// Returns true if the semaphore is currently locked (LOCK bit set).
     ///
     /// Reads `HSEM_Rx` via the mmap'd virtual base.
@@ -265,9 +282,11 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
     where
         Self: 'a;
 
-    /// Signal the remote core by locking semaphore `ch`.
+    /// Signal the remote core by locking and immediately unlocking semaphore `ch`.
     ///
-    /// Uses 1-step read lock (HSEM_RLRx). Sync and IRQ-safe.
+    /// Uses 1-step read lock (HSEM_RLRx) to atomically lock, then writes with
+    /// LOCK=0 to unlock and trigger the interrupt on the remote core.
+    /// Sync and IRQ-safe.
     fn ring(&self, ch: Chan) -> Result<(), Self::Error> {
         let sem = ch.id();
         if sem >= 16 {
@@ -278,16 +297,23 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
         // the semaphore lock that signals the other core.
         compiler_fence(Ordering::Release);
 
-        let result = unsafe { Self::read_lock(sem) };
+        // 1-step lock: atomically lock the semaphore and read back its state.
+        let locked_value = unsafe { Self::read_lock(sem) };
 
-        let lock_bit = result & r_fields::LOCK_BIT;
-        let lockid = ((result & r_fields::LOCKID_MASK) >> r_fields::LOCKID_SHIFT) as u8;
+        let lock_bit = locked_value & r_fields::LOCK_BIT;
+        let lockid = ((locked_value & r_fields::LOCKID_MASK) >> r_fields::LOCKID_SHIFT) as u8;
 
-        if lock_bit != 0 && lockid == crate::consts::M_CORE_LOCKID {
-            Ok(())
-        } else {
-            Err(HsemError::AlreadyLocked)
+        if lock_bit == 0 || lockid != crate::consts::M_CORE_LOCKID {
+            return Err(HsemError::AlreadyLocked);
         }
+
+        // Unlock by writing back with LOCK=0, which triggers the interrupt on the
+        // remote core. The LOCKID, SEC, PRIV, and PROCID must match what we just locked.
+        let unlock_value = locked_value & !r_fields::LOCK_BIT;
+        unsafe { Self::write_rx(sem, unlock_value) };
+
+        compiler_fence(Ordering::Release);
+        Ok(())
     }
 
     fn wait<'a>(&'a self, ch: Chan) -> Self::WaitFut<'a>
@@ -436,10 +462,10 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
     where
         Self: 'a;
 
-    /// Signal the remote core by locking semaphore `ch`.
+    /// Signal the remote core by locking and immediately unlocking semaphore `ch`.
     ///
-    /// Performs a 1-step read lock via `HSEM_RLRx`, accessed through the
-    /// mmap'd virtual base address stored in `self.base`.
+    /// Performs a 1-step read lock via `HSEM_RLRx` to atomically lock, then
+    /// writes via `HSEM_Rx` with LOCK=0 to unlock and trigger the interrupt.
     fn ring(&self, ch: Chan) -> Result<(), Self::Error> {
         let sem = ch.id();
         if sem >= 16 {
@@ -450,17 +476,25 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
         // semaphore lock that signals the other core.
         compiler_fence(Ordering::Release);
 
+        // 1-step lock: atomically lock the semaphore and read back its state.
         // SAFETY: self.base is a valid mmap'd HSEM virtual address; sem < 16.
-        let result = unsafe { self.read_lock(sem) };
+        let locked_value = unsafe { self.read_lock(sem) };
 
-        let lock_bit = result & r_fields::LOCK_BIT;
-        let lockid = ((result & r_fields::LOCKID_MASK) >> r_fields::LOCKID_SHIFT) as u8;
+        let lock_bit = locked_value & r_fields::LOCK_BIT;
+        let lockid = ((locked_value & r_fields::LOCKID_MASK) >> r_fields::LOCKID_SHIFT) as u8;
 
-        if lock_bit != 0 && lockid == crate::consts::A_CORE_LOCKID {
-            Ok(())
-        } else {
-            Err(HsemError::AlreadyLocked)
+        if lock_bit == 0 || lockid != crate::consts::A_CORE_LOCKID {
+            return Err(HsemError::AlreadyLocked);
         }
+
+        // Unlock by writing back with LOCK=0, which triggers the interrupt on the
+        // remote core. The LOCKID, SEC, PRIV, and PROCID must match what we just locked.
+        let unlock_value = locked_value & !r_fields::LOCK_BIT;
+        // SAFETY: self.base is a valid mmap'd HSEM virtual address; sem < 16.
+        unsafe { self.write_rx(sem, unlock_value) };
+
+        compiler_fence(Ordering::Release);
+        Ok(())
     }
 
     fn wait<'a>(&'a self, ch: Chan) -> Self::WaitFut<'a>
