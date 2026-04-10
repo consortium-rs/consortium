@@ -33,7 +33,10 @@ where
         Ok(len)
     }
 
-    fn decode(buf: &[u8]) -> Result<T, ProstError> {
+    fn decode<'buf>(buf: &'buf [u8]) -> Result<Self::Decoded<'buf>, ProstError>
+    where
+        T: 'buf,
+    {
         T::decode(buf).map_err(ProstError::Decode)
     }
 }

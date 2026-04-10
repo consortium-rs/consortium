@@ -1,0 +1,99 @@
+use consortium_common::codec::{Codec, CodecFor};
+
+pub struct RkyvCodec<const SCRATCH: usize>;
+
+/// A marker trait to indicate that the type can be safely archived and deserialized without validation.
+///
+/// Because in `no_alloc`, the `rkyv' didn't provide safe access to archived data, we need to ensure that the types we archive are safe to access without validation.
+///
+/// # Safety
+///
+/// When the data is strictly aligned via `#[repr(align(16))]`, it is safe to access the archived data without validation. This is because the alignment guarantees that the data will be correctly aligned in memory, preventing undefined behavior when accessing it.
+///
+/// Though only in `no_alloc` mode need this trait, using this marker to indicate that the type is safe to archive and deserialize without validation can help prevent misuse and ensure that the types we archive are always safe to access, regardless of the features enabled.
+///
+/// In `no_alloc` mode, we only serialize and deserialize the types implementing this trait, ensuring that all archived data is safe to access without validation. This allows us to maintain safety guarantees even in the absence of allocation and validation capabilities.
+pub unsafe trait TrustedArchive: rkyv::Archive {}
+
+impl<const SCRATCH: usize> Codec for RkyvCodec<SCRATCH> {
+    type Error = rkyv::rancor::Error;
+}
+#[cfg(feature = "alloc")]
+use rkyv::{
+    Archive, Serialize,
+    api::high::{HighSerializer, HighValidator},
+    bytecheck::CheckBytes,
+    rancor::Error as RkyvError,
+    ser::allocator::ArenaHandle,
+    util::AlignedVec,
+};
+
+#[cfg(feature = "alloc")]
+impl<T, const SCRATCH: usize> CodecFor<T> for RkyvCodec<SCRATCH>
+where
+    T: Archive + for<'a> Serialize<HighSerializer<AlignedVec, ArenaHandle<'a>, RkyvError>>,
+    T::Archived: for<'buf> CheckBytes<HighValidator<'buf, RkyvError>>,
+{
+    type Decoded<'buf>
+        = &'buf T::Archived
+    where
+        T: 'buf;
+
+    fn encode(msg: &T, buf: &mut [u8]) -> Result<usize, Self::Error> {
+        let bytes = rkyv::to_bytes::<RkyvError>(msg)?;
+        let len = bytes.len();
+        buf[..len].copy_from_slice(&bytes);
+        Ok(len)
+    }
+
+    fn decode<'buf>(buf: &'buf [u8]) -> Result<Self::Decoded<'buf>, Self::Error>
+    where
+        T: 'buf,
+    {
+        rkyv::access::<T::Archived, RkyvError>(buf)
+    }
+}
+
+#[cfg(not(feature = "alloc"))]
+use rkyv::{
+    Serialize,
+    api::low::{LowSerializer, to_bytes_in_with_alloc},
+    rancor,
+    ser::{allocator::SubAllocator, writer::Buffer},
+    util::Align,
+};
+
+#[cfg(not(feature = "alloc"))]
+impl<T, const SCRATCH: usize> CodecFor<T> for RkyvCodec<SCRATCH>
+where
+    T: TrustedArchive
+        + for<'a> Serialize<LowSerializer<Buffer<'a>, SubAllocator<'a>, rancor::Error>>,
+{
+    type Decoded<'buf>
+        = &'buf T::Archived
+    where
+        T: 'buf;
+
+    fn encode(msg: &T, buf: &mut [u8]) -> Result<usize, Self::Error> {
+        use core::mem::MaybeUninit;
+        let mut output = Align([MaybeUninit::<u8>::uninit(); SCRATCH]);
+        let mut alloc = [MaybeUninit::<u8>::uninit(); SCRATCH];
+        let bytes = to_bytes_in_with_alloc::<_, _, rancor::Error>(
+            msg,
+            Buffer::from(&mut *output),
+            SubAllocator::new(&mut alloc),
+        )?;
+        let len = bytes.len();
+        buf[..len].copy_from_slice(&bytes);
+        Ok(len)
+    }
+
+    fn decode<'buf>(buf: &'buf [u8]) -> Result<Self::Decoded<'buf>, Self::Error>
+    where
+        T: 'buf,
+    {
+        // SAFETY: T: TrustedArchive guarantees buf was produced by encode
+        // and is correctly aligned
+        Ok(unsafe { rkyv::access_unchecked::<T::Archived>(buf) })
+    }
+}

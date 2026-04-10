@@ -1,0 +1,13 @@
+[package]
+name = "consortium-codec-rkyv"
+version.workspace = true
+edition.workspace = true
+
+[features]
+alloc = ["rkyv/alloc", "rkyv/bytecheck"]
+std = ["rkyv/std", "rkyv/bytecheck", "alloc"]
+default = ["std"]
+
+[dependencies]
+rkyv = { version = "0.8.15", default-features = false, features = ["bytecheck"] }
+consortium-common = { path = "../consortium-common" }
