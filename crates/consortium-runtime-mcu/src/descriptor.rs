@@ -120,7 +120,5 @@ unsafe fn wv_u8(base: *mut u8, offset: usize, value: u8) {
 }
 
 unsafe fn rv_u32(base: *const u8, offset: usize) -> u32 {
-    unsafe {
-        (base.add(offset) as *const u32).read_volatile()
-    }
+    unsafe { (base.add(offset) as *const u32).read_volatile() }
 }

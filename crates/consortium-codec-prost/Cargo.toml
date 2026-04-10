@@ -1,0 +1,8 @@
+[package]
+name = "consortium-codec-prost"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+prost = { version = "0.14.3", default-features = false }
+consortium-common = { path = "../consortium-common" }

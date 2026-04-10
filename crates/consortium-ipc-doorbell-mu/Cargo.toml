@@ -8,9 +8,9 @@ edition.workspace = true
 # Chip selection — choose exactly one.  Defaults to imx93 for backwards
 # compatibility.  Enabling both is a compile error.
 default = ["imx95", "mua"]
-imx8mp = []   # 1 MU instance (i.MX 8M Plus)
-imx93 = []   # 2 MU instances (i.MX 93)
-imx95 = []   # 8 MU instances (i.MX 95)
+imx8mp = []                # 1 MU instance (i.MX 8M Plus)
+imx93 = []                 # 2 MU instances (i.MX 93)
+imx95 = []                 # 8 MU instances (i.MX 95)
 
 mua = []
 mub = []
