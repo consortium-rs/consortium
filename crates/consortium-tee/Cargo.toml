@@ -5,11 +5,15 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 
+[features]
+ta = []
+ca = ["dep:optee-teec", "dep:tokio"]
+default = ["ca"]
 
 [dependencies]
 thiserror = "2.0.18"
 consortium-tee-proc-macros = { path = "../consortium-tee-proc-macros" }
+tokio = { version = "1", default-features = false, optional = true }
 
 [target.'cfg(target_os = "linux")'.dependencies]
-optee-teec = "0.8.0"
-tokio = { version = "1", default-features = false }
+optee-teec = { version = "0.8.0", optional = true }

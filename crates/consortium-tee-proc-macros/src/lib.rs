@@ -68,6 +68,23 @@ pub fn tee_service(input: TokenStream) -> TokenStream {
         }
     };
 
+    let impl_primitive = quote! {
+        impl From<u32> for Command {
+            fn from(val: u32) -> Self {
+                match val {
+                    #(#discriminants => Command::#variant_idents,)*
+                    _ => Command::Unknown,
+                }
+            }
+        }
+
+        impl From<Command> for u32 {
+            fn from(cmd: Command) -> Self {
+                cmd as u32
+            }
+        }
+    };
+
     let dispatch_fns: Vec<Ident> = commands
         .iter()
         .map(|cmd| Ident::new(&format!("{}_dispatched", cmd), cmd.span()))
@@ -75,28 +92,28 @@ pub fn tee_service(input: TokenStream) -> TokenStream {
 
     let invoke_fn = if let Some(ctx_ident) = context {
         quote! {
-            #[invoke_command]
-            pub(crate) fn invoke_command(
+            #[cfg(feature = "ta")]
+            pub fn invoke_command(
                 ctx: &mut #ctx_ident,
                 cmd: u32,
-                params: &mut optee_utee::Parameters,
-            ) -> Result<()> {
+                params: &mut ::optee_utee::Parameters,
+            ) -> ::optee_utee::Result<()> {
                 match Command::from(cmd) {
                     #(Command::#variant_idents => #dispatch_fns(ctx, params),)*
-                    Command::Unknown => Err(Error::UnknownCommand),
+                    Command::Unknown => Err(::optee_utee::ErrorKind::BadParameters.into()),
                 }
             }
         }
     } else {
         quote! {
-            #[invoke_command]
-            pub(crate) fn invoke_command(
+            #[cfg(feature = "ta")]
+            pub fn invoke_command(
                 cmd: u32,
-                params: &mut optee_utee::Parameters,
-            ) -> Result<()> {
+                params: &mut ::optee_utee::Parameters,
+            ) -> ::optee_utee::Result<()> {
                 match Command::from(cmd) {
                     #(Command::#variant_idents => #dispatch_fns(params),)*
-                    Command::Unknown => Err(Error::UnknownCommand),
+                    Command::Unknown => Err(::optee_utee::ErrorKind::BadParameters.into()),
                 }
             }
         }
@@ -104,6 +121,7 @@ pub fn tee_service(input: TokenStream) -> TokenStream {
 
     quote! {
         #command_enum
+        #impl_primitive
         #invoke_fn
     }
     .into()
@@ -111,7 +129,7 @@ pub fn tee_service(input: TokenStream) -> TokenStream {
 
 /// Generates two companion functions for a TA command handler.
 ///
-/// **`function_name_dispatched`** (TA side) — unpacks `optee_utee::Parameters` into typed
+/// **`function_name_dispatched`** (TA side) — unpacks `::optee_utee::Parameters` into typed
 /// arguments, calls the original function, and if it returns a non-`()` value, flushes that
 /// value back into the next available output parameter slot before returning `Ok(())`.
 ///
@@ -266,14 +284,14 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
         let ctx_pat = &ctx.pat;
         let ctx_ty = &ctx.ty;
         quote! {
-            fn #dispatched_name(#ctx_pat: #ctx_ty, #param_binding: &mut optee_utee::Parameters) -> Result<()> {
+            fn #dispatched_name(#ctx_pat: #ctx_ty, #param_binding: &mut ::optee_utee::Parameters) -> ::optee_utee::Result<()> {
                 #(#unpack_stmts)*
                 #call_and_flush
             }
         }
     } else {
         quote! {
-            fn #dispatched_name(#param_binding: &mut optee_utee::Parameters) -> Result<()> {
+            fn #dispatched_name(#param_binding: &mut ::optee_utee::Parameters) -> ::optee_utee::Result<()> {
                 #(#unpack_stmts)*
                 #call_and_flush
             }
@@ -310,7 +328,7 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
 
     // Parameters::new always takes exactly 4 args.
     while new_params_args.len() < 4 {
-        new_params_args.push(quote! { optee_utee::ParamNone });
+        new_params_args.push(quote! { ::optee_utee::ParamNone });
     }
 
     let command_variant = Ident::new(&fn_name.to_string().to_pascal_case(), fn_name.span());
@@ -321,9 +339,9 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
         let read_back = gen_output_read_ca(tee_params.len(), out_ty, codec);
         quote! {
             #[cfg(feature = "ca")]
-            fn #call_name(session: &mut optee_teec::Session, #(#ca_sig_args),*) -> consortium_tee::TeeResult<#out_ty> {
+            fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<#out_ty> {
                 #(#pack_stmts)*
-                let mut _operation = optee_teec::Operation::new(0, #(#new_params_args),*);
+                let mut _operation = ::optee_teec::Operation::new(0, #(#new_params_args),*);
                 session.invoke_command(Command::#command_variant as u32, &mut _operation)?;
                 #(#post_invoke_stmts)*
                 Ok(#read_back)
@@ -332,9 +350,9 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
     } else if !post_invoke_stmts.is_empty() {
         quote! {
             #[cfg(feature = "ca")]
-            fn #call_name(session: &mut optee_teec::Session, #(#ca_sig_args),*) -> consortium_tee::TeeResult<()> {
+            fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<()> {
                 #(#pack_stmts)*
-                let mut _operation = optee_teec::Operation::new(0, #(#new_params_args),*);
+                let mut _operation = ::optee_teec::Operation::new(0, #(#new_params_args),*);
                 session.invoke_command(Command::#command_variant as u32, &mut _operation)?;
                 #(#post_invoke_stmts)*
                 Ok(())
@@ -343,9 +361,9 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
     } else {
         quote! {
             #[cfg(feature = "ca")]
-            fn #call_name(session: &mut optee_teec::Session, #(#ca_sig_args),*) -> consortium_tee::TeeResult<()> {
+            fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<()> {
                 #(#pack_stmts)*
-                let mut _operation = optee_teec::Operation::new(0, #(#new_params_args),*);
+                let mut _operation = ::optee_teec::Operation::new(0, #(#new_params_args),*);
                 session.invoke_command(Command::#command_variant as u32, &mut _operation)
             }
         }
@@ -369,7 +387,7 @@ pub fn derive_tee_param(item: TokenStream) -> TokenStream {
     let name = &input.ident;
     let (impl_generics, ty_generics, where_clause) = input.generics.split_for_impl();
     quote! {
-        impl #impl_generics consortium_tee::TeeParam for #name #ty_generics #where_clause {
+        impl #impl_generics ::consortium_tee::TeeParam for #name #ty_generics #where_clause {
             const MAX_SIZE: usize = 1024;
         }
     }
@@ -684,14 +702,14 @@ fn gen_unpack(
             let unpack = quote! {
                 // SAFETY: slot #idx is MemrefInout — type match guaranteed by #[tee_command]
                 let mut #tmp = unsafe { params.#idx.as_memref()? };
-                let mut #val_tmp: #inner_ty = <#c as consortium_common::codec::CodecFor<#inner_ty>>::decode(#tmp.buffer())
-                    .map_err(|_| optee_utee::Error::new(optee_utee::ErrorKind::BadParameters))?;
+                let mut #val_tmp: #inner_ty = <#c as ::consortium_common::codec::CodecFor<#inner_ty>>::decode(#tmp.buffer())
+                    .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
                 let #pat: &mut #inner_ty = &mut #val_tmp;
             };
             let flush = quote! {
                 // Re-serialize &mut T back into MemrefInout slot.
-                <#c as consortium_common::codec::CodecFor<#inner_ty>>::encode(#pat as &#inner_ty, #tmp.buffer())
-                    .map_err(|_| optee_utee::Error::new(optee_utee::ErrorKind::BadParameters))?;
+                <#c as ::consortium_common::codec::CodecFor<#inner_ty>>::encode(#pat as &#inner_ty, #tmp.buffer())
+                    .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
             };
             return (unpack, Some(flush), slot + 1);
         } else {
@@ -709,8 +727,8 @@ fn gen_unpack(
             let stmt = quote! {
                 // SAFETY: slot #idx is MemrefInput — type match guaranteed by #[tee_command]
                 let mut #tmp = unsafe { params.#idx.as_memref()? };
-                let #pat = <#c as consortium_common::codec::CodecFor<#ty>>::decode(#tmp.buffer())
-                    .map_err(|_| optee_utee::Error::new(optee_utee::ErrorKind::BadParameters))?;
+                let #pat = <#c as ::consortium_common::codec::CodecFor<#ty>>::decode(#tmp.buffer())
+                    .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
             };
             return (stmt, None, slot + 1);
         } else {
@@ -771,8 +789,8 @@ fn gen_flush_ta(
             quote! {
                 // SAFETY: slot #idx is MemrefOutput — type match guaranteed by #[tee_command]
                 let mut __p_out = unsafe { params.#idx.as_memref()? };
-                <#c as consortium_common::codec::CodecFor<#ty>>::encode(&__ret_val, __p_out.buffer())
-                    .map_err(|_| optee_utee::Error::new(optee_utee::ErrorKind::BadParameters))?;
+                <#c as ::consortium_common::codec::CodecFor<#ty>>::encode(&__ret_val, __p_out.buffer())
+                    .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
             }
         } else {
             quote! { compile_error!("codec = ... is required for TeeParam types; use #[tee_command(codec = MyCodec)]"); }
@@ -884,16 +902,16 @@ fn gen_pack_ca(
             let buf_ident = Ident::new(&format!("__inout_buf_{}", slot), Span::call_site());
             let param_n = quote::format_ident!("param_{}", slot);
             let pack = quote! {
-                let mut #buf_ident = vec![0u8; <#inner_ty as consortium_tee::TeeParam>::MAX_SIZE];
-                <#c as consortium_common::codec::CodecFor<#inner_ty>>::encode(#pat as &#inner_ty, &mut #buf_ident)
-                    .map_err(|_| consortium_tee::TeeError::ParamMismatch)?;
+                let mut #buf_ident = vec![0u8; <#inner_ty as ::consortium_tee::TeeParam>::MAX_SIZE];
+                <#c as ::consortium_common::codec::CodecFor<#inner_ty>>::encode(#pat as &#inner_ty, &mut #buf_ident)
+                    .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
                 let #slot_ident = ParamTmpRef::new_inout(&mut #buf_ident);
             };
             let read_back = quote! {
                 *#pat = {
                     let __m = _operation.#param_n().as_memref();
-                    <#c as consortium_common::codec::CodecFor<#inner_ty>>::decode(&__m.buffer()[..__m.size()])
-                        .map_err(|_| consortium_tee::TeeError::ParamMismatch)?
+                    <#c as ::consortium_common::codec::CodecFor<#inner_ty>>::decode(&__m.buffer()[..__m.size()])
+                        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
                 };
             };
             return (pack, Some(read_back));
@@ -910,9 +928,9 @@ fn gen_pack_ca(
         if let Some(c) = codec {
             let ser_ident = Ident::new(&format!("__ser_{}", slot), Span::call_site());
             let pack = quote! {
-                let mut #ser_ident = vec![0u8; <#ty as consortium_tee::TeeParam>::MAX_SIZE];
-                <#c as consortium_common::codec::CodecFor<#ty>>::encode(&#pat, &mut #ser_ident)
-                    .map_err(|_| consortium_tee::TeeError::ParamMismatch)?;
+                let mut #ser_ident = vec![0u8; <#ty as ::consortium_tee::TeeParam>::MAX_SIZE];
+                <#c as ::consortium_common::codec::CodecFor<#ty>>::encode(&#pat, &mut #ser_ident)
+                    .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
                 let #slot_ident = ParamTmpRef::new_input(&#ser_ident);
             };
             return (pack, None);
@@ -943,7 +961,7 @@ fn gen_output_pack_ca(slot_ident: &Ident, ty: &syn::Type, slot: usize) -> proc_m
     } else if is_tee_param_path(ty) {
         let buf_ident = Ident::new(&format!("__out_buf_{}", slot), Span::call_site());
         quote! {
-            let mut #buf_ident = vec![0u8; <#ty as consortium_tee::TeeParam>::MAX_SIZE];
+            let mut #buf_ident = vec![0u8; <#ty as ::consortium_tee::TeeParam>::MAX_SIZE];
             let #slot_ident = ParamTmpRef::new_output(&mut #buf_ident);
         }
     } else {
@@ -980,8 +998,8 @@ fn gen_output_read_ca(
             quote! {
                 {
                     let __m = _operation.#s().as_memref();
-                    <#c as consortium_common::codec::CodecFor<#ty>>::decode(&__m.buffer()[..__m.size()])
-                        .map_err(|_| consortium_tee::TeeError::ParamMismatch)?
+                    <#c as ::consortium_common::codec::CodecFor<#ty>>::decode(&__m.buffer()[..__m.size()])
+                        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
                 }
             }
         } else {

@@ -1,6 +1,7 @@
 // `TeeParam` and the derive macros are ungated from the Linux restriction — they must be
 // available on every target (TA code running in the TEE secure world is not Linux).
 // Error types and the TEE runtime (optee-teec) remain Linux-only.
+#![no_std]
 
 /// Marker trait for types that can be passed through a TEE memref slot via a codec.
 ///
@@ -33,7 +34,7 @@ pub trait TeeParam {
 
 pub use consortium_tee_proc_macros::{TeeParam, tee_command, tee_service};
 
-#[cfg(target_os = "linux")]
+#[cfg(all(target_os = "linux", feature = "ca"))]
 pub mod error;
-#[cfg(target_os = "linux")]
+#[cfg(all(target_os = "linux", feature = "ca"))]
 pub use error::{TeeError, TeeErrorOrigin, TeeResult};
