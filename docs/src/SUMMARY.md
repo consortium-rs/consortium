@@ -14,6 +14,7 @@
         - [HSEM/MU Comparison](dev/ipc/hsem-mu.md)
         - [Runtime Initialization](dev/ipc/runtime_init.md)
         - [Rustling Beaming Adleman](dev/ipc/rustling-beaming-adleman.md)
+        - [GPIO Doorbell](dev/ipc/gpio-doorbell.md)
     - [DTS Subsystem](dev/dts/index.md)
         - [Peripheral PAC Design](dev/dts/peripheral-pac-design.md)
     - [TEE Subsystem](dev/tee/index.md)
