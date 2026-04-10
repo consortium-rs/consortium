@@ -6,7 +6,10 @@
       "Bash(cargo build:*)",
       "Bash(cargo check:*)",
       "Bash(export PATH=/opt/homebrew/bin:$PATH)",
-      "Bash(grep -r \"libc\" crates/*/Cargo.toml)"
+      "Bash(grep -r \"libc\" crates/*/Cargo.toml)",
+      "Bash(cargo clippy:*)",
+      "Bash(grep -r \"postcard\" /Users/ethangoh/Developer/consortium/crates/consortium-tee* --include=\"*.rs\" --include=\"*.toml\")",
+      "Bash(grep -r \"serde\" /Users/ethangoh/Developer/consortium/crates/consortium-tee* --include=\"*.rs\" --include=\"*.toml\")"
     ]
   }
 }
