@@ -21,6 +21,7 @@ consortium-ipc = { path = "../consortium-ipc", features = ["std"] }
 consortium-ipc-doorbell-hsem = { path = "../consortium-ipc-doorbell-hsem", features = [
   "std",
 ], optional = true }
+consortium-common = { path = "../consortium-common" }
 consortium-ipc-doorbell-mu = { path = "../consortium-ipc-doorbell-mu", features = [
   "std",
 ], optional = true }
