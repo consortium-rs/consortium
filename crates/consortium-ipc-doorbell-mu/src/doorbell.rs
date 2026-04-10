@@ -287,6 +287,7 @@ impl<'a> core::future::Future for MuWaitFut<'a> {
 
             // SAFETY: GSR[GIPn] confirmed set; base and gi_idx are valid.
             unsafe { MuDoorbell::clear_gsr_gip(base, gi_idx) };
+            // SAFETY: base is valid; gi_idx < 4; called from single executor task.
             unsafe { MuDoorbell::disable_gi_interrupt(base, gi_idx) };
 
             Poll::Ready(Ok(self.ch))

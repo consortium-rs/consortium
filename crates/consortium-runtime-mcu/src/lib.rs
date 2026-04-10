@@ -31,14 +31,19 @@ pub use consortium_ipc_transport_mem;
 /// # Safety
 ///
 /// Caller must ensure the computed pointers are valid for the slot size.
-pub fn slot_pair_ptrs(
+pub unsafe fn slot_pair_ptrs(
     region_base: *mut u8,
     slot_idx: usize,
     slot_size: usize,
 ) -> (*mut u8, *mut u8) {
     let tx_offset = slot_idx * 2 * slot_size;
     let rx_offset = slot_idx * 2 * slot_size + slot_size;
-    unsafe { (region_base.add(tx_offset), region_base.add(rx_offset)) }
+    (
+        // SAFETY: the caller must ensure that `region_base` points to a valid shared memory region and that the computed offsets are within bounds for the number of slots and their sizes.
+        unsafe { region_base.add(tx_offset) },
+        // SAFETY: the caller must ensure that `region_base` is valid and that the computed offsets are within bounds of the shared memory region.
+        unsafe { region_base.add(rx_offset) },
+    )
 }
 
 /// Macro for declaring a static scratch buffer with proper alignment.

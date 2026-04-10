@@ -296,7 +296,16 @@ The UUID lives here and nowhere else. It is not part of `tee_service!`.
 
 ---
 
+## Advanced Parameter Types
+
+See `tee-advanced-type-system.md` for full documentation on:
+
+- Additional primitive types: `i32`, `u64`, `(u32, u32)` value pairs
+- Output value parameters: `&mut u32`, `&mut i32`, `&mut u64`
+- Serialized types: `T: TeeParam` with pluggable codecs via `#[tee_command(codec = MyCodec)]`
+
+---
+
 ## Future Work
 
 - **Lifecycle hooks** — `triggers { on_create, on_open_session, on_close_session, on_destroy }` block inside `tee_service!`, mapping to GlobalPlatform entry points with compile-time signature checking
-- **Advanced parameter types** — `(u32, u32)` pairs, `i32`, `&mut u32`/`&mut u64` output parameters, and serialized structs via `TeeParam` / `postcard` — see `tee-advanced-type-system.md`

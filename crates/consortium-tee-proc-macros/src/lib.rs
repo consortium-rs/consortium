@@ -189,7 +189,7 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
     let has_output = output_ty.is_some();
     let ret_is_result = is_result_returning(&input.sig.output);
 
-    // ── TA side: unpack stmts ────────────────────────────────────────────────
+    // TA side: unpack stmts
     let mut slot_index = 0usize;
     let mut unpack_stmts = vec![];
     let mut post_call_stmts = vec![];
@@ -215,7 +215,7 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
     // Output slot index (immediately after the last input slot).
     let output_slot = slot_index;
 
-    // ── TA side: call + optional flush ──────────────────────────────────────
+    // TA side: call + optional flush
     let call_and_flush = if let Some(out_ty) = output_ty {
         let flush = gen_flush_ta(output_slot, out_ty, codec);
         if ret_is_result {
@@ -261,7 +261,7 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
         quote! { _params }
     };
 
-    // ── TA dispatched fn ────────────────────────────────────────────────────
+    //  TA dispatched fn
     let dispatched_fn = if let Some(ctx) = ctx_param {
         let ctx_pat = &ctx.pat;
         let ctx_ty = &ctx.ty;
@@ -280,7 +280,7 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
         }
     };
 
-    // ── CA side: pack stmts ─────────────────────────────────────────────────
+    //  CA side: pack stmts
     let mut pack_stmts = vec![];
     let mut post_invoke_stmts = vec![];
     let mut ca_sig_args = vec![];
@@ -315,7 +315,7 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
 
     let command_variant = Ident::new(&fn_name.to_string().to_pascal_case(), fn_name.span());
 
-    // ── CA fn ───────────────────────────────────────────────────────────────
+    //  CA fn
     let ca_fn = if has_output {
         let out_ty = output_ty.unwrap();
         let read_back = gen_output_read_ca(tee_params.len(), out_ty, codec);
@@ -376,7 +376,7 @@ pub fn derive_tee_param(item: TokenStream) -> TokenStream {
     .into()
 }
 
-// ── Type helpers ─────────────────────────────────────────────────────────────
+//  Type helpers
 
 fn get_output_type(ret: &syn::ReturnType) -> Option<&syn::Type> {
     let ty = match ret {
@@ -532,7 +532,7 @@ fn is_mut_tee_param_ref(ty: &syn::Type) -> bool {
     false
 }
 
-// ── TA-side unpack / flush code generation ───────────────────────────────────
+//  TA-side unpack / flush code generation
 
 /// Returns `(unpack_stmt, optional_post_call_flush, next_slot_index)`.
 /// The post_call_flush is emitted after the inner function returns (for inout slots).
@@ -782,7 +782,7 @@ fn gen_flush_ta(
     }
 }
 
-// ── CA-side pack / read-back code generation ─────────────────────────────────
+//  CA-side pack / read-back code generation
 
 /// Returns `(pack_stmt, optional_post_invoke_readback)`.
 /// The post_invoke_readback writes results back into inout pointer args.

@@ -15,7 +15,7 @@ where
     where
         T: 'buf;
 
-    fn encode<'buf>(msg: &T, buf: &'buf mut [u8]) -> Result<usize, postcard::Error> {
+    fn encode(msg: &T, buf: &mut [u8]) -> Result<usize, postcard::Error> {
         let written = postcard::to_slice(msg, buf)?;
         Ok(written.len())
     }

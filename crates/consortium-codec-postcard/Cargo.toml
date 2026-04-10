@@ -2,6 +2,7 @@
 name = "consortium-codec-postcard"
 version.workspace = true
 edition.workspace = true
+license.workspace = true
 
 [dependencies]
 consortium-common = { path = "../consortium-common" }

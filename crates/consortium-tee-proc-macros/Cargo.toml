@@ -3,6 +3,7 @@ name = "consortium-tee-proc-macros"
 description = "Proc-macros for Consortium TEE: tee_service!, #[tee_command], and #[derive(TeeParam)] with pluggable codec support"
 version.workspace = true
 edition.workspace = true
+license.workspace = true
 
 [lib]
 proc-macro = true

@@ -3,6 +3,7 @@ name = "consortium-tee"
 description = "Trusted Execution Environment (TEE) support for Consortium with pluggable codec serialization via consortium_common::codec::CodecFor"
 version.workspace = true
 edition.workspace = true
+license.workspace = true
 
 
 [dependencies]

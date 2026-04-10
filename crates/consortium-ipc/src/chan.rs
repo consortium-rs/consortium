@@ -9,6 +9,10 @@ impl Chan {
         P::validate(id)
     }
 
+    /// # Safety
+    ///
+    /// This constructor does not perform any validation on the provided `id`. It is the caller's responsibility to ensure that the `id` is valid for the intended platform and use case.
+    ///
     /// In driver implementations, the implementor should refer to the platform-specific documentation for the valid range of channel IDs.
     /// Hence, this function is unsafe and should be used with caution.
     ///
@@ -30,6 +34,7 @@ impl Chan {
     ///        }
     ///    }
     /// }
+    ///
     /// ```
     pub unsafe fn new_unchecked(id: u8) -> Self {
         Self(id)

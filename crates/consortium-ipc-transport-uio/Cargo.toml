@@ -3,6 +3,7 @@ name = "consortium-ipc-transport-uio"
 description = "UIO-based IPC transport for Consortium"
 version.workspace = true
 edition.workspace = true
+license.workspace = true
 
 [dependencies]
 consortium-ipc = { path = "../consortium-ipc", features = ["std", "futures"] }

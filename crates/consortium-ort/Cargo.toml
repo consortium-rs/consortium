@@ -3,6 +3,7 @@ name = "consortium-ort"
 description = "ONNX Runtime (ORT) library for Consortium"
 version.workspace = true
 edition.workspace = true
+license.workspace = true
 
 [features]
 tracing = ["ort/tracing"]

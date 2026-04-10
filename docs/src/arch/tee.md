@@ -191,34 +191,43 @@ async fn main() -> Result<()> {
 The `#[tee_command]` macro supports advanced type conversion:
 
 ```rust
-#[tee_command]
+#[derive(TeeParam, Serialize, Deserialize)]
+struct Config {
+    threshold: u32,
+    enabled: bool,
+}
+
+#[tee_command(codec = PostcardCodec)]  // ← specify codec for TeeParam types
 fn process(
     ctx: &mut TaContext,
     // Input types (TEE slots → Rust types)
     flag: bool,                          // ParamValue.a()
     count: u32,                          // ParamValue.a()
     data: &[u8],                         // ParamMemref.buffer()
-    config: &mut [u8],                  // ParamMemref (mutable)
-    custom: MyStruct,                    // serde::Deserialize
+    output: &mut [u8],                   // ParamMemref (mutable)
+    config: Config,                      // TeeParam (deserialized via codec)
 
     // Output types (Rust types → TEE slots)
-) -> Result<(u32, Vec<u8>)> {
+) -> Result<Vec<u8>> {
     // User logic
-    Ok((count * 2, data.to_vec()))
+    Ok(data.to_vec())
 }
 ```
 
 **Mapping:**
-| Rust Type | TEE Slot | Direction |
-|-----------|----------|-----------|
-| `bool` | ParamValue.a (u32) | in/out |
-| `u32` | ParamValue.a | in/out |
-| `u64` | ParamValue (a + b) | in/out |
-| `&[u8]` | ParamMemref (read-only) | in |
-| `&mut [u8]` | ParamMemref (read-write) | in/out |
-| `T: Serialize` | ParamMemref (postcard) | in |
-| `Vec<u8>` | ParamMemref (output buffer) | out |
-| `T: Serialize` | ParamMemref (postcard) | out |
+| Rust Type | TEE Slot | Direction | Notes |
+|-----------|----------|-----------|-------|
+| `bool` | ParamValue.a (u32) | in/out |  |
+| `u32`, `i32` | ParamValue.a | in/out |  |
+| `u64` | ParamValue (a + b) | in/out | split across a(low) and b(high) |
+| `&[u8]` | ParamMemref (read-only) | in |  |
+| `&mut [u8]` | ParamMemref (read-write) | in/out |  |
+| `T: TeeParam` | ParamMemref | in | deserialized via `codec` |
+| `&mut T: TeeParam` | ParamMemref | in/out | round-trip via `codec` |
+| `Vec<u8>` | ParamMemref (output buffer) | out |  |
+| `T: TeeParam` | ParamMemref | out | serialized via `codec` |
+
+For `TeeParam` types, the `#[tee_command(codec = ...)]` attribute is required. See `tee-advanced-type-system.md`.
 
 ## TEE Performance & Security
 
@@ -252,14 +261,19 @@ crate-type = ["cdylib"]
 optee_utee = "0.4"
 consortium-tee = { path = "../../consortium-tee" }
 consortium-tee-proc-macros = { path = "../../consortium-tee-proc-macros" }
-serde = { version = "1.0", features = ["derive"] }
-postcard = "1.0"
+consortium-common = { path = "../../consortium-common" }
+
+# Optional: add only if using TeeParam types
+# Example: if using PostcardCodec for serialization
+serde = { version = "1.0", features = ["derive"], optional = true }
+postcard = { version = "1.0", optional = true }
 
 [build-dependencies]
 optee_utee_build = "0.4"
 
 [features]
 ca = []  # CA-side code generation (enabled by CA's build)
+postcard-codec = ["serde", "dep:postcard"]  # Enable postcard codec support
 ```
 
 **Build process:**

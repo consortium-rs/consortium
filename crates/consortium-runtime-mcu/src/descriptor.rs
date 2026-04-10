@@ -59,6 +59,7 @@ pub unsafe fn write_descriptor(
     );
 
     // Write magic and version
+    // SAFETY: the caller must ensure that `base` is valid for at least `CHAN_TABLE_BASE + num_channels * CHAN_ENTRY_SIZE` bytes and that the memory is DMA-coherent.
     unsafe {
         wv_u32(base, 0x00, MAGIC);
         wv_u8(base, 0x04, VERSION);
@@ -85,6 +86,7 @@ pub unsafe fn write_descriptor(
 ///
 /// Caller must ensure `base` is valid for at least 4 bytes and DMA-coherent.
 pub unsafe fn set_state(base: *mut u8, state: DescState) {
+    // SAFETY: the caller must ensure that `base` is valid for at least 4 bytes and that the memory is DMA-coherent.
     unsafe {
         wv_u32(base, 0x14, state as u32);
     }
@@ -96,6 +98,7 @@ pub unsafe fn set_state(base: *mut u8, state: DescState) {
 ///
 /// Caller must ensure `base` is valid for at least 4 bytes and DMA-coherent.
 pub unsafe fn get_state(base: *const u8) -> DescState {
+    // SAFETY: the caller must ensure that `base` is valid for at least 4 bytes and that the memory is DMA-coherent.
     let val = unsafe { rv_u32(base, 0x14) };
     match val {
         0 => DescState::KernelInit,
@@ -107,18 +110,30 @@ pub unsafe fn get_state(base: *const u8) -> DescState {
     }
 }
 
+/// # Safety
+///
+/// The caller must ensure that `base` is valid for at least `offset + 4` bytes and that the memory is DMA-coherent.
 unsafe fn wv_u32(base: *mut u8, offset: usize, value: u32) {
+    // SAFETY: the caller must ensure that `base` is valid for at least `offset + 4` bytes and that the memory is DMA-coherent.
     unsafe {
         (base.add(offset) as *mut u32).write_volatile(value);
     }
 }
 
+/// # Safety
+///
+/// The caller must ensure that `base` is valid for at least `offset + 1` bytes and that the memory is DMA-coherent.
 unsafe fn wv_u8(base: *mut u8, offset: usize, value: u8) {
+    // SAFETY: the caller must ensure that `base` is valid for at least `offset + 1` bytes and that the memory is DMA-coherent.
     unsafe {
         base.add(offset).write_volatile(value);
     }
 }
 
+/// # Safety
+///
+/// The caller must ensure that `base` is valid for at least `offset + 4` bytes and that the memory is DMA-coherent.
 unsafe fn rv_u32(base: *const u8, offset: usize) -> u32 {
+    // SAFETY: the caller must ensure that `base` is valid for at least `offset + 4` bytes and that the memory is DMA-coherent.
     unsafe { (base.add(offset) as *const u32).read_volatile() }
 }

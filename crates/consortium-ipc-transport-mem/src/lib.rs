@@ -197,6 +197,7 @@ impl<D: Doorbell, R: Region> Future for RecvFut<'_, D, R> {
         // come from Channel's &'static mut [u8].
         let buf = unsafe { core::slice::from_raw_parts_mut(this.buf_ptr, this.buf_len) };
 
+        // SAFETY: try_read synchronises with the sender's write via the slot flags; if it returns Some, the payload is valid for buf_len bytes and we have exclusive access to the slot until we mark it consumed.
         if let Some(n) = unsafe { slot::try_read(tr.rx_slot, buf) } {
             return Poll::Ready(Ok(n));
         }

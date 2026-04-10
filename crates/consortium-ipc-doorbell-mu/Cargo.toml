@@ -3,6 +3,7 @@ name = "consortium-ipc-doorbell-mu"
 description = "MU (Messaging Unit) Doorbell driver for Consortium IPC"
 version.workspace = true
 edition.workspace = true
+license.workspace = true
 
 [features]
 # Chip selection — choose exactly one.  Defaults to imx93 for backwards
