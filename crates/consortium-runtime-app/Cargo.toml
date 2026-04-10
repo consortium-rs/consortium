@@ -26,3 +26,5 @@ consortium-ipc-doorbell-mu = { path = "../consortium-ipc-doorbell-mu", features 
 consortium-hmi = { path = "../consortium-hmi", optional = true }
 consortium-ffi = { path = "../consortium-ffi", optional = true }
 consortium-ort = { path = "../consortium-ort", optional = true }
+tokio = { version = "1", features = ["rt", "time", "io-util"] }
+libc = "0.2"

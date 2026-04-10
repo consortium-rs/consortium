@@ -281,9 +281,4 @@ The MU doorbell is ready to use. To create a firmware application:
    - Exchange messages bidirectionally via MU signaling
    - Verify error handling and timeouts
 
-**Note:** MU base addresses are platform-specific. For i.MX 93:
-- MU1 typically at `0x4422_0000` (A-side) and `0x4423_0000` (B-side)
-- MU2 typically at `0x4243_0000` (A-side) and similar offset for B-side
-- Consult your SoC's reference manual for exact addresses.
-
 See `documents/implementation-status.md` for detailed roadmap and effort estimates.
