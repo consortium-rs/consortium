@@ -38,3 +38,4 @@ unnecessary_safety_doc = "deny"
 multiple_unsafe_ops_per_block = "deny"
 
 [workspace.dependencies]
+embedded-hal = "1.0"

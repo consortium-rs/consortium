@@ -1,7 +1,16 @@
 [package]
 name = "consortium-ipc-doorbell-gpio"
+description = "GPIO doorbell for Consortium IPC"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 
+[features]
+std = ["dep:tokio", "dep:linux-embedded-hal", "consortium-ipc/std"]
+
 [dependencies]
+consortium-ipc = { path = "../consortium-ipc", default-features = false }
+atomic-waker = "1.1.2"
+embedded-hal = { workspace = true }
+tokio = { version = "1", features = ["sync"], optional = true }
+linux-embedded-hal = { version = "0.4", optional = true }
