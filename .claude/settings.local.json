@@ -9,7 +9,9 @@
       "Bash(grep -r \"libc\" crates/*/Cargo.toml)",
       "Bash(cargo clippy:*)",
       "Bash(grep -r \"postcard\" /Users/ethangoh/Developer/consortium/crates/consortium-tee* --include=\"*.rs\" --include=\"*.toml\")",
-      "Bash(grep -r \"serde\" /Users/ethangoh/Developer/consortium/crates/consortium-tee* --include=\"*.rs\" --include=\"*.toml\")"
+      "Bash(grep -r \"serde\" /Users/ethangoh/Developer/consortium/crates/consortium-tee* --include=\"*.rs\" --include=\"*.toml\")",
+      "Bash(cargo search:*)",
+      "Bash(rustup target:*)"
     ]
   }
 }

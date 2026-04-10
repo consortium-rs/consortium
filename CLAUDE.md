@@ -36,6 +36,19 @@ cargo fmt
 
 This is a Rust workspace providing an async abstraction for inter-processor communication on Heterogeneous Multi-Processing (HMP) SoCs, primarily targeting the STM32MP2 (Cortex-A + Cortex-M) and i.MX 95 (Cortex-A + Cortex-M).
 
+### Crate Organization Reference
+
+| Category | Purpose |
+|----------|---------|
+| **Core IPC** | `consortium-ipc` — traits, Channel<T, C>, Transport, Codec, Doorbell, Region |
+| **Transports** | `consortium-ipc-transport-mem` (M-core), `consortium-ipc-transport-uio` (A-core/Linux) |
+| **Doorbells** | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio` |
+| **Codecs** | `consortium-codec-postcard` (default), `consortium-codec-prost`, `consortium-codec-rkyv` |
+| **Runtimes** | `consortium-runtime-mcu` (M-core), `consortium-runtime-app` (A-core/Linux) |
+| **Config & Build** | `consortium-common`, `consortium-builder`, `consortium-cli` |
+| **TEE** | `consortium-tee`, `consortium-tee-proc-macros`, `consortium-tee-test` |
+| **Utilities** | `consortium-ffi`, `consortium-hmi`, `consortium-ort` |
+
 ### Crates
 
 **Core IPC (production-ready):**
@@ -53,6 +66,11 @@ This is a Rust workspace providing an async abstraction for inter-processor comm
 **Runtime:**
 - **`consortium-runtime-mcu`** — M-core runtime library with descriptor initialization (`descriptor` module) and IRQ integration (`irq` module). Provides helpers for shared memory slot management and interrupt coordination. `no_std`-compatible.
 - **`consortium-runtime-app`** — Linux-side application harness with descriptor helpers and remoteproc integration. Exports helpers for opening UIO channels and managing M-core lifecycle. Linux-only.
+
+**Codec Implementations:**
+- **`consortium-codec-postcard`** — Default binary codec; zero-copy compatible; compact encoding via `postcard` crate. Used by `Channel<T, C>` in most examples.
+- **`consortium-codec-prost`** — Protocol Buffers integration for cross-language messaging and schema evolution.
+- **`consortium-codec-rkyv`** — Zero-copy deserialization; useful for performance-critical paths where allocation overhead matters.
 
 **Trusted Execution Environment (complete):**
 - **`consortium-tee`** — OP-TEE integration. Provides error types (`TeeError`, `TeeErrorOrigin`, `TeeResult`). Linux-only.
@@ -175,6 +193,17 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 
 **Platform support:** i.MX 9x series (i.MX 93, i.MX 8M Plus, i.MX 95, etc.)
 
+### 🔄 In Progress: GPIO Doorbell
+
+**Status:** Implementation in `consortium-ipc-doorbell-gpio`
+
+**Features:**
+- General-purpose GPIO-based signaling for custom SoCs without dedicated hardware doorbell peripherals
+- Flexible pin configuration for interrupt routing between processors
+- Supports both polling and interrupt-driven wake mechanisms
+
+**Platform support:** Custom implementations; requires GPIO driver integration.
+
 To add a new doorbell:
 1. Create a new crate `consortium-ipc-doorbell-<name>` (or add module to existing crate)
 2. Implement the `Doorbell` trait (`ring()`, `wait()`, `pending()`)
@@ -236,3 +265,39 @@ The MU doorbell is ready to use. To create a firmware application:
    - Verify error handling and timeouts
 
 See `docs/src/dev/ipc/implementation-status.md` for detailed roadmap and effort estimates.
+
+---
+
+## Design Documentation
+
+For deeper architectural understanding, see the guides in `docs/src/`:
+- **ipc/index.md** — IPC design overview and slot protocol details
+- **ipc/ipc-qos-design.md** — Quality-of-service considerations (latency, throughput, ordering)
+- **tee/index.md** — OP-TEE trusted application SDK design
+- **arch/ffi.md** — FFI bindings and C interop patterns
+- **arch/ort.md** — ONNX Runtime integration for ML inference
+
+Build and serve the book locally: `mdbook serve docs/`
+
+---
+
+## Common Development Tasks
+
+**Adding support for a new chip:**
+1. Add variant to `Chip` enum in `consortium-common/src/lib.rs`
+2. Implement `has_rt_core()`, `remoteproc_name()`, and `programmable_rt_cores()` methods
+3. If hardware requires new doorbell: create `consortium-ipc-doorbell-<name>` crate
+4. Document register addresses and IRQ routing in CLAUDE.md
+
+**Implementing a new Doorbell:**
+1. Create crate `consortium-ipc-doorbell-<name>` with M-core and A-core implementations
+2. Implement `Doorbell` trait (`ring()`, `wait()`, `pending()`)
+3. Optionally implement `ChanValidate` for channel ID bounds
+4. Add unit tests using `MemTransport<YourDoorbell, SramRegion>`
+5. Document platform support and register access safety in module docs
+6. Unless Technical Reference Manual and register map are available in context, don't implement from scratch
+
+**Selecting a codec:**
+- **Default:** Use `PostcardCodec` for compact, `no_std`-compatible encoding
+- **Cross-language:** Use `ProstCodec` when messages must be understood by C, Python, or other languages
+- **Performance-critical:** Use `RkyvCodec` for zero-copy deserialization (requires `alloc` in some cases)
