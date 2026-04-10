@@ -9,5 +9,7 @@ std = ["rkyv/std", "rkyv/bytecheck", "alloc"]
 default = ["std"]
 
 [dependencies]
-rkyv = { version = "0.8.15", default-features = false, features = ["bytecheck"] }
+rkyv = { version = "0.8.15", default-features = false, features = [
+  "bytecheck",
+] }
 consortium-common = { path = "../consortium-common" }

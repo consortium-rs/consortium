@@ -1,0 +1,6 @@
+[package]
+name = "consortium-ipc-doorbell-gpio"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
