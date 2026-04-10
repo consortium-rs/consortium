@@ -224,6 +224,7 @@ dependencies = [
 name = "consortium-runtime-app"
 version = "0.1.0"
 dependencies = [
+ "consortium-common",
  "consortium-ffi",
  "consortium-hmi",
  "consortium-ipc",

@@ -1,13 +1,13 @@
-/// Single-slot buffer layout within the DMA-coherent region.
-///
-/// ```text
-/// [0..4]        len    : u32   — valid payload bytes
-/// [4..8]        flags  : u32   — FLAG_VALID | FLAG_CONSUMED
-/// [8..8+mtu]    payload: [u8]
-/// ```
-///
-/// Write order: payload → len → flags (ensures receiver sees consistent data).
-/// Read order:  check flags → read len → copy payload → write FLAG_CONSUMED.
+//! Single-slot buffer layout within the DMA-coherent region.
+//!
+//! ```text
+//! [0..4]        len    : u32   — valid payload bytes
+//! [4..8]        flags  : u32   — FLAG_VALID | FLAG_CONSUMED
+//! [8..8+mtu]    payload: [u8]
+//! ```
+//!
+//! Write order: payload → len → flags (ensures receiver sees consistent data).
+//! Read order:  check flags → read len → copy payload → write FLAG_CONSUMED.
 
 pub const SLOT_HEADER: usize = 8;
 

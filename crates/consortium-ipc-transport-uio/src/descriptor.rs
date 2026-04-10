@@ -1,26 +1,26 @@
-/// Descriptor layout in the DMA-coherent shared region.
-///
-/// ```text
-/// Offset  Size  Owner   Field
-/// 0x00    4     kernel  magic           0x434F_4E53 ("CONS")
-/// 0x04    1     kernel  version
-/// 0x05    1     kernel  num_channels
-/// 0x06    2     kernel  reserved
-/// 0x08    4     kernel  proposed_mtu
-/// 0x0C    4     m-side  accepted_mtu
-/// 0x10    4     kernel  effective_mtu
-/// 0x14    4     both    state           (DescState)
-/// 0x18    8     kernel  reserved
-/// 0x20    16*N  kernel  channel table
-/// ```
-///
-/// Each channel table entry (16 bytes):
-/// ```text
-/// +0x00  4  tx_offset   A→M slot byte offset in region
-/// +0x04  4  tx_size     slot size (SLOT_HEADER + effective_mtu)
-/// +0x08  4  rx_offset   M→A slot byte offset in region
-/// +0x0C  4  rx_size
-/// ```
+//! Descriptor layout in the DMA-coherent shared region.
+//!
+//! ```text
+//! Offset  Size  Owner   Field
+//! 0x00    4     kernel  magic           0x434F_4E53 ("CONS")
+//! 0x04    1     kernel  version
+//! 0x05    1     kernel  num_channels
+//! 0x06    2     kernel  reserved
+//! 0x08    4     kernel  proposed_mtu
+//! 0x0C    4     m-side  accepted_mtu
+//! 0x10    4     kernel  effective_mtu
+//! 0x14    4     both    state           (DescState)
+//! 0x18    8     kernel  reserved
+//! 0x20    16*N  kernel  channel table
+//! ```
+//!
+//! Each channel table entry (16 bytes):
+//! ```text
+//! +0x00  4  tx_offset   A→M slot byte offset in region
+//! +0x04  4  tx_size     slot size (SLOT_HEADER + effective_mtu)
+//! +0x08  4  rx_offset   M→A slot byte offset in region
+//! +0x0C  4  rx_size
+//! ```
 
 pub const MAGIC: u32 = 0x434F_4E53;
 pub const VERSION: u8 = 1;

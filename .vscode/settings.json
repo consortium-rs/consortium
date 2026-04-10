@@ -1,0 +1,6 @@
+{
+    "remote.autoForwardPorts": false,
+    "rust-analyzer.server.extraEnv": {
+        "RUSTUP_TOOLCHAIN": ""
+    }
+}

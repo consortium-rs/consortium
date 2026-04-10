@@ -3,6 +3,7 @@
 pub mod descriptor;
 pub mod remoteproc;
 
+use consortium_common::codec::CodecFor;
 pub use consortium_ipc as ipc;
 pub use consortium_ipc_transport_uio as ipc_uio;
 pub use consortium_tee as tee;
@@ -12,8 +13,6 @@ pub use consortium_ipc_doorbell_hsem as hsem;
 
 #[cfg(feature = "imx9x")]
 pub use consortium_ipc_doorbell_mu as mu;
-
-use std::time::Duration;
 
 /// Open a UIO device and create a typed channel for receiving messages.
 ///
@@ -37,13 +36,13 @@ use std::time::Duration;
 /// let buf = static_buf!(MY_BUF, 512);
 /// let rx: Channel<Rx, MyMessage, _> = open_rx_channel(0, Chan(1), buf.init([0u8; 512]))?;
 /// ```
-pub async fn open_rx_channel<T, const N: usize>(
+pub async fn open_rx_channel<T, const N: usize, C>(
     uio_num: usize,
     chan: ipc::Chan,
     buf: &'static mut [u8; N],
-) -> Result<ipc::Channel<ipc::dir::Rx, T, ipc_uio::UioChannel>, Box<dyn std::error::Error>>
+) -> Result<ipc::Channel<ipc::channel::Rx, T, ipc_uio::UioChannel, C>, Box<dyn std::error::Error>>
 where
-    T: serde::de::DeserializeOwned,
+    C: CodecFor<T>,
 {
     // Call wait_for_ready before opening if you need to wait for M-core initialization.
     // Example: descriptor::wait_for_ready(uio_num, Duration::from_secs(10)).await?;
@@ -69,13 +68,13 @@ where
 /// # Errors
 ///
 /// Returns an error if the UIO device cannot be opened or the channel ID is invalid.
-pub async fn open_tx_channel<T, const N: usize>(
+pub async fn open_tx_channel<T, const N: usize, C>(
     uio_num: usize,
     chan: ipc::Chan,
     buf: &'static mut [u8; N],
-) -> Result<ipc::Channel<ipc::dir::Tx, T, ipc_uio::UioChannel>, Box<dyn std::error::Error>>
+) -> Result<ipc::Channel<ipc::channel::Tx, T, ipc_uio::UioChannel, C>, Box<dyn std::error::Error>>
 where
-    T: serde::Serialize,
+    C: CodecFor<T>,
 {
     let dev = ipc_uio::UioDevice::open(uio_num)?;
     let transport = dev.channel(chan)?;

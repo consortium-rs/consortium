@@ -1,3 +1,4 @@
+use std::fmt::Display;
 use std::io::Result;
 use std::path::PathBuf;
 use std::time::Duration;
@@ -48,16 +49,16 @@ impl From<String> for RemoteProcState {
     }
 }
 
-impl ToString for RemoteProcState {
-    fn to_string(&self) -> String {
+impl Display for RemoteProcState {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            RemoteProcState::Offline => "offline".to_string(),
-            RemoteProcState::Suspended => "suspended".to_string(),
-            RemoteProcState::Running => "running".to_string(),
-            RemoteProcState::Crashed => "crashed".to_string(),
-            RemoteProcState::Deleted => "deleted".to_string(),
-            RemoteProcState::Attached => "attached".to_string(),
-            RemoteProcState::Detached => "detached".to_string(),
+            RemoteProcState::Offline => write!(f, "offline"),
+            RemoteProcState::Suspended => write!(f, "suspended"),
+            RemoteProcState::Running => write!(f, "running"),
+            RemoteProcState::Crashed => write!(f, "crashed"),
+            RemoteProcState::Deleted => write!(f, "deleted"),
+            RemoteProcState::Attached => write!(f, "attached"),
+            RemoteProcState::Detached => write!(f, "detached"),
         }
     }
 }
@@ -80,12 +81,12 @@ impl From<String> for RemoteProcCoredump {
     }
 }
 
-impl ToString for RemoteProcCoredump {
-    fn to_string(&self) -> String {
+impl Display for RemoteProcCoredump {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            RemoteProcCoredump::Enabled => "enabled".to_string(),
-            RemoteProcCoredump::Disabled => "disabled".to_string(),
-            RemoteProcCoredump::Inline => "inline".to_string(),
+            RemoteProcCoredump::Disabled => write!(f, "disabled"),
+            RemoteProcCoredump::Enabled => write!(f, "enabled"),
+            RemoteProcCoredump::Inline => write!(f, "inline"),
         }
     }
 }
@@ -157,8 +158,7 @@ impl RemoteProc {
                         return Err(std::io::Error::new(
                             std::io::ErrorKind::TimedOut,
                             format!(
-                                "remoteproc did not reach state {} within {:?}",
-                                target.to_string(),
+                                "remoteproc did not reach state {target} within {:?}",
                                 timeout
                             ),
                         ));

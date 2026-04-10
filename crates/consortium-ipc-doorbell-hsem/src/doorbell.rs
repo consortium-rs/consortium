@@ -174,11 +174,6 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
     }
 
     #[inline]
-    fn rx_addr(&self, sem: u8) -> *mut u32 {
-        (self.base + sem as usize * 4) as *mut u32
-    }
-
-    #[inline]
     unsafe fn write_rx(&self, sem: u8, value: u32) {
         // SAFETY: caller must ensure sem is valid; self.base is a valid mmap'd address.
         unsafe { self.rx_addr(sem).write_volatile(value) }

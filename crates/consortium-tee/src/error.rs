@@ -16,10 +16,10 @@ pub enum TeeErrorOrigin {
 impl From<optee_teec::ErrorOrigin> for TeeErrorOrigin {
     fn from(o: optee_teec::ErrorOrigin) -> Self {
         match o {
-            optee_teec::ErrorOrigin::NotTrustedOs => Self::NotTrustedOs,
-            optee_teec::ErrorOrigin::TrustedOs => Self::TrustedOs,
-            optee_teec::ErrorOrigin::TrustedApplication => Self::TrustedApplication,
-            optee_teec::ErrorOrigin::Api => Self::Api,
+            optee_teec::ErrorOrigin::COMMS => Self::NotTrustedOs,
+            optee_teec::ErrorOrigin::TEE => Self::TrustedOs,
+            optee_teec::ErrorOrigin::TA => Self::TrustedApplication,
+            optee_teec::ErrorOrigin::API => Self::Api,
             _ => Self::Unknown,
         }
     }
