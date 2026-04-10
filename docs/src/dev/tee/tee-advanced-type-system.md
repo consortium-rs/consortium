@@ -2,35 +2,37 @@
 
 ## Status
 
-This document describes the **next implementation milestone** for `#[tee_command]`. The features below are not yet implemented.
+This document describes the **advanced type system** for `#[tee_command]`. Most features listed below are implemented; some remain planned.
 
 ### What is already implemented
 
-See `tee-sdk-design.md` for the current state. In brief:
+See `tee-sdk-design.md` for the baseline. Advanced types now fully implemented:
 
 | Category | Implemented types |
 |---|---|
-| Input parameters | `bool`, `u32`, `&[u8]`, `&mut [u8]` |
-| Return / output | `u32`, `u64`, `bool`, `Vec<u8>` |
+| Input parameters | `bool`, `u32`, `i32`, `u64`, `(u32, u32)`, `&[u8]`, `&mut [u8]`, `&mut u32`, `&mut i32`, `&mut u64`, `T: TeeParam` |
+| Return / output | `u32`, `u64`, `bool`, `Vec<u8>`, `T: TeeParam` |
+| Serialization | Pluggable codec via `#[tee_command(codec = MyCodec)]`; any codec implementing `consortium_common::codec::CodecFor<T>` |
 
 ### What this document covers
 
-- `i32`, `(u32, u32)` value pairs
-- `&mut u32` / `&mut u64` output parameters (inout slots)
-- Arbitrary serializable types via `TeeParam` + `postcard`
+- `i32`, `(u32, u32)` value pairs ✅
+- `&mut u32` / `&mut u64` output parameters (inout slots) ✅
+- Arbitrary serializable types via `TeeParam` + pluggable codec system ✅
 
 ---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│  Developer writes one function signature                │
-│                                                         │
-│  #[tee_command]                                         │
-│  fn process(ctx: &mut Ctx, cfg: MyConfig) -> Result<()> │
-└────────────────────┬────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────┐
+│  Developer writes one function signature                       │
+│                                                                │
+│  #[tee_command(codec = MyCodec)]  ← required if using TeeParam │
+│  fn process(ctx: &mut Ctx, cfg: MyConfig) -> Result<()>        │
+└────────────────────┬───────────────────────────────────────────┘
                      │  macro expands to
+                     │
           ┌──────────┴───────────┐
           │                      │
           ▼                      ▼
@@ -41,6 +43,8 @@ See `tee-sdk-design.md` for the current state. In brief:
 ```
 
 The original function is always emitted untouched, so internal TA-to-TA calls pay zero marshalling overhead.
+
+The `codec` attribute is required when any parameter or return type implements `TeeParam`. It specifies which codec to use for serialization/deserialization of those types.
 
 ---
 
@@ -62,11 +66,9 @@ A leading `&mut SomePath` parameter (where `SomePath` is not a primitive or slic
 |--------------|------------------|------------------------------------------|--------|
 | `u32`        | `ValueInput`     | `a = value`, `b = 0`                     | ✅ done |
 | `bool`       | `ValueInput`     | `a = value as u32` (0 or 1), `b = 0`    | ✅ done |
-| `u64`        | Return only      | `a = low 32`, `b = high 32`             | ✅ done (return only) |
-| `i32`        | `ValueInput`     | `a = value as u32`, `b = 0`              | planned |
-| `(u32, u32)` | `ValueInput`     | `a = .0`, `b = .1`                       | planned |
-
-> `u64` is currently supported as a **return type** only (split across `a`/`b`). Support as an input parameter is planned.
+| `u64`        | ValueInput/Return | `a = low 32`, `b = high 32`             | ✅ done |
+| `i32`        | `ValueInput`     | `a = value as u32`, `b = 0`              | ✅ done |
+| `(u32, u32)` | `ValueInput`     | `a = .0`, `b = .1`                       | ✅ done |
 
 ---
 
@@ -76,9 +78,9 @@ A `&mut T` where `T` is a primitive scalar is treated as an **output parameter**
 
 | Rust type   | Slot kind      | TA behaviour                          | CA behaviour                          | Status |
 |-------------|----------------|---------------------------------------|---------------------------------------|--------|
-| `&mut u32`  | `ValueInout`   | reads `a`, writes back via `set_a`    | reads `a` into `*ptr` after call      | planned |
-| `&mut i32`  | `ValueInout`   | reads `a as i32`, writes back cast    | reads `a as i32` into `*ptr` after call | planned |
-| `&mut u64`  | `ValueInout`   | reconstructs from `a`/`b`, writes back | reconstructs from `a`/`b` after call | planned |
+| `&mut u32`  | `ValueInout`   | reads `a`, writes back via `set_a`    | reads `a` into `*ptr` after call      | ✅ done |
+| `&mut i32`  | `ValueInout`   | reads `a as i32`, writes back cast    | reads `a as i32` into `*ptr` after call | ✅ done |
+| `&mut u64`  | `ValueInout`   | reconstructs from `a`/`b`, writes back | reconstructs from `a`/`b` after call | ✅ done |
 
 #### Example
 
@@ -106,7 +108,7 @@ fn compute(ctx: &mut Ctx, input: u32, result: &mut u64) -> Result<()> {
 
 ### Serialized Types (`TeeParam` — `ParamMemref` slot)
 
-Any type implementing `serde::Serialize + serde::Deserialize` can be passed through a memref slot. The macro serializes it using [`postcard`](https://docs.rs/postcard) (compact, `no_std`-friendly binary format).
+Any type implementing `TeeParam` can be passed through a memref slot. The macro serializes it using a pluggable codec specified via the `#[tee_command(codec = ...)]` attribute.
 
 Derive `TeeParam` on your type to opt in:
 
@@ -120,22 +122,26 @@ struct MyConfig {
 }
 ```
 
+The codec type must implement `consortium_common::codec::CodecFor<T>` for your serialization format (e.g., `PostcardCodec` for [`postcard`](https://docs.rs/postcard)).
+
 | Rust type          | Slot kind       | TA behaviour                             | CA behaviour                              | Status |
 |--------------------|-----------------|------------------------------------------|-------------------------------------------|--------|
-| `T: TeeParam`      | `MemrefInput`   | deserialize from buffer with `postcard`  | serialize to `Vec<u8>`, pass as memref    | planned |
-| `&mut T: TeeParam` | `MemrefInout`   | deserialize, pass `&mut`, re-serialize   | serialize, pass as memref, deserialize back | planned |
+| `T: TeeParam`      | `MemrefInput`   | deserialize from buffer with codec       | serialize to buffer, pass as memref       | ✅ done |
+| `&mut T: TeeParam` | `MemrefInout`   | deserialize, pass `&mut`, re-serialize   | serialize, pass as memref, deserialize back | ✅ done |
 
 ---
 
 ## The `TeeParam` Trait
 
 ```rust
-pub trait TeeParam: Serialize + for<'de> Deserialize<'de> {
+pub trait TeeParam {
     /// Maximum serialized size in bytes.
     /// Used to pre-size the inout buffer on the CA side.
     const MAX_SIZE: usize;
 }
 ```
+
+`TeeParam` is a codec-agnostic marker trait. Derive it on any type you want to pass through a memref slot. The actual serialization is handled by the codec you specify in `#[tee_command(codec = ...)]`.
 
 `MAX_SIZE` solves the inout buffer sizing problem: since the TA may return a value larger than what the CA sent, the CA must pre-allocate a buffer sized for the response. Defining it on the type means the size contract lives next to the type definition.
 
@@ -166,7 +172,7 @@ fn good(ctx: &mut Ctx, params: Params, input: &[u8], output: &mut [u8]) -> Resul
 
 ---
 
-## Type Classification Priority (planned full order)
+## Type Classification Priority (full order)
 
 When the macro inspects a parameter type, it will test these rules **in order**:
 
@@ -177,27 +183,70 @@ When the macro inspects a parameter type, it will test these rules **in order**:
 4. u32                → ValueInput (a)
 5. i32                → ValueInput (a, bit-cast)
 6. bool               → ValueInput (a, 0/1)
-7. u64                → ValueInput (a=low, b=high)    [currently return-only]
+7. u64                → ValueInput (a=low, b=high)
 8. (u32, u32)         → ValueInput (a=.0, b=.1)
-9. &mut T (Path)      → MemrefInout (TeeParam, postcard round-trip)
-10. T (Path)          → MemrefInput (TeeParam, postcard serialize)
+9. &mut T (Path)      → MemrefInout (TeeParam, codec round-trip)
+10. T (Path)          → MemrefInput (TeeParam, codec deserialize)
 11. anything else     → compile error
 ```
 
-Currently implemented: rules 1–2 as inputs, plus the return-type variants of 4/5/6/`Vec<u8>`.
+**All rules are now implemented.** Rules 9–10 require `#[tee_command(codec = MyCodec)]` to be specified.
 
 ---
 
-## Serialization Format: `postcard`
+## Codec Selection and Requirements
 
-[`postcard`](https://docs.rs/postcard) is chosen over alternatives for the following reasons:
+### Pluggable Codec System
 
-| Property             | `postcard` | `bincode` | `serde_json` |
-|----------------------|-----------|-----------|--------------|
-| `no_std` support     | ✅        | partial   | ❌           |
-| Output size          | minimal   | small     | large        |
-| Allocation-free mode | ✅ (heapless) | ❌    | ❌           |
+The `#[tee_command(codec = MyCodec)]` attribute lets you choose how `TeeParam` types are serialized. Your codec type must implement `consortium_common::codec::CodecFor<T>` for each `TeeParam` type you use.
 
-On the TA side (no allocator), `postcard::from_bytes` deserializes directly from the shared memref buffer. On the CA side, `postcard::to_allocvec` serializes into a `Vec<u8>` which is handed to `ParamMemref`.
+### Example: Using `PostcardCodec`
 
-> **Warning:** `postcard` is not self-describing. If you change a `TeeParam` type (add/remove/reorder fields), both CA and TA must be recompiled together.
+```rust
+use consortium_common::codec::PostcardCodec;
+
+#[derive(TeeParam, Serialize, Deserialize)]
+struct Config {
+    threshold: u32,
+    enabled: bool,
+}
+
+#[tee_command(codec = PostcardCodec)]
+fn process(ctx: &mut Ctx, cfg: Config) -> Result<(), TeeError> {
+    // ...
+}
+```
+
+### Considerations for Codec Choice
+
+| Property             | `postcard` | `bincode` | Custom |
+|----------------------|-----------|-----------|--------|
+| `no_std` support     | ✅        | partial   | ✅     |
+| Output size          | minimal   | small     | varies |
+| Allocation-free mode | ✅        | ❌        | ✅     |
+| Schema evolution     | manual    | manual    | custom |
+
+### Schema Evolution Warning
+
+Most binary codecs (including `postcard` and `bincode`) are **not self-describing**. If you change a `TeeParam` type (add/remove/reorder fields), both CA and TA must be recompiled together to stay in sync.
+
+---
+
+## Codec Implementation Reference
+
+To implement a custom codec for your type `T`:
+
+```rust
+impl consortium_common::codec::CodecFor<MyType> for MyCodec {
+    type Error = MyError;
+    type Decoded<'buf> = MyType;
+    
+    fn encode(msg: &MyType, buf: &mut [u8]) -> Result<usize, Self::Error> {
+        // Serialize msg into buf, return number of bytes written
+    }
+    
+    fn decode(buf: &[u8]) -> Result<Self::Decoded, Self::Error> {
+        // Deserialize from buf
+    }
+}
+```

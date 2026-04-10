@@ -3,6 +3,7 @@ name = "consortium-runtime-app"
 description = "Consortium application (nonsecure) runtime library on Linux side"
 version.workspace = true
 edition.workspace = true
+license.workspace = true
 
 [features]
 stm32mp2xx = ["consortium-ipc-doorbell-hsem"]

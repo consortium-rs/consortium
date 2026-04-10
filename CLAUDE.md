@@ -45,14 +45,14 @@ This is a Rust workspace providing an async abstraction for inter-processor comm
 - **`consortium-ipc-doorbell-hsem`** — Hardware Semaphore (HSEM) doorbell for STM32MP2/STM32MP25. Supports both no_std (M-core with `AtomicWaker` + HSEM_IRQHandler) and std (A-core with `tokio::sync::Notify`). Implements `Doorbell` trait and `HsemChanValidate`.
 - **`consortium-ipc-doorbell-mu`** — Message Unit (MU) doorbell for i.MX 9x series. Supports both no_std and std paths with two independent IRQ handlers (MU1/MU2). Implements `Doorbell` trait and `MuChanValidate`.
 
-**Configuration & Build (partial):**
+**Configuration & Build (working on):**
 - **`consortium-common`** — Shared configuration types: `Config`, `Chip` enum, `CortexMcuCore` enum, chip-to-core mappings. Enums for STM32MP2x and i.MX 9x families.
-- **`consortium-builder`** — SDK-aware cross-compilation helpers (stub). Planned: `ApplicationBuilder` (Cortex-A35/OpenSTLinux) and `FirmwareBuilder` (Cortex-M MCUs).
+- **`consortium-builder`** — Cross-compilation helpers. Provides `ApplicationBuilder`, `FirmwareBuilder`, and `OpteeBuilder` for building A-core applications, M-core firmware, and OP-TEE TA/CA binaries.
 - **`consortium-cli`** — Debug CLI tool (stub).
 
-**Runtime (minimal implementation, expanding):**
-- **`consortium-runtime-mcu`** — Real-time runtime library for M-core firmware (stub). Must provide: bootstrap, async executor, MemTransport integration.
-- **`consortium-runtime-app`** — Linux-side application harness. Exports `RemoteProc` sysfs wrapper with state readers and controls (`start`, `stop`, `set_firmware`, etc.). Linux-only.
+**Runtime:**
+- **`consortium-runtime-mcu`** — M-core runtime library with descriptor initialization (`descriptor` module) and IRQ integration (`irq` module). Provides helpers for shared memory slot management and interrupt coordination. `no_std`-compatible.
+- **`consortium-runtime-app`** — Linux-side application harness with descriptor helpers and remoteproc integration. Exports helpers for opening UIO channels and managing M-core lifecycle. Linux-only.
 
 **Trusted Execution Environment (complete):**
 - **`consortium-tee`** — OP-TEE integration. Provides error types (`TeeError`, `TeeErrorOrigin`, `TeeResult`). Linux-only.
@@ -139,18 +139,6 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
   - CA packs via `ParamValue` / `ParamTmpRef`, wraps in `optee_teec::Operation::new(0, ...)`, calls `session.invoke_command(Command::Variant as u32, &mut _operation)`
   - `Vec<u8>` return: CA pre-allocates 4096-byte `ParamTmpRef::new_output` buffer; TA writes into it; CA reads back `buffer()[..size()]`
 
-### Build system (`consortium-builder`)
-
-**Status:** Stub (19 LOC). Planned features:
-
-`ApplicationBuilder` cross-compiles for `aarch64-unknown-linux-gnu` using the ST OpenSTLinux SDK. It reads standard ST environment variables (`SDKTARGETSYSROOT`, `OECORE_NATIVE_SYSROOT`, `OECORE_TUNE_CCARGS`) and supports overrides (`OSTL_RUSTC`, `OSTL_CARGO`, `OSTL_SDK_SYSROOT`, `OSTL_SDK_EXTRA_FLAGS`). It sanitizes `PATH` to prevent the ST SDK toolchain from shadowing rustup.
-
-`FirmwareBuilder` maps `CortexMcuCore` variants to Rust targets (via `to_rust_target()`), reads binary name from `[[bin]]` or `[package]`, verifies ELF magic after build, and supports a `release` flag:
-- `CortexM0p` → `thumbv6m-none-eabi`
-- `CortexM33` → `thumbv8m.main-none-eabi`
-- `CortexM4` / `CortexM4f` / `CortexM7` → `thumbv7em-none-eabi`
-
----
 
 ## Hardware Doorbell Implementations
 
@@ -166,9 +154,9 @@ KernelInit (0) → Proposed (1) → MReady (2) → Ready (3)
 
 **Platform support:** STM32MP2x and STM32MP25x SoCs.
 
-### 🚧 Refactoring: MU (Messaging Unit)
+### ✅ Completed: MU (Messaging Unit)
 
-**Status:** Refactoring in progress. The Messaging Unit has GSR/GCR/GREI registers that can implement doorbells more straightforwardly without relying on the destructive read behavior of RRn.
+**Status:** Fully implemented in `consortium-ipc-doorbell-mu`. Uses GSR/GCR/GREI general-purpose interrupt registers for straightforward doorbell signaling.
 
 **Features:**
 - **M-core (bare-metal, no_std):** Zero-size type using `AtomicWaker` for async waiting. Rings MU TX registers and registers MU1/MU2 IRQ handlers. Two separate handler functions for two MU instances.
@@ -194,40 +182,6 @@ To add a new doorbell:
 4. Optionally implement `ChanValidate` for channel validation
 5. Test with real hardware or simulation
 - Unless Technical Reference Manual and register map are available in context, you shouldn't implement a doorbell from scratch.
-
-### 2. M-Core Runtime (`consortium-runtime-mcu`)
-
-Currently a stub. Must provide:
-- **Bootstrap code:** Stack setup, BSS initialization, relocation
-- **Async executor:** Cooperative executor or RTIC integration for `await` support
-- **MemTransport integration:** Initialize shared memory slots, create channels
-- **Interrupt handlers:** Register and dispatch M→A and A→M interrupts
-- **Example firmware:** Minimal app that sends/receives messages via IPC
-
-### 3. A-Core Runtime (`consortium-runtime-app`)
-
-Partially implemented (RemoteProc sysfs wrapper only). Must add:
-- **Firmware loading:** Map firmware ELF into memory via remoteproc
-- **Lifecycle management:** Start/stop firmware, handle state transitions
-- **UioDevice integration:** Initialize shared memory descriptor, open UIO device
-- **Example application:** Minimal app that loads firmware and exchanges messages
-- **Error recovery:** Handle firmware crashes, timeouts, channel failures
-
-### 4. Full Compilation Pipeline
-
-The system requires an 9-step build pipeline (see implementation-status.md):
-
-1. **Config → Device Tree + PAC:** Rust config code generates device tree and peripheral access crate
-2. **TF-M/NS-M compilation:** Compile Trusted/Non-Secure M-core firmware, bundle per remoteproc
-3. **TF-A/OP-TEE compilation:** Compile ARM Trusted Firmware and OP-TEE, optionally sign
-4. **HMI Web UI:** Compile Vite/React web interface, bundle static assets
-5. **Application binary:** Compile Cortex-A Linux application
-6. **Quantize models:** If applicable, quantize ML models for embedded inference
-7. **Configuration generation:** Output systemd services, supervisor configs, nginx configs
-8. **Installer script:** Attach setup and deployment scripts
-9. **Package:** Bundle everything into `.tar.gz` for deployment
-
-Status: Not started. Requires orchestration in `consortium-builder` or separate build tool.
 
 ---
 
@@ -281,4 +235,4 @@ The MU doorbell is ready to use. To create a firmware application:
    - Exchange messages bidirectionally via MU signaling
    - Verify error handling and timeouts
 
-See `documents/implementation-status.md` for detailed roadmap and effort estimates.
+See `docs/src/dev/ipc/implementation-status.md` for detailed roadmap and effort estimates.

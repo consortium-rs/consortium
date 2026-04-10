@@ -34,6 +34,8 @@ pub struct SramRegion {
 // SAFETY: SRAM is accessible from multiple cores simultaneously;
 // the caller (via `new`) takes responsibility for aliasing.
 unsafe impl Send for SramRegion {}
+// SAFETY: SRAM is accessible from multiple cores simultaneously;
+// the caller (via `new`) takes responsibility for aliasing.
 unsafe impl Sync for SramRegion {}
 
 impl SramRegion {
@@ -91,6 +93,7 @@ pub struct DdrRegion {
 
 // SAFETY: same as SramRegion — caller manages aliasing.
 unsafe impl Send for DdrRegion {}
+// SAFETY: same as SramRegion — caller manages aliasing.
 unsafe impl Sync for DdrRegion {}
 
 impl DdrRegion {

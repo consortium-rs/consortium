@@ -3,10 +3,11 @@ name = "consortium-builder"
 description = "Build system for Consortium applications and runtimes"
 version.workspace = true
 edition.workspace = true
+license.workspace = true
 
 [dependencies]
 consortium-common = { path = "../consortium-common", features = ["serde"] }
 tokio = { version = "1.50.0", features = ["full"] }
 toml = "1.1.0"
 uuid = "1.23.0"
-thiserror = "1.0"
+thiserror = "2.0.18"

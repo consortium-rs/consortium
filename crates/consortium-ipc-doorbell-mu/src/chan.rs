@@ -57,6 +57,7 @@ impl ChanValidate for MuChanValidate {
         match id {
             i if i < MU_CHAN_RESERVED => Err(MuError::ChanReserved),
             i if i >= MU_CHAN_COUNT => Err(MuError::ChanOutOfRange),
+            // SAFETY: caller-validated by the match arms above; id is guaranteed to be in the valid range for MU channels.
             _ => Ok(unsafe { consortium_ipc::Chan::new_unchecked(id) }),
         }
     }

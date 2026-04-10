@@ -23,7 +23,7 @@ where
     where
         T: 'buf;
 
-    fn encode<'buf>(msg: &T, buf: &'buf mut [u8]) -> Result<usize, ProstError> {
+    fn encode(msg: &T, buf: &mut [u8]) -> Result<usize, ProstError> {
         let len = msg.encoded_len();
         if len > buf.len() {
             return Err(ProstError::BufferTooSmall);

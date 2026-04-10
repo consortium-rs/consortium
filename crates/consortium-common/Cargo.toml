@@ -3,6 +3,7 @@ name = "consortium-common"
 description = "Common utilities and types for Consortium"
 version.workspace = true
 edition.workspace = true
+license.workspace = true
 
 [features]
 serde = ["dep:serde"]

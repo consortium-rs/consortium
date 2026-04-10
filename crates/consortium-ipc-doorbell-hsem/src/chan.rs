@@ -14,6 +14,7 @@ impl ChanValidate for HsemChanValidate {
         match id {
             i if i < HSEM_SEM_RESERVED => Err(HsemError::ChanReserved),
             i if i >= HSEM_SEM_COUNT => Err(HsemError::ChanOutOfRange),
+            // SAFETY: caller-validated by the match arms above; id is guaranteed to be in the valid range for HSEM semaphores.
             _ => Ok(unsafe { consortium_ipc::Chan::new_unchecked(id) }),
         }
     }

@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use tokio::io::AsyncReadExt;
 use tokio::process::Command;
 
@@ -62,7 +62,7 @@ pub async fn resolve_rustup(tool: &str) -> Result<String, String> {
 }
 
 /// Reads the binary name from Cargo.toml, preferring [[bin]] over [package].
-pub async fn binary_name(path: &PathBuf) -> Result<String, String> {
+pub async fn binary_name(path: &Path) -> Result<String, String> {
     let cargo_toml_path = path.join("Cargo.toml");
     let content = tokio::fs::read_to_string(&cargo_toml_path)
         .await
@@ -127,7 +127,7 @@ pub async fn resolve_rustc() -> Result<String, String> {
 }
 
 /// Returns the expected ELF output path after a successful build.
-pub async fn elf_path(path: &PathBuf, target: &str, release: bool) -> Result<PathBuf, String> {
+pub async fn elf_path(path: &Path, target: &str, release: bool) -> Result<PathBuf, String> {
     let binary_name = binary_name(path).await?;
     let profile = if release { "release" } else { "debug" };
 

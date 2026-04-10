@@ -3,6 +3,7 @@ name = "consortium-cli"
 description = "Command-line interface for managing Consortium applications and runtimes"
 version.workspace = true
 edition.workspace = true
+license.workspace = true
 
 [dependencies]
 serde = { version = "1.0.228", features = ["derive"] }

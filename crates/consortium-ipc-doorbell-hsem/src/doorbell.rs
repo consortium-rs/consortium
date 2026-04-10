@@ -298,6 +298,7 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
         compiler_fence(Ordering::Release);
 
         // 1-step lock: atomically lock the semaphore and read back its state.
+        // SAFETY: sem is caller-validated; access is hardware-synchronized by the HSEM.
         let locked_value = unsafe { Self::read_lock(sem) };
 
         let lock_bit = locked_value & r_fields::LOCK_BIT;
@@ -310,6 +311,7 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
         // Unlock by writing back with LOCK=0, which triggers the interrupt on the
         // remote core. The LOCKID, SEC, PRIV, and PROCID must match what we just locked.
         let unlock_value = locked_value & !r_fields::LOCK_BIT;
+        // SAFETY: must be called from the correct interrupt context; sem is caller-validated.
         unsafe { Self::write_rx(sem, unlock_value) };
 
         compiler_fence(Ordering::Release);
@@ -371,6 +373,7 @@ impl<'a, const PROC: u8> core::future::Future for HsemWaitFut<'a, PROC> {
         }
 
         if !self.interrupt_armed {
+            // SAFETY: must be called from the correct interrupt context; sem is caller-validated.
             unsafe {
                 HsemDoorbell::<PROC>::clear_interrupt(sem);
                 HsemDoorbell::<PROC>::enable_interrupt(sem);
@@ -382,6 +385,7 @@ impl<'a, const PROC: u8> core::future::Future for HsemWaitFut<'a, PROC> {
         if HsemDoorbell::<PROC>::interrupt_pending(sem) {
             compiler_fence(Ordering::Acquire);
 
+            // SAFETY: must be called from the correct interrupt context; sem is caller-validated.
             unsafe {
                 // Clear IER bit
                 let ier = HsemDoorbell::<PROC>::ier_addr();

@@ -205,10 +205,10 @@ impl OpteeBuilder {
 
 async fn resolve_python() -> Result<String, OpteeCompileError> {
     for candidate in ["python", "python3"] {
-        if let Ok(status) = Command::new(candidate).arg("--version").status().await {
-            if status.success() {
-                return Ok(candidate.to_string());
-            }
+        if let Ok(status) = Command::new(candidate).arg("--version").status().await
+            && status.success()
+        {
+            return Ok(candidate.to_string());
         }
     }
     Err(OpteeCompileError::PythonNotFound)
