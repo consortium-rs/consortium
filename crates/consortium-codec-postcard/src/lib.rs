@@ -20,7 +20,10 @@ where
         Ok(written.len())
     }
 
-    fn decode(buf: &[u8]) -> Result<T, postcard::Error> {
+    fn decode<'buf>(buf: &'buf [u8]) -> Result<Self::Decoded<'buf>, postcard::Error>
+    where
+        T: 'buf,
+    {
         postcard::from_bytes(buf)
     }
 }

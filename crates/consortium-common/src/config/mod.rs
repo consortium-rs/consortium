@@ -1,3 +1,6 @@
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
+
 use std::collections::HashMap;
 
 use crate::config::chip_map::Chip;
@@ -7,14 +10,22 @@ pub mod app_core;
 pub mod chip_map;
 pub mod mcu_core;
 
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-#[serde(deny_unknown_fields)]
+#[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    serde(deny_unknown_fields, rename_all = "snake_case")
+)]
 pub struct GeneralConfig {
     pub chip: Chip,
 }
 
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-#[serde(deny_unknown_fields)]
+#[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    serde(deny_unknown_fields, rename_all = "snake_case")
+)]
 pub struct FirmwareEntry {
     pub core: CortexMcuCore,
     pub index: usize,
@@ -23,8 +34,12 @@ pub struct FirmwareEntry {
     pub flash_address: Option<u64>,
 }
 
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-#[serde(deny_unknown_fields)]
+#[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    serde(deny_unknown_fields, rename_all = "snake_case")
+)]
 pub struct ProjectConfig {
     pub application: String,
     /// List of firmware to be built and flashed to the device.
@@ -33,8 +48,12 @@ pub struct ProjectConfig {
     pub interface: Option<String>,
 }
 
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-#[serde(deny_unknown_fields)]
+#[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    serde(deny_unknown_fields, rename_all = "snake_case")
+)]
 pub struct Config {
     pub general: GeneralConfig,
     pub project: ProjectConfig,

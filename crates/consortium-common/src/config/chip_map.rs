@@ -1,7 +1,14 @@
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
+
 use crate::config::{app_core::CortexAppCore, mcu_core::CortexMcuCore};
 
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-#[serde(deny_unknown_fields, rename_all = "snake_case")]
+#[derive(Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(
+    feature = "serde",
+    serde(deny_unknown_fields, rename_all = "snake_case")
+)]
 pub enum Chip {
     Stm32mp21x,
     Stm32mp23x,
