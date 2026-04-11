@@ -47,7 +47,7 @@
 use core::{
     future::Future,
     pin::Pin,
-    sync::atomic::{AtomicBool, Ordering, compiler_fence},
+    sync::atomic::{Ordering, compiler_fence},
     task::{Context, Poll},
 };
 

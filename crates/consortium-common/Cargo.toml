@@ -22,7 +22,11 @@ edition.workspace = true
 license.workspace = true
 
 [features]
+std = ["serde?/std"]
 serde = ["dep:serde"]
+default = []
 
 [dependencies]
-serde = { version = "1.0.228", features = ["derive"], optional = true }
+serde = { version = "1.0.228", features = [
+  "derive",
+], default-features = false, optional = true }

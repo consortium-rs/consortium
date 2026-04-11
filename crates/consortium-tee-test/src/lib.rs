@@ -1,4 +1,5 @@
 #![cfg_attr(feature = "ta", no_std)]
+#![cfg(target_os = "linux")]
 // Copyright 2026 Ethan Wu
 //
 // Licensed under the Apache License, Version 2.0 (the "License");

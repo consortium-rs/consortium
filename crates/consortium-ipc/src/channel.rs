@@ -85,7 +85,6 @@ impl<D, T, Tr: Transport, C: CodecFor<T>> Channel<D, T, Tr, C> {
 
 impl<T, Tr, C> Channel<Tx, T, Tr, C>
 where
-    T: serde::Serialize,
     Tr: Transport,
     C: CodecFor<T>,
 {
@@ -106,7 +105,6 @@ where
 
 impl<T, Tr, C> Channel<Rx, T, Tr, C>
 where
-    T: serde::de::DeserializeOwned,
     Tr: Transport,
     C: CodecFor<T>,
 {
