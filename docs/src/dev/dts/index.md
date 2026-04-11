@@ -1,1 +1,0 @@
-# Device Tree Source (DTS) Subsystem
