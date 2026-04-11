@@ -1,9 +1,4 @@
-# Peripheral Configuration & PAC Generation Design
-
-**Status:** Proposal  
-**Date:** 2026-04-06
-
----
+# RIF Subsystem: Peripheral Configuration & PAC Generation Design
 
 ## Overview
 
@@ -203,7 +198,13 @@ For i.MX 9x (TRDC), the equivalent domain controller registers are emitted inste
 
 ### 2. Per-Firmware PAC Wrapper (`generated/pac/<fw_key>/`)
 
-A thin generated crate per firmware entry exposes only the peripherals owned by that firmware as a `Peripherals` struct, wrapping `embassy-stm32` or `imxrt-hal` tokens. This gives the firmware typed, compile-time-verified access — it cannot reference a peripheral assigned to another core.
+A thin generated crate per firmware entry exposes only the peripherals owned by that firmware as a `Peripherals` struct, wrapping `embassy-stm32` or `imxrt-hal` tokens. This gives the firmware typed, compile-time-verified access — unowned peripherals are consumed at steal-time, preventing accidental access.
+
+For owned peripherals:
+- **Non-`Copy` types** are moved into the struct, providing exclusive ownership.
+- **`Copy` types** are also included but could be accessed elsewhere (since they're copyable). No artificial restriction is imposed.
+
+For unowned peripherals, all non-`Copy` tokens are explicitly consumed (moved into a drop) at steal-time. `Copy` peripherals that aren't owned can still be accessed via a second `steal()` call—this is acceptable since the type system cannot prevent it, and it's a rare edge case.
 
 ```rust
 // Generated: generated/pac/sensor_fw/src/lib.rs
@@ -218,9 +219,25 @@ pub struct Peripherals {
 impl Peripherals {
     /// # Safety
     /// Must be called exactly once, after `configure_rif()`.
+    /// Consumes unowned, non-Copy peripherals to prevent access.
     pub unsafe fn steal() -> Self {
         let p = embassy_stm32::Peripherals::steal();
-        Self { i2c1: p.I2C1, lptim1: p.LPTIM1 }
+        
+        // Consume unowned non-Copy peripherals by moving them
+        // They cannot be cloned, so this removes them from the namespace
+        let _unused = (
+            p.I2C2,
+            p.SPI1,
+            p.SPI2,
+            p.UART4,
+            p.LPTIM2,
+            // ... all other unowned, non-Copy peripherals
+        );
+        
+        Self { 
+            i2c1: p.I2C1, 
+            lptim1: p.LPTIM1,
+        }
     }
 }
 ```
@@ -232,7 +249,9 @@ Usage in firmware:
 async fn main(_spawner: Spawner) {
     consortium_runtime_mcu::init();   // calls configure_rif() internally
 
+    // Steal only owned peripherals; unowned non-Copy ones are consumed
     let p = unsafe { sensor_fw::Peripherals::steal() };
+    
     let mut i2c = I2c::new(p.i2c1, Config::default());
 
     loop {
@@ -241,6 +260,8 @@ async fn main(_spawner: Spawner) {
     }
 }
 ```
+
+The firmware has compile-time assurance that it cannot use unowned, non-`Copy` peripherals—attempting to reference them will fail at compile time because they were consumed in `steal()`. Owned peripherals are available as fields in `p`.
 
 For i.MX 9x, types come from `imxrt-hal` instead of `embassy-stm32`.
 
@@ -505,6 +526,7 @@ The generated struct wraps `imxrt_hal::instance::*` tokens. `imxrt-ral` instance
 | 3 | **Interrupt routing** | In scope for generated init, but contingent on what embassy-stm32 / imxrt-hal cover in their own `init()`. If NVIC enable and EXTI routing are handled by the HAL driver constructors, no generated code is needed. If not (e.g. STM32MP2x EXTI C2IMR routing to M-core), the builder emits the necessary register writes. To be determined during Phase 4 implementation with reference to embassy-stm32 source. |
 | 4 | **Silicon revisions** | Delegated to the upstream PAC (`stm32mp257-pac`, `imxrt-ral`). The chip DB targets a specific PAC version; users pin the PAC version in `Cargo.toml` as usual. No revision logic inside Consortium. |
 | 5 | **Shared peripherals** | Not in scope for the initial implementation. A peripheral must have exactly one static owner. Time-multiplexed or arbitrated sharing between cores is a future concern and will require a separate design. |
+| 6 | **Copy vs non-Copy peripheral tokens** | Unowned, non-`Copy` peripherals are consumed (moved into a drop) at steal-time, enforcing exclusivity through Rust's type system. Owned peripherals (both `Copy` and non-`Copy`) are included in the wrapper struct. For `Copy` peripherals, no artificial restriction is imposed—they can be copied anyway. This pragmatic approach leverages type-level safety where it's effective without unnecessary restrictions. |
 
 ---
 

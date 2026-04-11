@@ -250,6 +250,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-rif"
+version = "0.1.0"
+
+[[package]]
 name = "consortium-runtime-app"
 version = "0.1.0"
 dependencies = [
