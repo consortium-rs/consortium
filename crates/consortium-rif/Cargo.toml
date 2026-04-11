@@ -16,6 +16,7 @@
 
 [package]
 name = "consortium-rif"
+description = "RIF (Resource Isolation Framework) subsystem support for the Consortium project."
 version.workspace = true
 edition.workspace = true
 license.workspace = true

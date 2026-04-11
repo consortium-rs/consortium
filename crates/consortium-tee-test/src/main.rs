@@ -1,4 +1,3 @@
-#![no_std]
 // Copyright 2026 Ethan Wu
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +13,8 @@
 // limitations under the License.
 //
 // SPDX-License-Identifier: Apache-2.0
+#![no_std]
+#![cfg(target_os = "linux")]
 #![no_main]
 
 extern crate optee_utee;

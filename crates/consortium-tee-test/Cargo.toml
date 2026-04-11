@@ -35,15 +35,15 @@ name = "consortium_tee_test"
 path = "src/main.rs"
 required-features = ["ta"]
 
-[dependencies]
+[target.'cfg(target_os = "linux")'.dependencies]
 consortium-tee = { path = "../consortium-tee", default-features = false, features = [
   "ta",
 ] }
 num_enum = { version = "0.7.6", default-features = false }
+tokio = { version = "1.51.1", features = ["rt"] }
 optee-teec = { version = "0.8.0", optional = true }
 optee-utee = { version = "0.8.0", optional = true, default-features = false }
 optee-utee-sys = { version = "0.8.0", optional = true, default-features = false }
-tokio = { version = "1.51.1", features = ["rt"] }
 
 [build-dependencies]
 optee-utee-build = "0.8.0"

@@ -22,14 +22,9 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
-serde = { version = "1.0", default-features = false }
-postcard = { version = "1.1.3", default-features = false }
 consortium-common = { path = "../consortium-common" }
 
-[dev-dependencies]
-serde = { version = "1.0", features = ["derive"] }
-
 [features]
-std = ["alloc", "futures", "serde/std"]
-alloc = ["serde/alloc"]
+std = ["alloc", "futures"]
+alloc = []
 futures = []

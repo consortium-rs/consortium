@@ -104,6 +104,7 @@ impl Chip {
         Some((format!("remoteproc{id}"), programmable))
     }
 
+    #[cfg(feature = "std")]
     pub fn programmable_rt_cores(&self) -> Vec<(CortexMcuCore, usize, String)> {
         let mut cores = Vec::new();
         for idx in 0..2 {
