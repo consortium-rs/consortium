@@ -25,6 +25,10 @@ use crate::config::mcu_core::CortexMcuCore;
 pub mod app_core;
 pub mod chip_map;
 pub mod mcu_core;
+pub mod rif;
+
+// Convenient re-exports for RIF types
+pub use rif::{RifConfig, RifPeripheral, RifSource};
 
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]

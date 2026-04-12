@@ -248,7 +248,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-rif"
+name = "consortium-rpi"
+version = "0.1.0"
+
+[[package]]
+name = "consortium-rpi-meta"
 version = "0.1.0"
 
 [[package]]

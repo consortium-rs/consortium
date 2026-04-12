@@ -36,7 +36,8 @@ members = [
   "crates/consortium-codec-rkyv",
   "crates/consortium-ipc-doorbell-gpio",
   "crates/consortium-tee-test",
-  "crates/consortium-rif",
+  "crates/consortium-rpi",
+  "crates/consortium-rpi-meta",
 ]
 resolver = "2"
 
