@@ -1,0 +1,70 @@
+# Copyright 2026 Ethan Wu
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+[package]
+name = "consortium-rpi-meta"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[features]
+# stm32mp21xxxx
+stm32mp21xxxx = []
+stm32mp211axx = ["stm32mp21xxxx"]
+stm32mp211cxx = ["stm32mp21xxxx"]
+stm32mp211dxx = ["stm32mp21xxxx"]
+stm32mp211fxx = ["stm32mp21xxxx"]
+stm32mp213axx = ["stm32mp21xxxx"]
+stm32mp213cxx = ["stm32mp21xxxx"]
+stm32mp213dxx = ["stm32mp21xxxx"]
+stm32mp213fxx = ["stm32mp21xxxx"]
+stm32mp215axx = ["stm32mp21xxxx"]
+stm32mp215dxx = ["stm32mp21xxxx"]
+
+# stm32mp23xxxx
+stm32mp23xxxx = []
+stm32mp231axx = ["stm32mp23xxxx"]
+stm32mp231cxx = ["stm32mp23xxxx"]
+stm32mp231dxx = ["stm32mp23xxxx"]
+stm32mp231fxx = ["stm32mp23xxxx"]
+stm32mp233cxx = ["stm32mp23xxxx"]
+stm32mp233fxx = ["stm32mp23xxxx"]
+stm32mp235axx = ["stm32mp23xxxx"]
+stm32mp235cxx = ["stm32mp23xxxx"]
+stm32mp235dxx = ["stm32mp23xxxx"]
+stm32mp235fxx = ["stm32mp23xxxx"]
+
+# stm32mp25xxxx
+stm32mp25xxxx = []
+stm32mp251axx = ["stm32mp25xxxx"]
+stm32mp251cxx = ["stm32mp25xxxx"]
+stm32mp251dxx = ["stm32mp25xxxx"]
+stm32mp251fxx = ["stm32mp25xxxx"]
+stm32mp253cxx = ["stm32mp25xxxx"]
+stm32mp253fxx = ["stm32mp25xxxx"]
+stm32mp255axx = ["stm32mp25xxxx"]
+stm32mp255cxx = ["stm32mp25xxxx"]
+stm32mp255dxx = ["stm32mp25xxxx"]
+stm32mp255fxx = ["stm32mp25xxxx"]
+stm32mp257axx = ["stm32mp25xxxx"]
+stm32mp257cxx = ["stm32mp25xxxx"]
+stm32mp257dxx = ["stm32mp25xxxx"]
+stm32mp257fxx = ["stm32mp25xxxx"]
+
+[dependencies]
+
+[lints]
+workspace = true

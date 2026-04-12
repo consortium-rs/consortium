@@ -14,14 +14,9 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-[package]
-name = "consortium-rif"
-description = "RIF (Resource Isolation Framework) subsystem support for the Consortium project."
-version.workspace = true
-edition.workspace = true
-license.workspace = true
+def main():
+    print("Hello from scripts!")
 
-[dependencies]
 
-[lints]
-workspace = true
+if __name__ == "__main__":
+    main()

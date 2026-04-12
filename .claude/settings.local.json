@@ -11,7 +11,9 @@
       "Bash(grep -r \"postcard\" /Users/ethangoh/Developer/consortium/crates/consortium-tee* --include=\"*.rs\" --include=\"*.toml\")",
       "Bash(grep -r \"serde\" /Users/ethangoh/Developer/consortium/crates/consortium-tee* --include=\"*.rs\" --include=\"*.toml\")",
       "Bash(cargo search:*)",
-      "Bash(rustup target:*)"
+      "Bash(rustup target:*)",
+      "Bash(xargs -I {} sh -c 'echo \"=== {} ===\" && head -30 {}')",
+      "Bash(python scripts/rif/stm32mp_rpi_gen.py data/rif/rifsc crates/consortium-rpi-meta/src/generated/stm32mp)"
     ]
   }
 }
