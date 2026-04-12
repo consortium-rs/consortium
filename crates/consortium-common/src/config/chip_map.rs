@@ -122,4 +122,13 @@ impl Chip {
         cores.sort_by_key(|(_, _, name)| name.clone());
         cores
     }
+
+    pub fn rifsc_family_name(&self) -> Option<&'static str> {
+        match self {
+            Self::Stm32mp21x => Some("stm32mp21xxxx"),
+            Self::Stm32mp23x => Some("stm32mp23xxxx"),
+            Self::Stm32mp25x => Some("stm32mp25xxxx"),
+            _ => None,
+        }
+    }
 }

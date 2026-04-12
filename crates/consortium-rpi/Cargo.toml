@@ -22,6 +22,12 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
+consortium-common = { path = "../consortium-common", features = [
+  "serde",
+  "std",
+] }
+embedded-hal.workspace = true
+thiserror = "2.0.18"
 
 [lints]
 workspace = true
