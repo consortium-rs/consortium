@@ -258,6 +258,11 @@ dependencies = [
 [[package]]
 name = "consortium-rpi"
 version = "0.1.0"
+dependencies = [
+ "consortium-common",
+ "embedded-hal 1.0.0",
+ "thiserror",
+]
 
 [[package]]
 name = "consortium-rpi-meta"

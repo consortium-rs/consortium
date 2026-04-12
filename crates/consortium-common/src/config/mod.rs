@@ -53,6 +53,11 @@ pub use rifsc_loader::{load_all_rifsc_chips, load_rifsc_peripherals};
 )]
 pub struct GeneralConfig {
     pub chip: Chip,
+    /// Specific chip package variant for pin mux configuration (e.g., "STM32MP257FAKx").
+    /// This is used to load the correct IOMUX YAML file. If not specified, pin mux
+    /// validation cannot be performed, but RIFSC configuration can still be generated.
+    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+    pub variant: Option<String>,
 }
 
 #[derive(Debug, Clone)]

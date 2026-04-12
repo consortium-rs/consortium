@@ -169,4 +169,4 @@ build-arm: build-a build-m
 
 # Add license headers (requires addlicense)
 license:
-    addlicense -c "Ethan Wu" -y 2026 -l apache -s .
+    addlicense -c "Ethan Wu" -y 2026 -l apache -s -ignore "data/**/*" .
