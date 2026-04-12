@@ -23,10 +23,14 @@ license.workspace = true
 
 [features]
 std = ["serde?/std"]
-serde = ["dep:serde"]
+serde = ["dep:serde", "dep:serde_yaml"]
 default = []
 
 [dependencies]
 serde = { version = "1.0.228", features = [
   "derive",
 ], default-features = false, optional = true }
+serde_yaml = { version = "0.9", optional = true }
+
+[dev-dependencies]
+tempfile = "3.8"

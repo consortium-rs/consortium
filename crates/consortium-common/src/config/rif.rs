@@ -36,6 +36,12 @@ pub struct RifSource {
     pub repo: Option<String>,
     /// Path within the repository (e.g., "Utilities/ResourcesManager").
     pub resources_path: Option<String>,
+    /// Original source file name (e.g., "res_mgr_stm32mp25xxxx.h").
+    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+    pub file: Option<String>,
+    /// License of the original source (e.g., "BSD-3-Clause").
+    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+    pub license: Option<String>,
 }
 
 /// A peripheral definition within a RIF peripheral map.
