@@ -1,0 +1,3728 @@
+# ------------------------------------------------------
+# Derived from STM32CubeMX IO configuration
+# Only for use with STMicroelectronics STM32 MPU devices
+# License: ST SLA0044 / SLA0048
+# Purpose: IO mapping, pin configuration validation
+# ------------------------------------------------------
+
+OSC_IN:
+  position: R1
+  type: I/O
+  mux:
+    - name: rcc
+      pin: osc_in
+
+OSC_OUT:
+  position: R2
+  type: I/O
+  mux:
+    - name: rcc
+      pin: osc_out
+
+PA0:
+  position: P15
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d9
+    - name: dcmi
+      pin: d9
+    - name: eth2
+      pin: mii_rxd2
+    - name: fmc
+      pin: nl
+    - name: lptim1
+      pin: ch2
+    - name: pssi
+      pin: d9
+    - name: pwr
+      pin: wkup1
+    - name: sai2
+      pin: mclk_b
+    - name: spi5
+      pin: rdy
+    - name: tim3
+      pin: etr
+    - name: tim5
+      pin: ch2
+    - name: uart5
+      pin: tx
+    - name: uart8
+      pin: cts
+    - name: usart3
+      pin: tx
+
+PA1:
+  position: N15
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d5
+    - name: dcmi
+      pin: d5
+    - name: i2c4
+      pin: sda
+    - name: i2c6
+      pin: sda
+    - name: ltdc
+      pin: r3
+    - name: pssi
+      pin: d5
+    - name: sai3
+      pin: sd_a
+    - name: spi6
+      pin: miso
+    - name: tim4
+      pin: ch2
+    - name: usart1
+      pin: de
+    - name: usart1
+      pin: rts
+    - name: usart6
+      pin: ck
+
+PA2:
+  position: N12
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti2
+    - name: dcmipp
+      pin: d3
+    - name: dcmi
+      pin: d3
+    - name: i2c1
+      pin: sda
+    - name: i3c1
+      pin: sda
+    - name: lptim2
+      pin: in1
+    - name: ltdc
+      pin: b0
+    - name: mdf1
+      pin: sdi7
+    - name: pssi
+      pin: d3
+    - name: spi7
+      pin: miso
+    - name: usart1
+      pin: rx
+
+PA3:
+  position: R12
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti3
+    - name: dcmipp
+      pin: d2
+    - name: dcmi
+      pin: d2
+    - name: i2c1
+      pin: scl
+    - name: i2c7
+      pin: smba
+    - name: i3c1
+      pin: scl
+    - name: lptim2
+      pin: etr
+    - name: ltdc
+      pin: b1
+    - name: mdf1
+      pin: cki7
+    - name: pssi
+      pin: d2
+    - name: spi7
+      pin: mosi
+    - name: usart1
+      pin: tx
+
+PA4:
+  position: P12
+  type: I/O
+  mux:
+    - name: eth1
+      pin: ptp_aux_ts
+    - name: fdcan2
+      pin: tx
+    - name: ltdc
+      pin: r1
+    - name: tim2
+      pin: ch1
+    - name: usart2
+      pin: tx
+
+PA5:
+  position: J12
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d13
+    - name: dcmi
+      pin: d13
+    - name: fdcan2
+      pin: rx
+    - name: fmc
+      pin: a0
+    - name: ltdc
+      pin: g0
+    - name: pssi
+      pin: d13
+    - name: sai2
+      pin: mclk_b
+    - name: sai2
+      pin: sd_b
+    - name: spi4
+      pin: mosi
+    - name: tim2
+      pin: ch4
+    - name: usart2
+      pin: de
+    - name: usart2
+      pin: rts
+
+PA6:
+  position: M14
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d12
+    - name: dcmi
+      pin: d12
+    - name: fmc
+      pin: ne1
+    - name: ltdc
+      pin: g4
+    - name: mdf1
+      pin: sdi6
+    - name: pssi
+      pin: d12
+    - name: sai2
+      pin: fs_b
+    - name: spi4
+      pin: sck
+    - name: tim13
+      pin: ch1
+    - name: tim2
+      pin: etr
+    - name: usart2
+      pin: ck
+
+PA7:
+  position: K15
+  type: I/O
+  mux:
+    - name: audioclk
+    - name: dcmipp
+      pin: d6
+    - name: dcmi
+      pin: d6
+    - name: i2c2
+      pin: smba
+    - name: i2c3
+      pin: smba
+    - name: i2c4
+      pin: smba
+    - name: i2c6
+      pin: smba
+    - name: ltdc
+      pin: b5
+    - name: mdf1
+      pin: cck0
+    - name: pcie
+      pin: clkreqn
+    - name: pssi
+      pin: d6
+    - name: spi6
+      pin: rdy
+    - name: tim4
+      pin: etr
+    - name: usart1
+      pin: cts
+    - name: usart1
+      pin: nss
+
+PA8:
+  position: K9
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d4
+    - name: dcmi
+      pin: d4
+    - name: i2c5
+      pin: scl
+    - name: lptim2
+      pin: ch2
+    - name: ltdc
+      pin: b2
+    - name: pssi
+      pin: d4
+    - name: sai1
+      pin: fs_b
+    - name: spi7
+      pin: nss
+    - name: usart1
+      pin: ck
+    - name: usart2
+      pin: rx
+
+PA9:
+  position: K12
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d14
+    - name: eth1
+      pin: mdc
+    - name: lptim5
+      pin: etr
+    - name: ltdc
+      pin: g7
+    - name: pssi
+      pin: d14
+    - name: sai2
+      pin: sck_b
+    - name: spi4
+      pin: nss
+    - name: tim2
+      pin: ch3
+    - name: usart2
+      pin: cts
+    - name: usart2
+      pin: nss
+
+PA10:
+  position: M15
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d15
+    - name: eth1
+      pin: mdio
+    - name: lptim5
+      pin: in1
+    - name: ltdc
+      pin: r6
+    - name: pssi
+      pin: d15
+    - name: sai2
+      pin: sd_b
+    - name: spi4
+      pin: miso
+    - name: tim2
+      pin: ch2
+    - name: usart2
+      pin: rx
+
+PA11:
+  position: R9
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti11
+    - name: adc2
+      pin: exti11
+    - name: eth1
+      pin: mii_rx_dv
+    - name: eth1
+      pin: rgmii_rx_ctl
+    - name: eth1
+      pin: rmii_crs_dv
+    - name: lptim2
+      pin: ch1
+    - name: mdf1
+      pin: sdi4
+    - name: sai4
+      pin: sd_b
+    - name: spi8
+      pin: sck
+
+PA12:
+  position: R8
+  type: I/O
+  mux:
+    - name: eth1
+      pin: phy_intn
+    - name: i2c4
+      pin: scl
+    - name: i2c6
+      pin: scl
+    - name: sai3
+      pin: fs_a
+    - name: spi6
+      pin: mosi
+    - name: tim4
+      pin: ch1
+
+PA13:
+  position: W9
+  type: I/O
+  mux:
+    - name: eth1
+      pin: mii_tx_en
+    - name: eth1
+      pin: rgmii_tx_ctl
+    - name: eth1
+      pin: rmii_tx_en
+    - name: i2c7
+      pin: smba
+    - name: i2s3
+      pin: mck
+    - name: lptim2
+      pin: etr
+    - name: mdf1
+      pin: cki3
+    - name: spi8
+      pin: rdy
+    - name: usart2
+      pin: cts
+    - name: usart2
+      pin: nss
+
+PA14:
+  position: T8
+  type: I/O
+  mux:
+    - name: eth1
+      pin: mii_rx_clk
+    - name: eth1
+      pin: rgmii_rx_clk
+    - name: eth1
+      pin: rmii_ref_clk
+    - name: lptim2
+      pin: ch2
+    - name: mdf1
+      pin: cck1
+    - name: sai4
+      pin: fs_b
+    - name: spi8
+      pin: nss
+
+PA15:
+  position: T10
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti15
+    - name: adc2
+      pin: exti15
+    - name: eth1
+      pin: mii_txd0
+    - name: eth1
+      pin: rgmii_txd0
+    - name: eth1
+      pin: rmii_txd0
+    - name: i2c7
+      pin: sda
+    - name: i2s3
+      pin: sdi
+    - name: spi3
+      pin: miso
+    - name: usart2
+      pin: rx
+
+PB0:
+  position: B8
+  type: I/O
+  mux:
+    - name: i2s2
+      pin: ck
+    - name: octospim
+      pin: p2_io0
+    - name: spi2
+      pin: sck
+    - name: tim16
+      pin: ch1
+    - name: tim20
+      pin: ch4n
+    - name: usart1
+      pin: ck
+
+PB1:
+  position: D9
+  type: I/O
+  mux:
+    - name: fmc
+      pin: nce4
+    - name: i2s3
+      pin: ws
+    - name: octospim
+      pin: p2_io1
+    - name: spi3
+      pin: nss
+    - name: tim16
+      pin: ch1n
+    - name: tim20
+      pin: ch3n
+
+PB2:
+  position: E9
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti2
+    - name: i2s2
+      pin: sdo
+    - name: mdf1
+      pin: cki3
+    - name: octospim
+      pin: p2_io2
+    - name: spi2
+      pin: mosi
+    - name: tim16
+      pin: bkin
+    - name: tim17
+      pin: bkin
+    - name: tim20
+      pin: ch2n
+
+PB3:
+  position: A9
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti3
+    - name: fmc
+      pin: nce3
+    - name: i2s2
+      pin: ws
+    - name: mdf1
+      pin: sdi3
+    - name: octospim
+      pin: p2_io3
+    - name: spi2
+      pin: nss
+    - name: tim20
+      pin: ch3
+
+PB4:
+  position: C9
+  type: I/O
+  mux:
+    - name: i2c2
+      pin: sda
+    - name: i3c2
+      pin: sda
+    - name: mdf1
+      pin: sdi4
+    - name: octospim
+      pin: p2_io4
+    - name: sai4
+      pin: fs_b
+    - name: spi2
+      pin: rdy
+    - name: tim14
+      pin: ch1
+    - name: tim20
+      pin: ch2
+    - name: uart4
+      pin: cts
+
+PB5:
+  position: B9
+  type: I/O
+  mux:
+    - name: fmc
+      pin: d8
+    - name: fmc
+      pin: da8
+    - name: i2c2
+      pin: scl
+    - name: i2s2
+      pin: mck
+    - name: i3c2
+      pin: scl
+    - name: mdf1
+      pin: cki4
+    - name: octospim
+      pin: p2_io5
+    - name: sai4
+      pin: sd_b
+    - name: sdmmc3
+      pin: d123dir
+    - name: tim20
+      pin: ch1
+    - name: uart4
+      pin: de
+    - name: uart4
+      pin: rts
+
+PB6:
+  position: C8
+  type: I/O
+  mux:
+    - name: fmc
+      pin: d9
+    - name: fmc
+      pin: da9
+    - name: i2s2
+      pin: sdi
+    - name: octospim
+      pin: p2_io6
+    - name: sai4
+      pin: sck_b
+    - name: sdmmc3
+      pin: d0dir
+    - name: spi2
+      pin: miso
+    - name: tim20
+      pin: ch1n
+    - name: uart4
+      pin: rx
+
+PB7:
+  position: D7
+  type: I/O
+  mux:
+    - name: fmc
+      pin: d10
+    - name: fmc
+      pin: da10
+    - name: i2s3
+      pin: ck
+    - name: octospim
+      pin: p2_io7
+    - name: sai4
+      pin: mclk_b
+    - name: sdmmc3
+      pin: cdir
+    - name: spi3
+      pin: sck
+    - name: tim12
+      pin: ch1
+    - name: tim20
+      pin: etr
+    - name: uart4
+      pin: tx
+
+PB8:
+  position: A7
+  type: I/O
+  mux:
+    - name: fmc
+      pin: d12
+    - name: fmc
+      pin: da12
+    - name: i2s3
+      pin: sdo
+    - name: octospim
+      pin: p2_ncs1
+    - name: pcie
+      pin: clkreqn
+    - name: spi3
+      pin: mosi
+    - name: tim17
+      pin: ch1
+    - name: tim20
+      pin: ch4
+    - name: usart1
+      pin: tx
+
+PB9:
+  position: A8
+  type: I/O
+  mux:
+    - name: fdcan1
+      pin: tx
+    - name: fmc
+      pin: d13
+    - name: fmc
+      pin: da13
+    - name: octospim
+      pin: p2_dqs
+    - name: octospim
+      pin: p2_ncs2
+    - name: spi3
+      pin: rdy
+    - name: tim10
+      pin: ch1
+    - name: tim20
+      pin: bkin
+    - name: usart1
+      pin: de
+    - name: usart1
+      pin: rts
+
+PB10:
+  position: E12
+  type: I/O
+  mux:
+    - name: fmc
+      pin: d15
+    - name: fmc
+      pin: da15
+    - name: i2s3
+      pin: sdi
+    - name: octospim
+      pin: p2_clk
+    - name: spi3
+      pin: miso
+    - name: tim17
+      pin: ch1n
+    - name: usart1
+      pin: rx
+
+PB11:
+  position: B7
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti11
+    - name: adc2
+      pin: exti11
+    - name: fdcan1
+      pin: rx
+    - name: fmc
+      pin: d14
+    - name: fmc
+      pin: da14
+    - name: i2s3
+      pin: mck
+    - name: octospim
+      pin: p1_ncs2
+    - name: octospim
+      pin: p2_nclk
+    - name: octospim
+      pin: p2_ncs2
+    - name: tim12
+      pin: ch2
+    - name: tim20
+      pin: bkin2
+    - name: usart1
+      pin: cts
+    - name: usart1
+      pin: nss
+
+PB12:
+  position: E14
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d12
+    - name: dcmi
+      pin: d12
+    - name: fmc
+      pin: nwait
+    - name: pssi
+      pin: d12
+    - name: sdmmc3
+      pin: d2
+    - name: tim13
+      pin: ch1
+    - name: uart8
+      pin: cts
+
+PB13:
+  position: G15
+  type: I/O
+  mux:
+    - name: fmc
+      pin: d0
+    - name: fmc
+      pin: d5
+    - name: fmc
+      pin: da0
+    - name: fmc
+      pin: da5
+    - name: sai1
+      pin: sd_b
+    - name: sdmmc3
+      pin: ck
+    - name: spi7
+      pin: sck
+    - name: uart8
+      pin: rx
+
+PB14:
+  position: H15
+  type: I/O
+  mux:
+    - name: fmc
+      pin: d2
+    - name: fmc
+      pin: d7
+    - name: fmc
+      pin: da2
+    - name: fmc
+      pin: da7
+    - name: i2s2
+      pin: ck
+    - name: mdf1
+      pin: cki7
+    - name: sdmmc3
+      pin: d0
+    - name: spi2
+      pin: sck
+    - name: tim4
+      pin: ch2
+    - name: uart9
+      pin: rx
+
+PB15:
+  position: J15
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti15
+    - name: adc1
+      pin: inp15
+    - name: adc2
+      pin: exti15
+    - name: adc3
+      pin: inp5
+    - name: dcmipp
+      pin: d8
+    - name: dcmi
+      pin: d8
+    - name: eth1
+      pin: pps_out
+    - name: fmc
+      pin: a18
+    - name: lptim1
+      pin: in2
+    - name: ltdc
+      pin: r4
+    - name: pssi
+      pin: d8
+    - name: sai2
+      pin: sd_b
+    - name: spi5
+      pin: sck
+    - name: tim3
+      pin: ch2
+    - name: tim5
+      pin: ch1
+    - name: uart5
+      pin: rx
+    - name: uart8
+      pin: de
+    - name: uart8
+      pin: rts
+
+PC0:
+  position: V9
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d0
+    - name: dcmi
+      pin: d0
+    - name: eth1
+      pin: mii_tx_clk
+    - name: eth1
+      pin: rgmii_gtx_clk
+    - name: eth2
+      pin: mii_rx_clk
+    - name: eth2
+      pin: rmii_ref_clk
+    - name: lptim1
+      pin: ch1
+    - name: ltdc
+      pin: g7
+    - name: pssi
+      pin: d0
+    - name: sai3
+      pin: mclk_b
+    - name: spi6
+      pin: sck
+    - name: usart6
+      pin: tx
+
+PC1:
+  position: V10
+  type: I/O
+  mux:
+    - name: eth1
+      pin: mii_txd1
+    - name: eth1
+      pin: rgmii_txd1
+    - name: eth1
+      pin: rmii_txd1
+    - name: i2c7
+      pin: scl
+    - name: i2s3
+      pin: sdo
+    - name: spi3
+      pin: mosi
+    - name: usart2
+      pin: tx
+
+PC2:
+  position: T9
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti2
+    - name: eth1
+      pin: mii_rxd1
+    - name: eth1
+      pin: rgmii_rxd1
+    - name: eth1
+      pin: rmii_rxd1
+    - name: lptim2
+      pin: in1
+    - name: mdf1
+      pin: sdi3
+    - name: sai4
+      pin: mclk_b
+    - name: spi8
+      pin: mosi
+    - name: usart2
+      pin: de
+    - name: usart2
+      pin: rts
+
+PC3:
+  position: U4
+  type: I/O
+  mux:
+    - name: adc1
+      pin: inn10
+    - name: adc1
+      pin: inp12
+    - name: adc2
+      pin: inn10
+    - name: adc2
+      pin: inp12
+    - name: adc3
+      pin: exti3
+    - name: adc3
+      pin: inn10
+    - name: adc3
+      pin: inp12
+    - name: dcmipp
+      pin: d3
+    - name: dcmi
+      pin: d3
+    - name: eth1
+      pin: mii_rx_er
+    - name: eth2
+      pin: mii_rx_dv
+    - name: eth2
+      pin: rgmii_rx_ctl
+    - name: eth2
+      pin: rmii_crs_dv
+    - name: fdcan2
+      pin: tx
+    - name: i2s3
+      pin: ws
+    - name: lptim1
+      pin: in2
+    - name: ltdc
+      pin: g6
+    - name: pssi
+      pin: d3
+    - name: spi3
+      pin: nss
+    - name: spi6
+      pin: rdy
+    - name: tamp
+      pin: in3
+    - name: usart6
+      pin: de
+    - name: usart6
+      pin: rts
+
+PC4:
+  position: V3
+  type: I/O
+  mux:
+    - name: eth1
+      pin: rgmii_clk125
+    - name: eth2
+      pin: mii_tx_en
+    - name: eth2
+      pin: rgmii_tx_ctl
+    - name: eth2
+      pin: rmii_tx_en
+    - name: ltdc
+      pin: r0
+    - name: sai3
+      pin: fs_b
+    - name: spi6
+      pin: miso
+    - name: tamp
+      pin: in1
+
+PC5:
+  position: T7
+  type: I/O
+  mux:
+    - name: adc1
+      pin: inp10
+    - name: adc2
+      pin: inp10
+    - name: adc3
+      pin: inp10
+    - name: eth1
+      pin: mii_col
+    - name: eth1
+      pin: pps_out
+    - name: eth2
+      pin: mdio
+    - name: fmc
+      pin: a25
+    - name: i2c4
+      pin: sda
+    - name: ltdc
+      pin: de
+    - name: mdf1
+      pin: sdi1
+    - name: spdifrx
+      pin: in1
+    - name: tamp
+      pin: in6
+    - name: tim8
+      pin: ch1n
+
+PC6:
+  position: R7
+  type: I/O
+  mux:
+    - name: adc1
+      pin: inn5
+    - name: adc1
+      pin: inp9
+    - name: adc2
+      pin: inn5
+    - name: adc2
+      pin: inp9
+    - name: eth1
+      pin: mii_crs
+    - name: eth1
+      pin: phy_intn
+    - name: eth2
+      pin: mdc
+    - name: fmc
+      pin: a24
+    - name: i2c4
+      pin: scl
+    - name: ltdc
+      pin: clk
+    - name: mdf1
+      pin: cki1
+    - name: rtc
+      pin: refin
+    - name: spdifrx
+      pin: in0
+    - name: tim8
+      pin: ch1
+
+PC7:
+  position: W5
+  type: I/O
+  mux:
+    - name: adc3
+      pin: inn5
+    - name: adc3
+      pin: inp9
+    - name: dcmipp
+      pin: d1
+    - name: dcmi
+      pin: d1
+    - name: eth1
+      pin: mii_txd2
+    - name: eth2
+      pin: mii_txd0
+    - name: eth2
+      pin: rgmii_txd0
+    - name: eth2
+      pin: rmii_txd0
+    - name: ltdc
+      pin: b4
+    - name: pssi
+      pin: d1
+    - name: sai3
+      pin: sd_b
+    - name: spi6
+      pin: mosi
+    - name: tim8
+      pin: ch2n
+
+PC8:
+  position: U6
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d2
+    - name: dcmi
+      pin: d2
+    - name: eth1
+      pin: mii_txd3
+    - name: eth2
+      pin: mii_txd1
+    - name: eth2
+      pin: rgmii_txd1
+    - name: eth2
+      pin: rmii_txd1
+    - name: lptim1
+      pin: etr
+    - name: ltdc
+      pin: b3
+    - name: pssi
+      pin: d2
+    - name: sai3
+      pin: sck_b
+    - name: spi6
+      pin: nss
+    - name: tim8
+      pin: ch2
+    - name: usart6
+      pin: cts
+    - name: usart6
+      pin: nss
+
+PC9:
+  position: V6
+  type: I/O
+  mux:
+    - name: adc1
+      pin: inn4
+    - name: adc1
+      pin: inp8
+    - name: adc2
+      pin: inn4
+    - name: adc2
+      pin: inp8
+    - name: dcmipp
+      pin: d7
+    - name: dcmi
+      pin: d7
+    - name: eth2
+      pin: mii_txd2
+    - name: eth2
+      pin: rgmii_txd2
+    - name: fmc
+      pin: a22
+    - name: i2s3
+      pin: sdi
+    - name: ltdc
+      pin: g2
+    - name: pssi
+      pin: d7
+    - name: rcc
+      pin: mco_1
+    - name: sai2
+      pin: sck_a
+    - name: spi3
+      pin: miso
+    - name: tim13
+      pin: ch1
+    - name: tim8
+      pin: ch4n
+    - name: usb3dr
+      pin: ovrcur
+    - name: usbh
+      pin: hs_ovrcur
+
+PC10:
+  position: W6
+  type: I/O
+  mux:
+    - name: adc1
+      pin: inp5
+    - name: adc2
+      pin: inp5
+    - name: dcmipp
+      pin: d6
+    - name: dcmi
+      pin: d6
+    - name: eth2
+      pin: mii_txd3
+    - name: eth2
+      pin: rgmii_txd3
+    - name: fmc
+      pin: a23
+    - name: i2s3
+      pin: sdo
+    - name: lptim4
+      pin: etr
+    - name: ltdc
+      pin: g3
+    - name: pssi
+      pin: d6
+    - name: spi3
+      pin: mosi
+    - name: tim8
+      pin: ch4
+    - name: usb3dr
+      pin: vbusen
+    - name: usbh
+      pin: hs_vbusen
+
+PC11:
+  position: V5
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti11
+    - name: adc1
+      pin: inn3
+    - name: adc1
+      pin: inp7
+    - name: adc2
+      pin: exti11
+    - name: adc2
+      pin: inn3
+    - name: adc2
+      pin: inp7
+    - name: adc3
+      pin: inn3
+    - name: adc3
+      pin: inp7
+    - name: dcmipp
+      pin: d10
+    - name: dcmi
+      pin: d10
+    - name: eth2
+      pin: mii_rxd3
+    - name: eth2
+      pin: rgmii_rxd3
+    - name: fmc
+      pin: nbl1
+    - name: lptim1
+      pin: ch1
+    - name: ltdc
+      pin: r2
+    - name: pssi
+      pin: d10
+    - name: sai2
+      pin: mclk_a
+    - name: spi5
+      pin: nss
+    - name: tim3
+      pin: ch1
+    - name: tim5
+      pin: etr
+    - name: uart5
+      pin: de
+    - name: uart5
+      pin: rts
+    - name: usart3
+      pin: de
+    - name: usart3
+      pin: rts
+
+PC12:
+  position: V4
+  type: I/O
+  mux:
+    - name: adc1
+      pin: inp17
+    - name: dcmipp
+      pin: d5
+    - name: dcmi
+      pin: d5
+    - name: eth1
+      pin: mii_rxd3
+    - name: eth2
+      pin: mii_rxd1
+    - name: eth2
+      pin: rgmii_rxd1
+    - name: eth2
+      pin: rmii_rxd1
+    - name: i2c3
+      pin: scl
+    - name: i3c3
+      pin: scl
+    - name: lptim1
+      pin: ch2
+    - name: ltdc
+      pin: g1
+    - name: mdf1
+      pin: cki2
+    - name: pssi
+      pin: d5
+    - name: tim8
+      pin: ch3
+
+PC13:
+  position: P4
+  type: I/O
+  mux:
+    - name: rtc
+      pin: lsco
+    - name: rtc
+      pin: out1
+    - name: rtc
+      pin: ts
+    - name: tamp
+      pin: out1
+
+PD0:
+  position: C11
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: pixclk
+    - name: dcmi
+      pin: pixclk
+    - name: debug
+      pin: traceclk
+    - name: hdp
+      pin: hdp0
+    - name: octospim
+      pin: p1_clk
+    - name: pssi
+      pin: pdck
+    - name: sai1
+      pin: d2
+    - name: sai4
+      pin: fs_a
+    - name: spi7
+      pin: rdy
+    - name: tim15
+      pin: ch2
+    - name: uart7
+      pin: rx
+
+PD1:
+  position: F9
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: hsync
+    - name: dcmi
+      pin: hsync
+    - name: fdcan3
+      pin: rx
+    - name: hdp
+      pin: hdp1
+    - name: i2s1
+      pin: sdi
+    - name: octospim
+      pin: p1_nclk
+    - name: octospim
+      pin: p1_ncs2
+    - name: octospim
+      pin: p2_ncs2
+    - name: pssi
+      pin: de
+    - name: sai1
+      pin: ck2
+    - name: sai4
+      pin: sd_a
+    - name: spi1
+      pin: miso
+    - name: tim15
+      pin: ch1
+    - name: tim1
+      pin: bkin
+    - name: uart7
+      pin: de
+    - name: uart7
+      pin: rts
+
+PD2:
+  position: A10
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti2
+    - name: dcmipp
+      pin: vsync
+    - name: dcmi
+      pin: vsync
+    - name: fdcan3
+      pin: tx
+    - name: hdp
+      pin: hdp2
+    - name: i2s1
+      pin: ws
+    - name: octospim
+      pin: p1_dqs
+    - name: octospim
+      pin: p1_ncs2
+    - name: pssi
+      pin: rdy
+    - name: sai1
+      pin: ck1
+    - name: sai4
+      pin: sck_a
+    - name: spi1
+      pin: nss
+    - name: tim15
+      pin: bkin
+    - name: tim1
+      pin: etr
+    - name: uart7
+      pin: cts
+
+PD3:
+  position: D8
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti3
+    - name: dcmipp
+      pin: d15
+    - name: i2s2
+      pin: ck
+    - name: octospim
+      pin: p1_ncs1
+    - name: pssi
+      pin: d15
+    - name: sai1
+      pin: d1
+    - name: sai1
+      pin: mclk_a
+    - name: sai4
+      pin: mclk_a
+    - name: spi2
+      pin: sck
+    - name: tim15
+      pin: ch1n
+    - name: tim1
+      pin: bkin2
+    - name: uart7
+      pin: tx
+
+PD4:
+  position: C12
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d14
+    - name: debug
+      pin: traced0
+    - name: hdp
+      pin: hdp3
+    - name: octospim
+      pin: p1_io0
+    - name: pssi
+      pin: d14
+    - name: sai1
+      pin: d3
+    - name: sai1
+      pin: sd_b
+    - name: spi4
+      pin: miso
+    - name: tim1
+      pin: ch4n
+    - name: tim4
+      pin: ch1
+
+PD5:
+  position: B12
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d13
+    - name: dcmi
+      pin: d13
+    - name: debug
+      pin: traced1
+    - name: hdp
+      pin: hdp4
+    - name: octospim
+      pin: p1_io1
+    - name: pssi
+      pin: d13
+    - name: sai1
+      pin: d4
+    - name: sai1
+      pin: fs_b
+    - name: spi4
+      pin: nss
+    - name: tim1
+      pin: ch3n
+    - name: tim4
+      pin: ch2
+
+PD6:
+  position: A12
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d12
+    - name: dcmi
+      pin: d12
+    - name: debug
+      pin: traced2
+    - name: hdp
+      pin: hdp5
+    - name: mdf1
+      pin: sdi2
+    - name: octospim
+      pin: p1_io2
+    - name: pssi
+      pin: d12
+    - name: sai1
+      pin: sck_b
+    - name: spi4
+      pin: mosi
+    - name: tim1
+      pin: ch2n
+    - name: tim4
+      pin: ch3
+
+PD7:
+  position: D12
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d11
+    - name: dcmi
+      pin: d11
+    - name: debug
+      pin: traced3
+    - name: mdf1
+      pin: cki2
+    - name: octospim
+      pin: p1_io3
+    - name: pssi
+      pin: d11
+    - name: sai1
+      pin: mclk_b
+    - name: spi1
+      pin: rdy
+    - name: spi4
+      pin: sck
+    - name: tim1
+      pin: ch1n
+    - name: tim4
+      pin: ch4
+
+PD8:
+  position: E11
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d10
+    - name: dcmi
+      pin: d10
+    - name: debug
+      pin: traced4
+    - name: i2s1
+      pin: mck
+    - name: mdf1
+      pin: sdi1
+    - name: octospim
+      pin: p1_io4
+    - name: pssi
+      pin: d10
+    - name: sai1
+      pin: fs_a
+    - name: sdmmc1
+      pin: d123dir
+    - name: sdmmc1
+      pin: d7
+    - name: spi4
+      pin: rdy
+    - name: tim1
+      pin: ch4
+    - name: tim4
+      pin: etr
+    - name: uart4
+      pin: cts
+
+PD9:
+  position: C10
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d9
+    - name: dcmi
+      pin: d9
+    - name: debug
+      pin: traced5
+    - name: hdp
+      pin: hdp6
+    - name: i2s1
+      pin: sdo
+    - name: mdf1
+      pin: cki1
+    - name: octospim
+      pin: p1_io5
+    - name: pssi
+      pin: d9
+    - name: sai1
+      pin: sd_a
+    - name: sdmmc1
+      pin: d0dir
+    - name: sdmmc1
+      pin: d6
+    - name: spi1
+      pin: mosi
+    - name: tim1
+      pin: ch3
+    - name: uart4
+      pin: de
+    - name: uart4
+      pin: rts
+
+PD10:
+  position: D11
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d8
+    - name: dcmi
+      pin: d8
+    - name: debug
+      pin: traced6
+    - name: hdp
+      pin: hdp7
+    - name: i2c4
+      pin: sda
+    - name: mdf1
+      pin: sdi0
+    - name: octospim
+      pin: p1_io6
+    - name: pssi
+      pin: d8
+    - name: sai1
+      pin: sck_a
+    - name: sdmmc1
+      pin: cdir
+    - name: sdmmc1
+      pin: d5
+    - name: tim14
+      pin: ch1
+    - name: tim1
+      pin: ch2
+    - name: uart4
+      pin: rx
+
+PD11:
+  position: B10
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti11
+    - name: adc2
+      pin: exti11
+    - name: dcmipp
+      pin: d7
+    - name: dcmi
+      pin: d7
+    - name: debug
+      pin: traced7
+    - name: i2c4
+      pin: scl
+    - name: i2s1
+      pin: ck
+    - name: mdf1
+      pin: cki0
+    - name: octospim
+      pin: p1_io7
+    - name: pssi
+      pin: d7
+    - name: sai1
+      pin: mclk_a
+    - name: sdmmc1
+      pin: ckin
+    - name: sdmmc1
+      pin: d4
+    - name: spi1
+      pin: sck
+    - name: tim1
+      pin: ch1
+    - name: uart4
+      pin: tx
+
+PD12:
+  position: H14
+  type: I/O
+  mux:
+    - name: fmc
+      pin: d1
+    - name: fmc
+      pin: d6
+    - name: fmc
+      pin: da1
+    - name: fmc
+      pin: da6
+    - name: i2s2
+      pin: sdi
+    - name: sdmmc3
+      pin: cmd
+    - name: spdifrx
+      pin: in2
+    - name: spi2
+      pin: miso
+    - name: spi7
+      pin: miso
+    - name: tim4
+      pin: etr
+    - name: uart8
+      pin: de
+    - name: uart8
+      pin: rts
+
+PD13:
+  position: G9
+  type: I/O
+  mux:
+    - name: fmc
+      pin: d11
+    - name: fmc
+      pin: da11
+    - name: fmc
+      pin: nwe
+    - name: i2s2
+      pin: ws
+    - name: mdf1
+      pin: sdi7
+    - name: sdmmc3
+      pin: d1
+    - name: spi2
+      pin: nss
+    - name: tim4
+      pin: ch4
+    - name: uart9
+      pin: tx
+
+PD14:
+  position: A13
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d1
+    - name: dcmi
+      pin: d1
+    - name: fdcan1
+      pin: rx
+    - name: fmc
+      pin: d4
+    - name: fmc
+      pin: da4
+    - name: i2c7
+      pin: sda
+    - name: i2s1
+      pin: mck
+    - name: pssi
+      pin: d1
+    - name: sdmmc3
+      pin: d3
+    - name: tim11
+      pin: ch1
+
+PD15:
+  position: A11
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti15
+    - name: adc2
+      pin: exti15
+    - name: dcmipp
+      pin: d0
+    - name: dcmi
+      pin: d0
+    - name: fdcan1
+      pin: tx
+    - name: fmc
+      pin: d3
+    - name: fmc
+      pin: da3
+    - name: i2c5
+      pin: sda
+    - name: i2c7
+      pin: scl
+    - name: pssi
+      pin: d0
+    - name: sdmmc3
+      pin: ckin
+    - name: spi1
+      pin: rdy
+    - name: tim1
+      pin: bkin2
+    - name: tim5
+      pin: etr
+
+PE0:
+  position: B13
+  type: I/O
+  mux:
+    - name: debug
+      pin: traced2
+    - name: i2s1
+      pin: ck
+    - name: lptim2
+      pin: ch1
+    - name: sdmmc1
+      pin: d2
+    - name: spi1
+      pin: sck
+    - name: spi3
+      pin: rdy
+    - name: usart3
+      pin: ck
+
+PE1:
+  position: C13
+  type: I/O
+  mux:
+    - name: debug
+      pin: traced3
+    - name: i2s1
+      pin: mck
+    - name: i2s3
+      pin: mck
+    - name: lptim2
+      pin: ch2
+    - name: sdmmc1
+      pin: d3
+    - name: usart3
+      pin: rx
+
+PE2:
+  position: A14
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti2
+    - name: i2s1
+      pin: sdi
+    - name: i2s3
+      pin: sdo
+    - name: lptim2
+      pin: etr
+    - name: sai1
+      pin: sck_b
+    - name: sdmmc1
+      pin: cmd
+    - name: spi1
+      pin: miso
+    - name: spi3
+      pin: mosi
+    - name: tim10
+      pin: ch1
+
+PE3:
+  position: A15
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti3
+    - name: debug
+      pin: traceclk
+    - name: i2s3
+      pin: ck
+    - name: sai1
+      pin: mclk_b
+    - name: sdmmc1
+      pin: ck
+    - name: spi1
+      pin: rdy
+    - name: spi3
+      pin: sck
+    - name: tim11
+      pin: ch1
+    - name: usart3
+      pin: tx
+
+PE4:
+  position: B14
+  type: I/O
+  mux:
+    - name: debug
+      pin: traced0
+    - name: fdcan1
+      pin: tx
+    - name: i2s1
+      pin: sdo
+    - name: i2s3
+      pin: sdi
+    - name: lptim2
+      pin: in1
+    - name: sai1
+      pin: sd_b
+    - name: sdmmc1
+      pin: d0
+    - name: spi1
+      pin: mosi
+    - name: spi3
+      pin: miso
+    - name: usart3
+      pin: cts
+    - name: usart3
+      pin: nss
+
+PE5:
+  position: C14
+  type: I/O
+  mux:
+    - name: debug
+      pin: traced1
+    - name: fdcan1
+      pin: rx
+    - name: i2s1
+      pin: ws
+    - name: i2s3
+      pin: ws
+    - name: lptim2
+      pin: in2
+    - name: sai1
+      pin: fs_b
+    - name: sdmmc1
+      pin: d1
+    - name: spi1
+      pin: nss
+    - name: spi3
+      pin: nss
+    - name: usart3
+      pin: de
+    - name: usart3
+      pin: rts
+
+PE6:
+  position: F14
+  type: I/O
+  mux:
+    - name: fmc
+      pin: d1
+    - name: fmc
+      pin: da1
+    - name: sdmmc2
+      pin: d0dir
+    - name: sdmmc2
+      pin: d6
+    - name: spdifrx
+      pin: in2
+    - name: spi4
+      pin: rdy
+    - name: tim1
+      pin: etr
+    - name: usart1
+      pin: tx
+
+PE7:
+  position: C15
+  type: I/O
+  mux:
+    - name: fmc
+      pin: d2
+    - name: fmc
+      pin: da2
+    - name: sai4
+      pin: d4
+    - name: sdmmc2
+      pin: d123dir
+    - name: sdmmc2
+      pin: d7
+    - name: spdifrx
+      pin: in3
+    - name: tim14
+      pin: ch1
+    - name: tim1
+      pin: ch4n
+    - name: usart1
+      pin: rx
+
+PE8:
+  position: B15
+  type: I/O
+  mux:
+    - name: fmc
+      pin: a17
+    - name: fmc
+      pin: ale
+    - name: mdf1
+      pin: cki0
+    - name: sai4
+      pin: ck1
+    - name: sai4
+      pin: mclk_a
+    - name: sdmmc2
+      pin: d2
+    - name: spi4
+      pin: mosi
+    - name: tim1
+      pin: ch1
+
+PE9:
+  position: F15
+  type: I/O
+  mux:
+    - name: fmc
+      pin: d0
+    - name: fmc
+      pin: da0
+    - name: sai4
+      pin: d2
+    - name: sai4
+      pin: fs_a
+    - name: sdmmc2
+      pin: cdir
+    - name: sdmmc2
+      pin: d5
+    - name: spi4
+      pin: miso
+    - name: tim1
+      pin: ch4
+    - name: usart1
+      pin: ck
+
+PE10:
+  position: D15
+  type: I/O
+  mux:
+    - name: fmc
+      pin: nce2
+    - name: fmc
+      pin: ne3
+    - name: sai4
+      pin: d1
+    - name: sai4
+      pin: sd_a
+    - name: sdmmc2
+      pin: ckin
+    - name: sdmmc2
+      pin: d4
+    - name: spi4
+      pin: sck
+    - name: tim1
+      pin: ch3
+    - name: usart1
+      pin: cts
+    - name: usart1
+      pin: nss
+
+PE11:
+  position: B16
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti11
+    - name: adc2
+      pin: exti11
+    - name: fmc
+      pin: a16
+    - name: fmc
+      pin: cle
+    - name: sai1
+      pin: fs_a
+    - name: sai4
+      pin: d3
+    - name: sdmmc2
+      pin: d1
+    - name: spi7
+      pin: sck
+    - name: tim15
+      pin: ch2
+    - name: tim1
+      pin: ch3n
+
+PE12:
+  position: C16
+  type: I/O
+  mux:
+    - name: fmc
+      pin: nce1
+    - name: fmc
+      pin: ne2
+    - name: mdf1
+      pin: sdi0
+    - name: sai4
+      pin: ck2
+    - name: sai4
+      pin: sck_a
+    - name: sdmmc2
+      pin: d3
+    - name: spi4
+      pin: nss
+    - name: tim1
+      pin: ch2
+    - name: usart1
+      pin: de
+    - name: usart1
+      pin: rts
+
+PE13:
+  position: A16
+  type: I/O
+  mux:
+    - name: fmc
+      pin: rnb
+    - name: sai1
+      pin: sd_a
+    - name: sdmmc2
+      pin: d0
+    - name: spi7
+      pin: miso
+    - name: tim15
+      pin: ch1
+    - name: tim1
+      pin: ch2n
+
+PE14:
+  position: G14
+  type: I/O
+  mux:
+    - name: fmc
+      pin: nwe
+    - name: mdf1
+      pin: cki6
+    - name: sai1
+      pin: mclk_a
+    - name: sdmmc2
+      pin: ck
+    - name: spi7
+      pin: nss
+    - name: tim15
+      pin: bkin
+    - name: tim1
+      pin: bkin
+
+PE15:
+  position: D14
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti15
+    - name: adc2
+      pin: exti15
+    - name: fmc
+      pin: noe
+    - name: mdf1
+      pin: sdi6
+    - name: sai1
+      pin: sck_a
+    - name: sdmmc2
+      pin: cmd
+    - name: spi7
+      pin: mosi
+    - name: tim15
+      pin: ch1n
+    - name: tim1
+      pin: ch1n
+
+PF0:
+  position: N9
+  type: I/O
+  mux:
+    - name: adc1
+      pin: inp11
+    - name: adc2
+      pin: inp11
+    - name: adc3
+      pin: inp11
+    - name: eth1
+      pin: mdc
+    - name: eth2
+      pin: mii_crs
+    - name: fdcan2
+      pin: rx
+    - name: i2c2
+      pin: sda
+    - name: i2s3
+      pin: ck
+    - name: i3c2
+      pin: sda
+    - name: spi3
+      pin: sck
+    - name: tim12
+      pin: ch2
+
+PF1:
+  position: U8
+  type: I/O
+  mux:
+    - name: eth1
+      pin: mii_rxd0
+    - name: eth1
+      pin: rgmii_rxd0
+    - name: eth1
+      pin: rmii_rxd0
+    - name: lptim2
+      pin: in2
+    - name: mdf1
+      pin: cki4
+    - name: sai4
+      pin: sck_b
+    - name: spi8
+      pin: miso
+    - name: usart2
+      pin: ck
+
+PF2:
+  position: P9
+  type: I/O
+  mux:
+    - name: adc1
+      pin: inn11
+    - name: adc1
+      pin: inp13
+    - name: adc2
+      pin: inn11
+    - name: adc2
+      pin: inp13
+    - name: adc3
+      pin: exti2
+    - name: adc3
+      pin: inn11
+    - name: adc3
+      pin: inp13
+    - name: eth1
+      pin: mdio
+    - name: eth2
+      pin: mii_col
+    - name: fmc
+      pin: ne4
+    - name: i2c2
+      pin: scl
+    - name: i2c4
+      pin: smba
+    - name: i3c2
+      pin: scl
+    - name: spi3
+      pin: rdy
+    - name: tim12
+      pin: ch1
+
+PF3:
+  position: W10
+  type: I/O
+  mux:
+    - name: adc1
+      pin: inn15
+    - name: adc1
+      pin: inp16
+    - name: adc3
+      pin: exti3
+    - name: dcmipp
+      pin: hsync
+    - name: dcmi
+      pin: hsync
+    - name: eth1
+      pin: clk
+    - name: eth2
+      pin: pps_out
+    - name: fmc
+      pin: a20
+    - name: ltdc
+      pin: r6
+    - name: mdf1
+      pin: cck0
+    - name: pssi
+      pin: de
+    - name: sai2
+      pin: sck_b
+    - name: tim3
+      pin: ch4
+    - name: tim8
+      pin: bkin2
+    - name: uart8
+      pin: rx
+
+PF4:
+  position: W7
+  type: I/O
+  mux:
+    - name: eth1
+      pin: mdc
+    - name: eth1
+      pin: pps_out
+    - name: eth2
+      pin: clk
+    - name: eth2
+      pin: pps_out
+    - name: ltdc
+      pin: b7
+    - name: rtc
+      pin: out2
+    - name: sai3
+      pin: sck_a
+    - name: spi6
+      pin: nss
+    - name: tim4
+      pin: ch4
+    - name: usart6
+      pin: rx
+
+PF5:
+  position: P7
+  type: I/O
+  mux:
+    - name: eth1
+      pin: clk
+    - name: eth1
+      pin: mdio
+    - name: eth1
+      pin: phy_intn
+    - name: eth2
+      pin: phy_intn
+    - name: ltdc
+      pin: b6
+    - name: sai3
+      pin: mclk_a
+    - name: spi6
+      pin: sck
+    - name: tim4
+      pin: ch3
+    - name: usart6
+      pin: tx
+
+PF6:
+  position: U5
+  type: I/O
+  mux:
+    - name: eth2
+      pin: mii_rx_clk
+    - name: eth2
+      pin: rgmii_rx_clk
+    - name: eth2
+      pin: rmii_ref_clk
+    - name: i2c3
+      pin: smba
+    - name: ltdc
+      pin: b0
+    - name: rtc
+      pin: out2
+    - name: sai3
+      pin: mclk_b
+    - name: tamp
+      pin: in5
+    - name: tim12
+      pin: ch1
+    - name: usart6
+      pin: ck
+
+PF7:
+  position: V7
+  type: I/O
+  mux:
+    - name: eth2
+      pin: mii_tx_clk
+    - name: eth2
+      pin: rgmii_gtx_clk
+    - name: ltdc
+      pin: r1
+    - name: sai3
+      pin: sd_a
+    - name: spdifrx
+      pin: in1
+    - name: spi6
+      pin: sck
+    - name: tamp
+      pin: in2
+    - name: tim2
+      pin: etr
+
+PF8:
+  position: U7
+  type: I/O
+  mux:
+    - name: eth1
+      pin: clk
+    - name: eth2
+      pin: mii_rx_dv
+    - name: eth2
+      pin: mii_rx_er
+    - name: eth2
+      pin: rgmii_clk125
+    - name: eth2
+      pin: rmii_crs_dv
+    - name: ltdc
+      pin: g0
+    - name: rtc
+      pin: refin
+    - name: sai3
+      pin: sck_b
+    - name: tim12
+      pin: ch2
+    - name: usart3
+      pin: rx
+
+PF9:
+  position: T6
+  type: I/O
+  mux:
+    - name: eth2
+      pin: mdio
+    - name: eth2
+      pin: mii_rxd2
+    - name: eth2
+      pin: rgmii_rxd2
+    - name: mdf1
+      pin: sdi5
+    - name: sai2
+      pin: sd_a
+    - name: sai3
+      pin: sd_b
+    - name: tim2
+      pin: ch2
+    - name: uart8
+      pin: de
+    - name: uart8
+      pin: rts
+
+PF10:
+  position: L9
+  type: I/O
+  mux:
+    - name: adc3
+      pin: inp2
+    - name: eth2
+      pin: mii_txd2
+    - name: mdf1
+      pin: cki6
+    - name: rcc
+      pin: mco_2
+    - name: sai2
+      pin: mclk_a
+    - name: spi3
+      pin: rdy
+    - name: tim2
+      pin: ch3
+    - name: uart8
+      pin: tx
+
+PF11:
+  position: T4
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti11
+    - name: adc2
+      pin: exti11
+    - name: adc3
+      pin: inn2
+    - name: adc3
+      pin: inp6
+    - name: eth2
+      pin: mii_txd3
+    - name: mdf1
+      pin: sdi6
+    - name: rcc
+      pin: mco_1
+    - name: sai2
+      pin: sck_a
+    - name: spdifrx
+      pin: in0
+    - name: spi6
+      pin: rdy
+    - name: tim2
+      pin: ch4
+    - name: uart8
+      pin: rx
+
+PF12:
+  position: L7
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d0
+    - name: dcmi
+      pin: d0
+    - name: debug
+      pin: traceclk
+    - name: i2s1
+      pin: sdi
+    - name: ltdc
+      pin: clk
+    - name: pssi
+      pin: d0
+    - name: spi1
+      pin: miso
+    - name: spi5
+      pin: miso
+    - name: tim5
+      pin: ch1
+    - name: uart9
+      pin: de
+    - name: uart9
+      pin: rts
+
+PF13:
+  position: H2
+  type: I/O
+  mux:
+    - name: audioclk
+    - name: debug
+      pin: traced0
+    - name: fdcan3
+      pin: tx
+    - name: hdp
+      pin: hdp0
+    - name: i2s2
+      pin: ws
+    - name: ltdc
+      pin: r2
+    - name: mdf1
+      pin: cki7
+    - name: spi2
+      pin: nss
+    - name: tim3
+      pin: ch3
+    - name: usart3
+      pin: cts
+    - name: usart3
+      pin: nss
+    - name: usart6
+      pin: tx
+
+PF14:
+  position: G7
+  type: I/O
+  mux:
+    - name: debug
+      pin: traced1
+    - name: fdcan3
+      pin: rx
+    - name: hdp
+      pin: hdp1
+    - name: ltdc
+      pin: r3
+    - name: mdf1
+      pin: sdi7
+    - name: tim3
+      pin: ch4
+    - name: usart3
+      pin: de
+    - name: usart3
+      pin: rts
+    - name: usart6
+      pin: rx
+
+PF15:
+  position: G5
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti15
+    - name: adc2
+      pin: exti15
+    - name: debug
+      pin: traced2
+    - name: hdp
+      pin: hdp2
+    - name: i2c6
+      pin: smba
+    - name: i2s2
+      pin: ck
+    - name: ltdc
+      pin: r4
+    - name: spi2
+      pin: rdy
+    - name: spi2
+      pin: sck
+    - name: tim2
+      pin: ch2
+    - name: tim3
+      pin: etr
+    - name: usart3
+      pin: ck
+    - name: usart6
+      pin: cts
+    - name: usart6
+      pin: nss
+
+PG0:
+  position: T5
+  type: I/O
+  mux:
+    - name: adc1
+      pin: inn17
+    - name: adc1
+      pin: inp18
+    - name: dcmipp
+      pin: d4
+    - name: dcmi
+      pin: d4
+    - name: eth1
+      pin: mii_rxd2
+    - name: eth2
+      pin: mii_rxd0
+    - name: eth2
+      pin: rgmii_rxd0
+    - name: eth2
+      pin: rmii_rxd0
+    - name: i2c3
+      pin: sda
+    - name: i3c3
+      pin: sda
+    - name: lptim1
+      pin: in1
+    - name: ltdc
+      pin: g5
+    - name: mdf1
+      pin: sdi2
+    - name: pssi
+      pin: d4
+    - name: tim8
+      pin: ch3n
+
+PG1:
+  position: R4
+  type: I/O
+  mux:
+    - name: adc1
+      pin: inn2
+    - name: adc1
+      pin: inp6
+    - name: adc2
+      pin: inn2
+    - name: adc2
+      pin: inp6
+    - name: dcmipp
+      pin: d11
+    - name: dcmi
+      pin: d11
+    - name: eth2
+      pin: mii_rxd3
+    - name: eth2
+      pin: mii_rx_er
+    - name: fmc
+      pin: nbl0
+    - name: i2c3
+      pin: scl
+    - name: i2s3
+      pin: mck
+    - name: i3c3
+      pin: scl
+    - name: lptim1
+      pin: in1
+    - name: ltdc
+      pin: vsync
+    - name: pssi
+      pin: d11
+    - name: pwr
+      pin: wkup3
+    - name: sai2
+      pin: sd_a
+    - name: tamp
+      pin: in4
+    - name: tim5
+      pin: ch4
+    - name: uart5
+      pin: cts
+    - name: usart3
+      pin: cts
+    - name: usart3
+      pin: nss
+
+PG2:
+  position: M7
+  type: I/O
+  mux:
+    - name: adc1
+      pin: inp2
+    - name: adc2
+      pin: inp2
+    - name: adc3
+      pin: exti2
+    - name: eth2
+      pin: mii_tx_clk
+    - name: eth2
+      pin: rgmii_clk125
+    - name: fmc
+      pin: clk
+    - name: i2c3
+      pin: sda
+    - name: i2s3
+      pin: mck
+    - name: i3c3
+      pin: sda
+    - name: ltdc
+      pin: hsync
+    - name: pwr
+      pin: wkup5
+    - name: rtc
+      pin: refin
+    - name: sai2
+      pin: fs_a
+    - name: tim5
+      pin: ch3
+    - name: usart3
+      pin: ck
+
+PG3:
+  position: H12
+  type: I/O
+  mux:
+    - name: adc1
+      pin: inp3
+    - name: adc2
+      pin: inp3
+    - name: adc3
+      pin: exti3
+    - name: adc3
+      pin: inp3
+    - name: dcmipp
+      pin: pixclk
+    - name: dcmi
+      pin: pixclk
+    - name: eth2
+      pin: clk
+    - name: eth2
+      pin: phy_intn
+    - name: fmc
+      pin: a19
+    - name: lptim1
+      pin: etr
+    - name: ltdc
+      pin: r5
+    - name: pssi
+      pin: pdck
+    - name: pwr
+      pin: wkup6
+    - name: sai2
+      pin: fs_b
+    - name: spi5
+      pin: mosi
+    - name: tamp
+      pin: in7
+    - name: tim3
+      pin: ch3
+    - name: tim8
+      pin: etr
+    - name: uart8
+      pin: tx
+
+PG4:
+  position: N7
+  type: I/O
+  mux:
+    - name: adc1
+      pin: inp4
+    - name: adc2
+      pin: inp4
+    - name: dcmipp
+      pin: vsync
+    - name: dcmi
+      pin: vsync
+    - name: eth2
+      pin: mdc
+    - name: eth2
+      pin: pps_out
+    - name: fmc
+      pin: a21
+    - name: lptim4
+      pin: in1
+    - name: ltdc
+      pin: r7
+    - name: pssi
+      pin: rdy
+    - name: pwr
+      pin: pvd_in
+    - name: sai3
+      pin: fs_b
+    - name: spi5
+      pin: miso
+    - name: tim8
+      pin: bkin
+
+PG5:
+  position: K1
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: pixclk
+    - name: dcmi
+      pin: pixclk
+    - name: debug
+      pin: traced3
+    - name: hdp
+      pin: hdp3
+    - name: i2c6
+      pin: sda
+    - name: ltdc
+      pin: r5
+    - name: pssi
+      pin: pdck
+    - name: tim2
+      pin: ch3
+    - name: usart6
+      pin: de
+    - name: usart6
+      pin: rts
+
+PG6:
+  position: K2
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: hsync
+    - name: dcmi
+      pin: hsync
+    - name: debug
+      pin: traced4
+    - name: hdp
+      pin: hdp4
+    - name: i2c6
+      pin: scl
+    - name: i2s1
+      pin: ck
+    - name: ltdc
+      pin: r6
+    - name: pssi
+      pin: de
+    - name: spi1
+      pin: sck
+    - name: spi5
+      pin: sck
+    - name: tim2
+      pin: ch4
+
+PG7:
+  position: E7
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: vsync
+    - name: dcmi
+      pin: vsync
+    - name: debug
+      pin: traced5
+    - name: hdp
+      pin: hdp5
+    - name: i2s1
+      pin: ws
+    - name: ltdc
+      pin: r7
+    - name: pssi
+      pin: rdy
+    - name: spi1
+      pin: nss
+    - name: spi5
+      pin: nss
+    - name: tim5
+      pin: etr
+    - name: uart9
+      pin: cts
+
+PG8:
+  position: E5
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d2
+    - name: dcmi
+      pin: d2
+    - name: debug
+      pin: traced6
+    - name: hdp
+      pin: hdp6
+    - name: ltdc
+      pin: g2
+    - name: pssi
+      pin: d2
+    - name: spi1
+      pin: rdy
+    - name: spi5
+      pin: rdy
+    - name: tim5
+      pin: ch3
+    - name: uart5
+      pin: de
+    - name: uart5
+      pin: rts
+    - name: uart9
+      pin: tx
+    - name: usart6
+      pin: ck
+
+PG9:
+  position: G2
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d3
+    - name: dcmi
+      pin: d3
+    - name: debug
+      pin: traced7
+    - name: ltdc
+      pin: g3
+    - name: pssi
+      pin: d3
+    - name: tim5
+      pin: ch4
+    - name: uart5
+      pin: tx
+
+PG10:
+  position: F5
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d4
+    - name: dcmi
+      pin: d4
+    - name: debug
+      pin: traced8
+    - name: hdp
+      pin: hdp0
+    - name: ltdc
+      pin: g4
+    - name: pssi
+      pin: d4
+    - name: tim8
+      pin: ch4n
+    - name: uart5
+      pin: rx
+
+PG11:
+  position: F7
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti11
+    - name: adc2
+      pin: exti11
+    - name: dcmipp
+      pin: d5
+    - name: dcmi
+      pin: d5
+    - name: debug
+      pin: traced9
+    - name: fdcan1
+      pin: tx
+    - name: hdp
+      pin: hdp1
+    - name: ltdc
+      pin: g5
+    - name: pssi
+      pin: d5
+    - name: spi7
+      pin: mosi
+    - name: tim8
+      pin: ch4
+
+PG12:
+  position: H7
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d6
+    - name: dcmi
+      pin: d6
+    - name: debug
+      pin: traced10
+    - name: fdcan1
+      pin: rx
+    - name: hdp
+      pin: hdp2
+    - name: ltdc
+      pin: g6
+    - name: pssi
+      pin: d6
+    - name: spi7
+      pin: miso
+    - name: tim8
+      pin: ch1n
+
+PG13:
+  position: J7
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d7
+    - name: dcmi
+      pin: d7
+    - name: debug
+      pin: traced11
+    - name: hdp
+      pin: hdp3
+    - name: i2c1
+      pin: scl
+    - name: i3c1
+      pin: scl
+    - name: ltdc
+      pin: g7
+    - name: mdf1
+      pin: cki6
+    - name: pssi
+      pin: d7
+    - name: spi7
+      pin: sck
+    - name: tim8
+      pin: ch2n
+
+PG14:
+  position: H5
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d9
+    - name: dcmi
+      pin: d9
+    - name: debug
+      pin: traced12
+    - name: hdp
+      pin: hdp4
+    - name: ltdc
+      pin: b1
+    - name: mdf1
+      pin: cki5
+    - name: pssi
+      pin: d9
+    - name: spi7
+      pin: rdy
+    - name: tim8
+      pin: bkin2
+    - name: usart1
+      pin: tx
+
+PG15:
+  position: E4
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti15
+    - name: adc2
+      pin: exti15
+    - name: dcmipp
+      pin: d10
+    - name: dcmi
+      pin: d10
+    - name: debug
+      pin: traced13
+    - name: hdp
+      pin: hdp5
+    - name: lptim1
+      pin: ch2
+    - name: ltdc
+      pin: b2
+    - name: mdf1
+      pin: sdi5
+    - name: pssi
+      pin: d10
+    - name: tim8
+      pin: etr
+    - name: usart1
+      pin: rx
+
+PH2:
+  position: L14
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti2
+    - name: i2c3
+      pin: sda
+    - name: i2c5
+      pin: sda
+    - name: i3c3
+      pin: sda
+    - name: lptim2
+      pin: ch1
+    - name: sai1
+      pin: sck_b
+    - name: spdifrx
+      pin: in3
+    - name: spi7
+      pin: rdy
+    - name: tim16
+      pin: ch1
+
+PH3:
+  position: K14
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti3
+    - name: i2c7
+      pin: scl
+    - name: i2s1
+      pin: ws
+    - name: spi1
+      pin: nss
+    - name: tim17
+      pin: ch1n
+    - name: tim5
+      pin: ch3
+    - name: uart7
+      pin: rx
+
+PH4:
+  position: G12
+  type: I/O
+  mux:
+    - name: bootfailn
+    - name: eth1
+      pin: ptp_aux_ts
+    - name: ltdc
+      pin: r0
+    - name: tim17
+      pin: bkin
+    - name: tim5
+      pin: ch2
+    - name: uart7
+      pin: tx
+    - name: usb3dr
+      pin: ovrcur
+    - name: usbh
+      pin: hs_ovrcur
+
+PH5:
+  position: M9
+  type: I/O
+  mux:
+    - name: eth2
+      pin: ptp_aux_ts
+    - name: ltdc
+      pin: g1
+    - name: pwr
+      pin: wkup2
+    - name: sai2
+      pin: fs_a
+    - name: tim2
+      pin: ch1
+    - name: uart7
+      pin: rx
+    - name: uart8
+      pin: cts
+    - name: usb3dr
+      pin: vbusen
+    - name: usbh
+      pin: hs_vbusen
+
+PH6:
+  position: L15
+  type: I/O
+  mux:
+    - name: i2c1
+      pin: smba
+    - name: i2c3
+      pin: scl
+    - name: i2c5
+      pin: scl
+    - name: i3c3
+      pin: scl
+    - name: lptim2
+      pin: in2
+    - name: sai1
+      pin: mclk_b
+    - name: tim16
+      pin: ch1n
+
+PH7:
+  position: L12
+  type: I/O
+  mux:
+    - name: i2c7
+      pin: sda
+    - name: i2s1
+      pin: sdo
+    - name: spi1
+      pin: mosi
+    - name: tim17
+      pin: ch1
+    - name: tim5
+      pin: ch4
+    - name: uart4
+      pin: tx
+    - name: uart7
+      pin: de
+    - name: uart7
+      pin: rts
+
+PH8:
+  position: M12
+  type: I/O
+  mux:
+    - name: i2c3
+      pin: smba
+    - name: i2c5
+      pin: smba
+    - name: i2s1
+      pin: sdi
+    - name: spdifrx
+      pin: in3
+    - name: spi1
+      pin: miso
+    - name: tim5
+      pin: ch1
+    - name: uart4
+      pin: rx
+    - name: uart7
+      pin: cts
+
+PH9:
+  position: W8
+  type: I/O
+  mux:
+    - name: adc3
+      pin: inp4
+    - name: eth1
+      pin: mii_rx_er
+    - name: eth1
+      pin: rgmii_clk125
+    - name: sai3
+      pin: mclk_a
+    - name: spi6
+      pin: nss
+    - name: tim15
+      pin: ch1n
+    - name: usart6
+      pin: rx
+
+PH10:
+  position: U10
+  type: I/O
+  mux:
+    - name: adc3
+      pin: inn4
+    - name: adc3
+      pin: inp8
+    - name: eth1
+      pin: mii_txd2
+    - name: eth1
+      pin: rgmii_txd2
+    - name: eth2
+      pin: mdc
+    - name: i2s1
+      pin: ck
+    - name: sai3
+      pin: sck_a
+    - name: spi1
+      pin: sck
+    - name: spi6
+      pin: mosi
+    - name: tim15
+      pin: ch1
+
+PH11:
+  position: T11
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti11
+    - name: adc2
+      pin: exti11
+    - name: eth1
+      pin: mii_txd3
+    - name: eth1
+      pin: rgmii_txd3
+    - name: eth2
+      pin: mdio
+    - name: sai3
+      pin: fs_a
+    - name: spi6
+      pin: miso
+    - name: tim15
+      pin: ch2
+
+PH12:
+  position: V8
+  type: I/O
+  mux:
+    - name: eth1
+      pin: mii_rxd2
+    - name: eth1
+      pin: rgmii_rxd2
+    - name: i2s3
+      pin: ws
+    - name: spi3
+      pin: nss
+    - name: spi6
+      pin: miso
+    - name: tim10
+      pin: ch1
+
+PH13:
+  position: U9
+  type: I/O
+  mux:
+    - name: eth1
+      pin: mii_rxd3
+    - name: eth1
+      pin: rgmii_rxd3
+    - name: i2s3
+      pin: ck
+    - name: spi3
+      pin: sck
+    - name: spi6
+      pin: mosi
+    - name: tim11
+      pin: ch1
+    - name: tim15
+      pin: bkin
+
+PI0:
+  position: H1
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d11
+    - name: dcmi
+      pin: d11
+    - name: debug
+      pin: traced14
+    - name: hdp
+      pin: hdp6
+    - name: lptim1
+      pin: in1
+    - name: ltdc
+      pin: b3
+    - name: pssi
+      pin: d11
+    - name: sai4
+      pin: mclk_b
+    - name: tim8
+      pin: bkin
+    - name: usart1
+      pin: ck
+
+PI1:
+  position: J9
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d8
+    - name: dcmi
+      pin: d8
+    - name: debug
+      pin: traced15
+    - name: hdp
+      pin: hdp7
+    - name: i2c1
+      pin: sda
+    - name: i3c1
+      pin: sda
+    - name: ltdc
+      pin: b4
+    - name: mdf1
+      pin: sdi6
+    - name: pssi
+      pin: d8
+    - name: spi7
+      pin: nss
+    - name: tim8
+      pin: ch3n
+
+PI2:
+  position: J5
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti2
+    - name: dcmipp
+      pin: d13
+    - name: dcmi
+      pin: d13
+    - name: lptim1
+      pin: etr
+    - name: ltdc
+      pin: b5
+    - name: pssi
+      pin: d13
+    - name: sai4
+      pin: sck_b
+    - name: tim8
+      pin: ch1
+    - name: usart1
+      pin: de
+    - name: usart1
+      pin: rts
+
+PI3:
+  position: H9
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti3
+    - name: dcmipp
+      pin: d14
+    - name: lptim1
+      pin: in2
+    - name: ltdc
+      pin: b6
+    - name: pssi
+      pin: d14
+    - name: sai4
+      pin: sd_b
+    - name: tim8
+      pin: ch2
+    - name: usart1
+      pin: cts
+    - name: usart1
+      pin: nss
+
+PI4:
+  position: G1
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d15
+    - name: lptim1
+      pin: ch1
+    - name: ltdc
+      pin: b7
+    - name: pssi
+      pin: d15
+    - name: sai4
+      pin: fs_b
+    - name: tim8
+      pin: ch3
+
+PI5:
+  position: K7
+  type: I/O
+  mux:
+    - name: dcmipp
+      pin: d1
+    - name: dcmi
+      pin: d1
+    - name: i2s1
+      pin: sdo
+    - name: ltdc
+      pin: de
+    - name: pssi
+      pin: d1
+    - name: spi1
+      pin: mosi
+    - name: spi5
+      pin: mosi
+    - name: tim5
+      pin: ch2
+    - name: uart5
+      pin: cts
+    - name: uart9
+      pin: rx
+
+PI6:
+  position: D4
+  type: I/O
+  mux:
+    - name: ltdc
+      pin: vsync
+    - name: pwr
+      pin: wkup4
+    - name: rcc
+      pin: mco_1
+    - name: tim2
+      pin: etr
+    - name: tim3
+      pin: ch1
+    - name: usart3
+      pin: tx
+
+PI7:
+  position: D5
+  type: I/O
+  mux:
+    - name: ltdc
+      pin: hsync
+    - name: tim2
+      pin: ch1
+    - name: tim3
+      pin: ch2
+    - name: usart3
+      pin: rx
+
+PI8:
+  position: N4
+  type: I/O
+  mux:
+    - name: rtc
+      pin: lsco
+    - name: rtc
+      pin: out2
+    - name: tamp
+      pin: in1
+    - name: tamp
+      pin: out2
+
+PI9:
+  position: K6
+  type: I/O
+  mux:
+    - name: fdcan2
+      pin: tx
+    - name: fmc
+      pin: nwait
+    - name: i2s2
+      pin: sdo
+    - name: ltdc
+      pin: b0
+    - name: spi2
+      pin: mosi
+    - name: spi7
+      pin: mosi
+    - name: tim16
+      pin: bkin
+    - name: uart9
+      pin: cts
+
+PI10:
+  position: B11
+  type: I/O
+  mux:
+    - name: fdcan2
+      pin: rx
+    - name: fmc
+      pin: d12
+    - name: fmc
+      pin: da12
+    - name: i2s1
+      pin: ck
+    - name: mdf1
+      pin: cck0
+    - name: sai1
+      pin: sck_a
+    - name: spdifrx
+      pin: in0
+    - name: spi1
+      pin: sck
+    - name: tim4
+      pin: ch1
+
+PI11:
+  position: F12
+  type: I/O
+  mux:
+    - name: adc1
+      pin: exti11
+    - name: adc2
+      pin: exti11
+    - name: fmc
+      pin: d15
+    - name: fmc
+      pin: da15
+    - name: i2s2
+      pin: mck
+    - name: sdmmc3
+      pin: d3
+    - name: tim4
+      pin: ch3
+    - name: uart8
+      pin: tx
+    - name: uart9
+      pin: de
+    - name: uart9
+      pin: rts
+
+PZ0:
+  position: L5
+  type: I/O
+  mux:
+    - name: i2c8
+      pin: sda
+    - name: i3c4
+      pin: sda
+    - name: lptim3
+      pin: ch2
+    - name: lptim3
+      pin: in1
+    - name: lptim5
+      pin: out
+    - name: lpuart1
+      pin: tx
+    - name: spi8
+      pin: mosi
+    - name: tamp
+      pin: out3
+    - name: tim8
+      pin: ch1
+
+PZ1:
+  position: M4
+  type: I/O
+  mux:
+    - name: i2c8
+      pin: scl
+    - name: i2c8
+      pin: smba
+    - name: i3c4
+      pin: scl
+    - name: lptim3
+      pin: ch1
+    - name: lptim5
+      pin: etr
+    - name: lpuart1
+      pin: rx
+    - name: spi8
+      pin: miso
+    - name: tamp
+      pin: out5
+    - name: tim8
+      pin: ch2
+
+PZ2:
+  position: M3
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti2
+    - name: adf1
+      pin: cck0
+    - name: i2c8
+      pin: scl
+    - name: i3c4
+      pin: scl
+    - name: lptim3
+      pin: ch1
+    - name: lptim4
+      pin: etr
+    - name: lpuart1
+      pin: de
+    - name: lpuart1
+      pin: rts
+    - name: spi8
+      pin: sck
+    - name: tamp
+      pin: in3
+    - name: tamp
+      pin: out7
+
+PZ3:
+  position: M5
+  type: I/O
+  mux:
+    - name: adc3
+      pin: exti3
+    - name: adf1
+      pin: sdi0
+    - name: debug
+      pin: dbtrgi
+    - name: debug
+      pin: dbtrgo
+    - name: i2c8
+      pin: sda
+    - name: i3c4
+      pin: sda
+    - name: lptim3
+      pin: etr
+    - name: lptim4
+      pin: ch2
+    - name: lptim4
+      pin: in1
+    - name: lpuart1
+      pin: cts
+    - name: mdf1
+      pin: sdi5
+    - name: spi8
+      pin: nss
+    - name: tamp
+      pin: out4
+
+PZ4:
+  position: L4
+  type: I/O
+  mux:
+    - name: adf1
+      pin: cck1
+    - name: debug
+      pin: dbtrgi
+    - name: debug
+      pin: dbtrgo
+    - name: i2c8
+      pin: scl
+    - name: i3c4
+      pin: scl
+    - name: lptim4
+      pin: ch1
+    - name: lpuart1
+      pin: rx
+    - name: mdf1
+      pin: cck1
+    - name: rcc
+      pin: mco_2
+    - name: spi8
+      pin: rdy
+    - name: tamp
+      pin: in5
+    - name: tamp
+      pin: out6
+
+PZ5:
+  position: N3
+  type: I/O
+  mux:
+    - name: adf1
+      pin: cck0
+    - name: lptim3
+      pin: etr
+    - name: lptim4
+      pin: ch2
+    - name: lptim5
+      pin: in1
+    - name: lpuart1
+      pin: de
+    - name: lpuart1
+      pin: rts
+    - name: rcc
+      pin: mco_1
+    - name: spi8
+      pin: sck
+    - name: tamp
+      pin: out8
+
+PZ6:
+  position: K3
+  type: I/O
+  mux:
+    - name: adf1
+      pin: sdi0
+    - name: debug
+      pin: dbtrgi
+    - name: debug
+      pin: dbtrgo
+    - name: lptim4
+      pin: ch2
+    - name: lptim5
+      pin: out
+    - name: lpuart1
+      pin: cts
+    - name: spi8
+      pin: nss
+    - name: tamp
+      pin: in8
+    - name: tim8
+      pin: ch3
+
+PZ7:
+  position: L1
+  type: I/O
+  mux:
+    - name: adf1
+      pin: cck1
+    - name: lptim3
+      pin: ch2
+    - name: lptim5
+      pin: in1
+    - name: lpuart1
+      pin: tx
+    - name: mdf1
+      pin: cck1
+    - name: spi8
+      pin: mosi
+
+PZ8:
+  position: L3
+  type: I/O
+  mux:
+    - name: adf1
+      pin: sdi0
+    - name: i2c8
+      pin: smba
+    - name: lptim3
+      pin: in1
+    - name: lptim4
+      pin: ch1
+    - name: lptim5
+      pin: etr
+    - name: lpuart1
+      pin: rx
+    - name: mdf1
+      pin: sdi5
+    - name: spi8
+      pin: miso
+
+PZ9:
+  position: L2
+  type: I/O
+  mux:
+    - name: i2c8
+      pin: sda
+    - name: i3c4
+      pin: sda
+    - name: lptim3
+      pin: ch2
+    - name: lptim4
+      pin: etr
+    - name: lpuart1
+      pin: tx
+    - name: mdf1
+      pin: cki5
+    - name: rcc
+      pin: mco_2
+    - name: spi8
+      pin: rdy
+

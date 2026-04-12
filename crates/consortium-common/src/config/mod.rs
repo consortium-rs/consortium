@@ -24,11 +24,26 @@ use crate::config::mcu_core::CortexMcuCore;
 
 pub mod app_core;
 pub mod chip_map;
+#[cfg(feature = "serde")]
+pub mod iomux;
+#[cfg(all(feature = "serde", feature = "std"))]
+pub mod iomux_loader;
 pub mod mcu_core;
+pub mod peripheral;
 pub mod rif;
+#[cfg(all(feature = "serde", feature = "std"))]
+pub mod rifsc_loader;
 
 // Convenient re-exports for RIF types
 pub use rif::{RifConfig, RifPeripheral, RifSource};
+// Convenient re-exports for peripheral types
+#[cfg(feature = "serde")]
+pub use iomux::{IomuxConfig, Pin, SignalAssignment};
+#[cfg(all(feature = "serde", feature = "std"))]
+pub use iomux_loader::{load_iomux_from_path, load_stm32mp_iomux};
+pub use peripheral::Peripheral;
+#[cfg(all(feature = "serde", feature = "std"))]
+pub use rifsc_loader::{load_all_rifsc_chips, load_rifsc_peripherals};
 
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
@@ -77,6 +92,10 @@ pub struct ProjectConfig {
 pub struct Config {
     pub general: GeneralConfig,
     pub project: ProjectConfig,
+    /// Peripheral resource configuration.
+    /// Maps peripheral names to their ownership and security domain settings.
+    #[cfg_attr(feature = "serde", serde(default))]
+    pub peripheral: HashMap<String, Peripheral>,
 }
 
 impl Config {

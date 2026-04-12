@@ -232,7 +232,7 @@ def update_cargo_toml(cargo_path: Path, features_section: str) -> None:
 # ---------------------------------------------------------------------------
 
 def main():
-    yaml_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("../data/rif/rifsc")
+    yaml_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("../data/stm32mp/rifsc")
     out_dir  = Path(sys.argv[2]) if len(sys.argv) > 2 else RUST_OUT_DIR
 
     yaml_files = sorted(yaml_dir.glob("stm32mp*.yaml"))
