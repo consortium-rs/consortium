@@ -106,10 +106,11 @@ async fn main() {
         match rx_ch.recv().await {
             Ok(reply) => {
                 let expected = i.wrapping_add(1);
-                if *reply == expected {
-                    println!("HIL ping {} → echo {} ✓", i, *reply);
+                let reply_val = reply.into_inner();
+                if reply_val == expected {
+                    println!("HIL ping {} → echo {} ✓", i, reply_val);
                 } else {
-                    eprintln!("Echo mismatch at i={}: expected {}, got {}", i, expected, *reply);
+                    eprintln!("Echo mismatch at i={}: expected {}, got {}", i, expected, reply_val);
                     success = false;
                     break;
                 }
