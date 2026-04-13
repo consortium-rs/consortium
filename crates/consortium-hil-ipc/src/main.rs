@@ -26,6 +26,9 @@ use std::time::Duration;
 const UIO_NUM: usize = 0;
 const FIRMWARE: &str = "consortium-firmware-hil";
 
+static mut TX_BUF: [u8; 264] = [0u8; 264];
+static mut RX_BUF: [u8; 264] = [0u8; 264];
+
 #[tokio::main]
 async fn main() {
     println!("Starting HIL IPC test...");
@@ -65,15 +68,13 @@ async fn main() {
 
     // 3. Open channels
     println!("Opening IPC channels...");
-    let mut tx_buf = [0u8; 264];
-    let mut rx_buf = [0u8; 264];
 
-    let chan = match Chan::new_unchecked(0) {
+    let chan = match unsafe { Chan::new_unchecked(0) } {
         // Chan is a newtype; just construct it directly
         c => c,
     };
 
-    let mut tx_ch = match open_tx_channel::<u32, 264, PostcardCodec>(UIO_NUM, chan, &mut tx_buf).await {
+    let mut tx_ch = match open_tx_channel::<u32, 264, PostcardCodec>(UIO_NUM, chan, unsafe { &mut TX_BUF }).await {
         Ok(ch) => ch,
         Err(e) => {
             eprintln!("Failed to open TX channel: {}", e);
@@ -82,7 +83,7 @@ async fn main() {
         }
     };
 
-    let mut rx_ch = match open_rx_channel::<u32, 264, PostcardCodec>(UIO_NUM, chan, &mut rx_buf).await {
+    let mut rx_ch = match open_rx_channel::<u32, 264, PostcardCodec>(UIO_NUM, chan, unsafe { &mut RX_BUF }).await {
         Ok(ch) => ch,
         Err(e) => {
             eprintln!("Failed to open RX channel: {}", e);
