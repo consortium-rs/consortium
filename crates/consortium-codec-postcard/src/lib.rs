@@ -14,7 +14,10 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+#![no_std]
+
 use consortium_common::codec::{Codec, CodecFor};
+use core::result::Result;
 
 pub struct PostcardCodec;
 
