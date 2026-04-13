@@ -170,3 +170,19 @@ build-arm: build-a build-m
 # Add license headers (requires addlicense)
 license:
     addlicense -c "Ethan Wu" -y 2026 -l apache -s -ignore "data/**/*" .
+
+# ── HIL (Hardware-in-the-Loop) ────────────────────────────────────────────────
+
+# Build M-core HIL firmware (produces ELF for remoteproc)
+build-firmware-hil:
+    cargo build -p consortium-firmware-hil --release --target {{ m8_target }}
+
+# Build A-core HIL test runner (Linux aarch64)
+build-hil-ipc:
+    @[ "$(uname)" = "Linux" ] || { echo "Error: HIL runner requires Linux"; exit 1; }
+    cargo build -p consortium-hil-ipc --release --target {{ a64_target }}
+
+# Run HIL test (must be run on the STM32MP2 board as root)
+run-hil-ipc:
+    @[ "$(uname)" = "Linux" ] || { echo "Error: run on the STM32MP2 A-core"; exit 1; }
+    ./target/{{ a64_target }}/release/consortium-hil-ipc

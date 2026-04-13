@@ -27,15 +27,18 @@
 /// - `HSEM_IRQHandler` is registered in the interrupt vector table
 #[cfg(feature = "stm32mp2xx")]
 pub unsafe fn enable_hsem_irq() {
-    // STM32MP2xx uses Cortex-M NVIC. HSEM1 is typically IRQ 90.
-    // Use cortex-m::peripheral::NVIC or the PAC to enable the interrupt.
-    // This is platform-specific; for now we document the requirement.
+    // STM32MP25: HSEM_IT1 (non-secure) = IRQ 199 in NVIC
+    // Source: STM32MP25 RM0457 NVIC table — vector offset 0x035C → IRQ = (0x35C - 0x40) / 4 = 199
     //
-    // Example (using cortex-m crate):
-    // unsafe { cortex_m::peripheral::NVIC::unmask(cortex_m::peripheral::Interrupt::HSEM1) };
-    //
-    // The actual HSEM IRQ number varies by STM32MP variant (STM32MP21/23/25).
-    // Prefer using the PAC's generated interrupt definitions.
+    // SAFETY: Caller must ensure NVIC is initialized. We directly unmask via ISER register.
+    // ISER0 handles IRQs 0-31, ISER1 handles IRQs 32-63, etc.
+    // IRQ 199 → ISER6[199-192] = ISER6[7]
+    const HSEM_IT1_IRQ: usize = 199;
+    let iser_index = HSEM_IT1_IRQ / 32;
+    let iser_bit = HSEM_IT1_IRQ % 32;
+    let iser_addr = 0xE000_E100 as *mut u32;
+    let iser = unsafe { iser_addr.add(iser_index) };
+    unsafe { iser.write_volatile(iser.read_volatile() | (1 << iser_bit)) };
 }
 
 /// Enable MU1 and MU2 interrupts in the NVIC.

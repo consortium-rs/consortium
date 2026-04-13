@@ -38,6 +38,8 @@ members = [
   "crates/consortium-tee-test",
   "crates/consortium-rpi",
   "crates/consortium-rpi-meta",
+  "crates/consortium-firmware-hil",
+  "crates/consortium-hil-ipc",
 ]
 resolver = "2"
 

@@ -191,6 +191,30 @@ name = "consortium-ffi"
 version = "0.1.0"
 
 [[package]]
+name = "consortium-firmware-hil"
+version = "0.1.0"
+dependencies = [
+ "consortium-codec-postcard",
+ "consortium-ipc",
+ "consortium-ipc-transport-mem",
+ "consortium-runtime-mcu",
+ "cortex-m",
+ "cortex-m-rt",
+ "embassy-executor",
+ "postcard",
+]
+
+[[package]]
+name = "consortium-hil-ipc"
+version = "0.1.0"
+dependencies = [
+ "consortium-codec-postcard",
+ "consortium-ipc",
+ "consortium-runtime-app",
+ "tokio",
+]
+
+[[package]]
 name = "consortium-hmi"
 version = "0.1.0"
 
@@ -293,6 +317,7 @@ dependencies = [
  "consortium-ipc-doorbell-hsem",
  "consortium-ipc-doorbell-mu",
  "consortium-ipc-transport-mem",
+ "cortex-m",
  "embassy-executor",
  "static_cell",
 ]
@@ -356,6 +381,26 @@ dependencies = [
  "bitfield",
  "embedded-hal 0.2.7",
  "volatile-register",
+]
+
+[[package]]
+name = "cortex-m-rt"
+version = "0.7.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "801d4dec46b34c299ccf6b036717ae0fce602faa4f4fe816d9013b9a7c9f5ba6"
+dependencies = [
+ "cortex-m-rt-macros",
+]
+
+[[package]]
+name = "cortex-m-rt-macros"
+version = "0.7.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e37549a379a9e0e6e576fd208ee60394ccb8be963889eebba3ffe0980364f472"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]

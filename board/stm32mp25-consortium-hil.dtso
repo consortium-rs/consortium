@@ -1,0 +1,51 @@
+// SPDX-License-Identifier: Apache-2.0
+// HIL IPC overlay for STM32MP25 — maps SRAM1 as UIO + wires HSEM_IT1
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+
+/ {
+    compatible = "st,stm32mp257f-dk";
+
+    fragment@0 {
+        target-path = "/";
+        __overlay__ {
+            /* M-core firmware image for remoteproc */
+            reserved-memory {
+                #address-cells = <1>;
+                #size-cells = <1>;
+                ranges;
+
+                m33_sysram: m33_sysram@20000000 {
+                    reg = <0x20000000 0x30000>;   /* 192K code region in SYSRAM */
+                    no-map;
+                };
+
+                ipc_sram1: ipc_sram1@20060000 {
+                    reg = <0x20060000 0x10000>;   /* 64K SRAM1 shared IPC region */
+                    no-map;
+                };
+            };
+
+            /* UIO device for IPC shared memory + HSEM interrupt */
+            consortium_uio0: consortium-uio@20060000 {
+                compatible = "generic-uio";
+                reg = <0x20060000 0x10000>;       /* maps ipc_sram1 */
+                /* HSEM_IT1 non-secure: GIC SPI 199-32=167 (GIC SPIs start at IRQ 32) */
+                interrupts = <GIC_SPI 167 IRQ_TYPE_LEVEL_HIGH>;
+                interrupt-names = "hsem-it1";
+                status = "okay";
+            };
+
+            /* Remoteproc for Cortex-M33 */
+            m33_rproc: m33-rproc {
+                compatible = "st,stm32mp2-m33-tzen-rproc";
+                st,syscfg-holdboot = <...>;   /* fill from board BSP */
+                memory-region = <&m33_sysram>, <&ipc_sram1>;
+                status = "okay";
+            };
+        };
+    };
+};
