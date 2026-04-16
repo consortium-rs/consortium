@@ -34,7 +34,7 @@ consortium-ipc-doorbell-hsem = { path = "../consortium-ipc-doorbell-hsem", defau
 consortium-ipc-doorbell-mu = { path = "../consortium-ipc-doorbell-mu", default-features = false, optional = true }
 consortium-ipc-transport-mem = { path = "../consortium-ipc-transport-mem", default-features = false }
 static_cell = { version = "2", default-features = false }
-embassy-executor = { version = "0.5", default-features = false, features = [
+embassy-executor = { version = "0.10.0", default-features = false, features = [
   "arch-cortex-m",
 ] }
 cortex-m = { version = "0.7", default-features = false }
