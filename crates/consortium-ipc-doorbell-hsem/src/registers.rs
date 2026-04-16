@@ -24,7 +24,7 @@
 // Base Address (device-specific; adjust for your target)
 // ============================================================================
 
-pub const HSEM_BASE: u32 = 0x4000_6400; // Example base; verify in your device datasheet
+pub const HSEM_BASE: u32 = 0x5624_0000; // Verified in RM0457 for STM32MP25x; adjust as needed for other targets
 
 #[macro_export]
 // ============================================================================

@@ -1,0 +1,73 @@
+// STM32MP257 minimal platform for HSEM testing.
+// 2x Cortex-A35 + 1x Cortex-M33. M0+ omitted.
+
+// ---------------- CPUs ----------------
+cpu0: CPU.ARMv8A @ sysbus
+    cpuType: "cortex-a55"
+    genericInterruptController: gic
+    cpuId: 0
+
+cpu1: CPU.ARMv8A @ sysbus
+    cpuType: "cortex-a55"
+    genericInterruptController: gic
+    cpuId: 1
+
+cpu2: CPU.CortexM @ sysbus
+    cpuType: "cortex-m33"
+    nvic: nvic
+
+// ---------------- Interrupt controllers ----------------
+gic: IRQControllers.ARM_GenericInterruptController @ {
+        sysbus new Bus.BusMultiRegistration { address: 0x4AC10000; size: 0x1000;  region: "distributor" };
+        sysbus new Bus.BusMultiRegistration { address: 0x4AC20000; size: 0x20000; region: "cpuInterface" }
+    }
+    architectureVersion: IRQControllers.ARM_GenericInterruptControllerVersion.GICv2
+    [0-1] -> cpu0@[0-1]
+    [2-3] -> cpu1@[0-1]
+
+nvic: IRQControllers.NVIC @ {
+        sysbus new Bus.BusPointRegistration { address: 0xE000E000; cpu: cpu2 }
+    }
+    -> cpu2@0
+
+// ---------------- RAM block (0x0A000000 - 0x0A0BFFFF) ----------------
+sysram:  Memory.MappedMemory @ sysbus 0x0A000000
+    size: 0x40000   // 256 KB
+
+sram1:   Memory.MappedMemory @ sysbus 0x0A040000
+    size: 0x20000   // 128 KB
+
+sram2:   Memory.MappedMemory @ sysbus 0x0A060000
+    size: 0x20000   // 128 KB
+
+retram:  Memory.MappedMemory @ sysbus 0x0A080000
+    size: 0x20000   // 128 KB
+
+vderam:  Memory.MappedMemory @ sysbus 0x0A0A0000
+    size: 0x20000   // 128 KB
+
+// ---------------- DDR ----------------
+// Lower 2 GB shared (0x80000000 - 0xFFFFFFFF)
+ddr_shared: Memory.MappedMemory @ sysbus 0x80000000
+    size: 0x80000000   // 2 GB
+
+// Upper 2 GB (0x100000000 - 0x17FFFFFFF) - A35 only; register on cpu0/cpu1 buses.
+// Note: CPU2 (M33) has a 32-bit bus and cannot see this range anyway.
+ddr_upper: Memory.MappedMemory @ {
+        sysbus new Bus.BusPointRegistration { address: 0x100000000; cpu: cpu0 };
+        sysbus new Bus.BusPointRegistration { address: 0x100000000; cpu: cpu1 }
+    }
+    size: 0x80000000
+
+// ---------------- HSEM ----------------
+hsem: Miscellaneous.STM32MP25_HSEM @ sysbus 0x56240000
+    // RM0457: HSEM has only IT1 / SEC_IT1 exposed (single processor destination
+    // per table). Model emits 6 lines (3 procs x {ns, sec}); wire the ones your
+    // cores actually receive and leave the rest floating.
+    //
+    // Index 0 = non-secure IRQ for processor 1 -> A35 GIC, ID 231
+    // Index 2 = non-secure IRQ for processor 3 -> M33 NVIC, position 199
+    // Index 3 = secure IRQ for processor 1     -> A35 GIC, ID 232
+    // Index 5 = secure IRQ for processor 3     -> M33 NVIC, position 200
+    [0, 3] -> gic@[231, 232]
+    [2, 5] -> nvic@[199, 200]
