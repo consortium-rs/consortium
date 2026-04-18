@@ -29,7 +29,9 @@ default = ["ca"]
 [dependencies]
 thiserror = "2.0.18"
 consortium-tee-proc-macros = { path = "../consortium-tee-proc-macros" }
-tokio = { version = "1", default-features = false, optional = true }
+tokio = { version = "1", default-features = false, optional = true, features = [
+  "rt",
+] }
 
 [target.'cfg(target_os = "linux")'.dependencies]
 optee-teec = { version = "0.8.0", optional = true }
