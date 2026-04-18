@@ -20,10 +20,6 @@
 //! Base address must be added to each offset at runtime or via a base const.
 //! All offsets are relative to the HSEM peripheral base address.
 
-// ============================================================================
-// Base Address (device-specific; adjust for your target)
-// ============================================================================
-
 pub const HSEM_BASE: u32 = 0x5624_0000; // Verified in RM0457 for STM32MP25x; adjust as needed for other targets
 
 // ============================================================================
