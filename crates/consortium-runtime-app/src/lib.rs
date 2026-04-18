@@ -15,7 +15,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-pub mod descriptor;
+pub mod mmap;
 pub mod remoteproc;
 
 use consortium_common::codec::CodecFor;
@@ -60,7 +60,7 @@ where
     C: CodecFor<T>,
 {
     // Call wait_for_ready before opening if you need to wait for M-core initialization.
-    // Example: descriptor::wait_for_ready(uio_num, Duration::from_secs(10)).await?;
+    // Example: mmap::wait_for_ready(uio_num, Duration::from_secs(10)).await?;
 
     let dev = ipc_uio::UioDevice::open(uio_num)?;
     let transport = dev.channel(chan)?;

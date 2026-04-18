@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 // SPDX-License-Identifier: Apache-2.0
+#![allow(unused)] // Because this is a library crate, and some items are only used in certain contexts (e.g. std vs no_std).
 
 pub mod chan;
 pub mod consts;

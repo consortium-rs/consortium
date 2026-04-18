@@ -17,7 +17,7 @@
 #![no_std]
 #![no_main]
 
-use consortium_ipc::{Chan, Transport, regions::SramRegion};
+use consortium_ipc::{regions::SramRegion, Chan, Transport};
 use consortium_ipc_transport_mem::MemTransport;
 use consortium_runtime_mcu::{
     descriptor::{self, ChanDesc, DescState},
@@ -115,6 +115,7 @@ unsafe fn HardFault(_frame: &cortex_m_rt::ExceptionFrame) -> ! {
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo) -> ! {
     loop {
+        #[cfg(target_os = "none")]
         asm::bkpt();
     }
 }

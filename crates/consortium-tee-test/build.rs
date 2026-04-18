@@ -14,9 +14,14 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use optee_utee_build::{Error, TaConfig};
-
+#[cfg(target_os = "linux")]
 fn main() -> Result<(), Error> {
+    use optee_utee_build::{Error, TaConfig};
     let ta_config = TaConfig::new_default_with_cargo_env("197c710c-bdab-11eb-8f3f-17a5f698d23b")?;
     optee_utee_build::build(optee_utee_build::RustEdition::Edition2024, ta_config)
+}
+
+#[cfg(not(target_os = "linux"))]
+fn main() {
+    // No build steps needed for non-Linux targets
 }

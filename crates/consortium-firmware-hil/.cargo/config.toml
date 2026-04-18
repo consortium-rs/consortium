@@ -1,6 +1,3 @@
 [build]
 target = "thumbv8m.main-none-eabihf"
-rustflags = [
-  "-C", "link-arg=-Tmemory.x",
-  "-C", "linker=arm-none-eabi-ld",
-]
+rustflags = ["-C", "link-arg=-Tmemory.x", "-C", "linker=arm-none-eabi-ld"]

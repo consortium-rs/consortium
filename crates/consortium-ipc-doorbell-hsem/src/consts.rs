@@ -13,6 +13,7 @@
 // limitations under the License.
 //
 // SPDX-License-Identifier: Apache-2.0
+#![allow(unused)]
 
 /// LOCKID this core writes when locking. Must match the AHB bus master ID.
 /// Processor 1 (M-core) = MASTERID 1 per Table 188, STM32MP2.

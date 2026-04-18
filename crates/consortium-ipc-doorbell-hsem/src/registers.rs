@@ -26,42 +26,29 @@
 
 pub const HSEM_BASE: u32 = 0x5624_0000; // Verified in RM0457 for STM32MP25x; adjust as needed for other targets
 
-#[macro_export]
-// ============================================================================
-// Helper macro: computes absolute address from base + offset
-// ============================================================================
-// Usage: hsem_addr!(0x000) => HSEM_BASE + 0x000
-macro_rules! hsem_addr {
-    ($offset:expr) => {
-        HSEM_BASE + $offset
-    };
-}
-
 // ============================================================================
 // Module: Semaphore R registers (2-step write lock / unlock / read)
 // HSEM_Rx  — Address offset: 0x000 + 0x4 * x  (x = 0..=15)
 // Reset value: 0x0000_0000
 // ============================================================================
 pub mod semaphore_r {
-    use super::HSEM_BASE;
-
     #[allow(clippy::identity_op)]
-    pub const HSEM_R0: u32 = HSEM_BASE + 0x000;
-    pub const HSEM_R1: u32 = HSEM_BASE + 0x004;
-    pub const HSEM_R2: u32 = HSEM_BASE + 0x008;
-    pub const HSEM_R3: u32 = HSEM_BASE + 0x00C;
-    pub const HSEM_R4: u32 = HSEM_BASE + 0x010;
-    pub const HSEM_R5: u32 = HSEM_BASE + 0x014;
-    pub const HSEM_R6: u32 = HSEM_BASE + 0x018;
-    pub const HSEM_R7: u32 = HSEM_BASE + 0x01C;
-    pub const HSEM_R8: u32 = HSEM_BASE + 0x020;
-    pub const HSEM_R9: u32 = HSEM_BASE + 0x024;
-    pub const HSEM_R10: u32 = HSEM_BASE + 0x028;
-    pub const HSEM_R11: u32 = HSEM_BASE + 0x02C;
-    pub const HSEM_R12: u32 = HSEM_BASE + 0x030;
-    pub const HSEM_R13: u32 = HSEM_BASE + 0x034;
-    pub const HSEM_R14: u32 = HSEM_BASE + 0x038;
-    pub const HSEM_R15: u32 = HSEM_BASE + 0x03C;
+    pub const HSEM_R0: u32 = 0x000;
+    pub const HSEM_R1: u32 = 0x004;
+    pub const HSEM_R2: u32 = 0x008;
+    pub const HSEM_R3: u32 = 0x00C;
+    pub const HSEM_R4: u32 = 0x010;
+    pub const HSEM_R5: u32 = 0x014;
+    pub const HSEM_R6: u32 = 0x018;
+    pub const HSEM_R7: u32 = 0x01C;
+    pub const HSEM_R8: u32 = 0x020;
+    pub const HSEM_R9: u32 = 0x024;
+    pub const HSEM_R10: u32 = 0x028;
+    pub const HSEM_R11: u32 = 0x02C;
+    pub const HSEM_R12: u32 = 0x030;
+    pub const HSEM_R13: u32 = 0x034;
+    pub const HSEM_R14: u32 = 0x038;
+    pub const HSEM_R15: u32 = 0x03C;
 
     /// Bit fields within HSEM_Rx
     pub mod fields {
@@ -89,24 +76,22 @@ pub mod semaphore_r {
 // Accesses same physical bits as HSEM_Rx; all fields are read-only here.
 // ============================================================================
 pub mod semaphore_rlr {
-    use super::HSEM_BASE;
-
-    pub const HSEM_RLR0: u32 = HSEM_BASE + 0x080;
-    pub const HSEM_RLR1: u32 = HSEM_BASE + 0x084;
-    pub const HSEM_RLR2: u32 = HSEM_BASE + 0x088;
-    pub const HSEM_RLR3: u32 = HSEM_BASE + 0x08C;
-    pub const HSEM_RLR4: u32 = HSEM_BASE + 0x090;
-    pub const HSEM_RLR5: u32 = HSEM_BASE + 0x094;
-    pub const HSEM_RLR6: u32 = HSEM_BASE + 0x098;
-    pub const HSEM_RLR7: u32 = HSEM_BASE + 0x09C;
-    pub const HSEM_RLR8: u32 = HSEM_BASE + 0x0A0;
-    pub const HSEM_RLR9: u32 = HSEM_BASE + 0x0A4;
-    pub const HSEM_RLR10: u32 = HSEM_BASE + 0x0A8;
-    pub const HSEM_RLR11: u32 = HSEM_BASE + 0x0AC;
-    pub const HSEM_RLR12: u32 = HSEM_BASE + 0x0B0;
-    pub const HSEM_RLR13: u32 = HSEM_BASE + 0x0B4;
-    pub const HSEM_RLR14: u32 = HSEM_BASE + 0x0B8;
-    pub const HSEM_RLR15: u32 = HSEM_BASE + 0x0BC;
+    pub const HSEM_RLR0: u32 = 0x080;
+    pub const HSEM_RLR1: u32 = 0x084;
+    pub const HSEM_RLR2: u32 = 0x088;
+    pub const HSEM_RLR3: u32 = 0x08C;
+    pub const HSEM_RLR4: u32 = 0x090;
+    pub const HSEM_RLR5: u32 = 0x094;
+    pub const HSEM_RLR6: u32 = 0x098;
+    pub const HSEM_RLR7: u32 = 0x09C;
+    pub const HSEM_RLR8: u32 = 0x0A0;
+    pub const HSEM_RLR9: u32 = 0x0A4;
+    pub const HSEM_RLR10: u32 = 0x0A8;
+    pub const HSEM_RLR11: u32 = 0x0AC;
+    pub const HSEM_RLR12: u32 = 0x0B0;
+    pub const HSEM_RLR13: u32 = 0x0B4;
+    pub const HSEM_RLR14: u32 = 0x0B8;
+    pub const HSEM_RLR15: u32 = 0x0BC;
 
     /// Bit fields within HSEM_RLRx (all read-only at this address)
     pub mod fields {
@@ -131,35 +116,33 @@ pub mod semaphore_rlr {
 // Module: Non-secure interrupt registers (per processor n = 1..=3)
 // ============================================================================
 pub mod interrupt_nonsecure {
-    use super::HSEM_BASE;
-
     // --- Interrupt Enable Registers (HSEM_CnIER) ---
     // Offset: 0x100 + 0x10 * (n - 1)
     // Reset: 0x0000_0000
-    pub const HSEM_C1IER: u32 = HSEM_BASE + 0x100;
-    pub const HSEM_C2IER: u32 = HSEM_BASE + 0x110;
-    pub const HSEM_C3IER: u32 = HSEM_BASE + 0x120;
+    pub const HSEM_C1IER: u32 = 0x100;
+    pub const HSEM_C2IER: u32 = 0x110;
+    pub const HSEM_C3IER: u32 = 0x120;
 
     // --- Interrupt Clear Registers (HSEM_CnICR) ---
     // Offset: 0x104 + 0x10 * (n - 1)
     // Reset: 0x0000_0000
-    pub const HSEM_C1ICR: u32 = HSEM_BASE + 0x104;
-    pub const HSEM_C2ICR: u32 = HSEM_BASE + 0x114;
-    pub const HSEM_C3ICR: u32 = HSEM_BASE + 0x124;
+    pub const HSEM_C1ICR: u32 = 0x104;
+    pub const HSEM_C2ICR: u32 = 0x114;
+    pub const HSEM_C3ICR: u32 = 0x124;
 
     // --- Interrupt Status Registers (HSEM_CnISR) ---
     // Offset: 0x108 + 0x10 * (n - 1)
     // Reset: 0x0000_0000
-    pub const HSEM_C1ISR: u32 = HSEM_BASE + 0x108;
-    pub const HSEM_C2ISR: u32 = HSEM_BASE + 0x118;
-    pub const HSEM_C3ISR: u32 = HSEM_BASE + 0x128;
+    pub const HSEM_C1ISR: u32 = 0x108;
+    pub const HSEM_C2ISR: u32 = 0x118;
+    pub const HSEM_C3ISR: u32 = 0x128;
 
     // --- Masked Interrupt Status Registers (HSEM_CnMISR) ---
     // Offset: 0x10C + 0x10 * (n - 1)
     // Reset: 0x0000_0000
-    pub const HSEM_C1MISR: u32 = HSEM_BASE + 0x10C;
-    pub const HSEM_C2MISR: u32 = HSEM_BASE + 0x11C;
-    pub const HSEM_C3MISR: u32 = HSEM_BASE + 0x12C;
+    pub const HSEM_C1MISR: u32 = 0x10C;
+    pub const HSEM_C2MISR: u32 = 0x11C;
+    pub const HSEM_C3MISR: u32 = 0x12C;
 
     /// Bit fields shared across CnIER / CnICR / CnISR / CnMISR
     pub mod fields {
@@ -181,35 +164,33 @@ pub mod interrupt_nonsecure {
 // Module: Secure interrupt registers (per processor n = 1..=3)
 // ============================================================================
 pub mod interrupt_secure {
-    use super::HSEM_BASE;
-
     // --- Secure Interrupt Enable Registers (HSEM_SCnIER) ---
     // Offset: 0x180 + 0x10 * (n - 1)
     // Reset: 0x0000_0000
-    pub const HSEM_SC1IER: u32 = HSEM_BASE + 0x180;
-    pub const HSEM_SC2IER: u32 = HSEM_BASE + 0x190;
-    pub const HSEM_SC3IER: u32 = HSEM_BASE + 0x1A0;
+    pub const HSEM_SC1IER: u32 = 0x180;
+    pub const HSEM_SC2IER: u32 = 0x190;
+    pub const HSEM_SC3IER: u32 = 0x1A0;
 
     // --- Secure Interrupt Clear Registers (HSEM_SCnICR) ---
     // Offset: 0x184 + 0x10 * (n - 1)
     // Reset: 0x0000_0000
-    pub const HSEM_SC1ICR: u32 = HSEM_BASE + 0x184;
-    pub const HSEM_SC2ICR: u32 = HSEM_BASE + 0x194;
-    pub const HSEM_SC3ICR: u32 = HSEM_BASE + 0x1A4;
+    pub const HSEM_SC1ICR: u32 = 0x184;
+    pub const HSEM_SC2ICR: u32 = 0x194;
+    pub const HSEM_SC3ICR: u32 = 0x1A4;
 
     // --- Secure Interrupt Status Registers (HSEM_SCnISR) ---
     // Offset: 0x188 + 0x10 * (n - 1)
     // Reset: 0x0000_0000
-    pub const HSEM_SC1ISR: u32 = HSEM_BASE + 0x188;
-    pub const HSEM_SC2ISR: u32 = HSEM_BASE + 0x198;
-    pub const HSEM_SC3ISR: u32 = HSEM_BASE + 0x1A8;
+    pub const HSEM_SC1ISR: u32 = 0x188;
+    pub const HSEM_SC2ISR: u32 = 0x198;
+    pub const HSEM_SC3ISR: u32 = 0x1A8;
 
     // --- Secure Masked Interrupt Status Registers (HSEM_SCnMISR) ---
     // Offset: 0x18C + 0x10 * (n - 1)
     // Reset: 0x0000_0000
-    pub const HSEM_SC1MISR: u32 = HSEM_BASE + 0x18C;
-    pub const HSEM_SC2MISR: u32 = HSEM_BASE + 0x19C;
-    pub const HSEM_SC3MISR: u32 = HSEM_BASE + 0x1AC;
+    pub const HSEM_SC1MISR: u32 = 0x18C;
+    pub const HSEM_SC2MISR: u32 = 0x19C;
+    pub const HSEM_SC3MISR: u32 = 0x1AC;
 
     /// Bit fields shared across SCnIER / SCnICR / SCnISR / SCnMISR
     pub mod fields {
@@ -230,17 +211,15 @@ pub mod interrupt_secure {
 // Module: Attribute configuration registers
 // ============================================================================
 pub mod attributes {
-    use super::HSEM_BASE;
-
     // --- Security Configuration Register (HSEM_SECCFGR) ---
     // Offset: 0x200  Reset: 0x0000_0000
     // Write: secure + privileged only. Read: unrestricted.
-    pub const HSEM_SECCFGR: u32 = HSEM_BASE + 0x200;
+    pub const HSEM_SECCFGR: u32 = 0x200;
 
     // --- Privilege Configuration Register (HSEM_PRIVCFGR) ---
     // Offset: 0x210  Reset: 0x0000_0000
     // Write: privileged only. Read: unrestricted.
-    pub const HSEM_PRIVCFGR: u32 = HSEM_BASE + 0x210;
+    pub const HSEM_PRIVCFGR: u32 = 0x210;
 
     pub mod fields {
         /// Bits 15:0 — SEC[15:0] in SECCFGR: security attribute per semaphore (rw)
@@ -258,15 +237,13 @@ pub mod attributes {
 // Module: CID (Compartment ID) configuration registers
 // ============================================================================
 pub mod cid_config {
-    use super::HSEM_BASE;
-
     // --- Processor CID Configuration Registers (HSEM_CnCIDCFGR) ---
     // Offset: 0x220 + 0x4 * (n - 1)  (n = 1..=3)
     // Reset: 0x0000_0000
     // Write: secure + privileged + trusted domain CID only. Read: unrestricted.
-    pub const HSEM_C1CIDCFGR: u32 = HSEM_BASE + 0x220;
-    pub const HSEM_C2CIDCFGR: u32 = HSEM_BASE + 0x224;
-    pub const HSEM_C3CIDCFGR: u32 = HSEM_BASE + 0x228;
+    pub const HSEM_C1CIDCFGR: u32 = 0x220;
+    pub const HSEM_C2CIDCFGR: u32 = 0x224;
+    pub const HSEM_C3CIDCFGR: u32 = 0x228;
 
     // --- Group CID Configuration Registers (HSEM_GpCIDCFGR) ---
     // Offset: 0x240 + 0x4 * p  (p = 0..=3)
@@ -276,10 +253,10 @@ pub mod cid_config {
     //   p=3 → Group HSEM[15:12]
     // Reset: 0x0000_0000
     // Write: secure + privileged + trusted domain CID only. Read: unrestricted.
-    pub const HSEM_G0CIDCFGR: u32 = HSEM_BASE + 0x240; // HSEM[3:0]
-    pub const HSEM_G1CIDCFGR: u32 = HSEM_BASE + 0x244; // HSEM[7:4]
-    pub const HSEM_G2CIDCFGR: u32 = HSEM_BASE + 0x248; // HSEM[11:8]
-    pub const HSEM_G3CIDCFGR: u32 = HSEM_BASE + 0x24C; // HSEM[15:12]
+    pub const HSEM_G0CIDCFGR: u32 = 0x240; // HSEM[3:0]
+    pub const HSEM_G1CIDCFGR: u32 = 0x244; // HSEM[7:4]
+    pub const HSEM_G2CIDCFGR: u32 = 0x248; // HSEM[11:8]
+    pub const HSEM_G3CIDCFGR: u32 = 0x24C; // HSEM[15:12]
 
     /// Bit fields for HSEM_CnCIDCFGR
     pub mod cn_fields {
@@ -310,17 +287,15 @@ pub mod cid_config {
 // Module: Clear / Key registers
 // ============================================================================
 pub mod clear {
-    use super::HSEM_BASE;
-
     // --- Clear Register (HSEM_CR) ---
     // Offset: 0x230  Reset: 0x0000_0000
     // Write: secure + privileged + trusted domain CID only. Read: always 0.
-    pub const HSEM_CR: u32 = HSEM_BASE + 0x230;
+    pub const HSEM_CR: u32 = 0x230;
 
     // --- Clear Key Register (HSEM_KEYR) ---
     // Offset: 0x234  Reset: 0x0000_0000
     // Write: secure + privileged + trusted domain CID only.
-    pub const HSEM_KEYR: u32 = HSEM_BASE + 0x234;
+    pub const HSEM_KEYR: u32 = 0x234;
 
     /// Bit fields for HSEM_CR
     pub mod cr_fields {
@@ -350,27 +325,25 @@ pub mod clear {
 // Module: Hardware configuration and identification registers (read-only)
 // ============================================================================
 pub mod info {
-    use super::HSEM_BASE;
-
     // --- Hardware Configuration Register 2 (HSEM_HWCFGR2) ---
     // Offset: 0x3EC  Reset: 0x0000_0321
-    pub const HSEM_HWCFGR2: u32 = HSEM_BASE + 0x3EC;
+    pub const HSEM_HWCFGR2: u32 = 0x3EC;
 
     // --- Hardware Configuration Register 1 (HSEM_HWCFGR1) ---
     // Offset: 0x3F0  Reset: 0x0007_3310
-    pub const HSEM_HWCFGR1: u32 = HSEM_BASE + 0x3F0;
+    pub const HSEM_HWCFGR1: u32 = 0x3F0;
 
     // --- Version Register (HSEM_VERR) ---
     // Offset: 0x3F4  Reset: 0x0000_0020
-    pub const HSEM_VERR: u32 = HSEM_BASE + 0x3F4;
+    pub const HSEM_VERR: u32 = 0x3F4;
 
     // --- IP Identification Register (HSEM_IPIDR) ---
     // Offset: 0x3F8  Reset: 0x0010_0072
-    pub const HSEM_IPIDR: u32 = HSEM_BASE + 0x3F8;
+    pub const HSEM_IPIDR: u32 = 0x3F8;
 
     // --- Size Identification Register (HSEM_SIDR) ---
     // Offset: 0x3FC  Reset: 0xA3C5_DD01
-    pub const HSEM_SIDR: u32 = HSEM_BASE + 0x3FC;
+    pub const HSEM_SIDR: u32 = 0x3FC;
 
     /// Bit fields for HSEM_HWCFGR2
     pub mod hwcfgr2_fields {
