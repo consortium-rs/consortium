@@ -25,11 +25,16 @@ name = "consortium-firmware-hil"
 test = false
 
 [dependencies]
-consortium-runtime-mcu = { path = "../consortium-runtime-mcu", features = ["stm32mp2xx"] }
+consortium-runtime-mcu = { path = "../consortium-runtime-mcu", features = [
+  "stm32mp2xx",
+] }
 consortium-ipc-transport-mem = { path = "../consortium-ipc-transport-mem" }
 consortium-ipc = { path = "../consortium-ipc" }
 consortium-codec-postcard = { path = "../consortium-codec-postcard" }
-embassy-executor = { version = "0.5", features = ["arch-cortex-m", "executor-thread"] }
+embassy-executor = { version = "0.5", features = [
+  "arch-cortex-m",
+  "executor-thread",
+] }
 cortex-m = "0.7"
 cortex-m-rt = "0.7"
 postcard = "1"

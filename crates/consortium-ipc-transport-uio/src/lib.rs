@@ -15,9 +15,6 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-mod descriptor;
-mod slot;
-
 #[cfg(not(target_os = "linux"))]
 compile_error!(
     "`consortium-uio` is only supported on Linux (requires /dev/uioN and compatible UIO driver)"
@@ -35,8 +32,12 @@ use std::{
 use tokio::{io::unix::AsyncFd, sync::Notify};
 use uio::UioError;
 
-use consortium_ipc::{chan::Chan, transport::Transport};
-pub use descriptor::{DescState, Descriptor, DescriptorError};
+use consortium_ipc::{
+    chan::Chan,
+    descriptor::{ChannelLayout, DescState, Descriptor, DescriptorError},
+    slot,
+    transport::Transport,
+};
 use pin_project::pin_project;
 
 // ── Error ────────────────────────────────────────────────────────────────────
@@ -94,7 +95,7 @@ impl UioDevice {
         let region_base = uio.map_resource(0)? as *mut u8;
 
         // SAFETY: region_base is valid for the lifetime of `uio`.
-        let descriptor = unsafe { descriptor::parse(region_base) }?;
+        let descriptor = unsafe { consortium_ipc::descriptor::read_descriptor(region_base) }?;
 
         let irq_notify = Arc::new(Notify::new());
 
@@ -177,7 +178,7 @@ fn unmask_irq(f: &File) -> std::io::Result<()> {
 /// Implements [`Transport`]; obtain via [`UioDevice::channel`].
 pub struct UioChannel {
     inner: Arc<Inner>,
-    layout: descriptor::ChannelLayout,
+    layout: ChannelLayout,
     effective_mtu: usize,
 }
 

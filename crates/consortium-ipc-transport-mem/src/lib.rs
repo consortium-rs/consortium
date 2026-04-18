@@ -15,8 +15,6 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-mod slot;
-
 use core::{
     future::Future,
     marker::PhantomData,
@@ -24,7 +22,7 @@ use core::{
     task::{Context, Poll},
 };
 
-use consortium_ipc::{chan::Chan, doorbell::Doorbell, region::Region, transport::Transport};
+use consortium_ipc::{chan::Chan, doorbell::Doorbell, region::Region, slot, transport::Transport};
 
 // ── Error ────────────────────────────────────────────────────────────────────
 

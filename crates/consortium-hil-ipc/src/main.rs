@@ -14,23 +14,28 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use consortium_codec_postcard::PostcardCodec;
-use consortium_ipc::Chan;
-use consortium_runtime_app::{
-    descriptor::wait_for_ready,
-    open_rx_channel, open_tx_channel,
-    remoteproc::{RemoteProc, RemoteProcState},
-};
-use std::time::Duration;
-
+#[cfg(target_os = "linux")]
 const UIO_NUM: usize = 0;
+#[cfg(target_os = "linux")]
 const FIRMWARE: &str = "consortium-firmware-hil";
 
+#[cfg(target_os = "linux")]
 static mut TX_BUF: [u8; 264] = [0u8; 264];
+#[cfg(target_os = "linux")]
 static mut RX_BUF: [u8; 264] = [0u8; 264];
 
 #[tokio::main]
+#[cfg(target_os = "linux")]
 async fn main() {
+    use consortium_codec_postcard::PostcardCodec;
+    use consortium_ipc::Chan;
+    use consortium_runtime_app::{
+        descriptor::wait_for_ready,
+        open_rx_channel, open_tx_channel,
+        remoteproc::{RemoteProc, RemoteProcState},
+    };
+    use std::time::Duration;
+
     println!("Starting HIL IPC test...");
 
     // 1. Load and start M-core firmware
@@ -47,7 +52,10 @@ async fn main() {
     }
 
     // Wait for M-core to boot
-    match rp.wait_state(RemoteProcState::Running, Duration::from_secs(5)).await {
+    match rp
+        .wait_state(RemoteProcState::Running, Duration::from_secs(5))
+        .await
+    {
         Ok(_) => println!("M-core firmware started"),
         Err(e) => {
             eprintln!("Remoteproc did not start: {}", e);
@@ -74,23 +82,29 @@ async fn main() {
         c => c,
     };
 
-    let mut tx_ch = match open_tx_channel::<u32, 264, PostcardCodec>(UIO_NUM, chan, unsafe { &mut TX_BUF }).await {
-        Ok(ch) => ch,
-        Err(e) => {
-            eprintln!("Failed to open TX channel: {}", e);
-            let _ = rp.stop();
-            return;
-        }
-    };
+    let mut tx_ch =
+        match open_tx_channel::<u32, 264, PostcardCodec>(UIO_NUM, chan, unsafe { &mut TX_BUF })
+            .await
+        {
+            Ok(ch) => ch,
+            Err(e) => {
+                eprintln!("Failed to open TX channel: {}", e);
+                let _ = rp.stop();
+                return;
+            }
+        };
 
-    let mut rx_ch = match open_rx_channel::<u32, 264, PostcardCodec>(UIO_NUM, chan, unsafe { &mut RX_BUF }).await {
-        Ok(ch) => ch,
-        Err(e) => {
-            eprintln!("Failed to open RX channel: {}", e);
-            let _ = rp.stop();
-            return;
-        }
-    };
+    let mut rx_ch =
+        match open_rx_channel::<u32, 264, PostcardCodec>(UIO_NUM, chan, unsafe { &mut RX_BUF })
+            .await
+        {
+            Ok(ch) => ch,
+            Err(e) => {
+                eprintln!("Failed to open RX channel: {}", e);
+                let _ = rp.stop();
+                return;
+            }
+        };
 
     // 4. Send 5 pings, assert echoes are val+1
     println!("Running echo test...");
@@ -111,7 +125,10 @@ async fn main() {
                 if reply_val == expected {
                     println!("HIL ping {} → echo {} ✓", i, reply_val);
                 } else {
-                    eprintln!("Echo mismatch at i={}: expected {}, got {}", i, expected, reply_val);
+                    eprintln!(
+                        "Echo mismatch at i={}: expected {}, got {}",
+                        i, expected, reply_val
+                    );
                     success = false;
                     break;
                 }
@@ -134,4 +151,9 @@ async fn main() {
         println!("HIL IPC test FAILED");
         std::process::exit(1);
     }
+}
+
+#[cfg(not(target_os = "linux"))]
+fn main() {
+    panic!("This test is only supported on Linux");
 }

@@ -15,7 +15,6 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-pub mod descriptor;
 pub mod irq;
 
 #[cfg(feature = "stm32mp2xx")]
