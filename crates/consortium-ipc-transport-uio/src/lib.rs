@@ -34,7 +34,7 @@ use uio::UioError;
 
 use consortium_ipc::{
     chan::Chan,
-    descriptor::{ChannelLayout, DescState, Descriptor, DescriptorError},
+    descriptor::{ChannelLayout, Descriptor, DescriptorError},
     slot,
     transport::Transport,
 };
@@ -201,7 +201,7 @@ impl Transport for UioChannel {
     fn send<'a>(&mut self, _ch: Chan, data: &[u8]) -> Self::SendFut<'a> {
         SendFut {
             inner: Arc::clone(&self.inner),
-            tx_offset: self.layout.tx_offset,
+            tx_offset: self.layout.tx_offset as usize,
             data: data.to_vec(),
             notified: None,
         }
@@ -213,7 +213,7 @@ impl Transport for UioChannel {
         // The raw pointer is valid for the lifetime of the caller's borrow.
         RecvFut {
             inner: Arc::clone(&self.inner),
-            rx_offset: self.layout.rx_offset,
+            rx_offset: self.layout.rx_offset as usize,
             buf_ptr: buf.as_mut_ptr(),
             buf_len: buf.len(),
             notified: None,

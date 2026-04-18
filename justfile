@@ -44,31 +44,35 @@ check:
 
 # ── A-core (aarch64 / Linux) ─────────────────────────────────────────────────
 
-check-a64:
+check-ipc-a64:
     @[ "$(uname)" = "Linux" ] || { echo "Error: A-core targets require Linux"; exit 1; }
-    cargo check -p consortium-ipc --target {{ a64_target }}
+    cargo check -p consortium-ipc --target {{ a64_target }} -F std
     cargo check -p consortium-ipc-transport-uio --target {{ a64_target }}
     cargo check -p consortium-runtime-app --target {{ a64_target }}
+    cargo check -p consortium-ipc-doorbell-hsem --target {{ a64_target }} -F std
 
-build-a64:
+build-ipc-a64:
     @[ "$(uname)" = "Linux" ] || { echo "Error: A-core targets require Linux"; exit 1; }
-    cargo build -p consortium-ipc --release --target {{ a64_target }}
+    cargo build -p consortium-ipc --release --target {{ a64_target }} -F std
     cargo build -p consortium-ipc-transport-uio --release --target {{ a64_target }}
     cargo build -p consortium-runtime-app --release --target {{ a64_target }}
+    cargo build -p consortium-ipc-doorbell-hsem --release --target {{ a64_target }} -F std
 
 # ── A-core (armv7 / Linux) ──────────────────────────────────────────────────
 
-check-a32:
+check-ipc-a32:
     @[ "$(uname)" = "Linux" ] || { echo "Error: A-core targets require Linux"; exit 1; }
-    cargo check -p consortium-ipc --target {{ a32_target }}
+    cargo check -p consortium-ipc --target {{ a32_target }} -F std
     cargo check -p consortium-ipc-transport-uio --target {{ a32_target }}
     cargo check -p consortium-runtime-app --target {{ a32_target }}
+    cargo check -p consortium-ipc-doorbell-hsem --target {{ a32_target }} -F std
 
-build-a32:
+build-ipc-a32:
     @[ "$(uname)" = "Linux" ] || { echo "Error: A-core targets require Linux"; exit 1; }
-    cargo build -p consortium-ipc --release --target {{ a32_target }}
+    cargo build -p consortium-ipc --release --target {{ a32_target }} -F std
     cargo build -p consortium-ipc-transport-uio --release --target {{ a32_target }}
     cargo build -p consortium-runtime-app --release --target {{ a32_target }}
+    cargo build -p consortium-ipc-doorbell-hsem --release --target {{ a32_target }} -F std
 
 # ── TEE (Trusted Execution Environment / Linux) ──────────────────────────────
 
@@ -76,6 +80,7 @@ build-a32:
 check-tee:
     @[ "$(uname)" = "Linux" ] || { echo "Error: TEE crates require Linux"; exit 1; }
     cargo check -p consortium-tee
+    cargo check -p consortium-tee --no-default-features --features ta
     cargo check -p consortium-tee-proc-macros
 
 # Check TEE crates with panic=abort (for TA binaries)
@@ -101,27 +106,35 @@ test-tee:
 
 # ── M-core (thumbv8 / bare-metal) ───────────────────────────────────────────
 
-check-m8:
+check-ipc-m8:
     cargo check -p consortium-ipc --target {{ m8_target }}
+    cargo check -p consortium-common --target {{ m8_target }}
     cargo check -p consortium-ipc-transport-mem --target {{ m8_target }}
     cargo check -p consortium-runtime-mcu --target {{ m8_target }}
+    cargo check -p consortium-ipc-doorbell-hsem --target {{ m8_target }}
 
-build-m8:
+build-ipc-m8:
+    cargo build -p consortium-common --release --target {{ m8_target }}
     cargo build -p consortium-ipc --release --target {{ m8_target }}
     cargo build -p consortium-ipc-transport-mem --release --target {{ m8_target }}
     cargo build -p consortium-runtime-mcu --release --target {{ m8_target }}
+    cargo build -p consortium-ipc-doorbell-hsem --release --target {{ m8_target }}
 
 # ── M-core (thumbv7 / bare-metal) ───────────────────────────────────────────
 
-check-m7:
+check-ipc-m7:
+    cargo check -p consortium-common --target {{ m7_target }}
     cargo check -p consortium-ipc --target {{ m7_target }}
     cargo check -p consortium-ipc-transport-mem --target {{ m7_target }}
     cargo check -p consortium-runtime-mcu --target {{ m7_target }}
+    cargo check -p consortium-ipc-doorbell-hsem --target {{ m7_target }}
 
-build-m7:
+build-ipc-m7:
+    cargo build -p consortium-common --release --target {{ m7_target }}
     cargo build -p consortium-ipc --release --target {{ m7_target }}
     cargo build -p consortium-ipc-transport-mem --release --target {{ m7_target }}
     cargo build -p consortium-runtime-mcu --release --target {{ m7_target }}
+    cargo build -p consortium-ipc-doorbell-hsem --release --target {{ m8_target }}
 
 # ── RISC-V (rv32imc) ────────────────────────────────────────────────────────
 
@@ -149,40 +162,24 @@ build-rv32imafcp:
 
 # ── Combined ─────────────────────────────────────────────────────────────────
 
-check-m: check-m8 check-m7
+check-ipc-m: check-ipc-m8 check-ipc-m7
 
-build-m: build-m8 build-m7
+build-ipc-m: build-ipc-m8 build-ipc-m7
 
-check-a: check-a64 check-a32
+check-ipc-a: check-ipc-a64 check-ipc-a32
 
-build-a: build-a64 build-a32
+build-ipc-a: build-ipc-a64 build-ipc-a32
 
 check-rv: check-rv32imc check-rv32imac check-rv32imafcp
 
 build-rv: build-rv32imc build-rv32imac build-rv32imafcp
 
-check-arm: check-a check-m
+check-ipc-arm: check-ipc-a check-ipc-m
 
-build-arm: build-a build-m
+build-ipc-arm: build-ipc-a build-ipc-m
 
 # ── Utilities ────────────────────────────────────────────────────────────────
 
 # Add license headers (requires addlicense)
 license:
     addlicense -c "Ethan Wu" -y 2026 -l apache -s -ignore "data/**/*" .
-
-# ── HIL (Hardware-in-the-Loop) ────────────────────────────────────────────────
-
-# Build M-core HIL firmware (produces ELF for remoteproc)
-build-firmware-hil:
-    cargo build -p consortium-firmware-hil --release --target {{ m8_target }}
-
-# Build A-core HIL test runner (Linux aarch64)
-build-hil-ipc:
-    @[ "$(uname)" = "Linux" ] || { echo "Error: HIL runner requires Linux"; exit 1; }
-    cargo build -p consortium-hil-ipc --release --target {{ a64_target }}
-
-# Run HIL test (must be run on the STM32MP2 board as root)
-run-hil-ipc:
-    @[ "$(uname)" = "Linux" ] || { echo "Error: run on the STM32MP2 A-core"; exit 1; }
-    ./target/{{ a64_target }}/release/consortium-hil-ipc

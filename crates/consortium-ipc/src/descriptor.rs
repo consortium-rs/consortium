@@ -37,6 +37,7 @@
 //! +0x08  4  rx_offset   M→A slot byte offset in region
 //! +0x0C  4  rx_size
 //! ```
+#![allow(dead_code)]
 
 pub const MAGIC: u32 = 0x434F_4E53;
 pub const VERSION: u8 = 1;
@@ -46,7 +47,7 @@ const CHAN_ENTRY_SIZE: usize = 16;
 
 use num_enum::{FromPrimitive, IntoPrimitive};
 
-use crate::error::DescriptorError;
+pub use crate::error::DescriptorError;
 
 #[repr(u32)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FromPrimitive, IntoPrimitive)]
@@ -71,10 +72,11 @@ pub struct ChannelLayout {
 }
 
 #[derive(Debug)]
+#[cfg(feature = "alloc")]
 pub struct Descriptor {
     pub num_channels: u8,
     pub effective_mtu: usize,
-    pub channels: Vec<ChannelLayout>,
+    pub channels: alloc::vec::Vec<ChannelLayout>,
 }
 
 /// # Safety
@@ -136,6 +138,7 @@ pub unsafe fn set_state(base: *mut u8, state: DescState) {
 /// # Safety
 /// `base` must be valid for at least `CHAN_TABLE_BASE + num_channels * 16` bytes.
 /// All accesses use `read_volatile`; the region must be DMA-coherent.
+#[cfg(feature = "alloc")]
 pub unsafe fn read_descriptor(base: *const u8) -> Result<Descriptor, DescriptorError> {
     let magic = unsafe { rv_u32(base, 0x00) };
     let version = unsafe { rv_u8(base, 0x04) };

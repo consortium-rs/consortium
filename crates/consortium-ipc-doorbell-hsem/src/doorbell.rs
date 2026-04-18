@@ -26,7 +26,6 @@ use consortium_ipc::{Chan, Doorbell};
 use crate::error::HsemError;
 use crate::registers::semaphore_r::fields as r_fields;
 
-#[cfg(not(feature = "std"))]
 use crate::registers::{interrupt_nonsecure, semaphore_r, semaphore_rlr};
 
 // The std path computes all offsets inline from self.base; it does not need
@@ -347,7 +346,6 @@ impl<'a, const PROC: u8> HsemWaitFut<'a, PROC> {
     }
 }
 
-#[cfg(feature = "std")]
 impl<'a, const PROC: u8> core::future::Future for HsemWaitFut<'a, PROC> {
     type Output = Result<Chan, HsemError>;
 
@@ -366,11 +364,12 @@ impl<'a, const PROC: u8> core::future::Future for HsemWaitFut<'a, PROC> {
         if !this.armed {
             // SAFETY: must be called from the correct interrupt context; sem is caller-validated.
             unsafe {
-                self.clear_interrupt(sem);
-                self.enable_interrupt(sem);
+                this.doorbell.clear_interrupt(sem);
+                this.doorbell.enable_interrupt(sem);
             }
             this.armed = true;
-            if cfg!(feature = "std") {
+            #[cfg(feature = "std")]
+            {
                 // SAFETY: `doorbell` is borrowed for `'a` which outlives this
                 // future.  The Arc inside keeps the Notify allocation alive.
                 let notified = this.doorbell.notify.notified();
@@ -381,12 +380,16 @@ impl<'a, const PROC: u8> core::future::Future for HsemWaitFut<'a, PROC> {
                     >(notified)
                 };
                 this.notified = Some(notified);
-            } else {
+            }
+
+            #[cfg(not(feature = "std"))]
+            {
                 WAKER.register(cx.waker());
             }
         }
 
-        if cfg!(feature = "std") {
+        #[cfg(feature = "std")]
+        {
             // Poll the Notified future to register our waker and detect completion.
             if let Some(notified) = this.notified.as_mut() {
                 // SAFETY: `notified` lives inside `this` which is pinned.
@@ -397,20 +400,23 @@ impl<'a, const PROC: u8> core::future::Future for HsemWaitFut<'a, PROC> {
             }
 
             Poll::Pending
-        } else {
-            if self.interrupt_pending(sem) {
+        }
+
+        #[cfg(not(feature = "std"))]
+        {
+            if this.doorbell.interrupt_pending(sem) {
                 compiler_fence(Ordering::Acquire);
 
                 // SAFETY: must be called from the correct interrupt context; sem is caller-validated.
                 unsafe {
                     // Clear IER bit
-                    let ier = self.ier_addr();
+                    let ier = this.doorbell.ier_addr();
                     ier.write_volatile(ier.read_volatile() & !(1 << sem));
                     // Clear ICR
-                    self.clear_interrupt(sem);
+                    this.doorbell.clear_interrupt(sem);
                 }
 
-                Poll::Ready(Ok(self.ch))
+                Poll::Ready(Ok(this.ch))
             } else {
                 WAKER.register(cx.waker());
                 Poll::Pending

@@ -200,30 +200,6 @@ name = "consortium-ffi"
 version = "0.1.0"
 
 [[package]]
-name = "consortium-firmware-hil"
-version = "0.1.0"
-dependencies = [
- "consortium-codec-postcard",
- "consortium-ipc",
- "consortium-ipc-transport-mem",
- "consortium-runtime-mcu",
- "cortex-m",
- "cortex-m-rt",
- "embassy-executor 0.5.1",
- "postcard",
-]
-
-[[package]]
-name = "consortium-hil-ipc"
-version = "0.1.0"
-dependencies = [
- "consortium-codec-postcard",
- "consortium-ipc",
- "consortium-runtime-app",
- "tokio",
-]
-
-[[package]]
 name = "consortium-hmi"
 version = "0.1.0"
 
@@ -329,7 +305,7 @@ dependencies = [
  "consortium-ipc-doorbell-mu",
  "consortium-ipc-transport-mem",
  "cortex-m",
- "embassy-executor 0.10.0",
+ "embassy-executor",
  "num-traits",
  "static_cell",
 ]
@@ -406,26 +382,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cortex-m-rt"
-version = "0.7.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "801d4dec46b34c299ccf6b036717ae0fce602faa4f4fe816d9013b9a7c9f5ba6"
-dependencies = [
- "cortex-m-rt-macros",
-]
-
-[[package]]
-name = "cortex-m-rt-macros"
-version = "0.7.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e37549a379a9e0e6e576fd208ee60394ccb8be963889eebba3ffe0980364f472"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "critical-section"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -477,18 +433,6 @@ dependencies = [
 
 [[package]]
 name = "embassy-executor"
-version = "0.5.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a3d8701436bf0dc453703175459805045d049bf7404df7a68e59d05c7fbd1f04"
-dependencies = [
- "cortex-m",
- "critical-section",
- "document-features",
- "embassy-executor-macros 0.4.2",
-]
-
-[[package]]
-name = "embassy-executor"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5d0d3b15c9d7dc4fec1d8cb77112472fb008b3b28c51ad23838d83587a6d2f1e"
@@ -497,20 +441,8 @@ dependencies = [
  "cortex-m",
  "critical-section",
  "document-features",
- "embassy-executor-macros 0.8.0",
+ "embassy-executor-macros",
  "embassy-executor-timer-queue",
-]
-
-[[package]]
-name = "embassy-executor-macros"
-version = "0.4.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2b11dfbb15afc12c4171ac6e2994567c00881f61a0c13ada4429028a3c7f425f"
-dependencies = [
- "darling",
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
