@@ -185,8 +185,6 @@ pub extern "C" fn HSEM_IRQHandler() {
     WAKER.wake();
 }
 
-// ── std (A-core / Linux) ──────────────────────────────────────────────────────
-
 #[cfg(feature = "std")]
 impl<const PROC: u8> HsemDoorbell<PROC> {
     /// Create a doorbell using the mmap'd virtual base address of the HSEM
@@ -221,6 +219,18 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
     /// [`wait()`]: Doorbell::wait
     pub fn notifier(&self) -> std::sync::Arc<tokio::sync::Notify> {
         std::sync::Arc::clone(&self.notify)
+    }
+}
+
+#[cfg(not(feature = "std"))]
+impl<const PROC: u8> HsemDoorbell<PROC> {
+    /// Constant constructor for the M-core/bare-metal path, where the base address is a compile-time constant from the SoC TRM.
+    /// Panics if `PROC` is not in the range `1..=3`.
+    pub const fn new() -> Self {
+        assert!(PROC >= 1 && PROC <= 3, "PROC must be 1, 2, or 3");
+        Self {
+            base: crate::registers::HSEM_BASE as usize,
+        }
     }
 }
 
