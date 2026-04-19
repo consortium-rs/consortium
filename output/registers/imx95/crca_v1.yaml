@@ -1,42 +1,26 @@
 block/CRCA:
   description: ''
   items:
-  - name: CFG
+  - name: CHANNEL_CFG
     byte_offset: 0
-    fieldset: CRCA_CFG
-  - name: CFG
-    byte_offset: 16
-    fieldset: CRCA_CFG
-  - name: CFG
-    byte_offset: 32
-    fieldset: CRCA_CFG
-  - name: INP
+    array:
+      len: 3
+      stride: 16
+  - name: CHANNEL_INP
     byte_offset: 4
-    fieldset: CRCA_INP
-  - name: INP
-    byte_offset: 20
-    fieldset: CRCA_INP
-  - name: INP
-    byte_offset: 36
-    fieldset: CRCA_INP
-  - name: CSTAT
+    array:
+      len: 3
+      stride: 16
+  - name: CHANNEL_CSTAT
     byte_offset: 8
-    fieldset: CRCA_CSTAT
-  - name: CSTAT
-    byte_offset: 24
-    fieldset: CRCA_CSTAT
-  - name: CSTAT
-    byte_offset: 40
-    fieldset: CRCA_CSTAT
-  - name: OUTP
+    array:
+      len: 3
+      stride: 16
+  - name: CHANNEL_OUTP
     byte_offset: 12
-    fieldset: CRCA_OUTP
-  - name: OUTP
-    byte_offset: 28
-    fieldset: CRCA_OUTP
-  - name: OUTP
-    byte_offset: 44
-    fieldset: CRCA_OUTP
+    array:
+      len: 3
+      stride: 16
 fieldset/CRCA_CFG:
   description: ''
   fields:

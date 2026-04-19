@@ -1,60 +1,42 @@
 block/HDR_DECOMPRESS1:
   description: ''
   items:
-  - name: CTRL_CAM
+  - name: PIPE1_HDR_DECOMP_CTRL_CAM
     byte_offset: 0
-    fieldset: HDR_DECOMPRESS1_CTRL_CAM
-  - name: KNEE_POINT1_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_POINT1_CAM
     byte_offset: 4
-    fieldset: HDR_DECOMPRESS1_KNEE_POINT1_CAM
-  - name: KNEE_POINT2_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_POINT2_CAM
     byte_offset: 8
-    fieldset: HDR_DECOMPRESS1_KNEE_POINT2_CAM
-  - name: KNEE_POINT3_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_POINT3_CAM
     byte_offset: 12
-    fieldset: HDR_DECOMPRESS1_KNEE_POINT3_CAM
-  - name: KNEE_POINT4_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_POINT4_CAM
     byte_offset: 16
-    fieldset: HDR_DECOMPRESS1_KNEE_POINT4_CAM
-  - name: KNEE_OFFSET0_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_OFFSET0_CAM
     byte_offset: 20
-    fieldset: HDR_DECOMPRESS1_KNEE_OFFSET0_CAM
-  - name: KNEE_OFFSET1_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_OFFSET1_CAM
     byte_offset: 24
-    fieldset: HDR_DECOMPRESS1_KNEE_OFFSET1_CAM
-  - name: KNEE_OFFSET2_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_OFFSET2_CAM
     byte_offset: 28
-    fieldset: HDR_DECOMPRESS1_KNEE_OFFSET2_CAM
-  - name: KNEE_OFFSET3_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_OFFSET3_CAM
     byte_offset: 32
-    fieldset: HDR_DECOMPRESS1_KNEE_OFFSET3_CAM
-  - name: KNEE_OFFSET4_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_OFFSET4_CAM
     byte_offset: 36
-    fieldset: HDR_DECOMPRESS1_KNEE_OFFSET4_CAM
-  - name: KNEE_RATIO01_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_RATIO01_CAM
     byte_offset: 40
-    fieldset: HDR_DECOMPRESS1_KNEE_RATIO01_CAM
-  - name: KNEE_RATIO23_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_RATIO23_CAM
     byte_offset: 44
-    fieldset: HDR_DECOMPRESS1_KNEE_RATIO23_CAM
-  - name: KNEE_RATIO4_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_RATIO4_CAM
     byte_offset: 48
-    fieldset: HDR_DECOMPRESS1_KNEE_RATIO4_CAM
-  - name: KNEE_NPOINT0_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_NPOINT0_CAM
     byte_offset: 52
-    fieldset: HDR_DECOMPRESS1_KNEE_NPOINT0_CAM
-  - name: KNEE_NPOINT1_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_NPOINT1_CAM
     byte_offset: 56
-    fieldset: HDR_DECOMPRESS1_KNEE_NPOINT1_CAM
-  - name: KNEE_NPOINT2_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_NPOINT2_CAM
     byte_offset: 60
-    fieldset: HDR_DECOMPRESS1_KNEE_NPOINT2_CAM
-  - name: KNEE_NPOINT3_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_NPOINT3_CAM
     byte_offset: 64
-    fieldset: HDR_DECOMPRESS1_KNEE_NPOINT3_CAM
-  - name: KNEE_NPOINT4_CAM
+  - name: PIPE1_HDR_DECOMP_KNEE_NPOINT4_CAM
     byte_offset: 68
-    fieldset: HDR_DECOMPRESS1_KNEE_NPOINT4_CAM
 fieldset/HDR_DECOMPRESS1_CTRL_CAM:
   description: ''
   fields:

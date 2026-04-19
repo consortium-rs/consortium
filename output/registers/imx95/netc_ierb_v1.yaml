@@ -19,12 +19,10 @@ block/NETC_IERB:
   - name: ERSMBAR
     byte_offset: 132
     fieldset: NETC_IERB_ERSMBAR
-  - name: HTAHPCR
+  - name: HTA_NUM_HTAHPCR
     byte_offset: 192
-    fieldset: NETC_IERB_HTAHPCR
-  - name: HTALPCR
+  - name: HTA_NUM_HTALPCR
     byte_offset: 196
-    fieldset: NETC_IERB_HTALPCR
   - name: HBTMAR
     byte_offset: 256
     fieldset: NETC_IERB_HBTMAR
@@ -48,11 +46,10 @@ block/NETC_IERB:
     byte_offset: 388
   - name: SGLTTR
     byte_offset: 400
-  - name: RCMSICAR
+  - name: ARRAY_NUM_RC_RCMSICAR
     byte_offset: 520
-  - name: RCMSIAMQR
+  - name: ARRAY_NUM_RC_RCMSIAMQR
     byte_offset: 524
-    fieldset: NETC_IERB_RCMSIAMQR
   - name: EMDIOMCR
     byte_offset: 788
   - name: EMDIO_CFH_DIDVID
@@ -72,20 +69,18 @@ block/NETC_IERB:
   - name: EMDIORIDAR
     byte_offset: 864
     fieldset: NETC_IERB_EMDIORIDAR
-  - name: TMCR
+  - name: NUM_TMR_ARRAY_TMCR
     byte_offset: 1044
-  - name: T_CFH_DIDVID
+  - name: NUM_TMR_ARRAY_T_CFH_DIDVID
     byte_offset: 1056
-  - name: T_CFH_SIDSVID
+  - name: NUM_TMR_ARRAY_T_CFH_SIDSVID
     byte_offset: 1060
-  - name: TFAUXR
+  - name: NUM_TMR_ARRAY_TFAUXR
     byte_offset: 1092
-    fieldset: NETC_IERB_TFAUXR
-  - name: TBLPR
+  - name: NUM_TMR_ARRAY_TBLPR
     byte_offset: 1096
-  - name: TRIDAR
+  - name: NUM_TMR_ARRAY_TRIDAR
     byte_offset: 1120
-    fieldset: NETC_IERB_TRIDAR
   - name: TGSMCAPR
     byte_offset: 2048
   - name: TGSM0MAPR
@@ -138,279 +133,171 @@ block/NETC_IERB:
     byte_offset: 4256
   - name: L2E0MAR1
     byte_offset: 4260
-  - name: EBCR1
+  - name: CFG_ENETC_INST_EBCR1
     byte_offset: 12292
-  - name: EBCR1
-    byte_offset: 12548
-  - name: EBCR1
-    byte_offset: 12804
-  - name: EBCR2
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_EBCR2
     byte_offset: 12296
-  - name: EBCR2
-    byte_offset: 12552
-  - name: EBCR2
-    byte_offset: 12808
-  - name: EVFRIDAR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_EVFRIDAR
     byte_offset: 12304
-    fieldset: NETC_IERB_EVFRIDAR
-  - name: EVFRIDAR
-    byte_offset: 12560
-    fieldset: NETC_IERB_EVFRIDAR
-  - name: EVFRIDAR
-    byte_offset: 12816
-    fieldset: NETC_IERB_EVFRIDAR
-  - name: EMCR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_EMCR
     byte_offset: 12308
-  - name: EMCR
-    byte_offset: 12564
-  - name: EMCR
-    byte_offset: 12820
-  - name: E_CFH_DIDVID
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_E_CFH_DIDVID
     byte_offset: 12320
-  - name: E_CFH_DIDVID
-    byte_offset: 12576
-  - name: E_CFH_DIDVID
-    byte_offset: 12832
-  - name: E_CFH_SIDSVID
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_E_CFH_SIDSVID
     byte_offset: 12324
-  - name: E_CFH_SIDSVID
-    byte_offset: 12580
-  - name: E_CFH_SIDSVID
-    byte_offset: 12836
-  - name: E_CFC_VFDID
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_E_CFC_VFDID
     byte_offset: 12328
-  - name: E_CFC_VFDID
-    byte_offset: 12584
-  - name: E_CFC_VFDID
-    byte_offset: 12840
-  - name: EBCAR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_EBCAR
     byte_offset: 12336
-    fieldset: NETC_IERB_EBCAR
-  - name: EBCAR
-    byte_offset: 12592
-    fieldset: NETC_IERB_EBCAR
-  - name: EBCAR
-    byte_offset: 12848
-    fieldset: NETC_IERB_EBCAR
-  - name: EMCAR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_EMCAR
     byte_offset: 12340
-  - name: EMCAR
-    byte_offset: 12596
-  - name: EMCAR
-    byte_offset: 12852
-  - name: ECAR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_ECAR
     byte_offset: 12344
-    fieldset: NETC_IERB_ECAR
-  - name: ECAR
-    byte_offset: 12600
-    fieldset: NETC_IERB_ECAR
-  - name: ECAR
-    byte_offset: 12856
-    fieldset: NETC_IERB_ECAR
-  - name: EAMQR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_EAMQR
     byte_offset: 12352
-    fieldset: NETC_IERB_EAMQR
-  - name: EAMQR
-    byte_offset: 12608
-    fieldset: NETC_IERB_EAMQR
-  - name: EAMQR
-    byte_offset: 12864
-    fieldset: NETC_IERB_EAMQR
-  - name: EFAUXR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_EFAUXR
     byte_offset: 12356
-    fieldset: NETC_IERB_EFAUXR
-  - name: EFAUXR
-    byte_offset: 12612
-    fieldset: NETC_IERB_EFAUXR
-  - name: EFAUXR
-    byte_offset: 12868
-    fieldset: NETC_IERB_EFAUXR
-  - name: EBLPR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_EBLPR
     byte_offset: 12360
-  - name: EBLPR
-    byte_offset: 12616
-  - name: EBLPR
-    byte_offset: 12872
-  - name: ERXMBER
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_ERXMBER
     byte_offset: 12368
-    fieldset: NETC_IERB_ERXMBER
-  - name: ERXMBER
-    byte_offset: 12624
-    fieldset: NETC_IERB_ERXMBER
-  - name: ERXMBER
-    byte_offset: 12880
-    fieldset: NETC_IERB_ERXMBER
-  - name: ERXMBLR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_ERXMBLR
     byte_offset: 12372
-    fieldset: NETC_IERB_ERXMBLR
-  - name: ERXMBLR
-    byte_offset: 12628
-    fieldset: NETC_IERB_ERXMBLR
-  - name: ERXMBLR
-    byte_offset: 12884
-    fieldset: NETC_IERB_ERXMBLR
-  - name: ERIDAR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_ERIDAR
     byte_offset: 12384
-    fieldset: NETC_IERB_ERIDAR
-  - name: ERIDAR
-    byte_offset: 12640
-    fieldset: NETC_IERB_ERIDAR
-  - name: ERIDAR
-    byte_offset: 12896
-    fieldset: NETC_IERB_ERIDAR
-  - name: ETXHPTBCR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_ETXHPTBCR
     byte_offset: 12400
-  - name: ETXHPTBCR
-    byte_offset: 12656
-  - name: ETXHPTBCR
-    byte_offset: 12912
-  - name: ETXLPTBCR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_ETXLPTBCR
     byte_offset: 12404
-  - name: ETXLPTBCR
-    byte_offset: 12660
-  - name: ETXLPTBCR
-    byte_offset: 12916
-  - name: EHTMAR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_EHTMAR
     byte_offset: 12416
-    fieldset: NETC_IERB_EHTMAR
-  - name: EHTMAR
-    byte_offset: 12672
-    fieldset: NETC_IERB_EHTMAR
-  - name: EHTMAR
-    byte_offset: 12928
-    fieldset: NETC_IERB_EHTMAR
-  - name: EITMAR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_EITMAR
     byte_offset: 12420
-    fieldset: NETC_IERB_EITMAR
-  - name: EITMAR
-    byte_offset: 12676
-    fieldset: NETC_IERB_EITMAR
-  - name: EITMAR
-    byte_offset: 12932
-    fieldset: NETC_IERB_EITMAR
-  - name: EIPFTMAR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_EIPFTMAR
     byte_offset: 12424
-    fieldset: NETC_IERB_EIPFTMAR
-  - name: EIPFTMAR
-    byte_offset: 12680
-    fieldset: NETC_IERB_EIPFTMAR
-  - name: EIPFTMAR
-    byte_offset: 12936
-    fieldset: NETC_IERB_EIPFTMAR
-  - name: ERPITMAR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_ERPITMAR
     byte_offset: 12448
-  - name: ERPITMAR
-    byte_offset: 12704
-  - name: ERPITMAR
-    byte_offset: 12960
-  - name: EISCITMAR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_EISCITMAR
     byte_offset: 12452
-  - name: EISCITMAR
-    byte_offset: 12708
-  - name: EISCITMAR
-    byte_offset: 12964
-  - name: EISITMAR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_EISITMAR
     byte_offset: 12456
-  - name: EISITMAR
-    byte_offset: 12712
-  - name: EISITMAR
-    byte_offset: 12968
-  - name: ESGIITMAR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_ESGIITMAR
     byte_offset: 12468
-  - name: ESGIITMAR
-    byte_offset: 12724
-  - name: ESGIITMAR
-    byte_offset: 12980
-  - name: ESGCLITMAR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_ESGCLITMAR
     byte_offset: 12472
-  - name: ESGCLITMAR
-    byte_offset: 12728
-  - name: ESGCLITMAR
-    byte_offset: 12984
-  - name: ETGSTAR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_ETGSTAR
     byte_offset: 12528
-  - name: ETGSTAR
-    byte_offset: 12784
-  - name: ETGSTAR
-    byte_offset: 13040
-  - name: ETGSLR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_ENETC_INST_ETGSLR
     byte_offset: 12532
-  - name: ETGSLR
-    byte_offset: 12788
-  - name: ETGSLR
-    byte_offset: 13044
-  - name: VAMQR
+    array:
+      len: 3
+      stride: 256
+  - name: CFG_VSI_INST_VAMQR
     byte_offset: 16384
-    fieldset: NETC_IERB_VAMQR
-  - name: VAMQR
-    byte_offset: 16448
-    fieldset: NETC_IERB_VAMQR
-  - name: VAMQR
-    byte_offset: 16512
-    fieldset: NETC_IERB_VAMQR
-  - name: VAMQR
-    byte_offset: 16576
-    fieldset: NETC_IERB_VAMQR
-  - name: VAMQR
-    byte_offset: 16640
-    fieldset: NETC_IERB_VAMQR
-  - name: VAMQR
-    byte_offset: 16704
-    fieldset: NETC_IERB_VAMQR
-  - name: VFAUXR
+    array:
+      len: 6
+      stride: 64
+  - name: CFG_VSI_INST_VFAUXR
     byte_offset: 16388
-    fieldset: NETC_IERB_VFAUXR
-  - name: VFAUXR
-    byte_offset: 16452
-    fieldset: NETC_IERB_VFAUXR
-  - name: VFAUXR
-    byte_offset: 16516
-    fieldset: NETC_IERB_VFAUXR
-  - name: VFAUXR
-    byte_offset: 16580
-    fieldset: NETC_IERB_VFAUXR
-  - name: VFAUXR
-    byte_offset: 16644
-    fieldset: NETC_IERB_VFAUXR
-  - name: VFAUXR
-    byte_offset: 16708
-    fieldset: NETC_IERB_VFAUXR
-  - name: VBLPR
+    array:
+      len: 6
+      stride: 64
+  - name: CFG_VSI_INST_VBLPR
     byte_offset: 16392
-  - name: VBLPR
-    byte_offset: 16456
-  - name: VBLPR
-    byte_offset: 16520
-  - name: VBLPR
-    byte_offset: 16584
-  - name: VBLPR
-    byte_offset: 16648
-  - name: VBLPR
-    byte_offset: 16712
-  - name: VPMAR0
+    array:
+      len: 6
+      stride: 64
+  - name: CFG_VSI_INST_VPMAR0
     byte_offset: 16400
-  - name: VPMAR0
-    byte_offset: 16464
-  - name: VPMAR0
-    byte_offset: 16528
-  - name: VPMAR0
-    byte_offset: 16592
-  - name: VPMAR0
-    byte_offset: 16656
-  - name: VPMAR0
-    byte_offset: 16720
-  - name: VPMAR1
+    array:
+      len: 6
+      stride: 64
+  - name: CFG_VSI_INST_VPMAR1
     byte_offset: 16404
-  - name: VPMAR1
-    byte_offset: 16468
-  - name: VPMAR1
-    byte_offset: 16532
-  - name: VPMAR1
-    byte_offset: 16596
-  - name: VPMAR1
-    byte_offset: 16660
-  - name: VPMAR1
-    byte_offset: 16724
+    array:
+      len: 6
+      stride: 64
 fieldset/NETC_IERB_CAPR0_NUM:
   description: ''
   fields:

@@ -81,15 +81,12 @@ block/VPU_TRDC_MGR:
       len: 16
       stride: 4
     fieldset: VPU_TRDC_MGR_TRDC_DERRLOC
-  - name: W0
+  - name: MBC_DERR_W0
     byte_offset: 1024
-    fieldset: VPU_TRDC_MGR_W0
-  - name: W1
+  - name: MBC_DERR_W1
     byte_offset: 1028
-    fieldset: VPU_TRDC_MGR_W1
-  - name: W3
+  - name: MBC_DERR_W3
     byte_offset: 1036
-    fieldset: VPU_TRDC_MGR_W3
   - name: MDA_W0_0_DFMT1
     byte_offset: 2048
     fieldset: VPU_TRDC_MGR_MDA_W0_0_DFMT1

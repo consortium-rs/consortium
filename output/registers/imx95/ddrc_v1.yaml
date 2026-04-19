@@ -1,12 +1,11 @@
 block/DDRC:
   description: ''
   items:
-  - name: CS_BNDS
+  - name: CS_BNDS_CS_BNDS
     byte_offset: 0
-    fieldset: DDRC_CS_BNDS
-  - name: CS_BNDS
-    byte_offset: 8
-    fieldset: DDRC_CS_BNDS
+    array:
+      len: 2
+      stride: 8
   - name: REMAP_EXT_0
     byte_offset: 16
   - name: REMAP_EXT_1

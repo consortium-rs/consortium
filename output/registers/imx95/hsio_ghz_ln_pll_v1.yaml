@@ -1,45 +1,45 @@
 block/HSIO_GHZ_LN_PLL:
   description: ''
   items:
-  - name: RW
+  - name: CTRL_RW
     byte_offset: 0
-  - name: SET
+  - name: CTRL_SET
     byte_offset: 4
-  - name: CLR
+  - name: CTRL_CLR
     byte_offset: 8
-  - name: TOG
+  - name: CTRL_TOG
     byte_offset: 12
-  - name: RW
+  - name: SPREAD_SPECTRUM_RW
     byte_offset: 48
-  - name: SET
+  - name: SPREAD_SPECTRUM_SET
     byte_offset: 52
-  - name: CLR
+  - name: SPREAD_SPECTRUM_CLR
     byte_offset: 56
-  - name: TOG
+  - name: SPREAD_SPECTRUM_TOG
     byte_offset: 60
-  - name: RW
+  - name: NUMERATOR_RW
     byte_offset: 64
-  - name: SET
+  - name: NUMERATOR_SET
     byte_offset: 68
-  - name: CLR
+  - name: NUMERATOR_CLR
     byte_offset: 72
-  - name: TOG
+  - name: NUMERATOR_TOG
     byte_offset: 76
-  - name: RW
+  - name: DENOMINATOR_RW
     byte_offset: 80
-  - name: SET
+  - name: DENOMINATOR_SET
     byte_offset: 84
-  - name: CLR
+  - name: DENOMINATOR_CLR
     byte_offset: 88
-  - name: TOG
+  - name: DENOMINATOR_TOG
     byte_offset: 92
-  - name: RW
+  - name: DIV_RW
     byte_offset: 96
-  - name: SET
+  - name: DIV_SET
     byte_offset: 100
-  - name: CLR
+  - name: DIV_CLR
     byte_offset: 104
-  - name: TOG
+  - name: DIV_TOG
     byte_offset: 108
   - name: PLL_STATUS
     byte_offset: 240

@@ -160,47 +160,40 @@ class NXPPeripheralParser:
                                     field_name = field_match.group(3)
                                     field_array_name = field_match.group(4)
 
-                                    # Skip reserved fields
                                     if field_name.startswith('RESERVED'):
                                         continue
 
-                                    # Get offset from comment (supports fields with or without access qualifier)
                                     field_offset_match = re.search(r'offset:\s*0x([0-9a-fA-F]+)', nested_line_str)
                                     if field_offset_match:
                                         absolute_field_offset = int(field_offset_match.group(1), 16)
-                                        # Convert absolute to relative offset within nested struct
                                         field_offset = absolute_field_offset - nested_offset
                                     else:
-                                        # No offset in comment - skip this field
                                         field_offset = 0
 
-                                    # Skip fields without access qualifier and no explicit offset in comment
                                     if qualifier not in ('__IO', '__I', '__O') and not field_offset_match:
                                         continue
 
                                     description = extract_description(nested_line_str)
-
-                                    # Always prefix with nested struct name to avoid conflicts
                                     reg_name = f"{nested_name}_{field_name}"
+                                    reg_offset = struct_base_offset + field_offset
 
-                                    # Add register for each array element of the outer struct
-                                    for arr_idx in range(struct_array_len):
-                                        if array_step:
-                                            reg_offset = struct_base_offset + arr_idx * array_step + field_offset
-                                        else:
-                                            reg_offset = field_offset
+                                    item: Dict[str, Any] = {
+                                        'name': reg_name,
+                                        'byte_offset': reg_offset,
+                                    }
 
-                                        item: Dict[str, Any] = {
-                                            'name': reg_name,
-                                            'byte_offset': reg_offset,
+                                    if struct_array_len > 1 and array_step:
+                                        item['array'] = {
+                                            'len': struct_array_len,
+                                            'stride': array_step,
                                         }
 
-                                        if description:
-                                            item['description'] = description
+                                    if description:
+                                        item['description'] = description
 
-                                        self.block_data['items'].append(item)
+                                    self.block_data['items'].append(item)
 
-                            # Process top-level fields in the array
+                            # Process top-level fields in the array struct
                             for top_line_str in top_level_fields:
                                 top_stripped = top_line_str.strip()
                                 if not top_stripped:
@@ -218,41 +211,37 @@ class NXPPeripheralParser:
                                 field_name = field_match.group(3)
                                 field_array_name = field_match.group(4)
 
-                                # Skip reserved fields
                                 if field_name.startswith('RESERVED'):
                                     continue
 
-                                # Get offset from comment
                                 field_offset_match = re.search(r'offset:\s*0x([0-9a-fA-F]+)', top_line_str)
                                 if field_offset_match:
                                     absolute_field_offset = int(field_offset_match.group(1), 16)
-                                    # For top-level fields, offset is relative to the struct base
                                     field_offset = absolute_field_offset - struct_base_offset
                                 else:
                                     continue
 
-                                # Include fields with access qualifier OR with explicit offset in comment
                                 if qualifier not in ('__IO', '__I', '__O') and not field_offset_match:
                                     continue
 
                                 description = extract_description(top_line_str)
+                                reg_offset = struct_base_offset + field_offset
 
-                                # Add register for each array element
-                                for arr_idx in range(struct_array_len):
-                                    if array_step:
-                                        reg_offset = struct_base_offset + arr_idx * array_step + field_offset
-                                    else:
-                                        reg_offset = struct_base_offset + field_offset
+                                item = {
+                                    'name': f"{struct_member_name}_{field_name}",
+                                    'byte_offset': reg_offset,
+                                }
 
-                                    item: Dict[str, Any] = {
-                                        'name': f"{struct_member_name}_{field_name}",
-                                        'byte_offset': reg_offset,
+                                if struct_array_len > 1 and array_step:
+                                    item['array'] = {
+                                        'len': struct_array_len,
+                                        'stride': array_step,
                                     }
 
-                                    if description:
-                                        item['description'] = description
+                                if description:
+                                    item['description'] = description
 
-                                    self.block_data['items'].append(item)
+                                self.block_data['items'].append(item)
 
                         # Update offset after struct
                         if array_step and struct_array_len > 0:

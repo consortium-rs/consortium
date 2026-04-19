@@ -11,13 +11,13 @@ block/DDR_TCU:
     byte_offset: 1376
   - name: TCU_DFT_PHY
     byte_offset: 1408
-  - name: RW
+  - name: TCU_DDR_BSR_CONTROL__RW
     byte_offset: 2944
-  - name: SET
+  - name: TCU_DDR_BSR_CONTROL__SET
     byte_offset: 2948
-  - name: CLR
+  - name: TCU_DDR_BSR_CONTROL__CLR
     byte_offset: 2952
-  - name: TOG
+  - name: TCU_DDR_BSR_CONTROL__TOG
     byte_offset: 2956
   - name: TCU_PLL_COUNTER
     byte_offset: 3072

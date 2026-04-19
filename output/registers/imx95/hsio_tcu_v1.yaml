@@ -7,13 +7,13 @@ block/HSIO_TCU:
   - name: TCU_MAGIC_KW__MAGIC_KW1
     byte_offset: 1040
     fieldset: HSIO_TCU_TCU_MAGIC_KW__MAGIC_KW1
-  - name: RW
+  - name: TCU_PCIE0_PHY_CONTROL__RW
     byte_offset: 2320
-  - name: SET
+  - name: TCU_PCIE0_PHY_CONTROL__SET
     byte_offset: 2324
-  - name: CLR
+  - name: TCU_PCIE0_PHY_CONTROL__CLR
     byte_offset: 2328
-  - name: TOG
+  - name: TCU_PCIE0_PHY_CONTROL__TOG
     byte_offset: 2332
   - name: TCU_PCIE1_PHY_CONTROL_
     byte_offset: 2336
@@ -21,37 +21,37 @@ block/HSIO_TCU:
     byte_offset: 2352
   - name: TCU_DFT_BS_USB3
     byte_offset: 2368
-  - name: RW
+  - name: TCU_USB2_PHY_CONTROL__RW
     byte_offset: 2576
-  - name: SET
+  - name: TCU_USB2_PHY_CONTROL__SET
     byte_offset: 2580
-  - name: CLR
+  - name: TCU_USB2_PHY_CONTROL__CLR
     byte_offset: 2584
-  - name: TOG
+  - name: TCU_USB2_PHY_CONTROL__TOG
     byte_offset: 2588
-  - name: RW
+  - name: USB2_PHY_TESTDATA_RW
     byte_offset: 2592
-  - name: SET
+  - name: USB2_PHY_TESTDATA_SET
     byte_offset: 2596
-  - name: CLR
+  - name: USB2_PHY_TESTDATA_CLR
     byte_offset: 2600
-  - name: TOG
+  - name: USB2_PHY_TESTDATA_TOG
     byte_offset: 2604
-  - name: RW
+  - name: TCU_USB3_PHY_CONTROL__RW
     byte_offset: 2608
-  - name: SET
+  - name: TCU_USB3_PHY_CONTROL__SET
     byte_offset: 2612
-  - name: CLR
+  - name: TCU_USB3_PHY_CONTROL__CLR
     byte_offset: 2616
-  - name: TOG
+  - name: TCU_USB3_PHY_CONTROL__TOG
     byte_offset: 2620
-  - name: RW
+  - name: USB3_PHY_TESTDATA_RW
     byte_offset: 2624
-  - name: SET
+  - name: USB3_PHY_TESTDATA_SET
     byte_offset: 2628
-  - name: CLR
+  - name: USB3_PHY_TESTDATA_CLR
     byte_offset: 2632
-  - name: TOG
+  - name: USB3_PHY_TESTDATA_TOG
     byte_offset: 2636
   - name: TCU_PLL_COUNTER
     byte_offset: 3072

@@ -1,1158 +1,276 @@
 block/ISI:
   description: ''
   items:
-  - name: CTRL
+  - name: CHNL_CTRL
     byte_offset: 0
-    fieldset: ISI_CTRL
-  - name: CTRL
-    byte_offset: 65536
-    fieldset: ISI_CTRL
-  - name: CTRL
-    byte_offset: 131072
-    fieldset: ISI_CTRL
-  - name: CTRL
-    byte_offset: 196608
-    fieldset: ISI_CTRL
-  - name: CTRL
-    byte_offset: 262144
-    fieldset: ISI_CTRL
-  - name: CTRL
-    byte_offset: 327680
-    fieldset: ISI_CTRL
-  - name: CTRL
-    byte_offset: 393216
-    fieldset: ISI_CTRL
-  - name: CTRL
-    byte_offset: 458752
-    fieldset: ISI_CTRL
-  - name: IMG_CTRL
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_IMG_CTRL
     byte_offset: 4
-    fieldset: ISI_IMG_CTRL
-  - name: IMG_CTRL
-    byte_offset: 65540
-    fieldset: ISI_IMG_CTRL
-  - name: IMG_CTRL
-    byte_offset: 131076
-    fieldset: ISI_IMG_CTRL
-  - name: IMG_CTRL
-    byte_offset: 196612
-    fieldset: ISI_IMG_CTRL
-  - name: IMG_CTRL
-    byte_offset: 262148
-    fieldset: ISI_IMG_CTRL
-  - name: IMG_CTRL
-    byte_offset: 327684
-    fieldset: ISI_IMG_CTRL
-  - name: IMG_CTRL
-    byte_offset: 393220
-    fieldset: ISI_IMG_CTRL
-  - name: IMG_CTRL
-    byte_offset: 458756
-    fieldset: ISI_IMG_CTRL
-  - name: OUT_BUF_CTRL
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_OUT_BUF_CTRL
     byte_offset: 8
-  - name: OUT_BUF_CTRL
-    byte_offset: 65544
-  - name: OUT_BUF_CTRL
-    byte_offset: 131080
-  - name: OUT_BUF_CTRL
-    byte_offset: 196616
-  - name: OUT_BUF_CTRL
-    byte_offset: 262152
-  - name: OUT_BUF_CTRL
-    byte_offset: 327688
-  - name: OUT_BUF_CTRL
-    byte_offset: 393224
-  - name: OUT_BUF_CTRL
-    byte_offset: 458760
-  - name: IMG_CFG
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_IMG_CFG
     byte_offset: 12
-    fieldset: ISI_IMG_CFG
-  - name: IMG_CFG
-    byte_offset: 65548
-    fieldset: ISI_IMG_CFG
-  - name: IMG_CFG
-    byte_offset: 131084
-    fieldset: ISI_IMG_CFG
-  - name: IMG_CFG
-    byte_offset: 196620
-    fieldset: ISI_IMG_CFG
-  - name: IMG_CFG
-    byte_offset: 262156
-    fieldset: ISI_IMG_CFG
-  - name: IMG_CFG
-    byte_offset: 327692
-    fieldset: ISI_IMG_CFG
-  - name: IMG_CFG
-    byte_offset: 393228
-    fieldset: ISI_IMG_CFG
-  - name: IMG_CFG
-    byte_offset: 458764
-    fieldset: ISI_IMG_CFG
-  - name: IER
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_IER
     byte_offset: 16
-  - name: IER
-    byte_offset: 65552
-  - name: IER
-    byte_offset: 131088
-  - name: IER
-    byte_offset: 196624
-  - name: IER
-    byte_offset: 262160
-  - name: IER
-    byte_offset: 327696
-  - name: IER
-    byte_offset: 393232
-  - name: IER
-    byte_offset: 458768
-  - name: STS
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_STS
     byte_offset: 20
-  - name: STS
-    byte_offset: 65556
-  - name: STS
-    byte_offset: 131092
-  - name: STS
-    byte_offset: 196628
-  - name: STS
-    byte_offset: 262164
-  - name: STS
-    byte_offset: 327700
-  - name: STS
-    byte_offset: 393236
-  - name: STS
-    byte_offset: 458772
-  - name: SCALE_FACTOR
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_SCALE_FACTOR
     byte_offset: 24
-  - name: SCALE_FACTOR
-    byte_offset: 65560
-  - name: SCALE_FACTOR
-    byte_offset: 131096
-  - name: SCALE_FACTOR
-    byte_offset: 196632
-  - name: SCALE_FACTOR
-    byte_offset: 262168
-  - name: SCALE_FACTOR
-    byte_offset: 327704
-  - name: SCALE_FACTOR
-    byte_offset: 393240
-  - name: SCALE_FACTOR
-    byte_offset: 458776
-  - name: SCALE_OFFSET
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_SCALE_OFFSET
     byte_offset: 28
-  - name: SCALE_OFFSET
-    byte_offset: 65564
-  - name: SCALE_OFFSET
-    byte_offset: 131100
-  - name: SCALE_OFFSET
-    byte_offset: 196636
-  - name: SCALE_OFFSET
-    byte_offset: 262172
-  - name: SCALE_OFFSET
-    byte_offset: 327708
-  - name: SCALE_OFFSET
-    byte_offset: 393244
-  - name: SCALE_OFFSET
-    byte_offset: 458780
-  - name: CROP_ULC
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_CROP_ULC
     byte_offset: 32
-    fieldset: ISI_CROP_ULC
-  - name: CROP_ULC
-    byte_offset: 65568
-    fieldset: ISI_CROP_ULC
-  - name: CROP_ULC
-    byte_offset: 131104
-    fieldset: ISI_CROP_ULC
-  - name: CROP_ULC
-    byte_offset: 196640
-    fieldset: ISI_CROP_ULC
-  - name: CROP_ULC
-    byte_offset: 262176
-    fieldset: ISI_CROP_ULC
-  - name: CROP_ULC
-    byte_offset: 327712
-    fieldset: ISI_CROP_ULC
-  - name: CROP_ULC
-    byte_offset: 393248
-    fieldset: ISI_CROP_ULC
-  - name: CROP_ULC
-    byte_offset: 458784
-    fieldset: ISI_CROP_ULC
-  - name: CROP_LRC
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_CROP_LRC
     byte_offset: 36
-    fieldset: ISI_CROP_LRC
-  - name: CROP_LRC
-    byte_offset: 65572
-    fieldset: ISI_CROP_LRC
-  - name: CROP_LRC
-    byte_offset: 131108
-    fieldset: ISI_CROP_LRC
-  - name: CROP_LRC
-    byte_offset: 196644
-    fieldset: ISI_CROP_LRC
-  - name: CROP_LRC
-    byte_offset: 262180
-    fieldset: ISI_CROP_LRC
-  - name: CROP_LRC
-    byte_offset: 327716
-    fieldset: ISI_CROP_LRC
-  - name: CROP_LRC
-    byte_offset: 393252
-    fieldset: ISI_CROP_LRC
-  - name: CROP_LRC
-    byte_offset: 458788
-    fieldset: ISI_CROP_LRC
-  - name: CSC_COEFF0
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_CSC_COEFF0
     byte_offset: 40
-    fieldset: ISI_CSC_COEFF0
-  - name: CSC_COEFF0
-    byte_offset: 65576
-    fieldset: ISI_CSC_COEFF0
-  - name: CSC_COEFF0
-    byte_offset: 131112
-    fieldset: ISI_CSC_COEFF0
-  - name: CSC_COEFF0
-    byte_offset: 196648
-    fieldset: ISI_CSC_COEFF0
-  - name: CSC_COEFF0
-    byte_offset: 262184
-    fieldset: ISI_CSC_COEFF0
-  - name: CSC_COEFF0
-    byte_offset: 327720
-    fieldset: ISI_CSC_COEFF0
-  - name: CSC_COEFF0
-    byte_offset: 393256
-    fieldset: ISI_CSC_COEFF0
-  - name: CSC_COEFF0
-    byte_offset: 458792
-    fieldset: ISI_CSC_COEFF0
-  - name: CSC_COEFF1
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_CSC_COEFF1
     byte_offset: 44
-    fieldset: ISI_CSC_COEFF1
-  - name: CSC_COEFF1
-    byte_offset: 65580
-    fieldset: ISI_CSC_COEFF1
-  - name: CSC_COEFF1
-    byte_offset: 131116
-    fieldset: ISI_CSC_COEFF1
-  - name: CSC_COEFF1
-    byte_offset: 196652
-    fieldset: ISI_CSC_COEFF1
-  - name: CSC_COEFF1
-    byte_offset: 262188
-    fieldset: ISI_CSC_COEFF1
-  - name: CSC_COEFF1
-    byte_offset: 327724
-    fieldset: ISI_CSC_COEFF1
-  - name: CSC_COEFF1
-    byte_offset: 393260
-    fieldset: ISI_CSC_COEFF1
-  - name: CSC_COEFF1
-    byte_offset: 458796
-    fieldset: ISI_CSC_COEFF1
-  - name: CSC_COEFF2
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_CSC_COEFF2
     byte_offset: 48
-    fieldset: ISI_CSC_COEFF2
-  - name: CSC_COEFF2
-    byte_offset: 65584
-    fieldset: ISI_CSC_COEFF2
-  - name: CSC_COEFF2
-    byte_offset: 131120
-    fieldset: ISI_CSC_COEFF2
-  - name: CSC_COEFF2
-    byte_offset: 196656
-    fieldset: ISI_CSC_COEFF2
-  - name: CSC_COEFF2
-    byte_offset: 262192
-    fieldset: ISI_CSC_COEFF2
-  - name: CSC_COEFF2
-    byte_offset: 327728
-    fieldset: ISI_CSC_COEFF2
-  - name: CSC_COEFF2
-    byte_offset: 393264
-    fieldset: ISI_CSC_COEFF2
-  - name: CSC_COEFF2
-    byte_offset: 458800
-    fieldset: ISI_CSC_COEFF2
-  - name: CSC_COEFF3
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_CSC_COEFF3
     byte_offset: 52
-    fieldset: ISI_CSC_COEFF3
-  - name: CSC_COEFF3
-    byte_offset: 65588
-    fieldset: ISI_CSC_COEFF3
-  - name: CSC_COEFF3
-    byte_offset: 131124
-    fieldset: ISI_CSC_COEFF3
-  - name: CSC_COEFF3
-    byte_offset: 196660
-    fieldset: ISI_CSC_COEFF3
-  - name: CSC_COEFF3
-    byte_offset: 262196
-    fieldset: ISI_CSC_COEFF3
-  - name: CSC_COEFF3
-    byte_offset: 327732
-    fieldset: ISI_CSC_COEFF3
-  - name: CSC_COEFF3
-    byte_offset: 393268
-    fieldset: ISI_CSC_COEFF3
-  - name: CSC_COEFF3
-    byte_offset: 458804
-    fieldset: ISI_CSC_COEFF3
-  - name: CSC_COEFF4
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_CSC_COEFF4
     byte_offset: 56
-    fieldset: ISI_CSC_COEFF4
-  - name: CSC_COEFF4
-    byte_offset: 65592
-    fieldset: ISI_CSC_COEFF4
-  - name: CSC_COEFF4
-    byte_offset: 131128
-    fieldset: ISI_CSC_COEFF4
-  - name: CSC_COEFF4
-    byte_offset: 196664
-    fieldset: ISI_CSC_COEFF4
-  - name: CSC_COEFF4
-    byte_offset: 262200
-    fieldset: ISI_CSC_COEFF4
-  - name: CSC_COEFF4
-    byte_offset: 327736
-    fieldset: ISI_CSC_COEFF4
-  - name: CSC_COEFF4
-    byte_offset: 393272
-    fieldset: ISI_CSC_COEFF4
-  - name: CSC_COEFF4
-    byte_offset: 458808
-    fieldset: ISI_CSC_COEFF4
-  - name: CSC_COEFF5
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_CSC_COEFF5
     byte_offset: 60
-    fieldset: ISI_CSC_COEFF5
-  - name: CSC_COEFF5
-    byte_offset: 65596
-    fieldset: ISI_CSC_COEFF5
-  - name: CSC_COEFF5
-    byte_offset: 131132
-    fieldset: ISI_CSC_COEFF5
-  - name: CSC_COEFF5
-    byte_offset: 196668
-    fieldset: ISI_CSC_COEFF5
-  - name: CSC_COEFF5
-    byte_offset: 262204
-    fieldset: ISI_CSC_COEFF5
-  - name: CSC_COEFF5
-    byte_offset: 327740
-    fieldset: ISI_CSC_COEFF5
-  - name: CSC_COEFF5
-    byte_offset: 393276
-    fieldset: ISI_CSC_COEFF5
-  - name: CSC_COEFF5
-    byte_offset: 458812
-    fieldset: ISI_CSC_COEFF5
-  - name: ROI_0_ALPHA
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_ROI_0_ALPHA
     byte_offset: 64
-    fieldset: ISI_ROI_0_ALPHA
-  - name: ROI_0_ALPHA
-    byte_offset: 65600
-    fieldset: ISI_ROI_0_ALPHA
-  - name: ROI_0_ALPHA
-    byte_offset: 131136
-    fieldset: ISI_ROI_0_ALPHA
-  - name: ROI_0_ALPHA
-    byte_offset: 196672
-    fieldset: ISI_ROI_0_ALPHA
-  - name: ROI_0_ALPHA
-    byte_offset: 262208
-    fieldset: ISI_ROI_0_ALPHA
-  - name: ROI_0_ALPHA
-    byte_offset: 327744
-    fieldset: ISI_ROI_0_ALPHA
-  - name: ROI_0_ALPHA
-    byte_offset: 393280
-    fieldset: ISI_ROI_0_ALPHA
-  - name: ROI_0_ALPHA
-    byte_offset: 458816
-    fieldset: ISI_ROI_0_ALPHA
-  - name: ROI_0_ULC
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_ROI_0_ULC
     byte_offset: 68
-    fieldset: ISI_ROI_0_ULC
-  - name: ROI_0_ULC
-    byte_offset: 65604
-    fieldset: ISI_ROI_0_ULC
-  - name: ROI_0_ULC
-    byte_offset: 131140
-    fieldset: ISI_ROI_0_ULC
-  - name: ROI_0_ULC
-    byte_offset: 196676
-    fieldset: ISI_ROI_0_ULC
-  - name: ROI_0_ULC
-    byte_offset: 262212
-    fieldset: ISI_ROI_0_ULC
-  - name: ROI_0_ULC
-    byte_offset: 327748
-    fieldset: ISI_ROI_0_ULC
-  - name: ROI_0_ULC
-    byte_offset: 393284
-    fieldset: ISI_ROI_0_ULC
-  - name: ROI_0_ULC
-    byte_offset: 458820
-    fieldset: ISI_ROI_0_ULC
-  - name: ROI_0_LRC
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_ROI_0_LRC
     byte_offset: 72
-    fieldset: ISI_ROI_0_LRC
-  - name: ROI_0_LRC
-    byte_offset: 65608
-    fieldset: ISI_ROI_0_LRC
-  - name: ROI_0_LRC
-    byte_offset: 131144
-    fieldset: ISI_ROI_0_LRC
-  - name: ROI_0_LRC
-    byte_offset: 196680
-    fieldset: ISI_ROI_0_LRC
-  - name: ROI_0_LRC
-    byte_offset: 262216
-    fieldset: ISI_ROI_0_LRC
-  - name: ROI_0_LRC
-    byte_offset: 327752
-    fieldset: ISI_ROI_0_LRC
-  - name: ROI_0_LRC
-    byte_offset: 393288
-    fieldset: ISI_ROI_0_LRC
-  - name: ROI_0_LRC
-    byte_offset: 458824
-    fieldset: ISI_ROI_0_LRC
-  - name: ROI_1_ALPHA
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_ROI_1_ALPHA
     byte_offset: 76
-    fieldset: ISI_ROI_1_ALPHA
-  - name: ROI_1_ALPHA
-    byte_offset: 65612
-    fieldset: ISI_ROI_1_ALPHA
-  - name: ROI_1_ALPHA
-    byte_offset: 131148
-    fieldset: ISI_ROI_1_ALPHA
-  - name: ROI_1_ALPHA
-    byte_offset: 196684
-    fieldset: ISI_ROI_1_ALPHA
-  - name: ROI_1_ALPHA
-    byte_offset: 262220
-    fieldset: ISI_ROI_1_ALPHA
-  - name: ROI_1_ALPHA
-    byte_offset: 327756
-    fieldset: ISI_ROI_1_ALPHA
-  - name: ROI_1_ALPHA
-    byte_offset: 393292
-    fieldset: ISI_ROI_1_ALPHA
-  - name: ROI_1_ALPHA
-    byte_offset: 458828
-    fieldset: ISI_ROI_1_ALPHA
-  - name: ROI_1_ULC
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_ROI_1_ULC
     byte_offset: 80
-    fieldset: ISI_ROI_1_ULC
-  - name: ROI_1_ULC
-    byte_offset: 65616
-    fieldset: ISI_ROI_1_ULC
-  - name: ROI_1_ULC
-    byte_offset: 131152
-    fieldset: ISI_ROI_1_ULC
-  - name: ROI_1_ULC
-    byte_offset: 196688
-    fieldset: ISI_ROI_1_ULC
-  - name: ROI_1_ULC
-    byte_offset: 262224
-    fieldset: ISI_ROI_1_ULC
-  - name: ROI_1_ULC
-    byte_offset: 327760
-    fieldset: ISI_ROI_1_ULC
-  - name: ROI_1_ULC
-    byte_offset: 393296
-    fieldset: ISI_ROI_1_ULC
-  - name: ROI_1_ULC
-    byte_offset: 458832
-    fieldset: ISI_ROI_1_ULC
-  - name: ROI_1_LRC
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_ROI_1_LRC
     byte_offset: 84
-    fieldset: ISI_ROI_1_LRC
-  - name: ROI_1_LRC
-    byte_offset: 65620
-    fieldset: ISI_ROI_1_LRC
-  - name: ROI_1_LRC
-    byte_offset: 131156
-    fieldset: ISI_ROI_1_LRC
-  - name: ROI_1_LRC
-    byte_offset: 196692
-    fieldset: ISI_ROI_1_LRC
-  - name: ROI_1_LRC
-    byte_offset: 262228
-    fieldset: ISI_ROI_1_LRC
-  - name: ROI_1_LRC
-    byte_offset: 327764
-    fieldset: ISI_ROI_1_LRC
-  - name: ROI_1_LRC
-    byte_offset: 393300
-    fieldset: ISI_ROI_1_LRC
-  - name: ROI_1_LRC
-    byte_offset: 458836
-    fieldset: ISI_ROI_1_LRC
-  - name: ROI_2_ALPHA
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_ROI_2_ALPHA
     byte_offset: 88
-    fieldset: ISI_ROI_2_ALPHA
-  - name: ROI_2_ALPHA
-    byte_offset: 65624
-    fieldset: ISI_ROI_2_ALPHA
-  - name: ROI_2_ALPHA
-    byte_offset: 131160
-    fieldset: ISI_ROI_2_ALPHA
-  - name: ROI_2_ALPHA
-    byte_offset: 196696
-    fieldset: ISI_ROI_2_ALPHA
-  - name: ROI_2_ALPHA
-    byte_offset: 262232
-    fieldset: ISI_ROI_2_ALPHA
-  - name: ROI_2_ALPHA
-    byte_offset: 327768
-    fieldset: ISI_ROI_2_ALPHA
-  - name: ROI_2_ALPHA
-    byte_offset: 393304
-    fieldset: ISI_ROI_2_ALPHA
-  - name: ROI_2_ALPHA
-    byte_offset: 458840
-    fieldset: ISI_ROI_2_ALPHA
-  - name: ROI_2_ULC
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_ROI_2_ULC
     byte_offset: 92
-    fieldset: ISI_ROI_2_ULC
-  - name: ROI_2_ULC
-    byte_offset: 65628
-    fieldset: ISI_ROI_2_ULC
-  - name: ROI_2_ULC
-    byte_offset: 131164
-    fieldset: ISI_ROI_2_ULC
-  - name: ROI_2_ULC
-    byte_offset: 196700
-    fieldset: ISI_ROI_2_ULC
-  - name: ROI_2_ULC
-    byte_offset: 262236
-    fieldset: ISI_ROI_2_ULC
-  - name: ROI_2_ULC
-    byte_offset: 327772
-    fieldset: ISI_ROI_2_ULC
-  - name: ROI_2_ULC
-    byte_offset: 393308
-    fieldset: ISI_ROI_2_ULC
-  - name: ROI_2_ULC
-    byte_offset: 458844
-    fieldset: ISI_ROI_2_ULC
-  - name: ROI_2_LRC
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_ROI_2_LRC
     byte_offset: 96
-    fieldset: ISI_ROI_2_LRC
-  - name: ROI_2_LRC
-    byte_offset: 65632
-    fieldset: ISI_ROI_2_LRC
-  - name: ROI_2_LRC
-    byte_offset: 131168
-    fieldset: ISI_ROI_2_LRC
-  - name: ROI_2_LRC
-    byte_offset: 196704
-    fieldset: ISI_ROI_2_LRC
-  - name: ROI_2_LRC
-    byte_offset: 262240
-    fieldset: ISI_ROI_2_LRC
-  - name: ROI_2_LRC
-    byte_offset: 327776
-    fieldset: ISI_ROI_2_LRC
-  - name: ROI_2_LRC
-    byte_offset: 393312
-    fieldset: ISI_ROI_2_LRC
-  - name: ROI_2_LRC
-    byte_offset: 458848
-    fieldset: ISI_ROI_2_LRC
-  - name: ROI_3_ALPHA
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_ROI_3_ALPHA
     byte_offset: 100
-    fieldset: ISI_ROI_3_ALPHA
-  - name: ROI_3_ALPHA
-    byte_offset: 65636
-    fieldset: ISI_ROI_3_ALPHA
-  - name: ROI_3_ALPHA
-    byte_offset: 131172
-    fieldset: ISI_ROI_3_ALPHA
-  - name: ROI_3_ALPHA
-    byte_offset: 196708
-    fieldset: ISI_ROI_3_ALPHA
-  - name: ROI_3_ALPHA
-    byte_offset: 262244
-    fieldset: ISI_ROI_3_ALPHA
-  - name: ROI_3_ALPHA
-    byte_offset: 327780
-    fieldset: ISI_ROI_3_ALPHA
-  - name: ROI_3_ALPHA
-    byte_offset: 393316
-    fieldset: ISI_ROI_3_ALPHA
-  - name: ROI_3_ALPHA
-    byte_offset: 458852
-    fieldset: ISI_ROI_3_ALPHA
-  - name: ROI_3_ULC
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_ROI_3_ULC
     byte_offset: 104
-    fieldset: ISI_ROI_3_ULC
-  - name: ROI_3_ULC
-    byte_offset: 65640
-    fieldset: ISI_ROI_3_ULC
-  - name: ROI_3_ULC
-    byte_offset: 131176
-    fieldset: ISI_ROI_3_ULC
-  - name: ROI_3_ULC
-    byte_offset: 196712
-    fieldset: ISI_ROI_3_ULC
-  - name: ROI_3_ULC
-    byte_offset: 262248
-    fieldset: ISI_ROI_3_ULC
-  - name: ROI_3_ULC
-    byte_offset: 327784
-    fieldset: ISI_ROI_3_ULC
-  - name: ROI_3_ULC
-    byte_offset: 393320
-    fieldset: ISI_ROI_3_ULC
-  - name: ROI_3_ULC
-    byte_offset: 458856
-    fieldset: ISI_ROI_3_ULC
-  - name: ROI_3_LRC
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_ROI_3_LRC
     byte_offset: 108
-    fieldset: ISI_ROI_3_LRC
-  - name: ROI_3_LRC
-    byte_offset: 65644
-    fieldset: ISI_ROI_3_LRC
-  - name: ROI_3_LRC
-    byte_offset: 131180
-    fieldset: ISI_ROI_3_LRC
-  - name: ROI_3_LRC
-    byte_offset: 196716
-    fieldset: ISI_ROI_3_LRC
-  - name: ROI_3_LRC
-    byte_offset: 262252
-    fieldset: ISI_ROI_3_LRC
-  - name: ROI_3_LRC
-    byte_offset: 327788
-    fieldset: ISI_ROI_3_LRC
-  - name: ROI_3_LRC
-    byte_offset: 393324
-    fieldset: ISI_ROI_3_LRC
-  - name: ROI_3_LRC
-    byte_offset: 458860
-    fieldset: ISI_ROI_3_LRC
-  - name: OUT_BUF1_ADDR_Y
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_OUT_BUF1_ADDR_Y
     byte_offset: 112
-    fieldset: ISI_OUT_BUF1_ADDR_Y
-  - name: OUT_BUF1_ADDR_Y
-    byte_offset: 65648
-    fieldset: ISI_OUT_BUF1_ADDR_Y
-  - name: OUT_BUF1_ADDR_Y
-    byte_offset: 131184
-    fieldset: ISI_OUT_BUF1_ADDR_Y
-  - name: OUT_BUF1_ADDR_Y
-    byte_offset: 196720
-    fieldset: ISI_OUT_BUF1_ADDR_Y
-  - name: OUT_BUF1_ADDR_Y
-    byte_offset: 262256
-    fieldset: ISI_OUT_BUF1_ADDR_Y
-  - name: OUT_BUF1_ADDR_Y
-    byte_offset: 327792
-    fieldset: ISI_OUT_BUF1_ADDR_Y
-  - name: OUT_BUF1_ADDR_Y
-    byte_offset: 393328
-    fieldset: ISI_OUT_BUF1_ADDR_Y
-  - name: OUT_BUF1_ADDR_Y
-    byte_offset: 458864
-    fieldset: ISI_OUT_BUF1_ADDR_Y
-  - name: OUT_BUF1_ADDR_U
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_OUT_BUF1_ADDR_U
     byte_offset: 116
-    fieldset: ISI_OUT_BUF1_ADDR_U
-  - name: OUT_BUF1_ADDR_U
-    byte_offset: 65652
-    fieldset: ISI_OUT_BUF1_ADDR_U
-  - name: OUT_BUF1_ADDR_U
-    byte_offset: 131188
-    fieldset: ISI_OUT_BUF1_ADDR_U
-  - name: OUT_BUF1_ADDR_U
-    byte_offset: 196724
-    fieldset: ISI_OUT_BUF1_ADDR_U
-  - name: OUT_BUF1_ADDR_U
-    byte_offset: 262260
-    fieldset: ISI_OUT_BUF1_ADDR_U
-  - name: OUT_BUF1_ADDR_U
-    byte_offset: 327796
-    fieldset: ISI_OUT_BUF1_ADDR_U
-  - name: OUT_BUF1_ADDR_U
-    byte_offset: 393332
-    fieldset: ISI_OUT_BUF1_ADDR_U
-  - name: OUT_BUF1_ADDR_U
-    byte_offset: 458868
-    fieldset: ISI_OUT_BUF1_ADDR_U
-  - name: OUT_BUF1_ADDR_V
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_OUT_BUF1_ADDR_V
     byte_offset: 120
-    fieldset: ISI_OUT_BUF1_ADDR_V
-  - name: OUT_BUF1_ADDR_V
-    byte_offset: 65656
-    fieldset: ISI_OUT_BUF1_ADDR_V
-  - name: OUT_BUF1_ADDR_V
-    byte_offset: 131192
-    fieldset: ISI_OUT_BUF1_ADDR_V
-  - name: OUT_BUF1_ADDR_V
-    byte_offset: 196728
-    fieldset: ISI_OUT_BUF1_ADDR_V
-  - name: OUT_BUF1_ADDR_V
-    byte_offset: 262264
-    fieldset: ISI_OUT_BUF1_ADDR_V
-  - name: OUT_BUF1_ADDR_V
-    byte_offset: 327800
-    fieldset: ISI_OUT_BUF1_ADDR_V
-  - name: OUT_BUF1_ADDR_V
-    byte_offset: 393336
-    fieldset: ISI_OUT_BUF1_ADDR_V
-  - name: OUT_BUF1_ADDR_V
-    byte_offset: 458872
-    fieldset: ISI_OUT_BUF1_ADDR_V
-  - name: OUT_BUF_PITCH
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_OUT_BUF_PITCH
     byte_offset: 124
-  - name: OUT_BUF_PITCH
-    byte_offset: 65660
-  - name: OUT_BUF_PITCH
-    byte_offset: 131196
-  - name: OUT_BUF_PITCH
-    byte_offset: 196732
-  - name: OUT_BUF_PITCH
-    byte_offset: 262268
-  - name: OUT_BUF_PITCH
-    byte_offset: 327804
-  - name: OUT_BUF_PITCH
-    byte_offset: 393340
-  - name: OUT_BUF_PITCH
-    byte_offset: 458876
-  - name: IN_BUF_ADDR
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_IN_BUF_ADDR
     byte_offset: 128
-    fieldset: ISI_IN_BUF_ADDR
-  - name: IN_BUF_ADDR
-    byte_offset: 65664
-    fieldset: ISI_IN_BUF_ADDR
-  - name: IN_BUF_ADDR
-    byte_offset: 131200
-    fieldset: ISI_IN_BUF_ADDR
-  - name: IN_BUF_ADDR
-    byte_offset: 196736
-    fieldset: ISI_IN_BUF_ADDR
-  - name: IN_BUF_ADDR
-    byte_offset: 262272
-    fieldset: ISI_IN_BUF_ADDR
-  - name: IN_BUF_ADDR
-    byte_offset: 327808
-    fieldset: ISI_IN_BUF_ADDR
-  - name: IN_BUF_ADDR
-    byte_offset: 393344
-    fieldset: ISI_IN_BUF_ADDR
-  - name: IN_BUF_ADDR
-    byte_offset: 458880
-    fieldset: ISI_IN_BUF_ADDR
-  - name: IN_BUF_PITCH
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_IN_BUF_PITCH
     byte_offset: 132
-  - name: IN_BUF_PITCH
-    byte_offset: 65668
-  - name: IN_BUF_PITCH
-    byte_offset: 131204
-  - name: IN_BUF_PITCH
-    byte_offset: 196740
-  - name: IN_BUF_PITCH
-    byte_offset: 262276
-  - name: IN_BUF_PITCH
-    byte_offset: 327812
-  - name: IN_BUF_PITCH
-    byte_offset: 393348
-  - name: IN_BUF_PITCH
-    byte_offset: 458884
-  - name: MEM_RD_CTRL
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_MEM_RD_CTRL
     byte_offset: 136
-  - name: MEM_RD_CTRL
-    byte_offset: 65672
-  - name: MEM_RD_CTRL
-    byte_offset: 131208
-  - name: MEM_RD_CTRL
-    byte_offset: 196744
-  - name: MEM_RD_CTRL
-    byte_offset: 262280
-  - name: MEM_RD_CTRL
-    byte_offset: 327816
-  - name: MEM_RD_CTRL
-    byte_offset: 393352
-  - name: MEM_RD_CTRL
-    byte_offset: 458888
-  - name: OUT_BUF2_ADDR_Y
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_OUT_BUF2_ADDR_Y
     byte_offset: 140
-    fieldset: ISI_OUT_BUF2_ADDR_Y
-  - name: OUT_BUF2_ADDR_Y
-    byte_offset: 65676
-    fieldset: ISI_OUT_BUF2_ADDR_Y
-  - name: OUT_BUF2_ADDR_Y
-    byte_offset: 131212
-    fieldset: ISI_OUT_BUF2_ADDR_Y
-  - name: OUT_BUF2_ADDR_Y
-    byte_offset: 196748
-    fieldset: ISI_OUT_BUF2_ADDR_Y
-  - name: OUT_BUF2_ADDR_Y
-    byte_offset: 262284
-    fieldset: ISI_OUT_BUF2_ADDR_Y
-  - name: OUT_BUF2_ADDR_Y
-    byte_offset: 327820
-    fieldset: ISI_OUT_BUF2_ADDR_Y
-  - name: OUT_BUF2_ADDR_Y
-    byte_offset: 393356
-    fieldset: ISI_OUT_BUF2_ADDR_Y
-  - name: OUT_BUF2_ADDR_Y
-    byte_offset: 458892
-    fieldset: ISI_OUT_BUF2_ADDR_Y
-  - name: OUT_BUF2_ADDR_U
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_OUT_BUF2_ADDR_U
     byte_offset: 144
-    fieldset: ISI_OUT_BUF2_ADDR_U
-  - name: OUT_BUF2_ADDR_U
-    byte_offset: 65680
-    fieldset: ISI_OUT_BUF2_ADDR_U
-  - name: OUT_BUF2_ADDR_U
-    byte_offset: 131216
-    fieldset: ISI_OUT_BUF2_ADDR_U
-  - name: OUT_BUF2_ADDR_U
-    byte_offset: 196752
-    fieldset: ISI_OUT_BUF2_ADDR_U
-  - name: OUT_BUF2_ADDR_U
-    byte_offset: 262288
-    fieldset: ISI_OUT_BUF2_ADDR_U
-  - name: OUT_BUF2_ADDR_U
-    byte_offset: 327824
-    fieldset: ISI_OUT_BUF2_ADDR_U
-  - name: OUT_BUF2_ADDR_U
-    byte_offset: 393360
-    fieldset: ISI_OUT_BUF2_ADDR_U
-  - name: OUT_BUF2_ADDR_U
-    byte_offset: 458896
-    fieldset: ISI_OUT_BUF2_ADDR_U
-  - name: OUT_BUF2_ADDR_V
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_OUT_BUF2_ADDR_V
     byte_offset: 148
-    fieldset: ISI_OUT_BUF2_ADDR_V
-  - name: OUT_BUF2_ADDR_V
-    byte_offset: 65684
-    fieldset: ISI_OUT_BUF2_ADDR_V
-  - name: OUT_BUF2_ADDR_V
-    byte_offset: 131220
-    fieldset: ISI_OUT_BUF2_ADDR_V
-  - name: OUT_BUF2_ADDR_V
-    byte_offset: 196756
-    fieldset: ISI_OUT_BUF2_ADDR_V
-  - name: OUT_BUF2_ADDR_V
-    byte_offset: 262292
-    fieldset: ISI_OUT_BUF2_ADDR_V
-  - name: OUT_BUF2_ADDR_V
-    byte_offset: 327828
-    fieldset: ISI_OUT_BUF2_ADDR_V
-  - name: OUT_BUF2_ADDR_V
-    byte_offset: 393364
-    fieldset: ISI_OUT_BUF2_ADDR_V
-  - name: OUT_BUF2_ADDR_V
-    byte_offset: 458900
-    fieldset: ISI_OUT_BUF2_ADDR_V
-  - name: SCL_IMG_CFG
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_SCL_IMG_CFG
     byte_offset: 152
-    fieldset: ISI_SCL_IMG_CFG
-  - name: SCL_IMG_CFG
-    byte_offset: 65688
-    fieldset: ISI_SCL_IMG_CFG
-  - name: SCL_IMG_CFG
-    byte_offset: 131224
-    fieldset: ISI_SCL_IMG_CFG
-  - name: SCL_IMG_CFG
-    byte_offset: 196760
-    fieldset: ISI_SCL_IMG_CFG
-  - name: SCL_IMG_CFG
-    byte_offset: 262296
-    fieldset: ISI_SCL_IMG_CFG
-  - name: SCL_IMG_CFG
-    byte_offset: 327832
-    fieldset: ISI_SCL_IMG_CFG
-  - name: SCL_IMG_CFG
-    byte_offset: 393368
-    fieldset: ISI_SCL_IMG_CFG
-  - name: SCL_IMG_CFG
-    byte_offset: 458904
-    fieldset: ISI_SCL_IMG_CFG
-  - name: FLOW_CTRL
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_FLOW_CTRL
     byte_offset: 156
-  - name: FLOW_CTRL
-    byte_offset: 65692
-  - name: FLOW_CTRL
-    byte_offset: 131228
-  - name: FLOW_CTRL
-    byte_offset: 196764
-  - name: FLOW_CTRL
-    byte_offset: 262300
-  - name: FLOW_CTRL
-    byte_offset: 327836
-  - name: FLOW_CTRL
-    byte_offset: 393372
-  - name: FLOW_CTRL
-    byte_offset: 458908
-  - name: Y_BUF1_XTND_ADDR
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_Y_BUF1_XTND_ADDR
     byte_offset: 160
-  - name: Y_BUF1_XTND_ADDR
-    byte_offset: 65696
-  - name: Y_BUF1_XTND_ADDR
-    byte_offset: 131232
-  - name: Y_BUF1_XTND_ADDR
-    byte_offset: 196768
-  - name: Y_BUF1_XTND_ADDR
-    byte_offset: 262304
-  - name: Y_BUF1_XTND_ADDR
-    byte_offset: 327840
-  - name: Y_BUF1_XTND_ADDR
-    byte_offset: 393376
-  - name: Y_BUF1_XTND_ADDR
-    byte_offset: 458912
-  - name: U_BUF1_XTND_ADDR
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_U_BUF1_XTND_ADDR
     byte_offset: 164
-  - name: U_BUF1_XTND_ADDR
-    byte_offset: 65700
-  - name: U_BUF1_XTND_ADDR
-    byte_offset: 131236
-  - name: U_BUF1_XTND_ADDR
-    byte_offset: 196772
-  - name: U_BUF1_XTND_ADDR
-    byte_offset: 262308
-  - name: U_BUF1_XTND_ADDR
-    byte_offset: 327844
-  - name: U_BUF1_XTND_ADDR
-    byte_offset: 393380
-  - name: U_BUF1_XTND_ADDR
-    byte_offset: 458916
-  - name: V_BUF1_XTND_ADDR
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_V_BUF1_XTND_ADDR
     byte_offset: 168
-  - name: V_BUF1_XTND_ADDR
-    byte_offset: 65704
-  - name: V_BUF1_XTND_ADDR
-    byte_offset: 131240
-  - name: V_BUF1_XTND_ADDR
-    byte_offset: 196776
-  - name: V_BUF1_XTND_ADDR
-    byte_offset: 262312
-  - name: V_BUF1_XTND_ADDR
-    byte_offset: 327848
-  - name: V_BUF1_XTND_ADDR
-    byte_offset: 393384
-  - name: V_BUF1_XTND_ADDR
-    byte_offset: 458920
-  - name: Y_BUF2_XTND_ADDR
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_Y_BUF2_XTND_ADDR
     byte_offset: 172
-  - name: Y_BUF2_XTND_ADDR
-    byte_offset: 65708
-  - name: Y_BUF2_XTND_ADDR
-    byte_offset: 131244
-  - name: Y_BUF2_XTND_ADDR
-    byte_offset: 196780
-  - name: Y_BUF2_XTND_ADDR
-    byte_offset: 262316
-  - name: Y_BUF2_XTND_ADDR
-    byte_offset: 327852
-  - name: Y_BUF2_XTND_ADDR
-    byte_offset: 393388
-  - name: Y_BUF2_XTND_ADDR
-    byte_offset: 458924
-  - name: U_BUF2_XTND_ADDR
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_U_BUF2_XTND_ADDR
     byte_offset: 176
-  - name: U_BUF2_XTND_ADDR
-    byte_offset: 65712
-  - name: U_BUF2_XTND_ADDR
-    byte_offset: 131248
-  - name: U_BUF2_XTND_ADDR
-    byte_offset: 196784
-  - name: U_BUF2_XTND_ADDR
-    byte_offset: 262320
-  - name: U_BUF2_XTND_ADDR
-    byte_offset: 327856
-  - name: U_BUF2_XTND_ADDR
-    byte_offset: 393392
-  - name: U_BUF2_XTND_ADDR
-    byte_offset: 458928
-  - name: V_BUF2_XTND_ADDR
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_V_BUF2_XTND_ADDR
     byte_offset: 180
-  - name: V_BUF2_XTND_ADDR
-    byte_offset: 65716
-  - name: V_BUF2_XTND_ADDR
-    byte_offset: 131252
-  - name: V_BUF2_XTND_ADDR
-    byte_offset: 196788
-  - name: V_BUF2_XTND_ADDR
-    byte_offset: 262324
-  - name: V_BUF2_XTND_ADDR
-    byte_offset: 327860
-  - name: V_BUF2_XTND_ADDR
-    byte_offset: 393396
-  - name: V_BUF2_XTND_ADDR
-    byte_offset: 458932
-  - name: IN_BUF_XTND_ADDR
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_IN_BUF_XTND_ADDR
     byte_offset: 184
-  - name: IN_BUF_XTND_ADDR
-    byte_offset: 65720
-  - name: IN_BUF_XTND_ADDR
-    byte_offset: 131256
-  - name: IN_BUF_XTND_ADDR
-    byte_offset: 196792
-  - name: IN_BUF_XTND_ADDR
-    byte_offset: 262328
-  - name: IN_BUF_XTND_ADDR
-    byte_offset: 327864
-  - name: IN_BUF_XTND_ADDR
-    byte_offset: 393400
-  - name: IN_BUF_XTND_ADDR
-    byte_offset: 458936
-  - name: PIXEL_DATA_ADDR_OFFSET
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_PIXEL_DATA_ADDR_OFFSET
     byte_offset: 192
-  - name: PIXEL_DATA_ADDR_OFFSET
-    byte_offset: 65728
-  - name: PIXEL_DATA_ADDR_OFFSET
-    byte_offset: 131264
-  - name: PIXEL_DATA_ADDR_OFFSET
-    byte_offset: 196800
-  - name: PIXEL_DATA_ADDR_OFFSET
-    byte_offset: 262336
-  - name: PIXEL_DATA_ADDR_OFFSET
-    byte_offset: 327872
-  - name: PIXEL_DATA_ADDR_OFFSET
-    byte_offset: 393408
-  - name: PIXEL_DATA_ADDR_OFFSET
-    byte_offset: 458944
-  - name: STAT_DATA_ADDR_OFFSET
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_STAT_DATA_ADDR_OFFSET
     byte_offset: 196
-  - name: STAT_DATA_ADDR_OFFSET
-    byte_offset: 65732
-  - name: STAT_DATA_ADDR_OFFSET
-    byte_offset: 131268
-  - name: STAT_DATA_ADDR_OFFSET
-    byte_offset: 196804
-  - name: STAT_DATA_ADDR_OFFSET
-    byte_offset: 262340
-  - name: STAT_DATA_ADDR_OFFSET
-    byte_offset: 327876
-  - name: STAT_DATA_ADDR_OFFSET
-    byte_offset: 393412
-  - name: STAT_DATA_ADDR_OFFSET
-    byte_offset: 458948
-  - name: IMG_CFG2
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_IMG_CFG2
     byte_offset: 200
-    fieldset: ISI_IMG_CFG2
-  - name: IMG_CFG2
-    byte_offset: 65736
-    fieldset: ISI_IMG_CFG2
-  - name: IMG_CFG2
-    byte_offset: 131272
-    fieldset: ISI_IMG_CFG2
-  - name: IMG_CFG2
-    byte_offset: 196808
-    fieldset: ISI_IMG_CFG2
-  - name: IMG_CFG2
-    byte_offset: 262344
-    fieldset: ISI_IMG_CFG2
-  - name: IMG_CFG2
-    byte_offset: 327880
-    fieldset: ISI_IMG_CFG2
-  - name: IMG_CFG2
-    byte_offset: 393416
-    fieldset: ISI_IMG_CFG2
-  - name: IMG_CFG2
-    byte_offset: 458952
-    fieldset: ISI_IMG_CFG2
-  - name: IMG_CFG3
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_IMG_CFG3
     byte_offset: 204
-    fieldset: ISI_IMG_CFG3
-  - name: IMG_CFG3
-    byte_offset: 65740
-    fieldset: ISI_IMG_CFG3
-  - name: IMG_CFG3
-    byte_offset: 131276
-    fieldset: ISI_IMG_CFG3
-  - name: IMG_CFG3
-    byte_offset: 196812
-    fieldset: ISI_IMG_CFG3
-  - name: IMG_CFG3
-    byte_offset: 262348
-    fieldset: ISI_IMG_CFG3
-  - name: IMG_CFG3
-    byte_offset: 327884
-    fieldset: ISI_IMG_CFG3
-  - name: IMG_CFG3
-    byte_offset: 393420
-    fieldset: ISI_IMG_CFG3
-  - name: IMG_CFG3
-    byte_offset: 458956
-    fieldset: ISI_IMG_CFG3
-  - name: OUT_BUF_MAX_SIZE_Y
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_OUT_BUF_MAX_SIZE_Y
     byte_offset: 208
-    fieldset: ISI_OUT_BUF_MAX_SIZE_Y
-  - name: OUT_BUF_MAX_SIZE_Y
-    byte_offset: 65744
-    fieldset: ISI_OUT_BUF_MAX_SIZE_Y
-  - name: OUT_BUF_MAX_SIZE_Y
-    byte_offset: 131280
-    fieldset: ISI_OUT_BUF_MAX_SIZE_Y
-  - name: OUT_BUF_MAX_SIZE_Y
-    byte_offset: 196816
-    fieldset: ISI_OUT_BUF_MAX_SIZE_Y
-  - name: OUT_BUF_MAX_SIZE_Y
-    byte_offset: 262352
-    fieldset: ISI_OUT_BUF_MAX_SIZE_Y
-  - name: OUT_BUF_MAX_SIZE_Y
-    byte_offset: 327888
-    fieldset: ISI_OUT_BUF_MAX_SIZE_Y
-  - name: OUT_BUF_MAX_SIZE_Y
-    byte_offset: 393424
-    fieldset: ISI_OUT_BUF_MAX_SIZE_Y
-  - name: OUT_BUF_MAX_SIZE_Y
-    byte_offset: 458960
-    fieldset: ISI_OUT_BUF_MAX_SIZE_Y
-  - name: OUT_BUF_MAX_SIZE_U
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_OUT_BUF_MAX_SIZE_U
     byte_offset: 212
-    fieldset: ISI_OUT_BUF_MAX_SIZE_U
-  - name: OUT_BUF_MAX_SIZE_U
-    byte_offset: 65748
-    fieldset: ISI_OUT_BUF_MAX_SIZE_U
-  - name: OUT_BUF_MAX_SIZE_U
-    byte_offset: 131284
-    fieldset: ISI_OUT_BUF_MAX_SIZE_U
-  - name: OUT_BUF_MAX_SIZE_U
-    byte_offset: 196820
-    fieldset: ISI_OUT_BUF_MAX_SIZE_U
-  - name: OUT_BUF_MAX_SIZE_U
-    byte_offset: 262356
-    fieldset: ISI_OUT_BUF_MAX_SIZE_U
-  - name: OUT_BUF_MAX_SIZE_U
-    byte_offset: 327892
-    fieldset: ISI_OUT_BUF_MAX_SIZE_U
-  - name: OUT_BUF_MAX_SIZE_U
-    byte_offset: 393428
-    fieldset: ISI_OUT_BUF_MAX_SIZE_U
-  - name: OUT_BUF_MAX_SIZE_U
-    byte_offset: 458964
-    fieldset: ISI_OUT_BUF_MAX_SIZE_U
-  - name: OUT_BUF_MAX_SIZE_V
+    array:
+      len: 8
+      stride: 65536
+  - name: CHNL_OUT_BUF_MAX_SIZE_V
     byte_offset: 216
-    fieldset: ISI_OUT_BUF_MAX_SIZE_V
-  - name: OUT_BUF_MAX_SIZE_V
-    byte_offset: 65752
-    fieldset: ISI_OUT_BUF_MAX_SIZE_V
-  - name: OUT_BUF_MAX_SIZE_V
-    byte_offset: 131288
-    fieldset: ISI_OUT_BUF_MAX_SIZE_V
-  - name: OUT_BUF_MAX_SIZE_V
-    byte_offset: 196824
-    fieldset: ISI_OUT_BUF_MAX_SIZE_V
-  - name: OUT_BUF_MAX_SIZE_V
-    byte_offset: 262360
-    fieldset: ISI_OUT_BUF_MAX_SIZE_V
-  - name: OUT_BUF_MAX_SIZE_V
-    byte_offset: 327896
-    fieldset: ISI_OUT_BUF_MAX_SIZE_V
-  - name: OUT_BUF_MAX_SIZE_V
-    byte_offset: 393432
-    fieldset: ISI_OUT_BUF_MAX_SIZE_V
-  - name: OUT_BUF_MAX_SIZE_V
-    byte_offset: 458968
-    fieldset: ISI_OUT_BUF_MAX_SIZE_V
+    array:
+      len: 8
+      stride: 65536
 fieldset/ISI_CTRL:
   description: ''
   fields:

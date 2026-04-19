@@ -1,36 +1,26 @@
 block/RGB_TO_YUV:
   description: ''
   items:
-  - name: GAIN_CTRL_CAM
+  - name: NEO_PIPE2_CSC_CONF_GAIN_CTRL_CAM
     byte_offset: 0
-    fieldset: RGB_TO_YUV_GAIN_CTRL_CAM
-  - name: MAT0_CAM
+  - name: NEO_PIPE2_CSC_CONF_MAT0_CAM
     byte_offset: 4
-    fieldset: RGB_TO_YUV_MAT0_CAM
-  - name: MAT1_CAM
+  - name: NEO_PIPE2_CSC_CONF_MAT1_CAM
     byte_offset: 8
-    fieldset: RGB_TO_YUV_MAT1_CAM
-  - name: MAT2_CAM
+  - name: NEO_PIPE2_CSC_CONF_MAT2_CAM
     byte_offset: 12
-    fieldset: RGB_TO_YUV_MAT2_CAM
-  - name: MAT3_CAM
+  - name: NEO_PIPE2_CSC_CONF_MAT3_CAM
     byte_offset: 16
-    fieldset: RGB_TO_YUV_MAT3_CAM
-  - name: MAT4_CAM
+  - name: NEO_PIPE2_CSC_CONF_MAT4_CAM
     byte_offset: 20
-    fieldset: RGB_TO_YUV_MAT4_CAM
-  - name: MAT5_CAM
+  - name: NEO_PIPE2_CSC_CONF_MAT5_CAM
     byte_offset: 24
-    fieldset: RGB_TO_YUV_MAT5_CAM
-  - name: OFFSET0_CAM
+  - name: NEO_PIPE2_CSC_CONF_OFFSET0_CAM
     byte_offset: 32
-    fieldset: RGB_TO_YUV_OFFSET0_CAM
-  - name: OFFSET1_CAM
+  - name: NEO_PIPE2_CSC_CONF_OFFSET1_CAM
     byte_offset: 36
-    fieldset: RGB_TO_YUV_OFFSET1_CAM
-  - name: OFFSET2_CAM
+  - name: NEO_PIPE2_CSC_CONF_OFFSET2_CAM
     byte_offset: 40
-    fieldset: RGB_TO_YUV_OFFSET2_CAM
 fieldset/RGB_TO_YUV_GAIN_CTRL_CAM:
   description: ''
   fields:

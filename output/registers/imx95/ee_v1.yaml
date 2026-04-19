@@ -1,19 +1,15 @@
 block/EE:
   description: ''
   items:
-  - name: CTRL_CAM
+  - name: NEO_PIPE2_EE_CONF_CTRL_CAM
     byte_offset: 0
-    fieldset: EE_CTRL_CAM
-  - name: CORING_CAM
+  - name: NEO_PIPE2_EE_CONF_CORING_CAM
     byte_offset: 4
-    fieldset: EE_CORING_CAM
-  - name: CLIP_CAM
+  - name: NEO_PIPE2_EE_CONF_CLIP_CAM
     byte_offset: 8
-    fieldset: EE_CLIP_CAM
-  - name: MASKGAIN_CAM
+  - name: NEO_PIPE2_EE_CONF_MASKGAIN_CAM
     byte_offset: 12
-    fieldset: EE_MASKGAIN_CAM
-  - name: EDGECNT_CAM
+  - name: NEO_PIPE2_EE_CONF_EDGECNT_CAM
     byte_offset: 16
 fieldset/EE_CTRL_CAM:
   description: ''

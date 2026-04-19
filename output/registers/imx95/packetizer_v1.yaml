@@ -1,15 +1,12 @@
 block/PACKETIZER:
   description: ''
   items:
-  - name: CH0_CTRL_CAM
+  - name: NEO_PIPE2_PACK_CONF_CH0_CTRL_CAM
     byte_offset: 0
-    fieldset: PACKETIZER_CH0_CTRL_CAM
-  - name: CH12_CTRL_CAM
+  - name: NEO_PIPE2_PACK_CONF_CH12_CTRL_CAM
     byte_offset: 4
-    fieldset: PACKETIZER_CH12_CTRL_CAM
-  - name: PACK_CTRL_CAM
+  - name: NEO_PIPE2_PACK_CONF_PACK_CTRL_CAM
     byte_offset: 8
-    fieldset: PACKETIZER_PACK_CTRL_CAM
 fieldset/PACKETIZER_CH0_CTRL_CAM:
   description: ''
   fields:

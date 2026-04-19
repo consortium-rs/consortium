@@ -34,37 +34,31 @@ block/ENETC_GLOBAL:
   - name: SMERBOR1
     byte_offset: 72
     fieldset: ENETC_GLOBAL_SMERBOR1
-  - name: PCEOR
+  - name: PCE_SL_PCEOR
     byte_offset: 256
-  - name: RFEOR
+  - name: PCE_SL_RFEOR
     byte_offset: 260
   - name: NETCCLKR
     byte_offset: 356
     fieldset: ENETC_GLOBAL_NETCCLKR
-  - name: HTACAPR
+  - name: HTA_LOOP_HTACAPR
     byte_offset: 512
-  - name: HTARFCOR
+  - name: HTA_LOOP_HTARFCOR
     byte_offset: 516
-  - name: HTAHPBCOR
+  - name: HTA_LOOP_HTAHPBCOR
     byte_offset: 520
-    fieldset: ENETC_GLOBAL_HTAHPBCOR
-  - name: HTALPBCOR
+  - name: HTA_LOOP_HTALPBCOR
     byte_offset: 524
-    fieldset: ENETC_GLOBAL_HTALPBCOR
-  - name: HTATFCOR
+  - name: HTA_LOOP_HTATFCOR
     byte_offset: 548
-  - name: RCSBRLAR
+  - name: ARRAY_NUM_RC_RCSBRLAR
     byte_offset: 768
-    fieldset: ENETC_GLOBAL_RCSBRLAR
-  - name: RCSBRLHWMR
+  - name: ARRAY_NUM_RC_RCSBRLHWMR
     byte_offset: 772
-    fieldset: ENETC_GLOBAL_RCSBRLHWMR
-  - name: RCSBWLAR
+  - name: ARRAY_NUM_RC_RCSBWLAR
     byte_offset: 776
-    fieldset: ENETC_GLOBAL_RCSBWLAR
-  - name: RCSBWLHWMR
+  - name: ARRAY_NUM_RC_RCSBWLHWMR
     byte_offset: 780
-    fieldset: ENETC_GLOBAL_RCSBWLHWMR
   - name: IPBRR0
     byte_offset: 3064
   - name: IPBRR1
@@ -74,18 +68,14 @@ block/ENETC_GLOBAL:
     array:
       len: 2
       stride: 4
-  - name: EMDIOUFSBECR
+  - name: EMDIO_EMDIOUFSBECR
     byte_offset: 3616
-    fieldset: ENETC_GLOBAL_EMDIOUFSBECR
-  - name: EMDIOUFSBESR
+  - name: EMDIO_EMDIOUFSBESR
     byte_offset: 3620
-    fieldset: ENETC_GLOBAL_EMDIOUFSBESR
-  - name: TUFSBECR
+  - name: TIMER_TUFSBECR
     byte_offset: 3616
-    fieldset: ENETC_GLOBAL_TUFSBECR
-  - name: TUFSBESR
+  - name: TIMER_TUFSBESR
     byte_offset: 3620
-    fieldset: ENETC_GLOBAL_TUFSBESR
 fieldset/ENETC_GLOBAL_SMDTR:
   description: ''
   fields:

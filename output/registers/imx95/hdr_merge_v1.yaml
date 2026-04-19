@@ -1,33 +1,24 @@
 block/HDR_MERGE:
   description: ''
   items:
-  - name: CTRL_CAM
+  - name: NEO_PIPE1_HDR_MERGE_CONF_CTRL_CAM
     byte_offset: 0
-    fieldset: HDR_MERGE_CTRL_CAM
-  - name: GAIN_OFFSET_CAM
+  - name: NEO_PIPE1_HDR_MERGE_CONF_GAIN_OFFSET_CAM
     byte_offset: 4
-    fieldset: HDR_MERGE_GAIN_OFFSET_CAM
-  - name: GAIN_SCALE_CAM
+  - name: NEO_PIPE1_HDR_MERGE_CONF_GAIN_SCALE_CAM
     byte_offset: 8
-    fieldset: HDR_MERGE_GAIN_SCALE_CAM
-  - name: GAIN_SHIFT_CAM
+  - name: NEO_PIPE1_HDR_MERGE_CONF_GAIN_SHIFT_CAM
     byte_offset: 12
-    fieldset: HDR_MERGE_GAIN_SHIFT_CAM
-  - name: LUMA_TH_CAM
+  - name: NEO_PIPE1_HDR_MERGE_CONF_LUMA_TH_CAM
     byte_offset: 16
-    fieldset: HDR_MERGE_LUMA_TH_CAM
-  - name: LUMA_SCALE_CAM
+  - name: NEO_PIPE1_HDR_MERGE_CONF_LUMA_SCALE_CAM
     byte_offset: 20
-    fieldset: HDR_MERGE_LUMA_SCALE_CAM
-  - name: DOWNSCALE_CAM
+  - name: NEO_PIPE1_HDR_MERGE_CONF_DOWNSCALE_CAM
     byte_offset: 24
-    fieldset: HDR_MERGE_DOWNSCALE_CAM
-  - name: UPSCALE_CAM
+  - name: NEO_PIPE1_HDR_MERGE_CONF_UPSCALE_CAM
     byte_offset: 28
-    fieldset: HDR_MERGE_UPSCALE_CAM
-  - name: POST_SCALE_CAM
+  - name: NEO_PIPE1_HDR_MERGE_CONF_POST_SCALE_CAM
     byte_offset: 32
-    fieldset: HDR_MERGE_POST_SCALE_CAM
 fieldset/HDR_MERGE_CTRL_CAM:
   description: ''
   fields:

@@ -74,86 +74,26 @@ block/NETC_PORT:
   - name: PRXDCRR1
     byte_offset: 460
     fieldset: NETC_PORT_PRXDCRR1
-  - name: PTGSTCSR
+  - name: TCT_NUM_PTGSTCSR
     byte_offset: 512
-  - name: PTGSTCSR
-    byte_offset: 544
-  - name: PTGSTCSR
-    byte_offset: 576
-  - name: PTGSTCSR
-    byte_offset: 608
-  - name: PTGSTCSR
-    byte_offset: 640
-  - name: PTGSTCSR
-    byte_offset: 672
-  - name: PTGSTCSR
-    byte_offset: 704
-  - name: PTGSTCSR
-    byte_offset: 736
-  - name: PTCTMSDUR
+    array:
+      len: 8
+      stride: 32
+  - name: TCT_NUM_PTCTMSDUR
     byte_offset: 520
-    fieldset: NETC_PORT_PTCTMSDUR
-  - name: PTCTMSDUR
-    byte_offset: 552
-    fieldset: NETC_PORT_PTCTMSDUR
-  - name: PTCTMSDUR
-    byte_offset: 584
-    fieldset: NETC_PORT_PTCTMSDUR
-  - name: PTCTMSDUR
-    byte_offset: 616
-    fieldset: NETC_PORT_PTCTMSDUR
-  - name: PTCTMSDUR
-    byte_offset: 648
-    fieldset: NETC_PORT_PTCTMSDUR
-  - name: PTCTMSDUR
-    byte_offset: 680
-    fieldset: NETC_PORT_PTCTMSDUR
-  - name: PTCTMSDUR
-    byte_offset: 712
-    fieldset: NETC_PORT_PTCTMSDUR
-  - name: PTCTMSDUR
-    byte_offset: 744
-    fieldset: NETC_PORT_PTCTMSDUR
-  - name: PTCCBSR0
+    array:
+      len: 8
+      stride: 32
+  - name: TCT_NUM_PTCCBSR0
     byte_offset: 528
-    fieldset: NETC_PORT_PTCCBSR0
-  - name: PTCCBSR0
-    byte_offset: 560
-    fieldset: NETC_PORT_PTCCBSR0
-  - name: PTCCBSR0
-    byte_offset: 592
-    fieldset: NETC_PORT_PTCCBSR0
-  - name: PTCCBSR0
-    byte_offset: 624
-    fieldset: NETC_PORT_PTCCBSR0
-  - name: PTCCBSR0
-    byte_offset: 656
-    fieldset: NETC_PORT_PTCCBSR0
-  - name: PTCCBSR0
-    byte_offset: 688
-    fieldset: NETC_PORT_PTCCBSR0
-  - name: PTCCBSR0
-    byte_offset: 720
-    fieldset: NETC_PORT_PTCCBSR0
-  - name: PTCCBSR0
-    byte_offset: 752
-    fieldset: NETC_PORT_PTCCBSR0
-  - name: PTCCBSR1
+    array:
+      len: 8
+      stride: 32
+  - name: TCT_NUM_PTCCBSR1
     byte_offset: 532
-  - name: PTCCBSR1
-    byte_offset: 564
-  - name: PTCCBSR1
-    byte_offset: 596
-  - name: PTCCBSR1
-    byte_offset: 628
-  - name: PTCCBSR1
-    byte_offset: 660
-  - name: PTCCBSR1
-    byte_offset: 692
-  - name: PTCCBSR1
-    byte_offset: 724
-  - name: PTCCBSR1
-    byte_offset: 756
+    array:
+      len: 8
+      stride: 32
   - name: PISIDCR
     byte_offset: 1120
     fieldset: NETC_PORT_PISIDCR

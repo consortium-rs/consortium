@@ -15,13 +15,13 @@ block/ANALOG_TCU:
     byte_offset: 1360
   - name: TCU_ATX_SENSE_BUS_EN
     byte_offset: 1424
-  - name: RW
+  - name: TCU_ADC_CONTROL__RW
     byte_offset: 2640
-  - name: SET
+  - name: TCU_ADC_CONTROL__SET
     byte_offset: 2644
-  - name: CLR
+  - name: TCU_ADC_CONTROL__CLR
     byte_offset: 2648
-  - name: TOG
+  - name: TCU_ADC_CONTROL__TOG
     byte_offset: 2652
   - name: TCU_PLL_COUNTER
     byte_offset: 3072

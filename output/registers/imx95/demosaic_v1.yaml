@@ -1,16 +1,13 @@
 block/DEMOSAIC:
   description: ''
   items:
-  - name: CTRL_CAM
+  - name: NEO_PIPE2_DEMOSAIC_CONF_CTRL_CAM
     byte_offset: 0
-    fieldset: DEMOSAIC_CTRL_CAM
-  - name: ACTIVITY_CTL_CAM
+  - name: NEO_PIPE2_DEMOSAIC_CONF_ACTIVITY_CTL_CAM
     byte_offset: 4
-    fieldset: DEMOSAIC_ACTIVITY_CTL_CAM
-  - name: DYNAMICS_CTL0_CAM
+  - name: NEO_PIPE2_DEMOSAIC_CONF_DYNAMICS_CTL0_CAM
     byte_offset: 8
-    fieldset: DEMOSAIC_DYNAMICS_CTL0_CAM
-  - name: DYNAMICS_CTL2_CAM
+  - name: NEO_PIPE2_DEMOSAIC_CONF_DYNAMICS_CTL2_CAM
     byte_offset: 12
 fieldset/DEMOSAIC_CTRL_CAM:
   description: ''

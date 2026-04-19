@@ -144,60 +144,36 @@ block/WAKEUP_TRDC_MGR:
       len: 16
       stride: 4
     fieldset: WAKEUP_TRDC_MGR_TRDC_DERRLOC
-  - name: W0
+  - name: MBC_DERR_W0
     byte_offset: 1024
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 1040
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 1056
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 3
+      stride: 16
+  - name: MBC_DERR_W1
     byte_offset: 1028
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 1044
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 1060
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W3
+    array:
+      len: 3
+      stride: 16
+  - name: MBC_DERR_W3
     byte_offset: 1036
-    fieldset: WAKEUP_TRDC_MGR_W3
-  - name: W3
-    byte_offset: 1052
-    fieldset: WAKEUP_TRDC_MGR_W3
-  - name: W3
-    byte_offset: 1068
-    fieldset: WAKEUP_TRDC_MGR_W3
-  - name: W0
+    array:
+      len: 3
+      stride: 16
+  - name: MRC_DERR_W0
     byte_offset: 1152
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 1168
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 1184
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 3
+      stride: 16
+  - name: MRC_DERR_W1
     byte_offset: 1156
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 1172
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 1188
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W3
+    array:
+      len: 3
+      stride: 16
+  - name: MRC_DERR_W3
     byte_offset: 1164
-    fieldset: WAKEUP_TRDC_MGR_W3
-  - name: W3
-    byte_offset: 1180
-    fieldset: WAKEUP_TRDC_MGR_W3
-  - name: W3
-    byte_offset: 1196
-    fieldset: WAKEUP_TRDC_MGR_W3
+    array:
+      len: 3
+      stride: 16
   - name: MDA_W0_0_DFMT0
     byte_offset: 2048
     fieldset: WAKEUP_TRDC_MGR_MDA_W0_0_DFMT0
@@ -2362,819 +2338,211 @@ block/WAKEUP_TRDC_MGR:
       len: 8
       stride: 4
     fieldset: WAKEUP_TRDC_MGR_MRC0_GLBAC
-  - name: W0
+  - name: MRC0_DOM0_RGD_W0
     byte_offset: 90176
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90184
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90192
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90200
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90208
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90216
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90224
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90232
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM0_RGD_W1
     byte_offset: 90180
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90188
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90196
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90204
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90212
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90220
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90228
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90236
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM0_RGD_NSE
     byte_offset: 90304
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM0_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM1_RGD_W0
     byte_offset: 90432
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90440
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90448
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90456
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90464
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90472
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90480
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90488
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM1_RGD_W1
     byte_offset: 90436
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90444
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90452
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90460
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90468
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90476
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90484
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90492
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM1_RGD_NSE
     byte_offset: 90560
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM1_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM2_RGD_W0
     byte_offset: 90688
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90696
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90704
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90712
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90720
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90728
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90736
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90744
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM2_RGD_W1
     byte_offset: 90692
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90700
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90708
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90716
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90724
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90732
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90740
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90748
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM2_RGD_NSE
     byte_offset: 90816
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM2_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM3_RGD_W0
     byte_offset: 90944
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90952
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90960
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90968
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90976
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90984
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 90992
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91000
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM3_RGD_W1
     byte_offset: 90948
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90956
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90964
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90972
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90980
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90988
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 90996
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91004
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM3_RGD_NSE
     byte_offset: 91072
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM3_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM4_RGD_W0
     byte_offset: 91200
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91208
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91216
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91224
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91232
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91240
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91248
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91256
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM4_RGD_W1
     byte_offset: 91204
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91212
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91220
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91228
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91236
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91244
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91252
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91260
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM4_RGD_NSE
     byte_offset: 91328
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM4_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM5_RGD_W0
     byte_offset: 91456
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91464
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91472
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91480
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91488
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91496
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91504
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91512
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM5_RGD_W1
     byte_offset: 91460
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91468
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91476
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91484
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91492
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91500
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91508
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91516
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM5_RGD_NSE
     byte_offset: 91584
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM5_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM6_RGD_W0
     byte_offset: 91712
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91720
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91728
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91736
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91744
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91752
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91760
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91768
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM6_RGD_W1
     byte_offset: 91716
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91724
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91732
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91740
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91748
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91756
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91764
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91772
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM6_RGD_NSE
     byte_offset: 91840
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM6_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM7_RGD_W0
     byte_offset: 91968
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91976
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91984
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 91992
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92000
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92008
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92016
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92024
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM7_RGD_W1
     byte_offset: 91972
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91980
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91988
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 91996
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92004
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92012
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92020
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92028
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM7_RGD_NSE
     byte_offset: 92096
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM7_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM8_RGD_W0
     byte_offset: 92224
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92232
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92240
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92248
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92256
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92264
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92272
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92280
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM8_RGD_W1
     byte_offset: 92228
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92236
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92244
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92252
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92260
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92268
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92276
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92284
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM8_RGD_NSE
     byte_offset: 92352
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM8_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM9_RGD_W0
     byte_offset: 92480
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92488
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92496
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92504
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92512
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92520
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92528
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92536
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM9_RGD_W1
     byte_offset: 92484
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92492
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92500
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92508
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92516
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92524
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92532
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92540
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM9_RGD_NSE
     byte_offset: 92608
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM9_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM10_RGD_W0
     byte_offset: 92736
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92744
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92752
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92760
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92768
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92776
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92784
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 92792
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM10_RGD_W1
     byte_offset: 92740
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92748
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92756
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92764
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92772
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92780
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92788
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 92796
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM10_RGD_NSE
     byte_offset: 92864
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM10_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM11_RGD_W0
     byte_offset: 92992
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93000
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93008
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93016
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93024
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93032
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93040
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93048
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM11_RGD_W1
     byte_offset: 92996
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93004
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93012
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93020
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93028
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93036
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93044
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93052
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM11_RGD_NSE
     byte_offset: 93120
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM11_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM12_RGD_W0
     byte_offset: 93248
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93256
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93264
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93272
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93280
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93288
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93296
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93304
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM12_RGD_W1
     byte_offset: 93252
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93260
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93268
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93276
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93284
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93292
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93300
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93308
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM12_RGD_NSE
     byte_offset: 93376
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM12_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM13_RGD_W0
     byte_offset: 93504
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93512
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93520
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93528
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93536
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93544
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93552
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93560
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM13_RGD_W1
     byte_offset: 93508
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93516
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93524
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93532
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93540
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93548
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93556
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93564
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM13_RGD_NSE
     byte_offset: 93632
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM13_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM14_RGD_W0
     byte_offset: 93760
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93768
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93776
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93784
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93792
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93800
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93808
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 93816
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM14_RGD_W1
     byte_offset: 93764
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93772
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93780
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93788
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93796
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93804
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93812
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 93820
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM14_RGD_NSE
     byte_offset: 93888
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM14_RGD_NSE
-  - name: W0
+  - name: MRC0_DOM15_RGD_W0
     byte_offset: 94016
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94024
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94032
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94040
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94048
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94056
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94064
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94072
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC0_DOM15_RGD_W1
     byte_offset: 94020
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94028
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94036
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94044
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94052
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94060
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94068
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94076
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC0_DOM15_RGD_NSE
     byte_offset: 94144
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM15_RGD_NSE
@@ -3197,819 +2565,211 @@ block/WAKEUP_TRDC_MGR:
       len: 8
       stride: 4
     fieldset: WAKEUP_TRDC_MGR_MRC1_GLBAC
-  - name: W0
+  - name: MRC1_DOM0_RGD_W0
     byte_offset: 94272
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94280
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94288
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94296
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94304
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94312
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94320
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94328
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM0_RGD_W1
     byte_offset: 94276
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94284
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94292
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94300
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94308
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94316
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94324
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94332
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM0_RGD_NSE
     byte_offset: 94400
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM0_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM1_RGD_W0
     byte_offset: 94528
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94536
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94544
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94552
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94560
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94568
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94576
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94584
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM1_RGD_W1
     byte_offset: 94532
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94540
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94548
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94556
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94564
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94572
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94580
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94588
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM1_RGD_NSE
     byte_offset: 94656
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM1_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM2_RGD_W0
     byte_offset: 94784
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94792
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94800
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94808
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94816
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94824
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94832
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 94840
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM2_RGD_W1
     byte_offset: 94788
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94796
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94804
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94812
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94820
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94828
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94836
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 94844
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM2_RGD_NSE
     byte_offset: 94912
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM2_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM3_RGD_W0
     byte_offset: 95040
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95048
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95056
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95064
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95072
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95080
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95088
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95096
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM3_RGD_W1
     byte_offset: 95044
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95052
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95060
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95068
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95076
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95084
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95092
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95100
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM3_RGD_NSE
     byte_offset: 95168
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM3_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM4_RGD_W0
     byte_offset: 95296
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95304
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95312
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95320
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95328
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95336
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95344
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95352
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM4_RGD_W1
     byte_offset: 95300
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95308
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95316
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95324
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95332
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95340
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95348
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95356
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM4_RGD_NSE
     byte_offset: 95424
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM4_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM5_RGD_W0
     byte_offset: 95552
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95560
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95568
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95576
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95584
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95592
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95600
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95608
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM5_RGD_W1
     byte_offset: 95556
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95564
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95572
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95580
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95588
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95596
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95604
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95612
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM5_RGD_NSE
     byte_offset: 95680
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM5_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM6_RGD_W0
     byte_offset: 95808
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95816
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95824
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95832
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95840
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95848
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95856
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 95864
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM6_RGD_W1
     byte_offset: 95812
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95820
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95828
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95836
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95844
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95852
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95860
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 95868
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM6_RGD_NSE
     byte_offset: 95936
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM6_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM7_RGD_W0
     byte_offset: 96064
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96072
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96080
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96088
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96096
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96104
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96112
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96120
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM7_RGD_W1
     byte_offset: 96068
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96076
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96084
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96092
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96100
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96108
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96116
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96124
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM7_RGD_NSE
     byte_offset: 96192
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM7_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM8_RGD_W0
     byte_offset: 96320
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96328
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96336
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96344
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96352
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96360
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96368
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96376
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM8_RGD_W1
     byte_offset: 96324
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96332
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96340
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96348
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96356
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96364
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96372
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96380
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM8_RGD_NSE
     byte_offset: 96448
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM8_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM9_RGD_W0
     byte_offset: 96576
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96584
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96592
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96600
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96608
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96616
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96624
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96632
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM9_RGD_W1
     byte_offset: 96580
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96588
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96596
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96604
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96612
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96620
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96628
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96636
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM9_RGD_NSE
     byte_offset: 96704
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM9_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM10_RGD_W0
     byte_offset: 96832
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96840
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96848
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96856
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96864
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96872
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96880
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 96888
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM10_RGD_W1
     byte_offset: 96836
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96844
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96852
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96860
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96868
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96876
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96884
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 96892
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM10_RGD_NSE
     byte_offset: 96960
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM10_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM11_RGD_W0
     byte_offset: 97088
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97096
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97104
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97112
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97120
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97128
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97136
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97144
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM11_RGD_W1
     byte_offset: 97092
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97100
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97108
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97116
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97124
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97132
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97140
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97148
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM11_RGD_NSE
     byte_offset: 97216
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM11_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM12_RGD_W0
     byte_offset: 97344
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97352
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97360
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97368
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97376
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97384
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97392
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97400
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM12_RGD_W1
     byte_offset: 97348
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97356
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97364
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97372
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97380
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97388
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97396
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97404
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM12_RGD_NSE
     byte_offset: 97472
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM12_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM13_RGD_W0
     byte_offset: 97600
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97608
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97616
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97624
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97632
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97640
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97648
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97656
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM13_RGD_W1
     byte_offset: 97604
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97612
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97620
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97628
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97636
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97644
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97652
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97660
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM13_RGD_NSE
     byte_offset: 97728
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM13_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM14_RGD_W0
     byte_offset: 97856
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97864
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97872
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97880
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97888
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97896
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97904
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 97912
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM14_RGD_W1
     byte_offset: 97860
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97868
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97876
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97884
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97892
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97900
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97908
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 97916
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM14_RGD_NSE
     byte_offset: 97984
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM14_RGD_NSE
-  - name: W0
+  - name: MRC1_DOM15_RGD_W0
     byte_offset: 98112
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98120
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98128
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98136
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98144
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98152
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98160
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98168
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC1_DOM15_RGD_W1
     byte_offset: 98116
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98124
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98132
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98140
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98148
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98156
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98164
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98172
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC1_DOM15_RGD_NSE
     byte_offset: 98240
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM15_RGD_NSE
@@ -4032,819 +2792,211 @@ block/WAKEUP_TRDC_MGR:
       len: 8
       stride: 4
     fieldset: WAKEUP_TRDC_MGR_MRC2_GLBAC
-  - name: W0
+  - name: MRC2_DOM0_RGD_W0
     byte_offset: 98368
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98376
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98384
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98392
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98400
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98408
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98416
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98424
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM0_RGD_W1
     byte_offset: 98372
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98380
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98388
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98396
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98404
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98412
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98420
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98428
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM0_RGD_NSE
     byte_offset: 98496
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM0_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM1_RGD_W0
     byte_offset: 98624
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98632
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98640
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98648
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98656
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98664
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98672
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98680
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM1_RGD_W1
     byte_offset: 98628
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98636
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98644
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98652
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98660
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98668
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98676
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98684
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM1_RGD_NSE
     byte_offset: 98752
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM1_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM2_RGD_W0
     byte_offset: 98880
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98888
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98896
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98904
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98912
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98920
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98928
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 98936
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM2_RGD_W1
     byte_offset: 98884
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98892
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98900
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98908
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98916
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98924
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98932
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 98940
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM2_RGD_NSE
     byte_offset: 99008
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM2_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM3_RGD_W0
     byte_offset: 99136
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99144
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99152
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99160
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99168
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99176
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99184
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99192
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM3_RGD_W1
     byte_offset: 99140
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99148
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99156
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99164
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99172
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99180
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99188
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99196
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM3_RGD_NSE
     byte_offset: 99264
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM3_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM4_RGD_W0
     byte_offset: 99392
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99400
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99408
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99416
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99424
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99432
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99440
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99448
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM4_RGD_W1
     byte_offset: 99396
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99404
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99412
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99420
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99428
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99436
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99444
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99452
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM4_RGD_NSE
     byte_offset: 99520
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM4_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM5_RGD_W0
     byte_offset: 99648
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99656
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99664
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99672
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99680
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99688
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99696
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99704
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM5_RGD_W1
     byte_offset: 99652
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99660
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99668
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99676
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99684
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99692
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99700
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99708
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM5_RGD_NSE
     byte_offset: 99776
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM5_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM6_RGD_W0
     byte_offset: 99904
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99912
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99920
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99928
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99936
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99944
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99952
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 99960
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM6_RGD_W1
     byte_offset: 99908
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99916
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99924
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99932
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99940
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99948
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99956
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 99964
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM6_RGD_NSE
     byte_offset: 100032
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM6_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM7_RGD_W0
     byte_offset: 100160
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100168
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100176
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100184
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100192
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100200
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100208
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100216
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM7_RGD_W1
     byte_offset: 100164
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100172
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100180
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100188
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100196
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100204
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100212
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100220
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM7_RGD_NSE
     byte_offset: 100288
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM7_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM8_RGD_W0
     byte_offset: 100416
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100424
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100432
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100440
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100448
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100456
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100464
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100472
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM8_RGD_W1
     byte_offset: 100420
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100428
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100436
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100444
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100452
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100460
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100468
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100476
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM8_RGD_NSE
     byte_offset: 100544
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM8_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM9_RGD_W0
     byte_offset: 100672
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100680
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100688
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100696
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100704
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100712
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100720
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100728
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM9_RGD_W1
     byte_offset: 100676
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100684
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100692
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100700
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100708
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100716
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100724
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100732
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM9_RGD_NSE
     byte_offset: 100800
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM9_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM10_RGD_W0
     byte_offset: 100928
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100936
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100944
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100952
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100960
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100968
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100976
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 100984
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM10_RGD_W1
     byte_offset: 100932
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100940
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100948
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100956
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100964
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100972
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100980
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 100988
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM10_RGD_NSE
     byte_offset: 101056
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM10_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM11_RGD_W0
     byte_offset: 101184
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101192
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101200
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101208
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101216
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101224
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101232
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101240
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM11_RGD_W1
     byte_offset: 101188
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101196
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101204
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101212
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101220
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101228
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101236
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101244
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM11_RGD_NSE
     byte_offset: 101312
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM11_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM12_RGD_W0
     byte_offset: 101440
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101448
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101456
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101464
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101472
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101480
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101488
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101496
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM12_RGD_W1
     byte_offset: 101444
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101452
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101460
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101468
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101476
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101484
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101492
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101500
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM12_RGD_NSE
     byte_offset: 101568
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM12_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM13_RGD_W0
     byte_offset: 101696
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101704
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101712
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101720
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101728
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101736
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101744
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101752
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM13_RGD_W1
     byte_offset: 101700
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101708
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101716
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101724
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101732
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101740
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101748
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101756
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM13_RGD_NSE
     byte_offset: 101824
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM13_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM14_RGD_W0
     byte_offset: 101952
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101960
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101968
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101976
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101984
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 101992
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 102000
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 102008
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM14_RGD_W1
     byte_offset: 101956
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101964
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101972
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101980
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101988
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 101996
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 102004
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 102012
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM14_RGD_NSE
     byte_offset: 102080
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM14_RGD_NSE
-  - name: W0
+  - name: MRC2_DOM15_RGD_W0
     byte_offset: 102208
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 102216
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 102224
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 102232
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 102240
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 102248
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 102256
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W0
-    byte_offset: 102264
-    fieldset: WAKEUP_TRDC_MGR_W0
-  - name: W1
+    array:
+      len: 8
+      stride: 8
+  - name: MRC2_DOM15_RGD_W1
     byte_offset: 102212
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 102220
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 102228
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 102236
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 102244
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 102252
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 102260
-    fieldset: WAKEUP_TRDC_MGR_W1
-  - name: W1
-    byte_offset: 102268
-    fieldset: WAKEUP_TRDC_MGR_W1
+    array:
+      len: 8
+      stride: 8
   - name: MRC2_DOM15_RGD_NSE
     byte_offset: 102336
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM15_RGD_NSE

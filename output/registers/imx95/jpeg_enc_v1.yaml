@@ -1,83 +1,65 @@
 block/JPEG_ENC:
   description: ''
   items:
-  - name: MODE
+  - name: CONTROL_MODE
     byte_offset: 0
-    fieldset: JPEG_ENC_MODE
-  - name: CFG_MODE
+  - name: CONTROL_CFG_MODE
     byte_offset: 4
-    fieldset: JPEG_ENC_CFG_MODE
-  - name: QUALITY
+  - name: CONTROL_QUALITY
     byte_offset: 8
-    fieldset: JPEG_ENC_QUALITY
-  - name: RC_REGS_SEL
+  - name: CONTROL_RC_REGS_SEL
     byte_offset: 16
-  - name: LUMTH
+  - name: CONTROL_LUMTH
     byte_offset: 20
-    fieldset: JPEG_ENC_LUMTH
-  - name: CHRTH
+  - name: CONTROL_CHRTH
     byte_offset: 24
-    fieldset: JPEG_ENC_CHRTH
-  - name: NOMFRSIZE_LO
+  - name: CONTROL_NOMFRSIZE_LO
     byte_offset: 64
-  - name: NOMFRSIZE_HI
+  - name: CONTROL_NOMFRSIZE_HI
     byte_offset: 68
-  - name: OFBSIZE_LO
+  - name: CONTROL_OFBSIZE_LO
     byte_offset: 72
-  - name: OFBSIZE_HI
+  - name: CONTROL_OFBSIZE_HI
     byte_offset: 76
-  - name: STATUS_0
+  - name: STATUS_STATUS_0
     byte_offset: 0
-    fieldset: JPEG_ENC_STATUS_0
-  - name: STATUS_1
+  - name: STATUS_STATUS_1
     byte_offset: 4
-    fieldset: JPEG_ENC_STATUS_1
-  - name: STATUS_2
+  - name: STATUS_STATUS_2
     byte_offset: 8
-    fieldset: JPEG_ENC_STATUS_2
-  - name: STATUS_3
+  - name: STATUS_STATUS_3
     byte_offset: 12
-    fieldset: JPEG_ENC_STATUS_3
-  - name: STATUS_4
+  - name: STATUS_STATUS_4
     byte_offset: 16
-    fieldset: JPEG_ENC_STATUS_4
-  - name: STATUS_5
+  - name: STATUS_STATUS_5
     byte_offset: 20
-    fieldset: JPEG_ENC_STATUS_5
-  - name: STATUS_6
+  - name: STATUS_STATUS_6
     byte_offset: 24
-    fieldset: JPEG_ENC_STATUS_6
-  - name: STATUS_7
+  - name: STATUS_STATUS_7
     byte_offset: 28
-    fieldset: JPEG_ENC_STATUS_7
-  - name: STATUS_8
+  - name: STATUS_STATUS_8
     byte_offset: 32
-    fieldset: JPEG_ENC_STATUS_8
-  - name: STATUS_9
+  - name: STATUS_STATUS_9
     byte_offset: 36
-    fieldset: JPEG_ENC_STATUS_9
-  - name: STATUS_10
+  - name: STATUS_STATUS_10
     byte_offset: 40
-    fieldset: JPEG_ENC_STATUS_10
-  - name: STATUS_11
+  - name: STATUS_STATUS_11
     byte_offset: 44
-    fieldset: JPEG_ENC_STATUS_11
-  - name: STATUS_12
+  - name: STATUS_STATUS_12
     byte_offset: 48
-    fieldset: JPEG_ENC_STATUS_12
-  - name: STATUS_13
+  - name: STATUS_STATUS_13
     byte_offset: 52
-  - name: STATUS_14
+  - name: STATUS_STATUS_14
     byte_offset: 56
-  - name: STATUS_15
+  - name: STATUS_STATUS_15
     byte_offset: 60
-  - name: STATUS_16
+  - name: STATUS_STATUS_16
     byte_offset: 64
-  - name: STATUS_17
+  - name: STATUS_STATUS_17
     byte_offset: 68
-  - name: STATUS_18
+  - name: STATUS_STATUS_18
     byte_offset: 72
-  - name: STATUS_19
+  - name: STATUS_STATUS_19
     byte_offset: 76
 fieldset/JPEG_ENC_MODE:
   description: ''

@@ -70,11 +70,11 @@ block/NETC_SW_ENETC:
   - name: DOSL3CR
     byte_offset: 548
     fieldset: NETC_SW_ENETC_DOSL3CR
-  - name: VLANIPVMPR0
+  - name: NUM_PROFILE_VLANIPVMPR0
     byte_offset: 768
-  - name: VLANIPVMPR1
+  - name: NUM_PROFILE_VLANIPVMPR1
     byte_offset: 772
-  - name: VLANDRMPR
+  - name: NUM_PROFILE_VLANDRMPR
     byte_offset: 776
   - name: IPFCAPR
     byte_offset: 1600

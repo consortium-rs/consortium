@@ -1,54 +1,38 @@
 block/DRC:
   description: ''
   items:
-  - name: ROI0_POS_CAM
+  - name: NEO_PIPE2_DRC_CONF_ROI0_POS_CAM
     byte_offset: 0
-    fieldset: DRC_ROI0_POS_CAM
-  - name: ROI0_SIZE_CAM
+  - name: NEO_PIPE2_DRC_CONF_ROI0_SIZE_CAM
     byte_offset: 4
-    fieldset: DRC_ROI0_SIZE_CAM
-  - name: ROI1_POS_CAM
+  - name: NEO_PIPE2_DRC_CONF_ROI1_POS_CAM
     byte_offset: 8
-    fieldset: DRC_ROI1_POS_CAM
-  - name: ROI1_SIZE_CAM
+  - name: NEO_PIPE2_DRC_CONF_ROI1_SIZE_CAM
     byte_offset: 12
-    fieldset: DRC_ROI1_SIZE_CAM
-  - name: GROI_SUM_SHIFT_CAM
+  - name: NEO_PIPE2_DRC_CONF_GROI_SUM_SHIFT_CAM
     byte_offset: 16
-    fieldset: DRC_GROI_SUM_SHIFT_CAM
-  - name: GBL_GAIN_CAM
+  - name: NEO_PIPE2_DRC_CONF_GBL_GAIN_CAM
     byte_offset: 20
-    fieldset: DRC_GBL_GAIN_CAM
-  - name: LCL_BLK_SIZE_CAM
+  - name: NEO_PIPE2_DRC_CONF_LCL_BLK_SIZE_CAM
     byte_offset: 32
-    fieldset: DRC_LCL_BLK_SIZE_CAM
-  - name: LCL_STRETCH_CAM
+  - name: NEO_PIPE2_DRC_CONF_LCL_STRETCH_CAM
     byte_offset: 36
-    fieldset: DRC_LCL_STRETCH_CAM
-  - name: LCL_BLK_STEPY_CAM
+  - name: NEO_PIPE2_DRC_CONF_LCL_BLK_STEPY_CAM
     byte_offset: 40
-    fieldset: DRC_LCL_BLK_STEPY_CAM
-  - name: LCL_BLK_STEPX_CAM
+  - name: NEO_PIPE2_DRC_CONF_LCL_BLK_STEPX_CAM
     byte_offset: 44
-    fieldset: DRC_LCL_BLK_STEPX_CAM
-  - name: LCL_SUM_SHIFT_CAM
+  - name: NEO_PIPE2_DRC_CONF_LCL_SUM_SHIFT_CAM
     byte_offset: 48
-    fieldset: DRC_LCL_SUM_SHIFT_CAM
-  - name: ALPHA_CAM
+  - name: NEO_PIPE2_DRC_CONF_ALPHA_CAM
     byte_offset: 52
-    fieldset: DRC_ALPHA_CAM
-  - name: GROI0_SUM_CAM
+  - name: NEO_PIPE2_DRC_CONF_GROI0_SUM_CAM
     byte_offset: 64
-    fieldset: DRC_GROI0_SUM_CAM
-  - name: GROI1_SUM_CAM
+  - name: NEO_PIPE2_DRC_CONF_GROI1_SUM_CAM
     byte_offset: 68
-    fieldset: DRC_GROI1_SUM_CAM
-  - name: STAT_BLK_Y_CAM
+  - name: NEO_PIPE2_DRC_CONF_STAT_BLK_Y_CAM
     byte_offset: 80
-    fieldset: DRC_STAT_BLK_Y_CAM
-  - name: CURR_YFRACT_CAM
+  - name: NEO_PIPE2_DRC_CONF_CURR_YFRACT_CAM
     byte_offset: 84
-    fieldset: DRC_CURR_YFRACT_CAM
 fieldset/DRC_ROI0_POS_CAM:
   description: ''
   fields:

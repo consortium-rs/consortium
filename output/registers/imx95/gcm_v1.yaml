@@ -1,85 +1,59 @@
 block/GCM:
   description: ''
   items:
-  - name: IMAT0_CAM
+  - name: NEO_PIPE2_GCM_CONF_IMAT0_CAM
     byte_offset: 0
-    fieldset: GCM_IMAT0_CAM
-  - name: IMAT1_CAM
+  - name: NEO_PIPE2_GCM_CONF_IMAT1_CAM
     byte_offset: 4
-    fieldset: GCM_IMAT1_CAM
-  - name: IMAT2_CAM
+  - name: NEO_PIPE2_GCM_CONF_IMAT2_CAM
     byte_offset: 12
-    fieldset: GCM_IMAT2_CAM
-  - name: IMAT3_CAM
+  - name: NEO_PIPE2_GCM_CONF_IMAT3_CAM
     byte_offset: 16
-    fieldset: GCM_IMAT3_CAM
-  - name: IMAT4_CAM
+  - name: NEO_PIPE2_GCM_CONF_IMAT4_CAM
     byte_offset: 24
-    fieldset: GCM_IMAT4_CAM
-  - name: IMAT5_CAM
+  - name: NEO_PIPE2_GCM_CONF_IMAT5_CAM
     byte_offset: 28
-    fieldset: GCM_IMAT5_CAM
-  - name: IOFFSET0_CAM
+  - name: NEO_PIPE2_GCM_CONF_IOFFSET0_CAM
     byte_offset: 32
-    fieldset: GCM_IOFFSET0_CAM
-  - name: IOFFSET1_CAM
+  - name: NEO_PIPE2_GCM_CONF_IOFFSET1_CAM
     byte_offset: 36
-    fieldset: GCM_IOFFSET1_CAM
-  - name: IOFFSET2_CAM
+  - name: NEO_PIPE2_GCM_CONF_IOFFSET2_CAM
     byte_offset: 40
-    fieldset: GCM_IOFFSET2_CAM
-  - name: OMAT0_CAM
+  - name: NEO_PIPE2_GCM_CONF_OMAT0_CAM
     byte_offset: 48
-    fieldset: GCM_OMAT0_CAM
-  - name: OMAT1_CAM
+  - name: NEO_PIPE2_GCM_CONF_OMAT1_CAM
     byte_offset: 52
-    fieldset: GCM_OMAT1_CAM
-  - name: OMAT2_CAM
+  - name: NEO_PIPE2_GCM_CONF_OMAT2_CAM
     byte_offset: 56
-    fieldset: GCM_OMAT2_CAM
-  - name: OMAT3_CAM
+  - name: NEO_PIPE2_GCM_CONF_OMAT3_CAM
     byte_offset: 60
-    fieldset: GCM_OMAT3_CAM
-  - name: OMAT4_CAM
+  - name: NEO_PIPE2_GCM_CONF_OMAT4_CAM
     byte_offset: 64
-    fieldset: GCM_OMAT4_CAM
-  - name: OMAT5_CAM
+  - name: NEO_PIPE2_GCM_CONF_OMAT5_CAM
     byte_offset: 68
-    fieldset: GCM_OMAT5_CAM
-  - name: OOFFSET0_CAM
+  - name: NEO_PIPE2_GCM_CONF_OOFFSET0_CAM
     byte_offset: 72
-    fieldset: GCM_OOFFSET0_CAM
-  - name: OOFFSET1_CAM
+  - name: NEO_PIPE2_GCM_CONF_OOFFSET1_CAM
     byte_offset: 76
-    fieldset: GCM_OOFFSET1_CAM
-  - name: OOFFSET2_CAM
+  - name: NEO_PIPE2_GCM_CONF_OOFFSET2_CAM
     byte_offset: 80
-    fieldset: GCM_OOFFSET2_CAM
-  - name: GAMMA0_CAM
+  - name: NEO_PIPE2_GCM_CONF_GAMMA0_CAM
     byte_offset: 96
-    fieldset: GCM_GAMMA0_CAM
-  - name: GAMMA1_CAM
+  - name: NEO_PIPE2_GCM_CONF_GAMMA1_CAM
     byte_offset: 100
-    fieldset: GCM_GAMMA1_CAM
-  - name: GAMMA2_CAM
+  - name: NEO_PIPE2_GCM_CONF_GAMMA2_CAM
     byte_offset: 104
-    fieldset: GCM_GAMMA2_CAM
-  - name: BLKLVL0_CTRL_CAM
+  - name: NEO_PIPE2_GCM_CONF_BLKLVL0_CTRL_CAM
     byte_offset: 108
-    fieldset: GCM_BLKLVL0_CTRL_CAM
-  - name: BLKLVL1_CTRL_CAM
+  - name: NEO_PIPE2_GCM_CONF_BLKLVL1_CTRL_CAM
     byte_offset: 112
-    fieldset: GCM_BLKLVL1_CTRL_CAM
-  - name: BLKLVL2_CTRL_CAM
+  - name: NEO_PIPE2_GCM_CONF_BLKLVL2_CTRL_CAM
     byte_offset: 116
-    fieldset: GCM_BLKLVL2_CTRL_CAM
-  - name: LOWTH_CTRL01_CAM
+  - name: NEO_PIPE2_GCM_CONF_LOWTH_CTRL01_CAM
     byte_offset: 120
-    fieldset: GCM_LOWTH_CTRL01_CAM
-  - name: LOWTH_CTRL2_CAM
+  - name: NEO_PIPE2_GCM_CONF_LOWTH_CTRL2_CAM
     byte_offset: 124
-    fieldset: GCM_LOWTH_CTRL2_CAM
-  - name: MAT_CONFG_CAM
+  - name: NEO_PIPE2_GCM_CONF_MAT_CONFG_CAM
     byte_offset: 128
 fieldset/GCM_IMAT0_CAM:
   description: ''

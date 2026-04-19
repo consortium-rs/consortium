@@ -1,30 +1,22 @@
 block/VIGNETTING:
   description: ''
   items:
-  - name: CTRL_CAM
+  - name: NEO_PIPE1_VIGNETTING_CONF_CTRL_CAM
     byte_offset: 0
-    fieldset: VIGNETTING_CTRL_CAM
-  - name: BLK_CONF_CAM
+  - name: NEO_PIPE1_VIGNETTING_CONF_BLK_CONF_CAM
     byte_offset: 4
-    fieldset: VIGNETTING_BLK_CONF_CAM
-  - name: BLK_SIZE_CAM
+  - name: NEO_PIPE1_VIGNETTING_CONF_BLK_SIZE_CAM
     byte_offset: 8
-    fieldset: VIGNETTING_BLK_SIZE_CAM
-  - name: BLK_STEPY_CAM
+  - name: NEO_PIPE1_VIGNETTING_CONF_BLK_STEPY_CAM
     byte_offset: 12
-    fieldset: VIGNETTING_BLK_STEPY_CAM
-  - name: BLK_STEPX_CAM
+  - name: NEO_PIPE1_VIGNETTING_CONF_BLK_STEPX_CAM
     byte_offset: 16
-    fieldset: VIGNETTING_BLK_STEPX_CAM
-  - name: BLK_C_LINE_CAM
+  - name: NEO_PIPE1_VIGNETTING_CONF_BLK_C_LINE_CAM
     byte_offset: 32
-    fieldset: VIGNETTING_BLK_C_LINE_CAM
-  - name: BLK_C_ROW_CAM
+  - name: NEO_PIPE1_VIGNETTING_CONF_BLK_C_ROW_CAM
     byte_offset: 36
-    fieldset: VIGNETTING_BLK_C_ROW_CAM
-  - name: BLK_C_FRACY_CAM
+  - name: NEO_PIPE1_VIGNETTING_CONF_BLK_C_FRACY_CAM
     byte_offset: 40
-    fieldset: VIGNETTING_BLK_C_FRACY_CAM
 fieldset/VIGNETTING_CTRL_CAM:
   description: ''
   fields:

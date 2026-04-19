@@ -47,30 +47,16 @@ block/NETC_ENETC:
   - name: PRXBCHWMR
     byte_offset: 300
     fieldset: NETC_ENETC_PRXBCHWMR
-  - name: PICDRDCR
+  - name: PICDRADCR_PICDRDCR
     byte_offset: 320
-    fieldset: NETC_ENETC_PICDRDCR
-  - name: PICDRDCR
-    byte_offset: 336
-    fieldset: NETC_ENETC_PICDRDCR
-  - name: PICDRDCR
-    byte_offset: 352
-    fieldset: NETC_ENETC_PICDRDCR
-  - name: PICDRDCR
-    byte_offset: 368
-    fieldset: NETC_ENETC_PICDRDCR
-  - name: PICDRDCRRR
+    array:
+      len: 4
+      stride: 16
+  - name: PICDRADCR_PICDRDCRRR
     byte_offset: 328
-    fieldset: NETC_ENETC_PICDRDCRRR
-  - name: PICDRDCRRR
-    byte_offset: 344
-    fieldset: NETC_ENETC_PICDRDCRRR
-  - name: PICDRDCRRR
-    byte_offset: 360
-    fieldset: NETC_ENETC_PICDRDCRRR
-  - name: PICDRDCRRR
-    byte_offset: 376
-    fieldset: NETC_ENETC_PICDRDCRRR
+    array:
+      len: 4
+      stride: 16
   - name: PICPDSR
     byte_offset: 384
   - name: PSIPMMR
@@ -143,96 +129,76 @@ block/NETC_ENETC:
   - name: SMCAPR
     byte_offset: 2048
     fieldset: NETC_ENETC_SMCAPR
-  - name: PSIPMAR0
+  - name: NUM_SI_PSIPMAR0
     byte_offset: 8192
-  - name: PSIPMAR0
-    byte_offset: 8320
-  - name: PSIPMAR0
-    byte_offset: 8448
-  - name: PSIPMAR1
+    array:
+      len: 3
+      stride: 128
+  - name: NUM_SI_PSIPMAR1
     byte_offset: 8196
-  - name: PSIPMAR1
-    byte_offset: 8324
-  - name: PSIPMAR1
-    byte_offset: 8452
-  - name: PSIVLANR
+    array:
+      len: 3
+      stride: 128
+  - name: NUM_SI_PSIVLANR
     byte_offset: 8200
-    fieldset: NETC_ENETC_PSIVLANR
-  - name: PSIVLANR
-    byte_offset: 8328
-    fieldset: NETC_ENETC_PSIVLANR
-  - name: PSIVLANR
-    byte_offset: 8456
-    fieldset: NETC_ENETC_PSIVLANR
-  - name: PSICFGR0
+    array:
+      len: 3
+      stride: 128
+  - name: NUM_SI_PSICFGR0
     byte_offset: 8208
-    fieldset: NETC_ENETC_PSICFGR0
-  - name: PSICFGR0
-    byte_offset: 8336
-    fieldset: NETC_ENETC_PSICFGR0
-  - name: PSICFGR0
-    byte_offset: 8464
-    fieldset: NETC_ENETC_PSICFGR0
-  - name: PSICFGR1
+    array:
+      len: 3
+      stride: 128
+  - name: NUM_SI_PSICFGR1
     byte_offset: 8212
-  - name: PSICFGR1
-    byte_offset: 8340
-  - name: PSICFGR1
-    byte_offset: 8468
-  - name: PSICFGR2
+    array:
+      len: 3
+      stride: 128
+  - name: NUM_SI_PSICFGR2
     byte_offset: 8216
-  - name: PSICFGR2
-    byte_offset: 8344
-  - name: PSICFGR2
-    byte_offset: 8472
-  - name: PSIVMAFCFGR
+    array:
+      len: 3
+      stride: 128
+  - name: NUM_SI_PSIVMAFCFGR
     byte_offset: 8240
-  - name: PSIVMAFCFGR
-    byte_offset: 8368
-  - name: PSIVMAFCFGR
-    byte_offset: 8496
-  - name: PSIVLANFCFGR
+    array:
+      len: 3
+      stride: 128
+  - name: NUM_SI_PSIVLANFCFGR
     byte_offset: 8244
-  - name: PSIVLANFCFGR
-    byte_offset: 8372
-  - name: PSIVLANFCFGR
-    byte_offset: 8500
-  - name: PSIUMHFR0
+    array:
+      len: 3
+      stride: 128
+  - name: NUM_SI_PSIUMHFR0
     byte_offset: 8272
-  - name: PSIUMHFR0
-    byte_offset: 8400
-  - name: PSIUMHFR0
-    byte_offset: 8528
-  - name: PSIUMHFR1
+    array:
+      len: 3
+      stride: 128
+  - name: NUM_SI_PSIUMHFR1
     byte_offset: 8276
-  - name: PSIUMHFR1
-    byte_offset: 8404
-  - name: PSIUMHFR1
-    byte_offset: 8532
-  - name: PSIMMHFR0
+    array:
+      len: 3
+      stride: 128
+  - name: NUM_SI_PSIMMHFR0
     byte_offset: 8280
-  - name: PSIMMHFR0
-    byte_offset: 8408
-  - name: PSIMMHFR0
-    byte_offset: 8536
-  - name: PSIMMHFR1
+    array:
+      len: 3
+      stride: 128
+  - name: NUM_SI_PSIMMHFR1
     byte_offset: 8284
-  - name: PSIMMHFR1
-    byte_offset: 8412
-  - name: PSIMMHFR1
-    byte_offset: 8540
-  - name: PSIVHFR0
+    array:
+      len: 3
+      stride: 128
+  - name: NUM_SI_PSIVHFR0
     byte_offset: 8288
-  - name: PSIVHFR0
-    byte_offset: 8416
-  - name: PSIVHFR0
-    byte_offset: 8544
-  - name: PSIVHFR1
+    array:
+      len: 3
+      stride: 128
+  - name: NUM_SI_PSIVHFR1
     byte_offset: 8292
-  - name: PSIVHFR1
-    byte_offset: 8420
-  - name: PSIVHFR1
-    byte_offset: 8548
+    array:
+      len: 3
+      stride: 128
 fieldset/NETC_ENETC_ECAPR0:
   description: ''
   fields:

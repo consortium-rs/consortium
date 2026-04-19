@@ -1,69 +1,69 @@
 block/ANALOG_FRO:
   description: ''
   items:
-  - name: RW
+  - name: CSR_RW
     byte_offset: 512
-  - name: SET
+  - name: CSR_SET
     byte_offset: 516
-  - name: CLR
+  - name: CSR_CLR
     byte_offset: 520
-  - name: TOG
+  - name: CSR_TOG
     byte_offset: 524
-  - name: RW
+  - name: CNFG1_RW
     byte_offset: 528
-  - name: SET
+  - name: CNFG1_SET
     byte_offset: 532
-  - name: CLR
+  - name: CNFG1_CLR
     byte_offset: 536
-  - name: TOG
+  - name: CNFG1_TOG
     byte_offset: 540
-  - name: RW
+  - name: CNFG2_RW
     byte_offset: 544
-  - name: SET
+  - name: CNFG2_SET
     byte_offset: 548
-  - name: CLR
+  - name: CNFG2_CLR
     byte_offset: 552
-  - name: TOG
+  - name: CNFG2_TOG
     byte_offset: 556
-  - name: RW
+  - name: FROTRIM_RW
     byte_offset: 560
-  - name: SET
+  - name: FROTRIM_SET
     byte_offset: 564
-  - name: CLR
+  - name: FROTRIM_CLR
     byte_offset: 568
-  - name: TOG
+  - name: FROTRIM_TOG
     byte_offset: 572
-  - name: RW
+  - name: TEXPCNT_RW
     byte_offset: 576
-  - name: SET
+  - name: TEXPCNT_SET
     byte_offset: 580
-  - name: CLR
+  - name: TEXPCNT_CLR
     byte_offset: 584
-  - name: TOG
+  - name: TEXPCNT_TOG
     byte_offset: 588
-  - name: RW
+  - name: AUTOTRIM_RW
     byte_offset: 592
-  - name: SET
+  - name: AUTOTRIM_SET
     byte_offset: 596
-  - name: CLR
+  - name: AUTOTRIM_CLR
     byte_offset: 600
-  - name: TOG
+  - name: AUTOTRIM_TOG
     byte_offset: 604
-  - name: RW
+  - name: TRIMCNT_RW
     byte_offset: 608
-  - name: SET
+  - name: TRIMCNT_SET
     byte_offset: 612
-  - name: CLR
+  - name: TRIMCNT_CLR
     byte_offset: 616
-  - name: TOG
+  - name: TRIMCNT_TOG
     byte_offset: 620
-  - name: RW
+  - name: CNFG3_RW
     byte_offset: 640
-  - name: SET
+  - name: CNFG3_SET
     byte_offset: 644
-  - name: CLR
+  - name: CNFG3_CLR
     byte_offset: 648
-  - name: TOG
+  - name: CNFG3_TOG
     byte_offset: 652
 fieldset/ANALOG_FRO_CSR:
   description: ''

@@ -1,72 +1,58 @@
 block/BNR:
   description: ''
   items:
-  - name: CTRL_CAM
+  - name: NEO_PIPE1_BNR_CONF_CTRL_CAM
     byte_offset: 0
-    fieldset: BNR_CTRL_CAM
-  - name: YPEAK_CAM
+  - name: NEO_PIPE1_BNR_CONF_YPEAK_CAM
     byte_offset: 4
-  - name: YEDGE_TH0_CAM
+  - name: NEO_PIPE1_BNR_CONF_YEDGE_TH0_CAM
     byte_offset: 8
-  - name: YEDGE_SCALE_CAM
+  - name: NEO_PIPE1_BNR_CONF_YEDGE_SCALE_CAM
     byte_offset: 12
-    fieldset: BNR_YEDGE_SCALE_CAM
-  - name: YEDGES_TH0_CAM
+  - name: NEO_PIPE1_BNR_CONF_YEDGES_TH0_CAM
     byte_offset: 16
-  - name: YEDGES_SCALE_CAM
+  - name: NEO_PIPE1_BNR_CONF_YEDGES_SCALE_CAM
     byte_offset: 20
-    fieldset: BNR_YEDGES_SCALE_CAM
-  - name: YEDGEA_TH0_CAM
+  - name: NEO_PIPE1_BNR_CONF_YEDGEA_TH0_CAM
     byte_offset: 24
-  - name: YEDGEA_SCALE_CAM
+  - name: NEO_PIPE1_BNR_CONF_YEDGEA_SCALE_CAM
     byte_offset: 28
-    fieldset: BNR_YEDGEA_SCALE_CAM
-  - name: YLUMA_X_TH0_CAM
+  - name: NEO_PIPE1_BNR_CONF_YLUMA_X_TH0_CAM
     byte_offset: 32
-    fieldset: BNR_YLUMA_X_TH0_CAM
-  - name: YLUMA_Y_TH_CAM
+  - name: NEO_PIPE1_BNR_CONF_YLUMA_Y_TH_CAM
     byte_offset: 36
-  - name: YLUMA_SCALE_CAM
+  - name: NEO_PIPE1_BNR_CONF_YLUMA_SCALE_CAM
     byte_offset: 40
-    fieldset: BNR_YLUMA_SCALE_CAM
-  - name: YALPHA_GAIN_CAM
+  - name: NEO_PIPE1_BNR_CONF_YALPHA_GAIN_CAM
     byte_offset: 44
-    fieldset: BNR_YALPHA_GAIN_CAM
-  - name: CPEAK_CAM
+  - name: NEO_PIPE1_BNR_CONF_CPEAK_CAM
     byte_offset: 48
-  - name: CEDGE_TH0_CAM
+  - name: NEO_PIPE1_BNR_CONF_CEDGE_TH0_CAM
     byte_offset: 52
-  - name: CEDGE_SCALE_CAM
+  - name: NEO_PIPE1_BNR_CONF_CEDGE_SCALE_CAM
     byte_offset: 56
-    fieldset: BNR_CEDGE_SCALE_CAM
-  - name: CEDGES_TH0_CAM
+  - name: NEO_PIPE1_BNR_CONF_CEDGES_TH0_CAM
     byte_offset: 60
-  - name: CEDGES_SCALE_CAM
+  - name: NEO_PIPE1_BNR_CONF_CEDGES_SCALE_CAM
     byte_offset: 64
-    fieldset: BNR_CEDGES_SCALE_CAM
-  - name: CEDGEA_TH0_CAM
+  - name: NEO_PIPE1_BNR_CONF_CEDGEA_TH0_CAM
     byte_offset: 68
-  - name: CEDGEA_SCALE_CAM
+  - name: NEO_PIPE1_BNR_CONF_CEDGEA_SCALE_CAM
     byte_offset: 72
-    fieldset: BNR_CEDGEA_SCALE_CAM
-  - name: CLUMA_X_TH0_CAM
+  - name: NEO_PIPE1_BNR_CONF_CLUMA_X_TH0_CAM
     byte_offset: 76
-    fieldset: BNR_CLUMA_X_TH0_CAM
-  - name: CLUMA_Y_TH_CAM
+  - name: NEO_PIPE1_BNR_CONF_CLUMA_Y_TH_CAM
     byte_offset: 80
-  - name: CLUMA_SCALE_CAM
+  - name: NEO_PIPE1_BNR_CONF_CLUMA_SCALE_CAM
     byte_offset: 84
-    fieldset: BNR_CLUMA_SCALE_CAM
-  - name: CALPHA_GAIN_CAM
+  - name: NEO_PIPE1_BNR_CONF_CALPHA_GAIN_CAM
     byte_offset: 88
-    fieldset: BNR_CALPHA_GAIN_CAM
-  - name: EDGE_STAT_CAM
+  - name: NEO_PIPE1_BNR_CONF_EDGE_STAT_CAM
     byte_offset: 92
-  - name: EDGES_STAT_CAM
+  - name: NEO_PIPE1_BNR_CONF_EDGES_STAT_CAM
     byte_offset: 96
-  - name: STRETCH_CAM
+  - name: NEO_PIPE1_BNR_CONF_STRETCH_CAM
     byte_offset: 100
-    fieldset: BNR_STRETCH_CAM
 fieldset/BNR_CTRL_CAM:
   description: ''
   fields:
