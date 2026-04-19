@@ -1,0 +1,756 @@
+block/FLEXSPI:
+  description: ''
+  items:
+  - name: MCR0
+    byte_offset: 0
+    fieldset: FLEXSPI_MCR0
+  - name: MCR1
+    byte_offset: 4
+    fieldset: FLEXSPI_MCR1
+  - name: MCR2
+    byte_offset: 8
+    fieldset: FLEXSPI_MCR2
+  - name: AHBCR
+    byte_offset: 12
+    fieldset: FLEXSPI_AHBCR
+  - name: INTEN
+    byte_offset: 16
+    fieldset: FLEXSPI_INTEN
+  - name: INTR
+    byte_offset: 20
+    fieldset: FLEXSPI_INTR
+  - name: LUTKEY
+    byte_offset: 24
+    fieldset: FLEXSPI_LUTKEY
+  - name: LUTCR
+    byte_offset: 28
+    fieldset: FLEXSPI_LUTCR
+  - name: AHBRXBUFCR0
+    byte_offset: 32
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXSPI_AHBRXBUFCR0
+  - name: FLSHCR0
+    byte_offset: 96
+    array:
+      len: 4
+      stride: 4
+    fieldset: FLEXSPI_FLSHCR0
+  - name: FLSHCR1
+    byte_offset: 112
+    array:
+      len: 4
+      stride: 4
+    fieldset: FLEXSPI_FLSHCR1
+  - name: FLSHCR2
+    byte_offset: 128
+    array:
+      len: 4
+      stride: 4
+    fieldset: FLEXSPI_FLSHCR2
+  - name: FLSHCR4
+    byte_offset: 148
+    fieldset: FLEXSPI_FLSHCR4
+  - name: IPCR0
+    byte_offset: 160
+    fieldset: FLEXSPI_IPCR0
+  - name: IPCR1
+    byte_offset: 164
+    fieldset: FLEXSPI_IPCR1
+  - name: IPCR2
+    byte_offset: 168
+    fieldset: FLEXSPI_IPCR2
+  - name: IPCMD
+    byte_offset: 176
+    fieldset: FLEXSPI_IPCMD
+  - name: DLPR
+    byte_offset: 180
+    fieldset: FLEXSPI_DLPR
+  - name: IPRXFCR
+    byte_offset: 184
+    fieldset: FLEXSPI_IPRXFCR
+  - name: IPTXFCR
+    byte_offset: 188
+    fieldset: FLEXSPI_IPTXFCR
+  - name: DLLCR
+    byte_offset: 192
+    array:
+      len: 2
+      stride: 4
+    fieldset: FLEXSPI_DLLCR
+  - name: STS0
+    byte_offset: 224
+    fieldset: FLEXSPI_STS0
+  - name: STS1
+    byte_offset: 228
+    fieldset: FLEXSPI_STS1
+  - name: STS2
+    byte_offset: 232
+    fieldset: FLEXSPI_STS2
+  - name: AHBSPNDSTS
+    byte_offset: 236
+    fieldset: FLEXSPI_AHBSPNDSTS
+  - name: IPRXFSTS
+    byte_offset: 240
+    fieldset: FLEXSPI_IPRXFSTS
+  - name: IPTXFSTS
+    byte_offset: 244
+    fieldset: FLEXSPI_IPTXFSTS
+  - name: RFDR
+    byte_offset: 256
+    array:
+      len: 32
+      stride: 4
+    fieldset: FLEXSPI_RFDR
+  - name: TFDR
+    byte_offset: 384
+    array:
+      len: 32
+      stride: 4
+    fieldset: FLEXSPI_TFDR
+  - name: LUT
+    byte_offset: 512
+    array:
+      len: 128
+      stride: 4
+    fieldset: FLEXSPI_LUT
+  - name: IPSNSZSTART0
+    byte_offset: 1072
+  - name: IPSNSZEND0
+    byte_offset: 1076
+  - name: IPSNSZSTART1
+    byte_offset: 1080
+  - name: IPSNSZEND1
+    byte_offset: 1084
+  - name: AHBBUFREGIONSTART0
+    byte_offset: 1088
+  - name: AHBBUFREGIONEND0
+    byte_offset: 1092
+  - name: AHBBUFREGIONSTART1
+    byte_offset: 1096
+  - name: AHBBUFREGIONEND1
+    byte_offset: 1100
+  - name: AHBBUFREGIONSTART2
+    byte_offset: 1104
+  - name: AHBBUFREGIONEND2
+    byte_offset: 1108
+  - name: AHBBUFREGIONSTART3
+    byte_offset: 1112
+  - name: AHBBUFREGIONEND3
+    byte_offset: 1116
+fieldset/FLEXSPI_MCR0:
+  description: ''
+  fields:
+  - name: SWRESET
+    bit_offset: 0
+    bit_size: 1
+  - name: MDIS
+    bit_offset: 1
+    bit_size: 1
+  - name: RXCLKSRC
+    bit_offset: 4
+    bit_size: 2
+  - name: ARDFEN
+    bit_offset: 6
+    bit_size: 1
+  - name: ATDFEN
+    bit_offset: 7
+    bit_size: 1
+  - name: SERCLKDIV
+    bit_offset: 8
+    bit_size: 3
+  - name: HSEN
+    bit_offset: 11
+    bit_size: 1
+  - name: DOZEEN
+    bit_offset: 12
+    bit_size: 1
+  - name: SCKFREERUNEN
+    bit_offset: 14
+    bit_size: 1
+  - name: LEARNEN
+    bit_offset: 15
+    bit_size: 1
+  - name: IPGRANTWAIT
+    bit_offset: 16
+    bit_size: 8
+  - name: AHBGRANTWAIT
+    bit_offset: 24
+    bit_size: 8
+fieldset/FLEXSPI_MCR1:
+  description: ''
+  fields:
+  - name: AHBBUSWAIT
+    bit_offset: 0
+    bit_size: 16
+    description: AHB Bus Wait
+  - name: SEQWAIT
+    bit_offset: 16
+    bit_size: 16
+    description: AHB Bus Wait
+fieldset/FLEXSPI_MCR2:
+  description: ''
+  fields:
+  - name: CLRAHBBUFOPT
+    bit_offset: 11
+    bit_size: 1
+  - name: CLRLEARNPHASE
+    bit_offset: 14
+    bit_size: 1
+  - name: SAMEDEVICEEN
+    bit_offset: 15
+    bit_size: 1
+  - name: RESUMEWAIT
+    bit_offset: 24
+    bit_size: 8
+    description: Resume Wait Duration
+fieldset/FLEXSPI_AHBCR:
+  description: ''
+  fields:
+  - name: CLRAHBTXBUF
+    bit_offset: 2
+    bit_size: 1
+  - name: CACHABLEEN
+    bit_offset: 3
+    bit_size: 1
+  - name: BUFFERABLEEN
+    bit_offset: 4
+    bit_size: 1
+  - name: PREFETCHEN
+    bit_offset: 5
+    bit_size: 1
+  - name: READADDROPT
+    bit_offset: 6
+    bit_size: 1
+  - name: RESUMEDISABLE
+    bit_offset: 7
+    bit_size: 1
+  - name: READSZALIGN
+    bit_offset: 10
+    bit_size: 1
+  - name: ALIGNMENT
+    bit_offset: 20
+    bit_size: 2
+  - name: AFLASHBASE
+    bit_offset: 27
+    bit_size: 5
+fieldset/FLEXSPI_INTEN:
+  description: ''
+  fields:
+  - name: IPCMDDONEEN
+    bit_offset: 0
+    bit_size: 1
+  - name: IPCMDGEEN
+    bit_offset: 1
+    bit_size: 1
+  - name: AHBCMDGEEN
+    bit_offset: 2
+    bit_size: 1
+  - name: IPCMDERREN
+    bit_offset: 3
+    bit_size: 1
+  - name: AHBCMDERREN
+    bit_offset: 4
+    bit_size: 1
+  - name: IPRXWAEN
+    bit_offset: 5
+    bit_size: 1
+  - name: IPTXWEEN
+    bit_offset: 6
+    bit_size: 1
+  - name: DATALEARNFAILEN
+    bit_offset: 7
+    bit_size: 1
+  - name: SCKSTOPBYRDEN
+    bit_offset: 8
+    bit_size: 1
+  - name: SCKSTOPBYWREN
+    bit_offset: 9
+    bit_size: 1
+  - name: AHBBUSERROREN
+    bit_offset: 10
+    bit_size: 1
+  - name: SEQTIMEOUTEN
+    bit_offset: 11
+    bit_size: 1
+  - name: KEYDONEEN
+    bit_offset: 12
+    bit_size: 1
+  - name: KEYERROREN
+    bit_offset: 13
+    bit_size: 1
+  - name: IPCMDSECUREVIOEN
+    bit_offset: 16
+    bit_size: 1
+fieldset/FLEXSPI_INTR:
+  description: ''
+  fields:
+  - name: IPCMDDONE
+    bit_offset: 0
+    bit_size: 1
+  - name: IPCMDGE
+    bit_offset: 1
+    bit_size: 1
+  - name: AHBCMDGE
+    bit_offset: 2
+    bit_size: 1
+  - name: IPCMDERR
+    bit_offset: 3
+    bit_size: 1
+  - name: AHBCMDERR
+    bit_offset: 4
+    bit_size: 1
+  - name: IPRXWA
+    bit_offset: 5
+    bit_size: 1
+  - name: IPTXWE
+    bit_offset: 6
+    bit_size: 1
+  - name: DATALEARNFAIL
+    bit_offset: 7
+    bit_size: 1
+  - name: SCKSTOPBYRD
+    bit_offset: 8
+    bit_size: 1
+  - name: SCKSTOPBYWR
+    bit_offset: 9
+    bit_size: 1
+  - name: AHBBUSERROR
+    bit_offset: 10
+    bit_size: 1
+  - name: SEQTIMEOUT
+    bit_offset: 11
+    bit_size: 1
+  - name: KEYDONE
+    bit_offset: 12
+    bit_size: 1
+  - name: KEYERROR
+    bit_offset: 13
+    bit_size: 1
+    description: OTFAD key blob processing done interrupt.
+  - name: IPCMDSECUREVIO
+    bit_offset: 16
+    bit_size: 1
+fieldset/FLEXSPI_LUTKEY:
+  description: ''
+  fields:
+  - name: KEY
+    bit_offset: 0
+    bit_size: 32
+    description: LUT Key
+fieldset/FLEXSPI_LUTCR:
+  description: ''
+  fields:
+  - name: LOCK
+    bit_offset: 0
+    bit_size: 1
+  - name: UNLOCK
+    bit_offset: 1
+    bit_size: 1
+  - name: PROTECT
+    bit_offset: 2
+    bit_size: 1
+fieldset/FLEXSPI_AHBRXBUFCR0:
+  description: ''
+  fields:
+  - name: BUFSZ
+    bit_offset: 0
+    bit_size: 9
+    description: AHB Receive Buffer Size
+  - name: MSTRID
+    bit_offset: 16
+    bit_size: 4
+    description: AHB Receive Buffer Size
+  - name: PRIORITY
+    bit_offset: 24
+    bit_size: 3
+    description: AHB Controller ID
+  - name: REGIONEN
+    bit_offset: 30
+    bit_size: 1
+  - name: PREFETCHEN
+    bit_offset: 31
+    bit_size: 1
+fieldset/FLEXSPI_FLSHCR0:
+  description: ''
+  fields:
+  - name: FLSHSZ
+    bit_offset: 0
+    bit_size: 23
+    description: Flash Size in KB
+  - name: ADDRSHIFT
+    bit_offset: 29
+    bit_size: 1
+    description: Flash Size in KB
+fieldset/FLEXSPI_FLSHCR1:
+  description: ''
+  fields:
+  - name: TCSS
+    bit_offset: 0
+    bit_size: 5
+    description: Serial Flash CS Setup Time
+  - name: TCSH
+    bit_offset: 5
+    bit_size: 5
+    description: Serial Flash CS Setup Time
+  - name: WA
+    bit_offset: 10
+    bit_size: 1
+    description: Serial Flash CS Hold Time
+  - name: CAS
+    bit_offset: 11
+    bit_size: 4
+    description: Column Address Size
+  - name: CSINTERVALUNIT
+    bit_offset: 15
+    bit_size: 1
+    description: Column Address Size
+  - name: CSINTERVAL
+    bit_offset: 16
+    bit_size: 16
+    description: Chip Select Interval
+fieldset/FLEXSPI_FLSHCR2:
+  description: ''
+  fields:
+  - name: ARDSEQID
+    bit_offset: 0
+    bit_size: 5
+  - name: ARDSEQNUM
+    bit_offset: 5
+    bit_size: 3
+  - name: AWRSEQID
+    bit_offset: 8
+    bit_size: 5
+  - name: AWRSEQNUM
+    bit_offset: 13
+    bit_size: 3
+  - name: AWRWAIT
+    bit_offset: 16
+    bit_size: 12
+    description: AHB Write Wait
+  - name: AWRWAITUNIT
+    bit_offset: 28
+    bit_size: 3
+    description: AHB Write Wait
+  - name: CLRINSTRPTR
+    bit_offset: 31
+    bit_size: 1
+fieldset/FLEXSPI_FLSHCR4:
+  description: ''
+  fields:
+  - name: WMOPT1
+    bit_offset: 0
+    bit_size: 1
+  - name: WMOPT2
+    bit_offset: 1
+    bit_size: 1
+  - name: WMENA
+    bit_offset: 2
+    bit_size: 1
+fieldset/FLEXSPI_IPCR0:
+  description: ''
+  fields:
+  - name: SFAR
+    bit_offset: 0
+    bit_size: 32
+    description: Serial Flash Address
+fieldset/FLEXSPI_IPCR1:
+  description: ''
+  fields:
+  - name: IDATSZ
+    bit_offset: 0
+    bit_size: 16
+  - name: ISEQID
+    bit_offset: 16
+    bit_size: 5
+  - name: ISEQNUM
+    bit_offset: 24
+    bit_size: 3
+    description: Sequence Index in LUT for IP command.
+fieldset/FLEXSPI_IPCR2:
+  description: ''
+  fields:
+  - name: IPBLKAHBREQ
+    bit_offset: 0
+    bit_size: 1
+  - name: IPBLKAHBACK
+    bit_offset: 1
+    bit_size: 1
+  - name: IPBLKALLAHB
+    bit_offset: 2
+    bit_size: 1
+fieldset/FLEXSPI_IPCMD:
+  description: ''
+  fields:
+  - name: TRG
+    bit_offset: 0
+    bit_size: 1
+fieldset/FLEXSPI_DLPR:
+  description: ''
+  fields:
+  - name: DLP
+    bit_offset: 0
+    bit_size: 32
+    description: Data Learning Pattern
+fieldset/FLEXSPI_IPRXFCR:
+  description: ''
+  fields:
+  - name: CLRIPRXF
+    bit_offset: 0
+    bit_size: 1
+  - name: RXDMAEN
+    bit_offset: 1
+    bit_size: 1
+  - name: RXWMRK
+    bit_offset: 2
+    bit_size: 6
+fieldset/FLEXSPI_IPTXFCR:
+  description: ''
+  fields:
+  - name: CLRIPTXF
+    bit_offset: 0
+    bit_size: 1
+  - name: TXDMAEN
+    bit_offset: 1
+    bit_size: 1
+  - name: TXWMRK
+    bit_offset: 2
+    bit_size: 7
+    description: Transmit Watermark Level
+fieldset/FLEXSPI_DLLCR:
+  description: ''
+  fields:
+  - name: DLLEN
+    bit_offset: 0
+    bit_size: 1
+  - name: DLLRESET
+    bit_offset: 1
+    bit_size: 1
+  - name: SLVDLYTARGET
+    bit_offset: 3
+    bit_size: 4
+    description: Target Delay Line
+  - name: OVRDEN
+    bit_offset: 8
+    bit_size: 1
+    description: Target Delay Line
+  - name: OVRDVAL
+    bit_offset: 9
+    bit_size: 6
+  - name: REFPHASEGAP
+    bit_offset: 15
+    bit_size: 2
+    description: Target Clock Delay Line Override Value
+fieldset/FLEXSPI_STS0:
+  description: ''
+  fields:
+  - name: SEQIDLE
+    bit_offset: 0
+    bit_size: 1
+  - name: ARBIDLE
+    bit_offset: 1
+    bit_size: 1
+  - name: ARBCMDSRC
+    bit_offset: 2
+    bit_size: 2
+  - name: DATALEARNPHASEA
+    bit_offset: 4
+    bit_size: 4
+fieldset/FLEXSPI_STS1:
+  description: ''
+  fields:
+  - name: AHBCMDERRID
+    bit_offset: 0
+    bit_size: 5
+    description: AHB Command Error ID
+  - name: AHBCMDERRCODE
+    bit_offset: 8
+    bit_size: 4
+    description: AHB Command Error ID
+  - name: IPCMDERRID
+    bit_offset: 16
+    bit_size: 5
+    description: IP Command Error ID
+  - name: IPCMDERRCODE
+    bit_offset: 24
+    bit_size: 4
+    description: IP Command Error ID
+fieldset/FLEXSPI_STS2:
+  description: ''
+  fields:
+  - name: ASLVLOCK
+    bit_offset: 0
+    bit_size: 1
+  - name: AREFLOCK
+    bit_offset: 1
+    bit_size: 1
+  - name: ASLVSEL
+    bit_offset: 2
+    bit_size: 6
+  - name: AREFSEL
+    bit_offset: 8
+    bit_size: 6
+  - name: BSLVLOCK
+    bit_offset: 16
+    bit_size: 1
+  - name: BREFLOCK
+    bit_offset: 17
+    bit_size: 1
+  - name: BSLVSEL
+    bit_offset: 18
+    bit_size: 6
+  - name: BREFSEL
+    bit_offset: 24
+    bit_size: 6
+fieldset/FLEXSPI_AHBSPNDSTS:
+  description: ''
+  fields:
+  - name: ACTIVE
+    bit_offset: 0
+    bit_size: 1
+  - name: BUFID
+    bit_offset: 1
+    bit_size: 3
+  - name: DATLFT
+    bit_offset: 16
+    bit_size: 16
+    description: Data Left
+fieldset/FLEXSPI_IPRXFSTS:
+  description: ''
+  fields:
+  - name: FILL
+    bit_offset: 0
+    bit_size: 8
+    description: Fill Level of IP Receive FIFO
+  - name: RDCNTR
+    bit_offset: 16
+    bit_size: 16
+    description: Fill Level of IP Receive FIFO
+fieldset/FLEXSPI_IPTXFSTS:
+  description: ''
+  fields:
+  - name: FILL
+    bit_offset: 0
+    bit_size: 8
+    description: Fill Level of IP Transmit FIFO
+  - name: WRCNTR
+    bit_offset: 16
+    bit_size: 16
+    description: Fill Level of IP Transmit FIFO
+fieldset/FLEXSPI_RFDR:
+  description: ''
+  fields:
+  - name: RXDATA
+    bit_offset: 0
+    bit_size: 32
+    description: Receive Data
+fieldset/FLEXSPI_TFDR:
+  description: ''
+  fields:
+  - name: TXDATA
+    bit_offset: 0
+    bit_size: 32
+    description: Transmit Data
+fieldset/FLEXSPI_LUT:
+  description: ''
+  fields:
+  - name: OPERAND0
+    bit_offset: 0
+    bit_size: 8
+    description: OPERAND0
+  - name: OPCODE0
+    bit_offset: 10
+    bit_size: 6
+    description: NUM_PADS0
+  - name: OPERAND1
+    bit_offset: 16
+    bit_size: 8
+    description: OPCODE
+  - name: OPCODE1
+    bit_offset: 26
+    bit_size: 6
+    description: NUM_PADS1
+fieldset/FLEXSPI_LUT_NUM:
+  description: ''
+  fields:
+  - name: PADS0
+    bit_offset: 8
+    bit_size: 2
+    description: OPERAND0
+  - name: PADS1
+    bit_offset: 24
+    bit_size: 2
+    description: OPERAND1
+fieldset/FLEXSPI_IPSNSZSTART0_start:
+  description: ''
+  fields:
+  - name: address
+    bit_offset: 12
+    bit_size: 20
+fieldset/FLEXSPI_IPSNSZEND0_end:
+  description: ''
+  fields:
+  - name: address
+    bit_offset: 12
+    bit_size: 20
+fieldset/FLEXSPI_IPSNSZSTART1_start:
+  description: ''
+  fields:
+  - name: address
+    bit_offset: 12
+    bit_size: 20
+fieldset/FLEXSPI_IPSNSZEND1_end:
+  description: ''
+  fields:
+  - name: address
+    bit_offset: 12
+    bit_size: 20
+fieldset/FLEXSPI_AHBBUFREGIONSTART0_START:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 12
+    bit_size: 20
+fieldset/FLEXSPI_AHBBUFREGIONEND0_END:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 12
+    bit_size: 20
+fieldset/FLEXSPI_AHBBUFREGIONSTART1_START:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 12
+    bit_size: 20
+fieldset/FLEXSPI_AHBBUFREGIONEND1_END:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 12
+    bit_size: 20
+fieldset/FLEXSPI_AHBBUFREGIONSTART2_START:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 12
+    bit_size: 20
+fieldset/FLEXSPI_AHBBUFREGIONEND2_END:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 12
+    bit_size: 20
+fieldset/FLEXSPI_AHBBUFREGIONSTART3_START:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 12
+    bit_size: 20
+fieldset/FLEXSPI_AHBBUFREGIONEND3_END:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 12
+    bit_size: 20

@@ -1,0 +1,26 @@
+block/ANALOG_PMRO:
+  description: ''
+  items:
+  - name: CTRL1
+    byte_offset: 0
+    fieldset: ANALOG_PMRO_CTRL1
+  - name: CTRL2
+    byte_offset: 4
+    fieldset: ANALOG_PMRO_CTRL2
+fieldset/ANALOG_PMRO_CTRL1:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 18
+    description: 18 Dut Ring Oscillator enable
+  - name: DIV
+    bit_offset: 24
+    bit_size: 3
+    description: 18 Dut Ring Oscillator enable
+fieldset/ANALOG_PMRO_CTRL2:
+  description: ''
+  fields:
+  - name: CLKGEN
+    bit_offset: 0
+    bit_size: 18

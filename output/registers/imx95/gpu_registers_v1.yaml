@@ -1,0 +1,1774 @@
+block/GPU_REGISTERS:
+  description: ''
+  items:
+  - name: GPU_ID
+    byte_offset: 0
+  - name: L2_FEATURES
+    byte_offset: 4
+    fieldset: GPU_REGISTERS_L2_FEATURES
+  - name: CORE_FEATURES
+    byte_offset: 8
+  - name: TILER_FEATURES
+    byte_offset: 12
+  - name: MEM_FEATURES
+    byte_offset: 16
+  - name: MMU_FEATURES
+    byte_offset: 20
+  - name: AS_PRESENT
+    byte_offset: 24
+    fieldset: GPU_REGISTERS_AS_PRESENT
+  - name: CSF_ID
+    byte_offset: 28
+  - name: GPU_IRQ_RAWSTAT
+    byte_offset: 32
+  - name: GPU_IRQ_CLEAR
+    byte_offset: 36
+  - name: GPU_IRQ_MASK
+    byte_offset: 40
+  - name: GPU_IRQ_STATUS
+    byte_offset: 44
+  - name: GPU_COMMAND
+    byte_offset: 48
+    fieldset: GPU_REGISTERS_GPU_COMMAND
+  - name: GPU_STATUS
+    byte_offset: 52
+  - name: GPU_FAULTSTATUS
+    byte_offset: 60
+    fieldset: GPU_REGISTERS_GPU_FAULTSTATUS
+  - name: GPU_FAULTADDRESS_LO
+    byte_offset: 64
+    fieldset: GPU_REGISTERS_GPU_FAULTADDRESS_LO
+  - name: GPU_FAULTADDRESS_HI
+    byte_offset: 68
+    fieldset: GPU_REGISTERS_GPU_FAULTADDRESS_HI
+  - name: L2_CONFIG
+    byte_offset: 72
+  - name: PWR_KEY
+    byte_offset: 80
+    fieldset: GPU_REGISTERS_PWR_KEY
+  - name: PWR_OVERRIDE0
+    byte_offset: 84
+  - name: PWR_OVERRIDE1
+    byte_offset: 88
+  - name: TIMESTAMP_OFFSET_LO
+    byte_offset: 136
+    fieldset: GPU_REGISTERS_TIMESTAMP_OFFSET_LO
+  - name: TIMESTAMP_OFFSET_HI
+    byte_offset: 140
+    fieldset: GPU_REGISTERS_TIMESTAMP_OFFSET_HI
+  - name: CYCLE_COUNT_LO
+    byte_offset: 144
+    fieldset: GPU_REGISTERS_CYCLE_COUNT_LO
+  - name: CYCLE_COUNT_HI
+    byte_offset: 148
+    fieldset: GPU_REGISTERS_CYCLE_COUNT_HI
+  - name: TIMESTAMP_LO
+    byte_offset: 152
+    fieldset: GPU_REGISTERS_TIMESTAMP_LO
+  - name: TIMESTAMP_HI
+    byte_offset: 156
+    fieldset: GPU_REGISTERS_TIMESTAMP_HI
+  - name: THREAD_MAX_THREADS
+    byte_offset: 160
+    fieldset: GPU_REGISTERS_THREAD_MAX_THREADS
+  - name: THREAD_MAX_WORKGROUP_SIZE
+    byte_offset: 164
+    fieldset: GPU_REGISTERS_THREAD_MAX_WORKGROUP_SIZE
+  - name: THREAD_MAX_BARRIER_SIZE
+    byte_offset: 168
+    fieldset: GPU_REGISTERS_THREAD_MAX_BARRIER_SIZE
+  - name: THREAD_FEATURES
+    byte_offset: 172
+  - name: TEXTURE_FEATURES_0
+    byte_offset: 176
+    fieldset: GPU_REGISTERS_TEXTURE_FEATURES_0
+  - name: TEXTURE_FEATURES_1
+    byte_offset: 180
+  - name: TEXTURE_FEATURES_2
+    byte_offset: 184
+  - name: TEXTURE_FEATURES_3
+    byte_offset: 188
+  - name: SHADER_PRESENT_LO
+    byte_offset: 256
+    fieldset: GPU_REGISTERS_SHADER_PRESENT_LO
+  - name: SHADER_PRESENT_HI
+    byte_offset: 260
+    fieldset: GPU_REGISTERS_SHADER_PRESENT_HI
+  - name: TILER_PRESENT_LO
+    byte_offset: 272
+    fieldset: GPU_REGISTERS_TILER_PRESENT_LO
+  - name: TILER_PRESENT_HI
+    byte_offset: 276
+    fieldset: GPU_REGISTERS_TILER_PRESENT_HI
+  - name: L2_PRESENT_LO
+    byte_offset: 288
+    fieldset: GPU_REGISTERS_L2_PRESENT_LO
+  - name: L2_PRESENT_HI
+    byte_offset: 292
+    fieldset: GPU_REGISTERS_L2_PRESENT_HI
+  - name: SHADER_READY_LO
+    byte_offset: 320
+    fieldset: GPU_REGISTERS_SHADER_READY_LO
+  - name: SHADER_READY_HI
+    byte_offset: 324
+    fieldset: GPU_REGISTERS_SHADER_READY_HI
+  - name: TILER_READY_LO
+    byte_offset: 336
+    fieldset: GPU_REGISTERS_TILER_READY_LO
+  - name: TILER_READY_HI
+    byte_offset: 340
+    fieldset: GPU_REGISTERS_TILER_READY_HI
+  - name: L2_READY_LO
+    byte_offset: 352
+    fieldset: GPU_REGISTERS_L2_READY_LO
+  - name: L2_READY_HI
+    byte_offset: 356
+    fieldset: GPU_REGISTERS_L2_READY_HI
+  - name: SHADER_PWRON_LO
+    byte_offset: 384
+    fieldset: GPU_REGISTERS_SHADER_PWRON_LO
+  - name: SHADER_PWRON_HI
+    byte_offset: 388
+    fieldset: GPU_REGISTERS_SHADER_PWRON_HI
+  - name: TILER_PWRON_LO
+    byte_offset: 400
+    fieldset: GPU_REGISTERS_TILER_PWRON_LO
+  - name: TILER_PWRON_HI
+    byte_offset: 404
+    fieldset: GPU_REGISTERS_TILER_PWRON_HI
+  - name: L2_PWRON_LO
+    byte_offset: 416
+    fieldset: GPU_REGISTERS_L2_PWRON_LO
+  - name: L2_PWRON_HI
+    byte_offset: 420
+    fieldset: GPU_REGISTERS_L2_PWRON_HI
+  - name: SHADER_PWROFF_LO
+    byte_offset: 448
+    fieldset: GPU_REGISTERS_SHADER_PWROFF_LO
+  - name: SHADER_PWROFF_HI
+    byte_offset: 452
+    fieldset: GPU_REGISTERS_SHADER_PWROFF_HI
+  - name: TILER_PWROFF_LO
+    byte_offset: 464
+    fieldset: GPU_REGISTERS_TILER_PWROFF_LO
+  - name: TILER_PWROFF_HI
+    byte_offset: 468
+    fieldset: GPU_REGISTERS_TILER_PWROFF_HI
+  - name: L2_PWROFF_LO
+    byte_offset: 480
+    fieldset: GPU_REGISTERS_L2_PWROFF_LO
+  - name: L2_PWROFF_HI
+    byte_offset: 484
+    fieldset: GPU_REGISTERS_L2_PWROFF_HI
+  - name: SHADER_PWRTRANS_LO
+    byte_offset: 512
+    fieldset: GPU_REGISTERS_SHADER_PWRTRANS_LO
+  - name: SHADER_PWRTRANS_HI
+    byte_offset: 516
+    fieldset: GPU_REGISTERS_SHADER_PWRTRANS_HI
+  - name: TILER_PWRTRANS_LO
+    byte_offset: 528
+    fieldset: GPU_REGISTERS_TILER_PWRTRANS_LO
+  - name: TILER_PWRTRANS_HI
+    byte_offset: 532
+    fieldset: GPU_REGISTERS_TILER_PWRTRANS_HI
+  - name: L2_PWRTRANS_LO
+    byte_offset: 544
+    fieldset: GPU_REGISTERS_L2_PWRTRANS_LO
+  - name: L2_PWRTRANS_HI
+    byte_offset: 548
+    fieldset: GPU_REGISTERS_L2_PWRTRANS_HI
+  - name: SHADER_PWRACTIVE_LO
+    byte_offset: 576
+    fieldset: GPU_REGISTERS_SHADER_PWRACTIVE_LO
+  - name: SHADER_PWRACTIVE_HI
+    byte_offset: 580
+    fieldset: GPU_REGISTERS_SHADER_PWRACTIVE_HI
+  - name: TILER_PWRACTIVE_LO
+    byte_offset: 592
+    fieldset: GPU_REGISTERS_TILER_PWRACTIVE_LO
+  - name: TILER_PWRACTIVE_HI
+    byte_offset: 596
+    fieldset: GPU_REGISTERS_TILER_PWRACTIVE_HI
+  - name: L2_PWRACTIVE_LO
+    byte_offset: 608
+    fieldset: GPU_REGISTERS_L2_PWRACTIVE_LO
+  - name: L2_PWRACTIVE_HI
+    byte_offset: 612
+    fieldset: GPU_REGISTERS_L2_PWRACTIVE_HI
+  - name: REVIDR
+    byte_offset: 640
+    fieldset: GPU_REGISTERS_REVIDR
+  - name: COHERENCY_FEATURES
+    byte_offset: 768
+    fieldset: GPU_REGISTERS_COHERENCY_FEATURES
+  - name: COHERENCY_ENABLE
+    byte_offset: 772
+  - name: MCU_CONTROL
+    byte_offset: 1792
+    fieldset: GPU_REGISTERS_MCU_CONTROL
+  - name: MCU_STATUS
+    byte_offset: 1796
+    fieldset: GPU_REGISTERS_MCU_STATUS
+  - name: JOB_IRQ_RAWSTAT
+    byte_offset: 4096
+    fieldset: GPU_REGISTERS_JOB_IRQ_RAWSTAT
+  - name: JOB_IRQ_CLEAR
+    byte_offset: 4100
+    fieldset: GPU_REGISTERS_JOB_IRQ_CLEAR
+  - name: JOB_IRQ_MASK
+    byte_offset: 4104
+    fieldset: GPU_REGISTERS_JOB_IRQ_MASK
+  - name: JOB_IRQ_STATUS
+    byte_offset: 4108
+    fieldset: GPU_REGISTERS_JOB_IRQ_STATUS
+  - name: IRQ_RAWSTAT
+    byte_offset: 8192
+  - name: IRQ_CLEAR
+    byte_offset: 8196
+  - name: IRQ_MASK
+    byte_offset: 8200
+  - name: IRQ_STATUS
+    byte_offset: 8204
+  - name: TRANSTAB_LO
+    byte_offset: 9216
+    fieldset: GPU_REGISTERS_TRANSTAB_LO
+  - name: TRANSTAB_HI
+    byte_offset: 9220
+    fieldset: GPU_REGISTERS_TRANSTAB_HI
+  - name: MEMATTR_LO
+    byte_offset: 9224
+    fieldset: GPU_REGISTERS_MEMATTR_LO
+  - name: MEMATTR_HI
+    byte_offset: 9228
+    fieldset: GPU_REGISTERS_MEMATTR_HI
+  - name: LOCKADDR_LO
+    byte_offset: 9232
+  - name: LOCKADDR_HI
+    byte_offset: 9236
+  - name: COMMAND
+    byte_offset: 9240
+    fieldset: GPU_REGISTERS_COMMAND
+  - name: FAULTSTATUS
+    byte_offset: 9244
+  - name: FAULTADDRESS_LO
+    byte_offset: 9248
+  - name: FAULTADDRESS_HI
+    byte_offset: 9252
+  - name: STATUS
+    byte_offset: 9256
+  - name: TRANSCFG_LO
+    byte_offset: 9264
+    fieldset: GPU_REGISTERS_TRANSCFG_LO
+  - name: TRANSCFG_HI
+    byte_offset: 9268
+    fieldset: GPU_REGISTERS_TRANSCFG_HI
+  - name: FAULTEXTRA_LO
+    byte_offset: 9272
+  - name: FAULTEXTRA_HI
+    byte_offset: 9276
+fieldset/GPU_REGISTERS_GPU_ID_VERSION:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 4
+  - name: MINOR
+    bit_offset: 4
+    bit_size: 8
+    description: VERSION_MINOR
+  - name: MAJOR
+    bit_offset: 12
+    bit_size: 4
+    description: VERSION_MAJOR
+fieldset/GPU_REGISTERS_GPU_ID_PRODUCT:
+  description: ''
+  fields:
+  - name: MAJOR
+    bit_offset: 16
+    bit_size: 4
+    description: PRODUCT_MAJOR
+fieldset/GPU_REGISTERS_GPU_ID_ARCH:
+  description: ''
+  fields:
+  - name: REV
+    bit_offset: 20
+    bit_size: 4
+    description: ARCH_REV
+  - name: MINOR
+    bit_offset: 24
+    bit_size: 4
+    description: ARCH_REV
+  - name: MAJOR
+    bit_offset: 28
+    bit_size: 4
+    description: ARCH_MINOR
+fieldset/GPU_REGISTERS_L2_FEATURES_LINE:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 8
+    description: LINE_SIZE
+fieldset/GPU_REGISTERS_L2_FEATURES:
+  description: ''
+  fields:
+  - name: ASSOCIATIVITY
+    bit_offset: 8
+    bit_size: 8
+    description: LINE_SIZE
+fieldset/GPU_REGISTERS_L2_FEATURES_CACHE:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 16
+    bit_size: 8
+    description: CACHE_SIZE
+fieldset/GPU_REGISTERS_L2_FEATURES_BUS:
+  description: ''
+  fields:
+  - name: WIDTH
+    bit_offset: 24
+    bit_size: 8
+    description: BUS_WIDTH
+fieldset/GPU_REGISTERS_CORE_FEATURES_CORE:
+  description: ''
+  fields:
+  - name: VARIANT
+    bit_offset: 0
+    bit_size: 8
+fieldset/GPU_REGISTERS_CORE_FEATURES_reserved_word0_bit8:
+  description: ''
+  fields:
+  - name: width24
+    bit_offset: 8
+    bit_size: 24
+fieldset/GPU_REGISTERS_TILER_FEATURES_BIN:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 6
+    description: BIN_SIZE
+fieldset/GPU_REGISTERS_TILER_FEATURES_reserved_word0_bit6:
+  description: ''
+  fields:
+  - name: width2
+    bit_offset: 6
+    bit_size: 2
+fieldset/GPU_REGISTERS_TILER_FEATURES_MAX:
+  description: ''
+  fields:
+  - name: LEVELS
+    bit_offset: 8
+    bit_size: 4
+    description: MAX_LEVELS
+fieldset/GPU_REGISTERS_TILER_FEATURES_reserved_word0_bit12:
+  description: ''
+  fields:
+  - name: width20
+    bit_offset: 12
+    bit_size: 20
+fieldset/GPU_REGISTERS_MEM_FEATURES_COHERENT_CORE:
+  description: ''
+  fields:
+  - name: GROUP
+    bit_offset: 0
+    bit_size: 1
+fieldset/GPU_REGISTERS_MEM_FEATURES_COHERENT_SUPER:
+  description: ''
+  fields:
+  - name: GROUP
+    bit_offset: 1
+    bit_size: 1
+fieldset/GPU_REGISTERS_MEM_FEATURES_reserved_word0_bit2:
+  description: ''
+  fields:
+  - name: width6
+    bit_offset: 2
+    bit_size: 6
+fieldset/GPU_REGISTERS_MEM_FEATURES_L2:
+  description: ''
+  fields:
+  - name: SLICES
+    bit_offset: 8
+    bit_size: 4
+    description: L2_SLICES
+fieldset/GPU_REGISTERS_MEM_FEATURES_reserved_word0_bit12:
+  description: ''
+  fields:
+  - name: width20
+    bit_offset: 12
+    bit_size: 20
+fieldset/GPU_REGISTERS_MMU_FEATURES_VA:
+  description: ''
+  fields:
+  - name: BITS
+    bit_offset: 0
+    bit_size: 8
+    description: VA_BITS
+fieldset/GPU_REGISTERS_MMU_FEATURES_PA:
+  description: ''
+  fields:
+  - name: BITS
+    bit_offset: 8
+    bit_size: 8
+    description: VA_BITS
+fieldset/GPU_REGISTERS_MMU_FEATURES_reserved_word0_bit16:
+  description: ''
+  fields:
+  - name: width16
+    bit_offset: 16
+    bit_size: 16
+    description: PA_BITS
+fieldset/GPU_REGISTERS_AS_PRESENT:
+  description: ''
+  fields:
+  - name: present
+    bit_offset: 0
+    bit_size: 32
+    description: present
+fieldset/GPU_REGISTERS_CSF_ID_MCU:
+  description: ''
+  fields:
+  - name: REV
+    bit_offset: 0
+    bit_size: 4
+    description: MCU_REV
+  - name: MINOR
+    bit_offset: 4
+    bit_size: 6
+    description: MCU_REV
+  - name: MAJOR
+    bit_offset: 10
+    bit_size: 6
+    description: MCU_MINOR
+fieldset/GPU_REGISTERS_CSF_ID_CSHW:
+  description: ''
+  fields:
+  - name: REV
+    bit_offset: 16
+    bit_size: 4
+    description: MCU_MAJOR
+  - name: MINOR
+    bit_offset: 20
+    bit_size: 6
+    description: CSHW_REV
+  - name: MAJOR
+    bit_offset: 26
+    bit_size: 6
+    description: CSHW_MINOR
+fieldset/GPU_REGISTERS_GPU_IRQ_RAWSTAT_GPU:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 0
+    bit_size: 1
+    description: GPU_FAULT
+fieldset/GPU_REGISTERS_GPU_IRQ_RAWSTAT_GPU_PROTECTED:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 1
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_RAWSTAT_reserved_word0_bit2:
+  description: ''
+  fields:
+  - name: width6
+    bit_offset: 2
+    bit_size: 6
+fieldset/GPU_REGISTERS_GPU_IRQ_RAWSTAT_RESET:
+  description: ''
+  fields:
+  - name: COMPLETED
+    bit_offset: 8
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_RAWSTAT_POWER_CHANGED:
+  description: ''
+  fields:
+  - name: SINGLE
+    bit_offset: 9
+    bit_size: 1
+  - name: ALL
+    bit_offset: 10
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_RAWSTAT_reserved_word0_bit11:
+  description: ''
+  fields:
+  - name: width6
+    bit_offset: 11
+    bit_size: 6
+fieldset/GPU_REGISTERS_GPU_IRQ_RAWSTAT_CLEAN_CACHES:
+  description: ''
+  fields:
+  - name: COMPLETED
+    bit_offset: 17
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_RAWSTAT_DOORBELL:
+  description: ''
+  fields:
+  - name: MIRROR
+    bit_offset: 18
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_RAWSTAT_MCU:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 19
+    bit_size: 1
+    description: MCU_STATUS
+fieldset/GPU_REGISTERS_GPU_IRQ_RAWSTAT_reserved_word0_bit20:
+  description: ''
+  fields:
+  - name: width12
+    bit_offset: 20
+    bit_size: 12
+fieldset/GPU_REGISTERS_GPU_IRQ_CLEAR_GPU:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 0
+    bit_size: 1
+    description: GPU_FAULT
+fieldset/GPU_REGISTERS_GPU_IRQ_CLEAR_GPU_PROTECTED:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 1
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_CLEAR_reserved_word0_bit2:
+  description: ''
+  fields:
+  - name: width6
+    bit_offset: 2
+    bit_size: 6
+fieldset/GPU_REGISTERS_GPU_IRQ_CLEAR_RESET:
+  description: ''
+  fields:
+  - name: COMPLETED
+    bit_offset: 8
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_CLEAR_POWER_CHANGED:
+  description: ''
+  fields:
+  - name: SINGLE
+    bit_offset: 9
+    bit_size: 1
+  - name: ALL
+    bit_offset: 10
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_CLEAR_reserved_word0_bit11:
+  description: ''
+  fields:
+  - name: width6
+    bit_offset: 11
+    bit_size: 6
+fieldset/GPU_REGISTERS_GPU_IRQ_CLEAR_CLEAN_CACHES:
+  description: ''
+  fields:
+  - name: COMPLETED
+    bit_offset: 17
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_CLEAR_reserved_word0_bit18:
+  description: ''
+  fields:
+  - name: width1
+    bit_offset: 18
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_CLEAR_MCU:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 19
+    bit_size: 1
+    description: MCU_STATUS
+fieldset/GPU_REGISTERS_GPU_IRQ_CLEAR_reserved_word0_bit20:
+  description: ''
+  fields:
+  - name: width12
+    bit_offset: 20
+    bit_size: 12
+fieldset/GPU_REGISTERS_GPU_IRQ_MASK_GPU:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 0
+    bit_size: 1
+    description: GPU_FAULT
+fieldset/GPU_REGISTERS_GPU_IRQ_MASK_GPU_PROTECTED:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 1
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_MASK_reserved_word0_bit2:
+  description: ''
+  fields:
+  - name: width6
+    bit_offset: 2
+    bit_size: 6
+fieldset/GPU_REGISTERS_GPU_IRQ_MASK_RESET:
+  description: ''
+  fields:
+  - name: COMPLETED
+    bit_offset: 8
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_MASK_POWER_CHANGED:
+  description: ''
+  fields:
+  - name: SINGLE
+    bit_offset: 9
+    bit_size: 1
+  - name: ALL
+    bit_offset: 10
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_MASK_reserved_word0_bit11:
+  description: ''
+  fields:
+  - name: width6
+    bit_offset: 11
+    bit_size: 6
+fieldset/GPU_REGISTERS_GPU_IRQ_MASK_CLEAN_CACHES:
+  description: ''
+  fields:
+  - name: COMPLETED
+    bit_offset: 17
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_MASK_DOORBELL:
+  description: ''
+  fields:
+  - name: MIRROR
+    bit_offset: 18
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_MASK_MCU:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 19
+    bit_size: 1
+    description: MCU_STATUS
+fieldset/GPU_REGISTERS_GPU_IRQ_MASK_reserved_word0_bit20:
+  description: ''
+  fields:
+  - name: width12
+    bit_offset: 20
+    bit_size: 12
+fieldset/GPU_REGISTERS_GPU_IRQ_STATUS_GPU:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 0
+    bit_size: 1
+    description: GPU_FAULT
+fieldset/GPU_REGISTERS_GPU_IRQ_STATUS_GPU_PROTECTED:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 1
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_STATUS_reserved_word0_bit2:
+  description: ''
+  fields:
+  - name: width6
+    bit_offset: 2
+    bit_size: 6
+fieldset/GPU_REGISTERS_GPU_IRQ_STATUS_RESET:
+  description: ''
+  fields:
+  - name: COMPLETED
+    bit_offset: 8
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_STATUS_POWER_CHANGED:
+  description: ''
+  fields:
+  - name: SINGLE
+    bit_offset: 9
+    bit_size: 1
+  - name: ALL
+    bit_offset: 10
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_STATUS_reserved_word0_bit11:
+  description: ''
+  fields:
+  - name: width6
+    bit_offset: 11
+    bit_size: 6
+fieldset/GPU_REGISTERS_GPU_IRQ_STATUS_CLEAN_CACHES:
+  description: ''
+  fields:
+  - name: COMPLETED
+    bit_offset: 17
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_STATUS_DOORBELL:
+  description: ''
+  fields:
+  - name: MIRROR
+    bit_offset: 18
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_IRQ_STATUS_MCU:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 19
+    bit_size: 1
+    description: MCU_STATUS
+fieldset/GPU_REGISTERS_GPU_IRQ_STATUS_reserved_word0_bit20:
+  description: ''
+  fields:
+  - name: width12
+    bit_offset: 20
+    bit_size: 12
+fieldset/GPU_REGISTERS_GPU_COMMAND:
+  description: ''
+  fields:
+  - name: command
+    bit_offset: 0
+    bit_size: 8
+  - name: payload
+    bit_offset: 8
+    bit_size: 24
+    description: payload
+fieldset/GPU_REGISTERS_GPU_STATUS_GPU:
+  description: ''
+  fields:
+  - name: ACTIVE
+    bit_offset: 0
+    bit_size: 1
+    description: GPU_ACTIVE
+fieldset/GPU_REGISTERS_GPU_STATUS_PWR:
+  description: ''
+  fields:
+  - name: ACTIVE
+    bit_offset: 1
+    bit_size: 1
+    description: PWR_ACTIVE
+fieldset/GPU_REGISTERS_GPU_STATUS_reserved_word0_bit2:
+  description: ''
+  fields:
+  - name: width2
+    bit_offset: 2
+    bit_size: 2
+fieldset/GPU_REGISTERS_GPU_STATUS_PAGE:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 4
+    bit_size: 1
+    description: PAGE_FAULT
+fieldset/GPU_REGISTERS_GPU_STATUS_reserved_word0_bit5:
+  description: ''
+  fields:
+  - name: width2
+    bit_offset: 5
+    bit_size: 2
+fieldset/GPU_REGISTERS_GPU_STATUS_PROTECTED_MODE:
+  description: ''
+  fields:
+  - name: ACTIVE
+    bit_offset: 7
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_STATUS_GPU_DBG:
+  description: ''
+  fields:
+  - name: ENABLED
+    bit_offset: 8
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_STATUS_reserved_word0_bit9:
+  description: ''
+  fields:
+  - name: width22
+    bit_offset: 9
+    bit_size: 22
+fieldset/GPU_REGISTERS_GPU_STATUS_reserved_word0_bit31:
+  description: ''
+  fields:
+  - name: width1
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_FAULTSTATUS_EXCEPTION:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 8
+fieldset/GPU_REGISTERS_GPU_FAULTSTATUS_ACCESS:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 8
+    bit_size: 2
+fieldset/GPU_REGISTERS_GPU_FAULTSTATUS_ADDRESS:
+  description: ''
+  fields:
+  - name: VALID
+    bit_offset: 10
+    bit_size: 1
+fieldset/GPU_REGISTERS_GPU_FAULTSTATUS_JASID:
+  description: ''
+  fields:
+  - name: VALID
+    bit_offset: 11
+    bit_size: 1
+    description: JASID_VALID
+fieldset/GPU_REGISTERS_GPU_FAULTSTATUS:
+  description: ''
+  fields:
+  - name: JASID
+    bit_offset: 12
+    bit_size: 4
+    description: JASID
+fieldset/GPU_REGISTERS_GPU_FAULTSTATUS_SOURCE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 16
+    description: JASID
+fieldset/GPU_REGISTERS_GPU_FAULTADDRESS_LO:
+  description: ''
+  fields:
+  - name: pointer
+    bit_offset: 0
+    bit_size: 32
+    description: pointer
+fieldset/GPU_REGISTERS_GPU_FAULTADDRESS_HI:
+  description: ''
+  fields:
+  - name: pointer
+    bit_offset: 0
+    bit_size: 32
+    description: pointer
+fieldset/GPU_REGISTERS_L2_CONFIG_reserved_word0_bit0:
+  description: ''
+  fields:
+  - name: width16
+    bit_offset: 0
+    bit_size: 16
+fieldset/GPU_REGISTERS_L2_CONFIG_CACHE:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 16
+    bit_size: 8
+    description: CACHE_SIZE
+fieldset/GPU_REGISTERS_L2_CONFIG_HASH:
+  description: ''
+  fields:
+  - name: FUNCTION
+    bit_offset: 24
+    bit_size: 8
+    description: CACHE_SIZE
+fieldset/GPU_REGISTERS_PWR_KEY:
+  description: ''
+  fields:
+  - name: key
+    bit_offset: 0
+    bit_size: 32
+    description: key
+fieldset/GPU_REGISTERS_PWR_OVERRIDE0_PWRUP:
+  description: ''
+  fields:
+  - name: OVERRIDE
+    bit_offset: 0
+    bit_size: 2
+fieldset/GPU_REGISTERS_PWR_OVERRIDE0_ISOLATE:
+  description: ''
+  fields:
+  - name: OVERRIDE
+    bit_offset: 2
+    bit_size: 2
+fieldset/GPU_REGISTERS_PWR_OVERRIDE0_RESET:
+  description: ''
+  fields:
+  - name: OVERRIDE
+    bit_offset: 4
+    bit_size: 2
+fieldset/GPU_REGISTERS_PWR_OVERRIDE0_reserved_word0_bit6:
+  description: ''
+  fields:
+  - name: width2
+    bit_offset: 6
+    bit_size: 2
+fieldset/GPU_REGISTERS_PWR_OVERRIDE0_PWRUP_ACK:
+  description: ''
+  fields:
+  - name: OVERRIDE
+    bit_offset: 8
+    bit_size: 2
+fieldset/GPU_REGISTERS_PWR_OVERRIDE0_ISOLATE_ACK:
+  description: ''
+  fields:
+  - name: OVERRIDE
+    bit_offset: 10
+    bit_size: 2
+fieldset/GPU_REGISTERS_PWR_OVERRIDE0_FUNC_ISO:
+  description: ''
+  fields:
+  - name: OVERRIDE
+    bit_offset: 12
+    bit_size: 2
+fieldset/GPU_REGISTERS_PWR_OVERRIDE0_FUNC_ISO_ACK:
+  description: ''
+  fields:
+  - name: OVERRIDE
+    bit_offset: 14
+    bit_size: 2
+fieldset/GPU_REGISTERS_PWR_OVERRIDE0_PWRTRANS:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 16
+    bit_size: 6
+fieldset/GPU_REGISTERS_PWR_OVERRIDE0_reserved_word0_bit22:
+  description: ''
+  fields:
+  - name: width1
+    bit_offset: 22
+    bit_size: 1
+fieldset/GPU_REGISTERS_PWR_OVERRIDE0_THROTTLE:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 23
+    bit_size: 1
+  - name: LIMIT
+    bit_offset: 24
+    bit_size: 6
+fieldset/GPU_REGISTERS_PWR_OVERRIDE0_reserved_word0_bit30:
+  description: ''
+  fields:
+  - name: width2
+    bit_offset: 30
+    bit_size: 2
+fieldset/GPU_REGISTERS_PWR_OVERRIDE1_PWRTRANS:
+  description: ''
+  fields:
+  - name: VENDOR
+    bit_offset: 0
+    bit_size: 32
+fieldset/GPU_REGISTERS_TIMESTAMP_OFFSET_LO:
+  description: ''
+  fields:
+  - name: offset
+    bit_offset: 0
+    bit_size: 32
+    description: offset
+fieldset/GPU_REGISTERS_TIMESTAMP_OFFSET_HI:
+  description: ''
+  fields:
+  - name: offset
+    bit_offset: 0
+    bit_size: 32
+    description: offset
+fieldset/GPU_REGISTERS_CYCLE_COUNT_LO:
+  description: ''
+  fields:
+  - name: count
+    bit_offset: 0
+    bit_size: 32
+    description: count
+fieldset/GPU_REGISTERS_CYCLE_COUNT_HI:
+  description: ''
+  fields:
+  - name: count
+    bit_offset: 0
+    bit_size: 32
+    description: count
+fieldset/GPU_REGISTERS_TIMESTAMP_LO:
+  description: ''
+  fields:
+  - name: timestamp
+    bit_offset: 0
+    bit_size: 32
+    description: timestamp
+fieldset/GPU_REGISTERS_TIMESTAMP_HI:
+  description: ''
+  fields:
+  - name: timestamp
+    bit_offset: 0
+    bit_size: 32
+    description: timestamp
+fieldset/GPU_REGISTERS_THREAD_MAX_THREADS:
+  description: ''
+  fields:
+  - name: threads
+    bit_offset: 0
+    bit_size: 32
+    description: threads
+fieldset/GPU_REGISTERS_THREAD_MAX_WORKGROUP_SIZE:
+  description: ''
+  fields:
+  - name: threads
+    bit_offset: 0
+    bit_size: 32
+    description: threads
+fieldset/GPU_REGISTERS_THREAD_MAX_BARRIER_SIZE:
+  description: ''
+  fields:
+  - name: threads
+    bit_offset: 0
+    bit_size: 32
+    description: threads
+fieldset/GPU_REGISTERS_THREAD_FEATURES_MAX:
+  description: ''
+  fields:
+  - name: REGISTERS
+    bit_offset: 0
+    bit_size: 22
+    description: MAX_REGISTERS
+fieldset/GPU_REGISTERS_THREAD_FEATURES_IMPLEMENTATION:
+  description: ''
+  fields:
+  - name: TECHNOLOGY
+    bit_offset: 22
+    bit_size: 2
+fieldset/GPU_REGISTERS_THREAD_FEATURES_MAX_TASK:
+  description: ''
+  fields:
+  - name: QUEUE
+    bit_offset: 24
+    bit_size: 8
+fieldset/GPU_REGISTERS_TEXTURE_FEATURES_0:
+  description: ''
+  fields:
+  - name: format
+    bit_offset: 0
+    bit_size: 32
+    description: format
+fieldset/GPU_REGISTERS_TEXTURE_FEATURES_1_reserved_word0_bit0:
+  description: ''
+  fields:
+  - name: width32
+    bit_offset: 0
+    bit_size: 32
+fieldset/GPU_REGISTERS_TEXTURE_FEATURES_2_reserved_word0_bit0:
+  description: ''
+  fields:
+  - name: width32
+    bit_offset: 0
+    bit_size: 32
+fieldset/GPU_REGISTERS_TEXTURE_FEATURES_3_reserved_word0_bit0:
+  description: ''
+  fields:
+  - name: width32
+    bit_offset: 0
+    bit_size: 32
+fieldset/GPU_REGISTERS_SHADER_PRESENT_LO:
+  description: ''
+  fields:
+  - name: present
+    bit_offset: 0
+    bit_size: 32
+    description: present
+fieldset/GPU_REGISTERS_SHADER_PRESENT_HI:
+  description: ''
+  fields:
+  - name: present
+    bit_offset: 0
+    bit_size: 32
+    description: present
+fieldset/GPU_REGISTERS_TILER_PRESENT_LO:
+  description: ''
+  fields:
+  - name: present
+    bit_offset: 0
+    bit_size: 32
+    description: present
+fieldset/GPU_REGISTERS_TILER_PRESENT_HI:
+  description: ''
+  fields:
+  - name: present
+    bit_offset: 0
+    bit_size: 32
+    description: present
+fieldset/GPU_REGISTERS_L2_PRESENT_LO:
+  description: ''
+  fields:
+  - name: present
+    bit_offset: 0
+    bit_size: 32
+    description: present
+fieldset/GPU_REGISTERS_L2_PRESENT_HI:
+  description: ''
+  fields:
+  - name: present
+    bit_offset: 0
+    bit_size: 32
+    description: present
+fieldset/GPU_REGISTERS_SHADER_READY_LO:
+  description: ''
+  fields:
+  - name: ready
+    bit_offset: 0
+    bit_size: 32
+    description: ready
+fieldset/GPU_REGISTERS_SHADER_READY_HI:
+  description: ''
+  fields:
+  - name: ready
+    bit_offset: 0
+    bit_size: 32
+    description: ready
+fieldset/GPU_REGISTERS_TILER_READY_LO:
+  description: ''
+  fields:
+  - name: ready
+    bit_offset: 0
+    bit_size: 32
+    description: ready
+fieldset/GPU_REGISTERS_TILER_READY_HI:
+  description: ''
+  fields:
+  - name: ready
+    bit_offset: 0
+    bit_size: 32
+    description: ready
+fieldset/GPU_REGISTERS_L2_READY_LO:
+  description: ''
+  fields:
+  - name: ready
+    bit_offset: 0
+    bit_size: 32
+    description: ready
+fieldset/GPU_REGISTERS_L2_READY_HI:
+  description: ''
+  fields:
+  - name: ready
+    bit_offset: 0
+    bit_size: 32
+    description: ready
+fieldset/GPU_REGISTERS_SHADER_PWRON_LO:
+  description: ''
+  fields:
+  - name: request
+    bit_offset: 0
+    bit_size: 32
+    description: request
+fieldset/GPU_REGISTERS_SHADER_PWRON_HI:
+  description: ''
+  fields:
+  - name: request
+    bit_offset: 0
+    bit_size: 32
+    description: request
+fieldset/GPU_REGISTERS_TILER_PWRON_LO:
+  description: ''
+  fields:
+  - name: request
+    bit_offset: 0
+    bit_size: 32
+    description: request
+fieldset/GPU_REGISTERS_TILER_PWRON_HI:
+  description: ''
+  fields:
+  - name: request
+    bit_offset: 0
+    bit_size: 32
+    description: request
+fieldset/GPU_REGISTERS_L2_PWRON_LO:
+  description: ''
+  fields:
+  - name: request
+    bit_offset: 0
+    bit_size: 32
+    description: request
+fieldset/GPU_REGISTERS_L2_PWRON_HI:
+  description: ''
+  fields:
+  - name: request
+    bit_offset: 0
+    bit_size: 32
+    description: request
+fieldset/GPU_REGISTERS_SHADER_PWROFF_LO:
+  description: ''
+  fields:
+  - name: request
+    bit_offset: 0
+    bit_size: 32
+    description: request
+fieldset/GPU_REGISTERS_SHADER_PWROFF_HI:
+  description: ''
+  fields:
+  - name: request
+    bit_offset: 0
+    bit_size: 32
+    description: request
+fieldset/GPU_REGISTERS_TILER_PWROFF_LO:
+  description: ''
+  fields:
+  - name: request
+    bit_offset: 0
+    bit_size: 32
+    description: request
+fieldset/GPU_REGISTERS_TILER_PWROFF_HI:
+  description: ''
+  fields:
+  - name: request
+    bit_offset: 0
+    bit_size: 32
+    description: request
+fieldset/GPU_REGISTERS_L2_PWROFF_LO:
+  description: ''
+  fields:
+  - name: request
+    bit_offset: 0
+    bit_size: 32
+    description: request
+fieldset/GPU_REGISTERS_L2_PWROFF_HI:
+  description: ''
+  fields:
+  - name: request
+    bit_offset: 0
+    bit_size: 32
+    description: request
+fieldset/GPU_REGISTERS_SHADER_PWRTRANS_LO:
+  description: ''
+  fields:
+  - name: changing
+    bit_offset: 0
+    bit_size: 32
+    description: changing
+fieldset/GPU_REGISTERS_SHADER_PWRTRANS_HI:
+  description: ''
+  fields:
+  - name: changing
+    bit_offset: 0
+    bit_size: 32
+    description: changing
+fieldset/GPU_REGISTERS_TILER_PWRTRANS_LO:
+  description: ''
+  fields:
+  - name: changing
+    bit_offset: 0
+    bit_size: 32
+    description: changing
+fieldset/GPU_REGISTERS_TILER_PWRTRANS_HI:
+  description: ''
+  fields:
+  - name: changing
+    bit_offset: 0
+    bit_size: 32
+    description: changing
+fieldset/GPU_REGISTERS_L2_PWRTRANS_LO:
+  description: ''
+  fields:
+  - name: changing
+    bit_offset: 0
+    bit_size: 32
+    description: changing
+fieldset/GPU_REGISTERS_L2_PWRTRANS_HI:
+  description: ''
+  fields:
+  - name: changing
+    bit_offset: 0
+    bit_size: 32
+    description: changing
+fieldset/GPU_REGISTERS_SHADER_PWRACTIVE_LO:
+  description: ''
+  fields:
+  - name: active
+    bit_offset: 0
+    bit_size: 32
+    description: active
+fieldset/GPU_REGISTERS_SHADER_PWRACTIVE_HI:
+  description: ''
+  fields:
+  - name: active
+    bit_offset: 0
+    bit_size: 32
+    description: active
+fieldset/GPU_REGISTERS_TILER_PWRACTIVE_LO:
+  description: ''
+  fields:
+  - name: active
+    bit_offset: 0
+    bit_size: 32
+    description: active
+fieldset/GPU_REGISTERS_TILER_PWRACTIVE_HI:
+  description: ''
+  fields:
+  - name: active
+    bit_offset: 0
+    bit_size: 32
+    description: active
+fieldset/GPU_REGISTERS_L2_PWRACTIVE_LO:
+  description: ''
+  fields:
+  - name: active
+    bit_offset: 0
+    bit_size: 32
+    description: active
+fieldset/GPU_REGISTERS_L2_PWRACTIVE_HI:
+  description: ''
+  fields:
+  - name: active
+    bit_offset: 0
+    bit_size: 32
+    description: active
+fieldset/GPU_REGISTERS_REVIDR:
+  description: ''
+  fields:
+  - name: revision
+    bit_offset: 0
+    bit_size: 32
+    description: revision
+fieldset/GPU_REGISTERS_COHERENCY_FEATURES_ace:
+  description: ''
+  fields:
+  - name: lite
+    bit_offset: 0
+    bit_size: 1
+    description: ace_lite
+fieldset/GPU_REGISTERS_COHERENCY_FEATURES:
+  description: ''
+  fields:
+  - name: ace
+    bit_offset: 1
+    bit_size: 1
+    description: ace
+fieldset/GPU_REGISTERS_COHERENCY_FEATURES_reserved_word0_bit2:
+  description: ''
+  fields:
+  - name: width30
+    bit_offset: 2
+    bit_size: 30
+    description: ace
+fieldset/GPU_REGISTERS_COHERENCY_ENABLE_l2_cache_protocol:
+  description: ''
+  fields:
+  - name: select
+    bit_offset: 0
+    bit_size: 32
+fieldset/GPU_REGISTERS_MCU_CONTROL:
+  description: ''
+  fields:
+  - name: REQ
+    bit_offset: 0
+    bit_size: 2
+fieldset/GPU_REGISTERS_MCU_CONTROL_reserved_word0_bit2:
+  description: ''
+  fields:
+  - name: width30
+    bit_offset: 2
+    bit_size: 30
+fieldset/GPU_REGISTERS_MCU_STATUS:
+  description: ''
+  fields:
+  - name: VALUE
+    bit_offset: 0
+    bit_size: 2
+fieldset/GPU_REGISTERS_MCU_STATUS_reserved_word0_bit2:
+  description: ''
+  fields:
+  - name: width30
+    bit_offset: 2
+    bit_size: 30
+fieldset/GPU_REGISTERS_JOB_IRQ_RAWSTAT:
+  description: ''
+  fields:
+  - name: csg
+    bit_offset: 0
+    bit_size: 31
+    description: csg
+  - name: glb
+    bit_offset: 31
+    bit_size: 1
+    description: csg
+fieldset/GPU_REGISTERS_JOB_IRQ_CLEAR:
+  description: ''
+  fields:
+  - name: csg
+    bit_offset: 0
+    bit_size: 31
+    description: csg
+  - name: glb
+    bit_offset: 31
+    bit_size: 1
+    description: csg
+fieldset/GPU_REGISTERS_JOB_IRQ_MASK:
+  description: ''
+  fields:
+  - name: csg
+    bit_offset: 0
+    bit_size: 31
+    description: csg
+  - name: glb
+    bit_offset: 31
+    bit_size: 1
+    description: csg
+fieldset/GPU_REGISTERS_JOB_IRQ_STATUS:
+  description: ''
+  fields:
+  - name: csg
+    bit_offset: 0
+    bit_size: 31
+    description: csg
+  - name: glb
+    bit_offset: 31
+    bit_size: 1
+    description: csg
+fieldset/GPU_REGISTERS_IRQ_RAWSTAT_PAGE:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 0
+    bit_size: 16
+    description: PAGE_FAULT
+fieldset/GPU_REGISTERS_IRQ_RAWSTAT_COMMAND:
+  description: ''
+  fields:
+  - name: COMPLETED
+    bit_offset: 16
+    bit_size: 16
+fieldset/GPU_REGISTERS_IRQ_CLEAR_PAGE:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 0
+    bit_size: 16
+    description: PAGE_FAULT
+fieldset/GPU_REGISTERS_IRQ_CLEAR_COMMAND:
+  description: ''
+  fields:
+  - name: COMPLETED
+    bit_offset: 16
+    bit_size: 16
+    description: PAGE_FAULT
+fieldset/GPU_REGISTERS_IRQ_MASK_PAGE:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 0
+    bit_size: 8
+    description: PAGE_FAULT
+fieldset/GPU_REGISTERS_IRQ_MASK_PAGE_FAULT:
+  description: ''
+  fields:
+  - name: RESERVED
+    bit_offset: 8
+    bit_size: 8
+    description: PAGE_FAULT
+fieldset/GPU_REGISTERS_IRQ_MASK_COMMAND:
+  description: ''
+  fields:
+  - name: COMPLETED
+    bit_offset: 16
+    bit_size: 8
+fieldset/GPU_REGISTERS_IRQ_MASK_COMMAND_COMPLETED:
+  description: ''
+  fields:
+  - name: RESERVED
+    bit_offset: 24
+    bit_size: 8
+fieldset/GPU_REGISTERS_IRQ_STATUS_PAGE:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 0
+    bit_size: 16
+    description: PAGE_FAULT
+fieldset/GPU_REGISTERS_IRQ_STATUS_COMMAND:
+  description: ''
+  fields:
+  - name: COMPLETED
+    bit_offset: 16
+    bit_size: 16
+fieldset/GPU_REGISTERS_TRANSTAB_LO_BASE:
+  description: ''
+  fields:
+  - name: RESERVED
+    bit_offset: 0
+    bit_size: 4
+    description: BASE_RESERVED
+fieldset/GPU_REGISTERS_TRANSTAB_LO:
+  description: ''
+  fields:
+  - name: BASE
+    bit_offset: 4
+    bit_size: 28
+    description: BASE
+fieldset/GPU_REGISTERS_TRANSTAB_HI:
+  description: ''
+  fields:
+  - name: BASE
+    bit_offset: 0
+    bit_size: 8
+    description: BASE
+fieldset/GPU_REGISTERS_TRANSTAB_HI_BASE:
+  description: ''
+  fields:
+  - name: RESERVED
+    bit_offset: 8
+    bit_size: 24
+    description: BASE
+fieldset/GPU_REGISTERS_MEMATTR_LO:
+  description: ''
+  fields:
+  - name: ATTRIBUTE0
+    bit_offset: 0
+    bit_size: 8
+    description: ATTRIBUTE0
+  - name: ATTRIBUTE1
+    bit_offset: 8
+    bit_size: 8
+    description: ATTRIBUTE1
+  - name: ATTRIBUTE2
+    bit_offset: 16
+    bit_size: 8
+    description: ATTRIBUTE2
+  - name: ATTRIBUTE3
+    bit_offset: 24
+    bit_size: 8
+    description: ATTRIBUTE3
+fieldset/GPU_REGISTERS_MEMATTR_HI:
+  description: ''
+  fields:
+  - name: ATTRIBUTE4
+    bit_offset: 0
+    bit_size: 8
+    description: ATTRIBUTE4
+  - name: ATTRIBUTE5
+    bit_offset: 8
+    bit_size: 8
+    description: ATTRIBUTE5
+  - name: ATTRIBUTE6
+    bit_offset: 16
+    bit_size: 8
+    description: ATTRIBUTE6
+  - name: ATTRIBUTE7
+    bit_offset: 24
+    bit_size: 8
+    description: ATTRIBUTE7
+fieldset/GPU_REGISTERS_LOCKADDR_LO_LOCKADDR:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 6
+    description: LOCKADDR_SIZE
+  - name: BASE
+    bit_offset: 12
+    bit_size: 20
+    description: LOCKADDR_BASE
+fieldset/GPU_REGISTERS_LOCKADDR_LO_reserved_word0_bit6:
+  description: ''
+  fields:
+  - name: width6
+    bit_offset: 6
+    bit_size: 6
+fieldset/GPU_REGISTERS_LOCKADDR_HI_LOCKADDR:
+  description: ''
+  fields:
+  - name: BASE
+    bit_offset: 0
+    bit_size: 16
+    description: LOCKADDR_BASE
+fieldset/GPU_REGISTERS_LOCKADDR_HI_LOCKADDR_BASE:
+  description: ''
+  fields:
+  - name: RESERVED
+    bit_offset: 16
+    bit_size: 16
+fieldset/GPU_REGISTERS_COMMAND:
+  description: ''
+  fields:
+  - name: command
+    bit_offset: 0
+    bit_size: 8
+fieldset/GPU_REGISTERS_COMMAND_reserved_word0_bit8:
+  description: ''
+  fields:
+  - name: width24
+    bit_offset: 8
+    bit_size: 24
+fieldset/GPU_REGISTERS_FAULTSTATUS_EXCEPTION:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 8
+fieldset/GPU_REGISTERS_FAULTSTATUS_ACCESS:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 8
+    bit_size: 2
+fieldset/GPU_REGISTERS_FAULTSTATUS_reserved_word0_bit10:
+  description: ''
+  fields:
+  - name: width6
+    bit_offset: 10
+    bit_size: 6
+fieldset/GPU_REGISTERS_FAULTSTATUS_SOURCE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 16
+    description: SOURCE_ID
+fieldset/GPU_REGISTERS_FAULTADDRESS_LO_FAULT:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 0
+    bit_size: 32
+    description: FAULT_ADDRESS
+fieldset/GPU_REGISTERS_FAULTADDRESS_HI_FAULT:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 0
+    bit_size: 32
+    description: FAULT_ADDRESS
+fieldset/GPU_REGISTERS_STATUS_AS_ACTIVE:
+  description: ''
+  fields:
+  - name: EXT
+    bit_offset: 0
+    bit_size: 1
+    description: AS_ACTIVE_EXT
+  - name: INT
+    bit_offset: 1
+    bit_size: 1
+    description: AS_ACTIVE_INT
+fieldset/GPU_REGISTERS_STATUS_reserved_word0_bit2:
+  description: ''
+  fields:
+  - name: width30
+    bit_offset: 2
+    bit_size: 30
+fieldset/GPU_REGISTERS_TRANSCFG_LO:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 0
+    bit_size: 4
+fieldset/GPU_REGISTERS_TRANSCFG_LO_reserved_word0_bit4:
+  description: ''
+  fields:
+  - name: width2
+    bit_offset: 4
+    bit_size: 2
+fieldset/GPU_REGISTERS_TRANSCFG_LO_INA:
+  description: ''
+  fields:
+  - name: BITS
+    bit_offset: 6
+    bit_size: 5
+fieldset/GPU_REGISTERS_TRANSCFG_LO_reserved_word0_bit11:
+  description: ''
+  fields:
+  - name: width3
+    bit_offset: 11
+    bit_size: 3
+fieldset/GPU_REGISTERS_TRANSCFG_LO_OUTA:
+  description: ''
+  fields:
+  - name: BITS
+    bit_offset: 14
+    bit_size: 5
+    description: OUTA_BITS
+fieldset/GPU_REGISTERS_TRANSCFG_LO_reserved_word0_bit19:
+  description: ''
+  fields:
+  - name: width3
+    bit_offset: 19
+    bit_size: 3
+    description: OUTA_BITS
+fieldset/GPU_REGISTERS_TRANSCFG_LO_SL_CONCAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 22
+    bit_size: 1
+    description: SL_CONCAT_EN
+fieldset/GPU_REGISTERS_TRANSCFG_LO_reserved_word0_bit23:
+  description: ''
+  fields:
+  - name: width1
+    bit_offset: 23
+    bit_size: 1
+fieldset/GPU_REGISTERS_TRANSCFG_LO_PTW:
+  description: ''
+  fields:
+  - name: MEMATTR
+    bit_offset: 24
+    bit_size: 2
+  - name: SH
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPU_REGISTERS_TRANSCFG_LO_reserved_word0_bit26:
+  description: ''
+  fields:
+  - name: width2
+    bit_offset: 26
+    bit_size: 2
+fieldset/GPU_REGISTERS_TRANSCFG_LO_R:
+  description: ''
+  fields:
+  - name: ALLOCATE
+    bit_offset: 30
+    bit_size: 1
+fieldset/GPU_REGISTERS_TRANSCFG_LO_reserved_word0_bit31:
+  description: ''
+  fields:
+  - name: width2
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_REGISTERS_TRANSCFG_HI_reserved_word0_bit31:
+  description: ''
+  fields:
+  - name: width2
+    bit_offset: 0
+    bit_size: 1
+fieldset/GPU_REGISTERS_TRANSCFG_HI_DISABLE_HIER:
+  description: ''
+  fields:
+  - name: AP
+    bit_offset: 1
+    bit_size: 1
+fieldset/GPU_REGISTERS_TRANSCFG_HI_DISABLE_AF:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 2
+    bit_size: 1
+fieldset/GPU_REGISTERS_TRANSCFG_HI:
+  description: ''
+  fields:
+  - name: WXN
+    bit_offset: 3
+    bit_size: 1
+    description: WXN
+  - name: XREADABLE
+    bit_offset: 4
+    bit_size: 1
+    description: WXN
+fieldset/GPU_REGISTERS_TRANSCFG_HI_reserved_word0_bit37:
+  description: ''
+  fields:
+  - name: width23
+    bit_offset: 5
+    bit_size: 23
+    description: XREADABLE
+fieldset/GPU_REGISTERS_TRANSCFG_HI_PTW:
+  description: ''
+  fields:
+  - name: PBHA
+    bit_offset: 28
+    bit_size: 4
+    description: PTW_PBHA
+fieldset/GPU_REGISTERS_FAULTEXTRA_LO_FAULT:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 0
+    bit_size: 32
+    description: FAULT_ADDRESS
+fieldset/GPU_REGISTERS_FAULTEXTRA_HI_FAULT:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 0
+    bit_size: 32
+    description: FAULT_ADDRESS

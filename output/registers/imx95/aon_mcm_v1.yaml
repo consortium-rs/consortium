@@ -1,0 +1,141 @@
+block/AON_MCM:
+  description: ''
+  items:
+  - name: ISCR
+    byte_offset: 16
+    fieldset: AON_MCM_ISCR
+  - name: ETBCC
+    byte_offset: 20
+    fieldset: AON_MCM_ETBCC
+  - name: ETBRR
+    byte_offset: 24
+    fieldset: AON_MCM_ETBRR
+  - name: ETBCV
+    byte_offset: 28
+    fieldset: AON_MCM_ETBCV
+  - name: FADR
+    byte_offset: 32
+    fieldset: AON_MCM_FADR
+  - name: FATR
+    byte_offset: 36
+    fieldset: AON_MCM_FATR
+  - name: FDR
+    byte_offset: 40
+    fieldset: AON_MCM_FDR
+fieldset/AON_MCM_ISCR:
+  description: ''
+  fields:
+  - name: IRQ
+    bit_offset: 1
+    bit_size: 1
+  - name: NMI
+    bit_offset: 2
+    bit_size: 1
+  - name: DHREQ
+    bit_offset: 3
+    bit_size: 1
+  - name: CWBER
+    bit_offset: 4
+    bit_size: 1
+  - name: FIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: FDZC
+    bit_offset: 9
+    bit_size: 1
+  - name: FOFC
+    bit_offset: 10
+    bit_size: 1
+  - name: FUFC
+    bit_offset: 11
+    bit_size: 1
+  - name: FIXC
+    bit_offset: 12
+    bit_size: 1
+  - name: FIDC
+    bit_offset: 15
+    bit_size: 1
+  - name: CWBEE
+    bit_offset: 20
+    bit_size: 1
+  - name: FIOCE
+    bit_offset: 24
+    bit_size: 1
+  - name: FDZCE
+    bit_offset: 25
+    bit_size: 1
+  - name: FOFCE
+    bit_offset: 26
+    bit_size: 1
+  - name: FUFCE
+    bit_offset: 27
+    bit_size: 1
+  - name: FIXCE
+    bit_offset: 28
+    bit_size: 1
+  - name: FIDCE
+    bit_offset: 31
+    bit_size: 1
+fieldset/AON_MCM_ETBCC:
+  description: ''
+  fields:
+  - name: CNTEN
+    bit_offset: 0
+    bit_size: 1
+  - name: RSPT
+    bit_offset: 1
+    bit_size: 2
+  - name: RLRQ
+    bit_offset: 3
+    bit_size: 1
+fieldset/AON_MCM_ETBRR:
+  description: ''
+  fields:
+  - name: RELOAD
+    bit_offset: 0
+    bit_size: 11
+    description: Byte Count Reload Value
+fieldset/AON_MCM_ETBCV:
+  description: ''
+  fields:
+  - name: COUNTER
+    bit_offset: 0
+    bit_size: 11
+    description: Byte Count Counter Value
+fieldset/AON_MCM_FADR:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 0
+    bit_size: 32
+    description: Fault Address
+fieldset/AON_MCM_FATR:
+  description: ''
+  fields:
+  - name: BEDA
+    bit_offset: 0
+    bit_size: 1
+  - name: BEMD
+    bit_offset: 1
+    bit_size: 1
+  - name: BESZ
+    bit_offset: 4
+    bit_size: 2
+  - name: BEWT
+    bit_offset: 7
+    bit_size: 1
+  - name: BEMN
+    bit_offset: 8
+    bit_size: 4
+    description: Bus Error Initiator Number
+  - name: BEOVR
+    bit_offset: 31
+    bit_size: 1
+    description: Bus Error Initiator Number
+fieldset/AON_MCM_FDR:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 32
+    description: Fault Data

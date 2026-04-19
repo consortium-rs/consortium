@@ -1,0 +1,418 @@
+block/PIPE_CONF:
+  description: ''
+  items:
+  - name: SOFT_RESET
+    byte_offset: 0
+  - name: BUS_TXPARAM
+    byte_offset: 4
+    fieldset: PIPE_CONF_BUS_TXPARAM
+  - name: REG_XFR_DIS
+    byte_offset: 8
+  - name: CSI_CTRL
+    byte_offset: 16
+    fieldset: PIPE_CONF_CSI_CTRL
+  - name: FRAME_NUM
+    byte_offset: 20
+  - name: REG_SHD_CTRL
+    byte_offset: 24
+    fieldset: PIPE_CONF_REG_SHD_CTRL
+  - name: REG_SHD_CMD
+    byte_offset: 28
+    fieldset: PIPE_CONF_REG_SHD_CMD
+  - name: TRIG_CAM
+    byte_offset: 32
+    array:
+      len: 1
+      stride: 4
+    fieldset: PIPE_CONF_TRIG_CAM
+  - name: INT_EN0
+    byte_offset: 36
+  - name: INT_STAT0
+    byte_offset: 40
+    fieldset: PIPE_CONF_INT_STAT0
+  - name: CSI_STAT
+    byte_offset: 44
+  - name: IMG_CONF_CAM0
+    byte_offset: 48
+    fieldset: PIPE_CONF_IMG_CONF_CAM0
+  - name: IMG_SIZE_CAM0
+    byte_offset: 52
+    fieldset: PIPE_CONF_IMG_SIZE_CAM0
+  - name: IMG0_IN_ADDR_CAM0
+    byte_offset: 60
+    fieldset: PIPE_CONF_IMG0_IN_ADDR_CAM0
+  - name: IMG1_IN_ADDR_CAM0
+    byte_offset: 64
+    fieldset: PIPE_CONF_IMG1_IN_ADDR_CAM0
+  - name: OUTCH0_ADDR_CAM0
+    byte_offset: 68
+    fieldset: PIPE_CONF_OUTCH0_ADDR_CAM0
+  - name: OUTCH1_ADDR_CAM0
+    byte_offset: 72
+    fieldset: PIPE_CONF_OUTCH1_ADDR_CAM0
+  - name: OUTIR_ADDR_CAM0
+    byte_offset: 76
+    fieldset: PIPE_CONF_OUTIR_ADDR_CAM0
+  - name: IMG0_IN_LS_CAM0
+    byte_offset: 80
+    fieldset: PIPE_CONF_IMG0_IN_LS_CAM0
+  - name: IMG1_IN_LS_CAM0
+    byte_offset: 84
+    fieldset: PIPE_CONF_IMG1_IN_LS_CAM0
+  - name: OUTCH0_LS_CAM0
+    byte_offset: 88
+    fieldset: PIPE_CONF_OUTCH0_LS_CAM0
+  - name: OUTCH1_LS_CAM0
+    byte_offset: 92
+    fieldset: PIPE_CONF_OUTCH1_LS_CAM0
+  - name: OUTIR_LS_CAM0
+    byte_offset: 96
+    fieldset: PIPE_CONF_OUTIR_LS_CAM0
+  - name: SKIP_CTRL0
+    byte_offset: 100
+    fieldset: PIPE_CONF_SKIP_CTRL0
+fieldset/PIPE_CONF_SOFT_RESET_SOFT:
+  description: ''
+  fields:
+  - name: RESET
+    bit_offset: 0
+    bit_size: 1
+fieldset/PIPE_CONF_SOFT_RESET_HARD:
+  description: ''
+  fields:
+  - name: RESET
+    bit_offset: 1
+    bit_size: 1
+fieldset/PIPE_CONF_BUS_TXPARAM:
+  description: ''
+  fields:
+  - name: OTLT
+    bit_offset: 0
+    bit_size: 8
+  - name: OTHT
+    bit_offset: 8
+    bit_size: 8
+  - name: POSTQOS
+    bit_offset: 16
+    bit_size: 8
+  - name: BSIZE
+    bit_offset: 24
+    bit_size: 8
+fieldset/PIPE_CONF_REG_XFR_DIS_XFR_ERR:
+  description: ''
+  fields:
+  - name: DIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/PIPE_CONF_CSI_CTRL:
+  description: ''
+  fields:
+  - name: VID0
+    bit_offset: 0
+    bit_size: 5
+  - name: VID1
+    bit_offset: 8
+    bit_size: 5
+  - name: SSEN
+    bit_offset: 29
+    bit_size: 1
+  - name: DEVL
+    bit_offset: 30
+    bit_size: 1
+fieldset/PIPE_CONF_CSI_CTRL_CSI:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PIPE_CONF_FRAME_NUM_CURR:
+  description: ''
+  fields:
+  - name: FRAME
+    bit_offset: 0
+    bit_size: 16
+fieldset/PIPE_CONF_FRAME_NUM_SHD:
+  description: ''
+  fields:
+  - name: FRAME
+    bit_offset: 16
+    bit_size: 16
+fieldset/PIPE_CONF_REG_SHD_CTRL:
+  description: ''
+  fields:
+  - name: CTRL
+    bit_offset: 31
+    bit_size: 1
+fieldset/PIPE_CONF_REG_SHD_CMD:
+  description: ''
+  fields:
+  - name: CMD
+    bit_offset: 0
+    bit_size: 32
+fieldset/PIPE_CONF_TRIG_CAM:
+  description: ''
+  fields:
+  - name: TRIGGER
+    bit_offset: 0
+    bit_size: 32
+fieldset/PIPE_CONF_INT_EN0_EN:
+  description: ''
+  fields:
+  - name: FS1
+    bit_offset: 0
+    bit_size: 1
+  - name: FS2
+    bit_offset: 1
+    bit_size: 1
+  - name: FD1
+    bit_offset: 2
+    bit_size: 1
+  - name: FD2
+    bit_offset: 3
+    bit_size: 1
+  - name: STATD
+    bit_offset: 4
+    bit_size: 1
+  - name: DRCD
+    bit_offset: 5
+    bit_size: 1
+fieldset/PIPE_CONF_INT_EN0_EN_BUS:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 16
+    bit_size: 4
+fieldset/PIPE_CONF_INT_EN0_EN_CSI:
+  description: ''
+  fields:
+  - name: TERR
+    bit_offset: 29
+    bit_size: 1
+fieldset/PIPE_CONF_INT_EN0_EN_TRIG:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 30
+    bit_size: 1
+fieldset/PIPE_CONF_INT_STAT0_S:
+  description: ''
+  fields:
+  - name: FS1
+    bit_offset: 0
+    bit_size: 1
+  - name: FS2
+    bit_offset: 1
+    bit_size: 1
+  - name: FD1
+    bit_offset: 2
+    bit_size: 1
+  - name: FD2
+    bit_offset: 3
+    bit_size: 1
+  - name: STATD
+    bit_offset: 4
+    bit_size: 1
+  - name: DRCD
+    bit_offset: 5
+    bit_size: 1
+fieldset/PIPE_CONF_INT_STAT0_S_BUS:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 16
+    bit_size: 4
+fieldset/PIPE_CONF_INT_STAT0_S_CSI:
+  description: ''
+  fields:
+  - name: TERR
+    bit_offset: 29
+    bit_size: 1
+fieldset/PIPE_CONF_INT_STAT0_S_TRIG:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 30
+    bit_size: 1
+fieldset/PIPE_CONF_INT_STAT0:
+  description: ''
+  fields:
+  - name: BUSY
+    bit_offset: 31
+    bit_size: 1
+fieldset/PIPE_CONF_CSI_STAT_S_SL:
+  description: ''
+  fields:
+  - name: LP0
+    bit_offset: 0
+    bit_size: 1
+  - name: LP1
+    bit_offset: 16
+    bit_size: 1
+fieldset/PIPE_CONF_CSI_STAT_S_SF:
+  description: ''
+  fields:
+  - name: LP0
+    bit_offset: 1
+    bit_size: 1
+  - name: LP1
+    bit_offset: 17
+    bit_size: 1
+fieldset/PIPE_CONF_CSI_STAT_S_DO:
+  description: ''
+  fields:
+  - name: LP0
+    bit_offset: 2
+    bit_size: 1
+  - name: LP1
+    bit_offset: 18
+    bit_size: 1
+fieldset/PIPE_CONF_CSI_STAT_S_LOC:
+  description: ''
+  fields:
+  - name: LP0
+    bit_offset: 3
+    bit_size: 1
+  - name: LP1
+    bit_offset: 19
+    bit_size: 1
+fieldset/PIPE_CONF_CSI_STAT_S_LO:
+  description: ''
+  fields:
+  - name: LP0
+    bit_offset: 4
+    bit_size: 1
+  - name: LP1
+    bit_offset: 20
+    bit_size: 1
+fieldset/PIPE_CONF_CSI_STAT_S_CMD:
+  description: ''
+  fields:
+  - name: LP0
+    bit_offset: 5
+    bit_size: 1
+  - name: LP1
+    bit_offset: 21
+    bit_size: 1
+fieldset/PIPE_CONF_CSI_STAT_S_LL:
+  description: ''
+  fields:
+  - name: LP0
+    bit_offset: 6
+    bit_size: 1
+  - name: LP1
+    bit_offset: 22
+    bit_size: 1
+fieldset/PIPE_CONF_CSI_STAT_S_DATA:
+  description: ''
+  fields:
+  - name: LP0
+    bit_offset: 7
+    bit_size: 1
+  - name: LP1
+    bit_offset: 23
+    bit_size: 1
+fieldset/PIPE_CONF_CSI_STAT_S:
+  description: ''
+  fields:
+  - name: STOP
+    bit_offset: 31
+    bit_size: 1
+fieldset/PIPE_CONF_IMG_CONF_CAM0:
+  description: ''
+  fields:
+  - name: IBPP0
+    bit_offset: 0
+    bit_size: 4
+  - name: INALIGN0
+    bit_offset: 4
+    bit_size: 1
+  - name: LPALIGN0
+    bit_offset: 5
+    bit_size: 1
+  - name: IBPP1
+    bit_offset: 16
+    bit_size: 4
+  - name: INALIGN1
+    bit_offset: 20
+    bit_size: 1
+  - name: LPALIGN1
+    bit_offset: 21
+    bit_size: 1
+fieldset/PIPE_CONF_IMG_SIZE_CAM0:
+  description: ''
+  fields:
+  - name: WIDTH
+    bit_offset: 0
+    bit_size: 16
+  - name: HEIGHT
+    bit_offset: 16
+    bit_size: 16
+fieldset/PIPE_CONF_IMG0_IN_ADDR_CAM0:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/PIPE_CONF_IMG1_IN_ADDR_CAM0:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/PIPE_CONF_OUTCH0_ADDR_CAM0:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/PIPE_CONF_OUTCH1_ADDR_CAM0:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/PIPE_CONF_OUTIR_ADDR_CAM0:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/PIPE_CONF_IMG0_IN_LS_CAM0:
+  description: ''
+  fields:
+  - name: LS
+    bit_offset: 4
+    bit_size: 28
+fieldset/PIPE_CONF_IMG1_IN_LS_CAM0:
+  description: ''
+  fields:
+  - name: LS
+    bit_offset: 4
+    bit_size: 28
+fieldset/PIPE_CONF_OUTCH0_LS_CAM0:
+  description: ''
+  fields:
+  - name: LS
+    bit_offset: 4
+    bit_size: 28
+fieldset/PIPE_CONF_OUTCH1_LS_CAM0:
+  description: ''
+  fields:
+  - name: LS
+    bit_offset: 4
+    bit_size: 28
+fieldset/PIPE_CONF_OUTIR_LS_CAM0:
+  description: ''
+  fields:
+  - name: LS
+    bit_offset: 4
+    bit_size: 28
+fieldset/PIPE_CONF_SKIP_CTRL0:
+  description: ''
+  fields:
+  - name: PRESKIP
+    bit_offset: 0
+    bit_size: 16
+  - name: POSTSKIP
+    bit_offset: 16
+    bit_size: 16

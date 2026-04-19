@@ -1,0 +1,900 @@
+block/IPA_CONTROL:
+  description: ''
+  items:
+  - name: COMMAND
+    byte_offset: 0
+    fieldset: IPA_CONTROL_COMMAND
+  - name: STATUS
+    byte_offset: 4
+    fieldset: IPA_CONTROL_STATUS
+  - name: TIMER
+    byte_offset: 8
+    fieldset: IPA_CONTROL_TIMER
+  - name: SELECT_CSHW_LO
+    byte_offset: 16
+    fieldset: IPA_CONTROL_SELECT_CSHW_LO
+  - name: SELECT_CSHW_HI
+    byte_offset: 20
+    fieldset: IPA_CONTROL_SELECT_CSHW_HI
+  - name: SELECT_MEMSYS_LO
+    byte_offset: 24
+    fieldset: IPA_CONTROL_SELECT_MEMSYS_LO
+  - name: SELECT_MEMSYS_HI
+    byte_offset: 28
+    fieldset: IPA_CONTROL_SELECT_MEMSYS_HI
+  - name: SELECT_TILER_LO
+    byte_offset: 32
+    fieldset: IPA_CONTROL_SELECT_TILER_LO
+  - name: SELECT_TILER_HI
+    byte_offset: 36
+    fieldset: IPA_CONTROL_SELECT_TILER_HI
+  - name: SELECT_SHADER_LO
+    byte_offset: 40
+    fieldset: IPA_CONTROL_SELECT_SHADER_LO
+  - name: SELECT_SHADER_HI
+    byte_offset: 44
+    fieldset: IPA_CONTROL_SELECT_SHADER_HI
+  - name: VALUE_CSHW_N_LO_0
+    byte_offset: 256
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_LO_0
+  - name: VALUE_CSHW_N_HI_0
+    byte_offset: 260
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_HI_0
+  - name: VALUE_CSHW_N_LO_1
+    byte_offset: 264
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_LO_1
+  - name: VALUE_CSHW_N_HI_1
+    byte_offset: 268
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_HI_1
+  - name: VALUE_CSHW_N_LO_2
+    byte_offset: 272
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_LO_2
+  - name: VALUE_CSHW_N_HI_2
+    byte_offset: 276
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_HI_2
+  - name: VALUE_CSHW_N_LO_3
+    byte_offset: 280
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_LO_3
+  - name: VALUE_CSHW_N_HI_3
+    byte_offset: 284
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_HI_3
+  - name: VALUE_CSHW_N_LO_4
+    byte_offset: 288
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_LO_4
+  - name: VALUE_CSHW_N_HI_4
+    byte_offset: 292
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_HI_4
+  - name: VALUE_CSHW_N_LO_5
+    byte_offset: 296
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_LO_5
+  - name: VALUE_CSHW_N_HI_5
+    byte_offset: 300
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_HI_5
+  - name: VALUE_CSHW_N_LO_6
+    byte_offset: 304
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_LO_6
+  - name: VALUE_CSHW_N_HI_6
+    byte_offset: 308
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_HI_6
+  - name: VALUE_CSHW_N_LO_7
+    byte_offset: 312
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_LO_7
+  - name: VALUE_CSHW_N_HI_7
+    byte_offset: 316
+    fieldset: IPA_CONTROL_VALUE_CSHW_N_HI_7
+  - name: VALUE_MEMSYS_N_LO_0
+    byte_offset: 320
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_LO_0
+  - name: VALUE_MEMSYS_N_HI_0
+    byte_offset: 324
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_HI_0
+  - name: VALUE_MEMSYS_N_LO_1
+    byte_offset: 328
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_LO_1
+  - name: VALUE_MEMSYS_N_HI_1
+    byte_offset: 332
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_HI_1
+  - name: VALUE_MEMSYS_N_LO_2
+    byte_offset: 336
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_LO_2
+  - name: VALUE_MEMSYS_N_HI_2
+    byte_offset: 340
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_HI_2
+  - name: VALUE_MEMSYS_N_LO_3
+    byte_offset: 344
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_LO_3
+  - name: VALUE_MEMSYS_N_HI_3
+    byte_offset: 348
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_HI_3
+  - name: VALUE_MEMSYS_N_LO_4
+    byte_offset: 352
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_LO_4
+  - name: VALUE_MEMSYS_N_HI_4
+    byte_offset: 356
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_HI_4
+  - name: VALUE_MEMSYS_N_LO_5
+    byte_offset: 360
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_LO_5
+  - name: VALUE_MEMSYS_N_HI_5
+    byte_offset: 364
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_HI_5
+  - name: VALUE_MEMSYS_N_LO_6
+    byte_offset: 368
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_LO_6
+  - name: VALUE_MEMSYS_N_HI_6
+    byte_offset: 372
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_HI_6
+  - name: VALUE_MEMSYS_N_LO_7
+    byte_offset: 376
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_LO_7
+  - name: VALUE_MEMSYS_N_HI_7
+    byte_offset: 380
+    fieldset: IPA_CONTROL_VALUE_MEMSYS_N_HI_7
+  - name: VALUE_TILER_N_LO_0
+    byte_offset: 384
+    fieldset: IPA_CONTROL_VALUE_TILER_N_LO_0
+  - name: VALUE_TILER_N_HI_0
+    byte_offset: 388
+    fieldset: IPA_CONTROL_VALUE_TILER_N_HI_0
+  - name: VALUE_TILER_N_LO_1
+    byte_offset: 392
+    fieldset: IPA_CONTROL_VALUE_TILER_N_LO_1
+  - name: VALUE_TILER_N_HI_1
+    byte_offset: 396
+    fieldset: IPA_CONTROL_VALUE_TILER_N_HI_1
+  - name: VALUE_TILER_N_LO_2
+    byte_offset: 400
+    fieldset: IPA_CONTROL_VALUE_TILER_N_LO_2
+  - name: VALUE_TILER_N_HI_2
+    byte_offset: 404
+    fieldset: IPA_CONTROL_VALUE_TILER_N_HI_2
+  - name: VALUE_TILER_N_LO_3
+    byte_offset: 408
+    fieldset: IPA_CONTROL_VALUE_TILER_N_LO_3
+  - name: VALUE_TILER_N_HI_3
+    byte_offset: 412
+    fieldset: IPA_CONTROL_VALUE_TILER_N_HI_3
+  - name: VALUE_TILER_N_LO_4
+    byte_offset: 416
+    fieldset: IPA_CONTROL_VALUE_TILER_N_LO_4
+  - name: VALUE_TILER_N_HI_4
+    byte_offset: 420
+    fieldset: IPA_CONTROL_VALUE_TILER_N_HI_4
+  - name: VALUE_TILER_N_LO_5
+    byte_offset: 424
+    fieldset: IPA_CONTROL_VALUE_TILER_N_LO_5
+  - name: VALUE_TILER_N_HI_5
+    byte_offset: 428
+    fieldset: IPA_CONTROL_VALUE_TILER_N_HI_5
+  - name: VALUE_TILER_N_LO_6
+    byte_offset: 432
+    fieldset: IPA_CONTROL_VALUE_TILER_N_LO_6
+  - name: VALUE_TILER_N_HI_6
+    byte_offset: 436
+    fieldset: IPA_CONTROL_VALUE_TILER_N_HI_6
+  - name: VALUE_TILER_N_LO_7
+    byte_offset: 440
+    fieldset: IPA_CONTROL_VALUE_TILER_N_LO_7
+  - name: VALUE_TILER_N_HI_7
+    byte_offset: 444
+    fieldset: IPA_CONTROL_VALUE_TILER_N_HI_7
+  - name: VALUE_SHADER_N_LO_0
+    byte_offset: 448
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_LO_0
+  - name: VALUE_SHADER_N_HI_0
+    byte_offset: 452
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_HI_0
+  - name: VALUE_SHADER_N_LO_1
+    byte_offset: 456
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_LO_1
+  - name: VALUE_SHADER_N_HI_1
+    byte_offset: 460
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_HI_1
+  - name: VALUE_SHADER_N_LO_2
+    byte_offset: 464
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_LO_2
+  - name: VALUE_SHADER_N_HI_2
+    byte_offset: 468
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_HI_2
+  - name: VALUE_SHADER_N_LO_3
+    byte_offset: 472
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_LO_3
+  - name: VALUE_SHADER_N_HI_3
+    byte_offset: 476
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_HI_3
+  - name: VALUE_SHADER_N_LO_4
+    byte_offset: 480
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_LO_4
+  - name: VALUE_SHADER_N_HI_4
+    byte_offset: 484
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_HI_4
+  - name: VALUE_SHADER_N_LO_5
+    byte_offset: 488
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_LO_5
+  - name: VALUE_SHADER_N_HI_5
+    byte_offset: 492
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_HI_5
+  - name: VALUE_SHADER_N_LO_6
+    byte_offset: 496
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_LO_6
+  - name: VALUE_SHADER_N_HI_6
+    byte_offset: 500
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_HI_6
+  - name: VALUE_SHADER_N_LO_7
+    byte_offset: 504
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_LO_7
+  - name: VALUE_SHADER_N_HI_7
+    byte_offset: 508
+    fieldset: IPA_CONTROL_VALUE_SHADER_N_HI_7
+fieldset/IPA_CONTROL_COMMAND:
+  description: ''
+  fields:
+  - name: command
+    bit_offset: 0
+    bit_size: 8
+fieldset/IPA_CONTROL_COMMAND_reserved_word0_bit8:
+  description: ''
+  fields:
+  - name: width24
+    bit_offset: 8
+    bit_size: 24
+fieldset/IPA_CONTROL_STATUS_command:
+  description: ''
+  fields:
+  - name: active
+    bit_offset: 0
+    bit_size: 1
+    description: command_active
+fieldset/IPA_CONTROL_STATUS_timer:
+  description: ''
+  fields:
+  - name: active
+    bit_offset: 1
+    bit_size: 1
+    description: timer_active
+  - name: enabled
+    bit_offset: 31
+    bit_size: 1
+    description: timer_enabled
+fieldset/IPA_CONTROL_STATUS_auto:
+  description: ''
+  fields:
+  - name: active
+    bit_offset: 2
+    bit_size: 1
+    description: timer_active
+fieldset/IPA_CONTROL_STATUS_reserved_word0_bit3:
+  description: ''
+  fields:
+  - name: width5
+    bit_offset: 3
+    bit_size: 5
+    description: auto_active
+fieldset/IPA_CONTROL_STATUS_protected:
+  description: ''
+  fields:
+  - name: mode
+    bit_offset: 8
+    bit_size: 1
+    description: protected_mode
+fieldset/IPA_CONTROL_STATUS:
+  description: ''
+  fields:
+  - name: reset
+    bit_offset: 9
+    bit_size: 1
+    description: reset
+fieldset/IPA_CONTROL_STATUS_reserved_word0_bit10:
+  description: ''
+  fields:
+  - name: width21
+    bit_offset: 10
+    bit_size: 21
+    description: reset
+fieldset/IPA_CONTROL_TIMER:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 0
+    bit_size: 32
+    description: timeout
+fieldset/IPA_CONTROL_SELECT_CSHW_LO:
+  description: ''
+  fields:
+  - name: select0
+    bit_offset: 0
+    bit_size: 8
+    description: select0
+  - name: select1
+    bit_offset: 8
+    bit_size: 8
+    description: select0
+  - name: select2
+    bit_offset: 16
+    bit_size: 8
+    description: select1
+  - name: select3
+    bit_offset: 24
+    bit_size: 8
+    description: select2
+fieldset/IPA_CONTROL_SELECT_CSHW_HI:
+  description: ''
+  fields:
+  - name: select4
+    bit_offset: 0
+    bit_size: 8
+    description: select4
+  - name: select5
+    bit_offset: 8
+    bit_size: 8
+    description: select4
+  - name: select6
+    bit_offset: 16
+    bit_size: 8
+    description: select5
+  - name: select7
+    bit_offset: 24
+    bit_size: 8
+    description: select6
+fieldset/IPA_CONTROL_SELECT_MEMSYS_LO:
+  description: ''
+  fields:
+  - name: select0
+    bit_offset: 0
+    bit_size: 8
+    description: select0
+  - name: select1
+    bit_offset: 8
+    bit_size: 8
+    description: select0
+  - name: select2
+    bit_offset: 16
+    bit_size: 8
+    description: select1
+  - name: select3
+    bit_offset: 24
+    bit_size: 8
+    description: select2
+fieldset/IPA_CONTROL_SELECT_MEMSYS_HI:
+  description: ''
+  fields:
+  - name: select4
+    bit_offset: 0
+    bit_size: 8
+    description: select4
+  - name: select5
+    bit_offset: 8
+    bit_size: 8
+    description: select4
+  - name: select6
+    bit_offset: 16
+    bit_size: 8
+    description: select5
+  - name: select7
+    bit_offset: 24
+    bit_size: 8
+    description: select6
+fieldset/IPA_CONTROL_SELECT_TILER_LO:
+  description: ''
+  fields:
+  - name: select0
+    bit_offset: 0
+    bit_size: 8
+    description: select0
+  - name: select1
+    bit_offset: 8
+    bit_size: 8
+    description: select0
+  - name: select2
+    bit_offset: 16
+    bit_size: 8
+    description: select1
+  - name: select3
+    bit_offset: 24
+    bit_size: 8
+    description: select2
+fieldset/IPA_CONTROL_SELECT_TILER_HI:
+  description: ''
+  fields:
+  - name: select4
+    bit_offset: 0
+    bit_size: 8
+    description: select4
+  - name: select5
+    bit_offset: 8
+    bit_size: 8
+    description: select4
+  - name: select6
+    bit_offset: 16
+    bit_size: 8
+    description: select5
+  - name: select7
+    bit_offset: 24
+    bit_size: 8
+    description: select6
+fieldset/IPA_CONTROL_SELECT_SHADER_LO:
+  description: ''
+  fields:
+  - name: select0
+    bit_offset: 0
+    bit_size: 8
+    description: select0
+  - name: select1
+    bit_offset: 8
+    bit_size: 8
+    description: select0
+  - name: select2
+    bit_offset: 16
+    bit_size: 8
+    description: select1
+  - name: select3
+    bit_offset: 24
+    bit_size: 8
+    description: select2
+fieldset/IPA_CONTROL_SELECT_SHADER_HI:
+  description: ''
+  fields:
+  - name: select4
+    bit_offset: 0
+    bit_size: 8
+    description: select4
+  - name: select5
+    bit_offset: 8
+    bit_size: 8
+    description: select4
+  - name: select6
+    bit_offset: 16
+    bit_size: 8
+    description: select5
+  - name: select7
+    bit_offset: 24
+    bit_size: 8
+    description: select6
+fieldset/IPA_CONTROL_VALUE_CSHW_N_LO_0:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_HI_0:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_LO_1:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_HI_1:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_LO_2:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_HI_2:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_LO_3:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_HI_3:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_LO_4:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_HI_4:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_LO_5:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_HI_5:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_LO_6:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_HI_6:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_LO_7:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_CSHW_N_HI_7:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_LO_0:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_HI_0:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_LO_1:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_HI_1:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_LO_2:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_HI_2:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_LO_3:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_HI_3:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_LO_4:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_HI_4:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_LO_5:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_HI_5:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_LO_6:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_HI_6:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_LO_7:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_MEMSYS_N_HI_7:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_LO_0:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_HI_0:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_LO_1:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_HI_1:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_LO_2:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_HI_2:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_LO_3:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_HI_3:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_LO_4:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_HI_4:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_LO_5:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_HI_5:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_LO_6:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_HI_6:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_LO_7:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_TILER_N_HI_7:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_LO_0:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_HI_0:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_LO_1:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_HI_1:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_LO_2:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_HI_2:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_LO_3:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_HI_3:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_LO_4:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_HI_4:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_LO_5:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_HI_5:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_LO_6:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_HI_6:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_LO_7:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value
+fieldset/IPA_CONTROL_VALUE_SHADER_N_HI_7:
+  description: ''
+  fields:
+  - name: value
+    bit_offset: 0
+    bit_size: 32
+    description: value

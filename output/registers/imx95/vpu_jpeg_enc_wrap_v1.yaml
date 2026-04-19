@@ -1,0 +1,273 @@
+block/VPU_JPEG_ENC_WRAP:
+  description: ''
+  items:
+  - name: GLB_CTRL
+    byte_offset: 0
+    fieldset: VPU_JPEG_ENC_WRAP_GLB_CTRL
+  - name: COM_STATUS
+    byte_offset: 4
+  - name: IN_BUF_BASE0
+    byte_offset: 20
+  - name: IN_BUF_BASE1
+    byte_offset: 24
+  - name: IN_LINE_PITCH
+    byte_offset: 28
+  - name: STM_BUFBASE
+    byte_offset: 32
+  - name: STM_BUFSIZE
+    byte_offset: 36
+  - name: IMGSIZE
+    byte_offset: 40
+  - name: STM_CTRL
+    byte_offset: 44
+  - name: SLOT_STATUS
+    byte_offset: 65536
+    fieldset: VPU_JPEG_ENC_WRAP_SLOT_STATUS
+  - name: SLOT_IRQ_EN
+    byte_offset: 65540
+  - name: SLOT_BUF_PTR
+    byte_offset: 65544
+  - name: SLOT_CUR_DESCPT_PTR
+    byte_offset: 65548
+  - name: SLOT_NXT_DESCPT_PTR
+    byte_offset: 65552
+fieldset/VPU_JPEG_ENC_WRAP_GLB_CTRL_JPG_ENC:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_GLB_CTRL:
+  description: ''
+  fields:
+  - name: SFTRST
+    bit_offset: 1
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_GLB_CTRL_ENC:
+  description: ''
+  fields:
+  - name: GO
+    bit_offset: 2
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_GLB_CTRL_L:
+  description: ''
+  fields:
+  - name: ENDIAN
+    bit_offset: 3
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_GLB_CTRL_SLOT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 4
+    description: Slot Enable
+fieldset/VPU_JPEG_ENC_WRAP_COM_STATUS_CUR:
+  description: ''
+  fields:
+  - name: SLOT
+    bit_offset: 29
+    bit_size: 2
+    description: Current Slot
+fieldset/VPU_JPEG_ENC_WRAP_COM_STATUS_ENC:
+  description: ''
+  fields:
+  - name: ONGOING
+    bit_offset: 31
+    bit_size: 1
+    description: Encoding Ongoing
+fieldset/VPU_JPEG_ENC_WRAP_IN_BUF_BASE0_IN_BUF:
+  description: ''
+  fields:
+  - name: BASE0
+    bit_offset: 4
+    bit_size: 28
+fieldset/VPU_JPEG_ENC_WRAP_IN_BUF_BASE1_IN_BUF:
+  description: ''
+  fields:
+  - name: BASE1
+    bit_offset: 4
+    bit_size: 28
+fieldset/VPU_JPEG_ENC_WRAP_IN_LINE_PITCH_IN_LINE:
+  description: ''
+  fields:
+  - name: PITCH
+    bit_offset: 0
+    bit_size: 16
+fieldset/VPU_JPEG_ENC_WRAP_STM_BUFBASE_STM:
+  description: ''
+  fields:
+  - name: BUFBASE
+    bit_offset: 4
+    bit_size: 28
+fieldset/VPU_JPEG_ENC_WRAP_STM_BUFSIZE_STM:
+  description: ''
+  fields:
+  - name: BUFSIZE
+    bit_offset: 10
+    bit_size: 22
+fieldset/VPU_JPEG_ENC_WRAP_IMGSIZE_IMG:
+  description: ''
+  fields:
+  - name: HEIGHT
+    bit_offset: 0
+    bit_size: 14
+    description: Image Height
+  - name: WIDTH
+    bit_offset: 16
+    bit_size: 14
+    description: Image Width
+fieldset/VPU_JPEG_ENC_WRAP_STM_CTRL_PIXEL:
+  description: ''
+  fields:
+  - name: PRECISION
+    bit_offset: 2
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_STM_CTRL_IMAGE:
+  description: ''
+  fields:
+  - name: FORMAT
+    bit_offset: 3
+    bit_size: 4
+fieldset/VPU_JPEG_ENC_WRAP_STM_CTRL_BITBUF_PTR:
+  description: ''
+  fields:
+  - name: CLR
+    bit_offset: 7
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_STM_CTRL_CONFIG:
+  description: ''
+  fields:
+  - name: MOD
+    bit_offset: 9
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_STATUS_STMBUF:
+  description: ''
+  fields:
+  - name: HALF
+    bit_offset: 0
+    bit_size: 1
+  - name: RTND
+    bit_offset: 1
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_STATUS_SWITCHED:
+  description: ''
+  fields:
+  - name: IN
+    bit_offset: 2
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_STATUS:
+  description: ''
+  fields:
+  - name: FRMDONE
+    bit_offset: 3
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_STATUS_ENC_CONFG:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 8
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_STATUS_DES_RD:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 9
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_STATUS_BIT_WT:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 10
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_STATUS_IMG_RD:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 11
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_STATUS_CUR:
+  description: ''
+  fields:
+  - name: SLOT
+    bit_offset: 29
+    bit_size: 2
+    description: Current Slot
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_STATUS_ENC:
+  description: ''
+  fields:
+  - name: ONGOING
+    bit_offset: 31
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_IRQ_EN_STMBUF_HALF_IRQ:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_IRQ_EN_STMBUF_RTND_IRQ:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_IRQ_EN_SWITCHED_IN_IRQ:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_IRQ_EN_FRMDONE_IRQ:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_IRQ_EN_ENC_CONFG_ERR_IRQ:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_IRQ_EN_DES_RD_ERR_IRQ:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 9
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_IRQ_EN_BIT_WT_ERR_IRQ:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_IRQ_EN_IMG_RD_ERR_IRQ:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_BUF_PTR_STMBUF:
+  description: ''
+  fields:
+  - name: PTR
+    bit_offset: 0
+    bit_size: 32
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_CUR_DESCPT_PTR_CUR_DESCPT:
+  description: ''
+  fields:
+  - name: PTR
+    bit_offset: 2
+    bit_size: 30
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_NXT_DESCPT_PTR_NXT_DESCPT_PTR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/VPU_JPEG_ENC_WRAP_SLOT_NXT_DESCPT_PTR_NXT_DESCPT:
+  description: ''
+  fields:
+  - name: PTR
+    bit_offset: 2
+    bit_size: 30

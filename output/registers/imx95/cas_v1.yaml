@@ -1,0 +1,33 @@
+block/CAS:
+  description: ''
+  items:
+  - name: GAIN_CAM
+    byte_offset: 4
+    fieldset: CAS_GAIN_CAM
+  - name: CORR_CAM
+    byte_offset: 8
+    fieldset: CAS_CORR_CAM
+  - name: OFFSET_CAM
+    byte_offset: 12
+    fieldset: CAS_OFFSET_CAM
+fieldset/CAS_GAIN_CAM:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 0
+    bit_size: 16
+  - name: SHIFT
+    bit_offset: 16
+    bit_size: 8
+fieldset/CAS_CORR_CAM:
+  description: ''
+  fields:
+  - name: CORR
+    bit_offset: 0
+    bit_size: 16
+fieldset/CAS_OFFSET_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 16

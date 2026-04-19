@@ -1,0 +1,150 @@
+block/AXBS:
+  description: ''
+  items:
+  - name: PRS
+    byte_offset: 0
+    fieldset: AXBS_PRS
+  - name: CRS
+    byte_offset: 16
+    fieldset: AXBS_CRS
+  - name: MGPCR0
+    byte_offset: 2048
+    fieldset: AXBS_MGPCR0
+  - name: MGPCR1
+    byte_offset: 2304
+    fieldset: AXBS_MGPCR1
+  - name: MGPCR2
+    byte_offset: 2560
+    fieldset: AXBS_MGPCR2
+  - name: MGPCR3
+    byte_offset: 2816
+    fieldset: AXBS_MGPCR3
+  - name: MGPCR4
+    byte_offset: 3072
+    fieldset: AXBS_MGPCR4
+  - name: MGPCR5
+    byte_offset: 3328
+    fieldset: AXBS_MGPCR5
+  - name: MGPCR6
+    byte_offset: 3584
+    fieldset: AXBS_MGPCR6
+  - name: MGPCR7
+    byte_offset: 3840
+    fieldset: AXBS_MGPCR7
+fieldset/AXBS_PRS:
+  description: ''
+  fields:
+  - name: M0
+    bit_offset: 0
+    bit_size: 3
+  - name: M1
+    bit_offset: 4
+    bit_size: 3
+  - name: M2
+    bit_offset: 8
+    bit_size: 3
+  - name: M3
+    bit_offset: 12
+    bit_size: 3
+  - name: M4
+    bit_offset: 16
+    bit_size: 3
+  - name: M5
+    bit_offset: 20
+    bit_size: 3
+  - name: M6
+    bit_offset: 24
+    bit_size: 3
+  - name: M7
+    bit_offset: 28
+    bit_size: 3
+fieldset/AXBS_CRS:
+  description: ''
+  fields:
+  - name: PARK
+    bit_offset: 0
+    bit_size: 3
+  - name: PCTL
+    bit_offset: 4
+    bit_size: 2
+  - name: ARB
+    bit_offset: 8
+    bit_size: 2
+  - name: HPE0
+    bit_offset: 16
+    bit_size: 1
+  - name: HPE1
+    bit_offset: 17
+    bit_size: 1
+  - name: HPE2
+    bit_offset: 18
+    bit_size: 1
+  - name: HPE3
+    bit_offset: 19
+    bit_size: 1
+  - name: HPE4
+    bit_offset: 20
+    bit_size: 1
+  - name: HPE5
+    bit_offset: 21
+    bit_size: 1
+  - name: HPE6
+    bit_offset: 22
+    bit_size: 1
+  - name: HPE7
+    bit_offset: 23
+    bit_size: 1
+  - name: HLP
+    bit_offset: 30
+    bit_size: 1
+  - name: RO
+    bit_offset: 31
+    bit_size: 1
+fieldset/AXBS_MGPCR0:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3
+fieldset/AXBS_MGPCR1:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3
+fieldset/AXBS_MGPCR2:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3
+fieldset/AXBS_MGPCR3:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3
+fieldset/AXBS_MGPCR4:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3
+fieldset/AXBS_MGPCR5:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3
+fieldset/AXBS_MGPCR6:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3
+fieldset/AXBS_MGPCR7:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3

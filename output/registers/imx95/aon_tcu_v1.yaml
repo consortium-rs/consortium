@@ -1,0 +1,182 @@
+block/AON_TCU:
+  description: ''
+  items:
+  - name: TCU_MAGIC_KW__MAGIC_KW0
+    byte_offset: 1024
+    fieldset: AON_TCU_TCU_MAGIC_KW__MAGIC_KW0
+  - name: TCU_MAGIC_KW__MAGIC_KW1
+    byte_offset: 1040
+    fieldset: AON_TCU_TCU_MAGIC_KW__MAGIC_KW1
+  - name: TCU_CRR_IPT_CORE_HOLD
+    byte_offset: 1392
+  - name: TCU_MTR_MCT_ACCESS_
+    byte_offset: 1536
+  - name: TCU_MTR_MCT_ACCESS__MCT_LAUNCH_ALGOSEL0
+    byte_offset: 1552
+    fieldset: AON_TCU_TCU_MTR_MCT_ACCESS__MCT_LAUNCH_ALGOSEL0
+  - name: TCU_MTR_MCT_ACCESS__MCT_LAUNCH_ALGOSEL1
+    byte_offset: 1556
+    fieldset: AON_TCU_TCU_MTR_MCT_ACCESS__MCT_LAUNCH_ALGOSEL1
+  - name: TCU_MTR_MCT_ACCESS__MCT_LAUNCH_BISTSEL0
+    byte_offset: 1568
+    fieldset: AON_TCU_TCU_MTR_MCT_ACCESS__MCT_LAUNCH_BISTSEL0
+  - name: TCU_MTR_MCT_ACCESS__MCT_LAUNCH_BISTSEL1
+    byte_offset: 1572
+    fieldset: AON_TCU_TCU_MTR_MCT_ACCESS__MCT_LAUNCH_BISTSEL1
+  - name: TCU_MTR_MCT_ACCESS__MCT_LAUNCH_BISTSEL2
+    byte_offset: 1576
+    fieldset: AON_TCU_TCU_MTR_MCT_ACCESS__MCT_LAUNCH_BISTSEL2
+  - name: TCU_MTR_MCT_ACCESS__MCT_LAUNCH_BISTSEL3
+    byte_offset: 1580
+    fieldset: AON_TCU_TCU_MTR_MCT_ACCESS__MCT_LAUNCH_BISTSEL3
+  - name: TCU_MTR_DIRECT_BIST_ACCESS_
+    byte_offset: 1616
+  - name: TCU_IOMUX_CONTROL
+    byte_offset: 1920
+  - name: TCU_PLL_COUNTER
+    byte_offset: 3072
+  - name: TCU_DFT_FUSE
+    byte_offset: 3136
+fieldset/AON_TCU_TCU_MAGIC_KW__MAGIC_KW0:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 32
+fieldset/AON_TCU_TCU_MAGIC_KW__MAGIC_KW1:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 32
+fieldset/AON_TCU_TCU_CRR_IPT_CORE_HOLD_ipt_core:
+  description: ''
+  fields:
+  - name: hold
+    bit_offset: 0
+    bit_size: 1
+    description: ipt_core_hold
+fieldset/AON_TCU_TCU_MTR_MCT_ACCESS__mct_test:
+  description: ''
+  fields:
+  - name: mode
+    bit_offset: 0
+    bit_size: 1
+fieldset/AON_TCU_TCU_MTR_MCT_ACCESS__mct_launch_bist:
+  description: ''
+  fields:
+  - name: start
+    bit_offset: 1
+    bit_size: 1
+fieldset/AON_TCU_TCU_MTR_MCT_ACCESS__mct_launch:
+  description: ''
+  fields:
+  - name: crep
+    bit_offset: 2
+    bit_size: 1
+fieldset/AON_TCU_TCU_MTR_MCT_ACCESS__MCT_LAUNCH_ALGOSEL0:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 32
+fieldset/AON_TCU_TCU_MTR_MCT_ACCESS__MCT_LAUNCH_ALGOSEL1:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 32
+fieldset/AON_TCU_TCU_MTR_MCT_ACCESS__MCT_LAUNCH_BISTSEL0:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 32
+fieldset/AON_TCU_TCU_MTR_MCT_ACCESS__MCT_LAUNCH_BISTSEL1:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 32
+fieldset/AON_TCU_TCU_MTR_MCT_ACCESS__MCT_LAUNCH_BISTSEL2:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 32
+fieldset/AON_TCU_TCU_MTR_MCT_ACCESS__MCT_LAUNCH_BISTSEL3:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 32
+fieldset/AON_TCU_TCU_MTR_DIRECT_BIST_ACCESS__bist:
+  description: ''
+  fields:
+  - name: mode
+    bit_offset: 0
+    bit_size: 1
+fieldset/AON_TCU_TCU_MTR_DIRECT_BIST_ACCESS__bist_burnin_loop:
+  description: ''
+  fields:
+  - name: mode
+    bit_offset: 1
+    bit_size: 1
+  - name: start
+    bit_offset: 2
+    bit_size: 1
+fieldset/AON_TCU_TCU_IOMUX_CONTROL_tb_iomuxc_ovr:
+  description: ''
+  fields:
+  - name: bits
+    bit_offset: 0
+    bit_size: 24
+fieldset/AON_TCU_TCU_PLL_COUNTER_pll_count_rst:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 0
+    bit_size: 1
+    description: pll count reset
+fieldset/AON_TCU_TCU_PLL_COUNTER_pll_count:
+  description: ''
+  fields:
+  - name: start
+    bit_offset: 1
+    bit_size: 1
+    description: pll count start
+  - name: cnt
+    bit_offset: 16
+    bit_size: 16
+    description: pll count cnt
+fieldset/AON_TCU_TCU_PLL_COUNTER_pll_count_div:
+  description: ''
+  fields:
+  - name: en
+    bit_offset: 2
+    bit_size: 1
+fieldset/AON_TCU_TCU_PLL_COUNTER_pll_count_clk:
+  description: ''
+  fields:
+  - name: sel
+    bit_offset: 3
+    bit_size: 3
+fieldset/AON_TCU_TCU_PLL_COUNTER_pll_count_ref:
+  description: ''
+  fields:
+  - name: val
+    bit_offset: 8
+    bit_size: 8
+fieldset/AON_TCU_TCU_DFT_FUSE_tcu_dft_fuse:
+  description: ''
+  fields:
+  - name: disable
+    bit_offset: 0
+    bit_size: 1
+fieldset/AON_TCU_TCU_DFT_FUSE_tcu_fuse:
+  description: ''
+  fields:
+  - name: obs
+    bit_offset: 1
+    bit_size: 5
+    description: fuse observation

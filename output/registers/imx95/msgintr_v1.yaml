@@ -1,0 +1,22 @@
+block/MSGINTR:
+  description: ''
+  items:
+  - name: MSIIR
+    byte_offset: 0
+    fieldset: MSGINTR_MSIIR
+  - name: MSIR
+    byte_offset: 4
+    fieldset: MSGINTR_MSIR
+fieldset/MSGINTR_MSIIR:
+  description: ''
+  fields:
+  - name: IBS
+    bit_offset: 0
+    bit_size: 5
+    description: Interrupt Bit Select
+fieldset/MSGINTR_MSIR:
+  description: ''
+  fields:
+  - name: SHn
+    bit_offset: 0
+    bit_size: 32

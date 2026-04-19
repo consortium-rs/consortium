@@ -1,0 +1,9 @@
+block/FMC_Bank1E:
+  description: ''
+  items:
+  - name: BWTR
+    byte_offset: 260
+    array:
+      len: 7
+      stride: 4
+    description: NOR/PSRAM write timing registers

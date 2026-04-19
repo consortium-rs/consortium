@@ -1,0 +1,3433 @@
+block/BLK_CTRL_WAKEUPMIX:
+  description: ''
+  items:
+  - name: EARC_PLL_STATUS
+    byte_offset: 24
+  - name: SAI_CLK_SEL
+    byte_offset: 28
+  - name: VOLT_DETECT
+    byte_offset: 32
+  - name: AXI_ATTR_CFG
+    byte_offset: 40
+  - name: IPG_DEBUG_CM33
+    byte_offset: 44
+    fieldset: BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CM33
+  - name: IPG_DEBUG_CA55C0
+    byte_offset: 48
+    fieldset: BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C0
+  - name: IPG_DEBUG_CA55C1
+    byte_offset: 52
+    fieldset: BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C1
+  - name: IPG_DEBUG_CA55C2
+    byte_offset: 56
+    fieldset: BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C2
+  - name: IPG_DEBUG_CA55C3
+    byte_offset: 60
+    fieldset: BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C3
+  - name: IPG_DEBUG_CA55C4
+    byte_offset: 64
+    fieldset: BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C4
+  - name: IPG_DEBUG_CA55C5
+    byte_offset: 68
+    fieldset: BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C5
+  - name: IPG_DEBUG_CM7
+    byte_offset: 72
+    fieldset: BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CM7
+  - name: IPG_DEBUG_2_CM33
+    byte_offset: 76
+  - name: IPG_DEBUG_2_CA55C0
+    byte_offset: 80
+  - name: IPG_DEBUG_2_CA55C1
+    byte_offset: 84
+  - name: IPG_DEBUG_2_CA55C2
+    byte_offset: 88
+  - name: IPG_DEBUG_2_CA55C3
+    byte_offset: 92
+  - name: IPG_DEBUG_2_CA55C4
+    byte_offset: 96
+  - name: IPG_DEBUG_2_CA55C5
+    byte_offset: 100
+  - name: IPG_DEBUG_2_CM7
+    byte_offset: 104
+  - name: DBG_TRACE_CTL
+    byte_offset: 112
+  - name: SMMU_TBU_IRQ_SETUP
+    byte_offset: 132
+  - name: INITIATOR_TIMEOUT
+    byte_offset: 140
+  - name: NIU_TO_MA0
+    byte_offset: 144
+    fieldset: BLK_CTRL_WAKEUPMIX_NIU_TO_MA0
+  - name: NIU_TO_MA1
+    byte_offset: 148
+    fieldset: BLK_CTRL_WAKEUPMIX_NIU_TO_MA1
+  - name: NIU_TO_MA2
+    byte_offset: 152
+    fieldset: BLK_CTRL_WAKEUPMIX_NIU_TO_MA2
+  - name: NIU_TO_MD0
+    byte_offset: 156
+    fieldset: BLK_CTRL_WAKEUPMIX_NIU_TO_MD0
+  - name: NIU_TO_MD1
+    byte_offset: 160
+    fieldset: BLK_CTRL_WAKEUPMIX_NIU_TO_MD1
+  - name: NIU_TO_MD2
+    byte_offset: 164
+    fieldset: BLK_CTRL_WAKEUPMIX_NIU_TO_MD2
+  - name: NIU_TO_MD3
+    byte_offset: 168
+    fieldset: BLK_CTRL_WAKEUPMIX_NIU_TO_MD3
+  - name: NIU_TO_MD4
+    byte_offset: 172
+    fieldset: BLK_CTRL_WAKEUPMIX_NIU_TO_MD4
+  - name: NIU_TO_MD5
+    byte_offset: 176
+    fieldset: BLK_CTRL_WAKEUPMIX_NIU_TO_MD5
+  - name: NIU_TO_MD6
+    byte_offset: 180
+    fieldset: BLK_CTRL_WAKEUPMIX_NIU_TO_MD6
+  - name: NIU_TO_MD7
+    byte_offset: 184
+    fieldset: BLK_CTRL_WAKEUPMIX_NIU_TO_MD7
+  - name: NIU_TO_MD8
+    byte_offset: 188
+    fieldset: BLK_CTRL_WAKEUPMIX_NIU_TO_MD8
+  - name: NIU_TO_MD9
+    byte_offset: 192
+    fieldset: BLK_CTRL_WAKEUPMIX_NIU_TO_MD9
+  - name: IPG_STOP_CTL_0
+    byte_offset: 208
+  - name: IPG_STOP_ACK_STATUS_0
+    byte_offset: 212
+  - name: IPG_DOZE_CTL_0
+    byte_offset: 216
+  - name: IPG_STOP_CTL_1
+    byte_offset: 224
+  - name: IPG_DOZE_CTL_1
+    byte_offset: 232
+  - name: IPG_WAIT_CTL_1
+    byte_offset: 236
+  - name: QREQ_CTL_0
+    byte_offset: 256
+  - name: QACCEPT_STATUS_0
+    byte_offset: 260
+  - name: QDENY_STATUS_0
+    byte_offset: 264
+  - name: QACTIVE_STATUS_0
+    byte_offset: 268
+  - name: QREQ_CTL_1
+    byte_offset: 272
+  - name: QACCEPT_STATUS_1
+    byte_offset: 276
+  - name: QDENY_STATUS_1
+    byte_offset: 280
+  - name: QACTIVE_STATUS_1
+    byte_offset: 284
+  - name: QREQ_CTL_2
+    byte_offset: 288
+  - name: QACCEPT_STATUS_2
+    byte_offset: 292
+  - name: QDENY_STATUS_2
+    byte_offset: 296
+  - name: QACTIVE_STATUS_2
+    byte_offset: 300
+  - name: QREQ_CTL_3
+    byte_offset: 304
+  - name: QACCEPT_STATUS_3
+    byte_offset: 308
+  - name: QDENY_STATUS_3
+    byte_offset: 312
+  - name: QACTIVE_STATUS_3
+    byte_offset: 316
+fieldset/BLK_CTRL_WAKEUPMIX_EARC_PLL_STATUS_earc_pll:
+  description: ''
+  fields:
+  - name: lock
+    bit_offset: 0
+    bit_size: 1
+  - name: lol
+    bit_offset: 1
+    bit_size: 1
+  - name: powerup
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_SAI_CLK_SEL_SAI3:
+  description: ''
+  fields:
+  - name: MCLK1
+    bit_offset: 0
+    bit_size: 1
+  - name: MCLK2
+    bit_offset: 1
+    bit_size: 4
+  - name: MCLK3
+    bit_offset: 5
+    bit_size: 4
+fieldset/BLK_CTRL_WAKEUPMIX_SAI_CLK_SEL_SAI4:
+  description: ''
+  fields:
+  - name: MCLK1
+    bit_offset: 9
+    bit_size: 1
+  - name: MCLK2
+    bit_offset: 10
+    bit_size: 4
+  - name: MCLK3
+    bit_offset: 14
+    bit_size: 4
+fieldset/BLK_CTRL_WAKEUPMIX_SAI_CLK_SEL_SAI5:
+  description: ''
+  fields:
+  - name: MCLK1
+    bit_offset: 18
+    bit_size: 1
+  - name: MCLK2
+    bit_offset: 19
+    bit_size: 4
+  - name: MCLK3
+    bit_offset: 23
+    bit_size: 4
+fieldset/BLK_CTRL_WAKEUPMIX_VOLT_DETECT_supply_detector:
+  description: ''
+  fields:
+  - name: AON
+    bit_offset: 0
+    bit_size: 1
+  - name: GPIO
+    bit_offset: 1
+    bit_size: 1
+  - name: SD2
+    bit_offset: 2
+    bit_size: 1
+  - name: WAKEUP
+    bit_offset: 3
+    bit_size: 1
+  - name: ENET
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_VOLT_DETECT_supply_detector_CCM:
+  description: ''
+  fields:
+  - name: DAP
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_AXI_ATTR_CFG_arcache:
+  description: ''
+  fields:
+  - name: usdhc1
+    bit_offset: 0
+    bit_size: 1
+  - name: usdhc2
+    bit_offset: 2
+    bit_size: 1
+  - name: usdhc3
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_AXI_ATTR_CFG_awcache:
+  description: ''
+  fields:
+  - name: usdhc1
+    bit_offset: 1
+    bit_size: 1
+  - name: usdhc2
+    bit_offset: 3
+    bit_size: 1
+  - name: usdhc3
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CM33:
+  description: ''
+  fields:
+  - name: can2
+    bit_offset: 0
+    bit_size: 1
+    description: CAN2 debug
+  - name: can3
+    bit_offset: 1
+    bit_size: 1
+    description: CAN3 debug
+  - name: can4
+    bit_offset: 2
+    bit_size: 1
+    description: CAN4 debug
+  - name: can5
+    bit_offset: 3
+    bit_size: 1
+    description: CAN5 debug
+  - name: flexio1
+    bit_offset: 4
+    bit_size: 1
+    description: FlexIO1 debug
+  - name: flexio2
+    bit_offset: 5
+    bit_size: 1
+    description: FlexIO2 debug
+  - name: lpi2c3
+    bit_offset: 6
+    bit_size: 1
+    description: I2C3 debug
+  - name: lpi2c4
+    bit_offset: 7
+    bit_size: 1
+    description: I2C4 debug
+  - name: lpi2c5
+    bit_offset: 8
+    bit_size: 1
+    description: I2C5 debug
+  - name: lpi2c6
+    bit_offset: 9
+    bit_size: 1
+    description: I2C6 debug
+  - name: lpi2c7
+    bit_offset: 10
+    bit_size: 1
+    description: I2C7 debug
+  - name: lpi2c8
+    bit_offset: 11
+    bit_size: 1
+    description: I2C8 debug
+  - name: lpit2
+    bit_offset: 12
+    bit_size: 1
+    description: IT2 debug
+  - name: lpspi3
+    bit_offset: 13
+    bit_size: 1
+    description: SPI3 debug
+  - name: lpspi4
+    bit_offset: 14
+    bit_size: 1
+    description: SPI4 debug
+  - name: lpspi5
+    bit_offset: 15
+    bit_size: 1
+    description: SPI5 debug
+  - name: lpspi6
+    bit_offset: 16
+    bit_size: 1
+    description: SPI6 debug
+  - name: lpspi7
+    bit_offset: 17
+    bit_size: 1
+    description: SPI7 debug
+  - name: lpspi8
+    bit_offset: 18
+    bit_size: 1
+    description: SPI8 debug
+  - name: lptmr2
+    bit_offset: 19
+    bit_size: 1
+    description: TMR2 debug
+  - name: tpm3
+    bit_offset: 20
+    bit_size: 1
+    description: TPM3 debug
+  - name: tpm4
+    bit_offset: 21
+    bit_size: 1
+    description: TPM4 debug
+  - name: tpm5
+    bit_offset: 22
+    bit_size: 1
+    description: TPM5 debug
+  - name: tpm6
+    bit_offset: 23
+    bit_size: 1
+    description: TPM6 debug
+  - name: wdog3
+    bit_offset: 24
+    bit_size: 1
+    description: WDOG3 debug
+  - name: wdog4
+    bit_offset: 25
+    bit_size: 1
+    description: WDOG4 debug
+  - name: wdog5
+    bit_offset: 26
+    bit_size: 1
+    description: WDOG5 debug
+  - name: i3c2
+    bit_offset: 27
+    bit_size: 1
+    description: I3C2 debug
+  - name: sai3
+    bit_offset: 28
+    bit_size: 1
+    description: SAI3 debug
+  - name: sai4
+    bit_offset: 29
+    bit_size: 1
+    description: SAI4 debug
+  - name: sai5
+    bit_offset: 30
+    bit_size: 1
+    description: SAI5 debug
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C0:
+  description: ''
+  fields:
+  - name: can2
+    bit_offset: 0
+    bit_size: 1
+    description: CAN2 debug
+  - name: can3
+    bit_offset: 1
+    bit_size: 1
+    description: CAN3 debug
+  - name: can4
+    bit_offset: 2
+    bit_size: 1
+    description: CAN4 debug
+  - name: can5
+    bit_offset: 3
+    bit_size: 1
+    description: CAN5 debug
+  - name: flexio1
+    bit_offset: 4
+    bit_size: 1
+    description: FlexIO1 debug
+  - name: flexio2
+    bit_offset: 5
+    bit_size: 1
+    description: FlexIO2 debug
+  - name: lpi2c3
+    bit_offset: 6
+    bit_size: 1
+    description: I2C3 debug
+  - name: lpi2c4
+    bit_offset: 7
+    bit_size: 1
+    description: I2C4 debug
+  - name: lpi2c5
+    bit_offset: 8
+    bit_size: 1
+    description: I2C5 debug
+  - name: lpi2c6
+    bit_offset: 9
+    bit_size: 1
+    description: I2C6 debug
+  - name: lpi2c7
+    bit_offset: 10
+    bit_size: 1
+    description: I2C7 debug
+  - name: lpi2c8
+    bit_offset: 11
+    bit_size: 1
+    description: I2C8 debug
+  - name: lpit2
+    bit_offset: 12
+    bit_size: 1
+    description: IT2 debug
+  - name: lpspi3
+    bit_offset: 13
+    bit_size: 1
+    description: SPI3 debug
+  - name: lpspi4
+    bit_offset: 14
+    bit_size: 1
+    description: SPI4 debug
+  - name: lpspi5
+    bit_offset: 15
+    bit_size: 1
+    description: SPI5 debug
+  - name: lpspi6
+    bit_offset: 16
+    bit_size: 1
+    description: SPI6 debug
+  - name: lpspi7
+    bit_offset: 17
+    bit_size: 1
+    description: SPI7 debug
+  - name: lpspi8
+    bit_offset: 18
+    bit_size: 1
+    description: SPI8 debug
+  - name: lptmr2
+    bit_offset: 19
+    bit_size: 1
+    description: TMR2 debug
+  - name: tpm3
+    bit_offset: 20
+    bit_size: 1
+    description: TPM3 debug
+  - name: tpm4
+    bit_offset: 21
+    bit_size: 1
+    description: TPM4 debug
+  - name: tpm5
+    bit_offset: 22
+    bit_size: 1
+    description: TPM5 debug
+  - name: tpm6
+    bit_offset: 23
+    bit_size: 1
+    description: TPM6 debug
+  - name: wdog3
+    bit_offset: 24
+    bit_size: 1
+    description: WDOG3 debug
+  - name: wdog4
+    bit_offset: 25
+    bit_size: 1
+    description: WDOG4 debug
+  - name: wdog5
+    bit_offset: 26
+    bit_size: 1
+    description: WDOG5 debug
+  - name: i3c2
+    bit_offset: 27
+    bit_size: 1
+    description: I3C2 debug
+  - name: sai3
+    bit_offset: 28
+    bit_size: 1
+    description: SAI3 debug
+  - name: sai4
+    bit_offset: 29
+    bit_size: 1
+    description: SAI4 debug
+  - name: sai5
+    bit_offset: 30
+    bit_size: 1
+    description: SAI5 debug
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C1:
+  description: ''
+  fields:
+  - name: can2
+    bit_offset: 0
+    bit_size: 1
+    description: CAN2 debug
+  - name: can3
+    bit_offset: 1
+    bit_size: 1
+    description: CAN3 debug
+  - name: can4
+    bit_offset: 2
+    bit_size: 1
+    description: CAN4 debug
+  - name: can5
+    bit_offset: 3
+    bit_size: 1
+    description: CAN5 debug
+  - name: flexio1
+    bit_offset: 4
+    bit_size: 1
+    description: FlexIO1 debug
+  - name: flexio2
+    bit_offset: 5
+    bit_size: 1
+    description: FlexIO2 debug
+  - name: lpi2c3
+    bit_offset: 6
+    bit_size: 1
+    description: I2C3 debug
+  - name: lpi2c4
+    bit_offset: 7
+    bit_size: 1
+    description: I2C4 debug
+  - name: lpi2c5
+    bit_offset: 8
+    bit_size: 1
+    description: I2C5 debug
+  - name: lpi2c6
+    bit_offset: 9
+    bit_size: 1
+    description: I2C6 debug
+  - name: lpi2c7
+    bit_offset: 10
+    bit_size: 1
+    description: I2C7 debug
+  - name: lpi2c8
+    bit_offset: 11
+    bit_size: 1
+    description: I2C8 debug
+  - name: lpit2
+    bit_offset: 12
+    bit_size: 1
+    description: IT2 debug
+  - name: lpspi3
+    bit_offset: 13
+    bit_size: 1
+    description: SPI3 debug
+  - name: lpspi4
+    bit_offset: 14
+    bit_size: 1
+    description: SPI4 debug
+  - name: lpspi5
+    bit_offset: 15
+    bit_size: 1
+    description: SPI5 debug
+  - name: lpspi6
+    bit_offset: 16
+    bit_size: 1
+    description: SPI6 debug
+  - name: lpspi7
+    bit_offset: 17
+    bit_size: 1
+    description: SPI7 debug
+  - name: lpspi8
+    bit_offset: 18
+    bit_size: 1
+    description: SPI8 debug
+  - name: lptmr2
+    bit_offset: 19
+    bit_size: 1
+    description: TMR2 debug
+  - name: tpm3
+    bit_offset: 20
+    bit_size: 1
+    description: TPM3 debug
+  - name: tpm4
+    bit_offset: 21
+    bit_size: 1
+    description: TPM4 debug
+  - name: tpm5
+    bit_offset: 22
+    bit_size: 1
+    description: TPM5 debug
+  - name: tpm6
+    bit_offset: 23
+    bit_size: 1
+    description: TPM6 debug
+  - name: wdog3
+    bit_offset: 24
+    bit_size: 1
+    description: WDOG3 debug
+  - name: wdog4
+    bit_offset: 25
+    bit_size: 1
+    description: WDOG4 debug
+  - name: wdog5
+    bit_offset: 26
+    bit_size: 1
+    description: WDOG5 debug
+  - name: i3c2
+    bit_offset: 27
+    bit_size: 1
+    description: I3C2 debug
+  - name: sai3
+    bit_offset: 28
+    bit_size: 1
+    description: SAI3 debug
+  - name: sai4
+    bit_offset: 29
+    bit_size: 1
+    description: SAI4 debug
+  - name: sai5
+    bit_offset: 30
+    bit_size: 1
+    description: SAI5 debug
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C2:
+  description: ''
+  fields:
+  - name: can2
+    bit_offset: 0
+    bit_size: 1
+    description: CAN2 debug
+  - name: can3
+    bit_offset: 1
+    bit_size: 1
+    description: CAN3 debug
+  - name: can4
+    bit_offset: 2
+    bit_size: 1
+    description: CAN4 debug
+  - name: can5
+    bit_offset: 3
+    bit_size: 1
+    description: CAN5 debug
+  - name: flexio1
+    bit_offset: 4
+    bit_size: 1
+    description: FlexIO1 debug
+  - name: flexio2
+    bit_offset: 5
+    bit_size: 1
+    description: FlexIO2 debug
+  - name: lpi2c3
+    bit_offset: 6
+    bit_size: 1
+    description: I2C3 debug
+  - name: lpi2c4
+    bit_offset: 7
+    bit_size: 1
+    description: I2C4 debug
+  - name: lpi2c5
+    bit_offset: 8
+    bit_size: 1
+    description: I2C5 debug
+  - name: lpi2c6
+    bit_offset: 9
+    bit_size: 1
+    description: I2C6 debug
+  - name: lpi2c7
+    bit_offset: 10
+    bit_size: 1
+    description: I2C7 debug
+  - name: lpi2c8
+    bit_offset: 11
+    bit_size: 1
+    description: I2C8 debug
+  - name: lpit2
+    bit_offset: 12
+    bit_size: 1
+    description: IT2 debug
+  - name: lpspi3
+    bit_offset: 13
+    bit_size: 1
+    description: SPI3 debug
+  - name: lpspi4
+    bit_offset: 14
+    bit_size: 1
+    description: SPI4 debug
+  - name: lpspi5
+    bit_offset: 15
+    bit_size: 1
+    description: SPI5 debug
+  - name: lpspi6
+    bit_offset: 16
+    bit_size: 1
+    description: SPI6 debug
+  - name: lpspi7
+    bit_offset: 17
+    bit_size: 1
+    description: SPI7 debug
+  - name: lpspi8
+    bit_offset: 18
+    bit_size: 1
+    description: SPI8 debug
+  - name: lptmr2
+    bit_offset: 19
+    bit_size: 1
+    description: TMR2 debug
+  - name: tpm3
+    bit_offset: 20
+    bit_size: 1
+    description: TPM3 debug
+  - name: tpm4
+    bit_offset: 21
+    bit_size: 1
+    description: TPM4 debug
+  - name: tpm5
+    bit_offset: 22
+    bit_size: 1
+    description: TPM5 debug
+  - name: tpm6
+    bit_offset: 23
+    bit_size: 1
+    description: TPM6 debug
+  - name: wdog3
+    bit_offset: 24
+    bit_size: 1
+    description: WDOG3 debug
+  - name: wdog4
+    bit_offset: 25
+    bit_size: 1
+    description: WDOG4 debug
+  - name: wdog5
+    bit_offset: 26
+    bit_size: 1
+    description: WDOG5 debug
+  - name: i3c2
+    bit_offset: 27
+    bit_size: 1
+    description: I3C2 debug
+  - name: sai3
+    bit_offset: 28
+    bit_size: 1
+    description: SAI3 debug
+  - name: sai4
+    bit_offset: 29
+    bit_size: 1
+    description: SAI4 debug
+  - name: sai5
+    bit_offset: 30
+    bit_size: 1
+    description: SAI5 debug
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C3:
+  description: ''
+  fields:
+  - name: can2
+    bit_offset: 0
+    bit_size: 1
+    description: CAN2 debug
+  - name: can3
+    bit_offset: 1
+    bit_size: 1
+    description: CAN3 debug
+  - name: can4
+    bit_offset: 2
+    bit_size: 1
+    description: CAN4 debug
+  - name: can5
+    bit_offset: 3
+    bit_size: 1
+    description: CAN5 debug
+  - name: flexio1
+    bit_offset: 4
+    bit_size: 1
+    description: FlexIO1 debug
+  - name: flexio2
+    bit_offset: 5
+    bit_size: 1
+    description: FlexIO2 debug
+  - name: lpi2c3
+    bit_offset: 6
+    bit_size: 1
+    description: I2C3 debug
+  - name: lpi2c4
+    bit_offset: 7
+    bit_size: 1
+    description: I2C4 debug
+  - name: lpi2c5
+    bit_offset: 8
+    bit_size: 1
+    description: I2C5 debug
+  - name: lpi2c6
+    bit_offset: 9
+    bit_size: 1
+    description: I2C6 debug
+  - name: lpi2c7
+    bit_offset: 10
+    bit_size: 1
+    description: I2C7 debug
+  - name: lpi2c8
+    bit_offset: 11
+    bit_size: 1
+    description: I2C8 debug
+  - name: lpit2
+    bit_offset: 12
+    bit_size: 1
+    description: IT2 debug
+  - name: lpspi3
+    bit_offset: 13
+    bit_size: 1
+    description: SPI3 debug
+  - name: lpspi4
+    bit_offset: 14
+    bit_size: 1
+    description: SPI4 debug
+  - name: lpspi5
+    bit_offset: 15
+    bit_size: 1
+    description: SPI5 debug
+  - name: lpspi6
+    bit_offset: 16
+    bit_size: 1
+    description: SPI6 debug
+  - name: lpspi7
+    bit_offset: 17
+    bit_size: 1
+    description: SPI7 debug
+  - name: lpspi8
+    bit_offset: 18
+    bit_size: 1
+    description: SPI8 debug
+  - name: lptmr2
+    bit_offset: 19
+    bit_size: 1
+    description: TMR2 debug
+  - name: tpm3
+    bit_offset: 20
+    bit_size: 1
+    description: TPM3 debug
+  - name: tpm4
+    bit_offset: 21
+    bit_size: 1
+    description: TPM4 debug
+  - name: tpm5
+    bit_offset: 22
+    bit_size: 1
+    description: TPM5 debug
+  - name: tpm6
+    bit_offset: 23
+    bit_size: 1
+    description: TPM6 debug
+  - name: wdog3
+    bit_offset: 24
+    bit_size: 1
+    description: WDOG3 debug
+  - name: wdog4
+    bit_offset: 25
+    bit_size: 1
+    description: WDOG4 debug
+  - name: wdog5
+    bit_offset: 26
+    bit_size: 1
+    description: WDOG5 debug
+  - name: i3c2
+    bit_offset: 27
+    bit_size: 1
+    description: I3C2 debug
+  - name: sai3
+    bit_offset: 28
+    bit_size: 1
+    description: SAI3 debug
+  - name: sai4
+    bit_offset: 29
+    bit_size: 1
+    description: SAI4 debug
+  - name: sai5
+    bit_offset: 30
+    bit_size: 1
+    description: SAI5 debug
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C4:
+  description: ''
+  fields:
+  - name: can2
+    bit_offset: 0
+    bit_size: 1
+    description: CAN2 debug
+  - name: can3
+    bit_offset: 1
+    bit_size: 1
+    description: CAN3 debug
+  - name: can4
+    bit_offset: 2
+    bit_size: 1
+    description: CAN4 debug
+  - name: can5
+    bit_offset: 3
+    bit_size: 1
+    description: CAN5 debug
+  - name: flexio1
+    bit_offset: 4
+    bit_size: 1
+    description: FlexIO1 debug
+  - name: flexio2
+    bit_offset: 5
+    bit_size: 1
+    description: FlexIO2 debug
+  - name: lpi2c3
+    bit_offset: 6
+    bit_size: 1
+    description: I2C3 debug
+  - name: lpi2c4
+    bit_offset: 7
+    bit_size: 1
+    description: I2C4 debug
+  - name: lpi2c5
+    bit_offset: 8
+    bit_size: 1
+    description: I2C5 debug
+  - name: lpi2c6
+    bit_offset: 9
+    bit_size: 1
+    description: I2C6 debug
+  - name: lpi2c7
+    bit_offset: 10
+    bit_size: 1
+    description: I2C7 debug
+  - name: lpi2c8
+    bit_offset: 11
+    bit_size: 1
+    description: I2C8 debug
+  - name: lpit2
+    bit_offset: 12
+    bit_size: 1
+    description: IT2 debug
+  - name: lpspi3
+    bit_offset: 13
+    bit_size: 1
+    description: SPI3 debug
+  - name: lpspi4
+    bit_offset: 14
+    bit_size: 1
+    description: SPI4 debug
+  - name: lpspi5
+    bit_offset: 15
+    bit_size: 1
+    description: SPI5 debug
+  - name: lpspi6
+    bit_offset: 16
+    bit_size: 1
+    description: SPI6 debug
+  - name: lpspi7
+    bit_offset: 17
+    bit_size: 1
+    description: SPI7 debug
+  - name: lpspi8
+    bit_offset: 18
+    bit_size: 1
+    description: SPI8 debug
+  - name: lptmr2
+    bit_offset: 19
+    bit_size: 1
+    description: TMR2 debug
+  - name: tpm3
+    bit_offset: 20
+    bit_size: 1
+    description: TPM3 debug
+  - name: tpm4
+    bit_offset: 21
+    bit_size: 1
+    description: TPM4 debug
+  - name: tpm5
+    bit_offset: 22
+    bit_size: 1
+    description: TPM5 debug
+  - name: tpm6
+    bit_offset: 23
+    bit_size: 1
+    description: TPM6 debug
+  - name: wdog3
+    bit_offset: 24
+    bit_size: 1
+    description: WDOG3 debug
+  - name: wdog4
+    bit_offset: 25
+    bit_size: 1
+    description: WDOG4 debug
+  - name: wdog5
+    bit_offset: 26
+    bit_size: 1
+    description: WDOG5 debug
+  - name: i3c2
+    bit_offset: 27
+    bit_size: 1
+    description: I3C2 debug
+  - name: sai3
+    bit_offset: 28
+    bit_size: 1
+    description: SAI3 debug
+  - name: sai4
+    bit_offset: 29
+    bit_size: 1
+    description: SAI4 debug
+  - name: sai5
+    bit_offset: 30
+    bit_size: 1
+    description: SAI5 debug
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C5:
+  description: ''
+  fields:
+  - name: can2
+    bit_offset: 0
+    bit_size: 1
+    description: CAN2 debug
+  - name: can3
+    bit_offset: 1
+    bit_size: 1
+    description: CAN3 debug
+  - name: can4
+    bit_offset: 2
+    bit_size: 1
+    description: CAN4 debug
+  - name: can5
+    bit_offset: 3
+    bit_size: 1
+    description: CAN5 debug
+  - name: flexio1
+    bit_offset: 4
+    bit_size: 1
+    description: FlexIO1 debug
+  - name: flexio2
+    bit_offset: 5
+    bit_size: 1
+    description: FlexIO2 debug
+  - name: lpi2c3
+    bit_offset: 6
+    bit_size: 1
+    description: I2C3 debug
+  - name: lpi2c4
+    bit_offset: 7
+    bit_size: 1
+    description: I2C4 debug
+  - name: lpi2c5
+    bit_offset: 8
+    bit_size: 1
+    description: I2C5 debug
+  - name: lpi2c6
+    bit_offset: 9
+    bit_size: 1
+    description: I2C6 debug
+  - name: lpi2c7
+    bit_offset: 10
+    bit_size: 1
+    description: I2C7 debug
+  - name: lpi2c8
+    bit_offset: 11
+    bit_size: 1
+    description: I2C8 debug
+  - name: lpit2
+    bit_offset: 12
+    bit_size: 1
+    description: IT2 debug
+  - name: lpspi3
+    bit_offset: 13
+    bit_size: 1
+    description: SPI3 debug
+  - name: lpspi4
+    bit_offset: 14
+    bit_size: 1
+    description: SPI4 debug
+  - name: lpspi5
+    bit_offset: 15
+    bit_size: 1
+    description: SPI5 debug
+  - name: lpspi6
+    bit_offset: 16
+    bit_size: 1
+    description: SPI6 debug
+  - name: lpspi7
+    bit_offset: 17
+    bit_size: 1
+    description: SPI7 debug
+  - name: lpspi8
+    bit_offset: 18
+    bit_size: 1
+    description: SPI8 debug
+  - name: lptmr2
+    bit_offset: 19
+    bit_size: 1
+    description: TMR2 debug
+  - name: tpm3
+    bit_offset: 20
+    bit_size: 1
+    description: TPM3 debug
+  - name: tpm4
+    bit_offset: 21
+    bit_size: 1
+    description: TPM4 debug
+  - name: tpm5
+    bit_offset: 22
+    bit_size: 1
+    description: TPM5 debug
+  - name: tpm6
+    bit_offset: 23
+    bit_size: 1
+    description: TPM6 debug
+  - name: wdog3
+    bit_offset: 24
+    bit_size: 1
+    description: WDOG3 debug
+  - name: wdog4
+    bit_offset: 25
+    bit_size: 1
+    description: WDOG4 debug
+  - name: wdog5
+    bit_offset: 26
+    bit_size: 1
+    description: WDOG5 debug
+  - name: i3c2
+    bit_offset: 27
+    bit_size: 1
+    description: I3C2 debug
+  - name: sai3
+    bit_offset: 28
+    bit_size: 1
+    description: SAI3 debug
+  - name: sai4
+    bit_offset: 29
+    bit_size: 1
+    description: SAI4 debug
+  - name: sai5
+    bit_offset: 30
+    bit_size: 1
+    description: SAI5 debug
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CM7:
+  description: ''
+  fields:
+  - name: can2
+    bit_offset: 0
+    bit_size: 1
+    description: CAN2 debug
+  - name: can3
+    bit_offset: 1
+    bit_size: 1
+    description: CAN2 debug
+  - name: can4
+    bit_offset: 2
+    bit_size: 1
+    description: CAN3 debug
+  - name: can5
+    bit_offset: 3
+    bit_size: 1
+    description: CAN4 debug
+  - name: flexio1
+    bit_offset: 4
+    bit_size: 1
+    description: CAN5 debug
+  - name: flexio2
+    bit_offset: 5
+    bit_size: 1
+    description: FlexIO2 debug
+  - name: lpi2c3
+    bit_offset: 6
+    bit_size: 1
+    description: I2C3 debug
+  - name: lpi2c4
+    bit_offset: 7
+    bit_size: 1
+    description: I2C4 debug
+  - name: lpi2c5
+    bit_offset: 8
+    bit_size: 1
+    description: I2C5 debug
+  - name: lpi2c6
+    bit_offset: 9
+    bit_size: 1
+    description: I2C6 debug
+  - name: lpi2c7
+    bit_offset: 10
+    bit_size: 1
+    description: I2C7 debug
+  - name: lpi2c8
+    bit_offset: 11
+    bit_size: 1
+    description: I2C8 debug
+  - name: lpit2
+    bit_offset: 12
+    bit_size: 1
+    description: IT2 debug
+  - name: lpspi3
+    bit_offset: 13
+    bit_size: 1
+    description: SPI3 debug
+  - name: lpspi4
+    bit_offset: 14
+    bit_size: 1
+    description: SPI4 debug
+  - name: lpspi5
+    bit_offset: 15
+    bit_size: 1
+    description: SPI5 debug
+  - name: lpspi6
+    bit_offset: 16
+    bit_size: 1
+    description: SPI6 debug
+  - name: lpspi7
+    bit_offset: 17
+    bit_size: 1
+    description: SPI7 debug
+  - name: lpspi8
+    bit_offset: 18
+    bit_size: 1
+    description: SPI8 debug
+  - name: lptmr2
+    bit_offset: 19
+    bit_size: 1
+    description: TMR2 debug
+  - name: tpm3
+    bit_offset: 20
+    bit_size: 1
+    description: TPM3 debug
+  - name: tpm4
+    bit_offset: 21
+    bit_size: 1
+    description: TPM3 debug
+  - name: tpm5
+    bit_offset: 22
+    bit_size: 1
+    description: TPM4 debug
+  - name: tpm6
+    bit_offset: 23
+    bit_size: 1
+    description: TPM5 debug
+  - name: wdog3
+    bit_offset: 24
+    bit_size: 1
+    description: TPM6 debug
+  - name: wdog4
+    bit_offset: 25
+    bit_size: 1
+    description: WDOG4 debug
+  - name: wdog5
+    bit_offset: 26
+    bit_size: 1
+    description: WDOG5 debug
+  - name: i3c2
+    bit_offset: 27
+    bit_size: 1
+    description: I3C2 debug
+  - name: sai3
+    bit_offset: 28
+    bit_size: 1
+    description: I3C2 debug
+  - name: sai4
+    bit_offset: 29
+    bit_size: 1
+    description: SAI3 debug
+  - name: sai5
+    bit_offset: 30
+    bit_size: 1
+    description: SAI4 debug
+fieldset/BLK_CTRL_WAKEUPMIX_DBG_TRACE_CTL_clken:
+  description: ''
+  fields:
+  - name: csswo
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_SMMU_TBU_IRQ_SETUP_stretch:
+  description: ''
+  fields:
+  - name: ratio
+    bit_offset: 0
+    bit_size: 2
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_ma0:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_ma1a:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_ma1b:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_ma2a:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_ma2b:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_md0:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 16
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_md1:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 17
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_md2:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 18
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_md3:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 19
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_md4:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 20
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_md5:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 21
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_md6:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 22
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_md7:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 23
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_md8:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 24
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_INITIATOR_TIMEOUT_md9:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 25
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MA0_clk_div:
+  description: ''
+  fields:
+  - name: ratio
+    bit_offset: 0
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MA0:
+  description: ''
+  fields:
+  - name: upd
+    bit_offset: 15
+    bit_size: 1
+  - name: dis
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MA1_clk_div:
+  description: ''
+  fields:
+  - name: ratio
+    bit_offset: 0
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MA1:
+  description: ''
+  fields:
+  - name: upd
+    bit_offset: 15
+    bit_size: 1
+  - name: dis
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MA2_clk_div:
+  description: ''
+  fields:
+  - name: ratio
+    bit_offset: 0
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MA2:
+  description: ''
+  fields:
+  - name: upd
+    bit_offset: 15
+    bit_size: 1
+  - name: dis
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD0_clk_div:
+  description: ''
+  fields:
+  - name: ratio
+    bit_offset: 0
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD0:
+  description: ''
+  fields:
+  - name: upd
+    bit_offset: 15
+    bit_size: 1
+  - name: dis
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD1_clk_div:
+  description: ''
+  fields:
+  - name: ratio
+    bit_offset: 0
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD1:
+  description: ''
+  fields:
+  - name: upd
+    bit_offset: 15
+    bit_size: 1
+  - name: dis
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD2_clk_div:
+  description: ''
+  fields:
+  - name: ratio
+    bit_offset: 0
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD2:
+  description: ''
+  fields:
+  - name: upd
+    bit_offset: 15
+    bit_size: 1
+  - name: dis
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD3_clk_div:
+  description: ''
+  fields:
+  - name: ratio
+    bit_offset: 0
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD3:
+  description: ''
+  fields:
+  - name: upd
+    bit_offset: 15
+    bit_size: 1
+  - name: dis
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD4_clk_div:
+  description: ''
+  fields:
+  - name: ratio
+    bit_offset: 0
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD4:
+  description: ''
+  fields:
+  - name: upd
+    bit_offset: 15
+    bit_size: 1
+  - name: dis
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD5_clk_div:
+  description: ''
+  fields:
+  - name: ratio
+    bit_offset: 0
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD5:
+  description: ''
+  fields:
+  - name: upd
+    bit_offset: 15
+    bit_size: 1
+  - name: dis
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD6_clk_div:
+  description: ''
+  fields:
+  - name: ratio
+    bit_offset: 0
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD6:
+  description: ''
+  fields:
+  - name: upd
+    bit_offset: 15
+    bit_size: 1
+  - name: dis
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD7_clk_div:
+  description: ''
+  fields:
+  - name: ratio
+    bit_offset: 0
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD7:
+  description: ''
+  fields:
+  - name: upd
+    bit_offset: 15
+    bit_size: 1
+  - name: dis
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD8_clk_div:
+  description: ''
+  fields:
+  - name: ratio
+    bit_offset: 0
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD8:
+  description: ''
+  fields:
+  - name: upd
+    bit_offset: 15
+    bit_size: 1
+  - name: dis
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD9_clk_div:
+  description: ''
+  fields:
+  - name: ratio
+    bit_offset: 0
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_NIU_TO_MD9:
+  description: ''
+  fields:
+  - name: upd
+    bit_offset: 15
+    bit_size: 1
+  - name: dis
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_CTL_0_can2_stop:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_CTL_0_can3_stop:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_CTL_0_can4_stop:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_CTL_0_can5_stop:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_CTL_0_edma5_2_stop:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_CTL_0_edma5_3_stop:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_CTL_0_flexspi1_stop:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 8
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_ACK_STATUS_0_can2_stop:
+  description: ''
+  fields:
+  - name: ack
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_ACK_STATUS_0_can3_stop:
+  description: ''
+  fields:
+  - name: ack
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_ACK_STATUS_0_can4_stop:
+  description: ''
+  fields:
+  - name: ack
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_ACK_STATUS_0_can5_stop:
+  description: ''
+  fields:
+  - name: ack
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_ACK_STATUS_0_edma5_2_stop:
+  description: ''
+  fields:
+  - name: ack
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_ACK_STATUS_0_edma5_3_stop:
+  description: ''
+  fields:
+  - name: ack
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_ACK_STATUS_0_flexspi1_stop:
+  description: ''
+  fields:
+  - name: ack
+    bit_offset: 8
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_can2_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_can3_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_can4_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_can5_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_flexio1_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_flexio2_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_flexspi1_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 8
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpi2c3_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpi2c4_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 10
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpi2c5_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 11
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpi2c6_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 12
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpi2c7_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 13
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpi2c8_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 14
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpit2_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 15
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpspi3_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 16
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpspi4_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 17
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpspi5_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 18
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpspi6_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 19
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpspi7_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 20
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpspi8_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 21
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpuart3_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 22
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpuart4_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 23
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpuart5_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 24
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpuart6_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 25
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpuart7_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 26
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_0_lpuart8_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 27
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_CTL_1_tpm3_stop:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_CTL_1_tpm4_stop:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_CTL_1_tpm5_stop:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_CTL_1_tpm6_stop:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_CTL_1_wdog3_stop:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_CTL_1_wdog4_stop:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 8
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_STOP_CTL_1_wdog5_stop:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_1_tpm3_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_1_tpm4_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_1_tpm5_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DOZE_CTL_1_tpm6_doze:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_WAIT_CTL_1_wdog3:
+  description: ''
+  fields:
+  - name: wait
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_WAIT_CTL_1_wdog4:
+  description: ''
+  fields:
+  - name: wait
+    bit_offset: 8
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_WAIT_CTL_1_wdog5:
+  description: ''
+  fields:
+  - name: wait
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_can2_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_can3_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_can4_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_can5_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_edma5_2_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_edma5_3_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_flexio1_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_flexio2_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_flexspi1_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 8
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpi2c3_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpi2c4_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 10
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpi2c5_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 11
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpi2c6_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 12
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpi2c7_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 13
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpi2c8_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 14
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpit2_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 15
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpspi3_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 16
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpspi4_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 17
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpspi5_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 18
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpspi6_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 19
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpspi7_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 20
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpspi8_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 21
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpuart3_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 22
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpuart4_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 23
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpuart5_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 24
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpuart6_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 25
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpuart7_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 26
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_lpuart8_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 27
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_gpio2_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 28
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_gpio3_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 29
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_gpio4_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 30
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_0_gpio5_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_can2_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_can3_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_can4_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_can5_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_edma5_2_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_edma5_3_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_flexio1_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_flexio2_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_flexspi1_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 8
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpi2c3_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpi2c4_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 10
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpi2c5_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 11
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpi2c6_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 12
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpi2c7_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 13
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpi2c8_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 14
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpit2_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 15
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpspi3_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 16
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpspi4_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 17
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpspi5_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 18
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpspi6_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 19
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpspi7_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 20
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpspi8_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 21
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpuart3_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 22
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpuart4_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 23
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpuart5_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 24
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpuart6_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 25
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpuart7_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 26
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_lpuart8_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 27
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_gpio2_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 28
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_gpio3_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 29
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_gpio4_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 30
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_0_gpio5_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_can2:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_can3:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_can4:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_can5:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_edma5_2:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_edma5_3:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_flexio1:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_flexio2:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_flexspi1:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 8
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpi2c3:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpi2c4:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 10
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpi2c5:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 11
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpi2c6:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 12
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpi2c7:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 13
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpi2c8:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 14
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpit2:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 15
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpspi3:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 16
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpspi4:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 17
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpspi5:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 18
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpspi6:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 19
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpspi7:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 20
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpspi8:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 21
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpuart3:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 22
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpuart4:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 23
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpuart5:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 24
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpuart6:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 25
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpuart7:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 26
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_lpuart8:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 27
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_gpio2:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 28
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_gpio3:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 29
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_gpio4:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 30
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_0_gpio5:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_can2:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_can3:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_can4:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_can5:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_edma5_2:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_edma5_3:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_flexio1:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_flexio2:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_flexspi1:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 8
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpi2c3:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpi2c4:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 10
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpi2c5:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 11
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpi2c6:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 12
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpi2c7:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 13
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpi2c8:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 14
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpit2:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 15
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpspi3:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 16
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpspi4:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 17
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpspi5:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 18
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpspi6:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 19
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpspi7:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 20
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpspi8:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 21
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpuart3:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 22
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpuart4:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 23
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpuart5:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 24
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpuart6:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 25
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpuart7:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 26
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_lpuart8:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 27
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_gpio2:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 28
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_gpio3:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 29
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_gpio4:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 30
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_0_gpio5:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 31
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_1_sai3_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_1_sai4_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_1_sai5_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_1_tpm3_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_1_tpm4_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_1_tpm5_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_1_tpm6_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_1_wdog3_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_1_wdog4_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 8
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_1_wdog5_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_1_sai3_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_1_sai4_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_1_sai5_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_1_tpm3_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_1_tpm4_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_1_tpm5_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_1_tpm6_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_1_wdog3_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_1_wdog4_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 8
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_1_wdog5_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_1_sai3:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_1_sai4:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_1_sai5:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_1_tpm3:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_1_tpm4:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_1_tpm5:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_1_tpm6:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_1_wdog3:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_1_wdog4:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 8
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_1_wdog5:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_1_sai3:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_1_sai4:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_1_sai5:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_1_tpm3:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_1_tpm4:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_1_tpm5:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_1_tpm6:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_1_wdog3:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_1_wdog4:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 8
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_1_wdog5:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_flexio1_apb_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_flexio2_apb_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpi2c3_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpi2c4_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 10
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpi2c5_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 11
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpi2c6_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 12
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpi2c7_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 13
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpi2c8_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 14
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpspi3_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 16
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpspi4_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 17
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpspi5_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 18
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpspi6_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 19
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpspi7_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 20
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpspi8_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 21
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpuart3_apb_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 22
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpuart4_apb_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 23
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpuart5_apb_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 24
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpuart6_apb_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 25
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpuart7_apb_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 26
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_2_lpuart8_apb_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 27
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_flexio1_apb_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_flexio2_apb_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpi2c3_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpi2c4_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 10
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpi2c5_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 11
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpi2c6_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 12
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpi2c7_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 13
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpi2c8_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 14
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpspi3_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 16
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpspi4_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 17
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpspi5_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 18
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpspi6_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 19
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpspi7_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 20
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpspi8_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 21
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpuart3_apb_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 22
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpuart4_apb_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 23
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpuart5_apb_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 24
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpuart6_apb_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 25
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpuart7_apb_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 26
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_2_lpuart8_apb_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 27
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_flexio1_apb:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_flexio2_apb:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpi2c3_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpi2c4_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 10
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpi2c5_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 11
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpi2c6_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 12
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpi2c7_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 13
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpi2c8_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 14
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpspi3_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 16
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpspi4_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 17
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpspi5_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 18
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpspi6_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 19
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpspi7_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 20
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpspi8_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 21
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpuart3_apb:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 22
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpuart4_apb:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 23
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpuart5_apb:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 24
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpuart6_apb:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 25
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpuart7_apb:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 26
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_2_lpuart8_apb:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 27
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_flexio1_apb:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_flexio2_apb:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpi2c3_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpi2c4_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 10
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpi2c5_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 11
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpi2c6_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 12
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpi2c7_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 13
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpi2c8_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 14
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpspi3_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 16
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpspi4_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 17
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpspi5_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 18
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpspi6_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 19
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpspi7_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 20
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpspi8_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 21
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpuart3_apb:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 22
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpuart4_apb:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 23
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpuart5_apb:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 24
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpuart6_apb:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 25
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpuart7_apb:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 26
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_2_lpuart8_apb:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 27
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_3_sai3_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_3_sai4_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QREQ_CTL_3_sai5_ips_qreq:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_3_sai3_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_3_sai4_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACCEPT_STATUS_3_sai5_ips_qaccept:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_3_sai3_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_3_sai4_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QDENY_STATUS_3_sai5_ips:
+  description: ''
+  fields:
+  - name: qdeny
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_3_sai3_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_3_sai4_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QACTIVE_STATUS_3_sai5_ips:
+  description: ''
+  fields:
+  - name: qactive
+    bit_offset: 2
+    bit_size: 1

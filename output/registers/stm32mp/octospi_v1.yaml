@@ -1,0 +1,663 @@
+block/OCTOSPI:
+  description: ''
+  items:
+  - name: CR
+    byte_offset: 0
+    description: OCTOSPI Control register
+    fieldset: OCTOSPI_CR
+  - name: DCR1
+    byte_offset: 8
+    description: OCTOSPI Device Configuration register 1
+    fieldset: OCTOSPI_DCR1
+  - name: DCR2
+    byte_offset: 12
+    description: OCTOSPI Device Configuration register 2
+    fieldset: OCTOSPI_DCR2
+  - name: DCR3
+    byte_offset: 16
+    description: OCTOSPI Device Configuration register 3
+    fieldset: OCTOSPI_DCR3
+  - name: DCR4
+    byte_offset: 20
+    description: OCTOSPI Device Configuration register 4
+    fieldset: OCTOSPI_DCR4
+  - name: SR
+    byte_offset: 32
+    description: OCTOSPI Status register
+    fieldset: OCTOSPI_SR
+  - name: FCR
+    byte_offset: 36
+    description: OCTOSPI Flag Clear register
+    fieldset: OCTOSPI_FCR
+  - name: DLR
+    byte_offset: 64
+    description: OCTOSPI Data Length register
+    fieldset: OCTOSPI_DLR
+  - name: AR
+    byte_offset: 72
+    description: OCTOSPI Address register
+    fieldset: OCTOSPI_AR
+  - name: DR
+    byte_offset: 80
+    description: OCTOPSI Data register
+    fieldset: OCTOSPI_DR
+  - name: PSMKR
+    byte_offset: 128
+    description: OCTOSPI Polling Status Mask register
+    fieldset: OCTOSPI_PSMKR
+  - name: PSMAR
+    byte_offset: 136
+    description: OCTOSPI Polling Status Match register
+    fieldset: OCTOSPI_PSMAR
+  - name: PIR
+    byte_offset: 144
+    description: OCTOSPI Polling Interval register
+    fieldset: OCTOSPI_PIR
+  - name: CCR
+    byte_offset: 256
+    description: OCTOSPI Communication Configuration register
+    fieldset: OCTOSPI_CCR
+  - name: TCR
+    byte_offset: 264
+    description: OCTOSPI Timing Configuration register
+    fieldset: OCTOSPI_TCR
+  - name: IR
+    byte_offset: 272
+    description: OCTOSPI Instruction register
+    fieldset: OCTOSPI_IR
+  - name: ABR
+    byte_offset: 288
+    description: OCTOSPI Alternate Bytes register
+    fieldset: OCTOSPI_ABR
+  - name: LPTR
+    byte_offset: 304
+    description: OCTOSPI Low Power Timeout register
+    fieldset: OCTOSPI_LPTR
+  - name: WPCCR
+    byte_offset: 320
+    description: OCTOSPI Wrap Communication Configuration register
+    fieldset: OCTOSPI_WPCCR
+  - name: WPTCR
+    byte_offset: 328
+    description: OCTOSPI Wrap Timing Configuration register
+    fieldset: OCTOSPI_WPTCR
+  - name: WPIR
+    byte_offset: 336
+    description: OCTOSPI Wrap Instruction register
+    fieldset: OCTOSPI_WPIR
+  - name: WPABR
+    byte_offset: 352
+    description: OCTOSPI Wrap Alternate Bytes register
+    fieldset: OCTOSPI_WPABR
+  - name: WCCR
+    byte_offset: 384
+    description: OCTOSPI Write Communication Configuration register
+    fieldset: OCTOSPI_WCCR
+  - name: WTCR
+    byte_offset: 392
+    description: OCTOSPI Write Timing Configuration register
+    fieldset: OCTOSPI_WTCR
+  - name: WIR
+    byte_offset: 400
+    description: OCTOSPI Write Instruction register
+    fieldset: OCTOSPI_WIR
+  - name: WABR
+    byte_offset: 416
+    description: OCTOSPI Write Alternate Bytes register
+    fieldset: OCTOSPI_WABR
+  - name: HLCR
+    byte_offset: 512
+    description: OCTOSPI Hyperbus Latency Configuration register
+    fieldset: OCTOSPI_HLCR
+  - name: HWCFGR2
+    byte_offset: 1004
+    description: OCTOSPI hardware configuration register 2
+    fieldset: OCTOSPI_HWCFGR2
+  - name: HWCFGR
+    byte_offset: 1008
+    description: OCTOSPI HW Configuration register
+    fieldset: OCTOSPI_HWCFGR
+  - name: VERR
+    byte_offset: 1012
+    description: OCTOSPI Version register
+  - name: IDR
+    byte_offset: 1016
+    description: OCTOSPI Identification register
+  - name: MIDR
+    byte_offset: 1020
+    description: OCTOPSI HW Magic ID register
+fieldset/OCTOSPI_CR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+    description: Enable
+  - name: ABORT
+    bit_offset: 1
+    bit_size: 1
+    description: Abort request
+  - name: DMAEN
+    bit_offset: 2
+    bit_size: 1
+    description: DMA Enable
+  - name: TCEN
+    bit_offset: 3
+    bit_size: 1
+    description: Timeout Counter Enable
+  - name: DMM
+    bit_offset: 6
+    bit_size: 1
+    description: Dual-Quad Mode
+  - name: MSEL
+    bit_offset: 7
+    bit_size: 1
+    description: Flash Select
+  - name: FTHRES
+    bit_offset: 8
+    bit_size: 5
+    description: FIFO Threshold Level
+  - name: TEIE
+    bit_offset: 16
+    bit_size: 1
+    description: Transfer Error Interrupt Enable
+  - name: TCIE
+    bit_offset: 17
+    bit_size: 1
+    description: Transfer Complete Interrupt Enable
+  - name: FTIE
+    bit_offset: 18
+    bit_size: 1
+    description: FIFO Threshold Interrupt Enable
+  - name: SMIE
+    bit_offset: 19
+    bit_size: 1
+    description: Status Match Interrupt Enable
+  - name: TOIE
+    bit_offset: 20
+    bit_size: 1
+    description: TimeOut Interrupt Enable
+  - name: APMS
+    bit_offset: 22
+    bit_size: 1
+    description: Automatic Poll Mode Stop
+  - name: PMM
+    bit_offset: 23
+    bit_size: 1
+    description: Polling Match Mode
+  - name: CSSEL
+    bit_offset: 24
+    bit_size: 1
+    description: Chip select selection
+  - name: FMODE
+    bit_offset: 28
+    bit_size: 2
+    description: Functional Mode
+fieldset/OCTOSPI_DCR1:
+  description: ''
+  fields:
+  - name: CKMODE
+    bit_offset: 0
+    bit_size: 1
+    description: Mode 0 / Mode 3
+  - name: FRCK
+    bit_offset: 1
+    bit_size: 1
+    description: Free Running Clock
+  - name: DLYBYP
+    bit_offset: 3
+    bit_size: 1
+    description: Delay Block
+  - name: CSHT
+    bit_offset: 8
+    bit_size: 3
+    description: Chip Select High Time
+  - name: DEVSIZE
+    bit_offset: 16
+    bit_size: 5
+    description: Device Size
+  - name: MTYP
+    bit_offset: 24
+    bit_size: 3
+    description: Memory Type
+fieldset/OCTOSPI_DCR2:
+  description: ''
+  fields:
+  - name: PRESCALER
+    bit_offset: 0
+    bit_size: 8
+    description: Clock prescaler
+  - name: WRAPSIZE
+    bit_offset: 16
+    bit_size: 3
+    description: Wrap Size
+fieldset/OCTOSPI_DCR3:
+  description: ''
+  fields:
+  - name: CSBOUND
+    bit_offset: 16
+    bit_size: 5
+    description: Maximum transfer
+  - name: MAXTRAN
+    bit_offset: 0
+    bit_size: 8
+    description: Maximum transfer
+fieldset/OCTOSPI_DCR4:
+  description: ''
+  fields:
+  - name: REFRESH
+    bit_offset: 0
+    bit_size: 32
+    description: Refresh rate
+fieldset/OCTOSPI_SR:
+  description: ''
+  fields:
+  - name: TEF
+    bit_offset: 0
+    bit_size: 1
+    description: Transfer Error Flag
+  - name: TCF
+    bit_offset: 1
+    bit_size: 1
+    description: Transfer Complete Flag
+  - name: FTF
+    bit_offset: 2
+    bit_size: 1
+    description: FIFO Threshold Flag
+  - name: SMF
+    bit_offset: 3
+    bit_size: 1
+    description: Status Match Flag
+  - name: TOF
+    bit_offset: 4
+    bit_size: 1
+    description: Timeout Flag
+  - name: BUSY
+    bit_offset: 5
+    bit_size: 1
+    description: Busy
+  - name: FLEVEL
+    bit_offset: 8
+    bit_size: 6
+    description: FIFO Level
+fieldset/OCTOSPI_FCR:
+  description: ''
+  fields:
+  - name: CTEF
+    bit_offset: 0
+    bit_size: 1
+    description: Clear Transfer Error Flag
+  - name: CTCF
+    bit_offset: 1
+    bit_size: 1
+    description: Clear Transfer Complete Flag
+  - name: CSMF
+    bit_offset: 3
+    bit_size: 1
+    description: Clear Status Match Flag
+  - name: CTOF
+    bit_offset: 4
+    bit_size: 1
+    description: Clear Timeout Flag
+fieldset/OCTOSPI_DLR:
+  description: ''
+  fields:
+  - name: DL
+    bit_offset: 0
+    bit_size: 32
+    description: Data Length
+fieldset/OCTOSPI_AR:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 0
+    bit_size: 32
+    description: Address
+fieldset/OCTOSPI_DR:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+fieldset/OCTOSPI_PSMKR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 32
+    description: Status mask
+fieldset/OCTOSPI_PSMAR:
+  description: ''
+  fields:
+  - name: MATCH
+    bit_offset: 0
+    bit_size: 32
+    description: Status match
+fieldset/OCTOSPI_PIR:
+  description: ''
+  fields:
+  - name: INTERVAL
+    bit_offset: 0
+    bit_size: 16
+    description: Polling Interval
+fieldset/OCTOSPI_CCR:
+  description: ''
+  fields:
+  - name: IMODE
+    bit_offset: 0
+    bit_size: 3
+    description: Instruction Mode
+  - name: IDTR
+    bit_offset: 3
+    bit_size: 1
+    description: Instruction Double Transfer Rate
+  - name: ISIZE
+    bit_offset: 4
+    bit_size: 2
+    description: Instruction Size
+  - name: ADMODE
+    bit_offset: 8
+    bit_size: 3
+    description: Address Mode
+  - name: ADDTR
+    bit_offset: 11
+    bit_size: 1
+    description: Address Double Transfer Rate
+  - name: ADSIZE
+    bit_offset: 12
+    bit_size: 2
+    description: Address Size
+  - name: ABMODE
+    bit_offset: 16
+    bit_size: 3
+    description: Alternate Bytes Mode
+  - name: ABDTR
+    bit_offset: 19
+    bit_size: 1
+    description: Alternate Bytes Double Transfer Rate
+  - name: ABSIZE
+    bit_offset: 20
+    bit_size: 2
+    description: Alternate Bytes Size
+  - name: DMODE
+    bit_offset: 24
+    bit_size: 3
+    description: Data Mode
+  - name: DDTR
+    bit_offset: 27
+    bit_size: 1
+    description: Data Double Transfer Rate
+  - name: DQSE
+    bit_offset: 29
+    bit_size: 1
+    description: DQS Enable
+  - name: SIOO
+    bit_offset: 31
+    bit_size: 1
+    description: Send Instruction Only Once Mode
+fieldset/OCTOSPI_TCR:
+  description: ''
+  fields:
+  - name: DCYC
+    bit_offset: 0
+    bit_size: 5
+    description: Number of Dummy Cycles
+  - name: DHQC
+    bit_offset: 28
+    bit_size: 1
+    description: Delay Hold Quarter Cycle
+  - name: SSHIFT
+    bit_offset: 30
+    bit_size: 1
+    description: Sample Shift
+fieldset/OCTOSPI_IR:
+  description: ''
+  fields:
+  - name: INSTRUCTION
+    bit_offset: 0
+    bit_size: 32
+    description: Instruction
+fieldset/OCTOSPI_ABR:
+  description: ''
+  fields:
+  - name: ALTERNATE
+    bit_offset: 0
+    bit_size: 32
+    description: Alternate Bytes
+fieldset/OCTOSPI_LPTR:
+  description: ''
+  fields:
+  - name: TIMEOUT
+    bit_offset: 0
+    bit_size: 16
+    description: Timeout period
+fieldset/OCTOSPI_WPCCR:
+  description: ''
+  fields:
+  - name: IMODE
+    bit_offset: 0
+    bit_size: 3
+    description: Instruction Mode
+  - name: IDTR
+    bit_offset: 3
+    bit_size: 1
+    description: Instruction Double Transfer Rate
+  - name: ISIZE
+    bit_offset: 4
+    bit_size: 2
+    description: Instruction Size
+  - name: ADMODE
+    bit_offset: 8
+    bit_size: 3
+    description: Address Mode
+  - name: ADDTR
+    bit_offset: 11
+    bit_size: 1
+    description: Address Double Transfer Rate
+  - name: ADSIZE
+    bit_offset: 12
+    bit_size: 2
+    description: Address Size
+  - name: ABMODE
+    bit_offset: 16
+    bit_size: 3
+    description: Alternate Bytes Mode
+  - name: ABDTR
+    bit_offset: 19
+    bit_size: 1
+    description: Alternate Bytes Double Transfer Rate
+  - name: ABSIZE
+    bit_offset: 20
+    bit_size: 2
+    description: Alternate Bytes Size
+  - name: DMODE
+    bit_offset: 24
+    bit_size: 3
+    description: Data Mode
+  - name: DDTR
+    bit_offset: 27
+    bit_size: 1
+    description: Data Double Transfer Rate
+  - name: DQSE
+    bit_offset: 29
+    bit_size: 1
+    description: DQS Enable
+  - name: SIOO
+    bit_offset: 31
+    bit_size: 1
+    description: Send Instruction Only Once Mode
+fieldset/OCTOSPI_WPTCR:
+  description: ''
+  fields:
+  - name: DCYC
+    bit_offset: 0
+    bit_size: 5
+    description: Number of Dummy Cycles
+  - name: DHQC
+    bit_offset: 28
+    bit_size: 1
+    description: Delay Hold Quarter Cycle
+  - name: SSHIFT
+    bit_offset: 30
+    bit_size: 1
+    description: Sample Shift
+fieldset/OCTOSPI_WPIR:
+  description: ''
+  fields:
+  - name: INSTRUCTION
+    bit_offset: 0
+    bit_size: 32
+    description: Instruction
+fieldset/OCTOSPI_WPABR:
+  description: ''
+  fields:
+  - name: ALTERNATE
+    bit_offset: 0
+    bit_size: 32
+    description: Alternate Bytes
+fieldset/OCTOSPI_WCCR:
+  description: ''
+  fields:
+  - name: IMODE
+    bit_offset: 0
+    bit_size: 3
+    description: Instruction Mode
+  - name: IDTR
+    bit_offset: 3
+    bit_size: 1
+    description: Instruction Double Transfer Rate
+  - name: ISIZE
+    bit_offset: 4
+    bit_size: 2
+    description: Instruction Size
+  - name: ADMODE
+    bit_offset: 8
+    bit_size: 3
+    description: Address Mode
+  - name: ADDTR
+    bit_offset: 11
+    bit_size: 1
+    description: Address Double Transfer Rate
+  - name: ADSIZE
+    bit_offset: 12
+    bit_size: 2
+    description: Address Size
+  - name: ABMODE
+    bit_offset: 16
+    bit_size: 3
+    description: Alternate Bytes Mode
+  - name: ABDTR
+    bit_offset: 19
+    bit_size: 1
+    description: Alternate Bytes Double Transfer Rate
+  - name: ABSIZE
+    bit_offset: 20
+    bit_size: 2
+    description: Alternate Bytes Size
+  - name: DMODE
+    bit_offset: 24
+    bit_size: 3
+    description: Data Mode
+  - name: DDTR
+    bit_offset: 27
+    bit_size: 1
+    description: Data Double Transfer Rate
+  - name: DQSE
+    bit_offset: 29
+    bit_size: 1
+    description: DQS Enable
+  - name: SIOO
+    bit_offset: 31
+    bit_size: 1
+    description: Send Instruction Only Once Mode
+fieldset/OCTOSPI_WTCR:
+  description: ''
+  fields:
+  - name: DCYC
+    bit_offset: 0
+    bit_size: 5
+    description: Number of Dummy Cycles
+fieldset/OCTOSPI_WIR:
+  description: ''
+  fields:
+  - name: INSTRUCTION
+    bit_offset: 0
+    bit_size: 32
+    description: Instruction
+fieldset/OCTOSPI_WABR:
+  description: ''
+  fields:
+  - name: ALTERNATE
+    bit_offset: 0
+    bit_size: 32
+    description: Alternate Bytes
+fieldset/OCTOSPI_HLCR:
+  description: ''
+  fields:
+  - name: LM
+    bit_offset: 0
+    bit_size: 1
+    description: Latency Mode
+  - name: WZL
+    bit_offset: 1
+    bit_size: 1
+    description: Write Zero Latency
+  - name: TACC
+    bit_offset: 8
+    bit_size: 8
+    description: Access Time
+  - name: TRWR
+    bit_offset: 16
+    bit_size: 8
+    description: Read Write Recovery Time
+fieldset/OCTOSPI_HWCFGR2:
+  description: ''
+  fields:
+  - name: FRCK
+    bit_offset: 0
+    bit_size: 4
+    description: Free running clock
+  - name: RDFT
+    bit_offset: 4
+    bit_size: 4
+    description: Reduced features
+  - name: ARBM
+    bit_offset: 8
+    bit_size: 4
+    description: Arbitration configuration
+  - name: MEM16
+    bit_offset: 12
+    bit_size: 4
+    description: Size of the SPI memory supported
+  - name: HSINT
+    bit_offset: 16
+    bit_size: 4
+    description: High-speed interface
+fieldset/OCTOSPI_HWCFGR:
+  description: ''
+  fields:
+  - name: AXI
+    bit_offset: 0
+    bit_size: 4
+    description: OCTOSPI interface
+  - name: FIFO
+    bit_offset: 4
+    bit_size: 8
+    description: FIFO depth
+  - name: PRES
+    bit_offset: 12
+    bit_size: 8
+    description: Prescaler
+  - name: IDL
+    bit_offset: 20
+    bit_size: 4
+    description: ID Length
+  - name: MMW
+    bit_offset: 24
+    bit_size: 4
+    description: Memory-mapped write
+  - name: CSSRV
+    bit_offset: 28
+    bit_size: 4
+    description: CSSEL reset value

@@ -1,0 +1,48 @@
+block/GPU_BLK_CTRL_GPUMIX:
+  description: ''
+  items:
+  - name: STRIPING_GRANULE
+    byte_offset: 0
+  - name: TEXFMTENABLE
+    byte_offset: 4
+    fieldset: GPU_BLK_CTRL_GPUMIX_TEXFMTENABLE
+  - name: GPURESET
+    byte_offset: 8
+    fieldset: GPU_BLK_CTRL_GPUMIX_GPURESET
+  - name: DBGCTRL
+    byte_offset: 12
+    fieldset: GPU_BLK_CTRL_GPUMIX_DBGCTRL
+fieldset/GPU_BLK_CTRL_GPUMIX_STRIPING_GRANULE_STRIPING:
+  description: ''
+  fields:
+  - name: GRANULE
+    bit_offset: 0
+    bit_size: 4
+fieldset/GPU_BLK_CTRL_GPUMIX_TEXFMTENABLE:
+  description: ''
+  fields:
+  - name: TEXFMTENABLE
+    bit_offset: 0
+    bit_size: 32
+fieldset/GPU_BLK_CTRL_GPUMIX_GPURESET:
+  description: ''
+  fields:
+  - name: GPURR
+    bit_offset: 0
+    bit_size: 1
+    description: GPU Reset Release
+fieldset/GPU_BLK_CTRL_GPUMIX_DBGCTRL:
+  description: ''
+  fields:
+  - name: MCUDBGEN
+    bit_offset: 0
+    bit_size: 1
+  - name: MCUNIDEN
+    bit_offset: 1
+    bit_size: 1
+  - name: PROTDBGEN
+    bit_offset: 2
+    bit_size: 1
+  - name: PROTNIDEN
+    bit_offset: 3
+    bit_size: 1

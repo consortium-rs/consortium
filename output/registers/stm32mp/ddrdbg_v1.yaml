@@ -1,0 +1,78 @@
+block/DDRDBG:
+  description: ''
+  items:
+  - name: LP_DISABLE
+    byte_offset: 0
+    description: DDRDBG low-power disable register
+  - name: BYPASS_PCLKEN
+    byte_offset: 4
+    description: DDRDBG bypass PCLKEN register
+    fieldset: DDRDBG_BYPASS_PCLKEN
+  - name: DDRC_AUTO_SR_DELAY
+    byte_offset: 8
+    description: DDRDBG DDRC auto SR delay register
+  - name: OBSP_CTRL
+    byte_offset: 12
+    description: DDRDBG OBSP control register
+  - name: FRAC_PLL_LOCK
+    byte_offset: 16
+    description: DDRDBG FRAC PLL lock register
+    fieldset: DDRDBG_FRAC_PLL_LOCK
+  - name: DTO_OUTPUT
+    byte_offset: 20
+    description: DDRDBG DTO output register
+    fieldset: DDRDBG_DTO_OUTPUT
+  - name: DFI_ERRORS_CTRL
+    byte_offset: 48
+    description: DDRDBG DFI error control register
+  - name: DFI_ERROR_STATUS
+    byte_offset: 52
+    description: DDRDBG DFI error status register
+  - name: DFI_ERROR_MSK
+    byte_offset: 56
+    description: DDRDBG DFI error mask register
+  - name: DDR34_AC_SWIZZLE_ADD3_0
+    byte_offset: 256
+    description: DDRDBG DDR34 AC swizzle ADD3_0 register
+  - name: DDR34_AC_SWIZZLE_ADD7_4
+    byte_offset: 260
+    description: DDRDBG DDR34 AC swizzle ADD7_4 register
+  - name: DDR34_AC_SWIZZLE_ADD11_8
+    byte_offset: 264
+    description: DDRDBG DDR34 AC swizzle ADD11_8 register
+  - name: DDR34_AC_SWIZZLE_ADD15_12
+    byte_offset: 268
+    description: DDRDBG DDR34 AC swizzle ADD15_12 register
+  - name: DDR34_AC_SWIZZLE_BK2_0_ACTN
+    byte_offset: 272
+    description: DDRDBG DDR34 AC swizzle BK2 0 ACTN register
+  - name: DDR34_AC_SWIZZLE_RASN_CASN_BG1_0
+    byte_offset: 276
+    description: DDRDBG DDR34 AC swizzle RASN CASN BG1_0 register
+  - name: DDR34_AC_SWIZZLE_WEN
+    byte_offset: 280
+    description: DDRDBG DDR34 AC swizzle WEN register
+fieldset/DDRDBG_BYPASS_PCLKEN:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+    description: The DDRPHYC Bypass_Pclken is active. The targeted data rate is less
+      than 666 MT/s. The clock fed to the SDRAM interface is the one coming directly
+      from the interfan frac pll, and the DDRPHYC does not alter it.
+fieldset/DDRDBG_FRAC_PLL_LOCK:
+  description: ''
+  fields:
+  - name: LOCK
+    bit_offset: 0
+    bit_size: 1
+    description: PLL lock, direct copy of ddrss_pll2_lock.
+fieldset/DDRDBG_DTO_OUTPUT:
+  description: ''
+  fields:
+  - name: DTO
+    bit_offset: 0
+    bit_size: 1
+    description: DDRPHYC DTO output is stored in this register. Among other signals
+      of interests, the DDRPHYC PLL lock can be observed on this register.

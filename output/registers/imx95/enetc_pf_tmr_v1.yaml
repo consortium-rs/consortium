@@ -1,0 +1,491 @@
+block/ENETC_PF_TMR:
+  description: ''
+  items:
+  - name: TMR_ID
+    byte_offset: 0
+  - name: TMR_CAPR
+    byte_offset: 8
+    fieldset: ENETC_PF_TMR_TMR_CAPR
+  - name: TMR_FRT_L
+    byte_offset: 32
+  - name: TMR_FRT_H
+    byte_offset: 36
+  - name: TMR_SRT_L
+    byte_offset: 40
+  - name: TMR_SRT_H
+    byte_offset: 44
+  - name: TMR_DEF_CNT_L
+    byte_offset: 48
+  - name: TMR_DEF_CNT_H
+    byte_offset: 52
+  - name: TMR_CTRL
+    byte_offset: 128
+    fieldset: ENETC_PF_TMR_TMR_CTRL
+  - name: TMR_TEVENT
+    byte_offset: 132
+    fieldset: ENETC_PF_TMR_TMR_TEVENT
+  - name: TMR_TEMASK
+    byte_offset: 136
+    fieldset: ENETC_PF_TMR_TMR_TEMASK
+  - name: TMR_MSIVEC
+    byte_offset: 140
+    fieldset: ENETC_PF_TMR_TMR_MSIVEC
+  - name: TMR_STAT
+    byte_offset: 148
+    fieldset: ENETC_PF_TMR_TMR_STAT
+  - name: TMR_CNT_L
+    byte_offset: 152
+  - name: TMR_CNT_H
+    byte_offset: 156
+  - name: TMR_ADD
+    byte_offset: 160
+    fieldset: ENETC_PF_TMR_TMR_ADD
+  - name: TMR_ACC
+    byte_offset: 164
+  - name: TMR_PRSC
+    byte_offset: 168
+  - name: TMR_ECTRL
+    byte_offset: 172
+  - name: TMROFF_L
+    byte_offset: 176
+  - name: TMROFF_H
+    byte_offset: 180
+  - name: TMR_ALARM_L
+    byte_offset: 184
+  - name: TMR_ALARM_H
+    byte_offset: 188
+  - name: TMR_ALARM_CTRL
+    byte_offset: 204
+    fieldset: ENETC_PF_TMR_TMR_ALARM_CTRL
+  - name: TMR_FIPER
+    byte_offset: 208
+    array:
+      len: 3
+      stride: 4
+    fieldset: ENETC_PF_TMR_TMR_FIPER
+  - name: TMR_FIPER_CTRL
+    byte_offset: 220
+    fieldset: ENETC_PF_TMR_TMR_FIPER_CTRL
+  - name: TMR_ETTS_L
+    byte_offset: 224
+  - name: TMR_ETTS_H
+    byte_offset: 228
+  - name: TMR_CUR_TIME_L
+    byte_offset: 240
+  - name: TMR_CUR_TIME_H
+    byte_offset: 244
+  - name: TMR_PARAM
+    byte_offset: 248
+    fieldset: ENETC_PF_TMR_TMR_PARAM
+fieldset/ENETC_PF_TMR_TMR_ID_REV:
+  description: ''
+  fields:
+  - name: MN
+    bit_offset: 0
+    bit_size: 8
+  - name: MJ
+    bit_offset: 8
+    bit_size: 8
+fieldset/ENETC_PF_TMR_TMR_ID_TMR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 16
+fieldset/ENETC_PF_TMR_TMR_CAPR:
+  description: ''
+  fields:
+  - name: ECADJ
+    bit_offset: 1
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_CAPR_IEEE_8021AS:
+  description: ''
+  fields:
+  - name: REV
+    bit_offset: 2
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_CAPR_NUM:
+  description: ''
+  fields:
+  - name: MSIX
+    bit_offset: 16
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_FRT_L_TMR_FRT:
+  description: ''
+  fields:
+  - name: L
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_PF_TMR_TMR_FRT_H_TMR_FRT:
+  description: ''
+  fields:
+  - name: H
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_PF_TMR_TMR_SRT_L_TMR_SRT:
+  description: ''
+  fields:
+  - name: L
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_PF_TMR_TMR_SRT_H_TMR_SRT:
+  description: ''
+  fields:
+  - name: H
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_PF_TMR_TMR_DEF_CNT_L_TMR_DEF_CNT:
+  description: ''
+  fields:
+  - name: L
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_PF_TMR_TMR_DEF_CNT_H_TMR_DEF_CNT:
+  description: ''
+  fields:
+  - name: H
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_PF_TMR_TMR_CTRL_CK:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 0
+    bit_size: 2
+fieldset/ENETC_PF_TMR_TMR_CTRL:
+  description: ''
+  fields:
+  - name: TE
+    bit_offset: 2
+    bit_size: 1
+  - name: TMSR
+    bit_offset: 5
+    bit_size: 1
+  - name: CIPH
+    bit_offset: 6
+    bit_size: 1
+  - name: COPH
+    bit_offset: 7
+    bit_size: 1
+  - name: ETEP1
+    bit_offset: 8
+    bit_size: 1
+  - name: ETEP2
+    bit_offset: 9
+    bit_size: 1
+  - name: LDR
+    bit_offset: 11
+    bit_size: 1
+  - name: PP2L
+    bit_offset: 26
+    bit_size: 1
+  - name: PP1L
+    bit_offset: 27
+    bit_size: 1
+  - name: FS
+    bit_offset: 28
+    bit_size: 1
+  - name: ALM2P
+    bit_offset: 30
+    bit_size: 1
+  - name: ALM1P
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_CTRL_COMP:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 15
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_CTRL_TCLK:
+  description: ''
+  fields:
+  - name: PERIOD
+    bit_offset: 16
+    bit_size: 10
+fieldset/ENETC_PF_TMR_TMR_CTRL_SHADOW:
+  description: ''
+  fields:
+  - name: DIS
+    bit_offset: 29
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_TEVENT:
+  description: ''
+  fields:
+  - name: PP3EN
+    bit_offset: 5
+    bit_size: 1
+  - name: PP2EN
+    bit_offset: 6
+    bit_size: 1
+  - name: PP1EN
+    bit_offset: 7
+    bit_size: 1
+  - name: ALM1EN
+    bit_offset: 16
+    bit_size: 1
+  - name: ALM2EN
+    bit_offset: 17
+    bit_size: 1
+  - name: ETS1EN
+    bit_offset: 24
+    bit_size: 1
+  - name: ETS2EN
+    bit_offset: 25
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_TEVENT_ETS1:
+  description: ''
+  fields:
+  - name: THREN
+    bit_offset: 20
+    bit_size: 1
+  - name: OVEN
+    bit_offset: 28
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_TEVENT_ETS2:
+  description: ''
+  fields:
+  - name: THREN
+    bit_offset: 21
+    bit_size: 1
+  - name: OVEN
+    bit_offset: 29
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_TEMASK:
+  description: ''
+  fields:
+  - name: PP3EN
+    bit_offset: 5
+    bit_size: 1
+  - name: PP2EN
+    bit_offset: 6
+    bit_size: 1
+  - name: PP1EN
+    bit_offset: 7
+    bit_size: 1
+  - name: ALM1EN
+    bit_offset: 16
+    bit_size: 1
+  - name: ALM2EN
+    bit_offset: 17
+    bit_size: 1
+  - name: ETS1EN
+    bit_offset: 24
+    bit_size: 1
+  - name: ETS2EN
+    bit_offset: 25
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_TEMASK_ETS1:
+  description: ''
+  fields:
+  - name: THREN
+    bit_offset: 20
+    bit_size: 1
+  - name: OVEN
+    bit_offset: 28
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_TEMASK_ETS2:
+  description: ''
+  fields:
+  - name: THREN
+    bit_offset: 21
+    bit_size: 1
+  - name: OVEN
+    bit_offset: 29
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_MSIVEC:
+  description: ''
+  fields:
+  - name: VECTOR
+    bit_offset: 0
+    bit_size: 1
+    description: Vector
+fieldset/ENETC_PF_TMR_TMR_STAT_ETS1:
+  description: ''
+  fields:
+  - name: VLD
+    bit_offset: 24
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_STAT_ETS2:
+  description: ''
+  fields:
+  - name: VLD
+    bit_offset: 25
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_STAT:
+  description: ''
+  fields:
+  - name: RCD
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_CNT_L_TMR_CNT:
+  description: ''
+  fields:
+  - name: L
+    bit_offset: 0
+    bit_size: 32
+    description: Timer Counter
+fieldset/ENETC_PF_TMR_TMR_CNT_H_TMR_CNT:
+  description: ''
+  fields:
+  - name: H
+    bit_offset: 0
+    bit_size: 32
+    description: Timer Counter
+fieldset/ENETC_PF_TMR_TMR_ADD:
+  description: ''
+  fields:
+  - name: ADDEND
+    bit_offset: 0
+    bit_size: 32
+    description: Timer Addend
+fieldset/ENETC_PF_TMR_TMR_ACC_TMR:
+  description: ''
+  fields:
+  - name: ACC
+    bit_offset: 0
+    bit_size: 32
+    description: Timer Accumulator
+fieldset/ENETC_PF_TMR_TMR_PRSC_PRSC:
+  description: ''
+  fields:
+  - name: OCK
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_PF_TMR_TMR_ECTRL_ETFF:
+  description: ''
+  fields:
+  - name: THR
+    bit_offset: 0
+    bit_size: 4
+fieldset/ENETC_PF_TMR_TMROFF_L_TMROFF:
+  description: ''
+  fields:
+  - name: L
+    bit_offset: 0
+    bit_size: 32
+    description: Offset Value
+fieldset/ENETC_PF_TMR_TMROFF_H_TMROFF:
+  description: ''
+  fields:
+  - name: H
+    bit_offset: 0
+    bit_size: 32
+    description: Offset Value
+fieldset/ENETC_PF_TMR_TMR_ALARM_L_ALARM:
+  description: ''
+  fields:
+  - name: L
+    bit_offset: 0
+    bit_size: 32
+    description: Alarm Time Comparator
+fieldset/ENETC_PF_TMR_TMR_ALARM_H_ALARM:
+  description: ''
+  fields:
+  - name: H
+    bit_offset: 0
+    bit_size: 32
+    description: Alarm Time Comparator
+fieldset/ENETC_PF_TMR_TMR_ALARM_CTRL_ALARM1:
+  description: ''
+  fields:
+  - name: PW
+    bit_offset: 0
+    bit_size: 5
+fieldset/ENETC_PF_TMR_TMR_ALARM_CTRL:
+  description: ''
+  fields:
+  - name: PG1
+    bit_offset: 7
+    bit_size: 1
+  - name: PG2
+    bit_offset: 15
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_ALARM_CTRL_ALARM2:
+  description: ''
+  fields:
+  - name: PW
+    bit_offset: 8
+    bit_size: 5
+fieldset/ENETC_PF_TMR_TMR_FIPER:
+  description: ''
+  fields:
+  - name: FIPER
+    bit_offset: 0
+    bit_size: 32
+    description: Fixed-Interval Pulse Period
+fieldset/ENETC_PF_TMR_TMR_FIPER_CTRL_FIPER1:
+  description: ''
+  fields:
+  - name: PW
+    bit_offset: 0
+    bit_size: 5
+  - name: DIS
+    bit_offset: 7
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_FIPER_CTRL:
+  description: ''
+  fields:
+  - name: PG1
+    bit_offset: 6
+    bit_size: 1
+  - name: PG2
+    bit_offset: 14
+    bit_size: 1
+  - name: PG3
+    bit_offset: 22
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_FIPER_CTRL_FIPER2:
+  description: ''
+  fields:
+  - name: PW
+    bit_offset: 8
+    bit_size: 5
+  - name: DIS
+    bit_offset: 15
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_FIPER_CTRL_FIPER3:
+  description: ''
+  fields:
+  - name: PW
+    bit_offset: 16
+    bit_size: 5
+  - name: DIS
+    bit_offset: 23
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_ETTS_L_ETTS:
+  description: ''
+  fields:
+  - name: L
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_PF_TMR_TMR_ETTS_H_ETTS:
+  description: ''
+  fields:
+  - name: H
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_PF_TMR_TMR_CUR_TIME_L_TMR_CUR_TIME:
+  description: ''
+  fields:
+  - name: L
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_PF_TMR_TMR_CUR_TIME_H_TMR_CUR_TIME:
+  description: ''
+  fields:
+  - name: H
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_PF_TMR_TMR_PARAM:
+  description: ''
+  fields:
+  - name: SYNC
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_PF_TMR_TMR_PARAM_PARAM:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 1
+    bit_size: 31

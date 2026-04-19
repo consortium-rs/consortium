@@ -1,0 +1,56 @@
+block/CRCA:
+  description: ''
+  items:
+  - name: CFG
+    byte_offset: 0
+    fieldset: CRCA_CFG
+  - name: INP
+    byte_offset: 4
+    fieldset: CRCA_INP
+  - name: CSTAT
+    byte_offset: 8
+    fieldset: CRCA_CSTAT
+  - name: OUTP
+    byte_offset: 12
+    fieldset: CRCA_OUTP
+fieldset/CRCA_CFG:
+  description: ''
+  fields:
+  - name: INV
+    bit_offset: 0
+    bit_size: 1
+  - name: SWAP
+    bit_offset: 1
+    bit_size: 1
+  - name: POLYG
+    bit_offset: 2
+    bit_size: 2
+fieldset/CRCA_CFG_SWAP:
+  description: ''
+  fields:
+  - name: BITWISE
+    bit_offset: 4
+    bit_size: 1
+  - name: BYTEWISE
+    bit_offset: 5
+    bit_size: 1
+fieldset/CRCA_INP:
+  description: ''
+  fields:
+  - name: INP
+    bit_offset: 0
+    bit_size: 32
+fieldset/CRCA_CSTAT:
+  description: ''
+  fields:
+  - name: CSTAT
+    bit_offset: 0
+    bit_size: 32
+    description: CRC signature status
+fieldset/CRCA_OUTP:
+  description: ''
+  fields:
+  - name: OUTP
+    bit_offset: 0
+    bit_size: 32
+    description: Final CRC signature

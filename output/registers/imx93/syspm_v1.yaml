@@ -1,0 +1,85 @@
+block/SYSPM:
+  description: ''
+  items:
+  - name: PMCR
+    byte_offset: 0
+    fieldset: SYSPM_PMCR
+  - name: PMICTR_HI
+    byte_offset: 16
+    fieldset: SYSPM_PMICTR_HI
+  - name: PMICTR_LO
+    byte_offset: 20
+    fieldset: SYSPM_PMICTR_LO
+  - name: HI
+    byte_offset: 24
+    fieldset: SYSPM_HI
+  - name: LO
+    byte_offset: 28
+    fieldset: SYSPM_LO
+fieldset/SYSPM_PMCR:
+  description: ''
+  fields:
+  - name: MENB
+    bit_offset: 0
+    bit_size: 1
+  - name: SSC
+    bit_offset: 1
+    bit_size: 3
+  - name: CMODE
+    bit_offset: 4
+    bit_size: 2
+  - name: DCIFSH
+    bit_offset: 6
+    bit_size: 1
+  - name: RICTR
+    bit_offset: 7
+    bit_size: 1
+  - name: RECTR1
+    bit_offset: 8
+    bit_size: 1
+  - name: RECTR2
+    bit_offset: 9
+    bit_size: 1
+  - name: RECTR3
+    bit_offset: 10
+    bit_size: 1
+  - name: SELEVT1
+    bit_offset: 11
+    bit_size: 7
+    description: Select Event 1
+  - name: SELEVT2
+    bit_offset: 18
+    bit_size: 7
+    description: Select Event 1
+  - name: SELEVT3
+    bit_offset: 25
+    bit_size: 7
+    description: Select Event 2
+fieldset/SYSPM_PMICTR_HI:
+  description: ''
+  fields:
+  - name: ICTR
+    bit_offset: 0
+    bit_size: 8
+    description: Instruction Counter
+fieldset/SYSPM_PMICTR_LO:
+  description: ''
+  fields:
+  - name: ICTR
+    bit_offset: 0
+    bit_size: 32
+    description: Instruction Counter
+fieldset/SYSPM_HI:
+  description: ''
+  fields:
+  - name: ECTR
+    bit_offset: 0
+    bit_size: 8
+    description: Event Counter
+fieldset/SYSPM_LO:
+  description: ''
+  fields:
+  - name: ECTR
+    bit_offset: 0
+    bit_size: 32
+    description: Event Counter

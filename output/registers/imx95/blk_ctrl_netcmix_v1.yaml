@@ -1,0 +1,119 @@
+block/BLK_CTRL_NETCMIX:
+  description: ''
+  items:
+  - name: MQS_SETTING
+    byte_offset: 0
+    fieldset: BLK_CTRL_NETCMIX_MQS_SETTING
+  - name: NETCMIX_CLK_SEL
+    byte_offset: 4
+  - name: IPG_DEBUG_SAI2
+    byte_offset: 8
+  - name: CFG_LINK_IO_VAR
+    byte_offset: 12
+  - name: CFG_LINK_MII_PROT
+    byte_offset: 16
+  - name: CFG_LINK_PCS_PROT_0
+    byte_offset: 20
+  - name: CFG_LINK_PCS_PROT_1
+    byte_offset: 24
+  - name: CFG_LINK_PCS_PROT_2
+    byte_offset: 28
+  - name: CFG_SRC_ID
+    byte_offset: 32
+fieldset/BLK_CTRL_NETCMIX_MQS_SETTING_SAI:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 0
+    bit_size: 2
+fieldset/BLK_CTRL_NETCMIX_MQS_SETTING_MQS:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_MQS_SETTING_SOFT:
+  description: ''
+  fields:
+  - name: RESET
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_MQS_SETTING:
+  description: ''
+  fields:
+  - name: OVERSAMPLE
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_MQS_SETTING_IDDQ:
+  description: ''
+  fields:
+  - name: FUNC
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_MQS_SETTING_CLK:
+  description: ''
+  fields:
+  - name: DIVIDE
+    bit_offset: 9
+    bit_size: 8
+fieldset/BLK_CTRL_NETCMIX_NETCMIX_CLK_SEL_SAI2:
+  description: ''
+  fields:
+  - name: MCLK1
+    bit_offset: 0
+    bit_size: 1
+  - name: MCLK2
+    bit_offset: 1
+    bit_size: 4
+  - name: MCLK3
+    bit_offset: 6
+    bit_size: 4
+fieldset/BLK_CTRL_NETCMIX_NETCMIX_CLK_SEL_ENET1_TD2:
+  description: ''
+  fields:
+  - name: DIR
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_NETCMIX_CLK_SEL_ENET2_TD2:
+  description: ''
+  fields:
+  - name: DIR
+    bit_offset: 10
+    bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_IPG_DEBUG_SAI2_IPG_DEBUG_CA55:
+  description: ''
+  fields:
+  - name: CORE0
+    bit_offset: 0
+    bit_size: 1
+  - name: CORE1
+    bit_offset: 1
+    bit_size: 1
+  - name: CORE2
+    bit_offset: 2
+    bit_size: 1
+  - name: CORE3
+    bit_offset: 3
+    bit_size: 1
+  - name: CORE4
+    bit_offset: 4
+    bit_size: 1
+  - name: CORE5
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_IPG_DEBUG_SAI2_IPG_DEBUG:
+  description: ''
+  fields:
+  - name: CM33
+    bit_offset: 6
+    bit_size: 1
+  - name: M7
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_CFG_SRC_ID_CFG_SRC:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 8
+    description: NETC cfgsrc_id

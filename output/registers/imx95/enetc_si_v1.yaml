@@ -1,0 +1,1719 @@
+block/ENETC_SI:
+  description: ''
+  items:
+  - name: SIMR
+    byte_offset: 0
+    fieldset: ENETC_SI_SIMR
+  - name: SISR
+    byte_offset: 4
+  - name: SICTR
+    byte_offset: 24
+    array:
+      len: 2
+      stride: 4
+  - name: SIPCAPR0
+    byte_offset: 32
+    fieldset: ENETC_SI_SIPCAPR0
+  - name: SIPCAPR1
+    byte_offset: 36
+  - name: SITSR
+    byte_offset: 48
+    fieldset: ENETC_SI_SITSR
+  - name: SIRBGCR
+    byte_offset: 56
+  - name: SIBCAR
+    byte_offset: 64
+    fieldset: ENETC_SI_SIBCAR
+  - name: SIMCAR
+    byte_offset: 68
+  - name: SICCAR
+    byte_offset: 72
+    fieldset: ENETC_SI_SICCAR
+  - name: SIPMAR0
+    byte_offset: 128
+  - name: SIPMAR1
+    byte_offset: 132
+  - name: SICVLANR1
+    byte_offset: 144
+    fieldset: ENETC_SI_SICVLANR1
+  - name: SICVLANR2
+    byte_offset: 148
+    fieldset: ENETC_SI_SICVLANR2
+  - name: SIVLANIPVMR0
+    byte_offset: 256
+  - name: SIVLANIPVMR1
+    byte_offset: 260
+  - name: SIIPVBDRMR0
+    byte_offset: 336
+    fieldset: ENETC_SI_SIIPVBDRMR0
+  - name: PSIMSGRR
+    byte_offset: 516
+    fieldset: ENETC_SI_PSIMSGRR
+  - name: PSIMSGSR
+    byte_offset: 520
+    fieldset: ENETC_SI_PSIMSGSR
+  - name: PSIVMSGRCVAR0
+    byte_offset: 528
+    fieldset: ENETC_SI_PSIVMSGRCVAR0
+  - name: PSIVMSGRCVAR1
+    byte_offset: 532
+    fieldset: ENETC_SI_PSIVMSGRCVAR1
+  - name: VSIMSGSR
+    byte_offset: 516
+    fieldset: ENETC_SI_VSIMSGSR
+  - name: VSIMSGRR
+    byte_offset: 520
+    fieldset: ENETC_SI_VSIMSGRR
+  - name: VSIMSGSNDAR0
+    byte_offset: 528
+    fieldset: ENETC_SI_VSIMSGSNDAR0
+  - name: VSIMSGSNDAR1
+    byte_offset: 532
+    fieldset: ENETC_SI_VSIMSGSNDAR1
+  - name: SIROCT0
+    byte_offset: 768
+  - name: SIROCT1
+    byte_offset: 772
+  - name: SIRFRM0
+    byte_offset: 776
+  - name: SIRFRM1
+    byte_offset: 780
+  - name: SIRUCA0
+    byte_offset: 784
+  - name: SIRUCA1
+    byte_offset: 788
+  - name: SIRMCA0
+    byte_offset: 792
+  - name: SIRMCA1
+    byte_offset: 796
+  - name: SITOCT0
+    byte_offset: 800
+  - name: SITOCT1
+    byte_offset: 804
+  - name: SITFRM0
+    byte_offset: 808
+  - name: SITFRM1
+    byte_offset: 812
+  - name: SITUCA0
+    byte_offset: 816
+  - name: SITUCA1
+    byte_offset: 820
+  - name: SITMCA0
+    byte_offset: 824
+  - name: SITMCA1
+    byte_offset: 828
+  - name: SITDFCR
+    byte_offset: 832
+    fieldset: ENETC_SI_SITDFCR
+  - name: SIBLPR
+    byte_offset: 1008
+    array:
+      len: 2
+      stride: 4
+  - name: SICBDRMR
+    byte_offset: 2048
+    fieldset: ENETC_SI_SICBDRMR
+  - name: SICBDRSR
+    byte_offset: 2052
+    fieldset: ENETC_SI_SICBDRSR
+  - name: SICBDRBAR0
+    byte_offset: 2064
+    fieldset: ENETC_SI_SICBDRBAR0
+  - name: SICBDRBAR1
+    byte_offset: 2068
+    fieldset: ENETC_SI_SICBDRBAR1
+  - name: SICBDRPIR
+    byte_offset: 2072
+  - name: SICBDRCIR
+    byte_offset: 2076
+    fieldset: ENETC_SI_SICBDRCIR
+  - name: SICBDRLENR
+    byte_offset: 2080
+    fieldset: ENETC_SI_SICBDRLENR
+  - name: SICBDRIER
+    byte_offset: 2208
+    fieldset: ENETC_SI_SICBDRIER
+  - name: SICBDRIDR
+    byte_offset: 2212
+    fieldset: ENETC_SI_SICBDRIDR
+  - name: SICAPR0
+    byte_offset: 2304
+  - name: SICAPR1
+    byte_offset: 2308
+  - name: SICAPR2
+    byte_offset: 2312
+    fieldset: ENETC_SI_SICAPR2
+  - name: PSIIER
+    byte_offset: 2560
+    fieldset: ENETC_SI_PSIIER
+  - name: PSIIDR
+    byte_offset: 2568
+    fieldset: ENETC_SI_PSIIDR
+  - name: VSIIER
+    byte_offset: 2560
+    fieldset: ENETC_SI_VSIIER
+  - name: VSIIDR
+    byte_offset: 2568
+    fieldset: ENETC_SI_VSIIDR
+  - name: SITXIDR0
+    byte_offset: 2584
+    fieldset: ENETC_SI_SITXIDR0
+  - name: SITXIDR1
+    byte_offset: 2588
+    fieldset: ENETC_SI_SITXIDR1
+  - name: SIRXIDR0
+    byte_offset: 2600
+    fieldset: ENETC_SI_SIRXIDR0
+  - name: SIMSIVR
+    byte_offset: 2608
+    fieldset: ENETC_SI_SIMSIVR
+  - name: SICMSIVR
+    byte_offset: 2612
+    fieldset: ENETC_SI_SICMSIVR
+  - name: SITMRIER
+    byte_offset: 2624
+    fieldset: ENETC_SI_SITMRIER
+  - name: SITMRIDR
+    byte_offset: 2628
+    fieldset: ENETC_SI_SITMRIDR
+  - name: SITMRMSIVR
+    byte_offset: 2636
+    fieldset: ENETC_SI_SITMRMSIVR
+  - name: SIMSITRVR
+    byte_offset: 2816
+    array:
+      len: 8
+      stride: 4
+    fieldset: ENETC_SI_SIMSITRVR
+  - name: SIMSIRRVR
+    byte_offset: 2944
+    array:
+      len: 8
+      stride: 4
+    fieldset: ENETC_SI_SIMSIRRVR
+  - name: SICMECR
+    byte_offset: 3584
+    fieldset: ENETC_SI_SICMECR
+  - name: SICMESR
+    byte_offset: 3588
+    fieldset: ENETC_SI_SICMESR
+  - name: SICMECTR
+    byte_offset: 3596
+    fieldset: ENETC_SI_SICMECTR
+  - name: SIUPECR
+    byte_offset: 3600
+    fieldset: ENETC_SI_SIUPECR
+  - name: SIUPESR
+    byte_offset: 3604
+    fieldset: ENETC_SI_SIUPESR
+  - name: SIUPECTR
+    byte_offset: 3612
+    fieldset: ENETC_SI_SIUPECTR
+  - name: SIUNSBECR
+    byte_offset: 3616
+    fieldset: ENETC_SI_SIUNSBECR
+  - name: SIUNSBESR
+    byte_offset: 3620
+    fieldset: ENETC_SI_SIUNSBESR
+  - name: SIUNSBECTR
+    byte_offset: 3628
+    fieldset: ENETC_SI_SIUNSBECTR
+  - name: SIUFSBECR
+    byte_offset: 3632
+    fieldset: ENETC_SI_SIUFSBECR
+  - name: SIUFSBESR
+    byte_offset: 3636
+    fieldset: ENETC_SI_SIUFSBESR
+  - name: SIUNMECR
+    byte_offset: 3648
+    fieldset: ENETC_SI_SIUNMECR
+  - name: SIUNMESR0
+    byte_offset: 3652
+    fieldset: ENETC_SI_SIUNMESR0
+  - name: SIUNMESR1
+    byte_offset: 3656
+    fieldset: ENETC_SI_SIUNMESR1
+  - name: SIUNMECTR
+    byte_offset: 3660
+    fieldset: ENETC_SI_SIUNMECTR
+  - name: SIUFMECR
+    byte_offset: 3664
+    fieldset: ENETC_SI_SIUFMECR
+  - name: SIUFMESR0
+    byte_offset: 3668
+    fieldset: ENETC_SI_SIUFMESR0
+  - name: SIUFMESR1
+    byte_offset: 3672
+    fieldset: ENETC_SI_SIUFMESR1
+  - name: SIMAFTCAPR
+    byte_offset: 4096
+  - name: SIVFTCAPR
+    byte_offset: 4352
+  - name: SILSOSFMR0
+    byte_offset: 4864
+  - name: SILSOSFMR1
+    byte_offset: 4868
+  - name: SIRSSCAPR
+    byte_offset: 5632
+  - name: TBMR
+    byte_offset: 32768
+    fieldset: ENETC_SI_TBMR
+  - name: TBSR
+    byte_offset: 32772
+    fieldset: ENETC_SI_TBSR
+  - name: TBBAR0
+    byte_offset: 32784
+    fieldset: ENETC_SI_TBBAR0
+  - name: TBBAR1
+    byte_offset: 32788
+    fieldset: ENETC_SI_TBBAR1
+  - name: TBPIR
+    byte_offset: 32792
+  - name: TBCIR
+    byte_offset: 32796
+    fieldset: ENETC_SI_TBCIR
+  - name: TBLENR
+    byte_offset: 32800
+    fieldset: ENETC_SI_TBLENR
+  - name: TBIER
+    byte_offset: 32928
+    fieldset: ENETC_SI_TBIER
+  - name: TBIDR
+    byte_offset: 32932
+    fieldset: ENETC_SI_TBIDR
+  - name: TBICR0
+    byte_offset: 32936
+    fieldset: ENETC_SI_TBICR0
+  - name: TBICR1
+    byte_offset: 32940
+    fieldset: ENETC_SI_TBICR1
+  - name: RBMR
+    byte_offset: 33024
+    fieldset: ENETC_SI_RBMR
+  - name: RBSR
+    byte_offset: 33028
+    fieldset: ENETC_SI_RBSR
+  - name: RBBSR
+    byte_offset: 33032
+    fieldset: ENETC_SI_RBBSR
+  - name: RBCIR
+    byte_offset: 33036
+  - name: RBBAR0
+    byte_offset: 33040
+    fieldset: ENETC_SI_RBBAR0
+  - name: RBBAR1
+    byte_offset: 33044
+    fieldset: ENETC_SI_RBBAR1
+  - name: RBPIR
+    byte_offset: 33048
+    fieldset: ENETC_SI_RBPIR
+  - name: RBLENR
+    byte_offset: 33056
+    fieldset: ENETC_SI_RBLENR
+  - name: RBRSCR
+    byte_offset: 33072
+    fieldset: ENETC_SI_RBRSCR
+  - name: RBDCR
+    byte_offset: 33152
+    fieldset: ENETC_SI_RBDCR
+  - name: RBIER
+    byte_offset: 33184
+    fieldset: ENETC_SI_RBIER
+  - name: RBIDR
+    byte_offset: 33188
+    fieldset: ENETC_SI_RBIDR
+  - name: RBICR0
+    byte_offset: 33192
+    fieldset: ENETC_SI_RBICR0
+  - name: RBICR1
+    byte_offset: 33196
+    fieldset: ENETC_SI_RBICR1
+fieldset/ENETC_SI_SIMR:
+  description: ''
+  fields:
+  - name: RSSE
+    bit_offset: 0
+    bit_size: 1
+  - name: RNUM
+    bit_offset: 1
+    bit_size: 1
+  - name: RNMM
+    bit_offset: 2
+    bit_size: 1
+  - name: RNBM
+    bit_offset: 3
+    bit_size: 1
+  - name: V2IPVE
+    bit_offset: 4
+    bit_size: 1
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_SI_SIMR_DEFAULT_RX:
+  description: ''
+  fields:
+  - name: GROUP
+    bit_offset: 16
+    bit_size: 3
+fieldset/ENETC_SI_SISR_TX:
+  description: ''
+  fields:
+  - name: BUSY
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_SI_SISR_MAC:
+  description: ''
+  fields:
+  - name: UP
+    bit_offset: 1
+    bit_size: 1
+  - name: MP
+    bit_offset: 2
+    bit_size: 1
+fieldset/ENETC_SI_SISR_VLAN:
+  description: ''
+  fields:
+  - name: P
+    bit_offset: 3
+    bit_size: 1
+  - name: UTA
+    bit_offset: 4
+    bit_size: 1
+fieldset/ENETC_SI_SICTR_CURR:
+  description: ''
+  fields:
+  - name: TIME
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SIPCAPR0:
+  description: ''
+  fields:
+  - name: RSC
+    bit_offset: 0
+    bit_size: 1
+  - name: LSO
+    bit_offset: 1
+    bit_size: 1
+  - name: RFS
+    bit_offset: 2
+    bit_size: 1
+  - name: FP
+    bit_offset: 3
+    bit_size: 1
+  - name: TGS
+    bit_offset: 4
+    bit_size: 1
+  - name: TSD
+    bit_offset: 5
+    bit_size: 1
+  - name: CBS
+    bit_offset: 6
+    bit_size: 1
+  - name: RSS
+    bit_offset: 8
+    bit_size: 1
+  - name: PSFP
+    bit_offset: 9
+    bit_size: 1
+  - name: IPFLT
+    bit_offset: 10
+    bit_size: 1
+  - name: RP
+    bit_offset: 11
+    bit_size: 1
+  - name: WO
+    bit_offset: 13
+    bit_size: 1
+  - name: FS
+    bit_offset: 16
+    bit_size: 1
+fieldset/ENETC_SI_SIPCAPR1_NUM:
+  description: ''
+  fields:
+  - name: TCS
+    bit_offset: 4
+    bit_size: 3
+  - name: MCH
+    bit_offset: 8
+    bit_size: 2
+  - name: UCH
+    bit_offset: 10
+    bit_size: 2
+  - name: MSIX
+    bit_offset: 12
+    bit_size: 6
+  - name: IPV
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_SI_SITSR:
+  description: ''
+  fields:
+  - name: SYNC
+    bit_offset: 0
+    bit_size: 1
+    description: Timer synchronization
+fieldset/ENETC_SI_SITSR_PARAM:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 1
+    bit_size: 31
+    description: Timer synchronization
+fieldset/ENETC_SI_SIRBGCR_NUM:
+  description: ''
+  fields:
+  - name: GROUPS
+    bit_offset: 0
+    bit_size: 3
+    description: Number of groups
+fieldset/ENETC_SI_SIRBGCR_RINGS_PER:
+  description: ''
+  fields:
+  - name: GROUP
+    bit_offset: 16
+    bit_size: 3
+    description: Number of groups
+fieldset/ENETC_SI_SIBCAR_BD:
+  description: ''
+  fields:
+  - name: WRCACHE
+    bit_offset: 0
+    bit_size: 4
+  - name: WRDOMAIN
+    bit_offset: 4
+    bit_size: 2
+  - name: WRSNP
+    bit_offset: 6
+    bit_size: 2
+  - name: RDCACHE
+    bit_offset: 16
+    bit_size: 4
+  - name: RDDOMAIN
+    bit_offset: 20
+    bit_size: 2
+  - name: RDSNP
+    bit_offset: 22
+    bit_size: 2
+fieldset/ENETC_SI_SIBCAR:
+  description: ''
+  fields:
+  - name: WRCACHE
+    bit_offset: 8
+    bit_size: 4
+  - name: WRDOMAIN
+    bit_offset: 12
+    bit_size: 2
+  - name: WRSNP
+    bit_offset: 14
+    bit_size: 2
+  - name: RDCACHE
+    bit_offset: 24
+    bit_size: 4
+  - name: RDDOMAIN
+    bit_offset: 28
+    bit_size: 2
+  - name: RDSNP
+    bit_offset: 30
+    bit_size: 2
+fieldset/ENETC_SI_SIMCAR_MSG:
+  description: ''
+  fields:
+  - name: WRCACHE
+    bit_offset: 0
+    bit_size: 4
+  - name: WRDOMAIN
+    bit_offset: 4
+    bit_size: 2
+  - name: WRSNP
+    bit_offset: 6
+    bit_size: 2
+  - name: RDCACHE
+    bit_offset: 16
+    bit_size: 4
+  - name: RDDOMAIN
+    bit_offset: 20
+    bit_size: 2
+  - name: RDSNP
+    bit_offset: 22
+    bit_size: 2
+fieldset/ENETC_SI_SICCAR_CBD:
+  description: ''
+  fields:
+  - name: WRCACHE
+    bit_offset: 0
+    bit_size: 4
+  - name: WRDOMAIN
+    bit_offset: 4
+    bit_size: 2
+  - name: WRSNP
+    bit_offset: 6
+    bit_size: 2
+  - name: RDCACHE
+    bit_offset: 16
+    bit_size: 4
+  - name: RDDOMAIN
+    bit_offset: 20
+    bit_size: 2
+  - name: RDSNP
+    bit_offset: 22
+    bit_size: 2
+fieldset/ENETC_SI_SICCAR:
+  description: ''
+  fields:
+  - name: CWRCACHE
+    bit_offset: 8
+    bit_size: 4
+  - name: CWRDOMAIN
+    bit_offset: 12
+    bit_size: 2
+  - name: CWRSNP
+    bit_offset: 14
+    bit_size: 2
+  - name: CRDCACHE
+    bit_offset: 24
+    bit_size: 4
+  - name: CRDDOMAIN
+    bit_offset: 28
+    bit_size: 2
+  - name: CRDSNP
+    bit_offset: 30
+    bit_size: 2
+fieldset/ENETC_SI_SIPMAR0_PRIM_MAC:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SIPMAR1_PRIM_MAC:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_SI_SICVLANR1:
+  description: ''
+  fields:
+  - name: ETYPE
+    bit_offset: 0
+    bit_size: 16
+  - name: V
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_SI_SICVLANR2:
+  description: ''
+  fields:
+  - name: ETYPE
+    bit_offset: 0
+    bit_size: 16
+  - name: V
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_SI_SIIPVBDRMR0:
+  description: ''
+  fields:
+  - name: IPV0BDR
+    bit_offset: 0
+    bit_size: 3
+  - name: IPV1BDR
+    bit_offset: 4
+    bit_size: 3
+  - name: IPV2BDR
+    bit_offset: 8
+    bit_size: 3
+  - name: IPV3BDR
+    bit_offset: 12
+    bit_size: 3
+  - name: IPV4BDR
+    bit_offset: 16
+    bit_size: 3
+  - name: IPV5BDR
+    bit_offset: 20
+    bit_size: 3
+  - name: IPV6BDR
+    bit_offset: 24
+    bit_size: 3
+  - name: IPV7BDR
+    bit_offset: 28
+    bit_size: 3
+fieldset/ENETC_SI_PSIMSGRR:
+  description: ''
+  fields:
+  - name: MR1
+    bit_offset: 1
+    bit_size: 1
+  - name: MR2
+    bit_offset: 2
+    bit_size: 1
+  - name: MC
+    bit_offset: 16
+    bit_size: 16
+fieldset/ENETC_SI_PSIMSGSR:
+  description: ''
+  fields:
+  - name: MS1
+    bit_offset: 1
+    bit_size: 1
+  - name: MS2
+    bit_offset: 2
+    bit_size: 1
+  - name: MC
+    bit_offset: 16
+    bit_size: 16
+fieldset/ENETC_SI_PSIVMSGRCVAR0:
+  description: ''
+  fields:
+  - name: MSIZE
+    bit_offset: 0
+    bit_size: 5
+    description: Message size
+  - name: ADDRL
+    bit_offset: 6
+    bit_size: 26
+    description: Message size
+fieldset/ENETC_SI_PSIVMSGRCVAR1:
+  description: ''
+  fields:
+  - name: ADDRH
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_VSIMSGSR:
+  description: ''
+  fields:
+  - name: MB
+    bit_offset: 0
+    bit_size: 1
+  - name: MS
+    bit_offset: 1
+    bit_size: 1
+  - name: MC
+    bit_offset: 16
+    bit_size: 16
+fieldset/ENETC_SI_VSIMSGRR:
+  description: ''
+  fields:
+  - name: MR
+    bit_offset: 0
+    bit_size: 1
+  - name: MC
+    bit_offset: 16
+    bit_size: 16
+fieldset/ENETC_SI_VSIMSGSNDAR0:
+  description: ''
+  fields:
+  - name: MSIZE
+    bit_offset: 0
+    bit_size: 5
+    description: Message size
+  - name: ADDRL
+    bit_offset: 6
+    bit_size: 26
+    description: Message size
+fieldset/ENETC_SI_VSIMSGSNDAR1:
+  description: ''
+  fields:
+  - name: ADDRH
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SIROCT0_ROCT:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SIROCT1_ROCT:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SIRFRM0_RFRM:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SIRFRM1_RFRM:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SIRUCA0_RUCA:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SIRUCA1_RUCA:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SIRMCA0_RMCA:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SIRMCA1_RMCA:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SITOCT0_TOCT:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SITOCT1_TOCT:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SITFRM0_TFRM:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SITFRM1_TFRM:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SITUCA0_TUCA:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SITUCA1_TUCA:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SITMCA0_TMCA:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SITMCA1_TMCA:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SITDFCR:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 32
+    description: Counter
+fieldset/ENETC_SI_SIBLPR_PARAM:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SICBDRMR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_SI_SICBDRSR:
+  description: ''
+  fields:
+  - name: BUSY
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_SI_SICBDRBAR0:
+  description: ''
+  fields:
+  - name: ADDRL
+    bit_offset: 7
+    bit_size: 25
+fieldset/ENETC_SI_SICBDRBAR1:
+  description: ''
+  fields:
+  - name: ADDRH
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_SICBDRPIR_BDR:
+  description: ''
+  fields:
+  - name: INDEX
+    bit_offset: 0
+    bit_size: 10
+fieldset/ENETC_SI_SICBDRCIR_BDR:
+  description: ''
+  fields:
+  - name: INDEX
+    bit_offset: 0
+    bit_size: 10
+fieldset/ENETC_SI_SICBDRCIR:
+  description: ''
+  fields:
+  - name: SBE
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_SI_SICBDRLENR:
+  description: ''
+  fields:
+  - name: LENGTH
+    bit_offset: 3
+    bit_size: 8
+fieldset/ENETC_SI_SICBDRIER:
+  description: ''
+  fields:
+  - name: CBDCIE
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_SI_SICBDRIDR:
+  description: ''
+  fields:
+  - name: CBDC
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_SI_SICAPR0_NUM_TX:
+  description: ''
+  fields:
+  - name: BDR
+    bit_offset: 0
+    bit_size: 8
+fieldset/ENETC_SI_SICAPR0_NUM_RX:
+  description: ''
+  fields:
+  - name: BDR
+    bit_offset: 16
+    bit_size: 8
+fieldset/ENETC_SI_SICAPR1_NUM_RX:
+  description: ''
+  fields:
+  - name: GRP
+    bit_offset: 16
+    bit_size: 8
+fieldset/ENETC_SI_SICAPR2:
+  description: ''
+  fields:
+  - name: VTP
+    bit_offset: 0
+    bit_size: 4
+fieldset/ENETC_SI_PSIIER:
+  description: ''
+  fields:
+  - name: MR1IE
+    bit_offset: 1
+    bit_size: 1
+  - name: MR2IE
+    bit_offset: 2
+    bit_size: 1
+  - name: FLR1IE
+    bit_offset: 17
+    bit_size: 1
+  - name: FLR2IE
+    bit_offset: 18
+    bit_size: 1
+fieldset/ENETC_SI_PSIIDR:
+  description: ''
+  fields:
+  - name: TXR
+    bit_offset: 0
+    bit_size: 1
+  - name: MR1
+    bit_offset: 1
+    bit_size: 1
+  - name: MR2
+    bit_offset: 2
+    bit_size: 1
+  - name: RXR
+    bit_offset: 16
+    bit_size: 1
+  - name: FLR1
+    bit_offset: 17
+    bit_size: 1
+  - name: FLR2
+    bit_offset: 18
+    bit_size: 1
+fieldset/ENETC_SI_VSIIER:
+  description: ''
+  fields:
+  - name: MSIE
+    bit_offset: 8
+    bit_size: 1
+  - name: MRIE
+    bit_offset: 9
+    bit_size: 1
+fieldset/ENETC_SI_VSIIDR:
+  description: ''
+  fields:
+  - name: TXR
+    bit_offset: 0
+    bit_size: 1
+  - name: MS
+    bit_offset: 8
+    bit_size: 1
+  - name: MR
+    bit_offset: 9
+    bit_size: 1
+  - name: RXR
+    bit_offset: 16
+    bit_size: 1
+fieldset/ENETC_SI_SITXIDR0:
+  description: ''
+  fields:
+  - name: TXT0
+    bit_offset: 0
+    bit_size: 1
+  - name: TXT1
+    bit_offset: 1
+    bit_size: 1
+  - name: TXT2
+    bit_offset: 2
+    bit_size: 1
+  - name: TXT3
+    bit_offset: 3
+    bit_size: 1
+  - name: TXT4
+    bit_offset: 4
+    bit_size: 1
+  - name: TXT5
+    bit_offset: 5
+    bit_size: 1
+  - name: TXT6
+    bit_offset: 6
+    bit_size: 1
+  - name: TXT7
+    bit_offset: 7
+    bit_size: 1
+  - name: TXT8
+    bit_offset: 8
+    bit_size: 1
+  - name: TXT9
+    bit_offset: 9
+    bit_size: 1
+  - name: TXT10
+    bit_offset: 10
+    bit_size: 1
+  - name: TXT11
+    bit_offset: 11
+    bit_size: 1
+  - name: TXT12
+    bit_offset: 12
+    bit_size: 1
+  - name: TXT13
+    bit_offset: 13
+    bit_size: 1
+  - name: TXT14
+    bit_offset: 14
+    bit_size: 1
+  - name: TXT15
+    bit_offset: 15
+    bit_size: 1
+  - name: TXF0
+    bit_offset: 16
+    bit_size: 1
+  - name: TXF1
+    bit_offset: 17
+    bit_size: 1
+  - name: TXF2
+    bit_offset: 18
+    bit_size: 1
+  - name: TXF3
+    bit_offset: 19
+    bit_size: 1
+  - name: TXF4
+    bit_offset: 20
+    bit_size: 1
+  - name: TXF5
+    bit_offset: 21
+    bit_size: 1
+  - name: TXF6
+    bit_offset: 22
+    bit_size: 1
+  - name: TXF7
+    bit_offset: 23
+    bit_size: 1
+  - name: TXF8
+    bit_offset: 24
+    bit_size: 1
+  - name: TXF9
+    bit_offset: 25
+    bit_size: 1
+  - name: TXF10
+    bit_offset: 26
+    bit_size: 1
+  - name: TXF11
+    bit_offset: 27
+    bit_size: 1
+  - name: TXF12
+    bit_offset: 28
+    bit_size: 1
+  - name: TXF13
+    bit_offset: 29
+    bit_size: 1
+  - name: TXF14
+    bit_offset: 30
+    bit_size: 1
+  - name: TXF15
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_SI_SITXIDR1:
+  description: ''
+  fields:
+  - name: TXT16
+    bit_offset: 0
+    bit_size: 1
+  - name: TXT17
+    bit_offset: 1
+    bit_size: 1
+  - name: TXT18
+    bit_offset: 2
+    bit_size: 1
+  - name: TXT19
+    bit_offset: 3
+    bit_size: 1
+  - name: TXT20
+    bit_offset: 4
+    bit_size: 1
+  - name: TXT21
+    bit_offset: 5
+    bit_size: 1
+  - name: TXT22
+    bit_offset: 6
+    bit_size: 1
+  - name: TXT23
+    bit_offset: 7
+    bit_size: 1
+  - name: TXF16
+    bit_offset: 16
+    bit_size: 1
+  - name: TXF17
+    bit_offset: 17
+    bit_size: 1
+  - name: TXF18
+    bit_offset: 18
+    bit_size: 1
+  - name: TXF19
+    bit_offset: 19
+    bit_size: 1
+  - name: TXF20
+    bit_offset: 20
+    bit_size: 1
+  - name: TXF21
+    bit_offset: 21
+    bit_size: 1
+  - name: TXF22
+    bit_offset: 22
+    bit_size: 1
+  - name: TXF23
+    bit_offset: 23
+    bit_size: 1
+fieldset/ENETC_SI_SIRXIDR0:
+  description: ''
+  fields:
+  - name: RX0
+    bit_offset: 0
+    bit_size: 1
+  - name: RX1
+    bit_offset: 1
+    bit_size: 1
+  - name: RX2
+    bit_offset: 2
+    bit_size: 1
+  - name: RX3
+    bit_offset: 3
+    bit_size: 1
+  - name: RX4
+    bit_offset: 4
+    bit_size: 1
+  - name: RX5
+    bit_offset: 5
+    bit_size: 1
+  - name: RX6
+    bit_offset: 6
+    bit_size: 1
+  - name: RX7
+    bit_offset: 7
+    bit_size: 1
+  - name: RX8
+    bit_offset: 8
+    bit_size: 1
+  - name: RX9
+    bit_offset: 9
+    bit_size: 1
+  - name: RX10
+    bit_offset: 10
+    bit_size: 1
+  - name: RX11
+    bit_offset: 11
+    bit_size: 1
+  - name: RX12
+    bit_offset: 12
+    bit_size: 1
+  - name: RX13
+    bit_offset: 13
+    bit_size: 1
+  - name: RX14
+    bit_offset: 14
+    bit_size: 1
+  - name: RX15
+    bit_offset: 15
+    bit_size: 1
+  - name: RX16
+    bit_offset: 16
+    bit_size: 1
+  - name: RX17
+    bit_offset: 17
+    bit_size: 1
+  - name: RX18
+    bit_offset: 18
+    bit_size: 1
+  - name: RX19
+    bit_offset: 19
+    bit_size: 1
+  - name: RX20
+    bit_offset: 20
+    bit_size: 1
+  - name: RX21
+    bit_offset: 21
+    bit_size: 1
+  - name: RX22
+    bit_offset: 22
+    bit_size: 1
+  - name: RX23
+    bit_offset: 23
+    bit_size: 1
+fieldset/ENETC_SI_SIMSIVR:
+  description: ''
+  fields:
+  - name: VECTOR
+    bit_offset: 0
+    bit_size: 6
+fieldset/ENETC_SI_SICMSIVR:
+  description: ''
+  fields:
+  - name: VECTOR
+    bit_offset: 0
+    bit_size: 6
+fieldset/ENETC_SI_SITMRIER:
+  description: ''
+  fields:
+  - name: SYNCE
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_SI_SITMRIDR:
+  description: ''
+  fields:
+  - name: SYNC
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_SI_SITMRMSIVR:
+  description: ''
+  fields:
+  - name: VECTOR
+    bit_offset: 0
+    bit_size: 6
+fieldset/ENETC_SI_SIMSITRVR:
+  description: ''
+  fields:
+  - name: VECTOR
+    bit_offset: 0
+    bit_size: 6
+fieldset/ENETC_SI_SIMSIRRVR:
+  description: ''
+  fields:
+  - name: VECTOR
+    bit_offset: 0
+    bit_size: 6
+fieldset/ENETC_SI_SICMECR:
+  description: ''
+  fields:
+  - name: THRESHOLD
+    bit_offset: 0
+    bit_size: 8
+    description: Threshold
+fieldset/ENETC_SI_SICMESR_LINK_SLICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 5
+    description: Link or Slice ID
+fieldset/ENETC_SI_SICMESR_MEM:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 8
+    bit_size: 5
+    description: Link or Slice ID
+fieldset/ENETC_SI_SICMESR:
+  description: ''
+  fields:
+  - name: SBEE
+    bit_offset: 31
+    bit_size: 1
+    description: Memory ID
+fieldset/ENETC_SI_SICMECTR:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 8
+    description: Count
+fieldset/ENETC_SI_SIUPECR:
+  description: ''
+  fields:
+  - name: RD
+    bit_offset: 31
+    bit_size: 1
+    description: Report disable
+fieldset/ENETC_SI_SIUPESR_DROP_SI:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_SI_SIUPESR_DROP_RING:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+  - name: SEL
+    bit_offset: 3
+    bit_size: 1
+fieldset/ENETC_SI_SIUPESR_DROP_GRP:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 2
+    bit_size: 1
+fieldset/ENETC_SI_SIUPESR:
+  description: ''
+  fields:
+  - name: M
+    bit_offset: 30
+    bit_size: 1
+    description: Multiple
+  - name: PE
+    bit_offset: 31
+    bit_size: 1
+    description: Multiple
+fieldset/ENETC_SI_SIUPECTR:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 32
+    description: Count
+fieldset/ENETC_SI_SIUNSBECR:
+  description: ''
+  fields:
+  - name: THRESHOLD
+    bit_offset: 0
+    bit_size: 8
+    description: Threshold
+fieldset/ENETC_SI_SIUNSBESR_SB:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 8
+    bit_size: 4
+    description: System Bus ID
+fieldset/ENETC_SI_SIUNSBESR:
+  description: ''
+  fields:
+  - name: SBE
+    bit_offset: 31
+    bit_size: 1
+    description: System Bus ID
+fieldset/ENETC_SI_SIUNSBECTR:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 8
+    description: Count
+fieldset/ENETC_SI_SIUFSBECR:
+  description: ''
+  fields:
+  - name: RD
+    bit_offset: 31
+    bit_size: 1
+    description: Report disable
+fieldset/ENETC_SI_SIUFSBESR_SB:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 8
+    bit_size: 4
+    description: System Bus ID
+fieldset/ENETC_SI_SIUFSBESR:
+  description: ''
+  fields:
+  - name: M
+    bit_offset: 30
+    bit_size: 1
+    description: System Bus ID
+  - name: SBE
+    bit_offset: 31
+    bit_size: 1
+    description: Multiple
+fieldset/ENETC_SI_SIUNMECR:
+  description: ''
+  fields:
+  - name: THRESHOLD
+    bit_offset: 0
+    bit_size: 8
+    description: Threshold
+  - name: RD
+    bit_offset: 31
+    bit_size: 1
+    description: Threshold
+fieldset/ENETC_SI_SIUNMESR0_MEM:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 8
+    bit_size: 5
+    description: Memory ID
+fieldset/ENETC_SI_SIUNMESR0:
+  description: ''
+  fields:
+  - name: SYNDROME
+    bit_offset: 16
+    bit_size: 11
+    description: Memory ID
+  - name: MBEE
+    bit_offset: 31
+    bit_size: 1
+    description: Syndrome
+fieldset/ENETC_SI_SIUNMESR1:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+    description: Address
+fieldset/ENETC_SI_SIUNMECTR:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 8
+    description: Count
+fieldset/ENETC_SI_SIUFMECR:
+  description: ''
+  fields:
+  - name: RD
+    bit_offset: 31
+    bit_size: 1
+    description: Report disable
+fieldset/ENETC_SI_SIUFMESR0_LINK_SLICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 5
+    description: Link or Slice ID
+fieldset/ENETC_SI_SIUFMESR0_MEM:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 8
+    bit_size: 5
+    description: Memory ID
+fieldset/ENETC_SI_SIUFMESR0:
+  description: ''
+  fields:
+  - name: SYNDROME
+    bit_offset: 16
+    bit_size: 11
+    description: Memory ID
+  - name: M
+    bit_offset: 30
+    bit_size: 1
+    description: Syndrome
+  - name: MBEE
+    bit_offset: 31
+    bit_size: 1
+    description: Multiple
+fieldset/ENETC_SI_SIUFMESR1:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+    description: Address
+fieldset/ENETC_SI_SIMAFTCAPR_NUM_MAC:
+  description: ''
+  fields:
+  - name: AFTE
+    bit_offset: 0
+    bit_size: 8
+fieldset/ENETC_SI_SIVFTCAPR_NUM_VLAN:
+  description: ''
+  fields:
+  - name: FTE
+    bit_offset: 0
+    bit_size: 8
+fieldset/ENETC_SI_SILSOSFMR0_TCP_1ST:
+  description: ''
+  fields:
+  - name: SEG
+    bit_offset: 0
+    bit_size: 12
+fieldset/ENETC_SI_SILSOSFMR0_TCP_MID:
+  description: ''
+  fields:
+  - name: SEG
+    bit_offset: 16
+    bit_size: 12
+fieldset/ENETC_SI_SILSOSFMR1_TCP_LAST:
+  description: ''
+  fields:
+  - name: SEG
+    bit_offset: 0
+    bit_size: 12
+fieldset/ENETC_SI_SIRSSCAPR_NUM:
+  description: ''
+  fields:
+  - name: RSS
+    bit_offset: 0
+    bit_size: 4
+fieldset/ENETC_SI_TBMR:
+  description: ''
+  fields:
+  - name: PRIO
+    bit_offset: 0
+    bit_size: 3
+  - name: WRR
+    bit_offset: 4
+    bit_size: 3
+  - name: CRC
+    bit_offset: 8
+    bit_size: 1
+  - name: VIH
+    bit_offset: 9
+    bit_size: 1
+  - name: FWB
+    bit_offset: 24
+    bit_size: 1
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_SI_TBSR:
+  description: ''
+  fields:
+  - name: BUSY
+    bit_offset: 0
+    bit_size: 1
+  - name: SBE
+    bit_offset: 16
+    bit_size: 1
+fieldset/ENETC_SI_TBBAR0:
+  description: ''
+  fields:
+  - name: ADDRL
+    bit_offset: 7
+    bit_size: 25
+fieldset/ENETC_SI_TBBAR1:
+  description: ''
+  fields:
+  - name: ADDRH
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_TBPIR_BDR:
+  description: ''
+  fields:
+  - name: INDEX
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_SI_TBCIR_BDR:
+  description: ''
+  fields:
+  - name: INDEX
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_SI_TBCIR_STAT:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 15
+fieldset/ENETC_SI_TBCIR:
+  description: ''
+  fields:
+  - name: SBE
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_SI_TBLENR:
+  description: ''
+  fields:
+  - name: LENGTH
+    bit_offset: 3
+    bit_size: 14
+fieldset/ENETC_SI_TBIER:
+  description: ''
+  fields:
+  - name: TXTIE
+    bit_offset: 0
+    bit_size: 1
+  - name: TXFIE
+    bit_offset: 1
+    bit_size: 1
+fieldset/ENETC_SI_TBIDR:
+  description: ''
+  fields:
+  - name: TXT
+    bit_offset: 0
+    bit_size: 1
+  - name: TXF
+    bit_offset: 1
+    bit_size: 1
+fieldset/ENETC_SI_TBICR0:
+  description: ''
+  fields:
+  - name: ICPT
+    bit_offset: 0
+    bit_size: 4
+  - name: ICEN
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_SI_TBICR1:
+  description: ''
+  fields:
+  - name: ICTT
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_RBMR:
+  description: ''
+  fields:
+  - name: AL
+    bit_offset: 0
+    bit_size: 1
+  - name: BDS
+    bit_offset: 2
+    bit_size: 1
+  - name: CM
+    bit_offset: 4
+    bit_size: 1
+  - name: VTE
+    bit_offset: 5
+    bit_size: 1
+  - name: VTPD
+    bit_offset: 6
+    bit_size: 1
+  - name: CRC
+    bit_offset: 8
+    bit_size: 1
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_SI_RBSR:
+  description: ''
+  fields:
+  - name: EMPTY
+    bit_offset: 0
+    bit_size: 1
+  - name: SBE
+    bit_offset: 16
+    bit_size: 1
+fieldset/ENETC_SI_RBBSR:
+  description: ''
+  fields:
+  - name: BSIZE
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_SI_RBCIR_BDR:
+  description: ''
+  fields:
+  - name: INDEX
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_SI_RBBAR0:
+  description: ''
+  fields:
+  - name: ADDRL
+    bit_offset: 7
+    bit_size: 25
+fieldset/ENETC_SI_RBBAR1:
+  description: ''
+  fields:
+  - name: ADDRH
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_RBPIR_BDR:
+  description: ''
+  fields:
+  - name: INDEX
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_SI_RBPIR:
+  description: ''
+  fields:
+  - name: SBE
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_SI_RBLENR:
+  description: ''
+  fields:
+  - name: LENGTH
+    bit_offset: 3
+    bit_size: 14
+fieldset/ENETC_SI_RBRSCR:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 16
+    description: Size
+  - name: CT
+    bit_offset: 29
+    bit_size: 1
+    description: Size
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_SI_RBDCR:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_SI_RBIER:
+  description: ''
+  fields:
+  - name: RXTIE
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_SI_RBIDR:
+  description: ''
+  fields:
+  - name: RXT
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_SI_RBICR0:
+  description: ''
+  fields:
+  - name: ICPT
+    bit_offset: 0
+    bit_size: 9
+  - name: ICEN
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_SI_RBICR1:
+  description: ''
+  fields:
+  - name: ICTT
+    bit_offset: 0
+    bit_size: 32

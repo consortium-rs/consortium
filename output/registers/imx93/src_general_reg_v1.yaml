@@ -1,0 +1,743 @@
+block/SRC_GENERAL_REG:
+  description: ''
+  items:
+  - name: AUTHEN_CTRL
+    byte_offset: 4
+  - name: SCR
+    byte_offset: 16
+  - name: SRTMR
+    byte_offset: 20
+  - name: SRMASK
+    byte_offset: 24
+  - name: SRMR1
+    byte_offset: 32
+  - name: SRMR2
+    byte_offset: 36
+  - name: SRMR3
+    byte_offset: 40
+  - name: SRMR4
+    byte_offset: 44
+  - name: SRMR5
+    byte_offset: 48
+  - name: SBMR1
+    byte_offset: 64
+  - name: SBMR2
+    byte_offset: 68
+  - name: SRSR
+    byte_offset: 80
+  - name: GPR1
+    byte_offset: 84
+    fieldset: SRC_GENERAL_REG_GPR1
+  - name: GPR2
+    byte_offset: 88
+    fieldset: SRC_GENERAL_REG_GPR2
+  - name: GPR3
+    byte_offset: 92
+    fieldset: SRC_GENERAL_REG_GPR3
+  - name: GPR4
+    byte_offset: 96
+    fieldset: SRC_GENERAL_REG_GPR4
+  - name: GPR5
+    byte_offset: 100
+    fieldset: SRC_GENERAL_REG_GPR5
+  - name: GPR6
+    byte_offset: 104
+    fieldset: SRC_GENERAL_REG_GPR6
+  - name: GPR7
+    byte_offset: 108
+    fieldset: SRC_GENERAL_REG_GPR7
+  - name: GPR8
+    byte_offset: 112
+    fieldset: SRC_GENERAL_REG_GPR8
+  - name: GPR9
+    byte_offset: 116
+    fieldset: SRC_GENERAL_REG_GPR9
+  - name: GPR10
+    byte_offset: 120
+    fieldset: SRC_GENERAL_REG_GPR10
+  - name: GPR11
+    byte_offset: 124
+    fieldset: SRC_GENERAL_REG_GPR11
+  - name: GPR12
+    byte_offset: 128
+    fieldset: SRC_GENERAL_REG_GPR12
+  - name: GPR13
+    byte_offset: 132
+    fieldset: SRC_GENERAL_REG_GPR13
+  - name: GPR14
+    byte_offset: 136
+    fieldset: SRC_GENERAL_REG_GPR14
+  - name: GPR15
+    byte_offset: 140
+    fieldset: SRC_GENERAL_REG_GPR15
+  - name: GPR16
+    byte_offset: 144
+    fieldset: SRC_GENERAL_REG_GPR16
+  - name: GPR17
+    byte_offset: 148
+    fieldset: SRC_GENERAL_REG_GPR17
+  - name: GPR18
+    byte_offset: 152
+    fieldset: SRC_GENERAL_REG_GPR18
+  - name: GPR19
+    byte_offset: 156
+    fieldset: SRC_GENERAL_REG_GPR19
+  - name: GPR20
+    byte_offset: 256
+  - name: CM_QUIESCE
+    byte_offset: 260
+  - name: COLD_RESET_SSAR_ACK_CTRL
+    byte_offset: 264
+  - name: SP_ISO_CTRL
+    byte_offset: 268
+  - name: ROM_LP_CTRL
+    byte_offset: 272
+  - name: A55_DENY_STAT
+    byte_offset: 276
+fieldset/SRC_GENERAL_REG_AUTHEN_CTRL_LOCK:
+  description: ''
+  fields:
+  - name: CFG
+    bit_offset: 7
+    bit_size: 1
+  - name: TZ
+    bit_offset: 11
+    bit_size: 1
+  - name: LIST
+    bit_offset: 15
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_AUTHEN_CTRL_TZ:
+  description: ''
+  fields:
+  - name: USER
+    bit_offset: 8
+    bit_size: 1
+  - name: NS
+    bit_offset: 9
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_AUTHEN_CTRL_WHITE:
+  description: ''
+  fields:
+  - name: LIST
+    bit_offset: 16
+    bit_size: 16
+fieldset/SRC_GENERAL_REG_SCR_BT_RELEASE:
+  description: ''
+  fields:
+  - name: M33
+    bit_offset: 0
+    bit_size: 1
+  - name: ML
+    bit_offset: 4
+    bit_size: 1
+  - name: MEDIA
+    bit_offset: 5
+    bit_size: 1
+  - name: DDR
+    bit_offset: 6
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SCR_BT_RELEASE_A55:
+  description: ''
+  fields:
+  - name: CPU0
+    bit_offset: 1
+    bit_size: 1
+  - name: CPU1
+    bit_offset: 2
+    bit_size: 1
+  - name: PLAT
+    bit_offset: 3
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRTMR_WDOG1_TRIG:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 0
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRTMR_WDOG2_TRIG:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 1
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRTMR_WDOG3_TRIG:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 2
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRTMR_WDOG4_TRIG:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 3
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRTMR_WDOG5_TRIG:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 4
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRTMR_TEMPSENSE_TRIG:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 5
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRTMR_CSU_TRIG:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 6
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRTMR_JTAGSW_TRIG:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 7
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRTMR_CM33_RESET_TRIG:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 8
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRTMR_CM33_LOCKUP_TRIG:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 9
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRMASK_WDOG1:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRMASK_WDOG2:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 1
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRMASK_WDOG3:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 2
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRMASK_WDOG4:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 3
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRMASK_WDOG5:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 4
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRMASK_TEMPSENSE:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 5
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRMASK_CSU:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 6
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRMASK_JTAGSW:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 7
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRMASK_CM33_RESET:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 8
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRMASK_CM33_LOCKUP:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 9
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRMR1_WDOG1_RESET:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 0
+    bit_size: 16
+fieldset/SRC_GENERAL_REG_SRMR1_WDOG2_RESET:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 16
+    bit_size: 16
+fieldset/SRC_GENERAL_REG_SRMR2_WDOG3_RESET:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 0
+    bit_size: 16
+fieldset/SRC_GENERAL_REG_SRMR2_WDOG4_RESET:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 16
+    bit_size: 16
+fieldset/SRC_GENERAL_REG_SRMR3_WDOG5_RESET:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 0
+    bit_size: 16
+fieldset/SRC_GENERAL_REG_SRMR3_TEMPSENSE_RESET:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 16
+    bit_size: 16
+fieldset/SRC_GENERAL_REG_SRMR4_CSU_RESET:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 0
+    bit_size: 16
+fieldset/SRC_GENERAL_REG_SRMR4_JTAGSW_RESET:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 16
+    bit_size: 16
+fieldset/SRC_GENERAL_REG_SRMR5_CM33_RESET:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 0
+    bit_size: 16
+fieldset/SRC_GENERAL_REG_SRMR5_CM33_LOCKUP:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 16
+    bit_size: 16
+fieldset/SRC_GENERAL_REG_SBMR1_BOOT:
+  description: ''
+  fields:
+  - name: CFG0
+    bit_offset: 0
+    bit_size: 32
+fieldset/SRC_GENERAL_REG_SBMR2_BOOT:
+  description: ''
+  fields:
+  - name: CFG1
+    bit_offset: 0
+    bit_size: 16
+fieldset/SRC_GENERAL_REG_SBMR2_SDP:
+  description: ''
+  fields:
+  - name: DIS
+    bit_offset: 16
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SBMR2_IPP_BOOT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 24
+    bit_size: 6
+    description: Boot mode from pins
+fieldset/SRC_GENERAL_REG_SBMR2_DIT_BT:
+  description: ''
+  fields:
+  - name: DIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_SRC_POR:
+  description: ''
+  fields:
+  - name: B
+    bit_offset: 0
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_JTAG_RST:
+  description: ''
+  fields:
+  - name: B
+    bit_offset: 1
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_IPP_USER_RESET:
+  description: ''
+  fields:
+  - name: B
+    bit_offset: 2
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_WDOG1_RST:
+  description: ''
+  fields:
+  - name: B
+    bit_offset: 3
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_WDOG2_RST:
+  description: ''
+  fields:
+  - name: B
+    bit_offset: 4
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_WDOG3_RST:
+  description: ''
+  fields:
+  - name: B
+    bit_offset: 5
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_WDOG4_RST:
+  description: ''
+  fields:
+  - name: B
+    bit_offset: 6
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_WDOG5_RST:
+  description: ''
+  fields:
+  - name: B
+    bit_offset: 7
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_TEMPSENSE_RST:
+  description: ''
+  fields:
+  - name: B
+    bit_offset: 8
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_CSU_RESET:
+  description: ''
+  fields:
+  - name: B
+    bit_offset: 9
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_JTAG_SW:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 10
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_CM33:
+  description: ''
+  fields:
+  - name: REQUEST
+    bit_offset: 11
+    bit_size: 1
+  - name: LOCKUP
+    bit_offset: 12
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_AONMIX:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 16
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_WAKEUPMIX:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 17
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_DDRMIX:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 18
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_DDRPHY:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 19
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_MLMIX:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 20
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_NICMIX:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 21
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_HSIOMIX:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 22
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_MEDIAMIX:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 23
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_M33PMIX:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 24
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_A55C0MIX:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 25
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_A55C1MIX:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 26
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SRSR_A55PMIX:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 27
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_GPR1:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR2:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR3:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR4:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR5:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR6:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR7:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR8:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR9:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR10:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR11:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR12:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR13:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR14:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR15:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR16:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR17:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR18:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR19:
+  description: ''
+  fields:
+  - name: GPR
+    bit_offset: 0
+    bit_size: 32
+    description: General Purpose
+fieldset/SRC_GENERAL_REG_GPR20_ANAMIX_REF:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 5
+    bit_size: 2
+fieldset/SRC_GENERAL_REG_GPR20_CCM_24MCLK:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 7
+    bit_size: 2
+fieldset/SRC_GENERAL_REG_GPR20_CLKIN1:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 9
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_GPR20_CLKIN2:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 10
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_CM_QUIESCE_SAFE_CM33_AHB:
+  description: ''
+  fields:
+  - name: REQ
+    bit_offset: 0
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_CM_QUIESCE_SAFE_CM33_AHB_ACK:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 1
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_COLD_RESET_SSAR_ACK_CTRL_SSAR_CNT:
+  description: ''
+  fields:
+  - name: CFG
+    bit_offset: 0
+    bit_size: 14
+fieldset/SRC_GENERAL_REG_COLD_RESET_SSAR_ACK_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 30
+    bit_size: 2
+fieldset/SRC_GENERAL_REG_SP_ISO_CTRL_USB_PHY1:
+  description: ''
+  fields:
+  - name: ISO
+    bit_offset: 0
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SP_ISO_CTRL_USB_PHY2:
+  description: ''
+  fields:
+  - name: ISO
+    bit_offset: 1
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SP_ISO_CTRL_MIPI_CSI:
+  description: ''
+  fields:
+  - name: ISO
+    bit_offset: 2
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_SP_ISO_CTRL_MIPI_DSI:
+  description: ''
+  fields:
+  - name: ISO
+    bit_offset: 3
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_ROM_LP_CTRL_AONMIX_ROM_LP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_A55_DENY_STAT_A55_CORE0_PWRDN_DENY:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 0
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_A55_DENY_STAT_A55_CORE1_PWRDN_DENY:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 1
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_A55_DENY_STAT_A55_CLUSTER_PWRDN_DENY:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 2
+    bit_size: 1
+fieldset/SRC_GENERAL_REG_A55_DENY_STAT_A55_CLUSTER_CLKOFF_DENY:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 3
+    bit_size: 1

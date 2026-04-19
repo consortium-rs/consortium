@@ -1,0 +1,57 @@
+block/CAMERA_DSI_STREAM_CSR:
+  description: ''
+  items:
+  - name: DSI_HOST_CONFIGURATION
+    byte_offset: 0
+    fieldset: CAMERA_DSI_STREAM_CSR_DSI_HOST_CONFIGURATION
+  - name: DSI_PARITY_ERROR_STATUS
+    byte_offset: 4
+  - name: DSI_PARITY_ERROR_THRESHOLD
+    byte_offset: 8
+  - name: DSI_PARITY_ERROR_INJECTION
+    byte_offset: 12
+fieldset/CAMERA_DSI_STREAM_CSR_DSI_HOST_CONFIGURATION_Pixel_link:
+  description: ''
+  fields:
+  - name: format
+    bit_offset: 0
+    bit_size: 3
+fieldset/CAMERA_DSI_STREAM_CSR_DSI_HOST_CONFIGURATION:
+  description: ''
+  fields:
+  - name: shutdown
+    bit_offset: 4
+    bit_size: 1
+  - name: colormode
+    bit_offset: 5
+    bit_size: 1
+fieldset/CAMERA_DSI_STREAM_CSR_DSI_PARITY_ERROR_STATUS_Parity0:
+  description: ''
+  fields:
+  - name: error
+    bit_offset: 0
+    bit_size: 1
+fieldset/CAMERA_DSI_STREAM_CSR_DSI_PARITY_ERROR_STATUS_Parity123:
+  description: ''
+  fields:
+  - name: error
+    bit_offset: 1
+    bit_size: 1
+fieldset/CAMERA_DSI_STREAM_CSR_DSI_PARITY_ERROR_THRESHOLD_parity0_error:
+  description: ''
+  fields:
+  - name: max
+    bit_offset: 0
+    bit_size: 10
+fieldset/CAMERA_DSI_STREAM_CSR_DSI_PARITY_ERROR_THRESHOLD_parity123_error:
+  description: ''
+  fields:
+  - name: max
+    bit_offset: 16
+    bit_size: 10
+fieldset/CAMERA_DSI_STREAM_CSR_DSI_PARITY_ERROR_INJECTION_error:
+  description: ''
+  fields:
+  - name: inject
+    bit_offset: 0
+    bit_size: 4

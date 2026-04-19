@@ -1,0 +1,176 @@
+block/DCMI:
+  description: ''
+  items:
+  - name: CR
+    byte_offset: 0
+    description: DCMI control register 1
+    fieldset: DCMI_CR
+  - name: SR
+    byte_offset: 4
+    description: DCMI status register
+    fieldset: DCMI_SR
+  - name: RISR
+    byte_offset: 8
+    description: DCMI raw interrupt status register
+  - name: IER
+    byte_offset: 12
+    description: DCMI interrupt enable register
+  - name: MISR
+    byte_offset: 16
+    description: DCMI masked interrupt status register
+  - name: ICR
+    byte_offset: 20
+    description: DCMI interrupt clear register
+  - name: ESCR
+    byte_offset: 24
+    description: DCMI embedded synchronization code register
+    fieldset: DCMI_ESCR
+  - name: ESUR
+    byte_offset: 28
+    description: DCMI embedded synchronization unmask register
+    fieldset: DCMI_ESUR
+  - name: CWSTRTR
+    byte_offset: 32
+    description: DCMI crop window start
+  - name: CWSIZER
+    byte_offset: 36
+    description: DCMI crop window size
+  - name: DR
+    byte_offset: 40
+    description: DCMI data register
+    fieldset: DCMI_DR
+  - name: VERR
+    byte_offset: 1012
+    description: DCMI Version register
+  - name: IPDR
+    byte_offset: 1016
+    description: DCMI Identification register
+  - name: SIDR
+    byte_offset: 1020
+    description: DCMI Size Identification register
+fieldset/DCMI_CR:
+  description: ''
+  fields:
+  - name: CAPTURE
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: CM
+    bit_offset: 1
+    bit_size: 1
+    description: '0x00000002'
+  - name: CROP
+    bit_offset: 2
+    bit_size: 1
+    description: '0x00000004'
+  - name: JPEG
+    bit_offset: 3
+    bit_size: 1
+    description: '0x00000008'
+  - name: ESS
+    bit_offset: 4
+    bit_size: 1
+    description: '0x00000010'
+  - name: PCKPOL
+    bit_offset: 5
+    bit_size: 1
+    description: '0x00000020'
+  - name: HSPOL
+    bit_offset: 6
+    bit_size: 1
+    description: '0x00000040'
+  - name: VSPOL
+    bit_offset: 7
+    bit_size: 1
+    description: '0x00000080'
+  - name: CRE
+    bit_offset: 12
+    bit_size: 1
+    description: '0x00001000'
+  - name: ENABLE
+    bit_offset: 14
+    bit_size: 1
+    description: '0x00004000'
+  - name: BSM
+    bit_offset: 16
+    bit_size: 2
+    description: '0x00010000'
+  - name: OEBS
+    bit_offset: 18
+    bit_size: 1
+    description: '0x00040000'
+  - name: LSM
+    bit_offset: 19
+    bit_size: 1
+    description: '0x00080000'
+  - name: OELS
+    bit_offset: 20
+    bit_size: 1
+fieldset/DCMI_SR:
+  description: ''
+  fields:
+  - name: HSYNC
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: VSYNC
+    bit_offset: 1
+    bit_size: 1
+    description: '0x00000002'
+  - name: FNE
+    bit_offset: 2
+    bit_size: 1
+fieldset/DCMI_ESCR:
+  description: ''
+  fields:
+  - name: FSC
+    bit_offset: 0
+    bit_size: 8
+    description: '0x000000FF'
+  - name: LSC
+    bit_offset: 8
+    bit_size: 8
+    description: '0x0000FF00'
+  - name: LEC
+    bit_offset: 16
+    bit_size: 8
+    description: '0x00FF0000'
+  - name: FEC
+    bit_offset: 24
+    bit_size: 8
+fieldset/DCMI_ESUR:
+  description: ''
+  fields:
+  - name: FSU
+    bit_offset: 0
+    bit_size: 8
+    description: '0x000000FF'
+  - name: LSU
+    bit_offset: 8
+    bit_size: 8
+    description: '0x0000FF00'
+  - name: LEU
+    bit_offset: 16
+    bit_size: 8
+    description: '0x00FF0000'
+  - name: FEU
+    bit_offset: 24
+    bit_size: 8
+fieldset/DCMI_DR:
+  description: ''
+  fields:
+  - name: BYTE0
+    bit_offset: 0
+    bit_size: 8
+    description: '0x000000FF'
+  - name: BYTE1
+    bit_offset: 8
+    bit_size: 8
+    description: '0x0000FF00'
+  - name: BYTE2
+    bit_offset: 16
+    bit_size: 8
+    description: '0x00FF0000'
+  - name: BYTE3
+    bit_offset: 24
+    bit_size: 8

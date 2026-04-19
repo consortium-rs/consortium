@@ -1,0 +1,81 @@
+block/VIGNETTING:
+  description: ''
+  items:
+  - name: CTRL_CAM
+    byte_offset: 0
+    fieldset: VIGNETTING_CTRL_CAM
+  - name: BLK_CONF_CAM
+    byte_offset: 4
+    fieldset: VIGNETTING_BLK_CONF_CAM
+  - name: BLK_SIZE_CAM
+    byte_offset: 8
+    fieldset: VIGNETTING_BLK_SIZE_CAM
+  - name: BLK_STEPY_CAM
+    byte_offset: 12
+    fieldset: VIGNETTING_BLK_STEPY_CAM
+  - name: BLK_STEPX_CAM
+    byte_offset: 16
+    fieldset: VIGNETTING_BLK_STEPX_CAM
+  - name: BLK_C_LINE_CAM
+    byte_offset: 32
+    fieldset: VIGNETTING_BLK_C_LINE_CAM
+  - name: BLK_C_ROW_CAM
+    byte_offset: 36
+    fieldset: VIGNETTING_BLK_C_ROW_CAM
+  - name: BLK_C_FRACY_CAM
+    byte_offset: 40
+    fieldset: VIGNETTING_BLK_C_FRACY_CAM
+fieldset/VIGNETTING_CTRL_CAM:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/VIGNETTING_BLK_CONF_CAM:
+  description: ''
+  fields:
+  - name: COLS
+    bit_offset: 0
+    bit_size: 8
+  - name: ROWS
+    bit_offset: 16
+    bit_size: 8
+fieldset/VIGNETTING_BLK_SIZE_CAM:
+  description: ''
+  fields:
+  - name: XSIZE
+    bit_offset: 0
+    bit_size: 16
+  - name: YSIZE
+    bit_offset: 16
+    bit_size: 16
+fieldset/VIGNETTING_BLK_STEPY_CAM:
+  description: ''
+  fields:
+  - name: STEP
+    bit_offset: 0
+    bit_size: 16
+fieldset/VIGNETTING_BLK_STEPX_CAM:
+  description: ''
+  fields:
+  - name: STEP
+    bit_offset: 0
+    bit_size: 16
+fieldset/VIGNETTING_BLK_C_LINE_CAM:
+  description: ''
+  fields:
+  - name: LINE
+    bit_offset: 0
+    bit_size: 16
+fieldset/VIGNETTING_BLK_C_ROW_CAM:
+  description: ''
+  fields:
+  - name: BLKROW
+    bit_offset: 0
+    bit_size: 8
+fieldset/VIGNETTING_BLK_C_FRACY_CAM:
+  description: ''
+  fields:
+  - name: FRAC
+    bit_offset: 0
+    bit_size: 32

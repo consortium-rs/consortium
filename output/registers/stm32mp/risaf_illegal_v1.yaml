@@ -1,0 +1,9 @@
+block/RISAF_Illegal:
+  description: ''
+  items:
+  - name: IAESR
+    byte_offset: 0
+    description: RISAF Illegal access error status register
+  - name: IADDR
+    byte_offset: 4
+    description: RISAF Illegal address register,

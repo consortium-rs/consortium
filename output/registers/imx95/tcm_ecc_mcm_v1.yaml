@@ -1,0 +1,241 @@
+block/TCM_ECC_MCM:
+  description: ''
+  items:
+  - name: TCMECCR
+    byte_offset: 4
+  - name: INT_STATUS
+    byte_offset: 32
+  - name: INT_STAT_EN
+    byte_offset: 36
+  - name: INT_SIG_EN
+    byte_offset: 40
+  - name: CODE_TCM_ECC_SINGLE_ERROR_INFO
+    byte_offset: 92
+  - name: CODE_TCM_ECC_SINGLE_ERROR_ADDR
+    byte_offset: 96
+  - name: CODE_TCM_ECC_MULTI_ERROR_INFO
+    byte_offset: 104
+  - name: CODE_TCM_ECC_MULTI_ERROR_ADDR
+    byte_offset: 108
+  - name: SYS_TCM_ECC_SINGLE_ERROR_INFO
+    byte_offset: 116
+  - name: SYS_TCM_ECC_SINGLE_ERROR_ADDR
+    byte_offset: 120
+  - name: SYS_TCM_ECC_MULTI_ERROR_INFO
+    byte_offset: 128
+  - name: SYS_TCM_ECC_MULTI_ERROR_ADDR
+    byte_offset: 132
+  - name: CODE_TCM_ECC_ERROR_INJEC
+    byte_offset: 148
+  - name: SYS_TCM_ECC_ERROR_INJEC
+    byte_offset: 152
+fieldset/TCM_ECC_MCM_TCMECCR_WECC:
+  description: ''
+  fields:
+  - name: DIS
+    bit_offset: 0
+    bit_size: 1
+fieldset/TCM_ECC_MCM_TCMECCR_RECC:
+  description: ''
+  fields:
+  - name: DIS
+    bit_offset: 1
+    bit_size: 1
+fieldset/TCM_ECC_MCM_INT_STATUS_CODE_TCM_ECC_ERRM:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 10
+    bit_size: 1
+fieldset/TCM_ECC_MCM_INT_STATUS_CODE_TCM_ECC_ERRS:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 11
+    bit_size: 1
+fieldset/TCM_ECC_MCM_INT_STATUS_SYS_TCM_ECC_ERRM:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 12
+    bit_size: 1
+fieldset/TCM_ECC_MCM_INT_STATUS_SYS_TCM_ECC_ERRS:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 13
+    bit_size: 1
+fieldset/TCM_ECC_MCM_INT_STAT_EN_CODE_TCM_ERRM_INT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/TCM_ECC_MCM_INT_STAT_EN_CODE_TCM_ERRS_INT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/TCM_ECC_MCM_INT_STAT_EN_SYS_TCM_ERRM_INT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 12
+    bit_size: 1
+fieldset/TCM_ECC_MCM_INT_STAT_EN_SYS_TCM_ERRS_INT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 13
+    bit_size: 1
+fieldset/TCM_ECC_MCM_INT_SIG_EN_CODE_TCM_ERRM_INT_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/TCM_ECC_MCM_INT_SIG_EN_CODE_TCM_ERRS_INT_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/TCM_ECC_MCM_INT_SIG_EN_SYS_TCM_ERRM_INT_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 12
+    bit_size: 1
+fieldset/TCM_ECC_MCM_INT_SIG_EN_SYS_TCM_ERRS_INT_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 13
+    bit_size: 1
+fieldset/TCM_ECC_MCM_CODE_TCM_ECC_SINGLE_ERROR_INFO_CODE_TCM_ECCS:
+  description: ''
+  fields:
+  - name: EFSIZ
+    bit_offset: 1
+    bit_size: 3
+  - name: EFMST
+    bit_offset: 4
+    bit_size: 4
+  - name: EFPRT
+    bit_offset: 8
+    bit_size: 4
+  - name: EFSYN
+    bit_offset: 12
+    bit_size: 7
+fieldset/TCM_ECC_MCM_CODE_TCM_ECC_SINGLE_ERROR_ADDR_CODE_TCM_ECCS_ERRED:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/TCM_ECC_MCM_CODE_TCM_ECC_MULTI_ERROR_INFO_CODE_TCM_ECCM:
+  description: ''
+  fields:
+  - name: EFSIZ
+    bit_offset: 1
+    bit_size: 3
+  - name: EFMST
+    bit_offset: 4
+    bit_size: 4
+  - name: EFPRT
+    bit_offset: 8
+    bit_size: 4
+  - name: EFSYN
+    bit_offset: 12
+    bit_size: 7
+fieldset/TCM_ECC_MCM_CODE_TCM_ECC_MULTI_ERROR_ADDR_CODE_TCM_ECCM_ERRED:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/TCM_ECC_MCM_SYS_TCM_ECC_SINGLE_ERROR_INFO_SYS_TCM_ECCS:
+  description: ''
+  fields:
+  - name: EFSIZ
+    bit_offset: 1
+    bit_size: 3
+  - name: EFMST
+    bit_offset: 4
+    bit_size: 4
+  - name: EFPRT
+    bit_offset: 8
+    bit_size: 4
+  - name: EFSYN
+    bit_offset: 12
+    bit_size: 7
+fieldset/TCM_ECC_MCM_SYS_TCM_ECC_SINGLE_ERROR_ADDR_SYS_TCM_ECCS_ERRED:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/TCM_ECC_MCM_SYS_TCM_ECC_MULTI_ERROR_INFO_SYS_TCM_ECCM:
+  description: ''
+  fields:
+  - name: EFSIZ
+    bit_offset: 1
+    bit_size: 3
+  - name: EFMST
+    bit_offset: 4
+    bit_size: 4
+  - name: EFPRT
+    bit_offset: 8
+    bit_size: 4
+  - name: EFSYN
+    bit_offset: 12
+    bit_size: 7
+fieldset/TCM_ECC_MCM_SYS_TCM_ECC_MULTI_ERROR_ADDR_SYS_TCM_ECCM_ERRED:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/TCM_ECC_MCM_CODE_TCM_ECC_ERROR_INJEC_CODE_TCM:
+  description: ''
+  fields:
+  - name: ERR1BIT
+    bit_offset: 0
+    bit_size: 8
+  - name: ERR2BIT
+    bit_offset: 8
+    bit_size: 8
+  - name: FR11BI
+    bit_offset: 16
+    bit_size: 1
+  - name: FR1NCI
+    bit_offset: 17
+    bit_size: 1
+  - name: FRC1BI
+    bit_offset: 18
+    bit_size: 1
+  - name: FRCNCI
+    bit_offset: 19
+    bit_size: 1
+fieldset/TCM_ECC_MCM_SYS_TCM_ECC_ERROR_INJEC_SYS_TCM:
+  description: ''
+  fields:
+  - name: ERR1BIT
+    bit_offset: 0
+    bit_size: 8
+  - name: ERR2BIT
+    bit_offset: 8
+    bit_size: 8
+  - name: FR11BI
+    bit_offset: 16
+    bit_size: 1
+  - name: FR1NCI
+    bit_offset: 17
+    bit_size: 1
+  - name: FRC1BI
+    bit_offset: 18
+    bit_size: 1
+  - name: FRCNCI
+    bit_offset: 19
+    bit_size: 1

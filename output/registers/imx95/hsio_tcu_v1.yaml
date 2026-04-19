@@ -1,0 +1,392 @@
+block/HSIO_TCU:
+  description: ''
+  items:
+  - name: TCU_MAGIC_KW__MAGIC_KW0
+    byte_offset: 1024
+    fieldset: HSIO_TCU_TCU_MAGIC_KW__MAGIC_KW0
+  - name: TCU_MAGIC_KW__MAGIC_KW1
+    byte_offset: 1040
+    fieldset: HSIO_TCU_TCU_MAGIC_KW__MAGIC_KW1
+  - name: RW
+    byte_offset: 2320
+  - name: SET
+    byte_offset: 2324
+  - name: CLR
+    byte_offset: 2328
+  - name: TOG
+    byte_offset: 2332
+  - name: TCU_PCIE1_PHY_CONTROL_
+    byte_offset: 2336
+  - name: TCU_DFT_BS
+    byte_offset: 2352
+  - name: TCU_DFT_BS_USB3
+    byte_offset: 2368
+  - name: RW
+    byte_offset: 2576
+  - name: SET
+    byte_offset: 2580
+  - name: CLR
+    byte_offset: 2584
+  - name: TOG
+    byte_offset: 2588
+  - name: RW
+    byte_offset: 2592
+  - name: SET
+    byte_offset: 2596
+  - name: CLR
+    byte_offset: 2600
+  - name: TOG
+    byte_offset: 2604
+  - name: RW
+    byte_offset: 2608
+  - name: SET
+    byte_offset: 2612
+  - name: CLR
+    byte_offset: 2616
+  - name: TOG
+    byte_offset: 2620
+  - name: RW
+    byte_offset: 2624
+  - name: SET
+    byte_offset: 2628
+  - name: CLR
+    byte_offset: 2632
+  - name: TOG
+    byte_offset: 2636
+  - name: TCU_PLL_COUNTER
+    byte_offset: 3072
+  - name: TCU_DFT_FUSE
+    byte_offset: 3136
+fieldset/HSIO_TCU_TCU_MAGIC_KW__MAGIC_KW0:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 32
+fieldset/HSIO_TCU_TCU_MAGIC_KW__MAGIC_KW1:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 32
+fieldset/HSIO_TCU_TCU_PCIE0_PHY_CONTROL__test:
+  description: ''
+  fields:
+  - name: burnin
+    bit_offset: 0
+    bit_size: 1
+  - name: powerdown
+    bit_offset: 1
+    bit_size: 1
+  - name: mode
+    bit_offset: 4
+    bit_size: 1
+    description: test mode
+fieldset/HSIO_TCU_TCU_PCIE0_PHY_CONTROL__test_stop_clk:
+  description: ''
+  fields:
+  - name: en
+    bit_offset: 2
+    bit_size: 1
+fieldset/HSIO_TCU_TCU_PCIE0_PHY_CONTROL__test_tx_ref_clk:
+  description: ''
+  fields:
+  - name: en
+    bit_offset: 3
+    bit_size: 1
+fieldset/HSIO_TCU_TCU_PCIE1_PHY_CONTROL__test:
+  description: ''
+  fields:
+  - name: burnin
+    bit_offset: 0
+    bit_size: 1
+  - name: powerdown
+    bit_offset: 1
+    bit_size: 1
+  - name: mode
+    bit_offset: 4
+    bit_size: 1
+    description: test mode
+fieldset/HSIO_TCU_TCU_PCIE1_PHY_CONTROL__test_stop_clk:
+  description: ''
+  fields:
+  - name: en
+    bit_offset: 2
+    bit_size: 1
+fieldset/HSIO_TCU_TCU_PCIE1_PHY_CONTROL__test_tx_ref_clk:
+  description: ''
+  fields:
+  - name: en
+    bit_offset: 3
+    bit_size: 1
+fieldset/HSIO_TCU_TCU_DFT_BS_pcie0_bs:
+  description: ''
+  fields:
+  - name: tdi
+    bit_offset: 0
+    bit_size: 1
+    description: BS TDI
+  - name: acmode
+    bit_offset: 1
+    bit_size: 1
+    description: BS TDI
+  - name: actest
+    bit_offset: 2
+    bit_size: 1
+    description: BS ACTEST
+  - name: cdr
+    bit_offset: 3
+    bit_size: 1
+    description: BS CDR
+  - name: ce
+    bit_offset: 4
+    bit_size: 1
+    description: BS CDR
+  - name: rxinit
+    bit_offset: 5
+    bit_size: 1
+    description: BS CE
+  - name: sdr
+    bit_offset: 6
+    bit_size: 1
+    description: BS SDR
+  - name: udr
+    bit_offset: 7
+    bit_size: 1
+    description: BS SDR
+  - name: tdo
+    bit_offset: 8
+    bit_size: 1
+    description: BS UDR
+fieldset/HSIO_TCU_TCU_DFT_BS_pcie1_bs:
+  description: ''
+  fields:
+  - name: tdi
+    bit_offset: 16
+    bit_size: 1
+    description: BS TDO
+  - name: acmode
+    bit_offset: 17
+    bit_size: 1
+    description: BS TDI
+  - name: actest
+    bit_offset: 18
+    bit_size: 1
+    description: BS ACTEST
+  - name: cdr
+    bit_offset: 19
+    bit_size: 1
+    description: BS CDR
+  - name: ce
+    bit_offset: 20
+    bit_size: 1
+    description: BS CDR
+  - name: rxinit
+    bit_offset: 21
+    bit_size: 1
+    description: BS CE
+  - name: sdr
+    bit_offset: 22
+    bit_size: 1
+    description: BS SDR
+  - name: udr
+    bit_offset: 23
+    bit_size: 1
+    description: BS SDR
+  - name: tdo
+    bit_offset: 24
+    bit_size: 1
+    description: BS UDR
+fieldset/HSIO_TCU_TCU_DFT_BS_USB3_usb3_bs:
+  description: ''
+  fields:
+  - name: tdi
+    bit_offset: 0
+    bit_size: 1
+    description: BS TDI
+fieldset/HSIO_TCU_TCU_DFT_BS_USB3_usb3:
+  description: ''
+  fields:
+  - name: capturedr
+    bit_offset: 1
+    bit_size: 1
+    description: BS TDI
+  - name: clamp
+    bit_offset: 2
+    bit_size: 1
+    description: BS CLAMP
+  - name: extest
+    bit_offset: 3
+    bit_size: 1
+    description: BS CLAMP
+  - name: extestac
+    bit_offset: 4
+    bit_size: 1
+    description: BS EXTEST AC
+  - name: highz
+    bit_offset: 5
+    bit_size: 1
+    description: BS HIGHTZ
+  - name: bsinit
+    bit_offset: 6
+    bit_size: 1
+    description: BS HIGHTZ
+  - name: bsinvert
+    bit_offset: 7
+    bit_size: 1
+    description: BS INVERT
+  - name: preload
+    bit_offset: 8
+    bit_size: 1
+    description: BS PRELOAD
+  - name: shiftdr
+    bit_offset: 9
+    bit_size: 1
+    description: BS SHIFT DR
+  - name: updatedr
+    bit_offset: 10
+    bit_size: 1
+    description: BS UPDATE DR
+  - name: acjtlevel
+    bit_offset: 11
+    bit_size: 5
+    description: BS AC JT LEVEL
+  - name: bsrmode
+    bit_offset: 16
+    bit_size: 1
+    description: BSR MODE
+  - name: tdo
+    bit_offset: 31
+    bit_size: 1
+    description: BS TDO
+fieldset/HSIO_TCU_TCU_USB2_PHY_CONTROL__test:
+  description: ''
+  fields:
+  - name: mode
+    bit_offset: 0
+    bit_size: 1
+    description: usb_phy_test_mode
+fieldset/HSIO_TCU_TCU_USB2_PHY_CONTROL_:
+  description: ''
+  fields:
+  - name: testburnin
+    bit_offset: 1
+    bit_size: 1
+  - name: loopbackenb
+    bit_offset: 2
+    bit_size: 1
+  - name: vatestenb
+    bit_offset: 3
+    bit_size: 2
+  - name: suspendm0
+    bit_offset: 5
+    bit_size: 1
+    description: suspend mode
+  - name: testclk
+    bit_offset: 16
+    bit_size: 1
+  - name: testaddr
+    bit_offset: 17
+    bit_size: 4
+  - name: testdatain
+    bit_offset: 21
+    bit_size: 8
+  - name: testdataoutsel
+    bit_offset: 29
+    bit_size: 1
+  - name: atereset
+    bit_offset: 30
+    bit_size: 1
+fieldset/HSIO_TCU_USB2_PHY_TESTDATA:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 4
+    description: bit output for status monitor
+fieldset/HSIO_TCU_TCU_USB3_PHY_CONTROL__test:
+  description: ''
+  fields:
+  - name: mode
+    bit_offset: 0
+    bit_size: 1
+    description: usb_phy_test_mode
+fieldset/HSIO_TCU_TCU_USB3_PHY_CONTROL_:
+  description: ''
+  fields:
+  - name: testburnin
+    bit_offset: 1
+    bit_size: 1
+  - name: loopbackenb
+    bit_offset: 2
+    bit_size: 1
+  - name: vatestenb
+    bit_offset: 3
+    bit_size: 1
+  - name: atereset
+    bit_offset: 30
+    bit_size: 1
+    description: ate reset
+fieldset/HSIO_TCU_TCU_USB3_PHY_CONTROL__test_powerdown:
+  description: ''
+  fields:
+  - name: hsp
+    bit_offset: 4
+    bit_size: 1
+  - name: ssp
+    bit_offset: 5
+    bit_size: 1
+fieldset/HSIO_TCU_USB3_PHY_TESTDATA:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 4
+    description: bit output for status monitor
+fieldset/HSIO_TCU_TCU_PLL_COUNTER_pll_count_rst:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 0
+    bit_size: 1
+fieldset/HSIO_TCU_TCU_PLL_COUNTER_pll_count:
+  description: ''
+  fields:
+  - name: start
+    bit_offset: 1
+    bit_size: 1
+  - name: cnt
+    bit_offset: 16
+    bit_size: 16
+    description: pll count cnt
+fieldset/HSIO_TCU_TCU_PLL_COUNTER_pll_count_div:
+  description: ''
+  fields:
+  - name: en
+    bit_offset: 2
+    bit_size: 1
+fieldset/HSIO_TCU_TCU_PLL_COUNTER_pll_count_clk:
+  description: ''
+  fields:
+  - name: sel
+    bit_offset: 3
+    bit_size: 4
+fieldset/HSIO_TCU_TCU_PLL_COUNTER_pll_count_ref:
+  description: ''
+  fields:
+  - name: val
+    bit_offset: 8
+    bit_size: 8
+fieldset/HSIO_TCU_TCU_DFT_FUSE_tcu_dft_fuse:
+  description: ''
+  fields:
+  - name: disable
+    bit_offset: 0
+    bit_size: 1
+fieldset/HSIO_TCU_TCU_DFT_FUSE_tcu_fuse:
+  description: ''
+  fields:
+  - name: obs
+    bit_offset: 1
+    bit_size: 4
+    description: fuse observation

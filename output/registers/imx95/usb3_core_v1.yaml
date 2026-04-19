@@ -1,0 +1,3260 @@
+block/USB3_CORE:
+  description: ''
+  items:
+  - name: CAPLENGTH
+    byte_offset: 0
+    fieldset: USB3_CORE_CAPLENGTH
+  - name: HCSPARAMS1
+    byte_offset: 4
+    fieldset: USB3_CORE_HCSPARAMS1
+  - name: HCSPARAMS2
+    byte_offset: 8
+    fieldset: USB3_CORE_HCSPARAMS2
+  - name: HCSPARAMS3
+    byte_offset: 12
+  - name: HCCPARAMS1
+    byte_offset: 16
+    fieldset: USB3_CORE_HCCPARAMS1
+  - name: DBOFF
+    byte_offset: 20
+  - name: RTSOFF
+    byte_offset: 24
+  - name: HCCPARAMS2
+    byte_offset: 28
+    fieldset: USB3_CORE_HCCPARAMS2
+  - name: USBCMD
+    byte_offset: 32
+    fieldset: USB3_CORE_USBCMD
+  - name: USBSTS
+    byte_offset: 36
+    fieldset: USB3_CORE_USBSTS
+  - name: PAGESIZE
+    byte_offset: 40
+  - name: DNCTRL
+    byte_offset: 52
+  - name: CRCR_LO
+    byte_offset: 56
+    fieldset: USB3_CORE_CRCR_LO
+  - name: CRCR_HI
+    byte_offset: 60
+  - name: DCBAAP_LO
+    byte_offset: 80
+  - name: DCBAAP_HI
+    byte_offset: 84
+  - name: CONFIG
+    byte_offset: 88
+    fieldset: USB3_CORE_CONFIG
+  - name: PORTSC_20
+    byte_offset: 1056
+    fieldset: USB3_CORE_PORTSC_20
+  - name: PORTPMSC_20
+    byte_offset: 1060
+    fieldset: USB3_CORE_PORTPMSC_20
+  - name: PORTHLPMC_20
+    byte_offset: 1068
+    fieldset: USB3_CORE_PORTHLPMC_20
+  - name: PORTSC_30
+    byte_offset: 1072
+    fieldset: USB3_CORE_PORTSC_30
+  - name: PORTPMSC_30
+    byte_offset: 1076
+    fieldset: USB3_CORE_PORTPMSC_30
+  - name: PORTLI_30
+    byte_offset: 1080
+  - name: MFINDEX
+    byte_offset: 1088
+  - name: IMAN
+    byte_offset: 1120
+    fieldset: USB3_CORE_IMAN
+  - name: IMOD
+    byte_offset: 1124
+    fieldset: USB3_CORE_IMOD
+  - name: ERSTSZ
+    byte_offset: 1128
+  - name: ERSTBA_LO
+    byte_offset: 1136
+  - name: ERSTBA_HI
+    byte_offset: 1140
+  - name: ERDP_LO
+    byte_offset: 1144
+    fieldset: USB3_CORE_ERDP_LO
+  - name: ERDP_HI
+    byte_offset: 1148
+  - name: DB
+    byte_offset: 1152
+    array:
+      len: 64
+      stride: 4
+  - name: USBLEGSUP
+    byte_offset: 2176
+  - name: USBLEGCTLSTS
+    byte_offset: 2180
+  - name: SUPTPRT2_DW0
+    byte_offset: 2192
+  - name: SUPTPRT2_DW1
+    byte_offset: 2196
+  - name: SUPTPRT2_DW2
+    byte_offset: 2200
+    fieldset: USB3_CORE_SUPTPRT2_DW2
+  - name: SUPTPRT2_DW3
+    byte_offset: 2204
+  - name: SUPTPRT3_DW0
+    byte_offset: 2208
+  - name: SUPTPRT3_DW1
+    byte_offset: 2212
+  - name: SUPTPRT3_DW2
+    byte_offset: 2216
+    fieldset: USB3_CORE_SUPTPRT3_DW2
+  - name: SUPTPRT3_DW3
+    byte_offset: 2220
+  - name: GSBUSCFG0
+    byte_offset: 49408
+    fieldset: USB3_CORE_GSBUSCFG0
+  - name: GSBUSCFG1
+    byte_offset: 49412
+    fieldset: USB3_CORE_GSBUSCFG1
+  - name: GTXTHRCFG
+    byte_offset: 49416
+    fieldset: USB3_CORE_GTXTHRCFG
+  - name: GRXTHRCFG
+    byte_offset: 49420
+    fieldset: USB3_CORE_GRXTHRCFG
+  - name: GCTL
+    byte_offset: 49424
+    fieldset: USB3_CORE_GCTL
+  - name: GSTS
+    byte_offset: 49432
+    fieldset: USB3_CORE_GSTS
+  - name: GUCTL1
+    byte_offset: 49436
+  - name: GUID
+    byte_offset: 49448
+    fieldset: USB3_CORE_GUID
+  - name: GUCTL
+    byte_offset: 49452
+    fieldset: USB3_CORE_GUCTL
+  - name: GBUSERRADDRLO
+    byte_offset: 49456
+    fieldset: USB3_CORE_GBUSERRADDRLO
+  - name: GBUSERRADDRHI
+    byte_offset: 49460
+    fieldset: USB3_CORE_GBUSERRADDRHI
+  - name: GPRTBIMAPLO
+    byte_offset: 49464
+    fieldset: USB3_CORE_GPRTBIMAPLO
+  - name: GHWPARAMS0
+    byte_offset: 49472
+  - name: GHWPARAMS1
+    byte_offset: 49476
+  - name: GHWPARAMS2
+    byte_offset: 49480
+  - name: GHWPARAMS3
+    byte_offset: 49484
+  - name: GHWPARAMS4
+    byte_offset: 49488
+  - name: GHWPARAMS5
+    byte_offset: 49492
+  - name: GHWPARAMS6
+    byte_offset: 49496
+    fieldset: USB3_CORE_GHWPARAMS6
+  - name: GHWPARAMS7
+    byte_offset: 49500
+  - name: GPRTBIMAP_HSLO
+    byte_offset: 49536
+    fieldset: USB3_CORE_GPRTBIMAP_HSLO
+  - name: GPRTBIMAP_FSLO
+    byte_offset: 49544
+    fieldset: USB3_CORE_GPRTBIMAP_FSLO
+  - name: GUCTL2
+    byte_offset: 49564
+    fieldset: USB3_CORE_GUCTL2
+  - name: GUSB2PHYCFG
+    byte_offset: 49664
+    fieldset: USB3_CORE_GUSB2PHYCFG
+  - name: GUSB3PIPECTL
+    byte_offset: 49856
+    fieldset: USB3_CORE_GUSB3PIPECTL
+  - name: GTXFIFOSIZ
+    byte_offset: 49920
+    array:
+      len: 8
+      stride: 4
+  - name: GRXFIFOSIZ
+    byte_offset: 50048
+    array:
+      len: 3
+      stride: 4
+  - name: GEVNTADRLO
+    byte_offset: 50176
+    fieldset: USB3_CORE_GEVNTADRLO
+  - name: GEVNTADRHI
+    byte_offset: 50180
+    fieldset: USB3_CORE_GEVNTADRHI
+  - name: GEVNTSIZ
+    byte_offset: 50184
+    fieldset: USB3_CORE_GEVNTSIZ
+  - name: GEVNTCOUNT
+    byte_offset: 50188
+    fieldset: USB3_CORE_GEVNTCOUNT
+  - name: GHWPARAMS8
+    byte_offset: 50688
+  - name: GUCTL3
+    byte_offset: 50700
+  - name: GTXFIFOPRIDEV
+    byte_offset: 50704
+    fieldset: USB3_CORE_GTXFIFOPRIDEV
+  - name: GTXFIFOPRIHST
+    byte_offset: 50712
+    fieldset: USB3_CORE_GTXFIFOPRIHST
+  - name: GRXFIFOPRIHST
+    byte_offset: 50716
+    fieldset: USB3_CORE_GRXFIFOPRIHST
+  - name: GFIFOPRIDBC
+    byte_offset: 50720
+    fieldset: USB3_CORE_GFIFOPRIDBC
+  - name: GDMAHLRATIO
+    byte_offset: 50724
+    fieldset: USB3_CORE_GDMAHLRATIO
+  - name: GFLADJ
+    byte_offset: 50736
+  - name: GUSB2RHBCTL
+    byte_offset: 50752
+  - name: DCFG
+    byte_offset: 50944
+    fieldset: USB3_CORE_DCFG
+  - name: DCTL
+    byte_offset: 50948
+    fieldset: USB3_CORE_DCTL
+  - name: DEVTEN
+    byte_offset: 50952
+    fieldset: USB3_CORE_DEVTEN
+  - name: DSTS
+    byte_offset: 50956
+    fieldset: USB3_CORE_DSTS
+  - name: DGCMDPAR
+    byte_offset: 50960
+    fieldset: USB3_CORE_DGCMDPAR
+  - name: DGCMD
+    byte_offset: 50964
+    fieldset: USB3_CORE_DGCMD
+  - name: DALEPENA
+    byte_offset: 50976
+    fieldset: USB3_CORE_DALEPENA
+  - name: DEPCMDPAR20
+    byte_offset: 51200
+    fieldset: USB3_CORE_DEPCMDPAR20
+  - name: DEPCMDPAR10
+    byte_offset: 51204
+    fieldset: USB3_CORE_DEPCMDPAR10
+  - name: DEPCMDPAR00
+    byte_offset: 51208
+    fieldset: USB3_CORE_DEPCMDPAR00
+  - name: DEPCMD0
+    byte_offset: 51212
+    fieldset: USB3_CORE_DEPCMD0
+  - name: DEPCMDPAR21
+    byte_offset: 51216
+    fieldset: USB3_CORE_DEPCMDPAR21
+  - name: DEPCMDPAR11
+    byte_offset: 51220
+    fieldset: USB3_CORE_DEPCMDPAR11
+  - name: DEPCMDPAR01
+    byte_offset: 51224
+    fieldset: USB3_CORE_DEPCMDPAR01
+  - name: DEPCMD1
+    byte_offset: 51228
+    fieldset: USB3_CORE_DEPCMD1
+  - name: DEPCMDPAR22
+    byte_offset: 51232
+    fieldset: USB3_CORE_DEPCMDPAR22
+  - name: DEPCMDPAR12
+    byte_offset: 51236
+    fieldset: USB3_CORE_DEPCMDPAR12
+  - name: DEPCMDPAR02
+    byte_offset: 51240
+    fieldset: USB3_CORE_DEPCMDPAR02
+  - name: DEPCMD2
+    byte_offset: 51244
+    fieldset: USB3_CORE_DEPCMD2
+  - name: DEPCMDPAR23
+    byte_offset: 51248
+    fieldset: USB3_CORE_DEPCMDPAR23
+  - name: DEPCMDPAR13
+    byte_offset: 51252
+    fieldset: USB3_CORE_DEPCMDPAR13
+  - name: DEPCMDPAR03
+    byte_offset: 51256
+    fieldset: USB3_CORE_DEPCMDPAR03
+  - name: DEPCMD3
+    byte_offset: 51260
+    fieldset: USB3_CORE_DEPCMD3
+  - name: DEPCMDPAR24
+    byte_offset: 51264
+    fieldset: USB3_CORE_DEPCMDPAR24
+  - name: DEPCMDPAR14
+    byte_offset: 51268
+    fieldset: USB3_CORE_DEPCMDPAR14
+  - name: DEPCMDPAR04
+    byte_offset: 51272
+    fieldset: USB3_CORE_DEPCMDPAR04
+  - name: DEPCMD4
+    byte_offset: 51276
+    fieldset: USB3_CORE_DEPCMD4
+  - name: DEPCMDPAR25
+    byte_offset: 51280
+    fieldset: USB3_CORE_DEPCMDPAR25
+  - name: DEPCMDPAR15
+    byte_offset: 51284
+    fieldset: USB3_CORE_DEPCMDPAR15
+  - name: DEPCMDPAR05
+    byte_offset: 51288
+    fieldset: USB3_CORE_DEPCMDPAR05
+  - name: DEPCMD5
+    byte_offset: 51292
+    fieldset: USB3_CORE_DEPCMD5
+  - name: DEPCMDPAR26
+    byte_offset: 51296
+    fieldset: USB3_CORE_DEPCMDPAR26
+  - name: DEPCMDPAR16
+    byte_offset: 51300
+    fieldset: USB3_CORE_DEPCMDPAR16
+  - name: DEPCMDPAR06
+    byte_offset: 51304
+    fieldset: USB3_CORE_DEPCMDPAR06
+  - name: DEPCMD6
+    byte_offset: 51308
+    fieldset: USB3_CORE_DEPCMD6
+  - name: DEPCMDPAR27
+    byte_offset: 51312
+    fieldset: USB3_CORE_DEPCMDPAR27
+  - name: DEPCMDPAR17
+    byte_offset: 51316
+    fieldset: USB3_CORE_DEPCMDPAR17
+  - name: DEPCMDPAR07
+    byte_offset: 51320
+    fieldset: USB3_CORE_DEPCMDPAR07
+  - name: DEPCMD7
+    byte_offset: 51324
+    fieldset: USB3_CORE_DEPCMD7
+  - name: DEPCMDPAR28
+    byte_offset: 51328
+    fieldset: USB3_CORE_DEPCMDPAR28
+  - name: DEPCMDPAR18
+    byte_offset: 51332
+    fieldset: USB3_CORE_DEPCMDPAR18
+  - name: DEPCMDPAR08
+    byte_offset: 51336
+    fieldset: USB3_CORE_DEPCMDPAR08
+  - name: DEPCMD8
+    byte_offset: 51340
+    fieldset: USB3_CORE_DEPCMD8
+  - name: DEPCMDPAR29
+    byte_offset: 51344
+    fieldset: USB3_CORE_DEPCMDPAR29
+  - name: DEPCMDPAR19
+    byte_offset: 51348
+    fieldset: USB3_CORE_DEPCMDPAR19
+  - name: DEPCMDPAR09
+    byte_offset: 51352
+    fieldset: USB3_CORE_DEPCMDPAR09
+  - name: DEPCMD9
+    byte_offset: 51356
+    fieldset: USB3_CORE_DEPCMD9
+  - name: DEPCMDPAR210
+    byte_offset: 51360
+    fieldset: USB3_CORE_DEPCMDPAR210
+  - name: DEPCMDPAR110
+    byte_offset: 51364
+    fieldset: USB3_CORE_DEPCMDPAR110
+  - name: DEPCMDPAR010
+    byte_offset: 51368
+    fieldset: USB3_CORE_DEPCMDPAR010
+  - name: DEPCMD10
+    byte_offset: 51372
+    fieldset: USB3_CORE_DEPCMD10
+  - name: DEPCMDPAR211
+    byte_offset: 51376
+    fieldset: USB3_CORE_DEPCMDPAR211
+  - name: DEPCMDPAR111
+    byte_offset: 51380
+    fieldset: USB3_CORE_DEPCMDPAR111
+  - name: DEPCMDPAR011
+    byte_offset: 51384
+    fieldset: USB3_CORE_DEPCMDPAR011
+  - name: DEPCMD11
+    byte_offset: 51388
+    fieldset: USB3_CORE_DEPCMD11
+  - name: DEPCMDPAR212
+    byte_offset: 51392
+    fieldset: USB3_CORE_DEPCMDPAR212
+  - name: DEPCMDPAR112
+    byte_offset: 51396
+    fieldset: USB3_CORE_DEPCMDPAR112
+  - name: DEPCMDPAR012
+    byte_offset: 51400
+    fieldset: USB3_CORE_DEPCMDPAR012
+  - name: DEPCMD12
+    byte_offset: 51404
+    fieldset: USB3_CORE_DEPCMD12
+  - name: DEPCMDPAR213
+    byte_offset: 51408
+    fieldset: USB3_CORE_DEPCMDPAR213
+  - name: DEPCMDPAR113
+    byte_offset: 51412
+    fieldset: USB3_CORE_DEPCMDPAR113
+  - name: DEPCMDPAR013
+    byte_offset: 51416
+    fieldset: USB3_CORE_DEPCMDPAR013
+  - name: DEPCMD13
+    byte_offset: 51420
+    fieldset: USB3_CORE_DEPCMD13
+  - name: DEPCMDPAR214
+    byte_offset: 51424
+    fieldset: USB3_CORE_DEPCMDPAR214
+  - name: DEPCMDPAR114
+    byte_offset: 51428
+    fieldset: USB3_CORE_DEPCMDPAR114
+  - name: DEPCMDPAR014
+    byte_offset: 51432
+    fieldset: USB3_CORE_DEPCMDPAR014
+  - name: DEPCMD14
+    byte_offset: 51436
+    fieldset: USB3_CORE_DEPCMD14
+  - name: DEPCMDPAR215
+    byte_offset: 51440
+    fieldset: USB3_CORE_DEPCMDPAR215
+  - name: DEPCMDPAR115
+    byte_offset: 51444
+    fieldset: USB3_CORE_DEPCMDPAR115
+  - name: DEPCMDPAR015
+    byte_offset: 51448
+    fieldset: USB3_CORE_DEPCMDPAR015
+  - name: DEPCMD15
+    byte_offset: 51452
+    fieldset: USB3_CORE_DEPCMD15
+  - name: DEV_IMOD
+    byte_offset: 51712
+  - name: BCFG
+    byte_offset: 52272
+  - name: BCEVT
+    byte_offset: 52280
+    fieldset: USB3_CORE_BCEVT
+  - name: BCEVTEN
+    byte_offset: 52284
+  - name: LU1LFPSRXTIM0
+    byte_offset: 53248
+  - name: LINK_SETTINGS0
+    byte_offset: 53280
+  - name: LLUCTL0
+    byte_offset: 53284
+    fieldset: USB3_CORE_LLUCTL0
+  - name: LPTMDPDELAY0
+    byte_offset: 53288
+  - name: BU3RHBDBG
+    byte_offset: 55296
+  - name: BRSERRCNT
+    byte_offset: 55376
+    fieldset: USB3_CORE_BRSERRCNT
+  - name: BRMERRCNT
+    byte_offset: 55380
+    fieldset: USB3_CORE_BRMERRCNT
+  - name: BRMECCERR
+    byte_offset: 55384
+    fieldset: USB3_CORE_BRMECCERR
+  - name: BRERRCTL
+    byte_offset: 55388
+    fieldset: USB3_CORE_BRERRCTL
+  - name: BRAMADDRERR
+    byte_offset: 55392
+    array:
+      len: 3
+      stride: 4
+    fieldset: USB3_CORE_BRAMADDRERR
+fieldset/USB3_CORE_CAPLENGTH:
+  description: ''
+  fields:
+  - name: CAPLENGTH
+    bit_offset: 0
+    bit_size: 8
+  - name: HCIVERSION
+    bit_offset: 16
+    bit_size: 16
+fieldset/USB3_CORE_HCSPARAMS1:
+  description: ''
+  fields:
+  - name: MAXSLOTS
+    bit_offset: 0
+    bit_size: 8
+    description: Number of Device Slots
+  - name: MAXINTRS
+    bit_offset: 8
+    bit_size: 11
+    description: Number of Device Slots
+  - name: MAXPORTS
+    bit_offset: 24
+    bit_size: 8
+    description: Number of Interrupters
+fieldset/USB3_CORE_HCSPARAMS2:
+  description: ''
+  fields:
+  - name: IST
+    bit_offset: 0
+    bit_size: 4
+  - name: ERSTMAX
+    bit_offset: 4
+    bit_size: 4
+  - name: SPR
+    bit_offset: 26
+    bit_size: 1
+  - name: MAXSCRATCHPADBUFS
+    bit_offset: 27
+    bit_size: 5
+fieldset/USB3_CORE_HCSPARAMS2_MAXSCRATCHPADBUFS:
+  description: ''
+  fields:
+  - name: HI
+    bit_offset: 21
+    bit_size: 5
+fieldset/USB3_CORE_HCSPARAMS3_U1_DEVICE_EXIT:
+  description: ''
+  fields:
+  - name: LAT
+    bit_offset: 0
+    bit_size: 8
+fieldset/USB3_CORE_HCSPARAMS3_U2_DEVICE_EXIT:
+  description: ''
+  fields:
+  - name: LAT
+    bit_offset: 16
+    bit_size: 16
+fieldset/USB3_CORE_HCCPARAMS1:
+  description: ''
+  fields:
+  - name: AC64
+    bit_offset: 0
+    bit_size: 1
+    description: 64-bit Addressing Capability
+  - name: BNC
+    bit_offset: 1
+    bit_size: 1
+    description: 64-bit Addressing Capability
+  - name: CSZ
+    bit_offset: 2
+    bit_size: 1
+    description: BW Negotiation Capability
+  - name: PPC
+    bit_offset: 3
+    bit_size: 1
+    description: Context Size
+  - name: PIND
+    bit_offset: 4
+    bit_size: 1
+    description: Port Power Control
+  - name: LHRC
+    bit_offset: 5
+    bit_size: 1
+    description: Port Indicators
+  - name: LTC
+    bit_offset: 6
+    bit_size: 1
+    description: Light HC Reset Capability
+  - name: NSS
+    bit_offset: 7
+    bit_size: 1
+    description: Latency Tolerance Messaging Capability
+  - name: PAE
+    bit_offset: 8
+    bit_size: 1
+    description: No Secondary SID Support
+  - name: SPC
+    bit_offset: 9
+    bit_size: 1
+    description: Parse All Event Data
+  - name: SEC
+    bit_offset: 10
+    bit_size: 1
+    description: Short Packet Capability
+  - name: CFC
+    bit_offset: 11
+    bit_size: 1
+    description: Stopped EDLTA Capability
+  - name: MAXPSASIZE
+    bit_offset: 12
+    bit_size: 4
+    description: Contiguous Frame ID Capability
+  - name: XECP
+    bit_offset: 16
+    bit_size: 16
+fieldset/USB3_CORE_DBOFF_DOORBELL_ARRAY:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 2
+    bit_size: 30
+fieldset/USB3_CORE_RTSOFF_RUNTIME_REG_SPACE:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 5
+    bit_size: 27
+fieldset/USB3_CORE_HCCPARAMS2:
+  description: ''
+  fields:
+  - name: U3C
+    bit_offset: 0
+    bit_size: 1
+    description: U3 Entry Capability
+  - name: CMC
+    bit_offset: 1
+    bit_size: 1
+    description: U3 Entry Capability
+  - name: FSC
+    bit_offset: 2
+    bit_size: 1
+    description: Force Save Context Capability
+  - name: CTC
+    bit_offset: 3
+    bit_size: 1
+    description: Force Save Context Capability
+  - name: LEC
+    bit_offset: 4
+    bit_size: 1
+    description: Compliance Transition Capability
+  - name: CIC
+    bit_offset: 5
+    bit_size: 1
+    description: Large ESIT Payload Capability
+fieldset/USB3_CORE_USBCMD_R:
+  description: ''
+  fields:
+  - name: S
+    bit_offset: 0
+    bit_size: 1
+    description: Run/Stop
+fieldset/USB3_CORE_USBCMD:
+  description: ''
+  fields:
+  - name: HCRST
+    bit_offset: 1
+    bit_size: 1
+    description: Run/Stop
+  - name: INTE
+    bit_offset: 2
+    bit_size: 1
+    description: Host Controller Reset
+  - name: HSEE
+    bit_offset: 3
+    bit_size: 1
+    description: Interrupter Enable
+  - name: LHCRST
+    bit_offset: 7
+    bit_size: 1
+    description: Host System Error Enable
+  - name: CSS
+    bit_offset: 8
+    bit_size: 1
+    description: Light Host Controller Reset
+  - name: CRS
+    bit_offset: 9
+    bit_size: 1
+    description: Controller Save State
+  - name: EWE
+    bit_offset: 10
+    bit_size: 1
+    description: Controller Restore State
+  - name: EU3S
+    bit_offset: 11
+    bit_size: 1
+    description: Enable Wrap Event
+  - name: CME
+    bit_offset: 13
+    bit_size: 1
+    description: Enable U3 MFINDEX Stop
+fieldset/USB3_CORE_USBSTS:
+  description: ''
+  fields:
+  - name: HCH
+    bit_offset: 0
+    bit_size: 1
+    description: HC Halted
+  - name: HSE
+    bit_offset: 2
+    bit_size: 1
+    description: HC Halted
+  - name: EINT
+    bit_offset: 3
+    bit_size: 1
+    description: Host System Error
+  - name: PCD
+    bit_offset: 4
+    bit_size: 1
+    description: Event Interrupt
+  - name: SSS
+    bit_offset: 8
+    bit_size: 1
+    description: Port Change Detect
+  - name: RSS
+    bit_offset: 9
+    bit_size: 1
+    description: Save State Status
+  - name: SRE
+    bit_offset: 10
+    bit_size: 1
+    description: Restore State Status
+  - name: CNR
+    bit_offset: 11
+    bit_size: 1
+    description: Save/Restore Error
+  - name: HCE
+    bit_offset: 12
+    bit_size: 1
+fieldset/USB3_CORE_PAGESIZE_PAGE:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 16
+    description: Page Size
+fieldset/USB3_CORE_DNCTRL_N0:
+  description: ''
+  fields:
+  - name: N15
+    bit_offset: 0
+    bit_size: 16
+    description: Notification Enable
+fieldset/USB3_CORE_CRCR_LO:
+  description: ''
+  fields:
+  - name: RCS
+    bit_offset: 0
+    bit_size: 1
+    description: Ring Cycle State
+  - name: CS
+    bit_offset: 1
+    bit_size: 1
+    description: Ring Cycle State
+  - name: CA
+    bit_offset: 2
+    bit_size: 1
+    description: Command Stop
+  - name: CRR
+    bit_offset: 3
+    bit_size: 1
+    description: Command Abort
+fieldset/USB3_CORE_CRCR_LO_CMD_RING:
+  description: ''
+  fields:
+  - name: PNTR
+    bit_offset: 6
+    bit_size: 26
+    description: Command Ring Running
+fieldset/USB3_CORE_CRCR_HI_CMD_RING:
+  description: ''
+  fields:
+  - name: PNTR
+    bit_offset: 16
+    bit_size: 16
+    description: Command Ring Pointer
+fieldset/USB3_CORE_DCBAAP_LO_DEVICE_CONTEXT:
+  description: ''
+  fields:
+  - name: BAAP
+    bit_offset: 6
+    bit_size: 26
+fieldset/USB3_CORE_DCBAAP_HI_DEVICE_CONTEXT:
+  description: ''
+  fields:
+  - name: BAAP
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_CONFIG:
+  description: ''
+  fields:
+  - name: MAXSLOTSEN
+    bit_offset: 0
+    bit_size: 8
+    description: Max Device Slots Enabled
+  - name: U3E
+    bit_offset: 8
+    bit_size: 1
+    description: Max Device Slots Enabled
+  - name: CIE
+    bit_offset: 9
+    bit_size: 1
+    description: U3 Entry Enable
+fieldset/USB3_CORE_PORTSC_20:
+  description: ''
+  fields:
+  - name: CCS
+    bit_offset: 0
+    bit_size: 1
+    description: Current Connect Status
+  - name: PED
+    bit_offset: 1
+    bit_size: 1
+    description: Current Connect Status
+  - name: OCA
+    bit_offset: 3
+    bit_size: 1
+    description: Port Enabled/Disabled
+  - name: PR
+    bit_offset: 4
+    bit_size: 1
+    description: Over Current Active
+  - name: PLS
+    bit_offset: 5
+    bit_size: 4
+    description: Port Reset
+  - name: PP
+    bit_offset: 9
+    bit_size: 1
+    description: Port Link State
+  - name: PORTSPEED
+    bit_offset: 10
+    bit_size: 4
+    description: Port Power
+  - name: PIC
+    bit_offset: 14
+    bit_size: 2
+    description: Port Speed
+  - name: LWS
+    bit_offset: 16
+    bit_size: 1
+    description: Port Indicator Control
+  - name: CSC
+    bit_offset: 17
+    bit_size: 1
+    description: Port Link State Write Strobe
+  - name: PEC
+    bit_offset: 18
+    bit_size: 1
+    description: Connect Status Change
+  - name: OCC
+    bit_offset: 20
+    bit_size: 1
+    description: Port Enabled/Disabled Change
+  - name: PRC
+    bit_offset: 21
+    bit_size: 1
+    description: Over Current Change
+  - name: PLC
+    bit_offset: 22
+    bit_size: 1
+    description: Port Reset Change
+  - name: CAS
+    bit_offset: 24
+    bit_size: 1
+    description: Port Link State Change
+  - name: WCE
+    bit_offset: 25
+    bit_size: 1
+    description: Cold Attach Status
+  - name: WDE
+    bit_offset: 26
+    bit_size: 1
+    description: Wake on Connect Enable
+  - name: WOE
+    bit_offset: 27
+    bit_size: 1
+    description: Wake on Disconnect Enable
+  - name: DR
+    bit_offset: 30
+    bit_size: 1
+    description: Wake on Overcurrent Enable
+fieldset/USB3_CORE_PORTPMSC_20:
+  description: ''
+  fields:
+  - name: L1S
+    bit_offset: 0
+    bit_size: 3
+    description: L1 Status
+  - name: RWE
+    bit_offset: 3
+    bit_size: 1
+    description: L1 Status
+  - name: BESL
+    bit_offset: 4
+    bit_size: 4
+    description: Remote Wake Enable
+  - name: L1DSLOT
+    bit_offset: 8
+    bit_size: 8
+    description: Best Effort Service Latency
+  - name: HLE
+    bit_offset: 16
+    bit_size: 1
+    description: L1 Device Slot
+  - name: PRTTSTCTRL
+    bit_offset: 28
+    bit_size: 4
+    description: Hardware LPM Enable
+fieldset/USB3_CORE_PORTHLPMC_20:
+  description: ''
+  fields:
+  - name: HIRDM
+    bit_offset: 0
+    bit_size: 2
+  - name: BESLD
+    bit_offset: 10
+    bit_size: 4
+    description: L1 Timeout
+fieldset/USB3_CORE_PORTHLPMC_20_L1:
+  description: ''
+  fields:
+  - name: TIMEOUT
+    bit_offset: 2
+    bit_size: 8
+    description: L1 Timeout
+fieldset/USB3_CORE_PORTSC_30:
+  description: ''
+  fields:
+  - name: CCS
+    bit_offset: 0
+    bit_size: 1
+    description: Current Connect Status
+  - name: PED
+    bit_offset: 1
+    bit_size: 1
+    description: Current Connect Status
+  - name: OCA
+    bit_offset: 3
+    bit_size: 1
+    description: Port Enabled/Disabled
+  - name: PR
+    bit_offset: 4
+    bit_size: 1
+    description: Over Current Active
+  - name: PLS
+    bit_offset: 5
+    bit_size: 4
+    description: Port Reset
+  - name: PP
+    bit_offset: 9
+    bit_size: 1
+    description: Port Link State
+  - name: PORTSPEED
+    bit_offset: 10
+    bit_size: 4
+    description: Port Power
+  - name: PIC
+    bit_offset: 14
+    bit_size: 2
+    description: Port Speed
+  - name: LWS
+    bit_offset: 16
+    bit_size: 1
+    description: Port Indicator Control
+  - name: CSC
+    bit_offset: 17
+    bit_size: 1
+    description: Port Link State Write Strobe
+  - name: PEC
+    bit_offset: 18
+    bit_size: 1
+    description: Connect Status Change
+  - name: WRC
+    bit_offset: 19
+    bit_size: 1
+    description: Port Enabled/Disabled Change
+  - name: OCC
+    bit_offset: 20
+    bit_size: 1
+    description: Warm Port Reset Change
+  - name: PRC
+    bit_offset: 21
+    bit_size: 1
+    description: Over Current Change
+  - name: PLC
+    bit_offset: 22
+    bit_size: 1
+    description: Port Reset Change
+  - name: CEC
+    bit_offset: 23
+    bit_size: 1
+    description: Port Link State Change
+  - name: CAS
+    bit_offset: 24
+    bit_size: 1
+    description: Port Config Error Change
+  - name: WCE
+    bit_offset: 25
+    bit_size: 1
+    description: Cold Attach Status
+  - name: WDE
+    bit_offset: 26
+    bit_size: 1
+    description: Wake on Connect Enable
+  - name: WOE
+    bit_offset: 27
+    bit_size: 1
+    description: Wake on Disconnect Enable
+  - name: DR
+    bit_offset: 30
+    bit_size: 1
+    description: Wake on Overcurrent Enable
+  - name: WPR
+    bit_offset: 31
+    bit_size: 1
+    description: Device Removable
+fieldset/USB3_CORE_PORTPMSC_30_U1:
+  description: ''
+  fields:
+  - name: TIMEOUT
+    bit_offset: 0
+    bit_size: 8
+    description: U1 Timeout
+fieldset/USB3_CORE_PORTPMSC_30_U2:
+  description: ''
+  fields:
+  - name: TIMEOUT
+    bit_offset: 8
+    bit_size: 8
+    description: U1 Timeout
+fieldset/USB3_CORE_PORTPMSC_30:
+  description: ''
+  fields:
+  - name: FLA
+    bit_offset: 16
+    bit_size: 1
+    description: U2 Timeout
+fieldset/USB3_CORE_PORTLI_30_LINK_ERROR:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 16
+    description: Link Error Count
+fieldset/USB3_CORE_MFINDEX_MICROFRAME:
+  description: ''
+  fields:
+  - name: INDEX
+    bit_offset: 0
+    bit_size: 14
+    description: Microframe Index
+fieldset/USB3_CORE_IMAN:
+  description: ''
+  fields:
+  - name: IP
+    bit_offset: 0
+    bit_size: 1
+    description: Interrupt Pending
+  - name: IE
+    bit_offset: 1
+    bit_size: 1
+    description: Interrupt Pending
+fieldset/USB3_CORE_IMOD:
+  description: ''
+  fields:
+  - name: IMODI
+    bit_offset: 0
+    bit_size: 16
+    description: Interrupt Moderation Interval
+  - name: IMODC
+    bit_offset: 16
+    bit_size: 16
+    description: Interrupt Moderation Interval
+fieldset/USB3_CORE_ERSTSZ_ERS_TABLE:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 16
+fieldset/USB3_CORE_ERSTBA_LO_ERS_TABLE:
+  description: ''
+  fields:
+  - name: BAR
+    bit_offset: 6
+    bit_size: 26
+fieldset/USB3_CORE_ERSTBA_HI_ERS_TABLE:
+  description: ''
+  fields:
+  - name: BAR
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_ERDP_LO:
+  description: ''
+  fields:
+  - name: DESI
+    bit_offset: 0
+    bit_size: 3
+    description: Dequeue ERST Segment Index
+  - name: EHB
+    bit_offset: 3
+    bit_size: 1
+    description: Dequeue ERST Segment Index
+fieldset/USB3_CORE_ERDP_LO_ERD:
+  description: ''
+  fields:
+  - name: PNTR
+    bit_offset: 4
+    bit_size: 28
+    description: Event Handler Busy
+fieldset/USB3_CORE_ERDP_HI_ERD:
+  description: ''
+  fields:
+  - name: PNTR
+    bit_offset: 0
+    bit_size: 32
+    description: Event Ring Dequeue Pointer
+fieldset/USB3_CORE_DB_DB:
+  description: ''
+  fields:
+  - name: TARGET
+    bit_offset: 0
+    bit_size: 8
+    description: Doorbell Target
+fieldset/USB3_CORE_DB_DB_STREAM:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 16
+    description: Doorbell Target
+fieldset/USB3_CORE_USBLEGSUP_CAPABILITY:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 8
+    description: Capability ID
+fieldset/USB3_CORE_USBLEGSUP_NEXT_CAPABILITY:
+  description: ''
+  fields:
+  - name: POINTER
+    bit_offset: 8
+    bit_size: 8
+fieldset/USB3_CORE_USBLEGSUP_HC_BIOS:
+  description: ''
+  fields:
+  - name: OWNED
+    bit_offset: 16
+    bit_size: 1
+fieldset/USB3_CORE_USBLEGSUP_HC_OS:
+  description: ''
+  fields:
+  - name: OWNED
+    bit_offset: 24
+    bit_size: 1
+    description: HC OS Owned Semaphore
+fieldset/USB3_CORE_USBLEGCTLSTS_USB_SMI:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+    description: USB SMI Enable
+fieldset/USB3_CORE_USBLEGCTLSTS_SMI_ON_HOST:
+  description: ''
+  fields:
+  - name: E
+    bit_offset: 4
+    bit_size: 1
+fieldset/USB3_CORE_USBLEGCTLSTS_SMI_ON_OS:
+  description: ''
+  fields:
+  - name: E
+    bit_offset: 13
+    bit_size: 1
+fieldset/USB3_CORE_USBLEGCTLSTS_SMI_ON_PCI:
+  description: ''
+  fields:
+  - name: E
+    bit_offset: 14
+    bit_size: 1
+fieldset/USB3_CORE_USBLEGCTLSTS_SMI_ON_BAR:
+  description: ''
+  fields:
+  - name: E
+    bit_offset: 15
+    bit_size: 1
+    description: SMI on BAR Enable
+fieldset/USB3_CORE_USBLEGCTLSTS_SMI_ON:
+  description: ''
+  fields:
+  - name: EVENT
+    bit_offset: 16
+    bit_size: 1
+    description: SMI on Event Enable
+  - name: HOST
+    bit_offset: 20
+    bit_size: 1
+  - name: OS
+    bit_offset: 29
+    bit_size: 1
+    description: SMI on Ownership Change
+  - name: PCI
+    bit_offset: 30
+    bit_size: 1
+    description: SMI on PCI Command
+  - name: BAR
+    bit_offset: 31
+    bit_size: 1
+    description: SMI on BAR
+fieldset/USB3_CORE_SUPTPRT2_DW0_CAPABILITY:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 8
+    description: Capability ID
+fieldset/USB3_CORE_SUPTPRT2_DW0_NEXT_CAPABILITY:
+  description: ''
+  fields:
+  - name: POINTER
+    bit_offset: 8
+    bit_size: 8
+fieldset/USB3_CORE_SUPTPRT2_DW0_MINOR:
+  description: ''
+  fields:
+  - name: REVISION
+    bit_offset: 16
+    bit_size: 8
+    description: Minor Revision
+fieldset/USB3_CORE_SUPTPRT2_DW0_MAJOR:
+  description: ''
+  fields:
+  - name: REVISION
+    bit_offset: 24
+    bit_size: 8
+    description: Major Revision
+fieldset/USB3_CORE_SUPTPRT2_DW1_NAME:
+  description: ''
+  fields:
+  - name: STRING
+    bit_offset: 0
+    bit_size: 32
+    description: Name String
+fieldset/USB3_CORE_SUPTPRT2_DW2_COMPATIBLE_PORT:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 8
+  - name: COUNT
+    bit_offset: 8
+    bit_size: 8
+fieldset/USB3_CORE_SUPTPRT2_DW2:
+  description: ''
+  fields:
+  - name: HSO
+    bit_offset: 17
+    bit_size: 1
+    description: High-Speed Only
+  - name: IHI
+    bit_offset: 18
+    bit_size: 1
+    description: High-Speed Only
+  - name: HLC
+    bit_offset: 19
+    bit_size: 1
+    description: Integrated Hub Implemented
+  - name: BLC
+    bit_offset: 20
+    bit_size: 1
+    description: Compatible Port Offset
+  - name: MHD
+    bit_offset: 25
+    bit_size: 3
+    description: Hub Depth
+  - name: PSIC
+    bit_offset: 28
+    bit_size: 4
+    description: Hub Depth
+fieldset/USB3_CORE_SUPTPRT2_DW3_PROTCL_SLT:
+  description: ''
+  fields:
+  - name: TY
+    bit_offset: 0
+    bit_size: 5
+    description: Protocol Slot Type
+fieldset/USB3_CORE_SUPTPRT3_DW0_CAPABILITY:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 8
+    description: Capability ID
+fieldset/USB3_CORE_SUPTPRT3_DW0_NEXT_CAPABILITY:
+  description: ''
+  fields:
+  - name: POINTER
+    bit_offset: 8
+    bit_size: 8
+fieldset/USB3_CORE_SUPTPRT3_DW0_MINOR:
+  description: ''
+  fields:
+  - name: REVISION
+    bit_offset: 16
+    bit_size: 8
+    description: Minor Revision
+fieldset/USB3_CORE_SUPTPRT3_DW0_MAJOR:
+  description: ''
+  fields:
+  - name: REVISION
+    bit_offset: 24
+    bit_size: 8
+    description: Major Revision
+fieldset/USB3_CORE_SUPTPRT3_DW1_NAME:
+  description: ''
+  fields:
+  - name: STRING
+    bit_offset: 0
+    bit_size: 32
+    description: Name String
+fieldset/USB3_CORE_SUPTPRT3_DW2_COMPATIBLE_PORT:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 8
+  - name: COUNT
+    bit_offset: 8
+    bit_size: 8
+fieldset/USB3_CORE_SUPTPRT3_DW2:
+  description: ''
+  fields:
+  - name: MHD
+    bit_offset: 25
+    bit_size: 3
+    description: Hub Depth
+  - name: PSIC
+    bit_offset: 28
+    bit_size: 4
+    description: Hub Depth
+fieldset/USB3_CORE_SUPTPRT3_DW3_PROTCL_SLT:
+  description: ''
+  fields:
+  - name: TY
+    bit_offset: 0
+    bit_size: 5
+    description: Protocol Slot Type
+fieldset/USB3_CORE_GSBUSCFG0:
+  description: ''
+  fields:
+  - name: INCRBRSTENA
+    bit_offset: 0
+    bit_size: 1
+  - name: INCR4BRSTENA
+    bit_offset: 1
+    bit_size: 1
+  - name: INCR8BRSTENA
+    bit_offset: 2
+    bit_size: 1
+    description: INCR8 Burst Type Enable
+  - name: INCR16BRSTENA
+    bit_offset: 3
+    bit_size: 1
+  - name: INCR32BRSTENA
+    bit_offset: 4
+    bit_size: 1
+  - name: INCR64BRSTENA
+    bit_offset: 5
+    bit_size: 1
+  - name: INCR128BRSTENA
+    bit_offset: 6
+    bit_size: 1
+  - name: INCR256BRSTENA
+    bit_offset: 7
+    bit_size: 1
+  - name: DESBIGEND
+    bit_offset: 10
+    bit_size: 1
+  - name: DATBIGEND
+    bit_offset: 11
+    bit_size: 1
+    description: Data Access Is Big Endian
+  - name: DESWRREQINFO
+    bit_offset: 16
+    bit_size: 4
+  - name: DATWRREQINFO
+    bit_offset: 20
+    bit_size: 4
+  - name: DESRDREQINFO
+    bit_offset: 24
+    bit_size: 4
+  - name: DATRDREQINFO
+    bit_offset: 28
+    bit_size: 4
+fieldset/USB3_CORE_GSBUSCFG1:
+  description: ''
+  fields:
+  - name: PIPETRANSLIMIT
+    bit_offset: 8
+    bit_size: 4
+  - name: EN1KPAGE
+    bit_offset: 12
+    bit_size: 1
+    description: 1k Page Boundary Enable
+fieldset/USB3_CORE_GTXTHRCFG:
+  description: ''
+  fields:
+  - name: USBMAXTXBURSTSIZE
+    bit_offset: 16
+    bit_size: 8
+  - name: USBTXPKTCNT
+    bit_offset: 24
+    bit_size: 4
+  - name: USBTXPKTCNTSEL
+    bit_offset: 29
+    bit_size: 1
+fieldset/USB3_CORE_GRXTHRCFG:
+  description: ''
+  fields:
+  - name: RESVISOCOUTSPC
+    bit_offset: 0
+    bit_size: 13
+  - name: USBMAXRXBURSTSIZE
+    bit_offset: 19
+    bit_size: 5
+  - name: USBRXPKTCNT
+    bit_offset: 24
+    bit_size: 4
+  - name: USBRXPKTCNTSEL
+    bit_offset: 29
+    bit_size: 1
+fieldset/USB3_CORE_GCTL:
+  description: ''
+  fields:
+  - name: DSBLCLKGTNG
+    bit_offset: 0
+    bit_size: 1
+    description: Disable Clock Gating
+  - name: GblHibernationEn
+    bit_offset: 1
+    bit_size: 1
+    description: Disable Clock Gating
+  - name: DISSCRAMBLE
+    bit_offset: 3
+    bit_size: 1
+    description: Disable Scrambling
+  - name: SCALEDOWN
+    bit_offset: 4
+    bit_size: 2
+    description: Disable Scrambling
+  - name: RAMCLKSEL
+    bit_offset: 6
+    bit_size: 2
+  - name: DEBUGATTACH
+    bit_offset: 8
+    bit_size: 1
+    description: Debug Attach
+  - name: U1U2TimerScale
+    bit_offset: 9
+    bit_size: 1
+    description: Debug Attach
+  - name: SOFITPSYNC
+    bit_offset: 10
+    bit_size: 1
+  - name: CORESOFTRESET
+    bit_offset: 11
+    bit_size: 1
+  - name: PRTCAPDIR
+    bit_offset: 12
+    bit_size: 2
+  - name: FRMSCLDWN
+    bit_offset: 14
+    bit_size: 2
+  - name: U2RSTECN
+    bit_offset: 16
+    bit_size: 1
+  - name: BYPSSETADDR
+    bit_offset: 17
+    bit_size: 1
+  - name: MASTERFILTBYPASS
+    bit_offset: 18
+    bit_size: 1
+  - name: PWRDNSCALE
+    bit_offset: 19
+    bit_size: 13
+    description: Power Down Scale
+fieldset/USB3_CORE_GCTL_U2EXIT:
+  description: ''
+  fields:
+  - name: LFPS
+    bit_offset: 2
+    bit_size: 1
+fieldset/USB3_CORE_GSTS:
+  description: ''
+  fields:
+  - name: CURMOD
+    bit_offset: 0
+    bit_size: 2
+  - name: BUSERRADDRVLD
+    bit_offset: 4
+    bit_size: 1
+  - name: CSRTimeout
+    bit_offset: 5
+    bit_size: 1
+    description: CSR Timeout
+  - name: CBELT
+    bit_offset: 20
+    bit_size: 12
+    description: SSIC Interrupt Pending
+fieldset/USB3_CORE_GSTS_Device:
+  description: ''
+  fields:
+  - name: IP
+    bit_offset: 6
+    bit_size: 1
+    description: CSR Timeout
+fieldset/USB3_CORE_GSTS_Host:
+  description: ''
+  fields:
+  - name: IP
+    bit_offset: 7
+    bit_size: 1
+    description: Device Interrupt Pending
+fieldset/USB3_CORE_GSTS_BC:
+  description: ''
+  fields:
+  - name: IP
+    bit_offset: 9
+    bit_size: 1
+    description: Host Interrupt Pending
+fieldset/USB3_CORE_GSTS_SSIC:
+  description: ''
+  fields:
+  - name: IP
+    bit_offset: 11
+    bit_size: 1
+    description: Battery Charger Interrupt Pending
+fieldset/USB3_CORE_GUCTL1_LOA_FILTER:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_OVRLD_L1_SUSP:
+  description: ''
+  fields:
+  - name: COM
+    bit_offset: 1
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_HC_PARCHK:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 2
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_HC_ERRATA:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 3
+    bit_size: 1
+    description: Host ELD Enable
+fieldset/USB3_CORE_GUCTL1_L1_SUSP_THRLD_FOR:
+  description: ''
+  fields:
+  - name: HOST
+    bit_offset: 4
+    bit_size: 4
+fieldset/USB3_CORE_GUCTL1_L1_SUSP_THRLD_EN_FOR:
+  description: ''
+  fields:
+  - name: HOST
+    bit_offset: 8
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_DEV_HS_NYET_BULK:
+  description: ''
+  fields:
+  - name: SPR
+    bit_offset: 9
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_RESUME_OPMODE_HS:
+  description: ''
+  fields:
+  - name: HOST
+    bit_offset: 10
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_DISABLE_FIX_FOR_HANDLE_DATA_TOGGLE:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 14
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_PARKMODE_DISABLE:
+  description: ''
+  fields:
+  - name: FSLS
+    bit_offset: 15
+    bit_size: 1
+  - name: HS
+    bit_offset: 16
+    bit_size: 1
+  - name: SS
+    bit_offset: 17
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_NAK_PER_ENH:
+  description: ''
+  fields:
+  - name: HS
+    bit_offset: 18
+    bit_size: 1
+  - name: FS
+    bit_offset: 19
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_DEV_LSP_TAIL_LOCK:
+  description: ''
+  fields:
+  - name: DIS
+    bit_offset: 20
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_IP_GAP_ADD:
+  description: ''
+  fields:
+  - name: 'ON'
+    bit_offset: 21
+    bit_size: 3
+fieldset/USB3_CORE_GUCTL1_DEV_L1_EXIT_BY:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 24
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_P3_IN:
+  description: ''
+  fields:
+  - name: U2
+    bit_offset: 25
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_DEV_FORCE_20_CLK_FOR_30:
+  description: ''
+  fields:
+  - name: CLK
+    bit_offset: 26
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_DEV_TRB_OUT_SPR:
+  description: ''
+  fields:
+  - name: IND
+    bit_offset: 27
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_TX_IPGAP_LINECHECK:
+  description: ''
+  fields:
+  - name: DIS
+    bit_offset: 28
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_FILTER_SE0_FSLS:
+  description: ''
+  fields:
+  - name: EOP
+    bit_offset: 29
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_DS_RXDET_MAX_TOUT:
+  description: ''
+  fields:
+  - name: CTRL
+    bit_offset: 30
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL1_DEV_DECOUPLE_L1L2:
+  description: ''
+  fields:
+  - name: EVT
+    bit_offset: 31
+    bit_size: 1
+fieldset/USB3_CORE_GUID:
+  description: ''
+  fields:
+  - name: USERID
+    bit_offset: 0
+    bit_size: 32
+    description: User ID
+fieldset/USB3_CORE_GUCTL:
+  description: ''
+  fields:
+  - name: DTFT
+    bit_offset: 0
+    bit_size: 9
+  - name: DTCT
+    bit_offset: 9
+    bit_size: 2
+  - name: InsrtExtrFSBODI
+    bit_offset: 11
+    bit_size: 1
+  - name: ExtCapSupptEN
+    bit_offset: 12
+    bit_size: 1
+  - name: EnOverlapChk
+    bit_offset: 13
+    bit_size: 1
+  - name: USBHstInAutoRetryEn
+    bit_offset: 14
+    bit_size: 1
+  - name: ResBwHSEPS
+    bit_offset: 16
+    bit_size: 1
+  - name: SprsCtrlTransEn
+    bit_offset: 17
+    bit_size: 1
+  - name: NoExtrDl
+    bit_offset: 21
+    bit_size: 1
+  - name: REFCLKPER
+    bit_offset: 22
+    bit_size: 10
+fieldset/USB3_CORE_GBUSERRADDRLO:
+  description: ''
+  fields:
+  - name: BUSERRADDR
+    bit_offset: 0
+    bit_size: 32
+    description: Bus Address - Low
+fieldset/USB3_CORE_GBUSERRADDRHI:
+  description: ''
+  fields:
+  - name: BUSERRADDR
+    bit_offset: 0
+    bit_size: 32
+    description: Bus Address - High
+fieldset/USB3_CORE_GPRTBIMAPLO:
+  description: ''
+  fields:
+  - name: BINUM1
+    bit_offset: 0
+    bit_size: 4
+fieldset/USB3_CORE_GHWPARAMS6:
+  description: ''
+  fields:
+  - name: BCSupport
+    bit_offset: 14
+    bit_size: 1
+    description: DWC_USB3_EN_BC
+  - name: BUSFLTRSSUPPORT
+    bit_offset: 15
+    bit_size: 1
+    description: DWC_USB3_EN_BC
+fieldset/USB3_CORE_GPRTBIMAP_HSLO:
+  description: ''
+  fields:
+  - name: BINUM1
+    bit_offset: 0
+    bit_size: 4
+fieldset/USB3_CORE_GPRTBIMAP_FSLO:
+  description: ''
+  fields:
+  - name: BINUM1
+    bit_offset: 0
+    bit_size: 4
+fieldset/USB3_CORE_GUCTL2:
+  description: ''
+  fields:
+  - name: TXPINGDURATION
+    bit_offset: 0
+    bit_size: 5
+  - name: RXPINGDURATION
+    bit_offset: 5
+    bit_size: 6
+  - name: DISABLECFC
+    bit_offset: 11
+    bit_size: 1
+  - name: ENABLEEPCACHEEVICT
+    bit_offset: 12
+    bit_size: 1
+  - name: NOLOWPWRDUR
+    bit_offset: 15
+    bit_size: 4
+    description: No Low Power Duration
+fieldset/USB3_CORE_GUCTL2_RST:
+  description: ''
+  fields:
+  - name: ACTBITLATER
+    bit_offset: 14
+    bit_size: 1
+fieldset/USB3_CORE_GUCTL2_EN_HP_PM:
+  description: ''
+  fields:
+  - name: TIMER
+    bit_offset: 19
+    bit_size: 7
+    description: No Low Power Duration
+fieldset/USB3_CORE_GUSB2PHYCFG:
+  description: ''
+  fields:
+  - name: TOutCal
+    bit_offset: 0
+    bit_size: 3
+    description: HS/FS Timeout Calibration
+  - name: PHYIF
+    bit_offset: 3
+    bit_size: 1
+    description: PHY Interface
+  - name: FSINTF
+    bit_offset: 5
+    bit_size: 1
+  - name: SUSPENDUSB20
+    bit_offset: 6
+    bit_size: 1
+  - name: PHYSEL
+    bit_offset: 7
+    bit_size: 1
+  - name: ENBLSLPM
+    bit_offset: 8
+    bit_size: 1
+  - name: XCVRDLY
+    bit_offset: 9
+    bit_size: 1
+    description: Transceiver Delay
+  - name: USBTRDTIM
+    bit_offset: 10
+    bit_size: 4
+    description: Transceiver Delay
+  - name: ULPIAUTORES
+    bit_offset: 15
+    bit_size: 1
+    description: ULPI Auto Resume
+  - name: ULPIEXTVBUSDRV
+    bit_offset: 17
+    bit_size: 1
+  - name: ULPIEXTVBUSINDIACTOR
+    bit_offset: 18
+    bit_size: 1
+  - name: LSIPD
+    bit_offset: 19
+    bit_size: 3
+    description: LS Inter-Packet Time
+  - name: LSTRD
+    bit_offset: 22
+    bit_size: 3
+    description: LS Inter-Packet Time
+  - name: PHYSOFTRST
+    bit_offset: 31
+    bit_size: 1
+    description: UTMI PHY Soft Reset
+fieldset/USB3_CORE_GUSB2PHYCFG_ULPI_UTMI:
+  description: ''
+  fields:
+  - name: Sel
+    bit_offset: 4
+    bit_size: 1
+    description: PHY Interface
+fieldset/USB3_CORE_GUSB2PHYCFG_OVRD_FSLS_DISC:
+  description: ''
+  fields:
+  - name: TIME
+    bit_offset: 25
+    bit_size: 1
+    description: LS Turnaround Time
+fieldset/USB3_CORE_GUSB2PHYCFG_INV_SEL:
+  description: ''
+  fields:
+  - name: HSIC
+    bit_offset: 26
+    bit_size: 1
+fieldset/USB3_CORE_GUSB2PHYCFG_HSIC_CON_WIDTH:
+  description: ''
+  fields:
+  - name: ADJ
+    bit_offset: 27
+    bit_size: 2
+fieldset/USB3_CORE_GUSB2PHYCFG_ULPI_LPM_WITH_OPMODE:
+  description: ''
+  fields:
+  - name: CHK
+    bit_offset: 29
+    bit_size: 1
+fieldset/USB3_CORE_GUSB2PHYCFG_U2_FREECLK:
+  description: ''
+  fields:
+  - name: EXISTS
+    bit_offset: 30
+    bit_size: 1
+fieldset/USB3_CORE_GUSB3PIPECTL_ELASTIC_BUFFER:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 0
+    bit_size: 1
+fieldset/USB3_CORE_GUSB3PIPECTL_SS_TX_DE:
+  description: ''
+  fields:
+  - name: EMPHASIS
+    bit_offset: 1
+    bit_size: 2
+fieldset/USB3_CORE_GUSB3PIPECTL_TX:
+  description: ''
+  fields:
+  - name: MARGIN
+    bit_offset: 3
+    bit_size: 3
+    description: TX Margin [2:0]
+  - name: SWING
+    bit_offset: 6
+    bit_size: 1
+    description: TX Margin [2:0]
+fieldset/USB3_CORE_GUSB3PIPECTL:
+  description: ''
+  fields:
+  - name: SSICEn
+    bit_offset: 7
+    bit_size: 1
+    description: TX Swing
+  - name: LFPSFILTER
+    bit_offset: 9
+    bit_size: 1
+    description: LFPS Filter
+  - name: P3ExSigP2
+    bit_offset: 10
+    bit_size: 1
+    description: LFPS Filter
+  - name: P3P2TranOK
+    bit_offset: 11
+    bit_size: 1
+    description: P3 P2 Transitions OK
+  - name: LFPSP0Algn
+    bit_offset: 12
+    bit_size: 1
+    description: LFPS P0 Align
+  - name: SkipRxDet
+    bit_offset: 13
+    bit_size: 1
+    description: LFPS P0 Align
+  - name: AbortRxDetInU2
+    bit_offset: 14
+    bit_size: 1
+    description: Skip RX Detect
+  - name: DATWIDTH
+    bit_offset: 15
+    bit_size: 2
+  - name: SUSPENDENABLE
+    bit_offset: 17
+    bit_size: 1
+    description: Suspend USB3 SS PHY
+  - name: DELAYP1TRANS
+    bit_offset: 18
+    bit_size: 1
+  - name: DelayP1P2P3
+    bit_offset: 19
+    bit_size: 3
+    description: Delay P1P2P3
+  - name: DisRxDetU3RxDet
+    bit_offset: 22
+    bit_size: 1
+  - name: StartRxDetU3RxDet
+    bit_offset: 23
+    bit_size: 1
+  - name: DisRxDetP3
+    bit_offset: 28
+    bit_size: 1
+  - name: U2P3ok
+    bit_offset: 29
+    bit_size: 1
+  - name: HstPrtCmpl
+    bit_offset: 30
+    bit_size: 1
+  - name: PHYSOFTRST
+    bit_offset: 31
+    bit_size: 1
+    description: USB3_PHY Soft Reset
+fieldset/USB3_CORE_GUSB3PIPECTL_RX_DETECT_to_Polling_LFPS:
+  description: ''
+  fields:
+  - name: Control
+    bit_offset: 8
+    bit_size: 1
+    description: USB3 SSIC Enable
+fieldset/USB3_CORE_GUSB3PIPECTL_request:
+  description: ''
+  fields:
+  - name: p1p2p3
+    bit_offset: 24
+    bit_size: 1
+fieldset/USB3_CORE_GUSB3PIPECTL_u1u2exitfail_to:
+  description: ''
+  fields:
+  - name: recov
+    bit_offset: 25
+    bit_size: 1
+fieldset/USB3_CORE_GUSB3PIPECTL_ping_enhancement:
+  description: ''
+  fields:
+  - name: en
+    bit_offset: 26
+    bit_size: 1
+fieldset/USB3_CORE_GUSB3PIPECTL_Ux_exit_in:
+  description: ''
+  fields:
+  - name: Px
+    bit_offset: 27
+    bit_size: 1
+fieldset/USB3_CORE_GTXFIFOSIZ_TXFDEP:
+  description: ''
+  fields:
+  - name: N
+    bit_offset: 0
+    bit_size: 16
+    description: TXFIFO Depth
+fieldset/USB3_CORE_GTXFIFOSIZ_TXFSTADDR:
+  description: ''
+  fields:
+  - name: N
+    bit_offset: 16
+    bit_size: 16
+    description: TXFIFO Depth
+fieldset/USB3_CORE_GRXFIFOSIZ_RXFDEP:
+  description: ''
+  fields:
+  - name: N
+    bit_offset: 0
+    bit_size: 16
+    description: RxFIFO Depth
+fieldset/USB3_CORE_GRXFIFOSIZ_RXFSTADDR:
+  description: ''
+  fields:
+  - name: N
+    bit_offset: 16
+    bit_size: 16
+    description: RxFIFO Depth
+fieldset/USB3_CORE_GEVNTADRLO:
+  description: ''
+  fields:
+  - name: EVNTADRLO
+    bit_offset: 0
+    bit_size: 32
+    description: Event Buffer Address
+fieldset/USB3_CORE_GEVNTADRHI:
+  description: ''
+  fields:
+  - name: EVNTADRHI
+    bit_offset: 0
+    bit_size: 32
+    description: Event Buffer Address
+fieldset/USB3_CORE_GEVNTSIZ:
+  description: ''
+  fields:
+  - name: EVENTSIZ
+    bit_offset: 0
+    bit_size: 16
+    description: Event Buffer Size in Bytes
+  - name: EVNTINTRPTMASK
+    bit_offset: 31
+    bit_size: 1
+    description: Event Buffer Size in Bytes
+fieldset/USB3_CORE_GEVNTCOUNT:
+  description: ''
+  fields:
+  - name: EVNTCOUNT
+    bit_offset: 0
+    bit_size: 16
+    description: Event Count
+fieldset/USB3_CORE_GEVNTCOUNT_EVNT_HANDLER:
+  description: ''
+  fields:
+  - name: BUSY
+    bit_offset: 31
+    bit_size: 1
+    description: Event Count
+fieldset/USB3_CORE_GUCTL3_SCH_PING:
+  description: ''
+  fields:
+  - name: EARLY
+    bit_offset: 16
+    bit_size: 1
+fieldset/USB3_CORE_GTXFIFOPRIDEV:
+  description: ''
+  fields:
+  - name: gtxfifopridev
+    bit_offset: 0
+    bit_size: 8
+fieldset/USB3_CORE_GTXFIFOPRIHST:
+  description: ''
+  fields:
+  - name: gtxfifoprihst
+    bit_offset: 0
+    bit_size: 4
+fieldset/USB3_CORE_GRXFIFOPRIHST:
+  description: ''
+  fields:
+  - name: grxfifoprihst
+    bit_offset: 0
+    bit_size: 3
+fieldset/USB3_CORE_GFIFOPRIDBC:
+  description: ''
+  fields:
+  - name: gfifopridbc
+    bit_offset: 0
+    bit_size: 2
+    description: Host DbC DMA Priority
+fieldset/USB3_CORE_GDMAHLRATIO:
+  description: ''
+  fields:
+  - name: hsttxfifo
+    bit_offset: 0
+    bit_size: 5
+  - name: hstrxfifo
+    bit_offset: 8
+    bit_size: 5
+fieldset/USB3_CORE_GFLADJ_GFLADJ:
+  description: ''
+  fields:
+  - name: 30MHZ
+    bit_offset: 0
+    bit_size: 6
+fieldset/USB3_CORE_GFLADJ_GFLADJ_30MHZ_SDBND:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 7
+    bit_size: 1
+fieldset/USB3_CORE_GFLADJ_GFLADJ_REFCLK:
+  description: ''
+  fields:
+  - name: FLADJ
+    bit_offset: 8
+    bit_size: 14
+fieldset/USB3_CORE_GFLADJ_GFLADJ_REFCLK_LPM:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 23
+    bit_size: 1
+fieldset/USB3_CORE_GFLADJ_GFLADJ_REFCLK_240MHZ:
+  description: ''
+  fields:
+  - name: DECR
+    bit_offset: 24
+    bit_size: 7
+fieldset/USB3_CORE_GFLADJ_GFLADJ_REFCLK_240MHZDECR:
+  description: ''
+  fields:
+  - name: PLS1
+    bit_offset: 31
+    bit_size: 1
+fieldset/USB3_CORE_GUSB2RHBCTL_OVRD:
+  description: ''
+  fields:
+  - name: L1TIMEOUT
+    bit_offset: 0
+    bit_size: 4
+fieldset/USB3_CORE_DCFG:
+  description: ''
+  fields:
+  - name: DEVSPD
+    bit_offset: 0
+    bit_size: 3
+  - name: DEVADDR
+    bit_offset: 3
+    bit_size: 7
+    description: Device Address
+  - name: INTRNUM
+    bit_offset: 12
+    bit_size: 5
+    description: Device Address
+  - name: NUMP
+    bit_offset: 17
+    bit_size: 5
+    description: Interrupt Number
+  - name: LPMCAP
+    bit_offset: 22
+    bit_size: 1
+    description: Number of Receive Buffers
+  - name: IgnStrmPP
+    bit_offset: 23
+    bit_size: 1
+fieldset/USB3_CORE_DCTL:
+  description: ''
+  fields:
+  - name: TSTCTL
+    bit_offset: 1
+    bit_size: 4
+  - name: ULSTCHNGREQ
+    bit_offset: 5
+    bit_size: 4
+  - name: ACCEPTU1ENA
+    bit_offset: 9
+    bit_size: 1
+  - name: INITU1ENA
+    bit_offset: 10
+    bit_size: 1
+  - name: ACCEPTU2ENA
+    bit_offset: 11
+    bit_size: 1
+  - name: INITU2ENA
+    bit_offset: 12
+    bit_size: 1
+  - name: CSS
+    bit_offset: 16
+    bit_size: 1
+    description: Controller Save State
+  - name: CRS
+    bit_offset: 17
+    bit_size: 1
+    description: Controller Save State
+  - name: L1HibernationEn
+    bit_offset: 18
+    bit_size: 1
+    description: Controller Restore State
+  - name: KeepConnect
+    bit_offset: 19
+    bit_size: 1
+    description: Keep Connect
+  - name: HIRDTHRES
+    bit_offset: 24
+    bit_size: 5
+    description: HIRD Threshold
+  - name: CSFTRST
+    bit_offset: 30
+    bit_size: 1
+    description: HIRD Threshold
+fieldset/USB3_CORE_DCTL_LPM_NYET:
+  description: ''
+  fields:
+  - name: thres
+    bit_offset: 20
+    bit_size: 4
+    description: Keep Connect
+fieldset/USB3_CORE_DCTL_RUN:
+  description: ''
+  fields:
+  - name: STOP
+    bit_offset: 31
+    bit_size: 1
+    description: Core Soft Reset
+fieldset/USB3_CORE_DEVTEN:
+  description: ''
+  fields:
+  - name: DISSCONNEVTEN
+    bit_offset: 0
+    bit_size: 1
+  - name: USBRSTEVTEN
+    bit_offset: 1
+    bit_size: 1
+  - name: CONNECTDONEEVTEN
+    bit_offset: 2
+    bit_size: 1
+  - name: ULSTCNGEN
+    bit_offset: 3
+    bit_size: 1
+  - name: WKUPEVTEN
+    bit_offset: 4
+    bit_size: 1
+  - name: HibernationReqEvtEn
+    bit_offset: 5
+    bit_size: 1
+  - name: U3L2L1SuspEn
+    bit_offset: 6
+    bit_size: 1
+  - name: SOFTEVTEN
+    bit_offset: 7
+    bit_size: 1
+  - name: L1SUSPEN
+    bit_offset: 8
+    bit_size: 1
+    description: L1 Suspend Event Enable
+  - name: ERRTICERREVTEN
+    bit_offset: 9
+    bit_size: 1
+    description: L1 Suspend Event Enable
+  - name: VENDEVTSTRCVDEN
+    bit_offset: 12
+    bit_size: 1
+  - name: L1WKUPEVTEN
+    bit_offset: 14
+    bit_size: 1
+  - name: ECCERREN
+    bit_offset: 16
+    bit_size: 1
+    description: ECC Error Enable
+fieldset/USB3_CORE_DSTS:
+  description: ''
+  fields:
+  - name: CONNECTSPD
+    bit_offset: 0
+    bit_size: 3
+  - name: SOFFN
+    bit_offset: 3
+    bit_size: 14
+  - name: RXFIFOEMPTY
+    bit_offset: 17
+    bit_size: 1
+    description: Frame/Microframe Number of the Received SOF
+  - name: USBLNKST
+    bit_offset: 18
+    bit_size: 4
+    description: RxFIFO Empty
+  - name: DEVCTRLHLT
+    bit_offset: 22
+    bit_size: 1
+    description: Device Controller Halted
+  - name: COREIDLE
+    bit_offset: 23
+    bit_size: 1
+    description: Device Controller Halted
+  - name: SSS
+    bit_offset: 24
+    bit_size: 1
+    description: Core Idle
+  - name: RSS
+    bit_offset: 25
+    bit_size: 1
+    description: Save State Status
+  - name: DCNRD
+    bit_offset: 29
+    bit_size: 1
+    description: Restore State Status
+fieldset/USB3_CORE_DGCMDPAR:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DGCMD:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 8
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+    description: Command Interrupt on Complete
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Interrupt on Complete
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Active
+fieldset/USB3_CORE_DALEPENA:
+  description: ''
+  fields:
+  - name: USBACTEP
+    bit_offset: 0
+    bit_size: 32
+    description: USB Active Endpoints
+fieldset/USB3_CORE_DEPCMDPAR20:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR10:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR00:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD0:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+    description: Command Completion Status
+fieldset/USB3_CORE_DEPCMD0_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR21:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR11:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR01:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD1:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+    description: Command Completion Status
+fieldset/USB3_CORE_DEPCMD1_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR22:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR12:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR02:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD2:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+    description: Command Completion Status
+fieldset/USB3_CORE_DEPCMD2_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR23:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR13:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR03:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD3:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+    description: Command Completion Status
+fieldset/USB3_CORE_DEPCMD3_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR24:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR14:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR04:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD4:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+    description: Command Completion Status
+fieldset/USB3_CORE_DEPCMD4_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR25:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR15:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR05:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD5:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+    description: Command Completion Status
+fieldset/USB3_CORE_DEPCMD5_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR26:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR16:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR06:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD6:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+    description: Command Completion Status
+fieldset/USB3_CORE_DEPCMD6_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR27:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR17:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR07:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD7:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+    description: Command Completion Status
+fieldset/USB3_CORE_DEPCMD7_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR28:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR18:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR08:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD8:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+    description: Command Completion Status
+fieldset/USB3_CORE_DEPCMD8_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR29:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR19:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR09:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD9:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+    description: Command Completion Status
+fieldset/USB3_CORE_DEPCMD9_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR210:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR110:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR010:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD10:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+fieldset/USB3_CORE_DEPCMD10_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR211:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR111:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR011:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD11:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+fieldset/USB3_CORE_DEPCMD11_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR212:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR112:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR012:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD12:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+fieldset/USB3_CORE_DEPCMD12_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR213:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR113:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR013:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD13:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+fieldset/USB3_CORE_DEPCMD13_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR214:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR114:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR014:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD14:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+fieldset/USB3_CORE_DEPCMD14_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEPCMDPAR215:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR115:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMDPAR015:
+  description: ''
+  fields:
+  - name: PARAMETER
+    bit_offset: 0
+    bit_size: 32
+fieldset/USB3_CORE_DEPCMD15:
+  description: ''
+  fields:
+  - name: CMDTYP
+    bit_offset: 0
+    bit_size: 4
+  - name: CMDIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: CMDACT
+    bit_offset: 10
+    bit_size: 1
+    description: Command Active
+  - name: CMDSTATUS
+    bit_offset: 12
+    bit_size: 4
+    description: Command Completion Status
+  - name: COMMANDPARAM
+    bit_offset: 16
+    bit_size: 16
+fieldset/USB3_CORE_DEPCMD15_HIPRI:
+  description: ''
+  fields:
+  - name: FORCERM
+    bit_offset: 11
+    bit_size: 1
+    description: Command Active
+fieldset/USB3_CORE_DEV_IMOD_DEVICE:
+  description: ''
+  fields:
+  - name: IMODI
+    bit_offset: 0
+    bit_size: 16
+    description: Moderation Interval
+  - name: IMODC
+    bit_offset: 16
+    bit_size: 16
+fieldset/USB3_CORE_BCFG_CHIRP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+    description: Chirp Enable
+fieldset/USB3_CORE_BCFG_IDDIG:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 1
+    bit_size: 1
+    description: Chirp Enable
+fieldset/USB3_CORE_BCEVT:
+  description: ''
+  fields:
+  - name: MultValIdBc
+    bit_offset: 0
+    bit_size: 5
+    description: Multi Valued ID pin
+fieldset/USB3_CORE_BCEVT_MV:
+  description: ''
+  fields:
+  - name: ChngEvnt
+    bit_offset: 24
+    bit_size: 1
+    description: Multi Valued ID pin
+fieldset/USB3_CORE_BCEVTEN_MV:
+  description: ''
+  fields:
+  - name: ChngEvntEna
+    bit_offset: 24
+    bit_size: 1
+fieldset/USB3_CORE_LU1LFPSRXTIM0_U1U2_EXIT_RSP_RX:
+  description: ''
+  fields:
+  - name: CLK
+    bit_offset: 0
+    bit_size: 8
+fieldset/USB3_CORE_LU1LFPSRXTIM0_U1U2_LFPS_EXIT_RX:
+  description: ''
+  fields:
+  - name: CLK
+    bit_offset: 8
+    bit_size: 8
+fieldset/USB3_CORE_LINK_SETTINGS0_PM_ENTRY_TIMER:
+  description: ''
+  fields:
+  - name: US
+    bit_offset: 20
+    bit_size: 4
+fieldset/USB3_CORE_LINK_SETTINGS0_PM_LC_TIMER:
+  description: ''
+  fields:
+  - name: US
+    bit_offset: 24
+    bit_size: 3
+fieldset/USB3_CORE_LINK_SETTINGS0_U1_RESID_TIMER:
+  description: ''
+  fields:
+  - name: US
+    bit_offset: 28
+    bit_size: 3
+fieldset/USB3_CORE_LLUCTL0_NO_UX_EXIT_P0:
+  description: ''
+  fields:
+  - name: TRANS
+    bit_offset: 5
+    bit_size: 1
+fieldset/USB3_CORE_LLUCTL0_MASK_PIPE:
+  description: ''
+  fields:
+  - name: RESET
+    bit_offset: 7
+    bit_size: 1
+    description: Mask Pipe Reset
+fieldset/USB3_CORE_LLUCTL0_EN_RESET_PIPE_AFTER_PHY:
+  description: ''
+  fields:
+  - name: MUX
+    bit_offset: 11
+    bit_size: 1
+fieldset/USB3_CORE_LLUCTL0:
+  description: ''
+  fields:
+  - name: U2P3CPMok
+    bit_offset: 12
+    bit_size: 1
+fieldset/USB3_CORE_LLUCTL0_DISRXDET_LTSSM_TIMER:
+  description: ''
+  fields:
+  - name: OVRRD
+    bit_offset: 23
+    bit_size: 1
+fieldset/USB3_CORE_LLUCTL0_SUPPORT:
+  description: ''
+  fields:
+  - name: P4
+    bit_offset: 28
+    bit_size: 1
+fieldset/USB3_CORE_LLUCTL0_SUPPORT_P4:
+  description: ''
+  fields:
+  - name: PG
+    bit_offset: 29
+    bit_size: 1
+fieldset/USB3_CORE_LPTMDPDELAY0_P3CPMP4:
+  description: ''
+  fields:
+  - name: RESIDENCY
+    bit_offset: 10
+    bit_size: 12
+fieldset/USB3_CORE_BU3RHBDBG_TPCFG_TOUT:
+  description: ''
+  fields:
+  - name: CTRL
+    bit_offset: 3
+    bit_size: 1
+fieldset/USB3_CORE_BRSERRCNT:
+  description: ''
+  fields:
+  - name: RAM0SERRCNT
+    bit_offset: 0
+    bit_size: 8
+  - name: RAM1SERRCNT
+    bit_offset: 8
+    bit_size: 8
+  - name: RAM2SERRCNT
+    bit_offset: 16
+    bit_size: 8
+fieldset/USB3_CORE_BRMERRCNT:
+  description: ''
+  fields:
+  - name: RAM0MERRCNT
+    bit_offset: 0
+    bit_size: 8
+  - name: RAM1MERRCNT
+    bit_offset: 8
+    bit_size: 8
+  - name: RAM2MERRCNT
+    bit_offset: 16
+    bit_size: 8
+fieldset/USB3_CORE_BRMECCERR:
+  description: ''
+  fields:
+  - name: RAMMERRVEC
+    bit_offset: 0
+    bit_size: 3
+    description: RAM Multiple Error Vector
+  - name: RAMSERRVEC
+    bit_offset: 3
+    bit_size: 3
+    description: RAM Single Error Vector
+  - name: RAMMERR
+    bit_offset: 6
+    bit_size: 1
+  - name: RAMSERR
+    bit_offset: 7
+    bit_size: 1
+    description: RAM Single bit Error Status
+fieldset/USB3_CORE_BRERRCTL:
+  description: ''
+  fields:
+  - name: RMERRCLR
+    bit_offset: 0
+    bit_size: 1
+  - name: RSERRCLR
+    bit_offset: 1
+    bit_size: 1
+    description: RAM Single bit Error Clear
+  - name: ECCEN
+    bit_offset: 2
+    bit_size: 1
+    description: RAM Single bit Error Clear
+  - name: ECCERRINJECT
+    bit_offset: 3
+    bit_size: 1
+    description: ECC Enable (1) or Disable (0)
+fieldset/USB3_CORE_BRAMADDRERR:
+  description: ''
+  fields:
+  - name: RAM0ADDRLOC
+    bit_offset: 0
+    bit_size: 16
+    description: RAM0 Address Location
+  - name: RAM1ADDRLOC
+    bit_offset: 0
+    bit_size: 16
+    description: RAM1 Address Location
+  - name: RAM2ADDRLOC
+    bit_offset: 0
+    bit_size: 16
+    description: RAM2 Address Location

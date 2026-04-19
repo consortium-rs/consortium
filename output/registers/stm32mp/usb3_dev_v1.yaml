@@ -1,0 +1,315 @@
+block/USB3_DEV:
+  description: ''
+  items:
+  - name: DCFG
+    byte_offset: 0
+    description: (null) @ offset 0x0
+  - name: DCTL
+    byte_offset: 4
+    description: (null) @ offset 0x4
+  - name: DEVTEN
+    byte_offset: 8
+    description: (null) @ offset 0x8
+  - name: DSTS
+    byte_offset: 12
+    description: (null) @ offset 0xc
+  - name: DGCMDPAR
+    byte_offset: 16
+    description: (null) @ offset 0x10
+  - name: DGCMD
+    byte_offset: 20
+    description: (null) @ offset 0x14
+  - name: DALEPENA
+    byte_offset: 32
+    description: (null) @ offset 0x20
+  - name: DEPCMDPAR20
+    byte_offset: 256
+    description: (null) @ offset 0x100
+  - name: DEPCMDPAR10
+    byte_offset: 260
+    description: (null) @ offset 0x104
+  - name: DEPCMDPAR00
+    byte_offset: 264
+    description: (null) @ offset 0x108
+  - name: DEPCMD0
+    byte_offset: 268
+    description: (null) @ offset 0x10c
+  - name: DEPCMDPAR21
+    byte_offset: 272
+    description: (null) @ offset 0x110
+  - name: DEPCMDPAR11
+    byte_offset: 276
+    description: (null) @ offset 0x114
+  - name: DEPCMDPAR01
+    byte_offset: 280
+    description: (null) @ offset 0x118
+  - name: DEPCMD1
+    byte_offset: 284
+    description: (null) @ offset 0x11C
+  - name: DEPCMDPAR22
+    byte_offset: 288
+    description: (null) @ offset 0x120
+  - name: DEPCMDPAR12
+    byte_offset: 292
+    description: (null) @ offset 0x124
+  - name: DEPCMDPAR02
+    byte_offset: 296
+    description: (null) @ offset 0x128
+  - name: DEPCMD2
+    byte_offset: 300
+    description: (null) @ offset 0x12C
+  - name: DEPCMDPAR23
+    byte_offset: 304
+    description: (null) @ offset 0x130
+  - name: DEPCMDPAR13
+    byte_offset: 308
+    description: (null) @ offset 0x134
+  - name: DEPCMDPAR03
+    byte_offset: 312
+    description: (null) @ offset 0x138
+  - name: DEPCMD3
+    byte_offset: 316
+    description: (null) @ offset 0x13C
+  - name: DEPCMDPAR24
+    byte_offset: 320
+    description: (null) @ offset 0x140
+  - name: DEPCMDPAR14
+    byte_offset: 324
+    description: (null) @ offset 0x144
+  - name: DEPCMDPAR04
+    byte_offset: 328
+    description: (null) @ offset 0x148
+  - name: DEPCMD4
+    byte_offset: 332
+    description: (null) @ offset 0x14C
+  - name: DEPCMDPAR25
+    byte_offset: 336
+    description: (null) @ offset 0x150
+  - name: DEPCMDPAR15
+    byte_offset: 340
+    description: (null) @ offset 0x154
+  - name: DEPCMDPAR05
+    byte_offset: 344
+    description: (null) @ offset 0x158
+  - name: DEPCMD5
+    byte_offset: 348
+    description: (null) @ offset 0x15C
+  - name: DEPCMDPAR26
+    byte_offset: 352
+    description: (null) @ offset 0x160
+  - name: DEPCMDPAR16
+    byte_offset: 356
+    description: (null) @ offset 0x164
+  - name: DEPCMDPAR06
+    byte_offset: 360
+    description: (null) @ offset 0x168
+  - name: DEPCMD6
+    byte_offset: 364
+    description: (null) @ offset 0x16C
+  - name: DEPCMDPAR27
+    byte_offset: 368
+    description: (null) @ offset 0x170
+  - name: DEPCMDPAR17
+    byte_offset: 372
+    description: (null) @ offset 0x174
+  - name: DEPCMDPAR07
+    byte_offset: 376
+    description: (null) @ offset 0x178
+  - name: DEPCMD7
+    byte_offset: 380
+    description: (null) @ offset 0x17C
+  - name: DEPCMDPAR28
+    byte_offset: 384
+    description: (null) @ offset 0x180
+  - name: DEPCMDPAR18
+    byte_offset: 388
+    description: (null) @ offset 0x184
+  - name: DEPCMDPAR08
+    byte_offset: 392
+    description: (null) @ offset 0x188
+  - name: DEPCMD8
+    byte_offset: 396
+    description: (null) @ offset 0x18C
+  - name: DEPCMDPAR29
+    byte_offset: 400
+    description: (null) @ offset 0x190
+  - name: DEPCMDPAR19
+    byte_offset: 404
+    description: (null) @ offset 0x194
+  - name: DEPCMDPAR09
+    byte_offset: 408
+    description: (null) @ offset 0x198
+  - name: DEPCMD9
+    byte_offset: 412
+    description: (null) @ offset 0x19C
+  - name: DEPCMDPAR210
+    byte_offset: 416
+    description: (null) @ offset 0x1A0
+  - name: DEPCMDPAR110
+    byte_offset: 420
+    description: (null) @ offset 0x1A4
+  - name: DEPCMDPAR010
+    byte_offset: 424
+    description: (null) @ offset 0x1A8
+  - name: DEPCMD10
+    byte_offset: 428
+    description: (null) @ offset 0x1AC
+  - name: DEPCMDPAR211
+    byte_offset: 432
+    description: (null) @ offset 0x1B0
+  - name: DEPCMDPAR111
+    byte_offset: 436
+    description: (null) @ offset 0x1B4
+  - name: DEPCMDPAR011
+    byte_offset: 440
+    description: (null) @ offset 0x1B8
+  - name: DEPCMD11
+    byte_offset: 444
+    description: (null) @ offset 0x1BC
+  - name: DEPCMDPAR212
+    byte_offset: 448
+    description: (null) @ offset 0x1C0
+  - name: DEPCMDPAR112
+    byte_offset: 452
+    description: (null) @ offset 0x1C4
+  - name: DEPCMDPAR012
+    byte_offset: 456
+    description: (null) @ offset 0x1C8
+  - name: DEPCMD12
+    byte_offset: 460
+    description: (null) @ offset 0x1CC
+  - name: DEPCMDPAR213
+    byte_offset: 464
+    description: (null) @ offset 0x1D0
+  - name: DEPCMDPAR113
+    byte_offset: 468
+    description: (null) @ offset 0x1D4
+  - name: DEPCMDPAR013
+    byte_offset: 472
+    description: (null) @ offset 0x1D8
+  - name: DEPCMD13
+    byte_offset: 476
+    description: (null) @ offset 0x1DC
+  - name: DEPCMDPAR214
+    byte_offset: 480
+    description: (null) @ offset 0x1E0
+  - name: DEPCMDPAR114
+    byte_offset: 484
+    description: (null) @ offset 0x1E4
+  - name: DEPCMDPAR014
+    byte_offset: 488
+    description: (null) @ offset 0x1E8
+  - name: DEPCMD14
+    byte_offset: 492
+    description: (null) @ offset 0x1EC
+  - name: DEPCMDPAR215
+    byte_offset: 496
+    description: (null) @ offset 0x1F0
+  - name: DEPCMDPAR115
+    byte_offset: 500
+    description: (null) @ offset 0x1F4
+  - name: DEPCMDPAR015
+    byte_offset: 504
+    description: (null) @ offset 0x1F8
+  - name: DEPCMD15
+    byte_offset: 508
+    description: (null) @ offset 0x1FC
+  - name: DEPCMDPAR216
+    byte_offset: 512
+    description: (null) @ offset 0x200
+  - name: DEPCMDPAR116
+    byte_offset: 516
+    description: (null) @ offset 0x204
+  - name: DEPCMDPAR016
+    byte_offset: 520
+    description: (null) @ offset 0x208
+  - name: DEPCMD16
+    byte_offset: 524
+    description: (null) @ offset 0x20C
+  - name: DEPCMDPAR217
+    byte_offset: 528
+    description: (null) @ offset 0x210
+  - name: DEPCMDPAR117
+    byte_offset: 532
+    description: (null) @ offset 0x214
+  - name: DEPCMDPAR017
+    byte_offset: 536
+    description: (null) @ offset 0x218
+  - name: DEPCMD17
+    byte_offset: 540
+    description: (null) @ offset 0x21C
+  - name: DEPCMDPAR218
+    byte_offset: 544
+    description: (null) @ offset 0x220
+  - name: DEPCMDPAR118
+    byte_offset: 548
+    description: (null) @ offset 0x224
+  - name: DEPCMDPAR018
+    byte_offset: 552
+    description: (null) @ offset 0x228
+  - name: DEPCMD18
+    byte_offset: 556
+    description: (null) @ offset 0x22C
+  - name: DEPCMDPAR219
+    byte_offset: 560
+    description: (null) @ offset 0x230
+  - name: DEPCMDPAR119
+    byte_offset: 564
+    description: (null) @ offset 0x234
+  - name: DEPCMDPAR019
+    byte_offset: 568
+    description: (null) @ offset 0x238
+  - name: DEPCMD19
+    byte_offset: 572
+    description: (null) @ offset 0x23C
+  - name: DEPCMDPAR220
+    byte_offset: 576
+    description: (null) @ offset 0x240
+  - name: DEPCMDPAR120
+    byte_offset: 580
+    description: (null) @ offset 0x244
+  - name: DEPCMDPAR020
+    byte_offset: 584
+    description: (null) @ offset 0x248
+  - name: DEPCMD20
+    byte_offset: 588
+    description: (null) @ offset 0x24C
+  - name: DEPCMDPAR221
+    byte_offset: 592
+    description: (null) @ offset 0x250
+  - name: DEPCMDPAR121
+    byte_offset: 596
+    description: (null) @ offset 0x254
+  - name: DEPCMDPAR021
+    byte_offset: 600
+    description: (null) @ offset 0x258
+  - name: DEPCMD21
+    byte_offset: 604
+    description: (null) @ offset 0x25C
+  - name: DEPCMDPAR222
+    byte_offset: 608
+    description: (null) @ offset 0x260
+  - name: DEPCMDPAR122
+    byte_offset: 612
+    description: (null) @ offset 0x264
+  - name: DEPCMDPAR022
+    byte_offset: 616
+    description: (null) @ offset 0x268
+  - name: DEPCMD22
+    byte_offset: 620
+    description: (null) @ offset 0x26C
+  - name: DEPCMDPAR223
+    byte_offset: 624
+    description: (null) @ offset 0x270
+  - name: DEPCMDPAR123
+    byte_offset: 628
+    description: (null) @ offset 0x274
+  - name: DEPCMDPAR023
+    byte_offset: 632
+    description: (null) @ offset 0x278
+  - name: DEPCMD23
+    byte_offset: 636
+    description: (null) @ offset 0x27C
+  - name: DEV_IMOD
+    byte_offset: 768
+    description: (null) @ offset 0x300

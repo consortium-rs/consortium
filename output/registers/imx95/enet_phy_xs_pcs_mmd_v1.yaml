@@ -1,0 +1,216 @@
+block/ENET_PHY_XS_PCS_MMD:
+  description: ''
+  items:
+  - name: SR_XS_PCS_CTRL1
+    byte_offset: 0
+    fieldset: ENET_PHY_XS_PCS_MMD_SR_XS_PCS_CTRL1
+  - name: SR_XS_PCS_STS1
+    byte_offset: 2
+    fieldset: ENET_PHY_XS_PCS_MMD_SR_XS_PCS_STS1
+  - name: SR_XS_PCS_CTRL2
+    byte_offset: 14
+  - name: VR_XS_PCS_DIG_CTRL1
+    byte_offset: 65536
+    fieldset: ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DIG_CTRL1
+  - name: VR_XS_PCS_XAUI_CTRL
+    byte_offset: 65544
+  - name: VR_XS_PCS_DEBUG_CTRL
+    byte_offset: 65546
+  - name: VR_XS_PCS_KR_CTRL
+    byte_offset: 65550
+    fieldset: ENET_PHY_XS_PCS_MMD_VR_XS_PCS_KR_CTRL
+fieldset/ENET_PHY_XS_PCS_MMD_SR_XS_PCS_CTRL1:
+  description: ''
+  fields:
+  - name: SS6
+    bit_offset: 6
+    bit_size: 1
+    description: Speed Selection Bit 6
+  - name: LPM
+    bit_offset: 11
+    bit_size: 1
+  - name: SS13
+    bit_offset: 13
+    bit_size: 1
+  - name: RST
+    bit_offset: 15
+    bit_size: 1
+    description: Soft Reset (RW, SC Type)
+fieldset/ENET_PHY_XS_PCS_MMD_SR_XS_PCS_CTRL1_CS:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_SR_XS_PCS_STS1:
+  description: ''
+  fields:
+  - name: LPMS
+    bit_offset: 1
+    bit_size: 1
+    description: Low-Power Mode Support
+  - name: RLU
+    bit_offset: 2
+    bit_size: 1
+  - name: CSC
+    bit_offset: 6
+    bit_size: 1
+  - name: FLT
+    bit_offset: 7
+    bit_size: 1
+    description: Fault Condition Detected
+  - name: RXLPII
+    bit_offset: 8
+    bit_size: 1
+  - name: TXLPII
+    bit_offset: 9
+    bit_size: 1
+  - name: RXLPIR
+    bit_offset: 10
+    bit_size: 1
+  - name: TXLPIR
+    bit_offset: 11
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_SR_XS_PCS_CTRL2_PCS_TYPE:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 0
+    bit_size: 4
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DIG_CTRL1_BYP:
+  description: ''
+  fields:
+  - name: PWRUP
+    bit_offset: 1
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DIG_CTRL1_EN_2_5G:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 2
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DIG_CTRL1:
+  description: ''
+  fields:
+  - name: INIT
+    bit_offset: 8
+    bit_size: 1
+  - name: PWRSV
+    bit_offset: 11
+    bit_size: 1
+  - name: R2TLBE
+    bit_offset: 14
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DIG_CTRL1_USXG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 9
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DIG_CTRL1_USRA:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 10
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DIG_CTRL1_EN:
+  description: ''
+  fields:
+  - name: VSMMD1
+    bit_offset: 13
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DIG_CTRL1_VR:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 15
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_XAUI_CTRL_XAUI:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 0
+    bit_size: 1
+    description: XAUI Mode
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DEBUG_CTRL_SUPRESS_LOS:
+  description: ''
+  fields:
+  - name: DET
+    bit_offset: 4
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DEBUG_CTRL_SUPRESS_EEE_LOS:
+  description: ''
+  fields:
+  - name: DET
+    bit_offset: 5
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DEBUG_CTRL_RX_DT_EN:
+  description: ''
+  fields:
+  - name: CTL
+    bit_offset: 6
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DEBUG_CTRL_RX_SYNC:
+  description: ''
+  fields:
+  - name: CTL
+    bit_offset: 7
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DEBUG_CTRL_TX_PMBL:
+  description: ''
+  fields:
+  - name: CTL
+    bit_offset: 8
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DEBUG_CTRL_RX_PMBL:
+  description: ''
+  fields:
+  - name: CTL
+    bit_offset: 9
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_KR_CTRL_VR_TP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_KR_CTRL_PR:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 1
+    bit_size: 3
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_KR_CTRL_NVAL:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 4
+    bit_size: 3
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_KR_CTRL:
+  description: ''
+  fields:
+  - name: PRBS9RXEN
+    bit_offset: 7
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_KR_CTRL_DIS:
+  description: ''
+  fields:
+  - name: SCR
+    bit_offset: 8
+    bit_size: 1
+    description: Disable Scrambler
+  - name: DESCR
+    bit_offset: 9
+    bit_size: 1
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_KR_CTRL_USXG:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 10
+    bit_size: 3
+fieldset/ENET_PHY_XS_PCS_MMD_VR_XS_PCS_KR_CTRL_USXG_2PT5G:
+  description: ''
+  fields:
+  - name: GMII
+    bit_offset: 13
+    bit_size: 1

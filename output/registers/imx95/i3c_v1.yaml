@@ -1,0 +1,1423 @@
+block/I3C:
+  description: ''
+  items:
+  - name: MCONFIG
+    byte_offset: 0
+    fieldset: I3C_MCONFIG
+  - name: SCONFIG
+    byte_offset: 4
+    fieldset: I3C_SCONFIG
+  - name: SSTATUS
+    byte_offset: 8
+    fieldset: I3C_SSTATUS
+  - name: SCTRL
+    byte_offset: 12
+    fieldset: I3C_SCTRL
+  - name: SINTSET
+    byte_offset: 16
+    fieldset: I3C_SINTSET
+  - name: SINTCLR
+    byte_offset: 20
+    fieldset: I3C_SINTCLR
+  - name: SINTMASKED
+    byte_offset: 24
+    fieldset: I3C_SINTMASKED
+  - name: SERRWARN
+    byte_offset: 28
+    fieldset: I3C_SERRWARN
+  - name: SDMACTRL
+    byte_offset: 32
+    fieldset: I3C_SDMACTRL
+  - name: SDATACTRL
+    byte_offset: 44
+    fieldset: I3C_SDATACTRL
+  - name: SWDATAB
+    byte_offset: 48
+    fieldset: I3C_SWDATAB
+  - name: SWDATABE
+    byte_offset: 52
+    fieldset: I3C_SWDATABE
+  - name: SWDATAH
+    byte_offset: 56
+    fieldset: I3C_SWDATAH
+  - name: SWDATAHE
+    byte_offset: 60
+    fieldset: I3C_SWDATAHE
+  - name: SRDATAB
+    byte_offset: 64
+    fieldset: I3C_SRDATAB
+  - name: SRDATAH
+    byte_offset: 72
+    fieldset: I3C_SRDATAH
+  - name: SWDATAB1
+    byte_offset: 84
+    fieldset: I3C_SWDATAB1
+  - name: SWDATAH1
+    byte_offset: 84
+    fieldset: I3C_SWDATAH1
+  - name: SCAPABILITIES2
+    byte_offset: 92
+    fieldset: I3C_SCAPABILITIES2
+  - name: SCAPABILITIES
+    byte_offset: 96
+    fieldset: I3C_SCAPABILITIES
+  - name: SMAXLIMITS
+    byte_offset: 104
+    fieldset: I3C_SMAXLIMITS
+  - name: SIDPARTNO
+    byte_offset: 108
+    fieldset: I3C_SIDPARTNO
+  - name: SIDEXT
+    byte_offset: 112
+    fieldset: I3C_SIDEXT
+  - name: SVENDORID
+    byte_offset: 116
+    fieldset: I3C_SVENDORID
+  - name: STCCLOCK
+    byte_offset: 120
+    fieldset: I3C_STCCLOCK
+  - name: SMSGMAPADDR
+    byte_offset: 124
+    fieldset: I3C_SMSGMAPADDR
+  - name: MCONFIG_EXT
+    byte_offset: 128
+    fieldset: I3C_MCONFIG_EXT
+  - name: MCTRL
+    byte_offset: 132
+    fieldset: I3C_MCTRL
+  - name: MSTATUS
+    byte_offset: 136
+    fieldset: I3C_MSTATUS
+  - name: MIBIRULES
+    byte_offset: 140
+    fieldset: I3C_MIBIRULES
+  - name: MINTSET
+    byte_offset: 144
+    fieldset: I3C_MINTSET
+  - name: MINTCLR
+    byte_offset: 148
+    fieldset: I3C_MINTCLR
+  - name: MINTMASKED
+    byte_offset: 152
+    fieldset: I3C_MINTMASKED
+  - name: MERRWARN
+    byte_offset: 156
+    fieldset: I3C_MERRWARN
+  - name: MDMACTRL
+    byte_offset: 160
+    fieldset: I3C_MDMACTRL
+  - name: MDATACTRL
+    byte_offset: 172
+    fieldset: I3C_MDATACTRL
+  - name: MWDATAB
+    byte_offset: 176
+    fieldset: I3C_MWDATAB
+  - name: MWDATABE
+    byte_offset: 180
+    fieldset: I3C_MWDATABE
+  - name: MWDATAH
+    byte_offset: 184
+    fieldset: I3C_MWDATAH
+  - name: MWDATAHE
+    byte_offset: 188
+    fieldset: I3C_MWDATAHE
+  - name: MRDATAB
+    byte_offset: 192
+    fieldset: I3C_MRDATAB
+  - name: MRDATAH
+    byte_offset: 200
+    fieldset: I3C_MRDATAH
+  - name: MWDATAB1
+    byte_offset: 204
+    fieldset: I3C_MWDATAB1
+  - name: MWDATAH1
+    byte_offset: 204
+    fieldset: I3C_MWDATAH1
+  - name: MWMSG_SDR_CONTROL
+    byte_offset: 208
+    fieldset: I3C_MWMSG_SDR_CONTROL
+  - name: MWMSG_SDR_DATA
+    byte_offset: 208
+    fieldset: I3C_MWMSG_SDR_DATA
+  - name: MRMSG_SDR
+    byte_offset: 212
+    fieldset: I3C_MRMSG_SDR
+  - name: MWMSG_DDR_CONTROL
+    byte_offset: 216
+    fieldset: I3C_MWMSG_DDR_CONTROL
+  - name: MWMSG_DDR_CONTROL2
+    byte_offset: 216
+    fieldset: I3C_MWMSG_DDR_CONTROL2
+  - name: MWMSG_DDR_DATA
+    byte_offset: 216
+    fieldset: I3C_MWMSG_DDR_DATA
+  - name: MRMSG_DDR
+    byte_offset: 220
+    fieldset: I3C_MRMSG_DDR
+  - name: MDYNADDR
+    byte_offset: 228
+    fieldset: I3C_MDYNADDR
+  - name: SRSTACTTIME
+    byte_offset: 256
+    fieldset: I3C_SRSTACTTIME
+  - name: SCCCMASK
+    byte_offset: 268
+    fieldset: I3C_SCCCMASK
+  - name: SERRWARNMASK
+    byte_offset: 272
+    fieldset: I3C_SERRWARNMASK
+  - name: SMAPCTRL0
+    byte_offset: 284
+    fieldset: I3C_SMAPCTRL0
+  - name: SMAPCTRL1
+    byte_offset: 288
+    fieldset: I3C_SMAPCTRL1
+  - name: IBIEXT1
+    byte_offset: 320
+    fieldset: I3C_IBIEXT1
+  - name: IBIEXT2
+    byte_offset: 324
+    fieldset: I3C_IBIEXT2
+  - name: SELFRESET
+    byte_offset: 4080
+    fieldset: I3C_SELFRESET
+fieldset/I3C_MCONFIG:
+  description: ''
+  fields:
+  - name: MSTENA
+    bit_offset: 0
+    bit_size: 2
+  - name: DISTO
+    bit_offset: 3
+    bit_size: 1
+  - name: HKEEP
+    bit_offset: 4
+    bit_size: 2
+  - name: ODSTOP
+    bit_offset: 6
+    bit_size: 1
+  - name: PPBAUD
+    bit_offset: 8
+    bit_size: 4
+    description: Push-Pull Baud Rate
+  - name: PPLOW
+    bit_offset: 12
+    bit_size: 4
+    description: Push-Pull Baud Rate
+  - name: ODBAUD
+    bit_offset: 16
+    bit_size: 8
+    description: Push-Pull Low
+  - name: ODHPP
+    bit_offset: 24
+    bit_size: 1
+    description: Open-drain Baud Rate
+  - name: SKEW
+    bit_offset: 25
+    bit_size: 3
+    description: Skew
+  - name: I2CBAUD
+    bit_offset: 28
+    bit_size: 4
+    description: Skew
+fieldset/I3C_SCONFIG:
+  description: ''
+  fields:
+  - name: SLVENA
+    bit_offset: 0
+    bit_size: 1
+  - name: NACK
+    bit_offset: 1
+    bit_size: 1
+  - name: MATCHSS
+    bit_offset: 2
+    bit_size: 1
+  - name: S0IGNORE
+    bit_offset: 3
+    bit_size: 1
+  - name: HDROK
+    bit_offset: 4
+    bit_size: 1
+  - name: OFFLINE
+    bit_offset: 9
+    bit_size: 1
+  - name: BAMATCH
+    bit_offset: 16
+    bit_size: 6
+    description: Bus Available Match
+  - name: SADDR
+    bit_offset: 25
+    bit_size: 7
+    description: Bus Available Match
+fieldset/I3C_SSTATUS:
+  description: ''
+  fields:
+  - name: STNOTSTOP
+    bit_offset: 0
+    bit_size: 1
+  - name: STMSG
+    bit_offset: 1
+    bit_size: 1
+  - name: STCCCH
+    bit_offset: 2
+    bit_size: 1
+  - name: STREQRD
+    bit_offset: 3
+    bit_size: 1
+  - name: STREQWR
+    bit_offset: 4
+    bit_size: 1
+  - name: STDAA
+    bit_offset: 5
+    bit_size: 1
+  - name: STHDR
+    bit_offset: 6
+    bit_size: 1
+  - name: START
+    bit_offset: 8
+    bit_size: 1
+  - name: MATCHED
+    bit_offset: 9
+    bit_size: 1
+  - name: STOP
+    bit_offset: 10
+    bit_size: 1
+  - name: TXNOTFULL
+    bit_offset: 12
+    bit_size: 1
+  - name: DACHG
+    bit_offset: 13
+    bit_size: 1
+  - name: CCC
+    bit_offset: 14
+    bit_size: 1
+  - name: ERRWARN
+    bit_offset: 15
+    bit_size: 1
+    description: Error Warning
+  - name: HDRMATCH
+    bit_offset: 16
+    bit_size: 1
+    description: Error Warning
+  - name: CHANDLED
+    bit_offset: 17
+    bit_size: 1
+  - name: EVENT
+    bit_offset: 18
+    bit_size: 1
+  - name: SLVRST
+    bit_offset: 19
+    bit_size: 1
+    description: Target Reset Flag
+  - name: EVDET
+    bit_offset: 20
+    bit_size: 2
+    description: Target Reset Flag
+  - name: IBIDIS
+    bit_offset: 24
+    bit_size: 1
+  - name: MRDIS
+    bit_offset: 25
+    bit_size: 1
+  - name: HJDIS
+    bit_offset: 27
+    bit_size: 1
+  - name: ACTSTATE
+    bit_offset: 28
+    bit_size: 2
+  - name: TIMECTRL
+    bit_offset: 30
+    bit_size: 2
+fieldset/I3C_SSTATUS_RX:
+  description: ''
+  fields:
+  - name: PEND
+    bit_offset: 11
+    bit_size: 1
+fieldset/I3C_SCTRL:
+  description: ''
+  fields:
+  - name: EVENT
+    bit_offset: 0
+    bit_size: 2
+  - name: EXTDATA
+    bit_offset: 3
+    bit_size: 1
+  - name: MAPIDX
+    bit_offset: 4
+    bit_size: 1
+    description: Map Index
+  - name: IBIDATA
+    bit_offset: 8
+    bit_size: 8
+    description: Map Index
+  - name: PENDINT
+    bit_offset: 16
+    bit_size: 4
+    description: In-Band Interrupt Data
+  - name: ACTSTATE
+    bit_offset: 20
+    bit_size: 2
+    description: Pending Interrupt
+  - name: VENDINFO
+    bit_offset: 24
+    bit_size: 8
+    description: Activity State of Target
+fieldset/I3C_SINTSET:
+  description: ''
+  fields:
+  - name: START
+    bit_offset: 8
+    bit_size: 1
+  - name: MATCHED
+    bit_offset: 9
+    bit_size: 1
+  - name: STOP
+    bit_offset: 10
+    bit_size: 1
+  - name: RXPEND
+    bit_offset: 11
+    bit_size: 1
+  - name: TXSEND
+    bit_offset: 12
+    bit_size: 1
+  - name: DACHG
+    bit_offset: 13
+    bit_size: 1
+  - name: CCC
+    bit_offset: 14
+    bit_size: 1
+  - name: ERRWARN
+    bit_offset: 15
+    bit_size: 1
+  - name: DDRMATCHED
+    bit_offset: 16
+    bit_size: 1
+  - name: CHANDLED
+    bit_offset: 17
+    bit_size: 1
+  - name: EVENT
+    bit_offset: 18
+    bit_size: 1
+  - name: SLVRST
+    bit_offset: 19
+    bit_size: 1
+fieldset/I3C_SINTCLR:
+  description: ''
+  fields:
+  - name: START
+    bit_offset: 8
+    bit_size: 1
+  - name: MATCHED
+    bit_offset: 9
+    bit_size: 1
+    description: START Interrupt Enable Clear Flag
+  - name: STOP
+    bit_offset: 10
+    bit_size: 1
+    description: Matched Interrupt Enable Clear Flag
+  - name: RXPEND
+    bit_offset: 11
+    bit_size: 1
+    description: STOP Interrupt Enable Clear Flag
+  - name: TXSEND
+    bit_offset: 12
+    bit_size: 1
+    description: RXPEND Interrupt Enable Clear Flag
+  - name: DACHG
+    bit_offset: 13
+    bit_size: 1
+    description: TXSEND Interrupt Enable Clear Flag
+  - name: CCC
+    bit_offset: 14
+    bit_size: 1
+    description: DACHG Interrupt Enable Clear Flag
+  - name: ERRWARN
+    bit_offset: 15
+    bit_size: 1
+    description: CCC Interrupt Enable Clear Flag
+  - name: DDRMATCHED
+    bit_offset: 16
+    bit_size: 1
+    description: ERRWARN Interrupt Enable Clear Flag
+  - name: CHANDLED
+    bit_offset: 17
+    bit_size: 1
+  - name: EVENT
+    bit_offset: 18
+    bit_size: 1
+    description: CHANDLED Interrupt Enable Clear Flag
+  - name: SLVRST
+    bit_offset: 19
+    bit_size: 1
+    description: EVENT Interrupt Enable Clear Flag
+fieldset/I3C_SINTMASKED:
+  description: ''
+  fields:
+  - name: START
+    bit_offset: 8
+    bit_size: 1
+    description: START Interrupt Mask
+  - name: MATCHED
+    bit_offset: 9
+    bit_size: 1
+    description: START Interrupt Mask
+  - name: STOP
+    bit_offset: 10
+    bit_size: 1
+    description: MATCHED Interrupt Mask
+  - name: RXPEND
+    bit_offset: 11
+    bit_size: 1
+    description: STOP Interrupt Mask
+  - name: TXSEND
+    bit_offset: 12
+    bit_size: 1
+    description: RXPEND Interrupt Mask
+  - name: DACHG
+    bit_offset: 13
+    bit_size: 1
+    description: TXSEND Interrupt Mask
+  - name: CCC
+    bit_offset: 14
+    bit_size: 1
+    description: DACHG Interrupt Mask
+  - name: ERRWARN
+    bit_offset: 15
+    bit_size: 1
+    description: CCC Interrupt Mask
+  - name: DDRMATCHED
+    bit_offset: 16
+    bit_size: 1
+    description: ERRWARN Interrupt Mask
+  - name: CHANDLED
+    bit_offset: 17
+    bit_size: 1
+    description: DDRMATCHED Interrupt Mask
+  - name: EVENT
+    bit_offset: 18
+    bit_size: 1
+    description: CHANDLED Interrupt Mask
+  - name: SLVRST
+    bit_offset: 19
+    bit_size: 1
+    description: EVENT Interrupt Mask
+fieldset/I3C_SERRWARN:
+  description: ''
+  fields:
+  - name: ORUN
+    bit_offset: 0
+    bit_size: 1
+  - name: URUN
+    bit_offset: 1
+    bit_size: 1
+  - name: URUNNACK
+    bit_offset: 2
+    bit_size: 1
+  - name: TERM
+    bit_offset: 3
+    bit_size: 1
+  - name: INVSTART
+    bit_offset: 4
+    bit_size: 1
+  - name: SPAR
+    bit_offset: 8
+    bit_size: 1
+  - name: HPAR
+    bit_offset: 9
+    bit_size: 1
+  - name: HCRC
+    bit_offset: 10
+    bit_size: 1
+  - name: S0S1
+    bit_offset: 11
+    bit_size: 1
+  - name: OREAD
+    bit_offset: 16
+    bit_size: 1
+  - name: OWRITE
+    bit_offset: 17
+    bit_size: 1
+fieldset/I3C_SDMACTRL:
+  description: ''
+  fields:
+  - name: DMAFB
+    bit_offset: 0
+    bit_size: 2
+  - name: DMATB
+    bit_offset: 2
+    bit_size: 2
+  - name: DMAWIDTH
+    bit_offset: 4
+    bit_size: 2
+fieldset/I3C_SDATACTRL:
+  description: ''
+  fields:
+  - name: FLUSHTB
+    bit_offset: 0
+    bit_size: 1
+  - name: FLUSHFB
+    bit_offset: 1
+    bit_size: 1
+  - name: UNLOCK
+    bit_offset: 3
+    bit_size: 1
+  - name: TXTRIG
+    bit_offset: 4
+    bit_size: 2
+  - name: RXTRIG
+    bit_offset: 6
+    bit_size: 2
+  - name: TXCOUNT
+    bit_offset: 16
+    bit_size: 5
+  - name: RXCOUNT
+    bit_offset: 24
+    bit_size: 5
+    description: Count of Entries in Transmit
+  - name: TXFULL
+    bit_offset: 30
+    bit_size: 1
+    description: Count of Entries in Receive
+  - name: RXEMPTY
+    bit_offset: 31
+    bit_size: 1
+fieldset/I3C_SWDATAB:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 8
+    description: Data
+  - name: END
+    bit_offset: 8
+    bit_size: 1
+    description: Data
+fieldset/I3C_SWDATAB_END:
+  description: ''
+  fields:
+  - name: ALSO
+    bit_offset: 16
+    bit_size: 1
+fieldset/I3C_SWDATABE:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 8
+    description: Data
+fieldset/I3C_SWDATAH:
+  description: ''
+  fields:
+  - name: DATA0
+    bit_offset: 0
+    bit_size: 8
+    description: Data 0
+  - name: DATA1
+    bit_offset: 8
+    bit_size: 8
+    description: Data 0
+  - name: END
+    bit_offset: 16
+    bit_size: 1
+    description: Data 1
+fieldset/I3C_SWDATAHE:
+  description: ''
+  fields:
+  - name: DATA0
+    bit_offset: 0
+    bit_size: 8
+    description: Data 0
+  - name: DATA1
+    bit_offset: 8
+    bit_size: 8
+    description: Data 0
+fieldset/I3C_SRDATAB:
+  description: ''
+  fields:
+  - name: DATA0
+    bit_offset: 0
+    bit_size: 8
+    description: Data 0
+fieldset/I3C_SRDATAH:
+  description: ''
+  fields:
+  - name: LSB
+    bit_offset: 0
+    bit_size: 8
+    description: Low Byte
+  - name: MSB
+    bit_offset: 8
+    bit_size: 8
+    description: Low Byte
+fieldset/I3C_SWDATAB1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 8
+    description: Data
+fieldset/I3C_SWDATAH1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 16
+    description: Data
+fieldset/I3C_SCAPABILITIES2:
+  description: ''
+  fields:
+  - name: MAPCNT
+    bit_offset: 0
+    bit_size: 4
+    description: Map Count
+  - name: I2C10B
+    bit_offset: 4
+    bit_size: 1
+    description: Map Count
+  - name: I2CDEVID
+    bit_offset: 6
+    bit_size: 1
+  - name: IBIEXT
+    bit_offset: 8
+    bit_size: 1
+  - name: IBIXREG
+    bit_offset: 9
+    bit_size: 1
+  - name: SLVRST
+    bit_offset: 17
+    bit_size: 1
+  - name: GROUP
+    bit_offset: 18
+    bit_size: 2
+  - name: AASA
+    bit_offset: 21
+    bit_size: 1
+  - name: SSTSUB
+    bit_offset: 22
+    bit_size: 1
+  - name: SSTWR
+    bit_offset: 23
+    bit_size: 1
+fieldset/I3C_SCAPABILITIES:
+  description: ''
+  fields:
+  - name: IDENA
+    bit_offset: 0
+    bit_size: 2
+  - name: IDREG
+    bit_offset: 2
+    bit_size: 4
+  - name: HDRSUPP
+    bit_offset: 6
+    bit_size: 2
+  - name: MASTER
+    bit_offset: 9
+    bit_size: 1
+  - name: SADDR
+    bit_offset: 10
+    bit_size: 2
+  - name: CCCHANDLE
+    bit_offset: 12
+    bit_size: 4
+  - name: TIMECTRL
+    bit_offset: 21
+    bit_size: 1
+  - name: EXTFIFO
+    bit_offset: 23
+    bit_size: 3
+  - name: FIFOTX
+    bit_offset: 26
+    bit_size: 2
+  - name: FIFORX
+    bit_offset: 28
+    bit_size: 2
+  - name: INT
+    bit_offset: 30
+    bit_size: 1
+  - name: DMA
+    bit_offset: 31
+    bit_size: 1
+fieldset/I3C_SCAPABILITIES_IBI_MR:
+  description: ''
+  fields:
+  - name: HJ
+    bit_offset: 16
+    bit_size: 5
+fieldset/I3C_SMAXLIMITS:
+  description: ''
+  fields:
+  - name: MAXRD
+    bit_offset: 0
+    bit_size: 12
+    description: Maximum Read Length
+  - name: MAXWR
+    bit_offset: 16
+    bit_size: 12
+    description: Maximum Read Length
+fieldset/I3C_SIDPARTNO:
+  description: ''
+  fields:
+  - name: PARTNO
+    bit_offset: 0
+    bit_size: 32
+    description: Part Number
+fieldset/I3C_SIDEXT:
+  description: ''
+  fields:
+  - name: DCR
+    bit_offset: 8
+    bit_size: 8
+    description: Device Characteristic Register
+  - name: BCR
+    bit_offset: 16
+    bit_size: 8
+    description: Device Characteristic Register
+fieldset/I3C_SVENDORID:
+  description: ''
+  fields:
+  - name: VID
+    bit_offset: 0
+    bit_size: 15
+    description: Vendor ID
+fieldset/I3C_STCCLOCK:
+  description: ''
+  fields:
+  - name: ACCURACY
+    bit_offset: 0
+    bit_size: 8
+    description: Clock Accuracy
+  - name: FREQ
+    bit_offset: 8
+    bit_size: 8
+    description: Clock Accuracy
+fieldset/I3C_SMSGMAPADDR:
+  description: ''
+  fields:
+  - name: MAPLAST
+    bit_offset: 0
+    bit_size: 4
+    description: Matched Address Index
+  - name: LASTSTATIC
+    bit_offset: 4
+    bit_size: 1
+    description: Matched Address Index
+  - name: MAPLASTM1
+    bit_offset: 8
+    bit_size: 4
+  - name: MAPLASTM2
+    bit_offset: 16
+    bit_size: 4
+    description: Matched Previous Index 2
+fieldset/I3C_MCONFIG_EXT:
+  description: ''
+  fields:
+  - name: I2CBLOW
+    bit_offset: 0
+    bit_size: 4
+    description: I2C Baud Low
+  - name: I2CHS
+    bit_offset: 4
+    bit_size: 1
+    description: I2C Baud Low
+fieldset/I3C_MCONFIG_EXT_I2C:
+  description: ''
+  fields:
+  - name: A10B
+    bit_offset: 8
+    bit_size: 1
+    description: I2C HS
+  - name: A10BEXT
+    bit_offset: 9
+    bit_size: 3
+    description: I2C_A10BEXT
+fieldset/I3C_MCONFIG_EXT_I3C_CAS:
+  description: ''
+  fields:
+  - name: DEL
+    bit_offset: 16
+    bit_size: 2
+    description: I2C_A10BEXT
+fieldset/I3C_MCONFIG_EXT_I3C_CASR:
+  description: ''
+  fields:
+  - name: DEL
+    bit_offset: 18
+    bit_size: 2
+fieldset/I3C_MCTRL:
+  description: ''
+  fields:
+  - name: REQUEST
+    bit_offset: 0
+    bit_size: 3
+  - name: TYPE
+    bit_offset: 4
+    bit_size: 2
+  - name: IBIRESP
+    bit_offset: 6
+    bit_size: 2
+  - name: DIR
+    bit_offset: 8
+    bit_size: 1
+  - name: ADDR
+    bit_offset: 9
+    bit_size: 7
+    description: Address
+  - name: RDTERM
+    bit_offset: 16
+    bit_size: 8
+    description: Address
+fieldset/I3C_MSTATUS:
+  description: ''
+  fields:
+  - name: STATE
+    bit_offset: 0
+    bit_size: 3
+  - name: BETWEEN
+    bit_offset: 4
+    bit_size: 1
+  - name: NACKED
+    bit_offset: 5
+    bit_size: 1
+  - name: IBITYPE
+    bit_offset: 6
+    bit_size: 2
+  - name: SLVSTART
+    bit_offset: 8
+    bit_size: 1
+  - name: MCTRLDONE
+    bit_offset: 9
+    bit_size: 1
+  - name: COMPLETE
+    bit_offset: 10
+    bit_size: 1
+  - name: RXPEND
+    bit_offset: 11
+    bit_size: 1
+  - name: TXNOTFULL
+    bit_offset: 12
+    bit_size: 1
+  - name: IBIWON
+    bit_offset: 13
+    bit_size: 1
+  - name: ERRWARN
+    bit_offset: 15
+    bit_size: 1
+  - name: NOWMASTER
+    bit_offset: 19
+    bit_size: 1
+  - name: IBIADDR
+    bit_offset: 24
+    bit_size: 7
+    description: IBI Address
+fieldset/I3C_MIBIRULES:
+  description: ''
+  fields:
+  - name: ADDR0
+    bit_offset: 0
+    bit_size: 6
+    description: ADDR0
+  - name: ADDR1
+    bit_offset: 6
+    bit_size: 6
+    description: ADDR0
+  - name: ADDR2
+    bit_offset: 12
+    bit_size: 6
+    description: ADDR1
+  - name: ADDR3
+    bit_offset: 18
+    bit_size: 6
+    description: ADDR2
+  - name: ADDR4
+    bit_offset: 24
+    bit_size: 6
+    description: ADDR3
+  - name: MSB0
+    bit_offset: 30
+    bit_size: 1
+    description: ADDR4
+  - name: NOBYTE
+    bit_offset: 31
+    bit_size: 1
+fieldset/I3C_MINTSET:
+  description: ''
+  fields:
+  - name: SLVSTART
+    bit_offset: 8
+    bit_size: 1
+  - name: MCTRLDONE
+    bit_offset: 9
+    bit_size: 1
+  - name: COMPLETE
+    bit_offset: 10
+    bit_size: 1
+  - name: RXPEND
+    bit_offset: 11
+    bit_size: 1
+  - name: TXNOTFULL
+    bit_offset: 12
+    bit_size: 1
+    description: Receive Pending Interrupt Enable
+  - name: IBIWON
+    bit_offset: 13
+    bit_size: 1
+  - name: ERRWARN
+    bit_offset: 15
+    bit_size: 1
+  - name: NOWMASTER
+    bit_offset: 19
+    bit_size: 1
+fieldset/I3C_MINTCLR:
+  description: ''
+  fields:
+  - name: SLVSTART
+    bit_offset: 8
+    bit_size: 1
+  - name: MCTRLDONE
+    bit_offset: 9
+    bit_size: 1
+  - name: COMPLETE
+    bit_offset: 10
+    bit_size: 1
+  - name: RXPEND
+    bit_offset: 11
+    bit_size: 1
+  - name: TXNOTFULL
+    bit_offset: 12
+    bit_size: 1
+  - name: IBIWON
+    bit_offset: 13
+    bit_size: 1
+  - name: ERRWARN
+    bit_offset: 15
+    bit_size: 1
+  - name: NOWMASTER
+    bit_offset: 19
+    bit_size: 1
+fieldset/I3C_MINTMASKED:
+  description: ''
+  fields:
+  - name: SLVSTART
+    bit_offset: 8
+    bit_size: 1
+  - name: MCTRLDONE
+    bit_offset: 9
+    bit_size: 1
+  - name: COMPLETE
+    bit_offset: 10
+    bit_size: 1
+  - name: RXPEND
+    bit_offset: 11
+    bit_size: 1
+    description: RXPEND Interrupt Mask
+  - name: TXNOTFULL
+    bit_offset: 12
+    bit_size: 1
+    description: RXPEND Interrupt Mask
+  - name: IBIWON
+    bit_offset: 13
+    bit_size: 1
+  - name: ERRWARN
+    bit_offset: 15
+    bit_size: 1
+  - name: NOWMASTER
+    bit_offset: 19
+    bit_size: 1
+fieldset/I3C_MERRWARN:
+  description: ''
+  fields:
+  - name: URUN
+    bit_offset: 1
+    bit_size: 1
+  - name: NACK
+    bit_offset: 2
+    bit_size: 1
+  - name: WRABT
+    bit_offset: 3
+    bit_size: 1
+  - name: TERM
+    bit_offset: 4
+    bit_size: 1
+  - name: HPAR
+    bit_offset: 9
+    bit_size: 1
+  - name: HCRC
+    bit_offset: 10
+    bit_size: 1
+  - name: OREAD
+    bit_offset: 16
+    bit_size: 1
+  - name: OWRITE
+    bit_offset: 17
+    bit_size: 1
+  - name: MSGERR
+    bit_offset: 18
+    bit_size: 1
+  - name: INVREQ
+    bit_offset: 19
+    bit_size: 1
+  - name: TIMEOUT
+    bit_offset: 20
+    bit_size: 1
+fieldset/I3C_MDMACTRL:
+  description: ''
+  fields:
+  - name: DMAFB
+    bit_offset: 0
+    bit_size: 2
+  - name: DMATB
+    bit_offset: 2
+    bit_size: 2
+  - name: DMAWIDTH
+    bit_offset: 4
+    bit_size: 2
+fieldset/I3C_MDATACTRL:
+  description: ''
+  fields:
+  - name: FLUSHTB
+    bit_offset: 0
+    bit_size: 1
+  - name: FLUSHFB
+    bit_offset: 1
+    bit_size: 1
+  - name: UNLOCK
+    bit_offset: 3
+    bit_size: 1
+  - name: TXTRIG
+    bit_offset: 4
+    bit_size: 2
+  - name: RXTRIG
+    bit_offset: 6
+    bit_size: 2
+  - name: TXCOUNT
+    bit_offset: 16
+    bit_size: 5
+    description: Transmit Entry Count
+  - name: RXCOUNT
+    bit_offset: 24
+    bit_size: 5
+    description: Transmit Entry Count
+  - name: TXFULL
+    bit_offset: 30
+    bit_size: 1
+    description: Receive Entry Count
+  - name: RXEMPTY
+    bit_offset: 31
+    bit_size: 1
+fieldset/I3C_MWDATAB:
+  description: ''
+  fields:
+  - name: VALUE
+    bit_offset: 0
+    bit_size: 8
+    description: Data Byte
+  - name: END
+    bit_offset: 8
+    bit_size: 1
+    description: Data Byte
+fieldset/I3C_MWDATAB_END:
+  description: ''
+  fields:
+  - name: ALSO
+    bit_offset: 16
+    bit_size: 1
+fieldset/I3C_MWDATABE:
+  description: ''
+  fields:
+  - name: VALUE
+    bit_offset: 0
+    bit_size: 8
+    description: Data
+fieldset/I3C_MWDATAH:
+  description: ''
+  fields:
+  - name: DATA0
+    bit_offset: 0
+    bit_size: 8
+    description: Data Byte 0
+  - name: DATA1
+    bit_offset: 8
+    bit_size: 8
+    description: Data Byte 0
+  - name: END
+    bit_offset: 16
+    bit_size: 1
+    description: Data Byte 1
+fieldset/I3C_MWDATAHE:
+  description: ''
+  fields:
+  - name: DATA0
+    bit_offset: 0
+    bit_size: 8
+    description: Data Byte 0
+  - name: DATA1
+    bit_offset: 8
+    bit_size: 8
+    description: Data Byte 0
+fieldset/I3C_MRDATAB:
+  description: ''
+  fields:
+  - name: VALUE
+    bit_offset: 0
+    bit_size: 8
+    description: Value
+fieldset/I3C_MRDATAH:
+  description: ''
+  fields:
+  - name: LSB
+    bit_offset: 0
+    bit_size: 8
+    description: Low Byte
+  - name: MSB
+    bit_offset: 8
+    bit_size: 8
+    description: Low Byte
+fieldset/I3C_MWDATAB1:
+  description: ''
+  fields:
+  - name: VALUE
+    bit_offset: 0
+    bit_size: 8
+    description: Value
+fieldset/I3C_MWDATAH1:
+  description: ''
+  fields:
+  - name: VALUE
+    bit_offset: 0
+    bit_size: 16
+    description: Value
+fieldset/I3C_MWMSG_SDR_CONTROL:
+  description: ''
+  fields:
+  - name: DIR
+    bit_offset: 0
+    bit_size: 1
+  - name: ADDR
+    bit_offset: 1
+    bit_size: 7
+    description: Address
+  - name: END
+    bit_offset: 8
+    bit_size: 1
+    description: Address
+  - name: I2C
+    bit_offset: 10
+    bit_size: 1
+  - name: LEN
+    bit_offset: 11
+    bit_size: 5
+    description: Length
+fieldset/I3C_MWMSG_SDR_DATA:
+  description: ''
+  fields:
+  - name: DATA16B
+    bit_offset: 0
+    bit_size: 16
+    description: Data
+fieldset/I3C_MRMSG_SDR:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 16
+    description: Data
+fieldset/I3C_MWMSG_DDR_CONTROL:
+  description: ''
+  fields:
+  - name: ADDRCMD
+    bit_offset: 0
+    bit_size: 16
+    description: Address Command
+fieldset/I3C_MWMSG_DDR_CONTROL2:
+  description: ''
+  fields:
+  - name: LEN
+    bit_offset: 0
+    bit_size: 10
+    description: Length of Message
+  - name: END
+    bit_offset: 14
+    bit_size: 1
+    description: Length of Message
+fieldset/I3C_MWMSG_DDR_DATA:
+  description: ''
+  fields:
+  - name: DATA16B
+    bit_offset: 0
+    bit_size: 16
+    description: Data
+fieldset/I3C_MRMSG_DDR:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 16
+    description: Data
+fieldset/I3C_MDYNADDR:
+  description: ''
+  fields:
+  - name: DAVALID
+    bit_offset: 0
+    bit_size: 1
+  - name: DADDR
+    bit_offset: 1
+    bit_size: 7
+    description: Dynamic Address
+fieldset/I3C_SRSTACTTIME:
+  description: ''
+  fields:
+  - name: PERRSTTIM
+    bit_offset: 0
+    bit_size: 8
+  - name: SYSRSTTIM
+    bit_offset: 8
+    bit_size: 8
+fieldset/I3C_SCCCMASK:
+  description: ''
+  fields:
+  - name: BASE
+    bit_offset: 0
+    bit_size: 1
+  - name: BASEBX
+    bit_offset: 1
+    bit_size: 1
+  - name: BASEDX
+    bit_offset: 2
+    bit_size: 1
+  - name: MEXTB
+    bit_offset: 3
+    bit_size: 1
+  - name: MEXTD
+    bit_offset: 4
+    bit_size: 1
+  - name: VENDB
+    bit_offset: 5
+    bit_size: 1
+  - name: VENDD
+    bit_offset: 6
+    bit_size: 1
+fieldset/I3C_SERRWARNMASK:
+  description: ''
+  fields:
+  - name: ORUN
+    bit_offset: 0
+    bit_size: 1
+  - name: URUN
+    bit_offset: 1
+    bit_size: 1
+  - name: URUNNACK
+    bit_offset: 2
+    bit_size: 1
+  - name: TERM
+    bit_offset: 3
+    bit_size: 1
+  - name: INVSTART
+    bit_offset: 4
+    bit_size: 1
+  - name: SPAR
+    bit_offset: 8
+    bit_size: 1
+  - name: HPAR
+    bit_offset: 9
+    bit_size: 1
+  - name: HCRC
+    bit_offset: 10
+    bit_size: 1
+  - name: S0S1
+    bit_offset: 11
+    bit_size: 1
+fieldset/I3C_SMAPCTRL0:
+  description: ''
+  fields:
+  - name: ENA
+    bit_offset: 0
+    bit_size: 1
+  - name: DA
+    bit_offset: 1
+    bit_size: 7
+    description: Dynamic Address
+  - name: CAUSE
+    bit_offset: 8
+    bit_size: 3
+    description: Dynamic Address
+fieldset/I3C_SMAPCTRL1:
+  description: ''
+  fields:
+  - name: ENA
+    bit_offset: 0
+    bit_size: 1
+  - name: ADDR
+    bit_offset: 1
+    bit_size: 7
+    description: Address
+  - name: MAPSA
+    bit_offset: 8
+    bit_size: 1
+    description: Address
+  - name: SA10B
+    bit_offset: 9
+    bit_size: 3
+  - name: NACK
+    bit_offset: 12
+    bit_size: 1
+    description: Static Address 10-Bit Extension
+  - name: AUTO
+    bit_offset: 13
+    bit_size: 1
+  - name: DCR
+    bit_offset: 24
+    bit_size: 8
+    description: DCR
+fieldset/I3C_IBIEXT1:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 3
+    description: Count
+  - name: MAX
+    bit_offset: 4
+    bit_size: 3
+    description: Count
+  - name: EXT1
+    bit_offset: 8
+    bit_size: 8
+    description: Maximum
+  - name: EXT2
+    bit_offset: 16
+    bit_size: 8
+    description: Extra Byte 1
+  - name: EXT3
+    bit_offset: 24
+    bit_size: 8
+    description: Extra Byte 2
+fieldset/I3C_IBIEXT2:
+  description: ''
+  fields:
+  - name: EXT4
+    bit_offset: 0
+    bit_size: 8
+    description: Extra Byte 4
+  - name: EXT5
+    bit_offset: 8
+    bit_size: 8
+    description: Extra Byte 4
+  - name: EXT6
+    bit_offset: 16
+    bit_size: 8
+    description: Extra Byte 5
+  - name: EXT7
+    bit_offset: 24
+    bit_size: 8
+    description: Extra Byte 6
+fieldset/I3C_SELFRESET:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 0
+    bit_size: 1
+  - name: KEY
+    bit_offset: 8
+    bit_size: 24
+    description: Key

@@ -1,0 +1,1264 @@
+block/NETC_IERB:
+  description: ''
+  items:
+  - name: CAPR0
+    byte_offset: 0
+  - name: CAPR1
+    byte_offset: 4
+  - name: CAPR2
+    byte_offset: 8
+  - name: CAPR3
+    byte_offset: 12
+  - name: CMCAPR
+    byte_offset: 32
+  - name: ITTMCAPR
+    byte_offset: 48
+  - name: SMDTR
+    byte_offset: 128
+    fieldset: NETC_IERB_SMDTR
+  - name: ERSMBAR
+    byte_offset: 132
+    fieldset: NETC_IERB_ERSMBAR
+  - name: HTAHPCR
+    byte_offset: 192
+    fieldset: NETC_IERB_HTAHPCR
+  - name: HTALPCR
+    byte_offset: 196
+    fieldset: NETC_IERB_HTALPCR
+  - name: HBTMAR
+    byte_offset: 256
+    fieldset: NETC_IERB_HBTMAR
+  - name: HBTCR
+    byte_offset: 260
+  - name: ITTCR
+    byte_offset: 304
+  - name: NETCFLRCR
+    byte_offset: 368
+    fieldset: NETC_IERB_NETCFLRCR
+  - name: NETCCLKFR
+    byte_offset: 376
+    fieldset: NETC_IERB_NETCCLKFR
+  - name: NETCCLKCR
+    byte_offset: 380
+    fieldset: NETC_IERB_NETCCLKCR
+  - name: SBCR
+    byte_offset: 384
+    fieldset: NETC_IERB_SBCR
+  - name: SBOTCR
+    byte_offset: 388
+  - name: SGLTTR
+    byte_offset: 400
+  - name: RCMSICAR
+    byte_offset: 520
+  - name: RCMSIAMQR
+    byte_offset: 524
+    fieldset: NETC_IERB_RCMSIAMQR
+  - name: EMDIOMCR
+    byte_offset: 788
+  - name: EMDIO_CFH_DIDVID
+    byte_offset: 800
+  - name: EMDIO_CFH_SIDSVID
+    byte_offset: 804
+  - name: EMDIOFAUXR
+    byte_offset: 836
+    fieldset: NETC_IERB_EMDIOFAUXR
+  - name: EMDIOBLPR
+    byte_offset: 840
+    array:
+      len: 2
+      stride: 4
+  - name: EMDIO_CFG
+    byte_offset: 848
+  - name: EMDIORIDAR
+    byte_offset: 864
+    fieldset: NETC_IERB_EMDIORIDAR
+  - name: TMCR
+    byte_offset: 1044
+  - name: T_CFH_DIDVID
+    byte_offset: 1056
+  - name: T_CFH_SIDSVID
+    byte_offset: 1060
+  - name: TFAUXR
+    byte_offset: 1092
+    fieldset: NETC_IERB_TFAUXR
+  - name: TBLPR
+    byte_offset: 1096
+    array:
+      len: 2
+      stride: 4
+  - name: TRIDAR
+    byte_offset: 1120
+    fieldset: NETC_IERB_TRIDAR
+  - name: TGSMCAPR
+    byte_offset: 2048
+  - name: TGSM0MAPR
+    byte_offset: 2052
+    fieldset: NETC_IERB_TGSM0MAPR
+  - name: TGSM0CAPR
+    byte_offset: 2056
+  - name: L0CAPR
+    byte_offset: 4096
+    fieldset: NETC_IERB_L0CAPR
+  - name: L0MCAPR
+    byte_offset: 4100
+    fieldset: NETC_IERB_L0MCAPR
+  - name: L0IOCAPR
+    byte_offset: 4104
+    fieldset: NETC_IERB_L0IOCAPR
+  - name: L0BCR
+    byte_offset: 4112
+  - name: L0E0MAR0
+    byte_offset: 4128
+  - name: L0E0MAR1
+    byte_offset: 4132
+  - name: L1CAPR
+    byte_offset: 4160
+    fieldset: NETC_IERB_L1CAPR
+  - name: L1MCAPR
+    byte_offset: 4164
+    fieldset: NETC_IERB_L1MCAPR
+  - name: L1IOCAPR
+    byte_offset: 4168
+    fieldset: NETC_IERB_L1IOCAPR
+  - name: L1BCR
+    byte_offset: 4176
+  - name: L1E0MAR0
+    byte_offset: 4192
+  - name: L1E0MAR1
+    byte_offset: 4196
+  - name: L2CAPR
+    byte_offset: 4224
+    fieldset: NETC_IERB_L2CAPR
+  - name: L2MCAPR
+    byte_offset: 4228
+    fieldset: NETC_IERB_L2MCAPR
+  - name: L2IOCAPR
+    byte_offset: 4232
+    fieldset: NETC_IERB_L2IOCAPR
+  - name: L2BCR
+    byte_offset: 4240
+  - name: L2E0MAR0
+    byte_offset: 4256
+  - name: L2E0MAR1
+    byte_offset: 4260
+  - name: EBCR1
+    byte_offset: 12292
+  - name: EBCR2
+    byte_offset: 12296
+  - name: EVFRIDAR
+    byte_offset: 12304
+    fieldset: NETC_IERB_EVFRIDAR
+  - name: EMCR
+    byte_offset: 12308
+  - name: E_CFH_DIDVID
+    byte_offset: 12320
+  - name: E_CFH_SIDSVID
+    byte_offset: 12324
+  - name: E_CFC_VFDID
+    byte_offset: 12328
+  - name: EBCAR
+    byte_offset: 12336
+    fieldset: NETC_IERB_EBCAR
+  - name: EMCAR
+    byte_offset: 12340
+  - name: ECAR
+    byte_offset: 12344
+    fieldset: NETC_IERB_ECAR
+  - name: EAMQR
+    byte_offset: 12352
+    fieldset: NETC_IERB_EAMQR
+  - name: EFAUXR
+    byte_offset: 12356
+    fieldset: NETC_IERB_EFAUXR
+  - name: EBLPR
+    byte_offset: 12360
+    array:
+      len: 2
+      stride: 4
+  - name: ERXMBER
+    byte_offset: 12368
+    fieldset: NETC_IERB_ERXMBER
+  - name: ERXMBLR
+    byte_offset: 12372
+    fieldset: NETC_IERB_ERXMBLR
+  - name: ERIDAR
+    byte_offset: 12384
+    fieldset: NETC_IERB_ERIDAR
+  - name: ETXHPTBCR
+    byte_offset: 12400
+  - name: ETXLPTBCR
+    byte_offset: 12404
+  - name: EHTMAR
+    byte_offset: 12416
+    fieldset: NETC_IERB_EHTMAR
+  - name: EITMAR
+    byte_offset: 12420
+    fieldset: NETC_IERB_EITMAR
+  - name: EIPFTMAR
+    byte_offset: 12424
+    fieldset: NETC_IERB_EIPFTMAR
+  - name: ERPITMAR
+    byte_offset: 12448
+  - name: EISCITMAR
+    byte_offset: 12452
+  - name: EISITMAR
+    byte_offset: 12456
+  - name: ESGIITMAR
+    byte_offset: 12468
+  - name: ESGCLITMAR
+    byte_offset: 12472
+  - name: ETGSTAR
+    byte_offset: 12528
+  - name: ETGSLR
+    byte_offset: 12532
+  - name: VAMQR
+    byte_offset: 16384
+    fieldset: NETC_IERB_VAMQR
+  - name: VFAUXR
+    byte_offset: 16388
+    fieldset: NETC_IERB_VFAUXR
+  - name: VBLPR
+    byte_offset: 16392
+    array:
+      len: 2
+      stride: 4
+  - name: VPMAR0
+    byte_offset: 16400
+  - name: VPMAR1
+    byte_offset: 16404
+fieldset/NETC_IERB_CAPR0_NUM:
+  description: ''
+  fields:
+  - name: EMDIO
+    bit_offset: 4
+    bit_size: 1
+  - name: TMR
+    bit_offset: 6
+    bit_size: 2
+  - name: LINKS
+    bit_offset: 8
+    bit_size: 5
+  - name: SW
+    bit_offset: 16
+    bit_size: 2
+  - name: ENETC
+    bit_offset: 19
+    bit_size: 5
+  - name: VSI
+    bit_offset: 24
+    bit_size: 7
+fieldset/NETC_IERB_CAPR1_NUM_RX:
+  description: ''
+  fields:
+  - name: BDR
+    bit_offset: 0
+    bit_size: 10
+fieldset/NETC_IERB_CAPR1_NUM_TX:
+  description: ''
+  fields:
+  - name: BDR
+    bit_offset: 16
+    bit_size: 10
+fieldset/NETC_IERB_CAPR2_NUM:
+  description: ''
+  fields:
+  - name: MSIX
+    bit_offset: 0
+    bit_size: 11
+fieldset/NETC_IERB_CAPR3_NUM_MAC:
+  description: ''
+  fields:
+  - name: AFTE
+    bit_offset: 0
+    bit_size: 12
+fieldset/NETC_IERB_CAPR3_NUM_VLAN:
+  description: ''
+  fields:
+  - name: FTE
+    bit_offset: 16
+    bit_size: 12
+fieldset/NETC_IERB_CMCAPR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 24
+fieldset/NETC_IERB_CMCAPR_WORD:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 28
+    bit_size: 2
+fieldset/NETC_IERB_ITTMCAPR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_ITTMCAPR_WORD:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 28
+    bit_size: 2
+fieldset/NETC_IERB_SMDTR:
+  description: ''
+  fields:
+  - name: THRESH
+    bit_offset: 0
+    bit_size: 24
+fieldset/NETC_IERB_ERSMBAR:
+  description: ''
+  fields:
+  - name: THRESH
+    bit_offset: 0
+    bit_size: 24
+fieldset/NETC_IERB_HTAHPCR:
+  description: ''
+  fields:
+  - name: BLIMIT
+    bit_offset: 0
+    bit_size: 16
+  - name: FLIMIT
+    bit_offset: 24
+    bit_size: 8
+fieldset/NETC_IERB_HTALPCR:
+  description: ''
+  fields:
+  - name: BLIMIT
+    bit_offset: 0
+    bit_size: 16
+  - name: FLIMIT
+    bit_offset: 24
+    bit_size: 8
+fieldset/NETC_IERB_HBTMAR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 14
+fieldset/NETC_IERB_HBTMAR_MIN:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 16
+    bit_size: 8
+fieldset/NETC_IERB_HBTMAR:
+  description: ''
+  fields:
+  - name: NEPW
+    bit_offset: 24
+    bit_size: 3
+  - name: MLOC
+    bit_offset: 30
+    bit_size: 2
+fieldset/NETC_IERB_HBTCR_MAX:
+  description: ''
+  fields:
+  - name: COL
+    bit_offset: 0
+    bit_size: 3
+  - name: VISITS
+    bit_offset: 4
+    bit_size: 4
+fieldset/NETC_IERB_ITTCR_MAX:
+  description: ''
+  fields:
+  - name: VISITS
+    bit_offset: 0
+    bit_size: 4
+fieldset/NETC_IERB_NETCFLRCR:
+  description: ''
+  fields:
+  - name: VALUE
+    bit_offset: 0
+    bit_size: 9
+  - name: SCALE
+    bit_offset: 9
+    bit_size: 3
+    description: Scale
+fieldset/NETC_IERB_NETCCLKFR:
+  description: ''
+  fields:
+  - name: FRAC
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_IERB_NETCCLKCR:
+  description: ''
+  fields:
+  - name: FREQ
+    bit_offset: 0
+    bit_size: 11
+    description: Frequency
+  - name: PERIOD
+    bit_offset: 16
+    bit_size: 10
+    description: Frequency
+fieldset/NETC_IERB_SBCR:
+  description: ''
+  fields:
+  - name: WBS
+    bit_offset: 0
+    bit_size: 2
+  - name: RBS
+    bit_offset: 2
+    bit_size: 2
+fieldset/NETC_IERB_SBOTCR_OT:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_IERB_SGLTTR_LAG:
+  description: ''
+  fields:
+  - name: TIME
+    bit_offset: 0
+    bit_size: 5
+fieldset/NETC_IERB_RCMSICAR_MSI:
+  description: ''
+  fields:
+  - name: WRCACHE
+    bit_offset: 0
+    bit_size: 4
+  - name: WRDOMAIN
+    bit_offset: 4
+    bit_size: 2
+  - name: WRSNP
+    bit_offset: 6
+    bit_size: 2
+fieldset/NETC_IERB_RCMSIAMQR:
+  description: ''
+  fields:
+  - name: AWQOS
+    bit_offset: 20
+    bit_size: 4
+fieldset/NETC_IERB_EMDIOMCR_NUM:
+  description: ''
+  fields:
+  - name: MSIX
+    bit_offset: 0
+    bit_size: 1
+fieldset/NETC_IERB_EMDIO_CFH_DIDVID_VENDOR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_EMDIO_CFH_DIDVID_DEVICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 16
+fieldset/NETC_IERB_EMDIO_CFH_SIDSVID_SUBSYSTEM_VENDOR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_EMDIO_CFH_SIDSVID_SUBSYSTEM_DEVICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 16
+fieldset/NETC_IERB_EMDIOFAUXR:
+  description: ''
+  fields:
+  - name: FAUX
+    bit_offset: 0
+    bit_size: 4
+    description: Function Auxiliary Information
+fieldset/NETC_IERB_EMDIOBLPR_PARAM:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_IERB_EMDIO_CFG_MDIO:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 4
+    bit_size: 1
+fieldset/NETC_IERB_EMDIO_CFG_MDC:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 5
+    bit_size: 1
+fieldset/NETC_IERB_EMDIORIDAR:
+  description: ''
+  fields:
+  - name: RID
+    bit_offset: 0
+    bit_size: 16
+  - name: PBUS
+    bit_offset: 16
+    bit_size: 8
+fieldset/NETC_IERB_TMCR_NUM:
+  description: ''
+  fields:
+  - name: MSIX
+    bit_offset: 0
+    bit_size: 1
+fieldset/NETC_IERB_T_CFH_DIDVID_VENDOR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_T_CFH_DIDVID_DEVICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 16
+fieldset/NETC_IERB_T_CFH_SIDSVID_SUBSYSTEM_VENDOR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_T_CFH_SIDSVID_SUBSYSTEM_DEVICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 16
+fieldset/NETC_IERB_TFAUXR:
+  description: ''
+  fields:
+  - name: FAUX
+    bit_offset: 0
+    bit_size: 4
+    description: Function Auxiliary Information
+fieldset/NETC_IERB_TBLPR_PARAM:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_IERB_TRIDAR:
+  description: ''
+  fields:
+  - name: RID
+    bit_offset: 0
+    bit_size: 16
+  - name: PBUS
+    bit_offset: 16
+    bit_size: 8
+fieldset/NETC_IERB_TGSMCAPR_NUM:
+  description: ''
+  fields:
+  - name: MEM
+    bit_offset: 0
+    bit_size: 4
+fieldset/NETC_IERB_TGSM0MAPR:
+  description: ''
+  fields:
+  - name: ENETCn
+    bit_offset: 16
+    bit_size: 16
+fieldset/NETC_IERB_TGSM0CAPR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_L0CAPR_LINK:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 4
+    bit_size: 1
+fieldset/NETC_IERB_L0CAPR_NUM:
+  description: ''
+  fields:
+  - name: TC
+    bit_offset: 12
+    bit_size: 4
+fieldset/NETC_IERB_L0CAPR:
+  description: ''
+  fields:
+  - name: TGS
+    bit_offset: 28
+    bit_size: 1
+    description: Time Gate Scheduling
+  - name: CBS
+    bit_offset: 29
+    bit_size: 1
+    description: Time Gate Scheduling
+fieldset/NETC_IERB_L0MCAPR_MAC:
+  description: ''
+  fields:
+  - name: VAR
+    bit_offset: 0
+    bit_size: 3
+    description: MAC Variant
+fieldset/NETC_IERB_L0MCAPR:
+  description: ''
+  fields:
+  - name: EFPAD
+    bit_offset: 4
+    bit_size: 2
+    description: MAC Variant
+  - name: HD
+    bit_offset: 8
+    bit_size: 1
+    description: Egress frame padding capability
+  - name: FP
+    bit_offset: 9
+    bit_size: 2
+    description: Half Duplex capability
+fieldset/NETC_IERB_L0MCAPR_MIN:
+  description: ''
+  fields:
+  - name: MPDU
+    bit_offset: 12
+    bit_size: 1
+    description: Indicates if frame preemption is supported
+fieldset/NETC_IERB_L0MCAPR_MII:
+  description: ''
+  fields:
+  - name: PROT
+    bit_offset: 24
+    bit_size: 4
+fieldset/NETC_IERB_L0IOCAPR_PCS:
+  description: ''
+  fields:
+  - name: PROT
+    bit_offset: 0
+    bit_size: 16
+    description: PCS protocols supported
+fieldset/NETC_IERB_L0IOCAPR_IO:
+  description: ''
+  fields:
+  - name: VAR
+    bit_offset: 24
+    bit_size: 4
+    description: PCS protocols supported
+fieldset/NETC_IERB_L0IOCAPR_REVMII:
+  description: ''
+  fields:
+  - name: RATE
+    bit_offset: 30
+    bit_size: 1
+    description: IO Variants supported
+fieldset/NETC_IERB_L0IOCAPR:
+  description: ''
+  fields:
+  - name: REVMII
+    bit_offset: 31
+    bit_size: 1
+    description: RevMII MII rate
+fieldset/NETC_IERB_L0BCR_SW_PORT_ENETC:
+  description: ''
+  fields:
+  - name: INST
+    bit_offset: 0
+    bit_size: 5
+fieldset/NETC_IERB_L0BCR_NETC:
+  description: ''
+  fields:
+  - name: FUNC
+    bit_offset: 6
+    bit_size: 1
+fieldset/NETC_IERB_L0BCR_MDIO_PHYAD:
+  description: ''
+  fields:
+  - name: PRTAD
+    bit_offset: 8
+    bit_size: 5
+fieldset/NETC_IERB_L0E0MAR0_MAC:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_IERB_L0E0MAR1_MAC:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_L1CAPR_LINK:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 4
+    bit_size: 1
+fieldset/NETC_IERB_L1CAPR_NUM:
+  description: ''
+  fields:
+  - name: TC
+    bit_offset: 12
+    bit_size: 4
+fieldset/NETC_IERB_L1CAPR:
+  description: ''
+  fields:
+  - name: TGS
+    bit_offset: 28
+    bit_size: 1
+    description: Time Gate Scheduling
+  - name: CBS
+    bit_offset: 29
+    bit_size: 1
+    description: Time Gate Scheduling
+fieldset/NETC_IERB_L1MCAPR_MAC:
+  description: ''
+  fields:
+  - name: VAR
+    bit_offset: 0
+    bit_size: 3
+    description: MAC Variant
+fieldset/NETC_IERB_L1MCAPR:
+  description: ''
+  fields:
+  - name: EFPAD
+    bit_offset: 4
+    bit_size: 2
+    description: MAC Variant
+  - name: HD
+    bit_offset: 8
+    bit_size: 1
+    description: Egress frame padding capability
+  - name: FP
+    bit_offset: 9
+    bit_size: 2
+    description: Half Duplex capability
+fieldset/NETC_IERB_L1MCAPR_MIN:
+  description: ''
+  fields:
+  - name: MPDU
+    bit_offset: 12
+    bit_size: 1
+    description: Indicates if frame preemption is supported
+fieldset/NETC_IERB_L1MCAPR_MII:
+  description: ''
+  fields:
+  - name: PROT
+    bit_offset: 24
+    bit_size: 4
+fieldset/NETC_IERB_L1IOCAPR_PCS:
+  description: ''
+  fields:
+  - name: PROT
+    bit_offset: 0
+    bit_size: 16
+    description: PCS protocols supported
+fieldset/NETC_IERB_L1IOCAPR_IO:
+  description: ''
+  fields:
+  - name: VAR
+    bit_offset: 24
+    bit_size: 4
+    description: PCS protocols supported
+fieldset/NETC_IERB_L1IOCAPR_REVMII:
+  description: ''
+  fields:
+  - name: RATE
+    bit_offset: 30
+    bit_size: 1
+    description: IO Variants supported
+fieldset/NETC_IERB_L1IOCAPR:
+  description: ''
+  fields:
+  - name: REVMII
+    bit_offset: 31
+    bit_size: 1
+    description: RevMII MII rate
+fieldset/NETC_IERB_L1BCR_SW_PORT_ENETC:
+  description: ''
+  fields:
+  - name: INST
+    bit_offset: 0
+    bit_size: 5
+fieldset/NETC_IERB_L1BCR_NETC:
+  description: ''
+  fields:
+  - name: FUNC
+    bit_offset: 6
+    bit_size: 1
+fieldset/NETC_IERB_L1BCR_MDIO_PHYAD:
+  description: ''
+  fields:
+  - name: PRTAD
+    bit_offset: 8
+    bit_size: 5
+fieldset/NETC_IERB_L1E0MAR0_MAC:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_IERB_L1E0MAR1_MAC:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_L2CAPR_LINK:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 4
+    bit_size: 1
+fieldset/NETC_IERB_L2CAPR_NUM:
+  description: ''
+  fields:
+  - name: TC
+    bit_offset: 12
+    bit_size: 4
+fieldset/NETC_IERB_L2CAPR:
+  description: ''
+  fields:
+  - name: TGS
+    bit_offset: 28
+    bit_size: 1
+    description: Time Gate Scheduling
+  - name: CBS
+    bit_offset: 29
+    bit_size: 1
+    description: Time Gate Scheduling
+fieldset/NETC_IERB_L2MCAPR_MAC:
+  description: ''
+  fields:
+  - name: VAR
+    bit_offset: 0
+    bit_size: 3
+    description: MAC Variant
+fieldset/NETC_IERB_L2MCAPR:
+  description: ''
+  fields:
+  - name: EFPAD
+    bit_offset: 4
+    bit_size: 2
+    description: MAC Variant
+  - name: HD
+    bit_offset: 8
+    bit_size: 1
+    description: Egress frame padding capability
+  - name: FP
+    bit_offset: 9
+    bit_size: 2
+    description: Half Duplex capability
+fieldset/NETC_IERB_L2MCAPR_MIN:
+  description: ''
+  fields:
+  - name: MPDU
+    bit_offset: 12
+    bit_size: 1
+    description: Indicates if frame preemption is supported
+fieldset/NETC_IERB_L2MCAPR_MII:
+  description: ''
+  fields:
+  - name: PROT
+    bit_offset: 24
+    bit_size: 4
+fieldset/NETC_IERB_L2IOCAPR_PCS:
+  description: ''
+  fields:
+  - name: PROT
+    bit_offset: 0
+    bit_size: 16
+    description: PCS protocols supported
+fieldset/NETC_IERB_L2IOCAPR_IO:
+  description: ''
+  fields:
+  - name: VAR
+    bit_offset: 24
+    bit_size: 4
+    description: PCS protocols supported
+fieldset/NETC_IERB_L2IOCAPR_REVMII:
+  description: ''
+  fields:
+  - name: RATE
+    bit_offset: 30
+    bit_size: 1
+    description: IO Variants supported
+fieldset/NETC_IERB_L2IOCAPR:
+  description: ''
+  fields:
+  - name: REVMII
+    bit_offset: 31
+    bit_size: 1
+    description: RevMII MII rate
+fieldset/NETC_IERB_L2BCR_SW_PORT_ENETC:
+  description: ''
+  fields:
+  - name: INST
+    bit_offset: 0
+    bit_size: 5
+fieldset/NETC_IERB_L2BCR_NETC:
+  description: ''
+  fields:
+  - name: FUNC
+    bit_offset: 6
+    bit_size: 1
+fieldset/NETC_IERB_L2BCR_MDIO_PHYAD:
+  description: ''
+  fields:
+  - name: PRTAD
+    bit_offset: 8
+    bit_size: 5
+fieldset/NETC_IERB_L2E0MAR0_MAC:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_IERB_L2E0MAR1_MAC:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_EBCR1_NUM_RX:
+  description: ''
+  fields:
+  - name: BDR
+    bit_offset: 0
+    bit_size: 10
+fieldset/NETC_IERB_EBCR1_NUM_TX:
+  description: ''
+  fields:
+  - name: BDR
+    bit_offset: 16
+    bit_size: 10
+fieldset/NETC_IERB_EBCR2_NUM_MAC:
+  description: ''
+  fields:
+  - name: AFTE
+    bit_offset: 0
+    bit_size: 12
+fieldset/NETC_IERB_EBCR2_NUM_VLAN:
+  description: ''
+  fields:
+  - name: FTE
+    bit_offset: 16
+    bit_size: 12
+fieldset/NETC_IERB_EVFRIDAR_NUM:
+  description: ''
+  fields:
+  - name: VF
+    bit_offset: 0
+    bit_size: 4
+fieldset/NETC_IERB_EVFRIDAR:
+  description: ''
+  fields:
+  - name: STRIDE
+    bit_offset: 8
+    bit_size: 2
+  - name: OFFSET
+    bit_offset: 16
+    bit_size: 16
+fieldset/NETC_IERB_EMCR_NUM:
+  description: ''
+  fields:
+  - name: MSIX
+    bit_offset: 0
+    bit_size: 11
+fieldset/NETC_IERB_E_CFH_DIDVID_VENDOR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_E_CFH_DIDVID_DEVICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 16
+fieldset/NETC_IERB_E_CFH_SIDSVID_SUBSYSTEM_VENDOR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_E_CFH_SIDSVID_SUBSYSTEM_DEVICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 16
+fieldset/NETC_IERB_E_CFC_VFDID_VF_DEVICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 16
+fieldset/NETC_IERB_EBCAR_BD:
+  description: ''
+  fields:
+  - name: WRCACHE
+    bit_offset: 0
+    bit_size: 4
+  - name: WRDOMAIN
+    bit_offset: 4
+    bit_size: 2
+  - name: WRSNP
+    bit_offset: 6
+    bit_size: 2
+  - name: RDCACHE
+    bit_offset: 16
+    bit_size: 4
+  - name: RDDOMAIN
+    bit_offset: 20
+    bit_size: 2
+  - name: RDSNP
+    bit_offset: 22
+    bit_size: 2
+fieldset/NETC_IERB_EBCAR:
+  description: ''
+  fields:
+  - name: WRCACHE
+    bit_offset: 8
+    bit_size: 4
+  - name: WRDOMAIN
+    bit_offset: 12
+    bit_size: 2
+  - name: WRSNP
+    bit_offset: 14
+    bit_size: 2
+  - name: RDCACHE
+    bit_offset: 24
+    bit_size: 4
+  - name: RDDOMAIN
+    bit_offset: 28
+    bit_size: 2
+  - name: RDSNP
+    bit_offset: 30
+    bit_size: 2
+fieldset/NETC_IERB_EMCAR_MSG:
+  description: ''
+  fields:
+  - name: WRCACHE
+    bit_offset: 0
+    bit_size: 4
+  - name: WRDOMAIN
+    bit_offset: 4
+    bit_size: 2
+  - name: WRSNP
+    bit_offset: 6
+    bit_size: 2
+  - name: RDCACHE
+    bit_offset: 16
+    bit_size: 4
+  - name: RDDOMAIN
+    bit_offset: 20
+    bit_size: 2
+  - name: RDSNP
+    bit_offset: 22
+    bit_size: 2
+fieldset/NETC_IERB_ECAR_CBD:
+  description: ''
+  fields:
+  - name: WRCACHE
+    bit_offset: 0
+    bit_size: 4
+  - name: WRDOMAIN
+    bit_offset: 4
+    bit_size: 2
+  - name: WRSNP
+    bit_offset: 6
+    bit_size: 2
+  - name: RDCACHE
+    bit_offset: 16
+    bit_size: 4
+  - name: RDDOMAIN
+    bit_offset: 20
+    bit_size: 2
+  - name: RDSNP
+    bit_offset: 22
+    bit_size: 2
+fieldset/NETC_IERB_ECAR:
+  description: ''
+  fields:
+  - name: CWRCACHE
+    bit_offset: 8
+    bit_size: 4
+  - name: CWRDOMAIN
+    bit_offset: 12
+    bit_size: 2
+  - name: CWRSNP
+    bit_offset: 14
+    bit_size: 2
+  - name: CRDCACHE
+    bit_offset: 24
+    bit_size: 4
+  - name: CRDDOMAIN
+    bit_offset: 28
+    bit_size: 2
+  - name: CRDSNP
+    bit_offset: 30
+    bit_size: 2
+fieldset/NETC_IERB_EAMQR:
+  description: ''
+  fields:
+  - name: ARQOS
+    bit_offset: 16
+    bit_size: 4
+  - name: AWQOS
+    bit_offset: 20
+    bit_size: 4
+fieldset/NETC_IERB_EFAUXR:
+  description: ''
+  fields:
+  - name: FAUX
+    bit_offset: 0
+    bit_size: 4
+    description: Function Auxiliary Information
+fieldset/NETC_IERB_EBLPR_PARAM:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_IERB_ERXMBER:
+  description: ''
+  fields:
+  - name: AMOUNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/NETC_IERB_ERXMBLR:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 0
+    bit_size: 24
+fieldset/NETC_IERB_ERIDAR:
+  description: ''
+  fields:
+  - name: RID
+    bit_offset: 0
+    bit_size: 16
+  - name: PBUS
+    bit_offset: 16
+    bit_size: 8
+fieldset/NETC_IERB_ETXHPTBCR_BYTE:
+  description: ''
+  fields:
+  - name: CREDIT
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_ETXLPTBCR_BYTE:
+  description: ''
+  fields:
+  - name: CREDIT
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_EHTMAR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_EHTMAR:
+  description: ''
+  fields:
+  - name: MLOC
+    bit_offset: 30
+    bit_size: 2
+fieldset/NETC_IERB_EITMAR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_EITMAR:
+  description: ''
+  fields:
+  - name: MLOC
+    bit_offset: 30
+    bit_size: 2
+fieldset/NETC_IERB_EIPFTMAR:
+  description: ''
+  fields:
+  - name: ALLOC
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_ERPITMAR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_EISCITMAR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_EISITMAR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_ESGIITMAR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_ESGCLITMAR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_IERB_ETGSTAR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 12
+fieldset/NETC_IERB_ETGSLR_MIN:
+  description: ''
+  fields:
+  - name: LOOKAHEAD
+    bit_offset: 0
+    bit_size: 20
+fieldset/NETC_IERB_ETGSLR_ZERO:
+  description: ''
+  fields:
+  - name: LOOKAHEAD
+    bit_offset: 31
+    bit_size: 1
+fieldset/NETC_IERB_VAMQR:
+  description: ''
+  fields:
+  - name: ARQOS
+    bit_offset: 16
+    bit_size: 4
+  - name: AWQOS
+    bit_offset: 20
+    bit_size: 4
+fieldset/NETC_IERB_VFAUXR:
+  description: ''
+  fields:
+  - name: FAUX
+    bit_offset: 0
+    bit_size: 4
+    description: Function Auxiliary Information
+fieldset/NETC_IERB_VBLPR_PARAM:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_IERB_VPMAR0_MAC:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_IERB_VPMAR1_MAC:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 16

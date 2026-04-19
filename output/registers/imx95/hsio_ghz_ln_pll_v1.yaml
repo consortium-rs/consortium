@@ -1,0 +1,135 @@
+block/HSIO_GHZ_LN_PLL:
+  description: ''
+  items:
+  - name: RW
+    byte_offset: 0
+  - name: SET
+    byte_offset: 4
+  - name: CLR
+    byte_offset: 8
+  - name: TOG
+    byte_offset: 12
+  - name: RW
+    byte_offset: 48
+  - name: SET
+    byte_offset: 52
+  - name: CLR
+    byte_offset: 56
+  - name: TOG
+    byte_offset: 60
+  - name: RW
+    byte_offset: 64
+  - name: SET
+    byte_offset: 68
+  - name: CLR
+    byte_offset: 72
+  - name: TOG
+    byte_offset: 76
+  - name: RW
+    byte_offset: 80
+  - name: SET
+    byte_offset: 84
+  - name: CLR
+    byte_offset: 88
+  - name: TOG
+    byte_offset: 92
+  - name: RW
+    byte_offset: 96
+  - name: SET
+    byte_offset: 100
+  - name: CLR
+    byte_offset: 104
+  - name: TOG
+    byte_offset: 108
+  - name: PLL_STATUS
+    byte_offset: 240
+fieldset/HSIO_GHZ_LN_PLL_CTRL:
+  description: ''
+  fields:
+  - name: POWERUP
+    bit_offset: 0
+    bit_size: 1
+  - name: SPREADCTL
+    bit_offset: 8
+    bit_size: 1
+fieldset/HSIO_GHZ_LN_PLL_CTRL_CLKMUX:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+  - name: BYPASS
+    bit_offset: 2
+    bit_size: 1
+fieldset/HSIO_GHZ_LN_PLL_CTRL_HW_CTRL:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 16
+    bit_size: 1
+fieldset/HSIO_GHZ_LN_PLL_CTRL_LOCK:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 31
+    bit_size: 1
+fieldset/HSIO_GHZ_LN_PLL_SPREAD_SPECTRUM:
+  description: ''
+  fields:
+  - name: STEP
+    bit_offset: 0
+    bit_size: 15
+    description: Step
+  - name: ENABLE
+    bit_offset: 15
+    bit_size: 1
+    description: Step
+  - name: STOP
+    bit_offset: 16
+    bit_size: 16
+    description: Stop
+fieldset/HSIO_GHZ_LN_PLL_NUMERATOR:
+  description: ''
+  fields:
+  - name: MFN
+    bit_offset: 2
+    bit_size: 30
+    description: Numerator
+fieldset/HSIO_GHZ_LN_PLL_DENOMINATOR:
+  description: ''
+  fields:
+  - name: MFD
+    bit_offset: 0
+    bit_size: 30
+    description: Denominator
+fieldset/HSIO_GHZ_LN_PLL_DIV:
+  description: ''
+  fields:
+  - name: ODIV
+    bit_offset: 0
+    bit_size: 8
+  - name: RDIV
+    bit_offset: 13
+    bit_size: 3
+  - name: MFI
+    bit_offset: 16
+    bit_size: 9
+    description: Integer Portion of Loop Divider
+fieldset/HSIO_GHZ_LN_PLL_PLL_STATUS_PLL:
+  description: ''
+  fields:
+  - name: LOCK
+    bit_offset: 0
+    bit_size: 1
+    description: PLL_LOCK
+  - name: LOL
+    bit_offset: 1
+    bit_size: 1
+    description: PLL_LOCK
+fieldset/HSIO_GHZ_LN_PLL_PLL_STATUS_ANA:
+  description: ''
+  fields:
+  - name: MFN
+    bit_offset: 2
+    bit_size: 30
+    description: PLL_LOL

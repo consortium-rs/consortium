@@ -1,0 +1,5490 @@
+block/RCC:
+  description: ''
+  items:
+  - name: SECCFGR
+    byte_offset: 0
+    array:
+      len: 4
+      stride: 4
+    description: RCC Secure Configuration Register x (x=0 to 3)
+  - name: PRIVCFGR
+    byte_offset: 16
+    array:
+      len: 4
+      stride: 4
+    description: RCC Privileged Configuration Register x (x=0 to 3)
+  - name: RCFGLOCKR
+    byte_offset: 32
+    array:
+      len: 4
+      stride: 4
+    description: RCC Resource Configuration Lock Register x (x=0 to 3)
+  - name: GRSTCSETR
+    byte_offset: 1024
+    description: RCC Global Reset Control Set Register
+    fieldset: RCC_GRSTCSETR
+  - name: C1RSTCSETR
+    byte_offset: 1028
+    description: RCC CPU1 Reset Control Set Register
+    fieldset: RCC_C1RSTCSETR
+  - name: C1P1RSTCSETR
+    byte_offset: 1032
+    description: RCC CPU1 Processor 1 Reset Control Set Register
+    fieldset: RCC_C1P1RSTCSETR
+  - name: C2RSTCSETR
+    byte_offset: 1036
+    description: RCC CPU2 Reset Control Set Register
+    fieldset: RCC_C2RSTCSETR
+  - name: HWRSTSCLRR
+    byte_offset: 1040
+    description: RCC Hardware Reset Status Clear Register
+    fieldset: RCC_HWRSTSCLRR
+  - name: C1HWRSTSCLRR
+    byte_offset: 1044
+    description: RCC CPU1 Hardware Reset Status Clear Register
+    fieldset: RCC_C1HWRSTSCLRR
+  - name: C2HWRSTSCLRR
+    byte_offset: 1048
+    description: RCC CPU2 Hardware Reset Status Clear Register
+    fieldset: RCC_C2HWRSTSCLRR
+  - name: C1BOOTRSTSSETR
+    byte_offset: 1052
+    description: RCC CPU1 BOOT Reset Status Set Register
+    fieldset: RCC_C1BOOTRSTSSETR
+  - name: C1BOOTRSTSCLRR
+    byte_offset: 1056
+    description: RCC CPU1 BOOT Reset Status Clear Register
+    fieldset: RCC_C1BOOTRSTSCLRR
+  - name: C2BOOTRSTSSETR
+    byte_offset: 1060
+    description: RCC CPU2 BOOT Reset Status Set Register
+    fieldset: RCC_C2BOOTRSTSSETR
+  - name: C2BOOTRSTSCLRR
+    byte_offset: 1064
+    description: RCC CPU2 BOOT Reset Status Clear Register
+    fieldset: RCC_C2BOOTRSTSCLRR
+  - name: C1SREQSETR
+    byte_offset: 1068
+    description: RCC CPU1 Stop Request Set Register
+    fieldset: RCC_C1SREQSETR
+  - name: C1SREQCLRR
+    byte_offset: 1072
+    description: RCC CPU1 Stop Request Clear Register
+    fieldset: RCC_C1SREQCLRR
+  - name: CPUBOOTCR
+    byte_offset: 1076
+    description: RCC CPU Boot Control Register
+  - name: STBYBOOTCR
+    byte_offset: 1080
+    description: RCC Standby Boot Control Register
+  - name: LEGBOOTCR
+    byte_offset: 1084
+    description: RCC Legacy Boot Control Register
+  - name: BDCR
+    byte_offset: 1088
+    description: RCC Backup Domain Control Register
+    fieldset: RCC_BDCR
+  - name: D3DCR
+    byte_offset: 1092
+    description: RCC SmartRun Domain Control Register
+    fieldset: RCC_D3DCR
+  - name: D3DSR
+    byte_offset: 1096
+    description: RCC SmartRun Domain Status Register
+    fieldset: RCC_D3DSR
+  - name: RDCR
+    byte_offset: 1100
+    description: RCC Reset Duration Control Register
+    fieldset: RCC_RDCR
+  - name: C1MSRDCR
+    byte_offset: 1104
+    description: RCC C1MS Reset Delay Control Register
+    fieldset: RCC_C1MSRDCR
+  - name: PWRLPDLYCR
+    byte_offset: 1108
+    description: RCC PWR_LP Delay Control Register
+    fieldset: RCC_PWRLPDLYCR
+  - name: C1CIESETR
+    byte_offset: 1112
+    description: RCC CPU1 Clock Source Interrupt Enable Set Register
+    fieldset: RCC_C1CIESETR
+  - name: C1CIFCLRR
+    byte_offset: 1116
+    description: RCC CPU1 Clock Source Interrupt Flag Clear Register
+    fieldset: RCC_C1CIFCLRR
+  - name: C2CIESETR
+    byte_offset: 1120
+    description: RCC CPU2 Clock Source Interrupt Enable Set Register
+    fieldset: RCC_C2CIESETR
+  - name: C2CIFCLRR
+    byte_offset: 1124
+    description: RCC CPU2 Clock Source Interrupt Flag Clear Register
+    fieldset: RCC_C2CIFCLRR
+  - name: IWDGC1FZSETR
+    byte_offset: 1128
+    description: RCC IWDG CPU1 Clock Freeze Set Register
+  - name: IWDGC1FZCLRR
+    byte_offset: 1132
+    description: RCC IWDG CPU1 Clock Freeze Clear Register
+  - name: IWDGC1CFGSETR
+    byte_offset: 1136
+    description: RCC IWDG CPU1 Configuration Set Register
+  - name: IWDGC1CFGCLRR
+    byte_offset: 1140
+    description: RCC IWDG CPU1 Configuration Clear Register
+  - name: IWDGC2FZSETR
+    byte_offset: 1144
+    description: RCC IWDG CPU2 Clock Freeze Set Register
+  - name: IWDGC2FZCLRR
+    byte_offset: 1148
+    description: RCC IWDG CPU2 Clock Freeze Clear Register
+  - name: IWDGC2CFGSETR
+    byte_offset: 1152
+    description: RCC IWDG CPU2 Configuration Set Register
+  - name: IWDGC2CFGCLRR
+    byte_offset: 1156
+    description: RCC IWDG CPU2 Configuration Clear Register
+  - name: IWDGC3CFGSETR
+    byte_offset: 1160
+    description: RCC IWDG CPU3 Configuration Set Register
+  - name: IWDGC3CFGCLRR
+    byte_offset: 1164
+    description: RCC IWDG CPU3 Configuration Clear Register
+  - name: C3CFGR
+    byte_offset: 1168
+    description: RCC CPU3 Configuration Register
+    fieldset: RCC_C3CFGR
+  - name: MCO1CFGR
+    byte_offset: 1172
+    description: RCC MCO1 Configuration Register
+    fieldset: RCC_MCO1CFGR
+  - name: MCO2CFGR
+    byte_offset: 1176
+    description: RCC MCO2 Configuration Register
+    fieldset: RCC_MCO2CFGR
+  - name: OCENSETR
+    byte_offset: 1180
+    description: RCC Oscillator Clock Enable Set Register
+    fieldset: RCC_OCENSETR
+  - name: OCENCLRR
+    byte_offset: 1184
+    description: RCC Oscillator Clock Enable Clear Register
+    fieldset: RCC_OCENCLRR
+  - name: OCRDYR
+    byte_offset: 1188
+    description: RCC Oscillator Clock Ready Register
+    fieldset: RCC_OCRDYR
+  - name: HSICFGR
+    byte_offset: 1192
+    description: RCC HSI Configuration Register
+    fieldset: RCC_HSICFGR
+  - name: MSICFGR
+    byte_offset: 1196
+    description: RCC MSI Configuration Register
+    fieldset: RCC_MSICFGR
+  - name: RTCDIVR
+    byte_offset: 1200
+    description: RCC RTC Clock Divider Register
+    fieldset: RCC_RTCDIVR
+  - name: APB1DIVR
+    byte_offset: 1204
+    description: RCC APB1 Clock Divider Register
+    fieldset: RCC_APB1DIVR
+  - name: APB2DIVR
+    byte_offset: 1208
+    description: RCC APB2 Clock Divider Register
+    fieldset: RCC_APB2DIVR
+  - name: APB3DIVR
+    byte_offset: 1212
+    description: RCC APB3 Clock Divider Register
+    fieldset: RCC_APB3DIVR
+  - name: APB4DIVR
+    byte_offset: 1216
+    description: RCC APB4 Clock Divider Register
+    fieldset: RCC_APB4DIVR
+  - name: APBDBGDIVR
+    byte_offset: 1220
+    description: RCC APBDBG Clock Divider Register
+    fieldset: RCC_APBDBGDIVR
+  - name: TIMG1PRER
+    byte_offset: 1224
+    description: RCC TIM Group 1 Prescaler Register
+    fieldset: RCC_TIMG1PRER
+  - name: TIMG2PRER
+    byte_offset: 1228
+    description: RCC TIM Group 2 Prescaler Register
+    fieldset: RCC_TIMG2PRER
+  - name: LSMCUDIVR
+    byte_offset: 1232
+    description: RCC LSMCU Clock Divider Register
+    fieldset: RCC_LSMCUDIVR
+  - name: DDRCPCFGR
+    byte_offset: 1236
+    description: RCC DDRC AXI Ports Configuration Register
+    fieldset: RCC_DDRCPCFGR
+  - name: DDRCAPBCFGR
+    byte_offset: 1240
+    description: RCC DDRC APB Configuration Register
+    fieldset: RCC_DDRCAPBCFGR
+  - name: DDRPHYCAPBCFGR
+    byte_offset: 1244
+    description: RCC DDRPHYC APB Configuration Register
+    fieldset: RCC_DDRPHYCAPBCFGR
+  - name: DDRPHYCCFGR
+    byte_offset: 1248
+    description: RCC DDRPHYC Configuration Register
+    fieldset: RCC_DDRPHYCCFGR
+  - name: DDRCFGR
+    byte_offset: 1252
+    description: RCC DDR Configuration Register
+    fieldset: RCC_DDRCFGR
+  - name: DDRITFCFGR
+    byte_offset: 1256
+    description: RCC DDR Interface Configuration Register
+    fieldset: RCC_DDRITFCFGR
+  - name: SYSRAMCFGR
+    byte_offset: 1264
+    description: RCC SYSRAM Configuration Register
+    fieldset: RCC_SYSRAMCFGR
+  - name: VDERAMCFGR
+    byte_offset: 1268
+    description: RCC VDERAM Configuration Register
+    fieldset: RCC_VDERAMCFGR
+  - name: SRAM1CFGR
+    byte_offset: 1272
+    description: RCC SRAM1 Configuration Register
+    fieldset: RCC_SRAM1CFGR
+  - name: SRAM2CFGR
+    byte_offset: 1276
+    description: RCC SRAM2 Configuration Register
+    fieldset: RCC_SRAM2CFGR
+  - name: RETRAMCFGR
+    byte_offset: 1280
+    description: RCC RETRAM Configuration Register
+    fieldset: RCC_RETRAMCFGR
+  - name: BKPSRAMCFGR
+    byte_offset: 1284
+    description: RCC BKPSRAM Configuration Register
+    fieldset: RCC_BKPSRAMCFGR
+  - name: LPSRAM1CFGR
+    byte_offset: 1288
+    description: RCC LPSRAM1 Configuration Register
+    fieldset: RCC_LPSRAM1CFGR
+  - name: LPSRAM2CFGR
+    byte_offset: 1292
+    description: RCC LPSRAM2 Configuration Register
+    fieldset: RCC_LPSRAM2CFGR
+  - name: LPSRAM3CFGR
+    byte_offset: 1296
+    description: RCC LPSRAM3 Configuration Register
+    fieldset: RCC_LPSRAM3CFGR
+  - name: OSPI1CFGR
+    byte_offset: 1300
+    description: RCC OSPI1 Configuration Register
+    fieldset: RCC_OSPI1CFGR
+  - name: OSPI2CFGR
+    byte_offset: 1304
+    description: RCC OSPI2 Configuration Register
+    fieldset: RCC_OSPI2CFGR
+  - name: FMCCFGR
+    byte_offset: 1308
+    description: RCC FMC Configuration Register
+    fieldset: RCC_FMCCFGR
+  - name: DBGCFGR
+    byte_offset: 1312
+    description: RCC Debug Configuration Register
+    fieldset: RCC_DBGCFGR
+  - name: STMCFGR
+    byte_offset: 1316
+    description: RCC STM Configuration Register
+    fieldset: RCC_STMCFGR
+  - name: ETRCFGR
+    byte_offset: 1320
+    description: RCC ETR Configuration Register
+    fieldset: RCC_ETRCFGR
+  - name: GPIOACFGR
+    byte_offset: 1324
+    description: RCC GPIOA Configuration Register
+    fieldset: RCC_GPIOACFGR
+  - name: GPIOBCFGR
+    byte_offset: 1328
+    description: RCC GPIOB Configuration Register
+    fieldset: RCC_GPIOBCFGR
+  - name: GPIOCCFGR
+    byte_offset: 1332
+    description: RCC GPIOC Configuration Register
+    fieldset: RCC_GPIOCCFGR
+  - name: GPIODCFGR
+    byte_offset: 1336
+    description: RCC GPIOD Configuration Register
+    fieldset: RCC_GPIODCFGR
+  - name: GPIOECFGR
+    byte_offset: 1340
+    description: RCC GPIOE Configuration Register
+    fieldset: RCC_GPIOECFGR
+  - name: GPIOFCFGR
+    byte_offset: 1344
+    description: RCC GPIOF Configuration Register
+    fieldset: RCC_GPIOFCFGR
+  - name: GPIOGCFGR
+    byte_offset: 1348
+    description: RCC GPIOG Configuration Register
+    fieldset: RCC_GPIOGCFGR
+  - name: GPIOHCFGR
+    byte_offset: 1352
+    description: RCC GPIOH Configuration Register
+    fieldset: RCC_GPIOHCFGR
+  - name: GPIOICFGR
+    byte_offset: 1356
+    description: RCC GPIOI Configuration Register
+    fieldset: RCC_GPIOICFGR
+  - name: GPIOJCFGR
+    byte_offset: 1360
+    description: RCC GPIOJ Configuration Register
+    fieldset: RCC_GPIOJCFGR
+  - name: GPIOKCFGR
+    byte_offset: 1364
+    description: RCC GPIOK Configuration Register
+    fieldset: RCC_GPIOKCFGR
+  - name: GPIOZCFGR
+    byte_offset: 1368
+    description: RCC GPIOZ Configuration Register
+    fieldset: RCC_GPIOZCFGR
+  - name: HPDMA1CFGR
+    byte_offset: 1372
+    description: RCC HPDMA1 Configuration Register
+    fieldset: RCC_HPDMA1CFGR
+  - name: HPDMA2CFGR
+    byte_offset: 1376
+    description: RCC HPDMA2 Configuration Register
+    fieldset: RCC_HPDMA2CFGR
+  - name: HPDMA3CFGR
+    byte_offset: 1380
+    description: RCC HPDMA3 Configuration Register
+    fieldset: RCC_HPDMA3CFGR
+  - name: LPDMACFGR
+    byte_offset: 1384
+    description: RCC LPDMA Configuration Register
+    fieldset: RCC_LPDMACFGR
+  - name: HSEMCFGR
+    byte_offset: 1388
+    description: RCC HSEM Configuration Register
+    fieldset: RCC_HSEMCFGR
+  - name: IPCC1CFGR
+    byte_offset: 1392
+    description: RCC IPCC1 Configuration Register
+    fieldset: RCC_IPCC1CFGR
+  - name: IPCC2CFGR
+    byte_offset: 1396
+    description: RCC IPCC2 Configuration Register
+    fieldset: RCC_IPCC2CFGR
+  - name: RTCCFGR
+    byte_offset: 1400
+    description: RCC RTC Configuration Register
+    fieldset: RCC_RTCCFGR
+  - name: SYSCPU1CFGR
+    byte_offset: 1408
+    description: RCC SYSCPU1 Configuration Register
+    fieldset: RCC_SYSCPU1CFGR
+  - name: BSECCFGR
+    byte_offset: 1412
+    description: RCC BSEC Configuration Register
+    fieldset: RCC_BSECCFGR
+  - name: PLL2CFGR1
+    byte_offset: 1424
+    description: RCC PLL{x} Configuration Register 1
+    fieldset: RCC_PLL2CFGR1
+  - name: PLL2CFGR2
+    byte_offset: 1428
+    description: RCC PLL{x} Configuration Register 2
+    fieldset: RCC_PLL2CFGR2
+  - name: PLL2CFGR3
+    byte_offset: 1432
+    description: RCC PLL{x} Configuration Register 3
+    fieldset: RCC_PLL2CFGR3
+  - name: PLL2CFGR4
+    byte_offset: 1436
+    description: RCC PLL{x} Configuration Register 4
+    fieldset: RCC_PLL2CFGR4
+  - name: PLL2CFGR5
+    byte_offset: 1440
+    description: RCC PLL{x} Configuration Register 5
+    fieldset: RCC_PLL2CFGR5
+  - name: PLL2CFGR6
+    byte_offset: 1448
+    description: RCC PLL{x} Configuration Register 6
+    fieldset: RCC_PLL2CFGR6
+  - name: PLL2CFGR7
+    byte_offset: 1452
+    description: RCC PLL{x} Configuration Register 7
+    fieldset: RCC_PLL2CFGR7
+  - name: PLL3CFGR1
+    byte_offset: 1464
+    description: RCC PLL{x} Configuration Register 1
+    fieldset: RCC_PLL3CFGR1
+  - name: PLL3CFGR2
+    byte_offset: 1468
+    description: RCC PLL{x} Configuration Register 2
+    fieldset: RCC_PLL3CFGR2
+  - name: PLL3CFGR3
+    byte_offset: 1472
+    description: RCC PLL{x} Configuration Register 3
+    fieldset: RCC_PLL3CFGR3
+  - name: PLL3CFGR4
+    byte_offset: 1476
+    description: RCC PLL{x} Configuration Register 4
+    fieldset: RCC_PLL3CFGR4
+  - name: PLL3CFGR5
+    byte_offset: 1480
+    description: RCC PLL{x} Configuration Register 5
+    fieldset: RCC_PLL3CFGR5
+  - name: PLL3CFGR6
+    byte_offset: 1488
+    description: RCC PLL{x} Configuration Register 6
+    fieldset: RCC_PLL3CFGR6
+  - name: PLL3CFGR7
+    byte_offset: 1492
+    description: RCC PLL{x} Configuration Register 7
+    fieldset: RCC_PLL3CFGR7
+  - name: HSIFMONCR
+    byte_offset: 1504
+    description: RCC HSI Frequency Monitoring Control Register
+    fieldset: RCC_HSIFMONCR
+  - name: HSIFVALR
+    byte_offset: 1508
+    description: RCC HSI Frequency Value Register
+    fieldset: RCC_HSIFVALR
+  - name: TIM1CFGR
+    byte_offset: 1792
+    description: RCC TIM1 Configuration Register
+    fieldset: RCC_TIM1CFGR
+  - name: TIM2CFGR
+    byte_offset: 1796
+    description: RCC TIM2 Configuration Register
+    fieldset: RCC_TIM2CFGR
+  - name: TIM3CFGR
+    byte_offset: 1800
+    description: RCC TIM3 Configuration Register
+    fieldset: RCC_TIM3CFGR
+  - name: TIM4CFGR
+    byte_offset: 1804
+    description: RCC TIM4 Configuration Register
+    fieldset: RCC_TIM4CFGR
+  - name: TIM5CFGR
+    byte_offset: 1808
+    description: RCC TIM5 Configuration Register
+    fieldset: RCC_TIM5CFGR
+  - name: TIM6CFGR
+    byte_offset: 1812
+    description: RCC TIM6 Configuration Register
+    fieldset: RCC_TIM6CFGR
+  - name: TIM7CFGR
+    byte_offset: 1816
+    description: RCC TIM7 Configuration Register
+    fieldset: RCC_TIM7CFGR
+  - name: TIM8CFGR
+    byte_offset: 1820
+    description: RCC TIM8 Configuration Register
+    fieldset: RCC_TIM8CFGR
+  - name: TIM10CFGR
+    byte_offset: 1824
+    description: RCC TIM10 Configuration Register
+    fieldset: RCC_TIM10CFGR
+  - name: TIM11CFGR
+    byte_offset: 1828
+    description: RCC TIM11 Configuration Register
+    fieldset: RCC_TIM11CFGR
+  - name: TIM12CFGR
+    byte_offset: 1832
+    description: RCC TIM12 Configuration Register
+    fieldset: RCC_TIM12CFGR
+  - name: TIM13CFGR
+    byte_offset: 1836
+    description: RCC TIM13 Configuration Register
+    fieldset: RCC_TIM13CFGR
+  - name: TIM14CFGR
+    byte_offset: 1840
+    description: RCC TIM14 Configuration Register
+    fieldset: RCC_TIM14CFGR
+  - name: TIM15CFGR
+    byte_offset: 1844
+    description: RCC TIM15 Configuration Register
+    fieldset: RCC_TIM15CFGR
+  - name: TIM16CFGR
+    byte_offset: 1848
+    description: RCC TIM16 Configuration Register
+    fieldset: RCC_TIM16CFGR
+  - name: TIM17CFGR
+    byte_offset: 1852
+    description: RCC TIM17 Configuration Register
+    fieldset: RCC_TIM17CFGR
+  - name: TIM20CFGR
+    byte_offset: 1856
+    description: RCC TIM20 Configuration Register
+    fieldset: RCC_TIM20CFGR
+  - name: LPTIM1CFGR
+    byte_offset: 1860
+    description: RCC LPTIM1 Configuration Register
+    fieldset: RCC_LPTIM1CFGR
+  - name: LPTIM2CFGR
+    byte_offset: 1864
+    description: RCC LPTIM2 Configuration Register
+    fieldset: RCC_LPTIM2CFGR
+  - name: LPTIM3CFGR
+    byte_offset: 1868
+    description: RCC LPTIM3 Configuration Register
+    fieldset: RCC_LPTIM3CFGR
+  - name: LPTIM4CFGR
+    byte_offset: 1872
+    description: RCC LPTIM4 Configuration Register
+    fieldset: RCC_LPTIM4CFGR
+  - name: LPTIM5CFGR
+    byte_offset: 1876
+    description: RCC LPTIM5 Configuration Register
+    fieldset: RCC_LPTIM5CFGR
+  - name: SPI1CFGR
+    byte_offset: 1880
+    description: RCC SPI1 Configuration Register
+    fieldset: RCC_SPI1CFGR
+  - name: SPI2CFGR
+    byte_offset: 1884
+    description: RCC SPI2 Configuration Register
+    fieldset: RCC_SPI2CFGR
+  - name: SPI3CFGR
+    byte_offset: 1888
+    description: RCC SPI3 Configuration Register
+    fieldset: RCC_SPI3CFGR
+  - name: SPI4CFGR
+    byte_offset: 1892
+    description: RCC SPI4 Configuration Register
+    fieldset: RCC_SPI4CFGR
+  - name: SPI5CFGR
+    byte_offset: 1896
+    description: RCC SPI5 Configuration Register
+    fieldset: RCC_SPI5CFGR
+  - name: SPI6CFGR
+    byte_offset: 1900
+    description: RCC SPI6 Configuration Register
+    fieldset: RCC_SPI6CFGR
+  - name: SPI7CFGR
+    byte_offset: 1904
+    description: RCC SPI7 Configuration Register
+    fieldset: RCC_SPI7CFGR
+  - name: SPI8CFGR
+    byte_offset: 1908
+    description: RCC SPI8 Configuration Register
+    fieldset: RCC_SPI8CFGR
+  - name: SPDIFRXCFGR
+    byte_offset: 1912
+    description: RCC SPDIFRX Configuration Register
+    fieldset: RCC_SPDIFRXCFGR
+  - name: USART1CFGR
+    byte_offset: 1916
+    description: RCC USART1 Configuration Register
+    fieldset: RCC_USART1CFGR
+  - name: USART2CFGR
+    byte_offset: 1920
+    description: RCC USART2 Configuration Register
+    fieldset: RCC_USART2CFGR
+  - name: USART3CFGR
+    byte_offset: 1924
+    description: RCC USART3 Configuration Register
+    fieldset: RCC_USART3CFGR
+  - name: UART4CFGR
+    byte_offset: 1928
+    description: RCC UART4 Configuration Register
+    fieldset: RCC_UART4CFGR
+  - name: UART5CFGR
+    byte_offset: 1932
+    description: RCC UART5 Configuration Register
+    fieldset: RCC_UART5CFGR
+  - name: USART6CFGR
+    byte_offset: 1936
+    description: RCC USART6 Configuration Register
+    fieldset: RCC_USART6CFGR
+  - name: UART7CFGR
+    byte_offset: 1940
+    description: RCC UART7 Configuration Register
+    fieldset: RCC_UART7CFGR
+  - name: UART8CFGR
+    byte_offset: 1944
+    description: RCC UART8 Configuration Register
+    fieldset: RCC_UART8CFGR
+  - name: UART9CFGR
+    byte_offset: 1948
+    description: RCC UART9 Configuration Register
+    fieldset: RCC_UART9CFGR
+  - name: LPUART1CFGR
+    byte_offset: 1952
+    description: RCC LPUART1 Configuration Register
+    fieldset: RCC_LPUART1CFGR
+  - name: I2C1CFGR
+    byte_offset: 1956
+    description: RCC I2C1 Configuration Register
+    fieldset: RCC_I2C1CFGR
+  - name: I2C2CFGR
+    byte_offset: 1960
+    description: RCC I2C2 Configuration Register
+    fieldset: RCC_I2C2CFGR
+  - name: I2C3CFGR
+    byte_offset: 1964
+    description: RCC I2C3 Configuration Register
+    fieldset: RCC_I2C3CFGR
+  - name: I2C4CFGR
+    byte_offset: 1968
+    description: RCC I2C4 Configuration Register
+    fieldset: RCC_I2C4CFGR
+  - name: I2C5CFGR
+    byte_offset: 1972
+    description: RCC I2C5 Configuration Register
+    fieldset: RCC_I2C5CFGR
+  - name: I2C6CFGR
+    byte_offset: 1976
+    description: RCC I2C6 Configuration Register
+    fieldset: RCC_I2C6CFGR
+  - name: I2C7CFGR
+    byte_offset: 1980
+    description: RCC I2C7 Configuration Register
+    fieldset: RCC_I2C7CFGR
+  - name: I2C8CFGR
+    byte_offset: 1984
+    description: RCC I2C8 Configuration Register
+    fieldset: RCC_I2C8CFGR
+  - name: SAI1CFGR
+    byte_offset: 1988
+    description: RCC SAI1 Configuration Register
+    fieldset: RCC_SAI1CFGR
+  - name: SAI2CFGR
+    byte_offset: 1992
+    description: RCC SAI2 Configuration Register
+    fieldset: RCC_SAI2CFGR
+  - name: SAI3CFGR
+    byte_offset: 1996
+    description: RCC SAI3 Configuration Register
+    fieldset: RCC_SAI3CFGR
+  - name: SAI4CFGR
+    byte_offset: 2000
+    description: RCC SAI4 Configuration Register
+    fieldset: RCC_SAI4CFGR
+  - name: MDF1CFGR
+    byte_offset: 2008
+    description: RCC MDF1 Configuration Register
+    fieldset: RCC_MDF1CFGR
+  - name: ADF1CFGR
+    byte_offset: 2012
+    description: RCC ADF1 Configuration Register
+    fieldset: RCC_ADF1CFGR
+  - name: FDCANCFGR
+    byte_offset: 2016
+    description: RCC FDCAN Configuration Register
+    fieldset: RCC_FDCANCFGR
+  - name: HDPCFGR
+    byte_offset: 2020
+    description: RCC HDP Configuration Register
+    fieldset: RCC_HDPCFGR
+  - name: ADC12CFGR
+    byte_offset: 2024
+    description: RCC ADC12 Configuration Register
+    fieldset: RCC_ADC12CFGR
+  - name: ADC3CFGR
+    byte_offset: 2028
+    description: RCC ADC3 Configuration Register
+    fieldset: RCC_ADC3CFGR
+  - name: ETH1CFGR
+    byte_offset: 2032
+    description: RCC Ethernet 1 Configuration Register
+    fieldset: RCC_ETH1CFGR
+  - name: ETH2CFGR
+    byte_offset: 2036
+    description: RCC Ethernet 2 Configuration Register
+    fieldset: RCC_ETH2CFGR
+  - name: USBHCFGR
+    byte_offset: 2044
+    description: RCC USBH Configuration Register
+    fieldset: RCC_USBHCFGR
+  - name: USB2PHY1CFGR
+    byte_offset: 2048
+    description: RCC USB2PHY1 Configuration Register
+    fieldset: RCC_USB2PHY1CFGR
+  - name: USB2PHY2CFGR
+    byte_offset: 2052
+    description: RCC USB2PHY2 Configuration Register
+    fieldset: RCC_USB2PHY2CFGR
+  - name: USB3DRDCFGR
+    byte_offset: 2056
+    description: RCC USB3DRD Configuration Register
+    fieldset: RCC_USB3DRDCFGR
+  - name: USB3PCIEPHYCFGR
+    byte_offset: 2060
+    description: RCC USB3PCIEPHY Configuration Register
+    fieldset: RCC_USB3PCIEPHYCFGR
+  - name: PCIECFGR
+    byte_offset: 2064
+    description: RCC PCIE Configuration Register
+    fieldset: RCC_PCIECFGR
+  - name: UCPDCFGR
+    byte_offset: 2068
+    description: RCC UCPD Configuration Register
+    fieldset: RCC_UCPDCFGR
+  - name: ETHSWCFGR
+    byte_offset: 2072
+    description: RCC Ethernet switch Configuration Register
+    fieldset: RCC_ETHSWCFGR
+  - name: ETHSWACMCFGR
+    byte_offset: 2076
+    description: RCC Ethernet switch ACM Configuration Register
+    fieldset: RCC_ETHSWACMCFGR
+  - name: ETHSWACMMSGCFGR
+    byte_offset: 2080
+    description: RCC Ethernet switch ACM Message Configuration Register
+    fieldset: RCC_ETHSWACMMSGCFGR
+  - name: STGENCFGR
+    byte_offset: 2084
+    description: RCC STGEN Configuration Register
+    fieldset: RCC_STGENCFGR
+  - name: SDMMC1CFGR
+    byte_offset: 2096
+    description: RCC SDMMC1 Configuration Register
+    fieldset: RCC_SDMMC1CFGR
+  - name: SDMMC2CFGR
+    byte_offset: 2100
+    description: RCC SDMMC2 Configuration Register
+    fieldset: RCC_SDMMC2CFGR
+  - name: SDMMC3CFGR
+    byte_offset: 2104
+    description: RCC SDMMC3 Configuration Register
+    fieldset: RCC_SDMMC3CFGR
+  - name: GPUCFGR
+    byte_offset: 2108
+    description: RCC GPU Configuration Register
+    fieldset: RCC_GPUCFGR
+  - name: LTDCCFGR
+    byte_offset: 2112
+    description: RCC LTDC Configuration Register
+    fieldset: RCC_LTDCCFGR
+  - name: DSICFGR
+    byte_offset: 2116
+    description: RCC DSI Configuration Register
+    fieldset: RCC_DSICFGR
+  - name: LVDSCFGR
+    byte_offset: 2128
+    description: RCC LVDS Configuration Register
+    fieldset: RCC_LVDSCFGR
+  - name: CSI2CFGR
+    byte_offset: 2136
+    description: RCC CSI2 Configuration Register
+    fieldset: RCC_CSI2CFGR
+  - name: DCMIPPCFGR
+    byte_offset: 2140
+    description: RCC DCMIPP Configuration Register
+    fieldset: RCC_DCMIPPCFGR
+  - name: CCICFGR
+    byte_offset: 2144
+    description: RCC CCI Configuration Register
+    fieldset: RCC_CCICFGR
+  - name: VDECCFGR
+    byte_offset: 2148
+    description: RCC VDEC Configuration Register
+    fieldset: RCC_VDECCFGR
+  - name: VENCCFGR
+    byte_offset: 2152
+    description: RCC VENC Configuration Register
+    fieldset: RCC_VENCCFGR
+  - name: RNGCFGR
+    byte_offset: 2160
+    description: RCC RNG Configuration Register
+    fieldset: RCC_RNGCFGR
+  - name: PKACFGR
+    byte_offset: 2164
+    description: RCC PKA Configuration Register
+    fieldset: RCC_PKACFGR
+  - name: SAESCFGR
+    byte_offset: 2168
+    description: RCC SAES Configuration Register
+    fieldset: RCC_SAESCFGR
+  - name: HASHCFGR
+    byte_offset: 2172
+    description: RCC HASH Configuration Register
+    fieldset: RCC_HASHCFGR
+  - name: CRYP1CFGR
+    byte_offset: 2176
+    description: RCC CRYP1 Configuration Register
+    fieldset: RCC_CRYP1CFGR
+  - name: CRYP2CFGR
+    byte_offset: 2180
+    description: RCC CRYP2 Configuration Register
+    fieldset: RCC_CRYP2CFGR
+  - name: IWDG1CFGR
+    byte_offset: 2184
+    description: RCC IWDG1 Configuration Register
+    fieldset: RCC_IWDG1CFGR
+  - name: IWDG2CFGR
+    byte_offset: 2188
+    description: RCC IWDG2 Configuration Register
+    fieldset: RCC_IWDG2CFGR
+  - name: IWDG3CFGR
+    byte_offset: 2192
+    description: RCC IWDG3 Configuration Register
+    fieldset: RCC_IWDG3CFGR
+  - name: IWDG4CFGR
+    byte_offset: 2196
+    description: RCC IWDG4 Configuration Register
+    fieldset: RCC_IWDG4CFGR
+  - name: IWDG5CFGR
+    byte_offset: 2200
+    description: RCC IWDG5 Configuration Register
+    fieldset: RCC_IWDG5CFGR
+  - name: WWDG1CFGR
+    byte_offset: 2204
+    description: RCC WWDG1 Configuration Register
+    fieldset: RCC_WWDG1CFGR
+  - name: WWDG2CFGR
+    byte_offset: 2208
+    description: RCC WWDG2 Configuration Register
+    fieldset: RCC_WWDG2CFGR
+  - name: VREFCFGR
+    byte_offset: 2216
+    description: RCC VREF Configuration Register
+    fieldset: RCC_VREFCFGR
+  - name: DTSCFGR
+    byte_offset: 2220
+    description: RCC DTS Configuration Register
+    fieldset: RCC_DTSCFGR
+  - name: CRCCFGR
+    byte_offset: 2228
+    description: RCC CRC Configuration Register
+    fieldset: RCC_CRCCFGR
+  - name: SERCCFGR
+    byte_offset: 2232
+    description: RCC SERC Configuration Register
+    fieldset: RCC_SERCCFGR
+  - name: OSPIIOMCFGR
+    byte_offset: 2236
+    description: RCC OCTOSPI IOMANAGER Configuration Register
+    fieldset: RCC_OSPIIOMCFGR
+  - name: GICV2MCFGR
+    byte_offset: 2240
+    description: RCC GICV2M Configuration Register
+    fieldset: RCC_GICV2MCFGR
+  - name: I3C1CFGR
+    byte_offset: 2248
+    description: RCC I3C1 Configuration Register
+    fieldset: RCC_I3C1CFGR
+  - name: I3C2CFGR
+    byte_offset: 2252
+    description: RCC I3C2 Configuration Register
+    fieldset: RCC_I3C2CFGR
+  - name: I3C3CFGR
+    byte_offset: 2256
+    description: RCC I3C3 Configuration Register
+    fieldset: RCC_I3C3CFGR
+  - name: I3C4CFGR
+    byte_offset: 2260
+    description: RCC I3C4 Configuration Register
+    fieldset: RCC_I3C4CFGR
+  - name: MUXSELCFGR
+    byte_offset: 4096
+    description: RCC MUXSEL Configuration Register
+    fieldset: RCC_MUXSELCFGR
+  - name: XBARxCFGR
+    byte_offset: 4120
+    array:
+      len: 64
+      stride: 4
+    description: RCC Cross Bar x Configuration Register (x=0 to 63)
+    fieldset: RCC_XBARxCFGR
+  - name: PREDIVxCFGR
+    byte_offset: 4376
+    array:
+      len: 64
+      stride: 4
+    description: RCC Pre Divider x Configuration Register (x=0 to 63)
+    fieldset: RCC_PREDIVxCFGR
+  - name: PREDIVSR1
+    byte_offset: 4632
+    description: RCC Pre Divider Status Register 1
+    fieldset: RCC_PREDIVSR1
+  - name: PREDIVSR2
+    byte_offset: 4636
+    description: RCC Pre Divider Status Register 2
+    fieldset: RCC_PREDIVSR2
+  - name: FINDIVxCFGR
+    byte_offset: 4644
+    array:
+      len: 64
+      stride: 4
+    description: RCC Final Divider x Configuration Register (x=0 to 63)
+    fieldset: RCC_FINDIVxCFGR
+  - name: FINDIVSR1
+    byte_offset: 4900
+    description: RCC Final Divider Status Register 1
+    fieldset: RCC_FINDIVSR1
+  - name: FINDIVSR2
+    byte_offset: 4904
+    description: RCC Final Divider Status Register 2
+    fieldset: RCC_FINDIVSR2
+  - name: FCALCOBS0CFGR
+    byte_offset: 4928
+    description: RCC Clock Frequency Calculator and Observation 0 clock Configuration
+      Register
+    fieldset: RCC_FCALCOBS0CFGR
+  - name: FCALCOBS1CFGR
+    byte_offset: 4932
+    description: RCC Clock Frequency Calculator and Observation 1 clock Configuration
+      Register
+    fieldset: RCC_FCALCOBS1CFGR
+  - name: FCALCREFCFGR
+    byte_offset: 4936
+    description: RCC Clock Frequency Calculator Reference clock Configuration Register
+    fieldset: RCC_FCALCREFCFGR
+  - name: FCALCCR1
+    byte_offset: 4940
+    description: RCC Clock Frequency Calculator Control Register 1
+    fieldset: RCC_FCALCCR1
+  - name: FCALCCR2
+    byte_offset: 4948
+    description: RCC Clock Frequency Calculator Control Register 2
+    fieldset: RCC_FCALCCR2
+  - name: FCALCSR
+    byte_offset: 4952
+    description: RCC Clock Frequency Calculator Status Register
+    fieldset: RCC_FCALCSR
+  - name: PLL4CFGR1
+    byte_offset: 4960
+    description: RCC PLL{y} Configuration Register 1
+    fieldset: RCC_PLL4CFGR1
+  - name: PLL4CFGR2
+    byte_offset: 4964
+    description: RCC PLL{y} Configuration Register 2
+    fieldset: RCC_PLL4CFGR2
+  - name: PLL4CFGR3
+    byte_offset: 4968
+    description: RCC PLL{y} Configuration Register 3
+    fieldset: RCC_PLL4CFGR3
+  - name: PLL4CFGR4
+    byte_offset: 4972
+    description: RCC PLL{y} Configuration Register 4
+    fieldset: RCC_PLL4CFGR4
+  - name: PLL4CFGR5
+    byte_offset: 4976
+    description: RCC PLL{y} Configuration Register 5
+    fieldset: RCC_PLL4CFGR5
+  - name: PLL4CFGR6
+    byte_offset: 4984
+    description: RCC PLL{y} Configuration Register 6
+    fieldset: RCC_PLL4CFGR6
+  - name: PLL4CFGR7
+    byte_offset: 4988
+    description: RCC PLL{y} Configuration Register 7
+    fieldset: RCC_PLL4CFGR7
+  - name: PLL5CFGR1
+    byte_offset: 5000
+    description: RCC PLL{y} Configuration Register 1
+    fieldset: RCC_PLL5CFGR1
+  - name: PLL5CFGR2
+    byte_offset: 5004
+    description: RCC PLL{y} Configuration Register 2
+    fieldset: RCC_PLL5CFGR2
+  - name: PLL5CFGR3
+    byte_offset: 5008
+    description: RCC PLL{y} Configuration Register 3
+    fieldset: RCC_PLL5CFGR3
+  - name: PLL5CFGR4
+    byte_offset: 5012
+    description: RCC PLL{y} Configuration Register 4
+    fieldset: RCC_PLL5CFGR4
+  - name: PLL5CFGR5
+    byte_offset: 5016
+    description: RCC PLL{y} Configuration Register 5
+    fieldset: RCC_PLL5CFGR5
+  - name: PLL5CFGR6
+    byte_offset: 5024
+    description: RCC PLL{y} Configuration Register 6
+    fieldset: RCC_PLL5CFGR6
+  - name: PLL5CFGR7
+    byte_offset: 5028
+    description: RCC PLL{y} Configuration Register 7
+    fieldset: RCC_PLL5CFGR7
+  - name: PLL6CFGR1
+    byte_offset: 5040
+    description: RCC PLL{y} Configuration Register 1
+    fieldset: RCC_PLL6CFGR1
+  - name: PLL6CFGR2
+    byte_offset: 5044
+    description: RCC PLL{y} Configuration Register 2
+    fieldset: RCC_PLL6CFGR2
+  - name: PLL6CFGR3
+    byte_offset: 5048
+    description: RCC PLL{y} Configuration Register 3
+    fieldset: RCC_PLL6CFGR3
+  - name: PLL6CFGR4
+    byte_offset: 5052
+    description: RCC PLL{y} Configuration Register 4
+    fieldset: RCC_PLL6CFGR4
+  - name: PLL6CFGR5
+    byte_offset: 5056
+    description: RCC PLL{y} Configuration Register 5
+    fieldset: RCC_PLL6CFGR5
+  - name: PLL6CFGR6
+    byte_offset: 5064
+    description: RCC PLL{y} Configuration Register 6
+    fieldset: RCC_PLL6CFGR6
+  - name: PLL6CFGR7
+    byte_offset: 5068
+    description: RCC PLL{y} Configuration Register 7
+    fieldset: RCC_PLL6CFGR7
+  - name: PLL7CFGR1
+    byte_offset: 5080
+    description: RCC PLL{y} Configuration Register 1
+    fieldset: RCC_PLL7CFGR1
+  - name: PLL7CFGR2
+    byte_offset: 5084
+    description: RCC PLL{y} Configuration Register 2
+    fieldset: RCC_PLL7CFGR2
+  - name: PLL7CFGR3
+    byte_offset: 5088
+    description: RCC PLL{y} Configuration Register 3
+    fieldset: RCC_PLL7CFGR3
+  - name: PLL7CFGR4
+    byte_offset: 5092
+    description: RCC PLL{y} Configuration Register 4
+    fieldset: RCC_PLL7CFGR4
+  - name: PLL7CFGR5
+    byte_offset: 5096
+    description: RCC PLL{y} Configuration Register 5
+    fieldset: RCC_PLL7CFGR5
+  - name: PLL7CFGR6
+    byte_offset: 5104
+    description: RCC PLL{y} Configuration Register 6
+    fieldset: RCC_PLL7CFGR6
+  - name: PLL7CFGR7
+    byte_offset: 5108
+    description: RCC PLL{y} Configuration Register 7
+    fieldset: RCC_PLL7CFGR7
+  - name: PLL8CFGR1
+    byte_offset: 5120
+    description: RCC PLL{y} Configuration Register 1
+    fieldset: RCC_PLL8CFGR1
+  - name: PLL8CFGR2
+    byte_offset: 5124
+    description: RCC PLL{y} Configuration Register 2
+    fieldset: RCC_PLL8CFGR2
+  - name: PLL8CFGR3
+    byte_offset: 5128
+    description: RCC PLL{y} Configuration Register 3
+    fieldset: RCC_PLL8CFGR3
+  - name: PLL8CFGR4
+    byte_offset: 5132
+    description: RCC PLL{y} Configuration Register 4
+    fieldset: RCC_PLL8CFGR4
+  - name: PLL8CFGR5
+    byte_offset: 5136
+    description: RCC PLL{y} Configuration Register 5
+    fieldset: RCC_PLL8CFGR5
+  - name: PLL8CFGR6
+    byte_offset: 5144
+    description: RCC PLL{y} Configuration Register 6
+    fieldset: RCC_PLL8CFGR6
+  - name: PLL8CFGR7
+    byte_offset: 5148
+    description: RCC PLL{y} Configuration Register 7
+    fieldset: RCC_PLL8CFGR7
+  - name: VERR
+    byte_offset: 65524
+    description: RCC Version register
+    fieldset: RCC_VERR
+  - name: IDR
+    byte_offset: 65528
+    description: RCC ID register
+    fieldset: RCC_IDR
+  - name: SIDR
+    byte_offset: 65532
+    description: RCC Size ID register
+    fieldset: RCC_SIDR
+fieldset/RCC_GRSTCSETR:
+  description: ''
+  fields:
+  - name: SYSRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_C1RSTCSETR register
+fieldset/RCC_C1RSTCSETR:
+  description: ''
+  fields:
+  - name: C1RST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_C1P1RSTCSETR register
+fieldset/RCC_C1P1RSTCSETR:
+  description: ''
+  fields:
+  - name: C1P1PORRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_C2RSTCSETR register
+  - name: C1P1RST
+    bit_offset: 1
+    bit_size: 1
+    description: Bit fields for RCC_C2RSTCSETR register
+fieldset/RCC_C2RSTCSETR:
+  description: ''
+  fields:
+  - name: C2RST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_HWRSTSCLRR register
+fieldset/RCC_HWRSTSCLRR:
+  description: ''
+  fields:
+  - name: PORRSTF
+    bit_offset: 0
+    bit_size: 1
+    description: POR/PDR reset flag
+  - name: BORRSTF
+    bit_offset: 1
+    bit_size: 1
+    description: BOR reset flag
+  - name: PADRSTF
+    bit_offset: 2
+    bit_size: 1
+    description: NRST reset flag
+  - name: HCSSRSTF
+    bit_offset: 3
+    bit_size: 1
+    description: HSE CSS reset flag
+  - name: VCORERSTF
+    bit_offset: 4
+    bit_size: 1
+    description: V&lt;sub&gt;DDCORE&lt;/sub&gt; reset flag
+  - name: SYSC1RSTF
+    bit_offset: 5
+    bit_size: 1
+    description: CPU1 system reset flag
+  - name: SYSC2RSTF
+    bit_offset: 6
+    bit_size: 1
+    description: CPU2 system reset flag
+  - name: IWDG1SYSRSTF
+    bit_offset: 7
+    bit_size: 1
+    description: IWDG1 system reset flag
+  - name: IWDG2SYSRSTF
+    bit_offset: 8
+    bit_size: 1
+    description: IWDG2 system reset flag
+  - name: IWDG3SYSRSTF
+    bit_offset: 9
+    bit_size: 1
+    description: IWDG3 system reset flag
+  - name: IWDG4SYSRSTF
+    bit_offset: 10
+    bit_size: 1
+    description: IWDG4 system reset flag
+  - name: IWDG5SYSRSTF
+    bit_offset: 11
+    bit_size: 1
+    description: IWDG5 system reset flag
+  - name: RETCRCERRRSTF
+    bit_offset: 12
+    bit_size: 1
+    description: RETRAM CRC error reset flag
+  - name: RETECCFAILCRCRSTF
+    bit_offset: 13
+    bit_size: 1
+    description: RETRAM ECC failure reset flag during the CRC computation phase
+  - name: RETECCFAILRESTRSTF
+    bit_offset: 14
+    bit_size: 1
+    description: RETRAM ECC failure reset flag during system restoration phase
+fieldset/RCC_C1HWRSTSCLRR:
+  description: ''
+  fields:
+  - name: VCPURSTF
+    bit_offset: 0
+    bit_size: 1
+    description: V&lt;sub&gt;DDCPU&lt;/sub&gt; reset flag
+  - name: C1RSTF
+    bit_offset: 1
+    bit_size: 1
+    description: CPU1 reset flag
+  - name: C1P1RSTF
+    bit_offset: 2
+    bit_size: 1
+    description: CPU1 processor core 1 reset flag
+fieldset/RCC_C2HWRSTSCLRR:
+  description: ''
+  fields:
+  - name: C2RSTF
+    bit_offset: 0
+    bit_size: 1
+    description: CPU2 reset flag
+fieldset/RCC_C1BOOTRSTSSETR:
+  description: ''
+  fields:
+  - name: PORRSTF
+    bit_offset: 0
+    bit_size: 1
+    description: POR/PDR reset flag
+  - name: BORRSTF
+    bit_offset: 1
+    bit_size: 1
+    description: BOR reset flag
+  - name: PADRSTF
+    bit_offset: 2
+    bit_size: 1
+    description: NRST reset flag
+  - name: HCSSRSTF
+    bit_offset: 3
+    bit_size: 1
+    description: HSE CSS reset flag
+  - name: VCORERSTF
+    bit_offset: 4
+    bit_size: 1
+    description: V&lt;sub&gt;DDCORE&lt;/sub&gt; reset flag
+  - name: VCPURSTF
+    bit_offset: 5
+    bit_size: 1
+    description: V&lt;sub&gt;DDCPU&lt;/sub&gt; reset flag
+  - name: SYSC1RSTF
+    bit_offset: 6
+    bit_size: 1
+    description: CPU1 system reset flag
+  - name: SYSC2RSTF
+    bit_offset: 7
+    bit_size: 1
+    description: CPU2 system reset flag
+  - name: IWDG1SYSRSTF
+    bit_offset: 8
+    bit_size: 1
+    description: IWDG1 system reset flag
+  - name: IWDG2SYSRSTF
+    bit_offset: 9
+    bit_size: 1
+    description: IWDG2 system reset flag
+  - name: IWDG3SYSRSTF
+    bit_offset: 10
+    bit_size: 1
+    description: IWDG3 system reset flag
+  - name: IWDG4SYSRSTF
+    bit_offset: 11
+    bit_size: 1
+    description: IWDG4 system reset flag
+  - name: IWDG5SYSRSTF
+    bit_offset: 12
+    bit_size: 1
+    description: IWDG5 system reset flag
+  - name: C1RSTF
+    bit_offset: 13
+    bit_size: 1
+    description: CPU1 reset flag
+  - name: C1P1RSTF
+    bit_offset: 16
+    bit_size: 1
+    description: CPU1 processor core 1 reset flag
+  - name: RETCRCERRRSTF
+    bit_offset: 17
+    bit_size: 1
+    description: RETRAM CRC error reset flag
+  - name: RETECCFAILCRCRSTF
+    bit_offset: 18
+    bit_size: 1
+    description: RETRAM ECC failure reset flag during the CRC computation phase
+  - name: RETECCFAILRESTRSTF
+    bit_offset: 19
+    bit_size: 1
+    description: RETRAM ECC failure reset flag during system restoration phase
+  - name: STBYC1RSTF
+    bit_offset: 20
+    bit_size: 1
+    description: CPU1 system Standby reset flag
+  - name: D1STBYRSTF
+    bit_offset: 22
+    bit_size: 1
+    description: D1 DStandby reset flag
+  - name: D2STBYRSTF
+    bit_offset: 23
+    bit_size: 1
+    description: D2 DStandby reset flag
+fieldset/RCC_C1BOOTRSTSCLRR:
+  description: ''
+  fields:
+  - name: PORRSTF
+    bit_offset: 0
+    bit_size: 1
+    description: POR/PDR reset flag
+  - name: BORRSTF
+    bit_offset: 1
+    bit_size: 1
+    description: BOR reset flag
+  - name: PADRSTF
+    bit_offset: 2
+    bit_size: 1
+    description: NRST reset flag
+  - name: HCSSRSTF
+    bit_offset: 3
+    bit_size: 1
+    description: HSE CSS reset flag
+  - name: VCORERSTF
+    bit_offset: 4
+    bit_size: 1
+    description: V&lt;sub&gt;DDCORE&lt;/sub&gt; reset flag
+  - name: VCPURSTF
+    bit_offset: 5
+    bit_size: 1
+    description: V&lt;sub&gt;DDCPU&lt;/sub&gt; reset flag
+  - name: SYSC1RSTF
+    bit_offset: 6
+    bit_size: 1
+    description: CPU1 system reset flag
+  - name: SYSC2RSTF
+    bit_offset: 7
+    bit_size: 1
+    description: CPU2 system reset flag
+  - name: IWDG1SYSRSTF
+    bit_offset: 8
+    bit_size: 1
+    description: IWDG1 system reset flag
+  - name: IWDG2SYSRSTF
+    bit_offset: 9
+    bit_size: 1
+    description: IWDG2 system reset flag
+  - name: IWDG3SYSRSTF
+    bit_offset: 10
+    bit_size: 1
+    description: IWDG3 system reset flag
+  - name: IWDG4SYSRSTF
+    bit_offset: 11
+    bit_size: 1
+    description: IWDG4 system reset flag
+  - name: IWDG5SYSRSTF
+    bit_offset: 12
+    bit_size: 1
+    description: IWDG5 system reset flag
+  - name: C1RSTF
+    bit_offset: 13
+    bit_size: 1
+    description: CPU1 reset flag
+  - name: C1P1RSTF
+    bit_offset: 16
+    bit_size: 1
+    description: CPU1 processor core 1 reset flag
+  - name: RETCRCERRRSTF
+    bit_offset: 17
+    bit_size: 1
+    description: RETRAM CRC error reset flag
+  - name: RETECCFAILCRCRSTF
+    bit_offset: 18
+    bit_size: 1
+    description: RETRAM ECC failure reset flag during the CRC computation phase
+  - name: RETECCFAILRESTRSTF
+    bit_offset: 19
+    bit_size: 1
+    description: RETRAM ECC failure reset flag during system restoration phase
+  - name: STBYC1RSTF
+    bit_offset: 20
+    bit_size: 1
+    description: CPU1 system Standby reset flag
+  - name: D1STBYRSTF
+    bit_offset: 22
+    bit_size: 1
+    description: D1 DStandby reset flag
+  - name: D2STBYRSTF
+    bit_offset: 23
+    bit_size: 1
+    description: D2 DStandby reset flag
+fieldset/RCC_C2BOOTRSTSSETR:
+  description: ''
+  fields:
+  - name: PORRSTF
+    bit_offset: 0
+    bit_size: 1
+    description: POR/PDR reset flag
+  - name: BORRSTF
+    bit_offset: 1
+    bit_size: 1
+    description: BOR reset flag
+  - name: PADRSTF
+    bit_offset: 2
+    bit_size: 1
+    description: NRST reset flag
+  - name: HCSSRSTF
+    bit_offset: 3
+    bit_size: 1
+    description: HSE CSS reset flag
+  - name: VCORERSTF
+    bit_offset: 4
+    bit_size: 1
+    description: V&lt;sub&gt;DDCORE&lt;/sub&gt; reset flag
+  - name: SYSC1RSTF
+    bit_offset: 6
+    bit_size: 1
+    description: CPU1 system reset flag
+  - name: SYSC2RSTF
+    bit_offset: 7
+    bit_size: 1
+    description: CPU2 system reset flag
+  - name: IWDG1SYSRSTF
+    bit_offset: 8
+    bit_size: 1
+    description: IWDG1 system reset flag
+  - name: IWDG2SYSRSTF
+    bit_offset: 9
+    bit_size: 1
+    description: IWDG2 system reset flag
+  - name: IWDG3SYSRSTF
+    bit_offset: 10
+    bit_size: 1
+    description: IWDG3 system reset flag
+  - name: IWDG4SYSRSTF
+    bit_offset: 11
+    bit_size: 1
+    description: IWDG4 system reset flag
+  - name: IWDG5SYSRSTF
+    bit_offset: 12
+    bit_size: 1
+    description: IWDG5 system reset flag
+  - name: C2RSTF
+    bit_offset: 14
+    bit_size: 1
+    description: CPU2 reset flag
+  - name: RETCRCERRRSTF
+    bit_offset: 17
+    bit_size: 1
+    description: RETRAM CRC error reset flag
+  - name: RETECCFAILCRCRSTF
+    bit_offset: 18
+    bit_size: 1
+    description: RETRAM ECC failure reset flag during the CRC computation phase
+  - name: RETECCFAILRESTRSTF
+    bit_offset: 19
+    bit_size: 1
+    description: RETRAM ECC failure reset flag during system restoration phase
+  - name: STBYC2RSTF
+    bit_offset: 21
+    bit_size: 1
+    description: CPU2 system Standby reset flag
+  - name: D2STBYRSTF
+    bit_offset: 23
+    bit_size: 1
+    description: D2 DStandby reset flag
+fieldset/RCC_C2BOOTRSTSCLRR:
+  description: ''
+  fields:
+  - name: PORRSTF
+    bit_offset: 0
+    bit_size: 1
+    description: POR/PDR reset flag
+  - name: BORRSTF
+    bit_offset: 1
+    bit_size: 1
+    description: BOR reset flag
+  - name: PADRSTF
+    bit_offset: 2
+    bit_size: 1
+    description: NRST reset flag
+  - name: HCSSRSTF
+    bit_offset: 3
+    bit_size: 1
+    description: HSE CSS reset flag
+  - name: VCORERSTF
+    bit_offset: 4
+    bit_size: 1
+    description: V&lt;sub&gt;DDCORE&lt;/sub&gt; reset flag
+  - name: SYSC1RSTF
+    bit_offset: 6
+    bit_size: 1
+    description: CPU1 system reset flag
+  - name: SYSC2RSTF
+    bit_offset: 7
+    bit_size: 1
+    description: CPU2 system reset flag
+  - name: IWDG1SYSRSTF
+    bit_offset: 8
+    bit_size: 1
+    description: IWDG1 system reset flag
+  - name: IWDG2SYSRSTF
+    bit_offset: 9
+    bit_size: 1
+    description: IWDG2 reset flag
+  - name: IWDG3SYSRSTF
+    bit_offset: 10
+    bit_size: 1
+    description: IWDG3 reset flag
+  - name: IWDG4SYSRSTF
+    bit_offset: 11
+    bit_size: 1
+    description: IWDG4 reset flag
+  - name: IWDG5SYSRSTF
+    bit_offset: 12
+    bit_size: 1
+    description: IWDG5 reset flag
+  - name: C2RSTF
+    bit_offset: 14
+    bit_size: 1
+    description: CPU2 reset flag
+  - name: RETCRCERRRSTF
+    bit_offset: 17
+    bit_size: 1
+    description: RETRAM CRC error reset flag
+  - name: RETECCFAILCRCRSTF
+    bit_offset: 18
+    bit_size: 1
+    description: RETRAM ECC failure reset flag during the CRC computation phase
+  - name: RETECCFAILRESTRSTF
+    bit_offset: 19
+    bit_size: 1
+    description: RETRAM ECC failure reset flag during system restoration phase
+  - name: STBYC2RSTF
+    bit_offset: 21
+    bit_size: 1
+    description: CPU2 system Standby reset flag
+  - name: D2STBYRSTF
+    bit_offset: 23
+    bit_size: 1
+    description: D2 DStandby reset flag
+fieldset/RCC_C1SREQSETR:
+  description: ''
+  fields:
+  - name: ESLPREQ
+    bit_offset: 16
+    bit_size: 1
+    description: Enhanced CSleep request for CPU1 subsystem
+fieldset/RCC_C1SREQCLRR:
+  description: ''
+  fields:
+  - name: ESLPREQ
+    bit_offset: 16
+    bit_size: 1
+    description: Enhanced CSleep request for CPU1 subsystem
+fieldset/RCC_BDCR:
+  description: ''
+  fields:
+  - name: LSEON
+    bit_offset: 0
+    bit_size: 1
+    description: LSE oscillator enable
+  - name: LSEBYP
+    bit_offset: 1
+    bit_size: 1
+    description: LSE oscillator bypass
+  - name: LSERDY
+    bit_offset: 2
+    bit_size: 1
+    description: LSE oscillator ready
+  - name: LSEDIGBYP
+    bit_offset: 3
+    bit_size: 1
+    description: LSE digital bypass
+  - name: LSEDRV
+    bit_offset: 4
+    bit_size: 2
+    description: LSE oscillator driving capability
+  - name: LSECSSON
+    bit_offset: 6
+    bit_size: 1
+    description: LSE CSS enable
+  - name: LSEGFON
+    bit_offset: 7
+    bit_size: 1
+    description: LSE clock glitch filter enable
+  - name: LSECSSD
+    bit_offset: 8
+    bit_size: 1
+    description: LSE CSS failure detection
+  - name: LSION
+    bit_offset: 9
+    bit_size: 1
+    description: LSI oscillator enabled
+  - name: LSIRDY
+    bit_offset: 10
+    bit_size: 1
+    description: LSI oscillator ready
+  - name: RTCSRC
+    bit_offset: 16
+    bit_size: 2
+    description: RTC clock source selection
+  - name: RTCCKEN
+    bit_offset: 20
+    bit_size: 1
+    description: RTC clock enable
+  - name: MSIFREQSEL
+    bit_offset: 24
+    bit_size: 1
+    description: MSI frequency selection
+  - name: C3SYSTICKSEL
+    bit_offset: 25
+    bit_size: 1
+    description: CPU3 SysTick clock select
+  - name: VSWRST
+    bit_offset: 31
+    bit_size: 1
+    description: V&lt;sub&gt;SW&lt;/sub&gt; domain software reset
+fieldset/RCC_D3DCR:
+  description: ''
+  fields:
+  - name: MSION
+    bit_offset: 0
+    bit_size: 1
+    description: MSI oscillator enable
+  - name: MSIKERON
+    bit_offset: 1
+    bit_size: 1
+    description: Set by software to force the MSI on, even in Stop mode, in order
+      to be quickly available as kernel
+  - name: MSIRDY
+    bit_offset: 2
+    bit_size: 1
+    description: MSI clock ready flag
+  - name: D3PERCKSEL
+    bit_offset: 16
+    bit_size: 2
+    description: '0x00010000'
+fieldset/RCC_D3DSR:
+  description: ''
+  fields:
+  - name: D3STATE
+    bit_offset: 0
+    bit_size: 2
+    description: D3 domain state
+fieldset/RCC_RDCR:
+  description: ''
+  fields:
+  - name: MRD
+    bit_offset: 16
+    bit_size: 5
+    description: Minimum reset duration
+  - name: EADLY
+    bit_offset: 24
+    bit_size: 4
+    description: External access delays
+fieldset/RCC_C1MSRDCR:
+  description: ''
+  fields:
+  - name: C1MSRD
+    bit_offset: 0
+    bit_size: 5
+    description: Minimum Standby reset duration
+  - name: C1MSRST
+    bit_offset: 8
+    bit_size: 1
+    description: Trigger low-level pulse on NRSTC1MS pin
+fieldset/RCC_PWRLPDLYCR:
+  description: ''
+  fields:
+  - name: CPU2TMPSKP
+    bit_offset: 24
+    bit_size: 1
+    description: Skip of PWR_LP delay for CPU2
+fieldset/RCC_C1CIESETR:
+  description: ''
+  fields:
+  - name: LSIRDYIE
+    bit_offset: 0
+    bit_size: 1
+    description: LSI ready interrupt enable
+  - name: LSERDYIE
+    bit_offset: 1
+    bit_size: 1
+    description: LSE ready interrupt enable
+  - name: HSIRDYIE
+    bit_offset: 2
+    bit_size: 1
+    description: HSI ready interrupt enable
+  - name: HSERDYIE
+    bit_offset: 3
+    bit_size: 1
+    description: HSE ready interrupt enable
+  - name: MSIRDYIE
+    bit_offset: 4
+    bit_size: 1
+    description: MSI ready interrupt enable
+  - name: PLL1RDYIE
+    bit_offset: 5
+    bit_size: 1
+    description: PLL1 ready interrupt enable
+  - name: PLL2RDYIE
+    bit_offset: 6
+    bit_size: 1
+    description: PLL2 ready interrupt enable
+  - name: PLL3RDYIE
+    bit_offset: 7
+    bit_size: 1
+    description: PLL3 ready interrupt enable
+  - name: PLL4RDYIE
+    bit_offset: 8
+    bit_size: 1
+    description: PLL4 ready interrupt enable
+  - name: PLL5RDYIE
+    bit_offset: 9
+    bit_size: 1
+    description: PLL5 ready interrupt enable
+  - name: PLL6RDYIE
+    bit_offset: 10
+    bit_size: 1
+    description: PLL6 ready interrupt enable
+  - name: PLL7RDYIE
+    bit_offset: 11
+    bit_size: 1
+    description: PLL7 ready interrupt enable
+  - name: PLL8RDYIE
+    bit_offset: 12
+    bit_size: 1
+    description: PLL8 ready interrupt enable
+  - name: LSECSSIE
+    bit_offset: 16
+    bit_size: 1
+    description: LSE clock security system interrupt enable
+  - name: WKUPIE
+    bit_offset: 20
+    bit_size: 1
+    description: CPU1 wake-up from CStop interrupt enable
+fieldset/RCC_C1CIFCLRR:
+  description: ''
+  fields:
+  - name: LSIRDYF
+    bit_offset: 0
+    bit_size: 1
+    description: LSI ready interrupt flag
+  - name: LSERDYF
+    bit_offset: 1
+    bit_size: 1
+    description: LSE ready interrupt flag
+  - name: HSIRDYF
+    bit_offset: 2
+    bit_size: 1
+    description: HSI ready interrupt flag
+  - name: HSERDYF
+    bit_offset: 3
+    bit_size: 1
+    description: HSE ready interrupt flag
+  - name: MSIRDYF
+    bit_offset: 4
+    bit_size: 1
+    description: MSI ready interrupt flag
+  - name: PLL1RDYF
+    bit_offset: 5
+    bit_size: 1
+    description: PLL1 ready interrupt flag
+  - name: PLL2RDYF
+    bit_offset: 6
+    bit_size: 1
+    description: PLL2 ready interrupt flag
+  - name: PLL3RDYF
+    bit_offset: 7
+    bit_size: 1
+    description: PLL3 ready interrupt flag
+  - name: PLL4RDYF
+    bit_offset: 8
+    bit_size: 1
+    description: PLL4 ready interrupt flag
+  - name: PLL5RDYF
+    bit_offset: 9
+    bit_size: 1
+    description: PLL5 ready interrupt flag
+  - name: PLL6RDYF
+    bit_offset: 10
+    bit_size: 1
+    description: PLL6 ready interrupt flag
+  - name: PLL7RDYF
+    bit_offset: 11
+    bit_size: 1
+    description: PLL7 ready interrupt flag
+  - name: PLL8RDYF
+    bit_offset: 12
+    bit_size: 1
+    description: PLL8 ready interrupt flag
+  - name: LSECSSF
+    bit_offset: 16
+    bit_size: 1
+    description: LSE CSS interrupt flag
+  - name: WKUPF
+    bit_offset: 20
+    bit_size: 1
+    description: CPU1 wake-up from CStop interrupt flag
+fieldset/RCC_C2CIESETR:
+  description: ''
+  fields:
+  - name: LSIRDYIE
+    bit_offset: 0
+    bit_size: 1
+    description: LSI ready interrupt enable
+  - name: LSERDYIE
+    bit_offset: 1
+    bit_size: 1
+    description: LSE ready interrupt enable
+  - name: HSIRDYIE
+    bit_offset: 2
+    bit_size: 1
+    description: HSI ready interrupt enable
+  - name: HSERDYIE
+    bit_offset: 3
+    bit_size: 1
+    description: HSE ready interrupt enable
+  - name: MSIRDYIE
+    bit_offset: 4
+    bit_size: 1
+    description: MSI ready interrupt enable
+  - name: PLL1RDYIE
+    bit_offset: 5
+    bit_size: 1
+    description: PLL1 ready interrupt enable
+  - name: PLL2RDYIE
+    bit_offset: 6
+    bit_size: 1
+    description: PLL2 ready interrupt enable
+  - name: PLL3RDYIE
+    bit_offset: 7
+    bit_size: 1
+    description: PLL3 ready interrupt enable
+  - name: PLL4RDYIE
+    bit_offset: 8
+    bit_size: 1
+    description: PLL4 ready interrupt enable
+  - name: PLL5RDYIE
+    bit_offset: 9
+    bit_size: 1
+    description: PLL5 ready interrupt enable
+  - name: PLL6RDYIE
+    bit_offset: 10
+    bit_size: 1
+    description: PLL6 ready interrupt enable
+  - name: PLL7RDYIE
+    bit_offset: 11
+    bit_size: 1
+    description: PLL7 ready interrupt enable
+  - name: PLL8RDYIE
+    bit_offset: 12
+    bit_size: 1
+    description: PLL8 ready interrupt enable
+  - name: LSECSSIE
+    bit_offset: 16
+    bit_size: 1
+    description: LSE CSS interrupt enable
+  - name: WKUPIE
+    bit_offset: 20
+    bit_size: 1
+    description: CPU2 wake-up from CStop Interrupt Enable
+fieldset/RCC_C2CIFCLRR:
+  description: ''
+  fields:
+  - name: LSIRDYF
+    bit_offset: 0
+    bit_size: 1
+    description: LSI ready interrupt flag
+  - name: LSERDYF
+    bit_offset: 1
+    bit_size: 1
+    description: LSE ready interrupt flag
+  - name: HSIRDYF
+    bit_offset: 2
+    bit_size: 1
+    description: HSI ready interrupt flag
+  - name: HSERDYF
+    bit_offset: 3
+    bit_size: 1
+    description: HSE ready interrupt flag
+  - name: MSIRDYF
+    bit_offset: 4
+    bit_size: 1
+    description: MSI ready interrupt flag
+  - name: PLL1RDYF
+    bit_offset: 5
+    bit_size: 1
+    description: PLL1 ready interrupt flag
+  - name: PLL2RDYF
+    bit_offset: 6
+    bit_size: 1
+    description: PLL2 ready interrupt flag
+  - name: PLL3RDYF
+    bit_offset: 7
+    bit_size: 1
+    description: PLL3 ready interrupt flag
+  - name: PLL4RDYF
+    bit_offset: 8
+    bit_size: 1
+    description: PLL4 ready interrupt flag
+  - name: PLL5RDYF
+    bit_offset: 9
+    bit_size: 1
+    description: PLL5 ready interrupt flag
+  - name: PLL6RDYF
+    bit_offset: 10
+    bit_size: 1
+    description: PLL6 ready interrupt flag
+  - name: PLL7RDYF
+    bit_offset: 11
+    bit_size: 1
+    description: PLL7 ready interrupt flag
+  - name: PLL8RDYF
+    bit_offset: 12
+    bit_size: 1
+    description: PLL8 ready interrupt flag
+  - name: LSECSSF
+    bit_offset: 16
+    bit_size: 1
+    description: LSE clock security system interrupt flag
+  - name: WKUPF
+    bit_offset: 20
+    bit_size: 1
+    description: CPU2 wake-up from CStop interrupt flag
+fieldset/RCC_C3CFGR:
+  description: ''
+  fields:
+  - name: C3RST
+    bit_offset: 0
+    bit_size: 1
+    description: CPU3 reset
+  - name: C3EN
+    bit_offset: 1
+    bit_size: 1
+    description: CPU3 peripheral clocks enable
+  - name: C3LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: CPU3 peripheral clock enable during CSleep
+  - name: C3AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: CPU3 autonomous clock mode enable
+  - name: LPTIM3C3EN
+    bit_offset: 16
+    bit_size: 1
+    description: LPTIM3 allocation to CPU3 enable
+  - name: LPTIM4C3EN
+    bit_offset: 17
+    bit_size: 1
+    description: LPTIM4 allocation to CPU3 enable
+  - name: LPTIM5C3EN
+    bit_offset: 18
+    bit_size: 1
+    description: LPTIM5 allocation to CPU3 enable
+  - name: SPI8C3EN
+    bit_offset: 19
+    bit_size: 1
+    description: SPI8 allocation to CPU3 enable
+  - name: LPUART1C3EN
+    bit_offset: 20
+    bit_size: 1
+    description: LPUART1 allocation to CPU3 enable
+  - name: I2C8C3EN
+    bit_offset: 21
+    bit_size: 1
+    description: I2C8 allocation to CPU3 enable
+  - name: ADF1C3EN
+    bit_offset: 23
+    bit_size: 1
+    description: ADF1 allocation to CPU3 enable
+  - name: GPIOZC3EN
+    bit_offset: 24
+    bit_size: 1
+    description: GPIOZ allocation to CPU3 enable
+  - name: LPDMAC3EN
+    bit_offset: 25
+    bit_size: 1
+    description: LPDMA1 allocation to CPU3 enable
+  - name: RTCC3EN
+    bit_offset: 26
+    bit_size: 1
+    description: RTC allocation to CPU3 enable
+  - name: I3C4C3EN
+    bit_offset: 27
+    bit_size: 1
+    description: Bit fields for RCC_MCO1CFGR register
+fieldset/RCC_MCO1CFGR:
+  description: ''
+  fields:
+  - name: MCO1SEL
+    bit_offset: 0
+    bit_size: 1
+    description: MCO1 clock output selection
+  - name: MCO1ON
+    bit_offset: 8
+    bit_size: 1
+    description: Control of MCO1 output
+fieldset/RCC_MCO2CFGR:
+  description: ''
+  fields:
+  - name: MCO2SEL
+    bit_offset: 0
+    bit_size: 1
+    description: MCO2 clock output selection
+  - name: MCO2ON
+    bit_offset: 8
+    bit_size: 1
+    description: Control of the MCO2 output
+fieldset/RCC_OCENSETR:
+  description: ''
+  fields:
+  - name: HSION
+    bit_offset: 0
+    bit_size: 1
+    description: HSION bit set
+  - name: HSIKERON
+    bit_offset: 1
+    bit_size: 1
+    description: HSIKERON bit set
+  - name: HSEDIV2ON
+    bit_offset: 5
+    bit_size: 1
+    description: HSEDIV2ON bit set
+  - name: HSEDIV2BYP
+    bit_offset: 6
+    bit_size: 1
+    description: HSEDIV2BYP bit set
+  - name: HSEDIGBYP
+    bit_offset: 7
+    bit_size: 1
+    description: HSEDIGBYP bit set
+  - name: HSEON
+    bit_offset: 8
+    bit_size: 1
+    description: HSEON bit set
+  - name: HSEKERON
+    bit_offset: 9
+    bit_size: 1
+    description: HSEKERON bit set
+  - name: HSEBYP
+    bit_offset: 10
+    bit_size: 1
+    description: HSEBYP bit set
+  - name: HSECSSON
+    bit_offset: 11
+    bit_size: 1
+    description: HSECSSON bit set
+fieldset/RCC_OCENCLRR:
+  description: ''
+  fields:
+  - name: HSION
+    bit_offset: 0
+    bit_size: 1
+    description: HSION bit clear
+  - name: HSIKERON
+    bit_offset: 1
+    bit_size: 1
+    description: HSIKERON bit clear
+  - name: HSEDIV2ON
+    bit_offset: 5
+    bit_size: 1
+    description: HSEDIV2ON bit clear
+  - name: HSEDIV2BYP
+    bit_offset: 6
+    bit_size: 1
+    description: HSEDIV2BYP bit clear
+  - name: HSEDIGBYP
+    bit_offset: 7
+    bit_size: 1
+    description: HSEDIGBYP bit clear
+  - name: HSEON
+    bit_offset: 8
+    bit_size: 1
+    description: HSEON bit clear
+  - name: HSEKERON
+    bit_offset: 9
+    bit_size: 1
+    description: HSEKERON bit clear
+  - name: HSEBYP
+    bit_offset: 10
+    bit_size: 1
+    description: HSEBYP bit clear
+fieldset/RCC_OCRDYR:
+  description: ''
+  fields:
+  - name: HSIRDY
+    bit_offset: 0
+    bit_size: 1
+    description: HSI clock ready flag
+  - name: HSERDY
+    bit_offset: 8
+    bit_size: 1
+    description: HSE clock ready flag
+  - name: CKREST
+    bit_offset: 25
+    bit_size: 1
+    description: Clock restore state machine status
+fieldset/RCC_HSICFGR:
+  description: ''
+  fields:
+  - name: HSITRIM
+    bit_offset: 8
+    bit_size: 7
+    description: HSI clock trimming
+  - name: HSICAL
+    bit_offset: 16
+    bit_size: 9
+    description: HSI clock calibration
+fieldset/RCC_MSICFGR:
+  description: ''
+  fields:
+  - name: MSITRIM
+    bit_offset: 8
+    bit_size: 5
+    description: MSI clock trimming
+  - name: MSICAL
+    bit_offset: 16
+    bit_size: 8
+    description: MSI clock calibration
+fieldset/RCC_RTCDIVR:
+  description: ''
+  fields:
+  - name: RTCDIV
+    bit_offset: 0
+    bit_size: 6
+    description: HSE division factor for RTC clock
+fieldset/RCC_APB1DIVR:
+  description: ''
+  fields:
+  - name: APB1DIV
+    bit_offset: 0
+    bit_size: 3
+    description: APB1 clock divider
+  - name: APB1DIVRDY
+    bit_offset: 31
+    bit_size: 1
+    description: APB1 clock prescaler status
+fieldset/RCC_APB2DIVR:
+  description: ''
+  fields:
+  - name: APB2DIV
+    bit_offset: 0
+    bit_size: 3
+    description: APB2 clock divider
+  - name: APB2DIVRDY
+    bit_offset: 31
+    bit_size: 1
+    description: APB2 clock prescaler status
+fieldset/RCC_APB3DIVR:
+  description: ''
+  fields:
+  - name: APB3DIV
+    bit_offset: 0
+    bit_size: 3
+    description: APB3 clock divider
+  - name: APB3DIVRDY
+    bit_offset: 31
+    bit_size: 1
+    description: APB3 clock prescaler status
+fieldset/RCC_APB4DIVR:
+  description: ''
+  fields:
+  - name: APB4DIV
+    bit_offset: 0
+    bit_size: 3
+    description: APB4 clock divider
+  - name: APB4DIVRDY
+    bit_offset: 31
+    bit_size: 1
+    description: APB4 clock divider status
+fieldset/RCC_APBDBGDIVR:
+  description: ''
+  fields:
+  - name: APBDBGDIV
+    bit_offset: 0
+    bit_size: 3
+    description: APBDBG clock divider
+  - name: APBDBGDIVRDY
+    bit_offset: 31
+    bit_size: 1
+    description: APBDBG clock divider status
+fieldset/RCC_TIMG1PRER:
+  description: ''
+  fields:
+  - name: TIMG1PRE
+    bit_offset: 0
+    bit_size: 1
+    description: Clock prescaler selection for timers of group 1
+  - name: TIMG1PRERDY
+    bit_offset: 31
+    bit_size: 1
+    description: Clock prescaler status for timers of group 1
+fieldset/RCC_TIMG2PRER:
+  description: ''
+  fields:
+  - name: TIMG2PRE
+    bit_offset: 0
+    bit_size: 1
+    description: Clock prescaler selection for timers of group 2
+  - name: TIMG2PRERDY
+    bit_offset: 31
+    bit_size: 1
+    description: Clock prescaler status for timers of group 2
+fieldset/RCC_LSMCUDIVR:
+  description: ''
+  fields:
+  - name: LSMCUDIV
+    bit_offset: 0
+    bit_size: 1
+    description: LSMCU clock divider
+  - name: LSMCUDIVRDY
+    bit_offset: 31
+    bit_size: 1
+    description: LSMCU clock divider status
+fieldset/RCC_DDRCPCFGR:
+  description: ''
+  fields:
+  - name: DDRCPRST
+    bit_offset: 0
+    bit_size: 1
+    description: DDRC AXI port reset
+  - name: DDRCPEN
+    bit_offset: 1
+    bit_size: 1
+    description: DDRC AXI port clock enable
+  - name: DDRCPLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: DDRC AXI port clock enable during CSleep
+fieldset/RCC_DDRCAPBCFGR:
+  description: ''
+  fields:
+  - name: DDRCAPBRST
+    bit_offset: 0
+    bit_size: 1
+    description: DDRC APB reset
+  - name: DDRCAPBEN
+    bit_offset: 1
+    bit_size: 1
+    description: DDRC APB clock enable
+  - name: DDRCAPBLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: DDRC APB clock enable during CSleep
+fieldset/RCC_DDRPHYCAPBCFGR:
+  description: ''
+  fields:
+  - name: DDRPHYCAPBRST
+    bit_offset: 0
+    bit_size: 1
+    description: DDRPHYC APB reset
+  - name: DDRPHYCAPBEN
+    bit_offset: 1
+    bit_size: 1
+    description: DDRPHYC APB clock enable
+  - name: DDRPHYCAPBLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: DDRPHYC APB clock enable during CSleep
+fieldset/RCC_DDRPHYCCFGR:
+  description: ''
+  fields:
+  - name: DDRPHYCEN
+    bit_offset: 1
+    bit_size: 1
+    description: DDRPHYC kernel clock enable
+fieldset/RCC_DDRCFGR:
+  description: ''
+  fields:
+  - name: DDRCFGRST
+    bit_offset: 0
+    bit_size: 1
+    description: DDR APB configuration reset
+  - name: DDRCFGEN
+    bit_offset: 1
+    bit_size: 1
+    description: DDR APB configuration clock enable
+  - name: DDRCFGLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: DDR APB configuration clock enable during CSleep
+fieldset/RCC_DDRITFCFGR:
+  description: ''
+  fields:
+  - name: DDRRST
+    bit_offset: 0
+    bit_size: 1
+    description: DDR core and PHY reset
+  - name: DDRCKMOD
+    bit_offset: 4
+    bit_size: 2
+    description: RCC mode for DDR clock control
+  - name: DDRSHR
+    bit_offset: 8
+    bit_size: 1
+    description: DDR peripheral mode
+  - name: DDRPHYDLP
+    bit_offset: 16
+    bit_size: 1
+    description: DDRPHY deep low-power mode (LP2 or LP3)
+fieldset/RCC_SYSRAMCFGR:
+  description: ''
+  fields:
+  - name: SYSRAMEN
+    bit_offset: 1
+    bit_size: 1
+    description: SYSRAM clock enable
+  - name: SYSRAMLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SYSRAM clock enable during CSleep
+fieldset/RCC_VDERAMCFGR:
+  description: ''
+  fields:
+  - name: VDERAMEN
+    bit_offset: 1
+    bit_size: 1
+    description: VDERAM clock enable
+  - name: VDERAMLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: VDERAM clock enable during CSleep
+fieldset/RCC_SRAM1CFGR:
+  description: ''
+  fields:
+  - name: SRAM1EN
+    bit_offset: 1
+    bit_size: 1
+    description: SRAM1 clock enable
+  - name: SRAM1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SRAM1 clock enable during CSleep
+fieldset/RCC_SRAM2CFGR:
+  description: ''
+  fields:
+  - name: SRAM2EN
+    bit_offset: 1
+    bit_size: 1
+    description: SRAM2 clock enable
+  - name: SRAM2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SRAM2 clock enable during CSleep
+fieldset/RCC_RETRAMCFGR:
+  description: ''
+  fields:
+  - name: RETRAMEN
+    bit_offset: 1
+    bit_size: 1
+    description: RETRAM clock enable
+  - name: RETRAMLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: RETRAM clock enable during CSleep
+fieldset/RCC_BKPSRAMCFGR:
+  description: ''
+  fields:
+  - name: BKPSRAMEN
+    bit_offset: 1
+    bit_size: 1
+    description: BKPSRAM clock enable
+  - name: BKPSRAMLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: BKPSRAM clock enable during CSleep
+fieldset/RCC_LPSRAM1CFGR:
+  description: ''
+  fields:
+  - name: LPSRAM1EN
+    bit_offset: 1
+    bit_size: 1
+    description: LPSRAM1 clock enable
+  - name: LPSRAM1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: LPSRAM1 clock enable during CSleep
+  - name: LPSRAM1AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: LPSRAM1 autonomous clock mode enable
+fieldset/RCC_LPSRAM2CFGR:
+  description: ''
+  fields:
+  - name: LPSRAM2EN
+    bit_offset: 1
+    bit_size: 1
+    description: LPSRAM2 clock enable
+  - name: LPSRAM2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: LPSRAM2 clock enable during CSleep
+  - name: LPSRAM2AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: LPSRAM2 autonomous clock mode enable
+fieldset/RCC_LPSRAM3CFGR:
+  description: ''
+  fields:
+  - name: LPSRAM3EN
+    bit_offset: 1
+    bit_size: 1
+    description: LPSRAM3 clock enable
+  - name: LPSRAM3LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: LPSRAM3 clock enable during CSleep
+  - name: LPSRAM3AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: LPSRAM3 autonomous clock mode enable
+fieldset/RCC_OSPI1CFGR:
+  description: ''
+  fields:
+  - name: OSPI1RST
+    bit_offset: 0
+    bit_size: 1
+    description: OCTOSPI1 reset
+  - name: OSPI1EN
+    bit_offset: 1
+    bit_size: 1
+    description: OCTOSPI1 and OTFDEC1 clock enable
+  - name: OSPI1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: "OCTOSPI1, OTFDEC1 and OCTOSPI1 delay (DLYBOSPI1) clock enable during\xEF\
+      \xBF\xBDCSleep"
+  - name: OTFDEC1RST
+    bit_offset: 8
+    bit_size: 1
+    description: OTFDEC1 reset
+  - name: OSPI1DLLRST
+    bit_offset: 16
+    bit_size: 1
+    description: OCTOSPI1 DLL reset
+fieldset/RCC_OSPI2CFGR:
+  description: ''
+  fields:
+  - name: OSPI2RST
+    bit_offset: 0
+    bit_size: 1
+    description: OCTOSPI2 reset
+  - name: OSPI2EN
+    bit_offset: 1
+    bit_size: 1
+    description: OCTOSPI2 and OTFDEC2 clock enable
+  - name: OSPI2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: OCTOSPI2 and OTFDEC2 clock enable during CSleep
+  - name: OTFDEC2RST
+    bit_offset: 8
+    bit_size: 1
+    description: OTFDEC2 reset
+  - name: OSPI2DLLRST
+    bit_offset: 16
+    bit_size: 1
+    description: OCTOSPI2 DLL reset
+fieldset/RCC_FMCCFGR:
+  description: ''
+  fields:
+  - name: FMCRST
+    bit_offset: 0
+    bit_size: 1
+    description: FMC reset
+  - name: FMCEN
+    bit_offset: 1
+    bit_size: 1
+    description: FMC clock enable
+  - name: FMCLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: FMC clock enable during CSleep
+fieldset/RCC_DBGCFGR:
+  description: ''
+  fields:
+  - name: DBGEN
+    bit_offset: 8
+    bit_size: 1
+    description: Debug function clock enable
+  - name: TRACEEN
+    bit_offset: 9
+    bit_size: 1
+    description: Clock enable for trace port interface
+  - name: DBGRST
+    bit_offset: 12
+    bit_size: 1
+    description: Debug function reset
+fieldset/RCC_STMCFGR:
+  description: ''
+  fields:
+  - name: STMEN
+    bit_offset: 1
+    bit_size: 1
+    description: STM clock enable
+  - name: STMLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: STM clock enable during CSleep
+fieldset/RCC_ETRCFGR:
+  description: ''
+  fields:
+  - name: ETREN
+    bit_offset: 1
+    bit_size: 1
+    description: ETR clocks enable
+  - name: ETRLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: ETR clock enable during CSleep
+fieldset/RCC_GPIOACFGR:
+  description: ''
+  fields:
+  - name: GPIOxRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_GPIOBCFGR register
+  - name: GPIOxEN
+    bit_offset: 1
+    bit_size: 1
+    description: Bit fields for RCC_GPIOBCFGR register
+  - name: GPIOxLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Bit fields for RCC_GPIOBCFGR register
+fieldset/RCC_GPIOBCFGR:
+  description: ''
+  fields:
+  - name: GPIOxRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_GPIOCCFGR register
+  - name: GPIOxEN
+    bit_offset: 1
+    bit_size: 1
+    description: Bit fields for RCC_GPIOCCFGR register
+  - name: GPIOxLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Bit fields for RCC_GPIOCCFGR register
+fieldset/RCC_GPIOCCFGR:
+  description: ''
+  fields:
+  - name: GPIOxRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_GPIODCFGR register
+  - name: GPIOxEN
+    bit_offset: 1
+    bit_size: 1
+    description: Bit fields for RCC_GPIODCFGR register
+  - name: GPIOxLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Bit fields for RCC_GPIODCFGR register
+fieldset/RCC_GPIODCFGR:
+  description: ''
+  fields:
+  - name: GPIOxRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_GPIOECFGR register
+  - name: GPIOxEN
+    bit_offset: 1
+    bit_size: 1
+    description: Bit fields for RCC_GPIOECFGR register
+  - name: GPIOxLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Bit fields for RCC_GPIOECFGR register
+fieldset/RCC_GPIOECFGR:
+  description: ''
+  fields:
+  - name: GPIOxRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_GPIOFCFGR register
+  - name: GPIOxEN
+    bit_offset: 1
+    bit_size: 1
+    description: Bit fields for RCC_GPIOFCFGR register
+  - name: GPIOxLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Bit fields for RCC_GPIOFCFGR register
+fieldset/RCC_GPIOFCFGR:
+  description: ''
+  fields:
+  - name: GPIOxRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_GPIOGCFGR register
+  - name: GPIOxEN
+    bit_offset: 1
+    bit_size: 1
+    description: Bit fields for RCC_GPIOGCFGR register
+  - name: GPIOxLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Bit fields for RCC_GPIOGCFGR register
+fieldset/RCC_GPIOGCFGR:
+  description: ''
+  fields:
+  - name: GPIOxRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_GPIOHCFGR register
+  - name: GPIOxEN
+    bit_offset: 1
+    bit_size: 1
+    description: Bit fields for RCC_GPIOHCFGR register
+  - name: GPIOxLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Bit fields for RCC_GPIOHCFGR register
+fieldset/RCC_GPIOHCFGR:
+  description: ''
+  fields:
+  - name: GPIOxRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_GPIOICFGR register
+  - name: GPIOxEN
+    bit_offset: 1
+    bit_size: 1
+    description: Bit fields for RCC_GPIOICFGR register
+  - name: GPIOxLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Bit fields for RCC_GPIOICFGR register
+fieldset/RCC_GPIOICFGR:
+  description: ''
+  fields:
+  - name: GPIOxRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_GPIOJCFGR register
+  - name: GPIOxEN
+    bit_offset: 1
+    bit_size: 1
+    description: Bit fields for RCC_GPIOJCFGR register
+  - name: GPIOxLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Bit fields for RCC_GPIOJCFGR register
+fieldset/RCC_GPIOJCFGR:
+  description: ''
+  fields:
+  - name: GPIOxRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_GPIOKCFGR register
+  - name: GPIOxEN
+    bit_offset: 1
+    bit_size: 1
+    description: Bit fields for RCC_GPIOKCFGR register
+  - name: GPIOxLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Bit fields for RCC_GPIOKCFGR register
+fieldset/RCC_GPIOKCFGR:
+  description: ''
+  fields:
+  - name: GPIOxRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_GPIOZCFGR register
+  - name: GPIOxEN
+    bit_offset: 1
+    bit_size: 1
+    description: Bit fields for RCC_GPIOZCFGR register
+  - name: GPIOxLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Bit fields for RCC_GPIOZCFGR register
+fieldset/RCC_GPIOZCFGR:
+  description: ''
+  fields:
+  - name: GPIOZRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_HPDMA1CFGR register
+  - name: GPIOZEN
+    bit_offset: 1
+    bit_size: 1
+    description: Bit fields for RCC_HPDMA1CFGR register
+  - name: GPIOZLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Bit fields for RCC_HPDMA1CFGR register
+  - name: GPIOZAMEN
+    bit_offset: 3
+    bit_size: 1
+    description: Bit fields for RCC_HPDMA1CFGR register
+fieldset/RCC_HPDMA1CFGR:
+  description: ''
+  fields:
+  - name: HPDMA1RST
+    bit_offset: 0
+    bit_size: 1
+    description: HPDMA1 reset
+  - name: HPDMA1EN
+    bit_offset: 1
+    bit_size: 1
+    description: HPDMA1 clock enable
+  - name: HPDMA1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: HPDMA1 clock enable during CSleep
+fieldset/RCC_HPDMA2CFGR:
+  description: ''
+  fields:
+  - name: HPDMA2RST
+    bit_offset: 0
+    bit_size: 1
+    description: HPDMA2 reset
+  - name: HPDMA2EN
+    bit_offset: 1
+    bit_size: 1
+    description: HPDMA2 clock enable
+  - name: HPDMA2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: HPDMA2 clock enable during CSleep
+fieldset/RCC_HPDMA3CFGR:
+  description: ''
+  fields:
+  - name: HPDMA3RST
+    bit_offset: 0
+    bit_size: 1
+    description: HPDMA3 reset
+  - name: HPDMA3EN
+    bit_offset: 1
+    bit_size: 1
+    description: HPDMA3 clock enable
+  - name: HPDMA3LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: HPDMA3 clock enable during CSleep
+fieldset/RCC_LPDMACFGR:
+  description: ''
+  fields:
+  - name: LPDMARST
+    bit_offset: 0
+    bit_size: 1
+    description: LPDMA1 reset
+  - name: LPDMAEN
+    bit_offset: 1
+    bit_size: 1
+    description: LPDMA1 clock enable
+  - name: LPDMALPEN
+    bit_offset: 2
+    bit_size: 1
+    description: LPDMA1 clock enable during CSleep
+  - name: LPDMAAMEN
+    bit_offset: 3
+    bit_size: 1
+    description: LPDMA1 autonomous clock mode enable
+fieldset/RCC_HSEMCFGR:
+  description: ''
+  fields:
+  - name: HSEMRST
+    bit_offset: 0
+    bit_size: 1
+    description: HSEM reset
+  - name: HSEMEN
+    bit_offset: 1
+    bit_size: 1
+    description: HSEM clock enable
+  - name: HSEMLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: HSEM clock enable during CSleep
+  - name: HSEMAMEN
+    bit_offset: 3
+    bit_size: 1
+    description: HSEM autonomous clock mode enable
+fieldset/RCC_IPCC1CFGR:
+  description: ''
+  fields:
+  - name: IPCC1RST
+    bit_offset: 0
+    bit_size: 1
+    description: IPCC1 reset
+  - name: IPCC1EN
+    bit_offset: 1
+    bit_size: 1
+    description: IPCC1 clock enable
+  - name: IPCC1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: IPCC1 clock enable during CSleep
+fieldset/RCC_IPCC2CFGR:
+  description: ''
+  fields:
+  - name: IPCC2RST
+    bit_offset: 0
+    bit_size: 1
+    description: IPCC2 reset
+  - name: IPCC2EN
+    bit_offset: 1
+    bit_size: 1
+    description: IPCC2 clock enable
+  - name: IPCC2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: IPCC2 clock enable during CSleep
+  - name: IPCC2AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: IPCC2 autonomous clock mode enable
+fieldset/RCC_RTCCFGR:
+  description: ''
+  fields:
+  - name: RTCEN
+    bit_offset: 1
+    bit_size: 1
+    description: RTC bus clock enable
+  - name: RTCLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: RTC bus clock enable during CSleep
+  - name: RTCAMEN
+    bit_offset: 3
+    bit_size: 1
+    description: RTC autonomous clock mode enable
+fieldset/RCC_SYSCPU1CFGR:
+  description: ''
+  fields:
+  - name: SYSCPU1EN
+    bit_offset: 1
+    bit_size: 1
+    description: CPU1 system configuration clock enable
+  - name: SYSCPU1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: CPU1 system configuration clock enable during CSleep
+fieldset/RCC_BSECCFGR:
+  description: ''
+  fields:
+  - name: BSECEN
+    bit_offset: 1
+    bit_size: 1
+    description: BSEC clock enable
+  - name: BSECLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Bit fields for RCC_PLL2CFGR1 register
+fieldset/RCC_PLL2CFGR1:
+  description: ''
+  fields:
+  - name: SSMODRST
+    bit_offset: 0
+    bit_size: 1
+    description: PLLx spread-spectrum modulator reset
+  - name: PLLEN
+    bit_offset: 8
+    bit_size: 1
+    description: PLLx enable
+  - name: PLLRDY
+    bit_offset: 24
+    bit_size: 1
+    description: PLLx clock ready flag
+  - name: CKREFST
+    bit_offset: 28
+    bit_size: 1
+    description: PLLx reference clock state
+fieldset/RCC_PLL2CFGR2:
+  description: ''
+  fields:
+  - name: FREFDIV
+    bit_offset: 0
+    bit_size: 6
+    description: PLLx reference input clock divide frequency ratio
+  - name: FBDIV
+    bit_offset: 16
+    bit_size: 12
+    description: PLLx VCO multiplication factor
+fieldset/RCC_PLL2CFGR3:
+  description: ''
+  fields:
+  - name: FRACIN
+    bit_offset: 0
+    bit_size: 24
+    description: Fractional part of PLLx VCO multiplication factor
+  - name: DOWNSPREAD
+    bit_offset: 24
+    bit_size: 1
+    description: PLLx VCO frequency modulation mode
+  - name: DACEN
+    bit_offset: 25
+    bit_size: 1
+    description: PLLx noise canceling DAC enable in fractional mode
+  - name: SSCGDIS
+    bit_offset: 26
+    bit_size: 1
+    description: PLLx spread-spectrum modulator enable
+fieldset/RCC_PLL2CFGR4:
+  description: ''
+  fields:
+  - name: DSMEN
+    bit_offset: 8
+    bit_size: 1
+    description: PLLx delta-sigma modulator enable
+  - name: FOUTPOSTDIVEN
+    bit_offset: 9
+    bit_size: 1
+    description: PLLx output and post divider enable
+  - name: BYPASS
+    bit_offset: 10
+    bit_size: 1
+    description: PLLx FOUTPOSTDIV bypass
+fieldset/RCC_PLL2CFGR5:
+  description: ''
+  fields:
+  - name: DIVVAL
+    bit_offset: 0
+    bit_size: 4
+    description: Modulation frequency adjustment for PLLx
+  - name: SPREAD
+    bit_offset: 16
+    bit_size: 5
+    description: Modulation depth adjustment for PLLx
+fieldset/RCC_PLL2CFGR6:
+  description: ''
+  fields:
+  - name: POSTDIV1
+    bit_offset: 0
+    bit_size: 3
+    description: PLLx VCO frequency divide level 1
+fieldset/RCC_PLL2CFGR7:
+  description: ''
+  fields:
+  - name: POSTDIV2
+    bit_offset: 0
+    bit_size: 3
+    description: PLLx VCO frequency divide level 2
+fieldset/RCC_PLL3CFGR1:
+  description: ''
+  fields:
+  - name: SSMODRST
+    bit_offset: 0
+    bit_size: 1
+    description: PLLx spread-spectrum modulator reset
+  - name: PLLEN
+    bit_offset: 8
+    bit_size: 1
+    description: PLLx enable
+  - name: PLLRDY
+    bit_offset: 24
+    bit_size: 1
+    description: PLLx clock ready flag
+  - name: CKREFST
+    bit_offset: 28
+    bit_size: 1
+    description: PLLx reference clock state
+fieldset/RCC_PLL3CFGR2:
+  description: ''
+  fields:
+  - name: FREFDIV
+    bit_offset: 0
+    bit_size: 6
+    description: PLLx reference input clock divide frequency ratio
+  - name: FBDIV
+    bit_offset: 16
+    bit_size: 12
+    description: PLLx VCO multiplication factor
+fieldset/RCC_PLL3CFGR3:
+  description: ''
+  fields:
+  - name: FRACIN
+    bit_offset: 0
+    bit_size: 24
+    description: Fractional part of PLLx VCO multiplication factor
+  - name: DOWNSPREAD
+    bit_offset: 24
+    bit_size: 1
+    description: PLLx VCO frequency modulation mode
+  - name: DACEN
+    bit_offset: 25
+    bit_size: 1
+    description: PLLx noise canceling DAC enable in fractional mode
+  - name: SSCGDIS
+    bit_offset: 26
+    bit_size: 1
+    description: PLLx spread-spectrum modulator enable
+fieldset/RCC_PLL3CFGR4:
+  description: ''
+  fields:
+  - name: DSMEN
+    bit_offset: 8
+    bit_size: 1
+    description: PLLx delta-sigma modulator enable
+  - name: FOUTPOSTDIVEN
+    bit_offset: 9
+    bit_size: 1
+    description: PLLx output and post divider enable
+  - name: BYPASS
+    bit_offset: 10
+    bit_size: 1
+    description: PLLx FOUTPOSTDIV bypass
+fieldset/RCC_PLL3CFGR5:
+  description: ''
+  fields:
+  - name: DIVVAL
+    bit_offset: 0
+    bit_size: 4
+    description: Modulation frequency adjustment for PLLx
+  - name: SPREAD
+    bit_offset: 16
+    bit_size: 5
+    description: Modulation depth adjustment for PLLx
+fieldset/RCC_PLL3CFGR6:
+  description: ''
+  fields:
+  - name: POSTDIV1
+    bit_offset: 0
+    bit_size: 3
+    description: PLLx VCO frequency divide level 1
+fieldset/RCC_PLL3CFGR7:
+  description: ''
+  fields:
+  - name: POSTDIV2
+    bit_offset: 0
+    bit_size: 3
+    description: PLLx VCO frequency divide level 2
+fieldset/RCC_HSIFMONCR:
+  description: ''
+  fields:
+  - name: HSIREF
+    bit_offset: 0
+    bit_size: 11
+    description: HSI clock count reference value
+  - name: HSIMONEN
+    bit_offset: 15
+    bit_size: 1
+    description: HSI clock period monitor enable
+  - name: HSIDEV
+    bit_offset: 16
+    bit_size: 6
+    description: HSI clock count deviation value
+  - name: HSIMONIE
+    bit_offset: 30
+    bit_size: 1
+    description: HSI clock period monitor interrupt enable
+  - name: HSIMONF
+    bit_offset: 31
+    bit_size: 1
+    description: HSI clock period monitor interrupt flag
+fieldset/RCC_HSIFVALR:
+  description: ''
+  fields:
+  - name: HSIVAL
+    bit_offset: 0
+    bit_size: 11
+    description: HSI clock-cycle counter value
+fieldset/RCC_TIM1CFGR:
+  description: ''
+  fields:
+  - name: TIM1RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM1 reset
+  - name: TIM1EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM1 clock enable
+  - name: TIM1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM1 clock enable during CSleep
+fieldset/RCC_TIM2CFGR:
+  description: ''
+  fields:
+  - name: TIM2RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM2 reset
+  - name: TIM2EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM2 clock enable
+  - name: TIM2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM2 clock enable during CSleep
+fieldset/RCC_TIM3CFGR:
+  description: ''
+  fields:
+  - name: TIM3RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM3 reset
+  - name: TIM3EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM3 clock enable
+  - name: TIM3LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM3 clock enable during CSleep
+fieldset/RCC_TIM4CFGR:
+  description: ''
+  fields:
+  - name: TIM4RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM4 reset
+  - name: TIM4EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM4 clock enable
+  - name: TIM4LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM4 clock enable during CSleep
+fieldset/RCC_TIM5CFGR:
+  description: ''
+  fields:
+  - name: TIM5RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM5 reset
+  - name: TIM5EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM5 clock enable
+  - name: TIM5LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM5 clock enable during CSleep
+fieldset/RCC_TIM6CFGR:
+  description: ''
+  fields:
+  - name: TIM6RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM6 reset
+  - name: TIM6EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM6 clock enable
+  - name: TIM6LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM6 clock enable during CSleep
+fieldset/RCC_TIM7CFGR:
+  description: ''
+  fields:
+  - name: TIM7RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM7 reset
+  - name: TIM7EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM7 clock enable
+  - name: TIM7LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM7 clock enable during CSleep
+fieldset/RCC_TIM8CFGR:
+  description: ''
+  fields:
+  - name: TIM8RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM8 reset
+  - name: TIM8EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM8 clock enable
+  - name: TIM8LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM8 clock enable during CSleep
+fieldset/RCC_TIM10CFGR:
+  description: ''
+  fields:
+  - name: TIM10RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM10 reset
+  - name: TIM10EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM10 clock enable
+  - name: TIM10LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM10 clock enable during CSleep
+fieldset/RCC_TIM11CFGR:
+  description: ''
+  fields:
+  - name: TIM11RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM11 reset
+  - name: TIM11EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM11 clock enable
+  - name: TIM11LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM11 clock enable during CSleep
+fieldset/RCC_TIM12CFGR:
+  description: ''
+  fields:
+  - name: TIM12RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM12 reset
+  - name: TIM12EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM12 clock enable
+  - name: TIM12LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM12 clock enable during CSleep
+fieldset/RCC_TIM13CFGR:
+  description: ''
+  fields:
+  - name: TIM13RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM13 reset
+  - name: TIM13EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM13 clock enable
+  - name: TIM13LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM13 clock enable during CSleep
+fieldset/RCC_TIM14CFGR:
+  description: ''
+  fields:
+  - name: TIM14RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM14 reset
+  - name: TIM14EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM14 clock enable
+  - name: TIM14LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM14 clock enable during CSleep
+fieldset/RCC_TIM15CFGR:
+  description: ''
+  fields:
+  - name: TIM15RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM15 reset
+  - name: TIM15EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM15 clock enable
+  - name: TIM15LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM15 clock enable during CSleep
+fieldset/RCC_TIM16CFGR:
+  description: ''
+  fields:
+  - name: TIM16RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM16 reset
+  - name: TIM16EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM16 clock enable
+  - name: TIM16LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM16 clock enable during CSleep
+fieldset/RCC_TIM17CFGR:
+  description: ''
+  fields:
+  - name: TIM17RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM17 reset
+  - name: TIM17EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM17 clock enable
+  - name: TIM17LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM17 clock enable during CSleep
+fieldset/RCC_TIM20CFGR:
+  description: ''
+  fields:
+  - name: TIM20RST
+    bit_offset: 0
+    bit_size: 1
+    description: TIM20 reset
+  - name: TIM20EN
+    bit_offset: 1
+    bit_size: 1
+    description: TIM20 clock enable
+  - name: TIM20LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: TIM20 clock enable during CSleep
+fieldset/RCC_LPTIM1CFGR:
+  description: ''
+  fields:
+  - name: LPTIM1RST
+    bit_offset: 0
+    bit_size: 1
+    description: LPTIM1 reset
+  - name: LPTIM1EN
+    bit_offset: 1
+    bit_size: 1
+    description: LPTIM1 clock enable
+  - name: LPTIM1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: LPTIM1 clock enable during CSleep
+fieldset/RCC_LPTIM2CFGR:
+  description: ''
+  fields:
+  - name: LPTIM2RST
+    bit_offset: 0
+    bit_size: 1
+    description: LPTIM2 reset
+  - name: LPTIM2EN
+    bit_offset: 1
+    bit_size: 1
+    description: LPTIM2 clock enable
+  - name: LPTIM2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: LPTIM2 clock enable during CSleep
+fieldset/RCC_LPTIM3CFGR:
+  description: ''
+  fields:
+  - name: LPTIM3RST
+    bit_offset: 0
+    bit_size: 1
+    description: LPTIM3 reset
+  - name: LPTIM3EN
+    bit_offset: 1
+    bit_size: 1
+    description: LPTIM3 clock enable
+  - name: LPTIM3LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: LPTIM3 clock enable during CSleep
+  - name: LPTIM3AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: LPTIM3 autonomous clock mode enable
+fieldset/RCC_LPTIM4CFGR:
+  description: ''
+  fields:
+  - name: LPTIM4RST
+    bit_offset: 0
+    bit_size: 1
+    description: LPTIM4 reset
+  - name: LPTIM4EN
+    bit_offset: 1
+    bit_size: 1
+    description: LPTIM4 clock enable
+  - name: LPTIM4LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: LPTIM4 clock enable during CSleep
+  - name: LPTIM4AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: LPTIM4 autonomous clock mode enable
+fieldset/RCC_LPTIM5CFGR:
+  description: ''
+  fields:
+  - name: LPTIM5RST
+    bit_offset: 0
+    bit_size: 1
+    description: LPTIM5 reset
+  - name: LPTIM5EN
+    bit_offset: 1
+    bit_size: 1
+    description: LPTIM5 clock enable
+  - name: LPTIM5LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: LPTIM5 clock enable during CSleep
+  - name: LPTIM5AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: LPTIM5 autonomous clock mode enable
+fieldset/RCC_SPI1CFGR:
+  description: ''
+  fields:
+  - name: SPI1RST
+    bit_offset: 0
+    bit_size: 1
+    description: SPI1 reset
+  - name: SPI1EN
+    bit_offset: 1
+    bit_size: 1
+    description: SPI1 clock enable
+  - name: SPI1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SPI1 clock enable during CSleep
+fieldset/RCC_SPI2CFGR:
+  description: ''
+  fields:
+  - name: SPI2RST
+    bit_offset: 0
+    bit_size: 1
+    description: SPI2 reset
+  - name: SPI2EN
+    bit_offset: 1
+    bit_size: 1
+    description: SPI2 clock enable
+  - name: SPI2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SPI2 clock enable during CSleep
+fieldset/RCC_SPI3CFGR:
+  description: ''
+  fields:
+  - name: SPI3RST
+    bit_offset: 0
+    bit_size: 1
+    description: SPI3 reset
+  - name: SPI3EN
+    bit_offset: 1
+    bit_size: 1
+    description: SPI3 clock enable
+  - name: SPI3LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SPI3 clock enable during CSleep
+fieldset/RCC_SPI4CFGR:
+  description: ''
+  fields:
+  - name: SPI4RST
+    bit_offset: 0
+    bit_size: 1
+    description: SPI4 reset
+  - name: SPI4EN
+    bit_offset: 1
+    bit_size: 1
+    description: SPI4 clock enable
+  - name: SPI4LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SPI4 clock enable during CSleep
+fieldset/RCC_SPI5CFGR:
+  description: ''
+  fields:
+  - name: SPI5RST
+    bit_offset: 0
+    bit_size: 1
+    description: SPI5 reset
+  - name: SPI5EN
+    bit_offset: 1
+    bit_size: 1
+    description: SPI5 clock enable
+  - name: SPI5LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SPI5 clock enable during CSleep
+fieldset/RCC_SPI6CFGR:
+  description: ''
+  fields:
+  - name: SPI6RST
+    bit_offset: 0
+    bit_size: 1
+    description: SPI6 reset
+  - name: SPI6EN
+    bit_offset: 1
+    bit_size: 1
+    description: SPI6 clock enable
+  - name: SPI6LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SPI6 clock enable during CSleep
+fieldset/RCC_SPI7CFGR:
+  description: ''
+  fields:
+  - name: SPI7RST
+    bit_offset: 0
+    bit_size: 1
+    description: SPI7 reset
+  - name: SPI7EN
+    bit_offset: 1
+    bit_size: 1
+    description: SPI7 clock enable
+  - name: SPI7LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SPI7 clock enable during CSleep
+fieldset/RCC_SPI8CFGR:
+  description: ''
+  fields:
+  - name: SPI8RST
+    bit_offset: 0
+    bit_size: 1
+    description: SPI8 reset
+  - name: SPI8EN
+    bit_offset: 1
+    bit_size: 1
+    description: SPI8 clock enable
+  - name: SPI8LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SPI8 clock enable during CSleep
+  - name: SPI8AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: SPI8 autonomous clock mode enable
+fieldset/RCC_SPDIFRXCFGR:
+  description: ''
+  fields:
+  - name: SPDIFRXRST
+    bit_offset: 0
+    bit_size: 1
+    description: SPDIFRX reset
+  - name: SPDIFRXEN
+    bit_offset: 1
+    bit_size: 1
+    description: SPDIFRX clock enable
+  - name: SPDIFRXLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SPDIFRX clock enable during CSleep
+fieldset/RCC_USART1CFGR:
+  description: ''
+  fields:
+  - name: USART1RST
+    bit_offset: 0
+    bit_size: 1
+    description: USART1 reset
+  - name: USART1EN
+    bit_offset: 1
+    bit_size: 1
+    description: USART1 clock enable
+  - name: USART1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: USART1 clock enable during CSleep
+fieldset/RCC_USART2CFGR:
+  description: ''
+  fields:
+  - name: USART2RST
+    bit_offset: 0
+    bit_size: 1
+    description: USART2 reset
+  - name: USART2EN
+    bit_offset: 1
+    bit_size: 1
+    description: USART2 clock enable
+  - name: USART2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: USART2 clock enable during CSleep
+fieldset/RCC_USART3CFGR:
+  description: ''
+  fields:
+  - name: USART3RST
+    bit_offset: 0
+    bit_size: 1
+    description: USART3 reset
+  - name: USART3EN
+    bit_offset: 1
+    bit_size: 1
+    description: USART3 clock enable
+  - name: USART3LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: USART3 clock enable during CSleep
+fieldset/RCC_UART4CFGR:
+  description: ''
+  fields:
+  - name: UART4RST
+    bit_offset: 0
+    bit_size: 1
+    description: UART4 reset
+  - name: UART4EN
+    bit_offset: 1
+    bit_size: 1
+    description: UART4 clock enable
+  - name: UART4LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: UART4 clock enable during CSleep
+fieldset/RCC_UART5CFGR:
+  description: ''
+  fields:
+  - name: UART5RST
+    bit_offset: 0
+    bit_size: 1
+    description: UART5 reset
+  - name: UART5EN
+    bit_offset: 1
+    bit_size: 1
+    description: UART5 clock enable
+  - name: UART5LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: UART5 clock enable during CSleep
+fieldset/RCC_USART6CFGR:
+  description: ''
+  fields:
+  - name: USART6RST
+    bit_offset: 0
+    bit_size: 1
+    description: USART6 reset
+  - name: USART6EN
+    bit_offset: 1
+    bit_size: 1
+    description: USART6 clock enable
+  - name: USART6LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: USART6 clock enable during CSleep
+fieldset/RCC_UART7CFGR:
+  description: ''
+  fields:
+  - name: UART7RST
+    bit_offset: 0
+    bit_size: 1
+    description: UART7 reset
+  - name: UART7EN
+    bit_offset: 1
+    bit_size: 1
+    description: UART7 clock enable
+  - name: UART7LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: UART7 clock enable during CSleep
+fieldset/RCC_UART8CFGR:
+  description: ''
+  fields:
+  - name: UART8RST
+    bit_offset: 0
+    bit_size: 1
+    description: UART8 reset
+  - name: UART8EN
+    bit_offset: 1
+    bit_size: 1
+    description: UART8 clock enable
+  - name: UART8LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: UART8 clock enable during CSleep
+fieldset/RCC_UART9CFGR:
+  description: ''
+  fields:
+  - name: UART9RST
+    bit_offset: 0
+    bit_size: 1
+    description: UART9 reset
+  - name: UART9EN
+    bit_offset: 1
+    bit_size: 1
+    description: UART9 clock enable
+  - name: UART9LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: UART9 clock enable during CSleep
+fieldset/RCC_LPUART1CFGR:
+  description: ''
+  fields:
+  - name: LPUART1RST
+    bit_offset: 0
+    bit_size: 1
+    description: LPUART1 reset
+  - name: LPUART1EN
+    bit_offset: 1
+    bit_size: 1
+    description: LPUART1 clock enable
+  - name: LPUART1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: LPUART1 clock enable during CSleep
+  - name: LPUART1AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: LPUART1 autonomous clock mode enable
+fieldset/RCC_I2C1CFGR:
+  description: ''
+  fields:
+  - name: I2C1RST
+    bit_offset: 0
+    bit_size: 1
+    description: I2C1 reset
+  - name: I2C1EN
+    bit_offset: 1
+    bit_size: 1
+    description: I2C1 clock enable
+  - name: I2C1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: I2C1 clock enable during CSleep
+fieldset/RCC_I2C2CFGR:
+  description: ''
+  fields:
+  - name: I2C2RST
+    bit_offset: 0
+    bit_size: 1
+    description: I2C2 reset
+  - name: I2C2EN
+    bit_offset: 1
+    bit_size: 1
+    description: I2C2 clock enable
+  - name: I2C2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: I2C2 clock enable during CSleep
+fieldset/RCC_I2C3CFGR:
+  description: ''
+  fields:
+  - name: I2C3RST
+    bit_offset: 0
+    bit_size: 1
+    description: I2C3 reset
+  - name: I2C3EN
+    bit_offset: 1
+    bit_size: 1
+    description: I2C3 clock enable
+  - name: I2C3LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: I2C3 clock enable during CSleep
+fieldset/RCC_I2C4CFGR:
+  description: ''
+  fields:
+  - name: I2C4RST
+    bit_offset: 0
+    bit_size: 1
+    description: I2C4 reset
+  - name: I2C4EN
+    bit_offset: 1
+    bit_size: 1
+    description: I2C4 clock enable
+  - name: I2C4LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: I2C4 clock enable during CSleep
+fieldset/RCC_I2C5CFGR:
+  description: ''
+  fields:
+  - name: I2C5RST
+    bit_offset: 0
+    bit_size: 1
+    description: I2C5 reset
+  - name: I2C5EN
+    bit_offset: 1
+    bit_size: 1
+    description: I2C5 clock enable
+  - name: I2C5LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: I2C5 clock enable during CSleep
+fieldset/RCC_I2C6CFGR:
+  description: ''
+  fields:
+  - name: I2C6RST
+    bit_offset: 0
+    bit_size: 1
+    description: I2C6 reset
+  - name: I2C6EN
+    bit_offset: 1
+    bit_size: 1
+    description: I2C6 clock enable
+  - name: I2C6LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: I2C6 clock enable during CSleep
+fieldset/RCC_I2C7CFGR:
+  description: ''
+  fields:
+  - name: I2C7RST
+    bit_offset: 0
+    bit_size: 1
+    description: I2C7 reset
+  - name: I2C7EN
+    bit_offset: 1
+    bit_size: 1
+    description: I2C7 clock enable
+  - name: I2C7LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: I2C7 clock enable during CSleep
+fieldset/RCC_I2C8CFGR:
+  description: ''
+  fields:
+  - name: I2C8RST
+    bit_offset: 0
+    bit_size: 1
+    description: I2C8 reset
+  - name: I2C8EN
+    bit_offset: 1
+    bit_size: 1
+    description: I2C8 peripheral clocks enable
+  - name: I2C8LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: I2C8 peripheral clocks enable during CSleep mode
+  - name: I2C8AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: I2C8 autonomous clock mode enable
+fieldset/RCC_SAI1CFGR:
+  description: ''
+  fields:
+  - name: SAI1RST
+    bit_offset: 0
+    bit_size: 1
+    description: SAI1 reset
+  - name: SAI1EN
+    bit_offset: 1
+    bit_size: 1
+    description: SAI1 clock enable
+  - name: SAI1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SAI1 clock enable during CSleep
+fieldset/RCC_SAI2CFGR:
+  description: ''
+  fields:
+  - name: SAI2RST
+    bit_offset: 0
+    bit_size: 1
+    description: SAI2 reset
+  - name: SAI2EN
+    bit_offset: 1
+    bit_size: 1
+    description: SAI2 clock enable
+  - name: SAI2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SAI2 clock enable during CSleep
+fieldset/RCC_SAI3CFGR:
+  description: ''
+  fields:
+  - name: SAI3RST
+    bit_offset: 0
+    bit_size: 1
+    description: SAI3 reset
+  - name: SAI3EN
+    bit_offset: 1
+    bit_size: 1
+    description: SAI3 clock enable
+  - name: SAI3LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SAI3 clock enable during CSleep
+fieldset/RCC_SAI4CFGR:
+  description: ''
+  fields:
+  - name: SAI4RST
+    bit_offset: 0
+    bit_size: 1
+    description: SAI4 reset
+  - name: SAI4EN
+    bit_offset: 1
+    bit_size: 1
+    description: SAI4 clock enable
+  - name: SAI4LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SAI4 clock enable during CSleep
+fieldset/RCC_MDF1CFGR:
+  description: ''
+  fields:
+  - name: MDF1RST
+    bit_offset: 0
+    bit_size: 1
+    description: MDF1 reset
+  - name: MDF1EN
+    bit_offset: 1
+    bit_size: 1
+    description: MDF1 clock enable
+  - name: MDF1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: MDF1 clock enable during CSleep
+fieldset/RCC_ADF1CFGR:
+  description: ''
+  fields:
+  - name: ADF1RST
+    bit_offset: 0
+    bit_size: 1
+    description: ADF1 reset
+  - name: ADF1EN
+    bit_offset: 1
+    bit_size: 1
+    description: ADF1 clock enable
+  - name: ADF1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: ADF1 clock enable during CSleep
+  - name: ADF1AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: ADF1 autonomous clock mode enable
+fieldset/RCC_FDCANCFGR:
+  description: ''
+  fields:
+  - name: FDCANRST
+    bit_offset: 0
+    bit_size: 1
+    description: FDCAN reset
+  - name: FDCANEN
+    bit_offset: 1
+    bit_size: 1
+    description: FDCAN clock enable
+  - name: FDCANLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: FDCAN clock enable during CSleep
+fieldset/RCC_HDPCFGR:
+  description: ''
+  fields:
+  - name: HDPRST
+    bit_offset: 0
+    bit_size: 1
+    description: HDP reset
+  - name: HDPEN
+    bit_offset: 1
+    bit_size: 1
+    description: HDP clock enable
+fieldset/RCC_ADC12CFGR:
+  description: ''
+  fields:
+  - name: ADC12RST
+    bit_offset: 0
+    bit_size: 1
+    description: ADC12 reset
+  - name: ADC12EN
+    bit_offset: 1
+    bit_size: 1
+    description: ADC12 clock enable
+  - name: ADC12LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: ADC12 clock enable during CSleep
+  - name: ADC12KERSEL
+    bit_offset: 12
+    bit_size: 1
+    description: ADC12 kernel clock source selection
+fieldset/RCC_ADC3CFGR:
+  description: ''
+  fields:
+  - name: ADC3RST
+    bit_offset: 0
+    bit_size: 1
+    description: ADC3 reset
+  - name: ADC3EN
+    bit_offset: 1
+    bit_size: 1
+    description: ADC3 clock enable
+  - name: ADC3LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: ADC3 clock enable during CSleep
+  - name: ADC3KERSEL
+    bit_offset: 12
+    bit_size: 2
+    description: ADC3 kernel clock source select
+fieldset/RCC_ETH1CFGR:
+  description: ''
+  fields:
+  - name: ETH1RST
+    bit_offset: 0
+    bit_size: 1
+    description: Ethernet 1 reset
+  - name: ETH1MACEN
+    bit_offset: 1
+    bit_size: 1
+    description: Ethernet 1 bus clock enable
+  - name: ETH1MACLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Ethernet 1 bus clock enable during CSleep
+  - name: ETH1STPEN
+    bit_offset: 4
+    bit_size: 1
+    description: Ethernet 1 kernel clocks enable during CStop
+  - name: ETH1EN
+    bit_offset: 5
+    bit_size: 1
+    description: Ethernet 1 kernel clock enable
+  - name: ETH1LPEN
+    bit_offset: 6
+    bit_size: 1
+    description: Ethernet 1 kernel clock enable during CSleep
+  - name: ETH1TXEN
+    bit_offset: 8
+    bit_size: 1
+    description: Ethernet 1 transmission clock enable
+  - name: ETH1TXLPEN
+    bit_offset: 9
+    bit_size: 1
+    description: Ethernet 1 transmission clock enable during CSleep
+  - name: ETH1RXEN
+    bit_offset: 10
+    bit_size: 1
+    description: Ethernet 1 reception clock enable
+  - name: ETH1RXLPEN
+    bit_offset: 11
+    bit_size: 1
+    description: Ethernet 1 reception clock enable during CSleep
+fieldset/RCC_ETH2CFGR:
+  description: ''
+  fields:
+  - name: ETH2RST
+    bit_offset: 0
+    bit_size: 1
+    description: Ethernet 2 reset
+  - name: ETH2MACEN
+    bit_offset: 1
+    bit_size: 1
+    description: Ethernet 2 bus clock enable
+  - name: ETH2MACLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Ethernet 2 bus clock enable during CSleep
+  - name: ETH2STPEN
+    bit_offset: 4
+    bit_size: 1
+    description: Ethernet 2 kernel clocks enable during CStop
+  - name: ETH2EN
+    bit_offset: 5
+    bit_size: 1
+    description: Ethernet 2 kernel clocks enable
+  - name: ETH2LPEN
+    bit_offset: 6
+    bit_size: 1
+    description: Ethernet 2 kernel clocks enable during CSleep
+  - name: ETH2TXEN
+    bit_offset: 8
+    bit_size: 1
+    description: Ethernet 2 transmission clock enable
+  - name: ETH2TXLPEN
+    bit_offset: 9
+    bit_size: 1
+    description: Ethernet 2 transmission clock enable during CSleep mode
+  - name: ETH2RXEN
+    bit_offset: 10
+    bit_size: 1
+    description: Ethernet 2 reception clock enable
+  - name: ETH2RXLPEN
+    bit_offset: 11
+    bit_size: 1
+    description: Ethernet 2 reception clock enable during CSleep
+fieldset/RCC_USBHCFGR:
+  description: ''
+  fields:
+  - name: USBHRST
+    bit_offset: 0
+    bit_size: 1
+    description: USBH reset
+  - name: USBHEN
+    bit_offset: 1
+    bit_size: 1
+    description: USBH peripheral clock enable
+  - name: USBHLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: USBH clock enable during CSleep
+  - name: USBHSTPEN
+    bit_offset: 4
+    bit_size: 1
+    description: USBH clock enable during CStop
+fieldset/RCC_USB2PHY1CFGR:
+  description: ''
+  fields:
+  - name: USB2PHY1RST
+    bit_offset: 0
+    bit_size: 1
+    description: USB2PHY1 reset
+  - name: USB2PHY1EN
+    bit_offset: 1
+    bit_size: 1
+    description: USB2PHY1 clock enable
+  - name: USB2PHY1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: USB2PHY1 clock enable during CSleep
+  - name: USB2PHY1STPEN
+    bit_offset: 4
+    bit_size: 1
+    description: USB2PHY1 reference clock enable during CStop
+  - name: USB2PHY1CKREFSEL
+    bit_offset: 15
+    bit_size: 1
+    description: USB2PHY1 reference clock selection
+fieldset/RCC_USB2PHY2CFGR:
+  description: ''
+  fields:
+  - name: USB2PHY2RST
+    bit_offset: 0
+    bit_size: 1
+    description: USB2PHY2 reset
+  - name: USB2PHY2EN
+    bit_offset: 1
+    bit_size: 1
+    description: USB2PHY2 clock enable
+  - name: USB2PHY2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: USB2PHY2 clock enable during CSleep
+  - name: USB2PHY2STPEN
+    bit_offset: 4
+    bit_size: 1
+    description: USB2PHY2 reference clock enable during CStop
+  - name: USB2PHY2CKREFSEL
+    bit_offset: 15
+    bit_size: 1
+    description: USB2PHY2 reference clock select
+fieldset/RCC_USB3DRDCFGR:
+  description: ''
+  fields:
+  - name: USB3DRDRST
+    bit_offset: 0
+    bit_size: 1
+    description: USB3DRD reset
+  - name: USB3DRDEN
+    bit_offset: 1
+    bit_size: 1
+    description: USB3DRD peripheral clocks enable
+  - name: USB3DRDLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: USB3DRD clock enable during CSleep
+  - name: USB3DRDSTPEN
+    bit_offset: 4
+    bit_size: 1
+    description: USB3DRD clock enable during CStop
+fieldset/RCC_USB3PCIEPHYCFGR:
+  description: ''
+  fields:
+  - name: USB3PCIEPHYRST
+    bit_offset: 0
+    bit_size: 1
+    description: USB3PCIEPHY reset
+  - name: USB3PCIEPHYEN
+    bit_offset: 1
+    bit_size: 1
+    description: USB3PCIEPHY clock enable
+  - name: USB3PCIEPHYLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: USB3PCIEPHY clock enable during CSleep
+  - name: USB3PCIEPHYSTPEN
+    bit_offset: 4
+    bit_size: 1
+    description: USB3PCIEPHY reference clock enable during CStop
+  - name: USB3PCIEPHYCKREFSEL
+    bit_offset: 15
+    bit_size: 1
+    description: USB3PCIEPHY reference clock selection
+fieldset/RCC_PCIECFGR:
+  description: ''
+  fields:
+  - name: PCIERST
+    bit_offset: 0
+    bit_size: 1
+    description: PCIE reset
+  - name: PCIEEN
+    bit_offset: 1
+    bit_size: 1
+    description: PCIE clock enable
+  - name: PCIELPEN
+    bit_offset: 2
+    bit_size: 1
+    description: PCIE clock enable during CSleep
+  - name: PCIESTPEN
+    bit_offset: 4
+    bit_size: 1
+    description: PCIE clock enable during CStop
+fieldset/RCC_UCPDCFGR:
+  description: ''
+  fields:
+  - name: UCPDRST
+    bit_offset: 0
+    bit_size: 1
+    description: UCPD reset
+  - name: UCPDEN
+    bit_offset: 1
+    bit_size: 1
+    description: UCPD clock enable
+  - name: UCPDLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: UCPD clock enable during CSleep
+fieldset/RCC_ETHSWCFGR:
+  description: ''
+  fields:
+  - name: ETHSWRST
+    bit_offset: 0
+    bit_size: 1
+    description: ETHSW reset
+  - name: ETHSWMACEN
+    bit_offset: 1
+    bit_size: 1
+    description: ETHSW clock enable
+  - name: ETHSWMACLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: ETHSW clock enable during CSleep
+  - name: ETHSWEN
+    bit_offset: 5
+    bit_size: 1
+    description: ETHSW ck_ker_ethsw kernel clock enable
+  - name: ETHSWLPEN
+    bit_offset: 6
+    bit_size: 1
+    description: ETHSW ck_ker_ethsw kernel clock enable during CSleep
+  - name: ETHSWREFEN
+    bit_offset: 21
+    bit_size: 1
+    description: ETHSW ck_ker_ethswref kernel clock enable
+  - name: ETHSWREFLPEN
+    bit_offset: 22
+    bit_size: 1
+    description: ETHSW ck_ker_ethswref kernel clock enable during CSleep
+fieldset/RCC_ETHSWACMCFGR:
+  description: ''
+  fields:
+  - name: ETHSWACMEN
+    bit_offset: 1
+    bit_size: 1
+    description: ETHSW_ACM clock enable
+  - name: ETHSWACMLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: ETHSW_ACM clock enable during CSleep
+fieldset/RCC_ETHSWACMMSGCFGR:
+  description: ''
+  fields:
+  - name: ETHSWACMMSGEN
+    bit_offset: 1
+    bit_size: 1
+    description: ETHSW_ACM message buffer clock enable
+  - name: ETHSWACMMSGLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: ETHSW_ACM message buffer clock enable during CSleep
+fieldset/RCC_STGENCFGR:
+  description: ''
+  fields:
+  - name: STGENEN
+    bit_offset: 1
+    bit_size: 1
+    description: STGENRW and STGENRO clock enable
+  - name: STGENLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: STGENRW and STGENRO clock enable during CSleep
+  - name: STGENSTPEN
+    bit_offset: 4
+    bit_size: 1
+    description: STGENRW and STGENRO kernel clock enable during CStop
+fieldset/RCC_SDMMC1CFGR:
+  description: ''
+  fields:
+  - name: SDMMC1RST
+    bit_offset: 0
+    bit_size: 1
+    description: SDMMC1 reset
+  - name: SDMMC1EN
+    bit_offset: 1
+    bit_size: 1
+    description: SDMMC1 clock enable
+  - name: SDMMC1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SDMMC1 clock enable during CSleep
+  - name: SDMMC1DLLRST
+    bit_offset: 16
+    bit_size: 1
+    description: SDMMC1 DLL reset
+fieldset/RCC_SDMMC2CFGR:
+  description: ''
+  fields:
+  - name: SDMMC2RST
+    bit_offset: 0
+    bit_size: 1
+    description: SDMMC2 reset
+  - name: SDMMC2EN
+    bit_offset: 1
+    bit_size: 1
+    description: SDMMC2 clock enable
+  - name: SDMMC2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SDMMC2 clock enable during CSleep
+  - name: SDMMC2DLLRST
+    bit_offset: 16
+    bit_size: 1
+    description: SDMMC2 DLL reset
+fieldset/RCC_SDMMC3CFGR:
+  description: ''
+  fields:
+  - name: SDMMC3RST
+    bit_offset: 0
+    bit_size: 1
+    description: SDMMC3 block reset
+  - name: SDMMC3EN
+    bit_offset: 1
+    bit_size: 1
+    description: SDMMC3 clock enable
+  - name: SDMMC3LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SDMMC3 clock enable during CSleep
+  - name: SDMMC3DLLRST
+    bit_offset: 16
+    bit_size: 1
+    description: SDMMC3 DLL reset
+fieldset/RCC_GPUCFGR:
+  description: ''
+  fields:
+  - name: GPURST
+    bit_offset: 0
+    bit_size: 1
+    description: GPU reset
+  - name: GPUEN
+    bit_offset: 1
+    bit_size: 1
+    description: GPU clock enable
+  - name: GPULPEN
+    bit_offset: 2
+    bit_size: 1
+    description: GPU clock enable during CSleep
+fieldset/RCC_LTDCCFGR:
+  description: ''
+  fields:
+  - name: LTDCRST
+    bit_offset: 0
+    bit_size: 1
+    description: LTDC reset
+  - name: LTDCEN
+    bit_offset: 1
+    bit_size: 1
+    description: LTDC peripheral clock enable
+  - name: LTDCLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: LTDC clock enable during CSleep
+fieldset/RCC_DSICFGR:
+  description: ''
+  fields:
+  - name: DSIRST
+    bit_offset: 0
+    bit_size: 1
+    description: DSI reset
+  - name: DSIEN
+    bit_offset: 1
+    bit_size: 1
+    description: DSI clock enable
+  - name: DSILPEN
+    bit_offset: 2
+    bit_size: 1
+    description: DSI clock enable during CSleep
+  - name: DSIBLSEL
+    bit_offset: 12
+    bit_size: 1
+    description: DSI byte lane clock source selection
+  - name: DSIPHYCKREFSEL
+    bit_offset: 15
+    bit_size: 1
+    description: DSIPHY reference clock selection
+fieldset/RCC_LVDSCFGR:
+  description: ''
+  fields:
+  - name: LVDSRST
+    bit_offset: 0
+    bit_size: 1
+    description: LVDS reset
+  - name: LVDSEN
+    bit_offset: 1
+    bit_size: 1
+    description: LVDSPHY clock enable
+  - name: LVDSLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: LVDSPHY clock enable during CSleep
+  - name: LVDSPHYCKREFSEL
+    bit_offset: 15
+    bit_size: 1
+    description: LVDSPHY reference clock select
+fieldset/RCC_CSI2CFGR:
+  description: ''
+  fields:
+  - name: CSI2RST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_DCMIPPCFGR register
+  - name: CSI2EN
+    bit_offset: 1
+    bit_size: 1
+    description: Bit fields for RCC_DCMIPPCFGR register
+  - name: CSI2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: Bit fields for RCC_DCMIPPCFGR register
+fieldset/RCC_DCMIPPCFGR:
+  description: ''
+  fields:
+  - name: DCMIPPRST
+    bit_offset: 0
+    bit_size: 1
+    description: DCMIPP reset
+  - name: DCMIPPEN
+    bit_offset: 1
+    bit_size: 1
+    description: DCMIPP clock enable
+  - name: DCMIPPLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: DCMIPP clock enable during CSleep
+fieldset/RCC_CCICFGR:
+  description: ''
+  fields:
+  - name: CCIRST
+    bit_offset: 0
+    bit_size: 1
+    description: CCI reset
+  - name: CCIEN
+    bit_offset: 1
+    bit_size: 1
+    description: CCI clock enable
+  - name: CCILPEN
+    bit_offset: 2
+    bit_size: 1
+    description: CCI clock enable during CSleep
+fieldset/RCC_VDECCFGR:
+  description: ''
+  fields:
+  - name: VDECRST
+    bit_offset: 0
+    bit_size: 1
+    description: VDEC reset
+  - name: VDECEN
+    bit_offset: 1
+    bit_size: 1
+    description: VDEC clock enable
+  - name: VDECLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: VDEC clock enable during CSleep
+fieldset/RCC_VENCCFGR:
+  description: ''
+  fields:
+  - name: VENCRST
+    bit_offset: 0
+    bit_size: 1
+    description: VENC reset
+  - name: VENCEN
+    bit_offset: 1
+    bit_size: 1
+    description: VENC clock enable
+  - name: VENCLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: VENC clock enable during CSleep
+fieldset/RCC_RNGCFGR:
+  description: ''
+  fields:
+  - name: RNGRST
+    bit_offset: 0
+    bit_size: 1
+    description: RNG reset
+  - name: RNGEN
+    bit_offset: 1
+    bit_size: 1
+    description: RNG clock enable
+  - name: RNGLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: RNG clock enable during CSleep
+fieldset/RCC_PKACFGR:
+  description: ''
+  fields:
+  - name: PKARST
+    bit_offset: 0
+    bit_size: 1
+    description: PKA reset
+  - name: PKAEN
+    bit_offset: 1
+    bit_size: 1
+    description: PKA clock enable
+  - name: PKALPEN
+    bit_offset: 2
+    bit_size: 1
+    description: PKA clock enable during CSleep
+fieldset/RCC_SAESCFGR:
+  description: ''
+  fields:
+  - name: SAESRST
+    bit_offset: 0
+    bit_size: 1
+    description: SAES reset
+  - name: SAESEN
+    bit_offset: 1
+    bit_size: 1
+    description: SAES clock enable
+  - name: SAESLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SAES clock enable during CSleep
+fieldset/RCC_HASHCFGR:
+  description: ''
+  fields:
+  - name: HASHRST
+    bit_offset: 0
+    bit_size: 1
+    description: HASH reset
+  - name: HASHEN
+    bit_offset: 1
+    bit_size: 1
+    description: HASH clock enable
+  - name: HASHLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: HASH clock enable during CSleep
+fieldset/RCC_CRYP1CFGR:
+  description: ''
+  fields:
+  - name: CRYP1RST
+    bit_offset: 0
+    bit_size: 1
+    description: CRYP1 reset
+  - name: CRYP1EN
+    bit_offset: 1
+    bit_size: 1
+    description: CRYP1 clock enable
+  - name: CRYP1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: CRYP1 clock enable during CSleep
+fieldset/RCC_CRYP2CFGR:
+  description: ''
+  fields:
+  - name: CRYP2RST
+    bit_offset: 0
+    bit_size: 1
+    description: CRYP2 reset
+  - name: CRYP2EN
+    bit_offset: 1
+    bit_size: 1
+    description: CRYP2 clock enable
+  - name: CRYP2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: CRYP2 clock enable during CSleep
+fieldset/RCC_IWDG1CFGR:
+  description: ''
+  fields:
+  - name: IWDG1EN
+    bit_offset: 1
+    bit_size: 1
+    description: IWDG1 bus clock enable
+  - name: IWDG1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: IWDG1 bus clock enable during CSleep
+fieldset/RCC_IWDG2CFGR:
+  description: ''
+  fields:
+  - name: IWDG2EN
+    bit_offset: 1
+    bit_size: 1
+    description: IWDG2 bus clock enable
+  - name: IWDG2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: IWDG2 bus clock enable during CSleep
+fieldset/RCC_IWDG3CFGR:
+  description: ''
+  fields:
+  - name: IWDG3EN
+    bit_offset: 1
+    bit_size: 1
+    description: IWDG3 bus clock enable
+  - name: IWDG3LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: IWDG3 bus clock enable during CSleep
+fieldset/RCC_IWDG4CFGR:
+  description: ''
+  fields:
+  - name: IWDG4EN
+    bit_offset: 1
+    bit_size: 1
+    description: IWDG4 bus clock enable
+  - name: IWDG4LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: IWDG4 bus clock enable during CSleep
+fieldset/RCC_IWDG5CFGR:
+  description: ''
+  fields:
+  - name: IWDG5EN
+    bit_offset: 1
+    bit_size: 1
+    description: IWDG5 bus clock enable
+  - name: IWDG5LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: IWDG5 bus clock enable during CSleep
+  - name: IWDG5AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: IWDG5 autonomous clock mode enable
+fieldset/RCC_WWDG1CFGR:
+  description: ''
+  fields:
+  - name: WWDG1RST
+    bit_offset: 0
+    bit_size: 1
+    description: WWDG1 reset
+  - name: WWDG1EN
+    bit_offset: 1
+    bit_size: 1
+    description: WWDG1 bus clock enable
+  - name: WWDG1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: WWDG1 bus clock enable during CSleep
+fieldset/RCC_WWDG2CFGR:
+  description: ''
+  fields:
+  - name: WWDG2RST
+    bit_offset: 0
+    bit_size: 1
+    description: WWDG2 block reset
+  - name: WWDG2EN
+    bit_offset: 1
+    bit_size: 1
+    description: WWDG2 bus clock enable
+  - name: WWDG2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: WWDG2 bus clock enable during CSleep
+  - name: WWDG2AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: WWDG2 autonomous clock mode enable
+fieldset/RCC_VREFCFGR:
+  description: ''
+  fields:
+  - name: VREFRST
+    bit_offset: 0
+    bit_size: 1
+    description: VREF reset
+  - name: VREFEN
+    bit_offset: 1
+    bit_size: 1
+    description: VREF clock enable
+  - name: VREFLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: VREF clock enable during CSleep
+fieldset/RCC_DTSCFGR:
+  description: ''
+  fields:
+  - name: DTSRST
+    bit_offset: 0
+    bit_size: 1
+    description: DTS reset
+  - name: DTSEN
+    bit_offset: 1
+    bit_size: 1
+    description: DTS clock enable
+  - name: DTSLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: DTS clock enable during CSleep
+  - name: DTSKERSEL
+    bit_offset: 12
+    bit_size: 2
+    description: DTS kernel clock selection
+fieldset/RCC_CRCCFGR:
+  description: ''
+  fields:
+  - name: CRCRST
+    bit_offset: 0
+    bit_size: 1
+    description: CRC reset
+  - name: CRCEN
+    bit_offset: 1
+    bit_size: 1
+    description: CRC clock enable
+  - name: CRCLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: CRC clock enable during CSleep
+fieldset/RCC_SERCCFGR:
+  description: ''
+  fields:
+  - name: SERCRST
+    bit_offset: 0
+    bit_size: 1
+    description: SERC reset
+  - name: SERCEN
+    bit_offset: 1
+    bit_size: 1
+    description: SERC clocks enable
+  - name: SERCLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: SERC clock enable during CSleep
+fieldset/RCC_OSPIIOMCFGR:
+  description: ''
+  fields:
+  - name: OSPIIOMRST
+    bit_offset: 0
+    bit_size: 1
+    description: OCTOSPIM reset
+  - name: OSPIIOMEN
+    bit_offset: 1
+    bit_size: 1
+    description: OCTOSPIM clock enable
+  - name: OSPIIOMLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: OCTOSPIM clock enable during CSleep
+fieldset/RCC_GICV2MCFGR:
+  description: ''
+  fields:
+  - name: GICV2MEN
+    bit_offset: 1
+    bit_size: 1
+    description: GICV2M clock enable
+  - name: GICV2MLPEN
+    bit_offset: 2
+    bit_size: 1
+    description: GICV2M clock enable during CSleep
+fieldset/RCC_I3C1CFGR:
+  description: ''
+  fields:
+  - name: I3C1RST
+    bit_offset: 0
+    bit_size: 1
+    description: I3C1 reset
+  - name: I3C1EN
+    bit_offset: 1
+    bit_size: 1
+    description: I3C1 clock enable
+  - name: I3C1LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: I3C1 clock enable during CSleep
+fieldset/RCC_I3C2CFGR:
+  description: ''
+  fields:
+  - name: I3C2RST
+    bit_offset: 0
+    bit_size: 1
+    description: I3C2 reset
+  - name: I3C2EN
+    bit_offset: 1
+    bit_size: 1
+    description: I3C2 clock enable
+  - name: I3C2LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: I3C2 clock enable during CSleep
+fieldset/RCC_I3C3CFGR:
+  description: ''
+  fields:
+  - name: I3C3RST
+    bit_offset: 0
+    bit_size: 1
+    description: I3C3 reset
+  - name: I3C3EN
+    bit_offset: 1
+    bit_size: 1
+    description: I3C3 clock enable
+  - name: I3C3LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: I3C3 clock enable during CSleep
+fieldset/RCC_I3C4CFGR:
+  description: ''
+  fields:
+  - name: I3C4RST
+    bit_offset: 0
+    bit_size: 1
+    description: I3C4 reset
+  - name: I3C4EN
+    bit_offset: 1
+    bit_size: 1
+    description: I3C4 clock enable
+  - name: I3C4LPEN
+    bit_offset: 2
+    bit_size: 1
+    description: I3C4 clock enable during CSleep
+  - name: I3C4AMEN
+    bit_offset: 3
+    bit_size: 1
+    description: I3C4 autonomous clock mode enable
+fieldset/RCC_MUXSELCFGR:
+  description: ''
+  fields:
+  - name: MUXSEL0
+    bit_offset: 0
+    bit_size: 2
+    description: PLL4 reference clock selection
+  - name: MUXSEL1
+    bit_offset: 4
+    bit_size: 2
+    description: PLL5 reference clock selection
+  - name: MUXSEL2
+    bit_offset: 8
+    bit_size: 2
+    description: PLL6 reference clock selection
+  - name: MUXSEL3
+    bit_offset: 12
+    bit_size: 2
+    description: PLL7 reference clock selection
+  - name: MUXSEL4
+    bit_offset: 16
+    bit_size: 2
+    description: PLL8 reference clock selection
+  - name: MUXSEL5
+    bit_offset: 20
+    bit_size: 2
+    description: PLL1 reference clock selection (ck_pll1_ref)
+  - name: MUXSEL6
+    bit_offset: 24
+    bit_size: 2
+    description: PLL2 reference clock selection (ck_pll2_ref)
+  - name: MUXSEL7
+    bit_offset: 28
+    bit_size: 2
+    description: PLL3 reference clock selection (ck_pll3_ref)
+fieldset/RCC_XBARxCFGR:
+  description: ''
+  fields:
+  - name: XBARxSEL
+    bit_offset: 0
+    bit_size: 4
+    description: 'Bit fields for RCC_PREDIVxCFGR registers : x in [0;63]'
+  - name: XBARxEN
+    bit_offset: 6
+    bit_size: 1
+    description: 'Bit fields for RCC_PREDIVxCFGR registers : x in [0;63]'
+  - name: XBARxSTS
+    bit_offset: 7
+    bit_size: 1
+    description: 'Bit fields for RCC_PREDIVxCFGR registers : x in [0;63]'
+fieldset/RCC_PREDIVxCFGR:
+  description: ''
+  fields:
+  - name: PREDIVx
+    bit_offset: 0
+    bit_size: 10
+    description: Bit fields for RCC_PREDIVSR1 register
+fieldset/RCC_PREDIVSR1:
+  description: ''
+  fields:
+  - name: PREDIVSTS
+    bit_offset: 0
+    bit_size: 32
+    description: Bit fields for RCC_PREDIVSR2 register
+fieldset/RCC_PREDIVSR2:
+  description: ''
+  fields:
+  - name: PREDIVSTS
+    bit_offset: 0
+    bit_size: 32
+    description: 'Bit fields for RCC_FINDIVxCFGR registers : x in [0;63]'
+fieldset/RCC_FINDIVxCFGR:
+  description: ''
+  fields:
+  - name: FINDIVx
+    bit_offset: 0
+    bit_size: 6
+    description: Bit fields for RCC_FINDIVSR1 register
+  - name: FINDIVxEN
+    bit_offset: 6
+    bit_size: 1
+    description: Bit fields for RCC_FINDIVSR1 register
+fieldset/RCC_FINDIVSR1:
+  description: ''
+  fields:
+  - name: FINDIVSTS
+    bit_offset: 0
+    bit_size: 32
+    description: Bit fields for RCC_FINDIVSR2 register
+fieldset/RCC_FINDIVSR2:
+  description: ''
+  fields:
+  - name: FINDIVSTS
+    bit_offset: 0
+    bit_size: 32
+    description: Bit fields for RCC_FCALCOBS0CFGR register
+fieldset/RCC_FCALCOBS0CFGR:
+  description: ''
+  fields:
+  - name: CKINTSEL
+    bit_offset: 0
+    bit_size: 8
+    description: Bit fields for RCC_FCALCOBS1CFGR register
+  - name: CKEXTSEL
+    bit_offset: 8
+    bit_size: 3
+    description: Bit fields for RCC_FCALCOBS1CFGR register
+  - name: FCALCCKEXTSEL
+    bit_offset: 15
+    bit_size: 1
+    description: Bit fields for RCC_FCALCOBS1CFGR register
+  - name: CKOBSEXTSEL
+    bit_offset: 16
+    bit_size: 1
+    description: Bit fields for RCC_FCALCOBS1CFGR register
+  - name: FCALCCKINV
+    bit_offset: 17
+    bit_size: 1
+    description: Bit fields for RCC_FCALCOBS1CFGR register
+  - name: CKOBSINV
+    bit_offset: 18
+    bit_size: 1
+    description: Bit fields for RCC_FCALCOBS1CFGR register
+  - name: CKOBSDIV
+    bit_offset: 22
+    bit_size: 3
+    description: Bit fields for RCC_FCALCOBS1CFGR register
+  - name: FCALCCKEN
+    bit_offset: 25
+    bit_size: 1
+    description: Bit fields for RCC_FCALCOBS1CFGR register
+  - name: CKOBSEN
+    bit_offset: 26
+    bit_size: 1
+    description: Bit fields for RCC_FCALCOBS1CFGR register
+fieldset/RCC_FCALCOBS1CFGR:
+  description: ''
+  fields:
+  - name: CKINTSEL
+    bit_offset: 0
+    bit_size: 8
+    description: Bit fields for RCC_FCALCREFCFGR register
+  - name: CKEXTSEL
+    bit_offset: 8
+    bit_size: 3
+    description: Bit fields for RCC_FCALCREFCFGR register
+  - name: CKOBSEXTSEL
+    bit_offset: 16
+    bit_size: 1
+    description: Bit fields for RCC_FCALCREFCFGR register
+  - name: CKOBSINV
+    bit_offset: 18
+    bit_size: 1
+    description: Bit fields for RCC_FCALCREFCFGR register
+  - name: CKOBSDIV
+    bit_offset: 22
+    bit_size: 3
+    description: Bit fields for RCC_FCALCREFCFGR register
+  - name: CKOBSEN
+    bit_offset: 26
+    bit_size: 1
+    description: Bit fields for RCC_FCALCREFCFGR register
+  - name: FCALCRSTN
+    bit_offset: 27
+    bit_size: 1
+    description: Bit fields for RCC_FCALCREFCFGR register
+fieldset/RCC_FCALCREFCFGR:
+  description: ''
+  fields:
+  - name: FCALCREFCKSEL
+    bit_offset: 0
+    bit_size: 3
+    description: Bit fields for RCC_FCALCCR1 register
+fieldset/RCC_FCALCCR1:
+  description: ''
+  fields:
+  - name: FCALCRUN
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_FCALCCR2 register
+fieldset/RCC_FCALCCR2:
+  description: ''
+  fields:
+  - name: FCALCMD
+    bit_offset: 3
+    bit_size: 2
+    description: Bit fields for RCC_FCALCSR register
+  - name: FCALCTWC
+    bit_offset: 11
+    bit_size: 4
+    description: Bit fields for RCC_FCALCSR register
+  - name: FCALCTYP
+    bit_offset: 17
+    bit_size: 5
+    description: Bit fields for RCC_FCALCSR register
+fieldset/RCC_FCALCSR:
+  description: ''
+  fields:
+  - name: FVAL
+    bit_offset: 0
+    bit_size: 17
+    description: Bit fields for RCC_PLL4CFGR1 register
+  - name: FCALCSTS
+    bit_offset: 19
+    bit_size: 1
+    description: Bit fields for RCC_PLL4CFGR1 register
+fieldset/RCC_PLL4CFGR1:
+  description: ''
+  fields:
+  - name: SSMODRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_PLL4CFGR2 register
+  - name: PLLEN
+    bit_offset: 8
+    bit_size: 1
+    description: Bit fields for RCC_PLL4CFGR2 register
+  - name: PLLRDY
+    bit_offset: 24
+    bit_size: 1
+    description: Bit fields for RCC_PLL4CFGR2 register
+  - name: CKREFST
+    bit_offset: 28
+    bit_size: 1
+    description: Bit fields for RCC_PLL4CFGR2 register
+fieldset/RCC_PLL4CFGR2:
+  description: ''
+  fields:
+  - name: FREFDIV
+    bit_offset: 0
+    bit_size: 6
+    description: Bit fields for RCC_PLL4CFGR3 register
+  - name: FBDIV
+    bit_offset: 16
+    bit_size: 12
+    description: Bit fields for RCC_PLL4CFGR3 register
+fieldset/RCC_PLL4CFGR3:
+  description: ''
+  fields:
+  - name: FRACIN
+    bit_offset: 0
+    bit_size: 24
+    description: Bit fields for RCC_PLL4CFGR4 register
+  - name: DOWNSPREAD
+    bit_offset: 24
+    bit_size: 1
+    description: Bit fields for RCC_PLL4CFGR4 register
+  - name: DACEN
+    bit_offset: 25
+    bit_size: 1
+    description: Bit fields for RCC_PLL4CFGR4 register
+  - name: SSCGDIS
+    bit_offset: 26
+    bit_size: 1
+    description: Bit fields for RCC_PLL4CFGR4 register
+fieldset/RCC_PLL4CFGR4:
+  description: ''
+  fields:
+  - name: DSMEN
+    bit_offset: 8
+    bit_size: 1
+    description: Bit fields for RCC_PLL4CFGR5 register
+  - name: FOUTPOSTDIVEN
+    bit_offset: 9
+    bit_size: 1
+    description: Bit fields for RCC_PLL4CFGR5 register
+  - name: BYPASS
+    bit_offset: 10
+    bit_size: 1
+    description: Bit fields for RCC_PLL4CFGR5 register
+fieldset/RCC_PLL4CFGR5:
+  description: ''
+  fields:
+  - name: DIVVAL
+    bit_offset: 0
+    bit_size: 4
+    description: Bit fields for RCC_PLL4CFGR6 register
+  - name: SPREAD
+    bit_offset: 16
+    bit_size: 5
+    description: Bit fields for RCC_PLL4CFGR6 register
+fieldset/RCC_PLL4CFGR6:
+  description: ''
+  fields:
+  - name: POSTDIV1
+    bit_offset: 0
+    bit_size: 3
+    description: Bit fields for RCC_PLL4CFGR7 register
+fieldset/RCC_PLL4CFGR7:
+  description: ''
+  fields:
+  - name: POSTDIV2
+    bit_offset: 0
+    bit_size: 3
+    description: Bit fields for RCC_PLL5CFGR1 register
+fieldset/RCC_PLL5CFGR1:
+  description: ''
+  fields:
+  - name: SSMODRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_PLL5CFGR2 register
+  - name: PLLEN
+    bit_offset: 8
+    bit_size: 1
+    description: Bit fields for RCC_PLL5CFGR2 register
+  - name: PLLRDY
+    bit_offset: 24
+    bit_size: 1
+    description: Bit fields for RCC_PLL5CFGR2 register
+  - name: CKREFST
+    bit_offset: 28
+    bit_size: 1
+    description: Bit fields for RCC_PLL5CFGR2 register
+fieldset/RCC_PLL5CFGR2:
+  description: ''
+  fields:
+  - name: FREFDIV
+    bit_offset: 0
+    bit_size: 6
+    description: Bit fields for RCC_PLL5CFGR3 register
+  - name: FBDIV
+    bit_offset: 16
+    bit_size: 12
+    description: Bit fields for RCC_PLL5CFGR3 register
+fieldset/RCC_PLL5CFGR3:
+  description: ''
+  fields:
+  - name: FRACIN
+    bit_offset: 0
+    bit_size: 24
+    description: Bit fields for RCC_PLL5CFGR4 register
+  - name: DOWNSPREAD
+    bit_offset: 24
+    bit_size: 1
+    description: Bit fields for RCC_PLL5CFGR4 register
+  - name: DACEN
+    bit_offset: 25
+    bit_size: 1
+    description: Bit fields for RCC_PLL5CFGR4 register
+  - name: SSCGDIS
+    bit_offset: 26
+    bit_size: 1
+    description: Bit fields for RCC_PLL5CFGR4 register
+fieldset/RCC_PLL5CFGR4:
+  description: ''
+  fields:
+  - name: DSMEN
+    bit_offset: 8
+    bit_size: 1
+    description: Bit fields for RCC_PLL5CFGR5 register
+  - name: FOUTPOSTDIVEN
+    bit_offset: 9
+    bit_size: 1
+    description: Bit fields for RCC_PLL5CFGR5 register
+  - name: BYPASS
+    bit_offset: 10
+    bit_size: 1
+    description: Bit fields for RCC_PLL5CFGR5 register
+fieldset/RCC_PLL5CFGR5:
+  description: ''
+  fields:
+  - name: DIVVAL
+    bit_offset: 0
+    bit_size: 4
+    description: Bit fields for RCC_PLL5CFGR6 register
+  - name: SPREAD
+    bit_offset: 16
+    bit_size: 5
+    description: Bit fields for RCC_PLL5CFGR6 register
+fieldset/RCC_PLL5CFGR6:
+  description: ''
+  fields:
+  - name: POSTDIV1
+    bit_offset: 0
+    bit_size: 3
+    description: Bit fields for RCC_PLL5CFGR7 register
+fieldset/RCC_PLL5CFGR7:
+  description: ''
+  fields:
+  - name: POSTDIV2
+    bit_offset: 0
+    bit_size: 3
+    description: Bit fields for RCC_PLL6CFGR1 register
+fieldset/RCC_PLL6CFGR1:
+  description: ''
+  fields:
+  - name: SSMODRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_PLL6CFGR2 register
+  - name: PLLEN
+    bit_offset: 8
+    bit_size: 1
+    description: Bit fields for RCC_PLL6CFGR2 register
+  - name: PLLRDY
+    bit_offset: 24
+    bit_size: 1
+    description: Bit fields for RCC_PLL6CFGR2 register
+  - name: CKREFST
+    bit_offset: 28
+    bit_size: 1
+    description: Bit fields for RCC_PLL6CFGR2 register
+fieldset/RCC_PLL6CFGR2:
+  description: ''
+  fields:
+  - name: FREFDIV
+    bit_offset: 0
+    bit_size: 6
+    description: Bit fields for RCC_PLL6CFGR3 register
+  - name: FBDIV
+    bit_offset: 16
+    bit_size: 12
+    description: Bit fields for RCC_PLL6CFGR3 register
+fieldset/RCC_PLL6CFGR3:
+  description: ''
+  fields:
+  - name: FRACIN
+    bit_offset: 0
+    bit_size: 24
+    description: Bit fields for RCC_PLL6CFGR4 register
+  - name: DOWNSPREAD
+    bit_offset: 24
+    bit_size: 1
+    description: Bit fields for RCC_PLL6CFGR4 register
+  - name: DACEN
+    bit_offset: 25
+    bit_size: 1
+    description: Bit fields for RCC_PLL6CFGR4 register
+  - name: SSCGDIS
+    bit_offset: 26
+    bit_size: 1
+    description: Bit fields for RCC_PLL6CFGR4 register
+fieldset/RCC_PLL6CFGR4:
+  description: ''
+  fields:
+  - name: DSMEN
+    bit_offset: 8
+    bit_size: 1
+    description: Bit fields for RCC_PLL6CFGR5 register
+  - name: FOUTPOSTDIVEN
+    bit_offset: 9
+    bit_size: 1
+    description: Bit fields for RCC_PLL6CFGR5 register
+  - name: BYPASS
+    bit_offset: 10
+    bit_size: 1
+    description: Bit fields for RCC_PLL6CFGR5 register
+fieldset/RCC_PLL6CFGR5:
+  description: ''
+  fields:
+  - name: DIVVAL
+    bit_offset: 0
+    bit_size: 4
+    description: Bit fields for RCC_PLL6CFGR6 register
+  - name: SPREAD
+    bit_offset: 16
+    bit_size: 5
+    description: Bit fields for RCC_PLL6CFGR6 register
+fieldset/RCC_PLL6CFGR6:
+  description: ''
+  fields:
+  - name: POSTDIV1
+    bit_offset: 0
+    bit_size: 3
+    description: Bit fields for RCC_PLL6CFGR7 register
+fieldset/RCC_PLL6CFGR7:
+  description: ''
+  fields:
+  - name: POSTDIV2
+    bit_offset: 0
+    bit_size: 3
+    description: Bit fields for RCC_PLL7CFGR1 register
+fieldset/RCC_PLL7CFGR1:
+  description: ''
+  fields:
+  - name: SSMODRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_PLL7CFGR2 register
+  - name: PLLEN
+    bit_offset: 8
+    bit_size: 1
+    description: Bit fields for RCC_PLL7CFGR2 register
+  - name: PLLRDY
+    bit_offset: 24
+    bit_size: 1
+    description: Bit fields for RCC_PLL7CFGR2 register
+  - name: CKREFST
+    bit_offset: 28
+    bit_size: 1
+    description: Bit fields for RCC_PLL7CFGR2 register
+fieldset/RCC_PLL7CFGR2:
+  description: ''
+  fields:
+  - name: FREFDIV
+    bit_offset: 0
+    bit_size: 6
+    description: Bit fields for RCC_PLL7CFGR3 register
+  - name: FBDIV
+    bit_offset: 16
+    bit_size: 12
+    description: Bit fields for RCC_PLL7CFGR3 register
+fieldset/RCC_PLL7CFGR3:
+  description: ''
+  fields:
+  - name: FRACIN
+    bit_offset: 0
+    bit_size: 24
+    description: Bit fields for RCC_PLL7CFGR4 register
+  - name: DOWNSPREAD
+    bit_offset: 24
+    bit_size: 1
+    description: Bit fields for RCC_PLL7CFGR4 register
+  - name: DACEN
+    bit_offset: 25
+    bit_size: 1
+    description: Bit fields for RCC_PLL7CFGR4 register
+  - name: SSCGDIS
+    bit_offset: 26
+    bit_size: 1
+    description: Bit fields for RCC_PLL7CFGR4 register
+fieldset/RCC_PLL7CFGR4:
+  description: ''
+  fields:
+  - name: DSMEN
+    bit_offset: 8
+    bit_size: 1
+    description: Bit fields for RCC_PLL7CFGR5 register
+  - name: FOUTPOSTDIVEN
+    bit_offset: 9
+    bit_size: 1
+    description: Bit fields for RCC_PLL7CFGR5 register
+  - name: BYPASS
+    bit_offset: 10
+    bit_size: 1
+    description: Bit fields for RCC_PLL7CFGR5 register
+fieldset/RCC_PLL7CFGR5:
+  description: ''
+  fields:
+  - name: DIVVAL
+    bit_offset: 0
+    bit_size: 4
+    description: Bit fields for RCC_PLL7CFGR6 register
+  - name: SPREAD
+    bit_offset: 16
+    bit_size: 5
+    description: Bit fields for RCC_PLL7CFGR6 register
+fieldset/RCC_PLL7CFGR6:
+  description: ''
+  fields:
+  - name: POSTDIV1
+    bit_offset: 0
+    bit_size: 3
+    description: Bit fields for RCC_PLL7CFGR7 register
+fieldset/RCC_PLL7CFGR7:
+  description: ''
+  fields:
+  - name: POSTDIV2
+    bit_offset: 0
+    bit_size: 3
+    description: Bit fields for RCC_PLL8CFGR1 register
+fieldset/RCC_PLL8CFGR1:
+  description: ''
+  fields:
+  - name: SSMODRST
+    bit_offset: 0
+    bit_size: 1
+    description: Bit fields for RCC_PLL8CFGR2 register
+  - name: PLLEN
+    bit_offset: 8
+    bit_size: 1
+    description: Bit fields for RCC_PLL8CFGR2 register
+  - name: PLLRDY
+    bit_offset: 24
+    bit_size: 1
+    description: Bit fields for RCC_PLL8CFGR2 register
+  - name: CKREFST
+    bit_offset: 28
+    bit_size: 1
+    description: Bit fields for RCC_PLL8CFGR2 register
+fieldset/RCC_PLL8CFGR2:
+  description: ''
+  fields:
+  - name: FREFDIV
+    bit_offset: 0
+    bit_size: 6
+    description: Bit fields for RCC_PLL8CFGR3 register
+  - name: FBDIV
+    bit_offset: 16
+    bit_size: 12
+    description: Bit fields for RCC_PLL8CFGR3 register
+fieldset/RCC_PLL8CFGR3:
+  description: ''
+  fields:
+  - name: FRACIN
+    bit_offset: 0
+    bit_size: 24
+    description: Bit fields for RCC_PLL8CFGR4 register
+  - name: DOWNSPREAD
+    bit_offset: 24
+    bit_size: 1
+    description: Bit fields for RCC_PLL8CFGR4 register
+  - name: DACEN
+    bit_offset: 25
+    bit_size: 1
+    description: Bit fields for RCC_PLL8CFGR4 register
+  - name: SSCGDIS
+    bit_offset: 26
+    bit_size: 1
+    description: Bit fields for RCC_PLL8CFGR4 register
+fieldset/RCC_PLL8CFGR4:
+  description: ''
+  fields:
+  - name: DSMEN
+    bit_offset: 8
+    bit_size: 1
+    description: Bit fields for RCC_PLL8CFGR5 register
+  - name: FOUTPOSTDIVEN
+    bit_offset: 9
+    bit_size: 1
+    description: Bit fields for RCC_PLL8CFGR5 register
+  - name: BYPASS
+    bit_offset: 10
+    bit_size: 1
+    description: Bit fields for RCC_PLL8CFGR5 register
+fieldset/RCC_PLL8CFGR5:
+  description: ''
+  fields:
+  - name: DIVVAL
+    bit_offset: 0
+    bit_size: 4
+    description: Bit fields for RCC_PLL8CFGR6 register
+  - name: SPREAD
+    bit_offset: 16
+    bit_size: 5
+    description: Bit fields for RCC_PLL8CFGR6 register
+fieldset/RCC_PLL8CFGR6:
+  description: ''
+  fields:
+  - name: POSTDIV1
+    bit_offset: 0
+    bit_size: 3
+    description: Bit fields for RCC_PLL8CFGR7 register
+fieldset/RCC_PLL8CFGR7:
+  description: ''
+  fields:
+  - name: POSTDIV2
+    bit_offset: 0
+    bit_size: 3
+    description: Bit fields for RCC_VERR register
+fieldset/RCC_VERR:
+  description: ''
+  fields:
+  - name: MINREV
+    bit_offset: 0
+    bit_size: 4
+    description: Bit fields for RCC_IDR register
+  - name: MAJREV
+    bit_offset: 4
+    bit_size: 4
+    description: Bit fields for RCC_IDR register
+fieldset/RCC_IDR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 32
+    description: Bit fields for RCC_SIDR register
+fieldset/RCC_SIDR:
+  description: ''
+  fields:
+  - name: SID
+    bit_offset: 0
+    bit_size: 32

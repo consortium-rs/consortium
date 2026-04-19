@@ -1,0 +1,474 @@
+block/BLK_CTRL_WAKEUPMIX:
+  description: ''
+  items:
+  - name: IPG_DEBUG_CM33
+    byte_offset: 4
+    fieldset: BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CM33
+  - name: QCH_DIS
+    byte_offset: 16
+    fieldset: BLK_CTRL_WAKEUPMIX_QCH_DIS
+  - name: DEXSC_ERR
+    byte_offset: 28
+  - name: MQS_SETTING
+    byte_offset: 32
+    fieldset: BLK_CTRL_WAKEUPMIX_MQS_SETTING
+  - name: SAI_CLK_SEL
+    byte_offset: 36
+  - name: GPR
+    byte_offset: 40
+    fieldset: BLK_CTRL_WAKEUPMIX_GPR
+  - name: ENET_CLK_SEL
+    byte_offset: 44
+  - name: VOLT_DETECT
+    byte_offset: 52
+  - name: I3C2_WAKEUP
+    byte_offset: 56
+  - name: IPG_DEBUG_CA55C0
+    byte_offset: 60
+    fieldset: BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C0
+  - name: IPG_DEBUG_CA55C1
+    byte_offset: 64
+    fieldset: BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C1
+  - name: AXI_ATTR_CFG
+    byte_offset: 68
+  - name: I3C2_SDA_IRQ
+    byte_offset: 72
+    fieldset: BLK_CTRL_WAKEUPMIX_I3C2_SDA_IRQ
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CM33:
+  description: ''
+  fields:
+  - name: CAN2
+    bit_offset: 0
+    bit_size: 1
+  - name: FLEXIO1
+    bit_offset: 2
+    bit_size: 1
+  - name: FLEXIO2
+    bit_offset: 3
+    bit_size: 1
+  - name: LPI2C3
+    bit_offset: 4
+    bit_size: 1
+  - name: LPI2C4
+    bit_offset: 5
+    bit_size: 1
+  - name: LPI2C5
+    bit_offset: 6
+    bit_size: 1
+  - name: LPI2C6
+    bit_offset: 7
+    bit_size: 1
+  - name: LPI2C7
+    bit_offset: 8
+    bit_size: 1
+  - name: LPI2C8
+    bit_offset: 9
+    bit_size: 1
+  - name: LPIT2
+    bit_offset: 10
+    bit_size: 1
+  - name: LPSPI3
+    bit_offset: 11
+    bit_size: 1
+  - name: LPSPI4
+    bit_offset: 12
+    bit_size: 1
+  - name: LPSPI5
+    bit_offset: 13
+    bit_size: 1
+  - name: LPSPI6
+    bit_offset: 14
+    bit_size: 1
+  - name: LPSPI7
+    bit_offset: 15
+    bit_size: 1
+  - name: LPSPI8
+    bit_offset: 16
+    bit_size: 1
+  - name: LPTMR2
+    bit_offset: 17
+    bit_size: 1
+  - name: TPM3
+    bit_offset: 18
+    bit_size: 1
+  - name: TPM4
+    bit_offset: 19
+    bit_size: 1
+  - name: TPM5
+    bit_offset: 20
+    bit_size: 1
+  - name: TPM6
+    bit_offset: 21
+    bit_size: 1
+  - name: WDOG3
+    bit_offset: 22
+    bit_size: 1
+  - name: WDOG4
+    bit_offset: 23
+    bit_size: 1
+  - name: WDOG5
+    bit_offset: 24
+    bit_size: 1
+  - name: I3C2
+    bit_offset: 25
+    bit_size: 1
+  - name: SAI2
+    bit_offset: 26
+    bit_size: 1
+  - name: SAI3
+    bit_offset: 27
+    bit_size: 1
+  - name: ENET1
+    bit_offset: 28
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_QCH_DIS:
+  description: ''
+  fields:
+  - name: GPIO2
+    bit_offset: 0
+    bit_size: 1
+  - name: GPIO3
+    bit_offset: 1
+    bit_size: 1
+  - name: FLEXIO1
+    bit_offset: 2
+    bit_size: 1
+  - name: FLEXIO2
+    bit_offset: 3
+    bit_size: 1
+  - name: LPSPI3
+    bit_offset: 4
+    bit_size: 1
+  - name: LPSPI4
+    bit_offset: 5
+    bit_size: 1
+  - name: LPUART3
+    bit_offset: 6
+    bit_size: 1
+  - name: LPUART4
+    bit_offset: 7
+    bit_size: 1
+  - name: LPUART5
+    bit_offset: 8
+    bit_size: 1
+  - name: LPUART6
+    bit_offset: 9
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_DEXSC_ERR_EXC_ERR_RESP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_DEXSC_ERR_LOCK_EXC_ERR_RESP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_MQS_SETTING_SAI:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_MQS_SETTING_MQS:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_MQS_SETTING_SOFT:
+  description: ''
+  fields:
+  - name: RESET
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_MQS_SETTING:
+  description: ''
+  fields:
+  - name: OVERSAMPLE
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_MQS_SETTING_CLK:
+  description: ''
+  fields:
+  - name: DIVIDE
+    bit_offset: 8
+    bit_size: 8
+fieldset/BLK_CTRL_WAKEUPMIX_SAI_CLK_SEL_SAI2:
+  description: ''
+  fields:
+  - name: MCLK1
+    bit_offset: 0
+    bit_size: 1
+  - name: MCLK2
+    bit_offset: 1
+    bit_size: 3
+  - name: MCLK3
+    bit_offset: 4
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_SAI_CLK_SEL_SAI3:
+  description: ''
+  fields:
+  - name: MCLK1
+    bit_offset: 16
+    bit_size: 1
+  - name: MCLK2
+    bit_offset: 17
+    bit_size: 3
+  - name: MCLK3
+    bit_offset: 20
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_GPR:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+  - name: MODE
+    bit_offset: 1
+    bit_size: 3
+fieldset/BLK_CTRL_WAKEUPMIX_GPR_DIS_CRC:
+  description: ''
+  fields:
+  - name: CHK
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_ENET_CLK_SEL_ENET_QOS_CLK_TX_CLK:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_ENET_CLK_SEL_ENET1_TX_CLK:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_VOLT_DETECT_SUPPLY_DETECTOR:
+  description: ''
+  fields:
+  - name: AON
+    bit_offset: 0
+    bit_size: 1
+  - name: GPIO
+    bit_offset: 1
+    bit_size: 1
+  - name: SD2
+    bit_offset: 2
+    bit_size: 1
+  - name: WAKEUP
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_I3C2_WAKEUP_IRQ:
+  description: ''
+  fields:
+  - name: CLR
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C0:
+  description: ''
+  fields:
+  - name: CAN2
+    bit_offset: 0
+    bit_size: 1
+  - name: FLEXIO1
+    bit_offset: 2
+    bit_size: 1
+  - name: FLEXIO2
+    bit_offset: 3
+    bit_size: 1
+  - name: LPI2C3
+    bit_offset: 4
+    bit_size: 1
+  - name: LPI2C4
+    bit_offset: 5
+    bit_size: 1
+  - name: LPI2C5
+    bit_offset: 6
+    bit_size: 1
+  - name: LPI2C6
+    bit_offset: 7
+    bit_size: 1
+  - name: LPI2C7
+    bit_offset: 8
+    bit_size: 1
+  - name: LPI2C8
+    bit_offset: 9
+    bit_size: 1
+  - name: LPIT2
+    bit_offset: 10
+    bit_size: 1
+  - name: LPSPI3
+    bit_offset: 11
+    bit_size: 1
+  - name: LPSPI4
+    bit_offset: 12
+    bit_size: 1
+  - name: LPSPI5
+    bit_offset: 13
+    bit_size: 1
+  - name: LPSPI6
+    bit_offset: 14
+    bit_size: 1
+  - name: LPSPI7
+    bit_offset: 15
+    bit_size: 1
+  - name: LPSPI8
+    bit_offset: 16
+    bit_size: 1
+  - name: LPTMR2
+    bit_offset: 17
+    bit_size: 1
+  - name: TPM3
+    bit_offset: 18
+    bit_size: 1
+  - name: TPM4
+    bit_offset: 19
+    bit_size: 1
+  - name: TPM5
+    bit_offset: 20
+    bit_size: 1
+  - name: TPM6
+    bit_offset: 21
+    bit_size: 1
+  - name: WDOG3
+    bit_offset: 22
+    bit_size: 1
+  - name: WDOG4
+    bit_offset: 23
+    bit_size: 1
+  - name: WDOG5
+    bit_offset: 24
+    bit_size: 1
+  - name: I3C2
+    bit_offset: 25
+    bit_size: 1
+  - name: SAI2
+    bit_offset: 26
+    bit_size: 1
+  - name: SAI3
+    bit_offset: 27
+    bit_size: 1
+  - name: ENET1
+    bit_offset: 28
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_IPG_DEBUG_CA55C1:
+  description: ''
+  fields:
+  - name: CAN2
+    bit_offset: 0
+    bit_size: 1
+  - name: FLEXIO1
+    bit_offset: 2
+    bit_size: 1
+  - name: FLEXIO2
+    bit_offset: 3
+    bit_size: 1
+  - name: LPI2C3
+    bit_offset: 4
+    bit_size: 1
+  - name: LPI2C4
+    bit_offset: 5
+    bit_size: 1
+  - name: LPI2C5
+    bit_offset: 6
+    bit_size: 1
+  - name: LPI2C6
+    bit_offset: 7
+    bit_size: 1
+  - name: LPI2C7
+    bit_offset: 8
+    bit_size: 1
+  - name: LPI2C8
+    bit_offset: 9
+    bit_size: 1
+  - name: LPIT2
+    bit_offset: 10
+    bit_size: 1
+  - name: LPSPI3
+    bit_offset: 11
+    bit_size: 1
+  - name: LPSPI4
+    bit_offset: 12
+    bit_size: 1
+  - name: LPSPI5
+    bit_offset: 13
+    bit_size: 1
+  - name: LPSPI6
+    bit_offset: 14
+    bit_size: 1
+  - name: LPSPI7
+    bit_offset: 15
+    bit_size: 1
+  - name: LPSPI8
+    bit_offset: 16
+    bit_size: 1
+  - name: LPTMR2
+    bit_offset: 17
+    bit_size: 1
+  - name: TPM3
+    bit_offset: 18
+    bit_size: 1
+  - name: TPM4
+    bit_offset: 19
+    bit_size: 1
+  - name: TPM5
+    bit_offset: 20
+    bit_size: 1
+  - name: TPM6
+    bit_offset: 21
+    bit_size: 1
+  - name: WDOG3
+    bit_offset: 22
+    bit_size: 1
+  - name: WDOG4
+    bit_offset: 23
+    bit_size: 1
+  - name: WDOG5
+    bit_offset: 24
+    bit_size: 1
+  - name: I3C2
+    bit_offset: 25
+    bit_size: 1
+  - name: SAI2
+    bit_offset: 26
+    bit_size: 1
+  - name: SAI3
+    bit_offset: 27
+    bit_size: 1
+  - name: ENET1
+    bit_offset: 28
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_AXI_ATTR_CFG_ARCACHE:
+  description: ''
+  fields:
+  - name: USDHC1
+    bit_offset: 0
+    bit_size: 1
+  - name: USDHC2
+    bit_offset: 2
+    bit_size: 1
+  - name: USDHC3
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_AXI_ATTR_CFG_AWCACHE:
+  description: ''
+  fields:
+  - name: USDHC1
+    bit_offset: 1
+    bit_size: 1
+  - name: USDHC2
+    bit_offset: 3
+    bit_size: 1
+  - name: USDHC3
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_WAKEUPMIX_I3C2_SDA_IRQ:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 0
+    bit_size: 1

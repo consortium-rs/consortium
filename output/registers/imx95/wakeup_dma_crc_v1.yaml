@@ -1,0 +1,80 @@
+block/WAKEUP_DMA_CRC:
+  description: ''
+  items:
+  - name: GEC
+    byte_offset: 0
+  - name: CTL
+    byte_offset: 16
+    fieldset: WAKEUP_DMA_CRC_CTL
+  - name: ICRC
+    byte_offset: 20
+  - name: FCRC
+    byte_offset: 24
+fieldset/WAKEUP_DMA_CRC_GEC_GBL:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/WAKEUP_DMA_CRC_GEC_SWAP:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_DMA_CRC_CTL_CH:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 0
+    bit_size: 6
+fieldset/WAKEUP_DMA_CRC_CTL_POLY:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 8
+    bit_size: 3
+fieldset/WAKEUP_DMA_CRC_CTL_CS:
+  description: ''
+  fields:
+  - name: XOR
+    bit_offset: 12
+    bit_size: 1
+  - name: SWAP
+    bit_offset: 13
+    bit_size: 1
+fieldset/WAKEUP_DMA_CRC_CTL_SWAP:
+  description: ''
+  fields:
+  - name: BIT
+    bit_offset: 14
+    bit_size: 1
+fieldset/WAKEUP_DMA_CRC_CTL_INIT:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 15
+    bit_size: 1
+fieldset/WAKEUP_DMA_CRC_CTL:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 16
+    bit_size: 3
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_DMA_CRC_ICRC_INI_CRC:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 0
+    bit_size: 32
+    description: Initial CRC Value
+fieldset/WAKEUP_DMA_CRC_FCRC_CHKSUM:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 0
+    bit_size: 32
+    description: Final CRC Value

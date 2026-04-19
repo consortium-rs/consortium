@@ -1,0 +1,593 @@
+block/PDM:
+  description: ''
+  items:
+  - name: CTRL_1
+    byte_offset: 0
+    fieldset: PDM_CTRL_1
+  - name: CTRL_2
+    byte_offset: 4
+    fieldset: PDM_CTRL_2
+  - name: STAT
+    byte_offset: 8
+    fieldset: PDM_STAT
+  - name: FIFO_CTRL
+    byte_offset: 16
+    fieldset: PDM_FIFO_CTRL
+  - name: FIFO_STAT
+    byte_offset: 20
+    fieldset: PDM_FIFO_STAT
+  - name: DATACH
+    byte_offset: 36
+    array:
+      len: 8
+      stride: 4
+    fieldset: PDM_DATACH
+  - name: DC_CTRL
+    byte_offset: 100
+    fieldset: PDM_DC_CTRL
+  - name: DC_OUT_CTRL
+    byte_offset: 104
+    fieldset: PDM_DC_OUT_CTRL
+  - name: RANGE_CTRL
+    byte_offset: 116
+    fieldset: PDM_RANGE_CTRL
+  - name: RANGE_STAT
+    byte_offset: 124
+    fieldset: PDM_RANGE_STAT
+  - name: FSYNC_CTRL
+    byte_offset: 128
+    fieldset: PDM_FSYNC_CTRL
+  - name: VERID
+    byte_offset: 132
+    fieldset: PDM_VERID
+  - name: PARAM
+    byte_offset: 136
+    fieldset: PDM_PARAM
+  - name: VAD0_CTRL_1
+    byte_offset: 144
+    fieldset: PDM_VAD0_CTRL_1
+  - name: VAD0_CTRL_2
+    byte_offset: 148
+    fieldset: PDM_VAD0_CTRL_2
+  - name: VAD0_STAT
+    byte_offset: 152
+    fieldset: PDM_VAD0_STAT
+  - name: VAD0_SCONFIG
+    byte_offset: 156
+    fieldset: PDM_VAD0_SCONFIG
+  - name: VAD0_NCONFIG
+    byte_offset: 160
+    fieldset: PDM_VAD0_NCONFIG
+  - name: VAD0_NDATA
+    byte_offset: 164
+    fieldset: PDM_VAD0_NDATA
+  - name: VAD0_ZCD
+    byte_offset: 168
+    fieldset: PDM_VAD0_ZCD
+fieldset/PDM_CTRL_1:
+  description: ''
+  fields:
+  - name: CH0EN
+    bit_offset: 0
+    bit_size: 1
+    description: Channel 0 Enable
+  - name: CH1EN
+    bit_offset: 1
+    bit_size: 1
+    description: Channel 0 Enable
+  - name: CH2EN
+    bit_offset: 2
+    bit_size: 1
+    description: Channel 1 Enable
+  - name: CH3EN
+    bit_offset: 3
+    bit_size: 1
+    description: Channel 2 Enable
+  - name: CH4EN
+    bit_offset: 4
+    bit_size: 1
+    description: Channel 3 Enable
+  - name: CH5EN
+    bit_offset: 5
+    bit_size: 1
+    description: Channel 4 Enable
+  - name: CH6EN
+    bit_offset: 6
+    bit_size: 1
+    description: Channel 5 Enable
+  - name: CH7EN
+    bit_offset: 7
+    bit_size: 1
+    description: Channel 6 Enable
+  - name: FSYNCEN
+    bit_offset: 16
+    bit_size: 1
+    description: Channel 7 Enable
+  - name: DECFILS
+    bit_offset: 20
+    bit_size: 1
+  - name: ERREN
+    bit_offset: 23
+    bit_size: 1
+  - name: DISEL
+    bit_offset: 24
+    bit_size: 2
+  - name: DBGE
+    bit_offset: 26
+    bit_size: 1
+  - name: SRES
+    bit_offset: 27
+    bit_size: 1
+  - name: DBG
+    bit_offset: 28
+    bit_size: 1
+  - name: PDMIEN
+    bit_offset: 29
+    bit_size: 1
+  - name: DOZEN
+    bit_offset: 30
+    bit_size: 1
+  - name: MDIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/PDM_CTRL_2:
+  description: ''
+  fields:
+  - name: CLKDIV
+    bit_offset: 0
+    bit_size: 8
+  - name: CICOSR
+    bit_offset: 16
+    bit_size: 4
+  - name: QSEL
+    bit_offset: 25
+    bit_size: 3
+fieldset/PDM_STAT:
+  description: ''
+  fields:
+  - name: CH0F
+    bit_offset: 0
+    bit_size: 1
+  - name: CH1F
+    bit_offset: 1
+    bit_size: 1
+  - name: CH2F
+    bit_offset: 2
+    bit_size: 1
+  - name: CH3F
+    bit_offset: 3
+    bit_size: 1
+  - name: CH4F
+    bit_offset: 4
+    bit_size: 1
+  - name: CH5F
+    bit_offset: 5
+    bit_size: 1
+  - name: CH6F
+    bit_offset: 6
+    bit_size: 1
+  - name: CH7F
+    bit_offset: 7
+    bit_size: 1
+  - name: LOWFREQF
+    bit_offset: 29
+    bit_size: 1
+fieldset/PDM_STAT_FIR:
+  description: ''
+  fields:
+  - name: RDY
+    bit_offset: 30
+    bit_size: 1
+fieldset/PDM_STAT_BSY:
+  description: ''
+  fields:
+  - name: FIL
+    bit_offset: 31
+    bit_size: 1
+fieldset/PDM_FIFO_CTRL:
+  description: ''
+  fields:
+  - name: FIFOWMK
+    bit_offset: 0
+    bit_size: 5
+    description: FIFO Watermark Control
+fieldset/PDM_FIFO_STAT:
+  description: ''
+  fields:
+  - name: FIFOOVF0
+    bit_offset: 0
+    bit_size: 1
+  - name: FIFOOVF1
+    bit_offset: 1
+    bit_size: 1
+  - name: FIFOOVF2
+    bit_offset: 2
+    bit_size: 1
+  - name: FIFOOVF3
+    bit_offset: 3
+    bit_size: 1
+  - name: FIFOOVF4
+    bit_offset: 4
+    bit_size: 1
+  - name: FIFOOVF5
+    bit_offset: 5
+    bit_size: 1
+  - name: FIFOOVF6
+    bit_offset: 6
+    bit_size: 1
+  - name: FIFOOVF7
+    bit_offset: 7
+    bit_size: 1
+  - name: FIFOUND0
+    bit_offset: 8
+    bit_size: 1
+  - name: FIFOUND1
+    bit_offset: 9
+    bit_size: 1
+  - name: FIFOUND2
+    bit_offset: 10
+    bit_size: 1
+  - name: FIFOUND3
+    bit_offset: 11
+    bit_size: 1
+  - name: FIFOUND4
+    bit_offset: 12
+    bit_size: 1
+  - name: FIFOUND5
+    bit_offset: 13
+    bit_size: 1
+  - name: FIFOUND6
+    bit_offset: 14
+    bit_size: 1
+  - name: FIFOUND7
+    bit_offset: 15
+    bit_size: 1
+fieldset/PDM_DATACH:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 32
+    description: Channel n Data
+fieldset/PDM_DC_CTRL:
+  description: ''
+  fields:
+  - name: DCCONFIG0
+    bit_offset: 0
+    bit_size: 2
+  - name: DCCONFIG1
+    bit_offset: 2
+    bit_size: 2
+  - name: DCCONFIG2
+    bit_offset: 4
+    bit_size: 2
+  - name: DCCONFIG3
+    bit_offset: 6
+    bit_size: 2
+  - name: DCCONFIG4
+    bit_offset: 8
+    bit_size: 2
+  - name: DCCONFIG5
+    bit_offset: 10
+    bit_size: 2
+  - name: DCCONFIG6
+    bit_offset: 12
+    bit_size: 2
+  - name: DCCONFIG7
+    bit_offset: 14
+    bit_size: 2
+fieldset/PDM_DC_OUT_CTRL:
+  description: ''
+  fields:
+  - name: DCCONFIG0
+    bit_offset: 0
+    bit_size: 2
+  - name: DCCONFIG1
+    bit_offset: 2
+    bit_size: 2
+  - name: DCCONFIG2
+    bit_offset: 4
+    bit_size: 2
+  - name: DCCONFIG3
+    bit_offset: 6
+    bit_size: 2
+  - name: DCCONFIG4
+    bit_offset: 8
+    bit_size: 2
+  - name: DCCONFIG5
+    bit_offset: 10
+    bit_size: 2
+  - name: DCCONFIG6
+    bit_offset: 12
+    bit_size: 2
+  - name: DCCONFIG7
+    bit_offset: 14
+    bit_size: 2
+fieldset/PDM_RANGE_CTRL:
+  description: ''
+  fields:
+  - name: RANGEADJ0
+    bit_offset: 0
+    bit_size: 4
+    description: Channel 0 Range Adjustment
+  - name: RANGEADJ1
+    bit_offset: 4
+    bit_size: 4
+    description: Channel 0 Range Adjustment
+  - name: RANGEADJ2
+    bit_offset: 8
+    bit_size: 4
+    description: Channel 1 Range Adjustment
+  - name: RANGEADJ3
+    bit_offset: 12
+    bit_size: 4
+    description: Channel 2 Range Adjustment
+  - name: RANGEADJ4
+    bit_offset: 16
+    bit_size: 4
+    description: Channel 3 Range Adjustment
+  - name: RANGEADJ5
+    bit_offset: 20
+    bit_size: 4
+    description: Channel 4 Range Adjustment
+  - name: RANGEADJ6
+    bit_offset: 24
+    bit_size: 4
+    description: Channel 5 Range Adjustment
+  - name: RANGEADJ7
+    bit_offset: 28
+    bit_size: 4
+    description: Channel 6 Range Adjustment
+fieldset/PDM_RANGE_STAT:
+  description: ''
+  fields:
+  - name: RANGEOVF0
+    bit_offset: 0
+    bit_size: 1
+  - name: RANGEOVF1
+    bit_offset: 1
+    bit_size: 1
+  - name: RANGEOVF2
+    bit_offset: 2
+    bit_size: 1
+  - name: RANGEOVF3
+    bit_offset: 3
+    bit_size: 1
+  - name: RANGEOVF4
+    bit_offset: 4
+    bit_size: 1
+  - name: RANGEOVF5
+    bit_offset: 5
+    bit_size: 1
+  - name: RANGEOVF6
+    bit_offset: 6
+    bit_size: 1
+  - name: RANGEOVF7
+    bit_offset: 7
+    bit_size: 1
+  - name: RANGEUNF0
+    bit_offset: 16
+    bit_size: 1
+  - name: RANGEUNF1
+    bit_offset: 17
+    bit_size: 1
+  - name: RANGEUNF2
+    bit_offset: 18
+    bit_size: 1
+  - name: RANGEUNF3
+    bit_offset: 19
+    bit_size: 1
+  - name: RANGEUNF4
+    bit_offset: 20
+    bit_size: 1
+  - name: RANGEUNF5
+    bit_offset: 21
+    bit_size: 1
+  - name: RANGEUNF6
+    bit_offset: 22
+    bit_size: 1
+  - name: RANGEUNF7
+    bit_offset: 23
+    bit_size: 1
+fieldset/PDM_FSYNC_CTRL:
+  description: ''
+  fields:
+  - name: FSYNCLEN
+    bit_offset: 0
+    bit_size: 32
+fieldset/PDM_VERID:
+  description: ''
+  fields:
+  - name: FEATURE
+    bit_offset: 0
+    bit_size: 16
+    description: Feature Specification Number
+  - name: MINOR
+    bit_offset: 16
+    bit_size: 8
+    description: Feature Specification Number
+  - name: MAJOR
+    bit_offset: 24
+    bit_size: 8
+    description: Minor Version Number
+fieldset/PDM_PARAM:
+  description: ''
+  fields:
+  - name: NPAIR
+    bit_offset: 0
+    bit_size: 4
+  - name: HWVAD
+    bit_offset: 16
+    bit_size: 1
+fieldset/PDM_PARAM_FIFO:
+  description: ''
+  fields:
+  - name: PTRWID
+    bit_offset: 4
+    bit_size: 4
+fieldset/PDM_PARAM_FIL_OUT_WIDTH:
+  description: ''
+  fields:
+  - name: 24B
+    bit_offset: 8
+    bit_size: 1
+fieldset/PDM_PARAM_LOW:
+  description: ''
+  fields:
+  - name: POWER
+    bit_offset: 9
+    bit_size: 1
+fieldset/PDM_PARAM_DC:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 10
+    bit_size: 1
+fieldset/PDM_PARAM_DC_OUT:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 11
+    bit_size: 1
+fieldset/PDM_PARAM_HWVAD_ENERGY:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 17
+    bit_size: 1
+fieldset/PDM_PARAM_HWVAD:
+  description: ''
+  fields:
+  - name: ZCD
+    bit_offset: 19
+    bit_size: 1
+fieldset/PDM_PARAM_NUM:
+  description: ''
+  fields:
+  - name: HWVAD
+    bit_offset: 24
+    bit_size: 4
+    description: Number of HWVADs
+fieldset/PDM_VAD0_CTRL_1:
+  description: ''
+  fields:
+  - name: VADEN
+    bit_offset: 0
+    bit_size: 1
+  - name: VADRST
+    bit_offset: 1
+    bit_size: 1
+    description: HWVAD Reset
+  - name: VADIE
+    bit_offset: 2
+    bit_size: 1
+    description: HWVAD Reset
+  - name: VADERIE
+    bit_offset: 3
+    bit_size: 1
+  - name: VADST10
+    bit_offset: 4
+    bit_size: 1
+  - name: VADINITT
+    bit_offset: 8
+    bit_size: 5
+  - name: VADCICOSR
+    bit_offset: 16
+    bit_size: 4
+    description: CIC Oversampling Rate
+  - name: VADCHSEL
+    bit_offset: 24
+    bit_size: 3
+    description: CIC Oversampling Rate
+fieldset/PDM_VAD0_CTRL_2:
+  description: ''
+  fields:
+  - name: VADHPF
+    bit_offset: 0
+    bit_size: 2
+  - name: VADINPGAIN
+    bit_offset: 8
+    bit_size: 4
+  - name: VADFRAMET
+    bit_offset: 16
+    bit_size: 6
+  - name: VADFOUTDIS
+    bit_offset: 28
+    bit_size: 1
+  - name: VADPREFEN
+    bit_offset: 30
+    bit_size: 1
+  - name: VADFRENDIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/PDM_VAD0_STAT:
+  description: ''
+  fields:
+  - name: VADIF
+    bit_offset: 0
+    bit_size: 1
+  - name: VADINSATF
+    bit_offset: 16
+    bit_size: 1
+  - name: VADINITF
+    bit_offset: 31
+    bit_size: 1
+fieldset/PDM_VAD0_SCONFIG:
+  description: ''
+  fields:
+  - name: VADSGAIN
+    bit_offset: 0
+    bit_size: 4
+  - name: VADSMAXEN
+    bit_offset: 30
+    bit_size: 1
+  - name: VADSFILEN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PDM_VAD0_NCONFIG:
+  description: ''
+  fields:
+  - name: VADNGAIN
+    bit_offset: 0
+    bit_size: 4
+  - name: VADNFILADJ
+    bit_offset: 8
+    bit_size: 5
+  - name: VADNOREN
+    bit_offset: 28
+    bit_size: 1
+  - name: VADNDECEN
+    bit_offset: 29
+    bit_size: 1
+  - name: VADNMINEN
+    bit_offset: 30
+    bit_size: 1
+  - name: VADNFILAUTO
+    bit_offset: 31
+    bit_size: 1
+fieldset/PDM_VAD0_NDATA:
+  description: ''
+  fields:
+  - name: VADNDATA
+    bit_offset: 0
+    bit_size: 16
+    description: Noise Data
+fieldset/PDM_VAD0_ZCD:
+  description: ''
+  fields:
+  - name: VADZCDEN
+    bit_offset: 0
+    bit_size: 1
+  - name: VADZCDAUTO
+    bit_offset: 2
+    bit_size: 1
+  - name: VADZCDAND
+    bit_offset: 4
+    bit_size: 1
+  - name: VADZCDADJ
+    bit_offset: 8
+    bit_size: 4
+  - name: VADZCDTH
+    bit_offset: 16
+    bit_size: 10
+    description: ZCD Threshold

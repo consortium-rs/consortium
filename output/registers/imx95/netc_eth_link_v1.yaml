@@ -1,0 +1,2178 @@
+block/NETC_ETH_LINK:
+  description: ''
+  items:
+  - name: PM0_COMMAND_CONFIG
+    byte_offset: 8
+    fieldset: NETC_ETH_LINK_PM0_COMMAND_CONFIG
+  - name: PM0_MAC_ADDR_0
+    byte_offset: 12
+  - name: PM0_MAC_ADDR_1
+    byte_offset: 16
+  - name: PM0_MAXFRM
+    byte_offset: 20
+    fieldset: NETC_ETH_LINK_PM0_MAXFRM
+  - name: PM0_MDIO_CFG
+    byte_offset: 48
+    fieldset: NETC_ETH_LINK_PM0_MDIO_CFG
+  - name: PM0_MDIO_CTL
+    byte_offset: 52
+    fieldset: NETC_ETH_LINK_PM0_MDIO_CTL
+  - name: PM0_MDIO_DATA
+    byte_offset: 56
+    fieldset: NETC_ETH_LINK_PM0_MDIO_DATA
+  - name: PM0_MDIO_ADDR
+    byte_offset: 60
+    fieldset: NETC_ETH_LINK_PM0_MDIO_ADDR
+  - name: PM0_IEVENT
+    byte_offset: 64
+    fieldset: NETC_ETH_LINK_PM0_IEVENT
+  - name: PM0_IMASK
+    byte_offset: 76
+    fieldset: NETC_ETH_LINK_PM0_IMASK
+  - name: PM0_PAUSE_QUANTA
+    byte_offset: 84
+    fieldset: NETC_ETH_LINK_PM0_PAUSE_QUANTA
+  - name: PM0_PAUSE_THRESH
+    byte_offset: 100
+    fieldset: NETC_ETH_LINK_PM0_PAUSE_THRESH
+  - name: PM0_RX_PAUSE_STATUS
+    byte_offset: 116
+    fieldset: NETC_ETH_LINK_PM0_RX_PAUSE_STATUS
+  - name: PM0_LPWAKE_TIMER
+    byte_offset: 184
+  - name: PM0_SLEEP_TIMER
+    byte_offset: 188
+    fieldset: NETC_ETH_LINK_PM0_SLEEP_TIMER
+  - name: PM0_SINGLE_STEP
+    byte_offset: 192
+    fieldset: NETC_ETH_LINK_PM0_SINGLE_STEP
+  - name: PM0_HD_BACKOFF_ENTROPY
+    byte_offset: 208
+  - name: PM0_HD_FLOW_CTRL
+    byte_offset: 212
+  - name: PM0_STATN_CONFIG
+    byte_offset: 224
+    fieldset: NETC_ETH_LINK_PM0_STATN_CONFIG
+  - name: PM0_REOCTN
+    byte_offset: 256
+    fieldset: NETC_ETH_LINK_PM0_REOCTN
+  - name: PM0_ROCTN
+    byte_offset: 264
+    fieldset: NETC_ETH_LINK_PM0_ROCTN
+  - name: PM0_RXPFN
+    byte_offset: 280
+    fieldset: NETC_ETH_LINK_PM0_RXPFN
+  - name: PM0_RFRMN
+    byte_offset: 288
+    fieldset: NETC_ETH_LINK_PM0_RFRMN
+  - name: PM0_RFCSN
+    byte_offset: 296
+    fieldset: NETC_ETH_LINK_PM0_RFCSN
+  - name: PM0_RVLANN
+    byte_offset: 304
+    fieldset: NETC_ETH_LINK_PM0_RVLANN
+  - name: PM0_RERRN
+    byte_offset: 312
+    fieldset: NETC_ETH_LINK_PM0_RERRN
+  - name: PM0_RUCAN
+    byte_offset: 320
+    fieldset: NETC_ETH_LINK_PM0_RUCAN
+  - name: PM0_RMCAN
+    byte_offset: 328
+    fieldset: NETC_ETH_LINK_PM0_RMCAN
+  - name: PM0_RBCAN
+    byte_offset: 336
+    fieldset: NETC_ETH_LINK_PM0_RBCAN
+  - name: PM0_RDRPN
+    byte_offset: 344
+    fieldset: NETC_ETH_LINK_PM0_RDRPN
+  - name: PM0_RPKTN
+    byte_offset: 352
+    fieldset: NETC_ETH_LINK_PM0_RPKTN
+  - name: PM0_RUNDN
+    byte_offset: 360
+    fieldset: NETC_ETH_LINK_PM0_RUNDN
+  - name: PM0_R64N
+    byte_offset: 368
+    fieldset: NETC_ETH_LINK_PM0_R64N
+  - name: PM0_R127N
+    byte_offset: 376
+    fieldset: NETC_ETH_LINK_PM0_R127N
+  - name: PM0_R255N
+    byte_offset: 384
+    fieldset: NETC_ETH_LINK_PM0_R255N
+  - name: PM0_R511N
+    byte_offset: 392
+    fieldset: NETC_ETH_LINK_PM0_R511N
+  - name: PM0_R1023N
+    byte_offset: 400
+    fieldset: NETC_ETH_LINK_PM0_R1023N
+  - name: PM0_R1522N
+    byte_offset: 408
+    fieldset: NETC_ETH_LINK_PM0_R1522N
+  - name: PM0_R1523XN
+    byte_offset: 416
+    fieldset: NETC_ETH_LINK_PM0_R1523XN
+  - name: PM0_ROVRN
+    byte_offset: 424
+    fieldset: NETC_ETH_LINK_PM0_ROVRN
+  - name: PM0_RJBRN
+    byte_offset: 432
+    fieldset: NETC_ETH_LINK_PM0_RJBRN
+  - name: PM0_RFRGN
+    byte_offset: 440
+    fieldset: NETC_ETH_LINK_PM0_RFRGN
+  - name: PM0_RCNPN
+    byte_offset: 448
+    fieldset: NETC_ETH_LINK_PM0_RCNPN
+  - name: PM0_RDRNTPN
+    byte_offset: 456
+    fieldset: NETC_ETH_LINK_PM0_RDRNTPN
+  - name: PM0_TEOCTN
+    byte_offset: 512
+    fieldset: NETC_ETH_LINK_PM0_TEOCTN
+  - name: PM0_TOCTN
+    byte_offset: 520
+    fieldset: NETC_ETH_LINK_PM0_TOCTN
+  - name: PM0_TXPFN
+    byte_offset: 536
+    fieldset: NETC_ETH_LINK_PM0_TXPFN
+  - name: PM0_TFRMN
+    byte_offset: 544
+    fieldset: NETC_ETH_LINK_PM0_TFRMN
+  - name: PM0_TFCSN
+    byte_offset: 552
+    fieldset: NETC_ETH_LINK_PM0_TFCSN
+  - name: PM0_TVLANN
+    byte_offset: 560
+    fieldset: NETC_ETH_LINK_PM0_TVLANN
+  - name: PM0_TERRN
+    byte_offset: 568
+    fieldset: NETC_ETH_LINK_PM0_TERRN
+  - name: PM0_TUCAN
+    byte_offset: 576
+    fieldset: NETC_ETH_LINK_PM0_TUCAN
+  - name: PM0_TMCAN
+    byte_offset: 584
+    fieldset: NETC_ETH_LINK_PM0_TMCAN
+  - name: PM0_TBCAN
+    byte_offset: 592
+    fieldset: NETC_ETH_LINK_PM0_TBCAN
+  - name: PM0_TPKTN
+    byte_offset: 608
+    fieldset: NETC_ETH_LINK_PM0_TPKTN
+  - name: PM0_TUNDN
+    byte_offset: 616
+    fieldset: NETC_ETH_LINK_PM0_TUNDN
+  - name: PM0_T64N
+    byte_offset: 624
+    fieldset: NETC_ETH_LINK_PM0_T64N
+  - name: PM0_T127N
+    byte_offset: 632
+    fieldset: NETC_ETH_LINK_PM0_T127N
+  - name: PM0_T255N
+    byte_offset: 640
+    fieldset: NETC_ETH_LINK_PM0_T255N
+  - name: PM0_T511N
+    byte_offset: 648
+    fieldset: NETC_ETH_LINK_PM0_T511N
+  - name: PM0_T1023N
+    byte_offset: 656
+    fieldset: NETC_ETH_LINK_PM0_T1023N
+  - name: PM0_T1522N
+    byte_offset: 664
+    fieldset: NETC_ETH_LINK_PM0_T1522N
+  - name: PM0_T1523XN
+    byte_offset: 672
+    fieldset: NETC_ETH_LINK_PM0_T1523XN
+  - name: PM0_TCNPN
+    byte_offset: 704
+    fieldset: NETC_ETH_LINK_PM0_TCNPN
+  - name: PM0_TDFRN
+    byte_offset: 720
+    fieldset: NETC_ETH_LINK_PM0_TDFRN
+  - name: PM0_TMCOLN
+    byte_offset: 728
+    fieldset: NETC_ETH_LINK_PM0_TMCOLN
+  - name: PM0_TSCOLN
+    byte_offset: 736
+    fieldset: NETC_ETH_LINK_PM0_TSCOLN
+  - name: PM0_TLCOLN
+    byte_offset: 744
+    fieldset: NETC_ETH_LINK_PM0_TLCOLN
+  - name: PM0_TECOLN
+    byte_offset: 752
+    fieldset: NETC_ETH_LINK_PM0_TECOLN
+  - name: PM0_IF_MODE
+    byte_offset: 768
+    fieldset: NETC_ETH_LINK_PM0_IF_MODE
+  - name: PM0_IF_STATUS
+    byte_offset: 772
+    fieldset: NETC_ETH_LINK_PM0_IF_STATUS
+  - name: PM1_COMMAND_CONFIG
+    byte_offset: 1032
+    fieldset: NETC_ETH_LINK_PM1_COMMAND_CONFIG
+  - name: PM1_MAC_ADDR_0
+    byte_offset: 1036
+  - name: PM1_MAC_ADDR_1
+    byte_offset: 1040
+  - name: PM1_MAXFRM
+    byte_offset: 1044
+    fieldset: NETC_ETH_LINK_PM1_MAXFRM
+  - name: PM1_IEVENT
+    byte_offset: 1088
+    fieldset: NETC_ETH_LINK_PM1_IEVENT
+  - name: PM1_IMASK
+    byte_offset: 1100
+    fieldset: NETC_ETH_LINK_PM1_IMASK
+  - name: PM1_PAUSE_QUANTA
+    byte_offset: 1108
+    fieldset: NETC_ETH_LINK_PM1_PAUSE_QUANTA
+  - name: PM1_PAUSE_THRESH
+    byte_offset: 1124
+    fieldset: NETC_ETH_LINK_PM1_PAUSE_THRESH
+  - name: PM1_RX_PAUSE_STATUS
+    byte_offset: 1140
+    fieldset: NETC_ETH_LINK_PM1_RX_PAUSE_STATUS
+  - name: PM1_LPWAKE_TIMER
+    byte_offset: 1208
+  - name: PM1_SLEEP_TIMER
+    byte_offset: 1212
+    fieldset: NETC_ETH_LINK_PM1_SLEEP_TIMER
+  - name: PM1_SINGLE_STEP
+    byte_offset: 1216
+    fieldset: NETC_ETH_LINK_PM1_SINGLE_STEP
+  - name: PM1_HD_BACKOFF_ENTROPY
+    byte_offset: 1232
+  - name: PM1_HD_FLOW_CTRL
+    byte_offset: 1236
+  - name: PM1_STATN_CONFIG
+    byte_offset: 1248
+    fieldset: NETC_ETH_LINK_PM1_STATN_CONFIG
+  - name: PM1_REOCTN
+    byte_offset: 1280
+    fieldset: NETC_ETH_LINK_PM1_REOCTN
+  - name: PM1_ROCTN
+    byte_offset: 1288
+    fieldset: NETC_ETH_LINK_PM1_ROCTN
+  - name: PM1_RXPFN
+    byte_offset: 1304
+    fieldset: NETC_ETH_LINK_PM1_RXPFN
+  - name: PM1_RFRMN
+    byte_offset: 1312
+    fieldset: NETC_ETH_LINK_PM1_RFRMN
+  - name: PM1_RFCSN
+    byte_offset: 1320
+    fieldset: NETC_ETH_LINK_PM1_RFCSN
+  - name: PM1_RVLANN
+    byte_offset: 1328
+    fieldset: NETC_ETH_LINK_PM1_RVLANN
+  - name: PM1_RERRN
+    byte_offset: 1336
+    fieldset: NETC_ETH_LINK_PM1_RERRN
+  - name: PM1_RUCAN
+    byte_offset: 1344
+    fieldset: NETC_ETH_LINK_PM1_RUCAN
+  - name: PM1_RMCAN
+    byte_offset: 1352
+    fieldset: NETC_ETH_LINK_PM1_RMCAN
+  - name: PM1_RBCAN
+    byte_offset: 1360
+    fieldset: NETC_ETH_LINK_PM1_RBCAN
+  - name: PM1_RDRPN
+    byte_offset: 1368
+    fieldset: NETC_ETH_LINK_PM1_RDRPN
+  - name: PM1_RPKTN
+    byte_offset: 1376
+    fieldset: NETC_ETH_LINK_PM1_RPKTN
+  - name: PM1_RUNDN
+    byte_offset: 1384
+    fieldset: NETC_ETH_LINK_PM1_RUNDN
+  - name: PM1_R64N
+    byte_offset: 1392
+    fieldset: NETC_ETH_LINK_PM1_R64N
+  - name: PM1_R127N
+    byte_offset: 1400
+    fieldset: NETC_ETH_LINK_PM1_R127N
+  - name: PM1_R255N
+    byte_offset: 1408
+    fieldset: NETC_ETH_LINK_PM1_R255N
+  - name: PM1_R511N
+    byte_offset: 1416
+    fieldset: NETC_ETH_LINK_PM1_R511N
+  - name: PM1_R1023N
+    byte_offset: 1424
+    fieldset: NETC_ETH_LINK_PM1_R1023N
+  - name: PM1_R1522N
+    byte_offset: 1432
+    fieldset: NETC_ETH_LINK_PM1_R1522N
+  - name: PM1_R1523XN
+    byte_offset: 1440
+    fieldset: NETC_ETH_LINK_PM1_R1523XN
+  - name: PM1_ROVRN
+    byte_offset: 1448
+    fieldset: NETC_ETH_LINK_PM1_ROVRN
+  - name: PM1_RJBRN
+    byte_offset: 1456
+    fieldset: NETC_ETH_LINK_PM1_RJBRN
+  - name: PM1_RFRGN
+    byte_offset: 1464
+    fieldset: NETC_ETH_LINK_PM1_RFRGN
+  - name: PM1_RCNPN
+    byte_offset: 1472
+    fieldset: NETC_ETH_LINK_PM1_RCNPN
+  - name: PM1_RDRNTPN
+    byte_offset: 1480
+    fieldset: NETC_ETH_LINK_PM1_RDRNTPN
+  - name: PM1_TEOCTN
+    byte_offset: 1536
+    fieldset: NETC_ETH_LINK_PM1_TEOCTN
+  - name: PM1_TOCTN
+    byte_offset: 1544
+    fieldset: NETC_ETH_LINK_PM1_TOCTN
+  - name: PM1_TXPFN
+    byte_offset: 1560
+    fieldset: NETC_ETH_LINK_PM1_TXPFN
+  - name: PM1_TFRMN
+    byte_offset: 1568
+    fieldset: NETC_ETH_LINK_PM1_TFRMN
+  - name: PM1_TFCSN
+    byte_offset: 1576
+    fieldset: NETC_ETH_LINK_PM1_TFCSN
+  - name: PM1_TVLANN
+    byte_offset: 1584
+    fieldset: NETC_ETH_LINK_PM1_TVLANN
+  - name: PM1_TERRN
+    byte_offset: 1592
+    fieldset: NETC_ETH_LINK_PM1_TERRN
+  - name: PM1_TUCAN
+    byte_offset: 1600
+    fieldset: NETC_ETH_LINK_PM1_TUCAN
+  - name: PM1_TMCAN
+    byte_offset: 1608
+    fieldset: NETC_ETH_LINK_PM1_TMCAN
+  - name: PM1_TBCAN
+    byte_offset: 1616
+    fieldset: NETC_ETH_LINK_PM1_TBCAN
+  - name: PM1_TPKTN
+    byte_offset: 1632
+    fieldset: NETC_ETH_LINK_PM1_TPKTN
+  - name: PM1_TUNDN
+    byte_offset: 1640
+    fieldset: NETC_ETH_LINK_PM1_TUNDN
+  - name: PM1_T64N
+    byte_offset: 1648
+    fieldset: NETC_ETH_LINK_PM1_T64N
+  - name: PM1_T127N
+    byte_offset: 1656
+    fieldset: NETC_ETH_LINK_PM1_T127N
+  - name: PM1_T255N
+    byte_offset: 1664
+    fieldset: NETC_ETH_LINK_PM1_T255N
+  - name: PM1_T511N
+    byte_offset: 1672
+    fieldset: NETC_ETH_LINK_PM1_T511N
+  - name: PM1_T1023N
+    byte_offset: 1680
+    fieldset: NETC_ETH_LINK_PM1_T1023N
+  - name: PM1_T1522N
+    byte_offset: 1688
+    fieldset: NETC_ETH_LINK_PM1_T1522N
+  - name: PM1_T1523XN
+    byte_offset: 1696
+    fieldset: NETC_ETH_LINK_PM1_T1523XN
+  - name: PM1_TCNPN
+    byte_offset: 1728
+    fieldset: NETC_ETH_LINK_PM1_TCNPN
+  - name: PM1_TDFRN
+    byte_offset: 1744
+    fieldset: NETC_ETH_LINK_PM1_TDFRN
+  - name: PM1_TMCOLN
+    byte_offset: 1752
+    fieldset: NETC_ETH_LINK_PM1_TMCOLN
+  - name: PM1_TSCOLN
+    byte_offset: 1760
+    fieldset: NETC_ETH_LINK_PM1_TSCOLN
+  - name: PM1_TLCOLN
+    byte_offset: 1768
+    fieldset: NETC_ETH_LINK_PM1_TLCOLN
+  - name: PM1_TECOLN
+    byte_offset: 1776
+    fieldset: NETC_ETH_LINK_PM1_TECOLN
+  - name: PM1_IF_MODE
+    byte_offset: 1792
+    fieldset: NETC_ETH_LINK_PM1_IF_MODE
+  - name: PM1_IF_STATUS
+    byte_offset: 1796
+    fieldset: NETC_ETH_LINK_PM1_IF_STATUS
+  - name: MAC_MERGE_MMCSR
+    byte_offset: 2048
+    fieldset: NETC_ETH_LINK_MAC_MERGE_MMCSR
+  - name: MAC_MERGE_MMFAECR
+    byte_offset: 2056
+    fieldset: NETC_ETH_LINK_MAC_MERGE_MMFAECR
+  - name: MAC_MERGE_MMFSECR
+    byte_offset: 2060
+    fieldset: NETC_ETH_LINK_MAC_MERGE_MMFSECR
+  - name: MAC_MERGE_MMFAOCR
+    byte_offset: 2064
+    fieldset: NETC_ETH_LINK_MAC_MERGE_MMFAOCR
+  - name: MAC_MERGE_MMFCRXR
+    byte_offset: 2068
+    fieldset: NETC_ETH_LINK_MAC_MERGE_MMFCRXR
+  - name: MAC_MERGE_MMFCTXR
+    byte_offset: 2072
+    fieldset: NETC_ETH_LINK_MAC_MERGE_MMFCTXR
+  - name: MAC_MERGE_MMHCR
+    byte_offset: 2076
+    fieldset: NETC_ETH_LINK_MAC_MERGE_MMHCR
+  - name: PEMDIOCR
+    byte_offset: 3072
+    fieldset: NETC_ETH_LINK_PEMDIOCR
+  - name: PEMDIOICR
+    byte_offset: 3076
+    fieldset: NETC_ETH_LINK_PEMDIOICR
+  - name: PEMDIOIDR
+    byte_offset: 3080
+  - name: PEMDIORAR
+    byte_offset: 3084
+    fieldset: NETC_ETH_LINK_PEMDIORAR
+  - name: PEMDIOSR
+    byte_offset: 3088
+    fieldset: NETC_ETH_LINK_PEMDIOSR
+  - name: PPSCR
+    byte_offset: 3104
+    fieldset: NETC_ETH_LINK_PPSCR
+  - name: PPSCTRLR
+    byte_offset: 3108
+  - name: PPSDR
+    byte_offset: 3112
+  - name: PPSRAR
+    byte_offset: 3116
+    fieldset: NETC_ETH_LINK_PPSRAR
+  - name: PPSER
+    byte_offset: 3120
+  - name: PPSMR
+    byte_offset: 3124
+fieldset/NETC_ETH_LINK_PM0_COMMAND_CONFIG_TX:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+    description: MAC transmit path enable
+  - name: FLUSH
+    bit_offset: 22
+    bit_size: 1
+    description: Tx flush
+fieldset/NETC_ETH_LINK_PM0_COMMAND_CONFIG_RX:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+    description: MAC receive path enable
+  - name: FLUSH
+    bit_offset: 28
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_COMMAND_CONFIG_PAUSE:
+  description: ''
+  fields:
+  - name: FWD
+    bit_offset: 7
+    bit_size: 1
+  - name: IGN
+    bit_offset: 8
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_COMMAND_CONFIG_LOOP:
+  description: ''
+  fields:
+  - name: ENA
+    bit_offset: 10
+    bit_size: 1
+    description: Loopback enable
+fieldset/NETC_ETH_LINK_PM0_COMMAND_CONFIG_LPBK:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 11
+    bit_size: 2
+    description: Loopback mode
+fieldset/NETC_ETH_LINK_PM0_COMMAND_CONFIG_CNT_FRM:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 13
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_COMMAND_CONFIG_TS:
+  description: ''
+  fields:
+  - name: PNT
+    bit_offset: 14
+    bit_size: 1
+    description: Timestamp Point
+  - name: MODE
+    bit_offset: 30
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_COMMAND_CONFIG:
+  description: ''
+  fields:
+  - name: TXP
+    bit_offset: 15
+    bit_size: 1
+  - name: SFD
+    bit_offset: 21
+    bit_size: 1
+  - name: SWR
+    bit_offset: 26
+    bit_size: 1
+  - name: MG
+    bit_offset: 31
+    bit_size: 1
+    description: Magic Packet detection enable.
+fieldset/NETC_ETH_LINK_PM0_COMMAND_CONFIG_SEND:
+  description: ''
+  fields:
+  - name: IDLE
+    bit_offset: 16
+    bit_size: 1
+    description: Force send idle
+fieldset/NETC_ETH_LINK_PM0_COMMAND_CONFIG_TX_LOWP:
+  description: ''
+  fields:
+  - name: ENA
+    bit_offset: 23
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_COMMAND_CONFIG_REG_LOWP:
+  description: ''
+  fields:
+  - name: RXETY
+    bit_offset: 24
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_MAXFRM:
+  description: ''
+  fields:
+  - name: MAXFRM
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_ETH_LINK_PM0_MAXFRM_TX:
+  description: ''
+  fields:
+  - name: MTU
+    bit_offset: 16
+    bit_size: 16
+fieldset/NETC_ETH_LINK_PM0_MDIO_CFG:
+  description: ''
+  fields:
+  - name: BSY2
+    bit_offset: 0
+    bit_size: 1
+    description: MDIO busy (same as bit 31)
+  - name: ENC45
+    bit_offset: 6
+    bit_size: 1
+    description: Enable Clause 45 support.
+  - name: CIM
+    bit_offset: 29
+    bit_size: 1
+  - name: CMP
+    bit_offset: 30
+    bit_size: 1
+  - name: BSY1
+    bit_offset: 31
+    bit_size: 1
+    description: MDIO busy
+fieldset/NETC_ETH_LINK_PM0_MDIO_CFG_MDIO_RD:
+  description: ''
+  fields:
+  - name: ER
+    bit_offset: 1
+    bit_size: 1
+    description: MDIO error
+fieldset/NETC_ETH_LINK_PM0_MDIO_CFG_MDIO:
+  description: ''
+  fields:
+  - name: HOLD
+    bit_offset: 2
+    bit_size: 3
+    description: MDIO hold time
+fieldset/NETC_ETH_LINK_PM0_MDIO_CFG_PRE:
+  description: ''
+  fields:
+  - name: DIS
+    bit_offset: 5
+    bit_size: 1
+    description: MDIO preamble disable.
+fieldset/NETC_ETH_LINK_PM0_MDIO_CFG_MDIO_CLK:
+  description: ''
+  fields:
+  - name: DIV
+    bit_offset: 7
+    bit_size: 9
+fieldset/NETC_ETH_LINK_PM0_MDIO_CTL_DEV:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 5
+fieldset/NETC_ETH_LINK_PM0_MDIO_CTL_PORT:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 5
+    bit_size: 5
+fieldset/NETC_ETH_LINK_PM0_MDIO_CTL:
+  description: ''
+  fields:
+  - name: READ
+    bit_offset: 15
+    bit_size: 1
+    description: MDIO read initiation.
+  - name: BSY
+    bit_offset: 31
+    bit_size: 1
+    description: MDIO read initiation.
+fieldset/NETC_ETH_LINK_PM0_MDIO_DATA_MDIO:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 16
+    description: 16-bit MDIO data.
+fieldset/NETC_ETH_LINK_PM0_MDIO_DATA:
+  description: ''
+  fields:
+  - name: BUSY
+    bit_offset: 31
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_MDIO_ADDR:
+  description: ''
+  fields:
+  - name: REGADDR
+    bit_offset: 0
+    bit_size: 16
+    description: MDIO PHY register address.
+fieldset/NETC_ETH_LINK_PM0_IEVENT_LOC:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 0
+    bit_size: 1
+    description: Local fault event (XGMII)
+fieldset/NETC_ETH_LINK_PM0_IEVENT_REM:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 1
+    bit_size: 1
+    description: Remote fault event (XGMII)
+fieldset/NETC_ETH_LINK_PM0_IEVENT_RX:
+  description: ''
+  fields:
+  - name: LOWP
+    bit_offset: 4
+    bit_size: 1
+    description: Low Power Idle event
+  - name: EMPTY
+    bit_offset: 6
+    bit_size: 1
+    description: Receive idle event
+  - name: OVFL
+    bit_offset: 12
+    bit_size: 1
+  - name: CSD
+    bit_offset: 22
+    bit_size: 1
+    description: Rx Clock Stop Detection
+fieldset/NETC_ETH_LINK_PM0_IEVENT_TX:
+  description: ''
+  fields:
+  - name: EMPTY
+    bit_offset: 5
+    bit_size: 1
+    description: Transmit FIFO empty event
+  - name: LOWP
+    bit_offset: 8
+    bit_size: 2
+    description: Transmit low power status
+  - name: OVFL
+    bit_offset: 10
+    bit_size: 1
+  - name: UNFL
+    bit_offset: 11
+    bit_size: 1
+  - name: CSD
+    bit_offset: 21
+    bit_size: 1
+    description: Tx Clock Stop Detection
+fieldset/NETC_ETH_LINK_PM0_IEVENT_LI:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 7
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_IEVENT:
+  description: ''
+  fields:
+  - name: MGI
+    bit_offset: 14
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_IEVENT_SPD:
+  description: ''
+  fields:
+  - name: DUP
+    bit_offset: 23
+    bit_size: 1
+    description: Speed/Duplex Change
+fieldset/NETC_ETH_LINK_PM0_IEVENT_LINK:
+  description: ''
+  fields:
+  - name: UP
+    bit_offset: 24
+    bit_size: 1
+    description: Link Up
+  - name: DOWN
+    bit_offset: 25
+    bit_size: 1
+    description: Link Up
+fieldset/NETC_ETH_LINK_PM0_IEVENT_AN:
+  description: ''
+  fields:
+  - name: DONE
+    bit_offset: 26
+    bit_size: 1
+    description: Link Down
+fieldset/NETC_ETH_LINK_PM0_IEVENT_MRG:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 27
+    bit_size: 1
+  - name: AERR
+    bit_offset: 28
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_IMASK_LOC:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 0
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_IMASK_REM:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 1
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_IMASK_LI:
+  description: ''
+  fields:
+  - name: FAULT
+    bit_offset: 7
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_IMASK:
+  description: ''
+  fields:
+  - name: MGI
+    bit_offset: 14
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_IMASK_TX:
+  description: ''
+  fields:
+  - name: CSD
+    bit_offset: 21
+    bit_size: 1
+    description: Tx Clock Stop Detection
+fieldset/NETC_ETH_LINK_PM0_IMASK_RX:
+  description: ''
+  fields:
+  - name: CSD
+    bit_offset: 22
+    bit_size: 1
+    description: Tx Clock Stop Detection
+fieldset/NETC_ETH_LINK_PM0_IMASK_SPD:
+  description: ''
+  fields:
+  - name: DUP
+    bit_offset: 23
+    bit_size: 1
+    description: Rx Clock Stop Detection
+fieldset/NETC_ETH_LINK_PM0_IMASK_LINK:
+  description: ''
+  fields:
+  - name: UP
+    bit_offset: 24
+    bit_size: 1
+    description: Link Up
+  - name: DOWN
+    bit_offset: 25
+    bit_size: 1
+    description: Link Up
+fieldset/NETC_ETH_LINK_PM0_IMASK_AN:
+  description: ''
+  fields:
+  - name: DONE
+    bit_offset: 26
+    bit_size: 1
+    description: Link Down
+fieldset/NETC_ETH_LINK_PM0_IMASK_MRG:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 27
+    bit_size: 1
+  - name: AERR
+    bit_offset: 28
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_PAUSE_QUANTA:
+  description: ''
+  fields:
+  - name: PQNT
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_ETH_LINK_PM0_PAUSE_THRESH:
+  description: ''
+  fields:
+  - name: QTH
+    bit_offset: 0
+    bit_size: 16
+    description: Quanta threshold.
+fieldset/NETC_ETH_LINK_PM0_RX_PAUSE_STATUS:
+  description: ''
+  fields:
+  - name: PSTAT
+    bit_offset: 0
+    bit_size: 1
+    description: Pause status.
+fieldset/NETC_ETH_LINK_PM0_LPWAKE_TIMER_TW_SYS:
+  description: ''
+  fields:
+  - name: TX
+    bit_offset: 0
+    bit_size: 24
+fieldset/NETC_ETH_LINK_PM0_SLEEP_TIMER:
+  description: ''
+  fields:
+  - name: SLEEPT
+    bit_offset: 0
+    bit_size: 24
+fieldset/NETC_ETH_LINK_PM0_SINGLE_STEP:
+  description: ''
+  fields:
+  - name: CH
+    bit_offset: 6
+    bit_size: 1
+    description: Checksum update
+  - name: OFFSET
+    bit_offset: 7
+    bit_size: 8
+    description: Checksum update
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+    description: IEEE-1588 Single-Step enable.
+fieldset/NETC_ETH_LINK_PM0_HD_BACKOFF_ENTROPY_HD_BACKOFF:
+  description: ''
+  fields:
+  - name: ENTROPY
+    bit_offset: 0
+    bit_size: 10
+fieldset/NETC_ETH_LINK_PM0_HD_BACKOFF_ENTROPY_SW_ENTROPY:
+  description: ''
+  fields:
+  - name: VALID
+    bit_offset: 31
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_HD_FLOW_CTRL_HD_BP_OFF:
+  description: ''
+  fields:
+  - name: MIN
+    bit_offset: 0
+    bit_size: 12
+fieldset/NETC_ETH_LINK_PM0_HD_FLOW_CTRL_HD_BP_ON:
+  description: ''
+  fields:
+  - name: MAX
+    bit_offset: 16
+    bit_size: 12
+fieldset/NETC_ETH_LINK_PM0_STATN_CONFIG:
+  description: ''
+  fields:
+  - name: SAT
+    bit_offset: 0
+    bit_size: 1
+  - name: COD
+    bit_offset: 1
+    bit_size: 1
+  - name: CLR
+    bit_offset: 2
+    bit_size: 1
+  - name: WEN
+    bit_offset: 3
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_REOCTN:
+  description: ''
+  fields:
+  - name: REOCTn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_ROCTN:
+  description: ''
+  fields:
+  - name: ROCTn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RXPFN:
+  description: ''
+  fields:
+  - name: RXPFn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RFRMN:
+  description: ''
+  fields:
+  - name: RFRMn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RFCSN:
+  description: ''
+  fields:
+  - name: RFCSn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RVLANN:
+  description: ''
+  fields:
+  - name: RVLANn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RERRN:
+  description: ''
+  fields:
+  - name: RERRn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RUCAN:
+  description: ''
+  fields:
+  - name: RUCAn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RMCAN:
+  description: ''
+  fields:
+  - name: RMCAn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RBCAN:
+  description: ''
+  fields:
+  - name: RBCAn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RDRPN:
+  description: ''
+  fields:
+  - name: RDRPn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RPKTN:
+  description: ''
+  fields:
+  - name: RPKTn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RUNDN:
+  description: ''
+  fields:
+  - name: RUNDn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_R64N:
+  description: ''
+  fields:
+  - name: R64n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_R127N:
+  description: ''
+  fields:
+  - name: R127n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_R255N:
+  description: ''
+  fields:
+  - name: R255n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_R511N:
+  description: ''
+  fields:
+  - name: R511n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_R1023N:
+  description: ''
+  fields:
+  - name: R1023n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_R1522N:
+  description: ''
+  fields:
+  - name: R1522n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_R1523XN:
+  description: ''
+  fields:
+  - name: R1523Xn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_ROVRN:
+  description: ''
+  fields:
+  - name: ROVRn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RJBRN:
+  description: ''
+  fields:
+  - name: RJBRn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RFRGN:
+  description: ''
+  fields:
+  - name: RFRGn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RCNPN:
+  description: ''
+  fields:
+  - name: RCNPn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_RDRNTPN:
+  description: ''
+  fields:
+  - name: RDRNTPn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TEOCTN:
+  description: ''
+  fields:
+  - name: TEOCTn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TOCTN:
+  description: ''
+  fields:
+  - name: TOCTn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TXPFN:
+  description: ''
+  fields:
+  - name: TXPFn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TFRMN:
+  description: ''
+  fields:
+  - name: TFRMn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TFCSN:
+  description: ''
+  fields:
+  - name: TFCSn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TVLANN:
+  description: ''
+  fields:
+  - name: TVLANn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TERRN:
+  description: ''
+  fields:
+  - name: TERRn
+    bit_offset: 0
+    bit_size: 64
+    description: Transmit frame error count
+fieldset/NETC_ETH_LINK_PM0_TUCAN:
+  description: ''
+  fields:
+  - name: TUCAn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TMCAN:
+  description: ''
+  fields:
+  - name: TMCAn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TBCAN:
+  description: ''
+  fields:
+  - name: TBCAn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TPKTN:
+  description: ''
+  fields:
+  - name: TPKTn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TUNDN:
+  description: ''
+  fields:
+  - name: TUNDn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_T64N:
+  description: ''
+  fields:
+  - name: T64n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_T127N:
+  description: ''
+  fields:
+  - name: T127n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_T255N:
+  description: ''
+  fields:
+  - name: T255n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_T511N:
+  description: ''
+  fields:
+  - name: T511n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_T1023N:
+  description: ''
+  fields:
+  - name: T1023n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_T1522N:
+  description: ''
+  fields:
+  - name: T1522n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_T1523XN:
+  description: ''
+  fields:
+  - name: T1523Xn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TCNPN:
+  description: ''
+  fields:
+  - name: TCNPn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TDFRN:
+  description: ''
+  fields:
+  - name: TDFRn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TMCOLN:
+  description: ''
+  fields:
+  - name: TMCOLn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TSCOLN:
+  description: ''
+  fields:
+  - name: TSCOLn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TLCOLN:
+  description: ''
+  fields:
+  - name: TLCOLn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_TECOLN:
+  description: ''
+  fields:
+  - name: TECOLn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM0_IF_MODE:
+  description: ''
+  fields:
+  - name: IFMODE
+    bit_offset: 0
+    bit_size: 3
+    description: Interface mode
+  - name: REVMII
+    bit_offset: 3
+    bit_size: 1
+    description: Interface mode
+  - name: M10
+    bit_offset: 4
+    bit_size: 1
+  - name: HD
+    bit_offset: 6
+    bit_size: 1
+  - name: SSP
+    bit_offset: 13
+    bit_size: 2
+  - name: ENA
+    bit_offset: 15
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_IF_MODE_CLK:
+  description: ''
+  fields:
+  - name: STOP
+    bit_offset: 12
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM0_IF_STATUS:
+  description: ''
+  fields:
+  - name: RGFD
+    bit_offset: 12
+    bit_size: 1
+    description: RGMII full duplex
+  - name: RGSP
+    bit_offset: 13
+    bit_size: 2
+    description: RGMII full duplex
+  - name: RGLNK
+    bit_offset: 15
+    bit_size: 1
+    description: RGMII speed setting
+fieldset/NETC_ETH_LINK_PM1_COMMAND_CONFIG_TX:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+    description: MAC transmit path enable
+  - name: FLUSH
+    bit_offset: 22
+    bit_size: 1
+    description: Tx flush
+fieldset/NETC_ETH_LINK_PM1_COMMAND_CONFIG_RX:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+    description: MAC receive path enable
+  - name: FLUSH
+    bit_offset: 28
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM1_COMMAND_CONFIG_PAUSE:
+  description: ''
+  fields:
+  - name: FWD
+    bit_offset: 7
+    bit_size: 1
+  - name: IGN
+    bit_offset: 8
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM1_COMMAND_CONFIG_LOOP:
+  description: ''
+  fields:
+  - name: ENA
+    bit_offset: 10
+    bit_size: 1
+    description: Loopback enable
+fieldset/NETC_ETH_LINK_PM1_COMMAND_CONFIG_LPBK:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 11
+    bit_size: 2
+    description: Loopback mode
+fieldset/NETC_ETH_LINK_PM1_COMMAND_CONFIG_CNT_FRM:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 13
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM1_COMMAND_CONFIG_TS:
+  description: ''
+  fields:
+  - name: PNT
+    bit_offset: 14
+    bit_size: 1
+    description: Timestamp Point
+  - name: MODE
+    bit_offset: 30
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM1_COMMAND_CONFIG:
+  description: ''
+  fields:
+  - name: TXP
+    bit_offset: 15
+    bit_size: 1
+  - name: SWR
+    bit_offset: 26
+    bit_size: 1
+  - name: MG
+    bit_offset: 31
+    bit_size: 1
+    description: Magic Packet detection enable.
+fieldset/NETC_ETH_LINK_PM1_COMMAND_CONFIG_TX_LOWP:
+  description: ''
+  fields:
+  - name: ENA
+    bit_offset: 23
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM1_MAXFRM:
+  description: ''
+  fields:
+  - name: MAXFRM
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_ETH_LINK_PM1_MAXFRM_TX:
+  description: ''
+  fields:
+  - name: MTU
+    bit_offset: 16
+    bit_size: 16
+fieldset/NETC_ETH_LINK_PM1_IEVENT_TX:
+  description: ''
+  fields:
+  - name: EMPTY
+    bit_offset: 5
+    bit_size: 1
+    description: Transmit FIFO empty event
+  - name: LOWP
+    bit_offset: 8
+    bit_size: 2
+    description: Transmit low power status
+  - name: OVFL
+    bit_offset: 10
+    bit_size: 1
+  - name: UNFL
+    bit_offset: 11
+    bit_size: 1
+  - name: CSD
+    bit_offset: 21
+    bit_size: 1
+    description: Tx Clock Stop Detection
+fieldset/NETC_ETH_LINK_PM1_IEVENT_RX:
+  description: ''
+  fields:
+  - name: EMPTY
+    bit_offset: 6
+    bit_size: 1
+    description: Receive idle event
+  - name: OVFL
+    bit_offset: 12
+    bit_size: 1
+  - name: CSD
+    bit_offset: 22
+    bit_size: 1
+    description: Rx Clock Stop Detection
+fieldset/NETC_ETH_LINK_PM1_IEVENT:
+  description: ''
+  fields:
+  - name: MGI
+    bit_offset: 14
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM1_IEVENT_SPD:
+  description: ''
+  fields:
+  - name: DUP
+    bit_offset: 23
+    bit_size: 1
+    description: Speed/Duplex Change
+fieldset/NETC_ETH_LINK_PM1_IEVENT_MRG:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 27
+    bit_size: 1
+  - name: AERR
+    bit_offset: 28
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM1_IMASK:
+  description: ''
+  fields:
+  - name: MGI
+    bit_offset: 14
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM1_IMASK_TX:
+  description: ''
+  fields:
+  - name: CSD
+    bit_offset: 21
+    bit_size: 1
+    description: Tx Clock Stop Detection
+fieldset/NETC_ETH_LINK_PM1_IMASK_RX:
+  description: ''
+  fields:
+  - name: CSD
+    bit_offset: 22
+    bit_size: 1
+    description: Tx Clock Stop Detection
+fieldset/NETC_ETH_LINK_PM1_IMASK_SPD:
+  description: ''
+  fields:
+  - name: DUP
+    bit_offset: 23
+    bit_size: 1
+    description: Rx Clock Stop Detection
+fieldset/NETC_ETH_LINK_PM1_IMASK_MRG:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 27
+    bit_size: 1
+  - name: AERR
+    bit_offset: 28
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM1_PAUSE_QUANTA:
+  description: ''
+  fields:
+  - name: PQNT
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_ETH_LINK_PM1_PAUSE_THRESH:
+  description: ''
+  fields:
+  - name: QTH
+    bit_offset: 0
+    bit_size: 16
+    description: Quanta threshold.
+fieldset/NETC_ETH_LINK_PM1_RX_PAUSE_STATUS:
+  description: ''
+  fields:
+  - name: PSTAT
+    bit_offset: 0
+    bit_size: 1
+    description: Pause status.
+fieldset/NETC_ETH_LINK_PM1_LPWAKE_TIMER_TW_SYS:
+  description: ''
+  fields:
+  - name: TX
+    bit_offset: 0
+    bit_size: 24
+fieldset/NETC_ETH_LINK_PM1_SLEEP_TIMER:
+  description: ''
+  fields:
+  - name: SLEEPT
+    bit_offset: 0
+    bit_size: 24
+fieldset/NETC_ETH_LINK_PM1_SINGLE_STEP:
+  description: ''
+  fields:
+  - name: CH
+    bit_offset: 6
+    bit_size: 1
+    description: Checksum update
+  - name: OFFSET
+    bit_offset: 7
+    bit_size: 8
+    description: Checksum update
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+    description: IEEE-1588 Single-Step enable.
+fieldset/NETC_ETH_LINK_PM1_HD_BACKOFF_ENTROPY_HD_BACKOFF:
+  description: ''
+  fields:
+  - name: ENTROPY
+    bit_offset: 0
+    bit_size: 10
+fieldset/NETC_ETH_LINK_PM1_HD_BACKOFF_ENTROPY_SW_ENTROPY:
+  description: ''
+  fields:
+  - name: VALID
+    bit_offset: 31
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM1_HD_FLOW_CTRL_HD_BP_OFF:
+  description: ''
+  fields:
+  - name: MIN
+    bit_offset: 0
+    bit_size: 12
+fieldset/NETC_ETH_LINK_PM1_HD_FLOW_CTRL_HD_BP_ON:
+  description: ''
+  fields:
+  - name: MAX
+    bit_offset: 16
+    bit_size: 12
+fieldset/NETC_ETH_LINK_PM1_STATN_CONFIG:
+  description: ''
+  fields:
+  - name: SAT
+    bit_offset: 0
+    bit_size: 1
+  - name: COD
+    bit_offset: 1
+    bit_size: 1
+  - name: CLR
+    bit_offset: 2
+    bit_size: 1
+  - name: WEN
+    bit_offset: 3
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM1_REOCTN:
+  description: ''
+  fields:
+  - name: REOCTn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_ROCTN:
+  description: ''
+  fields:
+  - name: ROCTn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RXPFN:
+  description: ''
+  fields:
+  - name: RXPFn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RFRMN:
+  description: ''
+  fields:
+  - name: RFRMn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RFCSN:
+  description: ''
+  fields:
+  - name: RFCSn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RVLANN:
+  description: ''
+  fields:
+  - name: RVLANn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RERRN:
+  description: ''
+  fields:
+  - name: RERRn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RUCAN:
+  description: ''
+  fields:
+  - name: RUCAn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RMCAN:
+  description: ''
+  fields:
+  - name: RMCAn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RBCAN:
+  description: ''
+  fields:
+  - name: RBCAn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RDRPN:
+  description: ''
+  fields:
+  - name: RDRPn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RPKTN:
+  description: ''
+  fields:
+  - name: RPKTn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RUNDN:
+  description: ''
+  fields:
+  - name: RUNDn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_R64N:
+  description: ''
+  fields:
+  - name: R64n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_R127N:
+  description: ''
+  fields:
+  - name: R127n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_R255N:
+  description: ''
+  fields:
+  - name: R255n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_R511N:
+  description: ''
+  fields:
+  - name: R511n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_R1023N:
+  description: ''
+  fields:
+  - name: R1023n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_R1522N:
+  description: ''
+  fields:
+  - name: R1522n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_R1523XN:
+  description: ''
+  fields:
+  - name: R1523Xn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_ROVRN:
+  description: ''
+  fields:
+  - name: ROVRn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RJBRN:
+  description: ''
+  fields:
+  - name: RJBRn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RFRGN:
+  description: ''
+  fields:
+  - name: RFRGn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RCNPN:
+  description: ''
+  fields:
+  - name: RCNPn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_RDRNTPN:
+  description: ''
+  fields:
+  - name: RDRNTPn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TEOCTN:
+  description: ''
+  fields:
+  - name: TEOCTn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TOCTN:
+  description: ''
+  fields:
+  - name: TOCTn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TXPFN:
+  description: ''
+  fields:
+  - name: TXPFn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TFRMN:
+  description: ''
+  fields:
+  - name: TFRMn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TFCSN:
+  description: ''
+  fields:
+  - name: TFCSn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TVLANN:
+  description: ''
+  fields:
+  - name: TVLANn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TERRN:
+  description: ''
+  fields:
+  - name: TERRn
+    bit_offset: 0
+    bit_size: 64
+    description: Transmit frame error count
+fieldset/NETC_ETH_LINK_PM1_TUCAN:
+  description: ''
+  fields:
+  - name: TUCAn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TMCAN:
+  description: ''
+  fields:
+  - name: TMCAn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TBCAN:
+  description: ''
+  fields:
+  - name: TBCAn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TPKTN:
+  description: ''
+  fields:
+  - name: TPKTn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TUNDN:
+  description: ''
+  fields:
+  - name: TUNDn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_T64N:
+  description: ''
+  fields:
+  - name: T64n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_T127N:
+  description: ''
+  fields:
+  - name: T127n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_T255N:
+  description: ''
+  fields:
+  - name: T255n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_T511N:
+  description: ''
+  fields:
+  - name: T511n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_T1023N:
+  description: ''
+  fields:
+  - name: T1023n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_T1522N:
+  description: ''
+  fields:
+  - name: T1522n
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_T1523XN:
+  description: ''
+  fields:
+  - name: T1523Xn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TCNPN:
+  description: ''
+  fields:
+  - name: TCNPn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TDFRN:
+  description: ''
+  fields:
+  - name: TDFRn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TMCOLN:
+  description: ''
+  fields:
+  - name: TMCOLn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TSCOLN:
+  description: ''
+  fields:
+  - name: TSCOLn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TLCOLN:
+  description: ''
+  fields:
+  - name: TLCOLn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_TECOLN:
+  description: ''
+  fields:
+  - name: TECOLn
+    bit_offset: 0
+    bit_size: 64
+fieldset/NETC_ETH_LINK_PM1_IF_MODE:
+  description: ''
+  fields:
+  - name: IFMODE
+    bit_offset: 0
+    bit_size: 3
+    description: Interface mode
+  - name: REVMII
+    bit_offset: 3
+    bit_size: 1
+    description: Interface mode
+  - name: M10
+    bit_offset: 4
+    bit_size: 1
+  - name: HD
+    bit_offset: 6
+    bit_size: 1
+  - name: SSP
+    bit_offset: 13
+    bit_size: 2
+  - name: ENA
+    bit_offset: 15
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM1_IF_MODE_CLK:
+  description: ''
+  fields:
+  - name: STOP
+    bit_offset: 12
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PM1_IF_STATUS:
+  description: ''
+  fields:
+  - name: RGFD
+    bit_offset: 12
+    bit_size: 1
+    description: RGMII full duplex
+  - name: RGSP
+    bit_offset: 13
+    bit_size: 2
+    description: RGMII full duplex
+  - name: RGLNK
+    bit_offset: 15
+    bit_size: 1
+    description: RGMII speed setting
+fieldset/NETC_ETH_LINK_MAC_MERGE_MMCSR:
+  description: ''
+  fields:
+  - name: LPS
+    bit_offset: 0
+    bit_size: 1
+    description: Local preemption supported
+  - name: LPE
+    bit_offset: 1
+    bit_size: 1
+    description: Local preemption enabled
+  - name: LPA
+    bit_offset: 2
+    bit_size: 1
+    description: Local preemption active
+  - name: LAFS
+    bit_offset: 3
+    bit_size: 2
+    description: Local additional fragment size
+  - name: RPS
+    bit_offset: 5
+    bit_size: 1
+    description: Remote preemption supported
+  - name: RPE
+    bit_offset: 6
+    bit_size: 1
+    description: Remote preemption enabled
+  - name: RPA
+    bit_offset: 7
+    bit_size: 1
+    description: Remote preemption active
+  - name: RAFS
+    bit_offset: 8
+    bit_size: 2
+    description: Remote additional fragment size
+  - name: ME
+    bit_offset: 15
+    bit_size: 2
+    description: Merge enabled
+  - name: VDIS
+    bit_offset: 17
+    bit_size: 1
+    description: Merge enabled
+  - name: VSTS
+    bit_offset: 18
+    bit_size: 3
+    description: Verify disabled
+  - name: TXSTS
+    bit_offset: 21
+    bit_size: 2
+    description: Verify status
+  - name: VT
+    bit_offset: 23
+    bit_size: 7
+    description: Merge status
+fieldset/NETC_ETH_LINK_MAC_MERGE_MMCSR_LINK:
+  description: ''
+  fields:
+  - name: FAIL
+    bit_offset: 31
+    bit_size: 1
+    description: Verify Time
+fieldset/NETC_ETH_LINK_MAC_MERGE_MMFAECR:
+  description: ''
+  fields:
+  - name: MMFAEC
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_ETH_LINK_MAC_MERGE_MMFSECR:
+  description: ''
+  fields:
+  - name: MMFSEC
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_ETH_LINK_MAC_MERGE_MMFAOCR:
+  description: ''
+  fields:
+  - name: MMFAOC
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_ETH_LINK_MAC_MERGE_MMFCRXR:
+  description: ''
+  fields:
+  - name: MMFCRX
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_ETH_LINK_MAC_MERGE_MMFCTXR:
+  description: ''
+  fields:
+  - name: MMFCTX
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_ETH_LINK_MAC_MERGE_MMHCR:
+  description: ''
+  fields:
+  - name: MMHC
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_ETH_LINK_PEMDIOCR:
+  description: ''
+  fields:
+  - name: BSY2
+    bit_offset: 0
+    bit_size: 1
+  - name: ENC45
+    bit_offset: 6
+    bit_size: 1
+  - name: WHOAMI
+    bit_offset: 16
+    bit_size: 3
+    description: Returns the Link ID.
+  - name: EHOLD
+    bit_offset: 22
+    bit_size: 1
+    description: Returns the Link ID.
+  - name: NEG
+    bit_offset: 23
+    bit_size: 1
+  - name: CIM
+    bit_offset: 29
+    bit_size: 1
+  - name: CMP
+    bit_offset: 30
+    bit_size: 1
+  - name: BSY1
+    bit_offset: 31
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PEMDIOCR_MDIO_RD:
+  description: ''
+  fields:
+  - name: ER
+    bit_offset: 1
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PEMDIOCR_MDIO:
+  description: ''
+  fields:
+  - name: HOLD
+    bit_offset: 2
+    bit_size: 3
+fieldset/NETC_ETH_LINK_PEMDIOCR_PRE:
+  description: ''
+  fields:
+  - name: DIS
+    bit_offset: 5
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PEMDIOCR_MDIO_CLK:
+  description: ''
+  fields:
+  - name: DIV
+    bit_offset: 7
+    bit_size: 9
+    description: MDIO Clock Divisor.
+fieldset/NETC_ETH_LINK_PEMDIOCR_ADDR:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 28
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PEMDIOICR_DEV:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 5
+fieldset/NETC_ETH_LINK_PEMDIOICR_PORT:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 5
+    bit_size: 5
+fieldset/NETC_ETH_LINK_PEMDIOICR_POST:
+  description: ''
+  fields:
+  - name: INC
+    bit_offset: 14
+    bit_size: 1
+fieldset/NETC_ETH_LINK_PEMDIOICR:
+  description: ''
+  fields:
+  - name: READ
+    bit_offset: 15
+    bit_size: 1
+    description: MDIO read initiation.
+  - name: BSY
+    bit_offset: 31
+    bit_size: 1
+    description: MDIO read initiation.
+fieldset/NETC_ETH_LINK_PEMDIOIDR_MDIO:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 16
+    description: 16-bit MDIO data.
+fieldset/NETC_ETH_LINK_PEMDIORAR:
+  description: ''
+  fields:
+  - name: REGADDR
+    bit_offset: 0
+    bit_size: 16
+    description: MDIO PHY register address.
+fieldset/NETC_ETH_LINK_PEMDIOSR:
+  description: ''
+  fields:
+  - name: BSY
+    bit_offset: 0
+    bit_size: 1
+    description: Global MDIO busy
+fieldset/NETC_ETH_LINK_PEMDIOSR_WHT:
+  description: ''
+  fields:
+  - name: LIST
+    bit_offset: 8
+    bit_size: 5
+    description: Global MDIO busy
+fieldset/NETC_ETH_LINK_PEMDIOSR_WHT_LIST:
+  description: ''
+  fields:
+  - name: ENA
+    bit_offset: 15
+    bit_size: 1
+    description: PHY white list
+fieldset/NETC_ETH_LINK_PEMDIOSR_PORT:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 3
+    description: Port ID
+fieldset/NETC_ETH_LINK_PEMDIOSR_REQ:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 19
+    bit_size: 1
+    description: Port ID
+fieldset/NETC_ETH_LINK_PPSCR:
+  description: ''
+  fields:
+  - name: BSY
+    bit_offset: 0
+    bit_size: 1
+    description: MDIO busy
+fieldset/NETC_ETH_LINK_PPSCR_MDIO_RD:
+  description: ''
+  fields:
+  - name: ER
+    bit_offset: 1
+    bit_size: 1
+    description: MDIO busy
+fieldset/NETC_ETH_LINK_PPSCR_STATUS:
+  description: ''
+  fields:
+  - name: INTERVAL
+    bit_offset: 16
+    bit_size: 16
+    description: MDIO read error
+fieldset/NETC_ETH_LINK_PPSCTRLR_DEV:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 5
+fieldset/NETC_ETH_LINK_PPSCTRLR_PORT:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 5
+    bit_size: 5
+fieldset/NETC_ETH_LINK_PPSDR_MDIO:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 16
+    description: 16-bit MDIO data
+fieldset/NETC_ETH_LINK_PPSDR_CURR:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 16
+    bit_size: 16
+    description: 16-bit MDIO data
+fieldset/NETC_ETH_LINK_PPSRAR:
+  description: ''
+  fields:
+  - name: REGADDR
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_ETH_LINK_PPSER_STATUS_EVENT:
+  description: ''
+  fields:
+  - name: HL
+    bit_offset: 0
+    bit_size: 16
+  - name: LH
+    bit_offset: 16
+    bit_size: 16
+fieldset/NETC_ETH_LINK_PPSMR_STATUS_MASK:
+  description: ''
+  fields:
+  - name: HL
+    bit_offset: 0
+    bit_size: 16
+  - name: LH
+    bit_offset: 16
+    bit_size: 16

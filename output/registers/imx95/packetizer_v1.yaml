@@ -1,0 +1,57 @@
+block/PACKETIZER:
+  description: ''
+  items:
+  - name: CH0_CTRL_CAM
+    byte_offset: 0
+    fieldset: PACKETIZER_CH0_CTRL_CAM
+  - name: CH12_CTRL_CAM
+    byte_offset: 4
+    fieldset: PACKETIZER_CH12_CTRL_CAM
+  - name: PACK_CTRL_CAM
+    byte_offset: 8
+    fieldset: PACKETIZER_PACK_CTRL_CAM
+fieldset/PACKETIZER_CH0_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OBPP
+    bit_offset: 0
+    bit_size: 4
+  - name: RSA
+    bit_offset: 8
+    bit_size: 3
+  - name: LSA
+    bit_offset: 12
+    bit_size: 3
+fieldset/PACKETIZER_CH12_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OBPP
+    bit_offset: 0
+    bit_size: 4
+  - name: RSA
+    bit_offset: 8
+    bit_size: 3
+  - name: LSA
+    bit_offset: 12
+    bit_size: 3
+  - name: SUBSAMPLE
+    bit_offset: 16
+    bit_size: 2
+fieldset/PACKETIZER_PACK_CTRL_CAM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 1
+  - name: ORDER0
+    bit_offset: 8
+    bit_size: 2
+  - name: ORDER1
+    bit_offset: 10
+    bit_size: 2
+  - name: ORDER2
+    bit_offset: 12
+    bit_size: 2
+  - name: A0S
+    bit_offset: 16
+    bit_size: 4

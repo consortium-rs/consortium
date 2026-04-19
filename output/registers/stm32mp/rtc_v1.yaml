@@ -1,0 +1,841 @@
+block/RTC:
+  description: ''
+  items:
+  - name: TR
+    byte_offset: 0
+    description: RTC time register
+    fieldset: RTC_TR
+  - name: DR
+    byte_offset: 4
+    description: RTC date register
+    fieldset: RTC_DR
+  - name: SSR
+    byte_offset: 8
+    description: RTC sub second register
+    fieldset: RTC_SSR
+  - name: ICSR
+    byte_offset: 12
+    description: RTC initialization control and status register
+    fieldset: RTC_ICSR
+  - name: PRER
+    byte_offset: 16
+    description: RTC prescaler register
+  - name: WUTR
+    byte_offset: 20
+    description: RTC wakeup timer register
+    fieldset: RTC_WUTR
+  - name: CR
+    byte_offset: 24
+    description: RTC control register
+    fieldset: RTC_CR
+  - name: PRIVCR
+    byte_offset: 28
+    description: RTC privilege mode control register
+    fieldset: RTC_PRIVCR
+  - name: SECCFGR
+    byte_offset: 32
+    description: RTC secure mode control register
+    fieldset: RTC_SECCFGR
+  - name: WPR
+    byte_offset: 36
+    description: RTC write protection register
+    fieldset: RTC_WPR
+  - name: CALR
+    byte_offset: 40
+    description: RTC calibration register
+    fieldset: RTC_CALR
+  - name: SHIFTR
+    byte_offset: 44
+    description: RTC shift control register
+    fieldset: RTC_SHIFTR
+  - name: TSTR
+    byte_offset: 48
+    description: RTC timestamp time register
+    fieldset: RTC_TSTR
+  - name: TSDR
+    byte_offset: 52
+    description: RTC timestamp date register
+    fieldset: RTC_TSDR
+  - name: TSSSR
+    byte_offset: 56
+    description: RTC timestamp sub second register
+    fieldset: RTC_TSSSR
+  - name: ALRMAR
+    byte_offset: 64
+    description: RTC alarm A register
+    fieldset: RTC_ALRMAR
+  - name: ALRMASSR
+    byte_offset: 68
+    description: RTC alarm A sub second register
+    fieldset: RTC_ALRMASSR
+  - name: ALRMBR
+    byte_offset: 72
+    description: RTC alarm B register
+    fieldset: RTC_ALRMBR
+  - name: ALRMBSSR
+    byte_offset: 76
+    description: RTC alarm B sub second register
+    fieldset: RTC_ALRMBSSR
+  - name: SR
+    byte_offset: 80
+    description: RTC Status register
+    fieldset: RTC_SR
+  - name: MISR
+    byte_offset: 84
+    description: RTC non-secure masked interrupt status register
+    fieldset: RTC_MISR
+  - name: SMISR
+    byte_offset: 88
+    description: RTC secure masked interrupt status register
+    fieldset: RTC_SMISR
+  - name: SCR
+    byte_offset: 92
+    description: RTC status Clear register
+    fieldset: RTC_SCR
+  - name: CFGR
+    byte_offset: 96
+    description: RTC configuration register
+  - name: ALRABINR
+    byte_offset: 112
+    description: RTC alarm A binary mode register
+    fieldset: RTC_ALRABINR
+  - name: ALRBBINR
+    byte_offset: 116
+    description: RTC alarm B binary mode register
+    fieldset: RTC_ALRBBINR
+  - name: RCIDCFGR
+    byte_offset: 128
+    array:
+      len: 6
+      stride: 4
+    description: RTC Resource x CID configuration register
+    fieldset: RTC_RCIDCFGR
+  - name: HWCFGR
+    byte_offset: 1008
+    description: RTC hardware configuration register
+    fieldset: RTC_HWCFGR
+  - name: VERR
+    byte_offset: 1012
+    description: RTC version register
+    fieldset: RTC_VERR
+  - name: IPIDR
+    byte_offset: 1016
+    description: RTC identification register
+    fieldset: RTC_IPIDR
+  - name: SIDR
+    byte_offset: 1020
+    description: RTC size identification register
+    fieldset: RTC_SIDR
+fieldset/RTC_TR:
+  description: ''
+  fields:
+  - name: SU
+    bit_offset: 0
+    bit_size: 4
+    description: '0x00000001'
+  - name: ST
+    bit_offset: 4
+    bit_size: 3
+    description: '0x00000010'
+  - name: MNU
+    bit_offset: 8
+    bit_size: 4
+    description: '0x00000100'
+  - name: MNT
+    bit_offset: 12
+    bit_size: 3
+    description: '0x00001000'
+  - name: HU
+    bit_offset: 16
+    bit_size: 4
+    description: '0x00010000'
+  - name: HT
+    bit_offset: 20
+    bit_size: 2
+    description: '0x00100000'
+  - name: PM
+    bit_offset: 22
+    bit_size: 1
+fieldset/RTC_DR:
+  description: ''
+  fields:
+  - name: DU
+    bit_offset: 0
+    bit_size: 4
+    description: '0x00000001'
+  - name: DT
+    bit_offset: 4
+    bit_size: 2
+    description: '0x00000010'
+  - name: MU
+    bit_offset: 8
+    bit_size: 4
+    description: '0x00000100'
+  - name: MT
+    bit_offset: 12
+    bit_size: 1
+    description: '0x00001000'
+  - name: WDU
+    bit_offset: 13
+    bit_size: 3
+    description: '0x00002000'
+  - name: YU
+    bit_offset: 16
+    bit_size: 4
+    description: '0x00010000'
+  - name: YT
+    bit_offset: 20
+    bit_size: 4
+    description: '0x00100000'
+fieldset/RTC_SSR:
+  description: ''
+  fields:
+  - name: SS
+    bit_offset: 0
+    bit_size: 32
+fieldset/RTC_ICSR:
+  description: ''
+  fields:
+  - name: WUTWF
+    bit_offset: 2
+    bit_size: 1
+    description: '0x00000004'
+  - name: SHPF
+    bit_offset: 3
+    bit_size: 1
+    description: '0x00000008'
+  - name: INITS
+    bit_offset: 4
+    bit_size: 1
+    description: '0x00000010'
+  - name: RSF
+    bit_offset: 5
+    bit_size: 1
+    description: '0x00000020'
+  - name: INITF
+    bit_offset: 6
+    bit_size: 1
+    description: '0x00000040'
+  - name: INIT
+    bit_offset: 7
+    bit_size: 1
+    description: '0x00000080'
+  - name: BIN
+    bit_offset: 8
+    bit_size: 2
+    description: '0x00000100'
+  - name: BCDU
+    bit_offset: 10
+    bit_size: 3
+    description: '0x00000400'
+  - name: RECALPF
+    bit_offset: 16
+    bit_size: 1
+fieldset/RTC_WUTR:
+  description: ''
+  fields:
+  - name: WUT
+    bit_offset: 0
+    bit_size: 16
+    description: '0x0000FFFF'
+  - name: WUTOCLR
+    bit_offset: 16
+    bit_size: 16
+fieldset/RTC_CR:
+  description: ''
+  fields:
+  - name: WUCKSEL
+    bit_offset: 0
+    bit_size: 3
+    description: '0x00000001'
+  - name: TSEDGE
+    bit_offset: 3
+    bit_size: 1
+    description: '0x00000008'
+  - name: REFCKON
+    bit_offset: 4
+    bit_size: 1
+    description: '0x00000010'
+  - name: BYPSHAD
+    bit_offset: 5
+    bit_size: 1
+    description: '0x00000020'
+  - name: FMT
+    bit_offset: 6
+    bit_size: 1
+    description: '0x00000040'
+  - name: SSRUIE
+    bit_offset: 7
+    bit_size: 1
+    description: '0x00000080'
+  - name: ALRAE
+    bit_offset: 8
+    bit_size: 1
+    description: '0x00000100'
+  - name: ALRBE
+    bit_offset: 9
+    bit_size: 1
+    description: '0x00000200'
+  - name: WUTE
+    bit_offset: 10
+    bit_size: 1
+    description: '0x00000400'
+  - name: TSE
+    bit_offset: 11
+    bit_size: 1
+    description: '0x00000800'
+  - name: ALRAIE
+    bit_offset: 12
+    bit_size: 1
+    description: '0x00001000'
+  - name: ALRBIE
+    bit_offset: 13
+    bit_size: 1
+    description: '0x00002000'
+  - name: WUTIE
+    bit_offset: 14
+    bit_size: 1
+    description: '0x00004000'
+  - name: TSIE
+    bit_offset: 15
+    bit_size: 1
+    description: '0x00008000'
+  - name: ADD1H
+    bit_offset: 16
+    bit_size: 1
+    description: '0x00010000'
+  - name: SUB1H
+    bit_offset: 17
+    bit_size: 1
+    description: '0x00020000'
+  - name: BKP
+    bit_offset: 18
+    bit_size: 1
+    description: '0x00040000'
+  - name: COSEL
+    bit_offset: 19
+    bit_size: 1
+    description: '0x00080000'
+  - name: POL
+    bit_offset: 20
+    bit_size: 1
+    description: '0x00100000'
+  - name: OSEL
+    bit_offset: 21
+    bit_size: 2
+    description: '0x00200000'
+  - name: COE
+    bit_offset: 23
+    bit_size: 1
+    description: '0x00800000'
+  - name: ITSE
+    bit_offset: 24
+    bit_size: 1
+    description: Timestamp on internal event enable
+  - name: TAMPTS
+    bit_offset: 25
+    bit_size: 1
+    description: Activate timestamp on tamper detection event
+  - name: TAMPOE
+    bit_offset: 26
+    bit_size: 1
+    description: Tamper detection output enable on TAMPALARM
+  - name: ALRACLR
+    bit_offset: 27
+    bit_size: 1
+    description: Alarm A mask
+  - name: ALRBCLR
+    bit_offset: 28
+    bit_size: 1
+    description: Alarm B mask
+  - name: OUT2EN
+    bit_offset: 31
+    bit_size: 1
+    description: RTC_OUT2 output enable
+fieldset/RTC_PRIVCR:
+  description: ''
+  fields:
+  - name: ALRAPRIV
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: ALRBPRIV
+    bit_offset: 1
+    bit_size: 1
+    description: '0x00000002'
+  - name: WUTPRIV
+    bit_offset: 2
+    bit_size: 1
+    description: '0x00000004'
+  - name: TSPRIV
+    bit_offset: 3
+    bit_size: 1
+    description: '0x00000008'
+  - name: CALPRIV
+    bit_offset: 13
+    bit_size: 1
+    description: '0x00002000'
+  - name: INITPRIV
+    bit_offset: 14
+    bit_size: 1
+    description: '0x00004000'
+  - name: PRIV
+    bit_offset: 15
+    bit_size: 1
+fieldset/RTC_SECCFGR:
+  description: ''
+  fields:
+  - name: ALRASEC
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: ALRBSEC
+    bit_offset: 1
+    bit_size: 1
+    description: '0x00000002'
+  - name: WUTSEC
+    bit_offset: 2
+    bit_size: 1
+    description: '0x00000004'
+  - name: TSSEC
+    bit_offset: 3
+    bit_size: 1
+    description: '0x00000008'
+  - name: CALSEC
+    bit_offset: 13
+    bit_size: 1
+    description: '0x00002000'
+  - name: INITSEC
+    bit_offset: 14
+    bit_size: 1
+    description: '0x00004000'
+  - name: SEC
+    bit_offset: 15
+    bit_size: 1
+fieldset/RTC_WPR:
+  description: ''
+  fields:
+  - name: KEY
+    bit_offset: 0
+    bit_size: 8
+fieldset/RTC_CALR:
+  description: ''
+  fields:
+  - name: CALM
+    bit_offset: 0
+    bit_size: 9
+    description: '0x00000001'
+  - name: LPCAL
+    bit_offset: 12
+    bit_size: 1
+    description: '0x00001000'
+  - name: CALW16
+    bit_offset: 13
+    bit_size: 1
+    description: '0x00002000'
+  - name: CALW8
+    bit_offset: 14
+    bit_size: 1
+    description: '0x00004000'
+  - name: CALP
+    bit_offset: 15
+    bit_size: 1
+fieldset/RTC_SHIFTR:
+  description: ''
+  fields:
+  - name: SUBFS
+    bit_offset: 0
+    bit_size: 15
+    description: '0x00007FFF'
+  - name: ADD1S
+    bit_offset: 31
+    bit_size: 1
+fieldset/RTC_TSTR:
+  description: ''
+  fields:
+  - name: SU
+    bit_offset: 0
+    bit_size: 4
+    description: '0x00000001'
+  - name: ST
+    bit_offset: 4
+    bit_size: 3
+    description: '0x00000010'
+  - name: MNU
+    bit_offset: 8
+    bit_size: 4
+    description: '0x00000100'
+  - name: MNT
+    bit_offset: 12
+    bit_size: 3
+    description: '0x00001000'
+  - name: HU
+    bit_offset: 16
+    bit_size: 4
+    description: '0x00010000'
+  - name: HT
+    bit_offset: 20
+    bit_size: 2
+    description: '0x00100000'
+  - name: PM
+    bit_offset: 22
+    bit_size: 1
+fieldset/RTC_TSDR:
+  description: ''
+  fields:
+  - name: DU
+    bit_offset: 0
+    bit_size: 4
+    description: '0x00000001'
+  - name: DT
+    bit_offset: 4
+    bit_size: 2
+    description: '0x00000010'
+  - name: MU
+    bit_offset: 8
+    bit_size: 4
+    description: '0x00000100'
+  - name: MT
+    bit_offset: 12
+    bit_size: 1
+    description: '0x00001000'
+  - name: WDU
+    bit_offset: 13
+    bit_size: 3
+    description: '0x00002000'
+fieldset/RTC_TSSSR:
+  description: ''
+  fields:
+  - name: SS
+    bit_offset: 0
+    bit_size: 32
+    description: rtc timestamp sub second >
+fieldset/RTC_ALRMAR:
+  description: ''
+  fields:
+  - name: SU
+    bit_offset: 0
+    bit_size: 4
+    description: '0x00000001'
+  - name: ST
+    bit_offset: 4
+    bit_size: 3
+    description: '0x00000010'
+  - name: MSK1
+    bit_offset: 7
+    bit_size: 1
+    description: '0x00000080'
+  - name: MNU
+    bit_offset: 8
+    bit_size: 4
+    description: '0x00000100'
+  - name: MNT
+    bit_offset: 12
+    bit_size: 3
+    description: '0x00001000'
+  - name: MSK2
+    bit_offset: 15
+    bit_size: 1
+    description: '0x00008000'
+  - name: HU
+    bit_offset: 16
+    bit_size: 4
+    description: '0x00010000'
+  - name: HT
+    bit_offset: 20
+    bit_size: 2
+    description: '0x00100000'
+  - name: PM
+    bit_offset: 22
+    bit_size: 1
+    description: '0x00400000'
+  - name: MSK3
+    bit_offset: 23
+    bit_size: 1
+    description: '0x00800000'
+  - name: DU
+    bit_offset: 24
+    bit_size: 4
+    description: '0x01000000'
+  - name: DT
+    bit_offset: 28
+    bit_size: 2
+    description: '0x10000000'
+  - name: WDSEL
+    bit_offset: 30
+    bit_size: 1
+    description: '0x40000000'
+  - name: MSK4
+    bit_offset: 31
+    bit_size: 1
+fieldset/RTC_ALRMASSR:
+  description: ''
+  fields:
+  - name: SS
+    bit_offset: 0
+    bit_size: 15
+    description: '0x00007FFF'
+  - name: MASKSS
+    bit_offset: 24
+    bit_size: 6
+    description: '0x01000000'
+  - name: SSCLR
+    bit_offset: 31
+    bit_size: 1
+fieldset/RTC_ALRMBR:
+  description: ''
+  fields:
+  - name: SU
+    bit_offset: 0
+    bit_size: 4
+    description: '0x00000001'
+  - name: ST
+    bit_offset: 4
+    bit_size: 3
+    description: '0x00000010'
+  - name: MSK1
+    bit_offset: 7
+    bit_size: 1
+    description: '0x00000080'
+  - name: MNU
+    bit_offset: 8
+    bit_size: 4
+    description: '0x00000100'
+  - name: MNT
+    bit_offset: 12
+    bit_size: 3
+    description: '0x00001000'
+  - name: MSK2
+    bit_offset: 15
+    bit_size: 1
+    description: '0x00008000'
+  - name: HU
+    bit_offset: 16
+    bit_size: 4
+    description: '0x00010000'
+  - name: HT
+    bit_offset: 20
+    bit_size: 2
+    description: '0x00100000'
+  - name: PM
+    bit_offset: 22
+    bit_size: 1
+    description: '0x00400000'
+  - name: MSK3
+    bit_offset: 23
+    bit_size: 1
+    description: '0x00800000'
+  - name: DU
+    bit_offset: 24
+    bit_size: 4
+    description: '0x01000000'
+  - name: DT
+    bit_offset: 28
+    bit_size: 2
+    description: '0x10000000'
+  - name: WDSEL
+    bit_offset: 30
+    bit_size: 1
+    description: '0x40000000'
+  - name: MSK4
+    bit_offset: 31
+    bit_size: 1
+fieldset/RTC_ALRMBSSR:
+  description: ''
+  fields:
+  - name: SS
+    bit_offset: 0
+    bit_size: 15
+    description: '0x00007FFF'
+  - name: MASKSS
+    bit_offset: 24
+    bit_size: 6
+    description: '0x01000000'
+  - name: SSCLR
+    bit_offset: 31
+    bit_size: 1
+fieldset/RTC_SR:
+  description: ''
+  fields:
+  - name: ALRAF
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: ALRBF
+    bit_offset: 1
+    bit_size: 1
+    description: '0x00000002'
+  - name: WUTF
+    bit_offset: 2
+    bit_size: 1
+    description: '0x00000004'
+  - name: TSF
+    bit_offset: 3
+    bit_size: 1
+    description: '0x00000008'
+  - name: TSOVF
+    bit_offset: 4
+    bit_size: 1
+    description: '0x00000010'
+  - name: ITSF
+    bit_offset: 5
+    bit_size: 1
+    description: '0x00000020'
+  - name: SSRUF
+    bit_offset: 6
+    bit_size: 1
+fieldset/RTC_MISR:
+  description: ''
+  fields:
+  - name: ALRAMF
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: ALRBMF
+    bit_offset: 1
+    bit_size: 1
+    description: '0x00000002'
+  - name: WUTMF
+    bit_offset: 2
+    bit_size: 1
+    description: '0x00000004'
+  - name: TSMF
+    bit_offset: 3
+    bit_size: 1
+    description: '0x00000008'
+  - name: TSOVMF
+    bit_offset: 4
+    bit_size: 1
+    description: '0x00000010'
+  - name: ITSMF
+    bit_offset: 5
+    bit_size: 1
+    description: '0x00000020'
+  - name: SSRUMF
+    bit_offset: 6
+    bit_size: 1
+fieldset/RTC_SMISR:
+  description: ''
+  fields:
+  - name: ALRAMF
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: ALRBMF
+    bit_offset: 1
+    bit_size: 1
+    description: '0x00000002'
+  - name: WUTMF
+    bit_offset: 2
+    bit_size: 1
+    description: '0x00000004'
+  - name: TSMF
+    bit_offset: 3
+    bit_size: 1
+    description: '0x00000008'
+  - name: TSOVMF
+    bit_offset: 4
+    bit_size: 1
+    description: '0x00000010'
+  - name: ITSMF
+    bit_offset: 5
+    bit_size: 1
+    description: '0x00000020'
+  - name: SSRUMF
+    bit_offset: 6
+    bit_size: 1
+fieldset/RTC_SCR:
+  description: ''
+  fields:
+  - name: CALRAF
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: CALRBF
+    bit_offset: 1
+    bit_size: 1
+    description: '0x00000002'
+  - name: CWUTF
+    bit_offset: 2
+    bit_size: 1
+    description: '0x00000004'
+  - name: CTSF
+    bit_offset: 3
+    bit_size: 1
+    description: '0x00000008'
+  - name: CTSOVF
+    bit_offset: 4
+    bit_size: 1
+    description: '0x00000010'
+  - name: CITSF
+    bit_offset: 5
+    bit_size: 1
+    description: '0x00000020'
+  - name: CSSRUF
+    bit_offset: 6
+    bit_size: 1
+fieldset/RTC_ALRABINR:
+  description: ''
+  fields:
+  - name: SS
+    bit_offset: 0
+    bit_size: 32
+fieldset/RTC_ALRBBINR:
+  description: ''
+  fields:
+  - name: SS
+    bit_offset: 0
+    bit_size: 32
+fieldset/RTC_RCIDCFGR:
+  description: ''
+  fields:
+  - name: CFEN
+    bit_offset: 0
+    bit_size: 1
+    description: '0xFFFFFFFF'
+  - name: CID
+    bit_offset: 4
+    bit_size: 4
+fieldset/RTC_HWCFGR:
+  description: ''
+  fields:
+  - name: ALARMB
+    bit_offset: 0
+    bit_size: 4
+    description: '0x0000000F'
+  - name: WAKEUP
+    bit_offset: 4
+    bit_size: 4
+    description: '0x000000F0'
+  - name: TIMESTAMP
+    bit_offset: 12
+    bit_size: 4
+    description: '0x00000F000'
+  - name: RIF
+    bit_offset: 24
+    bit_size: 4
+fieldset/RTC_VERR:
+  description: ''
+  fields:
+  - name: MINREV
+    bit_offset: 0
+    bit_size: 3
+    description: RTC Minor version
+  - name: MAJREV
+    bit_offset: 4
+    bit_size: 3
+    description: RTC Major version
+fieldset/RTC_IPIDR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 32
+    description: RTC ID
+fieldset/RTC_SIDR:
+  description: ''
+  fields:
+  - name: SID
+    bit_offset: 0
+    bit_size: 32
+    description: RTC Size ID

@@ -1,0 +1,13 @@
+block/DOORBELLS:
+  description: ''
+  items:
+  - name: DOORBELL
+    byte_offset: 0
+    fieldset: DOORBELLS_DOORBELL
+fieldset/DOORBELLS_DOORBELL:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 32
+    description: MASK

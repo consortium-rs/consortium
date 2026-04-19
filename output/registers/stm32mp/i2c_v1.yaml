@@ -1,0 +1,463 @@
+block/I2C:
+  description: ''
+  items:
+  - name: CR1
+    byte_offset: 0
+    description: I2C Control register 1
+    fieldset: I2C_CR1
+  - name: CR2
+    byte_offset: 4
+    description: I2C Control register 2
+    fieldset: I2C_CR2
+  - name: OAR1
+    byte_offset: 8
+    description: I2C Own address 1 register
+    fieldset: I2C_OAR1
+  - name: OAR2
+    byte_offset: 12
+    description: I2C Own address 2 register
+    fieldset: I2C_OAR2
+  - name: TIMINGR
+    byte_offset: 16
+    description: I2C Timing register
+    fieldset: I2C_TIMINGR
+  - name: TIMEOUTR
+    byte_offset: 20
+    description: I2C Timeout register
+    fieldset: I2C_TIMEOUTR
+  - name: ISR
+    byte_offset: 24
+    description: I2C Interrupt and status register
+    fieldset: I2C_ISR
+  - name: ICR
+    byte_offset: 28
+    description: I2C Interrupt clear register
+    fieldset: I2C_ICR
+  - name: PECR
+    byte_offset: 32
+    description: I2C PEC register
+    fieldset: I2C_PECR
+  - name: RXDR
+    byte_offset: 36
+    description: I2C Receive data register
+    fieldset: I2C_RXDR
+  - name: TXDR
+    byte_offset: 40
+    description: I2C Transmit data register
+    fieldset: I2C_TXDR
+  - name: AUTOCR
+    byte_offset: 44
+    description: I2C Autonomous mode control register
+    fieldset: I2C_AUTOCR
+  - name: HWCFGR
+    byte_offset: 1008
+    description: I2C hardware configuration register
+  - name: VERR
+    byte_offset: 1012
+    description: I2C version register
+    fieldset: I2C_VERR
+  - name: IPIDR
+    byte_offset: 1016
+    description: I2C identification register
+    fieldset: I2C_IPIDR
+  - name: SIDR
+    byte_offset: 1020
+    description: I2C size identification register
+    fieldset: I2C_SIDR
+fieldset/I2C_CR1:
+  description: ''
+  fields:
+  - name: PE
+    bit_offset: 0
+    bit_size: 1
+    description: Peripheral enable
+  - name: TXIE
+    bit_offset: 1
+    bit_size: 1
+    description: TX interrupt enable
+  - name: RXIE
+    bit_offset: 2
+    bit_size: 1
+    description: RX interrupt enable
+  - name: ADDRIE
+    bit_offset: 3
+    bit_size: 1
+    description: Address match interrupt enable
+  - name: NACKIE
+    bit_offset: 4
+    bit_size: 1
+    description: NACK received interrupt enable
+  - name: STOPIE
+    bit_offset: 5
+    bit_size: 1
+    description: STOP detection interrupt enable
+  - name: TCIE
+    bit_offset: 6
+    bit_size: 1
+    description: Transfer complete interrupt enable
+  - name: ERRIE
+    bit_offset: 7
+    bit_size: 1
+    description: Errors interrupt enable
+  - name: DNF
+    bit_offset: 8
+    bit_size: 4
+    description: Digital noise filter
+  - name: ANFOFF
+    bit_offset: 12
+    bit_size: 1
+    description: Analog noise filter OFF
+  - name: SWRST
+    bit_offset: 13
+    bit_size: 1
+    description: Software reset
+  - name: TXDMAEN
+    bit_offset: 14
+    bit_size: 1
+    description: DMA transmission requests enable
+  - name: RXDMAEN
+    bit_offset: 15
+    bit_size: 1
+    description: DMA reception requests enable
+  - name: SBC
+    bit_offset: 16
+    bit_size: 1
+    description: Slave byte control
+  - name: NOSTRETCH
+    bit_offset: 17
+    bit_size: 1
+    description: Clock stretching disable
+  - name: WUPEN
+    bit_offset: 18
+    bit_size: 1
+    description: Wakeup from STOP enable
+  - name: GCEN
+    bit_offset: 19
+    bit_size: 1
+    description: General call enable
+  - name: SMBHEN
+    bit_offset: 20
+    bit_size: 1
+    description: SMBus host address enable
+  - name: SMBDEN
+    bit_offset: 21
+    bit_size: 1
+    description: SMBus device default address enable
+  - name: ALERTEN
+    bit_offset: 22
+    bit_size: 1
+    description: SMBus alert enable
+  - name: PECEN
+    bit_offset: 23
+    bit_size: 1
+    description: PEC enable
+  - name: FMP
+    bit_offset: 24
+    bit_size: 1
+    description: Fast-mode Plus 20mA drive enable
+  - name: ADDRACLR
+    bit_offset: 30
+    bit_size: 1
+    description: Address match flag (ADDR) automatic clear
+  - name: STOPFACLR
+    bit_offset: 31
+    bit_size: 1
+    description: STOP detection flag (STOPF) automatic clear
+fieldset/I2C_CR2:
+  description: ''
+  fields:
+  - name: SADD
+    bit_offset: 0
+    bit_size: 10
+    description: Slave address (master mode)
+  - name: ADD10
+    bit_offset: 11
+    bit_size: 1
+    description: 10-bit addressing mode (master mode)
+  - name: HEAD10R
+    bit_offset: 12
+    bit_size: 1
+    description: 10-bit address header only read direction (master mode)
+  - name: START
+    bit_offset: 13
+    bit_size: 1
+    description: START generation
+  - name: STOP
+    bit_offset: 14
+    bit_size: 1
+    description: STOP generation (master mode)
+  - name: NACK
+    bit_offset: 15
+    bit_size: 1
+    description: NACK generation (slave mode)
+  - name: NBYTES
+    bit_offset: 16
+    bit_size: 8
+    description: Number of bytes
+  - name: RELOAD
+    bit_offset: 24
+    bit_size: 1
+    description: NBYTES reload mode
+  - name: AUTOEND
+    bit_offset: 25
+    bit_size: 1
+    description: Automatic end mode (master mode)
+  - name: PECBYTE
+    bit_offset: 26
+    bit_size: 1
+    description: Packet error checking byte
+fieldset/I2C_OAR1:
+  description: ''
+  fields:
+  - name: OA1
+    bit_offset: 0
+    bit_size: 10
+    description: Interface own address 1
+  - name: OA1MODE
+    bit_offset: 10
+    bit_size: 1
+    description: Own address 1 10-bit mode
+  - name: OA1EN
+    bit_offset: 15
+    bit_size: 1
+    description: Own address 1 enable
+fieldset/I2C_OAR2:
+  description: ''
+  fields:
+  - name: OA2
+    bit_offset: 1
+    bit_size: 7
+    description: Interface own address 2
+  - name: OA2MSK
+    bit_offset: 8
+    bit_size: 3
+    description: Own address 2 masks
+  - name: OA2EN
+    bit_offset: 15
+    bit_size: 1
+    description: Own address 2 enable
+fieldset/I2C_TIMINGR:
+  description: ''
+  fields:
+  - name: SCLL
+    bit_offset: 0
+    bit_size: 8
+    description: SCL low period (master mode)
+  - name: SCLH
+    bit_offset: 8
+    bit_size: 8
+    description: SCL high period (master mode)
+  - name: SDADEL
+    bit_offset: 16
+    bit_size: 4
+    description: Data hold time
+  - name: SCLDEL
+    bit_offset: 20
+    bit_size: 4
+    description: Data setup time
+  - name: PRESC
+    bit_offset: 28
+    bit_size: 4
+    description: Timings prescaler
+fieldset/I2C_TIMEOUTR:
+  description: ''
+  fields:
+  - name: TIMEOUTA
+    bit_offset: 0
+    bit_size: 12
+    description: Bus timeout A
+  - name: TIDLE
+    bit_offset: 12
+    bit_size: 1
+    description: Idle clock timeout detection
+  - name: TIMOUTEN
+    bit_offset: 15
+    bit_size: 1
+    description: Clock timeout enable
+  - name: TIMEOUTB
+    bit_offset: 16
+    bit_size: 12
+    description: Bus timeout B
+  - name: TEXTEN
+    bit_offset: 31
+    bit_size: 1
+    description: Extended clock timeout enable
+fieldset/I2C_ISR:
+  description: ''
+  fields:
+  - name: TXE
+    bit_offset: 0
+    bit_size: 1
+    description: Transmit data register empty
+  - name: TXIS
+    bit_offset: 1
+    bit_size: 1
+    description: Transmit interrupt status
+  - name: RXNE
+    bit_offset: 2
+    bit_size: 1
+    description: Receive data register not empty
+  - name: ADDR
+    bit_offset: 3
+    bit_size: 1
+    description: Address matched (slave mode)
+  - name: NACKF
+    bit_offset: 4
+    bit_size: 1
+    description: NACK received flag
+  - name: STOPF
+    bit_offset: 5
+    bit_size: 1
+    description: STOP detection flag
+  - name: TC
+    bit_offset: 6
+    bit_size: 1
+    description: Transfer complete (master mode)
+  - name: TCR
+    bit_offset: 7
+    bit_size: 1
+    description: Transfer complete reload
+  - name: BERR
+    bit_offset: 8
+    bit_size: 1
+    description: Bus error
+  - name: ARLO
+    bit_offset: 9
+    bit_size: 1
+    description: Arbitration lost
+  - name: OVR
+    bit_offset: 10
+    bit_size: 1
+    description: Overrun/Underrun
+  - name: PECERR
+    bit_offset: 11
+    bit_size: 1
+    description: PEC error in reception
+  - name: TIMEOUT
+    bit_offset: 12
+    bit_size: 1
+    description: Timeout or Tlow detection flag
+  - name: ALERT
+    bit_offset: 13
+    bit_size: 1
+    description: SMBus alert
+  - name: BUSY
+    bit_offset: 15
+    bit_size: 1
+    description: Bus busy
+  - name: DIR
+    bit_offset: 16
+    bit_size: 1
+    description: Transfer direction (slave mode)
+  - name: ADDCODE
+    bit_offset: 17
+    bit_size: 7
+    description: Address match code (slave mode)
+fieldset/I2C_ICR:
+  description: ''
+  fields:
+  - name: ADDRCF
+    bit_offset: 3
+    bit_size: 1
+    description: Address matched clear flag
+  - name: NACKCF
+    bit_offset: 4
+    bit_size: 1
+    description: NACK clear flag
+  - name: STOPCF
+    bit_offset: 5
+    bit_size: 1
+    description: STOP detection clear flag
+  - name: BERRCF
+    bit_offset: 8
+    bit_size: 1
+    description: Bus error clear flag
+  - name: ARLOCF
+    bit_offset: 9
+    bit_size: 1
+    description: Arbitration lost clear flag
+  - name: OVRCF
+    bit_offset: 10
+    bit_size: 1
+    description: Overrun/Underrun clear flag
+  - name: PECCF
+    bit_offset: 11
+    bit_size: 1
+    description: PAC error clear flag
+  - name: TIMOUTCF
+    bit_offset: 12
+    bit_size: 1
+    description: Timeout clear flag
+  - name: ALERTCF
+    bit_offset: 13
+    bit_size: 1
+    description: Alert clear flag
+fieldset/I2C_PECR:
+  description: ''
+  fields:
+  - name: PEC
+    bit_offset: 0
+    bit_size: 8
+    description: PEC register
+fieldset/I2C_RXDR:
+  description: ''
+  fields:
+  - name: RXDATA
+    bit_offset: 0
+    bit_size: 8
+    description: 8-bit receive data
+fieldset/I2C_TXDR:
+  description: ''
+  fields:
+  - name: TXDATA
+    bit_offset: 0
+    bit_size: 8
+    description: 8-bit transmit data
+fieldset/I2C_AUTOCR:
+  description: ''
+  fields:
+  - name: TCDMAEN
+    bit_offset: 6
+    bit_size: 1
+    description: DMA request enable on Transfer Complete event
+  - name: TCRDMAEN
+    bit_offset: 7
+    bit_size: 1
+    description: DMA request enable on Transfer Complete Reload event
+  - name: TRIGSEL
+    bit_offset: 16
+    bit_size: 4
+    description: Trigger selection
+  - name: TRIGPOL
+    bit_offset: 20
+    bit_size: 1
+    description: Trigger polarity
+  - name: TRIGEN
+    bit_offset: 21
+    bit_size: 1
+    description: Trigger enable
+fieldset/I2C_VERR:
+  description: ''
+  fields:
+  - name: MINREV
+    bit_offset: 0
+    bit_size: 4
+    description: Minor Revision of the IP
+  - name: MAJREV
+    bit_offset: 4
+    bit_size: 4
+    description: Major Revision of the IP
+fieldset/I2C_IPIDR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 32
+    description: IP Identifier
+fieldset/I2C_SIDR:
+  description: ''
+  fields:
+  - name: SID
+    bit_offset: 0
+    bit_size: 32
+    description: Size Identifier

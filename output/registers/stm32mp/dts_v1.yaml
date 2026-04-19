@@ -1,0 +1,140 @@
+block/DTS:
+  description: ''
+  items:
+  - name: PVTREG_LOCK
+    byte_offset: 16
+    description: DTS PVT register lock register
+    fieldset: DTS_PVTREG_LOCK
+  - name: PVTLOCK_SR
+    byte_offset: 20
+    description: DTS PVT lock status register
+  - name: PVTTMR_CR
+    byte_offset: 32
+    description: DTS PVT Timer control register
+  - name: PVTTMR_SR
+    byte_offset: 36
+    description: DTS PVT timer status register
+  - name: PVTTMR_ICR
+    byte_offset: 40
+    description: DTS PVT timer IRQ clear register
+  - name: PVTTMRIRQTESTR
+    byte_offset: 44
+    description: DTS PVT timer IRQ test register
+  - name: PVT_IER
+    byte_offset: 64
+    description: DTS PVT IRQ enable register
+  - name: PVTIRQTRMASKR
+    byte_offset: 80
+    description: DTS PVT IRQ timer mask register
+  - name: TS_MR
+    byte_offset: 84
+    description: DTS PVT IRQ TS mask register
+  - name: PVTTR_SR
+    byte_offset: 96
+    description: DTS PVT IRQ timer status register
+  - name: TS_ISR
+    byte_offset: 100
+    description: DTS PVT IRQ TS status register
+  - name: PVTTMRRAW_ISR
+    byte_offset: 112
+    description: DTS PVT IRQ timer raw status register
+  - name: TSRAW_ISR
+    byte_offset: 116
+    description: DTS PVT IRQ TS raw status register
+  - name: TSCCLKSYNTHR
+    byte_offset: 128
+    description: DTS TSC clock synthesizer register
+  - name: TSCSDIFDISABLER
+    byte_offset: 132
+    description: DTS TSC SDIF interface disable register
+  - name: TSCSDIF_SR
+    byte_offset: 136
+    description: DTS TSC SDIF status register
+  - name: TSCSDIF_CR
+    byte_offset: 140
+    description: DTS TSC SDIF register
+  - name: TSCSDIFHALTR
+    byte_offset: 144
+    description: DTS TSC SDIF halt register
+  - name: TSCSDIF_CFGR
+    byte_offset: 148
+    description: DTS TSC SDIF control register
+  - name: TSCSMPL_CR
+    byte_offset: 160
+    description: DTS TSC sample control register
+  - name: TSCSDIFSMPLCLRR
+    byte_offset: 168
+    description: DTS TSC sample clear register
+  - name: TSCSMPLCNTR
+    byte_offset: 172
+    description: DTS TSC sample count register
+  - name: TS0_IER
+    byte_offset: 192
+    description: DTS TS0 IRQ enable register
+  - name: TS0_ISR
+    byte_offset: 196
+    description: DTS TS0 IRQ status register
+  - name: TS0_ICR
+    byte_offset: 200
+    description: DTS TS0 IRQ clear register
+  - name: TS0IRQTESTR
+    byte_offset: 204
+    description: DTS TS0 IRQ test register
+  - name: TS0SDIFRDATAR
+    byte_offset: 208
+    description: DTS TS0 SDIF RDATA register
+  - name: TS0SDIFDONER
+    byte_offset: 212
+    description: DTS TS0 SDIF done register
+  - name: TS0SDIFDATAR
+    byte_offset: 216
+    description: DTS TS0 SDIF data register
+  - name: TS0ALARMA_CFGR
+    byte_offset: 224
+    description: DTS TS0 alarm A configuration register
+  - name: TS0ALARMB_CFGR
+    byte_offset: 228
+    description: DTS TS0 alarm B configuration register
+  - name: TS0HLSAMPLER
+    byte_offset: 232
+    description: DTS TS0 high/low sample register
+  - name: TS0HILORESETR
+    byte_offset: 236
+    description: DTS TS0 high/low reset register
+  - name: TS1_IER
+    byte_offset: 256
+    description: DTS TS1 IRQ enable register
+  - name: TS1_ISR
+    byte_offset: 260
+    description: DTS TS1 IRQ status register
+  - name: TS1_ICR
+    byte_offset: 264
+    description: DTS TS1 IRQ clear register
+  - name: TS1IRQTESTR
+    byte_offset: 268
+    description: DTS TS1 IRQ test register
+  - name: TS1SDIFRDATAR
+    byte_offset: 272
+    description: DTS TS1 SDIF RDATA register
+  - name: TS1SDIFDONER
+    byte_offset: 276
+    description: DTS TS1 SDIF done register
+  - name: TS1SDIFDATAR
+    byte_offset: 280
+    description: DTS TS1 SDIF data register
+  - name: TS1ALARMA_CFGR
+    byte_offset: 288
+    description: DTS TS1 alarm A configuration register
+  - name: TS1HLSAMPLER
+    byte_offset: 296
+    description: DTS TS1 high/low sample register
+  - name: TS1HILORESETR
+    byte_offset: 300
+    description: DTS TS1 high/low reset register
+fieldset/DTS_PVTREG_LOCK:
+  description: ''
+  fields:
+  - name: LOCK
+    bit_offset: 0
+    bit_size: 32
+    description: PVT software lock register

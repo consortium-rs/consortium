@@ -1,0 +1,469 @@
+block/COLOR_TEMP:
+  description: ''
+  items:
+  - name: CTRL_CAM
+    byte_offset: 0
+    fieldset: COLOR_TEMP_CTRL_CAM
+  - name: ROI_POS_CAM
+    byte_offset: 4
+    fieldset: COLOR_TEMP_ROI_POS_CAM
+  - name: ROI_SIZE_CAM
+    byte_offset: 8
+    fieldset: COLOR_TEMP_ROI_SIZE_CAM
+  - name: REDGAIN_CAM
+    byte_offset: 12
+    fieldset: COLOR_TEMP_REDGAIN_CAM
+  - name: BLUEGAIN_CAM
+    byte_offset: 16
+    fieldset: COLOR_TEMP_BLUEGAIN_CAM
+  - name: POINT1_CAM
+    byte_offset: 20
+    fieldset: COLOR_TEMP_POINT1_CAM
+  - name: POINT2_CAM
+    byte_offset: 24
+    fieldset: COLOR_TEMP_POINT2_CAM
+  - name: HOFFSET_CAM
+    byte_offset: 28
+    fieldset: COLOR_TEMP_HOFFSET_CAM
+  - name: VOFFSET_CAM
+    byte_offset: 32
+    fieldset: COLOR_TEMP_VOFFSET_CAM
+  - name: POINT1_SLOPE_CAM
+    byte_offset: 36
+  - name: POINT2_SLOPE_CAM
+    byte_offset: 40
+  - name: LUMA_TH_CAM
+    byte_offset: 44
+    fieldset: COLOR_TEMP_LUMA_TH_CAM
+  - name: CSC_MAT0_CAM
+    byte_offset: 48
+    fieldset: COLOR_TEMP_CSC_MAT0_CAM
+  - name: CSC_MAT1_CAM
+    byte_offset: 52
+    fieldset: COLOR_TEMP_CSC_MAT1_CAM
+  - name: CSC_MAT2_CAM
+    byte_offset: 56
+    fieldset: COLOR_TEMP_CSC_MAT2_CAM
+  - name: CSC_MAT3_CAM
+    byte_offset: 60
+    fieldset: COLOR_TEMP_CSC_MAT3_CAM
+  - name: CSC_MAT4_CAM
+    byte_offset: 64
+    fieldset: COLOR_TEMP_CSC_MAT4_CAM
+  - name: R_GR_OFFSET_CAM
+    byte_offset: 68
+    fieldset: COLOR_TEMP_R_GR_OFFSET_CAM
+  - name: GB_B_OFFSET_CAM
+    byte_offset: 72
+    fieldset: COLOR_TEMP_GB_B_OFFSET_CAM
+  - name: CNT_WHITE_CAM
+    byte_offset: 76
+    fieldset: COLOR_TEMP_CNT_WHITE_CAM
+  - name: SUMRL_CAM
+    byte_offset: 80
+    fieldset: COLOR_TEMP_SUMRL_CAM
+  - name: SUMRH_CAM
+    byte_offset: 84
+    fieldset: COLOR_TEMP_SUMRH_CAM
+  - name: SUMGL_CAM
+    byte_offset: 88
+    fieldset: COLOR_TEMP_SUMGL_CAM
+  - name: SUMGH_CAM
+    byte_offset: 92
+    fieldset: COLOR_TEMP_SUMGH_CAM
+  - name: SUMBL_CAM
+    byte_offset: 96
+    fieldset: COLOR_TEMP_SUMBL_CAM
+  - name: SUMBH_CAM
+    byte_offset: 100
+    fieldset: COLOR_TEMP_SUMBH_CAM
+  - name: SUMRGL_CAM
+    byte_offset: 104
+    fieldset: COLOR_TEMP_SUMRGL_CAM
+  - name: SUMRGH_CAM
+    byte_offset: 108
+    fieldset: COLOR_TEMP_SUMRGH_CAM
+  - name: SUMBGL_CAM
+    byte_offset: 112
+    fieldset: COLOR_TEMP_SUMBGL_CAM
+  - name: SUMBGH_CAM
+    byte_offset: 116
+    fieldset: COLOR_TEMP_SUMBGH_CAM
+  - name: STAT_BLK_SIZE
+    byte_offset: 128
+    fieldset: COLOR_TEMP_STAT_BLK_SIZE
+  - name: STAT_CURR_BLK_Y
+    byte_offset: 136
+    fieldset: COLOR_TEMP_STAT_CURR_BLK_Y
+  - name: CROI_POS_CAM
+    byte_offset: 144
+  - name: CROI_PIXCNT_CAM
+    byte_offset: 152
+    fieldset: COLOR_TEMP_CROI_PIXCNT_CAM
+  - name: CROI_SUMRED_CAM
+    byte_offset: 156
+    fieldset: COLOR_TEMP_CROI_SUMRED_CAM
+  - name: CROI_SUMGREEN_CAM
+    byte_offset: 160
+    fieldset: COLOR_TEMP_CROI_SUMGREEN_CAM
+  - name: CROI_SUMBLUE_CAM
+    byte_offset: 164
+    fieldset: COLOR_TEMP_CROI_SUMBLUE_CAM
+  - name: GR_AVG_IN_CAM
+    byte_offset: 388
+  - name: GB_AVG_IN_CAM
+    byte_offset: 392
+  - name: GR_GB_CNT_CAM
+    byte_offset: 396
+    fieldset: COLOR_TEMP_GR_GB_CNT_CAM
+  - name: GR2_SUM_CAM
+    byte_offset: 408
+    fieldset: COLOR_TEMP_GR2_SUM_CAM
+  - name: GB2_SUM_CAM
+    byte_offset: 412
+    fieldset: COLOR_TEMP_GB2_SUM_CAM
+fieldset/COLOR_TEMP_CTRL_CAM:
+  description: ''
+  fields:
+  - name: IBPP
+    bit_offset: 0
+    bit_size: 2
+  - name: CSCON
+    bit_offset: 4
+    bit_size: 1
+  - name: ENABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/COLOR_TEMP_ROI_POS_CAM:
+  description: ''
+  fields:
+  - name: XPOS
+    bit_offset: 0
+    bit_size: 16
+  - name: YPOS
+    bit_offset: 16
+    bit_size: 16
+fieldset/COLOR_TEMP_ROI_SIZE_CAM:
+  description: ''
+  fields:
+  - name: WIDTH
+    bit_offset: 0
+    bit_size: 16
+  - name: HEIGHT
+    bit_offset: 16
+    bit_size: 16
+fieldset/COLOR_TEMP_REDGAIN_CAM:
+  description: ''
+  fields:
+  - name: MIN
+    bit_offset: 0
+    bit_size: 8
+  - name: MAX
+    bit_offset: 16
+    bit_size: 8
+fieldset/COLOR_TEMP_BLUEGAIN_CAM:
+  description: ''
+  fields:
+  - name: MIN
+    bit_offset: 0
+    bit_size: 8
+  - name: MAX
+    bit_offset: 16
+    bit_size: 8
+fieldset/COLOR_TEMP_POINT1_CAM:
+  description: ''
+  fields:
+  - name: BLUE
+    bit_offset: 0
+    bit_size: 8
+  - name: RED
+    bit_offset: 16
+    bit_size: 8
+fieldset/COLOR_TEMP_POINT2_CAM:
+  description: ''
+  fields:
+  - name: BLUE
+    bit_offset: 0
+    bit_size: 8
+  - name: RED
+    bit_offset: 16
+    bit_size: 8
+fieldset/COLOR_TEMP_HOFFSET_CAM:
+  description: ''
+  fields:
+  - name: RIGHT
+    bit_offset: 0
+    bit_size: 8
+  - name: LEFT
+    bit_offset: 16
+    bit_size: 8
+fieldset/COLOR_TEMP_VOFFSET_CAM:
+  description: ''
+  fields:
+  - name: UP
+    bit_offset: 0
+    bit_size: 8
+  - name: DOWN
+    bit_offset: 16
+    bit_size: 8
+fieldset/COLOR_TEMP_POINT1_SLOPE_CAM_SLOPE:
+  description: ''
+  fields:
+  - name: L
+    bit_offset: 0
+    bit_size: 16
+  - name: R
+    bit_offset: 16
+    bit_size: 16
+fieldset/COLOR_TEMP_POINT2_SLOPE_CAM_SLOPE:
+  description: ''
+  fields:
+  - name: L
+    bit_offset: 0
+    bit_size: 16
+  - name: R
+    bit_offset: 16
+    bit_size: 16
+fieldset/COLOR_TEMP_LUMA_TH_CAM:
+  description: ''
+  fields:
+  - name: THL
+    bit_offset: 0
+    bit_size: 16
+  - name: THH
+    bit_offset: 16
+    bit_size: 16
+fieldset/COLOR_TEMP_CSC_MAT0_CAM:
+  description: ''
+  fields:
+  - name: R0C0
+    bit_offset: 0
+    bit_size: 16
+  - name: R0C1
+    bit_offset: 16
+    bit_size: 16
+fieldset/COLOR_TEMP_CSC_MAT1_CAM:
+  description: ''
+  fields:
+  - name: R0C2
+    bit_offset: 0
+    bit_size: 16
+  - name: R1C0
+    bit_offset: 16
+    bit_size: 16
+fieldset/COLOR_TEMP_CSC_MAT2_CAM:
+  description: ''
+  fields:
+  - name: R1C1
+    bit_offset: 0
+    bit_size: 16
+  - name: R1C2
+    bit_offset: 16
+    bit_size: 16
+fieldset/COLOR_TEMP_CSC_MAT3_CAM:
+  description: ''
+  fields:
+  - name: R2C0
+    bit_offset: 0
+    bit_size: 16
+  - name: R2C1
+    bit_offset: 16
+    bit_size: 16
+fieldset/COLOR_TEMP_CSC_MAT4_CAM:
+  description: ''
+  fields:
+  - name: R2C2
+    bit_offset: 0
+    bit_size: 16
+fieldset/COLOR_TEMP_R_GR_OFFSET_CAM:
+  description: ''
+  fields:
+  - name: OFFSET0
+    bit_offset: 0
+    bit_size: 16
+  - name: OFFSET1
+    bit_offset: 16
+    bit_size: 16
+fieldset/COLOR_TEMP_GB_B_OFFSET_CAM:
+  description: ''
+  fields:
+  - name: OFFSET0
+    bit_offset: 0
+    bit_size: 16
+  - name: OFFSET1
+    bit_offset: 16
+    bit_size: 16
+fieldset/COLOR_TEMP_CNT_WHITE_CAM:
+  description: ''
+  fields:
+  - name: WHITE
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_SUMRL_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_SUMRH_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_SUMGL_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_SUMGH_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_SUMBL_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_SUMBH_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_SUMRGL_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_SUMRGH_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_SUMBGL_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_SUMBGH_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_STAT_BLK_SIZE:
+  description: ''
+  fields:
+  - name: XSIZE
+    bit_offset: 0
+    bit_size: 16
+  - name: YSIZE
+    bit_offset: 16
+    bit_size: 16
+fieldset/COLOR_TEMP_STAT_CURR_BLK_Y:
+  description: ''
+  fields:
+  - name: BLKLNE
+    bit_offset: 0
+    bit_size: 16
+  - name: BLKROW
+    bit_offset: 16
+    bit_size: 3
+fieldset/COLOR_TEMP_CROI_POS_CAM_ROVERG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 8
+  - name: HIGH
+    bit_offset: 8
+    bit_size: 8
+fieldset/COLOR_TEMP_CROI_POS_CAM_BOVERG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 16
+    bit_size: 8
+  - name: HIGH
+    bit_offset: 24
+    bit_size: 8
+fieldset/COLOR_TEMP_CROI_PIXCNT_CAM:
+  description: ''
+  fields:
+  - name: PIXCNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/COLOR_TEMP_CROI_SUMRED_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_CROI_SUMGREEN_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_CROI_SUMBLUE_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_GR_AVG_IN_CAM_GR:
+  description: ''
+  fields:
+  - name: AGV
+    bit_offset: 0
+    bit_size: 20
+fieldset/COLOR_TEMP_GB_AVG_IN_CAM_GB:
+  description: ''
+  fields:
+  - name: AGV
+    bit_offset: 0
+    bit_size: 20
+fieldset/COLOR_TEMP_GR_GB_CNT_CAM:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_GR_SUM_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_GB_SUM_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_GR2_SUM_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_GB2_SUM_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32
+fieldset/COLOR_TEMP_GRGB_SUM_CAM:
+  description: ''
+  fields:
+  - name: SUM
+    bit_offset: 0
+    bit_size: 32

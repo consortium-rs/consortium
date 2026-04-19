@@ -1,0 +1,799 @@
+block/SYSCFG:
+  description: ''
+  items:
+  - name: BOOTSR
+    byte_offset: 0
+    description: SYSCFG Boot pins status register
+    fieldset: SYSCFG_BOOTSR
+  - name: BOOTCR
+    byte_offset: 4
+    description: SYSCFG Boot pins control register
+  - name: DLYBSD1CR
+    byte_offset: 1024
+    description: SYSCFG DLYBSD1 control register
+    fieldset: SYSCFG_DLYBSD1CR
+  - name: DLYBSD1SR
+    byte_offset: 1028
+    description: SYSCFG DLYBSD1 status register
+    fieldset: SYSCFG_DLYBSD1SR
+  - name: SDMMC1CR
+    byte_offset: 1032
+    description: SYSCFG SDMMC1 control register
+  - name: DLYBSD2CR
+    byte_offset: 2048
+    description: SYSCFG DLYBSD2 control register
+    fieldset: SYSCFG_DLYBSD2CR
+  - name: DLYBSD2SR
+    byte_offset: 2052
+    description: SYSCFG DLYBSD2 status register
+    fieldset: SYSCFG_DLYBSD2SR
+  - name: SDMMC2CR
+    byte_offset: 2056
+    description: SYSCFG SDMMC2 control register
+  - name: DLYBSD3CR
+    byte_offset: 3072
+    description: SYSCFG DLYBSD3 control register
+    fieldset: SYSCFG_DLYBSD3CR
+  - name: DLYBSD3SR
+    byte_offset: 3076
+    description: SYSCFG DLYBSD3 status register
+    fieldset: SYSCFG_DLYBSD3SR
+  - name: DLYBOS1CR
+    byte_offset: 4096
+    description: SYSCFG DLYBOS1 control register
+    fieldset: SYSCFG_DLYBOS1CR
+  - name: DLYBOS1SR
+    byte_offset: 4100
+    description: SYSCFG DLYBOS1 status register
+    fieldset: SYSCFG_DLYBOS1SR
+  - name: DLYBOS2CR
+    byte_offset: 5120
+    description: SYSCFG DLYBOS2 control register
+    fieldset: SYSCFG_DLYBOS2CR
+  - name: DLYBOS2SR
+    byte_offset: 5124
+    description: SYSCFG DLYBOS2 status register
+    fieldset: SYSCFG_DLYBOS2SR
+  - name: VDERAMCR
+    byte_offset: 6144
+    description: SYSCFG Video decoder encoder RAM control register
+  - name: POTTAMPRSTCR
+    byte_offset: 6148
+    description: SYSCFG Potential tamper reset control register
+    fieldset: SYSCFG_POTTAMPRSTCR
+  - name: M33SSCR
+    byte_offset: 7168
+    description: SYSCFG M33SS control register
+    fieldset: SYSCFG_M33SSCR
+  - name: ICNQPCR1
+    byte_offset: 8192
+    description: SYSCFG ICN QOS priority control register 1
+  - name: ICNQPCR2
+    byte_offset: 8196
+    description: SYSCFG ICN QOS priority control register 2
+  - name: ICNEWRCR
+    byte_offset: 8200
+    description: SYSCFG ICN early write response control register
+  - name: ICNCGCR
+    byte_offset: 8204
+    description: SYSCFG ICN clock gating control register
+  - name: ICNGPUBWLCR
+    byte_offset: 8208
+    description: SYSCFG ICN GPU bandwidth limiter control register
+  - name: ICNE2EBWRCR
+    byte_offset: 8212
+    description: SYSCFG ICN end-to-end bandwidth regulation control register
+  - name: SAFERSTCR
+    byte_offset: 8216
+    description: SYSCFG safe reset control register
+  - name: ICNPCIBWLCR
+    byte_offset: 8220
+    description: SYSCFG ICN PCI bandwidth limiter control register
+  - name: ICNETHBWLCR
+    byte_offset: 8224
+    description: SYSCFG ICN ETH bandwidth limiter control register
+  - name: ICNUSB3BWLCR
+    byte_offset: 8228
+    description: SYSCFG ICN USB3 bandwidth limiter control register
+  - name: ICNCPU1BWLCR
+    byte_offset: 8232
+    description: SYSCFG ICN CPU1 bandwidth limiter control register
+  - name: ICNLTDCBWLCR
+    byte_offset: 8236
+    description: SYSCFG ICN LTDC bandwidth limiter control register
+  - name: ICNDCMIPPBWLCR
+    byte_offset: 8240
+    description: SYSCFG ICN DCMIPP bandwidth limiter control register
+  - name: ICNVDEBWLCR
+    byte_offset: 8244
+    description: SYSCFG ICN Video Decoder Encoder bandwidth limiter register
+  - name: USB2PHY1CR
+    byte_offset: 9216
+    description: SYSCFG USB2PHY1 control register
+    fieldset: SYSCFG_USB2PHY1CR
+  - name: USB2PHY1BCCR
+    byte_offset: 9220
+    description: SYSCFG USB2PHY1 battery charging control register
+  - name: USB2PHY1BCSR
+    byte_offset: 9224
+    description: SYSCFG USB2PHY1 battery charging status register
+    fieldset: SYSCFG_USB2PHY1BCSR
+  - name: USB2PHY1TRIM1CR
+    byte_offset: 9228
+    description: SYSCFG USB2PHY1 trimming 1 control register
+    fieldset: SYSCFG_USB2PHY1TRIM1CR
+  - name: USB2PHY1TRIM2CR
+    byte_offset: 9232
+    description: SYSCFG USB2PHY1 trimming 2 control register
+    fieldset: SYSCFG_USB2PHY1TRIM2CR
+  - name: USBHCR
+    byte_offset: 9248
+    description: SYSCFG USBH control register
+  - name: USB2PHY2CR
+    byte_offset: 10240
+    description: SYSCFG USB2PHY2 control register
+    fieldset: SYSCFG_USB2PHY2CR
+  - name: USB2PHY2TRIM1CR
+    byte_offset: 10248
+    description: SYSCFG USB2PHY2 trimming 1 control register
+    fieldset: SYSCFG_USB2PHY2TRIM1CR
+  - name: USB2PHY2TRIM2CR
+    byte_offset: 10252
+    description: SYSCFG USB2PHY2 trimming 2 control register
+    fieldset: SYSCFG_USB2PHY2TRIM2CR
+  - name: OCTOSPIAMCR
+    byte_offset: 11264
+    description: SYSCFG OCTOSPI address mapping control register
+  - name: ETH1CR
+    byte_offset: 12288
+    description: SYSCFG Ethernet1 control register
+  - name: ETH1SR
+    byte_offset: 12304
+    description: SYSCFG Ethernet1 status register
+  - name: ETH2CR
+    byte_offset: 13312
+    description: SYSCFG Ethernet2 configuration register
+  - name: ETH2SR
+    byte_offset: 13328
+    description: SYSCFG Ethernet2 status register
+  - name: ETHSWCR
+    byte_offset: 14336
+    description: SYSCFG Ethernet switch configuration register
+  - name: VDDIO3CCCR
+    byte_offset: 16384
+    description: SYSCFG VDDIO3 compensation cell control register
+    fieldset: SYSCFG_VDDIO3CCCR
+  - name: VDDIO3CCSR
+    byte_offset: 16388
+    description: SYSCFG VDDIO3 compensation cell status register
+    fieldset: SYSCFG_VDDIO3CCSR
+  - name: VDDIO4CCCR
+    byte_offset: 16392
+    description: SYSCFG VDDIO4 compensation cell control register
+    fieldset: SYSCFG_VDDIO4CCCR
+  - name: VDDIO4CCSR
+    byte_offset: 16396
+    description: SYSCFG VDDIO4 compensation cell status register
+    fieldset: SYSCFG_VDDIO4CCSR
+  - name: VDDCCCR
+    byte_offset: 16400
+    description: SYSCFG VDD compensation cell control register
+    fieldset: SYSCFG_VDDCCCR
+  - name: VDDCCSR
+    byte_offset: 16404
+    description: SYSCFG VDD compensation cell status register
+    fieldset: SYSCFG_VDDCCSR
+  - name: VDDIO2CCCR
+    byte_offset: 16408
+    description: SYSCFG VDDIO2 compensation cell control register
+    fieldset: SYSCFG_VDDIO2CCCR
+  - name: VDDIO2CCSR
+    byte_offset: 16412
+    description: SYSCFG VDDIO2 compensation cell status register
+    fieldset: SYSCFG_VDDIO2CCSR
+  - name: VDDIO1CCCR
+    byte_offset: 16416
+    description: SYSCFG VDDIO1 compensation cell control register
+    fieldset: SYSCFG_VDDIO1CCCR
+  - name: VDDIO1CCSR
+    byte_offset: 16420
+    description: SYSCFG VDDIO1 compensation cell status register
+    fieldset: SYSCFG_VDDIO1CCSR
+  - name: CBR
+    byte_offset: 17408
+    description: SYSCFG control timer break register
+    fieldset: SYSCFG_CBR
+  - name: USB3DRCR
+    byte_offset: 18432
+    description: SYSCFG USB3DR control register
+  - name: USB3DRSR
+    byte_offset: 18436
+    description: SYSCFG USB3DR status register
+  - name: COMBOPHYCR1
+    byte_offset: 19456
+    description: SYSCFG COMBOPHY control register 1
+  - name: COMBOPHYCR2
+    byte_offset: 19460
+    description: SYSCFG COMBOPHY control register 2
+  - name: COMBOPHYCR3
+    byte_offset: 19464
+    description: SYSCFG COMBOPHY control register 3
+  - name: COMBOPHYCR4
+    byte_offset: 19468
+    description: SYSCFG COMBOPHY control register 4
+  - name: COMBOPHYCR5
+    byte_offset: 19472
+    description: SYSCFG COMBOPHY control register 5
+  - name: COMBOPHYSR
+    byte_offset: 19476
+    description: SYSCFG COMBOPHY status register
+  - name: DISPLAYCLKCR
+    byte_offset: 20480
+    description: SYSCFG display clock control register
+  - name: PCIECR
+    byte_offset: 24576
+    description: SYSCFG PCIE control register
+  - name: PCIEPMEMSICR
+    byte_offset: 24580
+    description: SYSCFG PCIE CFG_PME_MSI control register
+  - name: PCIEAERRCMSICR
+    byte_offset: 24584
+    description: SYSCFG PCIE CFG_AER_RC_ERR_MSI control register
+  - name: PCIESYSRCCR
+    byte_offset: 24588
+    description: SYSCFG PCIE CFG_SYS_ERR_RC control register
+  - name: PCIEPTMIRQCR
+    byte_offset: 24592
+    description: SYSCFG PCIE PTM interrupt control register
+  - name: PCIEPRGCR
+    byte_offset: 24704
+    description: SYSCFG PCIE PRG control register
+  - name: PCIESR1
+    byte_offset: 24832
+    description: SYSCFG PCIE status register 1
+  - name: PCIESR2
+    byte_offset: 24836
+    description: SYSCFG PCIE interrupt status register 2
+  - name: IDC
+    byte_offset: 25600
+    description: SYSCFG device ID register
+  - name: VERR
+    byte_offset: 32756
+    description: SYSCFG version register
+    fieldset: SYSCFG_VERR
+  - name: IPIDR
+    byte_offset: 32760
+    description: SYSCFG identification register
+    fieldset: SYSCFG_IPIDR
+  - name: SIDR
+    byte_offset: 32764
+    description: SYSCFG size identification register
+    fieldset: SYSCFG_SIDR
+fieldset/SYSCFG_BOOTSR:
+  description: ''
+  fields:
+  - name: BOOT0
+    bit_offset: 0
+    bit_size: 1
+    description: BOOT0 pin value
+  - name: BOOT1
+    bit_offset: 1
+    bit_size: 1
+    description: BOOT1 pin value
+  - name: BOOT2
+    bit_offset: 2
+    bit_size: 1
+    description: BOOT2 pin value
+  - name: BOOT3
+    bit_offset: 3
+    bit_size: 1
+    description: BOOT3 pin value
+fieldset/SYSCFG_DLYBSD1CR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+    description: When 1, DLL is enabled
+fieldset/SYSCFG_DLYBSD1SR:
+  description: ''
+  fields:
+  - name: LOCK
+    bit_offset: 0
+    bit_size: 1
+    description: When 1, DLL is locked
+fieldset/SYSCFG_DLYBSD2CR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+    description: When 1, DLL is enabled
+fieldset/SYSCFG_DLYBSD2SR:
+  description: ''
+  fields:
+  - name: LOCK
+    bit_offset: 0
+    bit_size: 1
+    description: When 1, DLL is locked
+fieldset/SYSCFG_DLYBSD3CR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+    description: When 1, DLL is enabled
+fieldset/SYSCFG_DLYBSD3SR:
+  description: ''
+  fields:
+  - name: LOCK
+    bit_offset: 0
+    bit_size: 1
+    description: When 1, DLL is locked
+fieldset/SYSCFG_DLYBOS1CR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+    description: When 1, DLL is enabled
+fieldset/SYSCFG_DLYBOS1SR:
+  description: ''
+  fields:
+  - name: LOCK
+    bit_offset: 0
+    bit_size: 1
+    description: When 1, DLL is locked
+fieldset/SYSCFG_DLYBOS2CR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+    description: When 1, DLL is enabled
+fieldset/SYSCFG_DLYBOS2SR:
+  description: ''
+  fields:
+  - name: LOCK
+    bit_offset: 0
+    bit_size: 1
+    description: When 1, DLL is locked
+fieldset/SYSCFG_POTTAMPRSTCR:
+  description: ''
+  fields:
+  - name: POTTAMPRESETMASK
+    bit_offset: 0
+    bit_size: 1
+    description: This bit can be set by software to mask PKA, SAES, CRYP1/2 and HASH
+      reset in case of potential tamp
+fieldset/SYSCFG_M33SSCR:
+  description: ''
+  fields:
+  - name: LOCKSVTAIRCR
+    bit_offset: 16
+    bit_size: 1
+    description: 'Prevent changes to:'
+  - name: LOCKNSVTOR
+    bit_offset: 17
+    bit_size: 1
+    description: Prevent changes to the Non-secure vector table base address
+  - name: LOCKSMPU
+    bit_offset: 18
+    bit_size: 1
+    description: Prevent changes to programmed Secure MPU memory regions
+  - name: LOCKNSMPU
+    bit_offset: 19
+    bit_size: 1
+    description: Prevent changes to Nonsecure MPU memory regions already programmed
+  - name: LOCKSAU
+    bit_offset: 20
+    bit_size: 1
+    description: Prevent changes to Secure SAU memory regions already programmed
+fieldset/SYSCFG_USB2PHY1CR:
+  description: ''
+  fields:
+  - name: RETENABLEN1
+    bit_offset: 0
+    bit_size: 1
+    description: Retention mode enable (active low)
+  - name: AUTORSMENB1
+    bit_offset: 1
+    bit_size: 1
+    description: Auto-resume mode enable
+  - name: USB2PHY1CMN
+    bit_offset: 2
+    bit_size: 1
+    description: Controls the power down of analog blocks during Suspend and Sleep
+  - name: USB2PHY1SEL
+    bit_offset: 4
+    bit_size: 3
+    description: 'PHY refclk speed setting:'
+fieldset/SYSCFG_USB2PHY1BCSR:
+  description: ''
+  fields:
+  - name: CHGDET
+    bit_offset: 0
+    bit_size: 1
+    description: Comparison of voltage on DP with VDAT_REF threshold as defined in
+      BC v1
+  - name: FSVPLUS
+    bit_offset: 1
+    bit_size: 1
+    description: Voltage level on DP (also output of the comparison with VLGC threshold
+      as defined in BC v1
+  - name: FSVMINUS
+    bit_offset: 2
+    bit_size: 1
+    description: voltage level on DM (also output of the comparison with VLGC threshold
+      as defined in BC v1
+fieldset/SYSCFG_USB2PHY1TRIM1CR:
+  description: ''
+  fields:
+  - name: USB2PHY1PLLITUNE
+    bit_offset: 0
+    bit_size: 2
+    description: PLL Integral Path Tune
+  - name: USB2PHY1PLLPTUNE
+    bit_offset: 2
+    bit_size: 4
+    description: PLL Proportional Path Tune
+  - name: USB2PHY1COMPDISTUNE
+    bit_offset: 6
+    bit_size: 3
+    description: Disconnect Threshold Adjustment
+  - name: USB2PHY1SQRXTUNE
+    bit_offset: 9
+    bit_size: 3
+    description: Squelch Threshold Adjustment
+  - name: USB2PHY1VDATREFTUNE
+    bit_offset: 12
+    bit_size: 2
+    description: Data Detect Voltage Adjustment
+  - name: USB2PHY1OTGTUNE
+    bit_offset: 14
+    bit_size: 3
+    description: VBUS Valid Threshold Adjustment
+  - name: USB2PHY1TXHSXVTUNE
+    bit_offset: 17
+    bit_size: 2
+    description: Transmitter High Speed Crossover Adjustment
+  - name: USB2PHY1TXFSLSTUNE
+    bit_offset: 19
+    bit_size: 4
+    description: FS/LS Source Impedance Adjustment
+  - name: USB2PHY1TXVREFTUNE
+    bit_offset: 23
+    bit_size: 4
+    description: HS DC Voltage Level Adjustment
+  - name: USB2PHY1TXRISETUNE
+    bit_offset: 27
+    bit_size: 2
+    description: HS Transmitter Rise/Fall Time Adjustment
+  - name: USB2PHY1TXRESTUNE
+    bit_offset: 29
+    bit_size: 2
+    description: USB Source Impedance Adjustment
+fieldset/SYSCFG_USB2PHY1TRIM2CR:
+  description: ''
+  fields:
+  - name: USB2PHY1TXPREEMPAMPTUNE
+    bit_offset: 0
+    bit_size: 2
+    description: HS Transmitter Pre Emphasis Current Control
+  - name: USB2PHY1TXPREEMPPULSETUNE
+    bit_offset: 2
+    bit_size: 1
+    description: HS Transmitter Pre Emphasis Duration Control
+fieldset/SYSCFG_USB2PHY2CR:
+  description: ''
+  fields:
+  - name: RETENABLEN2
+    bit_offset: 0
+    bit_size: 1
+    description: Retention mode enable (active low)
+  - name: AUTORSMENB2
+    bit_offset: 1
+    bit_size: 1
+    description: Auto-resume mode enable
+  - name: USB2PHY2CMN
+    bit_offset: 2
+    bit_size: 1
+    description: Controls the power down of analog blocks during Suspend and Sleep
+  - name: VBUSVALID
+    bit_offset: 4
+    bit_size: 1
+    description: Controls vbus valid input of USB3DR controller when in Host mode
+  - name: VBUSVLDEXTSEL
+    bit_offset: 5
+    bit_size: 1
+    description: Selects VBUS valid comparator that is used when USB3DR controller
+      is in Device mode
+  - name: VBUSVLDEXT
+    bit_offset: 6
+    bit_size: 1
+    description: Voltage comparison result when an external voltage comparator is
+      used
+  - name: USB2PHY2SEL
+    bit_offset: 12
+    bit_size: 3
+    description: 'PHY refclk speed setting:'
+  - name: OTGDISABLE0
+    bit_offset: 16
+    bit_size: 1
+    description: Disable control bit for the VBUS Valid comparator in USB2PHY2
+  - name: DRVVBUS0
+    bit_offset: 17
+    bit_size: 1
+    description: Control bit for the VBUS Valid comparator in USB2PHY2
+fieldset/SYSCFG_USB2PHY2TRIM1CR:
+  description: ''
+  fields:
+  - name: USB2PHY2PLLITUNE
+    bit_offset: 0
+    bit_size: 2
+    description: PLL Integral Path Tune
+  - name: USB2PHY2PLLPTUNE
+    bit_offset: 2
+    bit_size: 4
+    description: PLL Proportional Path Tune
+  - name: USB2PHY2COMPDISTUNE
+    bit_offset: 6
+    bit_size: 3
+    description: Disconnect Threshold Adjustment
+  - name: USB2PHY2SQRXTUNE
+    bit_offset: 9
+    bit_size: 3
+    description: Squelch Threshold Adjustment
+  - name: USB2PHY2VDATREFTUNE
+    bit_offset: 12
+    bit_size: 2
+    description: Data Detect Voltage Adjustment
+  - name: USB2PHY2OTGTUNE
+    bit_offset: 14
+    bit_size: 3
+    description: VBUS Valid Threshold Adjustment
+  - name: USB2PHY2TXHSXVTUNE
+    bit_offset: 17
+    bit_size: 2
+    description: Transmitter High Speed Crossover Adjustment
+  - name: USB2PHY2TXFSLSTUNE
+    bit_offset: 19
+    bit_size: 4
+    description: FS/LS Source Impedance Adjustment
+  - name: USB2PHY2TXVREFTUNE
+    bit_offset: 23
+    bit_size: 4
+    description: HS DC Voltage Level Adjustment
+  - name: USB2PHY2TXRISETUNE
+    bit_offset: 27
+    bit_size: 2
+    description: HS Transmitter Rise/Fall Time Adjustment
+  - name: USB2PHY2TXRESTUNE
+    bit_offset: 29
+    bit_size: 2
+    description: USB Source Impedance Adjustment
+fieldset/SYSCFG_USB2PHY2TRIM2CR:
+  description: ''
+  fields:
+  - name: USB2PHY2TXPREEMPAMPTUNE
+    bit_offset: 0
+    bit_size: 2
+    description: HS Transmitter Pre Emphasis Current Control
+  - name: USB2PHY2TXPREEMPPULSETUNE
+    bit_offset: 2
+    bit_size: 1
+    description: HS Transmitter Pre Emphasis Duration Control
+fieldset/SYSCFG_VDDIO3CCCR:
+  description: ''
+  fields:
+  - name: RANSRC
+    bit_offset: 0
+    bit_size: 4
+    description: NMOS compensation code of the I/Os supplied by VDDIO3
+  - name: RAPSRC
+    bit_offset: 4
+    bit_size: 4
+    description: PMOS compensation code of the I/Os supplied by VDDIO3
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+    description: VDDIO3 I/Os compensation cell enable
+  - name: CS
+    bit_offset: 9
+    bit_size: 1
+    description: VDDIO3 I/Os code selection
+fieldset/SYSCFG_VDDIO3CCSR:
+  description: ''
+  fields:
+  - name: ANSRC
+    bit_offset: 0
+    bit_size: 4
+    description: NMOS compensation value of the I/Os supplied by VDDIO3
+  - name: APSRC
+    bit_offset: 4
+    bit_size: 4
+    description: PMOS compensation value of the I/Os supplied by VDDIO3
+  - name: READY
+    bit_offset: 8
+    bit_size: 1
+    description: VDDIO3 I/Os compensation cell ready flag
+fieldset/SYSCFG_VDDIO4CCCR:
+  description: ''
+  fields:
+  - name: RANSRC
+    bit_offset: 0
+    bit_size: 4
+    description: NMOS compensation code of the I/Os supplied by VDDIO4
+  - name: RAPSRC
+    bit_offset: 4
+    bit_size: 4
+    description: PMOS compensation code of the I/Os supplied by VDDIO4
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+    description: VDDIO4 I/Os compensation cell enable
+  - name: CS
+    bit_offset: 9
+    bit_size: 1
+    description: VDDIO4 I/Os code selection
+fieldset/SYSCFG_VDDIO4CCSR:
+  description: ''
+  fields:
+  - name: ANSRC
+    bit_offset: 0
+    bit_size: 4
+    description: NMOS compensation value of the I/Os supplied by VDDIO4
+  - name: APSRC
+    bit_offset: 4
+    bit_size: 4
+    description: PMOS compensation value of the I/Os supplied by VDDIO4
+  - name: READY
+    bit_offset: 8
+    bit_size: 1
+    description: VDDIO4 I/Os compensation cell ready flag
+fieldset/SYSCFG_VDDCCCR:
+  description: ''
+  fields:
+  - name: RANSRC
+    bit_offset: 0
+    bit_size: 4
+    description: NMOS compensation code of the I/Os supplied by VDD
+  - name: RAPSRC
+    bit_offset: 4
+    bit_size: 4
+    description: PMOS compensation code of the I/Os supplied by VDD
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+    description: VDD I/Os compensation cell enable
+  - name: CS
+    bit_offset: 9
+    bit_size: 1
+    description: VDD I/Os code selection
+fieldset/SYSCFG_VDDCCSR:
+  description: ''
+  fields:
+  - name: ANSRC
+    bit_offset: 0
+    bit_size: 4
+    description: NMOS compensation value of the I/Os supplied by VDD
+  - name: APSRC
+    bit_offset: 4
+    bit_size: 4
+    description: PMOS compensation value of the I/Os supplied by VDD
+  - name: READY
+    bit_offset: 8
+    bit_size: 1
+    description: VDD I/Os compensation cell ready flag
+fieldset/SYSCFG_VDDIO2CCCR:
+  description: ''
+  fields:
+  - name: RANSRC
+    bit_offset: 0
+    bit_size: 4
+    description: NMOS compensation code of the I/Os supplied by VDDIO2
+  - name: RAPSRC
+    bit_offset: 4
+    bit_size: 4
+    description: PMOS compensation code of the I/Os supplied by VDDIO2
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+    description: VDDIO2 I/Os compensation cell enable
+  - name: CS
+    bit_offset: 9
+    bit_size: 1
+    description: VDDIO2 I/Os code selection
+fieldset/SYSCFG_VDDIO2CCSR:
+  description: ''
+  fields:
+  - name: ANSRC
+    bit_offset: 0
+    bit_size: 4
+    description: NMOS compensation value of the I/Os supplied by VDDIO2
+  - name: APSRC
+    bit_offset: 4
+    bit_size: 4
+    description: PMOS compensation value of the I/Os supplied by VDDIO2
+  - name: READY
+    bit_offset: 8
+    bit_size: 1
+    description: VDDIO2 I/Os compensation cell ready flag
+fieldset/SYSCFG_VDDIO1CCCR:
+  description: ''
+  fields:
+  - name: RANSRC
+    bit_offset: 0
+    bit_size: 4
+    description: NMOS compensation code of the I/Os supplied by VDDIO1
+  - name: RAPSRC
+    bit_offset: 4
+    bit_size: 4
+    description: PMOS compensation code of the I/Os supplied by VDDIO1
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+    description: VDDIO1 I/Os compensation cell enable
+  - name: CS
+    bit_offset: 9
+    bit_size: 1
+    description: VDDIO1 I/Os code selection
+fieldset/SYSCFG_VDDIO1CCSR:
+  description: ''
+  fields:
+  - name: ANSRC
+    bit_offset: 0
+    bit_size: 4
+    description: NMOS compensation value of the I/Os supplied by VDDIO1
+  - name: APSRC
+    bit_offset: 4
+    bit_size: 4
+    description: PMOS compensation value of the I/Os supplied by VDDIO1
+  - name: READY
+    bit_offset: 8
+    bit_size: 1
+    description: VDDIO1 I/Os compensation cell ready flag
+fieldset/SYSCFG_CBR:
+  description: ''
+  fields:
+  - name: CLL
+    bit_offset: 0
+    bit_size: 1
+    description: Cortex-M33 LOCKUP (Hardfault) output enable bit
+  - name: PVDL
+    bit_offset: 2
+    bit_size: 1
+    description: PVD lock enable bit
+  - name: BKRAML
+    bit_offset: 3
+    bit_size: 1
+    description: Backup SRAM double ECC error lock bit
+  - name: RETRAML
+    bit_offset: 4
+    bit_size: 1
+    description: Retention SRAM double ECC error lock bit
+fieldset/SYSCFG_VERR:
+  description: ''
+  fields:
+  - name: MINREV
+    bit_offset: 0
+    bit_size: 4
+    description: Minor revision
+  - name: MAJREV
+    bit_offset: 4
+    bit_size: 4
+    description: Major revision
+fieldset/SYSCFG_IPIDR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 32
+    description: SYSCFG identifier
+fieldset/SYSCFG_SIDR:
+  description: ''
+  fields:
+  - name: SID
+    bit_offset: 0
+    bit_size: 32
+    description: Size identification

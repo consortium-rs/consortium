@@ -1,0 +1,582 @@
+block/I2S:
+  description: ''
+  items:
+  - name: VERID
+    byte_offset: 0
+    fieldset: I2S_VERID
+  - name: PARAM
+    byte_offset: 4
+    fieldset: I2S_PARAM
+  - name: TCSR
+    byte_offset: 8
+    fieldset: I2S_TCSR
+  - name: TCR1
+    byte_offset: 12
+    fieldset: I2S_TCR1
+  - name: TCR2
+    byte_offset: 16
+    fieldset: I2S_TCR2
+  - name: TCR3
+    byte_offset: 20
+    fieldset: I2S_TCR3
+  - name: TCR4
+    byte_offset: 24
+    fieldset: I2S_TCR4
+  - name: TCR5
+    byte_offset: 28
+    fieldset: I2S_TCR5
+  - name: TDR
+    byte_offset: 32
+    array:
+      len: 8
+      stride: 4
+    fieldset: I2S_TDR
+  - name: TFR
+    byte_offset: 64
+    array:
+      len: 8
+      stride: 4
+    fieldset: I2S_TFR
+  - name: TMR
+    byte_offset: 96
+    fieldset: I2S_TMR
+  - name: TTCR
+    byte_offset: 112
+    fieldset: I2S_TTCR
+  - name: TTSR
+    byte_offset: 116
+    fieldset: I2S_TTSR
+  - name: TBCR
+    byte_offset: 120
+    fieldset: I2S_TBCR
+  - name: TBCTR
+    byte_offset: 124
+    fieldset: I2S_TBCTR
+  - name: RCSR
+    byte_offset: 136
+    fieldset: I2S_RCSR
+  - name: RCR1
+    byte_offset: 140
+    fieldset: I2S_RCR1
+  - name: RCR2
+    byte_offset: 144
+    fieldset: I2S_RCR2
+  - name: RCR3
+    byte_offset: 148
+    fieldset: I2S_RCR3
+  - name: RCR4
+    byte_offset: 152
+    fieldset: I2S_RCR4
+  - name: RCR5
+    byte_offset: 156
+    fieldset: I2S_RCR5
+  - name: RDR
+    byte_offset: 160
+    array:
+      len: 8
+      stride: 4
+    fieldset: I2S_RDR
+  - name: RFR
+    byte_offset: 192
+    array:
+      len: 8
+      stride: 4
+    fieldset: I2S_RFR
+  - name: RMR
+    byte_offset: 224
+    fieldset: I2S_RMR
+  - name: RTCR
+    byte_offset: 240
+    fieldset: I2S_RTCR
+  - name: RTSR
+    byte_offset: 244
+    fieldset: I2S_RTSR
+  - name: RBCR
+    byte_offset: 248
+    fieldset: I2S_RBCR
+  - name: RBCTR
+    byte_offset: 252
+    fieldset: I2S_RBCTR
+  - name: MCR
+    byte_offset: 256
+    fieldset: I2S_MCR
+fieldset/I2S_VERID:
+  description: ''
+  fields:
+  - name: FEATURE
+    bit_offset: 0
+    bit_size: 16
+  - name: MINOR
+    bit_offset: 16
+    bit_size: 8
+    description: Minor Version Number
+  - name: MAJOR
+    bit_offset: 24
+    bit_size: 8
+    description: Minor Version Number
+fieldset/I2S_PARAM:
+  description: ''
+  fields:
+  - name: DATALINE
+    bit_offset: 0
+    bit_size: 4
+    description: Number of Data Lines
+  - name: FIFO
+    bit_offset: 8
+    bit_size: 4
+    description: Number of Data Lines
+  - name: FRAME
+    bit_offset: 16
+    bit_size: 4
+    description: FIFO Size
+fieldset/I2S_TCSR:
+  description: ''
+  fields:
+  - name: FRDE
+    bit_offset: 0
+    bit_size: 1
+  - name: FWDE
+    bit_offset: 1
+    bit_size: 1
+  - name: FRIE
+    bit_offset: 8
+    bit_size: 1
+  - name: FWIE
+    bit_offset: 9
+    bit_size: 1
+  - name: FEIE
+    bit_offset: 10
+    bit_size: 1
+  - name: SEIE
+    bit_offset: 11
+    bit_size: 1
+  - name: WSIE
+    bit_offset: 12
+    bit_size: 1
+  - name: FRF
+    bit_offset: 16
+    bit_size: 1
+  - name: FWF
+    bit_offset: 17
+    bit_size: 1
+  - name: FEF
+    bit_offset: 18
+    bit_size: 1
+  - name: SEF
+    bit_offset: 19
+    bit_size: 1
+  - name: WSF
+    bit_offset: 20
+    bit_size: 1
+  - name: SR
+    bit_offset: 24
+    bit_size: 1
+  - name: FR
+    bit_offset: 25
+    bit_size: 1
+  - name: BCE
+    bit_offset: 28
+    bit_size: 1
+  - name: DBGE
+    bit_offset: 29
+    bit_size: 1
+  - name: STOPE
+    bit_offset: 30
+    bit_size: 1
+  - name: TE
+    bit_offset: 31
+    bit_size: 1
+fieldset/I2S_TCR1:
+  description: ''
+  fields:
+  - name: TFW
+    bit_offset: 0
+    bit_size: 7
+fieldset/I2S_TCR2:
+  description: ''
+  fields:
+  - name: DIV
+    bit_offset: 0
+    bit_size: 8
+    description: Bit Clock Divide
+  - name: BYP
+    bit_offset: 23
+    bit_size: 1
+    description: Bit Clock Divide
+  - name: BCD
+    bit_offset: 24
+    bit_size: 1
+  - name: BCP
+    bit_offset: 25
+    bit_size: 1
+  - name: MSEL
+    bit_offset: 26
+    bit_size: 2
+  - name: BCI
+    bit_offset: 28
+    bit_size: 1
+  - name: BCS
+    bit_offset: 29
+    bit_size: 1
+  - name: SYNC
+    bit_offset: 30
+    bit_size: 1
+fieldset/I2S_TCR3:
+  description: ''
+  fields:
+  - name: WDFL
+    bit_offset: 0
+    bit_size: 5
+    description: Word Flag Configuration
+  - name: TCE
+    bit_offset: 16
+    bit_size: 8
+    description: Word Flag Configuration
+  - name: CFR
+    bit_offset: 24
+    bit_size: 8
+fieldset/I2S_TCR4:
+  description: ''
+  fields:
+  - name: FSD
+    bit_offset: 0
+    bit_size: 1
+  - name: FSP
+    bit_offset: 1
+    bit_size: 1
+  - name: ONDEM
+    bit_offset: 2
+    bit_size: 1
+  - name: FSE
+    bit_offset: 3
+    bit_size: 1
+  - name: MF
+    bit_offset: 4
+    bit_size: 1
+  - name: CHMOD
+    bit_offset: 5
+    bit_size: 1
+  - name: SYWD
+    bit_offset: 8
+    bit_size: 5
+    description: Sync Width
+  - name: FRSZ
+    bit_offset: 16
+    bit_size: 5
+    description: Sync Width
+  - name: FPACK
+    bit_offset: 24
+    bit_size: 2
+    description: Frame Size
+  - name: FCOMB
+    bit_offset: 26
+    bit_size: 2
+  - name: FCONT
+    bit_offset: 28
+    bit_size: 1
+fieldset/I2S_TCR5:
+  description: ''
+  fields:
+  - name: FBT
+    bit_offset: 8
+    bit_size: 5
+  - name: W0W
+    bit_offset: 16
+    bit_size: 5
+  - name: WNW
+    bit_offset: 24
+    bit_size: 5
+fieldset/I2S_TDR:
+  description: ''
+  fields:
+  - name: TDR
+    bit_offset: 0
+    bit_size: 32
+    description: Transmit Data
+fieldset/I2S_TFR:
+  description: ''
+  fields:
+  - name: RFP
+    bit_offset: 0
+    bit_size: 8
+  - name: WFP
+    bit_offset: 16
+    bit_size: 8
+  - name: WCP
+    bit_offset: 31
+    bit_size: 1
+fieldset/I2S_TMR:
+  description: ''
+  fields:
+  - name: TWM
+    bit_offset: 0
+    bit_size: 32
+fieldset/I2S_TTCR:
+  description: ''
+  fields:
+  - name: TSEN
+    bit_offset: 0
+    bit_size: 1
+  - name: TSINC
+    bit_offset: 1
+    bit_size: 1
+  - name: TSSEL
+    bit_offset: 2
+    bit_size: 2
+  - name: RTSC
+    bit_offset: 8
+    bit_size: 1
+  - name: RBC
+    bit_offset: 9
+    bit_size: 1
+fieldset/I2S_TTSR:
+  description: ''
+  fields:
+  - name: TSC
+    bit_offset: 0
+    bit_size: 32
+    description: Timestamp Counter
+fieldset/I2S_TBCR:
+  description: ''
+  fields:
+  - name: BCNT
+    bit_offset: 0
+    bit_size: 32
+    description: Bit Counter
+fieldset/I2S_TBCTR:
+  description: ''
+  fields:
+  - name: BCTS
+    bit_offset: 0
+    bit_size: 32
+    description: Bit Timestamp
+fieldset/I2S_RCSR:
+  description: ''
+  fields:
+  - name: FRDE
+    bit_offset: 0
+    bit_size: 1
+  - name: FWDE
+    bit_offset: 1
+    bit_size: 1
+  - name: FRIE
+    bit_offset: 8
+    bit_size: 1
+  - name: FWIE
+    bit_offset: 9
+    bit_size: 1
+  - name: FEIE
+    bit_offset: 10
+    bit_size: 1
+  - name: SEIE
+    bit_offset: 11
+    bit_size: 1
+  - name: WSIE
+    bit_offset: 12
+    bit_size: 1
+  - name: FRF
+    bit_offset: 16
+    bit_size: 1
+  - name: FWF
+    bit_offset: 17
+    bit_size: 1
+  - name: FEF
+    bit_offset: 18
+    bit_size: 1
+  - name: SEF
+    bit_offset: 19
+    bit_size: 1
+  - name: WSF
+    bit_offset: 20
+    bit_size: 1
+  - name: SR
+    bit_offset: 24
+    bit_size: 1
+  - name: FR
+    bit_offset: 25
+    bit_size: 1
+  - name: BCE
+    bit_offset: 28
+    bit_size: 1
+  - name: DBGE
+    bit_offset: 29
+    bit_size: 1
+  - name: STOPE
+    bit_offset: 30
+    bit_size: 1
+  - name: RE
+    bit_offset: 31
+    bit_size: 1
+fieldset/I2S_RCR1:
+  description: ''
+  fields:
+  - name: RFW
+    bit_offset: 0
+    bit_size: 7
+fieldset/I2S_RCR2:
+  description: ''
+  fields:
+  - name: DIV
+    bit_offset: 0
+    bit_size: 8
+    description: Bit Clock Divide
+  - name: BYP
+    bit_offset: 23
+    bit_size: 1
+    description: Bit Clock Divide
+  - name: BCD
+    bit_offset: 24
+    bit_size: 1
+  - name: BCP
+    bit_offset: 25
+    bit_size: 1
+  - name: MSEL
+    bit_offset: 26
+    bit_size: 2
+  - name: BCI
+    bit_offset: 28
+    bit_size: 1
+  - name: BCS
+    bit_offset: 29
+    bit_size: 1
+  - name: SYNC
+    bit_offset: 30
+    bit_size: 1
+fieldset/I2S_RCR3:
+  description: ''
+  fields:
+  - name: WDFL
+    bit_offset: 0
+    bit_size: 5
+  - name: RCE
+    bit_offset: 16
+    bit_size: 8
+  - name: CFR
+    bit_offset: 24
+    bit_size: 8
+fieldset/I2S_RCR4:
+  description: ''
+  fields:
+  - name: FSD
+    bit_offset: 0
+    bit_size: 1
+  - name: FSP
+    bit_offset: 1
+    bit_size: 1
+  - name: ONDEM
+    bit_offset: 2
+    bit_size: 1
+  - name: FSE
+    bit_offset: 3
+    bit_size: 1
+  - name: MF
+    bit_offset: 4
+    bit_size: 1
+  - name: SYWD
+    bit_offset: 8
+    bit_size: 5
+  - name: FRSZ
+    bit_offset: 16
+    bit_size: 5
+  - name: FPACK
+    bit_offset: 24
+    bit_size: 2
+  - name: FCOMB
+    bit_offset: 26
+    bit_size: 2
+  - name: FCONT
+    bit_offset: 28
+    bit_size: 1
+fieldset/I2S_RCR5:
+  description: ''
+  fields:
+  - name: FBT
+    bit_offset: 8
+    bit_size: 5
+  - name: W0W
+    bit_offset: 16
+    bit_size: 5
+  - name: WNW
+    bit_offset: 24
+    bit_size: 5
+fieldset/I2S_RDR:
+  description: ''
+  fields:
+  - name: RDR
+    bit_offset: 0
+    bit_size: 32
+    description: Receive Data
+fieldset/I2S_RFR:
+  description: ''
+  fields:
+  - name: RFP
+    bit_offset: 0
+    bit_size: 8
+  - name: RCP
+    bit_offset: 15
+    bit_size: 1
+  - name: WFP
+    bit_offset: 16
+    bit_size: 8
+fieldset/I2S_RMR:
+  description: ''
+  fields:
+  - name: RWM
+    bit_offset: 0
+    bit_size: 32
+fieldset/I2S_RTCR:
+  description: ''
+  fields:
+  - name: TSEN
+    bit_offset: 0
+    bit_size: 1
+  - name: TSINC
+    bit_offset: 1
+    bit_size: 1
+  - name: TSSEL
+    bit_offset: 2
+    bit_size: 2
+  - name: RTSC
+    bit_offset: 8
+    bit_size: 1
+  - name: RBC
+    bit_offset: 9
+    bit_size: 1
+fieldset/I2S_RTSR:
+  description: ''
+  fields:
+  - name: TSC
+    bit_offset: 0
+    bit_size: 32
+    description: Timestamp Counter
+fieldset/I2S_RBCR:
+  description: ''
+  fields:
+  - name: BCNT
+    bit_offset: 0
+    bit_size: 32
+    description: Bit Counter
+fieldset/I2S_RBCTR:
+  description: ''
+  fields:
+  - name: BCTS
+    bit_offset: 0
+    bit_size: 32
+    description: Bit Timestamp
+fieldset/I2S_MCR:
+  description: ''
+  fields:
+  - name: DIV
+    bit_offset: 0
+    bit_size: 8
+    description: MCLK Post Divide
+  - name: DIVEN
+    bit_offset: 23
+    bit_size: 1
+    description: MCLK Post Divide
+  - name: MSEL
+    bit_offset: 24
+    bit_size: 2
+  - name: MOE
+    bit_offset: 30
+    bit_size: 1

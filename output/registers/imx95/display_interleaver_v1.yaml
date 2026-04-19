@@ -1,0 +1,74 @@
+block/DISPLAY_INTERLEAVER:
+  description: ''
+  items:
+  - name: CTRL
+    byte_offset: 0
+  - name: SWRST
+    byte_offset: 32
+  - name: IE
+    byte_offset: 48
+  - name: IS
+    byte_offset: 64
+  - name: ICTRL
+    byte_offset: 80
+    fieldset: DISPLAY_INTERLEAVER_ICTRL
+fieldset/DISPLAY_INTERLEAVER_CTRL_HSYNC:
+  description: ''
+  fields:
+  - name: POLARITY
+    bit_offset: 9
+    bit_size: 1
+fieldset/DISPLAY_INTERLEAVER_CTRL_VSYNC:
+  description: ''
+  fields:
+  - name: POLARITY
+    bit_offset: 10
+    bit_size: 1
+fieldset/DISPLAY_INTERLEAVER_CTRL_DE:
+  description: ''
+  fields:
+  - name: POLARITY
+    bit_offset: 11
+    bit_size: 1
+fieldset/DISPLAY_INTERLEAVER_CTRL_PIXEL:
+  description: ''
+  fields:
+  - name: FORMAT
+    bit_offset: 12
+    bit_size: 1
+fieldset/DISPLAY_INTERLEAVER_CTRL_YUV:
+  description: ''
+  fields:
+  - name: CONV
+    bit_offset: 13
+    bit_size: 1
+fieldset/DISPLAY_INTERLEAVER_SWRST_SW:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 1
+    bit_size: 1
+fieldset/DISPLAY_INTERLEAVER_IE_FOVF:
+  description: ''
+  fields:
+  - name: IE0
+    bit_offset: 0
+    bit_size: 1
+  - name: IE1
+    bit_offset: 1
+    bit_size: 1
+fieldset/DISPLAY_INTERLEAVER_IS_FOVF:
+  description: ''
+  fields:
+  - name: IS0
+    bit_offset: 0
+    bit_size: 1
+  - name: IS1
+    bit_offset: 1
+    bit_size: 1
+fieldset/DISPLAY_INTERLEAVER_ICTRL:
+  description: ''
+  fields:
+  - name: WIDTH
+    bit_offset: 0
+    bit_size: 12

@@ -1,0 +1,228 @@
+block/NETC_PRIV:
+  description: ''
+  items:
+  - name: NETCRR
+    byte_offset: 256
+    fieldset: NETC_PRIV_NETCRR
+  - name: NETCSR
+    byte_offset: 260
+    fieldset: NETC_PRIV_NETCSR
+  - name: MEICR
+    byte_offset: 520
+    fieldset: NETC_PRIV_MEICR
+  - name: EICR
+    byte_offset: 524
+    fieldset: NETC_PRIV_EICR
+  - name: CMECR
+    byte_offset: 3584
+    fieldset: NETC_PRIV_CMECR
+  - name: CMESR
+    byte_offset: 3588
+    fieldset: NETC_PRIV_CMESR
+  - name: CMECTR
+    byte_offset: 3596
+    fieldset: NETC_PRIV_CMECTR
+  - name: UNMECR
+    byte_offset: 3632
+    fieldset: NETC_PRIV_UNMECR
+  - name: UNMESR0
+    byte_offset: 3636
+    fieldset: NETC_PRIV_UNMESR0
+  - name: UNMESR1
+    byte_offset: 3640
+    fieldset: NETC_PRIV_UNMESR1
+  - name: UNMECTR
+    byte_offset: 3644
+    fieldset: NETC_PRIV_UNMECTR
+  - name: UFMECR
+    byte_offset: 3648
+    fieldset: NETC_PRIV_UFMECR
+  - name: UFMESR0
+    byte_offset: 3652
+    fieldset: NETC_PRIV_UFMESR0
+  - name: UFMESR1
+    byte_offset: 3656
+    fieldset: NETC_PRIV_UFMESR1
+fieldset/NETC_PRIV_NETCRR:
+  description: ''
+  fields:
+  - name: SR
+    bit_offset: 0
+    bit_size: 1
+    description: Soft reset
+  - name: LOCK
+    bit_offset: 1
+    bit_size: 1
+    description: Soft reset
+fieldset/NETC_PRIV_NETCSR:
+  description: ''
+  fields:
+  - name: ERROR
+    bit_offset: 0
+    bit_size: 1
+  - name: STATE
+    bit_offset: 1
+    bit_size: 1
+fieldset/NETC_PRIV_MEICR_LINK:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 5
+    description: Link ID
+fieldset/NETC_PRIV_MEICR_MEM:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 8
+    bit_size: 5
+    description: Link ID
+fieldset/NETC_PRIV_MEICR:
+  description: ''
+  fields:
+  - name: ARM
+    bit_offset: 30
+    bit_size: 2
+    description: Memory ID
+fieldset/NETC_PRIV_EICR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 8
+fieldset/NETC_PRIV_CMECR:
+  description: ''
+  fields:
+  - name: THRESHOLD
+    bit_offset: 0
+    bit_size: 8
+fieldset/NETC_PRIV_CMESR_LINK_SLICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 5
+    description: Link or Slice ID
+fieldset/NETC_PRIV_CMESR_MEM:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 8
+    bit_size: 5
+    description: Link or Slice ID
+fieldset/NETC_PRIV_CMESR:
+  description: ''
+  fields:
+  - name: LE
+    bit_offset: 29
+    bit_size: 1
+    description: Memory ID
+  - name: SBEE
+    bit_offset: 31
+    bit_size: 1
+    description: Locality Elevated
+fieldset/NETC_PRIV_CMECTR:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 8
+    description: Count
+fieldset/NETC_PRIV_UNMECR:
+  description: ''
+  fields:
+  - name: THRESHOLD
+    bit_offset: 0
+    bit_size: 8
+  - name: RD
+    bit_offset: 31
+    bit_size: 1
+fieldset/NETC_PRIV_UNMESR0_LINK_SLICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 5
+    description: Link or Slice ID
+fieldset/NETC_PRIV_UNMESR0_MEM:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 8
+    bit_size: 5
+    description: Memory ID
+fieldset/NETC_PRIV_UNMESR0:
+  description: ''
+  fields:
+  - name: SYNDROME
+    bit_offset: 16
+    bit_size: 11
+    description: Memory ID
+  - name: LE
+    bit_offset: 29
+    bit_size: 1
+    description: Syndrome
+  - name: MBEE
+    bit_offset: 31
+    bit_size: 1
+    description: Locality Elevated
+fieldset/NETC_PRIV_UNMESR1:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+    description: Address
+fieldset/NETC_PRIV_UNMECTR:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 8
+    description: Count
+fieldset/NETC_PRIV_UFMECR:
+  description: ''
+  fields:
+  - name: RD
+    bit_offset: 31
+    bit_size: 1
+fieldset/NETC_PRIV_UFMESR0_LINK_SLICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 5
+    description: Link or Slice ID
+fieldset/NETC_PRIV_UFMESR0_MEM:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 8
+    bit_size: 5
+    description: Memory ID
+fieldset/NETC_PRIV_UFMESR0:
+  description: ''
+  fields:
+  - name: SYNDROME
+    bit_offset: 16
+    bit_size: 11
+    description: Memory ID
+  - name: LE
+    bit_offset: 29
+    bit_size: 1
+    description: Syndrome
+  - name: M
+    bit_offset: 30
+    bit_size: 1
+    description: Locality Elevated
+  - name: MBEE
+    bit_offset: 31
+    bit_size: 1
+    description: Multiple
+fieldset/NETC_PRIV_UFMESR1:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+    description: Address

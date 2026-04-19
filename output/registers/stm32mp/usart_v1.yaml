@@ -1,0 +1,693 @@
+block/USART:
+  description: ''
+  items:
+  - name: CR1
+    byte_offset: 0
+    description: USART Control register 1
+    fieldset: USART_CR1
+  - name: CR2
+    byte_offset: 4
+    description: USART Control register 2
+    fieldset: USART_CR2
+  - name: CR3
+    byte_offset: 8
+    description: USART Control register 3
+    fieldset: USART_CR3
+  - name: BRR
+    byte_offset: 12
+    description: USART Baud rate register
+    fieldset: USART_BRR
+  - name: GTPR
+    byte_offset: 16
+    description: USART Guard time and prescaler register
+    fieldset: USART_GTPR
+  - name: RTOR
+    byte_offset: 20
+    description: USART Receiver timeout register
+    fieldset: USART_RTOR
+  - name: RQR
+    byte_offset: 24
+    description: USART Request register
+    fieldset: USART_RQR
+  - name: ISR
+    byte_offset: 28
+    description: USART Interrupt and status register
+    fieldset: USART_ISR
+  - name: ICR
+    byte_offset: 32
+    description: USART Interrupt flag Clear register
+    fieldset: USART_ICR
+  - name: RDR
+    byte_offset: 36
+    description: USART Receive Data register
+    fieldset: USART_RDR
+  - name: TDR
+    byte_offset: 40
+    description: USART Transmit Data register
+    fieldset: USART_TDR
+  - name: PRESC
+    byte_offset: 44
+    description: USART Prescaler register
+    fieldset: USART_PRESC
+  - name: AUTOCR
+    byte_offset: 48
+    description: USART Autonomous mode Control register
+    fieldset: USART_AUTOCR
+  - name: HWCFGR2
+    byte_offset: 1004
+    description: USART Hardware Configuration register 2
+    fieldset: USART_HWCFGR2
+  - name: HWCFGR1
+    byte_offset: 1008
+    description: USART Hardware Configuration register 1
+    fieldset: USART_HWCFGR1
+  - name: VERR
+    byte_offset: 1012
+    description: USART version register
+    fieldset: USART_VERR
+  - name: IPIDR
+    byte_offset: 1016
+    description: USART Identification register
+    fieldset: USART_IPIDR
+  - name: SIDR
+    byte_offset: 1020
+    description: USART Size Identification register
+    fieldset: USART_SIDR
+fieldset/USART_CR1:
+  description: ''
+  fields:
+  - name: UE
+    bit_offset: 0
+    bit_size: 1
+    description: USART enable
+  - name: UESM
+    bit_offset: 1
+    bit_size: 1
+    description: USART enable in low-power mode
+  - name: RE
+    bit_offset: 2
+    bit_size: 1
+    description: Receiver enable
+  - name: TE
+    bit_offset: 3
+    bit_size: 1
+    description: Transmitter enable
+  - name: IDLEIE
+    bit_offset: 4
+    bit_size: 1
+    description: IDLE interrupt enable
+  - name: RXFNEIE
+    bit_offset: 5
+    bit_size: 1
+    description: RXFIFO not empty interrupt enable
+  - name: TCIE
+    bit_offset: 6
+    bit_size: 1
+    description: Transmission complete interrupt enable
+  - name: TXFNFIE
+    bit_offset: 7
+    bit_size: 1
+    description: TXFIFO not full interrupt enable
+  - name: PEIE
+    bit_offset: 8
+    bit_size: 1
+    description: PE interrupt enable
+  - name: PS
+    bit_offset: 9
+    bit_size: 1
+    description: Parity selection
+  - name: PCE
+    bit_offset: 10
+    bit_size: 1
+    description: Parity control enable
+  - name: WAKE
+    bit_offset: 11
+    bit_size: 1
+    description: Receiver wakeup method
+  - name: M
+    bit_offset: 12
+    bit_size: 17
+    description: Word length
+  - name: M0
+    bit_offset: 12
+    bit_size: 1
+    description: Word length
+  - name: MME
+    bit_offset: 13
+    bit_size: 1
+    description: Mute mode enable
+  - name: CMIE
+    bit_offset: 14
+    bit_size: 1
+    description: Character match interrupt enable
+  - name: OVER8
+    bit_offset: 15
+    bit_size: 1
+    description: Oversampling mode
+  - name: DEDT
+    bit_offset: 16
+    bit_size: 5
+    description: Driver Enable deassertion time
+  - name: DEAT
+    bit_offset: 21
+    bit_size: 5
+    description: Driver Enable assertion time
+  - name: RTOIE
+    bit_offset: 26
+    bit_size: 1
+    description: Receiver timeout interrupt enable
+  - name: EOBIE
+    bit_offset: 27
+    bit_size: 1
+    description: End of Block interrupt enable
+  - name: M1
+    bit_offset: 28
+    bit_size: 1
+    description: Word length
+  - name: FIFOEN
+    bit_offset: 29
+    bit_size: 1
+    description: FIFO mode enable
+  - name: TXFEIE
+    bit_offset: 30
+    bit_size: 1
+    description: TXFIFO empty interrupt enable
+  - name: RXFFIE
+    bit_offset: 31
+    bit_size: 1
+    description: RXFIFO Full interrupt enable
+fieldset/USART_CR2:
+  description: ''
+  fields:
+  - name: SLVEN
+    bit_offset: 0
+    bit_size: 1
+    description: Synchronous Slave mode enable
+  - name: ADDM7
+    bit_offset: 4
+    bit_size: 1
+    description: 7-bit Address Detection/4-bit Address Detection
+  - name: LBDL
+    bit_offset: 5
+    bit_size: 1
+    description: LIN break detection length
+  - name: LBDIE
+    bit_offset: 6
+    bit_size: 1
+    description: LIN break detection interrupt enable
+  - name: LBCL
+    bit_offset: 8
+    bit_size: 1
+    description: Last bit clock pulse
+  - name: CPHA
+    bit_offset: 9
+    bit_size: 1
+    description: Clock phase
+  - name: CPOL
+    bit_offset: 10
+    bit_size: 1
+    description: Clock polarity
+  - name: CLKEN
+    bit_offset: 11
+    bit_size: 1
+    description: Clock enable
+  - name: STOP
+    bit_offset: 12
+    bit_size: 2
+    description: stop bits
+  - name: LINEN
+    bit_offset: 14
+    bit_size: 1
+    description: LIN mode enable
+  - name: SWAP
+    bit_offset: 15
+    bit_size: 1
+    description: Swap TX/RX pins
+  - name: RXINV
+    bit_offset: 16
+    bit_size: 1
+    description: RX pin active level inversion
+  - name: TXINV
+    bit_offset: 17
+    bit_size: 1
+    description: TX pin active level inversion
+  - name: DATAINV
+    bit_offset: 18
+    bit_size: 1
+    description: Binary data inversion
+  - name: MSBFIRST
+    bit_offset: 19
+    bit_size: 1
+    description: Most significant bit first
+  - name: ABREN
+    bit_offset: 20
+    bit_size: 1
+    description: Auto baud rate enable
+  - name: ABRMODE
+    bit_offset: 21
+    bit_size: 2
+    description: Auto baud rate mode
+  - name: RTOEN
+    bit_offset: 23
+    bit_size: 1
+    description: Receiver timeout enable
+  - name: ADD
+    bit_offset: 24
+    bit_size: 8
+    description: Address of the USART node
+fieldset/USART_CR3:
+  description: ''
+  fields:
+  - name: EIE
+    bit_offset: 0
+    bit_size: 1
+    description: Error interrupt enable
+  - name: IREN
+    bit_offset: 1
+    bit_size: 1
+    description: IrDA mode enable
+  - name: IRLP
+    bit_offset: 2
+    bit_size: 1
+    description: IrDA low-power
+  - name: HDSEL
+    bit_offset: 3
+    bit_size: 1
+    description: Half-duplex selection
+  - name: NACK
+    bit_offset: 4
+    bit_size: 1
+    description: Smartcard NACK enable
+  - name: SCEN
+    bit_offset: 5
+    bit_size: 1
+    description: Smartcard mode enable
+  - name: DMAR
+    bit_offset: 6
+    bit_size: 1
+    description: DMA enable receiver
+  - name: DMAT
+    bit_offset: 7
+    bit_size: 1
+    description: DMA enable transmitter
+  - name: RTSE
+    bit_offset: 8
+    bit_size: 1
+    description: RTS enable
+  - name: CTSE
+    bit_offset: 9
+    bit_size: 1
+    description: CTS enable
+  - name: CTSIE
+    bit_offset: 10
+    bit_size: 1
+    description: CTS interrupt enable
+  - name: ONEBIT
+    bit_offset: 11
+    bit_size: 1
+    description: One sample bit method enable
+  - name: OVRDIS
+    bit_offset: 12
+    bit_size: 1
+    description: Overrun Disable
+  - name: DDRE
+    bit_offset: 13
+    bit_size: 1
+    description: DMA Disable on Reception Error
+  - name: DEM
+    bit_offset: 14
+    bit_size: 1
+    description: Driver enable mode
+  - name: DEP
+    bit_offset: 15
+    bit_size: 1
+    description: Driver enable polarity selection
+  - name: SCARCNT
+    bit_offset: 17
+    bit_size: 3
+    description: Smartcard auto-retry count
+  - name: TXFTIE
+    bit_offset: 23
+    bit_size: 1
+    description: TXFIFO threshold interrupt enable
+  - name: TCBGTIE
+    bit_offset: 24
+    bit_size: 1
+    description: Transmission Complete before guard time, interrupt enable
+  - name: RXFTCFG
+    bit_offset: 25
+    bit_size: 3
+    description: Receive FIFO threshold configuration
+  - name: RXFTIE
+    bit_offset: 28
+    bit_size: 1
+    description: RXFIFO threshold interrupt enable
+  - name: TXFTCFG
+    bit_offset: 29
+    bit_size: 3
+    description: TXFIFO threshold configuration
+fieldset/USART_BRR:
+  description: ''
+  fields:
+  - name: LPUART
+    bit_offset: 0
+    bit_size: 20
+    description: LPUART baud rate division (LPUARTDIV)
+  - name: BRR
+    bit_offset: 0
+    bit_size: 16
+    description: USART baud rate
+fieldset/USART_GTPR:
+  description: ''
+  fields:
+  - name: PSC
+    bit_offset: 0
+    bit_size: 8
+    description: Prescaler value
+  - name: GT
+    bit_offset: 8
+    bit_size: 8
+    description: Guard time value
+fieldset/USART_RTOR:
+  description: ''
+  fields:
+  - name: RTO
+    bit_offset: 0
+    bit_size: 24
+    description: Receiver timeout value
+  - name: BLEN
+    bit_offset: 24
+    bit_size: 8
+    description: Block Length
+fieldset/USART_RQR:
+  description: ''
+  fields:
+  - name: ABRRQ
+    bit_offset: 0
+    bit_size: 1
+    description: Auto baud rate request
+  - name: SBKRQ
+    bit_offset: 1
+    bit_size: 1
+    description: Send break request
+  - name: MMRQ
+    bit_offset: 2
+    bit_size: 1
+    description: Mute mode request
+  - name: RXFRQ
+    bit_offset: 3
+    bit_size: 1
+    description: Receive data flush request
+  - name: TXFRQ
+    bit_offset: 4
+    bit_size: 1
+    description: Transmit data flush request
+fieldset/USART_ISR:
+  description: ''
+  fields:
+  - name: PE
+    bit_offset: 0
+    bit_size: 1
+    description: Parity error
+  - name: FE
+    bit_offset: 1
+    bit_size: 1
+    description: Framing error
+  - name: NE
+    bit_offset: 2
+    bit_size: 1
+    description: Noise detection flag
+  - name: ORE
+    bit_offset: 3
+    bit_size: 1
+    description: Overrun error
+  - name: IDLE
+    bit_offset: 4
+    bit_size: 1
+    description: Idle line detected
+  - name: RXFNE
+    bit_offset: 5
+    bit_size: 1
+    description: RXFIFO not empty
+  - name: TC
+    bit_offset: 6
+    bit_size: 1
+    description: Transmission complete
+  - name: TXFNF
+    bit_offset: 7
+    bit_size: 1
+    description: '0x00000080'
+  - name: LBDF
+    bit_offset: 8
+    bit_size: 1
+    description: LIN break detection flag
+  - name: CTSIF
+    bit_offset: 9
+    bit_size: 1
+    description: CTS interrupt flag
+  - name: CTS
+    bit_offset: 10
+    bit_size: 1
+    description: CTS flag
+  - name: RTOF
+    bit_offset: 11
+    bit_size: 1
+    description: Receiver timeout
+  - name: EOBF
+    bit_offset: 12
+    bit_size: 1
+    description: End of block flag
+  - name: UDR
+    bit_offset: 13
+    bit_size: 1
+    description: SPI slave underrun error flag
+  - name: ABRE
+    bit_offset: 14
+    bit_size: 1
+    description: Auto baud rate error
+  - name: ABRF
+    bit_offset: 15
+    bit_size: 1
+    description: Auto baud rate flag
+  - name: BUSY
+    bit_offset: 16
+    bit_size: 1
+    description: Busy flag
+  - name: CMF
+    bit_offset: 17
+    bit_size: 1
+    description: Character match flag
+  - name: SBKF
+    bit_offset: 18
+    bit_size: 1
+    description: Send break flag
+  - name: RWU
+    bit_offset: 19
+    bit_size: 1
+    description: Receiver wakeup from Mute mode
+  - name: TEACK
+    bit_offset: 21
+    bit_size: 1
+    description: Transmit enable acknowledge flag
+  - name: REACK
+    bit_offset: 22
+    bit_size: 1
+    description: Receive enable acknowledge flag
+  - name: TXFE
+    bit_offset: 23
+    bit_size: 1
+    description: TXFIFO Empty
+  - name: RXFF
+    bit_offset: 24
+    bit_size: 1
+    description: RXFIFO Full
+  - name: TCBGT
+    bit_offset: 25
+    bit_size: 1
+    description: Transmission complete before guard time flag
+  - name: RXFT
+    bit_offset: 26
+    bit_size: 1
+    description: RXFIFO threshold flag
+  - name: TXFT
+    bit_offset: 27
+    bit_size: 1
+    description: TXFIFO threshold flag
+fieldset/USART_ICR:
+  description: ''
+  fields:
+  - name: PECF
+    bit_offset: 0
+    bit_size: 1
+    description: Parity error clear flag
+  - name: FECF
+    bit_offset: 1
+    bit_size: 1
+    description: Framing error clear flag
+  - name: NECF
+    bit_offset: 2
+    bit_size: 1
+    description: Noise detected clear flag
+  - name: ORECF
+    bit_offset: 3
+    bit_size: 1
+    description: Overrun error clear flag
+  - name: IDLECF
+    bit_offset: 4
+    bit_size: 1
+    description: Idle line detected clear flag
+  - name: TXFECF
+    bit_offset: 5
+    bit_size: 1
+    description: TXFIFO empty clear flag
+  - name: TCCF
+    bit_offset: 6
+    bit_size: 1
+    description: Transmission complete clear flag
+  - name: TCBGTCF
+    bit_offset: 7
+    bit_size: 1
+    description: Transmission complete before Guard time clear flag
+  - name: LBDCF
+    bit_offset: 8
+    bit_size: 1
+    description: LIN break detection clear flag
+  - name: CTSCF
+    bit_offset: 9
+    bit_size: 1
+    description: CTS clear flag
+  - name: RTOCF
+    bit_offset: 11
+    bit_size: 1
+    description: Receiver timeout clear flag
+  - name: EOBCF
+    bit_offset: 12
+    bit_size: 1
+    description: End of block clear flag
+  - name: UDRCF
+    bit_offset: 13
+    bit_size: 1
+    description: SPI slave underrun clear flag
+  - name: CMCF
+    bit_offset: 17
+    bit_size: 1
+    description: Character match clear flag
+fieldset/USART_RDR:
+  description: ''
+  fields:
+  - name: RDR
+    bit_offset: 0
+    bit_size: 9
+    description: Receive data value
+fieldset/USART_TDR:
+  description: ''
+  fields:
+  - name: TDR
+    bit_offset: 0
+    bit_size: 9
+    description: Transmit data value
+fieldset/USART_PRESC:
+  description: ''
+  fields:
+  - name: PRESCALER
+    bit_offset: 0
+    bit_size: 4
+    description: Clock prescaler
+fieldset/USART_AUTOCR:
+  description: ''
+  fields:
+  - name: TDN
+    bit_offset: 0
+    bit_size: 16
+    description: TDN transmission data number
+  - name: TRIGPOL
+    bit_offset: 16
+    bit_size: 1
+    description: Trigger polarity bit
+  - name: TRIGEN
+    bit_offset: 17
+    bit_size: 1
+    description: Trigger enable bit
+  - name: IDLEDIS
+    bit_offset: 18
+    bit_size: 1
+    description: Idle frame transmission disable bit after enabling the transmitter
+  - name: TRIGSEL
+    bit_offset: 19
+    bit_size: 4
+    description: Trigger selection bits
+fieldset/USART_HWCFGR2:
+  description: ''
+  fields:
+  - name: CFG1
+    bit_offset: 0
+    bit_size: 4
+    description: USART hardware configuration 1
+  - name: CFG2
+    bit_offset: 4
+    bit_size: 4
+    description: USART hardware configuration 2
+  - name: CFG3
+    bit_offset: 8
+    bit_size: 4
+    description: USART hardware configuration 3
+fieldset/USART_HWCFGR1:
+  description: ''
+  fields:
+  - name: CFG1
+    bit_offset: 0
+    bit_size: 4
+    description: USART hardware configuration 1
+  - name: CFG2
+    bit_offset: 4
+    bit_size: 4
+    description: USART hardware configuration 2
+  - name: CFG3
+    bit_offset: 8
+    bit_size: 4
+    description: USART hardware configuration 3
+  - name: CFG4
+    bit_offset: 12
+    bit_size: 4
+    description: USART hardware configuration 4
+  - name: CFG5
+    bit_offset: 16
+    bit_size: 4
+    description: USART hardware configuration 5
+  - name: CFG6
+    bit_offset: 20
+    bit_size: 4
+    description: USART hardware configuration 6
+  - name: CFG7
+    bit_offset: 24
+    bit_size: 4
+    description: USART hardware configuration 7
+  - name: CFG8
+    bit_offset: 28
+    bit_size: 4
+    description: USART hardware configuration 8
+fieldset/USART_VERR:
+  description: ''
+  fields:
+  - name: MINREV
+    bit_offset: 0
+    bit_size: 4
+    description: Minor revision
+  - name: MAJREV
+    bit_offset: 4
+    bit_size: 4
+    description: Major revision
+fieldset/USART_IPIDR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 32
+    description: Peripheral identifier
+fieldset/USART_SIDR:
+  description: ''
+  fields:
+  - name: SID
+    bit_offset: 0
+    bit_size: 32
+    description: Size identification

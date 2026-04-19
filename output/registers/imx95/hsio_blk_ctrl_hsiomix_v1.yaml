@@ -1,0 +1,541 @@
+block/HSIO_BLK_CTRL_HSIOMIX:
+  description: ''
+  items:
+  - name: GPR_REG0
+    byte_offset: 0
+  - name: USB1_WAKEUP_CTRL
+    byte_offset: 16
+  - name: USB2_WAKEUP_CTRL
+    byte_offset: 20
+  - name: USB1_WAKEUP_STATUS
+    byte_offset: 24
+  - name: USB2_WAKEUP_STATUS
+    byte_offset: 28
+  - name: USB1_AXQOS_DEFAULT
+    byte_offset: 32
+  - name: USB1_AXQOS_PANIC
+    byte_offset: 36
+  - name: USB2_AXQOS_DEFAULT
+    byte_offset: 40
+  - name: USB2_AXQOS_PANIC
+    byte_offset: 44
+  - name: PCIE1_AXQOS_DEFAULT
+    byte_offset: 48
+  - name: PCIE1_AXQOS_PANIC
+    byte_offset: 52
+  - name: PCIE2_AXQOS_DEFAULT
+    byte_offset: 56
+  - name: PCIE2_AXQOS_PANIC
+    byte_offset: 60
+  - name: PCIE1_DMA_XFER_GO_TOGG
+    byte_offset: 64
+  - name: PCIE2_DMA_XFER_GO_TOGG
+    byte_offset: 68
+  - name: PCIE1_REG
+    byte_offset: 80
+  - name: PCIE2_REG
+    byte_offset: 84
+  - name: LFAST_IO_REG
+    byte_offset: 192
+fieldset/HSIO_BLK_CTRL_HSIOMIX_GPR_REG0_PCIE1_PERST:
+  description: ''
+  fields:
+  - name: N
+    bit_offset: 0
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_GPR_REG0_PCIE2_PERST:
+  description: ''
+  fields:
+  - name: N
+    bit_offset: 1
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_GPR_REG0_USB2_BYPASS_LOGIC:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 5
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_GPR_REG0_USB_PHY_REF_CLK:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 6
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_GPR_REG0_CFG:
+  description: ''
+  fields:
+  - name: READY
+    bit_offset: 7
+    bit_size: 1
+    description: Configuration ready
+fieldset/HSIO_BLK_CTRL_HSIOMIX_GPR_REG0_CRS:
+  description: ''
+  fields:
+  - name: CLEAR
+    bit_offset: 8
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_CTRL_OTG_WKDPDMCHG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_CTRL_OTG_VBUS_WAKE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_CTRL_OTG_ID_WAKEUP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_CTRL_OTG_U3_WAKE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_CTRL_OTG_VBUS_SOURCE:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 4
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_CTRL_OTG_CONN_WAKEUP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 5
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_CTRL_AUTORESUME:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+  - name: DATADLY
+    bit_offset: 9
+    bit_size: 1
+  - name: ENDLY
+    bit_offset: 10
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_CTRL_LOWSPEED:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_CTRL_PHY:
+  description: ''
+  fields:
+  - name: BYPASSDMDATA
+    bit_offset: 12
+    bit_size: 1
+  - name: BYPASSDMEN
+    bit_offset: 13
+    bit_size: 1
+  - name: BYPASSDPDATA
+    bit_offset: 14
+    bit_size: 1
+  - name: BYPASSDPEN
+    bit_offset: 15
+    bit_size: 1
+  - name: BYPASSSEL
+    bit_offset: 16
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_CTRL_OTG_WAKE:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_CTRL_OTG_WKDPDMCHG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_CTRL_OTG_VBUS_WAKE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_CTRL_OTG_ID_WAKEUP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_CTRL_OTG_U3_WAKE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_CTRL_OTG_VBUS_SOURCE:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 4
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_CTRL_OTG_CONN_WAKEUP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 5
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_CTRL_AUTORESUME:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+  - name: DATADLY
+    bit_offset: 9
+    bit_size: 1
+  - name: ENDLY
+    bit_offset: 10
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_CTRL_LOWSPEED:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_CTRL_PHY:
+  description: ''
+  fields:
+  - name: BYPASSDMDATA
+    bit_offset: 12
+    bit_size: 1
+  - name: BYPASSDMEN
+    bit_offset: 13
+    bit_size: 1
+  - name: BYPASSDPDATA
+    bit_offset: 14
+    bit_size: 1
+  - name: BYPASSDPEN
+    bit_offset: 15
+    bit_size: 1
+  - name: BYPASSSEL
+    bit_offset: 16
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_CTRL_OTG_WAKE:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_STATUS_OTG_DP_DM_WAKEUP:
+  description: ''
+  fields:
+  - name: INTERRUPT
+    bit_offset: 0
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_STATUS_OTG_VBUS_SESSVLD_WAKEUP:
+  description: ''
+  fields:
+  - name: INTERRUPT
+    bit_offset: 1
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_STATUS_OTG_ID_WAKEUP:
+  description: ''
+  fields:
+  - name: INTERRUPT
+    bit_offset: 2
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_STATUS_OTG_U3_WAKEUP:
+  description: ''
+  fields:
+  - name: INTERRUP
+    bit_offset: 3
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_STATUS_OTG_PHY:
+  description: ''
+  fields:
+  - name: IDDIG0
+    bit_offset: 6
+    bit_size: 1
+  - name: VBUSVALID0
+    bit_offset: 7
+    bit_size: 1
+  - name: OTGSESSVLD0
+    bit_offset: 8
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_STATUS_PIPE:
+  description: ''
+  fields:
+  - name: RXELECIDLE
+    bit_offset: 9
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_STATUS_OTG_HOST:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 10
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_STATUS_PIPE3:
+  description: ''
+  fields:
+  - name: POWERDOWN
+    bit_offset: 11
+    bit_size: 2
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_STATUS_OTG_CONN_WAKEUP:
+  description: ''
+  fields:
+  - name: INTERRUPT
+    bit_offset: 13
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_WAKEUP_STATUS_OTG_WAKEUP:
+  description: ''
+  fields:
+  - name: INTERRUPT
+    bit_offset: 31
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_STATUS_OTG_DP_DM_WAKEUP:
+  description: ''
+  fields:
+  - name: INTERRUPT
+    bit_offset: 0
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_STATUS_OTG_VBUS_SESSVLD_WAKEUP:
+  description: ''
+  fields:
+  - name: INTERRUPT
+    bit_offset: 1
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_STATUS_OTG_ID_WAKEUP:
+  description: ''
+  fields:
+  - name: INTERRUPT
+    bit_offset: 2
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_STATUS_OTG_PHY:
+  description: ''
+  fields:
+  - name: IDDIG0
+    bit_offset: 6
+    bit_size: 1
+  - name: VBUSVALID0
+    bit_offset: 7
+    bit_size: 1
+  - name: OTGSESSVLD0
+    bit_offset: 8
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_STATUS_OTG_HOST:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 10
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_STATUS_PIPE3:
+  description: ''
+  fields:
+  - name: POWERDOWN
+    bit_offset: 11
+    bit_size: 2
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_WAKEUP_STATUS_OTG_WAKEUP:
+  description: ''
+  fields:
+  - name: INTERRUPT
+    bit_offset: 31
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_AXQOS_DEFAULT_AW_QOS:
+  description: ''
+  fields:
+  - name: DEFAULT
+    bit_offset: 0
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_AXQOS_DEFAULT_AR_QOS:
+  description: ''
+  fields:
+  - name: DEFAULT
+    bit_offset: 8
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_AXQOS_PANIC_AW_QOS:
+  description: ''
+  fields:
+  - name: PANIC
+    bit_offset: 0
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB1_AXQOS_PANIC_AR_QOS:
+  description: ''
+  fields:
+  - name: PANIC
+    bit_offset: 8
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_AXQOS_DEFAULT_AW_QOS:
+  description: ''
+  fields:
+  - name: DEFAULT
+    bit_offset: 0
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_AXQOS_DEFAULT_AR_QOS:
+  description: ''
+  fields:
+  - name: DEFAULT
+    bit_offset: 8
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_AXQOS_PANIC_AW_QOS:
+  description: ''
+  fields:
+  - name: PANIC
+    bit_offset: 0
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_USB2_AXQOS_PANIC_AR_QOS:
+  description: ''
+  fields:
+  - name: PANIC
+    bit_offset: 8
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE1_AXQOS_DEFAULT_AW_QOS:
+  description: ''
+  fields:
+  - name: DEFAULT
+    bit_offset: 0
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE1_AXQOS_DEFAULT_AR_QOS:
+  description: ''
+  fields:
+  - name: DEFAULT
+    bit_offset: 8
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE1_AXQOS_PANIC_AW_QOS:
+  description: ''
+  fields:
+  - name: PANIC
+    bit_offset: 0
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE1_AXQOS_PANIC_AR_QOS:
+  description: ''
+  fields:
+  - name: PANIC
+    bit_offset: 8
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE2_AXQOS_DEFAULT_AW_QOS:
+  description: ''
+  fields:
+  - name: DEFAULT
+    bit_offset: 0
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE2_AXQOS_DEFAULT_AR_QOS:
+  description: ''
+  fields:
+  - name: DEFAULT
+    bit_offset: 8
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE2_AXQOS_PANIC_AW_QOS:
+  description: ''
+  fields:
+  - name: PANIC
+    bit_offset: 0
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE2_AXQOS_PANIC_AR_QOS:
+  description: ''
+  fields:
+  - name: PANIC
+    bit_offset: 8
+    bit_size: 3
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE1_DMA_XFER_GO_TOGG_DMA_RDXFER_GO:
+  description: ''
+  fields:
+  - name: TOGG
+    bit_offset: 0
+    bit_size: 4
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE1_DMA_XFER_GO_TOGG_DMA_WDXFER_GO:
+  description: ''
+  fields:
+  - name: TOGG
+    bit_offset: 8
+    bit_size: 4
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE1_DMA_XFER_GO_TOGG_DMA_RDXFER_DONE:
+  description: ''
+  fields:
+  - name: TOGG
+    bit_offset: 16
+    bit_size: 4
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE1_DMA_XFER_GO_TOGG_DMA_WDXFER_DONE:
+  description: ''
+  fields:
+  - name: TOGG
+    bit_offset: 24
+    bit_size: 4
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE2_DMA_XFER_GO_TOGG_DMA_RDXFER_GO:
+  description: ''
+  fields:
+  - name: TOGG
+    bit_offset: 0
+    bit_size: 4
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE2_DMA_XFER_GO_TOGG_DMA_WDXFER_GO:
+  description: ''
+  fields:
+  - name: TOGG
+    bit_offset: 8
+    bit_size: 4
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE2_DMA_XFER_GO_TOGG_DMA_RDXFER_DONE:
+  description: ''
+  fields:
+  - name: TOGG
+    bit_offset: 16
+    bit_size: 4
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE2_DMA_XFER_GO_TOGG_DMA_WDXFER_DONE:
+  description: ''
+  fields:
+  - name: TOGG
+    bit_offset: 24
+    bit_size: 4
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE1_REG_RADM_CPL:
+  description: ''
+  fields:
+  - name: TIMEOUT
+    bit_offset: 0
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE1_REG_PHY_LANE0_POWER:
+  description: ''
+  fields:
+  - name: PRESENT
+    bit_offset: 1
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE2_REG_RADM_CPL:
+  description: ''
+  fields:
+  - name: TIMEOUT
+    bit_offset: 0
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_PCIE2_REG_PHY_LANE0_POWER:
+  description: ''
+  fields:
+  - name: PRESENT
+    bit_offset: 1
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_LFAST_IO_REG_FUNC_OUPUT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_LFAST_IO_REG_CREF:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 6
+    bit_size: 1
+fieldset/HSIO_BLK_CTRL_HSIOMIX_LFAST_IO_REG_IREF_TX:
+  description: ''
+  fields:
+  - name: OPT1
+    bit_offset: 7
+    bit_size: 1
+  - name: OPT2
+    bit_offset: 8
+    bit_size: 1
+  - name: OPT3
+    bit_offset: 9
+    bit_size: 1
+  - name: OPT4
+    bit_offset: 10
+    bit_size: 1

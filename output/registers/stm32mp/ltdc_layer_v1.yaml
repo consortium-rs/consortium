@@ -1,0 +1,96 @@
+block/LTDC_Layer:
+  description: ''
+  items:
+  - name: C0R
+    byte_offset: 256
+    description: LTDC layerx configuration 0 register
+  - name: C1R
+    byte_offset: 260
+    description: LTDC layerx configuration 1 register
+  - name: RCR
+    byte_offset: 264
+    description: LTDC layerx reload control register
+  - name: CR
+    byte_offset: 268
+    description: LTDC layerx control register
+  - name: WHPCR
+    byte_offset: 272
+    description: LTDC layerx window horizontal position configuration register
+  - name: WVPCR
+    byte_offset: 276
+    description: LTDC layerx window vertical position configuration register
+  - name: CKCR
+    byte_offset: 280
+    description: LTDC layerx color keying configuration register
+  - name: PFCR
+    byte_offset: 284
+    description: LTDC layerx pixel format configuration register
+  - name: CACR
+    byte_offset: 288
+    description: LTDC layerx constant alpha configuration register
+  - name: DCCR
+    byte_offset: 292
+    description: LTDC layerx default color configuration register
+  - name: BFCR
+    byte_offset: 296
+    description: LTDC layerx blending factors configuration register
+  - name: BLCR
+    byte_offset: 300
+    description: LTDC layerx burst length configuration register
+  - name: PCR
+    byte_offset: 304
+    description: LTDC layerx planar configuration register
+  - name: CFBAR
+    byte_offset: 308
+    description: LTDC layerx color frame buffer address register
+  - name: CFBLR
+    byte_offset: 312
+    description: LTDC layerx color frame buffer length register
+  - name: CFBLNR
+    byte_offset: 316
+    description: LTDC layerx color frame buffer line number register
+  - name: AFBA0R
+    byte_offset: 320
+    description: LTDC layerx auxiliary frame buffer address 0 register
+  - name: AFBA1R
+    byte_offset: 324
+    description: LTDC layerx auxiliary frame buffer address 1 register
+  - name: AFBLR
+    byte_offset: 328
+    description: LTDC layerx auxiliary frame buffer length register
+  - name: AFBLNR
+    byte_offset: 332
+    description: LTDC layerx auxiliary frame buffer line number register
+  - name: CLUTWR
+    byte_offset: 336
+    description: LTDC layerx CLUT write register
+  - name: SISR
+    byte_offset: 340
+    description: LTDC layerx scaler input size register
+  - name: SOSR
+    byte_offset: 344
+    description: LTDC layerx scaler output size register
+  - name: SVSFR
+    byte_offset: 348
+    description: LTDC layerx scaler vertical scaling factor register
+  - name: SVSPR
+    byte_offset: 352
+    description: LTDC layerx scaler vertical scaling phase register
+  - name: SHSFR
+    byte_offset: 356
+    description: LTDC layerx scaler horizontal scaling factor register
+  - name: SHSPR
+    byte_offset: 360
+    description: LTDC layerx scaler horizontal scaling phase register
+  - name: CYR0R
+    byte_offset: 364
+    description: LTDC layerx conversion YCbCr RGB 0 register
+  - name: CYR1R
+    byte_offset: 368
+    description: LTDC layerx conversion YCbCr RGB 1 register
+  - name: FPF0R
+    byte_offset: 372
+    description: LTDC layerx flexible pixel format 0 register
+  - name: FPF1R
+    byte_offset: 376
+    description: LTDC layerx flexible pixel format 1 register

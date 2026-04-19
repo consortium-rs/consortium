@@ -1,0 +1,2597 @@
+block/WAKEUP_TRDC_MGR_MEGA:
+  description: ''
+  items:
+  - name: TRDC_CR
+    byte_offset: 0
+    fieldset: WAKEUP_TRDC_MGR_MEGA_TRDC_CR
+  - name: TRDC_HWCFG0
+    byte_offset: 240
+    fieldset: WAKEUP_TRDC_MGR_MEGA_TRDC_HWCFG0
+  - name: TRDC_HWCFG1
+    byte_offset: 244
+    fieldset: WAKEUP_TRDC_MGR_MEGA_TRDC_HWCFG1
+  - name: TRDC_HWCFG2
+    byte_offset: 248
+    fieldset: WAKEUP_TRDC_MGR_MEGA_TRDC_HWCFG2
+  - name: TRDC_HWCFG3
+    byte_offset: 252
+    fieldset: WAKEUP_TRDC_MGR_MEGA_TRDC_HWCFG3
+  - name: DACFG0
+    byte_offset: 256
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG0
+  - name: DACFG1
+    byte_offset: 257
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG1
+  - name: DACFG2
+    byte_offset: 258
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG2
+  - name: DACFG3
+    byte_offset: 259
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG3
+  - name: DACFG4
+    byte_offset: 260
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG4
+  - name: DACFG5
+    byte_offset: 261
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG5
+  - name: DACFG6
+    byte_offset: 262
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG6
+  - name: DACFG7
+    byte_offset: 263
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG7
+  - name: DACFG8
+    byte_offset: 264
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG8
+  - name: DACFG9
+    byte_offset: 265
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG9
+  - name: DACFG10
+    byte_offset: 266
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG10
+  - name: DACFG11
+    byte_offset: 267
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG11
+  - name: DACFG12
+    byte_offset: 268
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG12
+  - name: DACFG13
+    byte_offset: 269
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG13
+  - name: DACFG14
+    byte_offset: 270
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG14
+  - name: DACFG15
+    byte_offset: 271
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG15
+  - name: DACFG16
+    byte_offset: 272
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG16
+  - name: DACFG17
+    byte_offset: 273
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG17
+  - name: DACFG18
+    byte_offset: 274
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG18
+  - name: DACFG19
+    byte_offset: 275
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG19
+  - name: DACFG20
+    byte_offset: 276
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG20
+  - name: DACFG21
+    byte_offset: 277
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG21
+  - name: DACFG22
+    byte_offset: 278
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG22
+  - name: DACFG23
+    byte_offset: 279
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG23
+  - name: DACFG24
+    byte_offset: 280
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG24
+  - name: DACFG25
+    byte_offset: 281
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG25
+  - name: DACFG26
+    byte_offset: 282
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG26
+  - name: DACFG27
+    byte_offset: 283
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG27
+  - name: DACFG28
+    byte_offset: 284
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG28
+  - name: DACFG29
+    byte_offset: 285
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG29
+  - name: DACFG30
+    byte_offset: 286
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG30
+  - name: DACFG31
+    byte_offset: 287
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG31
+  - name: DACFG32
+    byte_offset: 288
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG32
+  - name: DACFG33
+    byte_offset: 289
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG33
+  - name: DACFG34
+    byte_offset: 290
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG34
+  - name: DACFG35
+    byte_offset: 291
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG35
+  - name: DACFG36
+    byte_offset: 292
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG36
+  - name: DACFG37
+    byte_offset: 293
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG37
+  - name: DACFG38
+    byte_offset: 294
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG38
+  - name: DACFG39
+    byte_offset: 295
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG39
+  - name: DACFG40
+    byte_offset: 296
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG40
+  - name: DACFG41
+    byte_offset: 297
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG41
+  - name: DACFG42
+    byte_offset: 298
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG42
+  - name: DACFG43
+    byte_offset: 299
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG43
+  - name: DACFG44
+    byte_offset: 300
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG44
+  - name: DACFG45
+    byte_offset: 301
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG45
+  - name: DACFG46
+    byte_offset: 302
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG46
+  - name: DACFG47
+    byte_offset: 303
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG47
+  - name: DACFG48
+    byte_offset: 304
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG48
+  - name: DACFG49
+    byte_offset: 305
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG49
+  - name: DACFG50
+    byte_offset: 306
+    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG50
+  - name: TRDC_IDAU_CR
+    byte_offset: 448
+    fieldset: WAKEUP_TRDC_MGR_MEGA_TRDC_IDAU_CR
+  - name: TRDC_FLW_CTL
+    byte_offset: 480
+    fieldset: WAKEUP_TRDC_MGR_MEGA_TRDC_FLW_CTL
+  - name: TRDC_FLW_PBASE
+    byte_offset: 484
+    fieldset: WAKEUP_TRDC_MGR_MEGA_TRDC_FLW_PBASE
+  - name: TRDC_FLW_ABASE
+    byte_offset: 488
+  - name: TRDC_FLW_BCNT
+    byte_offset: 492
+    fieldset: WAKEUP_TRDC_MGR_MEGA_TRDC_FLW_BCNT
+  - name: TRDC_FDID
+    byte_offset: 508
+    fieldset: WAKEUP_TRDC_MGR_MEGA_TRDC_FDID
+  - name: TRDC_DERRLOC
+    byte_offset: 512
+    array:
+      len: 16
+      stride: 4
+    fieldset: WAKEUP_TRDC_MGR_MEGA_TRDC_DERRLOC
+  - name: MDA_W0_0_DFMT1
+    byte_offset: 2048
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_0_DFMT1
+  - name: MDA_W0_1_DFMT1
+    byte_offset: 2080
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_1_DFMT1
+  - name: MDA_W0_2_DFMT1
+    byte_offset: 2112
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_2_DFMT1
+  - name: MDA_W0_3_DFMT1
+    byte_offset: 2144
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_3_DFMT1
+  - name: MDA_W0_4_DFMT1
+    byte_offset: 2176
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_4_DFMT1
+  - name: MDA_W0_5_DFMT1
+    byte_offset: 2208
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_5_DFMT1
+  - name: MDA_W0_6_DFMT1
+    byte_offset: 2240
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_6_DFMT1
+  - name: MDA_W0_7_DFMT1
+    byte_offset: 2272
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_7_DFMT1
+  - name: MDA_W0_8_DFMT0
+    byte_offset: 2304
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_8_DFMT0
+  - name: MDA_W0_9_DFMT1
+    byte_offset: 2336
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_9_DFMT1
+  - name: MDA_W0_10_DFMT1
+    byte_offset: 2368
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_10_DFMT1
+  - name: MDA_W0_11_DFMT1
+    byte_offset: 2400
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_11_DFMT1
+  - name: MDA_W0_12_DFMT1
+    byte_offset: 2432
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_12_DFMT1
+  - name: MDA_W0_13_DFMT1
+    byte_offset: 2464
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_13_DFMT1
+  - name: MDA_W0_14_DFMT1
+    byte_offset: 2496
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_14_DFMT1
+  - name: MDA_W0_15_DFMT1
+    byte_offset: 2528
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_15_DFMT1
+  - name: MDA_W0_16_DFMT1
+    byte_offset: 2560
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_16_DFMT1
+  - name: MDA_W0_17_DFMT1
+    byte_offset: 2592
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_17_DFMT1
+  - name: MDA_W0_18_DFMT1
+    byte_offset: 2624
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_18_DFMT1
+  - name: MDA_W0_19_DFMT1
+    byte_offset: 2656
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_19_DFMT1
+  - name: MDA_W0_20_DFMT1
+    byte_offset: 2688
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_20_DFMT1
+  - name: MDA_W0_21_DFMT1
+    byte_offset: 2720
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_21_DFMT1
+  - name: MDA_W0_22_DFMT1
+    byte_offset: 2752
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_22_DFMT1
+  - name: MDA_W0_23_DFMT1
+    byte_offset: 2784
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_23_DFMT1
+  - name: MDA_W0_24_DFMT1
+    byte_offset: 2816
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_24_DFMT1
+  - name: MDA_W0_25_DFMT1
+    byte_offset: 2848
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_25_DFMT1
+  - name: MDA_W0_26_DFMT1
+    byte_offset: 2880
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_26_DFMT1
+  - name: MDA_W0_27_DFMT1
+    byte_offset: 2912
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_27_DFMT1
+  - name: MDA_W0_28_DFMT1
+    byte_offset: 2944
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_28_DFMT1
+  - name: MDA_W0_29_DFMT1
+    byte_offset: 2976
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_29_DFMT1
+  - name: MDA_W0_30_DFMT1
+    byte_offset: 3008
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_30_DFMT1
+  - name: MDA_W0_31_DFMT1
+    byte_offset: 3040
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_31_DFMT1
+  - name: MDA_W0_32_DFMT1
+    byte_offset: 3072
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_32_DFMT1
+  - name: MDA_W0_33_DFMT1
+    byte_offset: 3104
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_33_DFMT1
+  - name: MDA_W0_34_DFMT1
+    byte_offset: 3136
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_34_DFMT1
+  - name: MDA_W0_35_DFMT1
+    byte_offset: 3168
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_35_DFMT1
+  - name: MDA_W0_36_DFMT1
+    byte_offset: 3200
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_36_DFMT1
+  - name: MDA_W0_37_DFMT1
+    byte_offset: 3232
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_37_DFMT1
+  - name: MDA_W0_38_DFMT1
+    byte_offset: 3264
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_38_DFMT1
+  - name: MDA_W0_39_DFMT1
+    byte_offset: 3296
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_39_DFMT1
+  - name: MDA_W0_40_DFMT1
+    byte_offset: 3328
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_40_DFMT1
+  - name: MDA_W0_41_DFMT1
+    byte_offset: 3360
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_41_DFMT1
+  - name: MDA_W0_42_DFMT1
+    byte_offset: 3392
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_42_DFMT1
+  - name: MDA_W0_43_DFMT1
+    byte_offset: 3424
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_43_DFMT1
+  - name: MDA_W0_44_DFMT1
+    byte_offset: 3456
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_44_DFMT1
+  - name: MDA_W0_45_DFMT1
+    byte_offset: 3488
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_45_DFMT1
+  - name: MDA_W0_46_DFMT1
+    byte_offset: 3520
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_46_DFMT1
+  - name: MDA_W0_47_DFMT1
+    byte_offset: 3552
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_47_DFMT1
+  - name: MDA_W0_48_DFMT1
+    byte_offset: 3584
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_48_DFMT1
+  - name: MDA_W0_49_DFMT1
+    byte_offset: 3616
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_49_DFMT1
+  - name: MDA_W0_50_DFMT1
+    byte_offset: 3648
+    fieldset: WAKEUP_TRDC_MGR_MEGA_MDA_W0_50_DFMT1
+fieldset/WAKEUP_TRDC_MGR_MEGA_TRDC_CR:
+  description: ''
+  fields:
+  - name: GVLDM
+    bit_offset: 0
+    bit_size: 1
+  - name: HRL
+    bit_offset: 1
+    bit_size: 4
+    description: Hardware Revision Level
+  - name: GVLDB
+    bit_offset: 14
+    bit_size: 1
+  - name: GVLDR
+    bit_offset: 15
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_TRDC_HWCFG0:
+  description: ''
+  fields:
+  - name: NDID
+    bit_offset: 0
+    bit_size: 5
+    description: Number of domains
+  - name: NMSTR
+    bit_offset: 8
+    bit_size: 8
+    description: Number of bus initiators
+  - name: NMBC
+    bit_offset: 16
+    bit_size: 4
+    description: Number of MBCs
+  - name: NMRC
+    bit_offset: 24
+    bit_size: 5
+    description: Number of MRCs
+  - name: MID
+    bit_offset: 29
+    bit_size: 3
+    description: Module ID
+fieldset/WAKEUP_TRDC_MGR_MEGA_TRDC_HWCFG1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier number
+fieldset/WAKEUP_TRDC_MGR_MEGA_TRDC_HWCFG2:
+  description: ''
+  fields:
+  - name: PIDPn
+    bit_offset: 0
+    bit_size: 32
+    description: Process identifier present
+fieldset/WAKEUP_TRDC_MGR_MEGA_TRDC_HWCFG3:
+  description: ''
+  fields:
+  - name: PIDPn
+    bit_offset: 0
+    bit_size: 32
+    description: Process identifier present
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG0:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG1:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG2:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG3:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG4:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG5:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG6:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG7:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG8:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG9:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG10:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG11:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG12:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG13:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG14:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG15:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG16:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG17:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG18:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG19:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG20:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG21:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG22:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG23:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG24:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG25:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG26:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG27:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG28:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG29:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG30:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG31:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG32:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG33:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG34:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG35:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG36:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG37:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG38:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG39:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG40:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG41:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG42:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG43:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG44:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG45:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG46:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG47:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG48:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG49:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_DACFG50:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_TRDC_IDAU_CR:
+  description: ''
+  fields:
+  - name: VLD
+    bit_offset: 0
+    bit_size: 1
+    description: Valid
+  - name: CFGSECEXT
+    bit_offset: 3
+    bit_size: 1
+    description: Valid
+  - name: MPUSDIS
+    bit_offset: 4
+    bit_size: 1
+  - name: MPUNSDIS
+    bit_offset: 5
+    bit_size: 1
+  - name: SAUDIS
+    bit_offset: 6
+    bit_size: 1
+  - name: LKSVTAIRCR
+    bit_offset: 8
+    bit_size: 1
+  - name: LKNSVTOR
+    bit_offset: 9
+    bit_size: 1
+  - name: LKSMPU
+    bit_offset: 10
+    bit_size: 1
+  - name: LKNSMPU
+    bit_offset: 11
+    bit_size: 1
+  - name: LKSAU
+    bit_offset: 12
+    bit_size: 1
+  - name: PCURRNS
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_TRDC_FLW_CTL:
+  description: ''
+  fields:
+  - name: LK
+    bit_offset: 30
+    bit_size: 1
+  - name: V
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_TRDC_FLW_PBASE:
+  description: ''
+  fields:
+  - name: PBASE
+    bit_offset: 0
+    bit_size: 32
+    description: Physical base address
+fieldset/WAKEUP_TRDC_MGR_MEGA_TRDC_FLW_ABASE_ABASE:
+  description: ''
+  fields:
+  - name: L
+    bit_offset: 15
+    bit_size: 7
+  - name: H
+    bit_offset: 22
+    bit_size: 10
+fieldset/WAKEUP_TRDC_MGR_MEGA_TRDC_FLW_BCNT:
+  description: ''
+  fields:
+  - name: BCNT
+    bit_offset: 0
+    bit_size: 15
+    description: Block Count
+fieldset/WAKEUP_TRDC_MGR_MEGA_TRDC_FDID:
+  description: ''
+  fields:
+  - name: FDID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain ID of Faulted Access
+fieldset/WAKEUP_TRDC_MGR_MEGA_TRDC_DERRLOC:
+  description: ''
+  fields:
+  - name: MBCINST
+    bit_offset: 0
+    bit_size: 8
+    description: MBC instance
+  - name: MRCINST
+    bit_offset: 16
+    bit_size: 16
+    description: MRC instance
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_0_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_1_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_2_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_3_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_4_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_5_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_6_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_7_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_8_DFMT0:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: DIDS
+    bit_offset: 4
+    bit_size: 2
+  - name: PE
+    bit_offset: 6
+    bit_size: 2
+  - name: PIDM
+    bit_offset: 8
+    bit_size: 6
+    description: Process Identifier Mask
+  - name: SA
+    bit_offset: 14
+    bit_size: 2
+  - name: PID
+    bit_offset: 16
+    bit_size: 6
+    description: Process Identifier
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_9_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_10_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_11_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_12_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_13_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_14_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_15_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_16_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_17_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_18_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_19_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_20_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_21_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_22_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_23_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_24_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_25_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_26_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_27_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_28_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_29_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_30_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_31_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_32_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_33_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_34_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_35_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_36_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_37_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_38_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_39_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_40_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_41_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_42_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_43_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_44_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_45_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_46_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_47_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_48_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_49_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/WAKEUP_TRDC_MGR_MEGA_MDA_W0_50_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1

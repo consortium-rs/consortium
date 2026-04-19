@@ -1,0 +1,23 @@
+block/ANALOG_VDET:
+  description: ''
+  items:
+  - name: TRIM
+    byte_offset: 528
+fieldset/ANALOG_VDET_TRIM_CORE_HVD_TRIM_CTRL:
+  description: ''
+  fields:
+  - name: LV
+    bit_offset: 0
+    bit_size: 5
+fieldset/ANALOG_VDET_TRIM_CORE_LVD_TRIM_CTRL:
+  description: ''
+  fields:
+  - name: LV
+    bit_offset: 8
+    bit_size: 5
+fieldset/ANALOG_VDET_TRIM_HV_LVD_TRIM_CTRL:
+  description: ''
+  fields:
+  - name: LV
+    bit_offset: 16
+    bit_size: 5

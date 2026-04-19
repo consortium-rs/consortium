@@ -1,0 +1,60 @@
+block/OB_WB1:
+  description: ''
+  items:
+  - name: CTRL_CAM
+    byte_offset: 0
+    fieldset: OB_WB1_CTRL_CAM
+  - name: R_CTRL_CAM
+    byte_offset: 4
+    fieldset: OB_WB1_R_CTRL_CAM
+  - name: GR_CTRL_CAM
+    byte_offset: 8
+    fieldset: OB_WB1_GR_CTRL_CAM
+  - name: GB_CTRL_CAM
+    byte_offset: 12
+    fieldset: OB_WB1_GB_CTRL_CAM
+  - name: B_CTRL_CAM
+    byte_offset: 16
+    fieldset: OB_WB1_B_CTRL_CAM
+fieldset/OB_WB1_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OBPP
+    bit_offset: 2
+    bit_size: 2
+fieldset/OB_WB1_R_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 16
+  - name: GAIN
+    bit_offset: 16
+    bit_size: 16
+fieldset/OB_WB1_GR_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 16
+  - name: GAIN
+    bit_offset: 16
+    bit_size: 16
+fieldset/OB_WB1_GB_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 16
+  - name: GAIN
+    bit_offset: 16
+    bit_size: 16
+fieldset/OB_WB1_B_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 16
+  - name: GAIN
+    bit_offset: 16
+    bit_size: 16

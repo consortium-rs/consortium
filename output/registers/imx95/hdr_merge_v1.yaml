@@ -1,0 +1,132 @@
+block/HDR_MERGE:
+  description: ''
+  items:
+  - name: CTRL_CAM
+    byte_offset: 0
+    fieldset: HDR_MERGE_CTRL_CAM
+  - name: GAIN_OFFSET_CAM
+    byte_offset: 4
+    fieldset: HDR_MERGE_GAIN_OFFSET_CAM
+  - name: GAIN_SCALE_CAM
+    byte_offset: 8
+    fieldset: HDR_MERGE_GAIN_SCALE_CAM
+  - name: GAIN_SHIFT_CAM
+    byte_offset: 12
+    fieldset: HDR_MERGE_GAIN_SHIFT_CAM
+  - name: LUMA_TH_CAM
+    byte_offset: 16
+    fieldset: HDR_MERGE_LUMA_TH_CAM
+  - name: LUMA_SCALE_CAM
+    byte_offset: 20
+    fieldset: HDR_MERGE_LUMA_SCALE_CAM
+  - name: DOWNSCALE_CAM
+    byte_offset: 24
+    fieldset: HDR_MERGE_DOWNSCALE_CAM
+  - name: UPSCALE_CAM
+    byte_offset: 28
+    fieldset: HDR_MERGE_UPSCALE_CAM
+  - name: POST_SCALE_CAM
+    byte_offset: 32
+    fieldset: HDR_MERGE_POST_SCALE_CAM
+fieldset/HDR_MERGE_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OBPP
+    bit_offset: 2
+    bit_size: 2
+  - name: GAIN0BPP
+    bit_offset: 16
+    bit_size: 2
+  - name: GAIN1BPP
+    bit_offset: 18
+    bit_size: 2
+  - name: ENABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/HDR_MERGE_CTRL_CAM_SAFETY:
+  description: ''
+  fields:
+  - name: 'ON'
+    bit_offset: 4
+    bit_size: 1
+fieldset/HDR_MERGE_CTRL_CAM_MOTION_FIX:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+fieldset/HDR_MERGE_CTRL_CAM_BLEND:
+  description: ''
+  fields:
+  - name: 3X3
+    bit_offset: 9
+    bit_size: 1
+fieldset/HDR_MERGE_GAIN_OFFSET_CAM:
+  description: ''
+  fields:
+  - name: OFFSET0
+    bit_offset: 0
+    bit_size: 16
+  - name: OFFSET1
+    bit_offset: 16
+    bit_size: 16
+fieldset/HDR_MERGE_GAIN_SCALE_CAM:
+  description: ''
+  fields:
+  - name: SCALE0
+    bit_offset: 0
+    bit_size: 16
+  - name: SCALE1
+    bit_offset: 16
+    bit_size: 16
+fieldset/HDR_MERGE_GAIN_SHIFT_CAM:
+  description: ''
+  fields:
+  - name: SHIFT0
+    bit_offset: 0
+    bit_size: 5
+  - name: SHIFT1
+    bit_offset: 16
+    bit_size: 5
+fieldset/HDR_MERGE_LUMA_TH_CAM:
+  description: ''
+  fields:
+  - name: TH0
+    bit_offset: 0
+    bit_size: 16
+fieldset/HDR_MERGE_LUMA_SCALE_CAM:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 0
+    bit_size: 16
+  - name: SHIFT
+    bit_offset: 16
+    bit_size: 5
+  - name: THSHIFT
+    bit_offset: 24
+    bit_size: 5
+fieldset/HDR_MERGE_DOWNSCALE_CAM:
+  description: ''
+  fields:
+  - name: IMGSCALE0
+    bit_offset: 0
+    bit_size: 5
+  - name: IMGSCALE1
+    bit_offset: 16
+    bit_size: 5
+fieldset/HDR_MERGE_UPSCALE_CAM:
+  description: ''
+  fields:
+  - name: IMGSCALE0
+    bit_offset: 0
+    bit_size: 4
+  - name: IMGSCALE1
+    bit_offset: 16
+    bit_size: 4
+fieldset/HDR_MERGE_POST_SCALE_CAM:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 0
+    bit_size: 5

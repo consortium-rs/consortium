@@ -1,0 +1,1789 @@
+{
+  "name": "MIMX9352",
+  "family": "imx93",
+  "core": "cm33",
+  "irqs": [
+    {
+      "name": "DAP",
+      "value": 1,
+      "description": "DAP interrupt"
+    },
+    {
+      "name": "CTI_CM33",
+      "value": 3,
+      "description": "CTI trigger outputs from CM33 platform"
+    },
+    {
+      "name": "CTI_CA55",
+      "value": 4,
+      "description": "CTI trigger outputs from CA55 platform"
+    },
+    {
+      "name": "PMU",
+      "value": 5,
+      "description": "Performance Unit Interrupts from CA55 platform"
+    },
+    {
+      "name": "CACHE_ECC_ERR",
+      "value": 6,
+      "description": "ECC error from CA55 platform cache"
+    },
+    {
+      "name": "CACHE_ECC_PARITY_ERR",
+      "value": 7,
+      "description": "1-bit or 2-bit ECC or Parity error from CA55 platform cache"
+    },
+    {
+      "name": "CAN1",
+      "value": 8,
+      "description": "CAN1 interrupt"
+    },
+    {
+      "name": "CAN1_ERROR",
+      "value": 9,
+      "description": "CAN1 error interrupt"
+    },
+    {
+      "name": "GPIO1_0",
+      "value": 10,
+      "description": "General Purpose Input/Output 1 interrupt 0"
+    },
+    {
+      "name": "GPIO1_1",
+      "value": 11,
+      "description": "General Purpose Input/Output 1 interrupt 1"
+    },
+    {
+      "name": "I3C1",
+      "value": 12,
+      "description": "Improved Inter-Integrated Circuit 1 interrupt"
+    },
+    {
+      "name": "LPI2C1",
+      "value": 13,
+      "description": "Low Power Inter-Integrated Circuit module 1"
+    },
+    {
+      "name": "LPI2C2",
+      "value": 14,
+      "description": "Low Power Inter-Integrated Circuit module 2"
+    },
+    {
+      "name": "LPIT1",
+      "value": 15,
+      "description": "Low Power Periodic Interrupt Timer 1"
+    },
+    {
+      "name": "LPSPI1",
+      "value": 16,
+      "description": "Low Power Serial Peripheral Interface 1"
+    },
+    {
+      "name": "LPSPI2",
+      "value": 17,
+      "description": "Low Power Serial Peripheral Interface 2"
+    },
+    {
+      "name": "LPTMR1",
+      "value": 18,
+      "description": "Low Power Timer 1"
+    },
+    {
+      "name": "LPUART1",
+      "value": 19,
+      "description": "Low Power UART 1"
+    },
+    {
+      "name": "LPUART2",
+      "value": 20,
+      "description": "Low Power UART 2"
+    },
+    {
+      "name": "MU1_A",
+      "value": 21,
+      "description": "Messaging Unit 1 - Side A (to communicate with M7 core)"
+    },
+    {
+      "name": "MU1_B",
+      "value": 22,
+      "description": "Messaging Unit 1 - Side B (to communicate with M33 core)"
+    },
+    {
+      "name": "MU2_A",
+      "value": 23,
+      "description": "Messaging Unit 2 - Side A (to communicate with M7 core)"
+    },
+    {
+      "name": "MU2_B",
+      "value": 24,
+      "description": "Messaging Unit 2 - Side B (to communicate with A55 core)"
+    },
+    {
+      "name": "EDGELOCK_TRUST_MUA_RX",
+      "value": 28,
+      "description": "Edgelock Trust MUA RX full interrupt"
+    },
+    {
+      "name": "EDGELOCK_TRUST_MUA_TX",
+      "value": 29,
+      "description": "Edgelock Trust MUA TX empty interrupt"
+    },
+    {
+      "name": "EDGELOCK_APP_MUA_RX",
+      "value": 30,
+      "description": "Edgelock Apps Core MUA RX full interrupt"
+    },
+    {
+      "name": "EDGELOCK_APP_MUA_TX",
+      "value": 31,
+      "description": "Edgelock Apps Core MUA TX empty interrupt"
+    },
+    {
+      "name": "EDGELOCK_RT_MUA_RX",
+      "value": 32,
+      "description": "Edgelock Realtime Core MUA RX full interrupt"
+    },
+    {
+      "name": "EDGELOCK_RT_MUA_TX",
+      "value": 33,
+      "description": "Edgelock Realtime Core MUA TX empty interrupt"
+    },
+    {
+      "name": "EDGELOCK_SECURE",
+      "value": 34,
+      "description": "Edgelock secure interrupt"
+    },
+    {
+      "name": "EDGELOCK_NONSECURE",
+      "value": 35,
+      "description": "Edgelock non-secure interrupt"
+    },
+    {
+      "name": "TPM1",
+      "value": 36,
+      "description": "Timer PWM module 1"
+    },
+    {
+      "name": "TPM2",
+      "value": 37,
+      "description": "Timer PWM module 2"
+    },
+    {
+      "name": "WDOG1",
+      "value": 38,
+      "description": "Watchdog 1 Interrupt"
+    },
+    {
+      "name": "WDOG2",
+      "value": 39,
+      "description": "Watchdog 2 Interrupt"
+    },
+    {
+      "name": "TRDC",
+      "value": 40,
+      "description": "AONMIX TRDC transfer error interrupt"
+    },
+    {
+      "name": "SAI1",
+      "value": 45,
+      "description": "Serial Audio Interface 1"
+    },
+    {
+      "name": "PS_PARITY_ERR",
+      "value": 46,
+      "description": "M33 PS Tag/Data Parity Error"
+    },
+    {
+      "name": "TCM_ECC",
+      "value": 47,
+      "description": "M33 TCM ECC interrupt"
+    },
+    {
+      "name": "TCM_ERR",
+      "value": 48,
+      "description": "M33 TCM Error interrupt"
+    },
+    {
+      "name": "CAN2",
+      "value": 51,
+      "description": "CAN2 interrupt"
+    },
+    {
+      "name": "CAN2_ERROR",
+      "value": 52,
+      "description": "CAN2 error interrupt"
+    },
+    {
+      "name": "FLEXIO1",
+      "value": 53,
+      "description": "Flexible IO 1 interrupt"
+    },
+    {
+      "name": "FLEXIO2",
+      "value": 54,
+      "description": "Flexible IO 2 interrupt"
+    },
+    {
+      "name": "FlexSPI1",
+      "value": 55,
+      "description": "FlexSPI controller interface interrupt 1"
+    },
+    {
+      "name": "GPIO2_0",
+      "value": 57,
+      "description": "General Purpose Input/Output 2 interrupt 0"
+    },
+    {
+      "name": "GPIO2_1",
+      "value": 58,
+      "description": "General Purpose Input/Output 2 interrupt 1"
+    },
+    {
+      "name": "GPIO3_0",
+      "value": 59,
+      "description": "General Purpose Input/Output 3 interrupt 0"
+    },
+    {
+      "name": "GPIO3_1",
+      "value": 60,
+      "description": "General Purpose Input/Output 3 interrupt 1"
+    },
+    {
+      "name": "I3C2",
+      "value": 61,
+      "description": "Improved Inter-Integrated Circuit 2 interrupt"
+    },
+    {
+      "name": "LPI2C3",
+      "value": 62,
+      "description": "Low Power Inter-Integrated Circuit module 3"
+    },
+    {
+      "name": "LPI2C4",
+      "value": 63,
+      "description": "Low Power Inter-Integrated Circuit module 4"
+    },
+    {
+      "name": "LPIT2",
+      "value": 64,
+      "description": "Low Power Periodic Interrupt Timer 2"
+    },
+    {
+      "name": "LPSPI3",
+      "value": 65,
+      "description": "Low Power Serial Peripheral Interface 3"
+    },
+    {
+      "name": "LPSPI4",
+      "value": 66,
+      "description": "Low Power Serial Peripheral Interface 4"
+    },
+    {
+      "name": "LPTMR2",
+      "value": 67,
+      "description": "Low Power Timer 2"
+    },
+    {
+      "name": "LPUART3",
+      "value": 68,
+      "description": "Low Power UART 3"
+    },
+    {
+      "name": "LPUART4",
+      "value": 69,
+      "description": "Low Power UART 4"
+    },
+    {
+      "name": "LPUART5",
+      "value": 70,
+      "description": "Low Power UART 5"
+    },
+    {
+      "name": "LPUART6",
+      "value": 71,
+      "description": "Low Power UART 6"
+    },
+    {
+      "name": "MTR_MASTER_ERR",
+      "value": 72,
+      "description": "MTR Master error interrupt"
+    },
+    {
+      "name": "BBNSM_NONSECURE",
+      "value": 73,
+      "description": "BBNSM Non-Secure interrupt"
+    },
+    {
+      "name": "SYS_CTR_COMPARE",
+      "value": 74,
+      "description": "System Counter compare interrupt"
+    },
+    {
+      "name": "TPM3",
+      "value": 75,
+      "description": "Timer PWM module 3"
+    },
+    {
+      "name": "TPM4",
+      "value": 76,
+      "description": "Timer PWM module 4"
+    },
+    {
+      "name": "TPM5",
+      "value": 77,
+      "description": "Timer PWM module 5"
+    },
+    {
+      "name": "TPM6",
+      "value": 78,
+      "description": "Timer PWM module 6"
+    },
+    {
+      "name": "WDOG3",
+      "value": 79,
+      "description": "Watchdog 3 Interrupt"
+    },
+    {
+      "name": "WDOG4",
+      "value": 80,
+      "description": "Watchdog 4 Interrupt"
+    },
+    {
+      "name": "WDOG5",
+      "value": 81,
+      "description": "Watchdog 5 Interrupt"
+    },
+    {
+      "name": "TRDC_WAKEUPMIX_ERR",
+      "value": 82,
+      "description": "WAKEUPMIX TRDC transfer error interrupt"
+    },
+    {
+      "name": "TEMPMON",
+      "value": 83,
+      "description": "TempSensor interrupt"
+    },
+    {
+      "name": "uSDHC1",
+      "value": 86,
+      "description": "ultra Secure Digital Host Controller interrupt 1"
+    },
+    {
+      "name": "uSDHC2",
+      "value": 87,
+      "description": "ultra Secure Digital Host Controller interrupt 2"
+    },
+    {
+      "name": "TRDC_MEGAMIX_ERR",
+      "value": 88,
+      "description": "MEGAMIX TRDC transfer error interrupt"
+    },
+    {
+      "name": "TRDC_NIC_WRAPPER_ERR",
+      "value": 89,
+      "description": "NIC_WRAPPER TRDC transfer error interrupt"
+    },
+    {
+      "name": "DRAM_PERFMON",
+      "value": 90,
+      "description": "DRAM controller Performance Monitor Interrupt"
+    },
+    {
+      "name": "DRAM_CRITICAL",
+      "value": 91,
+      "description": "DRAM controller Critical Interrupt"
+    },
+    {
+      "name": "DRAM_PHY_CRITICAL",
+      "value": 92,
+      "description": "DRAM Phy Critical Interrupt"
+    },
+    {
+      "name": "DMA3_ERROR",
+      "value": 94,
+      "description": "eDMA1 error interrupt"
+    },
+    {
+      "name": "DMA3_0",
+      "value": 95,
+      "description": "eDMA1 channel 0 interrupt"
+    },
+    {
+      "name": "DMA3_1",
+      "value": 96,
+      "description": "eDMA1 channel 1 interrupt"
+    },
+    {
+      "name": "DMA3_2",
+      "value": 97,
+      "description": "eDMA1 channel 2 interrupt"
+    },
+    {
+      "name": "DMA3_3",
+      "value": 98,
+      "description": "eDMA1 channel 3 interrupt"
+    },
+    {
+      "name": "DMA3_4",
+      "value": 99,
+      "description": "eDMA1 channel 4 interrupt"
+    },
+    {
+      "name": "DMA3_5",
+      "value": 100,
+      "description": "eDMA1 channel 5 interrupt"
+    },
+    {
+      "name": "DMA3_6",
+      "value": 101,
+      "description": "eDMA1 channel 6 interrupt"
+    },
+    {
+      "name": "DMA3_7",
+      "value": 102,
+      "description": "eDMA1 channel 7 interrupt"
+    },
+    {
+      "name": "DMA3_8",
+      "value": 103,
+      "description": "eDMA1 channel 8 interrupt"
+    },
+    {
+      "name": "DMA3_9",
+      "value": 104,
+      "description": "eDMA1 channel 9 interrupt"
+    },
+    {
+      "name": "DMA3_10",
+      "value": 105,
+      "description": "eDMA1 channel 10 interrupt"
+    },
+    {
+      "name": "DMA3_11",
+      "value": 106,
+      "description": "eDMA1 channel 11 interrupt"
+    },
+    {
+      "name": "DMA3_12",
+      "value": 107,
+      "description": "eDMA1 channel 12 interrupt"
+    },
+    {
+      "name": "DMA3_13",
+      "value": 108,
+      "description": "eDMA1 channel 13 interrupt"
+    },
+    {
+      "name": "DMA3_14",
+      "value": 109,
+      "description": "eDMA1 channel 14 interrupt"
+    },
+    {
+      "name": "DMA3_15",
+      "value": 110,
+      "description": "eDMA1 channel 15 interrupt"
+    },
+    {
+      "name": "DMA3_16",
+      "value": 111,
+      "description": "eDMA1 channel 16 interrupt"
+    },
+    {
+      "name": "DMA3_17",
+      "value": 112,
+      "description": "eDMA1 channel 17 interrupt"
+    },
+    {
+      "name": "DMA3_18",
+      "value": 113,
+      "description": "eDMA1 channel 18 interrupt"
+    },
+    {
+      "name": "DMA3_19",
+      "value": 114,
+      "description": "eDMA1 channel 19 interrupt"
+    },
+    {
+      "name": "DMA3_20",
+      "value": 115,
+      "description": "eDMA1 channel 20 interrupt"
+    },
+    {
+      "name": "DMA3_21",
+      "value": 116,
+      "description": "eDMA1 channel 21 interrupt"
+    },
+    {
+      "name": "DMA3_22",
+      "value": 117,
+      "description": "eDMA1 channel 22 interrupt"
+    },
+    {
+      "name": "DMA3_23",
+      "value": 118,
+      "description": "eDMA1 channel 23 interrupt"
+    },
+    {
+      "name": "DMA3_24",
+      "value": 119,
+      "description": "eDMA1 channel 24 interrupt"
+    },
+    {
+      "name": "DMA3_25",
+      "value": 120,
+      "description": "eDMA1 channel 25 interrupt"
+    },
+    {
+      "name": "DMA3_26",
+      "value": 121,
+      "description": "eDMA1 channel 26 interrupt"
+    },
+    {
+      "name": "DMA3_27",
+      "value": 122,
+      "description": "eDMA1 channel 27 interrupt"
+    },
+    {
+      "name": "DMA3_28",
+      "value": 123,
+      "description": "eDMA1 channel 28 interrupt"
+    },
+    {
+      "name": "DMA3_29",
+      "value": 124,
+      "description": "eDMA1 channel 29 interrupt"
+    },
+    {
+      "name": "DMA3_30",
+      "value": 125,
+      "description": "eDMA1 channel 30 interrupt"
+    },
+    {
+      "name": "DMA4_ERROR",
+      "value": 127,
+      "description": "eDMA2 error interrupt"
+    },
+    {
+      "name": "DMA4_0_1",
+      "value": 128,
+      "description": "eDMA2 channel 0/1 interrupt"
+    },
+    {
+      "name": "DMA4_2_3",
+      "value": 129,
+      "description": "eDMA2 channel 2/3 interrupt"
+    },
+    {
+      "name": "DMA4_4_5",
+      "value": 130,
+      "description": "eDMA2 channel 4/5 interrupt"
+    },
+    {
+      "name": "DMA4_6_7",
+      "value": 131,
+      "description": "eDMA2 channel 6/7 interrupt"
+    },
+    {
+      "name": "DMA4_8_9",
+      "value": 132,
+      "description": "eDMA2 channel 8/9 interrupt"
+    },
+    {
+      "name": "DMA4_10_11",
+      "value": 133,
+      "description": "eDMA2 channel 10/11 interrupt"
+    },
+    {
+      "name": "DMA4_12_13",
+      "value": 134,
+      "description": "eDMA2 channel 12/13 interrupt"
+    },
+    {
+      "name": "DMA4_14_15",
+      "value": 135,
+      "description": "eDMA2 channel 14/15 interrupt"
+    },
+    {
+      "name": "DMA4_16_17",
+      "value": 136,
+      "description": "eDMA2 channel 16/17 interrupt"
+    },
+    {
+      "name": "DMA4_18_19",
+      "value": 137,
+      "description": "eDMA2 channel 18/19 interrupt"
+    },
+    {
+      "name": "DMA4_20_21",
+      "value": 138,
+      "description": "eDMA2 channel 20/21 interrupt"
+    },
+    {
+      "name": "DMA4_22_23",
+      "value": 139,
+      "description": "eDMA2 channel 22/23 interrupt"
+    },
+    {
+      "name": "DMA4_24_25",
+      "value": 140,
+      "description": "eDMA2 channel 24/25 interrupt"
+    },
+    {
+      "name": "DMA4_26_27",
+      "value": 141,
+      "description": "eDMA2 channel 26/27 interrupt"
+    },
+    {
+      "name": "DMA4_28_29",
+      "value": 142,
+      "description": "eDMA2 channel 28/29 interrupt"
+    },
+    {
+      "name": "DMA4_30_31",
+      "value": 143,
+      "description": "eDMA2 channel 30/31 interrupt"
+    },
+    {
+      "name": "DMA4_32_33",
+      "value": 144,
+      "description": "eDMA2 channel 32/33 interrupt"
+    },
+    {
+      "name": "DMA4_34_35",
+      "value": 145,
+      "description": "eDMA2 channel 34/35 interrupt"
+    },
+    {
+      "name": "DMA4_36_37",
+      "value": 146,
+      "description": "eDMA2 channel 36/37 interrupt"
+    },
+    {
+      "name": "DMA4_38_39",
+      "value": 147,
+      "description": "eDMA2 channel 38/39 interrupt"
+    },
+    {
+      "name": "DMA4_40_41",
+      "value": 148,
+      "description": "eDMA2 channel 40/41 interrupt"
+    },
+    {
+      "name": "DMA4_42_43",
+      "value": 149,
+      "description": "eDMA2 channel 42/43 interrupt"
+    },
+    {
+      "name": "DMA4_44_45",
+      "value": 150,
+      "description": "eDMA2 channel 44/45 interrupt"
+    },
+    {
+      "name": "DMA4_46_47",
+      "value": 151,
+      "description": "eDMA2 channel 46/47 interrupt"
+    },
+    {
+      "name": "DMA4_48_49",
+      "value": 152,
+      "description": "eDMA2 channel 48/49 interrupt"
+    },
+    {
+      "name": "DMA4_50_51",
+      "value": 153,
+      "description": "eDMA2 channel 50/51 interrupt"
+    },
+    {
+      "name": "DMA4_52_53",
+      "value": 154,
+      "description": "eDMA2 channel 52/53 interrupt"
+    },
+    {
+      "name": "DMA4_54_55",
+      "value": 155,
+      "description": "eDMA2 channel 54/55 interrupt"
+    },
+    {
+      "name": "DMA4_56_57",
+      "value": 156,
+      "description": "eDMA2 channel 56/57 interrupt"
+    },
+    {
+      "name": "DMA4_58_59",
+      "value": 157,
+      "description": "eDMA2 channel 58/59 interrupt"
+    },
+    {
+      "name": "DMA4_60_61",
+      "value": 158,
+      "description": "eDMA2 channel 60/61 interrupt"
+    },
+    {
+      "name": "DMA4_62_63",
+      "value": 159,
+      "description": "eDMA2 channel 62/63 interrupt"
+    },
+    {
+      "name": "DEBUG_WAKEUP",
+      "value": 160,
+      "description": "Debug Wakeup Interrupt"
+    },
+    {
+      "name": "EDGELOCK_GROUP1_RST_SRC",
+      "value": 161,
+      "description": "Edgelock Group 1 reset source"
+    },
+    {
+      "name": "EDGELOCK_GROUP2_RST_SRC_0",
+      "value": 162,
+      "description": "Edgelock Group 2 reset source"
+    },
+    {
+      "name": "EDGELOCK_GROUP2_RST_SRC_1",
+      "value": 163,
+      "description": "Edgelock Group 2 reset source"
+    },
+    {
+      "name": "DBG_TRACE_RST_SRC",
+      "value": 164,
+      "description": "JTAGSW DAP MDM-AP SRC reset source"
+    },
+    {
+      "name": "JTAGC_RST_SRC",
+      "value": 165,
+      "description": "JTAGC SRC reset source"
+    },
+    {
+      "name": "CM33_SYSREQRST_RST_SRC",
+      "value": 166,
+      "description": "CM33 SYSREQRST SRC reset source"
+    },
+    {
+      "name": "CM33_LOCKUP_RST_SRC",
+      "value": 167,
+      "description": "CM33 LOCKUP SRC reset source"
+    },
+    {
+      "name": "SAI2",
+      "value": 170,
+      "description": "Serial Audio Interface 2"
+    },
+    {
+      "name": "SAI3",
+      "value": 171,
+      "description": "Serial Audio Interface 3"
+    },
+    {
+      "name": "ISI",
+      "value": 172,
+      "description": "ISI interrupt"
+    },
+    {
+      "name": "PXP_0",
+      "value": 173,
+      "description": "PXP interrupt 0"
+    },
+    {
+      "name": "PXP_1",
+      "value": 174,
+      "description": "PXP interrupt 1"
+    },
+    {
+      "name": "CSI",
+      "value": 175,
+      "description": "CSI interrupt"
+    },
+    {
+      "name": "LCDIFv3",
+      "value": 176,
+      "description": "LCDIF Sync Interrupt"
+    },
+    {
+      "name": "DSI",
+      "value": 177,
+      "description": "MIPI DSI Interrupt Request"
+    },
+    {
+      "name": "ML",
+      "value": 178,
+      "description": "Machine learning processor interrupt"
+    },
+    {
+      "name": "ENET_MAC0_Rx_Tx_Done1",
+      "value": 179,
+      "description": "MAC 0 Receive / Trasmit Frame / Buffer Done"
+    },
+    {
+      "name": "ENET_MAC0_Rx_Tx_Done2",
+      "value": 180,
+      "description": "MAC 0 Receive / Trasmit Frame / Buffer Done"
+    },
+    {
+      "name": "ENET",
+      "value": 181,
+      "description": "MAC 0 IRQ"
+    },
+    {
+      "name": "ENET_1588",
+      "value": 182,
+      "description": "MAC 0 1588 Timer Interrupt - synchronous"
+    },
+    {
+      "name": "ENET_QOS_PMT",
+      "value": 183,
+      "description": "ENET QOS PMT interrupt"
+    },
+    {
+      "name": "ENET_QOS",
+      "value": 184,
+      "description": "ENET QOS interrupt"
+    },
+    {
+      "name": "USB1_WAKEUP",
+      "value": 187,
+      "description": "USB-1 Wake-up Interrupt"
+    },
+    {
+      "name": "USB2_WAKEUP",
+      "value": 188,
+      "description": "USB-2 Wake-up Interrupt"
+    },
+    {
+      "name": "GPIO4_0",
+      "value": 189,
+      "description": "General Purpose Input/Output 4 interrupt 0"
+    },
+    {
+      "name": "GPIO4_1",
+      "value": 190,
+      "description": "General Purpose Input/Output 4 interrupt 1"
+    },
+    {
+      "name": "LPSPI5",
+      "value": 191,
+      "description": "Low Power Serial Peripheral Interface 5"
+    },
+    {
+      "name": "LPSPI6",
+      "value": 192,
+      "description": "Low Power Serial Peripheral Interface 6"
+    },
+    {
+      "name": "LPSPI7",
+      "value": 193,
+      "description": "Low Power Serial Peripheral Interface 7"
+    },
+    {
+      "name": "LPSPI8",
+      "value": 194,
+      "description": "Low Power Serial Peripheral Interface 8"
+    },
+    {
+      "name": "LPI2C5",
+      "value": 195,
+      "description": "Low Power Inter-Integrated Circuit module 5"
+    },
+    {
+      "name": "LPI2C6",
+      "value": 196,
+      "description": "Low Power Inter-Integrated Circuit module 6"
+    },
+    {
+      "name": "LPI2C7",
+      "value": 197,
+      "description": "Low Power Inter-Integrated Circuit module 7"
+    },
+    {
+      "name": "LPI2C8",
+      "value": 198,
+      "description": "Low Power Inter-Integrated Circuit module 8"
+    },
+    {
+      "name": "PDM_HWVAD_ERROR",
+      "value": 199,
+      "description": "PDM interrupt"
+    },
+    {
+      "name": "PDM_HWVAD_EVENT",
+      "value": 200,
+      "description": "PDM interrupt"
+    },
+    {
+      "name": "PDM_ERROR",
+      "value": 201,
+      "description": "PDM interrupt"
+    },
+    {
+      "name": "PDM_EVENT",
+      "value": 202,
+      "description": "PDM interrupt"
+    },
+    {
+      "name": "AUDIO_XCVR_0",
+      "value": 203,
+      "description": "AUDIO XCVR interrupt"
+    },
+    {
+      "name": "AUDIO_XCVR_1",
+      "value": 204,
+      "description": "AUDIO XCVR interrupt"
+    },
+    {
+      "name": "uSDHC3",
+      "value": 205,
+      "description": "ultra Secure Digital Host Controller interrupt 3"
+    },
+    {
+      "name": "OCRAM_MECC_0",
+      "value": 206,
+      "description": "OCRAM MECC interrupt"
+    },
+    {
+      "name": "OCRAM_MECC_1",
+      "value": 207,
+      "description": "OCRAM MECC interrupt"
+    },
+    {
+      "name": "TRDC_HSIOMIX_ERR",
+      "value": 208,
+      "description": "HSIOMIX TRDC transfer error interrupt"
+    },
+    {
+      "name": "TRDC_MEDIAMIX_ERR",
+      "value": 209,
+      "description": "MEDIAMIX TRDC transfer error interrupt"
+    },
+    {
+      "name": "LPUART7",
+      "value": 210,
+      "description": "Low Power UART 7"
+    },
+    {
+      "name": "LPUART8",
+      "value": 211,
+      "description": "Low Power UART 8"
+    },
+    {
+      "name": "CM33_MCM",
+      "value": 212,
+      "description": "CM33 MCM interrupt"
+    },
+    {
+      "name": "SFA",
+      "value": 213,
+      "description": "SFA interrupt"
+    },
+    {
+      "name": "GIC600_0",
+      "value": 214,
+      "description": "GIC600 INTERRUPT"
+    },
+    {
+      "name": "GIC600_1",
+      "value": 215,
+      "description": "GIC600 INTERRUPT"
+    },
+    {
+      "name": "GIC600_2",
+      "value": 216,
+      "description": "GIC600 INTERRUPT"
+    },
+    {
+      "name": "ADC_ER",
+      "value": 217,
+      "description": "ADC interrupt"
+    },
+    {
+      "name": "ADC_WD",
+      "value": 218,
+      "description": "ADC interrupt"
+    },
+    {
+      "name": "ADC_EOC",
+      "value": 219,
+      "description": "ADC interrupt"
+    },
+    {
+      "name": "I3C1_WAKEUP",
+      "value": 221,
+      "description": "I3C1 wakeup irq after double sync"
+    },
+    {
+      "name": "I3C2_WAKEUP",
+      "value": 222,
+      "description": "I3C2 wakeup irq after double sync"
+    }
+  ],
+  "peripherals": [
+    {
+      "name": "ADC1",
+      "base_address": "0x44530000",
+      "block": "adc/ADC"
+    },
+    {
+      "name": "AHBRM1",
+      "base_address": "0x005e0000",
+      "block": "wakeup_ahbrm/WAKEUP_AHBRM"
+    },
+    {
+      "name": "ANA_OSC",
+      "base_address": "0x44480000",
+      "block": "ana_osc/ANA_OSC"
+    },
+    {
+      "name": "ARMPLL",
+      "base_address": "0x44481000",
+      "block": "pll/PLL"
+    },
+    {
+      "name": "AUDIOPLL",
+      "base_address": "0x44481200",
+      "block": "pll/PLL"
+    },
+    {
+      "name": "AXBS",
+      "base_address": "0x44510000",
+      "block": "axbs/AXBS"
+    },
+    {
+      "name": "BBNSM",
+      "base_address": "0x44440000",
+      "block": "bbnsm/BBNSM"
+    },
+    {
+      "name": "BLK_CTRL_AONMIX",
+      "base_address": "0x44210000",
+      "block": "blk_ctrl_ns_aonmix/BLK_CTRL_NS_AONMIX"
+    },
+    {
+      "name": "BLK_CTRL_DDRMIX",
+      "base_address": "0x4e010000",
+      "block": "ddrmix_blk_ctrl/DDRMIX_BLK_CTRL"
+    },
+    {
+      "name": "BLK_CTRL_MEDIAMIX",
+      "base_address": "0x4ac10000",
+      "block": "mediamix_blk_ctrl/MEDIAMIX_BLK_CTRL"
+    },
+    {
+      "name": "BLK_CTRL_MLMIX",
+      "base_address": "0x4a810000",
+      "block": "blk_ctrl_mlmix/BLK_CTRL_MLMIX"
+    },
+    {
+      "name": "BLK_CTRL_NIC_WRAPPER1",
+      "base_address": "0x49000000",
+      "block": "blk_ctrl_nicmix/BLK_CTRL_NICMIX"
+    },
+    {
+      "name": "BLK_CTRL_S_AONMIX",
+      "base_address": "0x444f0000",
+      "block": "blk_ctrl_s_aonmix/BLK_CTRL_S_AONMIX"
+    },
+    {
+      "name": "BLK_CTRL_WAKEUPMIX",
+      "base_address": "0x42420000",
+      "block": "blk_ctrl_wakeupmix/BLK_CTRL_WAKEUPMIX"
+    },
+    {
+      "name": "CAN1",
+      "base_address": "0x443a0000",
+      "block": "can/CAN"
+    },
+    {
+      "name": "CAN2",
+      "base_address": "0x425b0000",
+      "block": "can/CAN"
+    },
+    {
+      "name": "CCM_CTRL",
+      "base_address": "0x44450000",
+      "block": "ccm/CCM"
+    },
+    {
+      "name": "CM33_CACHE_ECC_MCM",
+      "base_address": "0x44401000",
+      "block": "cache_ecc_mcm/CACHE_ECC_MCM"
+    },
+    {
+      "name": "CM33_TCM_MCM",
+      "base_address": "0x44420000",
+      "block": "tcm_ecc_mcm/TCM_ECC_MCM"
+    },
+    {
+      "name": "DDR_CTRL",
+      "base_address": "0x4e300000",
+      "block": "ddrc/DDRC"
+    },
+    {
+      "name": "DMA3",
+      "base_address": "0x44000000",
+      "block": "dma/DMA"
+    },
+    {
+      "name": "DMA4",
+      "base_address": "0x42000000",
+      "block": "dma4/DMA4"
+    },
+    {
+      "name": "DRAMPLL",
+      "base_address": "0x44481300",
+      "block": "pll/PLL"
+    },
+    {
+      "name": "ENET",
+      "base_address": "0x42890000",
+      "block": "enet/ENET"
+    },
+    {
+      "name": "ENET_QOS",
+      "base_address": "0x428a0000",
+      "block": "enet_qos/ENET_QOS"
+    },
+    {
+      "name": "FLEXIO1",
+      "base_address": "0x425c0000",
+      "block": "flexio/FLEXIO"
+    },
+    {
+      "name": "FLEXIO2",
+      "base_address": "0x425d0000",
+      "block": "flexio/FLEXIO"
+    },
+    {
+      "name": "FLEXSPI",
+      "base_address": "0x425e0000",
+      "block": "flexspi/FLEXSPI"
+    },
+    {
+      "name": "FLEXSPI_OTFAD1",
+      "base_address": "0x425e0000",
+      "block": "otfad/OTFAD"
+    },
+    {
+      "name": "FSB1",
+      "base_address": "0x47510000",
+      "block": "fsb/FSB"
+    },
+    {
+      "name": "GPC_CTRL_CA55_0",
+      "base_address": "0x44470800",
+      "block": "gpc_cpu_ctrl/GPC_CPU_CTRL"
+    },
+    {
+      "name": "GPC_CTRL_CA55_1",
+      "base_address": "0x44471000",
+      "block": "gpc_cpu_ctrl/GPC_CPU_CTRL"
+    },
+    {
+      "name": "GPC_CTRL_CA55_CLUSTER",
+      "base_address": "0x44471800",
+      "block": "gpc_cpu_ctrl/GPC_CPU_CTRL"
+    },
+    {
+      "name": "GPC_CTRL_CM33",
+      "base_address": "0x44470000",
+      "block": "gpc_cpu_ctrl/GPC_CPU_CTRL"
+    },
+    {
+      "name": "GPC_GLOBAL",
+      "base_address": "0x44474000",
+      "block": "gpc_global/GPC_GLOBAL"
+    },
+    {
+      "name": "GPIO1",
+      "base_address": "0x47400000",
+      "block": "rgpio/RGPIO"
+    },
+    {
+      "name": "GPIO2",
+      "base_address": "0x43810000",
+      "block": "rgpio/RGPIO"
+    },
+    {
+      "name": "GPIO3",
+      "base_address": "0x43820000",
+      "block": "rgpio/RGPIO"
+    },
+    {
+      "name": "GPIO4",
+      "base_address": "0x43830000",
+      "block": "rgpio/RGPIO"
+    },
+    {
+      "name": "I3C1",
+      "base_address": "0x44330000",
+      "block": "i3c/I3C"
+    },
+    {
+      "name": "I3C2",
+      "base_address": "0x42520000",
+      "block": "i3c/I3C"
+    },
+    {
+      "name": "IOMUXC1",
+      "base_address": "0x443c0000",
+      "block": "iomuxc1/IOMUXC1"
+    },
+    {
+      "name": "IOMUXC_GPR",
+      "base_address": "0x443c0000",
+      "block": "iomuxc_gpr/IOMUXC_GPR"
+    },
+    {
+      "name": "ISI",
+      "base_address": "0x4ae40000",
+      "block": "isi/ISI"
+    },
+    {
+      "name": "LCDIF",
+      "base_address": "0x4ae30000",
+      "block": "lcdif/LCDIF"
+    },
+    {
+      "name": "LPCAC_PC",
+      "base_address": "0x44400000",
+      "block": "xcache/XCACHE"
+    },
+    {
+      "name": "LPCAC_PS",
+      "base_address": "0x44400800",
+      "block": "xcache/XCACHE"
+    },
+    {
+      "name": "LPI2C1",
+      "base_address": "0x44340000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPI2C2",
+      "base_address": "0x44350000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPI2C3",
+      "base_address": "0x42530000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPI2C4",
+      "base_address": "0x42540000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPI2C5",
+      "base_address": "0x426b0000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPI2C6",
+      "base_address": "0x426c0000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPI2C7",
+      "base_address": "0x426d0000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPI2C8",
+      "base_address": "0x426e0000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPIT1",
+      "base_address": "0x442f0000",
+      "block": "lpit/LPIT"
+    },
+    {
+      "name": "LPIT2",
+      "base_address": "0x424c0000",
+      "block": "lpit/LPIT"
+    },
+    {
+      "name": "LPSPI1",
+      "base_address": "0x44360000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPSPI2",
+      "base_address": "0x44370000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPSPI3",
+      "base_address": "0x42550000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPSPI4",
+      "base_address": "0x42560000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPSPI5",
+      "base_address": "0x426f0000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPSPI6",
+      "base_address": "0x42700000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPSPI7",
+      "base_address": "0x42710000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPSPI8",
+      "base_address": "0x42720000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPTMR1",
+      "base_address": "0x44300000",
+      "block": "lptmr/LPTMR"
+    },
+    {
+      "name": "LPTMR2",
+      "base_address": "0x424d0000",
+      "block": "lptmr/LPTMR"
+    },
+    {
+      "name": "LPUART1",
+      "base_address": "0x44380000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LPUART2",
+      "base_address": "0x44390000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LPUART3",
+      "base_address": "0x42570000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LPUART4",
+      "base_address": "0x42580000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LPUART5",
+      "base_address": "0x42590000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LPUART6",
+      "base_address": "0x425a0000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LPUART7",
+      "base_address": "0x42690000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LPUART8",
+      "base_address": "0x426a0000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "M33_PCF1",
+      "base_address": "0x443e0000",
+      "block": "syspm/SYSPM"
+    },
+    {
+      "name": "M33_PSF1",
+      "base_address": "0x443f0000",
+      "block": "syspm/SYSPM"
+    },
+    {
+      "name": "MIPI_CSI_CSR",
+      "base_address": "0x4ae00000",
+      "block": "mipi_csi/MIPI_CSI"
+    },
+    {
+      "name": "MIPI_DSI",
+      "base_address": "0x4ae10000",
+      "block": "mipi_dsi/MIPI_DSI"
+    },
+    {
+      "name": "MU1_MUA",
+      "base_address": "0x44220000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "MU2_MUA",
+      "base_address": "0x42430000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "MU_APPS__S3MUA",
+      "base_address": "0x47520000",
+      "block": "s3mu/S3MU"
+    },
+    {
+      "name": "MU_RT__S3MUA",
+      "base_address": "0x47540000",
+      "block": "s3mu/S3MU"
+    },
+    {
+      "name": "NPU",
+      "base_address": "0x4a900000",
+      "block": "npu/NPU"
+    },
+    {
+      "name": "OCRAM_MECC1",
+      "base_address": "0x490a0000",
+      "block": "ocram_mecc/OCRAM_MECC"
+    },
+    {
+      "name": "PDM",
+      "base_address": "0x44520000",
+      "block": "pdm/PDM"
+    },
+    {
+      "name": "PPB_MCM2_CM4",
+      "base_address": "0xe0080000",
+      "block": "mcm/MCM"
+    },
+    {
+      "name": "PXP",
+      "base_address": "0x4ae20000",
+      "block": "pxp/PXP"
+    },
+    {
+      "name": "SAI1",
+      "base_address": "0x443b0000",
+      "block": "i2s/I2S"
+    },
+    {
+      "name": "SAI2",
+      "base_address": "0x42650000",
+      "block": "i2s/I2S"
+    },
+    {
+      "name": "SAI3",
+      "base_address": "0x42660000",
+      "block": "i2s/I2S"
+    },
+    {
+      "name": "SEMA42_1",
+      "base_address": "0x44260000",
+      "block": "sema42/SEMA42"
+    },
+    {
+      "name": "SEMA42_2",
+      "base_address": "0x42450000",
+      "block": "sema42/SEMA42"
+    },
+    {
+      "name": "SPDIF",
+      "base_address": "0x42680000",
+      "block": "spdif/SPDIF"
+    },
+    {
+      "name": "SRC_A55C0_MEM",
+      "base_address": "0x44465c00",
+      "block": "src_mem_slice/SRC_MEM_SLICE"
+    },
+    {
+      "name": "SRC_A55C0_SLICE",
+      "base_address": "0x44462c00",
+      "block": "src_mix_slice/SRC_MIX_SLICE"
+    },
+    {
+      "name": "SRC_A55C1_MEM",
+      "base_address": "0x44466000",
+      "block": "src_mem_slice/SRC_MEM_SLICE"
+    },
+    {
+      "name": "SRC_A55C1_SLICE",
+      "base_address": "0x44463000",
+      "block": "src_mix_slice/SRC_MIX_SLICE"
+    },
+    {
+      "name": "SRC_A55P_SLICE",
+      "base_address": "0x44463400",
+      "block": "src_mix_slice/SRC_MIX_SLICE"
+    },
+    {
+      "name": "SRC_A55_L3_MEM",
+      "base_address": "0x44466800",
+      "block": "src_mem_slice/SRC_MEM_SLICE"
+    },
+    {
+      "name": "SRC_A55_SCU_MEM",
+      "base_address": "0x44466400",
+      "block": "src_mem_slice/SRC_MEM_SLICE"
+    },
+    {
+      "name": "SRC_AON_MEM",
+      "base_address": "0x44463800",
+      "block": "src_mem_slice/SRC_MEM_SLICE"
+    },
+    {
+      "name": "SRC_AON_SLICE",
+      "base_address": "0x44460800",
+      "block": "src_mix_slice/SRC_MIX_SLICE"
+    },
+    {
+      "name": "SRC_DDR_MEM",
+      "base_address": "0x44464000",
+      "block": "src_mem_slice/SRC_MEM_SLICE"
+    },
+    {
+      "name": "SRC_DDR_SLICE",
+      "base_address": "0x44461000",
+      "block": "src_mix_slice/SRC_MIX_SLICE"
+    },
+    {
+      "name": "SRC_DPHY_MEM",
+      "base_address": "0x44464400",
+      "block": "src_mem_slice/SRC_MEM_SLICE"
+    },
+    {
+      "name": "SRC_DPHY_SLICE",
+      "base_address": "0x44461400",
+      "block": "src_mix_slice/SRC_MIX_SLICE"
+    },
+    {
+      "name": "SRC_EDGELOCK_SLICE",
+      "base_address": "0x44460400",
+      "block": "src_mix_slice/SRC_MIX_SLICE"
+    },
+    {
+      "name": "SRC_GENERAL_REG",
+      "base_address": "0x44460000",
+      "block": "src_general_reg/SRC_GENERAL_REG"
+    },
+    {
+      "name": "SRC_HSIO_MEM",
+      "base_address": "0x44465400",
+      "block": "src_mem_slice/SRC_MEM_SLICE"
+    },
+    {
+      "name": "SRC_HSIO_SLICE",
+      "base_address": "0x44462000",
+      "block": "src_mix_slice/SRC_MIX_SLICE"
+    },
+    {
+      "name": "SRC_M33P_SLICE",
+      "base_address": "0x44462800",
+      "block": "src_mix_slice/SRC_MIX_SLICE"
+    },
+    {
+      "name": "SRC_MEDIA_MEM",
+      "base_address": "0x44465800",
+      "block": "src_mem_slice/SRC_MEM_SLICE"
+    },
+    {
+      "name": "SRC_MEDIA_SLICE",
+      "base_address": "0x44462400",
+      "block": "src_mix_slice/SRC_MIX_SLICE"
+    },
+    {
+      "name": "SRC_ML_MEM",
+      "base_address": "0x44464800",
+      "block": "src_mem_slice/SRC_MEM_SLICE"
+    },
+    {
+      "name": "SRC_ML_SLICE",
+      "base_address": "0x44461800",
+      "block": "src_mix_slice/SRC_MIX_SLICE"
+    },
+    {
+      "name": "SRC_NIC_MEM",
+      "base_address": "0x44464c00",
+      "block": "src_mem_slice/SRC_MEM_SLICE"
+    },
+    {
+      "name": "SRC_NIC_OCRAM",
+      "base_address": "0x44465000",
+      "block": "src_mem_slice/SRC_MEM_SLICE"
+    },
+    {
+      "name": "SRC_NIC_SLICE",
+      "base_address": "0x44461c00",
+      "block": "src_mix_slice/SRC_MIX_SLICE"
+    },
+    {
+      "name": "SRC_WKUP_MEM",
+      "base_address": "0x44463c00",
+      "block": "src_mem_slice/SRC_MEM_SLICE"
+    },
+    {
+      "name": "SRC_WKUP_SLICE",
+      "base_address": "0x44460c00",
+      "block": "src_mix_slice/SRC_MIX_SLICE"
+    },
+    {
+      "name": "SYSPLL",
+      "base_address": "0x44481100",
+      "block": "pll/PLL"
+    },
+    {
+      "name": "SYS_CTR_COMPARE",
+      "base_address": "0x442a0000",
+      "block": "sys_ctr_compare/SYS_CTR_COMPARE"
+    },
+    {
+      "name": "SYS_CTR_CONTROL",
+      "base_address": "0x44290000",
+      "block": "sys_ctr_control/SYS_CTR_CONTROL"
+    },
+    {
+      "name": "SYS_CTR_READ",
+      "base_address": "0x442b0000",
+      "block": "sys_ctr_read/SYS_CTR_READ"
+    },
+    {
+      "name": "TMU",
+      "base_address": "0x44482000",
+      "block": "tmu/TMU"
+    },
+    {
+      "name": "TPM1",
+      "base_address": "0x44310000",
+      "block": "tpm/TPM"
+    },
+    {
+      "name": "TPM2",
+      "base_address": "0x44320000",
+      "block": "tpm/TPM"
+    },
+    {
+      "name": "TPM3",
+      "base_address": "0x424e0000",
+      "block": "tpm/TPM"
+    },
+    {
+      "name": "TPM4",
+      "base_address": "0x424f0000",
+      "block": "tpm/TPM"
+    },
+    {
+      "name": "TPM5",
+      "base_address": "0x42500000",
+      "block": "tpm/TPM"
+    },
+    {
+      "name": "TPM6",
+      "base_address": "0x42510000",
+      "block": "tpm/TPM"
+    },
+    {
+      "name": "TRDC1",
+      "base_address": "0x44270000",
+      "block": "trdc_mbc2/TRDC_MBC2"
+    },
+    {
+      "name": "TRDC2",
+      "base_address": "0x42460000",
+      "block": "trdc_mbc2/TRDC_MBC2"
+    },
+    {
+      "name": "TRDC3",
+      "base_address": "0x42810000",
+      "block": "trdc_mbc0/TRDC_MBC0"
+    },
+    {
+      "name": "TRDC4",
+      "base_address": "0x49010000",
+      "block": "trdc_mbc4/TRDC_MBC4"
+    },
+    {
+      "name": "TRDC5",
+      "base_address": "0x4ac30000",
+      "block": "trdc_mbc0/TRDC_MBC0"
+    },
+    {
+      "name": "TRDC6",
+      "base_address": "0x4c030000",
+      "block": "trdc_mbc0/TRDC_MBC0"
+    },
+    {
+      "name": "TRGMUX",
+      "base_address": "0x44531000",
+      "block": "trgmux/TRGMUX"
+    },
+    {
+      "name": "TSTMR1__TSTMRA",
+      "base_address": "0x442c0000",
+      "block": "tstmr/TSTMR"
+    },
+    {
+      "name": "TSTMR2__TSTMRA",
+      "base_address": "0x42480000",
+      "block": "tstmr/TSTMR"
+    },
+    {
+      "name": "USB__USBNC_OTG1",
+      "base_address": "0x4c100200",
+      "block": "usbnc/USBNC"
+    },
+    {
+      "name": "USB__USBNC_OTG2",
+      "base_address": "0x4c200200",
+      "block": "usbnc/USBNC"
+    },
+    {
+      "name": "USB__USB_OTG1",
+      "base_address": "0x4c100000",
+      "block": "usb/USB"
+    },
+    {
+      "name": "USB__USB_OTG2",
+      "base_address": "0x4c200000",
+      "block": "usb/USB"
+    },
+    {
+      "name": "USDHC1",
+      "base_address": "0x42850000",
+      "block": "usdhc/USDHC"
+    },
+    {
+      "name": "USDHC2",
+      "base_address": "0x42860000",
+      "block": "usdhc/USDHC"
+    },
+    {
+      "name": "USDHC3",
+      "base_address": "0x428b0000",
+      "block": "usdhc/USDHC"
+    },
+    {
+      "name": "VIDEOPLL",
+      "base_address": "0x44481400",
+      "block": "pll/PLL"
+    },
+    {
+      "name": "WDOG1",
+      "base_address": "0x442d0000",
+      "block": "wdog/WDOG"
+    },
+    {
+      "name": "WDOG2",
+      "base_address": "0x442e0000",
+      "block": "wdog/WDOG"
+    },
+    {
+      "name": "WDOG3",
+      "base_address": "0x42490000",
+      "block": "wdog/WDOG"
+    },
+    {
+      "name": "WDOG4",
+      "base_address": "0x424a0000",
+      "block": "wdog/WDOG"
+    },
+    {
+      "name": "WDOG5",
+      "base_address": "0x424b0000",
+      "block": "wdog/WDOG"
+    }
+  ]
+}

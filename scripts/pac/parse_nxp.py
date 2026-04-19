@@ -1,0 +1,462 @@
+#!/usr/bin/env python3
+"""Parse NXP MCUX CMSIS headers into chiptool IR YAML and chip JSON."""
+
+import re
+import sys
+from pathlib import Path
+from typing import Dict, List, Any, Optional, Tuple
+import argparse
+
+from common import (
+    safe_hex_to_int, evaluate_expr, popcount, calc_bit_size_from_mask,
+    write_yaml, write_json, extract_description, strip_suffix
+)
+
+
+DATA_DIR = Path(__file__).parent.parent / "data"
+OUTPUT_DIR = Path(__file__).parent.parent / "output"
+
+FAMILY_REPRESENTATIVES = {
+    'imx93_cm33': ('MIMX9352_cm33', 'MIMX9352_cm33_COMMON.h'),
+    'imx95_cm7': ('MIMX9596_cm7', 'MIMX9596_cm7_COMMON.h'),
+}
+
+
+class NXPPeripheralParser:
+    """Parse a single PERI_*.h file for register definitions."""
+
+    def __init__(self, peri_header_path: Path):
+        self.peri_header_path = peri_header_path
+        with open(peri_header_path) as f:
+            self.content = f.read()
+
+        # Extract peripheral name from filename (PERI_LPUART.h → LPUART)
+        match = re.search(r'PERI_(\w+)\.h', peri_header_path.name)
+        self.peripheral_name = match.group(1) if match else "UNKNOWN"
+
+        self.block_name = self.peripheral_name
+        self.block_data: Dict[str, Any] = {'description': '', 'items': []}
+        self.fieldsets: Dict[str, Dict[str, Any]] = {}
+
+    def parse_array_counts(self) -> Dict[str, int]:
+        """Extract #define FOO_COUNT N declarations."""
+        counts = {}
+        for match in re.finditer(r'#define\s+(\w+)\s+(\d+)u?', self.content):
+            name = match.group(1)
+            count = int(match.group(2))
+            counts[name] = count
+        return counts
+
+    def parse_struct(self):
+        """Extract typedef struct definition."""
+        # Find struct matching Type suffix
+        pattern = rf'typedef\s+struct\s*\{{(.*?)\}}\s*(\w+_Type)\s*;'
+        match = re.search(pattern, self.content, re.DOTALL)
+        if not match:
+            return
+
+        struct_body = match.group(1)
+        struct_name = match.group(2)
+
+        # Verify struct name matches peripheral
+        if self.peripheral_name not in struct_name:
+            return
+
+        array_counts = self.parse_array_counts()
+        current_offset = 0
+
+        for line in struct_body.split('\n'):
+            line_stripped = line.strip()
+            if not line_stripped or line_stripped.startswith('/*') or line_stripped.startswith('//'):
+                continue
+
+            # Parse field: __IO uint32_t NAME; or uint8_t RESERVED[N];
+            # Pattern: [__IO|__I|__O]? type NAME[array]; /*!< ... */
+
+            field_match = re.match(
+                r'(__IO|__I|__O)?\s*(uint8_t|uint16_t|uint32_t|uint64_t)\s+(\w+)(?:\[(\w+)\])?\s*;',
+                line_stripped
+            )
+            if not field_match:
+                continue
+
+            qualifier = field_match.group(1) or ''
+            field_type = field_match.group(2)
+            field_name = field_match.group(3)
+            array_name = field_match.group(4)
+
+            # Skip reserved fields
+            if field_name.startswith('RESERVED'):
+                # Track gap
+                type_size = {'uint8_t': 1, 'uint16_t': 2, 'uint32_t': 4, 'uint64_t': 8}[field_type]
+                if array_name:
+                    array_len = array_counts.get(array_name, 0)
+                    current_offset += array_len * type_size
+                else:
+                    current_offset += type_size
+                continue
+
+            # Determine access
+            if qualifier == '__IO':
+                access = 'read-write'
+            elif qualifier == '__I':
+                access = 'read-only'
+            elif qualifier == '__O':
+                access = 'write-only'
+            else:
+                continue
+
+            # Extract byte offset from comment
+            byte_offset = current_offset
+            offset_match = re.search(r'offset:\s*0x([0-9a-fA-F]+)', line)
+            if offset_match:
+                byte_offset = int(offset_match.group(1), 16)
+                current_offset = byte_offset
+
+            description = extract_description(line)
+
+            item: Dict[str, Any] = {
+                'name': field_name,
+                'byte_offset': byte_offset,
+            }
+
+            # Handle arrays
+            if array_name:
+                array_len = array_counts.get(array_name, 0)
+                if array_len > 0:
+                    type_size = {'uint8_t': 1, 'uint16_t': 2, 'uint32_t': 4, 'uint64_t': 8}[field_type]
+                    item['array'] = {
+                        'len': array_len,
+                        'stride': type_size,
+                    }
+                    current_offset = byte_offset + array_len * type_size
+            else:
+                type_size = {'uint8_t': 1, 'uint16_t': 2, 'uint32_t': 4, 'uint64_t': 8}[field_type]
+                current_offset = byte_offset + type_size
+
+            if description:
+                item['description'] = description
+
+            self.block_data['items'].append(item)
+
+    def parse_bitfield_macros(self):
+        """Extract MASK and SHIFT defines for bitfields."""
+        # NXP uses _MASK and _SHIFT naming
+        mask_defs: Dict[str, int] = {}
+        shift_defs: Dict[str, int] = {}
+        descriptions: Dict[str, str] = {}
+
+        # Find all _MASK defines
+        for match in re.finditer(r'#define\s+(\w+)_MASK\s+\((0x[0-9a-fA-F]+)U?\)', self.content):
+            name = match.group(1)
+            mask_val = safe_hex_to_int(match.group(2))
+            if mask_val is not None:
+                mask_defs[name] = mask_val
+
+                # Extract description from preceding comment
+                line_start = self.content.rfind('\n', 0, match.start()) + 1
+                line_end = match.end()
+                context = self.content[max(0, line_start - 200):line_end + 100]
+
+                # Look for /*! FIELDNAME - description */ comment
+                desc_match = re.search(r'/\*!\s*(\w+)\s*-\s*(.*?)\s*\*/', context)
+                if desc_match:
+                    descriptions[name] = desc_match.group(2).strip()
+                else:
+                    descriptions[name] = ""
+
+        # Find all _SHIFT defines
+        for match in re.finditer(r'#define\s+(\w+)_SHIFT\s+\((\d+)U?\)', self.content):
+            name = match.group(1)
+            shift_val = int(match.group(2))
+            shift_defs[name] = shift_val
+
+        # Group by register (PERIPH_REG)
+        fieldsets_dict: Dict[str, List[Dict[str, Any]]] = {}
+
+        for field_name, mask_val in mask_defs.items():
+            if field_name not in shift_defs:
+                continue
+
+            bit_offset = shift_defs[field_name]
+            description = descriptions.get(field_name, '')
+
+            # Extract register name (PERIPH_REG_FIELD → PERIPH_REG)
+            parts = field_name.rsplit('_', 1)
+            if len(parts) != 2:
+                continue
+
+            reg_name = parts[0]
+            field_short = parts[1]
+
+            # Skip purely numeric field names (array indices, not real fields)
+            if field_short.isdigit():
+                continue
+
+            if reg_name not in fieldsets_dict:
+                fieldsets_dict[reg_name] = []
+
+            # NXP masks are pre-shifted; unshift before calculating bit size
+            unshifted_mask = mask_val >> bit_offset
+            bit_size = calc_bit_size_from_mask(unshifted_mask)
+
+            field: Dict[str, Any] = {
+                'name': field_short,
+                'bit_offset': bit_offset,
+                'bit_size': bit_size,
+            }
+
+            if description:
+                field['description'] = description
+
+            fieldsets_dict[reg_name].append(field)
+
+        # Convert to fieldsets
+        for reg_name, fields in fieldsets_dict.items():
+            # reg_name already includes block name (e.g., LPUART_VERID)
+            # so use it directly
+            self.fieldsets[reg_name] = {
+                'description': '',
+                'fields': fields,
+            }
+
+    def parse(self):
+        """Parse the peripheral file."""
+        self.parse_struct()
+        self.parse_bitfield_macros()
+
+    def emit_yaml(self):
+        """Write YAML output."""
+        if not self.block_data['items']:
+            return
+
+        # Link fieldsets to items
+        for item in self.block_data['items']:
+            reg_name = item['name']
+            # Fieldsets are named BLOCKNAME_REGNAME
+            fieldset_name = f'{self.block_name}_{reg_name}'
+            # Check both with and without block name prefix since NXP stores them as BLOCKNAME_REGNAME
+            if fieldset_name in self.fieldsets:
+                item['fieldset'] = fieldset_name
+
+        data = {f'block/{self.block_name}': self.block_data}
+        # fieldsets are already named BLOCKNAME_REGNAME, so add them with fieldset/ prefix
+        data.update({f'fieldset/{name}': fs for name, fs in self.fieldsets.items()})
+
+        yaml_path = OUTPUT_DIR / 'registers' / 'imx93' / f'{self.block_name.lower()}_v1.yaml'
+        write_yaml(data, yaml_path)
+        print(f"Wrote {yaml_path}")
+
+
+class NXPCommonParser:
+    """Parse *_COMMON.h file for IRQs and base addresses."""
+
+    def __init__(self, common_header_path: Path):
+        self.common_header_path = common_header_path
+        with open(common_header_path) as f:
+            self.content = f.read()
+
+        self.irqs: List[Dict[str, Any]] = []
+        self.instances: Dict[str, Tuple[str, int]] = {}  # name → (type, address)
+
+    def parse_irq_enum(self):
+        """Extract IRQ enum."""
+        # Find enum block
+        match = re.search(r'typedef\s+enum\s+IRQn\s*\{(.*?)\}\s*(?:IRQn_Type|IRQn)\s*;', self.content, re.DOTALL)
+        if not match:
+            return
+
+        enum_body = match.group(1)
+
+        for line in enum_body.split('\n'):
+            line = line.strip()
+            if not line or line.startswith('/*'):
+                continue
+
+            # Match: NAME_IRQn = VALUE, /*!< description */
+            entry_match = re.match(r'(\w+_IRQn)\s*=\s*(-?\d+)\s*,?\s*(?:/\*\*<?\s*(.*?)\s*\*/)?', line)
+            if not entry_match:
+                continue
+
+            name_with_suffix = entry_match.group(1)
+            value = int(entry_match.group(2))
+            description = entry_match.group(3) or ""
+
+            # Skip auxiliary constants and reserved entries
+            if 'NotAvail' in name_with_suffix or 'RESERVED' in name_with_suffix.upper():
+                continue
+
+            # Skip negative values (ARM core exceptions)
+            if value < 0:
+                continue
+
+            name = strip_suffix(name_with_suffix, '_IRQn')
+            self.irqs.append({
+                'name': name,
+                'value': value,
+                'description': description.strip(),
+            })
+
+    def parse_base_addresses(self):
+        """Extract base addresses and instance casts."""
+        # Find _BASE and _BASE_NS defines
+        bases: Dict[str, int] = {}
+
+        for match in re.finditer(r'#define\s+(\w+_BASE(?:_NS)?)\s+\((0x[0-9a-fA-F]+)u?\)', self.content):
+            name = match.group(1)
+            addr = safe_hex_to_int(match.group(2))
+            if addr is not None:
+                bases[name] = addr
+
+        # Find instance casts: NAME or NAME_NS -> (TYPE_Type *) BASE
+        for match in re.finditer(r'#define\s+(\w+)(?:_NS)?\s+\(\((\w+)_Type\s*\*\)\s*(\w+_BASE(?:_NS)?)\)', self.content):
+            instance_name = match.group(1)
+            block_type = match.group(2)
+            base_macro = match.group(3)
+
+            # Resolve base address - try _NS variant first, then fallback to non-NS
+            base_addr = None
+            if base_macro in bases:
+                base_addr = bases[base_macro]
+            elif base_macro.endswith('_NS'):
+                # Try without _NS suffix
+                base_no_ns = base_macro[:-3]  # Remove _NS
+                if f'{base_no_ns}_BASE_NS' in bases:
+                    base_addr = bases[f'{base_no_ns}_BASE_NS']
+                elif f'{base_no_ns}_BASE' in bases:
+                    base_addr = bases[f'{base_no_ns}_BASE']
+            else:
+                # Try with _NS suffix
+                base_with_ns = f'{base_macro}_NS'
+                if base_with_ns in bases:
+                    base_addr = bases[base_with_ns]
+
+            if base_addr is not None:
+                # Normalize instance name (remove _NS suffix for canonical name)
+                canonical_name = instance_name.replace('_NS', '')
+                self.instances[canonical_name] = (block_type, base_addr)
+
+    def parse(self):
+        """Parse the common file."""
+        self.parse_irq_enum()
+        self.parse_base_addresses()
+
+
+class NXPChipParser:
+    """Parse chip header file to get included peripherals."""
+
+    def __init__(self, chip_header_path: Path, common_parser: NXPCommonParser):
+        self.chip_header_path = chip_header_path
+        with open(chip_header_path) as f:
+            self.content = f.read()
+
+        self.common = common_parser
+
+        # Extract chip name and core from path
+        match = re.search(r'(MIMX\d+)_(\w+)\.h', chip_header_path.name)
+        if match:
+            self.chip_name = match.group(1)
+            self.core = match.group(2).lower()
+        else:
+            self.chip_name = "UNKNOWN"
+            self.core = "cm33"
+
+    def get_included_peripherals(self) -> List[str]:
+        """Extract list of included PERI_*.h files."""
+        peripherals = []
+        for match in re.finditer(r'#include\s+"PERI_(\w+)\.h"', self.content):
+            peripherals.append(match.group(1))
+        return peripherals
+
+    def emit_json(self, peri_blocks: Dict[str, str]):
+        """Write chip descriptor JSON."""
+        # Determine family from chip name
+        family = "imx93" if "9352" in self.chip_name or "9351" in self.chip_name or "9301" in self.chip_name else "imx95"
+
+        # Build peripherals list from instances
+        peripherals = []
+        for instance_name, (block_type, base_addr) in self.common.instances.items():
+            peripherals.append({
+                'name': instance_name,
+                'base_address': f'0x{base_addr:08x}',
+                'block': f'{block_type.lower()}/{block_type}',
+            })
+
+        chip_json = {
+            'name': self.chip_name,
+            'family': family,
+            'core': self.core,
+            'irqs': self.common.irqs,
+            'peripherals': sorted(peripherals, key=lambda x: x['name']),
+        }
+
+        json_path = OUTPUT_DIR / 'chips' / f'{self.chip_name}.json'
+        write_json(chip_json, json_path)
+        print(f"Wrote {json_path}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Parse NXP MCUX CMSIS headers')
+    parser.add_argument('--family', choices=list(FAMILY_REPRESENTATIVES.keys()),
+                        help='Family to parse')
+    parser.add_argument('--all', action='store_true', help='Parse all families')
+    args = parser.parse_args()
+
+    families_to_parse = FAMILY_REPRESENTATIVES.keys() if args.all else ([args.family] if args.family else [])
+
+    if not families_to_parse:
+        print("Error: specify --family or --all")
+        sys.exit(1)
+
+    for family in families_to_parse:
+        family_dir = DATA_DIR / family
+        if not family_dir.exists():
+            print(f"Warning: {family_dir} not found")
+            continue
+
+        # Parse all PERI_*.h files
+        print(f"Parsing {family}...")
+
+        # Determine which subfamily for output (imx93 or imx95)
+        subfamily = family.split('_')[0]
+        output_subdir = OUTPUT_DIR / 'registers' / subfamily
+
+        peri_files = sorted(family_dir.glob('PERI_*.h'))
+        for peri_file in peri_files:
+            peri_parser = NXPPeripheralParser(peri_file)
+            peri_parser.parse()
+
+            # Update output dir for this family
+            peri_parser.block_data['items']  # Check if has content
+
+            yaml_path = output_subdir / f'{peri_parser.block_name.lower()}_v1.yaml'
+            if peri_parser.block_data['items']:
+                # Link fieldsets
+                for item in peri_parser.block_data['items']:
+                    reg_name = item['name']
+                    # fieldsets stored with full name BLOCKNAME_REGNAME
+                    fieldset_name = f'{peri_parser.block_name}_{reg_name}'
+                    if fieldset_name in peri_parser.fieldsets:
+                        item['fieldset'] = fieldset_name
+
+                data = {f'block/{peri_parser.block_name}': peri_parser.block_data}
+                data.update({f'fieldset/{name}': fs for name, fs in peri_parser.fieldsets.items()})
+
+                write_yaml(data, yaml_path)
+                print(f"Wrote {yaml_path}")
+
+        # Parse chip descriptor(s)
+        chip_header, common_header_name = FAMILY_REPRESENTATIVES[family]
+        chip_header_path = family_dir / f'{chip_header}.h'
+        common_header_path = family_dir / common_header_name
+
+        if chip_header_path.exists() and common_header_path.exists():
+            common_parser = NXPCommonParser(common_header_path)
+            common_parser.parse()
+
+            chip_parser = NXPChipParser(chip_header_path, common_parser)
+            chip_parser.emit_json({})
+
+
+if __name__ == '__main__':
+    main()
