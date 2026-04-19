@@ -53,11 +53,3 @@ jobs:
         run: |
           bash scripts/test_summary.sh
         if: always()
-
-      - name: Upload output artifacts
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: register-output-${{ matrix.python-version }}
-          path: output/
-          retention-days: 7
