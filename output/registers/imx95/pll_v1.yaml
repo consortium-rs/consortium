@@ -42,21 +42,69 @@ block/PLL:
   - name: TOG
     byte_offset: 108
   - name: RW
-    byte_offset: 112
-  - name: SET
-    byte_offset: 116
-  - name: CLR
-    byte_offset: 120
-  - name: TOG
-    byte_offset: 124
+    byte_offset: 224
   - name: RW
-    byte_offset: 128
+    byte_offset: 256
+  - name: RW
+    byte_offset: 288
+  - name: RW
+    byte_offset: 320
   - name: SET
-    byte_offset: 132
+    byte_offset: 228
+  - name: SET
+    byte_offset: 260
+  - name: SET
+    byte_offset: 292
+  - name: SET
+    byte_offset: 324
   - name: CLR
-    byte_offset: 136
+    byte_offset: 232
+  - name: CLR
+    byte_offset: 264
+  - name: CLR
+    byte_offset: 296
+  - name: CLR
+    byte_offset: 328
   - name: TOG
-    byte_offset: 140
+    byte_offset: 236
+  - name: TOG
+    byte_offset: 268
+  - name: TOG
+    byte_offset: 300
+  - name: TOG
+    byte_offset: 332
+  - name: RW
+    byte_offset: 240
+  - name: RW
+    byte_offset: 272
+  - name: RW
+    byte_offset: 304
+  - name: RW
+    byte_offset: 336
+  - name: SET
+    byte_offset: 244
+  - name: SET
+    byte_offset: 276
+  - name: SET
+    byte_offset: 308
+  - name: SET
+    byte_offset: 340
+  - name: CLR
+    byte_offset: 248
+  - name: CLR
+    byte_offset: 280
+  - name: CLR
+    byte_offset: 312
+  - name: CLR
+    byte_offset: 344
+  - name: TOG
+    byte_offset: 252
+  - name: TOG
+    byte_offset: 284
+  - name: TOG
+    byte_offset: 316
+  - name: TOG
+    byte_offset: 348
   - name: PLL_STATUS
     byte_offset: 240
   - name: DFS_STATUS

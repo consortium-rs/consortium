@@ -31,17 +31,31 @@ block/AON_FCCU:
   - name: GEOUTPNC
     byte_offset: 3376
     fieldset: AON_FCCU_GEOUTPNC
+  - name: GEOUTPNC
+    byte_offset: 3396
+    fieldset: AON_FCCU_GEOUTPNC
   - name: GEOUTPMC
     byte_offset: 3380
+    fieldset: AON_FCCU_GEOUTPMC
+  - name: GEOUTPMC
+    byte_offset: 3400
     fieldset: AON_FCCU_GEOUTPMC
   - name: GEOUTMC
     byte_offset: 3384
     fieldset: AON_FCCU_GEOUTMC
+  - name: GEOUTMC
+    byte_offset: 3404
+    fieldset: AON_FCCU_GEOUTMC
   - name: GEOUTTMS
     byte_offset: 3388
     fieldset: AON_FCCU_GEOUTTMS
+  - name: GEOUTTMS
+    byte_offset: 3408
+    fieldset: AON_FCCU_GEOUTTMS
   - name: GEOUTDIC
     byte_offset: 3392
+  - name: GEOUTDIC
+    byte_offset: 3412
   - name: GDBGCFG
     byte_offset: 4016
     fieldset: AON_FCCU_GDBGCFG

@@ -64,15 +64,221 @@ class NXPPeripheralParser:
 
         array_counts = self.parse_array_counts()
         current_offset = 0
+        lines = struct_body.split('\n')
+        i = 0
 
-        for line in struct_body.split('\n'):
+        while i < len(lines):
+            line = lines[i]
             line_stripped = line.strip()
+            i += 1
+
             if not line_stripped or line_stripped.startswith('/*') or line_stripped.startswith('//'):
                 continue
 
-            # Parse field: __IO uint32_t NAME; or uint8_t RESERVED[N];
-            # Pattern: [__IO|__I|__O]? type NAME[array]; /*!< ... */
+            # Check for nested struct declaration: struct { ... } NAME[array];
+            struct_match = re.match(r'struct\s*\{', line_stripped)
+            if struct_match:
+                # Extract struct array step from comment
+                array_step = None
+                step_match = re.search(r'array\s+step:\s*0x([0-9a-fA-F]+)', line)
+                if step_match:
+                    array_step = int(step_match.group(1), 16)
 
+                struct_base_offset = current_offset
+                offset_match = re.search(r'offset:\s*0x([0-9a-fA-F]+)', line)
+                if offset_match:
+                    struct_base_offset = int(offset_match.group(1), 16)
+                    current_offset = struct_base_offset
+
+                # Collect all nested structs and top-level fields until the closing brace of the outer struct
+                nested_structs: List[Tuple[str, List[str], int]] = []  # (struct_name, body, offset)
+                top_level_fields: List[str] = []  # Fields at the top level of the array struct
+                outer_brace_depth = 0
+                current_nested_body: List[str] = []
+                current_nested_name: str = ""
+                current_nested_offset = 0
+
+                while i < len(lines):
+                    nested_line = lines[i]
+                    i += 1
+
+                    nested_stripped = nested_line.strip()
+
+                    # Check for inner struct declaration
+                    inner_struct_match = re.match(r'struct\s*\{', nested_stripped)
+                    if inner_struct_match:
+                        inner_offset_match = re.search(r'offset:\s*0x([0-9a-fA-F]+)', nested_line)
+                        if inner_offset_match:
+                            current_nested_offset = int(inner_offset_match.group(1), 16)
+                        else:
+                            current_nested_offset = 0
+                        current_nested_body = []
+                        outer_brace_depth += 1
+                        continue
+
+                    # Check for closing brace of inner struct: } NAME;
+                    if outer_brace_depth > 0 and nested_stripped.startswith('}'):
+                        struct_member_match = re.match(r'\}\s*(\w+)\s*;', nested_stripped)
+                        if struct_member_match:
+                            current_nested_name = struct_member_match.group(1)
+                            nested_structs.append((current_nested_name, current_nested_body, current_nested_offset))
+                            outer_brace_depth -= 1
+                            current_nested_body = []
+                            continue
+
+                    # Check for closing brace of outer array struct: } NAME[array];
+                    if outer_brace_depth == 0 and nested_stripped.startswith('}'):
+                        outer_struct_match = re.search(r'\}\s*(\w+)(?:\[(\w+)\])?\s*;', nested_line)
+                        if outer_struct_match:
+                            struct_member_name = outer_struct_match.group(1)
+                            struct_array_name = outer_struct_match.group(2)
+
+                            # Determine if this struct is an array
+                            struct_array_len = 1
+                            if struct_array_name:
+                                struct_array_len = array_counts.get(struct_array_name, 1)
+
+                            # Process each nested struct in the array
+                            for nested_name, nested_body, nested_offset in nested_structs:
+                                for nested_line_str in nested_body:
+                                    nested_stripped = nested_line_str.strip()
+                                    if not nested_stripped:
+                                        continue
+
+                                    field_match = re.match(
+                                        r'(__IO|__I|__O)?\s*(uint8_t|uint16_t|uint32_t|uint64_t)\s+(\w+)(?:\[(\w+)\])?\s*;',
+                                        nested_stripped
+                                    )
+                                    if not field_match:
+                                        continue
+
+                                    qualifier = field_match.group(1) or ''
+                                    field_type = field_match.group(2)
+                                    field_name = field_match.group(3)
+                                    field_array_name = field_match.group(4)
+
+                                    # Skip reserved fields
+                                    if field_name.startswith('RESERVED'):
+                                        continue
+
+                                    # Get offset from comment (supports fields with or without access qualifier)
+                                    field_offset_match = re.search(r'offset:\s*0x([0-9a-fA-F]+)', nested_line_str)
+                                    if field_offset_match:
+                                        absolute_field_offset = int(field_offset_match.group(1), 16)
+                                        # Convert absolute to relative offset within nested struct
+                                        field_offset = absolute_field_offset - nested_offset
+                                    else:
+                                        # No offset in comment - skip this field
+                                        field_offset = 0
+
+                                    # Skip fields without access qualifier and no explicit offset in comment
+                                    if qualifier not in ('__IO', '__I', '__O') and not field_offset_match:
+                                        continue
+
+                                    description = extract_description(nested_line_str)
+
+                                    # Generate register name with nested struct prefix if multiple nested structs exist
+                                    if len(nested_structs) > 1:
+                                        reg_name = f"{nested_name}_{field_name}"
+                                    else:
+                                        reg_name = field_name
+
+                                    # Add register for each array element of the outer struct
+                                    for arr_idx in range(struct_array_len):
+                                        if array_step:
+                                            reg_offset = struct_base_offset + arr_idx * array_step + field_offset
+                                        else:
+                                            reg_offset = field_offset
+
+                                        item: Dict[str, Any] = {
+                                            'name': reg_name,
+                                            'byte_offset': reg_offset,
+                                        }
+
+                                        if description:
+                                            item['description'] = description
+
+                                        self.block_data['items'].append(item)
+
+                            # Process top-level fields in the array
+                            for top_line_str in top_level_fields:
+                                top_stripped = top_line_str.strip()
+                                if not top_stripped:
+                                    continue
+
+                                field_match = re.match(
+                                    r'(__IO|__I|__O)?\s*(uint8_t|uint16_t|uint32_t|uint64_t)\s+(\w+)(?:\[(\w+)\])?\s*;',
+                                    top_stripped
+                                )
+                                if not field_match:
+                                    continue
+
+                                qualifier = field_match.group(1) or ''
+                                field_type = field_match.group(2)
+                                field_name = field_match.group(3)
+                                field_array_name = field_match.group(4)
+
+                                # Skip reserved fields
+                                if field_name.startswith('RESERVED'):
+                                    continue
+
+                                # Get offset from comment
+                                field_offset_match = re.search(r'offset:\s*0x([0-9a-fA-F]+)', top_line_str)
+                                if field_offset_match:
+                                    absolute_field_offset = int(field_offset_match.group(1), 16)
+                                    # For top-level fields, offset is relative to the struct base
+                                    field_offset = absolute_field_offset - struct_base_offset
+                                else:
+                                    continue
+
+                                # Skip fields without access qualifier
+                                if qualifier not in ('__IO', '__I', '__O'):
+                                    continue
+
+                                description = extract_description(top_line_str)
+
+                                # Add register for each array element
+                                for arr_idx in range(struct_array_len):
+                                    if array_step:
+                                        reg_offset = struct_base_offset + arr_idx * array_step + field_offset
+                                    else:
+                                        reg_offset = struct_base_offset + field_offset
+
+                                    item: Dict[str, Any] = {
+                                        'name': field_name,
+                                        'byte_offset': reg_offset,
+                                    }
+
+                                    if description:
+                                        item['description'] = description
+
+                                    self.block_data['items'].append(item)
+
+                        # Update offset after struct
+                        if array_step and struct_array_len > 0:
+                            current_offset = struct_base_offset + struct_array_len * array_step
+                        else:
+                            current_offset = struct_base_offset + 0x80  # Default step
+                        break
+                    else:
+                        if outer_brace_depth > 0:
+                            current_nested_body.append(nested_line)
+                        else:
+                            # Top-level field in the array struct
+                            top_level_fields.append(nested_line)
+                continue
+
+            # Handle non-array struct: struct { ... } NAME;
+            if line_stripped.startswith('}') and '{' not in line_stripped:
+                struct_match = re.search(r'\}\s*(\w+)\s*;', line_stripped)
+                if struct_match:
+                    struct_name = struct_match.group(1)
+
+                    # This closes a struct - but we need to know if it had nested structs
+                    # For simple cases without nesting, we just skip (handled by field parsing)
+                    continue
+
+            # Parse regular field: __IO uint32_t NAME; or uint8_t RESERVED[N];
             field_match = re.match(
                 r'(__IO|__I|__O)?\s*(uint8_t|uint16_t|uint32_t|uint64_t)\s+(\w+)(?:\[(\w+)\])?\s*;',
                 line_stripped
@@ -96,13 +302,17 @@ class NXPPeripheralParser:
                     current_offset += type_size
                 continue
 
-            # Determine access
+            # Determine access - allow fields without qualifier if they have explicit offset info
+            offset_match_here = re.search(r'offset:\s*0x([0-9a-fA-F]+)', line)
             if qualifier == '__IO':
                 access = 'read-write'
             elif qualifier == '__I':
                 access = 'read-only'
             elif qualifier == '__O':
                 access = 'write-only'
+            elif offset_match_here:
+                # Field has explicit offset, include it even without qualifier
+                access = 'read-write'  # Default to read-write for unqualified fields
             else:
                 continue
 

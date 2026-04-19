@@ -71,11 +71,11 @@ block/NETC_SW_ENETC:
     byte_offset: 548
     fieldset: NETC_SW_ENETC_DOSL3CR
   - name: VLANIPVMPR0
-    byte_offset: 768
+    byte_offset: 1536
   - name: VLANIPVMPR1
-    byte_offset: 772
+    byte_offset: 1540
   - name: VLANDRMPR
-    byte_offset: 776
+    byte_offset: 1544
   - name: IPFCAPR
     byte_offset: 1600
     fieldset: NETC_SW_ENETC_IPFCAPR

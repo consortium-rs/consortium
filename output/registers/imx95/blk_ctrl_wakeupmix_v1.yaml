@@ -100,8 +100,12 @@ block/BLK_CTRL_WAKEUPMIX:
     byte_offset: 212
   - name: IPG_DOZE_CTL_0
     byte_offset: 216
+  - name: IPG_WAIT_CTL_0
+    byte_offset: 220
   - name: IPG_STOP_CTL_1
     byte_offset: 224
+  - name: IPG_STOP_ACK_STATUS_1
+    byte_offset: 228
   - name: IPG_DOZE_CTL_1
     byte_offset: 232
   - name: IPG_WAIT_CTL_1

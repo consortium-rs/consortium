@@ -46,22 +46,31 @@ block/TRDC_MBC2:
       stride: 4
     fieldset: TRDC_MBC2_TRDC_DERRLOC
   - name: W0
-    byte_offset: 1024
+    byte_offset: 2048
+    fieldset: TRDC_MBC2_W0
+  - name: W0
+    byte_offset: 2064
     fieldset: TRDC_MBC2_W0
   - name: W1
-    byte_offset: 1028
+    byte_offset: 2052
+    fieldset: TRDC_MBC2_W1
+  - name: W1
+    byte_offset: 2068
     fieldset: TRDC_MBC2_W1
   - name: W3
-    byte_offset: 1036
+    byte_offset: 2060
+    fieldset: TRDC_MBC2_W3
+  - name: W3
+    byte_offset: 2076
     fieldset: TRDC_MBC2_W3
   - name: W0
-    byte_offset: 1152
+    byte_offset: 2304
     fieldset: TRDC_MBC2_W0
   - name: W1
-    byte_offset: 1156
+    byte_offset: 2308
     fieldset: TRDC_MBC2_W1
   - name: W3
-    byte_offset: 1164
+    byte_offset: 2316
     fieldset: TRDC_MBC2_W3
   - name: PID
     byte_offset: 1856
@@ -70,677 +79,914 @@ block/TRDC_MBC2:
       stride: 4
     fieldset: TRDC_MBC2_PID
   - name: MDA_W_DFMT0
-    byte_offset: 2048
+    byte_offset: 4096
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4128
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4160
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4192
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4224
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4256
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4288
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4320
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4352
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4384
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4416
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4448
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4480
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4512
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4544
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4576
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4608
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4640
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4672
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4704
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4736
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4768
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4800
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4832
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4864
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4896
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4928
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4960
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 4992
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 5024
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 5056
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 5088
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 5120
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 5152
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 5184
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 5216
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 5248
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 5280
+    fieldset: TRDC_MBC2_MDA_W_DFMT0
+  - name: MDA_W_DFMT0
+    byte_offset: 5312
     fieldset: TRDC_MBC2_MDA_W_DFMT0
   - name: MDA_W_DFMT1
-    byte_offset: 2048
+    byte_offset: 4096
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4128
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4160
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4192
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4224
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4256
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4288
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4320
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4352
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4384
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4416
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4448
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4480
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4512
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4544
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4576
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4608
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4640
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4672
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4704
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4736
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4768
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4800
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4832
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4864
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4896
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4928
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4960
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 4992
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 5024
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 5056
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 5088
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 5120
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 5152
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 5184
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 5216
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 5248
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 5280
+    fieldset: TRDC_MBC2_MDA_W_DFMT1
+  - name: MDA_W_DFMT1
+    byte_offset: 5312
     fieldset: TRDC_MBC2_MDA_W_DFMT1
   - name: MBC_MEM_GLBCFG
-    byte_offset: 65536
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 131072
+    fieldset: TRDC_MBC2_MBC_MEM_GLBCFG
+  - name: MBC_MEM_GLBCFG
+    byte_offset: 139264
     fieldset: TRDC_MBC2_MBC_MEM_GLBCFG
   - name: MBC_NSE_BLK_INDEX
-    byte_offset: 65552
+    byte_offset: 131088
+    fieldset: TRDC_MBC2_MBC_NSE_BLK_INDEX
+  - name: MBC_NSE_BLK_INDEX
+    byte_offset: 139280
     fieldset: TRDC_MBC2_MBC_NSE_BLK_INDEX
   - name: MBC_NSE_BLK_SET
-    byte_offset: 65556
+    byte_offset: 131092
+    fieldset: TRDC_MBC2_MBC_NSE_BLK_SET
+  - name: MBC_NSE_BLK_SET
+    byte_offset: 139284
     fieldset: TRDC_MBC2_MBC_NSE_BLK_SET
   - name: MBC_NSE_BLK_CLR
-    byte_offset: 65560
+    byte_offset: 131096
+    fieldset: TRDC_MBC2_MBC_NSE_BLK_CLR
+  - name: MBC_NSE_BLK_CLR
+    byte_offset: 139288
     fieldset: TRDC_MBC2_MBC_NSE_BLK_CLR
   - name: MBC_NSE_BLK_CLR_ALL
-    byte_offset: 65564
+    byte_offset: 131100
+    fieldset: TRDC_MBC2_MBC_NSE_BLK_CLR_ALL
+  - name: MBC_NSE_BLK_CLR_ALL
+    byte_offset: 139292
     fieldset: TRDC_MBC2_MBC_NSE_BLK_CLR_ALL
   - name: MBC_MEMN_GLBAC
-    byte_offset: 65568
-    array:
-      len: 8
-      stride: 4
+    byte_offset: 131104
+    fieldset: TRDC_MBC2_MBC_MEMN_GLBAC
+  - name: MBC_MEMN_GLBAC
+    byte_offset: 139296
     fieldset: TRDC_MBC2_MBC_MEMN_GLBAC
   - name: MBC_DOM0_MEM0_BLK_CFG_W
-    byte_offset: 65600
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 131136
+    fieldset: TRDC_MBC2_MBC_DOM0_MEM0_BLK_CFG_W
+  - name: MBC_DOM0_MEM0_BLK_CFG_W
+    byte_offset: 139328
     fieldset: TRDC_MBC2_MBC_DOM0_MEM0_BLK_CFG_W
   - name: MBC_DOM0_MEM0_BLK_NSE_W
-    byte_offset: 65856
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 131392
+    fieldset: TRDC_MBC2_MBC_DOM0_MEM0_BLK_NSE_W
+  - name: MBC_DOM0_MEM0_BLK_NSE_W
+    byte_offset: 139584
     fieldset: TRDC_MBC2_MBC_DOM0_MEM0_BLK_NSE_W
   - name: MBC_DOM0_MEM1_BLK_CFG_W
-    byte_offset: 65920
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 131456
+    fieldset: TRDC_MBC2_MBC_DOM0_MEM1_BLK_CFG_W
+  - name: MBC_DOM0_MEM1_BLK_CFG_W
+    byte_offset: 139648
     fieldset: TRDC_MBC2_MBC_DOM0_MEM1_BLK_CFG_W
   - name: MBC_DOM0_MEM1_BLK_NSE_W
-    byte_offset: 65952
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 131488
+    fieldset: TRDC_MBC2_MBC_DOM0_MEM1_BLK_NSE_W
+  - name: MBC_DOM0_MEM1_BLK_NSE_W
+    byte_offset: 139680
     fieldset: TRDC_MBC2_MBC_DOM0_MEM1_BLK_NSE_W
   - name: MBC_DOM0_MEM2_BLK_CFG_W
-    byte_offset: 65960
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 131496
+    fieldset: TRDC_MBC2_MBC_DOM0_MEM2_BLK_CFG_W
+  - name: MBC_DOM0_MEM2_BLK_CFG_W
+    byte_offset: 139688
     fieldset: TRDC_MBC2_MBC_DOM0_MEM2_BLK_CFG_W
   - name: MBC_DOM0_MEM2_BLK_NSE_W
-    byte_offset: 65992
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 131528
+    fieldset: TRDC_MBC2_MBC_DOM0_MEM2_BLK_NSE_W
+  - name: MBC_DOM0_MEM2_BLK_NSE_W
+    byte_offset: 139720
     fieldset: TRDC_MBC2_MBC_DOM0_MEM2_BLK_NSE_W
   - name: MBC_DOM1_MEM0_BLK_CFG_W
-    byte_offset: 66112
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 131648
+    fieldset: TRDC_MBC2_MBC_DOM1_MEM0_BLK_CFG_W
+  - name: MBC_DOM1_MEM0_BLK_CFG_W
+    byte_offset: 139840
     fieldset: TRDC_MBC2_MBC_DOM1_MEM0_BLK_CFG_W
   - name: MBC_DOM1_MEM0_BLK_NSE_W
-    byte_offset: 66368
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 131904
+    fieldset: TRDC_MBC2_MBC_DOM1_MEM0_BLK_NSE_W
+  - name: MBC_DOM1_MEM0_BLK_NSE_W
+    byte_offset: 140096
     fieldset: TRDC_MBC2_MBC_DOM1_MEM0_BLK_NSE_W
   - name: MBC_DOM1_MEM1_BLK_CFG_W
-    byte_offset: 66432
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 131968
+    fieldset: TRDC_MBC2_MBC_DOM1_MEM1_BLK_CFG_W
+  - name: MBC_DOM1_MEM1_BLK_CFG_W
+    byte_offset: 140160
     fieldset: TRDC_MBC2_MBC_DOM1_MEM1_BLK_CFG_W
   - name: MBC_DOM1_MEM1_BLK_NSE_W
-    byte_offset: 66464
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 132000
+    fieldset: TRDC_MBC2_MBC_DOM1_MEM1_BLK_NSE_W
+  - name: MBC_DOM1_MEM1_BLK_NSE_W
+    byte_offset: 140192
     fieldset: TRDC_MBC2_MBC_DOM1_MEM1_BLK_NSE_W
   - name: MBC_DOM1_MEM2_BLK_CFG_W
-    byte_offset: 66472
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 132008
+    fieldset: TRDC_MBC2_MBC_DOM1_MEM2_BLK_CFG_W
+  - name: MBC_DOM1_MEM2_BLK_CFG_W
+    byte_offset: 140200
     fieldset: TRDC_MBC2_MBC_DOM1_MEM2_BLK_CFG_W
   - name: MBC_DOM1_MEM2_BLK_NSE_W
-    byte_offset: 66504
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 132040
+    fieldset: TRDC_MBC2_MBC_DOM1_MEM2_BLK_NSE_W
+  - name: MBC_DOM1_MEM2_BLK_NSE_W
+    byte_offset: 140232
     fieldset: TRDC_MBC2_MBC_DOM1_MEM2_BLK_NSE_W
   - name: MBC_DOM2_MEM0_BLK_CFG_W
-    byte_offset: 66624
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 132160
+    fieldset: TRDC_MBC2_MBC_DOM2_MEM0_BLK_CFG_W
+  - name: MBC_DOM2_MEM0_BLK_CFG_W
+    byte_offset: 140352
     fieldset: TRDC_MBC2_MBC_DOM2_MEM0_BLK_CFG_W
   - name: MBC_DOM2_MEM0_BLK_NSE_W
-    byte_offset: 66880
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 132416
+    fieldset: TRDC_MBC2_MBC_DOM2_MEM0_BLK_NSE_W
+  - name: MBC_DOM2_MEM0_BLK_NSE_W
+    byte_offset: 140608
     fieldset: TRDC_MBC2_MBC_DOM2_MEM0_BLK_NSE_W
   - name: MBC_DOM2_MEM1_BLK_CFG_W
-    byte_offset: 66944
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 132480
+    fieldset: TRDC_MBC2_MBC_DOM2_MEM1_BLK_CFG_W
+  - name: MBC_DOM2_MEM1_BLK_CFG_W
+    byte_offset: 140672
     fieldset: TRDC_MBC2_MBC_DOM2_MEM1_BLK_CFG_W
   - name: MBC_DOM2_MEM1_BLK_NSE_W
-    byte_offset: 66976
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 132512
+    fieldset: TRDC_MBC2_MBC_DOM2_MEM1_BLK_NSE_W
+  - name: MBC_DOM2_MEM1_BLK_NSE_W
+    byte_offset: 140704
     fieldset: TRDC_MBC2_MBC_DOM2_MEM1_BLK_NSE_W
   - name: MBC_DOM2_MEM2_BLK_CFG_W
-    byte_offset: 66984
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 132520
+    fieldset: TRDC_MBC2_MBC_DOM2_MEM2_BLK_CFG_W
+  - name: MBC_DOM2_MEM2_BLK_CFG_W
+    byte_offset: 140712
     fieldset: TRDC_MBC2_MBC_DOM2_MEM2_BLK_CFG_W
   - name: MBC_DOM2_MEM2_BLK_NSE_W
-    byte_offset: 67016
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 132552
+    fieldset: TRDC_MBC2_MBC_DOM2_MEM2_BLK_NSE_W
+  - name: MBC_DOM2_MEM2_BLK_NSE_W
+    byte_offset: 140744
     fieldset: TRDC_MBC2_MBC_DOM2_MEM2_BLK_NSE_W
   - name: MBC_DOM3_MEM0_BLK_CFG_W
-    byte_offset: 67136
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 132672
+    fieldset: TRDC_MBC2_MBC_DOM3_MEM0_BLK_CFG_W
+  - name: MBC_DOM3_MEM0_BLK_CFG_W
+    byte_offset: 140864
     fieldset: TRDC_MBC2_MBC_DOM3_MEM0_BLK_CFG_W
   - name: MBC_DOM3_MEM0_BLK_NSE_W
-    byte_offset: 67392
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 132928
+    fieldset: TRDC_MBC2_MBC_DOM3_MEM0_BLK_NSE_W
+  - name: MBC_DOM3_MEM0_BLK_NSE_W
+    byte_offset: 141120
     fieldset: TRDC_MBC2_MBC_DOM3_MEM0_BLK_NSE_W
   - name: MBC_DOM3_MEM1_BLK_CFG_W
-    byte_offset: 67456
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 132992
+    fieldset: TRDC_MBC2_MBC_DOM3_MEM1_BLK_CFG_W
+  - name: MBC_DOM3_MEM1_BLK_CFG_W
+    byte_offset: 141184
     fieldset: TRDC_MBC2_MBC_DOM3_MEM1_BLK_CFG_W
   - name: MBC_DOM3_MEM1_BLK_NSE_W
-    byte_offset: 67488
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 133024
+    fieldset: TRDC_MBC2_MBC_DOM3_MEM1_BLK_NSE_W
+  - name: MBC_DOM3_MEM1_BLK_NSE_W
+    byte_offset: 141216
     fieldset: TRDC_MBC2_MBC_DOM3_MEM1_BLK_NSE_W
   - name: MBC_DOM3_MEM2_BLK_CFG_W
-    byte_offset: 67496
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 133032
+    fieldset: TRDC_MBC2_MBC_DOM3_MEM2_BLK_CFG_W
+  - name: MBC_DOM3_MEM2_BLK_CFG_W
+    byte_offset: 141224
     fieldset: TRDC_MBC2_MBC_DOM3_MEM2_BLK_CFG_W
   - name: MBC_DOM3_MEM2_BLK_NSE_W
-    byte_offset: 67528
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 133064
+    fieldset: TRDC_MBC2_MBC_DOM3_MEM2_BLK_NSE_W
+  - name: MBC_DOM3_MEM2_BLK_NSE_W
+    byte_offset: 141256
     fieldset: TRDC_MBC2_MBC_DOM3_MEM2_BLK_NSE_W
   - name: MBC_DOM4_MEM0_BLK_CFG_W
-    byte_offset: 67648
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 133184
+    fieldset: TRDC_MBC2_MBC_DOM4_MEM0_BLK_CFG_W
+  - name: MBC_DOM4_MEM0_BLK_CFG_W
+    byte_offset: 141376
     fieldset: TRDC_MBC2_MBC_DOM4_MEM0_BLK_CFG_W
   - name: MBC_DOM4_MEM0_BLK_NSE_W
-    byte_offset: 67904
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 133440
+    fieldset: TRDC_MBC2_MBC_DOM4_MEM0_BLK_NSE_W
+  - name: MBC_DOM4_MEM0_BLK_NSE_W
+    byte_offset: 141632
     fieldset: TRDC_MBC2_MBC_DOM4_MEM0_BLK_NSE_W
   - name: MBC_DOM4_MEM1_BLK_CFG_W
-    byte_offset: 67968
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 133504
+    fieldset: TRDC_MBC2_MBC_DOM4_MEM1_BLK_CFG_W
+  - name: MBC_DOM4_MEM1_BLK_CFG_W
+    byte_offset: 141696
     fieldset: TRDC_MBC2_MBC_DOM4_MEM1_BLK_CFG_W
   - name: MBC_DOM4_MEM1_BLK_NSE_W
-    byte_offset: 68000
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 133536
+    fieldset: TRDC_MBC2_MBC_DOM4_MEM1_BLK_NSE_W
+  - name: MBC_DOM4_MEM1_BLK_NSE_W
+    byte_offset: 141728
     fieldset: TRDC_MBC2_MBC_DOM4_MEM1_BLK_NSE_W
   - name: MBC_DOM4_MEM2_BLK_CFG_W
-    byte_offset: 68008
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 133544
+    fieldset: TRDC_MBC2_MBC_DOM4_MEM2_BLK_CFG_W
+  - name: MBC_DOM4_MEM2_BLK_CFG_W
+    byte_offset: 141736
     fieldset: TRDC_MBC2_MBC_DOM4_MEM2_BLK_CFG_W
   - name: MBC_DOM4_MEM2_BLK_NSE_W
-    byte_offset: 68040
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 133576
+    fieldset: TRDC_MBC2_MBC_DOM4_MEM2_BLK_NSE_W
+  - name: MBC_DOM4_MEM2_BLK_NSE_W
+    byte_offset: 141768
     fieldset: TRDC_MBC2_MBC_DOM4_MEM2_BLK_NSE_W
   - name: MBC_DOM5_MEM0_BLK_CFG_W
-    byte_offset: 68160
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 133696
+    fieldset: TRDC_MBC2_MBC_DOM5_MEM0_BLK_CFG_W
+  - name: MBC_DOM5_MEM0_BLK_CFG_W
+    byte_offset: 141888
     fieldset: TRDC_MBC2_MBC_DOM5_MEM0_BLK_CFG_W
   - name: MBC_DOM5_MEM0_BLK_NSE_W
-    byte_offset: 68416
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 133952
+    fieldset: TRDC_MBC2_MBC_DOM5_MEM0_BLK_NSE_W
+  - name: MBC_DOM5_MEM0_BLK_NSE_W
+    byte_offset: 142144
     fieldset: TRDC_MBC2_MBC_DOM5_MEM0_BLK_NSE_W
   - name: MBC_DOM5_MEM1_BLK_CFG_W
-    byte_offset: 68480
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 134016
+    fieldset: TRDC_MBC2_MBC_DOM5_MEM1_BLK_CFG_W
+  - name: MBC_DOM5_MEM1_BLK_CFG_W
+    byte_offset: 142208
     fieldset: TRDC_MBC2_MBC_DOM5_MEM1_BLK_CFG_W
   - name: MBC_DOM5_MEM1_BLK_NSE_W
-    byte_offset: 68512
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 134048
+    fieldset: TRDC_MBC2_MBC_DOM5_MEM1_BLK_NSE_W
+  - name: MBC_DOM5_MEM1_BLK_NSE_W
+    byte_offset: 142240
     fieldset: TRDC_MBC2_MBC_DOM5_MEM1_BLK_NSE_W
   - name: MBC_DOM5_MEM2_BLK_CFG_W
-    byte_offset: 68520
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 134056
+    fieldset: TRDC_MBC2_MBC_DOM5_MEM2_BLK_CFG_W
+  - name: MBC_DOM5_MEM2_BLK_CFG_W
+    byte_offset: 142248
     fieldset: TRDC_MBC2_MBC_DOM5_MEM2_BLK_CFG_W
   - name: MBC_DOM5_MEM2_BLK_NSE_W
-    byte_offset: 68552
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 134088
+    fieldset: TRDC_MBC2_MBC_DOM5_MEM2_BLK_NSE_W
+  - name: MBC_DOM5_MEM2_BLK_NSE_W
+    byte_offset: 142280
     fieldset: TRDC_MBC2_MBC_DOM5_MEM2_BLK_NSE_W
   - name: MBC_DOM6_MEM0_BLK_CFG_W
-    byte_offset: 68672
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 134208
+    fieldset: TRDC_MBC2_MBC_DOM6_MEM0_BLK_CFG_W
+  - name: MBC_DOM6_MEM0_BLK_CFG_W
+    byte_offset: 142400
     fieldset: TRDC_MBC2_MBC_DOM6_MEM0_BLK_CFG_W
   - name: MBC_DOM6_MEM0_BLK_NSE_W
-    byte_offset: 68928
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 134464
+    fieldset: TRDC_MBC2_MBC_DOM6_MEM0_BLK_NSE_W
+  - name: MBC_DOM6_MEM0_BLK_NSE_W
+    byte_offset: 142656
     fieldset: TRDC_MBC2_MBC_DOM6_MEM0_BLK_NSE_W
   - name: MBC_DOM6_MEM1_BLK_CFG_W
-    byte_offset: 68992
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 134528
+    fieldset: TRDC_MBC2_MBC_DOM6_MEM1_BLK_CFG_W
+  - name: MBC_DOM6_MEM1_BLK_CFG_W
+    byte_offset: 142720
     fieldset: TRDC_MBC2_MBC_DOM6_MEM1_BLK_CFG_W
   - name: MBC_DOM6_MEM1_BLK_NSE_W
-    byte_offset: 69024
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 134560
+    fieldset: TRDC_MBC2_MBC_DOM6_MEM1_BLK_NSE_W
+  - name: MBC_DOM6_MEM1_BLK_NSE_W
+    byte_offset: 142752
     fieldset: TRDC_MBC2_MBC_DOM6_MEM1_BLK_NSE_W
   - name: MBC_DOM6_MEM2_BLK_CFG_W
-    byte_offset: 69032
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 134568
+    fieldset: TRDC_MBC2_MBC_DOM6_MEM2_BLK_CFG_W
+  - name: MBC_DOM6_MEM2_BLK_CFG_W
+    byte_offset: 142760
     fieldset: TRDC_MBC2_MBC_DOM6_MEM2_BLK_CFG_W
   - name: MBC_DOM6_MEM2_BLK_NSE_W
-    byte_offset: 69064
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 134600
+    fieldset: TRDC_MBC2_MBC_DOM6_MEM2_BLK_NSE_W
+  - name: MBC_DOM6_MEM2_BLK_NSE_W
+    byte_offset: 142792
     fieldset: TRDC_MBC2_MBC_DOM6_MEM2_BLK_NSE_W
   - name: MBC_DOM7_MEM0_BLK_CFG_W
-    byte_offset: 69184
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 134720
+    fieldset: TRDC_MBC2_MBC_DOM7_MEM0_BLK_CFG_W
+  - name: MBC_DOM7_MEM0_BLK_CFG_W
+    byte_offset: 142912
     fieldset: TRDC_MBC2_MBC_DOM7_MEM0_BLK_CFG_W
   - name: MBC_DOM7_MEM0_BLK_NSE_W
-    byte_offset: 69440
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 134976
+    fieldset: TRDC_MBC2_MBC_DOM7_MEM0_BLK_NSE_W
+  - name: MBC_DOM7_MEM0_BLK_NSE_W
+    byte_offset: 143168
     fieldset: TRDC_MBC2_MBC_DOM7_MEM0_BLK_NSE_W
   - name: MBC_DOM7_MEM1_BLK_CFG_W
-    byte_offset: 69504
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 135040
+    fieldset: TRDC_MBC2_MBC_DOM7_MEM1_BLK_CFG_W
+  - name: MBC_DOM7_MEM1_BLK_CFG_W
+    byte_offset: 143232
     fieldset: TRDC_MBC2_MBC_DOM7_MEM1_BLK_CFG_W
   - name: MBC_DOM7_MEM1_BLK_NSE_W
-    byte_offset: 69536
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 135072
+    fieldset: TRDC_MBC2_MBC_DOM7_MEM1_BLK_NSE_W
+  - name: MBC_DOM7_MEM1_BLK_NSE_W
+    byte_offset: 143264
     fieldset: TRDC_MBC2_MBC_DOM7_MEM1_BLK_NSE_W
   - name: MBC_DOM7_MEM2_BLK_CFG_W
-    byte_offset: 69544
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 135080
+    fieldset: TRDC_MBC2_MBC_DOM7_MEM2_BLK_CFG_W
+  - name: MBC_DOM7_MEM2_BLK_CFG_W
+    byte_offset: 143272
     fieldset: TRDC_MBC2_MBC_DOM7_MEM2_BLK_CFG_W
   - name: MBC_DOM7_MEM2_BLK_NSE_W
-    byte_offset: 69576
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 135112
+    fieldset: TRDC_MBC2_MBC_DOM7_MEM2_BLK_NSE_W
+  - name: MBC_DOM7_MEM2_BLK_NSE_W
+    byte_offset: 143304
     fieldset: TRDC_MBC2_MBC_DOM7_MEM2_BLK_NSE_W
   - name: MBC_DOM8_MEM0_BLK_CFG_W
-    byte_offset: 69696
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 135232
+    fieldset: TRDC_MBC2_MBC_DOM8_MEM0_BLK_CFG_W
+  - name: MBC_DOM8_MEM0_BLK_CFG_W
+    byte_offset: 143424
     fieldset: TRDC_MBC2_MBC_DOM8_MEM0_BLK_CFG_W
   - name: MBC_DOM8_MEM0_BLK_NSE_W
-    byte_offset: 69952
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 135488
+    fieldset: TRDC_MBC2_MBC_DOM8_MEM0_BLK_NSE_W
+  - name: MBC_DOM8_MEM0_BLK_NSE_W
+    byte_offset: 143680
     fieldset: TRDC_MBC2_MBC_DOM8_MEM0_BLK_NSE_W
   - name: MBC_DOM8_MEM1_BLK_CFG_W
-    byte_offset: 70016
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 135552
+    fieldset: TRDC_MBC2_MBC_DOM8_MEM1_BLK_CFG_W
+  - name: MBC_DOM8_MEM1_BLK_CFG_W
+    byte_offset: 143744
     fieldset: TRDC_MBC2_MBC_DOM8_MEM1_BLK_CFG_W
   - name: MBC_DOM8_MEM1_BLK_NSE_W
-    byte_offset: 70048
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 135584
+    fieldset: TRDC_MBC2_MBC_DOM8_MEM1_BLK_NSE_W
+  - name: MBC_DOM8_MEM1_BLK_NSE_W
+    byte_offset: 143776
     fieldset: TRDC_MBC2_MBC_DOM8_MEM1_BLK_NSE_W
   - name: MBC_DOM8_MEM2_BLK_CFG_W
-    byte_offset: 70056
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 135592
+    fieldset: TRDC_MBC2_MBC_DOM8_MEM2_BLK_CFG_W
+  - name: MBC_DOM8_MEM2_BLK_CFG_W
+    byte_offset: 143784
     fieldset: TRDC_MBC2_MBC_DOM8_MEM2_BLK_CFG_W
   - name: MBC_DOM8_MEM2_BLK_NSE_W
-    byte_offset: 70088
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 135624
+    fieldset: TRDC_MBC2_MBC_DOM8_MEM2_BLK_NSE_W
+  - name: MBC_DOM8_MEM2_BLK_NSE_W
+    byte_offset: 143816
     fieldset: TRDC_MBC2_MBC_DOM8_MEM2_BLK_NSE_W
   - name: MBC_DOM9_MEM0_BLK_CFG_W
-    byte_offset: 70208
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 135744
+    fieldset: TRDC_MBC2_MBC_DOM9_MEM0_BLK_CFG_W
+  - name: MBC_DOM9_MEM0_BLK_CFG_W
+    byte_offset: 143936
     fieldset: TRDC_MBC2_MBC_DOM9_MEM0_BLK_CFG_W
   - name: MBC_DOM9_MEM0_BLK_NSE_W
-    byte_offset: 70464
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 136000
+    fieldset: TRDC_MBC2_MBC_DOM9_MEM0_BLK_NSE_W
+  - name: MBC_DOM9_MEM0_BLK_NSE_W
+    byte_offset: 144192
     fieldset: TRDC_MBC2_MBC_DOM9_MEM0_BLK_NSE_W
   - name: MBC_DOM9_MEM1_BLK_CFG_W
-    byte_offset: 70528
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 136064
+    fieldset: TRDC_MBC2_MBC_DOM9_MEM1_BLK_CFG_W
+  - name: MBC_DOM9_MEM1_BLK_CFG_W
+    byte_offset: 144256
     fieldset: TRDC_MBC2_MBC_DOM9_MEM1_BLK_CFG_W
   - name: MBC_DOM9_MEM1_BLK_NSE_W
-    byte_offset: 70560
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 136096
+    fieldset: TRDC_MBC2_MBC_DOM9_MEM1_BLK_NSE_W
+  - name: MBC_DOM9_MEM1_BLK_NSE_W
+    byte_offset: 144288
     fieldset: TRDC_MBC2_MBC_DOM9_MEM1_BLK_NSE_W
   - name: MBC_DOM9_MEM2_BLK_CFG_W
-    byte_offset: 70568
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 136104
+    fieldset: TRDC_MBC2_MBC_DOM9_MEM2_BLK_CFG_W
+  - name: MBC_DOM9_MEM2_BLK_CFG_W
+    byte_offset: 144296
     fieldset: TRDC_MBC2_MBC_DOM9_MEM2_BLK_CFG_W
   - name: MBC_DOM9_MEM2_BLK_NSE_W
-    byte_offset: 70600
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 136136
+    fieldset: TRDC_MBC2_MBC_DOM9_MEM2_BLK_NSE_W
+  - name: MBC_DOM9_MEM2_BLK_NSE_W
+    byte_offset: 144328
     fieldset: TRDC_MBC2_MBC_DOM9_MEM2_BLK_NSE_W
   - name: MBC_DOM10_MEM0_BLK_CFG_W
-    byte_offset: 70720
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 136256
+    fieldset: TRDC_MBC2_MBC_DOM10_MEM0_BLK_CFG_W
+  - name: MBC_DOM10_MEM0_BLK_CFG_W
+    byte_offset: 144448
     fieldset: TRDC_MBC2_MBC_DOM10_MEM0_BLK_CFG_W
   - name: MBC_DOM10_MEM0_BLK_NSE_W
-    byte_offset: 70976
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 136512
+    fieldset: TRDC_MBC2_MBC_DOM10_MEM0_BLK_NSE_W
+  - name: MBC_DOM10_MEM0_BLK_NSE_W
+    byte_offset: 144704
     fieldset: TRDC_MBC2_MBC_DOM10_MEM0_BLK_NSE_W
   - name: MBC_DOM10_MEM1_BLK_CFG_W
-    byte_offset: 71040
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 136576
+    fieldset: TRDC_MBC2_MBC_DOM10_MEM1_BLK_CFG_W
+  - name: MBC_DOM10_MEM1_BLK_CFG_W
+    byte_offset: 144768
     fieldset: TRDC_MBC2_MBC_DOM10_MEM1_BLK_CFG_W
   - name: MBC_DOM10_MEM1_BLK_NSE_W
-    byte_offset: 71072
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 136608
+    fieldset: TRDC_MBC2_MBC_DOM10_MEM1_BLK_NSE_W
+  - name: MBC_DOM10_MEM1_BLK_NSE_W
+    byte_offset: 144800
     fieldset: TRDC_MBC2_MBC_DOM10_MEM1_BLK_NSE_W
   - name: MBC_DOM10_MEM2_BLK_CFG_W
-    byte_offset: 71080
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 136616
+    fieldset: TRDC_MBC2_MBC_DOM10_MEM2_BLK_CFG_W
+  - name: MBC_DOM10_MEM2_BLK_CFG_W
+    byte_offset: 144808
     fieldset: TRDC_MBC2_MBC_DOM10_MEM2_BLK_CFG_W
   - name: MBC_DOM10_MEM2_BLK_NSE_W
-    byte_offset: 71112
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 136648
+    fieldset: TRDC_MBC2_MBC_DOM10_MEM2_BLK_NSE_W
+  - name: MBC_DOM10_MEM2_BLK_NSE_W
+    byte_offset: 144840
     fieldset: TRDC_MBC2_MBC_DOM10_MEM2_BLK_NSE_W
   - name: MBC_DOM11_MEM0_BLK_CFG_W
-    byte_offset: 71232
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 136768
+    fieldset: TRDC_MBC2_MBC_DOM11_MEM0_BLK_CFG_W
+  - name: MBC_DOM11_MEM0_BLK_CFG_W
+    byte_offset: 144960
     fieldset: TRDC_MBC2_MBC_DOM11_MEM0_BLK_CFG_W
   - name: MBC_DOM11_MEM0_BLK_NSE_W
-    byte_offset: 71488
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 137024
+    fieldset: TRDC_MBC2_MBC_DOM11_MEM0_BLK_NSE_W
+  - name: MBC_DOM11_MEM0_BLK_NSE_W
+    byte_offset: 145216
     fieldset: TRDC_MBC2_MBC_DOM11_MEM0_BLK_NSE_W
   - name: MBC_DOM11_MEM1_BLK_CFG_W
-    byte_offset: 71552
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 137088
+    fieldset: TRDC_MBC2_MBC_DOM11_MEM1_BLK_CFG_W
+  - name: MBC_DOM11_MEM1_BLK_CFG_W
+    byte_offset: 145280
     fieldset: TRDC_MBC2_MBC_DOM11_MEM1_BLK_CFG_W
   - name: MBC_DOM11_MEM1_BLK_NSE_W
-    byte_offset: 71584
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 137120
+    fieldset: TRDC_MBC2_MBC_DOM11_MEM1_BLK_NSE_W
+  - name: MBC_DOM11_MEM1_BLK_NSE_W
+    byte_offset: 145312
     fieldset: TRDC_MBC2_MBC_DOM11_MEM1_BLK_NSE_W
   - name: MBC_DOM11_MEM2_BLK_CFG_W
-    byte_offset: 71592
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 137128
+    fieldset: TRDC_MBC2_MBC_DOM11_MEM2_BLK_CFG_W
+  - name: MBC_DOM11_MEM2_BLK_CFG_W
+    byte_offset: 145320
     fieldset: TRDC_MBC2_MBC_DOM11_MEM2_BLK_CFG_W
   - name: MBC_DOM11_MEM2_BLK_NSE_W
-    byte_offset: 71624
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 137160
+    fieldset: TRDC_MBC2_MBC_DOM11_MEM2_BLK_NSE_W
+  - name: MBC_DOM11_MEM2_BLK_NSE_W
+    byte_offset: 145352
     fieldset: TRDC_MBC2_MBC_DOM11_MEM2_BLK_NSE_W
   - name: MBC_DOM12_MEM0_BLK_CFG_W
-    byte_offset: 71744
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 137280
+    fieldset: TRDC_MBC2_MBC_DOM12_MEM0_BLK_CFG_W
+  - name: MBC_DOM12_MEM0_BLK_CFG_W
+    byte_offset: 145472
     fieldset: TRDC_MBC2_MBC_DOM12_MEM0_BLK_CFG_W
   - name: MBC_DOM12_MEM0_BLK_NSE_W
-    byte_offset: 72000
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 137536
+    fieldset: TRDC_MBC2_MBC_DOM12_MEM0_BLK_NSE_W
+  - name: MBC_DOM12_MEM0_BLK_NSE_W
+    byte_offset: 145728
     fieldset: TRDC_MBC2_MBC_DOM12_MEM0_BLK_NSE_W
   - name: MBC_DOM12_MEM1_BLK_CFG_W
-    byte_offset: 72064
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 137600
+    fieldset: TRDC_MBC2_MBC_DOM12_MEM1_BLK_CFG_W
+  - name: MBC_DOM12_MEM1_BLK_CFG_W
+    byte_offset: 145792
     fieldset: TRDC_MBC2_MBC_DOM12_MEM1_BLK_CFG_W
   - name: MBC_DOM12_MEM1_BLK_NSE_W
-    byte_offset: 72096
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 137632
+    fieldset: TRDC_MBC2_MBC_DOM12_MEM1_BLK_NSE_W
+  - name: MBC_DOM12_MEM1_BLK_NSE_W
+    byte_offset: 145824
     fieldset: TRDC_MBC2_MBC_DOM12_MEM1_BLK_NSE_W
   - name: MBC_DOM12_MEM2_BLK_CFG_W
-    byte_offset: 72104
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 137640
+    fieldset: TRDC_MBC2_MBC_DOM12_MEM2_BLK_CFG_W
+  - name: MBC_DOM12_MEM2_BLK_CFG_W
+    byte_offset: 145832
     fieldset: TRDC_MBC2_MBC_DOM12_MEM2_BLK_CFG_W
   - name: MBC_DOM12_MEM2_BLK_NSE_W
-    byte_offset: 72136
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 137672
+    fieldset: TRDC_MBC2_MBC_DOM12_MEM2_BLK_NSE_W
+  - name: MBC_DOM12_MEM2_BLK_NSE_W
+    byte_offset: 145864
     fieldset: TRDC_MBC2_MBC_DOM12_MEM2_BLK_NSE_W
   - name: MBC_DOM13_MEM0_BLK_CFG_W
-    byte_offset: 72256
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 137792
+    fieldset: TRDC_MBC2_MBC_DOM13_MEM0_BLK_CFG_W
+  - name: MBC_DOM13_MEM0_BLK_CFG_W
+    byte_offset: 145984
     fieldset: TRDC_MBC2_MBC_DOM13_MEM0_BLK_CFG_W
   - name: MBC_DOM13_MEM0_BLK_NSE_W
-    byte_offset: 72512
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 138048
+    fieldset: TRDC_MBC2_MBC_DOM13_MEM0_BLK_NSE_W
+  - name: MBC_DOM13_MEM0_BLK_NSE_W
+    byte_offset: 146240
     fieldset: TRDC_MBC2_MBC_DOM13_MEM0_BLK_NSE_W
   - name: MBC_DOM13_MEM1_BLK_CFG_W
-    byte_offset: 72576
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 138112
+    fieldset: TRDC_MBC2_MBC_DOM13_MEM1_BLK_CFG_W
+  - name: MBC_DOM13_MEM1_BLK_CFG_W
+    byte_offset: 146304
     fieldset: TRDC_MBC2_MBC_DOM13_MEM1_BLK_CFG_W
   - name: MBC_DOM13_MEM1_BLK_NSE_W
-    byte_offset: 72608
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 138144
+    fieldset: TRDC_MBC2_MBC_DOM13_MEM1_BLK_NSE_W
+  - name: MBC_DOM13_MEM1_BLK_NSE_W
+    byte_offset: 146336
     fieldset: TRDC_MBC2_MBC_DOM13_MEM1_BLK_NSE_W
   - name: MBC_DOM13_MEM2_BLK_CFG_W
-    byte_offset: 72616
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 138152
+    fieldset: TRDC_MBC2_MBC_DOM13_MEM2_BLK_CFG_W
+  - name: MBC_DOM13_MEM2_BLK_CFG_W
+    byte_offset: 146344
     fieldset: TRDC_MBC2_MBC_DOM13_MEM2_BLK_CFG_W
   - name: MBC_DOM13_MEM2_BLK_NSE_W
-    byte_offset: 72648
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 138184
+    fieldset: TRDC_MBC2_MBC_DOM13_MEM2_BLK_NSE_W
+  - name: MBC_DOM13_MEM2_BLK_NSE_W
+    byte_offset: 146376
     fieldset: TRDC_MBC2_MBC_DOM13_MEM2_BLK_NSE_W
   - name: MBC_DOM14_MEM0_BLK_CFG_W
-    byte_offset: 72768
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 138304
+    fieldset: TRDC_MBC2_MBC_DOM14_MEM0_BLK_CFG_W
+  - name: MBC_DOM14_MEM0_BLK_CFG_W
+    byte_offset: 146496
     fieldset: TRDC_MBC2_MBC_DOM14_MEM0_BLK_CFG_W
   - name: MBC_DOM14_MEM0_BLK_NSE_W
-    byte_offset: 73024
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 138560
+    fieldset: TRDC_MBC2_MBC_DOM14_MEM0_BLK_NSE_W
+  - name: MBC_DOM14_MEM0_BLK_NSE_W
+    byte_offset: 146752
     fieldset: TRDC_MBC2_MBC_DOM14_MEM0_BLK_NSE_W
   - name: MBC_DOM14_MEM1_BLK_CFG_W
-    byte_offset: 73088
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 138624
+    fieldset: TRDC_MBC2_MBC_DOM14_MEM1_BLK_CFG_W
+  - name: MBC_DOM14_MEM1_BLK_CFG_W
+    byte_offset: 146816
     fieldset: TRDC_MBC2_MBC_DOM14_MEM1_BLK_CFG_W
   - name: MBC_DOM14_MEM1_BLK_NSE_W
-    byte_offset: 73120
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 138656
+    fieldset: TRDC_MBC2_MBC_DOM14_MEM1_BLK_NSE_W
+  - name: MBC_DOM14_MEM1_BLK_NSE_W
+    byte_offset: 146848
     fieldset: TRDC_MBC2_MBC_DOM14_MEM1_BLK_NSE_W
   - name: MBC_DOM14_MEM2_BLK_CFG_W
-    byte_offset: 73128
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 138664
+    fieldset: TRDC_MBC2_MBC_DOM14_MEM2_BLK_CFG_W
+  - name: MBC_DOM14_MEM2_BLK_CFG_W
+    byte_offset: 146856
     fieldset: TRDC_MBC2_MBC_DOM14_MEM2_BLK_CFG_W
   - name: MBC_DOM14_MEM2_BLK_NSE_W
-    byte_offset: 73160
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 138696
+    fieldset: TRDC_MBC2_MBC_DOM14_MEM2_BLK_NSE_W
+  - name: MBC_DOM14_MEM2_BLK_NSE_W
+    byte_offset: 146888
     fieldset: TRDC_MBC2_MBC_DOM14_MEM2_BLK_NSE_W
   - name: MBC_DOM15_MEM0_BLK_CFG_W
-    byte_offset: 73280
-    array:
-      len: 16
-      stride: 4
+    byte_offset: 138816
+    fieldset: TRDC_MBC2_MBC_DOM15_MEM0_BLK_CFG_W
+  - name: MBC_DOM15_MEM0_BLK_CFG_W
+    byte_offset: 147008
     fieldset: TRDC_MBC2_MBC_DOM15_MEM0_BLK_CFG_W
   - name: MBC_DOM15_MEM0_BLK_NSE_W
-    byte_offset: 73536
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 139072
+    fieldset: TRDC_MBC2_MBC_DOM15_MEM0_BLK_NSE_W
+  - name: MBC_DOM15_MEM0_BLK_NSE_W
+    byte_offset: 147264
     fieldset: TRDC_MBC2_MBC_DOM15_MEM0_BLK_NSE_W
   - name: MBC_DOM15_MEM1_BLK_CFG_W
-    byte_offset: 73600
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 139136
+    fieldset: TRDC_MBC2_MBC_DOM15_MEM1_BLK_CFG_W
+  - name: MBC_DOM15_MEM1_BLK_CFG_W
+    byte_offset: 147328
     fieldset: TRDC_MBC2_MBC_DOM15_MEM1_BLK_CFG_W
   - name: MBC_DOM15_MEM1_BLK_NSE_W
-    byte_offset: 73632
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 139168
+    fieldset: TRDC_MBC2_MBC_DOM15_MEM1_BLK_NSE_W
+  - name: MBC_DOM15_MEM1_BLK_NSE_W
+    byte_offset: 147360
     fieldset: TRDC_MBC2_MBC_DOM15_MEM1_BLK_NSE_W
   - name: MBC_DOM15_MEM2_BLK_CFG_W
-    byte_offset: 73640
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 139176
+    fieldset: TRDC_MBC2_MBC_DOM15_MEM2_BLK_CFG_W
+  - name: MBC_DOM15_MEM2_BLK_CFG_W
+    byte_offset: 147368
     fieldset: TRDC_MBC2_MBC_DOM15_MEM2_BLK_CFG_W
   - name: MBC_DOM15_MEM2_BLK_NSE_W
-    byte_offset: 73672
-    array:
-      len: 1
-      stride: 4
+    byte_offset: 139208
+    fieldset: TRDC_MBC2_MBC_DOM15_MEM2_BLK_NSE_W
+  - name: MBC_DOM15_MEM2_BLK_NSE_W
+    byte_offset: 147400
     fieldset: TRDC_MBC2_MBC_DOM15_MEM2_BLK_NSE_W
   - name: MRC_GLBCFG
-    byte_offset: 81920
+    byte_offset: 163840
     fieldset: TRDC_MBC2_MRC_GLBCFG
   - name: MRC_NSE_RGN_INDIRECT
-    byte_offset: 81936
+    byte_offset: 163856
   - name: MRC_NSE_RGN_SET
-    byte_offset: 81940
+    byte_offset: 163860
     fieldset: TRDC_MBC2_MRC_NSE_RGN_SET
   - name: MRC_NSE_RGN_CLR
-    byte_offset: 81944
+    byte_offset: 163864
     fieldset: TRDC_MBC2_MRC_NSE_RGN_CLR
   - name: MRC_NSE_RGN_CLR_ALL
-    byte_offset: 81948
+    byte_offset: 163868
   - name: MRC_GLBAC
-    byte_offset: 81952
-    array:
-      len: 8
-      stride: 4
+    byte_offset: 163872
     fieldset: TRDC_MBC2_MRC_GLBAC
   - name: MRC_DOM0_RGD_NSE
-    byte_offset: 82112
+    byte_offset: 164032
     fieldset: TRDC_MBC2_MRC_DOM0_RGD_NSE
   - name: MRC_DOM1_RGD_NSE
-    byte_offset: 82368
+    byte_offset: 164288
     fieldset: TRDC_MBC2_MRC_DOM1_RGD_NSE
   - name: MRC_DOM2_RGD_NSE
-    byte_offset: 82624
+    byte_offset: 164544
     fieldset: TRDC_MBC2_MRC_DOM2_RGD_NSE
   - name: MRC_DOM3_RGD_NSE
-    byte_offset: 82880
+    byte_offset: 164800
     fieldset: TRDC_MBC2_MRC_DOM3_RGD_NSE
   - name: MRC_DOM4_RGD_NSE
-    byte_offset: 83136
+    byte_offset: 165056
     fieldset: TRDC_MBC2_MRC_DOM4_RGD_NSE
   - name: MRC_DOM5_RGD_NSE
-    byte_offset: 83392
+    byte_offset: 165312
     fieldset: TRDC_MBC2_MRC_DOM5_RGD_NSE
   - name: MRC_DOM6_RGD_NSE
-    byte_offset: 83648
+    byte_offset: 165568
     fieldset: TRDC_MBC2_MRC_DOM6_RGD_NSE
   - name: MRC_DOM7_RGD_NSE
-    byte_offset: 83904
+    byte_offset: 165824
     fieldset: TRDC_MBC2_MRC_DOM7_RGD_NSE
   - name: MRC_DOM8_RGD_NSE
-    byte_offset: 84160
+    byte_offset: 166080
     fieldset: TRDC_MBC2_MRC_DOM8_RGD_NSE
   - name: MRC_DOM9_RGD_NSE
-    byte_offset: 84416
+    byte_offset: 166336
     fieldset: TRDC_MBC2_MRC_DOM9_RGD_NSE
   - name: MRC_DOM10_RGD_NSE
-    byte_offset: 84672
+    byte_offset: 166592
     fieldset: TRDC_MBC2_MRC_DOM10_RGD_NSE
   - name: MRC_DOM11_RGD_NSE
-    byte_offset: 84928
+    byte_offset: 166848
     fieldset: TRDC_MBC2_MRC_DOM11_RGD_NSE
   - name: MRC_DOM12_RGD_NSE
-    byte_offset: 85184
+    byte_offset: 167104
     fieldset: TRDC_MBC2_MRC_DOM12_RGD_NSE
   - name: MRC_DOM13_RGD_NSE
-    byte_offset: 85440
+    byte_offset: 167360
     fieldset: TRDC_MBC2_MRC_DOM13_RGD_NSE
   - name: MRC_DOM14_RGD_NSE
-    byte_offset: 85696
+    byte_offset: 167616
     fieldset: TRDC_MBC2_MRC_DOM14_RGD_NSE
   - name: MRC_DOM15_RGD_NSE
-    byte_offset: 85952
+    byte_offset: 167872
     fieldset: TRDC_MBC2_MRC_DOM15_RGD_NSE
 fieldset/TRDC_MBC2_TRDC_CR:
   description: ''

@@ -23,10 +23,28 @@ block/TPM:
     byte_offset: 28
     fieldset: TPM_STATUS
   - name: CnSC
-    byte_offset: 32
+    byte_offset: 64
+    fieldset: TPM_CnSC
+  - name: CnSC
+    byte_offset: 72
+    fieldset: TPM_CnSC
+  - name: CnSC
+    byte_offset: 80
+    fieldset: TPM_CnSC
+  - name: CnSC
+    byte_offset: 88
     fieldset: TPM_CnSC
   - name: CnV
-    byte_offset: 36
+    byte_offset: 68
+    fieldset: TPM_CnV
+  - name: CnV
+    byte_offset: 76
+    fieldset: TPM_CnV
+  - name: CnV
+    byte_offset: 84
+    fieldset: TPM_CnV
+  - name: CnV
+    byte_offset: 92
     fieldset: TPM_CnV
   - name: COMBINE
     byte_offset: 100

@@ -64,193 +64,771 @@ block/CAN:
   - name: CS
     byte_offset: 128
     fieldset: CAN_CS
-  - name: ID
-    byte_offset: 132
-    fieldset: CAN_ID
-  - name: WORD
-    byte_offset: 136
-    array:
-      len: 2
-      stride: 4
   - name: CS
-    byte_offset: 128
+    byte_offset: 144
     fieldset: CAN_CS
-  - name: ID
-    byte_offset: 132
-    fieldset: CAN_ID
-  - name: WORD
-    byte_offset: 136
-    array:
-      len: 4
-      stride: 4
+  - name: CS
+    byte_offset: 160
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 176
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 192
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 208
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 224
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 240
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 256
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 272
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 288
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 304
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 320
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 336
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 352
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 368
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 384
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 400
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 416
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 432
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 448
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 464
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 480
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 496
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 512
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 528
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 544
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 560
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 576
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 592
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 608
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 624
+    fieldset: CAN_CS
   - name: CS
     byte_offset: 640
     fieldset: CAN_CS
-  - name: ID
-    byte_offset: 644
-    fieldset: CAN_ID
-  - name: WORD
-    byte_offset: 648
-    array:
-      len: 4
-      stride: 4
+  - name: CS
+    byte_offset: 656
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 672
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 688
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 704
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 720
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 736
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 752
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 768
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 784
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 800
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 816
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 832
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 848
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 864
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 880
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 896
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 912
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 928
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 944
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 960
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 976
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 992
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1008
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1024
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1040
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1056
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1072
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1088
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1104
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1120
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1136
+    fieldset: CAN_CS
   - name: CS
     byte_offset: 1152
     fieldset: CAN_CS
-  - name: ID
-    byte_offset: 1156
-    fieldset: CAN_ID
-  - name: WORD
-    byte_offset: 1160
-    array:
-      len: 4
-      stride: 4
   - name: CS
-    byte_offset: 128
+    byte_offset: 1168
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1184
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1200
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1216
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1232
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1248
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1264
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1280
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1296
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1312
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1328
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1344
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1360
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1376
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1392
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1408
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1424
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1440
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1456
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1472
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1488
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1504
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1520
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1536
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1552
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1568
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1584
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1600
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1616
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1632
+    fieldset: CAN_CS
+  - name: CS
+    byte_offset: 1648
     fieldset: CAN_CS
   - name: ID
     byte_offset: 132
     fieldset: CAN_ID
-  - name: WORD
-    byte_offset: 136
-    array:
-      len: 8
-      stride: 4
-  - name: CS
-    byte_offset: 640
-    fieldset: CAN_CS
+  - name: ID
+    byte_offset: 148
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 164
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 180
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 196
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 212
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 228
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 244
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 260
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 276
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 292
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 308
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 324
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 340
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 356
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 372
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 388
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 404
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 420
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 436
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 452
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 468
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 484
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 500
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 516
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 532
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 548
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 564
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 580
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 596
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 612
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 628
+    fieldset: CAN_ID
   - name: ID
     byte_offset: 644
     fieldset: CAN_ID
-  - name: WORD
-    byte_offset: 648
-    array:
-      len: 8
-      stride: 4
-  - name: CS
-    byte_offset: 1152
-    fieldset: CAN_CS
+  - name: ID
+    byte_offset: 660
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 676
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 692
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 708
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 724
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 740
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 756
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 772
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 788
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 804
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 820
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 836
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 852
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 868
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 884
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 900
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 916
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 932
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 948
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 964
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 980
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 996
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1012
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1028
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1044
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1060
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1076
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1092
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1108
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1124
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1140
+    fieldset: CAN_ID
   - name: ID
     byte_offset: 1156
     fieldset: CAN_ID
-  - name: WORD
-    byte_offset: 1160
-    array:
-      len: 8
-      stride: 4
-  - name: CS
-    byte_offset: 128
-    fieldset: CAN_CS
   - name: ID
-    byte_offset: 132
+    byte_offset: 1172
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1188
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1204
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1220
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1236
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1252
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1268
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1284
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1300
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1316
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1332
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1348
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1364
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1380
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1396
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1412
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1428
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1444
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1460
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1476
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1492
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1508
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1524
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1540
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1556
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1572
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1588
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1604
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1620
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1636
+    fieldset: CAN_ID
+  - name: ID
+    byte_offset: 1652
     fieldset: CAN_ID
   - name: WORD
     byte_offset: 136
-    array:
-      len: 16
-      stride: 4
-  - name: CS
-    byte_offset: 640
-    fieldset: CAN_CS
-  - name: ID
-    byte_offset: 644
-    fieldset: CAN_ID
+  - name: WORD
+    byte_offset: 152
+  - name: WORD
+    byte_offset: 168
+  - name: WORD
+    byte_offset: 184
+  - name: WORD
+    byte_offset: 200
+  - name: WORD
+    byte_offset: 216
+  - name: WORD
+    byte_offset: 232
+  - name: WORD
+    byte_offset: 248
+  - name: WORD
+    byte_offset: 264
+  - name: WORD
+    byte_offset: 280
+  - name: WORD
+    byte_offset: 296
+  - name: WORD
+    byte_offset: 312
+  - name: WORD
+    byte_offset: 328
+  - name: WORD
+    byte_offset: 344
+  - name: WORD
+    byte_offset: 360
+  - name: WORD
+    byte_offset: 376
+  - name: WORD
+    byte_offset: 392
+  - name: WORD
+    byte_offset: 408
+  - name: WORD
+    byte_offset: 424
+  - name: WORD
+    byte_offset: 440
+  - name: WORD
+    byte_offset: 456
+  - name: WORD
+    byte_offset: 472
+  - name: WORD
+    byte_offset: 488
+  - name: WORD
+    byte_offset: 504
+  - name: WORD
+    byte_offset: 520
+  - name: WORD
+    byte_offset: 536
+  - name: WORD
+    byte_offset: 552
+  - name: WORD
+    byte_offset: 568
+  - name: WORD
+    byte_offset: 584
+  - name: WORD
+    byte_offset: 600
+  - name: WORD
+    byte_offset: 616
+  - name: WORD
+    byte_offset: 632
   - name: WORD
     byte_offset: 648
-    array:
-      len: 16
-      stride: 4
-  - name: CS
-    byte_offset: 1152
-    fieldset: CAN_CS
-  - name: ID
-    byte_offset: 1156
-    fieldset: CAN_ID
+  - name: WORD
+    byte_offset: 664
+  - name: WORD
+    byte_offset: 680
+  - name: WORD
+    byte_offset: 696
+  - name: WORD
+    byte_offset: 712
+  - name: WORD
+    byte_offset: 728
+  - name: WORD
+    byte_offset: 744
+  - name: WORD
+    byte_offset: 760
+  - name: WORD
+    byte_offset: 776
+  - name: WORD
+    byte_offset: 792
+  - name: WORD
+    byte_offset: 808
+  - name: WORD
+    byte_offset: 824
+  - name: WORD
+    byte_offset: 840
+  - name: WORD
+    byte_offset: 856
+  - name: WORD
+    byte_offset: 872
+  - name: WORD
+    byte_offset: 888
+  - name: WORD
+    byte_offset: 904
+  - name: WORD
+    byte_offset: 920
+  - name: WORD
+    byte_offset: 936
+  - name: WORD
+    byte_offset: 952
+  - name: WORD
+    byte_offset: 968
+  - name: WORD
+    byte_offset: 984
+  - name: WORD
+    byte_offset: 1000
+  - name: WORD
+    byte_offset: 1016
+  - name: WORD
+    byte_offset: 1032
+  - name: WORD
+    byte_offset: 1048
+  - name: WORD
+    byte_offset: 1064
+  - name: WORD
+    byte_offset: 1080
+  - name: WORD
+    byte_offset: 1096
+  - name: WORD
+    byte_offset: 1112
+  - name: WORD
+    byte_offset: 1128
+  - name: WORD
+    byte_offset: 1144
   - name: WORD
     byte_offset: 1160
-    array:
-      len: 16
-      stride: 4
-  - name: CS
-    byte_offset: 128
-    fieldset: CAN_CS
-  - name: ID
-    byte_offset: 132
-    fieldset: CAN_ID
-  - name: WORD0
-    byte_offset: 136
-  - name: WORD1
-    byte_offset: 140
-  - name: RXIMR
-    byte_offset: 2176
-    array:
-      len: 96
-      stride: 4
-    fieldset: CAN_RXIMR
-  - name: MECR
-    byte_offset: 2784
-    fieldset: CAN_MECR
-  - name: ERRIAR
-    byte_offset: 2788
-  - name: ERRIDPR
-    byte_offset: 2792
-    fieldset: CAN_ERRIDPR
-  - name: ERRIPPR
-    byte_offset: 2796
-    fieldset: CAN_ERRIPPR
-  - name: RERRAR
-    byte_offset: 2800
-    fieldset: CAN_RERRAR
-  - name: RERRDR
-    byte_offset: 2804
-    fieldset: CAN_RERRDR
-  - name: RERRSYNR
-    byte_offset: 2808
-    fieldset: CAN_RERRSYNR
-  - name: ERRSR
-    byte_offset: 2812
-    fieldset: CAN_ERRSR
-  - name: EPRS
-    byte_offset: 3056
-    fieldset: CAN_EPRS
-  - name: ENCBT
-    byte_offset: 3060
-    fieldset: CAN_ENCBT
-  - name: EDCBT
-    byte_offset: 3064
-    fieldset: CAN_EDCBT
-  - name: ETDC
-    byte_offset: 3068
-    fieldset: CAN_ETDC
-  - name: FDCTRL
-    byte_offset: 3072
-    fieldset: CAN_FDCTRL
-  - name: FDCBT
-    byte_offset: 3076
-    fieldset: CAN_FDCBT
-  - name: FDCRC
-    byte_offset: 3080
-  - name: ERFCR
-    byte_offset: 3084
-    fieldset: CAN_ERFCR
-  - name: ERFIER
-    byte_offset: 3088
-    fieldset: CAN_ERFIER
-  - name: ERFSR
-    byte_offset: 3092
-    fieldset: CAN_ERFSR
-  - name: HR_TIME_STAMP
-    byte_offset: 3120
-    array:
-      len: 96
-      stride: 4
-    fieldset: CAN_HR_TIME_STAMP
-  - name: ERFFEL
-    byte_offset: 12288
-    array:
-      len: 128
-      stride: 4
-    fieldset: CAN_ERFFEL
+  - name: WORD
+    byte_offset: 1176
+  - name: WORD
+    byte_offset: 1192
+  - name: WORD
+    byte_offset: 1208
+  - name: WORD
+    byte_offset: 1224
+  - name: WORD
+    byte_offset: 1240
+  - name: WORD
+    byte_offset: 1256
+  - name: WORD
+    byte_offset: 1272
+  - name: WORD
+    byte_offset: 1288
+  - name: WORD
+    byte_offset: 1304
+  - name: WORD
+    byte_offset: 1320
+  - name: WORD
+    byte_offset: 1336
+  - name: WORD
+    byte_offset: 1352
+  - name: WORD
+    byte_offset: 1368
+  - name: WORD
+    byte_offset: 1384
+  - name: WORD
+    byte_offset: 1400
+  - name: WORD
+    byte_offset: 1416
+  - name: WORD
+    byte_offset: 1432
+  - name: WORD
+    byte_offset: 1448
+  - name: WORD
+    byte_offset: 1464
+  - name: WORD
+    byte_offset: 1480
+  - name: WORD
+    byte_offset: 1496
+  - name: WORD
+    byte_offset: 1512
+  - name: WORD
+    byte_offset: 1528
+  - name: WORD
+    byte_offset: 1544
+  - name: WORD
+    byte_offset: 1560
+  - name: WORD
+    byte_offset: 1576
+  - name: WORD
+    byte_offset: 1592
+  - name: WORD
+    byte_offset: 1608
+  - name: WORD
+    byte_offset: 1624
+  - name: WORD
+    byte_offset: 1640
+  - name: WORD
+    byte_offset: 1656
 fieldset/CAN_MCR:
   description: ''
   fields:

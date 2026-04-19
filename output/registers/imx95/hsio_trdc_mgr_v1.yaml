@@ -88,16 +88,40 @@ block/HSIO_TRDC_MGR:
       stride: 4
     fieldset: HSIO_TRDC_MGR_TRDC_DERRLOC
   - name: W0
-    byte_offset: 1024
+    byte_offset: 2048
+    fieldset: HSIO_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 2064
+    fieldset: HSIO_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 2080
     fieldset: HSIO_TRDC_MGR_W0
   - name: W1
-    byte_offset: 1028
+    byte_offset: 2052
+    fieldset: HSIO_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 2068
+    fieldset: HSIO_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 2084
     fieldset: HSIO_TRDC_MGR_W1
   - name: W2
-    byte_offset: 1032
+    byte_offset: 2056
+    fieldset: HSIO_TRDC_MGR_W2
+  - name: W2
+    byte_offset: 2072
+    fieldset: HSIO_TRDC_MGR_W2
+  - name: W2
+    byte_offset: 2088
     fieldset: HSIO_TRDC_MGR_W2
   - name: W3
-    byte_offset: 1036
+    byte_offset: 2060
+    fieldset: HSIO_TRDC_MGR_W3
+  - name: W3
+    byte_offset: 2076
+    fieldset: HSIO_TRDC_MGR_W3
+  - name: W3
+    byte_offset: 2092
     fieldset: HSIO_TRDC_MGR_W3
   - name: MDA_W0_0_DFMT1
     byte_offset: 2048

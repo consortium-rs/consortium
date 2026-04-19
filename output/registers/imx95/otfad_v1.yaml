@@ -8,22 +8,52 @@ block/OTFAD:
     byte_offset: 3076
     fieldset: OTFAD_SR
   - name: KEY
-    byte_offset: 3328
-    array:
-      len: 4
-      stride: 4
+    byte_offset: 6656
+    fieldset: OTFAD_KEY
+  - name: KEY
+    byte_offset: 6720
+    fieldset: OTFAD_KEY
+  - name: KEY
+    byte_offset: 6784
+    fieldset: OTFAD_KEY
+  - name: KEY
+    byte_offset: 6848
     fieldset: OTFAD_KEY
   - name: CTR
-    byte_offset: 3344
-    array:
-      len: 2
-      stride: 4
+    byte_offset: 6672
+    fieldset: OTFAD_CTR
+  - name: CTR
+    byte_offset: 6736
+    fieldset: OTFAD_CTR
+  - name: CTR
+    byte_offset: 6800
+    fieldset: OTFAD_CTR
+  - name: CTR
+    byte_offset: 6864
     fieldset: OTFAD_CTR
   - name: RGD_W0
-    byte_offset: 3352
+    byte_offset: 6680
+    fieldset: OTFAD_RGD_W0
+  - name: RGD_W0
+    byte_offset: 6744
+    fieldset: OTFAD_RGD_W0
+  - name: RGD_W0
+    byte_offset: 6808
+    fieldset: OTFAD_RGD_W0
+  - name: RGD_W0
+    byte_offset: 6872
     fieldset: OTFAD_RGD_W0
   - name: RGD_W1
-    byte_offset: 3356
+    byte_offset: 6684
+    fieldset: OTFAD_RGD_W1
+  - name: RGD_W1
+    byte_offset: 6748
+    fieldset: OTFAD_RGD_W1
+  - name: RGD_W1
+    byte_offset: 6812
+    fieldset: OTFAD_RGD_W1
+  - name: RGD_W1
+    byte_offset: 6876
     fieldset: OTFAD_RGD_W1
 fieldset/OTFAD_CR:
   description: ''

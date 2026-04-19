@@ -8,16 +8,52 @@ block/INTM:
     byte_offset: 4
     fieldset: INTM_INTM_IACK
   - name: INTM_IRQSEL
-    byte_offset: 8
+    byte_offset: 16
+    fieldset: INTM_INTM_IRQSEL
+  - name: INTM_IRQSEL
+    byte_offset: 32
+    fieldset: INTM_INTM_IRQSEL
+  - name: INTM_IRQSEL
+    byte_offset: 48
+    fieldset: INTM_INTM_IRQSEL
+  - name: INTM_IRQSEL
+    byte_offset: 64
     fieldset: INTM_INTM_IRQSEL
   - name: INTM_LATENCY
-    byte_offset: 12
+    byte_offset: 20
+    fieldset: INTM_INTM_LATENCY
+  - name: INTM_LATENCY
+    byte_offset: 36
+    fieldset: INTM_INTM_LATENCY
+  - name: INTM_LATENCY
+    byte_offset: 52
+    fieldset: INTM_INTM_LATENCY
+  - name: INTM_LATENCY
+    byte_offset: 68
     fieldset: INTM_INTM_LATENCY
   - name: INTM_TIMER
-    byte_offset: 16
+    byte_offset: 24
+    fieldset: INTM_INTM_TIMER
+  - name: INTM_TIMER
+    byte_offset: 40
+    fieldset: INTM_INTM_TIMER
+  - name: INTM_TIMER
+    byte_offset: 56
+    fieldset: INTM_INTM_TIMER
+  - name: INTM_TIMER
+    byte_offset: 72
     fieldset: INTM_INTM_TIMER
   - name: INTM_STATUS
-    byte_offset: 20
+    byte_offset: 28
+    fieldset: INTM_INTM_STATUS
+  - name: INTM_STATUS
+    byte_offset: 44
+    fieldset: INTM_INTM_STATUS
+  - name: INTM_STATUS
+    byte_offset: 60
+    fieldset: INTM_INTM_STATUS
+  - name: INTM_STATUS
+    byte_offset: 76
     fieldset: INTM_INTM_STATUS
 fieldset/INTM_INTM_MM:
   description: ''

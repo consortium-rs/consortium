@@ -21,16 +21,49 @@ block/VPU_JPEG_ENC_WRAP:
   - name: STM_CTRL
     byte_offset: 44
   - name: SLOT_STATUS
-    byte_offset: 65536
+    byte_offset: 131072
+    fieldset: VPU_JPEG_ENC_WRAP_SLOT_STATUS
+  - name: SLOT_STATUS
+    byte_offset: 196608
+    fieldset: VPU_JPEG_ENC_WRAP_SLOT_STATUS
+  - name: SLOT_STATUS
+    byte_offset: 262144
+    fieldset: VPU_JPEG_ENC_WRAP_SLOT_STATUS
+  - name: SLOT_STATUS
+    byte_offset: 327680
     fieldset: VPU_JPEG_ENC_WRAP_SLOT_STATUS
   - name: SLOT_IRQ_EN
-    byte_offset: 65540
+    byte_offset: 131076
+  - name: SLOT_IRQ_EN
+    byte_offset: 196612
+  - name: SLOT_IRQ_EN
+    byte_offset: 262148
+  - name: SLOT_IRQ_EN
+    byte_offset: 327684
   - name: SLOT_BUF_PTR
-    byte_offset: 65544
+    byte_offset: 131080
+  - name: SLOT_BUF_PTR
+    byte_offset: 196616
+  - name: SLOT_BUF_PTR
+    byte_offset: 262152
+  - name: SLOT_BUF_PTR
+    byte_offset: 327688
   - name: SLOT_CUR_DESCPT_PTR
-    byte_offset: 65548
+    byte_offset: 131084
+  - name: SLOT_CUR_DESCPT_PTR
+    byte_offset: 196620
+  - name: SLOT_CUR_DESCPT_PTR
+    byte_offset: 262156
+  - name: SLOT_CUR_DESCPT_PTR
+    byte_offset: 327692
   - name: SLOT_NXT_DESCPT_PTR
-    byte_offset: 65552
+    byte_offset: 131088
+  - name: SLOT_NXT_DESCPT_PTR
+    byte_offset: 196624
+  - name: SLOT_NXT_DESCPT_PTR
+    byte_offset: 262160
+  - name: SLOT_NXT_DESCPT_PTR
+    byte_offset: 327696
 fieldset/VPU_JPEG_ENC_WRAP_GLB_CTRL_JPG_ENC:
   description: ''
   fields:

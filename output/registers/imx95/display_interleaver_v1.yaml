@@ -3,14 +3,25 @@ block/DISPLAY_INTERLEAVER:
   items:
   - name: CTRL
     byte_offset: 0
+  - name: CTRL
+    byte_offset: 65536
   - name: SWRST
     byte_offset: 32
+  - name: SWRST
+    byte_offset: 65568
   - name: IE
     byte_offset: 48
+  - name: IE
+    byte_offset: 65584
   - name: IS
     byte_offset: 64
+  - name: IS
+    byte_offset: 65600
   - name: ICTRL
     byte_offset: 80
+    fieldset: DISPLAY_INTERLEAVER_ICTRL
+  - name: ICTRL
+    byte_offset: 65616
     fieldset: DISPLAY_INTERLEAVER_ICTRL
 fieldset/DISPLAY_INTERLEAVER_CTRL_HSYNC:
   description: ''

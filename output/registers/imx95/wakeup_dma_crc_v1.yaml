@@ -4,12 +4,61 @@ block/WAKEUP_DMA_CRC:
   - name: GEC
     byte_offset: 0
   - name: CTL
-    byte_offset: 16
+    byte_offset: 32
+    fieldset: WAKEUP_DMA_CRC_CTL
+  - name: CTL
+    byte_offset: 48
+    fieldset: WAKEUP_DMA_CRC_CTL
+  - name: CTL
+    byte_offset: 64
+    fieldset: WAKEUP_DMA_CRC_CTL
+  - name: CTL
+    byte_offset: 80
+    fieldset: WAKEUP_DMA_CRC_CTL
+  - name: CTL
+    byte_offset: 96
+    fieldset: WAKEUP_DMA_CRC_CTL
+  - name: CTL
+    byte_offset: 112
+    fieldset: WAKEUP_DMA_CRC_CTL
+  - name: CTL
+    byte_offset: 128
+    fieldset: WAKEUP_DMA_CRC_CTL
+  - name: CTL
+    byte_offset: 144
     fieldset: WAKEUP_DMA_CRC_CTL
   - name: ICRC
-    byte_offset: 20
+    byte_offset: 36
+  - name: ICRC
+    byte_offset: 52
+  - name: ICRC
+    byte_offset: 68
+  - name: ICRC
+    byte_offset: 84
+  - name: ICRC
+    byte_offset: 100
+  - name: ICRC
+    byte_offset: 116
+  - name: ICRC
+    byte_offset: 132
+  - name: ICRC
+    byte_offset: 148
   - name: FCRC
-    byte_offset: 24
+    byte_offset: 40
+  - name: FCRC
+    byte_offset: 56
+  - name: FCRC
+    byte_offset: 72
+  - name: FCRC
+    byte_offset: 88
+  - name: FCRC
+    byte_offset: 104
+  - name: FCRC
+    byte_offset: 120
+  - name: FCRC
+    byte_offset: 136
+  - name: FCRC
+    byte_offset: 152
 fieldset/WAKEUP_DMA_CRC_GEC_GBL:
   description: ''
   fields:

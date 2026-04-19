@@ -4,8 +4,50 @@ block/AXBS:
   - name: PRS
     byte_offset: 0
     fieldset: AXBS_PRS
+  - name: PRS
+    byte_offset: 256
+    fieldset: AXBS_PRS
+  - name: PRS
+    byte_offset: 512
+    fieldset: AXBS_PRS
+  - name: PRS
+    byte_offset: 768
+    fieldset: AXBS_PRS
+  - name: PRS
+    byte_offset: 1024
+    fieldset: AXBS_PRS
+  - name: PRS
+    byte_offset: 1280
+    fieldset: AXBS_PRS
+  - name: PRS
+    byte_offset: 1536
+    fieldset: AXBS_PRS
+  - name: PRS
+    byte_offset: 1792
+    fieldset: AXBS_PRS
   - name: CRS
     byte_offset: 16
+    fieldset: AXBS_CRS
+  - name: CRS
+    byte_offset: 272
+    fieldset: AXBS_CRS
+  - name: CRS
+    byte_offset: 528
+    fieldset: AXBS_CRS
+  - name: CRS
+    byte_offset: 784
+    fieldset: AXBS_CRS
+  - name: CRS
+    byte_offset: 1040
+    fieldset: AXBS_CRS
+  - name: CRS
+    byte_offset: 1296
+    fieldset: AXBS_CRS
+  - name: CRS
+    byte_offset: 1552
+    fieldset: AXBS_CRS
+  - name: CRS
+    byte_offset: 1808
     fieldset: AXBS_CRS
   - name: MGPCR0
     byte_offset: 2048

@@ -114,11 +114,29 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 1024
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 1040
+    fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 1056
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 1028
     fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 1044
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 1060
+    fieldset: CAMERA_TRDC_MGR_W1
   - name: W3
     byte_offset: 1036
+    fieldset: CAMERA_TRDC_MGR_W3
+  - name: W3
+    byte_offset: 1052
+    fieldset: CAMERA_TRDC_MGR_W3
+  - name: W3
+    byte_offset: 1068
     fieldset: CAMERA_TRDC_MGR_W3
   - name: W0
     byte_offset: 1152
@@ -925,8 +943,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 90176
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 90184
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 90180
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 90188
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM0_RGD_NSE
     byte_offset: 90304
@@ -934,8 +958,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 90432
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 90440
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 90436
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 90444
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM1_RGD_NSE
     byte_offset: 90560
@@ -943,8 +973,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 90688
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 90696
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 90692
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 90700
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM2_RGD_NSE
     byte_offset: 90816
@@ -952,8 +988,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 90944
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 90952
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 90948
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 90956
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM3_RGD_NSE
     byte_offset: 91072
@@ -961,8 +1003,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 91200
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 91208
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 91204
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 91212
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM4_RGD_NSE
     byte_offset: 91328
@@ -970,8 +1018,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 91456
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 91464
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 91460
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 91468
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM5_RGD_NSE
     byte_offset: 91584
@@ -979,8 +1033,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 91712
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 91720
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 91716
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 91724
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM6_RGD_NSE
     byte_offset: 91840
@@ -988,8 +1048,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 91968
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 91976
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 91972
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 91980
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM7_RGD_NSE
     byte_offset: 92096
@@ -997,8 +1063,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 92224
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 92232
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 92228
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 92236
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM8_RGD_NSE
     byte_offset: 92352
@@ -1006,8 +1078,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 92480
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 92488
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 92484
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 92492
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM9_RGD_NSE
     byte_offset: 92608
@@ -1015,8 +1093,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 92736
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 92744
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 92740
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 92748
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM10_RGD_NSE
     byte_offset: 92864
@@ -1024,8 +1108,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 92992
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 93000
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 92996
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 93004
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM11_RGD_NSE
     byte_offset: 93120
@@ -1033,8 +1123,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 93248
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 93256
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 93252
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 93260
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM12_RGD_NSE
     byte_offset: 93376
@@ -1042,8 +1138,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 93504
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 93512
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 93508
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 93516
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM13_RGD_NSE
     byte_offset: 93632
@@ -1051,8 +1153,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 93760
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 93768
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 93764
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 93772
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM14_RGD_NSE
     byte_offset: 93888
@@ -1060,8 +1168,14 @@ block/CAMERA_TRDC_MGR:
   - name: W0
     byte_offset: 94016
     fieldset: CAMERA_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 94024
+    fieldset: CAMERA_TRDC_MGR_W0
   - name: W1
     byte_offset: 94020
+    fieldset: CAMERA_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 94028
     fieldset: CAMERA_TRDC_MGR_W1
   - name: MRC0_DOM15_RGD_NSE
     byte_offset: 94144

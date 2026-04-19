@@ -10,6 +10,8 @@ block/AON_ROMCP:
   - name: ROMPATCHCNTL
     byte_offset: 244
     fieldset: AON_ROMCP_ROMPATCHCNTL
+  - name: ROMPATCHENH
+    byte_offset: 248
   - name: ROMPATCHENL
     byte_offset: 252
     fieldset: AON_ROMCP_ROMPATCHENL

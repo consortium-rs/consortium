@@ -4,8 +4,20 @@ block/MSGINTR:
   - name: MSIIR
     byte_offset: 0
     fieldset: MSGINTR_MSIIR
+  - name: MSIIR
+    byte_offset: 8
+    fieldset: MSGINTR_MSIIR
+  - name: MSIIR
+    byte_offset: 16
+    fieldset: MSGINTR_MSIIR
   - name: MSIR
     byte_offset: 4
+    fieldset: MSGINTR_MSIR
+  - name: MSIR
+    byte_offset: 12
+    fieldset: MSGINTR_MSIR
+  - name: MSIR
+    byte_offset: 20
     fieldset: MSGINTR_MSIR
 fieldset/MSGINTR_MSIIR:
   description: ''

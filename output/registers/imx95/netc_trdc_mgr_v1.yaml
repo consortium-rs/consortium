@@ -58,13 +58,13 @@ block/NETC_TRDC_MGR:
       stride: 4
     fieldset: NETC_TRDC_MGR_TRDC_DERRLOC
   - name: W0
-    byte_offset: 1024
+    byte_offset: 2048
     fieldset: NETC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 1028
+    byte_offset: 2052
     fieldset: NETC_TRDC_MGR_W1
   - name: W3
-    byte_offset: 1036
+    byte_offset: 2060
     fieldset: NETC_TRDC_MGR_W3
   - name: MDA_W0_0_DFMT1
     byte_offset: 2048

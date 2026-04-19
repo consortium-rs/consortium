@@ -135,12 +135,16 @@ block/AON_BLK_CTRL_S_AONMIX:
   - name: LP_HANDSHAKE2_ELE
     byte_offset: 316
     fieldset: AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE2_ELE
+  - name: LP_HANDSHAKE3_ELE
+    byte_offset: 320
   - name: LP_HANDSHAKE_SM
     byte_offset: 324
     fieldset: AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_SM
   - name: LP_HANDSHAKE2_SM
     byte_offset: 328
     fieldset: AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE2_SM
+  - name: LP_HANDSHAKE3_SM
+    byte_offset: 332
   - name: SM_LP_HANDSHAKE_STATUS
     byte_offset: 336
     fieldset: AON_BLK_CTRL_S_AONMIX_SM_LP_HANDSHAKE_STATUS

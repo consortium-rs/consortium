@@ -162,6 +162,8 @@ block/ADC:
   - name: STAW2R
     byte_offset: 908
     fieldset: ADC_STAW2R
+  - name: STAW3R
+    byte_offset: 912
   - name: STAW4R
     byte_offset: 916
     fieldset: ADC_STAW4R

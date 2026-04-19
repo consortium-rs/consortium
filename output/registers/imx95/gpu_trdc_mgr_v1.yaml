@@ -40,22 +40,22 @@ block/GPU_TRDC_MGR:
       stride: 4
     fieldset: GPU_TRDC_MGR_TRDC_DERRLOC
   - name: W0
-    byte_offset: 1024
+    byte_offset: 2048
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 1028
+    byte_offset: 2052
     fieldset: GPU_TRDC_MGR_W1
   - name: W3
-    byte_offset: 1036
+    byte_offset: 2060
     fieldset: GPU_TRDC_MGR_W3
   - name: W0
-    byte_offset: 1152
+    byte_offset: 2304
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 1156
+    byte_offset: 2308
     fieldset: GPU_TRDC_MGR_W1
   - name: W3
-    byte_offset: 1164
+    byte_offset: 2316
     fieldset: GPU_TRDC_MGR_W3
   - name: MDA_W0_0_DFMT1
     byte_offset: 2048
@@ -203,145 +203,433 @@ block/GPU_TRDC_MGR:
       stride: 4
     fieldset: GPU_TRDC_MGR_MRC0_GLBAC
   - name: W0
-    byte_offset: 73792
+    byte_offset: 147584
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 147592
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 147600
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 147608
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 73796
+    byte_offset: 147588
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 147596
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 147604
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 147612
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM0_RGD_NSE
     byte_offset: 73920
     fieldset: GPU_TRDC_MGR_MRC0_DOM0_RGD_NSE
   - name: W0
-    byte_offset: 74048
+    byte_offset: 148096
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 148104
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 148112
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 148120
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 74052
+    byte_offset: 148100
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 148108
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 148116
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 148124
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM1_RGD_NSE
     byte_offset: 74176
     fieldset: GPU_TRDC_MGR_MRC0_DOM1_RGD_NSE
   - name: W0
-    byte_offset: 74304
+    byte_offset: 148608
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 148616
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 148624
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 148632
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 74308
+    byte_offset: 148612
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 148620
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 148628
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 148636
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM2_RGD_NSE
     byte_offset: 74432
     fieldset: GPU_TRDC_MGR_MRC0_DOM2_RGD_NSE
   - name: W0
-    byte_offset: 74560
+    byte_offset: 149120
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 149128
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 149136
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 149144
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 74564
+    byte_offset: 149124
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 149132
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 149140
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 149148
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM3_RGD_NSE
     byte_offset: 74688
     fieldset: GPU_TRDC_MGR_MRC0_DOM3_RGD_NSE
   - name: W0
-    byte_offset: 74816
+    byte_offset: 149632
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 149640
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 149648
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 149656
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 74820
+    byte_offset: 149636
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 149644
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 149652
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 149660
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM4_RGD_NSE
     byte_offset: 74944
     fieldset: GPU_TRDC_MGR_MRC0_DOM4_RGD_NSE
   - name: W0
-    byte_offset: 75072
+    byte_offset: 150144
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 150152
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 150160
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 150168
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 75076
+    byte_offset: 150148
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 150156
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 150164
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 150172
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM5_RGD_NSE
     byte_offset: 75200
     fieldset: GPU_TRDC_MGR_MRC0_DOM5_RGD_NSE
   - name: W0
-    byte_offset: 75328
+    byte_offset: 150656
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 150664
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 150672
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 150680
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 75332
+    byte_offset: 150660
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 150668
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 150676
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 150684
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM6_RGD_NSE
     byte_offset: 75456
     fieldset: GPU_TRDC_MGR_MRC0_DOM6_RGD_NSE
   - name: W0
-    byte_offset: 75584
+    byte_offset: 151168
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 151176
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 151184
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 151192
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 75588
+    byte_offset: 151172
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 151180
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 151188
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 151196
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM7_RGD_NSE
     byte_offset: 75712
     fieldset: GPU_TRDC_MGR_MRC0_DOM7_RGD_NSE
   - name: W0
-    byte_offset: 75840
+    byte_offset: 151680
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 151688
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 151696
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 151704
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 75844
+    byte_offset: 151684
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 151692
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 151700
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 151708
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM8_RGD_NSE
     byte_offset: 75968
     fieldset: GPU_TRDC_MGR_MRC0_DOM8_RGD_NSE
   - name: W0
-    byte_offset: 76096
+    byte_offset: 152192
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 152200
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 152208
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 152216
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 76100
+    byte_offset: 152196
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 152204
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 152212
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 152220
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM9_RGD_NSE
     byte_offset: 76224
     fieldset: GPU_TRDC_MGR_MRC0_DOM9_RGD_NSE
   - name: W0
-    byte_offset: 76352
+    byte_offset: 152704
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 152712
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 152720
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 152728
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 76356
+    byte_offset: 152708
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 152716
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 152724
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 152732
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM10_RGD_NSE
     byte_offset: 76480
     fieldset: GPU_TRDC_MGR_MRC0_DOM10_RGD_NSE
   - name: W0
-    byte_offset: 76608
+    byte_offset: 153216
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 153224
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 153232
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 153240
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 76612
+    byte_offset: 153220
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 153228
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 153236
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 153244
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM11_RGD_NSE
     byte_offset: 76736
     fieldset: GPU_TRDC_MGR_MRC0_DOM11_RGD_NSE
   - name: W0
-    byte_offset: 76864
+    byte_offset: 153728
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 153736
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 153744
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 153752
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 76868
+    byte_offset: 153732
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 153740
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 153748
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 153756
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM12_RGD_NSE
     byte_offset: 76992
     fieldset: GPU_TRDC_MGR_MRC0_DOM12_RGD_NSE
   - name: W0
-    byte_offset: 77120
+    byte_offset: 154240
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 154248
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 154256
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 154264
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 77124
+    byte_offset: 154244
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 154252
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 154260
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 154268
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM13_RGD_NSE
     byte_offset: 77248
     fieldset: GPU_TRDC_MGR_MRC0_DOM13_RGD_NSE
   - name: W0
-    byte_offset: 77376
+    byte_offset: 154752
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 154760
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 154768
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 154776
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 77380
+    byte_offset: 154756
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 154764
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 154772
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 154780
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM14_RGD_NSE
     byte_offset: 77504
     fieldset: GPU_TRDC_MGR_MRC0_DOM14_RGD_NSE
   - name: W0
-    byte_offset: 77632
+    byte_offset: 155264
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 155272
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 155280
+    fieldset: GPU_TRDC_MGR_W0
+  - name: W0
+    byte_offset: 155288
     fieldset: GPU_TRDC_MGR_W0
   - name: W1
-    byte_offset: 77636
+    byte_offset: 155268
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 155276
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 155284
+    fieldset: GPU_TRDC_MGR_W1
+  - name: W1
+    byte_offset: 155292
     fieldset: GPU_TRDC_MGR_W1
   - name: MRC0_DOM15_RGD_NSE
     byte_offset: 77760

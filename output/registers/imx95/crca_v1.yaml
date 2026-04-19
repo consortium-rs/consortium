@@ -4,14 +4,38 @@ block/CRCA:
   - name: CFG
     byte_offset: 0
     fieldset: CRCA_CFG
+  - name: CFG
+    byte_offset: 16
+    fieldset: CRCA_CFG
+  - name: CFG
+    byte_offset: 32
+    fieldset: CRCA_CFG
   - name: INP
     byte_offset: 4
+    fieldset: CRCA_INP
+  - name: INP
+    byte_offset: 20
+    fieldset: CRCA_INP
+  - name: INP
+    byte_offset: 36
     fieldset: CRCA_INP
   - name: CSTAT
     byte_offset: 8
     fieldset: CRCA_CSTAT
+  - name: CSTAT
+    byte_offset: 24
+    fieldset: CRCA_CSTAT
+  - name: CSTAT
+    byte_offset: 40
+    fieldset: CRCA_CSTAT
   - name: OUTP
     byte_offset: 12
+    fieldset: CRCA_OUTP
+  - name: OUTP
+    byte_offset: 28
+    fieldset: CRCA_OUTP
+  - name: OUTP
+    byte_offset: 44
     fieldset: CRCA_OUTP
 fieldset/CRCA_CFG:
   description: ''

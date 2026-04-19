@@ -52,6 +52,10 @@ block/ENETC_PF_TMR:
     byte_offset: 180
   - name: TMR_ALARM_L
     byte_offset: 184
+  - name: TMR_ALARM_L
+    byte_offset: 184
+  - name: TMR_ALARM_H
+    byte_offset: 188
   - name: TMR_ALARM_H
     byte_offset: 188
   - name: TMR_ALARM_CTRL
@@ -68,6 +72,10 @@ block/ENETC_PF_TMR:
     fieldset: ENETC_PF_TMR_TMR_FIPER_CTRL
   - name: TMR_ETTS_L
     byte_offset: 224
+  - name: TMR_ETTS_L
+    byte_offset: 224
+  - name: TMR_ETTS_H
+    byte_offset: 228
   - name: TMR_ETTS_H
     byte_offset: 228
   - name: TMR_CUR_TIME_L

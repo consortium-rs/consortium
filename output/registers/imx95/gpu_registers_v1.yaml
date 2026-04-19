@@ -231,42 +231,301 @@ block/GPU_REGISTERS:
   - name: IRQ_STATUS
     byte_offset: 8204
   - name: TRANSTAB_LO
-    byte_offset: 9216
+    byte_offset: 18432
+    fieldset: GPU_REGISTERS_TRANSTAB_LO
+  - name: TRANSTAB_LO
+    byte_offset: 18496
+    fieldset: GPU_REGISTERS_TRANSTAB_LO
+  - name: TRANSTAB_LO
+    byte_offset: 18560
+    fieldset: GPU_REGISTERS_TRANSTAB_LO
+  - name: TRANSTAB_LO
+    byte_offset: 18624
+    fieldset: GPU_REGISTERS_TRANSTAB_LO
+  - name: TRANSTAB_LO
+    byte_offset: 18688
+    fieldset: GPU_REGISTERS_TRANSTAB_LO
+  - name: TRANSTAB_LO
+    byte_offset: 18752
+    fieldset: GPU_REGISTERS_TRANSTAB_LO
+  - name: TRANSTAB_LO
+    byte_offset: 18816
+    fieldset: GPU_REGISTERS_TRANSTAB_LO
+  - name: TRANSTAB_LO
+    byte_offset: 18880
     fieldset: GPU_REGISTERS_TRANSTAB_LO
   - name: TRANSTAB_HI
-    byte_offset: 9220
+    byte_offset: 18436
+    fieldset: GPU_REGISTERS_TRANSTAB_HI
+  - name: TRANSTAB_HI
+    byte_offset: 18500
+    fieldset: GPU_REGISTERS_TRANSTAB_HI
+  - name: TRANSTAB_HI
+    byte_offset: 18564
+    fieldset: GPU_REGISTERS_TRANSTAB_HI
+  - name: TRANSTAB_HI
+    byte_offset: 18628
+    fieldset: GPU_REGISTERS_TRANSTAB_HI
+  - name: TRANSTAB_HI
+    byte_offset: 18692
+    fieldset: GPU_REGISTERS_TRANSTAB_HI
+  - name: TRANSTAB_HI
+    byte_offset: 18756
+    fieldset: GPU_REGISTERS_TRANSTAB_HI
+  - name: TRANSTAB_HI
+    byte_offset: 18820
+    fieldset: GPU_REGISTERS_TRANSTAB_HI
+  - name: TRANSTAB_HI
+    byte_offset: 18884
     fieldset: GPU_REGISTERS_TRANSTAB_HI
   - name: MEMATTR_LO
-    byte_offset: 9224
+    byte_offset: 18440
+    fieldset: GPU_REGISTERS_MEMATTR_LO
+  - name: MEMATTR_LO
+    byte_offset: 18504
+    fieldset: GPU_REGISTERS_MEMATTR_LO
+  - name: MEMATTR_LO
+    byte_offset: 18568
+    fieldset: GPU_REGISTERS_MEMATTR_LO
+  - name: MEMATTR_LO
+    byte_offset: 18632
+    fieldset: GPU_REGISTERS_MEMATTR_LO
+  - name: MEMATTR_LO
+    byte_offset: 18696
+    fieldset: GPU_REGISTERS_MEMATTR_LO
+  - name: MEMATTR_LO
+    byte_offset: 18760
+    fieldset: GPU_REGISTERS_MEMATTR_LO
+  - name: MEMATTR_LO
+    byte_offset: 18824
+    fieldset: GPU_REGISTERS_MEMATTR_LO
+  - name: MEMATTR_LO
+    byte_offset: 18888
     fieldset: GPU_REGISTERS_MEMATTR_LO
   - name: MEMATTR_HI
-    byte_offset: 9228
+    byte_offset: 18444
+    fieldset: GPU_REGISTERS_MEMATTR_HI
+  - name: MEMATTR_HI
+    byte_offset: 18508
+    fieldset: GPU_REGISTERS_MEMATTR_HI
+  - name: MEMATTR_HI
+    byte_offset: 18572
+    fieldset: GPU_REGISTERS_MEMATTR_HI
+  - name: MEMATTR_HI
+    byte_offset: 18636
+    fieldset: GPU_REGISTERS_MEMATTR_HI
+  - name: MEMATTR_HI
+    byte_offset: 18700
+    fieldset: GPU_REGISTERS_MEMATTR_HI
+  - name: MEMATTR_HI
+    byte_offset: 18764
+    fieldset: GPU_REGISTERS_MEMATTR_HI
+  - name: MEMATTR_HI
+    byte_offset: 18828
+    fieldset: GPU_REGISTERS_MEMATTR_HI
+  - name: MEMATTR_HI
+    byte_offset: 18892
     fieldset: GPU_REGISTERS_MEMATTR_HI
   - name: LOCKADDR_LO
-    byte_offset: 9232
+    byte_offset: 18448
+  - name: LOCKADDR_LO
+    byte_offset: 18512
+  - name: LOCKADDR_LO
+    byte_offset: 18576
+  - name: LOCKADDR_LO
+    byte_offset: 18640
+  - name: LOCKADDR_LO
+    byte_offset: 18704
+  - name: LOCKADDR_LO
+    byte_offset: 18768
+  - name: LOCKADDR_LO
+    byte_offset: 18832
+  - name: LOCKADDR_LO
+    byte_offset: 18896
   - name: LOCKADDR_HI
-    byte_offset: 9236
+    byte_offset: 18452
+  - name: LOCKADDR_HI
+    byte_offset: 18516
+  - name: LOCKADDR_HI
+    byte_offset: 18580
+  - name: LOCKADDR_HI
+    byte_offset: 18644
+  - name: LOCKADDR_HI
+    byte_offset: 18708
+  - name: LOCKADDR_HI
+    byte_offset: 18772
+  - name: LOCKADDR_HI
+    byte_offset: 18836
+  - name: LOCKADDR_HI
+    byte_offset: 18900
   - name: COMMAND
-    byte_offset: 9240
+    byte_offset: 18456
+    fieldset: GPU_REGISTERS_COMMAND
+  - name: COMMAND
+    byte_offset: 18520
+    fieldset: GPU_REGISTERS_COMMAND
+  - name: COMMAND
+    byte_offset: 18584
+    fieldset: GPU_REGISTERS_COMMAND
+  - name: COMMAND
+    byte_offset: 18648
+    fieldset: GPU_REGISTERS_COMMAND
+  - name: COMMAND
+    byte_offset: 18712
+    fieldset: GPU_REGISTERS_COMMAND
+  - name: COMMAND
+    byte_offset: 18776
+    fieldset: GPU_REGISTERS_COMMAND
+  - name: COMMAND
+    byte_offset: 18840
+    fieldset: GPU_REGISTERS_COMMAND
+  - name: COMMAND
+    byte_offset: 18904
     fieldset: GPU_REGISTERS_COMMAND
   - name: FAULTSTATUS
-    byte_offset: 9244
+    byte_offset: 18460
+  - name: FAULTSTATUS
+    byte_offset: 18524
+  - name: FAULTSTATUS
+    byte_offset: 18588
+  - name: FAULTSTATUS
+    byte_offset: 18652
+  - name: FAULTSTATUS
+    byte_offset: 18716
+  - name: FAULTSTATUS
+    byte_offset: 18780
+  - name: FAULTSTATUS
+    byte_offset: 18844
+  - name: FAULTSTATUS
+    byte_offset: 18908
   - name: FAULTADDRESS_LO
-    byte_offset: 9248
+    byte_offset: 18464
+  - name: FAULTADDRESS_LO
+    byte_offset: 18528
+  - name: FAULTADDRESS_LO
+    byte_offset: 18592
+  - name: FAULTADDRESS_LO
+    byte_offset: 18656
+  - name: FAULTADDRESS_LO
+    byte_offset: 18720
+  - name: FAULTADDRESS_LO
+    byte_offset: 18784
+  - name: FAULTADDRESS_LO
+    byte_offset: 18848
+  - name: FAULTADDRESS_LO
+    byte_offset: 18912
   - name: FAULTADDRESS_HI
-    byte_offset: 9252
+    byte_offset: 18468
+  - name: FAULTADDRESS_HI
+    byte_offset: 18532
+  - name: FAULTADDRESS_HI
+    byte_offset: 18596
+  - name: FAULTADDRESS_HI
+    byte_offset: 18660
+  - name: FAULTADDRESS_HI
+    byte_offset: 18724
+  - name: FAULTADDRESS_HI
+    byte_offset: 18788
+  - name: FAULTADDRESS_HI
+    byte_offset: 18852
+  - name: FAULTADDRESS_HI
+    byte_offset: 18916
   - name: STATUS
-    byte_offset: 9256
+    byte_offset: 18472
+  - name: STATUS
+    byte_offset: 18536
+  - name: STATUS
+    byte_offset: 18600
+  - name: STATUS
+    byte_offset: 18664
+  - name: STATUS
+    byte_offset: 18728
+  - name: STATUS
+    byte_offset: 18792
+  - name: STATUS
+    byte_offset: 18856
+  - name: STATUS
+    byte_offset: 18920
   - name: TRANSCFG_LO
-    byte_offset: 9264
+    byte_offset: 18480
+    fieldset: GPU_REGISTERS_TRANSCFG_LO
+  - name: TRANSCFG_LO
+    byte_offset: 18544
+    fieldset: GPU_REGISTERS_TRANSCFG_LO
+  - name: TRANSCFG_LO
+    byte_offset: 18608
+    fieldset: GPU_REGISTERS_TRANSCFG_LO
+  - name: TRANSCFG_LO
+    byte_offset: 18672
+    fieldset: GPU_REGISTERS_TRANSCFG_LO
+  - name: TRANSCFG_LO
+    byte_offset: 18736
+    fieldset: GPU_REGISTERS_TRANSCFG_LO
+  - name: TRANSCFG_LO
+    byte_offset: 18800
+    fieldset: GPU_REGISTERS_TRANSCFG_LO
+  - name: TRANSCFG_LO
+    byte_offset: 18864
+    fieldset: GPU_REGISTERS_TRANSCFG_LO
+  - name: TRANSCFG_LO
+    byte_offset: 18928
     fieldset: GPU_REGISTERS_TRANSCFG_LO
   - name: TRANSCFG_HI
-    byte_offset: 9268
+    byte_offset: 18484
+    fieldset: GPU_REGISTERS_TRANSCFG_HI
+  - name: TRANSCFG_HI
+    byte_offset: 18548
+    fieldset: GPU_REGISTERS_TRANSCFG_HI
+  - name: TRANSCFG_HI
+    byte_offset: 18612
+    fieldset: GPU_REGISTERS_TRANSCFG_HI
+  - name: TRANSCFG_HI
+    byte_offset: 18676
+    fieldset: GPU_REGISTERS_TRANSCFG_HI
+  - name: TRANSCFG_HI
+    byte_offset: 18740
+    fieldset: GPU_REGISTERS_TRANSCFG_HI
+  - name: TRANSCFG_HI
+    byte_offset: 18804
+    fieldset: GPU_REGISTERS_TRANSCFG_HI
+  - name: TRANSCFG_HI
+    byte_offset: 18868
+    fieldset: GPU_REGISTERS_TRANSCFG_HI
+  - name: TRANSCFG_HI
+    byte_offset: 18932
     fieldset: GPU_REGISTERS_TRANSCFG_HI
   - name: FAULTEXTRA_LO
-    byte_offset: 9272
+    byte_offset: 18488
+  - name: FAULTEXTRA_LO
+    byte_offset: 18552
+  - name: FAULTEXTRA_LO
+    byte_offset: 18616
+  - name: FAULTEXTRA_LO
+    byte_offset: 18680
+  - name: FAULTEXTRA_LO
+    byte_offset: 18744
+  - name: FAULTEXTRA_LO
+    byte_offset: 18808
+  - name: FAULTEXTRA_LO
+    byte_offset: 18872
+  - name: FAULTEXTRA_LO
+    byte_offset: 18936
   - name: FAULTEXTRA_HI
-    byte_offset: 9276
+    byte_offset: 18492
+  - name: FAULTEXTRA_HI
+    byte_offset: 18556
+  - name: FAULTEXTRA_HI
+    byte_offset: 18620
+  - name: FAULTEXTRA_HI
+    byte_offset: 18684
+  - name: FAULTEXTRA_HI
+    byte_offset: 18748
+  - name: FAULTEXTRA_HI
+    byte_offset: 18812
+  - name: FAULTEXTRA_HI
+    byte_offset: 18876
+  - name: FAULTEXTRA_HI
+    byte_offset: 18940
 fieldset/GPU_REGISTERS_GPU_ID_VERSION:
   description: ''
   fields:
