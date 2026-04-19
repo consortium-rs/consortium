@@ -180,11 +180,8 @@ class NXPPeripheralParser:
 
                                     description = extract_description(nested_line_str)
 
-                                    # Generate register name with nested struct prefix if multiple nested structs exist
-                                    if len(nested_structs) > 1:
-                                        reg_name = f"{nested_name}_{field_name}"
-                                    else:
-                                        reg_name = field_name
+                                    # Always prefix with nested struct name to avoid conflicts
+                                    reg_name = f"{nested_name}_{field_name}"
 
                                     # Add register for each array element of the outer struct
                                     for arr_idx in range(struct_array_len):
@@ -234,8 +231,8 @@ class NXPPeripheralParser:
                                 else:
                                     continue
 
-                                # Skip fields without access qualifier
-                                if qualifier not in ('__IO', '__I', '__O'):
+                                # Include fields with access qualifier OR with explicit offset in comment
+                                if qualifier not in ('__IO', '__I', '__O') and not field_offset_match:
                                     continue
 
                                 description = extract_description(top_line_str)
@@ -248,7 +245,7 @@ class NXPPeripheralParser:
                                         reg_offset = struct_base_offset + field_offset
 
                                     item: Dict[str, Any] = {
-                                        'name': field_name,
+                                        'name': f"{struct_member_name}_{field_name}",
                                         'byte_offset': reg_offset,
                                     }
 
