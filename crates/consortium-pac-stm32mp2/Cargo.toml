@@ -1,5 +1,6 @@
 [package]
 name = "stm32mp2-pac"
+description = "Peripheral Access Crate for the STM32MP2 series of microcontrollers"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
