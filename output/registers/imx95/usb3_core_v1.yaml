@@ -50,6 +50,8 @@ block/USB3_CORE:
   - name: PORTPMSC_20
     byte_offset: 1060
     fieldset: USB3_CORE_PORTPMSC_20
+  - name: PORTLI_20
+    byte_offset: 1064
   - name: PORTHLPMC_20
     byte_offset: 1068
     fieldset: USB3_CORE_PORTHLPMC_20
@@ -61,6 +63,8 @@ block/USB3_CORE:
     fieldset: USB3_CORE_PORTPMSC_30
   - name: PORTLI_30
     byte_offset: 1080
+  - name: PORTHLPMC_30
+    byte_offset: 1084
   - name: MFINDEX
     byte_offset: 1088
   - name: IMAN
@@ -165,6 +169,11 @@ block/USB3_CORE:
   - name: GPRTBIMAP_FSLO
     byte_offset: 49544
     fieldset: USB3_CORE_GPRTBIMAP_FSLO
+  - name: GERRINJCTL
+    byte_offset: 49556
+    array:
+      len: 2
+      stride: 4
   - name: GUCTL2
     byte_offset: 49564
     fieldset: USB3_CORE_GUCTL2

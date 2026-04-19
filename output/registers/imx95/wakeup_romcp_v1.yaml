@@ -10,6 +10,8 @@ block/WAKEUP_ROMCP:
   - name: ROMPATCHCNTL
     byte_offset: 244
     fieldset: WAKEUP_ROMCP_ROMPATCHCNTL
+  - name: ROMPATCHENH
+    byte_offset: 248
   - name: ROMPATCHENL
     byte_offset: 252
     fieldset: WAKEUP_ROMCP_ROMPATCHENL

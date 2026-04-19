@@ -129,12 +129,15 @@ class NXPPeripheralParser:
                     # Check for closing brace of outer array struct: } NAME[array];
                     if outer_brace_depth == 0 and nested_stripped.startswith('}'):
                         outer_struct_match = re.search(r'\}\s*(\w+)(?:\[(\w+)\])?\s*;', nested_line)
+
+                        # Initialize array length - will be updated if this is an array struct
+                        struct_array_len = 1
+
                         if outer_struct_match:
                             struct_member_name = outer_struct_match.group(1)
                             struct_array_name = outer_struct_match.group(2)
 
                             # Determine if this struct is an array
-                            struct_array_len = 1
                             if struct_array_name:
                                 struct_array_len = array_counts.get(struct_array_name, 1)
 

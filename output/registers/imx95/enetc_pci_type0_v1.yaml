@@ -66,45 +66,47 @@ block/ENETC_PCI_TYPE0:
     fieldset: ENETC_PCI_TYPE0_PCI_CFC_PCIPM_CAP
   - name: PCI_CFC_PCIPM_CTL_STAT
     byte_offset: 148
+  - name: PCI_CFC_PCIPM_DATA
+    byte_offset: 151
   - name: PCI_CFC_EA_CAP_LIST
     byte_offset: 156
   - name: PCI_CFC_EA_CAP
     byte_offset: 158
   - name: PCI_CFC_EA_PE_FMT
-    byte_offset: 320
+    byte_offset: 160
     fieldset: ENETC_PCI_TYPE0_PCI_CFC_EA_PE_FMT
   - name: PCI_CFC_EA_PE_FMT
-    byte_offset: 336
+    byte_offset: 176
     fieldset: ENETC_PCI_TYPE0_PCI_CFC_EA_PE_FMT
   - name: PCI_CFC_EA_PE_FMT
-    byte_offset: 352
+    byte_offset: 192
     fieldset: ENETC_PCI_TYPE0_PCI_CFC_EA_PE_FMT
   - name: PCI_CFC_EA_PE_BASE
-    byte_offset: 324
+    byte_offset: 164
     fieldset: ENETC_PCI_TYPE0_PCI_CFC_EA_PE_BASE
   - name: PCI_CFC_EA_PE_BASE
-    byte_offset: 340
+    byte_offset: 180
     fieldset: ENETC_PCI_TYPE0_PCI_CFC_EA_PE_BASE
   - name: PCI_CFC_EA_PE_BASE
-    byte_offset: 356
+    byte_offset: 196
     fieldset: ENETC_PCI_TYPE0_PCI_CFC_EA_PE_BASE
   - name: PCI_CFC_EA_PE_MAXOFF
-    byte_offset: 328
+    byte_offset: 168
     fieldset: ENETC_PCI_TYPE0_PCI_CFC_EA_PE_MAXOFF
   - name: PCI_CFC_EA_PE_MAXOFF
-    byte_offset: 344
+    byte_offset: 184
     fieldset: ENETC_PCI_TYPE0_PCI_CFC_EA_PE_MAXOFF
   - name: PCI_CFC_EA_PE_MAXOFF
-    byte_offset: 360
+    byte_offset: 200
     fieldset: ENETC_PCI_TYPE0_PCI_CFC_EA_PE_MAXOFF
   - name: PCI_CFC_EA_PE_EXT_BASE
-    byte_offset: 332
+    byte_offset: 172
     fieldset: ENETC_PCI_TYPE0_PCI_CFC_EA_PE_EXT_BASE
   - name: PCI_CFC_EA_PE_EXT_BASE
-    byte_offset: 348
+    byte_offset: 188
     fieldset: ENETC_PCI_TYPE0_PCI_CFC_EA_PE_EXT_BASE
   - name: PCI_CFC_EA_PE_EXT_BASE
-    byte_offset: 364
+    byte_offset: 204
     fieldset: ENETC_PCI_TYPE0_PCI_CFC_EA_PE_EXT_BASE
   - name: PCIE_CFC_AER_EXT_CAP_HDR
     byte_offset: 256

@@ -61,76 +61,76 @@ block/NOC_TRDC_MGR:
       stride: 4
     fieldset: NOC_TRDC_MGR_TRDC_DERRLOC
   - name: W0
-    byte_offset: 2048
+    byte_offset: 1024
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 2064
+    byte_offset: 1040
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 2080
+    byte_offset: 1056
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 2096
+    byte_offset: 1072
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 2112
+    byte_offset: 1088
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 2052
+    byte_offset: 1028
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 2068
+    byte_offset: 1044
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 2084
+    byte_offset: 1060
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 2100
+    byte_offset: 1076
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 2116
+    byte_offset: 1092
     fieldset: NOC_TRDC_MGR_W1
   - name: W2
-    byte_offset: 2056
+    byte_offset: 1032
     fieldset: NOC_TRDC_MGR_W2
   - name: W2
-    byte_offset: 2072
+    byte_offset: 1048
     fieldset: NOC_TRDC_MGR_W2
   - name: W2
-    byte_offset: 2088
+    byte_offset: 1064
     fieldset: NOC_TRDC_MGR_W2
   - name: W2
-    byte_offset: 2104
+    byte_offset: 1080
     fieldset: NOC_TRDC_MGR_W2
   - name: W2
-    byte_offset: 2120
+    byte_offset: 1096
     fieldset: NOC_TRDC_MGR_W2
   - name: W3
-    byte_offset: 2060
+    byte_offset: 1036
     fieldset: NOC_TRDC_MGR_W3
   - name: W3
-    byte_offset: 2076
+    byte_offset: 1052
     fieldset: NOC_TRDC_MGR_W3
   - name: W3
-    byte_offset: 2092
+    byte_offset: 1068
     fieldset: NOC_TRDC_MGR_W3
   - name: W3
-    byte_offset: 2108
+    byte_offset: 1084
     fieldset: NOC_TRDC_MGR_W3
   - name: W3
-    byte_offset: 2124
+    byte_offset: 1100
     fieldset: NOC_TRDC_MGR_W3
   - name: W0
-    byte_offset: 2304
+    byte_offset: 1152
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 2308
+    byte_offset: 1156
     fieldset: NOC_TRDC_MGR_W1
   - name: W2
-    byte_offset: 2312
+    byte_offset: 1160
     fieldset: NOC_TRDC_MGR_W2
   - name: W3
-    byte_offset: 2316
+    byte_offset: 1164
     fieldset: NOC_TRDC_MGR_W3
   - name: MDA_W0_0_DFMT0
     byte_offset: 2048
@@ -2921,1585 +2921,1585 @@ block/NOC_TRDC_MGR:
       stride: 4
     fieldset: NOC_TRDC_MGR_MRC0_GLBAC
   - name: W0
-    byte_offset: 213120
+    byte_offset: 106560
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213128
+    byte_offset: 106568
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213136
+    byte_offset: 106576
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213144
+    byte_offset: 106584
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213152
+    byte_offset: 106592
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213160
+    byte_offset: 106600
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213168
+    byte_offset: 106608
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213176
+    byte_offset: 106616
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213184
+    byte_offset: 106624
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213192
+    byte_offset: 106632
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213200
+    byte_offset: 106640
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213208
+    byte_offset: 106648
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213216
+    byte_offset: 106656
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213224
+    byte_offset: 106664
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213232
+    byte_offset: 106672
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213240
+    byte_offset: 106680
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 213124
+    byte_offset: 106564
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213132
+    byte_offset: 106572
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213140
+    byte_offset: 106580
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213148
+    byte_offset: 106588
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213156
+    byte_offset: 106596
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213164
+    byte_offset: 106604
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213172
+    byte_offset: 106612
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213180
+    byte_offset: 106620
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213188
+    byte_offset: 106628
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213196
+    byte_offset: 106636
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213204
+    byte_offset: 106644
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213212
+    byte_offset: 106652
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213220
+    byte_offset: 106660
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213228
+    byte_offset: 106668
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213236
+    byte_offset: 106676
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213244
+    byte_offset: 106684
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM0_RGD_NSE
     byte_offset: 106688
     fieldset: NOC_TRDC_MGR_MRC0_DOM0_RGD_NSE
   - name: W0
-    byte_offset: 213632
+    byte_offset: 106816
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213640
+    byte_offset: 106824
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213648
+    byte_offset: 106832
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213656
+    byte_offset: 106840
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213664
+    byte_offset: 106848
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213672
+    byte_offset: 106856
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213680
+    byte_offset: 106864
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213688
+    byte_offset: 106872
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213696
+    byte_offset: 106880
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213704
+    byte_offset: 106888
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213712
+    byte_offset: 106896
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213720
+    byte_offset: 106904
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213728
+    byte_offset: 106912
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213736
+    byte_offset: 106920
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213744
+    byte_offset: 106928
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 213752
+    byte_offset: 106936
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 213636
+    byte_offset: 106820
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213644
+    byte_offset: 106828
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213652
+    byte_offset: 106836
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213660
+    byte_offset: 106844
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213668
+    byte_offset: 106852
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213676
+    byte_offset: 106860
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213684
+    byte_offset: 106868
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213692
+    byte_offset: 106876
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213700
+    byte_offset: 106884
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213708
+    byte_offset: 106892
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213716
+    byte_offset: 106900
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213724
+    byte_offset: 106908
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213732
+    byte_offset: 106916
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213740
+    byte_offset: 106924
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213748
+    byte_offset: 106932
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 213756
+    byte_offset: 106940
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM1_RGD_NSE
     byte_offset: 106944
     fieldset: NOC_TRDC_MGR_MRC0_DOM1_RGD_NSE
   - name: W0
-    byte_offset: 214144
+    byte_offset: 107072
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214152
+    byte_offset: 107080
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214160
+    byte_offset: 107088
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214168
+    byte_offset: 107096
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214176
+    byte_offset: 107104
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214184
+    byte_offset: 107112
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214192
+    byte_offset: 107120
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214200
+    byte_offset: 107128
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214208
+    byte_offset: 107136
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214216
+    byte_offset: 107144
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214224
+    byte_offset: 107152
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214232
+    byte_offset: 107160
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214240
+    byte_offset: 107168
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214248
+    byte_offset: 107176
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214256
+    byte_offset: 107184
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214264
+    byte_offset: 107192
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 214148
+    byte_offset: 107076
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214156
+    byte_offset: 107084
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214164
+    byte_offset: 107092
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214172
+    byte_offset: 107100
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214180
+    byte_offset: 107108
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214188
+    byte_offset: 107116
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214196
+    byte_offset: 107124
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214204
+    byte_offset: 107132
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214212
+    byte_offset: 107140
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214220
+    byte_offset: 107148
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214228
+    byte_offset: 107156
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214236
+    byte_offset: 107164
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214244
+    byte_offset: 107172
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214252
+    byte_offset: 107180
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214260
+    byte_offset: 107188
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214268
+    byte_offset: 107196
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM2_RGD_NSE
     byte_offset: 107200
     fieldset: NOC_TRDC_MGR_MRC0_DOM2_RGD_NSE
   - name: W0
-    byte_offset: 214656
+    byte_offset: 107328
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214664
+    byte_offset: 107336
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214672
+    byte_offset: 107344
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214680
+    byte_offset: 107352
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214688
+    byte_offset: 107360
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214696
+    byte_offset: 107368
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214704
+    byte_offset: 107376
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214712
+    byte_offset: 107384
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214720
+    byte_offset: 107392
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214728
+    byte_offset: 107400
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214736
+    byte_offset: 107408
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214744
+    byte_offset: 107416
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214752
+    byte_offset: 107424
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214760
+    byte_offset: 107432
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214768
+    byte_offset: 107440
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 214776
+    byte_offset: 107448
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 214660
+    byte_offset: 107332
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214668
+    byte_offset: 107340
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214676
+    byte_offset: 107348
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214684
+    byte_offset: 107356
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214692
+    byte_offset: 107364
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214700
+    byte_offset: 107372
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214708
+    byte_offset: 107380
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214716
+    byte_offset: 107388
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214724
+    byte_offset: 107396
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214732
+    byte_offset: 107404
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214740
+    byte_offset: 107412
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214748
+    byte_offset: 107420
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214756
+    byte_offset: 107428
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214764
+    byte_offset: 107436
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214772
+    byte_offset: 107444
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 214780
+    byte_offset: 107452
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM3_RGD_NSE
     byte_offset: 107456
     fieldset: NOC_TRDC_MGR_MRC0_DOM3_RGD_NSE
   - name: W0
-    byte_offset: 215168
+    byte_offset: 107584
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215176
+    byte_offset: 107592
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215184
+    byte_offset: 107600
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215192
+    byte_offset: 107608
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215200
+    byte_offset: 107616
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215208
+    byte_offset: 107624
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215216
+    byte_offset: 107632
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215224
+    byte_offset: 107640
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215232
+    byte_offset: 107648
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215240
+    byte_offset: 107656
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215248
+    byte_offset: 107664
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215256
+    byte_offset: 107672
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215264
+    byte_offset: 107680
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215272
+    byte_offset: 107688
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215280
+    byte_offset: 107696
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215288
+    byte_offset: 107704
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 215172
+    byte_offset: 107588
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215180
+    byte_offset: 107596
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215188
+    byte_offset: 107604
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215196
+    byte_offset: 107612
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215204
+    byte_offset: 107620
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215212
+    byte_offset: 107628
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215220
+    byte_offset: 107636
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215228
+    byte_offset: 107644
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215236
+    byte_offset: 107652
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215244
+    byte_offset: 107660
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215252
+    byte_offset: 107668
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215260
+    byte_offset: 107676
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215268
+    byte_offset: 107684
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215276
+    byte_offset: 107692
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215284
+    byte_offset: 107700
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215292
+    byte_offset: 107708
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM4_RGD_NSE
     byte_offset: 107712
     fieldset: NOC_TRDC_MGR_MRC0_DOM4_RGD_NSE
   - name: W0
-    byte_offset: 215680
+    byte_offset: 107840
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215688
+    byte_offset: 107848
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215696
+    byte_offset: 107856
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215704
+    byte_offset: 107864
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215712
+    byte_offset: 107872
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215720
+    byte_offset: 107880
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215728
+    byte_offset: 107888
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215736
+    byte_offset: 107896
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215744
+    byte_offset: 107904
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215752
+    byte_offset: 107912
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215760
+    byte_offset: 107920
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215768
+    byte_offset: 107928
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215776
+    byte_offset: 107936
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215784
+    byte_offset: 107944
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215792
+    byte_offset: 107952
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 215800
+    byte_offset: 107960
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 215684
+    byte_offset: 107844
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215692
+    byte_offset: 107852
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215700
+    byte_offset: 107860
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215708
+    byte_offset: 107868
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215716
+    byte_offset: 107876
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215724
+    byte_offset: 107884
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215732
+    byte_offset: 107892
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215740
+    byte_offset: 107900
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215748
+    byte_offset: 107908
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215756
+    byte_offset: 107916
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215764
+    byte_offset: 107924
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215772
+    byte_offset: 107932
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215780
+    byte_offset: 107940
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215788
+    byte_offset: 107948
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215796
+    byte_offset: 107956
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 215804
+    byte_offset: 107964
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM5_RGD_NSE
     byte_offset: 107968
     fieldset: NOC_TRDC_MGR_MRC0_DOM5_RGD_NSE
   - name: W0
-    byte_offset: 216192
+    byte_offset: 108096
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216200
+    byte_offset: 108104
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216208
+    byte_offset: 108112
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216216
+    byte_offset: 108120
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216224
+    byte_offset: 108128
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216232
+    byte_offset: 108136
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216240
+    byte_offset: 108144
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216248
+    byte_offset: 108152
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216256
+    byte_offset: 108160
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216264
+    byte_offset: 108168
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216272
+    byte_offset: 108176
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216280
+    byte_offset: 108184
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216288
+    byte_offset: 108192
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216296
+    byte_offset: 108200
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216304
+    byte_offset: 108208
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216312
+    byte_offset: 108216
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 216196
+    byte_offset: 108100
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216204
+    byte_offset: 108108
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216212
+    byte_offset: 108116
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216220
+    byte_offset: 108124
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216228
+    byte_offset: 108132
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216236
+    byte_offset: 108140
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216244
+    byte_offset: 108148
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216252
+    byte_offset: 108156
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216260
+    byte_offset: 108164
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216268
+    byte_offset: 108172
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216276
+    byte_offset: 108180
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216284
+    byte_offset: 108188
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216292
+    byte_offset: 108196
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216300
+    byte_offset: 108204
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216308
+    byte_offset: 108212
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216316
+    byte_offset: 108220
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM6_RGD_NSE
     byte_offset: 108224
     fieldset: NOC_TRDC_MGR_MRC0_DOM6_RGD_NSE
   - name: W0
-    byte_offset: 216704
+    byte_offset: 108352
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216712
+    byte_offset: 108360
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216720
+    byte_offset: 108368
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216728
+    byte_offset: 108376
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216736
+    byte_offset: 108384
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216744
+    byte_offset: 108392
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216752
+    byte_offset: 108400
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216760
+    byte_offset: 108408
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216768
+    byte_offset: 108416
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216776
+    byte_offset: 108424
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216784
+    byte_offset: 108432
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216792
+    byte_offset: 108440
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216800
+    byte_offset: 108448
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216808
+    byte_offset: 108456
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216816
+    byte_offset: 108464
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 216824
+    byte_offset: 108472
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 216708
+    byte_offset: 108356
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216716
+    byte_offset: 108364
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216724
+    byte_offset: 108372
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216732
+    byte_offset: 108380
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216740
+    byte_offset: 108388
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216748
+    byte_offset: 108396
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216756
+    byte_offset: 108404
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216764
+    byte_offset: 108412
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216772
+    byte_offset: 108420
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216780
+    byte_offset: 108428
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216788
+    byte_offset: 108436
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216796
+    byte_offset: 108444
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216804
+    byte_offset: 108452
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216812
+    byte_offset: 108460
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216820
+    byte_offset: 108468
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 216828
+    byte_offset: 108476
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM7_RGD_NSE
     byte_offset: 108480
     fieldset: NOC_TRDC_MGR_MRC0_DOM7_RGD_NSE
   - name: W0
-    byte_offset: 217216
+    byte_offset: 108608
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217224
+    byte_offset: 108616
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217232
+    byte_offset: 108624
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217240
+    byte_offset: 108632
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217248
+    byte_offset: 108640
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217256
+    byte_offset: 108648
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217264
+    byte_offset: 108656
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217272
+    byte_offset: 108664
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217280
+    byte_offset: 108672
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217288
+    byte_offset: 108680
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217296
+    byte_offset: 108688
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217304
+    byte_offset: 108696
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217312
+    byte_offset: 108704
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217320
+    byte_offset: 108712
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217328
+    byte_offset: 108720
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217336
+    byte_offset: 108728
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 217220
+    byte_offset: 108612
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217228
+    byte_offset: 108620
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217236
+    byte_offset: 108628
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217244
+    byte_offset: 108636
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217252
+    byte_offset: 108644
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217260
+    byte_offset: 108652
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217268
+    byte_offset: 108660
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217276
+    byte_offset: 108668
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217284
+    byte_offset: 108676
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217292
+    byte_offset: 108684
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217300
+    byte_offset: 108692
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217308
+    byte_offset: 108700
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217316
+    byte_offset: 108708
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217324
+    byte_offset: 108716
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217332
+    byte_offset: 108724
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217340
+    byte_offset: 108732
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM8_RGD_NSE
     byte_offset: 108736
     fieldset: NOC_TRDC_MGR_MRC0_DOM8_RGD_NSE
   - name: W0
-    byte_offset: 217728
+    byte_offset: 108864
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217736
+    byte_offset: 108872
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217744
+    byte_offset: 108880
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217752
+    byte_offset: 108888
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217760
+    byte_offset: 108896
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217768
+    byte_offset: 108904
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217776
+    byte_offset: 108912
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217784
+    byte_offset: 108920
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217792
+    byte_offset: 108928
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217800
+    byte_offset: 108936
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217808
+    byte_offset: 108944
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217816
+    byte_offset: 108952
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217824
+    byte_offset: 108960
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217832
+    byte_offset: 108968
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217840
+    byte_offset: 108976
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 217848
+    byte_offset: 108984
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 217732
+    byte_offset: 108868
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217740
+    byte_offset: 108876
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217748
+    byte_offset: 108884
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217756
+    byte_offset: 108892
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217764
+    byte_offset: 108900
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217772
+    byte_offset: 108908
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217780
+    byte_offset: 108916
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217788
+    byte_offset: 108924
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217796
+    byte_offset: 108932
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217804
+    byte_offset: 108940
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217812
+    byte_offset: 108948
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217820
+    byte_offset: 108956
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217828
+    byte_offset: 108964
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217836
+    byte_offset: 108972
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217844
+    byte_offset: 108980
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 217852
+    byte_offset: 108988
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM9_RGD_NSE
     byte_offset: 108992
     fieldset: NOC_TRDC_MGR_MRC0_DOM9_RGD_NSE
   - name: W0
-    byte_offset: 218240
+    byte_offset: 109120
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218248
+    byte_offset: 109128
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218256
+    byte_offset: 109136
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218264
+    byte_offset: 109144
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218272
+    byte_offset: 109152
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218280
+    byte_offset: 109160
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218288
+    byte_offset: 109168
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218296
+    byte_offset: 109176
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218304
+    byte_offset: 109184
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218312
+    byte_offset: 109192
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218320
+    byte_offset: 109200
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218328
+    byte_offset: 109208
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218336
+    byte_offset: 109216
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218344
+    byte_offset: 109224
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218352
+    byte_offset: 109232
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218360
+    byte_offset: 109240
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 218244
+    byte_offset: 109124
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218252
+    byte_offset: 109132
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218260
+    byte_offset: 109140
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218268
+    byte_offset: 109148
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218276
+    byte_offset: 109156
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218284
+    byte_offset: 109164
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218292
+    byte_offset: 109172
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218300
+    byte_offset: 109180
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218308
+    byte_offset: 109188
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218316
+    byte_offset: 109196
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218324
+    byte_offset: 109204
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218332
+    byte_offset: 109212
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218340
+    byte_offset: 109220
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218348
+    byte_offset: 109228
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218356
+    byte_offset: 109236
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218364
+    byte_offset: 109244
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM10_RGD_NSE
     byte_offset: 109248
     fieldset: NOC_TRDC_MGR_MRC0_DOM10_RGD_NSE
   - name: W0
-    byte_offset: 218752
+    byte_offset: 109376
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218760
+    byte_offset: 109384
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218768
+    byte_offset: 109392
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218776
+    byte_offset: 109400
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218784
+    byte_offset: 109408
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218792
+    byte_offset: 109416
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218800
+    byte_offset: 109424
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218808
+    byte_offset: 109432
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218816
+    byte_offset: 109440
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218824
+    byte_offset: 109448
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218832
+    byte_offset: 109456
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218840
+    byte_offset: 109464
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218848
+    byte_offset: 109472
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218856
+    byte_offset: 109480
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218864
+    byte_offset: 109488
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 218872
+    byte_offset: 109496
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 218756
+    byte_offset: 109380
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218764
+    byte_offset: 109388
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218772
+    byte_offset: 109396
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218780
+    byte_offset: 109404
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218788
+    byte_offset: 109412
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218796
+    byte_offset: 109420
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218804
+    byte_offset: 109428
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218812
+    byte_offset: 109436
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218820
+    byte_offset: 109444
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218828
+    byte_offset: 109452
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218836
+    byte_offset: 109460
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218844
+    byte_offset: 109468
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218852
+    byte_offset: 109476
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218860
+    byte_offset: 109484
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218868
+    byte_offset: 109492
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 218876
+    byte_offset: 109500
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM11_RGD_NSE
     byte_offset: 109504
     fieldset: NOC_TRDC_MGR_MRC0_DOM11_RGD_NSE
   - name: W0
-    byte_offset: 219264
+    byte_offset: 109632
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219272
+    byte_offset: 109640
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219280
+    byte_offset: 109648
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219288
+    byte_offset: 109656
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219296
+    byte_offset: 109664
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219304
+    byte_offset: 109672
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219312
+    byte_offset: 109680
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219320
+    byte_offset: 109688
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219328
+    byte_offset: 109696
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219336
+    byte_offset: 109704
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219344
+    byte_offset: 109712
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219352
+    byte_offset: 109720
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219360
+    byte_offset: 109728
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219368
+    byte_offset: 109736
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219376
+    byte_offset: 109744
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219384
+    byte_offset: 109752
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 219268
+    byte_offset: 109636
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219276
+    byte_offset: 109644
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219284
+    byte_offset: 109652
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219292
+    byte_offset: 109660
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219300
+    byte_offset: 109668
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219308
+    byte_offset: 109676
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219316
+    byte_offset: 109684
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219324
+    byte_offset: 109692
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219332
+    byte_offset: 109700
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219340
+    byte_offset: 109708
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219348
+    byte_offset: 109716
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219356
+    byte_offset: 109724
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219364
+    byte_offset: 109732
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219372
+    byte_offset: 109740
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219380
+    byte_offset: 109748
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219388
+    byte_offset: 109756
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM12_RGD_NSE
     byte_offset: 109760
     fieldset: NOC_TRDC_MGR_MRC0_DOM12_RGD_NSE
   - name: W0
-    byte_offset: 219776
+    byte_offset: 109888
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219784
+    byte_offset: 109896
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219792
+    byte_offset: 109904
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219800
+    byte_offset: 109912
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219808
+    byte_offset: 109920
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219816
+    byte_offset: 109928
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219824
+    byte_offset: 109936
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219832
+    byte_offset: 109944
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219840
+    byte_offset: 109952
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219848
+    byte_offset: 109960
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219856
+    byte_offset: 109968
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219864
+    byte_offset: 109976
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219872
+    byte_offset: 109984
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219880
+    byte_offset: 109992
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219888
+    byte_offset: 110000
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 219896
+    byte_offset: 110008
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 219780
+    byte_offset: 109892
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219788
+    byte_offset: 109900
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219796
+    byte_offset: 109908
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219804
+    byte_offset: 109916
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219812
+    byte_offset: 109924
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219820
+    byte_offset: 109932
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219828
+    byte_offset: 109940
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219836
+    byte_offset: 109948
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219844
+    byte_offset: 109956
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219852
+    byte_offset: 109964
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219860
+    byte_offset: 109972
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219868
+    byte_offset: 109980
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219876
+    byte_offset: 109988
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219884
+    byte_offset: 109996
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219892
+    byte_offset: 110004
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 219900
+    byte_offset: 110012
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM13_RGD_NSE
     byte_offset: 110016
     fieldset: NOC_TRDC_MGR_MRC0_DOM13_RGD_NSE
   - name: W0
-    byte_offset: 220288
+    byte_offset: 110144
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220296
+    byte_offset: 110152
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220304
+    byte_offset: 110160
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220312
+    byte_offset: 110168
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220320
+    byte_offset: 110176
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220328
+    byte_offset: 110184
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220336
+    byte_offset: 110192
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220344
+    byte_offset: 110200
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220352
+    byte_offset: 110208
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220360
+    byte_offset: 110216
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220368
+    byte_offset: 110224
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220376
+    byte_offset: 110232
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220384
+    byte_offset: 110240
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220392
+    byte_offset: 110248
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220400
+    byte_offset: 110256
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220408
+    byte_offset: 110264
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 220292
+    byte_offset: 110148
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220300
+    byte_offset: 110156
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220308
+    byte_offset: 110164
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220316
+    byte_offset: 110172
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220324
+    byte_offset: 110180
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220332
+    byte_offset: 110188
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220340
+    byte_offset: 110196
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220348
+    byte_offset: 110204
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220356
+    byte_offset: 110212
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220364
+    byte_offset: 110220
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220372
+    byte_offset: 110228
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220380
+    byte_offset: 110236
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220388
+    byte_offset: 110244
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220396
+    byte_offset: 110252
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220404
+    byte_offset: 110260
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220412
+    byte_offset: 110268
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM14_RGD_NSE
     byte_offset: 110272
     fieldset: NOC_TRDC_MGR_MRC0_DOM14_RGD_NSE
   - name: W0
-    byte_offset: 220800
+    byte_offset: 110400
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220808
+    byte_offset: 110408
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220816
+    byte_offset: 110416
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220824
+    byte_offset: 110424
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220832
+    byte_offset: 110432
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220840
+    byte_offset: 110440
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220848
+    byte_offset: 110448
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220856
+    byte_offset: 110456
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220864
+    byte_offset: 110464
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220872
+    byte_offset: 110472
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220880
+    byte_offset: 110480
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220888
+    byte_offset: 110488
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220896
+    byte_offset: 110496
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220904
+    byte_offset: 110504
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220912
+    byte_offset: 110512
     fieldset: NOC_TRDC_MGR_W0
   - name: W0
-    byte_offset: 220920
+    byte_offset: 110520
     fieldset: NOC_TRDC_MGR_W0
   - name: W1
-    byte_offset: 220804
+    byte_offset: 110404
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220812
+    byte_offset: 110412
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220820
+    byte_offset: 110420
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220828
+    byte_offset: 110428
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220836
+    byte_offset: 110436
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220844
+    byte_offset: 110444
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220852
+    byte_offset: 110452
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220860
+    byte_offset: 110460
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220868
+    byte_offset: 110468
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220876
+    byte_offset: 110476
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220884
+    byte_offset: 110484
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220892
+    byte_offset: 110492
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220900
+    byte_offset: 110500
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220908
+    byte_offset: 110508
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220916
+    byte_offset: 110516
     fieldset: NOC_TRDC_MGR_W1
   - name: W1
-    byte_offset: 220924
+    byte_offset: 110524
     fieldset: NOC_TRDC_MGR_W1
   - name: MRC0_DOM15_RGD_NSE
     byte_offset: 110528

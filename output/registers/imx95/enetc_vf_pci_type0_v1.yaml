@@ -9,8 +9,15 @@ block/ENETC_VF_PCI_TYPE0:
     byte_offset: 6
   - name: PCI_CFH_REVID_CLASSCODE
     byte_offset: 8
+  - name: PCI_CFH_CL_SIZE
+    byte_offset: 12
+  - name: PCI_CFH_LAT_TIMER
+    byte_offset: 13
   - name: PCI_CFH_HDR_TYPE
     byte_offset: 14
+  - name: PCI_CFH_BIST
+    byte_offset: 15
+    fieldset: ENETC_VF_PCI_TYPE0_PCI_CFH_BIST
   - name: PCI_CFH_BAR0
     byte_offset: 16
     fieldset: ENETC_VF_PCI_TYPE0_PCI_CFH_BAR0

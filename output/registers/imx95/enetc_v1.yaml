@@ -35,35 +35,35 @@ block/ENETC:
     byte_offset: 72
     fieldset: ENETC_SMERBOR1
   - name: PCEOR
-    byte_offset: 512
+    byte_offset: 256
   - name: RFEOR
-    byte_offset: 516
+    byte_offset: 260
   - name: NETCCLKR
     byte_offset: 356
     fieldset: ENETC_NETCCLKR
   - name: HTACAPR
-    byte_offset: 1024
+    byte_offset: 512
   - name: HTARFCOR
-    byte_offset: 1028
+    byte_offset: 516
   - name: HTAHPBCOR
-    byte_offset: 1032
+    byte_offset: 520
     fieldset: ENETC_HTAHPBCOR
   - name: HTALPBCOR
-    byte_offset: 1036
+    byte_offset: 524
     fieldset: ENETC_HTALPBCOR
   - name: HTATFCOR
-    byte_offset: 1060
+    byte_offset: 548
   - name: RCSBRLAR
-    byte_offset: 1536
+    byte_offset: 768
     fieldset: ENETC_RCSBRLAR
   - name: RCSBRLHWMR
-    byte_offset: 1540
+    byte_offset: 772
     fieldset: ENETC_RCSBRLHWMR
   - name: RCSBWLAR
-    byte_offset: 1544
+    byte_offset: 776
     fieldset: ENETC_RCSBWLAR
   - name: RCSBWLHWMR
-    byte_offset: 1548
+    byte_offset: 780
     fieldset: ENETC_RCSBWLHWMR
   - name: IPBRR0
     byte_offset: 3064

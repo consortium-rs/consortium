@@ -37,6 +37,8 @@ block/OCRAM:
   - name: RAMMAXA
     byte_offset: 64
     fieldset: OCRAM_RAMMAXA
+  - name: RAMCR2
+    byte_offset: 128
 fieldset/OCRAM_RAMCR:
   description: ''
   fields:

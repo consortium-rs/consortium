@@ -46,30 +46,6 @@ block/ENETC_SI:
   - name: SIIPVBDRMR0
     byte_offset: 336
     fieldset: ENETC_SI_SIIPVBDRMR0
-  - name: PSIMSGRR
-    byte_offset: 516
-    fieldset: ENETC_SI_PSIMSGRR
-  - name: PSIMSGSR
-    byte_offset: 520
-    fieldset: ENETC_SI_PSIMSGSR
-  - name: PSIVMSGRCVAR0
-    byte_offset: 528
-    fieldset: ENETC_SI_PSIVMSGRCVAR0
-  - name: PSIVMSGRCVAR1
-    byte_offset: 532
-    fieldset: ENETC_SI_PSIVMSGRCVAR1
-  - name: VSIMSGSR
-    byte_offset: 516
-    fieldset: ENETC_SI_VSIMSGSR
-  - name: VSIMSGRR
-    byte_offset: 520
-    fieldset: ENETC_SI_VSIMSGRR
-  - name: VSIMSGSNDAR0
-    byte_offset: 528
-    fieldset: ENETC_SI_VSIMSGSNDAR0
-  - name: VSIMSGSNDAR1
-    byte_offset: 532
-    fieldset: ENETC_SI_VSIMSGSNDAR1
   - name: SIROCT0
     byte_offset: 768
   - name: SIROCT1
@@ -256,588 +232,588 @@ block/ENETC_SI:
   - name: SIRSSCAPR
     byte_offset: 5632
   - name: TBMR
-    byte_offset: 65536
+    byte_offset: 32768
     fieldset: ENETC_SI_TBMR
   - name: TBMR
-    byte_offset: 66048
+    byte_offset: 33280
     fieldset: ENETC_SI_TBMR
   - name: TBMR
-    byte_offset: 66560
+    byte_offset: 33792
     fieldset: ENETC_SI_TBMR
   - name: TBMR
-    byte_offset: 67072
+    byte_offset: 34304
     fieldset: ENETC_SI_TBMR
   - name: TBMR
-    byte_offset: 67584
+    byte_offset: 34816
     fieldset: ENETC_SI_TBMR
   - name: TBMR
-    byte_offset: 68096
+    byte_offset: 35328
     fieldset: ENETC_SI_TBMR
   - name: TBMR
-    byte_offset: 68608
+    byte_offset: 35840
     fieldset: ENETC_SI_TBMR
   - name: TBMR
-    byte_offset: 69120
+    byte_offset: 36352
     fieldset: ENETC_SI_TBMR
   - name: TBSR
-    byte_offset: 65540
+    byte_offset: 32772
     fieldset: ENETC_SI_TBSR
   - name: TBSR
-    byte_offset: 66052
+    byte_offset: 33284
     fieldset: ENETC_SI_TBSR
   - name: TBSR
-    byte_offset: 66564
+    byte_offset: 33796
     fieldset: ENETC_SI_TBSR
   - name: TBSR
-    byte_offset: 67076
+    byte_offset: 34308
     fieldset: ENETC_SI_TBSR
   - name: TBSR
-    byte_offset: 67588
+    byte_offset: 34820
     fieldset: ENETC_SI_TBSR
   - name: TBSR
-    byte_offset: 68100
+    byte_offset: 35332
     fieldset: ENETC_SI_TBSR
   - name: TBSR
-    byte_offset: 68612
+    byte_offset: 35844
     fieldset: ENETC_SI_TBSR
   - name: TBSR
-    byte_offset: 69124
+    byte_offset: 36356
     fieldset: ENETC_SI_TBSR
   - name: TBBAR0
-    byte_offset: 65552
+    byte_offset: 32784
     fieldset: ENETC_SI_TBBAR0
   - name: TBBAR0
-    byte_offset: 66064
+    byte_offset: 33296
     fieldset: ENETC_SI_TBBAR0
   - name: TBBAR0
-    byte_offset: 66576
+    byte_offset: 33808
     fieldset: ENETC_SI_TBBAR0
   - name: TBBAR0
-    byte_offset: 67088
+    byte_offset: 34320
     fieldset: ENETC_SI_TBBAR0
   - name: TBBAR0
-    byte_offset: 67600
+    byte_offset: 34832
     fieldset: ENETC_SI_TBBAR0
   - name: TBBAR0
-    byte_offset: 68112
+    byte_offset: 35344
     fieldset: ENETC_SI_TBBAR0
   - name: TBBAR0
-    byte_offset: 68624
+    byte_offset: 35856
     fieldset: ENETC_SI_TBBAR0
   - name: TBBAR0
-    byte_offset: 69136
+    byte_offset: 36368
     fieldset: ENETC_SI_TBBAR0
   - name: TBBAR1
-    byte_offset: 65556
+    byte_offset: 32788
     fieldset: ENETC_SI_TBBAR1
   - name: TBBAR1
-    byte_offset: 66068
+    byte_offset: 33300
     fieldset: ENETC_SI_TBBAR1
   - name: TBBAR1
-    byte_offset: 66580
+    byte_offset: 33812
     fieldset: ENETC_SI_TBBAR1
   - name: TBBAR1
-    byte_offset: 67092
+    byte_offset: 34324
     fieldset: ENETC_SI_TBBAR1
   - name: TBBAR1
-    byte_offset: 67604
+    byte_offset: 34836
     fieldset: ENETC_SI_TBBAR1
   - name: TBBAR1
-    byte_offset: 68116
+    byte_offset: 35348
     fieldset: ENETC_SI_TBBAR1
   - name: TBBAR1
-    byte_offset: 68628
+    byte_offset: 35860
     fieldset: ENETC_SI_TBBAR1
   - name: TBBAR1
-    byte_offset: 69140
+    byte_offset: 36372
     fieldset: ENETC_SI_TBBAR1
   - name: TBPIR
-    byte_offset: 65560
+    byte_offset: 32792
   - name: TBPIR
-    byte_offset: 66072
+    byte_offset: 33304
   - name: TBPIR
-    byte_offset: 66584
+    byte_offset: 33816
   - name: TBPIR
-    byte_offset: 67096
+    byte_offset: 34328
   - name: TBPIR
-    byte_offset: 67608
+    byte_offset: 34840
   - name: TBPIR
-    byte_offset: 68120
+    byte_offset: 35352
   - name: TBPIR
-    byte_offset: 68632
+    byte_offset: 35864
   - name: TBPIR
-    byte_offset: 69144
+    byte_offset: 36376
   - name: TBCIR
-    byte_offset: 65564
+    byte_offset: 32796
     fieldset: ENETC_SI_TBCIR
   - name: TBCIR
-    byte_offset: 66076
+    byte_offset: 33308
     fieldset: ENETC_SI_TBCIR
   - name: TBCIR
-    byte_offset: 66588
+    byte_offset: 33820
     fieldset: ENETC_SI_TBCIR
   - name: TBCIR
-    byte_offset: 67100
+    byte_offset: 34332
     fieldset: ENETC_SI_TBCIR
   - name: TBCIR
-    byte_offset: 67612
+    byte_offset: 34844
     fieldset: ENETC_SI_TBCIR
   - name: TBCIR
-    byte_offset: 68124
+    byte_offset: 35356
     fieldset: ENETC_SI_TBCIR
   - name: TBCIR
-    byte_offset: 68636
+    byte_offset: 35868
     fieldset: ENETC_SI_TBCIR
   - name: TBCIR
-    byte_offset: 69148
+    byte_offset: 36380
     fieldset: ENETC_SI_TBCIR
   - name: TBLENR
-    byte_offset: 65568
+    byte_offset: 32800
     fieldset: ENETC_SI_TBLENR
   - name: TBLENR
-    byte_offset: 66080
+    byte_offset: 33312
     fieldset: ENETC_SI_TBLENR
   - name: TBLENR
-    byte_offset: 66592
+    byte_offset: 33824
     fieldset: ENETC_SI_TBLENR
   - name: TBLENR
-    byte_offset: 67104
+    byte_offset: 34336
     fieldset: ENETC_SI_TBLENR
   - name: TBLENR
-    byte_offset: 67616
+    byte_offset: 34848
     fieldset: ENETC_SI_TBLENR
   - name: TBLENR
-    byte_offset: 68128
+    byte_offset: 35360
     fieldset: ENETC_SI_TBLENR
   - name: TBLENR
-    byte_offset: 68640
+    byte_offset: 35872
     fieldset: ENETC_SI_TBLENR
   - name: TBLENR
-    byte_offset: 69152
+    byte_offset: 36384
     fieldset: ENETC_SI_TBLENR
   - name: TBIER
-    byte_offset: 65696
+    byte_offset: 32928
     fieldset: ENETC_SI_TBIER
   - name: TBIER
-    byte_offset: 66208
+    byte_offset: 33440
     fieldset: ENETC_SI_TBIER
   - name: TBIER
-    byte_offset: 66720
+    byte_offset: 33952
     fieldset: ENETC_SI_TBIER
   - name: TBIER
-    byte_offset: 67232
+    byte_offset: 34464
     fieldset: ENETC_SI_TBIER
   - name: TBIER
-    byte_offset: 67744
+    byte_offset: 34976
     fieldset: ENETC_SI_TBIER
   - name: TBIER
-    byte_offset: 68256
+    byte_offset: 35488
     fieldset: ENETC_SI_TBIER
   - name: TBIER
-    byte_offset: 68768
+    byte_offset: 36000
     fieldset: ENETC_SI_TBIER
   - name: TBIER
-    byte_offset: 69280
+    byte_offset: 36512
     fieldset: ENETC_SI_TBIER
   - name: TBIDR
-    byte_offset: 65700
+    byte_offset: 32932
     fieldset: ENETC_SI_TBIDR
   - name: TBIDR
-    byte_offset: 66212
+    byte_offset: 33444
     fieldset: ENETC_SI_TBIDR
   - name: TBIDR
-    byte_offset: 66724
+    byte_offset: 33956
     fieldset: ENETC_SI_TBIDR
   - name: TBIDR
-    byte_offset: 67236
+    byte_offset: 34468
     fieldset: ENETC_SI_TBIDR
   - name: TBIDR
-    byte_offset: 67748
+    byte_offset: 34980
     fieldset: ENETC_SI_TBIDR
   - name: TBIDR
-    byte_offset: 68260
+    byte_offset: 35492
     fieldset: ENETC_SI_TBIDR
   - name: TBIDR
-    byte_offset: 68772
+    byte_offset: 36004
     fieldset: ENETC_SI_TBIDR
   - name: TBIDR
-    byte_offset: 69284
+    byte_offset: 36516
     fieldset: ENETC_SI_TBIDR
   - name: TBICR0
-    byte_offset: 65704
+    byte_offset: 32936
     fieldset: ENETC_SI_TBICR0
   - name: TBICR0
-    byte_offset: 66216
+    byte_offset: 33448
     fieldset: ENETC_SI_TBICR0
   - name: TBICR0
-    byte_offset: 66728
+    byte_offset: 33960
     fieldset: ENETC_SI_TBICR0
   - name: TBICR0
-    byte_offset: 67240
+    byte_offset: 34472
     fieldset: ENETC_SI_TBICR0
   - name: TBICR0
-    byte_offset: 67752
+    byte_offset: 34984
     fieldset: ENETC_SI_TBICR0
   - name: TBICR0
-    byte_offset: 68264
+    byte_offset: 35496
     fieldset: ENETC_SI_TBICR0
   - name: TBICR0
-    byte_offset: 68776
+    byte_offset: 36008
     fieldset: ENETC_SI_TBICR0
   - name: TBICR0
-    byte_offset: 69288
+    byte_offset: 36520
     fieldset: ENETC_SI_TBICR0
   - name: TBICR1
-    byte_offset: 65708
+    byte_offset: 32940
     fieldset: ENETC_SI_TBICR1
   - name: TBICR1
-    byte_offset: 66220
+    byte_offset: 33452
     fieldset: ENETC_SI_TBICR1
   - name: TBICR1
-    byte_offset: 66732
+    byte_offset: 33964
     fieldset: ENETC_SI_TBICR1
   - name: TBICR1
-    byte_offset: 67244
+    byte_offset: 34476
     fieldset: ENETC_SI_TBICR1
   - name: TBICR1
-    byte_offset: 67756
+    byte_offset: 34988
     fieldset: ENETC_SI_TBICR1
   - name: TBICR1
-    byte_offset: 68268
+    byte_offset: 35500
     fieldset: ENETC_SI_TBICR1
   - name: TBICR1
-    byte_offset: 68780
+    byte_offset: 36012
     fieldset: ENETC_SI_TBICR1
   - name: TBICR1
-    byte_offset: 69292
+    byte_offset: 36524
     fieldset: ENETC_SI_TBICR1
   - name: RBMR
-    byte_offset: 65792
+    byte_offset: 33024
     fieldset: ENETC_SI_RBMR
   - name: RBMR
-    byte_offset: 66304
+    byte_offset: 33536
     fieldset: ENETC_SI_RBMR
   - name: RBMR
-    byte_offset: 66816
+    byte_offset: 34048
     fieldset: ENETC_SI_RBMR
   - name: RBMR
-    byte_offset: 67328
+    byte_offset: 34560
     fieldset: ENETC_SI_RBMR
   - name: RBMR
-    byte_offset: 67840
+    byte_offset: 35072
     fieldset: ENETC_SI_RBMR
   - name: RBMR
-    byte_offset: 68352
+    byte_offset: 35584
     fieldset: ENETC_SI_RBMR
   - name: RBMR
-    byte_offset: 68864
+    byte_offset: 36096
     fieldset: ENETC_SI_RBMR
   - name: RBMR
-    byte_offset: 69376
+    byte_offset: 36608
     fieldset: ENETC_SI_RBMR
   - name: RBSR
-    byte_offset: 65796
+    byte_offset: 33028
     fieldset: ENETC_SI_RBSR
   - name: RBSR
-    byte_offset: 66308
+    byte_offset: 33540
     fieldset: ENETC_SI_RBSR
   - name: RBSR
-    byte_offset: 66820
+    byte_offset: 34052
     fieldset: ENETC_SI_RBSR
   - name: RBSR
-    byte_offset: 67332
+    byte_offset: 34564
     fieldset: ENETC_SI_RBSR
   - name: RBSR
-    byte_offset: 67844
+    byte_offset: 35076
     fieldset: ENETC_SI_RBSR
   - name: RBSR
-    byte_offset: 68356
+    byte_offset: 35588
     fieldset: ENETC_SI_RBSR
   - name: RBSR
-    byte_offset: 68868
+    byte_offset: 36100
     fieldset: ENETC_SI_RBSR
   - name: RBSR
-    byte_offset: 69380
+    byte_offset: 36612
     fieldset: ENETC_SI_RBSR
   - name: RBBSR
-    byte_offset: 65800
+    byte_offset: 33032
     fieldset: ENETC_SI_RBBSR
   - name: RBBSR
-    byte_offset: 66312
+    byte_offset: 33544
     fieldset: ENETC_SI_RBBSR
   - name: RBBSR
-    byte_offset: 66824
+    byte_offset: 34056
     fieldset: ENETC_SI_RBBSR
   - name: RBBSR
-    byte_offset: 67336
+    byte_offset: 34568
     fieldset: ENETC_SI_RBBSR
   - name: RBBSR
-    byte_offset: 67848
+    byte_offset: 35080
     fieldset: ENETC_SI_RBBSR
   - name: RBBSR
-    byte_offset: 68360
+    byte_offset: 35592
     fieldset: ENETC_SI_RBBSR
   - name: RBBSR
-    byte_offset: 68872
+    byte_offset: 36104
     fieldset: ENETC_SI_RBBSR
   - name: RBBSR
-    byte_offset: 69384
+    byte_offset: 36616
     fieldset: ENETC_SI_RBBSR
   - name: RBCIR
-    byte_offset: 65804
+    byte_offset: 33036
   - name: RBCIR
-    byte_offset: 66316
+    byte_offset: 33548
   - name: RBCIR
-    byte_offset: 66828
+    byte_offset: 34060
   - name: RBCIR
-    byte_offset: 67340
+    byte_offset: 34572
   - name: RBCIR
-    byte_offset: 67852
+    byte_offset: 35084
   - name: RBCIR
-    byte_offset: 68364
+    byte_offset: 35596
   - name: RBCIR
-    byte_offset: 68876
+    byte_offset: 36108
   - name: RBCIR
-    byte_offset: 69388
+    byte_offset: 36620
   - name: RBBAR0
-    byte_offset: 65808
+    byte_offset: 33040
     fieldset: ENETC_SI_RBBAR0
   - name: RBBAR0
-    byte_offset: 66320
+    byte_offset: 33552
     fieldset: ENETC_SI_RBBAR0
   - name: RBBAR0
-    byte_offset: 66832
+    byte_offset: 34064
     fieldset: ENETC_SI_RBBAR0
   - name: RBBAR0
-    byte_offset: 67344
+    byte_offset: 34576
     fieldset: ENETC_SI_RBBAR0
   - name: RBBAR0
-    byte_offset: 67856
+    byte_offset: 35088
     fieldset: ENETC_SI_RBBAR0
   - name: RBBAR0
-    byte_offset: 68368
+    byte_offset: 35600
     fieldset: ENETC_SI_RBBAR0
   - name: RBBAR0
-    byte_offset: 68880
+    byte_offset: 36112
     fieldset: ENETC_SI_RBBAR0
   - name: RBBAR0
-    byte_offset: 69392
+    byte_offset: 36624
     fieldset: ENETC_SI_RBBAR0
   - name: RBBAR1
-    byte_offset: 65812
+    byte_offset: 33044
     fieldset: ENETC_SI_RBBAR1
   - name: RBBAR1
-    byte_offset: 66324
+    byte_offset: 33556
     fieldset: ENETC_SI_RBBAR1
   - name: RBBAR1
-    byte_offset: 66836
+    byte_offset: 34068
     fieldset: ENETC_SI_RBBAR1
   - name: RBBAR1
-    byte_offset: 67348
+    byte_offset: 34580
     fieldset: ENETC_SI_RBBAR1
   - name: RBBAR1
-    byte_offset: 67860
+    byte_offset: 35092
     fieldset: ENETC_SI_RBBAR1
   - name: RBBAR1
-    byte_offset: 68372
+    byte_offset: 35604
     fieldset: ENETC_SI_RBBAR1
   - name: RBBAR1
-    byte_offset: 68884
+    byte_offset: 36116
     fieldset: ENETC_SI_RBBAR1
   - name: RBBAR1
-    byte_offset: 69396
+    byte_offset: 36628
     fieldset: ENETC_SI_RBBAR1
   - name: RBPIR
-    byte_offset: 65816
+    byte_offset: 33048
     fieldset: ENETC_SI_RBPIR
   - name: RBPIR
-    byte_offset: 66328
+    byte_offset: 33560
     fieldset: ENETC_SI_RBPIR
   - name: RBPIR
-    byte_offset: 66840
+    byte_offset: 34072
     fieldset: ENETC_SI_RBPIR
   - name: RBPIR
-    byte_offset: 67352
+    byte_offset: 34584
     fieldset: ENETC_SI_RBPIR
   - name: RBPIR
-    byte_offset: 67864
+    byte_offset: 35096
     fieldset: ENETC_SI_RBPIR
   - name: RBPIR
-    byte_offset: 68376
+    byte_offset: 35608
     fieldset: ENETC_SI_RBPIR
   - name: RBPIR
-    byte_offset: 68888
+    byte_offset: 36120
     fieldset: ENETC_SI_RBPIR
   - name: RBPIR
-    byte_offset: 69400
+    byte_offset: 36632
     fieldset: ENETC_SI_RBPIR
   - name: RBLENR
-    byte_offset: 65824
+    byte_offset: 33056
     fieldset: ENETC_SI_RBLENR
   - name: RBLENR
-    byte_offset: 66336
+    byte_offset: 33568
     fieldset: ENETC_SI_RBLENR
   - name: RBLENR
-    byte_offset: 66848
+    byte_offset: 34080
     fieldset: ENETC_SI_RBLENR
   - name: RBLENR
-    byte_offset: 67360
+    byte_offset: 34592
     fieldset: ENETC_SI_RBLENR
   - name: RBLENR
-    byte_offset: 67872
+    byte_offset: 35104
     fieldset: ENETC_SI_RBLENR
   - name: RBLENR
-    byte_offset: 68384
+    byte_offset: 35616
     fieldset: ENETC_SI_RBLENR
   - name: RBLENR
-    byte_offset: 68896
+    byte_offset: 36128
     fieldset: ENETC_SI_RBLENR
   - name: RBLENR
-    byte_offset: 69408
+    byte_offset: 36640
     fieldset: ENETC_SI_RBLENR
   - name: RBRSCR
-    byte_offset: 65840
+    byte_offset: 33072
     fieldset: ENETC_SI_RBRSCR
   - name: RBRSCR
-    byte_offset: 66352
+    byte_offset: 33584
     fieldset: ENETC_SI_RBRSCR
   - name: RBRSCR
-    byte_offset: 66864
+    byte_offset: 34096
     fieldset: ENETC_SI_RBRSCR
   - name: RBRSCR
-    byte_offset: 67376
+    byte_offset: 34608
     fieldset: ENETC_SI_RBRSCR
   - name: RBRSCR
-    byte_offset: 67888
+    byte_offset: 35120
     fieldset: ENETC_SI_RBRSCR
   - name: RBRSCR
-    byte_offset: 68400
+    byte_offset: 35632
     fieldset: ENETC_SI_RBRSCR
   - name: RBRSCR
-    byte_offset: 68912
+    byte_offset: 36144
     fieldset: ENETC_SI_RBRSCR
   - name: RBRSCR
-    byte_offset: 69424
+    byte_offset: 36656
     fieldset: ENETC_SI_RBRSCR
   - name: RBDCR
-    byte_offset: 65920
+    byte_offset: 33152
     fieldset: ENETC_SI_RBDCR
   - name: RBDCR
-    byte_offset: 66432
+    byte_offset: 33664
     fieldset: ENETC_SI_RBDCR
   - name: RBDCR
-    byte_offset: 66944
+    byte_offset: 34176
     fieldset: ENETC_SI_RBDCR
   - name: RBDCR
-    byte_offset: 67456
+    byte_offset: 34688
     fieldset: ENETC_SI_RBDCR
   - name: RBDCR
-    byte_offset: 67968
+    byte_offset: 35200
     fieldset: ENETC_SI_RBDCR
   - name: RBDCR
-    byte_offset: 68480
+    byte_offset: 35712
     fieldset: ENETC_SI_RBDCR
   - name: RBDCR
-    byte_offset: 68992
+    byte_offset: 36224
     fieldset: ENETC_SI_RBDCR
   - name: RBDCR
-    byte_offset: 69504
+    byte_offset: 36736
     fieldset: ENETC_SI_RBDCR
   - name: RBIER
-    byte_offset: 65952
+    byte_offset: 33184
     fieldset: ENETC_SI_RBIER
   - name: RBIER
-    byte_offset: 66464
+    byte_offset: 33696
     fieldset: ENETC_SI_RBIER
   - name: RBIER
-    byte_offset: 66976
+    byte_offset: 34208
     fieldset: ENETC_SI_RBIER
   - name: RBIER
-    byte_offset: 67488
+    byte_offset: 34720
     fieldset: ENETC_SI_RBIER
   - name: RBIER
-    byte_offset: 68000
+    byte_offset: 35232
     fieldset: ENETC_SI_RBIER
   - name: RBIER
-    byte_offset: 68512
+    byte_offset: 35744
     fieldset: ENETC_SI_RBIER
   - name: RBIER
-    byte_offset: 69024
+    byte_offset: 36256
     fieldset: ENETC_SI_RBIER
   - name: RBIER
-    byte_offset: 69536
+    byte_offset: 36768
     fieldset: ENETC_SI_RBIER
   - name: RBIDR
-    byte_offset: 65956
+    byte_offset: 33188
     fieldset: ENETC_SI_RBIDR
   - name: RBIDR
-    byte_offset: 66468
+    byte_offset: 33700
     fieldset: ENETC_SI_RBIDR
   - name: RBIDR
-    byte_offset: 66980
+    byte_offset: 34212
     fieldset: ENETC_SI_RBIDR
   - name: RBIDR
-    byte_offset: 67492
+    byte_offset: 34724
     fieldset: ENETC_SI_RBIDR
   - name: RBIDR
-    byte_offset: 68004
+    byte_offset: 35236
     fieldset: ENETC_SI_RBIDR
   - name: RBIDR
-    byte_offset: 68516
+    byte_offset: 35748
     fieldset: ENETC_SI_RBIDR
   - name: RBIDR
-    byte_offset: 69028
+    byte_offset: 36260
     fieldset: ENETC_SI_RBIDR
   - name: RBIDR
-    byte_offset: 69540
+    byte_offset: 36772
     fieldset: ENETC_SI_RBIDR
   - name: RBICR0
-    byte_offset: 65960
+    byte_offset: 33192
     fieldset: ENETC_SI_RBICR0
   - name: RBICR0
-    byte_offset: 66472
+    byte_offset: 33704
     fieldset: ENETC_SI_RBICR0
   - name: RBICR0
-    byte_offset: 66984
+    byte_offset: 34216
     fieldset: ENETC_SI_RBICR0
   - name: RBICR0
-    byte_offset: 67496
+    byte_offset: 34728
     fieldset: ENETC_SI_RBICR0
   - name: RBICR0
-    byte_offset: 68008
+    byte_offset: 35240
     fieldset: ENETC_SI_RBICR0
   - name: RBICR0
-    byte_offset: 68520
+    byte_offset: 35752
     fieldset: ENETC_SI_RBICR0
   - name: RBICR0
-    byte_offset: 69032
+    byte_offset: 36264
     fieldset: ENETC_SI_RBICR0
   - name: RBICR0
-    byte_offset: 69544
+    byte_offset: 36776
     fieldset: ENETC_SI_RBICR0
   - name: RBICR1
-    byte_offset: 65964
+    byte_offset: 33196
     fieldset: ENETC_SI_RBICR1
   - name: RBICR1
-    byte_offset: 66476
+    byte_offset: 33708
     fieldset: ENETC_SI_RBICR1
   - name: RBICR1
-    byte_offset: 66988
+    byte_offset: 34220
     fieldset: ENETC_SI_RBICR1
   - name: RBICR1
-    byte_offset: 67500
+    byte_offset: 34732
     fieldset: ENETC_SI_RBICR1
   - name: RBICR1
-    byte_offset: 68012
+    byte_offset: 35244
     fieldset: ENETC_SI_RBICR1
   - name: RBICR1
-    byte_offset: 68524
+    byte_offset: 35756
     fieldset: ENETC_SI_RBICR1
   - name: RBICR1
-    byte_offset: 69036
+    byte_offset: 36268
     fieldset: ENETC_SI_RBICR1
   - name: RBICR1
-    byte_offset: 69548
+    byte_offset: 36780
     fieldset: ENETC_SI_RBICR1
 fieldset/ENETC_SI_SIMR:
   description: ''

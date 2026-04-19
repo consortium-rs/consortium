@@ -4,6 +4,12 @@ block/MMU_TBU_ME10:
   - name: SMMU_PIDR4
     byte_offset: 4048
     fieldset: MMU_TBU_ME10_SMMU_PIDR4
+  - name: SMMU_PIDR5
+    byte_offset: 4052
+  - name: SMMU_PIDR6
+    byte_offset: 4056
+  - name: SMMU_PIDR7
+    byte_offset: 4060
   - name: SMMU_PIDR0
     byte_offset: 4064
   - name: SMMU_PIDR1
@@ -131,6 +137,12 @@ block/MMU_TBU_ME10:
   - name: SMMU_PMCG_PIDR4
     byte_offset: 12240
     fieldset: MMU_TBU_ME10_SMMU_PMCG_PIDR4
+  - name: SMMU_PMCG_PIDR5
+    byte_offset: 12244
+  - name: SMMU_PMCG_PIDR6
+    byte_offset: 12248
+  - name: SMMU_PMCG_PIDR7
+    byte_offset: 12252
   - name: SMMU_PMCG_PIDR0
     byte_offset: 12256
   - name: SMMU_PMCG_PIDR1
@@ -241,15 +253,23 @@ block/MMU_TBU_ME10:
   - name: TBU_ERRFR_LO
     byte_offset: 36480
     fieldset: MMU_TBU_ME10_TBU_ERRFR_LO
+  - name: TBU_ERRFR_HI
+    byte_offset: 36484
   - name: TBU_ERRCTLR_LO
     byte_offset: 36488
     fieldset: MMU_TBU_ME10_TBU_ERRCTLR_LO
+  - name: TBU_ERRCTLR_HI
+    byte_offset: 36492
   - name: TBU_ERRSTATUS_LO
     byte_offset: 36496
     fieldset: MMU_TBU_ME10_TBU_ERRSTATUS_LO
+  - name: TBU_ERRSTATUS_HI
+    byte_offset: 36500
   - name: TBU_ERRGEN_LO
     byte_offset: 36544
     fieldset: MMU_TBU_ME10_TBU_ERRGEN_LO
+  - name: TBU_ERRGEN_HI
+    byte_offset: 36548
   - name: MPAMF_IDR_LO_S
     byte_offset: 45056
     fieldset: MMU_TBU_ME10_MPAMF_IDR_LO_S

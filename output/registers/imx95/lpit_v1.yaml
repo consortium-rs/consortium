@@ -20,32 +20,32 @@ block/LPIT:
   - name: CLRTEN
     byte_offset: 24
   - name: TVAL
+    byte_offset: 32
+  - name: TVAL
+    byte_offset: 48
+  - name: TVAL
     byte_offset: 64
   - name: TVAL
     byte_offset: 80
-  - name: TVAL
-    byte_offset: 96
-  - name: TVAL
-    byte_offset: 112
+  - name: CVAL
+    byte_offset: 36
+  - name: CVAL
+    byte_offset: 52
   - name: CVAL
     byte_offset: 68
   - name: CVAL
     byte_offset: 84
-  - name: CVAL
-    byte_offset: 100
-  - name: CVAL
-    byte_offset: 116
+  - name: TCTRL
+    byte_offset: 40
+    fieldset: LPIT_TCTRL
+  - name: TCTRL
+    byte_offset: 56
+    fieldset: LPIT_TCTRL
   - name: TCTRL
     byte_offset: 72
     fieldset: LPIT_TCTRL
   - name: TCTRL
     byte_offset: 88
-    fieldset: LPIT_TCTRL
-  - name: TCTRL
-    byte_offset: 104
-    fieldset: LPIT_TCTRL
-  - name: TCTRL
-    byte_offset: 120
     fieldset: LPIT_TCTRL
 fieldset/LPIT_VERID:
   description: ''

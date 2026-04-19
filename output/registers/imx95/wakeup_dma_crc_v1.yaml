@@ -4,6 +4,9 @@ block/WAKEUP_DMA_CRC:
   - name: GEC
     byte_offset: 0
   - name: CTL
+    byte_offset: 16
+    fieldset: WAKEUP_DMA_CRC_CTL
+  - name: CTL
     byte_offset: 32
     fieldset: WAKEUP_DMA_CRC_CTL
   - name: CTL
@@ -24,9 +27,8 @@ block/WAKEUP_DMA_CRC:
   - name: CTL
     byte_offset: 128
     fieldset: WAKEUP_DMA_CRC_CTL
-  - name: CTL
-    byte_offset: 144
-    fieldset: WAKEUP_DMA_CRC_CTL
+  - name: ICRC
+    byte_offset: 20
   - name: ICRC
     byte_offset: 36
   - name: ICRC
@@ -41,8 +43,8 @@ block/WAKEUP_DMA_CRC:
     byte_offset: 116
   - name: ICRC
     byte_offset: 132
-  - name: ICRC
-    byte_offset: 148
+  - name: FCRC
+    byte_offset: 24
   - name: FCRC
     byte_offset: 40
   - name: FCRC
@@ -57,8 +59,6 @@ block/WAKEUP_DMA_CRC:
     byte_offset: 120
   - name: FCRC
     byte_offset: 136
-  - name: FCRC
-    byte_offset: 152
 fieldset/WAKEUP_DMA_CRC_GEC_GBL:
   description: ''
   fields:

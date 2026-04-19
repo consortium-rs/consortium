@@ -37,6 +37,8 @@ block/NEUTRON:
   - name: RES_X
     byte_offset: 48
     fieldset: NEUTRON_RES_X
+  - name: ASYMCTRL
+    byte_offset: 56
   - name: FLUSH
     byte_offset: 60
     fieldset: NEUTRON_FLUSH

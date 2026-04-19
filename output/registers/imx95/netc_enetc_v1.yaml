@@ -48,28 +48,28 @@ block/NETC_ENETC:
     byte_offset: 300
     fieldset: NETC_ENETC_PRXBCHWMR
   - name: PICDRDCR
-    byte_offset: 640
+    byte_offset: 320
     fieldset: NETC_ENETC_PICDRDCR
   - name: PICDRDCR
-    byte_offset: 656
+    byte_offset: 336
     fieldset: NETC_ENETC_PICDRDCR
   - name: PICDRDCR
-    byte_offset: 672
+    byte_offset: 352
     fieldset: NETC_ENETC_PICDRDCR
   - name: PICDRDCR
-    byte_offset: 688
+    byte_offset: 368
     fieldset: NETC_ENETC_PICDRDCR
   - name: PICDRDCRRR
-    byte_offset: 648
+    byte_offset: 328
     fieldset: NETC_ENETC_PICDRDCRRR
   - name: PICDRDCRRR
-    byte_offset: 664
+    byte_offset: 344
     fieldset: NETC_ENETC_PICDRDCRRR
   - name: PICDRDCRRR
-    byte_offset: 680
+    byte_offset: 360
     fieldset: NETC_ENETC_PICDRDCRRR
   - name: PICDRDCRRR
-    byte_offset: 696
+    byte_offset: 376
     fieldset: NETC_ENETC_PICDRDCRRR
   - name: PICPDSR
     byte_offset: 384
@@ -144,95 +144,95 @@ block/NETC_ENETC:
     byte_offset: 2048
     fieldset: NETC_ENETC_SMCAPR
   - name: PSIPMAR0
-    byte_offset: 16384
+    byte_offset: 8192
   - name: PSIPMAR0
-    byte_offset: 16512
+    byte_offset: 8320
   - name: PSIPMAR0
-    byte_offset: 16640
+    byte_offset: 8448
   - name: PSIPMAR1
-    byte_offset: 16388
+    byte_offset: 8196
   - name: PSIPMAR1
-    byte_offset: 16516
+    byte_offset: 8324
   - name: PSIPMAR1
-    byte_offset: 16644
+    byte_offset: 8452
   - name: PSIVLANR
-    byte_offset: 16392
+    byte_offset: 8200
     fieldset: NETC_ENETC_PSIVLANR
   - name: PSIVLANR
-    byte_offset: 16520
+    byte_offset: 8328
     fieldset: NETC_ENETC_PSIVLANR
   - name: PSIVLANR
-    byte_offset: 16648
+    byte_offset: 8456
     fieldset: NETC_ENETC_PSIVLANR
   - name: PSICFGR0
-    byte_offset: 16400
+    byte_offset: 8208
     fieldset: NETC_ENETC_PSICFGR0
   - name: PSICFGR0
-    byte_offset: 16528
+    byte_offset: 8336
     fieldset: NETC_ENETC_PSICFGR0
   - name: PSICFGR0
-    byte_offset: 16656
+    byte_offset: 8464
     fieldset: NETC_ENETC_PSICFGR0
   - name: PSICFGR1
-    byte_offset: 16404
+    byte_offset: 8212
   - name: PSICFGR1
-    byte_offset: 16532
+    byte_offset: 8340
   - name: PSICFGR1
-    byte_offset: 16660
+    byte_offset: 8468
   - name: PSICFGR2
-    byte_offset: 16408
+    byte_offset: 8216
   - name: PSICFGR2
-    byte_offset: 16536
+    byte_offset: 8344
   - name: PSICFGR2
-    byte_offset: 16664
+    byte_offset: 8472
   - name: PSIVMAFCFGR
-    byte_offset: 16432
+    byte_offset: 8240
   - name: PSIVMAFCFGR
-    byte_offset: 16560
+    byte_offset: 8368
   - name: PSIVMAFCFGR
-    byte_offset: 16688
+    byte_offset: 8496
   - name: PSIVLANFCFGR
-    byte_offset: 16436
+    byte_offset: 8244
   - name: PSIVLANFCFGR
-    byte_offset: 16564
+    byte_offset: 8372
   - name: PSIVLANFCFGR
-    byte_offset: 16692
+    byte_offset: 8500
   - name: PSIUMHFR0
-    byte_offset: 16464
+    byte_offset: 8272
   - name: PSIUMHFR0
-    byte_offset: 16592
+    byte_offset: 8400
   - name: PSIUMHFR0
-    byte_offset: 16720
+    byte_offset: 8528
   - name: PSIUMHFR1
-    byte_offset: 16468
+    byte_offset: 8276
   - name: PSIUMHFR1
-    byte_offset: 16596
+    byte_offset: 8404
   - name: PSIUMHFR1
-    byte_offset: 16724
+    byte_offset: 8532
   - name: PSIMMHFR0
-    byte_offset: 16472
+    byte_offset: 8280
   - name: PSIMMHFR0
-    byte_offset: 16600
+    byte_offset: 8408
   - name: PSIMMHFR0
-    byte_offset: 16728
+    byte_offset: 8536
   - name: PSIMMHFR1
-    byte_offset: 16476
+    byte_offset: 8284
   - name: PSIMMHFR1
-    byte_offset: 16604
+    byte_offset: 8412
   - name: PSIMMHFR1
-    byte_offset: 16732
+    byte_offset: 8540
   - name: PSIVHFR0
-    byte_offset: 16480
+    byte_offset: 8288
   - name: PSIVHFR0
-    byte_offset: 16608
+    byte_offset: 8416
   - name: PSIVHFR0
-    byte_offset: 16736
+    byte_offset: 8544
   - name: PSIVHFR1
-    byte_offset: 16484
+    byte_offset: 8292
   - name: PSIVHFR1
-    byte_offset: 16612
+    byte_offset: 8420
   - name: PSIVHFR1
-    byte_offset: 16740
+    byte_offset: 8548
 fieldset/NETC_ENETC_ECAPR0:
   description: ''
   fields:
