@@ -19,228 +19,429 @@ impl CCM {
         self.ptr as _
     }
     #[inline(always)]
-    pub const fn RW(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0usize) as _) }
+    pub const fn CLOCK_ROOT_CONTROL_RW(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 123usize);
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0usize + n * 128usize) as _) }
     }
     #[inline(always)]
-    pub const fn SET(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x04usize) as _) }
+    pub const fn CLOCK_ROOT_CONTROL_SET(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 123usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x04usize + n * 128usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x08usize) as _) }
+    pub const fn CLOCK_ROOT_CONTROL_CLR(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 123usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x08usize + n * 128usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0cusize) as _) }
+    pub const fn CLOCK_ROOT_CONTROL_TOG(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 123usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0cusize + n * 128usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn STATUS0(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x20usize) as _) }
+    pub const fn CLOCK_ROOT_STATUS0(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<CCM_CLOCK_ROOT_STATUS0, crate::common::RW> {
+        assert!(n < 123usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x20usize + n * 128usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn AUTHEN(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x30usize) as _) }
+    pub const fn CLOCK_ROOT_AUTHEN(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 123usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x30usize + n * 128usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn RW(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED0_RW(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4800usize) as _) }
+    }
+    #[inline(always)]
+    pub const fn GPR_SHARED0_SET(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4804usize) as _) }
+    }
+    #[inline(always)]
+    pub const fn GPR_SHARED0_CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4808usize) as _) }
+    }
+    #[inline(always)]
+    pub const fn GPR_SHARED0_TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x480cusize) as _) }
+    }
+    #[inline(always)]
+    pub const fn GPR_SHARED0_AUTHEN_RW(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4810usize) as _) }
     }
     #[inline(always)]
-    pub const fn SET(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED0_AUTHEN_SET(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4814usize) as _) }
     }
     #[inline(always)]
-    pub const fn CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED0_AUTHEN_CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4818usize) as _) }
     }
     #[inline(always)]
-    pub const fn TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED0_AUTHEN_TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x481cusize) as _) }
     }
     #[inline(always)]
-    pub const fn RW(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED1_RW(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4820usize) as _) }
     }
     #[inline(always)]
-    pub const fn SET(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED1_SET(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4824usize) as _) }
     }
     #[inline(always)]
-    pub const fn CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED1_CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4828usize) as _) }
     }
     #[inline(always)]
-    pub const fn TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED1_TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x482cusize) as _) }
     }
     #[inline(always)]
-    pub const fn RW(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED1_AUTHEN_RW(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4830usize) as _) }
     }
     #[inline(always)]
-    pub const fn SET(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED1_AUTHEN_SET(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4834usize) as _) }
     }
     #[inline(always)]
-    pub const fn CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED1_AUTHEN_CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4838usize) as _) }
     }
     #[inline(always)]
-    pub const fn TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED1_AUTHEN_TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x483cusize) as _) }
     }
     #[inline(always)]
-    pub const fn RW(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED2_RW(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4840usize) as _) }
     }
     #[inline(always)]
-    pub const fn SET(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED2_SET(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4844usize) as _) }
     }
     #[inline(always)]
-    pub const fn CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED2_CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4848usize) as _) }
     }
     #[inline(always)]
-    pub const fn TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED2_TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x484cusize) as _) }
     }
     #[inline(always)]
-    pub const fn RW(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED2_AUTHEN_RW(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4850usize) as _) }
     }
     #[inline(always)]
-    pub const fn SET(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED2_AUTHEN_SET(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4854usize) as _) }
     }
     #[inline(always)]
-    pub const fn CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED2_AUTHEN_CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4858usize) as _) }
     }
     #[inline(always)]
-    pub const fn TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn GPR_SHARED2_AUTHEN_TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x485cusize) as _) }
     }
     #[inline(always)]
-    pub const fn RW(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4870usize) as _) }
+    pub const fn GPR_SHARED_AUTHEN_RW(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 5usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4860usize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn SET(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4874usize) as _) }
+    pub const fn GPR_SHARED_RW(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 5usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4860usize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4878usize) as _) }
+    pub const fn GPR_SHARED_AUTHEN_SET(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 5usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4864usize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x487cusize) as _) }
+    pub const fn GPR_SHARED_SET(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 5usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4864usize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn RW(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c00usize) as _) }
+    pub const fn GPR_SHARED_AUTHEN_CLR(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 5usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4868usize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn SET(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c04usize) as _) }
+    pub const fn GPR_SHARED_CLR(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 5usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4868usize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c08usize) as _) }
+    pub const fn GPR_SHARED_AUTHEN_TOG(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 5usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x486cusize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c0cusize) as _) }
+    pub const fn GPR_SHARED_TOG(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 5usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x486cusize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn RW(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c10usize) as _) }
+    pub const fn GPR_PRIVATE_AUTHEN_RW(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 8usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c00usize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn SET(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c14usize) as _) }
+    pub const fn GPR_PRIVATE_RW(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 8usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c00usize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c18usize) as _) }
+    pub const fn GPR_PRIVATE_AUTHEN_SET(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 8usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c04usize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn TOG(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c1cusize) as _) }
+    pub const fn GPR_PRIVATE_SET(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 8usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c04usize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn DIRECT(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5000usize) as _) }
+    pub const fn GPR_PRIVATE_AUTHEN_CLR(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 8usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c08usize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn LPM_STATUS0(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5004usize) as _) }
+    pub const fn GPR_PRIVATE_CLR(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 8usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c08usize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn LPM_STATUS1(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5008usize) as _) }
+    pub const fn GPR_PRIVATE_AUTHEN_TOG(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 8usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c0cusize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn LPM0(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5010usize) as _) }
+    pub const fn GPR_PRIVATE_TOG(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 8usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4c0cusize + n * 32usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn LPM1(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5014usize) as _) }
+    pub const fn OSCPLL_DIRECT(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<CCM_OSCPLL_DIRECT, crate::common::RW> {
+        assert!(n < 39usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5000usize + n * 64usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn LPM_CUR(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x501cusize) as _) }
+    pub const fn OSCPLL_LPM_STATUS0(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 39usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5004usize + n * 64usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn STATUS0(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5020usize) as _) }
+    pub const fn OSCPLL_LPM_STATUS1(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 39usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5008usize + n * 64usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn STATUS1(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5024usize) as _) }
+    pub const fn OSCPLL_LPM0(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 39usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5010usize + n * 64usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn AUTHEN(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5030usize) as _) }
+    pub const fn OSCPLL_LPM1(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 39usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5014usize + n * 64usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn DIRECT(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8000usize) as _) }
+    pub const fn OSCPLL_LPM_CUR(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 39usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x501cusize + n * 64usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn LPM_STATUS0(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8004usize) as _) }
+    pub const fn OSCPLL_STATUS0(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<CCM_OSCPLL_STATUS0, crate::common::RW> {
+        assert!(n < 39usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5020usize + n * 64usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn LPM_STATUS1(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8008usize) as _) }
+    pub const fn OSCPLL_STATUS1(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 39usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5024usize + n * 64usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn LPM0(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8010usize) as _) }
+    pub const fn OSCPLL_AUTHEN(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 39usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5030usize + n * 64usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn LPM1(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8014usize) as _) }
+    pub const fn LPCG_DIRECT(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<CCM_LPCG_DIRECT, crate::common::RW> {
+        assert!(n < 256usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8000usize + n * 64usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn LPM_CUR(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x801cusize) as _) }
+    pub const fn LPCG_LPM_STATUS0(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 256usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8004usize + n * 64usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn STATUS0(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8020usize) as _) }
+    pub const fn LPCG_LPM_STATUS1(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 256usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8008usize + n * 64usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn STATUS1(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8024usize) as _) }
+    pub const fn LPCG_LPM0(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 256usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8010usize + n * 64usize) as _)
+        }
     }
     #[inline(always)]
-    pub const fn AUTHEN(self) -> crate::common::Reg<u32, crate::common::RW> {
-        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8030usize) as _) }
+    pub const fn LPCG_LPM1(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 256usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8014usize + n * 64usize) as _)
+        }
+    }
+    #[inline(always)]
+    pub const fn LPCG_LPM_CUR(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 256usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x801cusize + n * 64usize) as _)
+        }
+    }
+    #[inline(always)]
+    pub const fn LPCG_STATUS0(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<CCM_LPCG_STATUS0, crate::common::RW> {
+        assert!(n < 256usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8020usize + n * 64usize) as _)
+        }
+    }
+    #[inline(always)]
+    pub const fn LPCG_STATUS1(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 256usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8024usize + n * 64usize) as _)
+        }
+    }
+    #[inline(always)]
+    pub const fn LPCG_AUTHEN(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 256usize);
+        unsafe {
+            crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x8030usize + n * 64usize) as _)
+        }
     }
 }
 #[doc = ""]
