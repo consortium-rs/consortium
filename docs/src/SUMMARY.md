@@ -22,3 +22,5 @@
     - [TEE Subsystem](dev/tee/index.md)
         - [TEE SDK Design](dev/tee/tee-sdk-design.md)
         - [TEE Advanced Type System](dev/tee/tee-advanced-type-system.md)
+    - [HIL Plans](dev/hil/index.md)
+

@@ -38,6 +38,7 @@ members = [
   "crates/consortium-tee-test",
   "crates/consortium-rpi",
   "crates/consortium-rpi-meta",
+  "crates/consortium-ipc-transport-memory",
 ]
 resolver = "2"
 
