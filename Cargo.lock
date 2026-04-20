@@ -249,6 +249,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-ipc-transport-memory"
+version = "0.1.0"
+
+[[package]]
 name = "consortium-ipc-transport-uio"
 version = "0.1.0"
 dependencies = [
