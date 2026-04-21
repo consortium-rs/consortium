@@ -37,5 +37,5 @@ static_cell = { version = "2", default-features = false }
 embassy-executor = { version = "0.10.0", default-features = false, features = [
   "platform-cortex-m",
 ] }
-cortex-m = { version = "0.7", default-features = false }
+cortex-m = { version = "0.7" }
 num-traits = { version = "0.2.19", default-features = false }
