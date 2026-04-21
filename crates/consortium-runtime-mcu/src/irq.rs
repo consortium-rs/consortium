@@ -15,55 +15,40 @@
 // SPDX-License-Identifier: Apache-2.0
 
 //! Interrupt enable helpers for hardware doorbells.
-
-/// Enable the HSEM interrupt in the NVIC.
-///
-/// Must be called before any `HsemDoorbell::wait()` to ensure the IRQ handler is active.
-///
-/// # Safety
-///
-/// Caller must ensure:
-/// - NVIC is initialized
-/// - `HSEM_IRQHandler` is registered in the interrupt vector table
+//!
 #[cfg(feature = "stm32mp2xx")]
-pub unsafe fn enable_hsem_irq() {
-    // STM32MP25: HSEM_IT1 (non-secure) = IRQ 199 in NVIC
-    // Source: STM32MP25 RM0457 NVIC table — vector offset 0x035C → IRQ = (0x35C - 0x40) / 4 = 199
-    //
-    // SAFETY: Caller must ensure NVIC is initialized. We directly unmask via ISER register.
-    // ISER0 handles IRQs 0-31, ISER1 handles IRQs 32-63, etc.
-    // IRQ 199 → ISER6[199-192] = ISER6[7]
-    const HSEM_IT1_IRQ: usize = 199;
-    let iser_index = HSEM_IT1_IRQ / 32;
-    let iser_bit = HSEM_IT1_IRQ % 32;
-    let iser_addr = 0xE000_E100 as *mut u32;
-    let iser = unsafe { iser_addr.add(iser_index) };
-    unsafe { iser.write_volatile(iser.read_volatile() | (1 << iser_bit)) };
+use cortex_m::interrupt::InterruptNumber;
+use cortex_m::peripheral::NVIC;
+
+#[derive(Copy, Clone)]
+pub struct DoorbellInterrupt;
+
+// SAFETY: TRM verified.
+unsafe impl InterruptNumber for DoorbellInterrupt {
+    fn number(self) -> u16 {
+        #[cfg(feature = "stm32mp2xx")]
+        {
+            199 // HSEM_IT1 (non-secure) = IRQ 199 in NVIC
+        }
+        #[cfg(feature = "imx95")]
+        {
+            207 // MU7 (MU-B) = IRQ 207 in NVIC for i.MX95
+        }
+        #[cfg(feature = "imx93")]
+        {
+            22 // MU1 (MU-B) = IRQ 22 in NVIC for i.MX93
+        }
+    }
 }
 
-/// Enable MU1 and MU2 interrupts in the NVIC.
-///
-/// Must be called before any `MuDoorbell::wait()` to ensure the IRQ handlers are active.
+/// Enables the hardware doorbell interrupt.
 ///
 /// # Safety
 ///
-/// Caller must ensure:
-/// - NVIC is initialized
-/// - `MU1_IRQHandler` and `MU2_IRQHandler` are registered in the interrupt vector table
-#[cfg(feature = "imx93")]
-pub unsafe fn enable_mu_irq() {
-    // i.MX93 MU1 is typically IRQ 216, MU2 is IRQ 217.
-    // Use cortex-m::peripheral::NVIC or the PAC to enable both interrupts.
-    //
-    // Example (using cortex-m crate):
-    // unsafe {
-    //     cortex_m::peripheral::NVIC::unmask(cortex_m::peripheral::Interrupt::MUA);
-    //     cortex_m::peripheral::NVIC::unmask(cortex_m::peripheral::Interrupt::MUB);
-    // };
-}
-
-#[cfg(feature = "imx95")]
-pub unsafe fn enable_mu_irq() {
-    // i.MX95 MU interrupt numbers differ from i.MX93.
-    // Consult the i.MX95 reference manual for exact IRQ numbers.
+/// This function is unsafe because it can break mask-based critical sections. It should only be
+/// called once during initialization, and the caller must ensure that it is not called while critical
+/// sections are active.
+#[inline]
+pub unsafe fn enable_doorbell_interrupt() {
+    unsafe { NVIC::unmask(DoorbellInterrupt) }
 }
