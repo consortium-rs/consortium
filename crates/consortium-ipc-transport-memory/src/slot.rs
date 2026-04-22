@@ -48,7 +48,7 @@ pub unsafe fn write(base: *mut u8, payload: &[u8]) {
 
         let crc32 = crc32fast::hash(payload);
         wv_u32(base, 8, crc32);
-        
+
         wv_u32(base, 4, FLAG_VALID);
     }
 }
@@ -64,7 +64,7 @@ pub unsafe fn try_read(base: *mut u8, buf: &mut [u8]) -> Option<usize> {
         if flags & FLAG_VALID == 0 {
             return None;
         }
-        
+
         let len = rv_u32(base, 0) as usize;
         let n = len.min(buf.len());
         core::ptr::copy_nonoverlapping(base.add(SLOT_HEADER), buf.as_mut_ptr(), n);

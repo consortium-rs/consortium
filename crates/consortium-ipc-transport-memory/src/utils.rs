@@ -1,4 +1,3 @@
-
 /// # Safety
 ///
 /// Caller must ensure `base` is valid for at least 4 bytes and DMA-coherent.
