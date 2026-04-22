@@ -15,6 +15,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use super::descriptor::{DescState, MAGIC};
+use consortium_ipc::Doorbell;
+#[cfg(feature = "std")]
+use uio::UioError;
 
 #[derive(Debug, thiserror::Error)]
 pub enum DescriptorError {
@@ -27,3 +30,37 @@ pub enum DescriptorError {
     #[error("descriptor not ready: state is {0:?}")]
     NotReady(DescState),
 }
+
+#[derive(Debug, thiserror::Error)]
+pub enum Error<D: Doorbell> {
+    #[error("io: {0}")]
+    #[cfg(feature = "std")]
+    Io(#[from] std::io::Error),
+
+    #[error("uio: {0:?}")]
+    #[cfg(feature = "std")]
+    Uio(UioError),
+
+    #[error("descriptor: {0}")]
+    Descriptor(#[from] DescriptorError),
+
+    #[error("channel {0} out of range (device has {1})")]
+    ChannelOutOfRange(u8, u8),
+
+    #[error("doorbell error")]
+    Doorbell(D::Error),
+
+    #[error("no message to read")]
+    NoMessage,
+
+    #[error("message too large for buffer: {0} bytes, but buffer is {1} bytes")]
+    MessageTooLarge(usize, usize),
+}
+
+#[cfg(feature = "std")]
+impl<D: Doorbell> From<UioError> for Error<D> {
+    fn from(e: UioError) -> Self {
+        Self::Uio(e)
+    }
+}
+

@@ -251,6 +251,15 @@ dependencies = [
 [[package]]
 name = "consortium-ipc-transport-memory"
 version = "0.1.0"
+dependencies = [
+ "consortium-ipc",
+ "crc32fast",
+ "num_enum",
+ "pin-project",
+ "thiserror",
+ "tokio",
+ "uio",
+]
 
 [[package]]
 name = "consortium-ipc-transport-uio"
@@ -384,6 +393,15 @@ dependencies = [
  "bitfield",
  "embedded-hal 0.2.7",
  "volatile-register",
+]
+
+[[package]]
+name = "crc32fast"
+version = "1.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9481c1c90cbf2ac953f07c8d4a58aa3945c425b7185c9154d67a65e4230da511"
+dependencies = [
+ "cfg-if",
 ]
 
 [[package]]

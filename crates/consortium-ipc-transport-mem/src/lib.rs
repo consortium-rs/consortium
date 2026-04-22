@@ -22,7 +22,7 @@ use core::{
     task::{Context, Poll},
 };
 
-use consortium_ipc::{chan::Chan, doorbell::Doorbell, region::Region, slot, transport::Transport};
+use consortium_ipc::{chan::Chan, doorbell::Doorbell, region::Region, transport::Transport};
 
 // ── Error ────────────────────────────────────────────────────────────────────
 
