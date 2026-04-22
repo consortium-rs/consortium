@@ -33,14 +33,18 @@ pub trait Transport {
 
     /// Send bytes to the remote side.
     /// Internally handles doorbell ring after write.
-    fn send<'a>(&mut self, ch: Chan, data: &[u8]) -> Self::SendFut<'a>;
+    fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a>;
 
     /// Receive bytes from the remote side into buf.
     /// Internally awaits doorbell before reading.
     /// Returns number of bytes written into buf.
-    fn recv<'a>(&mut self, ch: Chan, buf: &mut [u8]) -> Self::RecvFut<'a>;
+    fn recv<'a>(&mut self, buf: &mut [u8]) -> Self::RecvFut<'a>;
 
-    /// Maximum bytes transferable in a single send/recv.
+    /// Maximum bytes transferable in a single send.
     /// Channel uses this to size its serialization scratch buffer.
-    fn max_message_size(&self) -> usize;
+    fn max_send_size(&self) -> usize;
+
+    /// Maximum bytes transferable in a single recv.
+    /// Channel uses this to size its deserialization scratch buffer.
+    fn max_recv_size(&self) -> usize;
 }
