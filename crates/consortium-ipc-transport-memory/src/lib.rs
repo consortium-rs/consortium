@@ -13,8 +13,8 @@
 // limitations under the License.
 //
 // SPDX-License-Identifier: Apache-2.0
-pub mod slot;
 pub mod descriptor;
 pub mod error;
+pub mod slot;
 pub mod transport;
 pub(crate) mod utils;

@@ -20,11 +20,11 @@ extern crate alloc;
 
 pub mod chan;
 pub mod channel;
-pub mod transport;
 pub mod doorbell;
 pub(crate) mod future;
 pub mod region;
 pub mod regions;
+pub mod transport;
 
 pub use {
     chan::Chan,

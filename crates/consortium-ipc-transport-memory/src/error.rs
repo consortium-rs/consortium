@@ -63,4 +63,3 @@ impl<D: Doorbell> From<UioError> for Error<D> {
         Self::Uio(e)
     }
 }
-

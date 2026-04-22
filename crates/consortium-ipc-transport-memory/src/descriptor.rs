@@ -42,8 +42,8 @@
 //! +0x09  3   reserved
 //! ```
 #![allow(dead_code)]
+use crate::utils::{rv_u8, rv_u32, wv_u8, wv_u32};
 use core::sync::atomic::Ordering;
-use crate::utils::{rv_u32, rv_u8, wv_u32, wv_u8};
 
 pub const CHANNEL_NUM_MAX: usize = 32;
 
@@ -65,12 +65,12 @@ pub const CHANNEL_TABLE_OFFSET: usize = 0x20;
 
 pub const fn channel_table_entry_offset(index: usize) -> usize {
     assert!(index < CHANNEL_NUM_MAX, "channel index out of range");
-    
+
     CHANNEL_TABLE_OFFSET + index * CHAN_ENTRY_SIZE
 }
 
 /// # Safety
-/// 
+///
 /// Caller must ensure the base and index is valid.
 pub(crate) unsafe fn read_channel(base: *const u8, index: usize) -> ChannelLayout {
     let off = channel_table_entry_offset(index);
@@ -112,6 +112,13 @@ pub struct ChannelLayout {
     pub size: u32,
     pub direction: ChannelDirection,
     _reserved: [u8; 3],
+}
+
+impl ChannelLayout {
+    pub unsafe fn slot_addr(&self, base: *const u8) -> *mut u8 {
+        // SAFETY: the caller must ensure that `base` is valid for at least `self.offset + self.size` bytes and that the memory is DMA-coherent.
+        unsafe { base.add(self.offset as usize) as *mut u8 }
+    }
 }
 
 #[repr(u8)]
@@ -208,7 +215,11 @@ pub unsafe fn descriptor_init(
 /// # Safety
 /// `base` must be valid for at least `CHAN_TABLE_BASE + num_channels * 16` bytes.
 /// All accesses use `read_volatile`; the region must be DMA-coherent.
-pub unsafe fn descriptor_ack(base: *mut u8, num_channels: usize, transfer_size: usize) -> Result<Descriptor, DescriptorError> {
+pub unsafe fn descriptor_ack(
+    base: *mut u8,
+    num_channels: usize,
+    transfer_size: usize,
+) -> Result<Descriptor, DescriptorError> {
     let magic = unsafe { rv_u32(base, 0x00) };
     let version = unsafe { rv_u8(base, 0x04) };
     let num_ch = unsafe { rv_u8(base, 0x05) };
@@ -220,7 +231,13 @@ pub unsafe fn descriptor_ack(base: *mut u8, num_channels: usize, transfer_size: 
     );
     let rx_transfer_size = unsafe { rv_u32(base, RX_TRANSFER_SIZE_OFFSET) };
     // SAFETY: when the base is valid and coherent, the state read will be consistent with the rx_transfer_size read. The A-core must have set the state to Ready before writing rx_transfer_size, so if we see Ready then rx_transfer_size is valid. We write back the (potentially adjusted) transfer size to ensure that both sides agree on the final value.
-    unsafe { wv_u32(base, RX_TRANSFER_SIZE_OFFSET, rx_transfer_size.max(transfer_size as u32)) };
+    unsafe {
+        wv_u32(
+            base,
+            RX_TRANSFER_SIZE_OFFSET,
+            rx_transfer_size.max(transfer_size as u32),
+        )
+    };
     let state = DescState::from_primitive(unsafe { rv_u32(base, STATE_OFFSET) });
 
     if magic != MAGIC {
@@ -266,9 +283,9 @@ pub unsafe fn descriptor_ack(base: *mut u8, num_channels: usize, transfer_size: 
 }
 
 /// Read the A-core updated max transfer size from the descriptor.
-/// 
+///
 /// # Safety
-/// 
+///
 /// `base` must be valid for at least 0x14 bytes and DMA-coherent.
 pub unsafe fn descriptor_complete(base: *const u8) -> u32 {
     // SAFETY: when the base is valid and coherent, the state read will be consistent with the rx_transfer_size read. The A-core must have set the state to Ready before writing rx_transfer_size, so if we see Ready then rx_transfer_size is valid.
