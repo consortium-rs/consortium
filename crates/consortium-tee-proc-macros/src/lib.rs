@@ -145,11 +145,11 @@ pub fn tee_service(input: TokenStream) -> TokenStream {
 
 /// Generates two companion functions for a TA command handler.
 ///
-/// **`function_name_dispatched`** (TA side) — unpacks `::optee_utee::Parameters` into typed
+/// **`function_name_dispatched`** (TA side) - unpacks `::optee_utee::Parameters` into typed
 /// arguments, calls the original function, and if it returns a non-`()` value, flushes that
 /// value back into the next available output parameter slot before returning `Ok(())`.
 ///
-/// **`call_function_name`** (CA side, `#[cfg(feature = "ca")]`) — packs arguments into
+/// **`call_function_name`** (CA side, `#[cfg(feature = "ca")]`) - packs arguments into
 /// parameters, allocates an extra output slot when the function has a return value,
 /// calls `invoke_command`, then reads the output slot back and returns
 /// `consortium_tee::TeeResult<T>`.
@@ -481,7 +481,7 @@ fn is_slice_ref(ty: &syn::Type, mutable: bool) -> bool {
     }
 }
 
-/// `&mut u32` / `&mut i32` / `&mut u64` — mutable reference to a named primitive scalar.
+/// `&mut u32` / `&mut i32` / `&mut u64` - mutable reference to a named primitive scalar.
 /// Returns the inner primitive type name if matched.
 fn mut_scalar_inner(ty: &syn::Type) -> Option<&'static str> {
     if let syn::Type::Reference(r) = ty
@@ -510,8 +510,8 @@ fn is_tuple_u32_u32(ty: &syn::Type) -> bool {
     false
 }
 
-/// Returns `true` if `ty` is `&mut SomeIdent` — a mutable reference to a named
-/// type (not a primitive scalar, not a slice) — treated as the implicit context parameter
+/// Returns `true` if `ty` is `&mut SomeIdent` - a mutable reference to a named
+/// type (not a primitive scalar, not a slice) - treated as the implicit context parameter
 /// OR as a `&mut T: TeeParam` inout parameter.
 fn is_context_ref(ty: &syn::Type) -> bool {
     if let syn::Type::Reference(r) = ty
@@ -593,7 +593,7 @@ fn gen_unpack(
     // Priority 1: &[u8]
     if is_slice_ref(ty, false) {
         let stmt = quote! {
-            // SAFETY: slot #idx is MemrefInput — type match guaranteed by #[tee_command]
+            // SAFETY: slot #idx is MemrefInput - type match guaranteed by #[tee_command]
             let mut #tmp = unsafe { params.#idx.as_memref()? };
             let #pat: &[u8] = #tmp.buffer();
         };
@@ -603,7 +603,7 @@ fn gen_unpack(
     // Priority 2: &mut [u8]
     if is_slice_ref(ty, true) {
         let stmt = quote! {
-            // SAFETY: slot #idx is MemrefInout — type match guaranteed by #[tee_command]
+            // SAFETY: slot #idx is MemrefInout - type match guaranteed by #[tee_command]
             let mut #tmp = unsafe { params.#idx.as_memref()? };
             let #pat: &mut [u8] = #tmp.buffer();
         };
@@ -616,7 +616,7 @@ fn gen_unpack(
         let (unpack_stmt, flush_stmt) = match scalar {
             "u32" => {
                 let u = quote! {
-                    // SAFETY: slot #idx is ValueInout — type match guaranteed by #[tee_command]
+                    // SAFETY: slot #idx is ValueInout - type match guaranteed by #[tee_command]
                     let mut #tmp = unsafe { params.#idx.as_value()? };
                     let mut #val_tmp: u32 = #tmp.a();
                     let #pat: &mut u32 = &mut #val_tmp;
@@ -629,7 +629,7 @@ fn gen_unpack(
             }
             "i32" => {
                 let u = quote! {
-                    // SAFETY: slot #idx is ValueInout — type match guaranteed by #[tee_command]
+                    // SAFETY: slot #idx is ValueInout - type match guaranteed by #[tee_command]
                     let mut #tmp = unsafe { params.#idx.as_value()? };
                     let mut #val_tmp: i32 = #tmp.a() as i32;
                     let #pat: &mut i32 = &mut #val_tmp;
@@ -642,7 +642,7 @@ fn gen_unpack(
             }
             "u64" => {
                 let u = quote! {
-                    // SAFETY: slot #idx is ValueInout — type match guaranteed by #[tee_command]
+                    // SAFETY: slot #idx is ValueInout - type match guaranteed by #[tee_command]
                     let mut #tmp = unsafe { params.#idx.as_value()? };
                     let mut #val_tmp: u64 = (#tmp.b() as u64) << 32 | #tmp.a() as u64;
                     let #pat: &mut u64 = &mut #val_tmp;
@@ -662,7 +662,7 @@ fn gen_unpack(
     // Priority 4: u32
     if is_primitive(ty, "u32") {
         let stmt = quote! {
-            // SAFETY: slot #idx is ValueInput — type match guaranteed by #[tee_command]
+            // SAFETY: slot #idx is ValueInput - type match guaranteed by #[tee_command]
             let #pat: u32 = unsafe { params.#idx.as_value()?.a() };
         };
         return (stmt, None, slot + 1);
@@ -671,7 +671,7 @@ fn gen_unpack(
     // Priority 5: i32
     if is_primitive(ty, "i32") {
         let stmt = quote! {
-            // SAFETY: slot #idx is ValueInput — type match guaranteed by #[tee_command]
+            // SAFETY: slot #idx is ValueInput - type match guaranteed by #[tee_command]
             let #pat: i32 = unsafe { params.#idx.as_value()?.a() } as i32;
         };
         return (stmt, None, slot + 1);
@@ -680,7 +680,7 @@ fn gen_unpack(
     // Priority 6: bool
     if is_primitive(ty, "bool") {
         let stmt = quote! {
-            // SAFETY: slot #idx is ValueInput — type match guaranteed by #[tee_command]
+            // SAFETY: slot #idx is ValueInput - type match guaranteed by #[tee_command]
             let #pat: bool = unsafe { params.#idx.as_value()?.a() } != 0;
         };
         return (stmt, None, slot + 1);
@@ -689,7 +689,7 @@ fn gen_unpack(
     // Priority 7: u64 (as input; currently return-only before this change)
     if is_primitive(ty, "u64") {
         let stmt = quote! {
-            // SAFETY: slot #idx is ValueInput — type match guaranteed by #[tee_command]
+            // SAFETY: slot #idx is ValueInput - type match guaranteed by #[tee_command]
             let mut #tmp = unsafe { params.#idx.as_value()? };
             let #pat: u64 = (#tmp.b() as u64) << 32 | #tmp.a() as u64;
         };
@@ -699,7 +699,7 @@ fn gen_unpack(
     // Priority 8: (u32, u32)
     if is_tuple_u32_u32(ty) {
         let stmt = quote! {
-            // SAFETY: slot #idx is ValueInput — type match guaranteed by #[tee_command]
+            // SAFETY: slot #idx is ValueInput - type match guaranteed by #[tee_command]
             let mut #tmp = unsafe { params.#idx.as_value()? };
             let #pat: (u32, u32) = (#tmp.a(), #tmp.b());
         };
@@ -716,7 +716,7 @@ fn gen_unpack(
             };
             let val_tmp = Ident::new(&format!("__val_{}", slot), Span::call_site());
             let unpack = quote! {
-                // SAFETY: slot #idx is MemrefInout — type match guaranteed by #[tee_command]
+                // SAFETY: slot #idx is MemrefInout - type match guaranteed by #[tee_command]
                 let mut #tmp = unsafe { params.#idx.as_memref()? };
                 let mut #val_tmp: #inner_ty = <#c as ::consortium_common::codec::CodecFor<#inner_ty>>::decode(#tmp.buffer())
                     .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
@@ -741,7 +741,7 @@ fn gen_unpack(
     if is_tee_param_path(ty) {
         if let Some(c) = codec {
             let stmt = quote! {
-                // SAFETY: slot #idx is MemrefInput — type match guaranteed by #[tee_command]
+                // SAFETY: slot #idx is MemrefInput - type match guaranteed by #[tee_command]
                 let mut #tmp = unsafe { params.#idx.as_memref()? };
                 let #pat = <#c as ::consortium_common::codec::CodecFor<#ty>>::decode(#tmp.buffer())
                     .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
@@ -776,34 +776,34 @@ fn gen_flush_ta(
     let idx = syn::Index::from(slot);
     if is_primitive(ty, "u32") {
         quote! {
-            // SAFETY: slot #idx is ValueOutput — type match guaranteed by #[tee_command]
+            // SAFETY: slot #idx is ValueOutput - type match guaranteed by #[tee_command]
             let mut __p_out = unsafe { params.#idx.as_value()? };
             __p_out.set_a(__ret_val);
         }
     } else if is_primitive(ty, "u64") {
         quote! {
-            // SAFETY: slot #idx is ValueOutput — type match guaranteed by #[tee_command]
+            // SAFETY: slot #idx is ValueOutput - type match guaranteed by #[tee_command]
             let mut __p_out = unsafe { params.#idx.as_value()? };
             __p_out.set_a((__ret_val >> 32) as u32);
             __p_out.set_b(__ret_val as u32);
         }
     } else if is_primitive(ty, "bool") {
         quote! {
-            // SAFETY: slot #idx is ValueOutput — type match guaranteed by #[tee_command]
+            // SAFETY: slot #idx is ValueOutput - type match guaranteed by #[tee_command]
             let mut __p_out = unsafe { params.#idx.as_value()? };
             __p_out.set_a(__ret_val as u32);
         }
     } else if is_vec_u8(ty) {
         quote! {
-            // SAFETY: slot #idx is MemrefOutput — type match guaranteed by #[tee_command]
+            // SAFETY: slot #idx is MemrefOutput - type match guaranteed by #[tee_command]
             let mut __p_out = unsafe { params.#idx.as_memref()? };
             __p_out.buffer()[..__ret_val.len()].copy_from_slice(&__ret_val);
         }
     } else if is_tee_param_path(ty) {
-        // T: TeeParam — serialize into the MemrefOutput buffer.
+        // T: TeeParam - serialize into the MemrefOutput buffer.
         if let Some(c) = codec {
             quote! {
-                // SAFETY: slot #idx is MemrefOutput — type match guaranteed by #[tee_command]
+                // SAFETY: slot #idx is MemrefOutput - type match guaranteed by #[tee_command]
                 let mut __p_out = unsafe { params.#idx.as_memref()? };
                 <#c as ::consortium_common::codec::CodecFor<#ty>>::encode(&__ret_val, __p_out.buffer())
                     .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;

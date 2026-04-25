@@ -133,8 +133,8 @@ impl DescriptorMmap {
 ///
 /// # Arguments
 ///
-/// * `uio_num` — the UIO device number (N in `/dev/uioN`)
-/// * `timeout` — maximum time to wait; uses `Duration::from_secs(30)` as a reasonable default
+/// * `uio_num` - the UIO device number (N in `/dev/uioN`)
+/// * `timeout` - maximum time to wait; uses `Duration::from_secs(30)` as a reasonable default
 ///
 /// # Returns
 ///

@@ -90,6 +90,11 @@ pub struct ChannelLayout {
 }
 
 impl Descriptor {
+    /// Reads a `Descriptor` from the shared-memory region at `ptr`.
+    ///
+    /// # Safety
+    /// `ptr` must be valid for at least `CHANNEL_TABLE_OFFSET + num_channels * CHAN_ENTRY_SIZE`
+    /// bytes and the memory must be DMA-coherent.
     pub unsafe fn from_raw_ptr(ptr: *const u8) -> Self {
         let header = unsafe { DescriptorHeader::from_raw_ptr(ptr) };
         let num_channels = unsafe { rv_u8(ptr, NUM_CHANNELS_OFFSET) };
@@ -124,6 +129,10 @@ impl Descriptor {
 }
 
 impl ChannelLayout {
+    /// Reads a `ChannelLayout` entry from the channel table at `ptr`.
+    ///
+    /// # Safety
+    /// `ptr` must be valid for at least `CHAN_ENTRY_SIZE` (12) bytes.
     pub unsafe fn from_raw_ptr(ptr: *const u8) -> Self {
         Self {
             offset: unsafe { rv_u32(ptr, 0) },
@@ -176,8 +185,13 @@ pub enum DescState {
 }
 
 impl ChannelLayout {
+    /// Returns a pointer to the slot data for this channel within the shared-memory region.
+    ///
+    /// # Safety
+    /// `base` must be valid for at least `self.offset + self.size` bytes and the memory
+    /// must be DMA-coherent.
     pub unsafe fn slot_addr(&self, base: *const u8) -> *mut u8 {
-        // SAFETY: the caller must ensure that `base` is valid for at least `self.offset + self.size` bytes and that the memory is DMA-coherent.
+        // SAFETY: caller guarantees base is valid for at least self.offset + self.size bytes.
         unsafe { base.add(self.offset as usize) as *mut u8 }
     }
 }
@@ -192,6 +206,9 @@ pub enum ChannelDirection {
 }
 
 impl ChannelDirection {
+    /// Returns `true` if this direction is a receive channel for the current build target.
+    ///
+    /// On `std` (A-core): `MToA` is RX. On bare-metal (M-core): `AToM` is RX.
     pub fn is_rx(&self) -> bool {
         #[cfg(feature = "std")]
         {
@@ -203,6 +220,9 @@ impl ChannelDirection {
         }
     }
 
+    /// Returns `true` if this direction is a transmit channel for the current build target.
+    ///
+    /// On `std` (A-core): `AToM` is TX. On bare-metal (M-core): `MToA` is TX.
     pub fn is_tx(&self) -> bool {
         #[cfg(feature = "std")]
         {
@@ -240,10 +260,10 @@ pub unsafe fn set_state(base: *mut u8, state: DescState) {
 ///
 /// # Arguments
 ///
-/// * `base` — pointer to the start of the shared DMA-coherent region
-/// * `num_channels` — total number of channels in the table
-/// * `transfer_size` — transfer size (written to offset 0x10)
-/// * `channels` — slice of channel descriptors (must match `num_channels`)
+/// * `base` - pointer to the start of the shared DMA-coherent region
+/// * `num_channels` - total number of channels in the table
+/// * `transfer_size` - transfer size (written to offset 0x10)
+/// * `channels` - slice of channel descriptors (must match `num_channels`)
 ///
 /// # Safety
 ///

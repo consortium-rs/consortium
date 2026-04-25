@@ -57,10 +57,16 @@ impl Descriptor {
         }
     }
 
+    /// Returns `true` if the descriptor header has the expected magic and version.
     pub fn check(&self) -> bool {
         self.header.check(MAGIC, VERSION).is_ok()
     }
 
+    /// Reads a `Descriptor` from shared memory at `ptr`.
+    ///
+    /// # Safety
+    /// `ptr` must point to a valid, readable shared-memory region of at least
+    /// `DESCRIPTOR_SIZE` bytes with consistent volatile layout.
     pub unsafe fn from_raw_ptr(ptr: *const u8) -> Self {
         let header = unsafe { DescriptorHeader::from_raw_ptr(ptr) };
         let write_ptr = unsafe { rv_u16(ptr, WRITE_PTR_OFFSET) };
@@ -77,7 +83,13 @@ impl Descriptor {
         }
     }
 
+    /// Writes this descriptor to shared memory at `ptr`.
+    ///
+    /// # Safety
+    /// `ptr` must point to a valid, writable shared-memory region of at least
+    /// `DESCRIPTOR_SIZE` bytes.
     pub unsafe fn write_to_raw_ptr(&self, ptr: *mut u8) {
+        // SAFETY: caller guarantees ptr is valid for DESCRIPTOR_SIZE bytes.
         unsafe {
             DescriptorHeader::new(MAGIC, VERSION).write_to_raw_ptr(ptr);
             wv_u16(ptr, WRITE_PTR_OFFSET, self.write_ptr);
@@ -87,6 +99,13 @@ impl Descriptor {
         }
     }
 
+    /// Reads the next available defmt frame from the circular buffer, returning its payload.
+    ///
+    /// Returns `None` if no frame is available or if the current frame header is invalid.
+    ///
+    /// # Safety
+    /// `base` must point to the start of the shared-memory region owning this descriptor,
+    /// valid for at least `self.capacity` bytes.
     #[cfg(feature = "host")]
     pub unsafe fn read_one_frame(&mut self, base: *mut u8) -> Option<Vec<u8>> {
         if self.read_ptr == self.write_ptr {
@@ -120,6 +139,13 @@ impl Descriptor {
         }
     }
 
+    /// Drains all available defmt frames from the circular buffer, returning them as a `Vec`.
+    ///
+    /// # Safety
+    /// Same requirements as [`read_one_frame`]: `base` must be valid for at least
+    /// `self.capacity` bytes.
+    ///
+    /// [`read_one_frame`]: Self::read_one_frame
     #[cfg(feature = "host")]
     pub unsafe fn read_bulk_frames(&mut self, base: *mut u8) -> Vec<Vec<u8>> {
         let mut frames = Vec::new();
@@ -130,8 +156,14 @@ impl Descriptor {
         frames
     }
 
-    // the return value indicates whether the frame was successfully written (i.e. it fits in the buffer and doesn't overwrite unread data)
-    // if it returns false, it will set the Overflow flag; otherwise it will clear the Overflow flag and write the frame.
+    /// Writes a single defmt frame into the circular buffer.
+    ///
+    /// Returns `true` on success; returns `false` and sets the `Overflow` flag if the
+    /// frame does not fit without overwriting unread data.
+    ///
+    /// # Safety
+    /// `base` must point to the start of the shared-memory region owning this descriptor,
+    /// valid for at least `self.capacity` bytes.
     pub unsafe fn write_one_frame(&mut self, base: *mut u8, frame: &[u8]) -> bool {
         match unsafe { self.allocate_write_ptr(base) } {
             Some(p) => {

@@ -42,15 +42,25 @@ impl DescriptorHeader {
         }
     }
 
+    /// Reads a `DescriptorHeader` from raw memory at `ptr`.
+    ///
+    /// # Safety
+    /// `ptr` must be valid for at least 6 bytes and the memory must be readable.
     pub unsafe fn from_raw_ptr(ptr: *const u8) -> Self {
         Self {
+            // SAFETY: caller guarantees ptr is valid for at least 6 bytes.
             magic: unsafe { *ptr.cast::<DescriptorMagic>() },
             version: unsafe { *ptr.add(4).cast::<u8>() },
             _reserved0: [0; 1],
         }
     }
 
+    /// Writes this `DescriptorHeader` to raw memory at `ptr`.
+    ///
+    /// # Safety
+    /// `ptr` must be valid for at least 6 bytes and the memory must be writable.
     pub unsafe fn write_to_raw_ptr(self, ptr: *mut u8) {
+        // SAFETY: caller guarantees ptr is valid for at least 6 bytes.
         unsafe { *ptr.cast::<DescriptorMagic>() = self.magic };
         unsafe { *ptr.add(4).cast::<u8>() = self.version };
     }
@@ -66,10 +76,12 @@ impl DescriptorMagic {
     pub const IPC: Self = Self(u32::from_be_bytes(*b"CIPC"));
     pub const DEBUG: Self = Self(u32::from_be_bytes(*b"CDBG"));
 
+    /// Returns `true` if this magic is one of the recognized consortium descriptor types.
     pub fn is_known(self) -> bool {
         matches!(self, Self::IPC | Self::DEBUG)
     }
 
+    /// Validates that this magic matches `expected`, returning a typed error if not.
     pub fn check(self, expected: Self) -> Result<(), DescriptorHeaderError> {
         if self == expected {
             Ok(())
@@ -92,6 +104,7 @@ impl DescriptorMagic {
 }
 
 impl DescriptorHeader {
+    /// Validates both magic and version, returning a typed error if either does not match.
     pub fn check(
         self,
         expected_magic: DescriptorMagic,

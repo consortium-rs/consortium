@@ -34,10 +34,10 @@ pub struct Rx;
 ///
 /// # Type parameters
 ///
-/// - `D`  — direction: [`Tx`] or [`Rx`]
-/// - `T`  — message type
-/// - `Tr` — underlying transport (HSEM, MU, serial, host socket…)
-/// - `C`  — codec, defaults to [`PostcardCodec`]
+/// - `D`  - direction: [`Tx`] or [`Rx`]
+/// - `T`  - message type
+/// - `Tr` - underlying transport (HSEM, MU, serial, host socket…)
+/// - `C`  - codec, defaults to [`PostcardCodec`]
 ///
 /// # Buffer ownership
 ///
@@ -63,9 +63,9 @@ pub struct Channel<D, T, Tr: Transport, C: CodecFor<T>> {
 impl<D, T, Tr: Transport, C: CodecFor<T>> Channel<D, T, Tr, C> {
     /// Construct a [`Channel`].
     ///
-    /// `chan`      — validated channel identifier  
-    /// `transport` — initialised transport  
-    /// `buf`       — scratch buffer, at least `transport.max_message_size()` bytes
+    /// `chan`      - validated channel identifier  
+    /// `transport` - initialised transport  
+    /// `buf`       - scratch buffer, at least `transport.max_message_size()` bytes
     pub fn new(chan: Chan, transport: Tr, buf: &'static mut [u8]) -> Self {
         Self {
             chan,
@@ -91,7 +91,7 @@ where
     /// Encode `msg` with the codec and hand the bytes to the transport.
     ///
     /// The transport rings the doorbell internally.  
-    /// Returns when bytes are handed off — not when the remote has
+    /// Returns when bytes are handed off - not when the remote has
     /// processed them.
     pub async fn send(&mut self, msg: &T) -> Result<(), ChannelError<C, Tr>> {
         let n = C::encode(msg, self.buf).map_err(ChannelError::Codec)?;
@@ -115,7 +115,7 @@ where
     ///
     /// When `C = PostcardCodec` the message is an owned `T`.  
     /// When `C` is a future zero-copy codec the returned handle will
-    /// borrow the internal buffer — the `'_` lifetime on
+    /// borrow the internal buffer - the `'_` lifetime on
     /// [`ReceivedMessage`] already accommodates this without any
     /// change to this signature.
     pub async fn recv(&mut self) -> Result<ReceivedMessage<'_, T, C>, ChannelError<C, Tr>> {
@@ -136,7 +136,7 @@ where
 
 /// A handle to a decoded received message.
 ///
-/// For [`PostcardCodec`] this owns the decoded `T` — the `'a`
+/// For [`PostcardCodec`] this owns the decoded `T` - the `'a`
 /// lifetime is unused and the value can be moved out freely via
 /// [`into_inner`](ReceivedMessage::into_inner).
 ///

@@ -52,13 +52,13 @@ impl RpiSession {
     ///     `PeripheralPinMux::alias` with `"PERIPH_FUNC"` (e.g., `"I2C1_SDA"`).
     ///
     /// # Arguments
-    /// * `config` — Project configuration with chip and peripheral definitions.
-    /// * `rif` — Optional RIFSC peripheral map (STM32MP only; pass `None` for i.MX or other chips without RIFSC).
-    /// * `iomux` — Optional IOMUX pin database (required for AF/pin validation; pass `None` when package variant is unknown).
+    /// * `config` - Project configuration with chip and peripheral definitions.
+    /// * `rif` - Optional RIFSC peripheral map (STM32MP only; pass `None` for i.MX or other chips without RIFSC).
+    /// * `iomux` - Optional IOMUX pin database (required for AF/pin validation; pass `None` when package variant is unknown).
     ///
     /// # Errors
-    /// - `RpiError::InvalidPin` — pin in `dts` doesn't exist in IOMUX.
-    /// - `RpiError::PinNotAvailable` — pin exists but doesn't support the peripheral.
+    /// - `RpiError::InvalidPin` - pin in `dts` doesn't exist in IOMUX.
+    /// - `RpiError::PinNotAvailable` - pin exists but doesn't support the peripheral.
     pub fn new(
         config: &Config,
         rif: Option<&RifConfig>,

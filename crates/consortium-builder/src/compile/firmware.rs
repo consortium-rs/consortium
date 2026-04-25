@@ -111,6 +111,7 @@ pub struct FirmwareBuilder {
 }
 
 impl FirmwareBuilder {
+    /// Builds the firmware, returning the path to the output ELF.
     pub async fn build(&self) -> Result<PathBuf, String> {
         FirmwareCompiler::build(FirmwareConfiguration {
             arch: self.arch.clone(),
@@ -121,6 +122,7 @@ impl FirmwareBuilder {
         .map_err(|e| e.to_string())
     }
 
+    /// Returns the expected output ELF path without building.
     pub async fn elf_path(&self) -> Result<PathBuf, String> {
         FirmwareCompiler::output_path(&FirmwareConfiguration {
             arch: self.arch.clone(),

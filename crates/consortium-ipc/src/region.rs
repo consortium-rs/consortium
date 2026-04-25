@@ -17,12 +17,12 @@
 //! Memory region abstractions for transport buffers and frame buffers.
 
 /// Describes a contiguous memory area.
-/// Does not imply ownership — just describes what exists.
+/// Does not imply ownership - just describes what exists.
 ///
 /// Implementations:
-///   SramRegion  — cache ops are noops
-///   DdrRegion   — cache ops are real dcache instructions
-///   SerialRegion— no backing memory, frame buffer only
+///   SramRegion  - cache ops are noops
+///   DdrRegion   - cache ops are real dcache instructions
+///   SerialRegion- no backing memory, frame buffer only
 pub trait Region {
     /// Raw pointer to the start of the region.
     ///

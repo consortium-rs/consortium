@@ -38,10 +38,12 @@ pub enum Chip {
 }
 
 impl Chip {
+    /// Returns `true` if this chip has a remoteproc entry for the given core type and index.
     pub fn has_rt_core(&self, core: &CortexMcuCore, idx: usize) -> bool {
         self.remoteproc_name(core, idx).is_some()
     }
 
+    /// Returns `true` if this chip has a remoteproc entry matching the given abbreviated core name.
     pub fn has_rt_core_name(&self, name: &str) -> bool {
         match name {
             "cm70" => matches!(self, Self::Imx94),
@@ -53,6 +55,7 @@ impl Chip {
         }
     }
 
+    /// Returns the list of application-class CPU cores and their counts for this chip.
     pub fn app_cpu(&self) -> Vec<(CortexAppCore, usize)> {
         match self {
             Self::Stm32mp21x | Self::Stm32mp23x | Self::Stm32mp25x => {
@@ -64,13 +67,15 @@ impl Chip {
         }
     }
 
+    /// Returns the Rust target triple for cross-compiling application code to this chip.
+    ///
+    /// Panics if the chip has heterogeneous app-core targets (not currently supported).
     pub fn app_compile_target(&self) -> &'static str {
         let cpus = self
             .app_cpu()
             .iter()
             .map(|(core, _)| core.to_rust_target())
             .collect::<Vec<_>>();
-        // If all CPUs have the same target, return that target. Otherwise, return a panic message since we don't support heterogeneous CPU targets yet.
         if cpus.iter().all(|&t| t == cpus[0]) {
             cpus[0]
         } else {
@@ -78,7 +83,8 @@ impl Chip {
         }
     }
 
-    // Returns (remoteproc name, programmable by remoteproc) for the given core and index
+    /// Returns `(remoteproc_name, programmable)` for the given core type and instance index,
+    /// or `None` if this chip has no such core.
     pub fn remoteproc_name(&self, core: &CortexMcuCore, idx: usize) -> Option<(String, bool)> {
         let (id, programmable) = match (self, core, idx) {
             (
@@ -104,6 +110,7 @@ impl Chip {
         Some((format!("remoteproc{id}"), programmable))
     }
 
+    /// Returns all programmable real-time cores with their remoteproc names, sorted by name.
     #[cfg(feature = "std")]
     pub fn programmable_rt_cores(&self) -> Vec<(CortexMcuCore, usize, String)> {
         let mut cores = Vec::new();
@@ -123,6 +130,7 @@ impl Chip {
         cores
     }
 
+    /// Returns the RIFSC family name for STM32MP chips, or `None` for i.MX chips.
     pub fn rifsc_family_name(&self) -> Option<&'static str> {
         match self {
             Self::Stm32mp21x => Some("stm32mp21xxxx"),

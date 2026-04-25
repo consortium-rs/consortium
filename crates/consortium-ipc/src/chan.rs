@@ -21,6 +21,7 @@ pub struct Chan(u8);
 /// For channels known at compile time
 /// Validation happens at compile time via const fn
 impl Chan {
+    /// Creates a new `Chan` with platform-specific validation via `P`.
     pub fn new<P: ChanValidate>(id: u8) -> Result<Self, P::Error> {
         P::validate(id)
     }
@@ -56,6 +57,7 @@ impl Chan {
         Self(id)
     }
 
+    /// Returns the raw channel identifier.
     pub fn id(&self) -> u8 {
         self.0
     }

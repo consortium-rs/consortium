@@ -139,7 +139,7 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
     /// Enable the interrupt for semaphore `sem` on our processor's IER.
     ///
     /// # Safety
-    /// Caller must ensure `sem` is a valid semaphore index (0–15) and that the
+    /// Caller must ensure `sem` is a valid semaphore index (0-15) and that the
     /// read-modify-write is not racing with other accesses to the IER register.
     #[inline]
     pub unsafe fn enable_interrupt(&self, sem: u8) {
@@ -151,14 +151,14 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
     /// Clear the interrupt status for semaphore `sem` (write 1 to ICR bit).
     ///
     /// # Safety
-    /// Caller must ensure `sem` is a valid semaphore index (0–15).
+    /// Caller must ensure `sem` is a valid semaphore index (0-15).
     #[inline]
     pub unsafe fn clear_interrupt(&self, sem: u8) {
         // SAFETY: caller must ensure sem is valid; self.base is a valid mmap'd address.
         unsafe { self.icr_addr().write_volatile(1 << sem) };
     }
 
-    /// Check the masked interrupt status — has semaphore `sem` fired an
+    /// Check the masked interrupt status - has semaphore `sem` fired an
     /// interrupt that is both pending AND enabled?
     #[inline]
     pub fn interrupt_pending(&self, sem: u8) -> bool {
@@ -191,7 +191,7 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
     ///
     /// # Arguments
     ///
-    /// * `hsem_base` — virtual address returned by `mmap` of the HSEM
+    /// * `hsem_base` - virtual address returned by `mmap` of the HSEM
     ///   peripheral range (e.g. resource 0 of a UIO device, or a `/dev/mem`
     ///   mapping of the physical base address from the SoC TRM).  Passing a
     ///   raw physical address here is **undefined behaviour** on Linux.
