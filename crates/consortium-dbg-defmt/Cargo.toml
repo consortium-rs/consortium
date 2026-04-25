@@ -8,10 +8,16 @@ license.workspace = true
 logger = []
 host = []
 default = ["host", "logger"]
+doorbell-hsem = ["consortium-ipc-doorbell-hsem"]
+doorbell-mu = ["consortium-ipc-doorbell-mu"]
 
 [dependencies]
 bitflags = "2.11.1"
 consortium-common = { path = "../consortium-common", default-features = false }
+consortium-ipc = { path = "../consortium-ipc", default-features = false }
+consortium-ipc-doorbell-hsem = { path = "../consortium-ipc-doorbell-hsem", default-features = false, optional = true }
+consortium-ipc-doorbell-mu = { path = "../consortium-ipc-doorbell-mu", default-features = false, optional = true }
+defmt = "1.0.1"
 
 [lints]
 workspace = true
