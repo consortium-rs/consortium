@@ -97,7 +97,7 @@ where
         let n = C::encode(msg, self.buf).map_err(ChannelError::Codec)?;
 
         self.transport
-            .send(self.chan, self.buf[..n].as_ref())
+            .send(self.buf[..n].as_ref())
             .await
             .map_err(ChannelError::Transport)
     }
@@ -121,7 +121,7 @@ where
     pub async fn recv(&mut self) -> Result<ReceivedMessage<'_, T, C>, ChannelError<C, Tr>> {
         let n = self
             .transport
-            .recv(self.chan, self.buf)
+            .recv(self.buf)
             .await
             .map_err(ChannelError::Transport)?;
 

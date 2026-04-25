@@ -1,14 +1,14 @@
 use std::marker::{PhantomData, PhantomPinned};
 
 use consortium_ipc::{
-    Chan, Doorbell, Region, Transport, chan,
+    Chan, Doorbell, Region, Transport,
     regions::{DdrRegion, SramRegion},
 };
 
 use crate::{
-    descriptor::{ChannelDirection, ChannelLayout, channel_table_entry_offset, read_channel},
+    descriptor::{ChannelLayout, NUM_CHANNELS_OFFSET, RX_UPDATED_ID_OFFSET, read_channel},
     error::Error,
-    slot::{self, is_consumed},
+    slot,
     utils::rv_u8,
 };
 
@@ -43,23 +43,17 @@ impl<D: Doorbell, R: SharedMemoryTransportable> SharedMemoryTransport<D, R> {
     }
 }
 
-#[pin_project::pin_project]
-struct SendFut<'a, D: Doorbell, R: SharedMemoryTransportable> {
-    transport: *mut SharedMemoryTransport<D, R>,
-    data: &'a [u8],
-
-    #[cfg(feature = "std")]
-    #[pin]
-    notified: Option<tokio::sync::futures::Notified<'static>>,
+pub struct SendFut<'a, D: Doorbell, R: SharedMemoryTransportable> {
+    result: Result<(), Error<D>>,
 
     _ph: PhantomData<&'a mut SharedMemoryTransport<D, R>>,
-    _pin: PhantomPinned,
 }
 
 #[pin_project::pin_project]
-struct RecvFut<'a, D: Doorbell, R: SharedMemoryTransportable> {
+pub struct RecvFut<'a, D: Doorbell, R: SharedMemoryTransportable> {
     transport: *mut SharedMemoryTransport<D, R>,
-    data: &'a mut [u8],
+    buf_ptr: *mut u8,
+    buf_len: usize,
 
     #[cfg(feature = "std")]
     #[pin]
@@ -74,7 +68,7 @@ unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send for Se
 // SAFETY: the pointer is exclusively owned by this future.
 unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send for RecvFut<'_, D, R> {}
 
-impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Transport<D, R>
+impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Transport
     for SharedMemoryTransport<D, R>
 {
     type Error = Error<D>;
@@ -88,20 +82,47 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Transport<D, R>
         Self: 'a;
 
     fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a> {
+        let mut channel_id = 0xFF;
+
+        // Step 1. Find the tx slot for this channel.
+        for chan in 0..unsafe { rv_u8(self.base, NUM_CHANNELS_OFFSET) } {
+            // Allocate the first free channel slot for transmission.
+            let channel = unsafe { read_channel(self.base, chan as usize) };
+            if unsafe { slot::is_consumed(channel.slot_addr(self.base)) } {
+                channel_id = chan;
+                break;
+            }
+        }
+
+        if channel_id == 0xFF {
+            // No free channel slot was found.
+            return SendFut {
+                result: Err(Error::NoChannel),
+                _ph: PhantomData,
+            };
+        }
+
+        // Step 2. Visit the slot.
+        let channel = unsafe { read_channel(self.base, channel_id as usize) };
+        let slot_base = unsafe { channel.slot_addr(self.base) };
+        unsafe { slot::write(slot_base, data) };
+
+        self.region.flush();
+
+        let result = self.doorbell.ring(self.ch).map_err(Error::Doorbell);
+
+        // Step 3. Ring the doorbell to notify the remote core.
         SendFut {
-            transport: self as *mut _,
-            data,
-            #[cfg(feature = "std")]
-            notified: None,
+            result,
             _ph: PhantomData,
-            _pin: PhantomPinned,
         }
     }
 
     fn recv<'a>(&mut self, data: &mut [u8]) -> Self::RecvFut<'a> {
         RecvFut {
             transport: self as *mut _,
-            data,
+            buf_ptr: data.as_mut_ptr(),
+            buf_len: data.len(),
             #[cfg(feature = "std")]
             notified: None,
             _ph: PhantomData,
@@ -126,17 +147,17 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Future for RecvFut
         cx: &mut core::task::Context<'_>,
     ) -> core::task::Poll<Self::Output> {
         // SAFETY: `transport` is exclusively owned by this future, so it's safe to get a mutable reference.
-        let this = unsafe { self.project() };
-        let transport = unsafe { **this.transport };
+        let this = self.project();
+        let transport = unsafe { &mut **this.transport };
 
         // Step 1. Find the rx slot for this channel.
-        let mut channel_id = unsafe { rv_u8(*this.transport as *mut u8, RX_SLOT_OFFSET) };
+        let mut channel_id = unsafe { rv_u8(*this.transport as *mut u8, RX_UPDATED_ID_OFFSET) };
         let channel_num = unsafe { rv_u8(*this.transport as *mut u8, NUM_CHANNELS_OFFSET) };
         let mut channel: Option<ChannelLayout> = if channel_id < channel_num {
             // Fast path: the doorbell indicated a specific channel has new data, so we check that one first.
             let channel_layout =
                 unsafe { read_channel(*this.transport as *mut u8, channel_id as usize) };
-            if channel_layout.direction == ChannelDirection::Rx
+            if channel_layout.direction.is_rx()
                 && !unsafe {
                     slot::is_consumed(channel_layout.slot_addr(*this.transport as *mut u8))
                 }
@@ -154,7 +175,7 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Future for RecvFut
             for chan in 0..channel_num {
                 let channel_layout =
                     unsafe { read_channel(*this.transport as *mut u8, chan as usize) };
-                if channel_layout.direction == ChannelDirection::Rx
+                if channel_layout.direction.is_rx()
                     && !unsafe {
                         slot::is_consumed(channel_layout.slot_addr(*this.transport as *mut u8))
                     }
@@ -175,7 +196,10 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Future for RecvFut
         let channel = unsafe { read_channel(*this.transport as *mut u8, channel_id as usize) };
         let slot_base = unsafe { channel.slot_addr(*this.transport as *mut u8) };
 
-        if let Some(n) = unsafe { slot::try_read(slot_base, this.data) } {
+        // SAFETY: the mutable buffer is exclusively owned by this future, so it's safe to create a mutable slice from the raw pointer and length.
+        let mut buf = unsafe { core::slice::from_raw_parts_mut(*this.buf_ptr, *this.buf_len) };
+
+        if let Some(n) = unsafe { slot::try_read(slot_base, &mut buf) } {
             // Successfully read a message from the slot.
             return core::task::Poll::Ready(Ok(n));
         }
@@ -183,7 +207,6 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Future for RecvFut
         transport.region.flush();
 
         // Step 4. No message in the slot — poll the doorbell to wait for a notification.
-        let transport = unsafe { &mut *this.transport };
         let mut wait_fut = transport.doorbell.wait(transport.ch);
 
         // SAFETY: `wait_fut` is a local variable and we only pin it for the duration of this poll call, so it will not be moved after pinning.
@@ -204,40 +227,13 @@ impl<D: Doorbell, R: SharedMemoryTransportable> Future for SendFut<'_, D, R> {
 
     fn poll(
         self: core::pin::Pin<&mut Self>,
-        cx: &mut core::task::Context<'_>,
+        _cx: &mut core::task::Context<'_>,
     ) -> core::task::Poll<Self::Output> {
-        let this = unsafe { self.project() };
-        let transport = unsafe { **this.transport };
-
-        let mut channel_id = 0xFF;
-
-        // Step 1. Find the tx slot for this channel.
-        for chan in 0..unsafe { rv_u8(*this.transport as *mut u8, NUM_CHANNELS_OFFSET) } {
-            // Allocate the first free channel slot for transmission.
-            let channel = unsafe { read_channel(*this.transport as *mut u8, chan as usize) };
-            if unsafe { slot::is_consumed(channel.slot_addr(*this.transport as *mut u8)) } {
-                channel_id = chan;
-                break;
-            }
-        }
-
-        if channel_id == 0xFF {
-            // No free channel slot was found.
-            return core::task::Poll::Pending;
-        }
-
-        // Step 2. Visit the slot.
-        let channel = unsafe { read_channel(*this.transport as *mut u8, channel_id as usize) };
-        let slot_base = unsafe { channel.slot_addr(*this.transport as *mut u8) };
-        unsafe { slot::write(slot_base, this.data) };
-
-        transport.region.flush();
-
-        // Step 3. Ring the doorbell to notify the remote core.
-        transport.doorbell.ring(transport.ch);
-
-        // Step 4. Now that the message is sent, we can return ready immediately.
-        core::task::Poll::Ready(Ok(()))
+        let this = unsafe { self.get_unchecked_mut() };
+        core::task::Poll::Ready(match &this.result {
+            Ok(()) => Ok(()),
+            Err(_) => core::mem::replace(&mut this.result, Ok(())),
+        })
     }
 }
 

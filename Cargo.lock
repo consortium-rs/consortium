@@ -242,30 +242,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-ipc-transport-mem"
-version = "0.1.0"
-dependencies = [
- "consortium-ipc",
-]
-
-[[package]]
 name = "consortium-ipc-transport-memory"
 version = "0.1.0"
 dependencies = [
  "consortium-ipc",
  "crc32fast",
  "num_enum",
- "pin-project",
- "thiserror",
- "tokio",
- "uio",
-]
-
-[[package]]
-name = "consortium-ipc-transport-uio"
-version = "0.1.0"
-dependencies = [
- "consortium-ipc",
  "pin-project",
  "thiserror",
  "tokio",
@@ -302,7 +284,7 @@ dependencies = [
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
  "consortium-ipc-doorbell-mu",
- "consortium-ipc-transport-uio",
+ "consortium-ipc-transport-memory",
  "consortium-ort",
  "consortium-tee",
  "libc",
@@ -317,7 +299,7 @@ dependencies = [
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
  "consortium-ipc-doorbell-mu",
- "consortium-ipc-transport-mem",
+ "consortium-ipc-transport-memory",
  "cortex-m",
  "embassy-executor",
  "num-traits",

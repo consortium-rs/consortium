@@ -18,8 +18,6 @@
 members = [
   "crates/consortium-ipc",
   "crates/consortium-cli",
-  "crates/consortium-ipc-transport-uio",
-  "crates/consortium-ipc-transport-mem",
   "crates/consortium-ipc-doorbell-hsem",
   "crates/consortium-ipc-doorbell-mu",
   "crates/consortium-runtime-mcu",
