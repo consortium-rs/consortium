@@ -46,6 +46,9 @@ consortium-ffi = { path = "../consortium-ffi", optional = true }
 consortium-ort = { path = "../consortium-ort", optional = true }
 tokio = { version = "1", features = ["rt", "time", "io-util"] }
 libc = "0.2"
+uio = { version = "0.5.2" }
+thiserror = { version = "2.0" }
+
 
 [dependencies]
 memmap2 = "0.9.10"

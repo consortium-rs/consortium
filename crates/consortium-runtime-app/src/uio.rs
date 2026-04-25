@@ -29,11 +29,10 @@ use std::{fs::File, io::Write as _, sync::Arc};
 use tokio::{io::unix::AsyncFd, sync::Notify};
 use uio::UioError;
 
-use consortium_ipc::{Chan, Doorbell, Region};
+use consortium_ipc::{Chan, Doorbell};
 use consortium_ipc_transport_memory::{
-    descriptor::{ChannelDirection, Descriptor, DescriptorError, descriptor_read},
-    slot,
-    transport::SharedMemoryTransport,
+    descriptor::{ChannelDirection, Descriptor, DescriptorError, descriptor_ack},
+    transport::{SharedMemoryTransport, SharedMemoryTransportable},
 };
 
 // ── Error ─────────────────────────────────────────────────────────────────────
@@ -95,7 +94,7 @@ pub struct UioDevice {
 impl UioDevice {
     /// Open `/dev/uio{uio_num}`, mmap resource 0, parse the descriptor, and
     /// start the IRQ listener task.
-    pub fn open(uio_num: usize) -> Result<Self, UioDeviceError> {
+    pub fn open(uio_num: usize, num_channels: usize, transfer_size: usize) -> Result<Self, UioDeviceError> {
         let uio = uio::UioDevice::blocking_new(uio_num)?;
 
         // map_resource reads the mapping size from sysfs and mmaps resource 0.
@@ -103,7 +102,7 @@ impl UioDevice {
 
         // SAFETY: region_base is valid for the lifetime of `uio`; descriptor
         // must already be in Ready state — call mmap::wait_for_ready first.
-        let descriptor = unsafe { descriptor_read(region_base) }?;
+        let descriptor = unsafe { descriptor_ack(region_base, num_channels, transfer_size) }?;
 
         let irq_notify = Arc::new(Notify::new());
 
@@ -146,7 +145,7 @@ impl UioDevice {
     ) -> Result<SharedMemoryTransport<D, R>, UioDeviceError>
     where
         D: Doorbell,
-        R: Region,
+        R: SharedMemoryTransportable,
     {
         let id = chan.id() as usize;
         let num_ch = self.inner.descriptor.num_channels as usize;
@@ -171,13 +170,6 @@ impl UioDevice {
         }
 
         let base = self.inner.region_base;
-        // SAFETY: offsets come from the descriptor written by M-core; `base`
-        // is valid for the entire mmap'd region.
-        let tx_slot = unsafe { base.add(tx_entry.offset as usize) };
-        let rx_slot = unsafe { base.add(rx_entry.offset as usize) };
-
-        let tx_mtu = (tx_entry.size as usize).saturating_sub(slot::SLOT_HEADER);
-        let rx_mtu = (rx_entry.size as usize).saturating_sub(slot::SLOT_HEADER);
 
         // SAFETY: slot pointers and sizes come from the validated descriptor;
         // this UioDevice exclusively owns the mmap.
@@ -186,11 +178,7 @@ impl UioDevice {
                 chan,
                 doorbell,
                 region,
-                tx_slot,
-                rx_slot,
-                tx_mtu,
-                rx_mtu,
-                Arc::clone(&self.inner.irq_notify),
+                base
             )
         })
     }
