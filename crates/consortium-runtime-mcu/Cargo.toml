@@ -32,7 +32,7 @@ default = ["stm32mp2xx"]
 consortium-ipc = { path = "../consortium-ipc", default-features = false }
 consortium-ipc-doorbell-hsem = { path = "../consortium-ipc-doorbell-hsem", default-features = false, optional = true }
 consortium-ipc-doorbell-mu = { path = "../consortium-ipc-doorbell-mu", default-features = false, optional = true }
-consortium-ipc-transport-mem = { path = "../consortium-ipc-transport-mem", default-features = false }
+consortium-ipc-transport-memory = { path = "../consortium-ipc-transport-memory", default-features = false }
 static_cell = { version = "2", default-features = false }
 embassy-executor = { version = "0.10.0", default-features = false, features = [
   "platform-cortex-m",

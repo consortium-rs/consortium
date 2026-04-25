@@ -26,7 +26,7 @@ pub use consortium_ipc_doorbell_mu as mu;
 #[cfg(feature = "imx95")]
 pub use consortium_ipc_doorbell_mu as mu;
 
-pub use consortium_ipc_transport_mem;
+pub use consortium_ipc_transport_memory;
 
 /// Compute the pointer to the Tx slot in a MemTransport slot pair.
 ///

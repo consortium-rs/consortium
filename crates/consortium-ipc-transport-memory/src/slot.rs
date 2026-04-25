@@ -25,9 +25,6 @@
 //!
 //! Write order: payload → len → flags (ensures receiver sees consistent data).
 //! Read order:  check flags → read len → copy payload → write FLAG_CONSUMED.
-
-use std::sync::atomic::compiler_fence;
-
 use crate::utils::{rv_u32, wv_u32};
 
 pub const SLOT_HEADER: usize = 12;

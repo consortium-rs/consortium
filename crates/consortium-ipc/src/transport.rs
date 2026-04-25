@@ -15,7 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 //! The `Transport` trait and related types.
-use crate::{chan::Chan, future::MaybeSend};
+use crate::future::MaybeSend;
 
 /// Moves raw bytes between cores over a specific medium.
 /// Knows nothing about message types — that's Channel's job.

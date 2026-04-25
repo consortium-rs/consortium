@@ -16,7 +16,7 @@
 
 use super::descriptor::{DescState, MAGIC};
 use consortium_ipc::Doorbell;
-#[cfg(feature = "std")]
+#[cfg(all(feature = "std", target_os = "linux"))]
 use uio::UioError;
 
 #[derive(Debug, thiserror::Error)]
@@ -31,14 +31,14 @@ pub enum DescriptorError {
     NotReady(DescState),
 }
 
-#[derive(Debug, thiserror::Error)]
+#[derive(Debug, thiserror::Error, Default)]
 pub enum Error<D: Doorbell> {
     #[error("io: {0}")]
     #[cfg(feature = "std")]
     Io(#[from] std::io::Error),
 
     #[error("uio: {0:?}")]
-    #[cfg(feature = "std")]
+    #[cfg(all(feature = "std", target_os = "linux"))]
     Uio(UioError),
 
     #[error("descriptor: {0}")]
@@ -50,14 +50,15 @@ pub enum Error<D: Doorbell> {
     #[error("doorbell error")]
     Doorbell(D::Error),
 
-    #[error("no message to read")]
-    NoMessage,
+    #[error("no available channel")]
+    NoChannel,
 
-    #[error("message too large for buffer: {0} bytes, but buffer is {1} bytes")]
-    MessageTooLarge(usize, usize),
+    #[error("unknown error")]
+    #[default]
+    Unknown,
 }
 
-#[cfg(feature = "std")]
+#[cfg(all(feature = "std", target_os = "linux"))]
 impl<D: Doorbell> From<UioError> for Error<D> {
     fn from(e: UioError) -> Self {
         Self::Uio(e)

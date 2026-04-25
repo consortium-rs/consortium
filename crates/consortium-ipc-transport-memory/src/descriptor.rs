@@ -130,6 +130,30 @@ pub enum ChannelDirection {
     Unrecognized = 0xFF,
 }
 
+impl ChannelDirection {
+    pub fn is_rx(&self) -> bool {
+        #[cfg(feature = "std")]
+        {
+            matches!(self, ChannelDirection::MToA)
+        }
+        #[cfg(not(feature = "std"))]
+        {
+            matches!(self, ChannelDirection::AToM)
+        }
+    }
+
+    pub fn is_tx(&self) -> bool {
+        #[cfg(feature = "std")]
+        {
+            matches!(self, ChannelDirection::AToM)
+        }
+        #[cfg(not(feature = "std"))]
+        {
+            matches!(self, ChannelDirection::MToA)
+        }
+    }
+}
+
 #[derive(Debug)]
 #[repr(C)]
 pub struct Descriptor {
