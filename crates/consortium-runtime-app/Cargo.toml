@@ -31,7 +31,9 @@ ffi = ["consortium-ffi"]
 ort = ["consortium-ort"]
 
 [target.'cfg(target_os = "linux")'.dependencies]
-consortium-ipc-transport-memory = { path = "../consortium-ipc-transport-memory", features = ["std"] }
+consortium-ipc-transport-memory = { path = "../consortium-ipc-transport-memory", features = [
+  "std",
+] }
 consortium-tee = { path = "../consortium-tee", optional = true }
 consortium-ipc = { path = "../consortium-ipc", features = ["std"] }
 consortium-ipc-doorbell-hsem = { path = "../consortium-ipc-doorbell-hsem", features = [

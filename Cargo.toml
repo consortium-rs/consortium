@@ -37,6 +37,7 @@ members = [
   "crates/consortium-rpi",
   "crates/consortium-rpi-meta",
   "crates/consortium-ipc-transport-memory",
+  "crates/consortium-dbg-defmt",
 ]
 resolver = "2"
 

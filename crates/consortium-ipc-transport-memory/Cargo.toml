@@ -33,6 +33,7 @@ crc32fast = { version = "1.5.0", default-features = false }
 tokio = { version = "1", optional = true, features = ["rt", "sync", "net"] }
 pin-project = { version = "1.1.11", optional = true }
 uio = { version = "0.5.2", optional = true }
+consortium-common = { path = "../consortium-common", default-features = false }
 
 [lints]
 workspace = true

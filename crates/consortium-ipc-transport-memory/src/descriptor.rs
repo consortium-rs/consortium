@@ -17,21 +17,19 @@
 //! Descriptor layout in the DMA-coherent shared region.
 //!
 //! ```text
-//! Offset  Size  Owner   Field
-//! 0x00    4     kernel  magic           0x4353_5449 ("CSTI" = Consortium) + endianness check
-//! 0x04    1     kernel  version (compatibility check)
-//! 0x05    1             reserved
-//! 0x06    1     kernel  num_channels
-//! 0x07    1             reserved
-//! 0x08    1     kernel  tx_updated_id (0xFF is default and indicates no update)
-//! 0x09    1     m-core  rx_updated_id (0xFF is default and indicates no update)
-//! 0x0A    2             reserved
-//! 0x0C    4     kernel  tx_transfer_size
-//! 0x10    4     m-core  rx_transfer_size
-//! 0x14    4             reserved
-//! 0x18    4     both    state           (DescState)
-//! 0x1C    4     kernel  reserved ; alignment padding
-//! 0x20    12*N  kernel  channel table
+//! Offset  Size  Owner Field
+//! 0x00    6     N/A   header (refer to `DescriptorHeader`)
+//! 0x06    1     app   num_channels
+//! 0x07    1     N/A   reserved
+//! 0x08    1     app   tx_updated_id (0xFF is default and indicates no update)
+//! 0x09    1     mcu   rx_updated_id (0xFF is default and indicates no update)
+//! 0x0A    2     N/A   reserved
+//! 0x0C    4     app   tx_transfer_size
+//! 0x10    4     mcu   rx_transfer_size
+//! 0x14    4     N/A   reserved
+//! 0x18    4     a&m   state           (DescState)
+//! 0x1C    4     N/A   reserved ; alignment padding
+//! 0x20    12*N  N/A   channel table
 //! ```
 //!
 //! Each channel table entry (12 bytes):
@@ -43,11 +41,12 @@
 //! ```
 #![allow(dead_code)]
 use crate::utils::{rv_u8, rv_u32, wv_u8, wv_u32};
+use consortium_common::descriptor::{DescriptorHeader, DescriptorMagic};
 use core::sync::atomic::Ordering;
 
 pub const CHANNEL_NUM_MAX: usize = 32;
 
-pub const MAGIC: u32 = 0x4353_5449; // "CSTI" = Consortium
+pub const MAGIC: DescriptorMagic = DescriptorMagic::new(b"CIPC");
 pub const VERSION: u8 = 1;
 
 const CHAN_TABLE_BASE: usize = 0x20;
@@ -62,6 +61,78 @@ pub const TX_TRANSFER_SIZE_OFFSET: usize = 0x0C;
 pub const RX_TRANSFER_SIZE_OFFSET: usize = 0x10;
 pub const STATE_OFFSET: usize = 0x18;
 pub const CHANNEL_TABLE_OFFSET: usize = 0x20;
+
+#[derive(Debug)]
+#[repr(C)]
+pub struct Descriptor {
+    pub header: DescriptorHeader,
+    pub num_channels: u8,
+    _reserved1: [u8; 1],
+    pub tx_updated_id: u8,
+    pub rx_updated_id: u8,
+    _reserved2: [u8; 2],
+    pub tx_mtu: u32,
+    pub rx_mtu: u32,
+    _reserved3: [u8; 4],
+    pub state: DescState,
+    _reserved4: [u8; 4],
+    pub channels: [ChannelLayout; CHANNEL_NUM_MAX],
+}
+
+/// Channel descriptor written to the descriptor table.
+#[derive(Clone, Copy, Debug, Default)]
+#[repr(C)]
+pub struct ChannelLayout {
+    pub offset: u32,
+    pub size: u32,
+    pub direction: ChannelDirection,
+    _reserved: [u8; 3],
+}
+
+impl Descriptor {
+    pub unsafe fn from_raw_ptr(ptr: *const u8) -> Self {
+        let header = unsafe { DescriptorHeader::from_raw_ptr(ptr) };
+        let num_channels = unsafe { rv_u8(ptr, NUM_CHANNELS_OFFSET) };
+        let tx_updated_id = unsafe { rv_u8(ptr, TX_UPDATED_ID_OFFSET) };
+        let rx_updated_id = unsafe { rv_u8(ptr, RX_UPDATED_ID_OFFSET) };
+        let tx_mtu = unsafe { rv_u32(ptr, TX_TRANSFER_SIZE_OFFSET) };
+        let rx_mtu = unsafe { rv_u32(ptr, RX_TRANSFER_SIZE_OFFSET) };
+        let state = DescState::from_primitive(unsafe { rv_u32(ptr, STATE_OFFSET) });
+
+        let mut channels = [ChannelLayout::default(); CHANNEL_NUM_MAX];
+        for i in 0..num_channels as usize {
+            channels[i] = unsafe {
+                ChannelLayout::from_raw_ptr(ptr.add(CHANNEL_TABLE_OFFSET + i * CHAN_ENTRY_SIZE))
+            };
+        }
+
+        Self {
+            header,
+            num_channels,
+            _reserved1: [0; 1],
+            tx_updated_id,
+            rx_updated_id,
+            _reserved2: [0; 2],
+            tx_mtu,
+            rx_mtu,
+            _reserved3: [0; 4],
+            state,
+            _reserved4: [0; 4],
+            channels,
+        }
+    }
+}
+
+impl ChannelLayout {
+    pub unsafe fn from_raw_ptr(ptr: *const u8) -> Self {
+        Self {
+            offset: unsafe { rv_u32(ptr, 0) },
+            size: unsafe { rv_u32(ptr, 4) },
+            direction: ChannelDirection::from_primitive(unsafe { rv_u8(ptr, 8) }),
+            _reserved: [0; 3],
+        }
+    }
+}
 
 pub const fn channel_table_entry_offset(index: usize) -> usize {
     assert!(index < CHANNEL_NUM_MAX, "channel index out of range");
@@ -104,16 +175,6 @@ pub enum DescState {
     Unrecognized = 0xFFFF_FFFF,
 }
 
-/// Channel descriptor written to the descriptor table.
-#[derive(Clone, Copy, Debug, Default)]
-#[repr(C)]
-pub struct ChannelLayout {
-    pub offset: u32,
-    pub size: u32,
-    pub direction: ChannelDirection,
-    _reserved: [u8; 3],
-}
-
 impl ChannelLayout {
     pub unsafe fn slot_addr(&self, base: *const u8) -> *mut u8 {
         // SAFETY: the caller must ensure that `base` is valid for at least `self.offset + self.size` bytes and that the memory is DMA-coherent.
@@ -152,17 +213,6 @@ impl ChannelDirection {
             matches!(self, ChannelDirection::MToA)
         }
     }
-}
-
-#[derive(Debug)]
-#[repr(C)]
-pub struct Descriptor {
-    pub num_channels: u8,
-    pub tx_updated_id: u8,
-    pub rx_updated_id: u8,
-    pub tx_mtu: u32,
-    pub rx_mtu: u32,
-    pub channels: [ChannelLayout; CHANNEL_NUM_MAX],
 }
 
 /// Read the descriptor state field.
@@ -215,8 +265,8 @@ pub unsafe fn descriptor_init(
     // Write magic and version
     // SAFETY: the caller must ensure that `base` is valid for at least `CHAN_TABLE_BASE + num_channels * CHAN_ENTRY_SIZE` bytes and that the memory is DMA-coherent.
     unsafe {
-        wv_u32(base, MAGIC_OFFSET, MAGIC);
-        wv_u8(base, VERSION_OFFSET, VERSION);
+        let header = DescriptorHeader::new(MAGIC, VERSION);
+        header.write_to_raw_ptr(base);
         wv_u8(base, NUM_CHANNELS_OFFSET, num_channels);
 
         wv_u32(base, RX_TRANSFER_SIZE_OFFSET, transfer_size as u32);
@@ -244,8 +294,12 @@ pub unsafe fn descriptor_ack(
     num_channels: usize,
     transfer_size: usize,
 ) -> Result<Descriptor, DescriptorError> {
-    let magic = unsafe { rv_u32(base, 0x00) };
-    let version = unsafe { rv_u8(base, 0x04) };
+    let header = unsafe { DescriptorHeader::from_raw_ptr(base) };
+
+    header
+        .check(MAGIC, VERSION)
+        .map_err(DescriptorError::Header)?;
+
     let num_ch = unsafe { rv_u8(base, 0x05) };
     debug_assert!(
         num_ch as usize == num_channels,
@@ -264,12 +318,6 @@ pub unsafe fn descriptor_ack(
     };
     let state = DescState::from_primitive(unsafe { rv_u32(base, STATE_OFFSET) });
 
-    if magic != MAGIC {
-        return Err(DescriptorError::BadMagic { got: magic });
-    }
-    if version != VERSION {
-        return Err(DescriptorError::BadVersion(version));
-    }
     if state != DescState::MReady {
         return Err(DescriptorError::NotReady(state));
     }
@@ -297,6 +345,12 @@ pub unsafe fn descriptor_ack(
     }
 
     Ok(Descriptor {
+        header,
+        _reserved1: [0; 1],
+        _reserved2: [0; 2],
+        _reserved3: [0; 4],
+        state: DescState::Ready,
+        _reserved4: [0; 4],
         num_channels: num_ch,
         tx_updated_id: 0xFF,
         rx_updated_id: 0xFF,

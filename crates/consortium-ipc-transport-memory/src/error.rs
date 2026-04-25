@@ -15,18 +15,15 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use super::descriptor::{DescState, MAGIC};
+use consortium_common::descriptor::DescriptorHeaderError;
 use consortium_ipc::Doorbell;
 #[cfg(all(feature = "std", target_os = "linux"))]
 use uio::UioError;
 
 #[derive(Debug, thiserror::Error)]
 pub enum DescriptorError {
-    #[error("bad magic: expected 0x{:08X}, got 0x{got:08X}", MAGIC)]
-    BadMagic { got: u32 },
-
-    #[error("unsupported descriptor version: {0}")]
-    BadVersion(u8),
-
+    #[error(transparent)]
+    Header(#[from] DescriptorHeaderError),
     #[error("descriptor not ready: state is {0:?}")]
     NotReady(DescState),
 }
