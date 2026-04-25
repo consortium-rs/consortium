@@ -16,7 +16,7 @@ use bitflags::bitflags;
 use consortium_common::descriptor::{DescriptorHeader, DescriptorMagic};
 
 use crate::packet::{PACKET_HEADER_SIZE, Packet};
-use crate::utils::rv_u16;
+use crate::utils::{rv_u16, wv_u16};
 #[repr(C)]
 pub struct Descriptor {
     pub header: DescriptorHeader,
@@ -57,6 +57,10 @@ impl Descriptor {
         }
     }
 
+    pub fn check(&self) -> bool {
+        self.header.check(MAGIC, VERSION).is_ok()
+    }
+
     pub unsafe fn from_raw_ptr(ptr: *const u8) -> Self {
         let header = unsafe { DescriptorHeader::from_raw_ptr(ptr) };
         let write_ptr = unsafe { rv_u16(ptr, WRITE_PTR_OFFSET) };
@@ -70,6 +74,16 @@ impl Descriptor {
             capacity,
             flags,
             _reserved1: [0; 2],
+        }
+    }
+
+    pub unsafe fn write_to_raw_ptr(&self, ptr: *mut u8) {
+        unsafe {
+            DescriptorHeader::new(MAGIC, VERSION).write_to_raw_ptr(ptr);
+            wv_u16(ptr, WRITE_PTR_OFFSET, self.write_ptr);
+            wv_u16(ptr, READ_PTR_OFFSET, self.read_ptr);
+            wv_u16(ptr, CAPACITY_OFFSET, self.capacity);
+            wv_u16(ptr, FLAGS_OFFSET, self.flags.bits());
         }
     }
 
@@ -178,6 +192,24 @@ impl Descriptor {
             None
         } else {
             Some(DESCRIPTOR_SIZE as u16)
+        }
+    }
+
+    /// Block until host has read all pending data. (defmt's Logger trait)
+    pub(crate) unsafe fn flush(&mut self, base: *mut u8) {
+        let cursor = unsafe { base.add(self.read_ptr as usize) };
+        let Some(mut frame_header) = (unsafe { Packet::try_from_raw_ptr(cursor) }) else {
+            return;
+        };
+        while self.read_ptr != self.write_ptr && self.read_ptr != DESCRIPTOR_SIZE as u16 {
+            while frame_header.is_valid() {
+                core::hint::spin_loop();
+            }
+            self.read_ptr = unsafe { self.next_read_ptr(base) };
+            match unsafe { Packet::try_from_raw_ptr(base.add(self.read_ptr as usize)) } {
+                Some(header) => frame_header = header,
+                None => return,
+            }
         }
     }
 }
