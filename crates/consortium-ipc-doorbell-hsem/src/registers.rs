@@ -24,7 +24,7 @@ pub const HSEM_BASE: u32 = 0x5624_0000; // Verified in RM0457 for STM32MP25x; ad
 
 // ============================================================================
 // Module: Semaphore R registers (2-step write lock / unlock / read)
-// HSEM_Rx  — Address offset: 0x000 + 0x4 * x  (x = 0..=15)
+// HSEM_Rx  - Address offset: 0x000 + 0x4 * x  (x = 0..=15)
 // Reset value: 0x0000_0000
 // ============================================================================
 pub mod semaphore_r {
@@ -48,18 +48,18 @@ pub mod semaphore_r {
 
     /// Bit fields within HSEM_Rx
     pub mod fields {
-        /// Bit 31 — LOCK: semaphore lock indication (rw)
+        /// Bit 31 - LOCK: semaphore lock indication (rw)
         pub const LOCK_BIT: u32 = 1 << 31;
-        /// Bit 30 — CFEN: CID filter indication (r)
+        /// Bit 30 - CFEN: CID filter indication (r)
         pub const CFEN_BIT: u32 = 1 << 30;
-        /// Bit 13 — PRIV: privileged domain lock (rw)
+        /// Bit 13 - PRIV: privileged domain lock (rw)
         pub const PRIV_BIT: u32 = 1 << 13;
-        /// Bit 12 — SEC: secure domain lock (rw)
+        /// Bit 12 - SEC: secure domain lock (rw)
         pub const SEC_BIT: u32 = 1 << 12;
-        /// Bits 11:8 — LOCKID[3:0] (rw)
+        /// Bits 11:8 - LOCKID[3:0] (rw)
         pub const LOCKID_SHIFT: u32 = 8;
         pub const LOCKID_MASK: u32 = 0xF << LOCKID_SHIFT;
-        /// Bits 7:0 — PROCID[7:0] (rw)
+        /// Bits 7:0 - PROCID[7:0] (rw)
         pub const PROCID_SHIFT: u32 = 0;
         pub const PROCID_MASK: u32 = 0xFF;
     }
@@ -67,7 +67,7 @@ pub mod semaphore_r {
 
 // ============================================================================
 // Module: Semaphore RLR registers (1-step read lock)
-// HSEM_RLRx — Address offset: 0x080 + 0x4 * x  (x = 0..=15)
+// HSEM_RLRx - Address offset: 0x080 + 0x4 * x  (x = 0..=15)
 // Reset value: 0x0000_0000
 // Accesses same physical bits as HSEM_Rx; all fields are read-only here.
 // ============================================================================
@@ -91,18 +91,18 @@ pub mod semaphore_rlr {
 
     /// Bit fields within HSEM_RLRx (all read-only at this address)
     pub mod fields {
-        /// Bit 31 — LOCK (r): reading a free semaphore locks it and returns 1
+        /// Bit 31 - LOCK (r): reading a free semaphore locks it and returns 1
         pub const LOCK_BIT: u32 = 1 << 31;
-        /// Bit 30 — CFEN (r)
+        /// Bit 30 - CFEN (r)
         pub const CFEN_BIT: u32 = 1 << 30;
-        /// Bit 13 — PRIV (r)
+        /// Bit 13 - PRIV (r)
         pub const PRIV_BIT: u32 = 1 << 13;
-        /// Bit 12 — SEC (r)
+        /// Bit 12 - SEC (r)
         pub const SEC_BIT: u32 = 1 << 12;
-        /// Bits 11:8 — LOCKID[3:0] (r)
+        /// Bits 11:8 - LOCKID[3:0] (r)
         pub const LOCKID_SHIFT: u32 = 8;
         pub const LOCKID_MASK: u32 = 0xF << LOCKID_SHIFT;
-        /// Bits 7:0 — PROCID[7:0] (r); always 0 after a read-lock
+        /// Bits 7:0 - PROCID[7:0] (r); always 0 after a read-lock
         pub const PROCID_SHIFT: u32 = 0;
         pub const PROCID_MASK: u32 = 0xFF;
     }
@@ -142,10 +142,10 @@ pub mod interrupt_nonsecure {
 
     /// Bit fields shared across CnIER / CnICR / CnISR / CnMISR
     pub mod fields {
-        /// Bits 15:0 — ISE[15:0] in IER: enable bit per semaphore (rw)
-        /// Bits 15:0 — ISC[15:0] in ICR: clear bit per semaphore (rc_w1)
-        /// Bits 15:0 — ISF[15:0] in ISR: status before masking (r)
-        /// Bits 15:0 — MISF[15:0] in MISR: masked status (r)
+        /// Bits 15:0 - ISE[15:0] in IER: enable bit per semaphore (rw)
+        /// Bits 15:0 - ISC[15:0] in ICR: clear bit per semaphore (rc_w1)
+        /// Bits 15:0 - ISF[15:0] in ISR: status before masking (r)
+        /// Bits 15:0 - MISF[15:0] in MISR: masked status (r)
         pub const SEM_MASK: u32 = 0xFFFF; // one bit per semaphore 0..=15
 
         /// Helper: bit mask for semaphore index i (0..=15)
@@ -190,10 +190,10 @@ pub mod interrupt_secure {
 
     /// Bit fields shared across SCnIER / SCnICR / SCnISR / SCnMISR
     pub mod fields {
-        /// Bits 15:0 — SISE[15:0] in SCnIER (rw)
-        /// Bits 15:0 — SISC[15:0] in SCnICR (rc_w1)
-        /// Bits 15:0 — SISF[15:0] in SCnISR (r)
-        /// Bits 15:0 — SMISF[15:0] in SCnMISR (r)
+        /// Bits 15:0 - SISE[15:0] in SCnIER (rw)
+        /// Bits 15:0 - SISC[15:0] in SCnICR (rc_w1)
+        /// Bits 15:0 - SISF[15:0] in SCnISR (r)
+        /// Bits 15:0 - SMISF[15:0] in SCnMISR (r)
         pub const SEM_MASK: u32 = 0xFFFF;
 
         #[inline(always)]
@@ -218,8 +218,8 @@ pub mod attributes {
     pub const HSEM_PRIVCFGR: u32 = 0x210;
 
     pub mod fields {
-        /// Bits 15:0 — SEC[15:0] in SECCFGR: security attribute per semaphore (rw)
-        /// Bits 15:0 — PRIV[15:0] in PRIVCFGR: privilege attribute per semaphore (rw)
+        /// Bits 15:0 - SEC[15:0] in SECCFGR: security attribute per semaphore (rw)
+        /// Bits 15:0 - PRIV[15:0] in PRIVCFGR: privilege attribute per semaphore (rw)
         pub const SEM_MASK: u32 = 0xFFFF;
 
         #[inline(always)]
@@ -256,16 +256,16 @@ pub mod cid_config {
 
     /// Bit fields for HSEM_CnCIDCFGR
     pub mod cn_fields {
-        /// Bits 6:4 — CID[2:0]: processor CID domain ID (rw)
+        /// Bits 6:4 - CID[2:0]: processor CID domain ID (rw)
         pub const CID_SHIFT: u32 = 4;
         pub const CID_MASK: u32 = 0x7 << CID_SHIFT;
-        /// Bit 0 — CFEN: CID filtering enable for processor n (rw)
+        /// Bit 0 - CFEN: CID filtering enable for processor n (rw)
         pub const CFEN_BIT: u32 = 1 << 0;
     }
 
     /// Bit fields for HSEM_GpCIDCFGR
     pub mod gp_fields {
-        /// Bits 18:16 — SEM_WLIST_C[3:1]: white list enable per CID (rw)
+        /// Bits 18:16 - SEM_WLIST_C[3:1]: white list enable per CID (rw)
         pub const SEM_WLIST_SHIFT: u32 = 16;
         pub const SEM_WLIST_MASK: u32 = 0x7 << SEM_WLIST_SHIFT;
         /// SEM_WLIST_C1 (processor 1 CID white listed)
@@ -274,7 +274,7 @@ pub mod cid_config {
         pub const SEM_WLIST_C2: u32 = 1 << 17;
         /// SEM_WLIST_C3 (processor 3 CID white listed)
         pub const SEM_WLIST_C3: u32 = 1 << 18;
-        /// Bit 0 — CFEN: group-level CID filtering enable (rw)
+        /// Bit 0 - CFEN: group-level CID filtering enable (rw)
         pub const CFEN_BIT: u32 = 1 << 0;
     }
 }
@@ -295,23 +295,23 @@ pub mod clear {
 
     /// Bit fields for HSEM_CR
     pub mod cr_fields {
-        /// Bits 31:16 — KEY[15:0]: must match HSEM_KEYR.KEY to clear (w)
+        /// Bits 31:16 - KEY[15:0]: must match HSEM_KEYR.KEY to clear (w)
         pub const KEY_SHIFT: u32 = 16;
         pub const KEY_MASK: u32 = 0xFFFF << KEY_SHIFT;
-        /// Bit 13 — PRIV: PRIV of semaphores to clear (w)
+        /// Bit 13 - PRIV: PRIV of semaphores to clear (w)
         pub const PRIV_BIT: u32 = 1 << 13;
-        /// Bit 12 — SEC: SEC of semaphores to clear (w)
+        /// Bit 12 - SEC: SEC of semaphores to clear (w)
         pub const SEC_BIT: u32 = 1 << 12;
-        /// Bits 11:8 — LOCKID[3:0]: LOCKID of semaphores to clear (w)
+        /// Bits 11:8 - LOCKID[3:0]: LOCKID of semaphores to clear (w)
         pub const LOCKID_SHIFT: u32 = 8;
         pub const LOCKID_MASK: u32 = 0xF << LOCKID_SHIFT;
-        /// Bit 0 — CFEN: CID-filtered semaphores to clear (w)
+        /// Bit 0 - CFEN: CID-filtered semaphores to clear (w)
         pub const CFEN_BIT: u32 = 1 << 0;
     }
 
     /// Bit fields for HSEM_KEYR
     pub mod keyr_fields {
-        /// Bits 31:16 — KEY[15:0]: semaphore clear key (rw)
+        /// Bits 31:16 - KEY[15:0]: semaphore clear key (rw)
         pub const KEY_SHIFT: u32 = 16;
         pub const KEY_MASK: u32 = 0xFFFF << KEY_SHIFT;
     }
@@ -343,45 +343,45 @@ pub mod info {
 
     /// Bit fields for HSEM_HWCFGR2
     pub mod hwcfgr2_fields {
-        /// Bits 15:12 — MASTERID4[3:0] (r)
+        /// Bits 15:12 - MASTERID4[3:0] (r)
         pub const MASTERID4_SHIFT: u32 = 12;
         pub const MASTERID4_MASK: u32 = 0xF << MASTERID4_SHIFT;
-        /// Bits 11:8  — MASTERID3[3:0] (r)
+        /// Bits 11:8  - MASTERID3[3:0] (r)
         pub const MASTERID3_SHIFT: u32 = 8;
         pub const MASTERID3_MASK: u32 = 0xF << MASTERID3_SHIFT;
-        /// Bits 7:4   — MASTERID2[3:0] (r)
+        /// Bits 7:4   - MASTERID2[3:0] (r)
         pub const MASTERID2_SHIFT: u32 = 4;
         pub const MASTERID2_MASK: u32 = 0xF << MASTERID2_SHIFT;
-        /// Bits 3:0   — MASTERID1[3:0] (r)
+        /// Bits 3:0   - MASTERID1[3:0] (r)
         pub const MASTERID1_SHIFT: u32 = 0;
         pub const MASTERID1_MASK: u32 = 0xF;
     }
 
     /// Bit fields for HSEM_HWCFGR1
     pub mod hwcfgr1_fields {
-        /// Bit 18 — CFEN: compartment filtering supported (r)
+        /// Bit 18 - CFEN: compartment filtering supported (r)
         pub const CFEN_BIT: u32 = 1 << 18;
-        /// Bit 17 — PRIVEN: privilege protection supported (r)
+        /// Bit 17 - PRIVEN: privilege protection supported (r)
         pub const PRIVEN_BIT: u32 = 1 << 17;
-        /// Bit 16 — SECEN: security protection supported (r)
+        /// Bit 16 - SECEN: security protection supported (r)
         pub const SECEN_BIT: u32 = 1 << 16;
-        /// Bits 15:12 — CID_WIDTH[3:0]: CID bus width (r)
+        /// Bits 15:12 - CID_WIDTH[3:0]: CID bus width (r)
         pub const CID_WIDTH_SHIFT: u32 = 12;
         pub const CID_WIDTH_MASK: u32 = 0xF << CID_WIDTH_SHIFT;
-        /// Bits 11:8  — NBINT[3:0]: number of interrupt lines / supported master IDs (r)
+        /// Bits 11:8  - NBINT[3:0]: number of interrupt lines / supported master IDs (r)
         pub const NBINT_SHIFT: u32 = 8;
         pub const NBINT_MASK: u32 = 0xF << NBINT_SHIFT;
-        /// Bits 7:0   — NBSEM[7:0]: number of semaphores (r)
+        /// Bits 7:0   - NBSEM[7:0]: number of semaphores (r)
         pub const NBSEM_SHIFT: u32 = 0;
         pub const NBSEM_MASK: u32 = 0xFF;
     }
 
     /// Bit fields for HSEM_VERR
     pub mod verr_fields {
-        /// Bits 7:4 — MAJREV[3:0]: major revision (r)
+        /// Bits 7:4 - MAJREV[3:0]: major revision (r)
         pub const MAJREV_SHIFT: u32 = 4;
         pub const MAJREV_MASK: u32 = 0xF << MAJREV_SHIFT;
-        /// Bits 3:0 — MINREV[3:0]: minor revision (r)
+        /// Bits 3:0 - MINREV[3:0]: minor revision (r)
         pub const MINREV_SHIFT: u32 = 0;
         pub const MINREV_MASK: u32 = 0xF;
     }

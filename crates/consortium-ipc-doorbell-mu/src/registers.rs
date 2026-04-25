@@ -148,15 +148,15 @@ pub mod mua {
         pub const MU_RSTH: u32 = 1 << 4;
         pub const MU_BOOT_MASK: u32 = 0x3 << 5;
 
-        // GIER — enable general-purpose interrupt n (n = 0..3)
+        // GIER - enable general-purpose interrupt n (n = 0..3)
         pub const fn gier_gie(n: u8) -> u32 {
             1 << n
         }
-        // GCR — set general-purpose interrupt request n (sender side, n = 0..3)
+        // GCR - set general-purpose interrupt request n (sender side, n = 0..3)
         pub const fn gcr_gir(n: u8) -> u32 {
             1 << n
         }
-        // GSR — general-purpose interrupt pending n (receiver side, W1C, n = 0..3)
+        // GSR - general-purpose interrupt pending n (receiver side, W1C, n = 0..3)
         pub const fn gsr_gip(n: u8) -> u32 {
             1 << n
         }
@@ -241,15 +241,15 @@ pub mod mub {
         pub const MU_RSTH: u32 = 1 << 4;
         pub const MU_BOOT_MASK: u32 = 0x3 << 5;
 
-        // GIER — enable general-purpose interrupt n (n = 0..3)
+        // GIER - enable general-purpose interrupt n (n = 0..3)
         pub const fn gier_gie(n: u8) -> u32 {
             1 << n
         }
-        // GCR — set general-purpose interrupt request n (sender side, n = 0..3)
+        // GCR - set general-purpose interrupt request n (sender side, n = 0..3)
         pub const fn gcr_gir(n: u8) -> u32 {
             1 << n
         }
-        // GSR — general-purpose interrupt pending n (receiver side, W1C, n = 0..3)
+        // GSR - general-purpose interrupt pending n (receiver side, W1C, n = 0..3)
         pub const fn gsr_gip(n: u8) -> u32 {
             1 << n
         }

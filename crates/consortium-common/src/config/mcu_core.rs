@@ -29,6 +29,7 @@ pub enum CortexMcuCore {
 }
 
 impl CortexMcuCore {
+    /// Parses a dash-separated core name string (e.g., `"cortex-m33"`) into a variant.
     pub fn as_key(s: &str) -> Option<Self> {
         match s {
             "cortex-m0p" => Some(Self::CortexM0p),
@@ -40,6 +41,7 @@ impl CortexMcuCore {
         }
     }
 
+    /// Returns the short abbreviation for this core (e.g., `"cm33"`).
     pub fn abbr(&self) -> &'static str {
         match self {
             Self::CortexM0p => "cm0p",
@@ -50,6 +52,7 @@ impl CortexMcuCore {
         }
     }
 
+    /// Parses a short abbreviation (e.g., `"cm33"`) into a variant.
     pub fn from_abbr(s: &str) -> Option<Self> {
         match s {
             "cm0p" => Some(Self::CortexM0p),
@@ -61,6 +64,7 @@ impl CortexMcuCore {
         }
     }
 
+    /// Returns the Rust target triple for cross-compiling to this core.
     pub fn to_rust_target(&self) -> &'static str {
         match self {
             Self::CortexM0p => "thumbv6m-none-eabi",

@@ -101,7 +101,7 @@ impl UioDevice {
         let region_base = uio.map_resource(0)? as *mut u8;
 
         // SAFETY: region_base is valid for the lifetime of `uio`; descriptor
-        // must already be in Ready state — call mmap::wait_for_ready first.
+        // must already be in Ready state - call mmap::wait_for_ready first.
         let descriptor = unsafe { descriptor_ack(region_base, num_channels, transfer_size) }?;
 
         let irq_notify = Arc::new(Notify::new());

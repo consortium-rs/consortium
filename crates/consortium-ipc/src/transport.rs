@@ -18,9 +18,9 @@
 use crate::future::MaybeSend;
 
 /// Moves raw bytes between cores over a specific medium.
-/// Knows nothing about message types — that's Channel's job.
+/// Knows nothing about message types - that's Channel's job.
 ///
-/// Owns a Doorbell internally — callers never ring/wait directly.
+/// Owns a Doorbell internally - callers never ring/wait directly.
 /// The Transport decides when to notify and when to wait.
 pub trait Transport {
     type Error;

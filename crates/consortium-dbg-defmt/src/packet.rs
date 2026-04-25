@@ -25,6 +25,10 @@ impl Packet {
         }
     }
 
+    /// Reads a `Packet` header from `ptr`, returning `None` if the magic does not match.
+    ///
+    /// # Safety
+    /// `ptr` must be valid for at least `PACKET_HEADER_SIZE` bytes.
     pub unsafe fn try_from_raw_ptr(ptr: *const u8) -> Option<Self> {
         let magic = unsafe { rv_u16(ptr, 0) };
         if magic != MAGIC {
@@ -35,6 +39,10 @@ impl Packet {
         Some(Self { magic, flag, len })
     }
 
+    /// Copies the packet payload from `base` into `payload`.
+    ///
+    /// # Safety
+    /// `base` must be valid for at least `self.len` bytes past `PACKET_HEADER_SIZE`.
     pub unsafe fn read_payload(&mut self, base: *mut u8, payload: &mut [u8]) {
         unsafe {
             std::ptr::copy_nonoverlapping(
@@ -45,6 +53,10 @@ impl Packet {
         }
     }
 
+    /// Writes this packet header to `ptr`.
+    ///
+    /// # Safety
+    /// `ptr` must be valid for at least `PACKET_HEADER_SIZE` bytes.
     pub unsafe fn write_to_raw_ptr(&self, ptr: *mut u8) {
         unsafe {
             wv_u16(ptr, 0, self.magic);
@@ -53,12 +65,20 @@ impl Packet {
         }
     }
 
+    /// Writes `payload` into the buffer at `ptr + 4`.
+    ///
+    /// # Safety
+    /// `ptr` must be valid for at least `4 + self.len` bytes.
     pub unsafe fn write_payload_to_raw_ptr(&self, ptr: *mut u8, payload: &[u8]) {
         unsafe {
             std::ptr::copy_nonoverlapping(payload.as_ptr(), ptr.add(4), self.len as usize);
         }
     }
 
+    /// Writes a complete packet (header + payload) to `ptr` in one call.
+    ///
+    /// # Safety
+    /// `ptr` must be valid for at least `PACKET_HEADER_SIZE + payload.len()` bytes.
     pub unsafe fn write_full_packet_to_raw_ptr(ptr: *mut u8, payload: &[u8]) {
         let packet = Self::new(payload.len() as u8);
         unsafe {
@@ -67,6 +87,11 @@ impl Packet {
         }
     }
 
+    /// Sets the `FLAG_CONSUMED` bit in the on-disk flag byte at `ptr`.
+    ///
+    /// # Safety
+    /// `ptr` must point to the start of this packet in shared memory, valid for
+    /// at least `PACKET_HEADER_SIZE` bytes.
     pub unsafe fn mark_as_consumed(&mut self, ptr: *mut u8) {
         self.flag |= FLAG_CONSUMED;
         unsafe {
@@ -74,6 +99,7 @@ impl Packet {
         }
     }
 
+    /// Returns `true` if the packet has the correct magic, is flagged valid, and has not been consumed.
     pub fn is_valid(&self) -> bool {
         self.magic == MAGIC && (self.flag & FLAG_VALID != 0) && (self.flag & FLAG_CONSUMED == 0)
     }

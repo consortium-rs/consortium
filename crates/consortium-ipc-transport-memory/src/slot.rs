@@ -17,9 +17,9 @@
 //! Single-slot buffer layout within the DMA-coherent region.
 //!
 //! ```text
-//! [0..4]        len     : u32   — valid payload bytes
-//! [4..8]        flags   : u32   — FLAG_VALID | FLAG_CONSUMED | FLAG_INTEGRITY_ERROR
-//! [8..12]       crc32   : u32   — integrity check
+//! [0..4]        len     : u32   - valid payload bytes
+//! [4..8]        flags   : u32   - FLAG_VALID | FLAG_CONSUMED | FLAG_INTEGRITY_ERROR
+//! [8..12]       crc32   : u32   - integrity check
 //! [12..12+mtu]  payload : [u8]
 //! ```
 //!

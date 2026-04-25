@@ -20,7 +20,7 @@ use tokio::process::Command;
 
 /// Strips ST SDK path entries from PATH using OECORE_NATIVE_SYSROOT as the
 /// anchor. All ST-injected entries are subdirectories of the native sysroot,
-/// so this is precise — upstream rustup/cargo/rustc remain reachable.
+/// so this is precise - upstream rustup/cargo/rustc remain reachable.
 pub fn clean_path(native_sysroot: &str) -> String {
     let path = std::env::var("PATH").unwrap_or_default();
 
@@ -128,6 +128,7 @@ pub async fn verify_elf(path: &PathBuf) -> Result<(), String> {
     Ok(())
 }
 
+/// Resolves the cargo binary path, preferring `CONSORTIUM_CARGO` env var over `rustup which`.
 pub async fn resolve_cargo() -> Result<String, String> {
     match std::env::var("CONSORTIUM_CARGO") {
         Ok(v) => Ok(v),
@@ -135,6 +136,7 @@ pub async fn resolve_cargo() -> Result<String, String> {
     }
 }
 
+/// Resolves the rustc binary path, preferring `CONSORTIUM_RUSTC` env var over `rustup which`.
 pub async fn resolve_rustc() -> Result<String, String> {
     match std::env::var("CONSORTIUM_RUSTC") {
         Ok(v) => Ok(v),
