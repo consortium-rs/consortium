@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use super::descriptor::{DescState, MAGIC};
+use super::descriptor::DescState;
 use consortium_common::descriptor::DescriptorHeaderError;
 use consortium_ipc::Doorbell;
 #[cfg(all(feature = "std", target_os = "linux"))]
