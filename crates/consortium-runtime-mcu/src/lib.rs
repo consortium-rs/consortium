@@ -32,9 +32,9 @@ pub use consortium_ipc_transport_memory;
 ///
 /// # Arguments
 ///
-/// * `region_base` — pointer to the start of the shared memory region
-/// * `slot_idx` — zero-indexed slot pair (0, 1, 2, ...)
-/// * `slot_size` — size of each slot (including 8-byte header): `8 + MTU`
+/// * `region_base` - pointer to the start of the shared memory region
+/// * `slot_idx` - zero-indexed slot pair (0, 1, 2, ...)
+/// * `slot_size` - size of each slot (including 8-byte header): `8 + MTU`
 ///
 /// # Returns
 ///

@@ -62,7 +62,7 @@ use crate::registers::MU_BASES;
 /// | Aspect              | HSEM                              | MU (GI)                                  |
 /// |---------------------|-----------------------------------|------------------------------------------|
 /// | Signal mechanism    | 1-step read-lock on semaphore reg | Set `GCR[GIRn]` (idempotent flag)        |
-/// | `ring()` guard      | LOCKID ownership (MASTERID)       | None — GCR set is always valid           |
+/// | `ring()` guard      | LOCKID ownership (MASTERID)       | None - GCR set is always valid           |
 /// | Interrupt clear     | Dedicated ICR (write-1-to-clear)  | Write 1 to `GSR[GIPn]` (W1C)            |
 /// | Interrupt enable    | IER bit per semaphore             | `GIER[GIEn]` bit per channel             |
 /// | Interrupt status    | MISR (masked)                     | `GSR[GIPn]` (non-destructive read)       |
@@ -111,7 +111,7 @@ impl MuDoorbell {
     ///
     /// This sets `GSR[GIPn]` on the remote side and fires their GI interrupt
     /// if `GIER[GIEn]` is enabled. Setting the bit again while already pending
-    /// is idempotent — the remote will see one pending signal.
+    /// is idempotent - the remote will see one pending signal.
     ///
     /// # Safety
     /// Caller must ensure `base` is a valid mapped MU peripheral address and
@@ -123,7 +123,7 @@ impl MuDoorbell {
         unsafe { gcr.write_volatile(gcr.read_volatile() | (1 << gi_idx)) };
     }
 
-    /// Returns `true` if `GSR[GIPn]` (bit `gi_idx`) is set — the remote core
+    /// Returns `true` if `GSR[GIPn]` (bit `gi_idx`) is set - the remote core
     /// has signaled this channel and the interrupt is pending.
     ///
     /// Non-destructive: reading GSR does not clear the pending bit.
@@ -136,7 +136,7 @@ impl MuDoorbell {
     /// Clear `GSR[GIPn]` (bit `gi_idx`) by writing 1 (write-1-to-clear).
     ///
     /// Also clears `GCR[GIRn]` on the sender side. Only the target bit is
-    /// written — other pending GI channels are unaffected.
+    /// written - other pending GI channels are unaffected.
     ///
     /// # Safety
     /// Caller must ensure `base` is valid, `gi_idx` < 4, and `GSR[GIPn]` is
@@ -150,7 +150,7 @@ impl MuDoorbell {
         unsafe { Self::gsr_addr(base).write_volatile(1 << gi_idx) };
     }
 
-    /// Enable `GIER[GIEn]` (bit `gi_idx`) — arm the GI interrupt for this channel.
+    /// Enable `GIER[GIEn]` (bit `gi_idx`) - arm the GI interrupt for this channel.
     ///
     /// # Safety
     /// Caller must ensure `base` is valid and not racing other GIER writes.
@@ -207,7 +207,7 @@ impl Doorbell for MuDoorbell {
     ///
     /// The hardware propagates this to `GSR[GIPn]` on the remote side and
     /// fires their GI interrupt if `GIER[GIEn]` is enabled.  Setting the bit
-    /// while the previous signal is still pending is idempotent — the remote
+    /// while the previous signal is still pending is idempotent - the remote
     /// will see one pending signal regardless.
     fn ring(&self, ch: Chan) -> Result<(), MuError> {
         if ch.id() >= MU_CHAN_COUNT {
@@ -328,7 +328,7 @@ fn waker_for(mu_id: u8) -> &'static atomic_waker::AtomicWaker {
 static MU_WAKERS: [atomic_waker::AtomicWaker; MU_INSTANCE_COUNT] =
     [const { atomic_waker::AtomicWaker::new() }; MU_INSTANCE_COUNT];
 
-// IRQ handlers — one per MU instance, chip-gated.
+// IRQ handlers - one per MU instance, chip-gated.
 //
 // Each handler wakes the futures waiting on that instance's GI interrupt.
 // Register these in your interrupt vector table.

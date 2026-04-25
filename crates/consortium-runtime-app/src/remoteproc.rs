@@ -108,41 +108,48 @@ impl Display for RemoteProcCoredump {
 }
 
 impl RemoteProc {
+    /// Constructs a `RemoteProc` handle for the given zero-based remoteproc index.
     pub fn new(index: usize) -> Self {
         let path = PathBuf::from(format!("/sys/class/remoteproc/remoteproc{}", index));
         Self { path }
     }
 
+    /// Reads the current state of the remote processor from sysfs.
     pub fn state(&self) -> Result<RemoteProcState> {
         let state_path = self.path.join("state");
         let state_str = std::fs::read_to_string(state_path)?.trim().to_string();
         Ok(RemoteProcState::from(state_str))
     }
 
+    /// Starts the remote processor by writing `"start"` to the sysfs state file.
     pub fn start(&self) -> Result<()> {
         let state_path = self.path.join("state");
         std::fs::write(state_path, "start")?;
         Ok(())
     }
 
+    /// Stops the remote processor by writing `"stop"` to the sysfs state file.
     pub fn stop(&self) -> Result<()> {
         let state_path = self.path.join("state");
         std::fs::write(state_path, "stop")?;
         Ok(())
     }
 
+    /// Sets the firmware image name for this remote processor via sysfs.
     pub fn set_firmware(&self, firmware: &str) -> Result<()> {
         let firmware_path = self.path.join("firmware");
         std::fs::write(firmware_path, firmware)?;
         Ok(())
     }
 
+    /// Sets the coredump mode for this remote processor via sysfs.
     pub fn set_coredump(&self, coredump: RemoteProcCoredump) -> Result<()> {
         let coredump_path = self.path.join("coredump");
         std::fs::write(coredump_path, coredump.to_string())?;
         Ok(())
     }
 
+    /// Enables or disables automatic recovery for this remote processor via sysfs.
     pub fn set_recovery(&self, recovery: bool) -> Result<()> {
         let recovery_path = self.path.join("recovery");
         std::fs::write(recovery_path, if recovery { "enabled" } else { "disabled" })?;
@@ -155,8 +162,8 @@ impl RemoteProc {
     ///
     /// # Arguments
     ///
-    /// * `target` — the desired state
-    /// * `timeout` — maximum time to wait
+    /// * `target` - the desired state
+    /// * `timeout` - maximum time to wait
     ///
     /// # Errors
     ///

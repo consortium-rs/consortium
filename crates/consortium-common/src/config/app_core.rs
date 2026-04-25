@@ -30,6 +30,7 @@ pub enum CortexAppCore {
 }
 
 impl CortexAppCore {
+    /// Parses a dash-separated core name string (e.g., `"cortex-a7"`) into a variant.
     pub fn as_key(s: &str) -> Option<Self> {
         match s {
             "cortex-a7" => Some(Self::CortexA7),
@@ -42,6 +43,7 @@ impl CortexAppCore {
         }
     }
 
+    /// Returns the short abbreviation for this core (e.g., `"ca7"`).
     pub fn abbr(&self) -> &'static str {
         match self {
             Self::CortexA7 => "ca7",
@@ -53,6 +55,7 @@ impl CortexAppCore {
         }
     }
 
+    /// Parses a short abbreviation (e.g., `"ca7"`) into a variant.
     pub fn from_abbr(s: &str) -> Option<Self> {
         match s {
             "ca7" => Some(Self::CortexA7),
@@ -65,6 +68,7 @@ impl CortexAppCore {
         }
     }
 
+    /// Returns the Rust target triple for cross-compiling to this core.
     pub fn to_rust_target(&self) -> &'static str {
         match self {
             // ARMv7-A (32-bit)

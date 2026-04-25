@@ -107,7 +107,7 @@ impl<P: OutputPin> Doorbell for GpioDoorbell<P> {
         Self: 'a;
 
     fn ring(&self, _ch: Chan) -> Result<(), Self::Error> {
-        // Channel argument ignored — single-channel GPIO.
+        // Channel argument ignored - single-channel GPIO.
         // Pulse: set_high then set_low to generate a rising-edge interrupt.
         compiler_fence(Ordering::Release);
 
@@ -222,7 +222,7 @@ impl<P: OutputPin + Send> Doorbell for GpioDoorbell<P> {
         Self: 'a;
 
     fn ring(&self, _ch: Chan) -> Result<(), Self::Error> {
-        // Channel argument ignored — single-channel GPIO.
+        // Channel argument ignored - single-channel GPIO.
         compiler_fence(Ordering::Release);
 
         let mut pin = self.pin.lock().unwrap();

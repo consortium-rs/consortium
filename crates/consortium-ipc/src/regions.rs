@@ -75,10 +75,10 @@ impl Region for SramRegion {
         self.len
     }
 
-    /// Noop — SRAM is cache-coherent.
+    /// Noop - SRAM is cache-coherent.
     fn flush(&self) {}
 
-    /// Noop — SRAM is cache-coherent.
+    /// Noop - SRAM is cache-coherent.
     fn invalidate(&self) {}
 
     fn is_coherent(&self) -> bool {
@@ -107,9 +107,9 @@ pub struct DdrRegion {
     len: usize,
 }
 
-// SAFETY: same as SramRegion — caller manages aliasing.
+// SAFETY: same as SramRegion - caller manages aliasing.
 unsafe impl Send for DdrRegion {}
-// SAFETY: same as SramRegion — caller manages aliasing.
+// SAFETY: same as SramRegion - caller manages aliasing.
 unsafe impl Sync for DdrRegion {}
 
 impl DdrRegion {
@@ -188,7 +188,7 @@ impl Region for DdrRegion {
 /// writes the peripheral registers directly.  `SerialRegion` satisfies the
 /// [`Region`] contract by:
 ///
-/// * returning a null pointer from [`as_ptr`] — callers **must not**
+/// * returning a null pointer from [`as_ptr`] - callers **must not**
 ///   dereference it;
 /// * reporting `max_frame` as [`len`], which the `Transport` implementation
 ///   uses to size its internal frame buffer;
@@ -225,10 +225,10 @@ impl Region for SerialRegion {
         self.max_frame
     }
 
-    /// Noop — no backing memory.
+    /// Noop - no backing memory.
     fn flush(&self) {}
 
-    /// Noop — no backing memory.
+    /// Noop - no backing memory.
     fn invalidate(&self) {}
 
     fn is_coherent(&self) -> bool {

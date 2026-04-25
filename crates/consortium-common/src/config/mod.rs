@@ -104,6 +104,7 @@ pub struct Config {
 }
 
 impl Config {
+    /// Validates that every firmware entry names a real-time core that exists on the configured chip.
     pub fn validate_rt_cores(&self) -> Result<(), String> {
         for (name, _) in self.project.firmware.iter() {
             if !self.general.chip.has_rt_core_name(name) {

@@ -206,13 +206,13 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Future for RecvFut
 
         transport.region.flush();
 
-        // Step 4. No message in the slot — poll the doorbell to wait for a notification.
+        // Step 4. No message in the slot - poll the doorbell to wait for a notification.
         let mut wait_fut = transport.doorbell.wait(transport.ch);
 
         // SAFETY: `wait_fut` is a local variable and we only pin it for the duration of this poll call, so it will not be moved after pinning.
         match unsafe { core::pin::Pin::new_unchecked(&mut wait_fut) }.poll(cx) {
             core::task::Poll::Ready(_) => {
-                // Doorbell already fired before we polled — schedule ourselves for an immediate re-poll to read the slot.
+                // Doorbell already fired before we polled - schedule ourselves for an immediate re-poll to read the slot.
                 cx.waker().wake_by_ref();
             }
             core::task::Poll::Pending => {}

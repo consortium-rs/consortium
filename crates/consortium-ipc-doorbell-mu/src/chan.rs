@@ -85,16 +85,16 @@ impl ChanValidate for MuChanValidate {
 /// its general-purpose interrupt index.
 ///
 /// Channels are laid out as 4 consecutive IDs per MU instance:
-/// - channels `[0, 4)` → MU1 (index 0), GI channels 0–3
-/// - channels `[4, 8)` → MU2 (index 1), GI channels 0–3
+/// - channels `[0, 4)` -> MU1 (index 0), GI channels 0-3
+/// - channels `[4, 8)` -> MU2 (index 1), GI channels 0-3
 /// - ...
-/// - channels `[4*(N-1), 4*N)` → MU_N (index N-1), GI channels 0–3
+/// - channels `[4*(N-1), 4*N)` -> MU_N (index N-1), GI channels 0-3
 ///
 /// [`Chan`]: consortium_ipc::Chan
 pub trait MuChanInfo {
     /// Zero-based MU instance index (0 = MU1, 1 = MU2, …).
     fn mu_id(&self) -> u8;
-    /// General-purpose interrupt index within the MU instance (0–3).
+    /// General-purpose interrupt index within the MU instance (0-3).
     fn gi_id(&self) -> u8;
 }
 

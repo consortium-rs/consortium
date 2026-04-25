@@ -18,7 +18,7 @@
 use crate::{chan::Chan, future::MaybeSend};
 
 /// Notifies the remote core that something has happened.
-/// Carries no data — pure signaling primitive.
+/// Carries no data - pure signaling primitive.
 ///
 /// The meaning of Chan:
 ///   HSEM:   semaphore gate ID (0..=31)
@@ -32,16 +32,16 @@ pub trait Doorbell {
         Self: 'a;
 
     /// Signal the remote core on the given channel.
-    /// Sync — notification dispatch must never need to await.
+    /// Sync - notification dispatch must never need to await.
     fn ring(&self, ch: Chan) -> Result<(), Self::Error>;
 
     /// Await a signal from the remote core.
-    /// Returns which channel fired — relevant when one
+    /// Returns which channel fired - relevant when one
     /// Doorbell covers multiple channels (e.g. MU has 4).
     fn wait<'a>(&'a self, ch: Chan) -> Self::WaitFut<'a>
     where
         Self: 'a;
 
-    /// Non-blocking check — has a signal arrived?
+    /// Non-blocking check - has a signal arrived?
     fn pending(&self, ch: Chan) -> bool;
 }

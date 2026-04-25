@@ -57,7 +57,7 @@ impl CrossCompiler {
     /// 3. i.MX Yocto pattern (`aarch64-poky-linux-gcc`)
     /// 4. `None` → generic Rust linker (warning emitted at build time)
     fn detect() -> Self {
-        // 1. Explicit CC/CXX — honour whatever the user or SDK set
+        // 1. Explicit CC/CXX: honour whatever the user or SDK set
         if let Ok(cc) = std::env::var("CC") {
             let cxx = std::env::var("CXX").unwrap_or_else(|_| cc.clone());
             return CrossCompiler {
@@ -88,7 +88,7 @@ impl CrossCompiler {
             };
         }
 
-        // 4. Nothing found — generic fallback with warning
+        // 4. Nothing found - generic fallback with warning
         CrossCompiler {
             cc: None,
             cxx: None,
@@ -179,7 +179,7 @@ impl SdkEnv {
 /// # Environment variables (in priority order)
 ///
 /// Cross-compiler detection:
-///   `CC` / `CXX` — explicit cross-compiler (any Yocto flavor)
+///   `CC` / `CXX`: explicit cross-compiler (any Yocto flavor)
 ///   Auto-detected: `aarch64-ostl-linux-gcc` (STM32MP2) or `aarch64-poky-linux-gcc` (i.MX Yocto)
 ///   Fallback: generic Rust linker (emits a warning)
 ///
@@ -190,7 +190,7 @@ impl SdkEnv {
 ///   `CONSORTIUM_RUSTC`, `CONSORTIUM_CARGO`
 ///
 /// Extra flags:
-///   `OSTL_SDK_EXTRA_FLAGS` — appended verbatim to RUSTFLAGS
+///   `OSTL_SDK_EXTRA_FLAGS`: appended verbatim to RUSTFLAGS
 #[derive(Clone)]
 pub struct ApplicationConfiguration {
     /// Path to the Cargo project root.
@@ -296,7 +296,7 @@ impl Compiler for ApplicationCompiler {
 /// Backward-compatible builder; delegates to [`ApplicationCompiler`].
 ///
 /// Cross-compiler detection and environment handling is identical to
-/// [`ApplicationCompiler`] — see [`ApplicationConfiguration`] for env var docs.
+/// [`ApplicationCompiler`]. See [`ApplicationConfiguration`] for env var docs.
 pub struct ApplicationBuilder {
     /// Path to the Cargo project root.
     pub path: PathBuf,
@@ -305,6 +305,7 @@ pub struct ApplicationBuilder {
 }
 
 impl ApplicationBuilder {
+    /// Builds the Linux application, returning the path to the output ELF.
     pub async fn build(&self) -> Result<PathBuf, String> {
         ApplicationCompiler::build(ApplicationConfiguration {
             path: self.path.clone(),
@@ -315,6 +316,7 @@ impl ApplicationBuilder {
         .map_err(|e| e.to_string())
     }
 
+    /// Returns the expected output ELF path without building.
     pub async fn elf_path(&self) -> Result<PathBuf, String> {
         ApplicationCompiler::output_path(&ApplicationConfiguration {
             path: self.path.clone(),
