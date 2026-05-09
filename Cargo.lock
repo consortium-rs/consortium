@@ -171,6 +171,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-codec-proc-macros"
+version = "0.1.0"
+dependencies = [
+ "heck",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "consortium-codec-prost"
 version = "0.1.0"
 dependencies = [
