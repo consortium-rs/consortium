@@ -38,6 +38,7 @@ members = [
   "crates/consortium-rpi-meta",
   "crates/consortium-ipc-transport-memory",
   "crates/consortium-dbg-defmt",
+  "crates/consortium-codec-proc-macros",
 ]
 resolver = "2"
 

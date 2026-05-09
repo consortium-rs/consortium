@@ -94,7 +94,11 @@ pub struct UioDevice {
 impl UioDevice {
     /// Open `/dev/uio{uio_num}`, mmap resource 0, parse the descriptor, and
     /// start the IRQ listener task.
-    pub fn open(uio_num: usize, num_channels: usize, transfer_size: usize) -> Result<Self, UioDeviceError> {
+    pub fn open(
+        uio_num: usize,
+        num_channels: usize,
+        transfer_size: usize,
+    ) -> Result<Self, UioDeviceError> {
         let uio = uio::UioDevice::blocking_new(uio_num)?;
 
         // map_resource reads the mapping size from sysfs and mmaps resource 0.
@@ -115,7 +119,11 @@ impl UioDevice {
         tokio::spawn(async move { irq_loop(async_fd, notify).await });
 
         Ok(Self {
-            inner: Arc::new(Inner { region_base, descriptor, irq_notify }),
+            inner: Arc::new(Inner {
+                region_base,
+                descriptor,
+                irq_notify,
+            }),
             _uio: uio,
         })
     }
@@ -173,14 +181,7 @@ impl UioDevice {
 
         // SAFETY: slot pointers and sizes come from the validated descriptor;
         // this UioDevice exclusively owns the mmap.
-        Ok(unsafe {
-            SharedMemoryTransport::new(
-                chan,
-                doorbell,
-                region,
-                base
-            )
-        })
+        Ok(unsafe { SharedMemoryTransport::new(chan, doorbell, region, base) })
     }
 }
 
