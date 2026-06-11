@@ -58,7 +58,7 @@ Developers write a single Rust function and the `#[tee_command]` macro generates
 
 ```rust
 // my-ta/src/lib.rs
-use consortium_tee_proc_macros::{tee_command, tee_service};
+use consortium_tee_macros::{tee_command, tee_service};
 
 // Define context (shared state)
 pub struct TaContext {
@@ -260,7 +260,7 @@ crate-type = ["cdylib"]
 [dependencies]
 optee_utee = "0.4"
 consortium-tee = { path = "../../consortium-tee" }
-consortium-tee-proc-macros = { path = "../../consortium-tee-proc-macros" }
+consortium-tee-macros = { path = "../../consortium-tee-macros" }
 consortium-common = { path = "../../consortium-common" }
 
 # Optional: add only if using TeeParam types

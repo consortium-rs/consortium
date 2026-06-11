@@ -28,7 +28,7 @@ default = ["ca"]
 
 [dependencies]
 thiserror = "2.0.18"
-consortium-tee-proc-macros = { path = "../consortium-tee-proc-macros" }
+consortium-tee-macros = { path = "../consortium-tee-macros" }
 tokio = { version = "1", default-features = false, optional = true, features = [
   "rt",
 ] }

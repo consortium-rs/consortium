@@ -25,7 +25,8 @@ members = [
   "crates/consortium-builder",
   "crates/consortium-common",
   "crates/consortium-tee",
-  "crates/consortium-tee-proc-macros",
+  "crates/consortium-tee-macros",
+  "crates/consortium-tee-macros-impl",
   "crates/consortium-ffi",
   "crates/consortium-hmi",
   "crates/consortium-ort",
@@ -35,7 +36,8 @@ members = [
   "crates/consortium-rpi-meta",
   "crates/consortium-ipc-transport-memory",
   "crates/consortium-dbg-defmt",
-  "crates/consortium-ipc-proc-macros",
+  "crates/consortium-ipc-macros",
+  "crates/consortium-ipc-macros-impl",
 ]
 resolver = "2"
 

@@ -47,7 +47,7 @@ What remains is **hardware-specific glue** and the **application runtime layer**
 - Compact binary, `no_std` compatible
 - GAT-based `Decoded<'buf, T>` for zero-copy future support
 
-### TEE Support (`consortium-tee` + `consortium-tee-proc-macros`)
+### TEE Support (`consortium-tee` + `consortium-tee-macros`)
 - **Error types:** `TeeError`, `TeeErrorOrigin`, `TeeResult` with `is_transient()`
 - **`tee_service!` macro:** Generates `Command` enum + dispatcher
 - **`#[tee_command]` macro:** Advanced type support including:
@@ -231,7 +231,7 @@ No current test harness for:
 | `consortium-builder` | 🟡 Build system | Minimal (requires cross-compilation helpers) |
 | `consortium-common` | ✅ Configuration | Config, Chip, CortexMcuCore types |
 | `consortium-tee` | ✅ TEE support | TeeError, TeeResult types |
-| `consortium-tee-proc-macros` | ✅ TEE macros | tee_service!, #[tee_command] with advanced types |
+| `consortium-tee-macros` | ✅ TEE macros | tee_service!, #[tee_command] with advanced types |
 | `consortium-cli` | ❌ Debug tool | Stub (requires IPC monitoring) |
 | `consortium-hmi` | ❌ HMI library | Stub (web-based GUI integration) |
 | `consortium-ffi` | ❌ FFI bindings | Stub (cross-language interop) |
@@ -265,7 +265,7 @@ Application (user code)
 | `consortium-ipc` | ✅ Trait tests | Basic contract verification |
 | `consortium-ipc-mem` | ✅ Transport tests | Slot protocol, doorbell mocking |
 | `consortium-ipc-uio` | ✅ Descriptor parsing | Linux-only; no real UIO device tests |
-| `consortium-tee-proc-macros` | ✅ Macro expansion | Compile-time correctness |
+| `consortium-tee-macros` | ✅ Macro expansion | Compile-time correctness |
 | `consortium-ipc-doorbell-hsem` | ✅ HSEM tests | Register access, async wakeup, channel validation |
 | `consortium-ipc-doorbell-mu` | ✅ Builds (no std + std) | Compiles on both no_std and std paths; ready for hardware tests |
 | Runtime (M-core) | ❌ None | Not implemented |
