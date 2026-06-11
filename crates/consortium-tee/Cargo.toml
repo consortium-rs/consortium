@@ -29,9 +29,7 @@ default = ["ca"]
 [dependencies]
 thiserror = "2.0.18"
 consortium-tee-macros = { path = "../consortium-tee-macros" }
-tokio = { version = "1", default-features = false, optional = true, features = [
-  "rt",
-] }
+tokio = { version = "1", default-features = false, optional = true, features = ["rt"] }
 
 [dev-dependencies]
 consortium-common = { path = "../consortium-common" }

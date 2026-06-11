@@ -1,6 +1,12 @@
-# AGENTS.md
+# AGENTS.md — AI Assistant Guide for Consortium
 
-This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
+Consortium is a framework for heterogeneous and asymmetric multiprocessing unit development, which compoese of following features:
+- `ipc`: inter-processor communication
+- `tee`: trusted execution environment via OP-TEE
+- `hmi`: human-machine interface under WPE WebKit
+- `dbg`: debug interface
+- `cfg`: configuration infrastructure including resource partition isolation
+- `
 
 ## Commands
 
@@ -33,7 +39,7 @@ A `justfile` is available with cross-compilation recipes for A-core (aarch64/arm
 
 ## Architecture
 
-This is a Rust workspace providing an async abstraction for inter-processor communication on Heterogeneous Multi-Processing (HMP) SoCs, primarily targeting the STM32MP2 (Cortex-A + Cortex-M) and i.MX 95 (Cortex-A + Cortex-M).
+This is a Rust workspace providing an async abstraction for inter-processor communication on Heterogeneous Multi-Processing (HMP) SoCs, primarily targeting the STM32MP25 (Cortex-A + Cortex-M) and i.MX 95 (Cortex-A + Cortex-M).
 
 ### Crate Organization Reference
 
@@ -57,11 +63,6 @@ This is a Rust workspace providing an async abstraction for inter-processor comm
 - **`consortium-ipc-doorbell-hsem`** — Hardware Semaphore doorbell for STM32MP2/STM32MP25 (both no_std and std).
 - **`consortium-ipc-doorbell-mu`** — Message Unit doorbell for i.MX 9x series (both no_std and std).
 - **`consortium-ipc-doorbell-gpio`** — GPIO-based doorbell via `embedded-hal` 1.0 (Linux-only, in progress).
-
-**Codecs:**
-- **`consortium-codec-postcard`** — Default compact binary codec (no_std-compatible).
-- **`consortium-codec-prost`** — Protocol Buffers for cross-language messaging.
-- **`consortium-codec-rkyv`** — Zero-copy deserialization for performance-critical paths.
 
 **Config & Build:**
 - **`consortium-common`** — Shared `Config` types, `Chip` enum, chip-to-core mappings, and `DescriptorHeader` (magic + version) used by all shared-memory descriptors.

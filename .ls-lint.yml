@@ -1,0 +1,45 @@
+ls:
+  board:
+    .dtso: kebab-case
+
+  crates:
+    .dir: kebab-case
+    .toml: PascalCase
+
+  crates/*/src:
+    .dir: snake_case
+    .rs: snake_case
+
+  crates/*/tests:
+    .dir: snake_case
+    .rs: snake_case
+    .snap: snake_case
+    .stderr: snake_case
+
+  docs/src:
+    .dir: kebab-case
+    .md: kebab-case | snake_case | SCREAMING_SNAKE_CASE
+
+  scripts:
+    .dir: snake_case
+    .lock: snake_case
+    .md: SCREAMING_SNAKE_CASE
+    .py: snake_case
+    .toml: snake_case
+
+  sim:
+    .dir: kebab-case
+    .md: SCREAMING_SNAKE_CASE
+    .elf: snake_case
+    .cs: snake_case
+    .repl: snake_case
+    .resc: snake_case
+
+ignore:
+  - .claude
+  - .git
+  - .idea
+  - .vscode
+  - data
+  - dialogs
+  - target

@@ -166,6 +166,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-cfg"
+version = "0.1.0"
+dependencies = [
+ "consortium-common",
+ "embedded-hal 1.0.0",
+ "thiserror",
+]
+
+[[package]]
+name = "consortium-cfg-meta"
+version = "0.1.0"
+
+[[package]]
 name = "consortium-cli"
 version = "0.1.0"
 dependencies = [
@@ -237,6 +250,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-ipc-doorbell-ipcc"
+version = "0.1.0"
+
+[[package]]
 name = "consortium-ipc-doorbell-mu"
 version = "0.1.0"
 dependencies = [
@@ -282,19 +299,6 @@ version = "0.1.0"
 dependencies = [
  "ort",
 ]
-
-[[package]]
-name = "consortium-rpi"
-version = "0.1.0"
-dependencies = [
- "consortium-common",
- "embedded-hal 1.0.0",
- "thiserror",
-]
-
-[[package]]
-name = "consortium-rpi-meta"
-version = "0.1.0"
 
 [[package]]
 name = "consortium-runtime-app"

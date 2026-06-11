@@ -15,17 +15,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-rpi"
-description = "RPI (Resource Partition Isolation) subsystem support for the Consortium project."
+name = "consortium-cfg"
+description = "Configuration subsystem support for the Consortium project."
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 
 [dependencies]
-consortium-common = { path = "../consortium-common", features = [
-  "serde",
-  "std",
-] }
+consortium-common = { path = "../consortium-common", features = ["serde", "std"] }
 embedded-hal.workspace = true
 thiserror = "2.0.18"
 

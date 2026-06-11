@@ -32,9 +32,29 @@ test-fn crate test_name:
 clippy:
     cargo clippy
 
+# Run all host-side linters
+lint: clippy taplo-check typos ls-lint
+
 # Format code
 fmt:
     cargo fmt
+
+# Format TOML files
+taplo-fmt:
+    taplo format
+
+# Check TOML formatting and validity
+taplo-check:
+    taplo format --check
+    taplo lint
+
+# Check spelling
+typos:
+    typos
+
+# Check file and directory names
+ls-lint:
+    npx --yes @ls-lint/ls-lint@2.3.1
 
 # ── Host (dev / CI) ──────────────────────────────────────────────────────────
 
