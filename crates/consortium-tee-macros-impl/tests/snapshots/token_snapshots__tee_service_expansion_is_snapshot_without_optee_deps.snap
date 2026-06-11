@@ -1,0 +1,39 @@
+---
+source: crates/consortium-tee-macros-impl/tests/token_snapshots.rs
+assertion_line: 16
+expression: pretty_snapshot(expanded)
+---
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+#[repr(u64)]
+pub enum Command {
+    Ping = 0,
+    EchoBytes = 1,
+    #[default]
+    Unknown = 2,
+}
+impl From<u32> for Command {
+    fn from(val: u32) -> Self {
+        match val {
+            0 => Command::Ping,
+            1 => Command::EchoBytes,
+            _ => Command::Unknown,
+        }
+    }
+}
+impl From<Command> for u32 {
+    fn from(cmd: Command) -> Self {
+        cmd as u32
+    }
+}
+#[cfg(feature = "ta")]
+pub fn invoke_command(
+    ctx: &mut ServiceContext,
+    cmd: u32,
+    params: &mut ::optee_utee::Parameters,
+) -> ::optee_utee::Result<()> {
+    match Command::from(cmd) {
+        Command::Ping => ping_dispatched(ctx, params),
+        Command::EchoBytes => echo_bytes_dispatched(ctx, params),
+        Command::Unknown => Err(::optee_utee::ErrorKind::BadParameters.into()),
+    }
+}

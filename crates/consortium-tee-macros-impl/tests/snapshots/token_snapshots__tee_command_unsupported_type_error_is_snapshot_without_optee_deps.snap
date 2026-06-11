@@ -1,0 +1,33 @@
+---
+source: crates/consortium-tee-macros-impl/tests/token_snapshots.rs
+assertion_line: 108
+expression: pretty_snapshot(expanded)
+---
+fn unsupported(input: (u32, u64)) -> (u32, u64) {
+    input
+}
+fn unsupported_dispatched(
+    params: &mut ::optee_utee::Parameters,
+) -> ::optee_utee::Result<()> {
+    compile_error!("Unsupported TEE parameter type");
+    let __ret_val = unsupported(input);
+    compile_error!("Unsupported TEE return type");
+    Ok(())
+}
+#[cfg(feature = "ca")]
+fn call_unsupported(
+    session: &mut ::optee_teec::Session,
+    input: (u32, u64),
+) -> ::consortium_tee::TeeResult<(u32, u64)> {
+    compile_error!("Unsupported TEE parameter type");
+    compile_error!("Unsupported TEE return type for output parameter");
+    let mut _operation = ::optee_teec::Operation::new(
+        0,
+        _p0,
+        _p1,
+        ::optee_utee::ParamNone,
+        ::optee_utee::ParamNone,
+    );
+    session.invoke_command(Command::Unsupported as u32, &mut _operation)?;
+    Ok(compile_error!("Unsupported TEE return type"))
+}
