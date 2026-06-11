@@ -44,13 +44,14 @@ pub const CAPACITY_OFFSET: usize = 0x0A;
 pub const FLAGS_OFFSET: usize = 0x0C;
 
 pub const DESCRIPTOR_SIZE: usize = core::mem::size_of::<Descriptor>();
+const DATA_START: u16 = DESCRIPTOR_SIZE as u16;
 
 impl Descriptor {
     pub const fn new(capacity: u16) -> Self {
         Self {
             header: DescriptorHeader::new(MAGIC, VERSION),
-            write_ptr: 0,
-            read_ptr: 0,
+            write_ptr: DATA_START,
+            read_ptr: DATA_START,
             capacity,
             flags: Flags::empty(),
             _reserved1: [0; 2],
@@ -111,32 +112,23 @@ impl Descriptor {
         if self.read_ptr == self.write_ptr {
             return None;
         }
-        let Some(mut frame_header) =
-            (unsafe { Packet::try_from_raw_ptr(base.add(self.read_ptr as usize)) })
-        else {
+        let packet_ptr = unsafe { base.add(self.read_ptr as usize) };
+        let Some(mut frame_header) = (unsafe { Packet::try_from_raw_ptr(packet_ptr) }) else {
             return None;
         };
-        // Find the next valid frame header, in case the current one is corrupted (e.g. due to an overflow)
-        while self.read_ptr != DESCRIPTOR_SIZE as u16 && !frame_header.is_valid() {
-            self.read_ptr = unsafe { self.next_read_ptr(base) };
-            match unsafe { Packet::try_from_raw_ptr(base.add(self.read_ptr as usize)) } {
-                Some(header) => frame_header = header,
-                None => return None,
-            }
+
+        if !frame_header.is_valid() {
+            return None;
         }
 
-        if self.read_ptr == DESCRIPTOR_SIZE as u16 {
-            None
-        } else {
-            let mut buffer = vec![0u8; frame_header.len as usize];
-            unsafe {
-                frame_header.read_payload(
-                    base.add(self.read_ptr as usize + PACKET_HEADER_SIZE),
-                    &mut buffer,
-                );
-            }
-            Some(buffer)
+        let mut buffer = vec![0u8; frame_header.len as usize];
+        unsafe {
+            frame_header.read_payload(packet_ptr, &mut buffer);
+            frame_header.mark_as_consumed(packet_ptr);
         }
+        self.read_ptr = unsafe { self.next_read_ptr(base) };
+        unsafe { wv_u16(base, READ_PTR_OFFSET, self.read_ptr) };
+        Some(buffer)
     }
 
     /// Drains all available defmt frames from the circular buffer, returning them as a `Vec`.
@@ -151,7 +143,6 @@ impl Descriptor {
         let mut frames = Vec::new();
         while let Some(frame) = unsafe { self.read_one_frame(base) } {
             frames.push(frame);
-            self.read_ptr = unsafe { self.next_read_ptr(base) };
         }
         frames
     }
@@ -165,15 +156,20 @@ impl Descriptor {
     /// `base` must point to the start of the shared-memory region owning this descriptor,
     /// valid for at least `self.capacity` bytes.
     pub unsafe fn write_one_frame(&mut self, base: *mut u8, frame: &[u8]) -> bool {
-        match unsafe { self.allocate_write_ptr(base) } {
+        match unsafe { self.allocate_write_ptr(base, frame.len()) } {
             Some(p) => {
                 unsafe { Packet::write_full_packet_to_raw_ptr(base.add(p as usize), frame) };
                 self.flags.remove(Flags::Overflow);
-                self.write_ptr = p;
+                self.write_ptr = self.advance_ptr(p, frame.len());
+                unsafe {
+                    wv_u16(base, WRITE_PTR_OFFSET, self.write_ptr);
+                    wv_u16(base, FLAGS_OFFSET, self.flags.bits());
+                }
                 true
             }
             None => {
                 self.flags.insert(Flags::Overflow);
+                unsafe { wv_u16(base, FLAGS_OFFSET, self.flags.bits()) };
                 false
             }
         }
@@ -187,43 +183,45 @@ impl Descriptor {
         let next_padding = frame_header.len as usize + PACKET_HEADER_SIZE;
         let next_ptr = self.read_ptr.wrapping_add(next_padding as u16);
         if next_ptr >= self.capacity {
-            DESCRIPTOR_SIZE as u16
+            DATA_START
         } else {
             next_ptr
         }
     }
 
-    pub(crate) unsafe fn next_write_ptr(&mut self, base: *mut u8) -> u16 {
-        let cursor = unsafe { base.add(self.write_ptr as usize) };
-        let Some(frame_header) = (unsafe { Packet::try_from_raw_ptr(cursor) }) else {
-            return self.write_ptr;
-        };
-        let next_padding = frame_header.len as usize + PACKET_HEADER_SIZE;
-        let next_ptr = self.write_ptr.wrapping_add(next_padding as u16);
-        if next_ptr >= self.capacity {
-            DESCRIPTOR_SIZE as u16
-        } else {
-            next_ptr
-        }
-    }
-
-    pub(crate) unsafe fn allocate_write_ptr(&mut self, base: *mut u8) -> Option<u16> {
-        let cursor = unsafe { base.add(self.write_ptr as usize) };
-        let Some(mut frame_header) = (unsafe { Packet::try_from_raw_ptr(cursor) }) else {
-            return Some(self.write_ptr);
-        };
-        while frame_header.is_valid() && self.write_ptr != DESCRIPTOR_SIZE as u16 {
-            self.write_ptr = unsafe { self.next_write_ptr(base) };
-            match unsafe { Packet::try_from_raw_ptr(base.add(self.write_ptr as usize)) } {
-                Some(header) => frame_header = header,
-                None => return Some(self.write_ptr),
-            }
+    pub(crate) unsafe fn allocate_write_ptr(
+        &mut self,
+        base: *mut u8,
+        frame_len: usize,
+    ) -> Option<u16> {
+        if frame_len > u8::MAX as usize {
+            return None;
         }
 
-        if frame_header.is_valid() {
+        let packet_len = PACKET_HEADER_SIZE + frame_len;
+        if packet_len > self.capacity as usize - DATA_START as usize {
+            return None;
+        }
+
+        let mut ptr = self.write_ptr;
+        if ptr as usize + packet_len > self.capacity as usize {
+            ptr = DATA_START;
+        }
+
+        let cursor = unsafe { base.add(ptr as usize) };
+        if unsafe { Packet::try_from_raw_ptr(cursor) }.is_some_and(|packet| packet.is_valid()) {
             None
         } else {
-            Some(DESCRIPTOR_SIZE as u16)
+            Some(ptr)
+        }
+    }
+
+    fn advance_ptr(&self, ptr: u16, frame_len: usize) -> u16 {
+        let next_ptr = ptr.wrapping_add((PACKET_HEADER_SIZE + frame_len) as u16);
+        if next_ptr >= self.capacity {
+            DATA_START
+        } else {
+            next_ptr
         }
     }
 
