@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use consortium_ipc::chan::ChanValidate;
+use consortium_ipc::ChanValidate;
 
 use crate::error::MuError;
 
