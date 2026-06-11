@@ -26,7 +26,7 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
     consortium_tee_macros_impl::tee_command(attr.into(), item.into()).into()
 }
 
-#[proc_macro_derive(TeeParam)]
+#[proc_macro_derive(TeeParam, attributes(tee))]
 pub fn derive_tee_param(item: TokenStream) -> TokenStream {
     consortium_tee_macros_impl::derive_tee_param(item.into()).into()
 }

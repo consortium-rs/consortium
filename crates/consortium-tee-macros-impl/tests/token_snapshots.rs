@@ -48,6 +48,42 @@ fn tee_param_derive_expansion_is_snapshot_without_codec_deps() {
 }
 
 #[test]
+fn tee_param_max_size_override_is_snapshot_without_codec_deps() {
+    let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
+        #[tee(max_size = 4096)]
+        struct LargePayload {
+            body: u32,
+        }
+    });
+
+    insta::assert_snapshot!(pretty_snapshot(expanded));
+}
+
+#[test]
+fn tee_param_empty_attribute_defaults_max_size_without_codec_deps() {
+    let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
+        #[tee]
+        struct DefaultPayload {
+            body: u32,
+        }
+    });
+
+    insta::assert_snapshot!(pretty_snapshot(expanded));
+}
+
+#[test]
+fn tee_param_invalid_attribute_error_is_snapshot_without_codec_deps() {
+    let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
+        #[tee(buffer = 4096)]
+        struct BadAttribute {
+            body: Vec<u8>,
+        }
+    });
+
+    insta::assert_snapshot!(pretty_snapshot(expanded));
+}
+
+#[test]
 fn tee_param_widening_warnings_are_snapshot_without_codec_deps() {
     let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
         enum WarningPayload {
