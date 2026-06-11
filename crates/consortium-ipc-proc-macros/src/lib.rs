@@ -36,7 +36,7 @@ use syn::{
 /// # Example
 ///
 /// ```rust,ignore
-/// use consortium_codec_proc_macros::IpcSafe;
+/// use consortium_ipc_proc_macros::IpcSafe;
 ///
 /// #[derive(IpcSafe)]
 /// struct SensorReading {

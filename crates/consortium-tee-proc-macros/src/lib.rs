@@ -16,9 +16,14 @@
 
 use heck::ToPascalCase;
 use proc_macro::TokenStream;
-use proc_macro2::Span;
-use quote::quote;
-use syn::{Ident, ItemFn, PatType, parse_macro_input};
+use proc_macro_warning::Warning;
+use proc_macro2::{Span, TokenStream as TokenStream2};
+use quote::{ToTokens as _, quote};
+use syn::spanned::Spanned as _;
+use syn::{
+    Data, DeriveInput, GenericArgument, GenericParam, Ident, ItemFn, PatType, PathArguments, Type,
+    parse_macro_input, parse_quote,
+};
 
 use crate::service::TeeServiceInput;
 
@@ -145,54 +150,53 @@ pub fn tee_service(input: TokenStream) -> TokenStream {
 
 /// Generates two companion functions for a TA command handler.
 ///
-/// **`function_name_dispatched`** (TA side) - unpacks `::optee_utee::Parameters` into typed
-/// arguments, calls the original function, and if it returns a non-`()` value, flushes that
-/// value back into the next available output parameter slot before returning `Ok(())`.
+/// **`function_name_dispatched`** (TA side) — unpacks `::optee_utee::Parameters` via the
+/// [`TeeParam`] trait, calls the original function, and flushes any output or inout values
+/// back into their slots.
 ///
-/// **`call_function_name`** (CA side, `#[cfg(feature = "ca")]`) - packs arguments into
-/// parameters, allocates an extra output slot when the function has a return value,
-/// calls `invoke_command`, then reads the output slot back and returns
-/// `consortium_tee::TeeResult<T>`.
+/// **`call_function_name`** (CA side, `#[cfg(feature = "ca")]`) — packs arguments via
+/// [`TeeParam`], calls `invoke_command`, then reads output slots back.
 ///
 /// The original function body is emitted unchanged.
 ///
 /// # Codec attribute
 ///
-/// When any parameter or return type implements `TeeParam`, you must specify a codec:
+/// When any parameter or return type implements `TeeParam<C>` for a serialized codec, you
+/// must specify the codec:
 ///
 /// ```no_run,ignore
-/// #[tee_command(codec = MyCodec)]
-/// fn my_handler(ctx: &mut Context, config: MyConfig) -> Result<(), TeeError> {
-///     // ...
-/// }
+/// #[tee_command(codec = PostcardCodec)]
+/// fn my_handler(ctx: &mut Context, config: MyConfig) -> Result<(), TeeError> { /* … */ }
 /// ```
 ///
-/// The codec type must implement `consortium_common::codec::CodecFor<T>` for each
-/// `TeeParam` type `T` used in the function signature.
+/// The codec `C` is passed as the type parameter to all `TeeParam<C>` calls. For
+/// primitive types (integers, booleans) the codec is ignored — they always use the
+/// `TeeParamSlot::Primitive` variant. Omitting `codec` uses `::consortium_tee::NoCodec`
+/// as the default, which causes a compile error if any serialized `TeeParam` types are
+/// present (since `NoCodec` does not implement `CodecFor<T>`).
 ///
-/// # Parameter type support (in classification priority order)
+/// # Parameter type support
 ///
-/// | Rust type        | TEE slot       | Notes                                        |
-/// |------------------|----------------|----------------------------------------------|
-/// | `&[u8]`          | `MemrefInput`  |                                              |
-/// | `&mut [u8]`      | `MemrefInout`  |                                              |
-/// | `&mut u32`       | `ValueInout`   | TA reads initial value, writes result back   |
-/// | `&mut i32`       | `ValueInout`   | bit-cast through u32                         |
-/// | `&mut u64`       | `ValueInout`   | split across a(low)/b(high)                  |
-/// | `u32`            | `ValueInput`   |                                              |
-/// | `i32`            | `ValueInput`   | bit-cast through u32                         |
-/// | `bool`           | `ValueInput`   | 0 or 1 in `a`                                |
-/// | `u64`            | `ValueInput`   | `a=low`, `b=high`                            |
-/// | `(u32, u32)`     | `ValueInput`   | `a=.0`, `b=.1`                               |
-/// | `&mut T: TeeParam` | `MemrefInout` | codec round-trip (requires `codec` attribute) |
-/// | `T: TeeParam`    | `MemrefInput`  | codec deserialize (requires `codec` attribute) |
+/// | Rust type            | TEE slot       | Notes                                          |
+/// |----------------------|----------------|------------------------------------------------|
+/// | `&[u8]`              | `MemrefInput`  |                                                |
+/// | `&mut [u8]`          | `MemrefInout`  |                                                |
+/// | `&mut u32`           | `ValueInout`   | TA reads initial, writes result back           |
+/// | `&mut i32`           | `ValueInout`   | bit-cast through u32                           |
+/// | `&mut u64`           | `ValueInout`   | split across a(low)/b(high)                    |
+/// | `T: TeeParam<C>`     | Value/Memref   | dispatched via `T::into_tee_param` / `from`    |
+/// | `&mut T: TeeParam<C>`| `MemrefInout`  | inout codec round-trip                         |
 ///
-/// Return values (`u32`, `u64`, `bool`, `Vec<u8>`, `T: TeeParam`) occupy a trailing slot.
-/// All `unsafe` blocks carry `// SAFETY:` comments.
+/// Return values use the same `TeeParam<C>` dispatch.
 #[proc_macro_attribute]
 pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
     let TeeArgs { codec } = parse_macro_input!(attr as TeeArgs);
-    let codec = codec.as_ref();
+
+    // Resolved codec type token — NoCodec when omitted.
+    let codec_ty: TokenStream2 = match &codec {
+        Some(c) => quote! { #c },
+        None => quote! { ::consortium_tee::NoCodec },
+    };
 
     let input = parse_macro_input!(item as ItemFn);
     let fn_name = &input.sig.ident;
@@ -237,7 +241,7 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
     for param in tee_params {
         let pat = &param.pat;
         let ty = &param.ty;
-        let (unpack, post, next) = gen_unpack(pat, ty, slot_index, codec);
+        let (unpack, post, next) = gen_unpack(pat, ty, slot_index, &codec_ty);
         unpack_stmts.push(unpack);
         if let Some(p) = post {
             post_call_stmts.push(p);
@@ -251,12 +255,11 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
 
     // TA side: call + optional flush
     let call_and_flush = if let Some(out_ty) = output_ty {
-        let flush = gen_flush_ta(output_slot, out_ty, codec);
+        let flush = gen_flush_ta(output_slot, out_ty, &codec_ty);
         if ret_is_result {
             quote! {
                 let __ret_val = #fn_name(#(#dispatch_call_args),*)?;
                 #(#post_call_stmts)*
-                // Flush return value into output parameter slot.
                 #flush
                 Ok(())
             }
@@ -264,13 +267,11 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
             quote! {
                 let __ret_val = #fn_name(#(#dispatch_call_args),*);
                 #(#post_call_stmts)*
-                // Flush return value into output parameter slot.
                 #flush
                 Ok(())
             }
         }
     } else if !post_call_stmts.is_empty() {
-        // No return value but there are inout post-call flushes.
         if ret_is_result {
             quote! {
                 #fn_name(#(#dispatch_call_args),*)?;
@@ -288,14 +289,13 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
         quote! { #fn_name(#(#dispatch_call_args),*) }
     };
 
-    // Use `_params` only when nothing reads/writes params at all.
     let param_binding = if !tee_params.is_empty() || has_output {
         quote! { params }
     } else {
         quote! { _params }
     };
 
-    //  TA dispatched fn
+    // TA dispatched fn
     let dispatched_fn = if let Some(ctx) = ctx_param {
         let ctx_pat = &ctx.pat;
         let ctx_ty = &ctx.ty;
@@ -314,7 +314,7 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
         }
     };
 
-    //  CA side: pack stmts
+    // CA side: pack stmts
     let mut pack_stmts = vec![];
     let mut post_invoke_stmts = vec![];
     let mut ca_sig_args = vec![];
@@ -325,7 +325,7 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
         let ty = &param.ty;
         let slot_ident = Ident::new(&format!("_p{}", i), Span::call_site());
         ca_sig_args.push(quote! { #pat: #ty });
-        let (pack, post) = gen_pack_ca(&slot_ident, pat, ty, i, codec);
+        let (pack, post) = gen_pack_ca(&slot_ident, pat, ty, i, &codec_ty);
         pack_stmts.push(pack);
         if let Some(p) = post {
             post_invoke_stmts.push(p);
@@ -333,26 +333,24 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
         new_params_args.push(quote! { #slot_ident });
     }
 
-    // Add output slot for the return value, if needed.
     if has_output {
         let out_ty = output_ty.unwrap();
         let out_slot = tee_params.len();
         let slot_ident = Ident::new(&format!("_p{}", out_slot), Span::call_site());
-        pack_stmts.push(gen_output_pack_ca(&slot_ident, out_ty, out_slot));
+        pack_stmts.push(gen_output_pack_ca(&slot_ident, out_ty, out_slot, &codec_ty));
         new_params_args.push(quote! { #slot_ident });
     }
 
-    // Parameters::new always takes exactly 4 args.
     while new_params_args.len() < 4 {
         new_params_args.push(quote! { ::optee_utee::ParamNone });
     }
 
     let command_variant = Ident::new(&fn_name.to_string().to_pascal_case(), fn_name.span());
 
-    //  CA fn
+    // CA fn
     let ca_fn = if has_output {
         let out_ty = output_ty.unwrap();
-        let read_back = gen_output_read_ca(tee_params.len(), out_ty, codec);
+        let read_back = gen_output_read_ca(tee_params.len(), out_ty, &codec_ty);
         quote! {
             #[cfg(feature = "ca")]
             fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<#out_ty> {
@@ -393,24 +391,315 @@ pub fn tee_command(attr: TokenStream, item: TokenStream) -> TokenStream {
     .into()
 }
 
-/// Derives `consortium_tee::TeeParam` with a default `MAX_SIZE` of 1024 bytes.
+/// Derive macro for `consortium_tee::TeeParam`.
+///
+/// Validates that the type's fields are safe for TEE parameter serialization — the same
+/// structural rules as `IpcSafe`:
+/// - No raw pointers (`*const T`, `*mut T`)
+/// - No bare references as fields (`&T`, `&mut T`)
+/// - No function pointers (`fn(…)`)
+/// - No `usize` / `isize` (pointer-width differs between 32-bit TA and 64-bit CA)
+///
+/// Generates `impl<C> TeeParam<C> for T` where `C` is constrained by
+/// `CodecFor<T, Decoded<'_> = T>`. The codec is NOT fixed at derive time — it is chosen
+/// at the `#[tee_command(codec = …)]` call site, keeping `TeeParam` codec-agnostic.
 ///
 /// Override `MAX_SIZE` with a manual `impl` if the type's worst-case serialized size
-/// is larger (or you want to save memory with a smaller value).
+/// differs from the default of 1024 bytes.
 #[proc_macro_derive(TeeParam)]
 pub fn derive_tee_param(item: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(item as syn::DeriveInput);
-    let name = &input.ident;
-    let (impl_generics, ty_generics, where_clause) = input.generics.split_for_impl();
-    quote! {
-        impl #impl_generics ::consortium_tee::TeeParam for #name #ty_generics #where_clause {
-            const MAX_SIZE: usize = 1024;
-        }
-    }
-    .into()
+    let input = parse_macro_input!(item as DeriveInput);
+    derive_tee_param_inner(input)
+        .unwrap_or_else(|e| e.into_compile_error())
+        .into()
 }
 
-//  Type helpers
+fn derive_tee_param_inner(input: DeriveInput) -> syn::Result<TokenStream2> {
+    let name = &input.ident;
+
+    // Collect all field types for validation.
+    let field_types: Vec<&Type> = match &input.data {
+        Data::Struct(s) => s.fields.iter().map(|f| &f.ty).collect(),
+        Data::Enum(e) => e
+            .variants
+            .iter()
+            .flat_map(|v| v.fields.iter().map(|f| &f.ty))
+            .collect(),
+        Data::Union(u) => u.fields.named.iter().map(|f| &f.ty).collect(),
+    };
+
+    // Validate all field types, accumulating errors and warnings before failing.
+    let mut combined: Option<syn::Error> = None;
+    let mut all_warnings: Vec<TokenStream2> = vec![];
+    for ty in field_types {
+        let (errs, warns) = check_tee_type(ty);
+        for err in errs {
+            match &mut combined {
+                None => combined = Some(err),
+                Some(prev) => prev.combine(err),
+            }
+        }
+        all_warnings.extend(warns);
+    }
+    if let Some(err) = combined {
+        return Err(err);
+    }
+
+    // Keep the original ty_generics (without the injected codec param) for the
+    // `for #name #orig_ty_generics` part of the impl.
+    let (_, orig_ty_generics, _) = input.generics.split_for_impl();
+
+    // Build the impl generics by cloning the original and injecting the codec param.
+    let codec_param = Ident::new("__TeeCodec", Span::call_site());
+    let mut generics = input.generics.clone();
+
+    // Add `TeeParam<__TeeCodec>` bounds to each existing type parameter so that
+    // `Wrapper<T>` only compiles when `T: TeeParam<C>`.
+    for param in &mut generics.params {
+        if let GenericParam::Type(tp) = param {
+            tp.bounds
+                .push(parse_quote!(::consortium_tee::TeeParam<#codec_param>));
+        }
+    }
+
+    // Inject the codec type parameter after the existing params.
+    generics.params.push(parse_quote!(#codec_param));
+
+    // Add where-clause bounds: CodecFor (for serialization) and 'static (so
+    // Decoded<'_> = Self can be resolved for owned types).
+    let where_clause = generics.make_where_clause();
+    where_clause.predicates.push(parse_quote!(
+        #codec_param: for<'__buf> ::consortium_common::codec::CodecFor<
+            #name #orig_ty_generics,
+            Decoded<'__buf> = #name #orig_ty_generics,
+        >
+    ));
+    where_clause
+        .predicates
+        .push(parse_quote!(#name #orig_ty_generics: 'static));
+
+    // impl_generics: <T, __TeeCodec>  (and the where clause)
+    // ty_generics from the modified set would include __TeeCodec, which is wrong for
+    // the `for Type` part, so we use orig_ty_generics there.
+    let (impl_generics, _, where_clause) = generics.split_for_impl();
+
+    Ok(quote! {
+        #(#all_warnings)*
+        impl #impl_generics ::consortium_tee::TeeParam<#codec_param>
+            for #name #orig_ty_generics
+            #where_clause
+        {
+            const MAX_SIZE: usize = 1024;
+
+            fn into_tee_param(
+                &self,
+            ) -> ::core::result::Result<::consortium_tee::TeeParamRepr, ::consortium_tee::TeeParamError>
+            {
+                let mut __buf = ::alloc::vec![0u8; <Self as ::consortium_tee::TeeParam<#codec_param>>::MAX_SIZE];
+                <#codec_param as ::consortium_common::codec::CodecFor<Self>>::encode(self, &mut __buf)
+                    .map(|__len| {
+                        __buf.truncate(__len);
+                        ::consortium_tee::TeeParamSlot::Serialized(__buf)
+                    })
+                    .map_err(|_| ::consortium_tee::TeeParamError::EncodeFailed)
+            }
+
+            fn from_tee_param(
+                repr: ::consortium_tee::TeeParamReprRef<'_>,
+            ) -> ::core::result::Result<Self, ::consortium_tee::TeeParamError>
+            {
+                match repr {
+                    ::consortium_tee::TeeParamSlot::Serialized(__bytes) => {
+                        <#codec_param as ::consortium_common::codec::CodecFor<Self>>::decode(__bytes)
+                            .map_err(|_| ::consortium_tee::TeeParamError::DecodeFailed)
+                    }
+                    ::consortium_tee::TeeParamSlot::Primitive { .. } => {
+                        Err(::consortium_tee::TeeParamError::DecodeFailed)
+                    }
+                }
+            }
+        }
+    })
+}
+
+/// Recursively checks `ty` for TEE-unsafe or lossy constructs.
+///
+/// Returns `(errors, warnings)` where warnings are emitted via `proc_macro_warning` and
+/// included in the generated output.
+///
+/// | Category         | Types                          | Action  |
+/// |-----------------|-------------------------------|---------|
+/// | Auto-widen      | `u8`, `u16` → `u32`           | Warning |
+/// | Auto-widen      | `i8`, `i16` → `i32` → `u32`  | Warning |
+/// | Auto-widen      | `char` → `u32` scalar         | Warning |
+/// | Native          | `u32`, `i32`, `u64`, `i64`, `bool`, `(u32, u32)` | OK |
+/// | Ambiguous float | `f32`, `f64`                  | Error   |
+/// | Too wide        | `u128`, `i128`                | Error   |
+/// | Platform-dep    | `usize`, `isize`              | Error   |
+/// | Unsendable      | raw ptrs, refs, fn ptrs       | Error   |
+/// | Not concrete    | trait objects, `impl Trait`   | Error   |
+fn check_tee_type(ty: &Type) -> (Vec<syn::Error>, Vec<TokenStream2>) {
+    let mut errors: Vec<syn::Error> = vec![];
+    let mut warnings: Vec<TokenStream2> = vec![];
+
+    match ty {
+        Type::Ptr(_) => errors.push(syn::Error::new_spanned(
+            ty,
+            "raw pointers are not allowed in TeeParam types: they cannot be serialized \
+             across the TEE secure-world boundary",
+        )),
+
+        Type::Reference(_) => errors.push(syn::Error::new_spanned(
+            ty,
+            "bare references are not allowed as TeeParam fields: use owned types instead",
+        )),
+
+        Type::BareFn(_) => errors.push(syn::Error::new_spanned(
+            ty,
+            "function pointers are not allowed in TeeParam types: they are not serializable",
+        )),
+
+        Type::Path(tp) => {
+            if let Some(ident) = tp.path.get_ident() {
+                match ident.to_string().as_str() {
+                    "usize" | "isize" => {
+                        errors.push(syn::Error::new_spanned(
+                            ty,
+                            format!(
+                                "`{}` is pointer-width dependent and not allowed in TeeParam \
+                                 types: the TA may be 32-bit while the CA is 64-bit; \
+                                 use `u32`/`u64` or `i32`/`i64`",
+                                ident
+                            ),
+                        ));
+                        return (errors, warnings);
+                    }
+                    "f32" | "f64" => {
+                        errors.push(syn::Error::new_spanned(
+                            ty,
+                            format!(
+                                "TEE value slots are `uint32_t` pairs; `{}` encoding is \
+                                 ambiguous across TEE boundaries; use `u32` directly or \
+                                 implement `TeeParam` with explicit encoding",
+                                ident
+                            ),
+                        ));
+                        return (errors, warnings);
+                    }
+                    "u128" | "i128" => {
+                        errors.push(syn::Error::new_spanned(
+                            ty,
+                            format!(
+                                "`{}` does not fit in two `u32` TEE Value fields; \
+                                 wrap it in a newtype and implement `TeeParam` using a \
+                                 Memref (serialized) slot",
+                                ident
+                            ),
+                        ));
+                        return (errors, warnings);
+                    }
+                    s @ ("u8" | "u16") => {
+                        let old = format!("`{s}` as a TeeParam field");
+                        let new = format!(
+                            "`{s}` is widened to `u32` in the TEE Value slot (lossless); \
+                             use `u32` directly to silence this warning"
+                        );
+                        warnings.push(
+                            Warning::new_deprecated("tee_param_implicit_widen")
+                                .old(&old)
+                                .new(&new)
+                                .span(ty.span())
+                                .build()
+                                .to_token_stream(),
+                        );
+                    }
+                    s @ ("i8" | "i16") => {
+                        let old = format!("`{s}` as a TeeParam field");
+                        let new = format!(
+                            "`{s}` is sign-extended to `i32` then bit-cast to `u32` \
+                             in the TEE Value slot (lossless); use `i32` directly \
+                             to silence this warning"
+                        );
+                        warnings.push(
+                            Warning::new_deprecated("tee_param_implicit_widen")
+                                .old(&old)
+                                .new(&new)
+                                .span(ty.span())
+                                .build()
+                                .to_token_stream(),
+                        );
+                    }
+                    "char" => {
+                        warnings.push(
+                            Warning::new_deprecated("tee_param_implicit_widen")
+                                .old("`char` as a TeeParam field")
+                                .new(
+                                    "`char` is mapped to its Unicode scalar value (`u32`) in the \
+                                     TEE Value slot; use `u32` directly to silence this warning",
+                                )
+                                .span(ty.span())
+                                .build()
+                                .to_token_stream(),
+                        );
+                    }
+                    _ => {}
+                }
+            }
+            // Recurse into angle-bracketed generic arguments (e.g. `Option<u8>`).
+            for seg in &tp.path.segments {
+                if let PathArguments::AngleBracketed(ab) = &seg.arguments {
+                    for arg in &ab.args {
+                        if let GenericArgument::Type(inner) = arg {
+                            let (e, w) = check_tee_type(inner);
+                            errors.extend(e);
+                            warnings.extend(w);
+                        }
+                    }
+                }
+            }
+        }
+
+        Type::Array(arr) => {
+            let (e, w) = check_tee_type(&arr.elem);
+            errors.extend(e);
+            warnings.extend(w);
+        }
+        Type::Slice(sl) => {
+            let (e, w) = check_tee_type(&sl.elem);
+            errors.extend(e);
+            warnings.extend(w);
+        }
+        Type::Tuple(t) => {
+            for elem in &t.elems {
+                let (e, w) = check_tee_type(elem);
+                errors.extend(e);
+                warnings.extend(w);
+            }
+        }
+        Type::Paren(p) => {
+            let (e, w) = check_tee_type(&p.elem);
+            errors.extend(e);
+            warnings.extend(w);
+        }
+        Type::Group(g) => {
+            let (e, w) = check_tee_type(&g.elem);
+            errors.extend(e);
+            warnings.extend(w);
+        }
+
+        Type::TraitObject(_) | Type::ImplTrait(_) => errors.push(syn::Error::new_spanned(
+            ty,
+            "trait objects and `impl Trait` are not allowed in TeeParam types: use a \
+             concrete, sized type",
+        )),
+
+        _ => {}
+    }
+
+    (errors, warnings)
+}
+
+// ── Type helpers ─────────────────────────────────────────────────────────────
 
 fn get_output_type(ret: &syn::ReturnType) -> Option<&syn::Type> {
     let ty = match ret {
@@ -481,8 +770,7 @@ fn is_slice_ref(ty: &syn::Type, mutable: bool) -> bool {
     }
 }
 
-/// `&mut u32` / `&mut i32` / `&mut u64` - mutable reference to a named primitive scalar.
-/// Returns the inner primitive type name if matched.
+/// `&mut u32` / `&mut i32` / `&mut u64` — returns the inner primitive name if matched.
 fn mut_scalar_inner(ty: &syn::Type) -> Option<&'static str> {
     if let syn::Type::Reference(r) = ty
         && r.mutability.is_some()
@@ -510,19 +798,15 @@ fn is_tuple_u32_u32(ty: &syn::Type) -> bool {
     false
 }
 
-/// Returns `true` if `ty` is `&mut SomeIdent` - a mutable reference to a named
-/// type (not a primitive scalar, not a slice) - treated as the implicit context parameter
-/// OR as a `&mut T: TeeParam` inout parameter.
+/// `&mut SomeIdent` (mutable reference to a named path type, not a primitive scalar, not a
+/// slice) — context parameter OR `&mut T: TeeParam` inout parameter.
 fn is_context_ref(ty: &syn::Type) -> bool {
     if let syn::Type::Reference(r) = ty
         && r.mutability.is_some()
     {
-        // Must be a Path (not a slice).
         if let syn::Type::Path(tp) = r.elem.as_ref() {
-            // Exclude known primitive scalars that we handle as ValueInout.
             if let Some(ident) = tp.path.get_ident() {
-                let s = ident.to_string();
-                if matches!(s.as_str(), "u32" | "i32" | "u64") {
+                if matches!(ident.to_string().as_str(), "u32" | "i32" | "u64") {
                     return false;
                 }
             }
@@ -532,21 +816,20 @@ fn is_context_ref(ty: &syn::Type) -> bool {
     false
 }
 
-/// Returns `true` if `ty` is a Path type that is not a known primitive or `Vec<u8>`.
-/// These types are routed through the `TeeParam` / codec path.
+/// Path type that is not a known primitive or `Vec<u8>` — routed through `TeeParam<C>`.
 fn is_tee_param_path(ty: &syn::Type) -> bool {
     if let syn::Type::Path(tp) = ty {
         if tp.qself.is_some() {
             return false;
         }
-        // Exclude known primitives already handled above.
         if let Some(ident) = tp.path.get_ident() {
-            let s = ident.to_string();
-            if matches!(s.as_str(), "u32" | "u64" | "i32" | "bool") {
+            if matches!(
+                ident.to_string().as_str(),
+                "u8" | "u16" | "u32" | "u64" | "i8" | "i16" | "i32" | "i64" | "bool"
+            ) {
                 return false;
             }
         }
-        // Exclude Vec<u8>.
         if is_vec_u8(ty) {
             return false;
         }
@@ -555,8 +838,7 @@ fn is_tee_param_path(ty: &syn::Type) -> bool {
     false
 }
 
-/// Returns `true` if `ty` is `&mut T` where T is a Path that is not a primitive scalar.
-/// These are routed through `TeeParam` MemrefInout.
+/// `&mut T` where T is a non-primitive path type — routed through `TeeParam<C>` MemrefInout.
 fn is_mut_tee_param_ref(ty: &syn::Type) -> bool {
     if let syn::Type::Reference(r) = ty
         && r.mutability.is_some()
@@ -566,20 +848,15 @@ fn is_mut_tee_param_ref(ty: &syn::Type) -> bool {
     false
 }
 
-//  TA-side unpack / flush code generation
+// ── TA-side unpack / flush code generation ───────────────────────────────────
 
 /// Returns `(unpack_stmt, optional_post_call_flush, next_slot_index)`.
-/// The post_call_flush is emitted after the inner function returns (for inout slots).
 fn gen_unpack(
     pat: &syn::Pat,
     ty: &syn::Type,
     slot: usize,
-    codec: Option<&syn::Path>,
-) -> (
-    proc_macro2::TokenStream,
-    Option<proc_macro2::TokenStream>,
-    usize,
-) {
+    codec: &TokenStream2,
+) -> (TokenStream2, Option<TokenStream2>, usize) {
     if slot >= 4 {
         return (
             quote! { compile_error!("Too many parameters: TEE only supports up to 4"); },
@@ -610,7 +887,7 @@ fn gen_unpack(
         return (stmt, None, slot + 1);
     }
 
-    // Priority 3: &mut u32 / &mut i32 / &mut u64  (ValueInout)
+    // Priority 3: &mut u32 / &mut i32 / &mut u64 (ValueInout)
     if let Some(scalar) = mut_scalar_inner(ty) {
         let val_tmp = Ident::new(&format!("__val_{}", slot), Span::call_site());
         let (unpack_stmt, flush_stmt) = match scalar {
@@ -659,104 +936,74 @@ fn gen_unpack(
         return (unpack_stmt, Some(flush_stmt), slot + 1);
     }
 
-    // Priority 4: u32
-    if is_primitive(ty, "u32") {
-        let stmt = quote! {
-            // SAFETY: slot #idx is ValueInput - type match guaranteed by #[tee_command]
-            let #pat: u32 = unsafe { params.#idx.as_value()?.a() };
-        };
-        return (stmt, None, slot + 1);
-    }
-
-    // Priority 5: i32
-    if is_primitive(ty, "i32") {
-        let stmt = quote! {
-            // SAFETY: slot #idx is ValueInput - type match guaranteed by #[tee_command]
-            let #pat: i32 = unsafe { params.#idx.as_value()?.a() } as i32;
-        };
-        return (stmt, None, slot + 1);
-    }
-
-    // Priority 6: bool
-    if is_primitive(ty, "bool") {
-        let stmt = quote! {
-            // SAFETY: slot #idx is ValueInput - type match guaranteed by #[tee_command]
-            let #pat: bool = unsafe { params.#idx.as_value()?.a() } != 0;
-        };
-        return (stmt, None, slot + 1);
-    }
-
-    // Priority 7: u64 (as input; currently return-only before this change)
-    if is_primitive(ty, "u64") {
-        let stmt = quote! {
-            // SAFETY: slot #idx is ValueInput - type match guaranteed by #[tee_command]
-            let mut #tmp = unsafe { params.#idx.as_value()? };
-            let #pat: u64 = (#tmp.b() as u64) << 32 | #tmp.a() as u64;
-        };
-        return (stmt, None, slot + 1);
-    }
-
-    // Priority 8: (u32, u32)
-    if is_tuple_u32_u32(ty) {
-        let stmt = quote! {
-            // SAFETY: slot #idx is ValueInput - type match guaranteed by #[tee_command]
-            let mut #tmp = unsafe { params.#idx.as_value()? };
-            let #pat: (u32, u32) = (#tmp.a(), #tmp.b());
-        };
-        return (stmt, None, slot + 1);
-    }
-
-    // Priority 9: &mut T: TeeParam  (MemrefInout, codec round-trip)
+    // Priority 4: &mut T: TeeParam  (MemrefInout, round-trip via TeeParam<C>)
     if is_mut_tee_param_ref(ty) {
-        if let Some(c) = codec {
-            let inner_ty = if let syn::Type::Reference(r) = ty {
-                r.elem.as_ref()
-            } else {
-                unreachable!()
-            };
-            let val_tmp = Ident::new(&format!("__val_{}", slot), Span::call_site());
-            let unpack = quote! {
-                // SAFETY: slot #idx is MemrefInout - type match guaranteed by #[tee_command]
-                let mut #tmp = unsafe { params.#idx.as_memref()? };
-                let mut #val_tmp: #inner_ty = <#c as ::consortium_common::codec::CodecFor<#inner_ty>>::decode(#tmp.buffer())
-                    .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
-                let #pat: &mut #inner_ty = &mut #val_tmp;
-            };
-            let flush = quote! {
-                // Re-serialize &mut T back into MemrefInout slot.
-                <#c as ::consortium_common::codec::CodecFor<#inner_ty>>::encode(#pat as &#inner_ty, #tmp.buffer())
-                    .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
-            };
-            return (unpack, Some(flush), slot + 1);
+        let inner_ty = if let syn::Type::Reference(r) = ty {
+            r.elem.as_ref()
         } else {
-            return (
-                quote! { compile_error!("codec = ... is required for TeeParam types; use #[tee_command(codec = MyCodec)]"); },
-                None,
-                slot,
-            );
-        }
+            unreachable!()
+        };
+        let val_tmp = Ident::new(&format!("__val_{}", slot), Span::call_site());
+        let repr_flush = Ident::new(&format!("__repr_flush_{}", slot), Span::call_site());
+        let flush_bytes = Ident::new(&format!("__flush_bytes_{}", slot), Span::call_site());
+        let unpack = quote! {
+            // SAFETY: slot #idx is MemrefInout - type match guaranteed by #[tee_command]
+            let mut #tmp = unsafe { params.#idx.as_memref()? };
+            let mut #val_tmp: #inner_ty =
+                <#inner_ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
+                    ::consortium_tee::TeeParamSlot::Serialized(#tmp.buffer())
+                ).map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
+            let #pat: &mut #inner_ty = &mut #val_tmp;
+        };
+        let flush = quote! {
+            // Re-serialize modified &mut T back into MemrefInout slot.
+            let #repr_flush =
+                <#inner_ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(&#val_tmp)
+                    .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
+            let ::consortium_tee::TeeParamSlot::Serialized(ref #flush_bytes) = #repr_flush
+                else { unreachable!() };
+            #tmp.buffer()[..#flush_bytes.len()].copy_from_slice(#flush_bytes.as_slice());
+        };
+        return (unpack, Some(flush), slot + 1);
     }
 
-    // Priority 10: T: TeeParam  (MemrefInput, codec deserialize)
-    if is_tee_param_path(ty) {
-        if let Some(c) = codec {
-            let stmt = quote! {
-                // SAFETY: slot #idx is MemrefInput - type match guaranteed by #[tee_command]
-                let mut #tmp = unsafe { params.#idx.as_memref()? };
-                let #pat = <#c as ::consortium_common::codec::CodecFor<#ty>>::decode(#tmp.buffer())
-                    .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
-            };
-            return (stmt, None, slot + 1);
-        } else {
-            return (
-                quote! { compile_error!("codec = ... is required for TeeParam types; use #[tee_command(codec = MyCodec)]"); },
-                None,
-                slot,
-            );
-        }
+    // Priority 5: any remaining owned type (primitives, (u32,u32), Vec<u8>, T: TeeParam).
+    // The slot kind (Value vs Memref) is determined by whether the TeeParam impl returns
+    // Primitive or Serialized; we use the type name to pick the right `as_value` / `as_memref`.
+    let is_value_slot = is_primitive(ty, "u8")
+        || is_primitive(ty, "u16")
+        || is_primitive(ty, "u32")
+        || is_primitive(ty, "u64")
+        || is_primitive(ty, "i8")
+        || is_primitive(ty, "i16")
+        || is_primitive(ty, "i32")
+        || is_primitive(ty, "i64")
+        || is_primitive(ty, "bool")
+        || is_tuple_u32_u32(ty);
+
+    if is_value_slot {
+        let stmt = quote! {
+            // SAFETY: slot #idx is ValueInput - type match guaranteed by #[tee_command]
+            let mut #tmp = unsafe { params.#idx.as_value()? };
+            let #pat = <#ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
+                ::consortium_tee::TeeParamSlot::Primitive { a: #tmp.a(), b: #tmp.b() }
+            ).map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
+        };
+        return (stmt, None, slot + 1);
     }
 
-    // Priority 11: unsupported
+    // Vec<u8> and T: TeeParam — Memref slot.
+    if is_vec_u8(ty) || is_tee_param_path(ty) {
+        let stmt = quote! {
+            // SAFETY: slot #idx is MemrefInput - type match guaranteed by #[tee_command]
+            let mut #tmp = unsafe { params.#idx.as_memref()? };
+            let #pat = <#ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
+                ::consortium_tee::TeeParamSlot::Serialized(#tmp.buffer())
+            ).map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
+        };
+        return (stmt, None, slot + 1);
+    }
+
     (
         quote! { compile_error!("Unsupported TEE parameter type"); },
         None,
@@ -765,68 +1012,62 @@ fn gen_unpack(
 }
 
 /// Emits statements that write `__ret_val` into the output parameter slot at `slot`.
-fn gen_flush_ta(
-    slot: usize,
-    ty: &syn::Type,
-    codec: Option<&syn::Path>,
-) -> proc_macro2::TokenStream {
+fn gen_flush_ta(slot: usize, ty: &syn::Type, codec: &TokenStream2) -> TokenStream2 {
     if slot >= 4 {
         return quote! { compile_error!("Too many parameters: no room for the output slot (TEE max 4)"); };
     }
     let idx = syn::Index::from(slot);
-    if is_primitive(ty, "u32") {
-        quote! {
+
+    let is_value_slot = is_primitive(ty, "u8")
+        || is_primitive(ty, "u16")
+        || is_primitive(ty, "u32")
+        || is_primitive(ty, "u64")
+        || is_primitive(ty, "i8")
+        || is_primitive(ty, "i16")
+        || is_primitive(ty, "i32")
+        || is_primitive(ty, "i64")
+        || is_primitive(ty, "bool")
+        || is_tuple_u32_u32(ty);
+
+    if is_value_slot {
+        return quote! {
             // SAFETY: slot #idx is ValueOutput - type match guaranteed by #[tee_command]
             let mut __p_out = unsafe { params.#idx.as_value()? };
-            __p_out.set_a(__ret_val);
-        }
-    } else if is_primitive(ty, "u64") {
-        quote! {
-            // SAFETY: slot #idx is ValueOutput - type match guaranteed by #[tee_command]
-            let mut __p_out = unsafe { params.#idx.as_value()? };
-            __p_out.set_a((__ret_val >> 32) as u32);
-            __p_out.set_b(__ret_val as u32);
-        }
-    } else if is_primitive(ty, "bool") {
-        quote! {
-            // SAFETY: slot #idx is ValueOutput - type match guaranteed by #[tee_command]
-            let mut __p_out = unsafe { params.#idx.as_value()? };
-            __p_out.set_a(__ret_val as u32);
-        }
-    } else if is_vec_u8(ty) {
-        quote! {
+            let __repr_out = <#ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(&__ret_val)
+                .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
+            let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_out, b: __pb_out } = __repr_out
+                else { unreachable!() };
+            __p_out.set_a(__pa_out);
+            __p_out.set_b(__pb_out);
+        };
+    }
+
+    // Vec<u8> and T: TeeParam — Memref slot.
+    if is_vec_u8(ty) || is_tee_param_path(ty) {
+        return quote! {
             // SAFETY: slot #idx is MemrefOutput - type match guaranteed by #[tee_command]
             let mut __p_out = unsafe { params.#idx.as_memref()? };
-            __p_out.buffer()[..__ret_val.len()].copy_from_slice(&__ret_val);
-        }
-    } else if is_tee_param_path(ty) {
-        // T: TeeParam - serialize into the MemrefOutput buffer.
-        if let Some(c) = codec {
-            quote! {
-                // SAFETY: slot #idx is MemrefOutput - type match guaranteed by #[tee_command]
-                let mut __p_out = unsafe { params.#idx.as_memref()? };
-                <#c as ::consortium_common::codec::CodecFor<#ty>>::encode(&__ret_val, __p_out.buffer())
-                    .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
-            }
-        } else {
-            quote! { compile_error!("codec = ... is required for TeeParam types; use #[tee_command(codec = MyCodec)]"); }
-        }
-    } else {
-        quote! { compile_error!("Unsupported TEE return type for output parameter (supported: u32, u64, bool, Vec<u8>, T: TeeParam)"); }
+            let __repr_out = <#ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(&__ret_val)
+                .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
+            let ::consortium_tee::TeeParamSlot::Serialized(ref __out_bytes) = __repr_out
+                else { unreachable!() };
+            __p_out.buffer()[..__out_bytes.len()].copy_from_slice(__out_bytes.as_slice());
+        };
     }
+
+    quote! { compile_error!("Unsupported TEE return type"); }
 }
 
-//  CA-side pack / read-back code generation
+// ── CA-side pack / read-back code generation ─────────────────────────────────
 
 /// Returns `(pack_stmt, optional_post_invoke_readback)`.
-/// The post_invoke_readback writes results back into inout pointer args.
 fn gen_pack_ca(
     slot_ident: &Ident,
     pat: &syn::Pat,
     ty: &syn::Type,
     slot: usize,
-    codec: Option<&syn::Path>,
-) -> (proc_macro2::TokenStream, Option<proc_macro2::TokenStream>) {
+    codec: &TokenStream2,
+) -> (TokenStream2, Option<TokenStream2>) {
     // Priority 1: &[u8]
     if is_slice_ref(ty, false) {
         return (
@@ -843,7 +1084,7 @@ fn gen_pack_ca(
         );
     }
 
-    // Priority 3: &mut u32 / &mut i32 / &mut u64  (ValueInout)
+    // Priority 3: &mut u32 / &mut i32 / &mut u64 (ValueInout)
     if let Some(scalar) = mut_scalar_inner(ty) {
         let param_n = quote::format_ident!("param_{}", slot);
         let (pack, read_back) = match scalar {
@@ -867,161 +1108,152 @@ fn gen_pack_ca(
         return (pack, Some(read_back));
     }
 
-    // Priority 4: u32
-    if is_primitive(ty, "u32") {
-        return (
-            quote! { let #slot_ident = ParamValue::new(#pat, 0, ParamType::ValueInput); },
-            None,
-        );
-    }
-
-    // Priority 5: i32
-    if is_primitive(ty, "i32") {
-        return (
-            quote! { let #slot_ident = ParamValue::new(#pat as u32, 0, ParamType::ValueInput); },
-            None,
-        );
-    }
-
-    // Priority 6: bool
-    if is_primitive(ty, "bool") {
-        return (
-            quote! { let #slot_ident = ParamValue::new(#pat as u32, 0, ParamType::ValueInput); },
-            None,
-        );
-    }
-
-    // Priority 7: u64
-    if is_primitive(ty, "u64") {
-        return (
-            quote! { let #slot_ident = ParamValue::new(#pat as u32, (#pat >> 32) as u32, ParamType::ValueInput); },
-            None,
-        );
-    }
-
-    // Priority 8: (u32, u32)
-    if is_tuple_u32_u32(ty) {
-        return (
-            quote! { let #slot_ident = ParamValue::new(#pat.0, #pat.1, ParamType::ValueInput); },
-            None,
-        );
-    }
-
-    // Priority 9: &mut T: TeeParam  (MemrefInout, encode → invoke → decode back)
+    // Priority 4: &mut T: TeeParam  (MemrefInout)
     if is_mut_tee_param_ref(ty) {
-        if let Some(c) = codec {
-            let inner_ty = if let syn::Type::Reference(r) = ty {
-                r.elem.as_ref()
-            } else {
-                unreachable!()
-            };
-            let buf_ident = Ident::new(&format!("__inout_buf_{}", slot), Span::call_site());
-            let param_n = quote::format_ident!("param_{}", slot);
-            let pack = quote! {
-                let mut #buf_ident = vec![0u8; <#inner_ty as ::consortium_tee::TeeParam>::MAX_SIZE];
-                <#c as ::consortium_common::codec::CodecFor<#inner_ty>>::encode(#pat as &#inner_ty, &mut #buf_ident)
-                    .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
-                let #slot_ident = ParamTmpRef::new_inout(&mut #buf_ident);
-            };
-            let read_back = quote! {
-                *#pat = {
-                    let __m = _operation.#param_n().as_memref();
-                    <#c as ::consortium_common::codec::CodecFor<#inner_ty>>::decode(&__m.buffer()[..__m.size()])
-                        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
-                };
-            };
-            return (pack, Some(read_back));
+        let inner_ty = if let syn::Type::Reference(r) = ty {
+            r.elem.as_ref()
         } else {
-            return (
-                quote! { compile_error!("codec = ... is required for TeeParam types; use #[tee_command(codec = MyCodec)]"); },
-                None,
-            );
-        }
+            unreachable!()
+        };
+        let buf_ident = Ident::new(&format!("__inout_buf_{}", slot), Span::call_site());
+        let repr_ident = Ident::new(&format!("__repr_inout_{}", slot), Span::call_site());
+        let src_ident = Ident::new(&format!("__src_inout_{}", slot), Span::call_site());
+        let param_n = quote::format_ident!("param_{}", slot);
+        let pack = quote! {
+            let mut #buf_ident = vec![0u8; <#inner_ty as ::consortium_tee::TeeParam<#codec>>::MAX_SIZE];
+            let #repr_ident = <#inner_ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(#pat)
+                .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
+            let ::consortium_tee::TeeParamSlot::Serialized(ref #src_ident) = #repr_ident
+                else { unreachable!() };
+            #buf_ident[..#src_ident.len()].copy_from_slice(#src_ident.as_slice());
+            let #slot_ident = ParamTmpRef::new_inout(&mut #buf_ident);
+        };
+        let read_back = quote! {
+            *#pat = {
+                let __m = _operation.#param_n().as_memref();
+                <#inner_ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
+                    ::consortium_tee::TeeParamSlot::Serialized(&__m.buffer()[..__m.size()])
+                ).map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
+            };
+        };
+        return (pack, Some(read_back));
     }
 
-    // Priority 10: T: TeeParam  (MemrefInput, encode to pre-allocated buffer then pass)
-    if is_tee_param_path(ty) {
-        if let Some(c) = codec {
-            let ser_ident = Ident::new(&format!("__ser_{}", slot), Span::call_site());
-            let pack = quote! {
-                let mut #ser_ident = vec![0u8; <#ty as ::consortium_tee::TeeParam>::MAX_SIZE];
-                <#c as ::consortium_common::codec::CodecFor<#ty>>::encode(&#pat, &mut #ser_ident)
-                    .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
-                let #slot_ident = ParamTmpRef::new_input(&#ser_ident);
-            };
-            return (pack, None);
-        } else {
-            return (
-                quote! { compile_error!("codec = ... is required for TeeParam types; use #[tee_command(codec = MyCodec)]"); },
-                None,
-            );
-        }
+    // Priority 5: Value-slot owned types.
+    let is_value_slot = is_primitive(ty, "u8")
+        || is_primitive(ty, "u16")
+        || is_primitive(ty, "u32")
+        || is_primitive(ty, "u64")
+        || is_primitive(ty, "i8")
+        || is_primitive(ty, "i16")
+        || is_primitive(ty, "i32")
+        || is_primitive(ty, "i64")
+        || is_primitive(ty, "bool")
+        || is_tuple_u32_u32(ty);
+
+    if is_value_slot {
+        let repr_ident = Ident::new(&format!("__repr_{}", slot), Span::call_site());
+        let pa_ident = Ident::new(&format!("__pa_{}", slot), Span::call_site());
+        let pb_ident = Ident::new(&format!("__pb_{}", slot), Span::call_site());
+        let pack = quote! {
+            let #repr_ident = <#ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(&#pat)
+                .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
+            let ::consortium_tee::TeeParamSlot::Primitive { a: #pa_ident, b: #pb_ident } = #repr_ident
+                else { unreachable!() };
+            let #slot_ident = ParamValue::new(#pa_ident, #pb_ident, ParamType::ValueInput);
+        };
+        return (pack, None);
+    }
+
+    // Priority 6: Vec<u8> and T: TeeParam — Memref slot.
+    if is_vec_u8(ty) || is_tee_param_path(ty) {
+        let repr_ident = Ident::new(&format!("__repr_{}", slot), Span::call_site());
+        let bytes_ident = Ident::new(&format!("__bytes_{}", slot), Span::call_site());
+        let pack = quote! {
+            let #repr_ident = <#ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(&#pat)
+                .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
+            let ::consortium_tee::TeeParamSlot::Serialized(ref #bytes_ident) = #repr_ident
+                else { unreachable!() };
+            let #slot_ident = ParamTmpRef::new_input(#bytes_ident.as_slice());
+        };
+        return (pack, None);
     }
 
     (
-        quote! { compile_error!("Unsupported TEE parameter type (for serialized types, enable the `serde` feature of `consortium-tee`)"); },
+        quote! { compile_error!("Unsupported TEE parameter type"); },
         None,
     )
 }
 
 /// Emits the declaration(s) that reserve a slot for the return value on the CA side.
-fn gen_output_pack_ca(slot_ident: &Ident, ty: &syn::Type, slot: usize) -> proc_macro2::TokenStream {
-    if is_primitive(ty, "u32") || is_primitive(ty, "u64") || is_primitive(ty, "bool") {
-        quote! { let #slot_ident = ParamValue::new(0, 0, ParamType::ValueOutput); }
-    } else if is_vec_u8(ty) {
-        let buf_ident = Ident::new(&format!("__out_buf_{}", slot), Span::call_site());
-        quote! {
-            let mut #buf_ident = vec![0u8; 4096];
-            let #slot_ident = ParamTmpRef::new_output(&mut #buf_ident);
-        }
-    } else if is_tee_param_path(ty) {
-        let buf_ident = Ident::new(&format!("__out_buf_{}", slot), Span::call_site());
-        quote! {
-            let mut #buf_ident = vec![0u8; <#ty as ::consortium_tee::TeeParam>::MAX_SIZE];
-            let #slot_ident = ParamTmpRef::new_output(&mut #buf_ident);
-        }
-    } else {
-        quote! { compile_error!("Unsupported TEE return type for output parameter (supported: u32, u64, bool, Vec<u8>, T: TeeParam)"); }
+fn gen_output_pack_ca(
+    slot_ident: &Ident,
+    ty: &syn::Type,
+    slot: usize,
+    codec: &TokenStream2,
+) -> TokenStream2 {
+    let is_value_slot = is_primitive(ty, "u8")
+        || is_primitive(ty, "u16")
+        || is_primitive(ty, "u32")
+        || is_primitive(ty, "u64")
+        || is_primitive(ty, "i8")
+        || is_primitive(ty, "i16")
+        || is_primitive(ty, "i32")
+        || is_primitive(ty, "i64")
+        || is_primitive(ty, "bool")
+        || is_tuple_u32_u32(ty);
+
+    if is_value_slot {
+        return quote! { let #slot_ident = ParamValue::new(0, 0, ParamType::ValueOutput); };
     }
+
+    if is_vec_u8(ty) || is_tee_param_path(ty) {
+        let buf_ident = Ident::new(&format!("__out_buf_{}", slot), Span::call_site());
+        return quote! {
+            let mut #buf_ident = vec![0u8; <#ty as ::consortium_tee::TeeParam<#codec>>::MAX_SIZE];
+            let #slot_ident = ParamTmpRef::new_output(&mut #buf_ident);
+        };
+    }
+
+    quote! { compile_error!("Unsupported TEE return type for output parameter"); }
 }
 
-/// Emits the expression that reads the return value back from `_operation` after
-/// `invoke_command` completes on the CA side.
-fn gen_output_read_ca(
-    slot: usize,
-    ty: &syn::Type,
-    codec: Option<&syn::Path>,
-) -> proc_macro2::TokenStream {
+/// Emits the expression that reads the return value back from `_operation` on the CA side.
+fn gen_output_read_ca(slot: usize, ty: &syn::Type, codec: &TokenStream2) -> TokenStream2 {
     let s = quote::format_ident!("param_{}", slot);
-    if is_primitive(ty, "u32") {
-        quote! { _operation.#s().as_value().a() }
-    } else if is_primitive(ty, "u64") {
-        quote! {
-            ((_operation.#s().as_value().a() as u64) << 32)
-                | (_operation.#s().as_value().b() as u64)
-        }
-    } else if is_primitive(ty, "bool") {
-        quote! { _operation.#s().as_value().a() != 0 }
-    } else if is_vec_u8(ty) {
-        quote! {
+
+    let is_value_slot = is_primitive(ty, "u8")
+        || is_primitive(ty, "u16")
+        || is_primitive(ty, "u32")
+        || is_primitive(ty, "u64")
+        || is_primitive(ty, "i8")
+        || is_primitive(ty, "i16")
+        || is_primitive(ty, "i32")
+        || is_primitive(ty, "i64")
+        || is_primitive(ty, "bool")
+        || is_tuple_u32_u32(ty);
+
+    if is_value_slot {
+        return quote! {
+            {
+                let __v = _operation.#s().as_value();
+                <#ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
+                    ::consortium_tee::TeeParamSlot::Primitive { a: __v.a(), b: __v.b() }
+                ).map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
+            }
+        };
+    }
+
+    if is_vec_u8(ty) || is_tee_param_path(ty) {
+        return quote! {
             {
                 let __m = _operation.#s().as_memref();
-                __m.buffer()[..__m.size()].to_vec()
+                <#ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
+                    ::consortium_tee::TeeParamSlot::Serialized(&__m.buffer()[..__m.size()])
+                ).map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
             }
-        }
-    } else if is_tee_param_path(ty) {
-        if let Some(c) = codec {
-            quote! {
-                {
-                    let __m = _operation.#s().as_memref();
-                    <#c as ::consortium_common::codec::CodecFor<#ty>>::decode(&__m.buffer()[..__m.size()])
-                        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
-                }
-            }
-        } else {
-            quote! { compile_error!("codec = ... is required for TeeParam types; use #[tee_command(codec = MyCodec)]"); }
-        }
-    } else {
-        quote! { compile_error!("Unsupported TEE return type (supported: u32, u64, bool, Vec<u8>, T: TeeParam)") }
+        };
     }
+
+    quote! { compile_error!("Unsupported TEE return type") }
 }
