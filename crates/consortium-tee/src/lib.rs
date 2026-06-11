@@ -89,7 +89,8 @@ pub struct NoCodec;
 /// ```
 ///
 /// `MAX_SIZE` bounds the Memref buffer pre-allocated on the CA side. The default
-/// from `#[derive(TeeParam)]` is 1024 bytes; override with a manual `impl`.
+/// from `#[derive(TeeParam)]` is 1024 bytes; override with
+/// `#[tee(max_size = N)]`.
 pub trait TeeParam<C = NoCodec>: Sized {
     /// Maximum serialized size in bytes (only meaningful for `Serialized` variants).
     const MAX_SIZE: usize;

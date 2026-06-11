@@ -19,8 +19,11 @@ use proc_macro2::{Span, TokenStream as TokenStream2};
 use quote::{ToTokens as _, quote};
 use syn::spanned::Spanned as _;
 use syn::{
-    Data, DeriveInput, GenericArgument, GenericParam, Ident, PathArguments, Type, parse_quote,
+    Attribute, Data, DeriveInput, GenericArgument, GenericParam, Ident, LitInt, Meta,
+    PathArguments, Type, parse_quote,
 };
+
+const DEFAULT_MAX_SIZE: &str = "1024";
 
 /// Derive macro for `consortium_tee::TeeParam`.
 ///
@@ -35,8 +38,8 @@ use syn::{
 /// `CodecFor<T, Decoded<'_> = T>`. The codec is NOT fixed at derive time — it is chosen
 /// at the `#[tee_command(codec = …)]` call site, keeping `TeeParam` codec-agnostic.
 ///
-/// Override `MAX_SIZE` with a manual `impl` if the type's worst-case serialized size
-/// differs from the default of 1024 bytes.
+/// Override `MAX_SIZE` with `#[tee(max_size = N)]` if the type's worst-case serialized
+/// size differs from the default of 1024 bytes.
 pub fn derive_tee_param(item: TokenStream2) -> TokenStream2 {
     let input = match syn::parse2::<DeriveInput>(item) {
         Ok(input) => input,
@@ -47,6 +50,7 @@ pub fn derive_tee_param(item: TokenStream2) -> TokenStream2 {
 
 fn derive_tee_param_impl(input: DeriveInput) -> syn::Result<TokenStream2> {
     let name = &input.ident;
+    let max_size = parse_tee_max_size(&input.attrs)?;
 
     // Collect all field types for validation.
     let field_types: Vec<&Type> = match &input.data {
@@ -122,7 +126,7 @@ fn derive_tee_param_impl(input: DeriveInput) -> syn::Result<TokenStream2> {
             for #name #orig_ty_generics
             #where_clause
         {
-            const MAX_SIZE: usize = 1024;
+            const MAX_SIZE: usize = #max_size;
 
             fn into_tee_param(
                 &self,
@@ -153,6 +157,36 @@ fn derive_tee_param_impl(input: DeriveInput) -> syn::Result<TokenStream2> {
             }
         }
     })
+}
+
+fn parse_tee_max_size(attrs: &[Attribute]) -> syn::Result<LitInt> {
+    let mut max_size = None;
+
+    for attr in attrs {
+        if !attr.path().is_ident("tee") {
+            continue;
+        }
+        if matches!(attr.meta, Meta::Path(_)) {
+            continue;
+        }
+
+        attr.parse_nested_meta(|meta| {
+            if !meta.path.is_ident("max_size") {
+                return Err(meta.error("expected `max_size`"));
+            }
+            if max_size.is_some() {
+                return Err(meta.error("duplicate `max_size`"));
+            }
+
+            let value = meta.value()?;
+            let lit: LitInt = value.parse()?;
+            lit.base10_parse::<usize>()?;
+            max_size = Some(lit);
+            Ok(())
+        })?;
+    }
+
+    Ok(max_size.unwrap_or_else(|| LitInt::new(DEFAULT_MAX_SIZE, Span::call_site())))
 }
 
 /// Recursively checks `ty` for TEE-unsafe or lossy constructs.
