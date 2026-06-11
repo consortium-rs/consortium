@@ -25,6 +25,7 @@ pub(crate) mod future;
 pub(crate) mod region;
 pub(crate) mod regions;
 pub(crate) mod transport;
+pub mod wire;
 
 pub use {
     chan::{Chan, ChanValidate},
@@ -33,4 +34,5 @@ pub use {
     region::Region,
     regions::{DdrRegion, SerialRegion, SramRegion},
     transport::Transport,
+    wire::IpcSafe,
 };

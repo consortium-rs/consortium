@@ -14,9 +14,8 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use consortium_common::codec::{Codec, CodecFor};
+use super::{Codec, CodecFor};
 
-// consortium-codec-prost
 pub struct ProstCodec;
 
 #[derive(Debug)]

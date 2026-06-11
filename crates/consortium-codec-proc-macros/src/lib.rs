@@ -22,7 +22,7 @@ use syn::{
     parse_quote,
 };
 
-/// Derive macro that validates a struct/enum is safe to use as a cross-core IPC proto message.
+/// Derive macro that validates a struct/enum is safe to use as a cross-core IPC message.
 ///
 /// Rejected field types (checked recursively through generics, arrays, tuples, etc.):
 /// - Raw pointers (`*const T`, `*mut T`) — meaningless across separate address spaces
@@ -30,15 +30,15 @@ use syn::{
 /// - Function pointers (`fn(...)`) — addresses are not portable across cores
 /// - `usize` / `isize` — width is platform-dependent (32-bit M-core vs 64-bit A-core)
 ///
-/// Generic type parameters in fields are required to be `IpcProto` themselves via a
+/// Generic type parameters in fields are required to be `IpcSafe` themselves via a
 /// generated where-clause bound.
 ///
 /// # Example
 ///
 /// ```rust,ignore
-/// use consortium_codec_macros::IpcProto;
+/// use consortium_codec_proc_macros::IpcSafe;
 ///
-/// #[derive(IpcProto)]
+/// #[derive(IpcSafe)]
 /// struct SensorReading {
 ///     sensor_id: u32,
 ///     value: f32,
@@ -46,18 +46,18 @@ use syn::{
 /// }
 ///
 /// // This would fail to compile:
-/// // #[derive(IpcProto)]
+/// // #[derive(IpcSafe)]
 /// // struct Bad { ptr: *const u8 }
 /// ```
-#[proc_macro_derive(IpcProto)]
-pub fn derive_ipc_proto(input: TokenStream) -> TokenStream {
+#[proc_macro_derive(IpcSafe)]
+pub fn derive_ipc_safe(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
-    derive_ipc_proto_inner(input)
+    derive_ipc_safe_inner(input)
         .unwrap_or_else(|e| e.into_compile_error())
         .into()
 }
 
-fn derive_ipc_proto_inner(input: DeriveInput) -> syn::Result<TokenStream2> {
+fn derive_ipc_safe_inner(input: DeriveInput) -> syn::Result<TokenStream2> {
     let name = &input.ident;
 
     // Collect all field types from structs, enums, and unions.
@@ -90,8 +90,7 @@ fn derive_ipc_proto_inner(input: DeriveInput) -> syn::Result<TokenStream2> {
     let mut generics = input.generics.clone();
     for param in &mut generics.params {
         if let GenericParam::Type(tp) = param {
-            tp.bounds
-                .push(parse_quote!(::consortium_common::codec::IpcProto));
+            tp.bounds.push(parse_quote!(::consortium_ipc::IpcSafe));
         }
     }
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
@@ -100,7 +99,7 @@ fn derive_ipc_proto_inner(input: DeriveInput) -> syn::Result<TokenStream2> {
         // SAFETY: the derive macro has verified at compile time that every field type
         // is free of raw pointers, references, function pointers, and platform-dependent
         // integer widths (`usize`/`isize`).
-        unsafe impl #impl_generics ::consortium_common::codec::IpcProto
+        unsafe impl #impl_generics ::consortium_ipc::IpcSafe
             for #name #ty_generics
             #where_clause
         {}

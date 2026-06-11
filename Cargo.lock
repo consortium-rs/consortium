@@ -162,15 +162,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-codec-postcard"
-version = "0.1.0"
-dependencies = [
- "consortium-common",
- "postcard",
- "serde",
-]
-
-[[package]]
 name = "consortium-codec-proc-macros"
 version = "0.1.0"
 dependencies = [
@@ -181,25 +172,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-codec-prost"
-version = "0.1.0"
-dependencies = [
- "consortium-common",
- "prost",
-]
-
-[[package]]
-name = "consortium-codec-rkyv"
-version = "0.1.0"
-dependencies = [
- "consortium-common",
- "rkyv",
-]
-
-[[package]]
 name = "consortium-common"
 version = "0.1.0"
 dependencies = [
+ "postcard",
+ "prost",
+ "rkyv",
  "serde",
  "serde_yaml",
  "tempfile",

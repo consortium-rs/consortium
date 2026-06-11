@@ -14,26 +14,29 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use consortium_common::codec::{Codec, CodecFor};
+use super::{Codec, CodecFor};
 
 pub struct RkyvCodec<const SCRATCH: usize>;
 
 /// A marker trait to indicate that the type can be safely archived and deserialized without validation.
 ///
-/// Because in `no_alloc`, the `rkyv' didn't provide safe access to archived data, we need to ensure that the types we archive are safe to access without validation.
+/// Because in `no_alloc`, the `rkyv` crate doesn't provide safe access to archived data, we need
+/// to ensure that the types we archive are safe to access without validation.
 ///
 /// # Safety
 ///
-/// When the data is strictly aligned via `#[repr(align(16))]`, it is safe to access the archived data without validation. This is because the alignment guarantees that the data will be correctly aligned in memory, preventing undefined behavior when accessing it.
+/// When the data is strictly aligned via `#[repr(align(16))]`, it is safe to access the archived
+/// data without validation. This is because the alignment guarantees that the data will be
+/// correctly aligned in memory, preventing undefined behavior when accessing it.
 ///
-/// Though only in `no_alloc` mode need this trait, using this marker to indicate that the type is safe to archive and deserialize without validation can help prevent misuse and ensure that the types we archive are always safe to access, regardless of the features enabled.
-///
-/// In `no_alloc` mode, we only serialize and deserialize the types implementing this trait, ensuring that all archived data is safe to access without validation. This allows us to maintain safety guarantees even in the absence of allocation and validation capabilities.
+/// In `no_alloc` mode, we only serialize and deserialize the types implementing this trait,
+/// ensuring that all archived data is safe to access without validation.
 pub unsafe trait TrustedArchive: rkyv::Archive {}
 
 impl<const SCRATCH: usize> Codec for RkyvCodec<SCRATCH> {
     type Error = rkyv::rancor::Error;
 }
+
 #[cfg(feature = "alloc")]
 use rkyv::{
     Archive, Serialize,
