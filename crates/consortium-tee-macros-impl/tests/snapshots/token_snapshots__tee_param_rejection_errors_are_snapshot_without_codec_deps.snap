@@ -1,0 +1,26 @@
+---
+source: crates/consortium-tee-macros-impl/tests/token_snapshots.rs
+assertion_line: 82
+expression: pretty_snapshot(expanded)
+---
+::core::compile_error! {
+    "raw pointers are not allowed in TeeParam types: they cannot be serialized across the TEE secure-world boundary"
+}
+::core::compile_error! {
+    "bare references are not allowed as TeeParam fields: use owned types instead"
+}
+::core::compile_error! {
+    "function pointers are not allowed in TeeParam types: they are not serializable"
+}
+::core::compile_error! {
+    "`usize` is pointer-width dependent and not allowed in TeeParam types: the TA may be 32-bit while the CA is 64-bit; use `u32`/`u64` or `i32`/`i64`"
+}
+::core::compile_error! {
+    "TEE value slots are `uint32_t` pairs; `f32` encoding is ambiguous across TEE boundaries; use `u32` directly or implement `TeeParam` with explicit encoding"
+}
+::core::compile_error! {
+    "`u128` does not fit in two `u32` TEE Value fields; wrap it in a newtype and implement `TeeParam` using a Memref (serialized) slot"
+}
+::core::compile_error! {
+    "trait objects and `impl Trait` are not allowed in TeeParam types: use a concrete, sized type"
+}

@@ -82,7 +82,7 @@ impl Parse for TeeServiceInput {
 
 /// Input:
 ///
-/// ```no_run
+/// ```no_run,ignore
 /// tee_service! {
 ///   (optional) context ContextStruct
 ///   commands { function_a, function_b }

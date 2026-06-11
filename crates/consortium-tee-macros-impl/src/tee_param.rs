@@ -75,6 +75,8 @@ fn derive_tee_param_impl(input: DeriveInput) -> syn::Result<TokenStream2> {
     if let Some(err) = combined {
         return Err(err);
     }
+    all_warnings.sort_by_key(|warning| warning.to_string());
+    all_warnings.dedup_by_key(|warning| warning.to_string());
 
     // Keep the original ty_generics (without the injected codec param) for the
     // `for #name #orig_ty_generics` part of the impl.

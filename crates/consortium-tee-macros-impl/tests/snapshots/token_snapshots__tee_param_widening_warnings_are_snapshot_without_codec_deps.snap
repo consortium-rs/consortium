@@ -1,0 +1,118 @@
+---
+source: crates/consortium-tee-macros-impl/tests/token_snapshots.rs
+assertion_line: 65
+expression: pretty_snapshot(expanded)
+---
+/// This function should not be called and only exists to emit a compiler warning.
+///
+/// It is a No-OP in any case.
+#[allow(dead_code)]
+#[allow(non_camel_case_types)]
+#[allow(non_snake_case)]
+fn tee_param_implicit_widen_char() {
+    #[deprecated(
+        note = "\n\t\tIt is deprecated to `char` as a TeeParam field.\n\t\tPlease instead `char` is mapped to its Unicode scalar value (`u32`) in the TEE Value slot; use `u32` directly to silence this warning."
+    )]
+    #[allow(non_upper_case_globals)]
+    const _w: () = ();
+    let _ = _w;
+}
+/// This function should not be called and only exists to emit a compiler warning.
+///
+/// It is a No-OP in any case.
+#[allow(dead_code)]
+#[allow(non_camel_case_types)]
+#[allow(non_snake_case)]
+fn tee_param_implicit_widen_i16() {
+    #[deprecated(
+        note = "\n\t\tIt is deprecated to `i16` as a TeeParam field.\n\t\tPlease instead `i16` is sign-extended to `i32` then bit-cast to `u32` in the TEE Value slot (lossless); use `i32` directly to silence this warning."
+    )]
+    #[allow(non_upper_case_globals)]
+    const _w: () = ();
+    let _ = _w;
+}
+/// This function should not be called and only exists to emit a compiler warning.
+///
+/// It is a No-OP in any case.
+#[allow(dead_code)]
+#[allow(non_camel_case_types)]
+#[allow(non_snake_case)]
+fn tee_param_implicit_widen_i8() {
+    #[deprecated(
+        note = "\n\t\tIt is deprecated to `i8` as a TeeParam field.\n\t\tPlease instead `i8` is sign-extended to `i32` then bit-cast to `u32` in the TEE Value slot (lossless); use `i32` directly to silence this warning."
+    )]
+    #[allow(non_upper_case_globals)]
+    const _w: () = ();
+    let _ = _w;
+}
+/// This function should not be called and only exists to emit a compiler warning.
+///
+/// It is a No-OP in any case.
+#[allow(dead_code)]
+#[allow(non_camel_case_types)]
+#[allow(non_snake_case)]
+fn tee_param_implicit_widen_u16() {
+    #[deprecated(
+        note = "\n\t\tIt is deprecated to `u16` as a TeeParam field.\n\t\tPlease instead `u16` is widened to `u32` in the TEE Value slot (lossless); use `u32` directly to silence this warning."
+    )]
+    #[allow(non_upper_case_globals)]
+    const _w: () = ();
+    let _ = _w;
+}
+/// This function should not be called and only exists to emit a compiler warning.
+///
+/// It is a No-OP in any case.
+#[allow(dead_code)]
+#[allow(non_camel_case_types)]
+#[allow(non_snake_case)]
+fn tee_param_implicit_widen_u8() {
+    #[deprecated(
+        note = "\n\t\tIt is deprecated to `u8` as a TeeParam field.\n\t\tPlease instead `u8` is widened to `u32` in the TEE Value slot (lossless); use `u32` directly to silence this warning."
+    )]
+    #[allow(non_upper_case_globals)]
+    const _w: () = ();
+    let _ = _w;
+}
+impl<__TeeCodec> ::consortium_tee::TeeParam<__TeeCodec> for WarningPayload
+where
+    __TeeCodec: for<'__buf> ::consortium_common::codec::CodecFor<
+        WarningPayload,
+        Decoded<'__buf> = WarningPayload,
+    >,
+    WarningPayload: 'static,
+{
+    const MAX_SIZE: usize = 1024;
+    fn into_tee_param(
+        &self,
+    ) -> ::core::result::Result<
+        ::consortium_tee::TeeParamRepr,
+        ::consortium_tee::TeeParamError,
+    > {
+        let mut __buf = ::alloc::vec![
+            0u8; < Self as ::consortium_tee::TeeParam < __TeeCodec >> ::MAX_SIZE
+        ];
+        <__TeeCodec as ::consortium_common::codec::CodecFor<
+            Self,
+        >>::encode(self, &mut __buf)
+            .map(|__len| {
+                __buf.truncate(__len);
+                ::consortium_tee::TeeParamSlot::Serialized(__buf)
+            })
+            .map_err(|_| ::consortium_tee::TeeParamError::EncodeFailed)
+    }
+    fn from_tee_param(
+        repr: ::consortium_tee::TeeParamReprRef<'_>,
+    ) -> ::core::result::Result<Self, ::consortium_tee::TeeParamError> {
+        match repr {
+            ::consortium_tee::TeeParamSlot::Serialized(__bytes) => {
+                <__TeeCodec as ::consortium_common::codec::CodecFor<
+                    Self,
+                >>::decode(__bytes)
+                    .map_err(|_| ::consortium_tee::TeeParamError::DecodeFailed)
+            }
+            ::consortium_tee::TeeParamSlot::Primitive { .. } => {
+                Err(::consortium_tee::TeeParamError::DecodeFailed)
+            }
+        }
+    }
+}
