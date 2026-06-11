@@ -18,16 +18,16 @@
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
-pub mod chan;
-pub mod channel;
-pub mod doorbell;
+pub(crate) mod chan;
+pub(crate) mod channel;
+pub(crate) mod doorbell;
 pub(crate) mod future;
-pub mod region;
-pub mod regions;
-pub mod transport;
+pub(crate) mod region;
+pub(crate) mod regions;
+pub(crate) mod transport;
 
 pub use {
-    chan::Chan,
+    chan::{Chan, ChanValidate},
     channel::Channel,
     doorbell::Doorbell,
     region::Region,
