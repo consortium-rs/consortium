@@ -36,9 +36,7 @@ path = "src/main.rs"
 required-features = ["ta"]
 
 [target.'cfg(target_os = "linux")'.dependencies]
-consortium-tee = { path = "../consortium-tee", default-features = false, features = [
-  "ta",
-] }
+consortium-tee = { path = "../consortium-tee", default-features = false, features = ["ta"] }
 num_enum = { version = "0.7.6", default-features = false }
 tokio = { version = "1.51.1", features = ["rt"] }
 optee-teec = { version = "0.8.0", optional = true }
