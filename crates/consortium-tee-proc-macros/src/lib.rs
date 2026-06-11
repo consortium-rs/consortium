@@ -604,8 +604,9 @@ fn check_tee_type(ty: &Type) -> (Vec<syn::Error>, Vec<TokenStream2>) {
                             "`{s}` is widened to `u32` in the TEE Value slot (lossless); \
                              use `u32` directly to silence this warning"
                         );
+                        let warning_name = format!("tee_param_implicit_widen_{s}");
                         warnings.push(
-                            Warning::new_deprecated("tee_param_implicit_widen")
+                            Warning::new_deprecated(&warning_name)
                                 .old(&old)
                                 .new(&new)
                                 .span(ty.span())
@@ -620,8 +621,9 @@ fn check_tee_type(ty: &Type) -> (Vec<syn::Error>, Vec<TokenStream2>) {
                              in the TEE Value slot (lossless); use `i32` directly \
                              to silence this warning"
                         );
+                        let warning_name = format!("tee_param_implicit_widen_{s}");
                         warnings.push(
-                            Warning::new_deprecated("tee_param_implicit_widen")
+                            Warning::new_deprecated(&warning_name)
                                 .old(&old)
                                 .new(&new)
                                 .span(ty.span())
@@ -631,7 +633,7 @@ fn check_tee_type(ty: &Type) -> (Vec<syn::Error>, Vec<TokenStream2>) {
                     }
                     "char" => {
                         warnings.push(
-                            Warning::new_deprecated("tee_param_implicit_widen")
+                            Warning::new_deprecated("tee_param_implicit_widen_char")
                                 .old("`char` as a TeeParam field")
                                 .new(
                                     "`char` is mapped to its Unicode scalar value (`u32`) in the \

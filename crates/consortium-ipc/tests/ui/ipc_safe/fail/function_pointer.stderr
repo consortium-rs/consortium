@@ -1,0 +1,5 @@
+error: function pointers are not allowed in IpcSafe types: code addresses are not portable across processor cores
+ --> tests/ui/ipc_safe/fail/function_pointer.rs:5:15
+  |
+5 |     callback: fn(u32) -> u32,
+  |               ^^^^^^^^^^^^^^

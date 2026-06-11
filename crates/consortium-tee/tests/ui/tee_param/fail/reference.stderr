@@ -1,0 +1,5 @@
+error: bare references are not allowed as TeeParam fields: use owned types instead
+ --> tests/ui/tee_param/fail/reference.rs:5:12
+  |
+5 |     value: &'a u32,
+  |            ^^^^^^^

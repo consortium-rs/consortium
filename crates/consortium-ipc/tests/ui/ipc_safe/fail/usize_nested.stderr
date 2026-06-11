@@ -1,0 +1,5 @@
+error: `usize` is platform-dependent (pointer-width) and not allowed in IpcSafe types: use u32/u64 or i32/i64 with an explicit width
+ --> tests/ui/ipc_safe/fail/usize_nested.rs:5:19
+  |
+5 |     value: Option<usize>,
+  |                   ^^^^^
