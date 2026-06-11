@@ -26,6 +26,10 @@ consortium-common = { path = "../consortium-common" }
 num_enum = { version = "0.7.3", default-features = false }
 thiserror = { version = "2.0", default-features = false }
 
+[dev-dependencies]
+consortium-ipc-proc-macros = { path = "../consortium-ipc-proc-macros" }
+trybuild = "1"
+
 [features]
 std = ["alloc", "futures"]
 alloc = []

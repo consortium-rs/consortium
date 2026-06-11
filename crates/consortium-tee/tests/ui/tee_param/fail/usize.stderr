@@ -1,0 +1,5 @@
+error: `usize` is pointer-width dependent and not allowed in TeeParam types: the TA may be 32-bit while the CA is 64-bit; use `u32`/`u64` or `i32`/`i64`
+ --> tests/ui/tee_param/fail/usize.rs:5:12
+  |
+5 |     value: usize,
+  |            ^^^^^

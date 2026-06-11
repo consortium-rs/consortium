@@ -1,0 +1,5 @@
+error: references are not allowed in IpcSafe types: they are local to one address space; use owned types instead
+ --> tests/ui/ipc_safe/fail/reference.rs:5:12
+  |
+5 |     value: &'a u32,
+  |            ^^^^^^^

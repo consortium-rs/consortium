@@ -1,0 +1,5 @@
+error: raw pointers are not allowed in IpcSafe types: they are not valid across separate processor address spaces; use an index or ID instead
+ --> tests/ui/ipc_safe/fail/raw_pointer.rs:5:10
+  |
+5 |     ptr: *const u8,
+  |          ^^^^^^^^^

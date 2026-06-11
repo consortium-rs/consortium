@@ -1,0 +1,5 @@
+error: raw pointers are not allowed in TeeParam types: they cannot be serialized across the TEE secure-world boundary
+ --> tests/ui/tee_param/fail/raw_pointer.rs:5:10
+  |
+5 |     ptr: *mut u8,
+  |          ^^^^^^^

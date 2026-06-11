@@ -111,19 +111,19 @@ fn check_type(ty: &Type) -> Vec<syn::Error> {
     match ty {
         Type::Ptr(_) => vec![syn::Error::new_spanned(
             ty,
-            "raw pointers are not allowed in IPC proto types: they are not valid across \
+            "raw pointers are not allowed in IpcSafe types: they are not valid across \
              separate processor address spaces; use an index or ID instead",
         )],
 
         Type::Reference(_) => vec![syn::Error::new_spanned(
             ty,
-            "references are not allowed in IPC proto types: they are local to one address \
+            "references are not allowed in IpcSafe types: they are local to one address \
              space; use owned types instead",
         )],
 
         Type::BareFn(_) => vec![syn::Error::new_spanned(
             ty,
-            "function pointers are not allowed in IPC proto types: code addresses are not \
+            "function pointers are not allowed in IpcSafe types: code addresses are not \
              portable across processor cores",
         )],
 
@@ -136,7 +136,7 @@ fn check_type(ty: &Type) -> Vec<syn::Error> {
                         ty,
                         format!(
                             "`{s}` is platform-dependent (pointer-width) and not allowed in \
-                             IPC proto types: use u32/u64 or i32/i64 with an explicit width"
+                             IpcSafe types: use u32/u64 or i32/i64 with an explicit width"
                         ),
                     )];
                 }
@@ -176,7 +176,7 @@ fn check_type(ty: &Type) -> Vec<syn::Error> {
         // catch-all because none of these can represent a plain, sized, ABI-stable value.
         Type::TraitObject(_) | Type::ImplTrait(_) => vec![syn::Error::new_spanned(
             ty,
-            "trait objects and `impl Trait` are not allowed in IPC proto types: use a \
+            "trait objects and `impl Trait` are not allowed in IpcSafe types: use a \
              concrete, sized type",
         )],
 
