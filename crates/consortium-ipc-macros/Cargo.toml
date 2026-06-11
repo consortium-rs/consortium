@@ -1,0 +1,15 @@
+[package]
+name = "consortium-ipc-macros"
+description = "Proc-macro wrappers for Consortium IPC"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lints]
+workspace = true
+
+[lib]
+proc-macro = true
+
+[dependencies]
+consortium-ipc-macros-impl = { path = "../consortium-ipc-macros-impl" }

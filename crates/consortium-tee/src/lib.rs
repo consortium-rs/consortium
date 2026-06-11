@@ -72,7 +72,7 @@ pub struct NoCodec;
 ///   CodecFor<Self>` — the codec encodes/decodes the value into
 ///   [`TeeParamSlot::Serialized`] bytes.
 ///
-/// Use `#[derive(TeeParam)]` from `consortium-tee-proc-macros` to automatically
+/// Use `#[derive(TeeParam)]` from `consortium-tee-macros` to automatically
 /// generate the serialized impl. The codec is NOT baked into the derive; it is
 /// specified once at the call site with `#[tee_command(codec = MyCodec)]`.
 ///
@@ -199,7 +199,7 @@ impl<C> TeeParam<C> for Vec<u8> {
     }
 }
 
-pub use consortium_tee_proc_macros::{TeeParam, tee_command, tee_service};
+pub use consortium_tee_macros::{TeeParam, tee_command, tee_service};
 
 #[cfg(all(target_os = "linux", feature = "ca"))]
 pub mod error;

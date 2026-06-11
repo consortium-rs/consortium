@@ -12,10 +12,11 @@ The core idea: the developer writes normal Rust functions, and the SDK generates
 
 ```
 consortium-tee/                  # error types, TeeResult alias
-consortium-tee-proc-macros/      # proc-macro crate: #[tee_command], tee_service!
+consortium-tee-macros/           # proc-macro wrapper crate: #[tee_command], tee_service!
+consortium-tee-macros-impl/      # proc-macro2 implementation crate for testable expansion logic
 ```
 
-The proc-macro crate depends only on `syn`, `quote`, `proc-macro2`, and `heck`. It emits code that references `optee_utee` (TA side) and `consortium_tee` (for `TeeResult` on the CA side), but does not import them itself.
+The proc-macro wrapper delegates to the implementation crate. The implementation crate depends on `syn`, `quote`, `proc-macro2`, and `heck`, and emits code that references `optee_utee` (TA side) and `consortium_tee` (for `TeeResult` on the CA side), but does not import those runtime crates itself.
 
 ---
 
@@ -69,7 +70,7 @@ my-ta = { path = "../my-ta", features = ["ca"] }
 ```rust
 // my-ta/src/lib.rs
 
-use consortium_tee_proc_macros::{tee_command, tee_service};
+use consortium_tee_macros::{tee_command, tee_service};
 
 tee_service! {
     context TaContext

@@ -15,15 +15,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-tee-proc-macros"
-description = "Proc-macros for Consortium TEE: tee_service!, #[tee_command], and #[derive(TeeParam)] with pluggable codec support"
+name = "consortium-tee-macros-impl"
+description = "Implementation crate for Consortium TEE macros"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
-
-[lib]
-proc-macro = true
-
 
 [dependencies]
 heck = "0.5.0"

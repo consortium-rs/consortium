@@ -1,4 +1,4 @@
-use consortium_ipc_proc_macros::IpcSafe;
+use consortium_ipc_macros::IpcSafe;
 
 #[derive(IpcSafe)]
 struct Bad {

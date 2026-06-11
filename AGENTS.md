@@ -47,7 +47,7 @@ This is a Rust workspace providing an async abstraction for inter-processor comm
 | **Config & Build** | `consortium-common`, `consortium-builder`, `consortium-cli` |
 | **Debug** | `consortium-dbg-defmt` |
 | **RPI Subsystem** | `consortium-rpi`, `consortium-rpi-meta` |
-| **TEE** | `consortium-tee`, `consortium-tee-proc-macros`, `consortium-tee-test` |
+| **TEE** | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`, `consortium-tee-test` |
 | **Utilities** | `consortium-ffi`, `consortium-hmi`, `consortium-ort` |
 
 ### Core Crates
@@ -77,7 +77,8 @@ This is a Rust workspace providing an async abstraction for inter-processor comm
 
 **TEE:**
 - **`consortium-tee`** — OP-TEE integration and error types (Linux-only).
-- **`consortium-tee-proc-macros`** — `tee_service!` and `#[tee_command]` macros for TA/CA code generation.
+- **`consortium-tee-macros`** — Proc-macro wrapper for `tee_service!`, `#[tee_command]`, and `#[derive(TeeParam)]`.
+- **`consortium-tee-macros-impl`** — Testable `proc_macro2` implementation logic for TEE macro expansion.
 
 **Utilities:**
 - **`consortium-ffi`**, **`consortium-hmi`**, **`consortium-ort`** — FFI bindings, HMI integration, and ONNX Runtime support.

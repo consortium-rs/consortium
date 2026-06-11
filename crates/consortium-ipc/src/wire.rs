@@ -22,7 +22,7 @@
 ///   assumptions that are meaningless across separate processor cores)
 /// - Free of platform-dependent integer widths (`usize`, `isize`)
 ///
-/// Use `#[derive(IpcSafe)]` from `consortium-ipc-proc-macros` to automatically enforce
+/// Use `#[derive(IpcSafe)]` from `consortium-ipc-macros` to automatically enforce
 /// these constraints at compile time. The derive rejects forbidden types anywhere in the
 /// field's type tree — including inside generics like `Vec<usize>` or `Option<*const u8>`.
 ///
@@ -32,7 +32,7 @@
 /// # Example
 ///
 /// ```rust,ignore
-/// use consortium_ipc_proc_macros::IpcSafe;
+/// use consortium_ipc_macros::IpcSafe;
 ///
 /// #[derive(IpcSafe)]
 /// struct MotorCommand {

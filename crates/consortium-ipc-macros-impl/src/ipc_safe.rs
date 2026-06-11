@@ -14,13 +14,9 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::quote;
-use syn::{
-    Data, DeriveInput, GenericArgument, GenericParam, PathArguments, Type, parse_macro_input,
-    parse_quote,
-};
+use syn::{Data, DeriveInput, GenericArgument, GenericParam, PathArguments, Type, parse_quote};
 
 /// Derive macro that validates a struct/enum is safe to use as a cross-core IPC message.
 ///
@@ -36,7 +32,7 @@ use syn::{
 /// # Example
 ///
 /// ```rust,ignore
-/// use consortium_ipc_proc_macros::IpcSafe;
+/// use consortium_ipc_macros::IpcSafe;
 ///
 /// #[derive(IpcSafe)]
 /// struct SensorReading {
@@ -49,15 +45,15 @@ use syn::{
 /// // #[derive(IpcSafe)]
 /// // struct Bad { ptr: *const u8 }
 /// ```
-#[proc_macro_derive(IpcSafe)]
-pub fn derive_ipc_safe(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as DeriveInput);
-    derive_ipc_safe_inner(input)
-        .unwrap_or_else(|e| e.into_compile_error())
-        .into()
+pub fn derive_ipc_safe(input: TokenStream2) -> TokenStream2 {
+    let input = match syn::parse2::<DeriveInput>(input) {
+        Ok(input) => input,
+        Err(err) => return err.into_compile_error(),
+    };
+    derive_ipc_safe_impl(input).unwrap_or_else(|e| e.into_compile_error())
 }
 
-fn derive_ipc_safe_inner(input: DeriveInput) -> syn::Result<TokenStream2> {
+fn derive_ipc_safe_impl(input: DeriveInput) -> syn::Result<TokenStream2> {
     let name = &input.ident;
 
     // Collect all field types from structs, enums, and unions.

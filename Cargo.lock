@@ -199,7 +199,7 @@ name = "consortium-ipc"
 version = "0.1.0"
 dependencies = [
  "consortium-common",
- "consortium-ipc-proc-macros",
+ "consortium-ipc-macros",
  "num_enum",
  "thiserror",
  "trybuild",
@@ -235,7 +235,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-ipc-proc-macros"
+name = "consortium-ipc-macros"
+version = "0.1.0"
+dependencies = [
+ "consortium-ipc-macros-impl",
+]
+
+[[package]]
+name = "consortium-ipc-macros-impl"
 version = "0.1.0"
 dependencies = [
  "heck",
@@ -317,7 +324,7 @@ name = "consortium-tee"
 version = "0.1.0"
 dependencies = [
  "consortium-common",
- "consortium-tee-proc-macros",
+ "consortium-tee-macros",
  "optee-teec",
  "thiserror",
  "tokio",
@@ -325,7 +332,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-tee-proc-macros"
+name = "consortium-tee-macros"
+version = "0.1.0"
+dependencies = [
+ "consortium-tee-macros-impl",
+]
+
+[[package]]
+name = "consortium-tee-macros-impl"
 version = "0.1.0"
 dependencies = [
  "heck",

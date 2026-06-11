@@ -81,7 +81,8 @@ check-tee:
     @[ "$(uname)" = "Linux" ] || { echo "Error: TEE crates require Linux"; exit 1; }
     cargo check -p consortium-tee
     cargo check -p consortium-tee --no-default-features --features ta
-    cargo check -p consortium-tee-proc-macros
+    cargo check -p consortium-tee-macros
+    cargo check -p consortium-tee-macros-impl
 
 # Check TEE crates with panic=abort (for TA binaries)
 check-tee-test:
@@ -92,7 +93,8 @@ check-tee-test:
 build-tee:
     @[ "$(uname)" = "Linux" ] || { echo "Error: TEE crates require Linux"; exit 1; }
     cargo build -p consortium-tee --release
-    cargo build -p consortium-tee-proc-macros --release
+    cargo build -p consortium-tee-macros --release
+    cargo build -p consortium-tee-macros-impl --release
 
 # Build TEE test crate with panic=abort
 build-tee-test:
