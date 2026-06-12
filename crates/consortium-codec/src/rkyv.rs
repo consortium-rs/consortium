@@ -15,6 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use crate::{Codec, CodecFor};
+use core::fmt;
 
 pub struct RkyvCodec<const SCRATCH: usize>;
 
@@ -35,6 +36,21 @@ pub unsafe trait TrustedArchive: rkyv::Archive {}
 
 impl<const SCRATCH: usize> Codec for RkyvCodec<SCRATCH> {
     type Error = rkyv::rancor::Error;
+}
+
+#[derive(Debug)]
+struct BufferTooSmall;
+
+impl fmt::Display for BufferTooSmall {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str("destination buffer is too small")
+    }
+}
+
+impl core::error::Error for BufferTooSmall {}
+
+fn buffer_too_small() -> rkyv::rancor::Error {
+    <rkyv::rancor::Error as rkyv::rancor::Source>::new(BufferTooSmall)
 }
 
 #[cfg(feature = "alloc")]
@@ -61,6 +77,9 @@ where
     fn encode(msg: &T, buf: &mut [u8]) -> Result<usize, Self::Error> {
         let bytes = rkyv::to_bytes::<RkyvError>(msg)?;
         let len = bytes.len();
+        if len > buf.len() {
+            return Err(buffer_too_small());
+        }
         buf[..len].copy_from_slice(&bytes);
         Ok(len)
     }
@@ -103,6 +122,9 @@ where
             SubAllocator::new(&mut alloc),
         )?;
         let len = bytes.len();
+        if len > buf.len() {
+            return Err(buffer_too_small());
+        }
         buf[..len].copy_from_slice(&bytes);
         Ok(len)
     }
@@ -114,5 +136,43 @@ where
         // SAFETY: T: TrustedArchive guarantees buf was produced by encode
         // and is correctly aligned
         Ok(unsafe { rkyv::access_unchecked::<T::Archived>(buf) })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[cfg(not(feature = "alloc"))]
+    // SAFETY: `u32` archives to plain integer data and is safe to access from
+    // bytes emitted by this codec's encoder.
+    unsafe impl TrustedArchive for u32 {}
+
+    #[test]
+    fn round_trips_archived_value() {
+        let msg = 0x1234_5678u32;
+        let mut buf = [0u8; 16];
+
+        let len = RkyvCodec::<64>::encode(&msg, &mut buf).expect("encode should fit");
+        let decoded =
+            <RkyvCodec<64> as CodecFor<u32>>::decode(&buf[..len]).expect("decode should succeed");
+
+        assert_eq!(*decoded, msg);
+    }
+
+    #[test]
+    fn rejects_buffer_that_is_too_small() {
+        let msg = 0x1234_5678u32;
+        let mut buf = [0u8; 1];
+
+        assert!(RkyvCodec::<64>::encode(&msg, &mut buf).is_err());
+    }
+
+    #[cfg(feature = "alloc")]
+    #[test]
+    fn rejects_invalid_archived_bytes() {
+        let buf = [0u8; 1];
+
+        assert!(<RkyvCodec<64> as CodecFor<u32>>::decode(&buf).is_err());
     }
 }

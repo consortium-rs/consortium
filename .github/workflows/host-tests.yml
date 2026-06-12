@@ -17,6 +17,9 @@ jobs:
       - name: Debug logging tests
         run: cargo test -p consortium-dbg-defmt
 
+      - name: Codec tests
+        run: cargo test -p consortium-codec --features postcard,prost,rkyv,alloc
+
       - name: IPC core tests
         run: cargo test -p consortium-ipc --features std
 
