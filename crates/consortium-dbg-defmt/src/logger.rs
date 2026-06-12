@@ -11,48 +11,105 @@ unsafe extern "C" {
 #[global_logger]
 pub struct ConsortiumLogger;
 
-unsafe impl Logger for ConsortiumLogger {
-    fn acquire() {
-        let base = unsafe { CONSORTIUM_DBG_SRAM_BASE as *const u8 };
-        let size = unsafe { CONSORTIUM_DBG_SRAM_SIZE };
+impl ConsortiumLogger {
+    /// Initializes the descriptor at `base` when needed and marks the logger as writing.
+    ///
+    /// # Safety
+    /// `base` must point to a writable debug shared-memory region of at least `size` bytes.
+    pub unsafe fn acquire_shared_memory(base: *mut u8, size: u16) {
+        // SAFETY: the caller guarantees `base` is readable for the descriptor header.
         let header = unsafe { DescriptorHeader::from_raw_ptr(base) };
         if header.check(MAGIC, VERSION).is_err() {
             let descriptor = Descriptor::new(size);
-            unsafe {
-                descriptor.write_to_raw_ptr(base as *mut u8);
-            }
+            // SAFETY: the caller guarantees `base` is writable for `size` bytes.
+            unsafe { descriptor.write_to_raw_ptr(base) };
         }
+        // SAFETY: the descriptor was either already present or initialized above at `base`.
         let descriptor = unsafe { &mut *(base as *mut Descriptor) };
         descriptor.flags.insert(Flags::Writing);
     }
 
-    unsafe fn flush() {
-        let base = unsafe { CONSORTIUM_DBG_SRAM_BASE as *const u8 };
+    /// Blocks until the host has consumed pending frames unless the descriptor is in error.
+    ///
+    /// # Safety
+    /// `base` must point to a valid debug shared-memory descriptor region.
+    pub unsafe fn flush_shared_memory(base: *mut u8) {
+        // SAFETY: the caller guarantees `base` points at a valid descriptor.
         let descriptor = unsafe { &mut *(base as *mut Descriptor) };
         if descriptor.flags.contains(Flags::Error) {
             return;
         }
-        unsafe {
-            descriptor.flush(base as *mut u8);
-        }
+        // SAFETY: the caller guarantees the descriptor owns a valid shared-memory region.
+        unsafe { descriptor.flush(base) };
     }
 
-    unsafe fn release() {
-        let base = unsafe { CONSORTIUM_DBG_SRAM_BASE as *const u8 };
+    /// Clears the writing flag in the descriptor at `base`.
+    ///
+    /// # Safety
+    /// `base` must point to a valid debug shared-memory descriptor region.
+    pub unsafe fn release_shared_memory(base: *mut u8) {
+        // SAFETY: the caller guarantees `base` points at a valid descriptor.
         let descriptor = unsafe { &mut *(base as *mut Descriptor) };
         descriptor.flags.remove(Flags::Writing);
     }
 
-    unsafe fn write(bytes: &[u8]) {
-        let base = unsafe { CONSORTIUM_DBG_SRAM_BASE as *const u8 };
+    /// Writes one defmt frame payload into the descriptor-backed ring buffer.
+    ///
+    /// # Safety
+    /// `base` must point to a valid debug shared-memory descriptor region.
+    pub unsafe fn write_shared_memory(base: *mut u8, bytes: &[u8]) {
+        // SAFETY: the caller guarantees `base` points at a valid descriptor.
         let descriptor = unsafe { &mut *(base as *mut Descriptor) };
         if descriptor.flags.contains(Flags::Error) {
             return;
         }
+        // SAFETY: the caller guarantees the descriptor owns a valid shared-memory region.
         unsafe {
-            if !descriptor.write_one_frame(base as *mut u8, bytes) {
+            if !descriptor.write_one_frame(base, bytes) {
                 descriptor.flags.insert(Flags::Overflow);
             }
+        }
+    }
+}
+
+// SAFETY: the implementation only accesses the debug SRAM region described by the platform
+// linker symbols and delegates all descriptor mutation to the shared-memory helpers above.
+unsafe impl Logger for ConsortiumLogger {
+    fn acquire() {
+        // SAFETY: the platform provides this linker symbol for the debug SRAM base.
+        let base = unsafe { CONSORTIUM_DBG_SRAM_BASE as *mut u8 };
+        // SAFETY: the platform provides this linker symbol for the debug SRAM size.
+        let size = unsafe { CONSORTIUM_DBG_SRAM_SIZE };
+        // SAFETY: the linker symbols describe the debug shared-memory region.
+        unsafe {
+            Self::acquire_shared_memory(base, size);
+        }
+    }
+
+    unsafe fn flush() {
+        // SAFETY: the platform provides this linker symbol for the debug SRAM base.
+        let base = unsafe { CONSORTIUM_DBG_SRAM_BASE as *mut u8 };
+        // SAFETY: the linker symbol describes the debug shared-memory region.
+        unsafe {
+            Self::flush_shared_memory(base);
+        }
+    }
+
+    unsafe fn release() {
+        // SAFETY: the platform provides this linker symbol for the debug SRAM base.
+        let base = unsafe { CONSORTIUM_DBG_SRAM_BASE as *mut u8 };
+        // SAFETY: the linker symbol describes the debug shared-memory region.
+        unsafe {
+            Self::release_shared_memory(base);
+        }
+    }
+
+    unsafe fn write(bytes: &[u8]) {
+        // SAFETY: the platform provides this linker symbol for the debug SRAM base.
+        let base = unsafe { CONSORTIUM_DBG_SRAM_BASE as *mut u8 };
+        // SAFETY: the linker symbol describes the debug shared-memory region.
+        unsafe {
+            Self::write_shared_memory(base, bytes);
         }
     }
 }
