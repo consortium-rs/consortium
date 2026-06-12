@@ -1,22 +1,36 @@
 use std::{env, path::PathBuf};
 
 fn main() {
-    pkg_config::probe_library("cogc`ore").unwrap();
+    pkg_config::probe_library("cogcore").unwrap();
     println!("cargo:rerun-if-changed=wrapper.h");
 
     let vendor = PathBuf::from("vendor");
 
     // Tell Cargo where to find the static library
-    println!("cargo:rustc-link-search=native={}", vendor.join("lib").display());
+    println!(
+        "cargo:rustc-link-search=native={}",
+        vendor.join("lib").display()
+    );
     println!("cargo:rustc-link-lib=static=cogcore");
 
     // Re-run if headers change
     println!("cargo:rerun-if-changed=wrapper.h");
-    println!("cargo:rerun-if-changed=vendor/include/cogcore.h");
+    println!("cargo:rerun-if-changed=vendor/include/cog.h");
+
+    let search_path =
+        std::env::var("COGCORE_LIB_DIR").unwrap_or_else(|_| "/usr/local/lib".to_string());
+
+    println!("cargo:rustc-link-search=native={search_path}");
+    println!("cargo:rustc-link-lib=dylib=cogcore");
 
     // Generate bindings
     let bindings = bindgen::Builder::default()
         .header("wrapper.h")
+        .clang_arg("-I/usr/include/glib-2.0".to_string())
+        .clang_arg("-I/usr/lib/aarch64-linux-gnu/glib-2.0/include".to_string())
+        .clang_arg("-I/usr/include/wpe-webkit-1.0".to_string())
+        .clang_arg("-I/usr/include/libsoup-2.4".to_string())
+        .clang_arg("-I/usr/include/wpe-1.0".to_string())
         .clang_arg(format!("-I{}", vendor.join("include").display()))
         .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
         .generate()

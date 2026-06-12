@@ -6,10 +6,16 @@ on:
     paths:
       - 'crates/libcogcore-sys/vendor/include/**'
       - 'crates/libcogcore-sys/wrapper.h'
+      - 'crates/libcogcore-sys/build.rs'
+      - '.github/workflows/cogcore.yml'
 
 jobs:
   generate:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04-arm
+    env:
+      COG_BUILD_DIR: /tmp/cog/build/core
+    permissions:
+      contents: write  # required for pushing commits
     steps:
       - uses: actions/checkout@v6.0.3
 
@@ -19,19 +25,32 @@ jobs:
           sudo apt-get install -y \
             libglib2.0-dev \
             libwpewebkit-1.0-dev \
-            clang llvm meson ninja-build
+            libwpebackend-fdo-1.0-dev \
+            libportal-dev \
+            libepoxy-dev \
+            libdrm-dev \
+            clang llvm meson ninja-build \
+            libinput-dev \
+            libcairo2-dev \
+            libwayland-dev \
+            libwayland-client0 \
+            libwayland-egl1 \
+            libwayland-cursor0 \
+            wayland-protocols \
+            libgbm-dev
 
       - name: Build cogcore
         run: |
           git clone https://github.com/Igalia/cog.git /tmp/cog
           cd /tmp/cog
-          meson setup build --prefix=/usr
-          ninja -C build install
+          meson setup build --prefix=/usr || cat build/meson-logs/meson-log.txt
+          sudo ninja -C build install
+
+      - name: Copy build files
+        run: cp /usr/include/cog/*.h crates/libcogcore-sys/vendor/include/
 
       - name: Generate bindings
         run: cargo build -p libcogcore-sys
-        env:
-          BINDGEN_EXTRA_CLANG_ARGS: "--target=aarch64-unknown-linux-gnu"
 
       - name: Copy bindings
         run: |
@@ -43,3 +62,4 @@ jobs:
         with:
           commit_message: "chore: regenerate cogcore bindings"
           file_pattern: crates/libcogcore-sys/src/bindings_pregenerated.rs
+          token: ${{ secrets.GITHUB_TOKEN }}
