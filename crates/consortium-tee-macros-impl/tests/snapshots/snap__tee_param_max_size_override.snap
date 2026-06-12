@@ -4,7 +4,7 @@ expression: pretty_snapshot(expanded)
 ---
 impl<__TeeCodec> ::consortium_tee::TeeParam<__TeeCodec> for LargePayload
 where
-    __TeeCodec: for<'__buf> ::consortium_common::codec::CodecFor<
+    __TeeCodec: for<'__buf> ::consortium_codec::CodecFor<
         LargePayload,
         Decoded<'__buf> = LargePayload,
     >,
@@ -20,9 +20,7 @@ where
         let mut __buf = ::alloc::vec![
             0u8; < Self as ::consortium_tee::TeeParam < __TeeCodec >> ::MAX_SIZE
         ];
-        <__TeeCodec as ::consortium_common::codec::CodecFor<
-            Self,
-        >>::encode(self, &mut __buf)
+        <__TeeCodec as ::consortium_codec::CodecFor<Self>>::encode(self, &mut __buf)
             .map(|__len| {
                 __buf.truncate(__len);
                 ::consortium_tee::TeeParamSlot::Serialized(__buf)
@@ -34,9 +32,7 @@ where
     ) -> ::core::result::Result<Self, ::consortium_tee::TeeParamError> {
         match repr {
             ::consortium_tee::TeeParamSlot::Serialized(__bytes) => {
-                <__TeeCodec as ::consortium_common::codec::CodecFor<
-                    Self,
-                >>::decode(__bytes)
+                <__TeeCodec as ::consortium_codec::CodecFor<Self>>::decode(__bytes)
                     .map_err(|_| ::consortium_tee::TeeParamError::DecodeFailed)
             }
             ::consortium_tee::TeeParamSlot::Primitive { .. } => {

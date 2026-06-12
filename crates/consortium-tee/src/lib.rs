@@ -37,7 +37,7 @@ pub enum TeeParamError {
 ///   Integers, booleans, and pairs use this variant. A `u16` becomes `Primitive { a: v as u32, b: 0 }`;
 ///   nothing is forced through `[u8; 2]`.
 /// - `Serialized(B)` maps to a TEE **Memref** slot — opaque bytes produced or consumed by a
-///   [`consortium_common::codec::CodecFor`] implementation.
+///   [`consortium_codec::CodecFor`] implementation.
 ///
 /// Two type aliases expose the canonical directions:
 /// - [`TeeParamRepr`] — owned (`B = Vec<u8>`), produced by [`TeeParam::into_tee_param`].

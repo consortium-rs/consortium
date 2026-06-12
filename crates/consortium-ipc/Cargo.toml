@@ -22,7 +22,7 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
-consortium-common = { path = "../consortium-common" }
+consortium-codec = { path = "../consortium-codec" }
 num_enum = { version = "0.7.3", default-features = false }
 thiserror = { version = "2.0", default-features = false }
 

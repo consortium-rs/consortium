@@ -16,7 +16,7 @@
 
 [package]
 name = "consortium-tee"
-description = "Trusted Execution Environment (TEE) support for Consortium with pluggable codec serialization via consortium_common::codec::CodecFor"
+description = "Trusted Execution Environment (TEE) support for Consortium with pluggable codec serialization via consortium_codec::CodecFor"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -28,11 +28,11 @@ default = ["ca"]
 
 [dependencies]
 thiserror = "2.0.18"
+consortium-codec = { path = "../consortium-codec" }
 consortium-tee-macros = { path = "../consortium-tee-macros" }
 tokio = { version = "1", default-features = false, optional = true, features = ["rt"] }
 
 [dev-dependencies]
-consortium-common = { path = "../consortium-common" }
 trybuild = "1"
 
 [target.'cfg(target_os = "linux")'.dependencies]
