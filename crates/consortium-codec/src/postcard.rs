@@ -44,3 +44,48 @@ where
         postcard::from_bytes(buf)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde::{Deserialize, Serialize};
+
+    #[derive(Debug, Deserialize, PartialEq, Serialize)]
+    struct Message {
+        sequence: u32,
+        ready: bool,
+    }
+
+    #[test]
+    fn round_trips_owned_message() {
+        let msg = Message {
+            sequence: 42,
+            ready: true,
+        };
+        let mut buf = [0u8; 16];
+
+        let len = PostcardCodec::encode(&msg, &mut buf).expect("encode should fit");
+        let decoded = <PostcardCodec as CodecFor<Message>>::decode(&buf[..len])
+            .expect("decode should succeed");
+
+        assert_eq!(decoded, msg);
+    }
+
+    #[test]
+    fn rejects_buffer_that_is_too_small() {
+        let msg = Message {
+            sequence: u32::MAX,
+            ready: true,
+        };
+        let mut buf = [0u8; 1];
+
+        assert!(PostcardCodec::encode(&msg, &mut buf).is_err());
+    }
+
+    #[test]
+    fn rejects_truncated_message() {
+        let buf = [42u8];
+
+        assert!(<PostcardCodec as CodecFor<Message>>::decode(&buf).is_err());
+    }
+}
