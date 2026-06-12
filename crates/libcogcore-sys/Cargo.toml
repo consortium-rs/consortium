@@ -1,0 +1,16 @@
+[package]
+name = "libcogcore-sys"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+links = "cogcore"
+
+[build-dependencies]
+bindgen = "0.70"
+pkg-config = "0.3.33"
+
+[dependencies]
+libc = "0.2"
+
+[lints]
+workspace = true

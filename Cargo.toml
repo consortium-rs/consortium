@@ -39,7 +39,7 @@ members = [
   "crates/consortium-ipc-doorbell-gpio",
   "crates/consortium-tee-test",
   "crates/consortium-ipc-transport-memory",
-  "crates/consortium-dbg-defmt",
+  "crates/consortium-dbg-defmt", "crates/libcogcore-sys",
 ]
 resolver = "2"
 
