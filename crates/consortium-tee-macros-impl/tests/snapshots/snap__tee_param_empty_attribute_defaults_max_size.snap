@@ -1,18 +1,14 @@
 ---
-source: crates/consortium-tee-macros-impl/tests/token_snapshots.rs
-assertion_line: 47
+source: crates/consortium-tee-macros-impl/tests/snap.rs
 expression: pretty_snapshot(expanded)
 ---
-impl<
-    T: ::consortium_tee::TeeParam<__TeeCodec>,
-    __TeeCodec,
-> ::consortium_tee::TeeParam<__TeeCodec> for CommandPayload<T>
+impl<__TeeCodec> ::consortium_tee::TeeParam<__TeeCodec> for DefaultPayload
 where
     __TeeCodec: for<'__buf> ::consortium_common::codec::CodecFor<
-        CommandPayload<T>,
-        Decoded<'__buf> = CommandPayload<T>,
+        DefaultPayload,
+        Decoded<'__buf> = DefaultPayload,
     >,
-    CommandPayload<T>: 'static,
+    DefaultPayload: 'static,
 {
     const MAX_SIZE: usize = 1024;
     fn into_tee_param(

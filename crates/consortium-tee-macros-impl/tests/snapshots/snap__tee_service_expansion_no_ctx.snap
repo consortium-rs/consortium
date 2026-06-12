@@ -1,0 +1,40 @@
+---
+source: crates/consortium-tee-macros-impl/tests/snap.rs
+expression: pretty_snapshot(expanded)
+---
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+#[repr(u64)]
+pub enum Command {
+    Ping = 0,
+    EchoBytes = 1,
+    Hello = 2,
+    #[default]
+    Unknown = 3,
+}
+impl From<u32> for Command {
+    fn from(val: u32) -> Self {
+        match val {
+            0 => Command::Ping,
+            1 => Command::EchoBytes,
+            2 => Command::Hello,
+            _ => Command::Unknown,
+        }
+    }
+}
+impl From<Command> for u32 {
+    fn from(cmd: Command) -> Self {
+        cmd as u32
+    }
+}
+#[cfg(feature = "ta")]
+pub fn invoke_command(
+    cmd: u32,
+    params: &mut ::optee_utee::Parameters,
+) -> ::optee_utee::Result<()> {
+    match Command::from(cmd) {
+        Command::Ping => ping_dispatched(params),
+        Command::EchoBytes => echo_bytes_dispatched(params),
+        Command::Hello => hello_dispatched(params),
+        Command::Unknown => Err(::optee_utee::ErrorKind::BadParameters.into()),
+    }
+}

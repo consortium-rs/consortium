@@ -1,6 +1,5 @@
 ---
-source: crates/consortium-tee-macros-impl/tests/token_snapshots.rs
-assertion_line: 82
+source: crates/consortium-tee-macros-impl/tests/snap.rs
 expression: pretty_snapshot(expanded)
 ---
 ::core::compile_error! {

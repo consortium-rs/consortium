@@ -1,6 +1,5 @@
 ---
-source: crates/consortium-tee-macros-impl/tests/token_snapshots.rs
-assertion_line: 94
+source: crates/consortium-tee-macros-impl/tests/snap.rs
 expression: pretty_snapshot(expanded)
 ---
 fn crowded(a: u32, b: u32, c: u32, d: u32, e: u32) {}

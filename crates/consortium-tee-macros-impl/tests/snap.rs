@@ -7,7 +7,7 @@ fn pretty_snapshot(tokens: TokenStream) -> String {
 }
 
 #[test]
-fn tee_service_expansion_is_snapshot_without_optee_deps() {
+fn tee_service_expansion() {
     let expanded = consortium_tee_macros_impl::tee_service(quote! {
         context ServiceContext
         commands { ping, echo_bytes }
@@ -17,7 +17,16 @@ fn tee_service_expansion_is_snapshot_without_optee_deps() {
 }
 
 #[test]
-fn tee_command_expansion_is_snapshot_without_optee_deps() {
+fn tee_service_expansion_no_ctx() {
+    let expanded = consortium_tee_macros_impl::tee_service(quote! {
+        commands { ping, echo_bytes, hello }
+    });
+
+    insta::assert_snapshot!(pretty_snapshot(expanded));
+}
+
+#[test]
+fn tee_command_expansion() {
     let expanded = consortium_tee_macros_impl::tee_command(
         quote! { codec = TestCodec },
         quote! {
@@ -36,7 +45,7 @@ fn tee_command_expansion_is_snapshot_without_optee_deps() {
 }
 
 #[test]
-fn tee_param_derive_expansion_is_snapshot_without_codec_deps() {
+fn tee_param_derive_expansion() {
     let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
         struct CommandPayload<T> {
             opcode: u32,
@@ -48,7 +57,7 @@ fn tee_param_derive_expansion_is_snapshot_without_codec_deps() {
 }
 
 #[test]
-fn tee_param_max_size_override_is_snapshot_without_codec_deps() {
+fn tee_param_max_size_override() {
     let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
         #[tee(max_size = 4096)]
         struct LargePayload {
@@ -60,7 +69,7 @@ fn tee_param_max_size_override_is_snapshot_without_codec_deps() {
 }
 
 #[test]
-fn tee_param_empty_attribute_defaults_max_size_without_codec_deps() {
+fn tee_param_empty_attribute_defaults_max_size() {
     let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
         #[tee]
         struct DefaultPayload {
@@ -72,7 +81,7 @@ fn tee_param_empty_attribute_defaults_max_size_without_codec_deps() {
 }
 
 #[test]
-fn tee_param_invalid_attribute_error_is_snapshot_without_codec_deps() {
+fn tee_param_invalid_attribute_error() {
     let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
         #[tee(buffer = 4096)]
         struct BadAttribute {
@@ -84,7 +93,7 @@ fn tee_param_invalid_attribute_error_is_snapshot_without_codec_deps() {
 }
 
 #[test]
-fn tee_param_widening_warnings_are_snapshot_without_codec_deps() {
+fn tee_param_widening_warnings() {
     let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
         enum WarningPayload {
             Small {
@@ -102,7 +111,7 @@ fn tee_param_widening_warnings_are_snapshot_without_codec_deps() {
 }
 
 #[test]
-fn tee_param_rejection_errors_are_snapshot_without_codec_deps() {
+fn tee_param_rejection_errors() {
     let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
         struct RejectedPayload<'a> {
             raw: *const u8,
@@ -119,7 +128,7 @@ fn tee_param_rejection_errors_are_snapshot_without_codec_deps() {
 }
 
 #[test]
-fn tee_command_too_many_parameters_error_is_snapshot_without_optee_deps() {
+fn tee_command_too_many_parameters_error() {
     let expanded = consortium_tee_macros_impl::tee_command(
         quote! {},
         quote! {
@@ -131,7 +140,7 @@ fn tee_command_too_many_parameters_error_is_snapshot_without_optee_deps() {
 }
 
 #[test]
-fn tee_command_unsupported_type_error_is_snapshot_without_optee_deps() {
+fn tee_command_unsupported_type_error() {
     let expanded = consortium_tee_macros_impl::tee_command(
         quote! {},
         quote! {
