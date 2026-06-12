@@ -1,6 +1,5 @@
 ---
-source: crates/consortium-tee-macros-impl/tests/token_snapshots.rs
-assertion_line: 108
+source: crates/consortium-tee-macros-impl/tests/snap.rs
 expression: pretty_snapshot(expanded)
 ---
 fn unsupported(input: (u32, u64)) -> (u32, u64) {
