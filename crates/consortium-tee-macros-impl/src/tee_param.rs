@@ -106,7 +106,7 @@ fn derive_tee_param_impl(input: DeriveInput) -> syn::Result<TokenStream2> {
     // Decoded<'_> = Self can be resolved for owned types).
     let where_clause = generics.make_where_clause();
     where_clause.predicates.push(parse_quote!(
-        #codec_param: for<'__buf> ::consortium_common::codec::CodecFor<
+        #codec_param: for<'__buf> ::consortium_codec::CodecFor<
             #name #orig_ty_generics,
             Decoded<'__buf> = #name #orig_ty_generics,
         >
@@ -133,7 +133,7 @@ fn derive_tee_param_impl(input: DeriveInput) -> syn::Result<TokenStream2> {
             ) -> ::core::result::Result<::consortium_tee::TeeParamRepr, ::consortium_tee::TeeParamError>
             {
                 let mut __buf = ::alloc::vec![0u8; <Self as ::consortium_tee::TeeParam<#codec_param>>::MAX_SIZE];
-                <#codec_param as ::consortium_common::codec::CodecFor<Self>>::encode(self, &mut __buf)
+                <#codec_param as ::consortium_codec::CodecFor<Self>>::encode(self, &mut __buf)
                     .map(|__len| {
                         __buf.truncate(__len);
                         ::consortium_tee::TeeParamSlot::Serialized(__buf)
@@ -147,7 +147,7 @@ fn derive_tee_param_impl(input: DeriveInput) -> syn::Result<TokenStream2> {
             {
                 match repr {
                     ::consortium_tee::TeeParamSlot::Serialized(__bytes) => {
-                        <#codec_param as ::consortium_common::codec::CodecFor<Self>>::decode(__bytes)
+                        <#codec_param as ::consortium_codec::CodecFor<Self>>::decode(__bytes)
                             .map_err(|_| ::consortium_tee::TeeParamError::DecodeFailed)
                     }
                     ::consortium_tee::TeeParamSlot::Primitive { .. } => {

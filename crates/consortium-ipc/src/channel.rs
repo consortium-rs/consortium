@@ -17,7 +17,7 @@
 //! Typed, directed communication channels over a [`Transport`].
 //!
 //! `Channel` is the main API for application code. It provides typed `send()` and `recv()` methods that encode and decode messages via a [`Codec`] and hand bytes to the underlying transport.
-use consortium_common::codec::{Codec, CodecFor};
+use consortium_codec::{Codec, CodecFor};
 use core::marker::PhantomData;
 use core::ops::Deref;
 

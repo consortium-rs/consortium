@@ -186,12 +186,19 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-common"
+name = "consortium-codec"
 version = "0.1.0"
 dependencies = [
  "postcard",
  "prost",
  "rkyv",
+ "serde",
+]
+
+[[package]]
+name = "consortium-common"
+version = "0.1.0"
+dependencies = [
  "serde",
  "serde_yaml",
  "tempfile",
@@ -222,7 +229,7 @@ version = "0.1.0"
 name = "consortium-ipc"
 version = "0.1.0"
 dependencies = [
- "consortium-common",
+ "consortium-codec",
  "consortium-ipc-macros",
  "num_enum",
  "thiserror",
@@ -338,7 +345,7 @@ dependencies = [
 name = "consortium-tee"
 version = "0.1.0"
 dependencies = [
- "consortium-common",
+ "consortium-codec",
  "consortium-tee-macros",
  "optee-teec",
  "thiserror",

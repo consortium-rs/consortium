@@ -28,6 +28,7 @@ members = [
   "crates/consortium-runtime-mcu",
   "crates/consortium-runtime-app",
   "crates/consortium-builder",
+  "crates/consortium-codec",
   "crates/consortium-common",
   "crates/consortium-tee",
   "crates/consortium-tee-macros",

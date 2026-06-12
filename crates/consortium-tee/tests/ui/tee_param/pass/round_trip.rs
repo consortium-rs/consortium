@@ -1,7 +1,7 @@
 #![allow(deprecated)]
 extern crate alloc;
 
-use consortium_common::codec::{Codec, CodecFor};
+use consortium_codec::{Codec, CodecFor};
 use consortium_tee::{TeeParam, TeeParamSlot};
 
 #[derive(Debug, Clone, PartialEq, TeeParam)]
