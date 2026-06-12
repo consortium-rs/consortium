@@ -202,9 +202,9 @@ impl<C> TeeParam<C> for Vec<u8> {
 
 pub use consortium_tee_macros::{TeeParam, tee_command, tee_service};
 
-#[cfg(all(target_os = "linux", feature = "ca"))]
+#[cfg(all(target_os = "linux", not(test), feature = "ca"))]
 pub mod error;
-#[cfg(all(target_os = "linux", feature = "ca"))]
+#[cfg(all(target_os = "linux", not(test), feature = "ca"))]
 pub use error::{TeeError, TeeErrorOrigin, TeeResult};
 
 #[cfg(test)]

@@ -24,7 +24,7 @@ jobs:
         run: cargo test -p consortium-ipc-transport-memory
 
       - name: TEE tests
-        run: cargo test -p consortium-tee
+        run: cargo test -p consortium-tee --no-default-features
 
       - name: TEE macro snapshot tests
         run: cargo test -p consortium-tee-macros-impl --test snap
