@@ -1,11 +1,11 @@
 [package]
 name = "libcogcore-sys"
 version = "0.1.0"
-edition = "2024"
+edition.workspace = true
 description = "FFI bindings to libcogcore (Cog WPE browser engine)"
-license = "Apache 2.0"
+license.workspace = true
 links = "cogcore"
-include = ["src/**/*", "build.rs", "vendor/include/**/*", "Cargo.toml"]
+include = ["src/**/*", "build.rs", "wrapper.h", "vendor/include/**/*", "Cargo.toml"]
 
 [build-dependencies]
 bindgen = "0.72"

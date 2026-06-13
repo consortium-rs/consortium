@@ -1,13 +1,15 @@
 [package]
 name = "libcogcore"
-version.workspace = true
+version = "0.1.0"
 edition.workspace = true
+description = "Safe wrapper for libcogcore-sys"
 license.workspace = true
 
 [dependencies]
 gio = "0.22"
 glib = "0.22"
-libcogcore-sys = { path = "../libcogcore-sys" }
+libcogcore-sys = { path = "../libcogcore-sys", version = "^0.1" }
+
 
 [lints]
 workspace = true
