@@ -1,0 +1,26 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    curl git pkg-config build-essential \
+    libglib2.0-dev \
+    libwpewebkit-1.0-dev \
+    libwpebackend-fdo-1.0-dev \
+    libportal-dev \
+    libepoxy-dev \
+    libdrm-dev \
+    clang llvm meson ninja-build \
+    libcairo2-dev \
+    libwayland-dev \
+    libwayland-client0 \
+    libwayland-egl1 \
+    libwayland-cursor0 \
+    wayland-protocols \
+    libgbm-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable
+ENV PATH="/root/.cargo/bin:$PATH"
+
+WORKDIR /workspace

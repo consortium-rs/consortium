@@ -5,12 +5,7 @@ edition = "2024"
 description = "FFI bindings to libcogcore (Cog WPE browser engine)"
 license = "Apache 2.0"
 links = "cogcore"
-include = [
-    "src/**/*",
-    "build.rs",
-    "vendor/include/**/*",
-    "Cargo.toml",
-]
+include = ["src/**/*", "build.rs", "vendor/include/**/*", "Cargo.toml"]
 
 [build-dependencies]
 bindgen = "0.72"
