@@ -1,7 +1,7 @@
 use std::{env, path::PathBuf};
 
 fn main() {
-    pkg_config::probe_library("cogcore").unwrap();
+    let cogcore = pkg_config::probe_library("cogcore").unwrap();
     println!("cargo:rerun-if-changed=wrapper.h");
 
     let vendor = PathBuf::from("vendor");
@@ -24,17 +24,16 @@ fn main() {
     println!("cargo:rustc-link-lib=dylib=cogcore");
 
     // Generate bindings
-    let bindings = bindgen::Builder::default()
+    let mut builder = bindgen::Builder::default()
         .header("wrapper.h")
-        .clang_arg("-I/usr/include/glib-2.0".to_string())
-        .clang_arg("-I/usr/lib/aarch64-linux-gnu/glib-2.0/include".to_string())
-        .clang_arg("-I/usr/include/wpe-webkit-1.0".to_string())
-        .clang_arg("-I/usr/include/libsoup-2.4".to_string())
-        .clang_arg("-I/usr/include/wpe-1.0".to_string())
         .clang_arg(format!("-I{}", vendor.join("include").display()))
-        .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
-        .generate()
-        .expect("failed to generate bindings");
+        .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()));
+
+    for include_path in cogcore.include_paths {
+        builder = builder.clang_arg(format!("-I{}", include_path.display()));
+    }
+
+    let bindings = builder.generate().expect("failed to generate bindings");
 
     let out = PathBuf::from(env::var("OUT_DIR").unwrap());
     bindings
