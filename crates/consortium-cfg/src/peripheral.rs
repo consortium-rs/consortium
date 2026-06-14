@@ -18,7 +18,7 @@ use consortium_common::config::peripheral::Peripheral as CommonPeripheral;
 use consortium_dts::Cell;
 use core::fmt::Display;
 
-use crate::error::RpiError;
+use crate::error::CfgError;
 
 #[derive(Debug, Clone)]
 pub struct Peripheral {
@@ -56,7 +56,11 @@ impl PeripheralPinMux {
     /// When `sleep` is `true`, the function position is replaced with `ANALOG`
     /// (the conventional STM32 sleep-mode pin state).
     pub fn to_dts_cell(&self, sleep: bool) -> Cell {
-        let function = if sleep { "ANALOG" } else { self.position.as_str() };
+        let function = if sleep {
+            "ANALOG"
+        } else {
+            self.position.as_str()
+        };
         Cell::macro_call(
             "STM32_PINMUX",
             [
@@ -102,7 +106,7 @@ impl Display for PeripheralPinMux {
 }
 
 impl TryFrom<(&str, &str, &str)> for PeripheralPinMux {
-    type Error = RpiError;
+    type Error = CfgError;
 
     /// Parse a pin string (e.g., "PA5") into group and pin ID components.
     ///
@@ -113,27 +117,27 @@ impl TryFrom<(&str, &str, &str)> for PeripheralPinMux {
     ///
     /// # Errors
     ///
-    /// Returns `RpiError::InvalidPin` if:
+    /// Returns `CfgError::InvalidPin` if:
     /// - String does not start with 'P'
     /// - Group character is not ASCII alphabetic
     /// - Pin ID cannot be parsed as u8
     fn try_from((s, position, alias): (&str, &str, &str)) -> Result<Self, Self::Error> {
         if !s.starts_with('P') {
-            return Err(RpiError::InvalidPin(s.to_string()));
+            return Err(CfgError::InvalidPin(s.to_string()));
         }
 
         let group = s[1..2]
             .chars()
             .next()
-            .ok_or_else(|| RpiError::InvalidPin(s.to_string()))?;
+            .ok_or_else(|| CfgError::InvalidPin(s.to_string()))?;
 
         if !group.is_ascii_alphabetic() {
-            return Err(RpiError::InvalidPin(s.to_string()));
+            return Err(CfgError::InvalidPin(s.to_string()));
         }
 
         let pin_id = s[2..]
             .parse::<u8>()
-            .map_err(|_| RpiError::InvalidPin(s.to_string()))?;
+            .map_err(|_| CfgError::InvalidPin(s.to_string()))?;
 
         Ok(Self {
             group,

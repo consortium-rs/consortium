@@ -1,0 +1,7 @@
+---
+source: crates/consortium-codec-macros-impl/tests/snap.rs
+expression: pretty_snapshot(expanded)
+---
+::core::compile_error! {
+    "TrustedArchive structs must carry #[repr(C)] or #[repr(align(N))] to guarantee stable memory layout for unchecked archive access"
+}

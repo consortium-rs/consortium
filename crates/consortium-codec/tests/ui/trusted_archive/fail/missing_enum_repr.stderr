@@ -1,0 +1,5 @@
+error: TrustedArchive enums must carry an integer repr (#[repr(u8)], #[repr(u16)], etc.) or #[repr(C)] to guarantee a stable discriminant in the archived form
+ --> tests/ui/trusted_archive/fail/missing_enum_repr.rs:5:6
+  |
+5 | enum NakedEnum {
+  |      ^^^^^^^^^

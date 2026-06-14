@@ -1,0 +1,5 @@
+---
+source: crates/consortium-codec-macros-impl/tests/snap.rs
+expression: pretty_snapshot(expanded)
+---
+unsafe impl ::consortium_codec::rkyv::TrustedArchive for Empty {}

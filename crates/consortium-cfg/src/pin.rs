@@ -89,7 +89,10 @@ impl Pin {
         }
 
         if let Some(slew_rate) = self.slew_rate {
-            node = node.property(Property::cells("slew-rate", [Cell::number(slew_rate as u64)]));
+            node = node.property(Property::cells(
+                "slew-rate",
+                [Cell::number(slew_rate as u64)],
+            ));
         }
 
         node.to_dts_with_options(&CodegenOptions {
