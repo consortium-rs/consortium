@@ -1,15 +1,7 @@
-#[cfg(any(
-    feature = "postcard",
-    feature = "prost",
-    all(feature = "rkyv", feature = "alloc")
-))]
+#[cfg(any(feature = "postcard", feature = "prost", feature = "rkyv"))]
 use consortium_codec::CodecFor;
 
-#[cfg(any(
-    feature = "postcard",
-    feature = "prost",
-    all(feature = "rkyv", feature = "alloc")
-))]
+#[cfg(any(feature = "postcard", feature = "prost", feature = "rkyv"))]
 fn round_trip<'buf, T, C>(msg: &'buf T, buf: &'buf mut [u8]) -> C::Decoded<'buf>
 where
     C: CodecFor<T>,
@@ -112,14 +104,61 @@ mod prost {
 mod rkyv {
     use super::round_trip;
     use consortium_codec::rkyv::RkyvCodec;
+    use rkyv::{Archive, Serialize};
+
+    #[derive(Archive, Debug, PartialEq, Serialize)]
+    struct Command {
+        opcode: u8,
+        argument: u16,
+    }
 
     #[test]
     fn typed_message_round_trips_through_public_trait() {
-        let msg = 0x1204_0003u32;
+        let msg = Command {
+            opcode: 3,
+            argument: 0x1204,
+        };
         let mut buf = [0u8; 16];
 
         let decoded = round_trip::<_, RkyvCodec<64>>(&msg, &mut buf);
 
-        assert_eq!(*decoded, msg);
+        assert_eq!(decoded.opcode, msg.opcode);
+        assert_eq!(decoded.argument, msg.argument);
+    }
+}
+
+#[cfg(all(feature = "rkyv", not(feature = "alloc")))]
+mod rkyv_no_alloc {
+    use super::round_trip;
+    use consortium_codec::rkyv::{RkyvCodec, TrustedArchive};
+    use rkyv::{Archive, Serialize};
+
+    #[repr(C, align(16))]
+    #[derive(Archive, Debug, PartialEq, Serialize)]
+    struct Command {
+        opcode: u8,
+        argument: u16,
+    }
+
+    // SAFETY: `Command` archives to fixed-size integer fields with no
+    // address-space-local state, and this test decodes from a 16-byte-aligned
+    // buffer containing bytes produced by `RkyvCodec::encode` for `Command`.
+    unsafe impl TrustedArchive for Command {}
+
+    #[repr(align(16))]
+    struct AlignedBuf<const N: usize>([u8; N]);
+
+    #[test]
+    fn trusted_message_round_trips_through_public_trait_without_alloc() {
+        let msg = Command {
+            opcode: 3,
+            argument: 0x1204,
+        };
+        let mut buf = AlignedBuf([0u8; 32]);
+
+        let decoded = round_trip::<_, RkyvCodec<64>>(&msg, &mut buf.0);
+
+        assert_eq!(decoded.opcode, msg.opcode);
+        assert_eq!(decoded.argument, msg.argument);
     }
 }
