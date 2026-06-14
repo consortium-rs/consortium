@@ -302,6 +302,7 @@ name = "consortium-ipc-doorbell-hsem"
 version = "0.1.0"
 dependencies = [
  "atomic-waker",
+ "bitfield",
  "consortium-ipc",
  "tokio",
 ]
@@ -309,12 +310,19 @@ dependencies = [
 [[package]]
 name = "consortium-ipc-doorbell-ipcc"
 version = "0.1.0"
+dependencies = [
+ "atomic-waker",
+ "bitfield",
+ "consortium-ipc",
+ "tokio",
+]
 
 [[package]]
 name = "consortium-ipc-doorbell-mu"
 version = "0.1.0"
 dependencies = [
  "atomic-waker",
+ "bitfield",
  "consortium-ipc",
  "tokio",
 ]
@@ -366,6 +374,7 @@ dependencies = [
  "consortium-hmi",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
+ "consortium-ipc-doorbell-ipcc",
  "consortium-ipc-doorbell-mu",
  "consortium-ipc-transport-memory",
  "consortium-ort",
@@ -383,6 +392,7 @@ version = "0.1.0"
 dependencies = [
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
+ "consortium-ipc-doorbell-ipcc",
  "consortium-ipc-doorbell-mu",
  "consortium-ipc-transport-memory",
  "cortex-m",

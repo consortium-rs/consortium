@@ -1,13 +1,21 @@
-# HSEM vs MU — Inconsistencies & Resolution
+# Doorbell Register Model Comparison
 
-| Aspect | HSEM | MU (GI) | How Resolved |
-|--------|------|---------|--------------|
-| **Signal mechanism** | 1-step read-lock on semaphore (stateful) | Set `GCR[GIRn]` (idempotent flag) | `ring()` uses `set_gcr_gir()` instead of a data register write |
-| **ring() guard** | LOCKID ownership check (MASTERID) | None — `GCR[GIRn]` set is always valid | No `AlreadyLocked` condition possible with GI registers |
-| **AlreadyLocked** | Another master holds the semaphore | N/A — variant removed | `MuError::AlreadyLocked` deleted; GCR set while pending is idempotent |
-| **Interrupt clear** | Dedicated ICR register (write-1-to-clear) | Write 1 to `GSR[GIPn]` (W1C) | `clear_gsr_gip()` — non-destructive, does not consume data |
-| **Interrupt enable** | IER bit per semaphore (16 bits) | `GIER[GIEn]` bit per channel (4 bits) | `enable/disable_gi_interrupt()` via GIER instead of IER/ICR |
-| **Interrupt status** | MISR (masked = IER & ISR) | `GSR[GIPn]` (non-destructive read) | `gsr_pending()` reads GSR directly without consuming the signal |
-| **Const generic** | PROC: u8 (selects C1/C2/C3 interrupt bank) | None needed | Base address + std feature determines the side |
-| **IRQ handlers** | Single `HSEM_IRQHandler` | `MU1_IRQHandler` + `MU2_IRQHandler` (+ more for imx95) | One `AtomicWaker` per MU instance; `waker_for(mu_id)` selects it |
-| **Channel count** | 16 (flat semaphore space) | `MU_INSTANCE_COUNT × 4` GI channels | `MuChanInfo::mu_id()` / `gi_id()` split the channel ID |
+| Aspect | HSEM | IPCC | MU (GI) |
+|--------|------|------|---------|
+| Platform | STM32MP23/25 | STM32MP21/23/25 | NXP i.MX 9x |
+| Signal mechanism | 1-step read-lock then unlock semaphore | Set `CxSCR.CHnS` to mark a channel occupied | Set `GCR[GIRn]` |
+| Backpressure guard | LOCKID ownership check; can report `AlreadyLocked` | Outgoing `CxTOCySR.CHnF`; returns `ChannelOccupied` while occupied | No guard; setting `GIRn` while pending is idempotent |
+| Receive status | `CnMISR` masked interrupt status | Opposite direction `CyTOCxSR.CHnF` | `GSR[GIPn]` |
+| Interrupt enable | `CnIER` bit per semaphore | `CxCR.RXOIE` plus `CxMR.CHnOM` unmask | `GIER[GIEn]` |
+| Interrupt clear | Dedicated `CnICR` W1C bit | `CxSCR.CHnC` W1C-style clear | `GSR[GIPn]` W1C |
+| Const generic | `PROC: u8` selects C1/C2/C3 interrupt bank | `PROC: u8` selects processor 1 or 2 register bank | None; base array and channel mapping select instance |
+| IRQ wakeup | Single `HSEM_IRQHandler` | Board/PAC calls `notify_rx_occupied_interrupt()` from the verified IPCC RX occupied line | `MU1_IRQHandler` ... `MU8_IRQHandler` by instance |
+| Channel count | 16 flat semaphore IDs; 0-1 reserved | 16 channels per IPCC instance; 0-1 reserved | `MU_INSTANCE_COUNT * 4`; 0-1 reserved |
+| Register style | `bitfield` register wrappers + volatile access | `bitfield` register wrappers + volatile access | `bitfield` register wrappers + volatile access |
+
+IPCC address map:
+
+| Family | IPCC1 | IPCC2 |
+|--------|-------|-------|
+| STM32MP21 | `0x4049_0000..=0x4049_03FF` | not present |
+| STM32MP23/25 | `0x4049_0000..=0x4049_03FF` | SmartRun `0x4625_0000..=0x4625_03FF` |

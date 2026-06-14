@@ -127,6 +127,44 @@ pub mod mua {
     pub const RR3: u32 = 0x28C;
 
     pub mod fields {
+        bitfield::bitfield! {
+            /// General-purpose interrupt fields shared by GIER/GCR/GSR.
+            #[derive(Clone, Copy)]
+            pub struct GeneralInterruptRegister(u32);
+            impl Debug;
+            u32;
+            pub gi, set_gi: 3, 0;
+        }
+
+        impl GeneralInterruptRegister {
+            #[inline(always)]
+            pub const fn from_bits(bits: u32) -> Self {
+                Self(bits)
+            }
+
+            #[inline(always)]
+            pub const fn bits(self) -> u32 {
+                self.0
+            }
+
+            #[inline(always)]
+            pub fn contains_gi(self, n: u8) -> bool {
+                self.bits() & gi_bit(n) != 0
+            }
+
+            #[inline(always)]
+            pub fn with_gi_set(mut self, n: u8) -> Self {
+                self.set_gi(self.gi() | gi_bit(n));
+                self
+            }
+
+            #[inline(always)]
+            pub fn with_gi_cleared(mut self, n: u8) -> Self {
+                self.set_gi(self.gi() & !gi_bit(n));
+                self
+            }
+        }
+
         // CR
         pub const MU_MUR: u32 = 1 << 0;
         pub const MU_MURIE: u32 = 1 << 1;
@@ -159,6 +197,14 @@ pub mod mua {
         // GSR - general-purpose interrupt pending n (receiver side, W1C, n = 0..3)
         pub const fn gsr_gip(n: u8) -> u32 {
             1 << n
+        }
+
+        pub const fn gi_bit(n: u8) -> u32 {
+            1 << n
+        }
+
+        pub const fn gi_write_one(n: u8) -> GeneralInterruptRegister {
+            GeneralInterruptRegister::from_bits(gi_bit(n))
         }
     }
 
@@ -220,6 +266,44 @@ pub mod mub {
     pub const RR3: u32 = 0x28C;
 
     pub mod fields {
+        bitfield::bitfield! {
+            /// General-purpose interrupt fields shared by GIER/GCR/GSR.
+            #[derive(Clone, Copy)]
+            pub struct GeneralInterruptRegister(u32);
+            impl Debug;
+            u32;
+            pub gi, set_gi: 3, 0;
+        }
+
+        impl GeneralInterruptRegister {
+            #[inline(always)]
+            pub const fn from_bits(bits: u32) -> Self {
+                Self(bits)
+            }
+
+            #[inline(always)]
+            pub const fn bits(self) -> u32 {
+                self.0
+            }
+
+            #[inline(always)]
+            pub fn contains_gi(self, n: u8) -> bool {
+                self.bits() & gi_bit(n) != 0
+            }
+
+            #[inline(always)]
+            pub fn with_gi_set(mut self, n: u8) -> Self {
+                self.set_gi(self.gi() | gi_bit(n));
+                self
+            }
+
+            #[inline(always)]
+            pub fn with_gi_cleared(mut self, n: u8) -> Self {
+                self.set_gi(self.gi() & !gi_bit(n));
+                self
+            }
+        }
+
         // CR
         pub const MU_MUR: u32 = 1 << 0;
         pub const MU_MURIE: u32 = 1 << 1;
@@ -252,6 +336,14 @@ pub mod mub {
         // GSR - general-purpose interrupt pending n (receiver side, W1C, n = 0..3)
         pub const fn gsr_gip(n: u8) -> u32 {
             1 << n
+        }
+
+        pub const fn gi_bit(n: u8) -> u32 {
+            1 << n
+        }
+
+        pub const fn gi_write_one(n: u8) -> GeneralInterruptRegister {
+            GeneralInterruptRegister::from_bits(gi_bit(n))
         }
     }
 

@@ -27,4 +27,5 @@ std = ["dep:tokio", "consortium-ipc/std"]
 [dependencies]
 consortium-ipc = { path = "../consortium-ipc", default-features = false }
 atomic-waker = "1.1.2"
+bitfield = "0.13.2"
 tokio = { version = "1", features = ["sync"], optional = true }

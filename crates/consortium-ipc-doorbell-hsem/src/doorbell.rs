@@ -24,7 +24,7 @@ use core::{
 use consortium_ipc::{Chan, Doorbell};
 
 use crate::error::HsemError;
-use crate::registers::semaphore_r::fields as r_fields;
+use crate::registers::{interrupt_nonsecure::fields::SemInterruptRegister, semaphore_r::fields};
 
 use crate::registers::{interrupt_nonsecure, semaphore_r, semaphore_rlr};
 
@@ -100,7 +100,9 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
     #[inline]
     pub fn is_locked(&self, sem: u8) -> bool {
         // SAFETY: self.base is a valid mmap'd HSEM address; volatile read.
-        unsafe { self.rx_addr(sem).read_volatile() & r_fields::LOCK_BIT != 0 }
+        let reg =
+            fields::SemaphoreRegister::from_bits(unsafe { self.rx_addr(sem).read_volatile() });
+        reg.lock()
     }
 
     #[inline]
@@ -145,7 +147,10 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
     pub unsafe fn enable_interrupt(&self, sem: u8) {
         let ier = self.ier_addr();
         // SAFETY: caller must ensure sem is valid; self.base is a valid mmap'd address.
-        unsafe { ier.write_volatile(ier.read_volatile() | (1 << sem)) };
+        let reg =
+            SemInterruptRegister::from_bits(unsafe { ier.read_volatile() }).with_sem_enabled(sem);
+        // SAFETY: caller must ensure sem is valid; self.base is a valid mmap'd address.
+        unsafe { ier.write_volatile(reg.bits()) };
     }
 
     /// Clear the interrupt status for semaphore `sem` (write 1 to ICR bit).
@@ -154,8 +159,9 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
     /// Caller must ensure `sem` is a valid semaphore index (0-15).
     #[inline]
     pub unsafe fn clear_interrupt(&self, sem: u8) {
+        let reg = SemInterruptRegister::from_bits(interrupt_nonsecure::fields::sem_bit(sem));
         // SAFETY: caller must ensure sem is valid; self.base is a valid mmap'd address.
-        unsafe { self.icr_addr().write_volatile(1 << sem) };
+        unsafe { self.icr_addr().write_volatile(reg.bits()) };
     }
 
     /// Check the masked interrupt status - has semaphore `sem` fired an
@@ -163,7 +169,8 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
     #[inline]
     pub fn interrupt_pending(&self, sem: u8) -> bool {
         // SAFETY: self.base is a valid mmap'd HSEM address; volatile read.
-        unsafe { self.misr_addr().read_volatile() & (1 << sem) != 0 }
+        let reg = SemInterruptRegister::from_bits(unsafe { self.misr_addr().read_volatile() });
+        reg.contains_sem(sem)
     }
 }
 
@@ -260,16 +267,18 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
         // SAFETY: self.base is a valid mmap'd HSEM virtual address; sem < 16.
         let locked_value = unsafe { self.read_lock(sem) };
 
-        let lock_bit = locked_value & r_fields::LOCK_BIT;
-        let lockid = ((locked_value & r_fields::LOCKID_MASK) >> r_fields::LOCKID_SHIFT) as u8;
+        let locked_reg = fields::SemaphoreRegister::from_bits(locked_value);
+        let lockid = locked_reg.lockid() as u8;
 
-        if lock_bit == 0 || lockid != crate::consts::A_CORE_LOCKID {
+        if !locked_reg.lock() || lockid != crate::consts::A_CORE_LOCKID {
             return Err(HsemError::AlreadyLocked);
         }
 
         // Unlock by writing back with LOCK=0, which triggers the interrupt on the
         // remote core. The LOCKID, SEC, PRIV, and PROCID must match what we just locked.
-        let unlock_value = locked_value & !r_fields::LOCK_BIT;
+        let mut unlock_reg = locked_reg;
+        unlock_reg.set_lock(false);
+        let unlock_value = unlock_reg.bits();
         // SAFETY: self.base is a valid mmap'd HSEM virtual address; sem < 16.
         unsafe { self.write_rx(sem, unlock_value) };
 
@@ -411,7 +420,9 @@ impl<'a, const PROC: u8> core::future::Future for HsemWaitFut<'a, PROC> {
                 unsafe {
                     // Clear IER bit
                     let ier = this.doorbell.ier_addr();
-                    ier.write_volatile(ier.read_volatile() & !(1 << sem));
+                    let reg =
+                        SemInterruptRegister::from_bits(ier.read_volatile()).with_sem_disabled(sem);
+                    ier.write_volatile(reg.bits());
                     // Clear ICR
                     this.doorbell.clear_interrupt(sem);
                 }

@@ -29,8 +29,12 @@ M-core                           A-core
 
 ### 1. NVIC / Interrupts
 - For HSEM: enable HSEM1 IRQ in NVIC. The `HSEM_IRQHandler` is already `#[no_mangle]` in `doorbell-hsem`.
+- For IPCC: enable the board/PAC-selected RX occupied interrupt line and call
+  `notify_rx_occupied_interrupt()` from that ISR. STM32MP21 uses IPCC only; STM32MP23/25
+  can use HSEM or IPCC.
 - For MU: enable MU1/MU2 IRQs. `MU1_IRQHandler`/`MU2_IRQHandler` already exist in `doorbell-mu`.
-- Runtime should expose `fn enable_hsem_irq()` / `fn enable_mu_irq()` wrappers (using `cortex-m` or PAC NVIC calls) behind the respective feature flags.
+- Runtime exposes verified generic doorbell IRQ helpers only where IRQ numbers are known;
+  IPCC IRQ routing should remain board/PAC-provided until the interrupt table is wired in.
 - These are one-liners but must be called before any `doorbell.wait()`.
 
 ### 2. Doorbell Construction
@@ -99,15 +103,15 @@ M-core                           A-core
 
 | File | Change |
 |------|--------|
-| `crates/consortium-runtime-mcu/src/lib.rs` | Add `enable_hsem_irq` / `enable_mu_irq`, descriptor write helpers, `mem_transport_for_slot`, `static_buf!` macro |
+| `crates/consortium-runtime-mcu/src/lib.rs` | Add doorbell IRQ helpers where verified, descriptor write helpers, `mem_transport_for_slot`, `static_buf!` macro |
 | `crates/consortium-runtime-app/src/lib.rs` | Fix re-export name, add `wait_for_ready`, `open_channel` convenience fn |
 | `crates/consortium-runtime-app/src/remoteproc.rs` | Add `wait_state` async helper |
 | New: `crates/consortium-runtime-mcu/src/descriptor.rs` | Descriptor write + state helpers for M-core side |
 | New: `crates/consortium-runtime-app/src/descriptor.rs` | Descriptor poll helpers for A-core side |
 
 Existing re-usable code:
-- `consortium-ipc-transport-uio/src/descriptor.rs` — already parses the descriptor format; M-core init should use the same layout constants
-- `consortium-ipc-transport-mem/src/lib.rs` — `MemTransport::new()` (unsafe constructor to wrap)
+- `consortium-ipc-transport-memory/src/descriptor.rs` — already parses the descriptor format; M-core init should use the same layout constants
+- `consortium-ipc-transport-memory/src/lib.rs` — shared-memory transport constructor to wrap
 - `consortium-runtime-app/src/remoteproc.rs` — `RemoteProc` (complete, no changes needed)
 
 ---
@@ -125,6 +129,6 @@ Existing re-usable code:
 ## Verification
 
 After implementation:
-1. `cargo build -p consortium-runtime-mcu --features stm32mp2xx --target thumbv7em-none-eabi` — must compile clean
+1. `cargo build -p consortium-runtime-mcu --features stm32mp25x --target thumbv7em-none-eabi` — must compile clean
 2. `cargo build -p consortium-runtime-app` (Linux host) — must compile clean (fixes broken re-export)
 3. Write an integration doc/example showing M-core init → `MReady` → A-core `wait_for_ready` → `UioDevice::open` → message exchange

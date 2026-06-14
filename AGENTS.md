@@ -117,16 +117,27 @@ the preferred style for validating shared-memory protocol logic without hardware
 Doorbells provide the wakeup/signaling half of IPC. Existing implementations should be
 used as patterns for any new platform:
 
-- `consortium-ipc-doorbell-hsem` targets STM32MP2/STM32MP25 hardware semaphores.
+- `consortium-ipc-doorbell-hsem` targets STM32MP23/STM32MP25 hardware semaphores.
 - `consortium-ipc-doorbell-mu` targets NXP i.MX Message Unit hardware.
 - `consortium-ipc-doorbell-gpio` is the GPIO-backed Linux-oriented implementation path.
-- `consortium-ipc-doorbell-ipcc` exists as the IPCC crate placeholder for STM32MP21 series
-which do not have HSEM peripheral.
+- `consortium-ipc-doorbell-ipcc` targets STM32MP21/STM32MP23/STM32MP25 IPCC. STM32MP21
+  uses IPCC only; STM32MP23/25 can use HSEM or IPCC. IPCC1 is at
+  `0x4049_0000..=0x4049_03FF` on all three families, while SmartRun IPCC2 is at
+  `0x4625_0000..=0x4625_03FF` only on STM32MP23/25.
 
 When adding or changing a doorbell, keep register access safety documented, validate
 channel bounds through the local validation type when appropriate, and maintain the
 dual-path design where practical: `no_std` firmware-side waiting plus `std`/Tokio host
-notification.
+notification. Use typed register access for MMIO fields; the current doorbell crates use
+the `bitfield` crate for register bitfields and volatile reads/writes at the access
+boundary.
+
+Runtime STM32 feature names are chip-family-specific:
+
+- `stm32mp21x` enables IPCC only.
+- `stm32mp23x` enables HSEM and IPCC.
+- `stm32mp25x` enables HSEM and IPCC and is the default STM32 runtime feature.
+- `stm32mp2xx` remains only as a compatibility alias for the previous HSEM-capable default.
 
 ## Configuration
 
