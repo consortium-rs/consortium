@@ -165,7 +165,7 @@ pub(crate) unsafe fn read_channel(base: *const u8, index: usize) -> ChannelLayou
     }
 }
 
-use std::sync::atomic::compiler_fence;
+use core::sync::atomic::compiler_fence;
 
 use num_enum::{FromPrimitive, IntoPrimitive};
 

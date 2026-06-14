@@ -1,4 +1,7 @@
-use std::marker::{PhantomData, PhantomPinned};
+use core::{
+    future::Future,
+    marker::{PhantomData, PhantomPinned},
+};
 
 use consortium_ipc::{Chan, DdrRegion, Doorbell, Region, SramRegion, Transport};
 

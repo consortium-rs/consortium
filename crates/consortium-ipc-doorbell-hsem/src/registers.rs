@@ -489,3 +489,12 @@ pub mod reset_values {
 }
 
 pub const HSEM_SEM_COUNT: u8 = 16;
+
+/// LOCKID this core writes when locking. Must match the AHB bus master ID.
+/// Processor 2 (M33-core) = MASTERID 2 per Table 188, STM32MP2.
+#[cfg(not(feature = "std"))]
+pub(crate) const M_CORE_LOCKID: u8 = 2;
+
+/// LOCKID for the A-core (Linux side). MASTERID 1 per Table 188, STM32MP2.
+#[cfg(feature = "std")]
+pub(crate) const A_CORE_LOCKID: u8 = 1;

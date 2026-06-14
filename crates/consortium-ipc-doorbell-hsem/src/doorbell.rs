@@ -270,7 +270,7 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
         let locked_reg = fields::SemaphoreRegister::from_bits(locked_value);
         let lockid = locked_reg.lockid() as u8;
 
-        if !locked_reg.lock() || lockid != crate::consts::A_CORE_LOCKID {
+        if !locked_reg.lock() || lockid != crate::regsiters::A_CORE_LOCKID {
             return Err(HsemError::AlreadyLocked);
         }
 
