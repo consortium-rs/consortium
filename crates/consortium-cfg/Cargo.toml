@@ -23,6 +23,7 @@ license.workspace = true
 
 [dependencies]
 consortium-common = { path = "../consortium-common", features = ["serde", "std"] }
+consortium-dts = { path = "../consortium-dts" }
 embedded-hal.workspace = true
 thiserror = "2.0.18"
 

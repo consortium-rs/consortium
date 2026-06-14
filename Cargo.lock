@@ -295,6 +295,7 @@ name = "consortium-cfg"
 version = "0.1.0"
 dependencies = [
  "consortium-common",
+ "consortium-dts",
  "embedded-hal 1.0.0",
  "thiserror",
 ]

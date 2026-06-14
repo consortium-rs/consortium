@@ -15,6 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use consortium_common::config::peripheral::Peripheral as CommonPeripheral;
+use consortium_dts::Cell;
 use core::fmt::Display;
 
 use crate::error::RpiError;
@@ -50,6 +51,22 @@ pub struct PeripheralPinMux {
 }
 
 impl PeripheralPinMux {
+    /// Build a `STM32_PINMUX` cell for use in a DTS pinmux property.
+    ///
+    /// When `sleep` is `true`, the function position is replaced with `ANALOG`
+    /// (the conventional STM32 sleep-mode pin state).
+    pub fn to_dts_cell(&self, sleep: bool) -> Cell {
+        let function = if sleep { "ANALOG" } else { self.position.as_str() };
+        Cell::macro_call(
+            "STM32_PINMUX",
+            [
+                format!("'{}'", self.group),
+                self.pin_id.to_string(),
+                function.to_string(),
+            ],
+        )
+    }
+
     /// Generate a DTS pinmux macro invocation for this pin.
     ///
     /// Produces a `STM32_PINMUX` macro call with optional sleep-mode override.
