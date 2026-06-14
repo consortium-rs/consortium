@@ -5,6 +5,7 @@
 `RpiSession` is the core abstraction for resolving and validating peripheral configurations at the device/chip variant level. It combines three data sources — the project configuration, the RIFSC peripheral map, and the IOMUX pin database — to produce a validated peripheral inventory with complete DTS metadata.
 
 The session ensures that:
+
 - **Peripheral IDs (perid)** are assigned from the chip's RIFSC YAML
 - **Pin mappings** are validated against the IOMUX YAML for the specific package variant
 - **Alternate function (AF) numbers** are derived correctly from the pin mux list
@@ -33,6 +34,7 @@ RpiSession::new()
 ### Key Types
 
 **`GeneralConfig`** (in `consortium-common`):
+
 ```rust
 pub struct GeneralConfig {
     pub chip: Chip,                    // Family level: Stm32mp25x, Imx95, etc.
@@ -41,6 +43,7 @@ pub struct GeneralConfig {
 ```
 
 **`RpiSession`** (in `consortium-rpi`):
+
 ```rust
 pub struct RpiSession {
     pub chip: Chip,
@@ -50,6 +53,7 @@ pub struct RpiSession {
 ```
 
 **`Peripheral`** (in `consortium-rpi`):
+
 ```rust
 pub struct Peripheral {
     pub name: String,
@@ -62,6 +66,7 @@ pub struct Peripheral {
 ```
 
 **`PeripheralPinMux`** (in `consortium-rpi`):
+
 ```rust
 pub struct PeripheralPinMux {
     pub group: char,                   // GPIO group: 'A', 'B', etc.
@@ -118,10 +123,12 @@ for (name, periph) in &session.peripherals {
 ### Optional Parameters
 
 **`rif: Option<&RifConfig>`**
+
 - **Required for STM32MP**: Pass the loaded RIFSC YAML to assign `perid`
 - **Not applicable for i.MX**: Pass `None`; peripherals will have `perid = None`
 
 **`iomux: Option<&IomuxConfig>`**
+
 - **Required for pin validation**: Pass the loaded IOMUX YAML for the specific package variant (e.g., `STM32MP257FAKx`)
 - **Optional**: Pass `None` to skip pin validation; `position` and `alias` fields remain empty
 
@@ -133,19 +140,19 @@ for (name, periph) in &session.peripherals {
 
 The `Chip` enum represents the **family level**. Use `rifsc_family_name()` to get the RIFSC YAML stem:
 
-| Chip | RIFSC Family | YAML File |
-|------|---|---|
-| `Stm32mp21x` | `stm32mp21xxxx` | `data/stm32mp/rifsc/stm32mp21xxxx.yaml` |
-| `Stm32mp23x` | `stm32mp23xxxx` | `data/stm32mp/rifsc/stm32mp23xxxx.yaml` |
-| `Stm32mp25x` | `stm32mp25xxxx` | `data/stm32mp/rifsc/stm32mp25xxxx.yaml` |
-| `Imx93`, `Imx95`, etc. | `None` | No RIFSC (uses TRDC, not yet implemented) |
+| Chip                   | RIFSC Family    | YAML File                                 |
+| ---------------------- | --------------- | ----------------------------------------- |
+| `Stm32mp21x`           | `stm32mp21xxxx` | `data/stm32mp/rifsc/stm32mp21xxxx.yaml`   |
+| `Stm32mp23x`           | `stm32mp23xxxx` | `data/stm32mp/rifsc/stm32mp23xxxx.yaml`   |
+| `Stm32mp25x`           | `stm32mp25xxxx` | `data/stm32mp/rifsc/stm32mp25xxxx.yaml`   |
+| `Imx93`, `Imx95`, etc. | `None`          | No RIFSC (uses TRDC, not yet implemented) |
 
 ### Variant → IOMUX YAML
 
 The **variant string** in `GeneralConfig` specifies the exact package. This maps directly to the IOMUX YAML filename:
 
-| Variant | IOMUX File |
-|---|---|
+| Variant            | IOMUX File                               |
+| ------------------ | ---------------------------------------- |
 | `"STM32MP255AAKx"` | `data/stm32mp/iomux/STM32MP255AAKx.yaml` |
 | `"STM32MP257FAKx"` | `data/stm32mp/iomux/STM32MP257FAKx.yaml` |
 | `"STM32MP213FANx"` | `data/stm32mp/iomux/STM32MP213FANx.yaml` |
@@ -160,20 +167,21 @@ Each pin entry in the IOMUX YAML lists available alternate functions (mux option
 
 ```yaml
 PA5:
-  position: P11                # Physical package position (BGA ball)
+  position: P11 # Physical package position (BGA ball)
   type: I/O
   mux:
-    - name: tim2              # AF0: Timer2 Channel 4
+    - name: tim2 # AF0: Timer2 Channel 4
       pin: ch4
-    - name: i2c1              # AF1: I2C1 SDA
+    - name: i2c1 # AF1: I2C1 SDA
       pin: sda
-    - name: spi2              # AF2: SPI2 MOSI
+    - name: spi2 # AF2: SPI2 MOSI
       pin: mosi
 ```
 
 ### AF Number Assignment
 
 The **AF function number is derived from the mux list index** (STM32MP convention):
+
 - `mux[0]` → `"AF0"` (timer2)
 - `mux[1]` → `"AF1"` (i2c1)
 - `mux[2]` → `"AF2"` (spi2)
@@ -193,10 +201,12 @@ pin.alias = "I2C1_SDA";                    // From mux[1].pin
 ### Validation Errors
 
 **`RpiError::InvalidPin(pin_name)`**
+
 - Pin does not exist in the IOMUX YAML for this package variant
 - Example: trying to use `"PA100"` on a 176-pin package that only has up to `"PA63"`
 
 **`RpiError::PinNotAvailable(pin, peripheral, allowed_pins)`**
+
 - Pin exists in IOMUX but does not support the configured peripheral
 - Example: `"PA5"` supports `tim2`, `i2c1`, `spi2`, but not `uart1`
 - The error message includes the list of pins that do support the peripheral

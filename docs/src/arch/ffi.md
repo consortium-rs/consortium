@@ -1,4 +1,3 @@
-
 ## Consortium FFI: Foreign Function Interface
 
 The Consortium FFI provides a unified interface for calling functions in Python, C, C++, and other languages from Rust code, with automatic serialization, process pooling, and type safety.
@@ -506,37 +505,41 @@ async fn detect_edges_with_retry(
 ### FFI Best Practices
 
 **1. Function Design:**
+
 - Keep functions pure (no side effects)
 - Serialize/deserialize at boundaries only
 - Batch operations where possible
 
 **2. Performance:**
+
 - Use binary serialization (postcard) for large data
 - Pool workers to amortize process creation cost
 - Cache expensive initialization (models, connections)
 
 **3. Error Handling:**
+
 - Implement retry logic for transient failures
 - Log detailed errors for debugging
 - Set timeouts for long-running calls
 
 **4. Resource Management:**
+
 - Limit worker pool size to available CPU cores
 - Set memory limits per worker
 - Clean up resources on shutdown
 
 ### FFI Features
 
-| Feature | Implementation |
-|---------|-----------------|
-| **Multi-language** | Python, C, C++, via subprocess |
-| **Serialization** | postcard, JSON, protobuf (pluggable) |
-| **Process pooling** | Work-stealing queue, load balancing |
-| **Error handling** | Automatic translation, stack traces |
-| **Type safety** | Compile-time type checking via macros |
-| **Async/await** | Full Tokio integration |
-| **Resource management** | Automatic cleanup, memory limits |
-| **Monitoring** | Execution time, memory usage, error rates |
+| Feature                 | Implementation                            |
+| ----------------------- | ----------------------------------------- |
+| **Multi-language**      | Python, C, C++, via subprocess            |
+| **Serialization**       | postcard, JSON, protobuf (pluggable)      |
+| **Process pooling**     | Work-stealing queue, load balancing       |
+| **Error handling**      | Automatic translation, stack traces       |
+| **Type safety**         | Compile-time type checking via macros     |
+| **Async/await**         | Full Tokio integration                    |
+| **Resource management** | Automatic cleanup, memory limits          |
+| **Monitoring**          | Execution time, memory usage, error rates |
 
 ### FFI Performance
 
@@ -546,13 +549,14 @@ async fn detect_edges_with_retry(
 | Serialization | ~0.1–1 ms |
 | IPC (socket) | ~0.5–2 ms |
 | Python deserialization | ~0.1–0.5 ms |
-| Function execution | *variable* |
+| Function execution | _variable_ |
 | Python serialization | ~0.1–0.5 ms |
 | IPC response | ~0.5–2 ms |
 | Rust deserialization | ~0.1–1 ms |
 | **Total overhead** | **~2–7 ms** |
 
 **Optimization strategies:**
+
 - Keep functions long-running (amortize overhead)
 - Batch multiple calls where possible
 - Use binary serialization (postcard) over JSON

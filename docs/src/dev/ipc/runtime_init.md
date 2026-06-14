@@ -196,6 +196,7 @@ Offset  Size  Field
 ```
 
 Slot layout (at each offset):
+
 ```
 0x00    4     length (payload bytes)
 0x04    4     flags (0x01 = VALID, 0x02 = CONSUMED)

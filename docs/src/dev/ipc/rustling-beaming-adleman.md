@@ -4,7 +4,7 @@
 
 Both runtime crates are currently empty re-export facades — no bootstrap, no channel setup, no executor wiring. The core IPC, transport, and doorbell crates are complete; the runtimes need to wire them together into usable startup sequences. There is also a broken re-export in `runtime-app` (`consortium_ipc_uio` should be `consortium_ipc_transport_uio`).
 
-The goal is to define what *initialization code* each crate should expose, and in what order those steps must occur.
+The goal is to define what _initialization code_ each crate should expose, and in what order those steps must occur.
 
 ---
 
@@ -28,6 +28,7 @@ M-core                           A-core
 ## `runtime-mcu` — What to Initialize
 
 ### 1. NVIC / Interrupts
+
 - For HSEM: enable HSEM1 IRQ in NVIC. The `HSEM_IRQHandler` is already `#[no_mangle]` in `doorbell-hsem`.
 - For IPCC: enable the board/PAC-selected RX occupied interrupt line and call
   `notify_rx_occupied_interrupt()` from that ISR. STM32MP21 uses IPCC only; STM32MP23/25
@@ -38,16 +39,19 @@ M-core                           A-core
 - These are one-liners but must be called before any `doorbell.wait()`.
 
 ### 2. Doorbell Construction
+
 - HSEM: `HsemDoorbell::<1>::new()` — zero-cost, no args.
 - MU: `MuDoorbell::default()` or `MuDoorbell::new(bases)` — needs `[u32; N]` base addresses.
 - Runtime should re-export these with correct feature gating (the existing re-exports in `lib.rs` are correct in form but the MU chip sub-feature problem must be fixed).
 
 ### 3. Shared Memory Descriptor (new)
+
 - M-core must write the descriptor header (magic `0x434F_4E53`, version 1, channel slots) at offset 0 of the shared SRAM region before A-core can open the UIO device.
 - Expose a `Descriptor` struct with a `write(base_ptr, channels: &[ChanDesc])` function and `set_state(ptr, state)` helper.
 - M-core writes `KernelInit → Proposed → MReady` after transport is set up; then waits for A-core to set `Ready`.
 
 ### 4. `MemTransport` Init Helper
+
 - Provide a safe(r) wrapper around `MemTransport::new()` that computes slot pointers from a base address and slot index:
   ```rust
   pub fn mem_transport_for_slot<D, R>(base: *mut u8, slot_idx: usize, mtu: usize, doorbell: D, region: R) -> MemTransport<D, R>
@@ -55,10 +59,12 @@ M-core                           A-core
 - Slot stride = `8 + mtu` bytes. Tx slot at `base + slot_idx * stride`, Rx slot at the mirror offset negotiated via the descriptor.
 
 ### 5. Static Scratch Buffers
+
 - User must provide `&'static mut [u8]` — runtime cannot allocate in `no_std`.
 - Provide a macro `static_buf!(NAME, SIZE)` that declares a properly aligned static buffer. This is a common pattern in Embassy; we can replicate it.
 
 ### 6. No Executor — Bring Your Own
+
 - Do not embed an executor. Users will use Embassy, RTIC2, or a bare-metal spin loop.
 - Document that `runtime-mcu` provides IPC init; the executor is the user's responsibility.
 
@@ -67,17 +73,21 @@ M-core                           A-core
 ## `runtime-app` — What to Initialize
 
 ### 1. Fix Broken Re-export (bug)
+
 - `lib.rs` line 3: `consortium_ipc_uio` → `consortium_ipc_transport_uio`
 
 ### 2. Firmware Lifecycle (existing, wire it up)
+
 - `RemoteProc` is already complete. Expose it at the top-level re-export.
 - Optionally add `RemoteProc::wait_state(target, timeout)` async helper that polls sysfs in a Tokio interval loop.
 
 ### 3. Descriptor Polling (new)
+
 - Before `UioDevice::open()`, the descriptor must be in `Ready(3)`.
 - Expose `async fn wait_for_ready(uio_num: usize, timeout: Duration) -> Result<(), Error>` that mmaps resource 0 without full init, polls `DescState` byte, and returns when `Ready`.
 
 ### 4. `UioDevice` / `UioChannel` Init
+
 - Re-export `UioDevice` (already done, once the name is fixed).
 - `UioDevice::open(n)` → `dev.channel(chan)` → `Channel::new(chan, ch, buf)`.
 - Provide a convenience function:
@@ -86,11 +96,13 @@ M-core                           A-core
   ```
 
 ### 5. Tokio Runtime
+
 - `runtime-app` is already `tokio`-based (UioDevice spawns tasks internally).
 - Do not embed `#[tokio::main]` — callers bring their own runtime. Document this.
 - No wrapping needed; just correct re-exports.
 
 ### 6. Doorbell / Notify Wiring (STM32 HSEM path only)
+
 - `UioDevice` has its own `Arc<Notify>` for the IRQ loop (already wired).
 - `HsemDoorbell::<2>::new(vaddr)` has its own `Arc<Notify>` — these are separate and currently not bridged.
 - For the UIO path the separate HSEM `Notify` is unused; `UioDevice`'s internal loop handles wakeup.
@@ -101,15 +113,16 @@ M-core                           A-core
 
 ## Critical Files to Modify
 
-| File | Change |
-|------|--------|
-| `crates/consortium-runtime-mcu/src/lib.rs` | Add doorbell IRQ helpers where verified, descriptor write helpers, `mem_transport_for_slot`, `static_buf!` macro |
-| `crates/consortium-runtime-app/src/lib.rs` | Fix re-export name, add `wait_for_ready`, `open_channel` convenience fn |
-| `crates/consortium-runtime-app/src/remoteproc.rs` | Add `wait_state` async helper |
-| New: `crates/consortium-runtime-mcu/src/descriptor.rs` | Descriptor write + state helpers for M-core side |
-| New: `crates/consortium-runtime-app/src/descriptor.rs` | Descriptor poll helpers for A-core side |
+| File                                                   | Change                                                                                                           |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| `crates/consortium-runtime-mcu/src/lib.rs`             | Add doorbell IRQ helpers where verified, descriptor write helpers, `mem_transport_for_slot`, `static_buf!` macro |
+| `crates/consortium-runtime-app/src/lib.rs`             | Fix re-export name, add `wait_for_ready`, `open_channel` convenience fn                                          |
+| `crates/consortium-runtime-app/src/remoteproc.rs`      | Add `wait_state` async helper                                                                                    |
+| New: `crates/consortium-runtime-mcu/src/descriptor.rs` | Descriptor write + state helpers for M-core side                                                                 |
+| New: `crates/consortium-runtime-app/src/descriptor.rs` | Descriptor poll helpers for A-core side                                                                          |
 
 Existing re-usable code:
+
 - `consortium-ipc-transport-memory/src/descriptor.rs` — already parses the descriptor format; M-core init should use the same layout constants
 - `consortium-ipc-transport-memory/src/lib.rs` — shared-memory transport constructor to wrap
 - `consortium-runtime-app/src/remoteproc.rs` — `RemoteProc` (complete, no changes needed)
@@ -129,6 +142,7 @@ Existing re-usable code:
 ## Verification
 
 After implementation:
+
 1. `cargo build -p consortium-runtime-mcu --features stm32mp25x --target thumbv7em-none-eabi` — must compile clean
 2. `cargo build -p consortium-runtime-app` (Linux host) — must compile clean (fixes broken re-export)
 3. Write an integration doc/example showing M-core init → `MReady` → A-core `wait_for_ready` → `UioDevice::open` → message exchange

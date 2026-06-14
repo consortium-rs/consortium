@@ -8,11 +8,11 @@ This document describes the **advanced type system** for `#[tee_command]`. Most 
 
 See `tee-sdk-design.md` for the baseline. Advanced types now fully implemented:
 
-| Category | Implemented types |
-|---|---|
-| Input parameters | `bool`, `u32`, `i32`, `u64`, `(u32, u32)`, `&[u8]`, `&mut [u8]`, `&mut u32`, `&mut i32`, `&mut u64`, `T: TeeParam` |
-| Return / output | `u32`, `u64`, `bool`, `Vec<u8>`, `T: TeeParam` |
-| Serialization | Pluggable codec via `#[tee_command(codec = MyCodec)]`; any codec implementing `consortium_common::codec::CodecFor<T>` |
+| Category         | Implemented types                                                                                                     |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Input parameters | `bool`, `u32`, `i32`, `u64`, `(u32, u32)`, `&[u8]`, `&mut [u8]`, `&mut u32`, `&mut i32`, `&mut u64`, `T: TeeParam`    |
+| Return / output  | `u32`, `u64`, `bool`, `Vec<u8>`, `T: TeeParam`                                                                        |
+| Serialization    | Pluggable codec via `#[tee_command(codec = MyCodec)]`; any codec implementing `consortium_common::codec::CodecFor<T>` |
 
 ### What this document covers
 
@@ -62,13 +62,13 @@ A leading `&mut SomePath` parameter (where `SomePath` is not a primitive or slic
 
 ### Additional Primitive Values (`ParamValue` slot)
 
-| Rust type    | Slot kind        | Encoding                                 | Status |
-|--------------|------------------|------------------------------------------|--------|
-| `u32`        | `ValueInput`     | `a = value`, `b = 0`                     | ✅ done |
-| `bool`       | `ValueInput`     | `a = value as u32` (0 or 1), `b = 0`    | ✅ done |
-| `u64`        | ValueInput/Return | `a = low 32`, `b = high 32`             | ✅ done |
-| `i32`        | `ValueInput`     | `a = value as u32`, `b = 0`              | ✅ done |
-| `(u32, u32)` | `ValueInput`     | `a = .0`, `b = .1`                       | ✅ done |
+| Rust type    | Slot kind         | Encoding                             | Status  |
+| ------------ | ----------------- | ------------------------------------ | ------- |
+| `u32`        | `ValueInput`      | `a = value`, `b = 0`                 | ✅ done |
+| `bool`       | `ValueInput`      | `a = value as u32` (0 or 1), `b = 0` | ✅ done |
+| `u64`        | ValueInput/Return | `a = low 32`, `b = high 32`          | ✅ done |
+| `i32`        | `ValueInput`      | `a = value as u32`, `b = 0`          | ✅ done |
+| `(u32, u32)` | `ValueInput`      | `a = .0`, `b = .1`                   | ✅ done |
 
 ---
 
@@ -76,11 +76,11 @@ A leading `&mut SomePath` parameter (where `SomePath` is not a primitive or slic
 
 A `&mut T` where `T` is a primitive scalar is treated as an **output parameter**. The TA writes a result back through the pointer; the CA reads it after `invoke_command` returns.
 
-| Rust type   | Slot kind      | TA behaviour                          | CA behaviour                          | Status |
-|-------------|----------------|---------------------------------------|---------------------------------------|--------|
-| `&mut u32`  | `ValueInout`   | reads `a`, writes back via `set_a`    | reads `a` into `*ptr` after call      | ✅ done |
-| `&mut i32`  | `ValueInout`   | reads `a as i32`, writes back cast    | reads `a as i32` into `*ptr` after call | ✅ done |
-| `&mut u64`  | `ValueInout`   | reconstructs from `a`/`b`, writes back | reconstructs from `a`/`b` after call | ✅ done |
+| Rust type  | Slot kind    | TA behaviour                           | CA behaviour                            | Status  |
+| ---------- | ------------ | -------------------------------------- | --------------------------------------- | ------- |
+| `&mut u32` | `ValueInout` | reads `a`, writes back via `set_a`     | reads `a` into `*ptr` after call        | ✅ done |
+| `&mut i32` | `ValueInout` | reads `a as i32`, writes back cast     | reads `a as i32` into `*ptr` after call | ✅ done |
+| `&mut u64` | `ValueInout` | reconstructs from `a`/`b`, writes back | reconstructs from `a`/`b` after call    | ✅ done |
 
 #### Example
 
@@ -124,10 +124,10 @@ struct MyConfig {
 
 The codec type must implement `consortium_common::codec::CodecFor<T>` for your serialization format (e.g., `PostcardCodec` for [`postcard`](https://docs.rs/postcard)).
 
-| Rust type          | Slot kind       | TA behaviour                             | CA behaviour                              | Status |
-|--------------------|-----------------|------------------------------------------|-------------------------------------------|--------|
-| `T: TeeParam`      | `MemrefInput`   | deserialize from buffer with codec       | serialize to buffer, pass as memref       | ✅ done |
-| `&mut T: TeeParam` | `MemrefInout`   | deserialize, pass `&mut`, re-serialize   | serialize, pass as memref, deserialize back | ✅ done |
+| Rust type          | Slot kind     | TA behaviour                           | CA behaviour                                | Status  |
+| ------------------ | ------------- | -------------------------------------- | ------------------------------------------- | ------- |
+| `T: TeeParam`      | `MemrefInput` | deserialize from buffer with codec     | serialize to buffer, pass as memref         | ✅ done |
+| `&mut T: TeeParam` | `MemrefInout` | deserialize, pass `&mut`, re-serialize | serialize, pass as memref, deserialize back | ✅ done |
 
 ---
 
@@ -220,11 +220,11 @@ fn process(ctx: &mut Ctx, cfg: Config) -> Result<(), TeeError> {
 ### Considerations for Codec Choice
 
 | Property             | `postcard` | `bincode` | Custom |
-|----------------------|-----------|-----------|--------|
-| `no_std` support     | ✅        | partial   | ✅     |
-| Output size          | minimal   | small     | varies |
-| Allocation-free mode | ✅        | ❌        | ✅     |
-| Schema evolution     | manual    | manual    | custom |
+| -------------------- | ---------- | --------- | ------ |
+| `no_std` support     | ✅         | partial   | ✅     |
+| Output size          | minimal    | small     | varies |
+| Allocation-free mode | ✅         | ❌        | ✅     |
+| Schema evolution     | manual     | manual    | custom |
 
 ### Schema Evolution Warning
 
@@ -240,11 +240,11 @@ To implement a custom codec for your type `T`:
 impl consortium_common::codec::CodecFor<MyType> for MyCodec {
     type Error = MyError;
     type Decoded<'buf> = MyType;
-    
+
     fn encode(msg: &MyType, buf: &mut [u8]) -> Result<usize, Self::Error> {
         // Serialize msg into buf, return number of bytes written
     }
-    
+
     fn decode(buf: &[u8]) -> Result<Self::Decoded, Self::Error> {
         // Deserialize from buf
     }

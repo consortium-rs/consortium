@@ -138,6 +138,7 @@ include!(concat!(env!("OUT_DIR"), "/user_ta_header.rs"));
 ```
 
 **What the macro generates:**
+
 - `invoke_command()` dispatcher that matches `cmd_id` to function handlers
 - For each `#[tee_command]` function, a `function_name_dispatched()` handler that:
   - Unpacks parameters from TEE slots (ParamValue, ParamMemref)
@@ -179,6 +180,7 @@ async fn main() -> Result<()> {
 ```
 
 **What the macro generates:**
+
 - For each `#[tee_command]` function, a `call_function_name()` stub that:
   - Creates a TEE session (if not already open)
   - Packs parameters into ParamValue / ParamMemref structures
@@ -217,14 +219,14 @@ fn process(
 **Mapping:**
 | Rust Type | TEE Slot | Direction | Notes |
 |-----------|----------|-----------|-------|
-| `bool` | ParamValue.a (u32) | in/out |  |
-| `u32`, `i32` | ParamValue.a | in/out |  |
+| `bool` | ParamValue.a (u32) | in/out | |
+| `u32`, `i32` | ParamValue.a | in/out | |
 | `u64` | ParamValue (a + b) | in/out | split across a(low) and b(high) |
-| `&[u8]` | ParamMemref (read-only) | in |  |
-| `&mut [u8]` | ParamMemref (read-write) | in/out |  |
+| `&[u8]` | ParamMemref (read-only) | in | |
+| `&mut [u8]` | ParamMemref (read-write) | in/out | |
 | `T: TeeParam` | ParamMemref | in | deserialized via `codec` |
 | `&mut T: TeeParam` | ParamMemref | in/out | round-trip via `codec` |
-| `Vec<u8>` | ParamMemref (output buffer) | out |  |
+| `Vec<u8>` | ParamMemref (output buffer) | out | |
 | `T: TeeParam` | ParamMemref | out | serialized via `codec` |
 
 For `TeeParam` types, the `#[tee_command(codec = ...)]` attribute is required. See `tee-advanced-type-system.md`.
@@ -232,15 +234,18 @@ For `TeeParam` types, the `#[tee_command(codec = ...)]` attribute is required. S
 ## TEE Performance & Security
 
 **Latency:**
+
 - CA → TA call: ~100–500 µs (SMC + OP-TEE context switch)
 - Crypto operation (SHA256): ~1–10 ms
 - Total roundtrip: dominated by crypto, not IPC overhead
 
 **Memory:**
+
 - TA binary: ~100–500 KB
 - CA shared memory buffers: 4 KB per call (for large payloads)
 
 **Security Guarantees:**
+
 - Data in TA never leaves secure world in plaintext
 - Crypto keys isolated from normal world OS
 - TA isolation enforced by hardware (TrustZone)
@@ -277,8 +282,8 @@ postcard-codec = ["serde", "dep:postcard"]  # Enable postcard codec support
 ```
 
 **Build process:**
+
 1. `build.rs` runs `optee_utee_build::build()` → generates `user_ta_header.rs`
 2. Macro generates `invoke_command()` dispatcher
 3. `cdylib` compiles to TA binary
 4. CA depends on `rlib` with `features = ["ca"]` → generates `call_*` stubs
-

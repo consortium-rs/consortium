@@ -1,4 +1,3 @@
-
 ## Consortium ORT: ONNX Runtime Integration
 
 The Consortium ORT (ONNX Runtime Wrapper) provides seamless AI model inference across all components (M-core, A-core, TEE) with automatic model bundling, hardware acceleration selection, and type-safe inference.
@@ -592,13 +591,14 @@ async fn main() -> Result<()> {
 
 ### Quantization Impact
 
-| Model | Original | INT8 | FP16 | Speed (INT8) | Accuracy Loss |
-|-------|----------|------|------|------|------|
-| YOLOv8n (24 MB) | 24 MB | 6 MB | 12 MB | ~1.5x faster | < 0.5% mAP |
-| ResNet50 (98 MB) | 98 MB | 25 MB | 49 MB | ~2x faster | < 1% top-1 acc |
-| MobileNetV2 (14 MB) | 14 MB | 3.5 MB | 7 MB | ~1.2x faster | < 0.3% top-1 acc |
+| Model               | Original | INT8   | FP16  | Speed (INT8) | Accuracy Loss    |
+| ------------------- | -------- | ------ | ----- | ------------ | ---------------- |
+| YOLOv8n (24 MB)     | 24 MB    | 6 MB   | 12 MB | ~1.5x faster | < 0.5% mAP       |
+| ResNet50 (98 MB)    | 98 MB    | 25 MB  | 49 MB | ~2x faster   | < 1% top-1 acc   |
+| MobileNetV2 (14 MB) | 14 MB    | 3.5 MB | 7 MB  | ~1.2x faster | < 0.3% top-1 acc |
 
 **Process:**
+
 1. Original model → load via ONNX Runtime
 2. Calibration → if INT8, run representative dataset to collect activation statistics
 3. Quantization → convert weights/activations to lower precision
@@ -608,12 +608,12 @@ async fn main() -> Result<()> {
 
 ### ORT Performance & Hardware Acceleration
 
-| Provider | Hardware | Latency | Throughput |
-|----------|----------|---------|-----------|
-| **CPU (ONNX Runtime)** | ARM Cortex-A | ~100–500 ms (YOLOv8) | 2–10 inferences/sec |
-| **GPU (CUDA)** | NVIDIA | ~10–50 ms | 20–100 inferences/sec |
-| **NPU (OpenVINO)** | Intel Movidius / VPU | ~20–100 ms | 10–50 inferences/sec |
-| **DSP (QNN)** | Qualcomm Hexagon | ~50–200 ms | 5–20 inferences/sec |
+| Provider               | Hardware             | Latency              | Throughput            |
+| ---------------------- | -------------------- | -------------------- | --------------------- |
+| **CPU (ONNX Runtime)** | ARM Cortex-A         | ~100–500 ms (YOLOv8) | 2–10 inferences/sec   |
+| **GPU (CUDA)**         | NVIDIA               | ~10–50 ms            | 20–100 inferences/sec |
+| **NPU (OpenVINO)**     | Intel Movidius / VPU | ~20–100 ms           | 10–50 inferences/sec  |
+| **DSP (QNN)**          | Qualcomm Hexagon     | ~50–200 ms           | 5–20 inferences/sec   |
 
 **Selection logic:** Auto-detect available hardware; fall back to CPU if necessary.
 

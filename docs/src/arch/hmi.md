@@ -1,4 +1,3 @@
-
 ## Consortium HMI: Human-Machine Interface
 
 The Consortium HMI provides a unified framework for building responsive, real-time UIs on the A-core Linux side, with automatic backend integration and multi-protocol support (web, embedded GUI, mobile).
@@ -505,103 +504,140 @@ async fn handle_websocket_client(
 <!-- templates/overview.html -->
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Consortium Control</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .header { color: white; margin-bottom: 30px; }
-        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .header {
+        color: white;
+        margin-bottom: 30px;
+      }
+      .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
-        }
-        .card:hover { transform: translateY(-5px); }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+      }
+      .card {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+      }
 
-        .sensor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .sensor { text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px; }
-        .sensor-value { font-size: 2.5em; font-weight: bold; color: #667eea; }
+      .sensor-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+      .sensor {
+        text-align: center;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+      .sensor-value {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #667eea;
+      }
 
-        button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            background: #667eea;
-            color: white;
-            transition: all 0.2s;
-        }
-        button:hover { background: #5568d3; }
+      button {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        background: #667eea;
+        color: white;
+        transition: all 0.2s;
+      }
+      button:hover {
+        background: #5568d3;
+      }
 
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="header">
-            <h1>🏠 Environmental Control</h1>
+      <div class="header">
+        <h1>🏠 Environmental Control</h1>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h2>📊 Sensors</h2>
+          <div class="sensor-grid">
+            <div class="sensor">
+              <div>Temperature</div>
+              <div class="sensor-value">{{ state.temperature | round(precision=1) }}°C</div>
+            </div>
+            <div class="sensor">
+              <div>Humidity</div>
+              <div class="sensor-value">{{ state.humidity | round }}%</div>
+            </div>
+          </div>
         </div>
 
-        <div class="grid">
-            <div class="card">
-                <h2>📊 Sensors</h2>
-                <div class="sensor-grid">
-                    <div class="sensor">
-                        <div>Temperature</div>
-                        <div class="sensor-value">{{ state.temperature | round(precision=1) }}°C</div>
-                    </div>
-                    <div class="sensor">
-                        <div>Humidity</div>
-                        <div class="sensor-value">{{ state.humidity | round }}%</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>🎛️ Device</h2>
-                <p>Mode: <strong>{% match state.device_mode %}
-                    {% when DeviceMode::Idle %}Idle
-                    {% when DeviceMode::Heating {target} %}Heating to {{ target }}°C
-                {% endmatch %}</strong></p>
-                <button onclick="send('SetMode', 'Heating')">Heat</button>
-                <button onclick="send('SetMode', 'Idle')">Off</button>
-            </div>
+        <div class="card">
+          <h2>🎛️ Device</h2>
+          <p>
+            Mode:
+            <strong
+              >{% match state.device_mode %} {% when DeviceMode::Idle %}Idle {% when
+              DeviceMode::Heating {target} %}Heating to {{ target }}°C {% endmatch %}</strong
+            >
+          </p>
+          <button onclick="send('SetMode', 'Heating')">Heat</button>
+          <button onclick="send('SetMode', 'Idle')">Off</button>
         </div>
+      </div>
     </div>
 
     <script>
-        const ws = new WebSocket("ws://" + location.host + "/ws");
-        ws.onmessage = (e) => document.documentElement.innerHTML = e.data;
+      const ws = new WebSocket("ws://" + location.host + "/ws");
+      ws.onmessage = (e) => (document.documentElement.innerHTML = e.data);
 
-        function send(action, value) {
-            const event = {};
-            event[action] = value;
-            ws.send(JSON.stringify(event));
-        }
+      function send(action, value) {
+        const event = {};
+        event[action] = value;
+        ws.send(JSON.stringify(event));
+      }
     </script>
-</body>
+  </body>
 </html>
 ```
 
@@ -615,15 +651,15 @@ async fn handle_websocket_client(
 
 ### HMI Features
 
-| Feature | Implementation |
-|---------|-----------------|
-| **Template Engine** | Tera/Askama for HTML generation |
-| **State Management** | Tokio channels + broadcast |
-| **WebSocket Transport** | tokio-tungstenite for real-time updates |
-| **Multi-Protocol** | HTTP, WebSocket, optional Tauri for desktop |
-| **Responsive Design** | CSS Grid/Flexbox, mobile-first |
-| **Accessibility** | WCAG 2.1 AA semantic HTML |
-| **Customization** | CSS variables, dark mode, internationalization |
+| Feature                 | Implementation                                 |
+| ----------------------- | ---------------------------------------------- |
+| **Template Engine**     | Tera/Askama for HTML generation                |
+| **State Management**    | Tokio channels + broadcast                     |
+| **WebSocket Transport** | tokio-tungstenite for real-time updates        |
+| **Multi-Protocol**      | HTTP, WebSocket, optional Tauri for desktop    |
+| **Responsive Design**   | CSS Grid/Flexbox, mobile-first                 |
+| **Accessibility**       | WCAG 2.1 AA semantic HTML                      |
+| **Customization**       | CSS variables, dark mode, internationalization |
 
 ### HMI Performance
 

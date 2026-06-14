@@ -81,12 +81,12 @@ let msg = rx.recv().await?;
 
 **Type parameters:**
 
-| Parameter | Role | Example |
-|-----------|------|---------|
-| `D` | Direction: `Tx` or `Rx` | Compile-time guard—can't call `recv()` on a `Tx` channel |
-| `T` | Message type | `TemperatureSensorData` |
-| `Tr` | Transport | `MemTransport<HsemDoorbell, DdrRegion>` |
-| `C` | Codec | `PostcardCodec` (default) |
+| Parameter | Role                    | Example                                                  |
+| --------- | ----------------------- | -------------------------------------------------------- |
+| `D`       | Direction: `Tx` or `Rx` | Compile-time guard—can't call `recv()` on a `Tx` channel |
+| `T`       | Message type            | `TemperatureSensorData`                                  |
+| `Tr`      | Transport               | `MemTransport<HsemDoorbell, DdrRegion>`                  |
+| `C`       | Codec                   | `PostcardCodec` (default)                                |
 
 **Zero-allocation contract:**
 
@@ -163,6 +163,7 @@ Used on Cortex-M. No OS, no allocator, no async runtime beyond cooperative polli
 `MemTransport<D: Doorbell, R: Region>` takes raw pointers to tx/rx slots in DMA-accessible shared memory. The doorbell and region types are injected at construction so the same transport compiles for HSEM, IPCC, MU, GPIO, or any platform-specific mechanism.
 
 **Send path:**
+
 1. Write payload into tx slot via volatile stores.
 2. `region.flush()` — issues `dc cvac` + `dsb sy` for each cache line if DDR; noop if SRAM.
 3. Write `len` then `FLAG_VALID` into slot header (volatile, ordered).
@@ -170,6 +171,7 @@ Used on Cortex-M. No OS, no allocator, no async runtime beyond cooperative polli
 5. Return immediately. `SendFut` resolves on the first poll.
 
 **Receive path:**
+
 1. `region.invalidate()` — issues `dc ivac` + `dsb sy` to discard stale cache lines.
 2. Check `FLAG_VALID` on rx slot (volatile read).
 3. If present: copy payload, write `FLAG_CONSUMED`, return.
@@ -181,6 +183,7 @@ Used on Cortex-M. No OS, no allocator, no async runtime beyond cooperative polli
 Used on Cortex-A running Linux. The transport is backed by a UIO (`/dev/uioN`) kernel driver that mmaps shared memory and delivers M-core interrupts as readable file events.
 
 `UioDevice::open(n)`:
+
 1. Opens `/dev/uio0`, mmaps resource 0 (shared SRAM/DDR region).
 2. Parses a binary descriptor from offset 0 (magic `0x434F4E53`, version 1). Fails if state ≠ `Ready`.
 3. Spawns a background Tokio task: waits on `AsyncFd::readable()` for M→A IRQs, then broadcasts `irq_notify.notify_waiters()`.
@@ -188,11 +191,13 @@ Used on Cortex-A running Linux. The transport is backed by a UIO (`/dev/uioN`) k
 `uio.channel(id)` returns a `UioChannel` with a reference to the shared `Arc<Inner>` and the channel's slot offsets.
 
 **Send path (A→M):**
+
 1. Check if tx slot is still consumed (previous message was processed).
 2. If not: subscribe to `irq_notify`, await it, retry.
 3. If consumed: write payload into slot, set `FLAG_VALID`. (Kernel/hardware delivers the interrupt; UIO's MU TX register write triggers M-core IRQ.)
 
 **Receive path (M→A):**
+
 1. Try-read rx slot (same `FLAG_VALID` check as MemTransport).
 2. If data present: copy payload, mark `FLAG_CONSUMED`, return.
 3. If not: subscribe to `irq_notify`, await it.
@@ -270,11 +275,11 @@ pub trait Region {
 }
 ```
 
-| Type | Backing | flush / invalidate | is_coherent | Use case |
-|------|---------|-------------------|------------|---------|
-| `SramRegion` | On-chip SRAM | Noops | `true` | M-core-local buffers |
-| `DdrRegion` | DDR DRAM | AArch64 `dc cvac`/`dc ivac` + `dsb sy` | `false` | Cross-core shared buffers |
-| `SerialRegion` | None (virtual) | Noops | `true` | UART/SWD trace channels |
+| Type           | Backing        | flush / invalidate                     | is_coherent | Use case                  |
+| -------------- | -------------- | -------------------------------------- | ----------- | ------------------------- |
+| `SramRegion`   | On-chip SRAM   | Noops                                  | `true`      | M-core-local buffers      |
+| `DdrRegion`    | DDR DRAM       | AArch64 `dc cvac`/`dc ivac` + `dsb sy` | `false`     | Cross-core shared buffers |
+| `SerialRegion` | None (virtual) | Noops                                  | `true`      | UART/SWD trace channels   |
 
 When `MemTransport` is monomorphized over `SramRegion`, the cache operations compile away entirely. When monomorphized over `DdrRegion`, they emit the correct AArch64 data cache maintenance instructions.
 
@@ -306,12 +311,12 @@ The `effective_mtu` in the descriptor drives `Transport::max_message_size()`, wh
 
 ## Platform Targets
 
-| Core | Transport | Doorbell | Region | Async runtime |
-|------|-----------|----------|--------|---------------|
-| Cortex-M (STM32MP21) | `MemTransport` | IPCC | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
-| Cortex-M (STM32MP23/25) | `MemTransport` | HSEM or IPCC | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
-| Cortex-M (i.MX 95) | `MemTransport` | MU | `SramRegion` / `DdrRegion` | cooperative executor |
-| Cortex-A (Linux) | `UioChannel` | Linux UIO + `tokio::sync::Notify` | mmap'd via UIO driver | Tokio |
+| Core                    | Transport      | Doorbell                          | Region                     | Async runtime                |
+| ----------------------- | -------------- | --------------------------------- | -------------------------- | ---------------------------- |
+| Cortex-M (STM32MP21)    | `MemTransport` | IPCC                              | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
+| Cortex-M (STM32MP23/25) | `MemTransport` | HSEM or IPCC                      | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
+| Cortex-M (i.MX 95)      | `MemTransport` | MU                                | `SramRegion` / `DdrRegion` | cooperative executor         |
+| Cortex-A (Linux)        | `UioChannel`   | Linux UIO + `tokio::sync::Notify` | mmap'd via UIO driver      | Tokio                        |
 
 The same `Channel<D, T, Tr, C>` API compiles for all rows. Only the concrete types in `Tr` differ.
 
@@ -321,11 +326,11 @@ The same `Channel<D, T, Tr, C>` API compiles for all rows. Only the concrete typ
 
 `consortium-ipc` (traits and `Channel`) is `no_std` by default.
 
-| Feature | Effect |
-|---------|--------|
-| *(none)* | Pure `no_std`; `MaybeSend` has no bounds |
-| `std` | Adds `Send` bound on futures via `MaybeSend: Send` |
-| `alloc` | Enables allocator support in serde/postcard |
+| Feature  | Effect                                             |
+| -------- | -------------------------------------------------- |
+| _(none)_ | Pure `no_std`; `MaybeSend` has no bounds           |
+| `std`    | Adds `Send` bound on futures via `MaybeSend: Send` |
+| `alloc`  | Enables allocator support in serde/postcard        |
 
 `consortium-mem` inherits `no_std`. `consortium-uio` requires `std` + Tokio and is Linux-only.
 

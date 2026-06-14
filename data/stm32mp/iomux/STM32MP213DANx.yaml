@@ -2924,4 +2924,3 @@ PZ3:
       pin: nss
     - name: tamp
       pin: out4
-

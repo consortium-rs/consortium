@@ -2285,4 +2285,3 @@ PI4:
 PWR_CPUON:
   position: H4
   type: I/O
-

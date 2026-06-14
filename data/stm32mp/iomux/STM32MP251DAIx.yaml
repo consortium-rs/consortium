@@ -4197,4 +4197,3 @@ PZ9:
       pin: mco_2
     - name: spi8
       pin: rdy
-

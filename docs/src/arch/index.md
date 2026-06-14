@@ -16,7 +16,6 @@ The Consortium architecture consists of the following components:
 
 The Consortium architecture is designed to be modular and extensible, allowing developers to easily add new components and features as needed. By providing a unified framework for inter-component communication and secure execution, the Consortium aims to simplify the development of heterogeneous and asymmetric multiprocessing systems, enabling developers to focus on building innovative applications rather than dealing with the complexities of inter-component communication.
 
-
 ## Integration: Complete Example
 
 Here's how TEE, HMI, ORT, and FFI work together:
@@ -71,6 +70,7 @@ async fn main() -> Result<()> {
 ```
 
 This demonstrates the power of the Consortium framework: developers can seamlessly combine:
+
 - **IPC** for low-latency sensor data
 - **TEE** for security-critical operations
 - **ORT** for AI inference
