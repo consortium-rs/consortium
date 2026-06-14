@@ -30,6 +30,7 @@ members = [
   "crates/consortium-builder",
   "crates/consortium-codec",
   "crates/consortium-common",
+  "crates/consortium-dts",
   "crates/consortium-tee",
   "crates/consortium-tee-macros",
   "crates/consortium-tee-macros-impl",
