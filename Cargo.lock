@@ -315,10 +315,30 @@ dependencies = [
 name = "consortium-codec"
 version = "0.1.0"
 dependencies = [
+ "consortium-codec-macros",
  "postcard",
  "prost",
  "rkyv",
  "serde",
+ "trybuild",
+]
+
+[[package]]
+name = "consortium-codec-macros"
+version = "0.1.0"
+dependencies = [
+ "consortium-codec-macros-impl",
+]
+
+[[package]]
+name = "consortium-codec-macros-impl"
+version = "0.1.0"
+dependencies = [
+ "insta",
+ "prettyplease",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]

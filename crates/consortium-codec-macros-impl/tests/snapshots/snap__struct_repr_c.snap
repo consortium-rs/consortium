@@ -1,0 +1,9 @@
+---
+source: crates/consortium-codec-macros-impl/tests/snap.rs
+expression: pretty_snapshot(expanded)
+---
+unsafe impl ::consortium_codec::rkyv::TrustedArchive for Point
+where
+    u32: ::consortium_codec::rkyv::TrustedArchive,
+    u32: ::consortium_codec::rkyv::TrustedArchive,
+{}

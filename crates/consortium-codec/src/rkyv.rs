@@ -63,6 +63,27 @@ trusted_archive_primitives!(
     f64,
 );
 
+// SAFETY: arrays archive to [T::Archived; N]; when T: TrustedArchive, every element's
+// archived form is safe to access without validation, so the array is too.
+unsafe impl<T: TrustedArchive, const N: usize> TrustedArchive for [T; N] {}
+
+macro_rules! impl_trusted_archive_tuple {
+    ($($T:ident),+) => {
+        // SAFETY: tuples archive to a tuple of the elements' archived forms; when every
+        // element is TrustedArchive, the archived tuple is safe to access without validation.
+        unsafe impl<$($T: TrustedArchive),+> TrustedArchive for ($($T,)+) {}
+    };
+}
+
+impl_trusted_archive_tuple!(T0);
+impl_trusted_archive_tuple!(T0, T1);
+impl_trusted_archive_tuple!(T0, T1, T2);
+impl_trusted_archive_tuple!(T0, T1, T2, T3);
+impl_trusted_archive_tuple!(T0, T1, T2, T3, T4);
+impl_trusted_archive_tuple!(T0, T1, T2, T3, T4, T5);
+impl_trusted_archive_tuple!(T0, T1, T2, T3, T4, T5, T6);
+impl_trusted_archive_tuple!(T0, T1, T2, T3, T4, T5, T6, T7);
+
 impl<const SCRATCH: usize> Codec for RkyvCodec<SCRATCH> {
     type Error = rkyv::rancor::Error;
 }

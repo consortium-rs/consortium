@@ -1,0 +1,5 @@
+error: TrustedArchive structs must carry #[repr(C)] or #[repr(align(N))] to guarantee stable memory layout for unchecked archive access
+ --> tests/ui/trusted_archive/fail/missing_struct_repr.rs:5:8
+  |
+5 | struct NakedStruct {
+  |        ^^^^^^^^^^^

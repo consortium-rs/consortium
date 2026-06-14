@@ -36,4 +36,6 @@ prost = { version = "0.14.3", default-features = false, optional = true }
 rkyv = { version = "0.8.15", default-features = false, features = ["bytecheck"], optional = true }
 
 [dev-dependencies]
+consortium-codec-macros = { path = "../consortium-codec-macros" }
 serde = { version = "1.0.228", features = ["derive"], default-features = false }
+trybuild = "1"

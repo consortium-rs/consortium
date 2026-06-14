@@ -14,23 +14,23 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! RPI session management with chip-aware peripheral configuration and RIFSC perid assignment.
+//! CFG session management with chip-aware peripheral configuration and RIFSC/TRDC perid assignment.
 
 use std::collections::HashMap;
 
 use consortium_common::config::{Config, chip_map::Chip, iomux::IomuxConfig, rif::RifConfig};
 
-use crate::error::RpiError;
+use crate::error::CfgError;
 use crate::peripheral::Peripheral;
 
 /// Session holding chip identity and resolved peripheral configuration.
 ///
-/// `RpiSession` is the main entry point for generating DTS snippets and RIFSC
-/// configuration for a specific chip. Construct it with `RpiSession::new()`,
+/// `CfgSession` is the main entry point for generating DTS snippets and RIFSC
+/// configuration for a specific chip. Construct it with `CfgSession::new()`,
 /// providing the user config, the chip-specific RIFSC peripheral map, and
 /// optionally the pin mux database for the target package variant.
 #[derive(Debug, Clone)]
-pub struct RpiSession {
+pub struct CfgSession {
     /// The target chip family for this session.
     pub chip: Chip,
     /// Specific chip package variant (e.g., "STM32MP257FAKx") used for IOMUX pin mux configuration.
@@ -39,11 +39,11 @@ pub struct RpiSession {
     pub peripherals: HashMap<String, Peripheral>,
 }
 
-impl RpiSession {
+impl CfgSession {
     /// Build a session from a project `Config`, optional RIFSC peripheral map, and optional IOMUX pin database.
     ///
     /// For each peripheral in `config.peripheral`:
-    /// - Creates an `RpiSession::Peripheral` from the common peripheral config.
+    /// - Creates an `CfgSession::Peripheral` from the common peripheral config.
     /// - Assigns `perid` from the matching entry in `rif` if provided (leaves `None` otherwise).
     /// - When `iomux` is provided:
     ///   - Verifies each pin in the peripheral's `dts` field exists in the IOMUX data.
@@ -57,13 +57,13 @@ impl RpiSession {
     /// * `iomux` - Optional IOMUX pin database (required for AF/pin validation; pass `None` when package variant is unknown).
     ///
     /// # Errors
-    /// - `RpiError::InvalidPin` - pin in `dts` doesn't exist in IOMUX.
-    /// - `RpiError::PinNotAvailable` - pin exists but doesn't support the peripheral.
+    /// - `CfgError::InvalidPin` - pin in `dts` doesn't exist in IOMUX.
+    /// - `CfgError::PinNotAvailable` - pin exists but doesn't support the peripheral.
     pub fn new(
         config: &Config,
         rif: Option<&RifConfig>,
         iomux: Option<&IomuxConfig>,
-    ) -> Result<Self, RpiError> {
+    ) -> Result<Self, CfgError> {
         let mut peripherals = HashMap::new();
 
         for (name, common_periph) in &config.peripheral {
@@ -83,7 +83,7 @@ impl RpiSession {
 
                     let iomux_pin = iomux
                         .get_pin(&pin_name)
-                        .ok_or_else(|| RpiError::InvalidPin(pin_name.clone()))?;
+                        .ok_or_else(|| CfgError::InvalidPin(pin_name.clone()))?;
 
                     let af_idx = iomux_pin
                         .mux
@@ -91,7 +91,7 @@ impl RpiSession {
                         .position(|sig| sig.name.to_lowercase() == name.to_lowercase())
                         .ok_or_else(|| {
                             let allowed = iomux.find_pins_with_peripheral(name);
-                            RpiError::PinNotAvailable(
+                            CfgError::PinNotAvailable(
                                 pin_name.clone(),
                                 name.clone(),
                                 String::new(),
@@ -110,7 +110,7 @@ impl RpiSession {
             peripherals.insert(name.clone(), periph);
         }
 
-        Ok(RpiSession {
+        Ok(CfgSession {
             chip: config.general.chip.clone(),
             variant: config.general.variant.clone(),
             peripherals,

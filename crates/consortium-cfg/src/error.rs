@@ -17,7 +17,7 @@
 use thiserror::Error;
 
 #[derive(Error, Debug, PartialEq, Eq, Clone, Hash)]
-pub enum RpiError {
+pub enum CfgError {
     #[error("The peripheral '{0}' not exists")]
     PeripheralNotFound(String),
 
