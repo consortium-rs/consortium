@@ -34,6 +34,35 @@ pub struct RkyvCodec<const SCRATCH: usize>;
 /// ensuring that all archived data is safe to access without validation.
 pub unsafe trait TrustedArchive: rkyv::Archive {}
 
+macro_rules! trusted_archive_primitives {
+    ($($ty:ty),* $(,)?) => {
+        $(
+            // SAFETY: These fixed-size primitives archive to plain value data
+            // with no address-space-local state. Values decoded by this codec
+            // are bytes produced by rkyv serialization for the same type.
+            unsafe impl TrustedArchive for $ty {}
+        )*
+    };
+}
+
+trusted_archive_primitives!(
+    (),
+    bool,
+    char,
+    u8,
+    u16,
+    u32,
+    u64,
+    u128,
+    i8,
+    i16,
+    i32,
+    i64,
+    i128,
+    f32,
+    f64,
+);
+
 impl<const SCRATCH: usize> Codec for RkyvCodec<SCRATCH> {
     type Error = rkyv::rancor::Error;
 }
@@ -143,10 +172,26 @@ where
 mod tests {
     use super::*;
 
-    #[cfg(not(feature = "alloc"))]
-    // SAFETY: `u32` archives to plain integer data and is safe to access from
-    // bytes emitted by this codec's encoder.
-    unsafe impl TrustedArchive for u32 {}
+    fn assert_trusted_archive<T: TrustedArchive>() {}
+
+    #[test]
+    fn fixed_size_primitives_are_trusted_archives() {
+        assert_trusted_archive::<()>();
+        assert_trusted_archive::<bool>();
+        assert_trusted_archive::<char>();
+        assert_trusted_archive::<u8>();
+        assert_trusted_archive::<u16>();
+        assert_trusted_archive::<u32>();
+        assert_trusted_archive::<u64>();
+        assert_trusted_archive::<u128>();
+        assert_trusted_archive::<i8>();
+        assert_trusted_archive::<i16>();
+        assert_trusted_archive::<i32>();
+        assert_trusted_archive::<i64>();
+        assert_trusted_archive::<i128>();
+        assert_trusted_archive::<f32>();
+        assert_trusted_archive::<f64>();
+    }
 
     #[test]
     fn round_trips_archived_value() {
