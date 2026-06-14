@@ -14,6 +14,8 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+use consortium_dts::{Cell, CodegenOptions, Node, PropValue, Property, ToDts};
+
 use crate::peripheral::PeripheralPinMux;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -52,59 +54,48 @@ impl Pin {
     /// Example output:
     /// ```dts
     /// pins {
-    ///     pinmux = <STM32_PINMUX('A', 5, AF1)>, /* I2C1_SDA */
-    ///             <STM32_PINMUX('A', 6, AF1)>; /* I2C1_SCL */
+    ///     pinmux = <STM32_PINMUX('A', 5, AF1)>, <STM32_PINMUX('A', 6, AF1)>;
     ///     bias-disable;
     ///     drive-push-pull;
     ///     slew-rate = <3>;
     /// };
     /// ```
     pub fn generate_dts(&self, id: usize) -> String {
-        let mut lines = Vec::new();
-
-        // Node name
         let node_name = if id == 0 {
             "pins".to_string()
         } else {
-            format!("pins{}", id)
+            format!("pins{id}")
         };
-        lines.push(format!("{} {{", node_name));
 
-        // Pinmux property
+        let mut node = Node::new(node_name);
+
         if !self.muxes.is_empty() {
-            lines.push("    pinmux =".to_string());
-            for (idx, (mux, sleep)) in self.muxes.iter().enumerate() {
-                let mux_line = mux.generate_dts_pinmux(*sleep);
-                if idx == self.muxes.len() - 1 {
-                    // Last item: end with semicolon
-                    lines.push(format!("            {};", mux_line));
-                } else {
-                    // Not last: end with comma
-                    lines.push(format!("            {},", mux_line));
-                }
-            }
+            node = node.property(Property::compound(
+                "pinmux",
+                self.muxes
+                    .iter()
+                    .map(|(mux, sleep)| PropValue::Cells(vec![mux.to_dts_cell(*sleep)])),
+            ));
         }
 
-        // Bias configuration
         if self.bias_disable {
-            lines.push("    bias-disable;".to_string());
+            node = node.property(Property::boolean("bias-disable"));
         }
 
-        // Drive mode
         match self.drive {
-            PinMode::PushPull => lines.push("    drive-push-pull;".to_string()),
-            PinMode::OpenDrain => lines.push("    drive-open-drain;".to_string()),
+            PinMode::PushPull => node = node.property(Property::boolean("drive-push-pull")),
+            PinMode::OpenDrain => node = node.property(Property::boolean("drive-open-drain")),
             PinMode::None => {}
         }
 
-        // Slew rate
         if let Some(slew_rate) = self.slew_rate {
-            lines.push(format!("    slew-rate = <{}>;", slew_rate));
+            node = node.property(Property::cells("slew-rate", [Cell::number(slew_rate as u64)]));
         }
 
-        lines.push("};".to_string());
-
-        lines.join("\n")
+        node.to_dts_with_options(&CodegenOptions {
+            trailing_newline: false,
+            ..CodegenOptions::default()
+        })
     }
 }
 
