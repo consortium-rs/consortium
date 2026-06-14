@@ -23,6 +23,8 @@ pub struct File {
     pub plugin: bool,
     /// Reserved memory declarations.
     pub mem_reserves: Vec<MemReserve>,
+    /// Source-level include directives.
+    pub includes: Vec<Include>,
     /// Top-level file items.
     pub items: Vec<TopLevelItem>,
 }
@@ -34,8 +36,6 @@ pub enum TopLevelItem {
     Root(Node),
     /// An overlay block such as `&uart4 { ... };`.
     Overlay(NodeOverlay),
-    /// A preprocessor include.
-    Include(Include),
     /// A top-level delete-node directive.
     DeleteNode(Reference),
 }
@@ -141,11 +141,5 @@ impl From<Node> for TopLevelItem {
 impl From<NodeOverlay> for TopLevelItem {
     fn from(overlay: NodeOverlay) -> Self {
         Self::Overlay(overlay)
-    }
-}
-
-impl From<Include> for TopLevelItem {
-    fn from(include: Include) -> Self {
-        Self::Include(include)
     }
 }

@@ -16,10 +16,7 @@
 
 use core::fmt::Write;
 
-use crate::ast::{
-    Cell, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference,
-    TopLevelItem,
-};
+use crate::ast::{Cell, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference, TopLevelItem};
 
 /// Code generation options for DTS output.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -113,21 +110,7 @@ impl Codegen {
             wrote_directive = true;
         }
 
-        let includes: Vec<_> = file
-            .items
-            .iter()
-            .filter_map(|item| match item {
-                TopLevelItem::Include(include) => Some(include),
-                _ => None,
-            })
-            .collect();
-        let others: Vec<_> = file
-            .items
-            .iter()
-            .filter(|item| !matches!(item, TopLevelItem::Include(_)))
-            .collect();
-
-        let has_preamble = !file.mem_reserves.is_empty() || !includes.is_empty();
+        let has_preamble = !file.mem_reserves.is_empty() || !file.includes.is_empty();
         if wrote_directive && has_preamble {
             self.output.push('\n');
         }
@@ -136,15 +119,15 @@ impl Codegen {
             self.print_mem_reserve(mem_reserve);
         }
 
-        for include in includes {
+        for include in &file.includes {
             self.print_include(include);
         }
 
-        if !others.is_empty() && !self.output.is_empty() && !self.output.ends_with("\n\n") {
+        if !file.items.is_empty() && !self.output.is_empty() && !self.output.ends_with("\n\n") {
             self.output.push('\n');
         }
 
-        for (idx, item) in others.iter().enumerate() {
+        for (idx, item) in file.items.iter().enumerate() {
             if idx > 0 && !self.output.ends_with("\n\n") {
                 self.output.push('\n');
             }
@@ -156,7 +139,6 @@ impl Codegen {
         match item {
             TopLevelItem::Root(node) => self.print_node(node),
             TopLevelItem::Overlay(overlay) => self.print_overlay(overlay),
-            TopLevelItem::Include(include) => self.print_include(include),
             TopLevelItem::DeleteNode(reference) => {
                 self.write_indent();
                 let _ = writeln!(
