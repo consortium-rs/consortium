@@ -81,6 +81,21 @@ pub enum TokenKind {
     /// `&`
     #[token("&")]
     Amp,
+    /// `+`
+    #[token("+")]
+    Plus,
+    /// `-`
+    #[token("-")]
+    Minus,
+    /// `*`
+    #[token("*")]
+    Star,
+    /// `|`
+    #[token("|")]
+    Pipe,
+    /// `?`
+    #[token("?")]
+    Question,
     /// `/`
     #[token("/")]
     Slash,

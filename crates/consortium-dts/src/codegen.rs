@@ -16,7 +16,10 @@
 
 use core::fmt::Write;
 
-use crate::ast::{Cell, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference, TopLevelItem};
+use crate::ast::{
+    Cell, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference,
+    TopLevelItem,
+};
 
 /// Code generation options for DTS output.
 #[derive(Debug, Clone, PartialEq, Eq)]

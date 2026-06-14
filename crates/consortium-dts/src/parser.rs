@@ -77,7 +77,9 @@ impl<'src> Parser<'src> {
             }
             TokenKind::Amp => {
                 let target = self.parse_reference()?;
-                Ok(TopLevelItem::Overlay(self.parse_overlay_after_target(target)?))
+                Ok(TopLevelItem::Overlay(
+                    self.parse_overlay_after_target(target)?,
+                ))
             }
             TokenKind::DeleteNode => {
                 self.advance();
@@ -125,10 +127,7 @@ impl<'src> Parser<'src> {
         }
     }
 
-    fn parse_overlay_after_target(
-        &mut self,
-        target: Reference,
-    ) -> Result<NodeOverlay, ParseError> {
+    fn parse_overlay_after_target(&mut self, target: Reference) -> Result<NodeOverlay, ParseError> {
         self.expect(TokenKind::LBrace, "`{` after overlay target")?;
         let (properties, children) = self.parse_node_body_items()?;
         self.expect(TokenKind::RBrace, "`}` after overlay body")?;
@@ -461,10 +460,12 @@ impl<'src> Parser<'src> {
                 literal: literal.to_string(),
             })
         } else {
-            literal.parse::<u64>().map_err(|_| ParseError::InvalidNumber {
-                span,
-                literal: literal.to_string(),
-            })
+            literal
+                .parse::<u64>()
+                .map_err(|_| ParseError::InvalidNumber {
+                    span,
+                    literal: literal.to_string(),
+                })
         }
     }
 
@@ -619,10 +620,7 @@ mod tests {
         let TopLevelItem::Overlay(path_overlay) = &file.items[1] else {
             panic!("expected overlay");
         };
-        assert_eq!(
-            path_overlay.target,
-            Reference::path("/soc/serial@40010000")
-        );
+        assert_eq!(path_overlay.target, Reference::path("/soc/serial@40010000"));
     }
 
     #[test]
