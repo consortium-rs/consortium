@@ -25,9 +25,14 @@
 pub mod ast;
 pub mod builder;
 pub mod codegen;
+pub mod error;
+pub mod lexer;
+pub mod parser;
 
 pub use ast::{
     Cell, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference,
     TopLevelItem,
 };
 pub use codegen::{Codegen, CodegenOptions, ToDts};
+pub use error::{DtsError, LexError, ParseError, Span};
+pub use parser::{Parser, parse_dts};

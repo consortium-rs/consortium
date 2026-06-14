@@ -68,7 +68,7 @@ impl File {
 
     /// Add an include.
     pub fn include(mut self, include: Include) -> Self {
-        self.items.push(TopLevelItem::Include(include));
+        self.includes.push(include);
         self
     }
 
