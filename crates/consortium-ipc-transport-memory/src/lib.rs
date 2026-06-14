@@ -1,3 +1,5 @@
+#![cfg_attr(not(feature = "std"), no_std)]
+
 // Copyright 2026 Ethan Wu
 //
 // Licensed under the Apache License, Version 2.0 (the "License");

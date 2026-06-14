@@ -17,7 +17,6 @@
 #![allow(unused)] // Because this is a library crate, and some items are only used in certain contexts (e.g. std vs no_std).
 
 pub mod chan;
-pub mod consts;
 pub mod doorbell;
 pub mod error;
 pub mod registers;
