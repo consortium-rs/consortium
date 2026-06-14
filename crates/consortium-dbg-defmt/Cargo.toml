@@ -20,6 +20,10 @@ consortium-ipc-doorbell-hsem = { path = "../consortium-ipc-doorbell-hsem", defau
 consortium-ipc-doorbell-mu = { path = "../consortium-ipc-doorbell-mu", default-features = false, optional = true }
 defmt = "1.0.1"
 defmt-decoder = { version = "1.1", optional = true }
+thiserror = { version = "2.0", default-features = false }
+
+[dev-dependencies]
+hex = "0.4"
 
 [lints]
 workspace = true

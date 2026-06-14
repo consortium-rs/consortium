@@ -9,13 +9,16 @@ use consortium_common::descriptor::DescriptorHeaderError;
 use crate::descriptor::{DESCRIPTOR_SIZE, Descriptor, MAGIC, VERSION};
 
 /// Errors produced by the A-core host reader.
-#[derive(Debug)]
+#[derive(thiserror::Error, Debug)]
 pub enum HostError {
     /// CDBG magic bytes did not match the expected `b"CDBG"` value.
+    #[error("CDBG magic mismatch")]
     MagicMismatch,
     /// CDBG version field did not match the expected version.
+    #[error("CDBG version mismatch")]
     VersionMismatch,
     /// Descriptor `capacity` field is incompatible with the mapped region length.
+    #[error("descriptor capacity {descriptor} exceeds mapped length {mapped}")]
     CapacityMismatch {
         /// Capacity recorded in the descriptor (0 when the region is too small to hold a header).
         descriptor: u16,
@@ -23,6 +26,7 @@ pub enum HostError {
         mapped: usize,
     },
     /// A ring pointer lies outside the valid `[DATA_START, capacity)` range.
+    #[error("ring pointer {ptr} is out of bounds (capacity {capacity})")]
     PointerOutOfBounds {
         /// The offending pointer value.
         ptr: u16,
@@ -31,36 +35,13 @@ pub enum HostError {
     },
     /// ELF bytes could not be parsed or contained no defmt table.
     #[cfg(feature = "decode")]
+    #[error("ELF parsing failed or missing defmt table")]
     ElfParse,
     /// defmt stream decoding failed with a non-recoverable error.
     #[cfg(feature = "decode")]
+    #[error("defmt decode error: {0:?}")]
     Decode(defmt_decoder::DecodeError),
 }
-
-impl core::fmt::Display for HostError {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        match self {
-            Self::MagicMismatch => write!(f, "CDBG magic mismatch"),
-            Self::VersionMismatch => write!(f, "CDBG version mismatch"),
-            Self::CapacityMismatch { descriptor, mapped } => write!(
-                f,
-                "descriptor capacity {descriptor} exceeds mapped length {mapped}"
-            ),
-            Self::PointerOutOfBounds { ptr, capacity } => {
-                write!(
-                    f,
-                    "ring pointer {ptr} is out of bounds (capacity {capacity})"
-                )
-            }
-            #[cfg(feature = "decode")]
-            Self::ElfParse => write!(f, "ELF parsing failed or missing defmt table"),
-            #[cfg(feature = "decode")]
-            Self::Decode(e) => write!(f, "defmt decode error: {e:?}"),
-        }
-    }
-}
-
-impl std::error::Error for HostError {}
 
 /// A-core reader over an already-mapped CDBG debug ring.
 ///

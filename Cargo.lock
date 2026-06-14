@@ -335,6 +335,8 @@ dependencies = [
  "consortium-ipc-doorbell-mu",
  "defmt",
  "defmt-decoder",
+ "hex 0.4.3",
+ "thiserror",
 ]
 
 [[package]]
