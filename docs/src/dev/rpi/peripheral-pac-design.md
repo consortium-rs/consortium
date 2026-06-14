@@ -18,12 +18,12 @@ The goal is that a developer declares intent once and the build system derives s
 
 On a heterogeneous SoC such as the STM32MP257 (Cortex-A35 + Cortex-M33 + Cortex-M0+) or i.MX 94 (Cortex-A55 + 2× Cortex-M7 + Cortex-M33), each peripheral must be owned by exactly one execution domain:
 
-| Domain | Mechanism | Current approach |
-|--------|-----------|-----------------|
-| Linux (NS) | DTS `status = "okay"` | Manual |
-| OP-TEE (S) | DTS `secure-status = "okay"` | Manual |
-| M-core NS firmware | PAC + HAL + RIFSC/TRDC | Manual |
-| M-core S firmware (TF-M) | PAC + HAL + RIFSC/TRDC | Manual |
+| Domain                   | Mechanism                    | Current approach |
+| ------------------------ | ---------------------------- | ---------------- |
+| Linux (NS)               | DTS `status = "okay"`        | Manual           |
+| OP-TEE (S)               | DTS `secure-status = "okay"` | Manual           |
+| M-core NS firmware       | PAC + HAL + RIFSC/TRDC       | Manual           |
+| M-core S firmware (TF-M) | PAC + HAL + RIFSC/TRDC       | Manual           |
 
 Today all four configurations are written by hand and must stay in sync. A mismatch causes silent interrupt mis-attribution, broken DMA, or a security violation trap at runtime.
 
@@ -37,11 +37,11 @@ Peripherals are declared as named subsections `[peripheral.<NAME>]`, where `<NAM
 
 ### Field reference
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `master` | string | yes | Who owns this peripheral: a core abbreviation (`"cm33"`, `"cm0p"`, `"cm7_0"`), `"linux"`, or `"optee"` |
-| `secure` | bool | when master is M-core or `"optee"` | `true` → secure-world (RIFSC SEC bit / TRDC); `false` → non-secure. Defaults to `false` for M-core, must be `true` for `"optee"` |
-| `clock` | string | no | Clock source name for this peripheral (chip-specific, e.g. `"pll4_r"`, `"hsi"`). Omit to use the chip reset default. |
+| Field    | Type   | Required                           | Description                                                                                                                      |
+| -------- | ------ | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `master` | string | yes                                | Who owns this peripheral: a core abbreviation (`"cm33"`, `"cm0p"`, `"cm7_0"`), `"linux"`, or `"optee"`                           |
+| `secure` | bool   | when master is M-core or `"optee"` | `true` → secure-world (RIFSC SEC bit / TRDC); `false` → non-secure. Defaults to `false` for M-core, must be `true` for `"optee"` |
+| `clock`  | string | no                                 | Clock source name for this peripheral (chip-specific, e.g. `"pll4_r"`, `"hsi"`). Omit to use the chip reset default.             |
 
 No `rif_cid` — the builder derives each core's compartment ID from `Chip::programmable_rt_cores()` and `Chip::remoteproc_name()` in `consortium-common`. No `dma` — DMA is RIF-aware on both STM32MP2x (RISAB) and i.MX 9x (TRDC); assigning a peripheral automatically covers its DMA paths.
 
@@ -60,12 +60,12 @@ secure = false
 
 `master` for M-core owners uses `CortexMcuCore::abbr()`:
 
-| Core | Single instance | Multiple instances (indexed) |
-|------|----------------|------------------------------|
-| Cortex-M0+ | `"cm0p"` | `"cm0p_0"`, `"cm0p_1"` |
-| Cortex-M33 | `"cm33"` | `"cm33_0"`, `"cm33_1"` |
-| Cortex-M7 | `"cm7"` | `"cm7_0"`, `"cm7_1"` |
-| Cortex-M4 | `"cm4"` | `"cm4_0"`, `"cm4_1"` |
+| Core       | Single instance | Multiple instances (indexed) |
+| ---------- | --------------- | ---------------------------- |
+| Cortex-M0+ | `"cm0p"`        | `"cm0p_0"`, `"cm0p_1"`       |
+| Cortex-M33 | `"cm33"`        | `"cm33_0"`, `"cm33_1"`       |
+| Cortex-M7  | `"cm7"`         | `"cm7_0"`, `"cm7_1"`         |
+| Cortex-M4  | `"cm4"`         | `"cm4_0"`, `"cm4_1"`         |
 
 When a chip has only one instance of a core type, the plain abbreviation is used. When it has multiple (e.g. i.MX 94 with two Cortex-M7 cores), an underscore-index suffix disambiguates. The builder resolves these against `Chip::programmable_rt_cores()` to validate correctness.
 
@@ -201,6 +201,7 @@ For i.MX 9x (TRDC), the equivalent domain controller registers are emitted inste
 A thin generated crate per firmware entry exposes only the peripherals owned by that firmware as a `Peripherals` struct, wrapping `embassy-stm32` or `imxrt-hal` tokens. This gives the firmware typed, compile-time-verified access — unowned peripherals are consumed at steal-time, preventing accidental access.
 
 For owned peripherals:
+
 - **Non-`Copy` types** are moved into the struct, providing exclusive ownership.
 - **`Copy` types** are also included but could be accessed elsewhere (since they're copyable). No artificial restriction is imposed.
 
@@ -222,7 +223,7 @@ impl Peripherals {
     /// Consumes unowned, non-Copy peripherals to prevent access.
     pub unsafe fn steal() -> Self {
         let p = embassy_stm32::Peripherals::steal();
-        
+
         // Consume unowned non-Copy peripherals by moving them
         // They cannot be cloned, so this removes them from the namespace
         let _unused = (
@@ -233,9 +234,9 @@ impl Peripherals {
             p.LPTIM2,
             // ... all other unowned, non-Copy peripherals
         );
-        
-        Self { 
-            i2c1: p.I2C1, 
+
+        Self {
+            i2c1: p.I2C1,
             lptim1: p.LPTIM1,
         }
     }
@@ -251,7 +252,7 @@ async fn main(_spawner: Spawner) {
 
     // Steal only owned peripherals; unowned non-Copy ones are consumed
     let p = unsafe { sensor_fw::Peripherals::steal() };
-    
+
     let mut i2c = I2c::new(p.i2c1, Config::default());
 
     loop {
@@ -519,14 +520,14 @@ The generated struct wraps `imxrt_hal::instance::*` tokens. `imxrt-ral` instance
 
 ## Design Decisions
 
-| # | Question | Decision |
-|---|----------|----------|
-| 1 | **GPIO in RIF** | GPIO banks (`gpioa`, `gpiob`, …) are listed in RIFSC/TRDC like any other peripheral. Declared as `[peripheral.gpioa]` with the same `master`/`secure` fields. No special handling. |
-| 2 | **Clock configuration** | `clock` field added to `[peripheral.<name>]`. Builder emits RCC/CCM clock source selection in `configure_rif()` alongside RIFSC config. Valid values per peripheral come from the chip DB (`clock_options`). System-level PLL/oscillator config is future work. |
-| 3 | **Interrupt routing** | In scope for generated init, but contingent on what embassy-stm32 / imxrt-hal cover in their own `init()`. If NVIC enable and EXTI routing are handled by the HAL driver constructors, no generated code is needed. If not (e.g. STM32MP2x EXTI C2IMR routing to M-core), the builder emits the necessary register writes. To be determined during Phase 4 implementation with reference to embassy-stm32 source. |
-| 4 | **Silicon revisions** | Delegated to the upstream PAC (`stm32mp257-pac`, `imxrt-ral`). The chip DB targets a specific PAC version; users pin the PAC version in `Cargo.toml` as usual. No revision logic inside Consortium. |
-| 5 | **Shared peripherals** | Not in scope for the initial implementation. A peripheral must have exactly one static owner. Time-multiplexed or arbitrated sharing between cores is a future concern and will require a separate design. |
-| 6 | **Copy vs non-Copy peripheral tokens** | Unowned, non-`Copy` peripherals are consumed (moved into a drop) at steal-time, enforcing exclusivity through Rust's type system. Owned peripherals (both `Copy` and non-`Copy`) are included in the wrapper struct. For `Copy` peripherals, no artificial restriction is imposed—they can be copied anyway. This pragmatic approach leverages type-level safety where it's effective without unnecessary restrictions. |
+| #   | Question                               | Decision                                                                                                                                                                                                                                                                                                                                                                                                                |
+| --- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **GPIO in RIF**                        | GPIO banks (`gpioa`, `gpiob`, …) are listed in RIFSC/TRDC like any other peripheral. Declared as `[peripheral.gpioa]` with the same `master`/`secure` fields. No special handling.                                                                                                                                                                                                                                      |
+| 2   | **Clock configuration**                | `clock` field added to `[peripheral.<name>]`. Builder emits RCC/CCM clock source selection in `configure_rif()` alongside RIFSC config. Valid values per peripheral come from the chip DB (`clock_options`). System-level PLL/oscillator config is future work.                                                                                                                                                         |
+| 3   | **Interrupt routing**                  | In scope for generated init, but contingent on what embassy-stm32 / imxrt-hal cover in their own `init()`. If NVIC enable and EXTI routing are handled by the HAL driver constructors, no generated code is needed. If not (e.g. STM32MP2x EXTI C2IMR routing to M-core), the builder emits the necessary register writes. To be determined during Phase 4 implementation with reference to embassy-stm32 source.       |
+| 4   | **Silicon revisions**                  | Delegated to the upstream PAC (`stm32mp257-pac`, `imxrt-ral`). The chip DB targets a specific PAC version; users pin the PAC version in `Cargo.toml` as usual. No revision logic inside Consortium.                                                                                                                                                                                                                     |
+| 5   | **Shared peripherals**                 | Not in scope for the initial implementation. A peripheral must have exactly one static owner. Time-multiplexed or arbitrated sharing between cores is a future concern and will require a separate design.                                                                                                                                                                                                              |
+| 6   | **Copy vs non-Copy peripheral tokens** | Unowned, non-`Copy` peripherals are consumed (moved into a drop) at steal-time, enforcing exclusivity through Rust's type system. Owned peripherals (both `Copy` and non-`Copy`) are included in the wrapper struct. For `Copy` peripherals, no artificial restriction is imposed—they can be copied anyway. This pragmatic approach leverages type-level safety where it's effective without unnecessary restrictions. |
 
 ---
 

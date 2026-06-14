@@ -235,23 +235,23 @@ Slot assignment is sequential by argument order, skipping the context. Both the 
 
 ### Input parameters
 
-| Rust type   | GP TEE slot       | TA unpacks via                     | CA packs via                                       |
-|-------------|-------------------|------------------------------------|----------------------------------------------------|
-| `bool`      | `VALUE_INPUT`  | `unsafe { params.N.as_value()?.a() } != 0`                              | `ParamValue::new(x as u32, 0, ValueInput)` |
-| `u32`       | `VALUE_INPUT`  | `unsafe { params.N.as_value()?.a() }`                                   | `ParamValue::new(x, 0, ValueInput)`        |
-| `&[u8]`     | `MEMREF_INPUT` | `let mut p = unsafe { params.N.as_memref()? }; p.buffer()`             | `ParamTmpRef::new_input(x)`                |
-| `&mut [u8]` | `MEMREF_INOUT` | `let mut p = unsafe { params.N.as_memref()? }; p.buffer()` (mut)       | `ParamTmpRef::new_inout(x)`                |
+| Rust type   | GP TEE slot    | TA unpacks via                                                   | CA packs via                               |
+| ----------- | -------------- | ---------------------------------------------------------------- | ------------------------------------------ |
+| `bool`      | `VALUE_INPUT`  | `unsafe { params.N.as_value()?.a() } != 0`                       | `ParamValue::new(x as u32, 0, ValueInput)` |
+| `u32`       | `VALUE_INPUT`  | `unsafe { params.N.as_value()?.a() }`                            | `ParamValue::new(x, 0, ValueInput)`        |
+| `&[u8]`     | `MEMREF_INPUT` | `let mut p = unsafe { params.N.as_memref()? }; p.buffer()`       | `ParamTmpRef::new_input(x)`                |
+| `&mut [u8]` | `MEMREF_INOUT` | `let mut p = unsafe { params.N.as_memref()? }; p.buffer()` (mut) | `ParamTmpRef::new_inout(x)`                |
 
 ### Return value (output slot)
 
 The output slot is always allocated as the last slot. A non-`()` return type triggers this; `()` / bare `-> Result<()>` does not.
 
-| Rust return type | GP TEE slot       | TA flushes via                                      | CA reads back via                                       |
-|------------------|-------------------|-----------------------------------------------------|---------------------------------------------------------|
-| `u32`     | `VALUE_OUTPUT`  | `let mut p = unsafe { params.N.as_value()? }; p.set_a(v)`              | `_operation.param_N().as_value().a()`                          |
-| `u64`     | `VALUE_OUTPUT`  | `p.set_a((v >> 32) as u32); p.set_b(v as u32)`                         | `(a as u64) << 32 \| (b as u64)`                               |
-| `bool`    | `VALUE_OUTPUT`  | `let mut p = unsafe { params.N.as_value()? }; p.set_a(v as u32)`       | `_operation.param_N().as_value().a() != 0`                     |
-| `Vec<u8>` | `MEMREF_OUTPUT` | `let mut p = unsafe { params.N.as_memref()? }; p.buffer()[..].copy_from_slice(...)` | `ParamTmpRef::new_output(&mut buf)`; read `buffer()[..size()]` back |
+| Rust return type | GP TEE slot     | TA flushes via                                                                      | CA reads back via                                                   |
+| ---------------- | --------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `u32`            | `VALUE_OUTPUT`  | `let mut p = unsafe { params.N.as_value()? }; p.set_a(v)`                           | `_operation.param_N().as_value().a()`                               |
+| `u64`            | `VALUE_OUTPUT`  | `p.set_a((v >> 32) as u32); p.set_b(v as u32)`                                      | `(a as u64) << 32 \| (b as u64)`                                    |
+| `bool`           | `VALUE_OUTPUT`  | `let mut p = unsafe { params.N.as_value()? }; p.set_a(v as u32)`                    | `_operation.param_N().as_value().a() != 0`                          |
+| `Vec<u8>`        | `MEMREF_OUTPUT` | `let mut p = unsafe { params.N.as_memref()? }; p.buffer()[..].copy_from_slice(...)` | `ParamTmpRef::new_output(&mut buf)`; read `buffer()[..size()]` back |
 
 ---
 

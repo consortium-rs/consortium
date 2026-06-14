@@ -49,21 +49,23 @@ Priority is stamped into the slot at send time; the receiver reads it before dec
 ### 2. Slot Header Extension
 
 Current layout:
+
 ```
 [len: u32][flags: u32][payload: [u8; mtu]]
 ```
 
 Extended layout (one extra byte, backward-incompatible version bump):
+
 ```
 [len: u32][flags: u32][priority: u8][_pad: [u8; 3]][payload: [u8; mtu]]
 ```
 
 **Flag additions:**
 
-| Bit | Name                | Meaning |
-|-----|---------------------|---------|
-| 0   | `FLAG_VALID`        | Slot contains a new message |
-| 1   | `FLAG_CONSUMED`     | Receiver has read the message |
+| Bit | Name                | Meaning                               |
+| --- | ------------------- | ------------------------------------- |
+| 0   | `FLAG_VALID`        | Slot contains a new message           |
+| 1   | `FLAG_CONSUMED`     | Receiver has read the message         |
 | 2   | `FLAG_BACKPRESSURE` | Receiver is slow; sender should pause |
 
 The descriptor version field (currently `1`) bumps to `2` to signal the new layout to both sides.
@@ -150,13 +152,13 @@ Total header overhead: 12 bytes (up from 8).
 
 ## Crate Changes Summary
 
-| Crate | Change |
-|-------|--------|
-| `consortium-ipc` | Add `Priority` enum; bump `Transport::send` signature; add `FLAG_BACKPRESSURE` |
-| `consortium-ipc-mem` | Write priority byte in slot; check backpressure flag |
-| `consortium-ipc-uio` | Read priority byte; expose it from `UioChannel::recv` |
-| `consortium-ipc` (new module `qos`) | `PriorityMux` |
-| Descriptor (UIO) | Version field: `1 → 2`; slot header size: `8 → 12` |
+| Crate                               | Change                                                                         |
+| ----------------------------------- | ------------------------------------------------------------------------------ |
+| `consortium-ipc`                    | Add `Priority` enum; bump `Transport::send` signature; add `FLAG_BACKPRESSURE` |
+| `consortium-ipc-mem`                | Write priority byte in slot; check backpressure flag                           |
+| `consortium-ipc-uio`                | Read priority byte; expose it from `UioChannel::recv`                          |
+| `consortium-ipc` (new module `qos`) | `PriorityMux`                                                                  |
+| Descriptor (UIO)                    | Version field: `1 → 2`; slot header size: `8 → 12`                             |
 
 ---
 

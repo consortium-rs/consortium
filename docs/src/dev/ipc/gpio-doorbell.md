@@ -26,6 +26,7 @@ Implemented a complete, production-ready GPIO doorbell for the Consortium IPC sy
 ## Architecture
 
 ### M-core (no_std) Path
+
 - **Interior mutability**: `RefCell<P>` (single-threaded M-core)
 - **Statics**: `AtomicWaker` + `AtomicBool PENDING` for software-tracked pending state
 - **ring()**: Pulses the GPIO pin (high → low) to generate interrupt
@@ -33,6 +34,7 @@ Implemented a complete, production-ready GPIO doorbell for the Consortium IPC sy
 - **wake()**: Public static method; user calls from their GPIO ISR
 
 ### A-core (Linux/std) Path
+
 - **Interior mutability**: `std::sync::Mutex<P>` (multi-threaded Linux)
 - **Async wakeup**: `Arc<tokio::sync::Notify>`
 - **notifier()**: Returns the Arc for wiring to external interrupt source
@@ -42,13 +44,13 @@ Implemented a complete, production-ready GPIO doorbell for the Consortium IPC sy
 
 ## Key Design Decisions
 
-| Aspect | vs HSEM/MU | Justification |
-|--------|-----------|---|
-| Interior mutability | Not needed | HSEM/MU use raw register writes; GPIO needs `OutputPin` which requires `&mut` |
-| Software PENDING flag | Hardware MISR register | GPIO has no hardware status register |
-| Single-channel | 16 channels (HSEM) / 8 channels (MU) | GPIO instance = one pin; use multiple instances for multi-channel |
-| `wake()` not `extern "C"` | `HSEM_IRQHandler` | GPIO IRQ names are board-specific; user calls this from their ISR |
-| `ch` argument ignored | Used for channel indexing | Single-channel design; argument accepted but unused |
+| Aspect                    | vs HSEM/MU                           | Justification                                                                 |
+| ------------------------- | ------------------------------------ | ----------------------------------------------------------------------------- |
+| Interior mutability       | Not needed                           | HSEM/MU use raw register writes; GPIO needs `OutputPin` which requires `&mut` |
+| Software PENDING flag     | Hardware MISR register               | GPIO has no hardware status register                                          |
+| Single-channel            | 16 channels (HSEM) / 8 channels (MU) | GPIO instance = one pin; use multiple instances for multi-channel             |
+| `wake()` not `extern "C"` | `HSEM_IRQHandler`                    | GPIO IRQ names are board-specific; user calls this from their ISR             |
+| `ch` argument ignored     | Used for channel indexing            | Single-channel design; argument accepted but unused                           |
 
 ## Verification
 
@@ -69,6 +71,7 @@ The std path (`cargo check --features std`) requires Linux to compile; the crate
 ## Usage Example
 
 ### M-core (Cortex-M, no_std)
+
 ```rust
 // In your setup:
 let pin = create_gpio_pin(); // your board-specific function
@@ -91,6 +94,7 @@ doorbell.ring(Chan(0)).ok();  // Signal remote core
 ```
 
 ### A-core (Linux, std)
+
 ```rust
 // Setup:
 let pin = CdevPin::new("/dev/gpiochip0", 42)?;  // linux-embedded-hal

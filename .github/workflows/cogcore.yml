@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'crates/libcogcore-sys/vendor/include/**'
-      - 'crates/libcogcore-sys/wrapper.h'
-      - 'crates/libcogcore-sys/build.rs'
-      - '.github/workflows/cogcore.yml'
+      - "crates/libcogcore-sys/vendor/include/**"
+      - "crates/libcogcore-sys/wrapper.h"
+      - "crates/libcogcore-sys/build.rs"
+      - ".github/workflows/cogcore.yml"
 
 jobs:
   generate:
@@ -15,7 +15,7 @@ jobs:
     env:
       COG_BUILD_DIR: /tmp/cog/build/core
     permissions:
-      contents: write  # required for pushing commits
+      contents: write # required for pushing commits
     steps:
       - uses: actions/checkout@v6.0.3
 
