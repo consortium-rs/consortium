@@ -1,6 +1,8 @@
 # Runtime Initialization Guide
 
-This document describes how to initialize and use the `consortium-runtime-mcu` and `consortium-runtime-app` crates for STM32MP2 (HSEM) or i.MX 9x (MU) platforms.
+This document describes how to initialize and use the `consortium-runtime-mcu` and
+`consortium-runtime-app` crates for STM32MP2 (IPCC on MP21, HSEM or IPCC on
+MP23/25) and i.MX 9x (MU) platforms.
 
 ## Architecture Overview
 
@@ -26,7 +28,7 @@ use consortium_ipc_transport_mem::MemTransport;
 use consortium_ipc_doorbell_hsem::HsemDoorbell;
 
 // 1. Enable the HSEM IRQ (must be called before doorbell.wait())
-unsafe { irq::enable_hsem_irq() };
+unsafe { irq::enable_doorbell_interrupt() };
 
 // 2. Create the doorbell (zero-cost)
 let doorbell = HsemDoorbell::<1>::new();
@@ -95,15 +97,20 @@ async fn ipc_receiver(ch: Channel<Rx, MyMessage, _>) {
 
 - **`descriptor::write_descriptor()`** — Initializes the shared descriptor header
 - **`descriptor::set_state(base, state)`** — Transitions descriptor state (e.g., `MReady → Ready`)
-- **`irq::enable_hsem_irq()`** — Enables HSEM interrupt in NVIC
+- **`irq::enable_doorbell_interrupt()`** — Enables the currently selected HSEM/MU doorbell interrupt when the IRQ number is verified in runtime code. IPCC IRQ numbers/routing remain board/PAC-provided.
 - **`slot_pair_ptrs(base, idx, size)`** — Computes slot pointers from region base
 - **`static_buf!(NAME, SIZE)`** — Declares properly aligned static buffers
 
 ### Features
 
-- **`stm32mp2xx`** — Enables HSEM doorbell support
+- **`stm32mp21x`** — Enables IPCC doorbell support
+- **`stm32mp23x`** / **`stm32mp25x`** — Enables HSEM and IPCC doorbell support
 - **`imx93`** / **`imx95`** — Enables MU doorbell support (i.MX variants)
 - **`imx9x`** — Umbrella feature (requires one of the above)
+
+STM32MP21/23/25 expose IPCC1 at `0x4049_0000..=0x4049_03FF`. STM32MP23/25 also
+expose the SmartRun IPCC2 block at `0x4625_0000..=0x4625_03FF`; STM32MP21 does
+not have IPCC2.
 
 ## A-Core (`consortium-runtime-app`)
 
@@ -195,7 +202,7 @@ Slot layout (at each offset):
 0x08    N     payload (up to effective_mtu bytes)
 ```
 
-## Complete Example: STM32MP2 with HSEM
+## Complete Example: STM32MP25 with HSEM
 
 ### M-Core Firmware (`consortium-runtime-mcu`)
 
@@ -209,7 +216,7 @@ use embassy_executor::Spawner;
 
 #[embassy_executor::main]
 async fn main(spawner: Spawner) {
-    irq::enable_hsem_irq();
+    irq::enable_doorbell_interrupt();
 
     let doorbell = HsemDoorbell::<1>::new();
     let region = SramRegion::new(SHARED_MEMORY_BASE, SHARED_MEMORY_SIZE);

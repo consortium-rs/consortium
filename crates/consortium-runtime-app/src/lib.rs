@@ -23,8 +23,11 @@ pub use consortium_ipc as ipc;
 pub use consortium_ipc_transport_memory as ipc_transport;
 pub use consortium_tee as tee;
 
-#[cfg(feature = "stm32mp2xx")]
+#[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
 pub use consortium_ipc_doorbell_hsem as hsem;
+
+#[cfg(any(feature = "stm32mp21x", feature = "stm32mp23x", feature = "stm32mp25x"))]
+pub use consortium_ipc_doorbell_ipcc as ipcc;
 
 #[cfg(feature = "imx9x")]
 pub use consortium_ipc_doorbell_mu as mu;

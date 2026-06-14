@@ -22,15 +22,21 @@ edition.workspace = true
 license.workspace = true
 
 [features]
-stm32mp2xx = ["consortium-ipc-doorbell-hsem"]
+stm32mp21x = ["consortium-ipc-doorbell-ipcc/stm32mp21x"]
+stm32mp23x = ["consortium-ipc-doorbell-hsem", "consortium-ipc-doorbell-ipcc/stm32mp23x"]
+stm32mp25x = ["consortium-ipc-doorbell-hsem", "consortium-ipc-doorbell-ipcc/stm32mp25x"]
+# Compatibility alias for the previous STM32MP2 default. New code should use
+# the chip-family features above so STM32MP21 can select IPCC without HSEM.
+stm32mp2xx = ["stm32mp25x"]
 imx9x = []
 imx93 = ["imx9x", "consortium-ipc-doorbell-mu/imx93"]
 imx95 = ["imx9x", "consortium-ipc-doorbell-mu/imx95"]
-default = ["stm32mp2xx"]
+default = ["stm32mp25x"]
 
 [dependencies]
 consortium-ipc = { path = "../consortium-ipc", default-features = false }
 consortium-ipc-doorbell-hsem = { path = "../consortium-ipc-doorbell-hsem", default-features = false, optional = true }
+consortium-ipc-doorbell-ipcc = { path = "../consortium-ipc-doorbell-ipcc", default-features = false, optional = true }
 consortium-ipc-doorbell-mu = { path = "../consortium-ipc-doorbell-mu", default-features = false, optional = true }
 consortium-ipc-transport-memory = { path = "../consortium-ipc-transport-memory", default-features = false }
 static_cell = { version = "2", default-features = false }

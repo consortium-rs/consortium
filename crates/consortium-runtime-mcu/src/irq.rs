@@ -16,17 +16,40 @@
 
 //! Interrupt enable helpers for hardware doorbells.
 //!
-#[cfg(feature = "stm32mp2xx")]
+#[cfg(any(
+    feature = "stm32mp23x",
+    feature = "stm32mp25x",
+    feature = "imx93",
+    feature = "imx95"
+))]
 use cortex_m::interrupt::InterruptNumber;
+#[cfg(any(
+    feature = "stm32mp23x",
+    feature = "stm32mp25x",
+    feature = "imx93",
+    feature = "imx95"
+))]
 use cortex_m::peripheral::NVIC;
 
+#[cfg(any(
+    feature = "stm32mp23x",
+    feature = "stm32mp25x",
+    feature = "imx93",
+    feature = "imx95"
+))]
 #[derive(Copy, Clone)]
 pub struct DoorbellInterrupt;
 
 // SAFETY: TRM verified.
+#[cfg(any(
+    feature = "stm32mp23x",
+    feature = "stm32mp25x",
+    feature = "imx93",
+    feature = "imx95"
+))]
 unsafe impl InterruptNumber for DoorbellInterrupt {
     fn number(self) -> u16 {
-        #[cfg(feature = "stm32mp2xx")]
+        #[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
         {
             199 // HSEM_IT1 (non-secure) = IRQ 199 in NVIC
         }
@@ -49,6 +72,12 @@ unsafe impl InterruptNumber for DoorbellInterrupt {
 /// called once during initialization, and the caller must ensure that it is not called while critical
 /// sections are active.
 #[inline]
+#[cfg(any(
+    feature = "stm32mp23x",
+    feature = "stm32mp25x",
+    feature = "imx93",
+    feature = "imx95"
+))]
 pub unsafe fn enable_doorbell_interrupt() {
     unsafe { NVIC::unmask(DoorbellInterrupt) }
 }

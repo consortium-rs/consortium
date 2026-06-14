@@ -1,10 +1,21 @@
 [package]
 name = "consortium-ipc-doorbell-ipcc"
+description = "STM32 IPCC doorbell driver for Consortium IPC"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 
+[features]
+std = ["dep:tokio", "consortium-ipc/std"]
+stm32mp21x = []
+stm32mp23x = []
+stm32mp25x = []
+
 [dependencies]
+consortium-ipc = { path = "../consortium-ipc", default-features = false }
+atomic-waker = "1.1.2"
+bitfield = "0.13.2"
+tokio = { version = "1", features = ["sync"], optional = true }
 
 [lints]
 workspace = true

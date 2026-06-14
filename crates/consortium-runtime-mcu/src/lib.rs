@@ -17,8 +17,11 @@
 
 pub mod irq;
 
-#[cfg(feature = "stm32mp2xx")]
+#[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
 pub use consortium_ipc_doorbell_hsem as hsem;
+
+#[cfg(any(feature = "stm32mp21x", feature = "stm32mp23x", feature = "stm32mp25x"))]
+pub use consortium_ipc_doorbell_ipcc as ipcc;
 
 #[cfg(feature = "imx93")]
 pub use consortium_ipc_doorbell_mu as mu;

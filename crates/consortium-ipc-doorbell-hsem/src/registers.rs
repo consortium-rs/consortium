@@ -48,6 +48,32 @@ pub mod semaphore_r {
 
     /// Bit fields within HSEM_Rx
     pub mod fields {
+        bitfield::bitfield! {
+            /// HSEM_Rx/HSEM_RLRx fields.
+            #[derive(Clone, Copy)]
+            pub struct SemaphoreRegister(u32);
+            impl Debug;
+            u32;
+            pub lock, set_lock: 31;
+            pub cfen, set_cfen: 30;
+            pub priv_attr, set_priv_attr: 13;
+            pub sec, set_sec: 12;
+            pub lockid, set_lockid: 11, 8;
+            pub procid, set_procid: 7, 0;
+        }
+
+        impl SemaphoreRegister {
+            #[inline(always)]
+            pub const fn from_bits(bits: u32) -> Self {
+                Self(bits)
+            }
+
+            #[inline(always)]
+            pub const fn bits(self) -> u32 {
+                self.0
+            }
+        }
+
         /// Bit 31 - LOCK: semaphore lock indication (rw)
         pub const LOCK_BIT: u32 = 1 << 31;
         /// Bit 30 - CFEN: CID filter indication (r)
@@ -62,6 +88,11 @@ pub mod semaphore_r {
         /// Bits 7:0 - PROCID[7:0] (rw)
         pub const PROCID_SHIFT: u32 = 0;
         pub const PROCID_MASK: u32 = 0xFF;
+
+        #[inline(always)]
+        pub const fn lockid(value: u32) -> u8 {
+            ((value & LOCKID_MASK) >> LOCKID_SHIFT) as u8
+        }
     }
 }
 
@@ -142,6 +173,44 @@ pub mod interrupt_nonsecure {
 
     /// Bit fields shared across CnIER / CnICR / CnISR / CnMISR
     pub mod fields {
+        bitfield::bitfield! {
+            /// Per-semaphore interrupt fields shared by IER/ICR/ISR/MISR.
+            #[derive(Clone, Copy)]
+            pub struct SemInterruptRegister(u32);
+            impl Debug;
+            u32;
+            pub sems, set_sems: 15, 0;
+        }
+
+        impl SemInterruptRegister {
+            #[inline(always)]
+            pub const fn from_bits(bits: u32) -> Self {
+                Self(bits)
+            }
+
+            #[inline(always)]
+            pub const fn bits(self) -> u32 {
+                self.0
+            }
+
+            #[inline(always)]
+            pub fn contains_sem(self, sem: u8) -> bool {
+                self.bits() & sem_bit(sem) != 0
+            }
+
+            #[inline(always)]
+            pub fn with_sem_enabled(mut self, sem: u8) -> Self {
+                self.set_sems(self.sems() | sem_bit(sem));
+                self
+            }
+
+            #[inline(always)]
+            pub fn with_sem_disabled(mut self, sem: u8) -> Self {
+                self.set_sems(self.sems() & !sem_bit(sem));
+                self
+            }
+        }
+
         /// Bits 15:0 - ISE[15:0] in IER: enable bit per semaphore (rw)
         /// Bits 15:0 - ISC[15:0] in ICR: clear bit per semaphore (rc_w1)
         /// Bits 15:0 - ISF[15:0] in ISR: status before masking (r)
@@ -152,6 +221,11 @@ pub mod interrupt_nonsecure {
         #[inline(always)]
         pub const fn sem_bit(i: u8) -> u32 {
             1 << i
+        }
+
+        #[inline(always)]
+        pub const fn sem_clear(i: u8) -> SemInterruptRegister {
+            SemInterruptRegister::from_bits(sem_bit(i))
         }
     }
 }

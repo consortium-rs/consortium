@@ -25,7 +25,7 @@ use consortium_ipc::{Chan, Doorbell};
 use crate::{
     chan::{MU_CHAN_COUNT, MU_INSTANCE_COUNT, MuChanInfo},
     error::MuError,
-    registers::side,
+    registers::side::{self, fields::GeneralInterruptRegister},
 };
 
 // Default (no_std / bare-metal) on i.MX93 uses compile-time base addresses.
@@ -120,7 +120,10 @@ impl MuDoorbell {
     pub unsafe fn set_gcr_gir(base: u32, gi_idx: u8) {
         let gcr = Self::gcr_addr(base);
         // SAFETY: caller guarantees.
-        unsafe { gcr.write_volatile(gcr.read_volatile() | (1 << gi_idx)) };
+        let reg =
+            GeneralInterruptRegister::from_bits(unsafe { gcr.read_volatile() }).with_gi_set(gi_idx);
+        // SAFETY: caller guarantees.
+        unsafe { gcr.write_volatile(reg.bits()) };
     }
 
     /// Returns `true` if `GSR[GIPn]` (bit `gi_idx`) is set - the remote core
@@ -130,7 +133,9 @@ impl MuDoorbell {
     #[inline]
     pub fn gsr_pending(base: u32, gi_idx: u8) -> bool {
         // SAFETY: base is a valid mapped MU peripheral address; volatile read.
-        unsafe { Self::gsr_addr(base).read_volatile() & (1 << gi_idx) != 0 }
+        let reg =
+            GeneralInterruptRegister::from_bits(unsafe { Self::gsr_addr(base).read_volatile() });
+        reg.contains_gi(gi_idx)
     }
 
     /// Clear `GSR[GIPn]` (bit `gi_idx`) by writing 1 (write-1-to-clear).
@@ -146,8 +151,9 @@ impl MuDoorbell {
     #[inline]
     pub unsafe fn clear_gsr_gip(base: u32, gi_idx: u8) {
         // W1C: write only the target bit; do NOT read-modify-write.
+        let reg = GeneralInterruptRegister::from_bits(side::fields::gi_bit(gi_idx));
         // SAFETY: caller guarantees.
-        unsafe { Self::gsr_addr(base).write_volatile(1 << gi_idx) };
+        unsafe { Self::gsr_addr(base).write_volatile(reg.bits()) };
     }
 
     /// Enable `GIER[GIEn]` (bit `gi_idx`) - arm the GI interrupt for this channel.
@@ -158,7 +164,10 @@ impl MuDoorbell {
     pub unsafe fn enable_gi_interrupt(base: u32, gi_idx: u8) {
         let gier = Self::gier_addr(base);
         // SAFETY: caller guarantees.
-        unsafe { gier.write_volatile(gier.read_volatile() | (1 << gi_idx)) };
+        let reg = GeneralInterruptRegister::from_bits(unsafe { gier.read_volatile() })
+            .with_gi_set(gi_idx);
+        // SAFETY: caller guarantees.
+        unsafe { gier.write_volatile(reg.bits()) };
     }
 
     /// Disable `GIER[GIEn]` (bit `gi_idx`).
@@ -169,7 +178,10 @@ impl MuDoorbell {
     pub unsafe fn disable_gi_interrupt(base: u32, gi_idx: u8) {
         let gier = Self::gier_addr(base);
         // SAFETY: caller guarantees.
-        unsafe { gier.write_volatile(gier.read_volatile() & !(1 << gi_idx)) };
+        let reg = GeneralInterruptRegister::from_bits(unsafe { gier.read_volatile() })
+            .with_gi_cleared(gi_idx);
+        // SAFETY: caller guarantees.
+        unsafe { gier.write_volatile(reg.bits()) };
     }
 }
 

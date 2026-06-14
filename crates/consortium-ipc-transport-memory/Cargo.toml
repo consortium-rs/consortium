@@ -22,7 +22,7 @@ license.workspace = true
 
 [features]
 alloc = ["consortium-ipc/alloc"]
-std = ["alloc", "dep:tokio", "dep:pin-project", "dep:uio"]
+std = ["alloc", "dep:tokio", "dep:uio"]
 default = ["std"]
 
 [dependencies]
@@ -31,7 +31,7 @@ thiserror = { version = "2.0", default-features = false }
 consortium-ipc = { path = "../consortium-ipc" }
 crc32fast = { version = "1.5.0", default-features = false }
 tokio = { version = "1", optional = true, features = ["rt", "sync", "net"] }
-pin-project = { version = "1.1.11", optional = true }
+pin-project = { version = "1.1.11" }
 uio = { version = "0.5.2", optional = true }
 consortium-common = { path = "../consortium-common", default-features = false }
 

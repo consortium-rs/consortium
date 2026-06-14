@@ -52,7 +52,7 @@ The complexity lives in the layers below. The application developer sees none of
 ┌───────────────┐        ┌─────────────────────────┐
 │  Slot (SHMEM) │        │  Doorbell               │
 │  len/flags/   │        │  ring() / wait()        │
-│  payload      │        │  HSEM, MU, Notify, etc. │
+│  payload      │        │  HSEM, IPCC, MU, etc.   │
 └───────────────┘        └─────────────────────────┘
         │
         ▼
@@ -160,7 +160,7 @@ Transport has two implementations for the two sides of an HMP SoC.
 
 Used on Cortex-M. No OS, no allocator, no async runtime beyond cooperative polling.
 
-`MemTransport<D: Doorbell, R: Region>` takes raw pointers to tx/rx slots in DMA-accessible shared memory. The doorbell and region types are injected at construction so the same transport compiles for HSEM, MU, GPIO, or any platform-specific mechanism.
+`MemTransport<D: Doorbell, R: Region>` takes raw pointers to tx/rx slots in DMA-accessible shared memory. The doorbell and region types are injected at construction so the same transport compiles for HSEM, IPCC, MU, GPIO, or any platform-specific mechanism.
 
 **Send path:**
 1. Write payload into tx slot via volatile stores.
@@ -250,7 +250,7 @@ pub trait Doorbell {
 }
 ```
 
-`Chan(u8)` maps to whatever the platform uses: an HSEM semaphore ID, an MU transmit register index, a GPIO line number, a serial byte, or a Tokio `Notify` slot in unit tests.
+`Chan(u8)` maps to whatever the platform uses: an HSEM semaphore ID, an IPCC channel, an MU transmit register index, a GPIO line number, a serial byte, or a Tokio `Notify` slot in unit tests.
 
 **MemTransport owns one Doorbell.** Application code never calls `ring()` or `wait()` directly—Transport manages that internally.
 
@@ -308,7 +308,8 @@ The `effective_mtu` in the descriptor drives `Transport::max_message_size()`, wh
 
 | Core | Transport | Doorbell | Region | Async runtime |
 |------|-----------|----------|--------|---------------|
-| Cortex-M (STM32MP2) | `MemTransport` | HSEM or MU | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
+| Cortex-M (STM32MP21) | `MemTransport` | IPCC | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
+| Cortex-M (STM32MP23/25) | `MemTransport` | HSEM or IPCC | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
 | Cortex-M (i.MX 95) | `MemTransport` | MU | `SramRegion` / `DdrRegion` | cooperative executor |
 | Cortex-A (Linux) | `UioChannel` | Linux UIO + `tokio::sync::Notify` | mmap'd via UIO driver | Tokio |
 
