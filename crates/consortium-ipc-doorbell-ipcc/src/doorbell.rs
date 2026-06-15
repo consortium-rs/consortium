@@ -449,6 +449,47 @@ mod tests {
         assert!(ChannelRegister::from_bits(regs[offsets::C1MR / 4]).contains_channel(2));
     }
 
+    #[cfg(feature = "std")]
+    #[test]
+    fn wait_thread_wakes_after_remote_status_and_notify() {
+        let regs = Box::leak(Box::new([0u32; 8]));
+        regs[offsets::C1MR / 4] = u32::MAX;
+        let base = regs.as_mut_ptr() as usize;
+        let doorbell = IpccDoorbell::<1>::new(base);
+        let notifier = doorbell.notifier();
+        let (armed_tx, armed_rx) = std::sync::mpsc::channel();
+
+        let waiter = std::thread::spawn(move || {
+            let rt = tokio::runtime::Builder::new_current_thread()
+                .build()
+                .expect("create waiter runtime");
+
+            rt.block_on(async move {
+                armed_tx.send(()).expect("signal waiter is starting");
+                doorbell.wait(ch(2)).await.expect("wait for IPCC doorbell")
+            })
+        });
+
+        armed_rx.recv().expect("waiter thread started");
+        while !ControlRegister::from_bits(unsafe {
+            (base as *const u32).add(offsets::C1CR / 4).read_volatile()
+        })
+        .rxoie()
+        {
+            std::thread::yield_now();
+        }
+
+        unsafe {
+            (base as *mut u32)
+                .add(offsets::C2TOC1SR / 4)
+                .write_volatile(crate::registers::channel_flag(2).bits());
+        }
+        notifier.notify_waiters();
+
+        assert_eq!(waiter.join().expect("waiter thread completes"), ch(2));
+        assert_eq!(regs[offsets::C1SCR / 4], channel_clear_flag(2).bits());
+    }
+
     #[test]
     fn validation_rejects_reserved_and_out_of_range_channels() {
         let mut regs = [0u32; 8];

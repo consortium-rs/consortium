@@ -467,4 +467,39 @@ mod tests {
 
         assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(3))));
     }
+
+    #[test]
+    fn wait_thread_wakes_after_notify() {
+        let regs = Box::leak(Box::new([0u32; 0x120 / 4]));
+        let base = regs.as_mut_ptr() as usize;
+        let doorbell = HsemDoorbell::<2>::new(base);
+        let notifier = doorbell.notifier();
+        let (armed_tx, armed_rx) = std::sync::mpsc::channel();
+
+        let waiter = std::thread::spawn(move || {
+            let rt = tokio::runtime::Builder::new_current_thread()
+                .build()
+                .expect("create waiter runtime");
+
+            rt.block_on(async move {
+                armed_tx.send(()).expect("signal waiter is starting");
+                doorbell.wait(ch(3)).await.expect("wait for HSEM doorbell")
+            })
+        });
+
+        armed_rx.recv().expect("waiter thread started");
+        while !SemInterruptRegister::from_bits(unsafe {
+            (base as *const u32)
+                .add(interrupt_nonsecure::HSEM_C2IER as usize / 4)
+                .read_volatile()
+        })
+        .contains_sem(3)
+        {
+            std::thread::yield_now();
+        }
+
+        notifier.notify_waiters();
+
+        assert_eq!(waiter.join().expect("waiter thread completes"), ch(3));
+    }
 }

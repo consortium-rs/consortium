@@ -604,4 +604,48 @@ mod tests {
         );
         assert!(!GeneralInterruptRegister::from_bits(regs[side::GIER as usize / 4]).contains_gi(2));
     }
+
+    #[test]
+    fn wait_thread_wakes_after_remote_status_and_notify() {
+        let regs = Box::leak(Box::new([0u32; 0x300 / 4]));
+        let base = regs.as_mut_ptr() as usize;
+        let doorbell = MuDoorbell::new(bases_with_first(base));
+        let notifier = doorbell.notifier();
+        let (armed_tx, armed_rx) = std::sync::mpsc::channel();
+
+        let waiter = std::thread::spawn(move || {
+            let rt = tokio::runtime::Builder::new_current_thread()
+                .build()
+                .expect("create waiter runtime");
+
+            rt.block_on(async move {
+                armed_tx.send(()).expect("signal waiter is starting");
+                doorbell.wait(ch(2)).await.expect("wait for MU doorbell")
+            })
+        });
+
+        armed_rx.recv().expect("waiter thread started");
+        while !GeneralInterruptRegister::from_bits(unsafe {
+            (base as *const u32)
+                .add(side::GIER as usize / 4)
+                .read_volatile()
+        })
+        .contains_gi(2)
+        {
+            std::thread::yield_now();
+        }
+
+        unsafe {
+            (base as *mut u32)
+                .add(side::GSR as usize / 4)
+                .write_volatile(GeneralInterruptRegister::from_bits(0).with_gi_set(2).bits());
+        }
+        notifier.notify_waiters();
+
+        assert_eq!(waiter.join().expect("waiter thread completes"), ch(2));
+        assert_eq!(
+            regs[side::GSR as usize / 4],
+            GeneralInterruptRegister::from_bits(0).with_gi_set(2).bits()
+        );
+    }
 }
