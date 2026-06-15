@@ -2,7 +2,9 @@
 
 ## Context
 
-Both runtime crates are currently empty re-export facades — no bootstrap, no channel setup, no executor wiring. The core IPC, transport, and doorbell crates are complete; the runtimes need to wire them together into usable startup sequences. There is also a broken re-export in `runtime-app` (`consortium_ipc_uio` should be `consortium_ipc_transport_uio`).
+Both runtime crates are still mostly thin re-export/init surfaces — no full bootstrap,
+channel setup, or executor wiring. The core IPC, transport, and doorbell crates are
+complete; the runtimes need to wire them together into usable startup sequences.
 
 The goal is to define what _initialization code_ each crate should expose, and in what order those steps must occur.
 
@@ -15,8 +17,8 @@ M-core                           A-core
 ------                           ------
 1. Init NVIC / enable IRQs       1. RemoteProc::start() [optional]
 2. Construct doorbell            2. Poll descriptor until MReady
-3. Construct MemTransport        3. UioDevice::open() (needs Ready state)
-4. Write DescState::MReady       4. dev.channel(chan) → UioChannel
+3. Construct transport           3. UioDevice::open() (needs Ready state)
+4. Write DescState::MReady       4. dev.channel_transport(chan, ...) → SharedMemoryTransport
 5. Wait for A-core ack           5. Channel::new(chan, uio_ch, buf)
 6. Write DescState::Ready        6. Spawn Tokio tasks
 7. Construct Channels
@@ -33,7 +35,10 @@ M-core                           A-core
 - For IPCC: enable the board/PAC-selected RX occupied interrupt line and call
   `notify_rx_occupied_interrupt()` from that ISR. STM32MP21 uses IPCC only; STM32MP23/25
   can use HSEM or IPCC.
-- For MU: enable MU1/MU2 IRQs. `MU1_IRQHandler`/`MU2_IRQHandler` already exist in `doorbell-mu`.
+- For MU: enable the IRQ for the MU instance selected by the SoC route. On current i.MX95
+  CA55 <-> CM7 defaults, use MU7 (runtime helper IRQ 207 on CM7) and channels 24/25.
+  `doorbell-mu` provides chip-gated `MU1_IRQHandler` through `MU8_IRQHandler` where
+  applicable.
 - Runtime exposes verified generic doorbell IRQ helpers only where IRQ numbers are known;
   IPCC IRQ routing should remain board/PAC-provided until the interrupt table is wired in.
 - These are one-liners but must be called before any `doorbell.wait()`.
@@ -41,20 +46,26 @@ M-core                           A-core
 ### 2. Doorbell Construction
 
 - HSEM: `HsemDoorbell::<1>::new()` — zero-cost, no args.
-- MU: `MuDoorbell::default()` or `MuDoorbell::new(bases)` — needs `[u32; N]` base addresses.
-- Runtime should re-export these with correct feature gating (the existing re-exports in `lib.rs` are correct in form but the MU chip sub-feature problem must be fixed).
+- MU: `MuDoorbell::default()` or `MuDoorbell::new(bases)` — needs `[usize; N]` base
+  addresses, where `N` is selected by `imx8mp`, `imx93`, or `imx95`. i.MX95 CA55
+  <-> CM7 code should default to `IMX95_CA55_CM7_TX_CHAN`/`IMX95_CA55_CM7_RX_CHAN`
+  (flat channel IDs 24/25 on MU7).
+- Runtime should re-export these with correct feature gating.
 
 ### 3. Shared Memory Descriptor (new)
 
 - M-core must write the descriptor header (magic `0x434F_4E53`, version 1, channel slots) at offset 0 of the shared SRAM region before A-core can open the UIO device.
-- Expose a `Descriptor` struct with a `write(base_ptr, channels: &[ChanDesc])` function and `set_state(ptr, state)` helper.
+- Expose descriptor initialization around the existing
+  `consortium-ipc-transport-memory::descriptor::descriptor_init()` and
+  `set_state()` helpers.
 - M-core writes `KernelInit → Proposed → MReady` after transport is set up; then waits for A-core to set `Ready`.
 
-### 4. `MemTransport` Init Helper
+### 4. `SharedMemoryTransport` Init Helper
 
-- Provide a safe(r) wrapper around `MemTransport::new()` that computes slot pointers from a base address and slot index:
+- Provide a safe(r) wrapper around `SharedMemoryTransport::new()` that validates the
+  descriptor/channel setup:
   ```rust
-  pub fn mem_transport_for_slot<D, R>(base: *mut u8, slot_idx: usize, mtu: usize, doorbell: D, region: R) -> MemTransport<D, R>
+  pub fn shared_memory_transport<D, R>(base: *mut u8, chan: Chan, doorbell: D, region: R) -> SharedMemoryTransport<D, R>
   ```
 - Slot stride = `8 + mtu` bytes. Tx slot at `base + slot_idx * stride`, Rx slot at the mirror offset negotiated via the descriptor.
 
@@ -72,9 +83,10 @@ M-core                           A-core
 
 ## `runtime-app` — What to Initialize
 
-### 1. Fix Broken Re-export (bug)
+### 1. Keep Runtime Re-exports Focused
 
-- `lib.rs` line 3: `consortium_ipc_uio` → `consortium_ipc_transport_uio`
+- `runtime-app` now re-exports `consortium_ipc_transport_memory` as `ipc_transport`
+  and owns the Linux UIO wrapper under `runtime_app::uio`.
 
 ### 2. Firmware Lifecycle (existing, wire it up)
 
@@ -86,13 +98,14 @@ M-core                           A-core
 - Before `UioDevice::open()`, the descriptor must be in `Ready(3)`.
 - Expose `async fn wait_for_ready(uio_num: usize, timeout: Duration) -> Result<(), Error>` that mmaps resource 0 without full init, polls `DescState` byte, and returns when `Ready`.
 
-### 4. `UioDevice` / `UioChannel` Init
+### 4. `UioDevice` / Shared Transport Init
 
-- Re-export `UioDevice` (already done, once the name is fixed).
-- `UioDevice::open(n)` → `dev.channel(chan)` → `Channel::new(chan, ch, buf)`.
+- Re-export `UioDevice`.
+- `UioDevice::open(uio_num, num_channels, transfer_size)` →
+  `dev.channel_transport(chan, doorbell, region)` → `Channel::new(chan, transport, buf)`.
 - Provide a convenience function:
   ```rust
-  pub async fn open_channel<T>(uio_num: usize, chan: Chan, buf: &'static mut [u8]) -> Result<Channel<Rx, T, UioChannel>, Error>
+  pub async fn open_channel<T>(uio_num: usize, chan: Chan, buf: &'static mut [u8]) -> Result<Channel<Rx, T, SharedMemoryTransport<_, _>>, Error>
   ```
 
 ### 5. Tokio Runtime

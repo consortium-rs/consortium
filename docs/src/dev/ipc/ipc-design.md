@@ -43,8 +43,8 @@ The complexity lives in the layers below. The application developer sees none of
 │  send(chan, &[u8])   recv(chan, &mut [u8])      │
 │  owns Doorbell; drives slot protocol            │
 │  ┌──────────────────┬────────────────────────┐  │
-│  │  MemTransport    │  UioChannel            │  │
-│  │  bare-metal      │  Linux / Tokio         │  │
+│  │  SharedMemory    │  runtime-app UIO       │  │
+│  │  transport       │  Linux / Tokio         │  │
 │  └──────────────────┴────────────────────────┘  │
 └───────┬──────────────────────────┬──────────────┘
         │                          │
@@ -71,11 +71,11 @@ The complexity lives in the layers below. The application developer sees none of
 
 ```rust
 // Tx side (M-core)
-let mut tx: Channel<Tx, TemperatureSensorData, MemTransport<_, _>> = /* ... */;
+let mut tx: Channel<Tx, TemperatureSensorData, SharedMemoryTransport<_, _>> = /* ... */;
 tx.send(&TemperatureSensorData { temp: 26.9, time_elapsed: 6 }).await?;
 
 // Rx side (A-core)
-let mut rx: Channel<Rx, TemperatureSensorData, UioChannel> = /* ... */;
+let mut rx: Channel<Rx, TemperatureSensorData, SharedMemoryTransport<_, _>> = /* ... */;
 let msg = rx.recv().await?;
 ```
 
@@ -85,7 +85,7 @@ let msg = rx.recv().await?;
 | --------- | ----------------------- | -------------------------------------------------------- |
 | `D`       | Direction: `Tx` or `Rx` | Compile-time guard—can't call `recv()` on a `Tx` channel |
 | `T`       | Message type            | `TemperatureSensorData`                                  |
-| `Tr`      | Transport               | `MemTransport<HsemDoorbell, DdrRegion>`                  |
+| `Tr`      | Transport               | `SharedMemoryTransport<HsemDoorbell, DdrRegion>`         |
 | `C`       | Codec                   | `PostcardCodec` (default)                                |
 
 **Zero-allocation contract:**
@@ -156,11 +156,14 @@ pub trait Transport {
 
 Transport has two implementations for the two sides of an HMP SoC.
 
-### MemTransport (M-core, bare-metal)
+### SharedMemoryTransport (M-core / UIO-backed paths)
 
 Used on Cortex-M. No OS, no allocator, no async runtime beyond cooperative polling.
 
-`MemTransport<D: Doorbell, R: Region>` takes raw pointers to tx/rx slots in DMA-accessible shared memory. The doorbell and region types are injected at construction so the same transport compiles for HSEM, IPCC, MU, GPIO, or any platform-specific mechanism.
+`SharedMemoryTransport<D: Doorbell, R: Region>` uses descriptor-backed slots in
+DMA-accessible shared memory. The doorbell and region types are injected at
+construction so the same transport compiles for HSEM, IPCC, MU, GPIO, or any
+platform-specific mechanism.
 
 **Send path:**
 
@@ -178,17 +181,18 @@ Used on Cortex-M. No OS, no allocator, no async runtime beyond cooperative polli
 4. If not: poll `doorbell.wait(ch)` to register waker; return `Pending`.
 5. When M→A IRQ fires, waker reschedules task; next poll retries from step 1.
 
-### UioChannel (A-core, Linux/Tokio)
+### Runtime-App UIO Path (A-core, Linux/Tokio)
 
 Used on Cortex-A running Linux. The transport is backed by a UIO (`/dev/uioN`) kernel driver that mmaps shared memory and delivers M-core interrupts as readable file events.
 
-`UioDevice::open(n)`:
+`UioDevice::open(uio_num, num_channels, transfer_size)`:
 
 1. Opens `/dev/uio0`, mmaps resource 0 (shared SRAM/DDR region).
 2. Parses a binary descriptor from offset 0 (magic `0x434F4E53`, version 1). Fails if state ≠ `Ready`.
 3. Spawns a background Tokio task: waits on `AsyncFd::readable()` for M→A IRQs, then broadcasts `irq_notify.notify_waiters()`.
 
-`uio.channel(id)` returns a `UioChannel` with a reference to the shared `Arc<Inner>` and the channel's slot offsets.
+`uio.channel_transport(chan, doorbell, region)` returns a `SharedMemoryTransport`
+backed by the parsed descriptor and the UIO mmap.
 
 **Send path (A→M):**
 
@@ -198,7 +202,7 @@ Used on Cortex-A running Linux. The transport is backed by a UIO (`/dev/uioN`) k
 
 **Receive path (M→A):**
 
-1. Try-read rx slot (same `FLAG_VALID` check as MemTransport).
+1. Try-read rx slot (same `FLAG_VALID` check as `SharedMemoryTransport`).
 2. If data present: copy payload, mark `FLAG_CONSUMED`, return.
 3. If not: subscribe to `irq_notify`, await it.
 4. Background task fires on each M→A interrupt, waking all waiting receivers.
@@ -257,7 +261,7 @@ pub trait Doorbell {
 
 `Chan(u8)` maps to whatever the platform uses: an HSEM semaphore ID, an IPCC channel, an MU transmit register index, a GPIO line number, a serial byte, or a Tokio `Notify` slot in unit tests.
 
-**MemTransport owns one Doorbell.** Application code never calls `ring()` or `wait()` directly—Transport manages that internally.
+**SharedMemoryTransport owns one Doorbell.** Application code never calls `ring()` or `wait()` directly—Transport manages that internally.
 
 ---
 
@@ -281,7 +285,7 @@ pub trait Region {
 | `DdrRegion`    | DDR DRAM       | AArch64 `dc cvac`/`dc ivac` + `dsb sy` | `false`     | Cross-core shared buffers |
 | `SerialRegion` | None (virtual) | Noops                                  | `true`      | UART/SWD trace channels   |
 
-When `MemTransport` is monomorphized over `SramRegion`, the cache operations compile away entirely. When monomorphized over `DdrRegion`, they emit the correct AArch64 data cache maintenance instructions.
+When `SharedMemoryTransport` is monomorphized over `SramRegion`, the cache operations compile away entirely. When monomorphized over `DdrRegion`, they emit the correct data cache maintenance for that region implementation.
 
 ---
 
@@ -311,12 +315,12 @@ The `effective_mtu` in the descriptor drives `Transport::max_message_size()`, wh
 
 ## Platform Targets
 
-| Core                    | Transport      | Doorbell                          | Region                     | Async runtime                |
-| ----------------------- | -------------- | --------------------------------- | -------------------------- | ---------------------------- |
-| Cortex-M (STM32MP21)    | `MemTransport` | IPCC                              | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
-| Cortex-M (STM32MP23/25) | `MemTransport` | HSEM or IPCC                      | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
-| Cortex-M (i.MX 95)      | `MemTransport` | MU                                | `SramRegion` / `DdrRegion` | cooperative executor         |
-| Cortex-A (Linux)        | `UioChannel`   | Linux UIO + `tokio::sync::Notify` | mmap'd via UIO driver      | Tokio                        |
+| Core                    | Transport               | Doorbell                          | Region                     | Async runtime                |
+| ----------------------- | ----------------------- | --------------------------------- | -------------------------- | ---------------------------- |
+| Cortex-M (STM32MP21)    | `SharedMemoryTransport` | IPCC                              | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
+| Cortex-M (STM32MP23/25) | `SharedMemoryTransport` | HSEM or IPCC                      | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
+| Cortex-M (i.MX 95)      | `SharedMemoryTransport` | MU                                | `SramRegion` / `DdrRegion` | cooperative executor         |
+| Cortex-A (Linux)        | runtime-app UIO path    | Linux UIO + `tokio::sync::Notify` | mmap'd via UIO driver      | Tokio                        |
 
 The same `Channel<D, T, Tr, C>` API compiles for all rows. Only the concrete types in `Tr` differ.
 

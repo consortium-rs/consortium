@@ -62,6 +62,19 @@ pub const MU_CHAN_COUNT: u8 = (MU_INSTANCE_COUNT * 4) as u8;
 /// Channels 0 and 1 are reserved for system/firmware use across all chips.
 pub const MU_CHAN_RESERVED: u8 = 2;
 
+/// Default i.MX95 CA55 <-> CM7 transmit-side channel.
+///
+/// i.MX95 MU7 and MU8 connect CA55 <-> CM7. Channel IDs are zero-based and
+/// laid out four per MU instance, so MU7 starts at channel 24.
+#[cfg(feature = "imx95")]
+pub const IMX95_CA55_CM7_TX_CHAN: u8 = 24;
+
+/// Default i.MX95 CA55 <-> CM7 receive-side channel.
+///
+/// Uses MU7 GI1, paired with [`IMX95_CA55_CM7_TX_CHAN`] on MU7 GI0.
+#[cfg(feature = "imx95")]
+pub const IMX95_CA55_CM7_RX_CHAN: u8 = 25;
+
 // ── Channel validation ────────────────────────────────────────────────────────
 
 pub struct MuChanValidate;
@@ -107,5 +120,23 @@ impl MuChanInfo for consortium_ipc::Chan {
     #[inline]
     fn gi_id(&self) -> u8 {
         self.id() % 4
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use consortium_ipc::Chan;
+
+    #[test]
+    #[cfg(feature = "imx95")]
+    fn imx95_default_ca55_cm7_channels_use_mu7() {
+        let tx = Chan::new::<MuChanValidate>(IMX95_CA55_CM7_TX_CHAN).unwrap();
+        let rx = Chan::new::<MuChanValidate>(IMX95_CA55_CM7_RX_CHAN).unwrap();
+
+        assert_eq!(tx.mu_id(), 6);
+        assert_eq!(tx.gi_id(), 0);
+        assert_eq!(rx.mu_id(), 6);
+        assert_eq!(rx.gi_id(), 1);
     }
 }

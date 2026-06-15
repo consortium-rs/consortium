@@ -31,7 +31,7 @@ pub use consortium_ipc_doorbell_mu as mu;
 
 pub use consortium_ipc_transport_memory;
 
-/// Compute the pointer to the Tx slot in a MemTransport slot pair.
+/// Compute the pointer to the Tx slot in a shared-memory transport slot pair.
 ///
 /// # Arguments
 ///

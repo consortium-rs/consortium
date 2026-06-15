@@ -23,8 +23,8 @@ M-core                           A-core
 ### Setup: Interrupt and Descriptor Initialization
 
 ```rust
-use consortium_runtime_mcu::{descriptor, irq, slot_pair_ptrs};
-use consortium_ipc_transport_mem::MemTransport;
+use consortium_runtime_mcu::{consortium_ipc_transport_memory::descriptor, irq};
+use consortium_ipc_transport_memory::transport::SharedMemoryTransport;
 use consortium_ipc_doorbell_hsem::HsemDoorbell;
 
 // 1. Enable the HSEM IRQ (must be called before doorbell.wait())
@@ -37,18 +37,16 @@ let doorbell = HsemDoorbell::<1>::new();
 // SAFETY: region_base must point to the shared DMA-coherent region
 unsafe {
     let channels = [
-        descriptor::ChanDesc {
-            tx_offset: 0x100,
-            tx_size: 0x208,    // 8-byte header + 512 bytes payload
-            rx_offset: 0x400,
-            rx_size: 0x208,
+        descriptor::ChannelLayout {
+            offset: 0x100,
+            size: 0x208,    // 8-byte header + 512 bytes payload
+            direction: descriptor::ChannelDirection::AToM,
         },
     ];
-    descriptor::write_descriptor(
+    descriptor::descriptor_init(
         region_base,
         1,                      // num_channels
-        512,                    // proposed_mtu
-        512,                    // accepted_mtu
+        512,                    // transfer size
         &channels,
     );
 
@@ -58,16 +56,12 @@ unsafe {
 
 // 4. Construct transport and channel
 let region = SramRegion::new(region_base, region_size);
-let (tx_ptr, rx_ptr) = slot_pair_ptrs(region_base, 0, 520);
-
 let transport = unsafe {
-    MemTransport::new(
+    SharedMemoryTransport::new(
         chan,
         doorbell,
         region,
-        tx_ptr,
-        rx_ptr,
-        512, // MTU
+        region_base,
     )
 };
 
@@ -95,10 +89,10 @@ async fn ipc_receiver(ch: Channel<Rx, MyMessage, _>) {
 
 ### Key Components
 
-- **`descriptor::write_descriptor()`** — Initializes the shared descriptor header
+- **`descriptor::descriptor_init()`** — Initializes the shared descriptor header
 - **`descriptor::set_state(base, state)`** — Transitions descriptor state (e.g., `MReady → Ready`)
 - **`irq::enable_doorbell_interrupt()`** — Enables the currently selected HSEM/MU doorbell interrupt when the IRQ number is verified in runtime code. IPCC IRQ numbers/routing remain board/PAC-provided.
-- **`slot_pair_ptrs(base, idx, size)`** — Computes slot pointers from region base
+- **`slot_pair_ptrs(base, idx, size)`** — Computes raw slot pointers for low-level setup
 - **`static_buf!(NAME, SIZE)`** — Declares properly aligned static buffers
 
 ### Features
@@ -107,6 +101,11 @@ async fn ipc_receiver(ch: Channel<Rx, MyMessage, _>) {
 - **`stm32mp23x`** / **`stm32mp25x`** — Enables HSEM and IPCC doorbell support
 - **`imx93`** / **`imx95`** — Enables MU doorbell support (i.MX variants)
 - **`imx9x`** — Umbrella feature (requires one of the above)
+
+On i.MX95, the current CA55 <-> CM7 IPC default is MU7 with flat channel IDs 24 and
+25 (`IMX95_CA55_CM7_TX_CHAN` / `IMX95_CA55_CM7_RX_CHAN`). MU1-4 connect CA55
+<-> CM33, MU5 connects CM7 <-> CM33, MU6 connects NONE <-> CM33, and MU7-8
+connect CA55 <-> CM7.
 
 STM32MP21/23/25 expose IPCC1 at `0x4049_0000..=0x4049_03FF`. STM32MP23/25 also
 expose the SmartRun IPCC2 block at `0x4625_0000..=0x4625_03FF`; STM32MP21 does
@@ -118,8 +117,7 @@ not have IPCC2.
 
 ```rust
 use consortium_runtime_app::{
-    descriptor, remoteproc::{RemoteProc, RemoteProcState},
-    open_rx_channel, open_tx_channel,
+    mmap, remoteproc::{RemoteProc, RemoteProcState}, uio::UioDevice,
 };
 use std::time::Duration;
 
@@ -134,18 +132,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     proc.wait_state(RemoteProcState::Running, Duration::from_secs(5)).await?;
 
     // 2. Poll descriptor until M-core signals Ready(3)
-    descriptor::wait_for_ready(0, Duration::from_secs(10)).await?;
+    mmap::wait_for_ready(0, Duration::from_secs(10)).await?;
 
     // 3. Open the UIO device
-    let dev = ipc_uio::UioDevice::open(0)?;
+    let dev = UioDevice::open(0, 2, 512)?;
 
     // 4. Get a channel and construct the IPC Channel
     static RX_BUF: static_cell::StaticCell<[u8; 512]> =
         static_cell::StaticCell::new([0u8; 512]);
 
-    let uio_ch = dev.channel(Chan::new(1)?)?;
+    let chan = Chan::new::<HsemChanValidate>(2)?;
+    let transport = dev.channel_transport(chan, doorbell, region)?;
     let rx_buf = RX_BUF.init([0u8; 512]);
-    let rx: Channel<Rx, MyMessage, _> = Channel::new(chan, uio_ch, rx_buf);
+    let rx: Channel<Rx, MyMessage, _> = Channel::new(chan, transport, rx_buf);
 
     // 5. Spawn receiver task
     tokio::spawn(async move {
@@ -163,14 +162,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-### Convenience Functions
+### UIO Transport Construction
 
-- **`open_rx_channel(uio_num, chan, buf)`** — Opens UIO device and creates an Rx channel
-- **`open_tx_channel(uio_num, chan, buf)`** — Opens UIO device and creates a Tx channel
+- **`UioDevice::open(uio_num, num_channels, transfer_size)`** — Opens UIO, mmaps resource 0,
+  parses the descriptor, and starts the IRQ listener task.
+- **`UioDevice::channel_transport(chan, doorbell, region)`** — Creates a
+  `SharedMemoryTransport` for one logical channel.
 
 ### State Polling
 
-- **`descriptor::wait_for_ready(uio_num, timeout)`** — Polls descriptor until `Ready(3)`
+- **`mmap::wait_for_ready(uio_num, timeout)`** — Polls descriptor until `Ready(3)`
   - Returns early if descriptor enters `Error` or `Suspended` state
   - Mmaps UIO resource 0 and polls at 50ms intervals
 
@@ -210,8 +211,8 @@ Slot layout (at each offset):
 ```rust
 #![no_std]
 
-use consortium_runtime_mcu::{descriptor, irq, slot_pair_ptrs};
-use consortium_ipc_transport_mem::MemTransport;
+use consortium_runtime_mcu::{consortium_ipc_transport_memory::descriptor, irq};
+use consortium_ipc_transport_memory::transport::SharedMemoryTransport;
 use consortium_ipc_doorbell_hsem::HsemDoorbell;
 use embassy_executor::Spawner;
 
@@ -223,37 +224,32 @@ async fn main(spawner: Spawner) {
     let region = SramRegion::new(SHARED_MEMORY_BASE, SHARED_MEMORY_SIZE);
 
     unsafe {
-        let channels = [descriptor::ChanDesc {
-            tx_offset: 0x100,
-            tx_size: 0x208,
-            rx_offset: 0x400,
-            rx_size: 0x208,
+        let channels = [descriptor::ChannelLayout {
+            offset: 0x100,
+            size: 0x208,
+            direction: descriptor::ChannelDirection::AToM,
         }];
-        descriptor::write_descriptor(
+        descriptor::descriptor_init(
             SHARED_MEMORY_BASE,
             1,
-            512,
             512,
             &channels,
         );
         descriptor::set_state(SHARED_MEMORY_BASE, descriptor::DescState::MReady);
     }
 
-    let (tx_ptr, rx_ptr) = slot_pair_ptrs(SHARED_MEMORY_BASE, 0, 520);
     let transport = unsafe {
-        MemTransport::new(
-            Chan::new(0).unwrap(),
+        SharedMemoryTransport::new(
+            Chan::new(2).unwrap(),
             doorbell,
             region,
-            tx_ptr,
-            rx_ptr,
-            512,
+            SHARED_MEMORY_BASE,
         )
     };
 
     static_buf!(BUF, 512);
     let buf = BUF.init([0u8; 512]);
-    let ch = Channel::new(Chan::new(0).unwrap(), transport, buf);
+    let ch = Channel::new(Chan::new(2).unwrap(), transport, buf);
 
     spawner.spawn(receiver(ch)).unwrap();
 }
@@ -276,7 +272,7 @@ async fn receiver(ch: Channel<Rx, u32, _>) {
 ### A-Core Application (`consortium-runtime-app`)
 
 ```rust
-use consortium_runtime_app::{descriptor, remoteproc::*};
+use consortium_runtime_app::{mmap, remoteproc::*, uio::UioDevice};
 use std::time::Duration;
 
 #[tokio::main]
@@ -286,10 +282,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     proc.start()?;
     proc.wait_state(RemoteProcState::Running, Duration::from_secs(5)).await?;
 
-    descriptor::wait_for_ready(0, Duration::from_secs(10)).await?;
+    mmap::wait_for_ready(0, Duration::from_secs(10)).await?;
 
-    let dev = ipc_uio::UioDevice::open(0)?;
-    let ch = dev.channel(Chan::new(0)?)?;
+    let dev = UioDevice::open(0, 2, 512)?;
+    let ch = Chan::new::<HsemChanValidate>(2)?;
 
     println!("IPC ready!");
     Ok(())
