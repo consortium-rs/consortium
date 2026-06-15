@@ -30,12 +30,23 @@ struct Wrapper<T> {
     tag: u32,
 }
 
+#[derive(Archive, Serialize, TrustedArchive)]
+#[repr(C, align(16))]
+struct AlignedC {
+    x: u32,
+    y: u32,
+}
+
 fn assert_trusted<T: consortium_codec::TrustedArchive>() {}
 
 fn main() {
     assert_trusted::<Sensor>();
     assert_trusted::<AlignedBuffer>();
     assert_trusted::<Status>();
+    assert_trusted::<AlignedC>();
     assert_trusted::<Wrapper<u32>>();
     assert_trusted::<Wrapper<[u64; 2]>>();
+    // Nested struct: confirms the where T: TrustedArchive bound is sufficient
+    // for a Wrapper whose field is itself a TrustedArchive type.
+    assert_trusted::<Wrapper<Sensor>>();
 }

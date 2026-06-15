@@ -1,0 +1,51 @@
+---
+source: crates/consortium-tee-macros-impl/tests/snap.rs
+expression: "snapshot_derive(quote!\n{\n    enum SmallFieldPayload\n    { Small { a: u8, b: u16, c: i8, d: i16, e: char, }, Nested(Option<u8>), }\n})"
+---
+// Input:
+#[derive(consortium_tee::TeeParam)]
+enum SmallFieldPayload {
+    Small { a: u8, b: u16, c: i8, d: i16, e: char },
+    Nested(Option<u8>),
+}
+
+// Expands to:
+impl<__TeeCodec> ::consortium_tee::TeeParam<__TeeCodec> for SmallFieldPayload
+where
+    __TeeCodec: for<'__buf> ::consortium_codec::CodecFor<
+        SmallFieldPayload,
+        Decoded<'__buf> = SmallFieldPayload,
+    >,
+    SmallFieldPayload: 'static,
+{
+    const MAX_SIZE: usize = 1024;
+    fn into_tee_param(
+        &self,
+    ) -> ::core::result::Result<
+        ::consortium_tee::TeeParamRepr,
+        ::consortium_tee::TeeParamError,
+    > {
+        let mut __buf = ::alloc::vec![
+            0u8; < Self as ::consortium_tee::TeeParam < __TeeCodec >> ::MAX_SIZE
+        ];
+        <__TeeCodec as ::consortium_codec::CodecFor<Self>>::encode(self, &mut __buf)
+            .map(|__len| {
+                __buf.truncate(__len);
+                ::consortium_tee::TeeParamSlot::Serialized(__buf)
+            })
+            .map_err(|_| ::consortium_tee::TeeParamError::EncodeFailed)
+    }
+    fn from_tee_param(
+        repr: ::consortium_tee::TeeParamReprRef<'_>,
+    ) -> ::core::result::Result<Self, ::consortium_tee::TeeParamError> {
+        match repr {
+            ::consortium_tee::TeeParamSlot::Serialized(__bytes) => {
+                <__TeeCodec as ::consortium_codec::CodecFor<Self>>::decode(__bytes)
+                    .map_err(|_| ::consortium_tee::TeeParamError::DecodeFailed)
+            }
+            ::consortium_tee::TeeParamSlot::Primitive { .. } => {
+                Err(::consortium_tee::TeeParamError::DecodeFailed)
+            }
+        }
+    }
+}

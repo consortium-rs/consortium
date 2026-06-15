@@ -1,0 +1,53 @@
+---
+source: crates/consortium-tee-macros-impl/tests/snap.rs
+expression: "snapshot_command(quote! {}, quote!\n{ fn read_counter() -> u64 { 0x1122_3344_5566_7788 } },)"
+---
+// Input:
+#[consortium_tee::tee_command]
+fn read_counter() -> u64 {
+    0x1122_3344_5566_7788
+}
+
+// Expands to:
+fn read_counter() -> u64 {
+    0x1122_3344_5566_7788
+}
+fn read_counter_dispatched(
+    params: &mut ::optee_utee::Parameters,
+) -> ::optee_utee::Result<()> {
+    let __ret_val = read_counter();
+    let mut __p_out = unsafe { params.0.as_value()? };
+    let __repr_out = <u64 as ::consortium_tee::TeeParam<
+        ::consortium_tee::NoCodec,
+    >>::into_tee_param(&__ret_val)
+        .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
+    let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_out, b: __pb_out } = __repr_out
+    else { unreachable!() };
+    __p_out.set_a(__pa_out);
+    __p_out.set_b(__pb_out);
+    Ok(())
+}
+#[cfg(feature = "ca")]
+fn call_read_counter(
+    session: &mut ::optee_teec::Session,
+) -> ::consortium_tee::TeeResult<u64> {
+    let _p0 = ParamValue::new(0, 0, ParamType::ValueOutput);
+    let mut _operation = ::optee_teec::Operation::new(
+        0,
+        _p0,
+        ::optee_utee::ParamNone,
+        ::optee_utee::ParamNone,
+        ::optee_utee::ParamNone,
+    );
+    session.invoke_command(Command::ReadCounter as u32, &mut _operation)?;
+    Ok({
+        let __v = _operation.param_0().as_value();
+        <u64 as ::consortium_tee::TeeParam<
+            ::consortium_tee::NoCodec,
+        >>::from_tee_param(::consortium_tee::TeeParamSlot::Primitive {
+                a: __v.a(),
+                b: __v.b(),
+            })
+            .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
+    })
+}

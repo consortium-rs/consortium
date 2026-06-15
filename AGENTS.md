@@ -246,6 +246,11 @@ chosen, and document each unsafe block with the ownership or pointer-lifetime in
 
 When updating docs, use the crate names and APIs present in the workspace.
 
+## Dependency Policy
+
+It's always encouraged to use credible crates whenever used (for example, adding `base64` for base64 codec, adding `futures` for async execution), especially in test.
+Before adding dependency, please ensure the crate to be Apache-2.0-friendly.
+
 <!--VITE PLUS START-->
 
 # Using Vite+, the Unified Toolchain for the Web

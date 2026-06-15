@@ -86,6 +86,57 @@ fn tee_command_expansion() {
 }
 
 #[test]
+fn tee_command_mixed_primitive_and_serialized_parameters() {
+    insta::assert_snapshot!(snapshot_command(
+        quote! { codec = TestCodec },
+        quote! {
+            fn configure(slot: u32, config: DeviceConfig) -> u32 {
+                slot + config.id as u32
+            }
+        },
+    ));
+}
+
+#[test]
+fn tee_command_typed_memref_inout_parameter() {
+    insta::assert_snapshot!(snapshot_command(
+        quote! { codec = TestCodec },
+        quote! {
+            fn adjust_config(config: &mut DeviceConfig) {
+                config.limit += 1;
+            }
+        },
+    ));
+}
+
+#[test]
+fn tee_command_primitive_return() {
+    insta::assert_snapshot!(snapshot_command(
+        quote! {},
+        quote! {
+            fn read_counter() -> u64 {
+                0x1122_3344_5566_7788
+            }
+        },
+    ));
+}
+
+#[test]
+fn tee_command_serialized_return_with_explicit_codec() {
+    insta::assert_snapshot!(snapshot_command(
+        quote! { codec = TestCodec },
+        quote! {
+            fn read_config(slot: u32) -> DeviceConfig {
+                DeviceConfig {
+                    id: slot as u8,
+                    limit: 1024,
+                }
+            }
+        },
+    ));
+}
+
+#[test]
 fn tee_param_derive_expansion() {
     insta::assert_snapshot!(snapshot_derive(quote! {
         struct CommandPayload<T> {
@@ -126,9 +177,9 @@ fn tee_param_invalid_attribute_error() {
 }
 
 #[test]
-fn tee_param_widening_warnings() {
+fn tee_param_small_integer_fields_are_serialized_without_warnings() {
     insta::assert_snapshot!(snapshot_derive(quote! {
-        enum WarningPayload {
+        enum SmallFieldPayload {
             Small {
                 a: u8,
                 b: u16,

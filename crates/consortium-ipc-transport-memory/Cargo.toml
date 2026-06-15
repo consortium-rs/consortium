@@ -35,5 +35,8 @@ pin-project = { version = "1.1.11" }
 uio = { version = "0.5.2", optional = true }
 consortium-common = { path = "../consortium-common", default-features = false }
 
+[dev-dependencies]
+futures = "0.3"
+
 [lints]
 workspace = true

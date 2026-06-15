@@ -14,10 +14,8 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use proc_macro_warning::Warning;
 use proc_macro2::{Span, TokenStream as TokenStream2};
-use quote::{ToTokens as _, quote};
-use syn::spanned::Spanned as _;
+use quote::quote;
 use syn::{
     Attribute, Data, DeriveInput, GenericArgument, GenericParam, Ident, LitInt, Meta,
     PathArguments, Type, parse_quote,
@@ -189,16 +187,15 @@ fn parse_tee_max_size(attrs: &[Attribute]) -> syn::Result<LitInt> {
     Ok(max_size.unwrap_or_else(|| LitInt::new(DEFAULT_MAX_SIZE, Span::call_site())))
 }
 
-/// Recursively checks `ty` for TEE-unsafe or lossy constructs.
+/// Recursively checks `ty` for TEE-unsafe constructs.
 ///
-/// Returns `(errors, warnings)` where warnings are emitted via `proc_macro_warning` and
-/// included in the generated output.
+/// Derived `TeeParam` types are carried through Memref slots, so narrow integer
+/// fields such as `u8` and `u16` are safe to preserve exactly through the selected
+/// codec. Direct TEE value-slot widening belongs to `tee_command` packing, not
+/// serialized struct field validation.
 ///
 /// | Category         | Types                          | Action  |
 /// |-----------------|-------------------------------|---------|
-/// | Auto-widen      | `u8`, `u16` → `u32`           | Warning |
-/// | Auto-widen      | `i8`, `i16` → `i32` → `u32`  | Warning |
-/// | Auto-widen      | `char` → `u32` scalar         | Warning |
 /// | Native          | `u32`, `i32`, `u64`, `i64`, `bool`, `(u32, u32)` | OK |
 /// | Ambiguous float | `f32`, `f64`                  | Error   |
 /// | Too wide        | `u128`, `i128`                | Error   |
@@ -264,52 +261,6 @@ fn check_tee_type(ty: &Type) -> (Vec<syn::Error>, Vec<TokenStream2>) {
                             ),
                         ));
                         return (errors, warnings);
-                    }
-                    s @ ("u8" | "u16") => {
-                        let old = format!("`{s}` as a TeeParam field");
-                        let new = format!(
-                            "`{s}` is widened to `u32` in the TEE Value slot (lossless); \
-                             use `u32` directly to silence this warning"
-                        );
-                        let warning_name = format!("tee_param_implicit_widen_{s}");
-                        warnings.push(
-                            Warning::new_deprecated(&warning_name)
-                                .old(&old)
-                                .new(&new)
-                                .span(ty.span())
-                                .build()
-                                .to_token_stream(),
-                        );
-                    }
-                    s @ ("i8" | "i16") => {
-                        let old = format!("`{s}` as a TeeParam field");
-                        let new = format!(
-                            "`{s}` is sign-extended to `i32` then bit-cast to `u32` \
-                             in the TEE Value slot (lossless); use `i32` directly \
-                             to silence this warning"
-                        );
-                        let warning_name = format!("tee_param_implicit_widen_{s}");
-                        warnings.push(
-                            Warning::new_deprecated(&warning_name)
-                                .old(&old)
-                                .new(&new)
-                                .span(ty.span())
-                                .build()
-                                .to_token_stream(),
-                        );
-                    }
-                    "char" => {
-                        warnings.push(
-                            Warning::new_deprecated("tee_param_implicit_widen_char")
-                                .old("`char` as a TeeParam field")
-                                .new(
-                                    "`char` is mapped to its Unicode scalar value (`u32`) in the \
-                                     TEE Value slot; use `u32` directly to silence this warning",
-                                )
-                                .span(ty.span())
-                                .build()
-                                .to_token_stream(),
-                        );
                     }
                     _ => {}
                 }
