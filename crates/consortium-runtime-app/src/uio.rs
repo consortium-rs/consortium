@@ -31,8 +31,8 @@ use uio::UioError;
 
 use consortium_ipc::{Chan, Doorbell};
 use consortium_ipc_transport_memory::{
-    descriptor::{ChannelDirection, Descriptor, DescriptorError, descriptor_ack},
-    transport::{SharedMemoryTransport, SharedMemoryTransportable},
+    ChannelDirection, Descriptor, DescriptorError, SharedMemoryTransport,
+    SharedMemoryTransportable, descriptor_ack,
 };
 
 // ── Error ─────────────────────────────────────────────────────────────────────

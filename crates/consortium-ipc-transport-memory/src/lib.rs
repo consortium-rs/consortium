@@ -15,8 +15,27 @@
 // limitations under the License.
 //
 // SPDX-License-Identifier: Apache-2.0
-pub mod descriptor;
-pub mod error;
-pub mod slot;
-pub mod transport;
+
+mod descriptor;
+mod error;
+#[path = "slot.rs"]
+mod slot_internal;
+mod transport;
 pub(crate) mod utils;
+
+pub use descriptor::{
+    CHANNEL_NUM_MAX, ChannelDirection, ChannelLayout, DescState, Descriptor, MAGIC,
+    RX_UPDATED_ID_OFFSET, VERSION, channel_table_entry_offset, descriptor_ack, descriptor_complete,
+    descriptor_init, get_state, set_state,
+};
+
+pub use error::{DescriptorError, Error};
+
+/// Low-level slot layout operations over the DMA-coherent shared region.
+pub mod slot {
+    pub use super::slot_internal::{
+        FLAG_CONSUMED, FLAG_INTEGRITY_ERROR, FLAG_VALID, SLOT_HEADER, is_consumed, try_read, write,
+    };
+}
+
+pub use transport::{RecvFut, SendFut, SharedMemoryTransport, SharedMemoryTransportable};

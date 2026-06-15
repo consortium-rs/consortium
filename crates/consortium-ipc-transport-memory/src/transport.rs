@@ -8,7 +8,7 @@ use consortium_ipc::{Chan, DdrRegion, Doorbell, Region, SramRegion, Transport};
 use crate::{
     descriptor::{ChannelLayout, NUM_CHANNELS_OFFSET, RX_UPDATED_ID_OFFSET, read_channel},
     error::Error,
-    slot,
+    slot_internal as slot,
     utils::rv_u8,
 };
 
