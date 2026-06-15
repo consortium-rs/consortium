@@ -1,0 +1,20 @@
+error[E0277]: the trait bound `NoCodec: CodecFor<Config>` is not satisfied
+  --> tests/ui/tee_command/fail/missing_codec.rs:46:23
+   |
+46 | fn configure(_config: Config) -> optee_utee::Result<()> {
+   |                       ^^^^^^ the trait `CodecFor<Config>` is not implemented for `NoCodec`
+   |
+help: the trait `TeeParam<__TeeCodec>` is implemented for `Config`
+  --> tests/ui/tee_command/fail/missing_codec.rs:40:10
+   |
+40 | #[derive(TeeParam)]
+   |          ^^^^^^^^
+note: required for `Config` to implement `TeeParam`
+  --> tests/ui/tee_command/fail/missing_codec.rs:41:8
+   |
+40 | #[derive(TeeParam)]
+   |          -------- type parameter would need to implement `TeeParam`
+41 | struct Config {
+   |        ^^^^^^
+   = help: consider manually implementing `TeeParam` to avoid undesired bounds
+   = note: this error originates in the derive macro `TeeParam` (in Nightly builds, run with -Z macro-backtrace for more info)
