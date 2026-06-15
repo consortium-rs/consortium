@@ -446,6 +446,8 @@ name = "consortium-ipc-macros-impl"
 version = "0.1.0"
 dependencies = [
  "heck",
+ "insta",
+ "prettyplease",
  "proc-macro2",
  "quote",
  "syn",

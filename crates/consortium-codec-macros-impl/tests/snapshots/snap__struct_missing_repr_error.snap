@@ -1,7 +1,14 @@
 ---
 source: crates/consortium-codec-macros-impl/tests/snap.rs
-expression: pretty_snapshot(expanded)
+expression: "snapshot(quote! { struct NakedStruct { x: u32, } })"
 ---
+// Input:
+#[derive(consortium_codec::TrustedArchive)]
+struct NakedStruct {
+    x: u32,
+}
+
+// Expands to:
 ::core::compile_error! {
     "TrustedArchive structs must carry #[repr(C)] or #[repr(align(N))] to guarantee stable memory layout for unchecked archive access"
 }

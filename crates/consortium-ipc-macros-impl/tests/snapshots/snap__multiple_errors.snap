@@ -1,0 +1,18 @@
+---
+source: crates/consortium-ipc-macros-impl/tests/snap.rs
+expression: "snapshot(quote! { struct MultipleProblems { ptr: *const u8, len: usize, } })"
+---
+// Input:
+#[derive(consortium_ipc::IpcSafe)]
+struct MultipleProblems {
+    ptr: *const u8,
+    len: usize,
+}
+
+// Expands to:
+::core::compile_error! {
+    "raw pointers are not allowed in IpcSafe types: they are not valid across separate processor address spaces; use an index or ID instead"
+}
+::core::compile_error! {
+    "`usize` is platform-dependent (pointer-width) and not allowed in IpcSafe types: use u32/u64 or i32/i64 with an explicit width"
+}

@@ -1,33 +1,69 @@
 use proc_macro2::TokenStream;
 use quote::quote;
 
-fn pretty_snapshot(tokens: TokenStream) -> String {
-    let file = syn::parse_file(&tokens.to_string()).expect("macro output should parse as Rust");
-    prettyplease::unparse(&file)
+fn fmt(tokens: &TokenStream) -> String {
+    match syn::parse_file(&tokens.to_string()) {
+        Ok(file) => prettyplease::unparse(&file),
+        Err(_) => format!("{tokens}\n"),
+    }
+}
+
+fn snapshot_derive(input: TokenStream) -> String {
+    let output = consortium_tee_macros_impl::derive_tee_param(input.clone());
+    format!(
+        "// Input:\n#[derive(consortium_tee::TeeParam)]\n{}\n// Expands to:\n{}",
+        fmt(&input),
+        fmt(&output)
+    )
+}
+
+fn snapshot_service(input: TokenStream) -> String {
+    let output = consortium_tee_macros_impl::tee_service(input.clone());
+    let input_code = quote! {
+        consortium_tee::tee_service! {
+            #input
+        }
+    };
+    format!(
+        "// Input:\n{}\n// Expands to:\n{}",
+        fmt(&input_code),
+        fmt(&output)
+    )
+}
+
+fn snapshot_command(attr: TokenStream, item: TokenStream) -> String {
+    let output = consortium_tee_macros_impl::tee_command(attr.clone(), item.clone());
+    let attr_line = if attr.is_empty() {
+        "#[consortium_tee::tee_command]\n".to_string()
+    } else {
+        format!("#[consortium_tee::tee_command({attr})]\n")
+    };
+    format!(
+        "// Input:\n{}{}\n// Expands to:\n{}",
+        attr_line,
+        fmt(&item),
+        fmt(&output)
+    )
 }
 
 #[test]
 fn tee_service_expansion() {
-    let expanded = consortium_tee_macros_impl::tee_service(quote! {
+    insta::assert_snapshot!(snapshot_service(quote! {
         context ServiceContext
         commands { ping, echo_bytes }
-    });
-
-    insta::assert_snapshot!(pretty_snapshot(expanded));
+    }));
 }
 
 #[test]
 fn tee_service_expansion_no_ctx() {
-    let expanded = consortium_tee_macros_impl::tee_service(quote! {
+    insta::assert_snapshot!(snapshot_service(quote! {
         commands { ping, echo_bytes, hello }
-    });
-
-    insta::assert_snapshot!(pretty_snapshot(expanded));
+    }));
 }
 
 #[test]
 fn tee_command_expansion() {
-    let expanded = consortium_tee_macros_impl::tee_command(
+    insta::assert_snapshot!(snapshot_command(
         quote! { codec = TestCodec },
         quote! {
             fn echo(
@@ -39,62 +75,52 @@ fn tee_command_expansion() {
                 Ok(input.to_vec())
             }
         },
-    );
-
-    insta::assert_snapshot!(pretty_snapshot(expanded));
+    ));
 }
 
 #[test]
 fn tee_param_derive_expansion() {
-    let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
+    insta::assert_snapshot!(snapshot_derive(quote! {
         struct CommandPayload<T> {
             opcode: u32,
             body: T,
         }
-    });
-
-    insta::assert_snapshot!(pretty_snapshot(expanded));
+    }));
 }
 
 #[test]
 fn tee_param_max_size_override() {
-    let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
+    insta::assert_snapshot!(snapshot_derive(quote! {
         #[tee(max_size = 4096)]
         struct LargePayload {
             body: u32,
         }
-    });
-
-    insta::assert_snapshot!(pretty_snapshot(expanded));
+    }));
 }
 
 #[test]
 fn tee_param_empty_attribute_defaults_max_size() {
-    let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
+    insta::assert_snapshot!(snapshot_derive(quote! {
         #[tee]
         struct DefaultPayload {
             body: u32,
         }
-    });
-
-    insta::assert_snapshot!(pretty_snapshot(expanded));
+    }));
 }
 
 #[test]
 fn tee_param_invalid_attribute_error() {
-    let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
+    insta::assert_snapshot!(snapshot_derive(quote! {
         #[tee(buffer = 4096)]
         struct BadAttribute {
             body: Vec<u8>,
         }
-    });
-
-    insta::assert_snapshot!(pretty_snapshot(expanded));
+    }));
 }
 
 #[test]
 fn tee_param_widening_warnings() {
-    let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
+    insta::assert_snapshot!(snapshot_derive(quote! {
         enum WarningPayload {
             Small {
                 a: u8,
@@ -105,14 +131,12 @@ fn tee_param_widening_warnings() {
             },
             Nested(Option<u8>),
         }
-    });
-
-    insta::assert_snapshot!(pretty_snapshot(expanded));
+    }));
 }
 
 #[test]
 fn tee_param_rejection_errors() {
-    let expanded = consortium_tee_macros_impl::derive_tee_param(quote! {
+    insta::assert_snapshot!(snapshot_derive(quote! {
         struct RejectedPayload<'a> {
             raw: *const u8,
             borrowed: &'a u32,
@@ -122,33 +146,27 @@ fn tee_param_rejection_errors() {
             too_wide: u128,
             erased: dyn Send,
         }
-    });
-
-    insta::assert_snapshot!(pretty_snapshot(expanded));
+    }));
 }
 
 #[test]
 fn tee_command_too_many_parameters_error() {
-    let expanded = consortium_tee_macros_impl::tee_command(
+    insta::assert_snapshot!(snapshot_command(
         quote! {},
         quote! {
             fn crowded(a: u32, b: u32, c: u32, d: u32, e: u32) {}
         },
-    );
-
-    insta::assert_snapshot!(pretty_snapshot(expanded));
+    ));
 }
 
 #[test]
 fn tee_command_unsupported_type_error() {
-    let expanded = consortium_tee_macros_impl::tee_command(
+    insta::assert_snapshot!(snapshot_command(
         quote! {},
         quote! {
             fn unsupported(input: (u32, u64)) -> (u32, u64) {
                 input
             }
         },
-    );
-
-    insta::assert_snapshot!(pretty_snapshot(expanded));
+    ));
 }

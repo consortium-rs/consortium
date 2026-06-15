@@ -1,7 +1,15 @@
 ---
 source: crates/consortium-tee-macros-impl/tests/snap.rs
-expression: pretty_snapshot(expanded)
+expression: "snapshot_derive(quote! { struct CommandPayload<T> { opcode: u32, body: T, } })"
 ---
+// Input:
+#[derive(consortium_tee::TeeParam)]
+struct CommandPayload<T> {
+    opcode: u32,
+    body: T,
+}
+
+// Expands to:
 impl<
     T: ::consortium_tee::TeeParam<__TeeCodec>,
     __TeeCodec,

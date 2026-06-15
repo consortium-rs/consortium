@@ -1,7 +1,14 @@
 ---
 source: crates/consortium-tee-macros-impl/tests/snap.rs
-expression: pretty_snapshot(expanded)
+expression: "snapshot_command(quote! {}, quote!\n{ fn unsupported(input: (u32, u64)) -> (u32, u64) { input } },)"
 ---
+// Input:
+#[consortium_tee::tee_command]
+fn unsupported(input: (u32, u64)) -> (u32, u64) {
+    input
+}
+
+// Expands to:
 fn unsupported(input: (u32, u64)) -> (u32, u64) {
     input
 }

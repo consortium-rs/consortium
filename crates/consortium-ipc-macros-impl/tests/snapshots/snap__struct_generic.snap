@@ -1,0 +1,13 @@
+---
+source: crates/consortium-ipc-macros-impl/tests/snap.rs
+expression: "snapshot(quote! { struct Wrapper<T> { value: T, tag: u32, } })"
+---
+// Input:
+#[derive(consortium_ipc::IpcSafe)]
+struct Wrapper<T> {
+    value: T,
+    tag: u32,
+}
+
+// Expands to:
+unsafe impl<T: ::consortium_ipc::IpcSafe> ::consortium_ipc::IpcSafe for Wrapper<T> {}

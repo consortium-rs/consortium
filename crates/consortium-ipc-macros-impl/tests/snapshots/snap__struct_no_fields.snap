@@ -1,0 +1,10 @@
+---
+source: crates/consortium-ipc-macros-impl/tests/snap.rs
+expression: "snapshot(quote! { struct Empty; })"
+---
+// Input:
+#[derive(consortium_ipc::IpcSafe)]
+struct Empty;
+
+// Expands to:
+unsafe impl ::consortium_ipc::IpcSafe for Empty {}

@@ -1,7 +1,16 @@
 ---
 source: crates/consortium-codec-macros-impl/tests/snap.rs
-expression: pretty_snapshot(expanded)
+expression: "snapshot(quote! { #[repr(C)] struct Wrapper<T> { value: T, count: u32, } })"
 ---
+// Input:
+#[derive(consortium_codec::TrustedArchive)]
+#[repr(C)]
+struct Wrapper<T> {
+    value: T,
+    count: u32,
+}
+
+// Expands to:
 unsafe impl<
     T: ::consortium_codec::rkyv::TrustedArchive,
 > ::consortium_codec::rkyv::TrustedArchive for Wrapper<T>

@@ -25,7 +25,7 @@ pub(crate) mod future;
 pub(crate) mod region;
 pub(crate) mod regions;
 pub(crate) mod transport;
-pub mod wire;
+pub(crate) mod wire;
 
 pub use {
     chan::{Chan, ChanValidate},
@@ -36,3 +36,5 @@ pub use {
     transport::Transport,
     wire::IpcSafe,
 };
+
+pub use consortium_ipc_macros::IpcSafe;

@@ -25,9 +25,9 @@ license.workspace = true
 consortium-codec = { path = "../consortium-codec" }
 num_enum = { version = "0.7.3", default-features = false }
 thiserror = { version = "2.0", default-features = false }
+consortium-ipc-macros = { path = "../consortium-ipc-macros" }
 
 [dev-dependencies]
-consortium-ipc-macros = { path = "../consortium-ipc-macros" }
 trybuild = "1"
 
 [features]
