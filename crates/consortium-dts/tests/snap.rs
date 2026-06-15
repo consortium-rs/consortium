@@ -69,10 +69,7 @@ fn root_node_with_property_variants() {
                 "local-mac-address",
                 [0xde, 0xad, 0xbe, 0xef, 0x00, 0x01],
             ))
-            .property(Property::reference(
-                "clocks",
-                Reference::label("rcc"),
-            ))
+            .property(Property::reference("clocks", Reference::label("rcc"),))
             .property(Property::compound(
                 "ranges",
                 [

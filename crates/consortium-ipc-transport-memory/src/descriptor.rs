@@ -54,7 +54,7 @@ const CHAN_ENTRY_SIZE: usize = 12;
 
 const MAGIC_OFFSET: usize = 0x00;
 const VERSION_OFFSET: usize = 0x04;
-pub(crate) const NUM_CHANNELS_OFFSET: usize = 0x05;
+pub(crate) const NUM_CHANNELS_OFFSET: usize = 0x06;
 const TX_UPDATED_ID_OFFSET: usize = 0x08;
 pub const RX_UPDATED_ID_OFFSET: usize = 0x09;
 const TX_TRANSFER_SIZE_OFFSET: usize = 0x0C;
@@ -307,7 +307,7 @@ pub unsafe fn descriptor_init(
 /// Parse the descriptor from the start of the mmap'd region.
 ///
 /// # Safety
-/// `base` must be valid for at least `CHAN_TABLE_BASE + num_channels * 16` bytes.
+/// `base` must be valid for at least `CHAN_TABLE_BASE + num_channels * CHAN_ENTRY_SIZE` bytes.
 /// All accesses use `read_volatile`; the region must be DMA-coherent.
 pub unsafe fn descriptor_ack(
     base: *mut u8,
@@ -320,7 +320,7 @@ pub unsafe fn descriptor_ack(
         .check(MAGIC, VERSION)
         .map_err(DescriptorError::Header)?;
 
-    let num_ch = unsafe { rv_u8(base, 0x05) };
+    let num_ch = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
     debug_assert!(
         num_ch as usize == num_channels,
         "num_channels mismatch: expected {}, got {}",
@@ -384,10 +384,10 @@ pub unsafe fn descriptor_ack(
 ///
 /// # Safety
 ///
-/// `base` must be valid for at least 0x14 bytes and DMA-coherent.
+/// `base` must be valid for at least `STATE_OFFSET + 4` bytes and DMA-coherent.
 pub unsafe fn descriptor_complete(base: *const u8) -> u32 {
     // SAFETY: when the base is valid and coherent, the state read will be consistent with the rx_transfer_size read. The A-core must have set the state to Ready before writing rx_transfer_size, so if we see Ready then rx_transfer_size is valid.
-    let state = DescState::from_primitive(unsafe { rv_u32(base, 0x14) });
+    let state = DescState::from_primitive(unsafe { rv_u32(base, STATE_OFFSET) });
 
     debug_assert!(
         state == DescState::Ready,
