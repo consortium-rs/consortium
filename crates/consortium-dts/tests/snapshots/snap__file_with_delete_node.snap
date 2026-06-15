@@ -1,0 +1,10 @@
+---
+source: crates/consortium-dts/tests/snap.rs
+assertion_line: 108
+expression: "File::dtsi().delete_node(Reference::label(\"uart4\")).delete_node(Reference::path(\"/soc/serial@40010000\")).to_dts()"
+---
+/dts-v1/;
+
+/delete-node/ &uart4;
+
+/delete-node/ &{/soc/serial@40010000};

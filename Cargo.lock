@@ -370,6 +370,7 @@ dependencies = [
 name = "consortium-dts"
 version = "0.1.0"
 dependencies = [
+ "insta",
  "logos",
  "thiserror",
 ]

@@ -25,5 +25,8 @@ license.workspace = true
 logos = "0.15"
 thiserror = "2.0.18"
 
+[dev-dependencies]
+insta = "1"
+
 [lints]
 workspace = true

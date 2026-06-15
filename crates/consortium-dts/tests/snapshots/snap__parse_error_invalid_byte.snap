@@ -1,0 +1,6 @@
+---
+source: crates/consortium-dts/tests/snap.rs
+assertion_line: 137
+expression: err.to_string()
+---
+invalid byte literal `zz` at byte range Span { start: 16, end: 18 }

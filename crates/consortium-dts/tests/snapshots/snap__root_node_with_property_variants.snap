@@ -1,0 +1,17 @@
+---
+source: crates/consortium-dts/tests/snap.rs
+assertion_line: 58
+expression: "Node::root().property(Property::strings(\"compatible\",\n[\"test,board\",\n\"simple-bus\"],)).property(Property::cells(\"reg\",\n[Cell::number(0x4000_0000),\nCell::number(0x1000)],)).property(Property::bytes(\"local-mac-address\",\n[0xde, 0xad, 0xbe, 0xef, 0x00,\n0x01],)).property(Property::reference(\"clocks\",\nReference::label(\"rcc\"),)).property(Property::compound(\"ranges\",\n[PropValue::Cells(vec![Cell::number(0)]),\nPropValue::Cells(vec![Cell::number(0x4000_0000)]),\nPropValue::Cells(vec![Cell::number(0x1000)]),],)).property(Property::raw(\"interrupt-parent\",\n\"<&gic>\")).child(Node::with_unit_address(\"serial\",\n\"0x40010000\").label(\"uart4\").status_okay(),).to_dts()"
+---
+/ {
+    compatible = "test,board", "simple-bus";
+    reg = <1073741824 4096>;
+    local-mac-address = [de ad be ef 00 01];
+    clocks = &rcc;
+    ranges = <0>, <1073741824>, <4096>;
+    interrupt-parent = <&gic>;
+
+    uart4: serial@40010000 {
+        status = "okay";
+    };
+};
