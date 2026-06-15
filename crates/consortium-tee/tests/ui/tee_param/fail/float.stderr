@@ -1,0 +1,5 @@
+error: TEE value slots are `uint32_t` pairs; `f32` encoding is ambiguous across TEE boundaries; use `u32` directly or implement `TeeParam` with explicit encoding
+ --> tests/ui/tee_param/fail/float.rs:5:12
+  |
+5 |     value: f32,
+  |            ^^^

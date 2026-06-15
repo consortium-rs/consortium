@@ -1,0 +1,13 @@
+---
+source: crates/consortium-tee-macros-impl/tests/snap.rs
+expression: "snapshot_service(quote! { commands { hello, world, unknown, conflict } })"
+---
+// Input:
+consortium_tee::tee_service! {
+    commands { hello, world, unknown, conflict }
+}
+
+// Expands to:
+::core::compile_error! {
+    "Command name 'Unknown' is reserved for the default case"
+}
