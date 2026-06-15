@@ -1,0 +1,33 @@
+---
+source: crates/consortium-tee-macros-impl/tests/snap.rs
+expression: "snapshot_command(quote! { codec = TestCodec }, quote!\n{ fn adjust_config(config: &mut DeviceConfig) { config.limit += 1; } },)"
+---
+// Input:
+#[consortium_tee::tee_command(codec = TestCodec)]
+fn adjust_config(config: &mut DeviceConfig) {
+    config.limit += 1;
+}
+
+// Expands to:
+fn adjust_config(config: &mut DeviceConfig) {
+    config.limit += 1;
+}
+fn adjust_config_dispatched(
+    config: &mut DeviceConfig,
+    _params: &mut ::optee_utee::Parameters,
+) -> ::optee_utee::Result<()> {
+    adjust_config(config)
+}
+#[cfg(feature = "ca")]
+fn call_adjust_config(
+    session: &mut ::optee_teec::Session,
+) -> ::consortium_tee::TeeResult<()> {
+    let mut _operation = ::optee_teec::Operation::new(
+        0,
+        ::optee_utee::ParamNone,
+        ::optee_utee::ParamNone,
+        ::optee_utee::ParamNone,
+        ::optee_utee::ParamNone,
+    );
+    session.invoke_command(Command::AdjustConfig as u32, &mut _operation)
+}
