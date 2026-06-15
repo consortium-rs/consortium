@@ -29,7 +29,7 @@
 
 /// Physical base addresses for i.MX 95 MU instances (MUA side).
 #[cfg(all(feature = "imx95", feature = "mua"))]
-pub const MU_BASES: [u32; crate::chan::MU_INSTANCE_COUNT] = [
+pub const MU_BASES: [usize; crate::chan::MU_INSTANCE_COUNT] = [
     0x4422_0000, // MU1
     0x445B_0000, // MU2
     0x445D_0000, // MU3
@@ -42,13 +42,13 @@ pub const MU_BASES: [u32; crate::chan::MU_INSTANCE_COUNT] = [
 
 /// Physical base addresses for i.MX 93 MU instances (MUA side).
 #[cfg(all(feature = "imx93", feature = "mua"))]
-pub const MU_BASES: [u32; crate::chan::MU_INSTANCE_COUNT] = [
+pub const MU_BASES: [usize; crate::chan::MU_INSTANCE_COUNT] = [
     0x4422_0000, // MU1
     0x4243_0000, // MU2
 ];
 
 #[cfg(all(feature = "imx95", feature = "mub"))]
-pub const MU_BASES: [u32; crate::chan::MU_INSTANCE_COUNT] = [
+pub const MU_BASES: [usize; crate::chan::MU_INSTANCE_COUNT] = [
     0x4423_0000, // MU1
     0x445C_0000, // MU2
     0x445E_0000, // MU3
@@ -60,7 +60,7 @@ pub const MU_BASES: [u32; crate::chan::MU_INSTANCE_COUNT] = [
 ];
 
 #[cfg(all(feature = "imx93", feature = "mub"))]
-pub const MU_BASES: [u32; crate::chan::MU_INSTANCE_COUNT] = [
+pub const MU_BASES: [usize; crate::chan::MU_INSTANCE_COUNT] = [
     0x4423_0000, // MU1
     0x4244_0000, // MU2
 ];

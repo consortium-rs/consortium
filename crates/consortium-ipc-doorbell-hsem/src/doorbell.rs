@@ -270,7 +270,7 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
         let locked_reg = fields::SemaphoreRegister::from_bits(locked_value);
         let lockid = locked_reg.lockid() as u8;
 
-        if !locked_reg.lock() || lockid != crate::regsiters::A_CORE_LOCKID {
+        if !locked_reg.lock() || lockid != crate::registers::A_CORE_LOCKID {
             return Err(HsemError::AlreadyLocked);
         }
 
@@ -433,5 +433,38 @@ impl<'a, const PROC: u8> core::future::Future for HsemWaitFut<'a, PROC> {
                 Poll::Pending
             }
         }
+    }
+}
+
+#[cfg(all(test, feature = "std"))]
+mod tests {
+    use super::*;
+
+    fn ch(id: u8) -> Chan {
+        // SAFETY: tests choose ids deliberately.
+        unsafe { Chan::new_unchecked(id) }
+    }
+
+    #[test]
+    fn wait_registers_waker_then_ready_after_notify() {
+        let mut regs = [0u32; 0x120 / 4];
+        let doorbell = HsemDoorbell::<2>::new(regs.as_mut_ptr() as usize);
+        let mut wait = std::pin::pin!(doorbell.wait(ch(3)));
+        let waker = std::task::Waker::noop();
+        let mut cx = Context::from_waker(waker);
+
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+        assert!(
+            SemInterruptRegister::from_bits(regs[interrupt_nonsecure::HSEM_C2IER as usize / 4])
+                .contains_sem(3)
+        );
+        assert_eq!(
+            regs[interrupt_nonsecure::HSEM_C2ICR as usize / 4],
+            SemInterruptRegister::from_bits(interrupt_nonsecure::fields::sem_bit(3)).bits()
+        );
+
+        doorbell.notifier().notify_waiters();
+
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(3))));
     }
 }

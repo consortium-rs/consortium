@@ -14,20 +14,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6.0.3
 
+      - name: Setup just
+        uses: extractions/setup-just@v4
+
       - name: Debug logging tests
         run: cargo test -p consortium-dbg-defmt
 
       - name: Codec tests
         run: cargo test -p consortium-codec --features postcard,prost,rkyv,alloc
 
-      - name: IPC core tests
-        run: cargo test -p consortium-ipc --features std
-
-      - name: IPC shared-memory transport tests
-        run: cargo test -p consortium-ipc-transport-memory
+      - name: IPC tests
+        run: just test ipc host
 
       - name: TEE tests
-        run: cargo test -p consortium-tee --no-default-features
-
-      - name: TEE macro snapshot tests
-        run: cargo test -p consortium-tee-macros-impl --test snap
+        run: just test tee host

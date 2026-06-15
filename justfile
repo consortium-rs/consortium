@@ -16,9 +16,20 @@ default:
 build:
     cargo build
 
-# Run all tests
-test:
-    cargo test
+# Run tests. With args: `just test ipc host`, `just test ipc m7`, `just test tee host`.
+test area="" scope="":
+    @case "{{ area }}:{{ scope }}" in \
+        ":") cargo test ;; \
+        "ipc:"|"ipc:host") just test-ipc-host ;; \
+        "ipc:a64") just test-ipc-a64 ;; \
+        "ipc:a32") just test-ipc-a32 ;; \
+        "ipc:m8") just test-ipc-m8 ;; \
+        "ipc:m7") just test-ipc-m7 ;; \
+        "tee:"|"tee:host") just test-tee-host ;; \
+        "tee:a64") just test-tee-a64 ;; \
+        "tee:a32") just test-tee-a32 ;; \
+        *) echo "Error: unknown test scope '{{ area }} {{ scope }}'"; echo "Try: just test ipc host | a64 | a32 | m8 | m7, or just test tee host | a64 | a32"; exit 1 ;; \
+    esac
 
 # Run tests for a specific crate (e.g. `just test-crate consortium-ipc`)
 test-crate crate:
@@ -67,32 +78,58 @@ check:
 check-ipc-a64:
     @[ "$(uname)" = "Linux" ] || { echo "Error: A-core targets require Linux"; exit 1; }
     cargo check -p consortium-ipc --target {{ a64_target }} -F std
-    cargo check -p consortium-ipc-transport-uio --target {{ a64_target }}
+    cargo check -p consortium-ipc-transport-memory --target {{ a64_target }} -F std
     cargo check -p consortium-runtime-app --target {{ a64_target }}
     cargo check -p consortium-ipc-doorbell-hsem --target {{ a64_target }} -F std
+    cargo check -p consortium-ipc-doorbell-ipcc --target {{ a64_target }} -F std
+    cargo check -p consortium-ipc-doorbell-mu --target {{ a64_target }} -F std
 
 build-ipc-a64:
     @[ "$(uname)" = "Linux" ] || { echo "Error: A-core targets require Linux"; exit 1; }
     cargo build -p consortium-ipc --release --target {{ a64_target }} -F std
-    cargo build -p consortium-ipc-transport-uio --release --target {{ a64_target }}
+    cargo build -p consortium-ipc-transport-memory --release --target {{ a64_target }} -F std
     cargo build -p consortium-runtime-app --release --target {{ a64_target }}
     cargo build -p consortium-ipc-doorbell-hsem --release --target {{ a64_target }} -F std
+    cargo build -p consortium-ipc-doorbell-ipcc --release --target {{ a64_target }} -F std
+    cargo build -p consortium-ipc-doorbell-mu --release --target {{ a64_target }} -F std
+
+# Run/compile A-core IPC tests for aarch64 Linux.
+test-ipc-a64:
+    @[ "$(uname)" = "Linux" ] || { echo "Error: A-core tests require Linux"; exit 1; }
+    cargo test -p consortium-ipc --target {{ a64_target }} -F std
+    cargo test -p consortium-ipc-transport-memory --target {{ a64_target }} -F std
+    cargo test -p consortium-ipc-doorbell-hsem --target {{ a64_target }} -F std
+    cargo test -p consortium-ipc-doorbell-ipcc --target {{ a64_target }} -F std
+    cargo test -p consortium-ipc-doorbell-mu --target {{ a64_target }} -F std
 
 # ── A-core (armv7 / Linux) ──────────────────────────────────────────────────
 
 check-ipc-a32:
     @[ "$(uname)" = "Linux" ] || { echo "Error: A-core targets require Linux"; exit 1; }
     cargo check -p consortium-ipc --target {{ a32_target }} -F std
-    cargo check -p consortium-ipc-transport-uio --target {{ a32_target }}
+    cargo check -p consortium-ipc-transport-memory --target {{ a32_target }} -F std
     cargo check -p consortium-runtime-app --target {{ a32_target }}
     cargo check -p consortium-ipc-doorbell-hsem --target {{ a32_target }} -F std
+    cargo check -p consortium-ipc-doorbell-ipcc --target {{ a32_target }} -F std
+    cargo check -p consortium-ipc-doorbell-mu --target {{ a32_target }} -F std
 
 build-ipc-a32:
     @[ "$(uname)" = "Linux" ] || { echo "Error: A-core targets require Linux"; exit 1; }
     cargo build -p consortium-ipc --release --target {{ a32_target }} -F std
-    cargo build -p consortium-ipc-transport-uio --release --target {{ a32_target }}
+    cargo build -p consortium-ipc-transport-memory --release --target {{ a32_target }} -F std
     cargo build -p consortium-runtime-app --release --target {{ a32_target }}
     cargo build -p consortium-ipc-doorbell-hsem --release --target {{ a32_target }} -F std
+    cargo build -p consortium-ipc-doorbell-ipcc --release --target {{ a32_target }} -F std
+    cargo build -p consortium-ipc-doorbell-mu --release --target {{ a32_target }} -F std
+
+# Run/compile A-core IPC tests for armv7 Linux.
+test-ipc-a32:
+    @[ "$(uname)" = "Linux" ] || { echo "Error: A-core tests require Linux"; exit 1; }
+    cargo test -p consortium-ipc --target {{ a32_target }} -F std
+    cargo test -p consortium-ipc-transport-memory --target {{ a32_target }} -F std
+    cargo test -p consortium-ipc-doorbell-hsem --target {{ a32_target }} -F std
+    cargo test -p consortium-ipc-doorbell-ipcc --target {{ a32_target }} -F std
+    cargo test -p consortium-ipc-doorbell-mu --target {{ a32_target }} -F std
 
 # ── TEE (Trusted Execution Environment / Linux) ──────────────────────────────
 
@@ -121,42 +158,81 @@ build-tee-test:
     @[ "$(uname)" = "Linux" ] || { echo "Error: TEE test crate requires Linux"; exit 1; }
     RUSTFLAGS="-C panic=abort" cargo build -p consortium-tee-test --release
 
-# Run TEE tests
+# Run host TEE tests that do not require OP-TEE runtime libraries.
 test-tee:
-    @[ "$(uname)" = "Linux" ] || { echo "Error: TEE tests require Linux"; exit 1; }
-    cargo test -p consortium-tee
+    just test-tee-host
+
+test-tee-host:
+    cargo test -p consortium-tee --no-default-features
+    cargo test -p consortium-tee-macros-impl --test snap
+
+# Run TEE tests for Linux A-core targets.
+test-tee-a64:
+    @[ "$(uname)" = "Linux" ] || { echo "Error: A-core TEE tests require Linux"; exit 1; }
+    cargo test -p consortium-tee --no-default-features --target {{ a64_target }}
+    cargo test -p consortium-tee-macros-impl --test snap
+
+test-tee-a32:
+    @[ "$(uname)" = "Linux" ] || { echo "Error: A-core TEE tests require Linux"; exit 1; }
+    cargo test -p consortium-tee --no-default-features --target {{ a32_target }}
+    cargo test -p consortium-tee-macros-impl --test snap
 
 # ── M-core (thumbv8 / bare-metal) ───────────────────────────────────────────
 
 check-ipc-m8:
     cargo check -p consortium-ipc --target {{ m8_target }}
     cargo check -p consortium-common --target {{ m8_target }}
-    cargo check -p consortium-ipc-transport-mem --target {{ m8_target }}
+    cargo check -p consortium-ipc-transport-memory --target {{ m8_target }} --no-default-features
     cargo check -p consortium-runtime-mcu --target {{ m8_target }}
     cargo check -p consortium-ipc-doorbell-hsem --target {{ m8_target }}
+    cargo check -p consortium-ipc-doorbell-ipcc --target {{ m8_target }}
+    cargo check -p consortium-ipc-doorbell-mu --target {{ m8_target }}
 
 build-ipc-m8:
     cargo build -p consortium-common --release --target {{ m8_target }}
     cargo build -p consortium-ipc --release --target {{ m8_target }}
-    cargo build -p consortium-ipc-transport-mem --release --target {{ m8_target }}
+    cargo build -p consortium-ipc-transport-memory --release --target {{ m8_target }} --no-default-features
     cargo build -p consortium-runtime-mcu --release --target {{ m8_target }}
     cargo build -p consortium-ipc-doorbell-hsem --release --target {{ m8_target }}
+    cargo build -p consortium-ipc-doorbell-ipcc --release --target {{ m8_target }}
+    cargo build -p consortium-ipc-doorbell-mu --release --target {{ m8_target }}
+
+# Compile M-core IPC crates for thumbv8. Unit tests are not runnable on the host.
+test-ipc-m8: check-ipc-m8
 
 # ── M-core (thumbv7 / bare-metal) ───────────────────────────────────────────
 
 check-ipc-m7:
     cargo check -p consortium-common --target {{ m7_target }}
     cargo check -p consortium-ipc --target {{ m7_target }}
-    cargo check -p consortium-ipc-transport-mem --target {{ m7_target }}
+    cargo check -p consortium-ipc-transport-memory --target {{ m7_target }} --no-default-features
     cargo check -p consortium-runtime-mcu --target {{ m7_target }}
     cargo check -p consortium-ipc-doorbell-hsem --target {{ m7_target }}
+    cargo check -p consortium-ipc-doorbell-ipcc --target {{ m7_target }}
+    cargo check -p consortium-ipc-doorbell-mu --target {{ m7_target }}
 
 build-ipc-m7:
     cargo build -p consortium-common --release --target {{ m7_target }}
     cargo build -p consortium-ipc --release --target {{ m7_target }}
-    cargo build -p consortium-ipc-transport-mem --release --target {{ m7_target }}
+    cargo build -p consortium-ipc-transport-memory --release --target {{ m7_target }} --no-default-features
     cargo build -p consortium-runtime-mcu --release --target {{ m7_target }}
-    cargo build -p consortium-ipc-doorbell-hsem --release --target {{ m8_target }}
+    cargo build -p consortium-ipc-doorbell-hsem --release --target {{ m7_target }}
+    cargo build -p consortium-ipc-doorbell-ipcc --release --target {{ m7_target }}
+    cargo build -p consortium-ipc-doorbell-mu --release --target {{ m7_target }}
+
+# Compile M-core IPC crates for thumbv7. Unit tests are not runnable on the host.
+test-ipc-m7: check-ipc-m7
+
+# Run host-side IPC tests, including fake-MMIO std doorbell wait-future tests.
+test-ipc-host:
+    cargo test -p consortium-ipc --features std
+    cargo test -p consortium-ipc-transport-memory
+    cargo test -p consortium-ipc-doorbell-hsem
+    cargo test -p consortium-ipc-doorbell-hsem --features std
+    cargo test -p consortium-ipc-doorbell-ipcc
+    cargo test -p consortium-ipc-doorbell-ipcc --features std
+    cargo test -p consortium-ipc-doorbell-mu
+    cargo test -p consortium-ipc-doorbell-mu --features std
 
 # ── RISC-V (rv32imc) ────────────────────────────────────────────────────────
 

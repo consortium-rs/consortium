@@ -417,14 +417,36 @@ mod tests {
         let mut regs = [0u32; 8];
         regs[offsets::C2TOC1SR / 4] = crate::registers::channel_flag(2).bits();
         let doorbell = IpccDoorbell::<1>::new(regs.as_mut_ptr() as usize);
-        let mut wait = doorbell.wait(ch(2));
+        let mut wait = std::pin::pin!(doorbell.wait(ch(2)));
         let waker = std::task::Waker::noop();
         let mut cx = Context::from_waker(waker);
 
-        assert_eq!(Pin::new(&mut wait).poll(&mut cx), Poll::Ready(Ok(ch(2))));
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(2))));
         assert!(ControlRegister::from_bits(regs[offsets::C1CR / 4]).rxoie());
         assert!(ChannelRegister::from_bits(regs[offsets::C1MR / 4]).contains_channel(2));
         assert_eq!(regs[offsets::C1SCR / 4], channel_clear_flag(2).bits());
+    }
+
+    #[cfg(feature = "std")]
+    #[test]
+    fn wait_registers_waker_then_ready_after_notify_and_incoming_status() {
+        let mut regs = [0u32; 8];
+        regs[offsets::C1MR / 4] = u32::MAX;
+        let doorbell = IpccDoorbell::<1>::new(regs.as_mut_ptr() as usize);
+        let mut wait = std::pin::pin!(doorbell.wait(ch(2)));
+        let waker = std::task::Waker::noop();
+        let mut cx = Context::from_waker(waker);
+
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+        assert!(ControlRegister::from_bits(regs[offsets::C1CR / 4]).rxoie());
+        assert!(!ChannelRegister::from_bits(regs[offsets::C1MR / 4]).contains_channel(2));
+
+        regs[offsets::C2TOC1SR / 4] = crate::registers::channel_flag(2).bits();
+        doorbell.notifier().notify_waiters();
+
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(2))));
+        assert_eq!(regs[offsets::C1SCR / 4], channel_clear_flag(2).bits());
+        assert!(ChannelRegister::from_bits(regs[offsets::C1MR / 4]).contains_channel(2));
     }
 
     #[test]
