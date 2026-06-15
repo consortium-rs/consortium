@@ -189,10 +189,22 @@ where
 ///
 /// Separates codec failures from transport failures so callers
 /// can handle them independently.
-#[derive(Debug)]
 pub enum ChannelError<C: Codec, Tr: Transport> {
     Codec(C::Error),
     Transport(Tr::Error),
+}
+
+impl<C: Codec, Tr: Transport> core::fmt::Debug for ChannelError<C, Tr>
+where
+    C::Error: core::fmt::Debug,
+    Tr::Error: core::fmt::Debug,
+{
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Codec(err) => f.debug_tuple("Codec").field(err).finish(),
+            Self::Transport(err) => f.debug_tuple("Transport").field(err).finish(),
+        }
+    }
 }
 
 impl<C: Codec, Tr: Transport> core::fmt::Display for ChannelError<C, Tr>
@@ -205,5 +217,217 @@ where
             Self::Codec(e) => write!(f, "codec error: {e}"),
             Self::Transport(e) => write!(f, "transport error: {e}"),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    extern crate std;
+
+    use super::*;
+    use core::fmt;
+    use futures::executor::block_on;
+    use futures::future::{Ready, ready};
+    use std::boxed::Box;
+    use std::vec::Vec;
+
+    #[derive(Debug, PartialEq)]
+    struct Message {
+        sequence: u8,
+    }
+
+    #[derive(Debug, PartialEq)]
+    enum CodecError {
+        Encode,
+        Decode,
+    }
+
+    impl fmt::Display for CodecError {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            write!(f, "{self:?}")
+        }
+    }
+
+    struct MockCodec;
+
+    impl Codec for MockCodec {
+        type Error = CodecError;
+    }
+
+    impl CodecFor<Message> for MockCodec {
+        type Decoded<'buf>
+            = Message
+        where
+            Message: 'buf;
+
+        fn encode(msg: &Message, buf: &mut [u8]) -> Result<usize, Self::Error> {
+            if msg.sequence == 0xFF || buf.is_empty() {
+                return Err(CodecError::Encode);
+            }
+            buf[0] = msg.sequence;
+            Ok(1)
+        }
+
+        fn decode<'buf>(buf: &'buf [u8]) -> Result<Self::Decoded<'buf>, Self::Error>
+        where
+            Message: 'buf,
+        {
+            match buf {
+                [0xEE, ..] | [] => Err(CodecError::Decode),
+                [sequence, ..] => Ok(Message {
+                    sequence: *sequence,
+                }),
+            }
+        }
+    }
+
+    #[derive(Debug, PartialEq)]
+    enum TransportError {
+        Send,
+        Recv,
+        BufferTooSmall,
+    }
+
+    impl fmt::Display for TransportError {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            write!(f, "{self:?}")
+        }
+    }
+
+    #[derive(Default)]
+    struct MockTransport {
+        sent: Vec<u8>,
+        recv_payload: Vec<u8>,
+        fail_send: bool,
+        fail_recv: bool,
+    }
+
+    impl Transport for MockTransport {
+        type Error = TransportError;
+        type SendFut<'a>
+            = Ready<Result<(), Self::Error>>
+        where
+            Self: 'a;
+        type RecvFut<'a>
+            = Ready<Result<usize, Self::Error>>
+        where
+            Self: 'a;
+
+        fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a> {
+            if self.fail_send {
+                return ready(Err(TransportError::Send));
+            }
+            self.sent.clear();
+            self.sent.extend_from_slice(data);
+            ready(Ok(()))
+        }
+
+        fn recv<'a>(&mut self, buf: &mut [u8]) -> Self::RecvFut<'a> {
+            if self.fail_recv {
+                return ready(Err(TransportError::Recv));
+            }
+            if self.recv_payload.len() > buf.len() {
+                return ready(Err(TransportError::BufferTooSmall));
+            }
+            let n = self.recv_payload.len();
+            buf[..n].copy_from_slice(&self.recv_payload);
+            ready(Ok(n))
+        }
+
+        fn max_send_size(&self) -> usize {
+            64
+        }
+
+        fn max_recv_size(&self) -> usize {
+            64
+        }
+    }
+
+    fn scratch<const N: usize>() -> &'static mut [u8] {
+        Box::leak(Box::new([0; N])).as_mut_slice()
+    }
+
+    #[test]
+    fn tx_channel_encodes_message_and_sends_bytes() {
+        let ch = unsafe { Chan::new_unchecked(3) };
+        let transport = MockTransport::default();
+        let mut channel = Channel::<Tx, Message, _, MockCodec>::new(ch, transport, scratch::<8>());
+
+        block_on(channel.send(&Message { sequence: 42 })).expect("send succeeds");
+
+        assert_eq!(channel.chan(), ch);
+        assert_eq!(channel.transport.sent, [42]);
+    }
+
+    #[test]
+    fn tx_channel_reports_codec_error_before_transport_send() {
+        let ch = unsafe { Chan::new_unchecked(0) };
+        let transport = MockTransport::default();
+        let mut channel = Channel::<Tx, Message, _, MockCodec>::new(ch, transport, scratch::<8>());
+
+        let err = block_on(channel.send(&Message { sequence: 0xFF }))
+            .expect_err("codec encode should fail");
+
+        assert!(matches!(err, ChannelError::Codec(CodecError::Encode)));
+        assert!(channel.transport.sent.is_empty());
+    }
+
+    #[test]
+    fn tx_channel_reports_transport_send_error() {
+        let ch = unsafe { Chan::new_unchecked(0) };
+        let transport = MockTransport {
+            fail_send: true,
+            ..MockTransport::default()
+        };
+        let mut channel = Channel::<Tx, Message, _, MockCodec>::new(ch, transport, scratch::<8>());
+
+        let err = block_on(channel.send(&Message { sequence: 7 }))
+            .expect_err("transport send should fail");
+
+        assert!(matches!(err, ChannelError::Transport(TransportError::Send)));
+    }
+
+    #[test]
+    fn rx_channel_receives_bytes_and_decodes_message() {
+        let ch = unsafe { Chan::new_unchecked(1) };
+        let transport = MockTransport {
+            recv_payload: std::vec![9],
+            ..MockTransport::default()
+        };
+        let mut channel = Channel::<Rx, Message, _, MockCodec>::new(ch, transport, scratch::<8>());
+
+        let decoded = block_on(channel.recv())
+            .expect("recv succeeds")
+            .into_inner();
+
+        assert_eq!(decoded, Message { sequence: 9 });
+    }
+
+    #[test]
+    fn rx_channel_reports_transport_recv_error() {
+        let ch = unsafe { Chan::new_unchecked(1) };
+        let transport = MockTransport {
+            fail_recv: true,
+            ..MockTransport::default()
+        };
+        let mut channel = Channel::<Rx, Message, _, MockCodec>::new(ch, transport, scratch::<8>());
+
+        let err = block_on(channel.recv()).expect_err("transport recv should fail");
+
+        assert!(matches!(err, ChannelError::Transport(TransportError::Recv)));
+    }
+
+    #[test]
+    fn rx_channel_reports_codec_decode_error() {
+        let ch = unsafe { Chan::new_unchecked(1) };
+        let transport = MockTransport {
+            recv_payload: std::vec![0xEE],
+            ..MockTransport::default()
+        };
+        let mut channel = Channel::<Rx, Message, _, MockCodec>::new(ch, transport, scratch::<8>());
+
+        let err = block_on(channel.recv()).expect_err("codec decode should fail");
+
+        assert!(matches!(err, ChannelError::Codec(CodecError::Decode)));
     }
 }

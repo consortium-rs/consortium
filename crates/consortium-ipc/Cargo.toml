@@ -28,6 +28,7 @@ thiserror = { version = "2.0", default-features = false }
 consortium-ipc-macros = { path = "../consortium-ipc-macros" }
 
 [dev-dependencies]
+futures = "0.3"
 trybuild = "1"
 
 [features]
