@@ -13,4 +13,4 @@ enum Direction {
 }
 
 // Expands to:
-unsafe impl ::consortium_codec::rkyv::TrustedArchive for Direction {}
+unsafe impl ::consortium_codec::TrustedArchive for Direction {}
