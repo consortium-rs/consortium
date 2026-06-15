@@ -12,13 +12,8 @@ use std::{
 use common::doorbell::HostDoorbell;
 use consortium_ipc::{Chan, Doorbell, Region, SramRegion, Transport};
 use consortium_ipc_transport_memory::{
-    descriptor::{
-        ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, channel_table_entry_offset,
-        descriptor_init,
-    },
-    error::Error,
-    slot,
-    transport::{SharedMemoryTransport, SharedMemoryTransportable},
+    ChannelDirection, ChannelLayout, Error, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
+    SharedMemoryTransportable, channel_table_entry_offset, descriptor_init, slot,
 };
 use futures::{pin_mut, poll};
 

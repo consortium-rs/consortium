@@ -52,15 +52,15 @@ pub const VERSION: u8 = 1;
 const CHAN_TABLE_BASE: usize = 0x20;
 const CHAN_ENTRY_SIZE: usize = 12;
 
-pub const MAGIC_OFFSET: usize = 0x00;
-pub const VERSION_OFFSET: usize = 0x04;
-pub const NUM_CHANNELS_OFFSET: usize = 0x05;
-pub const TX_UPDATED_ID_OFFSET: usize = 0x08;
+const MAGIC_OFFSET: usize = 0x00;
+const VERSION_OFFSET: usize = 0x04;
+pub(crate) const NUM_CHANNELS_OFFSET: usize = 0x05;
+const TX_UPDATED_ID_OFFSET: usize = 0x08;
 pub const RX_UPDATED_ID_OFFSET: usize = 0x09;
-pub const TX_TRANSFER_SIZE_OFFSET: usize = 0x0C;
-pub const RX_TRANSFER_SIZE_OFFSET: usize = 0x10;
-pub const STATE_OFFSET: usize = 0x18;
-pub const CHANNEL_TABLE_OFFSET: usize = 0x20;
+const TX_TRANSFER_SIZE_OFFSET: usize = 0x0C;
+const RX_TRANSFER_SIZE_OFFSET: usize = 0x10;
+const STATE_OFFSET: usize = 0x18;
+const CHANNEL_TABLE_OFFSET: usize = 0x20;
 
 #[derive(Debug)]
 #[repr(C)]
@@ -169,7 +169,7 @@ use core::sync::atomic::compiler_fence;
 
 use num_enum::{FromPrimitive, IntoPrimitive};
 
-pub use crate::error::DescriptorError;
+use crate::error::DescriptorError;
 
 #[repr(u32)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FromPrimitive, IntoPrimitive)]

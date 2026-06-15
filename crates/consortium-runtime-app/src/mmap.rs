@@ -19,7 +19,7 @@
 //! The A-core waits for the descriptor state to reach `Ready(3)` before opening the UIO device.
 //! Descriptor types and constants are re-exported from `consortium-ipc-transport-memory`.
 
-use consortium_ipc_transport_memory::descriptor::DescState;
+use consortium_ipc_transport_memory::DescState;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
