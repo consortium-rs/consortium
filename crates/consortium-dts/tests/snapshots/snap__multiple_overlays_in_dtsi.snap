@@ -1,0 +1,14 @@
+---
+source: crates/consortium-dts/tests/snap.rs
+assertion_line: 118
+expression: "File::dtsi().item(NodeOverlay::label(\"uart4\").property(Property::string(\"status\",\n\"okay\"))).item(NodeOverlay::label(\"i2c5\").property(Property::string(\"secure-status\",\n\"okay\"))).to_dts()"
+---
+/dts-v1/;
+
+&uart4 {
+    status = "okay";
+};
+
+&i2c5 {
+    secure-status = "okay";
+};

@@ -1,0 +1,14 @@
+---
+source: crates/consortium-dts/tests/snap.rs
+assertion_line: 96
+expression: "File::dtsi().mem_reserve(MemReserve::new(\"0x80000000\",\n\"0x1000\")).include(Include::quoted(\"board.dtsi\")).include(Include::angled(\"dt-bindings/gpio/gpio.h\")).item(NodeOverlay::label(\"uart4\").status_okay()).to_dts()"
+---
+/dts-v1/;
+
+/memreserve/ 0x80000000 0x1000;
+#include "board.dtsi"
+#include <dt-bindings/gpio/gpio.h>
+
+&uart4 {
+    status = "okay";
+};

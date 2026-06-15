@@ -1,0 +1,6 @@
+---
+source: crates/consortium-dts/tests/snap.rs
+assertion_line: 131
+expression: err.to_string()
+---
+expected `;` after property at byte range Span { start: 23, end: 24 }, found RBrace

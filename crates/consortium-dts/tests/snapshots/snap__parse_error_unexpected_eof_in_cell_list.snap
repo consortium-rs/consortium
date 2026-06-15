@@ -1,0 +1,6 @@
+---
+source: crates/consortium-dts/tests/snap.rs
+assertion_line: 143
+expression: err.to_string()
+---
+unexpected end of input while parsing cell list

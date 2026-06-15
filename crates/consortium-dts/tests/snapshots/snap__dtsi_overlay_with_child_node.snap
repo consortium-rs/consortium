@@ -1,0 +1,15 @@
+---
+source: crates/consortium-dts/tests/snap.rs
+assertion_line: 26
+expression: "File::dtsi().item(NodeOverlay::label(\"uart4\").property(Property::string(\"status\",\n\"okay\")).child(Node::new(\"pins\").property(Property::cells(\"pinmux\",\n[Cell::macro_call(\"STM32_PINMUX\",\n[\"'A'\", \"5\",\n\"AF1\"])],)).property(Property::boolean(\"bias-disable\")),),).to_dts()"
+---
+/dts-v1/;
+
+&uart4 {
+    status = "okay";
+
+    pins {
+        pinmux = <STM32_PINMUX('A', 5, AF1)>;
+        bias-disable;
+    };
+};

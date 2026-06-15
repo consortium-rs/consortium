@@ -1,0 +1,11 @@
+---
+source: crates/consortium-dts/tests/snap.rs
+assertion_line: 46
+expression: "File::dtso().item(NodeOverlay::path(\"/soc/serial@40010000\").property(Property::string(\"status\",\n\"okay\")),).to_dts()"
+---
+/dts-v1/;
+/plugin/;
+
+&{/soc/serial@40010000} {
+    status = "okay";
+};
