@@ -261,6 +261,28 @@ mod tests {
     }
 
     #[test]
+    fn primitive_boundary_values_round_trip_through_value_slots() {
+        assert_primitive(u8::MIN, 0, 0, 4);
+        assert_primitive(u8::MAX, 0xFF, 0, 4);
+        assert_primitive(u16::MIN, 0, 0, 4);
+        assert_primitive(u16::MAX, 0xFFFF, 0, 4);
+        assert_primitive(u32::MIN, 0, 0, 4);
+        assert_primitive(u32::MAX, u32::MAX, 0, 4);
+
+        assert_primitive(i8::MIN, i8::MIN as u32, 0, 4);
+        assert_primitive(i8::MAX, i8::MAX as u32, 0, 4);
+        assert_primitive(i16::MIN, i16::MIN as u32, 0, 4);
+        assert_primitive(i16::MAX, i16::MAX as u32, 0, 4);
+        assert_primitive(i32::MIN, i32::MIN as u32, 0, 4);
+        assert_primitive(i32::MAX, i32::MAX as u32, 0, 4);
+
+        assert_primitive(u64::MIN, 0, 0, 8);
+        assert_primitive(u64::MAX, u32::MAX, u32::MAX, 8);
+        assert_primitive(i64::MIN, 0, 0x8000_0000, 8);
+        assert_primitive(i64::MAX, u32::MAX, 0x7FFF_FFFF, 8);
+    }
+
+    #[test]
     fn u32_pair_round_trips_through_both_value_words() {
         let value = (0xCAFE_BABEu32, 0xFEED_FACEu32);
 

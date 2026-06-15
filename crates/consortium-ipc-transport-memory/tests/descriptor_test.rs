@@ -1,8 +1,8 @@
 use consortium_common::descriptor::{DescriptorHeader, DescriptorHeaderError, DescriptorMagic};
 use consortium_ipc_transport_memory::{
-    ChannelDirection, ChannelLayout, DescState, Descriptor, DescriptorError, VERSION,
-    channel_table_entry_offset, descriptor_ack, descriptor_complete, descriptor_init, get_state,
-    set_state,
+    CHANNEL_NUM_MAX, ChannelDirection, ChannelLayout, DescState, Descriptor, DescriptorError,
+    VERSION, channel_table_entry_offset, descriptor_ack, descriptor_complete, descriptor_init,
+    get_state, set_state,
 };
 use std::sync::mpsc;
 
@@ -200,6 +200,105 @@ fn descriptor_ack_rejects_non_mready_state() {
     assert!(matches!(
         err,
         DescriptorError::NotReady(DescState::Proposed)
+    ));
+}
+
+#[test]
+fn descriptor_ack_rejects_channel_count_mismatch() {
+    let mut backing = vec![0; DESCRIPTOR_LEN];
+    let base = backing.as_mut_ptr();
+    let channels = [channel(0x100, 0x80, ChannelDirection::AToM)];
+
+    unsafe {
+        descriptor_init(base, channels.len() as u8, 64, &channels);
+    }
+
+    let err = unsafe { descriptor_ack(base, 2, 64) }
+        .expect_err("descriptor channel count mismatch should be rejected");
+    assert!(matches!(
+        err,
+        DescriptorError::InvalidChannelCount {
+            expected: 2,
+            actual: 1
+        }
+    ));
+}
+
+#[test]
+fn descriptor_ack_rejects_too_many_channels_before_reading_table() {
+    let mut backing = vec![0; 0x20 + (CHANNEL_NUM_MAX + 1) * 12];
+    let base = backing.as_mut_ptr();
+    let channels = [channel(0x200, 0x80, ChannelDirection::AToM)];
+
+    unsafe {
+        descriptor_init(base, channels.len() as u8, 64, &channels);
+        base.add(NUM_CHANNELS_OFFSET)
+            .write_volatile((CHANNEL_NUM_MAX + 1) as u8);
+    }
+
+    let err = unsafe { descriptor_ack(base, CHANNEL_NUM_MAX + 1, 64) }
+        .expect_err("oversized channel table should be rejected");
+    assert!(matches!(
+        err,
+        DescriptorError::InvalidChannelCount {
+            expected,
+            actual
+        } if expected == CHANNEL_NUM_MAX + 1 && actual == CHANNEL_NUM_MAX + 1
+    ));
+}
+
+#[test]
+fn descriptor_ack_rejects_invalid_channel_layouts() {
+    let cases = [
+        (
+            channel(0x20, 0x80, ChannelDirection::AToM),
+            "slot overlaps descriptor header or channel table",
+        ),
+        (
+            channel(0x100, 8, ChannelDirection::AToM),
+            "slot is smaller than the slot header",
+        ),
+    ];
+
+    for (layout, reason) in cases {
+        let mut backing = vec![0; DESCRIPTOR_LEN];
+        let base = backing.as_mut_ptr();
+        unsafe {
+            descriptor_init(base, 1, 64, &[layout]);
+        }
+
+        let err = unsafe { descriptor_ack(base, 1, 64) }
+            .expect_err("invalid channel layout should be rejected");
+        assert!(matches!(
+            err,
+            DescriptorError::InvalidChannel {
+                index: 0,
+                reason: got
+            } if got == reason
+        ));
+    }
+}
+
+#[test]
+fn descriptor_ack_rejects_unrecognized_channel_direction() {
+    let mut backing = vec![0; DESCRIPTOR_LEN];
+    let base = backing.as_mut_ptr();
+    let channels = [channel(0x100, 0x80, ChannelDirection::AToM)];
+
+    unsafe {
+        descriptor_init(base, channels.len() as u8, 64, &channels);
+        base.add(channel_table_entry_offset(0) + 8)
+            .write_volatile(0x42);
+    }
+
+    let err = unsafe { descriptor_ack(base, 1, 64) }
+        .expect_err("unrecognized channel direction should be rejected");
+    assert!(matches!(
+        err,
+        DescriptorError::InvalidChannel {
+            index: 0,
+            reason: "direction is unrecognized"
+        }
     ));
 }
 

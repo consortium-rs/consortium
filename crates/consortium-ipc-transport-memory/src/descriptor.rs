@@ -170,6 +170,7 @@ use core::sync::atomic::compiler_fence;
 use num_enum::{FromPrimitive, IntoPrimitive};
 
 use crate::error::DescriptorError;
+use crate::slot_internal::SLOT_HEADER;
 
 #[repr(u32)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FromPrimitive, IntoPrimitive)]
@@ -321,12 +322,12 @@ pub unsafe fn descriptor_ack(
         .map_err(DescriptorError::Header)?;
 
     let num_ch = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
-    debug_assert!(
-        num_ch as usize == num_channels,
-        "num_channels mismatch: expected {}, got {}",
-        num_channels,
-        num_ch
-    );
+    if num_ch as usize != num_channels || num_ch as usize > CHANNEL_NUM_MAX {
+        return Err(DescriptorError::InvalidChannelCount {
+            expected: num_channels,
+            actual: num_ch as usize,
+        });
+    }
     let rx_transfer_size = unsafe { rv_u32(base, RX_TRANSFER_SIZE_OFFSET) };
     // SAFETY: when the base is valid and coherent, the state read will be consistent with the rx_transfer_size read. The A-core must have set the state to Ready before writing rx_transfer_size, so if we see Ready then rx_transfer_size is valid. We write back the (potentially adjusted) transfer size to ensure that both sides agree on the final value.
     unsafe {
@@ -355,6 +356,7 @@ pub unsafe fn descriptor_ack(
                 _reserved: [0; 3],
             };
         }
+        validate_channel_layout(i, num_ch as usize, channels[i])?;
     }
 
     compiler_fence(Ordering::Release);
@@ -378,6 +380,36 @@ pub unsafe fn descriptor_ack(
         rx_mtu: rx_transfer_size,
         channels,
     })
+}
+
+fn validate_channel_layout(
+    index: usize,
+    num_channels: usize,
+    channel: ChannelLayout,
+) -> Result<(), DescriptorError> {
+    let table_end = CHAN_TABLE_BASE + num_channels * CHAN_ENTRY_SIZE;
+    if channel.offset as usize <= table_end {
+        return Err(DescriptorError::InvalidChannel {
+            index,
+            reason: "slot overlaps descriptor header or channel table",
+        });
+    }
+
+    if channel.size < SLOT_HEADER as u32 {
+        return Err(DescriptorError::InvalidChannel {
+            index,
+            reason: "slot is smaller than the slot header",
+        });
+    }
+
+    if matches!(channel.direction, ChannelDirection::Unrecognized) {
+        return Err(DescriptorError::InvalidChannel {
+            index,
+            reason: "direction is unrecognized",
+        });
+    }
+
+    Ok(())
 }
 
 /// Read the A-core updated max transfer size from the descriptor.

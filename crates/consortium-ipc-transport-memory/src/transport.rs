@@ -106,6 +106,28 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Transport
 
         // Step 2. Visit the slot.
         let channel = unsafe { read_channel(self.base, channel_id as usize) };
+        let capacity = match (channel.size as usize).checked_sub(slot::SLOT_HEADER) {
+            Some(capacity) => capacity,
+            None => {
+                return SendFut {
+                    result: Err(Error::PayloadTooLarge {
+                        payload_len: data.len(),
+                        capacity: 0,
+                    }),
+                    _ph: PhantomData,
+                };
+            }
+        };
+        if data.len() > capacity {
+            return SendFut {
+                result: Err(Error::PayloadTooLarge {
+                    payload_len: data.len(),
+                    capacity,
+                }),
+                _ph: PhantomData,
+            };
+        }
+
         let slot_base = unsafe { channel.slot_addr(self.base) };
         unsafe { slot::write(slot_base, data) };
 

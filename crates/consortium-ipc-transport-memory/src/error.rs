@@ -26,6 +26,10 @@ pub enum DescriptorError {
     Header(#[from] DescriptorHeaderError),
     #[error("descriptor not ready: state is {0:?}")]
     NotReady(DescState),
+    #[error("invalid channel count: expected {expected}, got {actual}")]
+    InvalidChannelCount { expected: usize, actual: usize },
+    #[error("invalid channel {index}: {reason}")]
+    InvalidChannel { index: usize, reason: &'static str },
 }
 
 #[derive(Debug, thiserror::Error, Default)]
@@ -49,6 +53,9 @@ pub enum Error<D: Doorbell> {
 
     #[error("no available channel")]
     NoChannel,
+
+    #[error("payload too large: {payload_len} bytes exceeds channel capacity {capacity}")]
+    PayloadTooLarge { payload_len: usize, capacity: usize },
 
     #[error("unknown error")]
     #[default]

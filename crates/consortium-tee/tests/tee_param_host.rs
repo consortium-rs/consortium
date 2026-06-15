@@ -18,6 +18,14 @@ struct SmallBufferPayload {
 }
 
 #[derive(Debug, Clone, PartialEq, TeeParam)]
+#[tee(max_size = 3)]
+struct ExactMaxPayload {
+    a: u8,
+    b: u8,
+    c: u8,
+}
+
+#[derive(Debug, Clone, PartialEq, TeeParam)]
 #[tee(max_size = 2)]
 struct TooSmallMaxSize {
     a: u8,
@@ -85,6 +93,35 @@ impl CodecFor<SmallBufferPayload> for TestCodec {
             return Err(CodecError);
         }
         Ok(SmallBufferPayload {
+            a: buf[0],
+            b: buf[1],
+            c: buf[2],
+        })
+    }
+}
+
+impl CodecFor<ExactMaxPayload> for TestCodec {
+    type Decoded<'buf>
+        = ExactMaxPayload
+    where
+        ExactMaxPayload: 'buf;
+
+    fn encode(msg: &ExactMaxPayload, buf: &mut [u8]) -> Result<usize, Self::Error> {
+        if buf.len() < 3 {
+            return Err(CodecError);
+        }
+        buf[..3].copy_from_slice(&[msg.a, msg.b, msg.c]);
+        Ok(3)
+    }
+
+    fn decode<'buf>(buf: &'buf [u8]) -> Result<Self::Decoded<'buf>, Self::Error>
+    where
+        ExactMaxPayload: 'buf,
+    {
+        if buf.len() != 3 {
+            return Err(CodecError);
+        }
+        Ok(ExactMaxPayload {
             a: buf[0],
             b: buf[1],
             c: buf[2],
@@ -189,6 +226,29 @@ fn fake_frame_round_trips_serialized_inout_command_shape() {
 }
 
 #[test]
+fn fake_frame_round_trips_primitive_input_and_serialized_return_shape() {
+    let mut frame = FakeFrame::default();
+    frame.set(
+        0,
+        <u32 as TeeParam>::into_tee_param(&7).expect("pack primitive input"),
+    );
+
+    let input = <u32 as TeeParam>::from_tee_param(frame.borrowed(0)).expect("ta input");
+    let output = Config {
+        id: input as u8,
+        limit: 2048,
+    };
+    frame.set(
+        1,
+        <Config as TeeParam<TestCodec>>::into_tee_param(&output).expect("pack serialized output"),
+    );
+
+    let ca_output =
+        <Config as TeeParam<TestCodec>>::from_tee_param(frame.borrowed(1)).expect("ca output");
+    assert_eq!(ca_output, Config { id: 7, limit: 2048 });
+}
+
+#[test]
 fn derived_tee_param_maps_codec_encode_failure() {
     let value = SmallBufferPayload {
         a: 0xFF,
@@ -221,4 +281,37 @@ fn derived_tee_param_max_size_bounds_encode_buffer() {
         <TooSmallMaxSize as TeeParam<TestCodec>>::into_tee_param(&value),
         Err(TeeParamError::EncodeFailed)
     ));
+}
+
+#[test]
+fn derived_tee_param_allows_payload_exactly_at_max_size() {
+    let value = ExactMaxPayload { a: 1, b: 2, c: 3 };
+
+    assert_eq!(<ExactMaxPayload as TeeParam<TestCodec>>::MAX_SIZE, 3);
+    let repr =
+        <ExactMaxPayload as TeeParam<TestCodec>>::into_tee_param(&value).expect("encode payload");
+    let TeeParamSlot::Serialized(bytes) = repr else {
+        panic!("derived TeeParam should use serialized slot");
+    };
+    assert_eq!(bytes, vec![1, 2, 3]);
+
+    let decoded =
+        <ExactMaxPayload as TeeParam<TestCodec>>::from_tee_param(TeeParamSlot::Serialized(&bytes))
+            .expect("decode payload");
+    assert_eq!(decoded, value);
+}
+
+#[test]
+fn vec_u8_memrefs_round_trip_empty_and_large_buffers() {
+    for value in [Vec::new(), vec![0xA5; <Vec<u8> as TeeParam>::MAX_SIZE]] {
+        let repr = <Vec<u8> as TeeParam>::into_tee_param(&value).expect("encode vec");
+        let TeeParamSlot::Serialized(bytes) = repr else {
+            panic!("Vec<u8> should use serialized slot");
+        };
+        assert_eq!(bytes, value);
+
+        let decoded = <Vec<u8> as TeeParam>::from_tee_param(TeeParamSlot::Serialized(&bytes))
+            .expect("decode vec");
+        assert_eq!(decoded, value);
+    }
 }
