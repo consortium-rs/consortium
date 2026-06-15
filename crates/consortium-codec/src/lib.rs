@@ -16,13 +16,22 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 #[cfg(feature = "postcard")]
-pub mod postcard;
+pub(crate) mod postcard;
 
 #[cfg(feature = "prost")]
-pub mod prost;
+pub(crate) mod prost;
 
 #[cfg(feature = "rkyv")]
-pub mod rkyv;
+pub(crate) mod rkyv;
+
+#[cfg(feature = "postcard")]
+pub use postcard::PostcardCodec;
+
+#[cfg(feature = "prost")]
+pub use prost::ProstCodec;
+
+#[cfg(feature = "rkyv")]
+pub use rkyv::RkyvCodec;
 
 pub trait Codec: core::marker::Sized {
     type Error: core::fmt::Debug;
@@ -39,3 +48,9 @@ pub trait CodecFor<T>: Codec {
     where
         T: 'buf;
 }
+
+#[cfg(feature = "rkyv")]
+pub use consortium_codec_macros::TrustedArchive;
+
+#[cfg(feature = "rkyv")]
+pub use crate::rkyv::TrustedArchive;

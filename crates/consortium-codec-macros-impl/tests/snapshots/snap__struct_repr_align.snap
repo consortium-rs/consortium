@@ -1,7 +1,15 @@
 ---
 source: crates/consortium-codec-macros-impl/tests/snap.rs
-expression: pretty_snapshot(expanded)
+expression: "snapshot(quote! { #[repr(align(16))] struct Aligned { data: [u8; 16], } })"
 ---
+// Input:
+#[derive(consortium_codec::TrustedArchive)]
+#[repr(align(16))]
+struct Aligned {
+    data: [u8; 16],
+}
+
+// Expands to:
 unsafe impl ::consortium_codec::rkyv::TrustedArchive for Aligned
 where
     [u8; 16]: ::consortium_codec::rkyv::TrustedArchive,

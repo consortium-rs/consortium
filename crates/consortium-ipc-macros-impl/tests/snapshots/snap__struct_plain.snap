@@ -1,0 +1,14 @@
+---
+source: crates/consortium-ipc-macros-impl/tests/snap.rs
+expression: "snapshot(quote!\n{ struct SensorReading { sensor_id: u32, value: f32, flags: u8, } })"
+---
+// Input:
+#[derive(consortium_ipc::IpcSafe)]
+struct SensorReading {
+    sensor_id: u32,
+    value: f32,
+    flags: u8,
+}
+
+// Expands to:
+unsafe impl ::consortium_ipc::IpcSafe for SensorReading {}

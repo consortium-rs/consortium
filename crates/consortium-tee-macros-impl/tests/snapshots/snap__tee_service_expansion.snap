@@ -1,7 +1,13 @@
 ---
 source: crates/consortium-tee-macros-impl/tests/snap.rs
-expression: pretty_snapshot(expanded)
+expression: "snapshot_service(quote!\n{ context ServiceContext commands { ping, echo_bytes } })"
 ---
+// Input:
+consortium_tee::tee_service! {
+    context ServiceContext commands { ping, echo_bytes }
+}
+
+// Expands to:
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 #[repr(u64)]
 pub enum Command {

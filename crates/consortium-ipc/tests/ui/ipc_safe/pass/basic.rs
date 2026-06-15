@@ -1,4 +1,4 @@
-use consortium_ipc_macros::IpcSafe;
+use consortium_ipc::IpcSafe;
 
 #[derive(IpcSafe)]
 struct Header {

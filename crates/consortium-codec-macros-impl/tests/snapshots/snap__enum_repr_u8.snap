@@ -1,7 +1,17 @@
 ---
 source: crates/consortium-codec-macros-impl/tests/snap.rs
-expression: pretty_snapshot(expanded)
+expression: "snapshot(quote! { #[repr(u8)] enum Status { Idle, Running, Error(u32), } })"
 ---
+// Input:
+#[derive(consortium_codec::TrustedArchive)]
+#[repr(u8)]
+enum Status {
+    Idle,
+    Running,
+    Error(u32),
+}
+
+// Expands to:
 unsafe impl ::consortium_codec::rkyv::TrustedArchive for Status
 where
     u32: ::consortium_codec::rkyv::TrustedArchive,

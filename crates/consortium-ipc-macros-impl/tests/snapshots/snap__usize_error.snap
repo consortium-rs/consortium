@@ -1,0 +1,14 @@
+---
+source: crates/consortium-ipc-macros-impl/tests/snap.rs
+expression: "snapshot(quote! { struct HasUsize { len: usize, } })"
+---
+// Input:
+#[derive(consortium_ipc::IpcSafe)]
+struct HasUsize {
+    len: usize,
+}
+
+// Expands to:
+::core::compile_error! {
+    "`usize` is platform-dependent (pointer-width) and not allowed in IpcSafe types: use u32/u64 or i32/i64 with an explicit width"
+}

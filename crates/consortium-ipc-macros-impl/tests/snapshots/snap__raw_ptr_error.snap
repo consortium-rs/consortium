@@ -1,0 +1,14 @@
+---
+source: crates/consortium-ipc-macros-impl/tests/snap.rs
+expression: "snapshot(quote! { struct HasPtr { ptr: *const u8, } })"
+---
+// Input:
+#[derive(consortium_ipc::IpcSafe)]
+struct HasPtr {
+    ptr: *const u8,
+}
+
+// Expands to:
+::core::compile_error! {
+    "raw pointers are not allowed in IpcSafe types: they are not valid across separate processor address spaces; use an index or ID instead"
+}

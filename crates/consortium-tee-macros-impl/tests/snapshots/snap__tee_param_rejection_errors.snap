@@ -1,7 +1,20 @@
 ---
 source: crates/consortium-tee-macros-impl/tests/snap.rs
-expression: pretty_snapshot(expanded)
+expression: "snapshot_derive(quote!\n{\n    struct RejectedPayload<'a>\n    {\n        raw: *const u8, borrowed: &'a u32, callback: fn(u32) -> u32,\n        platform_width: Option<usize>, float_value: f32, too_wide: u128,\n        erased: dyn Send,\n    }\n})"
 ---
+// Input:
+#[derive(consortium_tee::TeeParam)]
+struct RejectedPayload<'a> {
+    raw: *const u8,
+    borrowed: &'a u32,
+    callback: fn(u32) -> u32,
+    platform_width: Option<usize>,
+    float_value: f32,
+    too_wide: u128,
+    erased: dyn Send,
+}
+
+// Expands to:
 ::core::compile_error! {
     "raw pointers are not allowed in TeeParam types: they cannot be serialized across the TEE secure-world boundary"
 }

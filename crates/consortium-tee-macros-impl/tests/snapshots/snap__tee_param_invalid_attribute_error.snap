@@ -1,7 +1,15 @@
 ---
 source: crates/consortium-tee-macros-impl/tests/snap.rs
-expression: pretty_snapshot(expanded)
+expression: "snapshot_derive(quote!\n{ #[tee(buffer = 4096)] struct BadAttribute { body: Vec<u8>, } })"
 ---
+// Input:
+#[derive(consortium_tee::TeeParam)]
+#[tee(buffer = 4096)]
+struct BadAttribute {
+    body: Vec<u8>,
+}
+
+// Expands to:
 ::core::compile_error! {
     "expected `max_size`"
 }

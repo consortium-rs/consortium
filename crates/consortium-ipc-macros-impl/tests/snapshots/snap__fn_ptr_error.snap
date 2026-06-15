@@ -1,0 +1,14 @@
+---
+source: crates/consortium-ipc-macros-impl/tests/snap.rs
+expression: "snapshot(quote! { struct HasFnPtr { cb: fn(u32) -> u32, } })"
+---
+// Input:
+#[derive(consortium_ipc::IpcSafe)]
+struct HasFnPtr {
+    cb: fn(u32) -> u32,
+}
+
+// Expands to:
+::core::compile_error! {
+    "function pointers are not allowed in IpcSafe types: code addresses are not portable across processor cores"
+}

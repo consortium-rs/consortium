@@ -1,5 +1,16 @@
 ---
 source: crates/consortium-codec-macros-impl/tests/snap.rs
-expression: pretty_snapshot(expanded)
+expression: "snapshot(quote! { #[repr(C)] enum Direction { North, South, East, West, } })"
 ---
+// Input:
+#[derive(consortium_codec::TrustedArchive)]
+#[repr(C)]
+enum Direction {
+    North,
+    South,
+    East,
+    West,
+}
+
+// Expands to:
 unsafe impl ::consortium_codec::rkyv::TrustedArchive for Direction {}

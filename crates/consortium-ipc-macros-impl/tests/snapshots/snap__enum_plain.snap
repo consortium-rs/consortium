@@ -1,0 +1,14 @@
+---
+source: crates/consortium-ipc-macros-impl/tests/snap.rs
+expression: "snapshot(quote! { enum Status { Idle, Running, Error(u32), } })"
+---
+// Input:
+#[derive(consortium_ipc::IpcSafe)]
+enum Status {
+    Idle,
+    Running,
+    Error(u32),
+}
+
+// Expands to:
+unsafe impl ::consortium_ipc::IpcSafe for Status {}

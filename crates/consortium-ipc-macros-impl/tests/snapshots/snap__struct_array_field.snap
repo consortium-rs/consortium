@@ -1,0 +1,12 @@
+---
+source: crates/consortium-ipc-macros-impl/tests/snap.rs
+expression: "snapshot(quote! { struct Buffer { data: [u32; 16], } })"
+---
+// Input:
+#[derive(consortium_ipc::IpcSafe)]
+struct Buffer {
+    data: [u32; 16],
+}
+
+// Expands to:
+unsafe impl ::consortium_ipc::IpcSafe for Buffer {}

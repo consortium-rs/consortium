@@ -1,7 +1,15 @@
 ---
 source: crates/consortium-tee-macros-impl/tests/snap.rs
-expression: pretty_snapshot(expanded)
+expression: "snapshot_derive(quote!\n{\n    enum WarningPayload\n    { Small { a: u8, b: u16, c: i8, d: i16, e: char, }, Nested(Option<u8>), }\n})"
 ---
+// Input:
+#[derive(consortium_tee::TeeParam)]
+enum WarningPayload {
+    Small { a: u8, b: u16, c: i8, d: i16, e: char },
+    Nested(Option<u8>),
+}
+
+// Expands to:
 /// This function should not be called and only exists to emit a compiler warning.
 ///
 /// It is a No-OP in any case.

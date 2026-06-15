@@ -1,7 +1,15 @@
 ---
 source: crates/consortium-tee-macros-impl/tests/snap.rs
-expression: pretty_snapshot(expanded)
+expression: "snapshot_derive(quote! { #[tee] struct DefaultPayload { body: u32, } })"
 ---
+// Input:
+#[derive(consortium_tee::TeeParam)]
+#[tee]
+struct DefaultPayload {
+    body: u32,
+}
+
+// Expands to:
 impl<__TeeCodec> ::consortium_tee::TeeParam<__TeeCodec> for DefaultPayload
 where
     __TeeCodec: for<'__buf> ::consortium_codec::CodecFor<

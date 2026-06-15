@@ -1,7 +1,16 @@
 ---
 source: crates/consortium-codec-macros-impl/tests/snap.rs
-expression: pretty_snapshot(expanded)
+expression: "snapshot(quote! { #[repr(C)] struct Point { x: u32, y: u32, } })"
 ---
+// Input:
+#[derive(consortium_codec::TrustedArchive)]
+#[repr(C)]
+struct Point {
+    x: u32,
+    y: u32,
+}
+
+// Expands to:
 unsafe impl ::consortium_codec::rkyv::TrustedArchive for Point
 where
     u32: ::consortium_codec::rkyv::TrustedArchive,
