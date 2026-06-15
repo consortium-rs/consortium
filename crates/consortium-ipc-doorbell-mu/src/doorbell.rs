@@ -75,7 +75,7 @@ pub struct MuDoorbell {
     /// Base addresses for each MU instance, ordered by instance index
     /// (index 0 = MU1, index 1 = MU2, …).  Size is determined by the
     /// active chip feature (`imx93` = 2, `imx95` = 8).
-    base_addrs: [u32; MU_INSTANCE_COUNT],
+    base_addrs: [usize; MU_INSTANCE_COUNT],
     #[cfg(feature = "std")]
     notify: std::sync::Arc<tokio::sync::Notify>,
 }
@@ -85,26 +85,26 @@ pub struct MuDoorbell {
 impl MuDoorbell {
     /// Look up the base address for the MU instance that owns channel `ch`.
     #[inline]
-    fn base_for(base_addrs: &[u32], ch: Chan) -> u32 {
+    fn base_for(base_addrs: &[usize], ch: Chan) -> usize {
         base_addrs[ch.mu_id() as usize]
     }
 
     /// Address of GCR (General-purpose Control Register).
     #[inline]
-    fn gcr_addr(base: u32) -> *mut u32 {
-        (base + side::GCR) as *mut u32
+    fn gcr_addr(base: usize) -> *mut u32 {
+        (base + side::GCR as usize) as *mut u32
     }
 
     /// Address of GSR (General-purpose Status Register).
     #[inline]
-    fn gsr_addr(base: u32) -> *mut u32 {
-        (base + side::GSR) as *mut u32
+    fn gsr_addr(base: usize) -> *mut u32 {
+        (base + side::GSR as usize) as *mut u32
     }
 
     /// Address of GIER (General-purpose Interrupt Enable Register).
     #[inline]
-    fn gier_addr(base: u32) -> *mut u32 {
-        (base + side::GIER) as *mut u32
+    fn gier_addr(base: usize) -> *mut u32 {
+        (base + side::GIER as usize) as *mut u32
     }
 
     /// Set `GCR[GIRn]` (bit `gi_idx`) to signal the remote core.
@@ -117,7 +117,7 @@ impl MuDoorbell {
     /// Caller must ensure `base` is a valid mapped MU peripheral address and
     /// `gi_idx` < 4.
     #[inline]
-    pub unsafe fn set_gcr_gir(base: u32, gi_idx: u8) {
+    pub unsafe fn set_gcr_gir(base: usize, gi_idx: u8) {
         let gcr = Self::gcr_addr(base);
         // SAFETY: caller guarantees.
         let reg =
@@ -131,7 +131,7 @@ impl MuDoorbell {
     ///
     /// Non-destructive: reading GSR does not clear the pending bit.
     #[inline]
-    pub fn gsr_pending(base: u32, gi_idx: u8) -> bool {
+    pub fn gsr_pending(base: usize, gi_idx: u8) -> bool {
         // SAFETY: base is a valid mapped MU peripheral address; volatile read.
         let reg =
             GeneralInterruptRegister::from_bits(unsafe { Self::gsr_addr(base).read_volatile() });
@@ -149,7 +149,7 @@ impl MuDoorbell {
     ///
     /// [`gsr_pending`]: Self::gsr_pending
     #[inline]
-    pub unsafe fn clear_gsr_gip(base: u32, gi_idx: u8) {
+    pub unsafe fn clear_gsr_gip(base: usize, gi_idx: u8) {
         // W1C: write only the target bit; do NOT read-modify-write.
         let reg = GeneralInterruptRegister::from_bits(side::fields::gi_bit(gi_idx));
         // SAFETY: caller guarantees.
@@ -161,7 +161,7 @@ impl MuDoorbell {
     /// # Safety
     /// Caller must ensure `base` is valid and not racing other GIER writes.
     #[inline]
-    pub unsafe fn enable_gi_interrupt(base: u32, gi_idx: u8) {
+    pub unsafe fn enable_gi_interrupt(base: usize, gi_idx: u8) {
         let gier = Self::gier_addr(base);
         // SAFETY: caller guarantees.
         let reg = GeneralInterruptRegister::from_bits(unsafe { gier.read_volatile() })
@@ -175,7 +175,7 @@ impl MuDoorbell {
     /// # Safety
     /// Caller must ensure `base` is valid and not racing other GIER writes.
     #[inline]
-    pub unsafe fn disable_gi_interrupt(base: u32, gi_idx: u8) {
+    pub unsafe fn disable_gi_interrupt(base: usize, gi_idx: u8) {
         let gier = Self::gier_addr(base);
         // SAFETY: caller guarantees.
         let reg = GeneralInterruptRegister::from_bits(unsafe { gier.read_volatile() })
@@ -201,8 +201,8 @@ impl Default for MuDoorbell {
 impl MuDoorbell {
     /// Create a doorbell from an array of MUB (Side B) base addresses, one per
     /// MU instance.  The array length is determined by the chip feature:
-    /// `[u32; 2]` for `imx93`, `[u32; 8]` for `imx95`.
-    pub const fn new(bases: [u32; MU_INSTANCE_COUNT]) -> Self {
+    /// `[usize; 2]` for `imx93`, `[usize; 8]` for `imx95`.
+    pub const fn new(bases: [usize; MU_INSTANCE_COUNT]) -> Self {
         Self { base_addrs: bases }
     }
 }
@@ -417,13 +417,13 @@ impl MuDoorbell {
     /// addresses, one per MU instance, as returned by `mmap`.
     ///
     /// The array length is determined by the chip feature:
-    /// `[u32; 2]` for `imx93`, `[u32; 8]` for `imx95`.
+    /// `[usize; 2]` for `imx93`, `[usize; 8]` for `imx95`.
     ///
     /// # Safety (caller obligation)
     /// Each element must be a virtual address obtained by mapping the
     /// corresponding MU peripheral (e.g. via `/dev/mem` or a UIO resource).
     /// Passing raw physical addresses is **undefined behaviour** on Linux.
-    pub fn new(bases: [u32; MU_INSTANCE_COUNT]) -> Self {
+    pub fn new(bases: [usize; MU_INSTANCE_COUNT]) -> Self {
         Self {
             base_addrs: bases,
             notify: std::sync::Arc::new(tokio::sync::Notify::new()),
@@ -564,5 +564,44 @@ impl<'a> core::future::Future for MuWaitFut<'a> {
         }
 
         Poll::Pending
+    }
+}
+
+#[cfg(all(test, feature = "std"))]
+mod tests {
+    use super::*;
+    use crate::registers::side;
+
+    fn ch(id: u8) -> Chan {
+        // SAFETY: tests choose ids deliberately.
+        unsafe { Chan::new_unchecked(id) }
+    }
+
+    fn bases_with_first(base: usize) -> [usize; MU_INSTANCE_COUNT] {
+        let mut bases = [0; MU_INSTANCE_COUNT];
+        bases[0] = base;
+        bases
+    }
+
+    #[test]
+    fn wait_registers_waker_then_ready_after_notify_and_pending_status() {
+        let mut regs = [0u32; 0x300 / 4];
+        let doorbell = MuDoorbell::new(bases_with_first(regs.as_mut_ptr() as usize));
+        let mut wait = std::pin::pin!(doorbell.wait(ch(2)));
+        let waker = std::task::Waker::noop();
+        let mut cx = Context::from_waker(waker);
+
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+        assert!(GeneralInterruptRegister::from_bits(regs[side::GIER as usize / 4]).contains_gi(2));
+
+        regs[side::GSR as usize / 4] = GeneralInterruptRegister::from_bits(0).with_gi_set(2).bits();
+        doorbell.notifier().notify_waiters();
+
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(2))));
+        assert_eq!(
+            regs[side::GSR as usize / 4],
+            GeneralInterruptRegister::from_bits(0).with_gi_set(2).bits()
+        );
+        assert!(!GeneralInterruptRegister::from_bits(regs[side::GIER as usize / 4]).contains_gi(2));
     }
 }

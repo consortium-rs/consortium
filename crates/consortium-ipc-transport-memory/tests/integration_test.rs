@@ -234,6 +234,41 @@ fn recv_is_pending_when_no_rx_slot_contains_data() {
     });
 }
 
+#[test]
+fn recv_future_becomes_ready_after_pending_poll_then_doorbell_ring() {
+    let mut backing = vec![0; REGION_LEN].into_boxed_slice();
+    let base = backing.as_mut_ptr();
+    init_two_channel_descriptor(base);
+
+    let rt = tokio::runtime::Builder::new_current_thread()
+        .build()
+        .expect("create host runtime");
+
+    rt.block_on(async move {
+        let region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let (app_doorbell, remote_doorbell) = HostDoorbell::pair();
+        let ch = unsafe { Chan::new_unchecked(0) };
+        let mut transport = unsafe { SharedMemoryTransport::new(ch, app_doorbell, region, base) };
+        let mut rx = [0; MTU];
+
+        let recv = transport.recv(&mut rx);
+        pin_mut!(recv);
+        assert!(matches!(poll!(recv.as_mut()), Poll::Pending));
+
+        unsafe {
+            let rx_layout = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
+            slot::write(rx_layout.slot_addr(base), b"woken");
+            base.add(RX_UPDATED_ID_OFFSET).write_volatile(1);
+        }
+        remote_doorbell.ring(ch).expect("wake app doorbell");
+
+        match poll!(recv.as_mut()) {
+            Poll::Ready(Ok(n)) => assert_eq!(&rx[..n], b"woken"),
+            other => panic!("recv future should be ready after doorbell ring: {other:?}"),
+        }
+    });
+}
+
 #[derive(Clone)]
 struct CountingRegion {
     ptr: *mut u8,
