@@ -1,0 +1,5 @@
+error: trait objects and `impl Trait` are not allowed in TeeParam types: use a concrete, sized type
+ --> tests/ui/tee_param/fail/trait_object.rs:5:13
+  |
+5 |     erased: dyn Send,
+  |             ^^^^^^^^

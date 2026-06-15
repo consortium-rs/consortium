@@ -1,0 +1,5 @@
+error: function pointers are not allowed in TeeParam types: they are not serializable
+ --> tests/ui/tee_param/fail/fn_ptr.rs:5:9
+  |
+5 |     cb: fn(u32) -> u32,
+  |         ^^^^^^^^^^^^^^

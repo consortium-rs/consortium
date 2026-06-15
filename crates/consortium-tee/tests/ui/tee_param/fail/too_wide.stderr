@@ -1,0 +1,5 @@
+error: `u128` does not fit in two `u32` TEE Value fields; wrap it in a newtype and implement `TeeParam` using a Memref (serialized) slot
+ --> tests/ui/tee_param/fail/too_wide.rs:5:12
+  |
+5 |     value: u128,
+  |            ^^^^

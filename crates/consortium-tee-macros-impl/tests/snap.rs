@@ -62,6 +62,13 @@ fn tee_service_expansion_no_ctx() {
 }
 
 #[test]
+fn tee_service_fail_unknown_conflict() {
+    insta::assert_snapshot!(snapshot_service(quote! {
+        commands { hello, world, unknown, conflict }
+    }));
+}
+
+#[test]
 fn tee_command_expansion() {
     insta::assert_snapshot!(snapshot_command(
         quote! { codec = TestCodec },

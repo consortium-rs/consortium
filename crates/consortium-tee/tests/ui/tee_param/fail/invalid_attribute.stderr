@@ -1,0 +1,5 @@
+error: expected `max_size`
+ --> tests/ui/tee_param/fail/invalid_attribute.rs:4:7
+  |
+4 | #[tee(buffer = 4096)]
+  |       ^^^^^^
