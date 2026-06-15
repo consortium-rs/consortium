@@ -65,11 +65,6 @@ pub const MU_BASES: [usize; crate::chan::MU_INSTANCE_COUNT] = [
     0x4244_0000, // MU2
 ];
 
-// i.MX 95 has 8 MU instances.  Physical base addresses must be taken from the
-// i.MX 95 Reference Manual and supplied by the caller via `MuDoorbell::new()`.
-// No compile-time constants are provided here to avoid embedding unverified
-// addresses in the crate.  Consult the TRM for your board revision.
-
 // ============================================================================
 // MU Side A (MUA) Registers (Relative Offsets)
 // ============================================================================

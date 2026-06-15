@@ -13,6 +13,13 @@
 | Channel count      | 16 flat semaphore IDs; 0-1 reserved                | 16 channels per IPCC instance; 0-1 reserved                                              | `MU_INSTANCE_COUNT * 4`; 0-1 reserved                |
 | Register style     | `bitfield` register wrappers + volatile access     | `bitfield` register wrappers + volatile access                                           | `bitfield` register wrappers + volatile access       |
 
+MU notes:
+
+- Chip features select the MU instance count: `imx8mp` = 1, `imx93` = 2, `imx95` = 8.
+- Side features select register view: `mua` for A-core and `mub` for M-core.
+- On current i.MX95 CA55 <-> CM7 defaults, use MU7 flat channels 24 and 25
+  (`IMX95_CA55_CM7_TX_CHAN` / `IMX95_CA55_CM7_RX_CHAN`).
+
 IPCC address map:
 
 | Family       | IPCC1                       | IPCC2                                |

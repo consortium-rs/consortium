@@ -32,6 +32,9 @@ cargo fmt
 # List project recipes
 just
 
+# Run the host-side IPC test bundle
+just test ipc host
+
 # Run the host-side lint bundle
 just lint
 
@@ -59,17 +62,18 @@ hardware or SDK workflows rather than generic macOS host checks.
 
 ## Workspace Shape
 
-| Area                    | Crates                                                                                                                       |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Core IPC                | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                      |
-| Shared transport        | `consortium-ipc-transport-memory`                                                                                            |
-| Doorbells               | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`, `consortium-ipc-doorbell-ipcc` |
-| Common types and codecs | `consortium-common`                                                                                                          |
-| Configuration           | `consortium-cfg`, `consortium-cfg-meta`                                                                                      |
-| Runtimes and build      | `consortium-runtime-mcu`, `consortium-runtime-app`, `consortium-builder`, `consortium-cli`                                   |
-| Debug                   | `consortium-dbg-defmt`                                                                                                       |
-| TEE                     | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`, `consortium-tee-test`                               |
-| Utilities and HMI       | `consortium-ffi`, `consortium-hmi`, `consortium-ort`, `libcogcore`, `libcogcore-sys`                                         |
+| Area               | Crates                                                                                                                       |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| Core IPC           | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                      |
+| Shared transport   | `consortium-ipc-transport-memory`                                                                                            |
+| Doorbells          | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`, `consortium-ipc-doorbell-ipcc` |
+| Codecs             | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                |
+| Common types       | `consortium-common`                                                                                                          |
+| Configuration      | `consortium-cfg`, `consortium-cfg-meta`, `consortium-dts`                                                                    |
+| Runtimes and build | `consortium-runtime-mcu`, `consortium-runtime-app`, `consortium-builder`, `consortium-cli`                                   |
+| Debug              | `consortium-dbg-defmt`                                                                                                       |
+| TEE                | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`, `consortium-tee-test`                               |
+| Utilities and HMI  | `consortium-ffi`, `consortium-hmi`, `consortium-ort`, `libcogcore`, `libcogcore-sys`                                         |
 
 `CLAUDE.md` currently delegates to this file, so this guide is the canonical assistant
 orientation document.
@@ -94,8 +98,13 @@ pointers, references, function pointers, and `usize`/`isize`. Use
 implementation lives in `consortium-ipc-macros-impl` so it can be tested without going
 through the proc-macro wrapper.
 
-`consortium-common` owns common project types and the codec family. Postcard, Prost,
-and rkyv support are feature-gated modules under `consortium_common::codec`.
+`consortium-codec` owns the codec traits and serialization families. Postcard, Prost,
+and rkyv support are feature-gated modules; rkyv also exposes
+`#[derive(TrustedArchive)]` through `consortium-codec-macros`. The macro implementation
+lives in `consortium-codec-macros-impl` and is tested with trybuild and insta snapshots.
+
+`consortium-common` owns common project types and configuration helpers shared across
+crates.
 
 ## Shared-Memory IPC
 
@@ -118,7 +127,13 @@ Doorbells provide the wakeup/signaling half of IPC. Existing implementations sho
 used as patterns for any new platform:
 
 - `consortium-ipc-doorbell-hsem` targets STM32MP23/STM32MP25 hardware semaphores.
-- `consortium-ipc-doorbell-mu` targets NXP i.MX Message Unit hardware.
+- `consortium-ipc-doorbell-mu` targets NXP i.MX Message Unit hardware. Chip features
+  select the MU instance count: `imx8mp` has 1 instance, `imx93` has 2, and `imx95` has 8. Side features select the local register view: `mua` for the A-core side and `mub`
+  for the M-core side. The current crate default is `imx95` plus `mua`.
+  For i.MX95 defaults, use MU7 channels 24 and 25 for CA55 <-> CM7 IPC: MU1-4 are
+  CA55 <-> CM33, MU5 is CM7 <-> CM33, MU6 is NONE <-> CM33, and MU7-8 are
+  CA55 <-> CM7. MU channels are numbered 4 per instance, so MU7 is the flat range
+  24..28 and channels 24/25 correspond to MU7 GI0/GI1.
 - `consortium-ipc-doorbell-gpio` is the GPIO-backed Linux-oriented implementation path.
 - `consortium-ipc-doorbell-ipcc` targets STM32MP21/STM32MP23/STM32MP25 IPCC. STM32MP21
   uses IPCC only; STM32MP23/25 can use HSEM or IPCC. IPCC1 is at
@@ -132,6 +147,12 @@ notification. Use typed register access for MMIO fields; the current doorbell cr
 the `bitfield` crate for register bitfields and volatile reads/writes at the access
 boundary.
 
+The `std` doorbell paths are host-testable without real hardware using fake MMIO arrays
+and Tokio `Notify`. Current HSEM, IPCC, and MU tests cover ring/pending register effects
+and wait futures that subscribe before notification, then complete after the fake
+interrupt/status bit is set and `notify_waiters()` is called. Prefer extending these
+fake-MMIO tests before requiring hardware-in-the-loop coverage.
+
 Runtime STM32 feature names are chip-family-specific:
 
 - `stm32mp21x` enables IPCC only.
@@ -139,12 +160,20 @@ Runtime STM32 feature names are chip-family-specific:
 - `stm32mp25x` enables HSEM and IPCC and is the default STM32 runtime feature.
 - `stm32mp2xx` remains only as a compatibility alias for the previous HSEM-capable default.
 
+Runtime i.MX feature names are split by SoC family:
+
+- `imx9x` is the umbrella runtime family.
+- `imx93` enables `imx9x` plus the MU crate's `imx93` feature.
+- `imx95` enables `imx9x` plus the MU crate's `imx95` feature.
+
 ## Configuration
 
 - `consortium-cfg` contains configuration, peripheral, pin, session, and validation
   logic for resource partitioning and platform setup.
 - `consortium-cfg-meta` contains generated STM32MP metadata and chip-family feature
   flags such as `stm32mp21xxxx`, `stm32mp23xxxx`, and `stm32mp25xxxx`.
+- `consortium-dts` contains the device-tree parser and builder used by configuration
+  flows that need DTS input/output rather than ad hoc string generation.
 
 Use the `docs/src/dev/rpi/` documentation as the design reference for resource
 partitioning concepts. Code lives in the `cfg` crates.
@@ -217,6 +246,9 @@ chosen, and document each unsafe block with the ownership or pointer-lifetime in
 - Use insta snapshots for macro expansion output where stable generated tokens matter.
 - Use heap-backed or mock-doorbell tests for shared-memory protocol behavior that does
   not require real hardware.
+- Use `just test ipc host` for the host-side IPC bundle. It runs the core IPC,
+  shared-memory transport, and HSEM/IPCC/MU doorbell tests in both default/no-std-shaped
+  and `std` feature configurations where applicable.
 - Keep hardware-dependent tests separate from default host checks.
 - Do not assume Linux-only crates or no-std target checks will work on every developer
   machine.

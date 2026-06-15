@@ -122,7 +122,7 @@ pub struct Channel<D, T, Tr, C = PostcardCodec, const P: Priority = Priority::No
 }
 
 // Alarm channel — won't compile if you accidentally use it as a background sink
-let alarm: Channel<Tx, AlarmEvent, MemTransport<_, _>, PostcardCodec, {Priority::RealTime}> = ...;
+let alarm: Channel<Tx, AlarmEvent, SharedMemoryTransport<_, _>, PostcardCodec, {Priority::RealTime}> = ...;
 ```
 
 The `Priority` const flows into `Transport::send()` via a new parameter:
@@ -155,8 +155,8 @@ Total header overhead: 12 bytes (up from 8).
 | Crate                               | Change                                                                         |
 | ----------------------------------- | ------------------------------------------------------------------------------ |
 | `consortium-ipc`                    | Add `Priority` enum; bump `Transport::send` signature; add `FLAG_BACKPRESSURE` |
-| `consortium-ipc-mem`                | Write priority byte in slot; check backpressure flag                           |
-| `consortium-ipc-uio`                | Read priority byte; expose it from `UioChannel::recv`                          |
+| `consortium-ipc-transport-memory`   | Write priority byte in slot; check backpressure flag                           |
+| `consortium-runtime-app` UIO path   | Read priority byte; expose it from the runtime UIO receive path                |
 | `consortium-ipc` (new module `qos`) | `PriorityMux`                                                                  |
 | Descriptor (UIO)                    | Version field: `1 → 2`; slot header size: `8 → 12`                             |
 

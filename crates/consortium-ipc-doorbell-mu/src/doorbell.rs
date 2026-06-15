@@ -28,7 +28,7 @@ use crate::{
     registers::side::{self, fields::GeneralInterruptRegister},
 };
 
-// Default (no_std / bare-metal) on i.MX93 uses compile-time base addresses.
+// Default (no_std / bare-metal) uses compile-time base addresses for the selected chip.
 #[cfg(not(feature = "std"))]
 use crate::registers::MU_BASES;
 
@@ -54,8 +54,15 @@ use crate::registers::MU_BASES;
 ///
 /// | Feature | Instances | `base_addrs` size |
 /// |---------|-----------|-------------------|
+/// | `imx8mp` |     1    | `[u32; 1]`        |
 /// | `imx93` |     2     | `[u32; 2]`        |
 /// | `imx95` |     8     | `[u32; 8]`        |
+///
+/// On i.MX95 this repository's default CA55 <-> CM7 IPC route is MU7, using
+/// flat zero-based channels [`crate::chan::IMX95_CA55_CM7_TX_CHAN`] (24, MU7 GI0)
+/// and [`crate::chan::IMX95_CA55_CM7_RX_CHAN`] (25, MU7 GI1). MU1-4 connect
+/// CA55 <-> CM33, MU5 connects CM7 <-> CM33, MU6 connects NONE <-> CM33, and
+/// MU7-8 connect CA55 <-> CM7.
 ///
 /// # Difference from HSEM
 ///
@@ -187,9 +194,8 @@ impl MuDoorbell {
 
 // ── no_std (M-core / bare-metal) ─────────────────────────────────────────────
 
-/// `Default` is only available for `imx93` (no_std) where the physical base
-/// addresses are known at compile time.  For other chips, construct explicitly
-/// with `MuDoorbell::new(bases)`.
+/// `Default` uses the compile-time physical base addresses for the selected
+/// no-std chip/side feature. Use `MuDoorbell::new(bases)` to override them.
 #[cfg(not(feature = "std"))]
 impl Default for MuDoorbell {
     fn default() -> Self {
@@ -201,7 +207,8 @@ impl Default for MuDoorbell {
 impl MuDoorbell {
     /// Create a doorbell from an array of MUB (Side B) base addresses, one per
     /// MU instance.  The array length is determined by the chip feature:
-    /// `[usize; 2]` for `imx93`, `[usize; 8]` for `imx95`.
+    /// `[usize; 1]` for `imx8mp`, `[usize; 2]` for `imx93`, or
+    /// `[usize; 8]` for `imx95`.
     pub const fn new(bases: [usize; MU_INSTANCE_COUNT]) -> Self {
         Self { base_addrs: bases }
     }

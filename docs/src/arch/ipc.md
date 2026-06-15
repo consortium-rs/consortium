@@ -42,11 +42,11 @@ The Consortium IPC is organized as a series of abstraction layers:
                            ▼
 ┌──────────────────────────────────────────────────────────────┐
 │  Transport Layer                                             │
-│  ├─ MemTransport (bare-metal M-core)                        │
+│  ├─ SharedMemoryTransport (M-core / shared memory)           │
 │  │  Generic over Doorbell + Region                          │
 │  │  Manages slot protocol, async polling                    │
-│  └─ UioChannel (Linux A-core)                               │
-│     Tokio-based, interrupt-driven                           │
+│  └─ runtime-app UIO path (Linux A-core)                      │
+│     mmap-backed, Tokio interrupt task                       │
 └──────────────────────────────────────────────────────────────┘
                            │
 ┌────────────┬─────────────┴──────────────┬───────────┐
@@ -78,16 +78,16 @@ static mut REGION: DdrRegion = /* ... */;
 #[main]
 async fn main() {
     // 1. Create transport (owning doorbell, managing slots)
-    let mut transport = MemTransport::new(
-        &mut HSEM_DOORBELL,
-        &mut REGION,
-        unsafe { TX_SLOT_PTR },  // physical address in shared SRAM
-        unsafe { RX_SLOT_PTR },
+    let mut transport = SharedMemoryTransport::new(
+        chan,
+        doorbell,
+        region,
+        unsafe { SHARED_REGION_BASE },
     );
 
     // 2. Create typed channel for a specific message
     let mut tx: Channel<Tx, SensorData, _, PostcardCodec> =
-        Channel::new(Chan(0), transport, unsafe { &mut TX_BUF });
+        Channel::new(chan, transport, unsafe { &mut TX_BUF });
 
     // 3. Send data (async, awaitable)
     loop {
@@ -104,7 +104,7 @@ async fn main() {
 ### A-Core (Linux + Tokio)
 
 ```rust
-use consortium_runtime_app::{RemoteProc, ipc_uio::UioDevice};
+use consortium_runtime_app::{mmap, remoteproc::RemoteProc, uio::UioDevice};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -113,12 +113,13 @@ async fn main() -> Result<()> {
     remoteproc.set_firmware("firmware.elf")?;
     remoteproc.start()?;
 
-    // 2. Open UIO device (waits for descriptor ready)
-    let uio = UioDevice::open(0).await?;
+    // 2. Wait for the descriptor, then open UIO
+    mmap::wait_for_ready(0, Duration::from_secs(10)).await?;
+    let uio = UioDevice::open(0, 2, 512)?;
 
     // 3. Create typed channel matching M-core
     let mut rx: Channel<Rx, SensorData, _, PostcardCodec> =
-        Channel::new(Chan(0), uio.channel(0).await?, unsafe { &mut RX_BUF });
+        Channel::new(chan, uio.channel_transport(chan, doorbell, region)?, unsafe { &mut RX_BUF });
 
     // 4. Receive messages in loop (async, awaitable)
     loop {

@@ -16,7 +16,7 @@ The goal is that a developer declares intent once and the build system derives s
 
 ## Motivation
 
-On a heterogeneous SoC such as the STM32MP257 (Cortex-A35 + Cortex-M33 + Cortex-M0+) or i.MX 94 (Cortex-A55 + 2× Cortex-M7 + Cortex-M33), each peripheral must be owned by exactly one execution domain:
+On a heterogeneous SoC such as the STM32MP257 (Cortex-A35 + Cortex-M33 + Cortex-M0+) or i.MX 95 (Cortex-A55 + Cortex-M7 + Cortex-M33), each peripheral must be owned by exactly one execution domain:
 
 | Domain                   | Mechanism                    | Current approach |
 | ------------------------ | ---------------------------- | ---------------- |
@@ -67,7 +67,7 @@ secure = false
 | Cortex-M7  | `"cm7"`         | `"cm7_0"`, `"cm7_1"`         |
 | Cortex-M4  | `"cm4"`         | `"cm4_0"`, `"cm4_1"`         |
 
-When a chip has only one instance of a core type, the plain abbreviation is used. When it has multiple (e.g. i.MX 94 with two Cortex-M7 cores), an underscore-index suffix disambiguates. The builder resolves these against `Chip::programmable_rt_cores()` to validate correctness.
+When a chip has only one instance of a core type, the plain abbreviation is used. When it has multiple instances of the same core type, an underscore-index suffix disambiguates. The builder resolves these against `Chip::programmable_rt_cores()` to validate correctness.
 
 ### Example — STM32MP257
 
@@ -118,28 +118,22 @@ master = "cm33"
 secure = false
 ```
 
-### Example — i.MX 94 (dual Cortex-M7)
+### Example — i.MX 95 (Cortex-M7)
 
 ```toml
 [general]
-chip = "imx94"
-
-[project.firmware.dsp_fw]
-core  = "CortexM7"
-index = 0
-path  = "firmware/dsp"
+chip = "imx95"
 
 [project.firmware.motor_fw]
 core  = "CortexM7"
-index = 1
 path  = "firmware/motor"
 
 [peripheral.lpi2c1]
-master = "cm7_0"       # first M7 (index 0)
+master = "cm7"
 secure = false
 
 [peripheral.lpspi3]
-master = "cm7_1"       # second M7 (index 1)
+master = "cm7"
 secure = false
 
 [peripheral.lpuart2]
@@ -362,7 +356,7 @@ All rules run inside `consortium-common`'s `Config::validate_peripherals()`, sha
 2. **Name validity:** All keys must exist in the chip peripheral database for the configured `chip`.
 3. **Master validity:** Each `master` value is either `"linux"`, `"optee"`, or a core abbreviation (with optional index) present in `Chip::programmable_rt_cores()`.
 4. **Security consistency:** `secure = false` is rejected for `"optee"` masters; `secure = true` is rejected for `"linux"` masters.
-5. **Core availability:** A `master` abbreviation must correspond to a core that actually exists on the chip (e.g. `"cm0p"` is invalid on i.MX 94).
+5. **Core availability:** A `master` abbreviation must correspond to a core that actually exists on the chip (e.g. `"cm0p"` is invalid on i.MX 95).
 6. **Clock validity:** If `clock` is specified, the value must appear in the chip DB's `clock_options` list for that peripheral. Peripherals without a `clock_reg` in the DB reject any `clock` field.
 
 Errors are emitted as `cargo:error=` messages during build and as structured output from `consortium peripheral validate`.
@@ -483,14 +477,14 @@ The generated struct wraps `imxrt_hal::instance::*` tokens. `imxrt-ral` instance
 
 - [ ] Define `ChipPeripheralDb` + `ChipPeripheralEntry` structs (TOML, embedded in `consortium-pac-gen`).
 - [ ] Populate STM32MP257 database (RIFSC index, DTS node name, HAL type path).
-- [ ] Populate i.MX 93 and i.MX 94 databases (TRDC domain index, DTS node, HAL type path).
+- [ ] Populate i.MX 93 and i.MX 95 databases (TRDC domain index, DTS node, HAL type path).
 - [ ] Expose DB lookup via `consortium-common` API so CLI and pac-gen share it.
 
 ### Phase 3 — CLI Subcommands (1 week)
 
 - [ ] Add `peripheral` subcommand group to `consortium-cli` (using `clap`).
 - [ ] Implement `list`, `show`, `validate`, `chip-info` with `--json` and `--unassigned` flags.
-- [ ] Test with STM32MP257 and i.MX 94 fixture configs.
+- [ ] Test with STM32MP257 and i.MX 95 fixture configs.
 
 ### Phase 4 — Code Generation (2 weeks)
 
@@ -507,7 +501,7 @@ The generated struct wraps `imxrt_hal::instance::*` tokens. `imxrt-ral` instance
 
 - [ ] `consortium-runtime-mcu`: call generated `configure_rif()` from `init()`.
 - [ ] Example firmware (STM32MP257) using generated `Peripherals` with embassy-stm32.
-- [ ] Example firmware (i.MX 94) using generated `Peripherals` with imxrt-hal.
+- [ ] Example firmware (i.MX 95) using generated `Peripherals` with imxrt-hal.
 - [ ] Integration test: build full config, verify generated files compile for target.
 
 ### Phase 6 — DTS Integration (1 week)

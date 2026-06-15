@@ -26,7 +26,7 @@ What remains is **hardware-specific glue** and the **application runtime layer**
 ### Transport Implementations
 
 - **`consortium-ipc-transport-memory` (bare-metal/no_std):**
-  - `MemTransport<D: Doorbell, R: Region>` generic over doorbell and region types
+  - `SharedMemoryTransport<D: Doorbell, R: Region>` generic over doorbell and region types
   - Slot protocol (len/flags/payload) with volatile I/O
   - SendFut (eager, synchronous doorbell.ring)
   - RecvFut (polling with async doorbell.wait)
@@ -134,7 +134,6 @@ HSEM is fully implemented in `consortium-ipc-doorbell-hsem` with:
 - Bare-metal M-core support (no_std + AtomicWaker)
 - Linux A-core support (std + tokio::sync::Notify)
 - Channel validation and error handling (16 channels max)
-- Re-exports for convenience in `consortium-ipc-mem` and `consortium-ipc-uio`
 - Const generic `PROC: u8` for selecting interrupt line (C1/C2/C3)
 
 ### ✅ Completed: IPCC (Inter-processor Communication Controller) for STM32MP21/23/25
@@ -152,12 +151,17 @@ IPCC is implemented in `consortium-ipc-doorbell-ipcc` with:
 
 MU is fully implemented in `consortium-ipc-doorbell-mu` with:
 
-- Bare-metal M-core support (no_std + 2× AtomicWaker for MU1/MU2)
+- Bare-metal M-core support (no_std + one `AtomicWaker` per selected MU instance)
 - Linux A-core support (std + tokio::sync::Notify)
-- Channel validation via `MuChanValidate` (8 channels across 2 MU instances; 0–1 reserved)
-- Two independent IRQ handlers: `MU1_IRQHandler` and `MU2_IRQHandler`
+- Channel validation via `MuChanValidate` (`MU_INSTANCE_COUNT * 4` flat channels; 0–1 reserved)
+- Chip features for `imx8mp` (1 MU), `imx93` (2 MUs), and `imx95` (8 MUs)
+- Side features for `mua` and `mub`; the crate default is `imx95` plus `mua`
+- IRQ handlers gated by chip feature (`MU1_IRQHandler` through `MU8_IRQHandler` on i.MX95)
+- i.MX95 CA55 <-> CM7 defaults use MU7 channels 24 and 25 (`IMX95_CA55_CM7_TX_CHAN`
+  and `IMX95_CA55_CM7_RX_CHAN`)
 - Flexible base address configuration (no const generic needed)
-- Key distinction: Reading RRn clears RSR (destructive read), unlike HSEM's ICR register
+- GI signaling uses `GCR[GIRn]`, pending status uses `GSR[GIPn]`, and clear is W1C through
+  `GSR[GIPn]`
 
 **Platform support:** i.MX 93, i.MX 95, and other NXP i.MX 9x SoCs
 
@@ -199,7 +203,7 @@ See `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-ipcc`, and
    - Bootstrap code (stack setup, relocation, initialization)
    - Async executor (cooperative or RTIC-based)
    - Interrupt handler registration
-   - Integration with MemTransport for IPC
+   - Integration with `SharedMemoryTransport` for IPC
    - Reset/panic handlers
    - Example: minimal firmware that spins up a Channel and sends data
    - Current design: use `Embassy` for async runtime with `no_std` support. When the project is targeting wider market, try to support Zephyr RTOS as well, which is widely used in embedded space and has good support for STM32 and NXP platforms.
@@ -297,18 +301,18 @@ Application (user code)
 
 ## Testing Status
 
-| Component                      | Tests                    | Notes                                                               |
-| ------------------------------ | ------------------------ | ------------------------------------------------------------------- |
-| `consortium-ipc`               | ✅ Trait tests           | Basic contract verification                                         |
-| `consortium-ipc-mem`           | ✅ Transport tests       | Slot protocol, doorbell mocking                                     |
-| `consortium-ipc-uio`           | ✅ Descriptor parsing    | Linux-only; no real UIO device tests                                |
-| `consortium-tee-macros`        | ✅ Macro expansion       | Compile-time correctness                                            |
-| `consortium-ipc-doorbell-hsem` | ✅ HSEM tests            | Register access, async wakeup, channel validation                   |
-| `consortium-ipc-doorbell-ipcc` | ✅ IPCC tests            | Register bitfields, channel validation, pending/wait clear behavior |
-| `consortium-ipc-doorbell-mu`   | ✅ Builds (no std + std) | Compiles on both no_std and std paths; ready for hardware tests     |
-| Runtime (M-core)               | ❌ None                  | Not implemented                                                     |
-| Runtime (A-core)               | ⚠️ Partial               | RemoteProc methods exist but not tested                             |
-| E2E (firmware ↔ app)           | ❌ None                  | Would require actual hardware or simulation                         |
+| Component                         | Tests              | Notes                                                               |
+| --------------------------------- | ------------------ | ------------------------------------------------------------------- |
+| `consortium-ipc`                  | ✅ Trait tests     | Basic contract verification                                         |
+| `consortium-ipc-transport-memory` | ✅ Transport tests | Slot protocol, descriptor parsing, doorbell mocking                 |
+| `consortium-runtime-app` UIO      | ⚠️ Partial         | Linux UIO wrapper exists; no real device tests                      |
+| `consortium-tee-macros`           | ✅ Macro expansion | Compile-time correctness                                            |
+| `consortium-ipc-doorbell-hsem`    | ✅ HSEM tests      | Register access, async wakeup, channel validation                   |
+| `consortium-ipc-doorbell-ipcc`    | ✅ IPCC tests      | Register bitfields, channel validation, pending/wait clear behavior |
+| `consortium-ipc-doorbell-mu`      | ✅ MU tests        | Channel mapping plus fake-MMIO std wait-future tests                |
+| Runtime (M-core)                  | ❌ None            | Not implemented                                                     |
+| Runtime (A-core)                  | ⚠️ Partial         | RemoteProc methods exist but not tested                             |
+| E2E (firmware ↔ app)              | ❌ None            | Would require actual hardware or simulation                         |
 
 ---
 
@@ -380,19 +384,19 @@ Crate names have been updated throughout all docs:
 
 ## Summary: What's Left
 
-| Layer                                     | Status  | Effort | Dependency                 |
-| ----------------------------------------- | ------- | ------ | -------------------------- |
-| Traits + Channel                          | ✅ Done | —      | —                          |
-| MemTransport (bare-metal)                 | ✅ Done | —      | Doorbell trait             |
-| UioTransport (Linux)                      | ✅ Done | —      | Kernel UIO driver          |
-| **Doorbell: HSEM (STM32MP23/25)**         | ✅ Done | —      | —                          |
-| **Doorbell: IPCC (STM32MP21/23/25)**      | ✅ Done | —      | —                          |
-| **Doorbell: MU (i.MX 9x series)**         | ✅ Done | —      | —                          |
-| **M-core runtime + executor (STM32MP2)**  | ❌ TODO | High   | `consortium-runtime-mcu`   |
-| **A-core runtime + lifecycle (STM32MP2)** | ❌ TODO | High   | RemoteProc + UIO expansion |
-| **Build pipeline (8-step)**               | ❌ TODO | High   | All prior phases           |
-| TEE support (macros)                      | ✅ Done | —      | —                          |
-| Configuration types                       | ✅ Done | —      | —                          |
+| Layer                                     | Status     | Effort | Dependency                 |
+| ----------------------------------------- | ---------- | ------ | -------------------------- |
+| Traits + Channel                          | ✅ Done    | —      | —                          |
+| SharedMemoryTransport (bare-metal)        | ✅ Done    | —      | Doorbell trait             |
+| runtime-app UIO path (Linux)              | ⚠️ Partial | —      | Kernel UIO driver          |
+| **Doorbell: HSEM (STM32MP23/25)**         | ✅ Done    | —      | —                          |
+| **Doorbell: IPCC (STM32MP21/23/25)**      | ✅ Done    | —      | —                          |
+| **Doorbell: MU (i.MX 9x series)**         | ✅ Done    | —      | —                          |
+| **M-core runtime + executor (STM32MP2)**  | ❌ TODO    | High   | `consortium-runtime-mcu`   |
+| **A-core runtime + lifecycle (STM32MP2)** | ❌ TODO    | High   | RemoteProc + UIO expansion |
+| **Build pipeline (8-step)**               | ❌ TODO    | High   | All prior phases           |
+| TEE support (macros)                      | ✅ Done    | —      | —                          |
+| Configuration types                       | ✅ Done    | —      | —                          |
 
 **Progress:** Both primary doorbell implementations are complete. Framework is ready for runtime layer development.
 

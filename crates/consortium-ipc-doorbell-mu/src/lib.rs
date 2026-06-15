@@ -21,5 +21,7 @@ pub mod error;
 pub mod registers;
 
 pub use chan::MuChanValidate;
+#[cfg(feature = "imx95")]
+pub use chan::{IMX95_CA55_CM7_RX_CHAN, IMX95_CA55_CM7_TX_CHAN};
 pub use doorbell::MuDoorbell;
 pub use error::MuError;
