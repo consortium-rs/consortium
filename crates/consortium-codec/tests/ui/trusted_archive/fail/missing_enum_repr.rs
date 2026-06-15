@@ -1,4 +1,4 @@
-use consortium_codec_macros::TrustedArchive;
+use consortium_codec::TrustedArchive;
 use rkyv::{Archive, Serialize};
 
 #[derive(Archive, Serialize, TrustedArchive)]

@@ -1,4 +1,4 @@
-use consortium_codec_macros::TrustedArchive;
+use consortium_codec::TrustedArchive;
 use rkyv::{Archive, Serialize};
 
 #[derive(Archive, Serialize, TrustedArchive)]
@@ -30,7 +30,7 @@ struct Wrapper<T> {
     tag: u32,
 }
 
-fn assert_trusted<T: consortium_codec::rkyv::TrustedArchive>() {}
+fn assert_trusted<T: consortium_codec::TrustedArchive>() {}
 
 fn main() {
     assert_trusted::<Sensor>();

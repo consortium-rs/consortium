@@ -133,7 +133,7 @@ fn derive_trusted_archive_impl(input: DeriveInput) -> syn::Result<TokenStream2> 
     for param in &mut generics.params {
         if let GenericParam::Type(tp) = param {
             tp.bounds
-                .push(parse_quote!(::consortium_codec::rkyv::TrustedArchive));
+                .push(parse_quote!(::consortium_codec::TrustedArchive));
         }
     }
 
@@ -144,7 +144,7 @@ fn derive_trusted_archive_impl(input: DeriveInput) -> syn::Result<TokenStream2> 
     for ty in &field_types {
         where_clause
             .predicates
-            .push(parse_quote!(#ty: ::consortium_codec::rkyv::TrustedArchive));
+            .push(parse_quote!(#ty: ::consortium_codec::TrustedArchive));
     }
 
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
@@ -154,7 +154,7 @@ fn derive_trusted_archive_impl(input: DeriveInput) -> syn::Result<TokenStream2> 
         // (#[repr(C)] or #[repr(align(N))] for structs/unions; integer or #[repr(C)]
         // for enums) and that every field type satisfies TrustedArchive, so the rkyv
         // archived form is safe to access without validation via `access_unchecked`.
-        unsafe impl #impl_generics ::consortium_codec::rkyv::TrustedArchive
+        unsafe impl #impl_generics ::consortium_codec::TrustedArchive
             for #name #ty_generics
             #where_clause
         {}

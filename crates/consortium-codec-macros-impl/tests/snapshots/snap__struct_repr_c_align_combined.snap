@@ -11,8 +11,8 @@ struct AlignedC {
 }
 
 // Expands to:
-unsafe impl ::consortium_codec::rkyv::TrustedArchive for AlignedC
+unsafe impl ::consortium_codec::TrustedArchive for AlignedC
 where
-    u32: ::consortium_codec::rkyv::TrustedArchive,
-    u64: ::consortium_codec::rkyv::TrustedArchive,
+    u32: ::consortium_codec::TrustedArchive,
+    u64: ::consortium_codec::TrustedArchive,
 {}

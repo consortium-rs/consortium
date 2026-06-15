@@ -11,8 +11,8 @@ struct Point {
 }
 
 // Expands to:
-unsafe impl ::consortium_codec::rkyv::TrustedArchive for Point
+unsafe impl ::consortium_codec::TrustedArchive for Point
 where
-    u32: ::consortium_codec::rkyv::TrustedArchive,
-    u32: ::consortium_codec::rkyv::TrustedArchive,
+    u32: ::consortium_codec::TrustedArchive,
+    u32: ::consortium_codec::TrustedArchive,
 {}

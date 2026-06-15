@@ -8,4 +8,4 @@ expression: "snapshot(quote! { #[repr(C)] struct Empty; })"
 struct Empty;
 
 // Expands to:
-unsafe impl ::consortium_codec::rkyv::TrustedArchive for Empty {}
+unsafe impl ::consortium_codec::TrustedArchive for Empty {}

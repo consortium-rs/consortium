@@ -12,7 +12,7 @@ enum Status {
 }
 
 // Expands to:
-unsafe impl ::consortium_codec::rkyv::TrustedArchive for Status
+unsafe impl ::consortium_codec::TrustedArchive for Status
 where
-    u32: ::consortium_codec::rkyv::TrustedArchive,
+    u32: ::consortium_codec::TrustedArchive,
 {}

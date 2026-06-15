@@ -11,10 +11,9 @@ struct Wrapper<T> {
 }
 
 // Expands to:
-unsafe impl<
-    T: ::consortium_codec::rkyv::TrustedArchive,
-> ::consortium_codec::rkyv::TrustedArchive for Wrapper<T>
+unsafe impl<T: ::consortium_codec::TrustedArchive> ::consortium_codec::TrustedArchive
+for Wrapper<T>
 where
-    T: ::consortium_codec::rkyv::TrustedArchive,
-    u32: ::consortium_codec::rkyv::TrustedArchive,
+    T: ::consortium_codec::TrustedArchive,
+    u32: ::consortium_codec::TrustedArchive,
 {}

@@ -13,7 +13,7 @@ where
 #[cfg(feature = "postcard")]
 mod postcard {
     use super::round_trip;
-    use consortium_codec::postcard::PostcardCodec;
+    use consortium_codec::PostcardCodec;
     use serde::{Deserialize, Serialize};
 
     #[derive(Debug, Deserialize, PartialEq, Serialize)]
@@ -39,7 +39,7 @@ mod postcard {
 #[cfg(feature = "prost")]
 mod prost {
     use super::round_trip;
-    use consortium_codec::prost::ProstCodec;
+    use consortium_codec::ProstCodec;
     use prost::Message;
     use prost::bytes::{Buf, BufMut};
     use prost::encoding::{self, DecodeContext, WireType};
@@ -103,7 +103,7 @@ mod prost {
 #[cfg(all(feature = "rkyv", feature = "alloc"))]
 mod rkyv {
     use super::round_trip;
-    use consortium_codec::rkyv::RkyvCodec;
+    use consortium_codec::RkyvCodec;
     use rkyv::{Archive, Serialize};
 
     #[derive(Archive, Debug, PartialEq, Serialize)]
@@ -130,7 +130,7 @@ mod rkyv {
 #[cfg(all(feature = "rkyv", not(feature = "alloc")))]
 mod rkyv_no_alloc {
     use super::round_trip;
-    use consortium_codec::rkyv::{RkyvCodec, TrustedArchive};
+    use consortium_codec::{RkyvCodec, TrustedArchive};
     use rkyv::{Archive, Serialize};
 
     #[repr(C, align(16))]

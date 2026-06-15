@@ -10,7 +10,7 @@ struct Aligned {
 }
 
 // Expands to:
-unsafe impl ::consortium_codec::rkyv::TrustedArchive for Aligned
+unsafe impl ::consortium_codec::TrustedArchive for Aligned
 where
-    [u8; 16]: ::consortium_codec::rkyv::TrustedArchive,
+    [u8; 16]: ::consortium_codec::TrustedArchive,
 {}
