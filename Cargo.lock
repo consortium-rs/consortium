@@ -389,6 +389,7 @@ version = "0.1.0"
 dependencies = [
  "consortium-codec",
  "consortium-ipc-macros",
+ "futures",
  "num_enum",
  "thiserror",
  "trybuild",
@@ -458,12 +459,14 @@ dependencies = [
 name = "consortium-ipc-transport-memory"
 version = "0.1.0"
 dependencies = [
+ "consortium-codec",
  "consortium-common",
  "consortium-ipc",
  "crc32fast",
  "futures",
  "num_enum",
  "pin-project",
+ "serde",
  "thiserror",
  "tokio",
  "uio",

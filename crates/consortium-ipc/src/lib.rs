@@ -29,7 +29,7 @@ pub(crate) mod wire;
 
 pub use {
     chan::{Chan, ChanValidate},
-    channel::Channel,
+    channel::{Channel, ChannelError, ReceivedMessage, Rx, Tx},
     doorbell::Doorbell,
     region::Region,
     regions::{DdrRegion, SerialRegion, SramRegion},
