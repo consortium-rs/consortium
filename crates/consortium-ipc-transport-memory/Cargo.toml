@@ -36,13 +36,9 @@ tokio             = { features = ["net", "rt", "sync"], optional = true, version
 uio               = { optional = true, version = "0.5.2" }
 
 [dev-dependencies]
-consortium-codec = { features = [
-  "alloc",
-  "postcard",
-  "rkyv",
-], path = "../consortium-codec" }
-futures = "0.3"
-serde = { default-features = false, features = ["derive"], version = "1.0.228" }
+consortium-codec = { features = ["alloc", "postcard", "rkyv"], path = "../consortium-codec" }
+futures          = "0.3"
+serde            = { default-features = false, features = ["derive"], version = "1.0.228" }
 
 [lints]
 workspace = true

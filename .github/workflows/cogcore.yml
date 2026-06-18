@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "crates/libcogcore-sys/vendor/include/**"
-      - "crates/libcogcore-sys/wrapper.h"
-      - "crates/libcogcore-sys/build.rs"
-      - ".github/workflows/cogcore.yml"
+      - 'crates/libcogcore-sys/vendor/include/**'
+      - 'crates/libcogcore-sys/wrapper.h'
+      - 'crates/libcogcore-sys/build.rs'
+      - '.github/workflows/cogcore.yml'
 
 jobs:
   generate:
@@ -60,6 +60,6 @@ jobs:
       - name: Commit bindings
         uses: stefanzweifel/git-auto-commit-action@v7.1.0
         with:
-          commit_message: "chore: regenerate cogcore bindings"
+          commit_message: 'chore: regenerate cogcore bindings'
           file_pattern: crates/libcogcore-sys/src/bindings_pregenerated.rs
           token: ${{ secrets.GITHUB_TOKEN }}

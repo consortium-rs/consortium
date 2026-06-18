@@ -3,4 +3,4 @@ behavior:
   require_full_match: true
   # No more `.snap.new` files. Remains will be updated in place.
   # https://insta.rs/docs/advanced/#controlling-snapshot-updating
-  update: "always"
+  update: 'always'
