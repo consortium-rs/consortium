@@ -5,6 +5,7 @@ name              = "consortium-runtime-prt"
 version.workspace = true
 
 [dependencies]
+defmt = "1.1.0"
 
 [lints]
 workspace = true

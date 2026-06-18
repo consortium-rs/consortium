@@ -18,7 +18,7 @@ consortium-common            = { default-features = false, path = "../consortium
 consortium-ipc               = { default-features = false, path = "../consortium-ipc" }
 consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem" }
 consortium-ipc-doorbell-mu   = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu" }
-defmt                        = "1.0.1"
+defmt                        = "1.1.0"
 defmt-decoder                = { optional = true, version = "1.1" }
 thiserror                    = { default-features = false, version = "2.0" }
 

@@ -7,7 +7,7 @@ use std::task::{Context, Poll};
 use consortium_ipc::{Chan, Doorbell};
 use tokio::sync::Notify;
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct HostDoorbell {
     tx: Arc<Notify>,
     rx: Arc<Notify>,
