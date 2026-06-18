@@ -36,7 +36,12 @@ tokio             = { features = ["net", "rt", "sync"], optional = true, version
 uio               = { optional = true, version = "0.5.2" }
 
 [dev-dependencies]
+atomic-waker    = "1.1.2"
 consortium-codec = { features = ["alloc", "postcard", "prost", "rkyv"], path = "../consortium-codec" }
+embassy-executor = { features = ["executor-thread", "platform-std"], version = "0.10.0" }
+embassy-futures  = "0.1.2"
+embassy-sync     = { features = ["std"], version = "0.8.0" }
+embassy-time     = { features = ["std"], version = "0.5.1" }
 futures          = "0.3"
 prost            = { default-features = false, version = "0.14.3" }
 rkyv             = { default-features = false, features = ["bytecheck"], version = "0.8.15" }

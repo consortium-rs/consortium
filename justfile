@@ -263,10 +263,11 @@ build-ipc-m7:
 # Compile M-core IPC crates for thumbv7. Unit tests are not runnable on the host.
 test-ipc-m7: check-ipc-m7
 
-# Run host-side IPC tests, including fake-MMIO std doorbell wait-future tests.
+# Run host-side IPC tests, including fake-MMIO std and no-std-shaped wait-future tests.
 test-ipc-host:
     cargo test -p consortium-ipc --features std
     cargo test -p consortium-ipc-transport-memory
+    cargo test -p consortium-ipc-transport-memory --no-default-features --test async_atomic_waker_test
     cargo test -p consortium-ipc-doorbell-hsem
     cargo test -p consortium-ipc-doorbell-hsem --features std
     cargo test -p consortium-ipc-doorbell-ipcc
