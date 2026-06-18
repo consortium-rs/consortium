@@ -3,7 +3,10 @@ use core::{
     marker::{PhantomData, PhantomPinned},
 };
 
-use consortium_ipc::{Chan, DdrRegion, Doorbell, Region, SramRegion, Transport};
+use consortium_ipc::{
+    Chan, DdrRegion, Doorbell, RecvTransport, Region, SendTransport, SramRegion, Transport,
+    TransportError,
+};
 
 use crate::{
     descriptor::{ChannelLayout, NUM_CHANNELS_OFFSET, RX_UPDATED_ID_OFFSET, read_channel},
@@ -12,13 +15,205 @@ use crate::{
     utils::rv_u8,
 };
 
+// ---------------------------------------------------------------------------
+// Shared send helper — avoids duplicating slot-write logic
+// ---------------------------------------------------------------------------
+
+/// # Safety
+/// `base` must be valid for reads/writes covering the full descriptor layout.
+unsafe fn send_bytes<D: Doorbell, R: Region>(
+    ch: Chan,
+    doorbell: &D,
+    region: &R,
+    base: *mut u8,
+    data: &[u8],
+) -> Result<(), Error<D>> {
+    let mut channel_id = 0xFF;
+
+    // SAFETY: caller guarantees `base` covers the descriptor header.
+    let num_channels = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
+
+    for chan in 0..num_channels {
+        // SAFETY: `chan` is within the validated channel table range.
+        let channel = unsafe { read_channel(base, chan as usize) };
+        // SAFETY: `channel` was read from the descriptor; slot pointer is within the region.
+        let slot_addr = unsafe { channel.slot_addr(base) };
+        // SAFETY: `slot_addr` points to a valid slot in the shared memory region.
+        let consumed = unsafe { slot::is_consumed(slot_addr) };
+        if consumed && channel.direction.is_tx() {
+            channel_id = chan;
+            break;
+        }
+    }
+
+    if channel_id == 0xFF {
+        return Err(Error::NoChannel);
+    }
+
+    // SAFETY: `channel_id` was validated against `num_channels` above.
+    let channel = unsafe { read_channel(base, channel_id as usize) };
+    let capacity = (channel.size as usize)
+        .checked_sub(slot::SLOT_HEADER)
+        .ok_or(Error::PayloadTooLarge {
+            payload_len: data.len(),
+            capacity: 0,
+        })?;
+
+    if data.len() > capacity {
+        return Err(Error::PayloadTooLarge {
+            payload_len: data.len(),
+            capacity,
+        });
+    }
+
+    // SAFETY: `channel` was read from the descriptor; slot pointer is within the region.
+    let slot_base = unsafe { channel.slot_addr(base) };
+    // SAFETY: `slot_base` points to a valid, capacity-checked slot.
+    unsafe { slot::write(slot_base, data) };
+
+    region.flush();
+    doorbell.ring(ch).map_err(Error::Doorbell)
+}
+
+// ---------------------------------------------------------------------------
+// Shared recv-poll helper — slot scanning + persistent doorbell subscription
+// ---------------------------------------------------------------------------
+
+/// Poll the recv path once.
+///
+/// `wait_fut` is persistent storage owned by the caller's future struct.  On
+/// the first `Pending` it is populated with a doorbell wait future so the waker
+/// registration survives across executor yields.  On re-poll after a wakeup the
+/// stored future is polled first; only if it fires do we re-scan the slot.
+///
+/// # Safety
+/// `base` must cover the descriptor header.  The doorbell must outlive `*wait_fut`.
+unsafe fn poll_recv<D: Doorbell + Send + 'static, R: SharedMemoryTransportable>(
+    doorbell: &D,
+    region: &R,
+    base: *mut u8,
+    ch: Chan,
+    buf: &mut [u8],
+    wait_fut: &mut Option<D::WaitFut<'static>>,
+    cx: &mut core::task::Context<'_>,
+) -> core::task::Poll<Result<usize, Error<D>>> {
+    // If a wait future is already armed, poll it.  If it is still pending our
+    // waker is already registered — park until the doorbell fires.  If it fires,
+    // clear it and fall through to re-scan the slot.
+    if let Some(ref mut wf) = *wait_fut {
+        // SAFETY: `wf` lives in the caller's pinned struct and is never moved.
+        match unsafe { core::pin::Pin::new_unchecked(wf) }.poll(cx) {
+            core::task::Poll::Pending => return core::task::Poll::Pending,
+            core::task::Poll::Ready(_) => {
+                *wait_fut = None;
+            }
+        }
+    }
+
+    // Fast path: check the channel indicated by the updated-id field.
+    // SAFETY: caller guarantees `base` covers the descriptor header.
+    let mut channel_id = unsafe { rv_u8(base, RX_UPDATED_ID_OFFSET) };
+    // SAFETY: same `base` validity guarantee.
+    let channel_num = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
+
+    let mut channel: Option<ChannelLayout> = if channel_id < channel_num {
+        // SAFETY: `channel_id` is within the validated channel table range.
+        let layout = unsafe { read_channel(base, channel_id as usize) };
+        // SAFETY: slot pointer is within the region.
+        let slot_addr = unsafe { layout.slot_addr(base) };
+        // SAFETY: `slot_addr` points to a valid slot.
+        let consumed = unsafe { slot::is_consumed(slot_addr) };
+        if layout.direction.is_rx() && !consumed { Some(layout) } else { None }
+    } else {
+        None
+    };
+
+    // Fallback: scan all channels.
+    if channel.is_none() {
+        for chan in 0..channel_num {
+            // SAFETY: `chan` is within the channel table range.
+            let layout = unsafe { read_channel(base, chan as usize) };
+            // SAFETY: slot pointer is within the region.
+            let slot_addr = unsafe { layout.slot_addr(base) };
+            // SAFETY: `slot_addr` points to a valid slot.
+            let consumed = unsafe { slot::is_consumed(slot_addr) };
+            if layout.direction.is_rx() && !consumed {
+                channel_id = chan;
+                channel = Some(layout);
+                break;
+            }
+        }
+    }
+
+    if channel.is_none() {
+        // No data yet — arm the doorbell so the waker stays registered until
+        // the remote calls ring().
+        return unsafe { arm_wait(doorbell, ch, wait_fut, cx) };
+    }
+
+    // SAFETY: `channel_id` was verified against `channel_num` during scan.
+    let channel = unsafe { read_channel(base, channel_id as usize) };
+    // SAFETY: slot pointer is within the region.
+    let slot_base = unsafe { channel.slot_addr(base) };
+
+    // SAFETY: `slot_base` is a valid slot; `buf` is exclusively owned by the caller.
+    if let Some(n) = unsafe { slot::try_read(slot_base, buf) } {
+        return core::task::Poll::Ready(Ok(n));
+    }
+
+    // Slot was visible but integrity check failed — invalidate caches and wait.
+    region.invalidate();
+    unsafe { arm_wait(doorbell, ch, wait_fut, cx) }
+}
+
+/// Create and store a doorbell wait future, poll it once to register the waker,
+/// then return `Pending`.
+///
+/// If a stored notification is immediately available (the remote rang before we
+/// subscribed), the future fires on the first poll: we clear it and schedule an
+/// immediate re-poll so the slot is re-checked on the very next executor cycle.
+///
+/// # Safety
+/// The doorbell must outlive `*wait_fut`.  `wait_fut` must point to a field in a
+/// pinned struct (i.e. the caller's future is `!Unpin` and pinned by the executor)
+/// so the stored future is never moved after it has been polled.
+unsafe fn arm_wait<D: Doorbell + Send + 'static>(
+    doorbell: &D,
+    ch: Chan,
+    wait_fut: &mut Option<D::WaitFut<'static>>,
+    cx: &mut core::task::Context<'_>,
+) -> core::task::Poll<Result<usize, Error<D>>> {
+    let wf = doorbell.wait(ch);
+    // SAFETY: the doorbell is inside the transport that exclusively owns the recv
+    // future, and the transport is guaranteed to outlive the future.  Erasing the
+    // lifetime to 'static is sound because `wait_fut` is dropped before the
+    // transport (enforced by the PhantomData<&'a mut Transport> on the future struct).
+    let wf =
+        unsafe { core::mem::transmute::<D::WaitFut<'_>, D::WaitFut<'static>>(wf) };
+    *wait_fut = Some(wf);
+    // SAFETY: `wait_fut` is now in a pinned location; we never move it after this poll.
+    match unsafe { core::pin::Pin::new_unchecked(wait_fut.as_mut().unwrap()) }.poll(cx) {
+        core::task::Poll::Ready(_) => {
+            // A notification was already stored (remote rang before we subscribed).
+            // Clear the future and ask the executor to re-poll immediately.
+            *wait_fut = None;
+            cx.waker().wake_by_ref();
+        }
+        core::task::Poll::Pending => {}
+    }
+    core::task::Poll::Pending
+}
+
+// ---------------------------------------------------------------------------
+// Combined transport
+// ---------------------------------------------------------------------------
+
 pub struct SharedMemoryTransport<D: Doorbell, R: SharedMemoryTransportable> {
     ch: Chan,
     doorbell: D,
     region: R,
-    /// The base pointer to the 0x00 of the shared memory region, where the descriptor header starts.
+    /// Base pointer to offset 0x00 of the shared memory region (descriptor header).
     base: *mut u8,
-
     tx_mtu: u32,
     rx_mtu: u32,
 }
@@ -28,8 +223,10 @@ impl<D: Doorbell, R: SharedMemoryTransportable> SharedMemoryTransport<D, R> {
     ///
     /// # Safety
     ///
-    /// - `base` must be valid for reads and writes for at least the size of the descriptor header (0x20 bytes) plus the channel table (32 entries * 0x10 bytes each).
-    /// - No other Rust reference to the shared memory region may exist while this transport is in use.
+    /// - `base` must be valid for reads and writes for at least the descriptor
+    ///   header (0x20 bytes) plus the channel table (32 × 0x10 bytes).
+    /// - No other Rust reference to the shared memory region may exist while
+    ///   this transport is in use.
     /// - The memory must be accessible to both this core and the remote core.
     pub unsafe fn new(ch: Chan, doorbell: D, region: R, base: *mut u8) -> Self {
         Self {
@@ -41,204 +238,127 @@ impl<D: Doorbell, R: SharedMemoryTransportable> SharedMemoryTransport<D, R> {
             rx_mtu: 0,
         }
     }
+
+    /// Consume this transport and return a `(send, recv)` half-pair.
+    ///
+    /// A single `SharedMemoryTransport` cannot be held by two [`Channel`]s at once
+    /// because both would need `&mut` access.  `split` solves this by producing two
+    /// independent owned halves:
+    ///
+    /// - [`SharedMemoryTransportTx`] implements [`SendTransport`] — pass it to
+    ///   `Channel::<Tx, …>`.
+    /// - [`SharedMemoryTransportRx`] implements [`RecvTransport`] — pass it to
+    ///   `Channel::<Rx, …>`.
+    ///
+    /// Both halves alias the same shared memory region; the same aliasing invariants
+    /// as [`new`](Self::new) apply.  The doorbell and region are cloned for the Rx
+    /// half; the originals move into the Tx half.
+    ///
+    /// [`Channel`]: consortium_ipc::Channel
+    /// [`SendTransport`]: consortium_ipc::SendTransport
+    /// [`RecvTransport`]: consortium_ipc::RecvTransport
+    pub fn split(self) -> (SharedMemoryTransportTx<D, R>, SharedMemoryTransportRx<D, R>)
+    where
+        D: Clone,
+        R: Clone,
+    {
+        let rx_doorbell = self.doorbell.clone();
+        let rx_region = self.region.clone();
+        (
+            SharedMemoryTransportTx {
+                ch: self.ch,
+                doorbell: self.doorbell,
+                region: self.region,
+                base: self.base,
+                tx_mtu: self.tx_mtu,
+            },
+            SharedMemoryTransportRx {
+                ch: self.ch,
+                doorbell: rx_doorbell,
+                region: rx_region,
+                base: self.base,
+                rx_mtu: self.rx_mtu,
+            },
+        )
+    }
 }
+
+// ---------------------------------------------------------------------------
+// Send / receive halves
+// ---------------------------------------------------------------------------
+
+/// Send-only half produced by [`SharedMemoryTransport::split`].
+pub struct SharedMemoryTransportTx<D: Doorbell, R: SharedMemoryTransportable> {
+    ch: Chan,
+    doorbell: D,
+    region: R,
+    base: *mut u8,
+    tx_mtu: u32,
+}
+
+/// Receive-only half produced by [`SharedMemoryTransport::split`].
+pub struct SharedMemoryTransportRx<D: Doorbell, R: SharedMemoryTransportable> {
+    ch: Chan,
+    doorbell: D,
+    region: R,
+    base: *mut u8,
+    rx_mtu: u32,
+}
+
+// ---------------------------------------------------------------------------
+// Futures
+// ---------------------------------------------------------------------------
 
 pub struct SendFut<'a, D: Doorbell, R: SharedMemoryTransportable> {
     result: Result<(), Error<D>>,
-
     _ph: PhantomData<&'a mut SharedMemoryTransport<D, R>>,
 }
 
-#[pin_project::pin_project]
-pub struct RecvFut<'a, D: Doorbell, R: SharedMemoryTransportable> {
+pub struct TxSendFut<'a, D: Doorbell, R: SharedMemoryTransportable> {
+    result: Result<(), Error<D>>,
+    _ph: PhantomData<&'a mut SharedMemoryTransportTx<D, R>>,
+}
+
+pub struct RecvFut<'a, D: Doorbell + 'static, R: SharedMemoryTransportable> {
     transport: *mut SharedMemoryTransport<D, R>,
     buf_ptr: *mut u8,
     buf_len: usize,
-
-    #[cfg(feature = "std")]
-    #[pin]
-    notified: Option<tokio::sync::futures::Notified<'static>>,
-
+    /// Persisted doorbell wait future. Kept alive between polls so the waker
+    /// registration is not lost when the executor parks this task.
+    wait_fut: Option<D::WaitFut<'static>>,
     _ph: PhantomData<&'a mut SharedMemoryTransport<D, R>>,
     _pin: PhantomPinned,
 }
 
-// SAFETY: the pointer is exclusively owned by this future.
+pub struct RxRecvFut<'a, D: Doorbell + 'static, R: SharedMemoryTransportable> {
+    transport: *mut SharedMemoryTransportRx<D, R>,
+    buf_ptr: *mut u8,
+    buf_len: usize,
+    /// Persisted doorbell wait future. Kept alive between polls so the waker
+    /// registration is not lost when the executor parks this task.
+    wait_fut: Option<D::WaitFut<'static>>,
+    _ph: PhantomData<&'a mut SharedMemoryTransportRx<D, R>>,
+    _pin: PhantomPinned,
+}
+
+// SAFETY: the raw pointer is exclusively owned by this future for its lifetime.
 unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send for SendFut<'_, D, R> {}
-// SAFETY: the pointer is exclusively owned by this future.
-unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send for RecvFut<'_, D, R> {}
-
-impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Transport
-    for SharedMemoryTransport<D, R>
+// SAFETY: same.
+unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send for TxSendFut<'_, D, R> {}
+// SAFETY: same.
+unsafe impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> Send
+    for RecvFut<'_, D, R>
 {
-    type Error = Error<D>;
-    type RecvFut<'a>
-        = RecvFut<'a, D, R>
-    where
-        Self: 'a;
-    type SendFut<'a>
-        = SendFut<'a, D, R>
-    where
-        Self: 'a;
-
-    fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a> {
-        let mut channel_id = 0xFF;
-
-        // Step 1. Find the tx slot for this channel.
-        for chan in 0..unsafe { rv_u8(self.base, NUM_CHANNELS_OFFSET) } {
-            // Allocate the first free channel slot for transmission.
-            let channel = unsafe { read_channel(self.base, chan as usize) };
-            if unsafe { slot::is_consumed(channel.slot_addr(self.base)) }
-                && channel.direction.is_tx()
-            {
-                channel_id = chan;
-                break;
-            }
-        }
-
-        if channel_id == 0xFF {
-            // No free channel slot was found.
-            return SendFut {
-                result: Err(Error::NoChannel),
-                _ph: PhantomData,
-            };
-        }
-
-        // Step 2. Visit the slot.
-        let channel = unsafe { read_channel(self.base, channel_id as usize) };
-        let capacity = match (channel.size as usize).checked_sub(slot::SLOT_HEADER) {
-            Some(capacity) => capacity,
-            None => {
-                return SendFut {
-                    result: Err(Error::PayloadTooLarge {
-                        payload_len: data.len(),
-                        capacity: 0,
-                    }),
-                    _ph: PhantomData,
-                };
-            }
-        };
-        if data.len() > capacity {
-            return SendFut {
-                result: Err(Error::PayloadTooLarge {
-                    payload_len: data.len(),
-                    capacity,
-                }),
-                _ph: PhantomData,
-            };
-        }
-
-        let slot_base = unsafe { channel.slot_addr(self.base) };
-        unsafe { slot::write(slot_base, data) };
-
-        self.region.flush();
-
-        let result = self.doorbell.ring(self.ch).map_err(Error::Doorbell);
-
-        // Step 3. Ring the doorbell to notify the remote core.
-        SendFut {
-            result,
-            _ph: PhantomData,
-        }
-    }
-
-    fn recv<'a>(&mut self, data: &mut [u8]) -> Self::RecvFut<'a> {
-        RecvFut {
-            transport: self as *mut _,
-            buf_ptr: data.as_mut_ptr(),
-            buf_len: data.len(),
-            #[cfg(feature = "std")]
-            notified: None,
-            _ph: PhantomData,
-            _pin: PhantomPinned,
-        }
-    }
-
-    fn max_send_size(&self) -> usize {
-        self.tx_mtu as usize
-    }
-
-    fn max_recv_size(&self) -> usize {
-        self.rx_mtu as usize
-    }
+}
+// SAFETY: same.
+unsafe impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> Send
+    for RxRecvFut<'_, D, R>
+{
 }
 
-impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Future for RecvFut<'_, D, R> {
-    type Output = Result<usize, Error<D>>;
-
-    fn poll(
-        self: core::pin::Pin<&mut Self>,
-        cx: &mut core::task::Context<'_>,
-    ) -> core::task::Poll<Self::Output> {
-        // SAFETY: `transport` is exclusively owned by this future, so it's safe to get a mutable reference.
-        let this = self.project();
-        let transport = unsafe { &mut **this.transport };
-
-        // Step 1. Find the rx slot for this channel.
-        let mut channel_id = unsafe { rv_u8(transport.base, RX_UPDATED_ID_OFFSET) };
-        let channel_num = unsafe { rv_u8(transport.base, NUM_CHANNELS_OFFSET) };
-        let mut channel: Option<ChannelLayout> = if channel_id < channel_num {
-            // Fast path: the doorbell indicated a specific channel has new data, so we check that one first.
-            let channel_layout = unsafe { read_channel(transport.base, channel_id as usize) };
-            if channel_layout.direction.is_rx()
-                && !unsafe { slot::is_consumed(channel_layout.slot_addr(transport.base)) }
-            {
-                Some(channel_layout)
-            } else {
-                None
-            }
-        } else {
-            None
-        };
-        // Step 2. Check if the slot is valid and contains a message for this channel.
-        if channel.is_none() {
-            // FALLBACK: iterate the channels to find the first valid message.
-            for chan in 0..channel_num {
-                let channel_layout = unsafe { read_channel(transport.base, chan as usize) };
-                if channel_layout.direction.is_rx()
-                    && !unsafe { slot::is_consumed(channel_layout.slot_addr(transport.base)) }
-                {
-                    channel_id = chan;
-                    channel = Some(channel_layout);
-                    break;
-                }
-            }
-        }
-
-        if channel.is_none() {
-            // No valid channel with new data was found.
-            return core::task::Poll::Pending;
-        }
-
-        // Step 3. Visit the slot.
-        let channel = unsafe { read_channel(transport.base, channel_id as usize) };
-        let slot_base = unsafe { channel.slot_addr(transport.base) };
-
-        // SAFETY: the mutable buffer is exclusively owned by this future, so it's safe to create a mutable slice from the raw pointer and length.
-        let mut buf = unsafe { core::slice::from_raw_parts_mut(*this.buf_ptr, *this.buf_len) };
-
-        if let Some(n) = unsafe { slot::try_read(slot_base, &mut buf) } {
-            // Successfully read a message from the slot.
-            return core::task::Poll::Ready(Ok(n));
-        }
-
-        transport.region.invalidate();
-
-        // Step 4. No message in the slot - poll the doorbell to wait for a notification.
-        let mut wait_fut = transport.doorbell.wait(transport.ch);
-
-        // SAFETY: `wait_fut` is a local variable and we only pin it for the duration of this poll call, so it will not be moved after pinning.
-        match unsafe { core::pin::Pin::new_unchecked(&mut wait_fut) }.poll(cx) {
-            core::task::Poll::Ready(_) => {
-                // Doorbell already fired before we polled - schedule ourselves for an immediate re-poll to read the slot.
-                cx.waker().wake_by_ref();
-            }
-            core::task::Poll::Pending => {}
-        }
-
-        core::task::Poll::Pending
-    }
-}
+// ---------------------------------------------------------------------------
+// Future impls — eager send
+// ---------------------------------------------------------------------------
 
 impl<D: Doorbell, R: SharedMemoryTransportable> Future for SendFut<'_, D, R> {
     type Output = Result<(), Error<D>>;
@@ -247,6 +367,7 @@ impl<D: Doorbell, R: SharedMemoryTransportable> Future for SendFut<'_, D, R> {
         self: core::pin::Pin<&mut Self>,
         _cx: &mut core::task::Context<'_>,
     ) -> core::task::Poll<Self::Output> {
+        // SAFETY: `SendFut` is never moved after being polled; result is stored inline.
         let this = unsafe { self.get_unchecked_mut() };
         core::task::Poll::Ready(match &this.result {
             Ok(()) => Ok(()),
@@ -254,6 +375,215 @@ impl<D: Doorbell, R: SharedMemoryTransportable> Future for SendFut<'_, D, R> {
         })
     }
 }
+
+impl<D: Doorbell, R: SharedMemoryTransportable> Future for TxSendFut<'_, D, R> {
+    type Output = Result<(), Error<D>>;
+
+    fn poll(
+        self: core::pin::Pin<&mut Self>,
+        _cx: &mut core::task::Context<'_>,
+    ) -> core::task::Poll<Self::Output> {
+        // SAFETY: `TxSendFut` is never moved after being polled; result is stored inline.
+        let this = unsafe { self.get_unchecked_mut() };
+        core::task::Poll::Ready(match &this.result {
+            Ok(()) => Ok(()),
+            Err(_) => core::mem::replace(&mut this.result, Ok(())),
+        })
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Future impls — async recv (delegates to poll_recv helper)
+// ---------------------------------------------------------------------------
+
+impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> Future
+    for RecvFut<'_, D, R>
+{
+    type Output = Result<usize, Error<D>>;
+
+    fn poll(
+        self: core::pin::Pin<&mut Self>,
+        cx: &mut core::task::Context<'_>,
+    ) -> core::task::Poll<Self::Output> {
+        // SAFETY: we never move fields out of `this`; `_pin: PhantomPinned` makes this !Unpin.
+        let this = unsafe { self.get_unchecked_mut() };
+        // SAFETY: `transport` is exclusively owned by this future.
+        let transport = unsafe { &mut *this.transport };
+        // SAFETY: `buf_ptr` and `buf_len` are exclusively owned by this future.
+        let buf = unsafe { core::slice::from_raw_parts_mut(this.buf_ptr, this.buf_len) };
+        // SAFETY: `base` covers the descriptor header; doorbell outlives `this.wait_fut`.
+        unsafe {
+            poll_recv(
+                &transport.doorbell,
+                &transport.region,
+                transport.base,
+                transport.ch,
+                buf,
+                &mut this.wait_fut,
+                cx,
+            )
+        }
+    }
+}
+
+impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> Future
+    for RxRecvFut<'_, D, R>
+{
+    type Output = Result<usize, Error<D>>;
+
+    fn poll(
+        self: core::pin::Pin<&mut Self>,
+        cx: &mut core::task::Context<'_>,
+    ) -> core::task::Poll<Self::Output> {
+        // SAFETY: we never move fields out of `this`; `_pin: PhantomPinned` makes this !Unpin.
+        let this = unsafe { self.get_unchecked_mut() };
+        // SAFETY: `transport` is exclusively owned by this future.
+        let transport = unsafe { &mut *this.transport };
+        // SAFETY: `buf_ptr` and `buf_len` are exclusively owned by this future.
+        let buf = unsafe { core::slice::from_raw_parts_mut(this.buf_ptr, this.buf_len) };
+        // SAFETY: `base` covers the descriptor header; doorbell outlives `this.wait_fut`.
+        unsafe {
+            poll_recv(
+                &transport.doorbell,
+                &transport.region,
+                transport.base,
+                transport.ch,
+                buf,
+                &mut this.wait_fut,
+                cx,
+            )
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// TransportError impls
+// ---------------------------------------------------------------------------
+
+impl<D: Doorbell, R: SharedMemoryTransportable> TransportError for SharedMemoryTransport<D, R> {
+    type Error = Error<D>;
+}
+
+impl<D: Doorbell, R: SharedMemoryTransportable> TransportError for SharedMemoryTransportTx<D, R> {
+    type Error = Error<D>;
+}
+
+impl<D: Doorbell, R: SharedMemoryTransportable> TransportError for SharedMemoryTransportRx<D, R> {
+    type Error = Error<D>;
+}
+
+// ---------------------------------------------------------------------------
+// SendTransport impls
+// ---------------------------------------------------------------------------
+
+impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
+    for SharedMemoryTransport<D, R>
+{
+    type SendFut<'a>
+        = SendFut<'a, D, R>
+    where
+        Self: 'a;
+
+    fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a> {
+        // SAFETY: `self.base` satisfies the descriptor layout invariant established in `new`.
+        let result = unsafe { send_bytes(self.ch, &self.doorbell, &self.region, self.base, data) };
+        SendFut {
+            result,
+            _ph: PhantomData,
+        }
+    }
+
+    fn max_send_size(&self) -> usize {
+        self.tx_mtu as usize
+    }
+}
+
+impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
+    for SharedMemoryTransportTx<D, R>
+{
+    type SendFut<'a>
+        = TxSendFut<'a, D, R>
+    where
+        Self: 'a;
+
+    fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a> {
+        // SAFETY: `self.base` satisfies the descriptor layout invariant established by `split`.
+        let result = unsafe { send_bytes(self.ch, &self.doorbell, &self.region, self.base, data) };
+        TxSendFut {
+            result,
+            _ph: PhantomData,
+        }
+    }
+
+    fn max_send_size(&self) -> usize {
+        self.tx_mtu as usize
+    }
+}
+
+// ---------------------------------------------------------------------------
+// RecvTransport impls
+// ---------------------------------------------------------------------------
+
+impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> RecvTransport
+    for SharedMemoryTransport<D, R>
+{
+    type RecvFut<'a>
+        = RecvFut<'a, D, R>
+    where
+        Self: 'a;
+
+    fn recv<'a>(&mut self, data: &mut [u8]) -> Self::RecvFut<'a> {
+        RecvFut {
+            transport: self as *mut _,
+            buf_ptr: data.as_mut_ptr(),
+            buf_len: data.len(),
+            wait_fut: None,
+            _ph: PhantomData,
+            _pin: PhantomPinned,
+        }
+    }
+
+    fn max_recv_size(&self) -> usize {
+        self.rx_mtu as usize
+    }
+}
+
+impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> RecvTransport
+    for SharedMemoryTransportRx<D, R>
+{
+    type RecvFut<'a>
+        = RxRecvFut<'a, D, R>
+    where
+        Self: 'a;
+
+    fn recv<'a>(&mut self, data: &mut [u8]) -> Self::RecvFut<'a> {
+        RxRecvFut {
+            transport: self as *mut _,
+            buf_ptr: data.as_mut_ptr(),
+            buf_len: data.len(),
+            wait_fut: None,
+            _ph: PhantomData,
+            _pin: PhantomPinned,
+        }
+    }
+
+    fn max_recv_size(&self) -> usize {
+        self.rx_mtu as usize
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Combined Transport impl
+// ---------------------------------------------------------------------------
+
+impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> Transport
+    for SharedMemoryTransport<D, R>
+{
+}
+
+// ---------------------------------------------------------------------------
+// SharedMemoryTransportable marker
+// ---------------------------------------------------------------------------
 
 pub trait SharedMemoryTransportable: Region {}
 

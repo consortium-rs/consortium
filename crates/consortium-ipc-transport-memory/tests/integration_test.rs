@@ -10,10 +10,11 @@ use std::{
 };
 
 use common::doorbell::HostDoorbell;
-use consortium_ipc::{Chan, Doorbell, Region, SramRegion, Transport};
+use consortium_ipc::{Chan, Doorbell, RecvTransport, Region, SendTransport, SramRegion};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, Error, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
-    SharedMemoryTransportable, channel_table_entry_offset, descriptor_init, slot,
+    SharedMemoryTransportRx, SharedMemoryTransportTx, SharedMemoryTransportable,
+    channel_table_entry_offset, descriptor_init, slot,
 };
 use futures::{pin_mut, poll};
 
@@ -22,6 +23,14 @@ const SLOT_SIZE: usize = slot::SLOT_HEADER + MTU;
 const A_TO_M_SLOT: usize = 0x100;
 const M_TO_A_SLOT: usize = A_TO_M_SLOT + SLOT_SIZE;
 const REGION_LEN: usize = M_TO_A_SLOT + SLOT_SIZE;
+
+// Paired-descriptor layout: two separate descriptor headers share two slots.
+const DESCRIPTOR_LEN: usize = 0x300;
+const A_DESCRIPTOR_OFFSET: usize = 0;
+const M_DESCRIPTOR_OFFSET: usize = DESCRIPTOR_LEN;
+const SHARED_A_TO_M_SLOT: usize = DESCRIPTOR_LEN * 2;
+const SHARED_M_TO_A_SLOT: usize = SHARED_A_TO_M_SLOT + SLOT_SIZE;
+const PAIRED_REGION_LEN: usize = SHARED_M_TO_A_SLOT + SLOT_SIZE;
 
 fn channel(offset: usize, direction: ChannelDirection) -> ChannelLayout {
     let mut layout = ChannelLayout::default();
@@ -420,6 +429,89 @@ fn recv_future_becomes_ready_after_pending_poll_then_doorbell_ring() {
     });
 }
 
+fn init_paired_descriptors(base: *mut u8) {
+    let a_base = unsafe { base.add(A_DESCRIPTOR_OFFSET) };
+    let m_base = unsafe { base.add(M_DESCRIPTOR_OFFSET) };
+
+    let a_to_m_from_a = SHARED_A_TO_M_SLOT - A_DESCRIPTOR_OFFSET;
+    let m_to_a_from_a = SHARED_M_TO_A_SLOT - A_DESCRIPTOR_OFFSET;
+    let a_to_m_from_m = SHARED_A_TO_M_SLOT - M_DESCRIPTOR_OFFSET;
+    let m_to_a_from_m = SHARED_M_TO_A_SLOT - M_DESCRIPTOR_OFFSET;
+
+    unsafe {
+        descriptor_init(
+            a_base,
+            2,
+            MTU,
+            &[
+                channel(a_to_m_from_a, ChannelDirection::AToM),
+                channel(m_to_a_from_a, ChannelDirection::MToA),
+            ],
+        );
+        descriptor_init(
+            m_base,
+            2,
+            MTU,
+            &[
+                channel(a_to_m_from_m, ChannelDirection::MToA),
+                channel(m_to_a_from_m, ChannelDirection::AToM),
+            ],
+        );
+        a_base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
+        m_base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
+    }
+}
+
+/// Demonstrate that `split()` produces two independent halves that can coexist
+/// in the same scope.  With a combined [`SharedMemoryTransport`] the borrow
+/// checker would not allow holding a send future and a receive future at the same
+/// time; the split halves remove that restriction.
+#[test]
+fn split_into_halves_allows_tx_and_rx_to_coexist() {
+    let mut backing = vec![0; REGION_LEN].into_boxed_slice();
+    let base = backing.as_mut_ptr();
+    init_two_channel_descriptor(base);
+
+    // Pre-fill the rx slot so the recv half returns immediately.
+    unsafe {
+        let rx_layout = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
+        slot::write(rx_layout.slot_addr(base), b"from-remote");
+        base.add(RX_UPDATED_ID_OFFSET).write_volatile(1);
+    }
+
+    let rt = tokio::runtime::Builder::new_current_thread()
+        .build()
+        .expect("create host runtime");
+
+    rt.block_on(async move {
+        let region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let (doorbell, _remote) = HostDoorbell::pair();
+        let ch = unsafe { Chan::new_unchecked(0) };
+        let transport = unsafe { SharedMemoryTransport::new(ch, doorbell, region, base) };
+
+        // `split` consumes the combined transport and yields two owned halves.
+        // Both live in this scope simultaneously — impossible with a single &mut transport.
+        let (mut tx, mut rx): (
+            SharedMemoryTransportTx<HostDoorbell, SramRegion>,
+            SharedMemoryTransportRx<HostDoorbell, SramRegion>,
+        ) = transport.split();
+
+        tx.send(b"to-remote").await.expect("tx half sends");
+
+        let mut buf = [0; MTU];
+        let n = rx.recv(&mut buf).await.expect("rx half receives");
+        assert_eq!(&buf[..n], b"from-remote");
+
+        // Confirm the tx payload reached its slot.
+        let tx_layout =
+            unsafe { ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(0))) };
+        let mut raw = [0; MTU];
+        let n = unsafe { slot::try_read(tx_layout.slot_addr(base), &mut raw) }
+            .expect("tx slot is readable");
+        assert_eq!(&raw[..n], b"to-remote");
+    });
+}
+
 #[derive(Clone)]
 struct CountingRegion {
     ptr: *mut u8,
@@ -567,5 +659,90 @@ fn immediate_recv_does_not_invalidate_region() {
 
         assert_eq!(observed_region.flush_count(), 0);
         assert_eq!(observed_region.invalidate_count(), 0);
+    });
+}
+
+/// Two-thread multidirectional demo: A and M each split their transport and use
+/// `tokio::join!` to send and receive **at the same time** within a single thread.
+///
+/// This is the scenario that motivated the split design.  A combined
+/// `&mut SharedMemoryTransport` cannot back two concurrent futures (`send` and `recv`
+/// both need exclusive access), so without `split` you would need a sequential
+/// send-then-recv loop or two separately constructed transports.  The split halves
+/// each hold exclusive ownership of their direction, so both can be polled
+/// concurrently with no conflict.
+#[test]
+fn split_halves_allow_full_duplex_between_two_threads() {
+    let mut backing = vec![0u8; PAIRED_REGION_LEN].into_boxed_slice();
+    let base_addr = backing.as_mut_ptr() as usize;
+    init_paired_descriptors(base_addr as *mut u8);
+
+    let (a_doorbell, m_doorbell) = HostDoorbell::pair();
+
+    std::thread::scope(|scope| {
+        // ── A-side thread ────────────────────────────────────────────────────
+        let a_thread = scope.spawn(move || {
+            let rt = tokio::runtime::Builder::new_current_thread()
+                .build()
+                .expect("create A-side runtime");
+
+            rt.block_on(async move {
+                let a_base = (base_addr + A_DESCRIPTOR_OFFSET) as *mut u8;
+                let ch = unsafe { Chan::new_unchecked(0) };
+                let region = unsafe { SramRegion::new(a_base, PAIRED_REGION_LEN) };
+                let transport =
+                    unsafe { SharedMemoryTransport::new(ch, a_doorbell, region, a_base) };
+
+                let (mut tx, mut rx): (
+                    SharedMemoryTransportTx<HostDoorbell, SramRegion>,
+                    SharedMemoryTransportRx<HostDoorbell, SramRegion>,
+                ) = transport.split();
+
+                let mut buf = [0u8; MTU];
+                eprintln!("[A] entering join");
+                let (send_res, recv_res) =
+                    futures::join!(tx.send(b"ping"), rx.recv(&mut buf));
+                eprintln!("[A] join completed");
+
+                send_res.expect("A sends ping");
+                let n = recv_res.expect("A receives pong");
+                assert_eq!(&buf[..n], b"pong");
+                eprintln!("[A] done");
+            });
+        });
+
+        // ── M-side thread ────────────────────────────────────────────────────
+        let m_thread = scope.spawn(move || {
+            let rt = tokio::runtime::Builder::new_current_thread()
+                .build()
+                .expect("create M-side runtime");
+
+            rt.block_on(async move {
+                let m_base = (base_addr + M_DESCRIPTOR_OFFSET) as *mut u8;
+                let ch = unsafe { Chan::new_unchecked(0) };
+                let region = unsafe { SramRegion::new(m_base, PAIRED_REGION_LEN) };
+                let transport =
+                    unsafe { SharedMemoryTransport::new(ch, m_doorbell, region, m_base) };
+
+                let (mut tx, mut rx): (
+                    SharedMemoryTransportTx<HostDoorbell, SramRegion>,
+                    SharedMemoryTransportRx<HostDoorbell, SramRegion>,
+                ) = transport.split();
+
+                let mut buf = [0u8; MTU];
+                eprintln!("[M] before join: about to futures::join!(rx.recv, tx.send(pong))");
+                let (recv_res, send_res) =
+                    futures::join!(rx.recv(&mut buf), tx.send(b"pong"));
+                eprintln!("[M] join completed");
+
+                let n = recv_res.expect("M receives ping");
+                assert_eq!(&buf[..n], b"ping");
+                send_res.expect("M sends pong");
+                eprintln!("[M] done");
+            });
+        });
+
+        a_thread.join().expect("A-side thread completes");
+        m_thread.join().expect("M-side thread completes");
     });
 }

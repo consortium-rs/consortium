@@ -33,7 +33,7 @@ pub use {
     doorbell::Doorbell,
     region::Region,
     regions::{DdrRegion, SerialRegion, SramRegion},
-    transport::Transport,
+    transport::{RecvTransport, SendTransport, Transport, TransportError},
     wire::IpcSafe,
 };
 

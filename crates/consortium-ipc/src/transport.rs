@@ -14,37 +14,45 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! The `Transport` trait and related types.
+//! The `Transport` trait family and related types.
 use crate::future::MaybeSend;
 
-/// Moves raw bytes between cores over a specific medium.
-/// Knows nothing about message types - that's Channel's job.
-///
-/// Owns a Doorbell internally - callers never ring/wait directly.
-/// The Transport decides when to notify and when to wait.
-pub trait Transport {
+/// Provides the `Error` associated type shared by [`SendTransport`] and [`RecvTransport`].
+pub trait TransportError {
     type Error;
+}
+
+/// Send half of a transport — moves bytes to the remote side.
+pub trait SendTransport: TransportError {
     type SendFut<'a>: Future<Output = Result<(), Self::Error>> + MaybeSend
     where
         Self: 'a;
+
+    /// Write `data` to the transport and ring the doorbell.
+    fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a>;
+
+    /// Maximum bytes transferable in a single send.
+    fn max_send_size(&self) -> usize;
+}
+
+/// Receive half of a transport — awaits bytes from the remote side.
+pub trait RecvTransport: TransportError {
     type RecvFut<'a>: Future<Output = Result<usize, Self::Error>> + MaybeSend
     where
         Self: 'a;
 
-    /// Send bytes to the remote side.
-    /// Internally handles doorbell ring after write.
-    fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a>;
-
-    /// Receive bytes from the remote side into buf.
-    /// Internally awaits doorbell before reading.
-    /// Returns number of bytes written into buf.
+    /// Await the doorbell and read bytes into `buf`.
+    /// Returns the number of bytes written into `buf`.
     fn recv<'a>(&mut self, buf: &mut [u8]) -> Self::RecvFut<'a>;
 
-    /// Maximum bytes transferable in a single send.
-    /// Channel uses this to size its serialization scratch buffer.
-    fn max_send_size(&self) -> usize;
-
     /// Maximum bytes transferable in a single recv.
-    /// Channel uses this to size its deserialization scratch buffer.
     fn max_recv_size(&self) -> usize;
 }
+
+/// Combined transport — covers both send and receive directions.
+///
+/// Implement this for full-duplex types; use [`SendTransport`] / [`RecvTransport`]
+/// directly when only one direction is needed (e.g. after a [`split`]).
+///
+/// [`split`]: crate::channel::Channel
+pub trait Transport: SendTransport + RecvTransport {}

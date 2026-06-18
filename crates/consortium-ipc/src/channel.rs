@@ -22,7 +22,7 @@ use core::marker::PhantomData;
 use core::ops::Deref;
 
 use crate::chan::Chan;
-use crate::transport::Transport;
+use crate::transport::{RecvTransport, SendTransport, TransportError};
 
 /// Marker: this channel can only send.
 pub struct Tx;
@@ -30,13 +30,13 @@ pub struct Tx;
 /// Marker: this channel can only receive.
 pub struct Rx;
 
-/// A typed, directed communication endpoint over a [`Transport`].
+/// A typed, directed communication endpoint over a transport half.
 ///
 /// # Type parameters
 ///
 /// - `D`  - direction: [`Tx`] or [`Rx`]
 /// - `T`  - message type
-/// - `Tr` - underlying transport (HSEM, MU, serial, host socket…)
+/// - `Tr` - send half ([`SendTransport`]) for `Tx`, receive half ([`RecvTransport`]) for `Rx`
 /// - `C`  - codec, defaults to [`PostcardCodec`]
 ///
 /// # Buffer ownership
@@ -50,8 +50,8 @@ pub struct Rx;
 /// let ch = Channel::<Tx, MyMsg, _>::new(chan, transport, unsafe { &mut BUF });
 /// ```
 ///
-/// The buffer must be at least `transport.max_message_size()` bytes.
-pub struct Channel<D, T, Tr: Transport, C: CodecFor<T>> {
+/// The buffer must be at least `transport.max_send_size()` / `max_recv_size()` bytes.
+pub struct Channel<D, T, Tr, C: CodecFor<T>> {
     chan: Chan,
     transport: Tr,
     buf: &'static mut [u8],
@@ -60,12 +60,12 @@ pub struct Channel<D, T, Tr: Transport, C: CodecFor<T>> {
     _codec: PhantomData<C>,
 }
 
-impl<D, T, Tr: Transport, C: CodecFor<T>> Channel<D, T, Tr, C> {
+impl<D, T, Tr, C: CodecFor<T>> Channel<D, T, Tr, C> {
     /// Construct a [`Channel`].
     ///
-    /// `chan`      - validated channel identifier  
-    /// `transport` - initialised transport  
-    /// `buf`       - scratch buffer, at least `transport.max_message_size()` bytes
+    /// `chan`      - validated channel identifier
+    /// `transport` - initialised transport half
+    /// `buf`       - scratch buffer, sized for the transport MTU
     pub fn new(chan: Chan, transport: Tr, buf: &'static mut [u8]) -> Self {
         Self {
             chan,
@@ -85,7 +85,7 @@ impl<D, T, Tr: Transport, C: CodecFor<T>> Channel<D, T, Tr, C> {
 
 impl<T, Tr, C> Channel<Tx, T, Tr, C>
 where
-    Tr: Transport,
+    Tr: SendTransport,
     C: CodecFor<T>,
 {
     /// Encode `msg` with the codec and hand the bytes to the transport.
@@ -105,7 +105,7 @@ where
 
 impl<T, Tr, C> Channel<Rx, T, Tr, C>
 where
-    Tr: Transport,
+    Tr: RecvTransport,
     C: CodecFor<T>,
 {
     /// Await the next message from the transport and decode it.
@@ -189,12 +189,12 @@ where
 ///
 /// Separates codec failures from transport failures so callers
 /// can handle them independently.
-pub enum ChannelError<C: Codec, Tr: Transport> {
+pub enum ChannelError<C: Codec, Tr: TransportError> {
     Codec(C::Error),
     Transport(Tr::Error),
 }
 
-impl<C: Codec, Tr: Transport> core::fmt::Debug for ChannelError<C, Tr>
+impl<C: Codec, Tr: TransportError> core::fmt::Debug for ChannelError<C, Tr>
 where
     C::Error: core::fmt::Debug,
     Tr::Error: core::fmt::Debug,
@@ -207,7 +207,7 @@ where
     }
 }
 
-impl<C: Codec, Tr: Transport> core::fmt::Display for ChannelError<C, Tr>
+impl<C: Codec, Tr: TransportError> core::fmt::Display for ChannelError<C, Tr>
 where
     C::Error: core::fmt::Display,
     Tr::Error: core::fmt::Display,
@@ -302,14 +302,13 @@ mod tests {
         fail_recv: bool,
     }
 
-    impl Transport for MockTransport {
+    impl crate::transport::TransportError for MockTransport {
         type Error = TransportError;
+    }
+
+    impl crate::transport::SendTransport for MockTransport {
         type SendFut<'a>
             = Ready<Result<(), Self::Error>>
-        where
-            Self: 'a;
-        type RecvFut<'a>
-            = Ready<Result<usize, Self::Error>>
         where
             Self: 'a;
 
@@ -321,6 +320,17 @@ mod tests {
             self.sent.extend_from_slice(data);
             ready(Ok(()))
         }
+
+        fn max_send_size(&self) -> usize {
+            64
+        }
+    }
+
+    impl crate::transport::RecvTransport for MockTransport {
+        type RecvFut<'a>
+            = Ready<Result<usize, Self::Error>>
+        where
+            Self: 'a;
 
         fn recv<'a>(&mut self, buf: &mut [u8]) -> Self::RecvFut<'a> {
             if self.fail_recv {
@@ -334,14 +344,12 @@ mod tests {
             ready(Ok(n))
         }
 
-        fn max_send_size(&self) -> usize {
-            64
-        }
-
         fn max_recv_size(&self) -> usize {
             64
         }
     }
+
+    impl crate::transport::Transport for MockTransport {}
 
     fn scratch<const N: usize>() -> &'static mut [u8] {
         Box::leak(Box::new([0; N])).as_mut_slice()

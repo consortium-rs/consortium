@@ -36,8 +36,10 @@ tokio             = { features = ["net", "rt", "sync"], optional = true, version
 uio               = { optional = true, version = "0.5.2" }
 
 [dev-dependencies]
-consortium-codec = { features = ["alloc", "postcard", "rkyv"], path = "../consortium-codec" }
+consortium-codec = { features = ["alloc", "postcard", "prost", "rkyv"], path = "../consortium-codec" }
 futures          = "0.3"
+prost            = { default-features = false, version = "0.14.3" }
+rkyv             = { default-features = false, features = ["bytecheck"], version = "0.8.15" }
 serde            = { default-features = false, features = ["derive"], version = "1.0.228" }
 
 [lints]

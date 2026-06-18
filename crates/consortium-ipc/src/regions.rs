@@ -66,6 +66,17 @@ impl SramRegion {
     }
 }
 
+// SAFETY: both halves intentionally alias the same shared-memory region,
+// which is the same aliasing contract accepted by `new`.
+impl Clone for SramRegion {
+    fn clone(&self) -> Self {
+        Self {
+            ptr: self.ptr,
+            len: self.len,
+        }
+    }
+}
+
 impl Region for SramRegion {
     unsafe fn as_ptr(&self) -> *mut u8 {
         self.ptr
@@ -121,6 +132,16 @@ impl DdrRegion {
     /// aliases exist while any `Transport` is using this region.
     pub unsafe fn new(ptr: *mut u8, len: usize) -> Self {
         Self { ptr, len }
+    }
+}
+
+// SAFETY: same aliasing contract as `new`.
+impl Clone for DdrRegion {
+    fn clone(&self) -> Self {
+        Self {
+            ptr: self.ptr,
+            len: self.len,
+        }
     }
 }
 
