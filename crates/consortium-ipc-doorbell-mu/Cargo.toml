@@ -15,27 +15,27 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-ipc-doorbell-mu"
-description = "MU (Messaging Unit) Doorbell driver for Consortium IPC"
-version.workspace = true
+description       = "MU (Messaging Unit) Doorbell driver for Consortium IPC"
 edition.workspace = true
 license.workspace = true
+name              = "consortium-ipc-doorbell-mu"
+version.workspace = true
 
 [features]
 # Chip selection — choose exactly one. Defaults to imx95/MUA for the current
 # CA55-side default. Enabling multiple chip features is a compile error.
 default = ["imx95", "mua"]
-imx8mp = []                # 1 MU instance (i.MX 8M Plus)
-imx93 = []                 # 2 MU instances (i.MX 93)
-imx95 = []                 # 8 MU instances (i.MX 95)
+imx8mp  = []               # 1 MU instance (i.MX 8M Plus)
+imx93   = []               # 2 MU instances (i.MX 93)
+imx95   = []               # 8 MU instances (i.MX 95)
 
 mua = []
 mub = []
 
-std = ["dep:tokio", "consortium-ipc/std"]
+std = ["consortium-ipc/std", "dep:tokio"]
 
 [dependencies]
-consortium-ipc = { path = "../consortium-ipc", default-features = false }
-atomic-waker = "1.1.2"
-bitfield = "0.13.2"
-tokio = { version = "1", features = ["rt", "sync"], optional = true }
+atomic-waker   = "1.1.2"
+bitfield       = "0.13.2"
+consortium-ipc = { default-features = false, path = "../consortium-ipc" }
+tokio          = { features = ["rt", "sync"], optional = true, version = "1" }

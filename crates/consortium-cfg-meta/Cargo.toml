@@ -15,14 +15,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-cfg-meta"
-version.workspace = true
 edition.workspace = true
 license.workspace = true
+name              = "consortium-cfg-meta"
+version.workspace = true
 
 [features]
 # stm32mp21xxxx
-stm32mp21xxxx = []
 stm32mp211axx = ["stm32mp21xxxx"]
 stm32mp211cxx = ["stm32mp21xxxx"]
 stm32mp211dxx = ["stm32mp21xxxx"]
@@ -33,9 +32,9 @@ stm32mp213dxx = ["stm32mp21xxxx"]
 stm32mp213fxx = ["stm32mp21xxxx"]
 stm32mp215axx = ["stm32mp21xxxx"]
 stm32mp215dxx = ["stm32mp21xxxx"]
+stm32mp21xxxx = []
 
 # stm32mp23xxxx
-stm32mp23xxxx = []
 stm32mp231axx = ["stm32mp23xxxx"]
 stm32mp231cxx = ["stm32mp23xxxx"]
 stm32mp231dxx = ["stm32mp23xxxx"]
@@ -46,9 +45,9 @@ stm32mp235axx = ["stm32mp23xxxx"]
 stm32mp235cxx = ["stm32mp23xxxx"]
 stm32mp235dxx = ["stm32mp23xxxx"]
 stm32mp235fxx = ["stm32mp23xxxx"]
+stm32mp23xxxx = []
 
 # stm32mp25xxxx
-stm32mp25xxxx = []
 stm32mp251axx = ["stm32mp25xxxx"]
 stm32mp251cxx = ["stm32mp25xxxx"]
 stm32mp251dxx = ["stm32mp25xxxx"]
@@ -63,6 +62,7 @@ stm32mp257axx = ["stm32mp25xxxx"]
 stm32mp257cxx = ["stm32mp25xxxx"]
 stm32mp257dxx = ["stm32mp25xxxx"]
 stm32mp257fxx = ["stm32mp25xxxx"]
+stm32mp25xxxx = []
 
 [dependencies]
 

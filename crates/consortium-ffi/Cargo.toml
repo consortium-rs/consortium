@@ -15,9 +15,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-ffi"
-version.workspace = true
 edition.workspace = true
 license.workspace = true
+name              = "consortium-ffi"
+version.workspace = true
 
 [dependencies]

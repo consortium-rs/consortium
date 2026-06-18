@@ -1,0 +1,10 @@
+[package]
+edition.workspace = true
+license.workspace = true
+name              = "consortium-runtime-prt"
+version.workspace = true
+
+[dependencies]
+
+[lints]
+workspace = true

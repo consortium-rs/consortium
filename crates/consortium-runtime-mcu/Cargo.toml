@@ -15,33 +15,39 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-runtime-mcu"
-description = "Consortium microcontroller cpu runtime library"
-version.workspace = true
+description       = "Consortium microcontroller cpu runtime library"
 edition.workspace = true
 license.workspace = true
+name              = "consortium-runtime-mcu"
+version.workspace = true
 
 [features]
 stm32mp21x = ["consortium-ipc-doorbell-ipcc/stm32mp21x"]
-stm32mp23x = ["consortium-ipc-doorbell-hsem", "consortium-ipc-doorbell-ipcc/stm32mp23x"]
-stm32mp25x = ["consortium-ipc-doorbell-hsem", "consortium-ipc-doorbell-ipcc/stm32mp25x"]
+stm32mp23x = [
+  "consortium-ipc-doorbell-hsem",
+  "consortium-ipc-doorbell-ipcc/stm32mp23x",
+]
+stm32mp25x = [
+  "consortium-ipc-doorbell-hsem",
+  "consortium-ipc-doorbell-ipcc/stm32mp25x",
+]
 # Compatibility alias for the previous STM32MP2 default. New code should use
 # the chip-family features above so STM32MP21 can select IPCC without HSEM.
+default    = ["stm32mp25x"]
+imx93      = ["consortium-ipc-doorbell-mu/imx93", "imx9x"]
+imx95      = ["consortium-ipc-doorbell-mu/imx95", "imx9x"]
+imx9x      = []
 stm32mp2xx = ["stm32mp25x"]
-imx9x = []
-imx93 = ["imx9x", "consortium-ipc-doorbell-mu/imx93"]
-imx95 = ["imx9x", "consortium-ipc-doorbell-mu/imx95"]
-default = ["stm32mp25x"]
 
 [dependencies]
-consortium-ipc = { path = "../consortium-ipc", default-features = false }
-consortium-ipc-doorbell-hsem = { path = "../consortium-ipc-doorbell-hsem", default-features = false, optional = true }
-consortium-ipc-doorbell-ipcc = { path = "../consortium-ipc-doorbell-ipcc", default-features = false, optional = true }
-consortium-ipc-doorbell-mu = { path = "../consortium-ipc-doorbell-mu", default-features = false, optional = true }
-consortium-ipc-transport-memory = { path = "../consortium-ipc-transport-memory", default-features = false }
-static_cell = { version = "2", default-features = false }
-embassy-executor = { version = "0.10.0", default-features = false, features = [
-  "platform-cortex-m",
-] }
+consortium-ipc = { default-features = false, path = "../consortium-ipc" }
+consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem" }
+consortium-ipc-doorbell-ipcc = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-ipcc" }
+consortium-ipc-doorbell-mu = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu" }
+consortium-ipc-transport-memory = { default-features = false, path = "../consortium-ipc-transport-memory" }
 cortex-m = { version = "0.7" }
-num-traits = { version = "0.2.19", default-features = false }
+embassy-executor = { default-features = false, features = [
+  "platform-cortex-m",
+], version = "0.10.0" }
+num-traits = { default-features = false, version = "0.2.19" }
+static_cell = { default-features = false, version = "2" }

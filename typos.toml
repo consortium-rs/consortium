@@ -1,10 +1,15 @@
 [files]
-extend-exclude = ["target", "data/stm32mp", "dialogs", "sim/renode/stm32mp257/firmware.elf"]
+extend-exclude = [
+  "data/stm32mp",
+  "dialogs",
+  "sim/renode/stm32mp257/firmware.elf",
+  "target",
+]
 
 [default.extend-words]
-GIR = "GIR"
 GIPn = "GIPn"
-hsi = "hsi"
-MIS = "MIS"
-Pn = "Pn"
+GIR  = "GIR"
+MIS  = "MIS"
+Pn   = "Pn"
 SISE = "SISE"
+hsi  = "hsi"

@@ -1,9 +1,9 @@
 [package]
-name = "consortium-ipc-macros"
-description = "Proc-macro wrappers for Consortium IPC"
-version.workspace = true
+description       = "Proc-macro wrappers for Consortium IPC"
 edition.workspace = true
 license.workspace = true
+name              = "consortium-ipc-macros"
+version.workspace = true
 
 [lints]
 workspace = true

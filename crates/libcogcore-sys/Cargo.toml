@@ -1,14 +1,20 @@
 [package]
-name = "libcogcore-sys"
-version = "0.1.0"
-edition.workspace = true
 description = "FFI bindings to libcogcore (Cog WPE browser engine)"
+edition.workspace = true
+include = [
+  "Cargo.toml",
+  "build.rs",
+  "src/**/*",
+  "vendor/include/**/*",
+  "wrapper.h",
+]
 license.workspace = true
 links = "cogcore"
-include = ["src/**/*", "build.rs", "wrapper.h", "vendor/include/**/*", "Cargo.toml"]
+name = "libcogcore-sys"
+version = "0.1.0"
 
 [build-dependencies]
-bindgen = "0.72"
+bindgen    = "0.72"
 pkg-config = "0.3.33"
 
 [dependencies]

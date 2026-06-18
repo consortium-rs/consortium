@@ -15,9 +15,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-hmi"
-version.workspace = true
 edition.workspace = true
 license.workspace = true
+name              = "consortium-hmi"
+version.workspace = true
 
 [dependencies]

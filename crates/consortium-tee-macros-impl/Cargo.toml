@@ -15,19 +15,19 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-tee-macros-impl"
-description = "Implementation crate for Consortium TEE macros"
-version.workspace = true
+description       = "Implementation crate for Consortium TEE macros"
 edition.workspace = true
 license.workspace = true
+name              = "consortium-tee-macros-impl"
+version.workspace = true
 
 [dependencies]
-heck = "0.5.0"
+heck               = "0.5.0"
 proc-macro-warning = "0.4"
-proc-macro2 = "1.0.106"
-quote = "1.0.45"
-syn = { version = "2.0.117", features = ["full"] }
+proc-macro2        = "1.0.106"
+quote              = "1.0.45"
+syn                = { features = ["full"], version = "2.0.117" }
 
 [dev-dependencies]
-insta = "1"
+insta        = "1"
 prettyplease = "0.2"

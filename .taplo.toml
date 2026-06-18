@@ -1,7 +1,7 @@
-include = ["**/*.toml"]
 exclude = ["target/**"]
+include = ["**/*.toml"]
 
 [formatting]
-column_width = 100
+column_width  = 100
 indent_string = "  "
-reorder_keys = false
+reorder_keys  = false
