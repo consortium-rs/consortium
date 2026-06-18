@@ -5,12 +5,49 @@ a32_target := "armv7-unknown-linux-gnueabihf"
 rv32imc_target := "riscv32imc-unknown-none-elf"
 rv32imac_target := "riscv32imac-unknown-none-elf"
 rv32imafcp_target := "riscv32imafc-unknown-none-elf"
+rust_tools := "taplo-cli typos-cli cargo-deny cargo-expand cargo-insta cargo-shear"
+ls_lint_version := "2.3.1"
 
 # List available recipes
 default:
     @just --list
 
 # ── Core Commands (from CLAUDE.md) ───────────────────────────────────────────
+
+# Install local development tools
+setup: setup-uv setup-vp setup-rust-tools setup-ls-lint
+
+# Install uv
+setup-uv:
+    @if command -v uv >/dev/null 2>&1; then \
+        echo "uv is already installed"; \
+    else \
+        curl -LsSf https://astral.sh/uv/install.sh | sh; \
+    fi
+
+# Install Vite+
+setup-vp:
+    @if command -v vp >/dev/null 2>&1; then \
+        echo "vp is already installed"; \
+    else \
+        curl -fsSL https://vite.plus | bash; \
+    fi
+
+# Install Cargo-hosted development tools
+setup-rust-tools: setup-cargo-binstall
+    cargo binstall -y {{ rust_tools }}
+
+# Install cargo-binstall, used for fast binary installs of Rust tooling
+setup-cargo-binstall:
+    @if command -v cargo-binstall >/dev/null 2>&1; then \
+        echo "cargo-binstall is already installed"; \
+    else \
+        cargo install cargo-binstall; \
+    fi
+
+# Prime ls-lint through vp dlx
+setup-ls-lint:
+    vp dlx --yes @ls-lint/ls-lint@{{ ls_lint_version }} --version
 
 # Build all crates
 build:
@@ -31,13 +68,13 @@ test area="" scope="":
         *) echo "Error: unknown test scope '{{ area }} {{ scope }}'"; echo "Try: just test ipc host | a64 | a32 | m8 | m7, or just test tee host | a64 | a32"; exit 1 ;; \
     esac
 
-# Run tests for a specific crate (e.g. `just test-crate consortium-ipc`)
+# Run tests for a specific crate (e.g. `just test-crate ipc`)
 test-crate crate:
-    cargo test -p {{ crate }}
+    @crate={{ quote(crate) }}; case "$crate" in consortium-*) ;; *) crate="consortium-$crate";; esac; cargo test -p "$crate"
 
-# Run a single test by name (e.g. `just test-fn consortium-ipc my_test`)
+# Run a single test by name (e.g. `just test-fn ipc my_test`)
 test-fn crate test_name:
-    cargo test -p {{ crate }} {{ test_name }}
+    @crate={{ quote(crate) }}; test_name={{ quote(test_name) }}; case "$crate" in consortium-*) ;; *) crate="consortium-$crate";; esac; cargo test -p "$crate" "$test_name"
 
 # Lint with Clippy
 clippy:
@@ -49,6 +86,9 @@ lint: clippy taplo-check typos ls-lint
 # Format code
 fmt:
     cargo fmt
+    vp fmt
+    uvx ruff format
+    taplo format
 
 # Format TOML files
 taplo-fmt:
@@ -65,7 +105,7 @@ typos:
 
 # Check file and directory names
 ls-lint:
-    npx --yes @ls-lint/ls-lint@2.3.1
+    vp dlx --yes @ls-lint/ls-lint@{{ ls_lint_version }}
 
 # ── Host (dev / CI) ──────────────────────────────────────────────────────────
 
