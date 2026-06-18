@@ -516,6 +516,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-runtime-prt"
+version = "0.1.0"
+
+[[package]]
 name = "consortium-tee"
 version = "0.1.0"
 dependencies = [

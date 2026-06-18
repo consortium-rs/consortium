@@ -15,15 +15,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-builder"
-description = "Build system for Consortium applications and runtimes"
-version.workspace = true
+description       = "Build system for Consortium applications and runtimes"
 edition.workspace = true
 license.workspace = true
+name              = "consortium-builder"
+version.workspace = true
 
 [dependencies]
-consortium-common = { path = "../consortium-common", features = ["serde", "std"] }
-tokio = { version = "1.50.0", features = ["full"] }
+consortium-common = { features = [
+  "serde",
+  "std",
+], path = "../consortium-common" }
+thiserror = "2.0.18"
+tokio = { features = ["full"], version = "1.50.0" }
 toml = "1.1.0"
 uuid = "1.23.0"
-thiserror = "2.0.18"

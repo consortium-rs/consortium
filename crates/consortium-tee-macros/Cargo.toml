@@ -15,11 +15,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-tee-macros"
-description = "Proc-macro wrappers for Consortium TEE"
-version.workspace = true
+description       = "Proc-macro wrappers for Consortium TEE"
 edition.workspace = true
 license.workspace = true
+name              = "consortium-tee-macros"
+version.workspace = true
 
 [lib]
 proc-macro = true

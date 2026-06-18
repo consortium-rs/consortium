@@ -15,25 +15,27 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-tee"
-description = "Trusted Execution Environment (TEE) support for Consortium with pluggable codec serialization via consortium_codec::CodecFor"
-version.workspace = true
+description       = "Trusted Execution Environment (TEE) support for Consortium with pluggable codec serialization via consortium_codec::CodecFor"
 edition.workspace = true
 license.workspace = true
+name              = "consortium-tee"
+version.workspace = true
 
 [features]
-ta = []
-ca = ["dep:optee-teec", "dep:tokio"]
+ca      = ["dep:optee-teec", "dep:tokio"]
 default = ["ca"]
+ta      = []
 
 [dependencies]
-thiserror = "2.0.18"
 consortium-codec = { path = "../consortium-codec" }
 consortium-tee-macros = { path = "../consortium-tee-macros" }
-tokio = { version = "1", default-features = false, optional = true, features = ["rt"] }
+thiserror = "2.0.18"
+tokio = { default-features = false, features = [
+  "rt",
+], optional = true, version = "1" }
 
 [dev-dependencies]
 trybuild = "1"
 
 [target.'cfg(target_os = "linux")'.dependencies]
-optee-teec = { version = "0.8.0", optional = true }
+optee-teec = { optional = true, version = "0.8.0" }

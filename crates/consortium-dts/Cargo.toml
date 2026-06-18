@@ -15,14 +15,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-dts"
-description = "Device Tree Source AST construction and code generation for Consortium"
-version.workspace = true
+description       = "Device Tree Source AST construction and code generation for Consortium"
 edition.workspace = true
 license.workspace = true
+name              = "consortium-dts"
+version.workspace = true
 
 [dependencies]
-logos = "0.15"
+logos     = "0.15"
 thiserror = "2.0.18"
 
 [dev-dependencies]

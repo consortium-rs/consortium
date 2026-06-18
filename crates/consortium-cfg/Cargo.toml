@@ -15,14 +15,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-cfg"
-description = "Configuration subsystem support for the Consortium project."
-version.workspace = true
+description       = "Configuration subsystem support for the Consortium project."
 edition.workspace = true
 license.workspace = true
+name              = "consortium-cfg"
+version.workspace = true
 
 [dependencies]
-consortium-common = { path = "../consortium-common", features = ["serde", "std"] }
+consortium-common = { features = [
+  "serde",
+  "std",
+], path = "../consortium-common" }
 consortium-dts = { path = "../consortium-dts" }
 embedded-hal.workspace = true
 thiserror = "2.0.18"

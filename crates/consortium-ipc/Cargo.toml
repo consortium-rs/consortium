@@ -15,23 +15,23 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-ipc"
-description = "Core IPC primitives for Consortium"
-version.workspace = true
+description       = "Core IPC primitives for Consortium"
 edition.workspace = true
 license.workspace = true
+name              = "consortium-ipc"
+version.workspace = true
 
 [dependencies]
-consortium-codec = { path = "../consortium-codec" }
-num_enum = { version = "0.7.3", default-features = false }
-thiserror = { version = "2.0", default-features = false }
+consortium-codec      = { path = "../consortium-codec" }
 consortium-ipc-macros = { path = "../consortium-ipc-macros" }
+num_enum              = { default-features = false, version = "0.7.3" }
+thiserror             = { default-features = false, version = "2.0" }
 
 [dev-dependencies]
-futures = "0.3"
+futures  = "0.3"
 trybuild = "1"
 
 [features]
-std = ["alloc", "futures"]
-alloc = []
+alloc   = []
 futures = []
+std     = ["alloc", "futures"]

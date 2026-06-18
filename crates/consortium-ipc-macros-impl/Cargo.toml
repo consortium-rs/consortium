@@ -1,19 +1,19 @@
 [package]
-name = "consortium-ipc-macros-impl"
-description = "Implementation crate for Consortium IPC macros"
-version.workspace = true
+description       = "Implementation crate for Consortium IPC macros"
 edition.workspace = true
 license.workspace = true
+name              = "consortium-ipc-macros-impl"
+version.workspace = true
 
 [lints]
 workspace = true
 
 [dependencies]
-heck = "0.5.0"
+heck        = "0.5.0"
 proc-macro2 = "1.0.106"
-quote = "1.0.45"
-syn = { version = "2.0.117", features = ["full"] }
+quote       = "1.0.45"
+syn         = { features = ["full"], version = "2.0.117" }
 
 [dev-dependencies]
-insta = "1"
+insta        = "1"
 prettyplease = "0.2"

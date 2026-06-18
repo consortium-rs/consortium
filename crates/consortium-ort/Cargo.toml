@@ -15,14 +15,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-ort"
-description = "ONNX Runtime (ORT) library for Consortium"
-version.workspace = true
+description       = "ONNX Runtime (ORT) library for Consortium"
 edition.workspace = true
 license.workspace = true
+name              = "consortium-ort"
+version.workspace = true
 
 [features]
 tracing = ["ort/tracing"]
 
 [dependencies]
-ort = { version = "2.0.0-rc.12", features = ["std", "ndarray", "api-24"], default-features = false }
+ort = { default-features = false, features = [
+  "api-24",
+  "ndarray",
+  "std",
+], version = "2.0.0-rc.12" }

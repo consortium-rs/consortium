@@ -15,11 +15,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-codec-macros"
-description = "Proc-macro wrappers for Consortium codec"
-version.workspace = true
+description       = "Proc-macro wrappers for Consortium codec"
 edition.workspace = true
 license.workspace = true
+name              = "consortium-codec-macros"
+version.workspace = true
 
 [lints]
 workspace = true

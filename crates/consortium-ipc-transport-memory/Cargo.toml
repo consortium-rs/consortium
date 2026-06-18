@@ -15,30 +15,34 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-ipc-transport-memory"
-version.workspace = true
 edition.workspace = true
 license.workspace = true
+name              = "consortium-ipc-transport-memory"
+version.workspace = true
 
 [features]
-alloc = ["consortium-ipc/alloc"]
-std = ["alloc", "dep:tokio", "dep:uio"]
+alloc   = ["consortium-ipc/alloc"]
 default = ["std"]
+std     = ["alloc", "dep:tokio", "dep:uio"]
 
 [dependencies]
-num_enum = { version = "0.7.3", default-features = false }
-thiserror = { version = "2.0", default-features = false }
-consortium-ipc = { path = "../consortium-ipc", default-features = false }
-crc32fast = { version = "1.5.0", default-features = false }
-tokio = { version = "1", optional = true, features = ["rt", "sync", "net"] }
-pin-project = { version = "1.1.11" }
-uio = { version = "0.5.2", optional = true }
-consortium-common = { path = "../consortium-common", default-features = false }
+consortium-common = { default-features = false, path = "../consortium-common" }
+consortium-ipc    = { default-features = false, path = "../consortium-ipc" }
+crc32fast         = { default-features = false, version = "1.5.0" }
+num_enum          = { default-features = false, version = "0.7.3" }
+pin-project       = { version = "1.1.11" }
+thiserror         = { default-features = false, version = "2.0" }
+tokio             = { features = ["net", "rt", "sync"], optional = true, version = "1" }
+uio               = { optional = true, version = "0.5.2" }
 
 [dev-dependencies]
-consortium-codec = { path = "../consortium-codec", features = ["alloc", "postcard", "rkyv"] }
+consortium-codec = { features = [
+  "alloc",
+  "postcard",
+  "rkyv",
+], path = "../consortium-codec" }
 futures = "0.3"
-serde = { version = "1.0.228", features = ["derive"], default-features = false }
+serde = { default-features = false, features = ["derive"], version = "1.0.228" }
 
 [lints]
 workspace = true

@@ -16,61 +16,62 @@
 
 [workspace]
 members = [
-  "crates/consortium-ipc",
-  "crates/consortium-cli",
+  "crates/consortium-builder",
   "crates/consortium-cfg",
   "crates/consortium-cfg-meta",
+  "crates/consortium-cli",
+  "crates/consortium-codec",
+  "crates/consortium-codec-macros",
+  "crates/consortium-codec-macros-impl",
+  "crates/consortium-common",
   "crates/consortium-dbg-defmt",
   "crates/consortium-dts",
+  "crates/consortium-ffi",
+  "crates/consortium-hmi",
+  "crates/consortium-ipc",
+  "crates/consortium-ipc-doorbell-gpio",
   "crates/consortium-ipc-doorbell-hsem",
   "crates/consortium-ipc-doorbell-ipcc",
   "crates/consortium-ipc-doorbell-mu",
   "crates/consortium-ipc-macros",
   "crates/consortium-ipc-macros-impl",
-  "crates/consortium-runtime-mcu",
+  "crates/consortium-ipc-transport-memory",
+  "crates/consortium-ort",
   "crates/consortium-runtime-app",
-  "crates/consortium-builder",
-  "crates/consortium-codec",
-  "crates/consortium-codec-macros",
-  "crates/consortium-codec-macros-impl",
-  "crates/consortium-common",
+  "crates/consortium-runtime-mcu",
+  "crates/consortium-runtime-prt",
   "crates/consortium-tee",
   "crates/consortium-tee-macros",
   "crates/consortium-tee-macros-impl",
-  "crates/consortium-ffi",
-  "crates/consortium-hmi",
-  "crates/consortium-ort",
-  "crates/consortium-ipc-doorbell-gpio",
   "crates/consortium-tee-test",
-  "crates/consortium-ipc-transport-memory",
-  "crates/libcogcore-sys",
   "crates/libcogcore",
+  "crates/libcogcore-sys",
 ]
 resolver = "2"
 
 [workspace.package]
-version = "0.1.0"
 edition = "2024"
 license = "Apache-2.0"
+version = "0.1.0"
 
 [workspace.lints.rust]
 unsafe_op_in_unsafe_fn = "deny"
 
 [workspace.lints.clippy]
-undocumented_unsafe_blocks = "deny"
-unnecessary_safety_comment = "deny"
-unnecessary_safety_doc = "deny"
 multiple_unsafe_ops_per_block = "deny"
+undocumented_unsafe_blocks    = "deny"
+unnecessary_safety_comment    = "deny"
+unnecessary_safety_doc        = "deny"
 
 [workspace.dependencies]
 embedded-hal = "1.0"
 
 [profile.dev]
-panic = "abort"
-lto = true
+lto       = true
 opt-level = 1
+panic     = "abort"
 
 [profile.release]
-panic = "abort"
-lto = true
+lto       = true
 opt-level = 1
+panic     = "abort"

@@ -15,33 +15,35 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-tee-test"
-version.workspace = true
 edition.workspace = true
 license.workspace = true
+name              = "consortium-tee-test"
+version.workspace = true
 
 [features]
-ca = ["dep:optee-teec"]
-ta = ["dep:optee-utee", "dep:optee-utee-sys"]
+ca      = ["dep:optee-teec"]
 default = ["ta"]
+ta      = ["dep:optee-utee", "dep:optee-utee-sys"]
 
 [lib]
-name = "consortium_tee_test"
-path = "src/lib.rs"
-crate-type = ["staticlib", "cdylib", "rlib"]
+crate-type = ["cdylib", "rlib", "staticlib"]
+name       = "consortium_tee_test"
+path       = "src/lib.rs"
 
 [[bin]]
-name = "consortium_tee_test"
-path = "src/main.rs"
+name              = "consortium_tee_test"
+path              = "src/main.rs"
 required-features = ["ta"]
 
 [target.'cfg(target_os = "linux")'.dependencies]
-consortium-tee = { path = "../consortium-tee", default-features = false, features = ["ta"] }
-num_enum = { version = "0.7.6", default-features = false }
-tokio = { version = "1.51.1", features = ["rt"] }
-optee-teec = { version = "0.8.0", optional = true }
-optee-utee = { version = "0.8.0", optional = true, default-features = false }
-optee-utee-sys = { version = "0.8.0", optional = true, default-features = false }
+consortium-tee = { default-features = false, features = [
+  "ta",
+], path = "../consortium-tee" }
+num_enum = { default-features = false, version = "0.7.6" }
+optee-teec = { optional = true, version = "0.8.0" }
+optee-utee = { default-features = false, optional = true, version = "0.8.0" }
+optee-utee-sys = { default-features = false, optional = true, version = "0.8.0" }
+tokio = { features = ["rt"], version = "1.51.1" }
 
 [target.'cfg(target_os = "linux")'.build-dependencies]
 optee-utee-build = "0.8.0"

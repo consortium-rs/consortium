@@ -15,11 +15,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-cli"
-description = "Command-line interface for managing Consortium applications and runtimes"
-version.workspace = true
+description       = "Command-line interface for managing Consortium applications and runtimes"
 edition.workspace = true
 license.workspace = true
+name              = "consortium-cli"
+version.workspace = true
 
 [dependencies]
-serde = { version = "1.0.228", features = ["derive"] }
+serde = { features = ["derive"], version = "1.0.228" }

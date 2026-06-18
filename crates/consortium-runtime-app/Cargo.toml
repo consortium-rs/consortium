@@ -15,49 +15,55 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-name = "consortium-runtime-app"
-description = "Consortium application (nonsecure) runtime library on Linux side"
-version.workspace = true
+description       = "Consortium application (nonsecure) runtime library on Linux side"
 edition.workspace = true
 license.workspace = true
+name              = "consortium-runtime-app"
+version.workspace = true
 
 [features]
 stm32mp21x = ["consortium-ipc-doorbell-ipcc/stm32mp21x"]
-stm32mp23x = ["consortium-ipc-doorbell-hsem", "consortium-ipc-doorbell-ipcc/stm32mp23x"]
-stm32mp25x = ["consortium-ipc-doorbell-hsem", "consortium-ipc-doorbell-ipcc/stm32mp25x"]
+stm32mp23x = [
+  "consortium-ipc-doorbell-hsem",
+  "consortium-ipc-doorbell-ipcc/stm32mp23x",
+]
+stm32mp25x = [
+  "consortium-ipc-doorbell-hsem",
+  "consortium-ipc-doorbell-ipcc/stm32mp25x",
+]
 # Compatibility alias for the previous STM32MP2 default. New code should use
 # the chip-family features above so STM32MP21 can select IPCC without HSEM.
+default    = ["imx9x", "stm32mp25x", "tee"]
+ffi        = ["consortium-ffi"]
+hmi        = ["consortium-hmi"]
+imx9x      = ["consortium-ipc-doorbell-mu"]
+ort        = ["consortium-ort"]
 stm32mp2xx = ["stm32mp25x"]
-imx9x = ["consortium-ipc-doorbell-mu"]
-default = ["stm32mp25x", "imx9x", "tee"]
-tee = ["consortium-tee"]
-hmi = ["consortium-hmi"]
-ffi = ["consortium-ffi"]
-ort = ["consortium-ort"]
+tee        = ["consortium-tee"]
 
 [target.'cfg(target_os = "linux")'.dependencies]
-consortium-ipc-transport-memory = { path = "../consortium-ipc-transport-memory", features = [
-  "std",
-] }
-consortium-tee = { path = "../consortium-tee", optional = true }
-consortium-ipc = { path = "../consortium-ipc", features = ["std"] }
-consortium-ipc-doorbell-hsem = { path = "../consortium-ipc-doorbell-hsem", features = [
-  "std",
-], optional = true }
-consortium-ipc-doorbell-ipcc = { path = "../consortium-ipc-doorbell-ipcc", features = [
-  "std",
-], optional = true }
 consortium-common = { path = "../consortium-common" }
-consortium-ipc-doorbell-mu = { path = "../consortium-ipc-doorbell-mu", features = [
+consortium-ffi = { optional = true, path = "../consortium-ffi" }
+consortium-hmi = { optional = true, path = "../consortium-hmi" }
+consortium-ipc = { features = ["std"], path = "../consortium-ipc" }
+consortium-ipc-doorbell-hsem = { features = [
   "std",
-], optional = true }
-consortium-hmi = { path = "../consortium-hmi", optional = true }
-consortium-ffi = { path = "../consortium-ffi", optional = true }
-consortium-ort = { path = "../consortium-ort", optional = true }
-tokio = { version = "1", features = ["rt", "time", "io-util"] }
+], optional = true, path = "../consortium-ipc-doorbell-hsem" }
+consortium-ipc-doorbell-ipcc = { features = [
+  "std",
+], optional = true, path = "../consortium-ipc-doorbell-ipcc" }
+consortium-ipc-doorbell-mu = { features = [
+  "std",
+], optional = true, path = "../consortium-ipc-doorbell-mu" }
+consortium-ipc-transport-memory = { features = [
+  "std",
+], path = "../consortium-ipc-transport-memory" }
+consortium-ort = { optional = true, path = "../consortium-ort" }
+consortium-tee = { optional = true, path = "../consortium-tee" }
 libc = "0.2"
-uio = { version = "0.5.2" }
 thiserror = { version = "2.0" }
+tokio = { features = ["io-util", "rt", "time"], version = "1" }
+uio = { version = "0.5.2" }
 
 
 [dependencies]
