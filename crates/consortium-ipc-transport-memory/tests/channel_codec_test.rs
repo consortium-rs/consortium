@@ -150,10 +150,8 @@ where
                 let transport =
                     unsafe { SharedMemoryTransport::new(ch, a_doorbell, region, a_base) };
                 let (tx_half, rx_half) = transport.split();
-                let mut tx =
-                    Channel::<Tx, Message, _, C>::new(ch, tx_half, scratch::<MTU>());
-                let mut rx =
-                    Channel::<Rx, Message, _, C>::new(ch, rx_half, scratch::<MTU>());
+                let mut tx = Channel::<Tx, Message, _, C>::new(ch, tx_half, scratch::<MTU>());
+                let mut rx = Channel::<Rx, Message, _, C>::new(ch, rx_half, scratch::<MTU>());
 
                 tx.send(&a_to_m)
                     .await
@@ -182,10 +180,8 @@ where
                 let transport =
                     unsafe { SharedMemoryTransport::new(ch, m_doorbell, region, m_base) };
                 let (tx_half, rx_half) = transport.split();
-                let mut tx =
-                    Channel::<Tx, Message, _, C>::new(ch, tx_half, scratch::<MTU>());
-                let mut rx =
-                    Channel::<Rx, Message, _, C>::new(ch, rx_half, scratch::<MTU>());
+                let mut tx = Channel::<Tx, Message, _, C>::new(ch, tx_half, scratch::<MTU>());
+                let mut rx = Channel::<Rx, Message, _, C>::new(ch, rx_half, scratch::<MTU>());
 
                 a_sent_for_m.wait();
 
