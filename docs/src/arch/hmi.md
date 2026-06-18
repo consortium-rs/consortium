@@ -515,7 +515,7 @@ async fn handle_websocket_client(
         box-sizing: border-box;
       }
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         padding: 20px;
@@ -628,13 +628,13 @@ async fn handle_websocket_client(
     </div>
 
     <script>
-      const ws = new WebSocket("ws://" + location.host + "/ws");
-      ws.onmessage = (e) => (document.documentElement.innerHTML = e.data);
+      const ws = new WebSocket('ws://' + location.host + '/ws')
+      ws.onmessage = (e) => (document.documentElement.innerHTML = e.data)
 
       function send(action, value) {
-        const event = {};
-        event[action] = value;
-        ws.send(JSON.stringify(event));
+        const event = {}
+        event[action] = value
+        ws.send(JSON.stringify(event))
       }
     </script>
   </body>

@@ -23,14 +23,8 @@ version.workspace = true
 
 [features]
 stm32mp21x = ["consortium-ipc-doorbell-ipcc/stm32mp21x"]
-stm32mp23x = [
-  "consortium-ipc-doorbell-hsem",
-  "consortium-ipc-doorbell-ipcc/stm32mp23x",
-]
-stm32mp25x = [
-  "consortium-ipc-doorbell-hsem",
-  "consortium-ipc-doorbell-ipcc/stm32mp25x",
-]
+stm32mp23x = ["consortium-ipc-doorbell-hsem", "consortium-ipc-doorbell-ipcc/stm32mp23x"]
+stm32mp25x = ["consortium-ipc-doorbell-hsem", "consortium-ipc-doorbell-ipcc/stm32mp25x"]
 # Compatibility alias for the previous STM32MP2 default. New code should use
 # the chip-family features above so STM32MP21 can select IPCC without HSEM.
 default    = ["imx9x", "stm32mp25x", "tee"]

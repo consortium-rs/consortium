@@ -2,6 +2,9 @@ exclude = ["target/**"]
 include = ["**/*.toml"]
 
 [formatting]
-column_width  = 100
-indent_string = "  "
-reorder_keys  = false
+column_width          = 100
+indent_string         = "  "
+reorder_keys          = false
+align_entries         = true
+reorder_arrays        = true
+reorder_inline_tables = true
