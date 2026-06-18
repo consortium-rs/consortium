@@ -123,7 +123,11 @@ unsafe fn poll_recv<D: Doorbell + Send + 'static, R: SharedMemoryTransportable>(
         let slot_addr = unsafe { layout.slot_addr(base) };
         // SAFETY: `slot_addr` points to a valid slot.
         let consumed = unsafe { slot::is_consumed(slot_addr) };
-        if layout.direction.is_rx() && !consumed { Some(layout) } else { None }
+        if layout.direction.is_rx() && !consumed {
+            Some(layout)
+        } else {
+            None
+        }
     } else {
         None
     };
@@ -188,8 +192,7 @@ unsafe fn arm_wait<D: Doorbell + Send + 'static>(
     // future, and the transport is guaranteed to outlive the future.  Erasing the
     // lifetime to 'static is sound because `wait_fut` is dropped before the
     // transport (enforced by the PhantomData<&'a mut Transport> on the future struct).
-    let wf =
-        unsafe { core::mem::transmute::<D::WaitFut<'_>, D::WaitFut<'static>>(wf) };
+    let wf = unsafe { core::mem::transmute::<D::WaitFut<'_>, D::WaitFut<'static>>(wf) };
     *wait_fut = Some(wf);
     // SAFETY: `wait_fut` is now in a pinned location; we never move it after this poll.
     match unsafe { core::pin::Pin::new_unchecked(wait_fut.as_mut().unwrap()) }.poll(cx) {
@@ -306,53 +309,102 @@ pub struct SharedMemoryTransportRx<D: Doorbell, R: SharedMemoryTransportable> {
 }
 
 // ---------------------------------------------------------------------------
+// RecvAccess — common field accessor used by RecvFut
+// ---------------------------------------------------------------------------
+
+/// Sealed accessor so `RecvFut` can be generic over both `SharedMemoryTransport`
+/// and `SharedMemoryTransportRx` without duplicating the future type.
+pub trait RecvAccess {
+    type D: Doorbell + 'static;
+    type R: SharedMemoryTransportable;
+    fn doorbell(&self) -> &Self::D;
+    fn region(&self) -> &Self::R;
+    fn base(&self) -> *mut u8;
+    fn ch(&self) -> Chan;
+}
+
+impl<D: Doorbell + 'static, R: SharedMemoryTransportable> RecvAccess
+    for SharedMemoryTransport<D, R>
+{
+    type D = D;
+    type R = R;
+    fn doorbell(&self) -> &D {
+        &self.doorbell
+    }
+    fn region(&self) -> &R {
+        &self.region
+    }
+    fn base(&self) -> *mut u8 {
+        self.base
+    }
+    fn ch(&self) -> Chan {
+        self.ch
+    }
+}
+
+impl<D: Doorbell + 'static, R: SharedMemoryTransportable> RecvAccess
+    for SharedMemoryTransportRx<D, R>
+{
+    type D = D;
+    type R = R;
+    fn doorbell(&self) -> &D {
+        &self.doorbell
+    }
+    fn region(&self) -> &R {
+        &self.region
+    }
+    fn base(&self) -> *mut u8 {
+        self.base
+    }
+    fn ch(&self) -> Chan {
+        self.ch
+    }
+}
+
+// ---------------------------------------------------------------------------
 // Futures
 // ---------------------------------------------------------------------------
 
+/// Future returned by [`SendTransport::send`] on shared-memory transports.
+///
+/// The send is completed eagerly inside `send()`; this future simply wraps the
+/// pre-computed result and is always `Ready` on the first poll.  The `'a`
+/// lifetime ties the future to the `&mut self` borrow of the transport so the
+/// borrow checker enforces correct ownership at the call site.
+///
+/// Both [`SharedMemoryTransport`] and [`SharedMemoryTransportTx`] use this same
+/// type; neither `D` nor `R` is referenced at runtime (the result is already
+/// computed), but both must appear as type parameters so the GAT `where Self: 'a`
+/// bound — which implies `D: 'a` and `R: 'a` — can be satisfied.
 pub struct SendFut<'a, D: Doorbell, R: SharedMemoryTransportable> {
     result: Result<(), Error<D>>,
-    _ph: PhantomData<&'a mut SharedMemoryTransport<D, R>>,
+    _ph: PhantomData<(&'a D, &'a R)>,
 }
 
-pub struct TxSendFut<'a, D: Doorbell, R: SharedMemoryTransportable> {
-    result: Result<(), Error<D>>,
-    _ph: PhantomData<&'a mut SharedMemoryTransportTx<D, R>>,
-}
-
-pub struct RecvFut<'a, D: Doorbell + 'static, R: SharedMemoryTransportable> {
-    transport: *mut SharedMemoryTransport<D, R>,
+/// Future returned by [`RecvTransport::recv`] on shared-memory transports.
+///
+/// Generic over any transport type `T` that implements [`RecvAccess`], so a
+/// single concrete type covers both [`SharedMemoryTransport`] and
+/// [`SharedMemoryTransportRx`].
+pub struct RecvFut<'a, T: RecvAccess> {
+    transport: *mut T,
     buf_ptr: *mut u8,
     buf_len: usize,
     /// Persisted doorbell wait future. Kept alive between polls so the waker
     /// registration is not lost when the executor parks this task.
-    wait_fut: Option<D::WaitFut<'static>>,
-    _ph: PhantomData<&'a mut SharedMemoryTransport<D, R>>,
+    wait_fut: Option<<T::D as Doorbell>::WaitFut<'static>>,
+    _ph: PhantomData<&'a mut T>,
     _pin: PhantomPinned,
 }
 
-pub struct RxRecvFut<'a, D: Doorbell + 'static, R: SharedMemoryTransportable> {
-    transport: *mut SharedMemoryTransportRx<D, R>,
-    buf_ptr: *mut u8,
-    buf_len: usize,
-    /// Persisted doorbell wait future. Kept alive between polls so the waker
-    /// registration is not lost when the executor parks this task.
-    wait_fut: Option<D::WaitFut<'static>>,
-    _ph: PhantomData<&'a mut SharedMemoryTransportRx<D, R>>,
-    _pin: PhantomPinned,
-}
-
-// SAFETY: the raw pointer is exclusively owned by this future for its lifetime.
+// SAFETY: the pre-computed result contains no non-Send types; D::Error is Send when D: Send.
 unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send for SendFut<'_, D, R> {}
-// SAFETY: same.
-unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send for TxSendFut<'_, D, R> {}
-// SAFETY: same.
-unsafe impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> Send
-    for RecvFut<'_, D, R>
-{
-}
-// SAFETY: same.
-unsafe impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> Send
-    for RxRecvFut<'_, D, R>
+// SAFETY: the raw pointer is exclusively owned by this future for its lifetime;
+// all concrete T, T::D, and T::R types used here are Send.
+unsafe impl<T: RecvAccess + Send> Send for RecvFut<'_, T>
+where
+    T::D: Send,
+    T::R: Send,
 {
 }
 
@@ -376,30 +428,16 @@ impl<D: Doorbell, R: SharedMemoryTransportable> Future for SendFut<'_, D, R> {
     }
 }
 
-impl<D: Doorbell, R: SharedMemoryTransportable> Future for TxSendFut<'_, D, R> {
-    type Output = Result<(), Error<D>>;
-
-    fn poll(
-        self: core::pin::Pin<&mut Self>,
-        _cx: &mut core::task::Context<'_>,
-    ) -> core::task::Poll<Self::Output> {
-        // SAFETY: `TxSendFut` is never moved after being polled; result is stored inline.
-        let this = unsafe { self.get_unchecked_mut() };
-        core::task::Poll::Ready(match &this.result {
-            Ok(()) => Ok(()),
-            Err(_) => core::mem::replace(&mut this.result, Ok(())),
-        })
-    }
-}
-
 // ---------------------------------------------------------------------------
-// Future impls — async recv (delegates to poll_recv helper)
+// Future impl — async recv (delegates to poll_recv helper)
 // ---------------------------------------------------------------------------
 
-impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> Future
-    for RecvFut<'_, D, R>
+impl<T: RecvAccess> Future for RecvFut<'_, T>
+where
+    T::D: Send + 'static,
+    T::R: Send,
 {
-    type Output = Result<usize, Error<D>>;
+    type Output = Result<usize, Error<T::D>>;
 
     fn poll(
         self: core::pin::Pin<&mut Self>,
@@ -414,40 +452,10 @@ impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> Future
         // SAFETY: `base` covers the descriptor header; doorbell outlives `this.wait_fut`.
         unsafe {
             poll_recv(
-                &transport.doorbell,
-                &transport.region,
-                transport.base,
-                transport.ch,
-                buf,
-                &mut this.wait_fut,
-                cx,
-            )
-        }
-    }
-}
-
-impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> Future
-    for RxRecvFut<'_, D, R>
-{
-    type Output = Result<usize, Error<D>>;
-
-    fn poll(
-        self: core::pin::Pin<&mut Self>,
-        cx: &mut core::task::Context<'_>,
-    ) -> core::task::Poll<Self::Output> {
-        // SAFETY: we never move fields out of `this`; `_pin: PhantomPinned` makes this !Unpin.
-        let this = unsafe { self.get_unchecked_mut() };
-        // SAFETY: `transport` is exclusively owned by this future.
-        let transport = unsafe { &mut *this.transport };
-        // SAFETY: `buf_ptr` and `buf_len` are exclusively owned by this future.
-        let buf = unsafe { core::slice::from_raw_parts_mut(this.buf_ptr, this.buf_len) };
-        // SAFETY: `base` covers the descriptor header; doorbell outlives `this.wait_fut`.
-        unsafe {
-            poll_recv(
-                &transport.doorbell,
-                &transport.region,
-                transport.base,
-                transport.ch,
+                transport.doorbell(),
+                transport.region(),
+                transport.base(),
+                transport.ch(),
                 buf,
                 &mut this.wait_fut,
                 cx,
@@ -502,14 +510,14 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
     for SharedMemoryTransportTx<D, R>
 {
     type SendFut<'a>
-        = TxSendFut<'a, D, R>
+        = SendFut<'a, D, R>
     where
         Self: 'a;
 
     fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a> {
         // SAFETY: `self.base` satisfies the descriptor layout invariant established by `split`.
         let result = unsafe { send_bytes(self.ch, &self.doorbell, &self.region, self.base, data) };
-        TxSendFut {
+        SendFut {
             result,
             _ph: PhantomData,
         }
@@ -528,7 +536,7 @@ impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> RecvTran
     for SharedMemoryTransport<D, R>
 {
     type RecvFut<'a>
-        = RecvFut<'a, D, R>
+        = RecvFut<'a, SharedMemoryTransport<D, R>>
     where
         Self: 'a;
 
@@ -552,12 +560,12 @@ impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> RecvTran
     for SharedMemoryTransportRx<D, R>
 {
     type RecvFut<'a>
-        = RxRecvFut<'a, D, R>
+        = RecvFut<'a, SharedMemoryTransportRx<D, R>>
     where
         Self: 'a;
 
     fn recv<'a>(&mut self, data: &mut [u8]) -> Self::RecvFut<'a> {
-        RxRecvFut {
+        RecvFut {
             transport: self as *mut _,
             buf_ptr: data.as_mut_ptr(),
             buf_len: data.len(),

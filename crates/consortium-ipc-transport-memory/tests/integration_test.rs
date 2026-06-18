@@ -700,8 +700,7 @@ fn split_halves_allow_full_duplex_between_two_threads() {
 
                 let mut buf = [0u8; MTU];
                 eprintln!("[A] entering join");
-                let (send_res, recv_res) =
-                    futures::join!(tx.send(b"ping"), rx.recv(&mut buf));
+                let (send_res, recv_res) = futures::join!(tx.send(b"ping"), rx.recv(&mut buf));
                 eprintln!("[A] join completed");
 
                 send_res.expect("A sends ping");
@@ -731,8 +730,7 @@ fn split_halves_allow_full_duplex_between_two_threads() {
 
                 let mut buf = [0u8; MTU];
                 eprintln!("[M] before join: about to futures::join!(rx.recv, tx.send(pong))");
-                let (recv_res, send_res) =
-                    futures::join!(rx.recv(&mut buf), tx.send(b"pong"));
+                let (recv_res, send_res) = futures::join!(rx.recv(&mut buf), tx.send(b"pong"));
                 eprintln!("[M] join completed");
 
                 let n = recv_res.expect("M receives ping");
