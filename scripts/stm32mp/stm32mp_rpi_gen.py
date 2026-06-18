@@ -36,6 +36,7 @@ LICENSE_RUST = """\
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def variant_to_feature(variant: str) -> str:
     """STM32MP257Fxx → stm32mp257fxx"""
     return variant.lower()
@@ -65,14 +66,15 @@ def collect_all_features(data: dict) -> list[str]:
 # Per-family .rs generator
 # ---------------------------------------------------------------------------
 
+
 def generate_family_rs(data: dict) -> str:
-    source     = data.get("source", {})
-    org        = source.get("org", "STMicroelectronics")
-    repo       = source.get("repo", "unknown")
-    res_path   = source.get("resources_path", "")
-    family     = data["chip_family"]
-    id_max     = data["rifsc_id_max"]
-    variants   = data.get("all_variants", [])
+    source = data.get("source", {})
+    org = source.get("org", "STMicroelectronics")
+    repo = source.get("repo", "unknown")
+    res_path = source.get("resources_path", "")
+    family = data["chip_family"]
+    id_max = data["rifsc_id_max"]
+    variants = data.get("all_variants", [])
     peripherals = data["peripherals"]
 
     features = [variant_to_feature(v) for v in variants]
@@ -81,59 +83,61 @@ def generate_family_rs(data: dict) -> str:
     lines.append(LICENSE_RUST)
 
     # Block clippy and other linters on auto-generated code
-    lines.append('#![allow(')
-    lines.append('    clippy::all,')
-    lines.append('    clippy::pedantic,')
-    lines.append('    clippy::nursery,')
-    lines.append('    missing_docs,')
-    lines.append('    non_camel_case_types,')
-    lines.append(')]')
-    lines.append('')
+    lines.append("#![allow(")
+    lines.append("    clippy::all,")
+    lines.append("    clippy::pedantic,")
+    lines.append("    clippy::nursery,")
+    lines.append("    missing_docs,")
+    lines.append("    non_camel_case_types,")
+    lines.append(")]")
+    lines.append("")
 
     # Crate-level doc
-    lines.append(f'//! RIF peripheral map for `{family}`.')
-    lines.append(f'//! Source: <https://github.com/{org}/{repo}>')
-    lines.append(f'//! Path  : `{res_path}`')
-    lines.append('//')
-    lines.append(f'//! Enable a chip variant via Cargo feature, e.g.:')
+    lines.append(f"//! RIF peripheral map for `{family}`.")
+    lines.append(f"//! Source: <https://github.com/{org}/{repo}>")
+    lines.append(f"//! Path  : `{res_path}`")
+    lines.append("//")
+    lines.append(f"//! Enable a chip variant via Cargo feature, e.g.:")
     if features:
-        lines.append(f'//! ```toml')
-        lines.append(f'//! [features]')
-        lines.append(f'//! {features[0]} = []')
-        lines.append(f'//! ```')
-    lines.append('')
+        lines.append(f"//! ```toml")
+        lines.append(f"//! [features]")
+        lines.append(f"//! {features[0]} = []")
+        lines.append(f"//! ```")
+    lines.append("")
 
     # ── RifscId enum ────────────────────────────────────────────────────────
-    lines.append('#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]')
-    lines.append('#[repr(u8)]')
-    lines.append(f'pub enum RifscId {{')
+    lines.append("#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]")
+    lines.append("#[repr(u8)]")
+    lines.append(f"pub enum RifscId {{")
 
     for p in peripherals:
-        const   = peripheral_to_const(p["name"])
-        rifsc   = p["rifsc_id"]
-        pvars   = p.get("variants")
+        const = peripheral_to_const(p["name"])
+        rifsc = p["rifsc_id"]
+        pvars = p.get("variants")
 
         if pvars:
             feats = ", ".join(f'feature = "{variant_to_feature(v)}"' for v in pvars)
-            cfg   = f'#[cfg(any({feats}))]'
-            lines.append(f'    {cfg}')
+            cfg = f"#[cfg(any({feats}))]"
+            lines.append(f"    {cfg}")
 
-        lines.append(f'    {const} = {rifsc},')
+        lines.append(f"    {const} = {rifsc},")
 
-    lines.append('}')
-    lines.append('')
+    lines.append("}")
+    lines.append("")
 
     # ── RifEntry struct ──────────────────────────────────────────────────────
-    lines.append('#[derive(Debug, Clone, Copy, PartialEq, Eq)]')
-    lines.append('pub struct RifEntry {')
-    lines.append('    pub id:   RifscId,')
-    lines.append('    pub name: &\'static str,')
-    lines.append('}')
-    lines.append('')
+    lines.append("#[derive(Debug, Clone, Copy, PartialEq, Eq)]")
+    lines.append("pub struct RifEntry {")
+    lines.append("    pub id:   RifscId,")
+    lines.append("    pub name: &'static str,")
+    lines.append("}")
+    lines.append("")
 
     # ── ALL_PERIPHERALS slice ────────────────────────────────────────────────
-    lines.append(f'/// All RIFSC peripherals available on the selected `{family}` variant.')
-    lines.append('pub const ALL_PERIPHERALS: &[RifEntry] = &[')
+    lines.append(
+        f"/// All RIFSC peripherals available on the selected `{family}` variant."
+    )
+    lines.append("pub const ALL_PERIPHERALS: &[RifEntry] = &[")
 
     for p in peripherals:
         const = peripheral_to_const(p["name"])
@@ -141,25 +145,25 @@ def generate_family_rs(data: dict) -> str:
 
         if pvars:
             feats = ", ".join(f'feature = "{variant_to_feature(v)}"' for v in pvars)
-            cfg   = f'#[cfg(any({feats}))]'
-            lines.append(f'    {cfg}')
+            cfg = f"#[cfg(any({feats}))]"
+            lines.append(f"    {cfg}")
 
         lines.append(f'    RifEntry {{ id: RifscId::{const}, name: "{p["name"]}" }},')
 
-    lines.append('];')
-    lines.append('')
+    lines.append("];")
+    lines.append("")
 
     # ── RIFSC_ID_MAX const ───────────────────────────────────────────────────
-    lines.append(f'/// Maximum RIFSC peripheral ID for `{family}`.')
-    lines.append(f'pub const RIFSC_ID_MAX: u8 = {id_max};')
-    lines.append('')
+    lines.append(f"/// Maximum RIFSC peripheral ID for `{family}`.")
+    lines.append(f"pub const RIFSC_ID_MAX: u8 = {id_max};")
+    lines.append("")
 
     # ── lookup fn ───────────────────────────────────────────────────────────
-    lines.append('/// Look up a [`RifEntry`] by RIFSC ID.')
-    lines.append('pub fn lookup(id: u8) -> Option<RifEntry> {')
-    lines.append('    ALL_PERIPHERALS.iter().copied().find(|e| e.id as u8 == id)')
-    lines.append('}')
-    lines.append('')
+    lines.append("/// Look up a [`RifEntry`] by RIFSC ID.")
+    lines.append("pub fn lookup(id: u8) -> Option<RifEntry> {")
+    lines.append("    ALL_PERIPHERALS.iter().copied().find(|e| e.id as u8 == id)")
+    lines.append("}")
+    lines.append("")
 
     return "\n".join(lines)
 
@@ -168,29 +172,30 @@ def generate_family_rs(data: dict) -> str:
 # mod.rs for the stm32mp directory
 # ---------------------------------------------------------------------------
 
+
 def generate_mod_rs(families: list[str]) -> str:
     lines = []
     lines.append(LICENSE_RUST)
 
     # Block clippy and other linters on auto-generated code
-    lines.append('#![allow(')
-    lines.append('    clippy::all,')
-    lines.append('    clippy::pedantic,')
-    lines.append('    clippy::nursery,')
-    lines.append('    missing_docs,')
-    lines.append(')]')
-    lines.append('')
+    lines.append("#![allow(")
+    lines.append("    clippy::all,")
+    lines.append("    clippy::pedantic,")
+    lines.append("    clippy::nursery,")
+    lines.append("    missing_docs,")
+    lines.append(")]")
+    lines.append("")
 
-    lines.append('//! Auto-generated RIF maps for STM32MP chip families.')
-    lines.append('')
+    lines.append("//! Auto-generated RIF maps for STM32MP chip families.")
+    lines.append("")
 
     for family in sorted(families):
         module = family_to_module(family)
         parent_feat = family_to_parent_feature(family)
         # Gate the entire module on the parent feature for this family
         lines.append(f'#[cfg(feature = "{parent_feat}")]')
-        lines.append(f'pub mod {module};')
-        lines.append('')
+        lines.append(f"pub mod {module};")
+        lines.append("")
 
     return "\n".join(lines)
 
@@ -199,19 +204,20 @@ def generate_mod_rs(families: list[str]) -> str:
 # Cargo.toml [features] snippet (printed to stdout for reference)
 # ---------------------------------------------------------------------------
 
+
 def generate_features_snippet(all_families_data: list[dict]) -> str:
-    lines = ['[features]']
+    lines = ["[features]"]
     for data in all_families_data:
         variants = data.get("all_variants", [])
-        family   = data["chip_family"]
+        family = data["chip_family"]
         parent_feat = family_to_parent_feature(family)
 
-        lines.append(f'# {family}')
-        lines.append(f'{parent_feat} = []')
+        lines.append(f"# {family}")
+        lines.append(f"{parent_feat} = []")
         for v in variants:
             feat = variant_to_feature(v)
             lines.append(f'{feat} = ["{parent_feat}"]')
-        lines.append('')
+        lines.append("")
     return "\n".join(lines)
 
 
@@ -220,7 +226,7 @@ def update_cargo_toml(cargo_path: Path, features_section: str) -> None:
     content = cargo_path.read_text(encoding="utf-8")
 
     # Find the [features] section and replace it
-    pattern = r'\[features\].*?(?=\n\[|\Z)'
+    pattern = r"\[features\].*?(?=\n\[|\Z)"
     replacement = features_section
 
     new_content = re.sub(pattern, replacement, content, count=1, flags=re.DOTALL)
@@ -231,9 +237,10 @@ def update_cargo_toml(cargo_path: Path, features_section: str) -> None:
 # Main
 # ---------------------------------------------------------------------------
 
+
 def main():
     yaml_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("../data/stm32mp/rifsc")
-    out_dir  = Path(sys.argv[2]) if len(sys.argv) > 2 else RUST_OUT_DIR
+    out_dir = Path(sys.argv[2]) if len(sys.argv) > 2 else RUST_OUT_DIR
 
     yaml_files = sorted(yaml_dir.glob("stm32mp*.yaml"))
     if not yaml_files:
@@ -242,14 +249,14 @@ def main():
 
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    all_data    = []
+    all_data = []
     all_families = []
 
     for yaml_path in yaml_files:
         data = yaml.safe_load(yaml_path.read_text(encoding="utf-8"))
         # Strip YAML license comment — yaml.safe_load already ignores it
-        family  = data["chip_family"]
-        module  = family_to_module(family)
+        family = data["chip_family"]
+        module = family_to_module(family)
         rs_path = out_dir / f"{module}.rs"
 
         rs_content = generate_family_rs(data)
@@ -275,7 +282,9 @@ def main():
         print(f"  {'Cargo.toml':<30} → {cargo_toml} (features section updated)")
     else:
         print()
-        print("── Cargo.toml not found. Add this to crates/consortium-rpi-meta/Cargo.toml ──")
+        print(
+            "── Cargo.toml not found. Add this to crates/consortium-rpi-meta/Cargo.toml ──"
+        )
         print(generate_features_snippet(all_data))
 
 

@@ -25,9 +25,9 @@ license.workspace = true
 # Chip selection — choose exactly one. Defaults to imx95/MUA for the current
 # CA55-side default. Enabling multiple chip features is a compile error.
 default = ["imx95", "mua"]
-imx8mp = [] # 1 MU instance (i.MX 8M Plus)
-imx93 = [] # 2 MU instances (i.MX 93)
-imx95 = [] # 8 MU instances (i.MX 95)
+imx8mp = []                # 1 MU instance (i.MX 8M Plus)
+imx93 = []                 # 2 MU instances (i.MX 93)
+imx95 = []                 # 8 MU instances (i.MX 95)
 
 mua = []
 mub = []

@@ -55,19 +55,20 @@ LICENSE_HEADER = """\
 
 # ── parser ────────────────────────────────────────────────────────────────────
 
+
 def extract_chip_family(content: str) -> str:
-    match = re.search(r'#ifndef\s+RES_MGR_(\w+)_H', content)
+    match = re.search(r"#ifndef\s+RES_MGR_(\w+)_H", content)
     return match.group(1).lower() if match else "unknown"
 
 
 def parse_defined_variants(condition: str) -> list[str]:
-    return re.findall(r'defined\((\w+)\)', condition)
+    return re.findall(r"defined\((\w+)\)", condition)
 
 
 def parse_header(header_path: Path) -> dict:
     content = header_path.read_text(encoding="utf-8", errors="replace")
     chip_family = extract_chip_family(content)
-    all_variants = sorted(set(re.findall(r'defined\((\w+)\)', content)))
+    all_variants = sorted(set(re.findall(r"defined\((\w+)\)", content)))
 
     peripherals = []
     condition_stack: list[list[str]] = []
@@ -104,7 +105,7 @@ def parse_header(header_path: Path) -> dict:
 
         if m := re.match(r"#define\s+\w+_RIFSC_(\w+)_ID\s+(\d+)", line):
             peripheral = m.group(1).lower()
-            rifsc_id   = int(m.group(2))
+            rifsc_id = int(m.group(2))
             entry = {"name": peripheral, "rifsc_id": rifsc_id}
 
             active = [v for level in condition_stack for v in level]
@@ -127,31 +128,39 @@ def parse_header(header_path: Path) -> dict:
 
 # ── git helpers ───────────────────────────────────────────────────────────────
 
+
 def clone_or_update(org: str, repo: str, clone_root: Path) -> Path:
-    url      = f"https://github.com/{org}/{repo}.git"
-    dest     = clone_root / repo
+    url = f"https://github.com/{org}/{repo}.git"
+    dest = clone_root / repo
 
     if dest.exists():
         print(f"  [git] Updating {repo} …")
-        subprocess.run(["git", "-C", str(dest), "pull", "--ff-only"],
-                       check=True, capture_output=True)
+        subprocess.run(
+            ["git", "-C", str(dest), "pull", "--ff-only"],
+            check=True,
+            capture_output=True,
+        )
     else:
         print(f"  [git] Cloning {repo} …")
         subprocess.run(
             ["git", "clone", "--depth=1", url, str(dest)],
-            check=True, capture_output=True,
+            check=True,
+            capture_output=True,
         )
     return dest
 
 
 # ── main ──────────────────────────────────────────────────────────────────────
 
+
 def main():
     import os
 
     clone_root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("_repos")
-    output_dir = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("../data/stm32mp/rifsc")
-    
+    output_dir = (
+        Path(sys.argv[2]) if len(sys.argv) > 2 else Path("../data/stm32mp/rifsc")
+    )
+
     os.makedirs(clone_root, exist_ok=True)
 
     clone_root.mkdir(parents=True, exist_ok=True)
@@ -164,13 +173,13 @@ def main():
     rows = []
 
     for repo_info in REPOS:
-        org           = repo_info["org"]
-        repo          = repo_info["repo"]
-        res_rel_path  = repo_info["resources_path"]
+        org = repo_info["org"]
+        repo = repo_info["repo"]
+        res_rel_path = repo_info["resources_path"]
 
         print(f"── {org}/{repo}")
         repo_dir = clone_or_update(org, repo, clone_root)
-        res_dir  = repo_dir / res_rel_path
+        res_dir = repo_dir / res_rel_path
 
         if not res_dir.exists():
             print(f"  [warn] {res_rel_path} not found — skipping\n")
@@ -182,17 +191,17 @@ def main():
             continue
 
         for header in headers:
-            data  = parse_header(header)
+            data = parse_header(header)
             total = len(data["peripherals"])
             gated = sum(1 for p in data["peripherals"] if "variants" in p)
 
             # Attach provenance so consumers know where this came from
             data["source"] = {
-                "org":            org,
-                "repo":           repo,
+                "org": org,
+                "repo": repo,
                 "resources_path": res_rel_path,
-                "file":           header.name,
-                "license":        "BSD-3-Clause",
+                "file": header.name,
+                "license": "BSD-3-Clause",
             }
 
             out_path = output_dir / f"{data['chip_family']}.yaml"
@@ -209,9 +218,13 @@ def main():
 
             out_path.write_text(license_block + yaml_body, encoding="utf-8")
 
-            print(f"  {header.name:<35} → {out_path.name}  "
-                  f"({total} peripherals, {gated} variant-gated)")
-            rows.append((repo, header.name, data["chip_family"], total, gated, out_path))
+            print(
+                f"  {header.name:<35} → {out_path.name}  "
+                f"({total} peripherals, {gated} variant-gated)"
+            )
+            rows.append(
+                (repo, header.name, data["chip_family"], total, gated, out_path)
+            )
 
         print()
 
