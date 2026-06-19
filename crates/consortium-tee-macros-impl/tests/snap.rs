@@ -71,7 +71,7 @@ fn tee_service_fail_unknown_conflict() {
 #[test]
 fn tee_command_expansion() {
     insta::assert_snapshot!(snapshot_command(
-        quote! { codec = TestCodec },
+        quote! { codec = TestCodec, ctx },
         quote! {
             fn echo(
                 ctx: &mut ServiceContext,
@@ -80,6 +80,52 @@ fn tee_command_expansion() {
             ) -> ::consortium_tee::TeeResult<Vec<u8>> {
                 *counter += 1;
                 Ok(input.to_vec())
+            }
+        },
+    ));
+}
+
+#[test]
+fn tee_command_context_by_name_warning() {
+    insta::assert_snapshot!(snapshot_command(
+        quote! { ctx = context },
+        quote! {
+            fn ping(value: u32, context: &mut ServiceContext) -> u32 {
+                value + 1
+            }
+        },
+    ));
+}
+
+#[test]
+fn tee_command_context_by_index_warning() {
+    insta::assert_snapshot!(snapshot_command(
+        quote! { ctx = 0 },
+        quote! {
+            fn ping(context: &mut ServiceContext, value: u32) -> u32 {
+                value + 1
+            }
+        },
+    ));
+}
+
+#[test]
+fn tee_command_ctx_missing_parameter_error() {
+    insta::assert_snapshot!(snapshot_command(
+        quote! { ctx },
+        quote! {
+            fn ping() {}
+        },
+    ));
+}
+
+#[test]
+fn tee_command_ctx_non_reference_error() {
+    insta::assert_snapshot!(snapshot_command(
+        quote! { ctx },
+        quote! {
+            fn ping(value: u32) -> u32 {
+                value
             }
         },
     ));

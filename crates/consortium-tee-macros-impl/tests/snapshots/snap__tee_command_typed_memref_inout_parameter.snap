@@ -13,21 +13,56 @@ fn adjust_config(config: &mut DeviceConfig) {
     config.limit += 1;
 }
 fn adjust_config_dispatched(
-    config: &mut DeviceConfig,
-    _params: &mut ::optee_utee::Parameters,
+    params: &mut ::optee_utee::Parameters,
 ) -> ::optee_utee::Result<()> {
-    adjust_config(config)
+    let mut __p_0 = unsafe { params.0.as_memref()? };
+    let mut __val_0: DeviceConfig = <DeviceConfig as ::consortium_tee::TeeParam<
+        TestCodec,
+    >>::from_tee_param(::consortium_tee::TeeParamSlot::Serialized(__p_0.buffer()))
+        .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
+    let config: &mut DeviceConfig = &mut __val_0;
+    adjust_config(config);
+    let __repr_flush_0 = <DeviceConfig as ::consortium_tee::TeeParam<
+        TestCodec,
+    >>::into_tee_param(&__val_0)
+        .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
+    let ::consortium_tee::TeeParamSlot::Serialized(ref __flush_bytes_0) = __repr_flush_0
+    else { unreachable!() };
+    __p_0.buffer()[..__flush_bytes_0.len()].copy_from_slice(__flush_bytes_0.as_slice());
+    Ok(())
 }
 #[cfg(feature = "ca")]
 fn call_adjust_config(
     session: &mut ::optee_teec::Session,
+    config: &mut DeviceConfig,
 ) -> ::consortium_tee::TeeResult<()> {
+    let mut __inout_buf_0 = vec![
+        0u8; < DeviceConfig as ::consortium_tee::TeeParam < TestCodec >> ::MAX_SIZE
+    ];
+    let __repr_inout_0 = <DeviceConfig as ::consortium_tee::TeeParam<
+        TestCodec,
+    >>::into_tee_param(config)
+        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
+    let ::consortium_tee::TeeParamSlot::Serialized(ref __src_inout_0) = __repr_inout_0
+    else { unreachable!() };
+    __inout_buf_0[..__src_inout_0.len()].copy_from_slice(__src_inout_0.as_slice());
+    let _p0 = ParamTmpRef::new_inout(&mut __inout_buf_0);
     let mut _operation = ::optee_teec::Operation::new(
         0,
-        ::optee_utee::ParamNone,
+        _p0,
         ::optee_utee::ParamNone,
         ::optee_utee::ParamNone,
         ::optee_utee::ParamNone,
     );
-    session.invoke_command(Command::AdjustConfig as u32, &mut _operation)
+    session.invoke_command(Command::AdjustConfig as u32, &mut _operation)?;
+    *config = {
+        let __m = _operation.param_0().as_memref();
+        <DeviceConfig as ::consortium_tee::TeeParam<
+            TestCodec,
+        >>::from_tee_param(
+                ::consortium_tee::TeeParamSlot::Serialized(&__m.buffer()[..__m.size()]),
+            )
+            .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
+    };
+    Ok(())
 }

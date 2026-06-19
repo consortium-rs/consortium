@@ -31,8 +31,6 @@ use crate::registers::{interrupt_nonsecure, semaphore_r, semaphore_rlr};
 // The std path computes all offsets inline from self.base; it does not need
 // the physical-address constants from the registers module.
 
-// ── Struct definition ────────────────────────────────────────────────────────
-
 /// HSEM-backed doorbell.
 ///
 /// `PROC`: which processor's interrupt line to use for `wait()`.
@@ -323,10 +321,11 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
 /// Future returned by `HsemDoorbell::wait()` on the M-core (no_std) path.
 ///
 /// State machine:
-///
+/// ```ignored
 ///   Init → clear ICR → enable IER → register waker → poll MISR
 ///        ↓ MISR set
 ///   clear IER + ICR → compiler_fence(Acquire) → return Ok(ch)
+/// ```
 #[allow(unused)]
 pub struct HsemWaitFut<'a, const PROC: u8> {
     doorbell: &'a HsemDoorbell<PROC>,

@@ -77,13 +77,13 @@ tee_service! {
 }
 
 // Business logic: just plain Rust
-#[tee_command]
+#[tee_command(ctx)]
 fn authenticate(ctx: &mut TaContext, secret: &[u8]) -> Result<bool> {
     ctx.counter += 1;
     Ok(constant_time_compare(secret, &ctx.hmac_key))
 }
 
-#[tee_command]
+#[tee_command(ctx)]
 fn encrypt_aes_cbc(
     ctx: &mut TaContext,
     plaintext: &[u8],
@@ -98,7 +98,7 @@ fn encrypt_aes_cbc(
     Ok(ciphertext.len() as u32)
 }
 
-#[tee_command]
+#[tee_command(ctx)]
 fn derive_key_hmac(ctx: &mut TaContext, seed: &[u8]) -> Result<Vec<u8>> {
     // Vec<u8> return: CA pre-allocates buffer, TA writes into it
     let mut key = vec![0u8; 32];

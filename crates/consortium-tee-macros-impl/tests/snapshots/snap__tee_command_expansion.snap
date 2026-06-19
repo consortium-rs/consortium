@@ -1,9 +1,9 @@
 ---
 source: crates/consortium-tee-macros-impl/tests/snap.rs
-expression: "snapshot_command(quote! { codec = TestCodec }, quote!\n{\n    fn echo(ctx: &mut ServiceContext, input: &[u8], counter: &mut u64,) ->\n    ::consortium_tee::TeeResult<Vec<u8>> { *counter += 1; Ok(input.to_vec()) }\n},)"
+expression: "snapshot_command(quote! { codec = TestCodec, ctx }, quote!\n{\n    fn echo(ctx: &mut ServiceContext, input: &[u8], counter: &mut u64,) ->\n    ::consortium_tee::TeeResult<Vec<u8>> { *counter += 1; Ok(input.to_vec()) }\n},)"
 ---
 // Input:
-#[consortium_tee::tee_command(codec = TestCodec)]
+#[consortium_tee::tee_command(codec = TestCodec , ctx)]
 fn echo(
     ctx: &mut ServiceContext,
     input: &[u8],

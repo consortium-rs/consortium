@@ -1,0 +1,14 @@
+---
+source: crates/consortium-tee-macros-impl/tests/snap.rs
+expression: "snapshot_command(quote! { ctx }, quote!\n{ fn ping(value: u32) -> u32 { value } },)"
+---
+// Input:
+#[consortium_tee::tee_command(ctx)]
+fn ping(value: u32) -> u32 {
+    value
+}
+
+// Expands to:
+::core::compile_error! {
+    "`ctx` parameter must have type `&mut SomePath`"
+}

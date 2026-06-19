@@ -1,0 +1,5 @@
+error: `ctx` requires a first parameter to use as context
+ --> tests/ui/tee_command/fail/ctx_missing_parameter.rs:3:15
+  |
+3 | #[tee_command(ctx)]
+  |               ^^^

@@ -20,13 +20,24 @@
 //! Base address must be added to each offset at runtime or via a base const.
 //! All offsets are relative to the HSEM peripheral base address.
 
+#[cfg(feature = "stm32mp25")]
 pub const HSEM_BASE: u32 = 0x5624_0000; // Verified in RM0457 for STM32MP25x; adjust as needed for other targets
 
-// ============================================================================
-// Module: Semaphore R registers (2-step write lock / unlock / read)
-// HSEM_Rx  - Address offset: 0x000 + 0x4 * x  (x = 0..=15)
-// Reset value: 0x0000_0000
-// ============================================================================
+#[cfg(feature = "stm32mp23")]
+pub const HSEM_BASE: u32 = 0x5624_0000; // Verified in RM0457 for STM32MP23x; adjust as needed for other targets
+
+#[cfg(feature = "stm32h7x5")]
+pub const HSEM_BASE: u32 = 0x5802_6400; // Verified in RM0399 for STM32H7x5; adjust as needed for other targets
+
+#[cfg(feature = "stm32h7x7")]
+pub const HSEM_BASE: u32 = 0x5802_6400; // Verified in RM0399 for STM32H7x7; adjust as needed for other targets
+
+/// Module: Semaphore R registers (2-step write lock / unlock / read)
+///
+/// `HSEM_Rx`  - Address offset: `0x000 + 0x4 * x`  (`x = 0..=15`)
+///
+/// Reset value: `0x0000_0000`
+///
 pub mod semaphore_r {
     #[allow(clippy::identity_op)]
     pub const HSEM_R0: u32 = 0x000;
