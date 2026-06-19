@@ -1,0 +1,5 @@
+error: `ctx` parameter must have type `&mut SomePath`
+ --> tests/ui/tee_command/fail/ctx_non_reference.rs:4:16
+  |
+4 | fn ping(value: u32) -> u32 {
+  |                ^^^

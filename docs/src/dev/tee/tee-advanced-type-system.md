@@ -54,7 +54,7 @@ The macro classifies each parameter by its Rust type and maps it to a TEE parame
 
 ### Context Parameter
 
-A leading `&mut SomePath` parameter (where `SomePath` is not a primitive or slice) is treated as the TA context. It is forwarded directly to the inner function and never packed into a TEE slot. This is already implemented — documented here for completeness.
+With `#[tee_command(ctx)]`, the first parameter with type `&mut SomePath` (where `SomePath` is not a primitive or slice) is treated as the TA context. Explicit selectors such as `ctx = name` or `ctx = 0` are accepted for compatibility and emit one warning; if the selected context is not the first parameter, the warning asks the user to move it first. The context is forwarded directly to the inner function and never packed into a TEE slot.
 
 ---
 
@@ -85,7 +85,7 @@ A `&mut T` where `T` is a primitive scalar is treated as an **output parameter**
 #### Example
 
 ```rust
-#[tee_command]
+#[tee_command(ctx)]
 fn compute(ctx: &mut Ctx, input: u32, result: &mut u64) -> Result<()> {
     *result = (input as u64) * 0xDEAD_BEEF;
     Ok(())
@@ -157,7 +157,7 @@ If you exceed 4 slots, restructure parameters into a serialized struct instead:
 
 ```rust
 // Too many slots
-#[tee_command]
+#[tee_command(ctx)]
 fn bad(ctx: &mut Ctx, a: u32, b: u64, c: u32, d: &[u8], e: &mut [u8]) -> Result<()> { ... }
 //                   [0]    [1]    [2]   [3]          [4]  ← 5 slots, compile error
 
@@ -165,7 +165,7 @@ fn bad(ctx: &mut Ctx, a: u32, b: u64, c: u32, d: &[u8], e: &mut [u8]) -> Result<
 #[derive(TeeParam, Serialize, Deserialize)]
 struct Params { a: u32, b: u64, c: u32 }
 
-#[tee_command]
+#[tee_command(ctx)]
 fn good(ctx: &mut Ctx, params: Params, input: &[u8], output: &mut [u8]) -> Result<()> { ... }
 //                     [0]             [1]            [2]   ← 3 slots
 ```

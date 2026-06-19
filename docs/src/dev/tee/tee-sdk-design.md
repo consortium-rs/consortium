@@ -77,13 +77,13 @@ tee_service! {
     commands { function_a, function_b }
 }
 
-#[tee_command]
+#[tee_command(ctx)]
 fn function_a(ctx: &mut TaContext, count: u32, data: &[u8]) -> Result<()> {
     // business logic
     Ok(())
 }
 
-#[tee_command]
+#[tee_command(ctx)]
 fn function_b(ctx: &mut TaContext, input: &[u8], output: &mut [u8]) -> Result<u32> {
     // writes return value into ValueOutput slot
     Ok(42)
@@ -139,7 +139,7 @@ An attribute macro applied to individual functions in `lib.rs`. It generates two
 
 ```rust
 // Input
-#[tee_command]
+#[tee_command(ctx)]
 fn function_a(ctx: &mut TaContext, count: u32, data: &[u8]) -> Result<()> { ... }
 
 // Generated (1): TA-side dispatch wrapper — always present, crate-private
@@ -166,7 +166,7 @@ When the function has a non-`()` return type, an extra output slot is allocated 
 
 ```rust
 // Input
-#[tee_command]
+#[tee_command(ctx)]
 fn function_b(ctx: &mut TaContext) -> Result<u32> { Ok(42) }
 
 // TA-side: flushes return value into ValueOutput slot
@@ -265,7 +265,7 @@ OP-TEE supports up to **4 parameter slots** per invocation. The macro emits a `c
 
 ## Context Detection
 
-The first parameter is treated as the TA context if and only if it is `&mut SomePath` where `SomePath` is not a slice (`[u8]`). A context parameter:
+With `#[tee_command(ctx)]`, the first parameter is treated as the TA context if and only if it has type `&mut SomePath` where `SomePath` is not a slice (`[u8]`). Explicit selectors such as `ctx = name` or `ctx = 0` are accepted for compatibility and emit one warning; if the selected context is not the first parameter, the warning asks the user to move it first. Prefer bare `ctx`. A context parameter:
 
 - Is forwarded directly to the inner function on the TA side
 - Is omitted from the CA-side `call_*` signature (it is the TA's internal state, not the caller's concern)

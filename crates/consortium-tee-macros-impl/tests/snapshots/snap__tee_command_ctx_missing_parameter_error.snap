@@ -1,0 +1,12 @@
+---
+source: crates/consortium-tee-macros-impl/tests/snap.rs
+expression: "snapshot_command(quote! { ctx }, quote! { fn ping() {} },)"
+---
+// Input:
+#[consortium_tee::tee_command(ctx)]
+fn ping() {}
+
+// Expands to:
+::core::compile_error! {
+    "`ctx` requires a first parameter to use as context"
+}

@@ -17,25 +17,58 @@
 use heck::ToPascalCase;
 use proc_macro2::{Span, TokenStream as TokenStream2};
 use quote::quote;
-use syn::{Ident, ItemFn, PatType};
+use syn::{Ident, ItemFn, LitInt, PatType, Token};
 
-// Parses `#[tee_command(codec = MyCodec)]` attributes.
+// Parses `#[tee_command(codec = MyCodec, ctx = context)]` attributes.
 struct TeeArgs {
     pub codec: Option<syn::Path>,
+    pub ctx: Option<CtxArg>,
+}
+
+enum CtxArg {
+    First(Ident),
+    Ident(Ident),
+    Index(LitInt),
 }
 
 impl syn::parse::Parse for TeeArgs {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-        if input.is_empty() {
-            return Ok(TeeArgs { codec: None });
+        let mut codec = None;
+        let mut ctx = None;
+
+        while !input.is_empty() {
+            let ident: Ident = input.parse()?;
+            if ident == "codec" {
+                if codec.is_some() {
+                    return Err(syn::Error::new(ident.span(), "duplicate `codec` argument"));
+                }
+                let _eq: Token![=] = input.parse()?;
+                codec = Some(input.parse()?);
+            } else if ident == "ctx" {
+                if ctx.is_some() {
+                    return Err(syn::Error::new(ident.span(), "duplicate `ctx` argument"));
+                }
+                ctx = if input.peek(Token![=]) {
+                    let _eq: Token![=] = input.parse()?;
+                    if input.peek(LitInt) {
+                        Some(CtxArg::Index(input.parse()?))
+                    } else {
+                        Some(CtxArg::Ident(input.parse()?))
+                    }
+                } else {
+                    Some(CtxArg::First(ident))
+                };
+            } else {
+                return Err(syn::Error::new(ident.span(), "expected `codec` or `ctx`"));
+            }
+
+            if input.is_empty() {
+                break;
+            }
+            input.parse::<Token![,]>()?;
         }
-        let ident: syn::Ident = input.parse()?;
-        if ident != "codec" {
-            return Err(syn::Error::new(ident.span(), "expected `codec`"));
-        }
-        let _eq: syn::Token![=] = input.parse()?;
-        let codec: syn::Path = input.parse()?;
-        Ok(TeeArgs { codec: Some(codec) })
+
+        Ok(TeeArgs { codec, ctx })
     }
 }
 
@@ -56,7 +89,7 @@ impl syn::parse::Parse for TeeArgs {
 /// must specify the codec:
 ///
 /// ```no_run,ignore
-/// #[tee_command(codec = PostcardCodec)]
+/// #[tee_command(codec = PostcardCodec, ctx)]
 /// fn my_handler(ctx: &mut Context, config: MyConfig) -> Result<(), TeeError> { /* … */ }
 /// ```
 ///
@@ -78,9 +111,13 @@ impl syn::parse::Parse for TeeArgs {
 /// | `T: TeeParam<C>`     | Value/Memref   | dispatched via `T::into_tee_param` / `from`    |
 /// | `&mut T: TeeParam<C>`| `MemrefInout`  | inout codec round-trip                         |
 ///
+/// `ctx` marks the first parameter as TA context. The parameter must be a mutable
+/// reference to a named path type and is skipped when assigning TEE slots. `ctx = name`
+/// and `ctx = 0` are accepted for compatibility and emit a deprecation warning.
+///
 /// Return values use the same `TeeParam<C>` dispatch.
 pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
-    let TeeArgs { codec } = match syn::parse2::<TeeArgs>(attr) {
+    let TeeArgs { codec, ctx } = match syn::parse2::<TeeArgs>(attr) {
         Ok(args) => args,
         Err(err) => return err.into_compile_error(),
     };
@@ -112,11 +149,16 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
         })
         .collect();
 
-    // First typed param is treated as context if it's `&mut SomeIdent` (not a slice).
-    let (ctx_param, tee_params) = match parameters.first() {
-        Some(p) if is_context_ref(&p.ty) => (Some(*p), &parameters[1..]),
-        _ => (None, &parameters[..]),
+    let (ctx_index, ctx_warning) = match resolve_context_index(ctx.as_ref(), &parameters) {
+        Ok(resolved) => resolved,
+        Err(err) => return err.into_compile_error(),
     };
+    let ctx_param = ctx_index.map(|index| parameters[index]);
+    let tee_params: Vec<&PatType> = parameters
+        .iter()
+        .enumerate()
+        .filter_map(|(index, param)| (Some(index) != ctx_index).then_some(*param))
+        .collect();
 
     // Return-type analysis.
     let output_ty: Option<&syn::Type> = get_output_type(&input.sig.output);
@@ -129,14 +171,13 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
     let mut post_call_stmts = vec![];
     let mut dispatch_call_args = vec![];
 
-    if let Some(ctx) = ctx_param {
-        let pat = &ctx.pat;
-        dispatch_call_args.push(quote! { #pat });
-    }
-
-    for param in tee_params {
+    for (param_index, param) in parameters.iter().enumerate() {
         let pat = &param.pat;
         let ty = &param.ty;
+        if Some(param_index) == ctx_index {
+            dispatch_call_args.push(quote! { #pat });
+            continue;
+        }
         let (unpack, post, next) = gen_unpack(pat, ty, slot_index, &codec_ty);
         unpack_stmts.push(unpack);
         if let Some(p) = post {
@@ -281,6 +322,7 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
 
     quote! {
         #input
+        #ctx_warning
         #dispatched_fn
         #ca_fn
     }
@@ -385,8 +427,91 @@ fn is_tuple_u32_u32(ty: &syn::Type) -> bool {
     false
 }
 
+fn resolve_context_index(
+    ctx: Option<&CtxArg>,
+    parameters: &[&PatType],
+) -> syn::Result<(Option<usize>, TokenStream2)> {
+    let Some(ctx) = ctx else {
+        return Ok((None, quote! {}));
+    };
+
+    let (index, warning) = match ctx {
+        CtxArg::First(ident) => {
+            if parameters.is_empty() {
+                return Err(syn::Error::new(
+                    ident.span(),
+                    "`ctx` requires a first parameter to use as context",
+                ));
+            }
+            (0, quote! {})
+        }
+        CtxArg::Ident(ident) => {
+            let index = parameters
+                .iter()
+                .position(|param| {
+                    if let syn::Pat::Ident(pat_ident) = param.pat.as_ref() {
+                        pat_ident.ident == *ident
+                    } else {
+                        false
+                    }
+                })
+                .ok_or_else(|| {
+                    syn::Error::new(
+                        ident.span(),
+                        format!("could not find context parameter `{ident}`"),
+                    )
+                })?;
+            (index, gen_deprecated_ctx_value_warning(index))
+        }
+        CtxArg::Index(lit) => {
+            let index = lit.base10_parse::<usize>()?;
+            if index >= parameters.len() {
+                return Err(syn::Error::new(
+                    lit.span(),
+                    format!("context parameter index {index} is out of range"),
+                ));
+            }
+            (index, gen_deprecated_ctx_value_warning(index))
+        }
+    };
+
+    let param = parameters[index];
+    if !is_context_ref(&param.ty) {
+        return Err(syn::Error::new_spanned(
+            &param.ty,
+            "`ctx` parameter must have type `&mut SomePath`",
+        ));
+    }
+
+    Ok((Some(index), warning))
+}
+
+fn gen_deprecated_ctx_value_warning(index: usize) -> TokenStream2 {
+    if index == 0 {
+        quote! {
+            const _: () = {
+                #[deprecated(
+                    note = "`#[tee_command(ctx = ...)]` is accepted for compatibility; prefer bare `ctx`"
+                )]
+                const __TEE_COMMAND_CTX_VALUE_WARNING: () = ();
+                __TEE_COMMAND_CTX_VALUE_WARNING
+            };
+        }
+    } else {
+        quote! {
+            const _: () = {
+                #[deprecated(
+                    note = "`#[tee_command(ctx = ...)]` is accepted for compatibility; move the context to the first parameter and use bare `ctx`"
+                )]
+                const __TEE_COMMAND_CTX_VALUE_WARNING: () = ();
+                __TEE_COMMAND_CTX_VALUE_WARNING
+            };
+        }
+    }
+}
+
 /// `&mut SomeIdent` (mutable reference to a named path type, not a primitive scalar, not a
-/// slice) — context parameter OR `&mut T: TeeParam` inout parameter.
+/// slice).
 fn is_context_ref(ty: &syn::Type) -> bool {
     if let syn::Type::Reference(r) = ty
         && r.mutability.is_some()
