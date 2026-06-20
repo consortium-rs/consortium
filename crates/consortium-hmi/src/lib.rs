@@ -13,3 +13,9 @@
 // limitations under the License.
 //
 // SPDX-License-Identifier: Apache-2.0
+
+pub mod app;
+pub mod ipc;
+
+pub use app::KioskApp;
+pub use ipc::IpcBridge;

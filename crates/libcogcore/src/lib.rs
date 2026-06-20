@@ -4,10 +4,12 @@
 //! WebKit and WPE types are left opaque for now and can be reached through raw
 //! pointer escape hatches when an integration needs them.
 
+pub mod content_manager;
 pub mod error;
 pub mod handlers;
 pub mod init;
 pub mod platform;
+pub mod script;
 pub mod shell;
 pub mod utils;
 pub mod view;
@@ -16,10 +18,12 @@ pub mod viewport;
 mod object;
 mod raw;
 
+pub use content_manager::UserContentManager;
 pub use error::{Error, GlibError, Result};
 pub use handlers::{DirectoryFilesHandler, HostRoutesHandler, PrefixRoutesHandler, RequestHandler};
 pub use init::init;
 pub use platform::Platform;
+pub use script::UserScript;
 pub use shell::Shell;
 pub use view::View;
 pub use viewport::Viewport;
