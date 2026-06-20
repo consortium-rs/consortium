@@ -114,7 +114,7 @@ pub fn tee_service(input: TokenStream2) -> TokenStream2 {
 
     let command_enum = quote! {
         #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-        #[repr(u64)]
+        #[repr(u32)]
         pub enum Command {
             #(#variant_idents = #discriminants,)*
             #[default]

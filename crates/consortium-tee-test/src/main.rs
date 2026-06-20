@@ -20,7 +20,25 @@
 extern crate optee_utee;
 
 use consortium_tee_test::invoke_command;
-use optee_utee::{Parameters, Result, ta_invoke_command};
+use optee_utee::{
+    Parameters, Result, ta_close_session, ta_create, ta_destroy, ta_invoke_command, ta_open_session,
+};
+
+#[ta_create]
+fn create() -> Result<()> {
+    Ok(())
+}
+
+#[ta_open_session]
+fn open_session(_params: &mut Parameters) -> Result<()> {
+    Ok(())
+}
+
+#[ta_close_session]
+fn close_session() {}
+
+#[ta_destroy]
+fn destroy() {}
 
 #[ta_invoke_command]
 fn invoker(command_id: u32, params: &mut Parameters) -> Result<()> {
