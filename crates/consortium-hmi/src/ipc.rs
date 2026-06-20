@@ -71,7 +71,10 @@ impl IpcBridge {
         cmd: impl Into<String>,
         f: impl Fn(String) -> String + Send + 'static,
     ) {
-        self.handlers.lock().unwrap().insert(cmd.into(), Box::new(f));
+        self.handlers
+            .lock()
+            .unwrap()
+            .insert(cmd.into(), Box::new(f));
     }
 
     /// Wires the bridge into `view`.
@@ -79,11 +82,9 @@ impl IpcBridge {
     /// Injects the `__IPC__` prelude script and connects the message signal.
     /// Must be called before the first page load.
     pub fn attach(self, view: &View) -> libcogcore::Result<()> {
-        let ucm = view
-            .user_content_manager()
-            .ok_or(libcogcore::Error::Null(
-                "webkit_web_view_get_user_content_manager",
-            ))?;
+        let ucm = view.user_content_manager().ok_or(libcogcore::Error::Null(
+            "webkit_web_view_get_user_content_manager",
+        ))?;
 
         ucm.add_script(&UserScript::new_at_document_start(JS_PRELUDE)?);
         ucm.register_script_message_handler("ipc")?;
@@ -105,25 +106,116 @@ impl Default for IpcBridge {
     }
 }
 
+#[derive(Debug, PartialEq, Eq)]
+struct Invocation {
+    id: u64,
+    cmd: String,
+    payload: String,
+}
+
+fn parse_invocation(msg: &str) -> Option<Invocation> {
+    let val = serde_json::from_str::<serde_json::Value>(msg).ok()?;
+
+    Some(Invocation {
+        id: val.get("id").and_then(|v| v.as_u64()).unwrap_or(0),
+        cmd: val
+            .get("cmd")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_string(),
+        payload: val
+            .get("payload")
+            .map(|v| v.to_string())
+            .unwrap_or_default(),
+    })
+}
+
+fn dispatch_handler(
+    handlers: &Arc<Mutex<HashMap<String, CommandFn>>>,
+    msg: &str,
+) -> Option<(u64, String)> {
+    let invocation = parse_invocation(msg)?;
+    let result = handlers
+        .lock()
+        .unwrap()
+        .get(&invocation.cmd)
+        .map(|f| f(invocation.payload))?;
+
+    Some((invocation.id, result))
+}
+
+fn resolve_script(id: u64, result: &str) -> String {
+    format!("window.__IPC__._resolve({id},{result})")
+}
+
 fn dispatch(handlers: &Arc<Mutex<HashMap<String, CommandFn>>>, view: &View, msg: &str) {
-    let Ok(val) = serde_json::from_str::<serde_json::Value>(msg) else {
-        return;
-    };
+    if let Some((id, result)) = dispatch_handler(handlers, msg) {
+        let _ = view.run_js(&resolve_script(id, &result));
+    }
+}
 
-    let id = val.get("id").and_then(|v| v.as_u64()).unwrap_or(0);
-    let cmd = val
-        .get("cmd")
-        .and_then(|v| v.as_str())
-        .unwrap_or("")
-        .to_string();
-    let payload = val
-        .get("payload")
-        .map(|v| v.to_string())
-        .unwrap_or_default();
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    let result = handlers.lock().unwrap().get(&cmd).map(|f| f(payload));
+    fn command_handlers() -> Arc<Mutex<HashMap<String, CommandFn>>> {
+        let mut bridge = IpcBridge::new();
+        bridge.handle("echo", |payload| payload);
+        bridge.handle("answer", |_| "42".into());
+        bridge.handlers
+    }
 
-    if let Some(result) = result {
-        let _ = view.run_js(&format!("window.__IPC__._resolve({id},{result})"));
+    #[test]
+    fn parse_invocation_preserves_json_payload() {
+        let invocation =
+            parse_invocation(r#"{"id":7,"cmd":"echo","payload":{"armed":true,"count":3}}"#)
+                .unwrap();
+
+        assert_eq!(invocation.id, 7);
+        assert_eq!(invocation.cmd, "echo");
+        assert_eq!(invocation.payload, r#"{"armed":true,"count":3}"#);
+    }
+
+    #[test]
+    fn parse_invocation_defaults_missing_fields() {
+        let invocation = parse_invocation(r#"{"payload":null}"#).unwrap();
+
+        assert_eq!(invocation.id, 0);
+        assert_eq!(invocation.cmd, "");
+        assert_eq!(invocation.payload, "null");
+    }
+
+    #[test]
+    fn parse_invocation_rejects_invalid_json() {
+        assert_eq!(parse_invocation("not json"), None);
+    }
+
+    #[test]
+    fn dispatch_handler_runs_registered_command() {
+        let response = dispatch_handler(
+            &command_handlers(),
+            r#"{"id":11,"cmd":"echo","payload":["a","b"]}"#,
+        );
+
+        assert_eq!(response, Some((11, r#"["a","b"]"#.into())));
+    }
+
+    #[test]
+    fn dispatch_handler_ignores_unknown_or_invalid_commands() {
+        let handlers = command_handlers();
+
+        assert_eq!(
+            dispatch_handler(&handlers, r#"{"id":1,"cmd":"missing"}"#),
+            None
+        );
+        assert_eq!(dispatch_handler(&handlers, "not json"), None);
+    }
+
+    #[test]
+    fn resolve_script_inlines_json_result() {
+        assert_eq!(
+            resolve_script(5, r#"{"ok":true}"#),
+            r#"window.__IPC__._resolve(5,{"ok":true})"#,
+        );
     }
 }

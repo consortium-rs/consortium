@@ -93,8 +93,7 @@ impl View {
     /// Returns the content manager attached to this view.
     pub fn user_content_manager(&self) -> Option<crate::UserContentManager> {
         // SAFETY: self.ptr owns a live CogView, which is also a WebKitWebView.
-        let ucm =
-            unsafe { sys::webkit_web_view_get_user_content_manager(self.as_webkit_ptr()) };
+        let ucm = unsafe { sys::webkit_web_view_get_user_content_manager(self.as_webkit_ptr()) };
         crate::UserContentManager::from_borrowed(ucm, "webkit_web_view_get_user_content_manager")
             .ok()
     }
@@ -113,9 +112,12 @@ impl View {
         // SAFETY: self.ptr owns a live WebKitWebView; null cancellable and callback
         // make this a fire-and-forget evaluation.
         unsafe {
-            sys::webkit_web_view_run_javascript(
+            sys::webkit_web_view_evaluate_javascript(
                 self.as_webkit_ptr(),
                 script.as_ptr(),
+                -1,
+                std::ptr::null(),
+                std::ptr::null(),
                 std::ptr::null_mut(),
                 None,
                 std::ptr::null_mut(),
