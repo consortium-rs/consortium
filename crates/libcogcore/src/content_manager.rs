@@ -37,6 +37,7 @@ impl UserContentManager {
             sys::webkit_user_content_manager_register_script_message_handler(
                 self.as_ptr(),
                 name.as_ptr(),
+                std::ptr::null(),
             )
         };
         Ok(())
@@ -58,12 +59,12 @@ impl UserContentManager {
         let data = Box::into_raw(Box::new(boxed)).cast::<c_void>();
 
         // SAFETY: GCallback is a type-erased C function pointer; the actual ABI
-        // matches the script-message-received signal: (manager, result, user_data).
+        // matches the script-message-received signal: (manager, value, user_data).
         let cb: unsafe extern "C" fn() = unsafe {
             std::mem::transmute::<
                 unsafe extern "C" fn(
                     *mut sys::WebKitUserContentManager,
-                    *mut sys::WebKitJavascriptResult,
+                    *mut sys::JSCValue,
                     sys::gpointer,
                 ),
                 unsafe extern "C" fn(),
@@ -94,21 +95,19 @@ impl UserContentManager {
 
 unsafe extern "C" fn script_message_trampoline(
     _manager: *mut sys::WebKitUserContentManager,
-    result: *mut sys::WebKitJavascriptResult,
+    value: *mut sys::JSCValue,
     user_data: sys::gpointer,
 ) {
     // SAFETY: user_data is a leaked Box<Box<dyn Fn(String)>> from connect_script_message,
     // kept alive by g_signal_connect_data until destroy_closure_data is called.
     let callback = unsafe { &*(user_data as *const Box<dyn Fn(String) + 'static>) };
 
-    // SAFETY: result is a live WebKitJavascriptResult delivered by WebKit's signal dispatch.
-    let js_value = unsafe { sys::webkit_javascript_result_get_js_value(result) };
-    if js_value.is_null() {
+    if value.is_null() {
         return;
     }
 
-    // SAFETY: js_value is a live JSCValue obtained from the WebKitJavascriptResult above.
-    let str_ptr = unsafe { sys::jsc_value_to_string(js_value) };
+    // SAFETY: value is a live JSCValue delivered by WebKit's signal dispatch.
+    let str_ptr = unsafe { sys::jsc_value_to_string(value) };
 
     let message = raw::string_from_owned(str_ptr, "jsc_value_to_string").unwrap_or_default();
     callback(message);
