@@ -41,7 +41,7 @@ jobs:
 
       - name: Build cogcore
         run: |
-          git clone --branch v0.18.5 --depth 1 --tags https://github.com/Igalia/cog.git /tmp/cog
+          git clone --branch 0.18.5 --depth 1 --tags https://github.com/Igalia/cog.git /tmp/cog
           cd /tmp/cog
           meson setup build --prefix=/usr || cat build/meson-logs/meson-log.txt
           sudo ninja -C build install
