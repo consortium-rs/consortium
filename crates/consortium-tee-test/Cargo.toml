@@ -26,7 +26,7 @@ default = ["ta"]
 ta      = ["dep:optee-utee", "dep:optee-utee-sys"]
 
 [lib]
-crate-type = ["cdylib", "rlib", "staticlib"]
+crate-type = ["rlib", "staticlib"]
 name       = "consortium_tee_test"
 path       = "src/lib.rs"
 

@@ -69,6 +69,25 @@ fn tee_service_fail_unknown_conflict() {
 }
 
 #[test]
+fn tee_service_live_test() {
+    insta::assert_snapshot!(snapshot_service(quote! {
+        commands { hello_world }
+    }));
+}
+
+#[test]
+fn tee_command_live_test() {
+    insta::assert_snapshot!(snapshot_command(
+        quote! {},
+        quote! {
+            fn hello_world(a: u32) -> u32 {
+                a
+            }
+        }
+    ))
+}
+
+#[test]
 fn tee_command_expansion() {
     insta::assert_snapshot!(snapshot_command(
         quote! { codec = TestCodec, ctx },
