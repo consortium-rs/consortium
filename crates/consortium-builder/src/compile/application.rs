@@ -55,7 +55,7 @@ impl CrossCompiler {
     /// 1. `CC` / `CXX` env vars (explicit, platform-agnostic)
     /// 2. STM32MP2 / OpenSTLinux pattern (`aarch64-ostl-linux-gcc`)
     /// 3. i.MX Yocto pattern (`aarch64-poky-linux-gcc`)
-    /// 4. `None` → generic Rust linker (warning emitted at build time)
+    /// 4. `None` → generic Rust linker
     fn detect() -> Self {
         // 1. Explicit CC/CXX: honour whatever the user or SDK set
         if let Ok(cc) = std::env::var("CC") {
@@ -88,15 +88,11 @@ impl CrossCompiler {
             };
         }
 
-        // 4. Nothing found - generic fallback with warning
+        // 4. Nothing found
         CrossCompiler {
             cc: None,
             cxx: None,
         }
-    }
-
-    fn has_explicit(&self) -> bool {
-        self.cc.is_some()
     }
 }
 
@@ -181,7 +177,7 @@ impl SdkEnv {
 /// Cross-compiler detection:
 ///   `CC` / `CXX`: explicit cross-compiler (any Yocto flavor)
 ///   Auto-detected: `aarch64-ostl-linux-gcc` (STM32MP2) or `aarch64-poky-linux-gcc` (i.MX Yocto)
-///   Fallback: generic Rust linker (emits a warning)
+///   Fallback: generic Rust linker
 ///
 /// Sysroot:
 ///   `OSTL_SDK_SYSROOT` > `SDKTARGETSYSROOT` > `OECORE_TARGET_SYSROOT`
@@ -211,14 +207,6 @@ impl Compiler for ApplicationCompiler {
 
     async fn build(config: Self::Configuration) -> Result<Self::Output, Self::Error> {
         let sdk = SdkEnv::resolve()?;
-
-        if !sdk.cross.has_explicit() {
-            eprintln!(
-                "warning: no cross-compiler found (CC not set, aarch64-ostl-linux-gcc and \
-                 aarch64-poky-linux-gcc not on PATH); using generic target linker. \
-                 Hardware-specific optimizations may be missing."
-            );
-        }
 
         let rustc = resolve_rustc()
             .await
