@@ -1437,6 +1437,7 @@ dependencies = [
  "gio",
  "glib",
  "libcogcore-sys",
+ "thiserror",
 ]
 
 [[package]]

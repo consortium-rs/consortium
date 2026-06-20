@@ -1,4 +1,6 @@
-use std::{error, ffi::NulError, fmt};
+use std::ffi::NulError;
+
+use thiserror::Error;
 
 use crate::raw;
 
@@ -6,13 +8,16 @@ use crate::raw;
 pub type Result<T> = std::result::Result<T, Error>;
 
 /// Error returned by safe Cog wrapper APIs.
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum Error {
     /// A Rust string contained an interior NUL byte and could not be passed to C.
-    Nul(NulError),
+    #[error("string contains an interior NUL byte: {0}")]
+    Nul(#[from] NulError),
     /// A C API returned an unexpected null pointer.
+    #[error("{0} returned a null pointer")]
     Null(&'static str),
     /// A C API reported a `GError`.
+    #[error("GLib error domain={} code={}: {}", .0.domain, .0.code, .0.message)]
     Glib(GlibError),
 }
 
@@ -32,28 +37,6 @@ impl Error {
         Self::Glib(raw::take_gerror(error))
     }
 }
-
-impl From<NulError> for Error {
-    fn from(error: NulError) -> Self {
-        Self::Nul(error)
-    }
-}
-
-impl fmt::Display for Error {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Nul(error) => write!(f, "string contains an interior NUL byte: {error}"),
-            Self::Null(context) => write!(f, "{context} returned a null pointer"),
-            Self::Glib(error) => write!(
-                f,
-                "GLib error domain={} code={}: {}",
-                error.domain, error.code, error.message
-            ),
-        }
-    }
-}
-
-impl error::Error for Error {}
 
 #[cfg(test)]
 mod tests {
