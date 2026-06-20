@@ -90,6 +90,40 @@ impl View {
         self.ptr.as_ptr()
     }
 
+    /// Returns the content manager attached to this view.
+    pub fn user_content_manager(&self) -> Option<crate::UserContentManager> {
+        // SAFETY: self.ptr owns a live CogView, which is also a WebKitWebView.
+        let ucm =
+            unsafe { sys::webkit_web_view_get_user_content_manager(self.as_webkit_ptr()) };
+        crate::UserContentManager::from_borrowed(ucm, "webkit_web_view_get_user_content_manager")
+            .ok()
+    }
+
+    /// Navigates the view to the given URI.
+    pub fn load_uri(&self, uri: &str) -> crate::Result<()> {
+        let uri = raw::cstring(uri)?;
+        // SAFETY: self.ptr owns a live WebKitWebView and uri is a valid NUL-terminated string.
+        unsafe { sys::webkit_web_view_load_uri(self.as_webkit_ptr(), uri.as_ptr()) };
+        Ok(())
+    }
+
+    /// Evaluates `script` in the view, ignoring any result or error.
+    pub fn run_js(&self, script: &str) -> crate::Result<()> {
+        let script = raw::cstring(script)?;
+        // SAFETY: self.ptr owns a live WebKitWebView; null cancellable and callback
+        // make this a fire-and-forget evaluation.
+        unsafe {
+            sys::webkit_web_view_run_javascript(
+                self.as_webkit_ptr(),
+                script.as_ptr(),
+                std::ptr::null_mut(),
+                None,
+                std::ptr::null_mut(),
+            )
+        };
+        Ok(())
+    }
+
     /// Returns this view as an opaque WebKit pointer.
     pub fn as_webkit_ptr(&self) -> *mut sys::WebKitWebView {
         self.as_ptr().cast::<sys::WebKitWebView>()
