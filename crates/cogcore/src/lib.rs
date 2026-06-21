@@ -1,6 +1,6 @@
 //! Safe Rust wrappers for the core Cog browser API.
 //!
-//! This crate intentionally wraps a small, useful subset of `libcogcore-sys`.
+//! This crate intentionally wraps a small, useful subset of `cogcore-sys`.
 //! WebKit and WPE types are left opaque for now and can be reached through raw
 //! pointer escape hatches when an integration needs them.
 

@@ -44,8 +44,8 @@ members = [
   "crates/consortium-tee-macros",
   "crates/consortium-tee-macros-impl",
   "crates/consortium-tee-test",
-  "crates/libcogcore",
-  "crates/libcogcore-sys",
+  "crates/cogcore",
+  "crates/cogcore-sys",
 ]
 resolver = "2"
 

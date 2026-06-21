@@ -1,6 +1,6 @@
 use std::os::raw::c_void;
 
-use libcogcore_sys as sys;
+use cogcore_sys as sys;
 
 use crate::{object::ObjectPtr, raw};
 

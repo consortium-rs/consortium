@@ -1,4 +1,4 @@
-use libcogcore_sys as sys;
+use cogcore_sys as sys;
 
 use crate::{Viewport, object::ObjectPtr, raw};
 

@@ -1,6 +1,6 @@
 use std::{marker::PhantomData, os::raw::c_void, ptr::NonNull};
 
-use libcogcore_sys as sys;
+use cogcore_sys as sys;
 
 use crate::{Error, Result};
 

@@ -19,7 +19,7 @@ use std::{
     sync::{Arc, Mutex},
 };
 
-use libcogcore::{UserScript, View};
+use cogcore::{UserScript, View};
 
 type CommandFn = Box<dyn Fn(String) -> String + Send + 'static>;
 
@@ -81,8 +81,8 @@ impl IpcBridge {
     ///
     /// Injects the `__IPC__` prelude script and connects the message signal.
     /// Must be called before the first page load.
-    pub fn attach(self, view: &View) -> libcogcore::Result<()> {
-        let ucm = view.user_content_manager().ok_or(libcogcore::Error::Null(
+    pub fn attach(self, view: &View) -> cogcore::Result<()> {
+        let ucm = view.user_content_manager().ok_or(cogcore::Error::Null(
             "webkit_web_view_get_user_content_manager",
         ))?;
 
