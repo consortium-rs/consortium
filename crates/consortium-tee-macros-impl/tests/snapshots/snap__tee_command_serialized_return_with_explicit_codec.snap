@@ -59,8 +59,8 @@ fn call_read_config(
         0,
         _p0,
         _p1,
-        ::optee_utee::ParamNone,
-        ::optee_utee::ParamNone,
+        ::optee_teec::ParamNone,
+        ::optee_teec::ParamNone,
     );
     session.invoke_command(Command::ReadConfig as u32, &mut _operation)?;
     Ok({

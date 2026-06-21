@@ -9,7 +9,7 @@ consortium_tee::tee_service! {
 
 // Expands to:
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-#[repr(u64)]
+#[repr(u32)]
 pub enum Command {
     HelloWorld = 0,
     #[default]

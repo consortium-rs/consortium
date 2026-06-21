@@ -279,7 +279,7 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
     }
 
     while new_params_args.len() < 4 {
-        new_params_args.push(quote! { ::optee_utee::ParamNone });
+        new_params_args.push(quote! { ::optee_teec::ParamNone });
     }
 
     let command_variant = Ident::new(&fn_name.to_string().to_pascal_case(), fn_name.span());

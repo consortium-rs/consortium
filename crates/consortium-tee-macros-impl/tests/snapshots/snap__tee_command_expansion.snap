@@ -67,7 +67,7 @@ fn call_echo(
         _p0,
         _p1,
         _p2,
-        ::optee_utee::ParamNone,
+        ::optee_teec::ParamNone,
     );
     session.invoke_command(Command::Echo as u32, &mut _operation)?;
     *counter = (_operation.param_1().as_value().b() as u64) << 32
