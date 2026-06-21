@@ -21,7 +21,7 @@ name              = "consortium-hmi"
 version.workspace = true
 
 [dependencies]
-libcogcore = { path = "../libcogcore", version = "^0.1" }
+cogcore = { path = "../cogcore", version = "^0.1" }
 serde_json  = "1"
 
 [lints]

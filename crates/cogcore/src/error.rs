@@ -33,7 +33,7 @@ pub struct GlibError {
 }
 
 impl Error {
-    pub(crate) fn glib(error: *mut libcogcore_sys::GError) -> Self {
+    pub(crate) fn glib(error: *mut cogcore_sys::GError) -> Self {
         Self::Glib(raw::take_gerror(error))
     }
 }

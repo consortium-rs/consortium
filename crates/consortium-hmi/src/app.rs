@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use libcogcore::{Shell, View};
+use cogcore::{Shell, View};
 
 use crate::ipc::IpcBridge;
 
@@ -40,13 +40,13 @@ pub struct KioskApp {
 impl KioskApp {
     /// Initializes Cog and creates a shell and a fullscreen view.
     ///
-    /// `platform` and `module_path` are forwarded to [`libcogcore::init`].
+    /// `platform` and `module_path` are forwarded to [`cogcore::init`].
     pub fn new(
         name: &str,
         platform: Option<&str>,
         module_path: Option<&str>,
-    ) -> libcogcore::Result<Self> {
-        libcogcore::init(platform, module_path)?;
+    ) -> cogcore::Result<Self> {
+        cogcore::init(platform, module_path)?;
         let shell = Shell::new(name, false)?;
         let view = View::new()?;
         Ok(Self {
@@ -64,7 +64,7 @@ impl KioskApp {
     ///
     /// Call this before [`View::load_uri`] so the prelude script is in place
     /// for the first page load.
-    pub fn attach_ipc(&self, bridge: IpcBridge) -> libcogcore::Result<()> {
+    pub fn attach_ipc(&self, bridge: IpcBridge) -> cogcore::Result<()> {
         bridge.attach(&self.view)
     }
 }

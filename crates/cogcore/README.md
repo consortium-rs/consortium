@@ -1,8 +1,8 @@
-# libcogcore
+# cogcore
 
 Safe Rust wrappers for the core Cog/WPE browser API used by Consortium's HMI subsystem.
 
-This crate sits above `libcogcore-sys`. The `-sys` crate owns raw bindgen output for Cog, GLib/GObject, WPE, and WebKit. This crate provides the small safe layer callers should normally use: object handles, GObject refcounting, Rust string conversion, `GError` conversion, and a focused browser shell/view API.
+This crate sits above `cogcore-sys`. The `-sys` crate owns raw bindgen output for Cog, GLib/GObject, WPE, and WebKit. This crate provides the small safe layer callers should normally use: object handles, GObject refcounting, Rust string conversion, `GError` conversion, and a focused browser shell/view API.
 
 ## Scope
 
@@ -22,11 +22,11 @@ WebKit and WPE types remain opaque in this crate. When integration code needs to
 ## Example
 
 ```rust,no_run
-use libcogcore::{
+use cogcore::{
     DirectoryFilesHandler, Platform, Shell, View, Viewport, init,
 };
 
-fn main() -> libcogcore::Result<()> {
+fn main() -> cogcore::Result<()> {
     init(None, None)?;
 
     let shell = Shell::new("consortium-hmi", false)?;
@@ -55,14 +55,14 @@ Returned `GError` values are copied into `GlibError` and freed immediately. Retu
 
 ## Platform Notes
 
-Cog/WPE development is Linux-oriented. On macOS, prefer formatting and static review for this crate; do not assume `cargo check -p libcogcore` or `cargo test -p libcogcore` can run without Cog, GLib/GIO, WPE, and WebKit development packages.
+Cog/WPE development is Linux-oriented. On macOS, prefer formatting and static review for this crate; do not assume `cargo check -p cogcore` or `cargo test -p cogcore` can run without Cog, GLib/GIO, WPE, and WebKit development packages.
 
 Use `.github/workflows/cogcore.yml` or a Linux machine with the Cog/WebKit stack installed for binding generation and wrapper validation.
 
 Useful validation commands on a suitable Linux host:
 
 ```bash
-cargo check -p libcogcore
-cargo test -p libcogcore
-cargo clippy -p libcogcore --all-targets
+cargo check -p cogcore
+cargo test -p cogcore
+cargo clippy -p cogcore --all-targets
 ```

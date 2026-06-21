@@ -73,7 +73,7 @@ hardware or SDK workflows rather than generic macOS host checks.
 | Runtimes and build | `consortium-runtime-mcu`, `consortium-runtime-app`, `consortium-builder`, `consortium-cli`                                   |
 | Debug              | `consortium-dbg-defmt`                                                                                                       |
 | TEE                | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`, `consortium-tee-test`                               |
-| Utilities and HMI  | `consortium-ffi`, `consortium-hmi`, `consortium-ort`, `libcogcore`, `libcogcore-sys`                                         |
+| Utilities and HMI  | `consortium-ffi`, `consortium-hmi`, `consortium-ort`, `cogcore`, `cogcore-sys`                                               |
 
 `CLAUDE.md` currently delegates to this file, so this guide is the canonical assistant
 orientation document.
@@ -224,14 +224,14 @@ is genuinely part of their compile-time contract.
 ## HMI and Cog/WPE
 
 The HMI subsystem includes `consortium-hmi` plus the Cog/WPE browser integration crates
-`libcogcore` and `libcogcore-sys`. `libcogcore-sys` owns the raw bindgen surface for
-Cog, GLib/GObject, WPE, and WebKit types. `libcogcore` is the safe Rust wrapper layer
+`cogcore` and `cogcore-sys`. `cogcore-sys` owns the raw bindgen surface for
+Cog, GLib/GObject, WPE, and WebKit types. `cogcore` is the safe Rust wrapper layer
 and should keep Cog object ownership, `GError` conversion, string conversion, and
 GObject refcounting out of callers.
 
 Cog/WPE work is Linux-oriented. On macOS, prefer `cargo fmt`, static review, and narrow
-non-linking checks where possible; do not assume `cargo check -p libcogcore` or
-`cargo test -p libcogcore` can run without the Linux Cog/WebKit development packages.
+non-linking checks where possible; do not assume `cargo check -p cogcore` or
+`cargo test -p cogcore` can run without the Linux Cog/WebKit development packages.
 Use the `cogcore.yml` GitHub workflow or a Linux machine with Cog, GLib/GIO, WPE, and
 WebKit headers installed for binding generation and wrapper validation.
 

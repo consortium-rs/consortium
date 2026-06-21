@@ -259,6 +259,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "cogcore"
+version = "0.1.0"
+dependencies = [
+ "cogcore-sys",
+ "gio",
+ "glib",
+ "thiserror",
+]
+
+[[package]]
+name = "cogcore-sys"
+version = "0.1.0"
+dependencies = [
+ "bindgen",
+ "libc",
+ "pkg-config",
+]
+
+[[package]]
 name = "colored"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -383,7 +402,7 @@ version = "0.1.0"
 name = "consortium-hmi"
 version = "0.1.0"
 dependencies = [
- "libcogcore",
+ "cogcore",
  "serde_json",
 ]
 
@@ -1433,25 +1452,6 @@ name = "libc_alloc"
 version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7581282928bc99698341d1de7590964c28db747c164eaac9409432a3eaed098a"
-
-[[package]]
-name = "libcogcore"
-version = "0.1.0"
-dependencies = [
- "gio",
- "glib",
- "libcogcore-sys",
- "thiserror",
-]
-
-[[package]]
-name = "libcogcore-sys"
-version = "0.1.0"
-dependencies = [
- "bindgen",
- "libc",
- "pkg-config",
-]
 
 [[package]]
 name = "libloading"
