@@ -65,7 +65,7 @@ fn call_configure(
         _p0,
         _p1,
         _p2,
-        ::optee_utee::ParamNone,
+        ::optee_teec::ParamNone,
     );
     session.invoke_command(Command::Configure as u32, &mut _operation)?;
     Ok({
