@@ -21,10 +21,10 @@ name              = "consortium-hmi"
 version.workspace = true
 
 [dependencies]
-cogcore = { path = "../cogcore", version = "^0.1" }
+cogcore         = { path = "../cogcore", version = "^0.1" }
 futures-channel = "0.3"
 futures-util    = "0.3"
-serde          = { features = ["derive"], version = "1" }
+serde           = { features = ["derive"], version = "1" }
 serde_json      = "1"
 tokio           = { features = ["rt"], version = "1" }
 

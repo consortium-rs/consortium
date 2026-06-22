@@ -1,5 +1,5 @@
-use glib::translate::ToGlibPtr;
 use cogcore_sys as sys;
+use glib::translate::ToGlibPtr;
 
 use crate::{Error, Result, object::ObjectPtr, raw};
 
