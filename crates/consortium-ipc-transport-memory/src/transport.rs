@@ -308,6 +308,24 @@ pub struct SharedMemoryTransportRx<D: Doorbell, R: SharedMemoryTransportable> {
     rx_mtu: u32,
 }
 
+// SAFETY: `base` is an exclusive pointer to a shared memory region managed by this
+// transport.  No shared reference to the pointed-to memory is ever handed out through
+// the safe API; the only aliasing is the intentional inter-processor sharing modelled
+// by the doorbell/region abstraction.  Sending the transport to another thread is
+// sound when D and R are both Send.
+unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
+    for SharedMemoryTransport<D, R>
+{
+}
+unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
+    for SharedMemoryTransportTx<D, R>
+{
+}
+unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
+    for SharedMemoryTransportRx<D, R>
+{
+}
+
 // ---------------------------------------------------------------------------
 // RecvAccess — common field accessor used by RecvFut
 // ---------------------------------------------------------------------------

@@ -1,6 +1,7 @@
-use std::{env, path::PathBuf};
-
+#[cfg(target_os = "linux")]
 fn main() {
+    use std::{env, path::PathBuf};
+
     let cogcore = pkg_config::probe_library("cogcore").unwrap();
     println!("cargo:rerun-if-changed=wrapper.h");
 
@@ -39,4 +40,9 @@ fn main() {
     bindings
         .write_to_file(out.join("bindings.rs"))
         .expect("failed to write bindings");
+}
+
+#[cfg(not(target_os = "linux"))]
+fn main() {
+    panic!("cogcore-sys only supports Linux");
 }

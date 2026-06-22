@@ -20,7 +20,7 @@ license.workspace = true
 name              = "consortium-hmi"
 version.workspace = true
 
-[dependencies]
+[target.'cfg(target_os = "linux")'.dependencies]
 cogcore         = { path = "../cogcore", version = "^0.1" }
 futures-channel = "0.3"
 futures-util    = "0.3"

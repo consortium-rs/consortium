@@ -5,7 +5,7 @@ license.workspace = true
 name              = "cogcore"
 version           = "0.1.0"
 
-[dependencies]
+[target.'cfg(target_os = "linux")'.dependencies]
 gio         = "0.22"
 glib        = "0.22"
 cogcore-sys = { path = "../cogcore-sys", version = "^0.1" }

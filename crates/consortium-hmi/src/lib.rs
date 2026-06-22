@@ -13,6 +13,7 @@
 // limitations under the License.
 //
 // SPDX-License-Identifier: Apache-2.0
+#![cfg(target_os = "linux")]
 
 pub mod app;
 pub mod bridge;
