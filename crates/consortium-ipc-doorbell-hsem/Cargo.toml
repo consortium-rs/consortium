@@ -22,12 +22,12 @@ name              = "consortium-ipc-doorbell-hsem"
 version.workspace = true
 
 [features]
-std = ["consortium-ipc/std", "dep:tokio"]
+std       = ["consortium-ipc/std", "dep:tokio"]
 stm32mp23 = []
 stm32mp25 = []
 stm32h7x5 = []
 stm32h7x7 = []
-default = ["stm32mp25"]
+default   = ["stm32mp25"]
 
 [dependencies]
 atomic-waker   = "1.1.2"

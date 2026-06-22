@@ -6,10 +6,10 @@ name              = "cogcore"
 version           = "0.1.0"
 
 [dependencies]
-gio        = "0.22"
-glib       = "0.22"
+gio         = "0.22"
+glib        = "0.22"
 cogcore-sys = { path = "../cogcore-sys", version = "^0.1" }
-thiserror  = "2.0"
+thiserror   = "2.0"
 
 
 [lints]

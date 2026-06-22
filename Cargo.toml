@@ -15,38 +15,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [workspace]
-members = [
-  "crates/consortium-builder",
-  "crates/consortium-cfg",
-  "crates/consortium-cfg-meta",
-  "crates/consortium-cli",
-  "crates/consortium-codec",
-  "crates/consortium-codec-macros",
-  "crates/consortium-codec-macros-impl",
-  "crates/consortium-common",
-  "crates/consortium-dbg-defmt",
-  "crates/consortium-dts",
-  "crates/consortium-ffi",
-  "crates/consortium-hmi",
-  "crates/consortium-ipc",
-  "crates/consortium-ipc-doorbell-gpio",
-  "crates/consortium-ipc-doorbell-hsem",
-  "crates/consortium-ipc-doorbell-ipcc",
-  "crates/consortium-ipc-doorbell-mu",
-  "crates/consortium-ipc-macros",
-  "crates/consortium-ipc-macros-impl",
-  "crates/consortium-ipc-transport-memory",
-  "crates/consortium-ort",
-  "crates/consortium-runtime-app",
-  "crates/consortium-runtime-mcu",
-  "crates/consortium-runtime-prt",
-  "crates/consortium-tee",
-  "crates/consortium-tee-macros",
-  "crates/consortium-tee-macros-impl",
-  "crates/consortium-tee-test",
-  "crates/cogcore",
-  "crates/cogcore-sys",
-]
+members  = ["crates/*"]
 resolver = "2"
 
 [workspace.package]
