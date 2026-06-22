@@ -403,7 +403,11 @@ name = "consortium-hmi"
 version = "0.1.0"
 dependencies = [
  "cogcore",
+ "futures-channel",
+ "futures-util",
+ "serde",
  "serde_json",
+ "tokio",
 ]
 
 [[package]]
