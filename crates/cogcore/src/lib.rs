@@ -3,6 +3,7 @@
 //! This crate intentionally wraps a small, useful subset of `cogcore-sys`.
 //! WebKit and WPE types are left opaque for now and can be reached through raw
 //! pointer escape hatches when an integration needs them.
+#![cfg(target_os = "linux")]
 
 pub mod content_manager;
 pub mod error;

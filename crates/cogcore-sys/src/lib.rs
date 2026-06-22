@@ -3,5 +3,6 @@
 #![allow(non_snake_case)]
 #![allow(dead_code)]
 #![allow(clippy::all)]
+#![cfg(target_os = "linux")]
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));

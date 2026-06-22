@@ -7,9 +7,9 @@ links             = "cogcore"
 name              = "cogcore-sys"
 version           = "0.1.0"
 
-[build-dependencies]
+[target.'cfg(target_os = "linux")'.build-dependencies]
 bindgen    = "0.72"
 pkg-config = "0.3.33"
 
-[dependencies]
+[target.'cfg(target_os = "linux")'.dependencies]
 libc = "0.2"
