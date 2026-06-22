@@ -16,20 +16,20 @@
 
 use cogcore::{Shell, View};
 
-use crate::ipc::IpcBridge;
+use crate::bridge::Bridge;
 
 /// Minimal kiosk application wrapping a Cog shell and a fullscreen web view.
 ///
 /// # Usage
 ///
 /// ```no_run
-/// use consortium_hmi::{KioskApp, IpcBridge};
+/// use consortium_hmi::{KioskApp, Bridge};
 ///
-/// let mut bridge = IpcBridge::new();
+/// let mut bridge = Bridge::new();
 /// bridge.handle("ping", |_| r#""pong""#.into());
 ///
 /// let app = KioskApp::new("my-kiosk", None, None).unwrap();
-/// app.attach_ipc(bridge).unwrap();
+/// app.attach_bridge(bridge).unwrap();
 /// app.view().load_uri("app://ui/index.html").unwrap();
 /// ```
 pub struct KioskApp {
@@ -60,11 +60,11 @@ impl KioskApp {
         &self.view
     }
 
-    /// Attaches an [`IpcBridge`] to the view.
+    /// Attaches a [`Bridge`] to the view.
     ///
     /// Call this before [`View::load_uri`] so the prelude script is in place
     /// for the first page load.
-    pub fn attach_ipc(&self, bridge: IpcBridge) -> cogcore::Result<()> {
+    pub fn attach_bridge(&self, bridge: Bridge) -> cogcore::Result<()> {
         bridge.attach(&self.view)
     }
 }

@@ -15,7 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 pub mod app;
-pub mod ipc;
+pub mod bridge;
 
 pub use app::KioskApp;
-pub use ipc::IpcBridge;
+pub use bridge::Bridge;
