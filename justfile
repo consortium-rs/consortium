@@ -15,7 +15,7 @@ default:
 # ── Core Commands (from CLAUDE.md) ───────────────────────────────────────────
 
 # Install local development tools
-setup: setup-uv setup-vp setup-rust-tools setup-ls-lint
+setup: setup-uv setup-vp setup-rust-tools setup-rust-targets setup-ls-lint
 
 # Install uv
 setup-uv:
@@ -37,6 +37,16 @@ setup-vp:
 setup-rust-tools: setup-cargo-binstall
     cargo binstall -y {{ rust_tools }}
 
+# Install Rust targets used by cross-build, check, and test recipes
+setup-rust-targets:
+    rustup target add {{ a64_target }}
+    rustup target add {{ a32_target }}
+    rustup target add {{ m8_target }}
+    rustup target add {{ m7_target }}
+    rustup target add {{ rv32imc_target }}
+    rustup target add {{ rv32imac_target }}
+    rustup target add {{ rv32imafcp_target }}
+
 # Install cargo-binstall, used for fast binary installs of Rust tooling
 setup-cargo-binstall:
     @if command -v cargo-binstall >/dev/null 2>&1; then \
@@ -53,7 +63,7 @@ setup-ls-lint:
 build:
     cargo build
 
-# Run tests. With args: `just test ipc host`, `just test ipc m7`, `just test tee host`.
+# Run tests. With args: `just test ipc host`, `just test hmi host`, `just test tee host`.
 test area="" scope="":
     @case "{{ area }}:{{ scope }}" in \
         ":") cargo test ;; \
@@ -62,10 +72,13 @@ test area="" scope="":
         "ipc:a32") just test-ipc-a32 ;; \
         "ipc:m8") just test-ipc-m8 ;; \
         "ipc:m7") just test-ipc-m7 ;; \
+        "hmi:"|"hmi:host") just test-hmi-host ;; \
+        "hmi:a64") just test-hmi-a64 ;; \
+        "hmi:a32") just test-hmi-a32 ;; \
         "tee:"|"tee:host") just test-tee-host ;; \
         "tee:a64") just test-tee-a64 ;; \
         "tee:a32") just test-tee-a32 ;; \
-        *) echo "Error: unknown test scope '{{ area }} {{ scope }}'"; echo "Try: just test ipc host | a64 | a32 | m8 | m7, or just test tee host | a64 | a32"; exit 1 ;; \
+        *) echo "Error: unknown test scope '{{ area }} {{ scope }}'"; echo "Try: just test ipc host | a64 | a32 | m8 | m7, just test hmi host | a64 | a32, or just test tee host | a64 | a32"; exit 1 ;; \
     esac
 
 # Run tests for a specific crate (e.g. `just test-crate ipc`)
@@ -170,6 +183,28 @@ test-ipc-a32:
     cargo test -p consortium-ipc-doorbell-hsem --target {{ a32_target }} -F std
     cargo test -p consortium-ipc-doorbell-ipcc --target {{ a32_target }} -F std
     cargo test -p consortium-ipc-doorbell-mu --target {{ a32_target }} -F std
+
+# ── HMI (Cog/WPE / Linux) ──────────────────────────────────────────────────
+
+# Run host-side HMI tests, including the raw Cog bindings and safe wrapper.
+test-hmi-host:
+    cargo test -p cogcore-sys
+    cargo test -p cogcore
+    cargo test -p consortium-hmi
+
+# Run/compile HMI tests for aarch64 Linux.
+test-hmi-a64:
+    @[ "$(uname)" = "Linux" ] || { echo "Error: A-core HMI tests require Linux"; exit 1; }
+    cargo test -p cogcore-sys --target {{ a64_target }}
+    cargo test -p cogcore --target {{ a64_target }}
+    cargo test -p consortium-hmi --target {{ a64_target }}
+
+# Run/compile HMI tests for armv7 Linux.
+test-hmi-a32:
+    @[ "$(uname)" = "Linux" ] || { echo "Error: A-core HMI tests require Linux"; exit 1; }
+    cargo test -p cogcore-sys --target {{ a32_target }}
+    cargo test -p cogcore --target {{ a32_target }}
+    cargo test -p consortium-hmi --target {{ a32_target }}
 
 # ── TEE (Trusted Execution Environment / Linux) ──────────────────────────────
 
