@@ -112,5 +112,6 @@ fn call_crowded(
         ::optee_teec::ParamType::ValueInput,
     );
     let mut _operation = ::optee_teec::Operation::new(0, _p0, _p1, _p2, _p3, _p4);
-    session.invoke_command(Command::Crowded as u32, &mut _operation)
+    session.invoke_command(Command::Crowded as u32, &mut _operation)?;
+    Ok(())
 }

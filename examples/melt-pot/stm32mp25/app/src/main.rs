@@ -94,7 +94,9 @@ async fn main() {
     // SAFETY: app_desc_base covers IPC_REGION_LEN bytes; no aliased Rust reference exists.
     unsafe { descriptor_init(app_desc_base, 1, MTU, &[m_to_a_chan]) };
 
+    // SAFETY: IPC_CHAN is the single descriptor channel initialized above.
     let ch = unsafe { Chan::new_unchecked(IPC_CHAN) };
+    // SAFETY: app_desc_base points to the heap-backed IPC region of IPC_REGION_LEN bytes.
     let region = unsafe { SramRegion::new(app_desc_base, IPC_REGION_LEN) };
     // PROC=1: CA35 interrupt controller view (RM0457 §22, processor IDs 1–3).
     let doorbell = HsemDoorbell::<1>::new(HSEM_VIRT_BASE);
@@ -138,11 +140,11 @@ async fn main() {
                 Err(e) => eprintln!("ipc recv error: {e}"),
             }
             // Drain any defmt log packets the CM33 wrote since the last receive.
-            if let Some(ref mut ring) = dbg {
-                if let Ok(packets) = ring.drain_packets() {
-                    for pkt in packets {
-                        eprintln!("[defmt] {} raw bytes", pkt.len());
-                    }
+            if let Some(ref mut ring) = dbg
+                && let Ok(packets) = ring.drain_packets()
+            {
+                for pkt in packets {
+                    eprintln!("[defmt] {} raw bytes", pkt.len());
                 }
             }
         }

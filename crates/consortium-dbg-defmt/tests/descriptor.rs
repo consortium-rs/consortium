@@ -17,21 +17,25 @@ fn logger_descriptor_round_trips_frames_over_heap_region_between_host_threads() 
     let producer = std::thread::spawn(move || {
         let base = base_addr as *mut u8;
 
-        unsafe {
-            ConsortiumLogger::acquire_shared_memory(base, REGION_LEN as u16);
+        // SAFETY: `base` points to the leaked heap-backed test region.
+        unsafe { ConsortiumLogger::acquire_shared_memory(base, REGION_LEN as u16) };
 
-            let descriptor = Descriptor::from_raw_ptr(base);
-            assert!(descriptor.check());
-            assert_eq!(descriptor.capacity, REGION_LEN as u16);
-            assert_eq!(descriptor.read_ptr, DESCRIPTOR_SIZE as u16);
-            assert_eq!(descriptor.write_ptr, DESCRIPTOR_SIZE as u16);
-            assert!(descriptor.flags.contains(Flags::Writing));
+        // SAFETY: the producer initialized the descriptor at `base` above.
+        let descriptor = unsafe { Descriptor::from_raw_ptr(base) };
+        assert!(descriptor.check());
+        assert_eq!(descriptor.capacity, REGION_LEN as u16);
+        assert_eq!(descriptor.read_ptr, DESCRIPTOR_SIZE as u16);
+        assert_eq!(descriptor.write_ptr, DESCRIPTOR_SIZE as u16);
+        assert!(descriptor.flags.contains(Flags::Writing));
 
-            ConsortiumLogger::write_shared_memory(base, b"alpha");
-            ConsortiumLogger::write_shared_memory(base, b"beta");
-            ConsortiumLogger::write_shared_memory(base, b"gamma");
-            ConsortiumLogger::release_shared_memory(base);
-        }
+        // SAFETY: `base` points to the initialized debug ring.
+        unsafe { ConsortiumLogger::write_shared_memory(base, b"alpha") };
+        // SAFETY: `base` points to the initialized debug ring.
+        unsafe { ConsortiumLogger::write_shared_memory(base, b"beta") };
+        // SAFETY: `base` points to the initialized debug ring.
+        unsafe { ConsortiumLogger::write_shared_memory(base, b"gamma") };
+        // SAFETY: `base` points to the initialized debug ring.
+        unsafe { ConsortiumLogger::release_shared_memory(base) };
 
         written_tx.send(()).expect("signal written frames");
     });
@@ -40,16 +44,18 @@ fn logger_descriptor_round_trips_frames_over_heap_region_between_host_threads() 
         written_rx.recv().expect("wait for producer");
         let base = base_addr as *mut u8;
 
-        unsafe {
-            let descriptor = Descriptor::from_raw_ptr(base);
-            assert!(!descriptor.flags.contains(Flags::Writing));
-            assert!(descriptor.flags.is_empty());
+        // SAFETY: producer initialized the descriptor and signaled completion.
+        let descriptor = unsafe { Descriptor::from_raw_ptr(base) };
+        assert!(!descriptor.flags.contains(Flags::Writing));
+        assert!(descriptor.flags.is_empty());
 
-            let mut reader = Descriptor::from_raw_ptr(base);
-            let frames = reader.read_bulk_frames(base);
-            ConsortiumLogger::flush_shared_memory(base);
-            frames
-        }
+        // SAFETY: producer initialized the descriptor and signaled completion.
+        let mut reader = unsafe { Descriptor::from_raw_ptr(base) };
+        // SAFETY: `base` points to the initialized debug ring.
+        let frames = unsafe { reader.read_bulk_frames(base) };
+        // SAFETY: `base` points to the initialized debug ring.
+        unsafe { ConsortiumLogger::flush_shared_memory(base) };
+        frames
     });
 
     producer.join().expect("producer completes");

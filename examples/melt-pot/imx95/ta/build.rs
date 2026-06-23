@@ -18,12 +18,12 @@
 // The UUID must match what the CA uses when opening the session.
 const TA_UUID: &str = "12345678-1234-1234-1234-123456789012";
 
-#[cfg(target_os = "linux")]
+#[cfg(all(target_os = "linux", feature = "ta"))]
 fn main() -> Result<(), optee_utee_build::Error> {
     use optee_utee_build::TaConfig;
     let ta_config = TaConfig::new_default_with_cargo_env(TA_UUID)?;
     optee_utee_build::build(optee_utee_build::RustEdition::Edition2024, ta_config)
 }
 
-#[cfg(not(target_os = "linux"))]
+#[cfg(not(all(target_os = "linux", feature = "ta")))]
 fn main() {}

@@ -152,6 +152,7 @@ unsafe fn poll_recv<D: Doorbell + Send + 'static, R: SharedMemoryTransportable>(
     if channel.is_none() {
         // No data yet — arm the doorbell so the waker stays registered until
         // the remote calls ring().
+        // SAFETY: `wait_fut` is the stored wait future for this receive operation.
         return unsafe { arm_wait(doorbell, ch, wait_fut, cx) };
     }
 
@@ -167,6 +168,7 @@ unsafe fn poll_recv<D: Doorbell + Send + 'static, R: SharedMemoryTransportable>(
 
     // Slot was visible but integrity check failed — invalidate caches and wait.
     region.invalidate();
+    // SAFETY: `wait_fut` is the stored wait future for this receive operation.
     unsafe { arm_wait(doorbell, ch, wait_fut, cx) }
 }
 
@@ -317,10 +319,16 @@ unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
     for SharedMemoryTransport<D, R>
 {
 }
+// SAFETY: the transmit half owns only the raw base pointer and never exposes shared
+// references to the pointed-to memory through the safe API. Moving it is sound
+// when its doorbell and region handles are Send.
 unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
     for SharedMemoryTransportTx<D, R>
 {
 }
+// SAFETY: the receive half owns only the raw base pointer and never exposes shared
+// references to the pointed-to memory through the safe API. Moving it is sound
+// when its doorbell and region handles are Send.
 unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
     for SharedMemoryTransportRx<D, R>
 {

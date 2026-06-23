@@ -26,6 +26,7 @@ fn call_unsupported(
     session: &mut ::optee_teec::Session,
     input: (u32, u64),
 ) -> ::consortium_tee::TeeResult<(u32, u64)> {
+    let _p0 = ::optee_teec::ParamNone;
     compile_error!("Unsupported TEE parameter type");
     compile_error!("Unsupported TEE return type for output parameter");
     let mut _operation = ::optee_teec::Operation::new(

@@ -20,6 +20,10 @@ pub struct Parameters(pub Param, pub Param, pub Param, pub Param);
 
 pub struct Param;
 
+enum Command {
+    Unsupported,
+}
+
 #[tee_command]
 fn unsupported(_value: &u32) -> optee_utee::Result<()> {
     Ok(())

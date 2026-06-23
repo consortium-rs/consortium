@@ -20,17 +20,8 @@ use crate::error::MuError;
 
 // ── Chip-feature guard ────────────────────────────────────────────────────────
 
-#[cfg(all(feature = "imx93", feature = "imx95"))]
-compile_error!("features `imx93` and `imx95` are mutually exclusive; enable exactly one");
-
-#[cfg(all(feature = "imx93", feature = "imx8mp"))]
-compile_error!("features `imx93` and `imx8mp` are mutually exclusive; enable exactly one");
-
-#[cfg(all(feature = "imx95", feature = "imx8mp"))]
-compile_error!("features `imx95` and `imx8mp` are mutually exclusive; enable exactly one");
-
 #[cfg(not(any(feature = "imx93", feature = "imx95", feature = "imx8mp")))]
-compile_error!("no chip feature selected; enable exactly one of: `imx93`, `imx95`, `imx8mp`");
+compile_error!("no chip feature selected; enable one of: `imx93`, `imx95`, `imx8mp`");
 
 // ── MU instance count (chip-specific) ────────────────────────────────────────
 
@@ -44,10 +35,10 @@ compile_error!("no chip feature selected; enable exactly one of: `imx93`, `imx95
 ///
 /// Defined as a single const using `cfg!` so enabling both features produces
 /// the `compile_error!` message above rather than a duplicate-definition error.
-pub const MU_INSTANCE_COUNT: usize = if cfg!(feature = "imx93") {
-    2
-} else if cfg!(feature = "imx95") {
+pub const MU_INSTANCE_COUNT: usize = if cfg!(feature = "imx95") {
     8
+} else if cfg!(feature = "imx93") {
+    2
 } else if cfg!(feature = "imx8mp") {
     1
 } else {

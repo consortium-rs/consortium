@@ -30,11 +30,14 @@ impl Packet {
     /// # Safety
     /// `ptr` must be valid for at least `PACKET_HEADER_SIZE` bytes.
     pub unsafe fn try_from_raw_ptr(ptr: *const u8) -> Option<Self> {
+        // SAFETY: caller guarantees `ptr` covers the packet header.
         let magic = unsafe { rv_u16(ptr, 0) };
         if magic != MAGIC {
             return None;
         }
+        // SAFETY: caller guarantees `ptr` covers the packet header.
         let flag = unsafe { rv_u8(ptr, FLAG_OFFSET) };
+        // SAFETY: caller guarantees `ptr` covers the packet header.
         let len = unsafe { rv_u8(ptr, LEN_OFFSET) };
         Some(Self { magic, flag, len })
     }
@@ -44,13 +47,10 @@ impl Packet {
     /// # Safety
     /// `base` must be valid for at least `self.len` bytes past `PACKET_HEADER_SIZE`.
     pub unsafe fn read_payload(&mut self, base: *mut u8, payload: &mut [u8]) {
-        unsafe {
-            core::ptr::copy_nonoverlapping(
-                base.add(PACKET_HEADER_SIZE),
-                payload.as_mut_ptr(),
-                self.len as usize,
-            );
-        }
+        // SAFETY: caller guarantees the packet payload begins after the header.
+        let src = unsafe { base.add(PACKET_HEADER_SIZE) };
+        // SAFETY: `src` points to `self.len` bytes and does not overlap `payload`.
+        unsafe { core::ptr::copy_nonoverlapping(src, payload.as_mut_ptr(), self.len as usize) };
     }
 
     /// Writes this packet header to `ptr`.
@@ -58,11 +58,12 @@ impl Packet {
     /// # Safety
     /// `ptr` must be valid for at least `PACKET_HEADER_SIZE` bytes.
     pub unsafe fn write_to_raw_ptr(&self, ptr: *mut u8) {
-        unsafe {
-            wv_u16(ptr, 0, self.magic);
-            wv_u8(ptr, FLAG_OFFSET, self.flag);
-            wv_u8(ptr, LEN_OFFSET, self.len);
-        }
+        // SAFETY: caller guarantees `ptr` covers the packet header.
+        unsafe { wv_u16(ptr, 0, self.magic) };
+        // SAFETY: caller guarantees `ptr` covers the packet header.
+        unsafe { wv_u8(ptr, FLAG_OFFSET, self.flag) };
+        // SAFETY: caller guarantees `ptr` covers the packet header.
+        unsafe { wv_u8(ptr, LEN_OFFSET, self.len) };
     }
 
     /// Writes `payload` into the buffer at `ptr + 4`.
@@ -70,9 +71,10 @@ impl Packet {
     /// # Safety
     /// `ptr` must be valid for at least `4 + self.len` bytes.
     pub unsafe fn write_payload_to_raw_ptr(&self, ptr: *mut u8, payload: &[u8]) {
-        unsafe {
-            core::ptr::copy_nonoverlapping(payload.as_ptr(), ptr.add(4), self.len as usize);
-        }
+        // SAFETY: caller guarantees the packet payload begins after the header.
+        let dst = unsafe { ptr.add(PACKET_HEADER_SIZE) };
+        // SAFETY: `dst` points to `self.len` bytes and does not overlap `payload`.
+        unsafe { core::ptr::copy_nonoverlapping(payload.as_ptr(), dst, self.len as usize) };
     }
 
     /// Writes a complete packet (header + payload) to `ptr` in one call.
@@ -81,10 +83,10 @@ impl Packet {
     /// `ptr` must be valid for at least `PACKET_HEADER_SIZE + payload.len()` bytes.
     pub unsafe fn write_full_packet_to_raw_ptr(ptr: *mut u8, payload: &[u8]) {
         let packet = Self::new(payload.len() as u8);
-        unsafe {
-            packet.write_to_raw_ptr(ptr);
-            packet.write_payload_to_raw_ptr(ptr, payload);
-        }
+        // SAFETY: caller guarantees `ptr` covers the full packet.
+        unsafe { packet.write_to_raw_ptr(ptr) };
+        // SAFETY: caller guarantees `ptr` covers the full packet.
+        unsafe { packet.write_payload_to_raw_ptr(ptr, payload) };
     }
 
     /// Sets the `FLAG_CONSUMED` bit in the on-disk flag byte at `ptr`.
@@ -94,9 +96,8 @@ impl Packet {
     /// at least `PACKET_HEADER_SIZE` bytes.
     pub unsafe fn mark_as_consumed(&mut self, ptr: *mut u8) {
         self.flag |= FLAG_CONSUMED;
-        unsafe {
-            wv_u8(ptr, FLAG_OFFSET, self.flag);
-        }
+        // SAFETY: caller guarantees `ptr` covers the packet header.
+        unsafe { wv_u8(ptr, FLAG_OFFSET, self.flag) };
     }
 
     /// Returns `true` if the packet has the correct magic, is flagged valid, and has not been consumed.

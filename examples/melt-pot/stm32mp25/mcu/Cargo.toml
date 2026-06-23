@@ -22,26 +22,43 @@ name              = "melt-pot-stm32mp25-mcu"
 version.workspace = true
 
 # Cross-compile target: thumbv8m.main-none-eabi  (Cortex-M33)
-# Example: cargo build -p melt-pot-stm32mp25-mcu --target thumbv8m.main-none-eabi --release
+# Example: cargo build -p melt-pot-stm32mp25-mcu --features firmware --target thumbv8m.main-none-eabi --release
+
+[features]
+default = []
+firmware = [
+  "dep:consortium-codec",
+  "dep:consortium-dbg-defmt",
+  "dep:consortium-ipc",
+  "dep:consortium-ipc-doorbell-hsem",
+  "dep:consortium-ipc-transport-memory",
+  "dep:cortex-m",
+  "dep:cortex-m-rt",
+  "dep:defmt",
+  "dep:embassy-executor",
+  "dep:panic-halt",
+  "dep:melt-pot-shared",
+]
 
 [[bin]]
 name = "melt-pot-stm32mp25-mcu"
 path = "src/main.rs"
+required-features = ["firmware"]
 
 [dependencies]
-melt-pot-shared = { path = "../../shared" }
+melt-pot-shared = { optional = true, path = "../../shared" }
 
-consortium-codec                 = { default-features = false, features = ["postcard"], path = "../../../../crates/consortium-codec" }
-consortium-dbg-defmt             = { default-features = false, features = ["logger"], path = "../../../../crates/consortium-dbg-defmt" }
-consortium-ipc                   = { default-features = false, path = "../../../../crates/consortium-ipc" }
-consortium-ipc-doorbell-hsem     = { default-features = false, features = ["stm32mp25"], path = "../../../../crates/consortium-ipc-doorbell-hsem" }
-consortium-ipc-transport-memory  = { default-features = false, path = "../../../../crates/consortium-ipc-transport-memory" }
+consortium-codec                 = { optional = true, default-features = false, features = ["postcard"], path = "../../../../crates/consortium-codec" }
+consortium-dbg-defmt             = { optional = true, default-features = false, features = ["logger"], path = "../../../../crates/consortium-dbg-defmt" }
+consortium-ipc                   = { optional = true, default-features = false, path = "../../../../crates/consortium-ipc" }
+consortium-ipc-doorbell-hsem     = { optional = true, default-features = false, features = ["stm32mp25"], path = "../../../../crates/consortium-ipc-doorbell-hsem" }
+consortium-ipc-transport-memory  = { optional = true, default-features = false, path = "../../../../crates/consortium-ipc-transport-memory" }
 
-cortex-m            = { version = "0.7" }
-cortex-m-rt         = { version = "0.7" }
-defmt               = { version = "1.1.0" }
-embassy-executor    = { default-features = false, features = ["executor-thread", "platform-cortex-m"], version = "0.10.0" }
-panic-halt          = { version = "0.2" }
+cortex-m            = { optional = true, version = "0.7" }
+cortex-m-rt         = { optional = true, version = "0.7" }
+defmt               = { optional = true, version = "1.1.0" }
+embassy-executor    = { optional = true, default-features = false, features = ["executor-thread", "platform-cortex-m"], version = "0.10.0" }
+panic-halt          = { optional = true, version = "0.2" }
 
 [lints]
 workspace = true

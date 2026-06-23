@@ -319,7 +319,8 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
             fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<()> {
                 #(#pack_stmts)*
                 let mut _operation = ::optee_teec::Operation::new(0, #(#new_params_args),*);
-                session.invoke_command(Command::#command_variant as u32, &mut _operation)
+                session.invoke_command(Command::#command_variant as u32, &mut _operation)?;
+                Ok(())
             }
         }
     };
@@ -896,7 +897,10 @@ fn gen_pack_ca(
     }
 
     (
-        quote! { compile_error!("Unsupported TEE parameter type"); },
+        quote! {
+            let #slot_ident = ::optee_teec::ParamNone;
+            compile_error!("Unsupported TEE parameter type");
+        },
         None,
     )
 }
