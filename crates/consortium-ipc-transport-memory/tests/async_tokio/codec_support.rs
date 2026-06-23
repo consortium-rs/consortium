@@ -5,8 +5,8 @@ use crate::common::doorbell::HostDoorbell;
 use consortium_codec::CodecFor;
 use consortium_ipc::{Chan, Channel, Rx, SramRegion, Tx};
 use consortium_ipc_transport_memory::{
-    ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport, descriptor_init,
-    slot,
+    ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport, Side,
+    descriptor_init, slot,
 };
 use prost::bytes::{Buf, BufMut};
 use prost::encoding::{self, DecodeContext, WireType};
@@ -17,12 +17,6 @@ pub const SLOT_SIZE: usize = slot::SLOT_HEADER + MTU;
 pub const A_TO_M_SLOT: usize = 0x100;
 pub const M_TO_A_SLOT: usize = A_TO_M_SLOT + SLOT_SIZE;
 pub const REGION_LEN: usize = M_TO_A_SLOT + SLOT_SIZE;
-pub const DESCRIPTOR_LEN: usize = 0x300;
-pub const A_DESCRIPTOR_OFFSET: usize = 0;
-pub const M_DESCRIPTOR_OFFSET: usize = DESCRIPTOR_LEN;
-pub const SHARED_A_TO_M_SLOT: usize = DESCRIPTOR_LEN * 2;
-pub const SHARED_M_TO_A_SLOT: usize = SHARED_A_TO_M_SLOT + SLOT_SIZE;
-pub const PAIRED_REGION_LEN: usize = SHARED_M_TO_A_SLOT + SLOT_SIZE;
 
 #[derive(
     Clone, Debug, Default, Deserialize, PartialEq, rkyv::Archive, rkyv::Serialize, Serialize,
@@ -90,39 +84,6 @@ pub fn scratch<const N: usize>() -> &'static mut [u8] {
     Box::leak(Box::new([0; N])).as_mut_slice()
 }
 
-fn init_paired_descriptors(base: *mut u8) {
-    let a_base = unsafe { base.add(A_DESCRIPTOR_OFFSET) };
-    let m_base = unsafe { base.add(M_DESCRIPTOR_OFFSET) };
-
-    let a_to_m_from_a = SHARED_A_TO_M_SLOT - A_DESCRIPTOR_OFFSET;
-    let m_to_a_from_a = SHARED_M_TO_A_SLOT - A_DESCRIPTOR_OFFSET;
-    let a_to_m_from_m = SHARED_A_TO_M_SLOT - M_DESCRIPTOR_OFFSET;
-    let m_to_a_from_m = SHARED_M_TO_A_SLOT - M_DESCRIPTOR_OFFSET;
-
-    unsafe {
-        descriptor_init(
-            a_base,
-            2,
-            MTU,
-            &[
-                channel(a_to_m_from_a, ChannelDirection::AToM),
-                channel(m_to_a_from_a, ChannelDirection::MToA),
-            ],
-        );
-        descriptor_init(
-            m_base,
-            2,
-            MTU,
-            &[
-                channel(a_to_m_from_m, ChannelDirection::MToA),
-                channel(m_to_a_from_m, ChannelDirection::AToM),
-            ],
-        );
-        a_base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
-        m_base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
-    }
-}
-
 pub fn block_on_current_thread(fut: impl Future<Output = ()>) {
     let rt = tokio::runtime::Builder::new_current_thread()
         .build()
@@ -135,9 +96,9 @@ where
     C: CodecFor<Message> + Send + 'static,
     for<'buf> C::Decoded<'buf>: MessageView + Send,
 {
-    let mut backing = vec![0; PAIRED_REGION_LEN].into_boxed_slice();
+    let mut backing = vec![0; REGION_LEN].into_boxed_slice();
     let base_addr = backing.as_mut_ptr() as usize;
-    init_paired_descriptors(base_addr as *mut u8);
+    init_two_channel_descriptor(base_addr as *mut u8);
     let (a_doorbell, m_doorbell) = HostDoorbell::pair();
     let a_expected = a_to_m.clone();
     let m_expected = m_to_a.clone();
@@ -149,11 +110,12 @@ where
         let m_sent_for_a = m_sent.clone();
         let a_thread = scope.spawn(move || {
             block_on_current_thread(async move {
-                let a_base = (base_addr + A_DESCRIPTOR_OFFSET) as *mut u8;
+                let base = base_addr as *mut u8;
                 let ch = unsafe { Chan::new_unchecked(0) };
-                let region = unsafe { SramRegion::new(a_base, PAIRED_REGION_LEN) };
-                let transport =
-                    unsafe { SharedMemoryTransport::new(ch, a_doorbell, region, a_base) };
+                let region = unsafe { SramRegion::new(base, REGION_LEN) };
+                let transport = unsafe {
+                    SharedMemoryTransport::new_with_side(ch, a_doorbell, region, base, Side::A)
+                };
                 let (tx_half, rx_half) = transport.split();
                 let mut tx = Channel::<Tx, Message, _, C>::new(ch, tx_half, scratch::<MTU>());
                 let mut rx = Channel::<Rx, Message, _, C>::new(ch, rx_half, scratch::<MTU>());
@@ -179,11 +141,12 @@ where
         let m_sent_for_m = m_sent;
         let m_thread = scope.spawn(move || {
             block_on_current_thread(async move {
-                let m_base = (base_addr + M_DESCRIPTOR_OFFSET) as *mut u8;
+                let base = base_addr as *mut u8;
                 let ch = unsafe { Chan::new_unchecked(0) };
-                let region = unsafe { SramRegion::new(m_base, PAIRED_REGION_LEN) };
-                let transport =
-                    unsafe { SharedMemoryTransport::new(ch, m_doorbell, region, m_base) };
+                let region = unsafe { SramRegion::new(base, REGION_LEN) };
+                let transport = unsafe {
+                    SharedMemoryTransport::new_with_side(ch, m_doorbell, region, base, Side::M)
+                };
                 let (tx_half, rx_half) = transport.split();
                 let mut tx = Channel::<Tx, Message, _, C>::new(ch, tx_half, scratch::<MTU>());
                 let mut rx = Channel::<Rx, Message, _, C>::new(ch, rx_half, scratch::<MTU>());
