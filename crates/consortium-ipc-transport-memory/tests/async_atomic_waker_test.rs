@@ -3,5 +3,5 @@
     clippy::undocumented_unsafe_blocks
 )]
 
-#[path = "async-atomic-waker/transport.rs"]
+#[path = "async_atomic_waker/transport.rs"]
 mod transport;

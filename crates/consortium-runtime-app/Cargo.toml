@@ -61,4 +61,4 @@ uio = { version = "0.5.2" }
 
 
 [dependencies]
-memmap2 = "0.9.10"
+memmap2 = "0.9.11"

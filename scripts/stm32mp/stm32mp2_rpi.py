@@ -15,7 +15,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import re
-import shutil
 import subprocess
 import yaml
 import sys

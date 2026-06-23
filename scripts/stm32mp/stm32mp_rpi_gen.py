@@ -97,18 +97,18 @@ def generate_family_rs(data: dict) -> str:
     lines.append(f"//! Source: <https://github.com/{org}/{repo}>")
     lines.append(f"//! Path  : `{res_path}`")
     lines.append("//")
-    lines.append(f"//! Enable a chip variant via Cargo feature, e.g.:")
+    lines.append("//! Enable a chip variant via Cargo feature, e.g.:")
     if features:
-        lines.append(f"//! ```toml")
-        lines.append(f"//! [features]")
+        lines.append("//! ```toml")
+        lines.append("//! [features]")
         lines.append(f"//! {features[0]} = []")
-        lines.append(f"//! ```")
+        lines.append("//! ```")
     lines.append("")
 
     # ── RifscId enum ────────────────────────────────────────────────────────
     lines.append("#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]")
     lines.append("#[repr(u8)]")
-    lines.append(f"pub enum RifscId {{")
+    lines.append("pub enum RifscId {")
 
     for p in peripherals:
         const = peripheral_to_const(p["name"])

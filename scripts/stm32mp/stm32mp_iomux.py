@@ -95,7 +95,7 @@ def render_yaml(pins):
         lines.append(f"  position: {pin['position']}")
         lines.append(f"  type: {pin['type']}")
         if pin["signals"]:
-            lines.append(f"  mux:")
+            lines.append("  mux:")
             for name, pin_part in pin["signals"]:
                 if pin_part:
                     lines.append(f"    - name: {name.lower()}")

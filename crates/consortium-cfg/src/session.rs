@@ -70,10 +70,10 @@ impl CfgSession {
             let mut periph = Peripheral::from((common_periph.clone(), name.clone()));
 
             // Assign perid from RIFSC map if available (STM32MP only)
-            if let Some(rif) = rif {
-                if let Some(rif_periph) = rif.peripheral_by_name(name) {
-                    periph.perid = Some(rif_periph.rifsc_id as u32);
-                }
+            if let Some(rif) = rif
+                && let Some(rif_periph) = rif.peripheral_by_name(name)
+            {
+                periph.perid = Some(rif_periph.rifsc_id as u32);
             }
 
             // Validate pins and populate AF position + alias from IOMUX if provided

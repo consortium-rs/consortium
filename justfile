@@ -5,6 +5,7 @@ a32_target := "armv7-unknown-linux-gnueabihf"
 rv32imc_target := "riscv32imc-unknown-none-elf"
 rv32imac_target := "riscv32imac-unknown-none-elf"
 rv32imafcp_target := "riscv32imafc-unknown-none-elf"
+lint_crates := "consortium-builder consortium-common consortium-cfg consortium-cfg-meta consortium-cli consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg-defmt consortium-dts consortium-ffi consortium-ipc consortium-ipc-doorbell-gpio consortium-ipc-doorbell-hsem consortium-ipc-doorbell-ipcc consortium-ipc-doorbell-mu consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-memory consortium-ort consortium-runtime-mcu consortium-runtime-prt consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
 rust_tools := "taplo-cli typos-cli cargo-deny cargo-expand cargo-insta cargo-shear"
 ls_lint_version := "2.3.1"
 
@@ -94,7 +95,42 @@ clippy:
     cargo clippy
 
 # Run all host-side linters
-lint: clippy taplo-check typos ls-lint
+lint: fmt-check cargo-lint taplo-check typos ls-lint oxlint ruff-lint
+
+# Run Rust lint checks that avoid HMI and OP-TEE CA/TA link dependencies
+cargo-lint:
+    @for crate in {{ lint_crates }}; do \
+        cargo clippy -p "$crate" --all-targets -- -D warnings || exit 1; \
+    done
+    cargo clippy -p consortium-runtime-app --no-default-features --features imx9x,stm32mp25x --all-targets -- -D warnings
+    cargo clippy -p consortium-tee --no-default-features --features ta --all-targets -- -D warnings
+
+# Lint JavaScript and TypeScript through Vite+
+oxlint:
+    vp lint
+
+# Lint Python scripts
+ruff-lint:
+    uvx ruff check .
+
+# Auto-fix lint and format issues
+fix: cargo-fix oxfix ruff-fix fmt
+
+# Apply Clippy autofixes, mirroring cargo-lint
+cargo-fix:
+    @for crate in {{ lint_crates }}; do \
+        cargo clippy --fix --allow-dirty --allow-staged -p "$crate" --all-targets || exit 1; \
+    done
+    cargo clippy --fix --allow-dirty --allow-staged -p consortium-runtime-app --no-default-features --features imx9x,stm32mp25x --all-targets
+    cargo clippy --fix --allow-dirty --allow-staged -p consortium-tee --no-default-features --features ta --all-targets
+
+# Apply JavaScript and TypeScript autofixes through Vite+
+oxfix:
+    vp lint --fix
+
+# Apply Python autofixes
+ruff-fix:
+    uvx ruff check --fix .
 
 # Format code
 fmt:
@@ -103,13 +139,19 @@ fmt:
     uvx ruff format
     taplo format
 
+# Check code formatting
+fmt-check:
+    cargo fmt --check
+    vp fmt --check
+    uvx ruff format --check
+    taplo format --check
+
 # Format TOML files
 taplo-fmt:
     taplo format
 
-# Check TOML formatting and validity
+# Check TOML validity
 taplo-check:
-    taplo format --check
     taplo lint
 
 # Check spelling

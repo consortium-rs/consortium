@@ -29,20 +29,26 @@ name = "melt-pot-imx95-app"
 path = "src/main.rs"
 
 [target.'cfg(target_os = "linux")'.dependencies]
-melt-pot-shared     = { path = "../../shared" }
-melt-pot-imx95-ta   = { default-features = false, features = ["ca"], path = "../ta" }
+melt-pot-shared   = { path = "../../shared" }
+melt-pot-imx95-ta = { default-features = false, features = ["ca"], path = "../ta" }
 
-consortium-codec                 = { features = ["postcard"], path = "../../../../crates/consortium-codec" }
-consortium-dbg-defmt             = { default-features = false, features = ["host"], path = "../../../../crates/consortium-dbg-defmt" }
-consortium-ipc                   = { features = ["std"], path = "../../../../crates/consortium-ipc" }
-consortium-ipc-doorbell-mu       = { features = ["imx95", "mua", "std"], path = "../../../../crates/consortium-ipc-doorbell-mu" }
-consortium-ipc-transport-memory  = { path = "../../../../crates/consortium-ipc-transport-memory" }
-consortium-hmi                   = { path = "../../../../crates/consortium-hmi" }
+consortium-codec = { features = ["postcard"], path = "../../../../crates/consortium-codec" }
+consortium-dbg-defmt = { default-features = false, features = [
+  "host",
+], path = "../../../../crates/consortium-dbg-defmt" }
+consortium-ipc = { features = ["std"], path = "../../../../crates/consortium-ipc" }
+consortium-ipc-doorbell-mu = { features = [
+  "imx95",
+  "mua",
+  "std",
+], path = "../../../../crates/consortium-ipc-doorbell-mu" }
+consortium-ipc-transport-memory = { path = "../../../../crates/consortium-ipc-transport-memory" }
+consortium-hmi = { path = "../../../../crates/consortium-hmi" }
 
 glib       = "0.22"
 serde      = { features = ["derive"], version = "1" }
 serde_json = "1"
-tokio      = { features = ["rt-multi-thread", "macros", "sync"], version = "1" }
+tokio      = { features = ["macros", "rt-multi-thread", "sync"], version = "1" }
 
 [lints]
 workspace = true

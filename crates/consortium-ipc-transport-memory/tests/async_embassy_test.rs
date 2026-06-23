@@ -3,5 +3,5 @@
     clippy::undocumented_unsafe_blocks
 )]
 
-#[path = "async-embassy/transport.rs"]
+#[path = "async_embassy/transport.rs"]
 mod transport;

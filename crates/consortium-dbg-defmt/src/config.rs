@@ -55,10 +55,15 @@ pub const SIZE: u16 = LENGTH as u16;
 /// `const` guard that fails the build with a helpful message when the debug
 /// shared-memory layout was not injected by `consortium-builder`.
 pub const fn assert_configured() {
-    assert!(
-        CONFIGURED,
-        "Debug shared-memory layout is not configured: build through `consortium-builder` \
-         (which injects CONSORTIUM_DBG_* from the [dbg] section of Consortium.toml) \
-         rather than a plain `cargo build`."
-    );
+    // Intentionally asserts on a `const`: this guard only evaluates when the `const fn`
+    // is called from a binary that requires a real region, not at every build.
+    #[allow(clippy::assertions_on_constants)]
+    {
+        assert!(
+            CONFIGURED,
+            "Debug shared-memory layout is not configured: build through `consortium-builder` \
+             (which injects CONSORTIUM_DBG_* from the [dbg] section of Consortium.toml) \
+             rather than a plain `cargo build`."
+        );
+    }
 }

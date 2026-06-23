@@ -1,0 +1,38 @@
+name: linters
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  linters:
+    name: all linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.3
+
+      - name: Setup just
+        uses: extractions/setup-just@v4
+
+      - name: Install Rust linters
+        run: |
+          cargo install taplo-cli --locked
+          cargo install typos-cli --locked
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v8.2.0
+
+      - name: Setup vite+
+        uses: voidzero-dev/setup-vp@v1
+        with:
+          node-version: '24'
+          cache: true
+
+      - name: Install Vite+ dependencies
+        run: vp install
+
+      - name: Run linters
+        run: just lint

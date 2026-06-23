@@ -23,22 +23,22 @@ version.workspace = true
 
 [features]
 stm32mp21x = ["consortium-ipc-doorbell-ipcc/stm32mp21x"]
-stm32mp23x = ["consortium-ipc-doorbell-hsem", "consortium-ipc-doorbell-ipcc/stm32mp23x"]
-stm32mp25x = ["consortium-ipc-doorbell-hsem", "consortium-ipc-doorbell-ipcc/stm32mp25x"]
+stm32mp23x = ["consortium-ipc-doorbell-hsem/stm32mp23", "consortium-ipc-doorbell-ipcc/stm32mp23x"]
+stm32mp25x = ["consortium-ipc-doorbell-hsem/stm32mp25", "consortium-ipc-doorbell-ipcc/stm32mp25x"]
 # Compatibility alias for the previous STM32MP2 default. New code should use
 # the chip-family features above so STM32MP21 can select IPCC without HSEM.
 default    = ["stm32mp25x"]
-imx93      = ["consortium-ipc-doorbell-mu/imx93", "imx9x"]
-imx95      = ["consortium-ipc-doorbell-mu/imx95", "imx9x"]
+imx93      = ["consortium-ipc-doorbell-mu/imx93", "consortium-ipc-doorbell-mu/mua", "imx9x"]
+imx95      = ["consortium-ipc-doorbell-mu/imx95", "consortium-ipc-doorbell-mu/mua", "imx9x"]
 imx9x      = []
 stm32mp2xx = ["stm32mp25x"]
 
 [dependencies]
-consortium-ipc = { default-features = false, path = "../consortium-ipc" }
-consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem" }
-consortium-ipc-doorbell-ipcc = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-ipcc" }
-consortium-ipc-doorbell-mu = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu" }
+consortium-ipc                  = { default-features = false, path = "../consortium-ipc" }
+consortium-ipc-doorbell-hsem    = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem" }
+consortium-ipc-doorbell-ipcc    = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-ipcc" }
+consortium-ipc-doorbell-mu      = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu" }
 consortium-ipc-transport-memory = { default-features = false, path = "../consortium-ipc-transport-memory" }
-cortex-m = { version = "0.7" }
-num-traits = { default-features = false, version = "0.2.19" }
-static_cell = { default-features = false, version = "2" }
+cortex-m                        = { version = "0.7" }
+num-traits                      = { default-features = false, version = "0.2.19" }
+static_cell                     = { default-features = false, version = "2" }

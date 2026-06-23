@@ -1,5 +1,12 @@
 [files]
-extend-exclude = ["data/stm32mp", "dialogs", "sim/renode/stm32mp257/firmware.elf", "target"]
+extend-exclude = [
+  "crates/cogcore-sys/src/bindings_pregenerated.rs",
+  "crates/cogcore-sys/vendor",
+  "data/stm32mp",
+  "dialogs",
+  "sim/renode/stm32mp257/firmware.elf",
+  "target",
+]
 
 [default.extend-words]
 GIPn = "GIPn"
@@ -8,3 +15,4 @@ MIS  = "MIS"
 Pn   = "Pn"
 SISE = "SISE"
 hsi  = "hsi"
+sems = "sems"

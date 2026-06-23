@@ -1,4 +1,4 @@
-#[repr(packed)]
+#[repr(C, packed)]
 #[derive(Clone, Copy, Debug)]
 /// Shared descriptor header
 ///
