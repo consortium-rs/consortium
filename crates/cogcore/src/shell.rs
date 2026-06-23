@@ -1,6 +1,6 @@
 use cogcore_sys as sys;
 
-use crate::{handlers::RequestHandler, object::ObjectPtr, raw};
+use crate::{handlers::RequestHandler, object::ObjectPtr, raw, security::SecurityManager};
 
 /// Owned Cog shell.
 #[derive(Clone)]
@@ -50,6 +50,20 @@ impl Shell {
             sys::cog_shell_set_request_handler(self.as_ptr(), scheme.as_ptr(), handler.as_ptr())
         };
         Ok(())
+    }
+
+    /// Returns the WebKit security manager for this shell's web context.
+    ///
+    /// Use this to register custom URI schemes as secure or CORS-enabled
+    /// **before** the first page load.
+    pub fn security_manager(&self) -> crate::Result<SecurityManager> {
+        // SAFETY: `self.ptr` owns a live CogShell. The returned security
+        // manager is borrowed from the web context and must not be unreffed
+        // by the caller; `SecurityManager::from_borrowed` takes a ref.
+        let mgr = unsafe {
+            sys::webkit_web_context_get_security_manager(self.web_context_ptr())
+        };
+        SecurityManager::from_borrowed(mgr, "webkit_web_context_get_security_manager")
     }
 
     /// Returns the borrowed WebKit context pointer for advanced integrations.

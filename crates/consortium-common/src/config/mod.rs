@@ -25,6 +25,8 @@ use crate::config::mcu_core::CortexMcuCore;
 pub mod app_core;
 pub mod chip_map;
 #[cfg(feature = "serde")]
+pub mod hmi;
+#[cfg(feature = "serde")]
 pub mod iomux;
 #[cfg(all(feature = "serde", feature = "std"))]
 pub mod iomux_loader;
@@ -37,6 +39,8 @@ pub mod rifsc_loader;
 // Convenient re-exports for RIF types
 pub use rif::{RifConfig, RifPeripheral, RifSource};
 // Convenient re-exports for peripheral types
+#[cfg(feature = "serde")]
+pub use hmi::HmiConfig;
 #[cfg(feature = "serde")]
 pub use iomux::{IomuxConfig, Pin, SignalAssignment};
 #[cfg(all(feature = "serde", feature = "std"))]
@@ -101,6 +105,10 @@ pub struct Config {
     /// Maps peripheral names to their ownership and security domain settings.
     #[cfg_attr(feature = "serde", serde(default))]
     pub peripheral: HashMap<String, Peripheral>,
+    /// HMI build configuration injected as compile-time env vars by the builder.
+    #[cfg(feature = "serde")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub hmi: Option<HmiConfig>,
 }
 
 impl Config {
