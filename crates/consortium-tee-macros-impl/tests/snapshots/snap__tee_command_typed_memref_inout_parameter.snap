@@ -33,7 +33,7 @@ fn adjust_config_dispatched(
     Ok(())
 }
 #[cfg(feature = "ca")]
-fn call_adjust_config(
+pub fn call_adjust_config(
     session: &mut ::optee_teec::Session,
     config: &mut DeviceConfig,
 ) -> ::consortium_tee::TeeResult<()> {

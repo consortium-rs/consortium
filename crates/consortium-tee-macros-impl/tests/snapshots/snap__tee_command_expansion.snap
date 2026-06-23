@@ -47,7 +47,7 @@ fn echo_dispatched(
     Ok(())
 }
 #[cfg(feature = "ca")]
-fn call_echo(
+pub fn call_echo(
     session: &mut ::optee_teec::Session,
     input: &[u8],
     counter: &mut u64,

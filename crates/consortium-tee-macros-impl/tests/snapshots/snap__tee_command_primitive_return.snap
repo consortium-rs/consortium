@@ -29,7 +29,7 @@ fn read_counter_dispatched(
     Ok(())
 }
 #[cfg(feature = "ca")]
-fn call_read_counter(
+pub fn call_read_counter(
     session: &mut ::optee_teec::Session,
 ) -> ::consortium_tee::TeeResult<u64> {
     let _p0 = ::optee_teec::ParamValue::new(0, 0, ::optee_teec::ParamType::ValueOutput);

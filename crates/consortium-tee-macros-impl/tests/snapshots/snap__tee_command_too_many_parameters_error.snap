@@ -48,7 +48,7 @@ fn crowded_dispatched(
     crowded(a, b, c, d, e)
 }
 #[cfg(feature = "ca")]
-fn call_crowded(
+pub fn call_crowded(
     session: &mut ::optee_teec::Session,
     a: u32,
     b: u32,

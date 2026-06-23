@@ -43,7 +43,7 @@ fn read_config_dispatched(
     Ok(())
 }
 #[cfg(feature = "ca")]
-fn call_read_config(
+pub fn call_read_config(
     session: &mut ::optee_teec::Session,
     slot: u32,
 ) -> ::consortium_tee::TeeResult<DeviceConfig> {
