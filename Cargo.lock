@@ -1654,6 +1654,7 @@ dependencies = [
 name = "melt-pot-imx95-ta"
 version = "0.1.0"
 dependencies = [
+ "consortium-common",
  "consortium-tee",
  "optee-teec",
  "optee-utee",
@@ -1708,6 +1709,7 @@ dependencies = [
 name = "melt-pot-stm32mp25-ta"
 version = "0.1.0"
 dependencies = [
+ "consortium-common",
  "consortium-tee",
  "optee-teec",
  "optee-utee",
