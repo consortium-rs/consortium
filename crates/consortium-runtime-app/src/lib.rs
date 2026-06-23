@@ -21,6 +21,8 @@ pub mod uio;
 
 pub use consortium_ipc as ipc;
 pub use consortium_ipc_transport_memory as ipc_transport;
+
+#[cfg(feature = "tee")]
 pub use consortium_tee as tee;
 
 #[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]

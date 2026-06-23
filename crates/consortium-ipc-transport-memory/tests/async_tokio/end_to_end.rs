@@ -1,82 +1,68 @@
-use std::sync::mpsc;
-
 use crate::common::doorbell::HostDoorbell;
 use crate::transport_support::{MTU, REGION_LEN, init_two_channel_descriptor};
-use consortium_ipc::{Chan, Doorbell, RecvTransport, SendTransport, SramRegion};
-use consortium_ipc_transport_memory::{
-    ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport, channel_table_entry_offset, slot,
-};
+use consortium_ipc::{Chan, RecvTransport, SendTransport, SramRegion};
+use consortium_ipc_transport_memory::{SharedMemoryTransport, Side};
 
+/// End-to-end ping/pong over the shared-memory transport.
+///
+/// Both cores are modelled over a *single* shared descriptor and shared slot
+/// region — the same memory the real A-core and M-core would map. On real
+/// firmware each core's TX/RX perspective is fixed by the build target; here both
+/// threads run under `std`, so each transport selects its [`Side`] explicitly to
+/// emulate the per-core direction interpretation. Neither side touches the shared
+/// memory directly: both drive a real [`SharedMemoryTransport`].
 #[test]
-fn shared_memory_transport_round_trips_over_heap_region_between_host_threads() {
-    let mut backing = vec![0; REGION_LEN].into_boxed_slice();
-    let base = backing.as_mut_ptr();
-
-    init_two_channel_descriptor(base);
-
-    let backing = Box::leak(backing);
+fn shared_memory_transport_round_trips_over_one_shared_descriptor() {
+    let mut backing = vec![0u8; REGION_LEN].into_boxed_slice();
     let base_addr = backing.as_mut_ptr() as usize;
-    let (app_doorbell, remote_doorbell) = HostDoorbell::pair();
-    let ch = unsafe { Chan::new_unchecked(0) };
-    let (reply_written_tx, reply_written_rx) = mpsc::channel();
+    init_two_channel_descriptor(base_addr as *mut u8);
 
-    let remote_thread = std::thread::spawn(move || {
-        let rt = tokio::runtime::Builder::new_current_thread()
-            .build()
-            .expect("create remote host runtime");
+    let (a_doorbell, m_doorbell) = HostDoorbell::pair();
 
-        rt.block_on(async move {
-            remote_doorbell
-                .wait(ch)
-                .await
-                .expect("remote waits for app doorbell");
+    std::thread::scope(|scope| {
+        let a_thread = scope.spawn(move || {
+            let rt = tokio::runtime::Builder::new_current_thread()
+                .build()
+                .expect("create A-side runtime");
 
-            let base = base_addr as *mut u8;
-            let app_to_remote =
-                unsafe { ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(0))) };
-            let remote_to_app =
-                unsafe { ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1))) };
+            rt.block_on(async move {
+                let base = base_addr as *mut u8;
+                let ch = unsafe { Chan::new_unchecked(0) };
+                let region = unsafe { SramRegion::new(base, REGION_LEN) };
+                let mut transport = unsafe {
+                    SharedMemoryTransport::new_with_side(ch, a_doorbell, region, base, Side::A)
+                };
 
-            let mut rx = [0; MTU];
-            let n = unsafe { slot::try_read(app_to_remote.slot_addr(base), &mut rx) }
-                .expect("remote reads app payload");
-            assert_eq!(&rx[..n], b"ping");
+                transport.send(b"ping").await.expect("A sends ping");
 
-            unsafe {
-                slot::write(remote_to_app.slot_addr(base), b"pong");
-                base.add(RX_UPDATED_ID_OFFSET).write_volatile(1);
-            }
-
-            reply_written_tx
-                .send(())
-                .expect("signal reply is in shared memory");
-            remote_doorbell.ring(ch).expect("ring app doorbell");
+                let mut buf = [0u8; MTU];
+                let n = transport.recv(&mut buf).await.expect("A receives pong");
+                assert_eq!(&buf[..n], b"pong");
+            });
         });
-    });
 
-    let app_thread = std::thread::spawn(move || {
-        let rt = tokio::runtime::Builder::new_current_thread()
-            .build()
-            .expect("create app host runtime");
+        let m_thread = scope.spawn(move || {
+            let rt = tokio::runtime::Builder::new_current_thread()
+                .build()
+                .expect("create M-side runtime");
 
-        rt.block_on(async move {
-            let base = base_addr as *mut u8;
-            let region = unsafe { SramRegion::new(base, REGION_LEN) };
-            let mut transport =
-                unsafe { SharedMemoryTransport::new(ch, app_doorbell, region, base) };
+            rt.block_on(async move {
+                let base = base_addr as *mut u8;
+                let ch = unsafe { Chan::new_unchecked(0) };
+                let region = unsafe { SramRegion::new(base, REGION_LEN) };
+                let mut transport = unsafe {
+                    SharedMemoryTransport::new_with_side(ch, m_doorbell, region, base, Side::M)
+                };
 
-            transport.send(b"ping").await.expect("send app payload");
+                let mut buf = [0u8; MTU];
+                let n = transport.recv(&mut buf).await.expect("M receives ping");
+                assert_eq!(&buf[..n], b"ping");
 
-            reply_written_rx
-                .recv()
-                .expect("remote writes reply before app receive");
-
-            let mut rx = [0; MTU];
-            let n = transport.recv(&mut rx).await.expect("receive reply");
-            assert_eq!(&rx[..n], b"pong");
+                transport.send(b"pong").await.expect("M sends pong");
+            });
         });
-    });
 
-    app_thread.join().expect("app thread completes");
-    remote_thread.join().expect("remote thread completes");
+        a_thread.join().expect("A-side thread completes");
+        m_thread.join().expect("M-side thread completes");
+    });
 }

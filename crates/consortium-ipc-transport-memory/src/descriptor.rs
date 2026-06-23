@@ -225,32 +225,60 @@ pub enum ChannelDirection {
     Unrecognized = 0xFF,
 }
 
-impl ChannelDirection {
-    /// Returns `true` if this direction is a receive channel for the current build target.
-    ///
-    /// On `std` (A-core): `MToA` is RX. On bare-metal (M-core): `AToM` is RX.
-    pub fn is_rx(&self) -> bool {
+/// Which core's perspective a transport takes when resolving channel directions.
+///
+/// Channel directions in the descriptor are absolute (`AToM` / `MToA`); a
+/// transport interprets them relative to the core it runs on. The A-core treats
+/// `AToM` as TX and `MToA` as RX; the M-core sees the reverse. On real firmware
+/// the side is fixed by the build target, so [`Side::for_target`] derives it from
+/// the `std` feature. Host tests that emulate both cores over one shared
+/// descriptor in a single process select the side explicitly.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Side {
+    /// Application core (Cortex-A / Linux): `AToM` is TX, `MToA` is RX.
+    A,
+    /// Microcontroller core (Cortex-M / bare-metal): `MToA` is TX, `AToM` is RX.
+    M,
+}
+
+impl Side {
+    /// The side implied by the build target: `A` on `std`, `M` on bare-metal.
+    pub const fn for_target() -> Self {
         #[cfg(feature = "std")]
         {
-            matches!(self, ChannelDirection::MToA)
+            Side::A
         }
         #[cfg(not(feature = "std"))]
         {
-            matches!(self, ChannelDirection::AToM)
+            Side::M
+        }
+    }
+}
+
+impl Default for Side {
+    fn default() -> Self {
+        Side::for_target()
+    }
+}
+
+impl ChannelDirection {
+    /// Returns `true` if this direction is a receive channel for `side`.
+    ///
+    /// For [`Side::A`]: `MToA` is RX. For [`Side::M`]: `AToM` is RX.
+    pub fn is_rx(&self, side: Side) -> bool {
+        match side {
+            Side::A => matches!(self, ChannelDirection::MToA),
+            Side::M => matches!(self, ChannelDirection::AToM),
         }
     }
 
-    /// Returns `true` if this direction is a transmit channel for the current build target.
+    /// Returns `true` if this direction is a transmit channel for `side`.
     ///
-    /// On `std` (A-core): `AToM` is TX. On bare-metal (M-core): `MToA` is TX.
-    pub fn is_tx(&self) -> bool {
-        #[cfg(feature = "std")]
-        {
-            matches!(self, ChannelDirection::AToM)
-        }
-        #[cfg(not(feature = "std"))]
-        {
-            matches!(self, ChannelDirection::MToA)
+    /// For [`Side::A`]: `AToM` is TX. For [`Side::M`]: `MToA` is TX.
+    pub fn is_tx(&self, side: Side) -> bool {
+        match side {
+            Side::A => matches!(self, ChannelDirection::AToM),
+            Side::M => matches!(self, ChannelDirection::MToA),
         }
     }
 }

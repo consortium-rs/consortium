@@ -26,8 +26,8 @@ pub(crate) mod utils;
 
 pub use descriptor::{
     CHANNEL_NUM_MAX, ChannelDirection, ChannelLayout, DescState, Descriptor, MAGIC,
-    RX_UPDATED_ID_OFFSET, VERSION, channel_table_entry_offset, descriptor_ack, descriptor_complete,
-    descriptor_init, get_state, set_state,
+    RX_UPDATED_ID_OFFSET, Side, VERSION, channel_table_entry_offset, descriptor_ack,
+    descriptor_complete, descriptor_init, get_state, set_state,
 };
 
 pub use error::{DescriptorError, Error};

@@ -15,13 +15,6 @@ pub const A_TO_M_SLOT: usize = 0x100;
 pub const M_TO_A_SLOT: usize = A_TO_M_SLOT + SLOT_SIZE;
 pub const REGION_LEN: usize = M_TO_A_SLOT + SLOT_SIZE;
 
-pub const DESCRIPTOR_LEN: usize = 0x300;
-pub const A_DESCRIPTOR_OFFSET: usize = 0;
-pub const M_DESCRIPTOR_OFFSET: usize = DESCRIPTOR_LEN;
-pub const SHARED_A_TO_M_SLOT: usize = DESCRIPTOR_LEN * 2;
-pub const SHARED_M_TO_A_SLOT: usize = SHARED_A_TO_M_SLOT + SLOT_SIZE;
-pub const PAIRED_REGION_LEN: usize = SHARED_M_TO_A_SLOT + SLOT_SIZE;
-
 pub fn channel(offset: usize, direction: ChannelDirection) -> ChannelLayout {
     let mut layout = ChannelLayout::default();
     layout.offset = offset as u32;
@@ -37,39 +30,6 @@ pub fn init_two_channel_descriptor(base: *mut u8) {
     unsafe {
         descriptor_init(base, 2, MTU, &[a_to_m, m_to_a]);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
-    }
-}
-
-pub fn init_paired_descriptors(base: *mut u8) {
-    let a_base = unsafe { base.add(A_DESCRIPTOR_OFFSET) };
-    let m_base = unsafe { base.add(M_DESCRIPTOR_OFFSET) };
-
-    let a_to_m_from_a = SHARED_A_TO_M_SLOT - A_DESCRIPTOR_OFFSET;
-    let m_to_a_from_a = SHARED_M_TO_A_SLOT - A_DESCRIPTOR_OFFSET;
-    let a_to_m_from_m = SHARED_A_TO_M_SLOT - M_DESCRIPTOR_OFFSET;
-    let m_to_a_from_m = SHARED_M_TO_A_SLOT - M_DESCRIPTOR_OFFSET;
-
-    unsafe {
-        descriptor_init(
-            a_base,
-            2,
-            MTU,
-            &[
-                channel(a_to_m_from_a, ChannelDirection::AToM),
-                channel(m_to_a_from_a, ChannelDirection::MToA),
-            ],
-        );
-        descriptor_init(
-            m_base,
-            2,
-            MTU,
-            &[
-                channel(a_to_m_from_m, ChannelDirection::MToA),
-                channel(m_to_a_from_m, ChannelDirection::AToM),
-            ],
-        );
-        a_base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
-        m_base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
     }
 }
 
