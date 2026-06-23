@@ -59,10 +59,15 @@ pub const MTU: u32 = parse_u32(env_or_zero(option_env!("CONSORTIUM_IPC_MTU")));
 /// Invoke as `const _: () = consortium_ipc_transport_memory::config::assert_configured();`
 /// in a binary that requires a real region.
 pub const fn assert_configured() {
-    assert!(
-        CONFIGURED,
-        "IPC shared-memory layout is not configured: build through `consortium-builder` \
-         (which injects CONSORTIUM_IPC_* from the [ipc] section of Consortium.toml) \
-         rather than a plain `cargo build`."
-    );
+    // Intentionally asserts on a `const`: this guard only evaluates when the `const fn`
+    // is called from a binary that requires a real region, not at every build.
+    #[allow(clippy::assertions_on_constants)]
+    {
+        assert!(
+            CONFIGURED,
+            "IPC shared-memory layout is not configured: build through `consortium-builder` \
+             (which injects CONSORTIUM_IPC_* from the [ipc] section of Consortium.toml) \
+             rather than a plain `cargo build`."
+        );
+    }
 }

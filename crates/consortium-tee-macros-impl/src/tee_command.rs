@@ -520,15 +520,14 @@ fn gen_deprecated_ctx_value_warning(index: usize) -> TokenStream2 {
 fn is_context_ref(ty: &syn::Type) -> bool {
     if let syn::Type::Reference(r) = ty
         && r.mutability.is_some()
+        && let syn::Type::Path(tp) = r.elem.as_ref()
     {
-        if let syn::Type::Path(tp) = r.elem.as_ref() {
-            if let Some(ident) = tp.path.get_ident() {
-                if matches!(ident.to_string().as_str(), "u32" | "i32" | "u64") {
-                    return false;
-                }
-            }
-            return true;
+        if let Some(ident) = tp.path.get_ident()
+            && matches!(ident.to_string().as_str(), "u32" | "i32" | "u64")
+        {
+            return false;
         }
+        return true;
     }
     false
 }
@@ -539,13 +538,13 @@ fn is_tee_param_path(ty: &syn::Type) -> bool {
         if tp.qself.is_some() {
             return false;
         }
-        if let Some(ident) = tp.path.get_ident() {
-            if matches!(
+        if let Some(ident) = tp.path.get_ident()
+            && matches!(
                 ident.to_string().as_str(),
                 "u8" | "u16" | "u32" | "u64" | "i8" | "i16" | "i32" | "i64" | "bool"
-            ) {
-                return false;
-            }
+            )
+        {
+            return false;
         }
         if is_vec_u8(ty) {
             return false;

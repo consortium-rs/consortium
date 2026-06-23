@@ -17,13 +17,13 @@
 [workspace]
 members = [
   "crates/*",
-  "examples/melt-pot/shared",
-  "examples/melt-pot/stm32mp25/mcu",
-  "examples/melt-pot/stm32mp25/app",
-  "examples/melt-pot/stm32mp25/ta",
-  "examples/melt-pot/imx95/mcu",
   "examples/melt-pot/imx95/app",
+  "examples/melt-pot/imx95/mcu",
   "examples/melt-pot/imx95/ta",
+  "examples/melt-pot/shared",
+  "examples/melt-pot/stm32mp25/app",
+  "examples/melt-pot/stm32mp25/mcu",
+  "examples/melt-pot/stm32mp25/ta",
 ]
 resolver = "2"
 

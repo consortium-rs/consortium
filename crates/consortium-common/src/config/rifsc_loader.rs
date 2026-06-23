@@ -24,6 +24,9 @@ use std::path::Path;
 use crate::config::rif::RifConfig;
 use serde_yaml;
 
+/// A chip family paired with the list of its peripheral names.
+pub type ChipPeripherals = (String, Vec<String>);
+
 /// Load a RIFSC YAML file and extract all peripheral names.
 ///
 /// Returns a Vec<String> containing all peripheral names (e.g., "tim1", "spi1", "uart1", etc.)
@@ -44,7 +47,7 @@ pub fn load_rifsc_peripherals(yaml_path: &Path) -> Result<Vec<String>, Box<dyn s
 /// A HashMap-like Vec where each entry contains the chip family and its peripheral list.
 pub fn load_all_rifsc_chips(
     rif_dir: &Path,
-) -> Result<Vec<(String, Vec<String>)>, Box<dyn std::error::Error>> {
+) -> Result<Vec<ChipPeripherals>, Box<dyn std::error::Error>> {
     let mut results = Vec::new();
 
     if !rif_dir.is_dir() {
@@ -55,7 +58,7 @@ pub fn load_all_rifsc_chips(
         let entry = entry?;
         let path = entry.path();
 
-        if path.is_file() && path.extension().map_or(false, |ext| ext == "yaml") {
+        if path.is_file() && path.extension().is_some_and(|ext| ext == "yaml") {
             let content = fs::read_to_string(&path)?;
             let config: RifConfig = serde_yaml::from_str(&content)?;
             let peripherals = config.peripherals.iter().map(|p| p.name.clone()).collect();

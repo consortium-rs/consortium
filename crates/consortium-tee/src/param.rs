@@ -74,6 +74,9 @@ pub trait TeeParam<C = NoCodec>: Sized {
     const MAX_SIZE: usize;
 
     /// Convert `self` into a [`TeeParamRepr`] suitable for packing into a TEE slot.
+    // Borrows `&self` deliberately: packing serializes a copy without consuming the
+    // value, so the caller can keep using it (e.g. for an in/out parameter).
+    #[allow(clippy::wrong_self_convention)]
     fn into_tee_param(&self) -> Result<TeeParamRepr, TeeParamError>;
 
     /// Reconstruct `Self` from a [`TeeParamReprRef`] extracted from a TEE slot.
@@ -228,7 +231,7 @@ mod tests {
     #[test]
     fn wide_primitives_split_low_bits_into_a_and_high_bits_into_b() {
         assert_primitive(0x1122_3344_5566_7788u64, 0x5566_7788, 0x1122_3344, 8);
-        assert_primitive(-0x1122_3344_5566_778i64, 0xBAA9_9888, 0xFEED_DCCB, 8);
+        assert_primitive(-0x0112_2334_4556_6778_i64, 0xBAA9_9888, 0xFEED_DCCB, 8);
     }
 
     #[test]

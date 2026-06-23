@@ -29,6 +29,12 @@
 /// Manual `impl IpcSafe` is `unsafe` so that out-of-derive impls require the author to
 /// acknowledge the ABI contract explicitly.
 ///
+/// # Safety
+///
+/// Implementors must guarantee the type has a fixed, platform-independent layout with no
+/// address-space-local constructs (raw pointers, references, function pointers, or
+/// `usize`/`isize`), so the bytes are meaningful when shared verbatim across cores.
+///
 /// # Example
 ///
 /// ```rust,ignore

@@ -20,7 +20,7 @@ impl Packet {
     pub const fn new(len: u8) -> Self {
         Self {
             magic: MAGIC,
-            flag: 0u8 | FLAG_VALID,
+            flag: FLAG_VALID,
             len,
         }
     }

@@ -36,7 +36,7 @@ optee-utee-sys = { default-features = false, optional = true, version = "0.8.0" 
 
 [target.'cfg(target_os = "linux")'.build-dependencies]
 consortium-common = { default-features = false, path = "../../../../crates/consortium-common" }
-optee-utee-build = "0.8.0"
+optee-utee-build  = "0.8.0"
 
 [lints]
 workspace = true

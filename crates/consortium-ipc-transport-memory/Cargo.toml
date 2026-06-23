@@ -43,13 +43,16 @@ consortium-codec = { features = [
   "prost",
   "rkyv",
 ], path = "../consortium-codec" }
-embassy-executor = { default-features = false, features = ["executor-thread", "platform-std"], version = "0.10.0" }
+embassy-executor = { default-features = false, features = [
+  "executor-thread",
+  "platform-std",
+], version = "0.10.0" }
 embassy-futures = "0.1.2"
 embassy-sync = { features = ["std"], version = "0.8.0" }
 embassy-time = { features = ["std"], version = "0.5.1" }
 futures = "0.3"
 prost = { default-features = false, version = "0.14.3" }
-rkyv = { default-features = false, features = ["bytecheck"], version = "0.8.15" }
+rkyv = { default-features = false, features = ["bytecheck"], version = "0.8.16" }
 serde = { default-features = false, features = ["derive"], version = "1.0.228" }
 
 [lints]

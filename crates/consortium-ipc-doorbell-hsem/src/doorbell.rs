@@ -245,6 +245,13 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
     }
 }
 
+#[cfg(not(feature = "std"))]
+impl<const PROC: u8> Default for HsemDoorbell<PROC> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
     type Error = HsemError;
     type WaitFut<'a>
