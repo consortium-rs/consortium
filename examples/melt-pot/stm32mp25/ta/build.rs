@@ -14,14 +14,17 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-// Replace the UUID below with the one from your OP-TEE TA UUID generator.
-// The UUID must match what the CA uses when opening the session.
-const TA_UUID: &str = "12345678-1234-1234-1234-123456789012";
-
 #[cfg(all(target_os = "linux", feature = "ta"))]
 fn main() -> Result<(), optee_utee_build::Error> {
+    use consortium_common::config::TEE_UUID_ENV;
     use optee_utee_build::TaConfig;
-    let ta_config = TaConfig::new_default_with_cargo_env(TA_UUID)?;
+
+    println!("cargo:rerun-if-env-changed={TEE_UUID_ENV}");
+
+    let ta_uuid = std::env::var(TEE_UUID_ENV).unwrap_or_else(|_| {
+        panic!("missing {TEE_UUID_ENV}; build this TA through consortium-builder")
+    });
+    let ta_config = TaConfig::new_default_with_cargo_env(&ta_uuid)?;
     optee_utee_build::build(optee_utee_build::RustEdition::Edition2024, ta_config)
 }
 

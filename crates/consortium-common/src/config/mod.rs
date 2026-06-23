@@ -36,6 +36,7 @@ pub mod rif;
 #[cfg(all(feature = "serde", feature = "std"))]
 pub mod rifsc_loader;
 pub mod shared_mem;
+pub mod tee;
 
 // Convenient re-exports for RIF types
 pub use rif::{RifConfig, RifPeripheral, RifSource};
@@ -50,6 +51,7 @@ pub use peripheral::Peripheral;
 #[cfg(all(feature = "serde", feature = "std"))]
 pub use rifsc_loader::{load_all_rifsc_chips, load_rifsc_peripherals};
 pub use shared_mem::SharedMemConfig;
+pub use tee::{TEE_UUID_ENV, TeeConfig};
 
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
@@ -117,6 +119,9 @@ pub struct Config {
     /// Debug (defmt) shared-memory layout, injected as `CONSORTIUM_DBG_*` env vars by the builder.
     #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
     pub dbg: Option<SharedMemConfig>,
+    /// OP-TEE Trusted Application metadata, injected as `CONSORTIUM_TEE_*` env vars.
+    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+    pub tee: Option<TeeConfig>,
 }
 
 impl Config {

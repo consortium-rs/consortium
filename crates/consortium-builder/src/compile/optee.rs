@@ -14,6 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+use consortium_common::config::TEE_UUID_ENV;
 use std::path::PathBuf;
 use thiserror::Error;
 use tokio::process::Command;
@@ -97,7 +98,8 @@ impl Compiler for OpteeCompiler {
             .arg("--target")
             .arg(OPTEE_TARGET)
             .current_dir(&config.path)
-            .env("TA_DEV_KIT_DIR", &config.ta_dev_kit_dir);
+            .env("TA_DEV_KIT_DIR", &config.ta_dev_kit_dir)
+            .env(TEE_UUID_ENV, config.ta_uuid.to_string());
 
         if config.release {
             cmd.arg("--release");
