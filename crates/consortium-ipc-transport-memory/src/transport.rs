@@ -266,7 +266,13 @@ impl<D: Doorbell, R: SharedMemoryTransportable> SharedMemoryTransport<D, R> {
     /// # Safety
     ///
     /// Same invariants as [`new`](Self::new).
-    pub unsafe fn new_with_side(ch: Chan, doorbell: D, region: R, base: *mut u8, side: Side) -> Self {
+    pub unsafe fn new_with_side(
+        ch: Chan,
+        doorbell: D,
+        region: R,
+        base: *mut u8,
+        side: Side,
+    ) -> Self {
         Self {
             ch,
             doorbell,
@@ -555,8 +561,16 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
 
     fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a> {
         // SAFETY: `self.base` satisfies the descriptor layout invariant established in `new`.
-        let result =
-            unsafe { send_bytes(self.ch, &self.doorbell, &self.region, self.base, self.side, data) };
+        let result = unsafe {
+            send_bytes(
+                self.ch,
+                &self.doorbell,
+                &self.region,
+                self.base,
+                self.side,
+                data,
+            )
+        };
         SendFut {
             result,
             _ph: PhantomData,
@@ -578,8 +592,16 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
 
     fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a> {
         // SAFETY: `self.base` satisfies the descriptor layout invariant established by `split`.
-        let result =
-            unsafe { send_bytes(self.ch, &self.doorbell, &self.region, self.base, self.side, data) };
+        let result = unsafe {
+            send_bytes(
+                self.ch,
+                &self.doorbell,
+                &self.region,
+                self.base,
+                self.side,
+                data,
+            )
+        };
         SendFut {
             result,
             _ph: PhantomData,
