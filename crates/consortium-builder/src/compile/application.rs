@@ -18,6 +18,8 @@ use std::path::PathBuf;
 use thiserror::Error;
 use tokio::process::Command;
 
+use consortium_common::config::HmiConfig;
+
 use super::Compiler;
 use crate::compile::utils::{
     clean_path, elf_path, resolve_cargo, resolve_cross_tool, resolve_rustc, verify_elf,
@@ -187,6 +189,10 @@ impl SdkEnv {
 ///
 /// Extra flags:
 ///   `OSTL_SDK_EXTRA_FLAGS`: appended verbatim to RUSTFLAGS
+///
+/// HMI (when `hmi` is `Some`):
+///   `CONSORTIUM_HMI_DIST`: absolute path to the compiled frontend dist directory
+///   `CONSORTIUM_HMI_DEBUG_URL`: dev-server URL (only injected when present)
 #[derive(Clone)]
 pub struct ApplicationConfiguration {
     /// Path to the Cargo project root.
@@ -195,6 +201,9 @@ pub struct ApplicationConfiguration {
     pub target: String,
     /// Build in release mode.
     pub release: bool,
+    /// Optional HMI config. `dist` must be an absolute path (resolved by the
+    /// caller from the manifest directory before constructing this struct).
+    pub hmi: Option<HmiConfig>,
 }
 
 /// Compiler for Linux applications targeting Yocto / OpenSTLinux A-cores.
@@ -246,6 +255,13 @@ impl Compiler for ApplicationCompiler {
             cmd.env("CXX", format!("{cxx} --sysroot={}", sdk.sysroot));
         }
 
+        if let Some(ref hmi) = config.hmi {
+            cmd.env("CONSORTIUM_HMI_DIST", &hmi.dist);
+            if let Some(ref url) = hmi.debug_url {
+                cmd.env("CONSORTIUM_HMI_DEBUG_URL", url);
+            }
+        }
+
         if config.release {
             cmd.arg("--release");
         }
@@ -290,6 +306,7 @@ pub struct ApplicationBuilder {
     pub path: PathBuf,
     pub release: bool,
     pub target: String,
+    pub hmi: Option<HmiConfig>,
 }
 
 impl ApplicationBuilder {
@@ -299,6 +316,7 @@ impl ApplicationBuilder {
             path: self.path.clone(),
             target: self.target.clone(),
             release: self.release,
+            hmi: self.hmi.clone(),
         })
         .await
         .map_err(|e| e.to_string())
@@ -310,6 +328,7 @@ impl ApplicationBuilder {
             path: self.path.clone(),
             target: self.target.clone(),
             release: self.release,
+            hmi: self.hmi.clone(),
         })
         .await
         .map_err(|e| e.to_string())
