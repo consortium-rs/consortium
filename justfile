@@ -238,7 +238,10 @@ test-tee:
     just test-tee-host
 
 test-tee-host:
-    cargo test -p consortium-tee --no-default-features
+    # `ta` is host-agnostic (no optee-teec/Linux deps) and is required for the
+    # tee_command trybuild fixtures to exercise the TA codegen path. CI has no
+    # optee-* bindings, so the `ca` path stays disabled.
+    cargo test -p consortium-tee --no-default-features --features ta
     cargo test -p consortium-tee-macros-impl --test snap
 
 # Run TEE tests for Linux A-core targets.
