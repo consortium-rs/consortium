@@ -14,9 +14,23 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+use consortium_common::config::SharedMemConfig;
 use std::path::{Path, PathBuf};
 use tokio::io::AsyncReadExt;
 use tokio::process::Command;
+
+/// Injects a shared-memory region's layout as `CONSORTIUM_<PREFIX>_*` env vars
+/// onto a pending `cargo build` command, so the firmware/application crates can
+/// read them at compile time with `option_env!`. A `None` config injects
+/// nothing, leaving the consuming crate to emit its "build via consortium-builder"
+/// hint.
+pub fn inject_shared_mem(cmd: &mut Command, prefix: &str, config: Option<&SharedMemConfig>) {
+    if let Some(cfg) = config {
+        for (key, value) in cfg.env_pairs(prefix) {
+            cmd.env(key, value);
+        }
+    }
+}
 
 /// Strips ST SDK path entries from PATH using OECORE_NATIVE_SYSROOT as the
 /// anchor. All ST-injected entries are subdirectories of the native sysroot,

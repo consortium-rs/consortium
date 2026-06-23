@@ -19,6 +19,7 @@ const _: () = {
     const __TEE_COMMAND_CTX_VALUE_WARNING: () = ();
     __TEE_COMMAND_CTX_VALUE_WARNING
 };
+#[cfg(feature = "ta")]
 fn ping_dispatched(
     context: &mut ServiceContext,
     params: &mut ::optee_utee::Parameters,
@@ -54,8 +55,12 @@ fn call_ping(
         .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
     let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_0, b: __pb_0 } = __repr_0
     else { unreachable!() };
-    let _p0 = ParamValue::new(__pa_0, __pb_0, ParamType::ValueInput);
-    let _p1 = ParamValue::new(0, 0, ParamType::ValueOutput);
+    let _p0 = ::optee_teec::ParamValue::new(
+        __pa_0,
+        __pb_0,
+        ::optee_teec::ParamType::ValueInput,
+    );
+    let _p1 = ::optee_teec::ParamValue::new(0, 0, ::optee_teec::ParamType::ValueOutput);
     let mut _operation = ::optee_teec::Operation::new(
         0,
         _p0,
@@ -65,7 +70,7 @@ fn call_ping(
     );
     session.invoke_command(Command::Ping as u32, &mut _operation)?;
     Ok({
-        let __v = _operation.param_1().as_value();
+        let __v = _operation.parameters().1;
         <u32 as ::consortium_tee::TeeParam<
             ::consortium_tee::NoCodec,
         >>::from_tee_param(::consortium_tee::TeeParamSlot::Primitive {

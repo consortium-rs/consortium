@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: Apache-2.0
+
+[platform]
+# The Rust compile targets are NOT listed here: they are the defaults looked up
+# from the chip database (`consortium_common::config::chip_map::Chip`) for this
+# chip (CM7 firmware target and CA55 application target).
+chip = "mimx9596cvt"
+
+# One shared descriptor + shared slots live in this OCRAM region, signalled over
+# MU7 (channels 24/25). The CM7 reaches it through the raw physical `base`; the
+# CA55 maps the *same* memory through the UIO device `uio`.
+[ipc]
+base   = 0x204C0000 # CM7 raw view of the shared OCRAM region
+length = 0x1000
+uio    = 0          # CA55 UIO device index for the IPC region
+mtu    = 64
+
+# The debug (CDBG) ring uses the SAME shared-memory format as [ipc].
+[dbg]
+base   = 0x204C1000 # CM7 raw view of the debug region
+length = 0x800
+uio    = 1          # CA55 UIO device index for the debug region
+mtu    = 64
+
+[tee]
+# OP-TEE TA UUID — replace with the real UUID from your TA build.
+uuid = "12345678-1234-1234-1234-123456789012"

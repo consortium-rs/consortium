@@ -35,6 +35,7 @@ pub mod peripheral;
 pub mod rif;
 #[cfg(all(feature = "serde", feature = "std"))]
 pub mod rifsc_loader;
+pub mod shared_mem;
 
 // Convenient re-exports for RIF types
 pub use rif::{RifConfig, RifPeripheral, RifSource};
@@ -48,6 +49,7 @@ pub use iomux_loader::{load_iomux_from_path, load_stm32mp_iomux};
 pub use peripheral::Peripheral;
 #[cfg(all(feature = "serde", feature = "std"))]
 pub use rifsc_loader::{load_all_rifsc_chips, load_rifsc_peripherals};
+pub use shared_mem::SharedMemConfig;
 
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
@@ -109,6 +111,12 @@ pub struct Config {
     #[cfg(feature = "serde")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub hmi: Option<HmiConfig>,
+    /// IPC shared-memory layout, injected as `CONSORTIUM_IPC_*` env vars by the builder.
+    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+    pub ipc: Option<SharedMemConfig>,
+    /// Debug (defmt) shared-memory layout, injected as `CONSORTIUM_DBG_*` env vars by the builder.
+    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
+    pub dbg: Option<SharedMemConfig>,
 }
 
 impl Config {

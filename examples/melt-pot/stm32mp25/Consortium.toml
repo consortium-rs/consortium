@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: Apache-2.0
+
+[platform]
+# The Rust compile targets are NOT listed here: they are the defaults looked up
+# from the chip database (`consortium_common::config::chip_map::Chip`) for this
+# chip (CM33 firmware target and CA35 application target).
+chip = "stm32mp257fak"
+
+# One shared descriptor + shared slots live in this region. The CM33 reaches it
+# through the raw physical `base`; the CA35 maps the *same* memory through the
+# UIO device `uio`, so the application-side address stays dynamic (mmap'd).
+[ipc]
+base   = 0x80000000 # CM33 raw view of the shared SRAM3 region
+length = 0x1000
+uio    = 0          # CA35 UIO device index for the IPC region
+mtu    = 64
+
+# The debug (CDBG) ring uses the SAME shared-memory format as [ipc].
+[dbg]
+base   = 0x80001000 # CM33 raw view of the debug region
+length = 0x800
+uio    = 1          # CA35 UIO device index for the debug region
+mtu    = 64
+
+[tee]
+# OP-TEE TA UUID — replace with the real UUID from your TA build.
+uuid = "12345678-1234-1234-1234-123456789012"

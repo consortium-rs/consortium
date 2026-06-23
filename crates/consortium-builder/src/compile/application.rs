@@ -18,11 +18,12 @@ use std::path::PathBuf;
 use thiserror::Error;
 use tokio::process::Command;
 
-use consortium_common::config::HmiConfig;
+use consortium_common::config::{HmiConfig, SharedMemConfig};
 
 use super::Compiler;
 use crate::compile::utils::{
-    clean_path, elf_path, resolve_cargo, resolve_cross_tool, resolve_rustc, verify_elf,
+    clean_path, elf_path, inject_shared_mem, resolve_cargo, resolve_cross_tool, resolve_rustc,
+    verify_elf,
 };
 
 /// Error type for application compilation.
@@ -204,6 +205,10 @@ pub struct ApplicationConfiguration {
     /// Optional HMI config. `dist` must be an absolute path (resolved by the
     /// caller from the manifest directory before constructing this struct).
     pub hmi: Option<HmiConfig>,
+    /// IPC shared-memory layout, injected as `CONSORTIUM_IPC_*` env vars.
+    pub ipc: Option<SharedMemConfig>,
+    /// Debug shared-memory layout, injected as `CONSORTIUM_DBG_*` env vars.
+    pub dbg: Option<SharedMemConfig>,
 }
 
 /// Compiler for Linux applications targeting Yocto / OpenSTLinux A-cores.
@@ -262,6 +267,9 @@ impl Compiler for ApplicationCompiler {
             }
         }
 
+        inject_shared_mem(&mut cmd, "IPC", config.ipc.as_ref());
+        inject_shared_mem(&mut cmd, "DBG", config.dbg.as_ref());
+
         if config.release {
             cmd.arg("--release");
         }
@@ -307,6 +315,8 @@ pub struct ApplicationBuilder {
     pub release: bool,
     pub target: String,
     pub hmi: Option<HmiConfig>,
+    pub ipc: Option<SharedMemConfig>,
+    pub dbg: Option<SharedMemConfig>,
 }
 
 impl ApplicationBuilder {
@@ -317,6 +327,8 @@ impl ApplicationBuilder {
             target: self.target.clone(),
             release: self.release,
             hmi: self.hmi.clone(),
+            ipc: self.ipc,
+            dbg: self.dbg,
         })
         .await
         .map_err(|e| e.to_string())
@@ -329,6 +341,8 @@ impl ApplicationBuilder {
             target: self.target.clone(),
             release: self.release,
             hmi: self.hmi.clone(),
+            ipc: self.ipc,
+            dbg: self.dbg,
         })
         .await
         .map_err(|e| e.to_string())

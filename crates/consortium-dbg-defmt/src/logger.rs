@@ -1,12 +1,8 @@
 use consortium_common::descriptor::DescriptorHeader;
 use defmt::{Logger, global_logger};
 
+use crate::config;
 use crate::descriptor::{Descriptor, Flags, MAGIC, VERSION};
-
-unsafe extern "C" {
-    static CONSORTIUM_DBG_SRAM_BASE: u32;
-    static CONSORTIUM_DBG_SRAM_SIZE: u16;
-}
 
 #[global_logger]
 pub struct ConsortiumLogger;
@@ -72,44 +68,50 @@ impl ConsortiumLogger {
     }
 }
 
-// SAFETY: the implementation only accesses the debug SRAM region described by the platform
-// linker symbols and delegates all descriptor mutation to the shared-memory helpers above.
+// SAFETY: the implementation only accesses the debug shared-memory region described by the
+// compile-time `[dbg]` layout (`config::BASE_PTR`/`config::SIZE`, injected by consortium-builder)
+// and delegates all descriptor mutation to the shared-memory helpers above. When the region was
+// not configured (`config::BASE` is `0`) every method is a no-op, so a plain `cargo build` links
+// cleanly without touching address `0`.
 unsafe impl Logger for ConsortiumLogger {
     fn acquire() {
-        // SAFETY: the platform provides this linker symbol for the debug SRAM base.
-        let base = unsafe { CONSORTIUM_DBG_SRAM_BASE as *mut u8 };
-        // SAFETY: the platform provides this linker symbol for the debug SRAM size.
-        let size = unsafe { CONSORTIUM_DBG_SRAM_SIZE };
-        // SAFETY: the linker symbols describe the debug shared-memory region.
+        if config::BASE == 0 {
+            return;
+        }
+        // SAFETY: `config::BASE_PTR`/`config::SIZE` describe the debug shared-memory region
+        // declared in `[dbg]` and injected by the builder.
         unsafe {
-            Self::acquire_shared_memory(base, size);
+            Self::acquire_shared_memory(config::BASE_PTR, config::SIZE);
         }
     }
 
     unsafe fn flush() {
-        // SAFETY: the platform provides this linker symbol for the debug SRAM base.
-        let base = unsafe { CONSORTIUM_DBG_SRAM_BASE as *mut u8 };
-        // SAFETY: the linker symbol describes the debug shared-memory region.
+        if config::BASE == 0 {
+            return;
+        }
+        // SAFETY: `config::BASE_PTR` describes the debug shared-memory region.
         unsafe {
-            Self::flush_shared_memory(base);
+            Self::flush_shared_memory(config::BASE_PTR);
         }
     }
 
     unsafe fn release() {
-        // SAFETY: the platform provides this linker symbol for the debug SRAM base.
-        let base = unsafe { CONSORTIUM_DBG_SRAM_BASE as *mut u8 };
-        // SAFETY: the linker symbol describes the debug shared-memory region.
+        if config::BASE == 0 {
+            return;
+        }
+        // SAFETY: `config::BASE_PTR` describes the debug shared-memory region.
         unsafe {
-            Self::release_shared_memory(base);
+            Self::release_shared_memory(config::BASE_PTR);
         }
     }
 
     unsafe fn write(bytes: &[u8]) {
-        // SAFETY: the platform provides this linker symbol for the debug SRAM base.
-        let base = unsafe { CONSORTIUM_DBG_SRAM_BASE as *mut u8 };
-        // SAFETY: the linker symbol describes the debug shared-memory region.
+        if config::BASE == 0 {
+            return;
+        }
+        // SAFETY: `config::BASE_PTR` describes the debug shared-memory region.
         unsafe {
-            Self::write_shared_memory(base, bytes);
+            Self::write_shared_memory(config::BASE_PTR, bytes);
         }
     }
 }

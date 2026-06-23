@@ -18,6 +18,7 @@ fn read_config(slot: u32) -> DeviceConfig {
         limit: 1024,
     }
 }
+#[cfg(feature = "ta")]
 fn read_config_dispatched(
     params: &mut ::optee_utee::Parameters,
 ) -> ::optee_utee::Result<()> {
@@ -50,11 +51,15 @@ fn call_read_config(
         .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
     let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_0, b: __pb_0 } = __repr_0
     else { unreachable!() };
-    let _p0 = ParamValue::new(__pa_0, __pb_0, ParamType::ValueInput);
+    let _p0 = ::optee_teec::ParamValue::new(
+        __pa_0,
+        __pb_0,
+        ::optee_teec::ParamType::ValueInput,
+    );
     let mut __out_buf_1 = vec![
         0u8; < DeviceConfig as ::consortium_tee::TeeParam < TestCodec >> ::MAX_SIZE
     ];
-    let _p1 = ParamTmpRef::new_output(&mut __out_buf_1);
+    let _p1 = ::optee_teec::ParamTmpRef::new_output(&mut __out_buf_1);
     let mut _operation = ::optee_teec::Operation::new(
         0,
         _p0,
@@ -64,11 +69,13 @@ fn call_read_config(
     );
     session.invoke_command(Command::ReadConfig as u32, &mut _operation)?;
     Ok({
-        let __m = _operation.param_1().as_memref();
+        let __updated_size = _operation.parameters().1.updated_size();
         <DeviceConfig as ::consortium_tee::TeeParam<
             TestCodec,
         >>::from_tee_param(
-                ::consortium_tee::TeeParamSlot::Serialized(&__m.buffer()[..__m.size()]),
+                ::consortium_tee::TeeParamSlot::Serialized(
+                    &__out_buf_1[..__updated_size],
+                ),
             )
             .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
     })

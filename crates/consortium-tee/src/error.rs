@@ -106,3 +106,21 @@ impl TeeError {
 }
 
 pub type TeeResult<T> = Result<T, TeeError>;
+
+// Generated CA functions use `?` on `session.invoke_command(...)`, which returns
+// `optee_teec::Error`. This conversion maps any raw TEEC error to `Invoke` so
+// the generated code compiles without manual `.map_err` at every call site.
+impl From<optee_teec::Error> for TeeError {
+    fn from(e: optee_teec::Error) -> Self {
+        let code = e.raw_code();
+        let origin = e
+            .origin()
+            .map(TeeErrorOrigin::from)
+            .unwrap_or(TeeErrorOrigin::Unknown);
+        TeeError::Invoke {
+            code,
+            origin,
+            source: e,
+        }
+    }
+}

@@ -60,9 +60,7 @@ impl Shell {
         // SAFETY: `self.ptr` owns a live CogShell. The returned security
         // manager is borrowed from the web context and must not be unreffed
         // by the caller; `SecurityManager::from_borrowed` takes a ref.
-        let mgr = unsafe {
-            sys::webkit_web_context_get_security_manager(self.web_context_ptr())
-        };
+        let mgr = unsafe { sys::webkit_web_context_get_security_manager(self.web_context_ptr()) };
         SecurityManager::from_borrowed(mgr, "webkit_web_context_get_security_manager")
     }
 

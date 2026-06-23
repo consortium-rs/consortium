@@ -8,6 +8,7 @@ fn crowded(a: u32, b: u32, c: u32, d: u32, e: u32) {}
 
 // Expands to:
 fn crowded(a: u32, b: u32, c: u32, d: u32, e: u32) {}
+#[cfg(feature = "ta")]
 fn crowded_dispatched(
     params: &mut ::optee_utee::Parameters,
 ) -> ::optee_utee::Result<()> {
@@ -61,35 +62,55 @@ fn call_crowded(
         .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
     let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_0, b: __pb_0 } = __repr_0
     else { unreachable!() };
-    let _p0 = ParamValue::new(__pa_0, __pb_0, ParamType::ValueInput);
+    let _p0 = ::optee_teec::ParamValue::new(
+        __pa_0,
+        __pb_0,
+        ::optee_teec::ParamType::ValueInput,
+    );
     let __repr_1 = <u32 as ::consortium_tee::TeeParam<
         ::consortium_tee::NoCodec,
     >>::into_tee_param(&b)
         .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
     let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_1, b: __pb_1 } = __repr_1
     else { unreachable!() };
-    let _p1 = ParamValue::new(__pa_1, __pb_1, ParamType::ValueInput);
+    let _p1 = ::optee_teec::ParamValue::new(
+        __pa_1,
+        __pb_1,
+        ::optee_teec::ParamType::ValueInput,
+    );
     let __repr_2 = <u32 as ::consortium_tee::TeeParam<
         ::consortium_tee::NoCodec,
     >>::into_tee_param(&c)
         .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
     let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_2, b: __pb_2 } = __repr_2
     else { unreachable!() };
-    let _p2 = ParamValue::new(__pa_2, __pb_2, ParamType::ValueInput);
+    let _p2 = ::optee_teec::ParamValue::new(
+        __pa_2,
+        __pb_2,
+        ::optee_teec::ParamType::ValueInput,
+    );
     let __repr_3 = <u32 as ::consortium_tee::TeeParam<
         ::consortium_tee::NoCodec,
     >>::into_tee_param(&d)
         .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
     let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_3, b: __pb_3 } = __repr_3
     else { unreachable!() };
-    let _p3 = ParamValue::new(__pa_3, __pb_3, ParamType::ValueInput);
+    let _p3 = ::optee_teec::ParamValue::new(
+        __pa_3,
+        __pb_3,
+        ::optee_teec::ParamType::ValueInput,
+    );
     let __repr_4 = <u32 as ::consortium_tee::TeeParam<
         ::consortium_tee::NoCodec,
     >>::into_tee_param(&e)
         .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
     let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_4, b: __pb_4 } = __repr_4
     else { unreachable!() };
-    let _p4 = ParamValue::new(__pa_4, __pb_4, ParamType::ValueInput);
+    let _p4 = ::optee_teec::ParamValue::new(
+        __pa_4,
+        __pb_4,
+        ::optee_teec::ParamType::ValueInput,
+    );
     let mut _operation = ::optee_teec::Operation::new(0, _p0, _p1, _p2, _p3, _p4);
     session.invoke_command(Command::Crowded as u32, &mut _operation)
 }

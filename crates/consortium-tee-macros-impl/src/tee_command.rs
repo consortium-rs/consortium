@@ -232,11 +232,14 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
         quote! { _params }
     };
 
-    // TA dispatched fn
+    // TA dispatched fn — only compiled when the "ta" feature is active.
+    // Without this gate a CA-only consumer would pull in ::optee_utee even though
+    // it only needs the generated `call_*` functions on the CA side.
     let dispatched_fn = if let Some(ctx) = ctx_param {
         let ctx_pat = &ctx.pat;
         let ctx_ty = &ctx.ty;
         quote! {
+            #[cfg(feature = "ta")]
             fn #dispatched_name(#ctx_pat: #ctx_ty, #param_binding: &mut ::optee_utee::Parameters) -> ::optee_utee::Result<()> {
                 #(#unpack_stmts)*
                 #call_and_flush
@@ -244,6 +247,7 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
         }
     } else {
         quote! {
+            #[cfg(feature = "ta")]
             fn #dispatched_name(#param_binding: &mut ::optee_utee::Parameters) -> ::optee_utee::Result<()> {
                 #(#unpack_stmts)*
                 #call_and_flush
@@ -783,7 +787,7 @@ fn gen_pack_ca(
     // Priority 1: &[u8]
     if is_slice_ref(ty, false) {
         return (
-            quote! { let #slot_ident = ParamTmpRef::new_input(#pat); },
+            quote! { let #slot_ident = ::optee_teec::ParamTmpRef::new_input(#pat); },
             None,
         );
     }
@@ -791,28 +795,28 @@ fn gen_pack_ca(
     // Priority 2: &mut [u8]
     if is_slice_ref(ty, true) {
         return (
-            quote! { let #slot_ident = ParamTmpRef::new_inout(#pat); },
+            quote! { let #slot_ident = ::optee_teec::ParamTmpRef::new_inout(#pat); },
             None,
         );
     }
 
     // Priority 3: &mut u32 / &mut i32 / &mut u64 (ValueInout)
     if let Some(scalar) = mut_scalar_inner(ty) {
-        let param_n = quote::format_ident!("param_{}", slot);
+        let slot_idx = syn::Index::from(slot);
         let (pack, read_back) = match scalar {
             "u32" => (
-                quote! { let #slot_ident = ParamValue::new(*#pat, 0, ParamType::ValueInout); },
-                quote! { *#pat = _operation.#param_n().as_value().a(); },
+                quote! { let #slot_ident = ::optee_teec::ParamValue::new(*#pat, 0, ::optee_teec::ParamType::ValueInout); },
+                quote! { *#pat = _operation.parameters().#slot_idx.a(); },
             ),
             "i32" => (
-                quote! { let #slot_ident = ParamValue::new(*#pat as u32, 0, ParamType::ValueInout); },
-                quote! { *#pat = _operation.#param_n().as_value().a() as i32; },
+                quote! { let #slot_ident = ::optee_teec::ParamValue::new(*#pat as u32, 0, ::optee_teec::ParamType::ValueInout); },
+                quote! { *#pat = _operation.parameters().#slot_idx.a() as i32; },
             ),
             "u64" => (
-                quote! { let #slot_ident = ParamValue::new(*#pat as u32, (*#pat >> 32) as u32, ParamType::ValueInout); },
+                quote! { let #slot_ident = ::optee_teec::ParamValue::new(*#pat as u32, (*#pat >> 32) as u32, ::optee_teec::ParamType::ValueInout); },
                 quote! {
-                    *#pat = (_operation.#param_n().as_value().b() as u64) << 32
-                        | _operation.#param_n().as_value().a() as u64;
+                    *#pat = (_operation.parameters().#slot_idx.b() as u64) << 32
+                        | _operation.parameters().#slot_idx.a() as u64;
                 },
             ),
             _ => unreachable!(),
@@ -830,7 +834,7 @@ fn gen_pack_ca(
         let buf_ident = Ident::new(&format!("__inout_buf_{}", slot), Span::call_site());
         let repr_ident = Ident::new(&format!("__repr_inout_{}", slot), Span::call_site());
         let src_ident = Ident::new(&format!("__src_inout_{}", slot), Span::call_site());
-        let param_n = quote::format_ident!("param_{}", slot);
+        let slot_idx = syn::Index::from(slot);
         let pack = quote! {
             let mut #buf_ident = vec![0u8; <#inner_ty as ::consortium_tee::TeeParam<#codec>>::MAX_SIZE];
             let #repr_ident = <#inner_ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(#pat)
@@ -838,13 +842,13 @@ fn gen_pack_ca(
             let ::consortium_tee::TeeParamSlot::Serialized(ref #src_ident) = #repr_ident
                 else { unreachable!() };
             #buf_ident[..#src_ident.len()].copy_from_slice(#src_ident.as_slice());
-            let #slot_ident = ParamTmpRef::new_inout(&mut #buf_ident);
+            let #slot_ident = ::optee_teec::ParamTmpRef::new_inout(&mut #buf_ident);
         };
         let read_back = quote! {
             *#pat = {
-                let __m = _operation.#param_n().as_memref();
+                let __updated_size = _operation.parameters().#slot_idx.updated_size();
                 <#inner_ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
-                    ::consortium_tee::TeeParamSlot::Serialized(&__m.buffer()[..__m.size()])
+                    ::consortium_tee::TeeParamSlot::Serialized(&#buf_ident[..__updated_size])
                 ).map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
             };
         };
@@ -872,7 +876,7 @@ fn gen_pack_ca(
                 .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
             let ::consortium_tee::TeeParamSlot::Primitive { a: #pa_ident, b: #pb_ident } = #repr_ident
                 else { unreachable!() };
-            let #slot_ident = ParamValue::new(#pa_ident, #pb_ident, ParamType::ValueInput);
+            let #slot_ident = ::optee_teec::ParamValue::new(#pa_ident, #pb_ident, ::optee_teec::ParamType::ValueInput);
         };
         return (pack, None);
     }
@@ -886,7 +890,7 @@ fn gen_pack_ca(
                 .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
             let ::consortium_tee::TeeParamSlot::Serialized(ref #bytes_ident) = #repr_ident
                 else { unreachable!() };
-            let #slot_ident = ParamTmpRef::new_input(#bytes_ident.as_slice());
+            let #slot_ident = ::optee_teec::ParamTmpRef::new_input(#bytes_ident.as_slice());
         };
         return (pack, None);
     }
@@ -916,14 +920,14 @@ fn gen_output_pack_ca(
         || is_tuple_u32_u32(ty);
 
     if is_value_slot {
-        return quote! { let #slot_ident = ParamValue::new(0, 0, ParamType::ValueOutput); };
+        return quote! { let #slot_ident = ::optee_teec::ParamValue::new(0, 0, ::optee_teec::ParamType::ValueOutput); };
     }
 
     if is_vec_u8(ty) || is_tee_param_path(ty) {
         let buf_ident = Ident::new(&format!("__out_buf_{}", slot), Span::call_site());
         return quote! {
             let mut #buf_ident = vec![0u8; <#ty as ::consortium_tee::TeeParam<#codec>>::MAX_SIZE];
-            let #slot_ident = ParamTmpRef::new_output(&mut #buf_ident);
+            let #slot_ident = ::optee_teec::ParamTmpRef::new_output(&mut #buf_ident);
         };
     }
 
@@ -932,7 +936,8 @@ fn gen_output_pack_ca(
 
 /// Emits the expression that reads the return value back from `_operation` on the CA side.
 fn gen_output_read_ca(slot: usize, ty: &syn::Type, codec: &TokenStream2) -> TokenStream2 {
-    let s = quote::format_ident!("param_{}", slot);
+    let slot_idx = syn::Index::from(slot);
+    let buf_ident = Ident::new(&format!("__out_buf_{}", slot), Span::call_site());
 
     let is_value_slot = is_primitive(ty, "u8")
         || is_primitive(ty, "u16")
@@ -948,7 +953,7 @@ fn gen_output_read_ca(slot: usize, ty: &syn::Type, codec: &TokenStream2) -> Toke
     if is_value_slot {
         return quote! {
             {
-                let __v = _operation.#s().as_value();
+                let __v = _operation.parameters().#slot_idx;
                 <#ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
                     ::consortium_tee::TeeParamSlot::Primitive { a: __v.a(), b: __v.b() }
                 ).map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
@@ -957,11 +962,14 @@ fn gen_output_read_ca(slot: usize, ty: &syn::Type, codec: &TokenStream2) -> Toke
     }
 
     if is_vec_u8(ty) || is_tee_param_path(ty) {
+        // `__out_buf_N` was declared by gen_output_pack_ca. After invoke_command the
+        // TA has written into it; the reconstructed parameter's updated_size() reflects
+        // how many bytes were actually written.
         return quote! {
             {
-                let __m = _operation.#s().as_memref();
+                let __updated_size = _operation.parameters().#slot_idx.updated_size();
                 <#ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
-                    ::consortium_tee::TeeParamSlot::Serialized(&__m.buffer()[..__m.size()])
+                    ::consortium_tee::TeeParamSlot::Serialized(&#buf_ident[..__updated_size])
                 ).map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
             }
         };

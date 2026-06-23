@@ -12,6 +12,7 @@ fn adjust_config(config: &mut DeviceConfig) {
 fn adjust_config(config: &mut DeviceConfig) {
     config.limit += 1;
 }
+#[cfg(feature = "ta")]
 fn adjust_config_dispatched(
     params: &mut ::optee_utee::Parameters,
 ) -> ::optee_utee::Result<()> {
@@ -46,7 +47,7 @@ fn call_adjust_config(
     let ::consortium_tee::TeeParamSlot::Serialized(ref __src_inout_0) = __repr_inout_0
     else { unreachable!() };
     __inout_buf_0[..__src_inout_0.len()].copy_from_slice(__src_inout_0.as_slice());
-    let _p0 = ParamTmpRef::new_inout(&mut __inout_buf_0);
+    let _p0 = ::optee_teec::ParamTmpRef::new_inout(&mut __inout_buf_0);
     let mut _operation = ::optee_teec::Operation::new(
         0,
         _p0,
@@ -56,11 +57,13 @@ fn call_adjust_config(
     );
     session.invoke_command(Command::AdjustConfig as u32, &mut _operation)?;
     *config = {
-        let __m = _operation.param_0().as_memref();
+        let __updated_size = _operation.parameters().0.updated_size();
         <DeviceConfig as ::consortium_tee::TeeParam<
             TestCodec,
         >>::from_tee_param(
-                ::consortium_tee::TeeParamSlot::Serialized(&__m.buffer()[..__m.size()]),
+                ::consortium_tee::TeeParamSlot::Serialized(
+                    &__inout_buf_0[..__updated_size],
+                ),
             )
             .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
     };

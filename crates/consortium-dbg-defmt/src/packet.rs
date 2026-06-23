@@ -45,7 +45,7 @@ impl Packet {
     /// `base` must be valid for at least `self.len` bytes past `PACKET_HEADER_SIZE`.
     pub unsafe fn read_payload(&mut self, base: *mut u8, payload: &mut [u8]) {
         unsafe {
-            std::ptr::copy_nonoverlapping(
+            core::ptr::copy_nonoverlapping(
                 base.add(PACKET_HEADER_SIZE),
                 payload.as_mut_ptr(),
                 self.len as usize,
@@ -71,7 +71,7 @@ impl Packet {
     /// `ptr` must be valid for at least `4 + self.len` bytes.
     pub unsafe fn write_payload_to_raw_ptr(&self, ptr: *mut u8, payload: &[u8]) {
         unsafe {
-            std::ptr::copy_nonoverlapping(payload.as_ptr(), ptr.add(4), self.len as usize);
+            core::ptr::copy_nonoverlapping(payload.as_ptr(), ptr.add(4), self.len as usize);
         }
     }
 

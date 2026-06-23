@@ -14,13 +14,14 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+use consortium_common::config::SharedMemConfig;
 use consortium_common::config::mcu_core::CortexMcuCore;
 use std::path::PathBuf;
 use thiserror::Error;
 use tokio::process::Command;
 
 use super::Compiler;
-use crate::compile::utils::{elf_path, resolve_cargo, verify_elf};
+use crate::compile::utils::{elf_path, inject_shared_mem, resolve_cargo, verify_elf};
 
 /// Error type for firmware compilation.
 #[derive(Error, Debug)]
@@ -47,6 +48,10 @@ pub struct FirmwareConfiguration {
     pub path: PathBuf,
     /// Build in release mode.
     pub release: bool,
+    /// IPC shared-memory layout, injected as `CONSORTIUM_IPC_*` env vars.
+    pub ipc: Option<SharedMemConfig>,
+    /// Debug shared-memory layout, injected as `CONSORTIUM_DBG_*` env vars.
+    pub dbg: Option<SharedMemConfig>,
 }
 
 /// Compiler for bare-metal Cortex-M firmware.
@@ -67,6 +72,9 @@ impl Compiler for FirmwareCompiler {
             .arg("--target")
             .arg(config.arch.to_rust_target())
             .current_dir(&config.path);
+
+        inject_shared_mem(&mut cmd, "IPC", config.ipc.as_ref());
+        inject_shared_mem(&mut cmd, "DBG", config.dbg.as_ref());
 
         if config.release {
             cmd.arg("--release");
@@ -108,6 +116,8 @@ pub struct FirmwareBuilder {
     pub arch: CortexMcuCore,
     pub path: PathBuf,
     pub release: bool,
+    pub ipc: Option<SharedMemConfig>,
+    pub dbg: Option<SharedMemConfig>,
 }
 
 impl FirmwareBuilder {
@@ -117,6 +127,8 @@ impl FirmwareBuilder {
             arch: self.arch.clone(),
             path: self.path.clone(),
             release: self.release,
+            ipc: self.ipc,
+            dbg: self.dbg,
         })
         .await
         .map_err(|e| e.to_string())
@@ -128,6 +140,8 @@ impl FirmwareBuilder {
             arch: self.arch.clone(),
             path: self.path.clone(),
             release: self.release,
+            ipc: self.ipc,
+            dbg: self.dbg,
         })
         .await
         .map_err(|e| e.to_string())

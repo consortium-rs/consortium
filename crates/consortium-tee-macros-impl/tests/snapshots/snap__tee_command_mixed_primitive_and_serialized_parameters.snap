@@ -12,6 +12,7 @@ fn configure(slot: u32, config: DeviceConfig) -> u32 {
 fn configure(slot: u32, config: DeviceConfig) -> u32 {
     slot + config.id as u32
 }
+#[cfg(feature = "ta")]
 fn configure_dispatched(
     params: &mut ::optee_utee::Parameters,
 ) -> ::optee_utee::Result<()> {
@@ -50,7 +51,11 @@ fn call_configure(
         .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
     let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_0, b: __pb_0 } = __repr_0
     else { unreachable!() };
-    let _p0 = ParamValue::new(__pa_0, __pb_0, ParamType::ValueInput);
+    let _p0 = ::optee_teec::ParamValue::new(
+        __pa_0,
+        __pb_0,
+        ::optee_teec::ParamType::ValueInput,
+    );
     let __repr_1 = <DeviceConfig as ::consortium_tee::TeeParam<
         TestCodec,
     >>::into_tee_param(&config)
@@ -58,8 +63,8 @@ fn call_configure(
     let ::consortium_tee::TeeParamSlot::Serialized(ref __bytes_1) = __repr_1 else {
         unreachable!()
     };
-    let _p1 = ParamTmpRef::new_input(__bytes_1.as_slice());
-    let _p2 = ParamValue::new(0, 0, ParamType::ValueOutput);
+    let _p1 = ::optee_teec::ParamTmpRef::new_input(__bytes_1.as_slice());
+    let _p2 = ::optee_teec::ParamValue::new(0, 0, ::optee_teec::ParamType::ValueOutput);
     let mut _operation = ::optee_teec::Operation::new(
         0,
         _p0,
@@ -69,7 +74,7 @@ fn call_configure(
     );
     session.invoke_command(Command::Configure as u32, &mut _operation)?;
     Ok({
-        let __v = _operation.param_2().as_value();
+        let __v = _operation.parameters().2;
         <u32 as ::consortium_tee::TeeParam<
             TestCodec,
         >>::from_tee_param(::consortium_tee::TeeParamSlot::Primitive {

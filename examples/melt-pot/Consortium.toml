@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+
+[example]
+name        = "melt-pot"
+description = "Full-stack demo: MCU sensor readings over IPC, TEE threshold check, web HMI dashboard"
+
+[platforms]
+stm32mp25 = "stm32mp25/Consortium.toml"
+imx95     = "imx95/Consortium.toml"
