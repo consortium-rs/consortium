@@ -42,7 +42,7 @@ fn configure_dispatched(
     Ok(())
 }
 #[cfg(feature = "ca")]
-fn call_configure(
+pub fn call_configure(
     session: &mut ::optee_teec::Session,
     slot: u32,
     config: DeviceConfig,

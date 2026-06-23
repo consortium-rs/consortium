@@ -294,7 +294,7 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
         let read_back = gen_output_read_ca(tee_params.len(), out_ty, &codec_ty);
         quote! {
             #[cfg(feature = "ca")]
-            fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<#out_ty> {
+            pub fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<#out_ty> {
                 #(#pack_stmts)*
                 let mut _operation = ::optee_teec::Operation::new(0, #(#new_params_args),*);
                 session.invoke_command(Command::#command_variant as u32, &mut _operation)?;
@@ -305,7 +305,7 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
     } else if !post_invoke_stmts.is_empty() {
         quote! {
             #[cfg(feature = "ca")]
-            fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<()> {
+            pub fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<()> {
                 #(#pack_stmts)*
                 let mut _operation = ::optee_teec::Operation::new(0, #(#new_params_args),*);
                 session.invoke_command(Command::#command_variant as u32, &mut _operation)?;
@@ -316,7 +316,7 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
     } else {
         quote! {
             #[cfg(feature = "ca")]
-            fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<()> {
+            pub fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<()> {
                 #(#pack_stmts)*
                 let mut _operation = ::optee_teec::Operation::new(0, #(#new_params_args),*);
                 session.invoke_command(Command::#command_variant as u32, &mut _operation)?;

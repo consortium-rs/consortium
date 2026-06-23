@@ -45,7 +45,7 @@ fn ping_dispatched(
     Ok(())
 }
 #[cfg(feature = "ca")]
-fn call_ping(
+pub fn call_ping(
     session: &mut ::optee_teec::Session,
     value: u32,
 ) -> ::consortium_tee::TeeResult<u32> {

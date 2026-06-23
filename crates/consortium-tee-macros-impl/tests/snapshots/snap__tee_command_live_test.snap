@@ -37,7 +37,7 @@ fn hello_world_dispatched(
     Ok(())
 }
 #[cfg(feature = "ca")]
-fn call_hello_world(
+pub fn call_hello_world(
     session: &mut ::optee_teec::Session,
     a: u32,
 ) -> ::consortium_tee::TeeResult<u32> {

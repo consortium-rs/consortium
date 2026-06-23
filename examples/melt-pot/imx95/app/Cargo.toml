@@ -36,6 +36,9 @@ consortium-codec = { features = ["postcard"], path = "../../../../crates/consort
 consortium-dbg-defmt = { default-features = false, features = [
   "host",
 ], path = "../../../../crates/consortium-dbg-defmt" }
+consortium-tee = { default-features = false, features = [
+  "ca",
+], path = "../../../../crates/consortium-tee" }
 consortium-ipc = { features = ["std"], path = "../../../../crates/consortium-ipc" }
 consortium-ipc-doorbell-mu = { features = [
   "imx95",
@@ -46,6 +49,7 @@ consortium-ipc-transport-memory = { path = "../../../../crates/consortium-ipc-tr
 consortium-hmi = { path = "../../../../crates/consortium-hmi" }
 
 glib       = "0.22"
+optee-teec = "0.8.0"
 serde      = { features = ["derive"], version = "1" }
 serde_json = "1"
 tokio      = { features = ["macros", "rt-multi-thread", "sync"], version = "1" }

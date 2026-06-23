@@ -22,7 +22,7 @@ fn unsupported_dispatched(
     Ok(())
 }
 #[cfg(feature = "ca")]
-fn call_unsupported(
+pub fn call_unsupported(
     session: &mut ::optee_teec::Session,
     input: (u32, u64),
 ) -> ::consortium_tee::TeeResult<(u32, u64)> {

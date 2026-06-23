@@ -60,6 +60,17 @@ const MU_VIRT_BASES: [usize; 8] = [0usize; 8]; // placeholder — fill after mma
 const DBG_SRAM_VIRT_BASE: usize = 0; // placeholder — fill in after mmap
 const DBG_SRAM_LEN: usize = dbg_config::LENGTH as usize;
 
+// ── OP-TEE Trusted Application UUID ──────────────────────────────────────────
+//
+// `consortium-builder` injects the `[tee] uuid` from Consortium.toml as the
+// `CONSORTIUM_TEE_UUID` compile-time environment variable (the same value the
+// TA's build script consumes), so the CA and TA always agree. A plain
+// `cargo build` falls back to the placeholder UUID in Consortium.toml.
+const TA_UUID: &str = match option_env!("CONSORTIUM_TEE_UUID") {
+    Some(uuid) => uuid,
+    None => "12345678-1234-1234-1234-123456789012",
+};
+
 // ── Status shared between the IPC receive task and the HMI bridge ────────────
 
 #[derive(serde::Serialize, serde::Deserialize, Clone)]
@@ -169,17 +180,36 @@ async fn main() {
     glib::MainLoop::new(None, false).run();
 }
 
+/// Software safe range, mirroring the TA's `TEMP_LIMIT_LO..=TEMP_LIMIT_HI`.
+/// Used as the fallback verdict when OP-TEE is not reachable.
+const SOFT_TEMP_RANGE: std::ops::RangeInclusive<i32> = -20_000..=85_000;
+
 /// Call the TEE to check whether `temperature_mdc` is within limits.
 ///
-/// On real hardware with OP-TEE, initialise an `optee_teec::Context` and call
-/// `melt_pot_imx95_ta::call_check_temperature(&mut ctx, temperature_mdc)`.
-/// The `ca` feature on the TA crate makes that function available.
-///
-/// This stub performs a software-only check so the demo runs without OP-TEE.
+/// Attempts the real OP-TEE path first: open a session to the melt-pot TA and
+/// invoke its `check_temperature` command (the `ca` feature on the TA crate
+/// makes [`call_check_temperature`](melt_pot_imx95_ta::call_check_temperature)
+/// available). If OP-TEE is not reachable -- no `/dev/tee*`, `tee-supplicant`
+/// down, or the TA not installed, as on a plain Linux development host -- it
+/// falls back to the same software range check so the demo still runs.
 fn tee_check(temperature_mdc: i32) -> bool {
-    // REPLACE with:
-    //   let mut ctx = optee_teec::Context::new().expect("TEE context");
-    //   melt_pot_imx95_ta::call_check_temperature(&mut ctx, temperature_mdc)
-    //       .unwrap_or(false)
-    (-20_000..=85_000).contains(&temperature_mdc)
+    match tee_check_optee(temperature_mdc) {
+        Ok(within_limits) => within_limits,
+        Err(err) => {
+            eprintln!("melt-pot: OP-TEE check unavailable ({err}); using software fallback");
+            SOFT_TEMP_RANGE.contains(&temperature_mdc)
+        }
+    }
+}
+
+/// Real OP-TEE invocation, mirroring the Teaclave CA pattern:
+/// `Context::new` -> `open_session(uuid)` -> invoke the command.
+fn tee_check_optee(temperature_mdc: i32) -> consortium_tee::TeeResult<bool> {
+    use consortium_tee::TeeError;
+    use optee_teec::{Context, Uuid};
+
+    let uuid = Uuid::parse_str(TA_UUID).map_err(TeeError::Session)?;
+    let mut ctx = Context::new().map_err(TeeError::Context)?;
+    let mut session = ctx.open_session(uuid).map_err(TeeError::Session)?;
+    melt_pot_imx95_ta::call_check_temperature(&mut session, temperature_mdc)
 }
