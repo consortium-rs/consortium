@@ -12,6 +12,7 @@ fn unsupported(input: (u32, u64)) -> (u32, u64) {
 fn unsupported(input: (u32, u64)) -> (u32, u64) {
     input
 }
+#[cfg(feature = "ta")]
 fn unsupported_dispatched(
     params: &mut ::optee_utee::Parameters,
 ) -> ::optee_utee::Result<()> {

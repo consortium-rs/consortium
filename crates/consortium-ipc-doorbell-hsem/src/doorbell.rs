@@ -28,6 +28,13 @@ use crate::registers::{interrupt_nonsecure::fields::SemInterruptRegister, semaph
 
 use crate::registers::{interrupt_nonsecure, semaphore_r, semaphore_rlr};
 
+/// LOCKID this core writes when locking a semaphore: A-core (1) on the std/Linux
+/// side, M-core (2) on the bare-metal side.
+#[cfg(feature = "std")]
+use crate::registers::A_CORE_LOCKID as SELF_LOCKID;
+#[cfg(not(feature = "std"))]
+use crate::registers::M_CORE_LOCKID as SELF_LOCKID;
+
 // The std path computes all offsets inline from self.base; it does not need
 // the physical-address constants from the registers module.
 
@@ -238,7 +245,6 @@ impl<const PROC: u8> HsemDoorbell<PROC> {
     }
 }
 
-#[cfg(feature = "std")]
 impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
     type Error = HsemError;
     type WaitFut<'a>
@@ -268,7 +274,7 @@ impl<const PROC: u8> Doorbell for HsemDoorbell<PROC> {
         let locked_reg = fields::SemaphoreRegister::from_bits(locked_value);
         let lockid = locked_reg.lockid() as u8;
 
-        if !locked_reg.lock() || lockid != crate::registers::A_CORE_LOCKID {
+        if !locked_reg.lock() || lockid != SELF_LOCKID {
             return Err(HsemError::AlreadyLocked);
         }
 

@@ -22,6 +22,7 @@ fn echo(
     *counter += 1;
     Ok(input.to_vec())
 }
+#[cfg(feature = "ta")]
 fn echo_dispatched(
     ctx: &mut ServiceContext,
     params: &mut ::optee_utee::Parameters,
@@ -51,17 +52,17 @@ fn call_echo(
     input: &[u8],
     counter: &mut u64,
 ) -> ::consortium_tee::TeeResult<::consortium_tee::TeeResult<Vec<u8>>> {
-    let _p0 = ParamTmpRef::new_input(input);
-    let _p1 = ParamValue::new(
+    let _p0 = ::optee_teec::ParamTmpRef::new_input(input);
+    let _p1 = ::optee_teec::ParamValue::new(
         *counter as u32,
         (*counter >> 32) as u32,
-        ParamType::ValueInout,
+        ::optee_teec::ParamType::ValueInout,
     );
     let mut __out_buf_2 = vec![
         0u8; < ::consortium_tee::TeeResult < Vec < u8 > > as ::consortium_tee::TeeParam <
         TestCodec >> ::MAX_SIZE
     ];
-    let _p2 = ParamTmpRef::new_output(&mut __out_buf_2);
+    let _p2 = ::optee_teec::ParamTmpRef::new_output(&mut __out_buf_2);
     let mut _operation = ::optee_teec::Operation::new(
         0,
         _p0,
@@ -70,16 +71,18 @@ fn call_echo(
         ::optee_teec::ParamNone,
     );
     session.invoke_command(Command::Echo as u32, &mut _operation)?;
-    *counter = (_operation.param_1().as_value().b() as u64) << 32
-        | _operation.param_1().as_value().a() as u64;
+    *counter = (_operation.parameters().1.b() as u64) << 32
+        | _operation.parameters().1.a() as u64;
     Ok({
-        let __m = _operation.param_2().as_memref();
+        let __updated_size = _operation.parameters().2.updated_size();
         <::consortium_tee::TeeResult<
             Vec<u8>,
         > as ::consortium_tee::TeeParam<
             TestCodec,
         >>::from_tee_param(
-                ::consortium_tee::TeeParamSlot::Serialized(&__m.buffer()[..__m.size()]),
+                ::consortium_tee::TeeParamSlot::Serialized(
+                    &__out_buf_2[..__updated_size],
+                ),
             )
             .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
     })

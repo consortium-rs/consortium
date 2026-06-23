@@ -640,6 +640,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "cortex-m-rt"
+version = "0.7.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "801d4dec46b34c299ccf6b036717ae0fce602faa4f4fe816d9013b9a7c9f5ba6"
+dependencies = [
+ "cortex-m-rt-macros",
+]
+
+[[package]]
+name = "cortex-m-rt-macros"
+version = "0.7.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e37549a379a9e0e6e576fd208ee60394ccb8be963889eebba3ffe0980364f472"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "crc32fast"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1597,6 +1617,106 @@ dependencies = [
 ]
 
 [[package]]
+name = "melt-pot-imx95-app"
+version = "0.1.0"
+dependencies = [
+ "consortium-codec",
+ "consortium-dbg-defmt",
+ "consortium-hmi",
+ "consortium-ipc",
+ "consortium-ipc-doorbell-mu",
+ "consortium-ipc-transport-memory",
+ "glib",
+ "melt-pot-imx95-ta",
+ "melt-pot-shared",
+ "serde",
+ "serde_json",
+ "tokio",
+]
+
+[[package]]
+name = "melt-pot-imx95-mcu"
+version = "0.1.0"
+dependencies = [
+ "consortium-codec",
+ "consortium-dbg-defmt",
+ "consortium-ipc",
+ "consortium-ipc-doorbell-mu",
+ "consortium-ipc-transport-memory",
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "embassy-executor",
+ "melt-pot-shared",
+ "panic-halt",
+]
+
+[[package]]
+name = "melt-pot-imx95-ta"
+version = "0.1.0"
+dependencies = [
+ "consortium-tee",
+ "optee-teec",
+ "optee-utee",
+ "optee-utee-build",
+ "optee-utee-sys",
+]
+
+[[package]]
+name = "melt-pot-shared"
+version = "0.1.0"
+dependencies = [
+ "consortium-ipc",
+ "serde",
+]
+
+[[package]]
+name = "melt-pot-stm32mp25-app"
+version = "0.1.0"
+dependencies = [
+ "consortium-codec",
+ "consortium-dbg-defmt",
+ "consortium-hmi",
+ "consortium-ipc",
+ "consortium-ipc-doorbell-hsem",
+ "consortium-ipc-transport-memory",
+ "glib",
+ "melt-pot-shared",
+ "melt-pot-stm32mp25-ta",
+ "serde",
+ "serde_json",
+ "tokio",
+]
+
+[[package]]
+name = "melt-pot-stm32mp25-mcu"
+version = "0.1.0"
+dependencies = [
+ "consortium-codec",
+ "consortium-dbg-defmt",
+ "consortium-ipc",
+ "consortium-ipc-doorbell-hsem",
+ "consortium-ipc-transport-memory",
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "embassy-executor",
+ "melt-pot-shared",
+ "panic-halt",
+]
+
+[[package]]
+name = "melt-pot-stm32mp25-ta"
+version = "0.1.0"
+dependencies = [
+ "consortium-tee",
+ "optee-teec",
+ "optee-utee",
+ "optee-utee-build",
+ "optee-utee-sys",
+]
+
+[[package]]
 name = "memchr"
 version = "2.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1946,6 +2066,12 @@ name = "ort-sys"
 version = "2.0.0-rc.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d7b497d21a8b6fbb4b5a544f8fadb77e801a09ae0add9e411d31c6f89e3c1e90"
+
+[[package]]
+name = "panic-halt"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "de96540e0ebde571dc55c73d60ef407c653844e6f9a1e2fdbd40c07b9252d812"
 
 [[package]]
 name = "parking_lot"

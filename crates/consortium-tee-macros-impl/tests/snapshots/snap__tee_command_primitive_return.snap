@@ -12,6 +12,7 @@ fn read_counter() -> u64 {
 fn read_counter() -> u64 {
     0x1122_3344_5566_7788
 }
+#[cfg(feature = "ta")]
 fn read_counter_dispatched(
     params: &mut ::optee_utee::Parameters,
 ) -> ::optee_utee::Result<()> {
@@ -31,7 +32,7 @@ fn read_counter_dispatched(
 fn call_read_counter(
     session: &mut ::optee_teec::Session,
 ) -> ::consortium_tee::TeeResult<u64> {
-    let _p0 = ParamValue::new(0, 0, ParamType::ValueOutput);
+    let _p0 = ::optee_teec::ParamValue::new(0, 0, ::optee_teec::ParamType::ValueOutput);
     let mut _operation = ::optee_teec::Operation::new(
         0,
         _p0,
@@ -41,7 +42,7 @@ fn call_read_counter(
     );
     session.invoke_command(Command::ReadCounter as u32, &mut _operation)?;
     Ok({
-        let __v = _operation.param_0().as_value();
+        let __v = _operation.parameters().0;
         <u64 as ::consortium_tee::TeeParam<
             ::consortium_tee::NoCodec,
         >>::from_tee_param(::consortium_tee::TeeParamSlot::Primitive {

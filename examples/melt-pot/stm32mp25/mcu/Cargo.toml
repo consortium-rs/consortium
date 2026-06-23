@@ -1,0 +1,47 @@
+# Copyright 2026 Ethan Wu
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+[package]
+description       = "melt-pot MCU firmware for STM32MP25 Cortex-M33"
+edition.workspace = true
+license.workspace = true
+name              = "melt-pot-stm32mp25-mcu"
+version.workspace = true
+
+# Cross-compile target: thumbv8m.main-none-eabi  (Cortex-M33)
+# Example: cargo build -p melt-pot-stm32mp25-mcu --target thumbv8m.main-none-eabi --release
+
+[[bin]]
+name = "melt-pot-stm32mp25-mcu"
+path = "src/main.rs"
+
+[dependencies]
+melt-pot-shared = { path = "../../shared" }
+
+consortium-codec                 = { default-features = false, features = ["postcard"], path = "../../../../crates/consortium-codec" }
+consortium-dbg-defmt             = { default-features = false, features = ["logger"], path = "../../../../crates/consortium-dbg-defmt" }
+consortium-ipc                   = { default-features = false, path = "../../../../crates/consortium-ipc" }
+consortium-ipc-doorbell-hsem     = { default-features = false, features = ["stm32mp25"], path = "../../../../crates/consortium-ipc-doorbell-hsem" }
+consortium-ipc-transport-memory  = { default-features = false, path = "../../../../crates/consortium-ipc-transport-memory" }
+
+cortex-m            = { version = "0.7" }
+cortex-m-rt         = { version = "0.7" }
+defmt               = { version = "1.1.0" }
+embassy-executor    = { default-features = false, features = ["executor-thread", "platform-cortex-m"], version = "0.10.0" }
+panic-halt          = { version = "0.2" }
+
+[lints]
+workspace = true
