@@ -31,7 +31,7 @@ use syn::{Attribute, Data, DeriveInput, GenericParam, Type, parse_quote};
 /// 2. **Field bounds** — every field type must itself satisfy `TrustedArchive`, enforced via
 ///    generated `where`-clause predicates. Generic type parameters receive the same bound.
 ///
-/// The generated `unsafe impl` carries a `// SAFETY:` comment that auditors can verify.
+/// The generated `unsafe impl` includes a short invariant note for auditors.
 pub fn derive_trusted_archive(input: TokenStream2) -> TokenStream2 {
     let input = match syn::parse2::<DeriveInput>(input) {
         Ok(input) => input,
@@ -70,13 +70,13 @@ fn parse_repr(attrs: &[Attribute]) -> syn::Result<ReprInfo> {
                 if meta.path.is_ident("align") {
                     info.has_align = true;
                 }
-            } else if let Some(ident) = meta.path.get_ident() {
-                if matches!(
+            } else if let Some(ident) = meta.path.get_ident()
+                && matches!(
                     ident.to_string().as_str(),
                     "u8" | "u16" | "u32" | "u64" | "i8" | "i16" | "i32" | "i64"
-                ) {
-                    info.has_integer = true;
-                }
+                )
+            {
+                info.has_integer = true;
             }
             Ok(())
         })?;

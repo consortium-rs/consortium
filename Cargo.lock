@@ -544,7 +544,6 @@ dependencies = [
  "consortium-ipc-doorbell-mu",
  "consortium-ipc-transport-memory",
  "cortex-m",
- "embassy-executor",
  "num-traits",
  "static_cell",
 ]

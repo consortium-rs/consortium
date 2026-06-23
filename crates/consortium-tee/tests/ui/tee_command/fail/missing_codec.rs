@@ -42,6 +42,10 @@ struct Config {
     value: u32,
 }
 
+enum Command {
+    Configure,
+}
+
 #[tee_command]
 fn configure(_config: Config) -> optee_utee::Result<()> {
     Ok(())

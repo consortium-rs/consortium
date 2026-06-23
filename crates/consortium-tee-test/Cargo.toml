@@ -21,9 +21,9 @@ name              = "consortium-tee-test"
 version.workspace = true
 
 [features]
-ca      = ["dep:optee-teec"]
-default = ["ta"]
-ta      = ["dep:optee-utee", "dep:optee-utee-sys"]
+ca      = ["consortium-tee/ca", "dep:optee-teec"]
+default = []
+ta      = ["consortium-tee/ta", "dep:optee-utee", "dep:optee-utee-sys"]
 
 [lib]
 crate-type = ["rlib", "staticlib"]
@@ -36,7 +36,7 @@ path              = "src/main.rs"
 required-features = ["ta"]
 
 [target.'cfg(target_os = "linux")'.dependencies]
-consortium-tee = { default-features = false, features = ["ta"], path = "../consortium-tee" }
+consortium-tee = { default-features = false, path = "../consortium-tee" }
 num_enum       = { default-features = false, version = "0.7.6" }
 optee-teec     = { optional = true, version = "0.8.0" }
 optee-utee     = { default-features = false, optional = true, version = "0.8.0" }

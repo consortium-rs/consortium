@@ -20,17 +20,14 @@
 //! Base address must be added to each offset at runtime or via a base const.
 //! All offsets are relative to the HSEM peripheral base address.
 
-#[cfg(feature = "stm32mp25")]
-pub const HSEM_BASE: u32 = 0x5624_0000; // Verified in RM0457 for STM32MP25x; adjust as needed for other targets
+#[cfg(any(feature = "stm32mp23", feature = "stm32mp25"))]
+pub const HSEM_BASE: u32 = 0x5624_0000; // Verified in RM0457 for STM32MP23x/STM32MP25x.
 
-#[cfg(feature = "stm32mp23")]
-pub const HSEM_BASE: u32 = 0x5624_0000; // Verified in RM0457 for STM32MP23x; adjust as needed for other targets
-
-#[cfg(feature = "stm32h7x5")]
-pub const HSEM_BASE: u32 = 0x5802_6400; // Verified in RM0399 for STM32H7x5; adjust as needed for other targets
-
-#[cfg(feature = "stm32h7x7")]
-pub const HSEM_BASE: u32 = 0x5802_6400; // Verified in RM0399 for STM32H7x7; adjust as needed for other targets
+#[cfg(all(
+    not(any(feature = "stm32mp23", feature = "stm32mp25")),
+    any(feature = "stm32h7x5", feature = "stm32h7x7")
+))]
+pub const HSEM_BASE: u32 = 0x5802_6400; // Verified in RM0399 for STM32H7x5/STM32H7x7.
 
 /// Module: Semaphore R registers (2-step write lock / unlock / read)
 ///

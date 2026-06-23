@@ -69,10 +69,15 @@ impl Descriptor {
     /// `ptr` must point to a valid, readable shared-memory region of at least
     /// `DESCRIPTOR_SIZE` bytes with consistent volatile layout.
     pub unsafe fn from_raw_ptr(ptr: *const u8) -> Self {
+        // SAFETY: caller guarantees the descriptor header is present at `ptr`.
         let header = unsafe { DescriptorHeader::from_raw_ptr(ptr) };
+        // SAFETY: caller guarantees the descriptor fields are valid and coherent.
         let write_ptr = unsafe { rv_u16(ptr, WRITE_PTR_OFFSET) };
+        // SAFETY: caller guarantees the descriptor fields are valid and coherent.
         let read_ptr = unsafe { rv_u16(ptr, READ_PTR_OFFSET) };
+        // SAFETY: caller guarantees the descriptor fields are valid and coherent.
         let capacity = unsafe { rv_u16(ptr, CAPACITY_OFFSET) };
+        // SAFETY: caller guarantees the descriptor fields are valid and coherent.
         let flags = Flags::from_bits_retain(unsafe { rv_u16(ptr, FLAGS_OFFSET) });
         Self {
             header,
@@ -90,14 +95,16 @@ impl Descriptor {
     /// `ptr` must point to a valid, writable shared-memory region of at least
     /// `DESCRIPTOR_SIZE` bytes.
     pub unsafe fn write_to_raw_ptr(&self, ptr: *mut u8) {
-        // SAFETY: caller guarantees ptr is valid for DESCRIPTOR_SIZE bytes.
-        unsafe {
-            DescriptorHeader::new(MAGIC, VERSION).write_to_raw_ptr(ptr);
-            wv_u16(ptr, WRITE_PTR_OFFSET, self.write_ptr);
-            wv_u16(ptr, READ_PTR_OFFSET, self.read_ptr);
-            wv_u16(ptr, CAPACITY_OFFSET, self.capacity);
-            wv_u16(ptr, FLAGS_OFFSET, self.flags.bits());
-        }
+        // SAFETY: caller guarantees `ptr` covers the descriptor header.
+        unsafe { DescriptorHeader::new(MAGIC, VERSION).write_to_raw_ptr(ptr) };
+        // SAFETY: caller guarantees the descriptor fields are valid and coherent.
+        unsafe { wv_u16(ptr, WRITE_PTR_OFFSET, self.write_ptr) };
+        // SAFETY: caller guarantees the descriptor fields are valid and coherent.
+        unsafe { wv_u16(ptr, READ_PTR_OFFSET, self.read_ptr) };
+        // SAFETY: caller guarantees the descriptor fields are valid and coherent.
+        unsafe { wv_u16(ptr, CAPACITY_OFFSET, self.capacity) };
+        // SAFETY: caller guarantees the descriptor fields are valid and coherent.
+        unsafe { wv_u16(ptr, FLAGS_OFFSET, self.flags.bits()) };
     }
 
     /// Reads the next available defmt frame from the circular buffer, returning its payload.
@@ -112,21 +119,23 @@ impl Descriptor {
         if self.read_ptr == self.write_ptr {
             return None;
         }
+        // SAFETY: caller guarantees the ring buffer covers `self.read_ptr`.
         let packet_ptr = unsafe { base.add(self.read_ptr as usize) };
-        let Some(mut frame_header) = (unsafe { Packet::try_from_raw_ptr(packet_ptr) }) else {
-            return None;
-        };
+        // SAFETY: `packet_ptr` points into the shared ring buffer.
+        let mut frame_header = (unsafe { Packet::try_from_raw_ptr(packet_ptr) })?;
 
         if !frame_header.is_valid() {
             return None;
         }
 
         let mut buffer = vec![0u8; frame_header.len as usize];
-        unsafe {
-            frame_header.read_payload(packet_ptr, &mut buffer);
-            frame_header.mark_as_consumed(packet_ptr);
-        }
+        // SAFETY: `packet_ptr` points to the valid frame described by `frame_header`.
+        unsafe { frame_header.read_payload(packet_ptr, &mut buffer) };
+        // SAFETY: `packet_ptr` points to the valid frame described by `frame_header`.
+        unsafe { frame_header.mark_as_consumed(packet_ptr) };
+        // SAFETY: `base` points to the descriptor-owned ring buffer.
         self.read_ptr = unsafe { self.next_read_ptr(base) };
+        // SAFETY: caller guarantees the descriptor fields are valid and coherent.
         unsafe { wv_u16(base, READ_PTR_OFFSET, self.read_ptr) };
         Some(buffer)
     }
@@ -141,6 +150,7 @@ impl Descriptor {
     #[cfg(feature = "host")]
     pub unsafe fn read_bulk_frames(&mut self, base: *mut u8) -> Vec<Vec<u8>> {
         let mut frames = Vec::new();
+        // SAFETY: caller guarantees `base` points to this descriptor`s ring buffer.
         while let Some(frame) = unsafe { self.read_one_frame(base) } {
             frames.push(frame);
         }
@@ -156,19 +166,24 @@ impl Descriptor {
     /// `base` must point to the start of the shared-memory region owning this descriptor,
     /// valid for at least `self.capacity` bytes.
     pub unsafe fn write_one_frame(&mut self, base: *mut u8, frame: &[u8]) -> bool {
+        // SAFETY: caller guarantees `base` points to this descriptor`s ring buffer.
         match unsafe { self.allocate_write_ptr(base, frame.len()) } {
             Some(p) => {
-                unsafe { Packet::write_full_packet_to_raw_ptr(base.add(p as usize), frame) };
+                // SAFETY: `p` was allocated within the ring buffer.
+                let packet_ptr = unsafe { base.add(p as usize) };
+                // SAFETY: `packet_ptr` points to enough space for the full packet.
+                unsafe { Packet::write_full_packet_to_raw_ptr(packet_ptr, frame) };
                 self.flags.remove(Flags::Overflow);
                 self.write_ptr = self.advance_ptr(p, frame.len());
-                unsafe {
-                    wv_u16(base, WRITE_PTR_OFFSET, self.write_ptr);
-                    wv_u16(base, FLAGS_OFFSET, self.flags.bits());
-                }
+                // SAFETY: caller guarantees the descriptor fields are valid and coherent.
+                unsafe { wv_u16(base, WRITE_PTR_OFFSET, self.write_ptr) };
+                // SAFETY: caller guarantees the descriptor fields are valid and coherent.
+                unsafe { wv_u16(base, FLAGS_OFFSET, self.flags.bits()) };
                 true
             }
             None => {
                 self.flags.insert(Flags::Overflow);
+                // SAFETY: caller guarantees the descriptor fields are valid and coherent.
                 unsafe { wv_u16(base, FLAGS_OFFSET, self.flags.bits()) };
                 false
             }
@@ -176,7 +191,9 @@ impl Descriptor {
     }
 
     pub(crate) unsafe fn next_read_ptr(&mut self, base: *const u8) -> u16 {
+        // SAFETY: caller guarantees the ring buffer covers `self.read_ptr`.
         let cursor = unsafe { base.add(self.read_ptr as usize) };
+        // SAFETY: `cursor` points into the shared ring buffer.
         let Some(frame_header) = (unsafe { Packet::try_from_raw_ptr(cursor) }) else {
             return DESCRIPTOR_SIZE as u16;
         };
@@ -208,7 +225,9 @@ impl Descriptor {
             ptr = DATA_START;
         }
 
+        // SAFETY: `ptr` has been wrapped into the ring buffer range.
         let cursor = unsafe { base.add(ptr as usize) };
+        // SAFETY: `cursor` points into the shared ring buffer.
         if unsafe { Packet::try_from_raw_ptr(cursor) }.is_some_and(|packet| packet.is_valid()) {
             None
         } else {
@@ -227,7 +246,9 @@ impl Descriptor {
 
     /// Block until host has read all pending data. (defmt's Logger trait)
     pub(crate) unsafe fn flush(&mut self, base: *mut u8) {
+        // SAFETY: caller guarantees the ring buffer covers `self.read_ptr`.
         let cursor = unsafe { base.add(self.read_ptr as usize) };
+        // SAFETY: `cursor` points into the shared ring buffer.
         let Some(mut frame_header) = (unsafe { Packet::try_from_raw_ptr(cursor) }) else {
             return;
         };
@@ -235,8 +256,12 @@ impl Descriptor {
             while frame_header.is_valid() {
                 core::hint::spin_loop();
             }
+            // SAFETY: `base` points to the descriptor-owned ring buffer.
             self.read_ptr = unsafe { self.next_read_ptr(base) };
-            match unsafe { Packet::try_from_raw_ptr(base.add(self.read_ptr as usize)) } {
+            // SAFETY: caller guarantees the ring buffer covers `self.read_ptr`.
+            let cursor = unsafe { base.add(self.read_ptr as usize) };
+            // SAFETY: `cursor` points into the shared ring buffer.
+            match unsafe { Packet::try_from_raw_ptr(cursor) } {
                 Some(header) => frame_header = header,
                 None => return,
             }

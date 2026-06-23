@@ -38,16 +38,19 @@ pub const FLAG_INTEGRITY_ERROR: u32 = 1 << 2;
 /// # Safety
 /// `base` must point to a slot of at least `SLOT_HEADER + payload.len()` bytes.
 pub unsafe fn write(base: *mut u8, payload: &[u8]) {
-    unsafe {
-        let dst = base.add(SLOT_HEADER);
-        core::ptr::copy_nonoverlapping(payload.as_ptr(), dst, payload.len());
-        wv_u32(base, 0, payload.len() as u32);
+    // SAFETY: caller guarantees the slot contains room for `SLOT_HEADER + payload.len()`.
+    let dst = unsafe { base.add(SLOT_HEADER) };
+    // SAFETY: `dst` points to the slot payload and does not overlap `payload`.
+    unsafe { core::ptr::copy_nonoverlapping(payload.as_ptr(), dst, payload.len()) };
+    // SAFETY: caller guarantees the slot header is valid and DMA-coherent.
+    unsafe { wv_u32(base, 0, payload.len() as u32) };
 
-        let crc32 = crc32fast::hash(payload);
-        wv_u32(base, 8, crc32);
+    let crc32 = crc32fast::hash(payload);
+    // SAFETY: caller guarantees the slot header is valid and DMA-coherent.
+    unsafe { wv_u32(base, 8, crc32) };
 
-        wv_u32(base, 4, FLAG_VALID);
-    }
+    // SAFETY: caller guarantees the slot header is valid and DMA-coherent.
+    unsafe { wv_u32(base, 4, FLAG_VALID) };
 }
 
 /// Copy the slot payload into `buf` and mark it CONSUMED.
@@ -56,27 +59,33 @@ pub unsafe fn write(base: *mut u8, payload: &[u8]) {
 /// # Safety
 /// `base` must point to a valid slot of at least `SLOT_HEADER + buf.len()` bytes.
 pub unsafe fn try_read(base: *mut u8, buf: &mut [u8]) -> Option<usize> {
-    unsafe {
-        let flags = rv_u32(base, 4);
-        if flags & FLAG_VALID == 0 {
-            return None;
-        }
-
-        let len = rv_u32(base, 0) as usize;
-        let n = len.min(buf.len());
-        core::ptr::copy_nonoverlapping(base.add(SLOT_HEADER), buf.as_mut_ptr(), n);
-
-        let crc_calculated = crc32fast::hash(&buf[..n]);
-        let crc_stored = rv_u32(base, 8);
-
-        if crc_calculated != crc_stored {
-            wv_u32(base, 4, FLAG_INTEGRITY_ERROR);
-            return None;
-        }
-
-        wv_u32(base, 4, FLAG_CONSUMED);
-        Some(n)
+    // SAFETY: caller guarantees the slot header is valid and DMA-coherent.
+    let flags = unsafe { rv_u32(base, 4) };
+    if flags & FLAG_VALID == 0 {
+        return None;
     }
+
+    // SAFETY: caller guarantees the slot header is valid and DMA-coherent.
+    let len = unsafe { rv_u32(base, 0) } as usize;
+    let n = len.min(buf.len());
+    // SAFETY: caller guarantees the slot payload contains at least `n` readable bytes.
+    let src = unsafe { base.add(SLOT_HEADER) };
+    // SAFETY: `src` points to the slot payload and does not overlap `buf`.
+    unsafe { core::ptr::copy_nonoverlapping(src, buf.as_mut_ptr(), n) };
+
+    let crc_calculated = crc32fast::hash(&buf[..n]);
+    // SAFETY: caller guarantees the slot header is valid and DMA-coherent.
+    let crc_stored = unsafe { rv_u32(base, 8) };
+
+    if crc_calculated != crc_stored {
+        // SAFETY: caller guarantees the slot header is valid and DMA-coherent.
+        unsafe { wv_u32(base, 4, FLAG_INTEGRITY_ERROR) };
+        return None;
+    }
+
+    // SAFETY: caller guarantees the slot header is valid and DMA-coherent.
+    unsafe { wv_u32(base, 4, FLAG_CONSUMED) };
+    Some(n)
 }
 
 /// True if the slot is free for the sender to reuse (consumed or never written).
@@ -84,8 +93,7 @@ pub unsafe fn try_read(base: *mut u8, buf: &mut [u8]) -> Option<usize> {
 /// # Safety
 /// `base` must point to a valid slot.
 pub unsafe fn is_consumed(base: *const u8) -> bool {
-    unsafe {
-        let flags = rv_u32(base, 4);
-        flags == 0 || (flags & FLAG_CONSUMED != 0) || (flags & FLAG_INTEGRITY_ERROR != 0)
-    }
+    // SAFETY: caller guarantees the slot header is valid and DMA-coherent.
+    let flags = unsafe { rv_u32(base, 4) };
+    flags == 0 || (flags & FLAG_CONSUMED != 0) || (flags & FLAG_INTEGRITY_ERROR != 0)
 }

@@ -41,13 +41,13 @@ pub const MU_BASES: [usize; crate::chan::MU_INSTANCE_COUNT] = [
 ];
 
 /// Physical base addresses for i.MX 93 MU instances (MUA side).
-#[cfg(all(feature = "imx93", feature = "mua"))]
+#[cfg(all(not(feature = "imx95"), feature = "imx93", feature = "mua"))]
 pub const MU_BASES: [usize; crate::chan::MU_INSTANCE_COUNT] = [
     0x4422_0000, // MU1
     0x4243_0000, // MU2
 ];
 
-#[cfg(all(feature = "imx95", feature = "mub"))]
+#[cfg(all(feature = "imx95", not(feature = "mua"), feature = "mub"))]
 pub const MU_BASES: [usize; crate::chan::MU_INSTANCE_COUNT] = [
     0x4423_0000, // MU1
     0x445C_0000, // MU2
@@ -59,7 +59,12 @@ pub const MU_BASES: [usize; crate::chan::MU_INSTANCE_COUNT] = [
     0x4274_0000, // MU8
 ];
 
-#[cfg(all(feature = "imx93", feature = "mub"))]
+#[cfg(all(
+    not(feature = "imx95"),
+    feature = "imx93",
+    not(feature = "mua"),
+    feature = "mub"
+))]
 pub const MU_BASES: [usize; crate::chan::MU_INSTANCE_COUNT] = [
     0x4423_0000, // MU1
     0x4244_0000, // MU2
@@ -348,7 +353,7 @@ pub mod mub {
 
 #[cfg(feature = "mua")]
 pub use self::mua as side;
-#[cfg(feature = "mub")]
+#[cfg(all(not(feature = "mua"), feature = "mub"))]
 pub use self::mub as side;
 
 // ============================================================================

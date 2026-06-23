@@ -43,7 +43,7 @@ consortium-codec = { features = [
   "prost",
   "rkyv",
 ], path = "../consortium-codec" }
-embassy-executor = { features = ["executor-thread", "platform-std"], version = "0.10.0" }
+embassy-executor = { default-features = false, features = ["executor-thread", "platform-std"], version = "0.10.0" }
 embassy-futures = "0.1.2"
 embassy-sync = { features = ["std"], version = "0.8.0" }
 embassy-time = { features = ["std"], version = "0.5.1" }

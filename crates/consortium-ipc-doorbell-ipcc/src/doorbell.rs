@@ -471,19 +471,20 @@ mod tests {
         });
 
         armed_rx.recv().expect("waiter thread started");
-        while !ControlRegister::from_bits(unsafe {
-            (base as *const u32).add(offsets::C1CR / 4).read_volatile()
-        })
-        .rxoie()
-        {
+        loop {
+            // SAFETY: `base` points to the fake MMIO register array used by this test.
+            let c1cr = unsafe { (base as *const u32).add(offsets::C1CR / 4) };
+            // SAFETY: `c1cr` points into the fake MMIO register array.
+            if ControlRegister::from_bits(unsafe { c1cr.read_volatile() }).rxoie() {
+                break;
+            }
             std::thread::yield_now();
         }
 
-        unsafe {
-            (base as *mut u32)
-                .add(offsets::C2TOC1SR / 4)
-                .write_volatile(crate::registers::channel_flag(2).bits());
-        }
+        // SAFETY: `base` points to the fake MMIO register array used by this test.
+        let status = unsafe { (base as *mut u32).add(offsets::C2TOC1SR / 4) };
+        // SAFETY: `status` points into the fake MMIO register array.
+        unsafe { status.write_volatile(crate::registers::channel_flag(2).bits()) };
         notifier.notify_waiters();
 
         assert_eq!(waiter.join().expect("waiter thread completes"), ch(2));

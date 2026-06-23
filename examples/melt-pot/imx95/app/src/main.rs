@@ -96,6 +96,7 @@ async fn main() {
     // CA55 waits on this channel; CM7 rings it to wake the CA55.
     // SAFETY: IMX95_CA55_CM7_RX_CHAN is a valid MU channel index.
     let ch = unsafe { Chan::new_unchecked(IMX95_CA55_CM7_RX_CHAN) };
+    // SAFETY: app_desc_base points to the heap-backed IPC region of IPC_REGION_LEN bytes.
     let region = unsafe { SramRegion::new(app_desc_base, IPC_REGION_LEN) };
     let doorbell = MuDoorbell::new(MU_VIRT_BASES);
     // SAFETY: app_desc_base satisfies the descriptor layout invariant above.
@@ -138,11 +139,11 @@ async fn main() {
                 Err(e) => eprintln!("ipc recv error: {e}"),
             }
             // Drain any defmt log packets the CM7 wrote since the last receive.
-            if let Some(ref mut ring) = dbg {
-                if let Ok(packets) = ring.drain_packets() {
-                    for pkt in packets {
-                        eprintln!("[defmt] {} raw bytes", pkt.len());
-                    }
+            if let Some(ref mut ring) = dbg
+                && let Ok(packets) = ring.drain_packets()
+            {
+                for pkt in packets {
+                    eprintln!("[defmt] {} raw bytes", pkt.len());
                 }
             }
         }

@@ -40,8 +40,5 @@ consortium-ipc-doorbell-ipcc = { default-features = false, optional = true, path
 consortium-ipc-doorbell-mu = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu" }
 consortium-ipc-transport-memory = { default-features = false, path = "../consortium-ipc-transport-memory" }
 cortex-m = { version = "0.7" }
-embassy-executor = { default-features = false, features = [
-  "platform-cortex-m",
-], version = "0.10.0" }
 num-traits = { default-features = false, version = "0.2.19" }
 static_cell = { default-features = false, version = "2" }

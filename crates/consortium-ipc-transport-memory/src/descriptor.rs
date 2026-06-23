@@ -96,19 +96,27 @@ impl Descriptor {
     /// `ptr` must be valid for at least `CHANNEL_TABLE_OFFSET + num_channels * CHAN_ENTRY_SIZE`
     /// bytes and the memory must be DMA-coherent.
     pub unsafe fn from_raw_ptr(ptr: *const u8) -> Self {
+        // SAFETY: caller guarantees the descriptor header is present at `ptr`.
         let header = unsafe { DescriptorHeader::from_raw_ptr(ptr) };
+        // SAFETY: caller guarantees the descriptor fixed header is valid and coherent.
         let num_channels = unsafe { rv_u8(ptr, NUM_CHANNELS_OFFSET) };
+        // SAFETY: caller guarantees the descriptor fixed header is valid and coherent.
         let tx_updated_id = unsafe { rv_u8(ptr, TX_UPDATED_ID_OFFSET) };
+        // SAFETY: caller guarantees the descriptor fixed header is valid and coherent.
         let rx_updated_id = unsafe { rv_u8(ptr, RX_UPDATED_ID_OFFSET) };
+        // SAFETY: caller guarantees the descriptor fixed header is valid and coherent.
         let tx_mtu = unsafe { rv_u32(ptr, TX_TRANSFER_SIZE_OFFSET) };
+        // SAFETY: caller guarantees the descriptor fixed header is valid and coherent.
         let rx_mtu = unsafe { rv_u32(ptr, RX_TRANSFER_SIZE_OFFSET) };
+        // SAFETY: caller guarantees the descriptor fixed header is valid and coherent.
         let state = DescState::from_primitive(unsafe { rv_u32(ptr, STATE_OFFSET) });
 
         let mut channels = [ChannelLayout::default(); CHANNEL_NUM_MAX];
-        for i in 0..num_channels as usize {
-            channels[i] = unsafe {
-                ChannelLayout::from_raw_ptr(ptr.add(CHANNEL_TABLE_OFFSET + i * CHAN_ENTRY_SIZE))
-            };
+        for (i, channel) in channels.iter_mut().enumerate().take(num_channels as usize) {
+            // SAFETY: caller guarantees the channel table covers `num_channels` entries.
+            let entry = unsafe { ptr.add(CHANNEL_TABLE_OFFSET + i * CHAN_ENTRY_SIZE) };
+            // SAFETY: `entry` points at a valid channel-table entry by the invariant above.
+            *channel = unsafe { ChannelLayout::from_raw_ptr(entry) };
         }
 
         Self {
@@ -134,10 +142,17 @@ impl ChannelLayout {
     /// # Safety
     /// `ptr` must be valid for at least `CHAN_ENTRY_SIZE` (12) bytes.
     pub unsafe fn from_raw_ptr(ptr: *const u8) -> Self {
+        // SAFETY: caller guarantees `ptr` covers the channel entry.
+        let offset = unsafe { rv_u32(ptr, 0) };
+        // SAFETY: caller guarantees `ptr` covers the channel entry.
+        let size = unsafe { rv_u32(ptr, 4) };
+        // SAFETY: caller guarantees `ptr` covers the channel entry.
+        let direction = ChannelDirection::from_primitive(unsafe { rv_u8(ptr, 8) });
+
         Self {
-            offset: unsafe { rv_u32(ptr, 0) },
-            size: unsafe { rv_u32(ptr, 4) },
-            direction: ChannelDirection::from_primitive(unsafe { rv_u8(ptr, 8) }),
+            offset,
+            size,
+            direction,
             _reserved: [0; 3],
         }
     }
@@ -154,14 +169,18 @@ pub const fn channel_table_entry_offset(index: usize) -> usize {
 /// Caller must ensure the base and index is valid.
 pub(crate) unsafe fn read_channel(base: *const u8, index: usize) -> ChannelLayout {
     let off = channel_table_entry_offset(index);
-    // SAFETY: Checked the base and index correct.
-    unsafe {
-        ChannelLayout {
-            offset: rv_u32(base, off),
-            size: rv_u32(base, off + 4),
-            direction: ChannelDirection::from_primitive(rv_u8(base, off + 8)),
-            _reserved: [0; 3],
-        }
+    // SAFETY: caller guarantees `base` covers the indexed channel entry.
+    let offset = unsafe { rv_u32(base, off) };
+    // SAFETY: caller guarantees `base` covers the indexed channel entry.
+    let size = unsafe { rv_u32(base, off + 4) };
+    // SAFETY: caller guarantees `base` covers the indexed channel entry.
+    let direction = ChannelDirection::from_primitive(unsafe { rv_u8(base, off + 8) });
+
+    ChannelLayout {
+        offset,
+        size,
+        direction,
+        _reserved: [0; 3],
     }
 }
 
@@ -242,6 +261,7 @@ impl ChannelDirection {
 ///
 /// Caller must ensure `base` is valid for at least 4 bytes and DMA-coherent.
 pub unsafe fn get_state(base: *const u8) -> DescState {
+    // SAFETY: caller guarantees the descriptor state field is valid and coherent.
     let val = unsafe { rv_u32(base, STATE_OFFSET) };
     DescState::from_primitive(val)
 }
@@ -283,26 +303,27 @@ pub unsafe fn descriptor_init(
         "channel count mismatch"
     );
 
-    // Write magic and version
-    // SAFETY: the caller must ensure that `base` is valid for at least `CHAN_TABLE_BASE + num_channels * CHAN_ENTRY_SIZE` bytes and that the memory is DMA-coherent.
-    unsafe {
-        let header = DescriptorHeader::new(MAGIC, VERSION);
-        header.write_to_raw_ptr(base);
-        wv_u8(base, NUM_CHANNELS_OFFSET, num_channels);
+    // Write magic and version.
+    let header = DescriptorHeader::new(MAGIC, VERSION);
+    // SAFETY: caller guarantees `base` covers the descriptor header.
+    unsafe { header.write_to_raw_ptr(base) };
+    // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
+    unsafe { wv_u8(base, NUM_CHANNELS_OFFSET, num_channels) };
+    // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
+    unsafe { wv_u32(base, RX_TRANSFER_SIZE_OFFSET, transfer_size as u32) };
 
-        wv_u32(base, RX_TRANSFER_SIZE_OFFSET, transfer_size as u32);
-
-        // Channel table
-        for (i, ch) in channels.iter().enumerate() {
-            let off = channel_table_entry_offset(i);
-            wv_u32(base, off, ch.offset);
-            wv_u32(base, off + 4, ch.size);
-            wv_u8(base, off + 8, ch.direction as u8);
-            // The remaining 3 bytes in the entry are reserved and set to 0 by default
-        }
-
-        wv_u32(base, STATE_OFFSET, DescState::MReady as u32);
+    for (i, ch) in channels.iter().enumerate() {
+        let off = channel_table_entry_offset(i);
+        // SAFETY: caller guarantees the channel table covers all `channels` entries.
+        unsafe { wv_u32(base, off, ch.offset) };
+        // SAFETY: caller guarantees the channel table covers all `channels` entries.
+        unsafe { wv_u32(base, off + 4, ch.size) };
+        // SAFETY: caller guarantees the channel table covers all `channels` entries.
+        unsafe { wv_u8(base, off + 8, ch.direction as u8) };
     }
+
+    // SAFETY: caller guarantees the descriptor state field is valid and coherent.
+    unsafe { wv_u32(base, STATE_OFFSET, DescState::MReady as u32) };
 }
 
 /// Parse the descriptor from the start of the mmap'd region.
@@ -315,12 +336,14 @@ pub unsafe fn descriptor_ack(
     num_channels: usize,
     transfer_size: usize,
 ) -> Result<Descriptor, DescriptorError> {
+    // SAFETY: caller guarantees the descriptor header is present at `base`.
     let header = unsafe { DescriptorHeader::from_raw_ptr(base) };
 
     header
         .check(MAGIC, VERSION)
         .map_err(DescriptorError::Header)?;
 
+    // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
     let num_ch = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
     if num_ch as usize != num_channels || num_ch as usize > CHANNEL_NUM_MAX {
         return Err(DescriptorError::InvalidChannelCount {
@@ -328,6 +351,7 @@ pub unsafe fn descriptor_ack(
             actual: num_ch as usize,
         });
     }
+    // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
     let rx_transfer_size = unsafe { rv_u32(base, RX_TRANSFER_SIZE_OFFSET) };
     // SAFETY: when the base is valid and coherent, the state read will be consistent with the rx_transfer_size read. The A-core must have set the state to Ready before writing rx_transfer_size, so if we see Ready then rx_transfer_size is valid. We write back the (potentially adjusted) transfer size to ensure that both sides agree on the final value.
     unsafe {
@@ -337,6 +361,7 @@ pub unsafe fn descriptor_ack(
             rx_transfer_size.max(transfer_size as u32),
         )
     };
+    // SAFETY: caller guarantees the descriptor state field is valid and coherent.
     let state = DescState::from_primitive(unsafe { rv_u32(base, STATE_OFFSET) });
 
     if state != DescState::MReady {
@@ -345,18 +370,22 @@ pub unsafe fn descriptor_ack(
 
     let mut channels = [ChannelLayout::default(); CHANNEL_NUM_MAX];
 
-    for i in 0..num_ch as usize {
+    for (i, channel) in channels.iter_mut().enumerate().take(num_ch as usize) {
         let off = CHAN_TABLE_BASE + i * CHAN_ENTRY_SIZE;
-        // SAFETY: When the `base` is valid and coherent, the reads is consistent with the fields.
-        unsafe {
-            channels[i] = ChannelLayout {
-                offset: rv_u32(base, off),
-                size: rv_u32(base, off + 4),
-                direction: ChannelDirection::from_primitive(rv_u8(base, off + 8)),
-                _reserved: [0; 3],
-            };
-        }
-        validate_channel_layout(i, num_ch as usize, channels[i])?;
+        // SAFETY: caller guarantees the channel table covers `num_ch` entries.
+        let offset = unsafe { rv_u32(base, off) };
+        // SAFETY: caller guarantees the channel table covers `num_ch` entries.
+        let size = unsafe { rv_u32(base, off + 4) };
+        // SAFETY: caller guarantees the channel table covers `num_ch` entries.
+        let direction = ChannelDirection::from_primitive(unsafe { rv_u8(base, off + 8) });
+
+        *channel = ChannelLayout {
+            offset,
+            size,
+            direction,
+            _reserved: [0; 3],
+        };
+        validate_channel_layout(i, num_ch as usize, *channel)?;
     }
 
     compiler_fence(Ordering::Release);
