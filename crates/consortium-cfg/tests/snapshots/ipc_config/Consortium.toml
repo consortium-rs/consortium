@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Fixture: only the [ipc] section. Exercises the shared-memory IPC region being
+# injected as `CONSORTIUM_IPC_*` and nothing else.
+
+[ipc]
+base   = 0x204C0000 # 541851648
+length = 0x1000     # 4096
+uio    = 0
+mtu    = 64

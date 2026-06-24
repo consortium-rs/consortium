@@ -65,3 +65,51 @@ impl SharedMemConfig {
         ]
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const SAMPLE: SharedMemConfig = SharedMemConfig {
+        base: 0x204C_0000,
+        length: 0x1000,
+        uio: 0,
+        mtu: 64,
+    };
+
+    #[test]
+    fn env_pairs_emit_the_ipc_layout_the_app_reads() {
+        // Keys and string values must match exactly what `option_env!`/`env!`
+        // read on the consuming side (`consortium-ipc-transport-memory`'s
+        // `config` module). Decimal stringification keeps them `parse_u64`-able.
+        let pairs = SAMPLE.env_pairs("IPC");
+        assert_eq!(
+            pairs,
+            [
+                ("CONSORTIUM_IPC_BASE".to_string(), "541851648".to_string()),
+                ("CONSORTIUM_IPC_LENGTH".to_string(), "4096".to_string()),
+                ("CONSORTIUM_IPC_UIO".to_string(), "0".to_string()),
+                ("CONSORTIUM_IPC_MTU".to_string(), "64".to_string()),
+            ]
+        );
+    }
+
+    #[test]
+    fn env_pairs_honour_the_prefix() {
+        // The debug region uses the same layout under a `DBG` prefix.
+        let keys: Vec<String> = SAMPLE
+            .env_pairs("DBG")
+            .into_iter()
+            .map(|(k, _)| k)
+            .collect();
+        assert_eq!(
+            keys,
+            [
+                "CONSORTIUM_DBG_BASE",
+                "CONSORTIUM_DBG_LENGTH",
+                "CONSORTIUM_DBG_UIO",
+                "CONSORTIUM_DBG_MTU",
+            ]
+        );
+    }
+}

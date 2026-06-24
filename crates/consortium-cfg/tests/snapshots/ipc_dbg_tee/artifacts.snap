@@ -1,0 +1,14 @@
+---
+source: crates/consortium-cfg/tests/snap.rs
+expression: env_export(&content)
+input_file: crates/consortium-cfg/tests/snapshots/ipc_dbg_tee/Consortium.toml
+---
+CONSORTIUM_DBG_BASE=541855744
+CONSORTIUM_DBG_LENGTH=2048
+CONSORTIUM_DBG_MTU=64
+CONSORTIUM_DBG_UIO=1
+CONSORTIUM_IPC_BASE=541851648
+CONSORTIUM_IPC_LENGTH=4096
+CONSORTIUM_IPC_MTU=64
+CONSORTIUM_IPC_UIO=0
+CONSORTIUM_TEE_UUID=12345678-1234-1234-1234-123456789012

@@ -303,6 +303,7 @@ name = "consortium-builder"
 version = "0.1.0"
 dependencies = [
  "consortium-common",
+ "serde",
  "thiserror",
  "tokio",
  "toml",
@@ -316,7 +317,10 @@ dependencies = [
  "consortium-common",
  "consortium-dts",
  "embedded-hal 1.0.0",
+ "insta",
+ "serde",
  "thiserror",
+ "toml",
 ]
 
 [[package]]

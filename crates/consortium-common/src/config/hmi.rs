@@ -40,3 +40,51 @@ pub struct HmiConfig {
     #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
     pub debug_url: Option<String>,
 }
+
+impl HmiConfig {
+    /// Environment variables the builder injects for this config.
+    ///
+    /// `CONSORTIUM_HMI_DIST` is always emitted; `CONSORTIUM_HMI_DEBUG_URL` is
+    /// emitted only when [`debug_url`](Self::debug_url) is set, so its absence
+    /// lets debug builds fall back to the static `csti://` handler. Consuming
+    /// crates read these with `option_env!` at compile time.
+    pub fn env_pairs(&self) -> Vec<(String, String)> {
+        let mut pairs = vec![("CONSORTIUM_HMI_DIST".to_string(), self.dist.clone())];
+        if let Some(url) = &self.debug_url {
+            pairs.push(("CONSORTIUM_HMI_DEBUG_URL".to_string(), url.clone()));
+        }
+        pairs
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn env_pairs_emit_dist_and_optional_debug_url() {
+        let with_url = HmiConfig {
+            dist: "ui/dist".to_string(),
+            debug_url: Some("http://localhost:5173".to_string()),
+        };
+        assert_eq!(
+            with_url.env_pairs(),
+            [
+                ("CONSORTIUM_HMI_DIST".to_string(), "ui/dist".to_string()),
+                (
+                    "CONSORTIUM_HMI_DEBUG_URL".to_string(),
+                    "http://localhost:5173".to_string()
+                ),
+            ]
+        );
+
+        let no_url = HmiConfig {
+            dist: "ui/dist".to_string(),
+            debug_url: None,
+        };
+        assert_eq!(
+            no_url.env_pairs(),
+            [("CONSORTIUM_HMI_DIST".to_string(), "ui/dist".to_string())]
+        );
+    }
+}

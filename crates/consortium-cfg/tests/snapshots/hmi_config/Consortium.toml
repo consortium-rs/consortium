@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Fixture: [hmi] with both keys. `dist` and the optional `debug_url` are both
+# injected (`CONSORTIUM_HMI_DIST` and `CONSORTIUM_HMI_DEBUG_URL`).
+
+[hmi]
+dist      = "ui/dist"
+debug_url = "http://localhost:5173"

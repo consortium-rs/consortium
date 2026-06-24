@@ -22,8 +22,8 @@ use consortium_common::config::{HmiConfig, SharedMemConfig};
 
 use super::Compiler;
 use crate::compile::utils::{
-    clean_path, elf_path, inject_shared_mem, resolve_cargo, resolve_cross_tool, resolve_rustc,
-    verify_elf,
+    clean_path, elf_path, inject_hmi, inject_shared_mem, resolve_cargo, resolve_cross_tool,
+    resolve_rustc, verify_elf,
 };
 
 /// Error type for application compilation.
@@ -260,12 +260,7 @@ impl Compiler for ApplicationCompiler {
             cmd.env("CXX", format!("{cxx} --sysroot={}", sdk.sysroot));
         }
 
-        if let Some(ref hmi) = config.hmi {
-            cmd.env("CONSORTIUM_HMI_DIST", &hmi.dist);
-            if let Some(ref url) = hmi.debug_url {
-                cmd.env("CONSORTIUM_HMI_DEBUG_URL", url);
-            }
-        }
+        inject_hmi(&mut cmd, config.hmi.as_ref());
 
         inject_shared_mem(&mut cmd, "IPC", config.ipc.as_ref());
         inject_shared_mem(&mut cmd, "DBG", config.dbg.as_ref());
