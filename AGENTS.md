@@ -32,11 +32,24 @@ cargo fmt
 # List project recipes
 just
 
+# Install/update local toolchains used by recipes
+just setup
+
+# Run host-side checks
+just check
+
 # Run the host-side IPC test bundle
 just test ipc host
 
+# Run the host-side TEE or HMI test bundles
+just test tee host
+just test hmi host
+
 # Run the host-side lint bundle
 just lint
+
+# Apply the standard Rust, frontend, Python, and TOML formatters/fixers
+just fix
 
 # Serve documentation locally
 mdbook serve docs/
@@ -44,9 +57,10 @@ mdbook serve docs/
 
 The `justfile` is the command index for routine development. It includes host checks,
 TEE checks, TOML formatting/linting through Taplo, spelling checks through `typos`, file
-name checks through `ls-lint`, and cross-compilation recipes for A-core, M-core, and
-RISC-V targets. Some target recipes are platform-dependent and should be treated as
-hardware or SDK workflows rather than generic macOS host checks.
+name checks through `ls-lint`, Python checks through `ruff`, frontend checks through
+Vite+, and cross-compilation recipes for A-core, M-core, and RISC-V targets. Some target
+recipes are platform-dependent and should be treated as hardware or SDK workflows rather
+than generic macOS host checks.
 
 ## Platform Notes
 
@@ -68,12 +82,14 @@ hardware or SDK workflows rather than generic macOS host checks.
 | Shared transport   | `consortium-ipc-transport-memory`                                                                                            |
 | Doorbells          | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`, `consortium-ipc-doorbell-ipcc` |
 | Codecs             | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                |
+| Macro helpers      | `consortium-macros-helpers`                                                                                                  |
 | Common types       | `consortium-common`                                                                                                          |
 | Configuration      | `consortium-cfg`, `consortium-cfg-meta`, `consortium-dts`                                                                    |
-| Runtimes and build | `consortium-runtime-mcu`, `consortium-runtime-app`, `consortium-builder`, `consortium-cli`                                   |
+| Runtimes and build | `consortium-runtime-mcu`, `consortium-runtime-prt`, `consortium-runtime-app`, `consortium-builder`, `consortium-cli`         |
 | Debug              | `consortium-dbg-defmt`                                                                                                       |
 | TEE                | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`, `consortium-tee-test`                               |
 | Utilities and HMI  | `consortium-ffi`, `consortium-hmi`, `consortium-ort`, `cogcore`, `cogcore-sys`                                               |
+| Examples           | `melt-pot-*`, including shared message types, app, MCU, and TA crates for i.MX95 and STM32MP25                               |
 
 `CLAUDE.md` currently delegates to this file, so this guide is the canonical assistant
 orientation document.
@@ -97,6 +113,11 @@ pointers, references, function pointers, and `usize`/`isize`. Use
 `#[derive(IpcSafe)]` from `consortium-ipc-macros` when adding message types; the macro
 implementation lives in `consortium-ipc-macros-impl` so it can be tested without going
 through the proc-macro wrapper.
+
+`consortium-macros-helpers` owns shared `syn` utilities used by macro implementation
+crates. Put reusable AST traversal, type classification, and return-type helpers there
+instead of duplicating them across `*-macros-impl` crates; keep domain-specific parsing
+and code generation in the owning macro implementation crate.
 
 `consortium-codec` owns the codec traits and serialization families. Postcard, Prost,
 and rkyv support are feature-gated modules; rkyv also exposes
@@ -178,6 +199,12 @@ Runtime i.MX feature names are split by SoC family:
 Use the `docs/src/dev/rpi/` documentation as the design reference for resource
 partitioning concepts. Code lives in the `cfg` crates.
 
+Peripheral config flows bridge `consortium-common` project config into validated
+`consortium-cfg` types. Keep the user-facing config centered on `owner`, `secure`, and
+optional DTS pin declarations; derive STM32 RIFSC `perid` values and pinmux positions
+from metadata during session validation. i.MX and non-RIFSC peripherals should keep
+`perid = None` rather than inventing placeholder IDs.
+
 ## TEE Model
 
 `consortium-tee` provides the shared TEE parameter model, macro re-exports, and the
@@ -198,7 +225,8 @@ Important concepts:
 
 When changing TEE macros, update both compile-fail tests and token snapshots as needed.
 Prefer testing macro logic in the implementation crate before relying on the proc-macro
-facade.
+facade. If a TEE macro needs generic `syn` helpers that would also apply to IPC or codec
+macros, add them to `consortium-macros-helpers` rather than keeping local copies.
 
 ## Debug Logging
 
@@ -211,7 +239,8 @@ descriptor discipline when changing debug transport behavior.
 
 `consortium-runtime-mcu` is the firmware-side runtime surface. It is expected to grow
 around descriptor initialization, interrupt integration, and an async execution model
-for M-core firmware.
+for M-core firmware. `consortium-runtime-prt` is the programmable real-time runtime
+surface for smaller RT cores and should remain lean and `defmt`-friendly.
 
 `consortium-runtime-app` is the A-core/Linux harness. It owns host-side lifecycle
 concerns such as remoteproc integration and application orchestration.
@@ -280,8 +309,10 @@ When updating docs, use the crate names and APIs present in the workspace.
 
 ## Dependency Policy
 
-It's always encouraged to use credible crates whenever used (for example, adding `base64` for base64 codec, adding `futures` for async execution), especially in test.
-Before adding dependency, please ensure the crate to be Apache-2.0-friendly.
+It's always encouraged to use credible crates whenever used, especially in tests. For
+example, prefer adding `base64` for a base64 codec or `futures` for async execution over
+hand-rolling common functionality. Before adding a dependency, ensure the crate is
+Apache-2.0-friendly.
 
 <!--VITE PLUS START-->
 
