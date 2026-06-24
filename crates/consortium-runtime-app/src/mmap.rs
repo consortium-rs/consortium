@@ -19,7 +19,7 @@
 //! The A-core waits for the descriptor state to reach `Ready(3)` before opening the UIO device.
 //! Descriptor types and constants are re-exported from `consortium-ipc-transport-memory`.
 
-use consortium_ipc_transport_memory::DescState;
+use consortium_ipc_transport_memory::{DescState, config};
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
@@ -127,13 +127,15 @@ impl DescriptorMmap {
 
 /// Poll the descriptor state until it reaches `Ready(3)`.
 ///
-/// Opens `/dev/uioN` resource 0 (the DMA-coherent region), mmaps it,
-/// and polls the state field at offset 0x14 at regular intervals until
+/// Opens the configured UIO device's `map0` (the DMA-coherent region), mmaps
+/// it, and polls the state field at offset 0x14 at regular intervals until
 /// `Ready(3)` is seen, a timeout occurs, or an error state is encountered.
+///
+/// The device index comes from [`config::UIO`] (the `CONSORTIUM_IPC_UIO` value
+/// injected from `Consortium.toml`), matching [`UioDevice::open`].
 ///
 /// # Arguments
 ///
-/// * `uio_num` - the UIO device number (N in `/dev/uioN`)
 /// * `timeout` - maximum time to wait; uses `Duration::from_secs(30)` as a reasonable default
 ///
 /// # Returns
@@ -145,11 +147,13 @@ impl DescriptorMmap {
 /// # Example
 ///
 /// ```ignore
-/// wait_for_ready(0, Duration::from_secs(10)).await?;
-/// let dev = UioDevice::open(0)?;
+/// wait_for_ready(Duration::from_secs(10)).await?;
+/// let dev = UioDevice::open(num_channels, transfer_size)?;
 /// ```
-pub async fn wait_for_ready(uio_num: usize, timeout: Duration) -> Result<(), WaitError> {
-    let mmap = DescriptorMmap::open(uio_num)?;
+///
+/// [`UioDevice::open`]: crate::uio::UioDevice::open
+pub async fn wait_for_ready(timeout: Duration) -> Result<(), WaitError> {
+    let mmap = DescriptorMmap::open(config::UIO as usize)?;
     let start = Instant::now();
     let poll_interval = Duration::from_millis(50);
 
