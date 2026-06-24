@@ -14,12 +14,10 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+use consortium_macros_helpers::{collect_field_types, path_type_arguments};
 use proc_macro2::{Span, TokenStream as TokenStream2};
 use quote::quote;
-use syn::{
-    Attribute, Data, DeriveInput, GenericArgument, GenericParam, Ident, LitInt, Meta,
-    PathArguments, Type, parse_quote,
-};
+use syn::{Attribute, DeriveInput, GenericParam, Ident, LitInt, Meta, Type, parse_quote};
 
 const DEFAULT_MAX_SIZE: &str = "1024";
 
@@ -50,16 +48,7 @@ fn derive_tee_param_impl(input: DeriveInput) -> syn::Result<TokenStream2> {
     let name = &input.ident;
     let max_size = parse_tee_max_size(&input.attrs)?;
 
-    // Collect all field types for validation.
-    let field_types: Vec<&Type> = match &input.data {
-        Data::Struct(s) => s.fields.iter().map(|f| &f.ty).collect(),
-        Data::Enum(e) => e
-            .variants
-            .iter()
-            .flat_map(|v| v.fields.iter().map(|f| &f.ty))
-            .collect(),
-        Data::Union(u) => u.fields.named.iter().map(|f| &f.ty).collect(),
-    };
+    let field_types = collect_field_types(&input.data);
 
     // Validate all field types, accumulating errors and warnings before failing.
     let mut combined: Option<syn::Error> = None;
@@ -266,16 +255,10 @@ fn check_tee_type(ty: &Type) -> (Vec<syn::Error>, Vec<TokenStream2>) {
                 }
             }
             // Recurse into angle-bracketed generic arguments (e.g. `Option<u8>`).
-            for seg in &tp.path.segments {
-                if let PathArguments::AngleBracketed(ab) = &seg.arguments {
-                    for arg in &ab.args {
-                        if let GenericArgument::Type(inner) = arg {
-                            let (e, w) = check_tee_type(inner);
-                            errors.extend(e);
-                            warnings.extend(w);
-                        }
-                    }
-                }
+            for inner in path_type_arguments(ty) {
+                let (e, w) = check_tee_type(inner);
+                errors.extend(e);
+                warnings.extend(w);
             }
         }
 

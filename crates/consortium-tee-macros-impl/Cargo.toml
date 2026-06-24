@@ -22,11 +22,12 @@ name              = "consortium-tee-macros-impl"
 version.workspace = true
 
 [dependencies]
-heck               = "0.5.0"
-proc-macro-warning = "0.4"
-proc-macro2        = "1.0.106"
-quote              = "1.0.45"
-syn                = { features = ["full"], version = "2.0.117" }
+consortium-macros-helpers = { path = "../consortium-macros-helpers" }
+heck                      = "0.5.0"
+proc-macro-warning        = "0.4"
+proc-macro2               = "1.0.106"
+quote                     = "1.0.45"
+syn                       = { features = ["full"], version = "2.0.117" }
 
 [dev-dependencies]
 insta        = "1"

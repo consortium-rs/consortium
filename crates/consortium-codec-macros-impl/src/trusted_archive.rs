@@ -14,9 +14,10 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+use consortium_macros_helpers::collect_field_types;
 use proc_macro2::{Span, TokenStream as TokenStream2};
 use quote::quote;
-use syn::{Attribute, Data, DeriveInput, GenericParam, Type, parse_quote};
+use syn::{Attribute, Data, DeriveInput, GenericParam, parse_quote};
 
 /// Derive macro for `consortium_codec::rkyv::TrustedArchive`.
 ///
@@ -105,18 +106,6 @@ fn check_repr(attrs: &[Attribute], span: Span, is_enum: bool) -> syn::Result<()>
     }
 
     Ok(())
-}
-
-fn collect_field_types(data: &Data) -> Vec<&Type> {
-    match data {
-        Data::Struct(s) => s.fields.iter().map(|f| &f.ty).collect(),
-        Data::Enum(e) => e
-            .variants
-            .iter()
-            .flat_map(|v| v.fields.iter().map(|f| &f.ty))
-            .collect(),
-        Data::Union(u) => u.fields.named.iter().map(|f| &f.ty).collect(),
-    }
 }
 
 fn derive_trusted_archive_impl(input: DeriveInput) -> syn::Result<TokenStream2> {

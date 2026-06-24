@@ -353,6 +353,7 @@ dependencies = [
 name = "consortium-codec-macros-impl"
 version = "0.1.0"
 dependencies = [
+ "consortium-macros-helpers",
  "insta",
  "prettyplease",
  "proc-macro2",
@@ -474,6 +475,7 @@ dependencies = [
 name = "consortium-ipc-macros-impl"
 version = "0.1.0"
 dependencies = [
+ "consortium-macros-helpers",
  "heck",
  "insta",
  "prettyplease",
@@ -504,6 +506,13 @@ dependencies = [
  "thiserror",
  "tokio",
  "uio",
+]
+
+[[package]]
+name = "consortium-macros-helpers"
+version = "0.1.0"
+dependencies = [
+ "syn",
 ]
 
 [[package]]
@@ -578,6 +587,7 @@ dependencies = [
 name = "consortium-tee-macros-impl"
 version = "0.1.0"
 dependencies = [
+ "consortium-macros-helpers",
  "heck",
  "insta",
  "prettyplease",

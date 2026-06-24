@@ -14,9 +14,10 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+use consortium_macros_helpers::{collect_field_types, path_type_arguments};
 use proc_macro2::TokenStream as TokenStream2;
 use quote::quote;
-use syn::{Data, DeriveInput, GenericArgument, GenericParam, PathArguments, Type, parse_quote};
+use syn::{DeriveInput, GenericParam, Type, parse_quote};
 
 /// Derive macro that validates a struct/enum is safe to use as a cross-core IPC message.
 ///
@@ -56,16 +57,7 @@ pub fn derive_ipc_safe(input: TokenStream2) -> TokenStream2 {
 fn derive_ipc_safe_impl(input: DeriveInput) -> syn::Result<TokenStream2> {
     let name = &input.ident;
 
-    // Collect all field types from structs, enums, and unions.
-    let field_types: Vec<&Type> = match &input.data {
-        Data::Struct(s) => s.fields.iter().map(|f| &f.ty).collect(),
-        Data::Enum(e) => e
-            .variants
-            .iter()
-            .flat_map(|v| v.fields.iter().map(|f| &f.ty))
-            .collect(),
-        Data::Union(u) => u.fields.named.iter().map(|f| &f.ty).collect(),
-    };
+    let field_types = collect_field_types(&input.data);
 
     // Validate every field type, accumulating all errors before failing.
     let mut combined: Option<syn::Error> = None;
@@ -138,26 +130,9 @@ fn check_type(ty: &Type) -> Vec<syn::Error> {
                 }
             }
             // Recurse into angle-bracketed generic arguments (e.g. `Vec<usize>`).
-            tp.path
-                .segments
-                .iter()
-                .flat_map(|seg| {
-                    if let PathArguments::AngleBracketed(ab) = &seg.arguments {
-                        ab.args
-                            .iter()
-                            .filter_map(|arg| {
-                                if let GenericArgument::Type(inner) = arg {
-                                    Some(inner)
-                                } else {
-                                    None
-                                }
-                            })
-                            .flat_map(check_type)
-                            .collect::<Vec<_>>()
-                    } else {
-                        vec![]
-                    }
-                })
+            path_type_arguments(ty)
+                .into_iter()
+                .flat_map(check_type)
                 .collect()
         }
 

@@ -14,9 +14,6 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-// `TeeParam` and the derive macros are ungated from the Linux restriction - they must be
-// available on every target (TA code running in the TEE secure world is not Linux).
-// Error types and the TEE runtime (optee-teec) remain Linux-only.
 #![no_std]
 extern crate alloc;
 
