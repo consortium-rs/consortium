@@ -45,9 +45,9 @@ pub struct NoCodec;
 ///
 /// The codec type `C` is threaded through the signature so that:
 /// - **Primitive** types (`u8`…`i64`, `bool`, `(u32, u32)`) implement `TeeParam<C>` for
-///   *any* `C` — the codec is never invoked; the type maps to a [`TeeParamSlot::Primitive`].
+///   *any* `C`: the codec is never invoked; the type maps to a [`TeeParamSlot::Primitive`].
 /// - **Serialized** types implement `TeeParam<C>` for a specific codec `C:
-///   CodecFor<Self>` — the codec encodes/decodes the value into
+///   CodecFor<Self>`: the codec encodes/decodes the value into
 ///   [`TeeParamSlot::Serialized`] bytes.
 ///
 /// Use `#[derive(TeeParam)]` from `consortium-tee-macros` to automatically
@@ -83,11 +83,8 @@ pub trait TeeParam<C = NoCodec>: Sized {
     fn from_tee_param(repr: TeeParamReprRef<'_>) -> Result<Self, TeeParamError>;
 }
 
-// ── Primitive blanket impls ──────────────────────────────────────────────────
-//
-// All primitive types implement TeeParam<C> for *any* C.  The codec type is
-// phantom — primitives never serialize through a codec.
-
+/// All primitive types implement TeeParam<C> for *any* C. Primitives never
+/// serialize through a codec.
 macro_rules! impl_tee_param_primitive {
     ($ty:ty, max: $max:expr, a: $a:expr, b: $b:expr, from: $from:expr) => {
         impl<C> TeeParam<C> for $ty {
