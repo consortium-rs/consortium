@@ -27,5 +27,12 @@ consortium-dts         = { path = "../consortium-dts" }
 embedded-hal.workspace = true
 thiserror              = "2.0.18"
 
+[dev-dependencies]
+# `tests/snap.rs` walks the workspace for `Consortium.toml`, parses the
+# env-contributing sections, and snapshots the injected `KEY=VALUE` pairs.
+insta = "1"
+serde = { features = ["derive"], version = "1.0.228" }
+toml  = "1.1.0"
+
 [lints]
 workspace = true

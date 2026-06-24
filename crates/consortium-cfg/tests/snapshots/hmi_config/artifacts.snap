@@ -1,0 +1,7 @@
+---
+source: crates/consortium-cfg/tests/snap.rs
+expression: env_export(&content)
+input_file: crates/consortium-cfg/tests/snapshots/hmi_config/Consortium.toml
+---
+CONSORTIUM_HMI_DEBUG_URL=http://localhost:5173
+CONSORTIUM_HMI_DIST=ui/dist

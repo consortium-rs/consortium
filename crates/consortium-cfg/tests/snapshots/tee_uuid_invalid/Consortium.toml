@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Fixture: [tee] with a malformed UUID. Validation fails, so no env var is
+# injected; the export records the rejection diagnostic instead of panicking.
+
+[tee]
+uuid = "1234-5678-not-a-real-uuid"
