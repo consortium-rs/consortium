@@ -19,6 +19,27 @@ pub mod mmap;
 pub mod remoteproc;
 pub mod uio;
 
+// The A-core runtime addresses the shared region through the `[ipc]` layout
+// injected by `consortium-builder` (the `CONSORTIUM_IPC_*` env vars). Without
+// it the UIO index and region addresses would silently be `0`, so fail the
+// build instead — a missing layout is a misconfiguration, not a runtime case.
+//
+// `env!`'s two-argument form emits this message as a plain `error:` at the
+// invocation site (far better DX than the `E0080: evaluation panicked` a
+// `const` assert produces). `CONSORTIUM_IPC_BASE` is the sentinel the builder
+// always injects, matching `config::CONFIGURED`.
+//
+// Skipped under `cfg(test)` so the host unit tests (e.g. the IRQ fan-out) build
+// without going through the builder. Doctests are disabled in `Cargo.toml`,
+// which otherwise force a normal-mode lib build that would trip this guard.
+#[cfg(not(test))]
+const _: &str = env!(
+    "CONSORTIUM_IPC_BASE",
+    "consortium-runtime-app requires the IPC shared-memory layout: build through \
+     `consortium-builder` (which injects CONSORTIUM_IPC_* from the [ipc] section of \
+     Consortium.toml) rather than a plain `cargo build`."
+);
+
 pub use consortium_ipc as ipc;
 pub use consortium_ipc_transport_memory as ipc_transport;
 

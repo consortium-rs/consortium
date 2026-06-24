@@ -21,6 +21,13 @@ license.workspace = true
 name              = "consortium-runtime-app"
 version.workspace = true
 
+[lib]
+# Doc examples here are all `ignore`d, and running doctests would force a
+# normal-mode lib build that trips the `assert_configured()` guard in `lib.rs`
+# outside of `consortium-builder`. Disable them so `cargo test` exercises the
+# host unit tests without requiring an injected `[ipc]` layout.
+doctest = false
+
 [features]
 stm32mp21x = ["consortium-ipc-doorbell-ipcc/stm32mp21x"]
 stm32mp23x = ["consortium-ipc-doorbell-hsem", "consortium-ipc-doorbell-ipcc/stm32mp23x"]

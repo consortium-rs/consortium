@@ -24,7 +24,11 @@
 //! Callers obtain per-channel transports via [`UioDevice::channel_transport`]
 //! and wrap them in [`Channel`](consortium_ipc::Channel).
 
-use std::{fs::File, io::Write as _, sync::Arc};
+use std::{
+    fs::File,
+    io::Write as _,
+    sync::{Arc, Mutex},
+};
 
 use tokio::{io::unix::AsyncFd, sync::Notify};
 use uio::UioError;
@@ -32,7 +36,7 @@ use uio::UioError;
 use consortium_ipc::{Chan, Doorbell};
 use consortium_ipc_transport_memory::{
     ChannelDirection, Descriptor, DescriptorError, SharedMemoryTransport,
-    SharedMemoryTransportable, descriptor_ack,
+    SharedMemoryTransportable, config, descriptor_ack,
 };
 
 // ── Error ─────────────────────────────────────────────────────────────────────
@@ -53,7 +57,25 @@ pub enum UioDeviceError {
 
     #[error("channel pair for chan {0} not found in descriptor")]
     ChannelPairNotFound(u8),
+
+    #[error("no UIO map named {0:?}")]
+    MapNotFound(String),
 }
+
+/// Upper bound on UIO maps scanned by [`UioDevice::map_peripheral_by_name`].
+///
+/// `uio_pdrv_genirq` platform devices expose a handful of maps at most; this
+/// caps the sysfs scan so a missing name fails fast instead of looping.
+const MAX_UIO_MAPS: usize = 8;
+
+/// Shared list of doorbell wakeups that the IRQ task fans out to.
+///
+/// Each registered [`Notify`] belongs to a doorbell (its [`notifier()`] handle);
+/// `irq_loop` calls `notify_waiters()` on every entry whenever an M→A interrupt
+/// fires, so all pending `wait()` futures re-check their hardware status.
+///
+/// [`notifier()`]: consortium_ipc::Doorbell
+type Notifiers = Arc<Mutex<Vec<Arc<Notify>>>>;
 
 impl From<UioError> for UioDeviceError {
     fn from(e: UioError) -> Self {
@@ -66,9 +88,10 @@ impl From<UioError> for UioDeviceError {
 struct Inner {
     region_base: *mut u8,
     descriptor: Descriptor,
-    /// Fires on every M→A IRQ. All pending `RecvFut`s and `SendFut`s wake
-    /// and re-check their slots.
-    irq_notify: Arc<Notify>,
+    /// Doorbell wakeups fired on every M→A IRQ. All pending `RecvFut`s and
+    /// `SendFut`s wake and re-check their slots. Populated through
+    /// [`UioDevice::register_doorbell`].
+    notifiers: Notifiers,
 }
 
 // SAFETY: region_base points into a DMA-coherent mmap that outlives `Inner`.
@@ -87,45 +110,137 @@ unsafe impl Sync for Inner {}
 /// Obtain per-channel transports via [`channel_transport`](Self::channel_transport).
 pub struct UioDevice {
     inner: Arc<Inner>,
-    /// Kept alive to preserve the mmap lifetime.
-    _uio: uio::UioDevice,
+    /// Owns the mmap'd resources; also used by [`map_peripheral`] to map the
+    /// doorbell register block.
+    ///
+    /// [`map_peripheral`]: Self::map_peripheral
+    uio: uio::UioDevice,
+    /// Background IRQ listener. Aborted on drop so the task does not outlive
+    /// the device (and the mmap it wakes waiters against).
+    irq_task: tokio::task::JoinHandle<()>,
+}
+
+impl Drop for UioDevice {
+    fn drop(&mut self) {
+        self.irq_task.abort();
+    }
 }
 
 impl UioDevice {
-    /// Open `/dev/uio{uio_num}`, mmap resource 0, parse the descriptor, and
+    /// Open the configured UIO device, mmap `map0`, parse the descriptor, and
     /// start the IRQ listener task.
-    pub fn open(
-        uio_num: usize,
-        num_channels: usize,
-        transfer_size: usize,
-    ) -> Result<Self, UioDeviceError> {
+    ///
+    /// The device index comes from [`config::UIO`] — the `CONSORTIUM_IPC_UIO`
+    /// value injected from the `[ipc]` section of `Consortium.toml` — so it is
+    /// not passed by the caller. Building this crate without that layout is a
+    /// compile error (see the `assert_configured()` guard in `lib.rs`), so by
+    /// the time `open` runs the index is always real.
+    pub fn open(num_channels: usize, transfer_size: usize) -> Result<Self, UioDeviceError> {
+        let uio_num = config::UIO as usize;
         let uio = uio::UioDevice::blocking_new(uio_num)?;
 
-        // map_resource reads the mapping size from sysfs and mmaps resource 0.
-        let region_base = uio.map_resource(0)? as *mut u8;
+        // map_mapping reads the size from sysfs and mmaps `/dev/uioN` at the
+        // map0 offset (the CIPC shared region) in the uio_pdrv_genirq namespace.
+        let region_base = uio.map_mapping(0)? as *mut u8;
 
         // SAFETY: region_base is valid for the lifetime of `uio`; descriptor
         // must already be in Ready state - call mmap::wait_for_ready first.
         let descriptor = unsafe { descriptor_ack(region_base, num_channels, transfer_size) }?;
 
-        let irq_notify = Arc::new(Notify::new());
+        let notifiers: Notifiers = Arc::new(Mutex::new(Vec::new()));
 
         // Open the device fd a second time for async IRQ listening so we do
         // not disturb the mmap held by `uio`.
         let irq_file = File::open(format!("/dev/uio{uio_num}"))?;
         let async_fd = AsyncFd::new(irq_file)?;
 
-        let notify = Arc::clone(&irq_notify);
-        tokio::spawn(async move { irq_loop(async_fd, notify).await });
+        let irq_notifiers = Arc::clone(&notifiers);
+        let irq_task = tokio::spawn(async move { irq_loop(async_fd, irq_notifiers).await });
 
         Ok(Self {
             inner: Arc::new(Inner {
                 region_base,
                 descriptor,
-                irq_notify,
+                notifiers,
             }),
-            _uio: uio,
+            uio,
+            irq_task,
         })
+    }
+
+    /// Map a UIO memory mapping by index and return its virtual base address.
+    ///
+    /// Maps live in the `uio_pdrv_genirq` maps namespace
+    /// (`/sys/class/uio/uioN/maps/mapN`); `map0` is the `CIPC` shared-memory
+    /// region (mapped at [`open`]). The doorbell peripheral register block
+    /// (MU / HSEM / IPCC) is a later map — typically `map1` — described in the
+    /// device tree. Pass the returned base into the matching doorbell
+    /// constructor, e.g. `MuDoorbell::new([base])`, `HsemDoorbell::new(base)`,
+    /// or `IpccDoorbell::new(base)`.
+    ///
+    /// Prefer [`map_peripheral_by_name`] when map ordering is not guaranteed.
+    ///
+    /// # Safety (caller obligation)
+    ///
+    /// The returned address is only valid while this `UioDevice` is alive (it
+    /// owns the mapping). The caller must treat it as MMIO: only the doorbell's
+    /// typed volatile register accesses may dereference it.
+    ///
+    /// [`open`]: Self::open
+    /// [`map_peripheral_by_name`]: Self::map_peripheral_by_name
+    pub fn map_peripheral(&self, index: usize) -> Result<usize, UioDeviceError> {
+        Ok(self.uio.map_mapping(index)? as usize)
+    }
+
+    /// Map a UIO memory mapping by its device-tree name and return its virtual
+    /// base address.
+    ///
+    /// Resolves `name` against `/sys/class/uio/uioN/maps/*/name` (the `reg-names`
+    /// entries from the device tree) so callers do not depend on map ordering,
+    /// then maps it like [`map_peripheral`]. The same MMIO safety obligation
+    /// applies.
+    ///
+    /// [`map_peripheral`]: Self::map_peripheral
+    pub fn map_peripheral_by_name(&self, name: &str) -> Result<usize, UioDeviceError> {
+        let index = self.find_map(name)?;
+        self.map_peripheral(index)
+    }
+
+    /// Find the map index whose name matches `name`, scanning up to
+    /// [`MAX_UIO_MAPS`]. Scanning stops at the first absent map.
+    fn find_map(&self, name: &str) -> Result<usize, UioDeviceError> {
+        for index in 0..MAX_UIO_MAPS {
+            match self.uio.map_name(index) {
+                Ok(found) if found == name => return Ok(index),
+                Ok(_) => continue,
+                // An absent map ends the contiguous map range.
+                Err(_) => break,
+            }
+        }
+        Err(UioDeviceError::MapNotFound(name.to_string()))
+    }
+
+    /// Register a doorbell's [`Notify`] so the IRQ task wakes its `wait()`
+    /// futures on every M→A interrupt.
+    ///
+    /// The std doorbells each own an internal `Notify` and expose it through
+    /// `notifier()`; without this registration their `wait()` futures never
+    /// resolve on the Linux side, because the wakeup arrives as a UIO interrupt
+    /// rather than via polled MMIO. Call this once per doorbell, before the
+    /// first receive:
+    ///
+    /// ```ignore
+    /// let base = dev.map_peripheral(1)?;
+    /// let mu = MuDoorbell::new([base; 8]);
+    /// dev.register_doorbell(mu.notifier());
+    /// let transport = dev.channel_transport(chan, mu, region)?;
+    /// ```
+    pub fn register_doorbell(&self, notifier: Arc<Notify>) {
+        self.inner
+            .notifiers
+            .lock()
+            .expect("notifier list poisoned")
+            .push(notifier);
     }
 
     /// Number of channels declared in the descriptor.
@@ -187,14 +302,18 @@ impl UioDevice {
 
 // ── IRQ background task ───────────────────────────────────────────────────────
 
-async fn irq_loop(async_fd: AsyncFd<File>, notify: Arc<Notify>) {
+async fn irq_loop(async_fd: AsyncFd<File>, notifiers: Notifiers) {
     loop {
+        // UIO protocol: re-arm the interrupt by writing 1, then block until the
+        // kernel reports it readable (an IRQ has fired and been masked).
         if unmask_irq(async_fd.get_ref()).is_err() {
             break;
         }
         match async_fd.readable().await {
             Err(_) => break,
             Ok(mut guard) => {
+                // Consume the 4-byte interrupt count so the fd is no longer
+                // readable; the value itself is unused (edge, not level).
                 let mut count = [0u8; 4];
                 let _ = guard.try_io(|fd| {
                     use std::io::Read;
@@ -203,10 +322,97 @@ async fn irq_loop(async_fd: AsyncFd<File>, notify: Arc<Notify>) {
                 guard.clear_ready();
             }
         }
+        // Fan the interrupt out to every registered doorbell. A poisoned lock
+        // means a registering thread panicked; tear the listener down.
+        if !notify_all(&notifiers) {
+            break;
+        }
+    }
+}
+
+/// Wake every registered doorbell. We do not know which channel fired, so each
+/// doorbell's `wait()` re-checks its own status register; a spurious wake is
+/// harmless. Returns `false` if the notifier list is poisoned.
+fn notify_all(notifiers: &Notifiers) -> bool {
+    let snapshot = match notifiers.lock() {
+        Ok(list) => list.clone(),
+        Err(_) => return false,
+    };
+    for notify in &snapshot {
         notify.notify_waiters();
     }
+    true
 }
 
 fn unmask_irq(f: &File) -> std::io::Result<()> {
     f.try_clone()?.write_all(&1u32.to_ne_bytes())
+}
+
+// ── Tests ─────────────────────────────────────────────────────────────────────
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::time::Duration;
+
+    /// Build a single-threaded runtime with timers enabled. Avoids needing the
+    /// tokio `macros` feature for `#[tokio::test]`.
+    fn runtime() -> tokio::runtime::Runtime {
+        tokio::runtime::Builder::new_current_thread()
+            .enable_time()
+            .build()
+            .expect("build runtime")
+    }
+
+    /// `notify_all` wakes every doorbell registered before the interrupt,
+    /// mirroring `RecvFut` arming its waker (via `Notified::enable`) before the
+    /// M→A IRQ arrives.
+    #[test]
+    fn notify_all_wakes_all_registered_doorbells() {
+        runtime().block_on(async {
+            let notifiers: Notifiers = Arc::new(Mutex::new(Vec::new()));
+            let a = Arc::new(Notify::new());
+            let b = Arc::new(Notify::new());
+            notifiers.lock().unwrap().push(Arc::clone(&a));
+            notifiers.lock().unwrap().push(Arc::clone(&b));
+
+            // Register both wakers before firing, as a pending receiver would.
+            let wait_a = a.notified();
+            let wait_b = b.notified();
+            tokio::pin!(wait_a, wait_b);
+            wait_a.as_mut().enable();
+            wait_b.as_mut().enable();
+
+            assert!(notify_all(&notifiers), "healthy list must report success");
+
+            tokio::time::timeout(Duration::from_secs(1), wait_a)
+                .await
+                .expect("doorbell a should wake");
+            tokio::time::timeout(Duration::from_secs(1), wait_b)
+                .await
+                .expect("doorbell b should wake");
+        });
+    }
+
+    /// An empty registry is a no-op success: an IRQ before any channel is set
+    /// up must not tear the listener down.
+    #[test]
+    fn notify_all_empty_list_is_ok() {
+        let notifiers: Notifiers = Arc::new(Mutex::new(Vec::new()));
+        assert!(notify_all(&notifiers));
+    }
+
+    /// A poisoned registry reports failure so the IRQ loop can stop.
+    #[test]
+    fn notify_all_poisoned_list_fails() {
+        let notifiers: Notifiers = Arc::new(Mutex::new(Vec::new()));
+        let clone = Arc::clone(&notifiers);
+        let _ = std::thread::spawn(move || {
+            let _guard = clone.lock().unwrap();
+            panic!("poison the lock");
+        })
+        .join();
+
+        assert!(!notify_all(&notifiers));
+    }
 }
