@@ -57,7 +57,6 @@ consortium-dbg-defmt = { default-features = false, features = [
 consortium-ipc = { default-features = false, optional = true, path = "../../../../crates/consortium-ipc" }
 consortium-ipc-doorbell-mu = { default-features = false, features = [
   "imx95",
-  "mub",
 ], optional = true, path = "../../../../crates/consortium-ipc-doorbell-mu" }
 consortium-ipc-transport-memory = { default-features = false, optional = true, path = "../../../../crates/consortium-ipc-transport-memory" }
 

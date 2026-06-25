@@ -14,24 +14,64 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! HSEM channel space and validation.
+//!
+//! A channel is a hardware semaphore id, numbered `0..`[`HSEM_CHAN_COUNT`].
+//! Semaphores in [`HSEM_CHAN_OCCUPIED`] are reserved for system/firmware use.
+
+use core::ops::Range;
+
 use consortium_ipc::ChanValidate;
 
 use crate::error::HsemError;
 
-pub struct HsemChanValidate;
+/// Number of hardware semaphores in the HSEM peripheral.
+pub const HSEM_CHAN_COUNT: u8 = 16;
 
-pub const HSEM_SEM_COUNT: u8 = 16;
-pub const HSEM_SEM_RESERVED: u8 = 2; // sem 0 and 1 reserved for system use
+/// Semaphore ids reserved for system/firmware use; not available to user
+/// channels.
+pub const HSEM_CHAN_OCCUPIED: Range<u8> = 0..2;
+
+/// Validates HSEM semaphore ids.
+pub struct HsemChanValidate;
 
 impl ChanValidate for HsemChanValidate {
     type Error = HsemError;
 
     fn validate(id: u8) -> Result<consortium_ipc::Chan, Self::Error> {
-        match id {
-            i if i < HSEM_SEM_RESERVED => Err(HsemError::ChanReserved),
-            i if i >= HSEM_SEM_COUNT => Err(HsemError::ChanOutOfRange),
-            // SAFETY: caller-validated by the match arms above; id is guaranteed to be in the valid range for HSEM semaphores.
-            _ => Ok(unsafe { consortium_ipc::Chan::new_unchecked(id) }),
+        if HSEM_CHAN_OCCUPIED.contains(&id) {
+            Err(HsemError::ChanReserved)
+        } else if id >= HSEM_CHAN_COUNT {
+            Err(HsemError::ChanOutOfRange)
+        } else {
+            // SAFETY: `id` is outside the reserved range and below the count,
+            // so it is a valid HSEM semaphore id.
+            Ok(unsafe { consortium_ipc::Chan::new_unchecked(id) })
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use consortium_ipc::Chan;
+
+    #[test]
+    fn accepts_unreserved_semaphores() {
+        for id in HSEM_CHAN_OCCUPIED.end..HSEM_CHAN_COUNT {
+            assert_eq!(Chan::new::<HsemChanValidate>(id).unwrap().id(), id);
+        }
+    }
+
+    #[test]
+    fn rejects_reserved_and_out_of_range() {
+        assert_eq!(
+            Chan::new::<HsemChanValidate>(0),
+            Err(HsemError::ChanReserved)
+        );
+        assert_eq!(
+            Chan::new::<HsemChanValidate>(HSEM_CHAN_COUNT),
+            Err(HsemError::ChanOutOfRange)
+        );
     }
 }

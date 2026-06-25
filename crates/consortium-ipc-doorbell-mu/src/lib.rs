@@ -15,13 +15,23 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! MU (Messaging Unit) doorbell driver for Consortium IPC.
+//!
+//! A [`MuDoorbell`] drives one MU instance from one processor [`side`], with the
+//! instance number and side selected at the type level (e.g. `MuDoorbell<Primary,
+//! 7>` is the CA55 view of MU7, the i.MX95 CA55 <-> CM7 default route). Its
+//! channels are the four general-purpose interrupt (GI) lines of that instance.
+//!
+//! [`side`]: consortium_ipc::Side
+
+pub mod abstraction;
 pub mod chan;
 pub mod doorbell;
 pub mod error;
 pub mod registers;
 
-pub use chan::MuChanValidate;
-#[cfg(feature = "imx95")]
-pub use chan::{IMX95_CA55_CM7_RX_CHAN, IMX95_CA55_CM7_TX_CHAN};
+pub use abstraction::Mu;
+pub use chan::{MU_CHAN_COUNT, MU_CHAN_OCCUPIED, MU_INSTANCE_COUNT, MuChanValidate};
+pub use consortium_ipc::{Primary, Secondary, Side};
 pub use doorbell::MuDoorbell;
 pub use error::MuError;

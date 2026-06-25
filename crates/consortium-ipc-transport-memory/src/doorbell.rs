@@ -14,15 +14,37 @@ pub trait SharedMemoryTransportDoorbell {
 }
 
 #[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
-impl SharedMemoryTransportDoorbell for hsem::HsemDoorbell {
-    const fn is_hardware_peripheral() -> bool { true }
-    const fn address() -> usize { hsem::HSEM_BASE as usize }
+impl<S: consortium_ipc::Side, const N: usize> SharedMemoryTransportDoorbell
+    for hsem::HsemDoorbell<S, N>
+{
+    fn is_hardware_peripheral() -> bool {
+        true
+    }
+    fn address() -> usize {
+        hsem::registers::base::BASE[N - 1]
+    }
 }
 
 #[cfg(any(feature = "stm32mp21x", feature = "stm32mp23x", feature = "stm32mp25x"))]
-impl SharedMemoryTransportDoorbell for ipcc::IpccDoorbell {
-    const fn is_hardware_peripheral() -> bool { true }
-    const fn address() -> usize { ipcc::base::IPCC_BASE as usize }
+impl<S: consortium_ipc::Side, const N: usize> SharedMemoryTransportDoorbell
+    for ipcc::IpccDoorbell<S, N>
+{
+    fn is_hardware_peripheral() -> bool {
+        true
+    }
+    fn address() -> usize {
+        ipcc::registers::base::BASE[N - 1]
+    }
 }
 
-#[cfg(any(feature = "imx93"))]
+#[cfg(feature = "imx9x")]
+impl<S: consortium_ipc::Side, const N: usize> SharedMemoryTransportDoorbell
+    for mu::MuDoorbell<S, N>
+{
+    fn is_hardware_peripheral() -> bool {
+        true
+    }
+    fn address() -> usize {
+        mu::registers::base::BASE[N - 1]
+    }
+}

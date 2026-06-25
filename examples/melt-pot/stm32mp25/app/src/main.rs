@@ -23,7 +23,7 @@ use consortium_dbg_defmt::config as dbg_config;
 use consortium_dbg_defmt::host::HostRing;
 use consortium_hmi::{Bridge, KioskApp};
 use consortium_ipc::{Chan, Channel, Rx, SramRegion};
-use consortium_ipc_doorbell_hsem::HsemDoorbell;
+use consortium_ipc_doorbell_hsem::{HsemDoorbell, Primary};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, SharedMemoryTransport, config as ipc_config, descriptor_init,
     slot::SLOT_HEADER,
@@ -109,8 +109,9 @@ async fn main() {
     let ch = unsafe { Chan::new_unchecked(IPC_CHAN) };
     // SAFETY: app_desc_base points to the heap-backed IPC region of IPC_REGION_LEN bytes.
     let region = unsafe { SramRegion::new(app_desc_base, IPC_REGION_LEN) };
-    // PROC=1: CA35 interrupt controller view (RM0457 §22, processor IDs 1–3).
-    let doorbell = HsemDoorbell::<1>::new(HSEM_VIRT_BASE);
+    // Primary = core C1: the CA35 interrupt view (RM0457 §22, processor IDs 1–3).
+    // SAFETY: HSEM_VIRT_BASE is the mmap'd virtual base of the HSEM window.
+    let doorbell = unsafe { HsemDoorbell::<Primary, 1>::new(HSEM_VIRT_BASE) };
     // SAFETY: app_desc_base satisfies the descriptor layout invariant above.
     let transport = unsafe { SharedMemoryTransport::new(ch, doorbell, region, app_desc_base) };
     let buf: &'static mut [u8] = Box::leak(Box::new([0u8; MTU]));

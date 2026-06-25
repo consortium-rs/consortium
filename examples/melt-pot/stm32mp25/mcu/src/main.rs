@@ -26,7 +26,7 @@ use consortium_codec::PostcardCodec;
 // calls below land in the CDBG ring described by `[dbg]`. No import is needed —
 // defmt resolves the global logger through the linker.
 use consortium_ipc::{Chan, Channel, SramRegion, Tx};
-use consortium_ipc_doorbell_hsem::HsemDoorbell;
+use consortium_ipc_doorbell_hsem::{HsemDoorbell, Secondary};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, SharedMemoryTransport, config as ipc_config, descriptor_init,
     slot::SLOT_HEADER,
@@ -57,9 +57,9 @@ const M_TO_A_CHAN_OFFSET: usize = M_TO_A_SLOT_PHYS - MCU_DESC_OFFSET;
 //
 // HSEM semaphore 0: CM33 rings → HSEM interrupt on CA35. On the firmware side the
 // HSEM peripheral base is a compile-time constant from the doorbell crate's
-// `stm32mp25` feature, so `HsemDoorbell::new()` takes no address argument.
-// HSEM_PROC is the CM33 notification view (RM0457 processor IDs 1–3; CA35 = 1).
-const HSEM_PROC: u8 = 2;
+// `stm32mp25` feature, so `HsemDoorbell::steal()` takes no address argument.
+// Secondary = core C2: the CM33 notification view (RM0457 processor IDs 1–3;
+// CA35 = C1/Primary).
 const IPC_CHAN: u8 = 0; // doorbell channel = HSEM semaphore index
 
 // ── CDBG debug ring ───────────────────────────────────────────────────────────
@@ -96,7 +96,8 @@ async fn main(_spawner: Spawner) {
     let ch = unsafe { Chan::new_unchecked(IPC_CHAN) };
     // SAFETY: ipc_base covers IPC_REGION_LEN bytes; no aliased Rust reference exists.
     let region = unsafe { SramRegion::new(ipc_base, IPC_REGION_LEN) };
-    let doorbell = HsemDoorbell::<HSEM_PROC>::new();
+    // SAFETY: this is the sole handle to the HSEM peripheral for the CM33 (C2).
+    let doorbell = unsafe { HsemDoorbell::<Secondary, 1>::steal() };
     // SAFETY: mcu_desc_base satisfies the descriptor layout invariant above.
     let transport = unsafe { SharedMemoryTransport::new(ch, doorbell, region, mcu_desc_base) };
     // SAFETY: TX_BUF is only accessed here; this function runs on the single executor thread,

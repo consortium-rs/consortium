@@ -42,7 +42,6 @@ consortium-tee = { default-features = false, features = [
 consortium-ipc = { features = ["std"], path = "../../../../crates/consortium-ipc" }
 consortium-ipc-doorbell-mu = { features = [
   "imx95",
-  "mua",
   "std",
 ], path = "../../../../crates/consortium-ipc-doorbell-mu" }
 consortium-ipc-transport-memory = { path = "../../../../crates/consortium-ipc-transport-memory" }

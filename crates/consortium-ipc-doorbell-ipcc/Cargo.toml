@@ -6,6 +6,8 @@ name              = "consortium-ipc-doorbell-ipcc"
 version.workspace = true
 
 [features]
+default    = ["stm32mp25x"]
+defmt      = ["dep:defmt"]
 std        = ["consortium-ipc/std", "dep:tokio"]
 stm32mp21x = []
 stm32mp23x = []
@@ -15,6 +17,7 @@ stm32mp25x = []
 atomic-waker   = "1.1.2"
 bitfield       = "0.13.2"
 consortium-ipc = { default-features = false, path = "../consortium-ipc" }
+defmt          = { optional = true, version = "1" }
 tokio          = { features = ["rt", "sync"], optional = true, version = "1" }
 
 [lints]

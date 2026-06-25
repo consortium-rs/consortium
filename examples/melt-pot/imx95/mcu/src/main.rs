@@ -26,7 +26,7 @@ use consortium_codec::PostcardCodec;
 // calls below land in the CDBG ring described by `[dbg]`. No import is needed —
 // defmt resolves the global logger through the linker.
 use consortium_ipc::{Chan, Channel, SramRegion, Tx};
-use consortium_ipc_doorbell_mu::{IMX95_CA55_CM7_RX_CHAN, MuDoorbell};
+use consortium_ipc_doorbell_mu::{MuDoorbell, Secondary};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, SharedMemoryTransport, config as ipc_config, descriptor_init,
     slot::SLOT_HEADER,
@@ -55,22 +55,10 @@ const M_TO_A_CHAN_OFFSET: usize = M_TO_A_SLOT_PHYS - MCU_DESC_OFFSET;
 
 // ── MU7 doorbell ─────────────────────────────────────────────────────────────
 //
-// MU7 GI0 (channel 24) is used for CM7 → CA55 signalling.
-// `IMX95_CA55_CM7_RX_CHAN` is channel 24 from the CA55's perspective (its RX),
-// which is the channel CM7 rings to wake the CA55.
-//
-// MU base addresses for i.MX95 (8 instances, MU1 through MU8).
-// PLATFORM: replace with the actual mapped bases for your boot configuration.
-const MU_BASES: [usize; 8] = [
-    0x4442_4000, // MU1
-    0x4442_8000, // MU2
-    0x4442_C000, // MU3
-    0x4443_0000, // MU4
-    0x4443_4000, // MU5
-    0x4443_8000, // MU6
-    0x4443_C000, // MU7  ← CA55 <-> CM7
-    0x4444_0000, // MU8
-];
+// The CA55 <-> CM7 default route is MU7. The CM7 is the side-B (MUB) view, so
+// the doorbell is `MuDoorbell<Secondary, 7>`, constructed via `steal()` from the
+// compile-time MUB base. CM7 -> CA55 signalling uses MU7 GI1 (channel 1).
+const CM7_TO_CA55_CHAN: u8 = 1;
 
 // ── CDBG debug ring ───────────────────────────────────────────────────────────
 //
@@ -103,13 +91,14 @@ async fn main(_spawner: Spawner) {
     // SAFETY: mcu_desc_base covers at least DESC_SIZE bytes of DMA-coherent OCRAM.
     unsafe { descriptor_init(mcu_desc_base, 1, MTU, &[m_to_a_chan]) };
 
-    // IMX95_CA55_CM7_RX_CHAN = 25 = MU7 GI1.  CM7 rings this channel; the CA55
-    // is woken via the MU7 GI1 interrupt and reads the data slot.
-    // SAFETY: IMX95_CA55_CM7_RX_CHAN is a valid MU channel index (25 < 32).
-    let ch = unsafe { Chan::new_unchecked(IMX95_CA55_CM7_RX_CHAN) };
+    // CM7_TO_CA55_CHAN = MU7 GI1.  CM7 rings this channel; the CA55 is woken via
+    // the MU7 GI1 interrupt and reads the data slot.
+    // SAFETY: CM7_TO_CA55_CHAN is a valid MU GI channel index (1 < 4).
+    let ch = unsafe { Chan::new_unchecked(CM7_TO_CA55_CHAN) };
     // SAFETY: ipc_base covers IPC_REGION_LEN bytes; no aliased Rust reference exists.
     let region = unsafe { SramRegion::new(ipc_base, IPC_REGION_LEN) };
-    let doorbell = MuDoorbell::new(MU_BASES);
+    // SAFETY: this is the sole handle to MU7's side-B (MUB) window.
+    let doorbell = unsafe { MuDoorbell::<Secondary, 7>::steal() };
     // SAFETY: mcu_desc_base satisfies the descriptor layout invariant above.
     let transport = unsafe { SharedMemoryTransport::new(ch, doorbell, region, mcu_desc_base) };
     // SAFETY: TX_BUF is only accessed here; this function runs on the single executor thread,

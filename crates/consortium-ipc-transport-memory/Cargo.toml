@@ -26,8 +26,8 @@ default = ["std"]
 doorbell-hsem = ["dep:consortium-ipc-doorbell-hsem"]
 doorbell-ipcc = ["dep:consortium-ipc-doorbell-ipcc"]
 doorbell-mu = ["dep:consortium-ipc-doorbell-mu"]
-imx93 = ["consortium-ipc-doorbell-mu/imx93", "consortium-ipc-doorbell-mu/mua", "imx9x"]
-imx95 = ["consortium-ipc-doorbell-mu/imx95", "consortium-ipc-doorbell-mu/mua", "imx9x"]
+imx93 = ["consortium-ipc-doorbell-mu/imx93", "imx9x"]
+imx95 = ["consortium-ipc-doorbell-mu/imx95", "imx9x"]
 imx9x = ["doorbell-mu"]
 std = [
   "alloc",
@@ -50,8 +50,11 @@ stm32mp25x = [
   "doorbell-hsem",
   "doorbell-ipcc",
 ]
-side-a = ["consortium-ipc-doorbell-mu?/mua"]
-side-b = ["consortium-ipc-doorbell-mu?/mub"]
+# The MU processor side is now selected at the type level (`Primary`/`Secondary`)
+# rather than by a cargo feature; these remain as no-op markers for callers that
+# still toggle them.
+side-a = []
+side-b = []
 
 [dependencies]
 consortium-common            = { default-features = false, path = "../consortium-common" }

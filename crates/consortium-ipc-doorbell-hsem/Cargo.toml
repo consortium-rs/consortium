@@ -22,6 +22,7 @@ name              = "consortium-ipc-doorbell-hsem"
 version.workspace = true
 
 [features]
+defmt     = ["dep:defmt"]
 std       = ["consortium-ipc/std", "dep:tokio"]
 stm32mp23 = []
 stm32mp25 = []
@@ -33,4 +34,5 @@ default   = ["stm32mp25"]
 atomic-waker   = "1.1.2"
 bitfield       = "0.13.2"
 consortium-ipc = { default-features = false, path = "../consortium-ipc" }
+defmt          = { optional = true, version = "1" }
 tokio          = { features = ["rt", "sync"], optional = true, version = "1" }

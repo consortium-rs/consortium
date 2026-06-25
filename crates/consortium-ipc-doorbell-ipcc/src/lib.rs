@@ -22,12 +22,25 @@
 //! This crate uses simplex signaling: [`IpccDoorbell::ring`] sets the local
 //! transmit channel occupied, and [`IpccDoorbell::wait`] waits for the remote
 //! transmit channel to become occupied before clearing it.
+//!
+//! The processor side and IPCC instance are selected at the type level:
+//! [`Primary`] drives processor 1, [`Secondary`] processor 2; `N` is the instance
+//! (`IpccDoorbell<Primary, 1>` is processor 1 on IPCC1). Channels are the 16
+//! IPCC channels.
+//!
+//! [`Primary`]: consortium_ipc::Primary
+//! [`Secondary`]: consortium_ipc::Secondary
 
+pub mod abstraction;
 pub mod chan;
 pub mod doorbell;
 pub mod error;
 pub mod registers;
 
-pub use chan::IpccChanValidate;
-pub use doorbell::IpccDoorbell;
+pub use abstraction::Ipcc;
+pub use chan::{IPCC_CHAN_COUNT, IPCC_CHAN_OCCUPIED, IpccChanValidate};
+pub use consortium_ipc::{Primary, Secondary, Side};
+#[cfg(not(feature = "std"))]
+pub use doorbell::notify_rx_occupied_interrupt;
+pub use doorbell::{IpccDoorbell, IpccWaitFut};
 pub use error::IpccError;

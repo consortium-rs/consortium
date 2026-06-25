@@ -14,376 +14,166 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! Messaging Unit (MU) Register Definitions
-//! Reference: IMX93RM.pdf, Rev 7, Chapter 20
+//! Messaging Unit (MU) hardware description.
 //!
-//! All offsets are **relative to MU instance base address**
-//! Usage: BASE_ADDR + register_offset
+//! Reference: i.MX 95 Reference Manual, MU chapter (offsets match the i.MX 93
+//! RM, Rev 7, Chapter 20). All register offsets are relative to a single MU
+//! instance base address. The side-B (MUB) window of each instance sits one
+//! [`base::LENGTH`] above the side-A (MUA) base, so a single [`base::BASE`]
+//! array plus the window length describes both processor views.
 
-// ============================================================================
-// MU Instance Base Addresses (physical, no_std / bare-metal use only)
-//
-// On A-core (Linux / std), do NOT use these constants directly.  Instead pass
-// the virtual addresses returned by mmap to `MuDoorbell::new()`.
-// ============================================================================
+/// MU instance base addresses and the per-instance register-window length.
+pub mod base {
+    use crate::chan::MU_INSTANCE_COUNT;
 
-/// Physical base addresses for i.MX 95 MU instances (MUA side).
-#[cfg(all(feature = "imx95", feature = "mua"))]
-pub const MU_BASES: [usize; crate::chan::MU_INSTANCE_COUNT] = [
-    0x4422_0000, // MU1
-    0x445B_0000, // MU2
-    0x445D_0000, // MU3
-    0x445F_0000, // MU4
-    0x4461_0000, // MU5
-    0x4463_0000, // MU6
-    0x4243_0000, // MU7
-    0x4273_0000, // MU8
-];
+    /// Side-A (MUA) physical base address of each MU instance, index 0 = MU1.
+    ///
+    /// The side-B (MUB) base of instance `i` is `BASE[i] + LENGTH`.
+    #[cfg(feature = "imx95")]
+    pub const BASE: [usize; MU_INSTANCE_COUNT] = [
+        0x4422_0000, // MU1
+        0x445B_0000, // MU2
+        0x445D_0000, // MU3
+        0x445F_0000, // MU4
+        0x4461_0000, // MU5
+        0x4463_0000, // MU6
+        0x4243_0000, // MU7
+        0x4273_0000, // MU8
+    ];
 
-/// Physical base addresses for i.MX 93 MU instances (MUA side).
-#[cfg(all(not(feature = "imx95"), feature = "imx93", feature = "mua"))]
-pub const MU_BASES: [usize; crate::chan::MU_INSTANCE_COUNT] = [
-    0x4422_0000, // MU1
-    0x4243_0000, // MU2
-];
+    /// Side-A (MUA) physical base address of each MU instance, index 0 = MU1.
+    #[cfg(all(not(feature = "imx95"), feature = "imx93"))]
+    pub const BASE: [usize; MU_INSTANCE_COUNT] = [
+        0x4422_0000, // MU1
+        0x4243_0000, // MU2
+    ];
 
-#[cfg(all(feature = "imx95", not(feature = "mua"), feature = "mub"))]
-pub const MU_BASES: [usize; crate::chan::MU_INSTANCE_COUNT] = [
-    0x4423_0000, // MU1
-    0x445C_0000, // MU2
-    0x445E_0000, // MU3
-    0x4460_0000, // MU4
-    0x4462_0000, // MU5
-    0x4464_0000, // MU6
-    0x4244_0000, // MU7
-    0x4274_0000, // MU8
-];
+    /// Side-A (MUA) physical base address of each MU instance, index 0 = MU1.
+    #[cfg(all(not(feature = "imx95"), not(feature = "imx93"), feature = "imx8mp"))]
+    pub const BASE: [usize; MU_INSTANCE_COUNT] = [
+        0x3022_0000, // MU
+    ];
 
-#[cfg(all(
-    not(feature = "imx95"),
-    feature = "imx93",
-    not(feature = "mua"),
-    feature = "mub"
-))]
-pub const MU_BASES: [usize; crate::chan::MU_INSTANCE_COUNT] = [
-    0x4423_0000, // MU1
-    0x4244_0000, // MU2
-];
+    /// Register-window length of one MU instance, in bytes. Also the offset
+    /// from a side-A (MUA) base to the matching side-B (MUB) base.
+    pub const LENGTH: usize = 0x1_0000;
+}
 
-// ============================================================================
-// MU Side A (MUA) Registers (Relative Offsets)
-// ============================================================================
-#[cfg(feature = "mua")]
-pub mod mua {
-    // Version ID Register
+/// Register offsets relative to a MU instance base address.
+pub mod offsets {
+    /// Version ID register. Reset `0x0309_000F` [`super::reset::VER`].
     pub const VER: u32 = 0x000;
-    // Parameter Register
+    /// Parameter register. Reset `0x0304_0404` [`super::reset::PAR`].
     pub const PAR: u32 = 0x004;
-    // Control Register
+    /// Control register. Reset `0x0`.
     pub const CR: u32 = 0x008;
-    // Status Register
+    /// Status register. Reset `0x0`.
     pub const SR: u32 = 0x00C;
-    // Core Control 0 Register
+    /// Core control 0 register. Reset `0x0000_0014` [`super::reset::CCR0`].
     pub const CCR0: u32 = 0x010;
-    // Core Interrupt Enable 0 Register
+    /// Core interrupt enable 0 register. Reset `0x0`.
     pub const CIER0: u32 = 0x014;
-    // Core Sticky Status 0 Register
+    /// Core sticky status 0 register. Reset `0x0`.
     pub const CSSR0: u32 = 0x018;
-    // Core Status 0 Register
+    /// Core status 0 register. Reset `0x0`.
     #[cfg(feature = "imx95")]
     pub const CSR0: u32 = 0x01C;
 
-    // Flag Control Register
+    /// Flag control register. Reset `0x0`.
     pub const FCR: u32 = 0x100;
-    // Flag Status Register
+    /// Flag status register. Reset `0x0`.
     pub const FSR: u32 = 0x104;
 
-    // General Purpose Interrupt Enable Register
+    /// General-purpose interrupt enable register, bitfield
+    /// [`super::cr::GeneralInterruptRegister`]. Reset `0x0`.
     pub const GIER: u32 = 0x110;
-    // General Purpose Control Register
+    /// General-purpose control register, bitfield
+    /// [`super::cr::GeneralInterruptRegister`]. Reset `0x0`.
     pub const GCR: u32 = 0x114;
-    // General Purpose Status Register
+    /// General-purpose status register, bitfield
+    /// [`super::cr::GeneralInterruptRegister`]. Reset `0x0`.
     pub const GSR: u32 = 0x118;
 
-    // Transmit Control Register
+    /// Transmit control register. Reset `0x0`.
     pub const TCR: u32 = 0x120;
-    // Transmit Status Register
+    /// Transmit status register. Reset `0x0000_000F` [`super::reset::TSR`].
     pub const TSR: u32 = 0x124;
-    // Receive Control Register
+    /// Receive control register. Reset `0x0`.
     pub const RCR: u32 = 0x128;
-    // Receive Status Register
+    /// Receive status register. Reset `0x0`.
     pub const RSR: u32 = 0x12C;
 
-    // Transmit Registers
+    /// Transmit register 0. Reset `0x0`.
     pub const TR0: u32 = 0x200;
+    /// Transmit register 1. Reset `0x0`.
     pub const TR1: u32 = 0x204;
+    /// Transmit register 2. Reset `0x0`.
     pub const TR2: u32 = 0x208;
+    /// Transmit register 3. Reset `0x0`.
     pub const TR3: u32 = 0x20C;
 
-    // Receive Registers
+    /// Receive register 0. Reset `0x0`.
     pub const RR0: u32 = 0x280;
+    /// Receive register 1. Reset `0x0`.
     pub const RR1: u32 = 0x284;
+    /// Receive register 2. Reset `0x0`.
     pub const RR2: u32 = 0x288;
+    /// Receive register 3. Reset `0x0`.
     pub const RR3: u32 = 0x28C;
-
-    pub mod fields {
-        bitfield::bitfield! {
-            /// General-purpose interrupt fields shared by GIER/GCR/GSR.
-            #[derive(Clone, Copy)]
-            pub struct GeneralInterruptRegister(u32);
-            impl Debug;
-            u32;
-            pub gi, set_gi: 3, 0;
-        }
-
-        impl GeneralInterruptRegister {
-            #[inline(always)]
-            pub const fn from_bits(bits: u32) -> Self {
-                Self(bits)
-            }
-
-            #[inline(always)]
-            pub const fn bits(self) -> u32 {
-                self.0
-            }
-
-            #[inline(always)]
-            pub fn contains_gi(self, n: u8) -> bool {
-                self.bits() & gi_bit(n) != 0
-            }
-
-            #[inline(always)]
-            pub fn with_gi_set(mut self, n: u8) -> Self {
-                self.set_gi(self.gi() | gi_bit(n));
-                self
-            }
-
-            #[inline(always)]
-            pub fn with_gi_cleared(mut self, n: u8) -> Self {
-                self.set_gi(self.gi() & !gi_bit(n));
-                self
-            }
-        }
-
-        // CR
-        pub const MU_MUR: u32 = 1 << 0;
-        pub const MU_MURIE: u32 = 1 << 1;
-
-        // SR
-        pub const MU_MURS: u32 = 1 << 0;
-        pub const MU_MURIP: u32 = 1 << 1;
-        pub const MU_EP: u32 = 1 << 2;
-        pub const MU_FUP: u32 = 1 << 3;
-        pub const MU_GIRP: u32 = 1 << 4;
-        pub const MU_TEP: u32 = 1 << 5;
-        pub const MU_RFP: u32 = 1 << 6;
-
-        // CCR0
-        pub const MU_NMI: u32 = 1 << 0;
-        pub const MU_HR: u32 = 1 << 1;
-        pub const MU_HRM: u32 = 1 << 2;
-        pub const MU_CLKE: u32 = 1 << 3;
-        pub const MU_RSTH: u32 = 1 << 4;
-        pub const MU_BOOT_MASK: u32 = 0x3 << 5;
-
-        // GIER - enable general-purpose interrupt n (n = 0..3)
-        pub const fn gier_gie(n: u8) -> u32 {
-            1 << n
-        }
-        // GCR - set general-purpose interrupt request n (sender side, n = 0..3)
-        pub const fn gcr_gir(n: u8) -> u32 {
-            1 << n
-        }
-        // GSR - general-purpose interrupt pending n (receiver side, W1C, n = 0..3)
-        pub const fn gsr_gip(n: u8) -> u32 {
-            1 << n
-        }
-
-        pub const fn gi_bit(n: u8) -> u32 {
-            1 << n
-        }
-
-        pub const fn gi_write_one(n: u8) -> GeneralInterruptRegister {
-            GeneralInterruptRegister::from_bits(gi_bit(n))
-        }
-    }
-
-    /// Number of general-purpose interrupt channels per MU instance.
-    pub const GI_COUNT: usize = 4;
 }
 
-// ============================================================================
-// MU Side B (MUB) Registers (Relative Offsets)
-// ============================================================================
-#[cfg(feature = "mub")]
-pub mod mub {
-    // Version ID Register
-    pub const VER: u32 = 0x000;
-    // Parameter Register
-    pub const PAR: u32 = 0x004;
-    // Control Register
-    pub const CR: u32 = 0x008;
-    // Status Register
-    pub const SR: u32 = 0x00C;
-    // Core Control 0 Register
-    pub const CCR0: u32 = 0x010;
-    // Core Interrupt Enable 0 Register
-    pub const CIER0: u32 = 0x014;
-    // Core Sticky Status 0 Register
-    pub const CSSR0: u32 = 0x018;
-    // Core Status 0 Register
-    #[cfg(feature = "imx95")]
-    pub const CSR0: u32 = 0x01C;
-
-    // Flag Control Register
-    pub const FCR: u32 = 0x100;
-    // Flag Status Register
-    pub const FSR: u32 = 0x104;
-
-    // General Purpose Interrupt Enable Register
-    pub const GIER: u32 = 0x110;
-    // General Purpose Control Register
-    pub const GCR: u32 = 0x114;
-    // General Purpose Status Register
-    pub const GSR: u32 = 0x118;
-
-    // Transmit Control Register
-    pub const TCR: u32 = 0x120;
-    // Transmit Status Register
-    pub const TSR: u32 = 0x124;
-    // Receive Control Register
-    pub const RCR: u32 = 0x128;
-    // Receive Status Register
-    pub const RSR: u32 = 0x12C;
-
-    // Transmit Registers
-    pub const TR0: u32 = 0x200;
-    pub const TR1: u32 = 0x204;
-    pub const TR2: u32 = 0x208;
-    pub const TR3: u32 = 0x20C;
-
-    // Receive Registers
-    pub const RR0: u32 = 0x280;
-    pub const RR1: u32 = 0x284;
-    pub const RR2: u32 = 0x288;
-    pub const RR3: u32 = 0x28C;
-
-    pub mod fields {
-        bitfield::bitfield! {
-            /// General-purpose interrupt fields shared by GIER/GCR/GSR.
-            #[derive(Clone, Copy)]
-            pub struct GeneralInterruptRegister(u32);
-            impl Debug;
-            u32;
-            pub gi, set_gi: 3, 0;
-        }
-
-        impl GeneralInterruptRegister {
-            #[inline(always)]
-            pub const fn from_bits(bits: u32) -> Self {
-                Self(bits)
-            }
-
-            #[inline(always)]
-            pub const fn bits(self) -> u32 {
-                self.0
-            }
-
-            #[inline(always)]
-            pub fn contains_gi(self, n: u8) -> bool {
-                self.bits() & gi_bit(n) != 0
-            }
-
-            #[inline(always)]
-            pub fn with_gi_set(mut self, n: u8) -> Self {
-                self.set_gi(self.gi() | gi_bit(n));
-                self
-            }
-
-            #[inline(always)]
-            pub fn with_gi_cleared(mut self, n: u8) -> Self {
-                self.set_gi(self.gi() & !gi_bit(n));
-                self
-            }
-        }
-
-        // CR
-        pub const MU_MUR: u32 = 1 << 0;
-        pub const MU_MURIE: u32 = 1 << 1;
-
-        // SR
-        pub const MU_MURS: u32 = 1 << 0;
-        pub const MU_MURIP: u32 = 1 << 1;
-        pub const MU_EP: u32 = 1 << 2;
-        pub const MU_FUP: u32 = 1 << 3;
-        pub const MU_GIRP: u32 = 1 << 4;
-        pub const MU_TEP: u32 = 1 << 5;
-        pub const MU_RFP: u32 = 1 << 6;
-
-        // CCR0
-        pub const MU_NMI: u32 = 1 << 0;
-        pub const MU_HR: u32 = 1 << 1;
-        pub const MU_HRM: u32 = 1 << 2;
-        pub const MU_CLKE: u32 = 1 << 3;
-        pub const MU_RSTH: u32 = 1 << 4;
-        pub const MU_BOOT_MASK: u32 = 0x3 << 5;
-
-        // GIER - enable general-purpose interrupt n (n = 0..3)
-        pub const fn gier_gie(n: u8) -> u32 {
-            1 << n
-        }
-        // GCR - set general-purpose interrupt request n (sender side, n = 0..3)
-        pub const fn gcr_gir(n: u8) -> u32 {
-            1 << n
-        }
-        // GSR - general-purpose interrupt pending n (receiver side, W1C, n = 0..3)
-        pub const fn gsr_gip(n: u8) -> u32 {
-            1 << n
-        }
-
-        pub const fn gi_bit(n: u8) -> u32 {
-            1 << n
-        }
-
-        pub const fn gi_write_one(n: u8) -> GeneralInterruptRegister {
-            GeneralInterruptRegister::from_bits(gi_bit(n))
-        }
+/// Register bitfields.
+pub mod cr {
+    bitfield::bitfield! {
+        /// General-purpose interrupt bits shared by `GIER`, `GCR` and `GSR`,
+        /// registers [`super::offsets::GIER`], [`super::offsets::GCR`] and
+        /// [`super::offsets::GSR`]. One bit per GI channel (`0..4`).
+        #[derive(Clone, Copy)]
+        #[cfg_attr(feature = "defmt", derive(defmt::Format))]
+        pub struct GeneralInterruptRegister(u32);
+        impl Debug;
+        u32;
+        pub gi, set_gi: 3, 0;
     }
 
-    /// Number of general-purpose interrupt channels per MU instance.
-    pub const GI_COUNT: usize = 4;
+    impl GeneralInterruptRegister {
+        /// Wraps a raw register word read from MMIO.
+        #[inline(always)]
+        pub const fn from_bits(bits: u32) -> Self {
+            Self(bits)
+        }
+
+        /// Returns the raw register word for writing back to MMIO.
+        #[inline(always)]
+        pub const fn bits(self) -> u32 {
+            self.0
+        }
+    }
 }
 
-#[cfg(feature = "mua")]
-pub use self::mua as side;
-#[cfg(all(not(feature = "mua"), feature = "mub"))]
-pub use self::mub as side;
-
-// ============================================================================
-// Reset Values (TRM Verified)
-// ============================================================================
+/// Reset values for registers whose reset state is non-zero.
 pub mod reset {
+    /// Reset value of [`super::offsets::VER`].
     pub const VER: u32 = 0x0309_000F;
+    /// Reset value of [`super::offsets::PAR`].
     pub const PAR: u32 = 0x0304_0404;
-    pub const CR: u32 = 0x0000_0000;
+    /// Reset value of [`super::offsets::CCR0`].
     pub const CCR0: u32 = 0x0000_0014;
-    pub const CIER0: u32 = 0x0000_0000;
-    pub const CSSR0: u32 = 0x0000_0000;
-    pub const FCR: u32 = 0x0000_0000;
-    pub const FSR: u32 = 0x0000_0000;
-    pub const GIER: u32 = 0x0000_0000;
-    pub const GCR: u32 = 0x0000_0000;
-    pub const GSR: u32 = 0x0000_0000;
-    pub const TCR: u32 = 0x0000_0000;
+    /// Reset value of [`super::offsets::TSR`].
     pub const TSR: u32 = 0x0000_000F;
-    pub const RCR: u32 = 0x0000_0000;
-    pub const RSR: u32 = 0x0000_0000;
-    pub const TR: u32 = 0x0000_0000;
-    pub const RR: u32 = 0x0000_0000;
 }
 
-// ============================================================================
-// MU Parameters
-// ============================================================================
-pub const TR_COUNT: usize = 4;
-pub const RR_COUNT: usize = 4;
+/// Interrupt line numbers for each MU instance's general-purpose interrupt.
+pub mod interrupts {
+    /// GIC SPI numbers of the MU general-purpose interrupts, index 0 = MU1.
+    ///
+    /// Not yet populated; routing is board- and SoC-specific. Fill in from the
+    /// SoC interrupt map when wiring the A-core (GIC) side.
+    pub const GIC: Option<&[u32]> = None;
+
+    /// NVIC IRQ numbers of the MU general-purpose interrupts, index 0 = MU1.
+    ///
+    /// Not yet populated; routing is board- and SoC-specific. Fill in from the
+    /// SoC interrupt map when wiring the M-core (NVIC) side.
+    pub const NVIC: Option<&[u32]> = None;
+}
