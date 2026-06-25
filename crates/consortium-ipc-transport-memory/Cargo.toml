@@ -21,19 +21,50 @@ name              = "consortium-ipc-transport-memory"
 version.workspace = true
 
 [features]
-alloc   = ["consortium-ipc/alloc"]
+alloc = ["consortium-ipc/alloc"]
 default = ["std"]
-std     = ["alloc", "dep:tokio", "dep:uio"]
+doorbell-hsem = ["dep:consortium-ipc-doorbell-hsem"]
+doorbell-ipcc = ["dep:consortium-ipc-doorbell-ipcc"]
+doorbell-mu = ["dep:consortium-ipc-doorbell-mu"]
+imx93 = ["consortium-ipc-doorbell-mu/imx93", "consortium-ipc-doorbell-mu/mua", "imx9x"]
+imx95 = ["consortium-ipc-doorbell-mu/imx95", "consortium-ipc-doorbell-mu/mua", "imx9x"]
+imx9x = ["doorbell-mu"]
+std = [
+  "alloc",
+  "consortium-ipc-doorbell-hsem?/std",
+  "consortium-ipc-doorbell-ipcc?/std",
+  "consortium-ipc-doorbell-mu?/std",
+  "dep:tokio",
+  "dep:uio",
+]
+stm32mp21x = ["consortium-ipc-doorbell-ipcc/stm32mp21x", "doorbell-ipcc"]
+stm32mp23x = [
+  "consortium-ipc-doorbell-hsem/stm32mp23",
+  "consortium-ipc-doorbell-ipcc/stm32mp23x",
+  "doorbell-hsem",
+  "doorbell-ipcc",
+]
+stm32mp25x = [
+  "consortium-ipc-doorbell-hsem/stm32mp25",
+  "consortium-ipc-doorbell-ipcc/stm32mp25x",
+  "doorbell-hsem",
+  "doorbell-ipcc",
+]
+side-a = ["consortium-ipc-doorbell-mu?/mua"]
+side-b = ["consortium-ipc-doorbell-mu?/mub"]
 
 [dependencies]
-consortium-common = { default-features = false, path = "../consortium-common" }
-consortium-ipc    = { default-features = false, path = "../consortium-ipc" }
-crc32fast         = { default-features = false, version = "1.5.0" }
-num_enum          = { default-features = false, version = "0.7.3" }
-pin-project       = { version = "1.1.11" }
-thiserror         = { default-features = false, version = "2.0" }
-tokio             = { features = ["net", "rt", "sync"], optional = true, version = "1" }
-uio               = { optional = true, version = "0.5.2" }
+consortium-common            = { default-features = false, path = "../consortium-common" }
+consortium-ipc               = { default-features = false, path = "../consortium-ipc" }
+consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem" }
+consortium-ipc-doorbell-ipcc = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-ipcc" }
+consortium-ipc-doorbell-mu   = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu" }
+crc32fast                    = { default-features = false, version = "1.5.0" }
+num_enum                     = { default-features = false, version = "0.7.3" }
+pin-project                  = { version = "1.1.11" }
+thiserror                    = { default-features = false, version = "2.0" }
+tokio                        = { features = ["net", "rt", "sync"], optional = true, version = "1" }
+uio                          = { optional = true, version = "0.5.2" }
 
 [dev-dependencies]
 atomic-waker = "1.1.2"

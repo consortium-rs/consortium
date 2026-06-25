@@ -132,9 +132,10 @@ impl UioDevice {
     ///
     /// The device index comes from [`config::UIO`] — the `CONSORTIUM_IPC_UIO`
     /// value injected from the `[ipc]` section of `Consortium.toml` — so it is
-    /// not passed by the caller. Building this crate without that layout is a
-    /// compile error (see the `assert_configured()` guard in `lib.rs`), so by
-    /// the time `open` runs the index is always real.
+    /// not passed by the caller. Building this crate with `ipc-shm` but without
+    /// that UIO value is a compile error (see the guard in `lib.rs`), so by the
+    /// time `open` runs the index is always real. The mapped address comes from
+    /// mmap, not from `CONSORTIUM_IPC_BASE`.
     pub fn open(num_channels: usize, transfer_size: usize) -> Result<Self, UioDeviceError> {
         let uio_num = config::UIO as usize;
         let uio = uio::UioDevice::blocking_new(uio_num)?;
