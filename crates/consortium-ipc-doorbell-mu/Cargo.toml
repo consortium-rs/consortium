@@ -22,20 +22,21 @@ name              = "consortium-ipc-doorbell-mu"
 version.workspace = true
 
 [features]
-# Chip selection — choose exactly one. Defaults to imx95/MUA for the current
+# Chip selection — choose exactly one. Defaults to imx95 for the current
 # CA55-side default. Enabling multiple chip features is a compile error.
-default = ["imx95", "mua"]
+# The processor side (MUA/MUB) is selected at the type level via `Side`,
+# not by a feature.
+default = ["imx95"]
 imx8mp  = []               # 1 MU instance (i.MX 8M Plus)
 imx93   = []               # 2 MU instances (i.MX 93)
 imx95   = []               # 8 MU instances (i.MX 95)
 
-mua = []
-mub = []
-
-std = ["consortium-ipc/std", "dep:tokio"]
+defmt = ["dep:defmt"]
+std   = ["consortium-ipc/std", "dep:tokio"]
 
 [dependencies]
 atomic-waker   = "1.1.2"
 bitfield       = "0.13.2"
 consortium-ipc = { default-features = false, path = "../consortium-ipc" }
+defmt          = { optional = true, version = "1" }
 tokio          = { features = ["rt", "sync"], optional = true, version = "1" }

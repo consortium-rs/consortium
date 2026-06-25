@@ -14,237 +14,119 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! MU general-purpose-interrupt doorbell.
+//!
+//! [`MuDoorbell`] wraps a single-instance [`Mu`] HAL handle and implements
+//! [`Doorbell`] over its GI channels:
+//!
+//! - [`ring`](Doorbell::ring) sets `GCR[GIRn]`, which the hardware reflects to
+//!   `GSR[GIPn]` on the remote side and raises its GI interrupt when armed.
+//! - [`wait`](Doorbell::wait) arms `GIER[GIEn]`, then resolves once `GSR[GIPn]`
+//!   is observed, acknowledging it with a write-1-to-clear.
+//! - [`pending`](Doorbell::pending) reads `GSR[GIPn]` non-destructively.
+
 use core::{
     pin::Pin,
     sync::atomic::{Ordering, compiler_fence},
     task::{Context, Poll},
 };
 
-use consortium_ipc::{Chan, Doorbell};
+use consortium_ipc::{Chan, Doorbell, Side};
 
-use crate::{
-    chan::{MU_CHAN_COUNT, MU_INSTANCE_COUNT, MuChanInfo},
-    error::MuError,
-    registers::side::{self, fields::GeneralInterruptRegister},
-};
+use crate::{abstraction::Mu, chan::MU_CHAN_COUNT, error::MuError};
 
-// Default (no_std / bare-metal) uses compile-time base addresses for the selected chip.
-#[cfg(not(feature = "std"))]
-use crate::registers::MU_BASES;
-
-// ── Struct ────────────────────────────────────────────────────────────────────
-
-/// MU-backed doorbell using the general-purpose interrupt (GI) mechanism.
-///
-/// Signaling uses the GCR/GSR/GIER register group:
-/// - [`ring()`] sets `GCR[GIRn]` on the local side; the hardware propagates
-///   this to `GSR[GIPn]` on the remote side and fires their GI interrupt if
-///   `GIER[GIEn]` is enabled.
-/// - [`wait()`] enables `GIER[GIEn]`, then polls `GSR[GIPn]` until the remote
-///   core has set it. Clears the pending bit by writing 1 to `GSR[GIPn]`
-///   (write-1-to-clear), which also clears `GCR[GIRn]` on the sender.
-/// - [`pending()`] reads `GSR[GIPn]` non-destructively.
-///
-/// **Base addresses** must match the side being accessed: MUA for the A-core
-/// (Linux), MUB for the M-core (bare-metal).  On Linux the addresses must be
-/// virtual (mmap'd); on bare-metal they may be the physical constants from
-/// [`crate::registers`].  Consult your SoC's Reference Manual for values.
-///
-/// The number of MU instances is selected at compile time via a chip feature:
-///
-/// | Feature | Instances | `base_addrs` size |
-/// |---------|-----------|-------------------|
-/// | `imx8mp` |     1    | `[u32; 1]`        |
-/// | `imx93` |     2     | `[u32; 2]`        |
-/// | `imx95` |     8     | `[u32; 8]`        |
-///
-/// On i.MX95 this repository's default CA55 <-> CM7 IPC route is MU7, using
-/// flat zero-based channels [`crate::chan::IMX95_CA55_CM7_TX_CHAN`] (24, MU7 GI0)
-/// and [`crate::chan::IMX95_CA55_CM7_RX_CHAN`] (25, MU7 GI1). MU1-4 connect
-/// CA55 <-> CM33, MU5 connects CM7 <-> CM33, MU6 connects NONE <-> CM33, and
-/// MU7-8 connect CA55 <-> CM7.
-///
-/// # Difference from HSEM
-///
-/// | Aspect              | HSEM                              | MU (GI)                                  |
-/// |---------------------|-----------------------------------|------------------------------------------|
-/// | Signal mechanism    | 1-step read-lock on semaphore reg | Set `GCR[GIRn]` (idempotent flag)        |
-/// | `ring()` guard      | LOCKID ownership (MASTERID)       | None - GCR set is always valid           |
-/// | Interrupt clear     | Dedicated ICR (write-1-to-clear)  | Write 1 to `GSR[GIPn]` (W1C)            |
-/// | Interrupt enable    | IER bit per semaphore             | `GIER[GIEn]` bit per channel             |
-/// | Interrupt status    | MISR (masked)                     | `GSR[GIPn]` (non-destructive read)       |
-/// | IRQ handlers        | `HSEM_IRQHandler`                 | `MU1_IRQHandler` … `MUN_IRQHandler`     |
-///
-/// [`ring()`]: Doorbell::ring
-/// [`wait()`]: Doorbell::wait
-/// [`pending()`]: Doorbell::pending
-pub struct MuDoorbell {
-    /// Base addresses for each MU instance, ordered by instance index
-    /// (index 0 = MU1, index 1 = MU2, …).  Size is determined by the
-    /// active chip feature (`imx93` = 2, `imx95` = 8).
-    base_addrs: [usize; MU_INSTANCE_COUNT],
+/// MU-backed doorbell for instance `N` (1-based), processor side `S`.
+pub struct MuDoorbell<S: Side, const N: usize> {
+    mu: Mu<S, N>,
     #[cfg(feature = "std")]
     notify: std::sync::Arc<tokio::sync::Notify>,
 }
 
-// ── Register helpers ──────────────────────────────────────────────────────────
-
-impl MuDoorbell {
-    /// Look up the base address for the MU instance that owns channel `ch`.
+impl<S: Side, const N: usize> MuDoorbell<S, N> {
     #[inline]
-    fn base_for(base_addrs: &[usize], ch: Chan) -> usize {
-        base_addrs[ch.mu_id() as usize]
-    }
-
-    /// Address of GCR (General-purpose Control Register).
-    #[inline]
-    fn gcr_addr(base: usize) -> *mut u32 {
-        (base + side::GCR as usize) as *mut u32
-    }
-
-    /// Address of GSR (General-purpose Status Register).
-    #[inline]
-    fn gsr_addr(base: usize) -> *mut u32 {
-        (base + side::GSR as usize) as *mut u32
-    }
-
-    /// Address of GIER (General-purpose Interrupt Enable Register).
-    #[inline]
-    fn gier_addr(base: usize) -> *mut u32 {
-        (base + side::GIER as usize) as *mut u32
-    }
-
-    /// Set `GCR[GIRn]` (bit `gi_idx`) to signal the remote core.
-    ///
-    /// This sets `GSR[GIPn]` on the remote side and fires their GI interrupt
-    /// if `GIER[GIEn]` is enabled. Setting the bit again while already pending
-    /// is idempotent - the remote will see one pending signal.
-    ///
-    /// # Safety
-    /// Caller must ensure `base` is a valid mapped MU peripheral address and
-    /// `gi_idx` < 4.
-    #[inline]
-    pub unsafe fn set_gcr_gir(base: usize, gi_idx: u8) {
-        let gcr = Self::gcr_addr(base);
-        // SAFETY: caller guarantees.
-        let reg =
-            GeneralInterruptRegister::from_bits(unsafe { gcr.read_volatile() }).with_gi_set(gi_idx);
-        // SAFETY: caller guarantees.
-        unsafe { gcr.write_volatile(reg.bits()) };
-    }
-
-    /// Returns `true` if `GSR[GIPn]` (bit `gi_idx`) is set - the remote core
-    /// has signaled this channel and the interrupt is pending.
-    ///
-    /// Non-destructive: reading GSR does not clear the pending bit.
-    #[inline]
-    pub fn gsr_pending(base: usize, gi_idx: u8) -> bool {
-        // SAFETY: base is a valid mapped MU peripheral address; volatile read.
-        let reg =
-            GeneralInterruptRegister::from_bits(unsafe { Self::gsr_addr(base).read_volatile() });
-        reg.contains_gi(gi_idx)
-    }
-
-    /// Clear `GSR[GIPn]` (bit `gi_idx`) by writing 1 (write-1-to-clear).
-    ///
-    /// Also clears `GCR[GIRn]` on the sender side. Only the target bit is
-    /// written - other pending GI channels are unaffected.
-    ///
-    /// # Safety
-    /// Caller must ensure `base` is valid, `gi_idx` < 4, and `GSR[GIPn]` is
-    /// actually set (i.e. call only after [`gsr_pending`] returns `true`).
-    ///
-    /// [`gsr_pending`]: Self::gsr_pending
-    #[inline]
-    pub unsafe fn clear_gsr_gip(base: usize, gi_idx: u8) {
-        // W1C: write only the target bit; do NOT read-modify-write.
-        let reg = GeneralInterruptRegister::from_bits(side::fields::gi_bit(gi_idx));
-        // SAFETY: caller guarantees.
-        unsafe { Self::gsr_addr(base).write_volatile(reg.bits()) };
-    }
-
-    /// Enable `GIER[GIEn]` (bit `gi_idx`) - arm the GI interrupt for this channel.
-    ///
-    /// # Safety
-    /// Caller must ensure `base` is valid and not racing other GIER writes.
-    #[inline]
-    pub unsafe fn enable_gi_interrupt(base: usize, gi_idx: u8) {
-        let gier = Self::gier_addr(base);
-        // SAFETY: caller guarantees.
-        let reg = GeneralInterruptRegister::from_bits(unsafe { gier.read_volatile() })
-            .with_gi_set(gi_idx);
-        // SAFETY: caller guarantees.
-        unsafe { gier.write_volatile(reg.bits()) };
-    }
-
-    /// Disable `GIER[GIEn]` (bit `gi_idx`).
-    ///
-    /// # Safety
-    /// Caller must ensure `base` is valid and not racing other GIER writes.
-    #[inline]
-    pub unsafe fn disable_gi_interrupt(base: usize, gi_idx: u8) {
-        let gier = Self::gier_addr(base);
-        // SAFETY: caller guarantees.
-        let reg = GeneralInterruptRegister::from_bits(unsafe { gier.read_volatile() })
-            .with_gi_cleared(gi_idx);
-        // SAFETY: caller guarantees.
-        unsafe { gier.write_volatile(reg.bits()) };
-    }
-}
-
-// ── no_std (M-core / bare-metal) ─────────────────────────────────────────────
-
-/// `Default` uses the compile-time physical base addresses for the selected
-/// no-std chip/side feature. Use `MuDoorbell::new(bases)` to override them.
-#[cfg(not(feature = "std"))]
-impl Default for MuDoorbell {
-    fn default() -> Self {
-        Self::new(MU_BASES)
+    fn gi_of(ch: Chan) -> Result<u8, MuError> {
+        let gi = ch.id();
+        if gi >= MU_CHAN_COUNT {
+            Err(MuError::ChanOutOfRange)
+        } else {
+            Ok(gi)
+        }
     }
 }
 
 #[cfg(not(feature = "std"))]
-impl MuDoorbell {
-    /// Create a doorbell from an array of MUB (Side B) base addresses, one per
-    /// MU instance.  The array length is determined by the chip feature:
-    /// `[usize; 1]` for `imx8mp`, `[usize; 2]` for `imx93`, or
-    /// `[usize; 8]` for `imx95`.
-    pub const fn new(bases: [usize; MU_INSTANCE_COUNT]) -> Self {
-        Self { base_addrs: bases }
+impl<const N: usize> MuDoorbell<consortium_ipc::Primary, N> {
+    /// Create a doorbell over the side-A (MUA) view of MU instance `N` using
+    /// the compile-time base from [`crate::registers::base`].
+    ///
+    /// # Safety
+    /// Grants raw MU register access; the caller must ensure no conflicting
+    /// handle to the same instance/side exists.
+    pub const unsafe fn steal() -> Self {
+        Self {
+            // SAFETY: forwarded obligation from this constructor.
+            mu: unsafe { Mu::<consortium_ipc::Primary, N>::steal() },
+        }
     }
 }
 
 #[cfg(not(feature = "std"))]
-impl Doorbell for MuDoorbell {
+impl<const N: usize> MuDoorbell<consortium_ipc::Secondary, N> {
+    /// Create a doorbell over the side-B (MUB) view of MU instance `N` using
+    /// the compile-time base from [`crate::registers::base`].
+    ///
+    /// # Safety
+    /// Grants raw MU register access; the caller must ensure no conflicting
+    /// handle to the same instance/side exists.
+    pub const unsafe fn steal() -> Self {
+        Self {
+            // SAFETY: forwarded obligation from this constructor.
+            mu: unsafe { Mu::<consortium_ipc::Secondary, N>::steal() },
+        }
+    }
+}
+
+#[cfg(feature = "std")]
+impl<S: Side, const N: usize> MuDoorbell<S, N> {
+    /// Create a doorbell over MU instance `N`, side `S`, from an `mmap`'d
+    /// virtual base address.
+    ///
+    /// # Safety
+    /// `base` must be the mapped virtual base of MU instance `N` for the side
+    /// matching `S`. Passing a raw physical address is undefined behaviour on
+    /// Linux.
+    pub unsafe fn new(base: usize) -> Self {
+        Self {
+            // SAFETY: forwarded obligation; `base` is the mapped MU window.
+            mu: unsafe { Mu::<S, N>::new(base) },
+            notify: std::sync::Arc::new(tokio::sync::Notify::new()),
+        }
+    }
+
+    /// Returns a cloned `Arc` to the internal `Notify`. Pass it to the UIO IRQ
+    /// loop so it can wake waiting [`wait`](Doorbell::wait) futures via
+    /// `notify_waiters()` when this instance's GI interrupt fires.
+    pub fn notifier(&self) -> std::sync::Arc<tokio::sync::Notify> {
+        std::sync::Arc::clone(&self.notify)
+    }
+}
+
+impl<S: Side, const N: usize> Doorbell for MuDoorbell<S, N> {
     type Error = MuError;
     type WaitFut<'a>
-        = MuWaitFut<'a>
+        = MuWaitFut<'a, S, N>
     where
         Self: 'a;
 
-    /// Signal the remote core by setting `GCR[GIRn]`.
-    ///
-    /// The hardware propagates this to `GSR[GIPn]` on the remote side and
-    /// fires their GI interrupt if `GIER[GIEn]` is enabled.  Setting the bit
-    /// while the previous signal is still pending is idempotent - the remote
-    /// will see one pending signal regardless.
     fn ring(&self, ch: Chan) -> Result<(), MuError> {
-        if ch.id() >= MU_CHAN_COUNT {
-            return Err(MuError::ChanOutOfRange);
-        }
+        let gi = Self::gi_of(ch)?;
 
-        let base = Self::base_for(&self.base_addrs, ch);
-        let gi_idx = ch.gi_id();
-
-        // Ensure preceding slot writes are visible to the remote before
-        // the GCR write that signals it.
+        // Ensure preceding slot writes are visible to the remote before the
+        // GCR write that signals it.
         compiler_fence(Ordering::Release);
 
-        // Set GCR[GIRn]. This sets GSR[GIPn] on the remote side and fires
-        // their GI interrupt if GIER[GIEn] is enabled.
-        // SAFETY: base is a valid MU peripheral address; gi_idx < 4.
-        unsafe { Self::set_gcr_gir(base, gi_idx) };
-
+        // SAFETY: `gi` is validated `< 4`; ring is the sole writer of GCR here.
+        unsafe { self.mu.request_gi(gi) };
         Ok(())
     }
 
@@ -256,112 +138,129 @@ impl Doorbell for MuDoorbell {
     }
 
     fn pending(&self, ch: Chan) -> bool {
-        if ch.id() >= MU_CHAN_COUNT {
-            return false;
+        match Self::gi_of(ch) {
+            Ok(gi) => self.mu.gi_pending(gi),
+            Err(_) => false,
         }
-        let base = Self::base_for(&self.base_addrs, ch);
-        Self::gsr_pending(base, ch.gi_id())
     }
 }
 
-// ─── MuWaitFut (no_std) ───────────────────────────────────────────────────────
+// ── Wait future ───────────────────────────────────────────────────────────────
 
-/// Future returned by [`MuDoorbell::wait()`] on the M-core (no_std) path.
+/// Future returned by [`MuDoorbell::wait`].
 ///
-/// State machine:
-///
-///   Init → enable `GIER[GIEn]` → register waker → poll `GSR[GIPn]`
-///        ↓ `GSR[GIPn]` set
-///   write 1 to `GSR[GIPn]` (W1C) → disable `GIER[GIEn]` → compiler_fence(Acquire) → return Ok(ch)
-///
-/// `GSR[GIPn]` is checked eagerly; if already set on the first poll the future
-/// completes without waiting for an interrupt.
-#[cfg(not(feature = "std"))]
-pub struct MuWaitFut<'a> {
-    doorbell: &'a MuDoorbell,
+/// Arms `GIER[GIEn]` on the first poll, then completes once `GSR[GIPn]` is
+/// observed, acknowledging it (W1C) and disarming the interrupt. On `no_std`
+/// the per-instance `AtomicWaker` is woken from `MUx_IRQHandler`; on `std` the
+/// doorbell's `Notify` is driven by the UIO IRQ loop.
+pub struct MuWaitFut<'a, S: Side, const N: usize> {
+    doorbell: &'a MuDoorbell<S, N>,
     ch: Chan,
-    interrupt_armed: bool,
+    armed: bool,
+    #[cfg(feature = "std")]
+    notified: Option<tokio::sync::futures::Notified<'static>>,
 }
 
-#[cfg(not(feature = "std"))]
-impl<'a> MuWaitFut<'a> {
-    fn new(doorbell: &'a MuDoorbell, ch: Chan) -> Self {
+impl<'a, S: Side, const N: usize> MuWaitFut<'a, S, N> {
+    fn new(doorbell: &'a MuDoorbell<S, N>, ch: Chan) -> Self {
         Self {
             doorbell,
             ch,
-            interrupt_armed: false,
+            armed: false,
+            #[cfg(feature = "std")]
+            notified: None,
         }
     }
 }
 
-#[cfg(not(feature = "std"))]
-impl<'a> core::future::Future for MuWaitFut<'a> {
+impl<'a, S: Side, const N: usize> core::future::Future for MuWaitFut<'a, S, N> {
     type Output = Result<Chan, MuError>;
 
-    fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        if self.ch.id() >= MU_CHAN_COUNT {
-            return Poll::Ready(Err(MuError::ChanOutOfRange));
+    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
+        // SAFETY: no pinned field is moved; `notified` is only set in place.
+        let this = unsafe { self.get_unchecked_mut() };
+        let gi = match MuDoorbell::<S, N>::gi_of(this.ch) {
+            Ok(gi) => gi,
+            Err(err) => return Poll::Ready(Err(err)),
+        };
+
+        if !this.armed {
+            // SAFETY: `gi` is validated `< 4`; armed once from this task.
+            unsafe { this.doorbell.mu.enable_gi(gi) };
+            this.armed = true;
+
+            #[cfg(feature = "std")]
+            {
+                let notified = this.doorbell.notify.notified();
+                // SAFETY: `doorbell` is borrowed for `'a`; its Arc-backed
+                // `Notify` outlives this future, so erasing the borrow is sound.
+                let notified = unsafe {
+                    core::mem::transmute::<
+                        tokio::sync::futures::Notified<'_>,
+                        tokio::sync::futures::Notified<'static>,
+                    >(notified)
+                };
+                this.notified = Some(notified);
+            }
+
+            #[cfg(not(feature = "std"))]
+            waker_for::<N>().register(cx.waker());
         }
 
-        let base = MuDoorbell::base_for(&self.doorbell.base_addrs, self.ch);
-        let gi_idx = self.ch.gi_id();
-        let mu_id = self.ch.mu_id();
-
-        if !self.interrupt_armed {
-            // SAFETY: base is valid; gi_idx < 4; called from single executor task.
-            unsafe { MuDoorbell::enable_gi_interrupt(base, gi_idx) };
-            self.interrupt_armed = true;
-
-            waker_for(mu_id).register(cx.waker());
-        }
-
-        if MuDoorbell::gsr_pending(base, gi_idx) {
-            // Acquire fence: GSR[GIPn] set → remote's GCR write → our slot reads
-            // must see all preceding writes the remote made before ring().
+        if this.doorbell.mu.gi_pending(gi) {
+            // Acquire fence: pairs with the remote's Release before ring(), so
+            // our subsequent slot reads observe the remote's writes.
             compiler_fence(Ordering::Acquire);
 
-            // SAFETY: GSR[GIPn] confirmed set; base and gi_idx are valid.
-            unsafe { MuDoorbell::clear_gsr_gip(base, gi_idx) };
-            // SAFETY: base is valid; gi_idx < 4; called from single executor task.
-            unsafe { MuDoorbell::disable_gi_interrupt(base, gi_idx) };
+            // SAFETY: GSR[GIPn] confirmed set; `gi` is valid.
+            unsafe { this.doorbell.mu.clear_gi(gi) };
+            // SAFETY: `gi` is valid; disarm after completion.
+            unsafe { this.doorbell.mu.disable_gi(gi) };
 
-            Poll::Ready(Ok(self.ch))
-        } else {
-            waker_for(mu_id).register(cx.waker());
-            Poll::Pending
+            return Poll::Ready(Ok(this.ch));
         }
+
+        #[cfg(feature = "std")]
+        if let Some(notified) = this.notified.as_mut() {
+            // SAFETY: `notified` lives inside the pinned future.
+            let _ = unsafe { Pin::new_unchecked(notified) }.poll(cx);
+        }
+
+        #[cfg(not(feature = "std"))]
+        waker_for::<N>().register(cx.waker());
+
+        Poll::Pending
     }
 }
 
-// ── no_std: per-instance AtomicWakers and IRQ handlers ───────────────────────
+// ── no_std: per-instance wakers and IRQ handlers ─────────────────────────────
 
-/// Look up the `AtomicWaker` for the given zero-based MU instance index.
 #[cfg(not(feature = "std"))]
 #[inline]
-fn waker_for(mu_id: u8) -> &'static atomic_waker::AtomicWaker {
-    &MU_WAKERS[mu_id as usize]
+fn waker_for<const N: usize>() -> &'static atomic_waker::AtomicWaker {
+    &MU_WAKERS[N - 1]
 }
 
-// `const { }` blocks make the repeat expression valid for non-Copy types.
 #[cfg(not(feature = "std"))]
-static MU_WAKERS: [atomic_waker::AtomicWaker; MU_INSTANCE_COUNT] =
-    [const { atomic_waker::AtomicWaker::new() }; MU_INSTANCE_COUNT];
+static MU_WAKERS: [atomic_waker::AtomicWaker; crate::chan::MU_INSTANCE_COUNT] =
+    [const { atomic_waker::AtomicWaker::new() }; crate::chan::MU_INSTANCE_COUNT];
 
-// IRQ handlers - one per MU instance, chip-gated.
-//
-// Each handler wakes the futures waiting on that instance's GI interrupt.
-// Register these in your interrupt vector table.
+// One IRQ handler per MU instance, chip-gated. Each wakes the futures waiting
+// on that instance's GI interrupt; register them in the interrupt vector table.
 
 /// # Safety
-/// Must be called only from the MU1 general-purpose IRQ handler.
-#[cfg(all(not(feature = "std"), any(feature = "imx93", feature = "imx95")))]
+/// Call only from the MU1 general-purpose IRQ handler.
+#[cfg(all(
+    not(feature = "std"),
+    any(feature = "imx93", feature = "imx95", feature = "imx8mp")
+))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU1_IRQHandler() {
     MU_WAKERS[0].wake();
 }
 
 /// # Safety
-/// Must be called only from the MU2 general-purpose IRQ handler.
+/// Call only from the MU2 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), any(feature = "imx93", feature = "imx95")))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU2_IRQHandler() {
@@ -369,7 +268,7 @@ pub extern "C" fn MU2_IRQHandler() {
 }
 
 /// # Safety
-/// Must be called only from the MU3 general-purpose IRQ handler.
+/// Call only from the MU3 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), feature = "imx95"))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU3_IRQHandler() {
@@ -377,7 +276,7 @@ pub extern "C" fn MU3_IRQHandler() {
 }
 
 /// # Safety
-/// Must be called only from the MU4 general-purpose IRQ handler.
+/// Call only from the MU4 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), feature = "imx95"))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU4_IRQHandler() {
@@ -385,7 +284,7 @@ pub extern "C" fn MU4_IRQHandler() {
 }
 
 /// # Safety
-/// Must be called only from the MU5 general-purpose IRQ handler.
+/// Call only from the MU5 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), feature = "imx95"))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU5_IRQHandler() {
@@ -393,7 +292,7 @@ pub extern "C" fn MU5_IRQHandler() {
 }
 
 /// # Safety
-/// Must be called only from the MU6 general-purpose IRQ handler.
+/// Call only from the MU6 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), feature = "imx95"))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU6_IRQHandler() {
@@ -401,7 +300,7 @@ pub extern "C" fn MU6_IRQHandler() {
 }
 
 /// # Safety
-/// Must be called only from the MU7 general-purpose IRQ handler.
+/// Call only from the MU7 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), feature = "imx95"))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU7_IRQHandler() {
@@ -409,250 +308,118 @@ pub extern "C" fn MU7_IRQHandler() {
 }
 
 /// # Safety
-/// Must be called only from the MU8 general-purpose IRQ handler.
+/// Call only from the MU8 general-purpose IRQ handler.
 #[cfg(all(not(feature = "std"), feature = "imx95"))]
 #[unsafe(no_mangle)]
 pub extern "C" fn MU8_IRQHandler() {
     MU_WAKERS[7].wake();
 }
 
-// ── std (A-core / Linux) ──────────────────────────────────────────────────────
-
-#[cfg(feature = "std")]
-impl MuDoorbell {
-    /// Create a doorbell from an array of MUA (Side A) **virtual** base
-    /// addresses, one per MU instance, as returned by `mmap`.
-    ///
-    /// The array length is determined by the chip feature:
-    /// `[usize; 2]` for `imx93`, `[usize; 8]` for `imx95`.
-    ///
-    /// # Safety (caller obligation)
-    /// Each element must be a virtual address obtained by mapping the
-    /// corresponding MU peripheral (e.g. via `/dev/mem` or a UIO resource).
-    /// Passing raw physical addresses is **undefined behaviour** on Linux.
-    pub fn new(bases: [usize; MU_INSTANCE_COUNT]) -> Self {
-        Self {
-            base_addrs: bases,
-            notify: std::sync::Arc::new(tokio::sync::Notify::new()),
-        }
-    }
-
-    /// Returns a cloned `Arc` to the internal `Notify`.
-    ///
-    /// Pass this to the UIO IRQ loop so it can wake waiting [`wait()`] futures
-    /// by calling `notify.notify_waiters()` when a MU GI interrupt fires.
-    ///
-    /// [`wait()`]: Doorbell::wait
-    pub fn notifier(&self) -> std::sync::Arc<tokio::sync::Notify> {
-        std::sync::Arc::clone(&self.notify)
-    }
-}
-
-#[cfg(feature = "std")]
-impl Doorbell for MuDoorbell {
-    type Error = MuError;
-    type WaitFut<'a>
-        = MuWaitFut<'a>
-    where
-        Self: 'a;
-
-    fn ring(&self, ch: Chan) -> Result<(), MuError> {
-        if ch.id() >= MU_CHAN_COUNT {
-            return Err(MuError::ChanOutOfRange);
-        }
-
-        let base = Self::base_for(&self.base_addrs, ch);
-        let gi_idx = ch.gi_id();
-
-        compiler_fence(Ordering::Release);
-
-        // SAFETY: base is a valid mmap'd MU peripheral address; gi_idx < 4.
-        unsafe { Self::set_gcr_gir(base, gi_idx) };
-
-        Ok(())
-    }
-
-    fn wait<'a>(&'a self, ch: Chan) -> Self::WaitFut<'a>
-    where
-        Self: 'a,
-    {
-        MuWaitFut::new(self, ch)
-    }
-
-    fn pending(&self, ch: Chan) -> bool {
-        if ch.id() >= MU_CHAN_COUNT {
-            return false;
-        }
-        let base = Self::base_for(&self.base_addrs, ch);
-        Self::gsr_pending(base, ch.gi_id())
-    }
-}
-
-// ─── MuWaitFut (std) ──────────────────────────────────────────────────────────
-
-/// Future returned by [`MuDoorbell::wait()`] on the A-core (std/Linux) path.
-///
-/// Arms `GIER[GIEn]` on first poll, then waits for the `Notify` held in
-/// [`MuDoorbell`] to fire (driven by the UIO IRQ loop or other external
-/// notifier).  Clears `GSR[GIPn]` (W1C) once the signal is detected.
-#[cfg(feature = "std")]
-pub struct MuWaitFut<'a> {
-    doorbell: &'a MuDoorbell,
-    ch: Chan,
-    interrupt_armed: bool,
-    /// Lifetime-erased `Notified` future.
-    ///
-    /// # Safety
-    /// Safe because `doorbell` (which owns the `Arc<Notify>`) is borrowed for
-    /// `'a`, so the `Notify` outlives this future. The transmute only erases
-    /// the borrow lifetime; the underlying `Arc` keeps the allocation alive.
-    notified: Option<tokio::sync::futures::Notified<'static>>,
-}
-
-#[cfg(feature = "std")]
-impl<'a> MuWaitFut<'a> {
-    fn new(doorbell: &'a MuDoorbell, ch: Chan) -> Self {
-        Self {
-            doorbell,
-            ch,
-            interrupt_armed: false,
-            notified: None,
-        }
-    }
-}
-
-#[cfg(feature = "std")]
-impl<'a> core::future::Future for MuWaitFut<'a> {
-    type Output = Result<Chan, MuError>;
-
-    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        // SAFETY: MuWaitFut has no self-referential fields before `notified`
-        // is stored; after that we never move the future.
-        let this = unsafe { self.get_unchecked_mut() };
-
-        if this.ch.id() >= MU_CHAN_COUNT {
-            return Poll::Ready(Err(MuError::ChanOutOfRange));
-        }
-
-        let base = MuDoorbell::base_for(&this.doorbell.base_addrs, this.ch);
-        let gi_idx = this.ch.gi_id();
-
-        if !this.interrupt_armed {
-            // SAFETY: base is valid (mmap'd); gi_idx < 4; single tokio task.
-            unsafe { MuDoorbell::enable_gi_interrupt(base, gi_idx) };
-            this.interrupt_armed = true;
-
-            // SAFETY: `doorbell` is borrowed for `'a` which outlives this
-            // future.  The Arc inside keeps the Notify allocation alive.
-            let notified = this.doorbell.notify.notified();
-            let notified = unsafe {
-                std::mem::transmute::<
-                    tokio::sync::futures::Notified<'_>,
-                    tokio::sync::futures::Notified<'static>,
-                >(notified)
-            };
-            this.notified = Some(notified);
-        }
-
-        if MuDoorbell::gsr_pending(base, gi_idx) {
-            compiler_fence(Ordering::Acquire);
-
-            // SAFETY: GSR[GIPn] confirmed set; base and gi_idx are valid.
-            unsafe { MuDoorbell::clear_gsr_gip(base, gi_idx) };
-            unsafe { MuDoorbell::disable_gi_interrupt(base, gi_idx) };
-
-            return Poll::Ready(Ok(this.ch));
-        }
-
-        // Poll the Notified future to register our waker with the Notify.
-        if let Some(notified) = this.notified.as_mut() {
-            // SAFETY: `notified` lives inside `this` which is pinned.
-            let _ = unsafe { Pin::new_unchecked(notified) }.poll(cx);
-        }
-
-        Poll::Pending
-    }
-}
-
 #[cfg(all(test, feature = "std"))]
 mod tests {
     use super::*;
-    use crate::registers::side;
+    use crate::registers::{cr::GeneralInterruptRegister, offsets};
 
     fn ch(id: u8) -> Chan {
-        // SAFETY: tests choose ids deliberately.
+        // SAFETY: tests pick ids deliberately.
         unsafe { Chan::new_unchecked(id) }
     }
 
-    fn bases_with_first(base: usize) -> [usize; MU_INSTANCE_COUNT] {
-        let mut bases = [0; MU_INSTANCE_COUNT];
-        bases[0] = base;
-        bases
+    // MU7 on i.MX95 is the CA55 <-> CM7 default route.
+    const N: usize = if cfg!(feature = "imx95") { 7 } else { 1 };
+
+    fn gier(regs: &[u32]) -> GeneralInterruptRegister {
+        GeneralInterruptRegister::from_bits(regs[offsets::GIER as usize / 4])
     }
 
     #[test]
-    fn wait_registers_waker_then_ready_after_notify_and_pending_status() {
+    fn ring_sets_gcr_bit() {
         let mut regs = [0u32; 0x300 / 4];
-        let doorbell = MuDoorbell::new(bases_with_first(regs.as_mut_ptr() as usize));
-        let mut wait = std::pin::pin!(doorbell.wait(ch(2)));
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db =
+            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+
+        db.ring(ch(2)).unwrap();
+
+        let gcr = GeneralInterruptRegister::from_bits(regs[offsets::GCR as usize / 4]);
+        assert!(gcr.gi() & (1 << 2) != 0);
+    }
+
+    #[test]
+    fn pending_reads_gsr() {
+        let mut regs = [0u32; 0x300 / 4];
+        regs[offsets::GSR as usize / 4] = 1 << 3;
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db =
+            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+
+        assert!(db.pending(ch(3)));
+        assert!(!db.pending(ch(2)));
+    }
+
+    #[test]
+    fn wait_registers_waker_then_ready_after_notify() {
+        let mut regs = [0u32; 0x300 / 4];
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db =
+            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+        let mut wait = std::pin::pin!(db.wait(ch(2)));
         let waker = std::task::Waker::noop();
         let mut cx = Context::from_waker(waker);
 
         assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
-        assert!(GeneralInterruptRegister::from_bits(regs[side::GIER as usize / 4]).contains_gi(2));
+        assert!(gier(&regs).gi() & (1 << 2) != 0);
 
-        regs[side::GSR as usize / 4] = GeneralInterruptRegister::from_bits(0).with_gi_set(2).bits();
-        doorbell.notifier().notify_waiters();
+        regs[offsets::GSR as usize / 4] = 1 << 2;
+        db.notifier().notify_waiters();
 
         assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(2))));
-        assert_eq!(
-            regs[side::GSR as usize / 4],
-            GeneralInterruptRegister::from_bits(0).with_gi_set(2).bits()
-        );
-        assert!(!GeneralInterruptRegister::from_bits(regs[side::GIER as usize / 4]).contains_gi(2));
+        // GIER bit cleared on completion.
+        assert!(gier(&regs).gi() & (1 << 2) == 0);
+        // GSR acknowledged (W1C).
+        assert_eq!(regs[offsets::GSR as usize / 4], 1 << 2);
     }
 
     #[test]
     fn wait_thread_wakes_after_remote_status_and_notify() {
         let regs = Box::leak(Box::new([0u32; 0x300 / 4]));
         let base = regs.as_mut_ptr() as usize;
-        let doorbell = MuDoorbell::new(bases_with_first(base));
-        let notifier = doorbell.notifier();
+        // SAFETY: `regs` backs a fake MMIO window leaked for the spawned thread.
+        let db = unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(base) };
+        let notifier = db.notifier();
         let (armed_tx, armed_rx) = std::sync::mpsc::channel();
 
         let waiter = std::thread::spawn(move || {
             let rt = tokio::runtime::Builder::new_current_thread()
                 .build()
                 .expect("create waiter runtime");
-
             rt.block_on(async move {
                 armed_tx.send(()).expect("signal waiter is starting");
-                doorbell.wait(ch(2)).await.expect("wait for MU doorbell")
+                db.wait(ch(2)).await.expect("wait for MU doorbell")
             })
         });
 
         armed_rx.recv().expect("waiter thread started");
-        while !GeneralInterruptRegister::from_bits(unsafe {
+        while GeneralInterruptRegister::from_bits(unsafe {
             (base as *const u32)
-                .add(side::GIER as usize / 4)
+                .add(offsets::GIER as usize / 4)
                 .read_volatile()
         })
-        .contains_gi(2)
+        .gi()
+            & (1 << 2)
+            == 0
         {
             std::thread::yield_now();
         }
 
         unsafe {
             (base as *mut u32)
-                .add(side::GSR as usize / 4)
-                .write_volatile(GeneralInterruptRegister::from_bits(0).with_gi_set(2).bits());
+                .add(offsets::GSR as usize / 4)
+                .write_volatile(1 << 2);
         }
         notifier.notify_waiters();
 
         assert_eq!(waiter.join().expect("waiter thread completes"), ch(2));
-        assert_eq!(
-            regs[side::GSR as usize / 4],
-            GeneralInterruptRegister::from_bits(0).with_gi_set(2).bits()
-        );
+        assert_eq!(regs[offsets::GSR as usize / 4], 1 << 2);
     }
 }

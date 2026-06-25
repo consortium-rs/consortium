@@ -14,13 +14,25 @@
 // limitations under the License.
 //
 // SPDX-License-Identifier: Apache-2.0
-#![allow(unused)] // Because this is a library crate, and some items are only used in certain contexts (e.g. std vs no_std).
 
+//! HSEM (Hardware Semaphore) doorbell driver for Consortium IPC.
+//!
+//! A [`HsemDoorbell`] drives the HSEM peripheral from one processor [`side`],
+//! with the side selected at the type level: [`Primary`] is core C1, [`Secondary`]
+//! is C2 and [`Tertiary`] is C3. HSEM is single-instance, so the instance const
+//! `N` is always `1` (e.g. `HsemDoorbell<Primary, 1>`). Its channels are the 16
+//! hardware semaphores.
+//!
+//! [`side`]: consortium_ipc::Side
+
+pub mod abstraction;
 pub mod chan;
 pub mod doorbell;
 pub mod error;
 pub mod registers;
 
-pub use chan::HsemChanValidate;
+pub use abstraction::Hsem;
+pub use chan::{HSEM_CHAN_COUNT, HSEM_CHAN_OCCUPIED, HsemChanValidate};
+pub use consortium_ipc::{Primary, Secondary, Side, Tertiary};
 pub use doorbell::HsemDoorbell;
 pub use error::HsemError;

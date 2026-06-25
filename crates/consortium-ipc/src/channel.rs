@@ -24,11 +24,19 @@ use core::ops::Deref;
 use crate::chan::Chan;
 use crate::transport::{RecvTransport, SendTransport, TransportError};
 
+/// Channel direction marker ([`Tx`] or [`Rx`]).
+///
+/// Sealed against external implementations via [`crate::sealed::Sealed`].
+pub trait Direction: crate::sealed::Sealed {}
+
 /// Marker: this channel can only send.
 pub struct Tx;
 
 /// Marker: this channel can only receive.
 pub struct Rx;
+
+impl Direction for Tx {}
+impl Direction for Rx {}
 
 /// A typed, directed communication endpoint over a transport half.
 ///

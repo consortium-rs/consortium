@@ -14,24 +14,64 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! IPCC channel space and validation.
+//!
+//! A channel is an IPCC hardware channel id, numbered `0..`[`IPCC_CHAN_COUNT`].
+//! Channels in [`IPCC_CHAN_OCCUPIED`] are reserved for system/firmware use.
+
+use core::ops::Range;
+
 use consortium_ipc::ChanValidate;
 
 use crate::error::IpccError;
 
-pub struct IpccChanValidate;
-
+/// Number of IPCC channels per processor bank.
 pub const IPCC_CHAN_COUNT: u8 = 16;
-pub const IPCC_CHAN_RESERVED: u8 = 2;
+
+/// Channel ids reserved for system/firmware use; not available to user
+/// channels.
+pub const IPCC_CHAN_OCCUPIED: Range<u8> = 0..2;
+
+/// Validates IPCC channel ids.
+pub struct IpccChanValidate;
 
 impl ChanValidate for IpccChanValidate {
     type Error = IpccError;
 
     fn validate(id: u8) -> Result<consortium_ipc::Chan, Self::Error> {
-        match id {
-            i if i < IPCC_CHAN_RESERVED => Err(IpccError::ChanReserved),
-            i if i >= IPCC_CHAN_COUNT => Err(IpccError::ChanOutOfRange),
-            // SAFETY: caller-validated by the match arms above; id is guaranteed to be in the valid range for IPCC channels.
-            _ => Ok(unsafe { consortium_ipc::Chan::new_unchecked(id) }),
+        if IPCC_CHAN_OCCUPIED.contains(&id) {
+            Err(IpccError::ChanReserved)
+        } else if id >= IPCC_CHAN_COUNT {
+            Err(IpccError::ChanOutOfRange)
+        } else {
+            // SAFETY: `id` is outside the reserved range and below the count,
+            // so it is a valid IPCC channel id.
+            Ok(unsafe { consortium_ipc::Chan::new_unchecked(id) })
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use consortium_ipc::Chan;
+
+    #[test]
+    fn accepts_unreserved_channels() {
+        for id in IPCC_CHAN_OCCUPIED.end..IPCC_CHAN_COUNT {
+            assert_eq!(Chan::new::<IpccChanValidate>(id).unwrap().id(), id);
+        }
+    }
+
+    #[test]
+    fn rejects_reserved_and_out_of_range() {
+        assert_eq!(
+            Chan::new::<IpccChanValidate>(0),
+            Err(IpccError::ChanReserved)
+        );
+        assert_eq!(
+            Chan::new::<IpccChanValidate>(IPCC_CHAN_COUNT),
+            Err(IpccError::ChanOutOfRange)
+        );
     }
 }

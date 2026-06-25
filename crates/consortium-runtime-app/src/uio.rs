@@ -176,8 +176,8 @@ impl UioDevice {
     /// region (mapped at [`open`]). The doorbell peripheral register block
     /// (MU / HSEM / IPCC) is a later map — typically `map1` — described in the
     /// device tree. Pass the returned base into the matching doorbell
-    /// constructor, e.g. `MuDoorbell::new([base])`, `HsemDoorbell::new(base)`,
-    /// or `IpccDoorbell::new(base)`.
+    /// constructor, e.g. `MuDoorbell::<Primary, 7>::new(base)`,
+    /// `HsemDoorbell::new(base)`, or `IpccDoorbell::new(base)`.
     ///
     /// Prefer [`map_peripheral_by_name`] when map ordering is not guaranteed.
     ///
@@ -232,7 +232,7 @@ impl UioDevice {
     ///
     /// ```ignore
     /// let base = dev.map_peripheral(1)?;
-    /// let mu = MuDoorbell::new([base; 8]);
+    /// let mu = unsafe { MuDoorbell::<Primary, 7>::new(base) };
     /// dev.register_doorbell(mu.notifier());
     /// let transport = dev.channel_transport(chan, mu, region)?;
     /// ```

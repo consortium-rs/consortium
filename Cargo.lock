@@ -445,6 +445,7 @@ dependencies = [
  "atomic-waker",
  "bitfield",
  "consortium-ipc",
+ "defmt",
  "tokio",
 ]
 
@@ -455,6 +456,7 @@ dependencies = [
  "atomic-waker",
  "bitfield",
  "consortium-ipc",
+ "defmt",
  "tokio",
 ]
 
@@ -465,6 +467,7 @@ dependencies = [
  "atomic-waker",
  "bitfield",
  "consortium-ipc",
+ "defmt",
  "tokio",
 ]
 

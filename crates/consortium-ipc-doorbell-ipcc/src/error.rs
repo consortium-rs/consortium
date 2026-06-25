@@ -14,14 +14,15 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+/// Errors raised by the IPCC doorbell.
 #[derive(Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum IpccError {
-    /// Chan id is out of the valid 0..=15 range.
+    /// Chan id is not a valid IPCC channel (`>= IPCC_CHAN_COUNT`).
     ChanOutOfRange,
-    /// Chan id is in the reserved range (0..=1) and cannot be used for user channels.
+    /// Chan id falls in the reserved channel range and cannot be used for user
+    /// channels.
     ChanReserved,
     /// The outgoing channel is still occupied by the previous signal.
     ChannelOccupied,
-    /// `IpccDoorbell` was instantiated for a processor id other than 1 or 2.
-    InvalidProcessor,
 }

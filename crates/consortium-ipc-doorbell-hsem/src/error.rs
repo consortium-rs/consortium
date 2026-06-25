@@ -14,12 +14,15 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#[derive(Debug, PartialEq)]
+/// Errors raised by the HSEM doorbell.
+#[derive(Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum HsemError {
-    /// Semaphore already locked by another master when ring() was called.
+    /// Semaphore already locked by another master when `ring()` was called.
     AlreadyLocked,
-    /// Chan id is out of the valid 0..=15 range.
+    /// Chan id is not a valid semaphore id (`>= HSEM_CHAN_COUNT`).
     ChanOutOfRange,
-    /// Chan id is in the reserved range (0..=1) and cannot be used for user channels.
+    /// Chan id falls in the reserved semaphore range and cannot be used for
+    /// user channels.
     ChanReserved,
 }

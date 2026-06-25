@@ -23,7 +23,7 @@ use consortium_dbg_defmt::config as dbg_config;
 use consortium_dbg_defmt::host::HostRing;
 use consortium_hmi::{Bridge, KioskApp};
 use consortium_ipc::{Chan, Channel, Rx, SramRegion};
-use consortium_ipc_doorbell_mu::{IMX95_CA55_CM7_RX_CHAN, MuDoorbell};
+use consortium_ipc_doorbell_mu::{MuDoorbell, Primary};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, SharedMemoryTransport, config as ipc_config, descriptor_init,
     slot::SLOT_HEADER,
@@ -46,9 +46,13 @@ const SLOT_SIZE: usize = SLOT_HEADER + MTU;
 const M_TO_A_SLOT_OFFSET: usize = DESC_SIZE * 2;
 const IPC_REGION_LEN: usize = M_TO_A_SLOT_OFFSET + SLOT_SIZE;
 
-// MU base addresses for i.MX95 (8 instances, MU1 through MU8).
-// PLATFORM: replace with the virtual addresses after mmap / UIO mapping.
-const MU_VIRT_BASES: [usize; 8] = [0usize; 8]; // placeholder — fill after mmap
+// MU7 side-A (CA55) base address for i.MX95. The CA55 <-> CM7 default route is
+// MU7, so the doorbell is `MuDoorbell<Primary, 7>`.
+// PLATFORM: replace with the virtual address after mmap / UIO mapping.
+const MU7_VIRT_BASE: usize = 0; // placeholder — fill after mmap
+
+// CM7 -> CA55 channel is MU7 GI1 (the CA55's RX within MU7).
+const CM7_TO_CA55_CHAN: u8 = 1;
 
 // ── CDBG debug ring (CM7 defmt logs) ─────────────────────────────────────────
 //
@@ -103,13 +107,14 @@ async fn main() {
     // SAFETY: app_desc_base covers IPC_REGION_LEN bytes; no aliased Rust reference exists.
     unsafe { descriptor_init(app_desc_base, 1, MTU, &[m_to_a_chan]) };
 
-    // IMX95_CA55_CM7_RX_CHAN = 25 = MU7 GI1.
-    // CA55 waits on this channel; CM7 rings it to wake the CA55.
-    // SAFETY: IMX95_CA55_CM7_RX_CHAN is a valid MU channel index.
-    let ch = unsafe { Chan::new_unchecked(IMX95_CA55_CM7_RX_CHAN) };
+    // CM7_TO_CA55_CHAN = MU7 GI1. CA55 waits on this channel; CM7 rings it to
+    // wake the CA55.
+    // SAFETY: CM7_TO_CA55_CHAN is a valid MU GI channel index (1 < 4).
+    let ch = unsafe { Chan::new_unchecked(CM7_TO_CA55_CHAN) };
     // SAFETY: app_desc_base points to the heap-backed IPC region of IPC_REGION_LEN bytes.
     let region = unsafe { SramRegion::new(app_desc_base, IPC_REGION_LEN) };
-    let doorbell = MuDoorbell::new(MU_VIRT_BASES);
+    // SAFETY: MU7_VIRT_BASE is the mmap'd virtual base of MU7's side-A window.
+    let doorbell = unsafe { MuDoorbell::<Primary, 7>::new(MU7_VIRT_BASE) };
     // SAFETY: app_desc_base satisfies the descriptor layout invariant above.
     let transport = unsafe { SharedMemoryTransport::new(ch, doorbell, region, app_desc_base) };
     let buf: &'static mut [u8] = Box::leak(Box::new([0u8; MTU]));

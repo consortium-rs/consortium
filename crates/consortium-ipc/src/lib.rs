@@ -24,15 +24,18 @@ pub(crate) mod doorbell;
 pub(crate) mod future;
 pub(crate) mod region;
 pub(crate) mod regions;
+pub(crate) mod sealed;
+pub(crate) mod side;
 pub(crate) mod transport;
 pub(crate) mod wire;
 
 pub use {
     chan::{Chan, ChanValidate},
-    channel::{Channel, ChannelError, ReceivedMessage, Rx, Tx},
+    channel::{Channel, ChannelError, Direction, ReceivedMessage, Rx, Tx},
     doorbell::Doorbell,
     region::Region,
     regions::{DdrRegion, SerialRegion, SramRegion},
+    side::{Primary, Secondary, Side, Tertiary},
     transport::{RecvTransport, SendTransport, Transport, TransportError},
     wire::IpcSafe,
 };
