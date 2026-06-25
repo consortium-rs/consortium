@@ -23,42 +23,41 @@ version.workspace = true
 
 [lib]
 # Doc examples here are all `ignore`d, and running doctests would force a
-# normal-mode lib build that trips the `assert_configured()` guard in `lib.rs`
+# normal-mode lib build that trips the runtime env guards in `lib.rs`
 # outside of `consortium-builder`. Disable them so `cargo test` exercises the
 # host unit tests without requiring an injected `[ipc]` layout.
 doctest = false
 
 [features]
-stm32mp21x = ["consortium-ipc-doorbell-ipcc/stm32mp21x"]
-stm32mp23x = ["consortium-ipc-doorbell-hsem", "consortium-ipc-doorbell-ipcc/stm32mp23x"]
-stm32mp25x = ["consortium-ipc-doorbell-hsem", "consortium-ipc-doorbell-ipcc/stm32mp25x"]
-# Compatibility alias for the previous STM32MP2 default. New code should use
-# the chip-family features above so STM32MP21 can select IPCC without HSEM.
-default    = ["imx9x", "stm32mp25x", "tee"]
+dbg        = ["dep:consortium-dbg-defmt"]
+default    = ["tee", "ipc-shm", "dbg"]
 ffi        = ["consortium-ffi"]
 hmi        = ["consortium-hmi"]
-imx9x      = ["consortium-ipc-doorbell-mu"]
+imx93      = ["consortium-ipc-transport-memory?/imx93", "imx9x"]
+imx95      = ["consortium-ipc-transport-memory?/imx95", "imx9x"]
+imx9x      = []
+ipc        = ["ipc-shm"]
+ipc-shm    = ["dep:consortium-ipc", "dep:consortium-ipc-transport-memory"]
 ort        = ["consortium-ort"]
+stm32mp21x = ["consortium-ipc-transport-memory?/stm32mp21x"]
+stm32mp23x = ["consortium-ipc-transport-memory?/stm32mp23x"]
+stm32mp25x = ["consortium-ipc-transport-memory?/stm32mp25x"]
+# Compatibility alias for the previous STM32MP2 default. New code should use
+# the chip-family features above so STM32MP21 can select IPCC without HSEM.
 stm32mp2xx = ["stm32mp25x"]
 tee        = ["consortium-tee"]
 
 [target.'cfg(target_os = "linux")'.dependencies]
 consortium-common = { path = "../consortium-common" }
+consortium-dbg-defmt = { default-features = false, features = [
+  "host",
+], optional = true, path = "../consortium-dbg-defmt" }
 consortium-ffi = { optional = true, path = "../consortium-ffi" }
 consortium-hmi = { optional = true, path = "../consortium-hmi" }
-consortium-ipc = { features = ["std"], path = "../consortium-ipc" }
-consortium-ipc-doorbell-hsem = { features = [
-  "std",
-], optional = true, path = "../consortium-ipc-doorbell-hsem" }
-consortium-ipc-doorbell-ipcc = { features = [
-  "std",
-], optional = true, path = "../consortium-ipc-doorbell-ipcc" }
-consortium-ipc-doorbell-mu = { features = [
-  "std",
-], optional = true, path = "../consortium-ipc-doorbell-mu" }
+consortium-ipc = { features = ["std"], optional = true, path = "../consortium-ipc" }
 consortium-ipc-transport-memory = { features = [
   "std",
-], path = "../consortium-ipc-transport-memory" }
+], optional = true, path = "../consortium-ipc-transport-memory" }
 consortium-ort = { optional = true, path = "../consortium-ort" }
 consortium-tee = { optional = true, path = "../consortium-tee" }
 libc = "0.2"

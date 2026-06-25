@@ -15,42 +15,46 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+#[cfg(feature = "ipc-shm")]
 pub mod mmap;
 pub mod remoteproc;
+#[cfg(feature = "ipc-shm")]
 pub mod uio;
 
-// The A-core runtime addresses the shared region through the `[ipc]` layout
-// injected by `consortium-builder` (the `CONSORTIUM_IPC_*` env vars). Without
-// it the UIO index and region addresses would silently be `0`, so fail the
-// build instead — a missing layout is a misconfiguration, not a runtime case.
+// When the A-core runtime uses the shared-memory IPC transport, it reaches the
+// region through `/dev/uioN`, not through the physical base address. Require
+// the builder-injected UIO number only for that runtime path.
 //
 // `env!`'s two-argument form emits this message as a plain `error:` at the
 // invocation site (far better DX than the `E0080: evaluation panicked` a
-// `const` assert produces). `CONSORTIUM_IPC_BASE` is the sentinel the builder
-// always injects, matching `config::CONFIGURED`.
+// `const` assert produces).
 //
 // Skipped under `cfg(test)` so the host unit tests (e.g. the IRQ fan-out) build
 // without going through the builder. Doctests are disabled in `Cargo.toml`,
 // which otherwise force a normal-mode lib build that would trip this guard.
-#[cfg(not(test))]
+#[cfg(all(feature = "ipc-shm", not(test)))]
 const _: &str = env!(
-    "CONSORTIUM_IPC_BASE",
-    "consortium-runtime-app requires the IPC shared-memory layout: build through \
-     `consortium-builder` (which injects CONSORTIUM_IPC_* from the [ipc] section of \
+    "CONSORTIUM_IPC_UIO",
+    "consortium-runtime-app with `ipc-shm` requires the IPC UIO device index: build through \
+     `consortium-builder` (which injects CONSORTIUM_IPC_UIO from the [ipc] section of \
      Consortium.toml) rather than a plain `cargo build`."
 );
 
+#[cfg(all(feature = "dbg", not(test)))]
+const _: &str = env!(
+    "CONSORTIUM_DBG_UIO",
+    "consortium-runtime-app with `dbg` requires the debug UIO device index: build through \
+     `consortium-builder` (which injects CONSORTIUM_DBG_UIO from the [dbg] section of \
+     Consortium.toml) rather than a plain `cargo build`."
+);
+
+#[cfg(feature = "ipc-shm")]
 pub use consortium_ipc as ipc;
+#[cfg(feature = "ipc-shm")]
 pub use consortium_ipc_transport_memory as ipc_transport;
+
+#[cfg(feature = "dbg")]
+pub use consortium_dbg_defmt as dbg;
 
 #[cfg(feature = "tee")]
 pub use consortium_tee as tee;
-
-#[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
-pub use consortium_ipc_doorbell_hsem as hsem;
-
-#[cfg(any(feature = "stm32mp21x", feature = "stm32mp23x", feature = "stm32mp25x"))]
-pub use consortium_ipc_doorbell_ipcc as ipcc;
-
-#[cfg(feature = "imx9x")]
-pub use consortium_ipc_doorbell_mu as mu;

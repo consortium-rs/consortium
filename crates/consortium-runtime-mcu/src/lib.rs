@@ -17,18 +17,26 @@
 
 pub mod irq;
 
-#[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
-pub use consortium_ipc_doorbell_hsem as hsem;
+#[cfg(all(feature = "ipc-shm", not(test)))]
+const _: &str = env!(
+    "CONSORTIUM_IPC_BASE",
+    "consortium-runtime-mcu with `ipc-shm` requires the IPC physical base address: build through \
+     `consortium-builder` (which injects CONSORTIUM_IPC_BASE from the [ipc] section of \
+     Consortium.toml) rather than a plain `cargo build`."
+);
 
-#[cfg(any(feature = "stm32mp21x", feature = "stm32mp23x", feature = "stm32mp25x"))]
-pub use consortium_ipc_doorbell_ipcc as ipcc;
+#[cfg(all(feature = "dbg", not(test)))]
+const _: &str = env!(
+    "CONSORTIUM_DBG_BASE",
+    "consortium-runtime-mcu with `dbg` requires the debug physical base address: build through \
+     `consortium-builder` (which injects CONSORTIUM_DBG_BASE from the [dbg] section of \
+     Consortium.toml) rather than a plain `cargo build`."
+);
 
-#[cfg(feature = "imx93")]
-pub use consortium_ipc_doorbell_mu as mu;
+#[cfg(feature = "dbg")]
+pub use consortium_dbg_defmt as dbg;
 
-#[cfg(feature = "imx95")]
-pub use consortium_ipc_doorbell_mu as mu;
-
+#[cfg(feature = "ipc-shm")]
 pub use consortium_ipc_transport_memory;
 
 /// Compute the pointer to the Tx slot in a shared-memory transport slot pair.
@@ -48,6 +56,7 @@ pub use consortium_ipc_transport_memory;
 /// # Safety
 ///
 /// Caller must ensure the computed pointers are valid for the slot size.
+#[cfg(feature = "ipc-shm")]
 pub unsafe fn slot_pair_ptrs(
     region_base: *mut u8,
     slot_idx: usize,

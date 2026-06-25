@@ -496,6 +496,9 @@ dependencies = [
  "consortium-codec",
  "consortium-common",
  "consortium-ipc",
+ "consortium-ipc-doorbell-hsem",
+ "consortium-ipc-doorbell-ipcc",
+ "consortium-ipc-doorbell-mu",
  "crc32fast",
  "embassy-executor",
  "embassy-futures",
@@ -531,12 +534,10 @@ name = "consortium-runtime-app"
 version = "0.1.0"
 dependencies = [
  "consortium-common",
+ "consortium-dbg-defmt",
  "consortium-ffi",
  "consortium-hmi",
  "consortium-ipc",
- "consortium-ipc-doorbell-hsem",
- "consortium-ipc-doorbell-ipcc",
- "consortium-ipc-doorbell-mu",
  "consortium-ipc-transport-memory",
  "consortium-ort",
  "consortium-tee",
@@ -551,10 +552,8 @@ dependencies = [
 name = "consortium-runtime-mcu"
 version = "0.1.0"
 dependencies = [
+ "consortium-dbg-defmt",
  "consortium-ipc",
- "consortium-ipc-doorbell-hsem",
- "consortium-ipc-doorbell-ipcc",
- "consortium-ipc-doorbell-mu",
  "consortium-ipc-transport-memory",
  "cortex-m",
  "num-traits",

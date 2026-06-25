@@ -231,6 +231,9 @@ pub mod mub {
     pub const CIER0: u32 = 0x014;
     // Core Sticky Status 0 Register
     pub const CSSR0: u32 = 0x018;
+    // Core Status 0 Register
+    #[cfg(feature = "imx95")]
+    pub const CSR0: u32 = 0x01C;
 
     // Flag Control Register
     pub const FCR: u32 = 0x100;
