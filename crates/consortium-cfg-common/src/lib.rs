@@ -13,10 +13,7 @@
 // limitations under the License.
 //
 // SPDX-License-Identifier: Apache-2.0
-#![cfg_attr(not(feature = "std"), no_std)]
 
-#[cfg(feature = "std")]
 pub mod config;
-#[cfg(all(feature = "std", feature = "serde"))]
 pub mod database;
 pub mod env_value;

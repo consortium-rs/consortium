@@ -1,6 +1,0 @@
----
-source: crates/consortium-cfg/tests/snap.rs
-expression: env_export(&content)
-input_file: crates/consortium-cfg/tests/snapshots/no_env_sections/Consortium.toml
----
-(no environment variables)

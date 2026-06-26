@@ -36,3 +36,5 @@ pub use ast::{
 pub use codegen::{Codegen, CodegenOptions, ToDts};
 pub use error::{DtsError, LexError, ParseError, Span};
 pub use parser::{Parser, parse_dts};
+
+pub mod utils;

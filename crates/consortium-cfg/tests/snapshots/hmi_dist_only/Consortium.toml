@@ -1,8 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-#
-# Fixture: [hmi] with `dist` only. `debug_url` is absent, so no
-# `CONSORTIUM_HMI_DEBUG_URL` is emitted and debug builds fall back to the static
-# `csti://` handler.
-
-[hmi]
-dist = "ui/dist"

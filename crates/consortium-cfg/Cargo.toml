@@ -22,17 +22,11 @@ name              = "consortium-cfg"
 version.workspace = true
 
 [dependencies]
-consortium-cfg-common      = { path = "../consortium-cfg-common" }
-consortium-dts         = { path = "../consortium-dts" }
-embedded-hal.workspace = true
-thiserror              = "2.0.18"
-
-[dev-dependencies]
-# `tests/snap.rs` walks the workspace for `Consortium.toml`, parses the
-# env-contributing sections, and snapshots the injected `KEY=VALUE` pairs.
-insta = "1"
-serde = { features = ["derive"], version = "1.0.228" }
-toml  = "1.1.0"
+consortium-cfg-common = { path = "../consortium-cfg-common" }
+consortium-dts        = { path = "../consortium-dts" }
+serde_yaml            = "0.9"
+thiserror             = "2.0.18"
+toml                  = "1.1.0"
 
 [lints]
 workspace = true

@@ -57,7 +57,7 @@ side-a = []
 side-b = []
 
 [dependencies]
-consortium-cfg-common            = { default-features = false, path = "../consortium-cfg-common" }
+consortium-cfg-common        = { path = "../consortium-cfg-common" }
 consortium-ipc               = { default-features = false, path = "../consortium-ipc" }
 consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem" }
 consortium-ipc-doorbell-ipcc = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-ipcc" }

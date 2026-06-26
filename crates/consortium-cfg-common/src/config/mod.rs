@@ -14,124 +14,41 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
+//! Vendor-agnostic `Consortium.toml` schema.
+
+pub mod doorbell;
+pub mod hmi;
+pub mod memory;
+pub mod peripheral;
+pub mod profile;
+pub mod ta;
+
+pub use doorbell::Doorbell;
+pub use hmi::{Hmi, HmiBackend, HmiEngine};
+pub use memory::{Memory, SharedMemory};
+pub use peripheral::Peripheral;
+pub use profile::Profile;
+pub use ta::Ta;
 
 use std::collections::HashMap;
 
-use crate::config::chip_map::Chip;
-use crate::config::mcu_core::CortexMcuCore;
-
-pub mod app_core;
-pub mod chip_map;
-#[cfg(feature = "serde")]
-pub mod hmi;
-#[cfg(feature = "serde")]
-pub mod iomux;
-#[cfg(all(feature = "serde", feature = "std"))]
-pub mod iomux_loader;
-pub mod mcu_core;
-pub mod peripheral;
-pub mod rif;
-#[cfg(all(feature = "serde", feature = "std"))]
-pub mod rifsc_loader;
-pub mod shared_mem;
-pub mod tee;
-
-// Convenient re-exports for RIF types
-pub use rif::{RifConfig, RifPeripheral, RifSource};
-// Convenient re-exports for peripheral types
-#[cfg(feature = "serde")]
-pub use hmi::HmiConfig;
-#[cfg(feature = "serde")]
-pub use iomux::{IomuxConfig, Pin, SignalAssignment};
-#[cfg(all(feature = "serde", feature = "std"))]
-pub use iomux_loader::{load_iomux_from_path, load_stm32mp_iomux};
-pub use peripheral::Peripheral;
-#[cfg(all(feature = "serde", feature = "std"))]
-pub use rifsc_loader::{load_all_rifsc_chips, load_rifsc_peripherals};
-pub use shared_mem::SharedMemConfig;
-pub use tee::{TEE_UUID_ENV, TeeConfig};
-
-#[derive(Debug, Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[cfg_attr(
-    feature = "serde",
-    serde(deny_unknown_fields, rename_all = "snake_case")
-)]
-pub struct GeneralConfig {
-    pub chip: Chip,
-    /// Specific chip package variant for pin mux configuration (e.g., "STM32MP257FAKx").
-    /// This is used to load the correct IOMUX YAML file. If not specified, pin mux
-    /// validation cannot be performed, but RIFSC configuration can still be generated.
-    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
-    pub variant: Option<String>,
-}
-
-#[derive(Debug, Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[cfg_attr(
-    feature = "serde",
-    serde(deny_unknown_fields, rename_all = "snake_case")
-)]
-pub struct FirmwareEntry {
-    pub core: CortexMcuCore,
-    pub index: usize,
-    pub path: String,
-    /// Optional: override flash address for this core's firmware
-    pub flash_address: Option<u64>,
-}
-
-#[derive(Debug, Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[cfg_attr(
-    feature = "serde",
-    serde(deny_unknown_fields, rename_all = "snake_case")
-)]
-pub struct ProjectConfig {
-    pub application: String,
-    /// List of firmware to be built and flashed to the device.
-    pub firmware: HashMap<String, FirmwareEntry>,
-    /// Human-machine interface (HMI) to be used for the project. This is optional and can be used to specify a custom HMI for the project.
-    pub interface: Option<String>,
-}
-
-#[derive(Debug, Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[cfg_attr(
-    feature = "serde",
-    serde(deny_unknown_fields, rename_all = "snake_case")
-)]
+/// A fully parsed `Consortium.toml` manifest.
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct Config {
-    pub general: GeneralConfig,
-    pub project: ProjectConfig,
-    /// Peripheral resource configuration.
-    /// Maps peripheral names to their ownership and security domain settings.
-    #[cfg_attr(feature = "serde", serde(default))]
+    /// Build profile: which chip the project targets.
+    pub profile: Profile,
+    /// Shared-memory layout for IPC and debug channels.
+    pub memory: Memory,
+    /// Doorbell peripherals wired up for IPC signalling.
+    #[serde(default, rename = "doorbell")]
+    pub doorbells: Vec<Doorbell>,
+    /// OP-TEE trusted applications bundled with the project.
+    #[serde(default, rename = "ta")]
+    pub tas: Vec<Ta>,
+    /// Optional human-machine-interface (web UI) configuration.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hmi: Option<Hmi>,
+    /// Peripheral resource assignments, keyed by peripheral name (e.g. `i2c1`).
+    #[serde(default)]
     pub peripheral: HashMap<String, Peripheral>,
-    /// HMI build configuration injected as compile-time env vars by the builder.
-    #[cfg(feature = "serde")]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub hmi: Option<HmiConfig>,
-    /// IPC shared-memory layout, injected as `CONSORTIUM_IPC_*` env vars by the builder.
-    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
-    pub ipc: Option<SharedMemConfig>,
-    /// Debug (defmt) shared-memory layout, injected as `CONSORTIUM_DBG_*` env vars by the builder.
-    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
-    pub dbg: Option<SharedMemConfig>,
-    /// OP-TEE Trusted Application metadata, injected as `CONSORTIUM_TEE_*` env vars.
-    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
-    pub tee: Option<TeeConfig>,
-}
-
-impl Config {
-    /// Validates that every firmware entry names a real-time core that exists on the configured chip.
-    pub fn validate_rt_cores(&self) -> Result<(), String> {
-        for (name, _) in self.project.firmware.iter() {
-            if !self.general.chip.has_rt_core_name(name) {
-                return Err(format!("Invalid firmware entry for core {}", name));
-            }
-        }
-        Ok(())
-    }
 }

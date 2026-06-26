@@ -316,9 +316,7 @@ version = "0.1.0"
 dependencies = [
  "consortium-cfg-common",
  "consortium-dts",
- "embedded-hal 1.0.0",
- "insta",
- "serde",
+ "serde_yaml",
  "thiserror",
  "toml",
 ]
@@ -327,14 +325,11 @@ dependencies = [
 name = "consortium-cfg-common"
 version = "0.1.0"
 dependencies = [
+ "consortium-dts",
  "serde",
  "serde_yaml",
  "tempfile",
 ]
-
-[[package]]
-name = "consortium-cfg-meta"
-version = "0.1.0"
 
 [[package]]
 name = "consortium-cli"
@@ -396,6 +391,7 @@ version = "0.1.0"
 dependencies = [
  "insta",
  "logos",
+ "serde",
  "thiserror",
 ]
 

@@ -1,9 +1,0 @@
----
-source: crates/consortium-cfg/tests/snap.rs
-expression: env_export(&content)
-input_file: crates/consortium-cfg/tests/snapshots/dbg_config/Consortium.toml
----
-CONSORTIUM_DBG_BASE=541855744
-CONSORTIUM_DBG_LENGTH=2048
-CONSORTIUM_DBG_MTU=128
-CONSORTIUM_DBG_UIO=1

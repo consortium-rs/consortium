@@ -1,7 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-#
-# Fixture: [tee] with a canonical 8-4-4-4-12 UUID. Validation passes, so
-# `CONSORTIUM_TEE_UUID` is injected verbatim.
-
-[tee]
-uuid = "0f1e2d3c-4b5a-6978-8796-a5b4c3d2e1f0"
