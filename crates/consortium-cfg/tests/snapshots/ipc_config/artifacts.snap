@@ -1,9 +1,0 @@
----
-source: crates/consortium-cfg/tests/snap.rs
-expression: env_export(&content)
-input_file: crates/consortium-cfg/tests/snapshots/ipc_config/Consortium.toml
----
-CONSORTIUM_IPC_BASE=541851648
-CONSORTIUM_IPC_LENGTH=4096
-CONSORTIUM_IPC_MTU=64
-CONSORTIUM_IPC_UIO=0

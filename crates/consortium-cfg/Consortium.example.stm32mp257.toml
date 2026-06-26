@@ -1,0 +1,48 @@
+[profile]
+chip = "stm32mp257fak3"
+
+[memory]
+uio = 0
+
+[memory.ipc]
+mmap   = 0
+base   = 0x000400000
+length = 0x8000
+mtu    = 128
+
+[memory.dbg]
+mmap   = 1
+base   = 0x000408000
+length = 0x2000
+mtu    = 64
+
+[[doorbell]]
+name = "hsem"
+uio  = 1
+
+[[doorbell]]
+name = "ipcc1"
+uio  = 2
+
+[[ta]]
+name = "boundary_check"
+uuid = "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"
+
+[hmi]
+engine  = "cog"
+backend = "wayland"
+debug   = "http://127.0.0.1:5173/"
+build   = "website/dist"
+
+[peripheral.i2c1]
+owner   = "ap"
+secure  = false
+pin.sda = "PB0"
+pin.scl = "PB1"
+
+[peripheral.spi1]
+owner    = "cm33"
+secure   = false
+pin.miso = "PA6"
+pin.mosi = "PA7"
+pin.sck  = "PA5"

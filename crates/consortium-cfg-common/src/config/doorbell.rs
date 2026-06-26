@@ -14,4 +14,13 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-pub mod stm32mp;
+/// A `[[doorbell]]` entry.
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Doorbell {
+    /// Doorbell peripheral name (e.g. `hsem`, `ipcc1`). Matched against the
+    /// chip database's doorbell list.
+    pub name: String,
+    /// UIO device index used to reach this doorbell's registers from Linux.
+    pub uio: u32,
+}

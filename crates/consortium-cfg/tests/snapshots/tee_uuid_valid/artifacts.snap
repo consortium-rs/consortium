@@ -1,6 +1,0 @@
----
-source: crates/consortium-cfg/tests/snap.rs
-expression: env_export(&content)
-input_file: crates/consortium-cfg/tests/snapshots/tee_uuid_valid/Consortium.toml
----
-CONSORTIUM_TEE_UUID=0f1e2d3c-4b5a-6978-8796-a5b4c3d2e1f0

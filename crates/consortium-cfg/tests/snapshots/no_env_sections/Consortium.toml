@@ -1,7 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-#
-# Fixture: a manifest with no env-contributing sections (an aggregator-style
-# file). The export is empty.
-
-[project]
-name = "melt-pot"

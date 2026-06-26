@@ -1,6 +1,5 @@
 pub mod hardware_doorbell_party;
 pub mod hardware_doorbell_peripheral;
-pub mod irq_method;
 pub mod mcore_name;
 pub mod party;
 pub mod schema;
@@ -9,7 +8,6 @@ pub use hardware_doorbell_party::HardwareDoorbellParty;
 pub use hardware_doorbell_peripheral::{
     HardwareDoorbellPeripheral, HardwareDoorbellPeripheralType, HardwareMemory,
 };
-pub use irq_method::IrqMethod;
 pub use mcore_name::McoreName;
 pub use party::Party;
 pub use schema::{

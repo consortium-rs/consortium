@@ -1,5 +1,0 @@
-[project]
-
-[hmi]
-dist      = "ui/dist"
-debug_url = "http://localhost:5173"

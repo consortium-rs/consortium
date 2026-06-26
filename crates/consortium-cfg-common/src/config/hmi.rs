@@ -14,77 +14,37 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
-
-/// HMI build configuration consumed by `consortium-hmi` at compile time.
-///
-/// Declared in `Consortium.toml` under `[hmi]` and injected as environment
-/// variables by `ApplicationCompiler` before invoking `cargo build`.
-/// `consortium-hmi` reads them via `option_env!` at compile time; no file
-/// I/O occurs on the target device.
-#[derive(Debug, Clone)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[cfg_attr(
-    feature = "serde",
-    serde(deny_unknown_fields, rename_all = "snake_case")
-)]
-pub struct HmiConfig {
-    /// Absolute path to the compiled frontend dist directory.
-    /// Served via the `csti://` protocol in release builds.
-    /// Relative paths in `Consortium.toml` are resolved to absolute by the
-    /// builder before injection.
-    pub dist: String,
-    /// Dev-server URL loaded directly in debug builds.
-    /// When absent, debug builds fall back to the `csti://` static handler.
-    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none"))]
-    pub debug_url: Option<String>,
+/// `[hmi]` section: web-based human-machine interface configuration.
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Hmi {
+    /// Rendering engine hosting the UI.
+    pub engine: HmiEngine,
+    /// Windowing/display backend the engine renders to.
+    pub backend: HmiBackend,
+    /// Dev-server URL loaded in debug builds; absent in release builds.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub debug: Option<String>,
+    /// Path to the built frontend assets served in release builds.
+    pub build: String,
 }
 
-impl HmiConfig {
-    /// Environment variables the builder injects for this config.
-    ///
-    /// `CONSORTIUM_HMI_DIST` is always emitted; `CONSORTIUM_HMI_DEBUG_URL` is
-    /// emitted only when [`debug_url`](Self::debug_url) is set, so its absence
-    /// lets debug builds fall back to the static `csti://` handler. Consuming
-    /// crates read these with `option_env!` at compile time.
-    pub fn env_pairs(&self) -> Vec<(String, String)> {
-        let mut pairs = vec![("CONSORTIUM_HMI_DIST".to_string(), self.dist.clone())];
-        if let Some(url) = &self.debug_url {
-            pairs.push(("CONSORTIUM_HMI_DEBUG_URL".to_string(), url.clone()));
-        }
-        pairs
-    }
+/// HMI rendering engine.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum HmiEngine {
+    /// Cog/WPE WebKit shell.
+    Cog,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn env_pairs_emit_dist_and_optional_debug_url() {
-        let with_url = HmiConfig {
-            dist: "ui/dist".to_string(),
-            debug_url: Some("http://localhost:5173".to_string()),
-        };
-        assert_eq!(
-            with_url.env_pairs(),
-            [
-                ("CONSORTIUM_HMI_DIST".to_string(), "ui/dist".to_string()),
-                (
-                    "CONSORTIUM_HMI_DEBUG_URL".to_string(),
-                    "http://localhost:5173".to_string()
-                ),
-            ]
-        );
-
-        let no_url = HmiConfig {
-            dist: "ui/dist".to_string(),
-            debug_url: None,
-        };
-        assert_eq!(
-            no_url.env_pairs(),
-            [("CONSORTIUM_HMI_DIST".to_string(), "ui/dist".to_string())]
-        );
-    }
+/// HMI display backend.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum HmiBackend {
+    /// Wayland compositor.
+    Wayland,
+    /// Direct DRM/KMS rendering.
+    Drm,
+    /// Headless/offscreen rendering.
+    Headless,
 }

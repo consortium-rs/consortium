@@ -1,6 +1,0 @@
----
-source: crates/consortium-cfg/tests/snap.rs
-expression: env_export(&content)
-input_file: crates/consortium-cfg/tests/snapshots/hmi_dist_only/Consortium.toml
----
-CONSORTIUM_HMI_DIST=ui/dist
