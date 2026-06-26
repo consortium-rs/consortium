@@ -29,7 +29,7 @@
 //! with [`assert_configured`] (or a `const` assert on [`CONFIGURED`]) to get a
 //! clear "build via consortium-builder" message instead of a silent zero base.
 
-use consortium_common::env_value::{parse_u32, parse_u64};
+use consortium_cfg_common::env_value::{parse_u32, parse_u64};
 
 const fn env_or_zero(value: Option<&str>) -> &str {
     match value {

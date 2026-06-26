@@ -16,7 +16,7 @@
 
 #![cfg(all(feature = "serde", feature = "std"))]
 
-use consortium_common::config::{load_all_rifsc_chips, load_rifsc_peripherals};
+use consortium_cfg_common::config::{load_all_rifsc_chips, load_rifsc_peripherals};
 use std::fs;
 use std::path::PathBuf;
 use tempfile::TempDir;

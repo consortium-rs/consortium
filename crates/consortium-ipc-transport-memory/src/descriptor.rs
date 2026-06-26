@@ -41,7 +41,7 @@
 //! ```
 #![allow(dead_code)]
 use crate::utils::{rv_u8, rv_u32, wv_u8, wv_u32};
-use consortium_common::descriptor::{DescriptorHeader, DescriptorMagic};
+use consortium_shared_memory::descriptor::{DescriptorHeader, DescriptorMagic};
 use core::sync::atomic::Ordering;
 
 pub const CHANNEL_NUM_MAX: usize = 32;

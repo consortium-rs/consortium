@@ -1,4 +1,4 @@
-use consortium_common::descriptor::DescriptorHeader;
+use consortium_shared_memory::descriptor::DescriptorHeader;
 use defmt::{Logger, global_logger};
 
 use crate::config;

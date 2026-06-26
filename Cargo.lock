@@ -302,7 +302,7 @@ dependencies = [
 name = "consortium-builder"
 version = "0.1.0"
 dependencies = [
- "consortium-common",
+ "consortium-cfg-common",
  "serde",
  "thiserror",
  "tokio",
@@ -314,13 +314,22 @@ dependencies = [
 name = "consortium-cfg"
 version = "0.1.0"
 dependencies = [
- "consortium-common",
+ "consortium-cfg-common",
  "consortium-dts",
  "embedded-hal 1.0.0",
  "insta",
  "serde",
  "thiserror",
  "toml",
+]
+
+[[package]]
+name = "consortium-cfg-common"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_yaml",
+ "tempfile",
 ]
 
 [[package]]
@@ -366,24 +375,15 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-common"
-version = "0.1.0"
-dependencies = [
- "serde",
- "serde_yaml",
- "tempfile",
- "thiserror",
-]
-
-[[package]]
 name = "consortium-dbg-defmt"
 version = "0.1.0"
 dependencies = [
  "bitflags 2.11.1",
- "consortium-common",
+ "consortium-cfg-common",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
  "consortium-ipc-doorbell-mu",
+ "consortium-shared-memory",
  "defmt",
  "defmt-decoder",
  "hex 0.4.3",
@@ -496,12 +496,13 @@ name = "consortium-ipc-transport-memory"
 version = "0.1.0"
 dependencies = [
  "atomic-waker",
+ "consortium-cfg-common",
  "consortium-codec",
- "consortium-common",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
  "consortium-ipc-doorbell-ipcc",
  "consortium-ipc-doorbell-mu",
+ "consortium-shared-memory",
  "crc32fast",
  "embassy-executor",
  "embassy-futures",
@@ -536,7 +537,7 @@ dependencies = [
 name = "consortium-runtime-app"
 version = "0.1.0"
 dependencies = [
- "consortium-common",
+ "consortium-cfg-common",
  "consortium-dbg-defmt",
  "consortium-ffi",
  "consortium-hmi",
@@ -568,6 +569,13 @@ name = "consortium-runtime-prt"
 version = "0.1.0"
 dependencies = [
  "defmt",
+]
+
+[[package]]
+name = "consortium-shared-memory"
+version = "0.1.0"
+dependencies = [
+ "thiserror",
 ]
 
 [[package]]
@@ -1678,7 +1686,7 @@ dependencies = [
 name = "melt-pot-imx95-ta"
 version = "0.1.0"
 dependencies = [
- "consortium-common",
+ "consortium-cfg-common",
  "consortium-tee",
  "optee-teec",
  "optee-utee",
@@ -1735,7 +1743,7 @@ dependencies = [
 name = "melt-pot-stm32mp25-ta"
 version = "0.1.0"
 dependencies = [
- "consortium-common",
+ "consortium-cfg-common",
  "consortium-tee",
  "optee-teec",
  "optee-utee",

@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use consortium_common::config::{HmiConfig, SharedMemConfig};
+use consortium_cfg_common::config::{HmiConfig, SharedMemConfig};
 use std::path::{Path, PathBuf};
 use tokio::io::AsyncReadExt;
 use tokio::process::Command;
@@ -189,7 +189,7 @@ pub async fn elf_path(path: &Path, target: &str, release: bool) -> Result<PathBu
 #[cfg(test)]
 mod tests {
     use super::*;
-    use consortium_common::env_value::{parse_u32, parse_u64};
+    use consortium_cfg_common::env_value::{parse_u32, parse_u64};
     use std::collections::HashMap;
     use std::ffi::OsStr;
 
@@ -415,12 +415,12 @@ mod tests {
     /// manifest, the builder, and the TA build script agree on one value.
     #[test]
     fn toml_tee_section_round_trips_to_injected_uuid() {
-        use consortium_common::config::TEE_UUID_ENV;
+        use consortium_cfg_common::config::TEE_UUID_ENV;
         use uuid::Uuid;
 
         #[derive(serde::Deserialize)]
         struct Doc {
-            tee: consortium_common::config::TeeConfig,
+            tee: consortium_cfg_common::config::TeeConfig,
         }
         let manifest = "[tee]\nuuid = \"12345678-1234-1234-1234-123456789012\"\n";
         let doc: Doc = toml::from_str(manifest).expect("[tee] should deserialize");

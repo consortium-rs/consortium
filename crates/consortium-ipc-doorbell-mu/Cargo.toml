@@ -27,9 +27,9 @@ version.workspace = true
 # The processor side (MUA/MUB) is selected at the type level via `Side`,
 # not by a feature.
 default = ["imx95"]
-imx8mp  = []               # 1 MU instance (i.MX 8M Plus)
-imx93   = []               # 2 MU instances (i.MX 93)
-imx95   = []               # 8 MU instances (i.MX 95)
+imx8mp  = []        # 1 MU instance (i.MX 8M Plus)
+imx93   = []        # 2 MU instances (i.MX 93)
+imx95   = []        # 8 MU instances (i.MX 95)
 
 defmt = ["dep:defmt"]
 std   = ["consortium-ipc/std", "dep:tokio"]

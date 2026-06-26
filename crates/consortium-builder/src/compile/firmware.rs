@@ -14,8 +14,8 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use consortium_common::config::SharedMemConfig;
-use consortium_common::config::mcu_core::CortexMcuCore;
+use consortium_cfg_common::config::SharedMemConfig;
+use consortium_cfg_common::config::mcu_core::CortexMcuCore;
 use std::path::PathBuf;
 use thiserror::Error;
 use tokio::process::Command;

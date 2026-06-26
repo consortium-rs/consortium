@@ -2,7 +2,7 @@
 
 [platform]
 # The Rust compile targets are NOT listed here: they are the defaults looked up
-# from the chip database (`consortium_common::config::chip_map::Chip`) for this
+# from the chip database (`consortium_cfg_common::config::chip_map::Chip`) for this
 # chip (CM7 firmware target and CA55 application target).
 chip = "mimx9596cvt"
 

@@ -22,7 +22,7 @@ name              = "consortium-cfg"
 version.workspace = true
 
 [dependencies]
-consortium-common      = { features = ["serde", "std"], path = "../consortium-common" }
+consortium-cfg-common      = { path = "../consortium-cfg-common" }
 consortium-dts         = { path = "../consortium-dts" }
 embedded-hal.workspace = true
 thiserror              = "2.0.18"

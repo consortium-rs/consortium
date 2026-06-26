@@ -1,0 +1,127 @@
+name: STM32MP25
+trm: https://www.st.com/resource/en/reference_manual/rm0457-stm32mp2325xx-advanced-armbased-3264bit-mpus-stmicroelectronics.pdf
+ap: ca35
+cp:
+  - name: cm33
+    count: 1
+    variant: remote
+  - name: cm0p
+    count: 1
+    variant: manager
+memory:
+  trm_page: [229]
+  aliases:
+    - offset: 0x20000000
+      secure: false
+    - offset: 0x30000000
+      secure: true
+  regions:
+    - name: SRAM1
+      type: sram
+      base: 0x000400000
+      length: 0x00020000
+      visible: [ap, cm33]
+    - name: SRAM2
+      type: sram
+      base: 0x00060000
+      length: 0x00020000
+      visible: [ap, cm33]
+    - name: LPSRAM1
+      type: sram
+      base: 0x000C0000
+      length: 0x00002000
+      visible: [ap, cm33, cm0p]
+    - name: LPSRAM2
+      type: sram
+      base: 0x000C2000
+      length: 0x00002000
+      visible: [ap, cm33, cm0p]
+    - name: LPSRAM3
+      type: sram
+      base: 0x000C4000
+      length: 0x00004000
+      visible: [ap, cm33, cm0p]
+peripheral:
+  aliases:
+    - address: 0x50000000
+      secure: true
+    - address: 0x40000000
+      secure: false
+  doorbells:
+    - name: HSEM
+      page: 1306
+      type: hsem
+      memory:
+        base: 0x06240000
+        length: 0x00000400
+      parties:
+        - core: linux
+          irq: 199
+          page_memory: 241
+          page_irq: 1753
+        - core: optee
+          irq: 200
+          page_memory: 232
+          page_irq: 1753
+        - core: cm33
+          irq: 199
+          page_memory: 241
+          page_irq: 1471
+        - core: cm33-s
+          irq: 200
+          page_memory: 232
+          page_irq: 1741
+        - core: cm0p
+          irq: 21
+          page_memory: 249
+          page_irq: 1745
+    - name: IPCC1
+      page: 1341
+      type: ipcc
+      memory:
+        base: 0x00490000
+        length: 0x00000400
+      parties:
+        - core: linux
+          irq: 171
+          page_memory: 245
+          page_irq: 1752
+        - core: optee
+          irq: 173
+          page_memory: 236
+          page_irq: 1752
+        - core: cm33
+          irq: 171
+          page_memory: 245
+          page_irq: 1741
+        - core: cm33-s
+          irq: 173
+          page_memory: 236
+          page_irq: 1741
+    - name: IPCC2
+      page: 1341
+      type: ipcc
+      memory:
+        base: 0x06250000
+        length: 0x00000400
+      parties:
+        - core: linux
+          irq: 175
+          page_memory: 241
+          page_irq: 1752
+        - core: optee
+          irq: 177
+          page_memory: 232
+          page_irq: 1752
+        - core: cm33
+          irq: 175
+          page_memory: 241
+          page_irq: 1471
+        - core: cm33-s
+          irq: 177
+          page_memory: 232
+          page_irq: 1741
+        - core: cm0p
+          irq: 13
+          page_memory: 249
+          page_irq: 1745

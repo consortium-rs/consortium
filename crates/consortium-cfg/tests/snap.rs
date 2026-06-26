@@ -37,7 +37,7 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 
-use consortium_common::config::{HmiConfig, SharedMemConfig, TeeConfig};
+use consortium_cfg_common::config::{HmiConfig, SharedMemConfig, TeeConfig};
 
 /// The env-contributing sections of a `Consortium.toml`.
 ///

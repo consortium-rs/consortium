@@ -83,7 +83,7 @@ than generic macOS host checks.
 | Doorbells          | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`, `consortium-ipc-doorbell-ipcc` |
 | Codecs             | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                |
 | Macro helpers      | `consortium-macros-helpers`                                                                                                  |
-| Common types       | `consortium-common`                                                                                                          |
+| Common types       | `consortium-cfg-common`                                                                                                          |
 | Configuration      | `consortium-cfg`, `consortium-cfg-meta`, `consortium-dts`                                                                    |
 | Runtimes and build | `consortium-runtime-mcu`, `consortium-runtime-prt`, `consortium-runtime-app`, `consortium-builder`, `consortium-cli`         |
 | Debug              | `consortium-dbg-defmt`                                                                                                       |
@@ -124,7 +124,7 @@ and rkyv support are feature-gated modules; rkyv also exposes
 `#[derive(TrustedArchive)]` through `consortium-codec-macros`. The macro implementation
 lives in `consortium-codec-macros-impl` and is tested with trybuild and insta snapshots.
 
-`consortium-common` owns common project types and configuration helpers shared across
+`consortium-cfg-common` owns common project types and configuration helpers shared across
 crates.
 
 ## Shared-Memory IPC
@@ -199,7 +199,7 @@ Runtime i.MX feature names are split by SoC family:
 Use the `docs/src/dev/rpi/` documentation as the design reference for resource
 partitioning concepts. Code lives in the `cfg` crates.
 
-Peripheral config flows bridge `consortium-common` project config into validated
+Peripheral config flows bridge `consortium-cfg-common` project config into validated
 `consortium-cfg` types. Keep the user-facing config centered on `owner`, `secure`, and
 optional DTS pin declarations; derive STM32 RIFSC `perid` values and pinmux positions
 from metadata during session validation. i.MX and non-RIFSC peripherals should keep

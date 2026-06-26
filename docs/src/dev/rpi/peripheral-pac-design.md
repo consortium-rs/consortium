@@ -4,7 +4,7 @@
 
 This document proposes a system for declaring peripheral ownership in `Consortium.toml` and automatically generating:
 
-1. **RIF/RIFSC security configuration** — derived entirely by the builder from the chip mapping already in `consortium-common`; not user-specified.
+1. **RIF/RIFSC security configuration** — derived entirely by the builder from the chip mapping already in `consortium-cfg-common`; not user-specified.
 2. **PAC peripheral objects** (`p.i2c1`, `p.spi2`, …) for M-core firmware, exposed in `embedded-hal`-compatible format backed by `embassy-stm32` or `imxrt-hal`.
 3. **Device Tree Source (DTS) fragments** assigning peripherals owned by `"linux"` or `"optee"` to their respective domains.
 
@@ -43,7 +43,7 @@ Peripherals are declared as named subsections `[peripheral.<NAME>]`, where `<NAM
 | `secure` | bool   | when master is M-core or `"optee"` | `true` → secure-world (RIFSC SEC bit / TRDC); `false` → non-secure. Defaults to `false` for M-core, must be `true` for `"optee"` |
 | `clock`  | string | no                                 | Clock source name for this peripheral (chip-specific, e.g. `"pll4_r"`, `"hsi"`). Omit to use the chip reset default.             |
 
-No `rif_cid` — the builder derives each core's compartment ID from `Chip::programmable_rt_cores()` and `Chip::remoteproc_name()` in `consortium-common`. No `dma` — DMA is RIF-aware on both STM32MP2x (RISAB) and i.MX 9x (TRDC); assigning a peripheral automatically covers its DMA paths.
+No `rif_cid` — the builder derives each core's compartment ID from `Chip::programmable_rt_cores()` and `Chip::remoteproc_name()` in `consortium-cfg-common`. No `dma` — DMA is RIF-aware on both STM32MP2x (RISAB) and i.MX 9x (TRDC); assigning a peripheral automatically covers its DMA paths.
 
 **GPIO banks** (`gpioa`, `gpiob`, …) are first-class entries in the RIFSC/TRDC like any other peripheral and are declared the same way — no special handling required:
 
@@ -289,7 +289,7 @@ Include these from the top-level board DTS via `#include`.
 Consortium.toml
       │
       ▼
-consortium-common
+consortium-cfg-common
   ├── parse [peripheral.*] → HashMap<String, PeripheralEntry>
   ├── Chip::programmable_rt_cores()  — resolve master abbr → (CortexMcuCore, index)
   └── validate_peripherals()         — run all rules, emit structured errors
@@ -310,7 +310,7 @@ consortium-common
 
 A build-time binary (and library API consumed by `consortium-builder`) that:
 
-1. Reads `Consortium.toml` via `consortium-common`.
+1. Reads `Consortium.toml` via `consortium-cfg-common`.
 2. Resolves each `master` abbreviation to `(CortexMcuCore, index)` using `Chip::programmable_rt_cores()`.
 3. Derives the RIF Compartment ID per core from `Chip::remoteproc_name()`.
 4. Looks up each peripheral name in the chip database to get RIFSC/TRDC index, DTS node, and HAL type path.
@@ -350,7 +350,7 @@ hal_type      = "embassy_stm32::peripherals::GPIOB"
 
 ## Validation Rules
 
-All rules run inside `consortium-common`'s `Config::validate_peripherals()`, shared by both the build pipeline and the CLI:
+All rules run inside `consortium-cfg-common`'s `Config::validate_peripherals()`, shared by both the build pipeline and the CLI:
 
 1. **Uniqueness:** Each `[peripheral.*]` key is unique (TOML guarantees this syntactically; validated semantically against the chip DB).
 2. **Name validity:** All keys must exist in the chip peripheral database for the configured `chip`.
@@ -467,7 +467,7 @@ The generated struct wraps `imxrt_hal::instance::*` tokens. `imxrt-ral` instance
 
 ### Phase 1 — Schema & Validation (1 week)
 
-- [ ] Add `PeripheralEntry { master: String, secure: Option<bool>, clock: Option<String> }` to `consortium-common`.
+- [ ] Add `PeripheralEntry { master: String, secure: Option<bool>, clock: Option<String> }` to `consortium-cfg-common`.
 - [ ] Parse `[peripheral.*]` as `HashMap<String, PeripheralEntry>` in `Config::from_toml()`.
 - [ ] Implement `Config::validate_peripherals()` with rules 1–6.
 - [ ] Extend `CortexMcuCore::from_abbr()` to handle indexed variants (`"cm7_0"`, `"cm7_1"`).
@@ -478,7 +478,7 @@ The generated struct wraps `imxrt_hal::instance::*` tokens. `imxrt-ral` instance
 - [ ] Define `ChipPeripheralDb` + `ChipPeripheralEntry` structs (TOML, embedded in `consortium-pac-gen`).
 - [ ] Populate STM32MP257 database (RIFSC index, DTS node name, HAL type path).
 - [ ] Populate i.MX 93 and i.MX 95 databases (TRDC domain index, DTS node, HAL type path).
-- [ ] Expose DB lookup via `consortium-common` API so CLI and pac-gen share it.
+- [ ] Expose DB lookup via `consortium-cfg-common` API so CLI and pac-gen share it.
 
 ### Phase 3 — CLI Subcommands (1 week)
 

@@ -63,7 +63,7 @@ What remains is **hardware-specific glue** and the **application runtime layer**
   - TA-side `*_dispatched` handlers with full parameter unpacking
 - ~929 LOC of sophisticated proc macros
 
-### Configuration (`consortium-common`)
+### Configuration (`consortium-cfg-common`)
 
 - **`Config`:** Top-level with `general` + `project` sections
 - **`Chip` enum:** STM32MP2x, i.MX 9x families with traits (`has_rt_core()`, `remoteproc_name()`, etc.)
@@ -270,7 +270,7 @@ No current test harness for:
 | `consortium-runtime-app`             | 🟡 A-core runtime          | RemoteProc sysfs wrapper (requires expansion)                       |
 | `consortium-runtime-mcu`             | ❌ M-core runtime          | Stub (requires bootstrap + executor)                                |
 | `consortium-builder`                 | 🟡 Build system            | Minimal (requires cross-compilation helpers)                        |
-| `consortium-common`                  | ✅ Configuration           | Config, Chip, CortexMcuCore types                                   |
+| `consortium-cfg-common`                  | ✅ Configuration           | Config, Chip, CortexMcuCore types                                   |
 | `consortium-tee`                     | ✅ TEE support             | TeeError, TeeResult types                                           |
 | `consortium-tee-macros`              | ✅ TEE macros              | tee_service!, #[tee_command] with advanced types                    |
 | `consortium-cli`                     | ❌ Debug tool              | Stub (requires IPC monitoring)                                      |
