@@ -12,7 +12,7 @@ See `tee-sdk-design.md` for the baseline. Advanced types now fully implemented:
 | ---------------- | --------------------------------------------------------------------------------------------------------------------- |
 | Input parameters | `bool`, `u32`, `i32`, `u64`, `(u32, u32)`, `&[u8]`, `&mut [u8]`, `&mut u32`, `&mut i32`, `&mut u64`, `T: TeeParam`    |
 | Return / output  | `u32`, `u64`, `bool`, `Vec<u8>`, `T: TeeParam`                                                                        |
-| Serialization    | Pluggable codec via `#[tee_command(codec = MyCodec)]`; any codec implementing `consortium_common::codec::CodecFor<T>` |
+| Serialization    | Pluggable codec via `#[tee_command(codec = MyCodec)]`; any codec implementing `consortium_cfg_common::codec::CodecFor<T>` |
 
 ### What this document covers
 
@@ -122,7 +122,7 @@ struct MyConfig {
 }
 ```
 
-The codec type must implement `consortium_common::codec::CodecFor<T>` for your serialization format (e.g., `PostcardCodec` for [`postcard`](https://docs.rs/postcard)).
+The codec type must implement `consortium_cfg_common::codec::CodecFor<T>` for your serialization format (e.g., `PostcardCodec` for [`postcard`](https://docs.rs/postcard)).
 
 | Rust type          | Slot kind     | TA behaviour                           | CA behaviour                                | Status  |
 | ------------------ | ------------- | -------------------------------------- | ------------------------------------------- | ------- |
@@ -198,12 +198,12 @@ When the macro inspects a parameter type, it will test these rules **in order**:
 
 ### Pluggable Codec System
 
-The `#[tee_command(codec = MyCodec)]` attribute lets you choose how `TeeParam` types are serialized. Your codec type must implement `consortium_common::codec::CodecFor<T>` for each `TeeParam` type you use.
+The `#[tee_command(codec = MyCodec)]` attribute lets you choose how `TeeParam` types are serialized. Your codec type must implement `consortium_cfg_common::codec::CodecFor<T>` for each `TeeParam` type you use.
 
 ### Example: Using `PostcardCodec`
 
 ```rust
-use consortium_common::codec::PostcardCodec;
+use consortium_cfg_common::codec::PostcardCodec;
 
 #[derive(TeeParam, Serialize, Deserialize)]
 struct Config {
@@ -237,7 +237,7 @@ Most binary codecs (including `postcard` and `bincode`) are **not self-describin
 To implement a custom codec for your type `T`:
 
 ```rust
-impl consortium_common::codec::CodecFor<MyType> for MyCodec {
+impl consortium_cfg_common::codec::CodecFor<MyType> for MyCodec {
     type Error = MyError;
     type Decoded<'buf> = MyType;
 

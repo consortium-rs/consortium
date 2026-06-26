@@ -33,7 +33,7 @@ RpiSession::new()
 
 ### Key Types
 
-**`GeneralConfig`** (in `consortium-common`):
+**`GeneralConfig`** (in `consortium-cfg-common`):
 
 ```rust
 pub struct GeneralConfig {
@@ -83,7 +83,7 @@ pub struct PeripheralPinMux {
 ### Creating an RpiSession
 
 ```rust
-use consortium_common::config::{
+use consortium_cfg_common::config::{
     Config,
     load_rifsc_peripherals,
     load_stm32mp_iomux,

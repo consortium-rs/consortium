@@ -14,6 +14,8 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+pub mod components;
+pub mod database;
 pub mod error;
 pub mod peripheral;
 pub mod pin;

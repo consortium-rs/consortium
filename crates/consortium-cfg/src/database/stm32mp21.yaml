@@ -1,0 +1,49 @@
+name: STM32MP21
+trm: https://www.st.com/resource/en/reference_manual/rm0506-stm32mp21xx-advanced-armbased-3264bit-mpus-stmicroelectronics.pdf
+ap: ca35
+cp:
+  - name: cm33
+    variant: remote
+memory:
+  trm_page: [185]
+  aliases:
+    - offset: 0x20000000
+      secure: false
+    - offset: 0x30000000
+      secure: true
+  regions:
+    - name: SRAM1
+      type: sram
+      base: 0x000600000
+      length: 0x00020000
+      visible: [ap, cm33]
+peripheral:
+  aliases:
+    - address: 0x50000000
+      secure: true
+    - address: 0x40000000
+      secure: false
+  doorbells:
+    - name: IPCC1
+      page: 1170
+      type: ipcc
+      memory:
+        base: 0x00490000
+        length: 0x00000400
+      parties:
+        - core: linux
+          irq: 152
+          page_memory: 199
+          page_irq: 1444
+        - core: optee
+          irq: 154
+          page_memory: 190
+          page_irq: 1444
+        - core: cm33
+          irq: 152
+          page_memory: 199
+          page_irq: 1444
+        - core: cm33-s
+          irq: 154
+          page_memory: 190
+          page_irq: 1444

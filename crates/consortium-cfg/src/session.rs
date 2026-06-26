@@ -18,7 +18,7 @@
 
 use std::collections::HashMap;
 
-use consortium_common::config::{Config, chip_map::Chip, iomux::IomuxConfig, rif::RifConfig};
+use consortium_cfg_common::config::{Config, chip_map::Chip, iomux::IomuxConfig, rif::RifConfig};
 
 use crate::error::CfgError;
 use crate::peripheral::Peripheral;

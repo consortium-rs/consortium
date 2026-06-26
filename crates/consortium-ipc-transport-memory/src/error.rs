@@ -15,8 +15,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use super::descriptor::DescState;
-use consortium_common::descriptor::DescriptorHeaderError;
 use consortium_ipc::Doorbell;
+use consortium_shared_memory::descriptor::DescriptorHeaderError;
 #[cfg(all(feature = "std", target_os = "linux"))]
 use uio::UioError;
 

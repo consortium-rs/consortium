@@ -1,0 +1,177 @@
+name: MIMX93
+trm: https://www.nxp.com/docs/en/reference-manual/IMX93RM.pdf
+ap: ca55
+cp:
+  - name: cm33
+    variant: manager
+  - name: cm7
+    variant: remote
+memory:
+  trm_page: [65, 77, 88]
+  aliases:
+    - offset: 0x20000000
+      secure: false
+    - offset: 0x30000000
+      secure: true
+  regions:
+    - name: OCRAM
+      type: sram
+      base: 0x00480000
+      length: 0x00058000
+      visible: [ap, cm33, cm7]
+peripheral:
+  aliases:
+    - address: 0x50000000
+      secure: true
+    - address: 0x40000000
+      secure: false
+  doorbells:
+    - name: MU1
+      page: 2740
+      type: mu
+      memory:
+        base: 0x04220000
+        length: 0x00020000
+      parties:
+        - core: linux
+          irq: 224
+          page_memory: 99
+          page_irq: 127
+        - core: optee
+          irq: 224
+          page_memory: 99
+          page_irq: 127
+        - core: cm33
+          irq: 225
+          page_memory: 99
+          page_irq: 128
+        - core: cm33-s
+          irq: 225
+          page_memory: 99
+          page_irq: 128
+    - name: MU2
+      page: 2740
+      type: mu
+      memory:
+        base: 0x045B0000
+        length: 0x00020000
+      parties:
+        - core: linux
+          irq: 226
+          page_memory: 101
+          page_irq: 128
+        - core: optee
+          irq: 226
+          page_memory: 101
+          page_irq: 128
+        - core: cm33
+          irq: 227
+          page_memory: 101
+          page_irq: 128
+        - core: cm33-s
+          irq: 227
+          page_memory: 101
+          page_irq: 128
+    - name: MU3
+      page: 2740
+      type: mu
+      memory:
+        base: 0x045D0000
+        length: 0x00020000
+      parties:
+        - core: linux
+          irq: 228
+          page_memory: 101
+          page_irq: 128
+        - core: optee
+          irq: 228
+          page_memory: 101
+          page_irq: 128
+        - core: cm33
+          irq: 229
+          page_memory: 101
+          page_irq: 128
+        - core: cm33-s
+          irq: 229
+          page_memory: 101
+          page_irq: 128
+    - name: MU4
+      page: 2740
+      type: mu
+      memory:
+        base: 0x045F0000
+        length: 0x00020000
+      parties:
+        - core: linux
+          irq: 230
+          page_memory: 101
+          page_irq: 128
+        - core: optee
+          irq: 230
+          page_memory: 101
+          page_irq: 128
+        - core: cm33
+          irq: 231
+          page_memory: 101
+          page_irq: 128
+        - core: cm33-s
+          irq: 231
+          page_memory: 101
+          page_irq: 128
+    - name: MU5
+      page: 2740
+      type: mu
+      memory:
+        base: 0x04610000
+        length: 0x00020000
+      parties:
+        - core: cm7
+          irq: 205
+          page_memory: 102
+          page_irq: 127
+        - core: cm33
+          irq: 232
+          page_memory: 101
+          page_irq: 128
+        - core: cm33-s
+          irq: 232
+          page_memory: 101
+          page_irq: 128
+    - name: MU7
+      page: 4556
+      type: mu
+      memory:
+        base: 0x02430000
+        length: 0x00020000
+      parties:
+        - core: linux
+          irq: 234
+          page_memory: 106
+          page_irq: 128
+        - core: optee
+          irq: 234
+          page_memory: 106
+          page_irq: 128
+        - core: cm7
+          irq: 207
+          page_memory: 106
+          page_irq: 127
+    - name: MU8
+      page: 4556
+      type: mu
+      memory:
+        base: 0x02730000
+        length: 0x00020000
+      parties:
+        - core: linux
+          irq: 235
+          page_memory: 107
+          page_irq: 128
+        - core: optee
+          irq: 235
+          page_memory: 107
+          page_irq: 128
+        - core: cm7
+          irq: 208
+          page_memory: 107
+          page_irq: 127

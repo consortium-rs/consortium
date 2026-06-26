@@ -1,8 +1,10 @@
-use consortium_common::descriptor::{DescriptorHeader, DescriptorHeaderError, DescriptorMagic};
 use consortium_ipc_transport_memory::{
     CHANNEL_NUM_MAX, ChannelDirection, ChannelLayout, DescState, Descriptor, DescriptorError,
     VERSION, channel_table_entry_offset, descriptor_ack, descriptor_complete, descriptor_init,
     get_state, set_state,
+};
+use consortium_shared_memory::descriptor::{
+    DescriptorHeader, DescriptorHeaderError, DescriptorMagic,
 };
 use std::sync::mpsc;
 

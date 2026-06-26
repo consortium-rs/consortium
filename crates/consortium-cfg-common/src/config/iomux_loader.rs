@@ -31,7 +31,7 @@ pub fn load_stm32mp_iomux(variant: &str) -> Result<IomuxConfig, Box<dyn std::err
     // Try multiple path strategies to handle different environments (dev, test, installed)
     let manifest_dir = env!("CARGO_MANIFEST_DIR");
     let possible_paths = vec![
-        // Development: from consortium-common crate
+        // Development: from consortium-cfg-common crate
         format!("{}/../../data/stm32mp/iomux/{}.yaml", manifest_dir, variant),
         // Test environment
         format!("{}/../../data/stm32mp/iomux/{}.yaml", manifest_dir, variant),

@@ -17,5 +17,6 @@
 
 #[cfg(feature = "std")]
 pub mod config;
-pub mod descriptor;
+#[cfg(all(feature = "std", feature = "serde"))]
+pub mod database;
 pub mod env_value;

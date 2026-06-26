@@ -13,7 +13,7 @@
 //! ```
 
 use bitflags::bitflags;
-use consortium_common::descriptor::{DescriptorHeader, DescriptorMagic};
+use consortium_shared_memory::descriptor::{DescriptorHeader, DescriptorMagic};
 
 use crate::packet::{PACKET_HEADER_SIZE, Packet};
 use crate::utils::{rv_u16, wv_u16};

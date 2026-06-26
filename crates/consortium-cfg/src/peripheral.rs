@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use consortium_common::config::peripheral::Peripheral as CommonPeripheral;
+use consortium_cfg_common::config::peripheral::Peripheral as CommonPeripheral;
 use consortium_dts::Cell;
 use core::fmt::Display;
 

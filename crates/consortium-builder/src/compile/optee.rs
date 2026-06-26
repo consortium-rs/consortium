@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use consortium_common::config::TEE_UUID_ENV;
+use consortium_cfg_common::config::TEE_UUID_ENV;
 use std::path::PathBuf;
 use thiserror::Error;
 use tokio::process::Command;

@@ -57,11 +57,12 @@ side-a = []
 side-b = []
 
 [dependencies]
-consortium-common            = { default-features = false, path = "../consortium-common" }
+consortium-cfg-common            = { default-features = false, path = "../consortium-cfg-common" }
 consortium-ipc               = { default-features = false, path = "../consortium-ipc" }
 consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem" }
 consortium-ipc-doorbell-ipcc = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-ipcc" }
 consortium-ipc-doorbell-mu   = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu" }
+consortium-shared-memory     = { path = "../consortium-shared-memory" }
 crc32fast                    = { default-features = false, version = "1.5.0" }
 num_enum                     = { default-features = false, version = "0.7.3" }
 pin-project                  = { version = "1.1.11" }

@@ -16,7 +16,7 @@
 
 #[cfg(all(target_os = "linux", feature = "ta"))]
 fn main() -> Result<(), optee_utee_build::Error> {
-    use consortium_common::config::TEE_UUID_ENV;
+    use consortium_cfg_common::config::TEE_UUID_ENV;
     use optee_utee_build::TaConfig;
 
     println!("cargo:rerun-if-env-changed={TEE_UUID_ENV}");

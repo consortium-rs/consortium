@@ -266,7 +266,7 @@ crate-type = ["cdylib"]
 optee_utee = "0.4"
 consortium-tee = { path = "../../consortium-tee" }
 consortium-tee-macros = { path = "../../consortium-tee-macros" }
-consortium-common = { path = "../../consortium-common" }
+consortium-cfg-common = { path = "../../consortium-cfg-common" }
 
 # Optional: add only if using TeeParam types
 # Example: if using PostcardCodec for serialization

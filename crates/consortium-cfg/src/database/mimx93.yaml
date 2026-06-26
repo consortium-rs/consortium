@@ -1,0 +1,72 @@
+name: MIMX93
+trm: https://www.nxp.com/docs/en/reference-manual/IMX93RM.pdf
+ap: ca55
+cp:
+  - name: cm33
+    variant: remote
+memory:
+  trm_page: [43, 54]
+  aliases:
+    - offset: 0x20000000
+      secure: false
+    - offset: 0x30000000
+      secure: true
+  regions:
+    - name: OCRAM
+      type: sram
+      base: 0x00480000
+      length: 0x00040000
+      visible: [ap, cm33]
+peripheral:
+  aliases:
+    - address: 0x50000000
+      secure: true
+    - address: 0x40000000
+      secure: false
+  doorbells:
+    - name: MU1
+      page: 585
+      type: mu
+      memory:
+        base: 0x04220000
+        length: 0x00020000
+      parties:
+        - core: linux
+          irq: 21
+          page_memory: 62
+          page_irq: 93
+        - core: optee
+          irq: 21
+          page_memory: 62
+          page_irq: 93
+        - core: cm33
+          irq: 22
+          page_memory: 62
+          page_irq: 93
+        - core: cm33-s
+          irq: 22
+          page_memory: 62
+          page_irq: 93
+    - name: MU2
+      page: 585
+      type: mu
+      memory:
+        base: 0x02430000
+        length: 0x00020000
+      parties:
+        - core: linux
+          irq: 23
+          page_memory: 75
+          page_irq: 93
+        - core: optee
+          irq: 23
+          page_memory: 75
+          page_irq: 93
+        - core: cm33
+          irq: 24
+          page_memory: 75
+          page_irq: 93
+        - core: cm33-s
+          irq: 24
+          page_memory: 75
+          page_irq: 93

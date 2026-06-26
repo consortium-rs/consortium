@@ -30,7 +30,7 @@ doctest = false
 
 [features]
 dbg        = ["dep:consortium-dbg-defmt"]
-default    = ["tee", "ipc-shm", "dbg"]
+default    = ["dbg", "ipc-shm", "tee"]
 ffi        = ["consortium-ffi"]
 hmi        = ["consortium-hmi"]
 imx93      = ["consortium-ipc-transport-memory?/imx93", "imx9x"]
@@ -48,7 +48,7 @@ stm32mp2xx = ["stm32mp25x"]
 tee        = ["consortium-tee"]
 
 [target.'cfg(target_os = "linux")'.dependencies]
-consortium-common = { path = "../consortium-common" }
+consortium-cfg-common = { path = "../consortium-cfg-common" }
 consortium-dbg-defmt = { default-features = false, features = [
   "host",
 ], optional = true, path = "../consortium-dbg-defmt" }

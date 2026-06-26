@@ -4,7 +4,7 @@
 //! and passes the base pointer and length to [`HostRing::from_raw_parts`].  This module
 //! does not perform any mapping itself.
 
-use consortium_common::descriptor::DescriptorHeaderError;
+use consortium_shared_memory::descriptor::DescriptorHeaderError;
 
 use crate::descriptor::{DESCRIPTOR_SIZE, Descriptor, MAGIC, VERSION};
 

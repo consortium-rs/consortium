@@ -15,21 +15,20 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "Common utilities and types for Consortium"
+description       = "Schema and configuration types for Consortium"
 edition.workspace = true
 license.workspace = true
-name              = "consortium-common"
+name              = "consortium-cfg-common"
 version.workspace = true
 
 [features]
-default = []
+default = ["std", "serde"]
 serde   = ["dep:serde", "dep:serde_yaml"]
 std     = ["serde?/std"]
 
 [dependencies]
 serde      = { default-features = false, features = ["derive"], optional = true, version = "1.0.228" }
 serde_yaml = { optional = true, version = "0.9" }
-thiserror  = { default-features = false, version = "2.0" }
 
 [dev-dependencies]
 tempfile = "3.8"
