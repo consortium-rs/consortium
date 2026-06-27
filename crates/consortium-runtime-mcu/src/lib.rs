@@ -17,22 +17,6 @@
 
 pub mod irq;
 
-#[cfg(all(feature = "ipc-shm", not(test)))]
-const _: &str = env!(
-    "CONSORTIUM_IPC_BASE",
-    "consortium-runtime-mcu with `ipc-shm` requires the IPC physical base address: build through \
-     `consortium-builder` (which injects CONSORTIUM_IPC_BASE from the [ipc] section of \
-     Consortium.toml) rather than a plain `cargo build`."
-);
-
-#[cfg(all(feature = "dbg", not(test)))]
-const _: &str = env!(
-    "CONSORTIUM_DBG_BASE",
-    "consortium-runtime-mcu with `dbg` requires the debug physical base address: build through \
-     `consortium-builder` (which injects CONSORTIUM_DBG_BASE from the [dbg] section of \
-     Consortium.toml) rather than a plain `cargo build`."
-);
-
 #[cfg(feature = "dbg")]
 pub use consortium_dbg_defmt as dbg;
 

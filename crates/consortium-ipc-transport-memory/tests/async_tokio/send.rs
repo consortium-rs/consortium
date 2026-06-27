@@ -1,11 +1,11 @@
 use crate::common::doorbell::HostDoorbell;
 use crate::transport_support::{
-    CountingRegion, MTU, REGION_LEN, SLOT_SIZE, channel, init_two_channel_descriptor,
+    CountingRegion, MTU, REGION_LEN, SLOT_SIZE, channel, init_descriptor_with_channels,
+    init_two_channel_descriptor,
 };
 use consortium_ipc::{Chan, Primary, SendTransport};
 use consortium_ipc_transport_memory::{
-    ChannelDirection, ChannelLayout, Error, SharedMemoryTransport, channel_table_entry_offset,
-    descriptor_init, slot,
+    ChannelDirection, ChannelLayout, Error, SharedMemoryTransport, channel_table_entry_offset, slot,
 };
 use consortium_shared_memory::SramRegion;
 
@@ -27,9 +27,11 @@ fn send_returns_no_channel_when_all_tx_slots_are_unconsumed() {
     rt.block_on(async move {
         let region = unsafe { SramRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
-        let ch = unsafe { Chan::new_unchecked(0) };
-        let mut transport =
-            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch, doorbell, region, base) };
+        let ch1 = unsafe { Chan::new_unchecked(0) };
+        let ch2 = unsafe { Chan::new_unchecked(1) };
+        let mut transport = unsafe {
+            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
+        };
 
         let err = transport
             .send(b"new-payload")
@@ -53,9 +55,11 @@ fn send_accepts_payload_at_channel_capacity() {
     rt.block_on(async move {
         let region = unsafe { SramRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
-        let ch = unsafe { Chan::new_unchecked(0) };
-        let mut transport =
-            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch, doorbell, region, base) };
+        let ch1 = unsafe { Chan::new_unchecked(0) };
+        let ch2 = unsafe { Chan::new_unchecked(1) };
+        let mut transport = unsafe {
+            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
+        };
 
         transport
             .send(&payload)
@@ -85,9 +89,11 @@ fn send_rejects_payload_larger_than_channel_capacity() {
     rt.block_on(async move {
         let region = unsafe { SramRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
-        let ch = unsafe { Chan::new_unchecked(0) };
-        let mut transport =
-            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch, doorbell, region, base) };
+        let ch1 = unsafe { Chan::new_unchecked(0) };
+        let ch2 = unsafe { Chan::new_unchecked(1) };
+        let mut transport = unsafe {
+            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
+        };
 
         let err = transport
             .send(&payload)
@@ -121,8 +127,8 @@ fn send_uses_later_tx_channel_when_first_tx_slot_is_pending() {
         channel(RX_SLOT, ChannelDirection::SecondaryToPrimary),
     ];
 
+    init_descriptor_with_channels(base, MTU, &channels);
     unsafe {
-        descriptor_init(base, MTU, &channels);
         let tx0 = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(0)));
         slot::write(tx0.slot_addr(base), b"still-pending");
     }
@@ -134,9 +140,11 @@ fn send_uses_later_tx_channel_when_first_tx_slot_is_pending() {
     rt.block_on(async move {
         let region = unsafe { SramRegion::new(base, MULTI_REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
-        let ch = unsafe { Chan::new_unchecked(0) };
-        let mut transport =
-            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch, doorbell, region, base) };
+        let ch1 = unsafe { Chan::new_unchecked(0) };
+        let ch2 = unsafe { Chan::new_unchecked(1) };
+        let mut transport = unsafe {
+            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
+        };
 
         transport
             .send(b"second-slot")
@@ -165,9 +173,11 @@ fn send_flushes_region_after_writing() {
         let region = CountingRegion::new(base, REGION_LEN);
         let observed_region = region.clone();
         let (doorbell, _remote) = HostDoorbell::pair();
-        let ch = unsafe { Chan::new_unchecked(0) };
-        let mut transport =
-            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch, doorbell, region, base) };
+        let ch1 = unsafe { Chan::new_unchecked(0) };
+        let ch2 = unsafe { Chan::new_unchecked(1) };
+        let mut transport = unsafe {
+            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
+        };
 
         transport.send(b"flush-me").await.expect("send payload");
 

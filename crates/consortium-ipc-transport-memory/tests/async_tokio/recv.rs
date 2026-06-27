@@ -2,12 +2,13 @@ use std::task::Poll;
 
 use crate::common::doorbell::HostDoorbell;
 use crate::transport_support::{
-    CountingRegion, MTU, REGION_LEN, SLOT_SIZE, channel, init_two_channel_descriptor,
+    CountingRegion, MTU, REGION_LEN, SLOT_SIZE, channel, init_descriptor_with_channels,
+    init_two_channel_descriptor,
 };
 use consortium_ipc::{Chan, Doorbell, Primary, RecvTransport};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
-    channel_table_entry_offset, descriptor_init, slot,
+    channel_table_entry_offset, slot,
 };
 use consortium_shared_memory::SramRegion;
 use futures::{pin_mut, poll};
@@ -27,8 +28,8 @@ fn recv_prefers_updated_rx_channel_over_fallback_order() {
         channel(RX1_SLOT, ChannelDirection::SecondaryToPrimary),
     ];
 
+    init_descriptor_with_channels(base, MTU, &channels);
     unsafe {
-        descriptor_init(base, MTU, &channels);
         let rx0 = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
         let rx1 = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(2)));
         slot::write(rx0.slot_addr(base), b"fallback-first");
@@ -43,9 +44,11 @@ fn recv_prefers_updated_rx_channel_over_fallback_order() {
     rt.block_on(async move {
         let region = unsafe { SramRegion::new(base, MULTI_REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
-        let ch = unsafe { Chan::new_unchecked(0) };
-        let mut transport =
-            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch, doorbell, region, base) };
+        let ch1 = unsafe { Chan::new_unchecked(0) };
+        let ch2 = unsafe { Chan::new_unchecked(1) };
+        let mut transport = unsafe {
+            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
+        };
 
         let mut rx = [0; MTU];
         let n = transport.recv(&mut rx).await.expect("receive updated slot");
@@ -79,9 +82,11 @@ fn recv_falls_back_when_updated_id_is_wrong_direction() {
     rt.block_on(async move {
         let region = unsafe { SramRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
-        let ch = unsafe { Chan::new_unchecked(0) };
-        let mut transport =
-            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch, doorbell, region, base) };
+        let ch1 = unsafe { Chan::new_unchecked(0) };
+        let ch2 = unsafe { Chan::new_unchecked(1) };
+        let mut transport = unsafe {
+            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
+        };
 
         let mut rx = [0; MTU];
         let n = transport
@@ -111,9 +116,11 @@ fn recv_falls_back_when_updated_id_is_out_of_range() {
     rt.block_on(async move {
         let region = unsafe { SramRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
-        let ch = unsafe { Chan::new_unchecked(0) };
-        let mut transport =
-            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch, doorbell, region, base) };
+        let ch1 = unsafe { Chan::new_unchecked(0) };
+        let ch2 = unsafe { Chan::new_unchecked(1) };
+        let mut transport = unsafe {
+            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
+        };
 
         let mut rx = [0; MTU];
         let n = transport
@@ -137,9 +144,11 @@ fn recv_is_pending_when_no_rx_slot_contains_data() {
     rt.block_on(async move {
         let region = unsafe { SramRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
-        let ch = unsafe { Chan::new_unchecked(0) };
-        let mut transport =
-            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch, doorbell, region, base) };
+        let ch1 = unsafe { Chan::new_unchecked(0) };
+        let ch2 = unsafe { Chan::new_unchecked(1) };
+        let mut transport = unsafe {
+            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
+        };
         let mut rx = [0; MTU];
 
         let recv = transport.recv(&mut rx);
@@ -161,9 +170,11 @@ fn recv_future_becomes_ready_after_pending_poll_then_doorbell_ring() {
     rt.block_on(async move {
         let region = unsafe { SramRegion::new(base, REGION_LEN) };
         let (app_doorbell, remote_doorbell) = HostDoorbell::pair();
-        let ch = unsafe { Chan::new_unchecked(0) };
-        let mut transport =
-            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch, app_doorbell, region, base) };
+        let ch1 = unsafe { Chan::new_unchecked(0) };
+        let ch2 = unsafe { Chan::new_unchecked(1) };
+        let mut transport = unsafe {
+            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, app_doorbell, region, base)
+        };
         let mut rx = [0; MTU];
 
         let recv = transport.recv(&mut rx);
@@ -175,7 +186,7 @@ fn recv_future_becomes_ready_after_pending_poll_then_doorbell_ring() {
             slot::write(rx_layout.slot_addr(base), b"woken");
             base.add(RX_UPDATED_ID_OFFSET).write_volatile(1);
         }
-        remote_doorbell.ring(ch).expect("wake app doorbell");
+        remote_doorbell.ring(ch2).expect("wake app doorbell");
 
         match poll!(recv.as_mut()) {
             Poll::Ready(Ok(n)) => assert_eq!(&rx[..n], b"woken"),
@@ -206,9 +217,11 @@ fn pending_recv_invalidates_region_once() {
         let region = CountingRegion::new(base, REGION_LEN);
         let observed_region = region.clone();
         let (doorbell, _remote) = HostDoorbell::pair();
-        let ch = unsafe { Chan::new_unchecked(0) };
-        let mut transport =
-            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch, doorbell, region, base) };
+        let ch1 = unsafe { Chan::new_unchecked(0) };
+        let ch2 = unsafe { Chan::new_unchecked(1) };
+        let mut transport = unsafe {
+            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
+        };
         let mut rx = [0; MTU];
 
         let recv = transport.recv(&mut rx);
@@ -240,9 +253,11 @@ fn immediate_recv_does_not_invalidate_region() {
         let region = CountingRegion::new(base, REGION_LEN);
         let observed_region = region.clone();
         let (doorbell, _remote) = HostDoorbell::pair();
-        let ch = unsafe { Chan::new_unchecked(0) };
-        let mut transport =
-            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch, doorbell, region, base) };
+        let ch1 = unsafe { Chan::new_unchecked(0) };
+        let ch2 = unsafe { Chan::new_unchecked(1) };
+        let mut transport = unsafe {
+            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
+        };
 
         let mut rx = [0; MTU];
         let n = transport

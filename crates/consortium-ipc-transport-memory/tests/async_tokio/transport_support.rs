@@ -4,9 +4,10 @@ use std::sync::{
 };
 
 use consortium_ipc_transport_memory::{
-    ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransportable,
-    descriptor_init, slot,
+    ChannelDirection, ChannelLayout, DescState, MAGIC, RX_UPDATED_ID_OFFSET,
+    RegionSharedMemoryTransportable, VERSION, channel_table_entry_offset, slot,
 };
+use consortium_shared_memory::descriptor::DescriptorHeader;
 use consortium_shared_memory::{Region, SramRegion};
 
 pub const MTU: usize = 64;
@@ -27,9 +28,23 @@ pub fn init_two_channel_descriptor(base: *mut u8) {
     let a_to_m = channel(A_TO_M_SLOT, ChannelDirection::PrimaryToSecondary);
     let m_to_a = channel(M_TO_A_SLOT, ChannelDirection::SecondaryToPrimary);
 
+    init_descriptor_with_channels(base, MTU, &[a_to_m, m_to_a]);
+}
+
+pub fn init_descriptor_with_channels(base: *mut u8, mtu: usize, channels: &[ChannelLayout]) {
     unsafe {
-        descriptor_init(base, MTU, &[a_to_m, m_to_a]);
+        DescriptorHeader::new(MAGIC, VERSION).write_to_raw_ptr(base);
+        base.add(0x06).write_volatile(channels.len() as u8);
+        (base.add(0x10) as *mut u32).write_volatile(mtu as u32);
+        (base.add(0x18) as *mut u32).write_volatile(DescState::Ready as u32);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
+
+        for (index, channel) in channels.iter().enumerate() {
+            let entry = base.add(channel_table_entry_offset(index));
+            (entry as *mut u32).write_volatile(channel.offset);
+            (entry.add(4) as *mut u32).write_volatile(channel.size);
+            entry.add(8).write_volatile(channel.direction as u8);
+        }
     }
 }
 
@@ -87,7 +102,7 @@ impl Region for CountingRegion {
     }
 }
 
-impl SharedMemoryTransportable for CountingRegion {}
+impl RegionSharedMemoryTransportable for CountingRegion {}
 
 pub type HostSramTransportTx<S> = consortium_ipc_transport_memory::SharedMemoryTransportTx<
     S,

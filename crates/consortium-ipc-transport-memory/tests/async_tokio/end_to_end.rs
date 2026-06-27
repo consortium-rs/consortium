@@ -28,10 +28,13 @@ fn shared_memory_transport_round_trips_over_one_shared_descriptor() {
 
             rt.block_on(async move {
                 let base = base_addr as *mut u8;
-                let ch = unsafe { Chan::new_unchecked(0) };
+                let ch_tx = unsafe { Chan::new_unchecked(0) };
+                let ch_rx = unsafe { Chan::new_unchecked(1) };
                 let region = unsafe { SramRegion::new(base, REGION_LEN) };
                 let mut transport = unsafe {
-                    SharedMemoryTransport::<Primary, _, _>::new(ch, a_doorbell, region, base)
+                    SharedMemoryTransport::<Primary, _, _>::new(
+                        ch_tx, ch_rx, a_doorbell, region, base,
+                    )
                 };
 
                 transport.send(b"ping").await.expect("A sends ping");
@@ -49,10 +52,13 @@ fn shared_memory_transport_round_trips_over_one_shared_descriptor() {
 
             rt.block_on(async move {
                 let base = base_addr as *mut u8;
-                let ch = unsafe { Chan::new_unchecked(0) };
+                let ch_rx = unsafe { Chan::new_unchecked(0) };
+                let ch_tx = unsafe { Chan::new_unchecked(1) };
                 let region = unsafe { SramRegion::new(base, REGION_LEN) };
                 let mut transport = unsafe {
-                    SharedMemoryTransport::<Secondary, _, _>::new(ch, m_doorbell, region, base)
+                    SharedMemoryTransport::<Secondary, _, _>::new(
+                        ch_tx, ch_rx, m_doorbell, region, base,
+                    )
                 };
 
                 let mut buf = [0u8; MTU];

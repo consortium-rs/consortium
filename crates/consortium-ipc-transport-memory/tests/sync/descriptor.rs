@@ -1,24 +1,98 @@
+use std::{
+    convert::Infallible,
+    future::Future,
+    pin::Pin,
+    task::{Context, Poll},
+};
+
+use consortium_ipc::{Chan, Doorbell, Primary, Secondary};
 use consortium_ipc_transport_memory::{
     CHANNEL_NUM_MAX, ChannelDirection, ChannelLayout, DescState, Descriptor, DescriptorError,
-    VERSION, channel_table_entry_offset, descriptor_ack, descriptor_complete, descriptor_init,
-    get_state, set_state,
+    Error, SharedMemoryTransport, VERSION, channel_table_entry_offset, descriptor_complete,
+    get_state, set_state, slot,
 };
-use consortium_shared_memory::descriptor::{
-    DescriptorHeader, DescriptorHeaderError, DescriptorMagic,
+use consortium_shared_memory::{
+    SramRegion,
+    descriptor::{DescriptorHeader, DescriptorHeaderError, DescriptorMagic},
 };
-use std::sync::mpsc;
+use futures::executor::block_on;
 
-const DESCRIPTOR_LEN: usize = 0x20 + 2 * 12;
+const DESCRIPTOR_LEN: usize = 0x800;
 const NUM_CHANNELS_OFFSET: usize = 0x06;
 const RX_TRANSFER_SIZE_OFFSET: usize = 0x10;
 const STATE_OFFSET: usize = 0x18;
 
-fn channel(offset: usize, size: usize, direction: ChannelDirection) -> ChannelLayout {
-    let mut channel = ChannelLayout::default();
-    channel.offset = offset as u32;
-    channel.size = size as u32;
-    channel.direction = direction;
-    channel
+type PrimaryTransport = SharedMemoryTransport<Primary, ImmediateDoorbell, SramRegion>;
+type SecondaryTransport = SharedMemoryTransport<Secondary, ImmediateDoorbell, SramRegion>;
+
+#[derive(Clone, Copy, Debug)]
+struct ImmediateDoorbell;
+
+struct ImmediateWaitFut {
+    ch: Chan,
+}
+
+impl Future for ImmediateWaitFut {
+    type Output = Result<Chan, Infallible>;
+
+    fn poll(self: Pin<&mut Self>, _cx: &mut Context<'_>) -> Poll<Self::Output> {
+        Poll::Ready(Ok(self.ch))
+    }
+}
+
+impl Doorbell for ImmediateDoorbell {
+    type Error = Infallible;
+    type WaitFut<'a> = ImmediateWaitFut;
+
+    fn ring(&self, _ch: Chan) -> Result<(), Self::Error> {
+        Ok(())
+    }
+
+    fn wait<'a>(&'a self, ch: Chan) -> Self::WaitFut<'a>
+    where
+        Self: 'a,
+    {
+        ImmediateWaitFut { ch }
+    }
+
+    fn pending(&self, _ch: Chan) -> bool {
+        true
+    }
+}
+
+fn init_descriptor(base: *mut u8, num_channels: u8, transfer_size: usize) {
+    let doorbell = ImmediateDoorbell;
+    let ch = unsafe { Chan::new_unchecked(0) };
+
+    block_on(async {
+        unsafe {
+            PrimaryTransport::descriptor_init(base, num_channels, transfer_size, &doorbell, ch, ch)
+                .await
+                .expect("primary descriptor init should complete");
+        }
+    });
+}
+
+fn ack_descriptor(
+    base: *mut u8,
+    num_channels: usize,
+    transfer_size: usize,
+) -> Result<Descriptor, Error<ImmediateDoorbell>> {
+    let doorbell = ImmediateDoorbell;
+    let ch = unsafe { Chan::new_unchecked(0) };
+
+    block_on(async {
+        unsafe {
+            SecondaryTransport::descriptor_ack(base, num_channels, transfer_size, &doorbell, ch, ch)
+                .await
+        }
+    })
+}
+
+fn write_u8(base: *mut u8, offset: usize, value: u8) {
+    unsafe {
+        base.add(offset).write_volatile(value);
+    }
 }
 
 fn write_u32(base: *mut u8, offset: usize, value: u32) {
@@ -35,34 +109,31 @@ fn read_u32(base: *const u8, offset: usize) -> u32 {
 fn descriptor_init_writes_documented_layout_offsets() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
-    let channels = [
-        channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary),
-        channel(0x180, 0x40, ChannelDirection::SecondaryToPrimary),
-    ];
 
-    unsafe {
-        descriptor_init(base, 96, &channels);
-    }
+    init_descriptor(base, 2, 96);
 
     assert_eq!(backing[4], VERSION);
     assert_eq!(backing[5], 0, "header reserved byte must stay reserved");
     assert_eq!(backing[NUM_CHANNELS_OFFSET], 2);
     assert_eq!(backing[7], 0, "descriptor reserved byte must stay reserved");
     assert_eq!(read_u32(base, RX_TRANSFER_SIZE_OFFSET), 96);
-    assert_eq!(read_u32(base, STATE_OFFSET), DescState::MReady as u32);
+    assert_eq!(read_u32(base, STATE_OFFSET), DescState::Ready as u32);
 
     let descriptor = unsafe { Descriptor::from_raw_ptr(base) };
+    let slot_size = (slot::SLOT_HEADER + 96) as u32;
     assert_eq!(descriptor.num_channels, 2);
     assert_eq!(descriptor.rx_mtu, 96);
-    assert_eq!(descriptor.state, DescState::MReady);
-    assert_eq!(descriptor.channels[0].offset, 0x100);
-    assert_eq!(descriptor.channels[0].size, 0x80);
+    assert_eq!(descriptor.state, DescState::Ready);
+    assert_eq!(descriptor.channels[0].size, slot_size);
     assert_eq!(
         descriptor.channels[0].direction,
         ChannelDirection::PrimaryToSecondary
     );
-    assert_eq!(descriptor.channels[1].offset, 0x180);
-    assert_eq!(descriptor.channels[1].size, 0x40);
+    assert_eq!(
+        descriptor.channels[1].offset,
+        descriptor.channels[0].offset + slot_size
+    );
+    assert_eq!(descriptor.channels[1].size, slot_size);
     assert_eq!(
         descriptor.channels[1].direction,
         ChannelDirection::SecondaryToPrimary
@@ -89,17 +160,11 @@ fn set_and_get_state_use_the_state_word() {
 fn descriptor_ack_validates_and_marks_descriptor_ready() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
-    let channels = [
-        channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary),
-        channel(0x180, 0x40, ChannelDirection::SecondaryToPrimary),
-    ];
 
-    unsafe {
-        descriptor_init(base, 64, &channels);
-    }
+    init_descriptor(base, 2, 64);
 
-    let descriptor = unsafe { descriptor_ack(base, channels.len(), 128) }
-        .expect("descriptor should be ready to acknowledge");
+    let descriptor =
+        ack_descriptor(base, 2, 128).expect("descriptor should be ready to acknowledge");
 
     assert_eq!(descriptor.num_channels, 2);
     assert_eq!(descriptor.state, DescState::Ready);
@@ -120,62 +185,55 @@ fn descriptor_ack_validates_and_marks_descriptor_ready() {
 fn two_threads_complete_descriptor_handshake() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base_addr = backing.as_mut_ptr() as usize;
-    let (m_ready_tx, m_ready_rx) = mpsc::channel();
-    let (a_ready_tx, a_ready_rx) = mpsc::channel();
+    let (init_tx, init_rx) = std::sync::mpsc::channel();
+    let (ack_tx, ack_rx) = std::sync::mpsc::channel();
 
     let m_side = std::thread::spawn(move || {
         let base = base_addr as *mut u8;
-        let channels = [
-            channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary),
-            channel(0x180, 0x80, ChannelDirection::SecondaryToPrimary),
-        ];
+        init_descriptor(base, 2, 96);
+        assert_eq!(unsafe { get_state(base) }, DescState::Ready);
+        init_tx.send(()).expect("signal descriptor is initialized");
 
-        unsafe {
-            descriptor_init(base, 96, &channels);
-        }
-        assert_eq!(unsafe { get_state(base) }, DescState::MReady);
-        m_ready_tx.send(()).expect("signal descriptor is MReady");
-
-        a_ready_rx.recv().expect("wait for A-side ack");
+        ack_rx.recv().expect("wait for secondary ack");
         let transfer_size = unsafe { descriptor_complete(base) };
         assert_eq!(transfer_size, 128);
         assert_eq!(unsafe { get_state(base) }, DescState::Ready);
     });
 
     let a_side = std::thread::spawn(move || {
-        m_ready_rx.recv().expect("wait for M-side init");
+        init_rx.recv().expect("wait for primary init");
 
         let base = base_addr as *mut u8;
-        let descriptor =
-            unsafe { descriptor_ack(base, 2, 128) }.expect("A-side acknowledges descriptor");
+        let descriptor = ack_descriptor(base, 2, 128).expect("secondary acknowledges descriptor");
 
         assert_eq!(descriptor.num_channels, 2);
         assert_eq!(descriptor.tx_mtu, 128);
         assert_eq!(descriptor.state, DescState::Ready);
         assert_eq!(unsafe { get_state(base) }, DescState::Ready);
-        a_ready_tx.send(()).expect("signal descriptor is Ready");
+        ack_tx.send(()).expect("signal descriptor is acknowledged");
     });
 
-    m_side.join().expect("M-side handshake completes");
-    a_side.join().expect("A-side handshake completes");
+    m_side.join().expect("primary-side handshake completes");
+    a_side.join().expect("secondary-side handshake completes");
 }
 
 #[test]
 fn descriptor_ack_rejects_bad_magic() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
-    let channels = [channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary)];
 
+    init_descriptor(base, 1, 64);
     unsafe {
-        descriptor_init(base, 64, &channels);
         DescriptorHeader::new(DescriptorMagic::DEBUG, VERSION).write_to_raw_ptr(base);
     }
 
-    let err = unsafe { descriptor_ack(base, channels.len(), 64) }
-        .expect_err("debug descriptor magic should be rejected for IPC");
+    let err =
+        ack_descriptor(base, 1, 64).expect_err("debug descriptor magic should be rejected for IPC");
     assert!(matches!(
         err,
-        DescriptorError::Header(DescriptorHeaderError::BadMagic { .. })
+        Error::Descriptor(DescriptorError::Header(
+            DescriptorHeaderError::BadMagic { .. }
+        ))
     ));
 }
 
@@ -183,37 +241,35 @@ fn descriptor_ack_rejects_bad_magic() {
 fn descriptor_ack_rejects_bad_version() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
-    let channels = [channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary)];
 
-    unsafe {
-        descriptor_init(base, 64, &channels);
-        base.add(4).write_volatile(VERSION + 1);
-    }
+    init_descriptor(base, 1, 64);
+    write_u8(base, 4, VERSION + 1);
 
-    let err = unsafe { descriptor_ack(base, channels.len(), 64) }
-        .expect_err("descriptor version mismatch should be rejected");
+    let err =
+        ack_descriptor(base, 1, 64).expect_err("descriptor version mismatch should be rejected");
     assert!(matches!(
         err,
-        DescriptorError::Header(DescriptorHeaderError::BadVersion(_, _))
+        Error::Descriptor(DescriptorError::Header(DescriptorHeaderError::BadVersion(
+            _,
+            _
+        )))
     ));
 }
 
 #[test]
-fn descriptor_ack_rejects_non_mready_state() {
+fn descriptor_ack_rejects_non_ready_state() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
-    let channels = [channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary)];
 
+    init_descriptor(base, 1, 64);
     unsafe {
-        descriptor_init(base, 64, &channels);
         set_state(base, DescState::Proposed);
     }
 
-    let err = unsafe { descriptor_ack(base, channels.len(), 64) }
-        .expect_err("descriptor must be MReady before ack");
+    let err = ack_descriptor(base, 1, 64).expect_err("descriptor must be Ready before ack");
     assert!(matches!(
         err,
-        DescriptorError::NotReady(DescState::Proposed)
+        Error::Descriptor(DescriptorError::NotReady(DescState::Proposed))
     ));
 }
 
@@ -221,43 +277,34 @@ fn descriptor_ack_rejects_non_mready_state() {
 fn descriptor_ack_rejects_channel_count_mismatch() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
-    let channels = [channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary)];
 
-    unsafe {
-        descriptor_init(base, 64, &channels);
-    }
+    init_descriptor(base, 1, 64);
 
-    let err = unsafe { descriptor_ack(base, 2, 64) }
+    let err = ack_descriptor(base, 2, 64)
         .expect_err("descriptor channel count mismatch should be rejected");
     assert!(matches!(
         err,
-        DescriptorError::InvalidChannelCount {
+        Error::Descriptor(DescriptorError::InvalidChannelCount {
             expected: 2,
             actual: 1
-        }
+        })
     ));
 }
 
 #[test]
 fn descriptor_ack_rejects_too_many_channels_before_reading_table() {
-    let mut backing = vec![0; 0x20 + (CHANNEL_NUM_MAX + 1) * 12];
+    let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
-    let channels = [channel(0x200, 0x80, ChannelDirection::PrimaryToSecondary)];
 
-    unsafe {
-        descriptor_init(base, 64, &channels);
-        base.add(NUM_CHANNELS_OFFSET)
-            .write_volatile((CHANNEL_NUM_MAX + 1) as u8);
-    }
+    init_descriptor(base, 1, 64);
+    write_u8(base, NUM_CHANNELS_OFFSET, (CHANNEL_NUM_MAX + 1) as u8);
 
-    let err = unsafe { descriptor_ack(base, CHANNEL_NUM_MAX + 1, 64) }
+    let err = ack_descriptor(base, CHANNEL_NUM_MAX + 1, 64)
         .expect_err("oversized channel table should be rejected");
     assert!(matches!(
         err,
-        DescriptorError::InvalidChannelCount {
-            expected,
-            actual
-        } if expected == CHANNEL_NUM_MAX + 1 && actual == CHANNEL_NUM_MAX + 1
+        Error::Descriptor(DescriptorError::InvalidChannelCount { expected, actual })
+            if expected == CHANNEL_NUM_MAX + 1 && actual == CHANNEL_NUM_MAX + 1
     ));
 }
 
@@ -265,30 +312,29 @@ fn descriptor_ack_rejects_too_many_channels_before_reading_table() {
 fn descriptor_ack_rejects_invalid_channel_layouts() {
     let cases = [
         (
-            channel(0x20, 0x80, ChannelDirection::PrimaryToSecondary),
+            0x20,
+            (slot::SLOT_HEADER + 64) as u32,
             "slot overlaps descriptor header or channel table",
         ),
-        (
-            channel(0x100, 8, ChannelDirection::PrimaryToSecondary),
-            "slot is smaller than the slot header",
-        ),
+        (0x200, 8, "slot is smaller than the slot header"),
     ];
 
-    for (layout, reason) in cases {
+    for (offset, size, reason) in cases {
         let mut backing = vec![0; DESCRIPTOR_LEN];
         let base = backing.as_mut_ptr();
-        unsafe {
-            descriptor_init(base, 64, &[layout]);
-        }
+        let entry = channel_table_entry_offset(0);
+        init_descriptor(base, 1, 64);
+        write_u32(base, entry, offset);
+        write_u32(base, entry + 4, size);
 
-        let err = unsafe { descriptor_ack(base, 1, 64) }
-            .expect_err("invalid channel layout should be rejected");
+        let err =
+            ack_descriptor(base, 1, 64).expect_err("invalid channel layout should be rejected");
         assert!(matches!(
             err,
-            DescriptorError::InvalidChannel {
+            Error::Descriptor(DescriptorError::InvalidChannel {
                 index: 0,
                 reason: got
-            } if got == reason
+            }) if got == reason
         ));
     }
 }
@@ -297,22 +343,18 @@ fn descriptor_ack_rejects_invalid_channel_layouts() {
 fn descriptor_ack_rejects_unrecognized_channel_direction() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
-    let channels = [channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary)];
 
-    unsafe {
-        descriptor_init(base, 64, &channels);
-        base.add(channel_table_entry_offset(0) + 8)
-            .write_volatile(0x42);
-    }
+    init_descriptor(base, 1, 64);
+    write_u8(base, channel_table_entry_offset(0) + 8, 0x42);
 
-    let err = unsafe { descriptor_ack(base, 1, 64) }
-        .expect_err("unrecognized channel direction should be rejected");
+    let err =
+        ack_descriptor(base, 1, 64).expect_err("unrecognized channel direction should be rejected");
     assert!(matches!(
         err,
-        DescriptorError::InvalidChannel {
+        Error::Descriptor(DescriptorError::InvalidChannel {
             index: 0,
             reason: "direction is unrecognized"
-        }
+        })
     ));
 }
 

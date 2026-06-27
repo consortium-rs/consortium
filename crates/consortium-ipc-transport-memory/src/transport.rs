@@ -15,9 +15,14 @@ use crate::{
     utils::rv_u8,
 };
 
+pub trait RegionSharedMemoryTransportable: consortium_shared_memory::region::Region {}
+
+impl RegionSharedMemoryTransportable for DdrRegion {}
+impl RegionSharedMemoryTransportable for SramRegion {}
+
 /// # Safety
 /// `base` must be valid for reads/writes covering the full descriptor layout.
-unsafe fn send_bytes<S: Side, D: Doorbell, R: Region>(
+unsafe fn send_bytes<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable>(
     ch: Chan,
     doorbell: &D,
     region: &R,
@@ -207,8 +212,9 @@ unsafe fn arm_wait<D: Doorbell + Send + 'static>(
     core::task::Poll::Pending
 }
 
-pub struct SharedMemoryTransport<S: Side, D: Doorbell, R: SharedMemoryTransportable> {
-    ch: Chan,
+pub struct SharedMemoryTransport<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> {
+    ch_tx: Chan,
+    ch_rx: Chan,
     doorbell: D,
     region: R,
     /// Base pointer to offset 0x00 of the shared memory region (descriptor header).
@@ -219,7 +225,7 @@ pub struct SharedMemoryTransport<S: Side, D: Doorbell, R: SharedMemoryTransporta
     _side: PhantomData<S>,
 }
 
-impl<S: Side, D: Doorbell, R: SharedMemoryTransportable> SharedMemoryTransport<S, D, R> {
+impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<S, D, R> {
     /// Construct a `SharedMemoryTransport` for an explicit [`Side`] `S`.
     ///
     /// Channel directions in the descriptor are absolute
@@ -229,9 +235,10 @@ impl<S: Side, D: Doorbell, R: SharedMemoryTransportable> SharedMemoryTransport<S
     /// # Safety
     ///
     /// Same invariants as [`new`](SharedMemoryTransport::new).
-    pub unsafe fn new(ch: Chan, doorbell: D, region: R, base: *mut u8) -> Self {
+    pub unsafe fn new(ch_tx: Chan, ch_rx: Chan, doorbell: D, region: R, base: *mut u8) -> Self {
         Self {
-            ch,
+            ch_tx,
+            ch_rx,
             doorbell,
             region,
             base,
@@ -273,7 +280,7 @@ impl<S: Side, D: Doorbell, R: SharedMemoryTransportable> SharedMemoryTransport<S
         let rx_region = self.region.clone();
         (
             SharedMemoryTransportTx {
-                ch: self.ch,
+                ch: self.ch_tx,
                 doorbell: self.doorbell,
                 region: self.region,
                 base: self.base,
@@ -281,7 +288,7 @@ impl<S: Side, D: Doorbell, R: SharedMemoryTransportable> SharedMemoryTransport<S
                 _side: PhantomData,
             },
             SharedMemoryTransportRx {
-                ch: self.ch,
+                ch: self.ch_rx,
                 doorbell: rx_doorbell,
                 region: rx_region,
                 base: self.base,
@@ -293,7 +300,7 @@ impl<S: Side, D: Doorbell, R: SharedMemoryTransportable> SharedMemoryTransport<S
 }
 
 /// Send-only half produced by [`SharedMemoryTransport::split`].
-pub struct SharedMemoryTransportTx<S: Side, D: Doorbell, R: SharedMemoryTransportable> {
+pub struct SharedMemoryTransportTx<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> {
     ch: Chan,
     doorbell: D,
     region: R,
@@ -303,7 +310,7 @@ pub struct SharedMemoryTransportTx<S: Side, D: Doorbell, R: SharedMemoryTranspor
 }
 
 /// Receive-only half produced by [`SharedMemoryTransport::split`].
-pub struct SharedMemoryTransportRx<S: Side, D: Doorbell, R: SharedMemoryTransportable> {
+pub struct SharedMemoryTransportRx<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> {
     ch: Chan,
     doorbell: D,
     region: R,
@@ -317,21 +324,21 @@ pub struct SharedMemoryTransportRx<S: Side, D: Doorbell, R: SharedMemoryTranspor
 // the safe API; the only aliasing is the intentional inter-processor sharing modelled
 // by the doorbell/region abstraction.  Sending the transport to another thread is
 // sound when D and R are both Send.
-unsafe impl<S: Side, D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
+unsafe impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Send
     for SharedMemoryTransport<S, D, R>
 {
 }
 // SAFETY: the transmit half owns only the raw base pointer and never exposes shared
 // references to the pointed-to memory through the safe API. Moving it is sound
 // when its doorbell and region handles are Send.
-unsafe impl<S: Side, D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
+unsafe impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Send
     for SharedMemoryTransportTx<S, D, R>
 {
 }
 // SAFETY: the receive half owns only the raw base pointer and never exposes shared
 // references to the pointed-to memory through the safe API. Moving it is sound
 // when its doorbell and region handles are Send.
-unsafe impl<S: Side, D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
+unsafe impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Send
     for SharedMemoryTransportRx<S, D, R>
 {
 }
@@ -341,14 +348,14 @@ unsafe impl<S: Side, D: Doorbell + Send, R: SharedMemoryTransportable + Send> Se
 pub trait RecvAccess {
     type S: Side;
     type D: Doorbell + 'static;
-    type R: SharedMemoryTransportable;
+    type R: RegionSharedMemoryTransportable;
     fn doorbell(&self) -> &Self::D;
     fn region(&self) -> &Self::R;
     fn base(&self) -> *mut u8;
     fn ch(&self) -> Chan;
 }
 
-impl<S: Side, D: Doorbell + 'static, R: SharedMemoryTransportable> RecvAccess
+impl<S: Side, D: Doorbell + 'static, R: RegionSharedMemoryTransportable> RecvAccess
     for SharedMemoryTransport<S, D, R>
 {
     type S = S;
@@ -364,11 +371,11 @@ impl<S: Side, D: Doorbell + 'static, R: SharedMemoryTransportable> RecvAccess
         self.base
     }
     fn ch(&self) -> Chan {
-        self.ch
+        self.ch_rx
     }
 }
 
-impl<S: Side, D: Doorbell + 'static, R: SharedMemoryTransportable> RecvAccess
+impl<S: Side, D: Doorbell + 'static, R: RegionSharedMemoryTransportable> RecvAccess
     for SharedMemoryTransportRx<S, D, R>
 {
     type S = S;
@@ -399,7 +406,7 @@ impl<S: Side, D: Doorbell + 'static, R: SharedMemoryTransportable> RecvAccess
 /// type; neither `D` nor `R` is referenced at runtime (the result is already
 /// computed), but both must appear as type parameters so the GAT `where Self: 'a`
 /// bound — which implies `D: 'a` and `R: 'a` — can be satisfied.
-pub struct SendFut<'a, D: Doorbell, R: SharedMemoryTransportable> {
+pub struct SendFut<'a, D: Doorbell, R: RegionSharedMemoryTransportable> {
     result: Result<(), Error<D>>,
     _ph: PhantomData<(&'a D, &'a R)>,
 }
@@ -421,7 +428,10 @@ pub struct RecvFut<'a, T: RecvAccess> {
 }
 
 // SAFETY: the pre-computed result contains no non-Send types; D::Error is Send when D: Send.
-unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send for SendFut<'_, D, R> {}
+unsafe impl<D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Send
+    for SendFut<'_, D, R>
+{
+}
 // SAFETY: the raw pointer is exclusively owned by this future for its lifetime;
 // all concrete T, T::D, and T::R types used here are Send.
 unsafe impl<T: RecvAccess + Send> Send for RecvFut<'_, T>
@@ -431,7 +441,7 @@ where
 {
 }
 
-impl<D: Doorbell, R: SharedMemoryTransportable> Future for SendFut<'_, D, R> {
+impl<D: Doorbell, R: RegionSharedMemoryTransportable> Future for SendFut<'_, D, R> {
     type Output = Result<(), Error<D>>;
 
     fn poll(
@@ -469,25 +479,25 @@ where
     }
 }
 
-impl<S: Side, D: Doorbell, R: SharedMemoryTransportable> TransportError
+impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> TransportError
     for SharedMemoryTransport<S, D, R>
 {
     type Error = Error<D>;
 }
 
-impl<S: Side, D: Doorbell, R: SharedMemoryTransportable> TransportError
+impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> TransportError
     for SharedMemoryTransportTx<S, D, R>
 {
     type Error = Error<D>;
 }
 
-impl<S: Side, D: Doorbell, R: SharedMemoryTransportable> TransportError
+impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> TransportError
     for SharedMemoryTransportRx<S, D, R>
 {
     type Error = Error<D>;
 }
 
-impl<S: Side, D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
+impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> SendTransport
     for SharedMemoryTransport<S, D, R>
 {
     type SendFut<'a>
@@ -498,7 +508,7 @@ impl<S: Side, D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTrans
     fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a> {
         // SAFETY: `self.base` satisfies the descriptor layout invariant established in `new`.
         let result = unsafe {
-            send_bytes::<S, D, R>(self.ch, &self.doorbell, &self.region, self.base, data)
+            send_bytes::<S, D, R>(self.ch_tx, &self.doorbell, &self.region, self.base, data)
         };
         SendFut {
             result,
@@ -511,7 +521,7 @@ impl<S: Side, D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTrans
     }
 }
 
-impl<S: Side, D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
+impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> SendTransport
     for SharedMemoryTransportTx<S, D, R>
 {
     type SendFut<'a>
@@ -535,7 +545,7 @@ impl<S: Side, D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTrans
     }
 }
 
-impl<S: Side, D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> RecvTransport
+impl<S: Side, D: Doorbell + Send + 'static, R: RegionSharedMemoryTransportable + Send> RecvTransport
     for SharedMemoryTransport<S, D, R>
 {
     type RecvFut<'a>
@@ -559,7 +569,7 @@ impl<S: Side, D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send>
     }
 }
 
-impl<S: Side, D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> RecvTransport
+impl<S: Side, D: Doorbell + Send + 'static, R: RegionSharedMemoryTransportable + Send> RecvTransport
     for SharedMemoryTransportRx<S, D, R>
 {
     type RecvFut<'a>
@@ -583,12 +593,7 @@ impl<S: Side, D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send>
     }
 }
 
-impl<S: Side, D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> Transport
+impl<S: Side, D: Doorbell + Send + 'static, R: RegionSharedMemoryTransportable + Send> Transport
     for SharedMemoryTransport<S, D, R>
 {
 }
-
-pub trait SharedMemoryTransportable: Region {}
-
-impl SharedMemoryTransportable for DdrRegion {}
-impl SharedMemoryTransportable for SramRegion {}
