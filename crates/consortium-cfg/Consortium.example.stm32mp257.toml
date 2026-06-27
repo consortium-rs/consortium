@@ -24,6 +24,7 @@ pattern       = "memory"
 party.cm0p    = { chan = 0, type = "PowerMode" }
 config.memory = { base = 0x000404000, length = 0x4000 }
 mtu           = 128
+codec         = "rkyv"
 
 [tee]
 uuid = "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"

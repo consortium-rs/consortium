@@ -25,6 +25,7 @@ party.linux  = { chan = 6, type = "SensorData" }
 party.cm33   = { chan = 7, type = "MotionControl" }
 confg.memory = { base = 0x000404000, length = 0x4000 }
 mtu          = 128
+codec        = "rkyv"
 
 [tee]
 uuid = "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"

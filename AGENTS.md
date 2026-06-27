@@ -14,21 +14,6 @@ required.
 ## Commands
 
 ```bash
-# Build the workspace
-cargo build
-
-# Run host-side tests
-cargo test
-
-# Run tests for one crate
-cargo test -p consortium-ipc
-
-# Lint Rust code
-cargo clippy
-
-# Format Rust code
-cargo fmt
-
 # List project recipes
 just
 
@@ -38,10 +23,8 @@ just setup
 # Run host-side checks
 just check
 
-# Run the host-side IPC test bundle
+# Run the host-side in different subsystems
 just test ipc host
-
-# Run the host-side TEE or HMI test bundles
 just test tee host
 just test hmi host
 
@@ -90,9 +73,6 @@ than generic macOS host checks.
 | TEE                | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`, `consortium-tee-test`                               |
 | Utilities and HMI  | `consortium-ffi`, `consortium-hmi`, `consortium-ort`, `cogcore`, `cogcore-sys`                                               |
 | Examples           | `melt-pot-*`, including shared message types, app, MCU, and TA crates for i.MX95 and STM32MP25                               |
-
-`CLAUDE.md` currently delegates to this file, so this guide is the canonical assistant
-orientation document.
 
 ## Core Architecture
 
@@ -148,18 +128,8 @@ Doorbells provide the wakeup/signaling half of IPC. Existing implementations sho
 used as patterns for any new platform:
 
 - `consortium-ipc-doorbell-hsem` targets STM32MP23/STM32MP25 hardware semaphores.
-- `consortium-ipc-doorbell-mu` targets NXP i.MX Message Unit hardware. Chip features
-  select the MU instance count: `imx8mp` has 1 instance, `imx93` has 2, and `imx95` has 8. Side features select the local register view: `mua` for the A-core side and `mub`
-  for the M-core side. The current crate default is `imx95` plus `mua`.
-  For i.MX95 defaults, use MU7 channels 24 and 25 for CA55 <-> CM7 IPC: MU1-4 are
-  CA55 <-> CM33, MU5 is CM7 <-> CM33, MU6 is NONE <-> CM33, and MU7-8 are
-  CA55 <-> CM7. MU channels are numbered 4 per instance, so MU7 is the flat range
-  24..28 and channels 24/25 correspond to MU7 GI0/GI1.
-- `consortium-ipc-doorbell-gpio` is the GPIO-backed Linux-oriented implementation path.
-- `consortium-ipc-doorbell-ipcc` targets STM32MP21/STM32MP23/STM32MP25 IPCC. STM32MP21
-  uses IPCC only; STM32MP23/25 can use HSEM or IPCC. IPCC1 is at
-  `0x4049_0000..=0x4049_03FF` on all three families, while SmartRun IPCC2 is at
-  `0x4625_0000..=0x4625_03FF` only on STM32MP23/25.
+- `consortium-ipc-doorbell-mu` targets NXP i.MX Message Unit hardware. Allow GI and RF interrupts.
+- `consortium-ipc-doorbell-ipcc` targets STM32MP21/STM32MP23/STM32MP25 IPCC.
 
 When adding or changing a doorbell, keep register access safety documented, validate
 channel bounds through the local validation type when appropriate, and maintain the
@@ -245,10 +215,14 @@ surface for smaller RT cores and should remain lean and `defmt`-friendly.
 `consortium-runtime-app` is the A-core/Linux harness. It owns host-side lifecycle
 concerns such as remoteproc integration and application orchestration.
 
+`consortium-runtime-spl` is the Secondary Program Loader "runtime." It's not a literal
+runtime but an entry for things like resource partition isolation configuration.
+
 `consortium-builder` is the intended home for cross-compilation and packaging helpers,
 including firmware, Linux application, OP-TEE, HMI assets, model artifacts, and installer
 bundle generation. Keep build orchestration code out of low-level IPC crates unless it
-is genuinely part of their compile-time contract.
+is genuinely part of their compile-time contract. We also plan to support producing
+bitbake file.
 
 ## HMI and Cog/WPE
 
@@ -294,16 +268,6 @@ chosen, and document each unsafe block with the ownership or pointer-lifetime in
 - `.ls-lint.yml` defines naming rules for crates, tests, docs, scripts, board files, and
   simulator files.
 - Crate and file names should follow the configured lint rules rather than local taste.
-
-## Documentation Map
-
-- `docs/src/arch/` contains architecture overviews for IPC, TEE, FFI, ORT, and HMI.
-- `docs/src/dev/ipc/` contains IPC implementation notes and roadmap material.
-- `docs/src/dev/tee/` contains OP-TEE SDK and macro design material.
-- `docs/src/dev/rpi/` contains resource partitioning design material; read it as the
-  conceptual source for the current `cfg` crates.
-- `docs/src/dev/hil/` contains hardware-in-the-loop planning.
-- `sim/renode/stm32mp257/` contains the STM32MP257 Renode simulator assets.
 
 When updating docs, use the crate names and APIs present in the workspace.
 
