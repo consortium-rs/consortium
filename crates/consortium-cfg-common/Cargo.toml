@@ -25,6 +25,7 @@ version.workspace = true
 serde          = { features = ["derive"], version = "1.0.228" }
 serde_yaml     = { version = "0.9" }
 consortium-dts = { path = "../consortium-dts" }
+uuid           = { features = ["serde"], version = "1.23.4" }
 
 [dev-dependencies]
 tempfile = "3.8"

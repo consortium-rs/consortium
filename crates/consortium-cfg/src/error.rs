@@ -44,6 +44,12 @@ pub enum CfgError {
     #[error("peripheral '{0}' is owned by '{1}', which is not a core on chip '{2}'")]
     OwnerNotVisible(String, String, String),
 
+    #[error("IPC channel endpoint '{0}' names core '{1}', which is not visible on chip '{2}'")]
+    IpcEndpointNotVisible(String, String, String),
+
+    #[error("no memory region set")]
+    MemoryRegionNotSet,
+
     #[error(
         "[memory.{region}] spans {base:#x}..{end:#x}, which is not contained in any SRAM region of chip '{chip}'. \
          Check the SRAM memory map in the TRM ({trm}) p. {pages}"
@@ -73,9 +79,4 @@ pub enum CfgError {
 
     #[error("[memory.{region}] has zero length")]
     RegionEmpty { region: String },
-
-    #[error(
-        "shared-memory regions must use contiguous mmap indices starting at 0, but found {found:?}"
-    )]
-    MmapOrder { found: Vec<u32> },
 }

@@ -1,4 +1,4 @@
-use super::Party;
+use crate::config::Party;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct HardwareDoorbellParty {

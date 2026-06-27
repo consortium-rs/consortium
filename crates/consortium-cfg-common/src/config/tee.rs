@@ -14,13 +14,12 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-/// A `[[doorbell]]` entry.
+use uuid::Uuid;
+
+/// `[tee]` section: trusted execution configuration.
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct Doorbell {
-    /// Doorbell peripheral name (e.g. `hsem`, `ipcc1`). Matched against the
-    /// chip database's doorbell list.
-    pub name: String,
-    /// UIO device index used to reach this doorbell's registers from Linux.
-    pub uio: u32,
+pub struct Tee {
+    /// UUID assigned to the trusted application.
+    pub uuid: Uuid,
 }

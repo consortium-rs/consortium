@@ -17,9 +17,16 @@
 //! MU channel space and validation.
 //!
 //! A [`crate::doorbell::MuDoorbell`] drives one MU instance, so a channel here
-//! is a general-purpose interrupt (GI) line within that instance, numbered
-//! `0..`[`MU_CHAN_COUNT`]. The MU instance itself is selected at the type level
-//! by the const `N` of [`crate::abstraction::Mu`].
+//! is one signaling line within that instance, numbered `0..`[`MU_CHAN_COUNT`].
+//! The instance exposes two kinds of line, packed into a single channel space:
+//!
+//! - channels `0..`[`MU_GI_CHAN_COUNT`] are general-purpose interrupt (GI)
+//!   lines, driven through `GCR`/`GSR`/`GIER`.
+//! - channels [`MU_GI_CHAN_COUNT`]`..`[`MU_CHAN_COUNT`] are receive-full (RF)
+//!   lines, driven through the transmit/receive registers and `RSR`/`RCR`.
+//!
+//! The MU instance itself is selected at the type level by the const `N` of
+//! [`crate::abstraction::Mu`].
 
 use core::ops::Range;
 
@@ -52,10 +59,19 @@ pub const MU_INSTANCE_COUNT: usize = if cfg!(feature = "imx95") {
     0
 };
 
-/// Number of general-purpose interrupt (GI) channels per MU instance.
-pub const MU_CHAN_COUNT: u8 = 4;
+/// Number of general-purpose interrupt (GI) channels per MU instance. These
+/// occupy the low end of the channel space, ids `0..MU_GI_CHAN_COUNT`.
+pub const MU_GI_CHAN_COUNT: u8 = 4;
 
-/// Channel ids reserved for system/firmware use. The MU GI lines are all
+/// Number of receive-full (RF) channels per MU instance. These follow the GI
+/// channels, ids `MU_GI_CHAN_COUNT..MU_CHAN_COUNT`.
+pub const MU_RF_CHAN_COUNT: u8 = 4;
+
+/// Total number of doorbell channels per MU instance: the GI lines followed by
+/// the RF lines.
+pub const MU_CHAN_COUNT: u8 = MU_GI_CHAN_COUNT + MU_RF_CHAN_COUNT;
+
+/// Channel ids reserved for system/firmware use. All MU GI and RF lines are
 /// available to user channels, so this range is empty.
 pub const MU_CHAN_OCCUPIED: Range<u8> = 0..0;
 
@@ -84,7 +100,7 @@ mod tests {
     use consortium_ipc::Chan;
 
     #[test]
-    fn accepts_all_gi_channels() {
+    fn accepts_all_gi_and_rf_channels() {
         for id in 0..MU_CHAN_COUNT {
             assert_eq!(Chan::new::<MuChanValidate>(id).unwrap().id(), id);
         }

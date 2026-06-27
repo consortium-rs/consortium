@@ -20,7 +20,9 @@
 //! A [`MuDoorbell`] drives one MU instance from one processor [`side`], with the
 //! instance number and side selected at the type level (e.g. `MuDoorbell<Primary,
 //! 7>` is the CA55 view of MU7, the i.MX95 CA55 <-> CM7 default route). Its
-//! channels are the four general-purpose interrupt (GI) lines of that instance.
+//! channels span two line kinds of that instance: channels `0..4` are the
+//! general-purpose interrupt (GI) lines and channels `4..8` are the
+//! receive-full (RF) lines.
 //!
 //! [`side`]: consortium_ipc::Side
 
@@ -31,7 +33,10 @@ pub mod error;
 pub mod registers;
 
 pub use abstraction::Mu;
-pub use chan::{MU_CHAN_COUNT, MU_CHAN_OCCUPIED, MU_INSTANCE_COUNT, MuChanValidate};
+pub use chan::{
+    MU_CHAN_COUNT, MU_CHAN_OCCUPIED, MU_GI_CHAN_COUNT, MU_INSTANCE_COUNT, MU_RF_CHAN_COUNT,
+    MuChanValidate,
+};
 pub use consortium_ipc::{Primary, Secondary, Side};
 pub use doorbell::MuDoorbell;
 pub use error::MuError;

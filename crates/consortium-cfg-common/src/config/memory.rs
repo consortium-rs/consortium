@@ -16,17 +16,9 @@
 
 /// `[memory]` section: the shared-memory layout used by the IPC and debug
 /// transports.
-///
-/// All regions are exposed to Linux through a single UIO device ([`uio`]); each
-/// region selects its own mapping within that device via
-/// [`SharedMemory::mmap`].
-///
-/// [`uio`]: Memory::uio
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Memory {
-    /// UIO device index backing the shared-memory regions.
-    pub uio: u32,
     /// `[memory.ipc]`: the IPC channel region.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ipc: Option<SharedMemory>,
@@ -39,8 +31,6 @@ pub struct Memory {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct SharedMemory {
-    /// Mapping index within the owning [`Memory::uio`] device.
-    pub mmap: u32,
     /// Physical base address of the region, as seen by the M-core.
     pub base: u64,
     /// Length of the region in bytes.
