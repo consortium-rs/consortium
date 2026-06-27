@@ -3,7 +3,7 @@ use crate::codec_support::{
 };
 use crate::common::doorbell::HostDoorbell;
 use consortium_codec::{CodecFor, PostcardCodec};
-use consortium_ipc::{Chan, Channel, Rx, Tx};
+use consortium_ipc::{Chan, Channel, Primary, Rx, Tx};
 use consortium_ipc_transport_memory::{
     ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport, channel_table_entry_offset, slot,
 };
@@ -19,7 +19,8 @@ fn postcard_channel_sends_typed_message_over_shared_memory_transport() {
         let region = unsafe { SramRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch = unsafe { Chan::new_unchecked(0) };
-        let transport = unsafe { SharedMemoryTransport::new(ch, doorbell, region, base) };
+        let transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch, doorbell, region, base) };
         let mut channel =
             Channel::<Tx, Message, _, PostcardCodec>::new(ch, transport, scratch::<MTU>());
 
@@ -73,7 +74,8 @@ fn postcard_channel_receives_typed_message_over_shared_memory_transport() {
         let region = unsafe { SramRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch = unsafe { Chan::new_unchecked(0) };
-        let transport = unsafe { SharedMemoryTransport::new(ch, doorbell, region, base) };
+        let transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch, doorbell, region, base) };
         let mut channel =
             Channel::<Rx, Message, _, PostcardCodec>::new(ch, transport, scratch::<MTU>());
 

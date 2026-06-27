@@ -36,11 +36,12 @@
 //! ```text
 //! +0x00  4   offset      the byte offset of the channel's slot
 //! +0x04  4   size        the total size of the channel's slot (must be ≥ SLOT_HEADER + MTU)
-//! +0x08  1   direction   0 for A→M, 1 for M→A
+//! +0x08  1   direction   0 for Primary→Secondary, 1 for Secondary→Primary
 //! +0x09  3   reserved
 //! ```
 #![allow(dead_code)]
 use crate::utils::{rv_u8, rv_u32, wv_u8, wv_u32};
+use consortium_ipc::{Primary, Side};
 use consortium_shared_memory::descriptor::{DescriptorHeader, DescriptorMagic};
 use core::sync::atomic::Ordering;
 
@@ -216,69 +217,46 @@ impl ChannelLayout {
     }
 }
 
+/// Absolute direction of a channel's slot, expressed in terms of the two
+/// processor sides.
+///
+/// By convention the A-core (Linux) is [`Primary`] and the M-core (firmware) is
+/// [`Secondary`], but nothing here is tied to a particular core: a direction is
+/// resolved into TX/RX relative to a given [`Side`] by [`is_tx`]/[`is_rx`].
+///
+/// [`is_tx`]: ChannelDirection::is_tx
+/// [`is_rx`]: ChannelDirection::is_rx
 #[repr(u8)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FromPrimitive, IntoPrimitive, Default)]
 pub enum ChannelDirection {
-    AToM = 0,
-    MToA = 1,
+    /// Slot written by [`Primary`] and read by [`Secondary`].
+    PrimaryToSecondary = 0,
+    /// Slot written by [`Secondary`] and read by [`Primary`].
+    SecondaryToPrimary = 1,
     #[default]
     Unrecognized = 0xFF,
 }
 
-/// Which core's perspective a transport takes when resolving channel directions.
-///
-/// Channel directions in the descriptor are absolute (`AToM` / `MToA`); a
-/// transport interprets them relative to the core it runs on. The A-core treats
-/// `AToM` as TX and `MToA` as RX; the M-core sees the reverse. On real firmware
-/// the side is fixed by the build target, so [`Side::for_target`] derives it from
-/// the `std` feature. Host tests that emulate both cores over one shared
-/// descriptor in a single process select the side explicitly.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Side {
-    /// Application core (Cortex-A / Linux): `AToM` is TX, `MToA` is RX.
-    A,
-    /// Microcontroller core (Cortex-M / bare-metal): `MToA` is TX, `AToM` is RX.
-    M,
-}
-
-impl Side {
-    /// The side implied by the build target: `A` on `std`, `M` on bare-metal.
-    pub const fn for_target() -> Self {
-        #[cfg(feature = "std")]
-        {
-            Side::A
-        }
-        #[cfg(not(feature = "std"))]
-        {
-            Side::M
-        }
-    }
-}
-
-impl Default for Side {
-    fn default() -> Self {
-        Side::for_target()
-    }
-}
-
 impl ChannelDirection {
-    /// Returns `true` if this direction is a receive channel for `side`.
+    /// Returns `true` if this direction is a receive channel for side `S`.
     ///
-    /// For [`Side::A`]: `MToA` is RX. For [`Side::M`]: `AToM` is RX.
-    pub fn is_rx(&self, side: Side) -> bool {
-        match side {
-            Side::A => matches!(self, ChannelDirection::MToA),
-            Side::M => matches!(self, ChannelDirection::AToM),
+    /// [`Primary`] receives what [`Secondary`] writes, and vice versa.
+    pub fn is_rx<S: Side>(&self) -> bool {
+        if S::INDEX == Primary::INDEX {
+            matches!(self, ChannelDirection::SecondaryToPrimary)
+        } else {
+            matches!(self, ChannelDirection::PrimaryToSecondary)
         }
     }
 
-    /// Returns `true` if this direction is a transmit channel for `side`.
+    /// Returns `true` if this direction is a transmit channel for side `S`.
     ///
-    /// For [`Side::A`]: `AToM` is TX. For [`Side::M`]: `MToA` is TX.
-    pub fn is_tx(&self, side: Side) -> bool {
-        match side {
-            Side::A => matches!(self, ChannelDirection::AToM),
-            Side::M => matches!(self, ChannelDirection::MToA),
+    /// [`Primary`] transmits to [`Secondary`], and vice versa.
+    pub fn is_tx<S: Side>(&self) -> bool {
+        if S::INDEX == Primary::INDEX {
+            matches!(self, ChannelDirection::PrimaryToSecondary)
+        } else {
+            matches!(self, ChannelDirection::SecondaryToPrimary)
         }
     }
 }
@@ -310,26 +288,17 @@ pub unsafe fn set_state(base: *mut u8, state: DescState) {
 /// # Arguments
 ///
 /// * `base` - pointer to the start of the shared DMA-coherent region
-/// * `num_channels` - total number of channels in the table
 /// * `transfer_size` - transfer size (written to offset 0x10)
-/// * `channels` - slice of channel descriptors (must match `num_channels`)
+/// * `channels` - slice of channel descriptors; its length is the channel count
 ///
 /// # Safety
 ///
 /// Caller must ensure:
-/// - `base` is valid for at least `CHAN_TABLE_BASE + num_channels * CHAN_ENTRY_SIZE` bytes
+/// - `base` is valid for at least `CHAN_TABLE_BASE + channels.len() * CHAN_ENTRY_SIZE` bytes
 /// - Memory is DMA-coherent and not accessed concurrently
 /// - All values in `channels` do not cause out-of-bounds offsets
-pub unsafe fn descriptor_init(
-    base: *mut u8,
-    num_channels: u8,
-    transfer_size: usize,
-    channels: &[ChannelLayout],
-) {
-    debug_assert!(
-        channels.len() == num_channels as usize,
-        "channel count mismatch"
-    );
+pub unsafe fn descriptor_init(base: *mut u8, transfer_size: usize, channels: &[ChannelLayout]) {
+    let num_channels = channels.len() as u8;
 
     // Write magic and version.
     let header = DescriptorHeader::new(MAGIC, VERSION);

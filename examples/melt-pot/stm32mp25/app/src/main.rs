@@ -92,18 +92,18 @@ async fn main() {
     let mut backing = vec![0u8; IPC_REGION_LEN];
     let app_desc_base = backing.as_mut_ptr();
 
-    // App descriptor: one RX channel (M→A slot) labeled MToA.
-    // The CM33's descriptor labels the same physical slot AToM (its TX).
+    // App descriptor: one RX channel (M→A slot) labeled SecondaryToPrimary.
+    // The CM33's descriptor labels the same physical slot PrimaryToSecondary (its TX).
     let m_to_a_chan = {
         let mut ch = ChannelLayout::default();
         ch.offset = M_TO_A_SLOT_OFFSET as u32;
         ch.size = SLOT_SIZE as u32;
-        ch.direction = ChannelDirection::MToA;
+        ch.direction = ChannelDirection::SecondaryToPrimary;
         ch
     };
 
     // SAFETY: app_desc_base covers IPC_REGION_LEN bytes; no aliased Rust reference exists.
-    unsafe { descriptor_init(app_desc_base, 1, MTU, &[m_to_a_chan]) };
+    unsafe { descriptor_init(app_desc_base, MTU, &[m_to_a_chan]) };
 
     // SAFETY: IPC_CHAN is the single descriptor channel initialized above.
     let ch = unsafe { Chan::new_unchecked(IPC_CHAN) };

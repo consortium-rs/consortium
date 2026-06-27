@@ -79,19 +79,19 @@ async fn main(_spawner: Spawner) {
     let ipc_base = IPC_SRAM_BASE as *mut u8;
     let mcu_desc_base = unsafe { ipc_base.add(MCU_DESC_OFFSET) };
 
-    // MCU descriptor: one TX channel (M→A slot), labeled AToM so that
+    // MCU descriptor: one TX channel (M→A slot), labeled PrimaryToSecondary so that
     // `send_bytes` finds it via `channel.direction.is_tx()`.
-    // The A-core's descriptor labels the same physical slot MToA (RX for app).
+    // The A-core's descriptor labels the same physical slot SecondaryToPrimary (RX for app).
     let m_to_a_chan = {
         let mut ch = ChannelLayout::default();
         ch.offset = M_TO_A_CHAN_OFFSET as u32;
         ch.size = SLOT_SIZE as u32;
-        ch.direction = ChannelDirection::AToM;
+        ch.direction = ChannelDirection::PrimaryToSecondary;
         ch
     };
 
     // SAFETY: mcu_desc_base covers at least DESC_SIZE bytes of DMA-coherent SRAM.
-    unsafe { descriptor_init(mcu_desc_base, 1, MTU, &[m_to_a_chan]) };
+    unsafe { descriptor_init(mcu_desc_base, MTU, &[m_to_a_chan]) };
 
     let ch = unsafe { Chan::new_unchecked(IPC_CHAN) };
     // SAFETY: ipc_base covers IPC_REGION_LEN bytes; no aliased Rust reference exists.

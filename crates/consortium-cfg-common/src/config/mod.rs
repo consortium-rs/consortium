@@ -35,8 +35,8 @@ pub mod tee;
 pub mod xcore_name;
 
 pub use acore_name::AcoreName;
-pub use core::{Core, VisibleCore};
 pub use codec::Codec;
+pub use core::{Core, VisibleCore};
 pub use dbg::{Dbg, DefmtDbg};
 pub use endpoints::Endpoints;
 pub use hmi::{Hmi, HmiBackend, HmiEngine};

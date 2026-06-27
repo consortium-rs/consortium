@@ -36,12 +36,12 @@ fn descriptor_init_writes_documented_layout_offsets() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
     let channels = [
-        channel(0x100, 0x80, ChannelDirection::AToM),
-        channel(0x180, 0x40, ChannelDirection::MToA),
+        channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary),
+        channel(0x180, 0x40, ChannelDirection::SecondaryToPrimary),
     ];
 
     unsafe {
-        descriptor_init(base, channels.len() as u8, 96, &channels);
+        descriptor_init(base, 96, &channels);
     }
 
     assert_eq!(backing[4], VERSION);
@@ -57,10 +57,16 @@ fn descriptor_init_writes_documented_layout_offsets() {
     assert_eq!(descriptor.state, DescState::MReady);
     assert_eq!(descriptor.channels[0].offset, 0x100);
     assert_eq!(descriptor.channels[0].size, 0x80);
-    assert_eq!(descriptor.channels[0].direction, ChannelDirection::AToM);
+    assert_eq!(
+        descriptor.channels[0].direction,
+        ChannelDirection::PrimaryToSecondary
+    );
     assert_eq!(descriptor.channels[1].offset, 0x180);
     assert_eq!(descriptor.channels[1].size, 0x40);
-    assert_eq!(descriptor.channels[1].direction, ChannelDirection::MToA);
+    assert_eq!(
+        descriptor.channels[1].direction,
+        ChannelDirection::SecondaryToPrimary
+    );
 }
 
 #[test]
@@ -84,12 +90,12 @@ fn descriptor_ack_validates_and_marks_descriptor_ready() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
     let channels = [
-        channel(0x100, 0x80, ChannelDirection::AToM),
-        channel(0x180, 0x40, ChannelDirection::MToA),
+        channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary),
+        channel(0x180, 0x40, ChannelDirection::SecondaryToPrimary),
     ];
 
     unsafe {
-        descriptor_init(base, channels.len() as u8, 64, &channels);
+        descriptor_init(base, 64, &channels);
     }
 
     let descriptor = unsafe { descriptor_ack(base, channels.len(), 128) }
@@ -100,8 +106,14 @@ fn descriptor_ack_validates_and_marks_descriptor_ready() {
     assert_eq!(descriptor.tx_mtu, 128);
     assert_eq!(unsafe { get_state(base) }, DescState::Ready);
     assert_eq!(read_u32(base, RX_TRANSFER_SIZE_OFFSET), 128);
-    assert_eq!(descriptor.channels[0].direction, ChannelDirection::AToM);
-    assert_eq!(descriptor.channels[1].direction, ChannelDirection::MToA);
+    assert_eq!(
+        descriptor.channels[0].direction,
+        ChannelDirection::PrimaryToSecondary
+    );
+    assert_eq!(
+        descriptor.channels[1].direction,
+        ChannelDirection::SecondaryToPrimary
+    );
 }
 
 #[test]
@@ -114,12 +126,12 @@ fn two_threads_complete_descriptor_handshake() {
     let m_side = std::thread::spawn(move || {
         let base = base_addr as *mut u8;
         let channels = [
-            channel(0x100, 0x80, ChannelDirection::AToM),
-            channel(0x180, 0x80, ChannelDirection::MToA),
+            channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary),
+            channel(0x180, 0x80, ChannelDirection::SecondaryToPrimary),
         ];
 
         unsafe {
-            descriptor_init(base, channels.len() as u8, 96, &channels);
+            descriptor_init(base, 96, &channels);
         }
         assert_eq!(unsafe { get_state(base) }, DescState::MReady);
         m_ready_tx.send(()).expect("signal descriptor is MReady");
@@ -152,10 +164,10 @@ fn two_threads_complete_descriptor_handshake() {
 fn descriptor_ack_rejects_bad_magic() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
-    let channels = [channel(0x100, 0x80, ChannelDirection::AToM)];
+    let channels = [channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary)];
 
     unsafe {
-        descriptor_init(base, channels.len() as u8, 64, &channels);
+        descriptor_init(base, 64, &channels);
         DescriptorHeader::new(DescriptorMagic::DEBUG, VERSION).write_to_raw_ptr(base);
     }
 
@@ -171,10 +183,10 @@ fn descriptor_ack_rejects_bad_magic() {
 fn descriptor_ack_rejects_bad_version() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
-    let channels = [channel(0x100, 0x80, ChannelDirection::AToM)];
+    let channels = [channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary)];
 
     unsafe {
-        descriptor_init(base, channels.len() as u8, 64, &channels);
+        descriptor_init(base, 64, &channels);
         base.add(4).write_volatile(VERSION + 1);
     }
 
@@ -190,10 +202,10 @@ fn descriptor_ack_rejects_bad_version() {
 fn descriptor_ack_rejects_non_mready_state() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
-    let channels = [channel(0x100, 0x80, ChannelDirection::AToM)];
+    let channels = [channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary)];
 
     unsafe {
-        descriptor_init(base, channels.len() as u8, 64, &channels);
+        descriptor_init(base, 64, &channels);
         set_state(base, DescState::Proposed);
     }
 
@@ -209,10 +221,10 @@ fn descriptor_ack_rejects_non_mready_state() {
 fn descriptor_ack_rejects_channel_count_mismatch() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
-    let channels = [channel(0x100, 0x80, ChannelDirection::AToM)];
+    let channels = [channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary)];
 
     unsafe {
-        descriptor_init(base, channels.len() as u8, 64, &channels);
+        descriptor_init(base, 64, &channels);
     }
 
     let err = unsafe { descriptor_ack(base, 2, 64) }
@@ -230,10 +242,10 @@ fn descriptor_ack_rejects_channel_count_mismatch() {
 fn descriptor_ack_rejects_too_many_channels_before_reading_table() {
     let mut backing = vec![0; 0x20 + (CHANNEL_NUM_MAX + 1) * 12];
     let base = backing.as_mut_ptr();
-    let channels = [channel(0x200, 0x80, ChannelDirection::AToM)];
+    let channels = [channel(0x200, 0x80, ChannelDirection::PrimaryToSecondary)];
 
     unsafe {
-        descriptor_init(base, channels.len() as u8, 64, &channels);
+        descriptor_init(base, 64, &channels);
         base.add(NUM_CHANNELS_OFFSET)
             .write_volatile((CHANNEL_NUM_MAX + 1) as u8);
     }
@@ -253,11 +265,11 @@ fn descriptor_ack_rejects_too_many_channels_before_reading_table() {
 fn descriptor_ack_rejects_invalid_channel_layouts() {
     let cases = [
         (
-            channel(0x20, 0x80, ChannelDirection::AToM),
+            channel(0x20, 0x80, ChannelDirection::PrimaryToSecondary),
             "slot overlaps descriptor header or channel table",
         ),
         (
-            channel(0x100, 8, ChannelDirection::AToM),
+            channel(0x100, 8, ChannelDirection::PrimaryToSecondary),
             "slot is smaller than the slot header",
         ),
     ];
@@ -266,7 +278,7 @@ fn descriptor_ack_rejects_invalid_channel_layouts() {
         let mut backing = vec![0; DESCRIPTOR_LEN];
         let base = backing.as_mut_ptr();
         unsafe {
-            descriptor_init(base, 1, 64, &[layout]);
+            descriptor_init(base, 64, &[layout]);
         }
 
         let err = unsafe { descriptor_ack(base, 1, 64) }
@@ -285,10 +297,10 @@ fn descriptor_ack_rejects_invalid_channel_layouts() {
 fn descriptor_ack_rejects_unrecognized_channel_direction() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
-    let channels = [channel(0x100, 0x80, ChannelDirection::AToM)];
+    let channels = [channel(0x100, 0x80, ChannelDirection::PrimaryToSecondary)];
 
     unsafe {
-        descriptor_init(base, channels.len() as u8, 64, &channels);
+        descriptor_init(base, 64, &channels);
         base.add(channel_table_entry_offset(0) + 8)
             .write_volatile(0x42);
     }
@@ -338,13 +350,14 @@ fn channel_direction_parses_known_and_unknown_values() {
     write_u32(base, 0, 0x200);
     write_u32(base, 4, 0x80);
     unsafe {
-        base.add(8).write_volatile(ChannelDirection::MToA as u8);
+        base.add(8)
+            .write_volatile(ChannelDirection::SecondaryToPrimary as u8);
     }
 
     let parsed = unsafe { ChannelLayout::from_raw_ptr(base) };
     assert_eq!(parsed.offset, 0x200);
     assert_eq!(parsed.size, 0x80);
-    assert_eq!(parsed.direction, ChannelDirection::MToA);
+    assert_eq!(parsed.direction, ChannelDirection::SecondaryToPrimary);
 
     unsafe {
         base.add(8).write_volatile(0x42);

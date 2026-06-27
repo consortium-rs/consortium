@@ -46,7 +46,7 @@ pub struct HardwareDoorbell {
 }
 
 /// A collection of doorbells visible to a given core.
-/// 
+///
 /// Call the doorbell type `Bella` because we classify it as a type-A doorbell. It is
 /// also someone significant to the author.
 #[derive(Debug, Clone, PartialEq, Eq)]

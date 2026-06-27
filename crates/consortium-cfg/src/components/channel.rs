@@ -1,3 +1,1 @@
-pub struct IpcChannel {
-    
-}
+pub struct IpcChannel {}
