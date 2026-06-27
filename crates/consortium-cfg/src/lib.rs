@@ -18,6 +18,7 @@ pub mod components;
 pub mod database;
 pub mod error;
 pub mod session;
+pub mod transpilers;
 
 pub use consortium_cfg_common::config;
 pub use error::CfgError;
