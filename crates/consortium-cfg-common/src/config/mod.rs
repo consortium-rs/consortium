@@ -17,6 +17,7 @@
 //! Vendor-agnostic `Consortium.toml` schema.
 
 pub mod acore_name;
+pub mod codec;
 pub mod core;
 pub mod dbg;
 pub mod endpoints;
@@ -35,6 +36,7 @@ pub mod xcore_name;
 
 pub use acore_name::AcoreName;
 pub use core::{Core, VisibleCore};
+pub use codec::Codec;
 pub use dbg::{Dbg, DefmtDbg};
 pub use endpoints::Endpoints;
 pub use hmi::{Hmi, HmiBackend, HmiEngine};

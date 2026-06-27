@@ -16,8 +16,6 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-pub mod config;
-
 /// Doorbells commonly paired with the shared-memory transport.
 pub mod doorbell;
 

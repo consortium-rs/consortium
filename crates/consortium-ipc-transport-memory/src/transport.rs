@@ -13,10 +13,6 @@ use crate::{
     utils::rv_u8,
 };
 
-// ---------------------------------------------------------------------------
-// Shared send helper — avoids duplicating slot-write logic
-// ---------------------------------------------------------------------------
-
 /// # Safety
 /// `base` must be valid for reads/writes covering the full descriptor layout.
 unsafe fn send_bytes<D: Doorbell, R: Region>(

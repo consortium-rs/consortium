@@ -16,6 +16,8 @@
 
 use std::collections::HashMap;
 
+use crate::config::codec::Codec;
+
 use super::{MemoryRegion, Party};
 
 /// `[ipc]` section: typed channels between visible cores.
@@ -42,6 +44,8 @@ pub struct IpcChannel {
     /// Endpoint declarations keyed by visible core name.
     #[serde(default, rename = "party")]
     pub endpoints: HashMap<Party, IpcEndpoint>,
+    /// Codec name for this channel's message type. Matched against the codec list.
+    pub codec: Codec,
 }
 
 impl IpcChannel {

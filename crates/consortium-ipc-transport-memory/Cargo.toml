@@ -50,11 +50,6 @@ stm32mp25x = [
   "doorbell-hsem",
   "doorbell-ipcc",
 ]
-# The MU processor side is now selected at the type level (`Primary`/`Secondary`)
-# rather than by a cargo feature; these remain as no-op markers for callers that
-# still toggle them.
-side-a = []
-side-b = []
 
 [dependencies]
 consortium-cfg-common        = { path = "../consortium-cfg-common" }
