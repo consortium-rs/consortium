@@ -32,6 +32,8 @@ pub struct Ipc {
 /// A `[[ipc.channel]]` entry.
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct IpcChannel {
+    /// Channel name, used for codegen and logging.
+    pub name: String,
     /// Doorbell peripheral name (e.g. `hsem`, `ipcc1`). Matched against the
     /// chip database's doorbell list.
     pub doorbell: String,

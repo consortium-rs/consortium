@@ -30,8 +30,6 @@
 use core::marker::PhantomData;
 
 use consortium_ipc::Side;
-#[cfg(not(feature = "std"))]
-use consortium_ipc::{Primary, Secondary};
 
 use crate::registers::{
     base,
@@ -245,7 +243,6 @@ impl<S: Side, const N: usize> Mu<S, N> {
     }
 }
 
-#[cfg(feature = "std")]
 impl<S: Side, const N: usize> Mu<S, N> {
     /// Create a HAL handle from an `mmap`'d virtual base address of MU instance
     /// `N`, side `S`.
@@ -259,42 +256,6 @@ impl<S: Side, const N: usize> Mu<S, N> {
         let _ = Self::INDEX;
         Self {
             base,
-            _side: PhantomData,
-        }
-    }
-}
-
-#[cfg(not(feature = "std"))]
-impl<const N: usize> Mu<Primary, N> {
-    /// Create a HAL handle to the side-A (MUA) window of MU instance `N` using
-    /// the compile-time base from [`registers::base`].
-    ///
-    /// # Safety
-    /// Grants raw access to the MU registers; the caller must ensure no
-    /// conflicting handle to the same instance/side exists.
-    ///
-    /// [`registers::base`]: crate::registers::base
-    pub const unsafe fn steal() -> Self {
-        Self {
-            base: base::BASE[Self::INDEX],
-            _side: PhantomData,
-        }
-    }
-}
-
-#[cfg(not(feature = "std"))]
-impl<const N: usize> Mu<Secondary, N> {
-    /// Create a HAL handle to the side-B (MUB) window of MU instance `N` using
-    /// the compile-time base from [`registers::base`].
-    ///
-    /// # Safety
-    /// Grants raw access to the MU registers; the caller must ensure no
-    /// conflicting handle to the same instance/side exists.
-    ///
-    /// [`registers::base`]: crate::registers::base
-    pub const unsafe fn steal() -> Self {
-        Self {
-            base: base::BASE[Self::INDEX] + base::LENGTH,
             _side: PhantomData,
         }
     }

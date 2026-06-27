@@ -11,18 +11,20 @@ memory = { base = 0x000408000, length = 0x2000 }
 mtu    = 64
 
 [[ipc.channel]]
+name          = "lp"
 doorbell      = "mu1"
 pattern       = "memory"
-party.linux   = { chan = 4, type = "SensorData" }
-party.cm33    = { chan = 5, type = "MotionControl" }
+party.linux   = { chan = 4, type = "LowPowerData" }
+party.cm33    = { chan = 5, type = "PowerControl" }
 config.memory = { base = 0x000400000, length = 0x4000 }
 mtu           = 128
 
 [[ipc.channel]]
+name         = "sensor"
 doorbell     = "mu7"
 pattern      = "memory"
 party.linux  = { chan = 6, type = "SensorData" }
-party.cm33   = { chan = 7, type = "MotionControl" }
+party.cm7    = { chan = 7, type = "MotionControl" }
 confg.memory = { base = 0x000404000, length = 0x4000 }
 mtu          = 128
 codec        = "rkyv"

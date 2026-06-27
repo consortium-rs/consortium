@@ -1,3 +1,5 @@
+use core::fmt;
+
 use super::HardwareDoorbellParty;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -24,4 +26,14 @@ pub enum HardwareDoorbellPeripheralType {
     Mu,
     Hsem,
     Ipcc,
+}
+
+impl fmt::Display for HardwareDoorbellPeripheralType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            HardwareDoorbellPeripheralType::Mu => write!(f, "Mu"),
+            HardwareDoorbellPeripheralType::Hsem => write!(f, "Hsem"),
+            HardwareDoorbellPeripheralType::Ipcc => write!(f, "Ipcc"),
+        }
+    }
 }

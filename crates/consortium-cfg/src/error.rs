@@ -100,8 +100,8 @@ pub enum CfgError {
     )]
     RegionOutOfBounds {
         region: String,
-        base: u64,
-        end: u64,
+        base: u32,
+        end: u32,
         chip: String,
         /// Reference manual URL for the chip.
         trm: String,
@@ -114,11 +114,11 @@ pub enum CfgError {
     )]
     RegionOverlap {
         a: String,
-        a_base: u64,
-        a_end: u64,
+        a_base: u32,
+        a_end: u32,
         b: String,
-        b_base: u64,
-        b_end: u64,
+        b_base: u32,
+        b_end: u32,
     },
 
     #[error("[memory.{region}] has zero length")]

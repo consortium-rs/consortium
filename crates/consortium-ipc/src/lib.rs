@@ -24,6 +24,7 @@ pub(crate) mod doorbell;
 pub(crate) mod future;
 pub(crate) mod sealed;
 pub(crate) mod side;
+pub(crate) mod transceiver;
 pub(crate) mod transport;
 pub(crate) mod wire;
 
@@ -32,6 +33,7 @@ pub use {
     channel::{Channel, ChannelError, Direction, ReceivedMessage, Rx, Tx},
     doorbell::Doorbell,
     side::{Primary, Secondary, Side, Tertiary},
+    transceiver::Transceiver,
     transport::{RecvTransport, SendTransport, Transport, TransportError},
     wire::IpcSafe,
 };

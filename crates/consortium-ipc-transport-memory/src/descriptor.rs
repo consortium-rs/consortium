@@ -65,7 +65,7 @@ const TX_TRANSFER_SIZE_OFFSET: usize = 0x0C;
 const RX_TRANSFER_SIZE_OFFSET: usize = 0x10;
 const STATE_OFFSET: usize = 0x18;
 const CHANNEL_TABLE_OFFSET: usize = 0x20;
-const DESCRIPTOR_LENGTH: usize = core::mem::size_of::<Descriptor>();
+pub const DESCRIPTOR_LENGTH: usize = core::mem::size_of::<Descriptor>();
 
 #[derive(Debug)]
 #[repr(C)]

@@ -60,23 +60,6 @@ impl<S: Side, const N: usize> IpccDoorbell<S, N> {
     }
 }
 
-#[cfg(not(feature = "std"))]
-impl<S: Side, const N: usize> IpccDoorbell<S, N> {
-    /// Create a doorbell over IPCC instance `N`, side `S`, using the
-    /// compile-time base from [`crate::registers::base`].
-    ///
-    /// # Safety
-    /// Grants raw IPCC register access; the caller must ensure no conflicting
-    /// handle for the same instance/side exists.
-    pub const unsafe fn steal() -> Self {
-        Self {
-            // SAFETY: forwarded obligation from this constructor.
-            ipcc: unsafe { Ipcc::steal() },
-        }
-    }
-}
-
-#[cfg(feature = "std")]
 impl<S: Side, const N: usize> IpccDoorbell<S, N> {
     /// Create a doorbell over IPCC instance `N`, side `S`, from an `mmap`'d
     /// virtual base address.
@@ -88,6 +71,7 @@ impl<S: Side, const N: usize> IpccDoorbell<S, N> {
         Self {
             // SAFETY: forwarded obligation; `base` is the mapped IPCC window.
             ipcc: unsafe { Ipcc::<S, N>::new(base) },
+            #[cfg(feature = "std")]
             notify: std::sync::Arc::new(tokio::sync::Notify::new()),
         }
     }
@@ -95,6 +79,7 @@ impl<S: Side, const N: usize> IpccDoorbell<S, N> {
     /// Returns a cloned `Arc` to the internal `Notify`. Pass it to the UIO IRQ
     /// loop or platform IRQ adapter so it can wake waiting
     /// [`wait`](Doorbell::wait) futures when IPCC RX-occupied fires.
+    #[cfg(feature = "std")]
     pub fn notifier(&self) -> std::sync::Arc<tokio::sync::Notify> {
         std::sync::Arc::clone(&self.notify)
     }

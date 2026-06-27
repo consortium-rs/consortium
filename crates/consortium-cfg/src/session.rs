@@ -177,8 +177,8 @@ impl Session {
         }
 
         let contained = self.database.memory.regions.iter().any(|sram| {
-            let sram_base = u64::from(sram.base);
-            let sram_end = sram_base + u64::from(sram.length);
+            let sram_base = sram.base;
+            let sram_end = sram_base + sram.length;
             region.base >= sram_base && end <= sram_end
         });
         if !contained {
@@ -190,7 +190,7 @@ impl Session {
 
     /// Builds a [`CfgError::RegionOutOfBounds`] annotated with the chip's TRM
     /// URL and the memory-map page(s), so the user knows where to look.
-    fn region_out_of_bounds(&self, region: &str, base: u64, end: u64) -> CfgError {
+    fn region_out_of_bounds(&self, region: &str, base: u32, end: u32) -> CfgError {
         let pages = self
             .database
             .memory

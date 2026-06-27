@@ -232,7 +232,6 @@ impl<S: Side, const N: usize> Ipcc<S, N> {
     }
 }
 
-#[cfg(feature = "std")]
 impl<S: Side, const N: usize> Ipcc<S, N> {
     /// Create a HAL handle from an `mmap`'d virtual base address of IPCC
     /// instance `N`.
@@ -245,22 +244,6 @@ impl<S: Side, const N: usize> Ipcc<S, N> {
         let _ = Self::INDEX;
         Self {
             base,
-            _side: PhantomData,
-        }
-    }
-}
-
-#[cfg(not(feature = "std"))]
-impl<S: Side, const N: usize> Ipcc<S, N> {
-    /// Create a HAL handle to IPCC instance `N` using the compile-time base from
-    /// [`crate::registers::base`].
-    ///
-    /// # Safety
-    /// Grants raw access to the IPCC registers; the caller must ensure no
-    /// conflicting handle for the same instance/side exists.
-    pub const unsafe fn steal() -> Self {
-        Self {
-            base: base::BASE[Self::INDEX],
             _side: PhantomData,
         }
     }

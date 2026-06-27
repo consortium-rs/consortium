@@ -179,7 +179,6 @@ impl<S: Side, const N: usize> Hsem<S, N> {
     }
 }
 
-#[cfg(feature = "std")]
 impl<S: Side, const N: usize> Hsem<S, N> {
     /// Create a HAL handle from an `mmap`'d virtual base address of the HSEM
     /// peripheral.
@@ -192,22 +191,6 @@ impl<S: Side, const N: usize> Hsem<S, N> {
         let _ = Self::INDEX;
         Self {
             base,
-            _side: PhantomData,
-        }
-    }
-}
-
-#[cfg(not(feature = "std"))]
-impl<S: Side, const N: usize> Hsem<S, N> {
-    /// Create a HAL handle to the HSEM peripheral using the compile-time base
-    /// from [`crate::registers::base`].
-    ///
-    /// # Safety
-    /// Grants raw access to the HSEM registers; the caller must ensure no
-    /// conflicting handle for the same core exists.
-    pub const unsafe fn steal() -> Self {
-        Self {
-            base: base::BASE[Self::INDEX],
             _side: PhantomData,
         }
     }

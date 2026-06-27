@@ -316,6 +316,7 @@ version = "0.1.0"
 dependencies = [
  "consortium-cfg-common",
  "consortium-dts",
+ "consortium-ipc-transport-memory",
  "prettyplease",
  "proc-macro2",
  "quote",
