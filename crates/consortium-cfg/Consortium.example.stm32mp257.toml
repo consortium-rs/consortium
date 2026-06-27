@@ -5,24 +5,24 @@ chip = "stm32mp257fak3"
 uio = 0
 
 [memory.ipc]
-mmap   = 0
 base   = 0x000400000
 length = 0x8000
 mtu    = 128
 
 [memory.dbg]
-mmap   = 1
 base   = 0x000408000
 length = 0x2000
 mtu    = 64
 
 [[doorbell]]
 name = "hsem"
-uio  = 1
+channel.ap = 0
+channel.cm33 = 1
 
 [[doorbell]]
 name = "ipcc1"
-uio  = 2
+channel.ap = 0
+channel.cm0p = 1
 
 [[ta]]
 name = "boundary_check"
