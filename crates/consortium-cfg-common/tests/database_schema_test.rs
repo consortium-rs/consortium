@@ -42,6 +42,9 @@ fn loads_stm32mp23_database_yaml() {
     assert_eq!(database.memory.trm_page, vec![229]);
     assert_eq!(database.peripheral.doorbells[0].memory.base, 0x0624_0000);
     assert_eq!(database.peripheral.doorbells[0].page, 1306);
+    assert_eq!(database.peripheral.doorbells[0].party_page, 1306);
+    assert_eq!(database.peripheral.doorbells[0].channels, 16);
+    assert_eq!(database.peripheral.doorbells[0].channel_page, 1306);
 }
 
 #[test]

@@ -7,11 +7,12 @@ use std::{
 };
 
 use atomic_waker::AtomicWaker;
-use consortium_ipc::{Chan, Doorbell, RecvTransport, SramRegion};
+use consortium_ipc::{Chan, Doorbell, RecvTransport};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
     channel_table_entry_offset, descriptor_init, slot,
 };
+use consortium_shared_memory::SramRegion;
 use futures::{pin_mut, task::noop_waker_ref};
 
 const MTU: usize = 64;

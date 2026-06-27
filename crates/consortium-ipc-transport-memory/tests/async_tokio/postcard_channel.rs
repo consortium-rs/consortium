@@ -3,10 +3,11 @@ use crate::codec_support::{
 };
 use crate::common::doorbell::HostDoorbell;
 use consortium_codec::{CodecFor, PostcardCodec};
-use consortium_ipc::{Chan, Channel, Rx, SramRegion, Tx};
+use consortium_ipc::{Chan, Channel, Rx, Tx};
 use consortium_ipc_transport_memory::{
     ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport, channel_table_entry_offset, slot,
 };
+use consortium_shared_memory::SramRegion;
 
 #[test]
 fn postcard_channel_sends_typed_message_over_shared_memory_transport() {

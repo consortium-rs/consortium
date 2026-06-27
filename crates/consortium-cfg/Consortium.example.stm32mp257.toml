@@ -6,27 +6,24 @@ linux = "./app"
 optee = "./ta"
 cm33  = "./firmware"
 
-[memory.ipc]
-base   = 0x000400000
-length = 0x8000
-mtu    = 128
-
-[memory.dbg]
-base   = 0x000408000
-length = 0x2000
+[dbg.defmt]
+memory = { base = 0x000408000, length = 0x2000 }
 mtu    = 64
 
 [[ipc.channel]]
-doorbell   = "hsem"
-linux.chan = 0
-linux.type = "SensorData"
-cm33.chan  = 1
-cm33.type  = "MotionControl"
+doorbell      = "hsem"
+pattern       = "memory"
+party.linux   = { chan = 0, type = "SensorData" }
+party.cm33    = { chan = 1, type = "MotionControl" }
+config.memory = { base = 0x000400000, length = 0x4000 }
+mtu           = 128
 
 [[ipc.channel]]
-doorbell  = "ipcc1"
-cm0p.chan = 0
-cm0p.type = "PowerMode"
+doorbell      = "ipcc2"
+pattern       = "memory"
+party.cm0p    = { chan = 0, type = "PowerMode" }
+config.memory = { base = 0x000404000, length = 0x4000 }
+mtu           = 128
 
 [tee]
 uuid = "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"

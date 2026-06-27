@@ -14,31 +14,36 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! `[memory]` -> UIO device.
+//! Shared-memory regions -> UIO device.
 //!
-//! The IPC and debug shared-memory regions share a single UIO device.
+//! Pattern-specific shared-memory regions can share a single UIO device.
 
-use consortium_cfg_common::config::{Memory, SharedMemory};
+use consortium_cfg_common::config::MemoryRegion;
 
 use super::ToUio;
 use crate::components::uio::UioDevice;
 use crate::error::CfgError;
 
-impl ToUio for Memory {
-    fn to_uio(&self) -> Result<Option<UioDevice>, CfgError> {
-        let regions: Vec<&SharedMemory> = [self.ipc.as_ref(), self.dbg.as_ref()]
-            .into_iter()
-            .flatten()
-            .collect();
+const UIO_MAX_MMAPS: usize = 5;
 
+impl ToUio for [MemoryRegion] {
+    fn to_uio(&self) -> Result<Option<UioDevice>, CfgError> {
         // Nothing to expose if neither region is configured.
-        if regions.is_empty() {
+        if self.is_empty() {
             return Ok(None);
+        }
+
+        if self.len() > UIO_MAX_MMAPS {
+            return Err(CfgError::UioMmapLimit {
+                device: "shared-memory".to_string(),
+                found: self.len(),
+                max: UIO_MAX_MMAPS,
+            });
         }
 
         // Bases and lengths are validated to lie within SRAM (a `u32` window)
         // during session validation, so the narrowing cast is lossless here.
-        let mmap = regions
+        let mmap = self
             .iter()
             .map(|region| (region.base as u32, region.length as u32))
             .collect();
@@ -52,44 +57,51 @@ impl ToUio for Memory {
 mod tests {
     use super::*;
 
-    fn region(base: u64, length: u64) -> SharedMemory {
-        SharedMemory {
-            base,
-            length,
-            mtu: 64,
-        }
+    fn region(base: u64, length: u64) -> MemoryRegion {
+        MemoryRegion { base, length }
     }
 
     #[test]
-    fn maps_ipc_and_dbg_in_schema_order() {
-        let memory = Memory {
-            dbg: Some(region(0x0040_8000, 0x2000)),
-            ipc: Some(region(0x0040_0000, 0x8000)),
-        };
+    fn maps_regions_in_slice_order() {
+        let memory = [region(0x0040_0000, 0x8000), region(0x0040_8000, 0x2000)];
 
-        let uio = memory.to_uio().unwrap().unwrap();
+        let uio = memory.as_slice().to_uio().unwrap().unwrap();
         assert_eq!(uio.mmap, vec![(0x0040_0000, 0x8000), (0x0040_8000, 0x2000)]);
         assert!(uio.irq.is_none());
     }
 
     #[test]
-    fn skips_absent_regions() {
-        let memory = Memory {
-            ipc: Some(region(0x0040_0000, 0x8000)),
-            dbg: None,
-        };
+    fn maps_single_region() {
+        let memory = [region(0x0040_0000, 0x8000)];
 
-        let uio = memory.to_uio().unwrap().unwrap();
+        let uio = memory.as_slice().to_uio().unwrap().unwrap();
         assert_eq!(uio.mmap, vec![(0x0040_0000, 0x8000)]);
     }
 
     #[test]
     fn none_when_no_regions() {
-        let memory = Memory {
-            ipc: None,
-            dbg: None,
-        };
+        let memory: [MemoryRegion; 0] = [];
+        assert!(memory.as_slice().to_uio().unwrap().is_none());
+    }
 
-        assert!(memory.to_uio().unwrap().is_none());
+    #[test]
+    fn errors_when_more_than_five_regions() {
+        let memory = [
+            region(0x0040_0000, 0x1000),
+            region(0x0040_1000, 0x1000),
+            region(0x0040_2000, 0x1000),
+            region(0x0040_3000, 0x1000),
+            region(0x0040_4000, 0x1000),
+            region(0x0040_5000, 0x1000),
+        ];
+
+        assert_eq!(
+            memory.as_slice().to_uio().err(),
+            Some(CfgError::UioMmapLimit {
+                device: "shared-memory".to_string(),
+                found: 6,
+                max: 5,
+            })
+        );
     }
 }

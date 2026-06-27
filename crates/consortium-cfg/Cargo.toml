@@ -24,7 +24,11 @@ version.workspace = true
 [dependencies]
 consortium-cfg-common = { path = "../consortium-cfg-common" }
 consortium-dts        = { path = "../consortium-dts" }
+prettyplease          = "0.2.37"
+proc-macro2           = "1.0.106"
+quote                 = "1.0.46"
 serde_yaml            = "0.9"
+syn                   = "2.0.118"
 thiserror             = "2.0.18"
 toml                  = "1.1.0"
 

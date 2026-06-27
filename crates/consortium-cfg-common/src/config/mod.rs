@@ -18,6 +18,7 @@
 
 pub mod acore_name;
 pub mod core;
+pub mod dbg;
 pub mod endpoints;
 pub mod hmi;
 pub mod ipc;
@@ -34,11 +35,12 @@ pub mod xcore_name;
 
 pub use acore_name::AcoreName;
 pub use core::{Core, VisibleCore};
+pub use dbg::{Dbg, DefmtDbg};
 pub use endpoints::Endpoints;
 pub use hmi::{Hmi, HmiBackend, HmiEngine};
-pub use ipc::{Ipc, IpcChannel, IpcEndpoint};
+pub use ipc::{Ipc, IpcChannel, IpcChannelConfig, IpcEndpoint, IpcPattern};
 pub use mcore_name::McoreName;
-pub use memory::{Memory, SharedMemory};
+pub use memory::{MemoryRegion, SharedMemory};
 pub use party::Party;
 pub use peripheral::Peripheral;
 pub use profile::Profile;
@@ -58,9 +60,9 @@ pub struct Config {
     /// Build artifact roots keyed by runtime endpoint name.
     #[serde(default)]
     pub endpoints: Endpoints,
-    /// Shared-memory layout for IPC and debug channels.
+    /// Debug transport configuration.
     #[serde(default)]
-    pub memory: Memory,
+    pub dbg: Dbg,
     /// Typed IPC channel declarations.
     #[serde(default)]
     pub ipc: Ipc,

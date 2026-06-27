@@ -2,11 +2,12 @@
 ///
 /// The values assigned to each variant match the standard Linux kernel device tree
 /// bindings (`dt-bindings/interrupt-controller/irq.h`) for seamless DTS generation.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize, Default)]
 #[serde(rename_all = "snake_case")]
 #[repr(u8)]
 pub enum IrqMethod {
     /// Unspecified or default interrupt trigger configuration.
+    #[default]
     None = 0,
 
     /// Edge-triggered interrupt, active on the rising edge.
@@ -38,10 +39,4 @@ pub enum IrqMethod {
     /// - Linux/GIC: `IRQ_TYPE_LEVEL_LOW`
     /// - MCU/NVIC: Low level detection
     LevelLow = 8,
-}
-
-impl Default for IrqMethod {
-    fn default() -> Self {
-        Self::None
-    }
 }

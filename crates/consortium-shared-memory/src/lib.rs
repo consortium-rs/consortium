@@ -17,3 +17,10 @@
 #![no_std]
 
 pub mod descriptor;
+pub mod region;
+pub mod regions;
+
+pub use {
+    region::Region,
+    regions::{DdrRegion, SerialRegion, SramRegion},
+};

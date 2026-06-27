@@ -2,11 +2,12 @@ use crate::common::doorbell::HostDoorbell;
 use crate::transport_support::{
     CountingRegion, MTU, REGION_LEN, SLOT_SIZE, channel, init_two_channel_descriptor,
 };
-use consortium_ipc::{Chan, SendTransport, SramRegion};
+use consortium_ipc::{Chan, SendTransport};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, Error, SharedMemoryTransport, channel_table_entry_offset,
     descriptor_init, slot,
 };
+use consortium_shared_memory::SramRegion;
 
 #[test]
 fn send_returns_no_channel_when_all_tx_slots_are_unconsumed() {

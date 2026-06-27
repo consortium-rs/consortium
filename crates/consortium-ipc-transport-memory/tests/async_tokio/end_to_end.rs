@@ -1,7 +1,8 @@
 use crate::common::doorbell::HostDoorbell;
 use crate::transport_support::{MTU, REGION_LEN, init_two_channel_descriptor};
-use consortium_ipc::{Chan, RecvTransport, SendTransport, SramRegion};
+use consortium_ipc::{Chan, RecvTransport, SendTransport};
 use consortium_ipc_transport_memory::{SharedMemoryTransport, Side};
+use consortium_shared_memory::SramRegion;
 
 /// End-to-end ping/pong over the shared-memory transport.
 ///

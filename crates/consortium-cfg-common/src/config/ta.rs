@@ -18,8 +18,6 @@
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Ta {
-    /// Human-readable TA name (e.g. `boundary_check`).
-    pub name: String,
     /// Canonical `8-4-4-4-12` UUID assigned to the trusted application.
     pub uuid: String,
 }

@@ -3,10 +3,13 @@ use super::HardwareDoorbellParty;
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct HardwareDoorbellPeripheral {
     pub name: String,
-    pub page: u64,
+    pub page: u32,
     pub r#type: HardwareDoorbellPeripheralType,
     pub memory: HardwareMemory,
     pub parties: Vec<HardwareDoorbellParty>,
+    pub party_page: u32,
+    pub channels: u32,
+    pub channel_page: u32,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]

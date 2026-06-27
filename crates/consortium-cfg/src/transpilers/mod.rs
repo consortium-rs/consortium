@@ -19,17 +19,13 @@
 use crate::components::uio::UioDevice;
 use crate::error::CfgError;
 
-pub mod doorbell_to_uio;
 pub mod memory_to_uio;
 
 /// Conversion from a configuration or database resource into a [`UioDevice`].
 pub trait ToUio {
     /// Builds the UIO device that exposes this resource to the Linux side.
     ///
-    /// Returns `Ok(None)` when the resource exposes nothing (e.g. a `[memory]`
-    /// section with neither an IPC nor a debug region), and an error when the
-    /// resource cannot be represented as a UIO device — for instance when its
-    /// `mmap` indices do not form the contiguous `mapN` order the kernel
-    /// requires.
+    /// Returns `Ok(None)` when the resource exposes nothing, and an error when
+    /// the resource cannot be represented as a UIO device.
     fn to_uio(&self) -> Result<Option<UioDevice>, CfgError>;
 }

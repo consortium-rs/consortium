@@ -27,7 +27,7 @@ pub enum CoprocessorVariant {
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct MemoryDatabase {
-    pub trm_page: Vec<u64>,
+    pub trm_page: Vec<u32>,
     pub aliases: Vec<MemoryAlias>,
     pub regions: Vec<MemoryRegion>,
 }
