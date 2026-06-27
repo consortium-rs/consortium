@@ -5,8 +5,8 @@ use crate::common::doorbell::HostDoorbell;
 use consortium_codec::CodecFor;
 use consortium_ipc::{Chan, Channel, Rx, Tx};
 use consortium_ipc_transport_memory::{
-    ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport, Side,
-    descriptor_init, slot,
+    ChannelDirection, ChannelLayout, Primary, RX_UPDATED_ID_OFFSET, Secondary,
+    SharedMemoryTransport, descriptor_init, slot,
 };
 use consortium_shared_memory::SramRegion;
 use prost::bytes::{Buf, BufMut};
@@ -72,11 +72,11 @@ pub fn channel(offset: usize, direction: ChannelDirection) -> ChannelLayout {
 }
 
 pub fn init_two_channel_descriptor(base: *mut u8) {
-    let a_to_m = channel(A_TO_M_SLOT, ChannelDirection::AToM);
-    let m_to_a = channel(M_TO_A_SLOT, ChannelDirection::MToA);
+    let a_to_m = channel(A_TO_M_SLOT, ChannelDirection::PrimaryToSecondary);
+    let m_to_a = channel(M_TO_A_SLOT, ChannelDirection::SecondaryToPrimary);
 
     unsafe {
-        descriptor_init(base, 2, MTU, &[a_to_m, m_to_a]);
+        descriptor_init(base, MTU, &[a_to_m, m_to_a]);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
     }
 }
@@ -115,7 +115,7 @@ where
                 let ch = unsafe { Chan::new_unchecked(0) };
                 let region = unsafe { SramRegion::new(base, REGION_LEN) };
                 let transport = unsafe {
-                    SharedMemoryTransport::new_with_side(ch, a_doorbell, region, base, Side::A)
+                    SharedMemoryTransport::<Primary, _, _>::new(ch, a_doorbell, region, base)
                 };
                 let (tx_half, rx_half) = transport.split();
                 let mut tx = Channel::<Tx, Message, _, C>::new(ch, tx_half, scratch::<MTU>());
@@ -146,7 +146,7 @@ where
                 let ch = unsafe { Chan::new_unchecked(0) };
                 let region = unsafe { SramRegion::new(base, REGION_LEN) };
                 let transport = unsafe {
-                    SharedMemoryTransport::new_with_side(ch, m_doorbell, region, base, Side::M)
+                    SharedMemoryTransport::<Secondary, _, _>::new(ch, m_doorbell, region, base)
                 };
                 let (tx_half, rx_half) = transport.split();
                 let mut tx = Channel::<Tx, Message, _, C>::new(ch, tx_half, scratch::<MTU>());

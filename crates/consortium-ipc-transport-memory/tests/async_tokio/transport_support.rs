@@ -24,11 +24,11 @@ pub fn channel(offset: usize, direction: ChannelDirection) -> ChannelLayout {
 }
 
 pub fn init_two_channel_descriptor(base: *mut u8) {
-    let a_to_m = channel(A_TO_M_SLOT, ChannelDirection::AToM);
-    let m_to_a = channel(M_TO_A_SLOT, ChannelDirection::MToA);
+    let a_to_m = channel(A_TO_M_SLOT, ChannelDirection::PrimaryToSecondary);
+    let m_to_a = channel(M_TO_A_SLOT, ChannelDirection::SecondaryToPrimary);
 
     unsafe {
-        descriptor_init(base, 2, MTU, &[a_to_m, m_to_a]);
+        descriptor_init(base, MTU, &[a_to_m, m_to_a]);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
     }
 }
@@ -89,11 +89,13 @@ impl Region for CountingRegion {
 
 impl SharedMemoryTransportable for CountingRegion {}
 
-pub type HostSramTransportTx = consortium_ipc_transport_memory::SharedMemoryTransportTx<
+pub type HostSramTransportTx<S> = consortium_ipc_transport_memory::SharedMemoryTransportTx<
+    S,
     crate::common::doorbell::HostDoorbell,
     SramRegion,
 >;
-pub type HostSramTransportRx = consortium_ipc_transport_memory::SharedMemoryTransportRx<
+pub type HostSramTransportRx<S> = consortium_ipc_transport_memory::SharedMemoryTransportRx<
+    S,
     crate::common::doorbell::HostDoorbell,
     SramRegion,
 >;

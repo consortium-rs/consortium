@@ -4,8 +4,8 @@ use crate::transport_support::{
 };
 use consortium_ipc::{Chan, RecvTransport, SendTransport};
 use consortium_ipc_transport_memory::{
-    ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport, Side, channel_table_entry_offset,
-    slot,
+    ChannelLayout, Primary, RX_UPDATED_ID_OFFSET, Secondary, SharedMemoryTransport,
+    channel_table_entry_offset, slot,
 };
 use consortium_shared_memory::SramRegion;
 
@@ -35,7 +35,8 @@ fn split_into_halves_allows_tx_and_rx_to_coexist() {
         let ch = unsafe { Chan::new_unchecked(0) };
         let transport = unsafe { SharedMemoryTransport::new(ch, doorbell, region, base) };
 
-        let (mut tx, mut rx): (HostSramTransportTx, HostSramTransportRx) = transport.split();
+        let (mut tx, mut rx): (HostSramTransportTx<Primary>, HostSramTransportRx<Primary>) =
+            transport.split();
 
         tx.send(b"to-remote").await.expect("tx half sends");
 
@@ -77,10 +78,10 @@ fn split_halves_allow_full_duplex_between_two_threads() {
                 let ch = unsafe { Chan::new_unchecked(0) };
                 let region = unsafe { SramRegion::new(base, REGION_LEN) };
                 let transport = unsafe {
-                    SharedMemoryTransport::new_with_side(ch, a_doorbell, region, base, Side::A)
+                    SharedMemoryTransport::<Primary, _, _>::new(ch, a_doorbell, region, base)
                 };
 
-                let (mut tx, mut rx): (HostSramTransportTx, HostSramTransportRx) =
+                let (mut tx, mut rx): (HostSramTransportTx<Primary>, HostSramTransportRx<Primary>) =
                     transport.split();
 
                 let mut buf = [0u8; MTU];
@@ -102,11 +103,13 @@ fn split_halves_allow_full_duplex_between_two_threads() {
                 let ch = unsafe { Chan::new_unchecked(0) };
                 let region = unsafe { SramRegion::new(base, REGION_LEN) };
                 let transport = unsafe {
-                    SharedMemoryTransport::new_with_side(ch, m_doorbell, region, base, Side::M)
+                    SharedMemoryTransport::<Secondary, _, _>::new(ch, m_doorbell, region, base)
                 };
 
-                let (mut tx, mut rx): (HostSramTransportTx, HostSramTransportRx) =
-                    transport.split();
+                let (mut tx, mut rx): (
+                    HostSramTransportTx<Secondary>,
+                    HostSramTransportRx<Secondary>,
+                ) = transport.split();
 
                 let mut buf = [0u8; MTU];
                 let (recv_res, send_res) = futures::join!(rx.recv(&mut buf), tx.send(b"pong"));

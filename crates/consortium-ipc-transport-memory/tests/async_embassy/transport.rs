@@ -11,7 +11,7 @@ use std::{
 
 use consortium_ipc::{Chan, Doorbell, RecvTransport};
 use consortium_ipc_transport_memory::{
-    ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
+    ChannelDirection, ChannelLayout, Primary, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
     channel_table_entry_offset, descriptor_init, slot,
 };
 use consortium_shared_memory::SramRegion;
@@ -35,11 +35,11 @@ fn channel(offset: usize, direction: ChannelDirection) -> ChannelLayout {
 }
 
 fn init_two_channel_descriptor(base: *mut u8) {
-    let a_to_m = channel(A_TO_M_SLOT, ChannelDirection::AToM);
-    let m_to_a = channel(M_TO_A_SLOT, ChannelDirection::MToA);
+    let a_to_m = channel(A_TO_M_SLOT, ChannelDirection::PrimaryToSecondary);
+    let m_to_a = channel(M_TO_A_SLOT, ChannelDirection::SecondaryToPrimary);
 
     unsafe {
-        descriptor_init(base, 2, MTU, &[a_to_m, m_to_a]);
+        descriptor_init(base, MTU, &[a_to_m, m_to_a]);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
     }
 }
@@ -130,7 +130,7 @@ impl Doorbell for EmbassyDoorbell {
 
 #[embassy_executor::task]
 async fn receive_task(
-    mut transport: SharedMemoryTransport<EmbassyDoorbell, SramRegion>,
+    mut transport: SharedMemoryTransport<Primary, EmbassyDoorbell, SramRegion>,
     done: &'static AtomicBool,
 ) {
     let signal = Signal::<NoopRawMutex, ()>::new();

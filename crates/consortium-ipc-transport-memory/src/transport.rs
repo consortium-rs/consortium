@@ -3,11 +3,13 @@ use core::{
     marker::{PhantomData, PhantomPinned},
 };
 
-use consortium_ipc::{Chan, Doorbell, RecvTransport, SendTransport, Transport, TransportError};
+use consortium_ipc::{
+    Chan, Doorbell, RecvTransport, SendTransport, Side, Transport, TransportError,
+};
 use consortium_shared_memory::{DdrRegion, Region, SramRegion};
 
 use crate::{
-    descriptor::{ChannelLayout, NUM_CHANNELS_OFFSET, RX_UPDATED_ID_OFFSET, Side, read_channel},
+    descriptor::{ChannelLayout, NUM_CHANNELS_OFFSET, RX_UPDATED_ID_OFFSET, read_channel},
     error::Error,
     slot_internal as slot,
     utils::rv_u8,
@@ -15,12 +17,11 @@ use crate::{
 
 /// # Safety
 /// `base` must be valid for reads/writes covering the full descriptor layout.
-unsafe fn send_bytes<D: Doorbell, R: Region>(
+unsafe fn send_bytes<S: Side, D: Doorbell, R: Region>(
     ch: Chan,
     doorbell: &D,
     region: &R,
     base: *mut u8,
-    side: Side,
     data: &[u8],
 ) -> Result<(), Error<D>> {
     let mut channel_id = 0xFF;
@@ -35,7 +36,7 @@ unsafe fn send_bytes<D: Doorbell, R: Region>(
         let slot_addr = unsafe { channel.slot_addr(base) };
         // SAFETY: `slot_addr` points to a valid slot in the shared memory region.
         let consumed = unsafe { slot::is_consumed(slot_addr) };
-        if consumed && channel.direction.is_tx(side) {
+        if consumed && channel.direction.is_tx::<S>() {
             channel_id = chan;
             break;
         }
@@ -93,7 +94,6 @@ where
     let region = transport.region();
     let base = transport.base();
     let ch = transport.ch();
-    let side = transport.side();
 
     // If a wait future is already armed, poll it.  If it is still pending our
     // waker is already registered — park until the doorbell fires.  If it fires,
@@ -121,7 +121,7 @@ where
         let slot_addr = unsafe { layout.slot_addr(base) };
         // SAFETY: `slot_addr` points to a valid slot.
         let consumed = unsafe { slot::is_consumed(slot_addr) };
-        if layout.direction.is_rx(side) && !consumed {
+        if layout.direction.is_rx::<T::S>() && !consumed {
             Some(layout)
         } else {
             None
@@ -139,7 +139,7 @@ where
             let slot_addr = unsafe { layout.slot_addr(base) };
             // SAFETY: `slot_addr` points to a valid slot.
             let consumed = unsafe { slot::is_consumed(slot_addr) };
-            if layout.direction.is_rx(side) && !consumed {
+            if layout.direction.is_rx::<T::S>() && !consumed {
                 channel_id = chan;
                 channel = Some(layout);
                 break;
@@ -207,66 +207,37 @@ unsafe fn arm_wait<D: Doorbell + Send + 'static>(
     core::task::Poll::Pending
 }
 
-pub struct SharedMemoryTransport<D: Doorbell, R: SharedMemoryTransportable> {
+pub struct SharedMemoryTransport<S: Side, D: Doorbell, R: SharedMemoryTransportable> {
     ch: Chan,
     doorbell: D,
     region: R,
     /// Base pointer to offset 0x00 of the shared memory region (descriptor header).
     base: *mut u8,
-    /// Which core's perspective resolves the absolute channel directions.
-    side: Side,
     tx_mtu: u32,
     rx_mtu: u32,
+    /// Which core's perspective resolves the absolute channel directions.
+    _side: PhantomData<S>,
 }
 
-impl<D: Doorbell, R: SharedMemoryTransportable> SharedMemoryTransport<D, R> {
-    /// Construct a `SharedMemoryTransport` for a single channel.
+impl<S: Side, D: Doorbell, R: SharedMemoryTransportable> SharedMemoryTransport<S, D, R> {
+    /// Construct a `SharedMemoryTransport` for an explicit [`Side`] `S`.
+    ///
+    /// Channel directions in the descriptor are absolute
+    /// (`PrimaryToSecondary` / `SecondaryToPrimary`); the side `S` selects which
+    /// core's view interprets them as TX vs RX.
     ///
     /// # Safety
     ///
-    /// - `base` must be valid for reads and writes for at least the descriptor
-    ///   header (0x20 bytes) plus the channel table (32 × 0x10 bytes).
-    /// - No other Rust reference to the shared memory region may exist while
-    ///   this transport is in use.
-    /// - The memory must be accessible to both this core and the remote core.
-    ///
-    /// The transport resolves channel directions from the perspective implied by
-    /// the build target ([`Side::for_target`]). Use [`new_with_side`] to override
-    /// this — for example, a host test that drives both cores over one shared
-    /// descriptor in a single `std` process.
-    ///
-    /// [`new_with_side`]: Self::new_with_side
+    /// Same invariants as [`new`](SharedMemoryTransport::new).
     pub unsafe fn new(ch: Chan, doorbell: D, region: R, base: *mut u8) -> Self {
-        // SAFETY: same invariants as `new_with_side`, forwarded directly.
-        unsafe { Self::new_with_side(ch, doorbell, region, base, Side::for_target()) }
-    }
-
-    /// Construct a `SharedMemoryTransport` with an explicit [`Side`].
-    ///
-    /// Channel directions in the descriptor are absolute (`AToM` / `MToA`); `side`
-    /// selects which core's view interprets them as TX vs RX. Firmware should
-    /// prefer [`new`](Self::new), which derives the side from the build target;
-    /// `new_with_side` exists for host tests that emulate both the A-core and the
-    /// M-core over a single shared descriptor.
-    ///
-    /// # Safety
-    ///
-    /// Same invariants as [`new`](Self::new).
-    pub unsafe fn new_with_side(
-        ch: Chan,
-        doorbell: D,
-        region: R,
-        base: *mut u8,
-        side: Side,
-    ) -> Self {
         Self {
             ch,
             doorbell,
             region,
             base,
-            side,
             tx_mtu: 0,
             rx_mtu: 0,
+            _side: PhantomData,
         }
     }
 
@@ -288,7 +259,12 @@ impl<D: Doorbell, R: SharedMemoryTransportable> SharedMemoryTransport<D, R> {
     /// [`Channel`]: consortium_ipc::Channel
     /// [`SendTransport`]: consortium_ipc::SendTransport
     /// [`RecvTransport`]: consortium_ipc::RecvTransport
-    pub fn split(self) -> (SharedMemoryTransportTx<D, R>, SharedMemoryTransportRx<D, R>)
+    pub fn split(
+        self,
+    ) -> (
+        SharedMemoryTransportTx<S, D, R>,
+        SharedMemoryTransportRx<S, D, R>,
+    )
     where
         D: Clone,
         R: Clone,
@@ -301,39 +277,39 @@ impl<D: Doorbell, R: SharedMemoryTransportable> SharedMemoryTransport<D, R> {
                 doorbell: self.doorbell,
                 region: self.region,
                 base: self.base,
-                side: self.side,
                 tx_mtu: self.tx_mtu,
+                _side: PhantomData,
             },
             SharedMemoryTransportRx {
                 ch: self.ch,
                 doorbell: rx_doorbell,
                 region: rx_region,
                 base: self.base,
-                side: self.side,
                 rx_mtu: self.rx_mtu,
+                _side: PhantomData,
             },
         )
     }
 }
 
 /// Send-only half produced by [`SharedMemoryTransport::split`].
-pub struct SharedMemoryTransportTx<D: Doorbell, R: SharedMemoryTransportable> {
+pub struct SharedMemoryTransportTx<S: Side, D: Doorbell, R: SharedMemoryTransportable> {
     ch: Chan,
     doorbell: D,
     region: R,
     base: *mut u8,
-    side: Side,
     tx_mtu: u32,
+    _side: PhantomData<S>,
 }
 
 /// Receive-only half produced by [`SharedMemoryTransport::split`].
-pub struct SharedMemoryTransportRx<D: Doorbell, R: SharedMemoryTransportable> {
+pub struct SharedMemoryTransportRx<S: Side, D: Doorbell, R: SharedMemoryTransportable> {
     ch: Chan,
     doorbell: D,
     region: R,
     base: *mut u8,
-    side: Side,
     rx_mtu: u32,
+    _side: PhantomData<S>,
 }
 
 // SAFETY: `base` is an exclusive pointer to a shared memory region managed by this
@@ -341,40 +317,41 @@ pub struct SharedMemoryTransportRx<D: Doorbell, R: SharedMemoryTransportable> {
 // the safe API; the only aliasing is the intentional inter-processor sharing modelled
 // by the doorbell/region abstraction.  Sending the transport to another thread is
 // sound when D and R are both Send.
-unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
-    for SharedMemoryTransport<D, R>
+unsafe impl<S: Side, D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
+    for SharedMemoryTransport<S, D, R>
 {
 }
 // SAFETY: the transmit half owns only the raw base pointer and never exposes shared
 // references to the pointed-to memory through the safe API. Moving it is sound
 // when its doorbell and region handles are Send.
-unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
-    for SharedMemoryTransportTx<D, R>
+unsafe impl<S: Side, D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
+    for SharedMemoryTransportTx<S, D, R>
 {
 }
 // SAFETY: the receive half owns only the raw base pointer and never exposes shared
 // references to the pointed-to memory through the safe API. Moving it is sound
 // when its doorbell and region handles are Send.
-unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
-    for SharedMemoryTransportRx<D, R>
+unsafe impl<S: Side, D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
+    for SharedMemoryTransportRx<S, D, R>
 {
 }
 
 /// Sealed accessor so `RecvFut` can be generic over both `SharedMemoryTransport`
 /// and `SharedMemoryTransportRx` without duplicating the future type.
 pub trait RecvAccess {
+    type S: Side;
     type D: Doorbell + 'static;
     type R: SharedMemoryTransportable;
     fn doorbell(&self) -> &Self::D;
     fn region(&self) -> &Self::R;
     fn base(&self) -> *mut u8;
     fn ch(&self) -> Chan;
-    fn side(&self) -> Side;
 }
 
-impl<D: Doorbell + 'static, R: SharedMemoryTransportable> RecvAccess
-    for SharedMemoryTransport<D, R>
+impl<S: Side, D: Doorbell + 'static, R: SharedMemoryTransportable> RecvAccess
+    for SharedMemoryTransport<S, D, R>
 {
+    type S = S;
     type D = D;
     type R = R;
     fn doorbell(&self) -> &D {
@@ -389,14 +366,12 @@ impl<D: Doorbell + 'static, R: SharedMemoryTransportable> RecvAccess
     fn ch(&self) -> Chan {
         self.ch
     }
-    fn side(&self) -> Side {
-        self.side
-    }
 }
 
-impl<D: Doorbell + 'static, R: SharedMemoryTransportable> RecvAccess
-    for SharedMemoryTransportRx<D, R>
+impl<S: Side, D: Doorbell + 'static, R: SharedMemoryTransportable> RecvAccess
+    for SharedMemoryTransportRx<S, D, R>
 {
+    type S = S;
     type D = D;
     type R = R;
     fn doorbell(&self) -> &D {
@@ -410,9 +385,6 @@ impl<D: Doorbell + 'static, R: SharedMemoryTransportable> RecvAccess
     }
     fn ch(&self) -> Chan {
         self.ch
-    }
-    fn side(&self) -> Side {
-        self.side
     }
 }
 
@@ -497,20 +469,26 @@ where
     }
 }
 
-impl<D: Doorbell, R: SharedMemoryTransportable> TransportError for SharedMemoryTransport<D, R> {
+impl<S: Side, D: Doorbell, R: SharedMemoryTransportable> TransportError
+    for SharedMemoryTransport<S, D, R>
+{
     type Error = Error<D>;
 }
 
-impl<D: Doorbell, R: SharedMemoryTransportable> TransportError for SharedMemoryTransportTx<D, R> {
+impl<S: Side, D: Doorbell, R: SharedMemoryTransportable> TransportError
+    for SharedMemoryTransportTx<S, D, R>
+{
     type Error = Error<D>;
 }
 
-impl<D: Doorbell, R: SharedMemoryTransportable> TransportError for SharedMemoryTransportRx<D, R> {
+impl<S: Side, D: Doorbell, R: SharedMemoryTransportable> TransportError
+    for SharedMemoryTransportRx<S, D, R>
+{
     type Error = Error<D>;
 }
 
-impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
-    for SharedMemoryTransport<D, R>
+impl<S: Side, D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
+    for SharedMemoryTransport<S, D, R>
 {
     type SendFut<'a>
         = SendFut<'a, D, R>
@@ -520,14 +498,7 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
     fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a> {
         // SAFETY: `self.base` satisfies the descriptor layout invariant established in `new`.
         let result = unsafe {
-            send_bytes(
-                self.ch,
-                &self.doorbell,
-                &self.region,
-                self.base,
-                self.side,
-                data,
-            )
+            send_bytes::<S, D, R>(self.ch, &self.doorbell, &self.region, self.base, data)
         };
         SendFut {
             result,
@@ -540,8 +511,8 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
     }
 }
 
-impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
-    for SharedMemoryTransportTx<D, R>
+impl<S: Side, D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
+    for SharedMemoryTransportTx<S, D, R>
 {
     type SendFut<'a>
         = SendFut<'a, D, R>
@@ -551,14 +522,7 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
     fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a> {
         // SAFETY: `self.base` satisfies the descriptor layout invariant established by `split`.
         let result = unsafe {
-            send_bytes(
-                self.ch,
-                &self.doorbell,
-                &self.region,
-                self.base,
-                self.side,
-                data,
-            )
+            send_bytes::<S, D, R>(self.ch, &self.doorbell, &self.region, self.base, data)
         };
         SendFut {
             result,
@@ -571,11 +535,11 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
     }
 }
 
-impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> RecvTransport
-    for SharedMemoryTransport<D, R>
+impl<S: Side, D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> RecvTransport
+    for SharedMemoryTransport<S, D, R>
 {
     type RecvFut<'a>
-        = RecvFut<'a, SharedMemoryTransport<D, R>>
+        = RecvFut<'a, SharedMemoryTransport<S, D, R>>
     where
         Self: 'a;
 
@@ -595,11 +559,11 @@ impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> RecvTran
     }
 }
 
-impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> RecvTransport
-    for SharedMemoryTransportRx<D, R>
+impl<S: Side, D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> RecvTransport
+    for SharedMemoryTransportRx<S, D, R>
 {
     type RecvFut<'a>
-        = RecvFut<'a, SharedMemoryTransportRx<D, R>>
+        = RecvFut<'a, SharedMemoryTransportRx<S, D, R>>
     where
         Self: 'a;
 
@@ -619,8 +583,8 @@ impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> RecvTran
     }
 }
 
-impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> Transport
-    for SharedMemoryTransport<D, R>
+impl<S: Side, D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> Transport
+    for SharedMemoryTransport<S, D, R>
 {
 }
 

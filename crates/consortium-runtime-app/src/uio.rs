@@ -33,10 +33,8 @@ use std::{
 use tokio::{io::unix::AsyncFd, sync::Notify};
 use uio::UioError;
 
-use consortium_ipc::{Chan, Doorbell};
 use consortium_ipc_transport_memory::{
-    ChannelDirection, Descriptor, DescriptorError, SharedMemoryTransport,
-    SharedMemoryTransportable, config, descriptor_ack,
+    Descriptor, DescriptorError, descriptor_ack, descriptor_init,
 };
 
 // ── Error ─────────────────────────────────────────────────────────────────────
@@ -87,7 +85,6 @@ impl From<UioError> for UioDeviceError {
 
 struct Inner {
     region_base: *mut u8,
-    descriptor: Descriptor,
     /// Doorbell wakeups fired on every M→A IRQ. All pending `RecvFut`s and
     /// `SendFut`s wake and re-check their slots. Populated through
     /// [`UioDevice::register_doorbell`].
@@ -136,23 +133,18 @@ impl UioDevice {
     /// that UIO value is a compile error (see the guard in `lib.rs`), so by the
     /// time `open` runs the index is always real. The mapped address comes from
     /// mmap, not from `CONSORTIUM_IPC_BASE`.
-    pub fn open(num_channels: usize, transfer_size: usize) -> Result<Self, UioDeviceError> {
-        let uio_num = config::UIO as usize;
-        let uio = uio::UioDevice::blocking_new(uio_num)?;
+    pub fn open(uio_id: usize, mmap_id: usize) -> Result<Self, UioDeviceError> {
+        let uio = uio::UioDevice::blocking_new(uio_id)?;
 
         // map_mapping reads the size from sysfs and mmaps `/dev/uioN` at the
         // map0 offset (the CIPC shared region) in the uio_pdrv_genirq namespace.
-        let region_base = uio.map_mapping(0)? as *mut u8;
-
-        // SAFETY: region_base is valid for the lifetime of `uio`; descriptor
-        // must already be in Ready state - call mmap::wait_for_ready first.
-        let descriptor = unsafe { descriptor_ack(region_base, num_channels, transfer_size) }?;
+        let region_base = uio.map_mapping(mmap_id)? as *mut u8;
 
         let notifiers: Notifiers = Arc::new(Mutex::new(Vec::new()));
 
         // Open the device fd a second time for async IRQ listening so we do
         // not disturb the mmap held by `uio`.
-        let irq_file = File::open(format!("/dev/uio{uio_num}"))?;
+        let irq_file = File::open(format!("/dev/uio{uio_id}"))?;
         let async_fd = AsyncFd::new(irq_file)?;
 
         let irq_notifiers = Arc::clone(&notifiers);
@@ -161,7 +153,6 @@ impl UioDevice {
         Ok(Self {
             inner: Arc::new(Inner {
                 region_base,
-                descriptor,
                 notifiers,
             }),
             uio,
@@ -170,14 +161,6 @@ impl UioDevice {
     }
 
     /// Map a UIO memory mapping by index and return its virtual base address.
-    ///
-    /// Maps live in the `uio_pdrv_genirq` maps namespace
-    /// (`/sys/class/uio/uioN/maps/mapN`); `map0` is the `CIPC` shared-memory
-    /// region (mapped at [`open`]). The doorbell peripheral register block
-    /// (MU / HSEM / IPCC) is a later map — typically `map1` — described in the
-    /// device tree. Pass the returned base into the matching doorbell
-    /// constructor, e.g. `MuDoorbell::<Primary, 7>::new(base)`,
-    /// `HsemDoorbell::new(base)`, or `IpccDoorbell::new(base)`.
     ///
     /// Prefer [`map_peripheral_by_name`] when map ordering is not guaranteed.
     ///
@@ -191,34 +174,6 @@ impl UioDevice {
     /// [`map_peripheral_by_name`]: Self::map_peripheral_by_name
     pub fn map_peripheral(&self, index: usize) -> Result<usize, UioDeviceError> {
         Ok(self.uio.map_mapping(index)? as usize)
-    }
-
-    /// Map a UIO memory mapping by its device-tree name and return its virtual
-    /// base address.
-    ///
-    /// Resolves `name` against `/sys/class/uio/uioN/maps/*/name` (the `reg-names`
-    /// entries from the device tree) so callers do not depend on map ordering,
-    /// then maps it like [`map_peripheral`]. The same MMIO safety obligation
-    /// applies.
-    ///
-    /// [`map_peripheral`]: Self::map_peripheral
-    pub fn map_peripheral_by_name(&self, name: &str) -> Result<usize, UioDeviceError> {
-        let index = self.find_map(name)?;
-        self.map_peripheral(index)
-    }
-
-    /// Find the map index whose name matches `name`, scanning up to
-    /// [`MAX_UIO_MAPS`]. Scanning stops at the first absent map.
-    fn find_map(&self, name: &str) -> Result<usize, UioDeviceError> {
-        for index in 0..MAX_UIO_MAPS {
-            match self.uio.map_name(index) {
-                Ok(found) if found == name => return Ok(index),
-                Ok(_) => continue,
-                // An absent map ends the contiguous map range.
-                Err(_) => break,
-            }
-        }
-        Err(UioDeviceError::MapNotFound(name.to_string()))
     }
 
     /// Register a doorbell's [`Notify`] so the IRQ task wakes its `wait()`
@@ -247,57 +202,6 @@ impl UioDevice {
     /// Number of channels declared in the descriptor.
     pub fn num_channels(&self) -> u8 {
         self.inner.descriptor.num_channels
-    }
-
-    /// Create a [`SharedMemoryTransport`] for the given logical channel.
-    ///
-    /// The descriptor channel table is expected to have paired entries for
-    /// each logical channel: the entry at index `2 * chan.id()` is the A→M
-    /// (transmit from A-core) slot, and `2 * chan.id() + 1` is the M→A
-    /// (receive on A-core) slot.
-    ///
-    /// `doorbell` is rung after each successful send to notify M-core.
-    /// `region`   governs cache-coherency operations (use [`DdrRegion`] for
-    ///            DDR-backed shared memory).
-    ///
-    /// [`DdrRegion`]: consortium_shared_memory::DdrRegion
-    pub fn channel_transport<D, R>(
-        &self,
-        chan: Chan,
-        doorbell: D,
-        region: R,
-    ) -> Result<SharedMemoryTransport<D, R>, UioDeviceError>
-    where
-        D: Doorbell,
-        R: SharedMemoryTransportable,
-    {
-        let id = chan.id() as usize;
-        let num_ch = self.inner.descriptor.num_channels as usize;
-
-        // Each logical channel occupies two consecutive descriptor entries:
-        //   even index → AToM (A-core transmits)
-        //   odd  index → MToA (A-core receives)
-        let tx_idx = 2 * id;
-        let rx_idx = 2 * id + 1;
-
-        if rx_idx >= num_ch {
-            return Err(UioDeviceError::ChannelOutOfRange(chan.id(), num_ch as u8));
-        }
-
-        let tx_entry = &self.inner.descriptor.channels[tx_idx];
-        let rx_entry = &self.inner.descriptor.channels[rx_idx];
-
-        if tx_entry.direction != ChannelDirection::AToM
-            || rx_entry.direction != ChannelDirection::MToA
-        {
-            return Err(UioDeviceError::ChannelPairNotFound(chan.id()));
-        }
-
-        let base = self.inner.region_base;
-
-        // SAFETY: slot pointers and sizes come from the validated descriptor;
-        // this UioDevice exclusively owns the mmap.
-        Ok(unsafe { SharedMemoryTransport::new(chan, doorbell, region, base) })
     }
 }
 
