@@ -84,39 +84,6 @@ impl<S: Side, const N: usize> MuDoorbell<S, N> {
     }
 }
 
-#[cfg(not(feature = "std"))]
-impl<const N: usize> MuDoorbell<consortium_ipc::Primary, N> {
-    /// Create a doorbell over the side-A (MUA) view of MU instance `N` using
-    /// the compile-time base from [`crate::registers::base`].
-    ///
-    /// # Safety
-    /// Grants raw MU register access; the caller must ensure no conflicting
-    /// handle to the same instance/side exists.
-    pub const unsafe fn steal() -> Self {
-        Self {
-            // SAFETY: forwarded obligation from this constructor.
-            mu: unsafe { Mu::<consortium_ipc::Primary, N>::steal() },
-        }
-    }
-}
-
-#[cfg(not(feature = "std"))]
-impl<const N: usize> MuDoorbell<consortium_ipc::Secondary, N> {
-    /// Create a doorbell over the side-B (MUB) view of MU instance `N` using
-    /// the compile-time base from [`crate::registers::base`].
-    ///
-    /// # Safety
-    /// Grants raw MU register access; the caller must ensure no conflicting
-    /// handle to the same instance/side exists.
-    pub const unsafe fn steal() -> Self {
-        Self {
-            // SAFETY: forwarded obligation from this constructor.
-            mu: unsafe { Mu::<consortium_ipc::Secondary, N>::steal() },
-        }
-    }
-}
-
-#[cfg(feature = "std")]
 impl<S: Side, const N: usize> MuDoorbell<S, N> {
     /// Create a doorbell over MU instance `N`, side `S`, from an `mmap`'d
     /// virtual base address.
@@ -129,6 +96,7 @@ impl<S: Side, const N: usize> MuDoorbell<S, N> {
         Self {
             // SAFETY: forwarded obligation; `base` is the mapped MU window.
             mu: unsafe { Mu::<S, N>::new(base) },
+            #[cfg(feature = "std")]
             notify: std::sync::Arc::new(tokio::sync::Notify::new()),
         }
     }
@@ -136,6 +104,7 @@ impl<S: Side, const N: usize> MuDoorbell<S, N> {
     /// Returns a cloned `Arc` to the internal `Notify`. Pass it to the UIO IRQ
     /// loop so it can wake waiting [`wait`](Doorbell::wait) futures via
     /// `notify_waiters()` when this instance's GI interrupt fires.
+    #[cfg(feature = "std")]
     pub fn notifier(&self) -> std::sync::Arc<tokio::sync::Notify> {
         std::sync::Arc::clone(&self.notify)
     }

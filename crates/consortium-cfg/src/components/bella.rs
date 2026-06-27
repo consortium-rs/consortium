@@ -59,7 +59,7 @@ impl Bella {
     /// visible to `core`.
     ///
     /// Returns `None` when no configured doorbell has an IRQ for `core`.
-    pub fn nvic_enable(&self, core: VisibleCore) -> Option<TokenStream> {
+    pub fn nvic_enable(&self, core: &VisibleCore) -> Option<TokenStream> {
         let mut interrupts = self
             .bells
             .iter()
@@ -191,7 +191,7 @@ mod tests {
             bells: vec![bell("hsem", core, 199), bell("ipcc2", core, 13)],
         };
 
-        let tokens = bella.nvic_enable(core).unwrap().to_string();
+        let tokens = bella.nvic_enable(&core).unwrap().to_string();
 
         assert!(tokens.contains("enum BellaInterrupt"));
         assert!(tokens.contains("HSEM = 199u16"));
@@ -208,7 +208,7 @@ mod tests {
             bells: vec![bell("hsem", cm33, 199)],
         };
 
-        assert!(bella.nvic_enable(cm7).is_none());
+        assert!(bella.nvic_enable(&cm7).is_none());
     }
 
     #[test]

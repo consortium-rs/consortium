@@ -55,23 +55,6 @@ impl<S: Side, const N: usize> HsemDoorbell<S, N> {
     }
 }
 
-#[cfg(not(feature = "std"))]
-impl<S: Side, const N: usize> HsemDoorbell<S, N> {
-    /// Create a doorbell over the HSEM peripheral using the compile-time base,
-    /// for processor side `S`.
-    ///
-    /// # Safety
-    /// Grants raw HSEM register access; the caller must ensure no conflicting
-    /// handle for the same core exists.
-    pub const unsafe fn steal() -> Self {
-        Self {
-            // SAFETY: forwarded obligation from this constructor.
-            hsem: unsafe { Hsem::steal() },
-        }
-    }
-}
-
-#[cfg(feature = "std")]
 impl<S: Side, const N: usize> HsemDoorbell<S, N> {
     /// Create a doorbell over the HSEM peripheral from an `mmap`'d virtual base
     /// address, for processor side `S`.
@@ -83,6 +66,7 @@ impl<S: Side, const N: usize> HsemDoorbell<S, N> {
         Self {
             // SAFETY: forwarded obligation; `base` is the mapped HSEM window.
             hsem: unsafe { Hsem::<S, N>::new(base) },
+            #[cfg(feature = "std")]
             notify: std::sync::Arc::new(tokio::sync::Notify::new()),
         }
     }
@@ -93,6 +77,7 @@ impl<S: Side, const N: usize> HsemDoorbell<S, N> {
     ///
     /// On Linux the kernel driver owns `CnIER`/`CnICR`; userspace must not
     /// touch them.
+    #[cfg(feature = "std")]
     pub fn notifier(&self) -> std::sync::Arc<tokio::sync::Notify> {
         std::sync::Arc::clone(&self.notify)
     }

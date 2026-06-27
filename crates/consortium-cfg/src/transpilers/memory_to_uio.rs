@@ -57,7 +57,7 @@ impl ToUio for [MemoryRegion] {
 mod tests {
     use super::*;
 
-    fn region(base: u64, length: u64) -> MemoryRegion {
+    fn region(base: u32, length: u32) -> MemoryRegion {
         MemoryRegion { base, length }
     }
 

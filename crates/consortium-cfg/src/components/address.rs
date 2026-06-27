@@ -18,3 +18,26 @@ pub struct Address {
     /// controller processor
     pub cp: HashMap<VisibleCore, u32>,
 }
+
+impl Address {
+    pub fn memory_lookup(
+        &self,
+        core: &VisibleCore,
+        uio_ident: syn::Ident,
+    ) -> proc_macro2::TokenStream {
+        match core {
+            VisibleCore::Ap => {
+                let uio_id = self.ap.uio_id;
+                let mmap_id = self.ap.mmap_id;
+                quote::quote! { #uio_ident[#uio_id].mmap(#mmap_id)? }
+            }
+            _ => {
+                let address = self
+                    .cp
+                    .get(core)
+                    .expect("core must have an address in the config");
+                quote::quote! { #address }
+            }
+        }
+    }
+}

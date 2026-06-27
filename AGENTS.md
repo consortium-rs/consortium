@@ -1,15 +1,22 @@
 # AGENTS.md - AI Assistant Guide for Consortium
 
 Consortium is a Rust workspace for heterogeneous multiprocessing systems, especially
-SoCs that pair Linux-capable Cortex-A cores with real-time Cortex-M or similar
-microcontroller cores. The project provides shared abstractions for inter-processor
-communication, trusted execution, configuration, debugging, and build/runtime glue for
-platforms such as STM32MP2 and NXP i.MX 9x.
+SoCs that pair a Linux-capable A-core with Cortex-M, Cortex-R, or RISC-V real-time
+cores. The repository is early-stage and moving quickly. Prefer reading the current
+crate sources and manifests over relying on older docs, examples, or design notes.
 
-The repository is still early-stage. APIs and crate boundaries are expected to evolve,
-but the current direction is clear: keep cross-core contracts explicit, keep `no_std`
-support viable for firmware-side code, and use host-side tests wherever hardware is not
-required.
+The current implementation centers on explicit cross-core contracts:
+
+- `consortium-ipc` defines typed channels, transport traits, side markers, doorbells,
+  and `IpcSafe`.
+- `consortium-codec` defines codec families used by IPC and TEE parameter conversion.
+- `consortium-shared-memory` owns low-level memory-region abstractions.
+- `consortium-ipc-transport-memory` owns the descriptor/slot shared-memory transport.
+- Doorbell crates bind hardware signaling to the transport layer.
+- `consortium-cfg-common` and `consortium-cfg` own the current `Consortium.toml`
+  schema, chip databases, validation, and DTS/UIO-oriented transpilers.
+- `consortium-tee` handles the trusted execution environment contracts.
+- `consortium-hmi` provides a Cog/WPE WebKit-based human-computer interface.
 
 ## Commands
 
@@ -23,260 +30,274 @@ just setup
 # Run host-side checks
 just check
 
-# Run the host-side in different subsystems
+# Run focused subsystem checks
 just test ipc host
 just test tee host
 just test hmi host
 
-# Run the host-side lint bundle
+# Run host-side lint bundle
 just lint
 
-# Apply the standard Rust, frontend, Python, and TOML formatters/fixers
+# Apply Rust, frontend, Python, and TOML fixers/formatters
 just fix
 
 # Serve documentation locally
 mdbook serve docs/
 ```
 
-The `justfile` is the command index for routine development. It includes host checks,
-TEE checks, TOML formatting/linting through Taplo, spelling checks through `typos`, file
-name checks through `ls-lint`, Python checks through `ruff`, frontend checks through
-Vite+, and cross-compilation recipes for A-core, M-core, and RISC-V targets. Some target
-recipes are platform-dependent and should be treated as hardware or SDK workflows rather
-than generic macOS host checks.
+Use `cargo test -p <crate>` for focused validation while iterating. Full-workspace
+commands can hit platform-sensitive crates or code that is mid-migration.
 
-## Platform Notes
+The `justfile` is the command index, but verify recipes against current crates before
+copying them into new docs. Some recipes still mention crates or type names that are not
+present in the current workspace, such as `consortium-common`, `consortium-runtime-prt`,
+`SharedMemConfig`, or `HmiConfig`.
 
-- Linux-only or Linux-oriented crates include `consortium-tee` CA-side support,
-  `consortium-runtime-app`, `consortium-ipc-transport-memory` with `std`, and the
-  Linux path of GPIO or UIO-backed integrations.
-- Bare-metal crates and feature paths include `consortium-runtime-mcu`,
-  `consortium-ipc-transport-memory` without `std`, and no-std doorbell code.
-- TEE TA-side macro and parameter code is intentionally usable without Linux. The CA
-  runtime surface remains Linux-gated.
-- Prefer targeted crate tests on non-Linux hosts. Full workspace tests can include
-  platform-sensitive crates.
+The current target-oriented recipes include A-core Linux (`aarch64-unknown-linux-gnu`,
+`armv7-unknown-linux-gnueabihf`), M-core bare-metal (`thumbv8m.main-none-eabihf`,
+`thumbv7em-none-eabihf`), and RISC-V (`riscv32imc-unknown-none-elf`,
+`riscv32imac-unknown-none-elf`, `riscv32imafc-unknown-none-elf`) checks/builds.
+A-core, TEE, HMI, UIO, Cog, WebKit, and Yocto/OpenSTLinux flows are Linux/SDK oriented.
 
 ## Workspace Shape
 
-| Area               | Crates                                                                                                                       |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
-| Core IPC           | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                      |
-| Shared transport   | `consortium-ipc-transport-memory`                                                                                            |
-| Doorbells          | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`, `consortium-ipc-doorbell-ipcc` |
-| Codecs             | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                |
-| Macro helpers      | `consortium-macros-helpers`                                                                                                  |
-| Common types       | `consortium-cfg-common`                                                                                                      |
-| Configuration      | `consortium-cfg`, `consortium-cfg-meta`, `consortium-dts`                                                                    |
-| Runtimes and build | `consortium-runtime-mcu`, `consortium-runtime-prt`, `consortium-runtime-app`, `consortium-builder`, `consortium-cli`         |
-| Debug              | `consortium-dbg-defmt`                                                                                                       |
-| TEE                | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`, `consortium-tee-test`                               |
-| Utilities and HMI  | `consortium-ffi`, `consortium-hmi`, `consortium-ort`, `cogcore`, `cogcore-sys`                                               |
-| Examples           | `melt-pot-*`, including shared message types, app, MCU, and TA crates for i.MX95 and STM32MP25                               |
+| Area            | Crates                                                                                                                       |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Core IPC        | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                      |
+| Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                |
+| Shared memory   | `consortium-shared-memory`, `consortium-ipc-transport-memory`                                                                |
+| Doorbells       | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-ipcc`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio` |
+| Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`                                                                  |
+| Macro helpers   | `consortium-macros-helpers`                                                                                                  |
+| Runtimes/build  | `consortium-runtime-app`, `consortium-runtime-mcu`, `consortium-runtime-spl`, `consortium-builder`, `consortium-cli`         |
+| Debug           | `consortium-dbg-defmt`                                                                                                       |
+| TEE             | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`, `consortium-tee-test`                               |
+| HMI/Cog/ORT/FFI | `consortium-hmi`, `cogcore`, `cogcore-sys`, `consortium-ort`, `consortium-ffi`                                               |
+| Examples        | `examples/melt-pot/*` for i.MX95 and STM32MP25 app/MCU/TA/shared message crates                                              |
 
-## Core Architecture
+## IPC Core
 
-The IPC layer is organized around a small trait hierarchy:
+The current IPC trait stack is:
 
 ```text
-Doorbell  - signaling primitive for notifying a remote processor
-Region    - memory area with optional cache maintenance hooks
-Transport - byte transport that owns or uses a Doorbell
-Codec     - serialization family implemented as CodecFor<T>
-Channel   - typed endpoint built from transport plus codec
+Doorbell       - hardware/software signal for waking a remote processor
+SendTransport  - byte send half; writes bytes and rings the doorbell
+RecvTransport  - byte receive half; waits for the doorbell and reads bytes
+Transport      - full-duplex transport: SendTransport + RecvTransport
+CodecFor<T>    - serialization family for a message type
+Channel<Tx/Rx> - typed directed endpoint over one transport half
+Transceiver    - typed send/receive endpoint built from paired channels
 ```
 
-`consortium-ipc` is `no_std` by default and exposes the central traits and channel
-types. `std`, `alloc`, and `futures` are feature-gated. Keep cross-core data structures
-portable: the `IpcSafe` marker trait rejects address-space-local constructs such as raw
-pointers, references, function pointers, and `usize`/`isize`. Use
-`#[derive(IpcSafe)]` from `consortium-ipc-macros` when adding message types; the macro
-implementation lives in `consortium-ipc-macros-impl` so it can be tested without going
-through the proc-macro wrapper.
+`consortium-ipc` is `no_std` unless `std` is enabled. Its feature shape is small:
+`alloc`, `futures`, and `std = ["alloc", "futures"]`. Keep core traits usable from
+firmware-side code.
 
-`consortium-macros-helpers` owns shared `syn` utilities used by macro implementation
-crates. Put reusable AST traversal, type classification, and return-type helpers there
-instead of duplicating them across `*-macros-impl` crates; keep domain-specific parsing
-and code generation in the owning macro implementation crate.
+`Channel<D, T, Tr, C>` does not allocate. Callers provide a `&'static mut [u8]` scratch
+buffer sized for the transport MTU. `Tx` channels require `SendTransport`; `Rx`
+channels require `RecvTransport`. `ReceivedMessage` is designed to handle owned codecs
+today and zero-copy codecs later.
 
-`consortium-codec` owns the codec traits and serialization families. Postcard, Prost,
-and rkyv support are feature-gated modules; rkyv also exposes
-`#[derive(TrustedArchive)]` through `consortium-codec-macros`. The macro implementation
-lives in `consortium-codec-macros-impl` and is tested with trybuild and insta snapshots.
+`Transceiver<TyTx, TyRx, Tr, C>` is public and wraps paired `Channel<Tx, ...>` and
+`Channel<Rx, ...>` values. If a transport needs separate ownership for Tx/Rx, use the
+transport's split halves before constructing channels.
 
-`consortium-cfg-common` owns common project types and configuration helpers shared across
-crates.
+`IpcSafe` rejects address-space-local constructs such as pointers, references, function
+pointers, `usize`, and `isize`. Add reusable `syn`/AST helpers to
+`consortium-macros-helpers`; keep domain-specific derive logic in the owning
+`*-macros-impl` crate.
 
-## Shared-Memory IPC
+## Codecs
 
-`consortium-ipc-transport-memory` is the unified shared-memory transport crate. It uses
-descriptor-backed channel layouts and slot headers over a memory region marked by the
-`CIPC` descriptor magic. The same crate serves host/Linux and firmware/bare-metal
-directions through features:
+`consortium-codec` is `no_std` by default and has no default codec feature. Available
+families are feature-gated:
 
-- `std` enables Tokio-facing support and Linux-oriented dependencies.
-- `alloc` enables allocation without full `std`.
-- default features currently include `std`.
+- `postcard` exposes `PostcardCodec`.
+- `prost` exposes `ProstCodec`.
+- `rkyv` exposes `RkyvCodec` and re-exports `TrustedArchive`.
 
-The transport test suite includes a host-thread integration test that initializes a heap
-backed descriptor, uses a mock host doorbell, sends `ping`, and receives `pong`. This is
-the preferred style for validating shared-memory protocol logic without hardware.
+`CodecFor<T>` owns the associated `Decoded<'buf>` type, so channel and TEE code should
+avoid assuming decode always produces an owned `T`.
+
+## Shared Memory IPC
+
+Shared memory is split across two crates:
+
+- `consortium-shared-memory` defines the `Region` trait and concrete `SramRegion`,
+  `DdrRegion`, and `SerialRegion` types. `SramRegion` is coherent/no-op cache
+  maintenance; `DdrRegion` performs AArch64 data-cache maintenance on AArch64 and
+  compiles to no-ops elsewhere; `SerialRegion` is a virtual no-backing region.
+- `consortium-ipc-transport-memory` defines the `CIPC` descriptor layout, channel table,
+  slot header protocol, descriptor init/complete helpers, and
+  `SharedMemoryTransport<S, D, R>`.
+
+`SharedMemoryTransport` is generic over a `Side`, a `Doorbell`, and a region implementing
+`RegionSharedMemoryTransportable`. Currently `SramRegion` and `DdrRegion` implement that
+transport marker.
+
+The descriptor uses absolute channel directions (`PrimaryToSecondary` and
+`SecondaryToPrimary`) and resolves them relative to the `Side` type. `Primary` is the
+Linux/A-core convention, and `Secondary` is the firmware/M-core convention in current
+examples and tests.
+
+`SharedMemoryTransport::split()` returns `SharedMemoryTransportTx` and
+`SharedMemoryTransportRx`. Use these halves when building simultaneous
+`Channel<Tx, ...>` and `Channel<Rx, ...>` endpoints from one transport.
+
+Shared-memory tests live under `crates/consortium-ipc-transport-memory/tests/` and cover
+sync descriptor layout, Tokio futures, split halves, codec-backed channels, atomic-waker
+no-std-shaped futures, Embassy-style polling, and end-to-end primary/secondary exchange.
+Prefer extending these heap-backed or fake-doorbell tests before requiring hardware.
 
 ## Doorbells
 
-Doorbells provide the wakeup/signaling half of IPC. Existing implementations should be
-used as patterns for any new platform:
+Doorbells provide wakeup/signaling and should keep MMIO safety invariants documented.
+Use typed register abstractions and validate channel bounds through the local validation
+type where available.
 
-- `consortium-ipc-doorbell-hsem` targets STM32MP23/STM32MP25 hardware semaphores.
-- `consortium-ipc-doorbell-mu` targets NXP i.MX Message Unit hardware. Allow GI and RF interrupts.
-- `consortium-ipc-doorbell-ipcc` targets STM32MP21/STM32MP23/STM32MP25 IPCC.
+- `consortium-ipc-doorbell-hsem` targets STM32 HSEM. Features are `stm32mp23`,
+  `stm32mp25`, `stm32h7x5`, `stm32h7x7`; default is `stm32mp25`; `std` enables Tokio
+  support.
+- `consortium-ipc-doorbell-ipcc` targets STM32 IPCC. Features are `stm32mp21x`,
+  `stm32mp23x`, `stm32mp25x`; default is `stm32mp25x`; `std` enables Tokio support.
+- `consortium-ipc-doorbell-mu` targets NXP i.MX MU. Features are `imx8mp`, `imx93`,
+  `imx95`; default is `imx95`; channels `0..4` are GI lines and `4..8` are RF lines.
+- `consortium-ipc-doorbell-gpio` is a single-channel GPIO doorbell. The `no_std` path
+  uses a software pending flag and IRQ-side `wake`; the `std` path exposes a Tokio
+  `Notify` that external interrupt code must trigger.
 
-When adding or changing a doorbell, keep register access safety documented, validate
-channel bounds through the local validation type when appropriate, and maintain the
-dual-path design where practical: `no_std` firmware-side waiting plus `std`/Tokio host
-notification. Use typed register access for MMIO fields; the current doorbell crates use
-the `bitfield` crate for register bitfields and volatile reads/writes at the access
-boundary.
-
-The `std` doorbell paths are host-testable without real hardware using fake MMIO arrays
-and Tokio `Notify`. Current HSEM, IPCC, and MU tests cover ring/pending register effects
-and wait futures that subscribe before notification, then complete after the fake
-interrupt/status bit is set and `notify_waiters()` is called. Prefer extending these
-fake-MMIO tests before requiring hardware-in-the-loop coverage.
-
-Runtime STM32 feature names are chip-family-specific:
-
-- `stm32mp21x` enables IPCC only.
-- `stm32mp23x` enables HSEM and IPCC.
-- `stm32mp25x` enables HSEM and IPCC and is the default STM32 runtime feature.
-- `stm32mp2xx` remains only as a compatibility alias for the previous HSEM-capable default.
-
-Runtime i.MX feature names are split by SoC family:
-
-- `imx9x` is the umbrella runtime family.
-- `imx93` enables `imx9x` plus the MU crate's `imx93` feature.
-- `imx95` enables `imx9x` plus the MU crate's `imx95` feature.
+The `std` doorbell paths are host-testable with fake MMIO and Tokio `Notify`. Runtime
+UIO integrations should bind each doorbell notifier to the Linux UIO IRQ fanout before
+receiving.
 
 ## Configuration
 
-- `consortium-cfg` contains configuration, peripheral, pin, session, and validation
-  logic for resource partitioning and platform setup.
-- `consortium-cfg-meta` contains generated STM32MP metadata and chip-family feature
-  flags such as `stm32mp21xxxx`, `stm32mp23xxxx`, and `stm32mp25xxxx`.
-- `consortium-dts` contains the device-tree parser and builder used by configuration
-  flows that need DTS input/output rather than ad hoc string generation.
+The authoritative current schema is in `consortium-cfg-common/src/config/`, not in the
+older melt-pot example manifests. Use `crates/consortium-cfg/Consortium.example.*.toml`
+and `consortium-cfg/src/session.rs` tests as the best references.
 
-Use the `docs/src/dev/rpi/` documentation as the design reference for resource
-partitioning concepts. Code lives in the `cfg` crates.
+Current top-level schema:
 
-Peripheral config flows bridge `consortium-cfg-common` project config into validated
-`consortium-cfg` types. Keep the user-facing config centered on `owner`, `secure`, and
-optional DTS pin declarations; derive STM32 RIFSC `perid` values and pinmux positions
-from metadata during session validation. i.MX and non-RIFSC peripherals should keep
-`perid = None` rather than inventing placeholder IDs.
+- `[profile] chip = "..."`
+- `[endpoints]` maps runtime endpoint names to artifact roots.
+- `[dbg.defmt]` contains `memory = { base, length }` and `mtu`.
+- `[[ipc.channel]]` contains `doorbell`, `pattern`, `party.<name>`, `config.memory`,
+  `mtu`, and optional `codec`.
+- `[tee]` contains the OP-TEE UUID.
+- `[hmi]` contains `engine`, `backend`, optional `debug`, and `build`.
+- `[peripheral.<name>]` contains `owner`, `secure`, and optional pin declarations.
 
-## TEE Model
+`Session::from_toml` parses the manifest, resolves `[profile] chip` through embedded
+YAML chip-family databases, and validates doorbell availability, visible parties,
+channel bounds, duplicate doorbell channels, SRAM bounds, memory overlap, and peripheral
+owners. Embedded database prefixes currently cover STM32MP21/23/25 and MIMX93/95, with
+`imx93`/`imx95` accepted as aliases for `mimx93`/`mimx95`.
 
-`consortium-tee` provides the shared TEE parameter model, macro re-exports, and the
-Linux-gated CA runtime/error surface. Parameter conversion is modeled through runtime
-traits.
+`consortium-cfg` currently includes DTS/UIO-oriented components and transpilers such as
+shared-memory regions to `generic-uio` nodes and Type-A doorbell interrupt enablement.
+Keep config changes centered on the schema types first, then validation, then
+transpilers.
 
-Important concepts:
+## Build-Time Configuration
 
-- `TeeParam<C = NoCodec>` converts Rust values to and from `TeeParamSlot`.
-- Primitive values map to TEE value slots and do not invoke a codec.
-- Serialized values map to memref slots and require a `CodecFor<T>` implementation.
-- `#[derive(TeeParam)]` generates serialized parameter support for custom types.
-- `#[tee(max_size = N)]` controls the maximum serialized buffer size for derived
-  parameters; the default is defined by the derive implementation.
-- `tee_service!` and `#[tee_command]` are exported through `consortium-tee-macros`.
-- Macro implementation logic lives in `consortium-tee-macros-impl` and is covered by
-  trybuild and insta snapshot tests.
+The intended builder flow injects compile-time environment variables such as
+`CONSORTIUM_IPC_*`, `CONSORTIUM_DBG_*`, `CONSORTIUM_HMI_*`, and `CONSORTIUM_TEE_UUID`.
+Consumers read them with `option_env!`/`env!` and parse values in `const` contexts with
+`consortium-cfg-common::env_value`.
 
-When changing TEE macros, update both compile-fail tests and token snapshots as needed.
-Prefer testing macro logic in the implementation crate before relying on the proc-macro
-facade. If a TEE macro needs generic `syn` helpers that would also apply to IPC or codec
-macros, add them to `consortium-macros-helpers` rather than keeping local copies.
+This layer is currently mid-migration. `consortium-dbg-defmt::config` uses the current
+`CONSORTIUM_DBG_BASE`/`CONSORTIUM_DBG_LENGTH` pattern. Some builder and example code
+still refers to older flat `[ipc]`/`[dbg]` tables or removed type names such as
+`SharedMemConfig`. Before extending builder behavior, reconcile it with the current
+`consortium-cfg-common` schema (`MemoryRegion`, `SharedMemory`, `Hmi`, `Dbg`, `Ipc`).
+
+## Runtime Layers
+
+`consortium-runtime-app` is Linux-only. It exposes remoteproc support, optional UIO-backed
+IPC (`ipc-shm`), optional debug (`dbg`), and optional TEE (`tee`). `UioDevice` opens
+`/dev/uioN`, maps the shared region, and runs a Tokio IRQ task that wakes registered
+doorbell notifiers.
+
+`consortium-runtime-mcu` is `no_std`, re-exports debug and shared-memory IPC pieces
+behind features, and provides small helpers such as `static_buf!` for scratch buffers.
+Its default feature is `ipc-shm`.
+
+`consortium-runtime-spl` currently exposes small domain/peripheral/role traits for
+partitioning-oriented code.
+
+## TEE
+
+`consortium-tee` is `no_std` with `alloc`. The default feature is `ca`, but CA error
+exports are gated to Linux non-test builds. The `ta` feature is host-agnostic and is used
+by host-side macro/parameter tests.
+
+`TeeParam<C = NoCodec>` converts Rust values to and from `TeeParamSlot`. Primitive
+values map to TEE value slots and implement `TeeParam<C>` for any `C`. Serialized values
+map to memref slots and require a `CodecFor<T>` implementation. `#[derive(TeeParam)]`
+generates serialized support; `#[tee(max_size = N)]` overrides the default serialized
+buffer bound.
+
+When changing TEE macros, update trybuild coverage and insta snapshots in the macro
+implementation crate before relying on the proc-macro facade.
 
 ## Debug Logging
 
-`consortium-dbg-defmt` implements defmt-over-shared-memory using a circular descriptor
-with `CDBG` magic. Host-side tests cover descriptor initialization, frame read/write,
-multi-threaded producer/consumer behavior, and overflow flagging. Preserve this
-descriptor discipline when changing debug transport behavior.
+`consortium-dbg-defmt` implements defmt-over-shared-memory with `CDBG` descriptors. Its
+default features are `host` and `logger`; `decode` adds `defmt-decoder` and implies
+`host`. Debug configuration comes from `CONSORTIUM_DBG_*`; plain `cargo build` leaves
+the config unconfigured and the logger no-op unless the binary calls the const guard.
 
-## Runtime and Build Layers
-
-`consortium-runtime-mcu` is the firmware-side runtime surface. It is expected to grow
-around descriptor initialization, interrupt integration, and an async execution model
-for M-core firmware. `consortium-runtime-prt` is the programmable real-time runtime
-surface for smaller RT cores and should remain lean and `defmt`-friendly.
-
-`consortium-runtime-app` is the A-core/Linux harness. It owns host-side lifecycle
-concerns such as remoteproc integration and application orchestration.
-
-`consortium-runtime-spl` is the Secondary Program Loader "runtime." It's not a literal
-runtime but an entry for things like resource partition isolation configuration.
-
-`consortium-builder` is the intended home for cross-compilation and packaging helpers,
-including firmware, Linux application, OP-TEE, HMI assets, model artifacts, and installer
-bundle generation. Keep build orchestration code out of low-level IPC crates unless it
-is genuinely part of their compile-time contract. We also plan to support producing
-bitbake file.
+Preserve descriptor discipline when changing debug transport behavior. Host-side tests
+cover descriptor initialization, ring read/write behavior, decoding fixtures, and
+overflow/error flags.
 
 ## HMI and Cog/WPE
 
-The HMI subsystem includes `consortium-hmi` plus the Cog/WPE browser integration crates
-`cogcore` and `cogcore-sys`. `cogcore-sys` owns the raw bindgen surface for
-Cog, GLib/GObject, WPE, and WebKit types. `cogcore` is the safe Rust wrapper layer
-and should keep Cog object ownership, `GError` conversion, string conversion, and
-GObject refcounting out of callers.
+`consortium-hmi` is Linux-only and currently exposes `KioskApp` and `Bridge`.
+`cogcore-sys` owns raw bindgen output and vendored Cog/WPE/WebKit headers; `cogcore`
+wraps a small safe subset and keeps WebKit/WPE types mostly opaque.
 
-Cog/WPE work is Linux-oriented. On macOS, prefer `cargo fmt`, static review, and narrow
-non-linking checks where possible; do not assume `cargo check -p cogcore` or
-`cargo test -p cogcore` can run without the Linux Cog/WebKit development packages.
-Use the `cogcore.yml` GitHub workflow or a Linux machine with Cog, GLib/GIO, WPE, and
-WebKit headers installed for binding generation and wrapper validation.
+Cog/WPE work needs Linux Cog, GLib/GIO, WPE, and WebKit development packages. On hosts
+without those packages, prefer formatting, source review, and narrow tests that do not
+link Cog/WebKit. Use the `cogcore.yml` workflow or a properly provisioned Linux machine
+for binding generation and wrapper validation.
 
-When extending the safe wrapper, prefer `glib`/`gio` types for public GLib/GIO
-interoperability, keep WebKit/WPE types opaque unless a broader binding strategy is
-chosen, and document each unsafe block with the ownership or pointer-lifetime invariant.
+When extending `cogcore`, prefer `glib`/`gio` types for public GLib/GIO interop, keep
+raw ownership and refcounting inside the safe wrapper layer, and document each unsafe
+block with the pointer lifetime or ownership invariant.
 
 ## Testing Guidance
 
 - Use `cargo test -p <crate>` for focused host-side validation.
-- Use trybuild tests for proc-macro acceptance and rejection behavior.
-- Use insta snapshots for macro expansion output where stable generated tokens matter.
-- Use heap-backed or mock-doorbell tests for shared-memory protocol behavior that does
-  not require real hardware.
-- Use `just test ipc host` for the host-side IPC bundle. It runs the core IPC,
-  shared-memory transport, and HSEM/IPCC/MU doorbell tests in both default/no-std-shaped
-  and `std` feature configurations where applicable.
-- Keep hardware-dependent tests separate from default host checks.
-- Do not assume Linux-only crates or no-std target checks will work on every developer
+- Use `just test ipc host` for the current host IPC bundle.
+- Use `cargo test -p consortium-ipc-transport-memory --no-default-features --test async_atomic_waker_test`
+  for the no-std-shaped shared-memory future path.
+- Use trybuild and insta snapshots for proc-macro behavior.
+- Use fake MMIO, heap-backed regions, and mock doorbells for protocol logic.
+- Keep hardware, SDK, UIO, remoteproc, OP-TEE runtime, and Cog/WebKit checks separate
+  from default host checks.
+- Do not assume Linux-only crates or no-std target checks work on every developer
   machine.
 
 ## Style and Tooling
 
 - Rust edition is 2024 across the workspace.
 - Workspace lints deny undocumented unsafe blocks and unsafe-operation shortcuts.
-- Keep unsafe blocks narrow and explain the hardware, memory, or ABI invariant they rely
-  on.
+- Keep unsafe blocks narrow and explain the hardware, memory, aliasing, or ABI invariant.
 - `cargo fmt` handles Rust formatting.
-- Taplo configuration uses two-space TOML indentation and a 100-column width.
+- Taplo uses two-space TOML indentation and a 100-column width.
 - `typos.toml` configures spelling checks.
-- `.ls-lint.yml` defines naming rules for crates, tests, docs, scripts, board files, and
-  simulator files.
-- Crate and file names should follow the configured lint rules rather than local taste.
+- `.ls-lint.yml` defines crate, test, doc, script, board, and simulator naming rules.
 
-When updating docs, use the crate names and APIs present in the workspace.
+When updating docs, use crate names, features, APIs, and schema fields present in the
+current workspace. Treat `docs/src/dev/**` as useful design history, but verify it
+against current source before making it normative.
 
 ## Dependency Policy
 
-It's always encouraged to use credible crates whenever used, especially in tests. For
-example, prefer adding `base64` for a base64 codec or `futures` for async execution over
-hand-rolling common functionality. Before adding a dependency, ensure the crate is
-Apache-2.0-friendly.
+Use credible crates for common functionality, especially in tests. Before adding a
+dependency, ensure the crate is compatible with Apache-2.0-friendly licensing and with
+the relevant `no_std`/`alloc`/`std` target constraints.
 
 <!--VITE PLUS START-->
 

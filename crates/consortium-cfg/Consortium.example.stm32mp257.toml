@@ -11,6 +11,7 @@ memory = { base = 0x000408000, length = 0x2000 }
 mtu    = 64
 
 [[ipc.channel]]
+name          = "sensor"
 doorbell      = "hsem"
 pattern       = "memory"
 party.linux   = { chan = 0, type = "SensorData" }
@@ -19,6 +20,7 @@ config.memory = { base = 0x000400000, length = 0x4000 }
 mtu           = 128
 
 [[ipc.channel]]
+name          = "lp"
 doorbell      = "ipcc2"
 pattern       = "memory"
 party.cm0p    = { chan = 0, type = "PowerMode" }
