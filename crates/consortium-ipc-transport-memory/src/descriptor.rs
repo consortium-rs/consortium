@@ -40,7 +40,10 @@
 //! +0x09  3   reserved
 //! ```
 #![allow(dead_code)]
+use crate::transport::RegionSharedMemoryTransportable;
 use crate::utils::{rv_u8, rv_u32, wv_u8, wv_u32};
+use crate::{Error, SharedMemoryTransport};
+use consortium_ipc::{Chan, Doorbell, Secondary};
 use consortium_ipc::{Primary, Side};
 use consortium_shared_memory::descriptor::{DescriptorHeader, DescriptorMagic};
 use core::sync::atomic::Ordering;
@@ -62,6 +65,7 @@ const TX_TRANSFER_SIZE_OFFSET: usize = 0x0C;
 const RX_TRANSFER_SIZE_OFFSET: usize = 0x10;
 const STATE_OFFSET: usize = 0x18;
 const CHANNEL_TABLE_OFFSET: usize = 0x20;
+const DESCRIPTOR_LENGTH: usize = core::mem::size_of::<Descriptor>();
 
 #[derive(Debug)]
 #[repr(C)]
@@ -163,6 +167,12 @@ pub const fn channel_table_entry_offset(index: usize) -> usize {
     assert!(index < CHANNEL_NUM_MAX, "channel index out of range");
 
     CHANNEL_TABLE_OFFSET + index * CHAN_ENTRY_SIZE
+}
+
+pub const fn slot_offset(index: usize, mtu: usize) -> usize {
+    assert!(index < CHANNEL_NUM_MAX, "channel index out of range");
+
+    (DESCRIPTOR_LENGTH + (SLOT_HEADER + mtu) * index) as usize
 }
 
 /// # Safety
@@ -283,129 +293,166 @@ pub unsafe fn set_state(base: *mut u8, state: DescState) {
     }
 }
 
-/// Write the descriptor header and channel table to the shared memory region.
-///
-/// # Arguments
-///
-/// * `base` - pointer to the start of the shared DMA-coherent region
-/// * `transfer_size` - transfer size (written to offset 0x10)
-/// * `channels` - slice of channel descriptors; its length is the channel count
-///
-/// # Safety
-///
-/// Caller must ensure:
-/// - `base` is valid for at least `CHAN_TABLE_BASE + channels.len() * CHAN_ENTRY_SIZE` bytes
-/// - Memory is DMA-coherent and not accessed concurrently
-/// - All values in `channels` do not cause out-of-bounds offsets
-pub unsafe fn descriptor_init(base: *mut u8, transfer_size: usize, channels: &[ChannelLayout]) {
-    let num_channels = channels.len() as u8;
+impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Primary, D, R> {
+    /// Write the descriptor header and channel table to the shared memory region.
+    ///
+    /// # Arguments
+    ///
+    /// * `base` - pointer to the start of the shared DMA-coherent region
+    /// * `transfer_size` - transfer size (written to offset 0x10)
+    /// * `channels` - slice of channel descriptors; its length is the channel count
+    ///
+    /// # Safety
+    ///
+    /// Caller must ensure:
+    /// - `base` is valid for at least `CHAN_TABLE_BASE + channels.len() * CHAN_ENTRY_SIZE` bytes
+    /// - Memory is DMA-coherent and not accessed concurrently
+    /// - All values in `channels` do not cause out-of-bounds offsets
+    /// - Should set a timeout for the doorbell wait to avoid deadlock if the secondary core fails to respond.
+    pub async unsafe fn descriptor_init(
+        base: *mut u8,
+        num_channels: u8,
+        transfer_size: usize,
+        doorbell: &D,
+        doorbell_tx: Chan,
+        doorbell_rx: Chan,
+    ) -> Result<(), Error<D>> {
+        // Write magic and version.
+        let header = DescriptorHeader::new(MAGIC, VERSION);
+        // SAFETY: caller guarantees `base` covers the descriptor header.
+        unsafe { header.write_to_raw_ptr(base) };
+        // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
+        unsafe { wv_u8(base, NUM_CHANNELS_OFFSET, num_channels) };
+        // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
+        unsafe { wv_u32(base, RX_TRANSFER_SIZE_OFFSET, transfer_size as u32) };
 
-    // Write magic and version.
-    let header = DescriptorHeader::new(MAGIC, VERSION);
-    // SAFETY: caller guarantees `base` covers the descriptor header.
-    unsafe { header.write_to_raw_ptr(base) };
-    // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
-    unsafe { wv_u8(base, NUM_CHANNELS_OFFSET, num_channels) };
-    // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
-    unsafe { wv_u32(base, RX_TRANSFER_SIZE_OFFSET, transfer_size as u32) };
+        for i in 0..num_channels as usize {
+            let off = channel_table_entry_offset(i);
+            // SAFETY: caller guarantees the channel table covers all `channels` entries.
+            unsafe { wv_u32(base, off, slot_offset(i, transfer_size) as u32) };
+            // SAFETY: caller guarantees the channel table covers all `channels` entries.
+            unsafe { wv_u32(base, off + 4, (SLOT_HEADER + transfer_size) as u32) };
+            // SAFETY: caller guarantees the channel table covers all `channels` entries.
+            unsafe {
+                wv_u8(
+                    base,
+                    off + 8,
+                    match i % 2 {
+                        0 => ChannelDirection::PrimaryToSecondary.into(), // TX
+                        1 => ChannelDirection::SecondaryToPrimary.into(), // RX
+                        _ => unreachable!(),
+                    },
+                )
+            };
+        }
 
-    for (i, ch) in channels.iter().enumerate() {
-        let off = channel_table_entry_offset(i);
-        // SAFETY: caller guarantees the channel table covers all `channels` entries.
-        unsafe { wv_u32(base, off, ch.offset) };
-        // SAFETY: caller guarantees the channel table covers all `channels` entries.
-        unsafe { wv_u32(base, off + 4, ch.size) };
-        // SAFETY: caller guarantees the channel table covers all `channels` entries.
-        unsafe { wv_u8(base, off + 8, ch.direction as u8) };
+        // SAFETY: caller guarantees the descriptor state field is valid and coherent.
+        unsafe { wv_u32(base, STATE_OFFSET, DescState::Ready as u32) };
+
+        doorbell.ring(doorbell_tx).map_err(Error::Doorbell)?;
+        doorbell.wait(doorbell_rx).await.map_err(Error::Doorbell)?;
+        Ok(())
     }
-
-    // SAFETY: caller guarantees the descriptor state field is valid and coherent.
-    unsafe { wv_u32(base, STATE_OFFSET, DescState::MReady as u32) };
 }
 
-/// Parse the descriptor from the start of the mmap'd region.
-///
-/// # Safety
-/// `base` must be valid for at least `CHAN_TABLE_BASE + num_channels * CHAN_ENTRY_SIZE` bytes.
-/// All accesses use `read_volatile`; the region must be DMA-coherent.
-pub unsafe fn descriptor_ack(
-    base: *mut u8,
-    num_channels: usize,
-    transfer_size: usize,
-) -> Result<Descriptor, DescriptorError> {
-    // SAFETY: caller guarantees the descriptor header is present at `base`.
-    let header = unsafe { DescriptorHeader::from_raw_ptr(base) };
+impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Secondary, D, R> {
+    /// Parse the descriptor from the start of the mmap'd region.
+    ///
+    /// # Safety
+    /// `base` must be valid for at least `CHAN_TABLE_BASE + num_channels * CHAN_ENTRY_SIZE` bytes.
+    /// All accesses use `read_volatile`; the region must be DMA-coherent.
+    pub async unsafe fn descriptor_ack(
+        base: *mut u8,
+        num_channels: usize,
+        transfer_size: usize,
+        doorbell: &D,
+        doorbell_rx: Chan,
+        doorbell_tx: Chan,
+    ) -> Result<Descriptor, super::Error<D>> {
+        // SAFETY: caller guarantees the descriptor header is present at `base`.
+        let header = unsafe { DescriptorHeader::from_raw_ptr(base) };
 
-    header
-        .check(MAGIC, VERSION)
-        .map_err(DescriptorError::Header)?;
+        header
+            .check(MAGIC, VERSION)
+            .map_err(|e| Error::Descriptor(DescriptorError::Header(e)))?;
 
-    // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
-    let num_ch = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
-    if num_ch as usize != num_channels || num_ch as usize > CHANNEL_NUM_MAX {
-        return Err(DescriptorError::InvalidChannelCount {
-            expected: num_channels,
-            actual: num_ch as usize,
-        });
-    }
-    // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
-    let rx_transfer_size = unsafe { rv_u32(base, RX_TRANSFER_SIZE_OFFSET) };
-    // SAFETY: when the base is valid and coherent, the state read will be consistent with the rx_transfer_size read. The A-core must have set the state to Ready before writing rx_transfer_size, so if we see Ready then rx_transfer_size is valid. We write back the (potentially adjusted) transfer size to ensure that both sides agree on the final value.
-    unsafe {
-        wv_u32(
-            base,
-            RX_TRANSFER_SIZE_OFFSET,
-            rx_transfer_size.max(transfer_size as u32),
-        )
-    };
-    // SAFETY: caller guarantees the descriptor state field is valid and coherent.
-    let state = DescState::from_primitive(unsafe { rv_u32(base, STATE_OFFSET) });
-
-    if state != DescState::MReady {
-        return Err(DescriptorError::NotReady(state));
-    }
-
-    let mut channels = [ChannelLayout::default(); CHANNEL_NUM_MAX];
-
-    for (i, channel) in channels.iter_mut().enumerate().take(num_ch as usize) {
-        let off = CHAN_TABLE_BASE + i * CHAN_ENTRY_SIZE;
-        // SAFETY: caller guarantees the channel table covers `num_ch` entries.
-        let offset = unsafe { rv_u32(base, off) };
-        // SAFETY: caller guarantees the channel table covers `num_ch` entries.
-        let size = unsafe { rv_u32(base, off + 4) };
-        // SAFETY: caller guarantees the channel table covers `num_ch` entries.
-        let direction = ChannelDirection::from_primitive(unsafe { rv_u8(base, off + 8) });
-
-        *channel = ChannelLayout {
-            offset,
-            size,
-            direction,
-            _reserved: [0; 3],
+        // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
+        let num_ch = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
+        if num_ch as usize != num_channels || num_ch as usize > CHANNEL_NUM_MAX {
+            return Err(DescriptorError::InvalidChannelCount {
+                expected: num_channels,
+                actual: num_ch as usize,
+            }
+            .into());
+        }
+        // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
+        let rx_transfer_size = unsafe { rv_u32(base, RX_TRANSFER_SIZE_OFFSET) };
+        // SAFETY: when the base is valid and coherent, the state read will be consistent with the rx_transfer_size read. The A-core must have set the state to Ready before writing rx_transfer_size, so if we see Ready then rx_transfer_size is valid. We write back the (potentially adjusted) transfer size to ensure that both sides agree on the final value.
+        unsafe {
+            wv_u32(
+                base,
+                RX_TRANSFER_SIZE_OFFSET,
+                rx_transfer_size.max(transfer_size as u32),
+            )
         };
-        validate_channel_layout(i, num_ch as usize, *channel)?;
+        // SAFETY: caller guarantees the descriptor state field is valid and coherent.
+        let mut state = DescState::from_primitive(unsafe { rv_u32(base, STATE_OFFSET) });
+
+        if state != DescState::Ready {
+            doorbell
+                .wait(doorbell_rx)
+                .await
+                .map_err(super::Error::Doorbell)?;
+            state = DescState::from_primitive(unsafe { rv_u32(base, STATE_OFFSET) });
+            if state != DescState::Ready {
+                return Err(DescriptorError::NotReady(state).into());
+            }
+        }
+
+        let mut channels = [ChannelLayout::default(); CHANNEL_NUM_MAX];
+
+        for (i, channel) in channels.iter_mut().enumerate().take(num_ch as usize) {
+            let off = CHAN_TABLE_BASE + i * CHAN_ENTRY_SIZE;
+            // SAFETY: caller guarantees the channel table covers `num_ch` entries.
+            let offset = unsafe { rv_u32(base, off) };
+            // SAFETY: caller guarantees the channel table covers `num_ch` entries.
+            let size = unsafe { rv_u32(base, off + 4) };
+            // SAFETY: caller guarantees the channel table covers `num_ch` entries.
+            let direction = ChannelDirection::from_primitive(unsafe { rv_u8(base, off + 8) });
+
+            *channel = ChannelLayout {
+                offset,
+                size,
+                direction,
+                _reserved: [0; 3],
+            };
+            validate_channel_layout(i, num_ch as usize, *channel)?;
+        }
+
+        compiler_fence(Ordering::Release);
+
+        // SAFETY: the caller must ensure that `base` is valid for at least 4 bytes and that the memory is DMA-coherent. Setting the state to Ready signals to the A-core that the descriptor is fully initialized and that it can read the rx_transfer_size and channel table entries safely.
+        unsafe {
+            wv_u32(base, STATE_OFFSET, DescState::Ready as u32);
+        }
+
+        doorbell.ring(doorbell_tx).map_err(Error::Doorbell)?;
+
+        Ok(Descriptor {
+            header,
+            _reserved1: [0; 1],
+            _reserved2: [0; 2],
+            _reserved3: [0; 4],
+            state: DescState::Ready,
+            _reserved4: [0; 4],
+            num_channels: num_ch,
+            tx_updated_id: 0xFF,
+            rx_updated_id: 0xFF,
+            tx_mtu: transfer_size as u32,
+            rx_mtu: rx_transfer_size,
+            channels,
+        })
     }
-
-    compiler_fence(Ordering::Release);
-
-    // SAFETY: the caller must ensure that `base` is valid for at least 4 bytes and that the memory is DMA-coherent. Setting the state to Ready signals to the A-core that the descriptor is fully initialized and that it can read the rx_transfer_size and channel table entries safely.
-    unsafe {
-        wv_u32(base, STATE_OFFSET, DescState::Ready as u32);
-    }
-
-    Ok(Descriptor {
-        header,
-        _reserved1: [0; 1],
-        _reserved2: [0; 2],
-        _reserved3: [0; 4],
-        state: DescState::Ready,
-        _reserved4: [0; 4],
-        num_channels: num_ch,
-        tx_updated_id: 0xFF,
-        rx_updated_id: 0xFF,
-        tx_mtu: transfer_size as u32,
-        rx_mtu: rx_transfer_size,
-        channels,
-    })
 }
 
 fn validate_channel_layout(

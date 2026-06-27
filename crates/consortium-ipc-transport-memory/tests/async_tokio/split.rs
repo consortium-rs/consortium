@@ -32,8 +32,9 @@ fn split_into_halves_allows_tx_and_rx_to_coexist() {
     rt.block_on(async move {
         let region = unsafe { SramRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
-        let ch = unsafe { Chan::new_unchecked(0) };
-        let transport = unsafe { SharedMemoryTransport::new(ch, doorbell, region, base) };
+        let ch_tx = unsafe { Chan::new_unchecked(0) };
+        let ch_rx = unsafe { Chan::new_unchecked(1) };
+        let transport = unsafe { SharedMemoryTransport::new(ch_tx, ch_rx, doorbell, region, base) };
 
         let (mut tx, mut rx): (HostSramTransportTx<Primary>, HostSramTransportRx<Primary>) =
             transport.split();
@@ -75,10 +76,13 @@ fn split_halves_allow_full_duplex_between_two_threads() {
 
             rt.block_on(async move {
                 let base = base_addr as *mut u8;
-                let ch = unsafe { Chan::new_unchecked(0) };
+                let ch_tx = unsafe { Chan::new_unchecked(0) };
+                let ch_rx = unsafe { Chan::new_unchecked(1) };
                 let region = unsafe { SramRegion::new(base, REGION_LEN) };
                 let transport = unsafe {
-                    SharedMemoryTransport::<Primary, _, _>::new(ch, a_doorbell, region, base)
+                    SharedMemoryTransport::<Primary, _, _>::new(
+                        ch_tx, ch_rx, a_doorbell, region, base,
+                    )
                 };
 
                 let (mut tx, mut rx): (HostSramTransportTx<Primary>, HostSramTransportRx<Primary>) =
@@ -100,10 +104,13 @@ fn split_halves_allow_full_duplex_between_two_threads() {
 
             rt.block_on(async move {
                 let base = base_addr as *mut u8;
-                let ch = unsafe { Chan::new_unchecked(0) };
+                let ch_rx = unsafe { Chan::new_unchecked(0) };
+                let ch_tx = unsafe { Chan::new_unchecked(1) };
                 let region = unsafe { SramRegion::new(base, REGION_LEN) };
                 let transport = unsafe {
-                    SharedMemoryTransport::<Secondary, _, _>::new(ch, m_doorbell, region, base)
+                    SharedMemoryTransport::<Secondary, _, _>::new(
+                        ch_tx, ch_rx, m_doorbell, region, base,
+                    )
                 };
 
                 let (mut tx, mut rx): (

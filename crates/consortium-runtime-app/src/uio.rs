@@ -33,9 +33,7 @@ use std::{
 use tokio::{io::unix::AsyncFd, sync::Notify};
 use uio::UioError;
 
-use consortium_ipc_transport_memory::{
-    Descriptor, DescriptorError, descriptor_ack, descriptor_init,
-};
+use consortium_ipc_transport_memory::DescriptorError;
 
 // ── Error ─────────────────────────────────────────────────────────────────────
 
@@ -60,12 +58,6 @@ pub enum UioDeviceError {
     MapNotFound(String),
 }
 
-/// Upper bound on UIO maps scanned by [`UioDevice::map_peripheral_by_name`].
-///
-/// `uio_pdrv_genirq` platform devices expose a handful of maps at most; this
-/// caps the sysfs scan so a missing name fails fast instead of looping.
-const MAX_UIO_MAPS: usize = 8;
-
 /// Shared list of doorbell wakeups that the IRQ task fans out to.
 ///
 /// Each registered [`Notify`] belongs to a doorbell (its [`notifier()`] handle);
@@ -84,7 +76,6 @@ impl From<UioError> for UioDeviceError {
 // ── UioDevice ─────────────────────────────────────────────────────────────────
 
 struct Inner {
-    region_base: *mut u8,
     /// Doorbell wakeups fired on every M→A IRQ. All pending `RecvFut`s and
     /// `SendFut`s wake and re-check their slots. Populated through
     /// [`UioDevice::register_doorbell`].
@@ -133,12 +124,8 @@ impl UioDevice {
     /// that UIO value is a compile error (see the guard in `lib.rs`), so by the
     /// time `open` runs the index is always real. The mapped address comes from
     /// mmap, not from `CONSORTIUM_IPC_BASE`.
-    pub fn open(uio_id: usize, mmap_id: usize) -> Result<Self, UioDeviceError> {
+    pub fn open(uio_id: usize) -> Result<Self, UioDeviceError> {
         let uio = uio::UioDevice::blocking_new(uio_id)?;
-
-        // map_mapping reads the size from sysfs and mmaps `/dev/uioN` at the
-        // map0 offset (the CIPC shared region) in the uio_pdrv_genirq namespace.
-        let region_base = uio.map_mapping(mmap_id)? as *mut u8;
 
         let notifiers: Notifiers = Arc::new(Mutex::new(Vec::new()));
 
@@ -151,10 +138,7 @@ impl UioDevice {
         let irq_task = tokio::spawn(async move { irq_loop(async_fd, irq_notifiers).await });
 
         Ok(Self {
-            inner: Arc::new(Inner {
-                region_base,
-                notifiers,
-            }),
+            inner: Arc::new(Inner { notifiers }),
             uio,
             irq_task,
         })
@@ -171,8 +155,7 @@ impl UioDevice {
     /// typed volatile register accesses may dereference it.
     ///
     /// [`open`]: Self::open
-    /// [`map_peripheral_by_name`]: Self::map_peripheral_by_name
-    pub fn map_peripheral(&self, index: usize) -> Result<usize, UioDeviceError> {
+    pub fn mmap(&self, index: usize) -> Result<usize, UioDeviceError> {
         Ok(self.uio.map_mapping(index)? as usize)
     }
 
@@ -186,22 +169,17 @@ impl UioDevice {
     /// first receive:
     ///
     /// ```ignore
-    /// let base = dev.map_peripheral(1)?;
+    /// let base = dev.mmap(1)?;
     /// let mu = unsafe { MuDoorbell::<Primary, 7>::new(base) };
-    /// dev.register_doorbell(mu.notifier());
-    /// let transport = dev.channel_transport(chan, mu, region)?;
+    /// dev.bind_notifier(mu.notifier());
+    /// let transport = SharedMemoryTransport::<Primary, _, _>::new(mu, desc, slot_pair);
     /// ```
-    pub fn register_doorbell(&self, notifier: Arc<Notify>) {
+    pub fn bind_notifier(&self, notifier: Arc<Notify>) {
         self.inner
             .notifiers
             .lock()
             .expect("notifier list poisoned")
             .push(notifier);
-    }
-
-    /// Number of channels declared in the descriptor.
-    pub fn num_channels(&self) -> u8 {
-        self.inner.descriptor.num_channels
     }
 }
 

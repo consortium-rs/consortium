@@ -5,10 +5,11 @@ use crate::common::doorbell::HostDoorbell;
 use consortium_codec::CodecFor;
 use consortium_ipc::{Chan, Channel, Rx, Tx};
 use consortium_ipc_transport_memory::{
-    ChannelDirection, ChannelLayout, Primary, RX_UPDATED_ID_OFFSET, Secondary,
-    SharedMemoryTransport, descriptor_init, slot,
+    ChannelDirection, ChannelLayout, DescState, MAGIC, Primary, RX_UPDATED_ID_OFFSET, Secondary,
+    SharedMemoryTransport, VERSION, channel_table_entry_offset, slot,
 };
 use consortium_shared_memory::SramRegion;
+use consortium_shared_memory::descriptor::DescriptorHeader;
 use prost::bytes::{Buf, BufMut};
 use prost::encoding::{self, DecodeContext, WireType};
 use serde::{Deserialize, Serialize};
@@ -76,8 +77,18 @@ pub fn init_two_channel_descriptor(base: *mut u8) {
     let m_to_a = channel(M_TO_A_SLOT, ChannelDirection::SecondaryToPrimary);
 
     unsafe {
-        descriptor_init(base, MTU, &[a_to_m, m_to_a]);
+        DescriptorHeader::new(MAGIC, VERSION).write_to_raw_ptr(base);
+        base.add(0x06).write_volatile(2);
+        (base.add(0x10) as *mut u32).write_volatile(MTU as u32);
+        (base.add(0x18) as *mut u32).write_volatile(DescState::Ready as u32);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
+
+        for (index, channel) in [a_to_m, m_to_a].iter().enumerate() {
+            let entry = base.add(channel_table_entry_offset(index));
+            (entry as *mut u32).write_volatile(channel.offset);
+            (entry.add(4) as *mut u32).write_volatile(channel.size);
+            entry.add(8).write_volatile(channel.direction as u8);
+        }
     }
 }
 
@@ -112,14 +123,17 @@ where
         let a_thread = scope.spawn(move || {
             block_on_current_thread(async move {
                 let base = base_addr as *mut u8;
-                let ch = unsafe { Chan::new_unchecked(0) };
+                let ch_tx = unsafe { Chan::new_unchecked(0) };
+                let ch_rx = unsafe { Chan::new_unchecked(1) };
                 let region = unsafe { SramRegion::new(base, REGION_LEN) };
                 let transport = unsafe {
-                    SharedMemoryTransport::<Primary, _, _>::new(ch, a_doorbell, region, base)
+                    SharedMemoryTransport::<Primary, _, _>::new(
+                        ch_tx, ch_rx, a_doorbell, region, base,
+                    )
                 };
                 let (tx_half, rx_half) = transport.split();
-                let mut tx = Channel::<Tx, Message, _, C>::new(ch, tx_half, scratch::<MTU>());
-                let mut rx = Channel::<Rx, Message, _, C>::new(ch, rx_half, scratch::<MTU>());
+                let mut tx = Channel::<Tx, Message, _, C>::new(ch_tx, tx_half, scratch::<MTU>());
+                let mut rx = Channel::<Rx, Message, _, C>::new(ch_rx, rx_half, scratch::<MTU>());
 
                 tx.send(&a_to_m)
                     .await
@@ -143,14 +157,17 @@ where
         let m_thread = scope.spawn(move || {
             block_on_current_thread(async move {
                 let base = base_addr as *mut u8;
-                let ch = unsafe { Chan::new_unchecked(0) };
+                let ch_rx = unsafe { Chan::new_unchecked(0) };
+                let ch_tx = unsafe { Chan::new_unchecked(1) };
                 let region = unsafe { SramRegion::new(base, REGION_LEN) };
                 let transport = unsafe {
-                    SharedMemoryTransport::<Secondary, _, _>::new(ch, m_doorbell, region, base)
+                    SharedMemoryTransport::<Secondary, _, _>::new(
+                        ch_tx, ch_rx, m_doorbell, region, base,
+                    )
                 };
                 let (tx_half, rx_half) = transport.split();
-                let mut tx = Channel::<Tx, Message, _, C>::new(ch, tx_half, scratch::<MTU>());
-                let mut rx = Channel::<Rx, Message, _, C>::new(ch, rx_half, scratch::<MTU>());
+                let mut tx = Channel::<Tx, Message, _, C>::new(ch_tx, tx_half, scratch::<MTU>());
+                let mut rx = Channel::<Rx, Message, _, C>::new(ch_rx, rx_half, scratch::<MTU>());
 
                 a_sent_for_m.wait();
 

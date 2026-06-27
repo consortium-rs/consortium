@@ -9,10 +9,11 @@ use std::{
 use atomic_waker::AtomicWaker;
 use consortium_ipc::{Chan, Doorbell, RecvTransport};
 use consortium_ipc_transport_memory::{
-    ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
-    channel_table_entry_offset, descriptor_init, slot,
+    ChannelDirection, ChannelLayout, DescState, MAGIC, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
+    VERSION, channel_table_entry_offset, slot,
 };
 use consortium_shared_memory::SramRegion;
+use consortium_shared_memory::descriptor::DescriptorHeader;
 use futures::{pin_mut, task::noop_waker_ref};
 
 const MTU: usize = 64;
@@ -132,8 +133,18 @@ fn init_two_channel_descriptor(base: *mut u8) {
     let m_to_a = channel(M_TO_A_SLOT, ChannelDirection::SecondaryToPrimary);
 
     unsafe {
-        descriptor_init(base, MTU, &[a_to_m, m_to_a]);
+        DescriptorHeader::new(MAGIC, VERSION).write_to_raw_ptr(base);
+        base.add(0x06).write_volatile(2);
+        (base.add(0x10) as *mut u32).write_volatile(MTU as u32);
+        (base.add(0x18) as *mut u32).write_volatile(DescState::Ready as u32);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
+
+        for (index, channel) in [a_to_m, m_to_a].iter().enumerate() {
+            let entry = base.add(channel_table_entry_offset(index));
+            (entry as *mut u32).write_volatile(channel.offset);
+            (entry.add(4) as *mut u32).write_volatile(channel.size);
+            entry.add(8).write_volatile(channel.direction as u8);
+        }
     }
 }
 
@@ -145,8 +156,10 @@ fn recv_future_wakes_from_atomic_waker_doorbell() {
 
     let region = unsafe { SramRegion::new(base, REGION_LEN) };
     let (app_doorbell, remote_doorbell) = AtomicDoorbell::pair();
-    let ch = unsafe { Chan::new_unchecked(0) };
-    let mut transport = unsafe { SharedMemoryTransport::<Side, _, _>::new(ch, app_doorbell, region, base) };
+    let ch1 = unsafe { Chan::new_unchecked(0) };
+    let ch2 = unsafe { Chan::new_unchecked(2) };
+    let mut transport =
+        unsafe { SharedMemoryTransport::<Side, _, _>::new(ch1, ch2, app_doorbell, region, base) };
     let mut rx = [0; MTU];
 
     let recv = transport.recv(&mut rx);
@@ -162,7 +175,7 @@ fn recv_future_wakes_from_atomic_waker_doorbell() {
             .write_volatile(RX_CHANNEL as u8);
     }
     remote_doorbell
-        .ring(ch)
+        .ring(ch2)
         .expect("wake app-side atomic waker doorbell");
 
     match recv.as_mut().poll(&mut cx) {

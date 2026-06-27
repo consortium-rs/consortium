@@ -11,10 +11,11 @@ use std::{
 
 use consortium_ipc::{Chan, Doorbell, RecvTransport};
 use consortium_ipc_transport_memory::{
-    ChannelDirection, ChannelLayout, Primary, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
-    channel_table_entry_offset, descriptor_init, slot,
+    ChannelDirection, ChannelLayout, DescState, MAGIC, Primary, RX_UPDATED_ID_OFFSET,
+    SharedMemoryTransport, VERSION, channel_table_entry_offset, slot,
 };
 use consortium_shared_memory::SramRegion;
+use consortium_shared_memory::descriptor::DescriptorHeader;
 use embassy_executor::Executor;
 use embassy_futures::yield_now;
 use embassy_sync::{blocking_mutex::raw::NoopRawMutex, signal::Signal};
@@ -39,8 +40,18 @@ fn init_two_channel_descriptor(base: *mut u8) {
     let m_to_a = channel(M_TO_A_SLOT, ChannelDirection::SecondaryToPrimary);
 
     unsafe {
-        descriptor_init(base, MTU, &[a_to_m, m_to_a]);
+        DescriptorHeader::new(MAGIC, VERSION).write_to_raw_ptr(base);
+        base.add(0x06).write_volatile(2);
+        (base.add(0x10) as *mut u32).write_volatile(MTU as u32);
+        (base.add(0x18) as *mut u32).write_volatile(DescState::Ready as u32);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
+
+        for (index, channel) in [a_to_m, m_to_a].iter().enumerate() {
+            let entry = base.add(channel_table_entry_offset(index));
+            (entry as *mut u32).write_volatile(channel.offset);
+            (entry.add(4) as *mut u32).write_volatile(channel.size);
+            entry.add(8).write_volatile(channel.direction as u8);
+        }
     }
 }
 
@@ -170,10 +181,11 @@ fn recv_future_wakes_on_embassy_platform_std_executor() {
     let backing = Box::leak(backing);
     let base = backing.as_mut_ptr();
     let base_addr = base as usize;
-    let ch = unsafe { Chan::new_unchecked(0) };
+    let ch1 = unsafe { Chan::new_unchecked(0) };
+    let ch2 = unsafe { Chan::new_unchecked(1) };
     let region = unsafe { SramRegion::new(base, REGION_LEN) };
     let (app_doorbell, remote_doorbell) = EmbassyDoorbell::pair();
-    let transport = unsafe { SharedMemoryTransport::new(ch, app_doorbell, region, base) };
+    let transport = unsafe { SharedMemoryTransport::new(ch1, ch2, app_doorbell, region, base) };
     let done = Box::leak(Box::new(AtomicBool::new(false)));
     let executor = Box::leak(Box::new(Executor::new()));
 
