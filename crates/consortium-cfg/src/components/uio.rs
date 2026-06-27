@@ -62,7 +62,7 @@ impl UioDevice {
     /// Renders this device as a `generic-uio` DTS node named `name`, using the
     /// default [`UioOptions`] (AArch64 `reg` layout, inherited interrupt parent).
     pub fn to_node(&self, name: impl Into<String>) -> Node {
-        self.to_node_with(name, &UioOptions::default())
+        self.to_node_with_options(name, &UioOptions::default())
     }
 
     /// Renders this device as a `generic-uio` DTS node named `name`.
@@ -73,7 +73,7 @@ impl UioDevice {
     /// mapping as a `<base length>` entry in the requested
     /// [`layout`](UioOptions::layout), an optional GIC SPI `interrupts` entry
     /// (with an optional `interrupt-parent`), and `status = "okay";`.
-    pub fn to_node_with(&self, name: impl Into<String>, options: &UioOptions) -> Node {
+    pub fn to_node_with_options(&self, name: impl Into<String>, options: &UioOptions) -> Node {
         let name = name.into();
 
         let mut node = match self.mmap.first() {
@@ -188,7 +188,7 @@ mod tests {
             layout: RegLayout::Narrow,
             ..UioOptions::default()
         };
-        let dts = device.to_node_with("ipc-shm", &options).to_dts();
+        let dts = device.to_node_with_options("ipc-shm", &options).to_dts();
         assert!(dts.contains("reg = <0x400000 0x8000>;"));
     }
 
@@ -203,7 +203,7 @@ mod tests {
             interrupt_parent: Some(Reference::label("intc")),
             ..UioOptions::default()
         };
-        let dts = device.to_node_with("hsem", &options).to_dts();
+        let dts = device.to_node_with_options("hsem", &options).to_dts();
         assert!(dts.contains("interrupt-parent = &intc;"));
         assert!(dts.contains("interrupts = <GIC_SPI 199 IRQ_TYPE_LEVEL_HIGH>;"));
     }

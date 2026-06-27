@@ -73,4 +73,9 @@ pub enum CfgError {
 
     #[error("[memory.{region}] has zero length")]
     RegionEmpty { region: String },
+
+    #[error(
+        "shared-memory regions must use contiguous mmap indices starting at 0, but found {found:?}"
+    )]
+    MmapOrder { found: Vec<u32> },
 }
