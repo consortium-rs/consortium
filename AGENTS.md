@@ -83,7 +83,7 @@ than generic macOS host checks.
 | Doorbells          | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`, `consortium-ipc-doorbell-ipcc` |
 | Codecs             | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                |
 | Macro helpers      | `consortium-macros-helpers`                                                                                                  |
-| Common types       | `consortium-cfg-common`                                                                                                          |
+| Common types       | `consortium-cfg-common`                                                                                                      |
 | Configuration      | `consortium-cfg`, `consortium-cfg-meta`, `consortium-dts`                                                                    |
 | Runtimes and build | `consortium-runtime-mcu`, `consortium-runtime-prt`, `consortium-runtime-app`, `consortium-builder`, `consortium-cli`         |
 | Debug              | `consortium-dbg-defmt`                                                                                                       |

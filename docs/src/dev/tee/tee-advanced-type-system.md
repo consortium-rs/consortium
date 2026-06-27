@@ -8,10 +8,10 @@ This document describes the **advanced type system** for `#[tee_command]`. Most 
 
 See `tee-sdk-design.md` for the baseline. Advanced types now fully implemented:
 
-| Category         | Implemented types                                                                                                     |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------- |
-| Input parameters | `bool`, `u32`, `i32`, `u64`, `(u32, u32)`, `&[u8]`, `&mut [u8]`, `&mut u32`, `&mut i32`, `&mut u64`, `T: TeeParam`    |
-| Return / output  | `u32`, `u64`, `bool`, `Vec<u8>`, `T: TeeParam`                                                                        |
+| Category         | Implemented types                                                                                                         |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Input parameters | `bool`, `u32`, `i32`, `u64`, `(u32, u32)`, `&[u8]`, `&mut [u8]`, `&mut u32`, `&mut i32`, `&mut u64`, `T: TeeParam`        |
+| Return / output  | `u32`, `u64`, `bool`, `Vec<u8>`, `T: TeeParam`                                                                            |
 | Serialization    | Pluggable codec via `#[tee_command(codec = MyCodec)]`; any codec implementing `consortium_cfg_common::codec::CodecFor<T>` |
 
 ### What this document covers
