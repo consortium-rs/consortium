@@ -49,6 +49,9 @@ peripheral:
           irq: 225
           page_memory: 99
           page_irq: 128
+      party_page: 2740
+      channels: 8
+      channel_page: 2741
     - name: MU2
       page: 2740
       type: mu
@@ -72,6 +75,9 @@ peripheral:
           irq: 227
           page_memory: 101
           page_irq: 128
+      party_page: 2740
+      channels: 8
+      channel_page: 2741
     - name: MU3
       page: 2740
       type: mu
@@ -95,6 +101,9 @@ peripheral:
           irq: 229
           page_memory: 101
           page_irq: 128
+      party_page: 2740
+      channels: 8
+      channel_page: 2741
     - name: MU4
       page: 2740
       type: mu
@@ -118,6 +127,9 @@ peripheral:
           irq: 231
           page_memory: 101
           page_irq: 128
+      party_page: 2740
+      channels: 8
+      channel_page: 2741
     - name: MU5
       page: 2740
       type: mu
@@ -137,6 +149,9 @@ peripheral:
           irq: 232
           page_memory: 101
           page_irq: 128
+      party_page: 2740
+      channels: 8
+      channel_page: 2741
     - name: MU7
       page: 4556
       type: mu
@@ -156,6 +171,9 @@ peripheral:
           irq: 207
           page_memory: 106
           page_irq: 127
+      party_page: 4556
+      channels: 8
+      channel_page: 4557
     - name: MU8
       page: 4556
       type: mu
@@ -175,3 +193,6 @@ peripheral:
           irq: 208
           page_memory: 107
           page_irq: 127
+      party_page: 4556
+      channels: 8
+      channel_page: 4557

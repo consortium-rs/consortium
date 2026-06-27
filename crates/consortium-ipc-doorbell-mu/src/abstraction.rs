@@ -33,7 +33,16 @@ use consortium_ipc::Side;
 #[cfg(not(feature = "std"))]
 use consortium_ipc::{Primary, Secondary};
 
-use crate::registers::{base, cr::GeneralInterruptRegister, offsets};
+use crate::registers::{
+    base,
+    cr::{FlagRegister, GeneralInterruptRegister},
+    offsets,
+};
+
+/// Token word written to a transmit register to raise a receive-full (RF)
+/// signal on the remote. The value is irrelevant to the doorbell—any write
+/// sets `RSR[RFn]`—so a fixed non-zero marker is used.
+const RF_TOKEN: u32 = 0x1;
 
 /// A HAL handle to MU instance `N` (1-based) viewed from processor side `S`.
 ///
@@ -71,17 +80,39 @@ impl<S: Side, const N: usize> Mu<S, N> {
     }
 
     #[inline]
-    fn read(&self, offset: u32) -> GeneralInterruptRegister {
+    fn read_raw(&self, offset: u32) -> u32 {
         // SAFETY: `self.base` is a valid mapped MU window (constructor
         // obligation); `offset` is a register offset within that window.
-        GeneralInterruptRegister::from_bits(unsafe { self.reg(offset).read_volatile() })
+        unsafe { self.reg(offset).read_volatile() }
+    }
+
+    #[inline]
+    unsafe fn write_raw(&self, offset: u32, value: u32) {
+        // SAFETY: caller guarantees exclusive access; `self.base` + `offset`
+        // addresses a valid MU register.
+        unsafe { self.reg(offset).write_volatile(value) };
+    }
+
+    #[inline]
+    fn read(&self, offset: u32) -> GeneralInterruptRegister {
+        GeneralInterruptRegister::from_bits(self.read_raw(offset))
     }
 
     #[inline]
     unsafe fn write(&self, offset: u32, value: GeneralInterruptRegister) {
-        // SAFETY: caller guarantees exclusive access; `self.base` + `offset`
-        // addresses a valid MU register.
-        unsafe { self.reg(offset).write_volatile(value.bits()) };
+        // SAFETY: forwarded to `write_raw`; caller guarantees exclusive access.
+        unsafe { self.write_raw(offset, value.bits()) };
+    }
+
+    #[inline]
+    fn read_flags(&self, offset: u32) -> FlagRegister {
+        FlagRegister::from_bits(self.read_raw(offset))
+    }
+
+    #[inline]
+    unsafe fn write_flags(&self, offset: u32, value: FlagRegister) {
+        // SAFETY: forwarded to `write_raw`; caller guarantees exclusive access.
+        unsafe { self.write_raw(offset, value.bits()) };
     }
 
     /// Set `GCR[GIRn]` to signal the remote side on GI channel `gi`.
@@ -143,6 +174,74 @@ impl<S: Side, const N: usize> Mu<S, N> {
         reg.set_gi(reg.gi() & !(1 << gi));
         // SAFETY: see method contract.
         unsafe { self.write(offsets::GIER, reg) };
+    }
+
+    // ── Receive-full (RF) channels ────────────────────────────────────────────
+
+    /// Signal the remote side on RF channel `rf` by writing transmit register
+    /// `TRn`, which sets `RSR[RFn]` on the remote side.
+    ///
+    /// Idempotent: if `TSR[TEn]` is clear, a previous write has not yet been
+    /// consumed by the remote, so `RSR[RFn]` is already pending there and this
+    /// call is skipped rather than clobbering the in-flight word.
+    ///
+    /// # Safety
+    /// `rf` must be a valid receive/transmit index (`< 4`) and the caller must
+    /// coordinate concurrent access to the transmit register.
+    #[inline]
+    pub unsafe fn request_rf(&self, rf: u8) {
+        // Skip if the transmit register is not empty: a signal is still pending.
+        if self.read_flags(offsets::TSR).flags() & (1 << rf) == 0 {
+            return;
+        }
+        // SAFETY: see method contract; `TRn = TR0 + rf * 4` is within the window.
+        unsafe { self.write_raw(offsets::TR0 + (rf as u32) * 4, RF_TOKEN) };
+    }
+
+    /// Returns `true` if `RSR[RFn]` is set, i.e. the remote side has signaled
+    /// RF channel `rf`. Non-destructive.
+    #[inline]
+    pub fn rf_pending(&self, rf: u8) -> bool {
+        self.read_flags(offsets::RSR).flags() & (1 << rf) != 0
+    }
+
+    /// Acknowledge RF channel `rf` by reading receive register `RRn`, which
+    /// clears `RSR[RFn]` and re-arms the remote's `TSR[TEn]`.
+    ///
+    /// # Safety
+    /// `rf` must be a valid receive index (`< 4`) and `RSR[RFn]` should be set.
+    #[inline]
+    pub unsafe fn ack_rf(&self, rf: u8) {
+        // Reading RRn is the architected way to clear RSR[RFn]; the value is
+        // discarded since the RF line is used purely as a doorbell.
+        // SAFETY: see method contract; `RRn = RR0 + rf * 4` is within the window.
+        let _ = unsafe { self.reg(offsets::RR0 + (rf as u32) * 4).read_volatile() };
+    }
+
+    /// Enable `RCR[RIEn]` to arm the receive interrupt for RF channel `rf`.
+    ///
+    /// # Safety
+    /// `rf` must be a valid receive index (`< 4`) and the caller must coordinate
+    /// concurrent access to `RCR`.
+    #[inline]
+    pub unsafe fn enable_rf(&self, rf: u8) {
+        let mut reg = self.read_flags(offsets::RCR);
+        reg.set_flags(reg.flags() | (1 << rf));
+        // SAFETY: see method contract.
+        unsafe { self.write_flags(offsets::RCR, reg) };
+    }
+
+    /// Disable `RCR[RIEn]` for RF channel `rf`.
+    ///
+    /// # Safety
+    /// `rf` must be a valid receive index (`< 4`) and the caller must coordinate
+    /// concurrent access to `RCR`.
+    #[inline]
+    pub unsafe fn disable_rf(&self, rf: u8) {
+        let mut reg = self.read_flags(offsets::RCR);
+        reg.set_flags(reg.flags() & !(1 << rf));
+        // SAFETY: see method contract.
+        unsafe { self.write_flags(offsets::RCR, reg) };
     }
 }
 

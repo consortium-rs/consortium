@@ -68,6 +68,9 @@ peripheral:
           irq: 200
           page_memory: 232
           page_irq: 1741
+      party_page: 1306
+      channels: 16
+      channel_page: 1306
     - name: IPCC1
       page: 1341
       type: ipcc
@@ -91,6 +94,9 @@ peripheral:
           irq: 173
           page_memory: 236
           page_irq: 1741
+      party_page: 1342
+      channels: 32
+      channel_page: 1341
     - name: IPCC2
       page: 1341
       type: ipcc
@@ -114,3 +120,6 @@ peripheral:
           irq: 177
           page_memory: 232
           page_irq: 1741
+      party_page: 1342
+      channels: 32
+      channel_page: 1341

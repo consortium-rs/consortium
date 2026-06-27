@@ -16,19 +16,37 @@
 
 //! Vendor-agnostic `Consortium.toml` schema.
 
-pub mod doorbell;
+pub mod acore_name;
+pub mod core;
+pub mod endpoints;
 pub mod hmi;
+pub mod ipc;
+pub mod mcore_name;
 pub mod memory;
+pub mod party;
 pub mod peripheral;
 pub mod profile;
+pub mod rcore_name;
+pub mod rvcore_name;
 pub mod ta;
+pub mod tee;
+pub mod xcore_name;
 
-pub use doorbell::Doorbell;
+pub use acore_name::AcoreName;
+pub use core::{Core, VisibleCore};
+pub use endpoints::Endpoints;
 pub use hmi::{Hmi, HmiBackend, HmiEngine};
+pub use ipc::{Ipc, IpcChannel, IpcEndpoint};
+pub use mcore_name::McoreName;
 pub use memory::{Memory, SharedMemory};
+pub use party::Party;
 pub use peripheral::Peripheral;
 pub use profile::Profile;
+pub use rcore_name::RcoreName;
+pub use rvcore_name::{RvCoreName, RvExtensions, RvXlen};
 pub use ta::Ta;
+pub use tee::Tee;
+pub use xcore_name::XcoreName;
 
 use std::collections::HashMap;
 
@@ -37,14 +55,18 @@ use std::collections::HashMap;
 pub struct Config {
     /// Build profile: which chip the project targets.
     pub profile: Profile,
+    /// Build artifact roots keyed by runtime endpoint name.
+    #[serde(default)]
+    pub endpoints: Endpoints,
     /// Shared-memory layout for IPC and debug channels.
+    #[serde(default)]
     pub memory: Memory,
-    /// Doorbell peripherals wired up for IPC signalling.
-    #[serde(default, rename = "doorbell")]
-    pub doorbells: Vec<Doorbell>,
-    /// OP-TEE trusted applications bundled with the project.
-    #[serde(default, rename = "ta")]
-    pub tas: Vec<Ta>,
+    /// Typed IPC channel declarations.
+    #[serde(default)]
+    pub ipc: Ipc,
+    /// Trusted execution configuration.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tee: Option<Tee>,
     /// Optional human-machine-interface (web UI) configuration.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub hmi: Option<Hmi>,

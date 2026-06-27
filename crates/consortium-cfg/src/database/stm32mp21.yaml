@@ -47,3 +47,6 @@ peripheral:
           irq: 154
           page_memory: 190
           page_irq: 1444
+      party_page: 1170
+      channels: 32
+      channel_page: 1170

@@ -14,16 +14,28 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! MU general-purpose-interrupt doorbell.
+//! MU doorbell over general-purpose-interrupt (GI) and receive-full (RF) lines.
 //!
 //! [`MuDoorbell`] wraps a single-instance [`Mu`] HAL handle and implements
-//! [`Doorbell`] over its GI channels:
+//! [`Doorbell`] over a channel space that packs two line kinds: channels
+//! `0..4` are GI lines and channels `4..8` are RF lines (see
+//! [`crate::chan`]).
+//!
+//! On a GI channel:
 //!
 //! - [`ring`](Doorbell::ring) sets `GCR[GIRn]`, which the hardware reflects to
 //!   `GSR[GIPn]` on the remote side and raises its GI interrupt when armed.
 //! - [`wait`](Doorbell::wait) arms `GIER[GIEn]`, then resolves once `GSR[GIPn]`
 //!   is observed, acknowledging it with a write-1-to-clear.
 //! - [`pending`](Doorbell::pending) reads `GSR[GIPn]` non-destructively.
+//!
+//! On an RF channel:
+//!
+//! - [`ring`](Doorbell::ring) writes transmit register `TRn`, which sets
+//!   `RSR[RFn]` on the remote side and raises its receive interrupt when armed.
+//! - [`wait`](Doorbell::wait) arms `RCR[RIEn]`, then resolves once `RSR[RFn]`
+//!   is observed, acknowledging it by reading `RRn`.
+//! - [`pending`](Doorbell::pending) reads `RSR[RFn]` non-destructively.
 
 use core::{
     pin::Pin,
@@ -33,7 +45,11 @@ use core::{
 
 use consortium_ipc::{Chan, Doorbell, Side};
 
-use crate::{abstraction::Mu, chan::MU_CHAN_COUNT, error::MuError};
+use crate::{
+    abstraction::Mu,
+    chan::{MU_CHAN_COUNT, MU_GI_CHAN_COUNT},
+    error::MuError,
+};
 
 /// MU-backed doorbell for instance `N` (1-based), processor side `S`.
 pub struct MuDoorbell<S: Side, const N: usize> {
@@ -42,14 +58,28 @@ pub struct MuDoorbell<S: Side, const N: usize> {
     notify: std::sync::Arc<tokio::sync::Notify>,
 }
 
+/// The hardware line a doorbell [`Chan`] maps to within an MU instance.
+#[derive(Clone, Copy)]
+enum MuLine {
+    /// General-purpose interrupt line, index `< 4` (`GCR`/`GSR`/`GIER`).
+    Gi(u8),
+    /// Receive-full line, index `< 4` (transmit/receive registers, `RSR`/`RCR`).
+    Rf(u8),
+}
+
 impl<S: Side, const N: usize> MuDoorbell<S, N> {
+    /// Classify a channel id into its GI or RF hardware line. Channels
+    /// `0..MU_GI_CHAN_COUNT` are GI lines; the following `MU_RF_CHAN_COUNT`
+    /// channels are RF lines.
     #[inline]
-    fn gi_of(ch: Chan) -> Result<u8, MuError> {
-        let gi = ch.id();
-        if gi >= MU_CHAN_COUNT {
-            Err(MuError::ChanOutOfRange)
+    fn line_of(ch: Chan) -> Result<MuLine, MuError> {
+        let id = ch.id();
+        if id < MU_GI_CHAN_COUNT {
+            Ok(MuLine::Gi(id))
+        } else if id < MU_CHAN_COUNT {
+            Ok(MuLine::Rf(id - MU_GI_CHAN_COUNT))
         } else {
-            Ok(gi)
+            Err(MuError::ChanOutOfRange)
         }
     }
 }
@@ -119,14 +149,18 @@ impl<S: Side, const N: usize> Doorbell for MuDoorbell<S, N> {
         Self: 'a;
 
     fn ring(&self, ch: Chan) -> Result<(), MuError> {
-        let gi = Self::gi_of(ch)?;
+        let line = Self::line_of(ch)?;
 
         // Ensure preceding slot writes are visible to the remote before the
-        // GCR write that signals it.
+        // register write that signals it.
         compiler_fence(Ordering::Release);
 
-        // SAFETY: `gi` is validated `< 4`; ring is the sole writer of GCR here.
-        unsafe { self.mu.request_gi(gi) };
+        match line {
+            // SAFETY: `gi` is validated `< 4`; ring is the sole writer of GCR.
+            MuLine::Gi(gi) => unsafe { self.mu.request_gi(gi) },
+            // SAFETY: `rf` is validated `< 4`; ring is the sole writer of TRn.
+            MuLine::Rf(rf) => unsafe { self.mu.request_rf(rf) },
+        }
         Ok(())
     }
 
@@ -138,8 +172,9 @@ impl<S: Side, const N: usize> Doorbell for MuDoorbell<S, N> {
     }
 
     fn pending(&self, ch: Chan) -> bool {
-        match Self::gi_of(ch) {
-            Ok(gi) => self.mu.gi_pending(gi),
+        match Self::line_of(ch) {
+            Ok(MuLine::Gi(gi)) => self.mu.gi_pending(gi),
+            Ok(MuLine::Rf(rf)) => self.mu.rf_pending(rf),
             Err(_) => false,
         }
     }
@@ -149,10 +184,13 @@ impl<S: Side, const N: usize> Doorbell for MuDoorbell<S, N> {
 
 /// Future returned by [`MuDoorbell::wait`].
 ///
-/// Arms `GIER[GIEn]` on the first poll, then completes once `GSR[GIPn]` is
-/// observed, acknowledging it (W1C) and disarming the interrupt. On `no_std`
-/// the per-instance `AtomicWaker` is woken from `MUx_IRQHandler`; on `std` the
-/// doorbell's `Notify` is driven by the UIO IRQ loop.
+/// On the first poll it arms the interrupt for the channel's line — `GIER[GIEn]`
+/// for a GI channel or `RCR[RIEn]` for an RF channel — then completes once the
+/// matching status flag (`GSR[GIPn]` or `RSR[RFn]`) is observed, acknowledging
+/// it (W1C of `GSR` for GI, or a read of `RRn` for RF) and disarming the
+/// interrupt. On `no_std` the per-instance `AtomicWaker` is woken from
+/// `MUx_IRQHandler`; on `std` the doorbell's `Notify` is driven by the UIO IRQ
+/// loop.
 pub struct MuWaitFut<'a, S: Side, const N: usize> {
     doorbell: &'a MuDoorbell<S, N>,
     ch: Chan,
@@ -179,14 +217,18 @@ impl<'a, S: Side, const N: usize> core::future::Future for MuWaitFut<'a, S, N> {
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         // SAFETY: no pinned field is moved; `notified` is only set in place.
         let this = unsafe { self.get_unchecked_mut() };
-        let gi = match MuDoorbell::<S, N>::gi_of(this.ch) {
-            Ok(gi) => gi,
+        let line = match MuDoorbell::<S, N>::line_of(this.ch) {
+            Ok(line) => line,
             Err(err) => return Poll::Ready(Err(err)),
         };
 
         if !this.armed {
-            // SAFETY: `gi` is validated `< 4`; armed once from this task.
-            unsafe { this.doorbell.mu.enable_gi(gi) };
+            match line {
+                // SAFETY: `gi` is validated `< 4`; armed once from this task.
+                MuLine::Gi(gi) => unsafe { this.doorbell.mu.enable_gi(gi) },
+                // SAFETY: `rf` is validated `< 4`; armed once from this task.
+                MuLine::Rf(rf) => unsafe { this.doorbell.mu.enable_rf(rf) },
+            }
             this.armed = true;
 
             #[cfg(feature = "std")]
@@ -207,15 +249,29 @@ impl<'a, S: Side, const N: usize> core::future::Future for MuWaitFut<'a, S, N> {
             waker_for::<N>().register(cx.waker());
         }
 
-        if this.doorbell.mu.gi_pending(gi) {
+        let ready = match line {
+            MuLine::Gi(gi) => this.doorbell.mu.gi_pending(gi),
+            MuLine::Rf(rf) => this.doorbell.mu.rf_pending(rf),
+        };
+        if ready {
             // Acquire fence: pairs with the remote's Release before ring(), so
             // our subsequent slot reads observe the remote's writes.
             compiler_fence(Ordering::Acquire);
 
-            // SAFETY: GSR[GIPn] confirmed set; `gi` is valid.
-            unsafe { this.doorbell.mu.clear_gi(gi) };
-            // SAFETY: `gi` is valid; disarm after completion.
-            unsafe { this.doorbell.mu.disable_gi(gi) };
+            match line {
+                MuLine::Gi(gi) => {
+                    // SAFETY: GSR[GIPn] confirmed set; `gi` is valid.
+                    unsafe { this.doorbell.mu.clear_gi(gi) };
+                    // SAFETY: `gi` is valid; disarm after completion.
+                    unsafe { this.doorbell.mu.disable_gi(gi) };
+                }
+                MuLine::Rf(rf) => {
+                    // SAFETY: RSR[RFn] confirmed set; `rf` is valid.
+                    unsafe { this.doorbell.mu.ack_rf(rf) };
+                    // SAFETY: `rf` is valid; disarm after completion.
+                    unsafe { this.doorbell.mu.disable_rf(rf) };
+                }
+            }
 
             return Poll::Ready(Ok(this.ch));
         }
@@ -318,7 +374,10 @@ pub extern "C" fn MU8_IRQHandler() {
 #[cfg(all(test, feature = "std"))]
 mod tests {
     use super::*;
-    use crate::registers::{cr::GeneralInterruptRegister, offsets};
+    use crate::registers::{
+        cr::{FlagRegister, GeneralInterruptRegister},
+        offsets, reset,
+    };
 
     fn ch(id: u8) -> Chan {
         // SAFETY: tests pick ids deliberately.
@@ -330,6 +389,10 @@ mod tests {
 
     fn gier(regs: &[u32]) -> GeneralInterruptRegister {
         GeneralInterruptRegister::from_bits(regs[offsets::GIER as usize / 4])
+    }
+
+    fn rcr(regs: &[u32]) -> FlagRegister {
+        FlagRegister::from_bits(regs[offsets::RCR as usize / 4])
     }
 
     #[test]
@@ -421,5 +484,74 @@ mod tests {
 
         assert_eq!(waiter.join().expect("waiter thread completes"), ch(2));
         assert_eq!(regs[offsets::GSR as usize / 4], 1 << 2);
+    }
+
+    // ── RF (receive-full) channels: 4..8 map to RF indices 0..4 ────────────────
+
+    #[test]
+    fn ring_rf_writes_transmit_register() {
+        let mut regs = [0u32; 0x300 / 4];
+        // TSR reset: all transmit registers empty, so ring is allowed.
+        regs[offsets::TSR as usize / 4] = reset::TSR;
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db =
+            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+
+        // ch(5) -> RF index 1 -> TR1.
+        db.ring(ch(5)).unwrap();
+
+        assert_ne!(regs[offsets::TR1 as usize / 4], 0);
+        assert_eq!(regs[offsets::TR0 as usize / 4], 0);
+    }
+
+    #[test]
+    fn ring_rf_skips_when_not_empty() {
+        let mut regs = [0u32; 0x300 / 4];
+        // TSR with TE1 clear: a prior transmit is still pending, so skip.
+        regs[offsets::TSR as usize / 4] = reset::TSR & !(1 << 1);
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db =
+            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+
+        db.ring(ch(5)).unwrap();
+
+        assert_eq!(regs[offsets::TR1 as usize / 4], 0);
+    }
+
+    #[test]
+    fn pending_rf_reads_rsr() {
+        let mut regs = [0u32; 0x300 / 4];
+        regs[offsets::RSR as usize / 4] = 1 << 2;
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db =
+            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+
+        // ch(6) -> RF index 2.
+        assert!(db.pending(ch(6)));
+        // ch(5) -> RF index 1, not full.
+        assert!(!db.pending(ch(5)));
+    }
+
+    #[test]
+    fn wait_rf_registers_rcr_then_ready_after_notify() {
+        let mut regs = [0u32; 0x300 / 4];
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db =
+            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+        // ch(5) -> RF index 1.
+        let mut wait = std::pin::pin!(db.wait(ch(5)));
+        let waker = std::task::Waker::noop();
+        let mut cx = Context::from_waker(waker);
+
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+        // RCR[RIE1] armed.
+        assert!(rcr(&regs).flags() & (1 << 1) != 0);
+
+        regs[offsets::RSR as usize / 4] = 1 << 1;
+        db.notifier().notify_waiters();
+
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(5))));
+        // RCR[RIE1] disarmed on completion.
+        assert!(rcr(&regs).flags() & (1 << 1) == 0);
     }
 }

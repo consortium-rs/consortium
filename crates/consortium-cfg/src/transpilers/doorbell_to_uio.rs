@@ -21,7 +21,8 @@
 //! party, since the UIO device is consumed by the Linux application; a doorbell
 //! with no Linux-facing interrupt becomes a memory-only UIO device.
 
-use consortium_cfg_common::database::{HardwareDoorbellPeripheral, Party};
+use consortium_cfg_common::config::Party;
+use consortium_cfg_common::database::HardwareDoorbellPeripheral;
 use consortium_dts::utils::irq_method::IrqMethod;
 
 use super::ToUio;

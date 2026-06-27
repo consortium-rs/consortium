@@ -1,4 +1,5 @@
-use consortium_cfg_common::database::{ChipDatabase, HardwareDoorbellPeripheralType, VisibleCore};
+use consortium_cfg_common::config::VisibleCore;
+use consortium_cfg_common::database::{ChipDatabase, HardwareDoorbellPeripheralType};
 use std::fs;
 use std::path::PathBuf;
 

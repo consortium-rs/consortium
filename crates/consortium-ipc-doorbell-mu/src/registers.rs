@@ -94,13 +94,18 @@ pub mod offsets {
     /// [`super::cr::GeneralInterruptRegister`]. Reset `0x0`.
     pub const GSR: u32 = 0x118;
 
-    /// Transmit control register. Reset `0x0`.
+    /// Transmit control register, bitfield [`super::cr::FlagRegister`]
+    /// (`TIEn`, one bit per transmit register). Reset `0x0`.
     pub const TCR: u32 = 0x120;
-    /// Transmit status register. Reset `0x0000_000F` [`super::reset::TSR`].
+    /// Transmit status register, bitfield [`super::cr::FlagRegister`]
+    /// (`TEn`, transmit-empty, one bit per transmit register).
+    /// Reset `0x0000_000F` [`super::reset::TSR`].
     pub const TSR: u32 = 0x124;
-    /// Receive control register. Reset `0x0`.
+    /// Receive control register, bitfield [`super::cr::FlagRegister`]
+    /// (`RIEn`, one bit per receive register). Reset `0x0`.
     pub const RCR: u32 = 0x128;
-    /// Receive status register. Reset `0x0`.
+    /// Receive status register, bitfield [`super::cr::FlagRegister`]
+    /// (`RFn`, receive-full, one bit per receive register). Reset `0x0`.
     pub const RSR: u32 = 0x12C;
 
     /// Transmit register 0. Reset `0x0`.
@@ -137,6 +142,39 @@ pub mod cr {
     }
 
     impl GeneralInterruptRegister {
+        /// Wraps a raw register word read from MMIO.
+        #[inline(always)]
+        pub const fn from_bits(bits: u32) -> Self {
+            Self(bits)
+        }
+
+        /// Returns the raw register word for writing back to MMIO.
+        #[inline(always)]
+        pub const fn bits(self) -> u32 {
+            self.0
+        }
+    }
+
+    bitfield::bitfield! {
+        /// Per-register flag bits shared by the transmit/receive control and
+        /// status registers `TCR`, `TSR`, `RCR` and `RSR`, registers
+        /// [`super::offsets::TCR`], [`super::offsets::TSR`],
+        /// [`super::offsets::RCR`] and [`super::offsets::RSR`]. One bit per
+        /// transmit/receive register (`0..4`):
+        ///
+        /// - `TCR`: transmit-interrupt-enable (`TIEn`).
+        /// - `TSR`: transmit-empty (`TEn`).
+        /// - `RCR`: receive-interrupt-enable (`RIEn`).
+        /// - `RSR`: receive-full (`RFn`).
+        #[derive(Clone, Copy)]
+        #[cfg_attr(feature = "defmt", derive(defmt::Format))]
+        pub struct FlagRegister(u32);
+        impl Debug;
+        u32;
+        pub flags, set_flags: 3, 0;
+    }
+
+    impl FlagRegister {
         /// Wraps a raw register word read from MMIO.
         #[inline(always)]
         pub const fn from_bits(bits: u32) -> Self {

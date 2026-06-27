@@ -16,8 +16,8 @@
 
 //! Loads a `Consortium.toml` manifest and binds it to its chip-family database.
 
-use consortium_cfg_common::config::{Config, SharedMemory};
-use consortium_cfg_common::database::{ChipDatabase, VisibleCore};
+use consortium_cfg_common::config::{Config, Party, SharedMemory, VisibleCore};
+use consortium_cfg_common::database::ChipDatabase;
 
 use crate::{database, error::CfgError};
 
@@ -59,17 +59,27 @@ impl Session {
 
         self.validate_memory()?;
 
-        for doorbell in &self.config.doorbells {
+        for channel in &self.config.ipc.channels {
             // TODO: support customized hardware doorbells declared in the
-            // manifest instead of restricting `name` to database entries.
+            // manifest instead of restricting `doorbell` to database entries.
             let known = self
                 .database
                 .peripheral
                 .doorbells
                 .iter()
-                .any(|entry| entry.name.eq_ignore_ascii_case(&doorbell.name));
+                .any(|entry| entry.name.eq_ignore_ascii_case(&channel.doorbell));
             if !known {
-                return Err(self.unknown_doorbell(&doorbell.name));
+                return Err(self.unknown_doorbell(&channel.doorbell));
+            }
+
+            for party in channel.endpoints.keys() {
+                if !self.is_party(*party) {
+                    return Err(CfgError::IpcEndpointNotVisible(
+                        channel.doorbell.clone(),
+                        party.to_string(),
+                        chip.clone(),
+                    ));
+                }
             }
         }
 
@@ -190,7 +200,22 @@ impl Session {
                 .cp
                 .iter()
                 .any(|cp| cp.name.eq_ignore_ascii_case(name.as_str())),
+            VisibleCore::Rcore(name) => self
+                .database
+                .cp
+                .iter()
+                .any(|cp| cp.name.eq_ignore_ascii_case(name.as_str())),
+            VisibleCore::Rvcore(name) => self
+                .database
+                .cp
+                .iter()
+                .any(|cp| cp.name.eq_ignore_ascii_case(&name.to_string())),
         }
+    }
+
+    /// Whether `party` names one of the chip's visible runtime endpoints.
+    fn is_party(&self, party: Party) -> bool {
+        self.is_core(party.core())
     }
 }
 
@@ -206,8 +231,28 @@ mod tests {
 
         assert_eq!(session.config.profile.chip, "stm32mp257fak3");
         assert_eq!(session.database.name, "STM32MP25");
-        assert_eq!(session.config.doorbells.len(), 2);
-        assert_eq!(session.config.tas[0].name, "boundary_check");
+        assert_eq!(session.config.ipc.channels.len(), 2);
+        assert_eq!(session.config.ipc.channels[0].doorbell, "hsem");
+        assert_eq!(
+            session.config.ipc.channels[0].endpoints[&Party::AcoreNonSecure].chan,
+            0
+        );
+        assert_eq!(
+            session.config.ipc.channels[0].endpoints[&"cm33".parse().unwrap()].ty,
+            "MotionControl"
+        );
+        assert_eq!(session.config.endpoints[&Party::AcoreNonSecure], "./app");
+        assert_eq!(
+            session
+                .config
+                .tee
+                .as_ref()
+                .unwrap()
+                .uuid
+                .to_string()
+                .to_uppercase(),
+            "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"
+        );
 
         let i2c1 = &session.config.peripheral["i2c1"];
         assert_eq!(i2c1.owner, VisibleCore::Ap);
@@ -223,12 +268,12 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
 
-            [memory]
-            uio = 0
-
-            [[doorbell]]
-            name = "nope"
-            uio = 1
+            [[ipc.channel]]
+            doorbell = "nope"
+            linux.chan = 0
+            linux.type = "Ping"
+            cm33.chan = 1
+            cm33.type = "Pong"
         "#;
 
         let err = Session::from_toml(manifest).unwrap_err();
@@ -245,11 +290,7 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
 
-            [memory]
-            uio = 0
-
             [memory.ipc]
-            mmap   = 0
             base   = 0x00400000
             length = 0x00080000
             mtu    = 128
@@ -267,17 +308,12 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
 
-            [memory]
-            uio = 0
-
             [memory.ipc]
-            mmap   = 0
             base   = 0x00400000
             length = 0x00008000
             mtu    = 128
 
             [memory.dbg]
-            mmap   = 1
             base   = 0x00404000
             length = 0x00002000
             mtu    = 64

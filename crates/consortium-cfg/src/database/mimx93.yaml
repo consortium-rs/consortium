@@ -27,6 +27,7 @@ peripheral:
     - name: MU1
       page: 585
       type: mu
+      pattern: gi
       memory:
         base: 0x04220000
         length: 0x00020000

@@ -1,8 +1,10 @@
 [profile]
 chip = "stm32mp257fak3"
 
-[memory]
-uio = 0
+[endpoints]
+linux = "./app"
+optee = "./ta"
+cm33  = "./firmware"
 
 [memory.ipc]
 base   = 0x000400000
@@ -14,18 +16,19 @@ base   = 0x000408000
 length = 0x2000
 mtu    = 64
 
-[[doorbell]]
-name = "hsem"
-channel.ap = 0
-channel.cm33 = 1
+[[ipc.channel]]
+doorbell   = "hsem"
+linux.chan = 0
+linux.type = "SensorData"
+cm33.chan  = 1
+cm33.type  = "MotionControl"
 
-[[doorbell]]
-name = "ipcc1"
-channel.ap = 0
-channel.cm0p = 1
+[[ipc.channel]]
+doorbell  = "ipcc1"
+cm0p.chan = 0
+cm0p.type = "PowerMode"
 
-[[ta]]
-name = "boundary_check"
+[tee]
 uuid = "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"
 
 [hmi]

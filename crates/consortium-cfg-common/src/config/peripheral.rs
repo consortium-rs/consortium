@@ -16,7 +16,7 @@
 
 use std::collections::HashMap;
 
-use crate::database::VisibleCore;
+use super::VisibleCore;
 
 /// A `[peripheral.<name>]` entry: the ownership and pinout of one peripheral.
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]

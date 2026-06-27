@@ -1,8 +1,8 @@
-use super::McoreName;
+use super::{McoreName, VisibleCore};
 use core::fmt;
 use core::str::FromStr;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Party {
     /// A-core, OP-TEE / secure world.
     AcoreSecure,
@@ -46,6 +46,15 @@ impl TryFrom<String> for Party {
 
     fn try_from(value: String) -> Result<Self, Self::Error> {
         value.parse()
+    }
+}
+
+impl Party {
+    pub const fn core(self) -> VisibleCore {
+        match self {
+            Self::AcoreSecure | Self::AcoreNonSecure => VisibleCore::Ap,
+            Self::Mcore { name, .. } => VisibleCore::Mcore(name),
+        }
     }
 }
 
@@ -149,6 +158,16 @@ mod tests {
             }
             .to_string(),
             "cm33:1-s"
+        );
+    }
+
+    #[test]
+    fn projects_party_to_core() {
+        assert_eq!(Party::AcoreNonSecure.core(), VisibleCore::Ap);
+        assert_eq!(Party::AcoreSecure.core(), VisibleCore::Ap);
+        assert_eq!(
+            "cm33-s".parse::<Party>().unwrap().core(),
+            VisibleCore::Mcore(McoreName::Cm33)
         );
     }
 }
