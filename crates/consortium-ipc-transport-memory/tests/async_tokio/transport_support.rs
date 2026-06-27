@@ -3,11 +3,11 @@ use std::sync::{
     atomic::{AtomicUsize, Ordering},
 };
 
-use consortium_ipc::{Region, SramRegion};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransportable,
     descriptor_init, slot,
 };
+use consortium_shared_memory::{Region, SramRegion};
 
 pub const MTU: usize = 64;
 pub const SLOT_SIZE: usize = slot::SLOT_HEADER + MTU;

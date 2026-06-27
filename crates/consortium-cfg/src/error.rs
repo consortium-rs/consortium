@@ -47,8 +47,52 @@ pub enum CfgError {
     #[error("IPC channel endpoint '{0}' names core '{1}', which is not visible on chip '{2}'")]
     IpcEndpointNotVisible(String, String, String),
 
+    #[error(
+        "doorbell '{doorbell}' does not configure party '{party}' on chip '{chip}'. \
+         Configured parties: {available}. Check the doorbell party table in the TRM ({trm}) p. {page}"
+    )]
+    DoorbellPartyUnavailable {
+        doorbell: String,
+        party: String,
+        chip: String,
+        available: String,
+        trm: String,
+        page: u32,
+    },
+
+    #[error(
+        "doorbell '{doorbell}' channel {channel} is unavailable on chip '{chip}'. \
+         Valid channels are 0..{channels}. Check the channel table in the TRM ({trm}) p. {page}"
+    )]
+    DoorbellChannelUnavailable {
+        doorbell: String,
+        channel: u32,
+        channels: u32,
+        chip: String,
+        trm: String,
+        page: u32,
+    },
+
+    #[error(
+        "doorbell '{doorbell}' channel {channel} is assigned more than once: \
+         '{first_party}' and '{second_party}' both use it"
+    )]
+    DoorbellChannelDuplicate {
+        doorbell: String,
+        channel: u32,
+        first_party: String,
+        second_party: String,
+    },
+
     #[error("no memory region set")]
     MemoryRegionNotSet,
+
+    #[error("UIO device '{device}' exposes {found} mappings, but Linux UIO supports at most {max}")]
+    UioMmapLimit {
+        device: String,
+        found: usize,
+        max: usize,
+    },
 
     #[error(
         "[memory.{region}] spans {base:#x}..{end:#x}, which is not contained in any SRAM region of chip '{chip}'. \

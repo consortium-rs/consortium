@@ -9,11 +9,12 @@ use std::{
     task::{Context, Poll, Waker},
 };
 
-use consortium_ipc::{Chan, Doorbell, RecvTransport, SramRegion};
+use consortium_ipc::{Chan, Doorbell, RecvTransport};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
     channel_table_entry_offset, descriptor_init, slot,
 };
+use consortium_shared_memory::SramRegion;
 use embassy_executor::Executor;
 use embassy_futures::yield_now;
 use embassy_sync::{blocking_mutex::raw::NoopRawMutex, signal::Signal};

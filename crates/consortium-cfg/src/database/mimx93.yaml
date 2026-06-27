@@ -48,6 +48,9 @@ peripheral:
           irq: 22
           page_memory: 62
           page_irq: 93
+      party_page: 585
+      channels: 8
+      channel_page: 586
     - name: MU2
       page: 585
       type: mu
@@ -71,3 +74,6 @@ peripheral:
           irq: 24
           page_memory: 75
           page_irq: 93
+      party_page: 585
+      channels: 8
+      channel_page: 586

@@ -4,11 +4,12 @@ use crate::common::doorbell::HostDoorbell;
 use crate::transport_support::{
     CountingRegion, MTU, REGION_LEN, SLOT_SIZE, channel, init_two_channel_descriptor,
 };
-use consortium_ipc::{Chan, Doorbell, RecvTransport, SramRegion};
+use consortium_ipc::{Chan, Doorbell, RecvTransport};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
     channel_table_entry_offset, descriptor_init, slot,
 };
+use consortium_shared_memory::SramRegion;
 use futures::{pin_mut, poll};
 
 #[test]

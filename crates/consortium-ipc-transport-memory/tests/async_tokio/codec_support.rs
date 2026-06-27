@@ -3,11 +3,12 @@ use std::thread;
 
 use crate::common::doorbell::HostDoorbell;
 use consortium_codec::CodecFor;
-use consortium_ipc::{Chan, Channel, Rx, SramRegion, Tx};
+use consortium_ipc::{Chan, Channel, Rx, Tx};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport, Side,
     descriptor_init, slot,
 };
+use consortium_shared_memory::SramRegion;
 use prost::bytes::{Buf, BufMut};
 use prost::encoding::{self, DecodeContext, WireType};
 use serde::{Deserialize, Serialize};

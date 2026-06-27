@@ -1,0 +1,266 @@
+// Copyright 2026 Ethan Wu
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// SPDX-License-Identifier: Apache-2.0
+
+//! Type-A doorbell interrupt enablement code generation.
+
+use std::collections::HashMap;
+
+use consortium_cfg_common::{
+    config::{Party, VisibleCore},
+    database::{HardwareDoorbellPeripheral, HardwareDoorbellPeripheralType},
+};
+use consortium_dts::utils::irq_method::IrqMethod;
+use proc_macro2::{Ident, Span, TokenStream};
+use quote::quote;
+
+use crate::components::address::Address;
+use crate::components::uio::UioDevice;
+use crate::error::CfgError;
+use crate::transpilers::ToUio;
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct HardwareDoorbell {
+    /// Peripheral name.
+    pub name: String,
+    /// Addressing/location information for the doorbell.
+    pub address: Address,
+    /// Type of the doorbell peripheral.
+    pub r#type: HardwareDoorbellPeripheralType,
+    /// Doorbell channels used by this configuration.
+    pub channels: Vec<u8>,
+    /// Interrupt numbers keyed by visible core.
+    pub irq: HashMap<VisibleCore, u32>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Bella {
+    pub bells: Vec<HardwareDoorbell>,
+}
+
+impl Bella {
+    /// Generates Cortex-M NVIC enablement code for every doorbell interrupt
+    /// visible to `core`.
+    ///
+    /// Returns `None` when no configured doorbell has an IRQ for `core`.
+    pub fn nvic_enable(&self, core: VisibleCore) -> Option<TokenStream> {
+        let mut interrupts = self
+            .bells
+            .iter()
+            .filter_map(|bell| {
+                bell.irq
+                    .get(&core)
+                    .and_then(|irq| u16::try_from(*irq).ok())
+                    .map(|irq| (interrupt_variant(&bell.name), irq))
+            })
+            .collect::<Vec<_>>();
+
+        if interrupts.is_empty() {
+            return None;
+        }
+
+        interrupts.sort_by_key(|(variant, _)| variant.to_string());
+        interrupts.dedup_by_key(|(variant, _)| variant.to_string());
+
+        let variants = interrupts
+            .iter()
+            .map(|(variant, irq)| quote! { #variant = #irq })
+            .collect::<Vec<_>>();
+        let variant_names = interrupts
+            .iter()
+            .map(|(variant, _)| variant)
+            .collect::<Vec<_>>();
+
+        Some(quote! {
+            #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+            #[repr(u16)]
+            pub enum BellaInterrupt {
+                #(#variants,)*
+            }
+
+            unsafe impl ::cortex_m::interrupt::InterruptNumber for BellaInterrupt {
+                fn number(self) -> u16 {
+                    self as u16
+                }
+            }
+
+            pub fn enable_bella_interrupts() {
+                // SAFETY: interrupt numbers are emitted from the validated
+                // Consortium hardware database for this visible core.
+                unsafe {
+                    #(
+                        ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::#variant_names);
+                    )*
+                }
+            }
+        })
+    }
+}
+
+impl ToUio for HardwareDoorbellPeripheral {
+    fn to_uio(&self) -> Result<Option<UioDevice>, CfgError> {
+        // The UIO device is driven from Linux, so use that party's GIC SPI.
+        // GIC SPI doorbell lines are level-high triggered.
+        let irq = self
+            .parties
+            .iter()
+            .find(|party| party.core == Party::AcoreNonSecure)
+            .map(|party| (party.irq, IrqMethod::LevelHigh));
+
+        // A doorbell always exposes its single register window as `map0`, so
+        // there is no `mmap` ordering to violate.
+        Ok(Some(UioDevice {
+            mmap: vec![(self.memory.base, self.memory.length)],
+            irq,
+        }))
+    }
+}
+
+fn interrupt_variant(name: &str) -> Ident {
+    let mut ident = String::new();
+    for ch in name.chars() {
+        if ch.is_ascii_alphanumeric() {
+            ident.push(ch.to_ascii_uppercase());
+        } else {
+            ident.push('_');
+        }
+    }
+
+    if ident.is_empty() || ident.starts_with(|ch: char| ch.is_ascii_digit()) {
+        ident.insert(0, '_');
+    }
+
+    Ident::new(&ident, Span::call_site())
+}
+
+// /// EASTER EGG. DO NOT DELETE
+// ///
+// /// # Safety
+// ///
+// /// DO NOT implement this trait unless you know what you are doing.
+// #[allow(unused)]
+// unsafe trait Ethan: Sized {}
+
+// /// SAFETY: Ethan knows what he is doing.
+// unsafe impl Ethan for Bella {}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use consortium_cfg_common::config::McoreName;
+    use consortium_cfg_common::database::{
+        HardwareDoorbellParty, HardwareDoorbellPeripheralType, HardwareMemory,
+    };
+
+    fn bell(name: &str, core: VisibleCore, irq: u32) -> HardwareDoorbell {
+        HardwareDoorbell {
+            name: name.to_string(),
+            address: Address {
+                ap: crate::components::address::ApAddress {
+                    uio_id: 0,
+                    mmap_id: 0,
+                },
+                cp: HashMap::new(),
+            },
+            r#type: HardwareDoorbellPeripheralType::Hsem,
+            channels: vec![0],
+            irq: HashMap::from([(core, irq)]),
+        }
+    }
+
+    #[test]
+    fn generates_nvic_enablement_for_core_irqs() {
+        let core = VisibleCore::Mcore(McoreName::Cm33);
+        let bella = Bella {
+            bells: vec![bell("hsem", core, 199), bell("ipcc2", core, 13)],
+        };
+
+        let tokens = bella.nvic_enable(core).unwrap().to_string();
+
+        assert!(tokens.contains("enum BellaInterrupt"));
+        assert!(tokens.contains("HSEM = 199u16"));
+        assert!(tokens.contains("IPCC2 = 13u16"));
+        assert!(tokens.contains("unsafe impl :: cortex_m :: interrupt :: InterruptNumber"));
+        assert!(tokens.contains("NVIC :: unmask"));
+    }
+
+    #[test]
+    fn skips_unavailable_core_irqs() {
+        let cm33 = VisibleCore::Mcore(McoreName::Cm33);
+        let cm7 = VisibleCore::Mcore(McoreName::Cm7);
+        let bella = Bella {
+            bells: vec![bell("hsem", cm33, 199)],
+        };
+
+        assert!(bella.nvic_enable(cm7).is_none());
+    }
+
+    #[test]
+    fn sanitizes_interrupt_variant_names() {
+        assert_eq!(interrupt_variant("mu-7").to_string(), "MU_7");
+        assert_eq!(interrupt_variant("1bad").to_string(), "_1BAD");
+    }
+
+    fn party(core: &str, irq: u32) -> HardwareDoorbellParty {
+        HardwareDoorbellParty {
+            core: core.parse().unwrap(),
+            irq,
+            page_memory: 0,
+            page_irq: 0,
+        }
+    }
+
+    fn database_doorbell(parties: Vec<HardwareDoorbellParty>) -> HardwareDoorbellPeripheral {
+        HardwareDoorbellPeripheral {
+            name: "HSEM".to_string(),
+            page: 1306,
+            r#type: HardwareDoorbellPeripheralType::Hsem,
+            memory: HardwareMemory {
+                base: 0x0624_0000,
+                length: 0x400,
+            },
+            parties,
+            party_page: 1306,
+            channels: 16,
+            channel_page: 1306,
+        }
+    }
+
+    #[test]
+    fn doorbell_uio_uses_linux_party_interrupt() {
+        let uio = database_doorbell(vec![
+            party("optee", 200),
+            party("linux", 199),
+            party("cm33", 199),
+        ])
+        .to_uio()
+        .unwrap()
+        .unwrap();
+
+        assert_eq!(uio.mmap, vec![(0x0624_0000, 0x400)]);
+        assert_eq!(uio.irq, Some((199, IrqMethod::LevelHigh)));
+    }
+
+    #[test]
+    fn doorbell_uio_is_memory_only_without_linux_party() {
+        let uio = database_doorbell(vec![party("cm33", 199), party("cm0p", 21)])
+            .to_uio()
+            .unwrap()
+            .unwrap();
+
+        assert_eq!(uio.mmap, vec![(0x0624_0000, 0x400)]);
+        assert!(uio.irq.is_none());
+    }
+}

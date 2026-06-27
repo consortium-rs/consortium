@@ -14,20 +14,17 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-/// `[memory]` section: the shared-memory layout used by the IPC and debug
-/// transports.
-#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+/// A shared-memory region used by a pattern-specific feature.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct Memory {
-    /// `[memory.ipc]`: the IPC channel region.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub ipc: Option<SharedMemory>,
-    /// `[memory.dbg]`: the defmt debug-log region.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub dbg: Option<SharedMemory>,
+pub struct MemoryRegion {
+    /// Physical base address of the region, as seen by the M-core.
+    pub base: u64,
+    /// Length of the region in bytes.
+    pub length: u64,
 }
 
-/// A single shared-memory region (`[memory.ipc]` or `[memory.dbg]`).
+/// A shared-memory region with MTU metadata.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct SharedMemory {
@@ -37,4 +34,13 @@ pub struct SharedMemory {
     pub length: u64,
     /// Maximum transfer unit (payload bytes per slot) for the channel.
     pub mtu: u32,
+}
+
+impl SharedMemory {
+    pub const fn region(self) -> MemoryRegion {
+        MemoryRegion {
+            base: self.base,
+            length: self.length,
+        }
+    }
 }

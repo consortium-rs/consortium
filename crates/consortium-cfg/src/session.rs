@@ -16,8 +16,10 @@
 
 //! Loads a `Consortium.toml` manifest and binds it to its chip-family database.
 
-use consortium_cfg_common::config::{Config, Party, SharedMemory, VisibleCore};
-use consortium_cfg_common::database::ChipDatabase;
+use std::collections::HashMap;
+
+use consortium_cfg_common::config::{Config, MemoryRegion, Party, VisibleCore};
+use consortium_cfg_common::database::{ChipDatabase, HardwareDoorbellPeripheral};
 
 use crate::{database, error::CfgError};
 
@@ -58,30 +60,7 @@ impl Session {
         let chip = &self.config.profile.chip;
 
         self.validate_memory()?;
-
-        for channel in &self.config.ipc.channels {
-            // TODO: support customized hardware doorbells declared in the
-            // manifest instead of restricting `doorbell` to database entries.
-            let known = self
-                .database
-                .peripheral
-                .doorbells
-                .iter()
-                .any(|entry| entry.name.eq_ignore_ascii_case(&channel.doorbell));
-            if !known {
-                return Err(self.unknown_doorbell(&channel.doorbell));
-            }
-
-            for party in channel.endpoints.keys() {
-                if !self.is_party(*party) {
-                    return Err(CfgError::IpcEndpointNotVisible(
-                        channel.doorbell.clone(),
-                        party.to_string(),
-                        chip.clone(),
-                    ));
-                }
-            }
-        }
+        self.validate_ipc()?;
 
         for (name, peripheral) in &self.config.peripheral {
             if !self.is_core(peripheral.owner) {
@@ -96,53 +75,114 @@ impl Session {
         Ok(())
     }
 
-    /// Validates the IPC and debug shared-memory regions: each must have a
-    /// non-zero length, lie entirely within one of the chip's SRAM regions, and
-    /// not overlap the other.
-    fn validate_memory(&self) -> Result<(), CfgError> {
-        let regions: [(&str, Option<&SharedMemory>); 2] = [
-            ("ipc", self.config.memory.ipc.as_ref()),
-            ("dbg", self.config.memory.dbg.as_ref()),
-        ];
+    /// Validates IPC doorbell references, party support, and channel allocation.
+    fn validate_ipc(&self) -> Result<(), CfgError> {
+        let chip = &self.config.profile.chip;
+        let mut used_channels: HashMap<(String, u32), Party> = HashMap::new();
 
-        for (name, region) in regions {
-            let Some(region) = region else { continue };
+        for channel in &self.config.ipc.channels {
+            let doorbell = self
+                .doorbell(&channel.doorbell)
+                .ok_or_else(|| self.unknown_doorbell(&channel.doorbell))?;
 
-            // Exclusive end address; a region that wraps past u64::MAX cannot
-            // fit in any SRAM window, so treat the overflow as out-of-bounds.
-            let Some(end) = region.base.checked_add(region.length) else {
-                return Err(self.region_out_of_bounds(name, region.base, region.base));
-            };
+            for (party, endpoint) in &channel.endpoints {
+                if !self.is_party(*party) {
+                    return Err(CfgError::IpcEndpointNotVisible(
+                        channel.doorbell.clone(),
+                        party.to_string(),
+                        chip.clone(),
+                    ));
+                }
 
-            if region.length == 0 {
-                return Err(CfgError::RegionEmpty {
-                    region: name.to_string(),
-                });
-            }
+                if !doorbell.parties.iter().any(|entry| entry.core == *party) {
+                    return Err(self.doorbell_party_unavailable(doorbell, *party));
+                }
 
-            let contained = self.database.memory.regions.iter().any(|sram| {
-                let sram_base = u64::from(sram.base);
-                let sram_end = sram_base + u64::from(sram.length);
-                region.base >= sram_base && end <= sram_end
-            });
-            if !contained {
-                return Err(self.region_out_of_bounds(name, region.base, end));
+                if endpoint.chan >= doorbell.channels {
+                    return Err(CfgError::DoorbellChannelUnavailable {
+                        doorbell: doorbell.name.clone(),
+                        channel: endpoint.chan,
+                        channels: doorbell.channels,
+                        chip: chip.clone(),
+                        trm: self.database.trm.clone(),
+                        page: doorbell.channel_page,
+                    });
+                }
+
+                let key = (doorbell.name.to_ascii_lowercase(), endpoint.chan);
+                if let Some(first_party) = used_channels.insert(key, *party) {
+                    return Err(CfgError::DoorbellChannelDuplicate {
+                        doorbell: doorbell.name.clone(),
+                        channel: endpoint.chan,
+                        first_party: first_party.to_string(),
+                        second_party: party.to_string(),
+                    });
+                }
             }
         }
 
-        if let (Some(ipc), Some(dbg)) = (&self.config.memory.ipc, &self.config.memory.dbg) {
-            let ipc_end = ipc.base + ipc.length;
-            let dbg_end = dbg.base + dbg.length;
-            if ipc.base < dbg_end && dbg.base < ipc_end {
-                return Err(CfgError::RegionOverlap {
-                    a: "ipc".to_string(),
-                    a_base: ipc.base,
-                    a_end: ipc_end,
-                    b: "dbg".to_string(),
-                    b_base: dbg.base,
-                    b_end: dbg_end,
-                });
+        Ok(())
+    }
+
+    /// Validates shared-memory regions: each must have a non-zero length, lie
+    /// entirely within one of the chip's SRAM regions, and not overlap another.
+    fn validate_memory(&self) -> Result<(), CfgError> {
+        let mut regions = Vec::new();
+
+        if let Some(defmt) = self.config.dbg.defmt {
+            regions.push(("dbg.defmt".to_string(), defmt.memory));
+        }
+
+        for (index, channel) in self.config.ipc.channels.iter().enumerate() {
+            if let Some(memory) = channel.memory() {
+                regions.push((format!("ipc.channel[{index}].config.memory"), memory));
             }
+        }
+
+        for (name, region) in &regions {
+            self.validate_memory_region(name, *region)?;
+        }
+
+        for (left_index, (left_name, left)) in regions.iter().enumerate() {
+            let left_end = left.base + left.length;
+            for (right_name, right) in regions.iter().skip(left_index + 1) {
+                let right_end = right.base + right.length;
+                if left.base < right_end && right.base < left_end {
+                    return Err(CfgError::RegionOverlap {
+                        a: left_name.clone(),
+                        a_base: left.base,
+                        a_end: left_end,
+                        b: right_name.clone(),
+                        b_base: right.base,
+                        b_end: right_end,
+                    });
+                }
+            }
+        }
+
+        Ok(())
+    }
+
+    fn validate_memory_region(&self, name: &str, region: MemoryRegion) -> Result<(), CfgError> {
+        // Exclusive end address; a region that wraps past u64::MAX cannot
+        // fit in any SRAM window, so treat the overflow as out-of-bounds.
+        let Some(end) = region.base.checked_add(region.length) else {
+            return Err(self.region_out_of_bounds(name, region.base, region.base));
+        };
+
+        if region.length == 0 {
+            return Err(CfgError::RegionEmpty {
+                region: name.to_string(),
+            });
+        }
+
+        let contained = self.database.memory.regions.iter().any(|sram| {
+            let sram_base = u64::from(sram.base);
+            let sram_end = sram_base + u64::from(sram.length);
+            region.base >= sram_base && end <= sram_end
+        });
+        if !contained {
+            return Err(self.region_out_of_bounds(name, region.base, end));
         }
 
         Ok(())
@@ -156,7 +196,7 @@ impl Session {
             .memory
             .trm_page
             .iter()
-            .map(u64::to_string)
+            .map(u32::to_string)
             .collect::<Vec<_>>()
             .join(", ");
 
@@ -187,6 +227,44 @@ impl Session {
             chip: self.config.profile.chip.clone(),
             trm: self.database.trm.clone(),
             available,
+        }
+    }
+
+    /// Finds a database doorbell by manifest name, ignoring ASCII case.
+    fn doorbell(&self, name: &str) -> Option<&HardwareDoorbellPeripheral> {
+        self.database
+            .peripheral
+            .doorbells
+            .iter()
+            .find(|entry| entry.name.eq_ignore_ascii_case(name))
+    }
+
+    /// Builds a [`CfgError::DoorbellPartyUnavailable`] with the configured
+    /// parties and the TRM page documenting party support.
+    fn doorbell_party_unavailable(
+        &self,
+        doorbell: &HardwareDoorbellPeripheral,
+        party: Party,
+    ) -> CfgError {
+        let available = doorbell
+            .parties
+            .iter()
+            .map(|entry| {
+                format!(
+                    "{} (TRM memory p. {}, IRQ p. {})",
+                    entry.core, entry.page_memory, entry.page_irq
+                )
+            })
+            .collect::<Vec<_>>()
+            .join(", ");
+
+        CfgError::DoorbellPartyUnavailable {
+            doorbell: doorbell.name.clone(),
+            party: party.to_string(),
+            chip: self.config.profile.chip.clone(),
+            available,
+            trm: self.database.trm.clone(),
+            page: doorbell.party_page,
         }
     }
 
@@ -238,7 +316,7 @@ mod tests {
             0
         );
         assert_eq!(
-            session.config.ipc.channels[0].endpoints[&"cm33".parse().unwrap()].ty,
+            session.config.ipc.channels[0].endpoints[&"cm33".parse().unwrap()].r#type,
             "MotionControl"
         );
         assert_eq!(session.config.endpoints[&Party::AcoreNonSecure], "./app");
@@ -270,16 +348,78 @@ mod tests {
 
             [[ipc.channel]]
             doorbell = "nope"
-            linux.chan = 0
-            linux.type = "Ping"
-            cm33.chan = 1
-            cm33.type = "Pong"
+            pattern = "memory"
+            party.linux = { chan = 0, type = "Ping" }
+            party.cm33 = { chan = 1, type = "Pong" }
+            config.memory = { base = 0x00400000, length = 0x00008000 }
+            mtu = 128
         "#;
 
         let err = Session::from_toml(manifest).unwrap_err();
         assert!(matches!(err, CfgError::UnknownDoorbell { .. }));
         // The hint lists real doorbells with their TRM pages.
         assert!(err.to_string().contains("HSEM (TRM p. 1306)"));
+    }
+
+    #[test]
+    fn rejects_doorbell_party_unavailable() {
+        let manifest = r#"
+            [profile]
+            chip = "stm32mp257fak3"
+
+            [[ipc.channel]]
+            doorbell = "ipcc1"
+            pattern = "memory"
+            party.cm0p = { chan = 0, type = "PowerMode" }
+            config.memory = { base = 0x00400000, length = 0x00008000 }
+            mtu = 128
+        "#;
+
+        let err = Session::from_toml(manifest).unwrap_err();
+        assert!(matches!(err, CfgError::DoorbellPartyUnavailable { .. }));
+        assert!(err.to_string().contains("Configured parties: linux"));
+        assert!(err.to_string().contains("TRM"));
+    }
+
+    #[test]
+    fn rejects_unavailable_doorbell_channel() {
+        let manifest = r#"
+            [profile]
+            chip = "stm32mp257fak3"
+
+            [[ipc.channel]]
+            doorbell = "hsem"
+            pattern = "memory"
+            party.linux = { chan = 16, type = "Ping" }
+            config.memory = { base = 0x00400000, length = 0x00008000 }
+            mtu = 128
+        "#;
+
+        assert!(matches!(
+            Session::from_toml(manifest),
+            Err(CfgError::DoorbellChannelUnavailable { .. })
+        ));
+    }
+
+    #[test]
+    fn rejects_duplicate_doorbell_channel() {
+        let manifest = r#"
+            [profile]
+            chip = "stm32mp257fak3"
+
+            [[ipc.channel]]
+            doorbell = "hsem"
+            pattern = "memory"
+            party.linux = { chan = 0, type = "Ping" }
+            party.cm33 = { chan = 0, type = "Pong" }
+            config.memory = { base = 0x00400000, length = 0x00008000 }
+            mtu = 128
+        "#;
+
+        assert!(matches!(
+            Session::from_toml(manifest),
+            Err(CfgError::DoorbellChannelDuplicate { .. })
+        ));
     }
 
     /// IPC region `0x40_0000..0x41_0000` sits outside every SRAM window on
@@ -290,10 +430,12 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
 
-            [memory.ipc]
-            base   = 0x00400000
-            length = 0x00080000
-            mtu    = 128
+            [[ipc.channel]]
+            doorbell = "hsem"
+            pattern = "memory"
+            party.linux = { chan = 0, type = "Ping" }
+            config.memory = { base = 0x00400000, length = 0x00080000 }
+            mtu = 128
         "#;
 
         assert!(matches!(
@@ -308,15 +450,16 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
 
-            [memory.ipc]
-            base   = 0x00400000
-            length = 0x00008000
-            mtu    = 128
+            [dbg.defmt]
+            memory = { base = 0x00404000, length = 0x00002000 }
+            mtu = 64
 
-            [memory.dbg]
-            base   = 0x00404000
-            length = 0x00002000
-            mtu    = 64
+            [[ipc.channel]]
+            doorbell = "hsem"
+            pattern = "memory"
+            party.linux = { chan = 0, type = "Ping" }
+            config.memory = { base = 0x00400000, length = 0x00008000 }
+            mtu = 128
         "#;
 
         assert!(matches!(

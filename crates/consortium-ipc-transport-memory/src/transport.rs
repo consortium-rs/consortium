@@ -3,10 +3,8 @@ use core::{
     marker::{PhantomData, PhantomPinned},
 };
 
-use consortium_ipc::{
-    Chan, DdrRegion, Doorbell, RecvTransport, Region, SendTransport, SramRegion, Transport,
-    TransportError,
-};
+use consortium_ipc::{Chan, Doorbell, RecvTransport, SendTransport, Transport, TransportError};
+use consortium_shared_memory::{DdrRegion, Region, SramRegion};
 
 use crate::{
     descriptor::{ChannelLayout, NUM_CHANNELS_OFFSET, RX_UPDATED_ID_OFFSET, Side, read_channel},
@@ -75,10 +73,6 @@ unsafe fn send_bytes<D: Doorbell, R: Region>(
     region.flush();
     doorbell.ring(ch).map_err(Error::Doorbell)
 }
-
-// ---------------------------------------------------------------------------
-// Shared recv-poll helper — slot scanning + persistent doorbell subscription
-// ---------------------------------------------------------------------------
 
 /// Poll the recv path once.
 ///
@@ -217,10 +211,6 @@ unsafe fn arm_wait<D: Doorbell + Send + 'static>(
     core::task::Poll::Pending
 }
 
-// ---------------------------------------------------------------------------
-// Combined transport
-// ---------------------------------------------------------------------------
-
 pub struct SharedMemoryTransport<D: Doorbell, R: SharedMemoryTransportable> {
     ch: Chan,
     doorbell: D,
@@ -330,10 +320,6 @@ impl<D: Doorbell, R: SharedMemoryTransportable> SharedMemoryTransport<D, R> {
     }
 }
 
-// ---------------------------------------------------------------------------
-// Send / receive halves
-// ---------------------------------------------------------------------------
-
 /// Send-only half produced by [`SharedMemoryTransport::split`].
 pub struct SharedMemoryTransportTx<D: Doorbell, R: SharedMemoryTransportable> {
     ch: Chan,
@@ -377,10 +363,6 @@ unsafe impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> Send
     for SharedMemoryTransportRx<D, R>
 {
 }
-
-// ---------------------------------------------------------------------------
-// RecvAccess — common field accessor used by RecvFut
-// ---------------------------------------------------------------------------
 
 /// Sealed accessor so `RecvFut` can be generic over both `SharedMemoryTransport`
 /// and `SharedMemoryTransportRx` without duplicating the future type.
@@ -438,10 +420,6 @@ impl<D: Doorbell + 'static, R: SharedMemoryTransportable> RecvAccess
     }
 }
 
-// ---------------------------------------------------------------------------
-// Futures
-// ---------------------------------------------------------------------------
-
 /// Future returned by [`SendTransport::send`] on shared-memory transports.
 ///
 /// The send is completed eagerly inside `send()`; this future simply wraps the
@@ -485,10 +463,6 @@ where
 {
 }
 
-// ---------------------------------------------------------------------------
-// Future impls — eager send
-// ---------------------------------------------------------------------------
-
 impl<D: Doorbell, R: SharedMemoryTransportable> Future for SendFut<'_, D, R> {
     type Output = Result<(), Error<D>>;
 
@@ -504,10 +478,6 @@ impl<D: Doorbell, R: SharedMemoryTransportable> Future for SendFut<'_, D, R> {
         })
     }
 }
-
-// ---------------------------------------------------------------------------
-// Future impl — async recv (delegates to poll_recv helper)
-// ---------------------------------------------------------------------------
 
 impl<T: RecvAccess> Future for RecvFut<'_, T>
 where
@@ -531,10 +501,6 @@ where
     }
 }
 
-// ---------------------------------------------------------------------------
-// TransportError impls
-// ---------------------------------------------------------------------------
-
 impl<D: Doorbell, R: SharedMemoryTransportable> TransportError for SharedMemoryTransport<D, R> {
     type Error = Error<D>;
 }
@@ -546,10 +512,6 @@ impl<D: Doorbell, R: SharedMemoryTransportable> TransportError for SharedMemoryT
 impl<D: Doorbell, R: SharedMemoryTransportable> TransportError for SharedMemoryTransportRx<D, R> {
     type Error = Error<D>;
 }
-
-// ---------------------------------------------------------------------------
-// SendTransport impls
-// ---------------------------------------------------------------------------
 
 impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
     for SharedMemoryTransport<D, R>
@@ -613,10 +575,6 @@ impl<D: Doorbell + Send, R: SharedMemoryTransportable + Send> SendTransport
     }
 }
 
-// ---------------------------------------------------------------------------
-// RecvTransport impls
-// ---------------------------------------------------------------------------
-
 impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> RecvTransport
     for SharedMemoryTransport<D, R>
 {
@@ -665,18 +623,10 @@ impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> RecvTran
     }
 }
 
-// ---------------------------------------------------------------------------
-// Combined Transport impl
-// ---------------------------------------------------------------------------
-
 impl<D: Doorbell + Send + 'static, R: SharedMemoryTransportable + Send> Transport
     for SharedMemoryTransport<D, R>
 {
 }
-
-// ---------------------------------------------------------------------------
-// SharedMemoryTransportable marker
-// ---------------------------------------------------------------------------
 
 pub trait SharedMemoryTransportable: Region {}
 

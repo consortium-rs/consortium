@@ -15,7 +15,7 @@ pub struct HardwareDoorbellParty {
     /// - M-core (NVIC): raw NVIC position.
     pub irq: u32,
     /// TRM page documenting the peripheral memory mapping for this core view.
-    pub page_memory: u64,
+    pub page_memory: u32,
     /// TRM page documenting the interrupt number for this core view.
-    pub page_irq: u64,
+    pub page_irq: u32,
 }

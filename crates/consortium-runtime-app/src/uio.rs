@@ -260,7 +260,7 @@ impl UioDevice {
     /// `region`   governs cache-coherency operations (use [`DdrRegion`] for
     ///            DDR-backed shared memory).
     ///
-    /// [`DdrRegion`]: consortium_ipc::DdrRegion
+    /// [`DdrRegion`]: consortium_shared_memory::DdrRegion
     pub fn channel_transport<D, R>(
         &self,
         chan: Chan,
