@@ -22,7 +22,7 @@ pub struct Address {
 impl Address {
     pub fn memory_lookup(
         &self,
-        core: &VisibleCore,
+        core: VisibleCore,
         uio_ident: &syn::Ident,
     ) -> proc_macro2::TokenStream {
         match core {
@@ -34,7 +34,7 @@ impl Address {
             _ => {
                 let address = self
                     .cp
-                    .get(core)
+                    .get(&core)
                     .expect("core must have an address in the config");
                 quote::quote! { #address }
             }
@@ -59,7 +59,7 @@ mod tests {
         };
 
         let uio = format_ident!("uio");
-        let tokens = address.memory_lookup(&VisibleCore::Ap, &uio).to_string();
+        let tokens = address.memory_lookup(VisibleCore::Ap, &uio).to_string();
 
         // `uio[3].mmap(2)?` — the UIO id selects the device, the mmap id the window.
         assert_eq!(tokens, "uio [3usize] . mmap (2usize) ?");
@@ -77,7 +77,7 @@ mod tests {
         };
 
         let uio = format_ident!("uio");
-        let tokens = address.memory_lookup(&core, &uio).to_string();
+        let tokens = address.memory_lookup(core, &uio).to_string();
 
         assert_eq!(tokens, "872415232u32");
     }
@@ -95,6 +95,6 @@ mod tests {
         };
 
         let uio = format_ident!("uio");
-        let _ = address.memory_lookup(&core, &uio);
+        let _ = address.memory_lookup(core, &uio);
     }
 }

@@ -3,60 +3,64 @@ source: crates/consortium-cfg/tests/snap.rs
 expression: stmts(tokens)
 ---
 fn _generated() {
-    let _consortium_ipc_shm_ping_region = unsafe {
-        ::consortium_shared_memory::regions::SramRegion::new(
-            uio[0usize].mmap(1usize)?,
-            32768u32,
-        )
-    };
-    let _consortium_ipc_shm_ping_doorbell_hsem = unsafe {
-        ::consortium_ipc_doorbell_hsem::HsemDoorbell::<
+    {
+        let _consortium_ipc_shm_ping_region = unsafe {
+            ::consortium_shared_memory::regions::SramRegion::new(
+                uio[0usize].mmap(1usize)?,
+                32768u32,
+            )
+        };
+        let _consortium_ipc_shm_ping_doorbell_hsem = unsafe {
+            ::consortium_ipc_doorbell_hsem::HsemDoorbell::<
+                ::consortium_ipc::side::Primary,
+                1usize,
+            >::new(uio[0usize].mmap(2usize)?)
+        };
+        uio[0usize].bind_notifier(_consortium_ipc_shm_ping_doorbell_hsem.notifier());
+        let _consortium_ipc_shm_ping_chan_tx = unsafe {
+            ::consortium_ipc::Chan::new_unchecked(0u8)
+        };
+        let _consortium_ipc_shm_ping_chan_rx = unsafe {
+            ::consortium_ipc::Chan::new_unchecked(1u8)
+        };
+        let _consortium_ipc_shm_ping_transport = ::consortium_ipc_transport_memory::Transport::<
             ::consortium_ipc::side::Primary,
-            1usize,
-        >::new(uio[0usize].mmap(2usize)?)
-    };
-    uio[0usize].bind_notifier(_consortium_ipc_shm_ping_doorbell_hsem.notifier());
-    let _consortium_ipc_shm_ping_chan_tx = unsafe {
-        ::consortium_ipc::Chan::new_unchecked(0u8)
-    };
-    let _consortium_ipc_shm_ping_chan_rx = unsafe {
-        ::consortium_ipc::Chan::new_unchecked(1u8)
-    };
-    let _consortium_ipc_shm_ping_transport = ::consortium_ipc_transport_memory::Transport::<
-        ::consortium_ipc::side::Primary,
-        _,
-        _,
-    >::new(
-        _consortium_ipc_shm_ping_chan_tx,
-        _consortium_ipc_shm_ping_chan_rx,
-        _consortium_ipc_shm_ping_doorbell_hsem,
-        _consortium_ipc_shm_ping_region,
-        uio[0usize].mmap(2usize)?,
-    );
-    let (_consortium_ipc_shm_ping_transport_tx, _consortium_ipc_shm_ping_transport_rx) = _consortium_ipc_shm_ping_transport
-        .split();
-    let _consortium_ipc_shm_ping_channel_tx = ::consortium_ipc::Channel::<
-        ::consortium_ipc::Tx,
-        Ping,
-        _,
-        ::consortium_codec_postcard::PostcardCodec,
-    >::new(
-        _consortium_ipc_shm_ping_chan_tx,
-        _consortium_ipc_shm_ping_transport_tx,
-        ping_tx_buf,
-    );
-    let _consortium_ipc_shm_ping_channel_rx = ::consortium_ipc::Channel::<
-        ::consortium_ipc::Rx,
-        Pong,
-        _,
-        ::consortium_codec_postcard::PostcardCodec,
-    >::new(
-        _consortium_ipc_shm_ping_chan_rx,
-        _consortium_ipc_shm_ping_transport_rx,
-        ping_rx_buf,
-    );
-    let _consortium_ipc_shm_ping_transceiver = ::consortium_ipc::Transceiver::new(
-        _consortium_ipc_shm_ping_channel_tx,
-        _consortium_ipc_shm_ping_channel_rx,
-    );
+            _,
+            _,
+        >::new(
+            _consortium_ipc_shm_ping_chan_tx,
+            _consortium_ipc_shm_ping_chan_rx,
+            _consortium_ipc_shm_ping_doorbell_hsem,
+            _consortium_ipc_shm_ping_region,
+            uio[0usize].mmap(2usize)?,
+        );
+        let (
+            _consortium_ipc_shm_ping_transport_tx,
+            _consortium_ipc_shm_ping_transport_rx,
+        ) = _consortium_ipc_shm_ping_transport.split();
+        let _consortium_ipc_shm_ping_channel_tx = ::consortium_ipc::Channel::<
+            ::consortium_ipc::Tx,
+            ::shared::Ping,
+            _,
+            ::consortium_codec_postcard::PostcardCodec,
+        >::new(
+            _consortium_ipc_shm_ping_chan_tx,
+            _consortium_ipc_shm_ping_transport_tx,
+            ping_tx_buf,
+        );
+        let _consortium_ipc_shm_ping_channel_rx = ::consortium_ipc::Channel::<
+            ::consortium_ipc::Rx,
+            ::shared::Pong,
+            _,
+            ::consortium_codec_postcard::PostcardCodec,
+        >::new(
+            _consortium_ipc_shm_ping_chan_rx,
+            _consortium_ipc_shm_ping_transport_rx,
+            ping_rx_buf,
+        );
+        ::consortium_ipc::Transceiver::new(
+            _consortium_ipc_shm_ping_channel_tx,
+            _consortium_ipc_shm_ping_channel_rx,
+        )
+    }
 }

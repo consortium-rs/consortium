@@ -1,0 +1,466 @@
+// Copyright 2026 Ethan Wu
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// SPDX-License-Identifier: Apache-2.0
+
+//! Lowers a validated [`Session`] into the `components` IR.
+//!
+//! The IR types in [`crate::components`] each own their own code generation
+//! ([`Transceiver::initialize`](crate::components::ipc_shm::Transceiver::initialize),
+//! [`BellA::nvic_enable`](crate::components::bella::BellA::nvic_enable),
+//! [`ToUio::to_uio`]). This module builds those structs from the parsed
+//! `Consortium.toml` plus its resolved chip database, so the builder can drive
+//! codegen without hand-assembling addresses, doorbell metadata, and UIO ids.
+//!
+//! A channel names its transport primary and secondary parties explicitly
+//! (`primary = ...` / `secondary = ...`); each must have a declared endpoint.
+//!
+//! The AP-side address layout is fixed here so the firmware-, NVIC-, and
+//! Linux-DTS outputs agree on UIO ids and mmap indices:
+//!
+//! - `uio0` aggregates every IPC shared-memory region; a region's `mmap_id` is
+//!   its index in channel-declaration order.
+//! - `uio1..=N` is one device per distinct doorbell, in first-appearance order;
+//!   a doorbell always exposes its register window as `mmap_id` 0.
+
+use std::collections::HashMap;
+
+use consortium_cfg_common::config::{MemoryRegion, Party, VisibleCore};
+use consortium_cfg_common::database::{HardwareDoorbellPeripheral, MemoryRegionType};
+
+use crate::components::address::{Address, ApAddress};
+use crate::components::bella::{BellA, HardwareDoorbell};
+use crate::components::ipc_shm::{Channel, DoorbellMeta, ShuHan, Transceiver};
+use crate::components::region::Region;
+use crate::components::uio::UioDevice;
+use crate::transpilers::ToUio;
+use crate::{Session, error::CfgError};
+
+/// The `components` IR lowered from a [`Session`].
+///
+/// Built once per session and shared across target cores; the codegen entry
+/// points ([`ShuHan::initialize`], [`BellA::nvic_enable`]) select the relevant
+/// core at emit time.
+#[derive(Debug, Clone)]
+pub struct LoweredIr {
+    /// Every IPC transceiver, one per `[[ipc.channel]]`.
+    pub shuhan: ShuHan,
+    /// Every distinct hardware doorbell, carrying per-core IRQ maps.
+    pub bella: BellA,
+    /// Linux UIO devices, named for their DTS node. Index 0 is the aggregate
+    /// shared-memory device (`ipc-shm`); the rest are one per doorbell.
+    pub uio: Vec<(String, UioDevice)>,
+}
+
+impl Session {
+    /// Lowers the validated manifest into the [`components`](crate::components)
+    /// IR.
+    ///
+    /// Assumes the session is already validated by [`Session::from_toml`]:
+    /// doorbells exist, parties are visible, channels are in bounds, and
+    /// regions fit SRAM. Only topology the validator does not constrain is
+    /// rejected here.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`CfgError::Manifest`] when a channel's `primary`/`secondary`
+    /// party has no declared endpoint, when its doorbell name cannot be typed,
+    /// or when a memory-pattern channel has no `config.memory`.
+    pub fn lower(&self) -> Result<LoweredIr, CfgError> {
+        let mut transceivers = Vec::new();
+        let mut regions: Vec<MemoryRegion> = Vec::new();
+
+        // Doorbells in first-appearance order; their position fixes the `uioN`
+        // id (offset by 1 for the shared-memory device at `uio0`).
+        let mut doorbell_order: Vec<String> = Vec::new();
+        let mut bells: Vec<HardwareDoorbell> = Vec::new();
+
+        for channel in &self.config.ipc.channels {
+            let primary_party = channel.primary;
+            let secondary_party = channel.secondary;
+            let primary = endpoint(channel, primary_party, "primary")?;
+            let secondary = endpoint(channel, secondary_party, "secondary")?;
+            let primary_core = primary_party.core();
+            let secondary_core = secondary_party.core();
+
+            let meta: DoorbellMeta = channel
+                .doorbell
+                .parse()
+                .map_err(|err: CfgError| CfgError::Manifest(err.to_string()))?;
+            let db_doorbell = self.doorbell(&channel.doorbell).ok_or_else(|| {
+                CfgError::Manifest(format!("unknown doorbell '{}'", channel.doorbell))
+            })?;
+
+            let memory = channel.memory().ok_or_else(|| {
+                CfgError::Manifest(format!(
+                    "ipc channel '{}' uses the memory pattern but sets no config.memory",
+                    channel.name
+                ))
+            })?;
+
+            // Region lives in `uio0`; its mmap slot is its declaration order.
+            let region_mmap = regions.len();
+            regions.push(memory);
+
+            // Reserve / reuse this doorbell's `uioN` device.
+            let doorbell_key = channel.doorbell.to_ascii_lowercase();
+            let doorbell_uio = match doorbell_order.iter().position(|n| *n == doorbell_key) {
+                Some(index) => index + 1,
+                None => {
+                    doorbell_order.push(doorbell_key.clone());
+                    doorbell_order.len()
+                }
+            };
+
+            // The AP resolves addresses through UIO; controller cores embed the
+            // physical base. Record both participants that are controllers.
+            let region_cp = controller_bases(primary_core, secondary_core, memory.base);
+            let doorbell_cp =
+                controller_bases(primary_core, secondary_core, db_doorbell.memory.base);
+
+            let region_address = Address {
+                ap: ApAddress {
+                    uio_id: 0,
+                    mmap_id: region_mmap,
+                },
+                cp: region_cp,
+            };
+            let doorbell_address = Address {
+                ap: ApAddress {
+                    uio_id: doorbell_uio,
+                    mmap_id: 0,
+                },
+                cp: doorbell_cp,
+            };
+
+            let channel_primary = Channel {
+                doorbell_chan: primary.chan as u8,
+                type_name: primary.r#type.clone(),
+                buffer_name: format!("{}_tx_buf", channel.name),
+            };
+            let channel_secondary = Channel {
+                doorbell_chan: secondary.chan as u8,
+                type_name: secondary.r#type.clone(),
+                buffer_name: format!("{}_rx_buf", channel.name),
+            };
+
+            // Record this doorbell's used channels and the IRQ of each
+            // participating party (keyed by core) for NVIC enablement. Only the
+            // parties on this channel are recorded, so the secure/non-secure
+            // IRQ variant is the one this channel actually uses.
+            record_bell(
+                &mut bells,
+                &doorbell_key,
+                &doorbell_address,
+                db_doorbell.r#type,
+                [
+                    (
+                        primary_core,
+                        party_irq(db_doorbell, primary_party),
+                        primary.chan as u8,
+                    ),
+                    (
+                        secondary_core,
+                        party_irq(db_doorbell, secondary_party),
+                        secondary.chan as u8,
+                    ),
+                ],
+            );
+
+            transceivers.push(Transceiver {
+                name: channel.name.clone(),
+                doorbell_address,
+                mtu: channel.mtu,
+                codec: channel.codec,
+                region: Region {
+                    r#type: MemoryRegionType::Sram,
+                    address: region_address,
+                    length: memory.length,
+                },
+                channel_primary: (primary_core, channel_primary),
+                channel_secondary: (secondary_core, channel_secondary),
+                doorbell: meta,
+            });
+        }
+
+        // Assemble the UIO device list in the order the addresses reference it:
+        // shared memory first, then each doorbell.
+        let mut uio = Vec::new();
+        if let Some(device) = regions.as_slice().to_uio()? {
+            uio.push(("ipc-shm".to_string(), device));
+        }
+        for name in &doorbell_order {
+            let db_doorbell = self
+                .doorbell(name)
+                .ok_or_else(|| CfgError::Manifest(format!("unknown doorbell '{name}'")))?;
+            if let Some(device) = db_doorbell.to_uio()? {
+                uio.push((name.clone(), device));
+            }
+        }
+
+        Ok(LoweredIr {
+            shuhan: ShuHan::new(transceivers),
+            bella: BellA { bells },
+            uio,
+        })
+    }
+}
+
+/// Resolves the endpoint a channel declares for `party`, named by `role` for
+/// the error message.
+fn endpoint<'c>(
+    channel: &'c consortium_cfg_common::config::IpcChannel,
+    party: Party,
+    role: &str,
+) -> Result<&'c consortium_cfg_common::config::IpcEndpoint, CfgError> {
+    channel.endpoints.get(&party).ok_or_else(|| {
+        CfgError::Manifest(format!(
+            "ipc channel '{}' names {role} party '{party}' but has no matching [party.{party}]",
+            channel.name
+        ))
+    })
+}
+
+/// The IRQ a doorbell assigns to `party`, if the database lists that exact party
+/// (matching secure/non-secure and instance index).
+fn party_irq(doorbell: &HardwareDoorbellPeripheral, party: Party) -> Option<u32> {
+    doorbell
+        .parties
+        .iter()
+        .find(|entry| entry.core == party)
+        .map(|entry| entry.irq)
+}
+
+/// The controller-core physical-base map for an address: every participant that
+/// is not the AP maps to `base` (the AP resolves through UIO instead).
+fn controller_bases(
+    primary: VisibleCore,
+    secondary: VisibleCore,
+    base: u32,
+) -> HashMap<VisibleCore, u32> {
+    [primary, secondary]
+        .into_iter()
+        .filter(|core| *core != VisibleCore::Ap)
+        .map(|core| (core, base))
+        .collect()
+}
+
+/// Records a doorbell's participating cores, creating the [`HardwareDoorbell`]
+/// on first sight and merging later hits. Each entry is a
+/// `(core, irq, channel)`: the channel is added to the doorbell's used set, and
+/// the IRQ (when known) is mapped to the core for NVIC enablement.
+fn record_bell(
+    bells: &mut Vec<HardwareDoorbell>,
+    key: &str,
+    address: &Address,
+    r#type: consortium_cfg_common::database::HardwareDoorbellPeripheralType,
+    entries: impl IntoIterator<Item = (VisibleCore, Option<u32>, u8)>,
+) {
+    let bell = match bells.iter_mut().find(|bell| bell.name == key) {
+        Some(bell) => bell,
+        None => {
+            bells.push(HardwareDoorbell {
+                name: key.to_string(),
+                address: address.clone(),
+                r#type,
+                channels: Vec::new(),
+                irq: HashMap::new(),
+            });
+            bells.last_mut().expect("just pushed")
+        }
+    };
+
+    for (core, irq, channel) in entries {
+        if !bell.channels.contains(&channel) {
+            bell.channels.push(channel);
+        }
+        if let Some(irq) = irq {
+            bell.irq.insert(core, irq);
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use consortium_cfg_common::config::{Codec, McoreName};
+
+    const STM32: &str = include_str!("../Consortium.example.stm32mp257.toml");
+
+    fn cm33() -> VisibleCore {
+        VisibleCore::Mcore(McoreName::Cm33)
+    }
+
+    fn cm0p() -> VisibleCore {
+        VisibleCore::Mcore(McoreName::Cm0p)
+    }
+
+    fn lowered() -> LoweredIr {
+        Session::from_toml(STM32)
+            .expect("example manifest loads")
+            .lower()
+            .expect("session lowers")
+    }
+
+    fn transceiver<'a>(ir: &'a LoweredIr, name: &str) -> &'a Transceiver {
+        ir.shuhan
+            .transceivers()
+            .iter()
+            .find(|t| t.name == name)
+            .unwrap_or_else(|| panic!("transceiver '{name}' present"))
+    }
+
+    #[test]
+    fn names_uio_devices_shared_memory_then_doorbells() {
+        let ir = lowered();
+        let names: Vec<_> = ir.uio.iter().map(|(name, _)| name.as_str()).collect();
+        assert_eq!(names, ["ipc-shm", "hsem", "ipcc2"]);
+    }
+
+    #[test]
+    fn region_addresses_index_uio0_in_declaration_order() {
+        let ir = lowered();
+        let sensor = transceiver(&ir, "sensor");
+        let lp = transceiver(&ir, "lp");
+
+        // Regions share uio0; mmap slot follows declaration order.
+        assert_eq!(
+            sensor.region.address.ap,
+            ApAddress {
+                uio_id: 0,
+                mmap_id: 0
+            }
+        );
+        assert_eq!(
+            lp.region.address.ap,
+            ApAddress {
+                uio_id: 0,
+                mmap_id: 1
+            }
+        );
+
+        // The controller side resolves to the manifest's physical base.
+        assert_eq!(sensor.region.address.cp[&cm33()], 0x0040_0000);
+        assert_eq!(lp.region.address.cp[&cm0p()], 0x0040_4000);
+    }
+
+    #[test]
+    fn doorbell_addresses_get_their_own_uio_devices() {
+        let ir = lowered();
+        let sensor = transceiver(&ir, "sensor");
+        let lp = transceiver(&ir, "lp");
+
+        assert_eq!(
+            sensor.doorbell_address.ap,
+            ApAddress {
+                uio_id: 1,
+                mmap_id: 0
+            }
+        );
+        assert_eq!(
+            lp.doorbell_address.ap,
+            ApAddress {
+                uio_id: 2,
+                mmap_id: 0
+            }
+        );
+    }
+
+    #[test]
+    fn uses_explicit_primary_secondary_parties() {
+        let ir = lowered();
+        let sensor = transceiver(&ir, "sensor");
+
+        // `primary = "linux"`, `secondary = "cm33"`.
+        assert_eq!(sensor.channel_primary.0, VisibleCore::Ap);
+        assert_eq!(sensor.channel_primary.1.doorbell_chan, 0);
+        assert_eq!(sensor.channel_primary.1.type_name, "SensorData");
+        assert_eq!(sensor.channel_secondary.0, cm33());
+        assert_eq!(sensor.channel_secondary.1.doorbell_chan, 1);
+        assert_eq!(sensor.channel_secondary.1.type_name, "MotionControl");
+    }
+
+    #[test]
+    fn carries_mtu_and_codec_through() {
+        let ir = lowered();
+        assert_eq!(transceiver(&ir, "sensor").mtu, 128);
+        assert_eq!(transceiver(&ir, "sensor").codec, Codec::Postcard);
+        assert_eq!(transceiver(&ir, "lp").codec, Codec::Rkyv);
+    }
+
+    #[test]
+    fn rejects_party_without_endpoint() {
+        // `secondary = "cm33"` names a party with no `[party.cm33]` endpoint.
+        let manifest = r#"
+            [profile]
+            chip = "stm32mp257fak3"
+            shared = "./shared"
+
+            [[ipc.channel]]
+            name = "solo"
+            doorbell = "hsem"
+            pattern = "memory"
+            primary = "linux"
+            secondary = "cm33"
+            party.linux = { chan = 0, type = "Ping" }
+            config.memory = { base = 0x00400000, length = 0x00008000 }
+            mtu = 128
+        "#;
+
+        let session = Session::from_toml(manifest).expect("manifest validates");
+        assert!(matches!(session.lower(), Err(CfgError::Manifest(_))));
+    }
+
+    #[test]
+    fn bella_collects_doorbell_channels_and_core_irqs() {
+        let ir = lowered();
+
+        let hsem = ir
+            .bella
+            .bells
+            .iter()
+            .find(|bell| bell.name == "hsem")
+            .expect("hsem doorbell");
+        // hsem carries the primary (linux, chan 0) and secondary (cm33, chan 1).
+        assert!(hsem.channels.contains(&0));
+        assert!(hsem.channels.contains(&1));
+        // cm33's NVIC line is sourced from the chip database.
+        assert_eq!(hsem.irq[&cm33()], 199);
+
+        let ipcc2 = ir
+            .bella
+            .bells
+            .iter()
+            .find(|bell| bell.name == "ipcc2")
+            .expect("ipcc2 doorbell");
+        assert!(ipcc2.irq.contains_key(&cm0p()));
+    }
+
+    #[test]
+    fn lowered_ir_emits_valid_rust() {
+        let ir = lowered();
+        let uio = quote::format_ident!("uio");
+        let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
+
+        let tokens = ir.shuhan.initialize(VisibleCore::Ap, &uio, &ty_crate);
+        syn::parse_file(&tokens.to_string()).expect("lowered ShuHan is valid Rust");
+
+        let bella = ir
+            .bella
+            .nvic_enable(&cm33())
+            .expect("cm33 has doorbell irqs");
+        let wrapped = quote::quote! { fn _f() { #bella } };
+        syn::parse_file(&wrapped.to_string()).expect("lowered Bella is valid Rust");
+    }
+}

@@ -231,7 +231,7 @@ impl Session {
     }
 
     /// Finds a database doorbell by manifest name, ignoring ASCII case.
-    fn doorbell(&self, name: &str) -> Option<&HardwareDoorbellPeripheral> {
+    pub(crate) fn doorbell(&self, name: &str) -> Option<&HardwareDoorbellPeripheral> {
         self.database
             .peripheral
             .doorbells
@@ -316,8 +316,16 @@ mod tests {
             0
         );
         assert_eq!(
-            session.config.ipc.channels[0].endpoints[&"cm33".parse().unwrap()].r#type,
+            session.config.ipc.channels[0].endpoints[&"cm33".parse::<Party>().unwrap()].r#type,
             "MotionControl"
+        );
+        assert_eq!(
+            session.config.ipc.channels[0].primary,
+            Party::AcoreNonSecure
+        );
+        assert_eq!(
+            session.config.ipc.channels[0].secondary,
+            "cm33".parse::<Party>().unwrap()
         );
         assert_eq!(session.config.endpoints[&Party::AcoreNonSecure], "./app");
         assert_eq!(
@@ -345,11 +353,14 @@ mod tests {
         let manifest = r#"
             [profile]
             chip = "stm32mp257fak3"
+            shared = "./shared"
 
             [[ipc.channel]]
             name = "probe"
             doorbell = "nope"
             pattern = "memory"
+            primary = "linux"
+            secondary = "cm33"
             party.linux = { chan = 0, type = "Ping" }
             party.cm33 = { chan = 1, type = "Pong" }
             config.memory = { base = 0x00400000, length = 0x00008000 }
@@ -367,11 +378,14 @@ mod tests {
         let manifest = r#"
             [profile]
             chip = "stm32mp257fak3"
+            shared = "./shared"
 
             [[ipc.channel]]
             name = "probe"
             doorbell = "ipcc1"
             pattern = "memory"
+            primary = "linux"
+            secondary = "cm0p"
             party.cm0p = { chan = 0, type = "PowerMode" }
             config.memory = { base = 0x00400000, length = 0x00008000 }
             mtu = 128
@@ -388,11 +402,14 @@ mod tests {
         let manifest = r#"
             [profile]
             chip = "stm32mp257fak3"
+            shared = "./shared"
 
             [[ipc.channel]]
             name = "probe"
             doorbell = "hsem"
             pattern = "memory"
+            primary = "linux"
+            secondary = "cm33"
             party.linux = { chan = 16, type = "Ping" }
             config.memory = { base = 0x00400000, length = 0x00008000 }
             mtu = 128
@@ -409,11 +426,14 @@ mod tests {
         let manifest = r#"
             [profile]
             chip = "stm32mp257fak3"
+            shared = "./shared"
 
             [[ipc.channel]]
             name = "probe"
             doorbell = "hsem"
             pattern = "memory"
+            primary = "linux"
+            secondary = "cm33"
             party.linux = { chan = 0, type = "Ping" }
             party.cm33 = { chan = 0, type = "Pong" }
             config.memory = { base = 0x00400000, length = 0x00008000 }
@@ -433,11 +453,14 @@ mod tests {
         let manifest = r#"
             [profile]
             chip = "stm32mp257fak3"
+            shared = "./shared"
 
             [[ipc.channel]]
             name = "probe"
             doorbell = "hsem"
             pattern = "memory"
+            primary = "linux"
+            secondary = "cm33"
             party.linux = { chan = 0, type = "Ping" }
             config.memory = { base = 0x00400000, length = 0x00080000 }
             mtu = 128
@@ -454,6 +477,7 @@ mod tests {
         let manifest = r#"
             [profile]
             chip = "stm32mp257fak3"
+            shared = "./shared"
 
             [dbg.defmt]
             memory = { base = 0x00404000, length = 0x00002000 }
@@ -463,6 +487,8 @@ mod tests {
             name = "probe"
             doorbell = "hsem"
             pattern = "memory"
+            primary = "linux"
+            secondary = "cm33"
             party.linux = { chan = 0, type = "Ping" }
             config.memory = { base = 0x00400000, length = 0x00008000 }
             mtu = 128

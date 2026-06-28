@@ -1,5 +1,6 @@
 [profile]
-chip = "mimx9596xvt"
+chip   = "mimx9596xvt"
+shared = "./shared"
 
 [endpoints]
 linux = "./app"
@@ -14,20 +15,24 @@ mtu    = 64
 name          = "lp"
 doorbell      = "mu1"
 pattern       = "memory"
+primary       = "linux"
+secondary     = "cm33"
 party.linux   = { chan = 4, type = "LowPowerData" }
 party.cm33    = { chan = 5, type = "PowerControl" }
 config.memory = { base = 0x000400000, length = 0x4000 }
 mtu           = 128
 
 [[ipc.channel]]
-name         = "sensor"
-doorbell     = "mu7"
-pattern      = "memory"
-party.linux  = { chan = 6, type = "SensorData" }
-party.cm7    = { chan = 7, type = "MotionControl" }
-confg.memory = { base = 0x000404000, length = 0x4000 }
-mtu          = 128
-codec        = "rkyv"
+name          = "sensor"
+doorbell      = "mu7"
+pattern       = "memory"
+primary       = "linux"
+secondary     = "cm7"
+party.linux   = { chan = 6, type = "SensorData" }
+party.cm7     = { chan = 7, type = "MotionControl" }
+config.memory = { base = 0x000404000, length = 0x4000 }
+mtu           = 128
+codec         = "rkyv"
 
 [tee]
 uuid = "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"

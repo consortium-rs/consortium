@@ -3,11 +3,11 @@ use std::str::FromStr;
 
 use consortium_cfg_common::{
     config::{Codec, VisibleCore},
-    database::HardwareDoorbellPeripheralType,
+    database::{HardwareDoorbellPeripheralType, MemoryRegionType},
 };
-use proc_macro2::TokenStream;
+use proc_macro2::{Span, TokenStream};
 use quote::format_ident;
-use syn::Ident;
+use syn::{Ident, Path};
 
 use crate::{
     components::{address::Address, region::Region},
@@ -31,6 +31,7 @@ impl Channel {
         chan_ident: &Ident,
         transport_ident: &Ident,
         codec: Codec,
+        ty_crate: &Path,
     ) -> TokenStream {
         let buf = format_ident!("{}", self.buffer_name);
         let direction_ty = match dir {
@@ -46,7 +47,7 @@ impl Channel {
         };
 
         quote::quote! {
-            ::consortium_ipc::Channel::<#direction_ty, #type_ident, _, #codec_token>::new(
+            ::consortium_ipc::Channel::<#direction_ty, #ty_crate::#type_ident, _, #codec_token>::new(
                 #chan_ident,
                 #transport_ident,
                 #buf,
@@ -77,7 +78,7 @@ pub struct Transceiver {
     /// secondary to primary channel
     pub channel_secondary: (VisibleCore, Channel),
     /// type-a doorbell metadata
-    pub bella: BellaMeta,
+    pub doorbell: DoorbellMeta,
 }
 
 impl Transceiver {
@@ -103,13 +104,23 @@ impl Transceiver {
             .min(consortium_ipc_transport_memory::CHANNEL_NUM_MAX as u32)
     }
 
+    /// get the side
+    fn side(&self, core: VisibleCore) -> Option<DoorbellRingerSide> {
+        if self.channel_primary.0 == core {
+            Some(DoorbellRingerSide::Primary)
+        } else if self.channel_secondary.0 == core {
+            Some(DoorbellRingerSide::Secondary)
+        } else {
+            None
+        }
+    }
+
     /// Generates the initialization code for the transceiver, including: region, doorbell, transport, channel, and transceiver.
-    pub fn initialize(
-        &self,
-        core: &VisibleCore,
-        uio_ident: &Ident,
-        side: BellaRingerSide,
-    ) -> TokenStream {
+    pub fn initialize(&self, core: VisibleCore, uio_ident: &Ident, ty_crate: &Path) -> TokenStream {
+        let side = self
+            .side(core)
+            .expect("core must be either primary or secondary for the transceiver");
+
         let region_ident = format_ident!("_consortium_ipc_shm_{}_region", self.name);
         let region_init = self.region.initialize(core, uio_ident);
         let region_code = quote::quote! {
@@ -119,9 +130,9 @@ impl Transceiver {
         let doorbell_ident = format_ident!(
             "_consortium_ipc_shm_{}_doorbell_{}",
             self.name,
-            self.bella.to_string()
+            self.doorbell.to_string()
         );
-        let doorbell_code = self.bella.initialize(
+        let doorbell_code = self.doorbell.initialize(
             side,
             core,
             uio_ident,
@@ -133,12 +144,12 @@ impl Transceiver {
         let chan_tx_ident = format_ident!("_consortium_ipc_shm_{}_chan_tx", self.name);
         let chan_rx_ident = format_ident!("_consortium_ipc_shm_{}_chan_rx", self.name);
         let chan_id_tx = match side {
-            BellaRingerSide::Primary => &self.channel_primary.1.doorbell_chan,
-            BellaRingerSide::Secondary => &self.channel_secondary.1.doorbell_chan,
+            DoorbellRingerSide::Primary => &self.channel_primary.1.doorbell_chan,
+            DoorbellRingerSide::Secondary => &self.channel_secondary.1.doorbell_chan,
         };
         let chan_id_rx = match side {
-            BellaRingerSide::Primary => &self.channel_secondary.1.doorbell_chan,
-            BellaRingerSide::Secondary => &self.channel_primary.1.doorbell_chan,
+            DoorbellRingerSide::Primary => &self.channel_secondary.1.doorbell_chan,
+            DoorbellRingerSide::Secondary => &self.channel_primary.1.doorbell_chan,
         };
         let chan_code = quote::quote! {
             // SAFETY: doorbell channel is verified to be valid in the config.
@@ -148,8 +159,8 @@ impl Transceiver {
         };
 
         let transport_side_ty = match side {
-            BellaRingerSide::Primary => quote::quote! { ::consortium_ipc::side::Primary },
-            BellaRingerSide::Secondary => quote::quote! { ::consortium_ipc::side::Secondary },
+            DoorbellRingerSide::Primary => quote::quote! { ::consortium_ipc::side::Primary },
+            DoorbellRingerSide::Secondary => quote::quote! { ::consortium_ipc::side::Secondary },
         };
 
         let transport_ident = format_ident!("_consortium_ipc_shm_{}_transport", self.name);
@@ -172,12 +183,12 @@ impl Transceiver {
         let channel_rx_ident = format_ident!("_consortium_ipc_shm_{}_channel_rx", self.name);
 
         let channel_tx = match side {
-            BellaRingerSide::Primary => &self.channel_primary.1,
-            BellaRingerSide::Secondary => &self.channel_secondary.1,
+            DoorbellRingerSide::Primary => &self.channel_primary.1,
+            DoorbellRingerSide::Secondary => &self.channel_secondary.1,
         };
         let channel_rx = match side {
-            BellaRingerSide::Primary => &self.channel_secondary.1,
-            BellaRingerSide::Secondary => &self.channel_primary.1,
+            DoorbellRingerSide::Primary => &self.channel_secondary.1,
+            DoorbellRingerSide::Secondary => &self.channel_primary.1,
         };
 
         let channel_tx_init = channel_tx.initialize(
@@ -185,12 +196,14 @@ impl Transceiver {
             &chan_tx_ident,
             &transport_tx_ident,
             self.codec,
+            ty_crate,
         );
         let channel_rx_init = channel_rx.initialize(
             Direction::Rx,
             &chan_rx_ident,
             &transport_rx_ident,
             self.codec,
+            ty_crate,
         );
 
         let channel_code = quote::quote! {
@@ -198,27 +211,84 @@ impl Transceiver {
             let #channel_rx_ident = #channel_rx_init;
         };
 
-        let transceiver_ident = format_ident!("_consortium_ipc_shm_{}_transceiver", self.name);
         let transceiver_code = quote::quote! {
-            let #transceiver_ident = ::consortium_ipc::Transceiver::new(
+            ::consortium_ipc::Transceiver::new(
                 #channel_tx_ident,
                 #channel_rx_ident
-            );
+            )
         };
 
         quote::quote! {
-            #region_code
-            #doorbell_code
-            #chan_code
-            #transport_code
-            #channel_code
-            #transceiver_code
+            {
+                #region_code
+                #doorbell_code
+                #chan_code
+                #transport_code
+                #channel_code
+                #transceiver_code
+            }
+        }
+    }
+
+    pub fn ty_signature(&self, core: VisibleCore, ty_crate: &Path) -> TokenStream {
+        let side = self
+            .side(core)
+            .expect("core must be either primary or secondary for the transceiver");
+        let doorbell_type = match self.doorbell.r#type {
+            HardwareDoorbellPeripheralType::Mu => {
+                quote::quote! { ::consortium_ipc_doorbell_mu::MuDoorbell }
+            }
+            HardwareDoorbellPeripheralType::Hsem => {
+                quote::quote! { ::consortium_ipc_doorbell_hsem::HsemDoorbell }
+            }
+            HardwareDoorbellPeripheralType::Ipcc => {
+                quote::quote! { ::consortium_ipc_doorbell_ipcc::IpccDoorbell }
+            }
+        };
+        let region_type = match self.region.r#type {
+            MemoryRegionType::Sram => {
+                quote::quote! { ::consortium_shared_memory::regions::SramRegion }
+            }
+        };
+
+        let side_type = match side {
+            DoorbellRingerSide::Primary => {
+                quote::quote! { ::consortium_ipc_transport_memory::Primary }
+            }
+            DoorbellRingerSide::Secondary => {
+                quote::quote! { ::consortium_ipc_transport_memory::Secondary }
+            }
+        };
+        let transport_type = quote::quote! {
+            ::consortium_ipc_transport_memory::SharedMemoryTransport<#side_type, #doorbell_type, #region_type>
+        };
+
+        let codec_type = match self.codec {
+            Codec::Postcard => quote::quote! { ::consortium_codec_postcard::PostcardCodec },
+            Codec::Prost => quote::quote! { ::consortium_codec_prost::ProstCodec },
+            Codec::Rkyv => quote::quote! { ::consortium_codec_rkyv::RkyvCodec },
+        };
+
+        let chan_tx = match side {
+            DoorbellRingerSide::Primary => &self.channel_primary.1,
+            DoorbellRingerSide::Secondary => &self.channel_secondary.1,
+        };
+        let chan_rx = match side {
+            DoorbellRingerSide::Primary => &self.channel_secondary.1,
+            DoorbellRingerSide::Secondary => &self.channel_primary.1,
+        };
+
+        let ty_tx = Ident::new(&chan_tx.type_name, proc_macro2::Span::call_site());
+        let ty_rx = Ident::new(&chan_rx.type_name, proc_macro2::Span::call_site());
+
+        quote::quote! {
+            ::consortium_ipc::Transceiver<#ty_crate::#ty_tx, #ty_crate::#ty_rx, #transport_type, #codec_type>
         }
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct BellaMeta {
+pub struct DoorbellMeta {
     /// doorbell type
     pub r#type: HardwareDoorbellPeripheralType,
     /// id
@@ -226,13 +296,13 @@ pub struct BellaMeta {
 }
 
 #[derive(Debug, Clone, Copy)]
-pub enum BellaRingerSide {
+pub enum DoorbellRingerSide {
     Primary,
     Secondary,
 }
 
-impl BellaMeta {
-    pub fn as_path(&self, side: BellaRingerSide) -> TokenStream {
+impl DoorbellMeta {
+    pub fn as_path(&self, side: DoorbellRingerSide) -> TokenStream {
         let id = self.id.unwrap_or(1) as usize;
         let crate_ident = format_ident!(
             "consortium_ipc_doorbell_{}",
@@ -242,8 +312,8 @@ impl BellaMeta {
         let side_ident = format_ident!(
             "{}",
             match side {
-                BellaRingerSide::Primary => "Primary",
-                BellaRingerSide::Secondary => "Secondary",
+                DoorbellRingerSide::Primary => "Primary",
+                DoorbellRingerSide::Secondary => "Secondary",
             }
         );
         let side_path = quote::quote! { ::consortium_ipc::side::#side_ident };
@@ -254,18 +324,18 @@ impl BellaMeta {
 
     pub fn initialize(
         &self,
-        side: BellaRingerSide,
-        core: &VisibleCore,
+        side: DoorbellRingerSide,
+        core: VisibleCore,
         uio_ident: &Ident,
         uio_id: usize,
-        bella_base: TokenStream,
-        bella_ident: &Ident,
+        doorbell_base: TokenStream,
+        doorbell_ident: &Ident,
     ) -> TokenStream {
         let doorbell = self.as_path(side);
 
         let binding_uio_stmt = match core {
             VisibleCore::Ap => Some(quote::quote! {
-                #uio_ident[#uio_id].bind_notifier(#bella_ident.notifier());
+                #uio_ident[#uio_id].bind_notifier(#doorbell_ident.notifier());
             }),
             _ => None,
         };
@@ -273,13 +343,13 @@ impl BellaMeta {
         quote::quote! {
             // SAFETY: the base is the UIO-mapped doorbell register window,
             // resolved from the validated Consortium hardware database.
-            let #bella_ident = unsafe { #doorbell::new(#bella_base) };
+            let #doorbell_ident = unsafe { #doorbell::new(#doorbell_base) };
             #binding_uio_stmt
         }
     }
 }
 
-impl FromStr for BellaMeta {
+impl FromStr for DoorbellMeta {
     type Err = CfgError;
 
     /// Parses a doorbell peripheral name into a typed initiator.
@@ -312,13 +382,71 @@ impl FromStr for BellaMeta {
     }
 }
 
-impl fmt::Display for BellaMeta {
+impl fmt::Display for DoorbellMeta {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.r#type.to_string().to_lowercase())?;
         if let Some(id) = self.id {
             write!(f, "{id}")?;
         }
         Ok(())
+    }
+}
+
+/// SHared Memory Unified, Hardware abstraction node.
+#[derive(Debug, Clone)]
+pub struct ShuHan {
+    transceivers: Vec<Transceiver>,
+}
+
+impl ShuHan {
+    /// Builds a node from its transceivers.
+    pub fn new(transceivers: Vec<Transceiver>) -> Self {
+        Self { transceivers }
+    }
+
+    /// The transceivers this node generates.
+    pub fn transceivers(&self) -> &[Transceiver] {
+        &self.transceivers
+    }
+
+    pub fn initialize(&self, core: VisibleCore, uio_ident: &Ident, ty_crate: &Path) -> TokenStream {
+        // 1. struct field defs: `name: Type`
+        let struct_def = self
+            .transceivers
+            .iter()
+            .map(|t| {
+                let ident = Ident::new(t.name.as_str(), Span::call_site());
+                let ty = t.ty_signature(core, ty_crate);
+                quote::quote! { #ident: #ty }
+            })
+            .collect::<Vec<_>>();
+
+        // 2. field inits for `new`'s body: `name: <init expr>`
+        let field_inits = self
+            .transceivers
+            .iter()
+            .map(|t| {
+                let ident = Ident::new(t.name.as_str(), Span::call_site());
+                let init = t.initialize(core, uio_ident, ty_crate);
+                quote::quote! { #ident: #init }
+            })
+            .collect::<Vec<_>>();
+
+        quote::quote! {
+            // struct definition
+            struct IpcMemoryEndpoints {
+                #(#struct_def),*
+            }
+
+            // impl new
+            impl IpcMemoryEndpoints {
+                fn new() -> Self {
+                    Self {
+                        #(#field_inits),*
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -343,8 +471,9 @@ mod tests {
     fn channel_tx_uses_tx_direction_marker() {
         let chan = format_ident!("chan");
         let transport = format_ident!("transport");
+        let ty_crate: Path = syn::parse_str("::shared").unwrap();
         let tokens = channel(0)
-            .initialize(Direction::Tx, &chan, &transport, Codec::Postcard)
+            .initialize(Direction::Tx, &chan, &transport, Codec::Postcard, &ty_crate)
             .to_string();
 
         assert!(tokens.contains(":: consortium_ipc :: Channel"));
@@ -356,8 +485,9 @@ mod tests {
     fn channel_rx_uses_rx_direction_marker() {
         let chan = format_ident!("chan");
         let transport = format_ident!("transport");
+        let ty_crate: Path = syn::parse_str("::shared").unwrap();
         let tokens = channel(1)
-            .initialize(Direction::Rx, &chan, &transport, Codec::Postcard)
+            .initialize(Direction::Rx, &chan, &transport, Codec::Postcard, &ty_crate)
             .to_string();
 
         assert!(tokens.contains(":: consortium_ipc :: Rx"));
@@ -385,7 +515,7 @@ mod tests {
             },
             channel_primary: (VisibleCore::Ap, channel(0)),
             channel_secondary: (cm33, channel(1)),
-            bella: BellaMeta {
+            doorbell: DoorbellMeta {
                 r#type: HardwareDoorbellPeripheralType::Hsem,
                 id: None,
             },
@@ -416,12 +546,12 @@ mod tests {
 
     #[test]
     fn doorbell_path_resolves_crate_type_and_side() {
-        let bella = BellaMeta {
+        let doorbell = DoorbellMeta {
             r#type: HardwareDoorbellPeripheralType::Mu,
             id: Some(7),
         };
 
-        let tokens = bella.as_path(BellaRingerSide::Primary).to_string();
+        let tokens = doorbell.as_path(DoorbellRingerSide::Primary).to_string();
         assert!(tokens.contains(":: consortium_ipc_doorbell_mu :: MuDoorbell"));
         assert!(tokens.contains(":: consortium_ipc :: side :: Primary"));
         assert!(tokens.contains("7usize"));
@@ -429,12 +559,12 @@ mod tests {
 
     #[test]
     fn doorbell_path_defaults_missing_id_to_one() {
-        let bella = BellaMeta {
+        let doorbell = DoorbellMeta {
             r#type: HardwareDoorbellPeripheralType::Hsem,
             id: None,
         };
 
-        let tokens = bella.as_path(BellaRingerSide::Secondary).to_string();
+        let tokens = doorbell.as_path(DoorbellRingerSide::Secondary).to_string();
         assert!(tokens.contains(":: consortium_ipc_doorbell_hsem :: HsemDoorbell"));
         assert!(tokens.contains(":: consortium_ipc :: side :: Secondary"));
         assert!(tokens.contains("1usize"));
@@ -443,28 +573,28 @@ mod tests {
     #[test]
     fn display_round_trips_through_from_str() {
         for s in ["mu7", "hsem", "ipcc1", "mu0"] {
-            let bella: BellaMeta = s.parse().unwrap();
-            assert_eq!(bella.to_string(), s);
+            let doorbell: DoorbellMeta = s.parse().unwrap();
+            assert_eq!(doorbell.to_string(), s);
         }
     }
 
     #[test]
     fn rejects_invalid_doorbell_id() {
-        assert!("mu999".parse::<BellaMeta>().is_err());
+        assert!("mu999".parse::<DoorbellMeta>().is_err());
     }
 
     #[test]
     fn parses_typed_doorbell_with_id() {
         assert_eq!(
-            "mu7".parse::<BellaMeta>().unwrap(),
-            BellaMeta {
+            "mu7".parse::<DoorbellMeta>().unwrap(),
+            DoorbellMeta {
                 r#type: HardwareDoorbellPeripheralType::Mu,
                 id: Some(7),
             }
         );
         assert_eq!(
-            "ipcc1".parse::<BellaMeta>().unwrap(),
-            BellaMeta {
+            "ipcc1".parse::<DoorbellMeta>().unwrap(),
+            DoorbellMeta {
                 r#type: HardwareDoorbellPeripheralType::Ipcc,
                 id: Some(1),
             }
@@ -474,8 +604,8 @@ mod tests {
     #[test]
     fn parses_typed_doorbell_without_id() {
         assert_eq!(
-            "hsem".parse::<BellaMeta>().unwrap(),
-            BellaMeta {
+            "hsem".parse::<DoorbellMeta>().unwrap(),
+            DoorbellMeta {
                 r#type: HardwareDoorbellPeripheralType::Hsem,
                 id: None,
             }
@@ -484,6 +614,6 @@ mod tests {
 
     #[test]
     fn rejects_unknown_doorbell_type() {
-        assert!("foo3".parse::<BellaMeta>().is_err());
+        assert!("foo3".parse::<DoorbellMeta>().is_err());
     }
 }

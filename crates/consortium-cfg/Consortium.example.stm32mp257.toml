@@ -1,5 +1,6 @@
 [profile]
-chip = "stm32mp257fak3"
+chip   = "stm32mp257fak3"
+shared = "./shared"
 
 [endpoints]
 linux = "./app"
@@ -14,6 +15,8 @@ mtu    = 64
 name          = "sensor"
 doorbell      = "hsem"
 pattern       = "memory"
+primary       = "linux"
+secondary     = "cm33"
 party.linux   = { chan = 0, type = "SensorData" }
 party.cm33    = { chan = 1, type = "MotionControl" }
 config.memory = { base = 0x000400000, length = 0x4000 }
@@ -23,7 +26,10 @@ mtu           = 128
 name          = "lp"
 doorbell      = "ipcc2"
 pattern       = "memory"
-party.cm0p    = { chan = 0, type = "PowerMode" }
+primary       = "linux"
+secondary     = "cm0p"
+party.linux   = { chan = 0, type = "PowerStatus" }
+party.cm0p    = { chan = 1, type = "PowerMode" }
 config.memory = { base = 0x000404000, length = 0x4000 }
 mtu           = 128
 codec         = "rkyv"

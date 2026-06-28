@@ -43,6 +43,12 @@ pub struct IpcChannel {
     pub config: IpcChannelConfig,
     /// Maximum transfer unit for this IPC channel.
     pub mtu: u32,
+    /// Party acting as the transport primary (the Linux/A-core convention).
+    /// Must name one of the [`endpoints`](Self::endpoints).
+    pub primary: Party,
+    /// Party acting as the transport secondary (the firmware/M-core
+    /// convention). Must name one of the [`endpoints`](Self::endpoints).
+    pub secondary: Party,
     /// Endpoint declarations keyed by visible core name.
     #[serde(default, rename = "party")]
     pub endpoints: HashMap<Party, IpcEndpoint>,
