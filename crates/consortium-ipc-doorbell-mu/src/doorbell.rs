@@ -58,6 +58,19 @@ pub struct MuDoorbell<S: Side, const N: usize> {
     notify: std::sync::Arc<tokio::sync::Notify>,
 }
 
+// Manual `Clone` (bound independent of `S`): the transport's `split` clones the
+// doorbell for the Rx half. Both halves share the same `Notify`, so an IRQ-side
+// wake reaches whichever half is waiting.
+impl<S: Side, const N: usize> Clone for MuDoorbell<S, N> {
+    fn clone(&self) -> Self {
+        Self {
+            mu: self.mu.clone(),
+            #[cfg(feature = "std")]
+            notify: self.notify.clone(),
+        }
+    }
+}
+
 /// The hardware line a doorbell [`Chan`] maps to within an MU instance.
 #[derive(Clone, Copy)]
 enum MuLine {

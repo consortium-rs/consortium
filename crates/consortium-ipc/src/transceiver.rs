@@ -18,50 +18,69 @@
 
 use consortium_codec::CodecFor;
 
-use crate::{Channel, ReceivedMessage, Rx, Transport, Tx};
+use crate::transport::{RecvTransport, SendTransport};
+use crate::{Channel, ChannelError, ReceivedMessage, Rx, Tx};
 
-/// A typed, directed communication endpoint over a transport half.
+/// A typed, multidirectional endpoint pairing a send half and a receive half.
+///
+/// The two halves carry independent transport types: the full-duplex
+/// [`SharedMemoryTransport`](consortium_ipc_transport_memory::SharedMemoryTransport)
+/// is `split` into a `…Tx` send half and a `…Rx` receive half, and each is the
+/// transport of its respective [`Channel`].
 ///
 /// # Type parameters
 ///
-/// - `T`  - message type
-/// - `Tr` - send half ([`SendTransport`]) for `Tx`, receive half ([`RecvTransport`]) for `Rx`
-/// - `C`  - codec, defaults to [`PostcardCodec`]
-pub struct Transceiver<TyTx, TyRx, Tr, C: CodecFor<TyTx> + CodecFor<TyRx>> {
-    tx: Channel<Tx, TyTx, Tr, C>,
-    rx: Channel<Rx, TyRx, Tr, C>,
+/// - `TyTx` / `TyRx` - the sent and received message types
+/// - `TrTx` - send-half transport ([`SendTransport`])
+/// - `TrRx` - receive-half transport ([`RecvTransport`])
+/// - `C`  - codec
+pub struct Transceiver<TyTx, TyRx, TrTx, TrRx, C: CodecFor<TyTx> + CodecFor<TyRx>> {
+    tx: Channel<Tx, TyTx, TrTx, C>,
+    rx: Channel<Rx, TyRx, TrRx, C>,
 }
 
-impl<TyTx, TyRx, Tr: Transport, C: CodecFor<TyTx> + CodecFor<TyRx>> Transceiver<TyTx, TyRx, Tr, C> {
+impl<TyTx, TyRx, TrTx, TrRx, C: CodecFor<TyTx> + CodecFor<TyRx>>
+    Transceiver<TyTx, TyRx, TrTx, TrRx, C>
+{
     /// Create a new [`Transceiver`] from a send half and a receive half.
-    pub fn new(tx: Channel<Tx, TyTx, Tr, C>, rx: Channel<Rx, TyRx, Tr, C>) -> Self {
+    pub fn new(tx: Channel<Tx, TyTx, TrTx, C>, rx: Channel<Rx, TyRx, TrRx, C>) -> Self {
         Self { tx, rx }
     }
 
     /// Get the send half of the transceiver.
-    pub fn tx(&self) -> &Channel<Tx, TyTx, Tr, C> {
+    pub fn tx(&self) -> &Channel<Tx, TyTx, TrTx, C> {
         &self.tx
     }
 
     /// Get the receive half of the transceiver.
-    pub fn rx(&self) -> &Channel<Rx, TyRx, Tr, C> {
+    pub fn rx(&self) -> &Channel<Rx, TyRx, TrRx, C> {
         &self.rx
     }
 
+    /// split into two channels
+    pub fn split(self) -> (Channel<Tx, TyTx, TrTx, C>, Channel<Rx, TyRx, TrRx, C>) {
+        (self.tx, self.rx)
+    }
+}
+
+impl<TyTx, TyRx, TrTx, TrRx, C> Transceiver<TyTx, TyRx, TrTx, TrRx, C>
+where
+    TrTx: SendTransport,
+    C: CodecFor<TyTx> + CodecFor<TyRx>,
+{
     /// send message
-    pub async fn send(&mut self, msg: &TyTx) -> Result<(), crate::ChannelError<C, Tr>> {
+    pub async fn send(&mut self, msg: &TyTx) -> Result<(), ChannelError<C, TrTx>> {
         self.tx.send(msg).await
     }
+}
 
+impl<TyTx, TyRx, TrTx, TrRx, C> Transceiver<TyTx, TyRx, TrTx, TrRx, C>
+where
+    TrRx: RecvTransport,
+    C: CodecFor<TyTx> + CodecFor<TyRx>,
+{
     /// receive message
-    pub async fn recv(
-        &mut self,
-    ) -> Result<ReceivedMessage<'_, TyRx, C>, crate::ChannelError<C, Tr>> {
+    pub async fn recv(&mut self) -> Result<ReceivedMessage<'_, TyRx, C>, ChannelError<C, TrRx>> {
         self.rx.recv().await
-    }
-
-    /// split into two channels
-    pub fn split(self) -> (Channel<Tx, TyTx, Tr, C>, Channel<Rx, TyRx, Tr, C>) {
-        (self.tx, self.rx)
     }
 }

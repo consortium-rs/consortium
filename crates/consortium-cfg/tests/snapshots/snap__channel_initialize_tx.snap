@@ -7,6 +7,13 @@ fn _generated() {
         ::consortium_ipc::Tx,
         ::shared::Ping,
         _,
-        ::consortium_codec_postcard::PostcardCodec,
-    >::new(chan_tx, transport_tx, ping_tx_buf);
+        ::consortium_codec::PostcardCodec,
+    >::new(
+        chan_tx,
+        transport_tx,
+        {
+            static mut PING_TX_BUF: [u8; 256usize] = [0u8; 256usize];
+            unsafe { &mut *::core::ptr::addr_of_mut!(PING_TX_BUF) }
+        },
+    );
 }

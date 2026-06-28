@@ -22,7 +22,7 @@ use std::collections::HashMap;
 
 use consortium_cfg::components::address::{Address, ApAddress};
 use consortium_cfg::components::bella::{BellA, HardwareDoorbell};
-use consortium_cfg::components::ipc_shm::{Channel, Direction, DoorbellMeta, Transceiver};
+use consortium_cfg::components::ipc_shm::{Channel, Direction, DoorbellMeta, ShuHan, Transceiver};
 use consortium_cfg::components::region::Region;
 use consortium_cfg_common::config::{Codec, McoreName, VisibleCore};
 use consortium_cfg_common::database::{HardwareDoorbellPeripheralType, MemoryRegionType};
@@ -44,8 +44,18 @@ fn expr(tokens: TokenStream) -> String {
     prettyplease::unparse(&file)
 }
 
+/// Pretty-print a fragment that is a sequence of items (e.g. struct + impl).
+fn items(tokens: TokenStream) -> String {
+    let file = syn::parse_file(&tokens.to_string()).expect("generated code should parse as Rust");
+    prettyplease::unparse(&file)
+}
+
 fn cm33() -> VisibleCore {
     VisibleCore::Mcore(McoreName::Cm33)
+}
+
+fn cm7() -> VisibleCore {
+    VisibleCore::Mcore(McoreName::Cm7)
 }
 
 /// An address mapped both through an AP UIO window and a controller-core
@@ -124,6 +134,7 @@ fn channel_initialize_tx() {
         &chan,
         &transport,
         Codec::Postcard,
+        256,
         &ty_crate,
     );
     insta::assert_snapshot!(expr(tokens));
@@ -154,4 +165,79 @@ fn bella_nvic_enable_for_controller_core() {
         .nvic_enable(&cm33())
         .expect("controller core has irqs");
     insta::assert_snapshot!(stmts(tokens));
+}
+
+/// A second transceiver on a distinct doorbell, core, and codec, so a
+/// multi-endpoint `ShuHan` exercises more than one of every generated arm.
+fn pong() -> Transceiver {
+    Transceiver {
+        name: "pong".to_string(),
+        doorbell_address: Address {
+            ap: ApAddress {
+                uio_id: 2,
+                mmap_id: 0,
+            },
+            cp: HashMap::from([(cm7(), 0x4500_0000)]),
+        },
+        mtu: 512,
+        codec: Codec::Rkyv,
+        region: Region {
+            r#type: MemoryRegionType::Sram,
+            address: Address {
+                ap: ApAddress {
+                    uio_id: 0,
+                    mmap_id: 1,
+                },
+                cp: HashMap::from([(cm7(), 0x3404_0000)]),
+            },
+            length: 0x4000,
+        },
+        channel_primary: (
+            VisibleCore::Ap,
+            Channel {
+                doorbell_chan: 2,
+                type_name: "Telemetry".to_string(),
+                buffer_name: "pong_tx_buf".to_string(),
+            },
+        ),
+        channel_secondary: (
+            cm7(),
+            Channel {
+                doorbell_chan: 3,
+                type_name: "Command".to_string(),
+                buffer_name: "pong_rx_buf".to_string(),
+            },
+        ),
+        doorbell: DoorbellMeta {
+            r#type: HardwareDoorbellPeripheralType::Ipcc,
+            id: Some(2),
+        },
+    }
+}
+
+/// A multi-transceiver node spanning two doorbell families, two codecs, and two
+/// controller cores. The full `IpcMemoryEndpoints` struct + `new` impl is the
+/// most representative "complicated IR -> code" surface.
+fn shuhan() -> ShuHan {
+    ShuHan::new(vec![transceiver(), pong()])
+}
+
+#[test]
+fn shuhan_ap_side_emits_full_endpoint_struct() {
+    let uio = format_ident!("uio");
+    let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
+    let tokens = shuhan().initialize(VisibleCore::Ap, &uio, &ty_crate);
+    insta::assert_snapshot!(items(tokens));
+}
+
+#[test]
+fn shuhan_controller_side_emits_single_endpoint_struct() {
+    // A controller core only participates in the transceivers it is a party to,
+    // but `ShuHan::initialize` still emits the whole node; the snapshot shows the
+    // cm33 view (it is only a party to `ping`, so `pong`'s cm7 addresses are not
+    // resolvable for this core).
+    let uio = format_ident!("uio");
+    let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
+    let tokens = ShuHan::new(vec![transceiver()]).initialize(cm33(), &uio, &ty_crate);
+    insta::assert_snapshot!(items(tokens));
 }

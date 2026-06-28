@@ -32,10 +32,13 @@ impl Address {
                 quote::quote! { #uio_ident[#uio_id].mmap(#mmap_id)? }
             }
             _ => {
-                let address = self
+                let address = *self
                     .cp
                     .get(&core)
                     .expect("core must have an address in the config");
+                // Emit a `usize` so it matches the AP `mmap` path's type; call
+                // sites cast to `*mut u8` where a pointer is needed.
+                let address = proc_macro2::Literal::usize_suffixed(address as usize);
                 quote::quote! { #address }
             }
         }
@@ -79,7 +82,7 @@ mod tests {
         let uio = format_ident!("uio");
         let tokens = address.memory_lookup(core, &uio).to_string();
 
-        assert_eq!(tokens, "872415232u32");
+        assert_eq!(tokens, "872415232usize");
     }
 
     #[test]
