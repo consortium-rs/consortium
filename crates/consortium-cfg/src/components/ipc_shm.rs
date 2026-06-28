@@ -5,7 +5,7 @@ use consortium_cfg_common::{
     config::{Codec, VisibleCore},
     database::{HardwareDoorbellPeripheralType, MemoryRegionType},
 };
-use proc_macro2::{Span, TokenStream};
+use proc_macro2::{Literal, Span, TokenStream};
 use quote::format_ident;
 use syn::{Ident, Path};
 
@@ -31,19 +31,29 @@ impl Channel {
         chan_ident: &Ident,
         transport_ident: &Ident,
         codec: Codec,
+        mtu: u32,
         ty_crate: &Path,
     ) -> TokenStream {
-        let buf = format_ident!("{}", self.buffer_name);
         let direction_ty = match dir {
             Direction::Tx => quote::quote! { ::consortium_ipc::Tx },
             Direction::Rx => quote::quote! { ::consortium_ipc::Rx },
         };
 
         let type_ident = format_ident!("{}", self.type_name);
-        let codec_token = match codec {
-            Codec::Postcard => quote::quote! { ::consortium_codec_postcard::PostcardCodec },
-            Codec::Prost => quote::quote! { ::consortium_codec_prost::ProstCodec },
-            Codec::Rkyv => quote::quote! { ::consortium_codec_rkyv::RkyvCodec },
+        let codec_token = codec_path(codec);
+
+        // The MTU-sized scratch buffer the channel encodes/decodes through. A
+        // function-local `static` gives it a `'static` lifetime without a heap
+        // or a caller-provided buffer; it is borrowed exactly once during init.
+        let buf_static = format_ident!("{}", self.buffer_name.to_uppercase());
+        let mtu = Literal::usize_suffixed(mtu as usize);
+        let buf = quote::quote! {
+            {
+                static mut #buf_static: [u8; #mtu] = [0u8; #mtu];
+                // SAFETY: function-local static scratch buffer, borrowed once
+                // during initialization and never aliased afterwards.
+                unsafe { &mut *::core::ptr::addr_of_mut!(#buf_static) }
+            }
         };
 
         quote::quote! {
@@ -53,6 +63,16 @@ impl Channel {
                 #buf,
             )
         }
+    }
+}
+
+/// The codec type path for `codec`, used by both endpoint construction and the
+/// transceiver type signature.
+fn codec_path(codec: Codec) -> TokenStream {
+    match codec {
+        Codec::Postcard => quote::quote! { ::consortium_codec::PostcardCodec },
+        Codec::Prost => quote::quote! { ::consortium_codec::ProstCodec },
+        Codec::Rkyv => quote::quote! { ::consortium_codec::RkyvCodec },
     }
 }
 
@@ -159,22 +179,28 @@ impl Transceiver {
         };
 
         let transport_side_ty = match side {
-            DoorbellRingerSide::Primary => quote::quote! { ::consortium_ipc::side::Primary },
-            DoorbellRingerSide::Secondary => quote::quote! { ::consortium_ipc::side::Secondary },
+            DoorbellRingerSide::Primary => quote::quote! { ::consortium_ipc::Primary },
+            DoorbellRingerSide::Secondary => quote::quote! { ::consortium_ipc::Secondary },
         };
 
         let transport_ident = format_ident!("_consortium_ipc_shm_{}_transport", self.name);
         let transport_tx_ident = format_ident!("_consortium_ipc_shm_{}_transport_tx", self.name);
         let transport_rx_ident = format_ident!("_consortium_ipc_shm_{}_transport_rx", self.name);
-        let transport_address = self.doorbell_address.memory_lookup(core, uio_ident);
+        // The transport's descriptor base is the shared-memory region base
+        // (offset 0x00), not the doorbell register window.
+        let transport_address = self.region.address.memory_lookup(core, uio_ident);
         let transport_code = quote::quote! {
-            let #transport_ident = ::consortium_ipc_transport_memory::Transport::<#transport_side_ty, _, _>::new(
-                #chan_tx_ident,
-                #chan_rx_ident,
-                #doorbell_ident,
-                #region_ident,
-                #transport_address
-            );
+            // SAFETY: the base is offset 0x00 of the validated shared-memory
+            // region, and the channels/doorbell/region are this side's.
+            let #transport_ident = unsafe {
+                ::consortium_ipc_transport_memory::SharedMemoryTransport::<#transport_side_ty, _, _>::new(
+                    #chan_tx_ident,
+                    #chan_rx_ident,
+                    #doorbell_ident,
+                    #region_ident,
+                    (#transport_address) as *mut u8,
+                )
+            };
 
             let (#transport_tx_ident, #transport_rx_ident) = #transport_ident.split();
         };
@@ -196,6 +222,7 @@ impl Transceiver {
             &chan_tx_ident,
             &transport_tx_ident,
             self.codec,
+            self.mtu,
             ty_crate,
         );
         let channel_rx_init = channel_rx.initialize(
@@ -203,6 +230,7 @@ impl Transceiver {
             &chan_rx_ident,
             &transport_rx_ident,
             self.codec,
+            self.mtu,
             ty_crate,
         );
 
@@ -234,15 +262,22 @@ impl Transceiver {
         let side = self
             .side(core)
             .expect("core must be either primary or secondary for the transceiver");
+        // The doorbell type carries its side and 1-based instance id so the
+        // transport halves are fully concrete (the field type names no `_`).
+        let side_ident = match side {
+            DoorbellRingerSide::Primary => format_ident!("Primary"),
+            DoorbellRingerSide::Secondary => format_ident!("Secondary"),
+        };
+        let db_id = Literal::usize_suffixed(self.doorbell.id.unwrap_or(1) as usize);
         let doorbell_type = match self.doorbell.r#type {
             HardwareDoorbellPeripheralType::Mu => {
-                quote::quote! { ::consortium_ipc_doorbell_mu::MuDoorbell }
+                quote::quote! { ::consortium_ipc_doorbell_mu::MuDoorbell<::consortium_ipc::#side_ident, #db_id> }
             }
             HardwareDoorbellPeripheralType::Hsem => {
-                quote::quote! { ::consortium_ipc_doorbell_hsem::HsemDoorbell }
+                quote::quote! { ::consortium_ipc_doorbell_hsem::HsemDoorbell<::consortium_ipc::#side_ident, #db_id> }
             }
             HardwareDoorbellPeripheralType::Ipcc => {
-                quote::quote! { ::consortium_ipc_doorbell_ipcc::IpccDoorbell }
+                quote::quote! { ::consortium_ipc_doorbell_ipcc::IpccDoorbell<::consortium_ipc::#side_ident, #db_id> }
             }
         };
         let region_type = match self.region.r#type {
@@ -259,15 +294,16 @@ impl Transceiver {
                 quote::quote! { ::consortium_ipc_transport_memory::Secondary }
             }
         };
-        let transport_type = quote::quote! {
-            ::consortium_ipc_transport_memory::SharedMemoryTransport<#side_type, #doorbell_type, #region_type>
+        // `split` yields distinct send/receive half types; the transceiver names
+        // both.
+        let transport_tx_type = quote::quote! {
+            ::consortium_ipc_transport_memory::SharedMemoryTransportTx<#side_type, #doorbell_type, #region_type>
+        };
+        let transport_rx_type = quote::quote! {
+            ::consortium_ipc_transport_memory::SharedMemoryTransportRx<#side_type, #doorbell_type, #region_type>
         };
 
-        let codec_type = match self.codec {
-            Codec::Postcard => quote::quote! { ::consortium_codec_postcard::PostcardCodec },
-            Codec::Prost => quote::quote! { ::consortium_codec_prost::ProstCodec },
-            Codec::Rkyv => quote::quote! { ::consortium_codec_rkyv::RkyvCodec },
-        };
+        let codec_type = codec_path(self.codec);
 
         let chan_tx = match side {
             DoorbellRingerSide::Primary => &self.channel_primary.1,
@@ -282,7 +318,7 @@ impl Transceiver {
         let ty_rx = Ident::new(&chan_rx.type_name, proc_macro2::Span::call_site());
 
         quote::quote! {
-            ::consortium_ipc::Transceiver<#ty_crate::#ty_tx, #ty_crate::#ty_rx, #transport_type, #codec_type>
+            ::consortium_ipc::Transceiver<#ty_crate::#ty_tx, #ty_crate::#ty_rx, #transport_tx_type, #transport_rx_type, #codec_type>
         }
     }
 }
@@ -316,7 +352,7 @@ impl DoorbellMeta {
                 DoorbellRingerSide::Secondary => "Secondary",
             }
         );
-        let side_path = quote::quote! { ::consortium_ipc::side::#side_ident };
+        let side_path = quote::quote! { ::consortium_ipc::#side_ident };
         quote::quote! {
             ::#crate_ident::#type_ident::<#side_path, #id>
         }
@@ -432,6 +468,33 @@ impl ShuHan {
             })
             .collect::<Vec<_>>();
 
+        // The AP resolves region/doorbell bases through UIO, so its `new` borrows
+        // the opened devices and is fallible (`mmap` can fail). Controller cores
+        // embed physical bases and never touch UIO, so theirs is infallible.
+        let (new_sig, new_body) = if core == VisibleCore::Ap {
+            (
+                quote::quote! {
+                    fn new(
+                        #uio_ident: &[::consortium_runtime_app::uio::UioDevice],
+                    ) -> ::core::result::Result<Self, ::consortium_runtime_app::uio::UioDeviceError>
+                },
+                quote::quote! {
+                    ::core::result::Result::Ok(Self {
+                        #(#field_inits),*
+                    })
+                },
+            )
+        } else {
+            (
+                quote::quote! { fn new() -> Self },
+                quote::quote! {
+                    Self {
+                        #(#field_inits),*
+                    }
+                },
+            )
+        };
+
         quote::quote! {
             // struct definition
             struct IpcMemoryEndpoints {
@@ -440,10 +503,8 @@ impl ShuHan {
 
             // impl new
             impl IpcMemoryEndpoints {
-                fn new() -> Self {
-                    Self {
-                        #(#field_inits),*
-                    }
+                #new_sig {
+                    #new_body
                 }
             }
         }
@@ -473,12 +534,21 @@ mod tests {
         let transport = format_ident!("transport");
         let ty_crate: Path = syn::parse_str("::shared").unwrap();
         let tokens = channel(0)
-            .initialize(Direction::Tx, &chan, &transport, Codec::Postcard, &ty_crate)
+            .initialize(
+                Direction::Tx,
+                &chan,
+                &transport,
+                Codec::Postcard,
+                128,
+                &ty_crate,
+            )
             .to_string();
 
         assert!(tokens.contains(":: consortium_ipc :: Channel"));
         assert!(tokens.contains(":: consortium_ipc :: Tx"));
-        assert!(tokens.contains("new (chan , transport , ping_buf ,)"));
+        // The scratch buffer is an inline function-local static sized to the MTU.
+        assert!(tokens.contains("static mut PING_BUF : [u8 ; 128usize]"));
+        assert!(tokens.contains("addr_of_mut ! (PING_BUF)"));
     }
 
     #[test]
@@ -487,7 +557,14 @@ mod tests {
         let transport = format_ident!("transport");
         let ty_crate: Path = syn::parse_str("::shared").unwrap();
         let tokens = channel(1)
-            .initialize(Direction::Rx, &chan, &transport, Codec::Postcard, &ty_crate)
+            .initialize(
+                Direction::Rx,
+                &chan,
+                &transport,
+                Codec::Postcard,
+                128,
+                &ty_crate,
+            )
             .to_string();
 
         assert!(tokens.contains(":: consortium_ipc :: Rx"));
@@ -553,7 +630,7 @@ mod tests {
 
         let tokens = doorbell.as_path(DoorbellRingerSide::Primary).to_string();
         assert!(tokens.contains(":: consortium_ipc_doorbell_mu :: MuDoorbell"));
-        assert!(tokens.contains(":: consortium_ipc :: side :: Primary"));
+        assert!(tokens.contains(":: consortium_ipc :: Primary"));
         assert!(tokens.contains("7usize"));
     }
 
@@ -566,7 +643,7 @@ mod tests {
 
         let tokens = doorbell.as_path(DoorbellRingerSide::Secondary).to_string();
         assert!(tokens.contains(":: consortium_ipc_doorbell_hsem :: HsemDoorbell"));
-        assert!(tokens.contains(":: consortium_ipc :: side :: Secondary"));
+        assert!(tokens.contains(":: consortium_ipc :: Secondary"));
         assert!(tokens.contains("1usize"));
     }
 

@@ -63,6 +63,67 @@ pub struct LoweredIr {
     pub uio: Vec<(String, UioDevice)>,
 }
 
+impl LoweredIr {
+    /// Generates the per-core IPC initialization module.
+    ///
+    /// Every core gets the `IpcMemoryEndpoints` struct and its `new`
+    /// constructor, restricted to the transceivers that core is a party to
+    /// (controller firmware images are per-core).
+    ///
+    /// The AP additionally brings up the Linux [`UioDevice`]s this IR declares
+    /// and wraps both in an `init` entry point returning
+    /// `ConsortiumEndpoints { uio, ipc_shm }`. The opened devices are kept in
+    /// `uio` because `ipc_shm` borrows their mmap windows for the lifetime of
+    /// the endpoints.
+    ///
+    /// [`UioDevice`]: crate::components::uio::UioDevice
+    pub fn initialize(&self, core: VisibleCore, ty_crate: &syn::Path) -> proc_macro2::TokenStream {
+        use quote::{format_ident, quote};
+
+        let uio_ident = format_ident!("uio");
+
+        // A core only constructs the transceivers it participates in.
+        let participating: Vec<_> = self
+            .shuhan
+            .transceivers()
+            .iter()
+            .filter(|t| t.channel_primary.0 == core || t.channel_secondary.0 == core)
+            .cloned()
+            .collect();
+        let endpoints = ShuHan::new(participating).initialize(core, &uio_ident, ty_crate);
+
+        if core != VisibleCore::Ap {
+            return endpoints;
+        }
+
+        // `UioDevice::open(n)` for each declared device, in `self.uio` order
+        // (shared-memory device first, then one per doorbell). The opened
+        // handles are moved into `ConsortiumEndpoints` so the mmap windows
+        // `IpcMemoryEndpoints` borrows stay alive.
+        let opens = (0..self.uio.len()).map(|id| {
+            quote! { ::consortium_runtime_app::uio::UioDevice::open(#id)? }
+        });
+
+        quote! {
+            #endpoints
+
+            struct ConsortiumEndpoints {
+                #uio_ident: ::std::vec::Vec<::consortium_runtime_app::uio::UioDevice>,
+                ipc_shm: IpcMemoryEndpoints,
+            }
+
+            fn init() -> ::core::result::Result<
+                ConsortiumEndpoints,
+                ::consortium_runtime_app::uio::UioDeviceError,
+            > {
+                let #uio_ident = ::std::vec![ #(#opens),* ];
+                let ipc_shm = IpcMemoryEndpoints::new(&#uio_ident)?;
+                ::core::result::Result::Ok(ConsortiumEndpoints { #uio_ident, ipc_shm })
+            }
+        }
+    }
+}
+
 impl Session {
     /// Lowers the validated manifest into the [`components`](crate::components)
     /// IR.

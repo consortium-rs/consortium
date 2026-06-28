@@ -43,6 +43,19 @@ pub struct HsemDoorbell<S: Side, const N: usize> {
     notify: std::sync::Arc<tokio::sync::Notify>,
 }
 
+// Manual `Clone` (bound independent of `S`): the transport's `split` clones the
+// doorbell for the Rx half. Both halves share the same `Notify`, so an IRQ-side
+// wake reaches whichever half is waiting.
+impl<S: Side, const N: usize> Clone for HsemDoorbell<S, N> {
+    fn clone(&self) -> Self {
+        Self {
+            hsem: self.hsem.clone(),
+            #[cfg(feature = "std")]
+            notify: self.notify.clone(),
+        }
+    }
+}
+
 impl<S: Side, const N: usize> HsemDoorbell<S, N> {
     #[inline]
     fn sem_of(ch: Chan) -> Result<u8, HsemError> {

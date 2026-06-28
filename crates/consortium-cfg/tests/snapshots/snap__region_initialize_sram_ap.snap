@@ -5,8 +5,8 @@ expression: expr(tokens)
 fn _generated() {
     let _ = unsafe {
         ::consortium_shared_memory::regions::SramRegion::new(
-            uio[0usize].mmap(1usize)?,
-            32768u32,
+            (uio[0usize].mmap(1usize)?) as *mut u8,
+            32768usize,
         )
     };
 }

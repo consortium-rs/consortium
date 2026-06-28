@@ -1,0 +1,194 @@
+---
+source: crates/consortium-cfg/tests/snap.rs
+expression: items(tokens)
+---
+struct IpcMemoryEndpoints {
+    ping: ::consortium_ipc::Transceiver<
+        ::shared::Ping,
+        ::shared::Pong,
+        ::consortium_ipc_transport_memory::SharedMemoryTransportTx<
+            ::consortium_ipc_transport_memory::Primary,
+            ::consortium_ipc_doorbell_hsem::HsemDoorbell<
+                ::consortium_ipc::Primary,
+                1usize,
+            >,
+            ::consortium_shared_memory::regions::SramRegion,
+        >,
+        ::consortium_ipc_transport_memory::SharedMemoryTransportRx<
+            ::consortium_ipc_transport_memory::Primary,
+            ::consortium_ipc_doorbell_hsem::HsemDoorbell<
+                ::consortium_ipc::Primary,
+                1usize,
+            >,
+            ::consortium_shared_memory::regions::SramRegion,
+        >,
+        ::consortium_codec::PostcardCodec,
+    >,
+    pong: ::consortium_ipc::Transceiver<
+        ::shared::Telemetry,
+        ::shared::Command,
+        ::consortium_ipc_transport_memory::SharedMemoryTransportTx<
+            ::consortium_ipc_transport_memory::Primary,
+            ::consortium_ipc_doorbell_ipcc::IpccDoorbell<
+                ::consortium_ipc::Primary,
+                2usize,
+            >,
+            ::consortium_shared_memory::regions::SramRegion,
+        >,
+        ::consortium_ipc_transport_memory::SharedMemoryTransportRx<
+            ::consortium_ipc_transport_memory::Primary,
+            ::consortium_ipc_doorbell_ipcc::IpccDoorbell<
+                ::consortium_ipc::Primary,
+                2usize,
+            >,
+            ::consortium_shared_memory::regions::SramRegion,
+        >,
+        ::consortium_codec::RkyvCodec,
+    >,
+}
+impl IpcMemoryEndpoints {
+    fn new(
+        uio: &[::consortium_runtime_app::uio::UioDevice],
+    ) -> ::core::result::Result<Self, ::consortium_runtime_app::uio::UioDeviceError> {
+        ::core::result::Result::Ok(Self {
+            ping: {
+                let _consortium_ipc_shm_ping_region = unsafe {
+                    ::consortium_shared_memory::regions::SramRegion::new(
+                        (uio[0usize].mmap(1usize)?) as *mut u8,
+                        32768usize,
+                    )
+                };
+                let _consortium_ipc_shm_ping_doorbell_hsem = unsafe {
+                    ::consortium_ipc_doorbell_hsem::HsemDoorbell::<
+                        ::consortium_ipc::Primary,
+                        1usize,
+                    >::new(uio[0usize].mmap(2usize)?)
+                };
+                uio[0usize]
+                    .bind_notifier(_consortium_ipc_shm_ping_doorbell_hsem.notifier());
+                let _consortium_ipc_shm_ping_chan_tx = unsafe {
+                    ::consortium_ipc::Chan::new_unchecked(0u8)
+                };
+                let _consortium_ipc_shm_ping_chan_rx = unsafe {
+                    ::consortium_ipc::Chan::new_unchecked(1u8)
+                };
+                let _consortium_ipc_shm_ping_transport = unsafe {
+                    ::consortium_ipc_transport_memory::SharedMemoryTransport::<
+                        ::consortium_ipc::Primary,
+                        _,
+                        _,
+                    >::new(
+                        _consortium_ipc_shm_ping_chan_tx,
+                        _consortium_ipc_shm_ping_chan_rx,
+                        _consortium_ipc_shm_ping_doorbell_hsem,
+                        _consortium_ipc_shm_ping_region,
+                        (uio[0usize].mmap(1usize)?) as *mut u8,
+                    )
+                };
+                let (
+                    _consortium_ipc_shm_ping_transport_tx,
+                    _consortium_ipc_shm_ping_transport_rx,
+                ) = _consortium_ipc_shm_ping_transport.split();
+                let _consortium_ipc_shm_ping_channel_tx = ::consortium_ipc::Channel::<
+                    ::consortium_ipc::Tx,
+                    ::shared::Ping,
+                    _,
+                    ::consortium_codec::PostcardCodec,
+                >::new(
+                    _consortium_ipc_shm_ping_chan_tx,
+                    _consortium_ipc_shm_ping_transport_tx,
+                    {
+                        static mut PING_TX_BUF: [u8; 256usize] = [0u8; 256usize];
+                        unsafe { &mut *::core::ptr::addr_of_mut!(PING_TX_BUF) }
+                    },
+                );
+                let _consortium_ipc_shm_ping_channel_rx = ::consortium_ipc::Channel::<
+                    ::consortium_ipc::Rx,
+                    ::shared::Pong,
+                    _,
+                    ::consortium_codec::PostcardCodec,
+                >::new(
+                    _consortium_ipc_shm_ping_chan_rx,
+                    _consortium_ipc_shm_ping_transport_rx,
+                    {
+                        static mut PING_RX_BUF: [u8; 256usize] = [0u8; 256usize];
+                        unsafe { &mut *::core::ptr::addr_of_mut!(PING_RX_BUF) }
+                    },
+                );
+                ::consortium_ipc::Transceiver::new(
+                    _consortium_ipc_shm_ping_channel_tx,
+                    _consortium_ipc_shm_ping_channel_rx,
+                )
+            },
+            pong: {
+                let _consortium_ipc_shm_pong_region = unsafe {
+                    ::consortium_shared_memory::regions::SramRegion::new(
+                        (uio[0usize].mmap(1usize)?) as *mut u8,
+                        16384usize,
+                    )
+                };
+                let _consortium_ipc_shm_pong_doorbell_ipcc2 = unsafe {
+                    ::consortium_ipc_doorbell_ipcc::IpccDoorbell::<
+                        ::consortium_ipc::Primary,
+                        2usize,
+                    >::new(uio[2usize].mmap(0usize)?)
+                };
+                uio[0usize]
+                    .bind_notifier(_consortium_ipc_shm_pong_doorbell_ipcc2.notifier());
+                let _consortium_ipc_shm_pong_chan_tx = unsafe {
+                    ::consortium_ipc::Chan::new_unchecked(2u8)
+                };
+                let _consortium_ipc_shm_pong_chan_rx = unsafe {
+                    ::consortium_ipc::Chan::new_unchecked(3u8)
+                };
+                let _consortium_ipc_shm_pong_transport = unsafe {
+                    ::consortium_ipc_transport_memory::SharedMemoryTransport::<
+                        ::consortium_ipc::Primary,
+                        _,
+                        _,
+                    >::new(
+                        _consortium_ipc_shm_pong_chan_tx,
+                        _consortium_ipc_shm_pong_chan_rx,
+                        _consortium_ipc_shm_pong_doorbell_ipcc2,
+                        _consortium_ipc_shm_pong_region,
+                        (uio[0usize].mmap(1usize)?) as *mut u8,
+                    )
+                };
+                let (
+                    _consortium_ipc_shm_pong_transport_tx,
+                    _consortium_ipc_shm_pong_transport_rx,
+                ) = _consortium_ipc_shm_pong_transport.split();
+                let _consortium_ipc_shm_pong_channel_tx = ::consortium_ipc::Channel::<
+                    ::consortium_ipc::Tx,
+                    ::shared::Telemetry,
+                    _,
+                    ::consortium_codec::RkyvCodec,
+                >::new(
+                    _consortium_ipc_shm_pong_chan_tx,
+                    _consortium_ipc_shm_pong_transport_tx,
+                    {
+                        static mut PONG_TX_BUF: [u8; 512usize] = [0u8; 512usize];
+                        unsafe { &mut *::core::ptr::addr_of_mut!(PONG_TX_BUF) }
+                    },
+                );
+                let _consortium_ipc_shm_pong_channel_rx = ::consortium_ipc::Channel::<
+                    ::consortium_ipc::Rx,
+                    ::shared::Command,
+                    _,
+                    ::consortium_codec::RkyvCodec,
+                >::new(
+                    _consortium_ipc_shm_pong_chan_rx,
+                    _consortium_ipc_shm_pong_transport_rx,
+                    {
+                        static mut PONG_RX_BUF: [u8; 512usize] = [0u8; 512usize];
+                        unsafe { &mut *::core::ptr::addr_of_mut!(PONG_RX_BUF) }
+                    },
+                );
+                ::consortium_ipc::Transceiver::new(
+                    _consortium_ipc_shm_pong_channel_tx,
+                    _consortium_ipc_shm_pong_channel_rx,
+                )
+            },
+        })
+    }
+}

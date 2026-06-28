@@ -6,13 +6,13 @@ fn _generated() {
     {
         let _consortium_ipc_shm_ping_region = unsafe {
             ::consortium_shared_memory::regions::SramRegion::new(
-                uio[0usize].mmap(1usize)?,
-                32768u32,
+                (uio[0usize].mmap(1usize)?) as *mut u8,
+                32768usize,
             )
         };
         let _consortium_ipc_shm_ping_doorbell_hsem = unsafe {
             ::consortium_ipc_doorbell_hsem::HsemDoorbell::<
-                ::consortium_ipc::side::Primary,
+                ::consortium_ipc::Primary,
                 1usize,
             >::new(uio[0usize].mmap(2usize)?)
         };
@@ -23,17 +23,19 @@ fn _generated() {
         let _consortium_ipc_shm_ping_chan_rx = unsafe {
             ::consortium_ipc::Chan::new_unchecked(1u8)
         };
-        let _consortium_ipc_shm_ping_transport = ::consortium_ipc_transport_memory::Transport::<
-            ::consortium_ipc::side::Primary,
-            _,
-            _,
-        >::new(
-            _consortium_ipc_shm_ping_chan_tx,
-            _consortium_ipc_shm_ping_chan_rx,
-            _consortium_ipc_shm_ping_doorbell_hsem,
-            _consortium_ipc_shm_ping_region,
-            uio[0usize].mmap(2usize)?,
-        );
+        let _consortium_ipc_shm_ping_transport = unsafe {
+            ::consortium_ipc_transport_memory::SharedMemoryTransport::<
+                ::consortium_ipc::Primary,
+                _,
+                _,
+            >::new(
+                _consortium_ipc_shm_ping_chan_tx,
+                _consortium_ipc_shm_ping_chan_rx,
+                _consortium_ipc_shm_ping_doorbell_hsem,
+                _consortium_ipc_shm_ping_region,
+                (uio[0usize].mmap(1usize)?) as *mut u8,
+            )
+        };
         let (
             _consortium_ipc_shm_ping_transport_tx,
             _consortium_ipc_shm_ping_transport_rx,
@@ -42,21 +44,27 @@ fn _generated() {
             ::consortium_ipc::Tx,
             ::shared::Ping,
             _,
-            ::consortium_codec_postcard::PostcardCodec,
+            ::consortium_codec::PostcardCodec,
         >::new(
             _consortium_ipc_shm_ping_chan_tx,
             _consortium_ipc_shm_ping_transport_tx,
-            ping_tx_buf,
+            {
+                static mut PING_TX_BUF: [u8; 256usize] = [0u8; 256usize];
+                unsafe { &mut *::core::ptr::addr_of_mut!(PING_TX_BUF) }
+            },
         );
         let _consortium_ipc_shm_ping_channel_rx = ::consortium_ipc::Channel::<
             ::consortium_ipc::Rx,
             ::shared::Pong,
             _,
-            ::consortium_codec_postcard::PostcardCodec,
+            ::consortium_codec::PostcardCodec,
         >::new(
             _consortium_ipc_shm_ping_chan_rx,
             _consortium_ipc_shm_ping_transport_rx,
-            ping_rx_buf,
+            {
+                static mut PING_RX_BUF: [u8; 256usize] = [0u8; 256usize];
+                unsafe { &mut *::core::ptr::addr_of_mut!(PING_RX_BUF) }
+            },
         );
         ::consortium_ipc::Transceiver::new(
             _consortium_ipc_shm_ping_channel_tx,

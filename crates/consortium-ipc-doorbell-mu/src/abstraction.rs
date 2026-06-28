@@ -53,6 +53,18 @@ pub struct Mu<S: Side, const N: usize> {
     _side: PhantomData<S>,
 }
 
+// Manual `Clone` so the bound is independent of `S` (the side markers are
+// zero-sized and not themselves `Clone`). Cloning copies the mapped base; the
+// transport's `split` relies on this to hand a doorbell to each half.
+impl<S: Side, const N: usize> Clone for Mu<S, N> {
+    fn clone(&self) -> Self {
+        Self {
+            base: self.base,
+            _side: PhantomData,
+        }
+    }
+}
+
 impl<S: Side, const N: usize> Mu<S, N> {
     /// Zero-based index of instance `N` into the [`base::BASE`] table.
     ///

@@ -1,0 +1,57 @@
+[profile]
+chip   = "stm32mp257fak3"
+shared = "./shared"
+
+[endpoints]
+linux = "./app"
+optee = "./ta"
+cm33  = "./firmware"
+
+[dbg.defmt]
+memory = { base = 0x000408000, length = 0x2000 }
+mtu    = 64
+
+[[ipc.channel]]
+name          = "sensor"
+doorbell      = "hsem"
+pattern       = "memory"
+primary       = "linux"
+secondary     = "cm33"
+party.linux   = { chan = 0, type = "SensorData" }
+party.cm33    = { chan = 1, type = "MotionControl" }
+config.memory = { base = 0x000400000, length = 0x4000 }
+mtu           = 128
+
+[[ipc.channel]]
+name          = "lp"
+doorbell      = "ipcc2"
+pattern       = "memory"
+primary       = "linux"
+secondary     = "cm0p"
+party.linux   = { chan = 0, type = "PowerStatus" }
+party.cm0p    = { chan = 1, type = "PowerMode" }
+config.memory = { base = 0x000404000, length = 0x4000 }
+mtu           = 128
+codec         = "rkyv"
+
+[tee]
+uuid = "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"
+
+[hmi]
+engine  = "cog"
+backend = "wayland"
+debug   = "http://127.0.0.1:5173/"
+build   = "website/dist"
+
+[peripheral.i2c1]
+owner   = "ap"
+secure  = false
+pin.sda = "PB0"
+pin.scl = "PB1"
+
+[peripheral.spi1]
+owner    = "cm33"
+secure   = false
+pin.miso = "PA6"
+pin.mosi = "PA7"
+pin.sck  = "PA5"
