@@ -23,24 +23,3 @@ pub struct MemoryRegion {
     /// Length of the region in bytes.
     pub length: u32,
 }
-
-/// A shared-memory region with MTU metadata.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct SharedMemory {
-    /// Physical base address of the region, as seen by the M-core.
-    pub base: u32,
-    /// Length of the region in bytes.
-    pub length: u32,
-    /// Maximum transfer unit (payload bytes per slot) for the channel.
-    pub mtu: u32,
-}
-
-impl SharedMemory {
-    pub const fn region(self) -> MemoryRegion {
-        MemoryRegion {
-            base: self.base,
-            length: self.length,
-        }
-    }
-}

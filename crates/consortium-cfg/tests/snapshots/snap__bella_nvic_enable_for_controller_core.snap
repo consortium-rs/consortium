@@ -1,0 +1,23 @@
+---
+source: crates/consortium-cfg/tests/snap.rs
+expression: stmts(tokens)
+---
+fn _generated() {
+    #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+    #[repr(u16)]
+    pub enum BellaInterrupt {
+        HSEM = 199u16,
+        IPCC2 = 13u16,
+    }
+    unsafe impl ::cortex_m::interrupt::InterruptNumber for BellaInterrupt {
+        fn number(self) -> u16 {
+            self as u16
+        }
+    }
+    pub fn enable_bella_interrupts() {
+        unsafe {
+            ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::HSEM);
+            ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::IPCC2);
+        }
+    }
+}

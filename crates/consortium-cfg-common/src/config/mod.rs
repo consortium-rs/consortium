@@ -42,7 +42,7 @@ pub use endpoints::Endpoints;
 pub use hmi::{Hmi, HmiBackend, HmiEngine};
 pub use ipc::{Ipc, IpcChannel, IpcChannelConfig, IpcEndpoint, IpcPattern};
 pub use mcore_name::McoreName;
-pub use memory::{MemoryRegion, SharedMemory};
+pub use memory::MemoryRegion;
 pub use party::Party;
 pub use peripheral::Peripheral;
 pub use profile::Profile;

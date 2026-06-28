@@ -1,0 +1,12 @@
+---
+source: crates/consortium-cfg/tests/snap.rs
+expression: expr(tokens)
+---
+fn _generated() {
+    let _ = unsafe {
+        ::consortium_shared_memory::regions::SramRegion::new(
+            uio[0usize].mmap(1usize)?,
+            32768u32,
+        )
+    };
+}

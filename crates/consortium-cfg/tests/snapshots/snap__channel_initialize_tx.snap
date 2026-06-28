@@ -1,0 +1,12 @@
+---
+source: crates/consortium-cfg/tests/snap.rs
+expression: expr(tokens)
+---
+fn _generated() {
+    let _ = ::consortium_ipc::Channel::<
+        ::consortium_ipc::Tx,
+        Ping,
+        _,
+        ::consortium_codec_postcard::PostcardCodec,
+    >::new(chan_tx, transport_tx, ping_tx_buf);
+}
