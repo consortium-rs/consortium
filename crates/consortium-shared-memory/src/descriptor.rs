@@ -50,6 +50,8 @@ impl DescriptorHeader {
         Self {
             // SAFETY: caller guarantees ptr is valid for at least 6 bytes.
             magic: unsafe { *ptr.cast::<DescriptorMagic>() },
+            // SAFETY: caller guarantees ptr is valid for at least 6 bytes.
+            #[allow(clippy::multiple_unsafe_ops_per_block)]
             version: unsafe { *ptr.add(4).cast::<u8>() },
             _reserved0: [0; 1],
         }
@@ -62,7 +64,11 @@ impl DescriptorHeader {
     pub unsafe fn write_to_raw_ptr(self, ptr: *mut u8) {
         // SAFETY: caller guarantees ptr is valid for at least 6 bytes.
         unsafe { *ptr.cast::<DescriptorMagic>() = self.magic };
-        unsafe { *ptr.add(4).cast::<u8>() = self.version };
+        // SAFETY: caller guarantees ptr is valid for at least 6 bytes.
+        #[allow(clippy::multiple_unsafe_ops_per_block)]
+        unsafe {
+            *ptr.add(4).cast::<u8>() = self.version
+        };
     }
 }
 

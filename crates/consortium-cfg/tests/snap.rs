@@ -21,10 +21,8 @@
 use std::collections::HashMap;
 
 use consortium_cfg::components::address::{Address, ApAddress};
-use consortium_cfg::components::bella::{Bella, HardwareDoorbell};
-use consortium_cfg::components::ipc_shm::{
-    BellaMeta, BellaRingerSide, Channel, Direction, Transceiver,
-};
+use consortium_cfg::components::bella::{BellA, HardwareDoorbell};
+use consortium_cfg::components::ipc_shm::{Channel, Direction, DoorbellMeta, Transceiver};
 use consortium_cfg::components::region::Region;
 use consortium_cfg_common::config::{Codec, McoreName, VisibleCore};
 use consortium_cfg_common::database::{HardwareDoorbellPeripheralType, MemoryRegionType};
@@ -86,7 +84,7 @@ fn transceiver() -> Transceiver {
                 buffer_name: "ping_rx_buf".to_string(),
             },
         ),
-        bella: BellaMeta {
+        doorbell: DoorbellMeta {
             r#type: HardwareDoorbellPeripheralType::Hsem,
             id: None,
         },
@@ -96,21 +94,23 @@ fn transceiver() -> Transceiver {
 #[test]
 fn transceiver_primary_side_binds_uio_notifier() {
     let uio = format_ident!("uio");
-    let tokens = transceiver().initialize(&VisibleCore::Ap, &uio, BellaRingerSide::Primary);
+    let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
+    let tokens = transceiver().initialize(VisibleCore::Ap, &uio, &ty_crate);
     insta::assert_snapshot!(stmts(tokens));
 }
 
 #[test]
 fn transceiver_secondary_side_uses_controller_addresses() {
     let uio = format_ident!("uio");
-    let tokens = transceiver().initialize(&cm33(), &uio, BellaRingerSide::Secondary);
+    let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
+    let tokens = transceiver().initialize(cm33(), &uio, &ty_crate);
     insta::assert_snapshot!(stmts(tokens));
 }
 
 #[test]
 fn region_initialize_sram_ap() {
     let uio = format_ident!("uio");
-    let tokens = transceiver().region.initialize(&VisibleCore::Ap, &uio);
+    let tokens = transceiver().region.initialize(VisibleCore::Ap, &uio);
     insta::assert_snapshot!(expr(tokens));
 }
 
@@ -118,18 +118,20 @@ fn region_initialize_sram_ap() {
 fn channel_initialize_tx() {
     let chan = format_ident!("chan_tx");
     let transport = format_ident!("transport_tx");
+    let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
     let tokens = transceiver().channel_primary.1.initialize(
         Direction::Tx,
         &chan,
         &transport,
         Codec::Postcard,
+        &ty_crate,
     );
     insta::assert_snapshot!(expr(tokens));
 }
 
 #[test]
 fn bella_nvic_enable_for_controller_core() {
-    let bella = Bella {
+    let bella = BellA {
         bells: vec![
             HardwareDoorbell {
                 name: "hsem".to_string(),

@@ -51,6 +51,7 @@ pub struct UioOptions {
     pub interrupt_parent: Option<Reference>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct UioDevice {
     /// address, length
     pub mmap: Vec<(u32, u32)>,

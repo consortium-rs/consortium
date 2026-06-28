@@ -66,8 +66,6 @@ impl SramRegion {
     }
 }
 
-// SAFETY: both halves intentionally alias the same shared-memory region,
-// which is the same aliasing contract accepted by `new`.
 impl Clone for SramRegion {
     fn clone(&self) -> Self {
         Self {
@@ -135,7 +133,6 @@ impl DdrRegion {
     }
 }
 
-// SAFETY: same aliasing contract as `new`.
 impl Clone for DdrRegion {
     fn clone(&self) -> Self {
         Self {
@@ -160,17 +157,23 @@ impl Region for DdrRegion {
     /// `dsb sy`.  On other targets this is a noop.
     fn flush(&self) {
         #[cfg(target_arch = "aarch64")]
-        // SAFETY: we only read the pointer value as an integer for the cache
-        // maintenance instruction; we do not create a Rust reference.
-        unsafe {
+        {
             let start = self.ptr as usize;
             let end = start + self.len;
             let mut addr = start & !(CACHE_LINE_SIZE - 1);
             while addr < end {
-                core::arch::asm!("dc cvac, {}", in(reg) addr, options(nostack));
+                // SAFETY: we only read the pointer value as an integer for the cache
+                // maintenance instruction; we do not create a Rust reference.
+                unsafe {
+                    core::arch::asm!("dc cvac, {}", in(reg) addr, options(nostack));
+                }
                 addr += CACHE_LINE_SIZE;
             }
-            core::arch::asm!("dsb sy", options(nostack));
+            // SAFETY: we only read the pointer value as an integer for the cache
+            // maintenance instruction; we do not create a Rust reference.
+            unsafe {
+                core::arch::asm!("dsb sy", options(nostack));
+            }
         }
     }
 
@@ -181,16 +184,19 @@ impl Region for DdrRegion {
     /// `dsb sy`.  On other targets this is a noop.
     fn invalidate(&self) {
         #[cfg(target_arch = "aarch64")]
-        // SAFETY: same as flush.
-        unsafe {
+        {
             let start = self.ptr as usize;
             let end = start + self.len;
             let mut addr = start & !(CACHE_LINE_SIZE - 1);
             while addr < end {
-                core::arch::asm!("dc ivac, {}", in(reg) addr, options(nostack));
+                // SAFETY: same as flush.
+                unsafe { core::arch::asm!("dc ivac, {}", in(reg) addr, options(nostack)) };
                 addr += CACHE_LINE_SIZE;
             }
-            core::arch::asm!("dsb sy", options(nostack));
+            // SAFETY: same as flush.
+            unsafe {
+                core::arch::asm!("dsb sy", options(nostack));
+            }
         }
     }
 

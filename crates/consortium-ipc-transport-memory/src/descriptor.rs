@@ -172,7 +172,7 @@ pub const fn channel_table_entry_offset(index: usize) -> usize {
 pub const fn slot_offset(index: usize, mtu: usize) -> usize {
     assert!(index < CHANNEL_NUM_MAX, "channel index out of range");
 
-    (DESCRIPTOR_LENGTH + (SLOT_HEADER + mtu) * index) as usize
+    DESCRIPTOR_LENGTH + (SLOT_HEADER + mtu) * index
 }
 
 /// # Safety
@@ -403,6 +403,7 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Seco
                 .wait(doorbell_rx)
                 .await
                 .map_err(super::Error::Doorbell)?;
+            // SAFETY: when the base is valid and coherent, the state read will be consistent with the rx_transfer_size read. The A-core must have set the state to Ready before writing rx_transfer_size, so if we see Ready then rx_transfer_size is valid.
             state = DescState::from_primitive(unsafe { rv_u32(base, STATE_OFFSET) });
             if state != DescState::Ready {
                 return Err(DescriptorError::NotReady(state).into());

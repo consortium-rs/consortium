@@ -50,11 +50,11 @@ pub struct HardwareDoorbell {
 /// Call the doorbell type `Bella` because we classify it as a type-A doorbell. It is
 /// also someone significant to the author.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Bella {
+pub struct BellA {
     pub bells: Vec<HardwareDoorbell>,
 }
 
-impl Bella {
+impl BellA {
     /// Generates Cortex-M NVIC enablement code for every doorbell interrupt
     /// visible to `core`.
     ///
@@ -100,15 +100,13 @@ impl Bella {
                 }
             }
 
-            pub fn enable_bella_interrupts() {
+            #(
                 // SAFETY: interrupt numbers are emitted from the validated
                 // Consortium hardware database for this visible core.
                 unsafe {
-                    #(
-                        ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::#variant_names);
-                    )*
+                    ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::#variant_names);
                 }
-            }
+            )*
         })
     }
 }
@@ -155,10 +153,10 @@ fn interrupt_variant(name: &str) -> Ident {
 // ///
 // /// DO NOT implement this trait unless you know what you are doing.
 // #[allow(unused)]
-// unsafe trait Ethan: Sized {}
+// unsafe trait EthaN: Sized {}
 
 // /// SAFETY: Ethan knows what he is doing.
-// unsafe impl Ethan for Bella {}
+// unsafe impl EthaN for BellA {}
 
 #[cfg(test)]
 mod tests {
@@ -187,7 +185,7 @@ mod tests {
     #[test]
     fn generates_nvic_enablement_for_core_irqs() {
         let core = VisibleCore::Mcore(McoreName::Cm33);
-        let bella = Bella {
+        let bella = BellA {
             bells: vec![bell("hsem", core, 199), bell("ipcc2", core, 13)],
         };
 
@@ -204,7 +202,7 @@ mod tests {
     fn skips_unavailable_core_irqs() {
         let cm33 = VisibleCore::Mcore(McoreName::Cm33);
         let cm7 = VisibleCore::Mcore(McoreName::Cm7);
-        let bella = Bella {
+        let bella = BellA {
             bells: vec![bell("hsem", cm33, 199)],
         };
 

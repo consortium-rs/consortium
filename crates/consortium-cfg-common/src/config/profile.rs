@@ -21,4 +21,6 @@ pub struct Profile {
     /// Full chip part number, e.g. `stm32mp257fak3`. Resolved against the chip
     /// database to pick the matching family definition.
     pub chip: String,
+    /// Shared crate location
+    pub shared: String,
 }

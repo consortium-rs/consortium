@@ -14,7 +14,7 @@ pub struct Region {
 }
 
 impl Region {
-    pub fn initialize(&self, core: &VisibleCore, uio_ident: &Ident) -> proc_macro2::TokenStream {
+    pub fn initialize(&self, core: VisibleCore, uio_ident: &Ident) -> proc_macro2::TokenStream {
         let address = self.address.memory_lookup(core, uio_ident);
         let length = self.length;
         let region_identifier = match self.r#type {
@@ -54,7 +54,7 @@ mod tests {
     #[test]
     fn sram_region_wraps_ap_lookup_in_unsafe_new() {
         let uio = format_ident!("uio");
-        let tokens = ap_region().initialize(&VisibleCore::Ap, &uio).to_string();
+        let tokens = ap_region().initialize(VisibleCore::Ap, &uio).to_string();
 
         assert!(tokens.contains("unsafe"));
         assert!(tokens.contains(":: consortium_shared_memory :: regions :: SramRegion :: new"));
