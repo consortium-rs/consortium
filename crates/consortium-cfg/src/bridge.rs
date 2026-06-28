@@ -37,7 +37,7 @@
 use std::collections::HashMap;
 
 use consortium_cfg_common::config::{MemoryRegion, Party, VisibleCore};
-use consortium_cfg_common::database::{HardwareDoorbellPeripheral, MemoryRegionType};
+use consortium_cfg_common::database::{ChipDatabase, HardwareDoorbellPeripheral, MemoryRegionType};
 
 use crate::components::address::{Address, ApAddress};
 use crate::components::bella::{BellA, HardwareDoorbell};
@@ -185,10 +185,20 @@ impl Session {
             };
 
             // The AP resolves addresses through UIO; controller cores embed the
-            // physical base. Record both participants that are controllers.
-            let region_cp = controller_bases(primary_core, secondary_core, memory.base);
-            let doorbell_cp =
-                controller_bases(primary_core, secondary_core, db_doorbell.memory.base);
+            // physical base. Each base is the chip's canonical offset; the real
+            // address adds the security-domain alias for the accessing party
+            // (e.g. STM32MP2 maps peripherals non-secure at 0x4000_0000 and
+            // secure at 0x5000_0000). Record both participants that are
+            // controllers, aliased to that party's world.
+            let region_cp =
+                controller_bases([primary_party, secondary_party], memory.base, |secure| {
+                    memory_alias(&self.database, secure)
+                });
+            let doorbell_cp = controller_bases(
+                [primary_party, secondary_party],
+                db_doorbell.memory.base,
+                |secure| peripheral_alias(&self.database, secure),
+            );
 
             let region_address = Address {
                 ap: ApAddress {
@@ -256,16 +266,25 @@ impl Session {
         }
 
         // Assemble the UIO device list in the order the addresses reference it:
-        // shared memory first, then each doorbell.
+        // shared memory first, then each doorbell. Linux is non-secure, so every
+        // mapped window is offset by the non-secure alias.
         let mut uio = Vec::new();
-        if let Some(device) = regions.as_slice().to_uio()? {
+        let region_alias = memory_alias(&self.database, false);
+        if let Some(mut device) = regions.as_slice().to_uio()? {
+            for window in &mut device.mmap {
+                window.0 += region_alias;
+            }
             uio.push(("ipc-shm".to_string(), device));
         }
+        let doorbell_alias = peripheral_alias(&self.database, false);
         for name in &doorbell_order {
             let db_doorbell = self
                 .doorbell(name)
                 .ok_or_else(|| CfgError::Manifest(format!("unknown doorbell '{name}'")))?;
-            if let Some(device) = db_doorbell.to_uio()? {
+            if let Some(mut device) = db_doorbell.to_uio()? {
+                for window in &mut device.mmap {
+                    window.0 += doorbell_alias;
+                }
                 uio.push((name.clone(), device));
             }
         }
@@ -304,17 +323,49 @@ fn party_irq(doorbell: &HardwareDoorbellPeripheral, party: Party) -> Option<u32>
 }
 
 /// The controller-core physical-base map for an address: every participant that
-/// is not the AP maps to `base` (the AP resolves through UIO instead).
+/// is not the AP maps to `base` plus the alias for that party's security world
+/// (the AP resolves through UIO instead).
 fn controller_bases(
-    primary: VisibleCore,
-    secondary: VisibleCore,
+    parties: [Party; 2],
     base: u32,
+    alias: impl Fn(bool) -> u32,
 ) -> HashMap<VisibleCore, u32> {
-    [primary, secondary]
+    parties
         .into_iter()
-        .filter(|core| *core != VisibleCore::Ap)
-        .map(|core| (core, base))
+        .filter(|party| party.core() != VisibleCore::Ap)
+        .map(|party| (party.core(), base + alias(party_secure(party))))
         .collect()
+}
+
+/// Whether `party` accesses the bus from the secure world.
+fn party_secure(party: Party) -> bool {
+    match party {
+        Party::AcoreSecure => true,
+        Party::AcoreNonSecure => false,
+        Party::Mcore { secure, .. } => secure,
+    }
+}
+
+/// The SRAM-region alias offset for the given security world, or `0` if the chip
+/// declares none.
+fn memory_alias(database: &ChipDatabase, secure: bool) -> u32 {
+    database
+        .memory
+        .aliases
+        .iter()
+        .find(|alias| alias.secure == secure)
+        .map_or(0, |alias| alias.offset)
+}
+
+/// The peripheral (doorbell) alias base for the given security world, or `0` if
+/// the chip declares none.
+fn peripheral_alias(database: &ChipDatabase, secure: bool) -> u32 {
+    database
+        .peripheral
+        .aliases
+        .iter()
+        .find(|alias| alias.secure == secure)
+        .map_or(0, |alias| alias.address)
 }
 
 /// Records a doorbell's participating cores, creating the [`HardwareDoorbell`]
@@ -411,9 +462,41 @@ mod tests {
             }
         );
 
-        // The controller side resolves to the manifest's physical base.
-        assert_eq!(sensor.region.address.cp[&cm33()], 0x0040_0000);
-        assert_eq!(lp.region.address.cp[&cm0p()], 0x0040_4000);
+        // The controller side resolves to the manifest base plus the non-secure
+        // SRAM alias (cm33 and cm0p are both non-secure here).
+        assert_eq!(sensor.region.address.cp[&cm33()], 0x2040_0000);
+        assert_eq!(lp.region.address.cp[&cm0p()], 0x2040_4000);
+    }
+
+    #[test]
+    fn uio_windows_apply_non_secure_aliases() {
+        let ir = lowered();
+
+        // SRAM regions map through the non-secure memory alias (0x2000_0000),
+        // so sensor at canonical 0x0040_0000 is exposed at 0x2040_0000.
+        let (_, shm) = ir
+            .uio
+            .iter()
+            .find(|(name, _)| name == "ipc-shm")
+            .expect("shared-memory uio device");
+        assert_eq!(shm.mmap[0].0, 0x2040_0000);
+
+        // The HSEM doorbell window maps through the non-secure peripheral alias
+        // (0x4000_0000): canonical 0x0624_0000 becomes 0x4624_0000.
+        let (_, hsem) = ir
+            .uio
+            .iter()
+            .find(|(name, _)| name == "hsem")
+            .expect("hsem uio device");
+        assert_eq!(hsem.mmap[0].0, 0x4624_0000);
+    }
+
+    #[test]
+    fn controller_doorbell_base_applies_security_alias() {
+        let ir = lowered();
+        let sensor = transceiver(&ir, "sensor");
+        // cm33 is non-secure, so it sees HSEM through the 0x4000_0000 alias.
+        assert_eq!(sensor.doorbell_address.cp[&cm33()], 0x4624_0000);
     }
 
     #[test]
