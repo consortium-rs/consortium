@@ -347,6 +347,7 @@ mod tests {
             chip = "stm32mp257fak3"
 
             [[ipc.channel]]
+            name = "probe"
             doorbell = "nope"
             pattern = "memory"
             party.linux = { chan = 0, type = "Ping" }
@@ -368,6 +369,7 @@ mod tests {
             chip = "stm32mp257fak3"
 
             [[ipc.channel]]
+            name = "probe"
             doorbell = "ipcc1"
             pattern = "memory"
             party.cm0p = { chan = 0, type = "PowerMode" }
@@ -388,6 +390,7 @@ mod tests {
             chip = "stm32mp257fak3"
 
             [[ipc.channel]]
+            name = "probe"
             doorbell = "hsem"
             pattern = "memory"
             party.linux = { chan = 16, type = "Ping" }
@@ -408,6 +411,7 @@ mod tests {
             chip = "stm32mp257fak3"
 
             [[ipc.channel]]
+            name = "probe"
             doorbell = "hsem"
             pattern = "memory"
             party.linux = { chan = 0, type = "Ping" }
@@ -431,6 +435,7 @@ mod tests {
             chip = "stm32mp257fak3"
 
             [[ipc.channel]]
+            name = "probe"
             doorbell = "hsem"
             pattern = "memory"
             party.linux = { chan = 0, type = "Ping" }
@@ -455,6 +460,7 @@ mod tests {
             mtu = 64
 
             [[ipc.channel]]
+            name = "probe"
             doorbell = "hsem"
             pattern = "memory"
             party.linux = { chan = 0, type = "Ping" }

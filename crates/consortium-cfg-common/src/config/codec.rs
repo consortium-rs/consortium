@@ -1,4 +1,7 @@
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, PartialEq, Eq, Hash, Default)]
+#[derive(
+    Debug, Clone, Copy, serde::Serialize, serde::Deserialize, PartialEq, Eq, Hash, Default,
+)]
+#[serde(rename_all = "lowercase")]
 pub enum Codec {
     /// Use `consortium-codec-postcard` for encoding/decoding messages.
     #[default]

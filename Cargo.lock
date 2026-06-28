@@ -317,6 +317,7 @@ dependencies = [
  "consortium-cfg-common",
  "consortium-dts",
  "consortium-ipc-transport-memory",
+ "insta",
  "prettyplease",
  "proc-macro2",
  "quote",

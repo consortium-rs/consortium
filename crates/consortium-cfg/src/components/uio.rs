@@ -23,7 +23,6 @@
 
 use consortium_dts::utils::irq_method::IrqMethod;
 use consortium_dts::{Cell, Node, Property, Reference};
-use proc_macro2::TokenStream;
 
 /// `compatible` string matched by the Linux `uio_pdrv_genirq` driver.
 pub const GENERIC_UIO_COMPATIBLE: &str = "generic-uio";
