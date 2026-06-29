@@ -37,7 +37,7 @@ pub mod xcore_name;
 pub use acore_name::AcoreName;
 pub use codec::Codec;
 pub use core::{Core, VisibleCore};
-pub use dbg::{Dbg, DefmtDbg};
+pub use dbg::{Dbg, DbgCore};
 pub use endpoints::Endpoints;
 pub use hmi::{Hmi, HmiBackend, HmiEngine};
 pub use ipc::{Ipc, IpcChannel, IpcChannelConfig, IpcEndpoint, IpcPattern};

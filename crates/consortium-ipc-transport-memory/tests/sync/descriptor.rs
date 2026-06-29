@@ -412,11 +412,11 @@ fn channel_direction_parses_known_and_unknown_values() {
 #[test]
 fn channel_table_offsets_cover_the_valid_channel_range() {
     assert_eq!(channel_table_entry_offset(0), 0x20);
-    assert_eq!(channel_table_entry_offset(31), 0x20 + 31 * 12);
+    assert_eq!(channel_table_entry_offset(15), 0x20 + 15 * 12);
 }
 
 #[test]
 #[should_panic(expected = "channel index out of range")]
 fn channel_table_offset_rejects_out_of_range_channel() {
-    let _ = channel_table_entry_offset(32);
+    let _ = channel_table_entry_offset(16);
 }

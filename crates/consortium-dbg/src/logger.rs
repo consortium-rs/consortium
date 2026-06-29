@@ -1,3 +1,4 @@
+#![cfg(feature = "logger")]
 use consortium_shared_memory::descriptor::DescriptorHeader;
 use defmt::{Logger, global_logger};
 

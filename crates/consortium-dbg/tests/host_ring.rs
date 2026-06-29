@@ -1,6 +1,6 @@
 #![cfg(feature = "host")]
 
-use consortium_dbg_defmt::{
+use consortium_dbg::{
     descriptor::{DESCRIPTOR_SIZE, Descriptor, READ_PTR_OFFSET, WRITE_PTR_OFFSET},
     host::{HostError, HostRing},
     logger::ConsortiumLogger,
@@ -220,7 +220,7 @@ fn host_ring_snapshot_reflects_descriptor_state() {
 /// CONSORTIUM_DEFMT_ELF=/path/to/firmware.elf \
 /// CONSORTIUM_DEFMT_PACKETS_HEX=aabbcc;ddeeff \
 /// [CONSORTIUM_DEFMT_EXPECT=substring] \
-/// cargo test -p consortium-dbg-defmt --features decode \
+/// cargo test -p consortium-dbg --features decode \
 ///   -- --ignored defmt_decode_from_env_fixture
 /// ```
 ///
@@ -230,7 +230,7 @@ fn host_ring_snapshot_reflects_descriptor_state() {
 #[test]
 #[ignore = "requires CONSORTIUM_DEFMT_ELF and CONSORTIUM_DEFMT_PACKETS_HEX env vars"]
 fn defmt_decode_from_env_fixture() {
-    use consortium_dbg_defmt::host::{DefmtContext, DefmtSession};
+    use consortium_dbg::host::{DefmtContext, DefmtSession};
 
     let elf_path = std::env::var("CONSORTIUM_DEFMT_ELF")
         .expect("set CONSORTIUM_DEFMT_ELF to the path of the firmware ELF");

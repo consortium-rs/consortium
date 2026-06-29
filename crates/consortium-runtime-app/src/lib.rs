@@ -25,7 +25,7 @@ pub use consortium_ipc as ipc;
 pub use consortium_ipc_transport_memory as ipc_transport;
 
 #[cfg(feature = "dbg")]
-pub use consortium_dbg_defmt as dbg;
+pub use consortium_dbg as dbg;
 
 #[cfg(feature = "tee")]
 pub use consortium_tee as tee;

@@ -1,7 +1,7 @@
 [package]
 edition.workspace = true
 license.workspace = true
-name              = "consortium-dbg-defmt"
+name              = "consortium-dbg"
 version.workspace = true
 
 [features]

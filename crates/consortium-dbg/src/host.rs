@@ -3,6 +3,7 @@
 //! The caller (A-core runtime or board integration) maps the MCU's debug SRAM region
 //! and passes the base pointer and length to [`HostRing::from_raw_parts`].  This module
 //! does not perform any mapping itself.
+#![cfg(feature = "host")]
 
 use consortium_shared_memory::descriptor::DescriptorHeaderError;
 

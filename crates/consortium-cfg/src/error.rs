@@ -84,6 +84,15 @@ pub enum CfgError {
         second_party: String,
     },
 
+    #[error(
+        "[dbg.ap] is not allowed: the application processor is always the debug host, \
+         not a logger. Declare a coprocessor logger such as [dbg.cm33] instead"
+    )]
+    DbgHostNotLoggable,
+
+    #[error("[dbg.{core}] names core '{core}', which is not a coprocessor on chip '{chip}'")]
+    DbgCoreNotVisible { core: String, chip: String },
+
     #[error("no memory region set")]
     MemoryRegionNotSet,
 
@@ -123,4 +132,17 @@ pub enum CfgError {
 
     #[error("[memory.{region}] has zero length")]
     RegionEmpty { region: String },
+
+    #[error(
+        "[memory.{region}] ({base:#x}, len {length:#x}) is not a valid MPU region: {requirement}. \
+         ARMv7-M/ARMv8-M MPU regions must have a power-of-two size of at least 32 bytes, with the \
+         base aligned to the size"
+    )]
+    RegionNotMpuAligned {
+        region: String,
+        base: u32,
+        length: u32,
+        /// The specific constraint that failed.
+        requirement: &'static str,
+    },
 }

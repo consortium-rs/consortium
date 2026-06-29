@@ -18,7 +18,7 @@
 pub mod irq;
 
 #[cfg(feature = "dbg")]
-pub use consortium_dbg_defmt as dbg;
+pub use consortium_dbg as dbg;
 
 #[cfg(feature = "ipc-shm")]
 pub use consortium_ipc_transport_memory;

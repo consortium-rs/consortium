@@ -61,6 +61,7 @@ impl Session {
 
         self.validate_memory()?;
         self.validate_ipc()?;
+        self.validate_dbg()?;
 
         for (name, peripheral) in &self.config.peripheral {
             if !self.is_core(peripheral.owner) {
@@ -124,13 +125,35 @@ impl Session {
         Ok(())
     }
 
+    /// Validates `[dbg.<core>]` entries: each must name a coprocessor visible
+    /// on the chip. The application processor is always the host that decodes
+    /// the logs, so it can never be a logger and `[dbg.ap]` is rejected.
+    fn validate_dbg(&self) -> Result<(), CfgError> {
+        let chip = &self.config.profile.chip;
+
+        for core in self.config.dbg.0.keys() {
+            if *core == VisibleCore::Ap {
+                return Err(CfgError::DbgHostNotLoggable);
+            }
+
+            if !self.is_core(*core) {
+                return Err(CfgError::DbgCoreNotVisible {
+                    core: core.to_string(),
+                    chip: chip.clone(),
+                });
+            }
+        }
+
+        Ok(())
+    }
+
     /// Validates shared-memory regions: each must have a non-zero length, lie
     /// entirely within one of the chip's SRAM regions, and not overlap another.
     fn validate_memory(&self) -> Result<(), CfgError> {
         let mut regions = Vec::new();
 
-        if let Some(defmt) = self.config.dbg.defmt {
-            regions.push(("dbg.defmt".to_string(), defmt.memory));
+        for (core, entry) in &self.config.dbg.0 {
+            regions.push((format!("dbg.{core}"), entry.memory));
         }
 
         for (index, channel) in self.config.ipc.channels.iter().enumerate() {
@@ -173,6 +196,28 @@ impl Session {
         if region.length == 0 {
             return Err(CfgError::RegionEmpty {
                 region: name.to_string(),
+            });
+        }
+
+        // MPU constraints (ARMv7-M / ARMv8-M): a region's size must be a
+        // power of two of at least 32 bytes, and its base must be aligned to
+        // that size. Controller cores protect each shared window with an MPU
+        // entry, so a region the MPU cannot express is rejected up front.
+        let mpu_requirement = if !region.length.is_power_of_two() {
+            Some("size must be a power of two")
+        } else if region.length < 32 {
+            Some("size must be at least 32 bytes")
+        } else if region.base % region.length != 0 {
+            Some("base must be aligned to the region size")
+        } else {
+            None
+        };
+        if let Some(requirement) = mpu_requirement {
+            return Err(CfgError::RegionNotMpuAligned {
+                region: name.to_string(),
+                base: region.base,
+                length: region.length,
+                requirement,
             });
         }
 
@@ -340,6 +385,10 @@ mod tests {
             "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"
         );
 
+        let cm33_dbg = session.config.dbg.0[&"cm33".parse::<VisibleCore>().unwrap()];
+        assert_eq!(cm33_dbg.mtu, 64);
+        assert_eq!(cm33_dbg.memory.length, 0x2000);
+
         let i2c1 = &session.config.peripheral["i2c1"];
         assert_eq!(i2c1.owner, VisibleCore::Ap);
         assert_eq!(i2c1.pin["sda"], "PB0");
@@ -472,6 +521,120 @@ mod tests {
         ));
     }
 
+    /// A non-power-of-two region length is not MPU-expressible.
+    #[test]
+    fn rejects_non_power_of_two_region() {
+        let manifest = r#"
+            [profile]
+            chip = "stm32mp257fak3"
+            shared = "./shared"
+
+            [[ipc.channel]]
+            name = "probe"
+            doorbell = "hsem"
+            pattern = "memory"
+            primary = "linux"
+            secondary = "cm33"
+            party.linux = { chan = 0, type = "Ping" }
+            config.memory = { base = 0x00400000, length = 0x00006000 }
+            mtu = 128
+        "#;
+
+        assert!(matches!(
+            Session::from_toml(manifest),
+            Err(CfgError::RegionNotMpuAligned { .. })
+        ));
+    }
+
+    /// A region whose base is not aligned to its (power-of-two) size is not
+    /// MPU-expressible.
+    #[test]
+    fn rejects_misaligned_region() {
+        // length 0x4000 (16 KiB) but base 0x402000 is only 8 KiB-aligned.
+        let manifest = r#"
+            [profile]
+            chip = "stm32mp257fak3"
+            shared = "./shared"
+
+            [[ipc.channel]]
+            name = "probe"
+            doorbell = "hsem"
+            pattern = "memory"
+            primary = "linux"
+            secondary = "cm33"
+            party.linux = { chan = 0, type = "Ping" }
+            config.memory = { base = 0x00402000, length = 0x00004000 }
+            mtu = 128
+        "#;
+
+        let err = Session::from_toml(manifest).unwrap_err();
+        assert!(matches!(err, CfgError::RegionNotMpuAligned { .. }));
+        assert!(err.to_string().contains("aligned"));
+    }
+
+    /// A region smaller than the ARMv7-M minimum (32 bytes) is rejected.
+    #[test]
+    fn rejects_subminimal_region() {
+        let manifest = r#"
+            [profile]
+            chip = "stm32mp257fak3"
+            shared = "./shared"
+
+            [[ipc.channel]]
+            name = "probe"
+            doorbell = "hsem"
+            pattern = "memory"
+            primary = "linux"
+            secondary = "cm33"
+            party.linux = { chan = 0, type = "Ping" }
+            config.memory = { base = 0x00400000, length = 0x10 }
+            mtu = 128
+        "#;
+
+        assert!(matches!(
+            Session::from_toml(manifest),
+            Err(CfgError::RegionNotMpuAligned { .. })
+        ));
+    }
+
+    /// `[dbg.ap]` is rejected: the AP is always the host, never a logger.
+    #[test]
+    fn rejects_dbg_on_application_processor() {
+        let manifest = r#"
+            [profile]
+            chip = "stm32mp257fak3"
+            shared = "./shared"
+
+            [dbg.ap]
+            memory = { base = 0x00404000, length = 0x00002000 }
+            mtu = 64
+        "#;
+
+        assert!(matches!(
+            Session::from_toml(manifest),
+            Err(CfgError::DbgHostNotLoggable)
+        ));
+    }
+
+    /// A `[dbg.<core>]` table naming a core the chip does not expose is rejected.
+    #[test]
+    fn rejects_dbg_on_unknown_core() {
+        let manifest = r#"
+            [profile]
+            chip = "stm32mp257fak3"
+            shared = "./shared"
+
+            [dbg.cm7]
+            memory = { base = 0x00404000, length = 0x00002000 }
+            mtu = 64
+        "#;
+
+        assert!(matches!(
+            Session::from_toml(manifest),
+            Err(CfgError::DbgCoreNotVisible { .. })
+        ));
+    }
+
     #[test]
     fn rejects_overlapping_regions() {
         let manifest = r#"
@@ -479,7 +642,7 @@ mod tests {
             chip = "stm32mp257fak3"
             shared = "./shared"
 
-            [dbg.defmt]
+            [dbg.cm33]
             memory = { base = 0x00404000, length = 0x00002000 }
             mtu = 64
 
