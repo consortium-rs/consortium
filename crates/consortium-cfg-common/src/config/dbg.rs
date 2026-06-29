@@ -14,21 +14,28 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use super::MemoryRegion;
+use std::collections::HashMap;
+
+use super::{MemoryRegion, VisibleCore};
 
 /// `[dbg]` section: debug transport configuration.
+///
+/// Each `[dbg.<core>]` table declares a defmt-over-shared-memory logger running
+/// on the named coprocessor (`<core>`). The application processor is always the
+/// host that decodes those logs, so it is never named here: there is no
+/// `[dbg.ap]`. A coprocessor with no `[dbg.<core>]` table has no debug logging
+/// configured.
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct Dbg {
-    /// `[dbg.defmt]`: defmt-over-shared-memory debug log configuration.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub defmt: Option<DefmtDbg>,
-}
+#[serde(transparent)]
+pub struct Dbg(
+    /// Per-coprocessor debug loggers, keyed by visible core name (e.g. `cm33`).
+    pub HashMap<VisibleCore, DbgCore>,
+);
 
-/// `[dbg.defmt]` section.
+/// `[dbg.<core>]` section: a single coprocessor's debug log ring.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct DefmtDbg {
+pub struct DbgCore {
     /// Shared-memory region backing the debug log ring.
     pub memory: MemoryRegion,
     /// Maximum transfer unit for debug frames.

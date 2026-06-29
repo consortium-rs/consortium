@@ -22,7 +22,7 @@ name              = "consortium-runtime-mcu"
 version.workspace = true
 
 [features]
-dbg        = ["dep:consortium-dbg-defmt"]
+dbg        = ["dep:consortium-dbg"]
 default    = ["ipc-shm"]
 imx93      = ["consortium-ipc-transport-memory?/imx93", "imx9x"]
 imx95      = ["consortium-ipc-transport-memory?/imx95", "imx9x"]
@@ -38,9 +38,9 @@ stm32mp2xx = ["stm32mp25x"]
 
 [dependencies]
 consortium-ipc = { default-features = false, optional = true, path = "../consortium-ipc" }
-consortium-dbg-defmt = { default-features = false, features = [
+consortium-dbg = { default-features = false, features = [
   "logger",
-], optional = true, path = "../consortium-dbg-defmt" }
+], optional = true, path = "../consortium-dbg" }
 consortium-ipc-transport-memory = { default-features = false, optional = true, path = "../consortium-ipc-transport-memory" }
 cortex-m = { version = "0.7" }
 num-traits = { default-features = false, version = "0.2.19" }

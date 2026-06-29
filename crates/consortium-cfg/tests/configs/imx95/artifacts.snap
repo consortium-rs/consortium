@@ -5,9 +5,9 @@
 ### ipc-shm
 
 ```dts
-ipc-shm@20482000 {
+ipc-shm@20484000 {
     compatible = "generic-uio";
-    reg = <0x0 0x20482000 0x0 0x4000 0x0 0x20486000 0x0 0x4000>;
+    reg = <0x0 0x20484000 0x0 0x4000 0x0 0x20488000 0x0 0x4000>;
     status = "okay";
 };
 ```
@@ -332,7 +332,7 @@ fn _generated() {
                 lp: {
                     let _consortium_ipc_shm_lp_region = unsafe {
                         ::consortium_shared_memory::regions::SramRegion::new(
-                            (541597696usize) as *mut u8,
+                            (541605888usize) as *mut u8,
                             16384usize,
                         )
                     };
@@ -358,7 +358,7 @@ fn _generated() {
                             _consortium_ipc_shm_lp_chan_rx,
                             _consortium_ipc_shm_lp_doorbell_mu1,
                             _consortium_ipc_shm_lp_region,
-                            (541597696usize) as *mut u8,
+                            (541605888usize) as *mut u8,
                         )
                     };
                     let (
@@ -435,7 +435,7 @@ fn _generated() {
                 sensor: {
                     let _consortium_ipc_shm_sensor_region = unsafe {
                         ::consortium_shared_memory::regions::SramRegion::new(
-                            (541614080usize) as *mut u8,
+                            (541622272usize) as *mut u8,
                             16384usize,
                         )
                     };
@@ -461,7 +461,7 @@ fn _generated() {
                             _consortium_ipc_shm_sensor_chan_rx,
                             _consortium_ipc_shm_sensor_doorbell_mu7,
                             _consortium_ipc_shm_sensor_region,
-                            (541614080usize) as *mut u8,
+                            (541622272usize) as *mut u8,
                         )
                     };
                     let (

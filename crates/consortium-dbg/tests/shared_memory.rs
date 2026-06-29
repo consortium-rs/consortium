@@ -1,6 +1,6 @@
 use std::sync::mpsc;
 
-use consortium_dbg_defmt::descriptor::{DESCRIPTOR_SIZE, Descriptor, Flags};
+use consortium_dbg::descriptor::{DESCRIPTOR_SIZE, Descriptor, Flags};
 
 const REGION_LEN: usize = 256;
 

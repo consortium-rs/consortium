@@ -7,7 +7,7 @@ linux = "./app"
 optee = "./ta"
 cm33  = "./firmware"
 
-[dbg.defmt]
+[dbg.cm33]
 memory = { base = 0x000480000, length = 0x2000 }
 mtu    = 64
 
@@ -19,7 +19,7 @@ primary       = "linux"
 secondary     = "cm33"
 party.linux   = { chan = 4, type = "LowPowerData" }
 party.cm33    = { chan = 5, type = "PowerControl" }
-config.memory = { base = 0x000482000, length = 0x4000 }
+config.memory = { base = 0x000484000, length = 0x4000 }
 mtu           = 128
 
 [[ipc.channel]]
@@ -30,7 +30,7 @@ primary       = "linux"
 secondary     = "cm7"
 party.linux   = { chan = 6, type = "SensorData" }
 party.cm7     = { chan = 7, type = "MotionControl" }
-config.memory = { base = 0x000486000, length = 0x4000 }
+config.memory = { base = 0x000488000, length = 0x4000 }
 mtu           = 128
 codec         = "rkyv"
 

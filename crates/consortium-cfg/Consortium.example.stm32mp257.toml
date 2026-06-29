@@ -7,7 +7,7 @@ linux = "./app"
 optee = "./ta"
 cm33  = "./firmware"
 
-[dbg.defmt]
+[dbg.cm33]
 memory = { base = 0x000408000, length = 0x2000 }
 mtu    = 64
 

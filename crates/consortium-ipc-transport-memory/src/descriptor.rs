@@ -48,7 +48,7 @@ use consortium_ipc::{Primary, Side};
 use consortium_shared_memory::descriptor::{DescriptorHeader, DescriptorMagic};
 use core::sync::atomic::Ordering;
 
-pub const CHANNEL_NUM_MAX: usize = 32;
+pub const CHANNEL_NUM_MAX: usize = 16;
 
 pub const MAGIC: DescriptorMagic = DescriptorMagic::new(b"CIPC");
 pub const VERSION: u8 = 1;

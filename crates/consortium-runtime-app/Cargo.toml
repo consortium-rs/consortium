@@ -29,7 +29,7 @@ version.workspace = true
 doctest = false
 
 [features]
-dbg        = ["dep:consortium-dbg-defmt"]
+dbg        = ["dep:consortium-dbg"]
 default    = ["dbg", "ipc-shm", "tee"]
 ffi        = ["consortium-ffi"]
 hmi        = ["consortium-hmi"]
@@ -49,9 +49,9 @@ tee        = ["consortium-tee"]
 
 [target.'cfg(target_os = "linux")'.dependencies]
 consortium-cfg-common = { path = "../consortium-cfg-common" }
-consortium-dbg-defmt = { default-features = false, features = [
+consortium-dbg = { default-features = false, features = [
   "host",
-], optional = true, path = "../consortium-dbg-defmt" }
+], optional = true, path = "../consortium-dbg" }
 consortium-ffi = { optional = true, path = "../consortium-ffi" }
 consortium-hmi = { optional = true, path = "../consortium-hmi" }
 consortium-ipc = { features = ["std"], optional = true, path = "../consortium-ipc" }

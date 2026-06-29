@@ -1,6 +1,6 @@
 use std::sync::mpsc;
 
-use consortium_dbg_defmt::{
+use consortium_dbg::{
     descriptor::{DESCRIPTOR_SIZE, Descriptor, Flags},
     logger::ConsortiumLogger,
 };
