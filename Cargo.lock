@@ -377,7 +377,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-dbg-defmt"
+name = "consortium-dbg"
 version = "0.1.0"
 dependencies = [
  "bitflags 2.11.1",
@@ -388,6 +388,7 @@ dependencies = [
  "consortium-shared-memory",
  "defmt",
  "defmt-decoder",
+ "defmt-parser",
  "hex 0.4.3",
  "thiserror",
 ]
@@ -541,7 +542,7 @@ name = "consortium-runtime-app"
 version = "0.1.0"
 dependencies = [
  "consortium-cfg-common",
- "consortium-dbg-defmt",
+ "consortium-dbg",
  "consortium-ffi",
  "consortium-hmi",
  "consortium-ipc",
@@ -552,6 +553,7 @@ dependencies = [
  "memmap2",
  "thiserror",
  "tokio",
+ "tracing",
  "uio",
 ]
 
@@ -559,7 +561,7 @@ dependencies = [
 name = "consortium-runtime-mcu"
 version = "0.1.0"
 dependencies = [
- "consortium-dbg-defmt",
+ "consortium-dbg",
  "consortium-ipc",
  "consortium-ipc-transport-memory",
  "cortex-m",
@@ -1653,7 +1655,7 @@ name = "melt-pot-imx95-app"
 version = "0.1.0"
 dependencies = [
  "consortium-codec",
- "consortium-dbg-defmt",
+ "consortium-dbg",
  "consortium-hmi",
  "consortium-ipc",
  "consortium-ipc-doorbell-mu",
@@ -1673,7 +1675,7 @@ name = "melt-pot-imx95-mcu"
 version = "0.1.0"
 dependencies = [
  "consortium-codec",
- "consortium-dbg-defmt",
+ "consortium-dbg",
  "consortium-ipc",
  "consortium-ipc-doorbell-mu",
  "consortium-ipc-transport-memory",
@@ -1710,7 +1712,7 @@ name = "melt-pot-stm32mp25-app"
 version = "0.1.0"
 dependencies = [
  "consortium-codec",
- "consortium-dbg-defmt",
+ "consortium-dbg",
  "consortium-hmi",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
@@ -1730,7 +1732,7 @@ name = "melt-pot-stm32mp25-mcu"
 version = "0.1.0"
 dependencies = [
  "consortium-codec",
- "consortium-dbg-defmt",
+ "consortium-dbg",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
  "consortium-ipc-transport-memory",

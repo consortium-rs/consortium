@@ -19,6 +19,11 @@ pub mod remoteproc;
 #[cfg(feature = "ipc-shm")]
 pub mod uio;
 
+/// Host-side defmt console for coprocessor debug rings. Requires both the
+/// `dbg` decode stack and the `ipc-shm` UIO mapping.
+#[cfg(all(feature = "dbg", feature = "ipc-shm"))]
+pub mod dbg_console;
+
 #[cfg(feature = "ipc")]
 pub use consortium_ipc as ipc;
 #[cfg(feature = "ipc-shm")]

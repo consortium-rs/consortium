@@ -1,0 +1,76 @@
+---
+source: crates/consortium-cfg/tests/snap.rs
+expression: connect_expr(tokens)
+---
+enum ConsortiumConnectError {
+    Descriptor(()),
+    Doorbell,
+    Other,
+}
+struct S {
+    sensor: (),
+}
+impl S {
+    async fn _generated(self) -> ::core::result::Result<(), ConsortiumConnectError> {
+        let _ = {
+            let transport = self.sensor;
+            let (chan_tx, chan_rx) = transport.channels();
+            unsafe {
+                <::consortium_ipc_transport_memory::SharedMemoryTransport<
+                    ::consortium_ipc::Secondary,
+                    ::consortium_ipc_doorbell_hsem::HsemDoorbell<
+                        ::consortium_ipc::Secondary,
+                        1usize,
+                    >,
+                    ::consortium_shared_memory::regions::SramRegion,
+                >>::descriptor_ack(
+                        transport.base(),
+                        2usize,
+                        256usize,
+                        transport.doorbell(),
+                        chan_rx,
+                        chan_tx,
+                    )
+                    .await
+            }
+                .map_err(|__e| match __e {
+                    ::consortium_ipc_transport_memory::Error::Descriptor(__d) => {
+                        ConsortiumConnectError::Descriptor(__d)
+                    }
+                    ::consortium_ipc_transport_memory::Error::Doorbell(_) => {
+                        ConsortiumConnectError::Doorbell
+                    }
+                    _ => ConsortiumConnectError::Other,
+                })?;
+            let (t_tx, t_rx) = transport.split();
+            let channel_tx = ::consortium_ipc::Channel::<
+                ::consortium_ipc::Tx,
+                ::shared::Pong,
+                _,
+                ::consortium_codec::PostcardCodec,
+            >::new(
+                chan_tx,
+                t_tx,
+                {
+                    static mut PING_RX_BUF: [u8; 256usize] = [0u8; 256usize];
+                    unsafe { &mut *::core::ptr::addr_of_mut!(PING_RX_BUF) }
+                },
+            );
+            let channel_rx = ::consortium_ipc::Channel::<
+                ::consortium_ipc::Rx,
+                ::shared::Ping,
+                _,
+                ::consortium_codec::PostcardCodec,
+            >::new(
+                chan_rx,
+                t_rx,
+                {
+                    static mut PING_TX_BUF: [u8; 256usize] = [0u8; 256usize];
+                    unsafe { &mut *::core::ptr::addr_of_mut!(PING_TX_BUF) }
+                },
+            );
+            ::consortium_ipc::Transceiver::new(channel_tx, channel_rx)
+        };
+        ::core::result::Result::Ok(())
+    }
+}

@@ -34,6 +34,16 @@ ipcc2@46250000 {
 };
 ```
 
+### dbg-shm
+
+```dts
+dbg-shm@20408000 {
+    compatible = "generic-uio";
+    reg = <0x0 0x20408000 0x0 0x2000>;
+    status = "okay";
+};
+```
+
 ## NVIC Initialization
 
 ### cm0p
@@ -82,7 +92,42 @@ fn _generated() {
 
 ```rust
 fn _generated() {
+    /// Descriptor-handshake failure, with the doorbell-specific payload
+    /// erased so a single error type spans transceivers that use
+    /// different doorbells. `no_std`-safe (no `alloc`).
+    #[derive(Debug)]
+    enum ConsortiumConnectError {
+        /// The descriptor header/channel table was invalid or never reached
+        /// the ready state.
+        Descriptor(::consortium_ipc_transport_memory::DescriptorError),
+        /// The doorbell signal failed during the handshake.
+        Doorbell,
+        /// Any other transport error during the handshake.
+        Other,
+    }
+    /// IPC endpoints that have been *constructed* but not yet connected.
+    /// Call [`connect`](IpcMemoryEndpoints::connect) to run the descriptor
+    /// handshake and obtain usable transceivers.
     struct IpcMemoryEndpoints {
+        sensor: ::consortium_ipc_transport_memory::SharedMemoryTransport<
+            ::consortium_ipc::Primary,
+            ::consortium_ipc_doorbell_hsem::HsemDoorbell<
+                ::consortium_ipc::Primary,
+                1usize,
+            >,
+            ::consortium_shared_memory::regions::SramRegion,
+        >,
+        lp: ::consortium_ipc_transport_memory::SharedMemoryTransport<
+            ::consortium_ipc::Primary,
+            ::consortium_ipc_doorbell_ipcc::IpccDoorbell<
+                ::consortium_ipc::Primary,
+                2usize,
+            >,
+            ::consortium_shared_memory::regions::SramRegion,
+        >,
+    }
+    /// Connected IPC endpoints: each field is a ready-to-use transceiver.
+    struct IpcMemoryEndpointsConnected {
         sensor: ::consortium_ipc::Transceiver<
             ::shared::SensorData,
             ::shared::MotionControl,
@@ -135,163 +180,251 @@ fn _generated() {
         > {
             ::core::result::Result::Ok(Self {
                 sensor: {
-                    let _consortium_ipc_shm_sensor_region = unsafe {
+                    let region = unsafe {
                         ::consortium_shared_memory::regions::SramRegion::new(
                             (uio[0usize].mmap(0usize)?) as *mut u8,
                             16384usize,
                         )
                     };
-                    let _consortium_ipc_shm_sensor_doorbell_hsem = unsafe {
+                    let doorbell = unsafe {
                         ::consortium_ipc_doorbell_hsem::HsemDoorbell::<
                             ::consortium_ipc::Primary,
                             1usize,
                         >::new(uio[1usize].mmap(0usize)?)
                     };
-                    uio[0usize]
-                        .bind_notifier(
-                            _consortium_ipc_shm_sensor_doorbell_hsem.notifier(),
-                        );
-                    let _consortium_ipc_shm_sensor_chan_tx = unsafe {
-                        ::consortium_ipc::Chan::new_unchecked(0u8)
-                    };
-                    let _consortium_ipc_shm_sensor_chan_rx = unsafe {
-                        ::consortium_ipc::Chan::new_unchecked(1u8)
-                    };
-                    let _consortium_ipc_shm_sensor_transport = unsafe {
+                    uio[0usize].bind_notifier(doorbell.notifier());
+                    let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(0u8) };
+                    let chan_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
+                    unsafe {
                         ::consortium_ipc_transport_memory::SharedMemoryTransport::<
                             ::consortium_ipc::Primary,
                             _,
                             _,
                         >::new(
-                            _consortium_ipc_shm_sensor_chan_tx,
-                            _consortium_ipc_shm_sensor_chan_rx,
-                            _consortium_ipc_shm_sensor_doorbell_hsem,
-                            _consortium_ipc_shm_sensor_region,
+                            chan_tx,
+                            chan_rx,
+                            doorbell,
+                            region,
                             (uio[0usize].mmap(0usize)?) as *mut u8,
                         )
-                    };
-                    let (
-                        _consortium_ipc_shm_sensor_transport_tx,
-                        _consortium_ipc_shm_sensor_transport_rx,
-                    ) = _consortium_ipc_shm_sensor_transport.split();
-                    let _consortium_ipc_shm_sensor_channel_tx = ::consortium_ipc::Channel::<
-                        ::consortium_ipc::Tx,
-                        ::shared::SensorData,
-                        _,
-                        ::consortium_codec::PostcardCodec,
-                    >::new(
-                        _consortium_ipc_shm_sensor_chan_tx,
-                        _consortium_ipc_shm_sensor_transport_tx,
-                        {
-                            static mut SENSOR_TX_BUF: [u8; 128usize] = [0u8; 128usize];
-                            unsafe { &mut *::core::ptr::addr_of_mut!(SENSOR_TX_BUF) }
-                        },
-                    );
-                    let _consortium_ipc_shm_sensor_channel_rx = ::consortium_ipc::Channel::<
-                        ::consortium_ipc::Rx,
-                        ::shared::MotionControl,
-                        _,
-                        ::consortium_codec::PostcardCodec,
-                    >::new(
-                        _consortium_ipc_shm_sensor_chan_rx,
-                        _consortium_ipc_shm_sensor_transport_rx,
-                        {
-                            static mut SENSOR_RX_BUF: [u8; 128usize] = [0u8; 128usize];
-                            unsafe { &mut *::core::ptr::addr_of_mut!(SENSOR_RX_BUF) }
-                        },
-                    );
-                    ::consortium_ipc::Transceiver::new(
-                        _consortium_ipc_shm_sensor_channel_tx,
-                        _consortium_ipc_shm_sensor_channel_rx,
-                    )
+                    }
                 },
                 lp: {
-                    let _consortium_ipc_shm_lp_region = unsafe {
+                    let region = unsafe {
                         ::consortium_shared_memory::regions::SramRegion::new(
                             (uio[0usize].mmap(1usize)?) as *mut u8,
                             16384usize,
                         )
                     };
-                    let _consortium_ipc_shm_lp_doorbell_ipcc2 = unsafe {
+                    let doorbell = unsafe {
                         ::consortium_ipc_doorbell_ipcc::IpccDoorbell::<
                             ::consortium_ipc::Primary,
                             2usize,
                         >::new(uio[2usize].mmap(0usize)?)
                     };
-                    uio[0usize]
-                        .bind_notifier(_consortium_ipc_shm_lp_doorbell_ipcc2.notifier());
-                    let _consortium_ipc_shm_lp_chan_tx = unsafe {
-                        ::consortium_ipc::Chan::new_unchecked(0u8)
-                    };
-                    let _consortium_ipc_shm_lp_chan_rx = unsafe {
-                        ::consortium_ipc::Chan::new_unchecked(1u8)
-                    };
-                    let _consortium_ipc_shm_lp_transport = unsafe {
+                    uio[0usize].bind_notifier(doorbell.notifier());
+                    let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(0u8) };
+                    let chan_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
+                    unsafe {
                         ::consortium_ipc_transport_memory::SharedMemoryTransport::<
                             ::consortium_ipc::Primary,
                             _,
                             _,
                         >::new(
-                            _consortium_ipc_shm_lp_chan_tx,
-                            _consortium_ipc_shm_lp_chan_rx,
-                            _consortium_ipc_shm_lp_doorbell_ipcc2,
-                            _consortium_ipc_shm_lp_region,
+                            chan_tx,
+                            chan_rx,
+                            doorbell,
+                            region,
                             (uio[0usize].mmap(1usize)?) as *mut u8,
                         )
-                    };
-                    let (
-                        _consortium_ipc_shm_lp_transport_tx,
-                        _consortium_ipc_shm_lp_transport_rx,
-                    ) = _consortium_ipc_shm_lp_transport.split();
-                    let _consortium_ipc_shm_lp_channel_tx = ::consortium_ipc::Channel::<
+                    }
+                },
+            })
+        }
+        /// Runs the descriptor handshake for every transceiver and returns
+        /// the connected endpoints. Each transceiver's primary side writes
+        /// and the secondary side acks the descriptor before any traffic.
+        async fn connect(
+            self,
+        ) -> ::core::result::Result<
+            IpcMemoryEndpointsConnected,
+            ConsortiumConnectError,
+        > {
+            ::core::result::Result::Ok(IpcMemoryEndpointsConnected {
+                sensor: {
+                    let transport = self.sensor;
+                    let (chan_tx, chan_rx) = transport.channels();
+                    unsafe {
+                        <::consortium_ipc_transport_memory::SharedMemoryTransport<
+                            ::consortium_ipc::Primary,
+                            ::consortium_ipc_doorbell_hsem::HsemDoorbell<
+                                ::consortium_ipc::Primary,
+                                1usize,
+                            >,
+                            ::consortium_shared_memory::regions::SramRegion,
+                        >>::descriptor_init(
+                                transport.base(),
+                                2u8,
+                                128usize,
+                                transport.doorbell(),
+                                chan_tx,
+                                chan_rx,
+                            )
+                            .await
+                    }
+                        .map_err(|__e| match __e {
+                            ::consortium_ipc_transport_memory::Error::Descriptor(__d) => {
+                                ConsortiumConnectError::Descriptor(__d)
+                            }
+                            ::consortium_ipc_transport_memory::Error::Doorbell(_) => {
+                                ConsortiumConnectError::Doorbell
+                            }
+                            _ => ConsortiumConnectError::Other,
+                        })?;
+                    let (t_tx, t_rx) = transport.split();
+                    let channel_tx = ::consortium_ipc::Channel::<
+                        ::consortium_ipc::Tx,
+                        ::shared::SensorData,
+                        _,
+                        ::consortium_codec::PostcardCodec,
+                    >::new(
+                        chan_tx,
+                        t_tx,
+                        {
+                            static mut SENSOR_TX_BUF: [u8; 128usize] = [0u8; 128usize];
+                            unsafe { &mut *::core::ptr::addr_of_mut!(SENSOR_TX_BUF) }
+                        },
+                    );
+                    let channel_rx = ::consortium_ipc::Channel::<
+                        ::consortium_ipc::Rx,
+                        ::shared::MotionControl,
+                        _,
+                        ::consortium_codec::PostcardCodec,
+                    >::new(
+                        chan_rx,
+                        t_rx,
+                        {
+                            static mut SENSOR_RX_BUF: [u8; 128usize] = [0u8; 128usize];
+                            unsafe { &mut *::core::ptr::addr_of_mut!(SENSOR_RX_BUF) }
+                        },
+                    );
+                    ::consortium_ipc::Transceiver::new(channel_tx, channel_rx)
+                },
+                lp: {
+                    let transport = self.lp;
+                    let (chan_tx, chan_rx) = transport.channels();
+                    unsafe {
+                        <::consortium_ipc_transport_memory::SharedMemoryTransport<
+                            ::consortium_ipc::Primary,
+                            ::consortium_ipc_doorbell_ipcc::IpccDoorbell<
+                                ::consortium_ipc::Primary,
+                                2usize,
+                            >,
+                            ::consortium_shared_memory::regions::SramRegion,
+                        >>::descriptor_init(
+                                transport.base(),
+                                2u8,
+                                128usize,
+                                transport.doorbell(),
+                                chan_tx,
+                                chan_rx,
+                            )
+                            .await
+                    }
+                        .map_err(|__e| match __e {
+                            ::consortium_ipc_transport_memory::Error::Descriptor(__d) => {
+                                ConsortiumConnectError::Descriptor(__d)
+                            }
+                            ::consortium_ipc_transport_memory::Error::Doorbell(_) => {
+                                ConsortiumConnectError::Doorbell
+                            }
+                            _ => ConsortiumConnectError::Other,
+                        })?;
+                    let (t_tx, t_rx) = transport.split();
+                    let channel_tx = ::consortium_ipc::Channel::<
                         ::consortium_ipc::Tx,
                         ::shared::PowerStatus,
                         _,
                         ::consortium_codec::RkyvCodec,
                     >::new(
-                        _consortium_ipc_shm_lp_chan_tx,
-                        _consortium_ipc_shm_lp_transport_tx,
+                        chan_tx,
+                        t_tx,
                         {
                             static mut LP_TX_BUF: [u8; 128usize] = [0u8; 128usize];
                             unsafe { &mut *::core::ptr::addr_of_mut!(LP_TX_BUF) }
                         },
                     );
-                    let _consortium_ipc_shm_lp_channel_rx = ::consortium_ipc::Channel::<
+                    let channel_rx = ::consortium_ipc::Channel::<
                         ::consortium_ipc::Rx,
                         ::shared::PowerMode,
                         _,
                         ::consortium_codec::RkyvCodec,
                     >::new(
-                        _consortium_ipc_shm_lp_chan_rx,
-                        _consortium_ipc_shm_lp_transport_rx,
+                        chan_rx,
+                        t_rx,
                         {
                             static mut LP_RX_BUF: [u8; 128usize] = [0u8; 128usize];
                             unsafe { &mut *::core::ptr::addr_of_mut!(LP_RX_BUF) }
                         },
                     );
-                    ::consortium_ipc::Transceiver::new(
-                        _consortium_ipc_shm_lp_channel_tx,
-                        _consortium_ipc_shm_lp_channel_rx,
-                    )
+                    ::consortium_ipc::Transceiver::new(channel_tx, channel_rx)
                 },
             })
         }
     }
-    struct ConsortiumEndpoints {
-        uio: ::std::vec::Vec<::consortium_runtime_app::uio::UioDevice>,
-        ipc_shm: IpcMemoryEndpoints,
+    /// Aggregate bring-up error for [`init`].
+    #[derive(Debug)]
+    enum ConsortiumInitError {
+        /// Opening or mapping a UIO device failed.
+        Uio(::consortium_runtime_app::uio::UioDeviceError),
+        /// An IPC transceiver's descriptor handshake failed.
+        Ipc(ConsortiumConnectError),
+        Dbg(::consortium_runtime_app::dbg_console::DbgConsoleError),
     }
-    fn init() -> ::core::result::Result<
-        ConsortiumEndpoints,
-        ::consortium_runtime_app::uio::UioDeviceError,
-    > {
+    impl ::core::convert::From<::consortium_runtime_app::uio::UioDeviceError>
+    for ConsortiumInitError {
+        fn from(e: ::consortium_runtime_app::uio::UioDeviceError) -> Self {
+            ConsortiumInitError::Uio(e)
+        }
+    }
+    impl ::core::convert::From<ConsortiumConnectError> for ConsortiumInitError {
+        fn from(e: ConsortiumConnectError) -> Self {
+            ConsortiumInitError::Ipc(e)
+        }
+    }
+    impl ::core::convert::From<::consortium_runtime_app::dbg_console::DbgConsoleError>
+    for ConsortiumInitError {
+        fn from(e: ::consortium_runtime_app::dbg_console::DbgConsoleError) -> Self {
+            ConsortiumInitError::Dbg(e)
+        }
+    }
+    struct ConsortiumEndpoints {
+        _consortium_dbg: ::consortium_runtime_app::dbg_console::DbgConsole,
+        uio: ::std::vec::Vec<::consortium_runtime_app::uio::UioDevice>,
+        ipc_shm: IpcMemoryEndpointsConnected,
+    }
+    async fn init() -> ::core::result::Result<ConsortiumEndpoints, ConsortiumInitError> {
         let uio = ::std::vec![
             ::consortium_runtime_app::uio::UioDevice::open(0usize) ?,
             ::consortium_runtime_app::uio::UioDevice::open(1usize) ?,
-            ::consortium_runtime_app::uio::UioDevice::open(2usize) ?
+            ::consortium_runtime_app::uio::UioDevice::open(2usize) ?,
+            ::consortium_runtime_app::uio::UioDevice::open(3usize) ?
         ];
-        let ipc_shm = IpcMemoryEndpoints::new(&uio)?;
+        let ipc_shm = IpcMemoryEndpoints::new(&uio)?.connect().await?;
+        let _consortium_dbg = ::consortium_runtime_app::dbg_console::spawn(
+            &uio,
+            &[
+                ::consortium_runtime_app::dbg_console::DbgRingSpec {
+                    uio_id: 3,
+                    mmap_id: 0,
+                    len: 8192,
+                    elf_path: "./firmware",
+                    label: "cm33",
+                },
+            ],
+        )?;
         ::core::result::Result::Ok(ConsortiumEndpoints {
+            _consortium_dbg,
             uio,
             ipc_shm,
         })
@@ -303,7 +436,34 @@ fn _generated() {
 
 ```rust
 fn _generated() {
+    /// Descriptor-handshake failure, with the doorbell-specific payload
+    /// erased so a single error type spans transceivers that use
+    /// different doorbells. `no_std`-safe (no `alloc`).
+    #[derive(Debug)]
+    enum ConsortiumConnectError {
+        /// The descriptor header/channel table was invalid or never reached
+        /// the ready state.
+        Descriptor(::consortium_ipc_transport_memory::DescriptorError),
+        /// The doorbell signal failed during the handshake.
+        Doorbell,
+        /// Any other transport error during the handshake.
+        Other,
+    }
+    /// IPC endpoints that have been *constructed* but not yet connected.
+    /// Call [`connect`](IpcMemoryEndpoints::connect) to run the descriptor
+    /// handshake and obtain usable transceivers.
     struct IpcMemoryEndpoints {
+        lp: ::consortium_ipc_transport_memory::SharedMemoryTransport<
+            ::consortium_ipc::Secondary,
+            ::consortium_ipc_doorbell_ipcc::IpccDoorbell<
+                ::consortium_ipc::Secondary,
+                2usize,
+            >,
+            ::consortium_shared_memory::regions::SramRegion,
+        >,
+    }
+    /// Connected IPC endpoints: each field is a ready-to-use transceiver.
+    struct IpcMemoryEndpointsConnected {
         lp: ::consortium_ipc::Transceiver<
             ::shared::PowerMode,
             ::shared::PowerStatus,
@@ -330,73 +490,106 @@ fn _generated() {
         fn new() -> Self {
             Self {
                 lp: {
-                    let _consortium_ipc_shm_lp_region = unsafe {
+                    let region = unsafe {
                         ::consortium_shared_memory::regions::SramRegion::new(
                             (541081600usize) as *mut u8,
                             16384usize,
                         )
                     };
-                    let _consortium_ipc_shm_lp_doorbell_ipcc2 = unsafe {
+                    let doorbell = unsafe {
                         ::consortium_ipc_doorbell_ipcc::IpccDoorbell::<
                             ::consortium_ipc::Secondary,
                             2usize,
                         >::new(1176829952usize)
                     };
-                    let _consortium_ipc_shm_lp_chan_tx = unsafe {
-                        ::consortium_ipc::Chan::new_unchecked(1u8)
-                    };
-                    let _consortium_ipc_shm_lp_chan_rx = unsafe {
-                        ::consortium_ipc::Chan::new_unchecked(0u8)
-                    };
-                    let _consortium_ipc_shm_lp_transport = unsafe {
+                    let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
+                    let chan_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(0u8) };
+                    unsafe {
                         ::consortium_ipc_transport_memory::SharedMemoryTransport::<
                             ::consortium_ipc::Secondary,
                             _,
                             _,
                         >::new(
-                            _consortium_ipc_shm_lp_chan_tx,
-                            _consortium_ipc_shm_lp_chan_rx,
-                            _consortium_ipc_shm_lp_doorbell_ipcc2,
-                            _consortium_ipc_shm_lp_region,
+                            chan_tx,
+                            chan_rx,
+                            doorbell,
+                            region,
                             (541081600usize) as *mut u8,
                         )
-                    };
-                    let (
-                        _consortium_ipc_shm_lp_transport_tx,
-                        _consortium_ipc_shm_lp_transport_rx,
-                    ) = _consortium_ipc_shm_lp_transport.split();
-                    let _consortium_ipc_shm_lp_channel_tx = ::consortium_ipc::Channel::<
+                    }
+                },
+            }
+        }
+        /// Runs the descriptor handshake for every transceiver and returns
+        /// the connected endpoints. Each transceiver's primary side writes
+        /// and the secondary side acks the descriptor before any traffic.
+        async fn connect(
+            self,
+        ) -> ::core::result::Result<
+            IpcMemoryEndpointsConnected,
+            ConsortiumConnectError,
+        > {
+            ::core::result::Result::Ok(IpcMemoryEndpointsConnected {
+                lp: {
+                    let transport = self.lp;
+                    let (chan_tx, chan_rx) = transport.channels();
+                    unsafe {
+                        <::consortium_ipc_transport_memory::SharedMemoryTransport<
+                            ::consortium_ipc::Secondary,
+                            ::consortium_ipc_doorbell_ipcc::IpccDoorbell<
+                                ::consortium_ipc::Secondary,
+                                2usize,
+                            >,
+                            ::consortium_shared_memory::regions::SramRegion,
+                        >>::descriptor_ack(
+                                transport.base(),
+                                2usize,
+                                128usize,
+                                transport.doorbell(),
+                                chan_rx,
+                                chan_tx,
+                            )
+                            .await
+                    }
+                        .map_err(|__e| match __e {
+                            ::consortium_ipc_transport_memory::Error::Descriptor(__d) => {
+                                ConsortiumConnectError::Descriptor(__d)
+                            }
+                            ::consortium_ipc_transport_memory::Error::Doorbell(_) => {
+                                ConsortiumConnectError::Doorbell
+                            }
+                            _ => ConsortiumConnectError::Other,
+                        })?;
+                    let (t_tx, t_rx) = transport.split();
+                    let channel_tx = ::consortium_ipc::Channel::<
                         ::consortium_ipc::Tx,
                         ::shared::PowerMode,
                         _,
                         ::consortium_codec::RkyvCodec,
                     >::new(
-                        _consortium_ipc_shm_lp_chan_tx,
-                        _consortium_ipc_shm_lp_transport_tx,
+                        chan_tx,
+                        t_tx,
                         {
                             static mut LP_RX_BUF: [u8; 128usize] = [0u8; 128usize];
                             unsafe { &mut *::core::ptr::addr_of_mut!(LP_RX_BUF) }
                         },
                     );
-                    let _consortium_ipc_shm_lp_channel_rx = ::consortium_ipc::Channel::<
+                    let channel_rx = ::consortium_ipc::Channel::<
                         ::consortium_ipc::Rx,
                         ::shared::PowerStatus,
                         _,
                         ::consortium_codec::RkyvCodec,
                     >::new(
-                        _consortium_ipc_shm_lp_chan_rx,
-                        _consortium_ipc_shm_lp_transport_rx,
+                        chan_rx,
+                        t_rx,
                         {
                             static mut LP_TX_BUF: [u8; 128usize] = [0u8; 128usize];
                             unsafe { &mut *::core::ptr::addr_of_mut!(LP_TX_BUF) }
                         },
                     );
-                    ::consortium_ipc::Transceiver::new(
-                        _consortium_ipc_shm_lp_channel_tx,
-                        _consortium_ipc_shm_lp_channel_rx,
-                    )
+                    ::consortium_ipc::Transceiver::new(channel_tx, channel_rx)
                 },
-            }
+            })
         }
     }
 }
@@ -406,7 +599,34 @@ fn _generated() {
 
 ```rust
 fn _generated() {
+    /// Descriptor-handshake failure, with the doorbell-specific payload
+    /// erased so a single error type spans transceivers that use
+    /// different doorbells. `no_std`-safe (no `alloc`).
+    #[derive(Debug)]
+    enum ConsortiumConnectError {
+        /// The descriptor header/channel table was invalid or never reached
+        /// the ready state.
+        Descriptor(::consortium_ipc_transport_memory::DescriptorError),
+        /// The doorbell signal failed during the handshake.
+        Doorbell,
+        /// Any other transport error during the handshake.
+        Other,
+    }
+    /// IPC endpoints that have been *constructed* but not yet connected.
+    /// Call [`connect`](IpcMemoryEndpoints::connect) to run the descriptor
+    /// handshake and obtain usable transceivers.
     struct IpcMemoryEndpoints {
+        sensor: ::consortium_ipc_transport_memory::SharedMemoryTransport<
+            ::consortium_ipc::Secondary,
+            ::consortium_ipc_doorbell_hsem::HsemDoorbell<
+                ::consortium_ipc::Secondary,
+                1usize,
+            >,
+            ::consortium_shared_memory::regions::SramRegion,
+        >,
+    }
+    /// Connected IPC endpoints: each field is a ready-to-use transceiver.
+    struct IpcMemoryEndpointsConnected {
         sensor: ::consortium_ipc::Transceiver<
             ::shared::MotionControl,
             ::shared::SensorData,
@@ -433,73 +653,106 @@ fn _generated() {
         fn new() -> Self {
             Self {
                 sensor: {
-                    let _consortium_ipc_shm_sensor_region = unsafe {
+                    let region = unsafe {
                         ::consortium_shared_memory::regions::SramRegion::new(
                             (541065216usize) as *mut u8,
                             16384usize,
                         )
                     };
-                    let _consortium_ipc_shm_sensor_doorbell_hsem = unsafe {
+                    let doorbell = unsafe {
                         ::consortium_ipc_doorbell_hsem::HsemDoorbell::<
                             ::consortium_ipc::Secondary,
                             1usize,
                         >::new(1176764416usize)
                     };
-                    let _consortium_ipc_shm_sensor_chan_tx = unsafe {
-                        ::consortium_ipc::Chan::new_unchecked(1u8)
-                    };
-                    let _consortium_ipc_shm_sensor_chan_rx = unsafe {
-                        ::consortium_ipc::Chan::new_unchecked(0u8)
-                    };
-                    let _consortium_ipc_shm_sensor_transport = unsafe {
+                    let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
+                    let chan_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(0u8) };
+                    unsafe {
                         ::consortium_ipc_transport_memory::SharedMemoryTransport::<
                             ::consortium_ipc::Secondary,
                             _,
                             _,
                         >::new(
-                            _consortium_ipc_shm_sensor_chan_tx,
-                            _consortium_ipc_shm_sensor_chan_rx,
-                            _consortium_ipc_shm_sensor_doorbell_hsem,
-                            _consortium_ipc_shm_sensor_region,
+                            chan_tx,
+                            chan_rx,
+                            doorbell,
+                            region,
                             (541065216usize) as *mut u8,
                         )
-                    };
-                    let (
-                        _consortium_ipc_shm_sensor_transport_tx,
-                        _consortium_ipc_shm_sensor_transport_rx,
-                    ) = _consortium_ipc_shm_sensor_transport.split();
-                    let _consortium_ipc_shm_sensor_channel_tx = ::consortium_ipc::Channel::<
+                    }
+                },
+            }
+        }
+        /// Runs the descriptor handshake for every transceiver and returns
+        /// the connected endpoints. Each transceiver's primary side writes
+        /// and the secondary side acks the descriptor before any traffic.
+        async fn connect(
+            self,
+        ) -> ::core::result::Result<
+            IpcMemoryEndpointsConnected,
+            ConsortiumConnectError,
+        > {
+            ::core::result::Result::Ok(IpcMemoryEndpointsConnected {
+                sensor: {
+                    let transport = self.sensor;
+                    let (chan_tx, chan_rx) = transport.channels();
+                    unsafe {
+                        <::consortium_ipc_transport_memory::SharedMemoryTransport<
+                            ::consortium_ipc::Secondary,
+                            ::consortium_ipc_doorbell_hsem::HsemDoorbell<
+                                ::consortium_ipc::Secondary,
+                                1usize,
+                            >,
+                            ::consortium_shared_memory::regions::SramRegion,
+                        >>::descriptor_ack(
+                                transport.base(),
+                                2usize,
+                                128usize,
+                                transport.doorbell(),
+                                chan_rx,
+                                chan_tx,
+                            )
+                            .await
+                    }
+                        .map_err(|__e| match __e {
+                            ::consortium_ipc_transport_memory::Error::Descriptor(__d) => {
+                                ConsortiumConnectError::Descriptor(__d)
+                            }
+                            ::consortium_ipc_transport_memory::Error::Doorbell(_) => {
+                                ConsortiumConnectError::Doorbell
+                            }
+                            _ => ConsortiumConnectError::Other,
+                        })?;
+                    let (t_tx, t_rx) = transport.split();
+                    let channel_tx = ::consortium_ipc::Channel::<
                         ::consortium_ipc::Tx,
                         ::shared::MotionControl,
                         _,
                         ::consortium_codec::PostcardCodec,
                     >::new(
-                        _consortium_ipc_shm_sensor_chan_tx,
-                        _consortium_ipc_shm_sensor_transport_tx,
+                        chan_tx,
+                        t_tx,
                         {
                             static mut SENSOR_RX_BUF: [u8; 128usize] = [0u8; 128usize];
                             unsafe { &mut *::core::ptr::addr_of_mut!(SENSOR_RX_BUF) }
                         },
                     );
-                    let _consortium_ipc_shm_sensor_channel_rx = ::consortium_ipc::Channel::<
+                    let channel_rx = ::consortium_ipc::Channel::<
                         ::consortium_ipc::Rx,
                         ::shared::SensorData,
                         _,
                         ::consortium_codec::PostcardCodec,
                     >::new(
-                        _consortium_ipc_shm_sensor_chan_rx,
-                        _consortium_ipc_shm_sensor_transport_rx,
+                        chan_rx,
+                        t_rx,
                         {
                             static mut SENSOR_TX_BUF: [u8; 128usize] = [0u8; 128usize];
                             unsafe { &mut *::core::ptr::addr_of_mut!(SENSOR_TX_BUF) }
                         },
                     );
-                    ::consortium_ipc::Transceiver::new(
-                        _consortium_ipc_shm_sensor_channel_tx,
-                        _consortium_ipc_shm_sensor_channel_rx,
-                    )
+                    ::consortium_ipc::Transceiver::new(channel_tx, channel_rx)
                 },
-            }
+            })
         }
     }
 }

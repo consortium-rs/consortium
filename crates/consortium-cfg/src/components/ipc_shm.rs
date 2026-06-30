@@ -135,23 +135,58 @@ impl Transceiver {
         }
     }
 
-    /// Generates the initialization code for the transceiver, including: region, doorbell, transport, channel, and transceiver.
-    pub fn initialize(&self, core: VisibleCore, uio_ident: &Ident, ty_crate: &Path) -> TokenStream {
+    /// The unsplit transport type for `core`, naming every generic concretely.
+    ///
+    /// This is both the disconnected `IpcMemoryEndpoints` field type and the
+    /// receiver of the descriptor handshake associated functions in
+    /// [`connect_field_init`](Self::connect_field_init).
+    pub fn transport_ty(&self, core: VisibleCore) -> TokenStream {
+        let side = self
+            .side(core)
+            .expect("core must be either primary or secondary for the transceiver");
+        let side_ident = match side {
+            DoorbellRingerSide::Primary => format_ident!("Primary"),
+            DoorbellRingerSide::Secondary => format_ident!("Secondary"),
+        };
+        let db_id = Literal::usize_suffixed(self.doorbell.id.unwrap_or(1) as usize);
+        let doorbell_type = match self.doorbell.r#type {
+            HardwareDoorbellPeripheralType::Mu => {
+                quote::quote! { ::consortium_ipc_doorbell_mu::MuDoorbell<::consortium_ipc::#side_ident, #db_id> }
+            }
+            HardwareDoorbellPeripheralType::Hsem => {
+                quote::quote! { ::consortium_ipc_doorbell_hsem::HsemDoorbell<::consortium_ipc::#side_ident, #db_id> }
+            }
+            HardwareDoorbellPeripheralType::Ipcc => {
+                quote::quote! { ::consortium_ipc_doorbell_ipcc::IpccDoorbell<::consortium_ipc::#side_ident, #db_id> }
+            }
+        };
+        let region_type = match self.region.r#type {
+            MemoryRegionType::Sram => {
+                quote::quote! { ::consortium_shared_memory::regions::SramRegion }
+            }
+        };
+        let side_type = match side {
+            DoorbellRingerSide::Primary => quote::quote! { ::consortium_ipc::Primary },
+            DoorbellRingerSide::Secondary => quote::quote! { ::consortium_ipc::Secondary },
+        };
+        quote::quote! {
+            ::consortium_ipc_transport_memory::SharedMemoryTransport<#side_type, #doorbell_type, #region_type>
+        }
+    }
+
+    /// The disconnected `IpcMemoryEndpoints` field initializer: builds the
+    /// region, doorbell, channel ids, and unsplit transport, evaluating to the
+    /// transport. The descriptor handshake is deferred to
+    /// [`connect`](super::ipc_shm::ShuHan), so this performs no IPC.
+    pub fn build_field_init(&self, core: VisibleCore, uio_ident: &Ident) -> TokenStream {
         let side = self
             .side(core)
             .expect("core must be either primary or secondary for the transceiver");
 
-        let region_ident = format_ident!("_consortium_ipc_shm_{}_region", self.name);
+        let region_ident = format_ident!("region");
         let region_init = self.region.initialize(core, uio_ident);
-        let region_code = quote::quote! {
-            let #region_ident = #region_init;
-        };
 
-        let doorbell_ident = format_ident!(
-            "_consortium_ipc_shm_{}_doorbell_{}",
-            self.name,
-            self.doorbell.to_string()
-        );
+        let doorbell_ident = format_ident!("doorbell");
         let doorbell_code = self.doorbell.initialize(
             side,
             core,
@@ -161,8 +196,6 @@ impl Transceiver {
             &doorbell_ident,
         );
 
-        let chan_tx_ident = format_ident!("_consortium_ipc_shm_{}_chan_tx", self.name);
-        let chan_rx_ident = format_ident!("_consortium_ipc_shm_{}_chan_rx", self.name);
         let chan_id_tx = match side {
             DoorbellRingerSide::Primary => &self.channel_primary.1.doorbell_chan,
             DoorbellRingerSide::Secondary => &self.channel_secondary.1.doorbell_chan,
@@ -171,42 +204,51 @@ impl Transceiver {
             DoorbellRingerSide::Primary => &self.channel_secondary.1.doorbell_chan,
             DoorbellRingerSide::Secondary => &self.channel_primary.1.doorbell_chan,
         };
-        let chan_code = quote::quote! {
-            // SAFETY: doorbell channel is verified to be valid in the config.
-            let #chan_tx_ident = unsafe { ::consortium_ipc::Chan::new_unchecked(#chan_id_tx) };
-            // SAFETY: doorbell channel is verified to be valid in the config.
-            let #chan_rx_ident = unsafe { ::consortium_ipc::Chan::new_unchecked(#chan_id_rx) };
-        };
 
         let transport_side_ty = match side {
             DoorbellRingerSide::Primary => quote::quote! { ::consortium_ipc::Primary },
             DoorbellRingerSide::Secondary => quote::quote! { ::consortium_ipc::Secondary },
         };
-
-        let transport_ident = format_ident!("_consortium_ipc_shm_{}_transport", self.name);
-        let transport_tx_ident = format_ident!("_consortium_ipc_shm_{}_transport_tx", self.name);
-        let transport_rx_ident = format_ident!("_consortium_ipc_shm_{}_transport_rx", self.name);
         // The transport's descriptor base is the shared-memory region base
         // (offset 0x00), not the doorbell register window.
         let transport_address = self.region.address.memory_lookup(core, uio_ident);
-        let transport_code = quote::quote! {
+
+        quote::quote! {{
+            let #region_ident = #region_init;
+            #doorbell_code
+            // SAFETY: doorbell channel is verified to be valid in the config.
+            let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(#chan_id_tx) };
+            // SAFETY: doorbell channel is verified to be valid in the config.
+            let chan_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(#chan_id_rx) };
             // SAFETY: the base is offset 0x00 of the validated shared-memory
             // region, and the channels/doorbell/region are this side's.
-            let #transport_ident = unsafe {
+            unsafe {
                 ::consortium_ipc_transport_memory::SharedMemoryTransport::<#transport_side_ty, _, _>::new(
-                    #chan_tx_ident,
-                    #chan_rx_ident,
+                    chan_tx,
+                    chan_rx,
                     #doorbell_ident,
                     #region_ident,
                     (#transport_address) as *mut u8,
                 )
-            };
+            }
+        }}
+    }
 
-            let (#transport_tx_ident, #transport_rx_ident) = #transport_ident.split();
-        };
-
-        let channel_tx_ident = format_ident!("_consortium_ipc_shm_{}_channel_tx", self.name);
-        let channel_rx_ident = format_ident!("_consortium_ipc_shm_{}_channel_rx", self.name);
+    /// The connected `IpcMemoryEndpointsConnected` field initializer: runs the
+    /// descriptor handshake on the stored transport (`descriptor_init` when this
+    /// side is Primary, `descriptor_ack` when Secondary), then splits it and
+    /// builds the typed [`Transceiver`]. Evaluates to the transceiver; uses
+    /// `?` against `ConsortiumConnectError` and `.await`.
+    pub fn connect_field_init(
+        &self,
+        core: VisibleCore,
+        field_ident: &Ident,
+        ty_crate: &Path,
+    ) -> TokenStream {
+        let side = self
+            .side(core)
+            .expect("core must be either primary or secondary for the transceiver");
+        let transport_ty = self.transport_ty(core);
 
         let channel_tx = match side {
             DoorbellRingerSide::Primary => &self.channel_primary.1,
@@ -217,45 +259,73 @@ impl Transceiver {
             DoorbellRingerSide::Secondary => &self.channel_primary.1,
         };
 
+        let t_tx = format_ident!("t_tx");
+        let t_rx = format_ident!("t_rx");
+        let chan_tx = format_ident!("chan_tx");
+        let chan_rx = format_ident!("chan_rx");
         let channel_tx_init = channel_tx.initialize(
             Direction::Tx,
-            &chan_tx_ident,
-            &transport_tx_ident,
+            &chan_tx,
+            &t_tx,
             self.codec,
             self.mtu,
             ty_crate,
         );
         let channel_rx_init = channel_rx.initialize(
             Direction::Rx,
-            &chan_rx_ident,
-            &transport_rx_ident,
+            &chan_rx,
+            &t_rx,
             self.codec,
             self.mtu,
             ty_crate,
         );
 
-        let channel_code = quote::quote! {
-            let #channel_tx_ident = #channel_tx_init;
-            let #channel_rx_ident = #channel_rx_init;
-        };
-
-        let transceiver_code = quote::quote! {
-            ::consortium_ipc::Transceiver::new(
-                #channel_tx_ident,
-                #channel_rx_ident
-            )
-        };
-
-        quote::quote! {
-            {
-                #region_code
-                #doorbell_code
-                #chan_code
-                #transport_code
-                #channel_code
-                #transceiver_code
+        // A bidirectional transceiver carves out two channel-table slots: slot 0
+        // is PrimaryToSecondary (TX), slot 1 is SecondaryToPrimary (RX).
+        let transfer_size = Literal::usize_suffixed(self.mtu as usize);
+        // Map any doorbell-generic transport error into the no_std-safe connect
+        // error, dropping the doorbell payload (whose type varies per channel).
+        let map_err = quote::quote! {
+            |__e| match __e {
+                ::consortium_ipc_transport_memory::Error::Descriptor(__d) => {
+                    ConsortiumConnectError::Descriptor(__d)
+                }
+                ::consortium_ipc_transport_memory::Error::Doorbell(_) => {
+                    ConsortiumConnectError::Doorbell
+                }
+                _ => ConsortiumConnectError::Other,
             }
-        }
+        };
+        let handshake = match side {
+            DoorbellRingerSide::Primary => quote::quote! {
+                // SAFETY: base covers the descriptor; this side is Primary, so it
+                // writes the descriptor and waits for the secondary's ack.
+                unsafe {
+                    <#transport_ty>::descriptor_init(
+                        transport.base(), 2u8, #transfer_size, transport.doorbell(), #chan_tx, #chan_rx,
+                    ).await
+                }.map_err(#map_err)?;
+            },
+            DoorbellRingerSide::Secondary => quote::quote! {
+                // SAFETY: base covers the descriptor; this side is Secondary, so it
+                // validates and acks the primary-written descriptor.
+                unsafe {
+                    <#transport_ty>::descriptor_ack(
+                        transport.base(), 2usize, #transfer_size, transport.doorbell(), #chan_rx, #chan_tx,
+                    ).await
+                }.map_err(#map_err)?;
+            },
+        };
+
+        quote::quote! {{
+            let transport = self.#field_ident;
+            let (#chan_tx, #chan_rx) = transport.channels();
+            #handshake
+            let (#t_tx, #t_rx) = transport.split();
+            let channel_tx = #channel_tx_init;
+            let channel_rx = #channel_rx_init;
+            ::consortium_ipc::Transceiver::new(channel_tx, channel_rx)
+        }}
     }
 
     pub fn ty_signature(&self, core: VisibleCore, ty_crate: &Path) -> TokenStream {
@@ -445,28 +515,40 @@ impl ShuHan {
         &self.transceivers
     }
 
+    /// Generates the per-core IPC endpoint module: a *disconnected*
+    /// `IpcMemoryEndpoints` whose `new` only builds the transports, and a
+    /// `IpcMemoryEndpointsConnected` produced by an `async fn connect` that runs
+    /// the descriptor handshake before exposing the typed transceivers.
+    ///
+    /// Splitting construction from connection makes "use a transceiver before the
+    /// descriptor is initialized" unrepresentable: `send`/`recv` live only on the
+    /// connected type, which cannot exist without the handshake having run.
     pub fn initialize(&self, core: VisibleCore, uio_ident: &Ident, ty_crate: &Path) -> TokenStream {
-        // 1. struct field defs: `name: Type`
-        let struct_def = self
-            .transceivers
-            .iter()
-            .map(|t| {
-                let ident = Ident::new(t.name.as_str(), Span::call_site());
-                let ty = t.ty_signature(core, ty_crate);
-                quote::quote! { #ident: #ty }
-            })
-            .collect::<Vec<_>>();
+        // Disconnected fields hold the unsplit transport; connected fields hold
+        // the typed transceiver.
+        let disconnected_def = self.transceivers.iter().map(|t| {
+            let ident = Ident::new(t.name.as_str(), Span::call_site());
+            let ty = t.transport_ty(core);
+            quote::quote! { #ident: #ty }
+        });
+        let connected_def = self.transceivers.iter().map(|t| {
+            let ident = Ident::new(t.name.as_str(), Span::call_site());
+            let ty = t.ty_signature(core, ty_crate);
+            quote::quote! { #ident: #ty }
+        });
 
-        // 2. field inits for `new`'s body: `name: <init expr>`
-        let field_inits = self
-            .transceivers
-            .iter()
-            .map(|t| {
-                let ident = Ident::new(t.name.as_str(), Span::call_site());
-                let init = t.initialize(core, uio_ident, ty_crate);
-                quote::quote! { #ident: #init }
-            })
-            .collect::<Vec<_>>();
+        // `new`-body field inits (build only) and `connect`-body field inits
+        // (handshake + split + typed channels).
+        let build_inits = self.transceivers.iter().map(|t| {
+            let ident = Ident::new(t.name.as_str(), Span::call_site());
+            let init = t.build_field_init(core, uio_ident);
+            quote::quote! { #ident: #init }
+        });
+        let connect_inits = self.transceivers.iter().map(|t| {
+            let ident = Ident::new(t.name.as_str(), Span::call_site());
+            let init = t.connect_field_init(core, &ident, ty_crate);
+            quote::quote! { #ident: #init }
+        });
 
         // The AP resolves region/doorbell bases through UIO, so its `new` borrows
         // the opened devices and is fallible (`mmap` can fail). Controller cores
@@ -480,7 +562,7 @@ impl ShuHan {
                 },
                 quote::quote! {
                     ::core::result::Result::Ok(Self {
-                        #(#field_inits),*
+                        #(#build_inits),*
                     })
                 },
             )
@@ -489,22 +571,53 @@ impl ShuHan {
                 quote::quote! { fn new() -> Self },
                 quote::quote! {
                     Self {
-                        #(#field_inits),*
+                        #(#build_inits),*
                     }
                 },
             )
         };
 
         quote::quote! {
-            // struct definition
-            struct IpcMemoryEndpoints {
-                #(#struct_def),*
+            /// Descriptor-handshake failure, with the doorbell-specific payload
+            /// erased so a single error type spans transceivers that use
+            /// different doorbells. `no_std`-safe (no `alloc`).
+            #[derive(Debug)]
+            enum ConsortiumConnectError {
+                /// The descriptor header/channel table was invalid or never reached
+                /// the ready state.
+                Descriptor(::consortium_ipc_transport_memory::DescriptorError),
+                /// The doorbell signal failed during the handshake.
+                Doorbell,
+                /// Any other transport error during the handshake.
+                Other,
             }
 
-            // impl new
+            /// IPC endpoints that have been *constructed* but not yet connected.
+            /// Call [`connect`](IpcMemoryEndpoints::connect) to run the descriptor
+            /// handshake and obtain usable transceivers.
+            struct IpcMemoryEndpoints {
+                #(#disconnected_def),*
+            }
+
+            /// Connected IPC endpoints: each field is a ready-to-use transceiver.
+            struct IpcMemoryEndpointsConnected {
+                #(#connected_def),*
+            }
+
             impl IpcMemoryEndpoints {
                 #new_sig {
                     #new_body
+                }
+
+                /// Runs the descriptor handshake for every transceiver and returns
+                /// the connected endpoints. Each transceiver's primary side writes
+                /// and the secondary side acks the descriptor before any traffic.
+                async fn connect(
+                    self,
+                ) -> ::core::result::Result<IpcMemoryEndpointsConnected, ConsortiumConnectError> {
+                    ::core::result::Result::Ok(IpcMemoryEndpointsConnected {
+                        #(#connect_inits),*
+                    })
                 }
             }
         }

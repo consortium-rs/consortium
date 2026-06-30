@@ -50,7 +50,7 @@ tee        = ["consortium-tee"]
 [target.'cfg(target_os = "linux")'.dependencies]
 consortium-cfg-common = { path = "../consortium-cfg-common" }
 consortium-dbg = { default-features = false, features = [
-  "host",
+  "decode",
 ], optional = true, path = "../consortium-dbg" }
 consortium-ffi = { optional = true, path = "../consortium-ffi" }
 consortium-hmi = { optional = true, path = "../consortium-hmi" }
@@ -63,6 +63,7 @@ consortium-tee = { optional = true, path = "../consortium-tee" }
 libc = "0.2"
 thiserror = { version = "2.0" }
 tokio = { features = ["io-util", "rt", "time"], version = "1" }
+tracing = { version = "0.1" }
 uio = { version = "0.5.2" }
 
 

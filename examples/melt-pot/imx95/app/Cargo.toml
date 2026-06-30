@@ -33,9 +33,9 @@ melt-pot-shared   = { path = "../../shared" }
 melt-pot-imx95-ta = { default-features = false, features = ["ca"], path = "../ta" }
 
 consortium-codec = { features = ["postcard"], path = "../../../../crates/consortium-codec" }
-consortium-dbg-defmt = { default-features = false, features = [
+consortium-dbg = { default-features = false, features = [
   "host",
-], path = "../../../../crates/consortium-dbg-defmt" }
+], path = "../../../../crates/consortium-dbg" }
 consortium-tee = { default-features = false, features = [
   "ca",
 ], path = "../../../../crates/consortium-tee" }

@@ -131,7 +131,7 @@ impl Session {
     fn validate_dbg(&self) -> Result<(), CfgError> {
         let chip = &self.config.profile.chip;
 
-        for core in self.config.dbg.0.keys() {
+        for core in self.config.dbg.cores.keys() {
             if *core == VisibleCore::Ap {
                 return Err(CfgError::DbgHostNotLoggable);
             }
@@ -152,7 +152,7 @@ impl Session {
     fn validate_memory(&self) -> Result<(), CfgError> {
         let mut regions = Vec::new();
 
-        for (core, entry) in &self.config.dbg.0 {
+        for (core, entry) in &self.config.dbg.cores {
             regions.push((format!("dbg.{core}"), entry.memory));
         }
 
@@ -385,7 +385,12 @@ mod tests {
             "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"
         );
 
-        let cm33_dbg = session.config.dbg.0[&"cm33".parse::<VisibleCore>().unwrap()];
+        // `[dbg] mode` flattens alongside the `[dbg.<core>]` tables.
+        assert_eq!(
+            session.config.dbg.mode,
+            consortium_cfg_common::config::DbgMode::Auto
+        );
+        let cm33_dbg = session.config.dbg.cores[&"cm33".parse::<VisibleCore>().unwrap()];
         assert_eq!(cm33_dbg.mtu, 64);
         assert_eq!(cm33_dbg.memory.length, 0x2000);
 

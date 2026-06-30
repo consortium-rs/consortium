@@ -44,6 +44,24 @@ fn expr(tokens: TokenStream) -> String {
     prettyplease::unparse(&file)
 }
 
+/// Pretty-print a `connect_field_init` expression, which uses `.await`, `?`,
+/// `self.<field>`, and `ConsortiumConnectError`. Wrap it in an async, fallible
+/// method on a stub carrying the referenced field so it parses standalone.
+fn connect_expr(tokens: TokenStream) -> String {
+    let wrapped: TokenStream = quote::quote! {
+        enum ConsortiumConnectError { Descriptor(()), Doorbell, Other }
+        struct S { sensor: () }
+        impl S {
+            async fn _generated(self) -> ::core::result::Result<(), ConsortiumConnectError> {
+                let _ = #tokens;
+                ::core::result::Result::Ok(())
+            }
+        }
+    };
+    let file = syn::parse_file(&wrapped.to_string()).expect("generated code should parse as Rust");
+    prettyplease::unparse(&file)
+}
+
 /// Pretty-print a fragment that is a sequence of items (e.g. struct + impl).
 fn items(tokens: TokenStream) -> String {
     let file = syn::parse_file(&tokens.to_string()).expect("generated code should parse as Rust");
@@ -104,17 +122,36 @@ fn transceiver() -> Transceiver {
 #[test]
 fn transceiver_primary_side_binds_uio_notifier() {
     let uio = format_ident!("uio");
-    let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
-    let tokens = transceiver().initialize(VisibleCore::Ap, &uio, &ty_crate);
-    insta::assert_snapshot!(stmts(tokens));
+    // The build phase resolves the AP region/doorbell and binds the UIO notifier;
+    // it evaluates to the unsplit transport (handshake deferred to `connect`).
+    let tokens = transceiver().build_field_init(VisibleCore::Ap, &uio);
+    insta::assert_snapshot!(expr(tokens));
 }
 
 #[test]
 fn transceiver_secondary_side_uses_controller_addresses() {
     let uio = format_ident!("uio");
+    let tokens = transceiver().build_field_init(cm33(), &uio);
+    insta::assert_snapshot!(expr(tokens));
+}
+
+#[test]
+fn transceiver_primary_connect_runs_descriptor_init() {
     let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
-    let tokens = transceiver().initialize(cm33(), &uio, &ty_crate);
-    insta::assert_snapshot!(stmts(tokens));
+    let field = format_ident!("sensor");
+    // The connect phase runs `descriptor_init` on the primary side, splits, and
+    // builds the typed transceiver. It uses `.await`/`?`, so it is wrapped in an
+    // async, fallible context for pretty-printing.
+    let tokens = transceiver().connect_field_init(VisibleCore::Ap, &field, &ty_crate);
+    insta::assert_snapshot!(connect_expr(tokens));
+}
+
+#[test]
+fn transceiver_secondary_connect_runs_descriptor_ack() {
+    let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
+    let field = format_ident!("sensor");
+    let tokens = transceiver().connect_field_init(cm33(), &field, &ty_crate);
+    insta::assert_snapshot!(connect_expr(tokens));
 }
 
 #[test]
