@@ -187,7 +187,7 @@ fn _generated() {
                 >,
                 ::consortium_shared_memory::regions::SramRegion,
             >,
-            ::consortium_codec::RkyvCodec,
+            ::consortium_codec::RkyvCodec<128usize>,
         >,
     }
     impl IpcMemoryEndpoints {
@@ -364,7 +364,7 @@ fn _generated() {
                         ::consortium_ipc::Tx,
                         ::shared::SensorData,
                         _,
-                        ::consortium_codec::RkyvCodec,
+                        ::consortium_codec::RkyvCodec<128usize>,
                     >::new(
                         chan_tx,
                         t_tx,
@@ -377,7 +377,7 @@ fn _generated() {
                         ::consortium_ipc::Rx,
                         ::shared::MotionControl,
                         _,
-                        ::consortium_codec::RkyvCodec,
+                        ::consortium_codec::RkyvCodec<128usize>,
                     >::new(
                         chan_rx,
                         t_rx,
@@ -665,7 +665,7 @@ fn _generated() {
                 >,
                 ::consortium_shared_memory::regions::SramRegion,
             >,
-            ::consortium_codec::RkyvCodec,
+            ::consortium_codec::RkyvCodec<128usize>,
         >,
     }
     impl IpcMemoryEndpoints {
@@ -747,7 +747,7 @@ fn _generated() {
                         ::consortium_ipc::Tx,
                         ::shared::MotionControl,
                         _,
-                        ::consortium_codec::RkyvCodec,
+                        ::consortium_codec::RkyvCodec<128usize>,
                     >::new(
                         chan_tx,
                         t_tx,
@@ -760,7 +760,7 @@ fn _generated() {
                         ::consortium_ipc::Rx,
                         ::shared::SensorData,
                         _,
-                        ::consortium_codec::RkyvCodec,
+                        ::consortium_codec::RkyvCodec<128usize>,
                     >::new(
                         chan_rx,
                         t_rx,

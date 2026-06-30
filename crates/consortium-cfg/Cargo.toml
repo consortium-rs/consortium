@@ -34,7 +34,25 @@ thiserror                       = "2.0.18"
 toml                            = "1.1.0"
 
 [dev-dependencies]
-insta = "1"
+# `trybuild` compiles the generated per-core init code (written to `tests/ui/`)
+# against the real runtime crates, so every crate the codegen names must be a
+# (dev-)dependency here for the UI crates to resolve it.
+consortium-codec             = { features = ["alloc", "postcard", "rkyv"], path = "../consortium-codec" }
+consortium-ipc               = { path = "../consortium-ipc" }
+consortium-ipc-doorbell-hsem = { features = ["std"], path = "../consortium-ipc-doorbell-hsem" }
+consortium-ipc-doorbell-ipcc = { features = ["std"], path = "../consortium-ipc-doorbell-ipcc" }
+consortium-ipc-doorbell-mu   = { features = ["std"], path = "../consortium-ipc-doorbell-mu" }
+consortium-shared-memory     = { path = "../consortium-shared-memory" }
+insta                        = "1"
+rkyv                         = { default-features = false, features = ["alloc", "bytecheck"], version = "0.8.16" }
+serde                        = { features = ["derive"], version = "1.0.228" }
+trybuild                     = "1"
+
+# The AP/Linux-side generated code targets `consortium-runtime-app`, which is
+# gated to `target_os = "linux"`; the UI test only emits + compiles those files
+# on Linux, so the dependency is Linux-only too.
+[target.'cfg(target_os = "linux")'.dev-dependencies]
+consortium-runtime-app = { path = "../consortium-runtime-app" }
 
 [lints]
 workspace = true

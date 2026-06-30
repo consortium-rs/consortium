@@ -40,7 +40,7 @@ impl Channel {
         };
 
         let type_ident = format_ident!("{}", self.type_name);
-        let codec_token = codec_path(codec);
+        let codec_token = codec_path(codec, mtu);
 
         // The MTU-sized scratch buffer the channel encodes/decodes through. A
         // function-local `static` gives it a `'static` lifetime without a heap
@@ -68,11 +68,18 @@ impl Channel {
 
 /// The codec type path for `codec`, used by both endpoint construction and the
 /// transceiver type signature.
-fn codec_path(codec: Codec) -> TokenStream {
+///
+/// `scratch` is the channel MTU; only [`RkyvCodec`](consortium_codec::RkyvCodec)
+/// is generic over it, sizing the on-stack serialization scratch in the
+/// `no_std` (no-`alloc`) encode path. The other codecs ignore it.
+fn codec_path(codec: Codec, scratch: u32) -> TokenStream {
     match codec {
         Codec::Postcard => quote::quote! { ::consortium_codec::PostcardCodec },
         Codec::Prost => quote::quote! { ::consortium_codec::ProstCodec },
-        Codec::Rkyv => quote::quote! { ::consortium_codec::RkyvCodec },
+        Codec::Rkyv => {
+            let scratch = Literal::usize_suffixed(scratch as usize);
+            quote::quote! { ::consortium_codec::RkyvCodec<#scratch> }
+        }
     }
 }
 
@@ -344,7 +351,7 @@ impl Transceiver {
             ::consortium_ipc_transport_memory::SharedMemoryTransportRx<#side_type, #doorbell_type, #region_type>
         };
 
-        let codec_type = codec_path(self.codec);
+        let codec_type = codec_path(self.codec, self.mtu);
 
         let chan_tx = match side {
             DoorbellRingerSide::Primary => &self.channel_primary.1,

@@ -315,16 +315,26 @@ name = "consortium-cfg"
 version = "0.1.0"
 dependencies = [
  "consortium-cfg-common",
+ "consortium-codec",
  "consortium-dts",
+ "consortium-ipc",
+ "consortium-ipc-doorbell-hsem",
+ "consortium-ipc-doorbell-ipcc",
+ "consortium-ipc-doorbell-mu",
  "consortium-ipc-transport-memory",
+ "consortium-runtime-app",
+ "consortium-shared-memory",
  "insta",
  "prettyplease",
  "proc-macro2",
  "quote",
+ "rkyv",
+ "serde",
  "serde_yaml",
  "syn",
  "thiserror",
  "toml",
+ "trybuild",
 ]
 
 [[package]]
