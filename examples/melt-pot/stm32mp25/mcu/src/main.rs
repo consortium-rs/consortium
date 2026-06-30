@@ -21,7 +21,7 @@ use embassy_executor::Spawner;
 use panic_halt as _;
 
 use consortium_codec::PostcardCodec;
-// Depending on `consortium-dbg-defmt` with the `logger` feature registers its
+// Depending on `consortium-dbg` with the `logger` feature registers its
 // `#[global_logger]` (`ConsortiumLogger`) as defmt's sink, so the `defmt::info!`
 // calls below land in the CDBG ring described by `[dbg]`. No import is needed —
 // defmt resolves the global logger through the linker.
@@ -66,7 +66,7 @@ const IPC_CHAN: u8 = 0; // doorbell channel = HSEM semaphore index
 //
 // The `ConsortiumLogger` global_logger locates the CDBG ring from the `[dbg]`
 // section of Consortium.toml, injected by consortium-builder as `CONSORTIUM_DBG_*`
-// and read through `consortium_dbg_defmt::config` — no `#[no_mangle]` statics or
+// and read through `consortium_dbg::config` — no `#[no_mangle]` statics or
 // linker symbols are required. The CA35 maps the same region via the [dbg] UIO.
 
 // Scratch buffer for the postcard encoder — lives in .bss, never on the stack.
@@ -74,6 +74,11 @@ static mut TX_BUF: [u8; MTU] = [0u8; MTU];
 
 #[embassy_executor::main]
 async fn main(_spawner: Spawner) {
+    // Reset the CDBG ring on every boot. A warm reset can retain SRAM, leaving a
+    // valid-looking but stale descriptor (cursors mid-stream, latched flags); this
+    // starts each boot from a fresh, empty ring. No-op when `[dbg]` is unconfigured.
+    consortium_dbg::logger::ConsortiumLogger::init();
+
     // SAFETY: IPC_SRAM_BASE is the CM33 address of the DMA-coherent shared SRAM;
     // no other Rust reference aliases this memory.
     let ipc_base = IPC_SRAM_BASE as *mut u8;

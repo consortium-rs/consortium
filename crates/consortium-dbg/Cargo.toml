@@ -5,7 +5,7 @@ name              = "consortium-dbg"
 version.workspace = true
 
 [features]
-decode        = ["dep:defmt-decoder", "host"]
+decode        = ["dep:defmt-decoder", "dep:defmt-parser", "host"]
 default       = ["host", "logger"]
 doorbell-hsem = ["consortium-ipc-doorbell-hsem"]
 doorbell-mu   = ["consortium-ipc-doorbell-mu"]
@@ -21,6 +21,7 @@ consortium-ipc-doorbell-mu   = { default-features = false, optional = true, path
 consortium-shared-memory     = { path = "../consortium-shared-memory" }
 defmt                        = "1.1.0"
 defmt-decoder                = { optional = true, version = "1.1" }
+defmt-parser                 = { optional = true, version = "1" }
 thiserror                    = { default-features = false, version = "2.0" }
 
 [dev-dependencies]

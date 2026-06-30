@@ -7,6 +7,11 @@ linux = "./app"
 optee = "./ta"
 cm33  = "./firmware"
 
+[dbg]
+# How the host (AP) consumes the rings: "auto" spawns a console that forwards
+# decoded defmt frames to `tracing`; "interface" hands back reader handles.
+mode = "auto"
+
 [dbg.cm33]
 memory = { base = 0x000408000, length = 0x2000 }
 mtu    = 64

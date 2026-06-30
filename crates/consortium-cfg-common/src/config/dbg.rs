@@ -25,12 +25,43 @@ use super::{MemoryRegion, VisibleCore};
 /// host that decodes those logs, so it is never named here: there is no
 /// `[dbg.ap]`. A coprocessor with no `[dbg.<core>]` table has no debug logging
 /// configured.
+///
+/// The optional top-level `mode` field selects how the host (AP) consumes the
+/// rings; the per-core tables flatten alongside it, so a manifest reads:
+///
+/// ```toml
+/// [dbg]
+/// mode = "auto"
+///
+/// [dbg.cm33]
+/// memory = { base = 0x00408000, length = 0x2000 }
+/// mtu = 64
+/// ```
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
-#[serde(transparent)]
-pub struct Dbg(
+pub struct Dbg {
+    /// How the host decodes the rings. Defaults to [`DbgMode::Auto`].
+    #[serde(default)]
+    pub mode: DbgMode,
     /// Per-coprocessor debug loggers, keyed by visible core name (e.g. `cm33`).
-    pub HashMap<VisibleCore, DbgCore>,
-);
+    ///
+    /// `flatten` captures every `[dbg.<core>]` table; the named `mode` field is
+    /// consumed first, so it never appears here.
+    #[serde(flatten)]
+    pub cores: HashMap<VisibleCore, DbgCore>,
+}
+
+/// How the host (AP) consumes each coprocessor's debug ring.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum DbgMode {
+    /// Generate a background task per ring that drains it, decodes the defmt
+    /// stream, and forwards each frame to `tracing` at the mapped level. Turnkey.
+    #[default]
+    Auto,
+    /// Generate accessors that hand the integrator the host ring readers and
+    /// defmt contexts; the integrator drives decoding itself. No background task.
+    Interface,
+}
 
 /// `[dbg.<core>]` section: a single coprocessor's debug log ring.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]

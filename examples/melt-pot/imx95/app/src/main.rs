@@ -19,8 +19,8 @@
 use std::sync::{Arc, Mutex};
 
 use consortium_codec::PostcardCodec;
-use consortium_dbg_defmt::config as dbg_config;
-use consortium_dbg_defmt::host::HostRing;
+use consortium_dbg::config as dbg_config;
+use consortium_dbg::host::HostRing;
 use consortium_hmi::{Bridge, KioskApp};
 use consortium_ipc::{Chan, Channel, Rx, SramRegion};
 use consortium_ipc_doorbell_mu::{MuDoorbell, Primary};
@@ -59,7 +59,7 @@ const CM7_TO_CA55_CHAN: u8 = 1;
 // The CM7 firmware writes defmt frames into this region; the CA55 reads them
 // via HostRing.  Map UIO device `dbg_config::UIO` (the `[dbg]` `uio` index) and
 // call HostRing::from_raw_parts(ptr, DBG_SRAM_LEN). The length comes from the
-// `[dbg]` section via `consortium_dbg_defmt::config`.
+// `[dbg]` section via `consortium_dbg::config`.
 // PLATFORM: replace DBG_SRAM_VIRT_BASE with the virtual address after mmap.
 const DBG_SRAM_VIRT_BASE: usize = 0; // placeholder — fill in after mmap
 const DBG_SRAM_LEN: usize = dbg_config::LENGTH as usize;

@@ -5,7 +5,7 @@ a32_target := "armv7-unknown-linux-gnueabihf"
 rv32imc_target := "riscv32imc-unknown-none-elf"
 rv32imac_target := "riscv32imac-unknown-none-elf"
 rv32imafcp_target := "riscv32imafc-unknown-none-elf"
-lint_crates := "consortium-builder consortium-common consortium-cfg consortium-cfg-meta consortium-cli consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg-defmt consortium-dts consortium-ffi consortium-ipc consortium-ipc-doorbell-gpio consortium-ipc-doorbell-hsem consortium-ipc-doorbell-ipcc consortium-ipc-doorbell-mu consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-memory consortium-ort consortium-runtime-mcu consortium-runtime-prt consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
+lint_crates := "consortium-builder consortium-common consortium-cfg consortium-cfg-meta consortium-cli consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg consortium-dts consortium-ffi consortium-ipc consortium-ipc-doorbell-gpio consortium-ipc-doorbell-hsem consortium-ipc-doorbell-ipcc consortium-ipc-doorbell-mu consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-memory consortium-ort consortium-runtime-mcu consortium-runtime-prt consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
 rust_tools := "taplo-cli typos-cli cargo-deny cargo-expand cargo-insta cargo-shear"
 ls_lint_version := "2.3.1"
 
@@ -64,7 +64,7 @@ setup-ls-lint:
 build:
     cargo build
 
-# Run tests. With args: `just test ipc host`, `just test hmi host`, `just test tee host`.
+# Run tests. With args: `just test ipc host`, `just test hmi host`, `just test tee host`, `just test cfg host`.
 test area="" scope="":
     @case "{{ area }}:{{ scope }}" in \
         ":") cargo test ;; \
@@ -79,7 +79,8 @@ test area="" scope="":
         "tee:"|"tee:host") just test-tee-host ;; \
         "tee:a64") just test-tee-a64 ;; \
         "tee:a32") just test-tee-a32 ;; \
-        *) echo "Error: unknown test scope '{{ area }} {{ scope }}'"; echo "Try: just test ipc host | a64 | a32 | m8 | m7, just test hmi host | a64 | a32, or just test tee host | a64 | a32"; exit 1 ;; \
+        "cfg:"|"cfg:host") just test-cfg-host ;; \
+        *) echo "Error: unknown test scope '{{ area }} {{ scope }}'"; echo "Try: just test ipc host | a64 | a32 | m8 | m7, just test hmi host | a64 | a32, just test tee host | a64 | a32, or just test cfg host"; exit 1 ;; \
     esac
 
 # Run tests for a specific crate (e.g. `just test-crate ipc`)
@@ -354,6 +355,14 @@ test-ipc-host:
     cargo test -p consortium-ipc-doorbell-ipcc --features std
     cargo test -p consortium-ipc-doorbell-mu
     cargo test -p consortium-ipc-doorbell-mu --features std
+
+# ── Configuration (host-only) ───────────────────────────────────────────────
+
+# Run host-side configuration tests: schema/validation, lowering, and the
+# codegen/DTS snapshot fixtures. These crates are host-only (no target builds).
+test-cfg-host:
+    cargo test -p consortium-cfg-common
+    cargo test -p consortium-cfg
 
 # ── RISC-V (rv32imc) ────────────────────────────────────────────────────────
 

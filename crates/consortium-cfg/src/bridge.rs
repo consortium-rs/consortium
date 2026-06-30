@@ -41,6 +41,7 @@ use consortium_cfg_common::database::{ChipDatabase, HardwareDoorbellPeripheral, 
 
 use crate::components::address::{Address, ApAddress};
 use crate::components::bella::{BellA, HardwareDoorbell};
+use crate::components::dbg::{DebugLogs, DebugRing};
 use crate::components::ipc_shm::{Channel, DoorbellMeta, ShuHan, Transceiver};
 use crate::components::region::Region;
 use crate::components::uio::UioDevice;
@@ -61,6 +62,9 @@ pub struct LoweredIr {
     /// Linux UIO devices, named for their DTS node. Index 0 is the aggregate
     /// shared-memory device (`ipc-shm`); the rest are one per doorbell.
     pub uio: Vec<(String, UioDevice)>,
+    /// Per-coprocessor debug log rings. Generates no Rust; resolves each
+    /// logger's `CONSORTIUM_DBG_*` build-time configuration for the builder.
+    pub dbg: DebugLogs,
 }
 
 impl LoweredIr {
@@ -97,28 +101,87 @@ impl LoweredIr {
         }
 
         // `UioDevice::open(n)` for each declared device, in `self.uio` order
-        // (shared-memory device first, then one per doorbell). The opened
-        // handles are moved into `ConsortiumEndpoints` so the mmap windows
-        // `IpcMemoryEndpoints` borrows stay alive.
+        // (shared-memory device first, then one per doorbell, then `dbg-shm`).
+        // The opened handles are moved into `ConsortiumEndpoints` so the mmap
+        // windows `IpcMemoryEndpointsConnected` borrows stay alive.
         let opens = (0..self.uio.len()).map(|id| {
             quote! { ::consortium_runtime_app::uio::UioDevice::open(#id)? }
         });
 
+        // The AP host console for the coprocessor debug rings, if any. Its field
+        // is declared *before* `uio` so its threads/handles drop (and stop
+        // touching the mappings) before the `UioDevice`s unmap them.
+        let host = self.dbg.initialize_host(&uio_ident);
+        let (dbg_field, dbg_field_name, dbg_init, dbg_error_arm) = match &host {
+            Some(host) => {
+                let field = &host.field;
+                let name = &host.field_name;
+                let init = &host.init;
+                (
+                    quote! { #field, },
+                    quote! { #name, },
+                    quote! { #init },
+                    quote! {
+                        Dbg(::consortium_runtime_app::dbg_console::DbgConsoleError),
+                    },
+                )
+            }
+            None => (quote! {}, quote! {}, quote! {}, quote! {}),
+        };
+        let dbg_from = if host.is_some() {
+            quote! {
+                impl ::core::convert::From<::consortium_runtime_app::dbg_console::DbgConsoleError>
+                    for ConsortiumInitError
+                {
+                    fn from(e: ::consortium_runtime_app::dbg_console::DbgConsoleError) -> Self {
+                        ConsortiumInitError::Dbg(e)
+                    }
+                }
+            }
+        } else {
+            quote! {}
+        };
+
         quote! {
             #endpoints
 
-            struct ConsortiumEndpoints {
-                #uio_ident: ::std::vec::Vec<::consortium_runtime_app::uio::UioDevice>,
-                ipc_shm: IpcMemoryEndpoints,
+            /// Aggregate bring-up error for [`init`].
+            #[derive(Debug)]
+            enum ConsortiumInitError {
+                /// Opening or mapping a UIO device failed.
+                Uio(::consortium_runtime_app::uio::UioDeviceError),
+                /// An IPC transceiver's descriptor handshake failed.
+                Ipc(ConsortiumConnectError),
+                #dbg_error_arm
             }
 
-            fn init() -> ::core::result::Result<
-                ConsortiumEndpoints,
-                ::consortium_runtime_app::uio::UioDeviceError,
-            > {
+            impl ::core::convert::From<::consortium_runtime_app::uio::UioDeviceError>
+                for ConsortiumInitError
+            {
+                fn from(e: ::consortium_runtime_app::uio::UioDeviceError) -> Self {
+                    ConsortiumInitError::Uio(e)
+                }
+            }
+
+            impl ::core::convert::From<ConsortiumConnectError> for ConsortiumInitError {
+                fn from(e: ConsortiumConnectError) -> Self {
+                    ConsortiumInitError::Ipc(e)
+                }
+            }
+
+            #dbg_from
+
+            struct ConsortiumEndpoints {
+                #dbg_field
+                #uio_ident: ::std::vec::Vec<::consortium_runtime_app::uio::UioDevice>,
+                ipc_shm: IpcMemoryEndpointsConnected,
+            }
+
+            async fn init() -> ::core::result::Result<ConsortiumEndpoints, ConsortiumInitError> {
                 let #uio_ident = ::std::vec![ #(#opens),* ];
-                let ipc_shm = IpcMemoryEndpoints::new(&#uio_ident)?;
-                ::core::result::Result::Ok(ConsortiumEndpoints { #uio_ident, ipc_shm })
+                let ipc_shm = IpcMemoryEndpoints::new(&#uio_ident)?.connect().await?;
+                #dbg_init
+                ::core::result::Result::Ok(ConsortiumEndpoints { #dbg_field_name #uio_ident, ipc_shm })
             }
         }
     }
@@ -289,11 +352,66 @@ impl Session {
             }
         }
 
+        // Debug log rings carry no security world (the table is keyed by a bare
+        // core), so each logger embeds its ring through the non-secure SRAM
+        // alias, matching both the firmware's own view of memory and Linux's
+        // (Linux is non-secure too, so the AP maps the same physical address).
+        let dbg_alias = memory_alias(&self.database, false);
+
+        // The AP maps every dbg ring through one aggregate `dbg-shm` UIO device,
+        // appended after the IPC/doorbell devices. Sort by core name so the mmap
+        // window order is deterministic and agrees with the host codegen, which
+        // sorts the same way.
+        let dbg_uio_id = uio.len();
+        let mut dbg_cores: Vec<_> = self.config.dbg.cores.iter().collect();
+        dbg_cores.sort_by_key(|(core, _)| core.to_string());
+
+        let mut dbg_windows = Vec::new();
+        let mut dbg_rings = HashMap::new();
+        for (mmap_id, (core, entry)) in dbg_cores.into_iter().enumerate() {
+            let base = u64::from(entry.memory.base) + u64::from(dbg_alias);
+            dbg_windows.push((base as u32, entry.memory.length));
+            dbg_rings.insert(
+                *core,
+                DebugRing {
+                    base,
+                    length: u64::from(entry.memory.length),
+                    mtu: entry.mtu,
+                    ap_uio_id: dbg_uio_id,
+                    ap_mmap_id: mmap_id,
+                    elf_path: self.endpoint_artifact(*core).unwrap_or_default(),
+                },
+            );
+        }
+        if !dbg_windows.is_empty() {
+            uio.push((
+                "dbg-shm".to_string(),
+                UioDevice {
+                    mmap: dbg_windows,
+                    irq: None,
+                },
+            ));
+        }
+
         Ok(LoweredIr {
             shuhan: ShuHan::new(transceivers),
             bella: BellA { bells },
             uio,
+            dbg: DebugLogs::new(dbg_rings, self.config.dbg.mode),
         })
+    }
+
+    /// The `[endpoints]` artifact root declared for `core`, used by the host as
+    /// the defmt symbol source for that coprocessor's debug ring.
+    ///
+    /// A core may correspond to a secure and a non-secure party; the ring is per
+    /// core, so the first endpoint whose party projects to `core` is used.
+    fn endpoint_artifact(&self, core: VisibleCore) -> Option<String> {
+        self.config
+            .endpoints
+            .iter()
+            .find(|(party, _)| party.core() == core)
+            .map(|(_, root)| root.clone())
     }
 }
 
@@ -437,7 +555,7 @@ mod tests {
     fn names_uio_devices_shared_memory_then_doorbells() {
         let ir = lowered();
         let names: Vec<_> = ir.uio.iter().map(|(name, _)| name.as_str()).collect();
-        assert_eq!(names, ["ipc-shm", "hsem", "ipcc2"]);
+        assert_eq!(names, ["ipc-shm", "hsem", "ipcc2", "dbg-shm"]);
     }
 
     #[test]
@@ -592,6 +710,25 @@ mod tests {
     }
 
     #[test]
+    fn lowers_dbg_ring_with_non_secure_alias_and_env() {
+        let ir = lowered();
+
+        // The example declares `[dbg.cm33]` at canonical 0x0040_8000; cm33 sees
+        // SRAM through the non-secure alias (0x2000_0000), so its logger embeds
+        // 0x2040_8000.
+        let ring = ir.dbg.ring(cm33()).expect("cm33 has a debug ring");
+        assert_eq!(ring.base, 0x2040_8000);
+        assert_eq!(ring.length, 0x2000);
+        assert_eq!(ring.mtu, 64);
+        assert!(ir.dbg.ring(cm0p()).is_none());
+
+        // The IR resolves the build-time vars the builder injects per core.
+        let env: std::collections::HashMap<_, _> = ring.env().into_iter().collect();
+        assert_eq!(env["CONSORTIUM_DBG_BASE"], "541097984");
+        assert_eq!(env["CONSORTIUM_DBG_LENGTH"], "8192");
+    }
+
+    #[test]
     fn lowered_ir_emits_valid_rust() {
         let ir = lowered();
         let uio = quote::format_ident!("uio");
@@ -599,6 +736,30 @@ mod tests {
 
         let tokens = ir.shuhan.initialize(VisibleCore::Ap, &uio, &ty_crate);
         syn::parse_file(&tokens.to_string()).expect("lowered ShuHan is valid Rust");
+
+        // The full AP entry point (disconnected/connected endpoints, async
+        // `connect`, `ConsortiumInitError`, and the dbg host console weave)
+        // must parse as a complete module.
+        let ap = ir.initialize(VisibleCore::Ap, &ty_crate);
+        let ap_file =
+            syn::parse_file(&ap.to_string()).expect("lowered AP init module is valid Rust");
+        let ap_src = ap.to_string();
+        assert!(ap_src.contains("IpcMemoryEndpointsConnected"));
+        assert!(ap_src.contains("async fn connect"));
+        assert!(ap_src.contains("descriptor_init"));
+        assert!(ap_src.contains("async fn init"));
+        // The example declares `[dbg.cm33]`, so the host console is woven in.
+        assert!(ap_src.contains("dbg_console :: spawn"));
+        // `init` is async and returns the aggregate error.
+        assert!(ap_src.contains("ConsortiumInitError"));
+        let _ = ap_file;
+
+        // A controller core (Secondary) emits an infallible `new` plus the same
+        // `connect` handshake (here via `descriptor_ack`).
+        let cm = ir.initialize(cm33(), &ty_crate);
+        let cm_src = cm.to_string();
+        syn::parse_file(&cm_src).expect("lowered controller init module is valid Rust");
+        assert!(cm_src.contains("descriptor_ack"));
 
         let bella = ir
             .bella

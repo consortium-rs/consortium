@@ -248,6 +248,29 @@ impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTrans
         }
     }
 
+    /// Descriptor base pointer (offset 0x00 of the shared region).
+    ///
+    /// Exposed so the descriptor handshake ([`descriptor_init`] /
+    /// [`descriptor_ack`]) can run on this transport before it is
+    /// [`split`](Self::split) into channel halves.
+    ///
+    /// [`descriptor_init`]: SharedMemoryTransport::descriptor_init
+    /// [`descriptor_ack`]: SharedMemoryTransport::descriptor_ack
+    pub fn base(&self) -> *mut u8 {
+        self.base
+    }
+
+    /// The doorbell this transport rings and waits on, borrowed for the
+    /// descriptor handshake before [`split`](Self::split).
+    pub fn doorbell(&self) -> &D {
+        &self.doorbell
+    }
+
+    /// This side's transmit and receive channel ids, in `(tx, rx)` order.
+    pub fn channels(&self) -> (Chan, Chan) {
+        (self.ch_tx, self.ch_rx)
+    }
+
     /// Consume this transport and return a `(send, recv)` half-pair.
     ///
     /// A single `SharedMemoryTransport` cannot be held by two [`Channel`]s at once

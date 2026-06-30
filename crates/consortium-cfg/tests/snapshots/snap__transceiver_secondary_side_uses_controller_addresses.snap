@@ -1,73 +1,29 @@
 ---
 source: crates/consortium-cfg/tests/snap.rs
-expression: stmts(tokens)
+expression: expr(tokens)
 ---
 fn _generated() {
-    {
-        let _consortium_ipc_shm_ping_region = unsafe {
+    let _ = {
+        let region = unsafe {
             ::consortium_shared_memory::regions::SramRegion::new(
                 (872415232usize) as *mut u8,
                 32768usize,
             )
         };
-        let _consortium_ipc_shm_ping_doorbell_hsem = unsafe {
+        let doorbell = unsafe {
             ::consortium_ipc_doorbell_hsem::HsemDoorbell::<
                 ::consortium_ipc::Secondary,
                 1usize,
             >::new(1140850688usize)
         };
-        let _consortium_ipc_shm_ping_chan_tx = unsafe {
-            ::consortium_ipc::Chan::new_unchecked(1u8)
-        };
-        let _consortium_ipc_shm_ping_chan_rx = unsafe {
-            ::consortium_ipc::Chan::new_unchecked(0u8)
-        };
-        let _consortium_ipc_shm_ping_transport = unsafe {
+        let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
+        let chan_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(0u8) };
+        unsafe {
             ::consortium_ipc_transport_memory::SharedMemoryTransport::<
                 ::consortium_ipc::Secondary,
                 _,
                 _,
-            >::new(
-                _consortium_ipc_shm_ping_chan_tx,
-                _consortium_ipc_shm_ping_chan_rx,
-                _consortium_ipc_shm_ping_doorbell_hsem,
-                _consortium_ipc_shm_ping_region,
-                (872415232usize) as *mut u8,
-            )
-        };
-        let (
-            _consortium_ipc_shm_ping_transport_tx,
-            _consortium_ipc_shm_ping_transport_rx,
-        ) = _consortium_ipc_shm_ping_transport.split();
-        let _consortium_ipc_shm_ping_channel_tx = ::consortium_ipc::Channel::<
-            ::consortium_ipc::Tx,
-            ::shared::Pong,
-            _,
-            ::consortium_codec::PostcardCodec,
-        >::new(
-            _consortium_ipc_shm_ping_chan_tx,
-            _consortium_ipc_shm_ping_transport_tx,
-            {
-                static mut PING_RX_BUF: [u8; 256usize] = [0u8; 256usize];
-                unsafe { &mut *::core::ptr::addr_of_mut!(PING_RX_BUF) }
-            },
-        );
-        let _consortium_ipc_shm_ping_channel_rx = ::consortium_ipc::Channel::<
-            ::consortium_ipc::Rx,
-            ::shared::Ping,
-            _,
-            ::consortium_codec::PostcardCodec,
-        >::new(
-            _consortium_ipc_shm_ping_chan_rx,
-            _consortium_ipc_shm_ping_transport_rx,
-            {
-                static mut PING_TX_BUF: [u8; 256usize] = [0u8; 256usize];
-                unsafe { &mut *::core::ptr::addr_of_mut!(PING_TX_BUF) }
-            },
-        );
-        ::consortium_ipc::Transceiver::new(
-            _consortium_ipc_shm_ping_channel_tx,
-            _consortium_ipc_shm_ping_channel_rx,
-        )
-    }
+            >::new(chan_tx, chan_rx, doorbell, region, (872415232usize) as *mut u8)
+        }
+    };
 }

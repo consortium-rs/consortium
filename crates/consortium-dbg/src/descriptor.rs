@@ -236,7 +236,9 @@ impl Descriptor {
     /// # Safety
     /// `base` must point to this descriptor's ring buffer, valid for at least
     /// `self.capacity` bytes.
-    #[cfg(feature = "logger")]
+    // Read-path helper shared by the host reader (`read_one_frame`) and the
+    // logger's own drain path, so it must be available whenever either is.
+    #[cfg(any(feature = "host", feature = "logger"))]
     pub(crate) unsafe fn next_read_ptr(&mut self, base: *const u8) -> u16 {
         // SAFETY: caller guarantees the ring buffer covers `self.read_ptr`.
         let cursor = unsafe { base.add(self.read_ptr as usize) };

@@ -28,7 +28,7 @@ version.workspace = true
 default = []
 firmware = [
   "dep:consortium-codec",
-  "dep:consortium-dbg-defmt",
+  "dep:consortium-dbg",
   "dep:consortium-ipc",
   "dep:consortium-ipc-doorbell-hsem",
   "dep:consortium-ipc-transport-memory",
@@ -51,9 +51,9 @@ melt-pot-shared = { optional = true, path = "../../shared" }
 consortium-codec = { default-features = false, features = [
   "postcard",
 ], optional = true, path = "../../../../crates/consortium-codec" }
-consortium-dbg-defmt = { default-features = false, features = [
+consortium-dbg = { default-features = false, features = [
   "logger",
-], optional = true, path = "../../../../crates/consortium-dbg-defmt" }
+], optional = true, path = "../../../../crates/consortium-dbg" }
 consortium-ipc = { default-features = false, optional = true, path = "../../../../crates/consortium-ipc" }
 consortium-ipc-doorbell-hsem = { default-features = false, features = [
   "stm32mp25",

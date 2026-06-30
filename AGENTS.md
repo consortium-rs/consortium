@@ -70,7 +70,7 @@ A-core, TEE, HMI, UIO, Cog, WebKit, and Yocto/OpenSTLinux flows are Linux/SDK or
 | Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`                                                                  |
 | Macro helpers   | `consortium-macros-helpers`                                                                                                  |
 | Runtimes/build  | `consortium-runtime-app`, `consortium-runtime-mcu`, `consortium-runtime-spl`, `consortium-builder`, `consortium-cli`         |
-| Debug           | `consortium-dbg-defmt`                                                                                                       |
+| Debug           | `consortium-dbg`                                                                                                             |
 | TEE             | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`, `consortium-tee-test`                               |
 | HMI/Cog/ORT/FFI | `consortium-hmi`, `cogcore`, `cogcore-sys`, `consortium-ort`, `consortium-ffi`                                               |
 | Examples        | `examples/melt-pot/*` for i.MX95 and STM32MP25 app/MCU/TA/shared message crates                                              |
@@ -180,7 +180,13 @@ Current top-level schema:
 
 - `[profile] chip = "..."`
 - `[endpoints]` maps runtime endpoint names to artifact roots.
-- `[dbg.defmt]` contains `memory = { base, length }` and `mtu`.
+- `[dbg.<core>]` declares a defmt logger on coprocessor `<core>` (e.g. `[dbg.cm33]`)
+  and contains `memory = { base, length }` and `mtu`. The AP is always the host that
+  decodes the logs, so there is no `[dbg.ap]`; a coprocessor with no table has no debug.
+  An optional top-level `[dbg] mode` (`auto`/`interface`, default `auto`) selects how
+  the AP consumes the rings: `auto` generates a console that forwards decoded defmt
+  frames to `tracing`; `interface` returns reader handles for the integrator. The
+  field flattens alongside the `[dbg.<core>]` tables.
 - `[[ipc.channel]]` contains `doorbell`, `pattern`, `party.<name>`, `config.memory`,
   `mtu`, and optional `codec`.
 - `[tee]` contains the OP-TEE UUID.
@@ -205,7 +211,7 @@ The intended builder flow injects compile-time environment variables such as
 Consumers read them with `option_env!`/`env!` and parse values in `const` contexts with
 `consortium-cfg-common::env_value`.
 
-This layer is currently mid-migration. `consortium-dbg-defmt::config` uses the current
+This layer is currently mid-migration. `consortium-dbg::config` uses the current
 `CONSORTIUM_DBG_BASE`/`CONSORTIUM_DBG_LENGTH` pattern. Some builder and example code
 still refers to older flat `[ipc]`/`[dbg]` tables or removed type names such as
 `SharedMemConfig`. Before extending builder behavior, reconcile it with the current
@@ -242,7 +248,7 @@ implementation crate before relying on the proc-macro facade.
 
 ## Debug Logging
 
-`consortium-dbg-defmt` implements defmt-over-shared-memory with `CDBG` descriptors. Its
+`consortium-dbg` implements defmt-over-shared-memory with `CDBG` descriptors. Its
 default features are `host` and `logger`; `decode` adds `defmt-decoder` and implies
 `host`. Debug configuration comes from `CONSORTIUM_DBG_*`; plain `cargo build` leaves
 the config unconfigured and the logger no-op unless the binary calls the const guard.
