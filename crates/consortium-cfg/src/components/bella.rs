@@ -27,9 +27,8 @@ use proc_macro2::{Ident, Span, TokenStream};
 use quote::quote;
 
 use crate::components::address::Address;
-use crate::components::uio::UioDevice;
+use crate::components::uio::{ToUio, UioBacking, UioDevice};
 use crate::error::CfgError;
-use crate::transpilers::ToUio;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct HardwareDoorbell {
@@ -122,10 +121,12 @@ impl ToUio for HardwareDoorbellPeripheral {
             .map(|party| (party.irq, IrqMethod::LevelHigh));
 
         // A doorbell always exposes its single register window as `map0`, so
-        // there is no `mmap` ordering to violate.
+        // there is no `mmap` ordering to violate. These are MMIO peripheral
+        // registers, not RAM, so they are described inline with `reg`.
         Ok(Some(UioDevice {
             mmap: vec![(self.memory.base, self.memory.length)],
             irq,
+            backing: UioBacking::Registers,
         }))
     }
 }

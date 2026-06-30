@@ -15,46 +15,13 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-pub mod irq;
+pub mod mpu;
 
 #[cfg(feature = "dbg")]
 pub use consortium_dbg as dbg;
 
 #[cfg(feature = "ipc-shm")]
 pub use consortium_ipc_transport_memory;
-
-/// Compute the pointer to the Tx slot in a shared-memory transport slot pair.
-///
-/// # Arguments
-///
-/// * `region_base` - pointer to the start of the shared memory region
-/// * `slot_idx` - zero-indexed slot pair (0, 1, 2, ...)
-/// * `slot_size` - size of each slot (including 8-byte header): `8 + MTU`
-///
-/// # Returns
-///
-/// A tuple `(tx_ptr, rx_ptr)` where:
-/// - `tx_ptr`: A→M slot (this side sends, other side receives)
-/// - `rx_ptr`: M→A slot (this side receives, other side sends)
-///
-/// # Safety
-///
-/// Caller must ensure the computed pointers are valid for the slot size.
-#[cfg(feature = "ipc-shm")]
-pub unsafe fn slot_pair_ptrs(
-    region_base: *mut u8,
-    slot_idx: usize,
-    slot_size: usize,
-) -> (*mut u8, *mut u8) {
-    let tx_offset = slot_idx * 2 * slot_size;
-    let rx_offset = slot_idx * 2 * slot_size + slot_size;
-    (
-        // SAFETY: the caller must ensure that `region_base` points to a valid shared memory region and that the computed offsets are within bounds for the number of slots and their sizes.
-        unsafe { region_base.add(tx_offset) },
-        // SAFETY: the caller must ensure that `region_base` is valid and that the computed offsets are within bounds of the shared memory region.
-        unsafe { region_base.add(rx_offset) },
-    )
-}
 
 /// Macro for declaring a static scratch buffer with proper alignment.
 ///

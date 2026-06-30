@@ -36,6 +36,7 @@ use std::path::{Path, PathBuf};
 
 use consortium_cfg::Session;
 use consortium_cfg::bridge::LoweredIr;
+use consortium_cfg::components::uio::RegLayout;
 use consortium_cfg_common::config::VisibleCore;
 use consortium_dts::ToDts;
 use proc_macro2::TokenStream;
@@ -89,6 +90,22 @@ fn render(ir: &LoweredIr) -> String {
     if ir.uio.is_empty() {
         md.push_str("_No UIO devices._\n\n");
     } else {
+        // Reserved-memory carveouts for the RAM-backed devices are aggregated
+        // into one `/reserved-memory` container, rendered first.
+        let carveouts: Vec<_> = ir
+            .uio
+            .iter()
+            .flat_map(|(name, device)| device.reserved_memory_nodes(name.as_str()))
+            .collect();
+        if let Some(container) =
+            consortium_cfg::components::uio::reserved_memory_container(carveouts, RegLayout::Wide)
+        {
+            md.push_str("### reserved-memory\n\n");
+            md.push_str("```dts\n");
+            md.push_str(container.to_dts().trim_end());
+            md.push_str("\n```\n\n");
+        }
+
         for (name, device) in &ir.uio {
             writeln!(md, "### {name}\n").unwrap();
             md.push_str("```dts\n");

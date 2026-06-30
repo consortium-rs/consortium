@@ -18,10 +18,13 @@ jobs:
         uses: extractions/setup-just@v4
 
       - name: Debug logging tests
-        run: cargo test -p consortium-dbg-defmt
+        run: just test dbg host
 
       - name: Codec tests
-        run: cargo test -p consortium-codec --features postcard,prost,rkyv,alloc
+        run: just test codec host
+
+      - name: Configuration tests
+        run: just test cfg host
 
       - name: IPC tests
         run: just test ipc host

@@ -15,6 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 pub mod application;
+pub mod env;
 pub mod firmware;
 pub mod optee;
 pub(crate) mod utils;
