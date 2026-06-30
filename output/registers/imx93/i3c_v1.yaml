@@ -49,9 +49,6 @@ block/I3C:
   - name: MRDATAH
     byte_offset: 72
     fieldset: I3C_MRDATAH
-  - name: SRDATAH
-    byte_offset: 72
-    fieldset: I3C_SRDATAH
   - name: SWDATAB1
     byte_offset: 84
     fieldset: I3C_SWDATAB1
@@ -130,21 +127,12 @@ block/I3C:
   - name: MWMSG_SDR_CONTROL
     byte_offset: 208
     fieldset: I3C_MWMSG_SDR_CONTROL
-  - name: MWMSG_SDR_DATA
-    byte_offset: 208
-    fieldset: I3C_MWMSG_SDR_DATA
   - name: MRMSG_SDR
     byte_offset: 212
     fieldset: I3C_MRMSG_SDR
   - name: MWMSG_DDR_CONTROL
     byte_offset: 216
     fieldset: I3C_MWMSG_DDR_CONTROL
-  - name: MWMSG_DDR_CONTROL2
-    byte_offset: 216
-    fieldset: I3C_MWMSG_DDR_CONTROL2
-  - name: MWMSG_DDR_DATA
-    byte_offset: 216
-    fieldset: I3C_MWMSG_DDR_DATA
   - name: MRMSG_DDR
     byte_offset: 220
     fieldset: I3C_MRMSG_DDR

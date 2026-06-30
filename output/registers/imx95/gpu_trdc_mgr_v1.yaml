@@ -13,9 +13,6 @@ block/GPU_TRDC_MGR:
   - name: DACFG0
     byte_offset: 256
     fieldset: GPU_TRDC_MGR_DACFG0
-  - name: DACFG1
-    byte_offset: 257
-    fieldset: GPU_TRDC_MGR_DACFG1
   - name: TRDC_IDAU_CR
     byte_offset: 448
     fieldset: GPU_TRDC_MGR_TRDC_IDAU_CR
@@ -201,21 +198,11 @@ block/GPU_TRDC_MGR:
     array:
       len: 4
       stride: 8
-  - name: MRC0_DOM0_RGD_W1
-    byte_offset: 73796
-    array:
-      len: 4
-      stride: 8
   - name: MRC0_DOM0_RGD_NSE
     byte_offset: 73920
     fieldset: GPU_TRDC_MGR_MRC0_DOM0_RGD_NSE
   - name: MRC0_DOM1_RGD_W0
     byte_offset: 74048
-    array:
-      len: 4
-      stride: 8
-  - name: MRC0_DOM1_RGD_W1
-    byte_offset: 74052
     array:
       len: 4
       stride: 8
@@ -227,21 +214,11 @@ block/GPU_TRDC_MGR:
     array:
       len: 4
       stride: 8
-  - name: MRC0_DOM2_RGD_W1
-    byte_offset: 74308
-    array:
-      len: 4
-      stride: 8
   - name: MRC0_DOM2_RGD_NSE
     byte_offset: 74432
     fieldset: GPU_TRDC_MGR_MRC0_DOM2_RGD_NSE
   - name: MRC0_DOM3_RGD_W0
     byte_offset: 74560
-    array:
-      len: 4
-      stride: 8
-  - name: MRC0_DOM3_RGD_W1
-    byte_offset: 74564
     array:
       len: 4
       stride: 8
@@ -253,21 +230,11 @@ block/GPU_TRDC_MGR:
     array:
       len: 4
       stride: 8
-  - name: MRC0_DOM4_RGD_W1
-    byte_offset: 74820
-    array:
-      len: 4
-      stride: 8
   - name: MRC0_DOM4_RGD_NSE
     byte_offset: 74944
     fieldset: GPU_TRDC_MGR_MRC0_DOM4_RGD_NSE
   - name: MRC0_DOM5_RGD_W0
     byte_offset: 75072
-    array:
-      len: 4
-      stride: 8
-  - name: MRC0_DOM5_RGD_W1
-    byte_offset: 75076
     array:
       len: 4
       stride: 8
@@ -279,21 +246,11 @@ block/GPU_TRDC_MGR:
     array:
       len: 4
       stride: 8
-  - name: MRC0_DOM6_RGD_W1
-    byte_offset: 75332
-    array:
-      len: 4
-      stride: 8
   - name: MRC0_DOM6_RGD_NSE
     byte_offset: 75456
     fieldset: GPU_TRDC_MGR_MRC0_DOM6_RGD_NSE
   - name: MRC0_DOM7_RGD_W0
     byte_offset: 75584
-    array:
-      len: 4
-      stride: 8
-  - name: MRC0_DOM7_RGD_W1
-    byte_offset: 75588
     array:
       len: 4
       stride: 8
@@ -305,21 +262,11 @@ block/GPU_TRDC_MGR:
     array:
       len: 4
       stride: 8
-  - name: MRC0_DOM8_RGD_W1
-    byte_offset: 75844
-    array:
-      len: 4
-      stride: 8
   - name: MRC0_DOM8_RGD_NSE
     byte_offset: 75968
     fieldset: GPU_TRDC_MGR_MRC0_DOM8_RGD_NSE
   - name: MRC0_DOM9_RGD_W0
     byte_offset: 76096
-    array:
-      len: 4
-      stride: 8
-  - name: MRC0_DOM9_RGD_W1
-    byte_offset: 76100
     array:
       len: 4
       stride: 8
@@ -331,21 +278,11 @@ block/GPU_TRDC_MGR:
     array:
       len: 4
       stride: 8
-  - name: MRC0_DOM10_RGD_W1
-    byte_offset: 76356
-    array:
-      len: 4
-      stride: 8
   - name: MRC0_DOM10_RGD_NSE
     byte_offset: 76480
     fieldset: GPU_TRDC_MGR_MRC0_DOM10_RGD_NSE
   - name: MRC0_DOM11_RGD_W0
     byte_offset: 76608
-    array:
-      len: 4
-      stride: 8
-  - name: MRC0_DOM11_RGD_W1
-    byte_offset: 76612
     array:
       len: 4
       stride: 8
@@ -357,21 +294,11 @@ block/GPU_TRDC_MGR:
     array:
       len: 4
       stride: 8
-  - name: MRC0_DOM12_RGD_W1
-    byte_offset: 76868
-    array:
-      len: 4
-      stride: 8
   - name: MRC0_DOM12_RGD_NSE
     byte_offset: 76992
     fieldset: GPU_TRDC_MGR_MRC0_DOM12_RGD_NSE
   - name: MRC0_DOM13_RGD_W0
     byte_offset: 77120
-    array:
-      len: 4
-      stride: 8
-  - name: MRC0_DOM13_RGD_W1
-    byte_offset: 77124
     array:
       len: 4
       stride: 8
@@ -383,21 +310,11 @@ block/GPU_TRDC_MGR:
     array:
       len: 4
       stride: 8
-  - name: MRC0_DOM14_RGD_W1
-    byte_offset: 77380
-    array:
-      len: 4
-      stride: 8
   - name: MRC0_DOM14_RGD_NSE
     byte_offset: 77504
     fieldset: GPU_TRDC_MGR_MRC0_DOM14_RGD_NSE
   - name: MRC0_DOM15_RGD_W0
     byte_offset: 77632
-    array:
-      len: 4
-      stride: 8
-  - name: MRC0_DOM15_RGD_W1
-    byte_offset: 77636
     array:
       len: 4
       stride: 8
@@ -569,9 +486,6 @@ fieldset/GPU_TRDC_MGR_W0:
     bit_offset: 0
     bit_size: 32
     description: Error address
-  - name: MRACSEL
-    bit_offset: 0
-    bit_size: 3
 fieldset/GPU_TRDC_MGR_W1:
   description: ''
   fields:
@@ -579,6 +493,10 @@ fieldset/GPU_TRDC_MGR_W1:
     bit_offset: 0
     bit_size: 4
     description: Error domain identifier
+  - name: NSE
+    bit_offset: 4
+    bit_size: 1
+    description: Valid
   - name: EATR
     bit_offset: 8
     bit_size: 3
@@ -594,14 +512,6 @@ fieldset/GPU_TRDC_MGR_W1:
     bit_offset: 30
     bit_size: 2
     description: Error port
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
-  - name: NSE
-    bit_offset: 4
-    bit_size: 1
-    description: Valid
 fieldset/GPU_TRDC_MGR_W1_SLV_DID:
   description: ''
   fields:

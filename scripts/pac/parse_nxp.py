@@ -4,7 +4,7 @@
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Optional, Tuple, Set
 import argparse
 
 from common import (
@@ -37,6 +37,69 @@ class NXPPeripheralParser:
         self.block_name = self.peripheral_name
         self.block_data: Dict[str, Any] = {'description': '', 'items': []}
         self.fieldsets: Dict[str, Dict[str, Any]] = {}
+
+    @staticmethod
+    def _item_size(item: Dict[str, Any]) -> int:
+        """Return the address span occupied by a register item."""
+        array = item.get('array')
+        if isinstance(array, dict):
+            return (int(array.get('len', 1)) - 1) * int(array.get('stride', 4)) + 4
+        return 4
+
+    @classmethod
+    def _prune_overlapping_items(cls, items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Drop alternate register views that overlap in chiptool IR."""
+        by_name_offset: Dict[Tuple[str, int], Dict[str, Any]] = {}
+        order: List[Tuple[str, int]] = []
+
+        for item in items:
+            key = (item['name'], int(item['byte_offset']))
+            if key not in by_name_offset:
+                by_name_offset[key] = item
+                order.append(key)
+                continue
+
+            existing = by_name_offset[key]
+            if cls._item_size(item) > cls._item_size(existing):
+                by_name_offset[key] = item
+
+        compacted: List[Dict[str, Any]] = []
+        for key in order:
+            item = by_name_offset[key]
+            start = int(item['byte_offset'])
+            end = start + cls._item_size(item) - 1
+
+            if any(
+                max(start, int(existing['byte_offset'])) <= min(
+                    end,
+                    int(existing['byte_offset']) + cls._item_size(existing) - 1,
+                )
+                for existing in compacted
+            ):
+                continue
+
+            compacted.append(item)
+
+        return compacted
+
+    @staticmethod
+    def _prune_overlapping_fields(fields: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Drop alternate bitfield views that overlap in chiptool IR."""
+        pruned: List[Dict[str, Any]] = []
+        used_bits: Set[int] = set()
+
+        for field in sorted(fields, key=lambda f: (f['bit_offset'], f['name'])):
+            offset = int(field['bit_offset'])
+            size = int(field['bit_size'])
+            bits = set(range(offset, offset + size))
+
+            if used_bits & bits:
+                continue
+
+            pruned.append(field)
+            used_bits.update(bits)
+
+        return pruned
 
     def parse_array_counts(self) -> Dict[str, int]:
         """Extract #define FOO_COUNT N declarations."""
@@ -175,7 +238,7 @@ class NXPPeripheralParser:
 
                                     description = extract_description(nested_line_str)
                                     reg_name = f"{nested_name}_{field_name}"
-                                    reg_offset = struct_base_offset + field_offset
+                                    reg_offset = absolute_field_offset if field_offset_match else struct_base_offset + field_offset
 
                                     item: Dict[str, Any] = {
                                         'name': reg_name,
@@ -416,7 +479,7 @@ class NXPPeripheralParser:
             # so use it directly
             self.fieldsets[reg_name] = {
                 'description': '',
-                'fields': fields,
+                'fields': self._prune_overlapping_fields(fields),
             }
 
     def parse(self):
@@ -437,6 +500,8 @@ class NXPPeripheralParser:
             # Check both with and without block name prefix since NXP stores them as BLOCKNAME_REGNAME
             if fieldset_name in self.fieldsets:
                 item['fieldset'] = fieldset_name
+
+        self.block_data['items'] = self._prune_overlapping_items(self.block_data['items'])
 
         data = {f'block/{self.block_name}': self.block_data}
         # fieldsets are already named BLOCKNAME_REGNAME, so add them with fieldset/ prefix
@@ -637,6 +702,8 @@ def main():
                     fieldset_name = f'{peri_parser.block_name}_{reg_name}'
                     if fieldset_name in peri_parser.fieldsets:
                         item['fieldset'] = fieldset_name
+
+                peri_parser.block_data['items'] = peri_parser._prune_overlapping_items(peri_parser.block_data['items'])
 
                 data = {f'block/{peri_parser.block_name}': peri_parser.block_data}
                 data.update({f'fieldset/{name}': fs for name, fs in peri_parser.fieldsets.items()})

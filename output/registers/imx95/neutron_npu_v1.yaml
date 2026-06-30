@@ -85,27 +85,15 @@ block/NEUTRON_NPU:
   - name: DCTRL0_FETCH
     byte_offset: 160
     fieldset: NEUTRON_NPU_DCTRL0_FETCH
-  - name: DCTRL0_PUSH
-    byte_offset: 160
-    fieldset: NEUTRON_NPU_DCTRL0_PUSH
   - name: DCTRL1_FETCH
     byte_offset: 164
     fieldset: NEUTRON_NPU_DCTRL1_FETCH
-  - name: DCTRL1_PUSH
-    byte_offset: 164
-    fieldset: NEUTRON_NPU_DCTRL1_PUSH
   - name: DCTRL2_FETCH
     byte_offset: 168
     fieldset: NEUTRON_NPU_DCTRL2_FETCH
-  - name: DCTRL2_PUSH
-    byte_offset: 168
-    fieldset: NEUTRON_NPU_DCTRL2_PUSH
   - name: DCTRL3_FETCH
     byte_offset: 172
     fieldset: NEUTRON_NPU_DCTRL3_FETCH
-  - name: DCTRL3_PUSH
-    byte_offset: 172
-    fieldset: NEUTRON_NPU_DCTRL3_PUSH
   - name: DSADDR0
     byte_offset: 176
     fieldset: NEUTRON_NPU_DSADDR0
@@ -176,9 +164,6 @@ block/NEUTRON_NPU:
   - name: APPCTRL_SOC
     byte_offset: 512
     fieldset: NEUTRON_NPU_APPCTRL_SOC
-  - name: APPCTRL_ZV
-    byte_offset: 512
-    fieldset: NEUTRON_NPU_APPCTRL_ZV
   - name: APPSTATUS
     byte_offset: 516
     fieldset: NEUTRON_NPU_APPSTATUS

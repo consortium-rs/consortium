@@ -33,26 +33,6 @@ block/AON_FCCU:
     array:
       len: 2
       stride: 20
-  - name: GLB_EOUT_GEOUTPMC
-    byte_offset: 3380
-    array:
-      len: 2
-      stride: 20
-  - name: GLB_EOUT_GEOUTMC
-    byte_offset: 3384
-    array:
-      len: 2
-      stride: 20
-  - name: GLB_EOUT_GEOUTTMS
-    byte_offset: 3388
-    array:
-      len: 2
-      stride: 20
-  - name: GLB_EOUT_GEOUTDIC
-    byte_offset: 3392
-    array:
-      len: 2
-      stride: 20
   - name: GDBGCFG
     byte_offset: 4016
     fieldset: AON_FCCU_GDBGCFG

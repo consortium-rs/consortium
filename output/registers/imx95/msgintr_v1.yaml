@@ -6,11 +6,6 @@ block/MSGINTR:
     array:
       len: 3
       stride: 8
-  - name: MSI_MSIR
-    byte_offset: 4
-    array:
-      len: 3
-      stride: 8
 fieldset/MSGINTR_MSIIR:
   description: ''
   fields:

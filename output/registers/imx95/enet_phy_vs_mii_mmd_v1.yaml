@@ -7,8 +7,6 @@ block/ENET_PHY_VS_MII_MMD:
   - name: VR_MII_DIG_CTRL1
     byte_offset: 65536
     fieldset: ENET_PHY_VS_MII_MMD_VR_MII_DIG_CTRL1
-  - name: VR_MII_AN_CTRL
-    byte_offset: 65538
   - name: VR_MII_AN_INTR_STS
     byte_offset: 65540
   - name: VR_MII_LINK_TIMER_CTRL

@@ -37,9 +37,6 @@ block/USB:
   - name: CAPLENGTH
     byte_offset: 256
     fieldset: USB_CAPLENGTH
-  - name: HCIVERSION
-    byte_offset: 258
-    fieldset: USB_HCIVERSION
   - name: HCSPARAMS
     byte_offset: 260
     fieldset: USB_HCSPARAMS
@@ -67,15 +64,9 @@ block/USB:
   - name: DEVICEADDR
     byte_offset: 340
     fieldset: USB_DEVICEADDR
-  - name: PERIODICLISTBASE
-    byte_offset: 340
-    fieldset: USB_PERIODICLISTBASE
   - name: ASYNCLISTADDR
     byte_offset: 344
     fieldset: USB_ASYNCLISTADDR
-  - name: ENDPTLISTADDR
-    byte_offset: 344
-    fieldset: USB_ENDPTLISTADDR
   - name: BURSTSIZE
     byte_offset: 352
     fieldset: USB_BURSTSIZE

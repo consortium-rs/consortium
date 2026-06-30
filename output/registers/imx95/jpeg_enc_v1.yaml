@@ -21,20 +21,8 @@ block/JPEG_ENC:
     byte_offset: 72
   - name: CONTROL_OFBSIZE_HI
     byte_offset: 76
-  - name: STATUS_STATUS_0
-    byte_offset: 0
-  - name: STATUS_STATUS_1
-    byte_offset: 4
-  - name: STATUS_STATUS_2
-    byte_offset: 8
   - name: STATUS_STATUS_3
     byte_offset: 12
-  - name: STATUS_STATUS_4
-    byte_offset: 16
-  - name: STATUS_STATUS_5
-    byte_offset: 20
-  - name: STATUS_STATUS_6
-    byte_offset: 24
   - name: STATUS_STATUS_7
     byte_offset: 28
   - name: STATUS_STATUS_8
@@ -53,14 +41,6 @@ block/JPEG_ENC:
     byte_offset: 56
   - name: STATUS_STATUS_15
     byte_offset: 60
-  - name: STATUS_STATUS_16
-    byte_offset: 64
-  - name: STATUS_STATUS_17
-    byte_offset: 68
-  - name: STATUS_STATUS_18
-    byte_offset: 72
-  - name: STATUS_STATUS_19
-    byte_offset: 76
 fieldset/JPEG_ENC_MODE:
   description: ''
   fields:

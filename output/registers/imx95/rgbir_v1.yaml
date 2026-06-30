@@ -43,9 +43,6 @@ block/RGBIR:
 fieldset/RGBIR_CTRL_CAM:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
   - name: PATTERN
     bit_offset: 2
     bit_size: 1

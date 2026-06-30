@@ -25,26 +25,6 @@ block/VPU_JPEG_ENC_WRAP:
     array:
       len: 4
       stride: 65536
-  - name: BIT_STREAM_SLOT_IRQ_EN
-    byte_offset: 65540
-    array:
-      len: 4
-      stride: 65536
-  - name: BIT_STREAM_SLOT_BUF_PTR
-    byte_offset: 65544
-    array:
-      len: 4
-      stride: 65536
-  - name: BIT_STREAM_SLOT_CUR_DESCPT_PTR
-    byte_offset: 65548
-    array:
-      len: 4
-      stride: 65536
-  - name: BIT_STREAM_SLOT_NXT_DESCPT_PTR
-    byte_offset: 65552
-    array:
-      len: 4
-      stride: 65536
 fieldset/VPU_JPEG_ENC_WRAP_GLB_CTRL_JPG_ENC:
   description: ''
   fields:

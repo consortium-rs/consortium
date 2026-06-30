@@ -8,16 +8,6 @@ block/WAKEUP_DMA_CRC:
     array:
       len: 8
       stride: 16
-  - name: CONTROL_REGISTER_ICRC
-    byte_offset: 20
-    array:
-      len: 8
-      stride: 16
-  - name: CONTROL_REGISTER_FCRC
-    byte_offset: 24
-    array:
-      len: 8
-      stride: 16
 fieldset/WAKEUP_DMA_CRC_GEC_GBL:
   description: ''
   fields:

@@ -6,26 +6,6 @@ block/DISPLAY_INTERLEAVER:
     array:
       len: 2
       stride: 65536
-  - name: DISPLAY_SWRST
-    byte_offset: 32
-    array:
-      len: 2
-      stride: 65536
-  - name: DISPLAY_IE
-    byte_offset: 48
-    array:
-      len: 2
-      stride: 65536
-  - name: DISPLAY_IS
-    byte_offset: 64
-    array:
-      len: 2
-      stride: 65536
-  - name: DISPLAY_ICTRL
-    byte_offset: 80
-    array:
-      len: 2
-      stride: 65536
 fieldset/DISPLAY_INTERLEAVER_CTRL_HSYNC:
   description: ''
   fields:

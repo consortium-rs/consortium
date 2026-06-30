@@ -6,11 +6,6 @@ block/AXBS:
     array:
       len: 8
       stride: 256
-  - name: SLAVE_CRS
-    byte_offset: 16
-    array:
-      len: 8
-      stride: 256
   - name: MGPCR0
     byte_offset: 2048
     fieldset: AXBS_MGPCR0

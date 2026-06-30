@@ -19,24 +19,9 @@ block/NOC_TRDC_MGR:
   - name: DACFG0
     byte_offset: 256
     fieldset: NOC_TRDC_MGR_DACFG0
-  - name: DACFG1
-    byte_offset: 257
-    fieldset: NOC_TRDC_MGR_DACFG1
-  - name: DACFG2
-    byte_offset: 258
-    fieldset: NOC_TRDC_MGR_DACFG2
-  - name: DACFG3
-    byte_offset: 259
-    fieldset: NOC_TRDC_MGR_DACFG3
   - name: DACFG4
     byte_offset: 260
     fieldset: NOC_TRDC_MGR_DACFG4
-  - name: DACFG5
-    byte_offset: 261
-    fieldset: NOC_TRDC_MGR_DACFG5
-  - name: DACFG6
-    byte_offset: 262
-    fieldset: NOC_TRDC_MGR_DACFG6
   - name: TRDC_IDAU_CR
     byte_offset: 448
     fieldset: NOC_TRDC_MGR_TRDC_IDAU_CR
@@ -62,21 +47,6 @@ block/NOC_TRDC_MGR:
     fieldset: NOC_TRDC_MGR_TRDC_DERRLOC
   - name: MBC_DERR_W0
     byte_offset: 1024
-    array:
-      len: 5
-      stride: 16
-  - name: MBC_DERR_W1
-    byte_offset: 1028
-    array:
-      len: 5
-      stride: 16
-  - name: MBC_DERR_W2
-    byte_offset: 1032
-    array:
-      len: 5
-      stride: 16
-  - name: MBC_DERR_W3
-    byte_offset: 1036
     array:
       len: 5
       stride: 16
@@ -2881,21 +2851,11 @@ block/NOC_TRDC_MGR:
     array:
       len: 16
       stride: 8
-  - name: MRC0_DOM0_RGD_W1
-    byte_offset: 106564
-    array:
-      len: 16
-      stride: 8
   - name: MRC0_DOM0_RGD_NSE
     byte_offset: 106688
     fieldset: NOC_TRDC_MGR_MRC0_DOM0_RGD_NSE
   - name: MRC0_DOM1_RGD_W0
     byte_offset: 106816
-    array:
-      len: 16
-      stride: 8
-  - name: MRC0_DOM1_RGD_W1
-    byte_offset: 106820
     array:
       len: 16
       stride: 8
@@ -2907,21 +2867,11 @@ block/NOC_TRDC_MGR:
     array:
       len: 16
       stride: 8
-  - name: MRC0_DOM2_RGD_W1
-    byte_offset: 107076
-    array:
-      len: 16
-      stride: 8
   - name: MRC0_DOM2_RGD_NSE
     byte_offset: 107200
     fieldset: NOC_TRDC_MGR_MRC0_DOM2_RGD_NSE
   - name: MRC0_DOM3_RGD_W0
     byte_offset: 107328
-    array:
-      len: 16
-      stride: 8
-  - name: MRC0_DOM3_RGD_W1
-    byte_offset: 107332
     array:
       len: 16
       stride: 8
@@ -2933,21 +2883,11 @@ block/NOC_TRDC_MGR:
     array:
       len: 16
       stride: 8
-  - name: MRC0_DOM4_RGD_W1
-    byte_offset: 107588
-    array:
-      len: 16
-      stride: 8
   - name: MRC0_DOM4_RGD_NSE
     byte_offset: 107712
     fieldset: NOC_TRDC_MGR_MRC0_DOM4_RGD_NSE
   - name: MRC0_DOM5_RGD_W0
     byte_offset: 107840
-    array:
-      len: 16
-      stride: 8
-  - name: MRC0_DOM5_RGD_W1
-    byte_offset: 107844
     array:
       len: 16
       stride: 8
@@ -2959,21 +2899,11 @@ block/NOC_TRDC_MGR:
     array:
       len: 16
       stride: 8
-  - name: MRC0_DOM6_RGD_W1
-    byte_offset: 108100
-    array:
-      len: 16
-      stride: 8
   - name: MRC0_DOM6_RGD_NSE
     byte_offset: 108224
     fieldset: NOC_TRDC_MGR_MRC0_DOM6_RGD_NSE
   - name: MRC0_DOM7_RGD_W0
     byte_offset: 108352
-    array:
-      len: 16
-      stride: 8
-  - name: MRC0_DOM7_RGD_W1
-    byte_offset: 108356
     array:
       len: 16
       stride: 8
@@ -2985,21 +2915,11 @@ block/NOC_TRDC_MGR:
     array:
       len: 16
       stride: 8
-  - name: MRC0_DOM8_RGD_W1
-    byte_offset: 108612
-    array:
-      len: 16
-      stride: 8
   - name: MRC0_DOM8_RGD_NSE
     byte_offset: 108736
     fieldset: NOC_TRDC_MGR_MRC0_DOM8_RGD_NSE
   - name: MRC0_DOM9_RGD_W0
     byte_offset: 108864
-    array:
-      len: 16
-      stride: 8
-  - name: MRC0_DOM9_RGD_W1
-    byte_offset: 108868
     array:
       len: 16
       stride: 8
@@ -3011,21 +2931,11 @@ block/NOC_TRDC_MGR:
     array:
       len: 16
       stride: 8
-  - name: MRC0_DOM10_RGD_W1
-    byte_offset: 109124
-    array:
-      len: 16
-      stride: 8
   - name: MRC0_DOM10_RGD_NSE
     byte_offset: 109248
     fieldset: NOC_TRDC_MGR_MRC0_DOM10_RGD_NSE
   - name: MRC0_DOM11_RGD_W0
     byte_offset: 109376
-    array:
-      len: 16
-      stride: 8
-  - name: MRC0_DOM11_RGD_W1
-    byte_offset: 109380
     array:
       len: 16
       stride: 8
@@ -3037,21 +2947,11 @@ block/NOC_TRDC_MGR:
     array:
       len: 16
       stride: 8
-  - name: MRC0_DOM12_RGD_W1
-    byte_offset: 109636
-    array:
-      len: 16
-      stride: 8
   - name: MRC0_DOM12_RGD_NSE
     byte_offset: 109760
     fieldset: NOC_TRDC_MGR_MRC0_DOM12_RGD_NSE
   - name: MRC0_DOM13_RGD_W0
     byte_offset: 109888
-    array:
-      len: 16
-      stride: 8
-  - name: MRC0_DOM13_RGD_W1
-    byte_offset: 109892
     array:
       len: 16
       stride: 8
@@ -3063,21 +2963,11 @@ block/NOC_TRDC_MGR:
     array:
       len: 16
       stride: 8
-  - name: MRC0_DOM14_RGD_W1
-    byte_offset: 110148
-    array:
-      len: 16
-      stride: 8
   - name: MRC0_DOM14_RGD_NSE
     byte_offset: 110272
     fieldset: NOC_TRDC_MGR_MRC0_DOM14_RGD_NSE
   - name: MRC0_DOM15_RGD_W0
     byte_offset: 110400
-    array:
-      len: 16
-      stride: 8
-  - name: MRC0_DOM15_RGD_W1
-    byte_offset: 110404
     array:
       len: 16
       stride: 8
@@ -3308,9 +3198,6 @@ fieldset/NOC_TRDC_MGR_W0:
     bit_offset: 0
     bit_size: 32
     description: Error address
-  - name: MRACSEL
-    bit_offset: 0
-    bit_size: 3
 fieldset/NOC_TRDC_MGR_W1:
   description: ''
   fields:
@@ -3318,10 +3205,6 @@ fieldset/NOC_TRDC_MGR_W1:
     bit_offset: 0
     bit_size: 4
     description: Error address
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1

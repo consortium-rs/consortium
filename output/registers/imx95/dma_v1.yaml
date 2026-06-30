@@ -27,23 +27,11 @@ block/DMA:
   - name: TCD_DOFF
     byte_offset: 65588
     fieldset: DMA_TCD_DOFF
-  - name: TCD_CITER_ELINKNO
-    byte_offset: 65590
-    fieldset: DMA_TCD_CITER_ELINKNO
-  - name: TCD_CITER_ELINKYES
-    byte_offset: 65590
-    fieldset: DMA_TCD_CITER_ELINKYES
   - name: TCD_DLAST_SGA
     byte_offset: 65592
   - name: TCD_CSR
     byte_offset: 65596
     fieldset: DMA_TCD_CSR
-  - name: TCD_BITER_ELINKNO
-    byte_offset: 65598
-    fieldset: DMA_TCD_BITER_ELINKNO
-  - name: TCD_BITER_ELINKYES
-    byte_offset: 65598
-    fieldset: DMA_TCD_BITER_ELINKYES
 fieldset/DMA_MP_CSR:
   description: ''
   fields:

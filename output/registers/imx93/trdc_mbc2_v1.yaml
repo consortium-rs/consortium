@@ -72,9 +72,6 @@ block/TRDC_MBC2:
   - name: MDA_W_DFMT0
     byte_offset: 2048
     fieldset: TRDC_MBC2_MDA_W_DFMT0
-  - name: MDA_W_DFMT1
-    byte_offset: 2048
-    fieldset: TRDC_MBC2_MDA_W_DFMT1
   - name: MBC_MEM_GLBCFG
     byte_offset: 65536
     array:
@@ -11111,10 +11108,6 @@ fieldset/TRDC_MBC2_MRC_DOM0_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11166,10 +11159,6 @@ fieldset/TRDC_MBC2_MRC_DOM1_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11221,10 +11210,6 @@ fieldset/TRDC_MBC2_MRC_DOM2_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11276,10 +11261,6 @@ fieldset/TRDC_MBC2_MRC_DOM3_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11331,10 +11312,6 @@ fieldset/TRDC_MBC2_MRC_DOM4_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11386,10 +11363,6 @@ fieldset/TRDC_MBC2_MRC_DOM5_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11441,10 +11414,6 @@ fieldset/TRDC_MBC2_MRC_DOM6_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11496,10 +11465,6 @@ fieldset/TRDC_MBC2_MRC_DOM7_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11551,10 +11516,6 @@ fieldset/TRDC_MBC2_MRC_DOM8_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11606,10 +11567,6 @@ fieldset/TRDC_MBC2_MRC_DOM9_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11661,10 +11618,6 @@ fieldset/TRDC_MBC2_MRC_DOM10_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11716,10 +11669,6 @@ fieldset/TRDC_MBC2_MRC_DOM11_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11771,10 +11720,6 @@ fieldset/TRDC_MBC2_MRC_DOM12_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11826,10 +11771,6 @@ fieldset/TRDC_MBC2_MRC_DOM13_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11881,10 +11822,6 @@ fieldset/TRDC_MBC2_MRC_DOM14_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -11936,10 +11873,6 @@ fieldset/TRDC_MBC2_MRC_DOM15_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1

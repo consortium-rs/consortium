@@ -19,108 +19,30 @@ block/WAKEUP_TRDC_MGR:
   - name: DACFG0
     byte_offset: 256
     fieldset: WAKEUP_TRDC_MGR_DACFG0
-  - name: DACFG1
-    byte_offset: 257
-    fieldset: WAKEUP_TRDC_MGR_DACFG1
-  - name: DACFG2
-    byte_offset: 258
-    fieldset: WAKEUP_TRDC_MGR_DACFG2
-  - name: DACFG3
-    byte_offset: 259
-    fieldset: WAKEUP_TRDC_MGR_DACFG3
   - name: DACFG4
     byte_offset: 260
     fieldset: WAKEUP_TRDC_MGR_DACFG4
-  - name: DACFG5
-    byte_offset: 261
-    fieldset: WAKEUP_TRDC_MGR_DACFG5
-  - name: DACFG6
-    byte_offset: 262
-    fieldset: WAKEUP_TRDC_MGR_DACFG6
-  - name: DACFG7
-    byte_offset: 263
-    fieldset: WAKEUP_TRDC_MGR_DACFG7
   - name: DACFG8
     byte_offset: 264
     fieldset: WAKEUP_TRDC_MGR_DACFG8
-  - name: DACFG9
-    byte_offset: 265
-    fieldset: WAKEUP_TRDC_MGR_DACFG9
-  - name: DACFG10
-    byte_offset: 266
-    fieldset: WAKEUP_TRDC_MGR_DACFG10
-  - name: DACFG11
-    byte_offset: 267
-    fieldset: WAKEUP_TRDC_MGR_DACFG11
   - name: DACFG12
     byte_offset: 268
     fieldset: WAKEUP_TRDC_MGR_DACFG12
-  - name: DACFG13
-    byte_offset: 269
-    fieldset: WAKEUP_TRDC_MGR_DACFG13
-  - name: DACFG14
-    byte_offset: 270
-    fieldset: WAKEUP_TRDC_MGR_DACFG14
-  - name: DACFG15
-    byte_offset: 271
-    fieldset: WAKEUP_TRDC_MGR_DACFG15
   - name: DACFG16
     byte_offset: 272
     fieldset: WAKEUP_TRDC_MGR_DACFG16
-  - name: DACFG17
-    byte_offset: 273
-    fieldset: WAKEUP_TRDC_MGR_DACFG17
-  - name: DACFG18
-    byte_offset: 274
-    fieldset: WAKEUP_TRDC_MGR_DACFG18
-  - name: DACFG19
-    byte_offset: 275
-    fieldset: WAKEUP_TRDC_MGR_DACFG19
   - name: DACFG20
     byte_offset: 276
     fieldset: WAKEUP_TRDC_MGR_DACFG20
-  - name: DACFG21
-    byte_offset: 277
-    fieldset: WAKEUP_TRDC_MGR_DACFG21
-  - name: DACFG22
-    byte_offset: 278
-    fieldset: WAKEUP_TRDC_MGR_DACFG22
-  - name: DACFG23
-    byte_offset: 279
-    fieldset: WAKEUP_TRDC_MGR_DACFG23
   - name: DACFG24
     byte_offset: 280
     fieldset: WAKEUP_TRDC_MGR_DACFG24
-  - name: DACFG25
-    byte_offset: 281
-    fieldset: WAKEUP_TRDC_MGR_DACFG25
-  - name: DACFG26
-    byte_offset: 282
-    fieldset: WAKEUP_TRDC_MGR_DACFG26
-  - name: DACFG27
-    byte_offset: 283
-    fieldset: WAKEUP_TRDC_MGR_DACFG27
   - name: DACFG28
     byte_offset: 284
     fieldset: WAKEUP_TRDC_MGR_DACFG28
-  - name: DACFG29
-    byte_offset: 285
-    fieldset: WAKEUP_TRDC_MGR_DACFG29
-  - name: DACFG30
-    byte_offset: 286
-    fieldset: WAKEUP_TRDC_MGR_DACFG30
-  - name: DACFG31
-    byte_offset: 287
-    fieldset: WAKEUP_TRDC_MGR_DACFG31
   - name: DACFG32
     byte_offset: 288
     fieldset: WAKEUP_TRDC_MGR_DACFG32
-  - name: DACFG33
-    byte_offset: 289
-    fieldset: WAKEUP_TRDC_MGR_DACFG33
-  - name: DACFG34
-    byte_offset: 290
-    fieldset: WAKEUP_TRDC_MGR_DACFG34
   - name: TRDC_IDAU_CR
     byte_offset: 448
     fieldset: WAKEUP_TRDC_MGR_TRDC_IDAU_CR
@@ -149,28 +71,8 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 3
       stride: 16
-  - name: MBC_DERR_W1
-    byte_offset: 1028
-    array:
-      len: 3
-      stride: 16
-  - name: MBC_DERR_W3
-    byte_offset: 1036
-    array:
-      len: 3
-      stride: 16
   - name: MRC_DERR_W0
     byte_offset: 1152
-    array:
-      len: 3
-      stride: 16
-  - name: MRC_DERR_W1
-    byte_offset: 1156
-    array:
-      len: 3
-      stride: 16
-  - name: MRC_DERR_W3
-    byte_offset: 1164
     array:
       len: 3
       stride: 16
@@ -2343,21 +2245,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC0_DOM0_RGD_W1
-    byte_offset: 90180
-    array:
-      len: 8
-      stride: 8
   - name: MRC0_DOM0_RGD_NSE
     byte_offset: 90304
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM0_RGD_NSE
   - name: MRC0_DOM1_RGD_W0
     byte_offset: 90432
-    array:
-      len: 8
-      stride: 8
-  - name: MRC0_DOM1_RGD_W1
-    byte_offset: 90436
     array:
       len: 8
       stride: 8
@@ -2369,21 +2261,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC0_DOM2_RGD_W1
-    byte_offset: 90692
-    array:
-      len: 8
-      stride: 8
   - name: MRC0_DOM2_RGD_NSE
     byte_offset: 90816
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM2_RGD_NSE
   - name: MRC0_DOM3_RGD_W0
     byte_offset: 90944
-    array:
-      len: 8
-      stride: 8
-  - name: MRC0_DOM3_RGD_W1
-    byte_offset: 90948
     array:
       len: 8
       stride: 8
@@ -2395,21 +2277,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC0_DOM4_RGD_W1
-    byte_offset: 91204
-    array:
-      len: 8
-      stride: 8
   - name: MRC0_DOM4_RGD_NSE
     byte_offset: 91328
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM4_RGD_NSE
   - name: MRC0_DOM5_RGD_W0
     byte_offset: 91456
-    array:
-      len: 8
-      stride: 8
-  - name: MRC0_DOM5_RGD_W1
-    byte_offset: 91460
     array:
       len: 8
       stride: 8
@@ -2421,21 +2293,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC0_DOM6_RGD_W1
-    byte_offset: 91716
-    array:
-      len: 8
-      stride: 8
   - name: MRC0_DOM6_RGD_NSE
     byte_offset: 91840
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM6_RGD_NSE
   - name: MRC0_DOM7_RGD_W0
     byte_offset: 91968
-    array:
-      len: 8
-      stride: 8
-  - name: MRC0_DOM7_RGD_W1
-    byte_offset: 91972
     array:
       len: 8
       stride: 8
@@ -2447,21 +2309,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC0_DOM8_RGD_W1
-    byte_offset: 92228
-    array:
-      len: 8
-      stride: 8
   - name: MRC0_DOM8_RGD_NSE
     byte_offset: 92352
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM8_RGD_NSE
   - name: MRC0_DOM9_RGD_W0
     byte_offset: 92480
-    array:
-      len: 8
-      stride: 8
-  - name: MRC0_DOM9_RGD_W1
-    byte_offset: 92484
     array:
       len: 8
       stride: 8
@@ -2473,21 +2325,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC0_DOM10_RGD_W1
-    byte_offset: 92740
-    array:
-      len: 8
-      stride: 8
   - name: MRC0_DOM10_RGD_NSE
     byte_offset: 92864
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM10_RGD_NSE
   - name: MRC0_DOM11_RGD_W0
     byte_offset: 92992
-    array:
-      len: 8
-      stride: 8
-  - name: MRC0_DOM11_RGD_W1
-    byte_offset: 92996
     array:
       len: 8
       stride: 8
@@ -2499,21 +2341,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC0_DOM12_RGD_W1
-    byte_offset: 93252
-    array:
-      len: 8
-      stride: 8
   - name: MRC0_DOM12_RGD_NSE
     byte_offset: 93376
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM12_RGD_NSE
   - name: MRC0_DOM13_RGD_W0
     byte_offset: 93504
-    array:
-      len: 8
-      stride: 8
-  - name: MRC0_DOM13_RGD_W1
-    byte_offset: 93508
     array:
       len: 8
       stride: 8
@@ -2525,21 +2357,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC0_DOM14_RGD_W1
-    byte_offset: 93764
-    array:
-      len: 8
-      stride: 8
   - name: MRC0_DOM14_RGD_NSE
     byte_offset: 93888
     fieldset: WAKEUP_TRDC_MGR_MRC0_DOM14_RGD_NSE
   - name: MRC0_DOM15_RGD_W0
     byte_offset: 94016
-    array:
-      len: 8
-      stride: 8
-  - name: MRC0_DOM15_RGD_W1
-    byte_offset: 94020
     array:
       len: 8
       stride: 8
@@ -2570,21 +2392,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC1_DOM0_RGD_W1
-    byte_offset: 94276
-    array:
-      len: 8
-      stride: 8
   - name: MRC1_DOM0_RGD_NSE
     byte_offset: 94400
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM0_RGD_NSE
   - name: MRC1_DOM1_RGD_W0
     byte_offset: 94528
-    array:
-      len: 8
-      stride: 8
-  - name: MRC1_DOM1_RGD_W1
-    byte_offset: 94532
     array:
       len: 8
       stride: 8
@@ -2596,21 +2408,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC1_DOM2_RGD_W1
-    byte_offset: 94788
-    array:
-      len: 8
-      stride: 8
   - name: MRC1_DOM2_RGD_NSE
     byte_offset: 94912
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM2_RGD_NSE
   - name: MRC1_DOM3_RGD_W0
     byte_offset: 95040
-    array:
-      len: 8
-      stride: 8
-  - name: MRC1_DOM3_RGD_W1
-    byte_offset: 95044
     array:
       len: 8
       stride: 8
@@ -2622,21 +2424,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC1_DOM4_RGD_W1
-    byte_offset: 95300
-    array:
-      len: 8
-      stride: 8
   - name: MRC1_DOM4_RGD_NSE
     byte_offset: 95424
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM4_RGD_NSE
   - name: MRC1_DOM5_RGD_W0
     byte_offset: 95552
-    array:
-      len: 8
-      stride: 8
-  - name: MRC1_DOM5_RGD_W1
-    byte_offset: 95556
     array:
       len: 8
       stride: 8
@@ -2648,21 +2440,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC1_DOM6_RGD_W1
-    byte_offset: 95812
-    array:
-      len: 8
-      stride: 8
   - name: MRC1_DOM6_RGD_NSE
     byte_offset: 95936
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM6_RGD_NSE
   - name: MRC1_DOM7_RGD_W0
     byte_offset: 96064
-    array:
-      len: 8
-      stride: 8
-  - name: MRC1_DOM7_RGD_W1
-    byte_offset: 96068
     array:
       len: 8
       stride: 8
@@ -2674,21 +2456,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC1_DOM8_RGD_W1
-    byte_offset: 96324
-    array:
-      len: 8
-      stride: 8
   - name: MRC1_DOM8_RGD_NSE
     byte_offset: 96448
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM8_RGD_NSE
   - name: MRC1_DOM9_RGD_W0
     byte_offset: 96576
-    array:
-      len: 8
-      stride: 8
-  - name: MRC1_DOM9_RGD_W1
-    byte_offset: 96580
     array:
       len: 8
       stride: 8
@@ -2700,21 +2472,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC1_DOM10_RGD_W1
-    byte_offset: 96836
-    array:
-      len: 8
-      stride: 8
   - name: MRC1_DOM10_RGD_NSE
     byte_offset: 96960
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM10_RGD_NSE
   - name: MRC1_DOM11_RGD_W0
     byte_offset: 97088
-    array:
-      len: 8
-      stride: 8
-  - name: MRC1_DOM11_RGD_W1
-    byte_offset: 97092
     array:
       len: 8
       stride: 8
@@ -2726,21 +2488,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC1_DOM12_RGD_W1
-    byte_offset: 97348
-    array:
-      len: 8
-      stride: 8
   - name: MRC1_DOM12_RGD_NSE
     byte_offset: 97472
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM12_RGD_NSE
   - name: MRC1_DOM13_RGD_W0
     byte_offset: 97600
-    array:
-      len: 8
-      stride: 8
-  - name: MRC1_DOM13_RGD_W1
-    byte_offset: 97604
     array:
       len: 8
       stride: 8
@@ -2752,21 +2504,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC1_DOM14_RGD_W1
-    byte_offset: 97860
-    array:
-      len: 8
-      stride: 8
   - name: MRC1_DOM14_RGD_NSE
     byte_offset: 97984
     fieldset: WAKEUP_TRDC_MGR_MRC1_DOM14_RGD_NSE
   - name: MRC1_DOM15_RGD_W0
     byte_offset: 98112
-    array:
-      len: 8
-      stride: 8
-  - name: MRC1_DOM15_RGD_W1
-    byte_offset: 98116
     array:
       len: 8
       stride: 8
@@ -2797,21 +2539,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC2_DOM0_RGD_W1
-    byte_offset: 98372
-    array:
-      len: 8
-      stride: 8
   - name: MRC2_DOM0_RGD_NSE
     byte_offset: 98496
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM0_RGD_NSE
   - name: MRC2_DOM1_RGD_W0
     byte_offset: 98624
-    array:
-      len: 8
-      stride: 8
-  - name: MRC2_DOM1_RGD_W1
-    byte_offset: 98628
     array:
       len: 8
       stride: 8
@@ -2823,21 +2555,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC2_DOM2_RGD_W1
-    byte_offset: 98884
-    array:
-      len: 8
-      stride: 8
   - name: MRC2_DOM2_RGD_NSE
     byte_offset: 99008
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM2_RGD_NSE
   - name: MRC2_DOM3_RGD_W0
     byte_offset: 99136
-    array:
-      len: 8
-      stride: 8
-  - name: MRC2_DOM3_RGD_W1
-    byte_offset: 99140
     array:
       len: 8
       stride: 8
@@ -2849,21 +2571,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC2_DOM4_RGD_W1
-    byte_offset: 99396
-    array:
-      len: 8
-      stride: 8
   - name: MRC2_DOM4_RGD_NSE
     byte_offset: 99520
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM4_RGD_NSE
   - name: MRC2_DOM5_RGD_W0
     byte_offset: 99648
-    array:
-      len: 8
-      stride: 8
-  - name: MRC2_DOM5_RGD_W1
-    byte_offset: 99652
     array:
       len: 8
       stride: 8
@@ -2875,21 +2587,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC2_DOM6_RGD_W1
-    byte_offset: 99908
-    array:
-      len: 8
-      stride: 8
   - name: MRC2_DOM6_RGD_NSE
     byte_offset: 100032
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM6_RGD_NSE
   - name: MRC2_DOM7_RGD_W0
     byte_offset: 100160
-    array:
-      len: 8
-      stride: 8
-  - name: MRC2_DOM7_RGD_W1
-    byte_offset: 100164
     array:
       len: 8
       stride: 8
@@ -2901,21 +2603,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC2_DOM8_RGD_W1
-    byte_offset: 100420
-    array:
-      len: 8
-      stride: 8
   - name: MRC2_DOM8_RGD_NSE
     byte_offset: 100544
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM8_RGD_NSE
   - name: MRC2_DOM9_RGD_W0
     byte_offset: 100672
-    array:
-      len: 8
-      stride: 8
-  - name: MRC2_DOM9_RGD_W1
-    byte_offset: 100676
     array:
       len: 8
       stride: 8
@@ -2927,21 +2619,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC2_DOM10_RGD_W1
-    byte_offset: 100932
-    array:
-      len: 8
-      stride: 8
   - name: MRC2_DOM10_RGD_NSE
     byte_offset: 101056
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM10_RGD_NSE
   - name: MRC2_DOM11_RGD_W0
     byte_offset: 101184
-    array:
-      len: 8
-      stride: 8
-  - name: MRC2_DOM11_RGD_W1
-    byte_offset: 101188
     array:
       len: 8
       stride: 8
@@ -2953,21 +2635,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC2_DOM12_RGD_W1
-    byte_offset: 101444
-    array:
-      len: 8
-      stride: 8
   - name: MRC2_DOM12_RGD_NSE
     byte_offset: 101568
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM12_RGD_NSE
   - name: MRC2_DOM13_RGD_W0
     byte_offset: 101696
-    array:
-      len: 8
-      stride: 8
-  - name: MRC2_DOM13_RGD_W1
-    byte_offset: 101700
     array:
       len: 8
       stride: 8
@@ -2979,21 +2651,11 @@ block/WAKEUP_TRDC_MGR:
     array:
       len: 8
       stride: 8
-  - name: MRC2_DOM14_RGD_W1
-    byte_offset: 101956
-    array:
-      len: 8
-      stride: 8
   - name: MRC2_DOM14_RGD_NSE
     byte_offset: 102080
     fieldset: WAKEUP_TRDC_MGR_MRC2_DOM14_RGD_NSE
   - name: MRC2_DOM15_RGD_W0
     byte_offset: 102208
-    array:
-      len: 8
-      stride: 8
-  - name: MRC2_DOM15_RGD_W1
-    byte_offset: 102212
     array:
       len: 8
       stride: 8
@@ -3476,9 +3138,6 @@ fieldset/WAKEUP_TRDC_MGR_W0:
     bit_offset: 0
     bit_size: 32
     description: Error address
-  - name: MRACSEL
-    bit_offset: 0
-    bit_size: 3
 fieldset/WAKEUP_TRDC_MGR_W1:
   description: ''
   fields:
@@ -3486,6 +3145,10 @@ fieldset/WAKEUP_TRDC_MGR_W1:
     bit_offset: 0
     bit_size: 4
     description: Error domain identifier
+  - name: NSE
+    bit_offset: 4
+    bit_size: 1
+    description: Valid
   - name: EATR
     bit_offset: 8
     bit_size: 3
@@ -3501,14 +3164,6 @@ fieldset/WAKEUP_TRDC_MGR_W1:
     bit_offset: 30
     bit_size: 2
     description: Error port
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
-  - name: NSE
-    bit_offset: 4
-    bit_size: 1
-    description: Valid
 fieldset/WAKEUP_TRDC_MGR_W1_SLV_DID:
   description: ''
   fields:

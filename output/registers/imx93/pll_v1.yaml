@@ -161,9 +161,6 @@ fieldset/PLL_DFS_CLKOUT:
 fieldset/PLL_DFS:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
   - name: MFN
     bit_offset: 0
     bit_size: 3
@@ -172,6 +169,9 @@ fieldset/PLL_DFS:
     bit_offset: 8
     bit_size: 8
     description: MFN
+  - name: ENABLE
+    bit_offset: 31
+    bit_size: 1
 fieldset/PLL_PLL_STATUS_PLL:
   description: ''
   fields:

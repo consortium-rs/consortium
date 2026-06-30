@@ -12,21 +12,6 @@ block/OTFAD:
     array:
       len: 4
       stride: 64
-  - name: CTX_CTR
-    byte_offset: 3344
-    array:
-      len: 4
-      stride: 64
-  - name: CTX_RGD_W0
-    byte_offset: 3352
-    array:
-      len: 4
-      stride: 64
-  - name: CTX_RGD_W1
-    byte_offset: 3356
-    array:
-      len: 4
-      stride: 64
 fieldset/OTFAD_CR:
   description: ''
   fields:

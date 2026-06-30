@@ -4,7 +4,7 @@
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Optional, Tuple, Set
 import argparse
 
 from common import (
@@ -43,6 +43,64 @@ class STM32HeaderParser:
         self.blocks: Dict[str, Dict[str, Any]] = {}
         self.fieldsets: Dict[str, Dict[str, Any]] = {}
         self.peripherals: List[Dict[str, Any]] = []
+
+    @staticmethod
+    def _is_aggregate_alias(field_name: str, field_names: Set[str]) -> bool:
+        """Return true for CMSIS aggregate aliases covered by concrete fields."""
+        if field_name.endswith('x'):
+            return True
+        if field_name == 'LPUART':
+            return True
+        if field_name == 'CCC' and {'RNW', 'ADD'}.issubset(field_names):
+            return True
+        return any(
+            other.startswith(field_name)
+            and other[len(field_name):].isdigit()
+            for other in field_names
+            if other != field_name
+        )
+
+    @classmethod
+    def _prune_overlapping_fields(cls, fields: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Drop aggregate/alternate CMSIS aliases that cannot be represented in chiptool IR."""
+        field_names = {field['name'] for field in fields}
+        remove: Set[int] = set()
+
+        for i, field in enumerate(fields):
+            field_mask = field.get('_mask', 0)
+            if not field_mask:
+                continue
+
+            for j, other in enumerate(fields):
+                if i == j:
+                    continue
+
+                other_mask = other.get('_mask', 0)
+                if not other_mask or not (field_mask & other_mask):
+                    continue
+
+                if cls._is_aggregate_alias(field['name'], field_names):
+                    remove.add(i)
+                    break
+
+                if cls._is_aggregate_alias(other['name'], field_names):
+                    continue
+
+                same_offset = field['bit_offset'] == other['bit_offset']
+                narrower = field['bit_size'] < other['bit_size']
+                if same_offset and narrower:
+                    remove.add(i)
+                    break
+
+        pruned = []
+        for i, field in enumerate(fields):
+            if i in remove:
+                continue
+            field.pop('_mask', None)
+            pruned.append(field)
+
+        pruned.sort(key=lambda f: (f['bit_offset'], f['name']))
+        return pruned
 
     def strip_preprocessor(self):
         """Remove #if/#else/#endif conditionals, keeping all branches."""
@@ -260,6 +318,7 @@ class STM32HeaderParser:
                 'name': parts[1],
                 'bit_offset': bit_offset,
                 'bit_size': bit_size,
+                '_mask': mask_val << bit_offset,
             }
 
             if description:
@@ -271,7 +330,7 @@ class STM32HeaderParser:
         for reg_name, fields in fieldsets_dict.items():
             self.fieldsets[reg_name] = {
                 'description': '',
-                'fields': fields,
+                'fields': self._prune_overlapping_fields(fields),
             }
 
     def parse_base_addresses_and_instances(self):

@@ -75,51 +75,8 @@ block/CAN:
   - name: WORD
     byte_offset: 136
     array:
-      len: 2
-      stride: 4
-  - name: CS
-    byte_offset: 128
-    fieldset: CAN_CS
-  - name: ID
-    byte_offset: 132
-    fieldset: CAN_ID
-  - name: WORD
-    byte_offset: 136
-    array:
-      len: 4
-      stride: 4
-  - name: CS
-    byte_offset: 128
-    fieldset: CAN_CS
-  - name: ID
-    byte_offset: 132
-    fieldset: CAN_ID
-  - name: WORD
-    byte_offset: 136
-    array:
-      len: 8
-      stride: 4
-  - name: CS
-    byte_offset: 128
-    fieldset: CAN_CS
-  - name: ID
-    byte_offset: 132
-    fieldset: CAN_ID
-  - name: WORD
-    byte_offset: 136
-    array:
       len: 16
       stride: 4
-  - name: CS
-    byte_offset: 128
-    fieldset: CAN_CS
-  - name: ID
-    byte_offset: 132
-    fieldset: CAN_ID
-  - name: WORD0
-    byte_offset: 136
-  - name: WORD1
-    byte_offset: 140
   - name: RXIMR
     byte_offset: 2176
     array:

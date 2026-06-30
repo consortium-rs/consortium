@@ -49,12 +49,6 @@ block/RGPIO:
       len: 32
       stride: 1
     fieldset: RGPIO_PDR
-  - name: ICR
-    byte_offset: 128
-    array:
-      len: 32
-      stride: 4
-    fieldset: RGPIO_ICR
   - name: GICLR
     byte_offset: 256
     fieldset: RGPIO_GICLR

@@ -46,41 +46,6 @@ block/PLL:
     array:
       len: 4
       stride: 32
-  - name: DFS_CTRL_SET
-    byte_offset: 116
-    array:
-      len: 4
-      stride: 32
-  - name: DFS_CTRL_CLR
-    byte_offset: 120
-    array:
-      len: 4
-      stride: 32
-  - name: DFS_CTRL_TOG
-    byte_offset: 124
-    array:
-      len: 4
-      stride: 32
-  - name: DFS_DIV_RW
-    byte_offset: 112
-    array:
-      len: 4
-      stride: 32
-  - name: DFS_DIV_SET
-    byte_offset: 116
-    array:
-      len: 4
-      stride: 32
-  - name: DFS_DIV_CLR
-    byte_offset: 120
-    array:
-      len: 4
-      stride: 32
-  - name: DFS_DIV_TOG
-    byte_offset: 124
-    array:
-      len: 4
-      stride: 32
   - name: PLL_STATUS
     byte_offset: 240
   - name: DFS_STATUS
@@ -185,9 +150,6 @@ fieldset/PLL_DFS_CLKOUT:
 fieldset/PLL_DFS:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
   - name: MFN
     bit_offset: 0
     bit_size: 3
@@ -196,6 +158,9 @@ fieldset/PLL_DFS:
     bit_offset: 8
     bit_size: 8
     description: MFN
+  - name: ENABLE
+    bit_offset: 31
+    bit_size: 1
 fieldset/PLL_PLL_STATUS_PLL:
   description: ''
   fields:

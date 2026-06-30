@@ -52,11 +52,6 @@ block/NETC_ENETC:
     array:
       len: 4
       stride: 16
-  - name: PICDRADCR_PICDRDCRRR
-    byte_offset: 328
-    array:
-      len: 4
-      stride: 16
   - name: PICPDSR
     byte_offset: 384
   - name: PSIPMMR
@@ -131,71 +126,6 @@ block/NETC_ENETC:
     fieldset: NETC_ENETC_SMCAPR
   - name: NUM_SI_PSIPMAR0
     byte_offset: 8192
-    array:
-      len: 3
-      stride: 128
-  - name: NUM_SI_PSIPMAR1
-    byte_offset: 8196
-    array:
-      len: 3
-      stride: 128
-  - name: NUM_SI_PSIVLANR
-    byte_offset: 8200
-    array:
-      len: 3
-      stride: 128
-  - name: NUM_SI_PSICFGR0
-    byte_offset: 8208
-    array:
-      len: 3
-      stride: 128
-  - name: NUM_SI_PSICFGR1
-    byte_offset: 8212
-    array:
-      len: 3
-      stride: 128
-  - name: NUM_SI_PSICFGR2
-    byte_offset: 8216
-    array:
-      len: 3
-      stride: 128
-  - name: NUM_SI_PSIVMAFCFGR
-    byte_offset: 8240
-    array:
-      len: 3
-      stride: 128
-  - name: NUM_SI_PSIVLANFCFGR
-    byte_offset: 8244
-    array:
-      len: 3
-      stride: 128
-  - name: NUM_SI_PSIUMHFR0
-    byte_offset: 8272
-    array:
-      len: 3
-      stride: 128
-  - name: NUM_SI_PSIUMHFR1
-    byte_offset: 8276
-    array:
-      len: 3
-      stride: 128
-  - name: NUM_SI_PSIMMHFR0
-    byte_offset: 8280
-    array:
-      len: 3
-      stride: 128
-  - name: NUM_SI_PSIMMHFR1
-    byte_offset: 8284
-    array:
-      len: 3
-      stride: 128
-  - name: NUM_SI_PSIVHFR0
-    byte_offset: 8288
-    array:
-      len: 3
-      stride: 128
-  - name: NUM_SI_PSIVHFR1
-    byte_offset: 8292
     array:
       len: 3
       stride: 128

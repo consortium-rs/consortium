@@ -124,10 +124,6 @@ fieldset/USART_CR1:
     bit_offset: 11
     bit_size: 1
     description: Receiver wakeup method
-  - name: M
-    bit_offset: 12
-    bit_size: 17
-    description: Word length
   - name: M0
     bit_offset: 12
     bit_size: 1
@@ -349,10 +345,6 @@ fieldset/USART_CR3:
 fieldset/USART_BRR:
   description: ''
   fields:
-  - name: LPUART
-    bit_offset: 0
-    bit_size: 20
-    description: LPUART baud rate division (LPUARTDIV)
   - name: BRR
     bit_offset: 0
     bit_size: 16

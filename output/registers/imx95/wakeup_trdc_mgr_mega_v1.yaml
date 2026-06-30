@@ -19,156 +19,42 @@ block/WAKEUP_TRDC_MGR_MEGA:
   - name: DACFG0
     byte_offset: 256
     fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG0
-  - name: DACFG1
-    byte_offset: 257
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG1
-  - name: DACFG2
-    byte_offset: 258
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG2
-  - name: DACFG3
-    byte_offset: 259
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG3
   - name: DACFG4
     byte_offset: 260
     fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG4
-  - name: DACFG5
-    byte_offset: 261
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG5
-  - name: DACFG6
-    byte_offset: 262
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG6
-  - name: DACFG7
-    byte_offset: 263
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG7
   - name: DACFG8
     byte_offset: 264
     fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG8
-  - name: DACFG9
-    byte_offset: 265
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG9
-  - name: DACFG10
-    byte_offset: 266
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG10
-  - name: DACFG11
-    byte_offset: 267
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG11
   - name: DACFG12
     byte_offset: 268
     fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG12
-  - name: DACFG13
-    byte_offset: 269
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG13
-  - name: DACFG14
-    byte_offset: 270
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG14
-  - name: DACFG15
-    byte_offset: 271
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG15
   - name: DACFG16
     byte_offset: 272
     fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG16
-  - name: DACFG17
-    byte_offset: 273
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG17
-  - name: DACFG18
-    byte_offset: 274
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG18
-  - name: DACFG19
-    byte_offset: 275
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG19
   - name: DACFG20
     byte_offset: 276
     fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG20
-  - name: DACFG21
-    byte_offset: 277
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG21
-  - name: DACFG22
-    byte_offset: 278
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG22
-  - name: DACFG23
-    byte_offset: 279
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG23
   - name: DACFG24
     byte_offset: 280
     fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG24
-  - name: DACFG25
-    byte_offset: 281
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG25
-  - name: DACFG26
-    byte_offset: 282
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG26
-  - name: DACFG27
-    byte_offset: 283
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG27
   - name: DACFG28
     byte_offset: 284
     fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG28
-  - name: DACFG29
-    byte_offset: 285
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG29
-  - name: DACFG30
-    byte_offset: 286
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG30
-  - name: DACFG31
-    byte_offset: 287
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG31
   - name: DACFG32
     byte_offset: 288
     fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG32
-  - name: DACFG33
-    byte_offset: 289
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG33
-  - name: DACFG34
-    byte_offset: 290
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG34
-  - name: DACFG35
-    byte_offset: 291
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG35
   - name: DACFG36
     byte_offset: 292
     fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG36
-  - name: DACFG37
-    byte_offset: 293
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG37
-  - name: DACFG38
-    byte_offset: 294
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG38
-  - name: DACFG39
-    byte_offset: 295
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG39
   - name: DACFG40
     byte_offset: 296
     fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG40
-  - name: DACFG41
-    byte_offset: 297
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG41
-  - name: DACFG42
-    byte_offset: 298
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG42
-  - name: DACFG43
-    byte_offset: 299
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG43
   - name: DACFG44
     byte_offset: 300
     fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG44
-  - name: DACFG45
-    byte_offset: 301
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG45
-  - name: DACFG46
-    byte_offset: 302
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG46
-  - name: DACFG47
-    byte_offset: 303
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG47
   - name: DACFG48
     byte_offset: 304
     fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG48
-  - name: DACFG49
-    byte_offset: 305
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG49
-  - name: DACFG50
-    byte_offset: 306
-    fieldset: WAKEUP_TRDC_MGR_MEGA_DACFG50
   - name: TRDC_IDAU_CR
     byte_offset: 448
     fieldset: WAKEUP_TRDC_MGR_MEGA_TRDC_IDAU_CR

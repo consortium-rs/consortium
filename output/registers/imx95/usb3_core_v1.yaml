@@ -3259,11 +3259,3 @@ fieldset/USB3_CORE_BRAMADDRERR:
     bit_offset: 0
     bit_size: 16
     description: RAM0 Address Location
-  - name: RAM1ADDRLOC
-    bit_offset: 0
-    bit_size: 16
-    description: RAM1 Address Location
-  - name: RAM2ADDRLOC
-    bit_offset: 0
-    bit_size: 16
-    description: RAM2 Address Location

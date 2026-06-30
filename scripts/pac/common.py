@@ -73,7 +73,7 @@ def calc_bit_size_from_mask(mask_val: int) -> int:
     bit_size = mask_val.bit_length()
     # Verify it's a contiguous mask (no gaps)
     expected = (1 << bit_size) - 1
-    if (mask_val & expected) == mask_val:
+    if mask_val == expected:
         return bit_size
     # If not contiguous, just count set bits
     return popcount(mask_val)

@@ -95,8 +95,9 @@ def check_bitfield_widths(data: Dict) -> List[str]:
             if bit_size <= 0:
                 issues.append(f"  {key}.{field['name']}: invalid bit_size: {bit_size}")
 
-            # Check for overlapping fields (simplified check)
-            if bit_size > 32:
+            # NXP headers include legitimate 64-bit registers, so only flag
+            # widths that exceed the largest scalar register size we model.
+            if bit_size > 64:
                 issues.append(f"  {key}.{field['name']}: suspiciously large bit_size: {bit_size}")
 
         # Check for overlaps

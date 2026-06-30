@@ -1283,45 +1283,18 @@ fieldset/ENET_QOS_MAC_RXQ_CTRL:
   - name: AVCPQ
     bit_offset: 0
     bit_size: 3
-  - name: PSRQ0
-    bit_offset: 0
-    bit_size: 8
-  - name: PSRQ4
-    bit_offset: 0
-    bit_size: 8
-  - name: RXQ0EN
-    bit_offset: 0
-    bit_size: 2
-  - name: RXQ1EN
-    bit_offset: 2
-    bit_size: 2
   - name: PTPQ
     bit_offset: 4
     bit_size: 3
-  - name: RXQ2EN
-    bit_offset: 4
-    bit_size: 2
-  - name: RXQ3EN
-    bit_offset: 6
-    bit_size: 2
   - name: DCBCPQ
     bit_offset: 8
     bit_size: 3
-  - name: PSRQ1
-    bit_offset: 8
-    bit_size: 8
-  - name: RXQ4EN
-    bit_offset: 8
-    bit_size: 2
   - name: UPQ
     bit_offset: 12
     bit_size: 3
   - name: MCBCQ
     bit_offset: 16
     bit_size: 3
-  - name: PSRQ2
-    bit_offset: 16
-    bit_size: 8
   - name: MCBCQEN
     bit_offset: 20
     bit_size: 1
@@ -1334,10 +1307,6 @@ fieldset/ENET_QOS_MAC_RXQ_CTRL:
   - name: FPRQ
     bit_offset: 24
     bit_size: 3
-    description: Frame Preemption Residue Queue
-  - name: PSRQ3
-    bit_offset: 24
-    bit_size: 8
     description: Frame Preemption Residue Queue
 fieldset/ENET_QOS_MAC_INTERRUPT_STATUS:
   description: ''
@@ -1587,15 +1556,6 @@ fieldset/ENET_QOS_MAC_HW_FEAT:
   - name: MIISEL
     bit_offset: 0
     bit_size: 1
-  - name: NRVF
-    bit_offset: 0
-    bit_size: 3
-  - name: RXFIFOSIZE
-    bit_offset: 0
-    bit_size: 5
-  - name: RXQCNT
-    bit_offset: 0
-    bit_size: 4
   - name: GMIISEL
     bit_offset: 1
     bit_size: 1
@@ -1608,27 +1568,12 @@ fieldset/ENET_QOS_MAC_HW_FEAT:
   - name: CBTISEL
     bit_offset: 4
     bit_size: 1
-  - name: VLHASH
-    bit_offset: 4
-    bit_size: 1
   - name: DVLAN
-    bit_offset: 5
-    bit_size: 1
-  - name: SMASEL
-    bit_offset: 5
-    bit_size: 1
-  - name: SPRAM
     bit_offset: 5
     bit_size: 1
   - name: RWKSEL
     bit_offset: 6
     bit_size: 1
-  - name: TXFIFOSIZE
-    bit_offset: 6
-    bit_size: 5
-  - name: TXQCNT
-    bit_offset: 6
-    bit_size: 4
   - name: MGKSEL
     bit_offset: 7
     bit_size: 1
@@ -1638,95 +1583,35 @@ fieldset/ENET_QOS_MAC_HW_FEAT:
   - name: ARPOFFSEL
     bit_offset: 9
     bit_size: 1
-  - name: PDUPSEL
-    bit_offset: 9
-    bit_size: 1
   - name: FRPSEL
     bit_offset: 10
     bit_size: 1
   - name: FRPBS
     bit_offset: 11
     bit_size: 2
-  - name: OSTEN
-    bit_offset: 11
-    bit_size: 1
-  - name: PTOEN
-    bit_offset: 12
-    bit_size: 1
-  - name: RXCHCNT
-    bit_offset: 12
-    bit_size: 4
-  - name: TSSEL
-    bit_offset: 12
-    bit_size: 1
   - name: ADVTHWORD
     bit_offset: 13
     bit_size: 1
-  - name: EEESEL
-    bit_offset: 13
-    bit_size: 1
-  - name: FRPES
-    bit_offset: 13
-    bit_size: 2
   - name: ADDR64
     bit_offset: 14
     bit_size: 2
-  - name: TXCOESEL
-    bit_offset: 14
-    bit_size: 1
   - name: DCBEN
-    bit_offset: 16
-    bit_size: 1
-  - name: ESTSEL
-    bit_offset: 16
-    bit_size: 1
-  - name: RXCOESEL
     bit_offset: 16
     bit_size: 1
   - name: ESTDEP
     bit_offset: 17
     bit_size: 3
-  - name: SPHEN
-    bit_offset: 17
-    bit_size: 1
-  - name: ADDMACADRSEL
-    bit_offset: 18
-    bit_size: 5
-  - name: TSOEN
-    bit_offset: 18
-    bit_size: 1
-  - name: TXCHCNT
-    bit_offset: 18
-    bit_size: 4
-  - name: DBGMEMA
-    bit_offset: 19
-    bit_size: 1
   - name: AVSEL
     bit_offset: 20
     bit_size: 1
-  - name: ESTWID
-    bit_offset: 20
-    bit_size: 2
   - name: RAVSEL
     bit_offset: 21
     bit_size: 1
   - name: MACADR32SEL
     bit_offset: 23
     bit_size: 1
-  - name: POUOST
-    bit_offset: 23
-    bit_size: 1
   - name: HASHTBLSZ
     bit_offset: 24
-    bit_size: 2
-  - name: MACADR64SEL
-    bit_offset: 24
-    bit_size: 1
-  - name: PPSOUTNUM
-    bit_offset: 24
-    bit_size: 3
-  - name: TSSTSSEL
-    bit_offset: 25
     bit_size: 2
   - name: FPESEL
     bit_offset: 26
@@ -1734,21 +1619,6 @@ fieldset/ENET_QOS_MAC_HW_FEAT:
   - name: L3L4FNUM
     bit_offset: 27
     bit_size: 4
-  - name: SAVLANINS
-    bit_offset: 27
-    bit_size: 1
-  - name: TBSSEL
-    bit_offset: 27
-    bit_size: 1
-  - name: ACTPHYSEL
-    bit_offset: 28
-    bit_size: 3
-  - name: ASP
-    bit_offset: 28
-    bit_size: 2
-  - name: AUXSNAPNUM
-    bit_offset: 28
-    bit_size: 3
 fieldset/ENET_QOS_MAC_MDIO_ADDRESS:
   description: ''
   fields:

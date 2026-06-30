@@ -63,21 +63,9 @@ block/DMA5:
   - name: DOFF
     byte_offset: 65608
     fieldset: DMA5_DOFF
-  - name: CITER_ELINKNO
-    byte_offset: 65610
-    fieldset: DMA5_CITER_ELINKNO
-  - name: CITER_ELINKYES
-    byte_offset: 65610
-    fieldset: DMA5_CITER_ELINKYES
   - name: CSR
     byte_offset: 65612
     fieldset: DMA5_CSR
-  - name: BITER_ELINKNO
-    byte_offset: 65614
-    fieldset: DMA5_BITER_ELINKNO
-  - name: BITER_ELINKYES
-    byte_offset: 65614
-    fieldset: DMA5_BITER_ELINKYES
 fieldset/DMA5_MP_CSR:
   description: ''
   fields:

@@ -5,19 +5,10 @@ block/ENETC_VF_PCI_TYPE0:
     byte_offset: 0
   - name: PCI_CFH_CMD
     byte_offset: 4
-  - name: PCI_CFH_STAT
-    byte_offset: 6
   - name: PCI_CFH_REVID_CLASSCODE
     byte_offset: 8
   - name: PCI_CFH_CL_SIZE
     byte_offset: 12
-  - name: PCI_CFH_LAT_TIMER
-    byte_offset: 13
-  - name: PCI_CFH_HDR_TYPE
-    byte_offset: 14
-  - name: PCI_CFH_BIST
-    byte_offset: 15
-    fieldset: ENETC_VF_PCI_TYPE0_PCI_CFH_BIST
   - name: PCI_CFH_BAR0
     byte_offset: 16
     fieldset: ENETC_VF_PCI_TYPE0_PCI_CFH_BAR0
@@ -40,30 +31,22 @@ block/ENETC_VF_PCI_TYPE0:
     byte_offset: 40
   - name: PCI_CFH_SUBSYS_VID
     byte_offset: 44
-  - name: PCI_CFH_SUBSYS_ID
-    byte_offset: 46
   - name: PCI_CFH_EXP_ROM_BA
     byte_offset: 48
   - name: PCI_CFH_CAP_PTR
     byte_offset: 52
   - name: PCI_CFC_PCIE_CAP_LIST
     byte_offset: 64
-  - name: PCI_CFC_PCIE_CAP
-    byte_offset: 66
   - name: PCI_CFC_PCIE_DEV_CAP
     byte_offset: 68
   - name: PCI_CFC_PCIE_DEV_CTL
     byte_offset: 72
-  - name: PCI_CFC_PCIE_DEV_STAT
-    byte_offset: 74
   - name: PCI_CFC_PCIE_DEV_CAP2
     byte_offset: 100
   - name: PCI_CFC_PCIE_DEV_CTL2
     byte_offset: 104
   - name: PCI_CFC_MSIX_CAP_LIST
     byte_offset: 128
-  - name: PCI_CFC_MSIX_MSG_CTL
-    byte_offset: 130
   - name: PCI_CFC_MSIX_TABLE_OFF_BIR
     byte_offset: 132
   - name: PCI_CFC_MSIX_PBA_OFF_BIR
@@ -86,8 +69,6 @@ block/ENETC_VF_PCI_TYPE0:
     byte_offset: 304
   - name: PCIE_CFC_ACS_CAP
     byte_offset: 308
-  - name: PCIE_CFC_ACS_CTL
-    byte_offset: 310
   - name: PCIE_CFC_RTR_CAP_HDR
     byte_offset: 320
   - name: PCIE_CFC_RTR_RTR1

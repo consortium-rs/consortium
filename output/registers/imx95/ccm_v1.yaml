@@ -6,32 +6,6 @@ block/CCM:
     array:
       len: 123
       stride: 128
-  - name: CLOCK_ROOT_CONTROL_SET
-    byte_offset: 4
-    array:
-      len: 123
-      stride: 128
-  - name: CLOCK_ROOT_CONTROL_CLR
-    byte_offset: 8
-    array:
-      len: 123
-      stride: 128
-  - name: CLOCK_ROOT_CONTROL_TOG
-    byte_offset: 12
-    array:
-      len: 123
-      stride: 128
-  - name: CLOCK_ROOT_STATUS0
-    byte_offset: 32
-    array:
-      len: 123
-      stride: 128
-    fieldset: CCM_CLOCK_ROOT_STATUS0
-  - name: CLOCK_ROOT_AUTHEN
-    byte_offset: 48
-    array:
-      len: 123
-      stride: 128
   - name: GPR_SHARED0_RW
     byte_offset: 18432
   - name: GPR_SHARED0_SET
@@ -85,78 +59,8 @@ block/CCM:
     array:
       len: 5
       stride: 32
-  - name: GPR_SHARED_SET
-    byte_offset: 18532
-    array:
-      len: 5
-      stride: 32
-  - name: GPR_SHARED_CLR
-    byte_offset: 18536
-    array:
-      len: 5
-      stride: 32
-  - name: GPR_SHARED_TOG
-    byte_offset: 18540
-    array:
-      len: 5
-      stride: 32
-  - name: GPR_SHARED_AUTHEN_RW
-    byte_offset: 18528
-    array:
-      len: 5
-      stride: 32
-  - name: GPR_SHARED_AUTHEN_SET
-    byte_offset: 18532
-    array:
-      len: 5
-      stride: 32
-  - name: GPR_SHARED_AUTHEN_CLR
-    byte_offset: 18536
-    array:
-      len: 5
-      stride: 32
-  - name: GPR_SHARED_AUTHEN_TOG
-    byte_offset: 18540
-    array:
-      len: 5
-      stride: 32
   - name: GPR_PRIVATE_RW
     byte_offset: 19456
-    array:
-      len: 8
-      stride: 32
-  - name: GPR_PRIVATE_SET
-    byte_offset: 19460
-    array:
-      len: 8
-      stride: 32
-  - name: GPR_PRIVATE_CLR
-    byte_offset: 19464
-    array:
-      len: 8
-      stride: 32
-  - name: GPR_PRIVATE_TOG
-    byte_offset: 19468
-    array:
-      len: 8
-      stride: 32
-  - name: GPR_PRIVATE_AUTHEN_RW
-    byte_offset: 19456
-    array:
-      len: 8
-      stride: 32
-  - name: GPR_PRIVATE_AUTHEN_SET
-    byte_offset: 19460
-    array:
-      len: 8
-      stride: 32
-  - name: GPR_PRIVATE_AUTHEN_CLR
-    byte_offset: 19464
-    array:
-      len: 8
-      stride: 32
-  - name: GPR_PRIVATE_AUTHEN_TOG
-    byte_offset: 19468
     array:
       len: 8
       stride: 32
@@ -166,94 +70,12 @@ block/CCM:
       len: 39
       stride: 64
     fieldset: CCM_OSCPLL_DIRECT
-  - name: OSCPLL_LPM_STATUS0
-    byte_offset: 20484
-    array:
-      len: 39
-      stride: 64
-  - name: OSCPLL_LPM_STATUS1
-    byte_offset: 20488
-    array:
-      len: 39
-      stride: 64
-  - name: OSCPLL_LPM0
-    byte_offset: 20496
-    array:
-      len: 39
-      stride: 64
-  - name: OSCPLL_LPM1
-    byte_offset: 20500
-    array:
-      len: 39
-      stride: 64
-  - name: OSCPLL_LPM_CUR
-    byte_offset: 20508
-    array:
-      len: 39
-      stride: 64
-  - name: OSCPLL_STATUS0
-    byte_offset: 20512
-    array:
-      len: 39
-      stride: 64
-    fieldset: CCM_OSCPLL_STATUS0
-  - name: OSCPLL_STATUS1
-    byte_offset: 20516
-    array:
-      len: 39
-      stride: 64
-  - name: OSCPLL_AUTHEN
-    byte_offset: 20528
-    array:
-      len: 39
-      stride: 64
   - name: LPCG_DIRECT
     byte_offset: 32768
     array:
       len: 256
       stride: 64
     fieldset: CCM_LPCG_DIRECT
-  - name: LPCG_LPM_STATUS0
-    byte_offset: 32772
-    array:
-      len: 256
-      stride: 64
-  - name: LPCG_LPM_STATUS1
-    byte_offset: 32776
-    array:
-      len: 256
-      stride: 64
-  - name: LPCG_LPM0
-    byte_offset: 32784
-    array:
-      len: 256
-      stride: 64
-  - name: LPCG_LPM1
-    byte_offset: 32788
-    array:
-      len: 256
-      stride: 64
-  - name: LPCG_LPM_CUR
-    byte_offset: 32796
-    array:
-      len: 256
-      stride: 64
-  - name: LPCG_STATUS0
-    byte_offset: 32800
-    array:
-      len: 256
-      stride: 64
-    fieldset: CCM_LPCG_STATUS0
-  - name: LPCG_STATUS1
-    byte_offset: 32804
-    array:
-      len: 256
-      stride: 64
-  - name: LPCG_AUTHEN
-    byte_offset: 32816
-    array:
-      len: 256
-      stride: 64
 fieldset/CCM_CLOCK_ROOT:
   description: ''
   fields:

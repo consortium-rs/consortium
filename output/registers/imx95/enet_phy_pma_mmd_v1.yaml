@@ -5,74 +5,44 @@ block/ENET_PHY_PMA_MMD:
     byte_offset: 65600
   - name: VR_XS_PMA_MP_12G_16G_25G_TX_GENCTRL0
     byte_offset: 65632
-  - name: VR_XS_PMA_MP_12G_16G_25G_TX_GENCTRL1
-    byte_offset: 65634
   - name: VR_XS_PMA_MP_12G_16G_TX_GENCTRL2
     byte_offset: 65636
-  - name: VR_XS_PMA_MP_12G_16G_25G_TX_BOOST_CTRL
-    byte_offset: 65638
   - name: VR_XS_PMA_MP_12G_16G_25G_TX_RATE_CTRL
     byte_offset: 65640
-  - name: MP_12G_16G_25G_TX_POWER_STATE_CTRL
-    byte_offset: 65642
   - name: VR_XS_PMA_MP_12G_16G_25G_TX_EQ_CTRL0
     byte_offset: 65644
-  - name: VR_XS_PMA_MP_12G_16G_25G_TX_EQ_CTRL1
-    byte_offset: 65646
   - name: VR_XS_PMA_MP_16G_25G_TX_MISC_CTRL0
     byte_offset: 65660
   - name: VR_XS_PMA_MP_12G_16G_25G_RX_GENCTRL0
     byte_offset: 65696
-  - name: MP_12G_16G_25G_RX_GENCTRL1
-    byte_offset: 65698
   - name: VR_XS_PMA_MP_12G_16G_RX_GENCTRL2
     byte_offset: 65700
-  - name: VR_XS_PMA_MP_12G_16G_RX_GENCTRL3
-    byte_offset: 65702
   - name: VR_XS_PMA_MP_12G_16G_25G_RX_RATE_CTRL
     byte_offset: 65704
-  - name: MP_12G_16G_25G_RX_POWER_STATE_CTRL
-    byte_offset: 65706
   - name: VR_XS_PMA_MP_12G_16G_25G_RX_CDR_CTRL
     byte_offset: 65708
-  - name: VR_XS_PMA_MP_12G_16G_25G_RX_ATTN_CTRL
-    byte_offset: 65710
   - name: VR_XS_PMA_MP_16G_25G_RX_EQ_CTRL0
     byte_offset: 65712
   - name: VR_XS_PMA_MP_12G_16G_25G_RX_EQ_CTRL4
     byte_offset: 65720
-  - name: VR_XS_PMA_MP_16G_25G_RX_EQ_CTRL5
-    byte_offset: 65722
   - name: VR_XS_PMA_MP_12G_16G_25G_DFE_TAP_CTRL0
     byte_offset: 65724
   - name: VR_XS_PMA_MP_16G_RX_CDR_CTRL1
     byte_offset: 65736
-  - name: VR_XS_PMA_MP_16G_25G_RX_PPM_CTRL0
-    byte_offset: 65738
   - name: VR_XS_PMA_MP_16G_25G_RX_GENCTRL4
     byte_offset: 65744
-  - name: VR_XS_PMA_MP_16G_25G_RX_MISC_CTRL0
-    byte_offset: 65746
   - name: VR_XS_PMA_MP_16G_25G_RX_IQ_CTRL0
     byte_offset: 65750
   - name: VR_XS_PMA_MP_12G_16G_25G_MPLL_CMN_CTRL
     byte_offset: 65760
-  - name: VR_XS_PMA_MP_12G_16G_MPLLA_CTRL0
-    byte_offset: 65762
   - name: VR_XS_PMA_MP_16G_MPLLA_CTRL1
     byte_offset: 65764
-  - name: VR_XS_PMA_MP_12G_16G_MPLLA_CTRL2
-    byte_offset: 65766
   - name: VR_XS_PMA_MP_16G_MPLLA_CTRL3
     byte_offset: 65774
   - name: VR_XS_PMA_MP_16G_MPLLA_CTRL4
     byte_offset: 65778
-  - name: VR_XS_PMA_MP_16G_MPLLA_CTRL5
-    byte_offset: 65780
   - name: VR_XS_PMA_MP_12G_16G_25G_MISC_CTRL0
     byte_offset: 65824
-  - name: VR_XS_PMA_MP_12G_16G_25G_REF_CLK_CTRL
-    byte_offset: 65826
   - name: VR_XS_PMA_MP_12G_16G_25G_VCO_CAL_LD0
     byte_offset: 65828
   - name: VR_XS_PMA_MP_16G_25G_VCO_CAL_REF0
@@ -82,8 +52,6 @@ block/ENET_PHY_PMA_MMD:
     fieldset: ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_MISC_STS
   - name: VR_XS_PMA_MP_12G_16G_25G_SRAM
     byte_offset: 65846
-  - name: VR_XS_PMA_MP_16G_25G_MISC_CTRL2
-    byte_offset: 65848
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_TX_GENCTRL1_VBOOST:
   description: ''
   fields:

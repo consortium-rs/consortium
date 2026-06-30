@@ -216,10 +216,6 @@ fieldset/HSEM_RLR:
 fieldset/HSEM_C1IER:
   description: ''
   fields:
-  - name: ISE
-    bit_offset: 0
-    bit_size: 16
-    description: non-secure Interrupt(n) semaphore x enable bit. (x = 0 to 15)
   - name: ISE0
     bit_offset: 0
     bit_size: 1

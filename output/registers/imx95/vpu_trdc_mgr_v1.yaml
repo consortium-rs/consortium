@@ -13,51 +13,15 @@ block/VPU_TRDC_MGR:
   - name: DACFG0
     byte_offset: 256
     fieldset: VPU_TRDC_MGR_DACFG0
-  - name: DACFG1
-    byte_offset: 257
-    fieldset: VPU_TRDC_MGR_DACFG1
-  - name: DACFG2
-    byte_offset: 258
-    fieldset: VPU_TRDC_MGR_DACFG2
-  - name: DACFG3
-    byte_offset: 259
-    fieldset: VPU_TRDC_MGR_DACFG3
   - name: DACFG4
     byte_offset: 260
     fieldset: VPU_TRDC_MGR_DACFG4
-  - name: DACFG5
-    byte_offset: 261
-    fieldset: VPU_TRDC_MGR_DACFG5
-  - name: DACFG6
-    byte_offset: 262
-    fieldset: VPU_TRDC_MGR_DACFG6
-  - name: DACFG7
-    byte_offset: 263
-    fieldset: VPU_TRDC_MGR_DACFG7
   - name: DACFG8
     byte_offset: 264
     fieldset: VPU_TRDC_MGR_DACFG8
-  - name: DACFG9
-    byte_offset: 265
-    fieldset: VPU_TRDC_MGR_DACFG9
-  - name: DACFG10
-    byte_offset: 266
-    fieldset: VPU_TRDC_MGR_DACFG10
-  - name: DACFG11
-    byte_offset: 267
-    fieldset: VPU_TRDC_MGR_DACFG11
   - name: DACFG12
     byte_offset: 268
     fieldset: VPU_TRDC_MGR_DACFG12
-  - name: DACFG13
-    byte_offset: 269
-    fieldset: VPU_TRDC_MGR_DACFG13
-  - name: DACFG14
-    byte_offset: 270
-    fieldset: VPU_TRDC_MGR_DACFG14
-  - name: DACFG15
-    byte_offset: 271
-    fieldset: VPU_TRDC_MGR_DACFG15
   - name: TRDC_IDAU_CR
     byte_offset: 448
     fieldset: VPU_TRDC_MGR_TRDC_IDAU_CR

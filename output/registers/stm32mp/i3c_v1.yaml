@@ -139,10 +139,6 @@ fieldset/I3C_CR:
     bit_offset: 16
     bit_size: 1
     description: read / non-write message (when I3C is acting as controller)
-  - name: CCC
-    bit_offset: 16
-    bit_size: 8
-    description: 8-Bit CCC code
   - name: ADD
     bit_offset: 17
     bit_size: 7
@@ -249,10 +245,6 @@ fieldset/I3C_RDR:
 fieldset/I3C_RDWR:
   description: ''
   fields:
-  - name: RDBx
-    bit_offset: 0
-    bit_size: 32
-    description: 32-bit received data
   - name: RDB0
     bit_offset: 0
     bit_size: 8
@@ -279,10 +271,6 @@ fieldset/I3C_TDR:
 fieldset/I3C_TDWR:
   description: ''
   fields:
-  - name: TDBx
-    bit_offset: 0
-    bit_size: 32
-    description: 32-bit transmit data
   - name: TDB0
     bit_offset: 0
     bit_size: 8
@@ -302,10 +290,6 @@ fieldset/I3C_TDWR:
 fieldset/I3C_IBIDR:
   description: ''
   fields:
-  - name: IBIDBx
-    bit_offset: 0
-    bit_size: 32
-    description: 32-bit IBI payload data
   - name: IBIDB0
     bit_offset: 0
     bit_size: 8
@@ -825,10 +809,6 @@ fieldset/I3C_TIMINGR2:
 fieldset/I3C_BCR:
   description: ''
   fields:
-  - name: BCR
-    bit_offset: 0
-    bit_size: 8
-    description: Bus Characteristics
   - name: BCR0
     bit_offset: 0
     bit_size: 1

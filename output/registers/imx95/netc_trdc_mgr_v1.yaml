@@ -13,27 +13,9 @@ block/NETC_TRDC_MGR:
   - name: DACFG0
     byte_offset: 256
     fieldset: NETC_TRDC_MGR_DACFG0
-  - name: DACFG1
-    byte_offset: 257
-    fieldset: NETC_TRDC_MGR_DACFG1
-  - name: DACFG2
-    byte_offset: 258
-    fieldset: NETC_TRDC_MGR_DACFG2
-  - name: DACFG3
-    byte_offset: 259
-    fieldset: NETC_TRDC_MGR_DACFG3
   - name: DACFG4
     byte_offset: 260
     fieldset: NETC_TRDC_MGR_DACFG4
-  - name: DACFG5
-    byte_offset: 261
-    fieldset: NETC_TRDC_MGR_DACFG5
-  - name: DACFG6
-    byte_offset: 262
-    fieldset: NETC_TRDC_MGR_DACFG6
-  - name: DACFG7
-    byte_offset: 263
-    fieldset: NETC_TRDC_MGR_DACFG7
   - name: TRDC_IDAU_CR
     byte_offset: 448
     fieldset: NETC_TRDC_MGR_TRDC_IDAU_CR

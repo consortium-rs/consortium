@@ -79,21 +79,6 @@ block/NETC_PORT:
     array:
       len: 8
       stride: 32
-  - name: TCT_NUM_PTCTMSDUR
-    byte_offset: 520
-    array:
-      len: 8
-      stride: 32
-  - name: TCT_NUM_PTCCBSR0
-    byte_offset: 528
-    array:
-      len: 8
-      stride: 32
-  - name: TCT_NUM_PTCCBSR1
-    byte_offset: 532
-    array:
-      len: 8
-      stride: 32
   - name: PISIDCR
     byte_offset: 1120
     fieldset: NETC_PORT_PISIDCR

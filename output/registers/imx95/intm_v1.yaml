@@ -12,21 +12,6 @@ block/INTM:
     array:
       len: 4
       stride: 16
-  - name: MON_INTM_LATENCY
-    byte_offset: 12
-    array:
-      len: 4
-      stride: 16
-  - name: MON_INTM_TIMER
-    byte_offset: 16
-    array:
-      len: 4
-      stride: 16
-  - name: MON_INTM_STATUS
-    byte_offset: 20
-    array:
-      len: 4
-      stride: 16
 fieldset/INTM_INTM_MM:
   description: ''
   fields:

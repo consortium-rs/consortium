@@ -50,16 +50,6 @@ block/TRDC_MBC2:
     array:
       len: 2
       stride: 16
-  - name: MBC_DERR_W1
-    byte_offset: 1028
-    array:
-      len: 2
-      stride: 16
-  - name: MBC_DERR_W3
-    byte_offset: 1036
-    array:
-      len: 2
-      stride: 16
   - name: MRC_DERR_W0
     byte_offset: 1152
   - name: MRC_DERR_W1
@@ -7864,10 +7854,6 @@ fieldset/TRDC_MBC2_MRC_DOM0_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -7919,10 +7905,6 @@ fieldset/TRDC_MBC2_MRC_DOM1_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -7974,10 +7956,6 @@ fieldset/TRDC_MBC2_MRC_DOM2_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -8029,10 +8007,6 @@ fieldset/TRDC_MBC2_MRC_DOM3_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -8084,10 +8058,6 @@ fieldset/TRDC_MBC2_MRC_DOM4_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -8139,10 +8109,6 @@ fieldset/TRDC_MBC2_MRC_DOM5_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -8194,10 +8160,6 @@ fieldset/TRDC_MBC2_MRC_DOM6_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -8249,10 +8211,6 @@ fieldset/TRDC_MBC2_MRC_DOM7_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -8304,10 +8262,6 @@ fieldset/TRDC_MBC2_MRC_DOM8_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -8359,10 +8313,6 @@ fieldset/TRDC_MBC2_MRC_DOM9_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -8414,10 +8364,6 @@ fieldset/TRDC_MBC2_MRC_DOM10_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -8469,10 +8415,6 @@ fieldset/TRDC_MBC2_MRC_DOM11_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -8524,10 +8466,6 @@ fieldset/TRDC_MBC2_MRC_DOM12_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -8579,10 +8517,6 @@ fieldset/TRDC_MBC2_MRC_DOM13_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -8634,10 +8568,6 @@ fieldset/TRDC_MBC2_MRC_DOM14_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1
@@ -8689,10 +8619,6 @@ fieldset/TRDC_MBC2_MRC_DOM15_RGD_W:
   - name: MRACSEL
     bit_offset: 0
     bit_size: 3
-  - name: VLD
-    bit_offset: 0
-    bit_size: 1
-    description: Valid
   - name: NSE
     bit_offset: 4
     bit_size: 1

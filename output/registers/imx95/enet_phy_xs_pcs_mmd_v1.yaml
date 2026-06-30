@@ -4,9 +4,6 @@ block/ENET_PHY_XS_PCS_MMD:
   - name: SR_XS_PCS_CTRL1
     byte_offset: 0
     fieldset: ENET_PHY_XS_PCS_MMD_SR_XS_PCS_CTRL1
-  - name: SR_XS_PCS_STS1
-    byte_offset: 2
-    fieldset: ENET_PHY_XS_PCS_MMD_SR_XS_PCS_STS1
   - name: SR_XS_PCS_CTRL2
     byte_offset: 14
   - name: VR_XS_PCS_DIG_CTRL1
@@ -14,8 +11,6 @@ block/ENET_PHY_XS_PCS_MMD:
     fieldset: ENET_PHY_XS_PCS_MMD_VR_XS_PCS_DIG_CTRL1
   - name: VR_XS_PCS_XAUI_CTRL
     byte_offset: 65544
-  - name: VR_XS_PCS_DEBUG_CTRL
-    byte_offset: 65546
   - name: VR_XS_PCS_KR_CTRL
     byte_offset: 65550
     fieldset: ENET_PHY_XS_PCS_MMD_VR_XS_PCS_KR_CTRL

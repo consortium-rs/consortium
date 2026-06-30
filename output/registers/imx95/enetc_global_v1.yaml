@@ -72,10 +72,6 @@ block/ENETC_GLOBAL:
     byte_offset: 3616
   - name: EMDIO_EMDIOUFSBESR
     byte_offset: 3620
-  - name: TIMER_TUFSBECR
-    byte_offset: 3616
-  - name: TIMER_TUFSBESR
-    byte_offset: 3620
 fieldset/ENETC_GLOBAL_SMDTR:
   description: ''
   fields:

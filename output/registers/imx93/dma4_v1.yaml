@@ -52,15 +52,9 @@ block/DMA4:
   - name: SOFF
     byte_offset: 65572
     fieldset: DMA4_SOFF
-  - name: ATTR
-    byte_offset: 65574
-    fieldset: DMA4_ATTR
   - name: NBYTES_MLOFFNO
     byte_offset: 65576
     fieldset: DMA4_NBYTES_MLOFFNO
-  - name: NBYTES_MLOFFYES
-    byte_offset: 65576
-    fieldset: DMA4_NBYTES_MLOFFYES
   - name: SLAST_SDA
     byte_offset: 65580
   - name: DADDR
@@ -69,23 +63,11 @@ block/DMA4:
   - name: DOFF
     byte_offset: 65588
     fieldset: DMA4_DOFF
-  - name: CITER_ELINKNO
-    byte_offset: 65590
-    fieldset: DMA4_CITER_ELINKNO
-  - name: CITER_ELINKYES
-    byte_offset: 65590
-    fieldset: DMA4_CITER_ELINKYES
   - name: DLAST_SGA
     byte_offset: 65592
-  - name: CSR
+  - name: TCD_CSR
     byte_offset: 65596
-    fieldset: DMA4_CSR
-  - name: BITER_ELINKNO
-    byte_offset: 65598
-    fieldset: DMA4_BITER_ELINKNO
-  - name: BITER_ELINKYES
-    byte_offset: 65598
-    fieldset: DMA4_BITER_ELINKYES
+    fieldset: DMA4_TCD_CSR
 fieldset/DMA4_CSR:
   description: ''
   fields:
@@ -121,37 +103,49 @@ fieldset/DMA4_CSR:
     bit_offset: 31
     bit_size: 1
     description: Active Channel ID
+fieldset/DMA4_TCD_CSR:
+  description: ''
+  fields:
   - name: START
     bit_offset: 0
     bit_size: 1
+    description: Channel Start
   - name: INTMAJOR
     bit_offset: 1
     bit_size: 1
+    description: Interrupt Enable after Major Iteration Count Completion
   - name: INTHALF
     bit_offset: 2
     bit_size: 1
+    description: Interrupt Enable after Major Counter is Half Complete
   - name: DREQ
     bit_offset: 3
     bit_size: 1
+    description: Disable Request
   - name: ESG
     bit_offset: 4
     bit_size: 1
+    description: Enable Scatter/Gather Processing
   - name: MAJORELINK
     bit_offset: 5
     bit_size: 1
+    description: Enable Channel-to-Channel Linking on Major Loop Complete
   - name: EEOP
     bit_offset: 6
     bit_size: 1
+    description: Enable End-of-Packet Processing
   - name: ESDA
     bit_offset: 7
     bit_size: 1
+    description: Enable Store Destination Address
   - name: MAJORLINKCH
     bit_offset: 8
     bit_size: 6
+    description: Major Loop Link Channel Number
   - name: TMC
     bit_offset: 14
     bit_size: 2
-    description: Major Loop Link Channel Number
+    description: Transfer Mode Control
 fieldset/DMA4_CSR_ACTIVE:
   description: ''
   fields:
