@@ -72,7 +72,7 @@ struct IpcMemoryEndpointsConnected {
             >,
             ::consortium_shared_memory::regions::SramRegion,
         >,
-        ::consortium_codec::RkyvCodec,
+        ::consortium_codec::RkyvCodec<512usize>,
     >,
 }
 impl IpcMemoryEndpoints {
@@ -243,7 +243,7 @@ impl IpcMemoryEndpoints {
                     ::consortium_ipc::Tx,
                     ::shared::Telemetry,
                     _,
-                    ::consortium_codec::RkyvCodec,
+                    ::consortium_codec::RkyvCodec<512usize>,
                 >::new(
                     chan_tx,
                     t_tx,
@@ -256,7 +256,7 @@ impl IpcMemoryEndpoints {
                     ::consortium_ipc::Rx,
                     ::shared::Command,
                     _,
-                    ::consortium_codec::RkyvCodec,
+                    ::consortium_codec::RkyvCodec<512usize>,
                 >::new(
                     chan_rx,
                     t_rx,

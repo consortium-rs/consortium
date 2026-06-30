@@ -193,7 +193,7 @@ fn _generated() {
                 >,
                 ::consortium_shared_memory::regions::SramRegion,
             >,
-            ::consortium_codec::RkyvCodec,
+            ::consortium_codec::RkyvCodec<128usize>,
         >,
     }
     impl IpcMemoryEndpoints {
@@ -370,7 +370,7 @@ fn _generated() {
                         ::consortium_ipc::Tx,
                         ::shared::PowerStatus,
                         _,
-                        ::consortium_codec::RkyvCodec,
+                        ::consortium_codec::RkyvCodec<128usize>,
                     >::new(
                         chan_tx,
                         t_tx,
@@ -383,7 +383,7 @@ fn _generated() {
                         ::consortium_ipc::Rx,
                         ::shared::PowerMode,
                         _,
-                        ::consortium_codec::RkyvCodec,
+                        ::consortium_codec::RkyvCodec<128usize>,
                     >::new(
                         chan_rx,
                         t_rx,
@@ -508,7 +508,7 @@ fn _generated() {
                 >,
                 ::consortium_shared_memory::regions::SramRegion,
             >,
-            ::consortium_codec::RkyvCodec,
+            ::consortium_codec::RkyvCodec<128usize>,
         >,
     }
     impl IpcMemoryEndpoints {
@@ -590,7 +590,7 @@ fn _generated() {
                         ::consortium_ipc::Tx,
                         ::shared::PowerMode,
                         _,
-                        ::consortium_codec::RkyvCodec,
+                        ::consortium_codec::RkyvCodec<128usize>,
                     >::new(
                         chan_tx,
                         t_tx,
@@ -603,7 +603,7 @@ fn _generated() {
                         ::consortium_ipc::Rx,
                         ::shared::PowerStatus,
                         _,
-                        ::consortium_codec::RkyvCodec,
+                        ::consortium_codec::RkyvCodec<128usize>,
                     >::new(
                         chan_rx,
                         t_rx,
