@@ -14,13 +14,12 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use consortium_cfg_common::config::SharedMemConfig;
-use consortium_cfg_common::config::mcu_core::CortexMcuCore;
 use std::path::PathBuf;
 use thiserror::Error;
 use tokio::process::Command;
 
 use super::Compiler;
+use crate::compile::env::{CortexMcuCore, SharedMemConfig};
 use crate::compile::utils::{elf_path, inject_shared_mem, resolve_cargo, verify_elf};
 
 /// Error type for firmware compilation.

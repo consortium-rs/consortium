@@ -64,7 +64,7 @@ setup-ls-lint:
 build:
     cargo build
 
-# Run tests. With args: `just test ipc host`, `just test hmi host`, `just test tee host`, `just test cfg host`.
+# Run tests. With args: `just test ipc host`, `just test hmi host`, `just test tee host`, `just test cfg host`, `just test dbg host`, `just test codec host`.
 test area="" scope="":
     @case "{{ area }}:{{ scope }}" in \
         ":") cargo test ;; \
@@ -80,7 +80,9 @@ test area="" scope="":
         "tee:a64") just test-tee-a64 ;; \
         "tee:a32") just test-tee-a32 ;; \
         "cfg:"|"cfg:host") just test-cfg-host ;; \
-        *) echo "Error: unknown test scope '{{ area }} {{ scope }}'"; echo "Try: just test ipc host | a64 | a32 | m8 | m7, just test hmi host | a64 | a32, just test tee host | a64 | a32, or just test cfg host"; exit 1 ;; \
+        "dbg:"|"dbg:host") just test-dbg-host ;; \
+        "codec:"|"codec:host") just test-codec-host ;; \
+        *) echo "Error: unknown test scope '{{ area }} {{ scope }}'"; echo "Try: just test ipc host | a64 | a32 | m8 | m7, just test hmi host | a64 | a32, just test tee host | a64 | a32, just test cfg host, just test dbg host, or just test codec host"; exit 1 ;; \
     esac
 
 # Run tests for a specific crate (e.g. `just test-crate ipc`)
@@ -363,6 +365,18 @@ test-ipc-host:
 test-cfg-host:
     cargo test -p consortium-cfg-common
     cargo test -p consortium-cfg
+
+# Run host-side debug-logging tests: descriptor/ring behavior and the logger,
+# plus the defmt `decode` path (defmt-decoder host reader).
+test-dbg-host:
+    cargo test -p consortium-dbg
+    cargo test -p consortium-dbg --features decode
+
+# Run host-side codec tests across all families, plus the derive-macro
+# snapshot/trybuild coverage.
+test-codec-host:
+    cargo test -p consortium-codec --features postcard,prost,rkyv,alloc
+    cargo test -p consortium-codec-macros-impl
 
 # ── RISC-V (rv32imc) ────────────────────────────────────────────────────────
 

@@ -144,33 +144,23 @@ impl Transceiver {
         let side = self
             .side(core)
             .expect("core must be either primary or secondary for the transceiver");
-        let side_ident = match side {
-            DoorbellRingerSide::Primary => format_ident!("Primary"),
-            DoorbellRingerSide::Secondary => format_ident!("Secondary"),
-        };
-        let db_id = Literal::usize_suffixed(self.doorbell.id.unwrap_or(1) as usize);
-        let doorbell_type = match self.doorbell.r#type {
-            HardwareDoorbellPeripheralType::Mu => {
-                quote::quote! { ::consortium_ipc_doorbell_mu::MuDoorbell<::consortium_ipc::#side_ident, #db_id> }
-            }
-            HardwareDoorbellPeripheralType::Hsem => {
-                quote::quote! { ::consortium_ipc_doorbell_hsem::HsemDoorbell<::consortium_ipc::#side_ident, #db_id> }
-            }
-            HardwareDoorbellPeripheralType::Ipcc => {
-                quote::quote! { ::consortium_ipc_doorbell_ipcc::IpccDoorbell<::consortium_ipc::#side_ident, #db_id> }
-            }
-        };
-        let region_type = match self.region.r#type {
-            MemoryRegionType::Sram => {
-                quote::quote! { ::consortium_shared_memory::regions::SramRegion }
-            }
-        };
+        let doorbell_type = self.doorbell.as_type(side);
+        let region_type = self.region_ty();
         let side_type = match side {
             DoorbellRingerSide::Primary => quote::quote! { ::consortium_ipc::Primary },
             DoorbellRingerSide::Secondary => quote::quote! { ::consortium_ipc::Secondary },
         };
         quote::quote! {
             ::consortium_ipc_transport_memory::SharedMemoryTransport<#side_type, #doorbell_type, #region_type>
+        }
+    }
+
+    /// The shared-memory region type for this transceiver, in type position.
+    fn region_ty(&self) -> TokenStream {
+        match self.region.r#type {
+            MemoryRegionType::Sram => {
+                quote::quote! { ::consortium_shared_memory::regions::SramRegion }
+            }
         }
     }
 
@@ -334,27 +324,8 @@ impl Transceiver {
             .expect("core must be either primary or secondary for the transceiver");
         // The doorbell type carries its side and 1-based instance id so the
         // transport halves are fully concrete (the field type names no `_`).
-        let side_ident = match side {
-            DoorbellRingerSide::Primary => format_ident!("Primary"),
-            DoorbellRingerSide::Secondary => format_ident!("Secondary"),
-        };
-        let db_id = Literal::usize_suffixed(self.doorbell.id.unwrap_or(1) as usize);
-        let doorbell_type = match self.doorbell.r#type {
-            HardwareDoorbellPeripheralType::Mu => {
-                quote::quote! { ::consortium_ipc_doorbell_mu::MuDoorbell<::consortium_ipc::#side_ident, #db_id> }
-            }
-            HardwareDoorbellPeripheralType::Hsem => {
-                quote::quote! { ::consortium_ipc_doorbell_hsem::HsemDoorbell<::consortium_ipc::#side_ident, #db_id> }
-            }
-            HardwareDoorbellPeripheralType::Ipcc => {
-                quote::quote! { ::consortium_ipc_doorbell_ipcc::IpccDoorbell<::consortium_ipc::#side_ident, #db_id> }
-            }
-        };
-        let region_type = match self.region.r#type {
-            MemoryRegionType::Sram => {
-                quote::quote! { ::consortium_shared_memory::regions::SramRegion }
-            }
-        };
+        let doorbell_type = self.doorbell.as_type(side);
+        let region_type = self.region_ty();
 
         let side_type = match side {
             DoorbellRingerSide::Primary => {
@@ -408,8 +379,11 @@ pub enum DoorbellRingerSide {
 }
 
 impl DoorbellMeta {
-    pub fn as_path(&self, side: DoorbellRingerSide) -> TokenStream {
-        let id = self.id.unwrap_or(1) as usize;
+    /// The doorbell's crate path, type name, and IPC side marker idents.
+    ///
+    /// Shared by [`as_path`](Self::as_path) (expression position) and
+    /// [`as_type`](Self::as_type) (type position), which differ only in turbofish.
+    fn idents(&self, side: DoorbellRingerSide) -> (Ident, Ident, Ident) {
         let crate_ident = format_ident!(
             "consortium_ipc_doorbell_{}",
             self.r#type.to_string().to_lowercase()
@@ -422,9 +396,26 @@ impl DoorbellMeta {
                 DoorbellRingerSide::Secondary => "Secondary",
             }
         );
-        let side_path = quote::quote! { ::consortium_ipc::#side_ident };
+        (crate_ident, type_ident, side_ident)
+    }
+
+    /// The doorbell type in expression/path position (turbofish form), for
+    /// `<doorbell>::new(...)` construction.
+    pub fn as_path(&self, side: DoorbellRingerSide) -> TokenStream {
+        let id = self.id.unwrap_or(1) as usize;
+        let (crate_ident, type_ident, side_ident) = self.idents(side);
         quote::quote! {
-            ::#crate_ident::#type_ident::<#side_path, #id>
+            ::#crate_ident::#type_ident::<::consortium_ipc::#side_ident, #id>
+        }
+    }
+
+    /// The doorbell type in type position (no turbofish), for naming the
+    /// doorbell inside a transport type signature.
+    pub fn as_type(&self, side: DoorbellRingerSide) -> TokenStream {
+        let id = self.id.unwrap_or(1) as usize;
+        let (crate_ident, type_ident, side_ident) = self.idents(side);
+        quote::quote! {
+            ::#crate_ident::#type_ident<::consortium_ipc::#side_ident, #id>
         }
     }
 

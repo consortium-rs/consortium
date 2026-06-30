@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use consortium_cfg_common::config::{HmiConfig, SharedMemConfig};
+use crate::compile::env::{HmiConfig, SharedMemConfig};
 use std::path::{Path, PathBuf};
 use tokio::io::AsyncReadExt;
 use tokio::process::Command;
@@ -408,41 +408,32 @@ mod tests {
 
     // ── TEE ─────────────────────────────────────────────────────────────────
 
-    /// End-to-end: a `Consortium.toml` `[tee]` table parses into a [`TeeConfig`]
-    /// whose UUID string is a valid [`Uuid`]. The OP-TEE compiler injects that
-    /// UUID under [`TEE_UUID_ENV`] (`config.ta_uuid.to_string()`), and
-    /// [`TeeConfig::env_pair`] maps the same config to the same variable, so the
-    /// manifest, the builder, and the TA build script agree on one value.
+    /// End-to-end: a `Consortium.toml` `[tee]` table parses into a [`Tee`] whose
+    /// `uuid` is a real [`Uuid`]. The OP-TEE compiler injects that UUID under
+    /// [`TEE_UUID_ENV`] (`config.ta_uuid.to_string()`), and each TA's `build.rs`
+    /// reads the same variable back, so the manifest, the builder, and the TA
+    /// build script all agree on one value.
     #[test]
     fn toml_tee_section_round_trips_to_injected_uuid() {
-        use consortium_cfg_common::config::TEE_UUID_ENV;
-        use uuid::Uuid;
+        use consortium_cfg_common::config::{TEE_UUID_ENV, Tee};
 
         #[derive(serde::Deserialize)]
         struct Doc {
-            tee: consortium_cfg_common::config::TeeConfig,
+            tee: Tee,
         }
         let manifest = "[tee]\nuuid = \"12345678-1234-1234-1234-123456789012\"\n";
         let doc: Doc = toml::from_str(manifest).expect("[tee] should deserialize");
 
-        // The manifest UUID parses, and the canonical form the OP-TEE compiler
-        // injects round-trips back to the manifest value.
-        let uuid: Uuid = doc.tee.uuid.parse().expect("uuid should parse");
-        assert_eq!(uuid.to_string(), doc.tee.uuid);
-
-        // Mirror the env var the OP-TEE compiler sets, then check `env_pair`
-        // names the same variable with the same value.
+        // Mirror the env var the OP-TEE compiler sets from the parsed UUID, then
+        // check it round-trips back to the manifest's canonical form.
         let mut cmd = Command::new("true");
-        cmd.env(TEE_UUID_ENV, uuid.to_string());
+        cmd.env(TEE_UUID_ENV, doc.tee.uuid.to_string());
         let vars = injected_vars(&cmd);
         assert_eq!(
             vars.get(TEE_UUID_ENV).map(String::as_str),
-            Some(doc.tee.uuid.as_str())
+            Some("12345678-1234-1234-1234-123456789012")
         );
-
-        let (key, value) = doc.tee.env_pair();
-        assert_eq!(key, TEE_UUID_ENV);
-        assert_eq!(value, doc.tee.uuid);
+        assert_eq!(TEE_UUID_ENV, "CONSORTIUM_TEE_UUID");
     }
 
     #[test]

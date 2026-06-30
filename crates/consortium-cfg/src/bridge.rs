@@ -44,8 +44,7 @@ use crate::components::bella::{BellA, HardwareDoorbell};
 use crate::components::dbg::{DebugLogs, DebugRing};
 use crate::components::ipc_shm::{Channel, DoorbellMeta, ShuHan, Transceiver};
 use crate::components::region::Region;
-use crate::components::uio::UioDevice;
-use crate::transpilers::ToUio;
+use crate::components::uio::{ToUio, UioBacking, UioDevice};
 use crate::{Session, error::CfgError};
 
 /// The `components` IR lowered from a [`Session`].
@@ -389,6 +388,7 @@ impl Session {
                 UioDevice {
                     mmap: dbg_windows,
                     irq: None,
+                    backing: UioBacking::ReservedMemory,
                 },
             ));
         }

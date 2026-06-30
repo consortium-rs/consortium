@@ -20,8 +20,7 @@
 
 use consortium_cfg_common::config::MemoryRegion;
 
-use super::ToUio;
-use crate::components::uio::UioDevice;
+use crate::components::uio::{ToUio, UioBacking, UioDevice};
 use crate::error::CfgError;
 
 const UIO_MAX_MMAPS: usize = 5;
@@ -41,15 +40,18 @@ impl ToUio for [MemoryRegion] {
             });
         }
 
-        // Bases and lengths are validated to lie within SRAM (a `u32` window)
-        // during session validation, so the narrowing cast is lossless here.
         let mmap = self
             .iter()
-            .map(|region| (region.base as u32, region.length as u32))
+            .map(|region| (region.base, region.length))
             .collect();
 
         // Shared memory carries no interrupt of its own; doorbells signal it.
-        Ok(Some(UioDevice { mmap, irq: None }))
+        // It is a RAM carveout, so it is exposed through `reserved-memory`.
+        Ok(Some(UioDevice {
+            mmap,
+            irq: None,
+            backing: UioBacking::ReservedMemory,
+        }))
     }
 }
 

@@ -16,6 +16,12 @@
 
 use uuid::Uuid;
 
+/// Compile-time environment variable carrying the OP-TEE TA UUID.
+///
+/// The builder's OP-TEE compiler sets this before `cargo build`, and each TA's
+/// `build.rs` reads it back, so both sides must name the same variable.
+pub const TEE_UUID_ENV: &str = "CONSORTIUM_TEE_UUID";
+
 /// `[tee]` section: trusted execution configuration.
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]

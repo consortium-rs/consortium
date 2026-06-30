@@ -49,7 +49,7 @@ pub use profile::Profile;
 pub use rcore_name::RcoreName;
 pub use rvcore_name::{RvCoreName, RvExtensions, RvXlen};
 pub use ta::Ta;
-pub use tee::Tee;
+pub use tee::{TEE_UUID_ENV, Tee};
 pub use xcore_name::XcoreName;
 
 use std::collections::HashMap;

@@ -18,9 +18,8 @@ use std::path::PathBuf;
 use thiserror::Error;
 use tokio::process::Command;
 
-use consortium_cfg_common::config::{HmiConfig, SharedMemConfig};
-
 use super::Compiler;
+use crate::compile::env::{HmiConfig, SharedMemConfig};
 use crate::compile::utils::{
     clean_path, elf_path, inject_hmi, inject_shared_mem, resolve_cargo, resolve_cross_tool,
     resolve_rustc, verify_elf,

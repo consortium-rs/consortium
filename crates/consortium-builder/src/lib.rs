@@ -19,6 +19,9 @@ mod compile;
 // Trait
 pub use compile::Compiler;
 
+// Compile-time environment-injection carriers
+pub use compile::env::{CortexMcuCore, HmiConfig, SharedMemConfig};
+
 // Backward-compatible builders (String-error API)
 pub use compile::application::ApplicationBuilder;
 pub use compile::firmware::FirmwareBuilder;
