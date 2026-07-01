@@ -50,9 +50,14 @@ trybuild                     = "1"
 
 # The AP/Linux-side generated code targets `consortium-runtime-app`, which is
 # gated to `target_os = "linux"`; the UI test only emits + compiles those files
-# on Linux, so the dependency is Linux-only too.
+# on Linux, so the dependency is Linux-only too. Keep default features disabled
+# here: cfg UI tests need UIO + debug-console symbols, but CI does not provide an
+# OP-TEE client export for the runtime app's `tee` default feature.
 [target.'cfg(target_os = "linux")'.dev-dependencies]
-consortium-runtime-app = { path = "../consortium-runtime-app" }
+consortium-runtime-app = { default-features = false, features = [
+  "dbg",
+  "ipc-shm",
+], path = "../consortium-runtime-app" }
 
 [lints]
 workspace = true
