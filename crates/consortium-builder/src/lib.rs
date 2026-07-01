@@ -30,7 +30,7 @@ pub use compile::deploy::systemd::{
 pub use pipeline::{PipelineConfig, PipelineError, PipelinePlan, run as run_pipeline};
 
 // Compile-time environment-injection carriers
-pub use compile::env::{CortexMcuCore, HmiConfig, SharedMemConfig};
+pub use compile::env::{CortexMcuCore, DbgConfig, HmiConfig, SharedMemConfig};
 
 // Backward-compatible builders (String-error API)
 pub use compile::application::ApplicationBuilder;

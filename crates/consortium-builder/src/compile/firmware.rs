@@ -19,8 +19,8 @@ use thiserror::Error;
 use tokio::process::Command;
 
 use super::Compiler;
-use crate::compile::env::SharedMemConfig;
-use crate::compile::utils::{elf_path, inject_shared_mem, resolve_cargo, verify_elf};
+use crate::compile::env::{DbgConfig, SharedMemConfig};
+use crate::compile::utils::{elf_path, inject_dbg, inject_shared_mem, resolve_cargo, verify_elf};
 
 /// Error type for firmware compilation.
 #[derive(Error, Debug)]
@@ -52,8 +52,8 @@ pub struct FirmwareConfiguration {
     pub release: bool,
     /// IPC shared-memory layout, injected as `CONSORTIUM_IPC_*` env vars.
     pub ipc: Option<SharedMemConfig>,
-    /// Debug shared-memory layout, injected as `CONSORTIUM_DBG_*` env vars.
-    pub dbg: Option<SharedMemConfig>,
+    /// Debug ring layout, injected as `CONSORTIUM_DBG_*` env vars.
+    pub dbg: Option<DbgConfig>,
 }
 
 /// Compiler for bare-metal Cortex-M firmware.
@@ -76,7 +76,7 @@ impl Compiler for FirmwareCompiler {
             .current_dir(&config.path);
 
         inject_shared_mem(&mut cmd, "IPC", config.ipc.as_ref());
-        inject_shared_mem(&mut cmd, "DBG", config.dbg.as_ref());
+        inject_dbg(&mut cmd, config.dbg.as_ref());
 
         if config.release {
             cmd.arg("--release");
@@ -120,7 +120,7 @@ pub struct FirmwareBuilder {
     pub path: PathBuf,
     pub release: bool,
     pub ipc: Option<SharedMemConfig>,
-    pub dbg: Option<SharedMemConfig>,
+    pub dbg: Option<DbgConfig>,
 }
 
 impl FirmwareBuilder {

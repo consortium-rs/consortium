@@ -208,7 +208,8 @@ pub fn derive_hmi_configuration(
     let Some(hmi) = &session.config.hmi else {
         return Ok(None);
     };
-    let command = crate::compile::utils::resolve_hmi_build_command().map_err(PipelineError::Codegen)?;
+    let command =
+        crate::compile::utils::resolve_hmi_build_command().map_err(PipelineError::Codegen)?;
     Ok(Some(HmiConfiguration {
         project_dir: manifest_dir.join(&hmi.source),
         dist_dir: manifest_dir.join(&hmi.build),
@@ -311,7 +312,10 @@ pub async fn run(config: PipelineConfig) -> Result<PathBuf, PipelineError> {
     let application = ApplicationCompiler::build(plan.application.config.clone()).await?;
 
     // Stage 6: render the systemd unit.
-    let systemd_units = vec![(plan.systemd.file_name(), systemd::render_unit(&plan.systemd))];
+    let systemd_units = vec![(
+        plan.systemd.file_name(),
+        systemd::render_unit(&plan.systemd),
+    )];
 
     // Stage 7: assemble dist/.
     let layout = DistLayout::new(&config.dist_root);
@@ -353,26 +357,23 @@ pub(crate) fn core_rust_triple(core: VisibleCore) -> String {
 }
 
 /// The shared-memory layout for `core`'s first IPC channel, if it has one.
+///
+/// No physical base is carried: the IPC transport resolves its region from the
+/// generated code (controllers embed the base; the AP maps through UIO), so the
+/// only AP-relevant coordinate is the UIO device index.
 pub(crate) fn ipc_config_for(ir: &LoweredIr, core: VisibleCore) -> Option<SharedMemConfig> {
     let transceiver = ir
         .shuhan
         .transceivers()
         .iter()
         .find(|t| t.channel_primary.0 == core || t.channel_secondary.0 == core)?;
-    let length = u64::from(transceiver.region.length);
-    let (base, uio) = match core {
-        // The AP resolves the region through UIO, so it carries the UIO id; the
-        // physical base is unused on that side.
-        VisibleCore::Ap => (0, transceiver.region.address.ap.uio_id as u32),
-        // Controllers reach the region through their physical base.
-        _ => (
-            u64::from(*transceiver.region.address.cp.get(&core)?),
-            0,
-        ),
+    // The AP carries its UIO device index; controllers don't map through UIO.
+    let uio = match core {
+        VisibleCore::Ap => transceiver.region.address.ap.uio_id as u32,
+        _ => 0,
     };
     Some(SharedMemConfig {
-        base,
-        length,
+        length: u64::from(transceiver.region.length),
         uio,
         mtu: transceiver.mtu,
     })
@@ -539,10 +540,7 @@ mod tests {
         assert!(plan.ta.is_some());
 
         // Stage 6: systemd ExecStart uses the app binary under the deploy root.
-        assert_eq!(
-            plan.systemd.exec_start,
-            "/opt/consortium/app/melt-pot-app"
-        );
+        assert_eq!(plan.systemd.exec_start, "/opt/consortium/app/melt-pot-app");
 
         let _ = std::fs::remove_dir_all(&root);
     }

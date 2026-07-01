@@ -29,13 +29,6 @@ pub struct Profile {
     /// This is a *naming convention only*: the pipeline never writes to a live
     /// target filesystem. It is used to compose the HMI dist path, the systemd
     /// unit's `ExecStart=`/`WorkingDirectory=`, and the firmware install
-    /// location a bitbake recipe consumes. Defaults to `/opt/consortium` so
-    /// existing manifests keep parsing.
-    #[serde(default = "default_deploy_root")]
+    /// location a bitbake recipe consumes.
     pub deploy_root: String,
-}
-
-/// Default [`Profile::deploy_root`] when a manifest omits it.
-fn default_deploy_root() -> String {
-    "/opt/consortium".to_string()
 }
