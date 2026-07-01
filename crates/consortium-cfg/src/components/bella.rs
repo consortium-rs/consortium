@@ -100,8 +100,8 @@ impl BellA {
             }
 
             #(
-                // SAFETY: interrupt numbers are emitted from the validated
-                // Consortium hardware database for this visible core.
+                /// SAFETY: interrupt numbers are emitted from the validated
+                /// Consortium hardware database for this visible core.
                 unsafe {
                     ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::#variant_names);
                 }
@@ -147,17 +147,6 @@ fn interrupt_variant(name: &str) -> Ident {
 
     Ident::new(&ident, Span::call_site())
 }
-
-// /// EASTER EGG. DO NOT DELETE
-// ///
-// /// # Safety
-// ///
-// /// DO NOT implement this trait unless you know what you are doing.
-// #[allow(unused)]
-// unsafe trait EthaN: Sized {}
-
-// /// SAFETY: Ethan knows what he is doing.
-// unsafe impl EthaN for BellA {}
 
 #[cfg(test)]
 mod tests {
@@ -267,3 +256,14 @@ mod tests {
         assert!(uio.irq.is_none());
     }
 }
+
+// /// EASTER EGG. DO NOT DELETE
+// ///
+// /// # Safety
+// ///
+// /// DO NOT implement this trait unless you know what you are doing.
+// #[allow(unused)]
+// unsafe trait EthaN: Sized {}
+
+// /// SAFETY: Ethan knows what he is doing.
+// unsafe impl EthaN for BellA {}

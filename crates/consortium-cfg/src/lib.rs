@@ -18,7 +18,10 @@ pub mod bridge;
 pub mod components;
 pub mod database;
 pub mod error;
+pub mod render;
 pub mod session;
+
+pub use render::render;
 
 pub use consortium_cfg_common::config;
 pub use error::CfgError;

@@ -1,7 +1,8 @@
 ---
 source: crates/consortium-cfg/tests/snap.rs
-expression: expr(tokens)
+expression: items(tokens)
 ---
+static mut PING_TX_BUF: [u8; 256usize] = [0u8; 256usize];
 fn _generated() {
     let _ = ::consortium_ipc::Channel::<
         ::consortium_ipc::Tx,
@@ -12,7 +13,8 @@ fn _generated() {
         chan_tx,
         transport_tx,
         {
-            static mut PING_TX_BUF: [u8; 256usize] = [0u8; 256usize];
+            // SAFETY: module-level static scratch buffer, borrowed once
+            // during initialization and never aliased afterwards.
             unsafe { &mut *::core::ptr::addr_of_mut!(PING_TX_BUF) }
         },
     );
