@@ -209,7 +209,8 @@ mod tests {
     use super::*;
 
     fn scratch(tag: &str) -> PathBuf {
-        let dir = std::env::temp_dir().join(format!("consortium-dist-{tag}-{}", std::process::id()));
+        let dir =
+            std::env::temp_dir().join(format!("consortium-dist-{tag}-{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&dir);
         std::fs::create_dir_all(&dir).expect("create scratch");
         dir
@@ -234,12 +235,11 @@ mod tests {
         std::fs::write(www.join("assets").join("app.js"), b"//js").unwrap();
 
         let layout = DistLayout::new(base.join("dist"));
-        let firmware =
-            HashMap::from([(VisibleCore::Mcore("cm33".parse().unwrap()), cm33_elf.clone())]);
-        let units = vec![(
-            "consortium-app.service".to_string(),
-            "[Unit]\n".to_string(),
-        )];
+        let firmware = HashMap::from([(
+            VisibleCore::Mcore("cm33".parse().unwrap()),
+            cm33_elf.clone(),
+        )]);
+        let units = vec![("consortium-app.service".to_string(), "[Unit]\n".to_string())];
 
         assemble(&layout, &firmware, &app, Some(&ta), Some(&www), &units)
             .await

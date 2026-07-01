@@ -784,6 +784,7 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
             shared = "./shared"
+            deploy_root = "/opt/consortium"
 
             [[ipc.channel]]
             name = "solo"

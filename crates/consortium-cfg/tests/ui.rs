@@ -193,8 +193,12 @@ fn generated_init_code_compiles() {
         // `include_bytes!` resolves against a file that exists relative to the
         // emitted `tests/ui/linux/*.rs` crate.
         let fixture = PathBuf::from("../../fixtures/placeholder.elf");
-        let resolved: HashMap<VisibleCore, PathBuf> =
-            ir.dbg.rings().keys().map(|core| (*core, fixture.clone())).collect();
+        let resolved: HashMap<VisibleCore, PathBuf> = ir
+            .dbg
+            .rings()
+            .keys()
+            .map(|core| (*core, fixture.clone()))
+            .collect();
         ir.dbg = std::mem::take(&mut ir.dbg).with_resolved_elf_paths(&resolved);
 
         let types = message_types(&ir);

@@ -408,6 +408,7 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
             shared = "./shared"
+            deploy_root = "/opt/consortium"
 
             [[ipc.channel]]
             name = "probe"
@@ -433,6 +434,7 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
             shared = "./shared"
+            deploy_root = "/opt/consortium"
 
             [[ipc.channel]]
             name = "probe"
@@ -457,6 +459,7 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
             shared = "./shared"
+            deploy_root = "/opt/consortium"
 
             [[ipc.channel]]
             name = "probe"
@@ -481,6 +484,7 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
             shared = "./shared"
+            deploy_root = "/opt/consortium"
 
             [[ipc.channel]]
             name = "probe"
@@ -508,6 +512,7 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
             shared = "./shared"
+            deploy_root = "/opt/consortium"
 
             [[ipc.channel]]
             name = "probe"
@@ -533,6 +538,7 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
             shared = "./shared"
+            deploy_root = "/opt/consortium"
 
             [[ipc.channel]]
             name = "probe"
@@ -560,6 +566,7 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
             shared = "./shared"
+            deploy_root = "/opt/consortium"
 
             [[ipc.channel]]
             name = "probe"
@@ -584,6 +591,7 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
             shared = "./shared"
+            deploy_root = "/opt/consortium"
 
             [[ipc.channel]]
             name = "probe"
@@ -609,6 +617,7 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
             shared = "./shared"
+            deploy_root = "/opt/consortium"
 
             [dbg.ap]
             memory = { base = 0x00404000, length = 0x00002000 }
@@ -628,6 +637,7 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
             shared = "./shared"
+            deploy_root = "/opt/consortium"
 
             [dbg.cm7]
             memory = { base = 0x00404000, length = 0x00002000 }
@@ -646,6 +656,7 @@ mod tests {
             [profile]
             chip = "stm32mp257fak3"
             shared = "./shared"
+            deploy_root = "/opt/consortium"
 
             [dbg.cm33]
             memory = { base = 0x00404000, length = 0x00002000 }

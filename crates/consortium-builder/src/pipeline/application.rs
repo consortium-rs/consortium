@@ -127,7 +127,10 @@ mod tests {
 
     #[test]
     fn acore_triple_tracks_bitness() {
-        assert_eq!(acore_linux_triple("ca35").unwrap(), "aarch64-unknown-linux-gnu");
+        assert_eq!(
+            acore_linux_triple("ca35").unwrap(),
+            "aarch64-unknown-linux-gnu"
+        );
         assert_eq!(
             acore_linux_triple("ca7").unwrap(),
             "armv7-unknown-linux-gnueabihf"
@@ -160,7 +163,10 @@ mod tests {
         assert_eq!(hmi.dist, "/opt/consortium/www");
 
         // The generated AP module embeds the resolved firmware ELF.
-        assert!(plan.generated.contains("include_bytes!(\"/build/cm33.elf\")"));
+        assert!(
+            plan.generated
+                .contains("include_bytes!(\"/build/cm33.elf\")")
+        );
         // The AP is the host, so no debug writer layout is injected.
         assert!(plan.config.dbg.is_none());
     }

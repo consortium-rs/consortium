@@ -1,6 +1,7 @@
 [profile]
-chip   = "mimx9596xvt"
-shared = "./shared"
+chip        = "mimx9596xvt"
+shared      = "./shared"
+deploy_root = "/opt/consortium"
 
 [endpoints]
 linux = "./app"

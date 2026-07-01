@@ -139,7 +139,8 @@ mod tests {
         let manifest = "\
             [profile]\n\
             chip = \"stm32mp257fak3\"\n\
-            shared = \"./shared\"\n";
+            shared = \"./shared\"\n\
+            deploy_root = \"/opt/consortium\"\n";
         let session = Session::from_toml(manifest).expect("manifest loads");
         let plan = plan_ta_build(&session, Path::new("/proj"), Some(&toolchain()), false)
             .expect("plan succeeds");

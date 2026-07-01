@@ -19,10 +19,10 @@ use thiserror::Error;
 use tokio::process::Command;
 
 use super::Compiler;
-use crate::compile::env::{HmiConfig, SharedMemConfig};
+use crate::compile::env::{DbgConfig, HmiConfig, SharedMemConfig};
 use crate::compile::utils::{
-    clean_path, elf_path, inject_hmi, inject_shared_mem, resolve_cargo, resolve_cross_tool,
-    resolve_rustc, verify_elf,
+    clean_path, elf_path, inject_dbg, inject_hmi, inject_shared_mem, resolve_cargo,
+    resolve_cross_tool, resolve_rustc, verify_elf,
 };
 
 /// Error type for application compilation.
@@ -206,8 +206,8 @@ pub struct ApplicationConfiguration {
     pub hmi: Option<HmiConfig>,
     /// IPC shared-memory layout, injected as `CONSORTIUM_IPC_*` env vars.
     pub ipc: Option<SharedMemConfig>,
-    /// Debug shared-memory layout, injected as `CONSORTIUM_DBG_*` env vars.
-    pub dbg: Option<SharedMemConfig>,
+    /// Debug ring layout, injected as `CONSORTIUM_DBG_*` env vars.
+    pub dbg: Option<DbgConfig>,
 }
 
 /// Compiler for Linux applications targeting Yocto / OpenSTLinux A-cores.
@@ -262,7 +262,7 @@ impl Compiler for ApplicationCompiler {
         inject_hmi(&mut cmd, config.hmi.as_ref());
 
         inject_shared_mem(&mut cmd, "IPC", config.ipc.as_ref());
-        inject_shared_mem(&mut cmd, "DBG", config.dbg.as_ref());
+        inject_dbg(&mut cmd, config.dbg.as_ref());
 
         if config.release {
             cmd.arg("--release");
@@ -310,7 +310,7 @@ pub struct ApplicationBuilder {
     pub target: String,
     pub hmi: Option<HmiConfig>,
     pub ipc: Option<SharedMemConfig>,
-    pub dbg: Option<SharedMemConfig>,
+    pub dbg: Option<DbgConfig>,
 }
 
 impl ApplicationBuilder {

@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use crate::compile::env::{HmiConfig, SharedMemConfig};
+use crate::compile::env::{DbgConfig, HmiConfig, SharedMemConfig};
 use crate::compile::web::HmiBuildCommand;
 use std::path::{Path, PathBuf};
 use tokio::io::AsyncReadExt;
@@ -28,6 +28,18 @@ use tokio::process::Command;
 pub fn inject_shared_mem(cmd: &mut Command, prefix: &str, config: Option<&SharedMemConfig>) {
     if let Some(cfg) = config {
         for (key, value) in cfg.env_pairs(prefix) {
+            cmd.env(key, value);
+        }
+    }
+}
+
+/// Injects the debug ring's `CONSORTIUM_DBG_BASE`/`_LENGTH` env vars onto a
+/// pending `cargo build` command, so `consortium-dbg`'s `config` module can read
+/// them at compile time with `option_env!`. A `None` config injects nothing,
+/// leaving the logger unconfigured (a no-op).
+pub fn inject_dbg(cmd: &mut Command, config: Option<&DbgConfig>) {
+    if let Some(cfg) = config {
+        for (key, value) in cfg.env_pairs() {
             cmd.env(key, value);
         }
     }
@@ -120,9 +132,11 @@ fn resolve_hmi_build_command_from(
     if has_tool("npm") {
         return Ok(HmiBuildCommand::NpmRunBuild);
     }
-    Err("no HMI build tool found: set CONSORTIUM_HMI_BUILD_CMD, or install `vp` \
+    Err(
+        "no HMI build tool found: set CONSORTIUM_HMI_BUILD_CMD, or install `vp` \
          or `npm` on PATH"
-        .to_string())
+            .to_string(),
+    )
 }
 
 /// Resolves upstream cargo or rustc via `rustup which --toolchain stable`.
@@ -248,9 +262,8 @@ mod tests {
     }
 
     #[test]
-    fn inject_shared_mem_sets_all_four_vars() {
+    fn inject_shared_mem_sets_all_ipc_vars() {
         let cfg = SharedMemConfig {
-            base: 0x204C_0000,
             length: 0x1000,
             uio: 3,
             mtu: 64,
@@ -259,10 +272,8 @@ mod tests {
         inject_shared_mem(&mut cmd, "IPC", Some(&cfg));
 
         let vars = injected_vars(&cmd);
-        assert_eq!(
-            vars.get("CONSORTIUM_IPC_BASE").map(String::as_str),
-            Some("541851648")
-        );
+        // No base: nothing reads `CONSORTIUM_IPC_BASE`.
+        assert!(!vars.contains_key("CONSORTIUM_IPC_BASE"));
         assert_eq!(
             vars.get("CONSORTIUM_IPC_LENGTH").map(String::as_str),
             Some("4096")
@@ -275,28 +286,24 @@ mod tests {
             vars.get("CONSORTIUM_IPC_MTU").map(String::as_str),
             Some("64")
         );
-        assert_eq!(vars.len(), 4);
+        assert_eq!(vars.len(), 3);
     }
 
     #[test]
     fn inject_shared_mem_none_injects_nothing() {
-        // A missing `[ipc]`/`[dbg]` section must leave the consuming crate to
-        // emit its own "build via consortium-builder" hint, not a silent zero.
+        // A missing `[ipc]` section must leave the consuming crate to emit its own
+        // "build via consortium-builder" hint, not a silent zero.
         let mut cmd = Command::new("true");
         inject_shared_mem(&mut cmd, "IPC", None);
         assert!(injected_vars(&cmd).is_empty());
     }
 
     #[test]
-    fn inject_shared_mem_honours_prefix() {
-        let cfg = SharedMemConfig {
-            base: 0x204C_1000,
-            length: 0x800,
-            uio: 1,
-            mtu: 64,
-        };
+    fn inject_dbg_emits_base_and_length() {
+        // The debug carrier keeps the base + length `consortium-dbg` reads.
+        let cfg = DbgConfig::new(0x204C_1000, 0x800);
         let mut cmd = Command::new("true");
-        inject_shared_mem(&mut cmd, "DBG", Some(&cfg));
+        inject_dbg(&mut cmd, Some(&cfg));
 
         let vars = injected_vars(&cmd);
         assert!(vars.keys().all(|k| k.starts_with("CONSORTIUM_DBG_")));
@@ -304,15 +311,23 @@ mod tests {
             vars.get("CONSORTIUM_DBG_BASE").map(String::as_str),
             Some("541855744")
         );
+        assert_eq!(
+            vars.get("CONSORTIUM_DBG_LENGTH").map(String::as_str),
+            Some("2048")
+        );
         assert!(!vars.contains_key("CONSORTIUM_IPC_BASE"));
     }
 
+    #[test]
+    fn inject_dbg_none_injects_nothing() {
+        let mut cmd = Command::new("true");
+        inject_dbg(&mut cmd, None);
+        assert!(injected_vars(&cmd).is_empty());
+    }
+
     /// End-to-end: a `Consortium.toml` `[ipc]` table parses into a
-    /// [`SharedMemConfig`], the builder injects it as env vars, and parsing
-    /// those values back with the same `const` helpers the application uses
-    /// (`consortium-ipc-transport-memory`'s `config` module) recovers the
-    /// original numbers. This is the contract that ties the manifest, the
-    /// builder, and the compile-time `config` constants together.
+    /// [`SharedMemConfig`], the builder injects it as env vars, and parsing those
+    /// values back with the same `const` helpers recovers the original numbers.
     #[test]
     fn toml_ipc_section_round_trips_through_injected_env() {
         #[derive(serde::Deserialize)]
@@ -320,10 +335,10 @@ mod tests {
             ipc: SharedMemConfig,
         }
 
-        // Hex base, decimal/hex mix, and `_` separators all per the manifest.
+        // No base: the IPC carrier resolves its region from generated code, not
+        // the environment.
         let manifest = "\
             [ipc]\n\
-            base   = 0x204C0000\n\
             length = 0x1000\n\
             uio    = 0\n\
             mtu    = 64\n";
@@ -341,13 +356,11 @@ mod tests {
                 .map(String::as_str)
                 .unwrap_or_else(|| panic!("missing CONSORTIUM_IPC_{suffix}"))
         };
-        assert_eq!(parse_u64(read("BASE")), cfg.base);
         assert_eq!(parse_u64(read("LENGTH")), cfg.length);
         assert_eq!(parse_u32(read("UIO")), cfg.uio);
         assert_eq!(parse_u32(read("MTU")), cfg.mtu);
 
-        // And the manifest's hex values landed where we expect.
-        assert_eq!(cfg.base, 0x204C_0000);
+        assert!(!vars.contains_key("CONSORTIUM_IPC_BASE"));
         assert_eq!(cfg.uio, 0);
     }
 
@@ -360,7 +373,7 @@ mod tests {
             #[allow(dead_code)]
             ipc: SharedMemConfig,
         }
-        let manifest = "[ipc]\nbase = 0\nlength = 0\nuio = 0\nmtu = 0\nbogus = 1\n";
+        let manifest = "[ipc]\nlength = 0\nuio = 0\nmtu = 0\nbogus = 1\n";
         let err = match toml::from_str::<Doc>(manifest) {
             Ok(_) => panic!("unknown field `bogus` should have been rejected"),
             Err(e) => e,

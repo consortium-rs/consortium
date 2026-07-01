@@ -165,7 +165,10 @@ mod tests {
     use super::*;
 
     fn tmp_dir(tag: &str) -> PathBuf {
-        let base = std::env::var("SCRATCH_DIR").ok().map(PathBuf::from).unwrap_or_else(std::env::temp_dir);
+        let base = std::env::var("SCRATCH_DIR")
+            .ok()
+            .map(PathBuf::from)
+            .unwrap_or_else(std::env::temp_dir);
         let dir = base.join(format!("consortium-hmi-test-{tag}-{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&dir);
         std::fs::create_dir_all(&dir).expect("create temp dir");
@@ -174,7 +177,10 @@ mod tests {
 
     #[test]
     fn program_args_map_each_command() {
-        assert_eq!(HmiBuildCommand::VpBuild.program_args(), ("vp", vec!["build"]));
+        assert_eq!(
+            HmiBuildCommand::VpBuild.program_args(),
+            ("vp", vec!["build"])
+        );
         assert_eq!(
             HmiBuildCommand::NpmRunBuild.program_args(),
             ("npm", vec!["run", "build"])
@@ -221,7 +227,9 @@ mod tests {
             command: HmiBuildCommand::Custom(vec!["true".into()]),
         };
 
-        let err = HmiCompiler::build(cfg).await.expect_err("missing dist is an error");
+        let err = HmiCompiler::build(cfg)
+            .await
+            .expect_err("missing dist is an error");
         assert!(matches!(err, HmiCompileError::DistNotFound(_)));
 
         let _ = std::fs::remove_dir_all(&project);
@@ -236,7 +244,9 @@ mod tests {
             command: HmiBuildCommand::Custom(vec!["false".into()]),
         };
 
-        let err = HmiCompiler::build(cfg).await.expect_err("failing command is an error");
+        let err = HmiCompiler::build(cfg)
+            .await
+            .expect_err("failing command is an error");
         assert!(matches!(err, HmiCompileError::BuildFailed(_)));
 
         let _ = std::fs::remove_dir_all(&project);

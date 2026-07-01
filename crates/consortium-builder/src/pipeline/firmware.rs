@@ -29,7 +29,7 @@ use consortium_cfg_common::config::{Party, VisibleCore};
 use consortium_cfg_common::database::{ChipDatabase, Coprocessor, CoprocessorVariant};
 
 use super::{PipelineError, core_rust_triple, ipc_config_for, visible_core_of};
-use crate::compile::env::SharedMemConfig;
+use crate::compile::env::DbgConfig;
 use crate::compile::firmware::FirmwareConfiguration;
 
 /// A resolved firmware build for one remote coprocessor.
@@ -110,23 +110,18 @@ pub fn plan_firmware_builds(
     Ok(plans)
 }
 
-/// The debug-ring shared-memory layout for `core`, if it declares `[dbg.<core>]`.
-fn dbg_config_for(ir: &LoweredIr, core: VisibleCore) -> Option<SharedMemConfig> {
+/// The debug-ring layout for `core`, if it declares `[dbg.<core>]`.
+///
+/// The logging core reads its ring base + length from `CONSORTIUM_DBG_*` at
+/// compile time (via `consortium-dbg`'s `config`), so those are exactly the two
+/// values carried.
+fn dbg_config_for(ir: &LoweredIr, core: VisibleCore) -> Option<DbgConfig> {
     let ring = ir.dbg.ring(core)?;
-    Some(SharedMemConfig {
-        base: ring.base,
-        length: ring.length,
-        // Controllers reach the ring through the physical base; the UIO id is the
-        // AP-side aggregate device and is carried for completeness only.
-        uio: ring.ap_uio_id as u32,
-        mtu: ring.mtu,
-    })
+    Some(DbgConfig::new(ring.base, ring.length))
 }
 
 /// The build-host path of a firmware crate's compiled ELF for the given target.
-pub async fn firmware_elf_path(
-    config: &FirmwareConfiguration,
-) -> Result<PathBuf, PipelineError> {
+pub async fn firmware_elf_path(config: &FirmwareConfiguration) -> Result<PathBuf, PipelineError> {
     crate::compile::utils::elf_path(&config.path, &config.target, config.release)
         .await
         .map_err(PipelineError::Codegen)
