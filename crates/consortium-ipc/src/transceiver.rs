@@ -58,6 +58,7 @@ impl<TyTx, TyRx, TrTx, TrRx, C: CodecFor<TyTx> + CodecFor<TyRx>>
     }
 
     /// split into two channels
+    #[allow(clippy::type_complexity)]
     pub fn split(self) -> (Channel<Tx, TyTx, TrTx, C>, Channel<Rx, TyRx, TrRx, C>) {
         (self.tx, self.rx)
     }
