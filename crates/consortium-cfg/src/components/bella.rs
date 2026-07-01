@@ -64,7 +64,7 @@ impl BellA {
             .iter()
             .filter_map(|bell| {
                 bell.irq
-                    .get(&core)
+                    .get(core)
                     .and_then(|irq| u16::try_from(*irq).ok())
                     .map(|irq| (interrupt_variant(&bell.name), irq))
             })

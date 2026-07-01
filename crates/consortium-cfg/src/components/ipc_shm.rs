@@ -134,7 +134,7 @@ impl Transceiver {
 
         let slot_len = header_len.saturating_add(self.mtu);
 
-        let pair_len = slot_len.checked_mul(2).unwrap_or(u32::MAX);
+        let pair_len = slot_len.saturating_mul(2);
 
         if pair_len == 0 {
             return 0;

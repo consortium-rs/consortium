@@ -207,7 +207,7 @@ impl Session {
             Some("size must be a power of two")
         } else if region.length < 32 {
             Some("size must be at least 32 bytes")
-        } else if region.base % region.length != 0 {
+        } else if !region.base.is_multiple_of(region.length) {
             Some("base must be aligned to the region size")
         } else {
             None
