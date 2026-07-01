@@ -23,6 +23,9 @@
 //! `consortium-cfg-common`); the mapping from the current schema onto these
 //! carriers is still being reconciled, so they stay local to the builder.
 
+use std::path::{Path, PathBuf};
+
+use consortium_cfg_common::config::{Hmi, MemoryRegion};
 use serde::{Deserialize, Serialize};
 
 /// Shared-memory region layout for an IPC or debug channel.
@@ -51,6 +54,23 @@ pub struct SharedMemConfig {
 }
 
 impl SharedMemConfig {
+    /// Builds a resolved config from a `[dbg.<core>]` or `[[ipc.channel]]`
+    /// shared-memory region plus the UIO index and MTU the lowering resolved.
+    ///
+    /// The schema's [`MemoryRegion`] carries 32-bit physical `base`/`length`
+    /// (these chips are 32-bit-addressed); they widen into the 64-bit fields the
+    /// injected env vars use. `uio` is the AP-side UIO device index the Linux
+    /// application mmaps (from `LoweredIr`'s resolved `ApAddress`), and `mtu` is
+    /// the channel/logger MTU.
+    pub fn from_region(region: MemoryRegion, uio: u32, mtu: u32) -> Self {
+        Self {
+            base: u64::from(region.base),
+            length: u64::from(region.length),
+            uio,
+            mtu,
+        }
+    }
+
     /// Environment variable suffixes used when the builder injects this config.
     ///
     /// The builder emits `CONSORTIUM_<PREFIX>_BASE`, `_LENGTH`, `_UIO`, and
@@ -89,6 +109,27 @@ pub struct HmiConfig {
 }
 
 impl HmiConfig {
+    /// Builds the compile-time HMI carrier from the parsed `[hmi]` section.
+    ///
+    /// `dist` is the directory the deployed application serves the frontend
+    /// assets from; it becomes `CONSORTIUM_HMI_DIST`. Because the build host and
+    /// the target are different machines, this must be the *on-target* path a
+    /// downstream packaging recipe installs the assets to, not the build-host
+    /// dist. A relative `dist` is resolved beneath `deploy_root` (the manifest's
+    /// `[profile] deploy_root` naming convention); an absolute `dist` is used
+    /// verbatim. `debug_url` comes from `[hmi].debug` for dev builds.
+    pub fn from_hmi(hmi: &Hmi, dist: PathBuf, deploy_root: &str) -> Self {
+        let dist = if dist.is_absolute() {
+            dist
+        } else {
+            Path::new(deploy_root).join(dist)
+        };
+        Self {
+            dist: dist.to_string_lossy().into_owned(),
+            debug_url: hmi.debug.clone(),
+        }
+    }
+
     /// Environment variables the builder injects for this config.
     ///
     /// `CONSORTIUM_HMI_DIST` is always emitted; `CONSORTIUM_HMI_DEBUG_URL` is
@@ -233,6 +274,52 @@ mod tests {
             no_url.env_pairs(),
             [("CONSORTIUM_HMI_DIST".to_string(), "ui/dist".to_string())]
         );
+    }
+
+    #[test]
+    fn from_region_widens_schema_region_into_injectable_config() {
+        // A resolved `[[ipc.channel]]`/`[dbg.<core>]` region plus the lowered
+        // UIO index and MTU produce exactly the config the builder injects.
+        let region = MemoryRegion {
+            base: 0x2040_0000,
+            length: 0x4000,
+        };
+        let cfg = SharedMemConfig::from_region(region, 0, 128);
+        assert_eq!(
+            cfg,
+            SharedMemConfig {
+                base: 0x2040_0000,
+                length: 0x4000,
+                uio: 0,
+                mtu: 128,
+            }
+        );
+        // And the widened values round-trip through the env injection.
+        let pairs = cfg.env_pairs("IPC");
+        assert_eq!(pairs[0], ("CONSORTIUM_IPC_BASE".to_string(), "541065216".to_string()));
+    }
+
+    #[test]
+    fn from_hmi_resolves_relative_dist_under_deploy_root() {
+        use consortium_cfg_common::config::{Hmi, HmiBackend, HmiEngine};
+
+        let hmi = Hmi {
+            engine: HmiEngine::Cog,
+            backend: HmiBackend::Wayland,
+            debug: Some("http://127.0.0.1:5173/".to_string()),
+            source: "website".to_string(),
+            build: "website/dist".to_string(),
+        };
+
+        // A relative dist name is placed under the deploy root (the on-target
+        // path the deployed app serves from), and the debug URL carries through.
+        let cfg = HmiConfig::from_hmi(&hmi, PathBuf::from("www"), "/opt/consortium");
+        assert_eq!(cfg.dist, "/opt/consortium/www");
+        assert_eq!(cfg.debug_url.as_deref(), Some("http://127.0.0.1:5173/"));
+
+        // An absolute dist is used verbatim.
+        let cfg = HmiConfig::from_hmi(&hmi, PathBuf::from("/srv/ui"), "/opt/consortium");
+        assert_eq!(cfg.dist, "/srv/ui");
     }
 
     #[test]

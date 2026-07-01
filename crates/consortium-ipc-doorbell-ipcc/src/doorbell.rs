@@ -27,7 +27,7 @@
 
 use core::{
     pin::Pin,
-    sync::atomic::{Ordering, compiler_fence},
+    sync::atomic::{Ordering, fence},
     task::{Context, Poll},
 };
 
@@ -111,7 +111,7 @@ impl<S: Side, const N: usize> Doorbell for IpccDoorbell<S, N> {
             return Err(IpccError::ChannelOccupied);
         }
 
-        compiler_fence(Ordering::Release);
+        fence(Ordering::Release);
 
         // SAFETY: `id` is validated `< 16`; SCR is this side's bank.
         unsafe { self.ipcc.set_outgoing_occupied(id) };
@@ -127,7 +127,13 @@ impl<S: Side, const N: usize> Doorbell for IpccDoorbell<S, N> {
 
     fn pending(&self, ch: Chan) -> bool {
         match Self::channel_of(ch) {
-            Ok(id) => self.ipcc.incoming_occupied(id),
+            Ok(id) => {
+                let pending = self.ipcc.incoming_occupied(id);
+                if pending {
+                    fence(Ordering::Acquire);
+                }
+                pending
+            }
             Err(_) => false,
         }
     }
@@ -197,7 +203,7 @@ impl<'a, S: Side, const N: usize> core::future::Future for IpccWaitFut<'a, S, N>
         }
 
         if this.doorbell.ipcc.incoming_occupied(id) {
-            compiler_fence(Ordering::Acquire);
+            fence(Ordering::Acquire);
 
             // SAFETY: `id` is validated `< 16`; the incoming bit is set.
             unsafe { this.doorbell.ipcc.clear_incoming_occupied(id) };

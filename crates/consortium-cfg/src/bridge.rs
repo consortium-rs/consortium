@@ -509,8 +509,16 @@ impl Session {
         })
     }
 
-    /// The `[endpoints]` artifact root declared for `core`, used by the host as
-    /// the defmt symbol source for that coprocessor's debug ring.
+    /// The `[endpoints]` artifact root declared for `core`, used to *seed* that
+    /// coprocessor's debug-ring [`elf_path`](crate::components::dbg::DebugRing::elf_path).
+    ///
+    /// This is only a placeholder: it names the firmware's source directory, not
+    /// its compiled ELF. The build pipeline overwrites it with the real
+    /// build-host artifact path via
+    /// [`DebugLogs::with_resolved_elf_paths`](crate::components::dbg::DebugLogs::with_resolved_elf_paths)
+    /// once Stage 1 has compiled the firmware, before generating the AP codegen
+    /// that `include_bytes!`es the image. Keeping `lower` a pure function of the
+    /// manifest means the substitution happens in the builder, not here.
     ///
     /// A core may correspond to a secure and a non-secure party; the ring is per
     /// core, so the first endpoint whose party projects to `core` is used.

@@ -68,7 +68,8 @@ fn send_accepts_payload_at_channel_capacity() {
 
         let tx = unsafe { ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(0))) };
         let mut rx = [0; MTU];
-        let n = unsafe { slot::try_read(tx.slot_addr(base), &mut rx) }
+        let read_region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let n = unsafe { slot::try_read(tx.slot_addr(base), &mut rx, &read_region) }
             .expect("remote reads MTU-sized payload");
         assert_eq!(n, MTU);
         assert_eq!(rx, payload);
@@ -153,14 +154,15 @@ fn send_uses_later_tx_channel_when_first_tx_slot_is_pending() {
 
         let tx1 = unsafe { ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1))) };
         let mut rx = [0; MTU];
-        let n = unsafe { slot::try_read(tx1.slot_addr(base), &mut rx) }
+        let read_region = unsafe { SramRegion::new(base, MULTI_REGION_LEN) };
+        let n = unsafe { slot::try_read(tx1.slot_addr(base), &mut rx, &read_region) }
             .expect("remote reads second tx slot");
         assert_eq!(&rx[..n], b"second-slot");
     });
 }
 
 #[test]
-fn send_flushes_region_after_writing() {
+fn send_invalidates_before_scan_and_flushes_after_writing() {
     let mut backing = vec![0; REGION_LEN].into_boxed_slice();
     let base = backing.as_mut_ptr();
     init_two_channel_descriptor(base);
@@ -182,6 +184,6 @@ fn send_flushes_region_after_writing() {
         transport.send(b"flush-me").await.expect("send payload");
 
         assert_eq!(observed_region.flush_count(), 1);
-        assert_eq!(observed_region.invalidate_count(), 0);
+        assert_eq!(observed_region.invalidate_count(), 1);
     });
 }

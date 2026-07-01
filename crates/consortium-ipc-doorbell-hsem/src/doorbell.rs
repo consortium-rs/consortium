@@ -27,7 +27,7 @@
 
 use core::{
     pin::Pin,
-    sync::atomic::{Ordering, compiler_fence},
+    sync::atomic::{Ordering, fence},
     task::{Context, Poll},
 };
 
@@ -108,7 +108,7 @@ impl<S: Side, const N: usize> Doorbell for HsemDoorbell<S, N> {
 
         // Ensure preceding slot writes are ordered before the semaphore lock
         // that signals the other core.
-        compiler_fence(Ordering::Release);
+        fence(Ordering::Release);
 
         // 1-step read-lock: atomically lock the semaphore and read it back.
         // SAFETY: `sem` is validated `< 16`.
@@ -123,7 +123,7 @@ impl<S: Side, const N: usize> Doorbell for HsemDoorbell<S, N> {
         // SAFETY: `sem` is validated `< 16`.
         unsafe { self.hsem.write_rx(sem, unlock) };
 
-        compiler_fence(Ordering::Release);
+        fence(Ordering::Release);
         Ok(())
     }
 
@@ -136,7 +136,13 @@ impl<S: Side, const N: usize> Doorbell for HsemDoorbell<S, N> {
 
     fn pending(&self, ch: Chan) -> bool {
         match Self::sem_of(ch) {
-            Ok(sem) => self.hsem.interrupt_pending(sem),
+            Ok(sem) => {
+                let pending = self.hsem.interrupt_pending(sem);
+                if pending {
+                    fence(Ordering::Acquire);
+                }
+                pending
+            }
             Err(_) => false,
         }
     }
@@ -213,7 +219,7 @@ impl<'a, S: Side, const N: usize> core::future::Future for HsemWaitFut<'a, S, N>
             if let Some(notified) = this.notified.as_mut() {
                 // SAFETY: `notified` lives inside the pinned future.
                 if unsafe { Pin::new_unchecked(notified) }.poll(cx).is_ready() {
-                    compiler_fence(Ordering::Acquire);
+                    fence(Ordering::Acquire);
                     return Poll::Ready(Ok(this.ch));
                 }
             }
@@ -223,7 +229,7 @@ impl<'a, S: Side, const N: usize> core::future::Future for HsemWaitFut<'a, S, N>
         #[cfg(not(feature = "std"))]
         {
             if this.doorbell.hsem.interrupt_pending(sem) {
-                compiler_fence(Ordering::Acquire);
+                fence(Ordering::Acquire);
 
                 // SAFETY: `sem` is validated `< 16`; disarm and acknowledge.
                 unsafe {

@@ -59,9 +59,12 @@ pub struct DbgRingSpec {
     pub mmap_id: usize,
     /// Mapped ring length in bytes.
     pub len: usize,
-    /// Path to the coprocessor firmware artifact used for defmt symbol
-    /// resolution (the `[endpoints]` value for this core).
-    pub elf_path: &'static str,
+    /// The coprocessor firmware ELF, embedded into the application binary at
+    /// compile time (via `include_bytes!` in the configuration codegen) and used
+    /// for defmt symbol resolution. Embedding rather than reading a path removes
+    /// the on-target file dependency: the build host and the deployed board are
+    /// different machines, so a runtime path would be fragile.
+    pub elf_bytes: &'static [u8],
     /// Coprocessor label attached to every emitted record (e.g. `cm33`).
     pub label: &'static str,
 }
@@ -72,15 +75,7 @@ pub enum DbgConsoleError {
     /// Mapping the ring's UIO window failed.
     #[error(transparent)]
     Uio(#[from] UioDeviceError),
-    /// The firmware ELF could not be read from `elf_path`.
-    #[error("reading firmware ELF '{path}': {source}")]
-    Elf {
-        /// The path that failed to read.
-        path: String,
-        /// Underlying I/O error.
-        source: std::io::Error,
-    },
-    /// The firmware ELF carried no parseable defmt table.
+    /// The embedded firmware ELF carried no parseable defmt table.
     #[error(transparent)]
     Host(#[from] HostError),
 }
@@ -108,28 +103,25 @@ impl Drop for DbgConsole {
 
 /// Spawn one polling thread per ring (auto mode).
 ///
-/// Each thread reads its firmware ELF up front, waits for the writer to publish a
-/// valid descriptor, then polls the ring and forwards frames to `tracing`.
+/// Each ring carries its firmware ELF embedded in the binary, so a thread waits
+/// for the writer to publish a valid descriptor, then polls the ring and
+/// forwards frames to `tracing`.
 pub fn spawn(devices: &[UioDevice], specs: &[DbgRingSpec]) -> Result<DbgConsole, DbgConsoleError> {
     let stop = Arc::new(AtomicBool::new(false));
     let mut threads = Vec::with_capacity(specs.len());
     for spec in specs {
         let base = devices[spec.uio_id].mmap(spec.mmap_id)?;
-        let elf = std::fs::read(spec.elf_path).map_err(|source| DbgConsoleError::Elf {
-            path: spec.elf_path.to_string(),
-            source,
-        })?;
         let spec = *spec;
         let stop = Arc::clone(&stop);
-        threads.push(std::thread::spawn(move || run_ring(base, elf, spec, &stop)));
+        threads.push(std::thread::spawn(move || run_ring(base, spec, &stop)));
     }
     Ok(DbgConsole { stop, threads })
 }
 
-/// Drain `base` until `stop` is set, decoding against `elf` and forwarding to
-/// `tracing`.
-fn run_ring(base: usize, elf: Vec<u8>, spec: DbgRingSpec, stop: &AtomicBool) {
-    let ctx = match DefmtContext::from_elf_bytes(&elf) {
+/// Drain `base` until `stop` is set, decoding against the ring's embedded ELF and
+/// forwarding to `tracing`.
+fn run_ring(base: usize, spec: DbgRingSpec, stop: &AtomicBool) {
+    let ctx = match DefmtContext::from_elf_bytes(spec.elf_bytes) {
         Ok(ctx) => ctx,
         Err(err) => {
             tracing::error!(target: TARGET, core = spec.label, "defmt table parse failed: {err}");
@@ -216,11 +208,7 @@ pub fn open(
     let mut handles = Vec::with_capacity(specs.len());
     for spec in specs {
         let base = devices[spec.uio_id].mmap(spec.mmap_id)?;
-        let elf = std::fs::read(spec.elf_path).map_err(|source| DbgConsoleError::Elf {
-            path: spec.elf_path.to_string(),
-            source,
-        })?;
-        let context = DefmtContext::from_elf_bytes(&elf)?;
+        let context = DefmtContext::from_elf_bytes(spec.elf_bytes)?;
         handles.push(DbgRingHandle {
             base,
             len: spec.len,
@@ -229,4 +217,42 @@ pub fn open(
         });
     }
     Ok(handles)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// A `DbgRingSpec` carries its firmware ELF as embedded bytes, as the
+    /// configuration codegen emits via `include_bytes!`. The `elf_bytes` field is
+    /// `&'static [u8]`, so a `const`/`static` byte slice (what `include_bytes!`
+    /// expands to) is assignable and the spec stays `Copy`.
+    #[test]
+    fn spec_holds_embedded_elf_bytes() {
+        const ELF: &[u8] = b"\x7fELF fake firmware image";
+        let spec = DbgRingSpec {
+            uio_id: 3,
+            mmap_id: 0,
+            len: 0x2000,
+            elf_bytes: ELF,
+            label: "cm33",
+        };
+        let copy = spec; // `Copy` is required so the spawn loop can move it per thread.
+        assert_eq!(copy.elf_bytes, ELF);
+        assert_eq!(copy.label, "cm33");
+    }
+
+    /// The embedded bytes flow straight into `DefmtContext::from_elf_bytes` with
+    /// no intervening file read, so a non-defmt image surfaces as a decode-time
+    /// `Host` error rather than the removed file-read variant.
+    #[test]
+    fn non_defmt_bytes_surface_as_host_error() {
+        let err = match DefmtContext::from_elf_bytes(b"not an elf") {
+            Ok(_) => panic!("garbage bytes carry no defmt table"),
+            Err(err) => err,
+        };
+        // The wiring now only fails via `HostError`; the old `Elf` file-read
+        // variant no longer exists.
+        let _console: DbgConsoleError = err.into();
+    }
 }

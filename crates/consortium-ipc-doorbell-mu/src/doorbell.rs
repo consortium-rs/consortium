@@ -39,7 +39,7 @@
 
 use core::{
     pin::Pin,
-    sync::atomic::{Ordering, compiler_fence},
+    sync::atomic::{Ordering, fence},
     task::{Context, Poll},
 };
 
@@ -135,7 +135,7 @@ impl<S: Side, const N: usize> Doorbell for MuDoorbell<S, N> {
 
         // Ensure preceding slot writes are visible to the remote before the
         // register write that signals it.
-        compiler_fence(Ordering::Release);
+        fence(Ordering::Release);
 
         match line {
             // SAFETY: `gi` is validated `< 4`; ring is the sole writer of GCR.
@@ -155,8 +155,20 @@ impl<S: Side, const N: usize> Doorbell for MuDoorbell<S, N> {
 
     fn pending(&self, ch: Chan) -> bool {
         match Self::line_of(ch) {
-            Ok(MuLine::Gi(gi)) => self.mu.gi_pending(gi),
-            Ok(MuLine::Rf(rf)) => self.mu.rf_pending(rf),
+            Ok(MuLine::Gi(gi)) => {
+                let pending = self.mu.gi_pending(gi);
+                if pending {
+                    fence(Ordering::Acquire);
+                }
+                pending
+            }
+            Ok(MuLine::Rf(rf)) => {
+                let pending = self.mu.rf_pending(rf);
+                if pending {
+                    fence(Ordering::Acquire);
+                }
+                pending
+            }
             Err(_) => false,
         }
     }
@@ -238,7 +250,7 @@ impl<'a, S: Side, const N: usize> core::future::Future for MuWaitFut<'a, S, N> {
         if ready {
             // Acquire fence: pairs with the remote's Release before ring(), so
             // our subsequent slot reads observe the remote's writes.
-            compiler_fence(Ordering::Acquire);
+            fence(Ordering::Acquire);
 
             match line {
                 MuLine::Gi(gi) => {

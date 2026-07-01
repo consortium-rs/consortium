@@ -36,7 +36,7 @@
 //!
 //! The files are regenerated on every run, so they always track the codegen.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap};
 use std::fmt::Write as _;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -183,9 +183,20 @@ fn generated_init_code_compiles() {
 
         let session = Session::from_toml(&toml)
             .unwrap_or_else(|e| panic!("parse {}: {e}", manifest.display()));
-        let ir = session
+        let mut ir = session
             .lower()
             .unwrap_or_else(|e| panic!("lower {}: {e}", manifest.display()));
+
+        // The AP codegen `include_bytes!`es each dbg ring's firmware ELF. The
+        // real path is a Stage-1 build output the builder substitutes; here we
+        // point every ring at a committed placeholder ELF so the generated
+        // `include_bytes!` resolves against a file that exists relative to the
+        // emitted `tests/ui/linux/*.rs` crate.
+        let fixture = PathBuf::from("../../fixtures/placeholder.elf");
+        let resolved: HashMap<VisibleCore, PathBuf> =
+            ir.dbg.rings().keys().map(|core| (*core, fixture.clone())).collect();
+        ir.dbg = std::mem::take(&mut ir.dbg).with_resolved_elf_paths(&resolved);
+
         let types = message_types(&ir);
 
         for core in cores(&ir) {

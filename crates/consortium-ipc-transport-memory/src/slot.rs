@@ -25,6 +25,8 @@
 //!
 //! Write order: payload → len → flags (ensures receiver sees consistent data).
 //! Read order:  check flags → read len → copy payload → write FLAG_CONSUMED.
+use consortium_shared_memory::Region;
+
 use crate::utils::{rv_u32, wv_u32};
 
 pub const SLOT_HEADER: usize = 12;
@@ -38,6 +40,9 @@ pub const FLAG_INTEGRITY_ERROR: u32 = 1 << 2;
 /// # Safety
 /// `base` must point to a slot of at least `SLOT_HEADER + payload.len()` bytes.
 pub unsafe fn write(base: *mut u8, payload: &[u8]) {
+    // SAFETY: caller guarantees the slot header is valid.
+    debug_assert!(unsafe { is_consumed(base) });
+
     // SAFETY: caller guarantees the slot contains room for `SLOT_HEADER + payload.len()`.
     let dst = unsafe { base.add(SLOT_HEADER) };
     // SAFETY: `dst` points to the slot payload and does not overlap `payload`.
@@ -58,7 +63,7 @@ pub unsafe fn write(base: *mut u8, payload: &[u8]) {
 ///
 /// # Safety
 /// `base` must point to a valid slot of at least `SLOT_HEADER + buf.len()` bytes.
-pub unsafe fn try_read(base: *mut u8, buf: &mut [u8]) -> Option<usize> {
+pub unsafe fn try_read<R: Region>(base: *mut u8, buf: &mut [u8], region: &R) -> Option<usize> {
     // SAFETY: caller guarantees the slot header is valid and DMA-coherent.
     let flags = unsafe { rv_u32(base, 4) };
     if flags & FLAG_VALID == 0 {
@@ -80,11 +85,13 @@ pub unsafe fn try_read(base: *mut u8, buf: &mut [u8]) -> Option<usize> {
     if crc_calculated != crc_stored {
         // SAFETY: caller guarantees the slot header is valid and DMA-coherent.
         unsafe { wv_u32(base, 4, FLAG_INTEGRITY_ERROR) };
+        region.flush();
         return None;
     }
 
     // SAFETY: caller guarantees the slot header is valid and DMA-coherent.
     unsafe { wv_u32(base, 4, FLAG_CONSUMED) };
+    region.flush();
     Some(n)
 }
 

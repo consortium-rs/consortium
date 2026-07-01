@@ -47,7 +47,7 @@
 use core::{
     future::Future,
     pin::Pin,
-    sync::atomic::{Ordering, compiler_fence},
+    sync::atomic::{Ordering, fence},
     task::{Context, Poll},
 };
 
@@ -109,7 +109,7 @@ impl<P: OutputPin> Doorbell for GpioDoorbell<P> {
     fn ring(&self, _ch: Chan) -> Result<(), Self::Error> {
         // Channel argument ignored - single-channel GPIO.
         // Pulse: set_high then set_low to generate a rising-edge interrupt.
-        compiler_fence(Ordering::Release);
+        fence(Ordering::Release);
 
         let mut pin = self.pin.borrow_mut();
         pin.set_high()?;
@@ -166,7 +166,7 @@ impl<'a, P: OutputPin> Future for GpioWaitFut<'a, P> {
         if PENDING.load(Ordering::Acquire) {
             // Signal arrived. Clear the flag and return.
             PENDING.store(false, Ordering::Release);
-            compiler_fence(Ordering::Acquire);
+            fence(Ordering::Acquire);
             // SAFETY: 0 is a valid channel ID for single-channel GPIO.
             return Poll::Ready(Ok(unsafe { Chan::new_unchecked(0) }));
         }
@@ -223,7 +223,7 @@ impl<P: OutputPin + Send> Doorbell for GpioDoorbell<P> {
 
     fn ring(&self, _ch: Chan) -> Result<(), Self::Error> {
         // Channel argument ignored - single-channel GPIO.
-        compiler_fence(Ordering::Release);
+        fence(Ordering::Release);
 
         let mut pin = self.pin.lock().unwrap();
         pin.set_high()?;
@@ -300,7 +300,7 @@ impl<'a, P: OutputPin + Send> Future for GpioWaitFut<'a, P> {
         if let Some(notified) = this.notified.as_mut() {
             // SAFETY: `notified` lives inside `this` which is pinned via the Pin<&mut Self>.
             if unsafe { Pin::new_unchecked(notified) }.poll(cx).is_ready() {
-                compiler_fence(Ordering::Acquire);
+                fence(Ordering::Acquire);
                 // SAFETY: 0 is a valid channel ID for single-channel GPIO.
                 return Poll::Ready(Ok(unsafe { Chan::new_unchecked(0) }));
             }

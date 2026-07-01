@@ -36,7 +36,8 @@ fn rkyv_channel_sends_archived_message_over_shared_memory_transport() {
 
         let tx = unsafe { ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(0))) };
         let mut raw = [0; MTU];
-        let n = unsafe { slot::try_read(tx.slot_addr(base), &mut raw) }
+        let read_region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let n = unsafe { slot::try_read(tx.slot_addr(base), &mut raw, &read_region) }
             .expect("remote reads raw rkyv payload");
         let decoded =
             <RkyvCodec<128> as CodecFor<Message>>::decode(&raw[..n]).expect("remote decodes rkyv");

@@ -347,7 +347,7 @@ async fn init() -> ::core::result::Result<ConsortiumEndpoints, ConsortiumInitErr
                 uio_id: 3,
                 mmap_id: 0,
                 len: 8192,
-                elf_path: "./firmware",
+                elf_bytes: include_bytes!("../../fixtures/placeholder.elf"),
                 label: "cm33",
             },
         ],

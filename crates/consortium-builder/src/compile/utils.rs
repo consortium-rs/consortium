@@ -15,6 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use crate::compile::env::{HmiConfig, SharedMemConfig};
+use crate::compile::web::HmiBuildCommand;
 use std::path::{Path, PathBuf};
 use tokio::io::AsyncReadExt;
 use tokio::process::Command;
@@ -86,6 +87,42 @@ pub fn resolve_cross_tool(tool: &str) -> Result<String, String> {
              Is the ST environment-setup script sourced?",
         tool
     ))
+}
+
+/// Resolves the HMI frontend build command, preferring the
+/// `CONSORTIUM_HMI_BUILD_CMD` override, then `vp`, then `npm` on PATH.
+///
+/// Mirrors [`resolve_cargo`]'s env-var-first pattern: an explicit override wins,
+/// otherwise the first available known toolchain is used.
+pub fn resolve_hmi_build_command() -> Result<HmiBuildCommand, String> {
+    resolve_hmi_build_command_from(std::env::var("CONSORTIUM_HMI_BUILD_CMD").ok(), |tool| {
+        resolve_cross_tool(tool).is_ok()
+    })
+}
+
+/// The env-var/PATH resolution logic for [`resolve_hmi_build_command`], factored
+/// out so it can be tested deterministically without touching the process's
+/// global `PATH`/env (which parallel tests would race on).
+fn resolve_hmi_build_command_from(
+    env_cmd: Option<String>,
+    has_tool: impl Fn(&str) -> bool,
+) -> Result<HmiBuildCommand, String> {
+    if let Some(cmd) = env_cmd {
+        let parts: Vec<String> = cmd.split_whitespace().map(String::from).collect();
+        if parts.is_empty() {
+            return Err("CONSORTIUM_HMI_BUILD_CMD is set but empty".to_string());
+        }
+        return Ok(HmiBuildCommand::Custom(parts));
+    }
+    if has_tool("vp") {
+        return Ok(HmiBuildCommand::VpBuild);
+    }
+    if has_tool("npm") {
+        return Ok(HmiBuildCommand::NpmRunBuild);
+    }
+    Err("no HMI build tool found: set CONSORTIUM_HMI_BUILD_CMD, or install `vp` \
+         or `npm` on PATH"
+        .to_string())
 }
 
 /// Resolves upstream cargo or rustc via `rustup which --toolchain stable`.
@@ -434,6 +471,43 @@ mod tests {
             Some("12345678-1234-1234-1234-123456789012")
         );
         assert_eq!(TEE_UUID_ENV, "CONSORTIUM_TEE_UUID");
+    }
+
+    // ── HMI build command resolution ─────────────────────────────────────────
+
+    #[test]
+    fn hmi_command_override_beats_path_tools() {
+        // An explicit override is honoured verbatim even when `vp`/`npm` exist.
+        let cmd = resolve_hmi_build_command_from(Some("pnpm build".to_string()), |_| true)
+            .expect("override resolves");
+        assert_eq!(
+            cmd,
+            HmiBuildCommand::Custom(vec!["pnpm".to_string(), "build".to_string()])
+        );
+    }
+
+    #[test]
+    fn hmi_command_prefers_vp_then_npm() {
+        // With no override, `vp` wins when present.
+        let cmd = resolve_hmi_build_command_from(None, |tool| tool == "vp" || tool == "npm")
+            .expect("vp resolves");
+        assert_eq!(cmd, HmiBuildCommand::VpBuild);
+
+        // Falls back to `npm` when only it is on PATH.
+        let cmd = resolve_hmi_build_command_from(None, |tool| tool == "npm").expect("npm resolves");
+        assert_eq!(cmd, HmiBuildCommand::NpmRunBuild);
+    }
+
+    #[test]
+    fn hmi_command_errors_when_nothing_available() {
+        let err = resolve_hmi_build_command_from(None, |_| false)
+            .expect_err("no tool and no override is an error");
+        assert!(err.contains("CONSORTIUM_HMI_BUILD_CMD"));
+
+        // An empty override is rejected rather than launching an empty program.
+        let err = resolve_hmi_build_command_from(Some("   ".to_string()), |_| false)
+            .expect_err("empty override is an error");
+        assert!(err.contains("empty"));
     }
 
     #[test]
