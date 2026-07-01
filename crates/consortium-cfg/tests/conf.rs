@@ -46,8 +46,7 @@ use proc_macro2::TokenStream;
 /// cleanly and the snapshot fails if the output stops being valid Rust.
 fn pretty(tokens: TokenStream) -> String {
     let wrapped: TokenStream = quote::quote! { fn _generated() { #tokens } };
-    let file = syn::parse_file(&wrapped.to_string()).expect("generated code should parse as Rust");
-    prettyplease::unparse(&file)
+    consortium_cfg::render(wrapped).expect("generated code should parse as Rust")
 }
 
 /// The `ty_crate` path used for generated message types in these fixtures.

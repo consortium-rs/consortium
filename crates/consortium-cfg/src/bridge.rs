@@ -36,7 +36,7 @@
 
 use std::collections::HashMap;
 
-use consortium_cfg_common::config::{MemoryRegion, Party, VisibleCore};
+use consortium_cfg_common::config::{McoreName, MemoryRegion, Party, VisibleCore};
 use consortium_cfg_common::database::{ChipDatabase, HardwareDoorbellPeripheral, MemoryRegionType};
 
 use crate::components::address::{Address, ApAddress};
@@ -93,10 +93,19 @@ impl LoweredIr {
             .filter(|t| t.channel_primary.0 == core || t.channel_secondary.0 == core)
             .cloned()
             .collect();
-        let endpoints = ShuHan::new(participating).initialize(core, &uio_ident, ty_crate);
+        let endpoints = ShuHan::new(participating.clone()).initialize(core, &uio_ident, ty_crate);
 
-        if core != VisibleCore::Ap {
-            return endpoints;
+        match core {
+            // The AP falls through to its UIO/`init` bring-up below.
+            VisibleCore::Ap => {}
+            // Cortex-M controllers additionally get an `init` entry point that
+            // programs the MPU and NVIC before constructing the endpoints.
+            VisibleCore::Mcore(name) => {
+                return self.controller_init(core, name, &participating, endpoints);
+            }
+            // Other controller families (Cortex-R, RISC-V) have no Cortex-M
+            // MPU/NVIC weave yet; emit just the endpoint module.
+            _ => return endpoints,
         }
 
         // `UioDevice::open(n)` for each declared device, in `self.uio` order
@@ -184,6 +193,105 @@ impl LoweredIr {
             }
         }
     }
+
+    /// Wraps a Cortex-M controller core's endpoint module with an `init` entry
+    /// point that brings up the core's memory protection and interrupt
+    /// controller before constructing the (disconnected) IPC endpoints.
+    ///
+    /// The generated `init`:
+    ///
+    /// - programs one Normal, shareable, non-cacheable MPU carveout per
+    ///   distinct shared IPC region (so this core and its peer observe a
+    ///   coherent view without manual cache maintenance), for the cached
+    ///   Cortex-M families that ship a [`consortium_runtime_mcu::mpu`] helper
+    ///   (ARMv7-M/ARMv8-M). ARMv6-M (`cm0p`) has no data cache and no helper, so
+    ///   it gets NVIC setup only; and
+    /// - unmasks every doorbell NVIC line visible to this core (via
+    ///   [`BellA::nvic_enable`](crate::components::bella::BellA::nvic_enable)).
+    ///
+    /// It is gated to `target_arch = "arm"` so the host trybuild harness, which
+    /// never links `cortex-m` or `consortium-runtime-mcu`, skips it while still
+    /// compiling the endpoint module.
+    fn controller_init(
+        &self,
+        core: VisibleCore,
+        name: McoreName,
+        participating: &[Transceiver],
+        endpoints: proc_macro2::TokenStream,
+    ) -> proc_macro2::TokenStream {
+        use quote::quote;
+
+        // One non-cacheable carveout per distinct shared-region base this core
+        // maps. ARMv6-M has no cache to disable, so it configures no regions.
+        let mut mpu_stmts = Vec::new();
+        if mcore_has_mpu_helper(name) {
+            let mut seen = std::collections::BTreeSet::new();
+            for transceiver in participating {
+                let Some(base) = transceiver.region.address.cp.get(&core).copied() else {
+                    continue;
+                };
+                if !seen.insert(base) {
+                    continue;
+                }
+                let size = transceiver.region.length;
+                let region = seen.len() as u8 - 1;
+                mpu_stmts.push(quote! {
+                    /// SAFETY: `init` holds exclusive privileged MPU access during
+                    /// bring-up; `base`/`size` are this core's validated shared
+                    /// region from the Consortium hardware layout.
+                    unsafe {
+                        ::consortium_runtime_mcu::mpu::disable_cache(
+                            &mut __core.MPU,
+                            #region,
+                            #base,
+                            #size,
+                        );
+                    }
+                });
+            }
+        }
+
+        // `disable_cache` needs the stolen `MPU` peripheral; NVIC unmasking is a
+        // free function, so cores with no MPU carveout skip the steal entirely.
+        let steal = if mpu_stmts.is_empty() {
+            quote! {}
+        } else {
+            quote! {
+                /// SAFETY: `init` runs once during controller bring-up, in
+                /// privileged mode, before any other code touches the MPU.
+                let mut __core = unsafe { ::cortex_m::Peripherals::steal() };
+            }
+        };
+
+        // The doorbell NVIC enum/impl plus `unmask` statements for this core.
+        let nvic = self.bella.nvic_enable(&core);
+
+        quote! {
+            #endpoints
+
+            /// Brings up this controller core's memory protection and interrupt
+            /// controller, then constructs its (disconnected) IPC endpoints.
+            /// Call `.connect().await` on the result to run the descriptor
+            /// handshake.
+            ///
+            /// Compiled only for Cortex-M targets; the host trybuild harness
+            /// (which never links `cortex-m`) skips it.
+            #[cfg(target_arch = "arm")]
+            fn init() -> IpcMemoryEndpoints {
+                #steal
+                #(#mpu_stmts)*
+                #nvic
+                IpcMemoryEndpoints::new()
+            }
+        }
+    }
+}
+
+/// Whether `name`'s Cortex-M architecture ships a `disable_cache` MPU helper in
+/// [`consortium_runtime_mcu::mpu`]. ARMv7-M (`cm4f`/`cm7`) and ARMv8-M (`cm33`)
+/// do; ARMv6-M (`cm0p`) has no data cache and no helper.
+fn mcore_has_mpu_helper(name: McoreName) -> bool {
+    !matches!(name, McoreName::Cm0p)
 }
 
 impl Session {

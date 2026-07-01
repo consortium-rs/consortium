@@ -55,8 +55,7 @@ fn ty_crate() -> syn::Path {
 /// Pretty-prints generated *items* (struct/impl/enum/fn) as a Rust source
 /// fragment, failing if the codegen stops being parseable.
 fn render_items(tokens: TokenStream) -> String {
-    let file = syn::parse_file(&tokens.to_string()).expect("generated code should parse as Rust");
-    prettyplease::unparse(&file)
+    consortium_cfg::render(tokens).expect("generated code should parse as Rust")
 }
 
 /// Every distinct core that participates in any transceiver, AP first then

@@ -33,39 +33,37 @@ use quote::format_ident;
 /// `prettyplease` can format it and we assert the output is valid Rust.
 fn stmts(tokens: TokenStream) -> String {
     let wrapped: TokenStream = quote::quote! { fn _generated() { #tokens } };
-    let file = syn::parse_file(&wrapped.to_string()).expect("generated code should parse as Rust");
-    prettyplease::unparse(&file)
+    consortium_cfg::render(wrapped).expect("generated code should parse as Rust")
 }
 
 /// Pretty-print a fragment that is a single expression.
 fn expr(tokens: TokenStream) -> String {
     let wrapped: TokenStream = quote::quote! { fn _generated() { let _ = #tokens; } };
-    let file = syn::parse_file(&wrapped.to_string()).expect("generated code should parse as Rust");
-    prettyplease::unparse(&file)
+    consortium_cfg::render(wrapped).expect("generated code should parse as Rust")
 }
 
-/// Pretty-print a `connect_field_init` expression, which uses `.await`, `?`,
-/// `self.<field>`, and `ConsortiumConnectError`. Wrap it in an async, fallible
-/// method on a stub carrying the referenced field so it parses standalone.
-fn connect_expr(tokens: TokenStream) -> String {
+/// Pretty-print a `connect_field_init` result: the hoisted scratch-buffer
+/// `static`s as module items, followed by the field-initializer expression
+/// (which uses `.await`, `?`, `self.<field>`, and `ConsortiumConnectError`)
+/// wrapped in an async, fallible method on a stub carrying the referenced field.
+fn connect_expr((buffers, expr): (TokenStream, TokenStream)) -> String {
     let wrapped: TokenStream = quote::quote! {
+        #buffers
         enum ConsortiumConnectError { Descriptor(()), Doorbell, Other }
         struct S { sensor: () }
         impl S {
             async fn _generated(self) -> ::core::result::Result<(), ConsortiumConnectError> {
-                let _ = #tokens;
+                let _ = #expr;
                 ::core::result::Result::Ok(())
             }
         }
     };
-    let file = syn::parse_file(&wrapped.to_string()).expect("generated code should parse as Rust");
-    prettyplease::unparse(&file)
+    consortium_cfg::render(wrapped).expect("generated code should parse as Rust")
 }
 
 /// Pretty-print a fragment that is a sequence of items (e.g. struct + impl).
 fn items(tokens: TokenStream) -> String {
-    let file = syn::parse_file(&tokens.to_string()).expect("generated code should parse as Rust");
-    prettyplease::unparse(&file)
+    consortium_cfg::render(tokens).expect("generated code should parse as Rust")
 }
 
 fn cm33() -> VisibleCore {
@@ -166,7 +164,7 @@ fn channel_initialize_tx() {
     let chan = format_ident!("chan_tx");
     let transport = format_ident!("transport_tx");
     let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
-    let tokens = transceiver().channel_primary.1.initialize(
+    let init = transceiver().channel_primary.1.initialize(
         Direction::Tx,
         &chan,
         &transport,
@@ -174,7 +172,17 @@ fn channel_initialize_tx() {
         256,
         &ty_crate,
     );
-    insta::assert_snapshot!(expr(tokens));
+    // The module-level scratch-buffer `static` and the `Channel::new(...)`
+    // expression that borrows it.
+    let buffer = init.buffer;
+    let channel = init.channel;
+    let tokens = quote::quote! {
+        #buffer
+        fn _generated() {
+            let _ = #channel;
+        }
+    };
+    insta::assert_snapshot!(items(tokens));
 }
 
 #[test]

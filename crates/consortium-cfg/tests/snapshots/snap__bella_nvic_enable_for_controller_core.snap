@@ -14,9 +14,13 @@ fn _generated() {
             self as u16
         }
     }
+    // SAFETY: interrupt numbers are emitted from the validated
+    // Consortium hardware database for this visible core.
     unsafe {
         ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::HSEM);
     }
+    // SAFETY: interrupt numbers are emitted from the validated
+    // Consortium hardware database for this visible core.
     unsafe {
         ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::IPCC2);
     }

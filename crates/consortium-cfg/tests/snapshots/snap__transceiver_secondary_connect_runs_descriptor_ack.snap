@@ -2,6 +2,8 @@
 source: crates/consortium-cfg/tests/snap.rs
 expression: connect_expr(tokens)
 ---
+static mut PING_RX_BUF: [u8; 256usize] = [0u8; 256usize];
+static mut PING_TX_BUF: [u8; 256usize] = [0u8; 256usize];
 enum ConsortiumConnectError {
     Descriptor(()),
     Doorbell,
@@ -15,6 +17,8 @@ impl S {
         let _ = {
             let transport = self.sensor;
             let (chan_tx, chan_rx) = transport.channels();
+            // SAFETY: base covers the descriptor; this side is Secondary, so it
+            // validates and acks the primary-written descriptor.
             unsafe {
                 <::consortium_ipc_transport_memory::SharedMemoryTransport<
                     ::consortium_ipc::Secondary,
@@ -52,7 +56,8 @@ impl S {
                 chan_tx,
                 t_tx,
                 {
-                    static mut PING_RX_BUF: [u8; 256usize] = [0u8; 256usize];
+                    // SAFETY: module-level static scratch buffer, borrowed once
+                    // during initialization and never aliased afterwards.
                     unsafe { &mut *::core::ptr::addr_of_mut!(PING_RX_BUF) }
                 },
             );
@@ -65,7 +70,8 @@ impl S {
                 chan_rx,
                 t_rx,
                 {
-                    static mut PING_TX_BUF: [u8; 256usize] = [0u8; 256usize];
+                    // SAFETY: module-level static scratch buffer, borrowed once
+                    // during initialization and never aliased afterwards.
                     unsafe { &mut *::core::ptr::addr_of_mut!(PING_TX_BUF) }
                 },
             );
