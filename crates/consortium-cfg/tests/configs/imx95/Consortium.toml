@@ -41,6 +41,7 @@ uuid = "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"
 engine  = "cog"
 backend = "wayland"
 debug   = "http://127.0.0.1:5173/"
+source  = "website"
 build   = "website/dist"
 
 [peripheral.i2c1]

@@ -25,6 +25,7 @@
 //! builder does not re-derive addresses from the manifest.
 
 use std::collections::HashMap;
+use std::path::PathBuf;
 
 use consortium_cfg_common::config::{DbgMode, VisibleCore};
 use proc_macro2::{Literal, TokenStream};
@@ -47,8 +48,14 @@ pub struct DebugRing {
     pub ap_uio_id: usize,
     /// mmap window index of this ring within that device.
     pub ap_mmap_id: usize,
-    /// Path to the logging core's firmware artifact (its `[endpoints]` value),
-    /// from which the host resolves the defmt symbol table.
+    /// Build-host path to this core's compiled firmware ELF, from which the host
+    /// resolves the defmt symbol table.
+    ///
+    /// [`Session::lower`](crate::Session::lower) seeds this with the manifest's
+    /// `[endpoints]` value (a source-directory placeholder). The build pipeline
+    /// then overwrites it via [`DebugLogs::with_resolved_elf_paths`] with the
+    /// absolute path of the firmware ELF it just compiled, so the AP codegen can
+    /// `include_bytes!` the real image at compile time.
     pub elf_path: String,
 }
 
@@ -95,6 +102,25 @@ impl DebugLogs {
         self.rings.get(&core).cloned()
     }
 
+    /// Overwrites each ring's [`elf_path`](DebugRing::elf_path) with the
+    /// build-host path of that core's compiled firmware ELF.
+    ///
+    /// [`Session::lower`](crate::Session::lower) seeds `elf_path` with the
+    /// manifest's `[endpoints]` value (a source directory, not an artifact), so
+    /// the build pipeline calls this once Stage 1 has produced the real ELFs,
+    /// right before generating the AP codegen that `include_bytes!`es them. A
+    /// ring whose core is absent from `resolved` keeps its seeded value; the
+    /// pipeline's `resolve_dbg_elf_paths` guarantees every `[dbg.<core>]` ring is
+    /// present, so a leftover placeholder means a bug upstream.
+    pub fn with_resolved_elf_paths(mut self, resolved: &HashMap<VisibleCore, PathBuf>) -> Self {
+        for (core, ring) in self.rings.iter_mut() {
+            if let Some(path) = resolved.get(core) {
+                ring.elf_path = path.to_string_lossy().into_owned();
+            }
+        }
+        self
+    }
+
     /// Generates the AP-side host console code, or `None` when no coprocessor
     /// declares a debug ring.
     ///
@@ -124,7 +150,7 @@ impl DebugLogs {
                     uio_id: #uio_id,
                     mmap_id: #mmap_id,
                     len: #len,
-                    elf_path: #elf_path,
+                    elf_bytes: include_bytes!(#elf_path),
                     label: #label,
                 }
             }
@@ -241,10 +267,43 @@ mod tests {
         assert!(init_str.contains(":: consortium_runtime_app :: dbg_console :: spawn"));
         assert!(init_str.contains("DbgRingSpec"));
         assert!(init_str.contains("\"cm33\""));
-        assert!(init_str.contains("\"./firmware\""));
+        // The firmware ELF is embedded at compile time, not read from a path, so
+        // the spec carries `elf_bytes: include_bytes!("<path>")`.
+        assert!(init_str.contains("elf_bytes : include_bytes ! (\"./firmware\")"));
+        assert!(!init_str.contains("elf_path"));
         assert!(host.field.to_string().contains("DbgConsole"));
 
         // The init statement parses as a valid Rust block.
+        let init = &host.init;
+        let wrapped = quote! { fn _f(uio: ()) -> ::core::result::Result<(), ()> { #init Ok(()) } };
+        syn::parse_file(&wrapped.to_string()).expect("host init is valid Rust");
+    }
+
+    #[test]
+    fn with_resolved_elf_paths_embeds_the_build_host_path() {
+        // The pipeline substitutes each ring's seeded `[endpoints]` placeholder
+        // with the absolute build-host path of the firmware ELF it compiled; the
+        // generated `include_bytes!` must then name exactly that path.
+        let logs = DebugLogs::new(HashMap::from([(cm33(), ring())]), DbgMode::Auto);
+        let resolved = HashMap::from([(
+            cm33(),
+            PathBuf::from("/build/target/thumbv8m.main-none-eabi/release/firmware"),
+        )]);
+        let logs = logs.with_resolved_elf_paths(&resolved);
+
+        assert_eq!(
+            logs.ring(cm33()).expect("cm33 ring").elf_path,
+            "/build/target/thumbv8m.main-none-eabi/release/firmware"
+        );
+
+        let uio = format_ident!("uio");
+        let host = logs.initialize_host(&uio).expect("rings present");
+        let init_str = host.init.to_string();
+        assert!(init_str.contains(
+            "elf_bytes : include_bytes ! (\"/build/target/thumbv8m.main-none-eabi/release/firmware\")"
+        ));
+
+        // The generated spec still parses as valid Rust.
         let init = &host.init;
         let wrapped = quote! { fn _f(uio: ()) -> ::core::result::Result<(), ()> { #init Ok(()) } };
         syn::parse_file(&wrapped.to_string()).expect("host init is valid Rust");

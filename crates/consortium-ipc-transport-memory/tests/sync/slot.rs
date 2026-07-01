@@ -1,6 +1,7 @@
 use consortium_ipc_transport_memory::slot::{
     self, FLAG_CONSUMED, FLAG_INTEGRITY_ERROR, FLAG_VALID, SLOT_HEADER,
 };
+use consortium_shared_memory::SramRegion;
 
 fn flags(slot: &[u8]) -> u32 {
     u32::from_le_bytes(slot[4..8].try_into().expect("slot flag bytes"))
@@ -20,7 +21,8 @@ fn write_then_read_returns_payload_and_consumes_slot() {
     assert!(!unsafe { slot::is_consumed(base) });
 
     let mut rx = vec![0; payload.len()];
-    let n = unsafe { slot::try_read(base, &mut rx) }.expect("read valid slot");
+    let region = unsafe { SramRegion::new(base, backing.len()) };
+    let n = unsafe { slot::try_read(base, &mut rx, &region) }.expect("read valid slot");
 
     assert_eq!(n, payload.len());
     assert_eq!(&rx, payload);
@@ -40,7 +42,8 @@ fn corrupted_payload_sets_integrity_error() {
     backing[SLOT_HEADER + 3] ^= 0x55;
 
     let mut rx = vec![0; payload.len()];
-    assert_eq!(unsafe { slot::try_read(base, &mut rx) }, None);
+    let region = unsafe { SramRegion::new(base, backing.len()) };
+    assert_eq!(unsafe { slot::try_read(base, &mut rx, &region) }, None);
     assert_eq!(flags(&backing), FLAG_INTEGRITY_ERROR);
     assert!(unsafe { slot::is_consumed(base) });
 }
@@ -56,7 +59,8 @@ fn short_receive_buffer_is_treated_as_integrity_error() {
     }
 
     let mut rx = [0; 4];
-    assert_eq!(unsafe { slot::try_read(base, &mut rx) }, None);
+    let region = unsafe { SramRegion::new(base, backing.len()) };
+    assert_eq!(unsafe { slot::try_read(base, &mut rx, &region) }, None);
     assert_eq!(flags(&backing), FLAG_INTEGRITY_ERROR);
     assert!(unsafe { slot::is_consumed(base) });
 }

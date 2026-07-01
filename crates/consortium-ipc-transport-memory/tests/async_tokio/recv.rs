@@ -57,7 +57,8 @@ fn recv_prefers_updated_rx_channel_over_fallback_order() {
         let rx0_layout =
             unsafe { ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1))) };
         let mut fallback = [0; MTU];
-        let n = unsafe { slot::try_read(rx0_layout.slot_addr(base), &mut fallback) }
+        let read_region = unsafe { SramRegion::new(base, MULTI_REGION_LEN) };
+        let n = unsafe { slot::try_read(rx0_layout.slot_addr(base), &mut fallback, &read_region) }
             .expect("fallback slot should still be unread");
         assert_eq!(&fallback[..n], b"fallback-first");
     });
@@ -196,7 +197,7 @@ fn recv_future_becomes_ready_after_pending_poll_then_doorbell_ring() {
 }
 
 #[test]
-fn pending_recv_invalidates_region_once() {
+fn pending_recv_flushes_integrity_error_and_self_wakes() {
     let mut backing = vec![0; REGION_LEN].into_boxed_slice();
     let base = backing.as_mut_ptr();
     init_two_channel_descriptor(base);
@@ -228,13 +229,13 @@ fn pending_recv_invalidates_region_once() {
         pin_mut!(recv);
         assert!(matches!(poll!(recv.as_mut()), Poll::Pending));
 
-        assert_eq!(observed_region.flush_count(), 0);
-        assert_eq!(observed_region.invalidate_count(), 1);
+        assert_eq!(observed_region.flush_count(), 1);
+        assert_eq!(observed_region.invalidate_count(), 2);
     });
 }
 
 #[test]
-fn immediate_recv_does_not_invalidate_region() {
+fn immediate_recv_invalidates_before_read_and_flushes_consumed_flag() {
     let mut backing = vec![0; REGION_LEN].into_boxed_slice();
     let base = backing.as_mut_ptr();
     init_two_channel_descriptor(base);
@@ -266,7 +267,7 @@ fn immediate_recv_does_not_invalidate_region() {
             .expect("receive ready payload");
         assert_eq!(&rx[..n], b"already-there");
 
-        assert_eq!(observed_region.flush_count(), 0);
-        assert_eq!(observed_region.invalidate_count(), 0);
+        assert_eq!(observed_region.flush_count(), 1);
+        assert_eq!(observed_region.invalidate_count(), 1);
     });
 }

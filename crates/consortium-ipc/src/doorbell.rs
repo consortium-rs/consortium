@@ -25,6 +25,17 @@ use crate::{chan::Chan, future::MaybeSend};
 ///   MU:     transmit register index (0..=3)
 ///   Serial: logical channel byte in frame header
 ///   Host:   Unix socket / TCP port logical channel
+///
+/// # Ordering contract
+///
+/// `ring` is the publication edge for data written before signaling the peer.
+/// Implementations must ensure those writes happen-before the corresponding
+/// `wait` completion or `pending` observation on the receiving side. For
+/// software pending bits this means a release operation in `ring` (or in the
+/// interrupt producer) paired with an acquire operation in `wait`/`pending`, or
+/// stronger ordering. For hardware-backed doorbells, the interrupt or MMIO
+/// signal must not be observed by the peer before the shared-memory writes that
+/// the signal publishes are visible.
 pub trait Doorbell {
     type Error;
     type WaitFut<'a>: Future<Output = Result<Chan, Self::Error>> + MaybeSend

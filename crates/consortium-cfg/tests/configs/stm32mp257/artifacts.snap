@@ -473,7 +473,7 @@ fn _generated() {
                     uio_id: 3,
                     mmap_id: 0,
                     len: 8192,
-                    elf_path: "./firmware",
+                    elf_bytes: include_bytes!("./firmware"),
                     label: "cm33",
                 },
             ],

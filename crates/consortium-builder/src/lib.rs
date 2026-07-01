@@ -15,9 +15,19 @@
 // SPDX-License-Identifier: Apache-2.0
 
 mod compile;
+pub mod pipeline;
 
 // Trait
 pub use compile::Compiler;
+
+// Deployment artifact rendering
+pub use compile::deploy::systemd::{
+    SystemdRestartPolicy, SystemdUnitConfig, render_unit as render_systemd_unit,
+    write_unit as write_systemd_unit,
+};
+
+// End-to-end pipeline
+pub use pipeline::{PipelineConfig, PipelineError, PipelinePlan, run as run_pipeline};
 
 // Compile-time environment-injection carriers
 pub use compile::env::{CortexMcuCore, HmiConfig, SharedMemConfig};
@@ -33,3 +43,4 @@ pub use compile::application::{
 };
 pub use compile::firmware::{FirmwareCompileError, FirmwareCompiler, FirmwareConfiguration};
 pub use compile::optee::{OPTEE_TARGET, OpteeCompileError, OpteeCompiler, OpteeConfiguration};
+pub use compile::web::{HmiBuildCommand, HmiCompileError, HmiCompiler, HmiConfiguration};

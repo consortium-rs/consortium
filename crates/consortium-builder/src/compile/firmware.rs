@@ -19,7 +19,7 @@ use thiserror::Error;
 use tokio::process::Command;
 
 use super::Compiler;
-use crate::compile::env::{CortexMcuCore, SharedMemConfig};
+use crate::compile::env::SharedMemConfig;
 use crate::compile::utils::{elf_path, inject_shared_mem, resolve_cargo, verify_elf};
 
 /// Error type for firmware compilation.
@@ -38,11 +38,14 @@ pub enum FirmwareCompileError {
     UtilityError(String),
 }
 
-/// Build parameters for bare-metal Cortex-M firmware.
+/// Build parameters for bare-metal coprocessor firmware.
 #[derive(Clone)]
 pub struct FirmwareConfiguration {
-    /// Target MCU core (determines the Rust target triple).
-    pub arch: CortexMcuCore,
+    /// Rust target triple to cross-compile for (e.g.
+    /// `thumbv8m.main-none-eabi`). Resolved by the caller from the coprocessor's
+    /// core name (`McoreName`/`RcoreName`/`RvCoreName::as_rust_triple`), the
+    /// single source of truth for triples.
+    pub target: String,
     /// Path to the firmware Cargo project root.
     pub path: PathBuf,
     /// Build in release mode.
@@ -69,7 +72,7 @@ impl Compiler for FirmwareCompiler {
         let mut cmd = Command::new(&cargo);
         cmd.arg("build")
             .arg("--target")
-            .arg(config.arch.to_rust_target())
+            .arg(&config.target)
             .current_dir(&config.path);
 
         inject_shared_mem(&mut cmd, "IPC", config.ipc.as_ref());
@@ -104,7 +107,7 @@ impl Compiler for FirmwareCompiler {
     }
 
     async fn output_path(config: &Self::Configuration) -> Result<PathBuf, Self::Error> {
-        elf_path(&config.path, config.arch.to_rust_target(), config.release)
+        elf_path(&config.path, &config.target, config.release)
             .await
             .map_err(FirmwareCompileError::UtilityError)
     }
@@ -112,7 +115,8 @@ impl Compiler for FirmwareCompiler {
 
 /// Backward-compatible builder; delegates to [`FirmwareCompiler`].
 pub struct FirmwareBuilder {
-    pub arch: CortexMcuCore,
+    /// Rust target triple to cross-compile for.
+    pub target: String,
     pub path: PathBuf,
     pub release: bool,
     pub ipc: Option<SharedMemConfig>,
@@ -123,7 +127,7 @@ impl FirmwareBuilder {
     /// Builds the firmware, returning the path to the output ELF.
     pub async fn build(&self) -> Result<PathBuf, String> {
         FirmwareCompiler::build(FirmwareConfiguration {
-            arch: self.arch.clone(),
+            target: self.target.clone(),
             path: self.path.clone(),
             release: self.release,
             ipc: self.ipc,
@@ -136,7 +140,7 @@ impl FirmwareBuilder {
     /// Returns the expected output ELF path without building.
     pub async fn elf_path(&self) -> Result<PathBuf, String> {
         FirmwareCompiler::output_path(&FirmwareConfiguration {
-            arch: self.arch.clone(),
+            target: self.target.clone(),
             path: self.path.clone(),
             release: self.release,
             ipc: self.ipc,

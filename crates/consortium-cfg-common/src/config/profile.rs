@@ -23,4 +23,19 @@ pub struct Profile {
     pub chip: String,
     /// Shared crate location
     pub shared: String,
+    /// On-target root under which the build pipeline's artifacts are expected to
+    /// be installed by a downstream packaging recipe (e.g. `/opt/consortium`).
+    ///
+    /// This is a *naming convention only*: the pipeline never writes to a live
+    /// target filesystem. It is used to compose the HMI dist path, the systemd
+    /// unit's `ExecStart=`/`WorkingDirectory=`, and the firmware install
+    /// location a bitbake recipe consumes. Defaults to `/opt/consortium` so
+    /// existing manifests keep parsing.
+    #[serde(default = "default_deploy_root")]
+    pub deploy_root: String,
+}
+
+/// Default [`Profile::deploy_root`] when a manifest omits it.
+fn default_deploy_root() -> String {
+    "/opt/consortium".to_string()
 }

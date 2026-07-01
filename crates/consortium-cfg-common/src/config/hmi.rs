@@ -25,7 +25,12 @@ pub struct Hmi {
     /// Dev-server URL loaded in debug builds; absent in release builds.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub debug: Option<String>,
-    /// Path to the built frontend assets served in release builds.
+    /// Frontend project root the build pipeline compiles (manifest-relative),
+    /// e.g. `website`. The pipeline runs the frontend build command here.
+    pub source: String,
+    /// Resolved dist output directory the frontend build produces and the
+    /// application serves in release builds (manifest-relative), e.g.
+    /// `website/dist`.
     pub build: String,
 }
 

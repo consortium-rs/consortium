@@ -31,6 +31,8 @@ unsafe fn send_bytes<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable>(
 ) -> Result<(), Error<D>> {
     let mut channel_id = 0xFF;
 
+    region.invalidate();
+
     // SAFETY: caller guarantees `base` covers the descriptor header.
     let num_channels = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
 
@@ -99,6 +101,7 @@ where
     let region = transport.region();
     let base = transport.base();
     let ch = transport.ch();
+    let mut region_invalidated = false;
 
     // If a wait future is already armed, poll it.  If it is still pending our
     // waker is already registered — park until the doorbell fires.  If it fires,
@@ -109,11 +112,18 @@ where
             core::task::Poll::Pending => return core::task::Poll::Pending,
             core::task::Poll::Ready(_) => {
                 *wait_fut = None;
+                region.invalidate();
+                region_invalidated = true;
             }
         }
     }
 
     // Fast path: check the channel indicated by the updated-id field.
+
+    if !region_invalidated {
+        region.invalidate();
+    }
+
     // SAFETY: caller guarantees `base` covers the descriptor header.
     let mut channel_id = unsafe { rv_u8(base, RX_UPDATED_ID_OFFSET) };
     // SAFETY: same `base` validity guarantee.
@@ -165,14 +175,16 @@ where
     let slot_base = unsafe { channel.slot_addr(base) };
 
     // SAFETY: `slot_base` is a valid slot; `buf` is exclusively owned by the caller.
-    if let Some(n) = unsafe { slot::try_read(slot_base, buf) } {
+    if let Some(n) = unsafe { slot::try_read(slot_base, buf, region) } {
         return core::task::Poll::Ready(Ok(n));
     }
 
-    // Slot was visible but integrity check failed — invalidate caches and wait.
+    // The scan saw a readable slot but the read could not complete.  Flushes for
+    // integrity-error flags happen inside `try_read`; invalidate and force an
+    // immediate re-poll so this path does not depend on an unrelated doorbell.
     region.invalidate();
-    // SAFETY: `wait_fut` is the stored wait future for this receive operation.
-    unsafe { arm_wait(doorbell, ch, wait_fut, cx) }
+    cx.waker().wake_by_ref();
+    core::task::Poll::Pending
 }
 
 /// Create and store a doorbell wait future, poll it once to register the waker,
