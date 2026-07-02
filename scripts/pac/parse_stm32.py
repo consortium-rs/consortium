@@ -13,8 +13,8 @@ from common import (
 )
 
 
-DATA_DIR = Path(__file__).parent.parent / "data"
-OUTPUT_DIR = Path(__file__).parent.parent / "output"
+DATA_DIR = Path(__file__).resolve().parents[2] / "data"
+OUTPUT_DIR = Path(__file__).resolve().parents[2] / "output"
 
 FAMILY_REPRESENTATIVES = {
     'stm32mp21_cm33': 'stm32mp215fxx_cm33.h',

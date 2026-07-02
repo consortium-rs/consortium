@@ -7,11 +7,11 @@ echo "=========================================="
 echo ""
 
 echo "1. Running custom validation checks..."
-python scripts/test_output.py 2>&1 | grep -E "^(Register|Chip|Total|✓ All)" | tail -4
+python scripts/pac/test_output.py 2>&1 | grep -E "^(Register|Chip|Total|✓ All)" | tail -4
 
 echo ""
 echo "2. Running chiptool validation..."
-python scripts/validate_with_chiptool.py 2>&1 | grep -E "^(Passed|Failed):" | head -2
+python scripts/pac/validate_with_chiptool.py 2>&1 | grep -E "^(Passed|Failed):" | head -2
 
 echo ""
 echo "3. File statistics..."

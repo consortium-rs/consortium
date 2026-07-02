@@ -16,7 +16,7 @@ default:
 # ── Core Commands (from CLAUDE.md) ───────────────────────────────────────────
 
 # Install local development tools
-setup: setup-uv setup-vp setup-rust-tools setup-rust-targets setup-ls-lint
+setup: setup-uv setup-vp setup-rust-tools setup-rust-targets setup-ls-lint setup-chiptool
 
 # Install uv
 setup-uv:
@@ -59,6 +59,14 @@ setup-cargo-binstall:
 # Prime ls-lint through vp dlx
 setup-ls-lint:
     vp dlx --yes @ls-lint/ls-lint@{{ ls_lint_version }} --version
+
+# Install chiptool, used to validate/regenerate the peripheral access crates
+setup-chiptool:
+    @if command -v chiptool >/dev/null 2>&1; then \
+        echo "chiptool is already installed"; \
+    else \
+        cargo install --git https://github.com/embassy-rs/chiptool --locked; \
+    fi
 
 # Build all crates
 build:
@@ -425,3 +433,133 @@ build-ipc-arm: build-ipc-a build-ipc-m
 # Add license headers (requires addlicense)
 license:
     addlicense -c "Ethan Wu" -y 2026 -l apache -s -ignore "data/**/*" .
+
+# ── PAC generation (consortium-pac-*) ────────────────────────────────────────
+# Tooling for the peripheral access crates. Vendor headers live in `submodules/`,
+# local patches in `scripts/pac/patches/`, generated IR in `output/`. Requires
+# chiptool (see `just setup-chiptool`).
+
+# Initialize the PAC vendor submodules and apply local patches
+pac-init:
+    git submodule update --init submodules/imx-sm submodules/mcux-devices-imx submodules/STM32CubeMP2
+    just pac-patch
+
+# Apply all patches to all PAC submodules
+pac-patch:
+    #!/usr/bin/env bash
+    set -e
+    PATCHES_DIR="$(pwd)/scripts/pac/patches"
+
+    for submodule_patches_dir in "$PATCHES_DIR"/*/; do
+        submodule=$(basename "$submodule_patches_dir")
+        target="submodules/$submodule"
+
+        if [ ! -d "$target" ]; then
+            echo "Skipping $submodule (not cloned yet)"
+            continue
+        fi
+
+        patches=("$submodule_patches_dir"*.diff)
+        if [ ! -e "${patches[0]}" ]; then
+            echo "No patches for $submodule"
+            continue
+        fi
+
+        echo "🔧 Patching $submodule..."
+        git -C "$target" apply --ignore-whitespace "${patches[@]}"
+        echo "$submodule patched"
+    done
+
+# Apply patches for a specific PAC submodule
+pac-patch-one submodule:
+    #!/usr/bin/env bash
+    set -e
+    patches=(scripts/pac/patches/{{submodule}}/*.diff)
+    if [ ! -e "${patches[0]}" ]; then
+        echo "No patches found for {{submodule}}"
+        exit 0
+    fi
+    git -C submodules/{{submodule}} apply --ignore-whitespace "${patches[@]}"
+
+# Reset all PAC submodules to upstream HEAD and re-apply patches
+pac-reset:
+    #!/usr/bin/env bash
+    set -e
+    echo "Resetting all PAC submodules to upstream HEAD..."
+    git submodule foreach --recursive 'git am --abort 2>/dev/null || true'
+    git submodule foreach --recursive 'git rebase --abort 2>/dev/null || true'
+    git submodule update --init --force submodules/imx-sm submodules/mcux-devices-imx submodules/STM32CubeMP2
+    just pac-patch
+
+# Reset a specific PAC submodule and re-apply its patches
+pac-reset-one submodule:
+    git -C submodules/{{submodule}} reset --hard
+    git -C submodules/{{submodule}} clean -fd
+    just pac-patch-one {{submodule}}
+
+# Fetch a patch from a GitHub PR and save it under scripts/pac/patches
+pac-fetch-patch submodule owner repo pr:
+    mkdir -p scripts/pac/patches/{{submodule}}
+    curl -L https://github.com/{{owner}}/{{repo}}/pull/{{pr}}.diff \
+        -o scripts/pac/patches/{{submodule}}/pr{{pr}}.diff
+    echo "Saved to scripts/pac/patches/{{submodule}}/pr{{pr}}.diff"
+
+# Check that all PAC patches apply cleanly (dry run)
+pac-check:
+    #!/usr/bin/env bash
+    set -e
+    PATCHES_DIR="$(pwd)/scripts/pac/patches"
+
+    for submodule_patches_dir in "$PATCHES_DIR"/*/; do
+        submodule=$(basename "$submodule_patches_dir")
+        target="submodules/$submodule"
+        [ ! -d "$target" ] && continue
+
+        patches=("$submodule_patches_dir"*.diff)
+        [ ! -e "${patches[0]}" ] && continue
+
+        echo "🔍 Checking $submodule..."
+        git -C "$target" apply --check --ignore-whitespace "${patches[@]}" \
+            && echo "$submodule OK" \
+            || echo "$submodule FAILED"
+    done
+
+# Show PAC submodule status
+pac-status:
+    git submodule status submodules/imx-sm submodules/mcux-devices-imx submodules/STM32CubeMP2
+
+# Stage vendor CMSIS headers into ./data for the parsers
+pac-prepare:
+    bash scripts/pac/prepare.sh
+
+# Parse STM32MP CMSIS headers into chiptool IR
+pac-parse-stm32:
+    python scripts/pac/parse_stm32.py --all
+
+# Parse NXP MCUX CMSIS headers into chiptool IR
+pac-parse-nxp:
+    python scripts/pac/parse_nxp.py --all
+
+# Parse all CMSIS headers (STM32 + NXP)
+pac-parse-all: pac-parse-stm32 pac-parse-nxp
+    @echo "✓ All parsers completed"
+
+# Run custom PAC output validation tests
+pac-test:
+    python scripts/pac/test_output.py
+
+# Validate PAC output with chiptool
+pac-validate:
+    python scripts/pac/validate_with_chiptool.py
+
+# Show PAC validation summary
+pac-summary:
+    bash scripts/pac/test_summary.sh
+
+# Full PAC pipeline: parse, test, and validate
+pac-ci: pac-parse-all pac-test pac-validate
+    @echo ""
+    @echo "=========================================="
+    @echo "PAC Pipeline Complete"
+    @echo "=========================================="
+    bash scripts/pac/test_summary.sh

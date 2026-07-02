@@ -1,17 +1,17 @@
-name: CI - Parse and Validate
+name: PAC - Parse and Validate
 
 on:
   push:
     branches: [main, develop]
     paths:
-      - 'scripts/**'
-      - 'data/**'
-      - '.github/workflows/ci.yml'
+      - 'scripts/pac/**'
+      - 'submodules/**'
+      - '.github/workflows/pac.yml'
   pull_request:
     branches: [main]
     paths:
-      - 'scripts/**'
-      - 'data/**'
+      - 'scripts/pac/**'
+      - 'submodules/**'
 
 jobs:
   parse-and-validate:
@@ -38,18 +38,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyyaml
 
-      - name: Run CI pipeline
+      - name: Stage vendor headers
+        run: bash scripts/pac/prepare.sh
+
+      - name: Run PAC pipeline
         run: |
-          python scripts/parse_stm32.py --all
-          python scripts/parse_nxp.py --all
-          python scripts/test_output.py
+          python scripts/pac/parse_stm32.py --all
+          python scripts/pac/parse_nxp.py --all
+          python scripts/pac/test_output.py
 
       - name: Validate with chiptool
         run: |
-          python scripts/validate_with_chiptool.py
+          python scripts/pac/validate_with_chiptool.py
         continue-on-error: true
 
       - name: Show summary
         run: |
-          bash scripts/test_summary.sh
+          bash scripts/pac/test_summary.sh
         if: always()

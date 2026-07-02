@@ -654,6 +654,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-pac-imx9"
+version = "0.1.0"
+dependencies = [
+ "defmt",
+]
+
+[[package]]
+name = "consortium-pac-stm32mp2"
+version = "0.1.0"
+dependencies = [
+ "defmt",
+]
+
+[[package]]
 name = "consortium-runtime-app"
 version = "0.1.0"
 dependencies = [
