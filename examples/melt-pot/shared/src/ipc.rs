@@ -17,14 +17,26 @@
 use consortium_ipc::IpcSafe;
 use serde::{Deserialize, Serialize};
 
-/// Temperature reading sent from the MCU to the application processor over IPC.
-///
-/// Serialized with postcard for the IPC channel; the `IpcSafe` bound ensures
-/// no address-space-local constructs (pointers, references) cross the core boundary.
+// These message types are referenced by name from the generated `consortium.gen.rs`
+// modules (the `party.<name>.type` entries in `Consortium.toml`). Both directions
+// of the `sensor` channel use the default postcard codec, so each type derives
+// `serde::Serialize`/`Deserialize`. `IpcSafe` rejects address-space-local
+// constructs (pointers, references) crossing the core boundary.
+
+/// Temperature reading sent from the coprocessor (CM33 / CM7) to the application
+/// processor over the `sensor` IPC channel.
 #[derive(Clone, Copy, Debug, IpcSafe, Deserialize, Serialize)]
 pub struct SensorReading {
     /// Temperature in millidegrees Celsius (e.g. 25_000 = 25.000 °C).
     pub temperature_mdc: i32,
     /// Monotonic sequence counter; wraps at u32::MAX.
     pub seq: u32,
+}
+
+/// Control command sent from the application processor back to the coprocessor
+/// on the `sensor` channel (e.g. a new target set-point).
+#[derive(Clone, Copy, Debug, IpcSafe, Deserialize, Serialize)]
+pub struct Command {
+    /// Requested set-point in millidegrees Celsius.
+    pub set_point_mdc: i32,
 }

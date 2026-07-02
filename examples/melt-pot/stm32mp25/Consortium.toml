@@ -1,27 +1,68 @@
 # SPDX-License-Identifier: Apache-2.0
 
-[platform]
-# The Rust compile targets are NOT listed here: they are the defaults looked up
-# from the chip database (`consortium_cfg_common::config::chip_map::Chip`) for this
-# chip (CM33 firmware target and CA35 application target).
-chip = "stm32mp257fak"
+# melt-pot on STM32MP257: CA35 Linux application + CM33 real-time firmware.
+# The CM0+ low-power core is intentionally not used by this example.
 
-# One shared descriptor + shared slots live in this region. The CM33 reaches it
-# through the raw physical `base`; the CA35 maps the *same* memory through the
-# UIO device `uio`, so the application-side address stays dynamic (mmap'd).
-[ipc]
-base   = 0x80000000 # CM33 raw view of the shared SRAM3 region
-length = 0x1000
-uio    = 0          # CA35 UIO device index for the IPC region
-mtu    = 64
+[profile]
+# The Rust compile targets are looked up from the embedded chip database for
+# this chip (CM33 firmware target and CA35 application target); they are not
+# listed here.
+chip        = "stm32mp257fak3"
+shared      = "../shared"
+deploy_root = "/opt/consortium"
 
-# The debug (CDBG) ring uses the SAME shared-memory format as [ipc].
+[endpoints]
+# Runtime endpoint name -> crate root. `cm33` is the single remote coprocessor.
+linux = "./app"
+optee = "./ta"
+cm33  = "./mcu"
+
 [dbg]
-base   = 0x80001000 # CM33 raw view of the debug region
-length = 0x800
-uio    = 1          # CA35 UIO device index for the debug region
+# How the AP consumes the defmt rings: "auto" forwards decoded frames to
+# `tracing`; "interface" hands back reader handles.
+mode = "auto"
+
+# defmt ring for the CM33, in SRAM2 (see the stm32mp25 chip database), just
+# above the IPC region below.
+[dbg.cm33]
+memory = { base = 0x00064000, length = 0x2000 }
 mtu    = 64
+
+# One shared descriptor + slots for the sensor channel, signalled over HSEM.
+# The region lives in SRAM2 (base 0x00060000 in the stm32mp25 chip database);
+# the CM33 reaches it through the raw physical base and the CA35 maps the same
+# memory through its UIO device.
+[[ipc.channel]]
+name          = "sensor"
+doorbell      = "hsem"
+pattern       = "memory"
+primary       = "linux"
+secondary     = "cm33"
+party.linux   = { chan = 0, type = "Command" }
+party.cm33    = { chan = 1, type = "SensorReading" }
+config.memory = { base = 0x00060000, length = 0x4000 }
+mtu           = 128
 
 [tee]
 # OP-TEE TA UUID — replace with the real UUID from your TA build.
 uuid = "12345678-1234-1234-1234-123456789012"
+
+[hmi]
+engine  = "cog"
+backend = "wayland"
+debug   = "http://127.0.0.1:5173/"
+source  = "website"
+build   = "website/dist"
+
+[peripheral.i2c1]
+owner   = "ap"
+secure  = false
+pin.sda = "PB0"
+pin.scl = "PB1"
+
+[peripheral.spi1]
+owner    = "cm33"
+secure   = false
+pin.miso = "PA6"
+pin.mosi = "PA7"
+pin.sck  = "PA5"

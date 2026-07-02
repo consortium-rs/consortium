@@ -1,27 +1,66 @@
 # SPDX-License-Identifier: Apache-2.0
 
-[platform]
-# The Rust compile targets are NOT listed here: they are the defaults looked up
-# from the chip database (`consortium_cfg_common::config::chip_map::Chip`) for this
-# chip (CM7 firmware target and CA55 application target).
-chip = "mimx9596cvt"
+# melt-pot on i.MX95: CA55 Linux application + CM7 real-time firmware.
+# The M33 system-manager core is intentionally not used by this example.
 
-# One shared descriptor + shared slots live in this OCRAM region, signalled over
-# MU7 (channels 24/25). The CM7 reaches it through the raw physical `base`; the
-# CA55 maps the *same* memory through the UIO device `uio`.
-[ipc]
-base   = 0x204C0000 # CM7 raw view of the shared OCRAM region
-length = 0x1000
-uio    = 0          # CA55 UIO device index for the IPC region
-mtu    = 64
+[profile]
+# The Rust compile targets are looked up from the embedded chip database for
+# this chip (CM7 firmware target and CA55 application target); they are not
+# listed here.
+chip        = "mimx9596xvt"
+shared      = "../shared"
+deploy_root = "/opt/consortium"
 
-# The debug (CDBG) ring uses the SAME shared-memory format as [ipc].
+[endpoints]
+# Runtime endpoint name -> crate root. `cm7` is the single remote coprocessor.
+linux = "./app"
+optee = "./ta"
+cm7   = "./mcu"
+
 [dbg]
-base   = 0x204C1000 # CM7 raw view of the debug region
-length = 0x800
-uio    = 1          # CA55 UIO device index for the debug region
+mode = "auto"
+
+# defmt ring for the CM7, in OCRAM (see the mimx95 chip database), just above
+# the IPC region below.
+[dbg.cm7]
+memory = { base = 0x00484000, length = 0x2000 }
 mtu    = 64
+
+# One shared descriptor + slots for the sensor channel, signalled over MU7.
+# The region lives in OCRAM (base 0x00480000 in the mimx95 chip database); the
+# CM7 reaches it through the raw physical base and the CA55 maps the same
+# memory through its UIO device.
+[[ipc.channel]]
+name          = "sensor"
+doorbell      = "mu7"
+pattern       = "memory"
+primary       = "linux"
+secondary     = "cm7"
+party.linux   = { chan = 6, type = "Command" }
+party.cm7     = { chan = 7, type = "SensorReading" }
+config.memory = { base = 0x00480000, length = 0x4000 }
+mtu           = 128
 
 [tee]
 # OP-TEE TA UUID — replace with the real UUID from your TA build.
 uuid = "12345678-1234-1234-1234-123456789012"
+
+[hmi]
+engine  = "cog"
+backend = "wayland"
+debug   = "http://127.0.0.1:5173/"
+source  = "website"
+build   = "website/dist"
+
+[peripheral.i2c1]
+owner   = "ap"
+secure  = false
+pin.sda = "PB0"
+pin.scl = "PB1"
+
+[peripheral.spi1]
+owner    = "cm7"
+secure   = false
+pin.miso = "PA6"
+pin.mosi = "PA7"
+pin.sck  = "PA5"

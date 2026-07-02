@@ -14,15 +14,19 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+# This crate is built by the `consortium` build pipeline, which writes the
+# generated `src/consortium.gen.rs` (UIO bring-up, IPC transceivers, defmt
+# console) this application `include!`s, then compiles it. It is intentionally
+# excluded from the workspace so it builds into its own per-crate `target/`.
 [package]
-description       = "melt-pot Linux application for i.MX95 Cortex-A55"
-edition.workspace = true
-license.workspace = true
-name              = "melt-pot-imx95-app"
-version.workspace = true
+description = "melt-pot Linux application for i.MX95 Cortex-A55"
+edition     = "2024"
+license     = "Apache-2.0"
+name        = "melt-pot-imx95-app"
+version     = "0.1.0"
 
 # Cross-compile target: aarch64-unknown-linux-gnu  (Cortex-A55, 64-bit Linux)
-# Example: cargo build -p melt-pot-imx95-app --target aarch64-unknown-linux-gnu --release
+# Built via `consortium build --manifest ../Consortium.toml`.
 
 [[bin]]
 name = "melt-pot-imx95-app"
@@ -32,19 +36,25 @@ path = "src/main.rs"
 melt-pot-shared   = { path = "../../shared" }
 melt-pot-imx95-ta = { default-features = false, features = ["ca"], path = "../ta" }
 
+# Named directly by the generated `consortium.gen.rs`.
 consortium-codec = { features = ["postcard"], path = "../../../../crates/consortium-codec" }
-consortium-dbg = { default-features = false, features = [
-  "host",
-], path = "../../../../crates/consortium-dbg" }
+consortium-ipc = { features = ["std"], path = "../../../../crates/consortium-ipc" }
+consortium-ipc-doorbell-mu = { features = [
+  "std",
+], path = "../../../../crates/consortium-ipc-doorbell-mu" }
+consortium-ipc-transport-memory = { features = [
+  "imx95",
+  "std",
+], path = "../../../../crates/consortium-ipc-transport-memory" }
+consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory" }
+consortium-runtime-app = { features = [
+  "imx95",
+], path = "../../../../crates/consortium-runtime-app" }
+
+# Application runtime.
 consortium-tee = { default-features = false, features = [
   "ca",
 ], path = "../../../../crates/consortium-tee" }
-consortium-ipc = { features = ["std"], path = "../../../../crates/consortium-ipc" }
-consortium-ipc-doorbell-mu = { features = [
-  "imx95",
-  "std",
-], path = "../../../../crates/consortium-ipc-doorbell-mu" }
-consortium-ipc-transport-memory = { path = "../../../../crates/consortium-ipc-transport-memory" }
 consortium-hmi = { path = "../../../../crates/consortium-hmi" }
 
 glib       = "0.22"
@@ -52,6 +62,3 @@ optee-teec = "0.8.0"
 serde      = { features = ["derive"], version = "1" }
 serde_json = "1"
 tokio      = { features = ["macros", "rt-multi-thread", "sync"], version = "1" }
-
-[lints]
-workspace = true

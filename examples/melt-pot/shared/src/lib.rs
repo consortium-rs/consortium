@@ -17,4 +17,4 @@
 #![no_std]
 
 pub mod ipc;
-pub use ipc::SensorReading;
+pub use ipc::{Command, SensorReading};
