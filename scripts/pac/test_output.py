@@ -41,37 +41,41 @@ def check_descriptions(data: Dict) -> List[str]:
         if not isinstance(value, dict):
             continue
 
-        desc = value.get('description', '')
+        desc = value.get("description", "")
         if not isinstance(desc, str):
             continue
 
         # Check for comment artifacts
-        if '/*!<' in desc or '/*!' in desc or '*/' in desc:
+        if "/*!<" in desc or "/*!" in desc or "*/" in desc:
             issues.append(f"  {key}: has comment artifact in description: {desc[:60]}")
 
         # Check for Doxygen tags
-        if re.search(r'@\w+', desc):
+        if re.search(r"@\w+", desc):
             issues.append(f"  {key}: has Doxygen tag in description: {desc[:60]}")
 
         # Check for Address offset metadata
-        if 'Address offset' in desc or 'address offset' in desc:
+        if "Address offset" in desc or "address offset" in desc:
             issues.append(f"  {key}: has offset metadata in description: {desc[:60]}")
 
         # Check for array metadata
-        if 'array step' in desc.lower() or 'step:' in desc:
+        if "array step" in desc.lower() or "step:" in desc:
             issues.append(f"  {key}: has array metadata in description: {desc[:60]}")
 
         # Check for excessive whitespace
-        if '  ' in desc:
-            issues.append(f"  {key}: has excessive whitespace in description: {desc[:60]}")
+        if "  " in desc:
+            issues.append(
+                f"  {key}: has excessive whitespace in description: {desc[:60]}"
+            )
 
         # Check fields in fieldsets
-        if 'fields' in value:
-            for field in value['fields']:
-                field_desc = field.get('description', '')
+        if "fields" in value:
+            for field in value["fields"]:
+                field_desc = field.get("description", "")
                 if isinstance(field_desc, str):
-                    if '/*!<' in field_desc or '@' in field_desc:
-                        issues.append(f"  {key}.{field['name']}: bad description: {field_desc[:60]}")
+                    if "/*!<" in field_desc or "@" in field_desc:
+                        issues.append(
+                            f"  {key}.{field['name']}: bad description: {field_desc[:60]}"
+                        )
 
     return issues
 
@@ -81,13 +85,13 @@ def check_bitfield_widths(data: Dict) -> List[str]:
     issues = []
 
     for key, value in data.items():
-        if not isinstance(value, dict) or 'fields' not in value:
+        if not isinstance(value, dict) or "fields" not in value:
             continue
 
         # Check for zero or negative bit sizes
-        for field in value['fields']:
-            bit_size = field.get('bit_size')
-            bit_offset = field.get('bit_offset', 0)
+        for field in value["fields"]:
+            bit_size = field.get("bit_size")
+            bit_offset = field.get("bit_offset", 0)
 
             if not isinstance(bit_size, int):
                 continue
@@ -98,42 +102,59 @@ def check_bitfield_widths(data: Dict) -> List[str]:
             # NXP headers include legitimate 64-bit registers, so only flag
             # widths that exceed the largest scalar register size we model.
             if bit_size > 64:
-                issues.append(f"  {key}.{field['name']}: suspiciously large bit_size: {bit_size}")
-
-        # Check for overlaps
-        fields_by_offset: Dict[int, List] = {}
-        for field in value['fields']:
-            offset = field.get('bit_offset', 0)
-            if offset not in fields_by_offset:
-                fields_by_offset[offset] = []
-            fields_by_offset[offset].append(field)
-
-        # If multiple fields at same offset with different sizes, might indicate duplicate
-        for offset, fields in fields_by_offset.items():
-            if len(fields) > 1:
-                names = [f['name'] for f in fields]
-                issues.append(f"  {key}: multiple fields at offset {offset}: {names}")
+                issues.append(
+                    f"  {key}.{field['name']}: suspiciously large bit_size: {bit_size}"
+                )
 
     return issues
+
+
+def check_field_overlaps(data: Dict) -> List[str]:
+    """Report fields sharing a bit offset.
+
+    CMSIS headers legitimately define multiple views at the same offset (e.g.
+    timer CCMRx input-capture vs output-compare modes, or single-bit/array
+    aliases like RLOCK/RLOCK0). chiptool represents these as distinct fields, so
+    these are informational warnings rather than errors.
+    """
+    warnings = []
+
+    for key, value in data.items():
+        if not isinstance(value, dict) or "fields" not in value:
+            continue
+
+        fields_by_offset: Dict[int, List] = {}
+        for field in value["fields"]:
+            offset = field.get("bit_offset", 0)
+            fields_by_offset.setdefault(offset, []).append(field)
+
+        for offset, fields in fields_by_offset.items():
+            if len(fields) > 1:
+                names = [f["name"] for f in fields]
+                warnings.append(f"  {key}: multiple fields at offset {offset}: {names}")
+
+    return warnings
 
 
 def check_chip_json(data: Dict) -> List[str]:
     """Check chip JSON structure."""
     issues = []
 
-    if 'name' not in data:
+    if "name" not in data:
         issues.append("  Missing 'name' field")
 
-    if 'peripherals' in data:
-        for periph in data['peripherals']:
+    if "peripherals" in data:
+        for periph in data["peripherals"]:
             # Check base_address format
-            if 'base_address' in periph:
-                addr = periph['base_address']
-                if not re.match(r'^0x[0-9a-f]{8}$', addr, re.IGNORECASE):
-                    issues.append(f"  {periph.get('name', '?')}: invalid base_address format: {addr}")
+            if "base_address" in periph:
+                addr = periph["base_address"]
+                if not re.match(r"^0x[0-9a-f]{8}$", addr, re.IGNORECASE):
+                    issues.append(
+                        f"  {periph.get('name', '?')}: invalid base_address format: {addr}"
+                    )
 
             # Check block reference
-            if 'block' not in periph:
+            if "block" not in periph:
                 issues.append(f"  {periph.get('name', '?')}: missing block reference")
 
     return issues
@@ -178,13 +199,23 @@ def test_register_yamls():
         issues.extend(check_descriptions(data))
         issues.extend(check_bitfield_widths(data))
 
+        # Non-fatal: legitimate CMSIS alternate-function / alias overlaps.
+        warnings = check_field_overlaps(data)
+
         if issues:
-            print(f"⚠️  {rel_path}:")
+            print(f"❌ {rel_path}:")
             for issue in issues[:5]:  # Show first 5 issues
                 print(issue)
             if len(issues) > 5:
                 print(f"  ... and {len(issues) - 5} more issues")
             failed += 1
+        elif warnings:
+            print(f"⚠️  {rel_path}: {len(warnings)} overlapping field view(s)")
+            for warning in warnings[:5]:
+                print(warning)
+            if len(warnings) > 5:
+                print(f"  ... and {len(warnings) - 5} more")
+            passed += 1
         else:
             print(f"✓ {rel_path}")
             passed += 1
@@ -238,8 +269,8 @@ def test_chip_jsons():
             failed += 1
         else:
             # Check IRQ count
-            irq_count = len(data.get('irqs', []))
-            periph_count = len(data.get('peripherals', []))
+            irq_count = len(data.get("irqs", []))
+            periph_count = len(data.get("peripherals", []))
             print(f"✓ {rel_path}: {irq_count} IRQs, {periph_count} peripherals")
             passed += 1
 
@@ -273,5 +304,5 @@ def main():
         return 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

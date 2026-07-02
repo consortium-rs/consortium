@@ -1,3457 +1,3457 @@
 block/DCMIPP:
   description: ''
   items:
-  - name: IPGR1
-    byte_offset: 0
-    description: DCMIPP IP-Plug global register 1
-    fieldset: DCMIPP_IPGR1
-  - name: IPGR2
-    byte_offset: 4
-    description: DCMIPP IP-Plug global register 2
-    fieldset: DCMIPP_IPGR2
-  - name: IPGR3
-    byte_offset: 8
-    description: DCMIPP IP-Plug global register 3
-    fieldset: DCMIPP_IPGR3
-  - name: IPGR8
-    byte_offset: 28
-    description: DCMIPP IP-Plug identification register
-    fieldset: DCMIPP_IPGR8
-  - name: IPC1R1
-    byte_offset: 32
-    description: DCMIPP IP-Plug Clientx register 1
-    fieldset: DCMIPP_IPC1R1
-  - name: IPC1R2
-    byte_offset: 36
-    description: DCMIPP IP-Plug Clientx register 2
-    fieldset: DCMIPP_IPC1R2
-  - name: IPC1R3
-    byte_offset: 40
-    description: DCMIPP IP-Plug Clientx register 3
-    fieldset: DCMIPP_IPC1R3
-  - name: IPC2R1
-    byte_offset: 48
-    description: DCMIPP IP-Plug Clientx register 1
-    fieldset: DCMIPP_IPC2R1
-  - name: IPC2R2
-    byte_offset: 52
-    description: DCMIPP IP-Plug Clientx register 2
-    fieldset: DCMIPP_IPC2R2
-  - name: IPC2R3
-    byte_offset: 56
-    description: DCMIPP IP-Plug Clientx register 3
-    fieldset: DCMIPP_IPC2R3
-  - name: IPC3R1
-    byte_offset: 64
-    description: DCMIPP IP-Plug Clientx register 1
-    fieldset: DCMIPP_IPC3R1
-  - name: IPC3R2
-    byte_offset: 68
-    description: DCMIPP IP-Plug Clientx register 2
-    fieldset: DCMIPP_IPC3R2
-  - name: IPC3R3
-    byte_offset: 72
-    description: DCMIPP IP-Plug Clientx register 3
-    fieldset: DCMIPP_IPC3R3
-  - name: IPC4R1
-    byte_offset: 80
-    description: DCMIPP IP-Plug Clientx register 1
-    fieldset: DCMIPP_IPC4R1
-  - name: IPC4R2
-    byte_offset: 84
-    description: DCMIPP IP-Plug Clientx register 2
-    fieldset: DCMIPP_IPC4R2
-  - name: IPC4R3
-    byte_offset: 88
-    description: DCMIPP IP-Plug Clientx register 3
-    fieldset: DCMIPP_IPC4R3
-  - name: IPC5R1
-    byte_offset: 96
-    description: DCMIPP IP-Plug Clientx register 1
-    fieldset: DCMIPP_IPC5R1
-  - name: IPC5R2
-    byte_offset: 100
-    description: DCMIPP IP-Plug Clientx register 2
-    fieldset: DCMIPP_IPC5R2
-  - name: IPC5R3
-    byte_offset: 104
-    description: DCMIPP IP-Plug Clientx register 3
-    fieldset: DCMIPP_IPC5R3
-  - name: PRCR
-    byte_offset: 260
-    description: DCMIPP parallel interface control register
-    fieldset: DCMIPP_PRCR
-  - name: PRESCR
-    byte_offset: 264
-    description: DCMIPP parallel interface embedded synchronization code register
-    fieldset: DCMIPP_PRESCR
-  - name: PRESUR
-    byte_offset: 268
-    description: DCMIPP parallel interface embedded synchronization unmask register
-    fieldset: DCMIPP_PRESUR
-  - name: PRIER
-    byte_offset: 500
-    description: DCMIPP parallel interface interrupt enable register
-    fieldset: DCMIPP_PRIER
-  - name: PRSR
-    byte_offset: 504
-    description: DCMIPP parallel interface status register
-    fieldset: DCMIPP_PRSR
-  - name: PRFCR
-    byte_offset: 508
-    description: DCMIPP parallel interface interrupt clear register
-    fieldset: DCMIPP_PRFCR
-  - name: CMHWCFGR
-    byte_offset: 512
-    description: DCMIPP common IP HW configuration register
-    fieldset: DCMIPP_CMHWCFGR
-  - name: CMCR
-    byte_offset: 516
-    description: DCMIPP common configuration register
-    fieldset: DCMIPP_CMCR
-  - name: CMFRCR
-    byte_offset: 520
-    description: DCMIPP common frame counter register
-    fieldset: DCMIPP_CMFRCR
-  - name: CMTPGCR1
-    byte_offset: 528
-    description: DCMIPP Pipe1 test pattern generator configuration register 1
-    fieldset: DCMIPP_CMTPGCR1
-  - name: CMTPGCR2
-    byte_offset: 532
-    description: DCMIPP Pipe1 test pattern generator configuration register 2
-    fieldset: DCMIPP_CMTPGCR2
-  - name: CMIER
-    byte_offset: 1008
-    description: DCMIPP common interrupt enable register
-    fieldset: DCMIPP_CMIER
-  - name: CMSR1
-    byte_offset: 1012
-    description: DCMIPP common status register 1
-    fieldset: DCMIPP_CMSR1
-  - name: CMSR2
-    byte_offset: 1016
-    description: DCMIPP common status register 2
-    fieldset: DCMIPP_CMSR2
-  - name: CMFCR
-    byte_offset: 1020
-    description: DCMIPP common interrupt clear register
-    fieldset: DCMIPP_CMFCR
-  - name: P0HWCFGR
-    byte_offset: 1024
-    description: DCMIPP Pipe0 HW configuration register
-    fieldset: DCMIPP_P0HWCFGR
-  - name: P0FSCR
-    byte_offset: 1028
-    description: DCMIPP Pipe0 flow selection configuration register
-    fieldset: DCMIPP_P0FSCR
-  - name: P0FCTCR
-    byte_offset: 1280
-    description: DCMIPP Pipe0 flow control configuration register
-    fieldset: DCMIPP_P0FCTCR
-  - name: P0SCSTR
-    byte_offset: 1284
-    description: DCMIPP Pipe0 statistic/crop start register
-    fieldset: DCMIPP_P0SCSTR
-  - name: P0SCSZR
-    byte_offset: 1288
-    description: DCMIPP Pipe0 statistic/crop size register
-    fieldset: DCMIPP_P0SCSZR
-  - name: P0DCCNTR
-    byte_offset: 1456
-    description: DCMIPP Pipe0 dump counter register
-    fieldset: DCMIPP_P0DCCNTR
-  - name: P0DCLMTR
-    byte_offset: 1460
-    description: DCMIPP Pipe0 dump limit register
-    fieldset: DCMIPP_P0DCLMTR
-  - name: P0PPCR
-    byte_offset: 1472
-    description: DCMIPP Pipe0 pixel packer configuration register
-    fieldset: DCMIPP_P0PPCR
-  - name: P0PPM0AR1
-    byte_offset: 1476
-    description: DCMIPP Pipe0 pixel packer Memory0 address register 1
-    fieldset: DCMIPP_P0PPM0AR1
-  - name: P0STM0AR
-    byte_offset: 1488
-    description: DCMIPP Pipe0 status Memory0 address register
-    fieldset: DCMIPP_P0STM0AR
-  - name: P0IER
-    byte_offset: 1524
-    description: DCMIPP Pipe0 interrupt enable register
-    fieldset: DCMIPP_P0IER
-  - name: P0SR
-    byte_offset: 1528
-    description: DCMIPP Pipe0 status register
-    fieldset: DCMIPP_P0SR
-  - name: P0FCR
-    byte_offset: 1532
-    description: DCMIPP Pipe0 interrupt clear register
-    fieldset: DCMIPP_P0FCR
-  - name: P0CFSCR
-    byte_offset: 1540
-    description: DCMIPP Pipe0 current flow selection configuration register
-    fieldset: DCMIPP_P0CFSCR
-  - name: P0CFCTCR
-    byte_offset: 1792
-    description: DCMIPP Pipe0 current flow control configuration register
-    fieldset: DCMIPP_P0CFCTCR
-  - name: P0CSCSTR
-    byte_offset: 1796
-    description: DCMIPP Pipe0 current statistic/crop start register
-    fieldset: DCMIPP_P0CSCSTR
-  - name: P0CSCSZR
-    byte_offset: 1800
-    description: DCMIPP Pipe0 current statistic/crop size register
-    fieldset: DCMIPP_P0CSCSZR
-  - name: P0CPPCR
-    byte_offset: 1984
-    description: DCMIPP Pipe0 current pixel packer configuration register
-    fieldset: DCMIPP_P0CPPCR
-  - name: P0CPPM0AR1
-    byte_offset: 1988
-    description: DCMIPP Pipe0 current pixel packer Memory0 address register 1
-    fieldset: DCMIPP_P0CPPM0AR1
-  - name: P1HWCFGR
-    byte_offset: 2048
-    description: DCMIPP Pipex HW configuration register
-    fieldset: DCMIPP_P1HWCFGR
-  - name: P1FSCR
-    byte_offset: 2052
-    description: DCMIPP Pipe1 flow selection configuration register
-    fieldset: DCMIPP_P1FSCR
-  - name: P1SRCR
-    byte_offset: 2080
-    description: DCMIPP Pipe1 stat removal configuration register
-    fieldset: DCMIPP_P1SRCR
-  - name: P1BPRCR
-    byte_offset: 2084
-    description: DCMIPP Pipe1 bad pixel removal control register
-    fieldset: DCMIPP_P1BPRCR
-  - name: P1BPRSR
-    byte_offset: 2088
-    description: DCMIPP Pipe1 bad pixel removal status register
-    fieldset: DCMIPP_P1BPRSR
-  - name: P1DECR
-    byte_offset: 2096
-    description: DCMIPP Pipe1 decimation register
-    fieldset: DCMIPP_P1DECR
-  - name: P1BLCCR
-    byte_offset: 2112
-    description: DCMIPP Pipe1 black level calibration control register
-    fieldset: DCMIPP_P1BLCCR
-  - name: P1EXCR1
-    byte_offset: 2116
-    description: DCMIPP Pipe1 exposure control register 1
-    fieldset: DCMIPP_P1EXCR1
-  - name: P1EXCR2
-    byte_offset: 2120
-    description: DCMIPP Pipe1 exposure control register 2
-    fieldset: DCMIPP_P1EXCR2
-  - name: P1ST1CR
-    byte_offset: 2128
-    description: DCMIPP Pipe1 statistics1 control register
-    fieldset: DCMIPP_P1ST1CR
-  - name: P1ST2CR
-    byte_offset: 2132
-    description: DCMIPP Pipe1 statistics 2 control register
-    fieldset: DCMIPP_P1ST2CR
-  - name: P1ST3CR
-    byte_offset: 2136
-    description: DCMIPP Pipe1 statistics 3 control register
-    fieldset: DCMIPP_P1ST3CR
-  - name: P1STSTR
-    byte_offset: 2140
-    description: DCMIPP Pipe1 statistics window start register
-    fieldset: DCMIPP_P1STSTR
-  - name: P1STSZR
-    byte_offset: 2144
-    description: DCMIPP Pipe1 statistics window size register
-    fieldset: DCMIPP_P1STSZR
-  - name: P1ST1SR
-    byte_offset: 2148
-    description: DCMIPP Pipe1 statistics 1 status register
-    fieldset: DCMIPP_P1ST1SR
-  - name: P1ST2SR
-    byte_offset: 2152
-    description: DCMIPP Pipe1 statistics 2 status register
-    fieldset: DCMIPP_P1ST2SR
-  - name: P1ST3SR
-    byte_offset: 2156
-    description: DCMIPP Pipe1 statistics 3 status register
-    fieldset: DCMIPP_P1ST3SR
-  - name: P1DMCR
-    byte_offset: 2160
-    description: DCMIPP Pipe1 demosaicing configuration register
-    fieldset: DCMIPP_P1DMCR
-  - name: P1CCCR
-    byte_offset: 2176
-    description: DCMIPP Pipe1 ColorConv configuration register
-    fieldset: DCMIPP_P1CCCR
-  - name: P1CCRR1
-    byte_offset: 2180
-    description: DCMIPP Pipe1 ColorConv red coefficient register 1
-    fieldset: DCMIPP_P1CCRR1
-  - name: P1CCRR2
-    byte_offset: 2184
-    description: DCMIPP Pipe1 ColorConv red coefficient register 2
-    fieldset: DCMIPP_P1CCRR2
-  - name: P1CCGR1
-    byte_offset: 2188
-    description: DCMIPP Pipe1 ColorConv green coefficient register 1
-    fieldset: DCMIPP_P1CCGR1
-  - name: P1CCGR2
-    byte_offset: 2192
-    description: DCMIPP Pipe1 ColorConv green coefficient register 2
-    fieldset: DCMIPP_P1CCGR2
-  - name: P1CCBR1
-    byte_offset: 2196
-    description: DCMIPP Pipex ColorConv blue coefficient register 1
-    fieldset: DCMIPP_P1CCBR1
-  - name: P1CCBR2
-    byte_offset: 2200
-    description: DCMIPP Pipe1 ColorConv blue coefficient register 2
-    fieldset: DCMIPP_P1CCBR2
-  - name: P1CTCR1
-    byte_offset: 2208
-    description: DCMIPP Pipe1 contrast control register 1
-    fieldset: DCMIPP_P1CTCR1
-  - name: P1CTCR2
-    byte_offset: 2212
-    description: DCMIPP Pipe1 contrast control register 2
-    fieldset: DCMIPP_P1CTCR2
-  - name: P1CTCR3
-    byte_offset: 2216
-    description: DCMIPP Pipe1 contrast control register 3
-    fieldset: DCMIPP_P1CTCR3
-  - name: P1FCTCR
-    byte_offset: 2304
-    description: DCMIPP Pipex flow control configuration register
-    fieldset: DCMIPP_P1FCTCR
-  - name: P1CRSTR
-    byte_offset: 2308
-    description: DCMIPP Pipex crop window start register
-    fieldset: DCMIPP_P1CRSTR
-  - name: P1CRSZR
-    byte_offset: 2312
-    description: DCMIPP Pipex crop window size register
-    fieldset: DCMIPP_P1CRSZR
-  - name: P1DCCR
-    byte_offset: 2316
-    description: DCMIPP Pipex decimation register
-    fieldset: DCMIPP_P1DCCR
-  - name: P1DSCR
-    byte_offset: 2320
-    description: DCMIPP Pipex downsize configuration register
-    fieldset: DCMIPP_P1DSCR
-  - name: P1DSRTIOR
-    byte_offset: 2324
-    description: DCMIPP Pipex downsize ratio register
-    fieldset: DCMIPP_P1DSRTIOR
-  - name: P1DSSZR
-    byte_offset: 2328
-    description: DCMIPP Pipex downsize destination size register
-    fieldset: DCMIPP_P1DSSZR
-  - name: P1GMCR
-    byte_offset: 2416
-    description: DCMIPP Pipex gamma configuration register
-    fieldset: DCMIPP_P1GMCR
-  - name: P1YUVCR
-    byte_offset: 2432
-    description: DCMIPP Pipe1 YUVConv configuration register
-    fieldset: DCMIPP_P1YUVCR
-  - name: P1YUVRR1
-    byte_offset: 2436
-    description: DCMIPP Pipe1 YUVConv red coefficient register 1
-    fieldset: DCMIPP_P1YUVRR1
-  - name: P1YUVRR2
-    byte_offset: 2440
-    description: DCMIPP Pipe1 YUVConv red coefficient register 2
-    fieldset: DCMIPP_P1YUVRR2
-  - name: P1YUVGR1
-    byte_offset: 2444
-    description: DCMIPP Pipe1 YUVConv green coefficient register 1
-    fieldset: DCMIPP_P1YUVGR1
-  - name: P1YUVGR2
-    byte_offset: 2448
-    description: DCMIPP Pipe1 YUVConv green coefficient register 2
-    fieldset: DCMIPP_P1YUVGR2
-  - name: P1YUVBR1
-    byte_offset: 2452
-    description: DCMIPP Pipe1 YUVConv blue coefficient register 1
-    fieldset: DCMIPP_P1YUVBR1
-  - name: P1YUVBR2
-    byte_offset: 2456
-    description: DCMIPP Pipe1 YUV blue coefficient register 2
-    fieldset: DCMIPP_P1YUVBR2
-  - name: P1PPCR
-    byte_offset: 2496
-    description: DCMIPP Pipe1 pixel packer configuration register
-    fieldset: DCMIPP_P1PPCR
-  - name: P1PPM0AR1
-    byte_offset: 2500
-    description: DCMIPP Pipe1 pixel packer Memory0 address register 1
-    fieldset: DCMIPP_P1PPM0AR1
-  - name: P1PPM0PR
-    byte_offset: 2508
-    description: DCMIPP Pipex pixel packer Memory0 pitch register
-    fieldset: DCMIPP_P1PPM0PR
-  - name: P1STM0AR
-    byte_offset: 2512
-    description: DCMIPP Pipex status Memory0 address register
-    fieldset: DCMIPP_P1STM0AR
-  - name: P1PPM1AR1
-    byte_offset: 2516
-    description: DCMIPP Pipex pixel packer Memory1 address register 1
-    fieldset: DCMIPP_P1PPM1AR1
-  - name: P1PPM1PR
-    byte_offset: 2524
-    description: DCMIPP Pipex pixel packer Memory1 pitch register
-    fieldset: DCMIPP_P1PPM1PR
-  - name: P1STM1AR
-    byte_offset: 2528
-    description: DCMIPP Pipex status Memory1 address register
-    fieldset: DCMIPP_P1STM1AR
-  - name: P1PPM2AR1
-    byte_offset: 2532
-    description: DCMIPP Pipex pixel packer memory2 address register 1
-    fieldset: DCMIPP_P1PPM2AR1
-  - name: P1STM2AR
-    byte_offset: 2544
-    description: DCMIPP Pipex status Memory2 address register
-    fieldset: DCMIPP_P1STM2AR
-  - name: P1IER
-    byte_offset: 2548
-    description: DCMIPP Pipe1 interrupt enable register
-    fieldset: DCMIPP_P1IER
-  - name: P1SR
-    byte_offset: 2552
-    description: DCMIPP Pipe1 status register
-    fieldset: DCMIPP_P1SR
-  - name: P1FCR
-    byte_offset: 2556
-    description: DCMIPP Pipe1 interrupt clear register
-    fieldset: DCMIPP_P1FCR
-  - name: P1CFSCR
-    byte_offset: 2564
-    description: DCMIPP Pipe1 current flow selection configuration register
-    fieldset: DCMIPP_P1CFSCR
-  - name: P1CBPRCR
-    byte_offset: 2596
-    description: DCMIPP Pipe1 current bad pixel removal register
-    fieldset: DCMIPP_P1CBPRCR
-  - name: P1CBLCCR
-    byte_offset: 2624
-    description: DCMIPP Pipe1 current black level calibration control register
-    fieldset: DCMIPP_P1CBLCCR
-  - name: P1CEXCR1
-    byte_offset: 2628
-    description: DCMIPP Pipe1 current exposure control register 1
-    fieldset: DCMIPP_P1CEXCR1
-  - name: P1CEXCR2
-    byte_offset: 2632
-    description: DCMIPP Pipe1 current exposure control register 2
-    fieldset: DCMIPP_P1CEXCR2
-  - name: P1CST1CR
-    byte_offset: 2640
-    description: DCMIPP Pipe1 current statistics 1 control register
-    fieldset: DCMIPP_P1CST1CR
-  - name: P1CST2CR
-    byte_offset: 2644
-    description: DCMIPP Pipe1 current statistics 2 control register
-    fieldset: DCMIPP_P1CST2CR
-  - name: P1CST3CR
-    byte_offset: 2648
-    description: DCMIPP Pipe1 current statistics 3 control register
-    fieldset: DCMIPP_P1CST3CR
-  - name: P1CSTSTR
-    byte_offset: 2652
-    description: DCMIPP Pipe1 current statistics window start register
-    fieldset: DCMIPP_P1CSTSTR
-  - name: P1CSTSZR
-    byte_offset: 2656
-    description: DCMIPP Pipe1 current statistics window size register
-    fieldset: DCMIPP_P1CSTSZR
-  - name: P1CCCCR
-    byte_offset: 2688
-    description: DCMIPP Pipe1 current ColorConv configuration register
-    fieldset: DCMIPP_P1CCCCR
-  - name: P1CCCRR1
-    byte_offset: 2692
-    description: DCMIPP Pipe1 current ColorConv red coefficient register 1
-    fieldset: DCMIPP_P1CCCRR1
-  - name: P1CCCRR2
-    byte_offset: 2696
-    description: DCMIPP Pipe1 current ColorConv red coefficient register 2
-    fieldset: DCMIPP_P1CCCRR2
-  - name: P1CCCGR1
-    byte_offset: 2700
-    description: DCMIPP Pipe1 current ColorConv green coefficient register 1
-    fieldset: DCMIPP_P1CCCGR1
-  - name: P1CCCGR2
-    byte_offset: 2704
-    description: DCMIPP Pipe1 current ColorConv green coefficient register 2
-    fieldset: DCMIPP_P1CCCGR2
-  - name: P1CCCBR1
-    byte_offset: 2708
-    description: DCMIPP Pipex current ColorConv blue coefficient register 1
-    fieldset: DCMIPP_P1CCCBR1
-  - name: P1CCCBR2
-    byte_offset: 2712
-    description: DCMIPP Pipe1 current ColorConv blue coefficient register 2
-    fieldset: DCMIPP_P1CCCBR2
-  - name: P1CCTCR1
-    byte_offset: 2720
-    description: DCMIPP Pipe1 current contrast control register 1
-    fieldset: DCMIPP_P1CCTCR1
-  - name: P1CCTCR2
-    byte_offset: 2724
-    description: DCMIPP Pipe1 current contrast control register 2
-    fieldset: DCMIPP_P1CCTCR2
-  - name: P1CCTCR3
-    byte_offset: 2728
-    description: DCMIPP Pipe1 current contrast control register 3
-    fieldset: DCMIPP_P1CCTCR3
-  - name: P1CFCTCR
-    byte_offset: 2816
-    description: DCMIPP Pipex current flow control configuration register
-    fieldset: DCMIPP_P1CFCTCR
-  - name: P1CCRSTR
-    byte_offset: 2820
-    description: DCMIPP Pipex current crop window start register
-    fieldset: DCMIPP_P1CCRSTR
-  - name: P1CCRSZR
-    byte_offset: 2824
-    description: DCMIPP Pipex current crop window size register
-    fieldset: DCMIPP_P1CCRSZR
-  - name: P1CDCCR
-    byte_offset: 2828
-    description: DCMIPP Pipex current decimation register
-    fieldset: DCMIPP_P1CDCCR
-  - name: P1CDSCR
-    byte_offset: 2832
-    description: DCMIPP Pipex current downsize configuration register
-    fieldset: DCMIPP_P1CDSCR
-  - name: P1CDSRTIOR
-    byte_offset: 2836
-    description: DCMIPP Pipex current downsize ratio register
-    fieldset: DCMIPP_P1CDSRTIOR
-  - name: P1CDSSZR
-    byte_offset: 2840
-    description: DCMIPP Pipex current downsize destination size register
-    fieldset: DCMIPP_P1CDSSZR
-  - name: P1CPPCR
-    byte_offset: 3008
-    description: DCMIPP Pipe1 current pixel packer configuration register
-    fieldset: DCMIPP_P1CPPCR
-  - name: P1CPPM0AR1
-    byte_offset: 3012
-    description: DCMIPP Pipe1 current pixel packer Memory0 address register 1
-    fieldset: DCMIPP_P1CPPM0AR1
-  - name: P1CPPM0PR
-    byte_offset: 3020
-    description: DCMIPP Pipex current pixel packer Memory0 pitch register
-    fieldset: DCMIPP_P1CPPM0PR
-  - name: P1CPPM1AR1
-    byte_offset: 3028
-    description: DCMIPP Pipex current pixel packer Memory1 address register 1
-    fieldset: DCMIPP_P1CPPM1AR1
-  - name: P1CPPM1PR
-    byte_offset: 3036
-    description: DCMIPP Pipex current pixel packer Memory1 pitch register
-    fieldset: DCMIPP_P1CPPM1PR
-  - name: P1CPPM2AR1
-    byte_offset: 3044
-    description: DCMIPP Pipex current pixel packer Memory2 address register 1
-    fieldset: DCMIPP_P1CPPM2AR1
-  - name: P2HWCFGR
-    byte_offset: 3072
-    description: DCMIPP Pipex HW configuration register
-    fieldset: DCMIPP_P2HWCFGR
-  - name: P2FSCR
-    byte_offset: 3076
-    description: DCMIPP Pipe2 flow selection configuration register
-    fieldset: DCMIPP_P2FSCR
-  - name: P2FCTCR
-    byte_offset: 3328
-    description: DCMIPP Pipex flow control configuration register
-    fieldset: DCMIPP_P2FCTCR
-  - name: P2CRSTR
-    byte_offset: 3332
-    description: DCMIPP Pipex crop window start register
-    fieldset: DCMIPP_P2CRSTR
-  - name: P2CRSZR
-    byte_offset: 3336
-    description: DCMIPP Pipex crop window size register
-    fieldset: DCMIPP_P2CRSZR
-  - name: P2DCCR
-    byte_offset: 3340
-    description: DCMIPP Pipex decimation register
-    fieldset: DCMIPP_P2DCCR
-  - name: P2DSCR
-    byte_offset: 3344
-    description: DCMIPP Pipex downsize configuration register
-    fieldset: DCMIPP_P2DSCR
-  - name: P2DSRTIOR
-    byte_offset: 3348
-    description: DCMIPP Pipex downsize ratio register
-    fieldset: DCMIPP_P2DSRTIOR
-  - name: P2DSSZR
-    byte_offset: 3352
-    description: DCMIPP Pipex downsize destination size register
-    fieldset: DCMIPP_P2DSSZR
-  - name: P2GMCR
-    byte_offset: 3440
-    description: DCMIPP Pipex gamma configuration register
-    fieldset: DCMIPP_P2GMCR
-  - name: P2PPCR
-    byte_offset: 3520
-    description: DCMIPP Pipe2 pixel packer configuration register
-    fieldset: DCMIPP_P2PPCR
-  - name: P2PPM0AR1
-    byte_offset: 3524
-    description: DCMIPP Pipe2 pixel packer Memory0 address register 1
-    fieldset: DCMIPP_P2PPM0AR1
-  - name: P2PPM0PR
-    byte_offset: 3532
-    description: DCMIPP Pipex pixel packer Memory0 pitch register
-    fieldset: DCMIPP_P2PPM0PR
-  - name: P2STM0AR
-    byte_offset: 3536
-    description: DCMIPP Pipex status Memory0 address register
-    fieldset: DCMIPP_P2STM0AR
-  - name: P2IER
-    byte_offset: 3572
-    description: DCMIPP Pipe2 interrupt enable register
-    fieldset: DCMIPP_P2IER
-  - name: P2SR
-    byte_offset: 3576
-    description: DCMIPP Pipe2 status register
-    fieldset: DCMIPP_P2SR
-  - name: P2FCR
-    byte_offset: 3580
-    description: DCMIPP Pipe2 interrupt clear register
-    fieldset: DCMIPP_P2FCR
-  - name: P2CFSCR
-    byte_offset: 3588
-    description: DCMIPP Pipe2 current flow selection configuration register
-    fieldset: DCMIPP_P2CFSCR
-  - name: P2CFCTCR
-    byte_offset: 3840
-    description: DCMIPP Pipex current flow control configuration register
-    fieldset: DCMIPP_P2CFCTCR
-  - name: P2CCRSTR
-    byte_offset: 3844
-    description: DCMIPP Pipex current crop window start register
-    fieldset: DCMIPP_P2CCRSTR
-  - name: P2CCRSZR
-    byte_offset: 3848
-    description: DCMIPP Pipex current crop window size register
-    fieldset: DCMIPP_P2CCRSZR
-  - name: P2CDCCR
-    byte_offset: 3852
-    description: DCMIPP Pipex current decimation register
-    fieldset: DCMIPP_P2CDCCR
-  - name: P2CDSCR
-    byte_offset: 3856
-    description: DCMIPP Pipex current downsize configuration register
-    fieldset: DCMIPP_P2CDSCR
-  - name: P2CDSRTIOR
-    byte_offset: 3860
-    description: DCMIPP Pipex current downsize ratio register
-    fieldset: DCMIPP_P2CDSRTIOR
-  - name: P2CDSSZR
-    byte_offset: 3864
-    description: DCMIPP Pipex current downsize destination size register
-    fieldset: DCMIPP_P2CDSSZR
-  - name: P2CPPCR
-    byte_offset: 4032
-    description: DCMIPP Pipe2 current pixel packer configuration register
-    fieldset: DCMIPP_P2CPPCR
-  - name: P2CPPM0AR1
-    byte_offset: 4036
-    description: DCMIPP Pipe2 current pixel packer Memory0 address register 1
-    fieldset: DCMIPP_P2CPPM0AR1
-  - name: P2CPPM0PR
-    byte_offset: 4044
-    description: DCMIPP Pipex current pixel packer Memory0 pitch register
-    fieldset: DCMIPP_P2CPPM0PR
-  - name: HWCFGR2
-    byte_offset: 4076
-    description: DCMIPP hardware configuration register 2
-    fieldset: DCMIPP_HWCFGR2
-  - name: HWCFGR1
-    byte_offset: 4080
-    description: DCMIPP hardware configuration register 1
-    fieldset: DCMIPP_HWCFGR1
-  - name: VERR
-    byte_offset: 4084
-    description: DCMIPP version register
-    fieldset: DCMIPP_VERR
-  - name: IPIDR
-    byte_offset: 4088
-    description: DCMIPP identification register
-    fieldset: DCMIPP_IPIDR
-  - name: SIDR
-    byte_offset: 4092
-    description: DCMIPP size identification register
-    fieldset: DCMIPP_SIDR
+    - name: IPGR1
+      byte_offset: 0
+      description: DCMIPP IP-Plug global register 1
+      fieldset: DCMIPP_IPGR1
+    - name: IPGR2
+      byte_offset: 4
+      description: DCMIPP IP-Plug global register 2
+      fieldset: DCMIPP_IPGR2
+    - name: IPGR3
+      byte_offset: 8
+      description: DCMIPP IP-Plug global register 3
+      fieldset: DCMIPP_IPGR3
+    - name: IPGR8
+      byte_offset: 28
+      description: DCMIPP IP-Plug identification register
+      fieldset: DCMIPP_IPGR8
+    - name: IPC1R1
+      byte_offset: 32
+      description: DCMIPP IP-Plug Clientx register 1
+      fieldset: DCMIPP_IPC1R1
+    - name: IPC1R2
+      byte_offset: 36
+      description: DCMIPP IP-Plug Clientx register 2
+      fieldset: DCMIPP_IPC1R2
+    - name: IPC1R3
+      byte_offset: 40
+      description: DCMIPP IP-Plug Clientx register 3
+      fieldset: DCMIPP_IPC1R3
+    - name: IPC2R1
+      byte_offset: 48
+      description: DCMIPP IP-Plug Clientx register 1
+      fieldset: DCMIPP_IPC2R1
+    - name: IPC2R2
+      byte_offset: 52
+      description: DCMIPP IP-Plug Clientx register 2
+      fieldset: DCMIPP_IPC2R2
+    - name: IPC2R3
+      byte_offset: 56
+      description: DCMIPP IP-Plug Clientx register 3
+      fieldset: DCMIPP_IPC2R3
+    - name: IPC3R1
+      byte_offset: 64
+      description: DCMIPP IP-Plug Clientx register 1
+      fieldset: DCMIPP_IPC3R1
+    - name: IPC3R2
+      byte_offset: 68
+      description: DCMIPP IP-Plug Clientx register 2
+      fieldset: DCMIPP_IPC3R2
+    - name: IPC3R3
+      byte_offset: 72
+      description: DCMIPP IP-Plug Clientx register 3
+      fieldset: DCMIPP_IPC3R3
+    - name: IPC4R1
+      byte_offset: 80
+      description: DCMIPP IP-Plug Clientx register 1
+      fieldset: DCMIPP_IPC4R1
+    - name: IPC4R2
+      byte_offset: 84
+      description: DCMIPP IP-Plug Clientx register 2
+      fieldset: DCMIPP_IPC4R2
+    - name: IPC4R3
+      byte_offset: 88
+      description: DCMIPP IP-Plug Clientx register 3
+      fieldset: DCMIPP_IPC4R3
+    - name: IPC5R1
+      byte_offset: 96
+      description: DCMIPP IP-Plug Clientx register 1
+      fieldset: DCMIPP_IPC5R1
+    - name: IPC5R2
+      byte_offset: 100
+      description: DCMIPP IP-Plug Clientx register 2
+      fieldset: DCMIPP_IPC5R2
+    - name: IPC5R3
+      byte_offset: 104
+      description: DCMIPP IP-Plug Clientx register 3
+      fieldset: DCMIPP_IPC5R3
+    - name: PRCR
+      byte_offset: 260
+      description: DCMIPP parallel interface control register
+      fieldset: DCMIPP_PRCR
+    - name: PRESCR
+      byte_offset: 264
+      description: DCMIPP parallel interface embedded synchronization code register
+      fieldset: DCMIPP_PRESCR
+    - name: PRESUR
+      byte_offset: 268
+      description: DCMIPP parallel interface embedded synchronization unmask register
+      fieldset: DCMIPP_PRESUR
+    - name: PRIER
+      byte_offset: 500
+      description: DCMIPP parallel interface interrupt enable register
+      fieldset: DCMIPP_PRIER
+    - name: PRSR
+      byte_offset: 504
+      description: DCMIPP parallel interface status register
+      fieldset: DCMIPP_PRSR
+    - name: PRFCR
+      byte_offset: 508
+      description: DCMIPP parallel interface interrupt clear register
+      fieldset: DCMIPP_PRFCR
+    - name: CMHWCFGR
+      byte_offset: 512
+      description: DCMIPP common IP HW configuration register
+      fieldset: DCMIPP_CMHWCFGR
+    - name: CMCR
+      byte_offset: 516
+      description: DCMIPP common configuration register
+      fieldset: DCMIPP_CMCR
+    - name: CMFRCR
+      byte_offset: 520
+      description: DCMIPP common frame counter register
+      fieldset: DCMIPP_CMFRCR
+    - name: CMTPGCR1
+      byte_offset: 528
+      description: DCMIPP Pipe1 test pattern generator configuration register 1
+      fieldset: DCMIPP_CMTPGCR1
+    - name: CMTPGCR2
+      byte_offset: 532
+      description: DCMIPP Pipe1 test pattern generator configuration register 2
+      fieldset: DCMIPP_CMTPGCR2
+    - name: CMIER
+      byte_offset: 1008
+      description: DCMIPP common interrupt enable register
+      fieldset: DCMIPP_CMIER
+    - name: CMSR1
+      byte_offset: 1012
+      description: DCMIPP common status register 1
+      fieldset: DCMIPP_CMSR1
+    - name: CMSR2
+      byte_offset: 1016
+      description: DCMIPP common status register 2
+      fieldset: DCMIPP_CMSR2
+    - name: CMFCR
+      byte_offset: 1020
+      description: DCMIPP common interrupt clear register
+      fieldset: DCMIPP_CMFCR
+    - name: P0HWCFGR
+      byte_offset: 1024
+      description: DCMIPP Pipe0 HW configuration register
+      fieldset: DCMIPP_P0HWCFGR
+    - name: P0FSCR
+      byte_offset: 1028
+      description: DCMIPP Pipe0 flow selection configuration register
+      fieldset: DCMIPP_P0FSCR
+    - name: P0FCTCR
+      byte_offset: 1280
+      description: DCMIPP Pipe0 flow control configuration register
+      fieldset: DCMIPP_P0FCTCR
+    - name: P0SCSTR
+      byte_offset: 1284
+      description: DCMIPP Pipe0 statistic/crop start register
+      fieldset: DCMIPP_P0SCSTR
+    - name: P0SCSZR
+      byte_offset: 1288
+      description: DCMIPP Pipe0 statistic/crop size register
+      fieldset: DCMIPP_P0SCSZR
+    - name: P0DCCNTR
+      byte_offset: 1456
+      description: DCMIPP Pipe0 dump counter register
+      fieldset: DCMIPP_P0DCCNTR
+    - name: P0DCLMTR
+      byte_offset: 1460
+      description: DCMIPP Pipe0 dump limit register
+      fieldset: DCMIPP_P0DCLMTR
+    - name: P0PPCR
+      byte_offset: 1472
+      description: DCMIPP Pipe0 pixel packer configuration register
+      fieldset: DCMIPP_P0PPCR
+    - name: P0PPM0AR1
+      byte_offset: 1476
+      description: DCMIPP Pipe0 pixel packer Memory0 address register 1
+      fieldset: DCMIPP_P0PPM0AR1
+    - name: P0STM0AR
+      byte_offset: 1488
+      description: DCMIPP Pipe0 status Memory0 address register
+      fieldset: DCMIPP_P0STM0AR
+    - name: P0IER
+      byte_offset: 1524
+      description: DCMIPP Pipe0 interrupt enable register
+      fieldset: DCMIPP_P0IER
+    - name: P0SR
+      byte_offset: 1528
+      description: DCMIPP Pipe0 status register
+      fieldset: DCMIPP_P0SR
+    - name: P0FCR
+      byte_offset: 1532
+      description: DCMIPP Pipe0 interrupt clear register
+      fieldset: DCMIPP_P0FCR
+    - name: P0CFSCR
+      byte_offset: 1540
+      description: DCMIPP Pipe0 current flow selection configuration register
+      fieldset: DCMIPP_P0CFSCR
+    - name: P0CFCTCR
+      byte_offset: 1792
+      description: DCMIPP Pipe0 current flow control configuration register
+      fieldset: DCMIPP_P0CFCTCR
+    - name: P0CSCSTR
+      byte_offset: 1796
+      description: DCMIPP Pipe0 current statistic/crop start register
+      fieldset: DCMIPP_P0CSCSTR
+    - name: P0CSCSZR
+      byte_offset: 1800
+      description: DCMIPP Pipe0 current statistic/crop size register
+      fieldset: DCMIPP_P0CSCSZR
+    - name: P0CPPCR
+      byte_offset: 1984
+      description: DCMIPP Pipe0 current pixel packer configuration register
+      fieldset: DCMIPP_P0CPPCR
+    - name: P0CPPM0AR1
+      byte_offset: 1988
+      description: DCMIPP Pipe0 current pixel packer Memory0 address register 1
+      fieldset: DCMIPP_P0CPPM0AR1
+    - name: P1HWCFGR
+      byte_offset: 2048
+      description: DCMIPP Pipex HW configuration register
+      fieldset: DCMIPP_P1HWCFGR
+    - name: P1FSCR
+      byte_offset: 2052
+      description: DCMIPP Pipe1 flow selection configuration register
+      fieldset: DCMIPP_P1FSCR
+    - name: P1SRCR
+      byte_offset: 2080
+      description: DCMIPP Pipe1 stat removal configuration register
+      fieldset: DCMIPP_P1SRCR
+    - name: P1BPRCR
+      byte_offset: 2084
+      description: DCMIPP Pipe1 bad pixel removal control register
+      fieldset: DCMIPP_P1BPRCR
+    - name: P1BPRSR
+      byte_offset: 2088
+      description: DCMIPP Pipe1 bad pixel removal status register
+      fieldset: DCMIPP_P1BPRSR
+    - name: P1DECR
+      byte_offset: 2096
+      description: DCMIPP Pipe1 decimation register
+      fieldset: DCMIPP_P1DECR
+    - name: P1BLCCR
+      byte_offset: 2112
+      description: DCMIPP Pipe1 black level calibration control register
+      fieldset: DCMIPP_P1BLCCR
+    - name: P1EXCR1
+      byte_offset: 2116
+      description: DCMIPP Pipe1 exposure control register 1
+      fieldset: DCMIPP_P1EXCR1
+    - name: P1EXCR2
+      byte_offset: 2120
+      description: DCMIPP Pipe1 exposure control register 2
+      fieldset: DCMIPP_P1EXCR2
+    - name: P1ST1CR
+      byte_offset: 2128
+      description: DCMIPP Pipe1 statistics1 control register
+      fieldset: DCMIPP_P1ST1CR
+    - name: P1ST2CR
+      byte_offset: 2132
+      description: DCMIPP Pipe1 statistics 2 control register
+      fieldset: DCMIPP_P1ST2CR
+    - name: P1ST3CR
+      byte_offset: 2136
+      description: DCMIPP Pipe1 statistics 3 control register
+      fieldset: DCMIPP_P1ST3CR
+    - name: P1STSTR
+      byte_offset: 2140
+      description: DCMIPP Pipe1 statistics window start register
+      fieldset: DCMIPP_P1STSTR
+    - name: P1STSZR
+      byte_offset: 2144
+      description: DCMIPP Pipe1 statistics window size register
+      fieldset: DCMIPP_P1STSZR
+    - name: P1ST1SR
+      byte_offset: 2148
+      description: DCMIPP Pipe1 statistics 1 status register
+      fieldset: DCMIPP_P1ST1SR
+    - name: P1ST2SR
+      byte_offset: 2152
+      description: DCMIPP Pipe1 statistics 2 status register
+      fieldset: DCMIPP_P1ST2SR
+    - name: P1ST3SR
+      byte_offset: 2156
+      description: DCMIPP Pipe1 statistics 3 status register
+      fieldset: DCMIPP_P1ST3SR
+    - name: P1DMCR
+      byte_offset: 2160
+      description: DCMIPP Pipe1 demosaicing configuration register
+      fieldset: DCMIPP_P1DMCR
+    - name: P1CCCR
+      byte_offset: 2176
+      description: DCMIPP Pipe1 ColorConv configuration register
+      fieldset: DCMIPP_P1CCCR
+    - name: P1CCRR1
+      byte_offset: 2180
+      description: DCMIPP Pipe1 ColorConv red coefficient register 1
+      fieldset: DCMIPP_P1CCRR1
+    - name: P1CCRR2
+      byte_offset: 2184
+      description: DCMIPP Pipe1 ColorConv red coefficient register 2
+      fieldset: DCMIPP_P1CCRR2
+    - name: P1CCGR1
+      byte_offset: 2188
+      description: DCMIPP Pipe1 ColorConv green coefficient register 1
+      fieldset: DCMIPP_P1CCGR1
+    - name: P1CCGR2
+      byte_offset: 2192
+      description: DCMIPP Pipe1 ColorConv green coefficient register 2
+      fieldset: DCMIPP_P1CCGR2
+    - name: P1CCBR1
+      byte_offset: 2196
+      description: DCMIPP Pipex ColorConv blue coefficient register 1
+      fieldset: DCMIPP_P1CCBR1
+    - name: P1CCBR2
+      byte_offset: 2200
+      description: DCMIPP Pipe1 ColorConv blue coefficient register 2
+      fieldset: DCMIPP_P1CCBR2
+    - name: P1CTCR1
+      byte_offset: 2208
+      description: DCMIPP Pipe1 contrast control register 1
+      fieldset: DCMIPP_P1CTCR1
+    - name: P1CTCR2
+      byte_offset: 2212
+      description: DCMIPP Pipe1 contrast control register 2
+      fieldset: DCMIPP_P1CTCR2
+    - name: P1CTCR3
+      byte_offset: 2216
+      description: DCMIPP Pipe1 contrast control register 3
+      fieldset: DCMIPP_P1CTCR3
+    - name: P1FCTCR
+      byte_offset: 2304
+      description: DCMIPP Pipex flow control configuration register
+      fieldset: DCMIPP_P1FCTCR
+    - name: P1CRSTR
+      byte_offset: 2308
+      description: DCMIPP Pipex crop window start register
+      fieldset: DCMIPP_P1CRSTR
+    - name: P1CRSZR
+      byte_offset: 2312
+      description: DCMIPP Pipex crop window size register
+      fieldset: DCMIPP_P1CRSZR
+    - name: P1DCCR
+      byte_offset: 2316
+      description: DCMIPP Pipex decimation register
+      fieldset: DCMIPP_P1DCCR
+    - name: P1DSCR
+      byte_offset: 2320
+      description: DCMIPP Pipex downsize configuration register
+      fieldset: DCMIPP_P1DSCR
+    - name: P1DSRTIOR
+      byte_offset: 2324
+      description: DCMIPP Pipex downsize ratio register
+      fieldset: DCMIPP_P1DSRTIOR
+    - name: P1DSSZR
+      byte_offset: 2328
+      description: DCMIPP Pipex downsize destination size register
+      fieldset: DCMIPP_P1DSSZR
+    - name: P1GMCR
+      byte_offset: 2416
+      description: DCMIPP Pipex gamma configuration register
+      fieldset: DCMIPP_P1GMCR
+    - name: P1YUVCR
+      byte_offset: 2432
+      description: DCMIPP Pipe1 YUVConv configuration register
+      fieldset: DCMIPP_P1YUVCR
+    - name: P1YUVRR1
+      byte_offset: 2436
+      description: DCMIPP Pipe1 YUVConv red coefficient register 1
+      fieldset: DCMIPP_P1YUVRR1
+    - name: P1YUVRR2
+      byte_offset: 2440
+      description: DCMIPP Pipe1 YUVConv red coefficient register 2
+      fieldset: DCMIPP_P1YUVRR2
+    - name: P1YUVGR1
+      byte_offset: 2444
+      description: DCMIPP Pipe1 YUVConv green coefficient register 1
+      fieldset: DCMIPP_P1YUVGR1
+    - name: P1YUVGR2
+      byte_offset: 2448
+      description: DCMIPP Pipe1 YUVConv green coefficient register 2
+      fieldset: DCMIPP_P1YUVGR2
+    - name: P1YUVBR1
+      byte_offset: 2452
+      description: DCMIPP Pipe1 YUVConv blue coefficient register 1
+      fieldset: DCMIPP_P1YUVBR1
+    - name: P1YUVBR2
+      byte_offset: 2456
+      description: DCMIPP Pipe1 YUV blue coefficient register 2
+      fieldset: DCMIPP_P1YUVBR2
+    - name: P1PPCR
+      byte_offset: 2496
+      description: DCMIPP Pipe1 pixel packer configuration register
+      fieldset: DCMIPP_P1PPCR
+    - name: P1PPM0AR1
+      byte_offset: 2500
+      description: DCMIPP Pipe1 pixel packer Memory0 address register 1
+      fieldset: DCMIPP_P1PPM0AR1
+    - name: P1PPM0PR
+      byte_offset: 2508
+      description: DCMIPP Pipex pixel packer Memory0 pitch register
+      fieldset: DCMIPP_P1PPM0PR
+    - name: P1STM0AR
+      byte_offset: 2512
+      description: DCMIPP Pipex status Memory0 address register
+      fieldset: DCMIPP_P1STM0AR
+    - name: P1PPM1AR1
+      byte_offset: 2516
+      description: DCMIPP Pipex pixel packer Memory1 address register 1
+      fieldset: DCMIPP_P1PPM1AR1
+    - name: P1PPM1PR
+      byte_offset: 2524
+      description: DCMIPP Pipex pixel packer Memory1 pitch register
+      fieldset: DCMIPP_P1PPM1PR
+    - name: P1STM1AR
+      byte_offset: 2528
+      description: DCMIPP Pipex status Memory1 address register
+      fieldset: DCMIPP_P1STM1AR
+    - name: P1PPM2AR1
+      byte_offset: 2532
+      description: DCMIPP Pipex pixel packer memory2 address register 1
+      fieldset: DCMIPP_P1PPM2AR1
+    - name: P1STM2AR
+      byte_offset: 2544
+      description: DCMIPP Pipex status Memory2 address register
+      fieldset: DCMIPP_P1STM2AR
+    - name: P1IER
+      byte_offset: 2548
+      description: DCMIPP Pipe1 interrupt enable register
+      fieldset: DCMIPP_P1IER
+    - name: P1SR
+      byte_offset: 2552
+      description: DCMIPP Pipe1 status register
+      fieldset: DCMIPP_P1SR
+    - name: P1FCR
+      byte_offset: 2556
+      description: DCMIPP Pipe1 interrupt clear register
+      fieldset: DCMIPP_P1FCR
+    - name: P1CFSCR
+      byte_offset: 2564
+      description: DCMIPP Pipe1 current flow selection configuration register
+      fieldset: DCMIPP_P1CFSCR
+    - name: P1CBPRCR
+      byte_offset: 2596
+      description: DCMIPP Pipe1 current bad pixel removal register
+      fieldset: DCMIPP_P1CBPRCR
+    - name: P1CBLCCR
+      byte_offset: 2624
+      description: DCMIPP Pipe1 current black level calibration control register
+      fieldset: DCMIPP_P1CBLCCR
+    - name: P1CEXCR1
+      byte_offset: 2628
+      description: DCMIPP Pipe1 current exposure control register 1
+      fieldset: DCMIPP_P1CEXCR1
+    - name: P1CEXCR2
+      byte_offset: 2632
+      description: DCMIPP Pipe1 current exposure control register 2
+      fieldset: DCMIPP_P1CEXCR2
+    - name: P1CST1CR
+      byte_offset: 2640
+      description: DCMIPP Pipe1 current statistics 1 control register
+      fieldset: DCMIPP_P1CST1CR
+    - name: P1CST2CR
+      byte_offset: 2644
+      description: DCMIPP Pipe1 current statistics 2 control register
+      fieldset: DCMIPP_P1CST2CR
+    - name: P1CST3CR
+      byte_offset: 2648
+      description: DCMIPP Pipe1 current statistics 3 control register
+      fieldset: DCMIPP_P1CST3CR
+    - name: P1CSTSTR
+      byte_offset: 2652
+      description: DCMIPP Pipe1 current statistics window start register
+      fieldset: DCMIPP_P1CSTSTR
+    - name: P1CSTSZR
+      byte_offset: 2656
+      description: DCMIPP Pipe1 current statistics window size register
+      fieldset: DCMIPP_P1CSTSZR
+    - name: P1CCCCR
+      byte_offset: 2688
+      description: DCMIPP Pipe1 current ColorConv configuration register
+      fieldset: DCMIPP_P1CCCCR
+    - name: P1CCCRR1
+      byte_offset: 2692
+      description: DCMIPP Pipe1 current ColorConv red coefficient register 1
+      fieldset: DCMIPP_P1CCCRR1
+    - name: P1CCCRR2
+      byte_offset: 2696
+      description: DCMIPP Pipe1 current ColorConv red coefficient register 2
+      fieldset: DCMIPP_P1CCCRR2
+    - name: P1CCCGR1
+      byte_offset: 2700
+      description: DCMIPP Pipe1 current ColorConv green coefficient register 1
+      fieldset: DCMIPP_P1CCCGR1
+    - name: P1CCCGR2
+      byte_offset: 2704
+      description: DCMIPP Pipe1 current ColorConv green coefficient register 2
+      fieldset: DCMIPP_P1CCCGR2
+    - name: P1CCCBR1
+      byte_offset: 2708
+      description: DCMIPP Pipex current ColorConv blue coefficient register 1
+      fieldset: DCMIPP_P1CCCBR1
+    - name: P1CCCBR2
+      byte_offset: 2712
+      description: DCMIPP Pipe1 current ColorConv blue coefficient register 2
+      fieldset: DCMIPP_P1CCCBR2
+    - name: P1CCTCR1
+      byte_offset: 2720
+      description: DCMIPP Pipe1 current contrast control register 1
+      fieldset: DCMIPP_P1CCTCR1
+    - name: P1CCTCR2
+      byte_offset: 2724
+      description: DCMIPP Pipe1 current contrast control register 2
+      fieldset: DCMIPP_P1CCTCR2
+    - name: P1CCTCR3
+      byte_offset: 2728
+      description: DCMIPP Pipe1 current contrast control register 3
+      fieldset: DCMIPP_P1CCTCR3
+    - name: P1CFCTCR
+      byte_offset: 2816
+      description: DCMIPP Pipex current flow control configuration register
+      fieldset: DCMIPP_P1CFCTCR
+    - name: P1CCRSTR
+      byte_offset: 2820
+      description: DCMIPP Pipex current crop window start register
+      fieldset: DCMIPP_P1CCRSTR
+    - name: P1CCRSZR
+      byte_offset: 2824
+      description: DCMIPP Pipex current crop window size register
+      fieldset: DCMIPP_P1CCRSZR
+    - name: P1CDCCR
+      byte_offset: 2828
+      description: DCMIPP Pipex current decimation register
+      fieldset: DCMIPP_P1CDCCR
+    - name: P1CDSCR
+      byte_offset: 2832
+      description: DCMIPP Pipex current downsize configuration register
+      fieldset: DCMIPP_P1CDSCR
+    - name: P1CDSRTIOR
+      byte_offset: 2836
+      description: DCMIPP Pipex current downsize ratio register
+      fieldset: DCMIPP_P1CDSRTIOR
+    - name: P1CDSSZR
+      byte_offset: 2840
+      description: DCMIPP Pipex current downsize destination size register
+      fieldset: DCMIPP_P1CDSSZR
+    - name: P1CPPCR
+      byte_offset: 3008
+      description: DCMIPP Pipe1 current pixel packer configuration register
+      fieldset: DCMIPP_P1CPPCR
+    - name: P1CPPM0AR1
+      byte_offset: 3012
+      description: DCMIPP Pipe1 current pixel packer Memory0 address register 1
+      fieldset: DCMIPP_P1CPPM0AR1
+    - name: P1CPPM0PR
+      byte_offset: 3020
+      description: DCMIPP Pipex current pixel packer Memory0 pitch register
+      fieldset: DCMIPP_P1CPPM0PR
+    - name: P1CPPM1AR1
+      byte_offset: 3028
+      description: DCMIPP Pipex current pixel packer Memory1 address register 1
+      fieldset: DCMIPP_P1CPPM1AR1
+    - name: P1CPPM1PR
+      byte_offset: 3036
+      description: DCMIPP Pipex current pixel packer Memory1 pitch register
+      fieldset: DCMIPP_P1CPPM1PR
+    - name: P1CPPM2AR1
+      byte_offset: 3044
+      description: DCMIPP Pipex current pixel packer Memory2 address register 1
+      fieldset: DCMIPP_P1CPPM2AR1
+    - name: P2HWCFGR
+      byte_offset: 3072
+      description: DCMIPP Pipex HW configuration register
+      fieldset: DCMIPP_P2HWCFGR
+    - name: P2FSCR
+      byte_offset: 3076
+      description: DCMIPP Pipe2 flow selection configuration register
+      fieldset: DCMIPP_P2FSCR
+    - name: P2FCTCR
+      byte_offset: 3328
+      description: DCMIPP Pipex flow control configuration register
+      fieldset: DCMIPP_P2FCTCR
+    - name: P2CRSTR
+      byte_offset: 3332
+      description: DCMIPP Pipex crop window start register
+      fieldset: DCMIPP_P2CRSTR
+    - name: P2CRSZR
+      byte_offset: 3336
+      description: DCMIPP Pipex crop window size register
+      fieldset: DCMIPP_P2CRSZR
+    - name: P2DCCR
+      byte_offset: 3340
+      description: DCMIPP Pipex decimation register
+      fieldset: DCMIPP_P2DCCR
+    - name: P2DSCR
+      byte_offset: 3344
+      description: DCMIPP Pipex downsize configuration register
+      fieldset: DCMIPP_P2DSCR
+    - name: P2DSRTIOR
+      byte_offset: 3348
+      description: DCMIPP Pipex downsize ratio register
+      fieldset: DCMIPP_P2DSRTIOR
+    - name: P2DSSZR
+      byte_offset: 3352
+      description: DCMIPP Pipex downsize destination size register
+      fieldset: DCMIPP_P2DSSZR
+    - name: P2GMCR
+      byte_offset: 3440
+      description: DCMIPP Pipex gamma configuration register
+      fieldset: DCMIPP_P2GMCR
+    - name: P2PPCR
+      byte_offset: 3520
+      description: DCMIPP Pipe2 pixel packer configuration register
+      fieldset: DCMIPP_P2PPCR
+    - name: P2PPM0AR1
+      byte_offset: 3524
+      description: DCMIPP Pipe2 pixel packer Memory0 address register 1
+      fieldset: DCMIPP_P2PPM0AR1
+    - name: P2PPM0PR
+      byte_offset: 3532
+      description: DCMIPP Pipex pixel packer Memory0 pitch register
+      fieldset: DCMIPP_P2PPM0PR
+    - name: P2STM0AR
+      byte_offset: 3536
+      description: DCMIPP Pipex status Memory0 address register
+      fieldset: DCMIPP_P2STM0AR
+    - name: P2IER
+      byte_offset: 3572
+      description: DCMIPP Pipe2 interrupt enable register
+      fieldset: DCMIPP_P2IER
+    - name: P2SR
+      byte_offset: 3576
+      description: DCMIPP Pipe2 status register
+      fieldset: DCMIPP_P2SR
+    - name: P2FCR
+      byte_offset: 3580
+      description: DCMIPP Pipe2 interrupt clear register
+      fieldset: DCMIPP_P2FCR
+    - name: P2CFSCR
+      byte_offset: 3588
+      description: DCMIPP Pipe2 current flow selection configuration register
+      fieldset: DCMIPP_P2CFSCR
+    - name: P2CFCTCR
+      byte_offset: 3840
+      description: DCMIPP Pipex current flow control configuration register
+      fieldset: DCMIPP_P2CFCTCR
+    - name: P2CCRSTR
+      byte_offset: 3844
+      description: DCMIPP Pipex current crop window start register
+      fieldset: DCMIPP_P2CCRSTR
+    - name: P2CCRSZR
+      byte_offset: 3848
+      description: DCMIPP Pipex current crop window size register
+      fieldset: DCMIPP_P2CCRSZR
+    - name: P2CDCCR
+      byte_offset: 3852
+      description: DCMIPP Pipex current decimation register
+      fieldset: DCMIPP_P2CDCCR
+    - name: P2CDSCR
+      byte_offset: 3856
+      description: DCMIPP Pipex current downsize configuration register
+      fieldset: DCMIPP_P2CDSCR
+    - name: P2CDSRTIOR
+      byte_offset: 3860
+      description: DCMIPP Pipex current downsize ratio register
+      fieldset: DCMIPP_P2CDSRTIOR
+    - name: P2CDSSZR
+      byte_offset: 3864
+      description: DCMIPP Pipex current downsize destination size register
+      fieldset: DCMIPP_P2CDSSZR
+    - name: P2CPPCR
+      byte_offset: 4032
+      description: DCMIPP Pipe2 current pixel packer configuration register
+      fieldset: DCMIPP_P2CPPCR
+    - name: P2CPPM0AR1
+      byte_offset: 4036
+      description: DCMIPP Pipe2 current pixel packer Memory0 address register 1
+      fieldset: DCMIPP_P2CPPM0AR1
+    - name: P2CPPM0PR
+      byte_offset: 4044
+      description: DCMIPP Pipex current pixel packer Memory0 pitch register
+      fieldset: DCMIPP_P2CPPM0PR
+    - name: HWCFGR2
+      byte_offset: 4076
+      description: DCMIPP hardware configuration register 2
+      fieldset: DCMIPP_HWCFGR2
+    - name: HWCFGR1
+      byte_offset: 4080
+      description: DCMIPP hardware configuration register 1
+      fieldset: DCMIPP_HWCFGR1
+    - name: VERR
+      byte_offset: 4084
+      description: DCMIPP version register
+      fieldset: DCMIPP_VERR
+    - name: IPIDR
+      byte_offset: 4088
+      description: DCMIPP identification register
+      fieldset: DCMIPP_IPIDR
+    - name: SIDR
+      byte_offset: 4092
+      description: DCMIPP size identification register
+      fieldset: DCMIPP_SIDR
 fieldset/DCMIPP_IPGR1:
   description: ''
   fields:
-  - name: MEMORYPAGE
-    bit_offset: 0
-    bit_size: 3
-    description: 'Memory page size, as power of 2 of 64-byte units:'
+    - name: MEMORYPAGE
+      bit_offset: 0
+      bit_size: 3
+      description: 'Memory page size, as power of 2 of 64-byte units:'
 fieldset/DCMIPP_IPGR2:
   description: ''
   fields:
-  - name: PSTART
-    bit_offset: 0
-    bit_size: 1
-    description: Request to lock the IP-Plug, to allow reconfiguration
+    - name: PSTART
+      bit_offset: 0
+      bit_size: 1
+      description: Request to lock the IP-Plug, to allow reconfiguration
 fieldset/DCMIPP_IPGR3:
   description: ''
   fields:
-  - name: IDLE
-    bit_offset: 0
-    bit_size: 1
-    description: Status of IP-Plug
+    - name: IDLE
+      bit_offset: 0
+      bit_size: 1
+      description: Status of IP-Plug
 fieldset/DCMIPP_IPGR8:
   description: ''
   fields:
-  - name: DID
-    bit_offset: 0
-    bit_size: 6
-    description: Division identifier (0x14)
-  - name: REVID
-    bit_offset: 8
-    bit_size: 5
-    description: Revision identifier (0x03)
-  - name: ARCHIID
-    bit_offset: 16
-    bit_size: 5
-    description: Architecture identifier (0x04)
-  - name: IPPID
-    bit_offset: 24
-    bit_size: 8
-    description: IP identifier (0xAA)
+    - name: DID
+      bit_offset: 0
+      bit_size: 6
+      description: Division identifier (0x14)
+    - name: REVID
+      bit_offset: 8
+      bit_size: 5
+      description: Revision identifier (0x03)
+    - name: ARCHIID
+      bit_offset: 16
+      bit_size: 5
+      description: Architecture identifier (0x04)
+    - name: IPPID
+      bit_offset: 24
+      bit_size: 8
+      description: IP identifier (0xAA)
 fieldset/DCMIPP_IPC1R1:
   description: ''
   fields:
-  - name: TRAFFIC
-    bit_offset: 0
-    bit_size: 3
-    description: Burst size as power of 2 of 8 bytes units
-  - name: OTR
-    bit_offset: 8
-    bit_size: 4
-    description: 'max outstanding transactions:'
+    - name: TRAFFIC
+      bit_offset: 0
+      bit_size: 3
+      description: Burst size as power of 2 of 8 bytes units
+    - name: OTR
+      bit_offset: 8
+      bit_size: 4
+      description: 'max outstanding transactions:'
 fieldset/DCMIPP_IPC1R2:
   description: ''
   fields:
-  - name: SVCMAPPING
-    bit_offset: 8
-    bit_size: 4
-    description: Non-user, must be kept at reset value
-  - name: WLRU
-    bit_offset: 16
-    bit_size: 4
-    description: 'Ratio for WLRU[3:0] arbitration:'
+    - name: SVCMAPPING
+      bit_offset: 8
+      bit_size: 4
+      description: Non-user, must be kept at reset value
+    - name: WLRU
+      bit_offset: 16
+      bit_size: 4
+      description: 'Ratio for WLRU[3:0] arbitration:'
 fieldset/DCMIPP_IPC1R3:
   description: ''
   fields:
-  - name: DPREGSTART
-    bit_offset: 0
-    bit_size: 11
-    description: Start word (AXI width = 64 bits) of the FIFO of this client
-  - name: DPREGEND
-    bit_offset: 16
-    bit_size: 11
-    description: End word (AXI width = 64 bits) of the FIFO of this client
+    - name: DPREGSTART
+      bit_offset: 0
+      bit_size: 11
+      description: Start word (AXI width = 64 bits) of the FIFO of this client
+    - name: DPREGEND
+      bit_offset: 16
+      bit_size: 11
+      description: End word (AXI width = 64 bits) of the FIFO of this client
 fieldset/DCMIPP_IPC2R1:
   description: ''
   fields:
-  - name: TRAFFIC
-    bit_offset: 0
-    bit_size: 3
-    description: Burst size as power of 2 of 8 bytes units
-  - name: OTR
-    bit_offset: 8
-    bit_size: 4
-    description: 'max outstanding transactions:'
+    - name: TRAFFIC
+      bit_offset: 0
+      bit_size: 3
+      description: Burst size as power of 2 of 8 bytes units
+    - name: OTR
+      bit_offset: 8
+      bit_size: 4
+      description: 'max outstanding transactions:'
 fieldset/DCMIPP_IPC2R2:
   description: ''
   fields:
-  - name: SVCMAPPING
-    bit_offset: 8
-    bit_size: 4
-    description: Non-user, must be kept at reset value
-  - name: WLRU
-    bit_offset: 16
-    bit_size: 4
-    description: 'Ratio for WLRU[3:0] arbitration:'
+    - name: SVCMAPPING
+      bit_offset: 8
+      bit_size: 4
+      description: Non-user, must be kept at reset value
+    - name: WLRU
+      bit_offset: 16
+      bit_size: 4
+      description: 'Ratio for WLRU[3:0] arbitration:'
 fieldset/DCMIPP_IPC2R3:
   description: ''
   fields:
-  - name: DPREGSTART
-    bit_offset: 0
-    bit_size: 11
-    description: Start word (AXI width = 64 bits) of the FIFO of this client
-  - name: DPREGEND
-    bit_offset: 16
-    bit_size: 11
-    description: End word (AXI width = 64 bits) of the FIFO of this client
+    - name: DPREGSTART
+      bit_offset: 0
+      bit_size: 11
+      description: Start word (AXI width = 64 bits) of the FIFO of this client
+    - name: DPREGEND
+      bit_offset: 16
+      bit_size: 11
+      description: End word (AXI width = 64 bits) of the FIFO of this client
 fieldset/DCMIPP_IPC3R1:
   description: ''
   fields:
-  - name: TRAFFIC
-    bit_offset: 0
-    bit_size: 3
-    description: Burst size as power of 2 of 8 bytes units
-  - name: OTR
-    bit_offset: 8
-    bit_size: 4
-    description: 'max outstanding transactions:'
+    - name: TRAFFIC
+      bit_offset: 0
+      bit_size: 3
+      description: Burst size as power of 2 of 8 bytes units
+    - name: OTR
+      bit_offset: 8
+      bit_size: 4
+      description: 'max outstanding transactions:'
 fieldset/DCMIPP_IPC3R2:
   description: ''
   fields:
-  - name: SVCMAPPING
-    bit_offset: 8
-    bit_size: 4
-    description: Non-user, must be kept at reset value
-  - name: WLRU
-    bit_offset: 16
-    bit_size: 4
-    description: 'Ratio for WLRU[3:0] arbitration:'
+    - name: SVCMAPPING
+      bit_offset: 8
+      bit_size: 4
+      description: Non-user, must be kept at reset value
+    - name: WLRU
+      bit_offset: 16
+      bit_size: 4
+      description: 'Ratio for WLRU[3:0] arbitration:'
 fieldset/DCMIPP_IPC3R3:
   description: ''
   fields:
-  - name: DPREGSTART
-    bit_offset: 0
-    bit_size: 11
-    description: Start word (AXI width = 64 bits) of the FIFO of this client
-  - name: DPREGEND
-    bit_offset: 16
-    bit_size: 11
-    description: End word (AXI width = 64 bits) of the FIFO of this client
+    - name: DPREGSTART
+      bit_offset: 0
+      bit_size: 11
+      description: Start word (AXI width = 64 bits) of the FIFO of this client
+    - name: DPREGEND
+      bit_offset: 16
+      bit_size: 11
+      description: End word (AXI width = 64 bits) of the FIFO of this client
 fieldset/DCMIPP_IPC4R1:
   description: ''
   fields:
-  - name: TRAFFIC
-    bit_offset: 0
-    bit_size: 3
-    description: Burst size as power of 2 of 8 bytes units
-  - name: OTR
-    bit_offset: 8
-    bit_size: 4
-    description: 'max outstanding transactions:'
+    - name: TRAFFIC
+      bit_offset: 0
+      bit_size: 3
+      description: Burst size as power of 2 of 8 bytes units
+    - name: OTR
+      bit_offset: 8
+      bit_size: 4
+      description: 'max outstanding transactions:'
 fieldset/DCMIPP_IPC4R2:
   description: ''
   fields:
-  - name: SVCMAPPING
-    bit_offset: 8
-    bit_size: 4
-    description: Non-user, must be kept at reset value
-  - name: WLRU
-    bit_offset: 16
-    bit_size: 4
-    description: 'Ratio for WLRU[3:0] arbitration:'
+    - name: SVCMAPPING
+      bit_offset: 8
+      bit_size: 4
+      description: Non-user, must be kept at reset value
+    - name: WLRU
+      bit_offset: 16
+      bit_size: 4
+      description: 'Ratio for WLRU[3:0] arbitration:'
 fieldset/DCMIPP_IPC4R3:
   description: ''
   fields:
-  - name: DPREGSTART
-    bit_offset: 0
-    bit_size: 11
-    description: Start word (AXI width = 64 bits) of the FIFO of this client
-  - name: DPREGEND
-    bit_offset: 16
-    bit_size: 11
-    description: End word (AXI width = 64 bits) of the FIFO of this client
+    - name: DPREGSTART
+      bit_offset: 0
+      bit_size: 11
+      description: Start word (AXI width = 64 bits) of the FIFO of this client
+    - name: DPREGEND
+      bit_offset: 16
+      bit_size: 11
+      description: End word (AXI width = 64 bits) of the FIFO of this client
 fieldset/DCMIPP_IPC5R1:
   description: ''
   fields:
-  - name: TRAFFIC
-    bit_offset: 0
-    bit_size: 3
-    description: Burst size as power of 2 of 8 bytes units
-  - name: OTR
-    bit_offset: 8
-    bit_size: 4
-    description: 'max outstanding transactions:'
+    - name: TRAFFIC
+      bit_offset: 0
+      bit_size: 3
+      description: Burst size as power of 2 of 8 bytes units
+    - name: OTR
+      bit_offset: 8
+      bit_size: 4
+      description: 'max outstanding transactions:'
 fieldset/DCMIPP_IPC5R2:
   description: ''
   fields:
-  - name: SVCMAPPING
-    bit_offset: 8
-    bit_size: 4
-    description: Non-user, must be kept at reset value
-  - name: WLRU
-    bit_offset: 16
-    bit_size: 4
-    description: 'Ratio for WLRU[3:0] arbitration:'
+    - name: SVCMAPPING
+      bit_offset: 8
+      bit_size: 4
+      description: Non-user, must be kept at reset value
+    - name: WLRU
+      bit_offset: 16
+      bit_size: 4
+      description: 'Ratio for WLRU[3:0] arbitration:'
 fieldset/DCMIPP_IPC5R3:
   description: ''
   fields:
-  - name: DPREGSTART
-    bit_offset: 0
-    bit_size: 11
-    description: Start word (AXI width = 64 bits) of the FIFO of this client
-  - name: DPREGEND
-    bit_offset: 16
-    bit_size: 11
-    description: End word (AXI width = 64 bits) of the FIFO of this client
+    - name: DPREGSTART
+      bit_offset: 0
+      bit_size: 11
+      description: Start word (AXI width = 64 bits) of the FIFO of this client
+    - name: DPREGEND
+      bit_offset: 16
+      bit_size: 11
+      description: End word (AXI width = 64 bits) of the FIFO of this client
 fieldset/DCMIPP_PRCR:
   description: ''
   fields:
-  - name: ESS
-    bit_offset: 4
-    bit_size: 1
-    description: Embedded synchronization select
-  - name: PCKPOL
-    bit_offset: 5
-    bit_size: 1
-    description: Pixel clock polarity
-  - name: HSPOL
-    bit_offset: 6
-    bit_size: 1
-    description: Horizontal synchronization polarity
-  - name: VSPOL
-    bit_offset: 7
-    bit_size: 1
-    description: Vertical synchronization polarity
-  - name: EDM
-    bit_offset: 10
-    bit_size: 3
-    description: Extended data mode
-  - name: ENABLE
-    bit_offset: 14
-    bit_size: 1
-    description: Parallel interface enable
-  - name: FORMAT
-    bit_offset: 16
-    bit_size: 8
-    description: 'Other values: Data is captured and output as-is through the data/dump
-      pipeline only (e'
-  - name: SWAPCYCLES
-    bit_offset: 25
-    bit_size: 1
-    description: Swap data from cycle 0 vs
-  - name: SWAPBITS
-    bit_offset: 26
-    bit_size: 1
-    description: Swap LSB vs
+    - name: ESS
+      bit_offset: 4
+      bit_size: 1
+      description: Embedded synchronization select
+    - name: PCKPOL
+      bit_offset: 5
+      bit_size: 1
+      description: Pixel clock polarity
+    - name: HSPOL
+      bit_offset: 6
+      bit_size: 1
+      description: Horizontal synchronization polarity
+    - name: VSPOL
+      bit_offset: 7
+      bit_size: 1
+      description: Vertical synchronization polarity
+    - name: EDM
+      bit_offset: 10
+      bit_size: 3
+      description: Extended data mode
+    - name: ENABLE
+      bit_offset: 14
+      bit_size: 1
+      description: Parallel interface enable
+    - name: FORMAT
+      bit_offset: 16
+      bit_size: 8
+      description: 'Other values: Data is captured and output as-is through the data/dump
+        pipeline only (e'
+    - name: SWAPCYCLES
+      bit_offset: 25
+      bit_size: 1
+      description: Swap data from cycle 0 vs
+    - name: SWAPBITS
+      bit_offset: 26
+      bit_size: 1
+      description: Swap LSB vs
 fieldset/DCMIPP_PRESCR:
   description: ''
   fields:
-  - name: FSC
-    bit_offset: 0
-    bit_size: 8
-    description: Frame start delimiter code
-  - name: LSC
-    bit_offset: 8
-    bit_size: 8
-    description: Line start delimiter code
-  - name: LEC
-    bit_offset: 16
-    bit_size: 8
-    description: Line end delimiter code
-  - name: FEC
-    bit_offset: 24
-    bit_size: 8
-    description: Frame end delimiter code
+    - name: FSC
+      bit_offset: 0
+      bit_size: 8
+      description: Frame start delimiter code
+    - name: LSC
+      bit_offset: 8
+      bit_size: 8
+      description: Line start delimiter code
+    - name: LEC
+      bit_offset: 16
+      bit_size: 8
+      description: Line end delimiter code
+    - name: FEC
+      bit_offset: 24
+      bit_size: 8
+      description: Frame end delimiter code
 fieldset/DCMIPP_PRESUR:
   description: ''
   fields:
-  - name: FSU
-    bit_offset: 0
-    bit_size: 8
-    description: Frame start delimiter unmask
-  - name: LSU
-    bit_offset: 8
-    bit_size: 8
-    description: Line start delimiter unmask
-  - name: LEU
-    bit_offset: 16
-    bit_size: 8
-    description: Line end delimiter unmask
-  - name: FEU
-    bit_offset: 24
-    bit_size: 8
-    description: Frame end delimiter unmask
+    - name: FSU
+      bit_offset: 0
+      bit_size: 8
+      description: Frame start delimiter unmask
+    - name: LSU
+      bit_offset: 8
+      bit_size: 8
+      description: Line start delimiter unmask
+    - name: LEU
+      bit_offset: 16
+      bit_size: 8
+      description: Line end delimiter unmask
+    - name: FEU
+      bit_offset: 24
+      bit_size: 8
+      description: Frame end delimiter unmask
 fieldset/DCMIPP_PRIER:
   description: ''
   fields:
-  - name: ERRIE
-    bit_offset: 6
-    bit_size: 1
-    description: Synchronization error interrupt enable
+    - name: ERRIE
+      bit_offset: 6
+      bit_size: 1
+      description: Synchronization error interrupt enable
 fieldset/DCMIPP_PRSR:
   description: ''
   fields:
-  - name: ERRF
-    bit_offset: 6
-    bit_size: 1
-    description: Synchronization error raw interrupt status
-  - name: HSYNC
-    bit_offset: 16
-    bit_size: 1
-    description: This bit gives the state of the HSYNC pin with the correct programmed
-      polarity if the ENABLE bit is
-  - name: VSYNC
-    bit_offset: 17
-    bit_size: 1
-    description: This bit gives the state of the VSYNC pin with the correct programmed
-      polarity if the ENABLE bit is
+    - name: ERRF
+      bit_offset: 6
+      bit_size: 1
+      description: Synchronization error raw interrupt status
+    - name: HSYNC
+      bit_offset: 16
+      bit_size: 1
+      description: This bit gives the state of the HSYNC pin with the correct programmed
+        polarity if the ENABLE bit is
+    - name: VSYNC
+      bit_offset: 17
+      bit_size: 1
+      description: This bit gives the state of the VSYNC pin with the correct programmed
+        polarity if the ENABLE bit is
 fieldset/DCMIPP_PRFCR:
   description: ''
   fields:
-  - name: CERRF
-    bit_offset: 6
-    bit_size: 1
-    description: Synchronization error interrupt status clear
+    - name: CERRF
+      bit_offset: 6
+      bit_size: 1
+      description: Synchronization error interrupt status clear
 fieldset/DCMIPP_CMHWCFGR:
   description: ''
   fields:
-  - name: CPIPES
-    bit_offset: 2
-    bit_size: 2
-    description: Amount of instantiated pipes (either dump or pixel pipes)
-  - name: CPAR
-    bit_offset: 4
-    bit_size: 1
-    description: 'Presence of the parallel interface:'
-  - name: CCSI
-    bit_offset: 5
-    bit_size: 1
-    description: 'Presence of the CSI-2 host interface:'
+    - name: CPIPES
+      bit_offset: 2
+      bit_size: 2
+      description: Amount of instantiated pipes (either dump or pixel pipes)
+    - name: CPAR
+      bit_offset: 4
+      bit_size: 1
+      description: 'Presence of the parallel interface:'
+    - name: CCSI
+      bit_offset: 5
+      bit_size: 1
+      description: 'Presence of the CSI-2 host interface:'
 fieldset/DCMIPP_CMCR:
   description: ''
   fields:
-  - name: INSEL
-    bit_offset: 0
-    bit_size: 1
-    description: input selection
-  - name: PSFC
-    bit_offset: 1
-    bit_size: 2
-    description: Pipe selection for the frame counter
-  - name: CFC
-    bit_offset: 4
-    bit_size: 1
-    description: Clear frame counter
-  - name: FCRS
-    bit_offset: 5
-    bit_size: 2
-    description: Frame counter reset selection
-  - name: SWAPRB
-    bit_offset: 7
-    bit_size: 1
-    description: Swap R/U and B/V
+    - name: INSEL
+      bit_offset: 0
+      bit_size: 1
+      description: input selection
+    - name: PSFC
+      bit_offset: 1
+      bit_size: 2
+      description: Pipe selection for the frame counter
+    - name: CFC
+      bit_offset: 4
+      bit_size: 1
+      description: Clear frame counter
+    - name: FCRS
+      bit_offset: 5
+      bit_size: 2
+      description: Frame counter reset selection
+    - name: SWAPRB
+      bit_offset: 7
+      bit_size: 1
+      description: Swap R/U and B/V
 fieldset/DCMIPP_CMFRCR:
   description: ''
   fields:
-  - name: FRMCNT
-    bit_offset: 0
-    bit_size: 32
-    description: Frame counter, read-only, loops around
+    - name: FRMCNT
+      bit_offset: 0
+      bit_size: 32
+      description: Frame counter, read-only, loops around
 fieldset/DCMIPP_CMTPGCR1:
   description: ''
   fields:
-  - name: WIDTH
-    bit_offset: 0
-    bit_size: 14
-    description: Width of the visible pixels of the generated frame, with a maximum
-      of 16383
-  - name: HEIGHT
-    bit_offset: 16
-    bit_size: 14
-    description: Height of the visible pixels of the generated frame, with a maximum
-      of 16383
+    - name: WIDTH
+      bit_offset: 0
+      bit_size: 14
+      description: Width of the visible pixels of the generated frame, with a maximum
+        of 16383
+    - name: HEIGHT
+      bit_offset: 16
+      bit_size: 14
+      description: Height of the visible pixels of the generated frame, with a maximum
+        of 16383
 fieldset/DCMIPP_CMTPGCR2:
   description: ''
   fields:
-  - name: TPGEN
-    bit_offset: 0
-    bit_size: 1
-    description: 'Test pattern generator enable:'
-  - name: LFLEN
-    bit_offset: 1
-    bit_size: 1
-    description: 'Lifeline enable:'
-  - name: GSEN
-    bit_offset: 2
-    bit_size: 1
-    description: 'Greyscale enable:'
-  - name: PATTERN
-    bit_offset: 3
-    bit_size: 1
-    description: 'Pattern selection, between Color Bars and Color Squares:'
-  - name: YT
-    bit_offset: 4
-    bit_size: 2
-    description: YUV type, indicating whether the YUV is defined as CCIR601 or 709,
-      and whether its dynamic is full
-  - name: RT
-    bit_offset: 6
-    bit_size: 2
-    description: Rawbayer type, indicating the sequence of the R,G,G,B components
-  - name: FORMAT
-    bit_offset: 8
-    bit_size: 8
-    description: 'Pixel format generated:'
-  - name: VBL
-    bit_offset: 16
-    bit_size: 16
-    description: Amount of lines of the vertical blanking
+    - name: TPGEN
+      bit_offset: 0
+      bit_size: 1
+      description: 'Test pattern generator enable:'
+    - name: LFLEN
+      bit_offset: 1
+      bit_size: 1
+      description: 'Lifeline enable:'
+    - name: GSEN
+      bit_offset: 2
+      bit_size: 1
+      description: 'Greyscale enable:'
+    - name: PATTERN
+      bit_offset: 3
+      bit_size: 1
+      description: 'Pattern selection, between Color Bars and Color Squares:'
+    - name: YT
+      bit_offset: 4
+      bit_size: 2
+      description: YUV type, indicating whether the YUV is defined as CCIR601 or 709,
+        and whether its dynamic is full
+    - name: RT
+      bit_offset: 6
+      bit_size: 2
+      description: Rawbayer type, indicating the sequence of the R,G,G,B components
+    - name: FORMAT
+      bit_offset: 8
+      bit_size: 8
+      description: 'Pixel format generated:'
+    - name: VBL
+      bit_offset: 16
+      bit_size: 16
+      description: Amount of lines of the vertical blanking
 fieldset/DCMIPP_CMIER:
   description: ''
   fields:
-  - name: ATXERRIE
-    bit_offset: 5
-    bit_size: 1
-    description: AXI Transfer error interrupt enable for IPPLUG
-  - name: PRERRIE
-    bit_offset: 6
-    bit_size: 1
-    description: limit interrupt enable for the Parallel Interface
-  - name: P0LINEIE
-    bit_offset: 8
-    bit_size: 1
-    description: multi-Line Capture complete interrupt enable for the Pipe0
-  - name: P0FRAMEIE
-    bit_offset: 9
-    bit_size: 1
-    description: Frame Capture complete interrupt enable for the Pipe0
-  - name: P0VSYNCIE
-    bit_offset: 10
-    bit_size: 1
-    description: Vertical sync interrupt enable for the Pipe0
-  - name: P0LIMITIE
-    bit_offset: 14
-    bit_size: 1
-    description: limit interrupt enable for the Pipe0
-  - name: P0OVRIE
-    bit_offset: 15
-    bit_size: 1
-    description: Overrun interrupt enable for the Pipe0
-  - name: P1LINEIE
-    bit_offset: 16
-    bit_size: 1
-    description: multi-Line Capture complete interrupt status clear for the Pipe1
-  - name: P1FRAMEIE
-    bit_offset: 17
-    bit_size: 1
-    description: Frame Capture complete interrupt enable for the Pipe1
-  - name: P1VSYNCIE
-    bit_offset: 18
-    bit_size: 1
-    description: Vertical sync interrupt enable for the Pipe1
-  - name: P1OVRIE
-    bit_offset: 23
-    bit_size: 1
-    description: Overrun interrupt enable for the Pipe1
-  - name: P2LINEIE
-    bit_offset: 24
-    bit_size: 1
-    description: multi-Line Capture complete interrupt enable for the Pipe2
-  - name: P2FRAMEIE
-    bit_offset: 25
-    bit_size: 1
-    description: Frame Capture complete interrupt enable for the Pipe2
-  - name: P2VSYNCIE
-    bit_offset: 26
-    bit_size: 1
-    description: Vertical sync interrupt enable for the Pipe2
-  - name: P2OVRIE
-    bit_offset: 31
-    bit_size: 1
-    description: Overrun interrupt status enable for the Pipe2
+    - name: ATXERRIE
+      bit_offset: 5
+      bit_size: 1
+      description: AXI Transfer error interrupt enable for IPPLUG
+    - name: PRERRIE
+      bit_offset: 6
+      bit_size: 1
+      description: limit interrupt enable for the Parallel Interface
+    - name: P0LINEIE
+      bit_offset: 8
+      bit_size: 1
+      description: multi-Line Capture complete interrupt enable for the Pipe0
+    - name: P0FRAMEIE
+      bit_offset: 9
+      bit_size: 1
+      description: Frame Capture complete interrupt enable for the Pipe0
+    - name: P0VSYNCIE
+      bit_offset: 10
+      bit_size: 1
+      description: Vertical sync interrupt enable for the Pipe0
+    - name: P0LIMITIE
+      bit_offset: 14
+      bit_size: 1
+      description: limit interrupt enable for the Pipe0
+    - name: P0OVRIE
+      bit_offset: 15
+      bit_size: 1
+      description: Overrun interrupt enable for the Pipe0
+    - name: P1LINEIE
+      bit_offset: 16
+      bit_size: 1
+      description: multi-Line Capture complete interrupt status clear for the Pipe1
+    - name: P1FRAMEIE
+      bit_offset: 17
+      bit_size: 1
+      description: Frame Capture complete interrupt enable for the Pipe1
+    - name: P1VSYNCIE
+      bit_offset: 18
+      bit_size: 1
+      description: Vertical sync interrupt enable for the Pipe1
+    - name: P1OVRIE
+      bit_offset: 23
+      bit_size: 1
+      description: Overrun interrupt enable for the Pipe1
+    - name: P2LINEIE
+      bit_offset: 24
+      bit_size: 1
+      description: multi-Line Capture complete interrupt enable for the Pipe2
+    - name: P2FRAMEIE
+      bit_offset: 25
+      bit_size: 1
+      description: Frame Capture complete interrupt enable for the Pipe2
+    - name: P2VSYNCIE
+      bit_offset: 26
+      bit_size: 1
+      description: Vertical sync interrupt enable for the Pipe2
+    - name: P2OVRIE
+      bit_offset: 31
+      bit_size: 1
+      description: Overrun interrupt status enable for the Pipe2
 fieldset/DCMIPP_CMSR1:
   description: ''
   fields:
-  - name: PRHSYNC
-    bit_offset: 0
-    bit_size: 1
-    description: This bit gives the state of the HSYNC pin with the correct programmed
-      polarity on the parallel inte
-  - name: PRVSYNC
-    bit_offset: 1
-    bit_size: 1
-    description: This bit gives the state of the VSYNC pin with the correct programmed
-      polarity on the parallel inte
-  - name: P0LSTLINE
-    bit_offset: 8
-    bit_size: 1
-    description: Last Line LSB bit, sampled at Frame capture complete event for Pipe0
-  - name: P0LSTFRM
-    bit_offset: 9
-    bit_size: 1
-    description: Last frame LSB bit, sampled at Frame capture complete event for Pipe0
-  - name: P0LSTVCID
-    bit_offset: 10
-    bit_size: 2
-    description: Last VCID, sampled at Frame capture complete event for Pipe0
-  - name: P0CPTACT
-    bit_offset: 15
-    bit_size: 1
-    description: Active frame capture (active from start-of-frame to frame complete)
-      for Pipe0
-  - name: P1LSTLINE
-    bit_offset: 16
-    bit_size: 1
-    description: Last Line LSB bit, sampled at Frame capture complete event for Pipe1
-  - name: P1LSTFRM
-    bit_offset: 17
-    bit_size: 1
-    description: Last frame LSB bit, sampled at frame capture complete event for Pipe1
-  - name: P1LSTVCID
-    bit_offset: 18
-    bit_size: 2
-    description: Last VCID, sampled at frame capture complete event for Pipe1
-  - name: P1CPTACT
-    bit_offset: 23
-    bit_size: 1
-    description: Active frame capture (active from start-of-frame to frame complete)
-      for Pipe1
-  - name: P2LSTLINE
-    bit_offset: 24
-    bit_size: 1
-    description: Last line LSB bit, sampled at Frame capture complete event for Pipe2
-  - name: P2LSTFRM
-    bit_offset: 25
-    bit_size: 1
-    description: Last frame LSB bit, sampled at frame capture complete event for Pipe2
-  - name: P2LSTVCID
-    bit_offset: 26
-    bit_size: 2
-    description: Last VCID, sampled at frame capture complete event for Pipe2
-  - name: P2CPTACT
-    bit_offset: 31
-    bit_size: 1
-    description: Active frame capture (active from start-of-frame to frame complete)
-      for Pipe2
+    - name: PRHSYNC
+      bit_offset: 0
+      bit_size: 1
+      description: This bit gives the state of the HSYNC pin with the correct programmed
+        polarity on the parallel inte
+    - name: PRVSYNC
+      bit_offset: 1
+      bit_size: 1
+      description: This bit gives the state of the VSYNC pin with the correct programmed
+        polarity on the parallel inte
+    - name: P0LSTLINE
+      bit_offset: 8
+      bit_size: 1
+      description: Last Line LSB bit, sampled at Frame capture complete event for Pipe0
+    - name: P0LSTFRM
+      bit_offset: 9
+      bit_size: 1
+      description: Last frame LSB bit, sampled at Frame capture complete event for Pipe0
+    - name: P0LSTVCID
+      bit_offset: 10
+      bit_size: 2
+      description: Last VCID, sampled at Frame capture complete event for Pipe0
+    - name: P0CPTACT
+      bit_offset: 15
+      bit_size: 1
+      description: Active frame capture (active from start-of-frame to frame complete)
+        for Pipe0
+    - name: P1LSTLINE
+      bit_offset: 16
+      bit_size: 1
+      description: Last Line LSB bit, sampled at Frame capture complete event for Pipe1
+    - name: P1LSTFRM
+      bit_offset: 17
+      bit_size: 1
+      description: Last frame LSB bit, sampled at frame capture complete event for Pipe1
+    - name: P1LSTVCID
+      bit_offset: 18
+      bit_size: 2
+      description: Last VCID, sampled at frame capture complete event for Pipe1
+    - name: P1CPTACT
+      bit_offset: 23
+      bit_size: 1
+      description: Active frame capture (active from start-of-frame to frame complete)
+        for Pipe1
+    - name: P2LSTLINE
+      bit_offset: 24
+      bit_size: 1
+      description: Last line LSB bit, sampled at Frame capture complete event for Pipe2
+    - name: P2LSTFRM
+      bit_offset: 25
+      bit_size: 1
+      description: Last frame LSB bit, sampled at frame capture complete event for Pipe2
+    - name: P2LSTVCID
+      bit_offset: 26
+      bit_size: 2
+      description: Last VCID, sampled at frame capture complete event for Pipe2
+    - name: P2CPTACT
+      bit_offset: 31
+      bit_size: 1
+      description: Active frame capture (active from start-of-frame to frame complete)
+        for Pipe2
 fieldset/DCMIPP_CMSR2:
   description: ''
   fields:
-  - name: ATXERRF
-    bit_offset: 5
-    bit_size: 1
-    description: AXI transfer error interrupt status flag for the IPPLUG
-  - name: PRERRF
-    bit_offset: 6
-    bit_size: 1
-    description: Synchronization error raw interrupt status for the parallel interface
-  - name: P0LINEF
-    bit_offset: 8
-    bit_size: 1
-    description: Multi-line capture completed raw interrupt status for Pipe0
-  - name: P0FRAMEF
-    bit_offset: 9
-    bit_size: 1
-    description: Frame capture completed raw interrupt status for Pipe0
-  - name: P0VSYNCF
-    bit_offset: 10
-    bit_size: 1
-    description: VSYNC raw interrupt status for Pipe0
-  - name: P0LIMITF
-    bit_offset: 14
-    bit_size: 1
-    description: Limit raw interrupt status for Pipe0
-  - name: P0OVRF
-    bit_offset: 15
-    bit_size: 1
-    description: Overrun raw interrupt status for Pipe0
-  - name: P1LINEF
-    bit_offset: 16
-    bit_size: 1
-    description: Multi-line capture completed raw interrupt status for Pipe1
-  - name: P1FRAMEF
-    bit_offset: 17
-    bit_size: 1
-    description: Frame capture completed raw interrupt status for Pipe1
-  - name: P1VSYNCF
-    bit_offset: 18
-    bit_size: 1
-    description: VSYNC raw interrupt status for Pipe1
-  - name: P1OVRF
-    bit_offset: 23
-    bit_size: 1
-    description: Overrun raw interrupt status for Pipe1
-  - name: P2LINEF
-    bit_offset: 24
-    bit_size: 1
-    description: Multi-line capture completed raw interrupt status for Pipe2
-  - name: P2FRAMEF
-    bit_offset: 25
-    bit_size: 1
-    description: Frame capture completed raw interrupt status for Pipe2
-  - name: P2VSYNCF
-    bit_offset: 26
-    bit_size: 1
-    description: VSYNC raw interrupt status for Pipe2
-  - name: P2OVRF
-    bit_offset: 31
-    bit_size: 1
-    description: Overrun raw interrupt status for Pipe2
+    - name: ATXERRF
+      bit_offset: 5
+      bit_size: 1
+      description: AXI transfer error interrupt status flag for the IPPLUG
+    - name: PRERRF
+      bit_offset: 6
+      bit_size: 1
+      description: Synchronization error raw interrupt status for the parallel interface
+    - name: P0LINEF
+      bit_offset: 8
+      bit_size: 1
+      description: Multi-line capture completed raw interrupt status for Pipe0
+    - name: P0FRAMEF
+      bit_offset: 9
+      bit_size: 1
+      description: Frame capture completed raw interrupt status for Pipe0
+    - name: P0VSYNCF
+      bit_offset: 10
+      bit_size: 1
+      description: VSYNC raw interrupt status for Pipe0
+    - name: P0LIMITF
+      bit_offset: 14
+      bit_size: 1
+      description: Limit raw interrupt status for Pipe0
+    - name: P0OVRF
+      bit_offset: 15
+      bit_size: 1
+      description: Overrun raw interrupt status for Pipe0
+    - name: P1LINEF
+      bit_offset: 16
+      bit_size: 1
+      description: Multi-line capture completed raw interrupt status for Pipe1
+    - name: P1FRAMEF
+      bit_offset: 17
+      bit_size: 1
+      description: Frame capture completed raw interrupt status for Pipe1
+    - name: P1VSYNCF
+      bit_offset: 18
+      bit_size: 1
+      description: VSYNC raw interrupt status for Pipe1
+    - name: P1OVRF
+      bit_offset: 23
+      bit_size: 1
+      description: Overrun raw interrupt status for Pipe1
+    - name: P2LINEF
+      bit_offset: 24
+      bit_size: 1
+      description: Multi-line capture completed raw interrupt status for Pipe2
+    - name: P2FRAMEF
+      bit_offset: 25
+      bit_size: 1
+      description: Frame capture completed raw interrupt status for Pipe2
+    - name: P2VSYNCF
+      bit_offset: 26
+      bit_size: 1
+      description: VSYNC raw interrupt status for Pipe2
+    - name: P2OVRF
+      bit_offset: 31
+      bit_size: 1
+      description: Overrun raw interrupt status for Pipe2
 fieldset/DCMIPP_CMFCR:
   description: ''
   fields:
-  - name: CATXERRF
-    bit_offset: 5
-    bit_size: 1
-    description: AXI Transfer error interrupt status clear
-  - name: CPRERRF
-    bit_offset: 6
-    bit_size: 1
-    description: Synchronization error interrupt status clear
-  - name: CP0LINEF
-    bit_offset: 8
-    bit_size: 1
-    description: Multi-line capture complete interrupt status clear
-  - name: CP0FRAMEF
-    bit_offset: 9
-    bit_size: 1
-    description: Frame capture complete interrupt status clear
-  - name: CP0VSYNCF
-    bit_offset: 10
-    bit_size: 1
-    description: Vertical synchronization interrupt status clear
-  - name: CP0LIMITF
-    bit_offset: 14
-    bit_size: 1
-    description: limit interrupt status clear
-  - name: CP0OVRF
-    bit_offset: 15
-    bit_size: 1
-    description: Overrun interrupt status clear
-  - name: CP1LINEF
-    bit_offset: 16
-    bit_size: 1
-    description: Multi-line capture complete interrupt status clear
-  - name: CP1FRAMEF
-    bit_offset: 17
-    bit_size: 1
-    description: Frame capture complete interrupt status clear
-  - name: CP1VSYNCF
-    bit_offset: 18
-    bit_size: 1
-    description: Vertical synchronization interrupt status clear
-  - name: CP1OVRF
-    bit_offset: 23
-    bit_size: 1
-    description: Overrun interrupt status clear
-  - name: CP2LINEF
-    bit_offset: 24
-    bit_size: 1
-    description: Multi-line capture complete interrupt status clear
-  - name: CP2FRAMEF
-    bit_offset: 25
-    bit_size: 1
-    description: Frame capture complete interrupt status clear
-  - name: CP2VSYNCF
-    bit_offset: 26
-    bit_size: 1
-    description: Vertical synchronization interrupt status clear
-  - name: CP2OVRF
-    bit_offset: 31
-    bit_size: 1
-    description: Overrun interrupt status clear
+    - name: CATXERRF
+      bit_offset: 5
+      bit_size: 1
+      description: AXI Transfer error interrupt status clear
+    - name: CPRERRF
+      bit_offset: 6
+      bit_size: 1
+      description: Synchronization error interrupt status clear
+    - name: CP0LINEF
+      bit_offset: 8
+      bit_size: 1
+      description: Multi-line capture complete interrupt status clear
+    - name: CP0FRAMEF
+      bit_offset: 9
+      bit_size: 1
+      description: Frame capture complete interrupt status clear
+    - name: CP0VSYNCF
+      bit_offset: 10
+      bit_size: 1
+      description: Vertical synchronization interrupt status clear
+    - name: CP0LIMITF
+      bit_offset: 14
+      bit_size: 1
+      description: limit interrupt status clear
+    - name: CP0OVRF
+      bit_offset: 15
+      bit_size: 1
+      description: Overrun interrupt status clear
+    - name: CP1LINEF
+      bit_offset: 16
+      bit_size: 1
+      description: Multi-line capture complete interrupt status clear
+    - name: CP1FRAMEF
+      bit_offset: 17
+      bit_size: 1
+      description: Frame capture complete interrupt status clear
+    - name: CP1VSYNCF
+      bit_offset: 18
+      bit_size: 1
+      description: Vertical synchronization interrupt status clear
+    - name: CP1OVRF
+      bit_offset: 23
+      bit_size: 1
+      description: Overrun interrupt status clear
+    - name: CP2LINEF
+      bit_offset: 24
+      bit_size: 1
+      description: Multi-line capture complete interrupt status clear
+    - name: CP2FRAMEF
+      bit_offset: 25
+      bit_size: 1
+      description: Frame capture complete interrupt status clear
+    - name: CP2VSYNCF
+      bit_offset: 26
+      bit_size: 1
+      description: Vertical synchronization interrupt status clear
+    - name: CP2OVRF
+      bit_offset: 31
+      bit_size: 1
+      description: Overrun interrupt status clear
 fieldset/DCMIPP_P0HWCFGR:
   description: ''
   fields:
-  - name: CPLA
-    bit_offset: 0
-    bit_size: 2
-    description: Capability for planar buffers
-  - name: CDS
-    bit_offset: 2
-    bit_size: 1
-    description: Capability for downsize filter
-  - name: DBM
-    bit_offset: 3
-    bit_size: 1
-    description: Double buffer mode
-  - name: CRB
-    bit_offset: 4
-    bit_size: 2
-    description: Capability for demosaicing
-  - name: CGM
-    bit_offset: 6
-    bit_size: 2
-    description: Capability for gamma conversions
-  - name: CROI
-    bit_offset: 8
-    bit_size: 4
-    description: 'Capability for ROI: defines the number of ROI in the pipe'
-  - name: CVP
-    bit_offset: 13
-    bit_size: 1
-    description: Capability for virtual pipeline virtualization
+    - name: CPLA
+      bit_offset: 0
+      bit_size: 2
+      description: Capability for planar buffers
+    - name: CDS
+      bit_offset: 2
+      bit_size: 1
+      description: Capability for downsize filter
+    - name: DBM
+      bit_offset: 3
+      bit_size: 1
+      description: Double buffer mode
+    - name: CRB
+      bit_offset: 4
+      bit_size: 2
+      description: Capability for demosaicing
+    - name: CGM
+      bit_offset: 6
+      bit_size: 2
+      description: Capability for gamma conversions
+    - name: CROI
+      bit_offset: 8
+      bit_size: 4
+      description: 'Capability for ROI: defines the number of ROI in the pipe'
+    - name: CVP
+      bit_offset: 13
+      bit_size: 1
+      description: Capability for virtual pipeline virtualization
 fieldset/DCMIPP_P0FSCR:
   description: ''
   fields:
-  - name: DTIDA
-    bit_offset: 0
-    bit_size: 6
-    description: Data type selection ID A
-  - name: DTIDB
-    bit_offset: 8
-    bit_size: 6
-    description: Data type selection ID B
-  - name: DTMODE
-    bit_offset: 16
-    bit_size: 2
-    description: Flow selection mode
-  - name: VC
-    bit_offset: 19
-    bit_size: 2
-    description: Flow selection mode
-  - name: PIPEN
-    bit_offset: 31
-    bit_size: 1
-    description: Activation of PipeN
+    - name: DTIDA
+      bit_offset: 0
+      bit_size: 6
+      description: Data type selection ID A
+    - name: DTIDB
+      bit_offset: 8
+      bit_size: 6
+      description: Data type selection ID B
+    - name: DTMODE
+      bit_offset: 16
+      bit_size: 2
+      description: Flow selection mode
+    - name: VC
+      bit_offset: 19
+      bit_size: 2
+      description: Flow selection mode
+    - name: PIPEN
+      bit_offset: 31
+      bit_size: 1
+      description: Activation of PipeN
 fieldset/DCMIPP_P0FCTCR:
   description: ''
   fields:
-  - name: FRATE
-    bit_offset: 0
-    bit_size: 2
-    description: Frame capture rate control
-  - name: CPTMODE
-    bit_offset: 2
-    bit_size: 1
-    description: Capture mode
-  - name: CPTREQ
-    bit_offset: 3
-    bit_size: 1
-    description: Capture requested
+    - name: FRATE
+      bit_offset: 0
+      bit_size: 2
+      description: Frame capture rate control
+    - name: CPTMODE
+      bit_offset: 2
+      bit_size: 1
+      description: Capture mode
+    - name: CPTREQ
+      bit_offset: 3
+      bit_size: 1
+      description: Capture requested
 fieldset/DCMIPP_P0SCSTR:
   description: ''
   fields:
-  - name: HSTART
-    bit_offset: 0
-    bit_size: 12
-    description: Horizontal start, from 0 to 4094 words wide
-  - name: VSTART
-    bit_offset: 16
-    bit_size: 12
-    description: Vertical start, from 0 to 4094 pixels high
+    - name: HSTART
+      bit_offset: 0
+      bit_size: 12
+      description: Horizontal start, from 0 to 4094 words wide
+    - name: VSTART
+      bit_offset: 16
+      bit_size: 12
+      description: Vertical start, from 0 to 4094 pixels high
 fieldset/DCMIPP_P0SCSZR:
   description: ''
   fields:
-  - name: HSIZE
-    bit_offset: 0
-    bit_size: 12
-    description: Horizontal size, from 0 to 4094 word wide (data 32-bit)
-  - name: VSIZE
-    bit_offset: 16
-    bit_size: 12
-    description: Vertical size, from 0 to 4094 pixels high
-  - name: POSNEG
-    bit_offset: 30
-    bit_size: 1
-    description: This bit is set and cleared by software
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
-    description: This bit is set and cleared by software
+    - name: HSIZE
+      bit_offset: 0
+      bit_size: 12
+      description: Horizontal size, from 0 to 4094 word wide (data 32-bit)
+    - name: VSIZE
+      bit_offset: 16
+      bit_size: 12
+      description: Vertical size, from 0 to 4094 pixels high
+    - name: POSNEG
+      bit_offset: 30
+      bit_size: 1
+      description: This bit is set and cleared by software
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
+      description: This bit is set and cleared by software
 fieldset/DCMIPP_P0DCCNTR:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 26
-    description: Number of data dumped during the frame
+    - name: CNT
+      bit_offset: 0
+      bit_size: 26
+      description: Number of data dumped during the frame
 fieldset/DCMIPP_P0DCLMTR:
   description: ''
   fields:
-  - name: LIMIT
-    bit_offset: 0
-    bit_size: 24
-    description: Maximum number of 32-bit data that can be dumped during a frame,
-      after the crop 2D operation
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
+    - name: LIMIT
+      bit_offset: 0
+      bit_size: 24
+      description: Maximum number of 32-bit data that can be dumped during a frame,
+        after the crop 2D operation
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
 fieldset/DCMIPP_P0PPCR:
   description: ''
   fields:
-  - name: SWAPYUV
-    bit_offset: 0
-    bit_size: 1
-    description: SwapY vs UV bits, when the YUV mode is active
-  - name: PAD
-    bit_offset: 5
-    bit_size: 1
-    description: 'Pad mode for monochrome and raw Bayer 10/12/14 bpp: MSB vs'
-  - name: HEADEREN
-    bit_offset: 6
-    bit_size: 1
-    description: CSI header dump enable
-  - name: BSM
-    bit_offset: 7
-    bit_size: 2
-    description: Byte select mode
-  - name: OEBS
-    bit_offset: 9
-    bit_size: 1
-    description: Odd/even byte select (byte select start)
-  - name: LSM
-    bit_offset: 10
-    bit_size: 1
-    description: Line select mode
-  - name: OELS
-    bit_offset: 11
-    bit_size: 1
-    description: Odd/even line select (line select start)
-  - name: LINEMULT
-    bit_offset: 13
-    bit_size: 3
-    description: Amount of capture completed lines for LINE Event and Interrupt
+    - name: SWAPYUV
+      bit_offset: 0
+      bit_size: 1
+      description: SwapY vs UV bits, when the YUV mode is active
+    - name: PAD
+      bit_offset: 5
+      bit_size: 1
+      description: 'Pad mode for monochrome and raw Bayer 10/12/14 bpp: MSB vs'
+    - name: HEADEREN
+      bit_offset: 6
+      bit_size: 1
+      description: CSI header dump enable
+    - name: BSM
+      bit_offset: 7
+      bit_size: 2
+      description: Byte select mode
+    - name: OEBS
+      bit_offset: 9
+      bit_size: 1
+      description: Odd/even byte select (byte select start)
+    - name: LSM
+      bit_offset: 10
+      bit_size: 1
+      description: Line select mode
+    - name: OELS
+      bit_offset: 11
+      bit_size: 1
+      description: Odd/even line select (line select start)
+    - name: LINEMULT
+      bit_offset: 13
+      bit_size: 3
+      description: Amount of capture completed lines for LINE Event and Interrupt
 fieldset/DCMIPP_P0PPM0AR1:
   description: ''
   fields:
-  - name: M0A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory0 address
+    - name: M0A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory0 address
 fieldset/DCMIPP_P0STM0AR:
   description: ''
   fields:
-  - name: M0A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory0 address
+    - name: M0A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory0 address
 fieldset/DCMIPP_P0IER:
   description: ''
   fields:
-  - name: LINEIE
-    bit_offset: 0
-    bit_size: 1
-    description: Multi-line capture completed interrupt enable
-  - name: FRAMEIE
-    bit_offset: 1
-    bit_size: 1
-    description: Frame capture completed interrupt enable
-  - name: VSYNCIE
-    bit_offset: 2
-    bit_size: 1
-    description: VSYNC interrupt enable
-  - name: LIMITIE
-    bit_offset: 6
-    bit_size: 1
-    description: Limit interrupt enable
-  - name: OVRIE
-    bit_offset: 7
-    bit_size: 1
-    description: Overrun interrupt enable
+    - name: LINEIE
+      bit_offset: 0
+      bit_size: 1
+      description: Multi-line capture completed interrupt enable
+    - name: FRAMEIE
+      bit_offset: 1
+      bit_size: 1
+      description: Frame capture completed interrupt enable
+    - name: VSYNCIE
+      bit_offset: 2
+      bit_size: 1
+      description: VSYNC interrupt enable
+    - name: LIMITIE
+      bit_offset: 6
+      bit_size: 1
+      description: Limit interrupt enable
+    - name: OVRIE
+      bit_offset: 7
+      bit_size: 1
+      description: Overrun interrupt enable
 fieldset/DCMIPP_P0SR:
   description: ''
   fields:
-  - name: LINEF
-    bit_offset: 0
-    bit_size: 1
-    description: Multi-line capture completed raw interrupt status
-  - name: FRAMEF
-    bit_offset: 1
-    bit_size: 1
-    description: Frame capture completed raw interrupt status
-  - name: VSYNCF
-    bit_offset: 2
-    bit_size: 1
-    description: VSYNC raw interrupt status
-  - name: LIMITF
-    bit_offset: 6
-    bit_size: 1
-    description: Limit raw interrupt status
-  - name: OVRF
-    bit_offset: 7
-    bit_size: 1
-    description: Overrun raw interrupt status
-  - name: LSTLINE
-    bit_offset: 16
-    bit_size: 1
-    description: Last line LSB bit, sampled at frame capture complete event
-  - name: LSTFRM
-    bit_offset: 17
-    bit_size: 1
-    description: Last frame LSB bit, sampled at frame capture complete event
-  - name: LSTVCID
-    bit_offset: 18
-    bit_size: 2
-    description: Last VCID, sampled at frame capture complete event
-  - name: CPTACT
-    bit_offset: 23
-    bit_size: 1
-    description: Capture immediate status
+    - name: LINEF
+      bit_offset: 0
+      bit_size: 1
+      description: Multi-line capture completed raw interrupt status
+    - name: FRAMEF
+      bit_offset: 1
+      bit_size: 1
+      description: Frame capture completed raw interrupt status
+    - name: VSYNCF
+      bit_offset: 2
+      bit_size: 1
+      description: VSYNC raw interrupt status
+    - name: LIMITF
+      bit_offset: 6
+      bit_size: 1
+      description: Limit raw interrupt status
+    - name: OVRF
+      bit_offset: 7
+      bit_size: 1
+      description: Overrun raw interrupt status
+    - name: LSTLINE
+      bit_offset: 16
+      bit_size: 1
+      description: Last line LSB bit, sampled at frame capture complete event
+    - name: LSTFRM
+      bit_offset: 17
+      bit_size: 1
+      description: Last frame LSB bit, sampled at frame capture complete event
+    - name: LSTVCID
+      bit_offset: 18
+      bit_size: 2
+      description: Last VCID, sampled at frame capture complete event
+    - name: CPTACT
+      bit_offset: 23
+      bit_size: 1
+      description: Capture immediate status
 fieldset/DCMIPP_P0FCR:
   description: ''
   fields:
-  - name: CLINEF
-    bit_offset: 0
-    bit_size: 1
-    description: Multi-line capture complete interrupt status clear
-  - name: CFRAMEF
-    bit_offset: 1
-    bit_size: 1
-    description: Frame capture complete interrupt status clear
-  - name: CVSYNCF
-    bit_offset: 2
-    bit_size: 1
-    description: Vertical synchronization interrupt status clear
-  - name: CLIMITF
-    bit_offset: 6
-    bit_size: 1
-    description: limit interrupt status clear
-  - name: COVRF
-    bit_offset: 7
-    bit_size: 1
-    description: Overrun interrupt status clear
+    - name: CLINEF
+      bit_offset: 0
+      bit_size: 1
+      description: Multi-line capture complete interrupt status clear
+    - name: CFRAMEF
+      bit_offset: 1
+      bit_size: 1
+      description: Frame capture complete interrupt status clear
+    - name: CVSYNCF
+      bit_offset: 2
+      bit_size: 1
+      description: Vertical synchronization interrupt status clear
+    - name: CLIMITF
+      bit_offset: 6
+      bit_size: 1
+      description: limit interrupt status clear
+    - name: COVRF
+      bit_offset: 7
+      bit_size: 1
+      description: Overrun interrupt status clear
 fieldset/DCMIPP_P0CFSCR:
   description: ''
   fields:
-  - name: DTIDA
-    bit_offset: 0
-    bit_size: 6
-    description: Current Data type selection ID A
-  - name: DTIDB
-    bit_offset: 8
-    bit_size: 6
-    description: Current Data type selection ID B
-  - name: DTMODE
-    bit_offset: 16
-    bit_size: 2
-    description: Flow selection mode
-  - name: VC
-    bit_offset: 19
-    bit_size: 2
-    description: Current flow selection mode
-  - name: PIPEN
-    bit_offset: 31
-    bit_size: 1
-    description: Current activation of PipeN
+    - name: DTIDA
+      bit_offset: 0
+      bit_size: 6
+      description: Current Data type selection ID A
+    - name: DTIDB
+      bit_offset: 8
+      bit_size: 6
+      description: Current Data type selection ID B
+    - name: DTMODE
+      bit_offset: 16
+      bit_size: 2
+      description: Flow selection mode
+    - name: VC
+      bit_offset: 19
+      bit_size: 2
+      description: Current flow selection mode
+    - name: PIPEN
+      bit_offset: 31
+      bit_size: 1
+      description: Current activation of PipeN
 fieldset/DCMIPP_P0CFCTCR:
   description: ''
   fields:
-  - name: FRATE
-    bit_offset: 0
-    bit_size: 2
-    description: Frame capture rate control
-  - name: CPTMODE
-    bit_offset: 2
-    bit_size: 1
-    description: Capture mode
-  - name: CPTREQ
-    bit_offset: 3
-    bit_size: 1
-    description: Capture requested
+    - name: FRATE
+      bit_offset: 0
+      bit_size: 2
+      description: Frame capture rate control
+    - name: CPTMODE
+      bit_offset: 2
+      bit_size: 1
+      description: Capture mode
+    - name: CPTREQ
+      bit_offset: 3
+      bit_size: 1
+      description: Capture requested
 fieldset/DCMIPP_P0CSCSTR:
   description: ''
   fields:
-  - name: HSTART
-    bit_offset: 0
-    bit_size: 12
-    description: Current horizontal start, from 0 to 4094 words wide
-  - name: VSTART
-    bit_offset: 16
-    bit_size: 12
-    description: Current vertical start, from 0 to 4094 pixels high
+    - name: HSTART
+      bit_offset: 0
+      bit_size: 12
+      description: Current horizontal start, from 0 to 4094 words wide
+    - name: VSTART
+      bit_offset: 16
+      bit_size: 12
+      description: Current vertical start, from 0 to 4094 pixels high
 fieldset/DCMIPP_P0CSCSZR:
   description: ''
   fields:
-  - name: HSIZE
-    bit_offset: 0
-    bit_size: 12
-    description: Current horizontal size, from 0 to 4094 word wide (data 32-bit)
-  - name: VSIZE
-    bit_offset: 16
-    bit_size: 12
-    description: Current vertical size, from 0 to 4094 pixels high
-  - name: POSNEG
-    bit_offset: 30
-    bit_size: 1
-    description: Current value of the POSNEG bit
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
-    description: Current value of the ENABLE bit
+    - name: HSIZE
+      bit_offset: 0
+      bit_size: 12
+      description: Current horizontal size, from 0 to 4094 word wide (data 32-bit)
+    - name: VSIZE
+      bit_offset: 16
+      bit_size: 12
+      description: Current vertical size, from 0 to 4094 pixels high
+    - name: POSNEG
+      bit_offset: 30
+      bit_size: 1
+      description: Current value of the POSNEG bit
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
+      description: Current value of the ENABLE bit
 fieldset/DCMIPP_P0CPPCR:
   description: ''
   fields:
-  - name: SWAPYUV
-    bit_offset: 0
-    bit_size: 1
-    description: SwapY vs UV bits, when the YUV mode is active
-  - name: PAD
-    bit_offset: 5
-    bit_size: 1
-    description: 'Current Pad mode for monochrome and raw Bayer 10/12/14 bpp: MSB
-      vs'
-  - name: HEADEREN
-    bit_offset: 6
-    bit_size: 1
-    description: Current CSI header dump enable
-  - name: BSM
-    bit_offset: 7
-    bit_size: 2
-    description: Current Byte select mode
-  - name: OEBS
-    bit_offset: 9
-    bit_size: 1
-    description: Current odd/even byte select (Byte select start)
-  - name: LSM
-    bit_offset: 10
-    bit_size: 1
-    description: Current Line select mode
-  - name: OELS
-    bit_offset: 11
-    bit_size: 1
-    description: Current odd/even line select (Line select start)
-  - name: LINEMULT
-    bit_offset: 13
-    bit_size: 3
-    description: Current amount of capture completed lines for LINE Event and Interrupt
+    - name: SWAPYUV
+      bit_offset: 0
+      bit_size: 1
+      description: SwapY vs UV bits, when the YUV mode is active
+    - name: PAD
+      bit_offset: 5
+      bit_size: 1
+      description: 'Current Pad mode for monochrome and raw Bayer 10/12/14 bpp: MSB
+        vs'
+    - name: HEADEREN
+      bit_offset: 6
+      bit_size: 1
+      description: Current CSI header dump enable
+    - name: BSM
+      bit_offset: 7
+      bit_size: 2
+      description: Current Byte select mode
+    - name: OEBS
+      bit_offset: 9
+      bit_size: 1
+      description: Current odd/even byte select (Byte select start)
+    - name: LSM
+      bit_offset: 10
+      bit_size: 1
+      description: Current Line select mode
+    - name: OELS
+      bit_offset: 11
+      bit_size: 1
+      description: Current odd/even line select (Line select start)
+    - name: LINEMULT
+      bit_offset: 13
+      bit_size: 3
+      description: Current amount of capture completed lines for LINE Event and Interrupt
 fieldset/DCMIPP_P0CPPM0AR1:
   description: ''
   fields:
-  - name: M0A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory0 address
+    - name: M0A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory0 address
 fieldset/DCMIPP_P1HWCFGR:
   description: ''
   fields:
-  - name: CPLA
-    bit_offset: 0
-    bit_size: 2
-    description: Capability for planar buffers
-  - name: CDS
-    bit_offset: 2
-    bit_size: 1
-    description: Capability for downsize filter
-  - name: DBM
-    bit_offset: 3
-    bit_size: 1
-    description: Double buffer mode
-  - name: CRB
-    bit_offset: 4
-    bit_size: 2
-    description: Capability for demosaicing
-  - name: CGM
-    bit_offset: 6
-    bit_size: 2
-    description: Capability for gamma conversions
-  - name: CROI
-    bit_offset: 8
-    bit_size: 4
-    description: 'Capability for ROI: defines the number of ROI in the pipe'
-  - name: CVP
-    bit_offset: 13
-    bit_size: 1
-    description: Capability for virtual pipeline virtualization
+    - name: CPLA
+      bit_offset: 0
+      bit_size: 2
+      description: Capability for planar buffers
+    - name: CDS
+      bit_offset: 2
+      bit_size: 1
+      description: Capability for downsize filter
+    - name: DBM
+      bit_offset: 3
+      bit_size: 1
+      description: Double buffer mode
+    - name: CRB
+      bit_offset: 4
+      bit_size: 2
+      description: Capability for demosaicing
+    - name: CGM
+      bit_offset: 6
+      bit_size: 2
+      description: Capability for gamma conversions
+    - name: CROI
+      bit_offset: 8
+      bit_size: 4
+      description: 'Capability for ROI: defines the number of ROI in the pipe'
+    - name: CVP
+      bit_offset: 13
+      bit_size: 1
+      description: Capability for virtual pipeline virtualization
 fieldset/DCMIPP_P1FSCR:
   description: ''
   fields:
-  - name: DTIDA
-    bit_offset: 0
-    bit_size: 6
-    description: Data type ID A
-  - name: DTIDB
-    bit_offset: 8
-    bit_size: 6
-    description: Data type ID B
-  - name: DTMODE
-    bit_offset: 16
-    bit_size: 2
-    description: Flow selection mode
-  - name: PIPEDIFF
-    bit_offset: 18
-    bit_size: 1
-    description: Differentiates Pipe2 vs
-  - name: VC
-    bit_offset: 19
-    bit_size: 2
-    description: Flow selection mode
-  - name: FDTF
-    bit_offset: 24
-    bit_size: 6
-    description: Force Data type format
-  - name: FDTFEN
-    bit_offset: 30
-    bit_size: 1
-    description: Force Data type format enable
-  - name: PIPEN
-    bit_offset: 31
-    bit_size: 1
-    description: Activation of PipeN
+    - name: DTIDA
+      bit_offset: 0
+      bit_size: 6
+      description: Data type ID A
+    - name: DTIDB
+      bit_offset: 8
+      bit_size: 6
+      description: Data type ID B
+    - name: DTMODE
+      bit_offset: 16
+      bit_size: 2
+      description: Flow selection mode
+    - name: PIPEDIFF
+      bit_offset: 18
+      bit_size: 1
+      description: Differentiates Pipe2 vs
+    - name: VC
+      bit_offset: 19
+      bit_size: 2
+      description: Flow selection mode
+    - name: FDTF
+      bit_offset: 24
+      bit_size: 6
+      description: Force Data type format
+    - name: FDTFEN
+      bit_offset: 30
+      bit_size: 1
+      description: Force Data type format enable
+    - name: PIPEN
+      bit_offset: 31
+      bit_size: 1
+      description: Activation of PipeN
 fieldset/DCMIPP_P1SRCR:
   description: ''
   fields:
-  - name: LASTLINE
-    bit_offset: 0
-    bit_size: 12
-    description: Number of the last line to be kept when CROPEN = 1
-  - name: FIRSTLINEDEL
-    bit_offset: 12
-    bit_size: 3
-    description: Number of lines to be deleted when CROPEN = 1
-  - name: CROPEN
-    bit_offset: 15
-    bit_size: 1
-    description: Crop line enable
+    - name: LASTLINE
+      bit_offset: 0
+      bit_size: 12
+      description: Number of the last line to be kept when CROPEN = 1
+    - name: FIRSTLINEDEL
+      bit_offset: 12
+      bit_size: 3
+      description: Number of lines to be deleted when CROPEN = 1
+    - name: CROPEN
+      bit_offset: 15
+      bit_size: 1
+      description: Crop line enable
 fieldset/DCMIPP_P1BPRCR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-    description: Bad pixel detection must be enabled only for raw Bayer flows, as
-      it corrupts RGB flows
-  - name: STRENGTH
-    bit_offset: 1
-    bit_size: 3
-    description: 'Strength (aggressivity) of the bad pixel detection:'
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Bad pixel detection must be enabled only for raw Bayer flows, as
+        it corrupts RGB flows
+    - name: STRENGTH
+      bit_offset: 1
+      bit_size: 3
+      description: 'Strength (aggressivity) of the bad pixel detection:'
 fieldset/DCMIPP_P1BPRSR:
   description: ''
   fields:
-  - name: BADCNT
-    bit_offset: 0
-    bit_size: 12
-    description: Amount of detected bad pixels
+    - name: BADCNT
+      bit_offset: 0
+      bit_size: 12
+      description: Amount of detected bad pixels
 fieldset/DCMIPP_P1DECR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: HDEC
-    bit_offset: 1
-    bit_size: 2
-    description: Horizontal decimation ratio
-  - name: VDEC
-    bit_offset: 3
-    bit_size: 2
-    description: Vertical decimation ratio
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: HDEC
+      bit_offset: 1
+      bit_size: 2
+      description: Horizontal decimation ratio
+    - name: VDEC
+      bit_offset: 3
+      bit_size: 2
+      description: Vertical decimation ratio
 fieldset/DCMIPP_P1BLCCR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-    description: Black level calibration
-  - name: BLCB
-    bit_offset: 8
-    bit_size: 8
-    description: Black level calibration - Blue
-  - name: BLCG
-    bit_offset: 16
-    bit_size: 8
-    description: Black level calibration - Green
-  - name: BLCR
-    bit_offset: 24
-    bit_size: 8
-    description: Black level calibration - Red
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Black level calibration
+    - name: BLCB
+      bit_offset: 8
+      bit_size: 8
+      description: Black level calibration - Blue
+    - name: BLCG
+      bit_offset: 16
+      bit_size: 8
+      description: Black level calibration - Green
+    - name: BLCR
+      bit_offset: 24
+      bit_size: 8
+      description: Black level calibration - Red
 fieldset/DCMIPP_P1EXCR1:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-    description: Exposure control (multiplication and shift) of all red, green and
-      blue
-  - name: MULTR
-    bit_offset: 20
-    bit_size: 8
-    description: Exposure multiplier - Red
-  - name: SHFR
-    bit_offset: 28
-    bit_size: 3
-    description: Exposure shift - Red
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Exposure control (multiplication and shift) of all red, green and
+        blue
+    - name: MULTR
+      bit_offset: 20
+      bit_size: 8
+      description: Exposure multiplier - Red
+    - name: SHFR
+      bit_offset: 28
+      bit_size: 3
+      description: Exposure shift - Red
 fieldset/DCMIPP_P1EXCR2:
   description: ''
   fields:
-  - name: MULTB
-    bit_offset: 4
-    bit_size: 8
-    description: Exposure multiplier - Blue
-  - name: SHFB
-    bit_offset: 12
-    bit_size: 3
-    description: Exposure shift - Blue
-  - name: MULTG
-    bit_offset: 20
-    bit_size: 8
-    description: Exposure multiplier - Green
-  - name: SHFG
-    bit_offset: 28
-    bit_size: 3
-    description: Exposure shift - Green
+    - name: MULTB
+      bit_offset: 4
+      bit_size: 8
+      description: Exposure multiplier - Blue
+    - name: SHFB
+      bit_offset: 12
+      bit_size: 3
+      description: Exposure shift - Blue
+    - name: MULTG
+      bit_offset: 20
+      bit_size: 8
+      description: Exposure multiplier - Green
+    - name: SHFG
+      bit_offset: 28
+      bit_size: 3
+      description: Exposure shift - Green
 fieldset/DCMIPP_P1ST1CR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: BINS
-    bit_offset: 2
-    bit_size: 2
-    description: Bin definition
-  - name: SRC
-    bit_offset: 4
-    bit_size: 3
-    description: Statistics source
-  - name: MODE
-    bit_offset: 7
-    bit_size: 1
-    description: Statistics mode
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: BINS
+      bit_offset: 2
+      bit_size: 2
+      description: Bin definition
+    - name: SRC
+      bit_offset: 4
+      bit_size: 3
+      description: Statistics source
+    - name: MODE
+      bit_offset: 7
+      bit_size: 1
+      description: Statistics mode
 fieldset/DCMIPP_P1ST2CR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: BINS
-    bit_offset: 2
-    bit_size: 2
-    description: Bin definition
-  - name: SRC
-    bit_offset: 4
-    bit_size: 3
-    description: Statistics source
-  - name: MODE
-    bit_offset: 7
-    bit_size: 1
-    description: Statistics mode
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: BINS
+      bit_offset: 2
+      bit_size: 2
+      description: Bin definition
+    - name: SRC
+      bit_offset: 4
+      bit_size: 3
+      description: Statistics source
+    - name: MODE
+      bit_offset: 7
+      bit_size: 1
+      description: Statistics mode
 fieldset/DCMIPP_P1ST3CR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: BINS
-    bit_offset: 2
-    bit_size: 2
-    description: Bin definition
-  - name: SRC
-    bit_offset: 4
-    bit_size: 3
-    description: Statistics source
-  - name: MODE
-    bit_offset: 7
-    bit_size: 1
-    description: Statistics mode
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: BINS
+      bit_offset: 2
+      bit_size: 2
+      description: Bin definition
+    - name: SRC
+      bit_offset: 4
+      bit_size: 3
+      description: Statistics source
+    - name: MODE
+      bit_offset: 7
+      bit_size: 1
+      description: Statistics mode
 fieldset/DCMIPP_P1STSTR:
   description: ''
   fields:
-  - name: HSTART
-    bit_offset: 0
-    bit_size: 12
-    description: Horizontal start, from 0 to 4094 pixels wide
-  - name: VSTART
-    bit_offset: 16
-    bit_size: 12
-    description: Vertical start, from 0 to 4094 pixels high
+    - name: HSTART
+      bit_offset: 0
+      bit_size: 12
+      description: Horizontal start, from 0 to 4094 pixels wide
+    - name: VSTART
+      bit_offset: 16
+      bit_size: 12
+      description: Vertical start, from 0 to 4094 pixels high
 fieldset/DCMIPP_P1STSZR:
   description: ''
   fields:
-  - name: HSIZE
-    bit_offset: 0
-    bit_size: 12
-    description: Horizontal size, from 0 to 4094 pixels wide
-  - name: VSIZE
-    bit_offset: 16
-    bit_size: 12
-    description: Vertical size, from 0 to 4094 pixels high
-  - name: CROPEN
-    bit_offset: 31
-    bit_size: 1
+    - name: HSIZE
+      bit_offset: 0
+      bit_size: 12
+      description: Horizontal size, from 0 to 4094 pixels wide
+    - name: VSIZE
+      bit_offset: 16
+      bit_size: 12
+      description: Vertical size, from 0 to 4094 pixels high
+    - name: CROPEN
+      bit_offset: 31
+      bit_size: 1
 fieldset/DCMIPP_P1ST1SR:
   description: ''
   fields:
-  - name: ACCU
-    bit_offset: 0
-    bit_size: 24
-    description: Accumulation result, divided by 256
+    - name: ACCU
+      bit_offset: 0
+      bit_size: 24
+      description: Accumulation result, divided by 256
 fieldset/DCMIPP_P1ST2SR:
   description: ''
   fields:
-  - name: ACCU
-    bit_offset: 0
-    bit_size: 24
-    description: accumulation result, divided by 256
+    - name: ACCU
+      bit_offset: 0
+      bit_size: 24
+      description: accumulation result, divided by 256
 fieldset/DCMIPP_P1ST3SR:
   description: ''
   fields:
-  - name: ACCU
-    bit_offset: 0
-    bit_size: 24
-    description: accumulation result, divided by 256
+    - name: ACCU
+      bit_offset: 0
+      bit_size: 24
+      description: accumulation result, divided by 256
 fieldset/DCMIPP_P1DMCR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: TYPE
-    bit_offset: 1
-    bit_size: 2
-    description: Raw Bayer type
-  - name: PEAK
-    bit_offset: 16
-    bit_size: 3
-    description: Strength of the peak detection
-  - name: LINEV
-    bit_offset: 20
-    bit_size: 3
-    description: Strength of the vertical line detection
-  - name: LINEH
-    bit_offset: 24
-    bit_size: 3
-    description: Strength of the horizontal line detection
-  - name: EDGE
-    bit_offset: 28
-    bit_size: 3
-    description: Strength of the edge detection
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: TYPE
+      bit_offset: 1
+      bit_size: 2
+      description: Raw Bayer type
+    - name: PEAK
+      bit_offset: 16
+      bit_size: 3
+      description: Strength of the peak detection
+    - name: LINEV
+      bit_offset: 20
+      bit_size: 3
+      description: Strength of the vertical line detection
+    - name: LINEH
+      bit_offset: 24
+      bit_size: 3
+      description: Strength of the horizontal line detection
+    - name: EDGE
+      bit_offset: 28
+      bit_size: 3
+      description: Strength of the edge detection
 fieldset/DCMIPP_P1CCCR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: TYPE
-    bit_offset: 1
-    bit_size: 1
-    description: output samples type used while CLAMP is activated
-  - name: CLAMP
-    bit_offset: 2
-    bit_size: 1
-    description: Clamp the output samples
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: TYPE
+      bit_offset: 1
+      bit_size: 1
+      description: output samples type used while CLAMP is activated
+    - name: CLAMP
+      bit_offset: 2
+      bit_size: 1
+      description: Clamp the output samples
 fieldset/DCMIPP_P1CCRR1:
   description: ''
   fields:
-  - name: RR
-    bit_offset: 0
-    bit_size: 11
-    description: Coefficient row 1 column 1 of the matrix
-  - name: RG
-    bit_offset: 16
-    bit_size: 11
-    description: Coefficient row 1 column 2 of the matrix
+    - name: RR
+      bit_offset: 0
+      bit_size: 11
+      description: Coefficient row 1 column 1 of the matrix
+    - name: RG
+      bit_offset: 16
+      bit_size: 11
+      description: Coefficient row 1 column 2 of the matrix
 fieldset/DCMIPP_P1CCRR2:
   description: ''
   fields:
-  - name: RB
-    bit_offset: 0
-    bit_size: 11
-    description: Coefficient row 1 column 3 of the matrix
-  - name: RA
-    bit_offset: 16
-    bit_size: 10
-    description: Coefficient row 1 of the added column (signed integer value)
+    - name: RB
+      bit_offset: 0
+      bit_size: 11
+      description: Coefficient row 1 column 3 of the matrix
+    - name: RA
+      bit_offset: 16
+      bit_size: 10
+      description: Coefficient row 1 of the added column (signed integer value)
 fieldset/DCMIPP_P1CCGR1:
   description: ''
   fields:
-  - name: GR
-    bit_offset: 0
-    bit_size: 11
-    description: Coefficient row 2 column 1 of the matrix
-  - name: GG
-    bit_offset: 16
-    bit_size: 11
-    description: Coefficient row 2 column 2 of the matrix
+    - name: GR
+      bit_offset: 0
+      bit_size: 11
+      description: Coefficient row 2 column 1 of the matrix
+    - name: GG
+      bit_offset: 16
+      bit_size: 11
+      description: Coefficient row 2 column 2 of the matrix
 fieldset/DCMIPP_P1CCGR2:
   description: ''
   fields:
-  - name: GB
-    bit_offset: 0
-    bit_size: 11
-    description: Coefficient row 2 column 3 of the matrix
-  - name: GA
-    bit_offset: 16
-    bit_size: 10
-    description: Coefficient row 2 of the added column (signed integer value)
+    - name: GB
+      bit_offset: 0
+      bit_size: 11
+      description: Coefficient row 2 column 3 of the matrix
+    - name: GA
+      bit_offset: 16
+      bit_size: 10
+      description: Coefficient row 2 of the added column (signed integer value)
 fieldset/DCMIPP_P1CCBR1:
   description: ''
   fields:
-  - name: BR
-    bit_offset: 0
-    bit_size: 11
-    description: Coefficient row 3 column 1 of the matrix
-  - name: BG
-    bit_offset: 16
-    bit_size: 11
-    description: Coefficient row 3 column 2 of the matrix
+    - name: BR
+      bit_offset: 0
+      bit_size: 11
+      description: Coefficient row 3 column 1 of the matrix
+    - name: BG
+      bit_offset: 16
+      bit_size: 11
+      description: Coefficient row 3 column 2 of the matrix
 fieldset/DCMIPP_P1CCBR2:
   description: ''
   fields:
-  - name: BB
-    bit_offset: 0
-    bit_size: 11
-    description: Coefficient row 3 column 3 of the matrix
-  - name: BA
-    bit_offset: 16
-    bit_size: 10
-    description: Coefficient row 3 of the added column (signed integer value)
+    - name: BB
+      bit_offset: 0
+      bit_size: 11
+      description: Coefficient row 3 column 3 of the matrix
+    - name: BA
+      bit_offset: 16
+      bit_size: 10
+      description: Coefficient row 3 of the added column (signed integer value)
 fieldset/DCMIPP_P1CTCR1:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: LUM0
-    bit_offset: 9
-    bit_size: 6
-    description: Luminance increase for input luminance of 0 (increase is idle with
-      LUMx = 16)
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: LUM0
+      bit_offset: 9
+      bit_size: 6
+      description: Luminance increase for input luminance of 0 (increase is idle with
+        LUMx = 16)
 fieldset/DCMIPP_P1CTCR2:
   description: ''
   fields:
-  - name: LUM4
-    bit_offset: 1
-    bit_size: 6
-    description: Luminance increase for input luminance of 128 (increase is idle with
-      LUMx = 16)
-  - name: LUM3
-    bit_offset: 9
-    bit_size: 6
-    description: Luminance increase for input luminance of 96 (increase is idle with
-      LUMx = 16)
-  - name: LUM2
-    bit_offset: 17
-    bit_size: 6
-    description: Luminance increase for input luminance of 64 (increase is idle with
-      LUMx = 16)
-  - name: LUM1
-    bit_offset: 25
-    bit_size: 6
-    description: Luminance increase for input luminance of 32 (increase is idle with
-      LUMx = 16)
+    - name: LUM4
+      bit_offset: 1
+      bit_size: 6
+      description: Luminance increase for input luminance of 128 (increase is idle with
+        LUMx = 16)
+    - name: LUM3
+      bit_offset: 9
+      bit_size: 6
+      description: Luminance increase for input luminance of 96 (increase is idle with
+        LUMx = 16)
+    - name: LUM2
+      bit_offset: 17
+      bit_size: 6
+      description: Luminance increase for input luminance of 64 (increase is idle with
+        LUMx = 16)
+    - name: LUM1
+      bit_offset: 25
+      bit_size: 6
+      description: Luminance increase for input luminance of 32 (increase is idle with
+        LUMx = 16)
 fieldset/DCMIPP_P1CTCR3:
   description: ''
   fields:
-  - name: LUM8
-    bit_offset: 1
-    bit_size: 6
-    description: Luminance increase for input luminance of 256 (increase is idle with
-      LUMx = 16)
-  - name: LUM7
-    bit_offset: 9
-    bit_size: 6
-    description: Luminance increase for input luminance of 224 (increase is idle with
-      LUMx = 16)
-  - name: LUM6
-    bit_offset: 17
-    bit_size: 6
-    description: Luminance increase for input luminance of 192 (increase is idle with
-      LUMx = 16)
-  - name: LUM5
-    bit_offset: 25
-    bit_size: 6
-    description: Luminance increase for input luminance of 160 (increase is idle with
-      LUMx = 16)
+    - name: LUM8
+      bit_offset: 1
+      bit_size: 6
+      description: Luminance increase for input luminance of 256 (increase is idle with
+        LUMx = 16)
+    - name: LUM7
+      bit_offset: 9
+      bit_size: 6
+      description: Luminance increase for input luminance of 224 (increase is idle with
+        LUMx = 16)
+    - name: LUM6
+      bit_offset: 17
+      bit_size: 6
+      description: Luminance increase for input luminance of 192 (increase is idle with
+        LUMx = 16)
+    - name: LUM5
+      bit_offset: 25
+      bit_size: 6
+      description: Luminance increase for input luminance of 160 (increase is idle with
+        LUMx = 16)
 fieldset/DCMIPP_P1FCTCR:
   description: ''
   fields:
-  - name: FRATE
-    bit_offset: 0
-    bit_size: 2
-    description: Frame capture rate control
-  - name: CPTMODE
-    bit_offset: 2
-    bit_size: 1
-    description: Capture mode
-  - name: CPTREQ
-    bit_offset: 3
-    bit_size: 1
-    description: Capture requested
+    - name: FRATE
+      bit_offset: 0
+      bit_size: 2
+      description: Frame capture rate control
+    - name: CPTMODE
+      bit_offset: 2
+      bit_size: 1
+      description: Capture mode
+    - name: CPTREQ
+      bit_offset: 3
+      bit_size: 1
+      description: Capture requested
 fieldset/DCMIPP_P1CRSTR:
   description: ''
   fields:
-  - name: HSTART
-    bit_offset: 0
-    bit_size: 12
-    description: Horizontal start, from 0 to 4094 pixels wide
-  - name: VSTART
-    bit_offset: 16
-    bit_size: 12
-    description: Vertical start, from 0 to 4094 pixels high
+    - name: HSTART
+      bit_offset: 0
+      bit_size: 12
+      description: Horizontal start, from 0 to 4094 pixels wide
+    - name: VSTART
+      bit_offset: 16
+      bit_size: 12
+      description: Vertical start, from 0 to 4094 pixels high
 fieldset/DCMIPP_P1CRSZR:
   description: ''
   fields:
-  - name: HSIZE
-    bit_offset: 0
-    bit_size: 12
-    description: Horizontal size, from 0 to 4094 pixels wide
-  - name: VSIZE
-    bit_offset: 16
-    bit_size: 12
-    description: Vertical size, from 0 to 4094 pixels high
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
+    - name: HSIZE
+      bit_offset: 0
+      bit_size: 12
+      description: Horizontal size, from 0 to 4094 pixels wide
+    - name: VSIZE
+      bit_offset: 16
+      bit_size: 12
+      description: Vertical size, from 0 to 4094 pixels high
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
 fieldset/DCMIPP_P1DCCR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: HDEC
-    bit_offset: 1
-    bit_size: 2
-    description: Horizontal decimation ratio
-  - name: VDEC
-    bit_offset: 3
-    bit_size: 2
-    description: Vertical decimation ratio
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: HDEC
+      bit_offset: 1
+      bit_size: 2
+      description: Horizontal decimation ratio
+    - name: VDEC
+      bit_offset: 3
+      bit_size: 2
+      description: Vertical decimation ratio
 fieldset/DCMIPP_P1DSCR:
   description: ''
   fields:
-  - name: HDIV
-    bit_offset: 0
-    bit_size: 10
-    description: Horizontal division factor, from 128 (8x) to 1023 (1x)
-  - name: VDIV
-    bit_offset: 16
-    bit_size: 10
-    description: Vertical division factor, from 128 (8x) to 1023 (1x)
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
+    - name: HDIV
+      bit_offset: 0
+      bit_size: 10
+      description: Horizontal division factor, from 128 (8x) to 1023 (1x)
+    - name: VDIV
+      bit_offset: 16
+      bit_size: 10
+      description: Vertical division factor, from 128 (8x) to 1023 (1x)
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
 fieldset/DCMIPP_P1DSRTIOR:
   description: ''
   fields:
-  - name: HRATIO
-    bit_offset: 0
-    bit_size: 16
-    description: Horizontal ratio, from 8192 (1x) to 65535 (8x)
-  - name: VRATIO
-    bit_offset: 16
-    bit_size: 16
-    description: Vertical ratio, from 8192 (1x) to 65535 (8x)
+    - name: HRATIO
+      bit_offset: 0
+      bit_size: 16
+      description: Horizontal ratio, from 8192 (1x) to 65535 (8x)
+    - name: VRATIO
+      bit_offset: 16
+      bit_size: 16
+      description: Vertical ratio, from 8192 (1x) to 65535 (8x)
 fieldset/DCMIPP_P1DSSZR:
   description: ''
   fields:
-  - name: HSIZE
-    bit_offset: 0
-    bit_size: 12
-    description: Horizontal size, from 0 to 4094 pixels wide
-  - name: VSIZE
-    bit_offset: 16
-    bit_size: 12
-    description: Vertical size, from 0 to 4094 pixels high
+    - name: HSIZE
+      bit_offset: 0
+      bit_size: 12
+      description: Horizontal size, from 0 to 4094 pixels wide
+    - name: VSIZE
+      bit_offset: 16
+      bit_size: 12
+      description: Vertical size, from 0 to 4094 pixels high
 fieldset/DCMIPP_P1GMCR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
 fieldset/DCMIPP_P1YUVCR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: TYPE
-    bit_offset: 1
-    bit_size: 1
-    description: Output samples type used while CLAMP is activated
-  - name: CLAMP
-    bit_offset: 2
-    bit_size: 1
-    description: Clamp the output samples
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: TYPE
+      bit_offset: 1
+      bit_size: 1
+      description: Output samples type used while CLAMP is activated
+    - name: CLAMP
+      bit_offset: 2
+      bit_size: 1
+      description: Clamp the output samples
 fieldset/DCMIPP_P1YUVRR1:
   description: ''
   fields:
-  - name: RR
-    bit_offset: 0
-    bit_size: 11
-    description: Coefficient row 1 column 1 of the matrix
-  - name: RG
-    bit_offset: 16
-    bit_size: 11
-    description: Coefficient row 1 column 2 of the matrix
+    - name: RR
+      bit_offset: 0
+      bit_size: 11
+      description: Coefficient row 1 column 1 of the matrix
+    - name: RG
+      bit_offset: 16
+      bit_size: 11
+      description: Coefficient row 1 column 2 of the matrix
 fieldset/DCMIPP_P1YUVRR2:
   description: ''
   fields:
-  - name: RB
-    bit_offset: 0
-    bit_size: 11
-    description: Coefficient row 1 column 3 of the matrix
-  - name: RA
-    bit_offset: 16
-    bit_size: 10
-    description: Coefficient row 1 of the added column (signed integer value)
+    - name: RB
+      bit_offset: 0
+      bit_size: 11
+      description: Coefficient row 1 column 3 of the matrix
+    - name: RA
+      bit_offset: 16
+      bit_size: 10
+      description: Coefficient row 1 of the added column (signed integer value)
 fieldset/DCMIPP_P1YUVGR1:
   description: ''
   fields:
-  - name: GR
-    bit_offset: 0
-    bit_size: 11
-    description: Coefficient row 2 column 1 of the matrix
-  - name: GG
-    bit_offset: 16
-    bit_size: 11
-    description: Coefficient row 2 column 2 of the matrix
+    - name: GR
+      bit_offset: 0
+      bit_size: 11
+      description: Coefficient row 2 column 1 of the matrix
+    - name: GG
+      bit_offset: 16
+      bit_size: 11
+      description: Coefficient row 2 column 2 of the matrix
 fieldset/DCMIPP_P1YUVGR2:
   description: ''
   fields:
-  - name: GB
-    bit_offset: 0
-    bit_size: 11
-    description: Coefficient row 2 column 3 of the matrix
-  - name: GA
-    bit_offset: 16
-    bit_size: 10
-    description: Coefficient row 2 of the added column (signed integer value)
+    - name: GB
+      bit_offset: 0
+      bit_size: 11
+      description: Coefficient row 2 column 3 of the matrix
+    - name: GA
+      bit_offset: 16
+      bit_size: 10
+      description: Coefficient row 2 of the added column (signed integer value)
 fieldset/DCMIPP_P1YUVBR1:
   description: ''
   fields:
-  - name: BR
-    bit_offset: 0
-    bit_size: 11
-    description: Coefficient row 3 column 1 of the matrix
-  - name: BG
-    bit_offset: 16
-    bit_size: 11
-    description: Coefficient row 3 column 2 of the matrix
+    - name: BR
+      bit_offset: 0
+      bit_size: 11
+      description: Coefficient row 3 column 1 of the matrix
+    - name: BG
+      bit_offset: 16
+      bit_size: 11
+      description: Coefficient row 3 column 2 of the matrix
 fieldset/DCMIPP_P1YUVBR2:
   description: ''
   fields:
-  - name: BB
-    bit_offset: 0
-    bit_size: 11
-    description: Coefficient row 3 column 3 of the matrix
-  - name: BA
-    bit_offset: 16
-    bit_size: 10
-    description: Coefficient row 3 of the added column (signed integer value)
+    - name: BB
+      bit_offset: 0
+      bit_size: 11
+      description: Coefficient row 3 column 3 of the matrix
+    - name: BA
+      bit_offset: 16
+      bit_size: 10
+      description: Coefficient row 3 of the added column (signed integer value)
 fieldset/DCMIPP_P1PPCR:
   description: ''
   fields:
-  - name: FORMAT
-    bit_offset: 0
-    bit_size: 4
-    description: Memory format
-  - name: SWAPRB
-    bit_offset: 4
-    bit_size: 1
-    description: Swaps R-vs-B components if RGB, and U-vs-V components if YUV
-  - name: LINEMULT
-    bit_offset: 13
-    bit_size: 3
-    description: Amount of capture completed lines for LINE Event and Interrupt
+    - name: FORMAT
+      bit_offset: 0
+      bit_size: 4
+      description: Memory format
+    - name: SWAPRB
+      bit_offset: 4
+      bit_size: 1
+      description: Swaps R-vs-B components if RGB, and U-vs-V components if YUV
+    - name: LINEMULT
+      bit_offset: 13
+      bit_size: 3
+      description: Amount of capture completed lines for LINE Event and Interrupt
 fieldset/DCMIPP_P1PPM0AR1:
   description: ''
   fields:
-  - name: M0A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory0 address
+    - name: M0A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory0 address
 fieldset/DCMIPP_P1PPM0PR:
   description: ''
   fields:
-  - name: PITCH
-    bit_offset: 0
-    bit_size: 15
-    description: Number of bytes between the address of two consecutive lines
+    - name: PITCH
+      bit_offset: 0
+      bit_size: 15
+      description: Number of bytes between the address of two consecutive lines
 fieldset/DCMIPP_P1STM0AR:
   description: ''
   fields:
-  - name: M0A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory0 address
+    - name: M0A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory0 address
 fieldset/DCMIPP_P1PPM1AR1:
   description: ''
   fields:
-  - name: M1A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory1 address
+    - name: M1A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory1 address
 fieldset/DCMIPP_P1PPM1PR:
   description: ''
   fields:
-  - name: PITCH
-    bit_offset: 0
-    bit_size: 15
-    description: Number of bytes between the address of two consecutive lines
+    - name: PITCH
+      bit_offset: 0
+      bit_size: 15
+      description: Number of bytes between the address of two consecutive lines
 fieldset/DCMIPP_P1STM1AR:
   description: ''
   fields:
-  - name: M1A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory1 address
+    - name: M1A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory1 address
 fieldset/DCMIPP_P1PPM2AR1:
   description: ''
   fields:
-  - name: M2A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory2 address
+    - name: M2A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory2 address
 fieldset/DCMIPP_P1STM2AR:
   description: ''
   fields:
-  - name: M2A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory2 address
+    - name: M2A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory2 address
 fieldset/DCMIPP_P1IER:
   description: ''
   fields:
-  - name: LINEIE
-    bit_offset: 0
-    bit_size: 1
-    description: Multi-line capture completed interrupt enable
-  - name: FRAMEIE
-    bit_offset: 1
-    bit_size: 1
-    description: Frame capture completed interrupt enable
-  - name: VSYNCIE
-    bit_offset: 2
-    bit_size: 1
-    description: VSYNC interrupt enable
-  - name: OVRIE
-    bit_offset: 7
-    bit_size: 1
-    description: Overrun interrupt enable
+    - name: LINEIE
+      bit_offset: 0
+      bit_size: 1
+      description: Multi-line capture completed interrupt enable
+    - name: FRAMEIE
+      bit_offset: 1
+      bit_size: 1
+      description: Frame capture completed interrupt enable
+    - name: VSYNCIE
+      bit_offset: 2
+      bit_size: 1
+      description: VSYNC interrupt enable
+    - name: OVRIE
+      bit_offset: 7
+      bit_size: 1
+      description: Overrun interrupt enable
 fieldset/DCMIPP_P1SR:
   description: ''
   fields:
-  - name: LINEF
-    bit_offset: 0
-    bit_size: 1
-    description: Multi-line capture completed raw interrupt status
-  - name: FRAMEF
-    bit_offset: 1
-    bit_size: 1
-    description: Frame capture completed raw interrupt status
-  - name: VSYNCF
-    bit_offset: 2
-    bit_size: 1
-    description: VSYNC raw interrupt status
-  - name: OVRF
-    bit_offset: 7
-    bit_size: 1
-    description: Overrun raw interrupt status
-  - name: LSTLINE
-    bit_offset: 16
-    bit_size: 1
-    description: Last line LSB bit, sampled at frame capture complete event
-  - name: LSTFRM
-    bit_offset: 17
-    bit_size: 1
-    description: Last frame LSB bit, sampled at frame capture complete event
-  - name: LSTVCID
-    bit_offset: 18
-    bit_size: 2
-    description: Last VCID, sampled at frame capture complete event
-  - name: CPTACT
-    bit_offset: 23
-    bit_size: 1
-    description: Capture immediate status
+    - name: LINEF
+      bit_offset: 0
+      bit_size: 1
+      description: Multi-line capture completed raw interrupt status
+    - name: FRAMEF
+      bit_offset: 1
+      bit_size: 1
+      description: Frame capture completed raw interrupt status
+    - name: VSYNCF
+      bit_offset: 2
+      bit_size: 1
+      description: VSYNC raw interrupt status
+    - name: OVRF
+      bit_offset: 7
+      bit_size: 1
+      description: Overrun raw interrupt status
+    - name: LSTLINE
+      bit_offset: 16
+      bit_size: 1
+      description: Last line LSB bit, sampled at frame capture complete event
+    - name: LSTFRM
+      bit_offset: 17
+      bit_size: 1
+      description: Last frame LSB bit, sampled at frame capture complete event
+    - name: LSTVCID
+      bit_offset: 18
+      bit_size: 2
+      description: Last VCID, sampled at frame capture complete event
+    - name: CPTACT
+      bit_offset: 23
+      bit_size: 1
+      description: Capture immediate status
 fieldset/DCMIPP_P1FCR:
   description: ''
   fields:
-  - name: CLINEF
-    bit_offset: 0
-    bit_size: 1
-    description: Multi-line capture complete interrupt status clear
-  - name: CFRAMEF
-    bit_offset: 1
-    bit_size: 1
-    description: Frame capture complete interrupt status clear
-  - name: CVSYNCF
-    bit_offset: 2
-    bit_size: 1
-    description: Vertical synchronization interrupt status clear
-  - name: COVRF
-    bit_offset: 7
-    bit_size: 1
-    description: Overrun interrupt status clear
+    - name: CLINEF
+      bit_offset: 0
+      bit_size: 1
+      description: Multi-line capture complete interrupt status clear
+    - name: CFRAMEF
+      bit_offset: 1
+      bit_size: 1
+      description: Frame capture complete interrupt status clear
+    - name: CVSYNCF
+      bit_offset: 2
+      bit_size: 1
+      description: Vertical synchronization interrupt status clear
+    - name: COVRF
+      bit_offset: 7
+      bit_size: 1
+      description: Overrun interrupt status clear
 fieldset/DCMIPP_P1CFSCR:
   description: ''
   fields:
-  - name: DTIDA
-    bit_offset: 0
-    bit_size: 6
-    description: Current Data type ID A
-  - name: DTIDB
-    bit_offset: 8
-    bit_size: 6
-    description: Current Data type ID B
-  - name: DTMODE
-    bit_offset: 16
-    bit_size: 2
-    description: Flow selection mode
-  - name: PIPEDIFF
-    bit_offset: 18
-    bit_size: 1
-    description: Current differentiates Pipe2 vs
-  - name: VC
-    bit_offset: 19
-    bit_size: 2
-    description: Current flow selection mode
-  - name: FDTF
-    bit_offset: 24
-    bit_size: 6
-    description: Current force Data type format
-  - name: FDTFEN
-    bit_offset: 30
-    bit_size: 1
-    description: Current force Data type format enable
-  - name: PIPEN
-    bit_offset: 31
-    bit_size: 1
-    description: Current activation of PipeN
+    - name: DTIDA
+      bit_offset: 0
+      bit_size: 6
+      description: Current Data type ID A
+    - name: DTIDB
+      bit_offset: 8
+      bit_size: 6
+      description: Current Data type ID B
+    - name: DTMODE
+      bit_offset: 16
+      bit_size: 2
+      description: Flow selection mode
+    - name: PIPEDIFF
+      bit_offset: 18
+      bit_size: 1
+      description: Current differentiates Pipe2 vs
+    - name: VC
+      bit_offset: 19
+      bit_size: 2
+      description: Current flow selection mode
+    - name: FDTF
+      bit_offset: 24
+      bit_size: 6
+      description: Current force Data type format
+    - name: FDTFEN
+      bit_offset: 30
+      bit_size: 1
+      description: Current force Data type format enable
+    - name: PIPEN
+      bit_offset: 31
+      bit_size: 1
+      description: Current activation of PipeN
 fieldset/DCMIPP_P1CBPRCR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-    description: Current status of enable bit
-  - name: STRENGTH
-    bit_offset: 1
-    bit_size: 3
-    description: 'Current strength (aggressivity) of the bad pixel detection:'
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Current status of enable bit
+    - name: STRENGTH
+      bit_offset: 1
+      bit_size: 3
+      description: 'Current strength (aggressivity) of the bad pixel detection:'
 fieldset/DCMIPP_P1CBLCCR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-    description: For current black level calibration
-  - name: BLCB
-    bit_offset: 8
-    bit_size: 8
-    description: Current black level calibration - Blue
-  - name: BLCG
-    bit_offset: 16
-    bit_size: 8
-    description: Current black level calibration - Green
-  - name: BLCR
-    bit_offset: 24
-    bit_size: 8
-    description: Current black level calibration - Red
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: For current black level calibration
+    - name: BLCB
+      bit_offset: 8
+      bit_size: 8
+      description: Current black level calibration - Blue
+    - name: BLCG
+      bit_offset: 16
+      bit_size: 8
+      description: Current black level calibration - Green
+    - name: BLCR
+      bit_offset: 24
+      bit_size: 8
+      description: Current black level calibration - Red
 fieldset/DCMIPP_P1CEXCR1:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-    description: for exposure control (multiplication and shift)
-  - name: MULTR
-    bit_offset: 20
-    bit_size: 8
-    description: Current exposure multiplier - Red
-  - name: SHFR
-    bit_offset: 28
-    bit_size: 3
-    description: Current exposure shift - Red
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: for exposure control (multiplication and shift)
+    - name: MULTR
+      bit_offset: 20
+      bit_size: 8
+      description: Current exposure multiplier - Red
+    - name: SHFR
+      bit_offset: 28
+      bit_size: 3
+      description: Current exposure shift - Red
 fieldset/DCMIPP_P1CEXCR2:
   description: ''
   fields:
-  - name: MULTB
-    bit_offset: 4
-    bit_size: 8
-    description: Current exposure multiplier - Blue
-  - name: SHFB
-    bit_offset: 12
-    bit_size: 3
-    description: Current exposure shift - Blue
-  - name: MULTG
-    bit_offset: 20
-    bit_size: 8
-    description: Current exposure multiplier - Green
-  - name: SHFG
-    bit_offset: 28
-    bit_size: 3
-    description: Current exposure shift - Green
+    - name: MULTB
+      bit_offset: 4
+      bit_size: 8
+      description: Current exposure multiplier - Blue
+    - name: SHFB
+      bit_offset: 12
+      bit_size: 3
+      description: Current exposure shift - Blue
+    - name: MULTG
+      bit_offset: 20
+      bit_size: 8
+      description: Current exposure multiplier - Green
+    - name: SHFG
+      bit_offset: 28
+      bit_size: 3
+      description: Current exposure shift - Green
 fieldset/DCMIPP_P1CST1CR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-    description: Current enable bit value
-  - name: BINS
-    bit_offset: 2
-    bit_size: 2
-    description: Current bin definition
-  - name: SRC
-    bit_offset: 4
-    bit_size: 3
-    description: Current source of statistics
-  - name: MODE
-    bit_offset: 7
-    bit_size: 1
-    description: Current statistics mode
-  - name: ACCU
-    bit_offset: 8
-    bit_size: 24
-    description: Current accumulation result, divided by 256
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Current enable bit value
+    - name: BINS
+      bit_offset: 2
+      bit_size: 2
+      description: Current bin definition
+    - name: SRC
+      bit_offset: 4
+      bit_size: 3
+      description: Current source of statistics
+    - name: MODE
+      bit_offset: 7
+      bit_size: 1
+      description: Current statistics mode
+    - name: ACCU
+      bit_offset: 8
+      bit_size: 24
+      description: Current accumulation result, divided by 256
 fieldset/DCMIPP_P1CST2CR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: BINS
-    bit_offset: 2
-    bit_size: 2
-    description: Bin definition
-  - name: SRC
-    bit_offset: 4
-    bit_size: 3
-    description: source of stat
-  - name: MODE
-    bit_offset: 7
-    bit_size: 1
-    description: statistics mode
-  - name: ACCU
-    bit_offset: 8
-    bit_size: 24
-    description: Accumulation result, divided by 256
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: BINS
+      bit_offset: 2
+      bit_size: 2
+      description: Bin definition
+    - name: SRC
+      bit_offset: 4
+      bit_size: 3
+      description: source of stat
+    - name: MODE
+      bit_offset: 7
+      bit_size: 1
+      description: statistics mode
+    - name: ACCU
+      bit_offset: 8
+      bit_size: 24
+      description: Accumulation result, divided by 256
 fieldset/DCMIPP_P1CST3CR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: BINS
-    bit_offset: 2
-    bit_size: 2
-    description: Bin definition
-  - name: SRC
-    bit_offset: 4
-    bit_size: 3
-    description: Statistics source
-  - name: MODE
-    bit_offset: 7
-    bit_size: 1
-    description: Statistics mode
-  - name: ACCU
-    bit_offset: 8
-    bit_size: 24
-    description: Accumulation result, divided by 256
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: BINS
+      bit_offset: 2
+      bit_size: 2
+      description: Bin definition
+    - name: SRC
+      bit_offset: 4
+      bit_size: 3
+      description: Statistics source
+    - name: MODE
+      bit_offset: 7
+      bit_size: 1
+      description: Statistics mode
+    - name: ACCU
+      bit_offset: 8
+      bit_size: 24
+      description: Accumulation result, divided by 256
 fieldset/DCMIPP_P1CSTSTR:
   description: ''
   fields:
-  - name: HSTART
-    bit_offset: 0
-    bit_size: 12
-    description: Current horizontal start, from 0 to 4094 pixels wide
-  - name: VSTART
-    bit_offset: 16
-    bit_size: 12
-    description: Current vertical start, from 0 to 4094 pixels high
+    - name: HSTART
+      bit_offset: 0
+      bit_size: 12
+      description: Current horizontal start, from 0 to 4094 pixels wide
+    - name: VSTART
+      bit_offset: 16
+      bit_size: 12
+      description: Current vertical start, from 0 to 4094 pixels high
 fieldset/DCMIPP_P1CSTSZR:
   description: ''
   fields:
-  - name: HSIZE
-    bit_offset: 0
-    bit_size: 12
-    description: Current horizontal size, from 0 to 4094 pixels wide
-  - name: VSIZE
-    bit_offset: 16
-    bit_size: 12
-    description: Current vertical size, from 0 to 4094 pixels high
-  - name: CROPEN
-    bit_offset: 31
-    bit_size: 1
-    description: Current CROPEN bit value
+    - name: HSIZE
+      bit_offset: 0
+      bit_size: 12
+      description: Current horizontal size, from 0 to 4094 pixels wide
+    - name: VSIZE
+      bit_offset: 16
+      bit_size: 12
+      description: Current vertical size, from 0 to 4094 pixels high
+    - name: CROPEN
+      bit_offset: 31
+      bit_size: 1
+      description: Current CROPEN bit value
 fieldset/DCMIPP_P1CCCCR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-    description: This bit indicates the current value applied
-  - name: TYPE
-    bit_offset: 1
-    bit_size: 1
-    description: output samples type used while CLAMP is activated
-  - name: CLAMP
-    bit_offset: 2
-    bit_size: 1
-    description: Clamp the output samples
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: This bit indicates the current value applied
+    - name: TYPE
+      bit_offset: 1
+      bit_size: 1
+      description: output samples type used while CLAMP is activated
+    - name: CLAMP
+      bit_offset: 2
+      bit_size: 1
+      description: Clamp the output samples
 fieldset/DCMIPP_P1CCCRR1:
   description: ''
   fields:
-  - name: RR
-    bit_offset: 0
-    bit_size: 11
-    description: Current coefficient row 1 column 1 of the matrix
-  - name: RG
-    bit_offset: 16
-    bit_size: 11
-    description: Current coefficient row 1 column 2 of the matrix
+    - name: RR
+      bit_offset: 0
+      bit_size: 11
+      description: Current coefficient row 1 column 1 of the matrix
+    - name: RG
+      bit_offset: 16
+      bit_size: 11
+      description: Current coefficient row 1 column 2 of the matrix
 fieldset/DCMIPP_P1CCCRR2:
   description: ''
   fields:
-  - name: RB
-    bit_offset: 0
-    bit_size: 11
-    description: Current coefficient row 1 column 3 of the matrix
-  - name: RA
-    bit_offset: 16
-    bit_size: 10
-    description: Current coefficient row 1 of the added column (signed integer value)
+    - name: RB
+      bit_offset: 0
+      bit_size: 11
+      description: Current coefficient row 1 column 3 of the matrix
+    - name: RA
+      bit_offset: 16
+      bit_size: 10
+      description: Current coefficient row 1 of the added column (signed integer value)
 fieldset/DCMIPP_P1CCCGR1:
   description: ''
   fields:
-  - name: GR
-    bit_offset: 0
-    bit_size: 11
-    description: Current coefficient row 2 column 1 of the matrix
-  - name: GG
-    bit_offset: 16
-    bit_size: 11
-    description: Current coefficient row 2 column 2 of the matrix
+    - name: GR
+      bit_offset: 0
+      bit_size: 11
+      description: Current coefficient row 2 column 1 of the matrix
+    - name: GG
+      bit_offset: 16
+      bit_size: 11
+      description: Current coefficient row 2 column 2 of the matrix
 fieldset/DCMIPP_P1CCCGR2:
   description: ''
   fields:
-  - name: GB
-    bit_offset: 0
-    bit_size: 11
-    description: Current coefficient row 2 column 3 of the matrix
-  - name: GA
-    bit_offset: 16
-    bit_size: 10
-    description: Current coefficient row 2 of the added column (signed integer value)
+    - name: GB
+      bit_offset: 0
+      bit_size: 11
+      description: Current coefficient row 2 column 3 of the matrix
+    - name: GA
+      bit_offset: 16
+      bit_size: 10
+      description: Current coefficient row 2 of the added column (signed integer value)
 fieldset/DCMIPP_P1CCCBR1:
   description: ''
   fields:
-  - name: BR
-    bit_offset: 0
-    bit_size: 11
-    description: Current coefficient row 3 column 1 of the matrix
-  - name: BG
-    bit_offset: 16
-    bit_size: 11
-    description: Current coefficient row 3 column 2 of the matrix
+    - name: BR
+      bit_offset: 0
+      bit_size: 11
+      description: Current coefficient row 3 column 1 of the matrix
+    - name: BG
+      bit_offset: 16
+      bit_size: 11
+      description: Current coefficient row 3 column 2 of the matrix
 fieldset/DCMIPP_P1CCCBR2:
   description: ''
   fields:
-  - name: BB
-    bit_offset: 0
-    bit_size: 11
-    description: Current coefficient row 3 column 3 of the matrix
-  - name: BA
-    bit_offset: 16
-    bit_size: 10
-    description: Current coefficient row 3 of the added column (signed integer value)
+    - name: BB
+      bit_offset: 0
+      bit_size: 11
+      description: Current coefficient row 3 column 3 of the matrix
+    - name: BA
+      bit_offset: 16
+      bit_size: 10
+      description: Current coefficient row 3 of the added column (signed integer value)
 fieldset/DCMIPP_P1CCTCR1:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-    description: Current ENABLE bit value
-  - name: LUM0
-    bit_offset: 9
-    bit_size: 6
-    description: Current luminance increase for input luminance of 0 (increase is
-      idle with LUMx = 16)
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Current ENABLE bit value
+    - name: LUM0
+      bit_offset: 9
+      bit_size: 6
+      description: Current luminance increase for input luminance of 0 (increase is
+        idle with LUMx = 16)
 fieldset/DCMIPP_P1CCTCR2:
   description: ''
   fields:
-  - name: LUM4
-    bit_offset: 1
-    bit_size: 6
-    description: Current luminance increase for input luminance of 128 (increase is
-      idle with LUMx = 16)
-  - name: LUM3
-    bit_offset: 9
-    bit_size: 6
-    description: Current luminance increase for input luminance of 96 (increase is
-      idle with LUMx = 16)
-  - name: LUM2
-    bit_offset: 17
-    bit_size: 6
-    description: Current luminance increase for input luminance of 64 (increase is
-      idle with LUMx = 16)
-  - name: LUM1
-    bit_offset: 25
-    bit_size: 6
-    description: Current luminance increase for input luminance of 32 (increase is
-      idle with LUMx = 16)
+    - name: LUM4
+      bit_offset: 1
+      bit_size: 6
+      description: Current luminance increase for input luminance of 128 (increase is
+        idle with LUMx = 16)
+    - name: LUM3
+      bit_offset: 9
+      bit_size: 6
+      description: Current luminance increase for input luminance of 96 (increase is
+        idle with LUMx = 16)
+    - name: LUM2
+      bit_offset: 17
+      bit_size: 6
+      description: Current luminance increase for input luminance of 64 (increase is
+        idle with LUMx = 16)
+    - name: LUM1
+      bit_offset: 25
+      bit_size: 6
+      description: Current luminance increase for input luminance of 32 (increase is
+        idle with LUMx = 16)
 fieldset/DCMIPP_P1CCTCR3:
   description: ''
   fields:
-  - name: LUM8
-    bit_offset: 1
-    bit_size: 6
-    description: Luminance increase for input luminance of 256 (increase is idle with
-      LUMx = 16)
-  - name: LUM7
-    bit_offset: 9
-    bit_size: 6
-    description: Luminance increase for input luminance of 224 (increase is idle with
-      LUMx = 16)
-  - name: LUM6
-    bit_offset: 17
-    bit_size: 6
-    description: Luminance increase for input luminance of 192 (increase is idle with
-      LUMx = 16)
-  - name: LUM5
-    bit_offset: 25
-    bit_size: 6
-    description: Luminance increase for input luminance of 160 (increase is idle with
-      LUMx = 16)
+    - name: LUM8
+      bit_offset: 1
+      bit_size: 6
+      description: Luminance increase for input luminance of 256 (increase is idle with
+        LUMx = 16)
+    - name: LUM7
+      bit_offset: 9
+      bit_size: 6
+      description: Luminance increase for input luminance of 224 (increase is idle with
+        LUMx = 16)
+    - name: LUM6
+      bit_offset: 17
+      bit_size: 6
+      description: Luminance increase for input luminance of 192 (increase is idle with
+        LUMx = 16)
+    - name: LUM5
+      bit_offset: 25
+      bit_size: 6
+      description: Luminance increase for input luminance of 160 (increase is idle with
+        LUMx = 16)
 fieldset/DCMIPP_P1CFCTCR:
   description: ''
   fields:
-  - name: FRATE
-    bit_offset: 0
-    bit_size: 2
-    description: Frame capture rate control
-  - name: CPTMODE
-    bit_offset: 2
-    bit_size: 1
-    description: Capture mode
-  - name: CPTREQ
-    bit_offset: 3
-    bit_size: 1
-    description: Capture requested
+    - name: FRATE
+      bit_offset: 0
+      bit_size: 2
+      description: Frame capture rate control
+    - name: CPTMODE
+      bit_offset: 2
+      bit_size: 1
+      description: Capture mode
+    - name: CPTREQ
+      bit_offset: 3
+      bit_size: 1
+      description: Capture requested
 fieldset/DCMIPP_P1CCRSTR:
   description: ''
   fields:
-  - name: HSTART
-    bit_offset: 0
-    bit_size: 12
-    description: Current horizontal start, from 0 to 4094 pixels wide
-  - name: VSTART
-    bit_offset: 16
-    bit_size: 12
-    description: Current vertical start, from 0 to 4094 pixels high
+    - name: HSTART
+      bit_offset: 0
+      bit_size: 12
+      description: Current horizontal start, from 0 to 4094 pixels wide
+    - name: VSTART
+      bit_offset: 16
+      bit_size: 12
+      description: Current vertical start, from 0 to 4094 pixels high
 fieldset/DCMIPP_P1CCRSZR:
   description: ''
   fields:
-  - name: HSIZE
-    bit_offset: 0
-    bit_size: 12
-    description: Current horizontal size, from 0 to 4094 pixels wide
-  - name: VSIZE
-    bit_offset: 16
-    bit_size: 12
-    description: Current vertical size, from 0 to 4094 pixels high
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
-    description: Current ENABLE bit value
+    - name: HSIZE
+      bit_offset: 0
+      bit_size: 12
+      description: Current horizontal size, from 0 to 4094 pixels wide
+    - name: VSIZE
+      bit_offset: 16
+      bit_size: 12
+      description: Current vertical size, from 0 to 4094 pixels high
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
+      description: Current ENABLE bit value
 fieldset/DCMIPP_P1CDCCR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: HDEC
-    bit_offset: 1
-    bit_size: 2
-    description: Horizontal decimation ratio
-  - name: VDEC
-    bit_offset: 3
-    bit_size: 2
-    description: Vertical decimation ratio
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: HDEC
+      bit_offset: 1
+      bit_size: 2
+      description: Horizontal decimation ratio
+    - name: VDEC
+      bit_offset: 3
+      bit_size: 2
+      description: Vertical decimation ratio
 fieldset/DCMIPP_P1CDSCR:
   description: ''
   fields:
-  - name: HDIV
-    bit_offset: 0
-    bit_size: 10
-    description: Current horizontal division factor, from 128 (8x) to 1023 (1x)
-  - name: VDIV
-    bit_offset: 16
-    bit_size: 10
-    description: Current vertical division factor, from 128 (8x) to 1023 (1x)
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
-    description: Current value of the bit ENABLE
+    - name: HDIV
+      bit_offset: 0
+      bit_size: 10
+      description: Current horizontal division factor, from 128 (8x) to 1023 (1x)
+    - name: VDIV
+      bit_offset: 16
+      bit_size: 10
+      description: Current vertical division factor, from 128 (8x) to 1023 (1x)
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
+      description: Current value of the bit ENABLE
 fieldset/DCMIPP_P1CDSRTIOR:
   description: ''
   fields:
-  - name: HRATIO
-    bit_offset: 0
-    bit_size: 16
-    description: Current horizontal ratio, from 8192 (1x) to 65535 (8x)
-  - name: VRATIO
-    bit_offset: 16
-    bit_size: 16
-    description: Current vertical ratio, from 8192 (1x) to 65535 (8x)
+    - name: HRATIO
+      bit_offset: 0
+      bit_size: 16
+      description: Current horizontal ratio, from 8192 (1x) to 65535 (8x)
+    - name: VRATIO
+      bit_offset: 16
+      bit_size: 16
+      description: Current vertical ratio, from 8192 (1x) to 65535 (8x)
 fieldset/DCMIPP_P1CDSSZR:
   description: ''
   fields:
-  - name: HSIZE
-    bit_offset: 0
-    bit_size: 12
-    description: Current horizontal size, from 0 to 4094 pixels wide
-  - name: VSIZE
-    bit_offset: 16
-    bit_size: 12
-    description: Current vertical size, from 0 to 4094 pixels high
+    - name: HSIZE
+      bit_offset: 0
+      bit_size: 12
+      description: Current horizontal size, from 0 to 4094 pixels wide
+    - name: VSIZE
+      bit_offset: 16
+      bit_size: 12
+      description: Current vertical size, from 0 to 4094 pixels high
 fieldset/DCMIPP_P1CPPCR:
   description: ''
   fields:
-  - name: FORMAT
-    bit_offset: 0
-    bit_size: 4
-    description: Memory format
-  - name: SWAPRB
-    bit_offset: 4
-    bit_size: 1
-    description: Swaps R-vs-B components if RGB, and U-vs-V components if YUV
-  - name: LINEMULT
-    bit_offset: 13
-    bit_size: 3
-    description: Amount of capture completed lines for LINE Event and Interrupt
+    - name: FORMAT
+      bit_offset: 0
+      bit_size: 4
+      description: Memory format
+    - name: SWAPRB
+      bit_offset: 4
+      bit_size: 1
+      description: Swaps R-vs-B components if RGB, and U-vs-V components if YUV
+    - name: LINEMULT
+      bit_offset: 13
+      bit_size: 3
+      description: Amount of capture completed lines for LINE Event and Interrupt
 fieldset/DCMIPP_P1CPPM0AR1:
   description: ''
   fields:
-  - name: M0A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory0 address
+    - name: M0A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory0 address
 fieldset/DCMIPP_P1CPPM0PR:
   description: ''
   fields:
-  - name: PITCH
-    bit_offset: 0
-    bit_size: 15
-    description: Number of bytes between the address of two consecutive lines
+    - name: PITCH
+      bit_offset: 0
+      bit_size: 15
+      description: Number of bytes between the address of two consecutive lines
 fieldset/DCMIPP_P1CPPM1AR1:
   description: ''
   fields:
-  - name: M1A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory1 address
+    - name: M1A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory1 address
 fieldset/DCMIPP_P1CPPM1PR:
   description: ''
   fields:
-  - name: PITCH
-    bit_offset: 0
-    bit_size: 15
-    description: Number of bytes between the address of two consecutive lines
+    - name: PITCH
+      bit_offset: 0
+      bit_size: 15
+      description: Number of bytes between the address of two consecutive lines
 fieldset/DCMIPP_P1CPPM2AR1:
   description: ''
   fields:
-  - name: M2A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory 2 address
+    - name: M2A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory 2 address
 fieldset/DCMIPP_P2HWCFGR:
   description: ''
   fields:
-  - name: CPLA
-    bit_offset: 0
-    bit_size: 2
-    description: Capability for planar buffers
-  - name: CDS
-    bit_offset: 2
-    bit_size: 1
-    description: Capability for downsize filter
-  - name: DBM
-    bit_offset: 3
-    bit_size: 1
-    description: Double buffer mode
-  - name: CRB
-    bit_offset: 4
-    bit_size: 2
-    description: Capability for demosaicing
-  - name: CGM
-    bit_offset: 6
-    bit_size: 2
-    description: Capability for gamma conversions
-  - name: CROI
-    bit_offset: 8
-    bit_size: 4
-    description: 'Capability for ROI: defines the number of ROI in the pipe'
-  - name: CVP
-    bit_offset: 13
-    bit_size: 1
-    description: Capability for virtual pipeline virtualization
+    - name: CPLA
+      bit_offset: 0
+      bit_size: 2
+      description: Capability for planar buffers
+    - name: CDS
+      bit_offset: 2
+      bit_size: 1
+      description: Capability for downsize filter
+    - name: DBM
+      bit_offset: 3
+      bit_size: 1
+      description: Double buffer mode
+    - name: CRB
+      bit_offset: 4
+      bit_size: 2
+      description: Capability for demosaicing
+    - name: CGM
+      bit_offset: 6
+      bit_size: 2
+      description: Capability for gamma conversions
+    - name: CROI
+      bit_offset: 8
+      bit_size: 4
+      description: 'Capability for ROI: defines the number of ROI in the pipe'
+    - name: CVP
+      bit_offset: 13
+      bit_size: 1
+      description: Capability for virtual pipeline virtualization
 fieldset/DCMIPP_P2FSCR:
   description: ''
   fields:
-  - name: DTIDA
-    bit_offset: 0
-    bit_size: 6
-    description: Data type ID
-  - name: VC
-    bit_offset: 19
-    bit_size: 2
-    description: Flow selection mode
-  - name: FDTF
-    bit_offset: 24
-    bit_size: 6
-    description: Force Data type format
-  - name: FDTFEN
-    bit_offset: 30
-    bit_size: 1
-    description: Force Data type format enable
-  - name: PIPEN
-    bit_offset: 31
-    bit_size: 1
-    description: Activation of PipeN
+    - name: DTIDA
+      bit_offset: 0
+      bit_size: 6
+      description: Data type ID
+    - name: VC
+      bit_offset: 19
+      bit_size: 2
+      description: Flow selection mode
+    - name: FDTF
+      bit_offset: 24
+      bit_size: 6
+      description: Force Data type format
+    - name: FDTFEN
+      bit_offset: 30
+      bit_size: 1
+      description: Force Data type format enable
+    - name: PIPEN
+      bit_offset: 31
+      bit_size: 1
+      description: Activation of PipeN
 fieldset/DCMIPP_P2FCTCR:
   description: ''
   fields:
-  - name: FRATE
-    bit_offset: 0
-    bit_size: 2
-    description: Frame capture rate control
-  - name: CPTMODE
-    bit_offset: 2
-    bit_size: 1
-    description: Capture mode
-  - name: CPTREQ
-    bit_offset: 3
-    bit_size: 1
-    description: Capture requested
+    - name: FRATE
+      bit_offset: 0
+      bit_size: 2
+      description: Frame capture rate control
+    - name: CPTMODE
+      bit_offset: 2
+      bit_size: 1
+      description: Capture mode
+    - name: CPTREQ
+      bit_offset: 3
+      bit_size: 1
+      description: Capture requested
 fieldset/DCMIPP_P2CRSTR:
   description: ''
   fields:
-  - name: HSTART
-    bit_offset: 0
-    bit_size: 12
-    description: Horizontal start, from 0 to 4094 pixels wide
-  - name: VSTART
-    bit_offset: 16
-    bit_size: 12
-    description: Vertical start, from 0 to 4094 pixels high
+    - name: HSTART
+      bit_offset: 0
+      bit_size: 12
+      description: Horizontal start, from 0 to 4094 pixels wide
+    - name: VSTART
+      bit_offset: 16
+      bit_size: 12
+      description: Vertical start, from 0 to 4094 pixels high
 fieldset/DCMIPP_P2CRSZR:
   description: ''
   fields:
-  - name: HSIZE
-    bit_offset: 0
-    bit_size: 12
-    description: Horizontal size, from 0 to 4094 pixels wide
-  - name: VSIZE
-    bit_offset: 16
-    bit_size: 12
-    description: Vertical size, from 0 to 4094 pixels high
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
+    - name: HSIZE
+      bit_offset: 0
+      bit_size: 12
+      description: Horizontal size, from 0 to 4094 pixels wide
+    - name: VSIZE
+      bit_offset: 16
+      bit_size: 12
+      description: Vertical size, from 0 to 4094 pixels high
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
 fieldset/DCMIPP_P2DCCR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: HDEC
-    bit_offset: 1
-    bit_size: 2
-    description: Horizontal decimation ratio
-  - name: VDEC
-    bit_offset: 3
-    bit_size: 2
-    description: Vertical decimation ratio
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: HDEC
+      bit_offset: 1
+      bit_size: 2
+      description: Horizontal decimation ratio
+    - name: VDEC
+      bit_offset: 3
+      bit_size: 2
+      description: Vertical decimation ratio
 fieldset/DCMIPP_P2DSCR:
   description: ''
   fields:
-  - name: HDIV
-    bit_offset: 0
-    bit_size: 10
-    description: Horizontal division factor, from 128 (8x) to 1023 (1x)
-  - name: VDIV
-    bit_offset: 16
-    bit_size: 10
-    description: Vertical division factor, from 128 (8x) to 1023 (1x)
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
+    - name: HDIV
+      bit_offset: 0
+      bit_size: 10
+      description: Horizontal division factor, from 128 (8x) to 1023 (1x)
+    - name: VDIV
+      bit_offset: 16
+      bit_size: 10
+      description: Vertical division factor, from 128 (8x) to 1023 (1x)
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
 fieldset/DCMIPP_P2DSRTIOR:
   description: ''
   fields:
-  - name: HRATIO
-    bit_offset: 0
-    bit_size: 16
-    description: Horizontal ratio, from 8192 (1x) to 65535 (8x)
-  - name: VRATIO
-    bit_offset: 16
-    bit_size: 16
-    description: Vertical ratio, from 8192 (1x) to 65535 (8x)
+    - name: HRATIO
+      bit_offset: 0
+      bit_size: 16
+      description: Horizontal ratio, from 8192 (1x) to 65535 (8x)
+    - name: VRATIO
+      bit_offset: 16
+      bit_size: 16
+      description: Vertical ratio, from 8192 (1x) to 65535 (8x)
 fieldset/DCMIPP_P2DSSZR:
   description: ''
   fields:
-  - name: HSIZE
-    bit_offset: 0
-    bit_size: 12
-    description: Horizontal size, from 0 to 4094 pixels wide
-  - name: VSIZE
-    bit_offset: 16
-    bit_size: 12
-    description: Vertical size, from 0 to 4094 pixels high
+    - name: HSIZE
+      bit_offset: 0
+      bit_size: 12
+      description: Horizontal size, from 0 to 4094 pixels wide
+    - name: VSIZE
+      bit_offset: 16
+      bit_size: 12
+      description: Vertical size, from 0 to 4094 pixels high
 fieldset/DCMIPP_P2GMCR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
 fieldset/DCMIPP_P2PPCR:
   description: ''
   fields:
-  - name: FORMAT
-    bit_offset: 0
-    bit_size: 4
-    description: Memory format (only coplanar formats are supported in Pipe2)
-  - name: SWAPRB
-    bit_offset: 4
-    bit_size: 1
-    description: Swaps R-vs-B components if RGB, and if YUV, swaps U-vs-V components
-  - name: LINEMULT
-    bit_offset: 13
-    bit_size: 3
-    description: Amount of capture completed lines for LINE Event and Interrupt
+    - name: FORMAT
+      bit_offset: 0
+      bit_size: 4
+      description: Memory format (only coplanar formats are supported in Pipe2)
+    - name: SWAPRB
+      bit_offset: 4
+      bit_size: 1
+      description: Swaps R-vs-B components if RGB, and if YUV, swaps U-vs-V components
+    - name: LINEMULT
+      bit_offset: 13
+      bit_size: 3
+      description: Amount of capture completed lines for LINE Event and Interrupt
 fieldset/DCMIPP_P2PPM0AR1:
   description: ''
   fields:
-  - name: M0A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory0 address
+    - name: M0A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory0 address
 fieldset/DCMIPP_P2PPM0PR:
   description: ''
   fields:
-  - name: PITCH
-    bit_offset: 0
-    bit_size: 15
-    description: Number of bytes between the address of two consecutive lines
+    - name: PITCH
+      bit_offset: 0
+      bit_size: 15
+      description: Number of bytes between the address of two consecutive lines
 fieldset/DCMIPP_P2STM0AR:
   description: ''
   fields:
-  - name: M0A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory0 address
+    - name: M0A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory0 address
 fieldset/DCMIPP_P2IER:
   description: ''
   fields:
-  - name: LINEIE
-    bit_offset: 0
-    bit_size: 1
-    description: Multi-line capture completed interrupt enable
-  - name: FRAMEIE
-    bit_offset: 1
-    bit_size: 1
-    description: Frame capture completed interrupt enable
-  - name: VSYNCIE
-    bit_offset: 2
-    bit_size: 1
-    description: VSYNC interrupt enable
-  - name: OVRIE
-    bit_offset: 7
-    bit_size: 1
-    description: Overrun interrupt enable
+    - name: LINEIE
+      bit_offset: 0
+      bit_size: 1
+      description: Multi-line capture completed interrupt enable
+    - name: FRAMEIE
+      bit_offset: 1
+      bit_size: 1
+      description: Frame capture completed interrupt enable
+    - name: VSYNCIE
+      bit_offset: 2
+      bit_size: 1
+      description: VSYNC interrupt enable
+    - name: OVRIE
+      bit_offset: 7
+      bit_size: 1
+      description: Overrun interrupt enable
 fieldset/DCMIPP_P2SR:
   description: ''
   fields:
-  - name: LINEF
-    bit_offset: 0
-    bit_size: 1
-    description: Multi-line capture completed raw interrupt status
-  - name: FRAMEF
-    bit_offset: 1
-    bit_size: 1
-    description: Frame capture completed raw interrupt status
-  - name: VSYNCF
-    bit_offset: 2
-    bit_size: 1
-    description: VSYNC raw interrupt status
-  - name: OVRF
-    bit_offset: 7
-    bit_size: 1
-    description: Overrun raw interrupt status
-  - name: LSTLINE
-    bit_offset: 16
-    bit_size: 1
-    description: Last line LSB bit, sampled at frame capture complete event
-  - name: LSTFRM
-    bit_offset: 17
-    bit_size: 1
-    description: Last frame LSB bit, sampled at frame capture complete event
-  - name: LSTVCID
-    bit_offset: 18
-    bit_size: 2
-    description: Last VCID, sampled at frame capture complete event
-  - name: CPTACT
-    bit_offset: 23
-    bit_size: 1
-    description: Capture immediate status
+    - name: LINEF
+      bit_offset: 0
+      bit_size: 1
+      description: Multi-line capture completed raw interrupt status
+    - name: FRAMEF
+      bit_offset: 1
+      bit_size: 1
+      description: Frame capture completed raw interrupt status
+    - name: VSYNCF
+      bit_offset: 2
+      bit_size: 1
+      description: VSYNC raw interrupt status
+    - name: OVRF
+      bit_offset: 7
+      bit_size: 1
+      description: Overrun raw interrupt status
+    - name: LSTLINE
+      bit_offset: 16
+      bit_size: 1
+      description: Last line LSB bit, sampled at frame capture complete event
+    - name: LSTFRM
+      bit_offset: 17
+      bit_size: 1
+      description: Last frame LSB bit, sampled at frame capture complete event
+    - name: LSTVCID
+      bit_offset: 18
+      bit_size: 2
+      description: Last VCID, sampled at frame capture complete event
+    - name: CPTACT
+      bit_offset: 23
+      bit_size: 1
+      description: Capture immediate status
 fieldset/DCMIPP_P2FCR:
   description: ''
   fields:
-  - name: CLINEF
-    bit_offset: 0
-    bit_size: 1
-    description: Multi-line capture complete interrupt status clear
-  - name: CFRAMEF
-    bit_offset: 1
-    bit_size: 1
-    description: Frame capture complete interrupt status clear
-  - name: CVSYNCF
-    bit_offset: 2
-    bit_size: 1
-    description: Vertical synchronization interrupt status clear
-  - name: COVRF
-    bit_offset: 7
-    bit_size: 1
-    description: Overrun interrupt status clear
+    - name: CLINEF
+      bit_offset: 0
+      bit_size: 1
+      description: Multi-line capture complete interrupt status clear
+    - name: CFRAMEF
+      bit_offset: 1
+      bit_size: 1
+      description: Frame capture complete interrupt status clear
+    - name: CVSYNCF
+      bit_offset: 2
+      bit_size: 1
+      description: Vertical synchronization interrupt status clear
+    - name: COVRF
+      bit_offset: 7
+      bit_size: 1
+      description: Overrun interrupt status clear
 fieldset/DCMIPP_P2CFSCR:
   description: ''
   fields:
-  - name: DTID
-    bit_offset: 0
-    bit_size: 6
-    description: Current Data type ID
-  - name: VC
-    bit_offset: 19
-    bit_size: 2
-    description: Current flow selection mode
-  - name: FDTF
-    bit_offset: 24
-    bit_size: 6
-    description: Current force Data type format
-  - name: FDTFEN
-    bit_offset: 30
-    bit_size: 1
-    description: Current force Data type format enable
-  - name: PIPEN
-    bit_offset: 31
-    bit_size: 1
-    description: Current activation of PipeN
-  - name: DTIDA
-    bit_offset: 0
-    bit_size: 6
-    description: Current data type ID
+    - name: DTID
+      bit_offset: 0
+      bit_size: 6
+      description: Current Data type ID
+    - name: VC
+      bit_offset: 19
+      bit_size: 2
+      description: Current flow selection mode
+    - name: FDTF
+      bit_offset: 24
+      bit_size: 6
+      description: Current force Data type format
+    - name: FDTFEN
+      bit_offset: 30
+      bit_size: 1
+      description: Current force Data type format enable
+    - name: PIPEN
+      bit_offset: 31
+      bit_size: 1
+      description: Current activation of PipeN
+    - name: DTIDA
+      bit_offset: 0
+      bit_size: 6
+      description: Current data type ID
 fieldset/DCMIPP_P2CFCTCR:
   description: ''
   fields:
-  - name: FRATE
-    bit_offset: 0
-    bit_size: 2
-    description: Frame capture rate control
-  - name: CPTMODE
-    bit_offset: 2
-    bit_size: 1
-    description: Capture mode
-  - name: CPTREQ
-    bit_offset: 3
-    bit_size: 1
-    description: Capture requested
+    - name: FRATE
+      bit_offset: 0
+      bit_size: 2
+      description: Frame capture rate control
+    - name: CPTMODE
+      bit_offset: 2
+      bit_size: 1
+      description: Capture mode
+    - name: CPTREQ
+      bit_offset: 3
+      bit_size: 1
+      description: Capture requested
 fieldset/DCMIPP_P2CCRSTR:
   description: ''
   fields:
-  - name: HSTART
-    bit_offset: 0
-    bit_size: 12
-    description: Current horizontal start, from 0 to 4094 pixels wide
-  - name: VSTART
-    bit_offset: 16
-    bit_size: 12
-    description: Current vertical start, from 0 to 4094 pixels high
+    - name: HSTART
+      bit_offset: 0
+      bit_size: 12
+      description: Current horizontal start, from 0 to 4094 pixels wide
+    - name: VSTART
+      bit_offset: 16
+      bit_size: 12
+      description: Current vertical start, from 0 to 4094 pixels high
 fieldset/DCMIPP_P2CCRSZR:
   description: ''
   fields:
-  - name: HSIZE
-    bit_offset: 0
-    bit_size: 12
-    description: Current horizontal size, from 0 to 4094 pixels wide
-  - name: VSIZE
-    bit_offset: 16
-    bit_size: 12
-    description: Current vertical size, from 0 to 4094 pixels high
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
-    description: Current ENABLE bit value
+    - name: HSIZE
+      bit_offset: 0
+      bit_size: 12
+      description: Current horizontal size, from 0 to 4094 pixels wide
+    - name: VSIZE
+      bit_offset: 16
+      bit_size: 12
+      description: Current vertical size, from 0 to 4094 pixels high
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
+      description: Current ENABLE bit value
 fieldset/DCMIPP_P2CDCCR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: HDEC
-    bit_offset: 1
-    bit_size: 2
-    description: Horizontal decimation ratio
-  - name: VDEC
-    bit_offset: 3
-    bit_size: 2
-    description: Vertical decimation ratio
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: HDEC
+      bit_offset: 1
+      bit_size: 2
+      description: Horizontal decimation ratio
+    - name: VDEC
+      bit_offset: 3
+      bit_size: 2
+      description: Vertical decimation ratio
 fieldset/DCMIPP_P2CDSCR:
   description: ''
   fields:
-  - name: HDIV
-    bit_offset: 0
-    bit_size: 10
-    description: Current horizontal division factor, from 128 (8x) to 1023 (1x)
-  - name: VDIV
-    bit_offset: 16
-    bit_size: 10
-    description: Current vertical division factor, from 128 (8x) to 1023 (1x)
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
-    description: Current value of the bit ENABLE
+    - name: HDIV
+      bit_offset: 0
+      bit_size: 10
+      description: Current horizontal division factor, from 128 (8x) to 1023 (1x)
+    - name: VDIV
+      bit_offset: 16
+      bit_size: 10
+      description: Current vertical division factor, from 128 (8x) to 1023 (1x)
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
+      description: Current value of the bit ENABLE
 fieldset/DCMIPP_P2CDSRTIOR:
   description: ''
   fields:
-  - name: HRATIO
-    bit_offset: 0
-    bit_size: 16
-    description: Current horizontal ratio, from 8192 (1x) to 65535 (8x)
-  - name: VRATIO
-    bit_offset: 16
-    bit_size: 16
-    description: Current vertical ratio, from 8192 (1x) to 65535 (8x)
+    - name: HRATIO
+      bit_offset: 0
+      bit_size: 16
+      description: Current horizontal ratio, from 8192 (1x) to 65535 (8x)
+    - name: VRATIO
+      bit_offset: 16
+      bit_size: 16
+      description: Current vertical ratio, from 8192 (1x) to 65535 (8x)
 fieldset/DCMIPP_P2CDSSZR:
   description: ''
   fields:
-  - name: HSIZE
-    bit_offset: 0
-    bit_size: 12
-    description: Current horizontal size, from 0 to 4094 pixels wide
-  - name: VSIZE
-    bit_offset: 16
-    bit_size: 12
-    description: Current vertical size, from 0 to 4094 pixels high
+    - name: HSIZE
+      bit_offset: 0
+      bit_size: 12
+      description: Current horizontal size, from 0 to 4094 pixels wide
+    - name: VSIZE
+      bit_offset: 16
+      bit_size: 12
+      description: Current vertical size, from 0 to 4094 pixels high
 fieldset/DCMIPP_P2CPPCR:
   description: ''
   fields:
-  - name: FORMAT
-    bit_offset: 0
-    bit_size: 4
-    description: Memory format (only coplanar formats are supported in Pipe2)
-  - name: SWAPRB
-    bit_offset: 4
-    bit_size: 1
-    description: Swaps R-vs-B components if RGB, and if YUV, swaps U-vs-V components
-  - name: LINEMULT
-    bit_offset: 13
-    bit_size: 3
-    description: Amount of capture completed lines for LINE Event and Interrupt
+    - name: FORMAT
+      bit_offset: 0
+      bit_size: 4
+      description: Memory format (only coplanar formats are supported in Pipe2)
+    - name: SWAPRB
+      bit_offset: 4
+      bit_size: 1
+      description: Swaps R-vs-B components if RGB, and if YUV, swaps U-vs-V components
+    - name: LINEMULT
+      bit_offset: 13
+      bit_size: 3
+      description: Amount of capture completed lines for LINE Event and Interrupt
 fieldset/DCMIPP_P2CPPM0AR1:
   description: ''
   fields:
-  - name: M0A
-    bit_offset: 0
-    bit_size: 32
-    description: Memory0 address
+    - name: M0A
+      bit_offset: 0
+      bit_size: 32
+      description: Memory0 address
 fieldset/DCMIPP_P2CPPM0PR:
   description: ''
   fields:
-  - name: PITCH
-    bit_offset: 0
-    bit_size: 15
-    description: Number of bytes between the address of two consecutive lines
+    - name: PITCH
+      bit_offset: 0
+      bit_size: 15
+      description: Number of bytes between the address of two consecutive lines
 fieldset/DCMIPP_HWCFGR2:
   description: ''
   fields:
-  - name: VPFT
-    bit_offset: 0
-    bit_size: 3
-    description: Virtual pipe function
-  - name: DBMFT
-    bit_offset: 4
-    bit_size: 1
-    description: Double buffer mode featured
-  - name: PROCCLK
-    bit_offset: 8
-    bit_size: 1
-    description: Processing clock linked to AXI clock featured
-  - name: ADDMOD
-    bit_offset: 12
-    bit_size: 1
-    description: Address modulo computation to access a small buffer in streaming
-      featured
-  - name: DEC1
-    bit_offset: 16
-    bit_size: 1
-    description: Decimation on Pipe1 before downsize
-  - name: DEC2
-    bit_offset: 17
-    bit_size: 1
-    description: Decimation on Pipe2 before downsize
-  - name: MCU
-    bit_offset: 20
-    bit_size: 1
-    description: Macroblock unit as pixel format
-  - name: TPG
-    bit_offset: 24
-    bit_size: 1
-    description: Test Pattern Generator
-  - name: STV
-    bit_offset: 28
-    bit_size: 1
-    description: Statistic Version
+    - name: VPFT
+      bit_offset: 0
+      bit_size: 3
+      description: Virtual pipe function
+    - name: DBMFT
+      bit_offset: 4
+      bit_size: 1
+      description: Double buffer mode featured
+    - name: PROCCLK
+      bit_offset: 8
+      bit_size: 1
+      description: Processing clock linked to AXI clock featured
+    - name: ADDMOD
+      bit_offset: 12
+      bit_size: 1
+      description: Address modulo computation to access a small buffer in streaming
+        featured
+    - name: DEC1
+      bit_offset: 16
+      bit_size: 1
+      description: Decimation on Pipe1 before downsize
+    - name: DEC2
+      bit_offset: 17
+      bit_size: 1
+      description: Decimation on Pipe2 before downsize
+    - name: MCU
+      bit_offset: 20
+      bit_size: 1
+      description: Macroblock unit as pixel format
+    - name: TPG
+      bit_offset: 24
+      bit_size: 1
+      description: Test Pattern Generator
+    - name: STV
+      bit_offset: 28
+      bit_size: 1
+      description: Statistic Version
 fieldset/DCMIPP_HWCFGR1:
   description: ''
   fields:
-  - name: CSIFT
-    bit_offset: 0
-    bit_size: 1
-    description: CSI2 host protocol compliant
-  - name: PIPENB
-    bit_offset: 4
-    bit_size: 2
-    description: Number of pipes
-  - name: IPPLUGCFG
-    bit_offset: 8
-    bit_size: 1
-    description: IP-Plug configuration
-  - name: DSP1FT
-    bit_offset: 12
-    bit_size: 1
-    description: down-sampling feature for the pixel Pipe1
-  - name: DSP2FT
-    bit_offset: 13
-    bit_size: 1
-    description: down-sampling feature for the pixel Pipe2
-  - name: RB2RGB
-    bit_offset: 16
-    bit_size: 1
-    description: Raw Bayer to RGB feature (demosaicer)
-  - name: PLANARFT
-    bit_offset: 20
-    bit_size: 2
-    description: Buffer features for Pipe1
-  - name: ROI1NB
-    bit_offset: 24
-    bit_size: 4
-    description: Number of ROI for Pipe1
-  - name: ROI2NB
-    bit_offset: 28
-    bit_size: 4
-    description: Number of ROI for Pipe2
+    - name: CSIFT
+      bit_offset: 0
+      bit_size: 1
+      description: CSI2 host protocol compliant
+    - name: PIPENB
+      bit_offset: 4
+      bit_size: 2
+      description: Number of pipes
+    - name: IPPLUGCFG
+      bit_offset: 8
+      bit_size: 1
+      description: IP-Plug configuration
+    - name: DSP1FT
+      bit_offset: 12
+      bit_size: 1
+      description: down-sampling feature for the pixel Pipe1
+    - name: DSP2FT
+      bit_offset: 13
+      bit_size: 1
+      description: down-sampling feature for the pixel Pipe2
+    - name: RB2RGB
+      bit_offset: 16
+      bit_size: 1
+      description: Raw Bayer to RGB feature (demosaicer)
+    - name: PLANARFT
+      bit_offset: 20
+      bit_size: 2
+      description: Buffer features for Pipe1
+    - name: ROI1NB
+      bit_offset: 24
+      bit_size: 4
+      description: Number of ROI for Pipe1
+    - name: ROI2NB
+      bit_offset: 28
+      bit_size: 4
+      description: Number of ROI for Pipe2
 fieldset/DCMIPP_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: Minor revision of the IP
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: Major revision of the IP
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: Minor revision of the IP
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: Major revision of the IP
 fieldset/DCMIPP_IPIDR:
   description: ''
   fields:
-  - name: IDR
-    bit_offset: 0
-    bit_size: 32
-    description: Parallel camera interface (DCMI) and optional pixel processing (PP)
+    - name: IDR
+      bit_offset: 0
+      bit_size: 32
+      description: Parallel camera interface (DCMI) and optional pixel processing (PP)
 fieldset/DCMIPP_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: 4 Kbytes decoding space
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: 4 Kbytes decoding space

@@ -1,149 +1,149 @@
 block/ANALOG_TCU:
   description: ''
   items:
-  - name: TCU_MAGIC_KW__MAGIC_KW0
-    byte_offset: 1024
-    fieldset: ANALOG_TCU_TCU_MAGIC_KW__MAGIC_KW0
-  - name: TCU_MAGIC_KW__MAGIC_KW1
-    byte_offset: 1040
-    fieldset: ANALOG_TCU_TCU_MAGIC_KW__MAGIC_KW1
-  - name: TCU_TEMPSENSER_MODE
-    byte_offset: 1280
-  - name: TCU_CLK_MUXSEL
-    byte_offset: 1344
-  - name: TCU_EXPOSE
-    byte_offset: 1360
-  - name: TCU_ATX_SENSE_BUS_EN
-    byte_offset: 1424
-  - name: TCU_ADC_CONTROL__RW
-    byte_offset: 2640
-  - name: TCU_ADC_CONTROL__SET
-    byte_offset: 2644
-  - name: TCU_ADC_CONTROL__CLR
-    byte_offset: 2648
-  - name: TCU_ADC_CONTROL__TOG
-    byte_offset: 2652
-  - name: TCU_PLL_COUNTER
-    byte_offset: 3072
-  - name: TCU_DFT_FUSE
-    byte_offset: 3136
+    - name: TCU_MAGIC_KW__MAGIC_KW0
+      byte_offset: 1024
+      fieldset: ANALOG_TCU_TCU_MAGIC_KW__MAGIC_KW0
+    - name: TCU_MAGIC_KW__MAGIC_KW1
+      byte_offset: 1040
+      fieldset: ANALOG_TCU_TCU_MAGIC_KW__MAGIC_KW1
+    - name: TCU_TEMPSENSER_MODE
+      byte_offset: 1280
+    - name: TCU_CLK_MUXSEL
+      byte_offset: 1344
+    - name: TCU_EXPOSE
+      byte_offset: 1360
+    - name: TCU_ATX_SENSE_BUS_EN
+      byte_offset: 1424
+    - name: TCU_ADC_CONTROL__RW
+      byte_offset: 2640
+    - name: TCU_ADC_CONTROL__SET
+      byte_offset: 2644
+    - name: TCU_ADC_CONTROL__CLR
+      byte_offset: 2648
+    - name: TCU_ADC_CONTROL__TOG
+      byte_offset: 2652
+    - name: TCU_PLL_COUNTER
+      byte_offset: 3072
+    - name: TCU_DFT_FUSE
+      byte_offset: 3136
 fieldset/ANALOG_TCU_TCU_MAGIC_KW__MAGIC_KW0:
   description: ''
   fields:
-  - name: out
-    bit_offset: 0
-    bit_size: 32
+    - name: out
+      bit_offset: 0
+      bit_size: 32
 fieldset/ANALOG_TCU_TCU_MAGIC_KW__MAGIC_KW1:
   description: ''
   fields:
-  - name: out
-    bit_offset: 0
-    bit_size: 32
+    - name: out
+      bit_offset: 0
+      bit_size: 32
 fieldset/ANALOG_TCU_TCU_TEMPSENSER_MODE_ipt_temp:
   description: ''
   fields:
-  - name: data
-    bit_offset: 0
-    bit_size: 16
-  - name: valid
-    bit_offset: 16
-    bit_size: 1
+    - name: data
+      bit_offset: 0
+      bit_size: 16
+    - name: valid
+      bit_offset: 16
+      bit_size: 1
 fieldset/ANALOG_TCU_TCU_CLK_MUXSEL_ipt_clk_src_mux:
   description: ''
   fields:
-  - name: sel
-    bit_offset: 0
-    bit_size: 4
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
 fieldset/ANALOG_TCU_TCU_CLK_MUXSEL_ipt_osc_clkin_mux:
   description: ''
   fields:
-  - name: sel1
-    bit_offset: 4
-    bit_size: 2
-  - name: sel0
-    bit_offset: 6
-    bit_size: 2
+    - name: sel1
+      bit_offset: 4
+      bit_size: 2
+    - name: sel0
+      bit_offset: 6
+      bit_size: 2
 fieldset/ANALOG_TCU_TCU_EXPOSE_tcu_expose:
   description: ''
   fields:
-  - name: mode
-    bit_offset: 0
-    bit_size: 1
-    description: dft fuse disable
+    - name: mode
+      bit_offset: 0
+      bit_size: 1
+      description: dft fuse disable
 fieldset/ANALOG_TCU_TCU_ATX_SENSE_BUS_EN_tcu_dft_atx_sense_bus:
   description: ''
   fields:
-  - name: en
-    bit_offset: 0
-    bit_size: 1
+    - name: en
+      bit_offset: 0
+      bit_size: 1
 fieldset/ANALOG_TCU_TCU_ADC_CONTROL__adc_muxing:
   description: ''
   fields:
-  - name: en
-    bit_offset: 0
-    bit_size: 1
+    - name: en
+      bit_offset: 0
+      bit_size: 1
 fieldset/ANALOG_TCU_TCU_ADC_CONTROL__adc_tst:
   description: ''
   fields:
-  - name: wren
-    bit_offset: 1
-    bit_size: 1
+    - name: wren
+      bit_offset: 1
+      bit_size: 1
 fieldset/ANALOG_TCU_TCU_ADC_CONTROL__adc_all_analog:
   description: ''
   fields:
-  - name: pd
-    bit_offset: 2
-    bit_size: 1
+    - name: pd
+      bit_offset: 2
+      bit_size: 1
 fieldset/ANALOG_TCU_TCU_ADC_CONTROL__adc_adc:
   description: ''
   fields:
-  - name: pd
-    bit_offset: 3
-    bit_size: 1
+    - name: pd
+      bit_offset: 3
+      bit_size: 1
 fieldset/ANALOG_TCU_TCU_PLL_COUNTER_pll_count_rst:
   description: ''
   fields:
-  - name: n
-    bit_offset: 0
-    bit_size: 1
+    - name: n
+      bit_offset: 0
+      bit_size: 1
 fieldset/ANALOG_TCU_TCU_PLL_COUNTER_pll_count:
   description: ''
   fields:
-  - name: start
-    bit_offset: 1
-    bit_size: 1
-  - name: cnt
-    bit_offset: 16
-    bit_size: 16
-    description: pll count cnt
+    - name: start
+      bit_offset: 1
+      bit_size: 1
+    - name: cnt
+      bit_offset: 16
+      bit_size: 16
+      description: pll count cnt
 fieldset/ANALOG_TCU_TCU_PLL_COUNTER_pll_count_div:
   description: ''
   fields:
-  - name: en
-    bit_offset: 2
-    bit_size: 1
+    - name: en
+      bit_offset: 2
+      bit_size: 1
 fieldset/ANALOG_TCU_TCU_PLL_COUNTER_pll_count_clk:
   description: ''
   fields:
-  - name: sel
-    bit_offset: 3
-    bit_size: 3
+    - name: sel
+      bit_offset: 3
+      bit_size: 3
 fieldset/ANALOG_TCU_TCU_PLL_COUNTER_pll_count_ref:
   description: ''
   fields:
-  - name: val
-    bit_offset: 8
-    bit_size: 8
+    - name: val
+      bit_offset: 8
+      bit_size: 8
 fieldset/ANALOG_TCU_TCU_DFT_FUSE_tcu_dft_fuse:
   description: ''
   fields:
-  - name: disable
-    bit_offset: 0
-    bit_size: 1
+    - name: disable
+      bit_offset: 0
+      bit_size: 1
 fieldset/ANALOG_TCU_TCU_DFT_FUSE_tcu_fuse:
   description: ''
   fields:
-  - name: obs
-    bit_offset: 1
-    bit_size: 3
-    description: fuse observation
+    - name: obs
+      bit_offset: 1
+      bit_size: 3
+      description: fuse observation

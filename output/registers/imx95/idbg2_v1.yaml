@@ -1,97 +1,97 @@
 block/IDBG2:
   description: ''
   items:
-  - name: LINE_NUM
-    byte_offset: 0
-  - name: CURR_LINE_NUM
-    byte_offset: 4
-  - name: IMA
-    byte_offset: 8
-    fieldset: IDBG2_IMA
-  - name: IMD
-    byte_offset: 12
-    fieldset: IDBG2_IMD
-  - name: DONE_STAT
-    byte_offset: 16
-    fieldset: IDBG2_DONE_STAT
+    - name: LINE_NUM
+      byte_offset: 0
+    - name: CURR_LINE_NUM
+      byte_offset: 4
+    - name: IMA
+      byte_offset: 8
+      fieldset: IDBG2_IMA
+    - name: IMD
+      byte_offset: 12
+      fieldset: IDBG2_IMD
+    - name: DONE_STAT
+      byte_offset: 16
+      fieldset: IDBG2_DONE_STAT
 fieldset/IDBG2_LINE_NUM_LINE:
   description: ''
   fields:
-  - name: NUM
-    bit_offset: 0
-    bit_size: 17
+    - name: NUM
+      bit_offset: 0
+      bit_size: 17
 fieldset/IDBG2_CURR_LINE_NUM_CURR_LINE:
   description: ''
   fields:
-  - name: NUM
-    bit_offset: 0
-    bit_size: 17
+    - name: NUM
+      bit_offset: 0
+      bit_size: 17
 fieldset/IDBG2_CURR_LINE_NUM_DBG:
   description: ''
   fields:
-  - name: HIT
-    bit_offset: 31
-    bit_size: 1
+    - name: HIT
+      bit_offset: 31
+      bit_size: 1
 fieldset/IDBG2_IMA:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 0
-    bit_size: 12
-  - name: NAME
-    bit_offset: 16
-    bit_size: 6
-  - name: RDWF
-    bit_offset: 28
-    bit_size: 2
-  - name: WDWF
-    bit_offset: 30
-    bit_size: 2
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 12
+    - name: NAME
+      bit_offset: 16
+      bit_size: 6
+    - name: RDWF
+      bit_offset: 28
+      bit_size: 2
+    - name: WDWF
+      bit_offset: 30
+      bit_size: 2
 fieldset/IDBG2_IMD:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
 fieldset/IDBG2_DONE_STAT:
   description: ''
   fields:
-  - name: AF
-    bit_offset: 0
-    bit_size: 1
-  - name: GCM
-    bit_offset: 1
-    bit_size: 1
-  - name: CAS
-    bit_offset: 2
-    bit_size: 1
-  - name: CCONVMED
-    bit_offset: 3
-    bit_size: 1
-  - name: EE
-    bit_offset: 4
-    bit_size: 1
-  - name: DF
-    bit_offset: 5
-    bit_size: 1
-  - name: DMAP
-    bit_offset: 6
-    bit_size: 1
-  - name: NR
-    bit_offset: 7
-    bit_size: 1
-  - name: DEMOSAIC
-    bit_offset: 8
-    bit_size: 1
-  - name: CSC
-    bit_offset: 9
-    bit_size: 1
-  - name: DRC
-    bit_offset: 10
-    bit_size: 1
-  - name: PKT
-    bit_offset: 11
-    bit_size: 1
-  - name: RUN
-    bit_offset: 31
-    bit_size: 1
+    - name: AF
+      bit_offset: 0
+      bit_size: 1
+    - name: GCM
+      bit_offset: 1
+      bit_size: 1
+    - name: CAS
+      bit_offset: 2
+      bit_size: 1
+    - name: CCONVMED
+      bit_offset: 3
+      bit_size: 1
+    - name: EE
+      bit_offset: 4
+      bit_size: 1
+    - name: DF
+      bit_offset: 5
+      bit_size: 1
+    - name: DMAP
+      bit_offset: 6
+      bit_size: 1
+    - name: NR
+      bit_offset: 7
+      bit_size: 1
+    - name: DEMOSAIC
+      bit_offset: 8
+      bit_size: 1
+    - name: CSC
+      bit_offset: 9
+      bit_size: 1
+    - name: DRC
+      bit_offset: 10
+      bit_size: 1
+    - name: PKT
+      bit_offset: 11
+      bit_size: 1
+    - name: RUN
+      bit_offset: 31
+      bit_size: 1

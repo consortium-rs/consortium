@@ -1,112 +1,112 @@
 block/AON_ROMCP:
   description: ''
   items:
-  - name: ROMPATCHD
-    byte_offset: 180
-    array:
-      len: 16
-      stride: 4
-    fieldset: AON_ROMCP_ROMPATCHD
-  - name: ROMPATCHCNTL
-    byte_offset: 244
-    fieldset: AON_ROMCP_ROMPATCHCNTL
-  - name: ROMPATCHENH
-    byte_offset: 248
-  - name: ROMPATCHENL
-    byte_offset: 252
-    fieldset: AON_ROMCP_ROMPATCHENL
-  - name: ROMPATCHA
-    byte_offset: 256
-    array:
-      len: 32
-      stride: 4
-    fieldset: AON_ROMCP_ROMPATCHA
-  - name: ROMPATCHSR
-    byte_offset: 520
-    fieldset: AON_ROMCP_ROMPATCHSR
+    - name: ROMPATCHD
+      byte_offset: 180
+      array:
+        len: 16
+        stride: 4
+      fieldset: AON_ROMCP_ROMPATCHD
+    - name: ROMPATCHCNTL
+      byte_offset: 244
+      fieldset: AON_ROMCP_ROMPATCHCNTL
+    - name: ROMPATCHENH
+      byte_offset: 248
+    - name: ROMPATCHENL
+      byte_offset: 252
+      fieldset: AON_ROMCP_ROMPATCHENL
+    - name: ROMPATCHA
+      byte_offset: 256
+      array:
+        len: 32
+        stride: 4
+      fieldset: AON_ROMCP_ROMPATCHA
+    - name: ROMPATCHSR
+      byte_offset: 520
+      fieldset: AON_ROMCP_ROMPATCHSR
 fieldset/AON_ROMCP_ROMPATCHD:
   description: ''
   fields:
-  - name: DATAX
-    bit_offset: 0
-    bit_size: 32
-    description: Data Fix Registers
+    - name: DATAX
+      bit_offset: 0
+      bit_size: 32
+      description: Data Fix Registers
 fieldset/AON_ROMCP_ROMPATCHCNTL:
   description: ''
   fields:
-  - name: DATAFIX0
-    bit_offset: 0
-    bit_size: 1
-  - name: DATAFIX1
-    bit_offset: 1
-    bit_size: 1
-  - name: DATAFIX2
-    bit_offset: 2
-    bit_size: 1
-  - name: DATAFIX3
-    bit_offset: 3
-    bit_size: 1
-  - name: DATAFIX4
-    bit_offset: 4
-    bit_size: 1
-  - name: DATAFIX5
-    bit_offset: 5
-    bit_size: 1
-  - name: DATAFIX6
-    bit_offset: 6
-    bit_size: 1
-  - name: DATAFIX7
-    bit_offset: 7
-    bit_size: 1
-  - name: DATAFIX8
-    bit_offset: 8
-    bit_size: 1
-  - name: DATAFIX9
-    bit_offset: 9
-    bit_size: 1
-  - name: DATAFIX10
-    bit_offset: 10
-    bit_size: 1
-  - name: DATAFIX11
-    bit_offset: 11
-    bit_size: 1
-  - name: DATAFIX12
-    bit_offset: 12
-    bit_size: 1
-  - name: DATAFIX13
-    bit_offset: 13
-    bit_size: 1
-  - name: DATAFIX14
-    bit_offset: 14
-    bit_size: 1
-  - name: DATAFIX15
-    bit_offset: 15
-    bit_size: 1
-  - name: DIS
-    bit_offset: 29
-    bit_size: 1
+    - name: DATAFIX0
+      bit_offset: 0
+      bit_size: 1
+    - name: DATAFIX1
+      bit_offset: 1
+      bit_size: 1
+    - name: DATAFIX2
+      bit_offset: 2
+      bit_size: 1
+    - name: DATAFIX3
+      bit_offset: 3
+      bit_size: 1
+    - name: DATAFIX4
+      bit_offset: 4
+      bit_size: 1
+    - name: DATAFIX5
+      bit_offset: 5
+      bit_size: 1
+    - name: DATAFIX6
+      bit_offset: 6
+      bit_size: 1
+    - name: DATAFIX7
+      bit_offset: 7
+      bit_size: 1
+    - name: DATAFIX8
+      bit_offset: 8
+      bit_size: 1
+    - name: DATAFIX9
+      bit_offset: 9
+      bit_size: 1
+    - name: DATAFIX10
+      bit_offset: 10
+      bit_size: 1
+    - name: DATAFIX11
+      bit_offset: 11
+      bit_size: 1
+    - name: DATAFIX12
+      bit_offset: 12
+      bit_size: 1
+    - name: DATAFIX13
+      bit_offset: 13
+      bit_size: 1
+    - name: DATAFIX14
+      bit_offset: 14
+      bit_size: 1
+    - name: DATAFIX15
+      bit_offset: 15
+      bit_size: 1
+    - name: DIS
+      bit_offset: 29
+      bit_size: 1
 fieldset/AON_ROMCP_ROMPATCHENL:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 32
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_ROMCP_ROMPATCHA:
   description: ''
   fields:
-  - name: THUMBX
-    bit_offset: 0
-    bit_size: 1
-  - name: ADDRX
-    bit_offset: 1
-    bit_size: 23
-    description: Address Comparator Registers
+    - name: THUMBX
+      bit_offset: 0
+      bit_size: 1
+    - name: ADDRX
+      bit_offset: 1
+      bit_size: 23
+      description: Address Comparator Registers
 fieldset/AON_ROMCP_ROMPATCHSR:
   description: ''
   fields:
-  - name: SOURCE
-    bit_offset: 0
-    bit_size: 6
-  - name: SW
-    bit_offset: 17
-    bit_size: 1
+    - name: SOURCE
+      bit_offset: 0
+      bit_size: 6
+    - name: SW
+      bit_offset: 17
+      bit_size: 1

@@ -1,849 +1,849 @@
 block/BSEC:
   description: ''
   items:
-  - name: FVRw
-    byte_offset: 0
-    array:
-      len: 384
-      stride: 4
-    description: BSEC fuse word (0-383) value register
-    fieldset: BSEC_FVRw
-  - name: SPLOCKx
-    byte_offset: 2048
-    array:
-      len: 12
-      stride: 4
-    description: BSEC sticky program lock register (0-11),
-    fieldset: BSEC_SPLOCKx
-  - name: SWLOCKx
-    byte_offset: 2112
-    array:
-      len: 12
-      stride: 4
-    description: BSEC sticky write lock register (0-11)
-    fieldset: BSEC_SWLOCKx
-  - name: SRLOCKx
-    byte_offset: 2176
-    array:
-      len: 12
-      stride: 4
-    description: BSEC sticky reload lock register (0-11)
-    fieldset: BSEC_SRLOCKx
-  - name: OTPVLDRx
-    byte_offset: 2240
-    array:
-      len: 12
-      stride: 4
-    description: BSEC OTP valid register (0-11)
-    fieldset: BSEC_OTPVLDRx
-  - name: SFSRx
-    byte_offset: 2368
-    array:
-      len: 12
-      stride: 4
-    description: BSEC shadowed fuses status register (0-11)
-    fieldset: BSEC_SFSRx
-  - name: OTPCR
-    byte_offset: 3076
-    description: BSEC OTP control register
-    fieldset: BSEC_OTPCR
-  - name: WDR
-    byte_offset: 3080
-    description: BSEC write data register
-    fieldset: BSEC_WDR
-  - name: SCRATCHRx
-    byte_offset: 3584
-    array:
-      len: 4
-      stride: 4
-    description: BSEC scratch register (0-3)
-    fieldset: BSEC_SCRATCHRx
-  - name: LOCKR
-    byte_offset: 3600
-    description: BSEC lock register
-    fieldset: BSEC_LOCKR
-  - name: JTAGINR
-    byte_offset: 3604
-    description: BSEC JTAG input register
-    fieldset: BSEC_JTAGINR
-  - name: JTAGOUTR
-    byte_offset: 3608
-    description: BSEC JTAG output register
-    fieldset: BSEC_JTAGOUTR
-  - name: DENR
-    byte_offset: 3616
-    description: BSEC debug enable register
-    fieldset: BSEC_DENR
-  - name: UNMAPR
-    byte_offset: 3620
-    description: BSEC unmap register
-    fieldset: BSEC_UNMAPR
-  - name: SR
-    byte_offset: 3648
-    description: BSEC status register
-    fieldset: BSEC_SR
-  - name: OTPSR
-    byte_offset: 3652
-    description: BSEC OTP status register
-    fieldset: BSEC_OTPSR
-  - name: WOSCRx
-    byte_offset: 3904
-    array:
-      len: 8
-      stride: 4
-    description: BSEC write once scratch register (0-7)
-    fieldset: BSEC_WOSCRx
-  - name: HRCR
-    byte_offset: 4072
-    description: BSEC hot reset count register
-    fieldset: BSEC_HRCR
-  - name: WRCR
-    byte_offset: 4076
-    description: BSEC warm reset count register
-    fieldset: BSEC_WRCR
-  - name: VERR
-    byte_offset: 4084
-    description: BSEC version register
-    fieldset: BSEC_VERR
-  - name: IPIDR
-    byte_offset: 4088
-    description: BSEC identification register
-    fieldset: BSEC_IPIDR
-  - name: SIDR
-    byte_offset: 4092
-    description: BSEC size identification register
-    fieldset: BSEC_SIDR
+    - name: FVRw
+      byte_offset: 0
+      array:
+        len: 384
+        stride: 4
+      description: BSEC fuse word (0-383) value register
+      fieldset: BSEC_FVRw
+    - name: SPLOCKx
+      byte_offset: 2048
+      array:
+        len: 12
+        stride: 4
+      description: BSEC sticky program lock register (0-11),
+      fieldset: BSEC_SPLOCKx
+    - name: SWLOCKx
+      byte_offset: 2112
+      array:
+        len: 12
+        stride: 4
+      description: BSEC sticky write lock register (0-11)
+      fieldset: BSEC_SWLOCKx
+    - name: SRLOCKx
+      byte_offset: 2176
+      array:
+        len: 12
+        stride: 4
+      description: BSEC sticky reload lock register (0-11)
+      fieldset: BSEC_SRLOCKx
+    - name: OTPVLDRx
+      byte_offset: 2240
+      array:
+        len: 12
+        stride: 4
+      description: BSEC OTP valid register (0-11)
+      fieldset: BSEC_OTPVLDRx
+    - name: SFSRx
+      byte_offset: 2368
+      array:
+        len: 12
+        stride: 4
+      description: BSEC shadowed fuses status register (0-11)
+      fieldset: BSEC_SFSRx
+    - name: OTPCR
+      byte_offset: 3076
+      description: BSEC OTP control register
+      fieldset: BSEC_OTPCR
+    - name: WDR
+      byte_offset: 3080
+      description: BSEC write data register
+      fieldset: BSEC_WDR
+    - name: SCRATCHRx
+      byte_offset: 3584
+      array:
+        len: 4
+        stride: 4
+      description: BSEC scratch register (0-3)
+      fieldset: BSEC_SCRATCHRx
+    - name: LOCKR
+      byte_offset: 3600
+      description: BSEC lock register
+      fieldset: BSEC_LOCKR
+    - name: JTAGINR
+      byte_offset: 3604
+      description: BSEC JTAG input register
+      fieldset: BSEC_JTAGINR
+    - name: JTAGOUTR
+      byte_offset: 3608
+      description: BSEC JTAG output register
+      fieldset: BSEC_JTAGOUTR
+    - name: DENR
+      byte_offset: 3616
+      description: BSEC debug enable register
+      fieldset: BSEC_DENR
+    - name: UNMAPR
+      byte_offset: 3620
+      description: BSEC unmap register
+      fieldset: BSEC_UNMAPR
+    - name: SR
+      byte_offset: 3648
+      description: BSEC status register
+      fieldset: BSEC_SR
+    - name: OTPSR
+      byte_offset: 3652
+      description: BSEC OTP status register
+      fieldset: BSEC_OTPSR
+    - name: WOSCRx
+      byte_offset: 3904
+      array:
+        len: 8
+        stride: 4
+      description: BSEC write once scratch register (0-7)
+      fieldset: BSEC_WOSCRx
+    - name: HRCR
+      byte_offset: 4072
+      description: BSEC hot reset count register
+      fieldset: BSEC_HRCR
+    - name: WRCR
+      byte_offset: 4076
+      description: BSEC warm reset count register
+      fieldset: BSEC_WRCR
+    - name: VERR
+      byte_offset: 4084
+      description: BSEC version register
+      fieldset: BSEC_VERR
+    - name: IPIDR
+      byte_offset: 4088
+      description: BSEC identification register
+      fieldset: BSEC_IPIDR
+    - name: SIDR
+      byte_offset: 4092
+      description: BSEC size identification register
+      fieldset: BSEC_SIDR
 fieldset/BSEC_FVRw:
   description: ''
   fields:
-  - name: FV
-    bit_offset: 0
-    bit_size: 32
-    description: Fuse value
+    - name: FV
+      bit_offset: 0
+      bit_size: 32
+      description: Fuse value
 fieldset/BSEC_SPLOCKx:
   description: ''
   fields:
-  - name: SPLOCK0
-    bit_offset: 0
-    bit_size: 1
-  - name: SPLOCK1
-    bit_offset: 1
-    bit_size: 1
-  - name: SPLOCK2
-    bit_offset: 2
-    bit_size: 1
-  - name: SPLOCK3
-    bit_offset: 3
-    bit_size: 1
-  - name: SPLOCK4
-    bit_offset: 4
-    bit_size: 1
-  - name: SPLOCK5
-    bit_offset: 5
-    bit_size: 1
-  - name: SPLOCK6
-    bit_offset: 6
-    bit_size: 1
-  - name: SPLOCK7
-    bit_offset: 7
-    bit_size: 1
-  - name: SPLOCK8
-    bit_offset: 8
-    bit_size: 1
-  - name: SPLOCK9
-    bit_offset: 9
-    bit_size: 1
-  - name: SPLOCK10
-    bit_offset: 10
-    bit_size: 1
-  - name: SPLOCK11
-    bit_offset: 11
-    bit_size: 1
-  - name: SPLOCK12
-    bit_offset: 12
-    bit_size: 1
-  - name: SPLOCK13
-    bit_offset: 13
-    bit_size: 1
-  - name: SPLOCK14
-    bit_offset: 14
-    bit_size: 1
-  - name: SPLOCK15
-    bit_offset: 15
-    bit_size: 1
-  - name: SPLOCK16
-    bit_offset: 16
-    bit_size: 1
-  - name: SPLOCK17
-    bit_offset: 17
-    bit_size: 1
-  - name: SPLOCK18
-    bit_offset: 18
-    bit_size: 1
-  - name: SPLOCK19
-    bit_offset: 19
-    bit_size: 1
-  - name: SPLOCK20
-    bit_offset: 20
-    bit_size: 1
-  - name: SPLOCK21
-    bit_offset: 21
-    bit_size: 1
-  - name: SPLOCK22
-    bit_offset: 22
-    bit_size: 1
-  - name: SPLOCK23
-    bit_offset: 23
-    bit_size: 1
-  - name: SPLOCK24
-    bit_offset: 24
-    bit_size: 1
-  - name: SPLOCK25
-    bit_offset: 25
-    bit_size: 1
-  - name: SPLOCK26
-    bit_offset: 26
-    bit_size: 1
-  - name: SPLOCK27
-    bit_offset: 27
-    bit_size: 1
-  - name: SPLOCK28
-    bit_offset: 28
-    bit_size: 1
-  - name: SPLOCK29
-    bit_offset: 29
-    bit_size: 1
-  - name: SPLOCK30
-    bit_offset: 30
-    bit_size: 1
-  - name: SPLOCK31
-    bit_offset: 31
-    bit_size: 1
+    - name: SPLOCK0
+      bit_offset: 0
+      bit_size: 1
+    - name: SPLOCK1
+      bit_offset: 1
+      bit_size: 1
+    - name: SPLOCK2
+      bit_offset: 2
+      bit_size: 1
+    - name: SPLOCK3
+      bit_offset: 3
+      bit_size: 1
+    - name: SPLOCK4
+      bit_offset: 4
+      bit_size: 1
+    - name: SPLOCK5
+      bit_offset: 5
+      bit_size: 1
+    - name: SPLOCK6
+      bit_offset: 6
+      bit_size: 1
+    - name: SPLOCK7
+      bit_offset: 7
+      bit_size: 1
+    - name: SPLOCK8
+      bit_offset: 8
+      bit_size: 1
+    - name: SPLOCK9
+      bit_offset: 9
+      bit_size: 1
+    - name: SPLOCK10
+      bit_offset: 10
+      bit_size: 1
+    - name: SPLOCK11
+      bit_offset: 11
+      bit_size: 1
+    - name: SPLOCK12
+      bit_offset: 12
+      bit_size: 1
+    - name: SPLOCK13
+      bit_offset: 13
+      bit_size: 1
+    - name: SPLOCK14
+      bit_offset: 14
+      bit_size: 1
+    - name: SPLOCK15
+      bit_offset: 15
+      bit_size: 1
+    - name: SPLOCK16
+      bit_offset: 16
+      bit_size: 1
+    - name: SPLOCK17
+      bit_offset: 17
+      bit_size: 1
+    - name: SPLOCK18
+      bit_offset: 18
+      bit_size: 1
+    - name: SPLOCK19
+      bit_offset: 19
+      bit_size: 1
+    - name: SPLOCK20
+      bit_offset: 20
+      bit_size: 1
+    - name: SPLOCK21
+      bit_offset: 21
+      bit_size: 1
+    - name: SPLOCK22
+      bit_offset: 22
+      bit_size: 1
+    - name: SPLOCK23
+      bit_offset: 23
+      bit_size: 1
+    - name: SPLOCK24
+      bit_offset: 24
+      bit_size: 1
+    - name: SPLOCK25
+      bit_offset: 25
+      bit_size: 1
+    - name: SPLOCK26
+      bit_offset: 26
+      bit_size: 1
+    - name: SPLOCK27
+      bit_offset: 27
+      bit_size: 1
+    - name: SPLOCK28
+      bit_offset: 28
+      bit_size: 1
+    - name: SPLOCK29
+      bit_offset: 29
+      bit_size: 1
+    - name: SPLOCK30
+      bit_offset: 30
+      bit_size: 1
+    - name: SPLOCK31
+      bit_offset: 31
+      bit_size: 1
 fieldset/BSEC_SWLOCKx:
   description: ''
   fields:
-  - name: SWLOCK0
-    bit_offset: 0
-    bit_size: 1
-  - name: SWLOCK1
-    bit_offset: 1
-    bit_size: 1
-  - name: SWLOCK2
-    bit_offset: 2
-    bit_size: 1
-  - name: SWLOCK3
-    bit_offset: 3
-    bit_size: 1
-  - name: SWLOCK4
-    bit_offset: 4
-    bit_size: 1
-  - name: SWLOCK5
-    bit_offset: 5
-    bit_size: 1
-  - name: SWLOCK6
-    bit_offset: 6
-    bit_size: 1
-  - name: SWLOCK7
-    bit_offset: 7
-    bit_size: 1
-  - name: SWLOCK8
-    bit_offset: 8
-    bit_size: 1
-  - name: SWLOCK9
-    bit_offset: 9
-    bit_size: 1
-  - name: SWLOCK10
-    bit_offset: 10
-    bit_size: 1
-  - name: SWLOCK11
-    bit_offset: 11
-    bit_size: 1
-  - name: SWLOCK12
-    bit_offset: 12
-    bit_size: 1
-  - name: SWLOCK13
-    bit_offset: 13
-    bit_size: 1
-  - name: SWLOCK14
-    bit_offset: 14
-    bit_size: 1
-  - name: SWLOCK15
-    bit_offset: 15
-    bit_size: 1
-  - name: SWLOCK16
-    bit_offset: 16
-    bit_size: 1
-  - name: SWLOCK17
-    bit_offset: 17
-    bit_size: 1
-  - name: SWLOCK18
-    bit_offset: 18
-    bit_size: 1
-  - name: SWLOCK19
-    bit_offset: 19
-    bit_size: 1
-  - name: SWLOCK20
-    bit_offset: 20
-    bit_size: 1
-  - name: SWLOCK21
-    bit_offset: 21
-    bit_size: 1
-  - name: SWLOCK22
-    bit_offset: 22
-    bit_size: 1
-  - name: SWLOCK23
-    bit_offset: 23
-    bit_size: 1
-  - name: SWLOCK24
-    bit_offset: 24
-    bit_size: 1
-  - name: SWLOCK25
-    bit_offset: 25
-    bit_size: 1
-  - name: SWLOCK26
-    bit_offset: 26
-    bit_size: 1
-  - name: SWLOCK27
-    bit_offset: 27
-    bit_size: 1
-  - name: SWLOCK28
-    bit_offset: 28
-    bit_size: 1
-  - name: SWLOCK29
-    bit_offset: 29
-    bit_size: 1
-  - name: SWLOCK30
-    bit_offset: 30
-    bit_size: 1
-  - name: SWLOCK31
-    bit_offset: 31
-    bit_size: 1
+    - name: SWLOCK0
+      bit_offset: 0
+      bit_size: 1
+    - name: SWLOCK1
+      bit_offset: 1
+      bit_size: 1
+    - name: SWLOCK2
+      bit_offset: 2
+      bit_size: 1
+    - name: SWLOCK3
+      bit_offset: 3
+      bit_size: 1
+    - name: SWLOCK4
+      bit_offset: 4
+      bit_size: 1
+    - name: SWLOCK5
+      bit_offset: 5
+      bit_size: 1
+    - name: SWLOCK6
+      bit_offset: 6
+      bit_size: 1
+    - name: SWLOCK7
+      bit_offset: 7
+      bit_size: 1
+    - name: SWLOCK8
+      bit_offset: 8
+      bit_size: 1
+    - name: SWLOCK9
+      bit_offset: 9
+      bit_size: 1
+    - name: SWLOCK10
+      bit_offset: 10
+      bit_size: 1
+    - name: SWLOCK11
+      bit_offset: 11
+      bit_size: 1
+    - name: SWLOCK12
+      bit_offset: 12
+      bit_size: 1
+    - name: SWLOCK13
+      bit_offset: 13
+      bit_size: 1
+    - name: SWLOCK14
+      bit_offset: 14
+      bit_size: 1
+    - name: SWLOCK15
+      bit_offset: 15
+      bit_size: 1
+    - name: SWLOCK16
+      bit_offset: 16
+      bit_size: 1
+    - name: SWLOCK17
+      bit_offset: 17
+      bit_size: 1
+    - name: SWLOCK18
+      bit_offset: 18
+      bit_size: 1
+    - name: SWLOCK19
+      bit_offset: 19
+      bit_size: 1
+    - name: SWLOCK20
+      bit_offset: 20
+      bit_size: 1
+    - name: SWLOCK21
+      bit_offset: 21
+      bit_size: 1
+    - name: SWLOCK22
+      bit_offset: 22
+      bit_size: 1
+    - name: SWLOCK23
+      bit_offset: 23
+      bit_size: 1
+    - name: SWLOCK24
+      bit_offset: 24
+      bit_size: 1
+    - name: SWLOCK25
+      bit_offset: 25
+      bit_size: 1
+    - name: SWLOCK26
+      bit_offset: 26
+      bit_size: 1
+    - name: SWLOCK27
+      bit_offset: 27
+      bit_size: 1
+    - name: SWLOCK28
+      bit_offset: 28
+      bit_size: 1
+    - name: SWLOCK29
+      bit_offset: 29
+      bit_size: 1
+    - name: SWLOCK30
+      bit_offset: 30
+      bit_size: 1
+    - name: SWLOCK31
+      bit_offset: 31
+      bit_size: 1
 fieldset/BSEC_SRLOCKx:
   description: ''
   fields:
-  - name: SRLOCK0
-    bit_offset: 0
-    bit_size: 1
-  - name: SRLOCK1
-    bit_offset: 1
-    bit_size: 1
-  - name: SRLOCK2
-    bit_offset: 2
-    bit_size: 1
-  - name: SRLOCK3
-    bit_offset: 3
-    bit_size: 1
-  - name: SRLOCK4
-    bit_offset: 4
-    bit_size: 1
-  - name: SRLOCK5
-    bit_offset: 5
-    bit_size: 1
-  - name: SRLOCK6
-    bit_offset: 6
-    bit_size: 1
-  - name: SRLOCK7
-    bit_offset: 7
-    bit_size: 1
-  - name: SRLOCK8
-    bit_offset: 8
-    bit_size: 1
-  - name: SRLOCK9
-    bit_offset: 9
-    bit_size: 1
-  - name: SRLOCK10
-    bit_offset: 10
-    bit_size: 1
-  - name: SRLOCK11
-    bit_offset: 11
-    bit_size: 1
-  - name: SRLOCK12
-    bit_offset: 12
-    bit_size: 1
-  - name: SRLOCK13
-    bit_offset: 13
-    bit_size: 1
-  - name: SRLOCK14
-    bit_offset: 14
-    bit_size: 1
-  - name: SRLOCK15
-    bit_offset: 15
-    bit_size: 1
-  - name: SRLOCK16
-    bit_offset: 16
-    bit_size: 1
-  - name: SRLOCK17
-    bit_offset: 17
-    bit_size: 1
-  - name: SRLOCK18
-    bit_offset: 18
-    bit_size: 1
-  - name: SRLOCK19
-    bit_offset: 19
-    bit_size: 1
-  - name: SRLOCK20
-    bit_offset: 20
-    bit_size: 1
-  - name: SRLOCK21
-    bit_offset: 21
-    bit_size: 1
-  - name: SRLOCK22
-    bit_offset: 22
-    bit_size: 1
-  - name: SRLOCK23
-    bit_offset: 23
-    bit_size: 1
-  - name: SRLOCK24
-    bit_offset: 24
-    bit_size: 1
-  - name: SRLOCK25
-    bit_offset: 25
-    bit_size: 1
-  - name: SRLOCK26
-    bit_offset: 26
-    bit_size: 1
-  - name: SRLOCK27
-    bit_offset: 27
-    bit_size: 1
-  - name: SRLOCK28
-    bit_offset: 28
-    bit_size: 1
-  - name: SRLOCK29
-    bit_offset: 29
-    bit_size: 1
-  - name: SRLOCK30
-    bit_offset: 30
-    bit_size: 1
-  - name: SRLOCK31
-    bit_offset: 31
-    bit_size: 1
+    - name: SRLOCK0
+      bit_offset: 0
+      bit_size: 1
+    - name: SRLOCK1
+      bit_offset: 1
+      bit_size: 1
+    - name: SRLOCK2
+      bit_offset: 2
+      bit_size: 1
+    - name: SRLOCK3
+      bit_offset: 3
+      bit_size: 1
+    - name: SRLOCK4
+      bit_offset: 4
+      bit_size: 1
+    - name: SRLOCK5
+      bit_offset: 5
+      bit_size: 1
+    - name: SRLOCK6
+      bit_offset: 6
+      bit_size: 1
+    - name: SRLOCK7
+      bit_offset: 7
+      bit_size: 1
+    - name: SRLOCK8
+      bit_offset: 8
+      bit_size: 1
+    - name: SRLOCK9
+      bit_offset: 9
+      bit_size: 1
+    - name: SRLOCK10
+      bit_offset: 10
+      bit_size: 1
+    - name: SRLOCK11
+      bit_offset: 11
+      bit_size: 1
+    - name: SRLOCK12
+      bit_offset: 12
+      bit_size: 1
+    - name: SRLOCK13
+      bit_offset: 13
+      bit_size: 1
+    - name: SRLOCK14
+      bit_offset: 14
+      bit_size: 1
+    - name: SRLOCK15
+      bit_offset: 15
+      bit_size: 1
+    - name: SRLOCK16
+      bit_offset: 16
+      bit_size: 1
+    - name: SRLOCK17
+      bit_offset: 17
+      bit_size: 1
+    - name: SRLOCK18
+      bit_offset: 18
+      bit_size: 1
+    - name: SRLOCK19
+      bit_offset: 19
+      bit_size: 1
+    - name: SRLOCK20
+      bit_offset: 20
+      bit_size: 1
+    - name: SRLOCK21
+      bit_offset: 21
+      bit_size: 1
+    - name: SRLOCK22
+      bit_offset: 22
+      bit_size: 1
+    - name: SRLOCK23
+      bit_offset: 23
+      bit_size: 1
+    - name: SRLOCK24
+      bit_offset: 24
+      bit_size: 1
+    - name: SRLOCK25
+      bit_offset: 25
+      bit_size: 1
+    - name: SRLOCK26
+      bit_offset: 26
+      bit_size: 1
+    - name: SRLOCK27
+      bit_offset: 27
+      bit_size: 1
+    - name: SRLOCK28
+      bit_offset: 28
+      bit_size: 1
+    - name: SRLOCK29
+      bit_offset: 29
+      bit_size: 1
+    - name: SRLOCK30
+      bit_offset: 30
+      bit_size: 1
+    - name: SRLOCK31
+      bit_offset: 31
+      bit_size: 1
 fieldset/BSEC_OTPVLDRx:
   description: ''
   fields:
-  - name: VLDF0
-    bit_offset: 0
-    bit_size: 1
-  - name: VLDF1
-    bit_offset: 1
-    bit_size: 1
-  - name: VLDF2
-    bit_offset: 2
-    bit_size: 1
-  - name: VLDF3
-    bit_offset: 3
-    bit_size: 1
-  - name: VLDF4
-    bit_offset: 4
-    bit_size: 1
-  - name: VLDF5
-    bit_offset: 5
-    bit_size: 1
-  - name: VLDF6
-    bit_offset: 6
-    bit_size: 1
-  - name: VLDF7
-    bit_offset: 7
-    bit_size: 1
-  - name: VLDF8
-    bit_offset: 8
-    bit_size: 1
-  - name: VLDF9
-    bit_offset: 9
-    bit_size: 1
-  - name: VLDF10
-    bit_offset: 10
-    bit_size: 1
-  - name: VLDF11
-    bit_offset: 11
-    bit_size: 1
-  - name: VLDF12
-    bit_offset: 12
-    bit_size: 1
-  - name: VLDF13
-    bit_offset: 13
-    bit_size: 1
-  - name: VLDF14
-    bit_offset: 14
-    bit_size: 1
-  - name: VLDF15
-    bit_offset: 15
-    bit_size: 1
-  - name: VLDF16
-    bit_offset: 16
-    bit_size: 1
-  - name: VLDF17
-    bit_offset: 17
-    bit_size: 1
-  - name: VLDF18
-    bit_offset: 18
-    bit_size: 1
-  - name: VLDF19
-    bit_offset: 19
-    bit_size: 1
-  - name: VLDF20
-    bit_offset: 20
-    bit_size: 1
-  - name: VLDF21
-    bit_offset: 21
-    bit_size: 1
-  - name: VLDF22
-    bit_offset: 22
-    bit_size: 1
-  - name: VLDF23
-    bit_offset: 23
-    bit_size: 1
-  - name: VLDF24
-    bit_offset: 24
-    bit_size: 1
-  - name: VLDF25
-    bit_offset: 25
-    bit_size: 1
-  - name: VLDF26
-    bit_offset: 26
-    bit_size: 1
-  - name: VLDF27
-    bit_offset: 27
-    bit_size: 1
-  - name: VLDF28
-    bit_offset: 28
-    bit_size: 1
-  - name: VLDF29
-    bit_offset: 29
-    bit_size: 1
-  - name: VLDF30
-    bit_offset: 30
-    bit_size: 1
-  - name: VLDF31
-    bit_offset: 31
-    bit_size: 1
+    - name: VLDF0
+      bit_offset: 0
+      bit_size: 1
+    - name: VLDF1
+      bit_offset: 1
+      bit_size: 1
+    - name: VLDF2
+      bit_offset: 2
+      bit_size: 1
+    - name: VLDF3
+      bit_offset: 3
+      bit_size: 1
+    - name: VLDF4
+      bit_offset: 4
+      bit_size: 1
+    - name: VLDF5
+      bit_offset: 5
+      bit_size: 1
+    - name: VLDF6
+      bit_offset: 6
+      bit_size: 1
+    - name: VLDF7
+      bit_offset: 7
+      bit_size: 1
+    - name: VLDF8
+      bit_offset: 8
+      bit_size: 1
+    - name: VLDF9
+      bit_offset: 9
+      bit_size: 1
+    - name: VLDF10
+      bit_offset: 10
+      bit_size: 1
+    - name: VLDF11
+      bit_offset: 11
+      bit_size: 1
+    - name: VLDF12
+      bit_offset: 12
+      bit_size: 1
+    - name: VLDF13
+      bit_offset: 13
+      bit_size: 1
+    - name: VLDF14
+      bit_offset: 14
+      bit_size: 1
+    - name: VLDF15
+      bit_offset: 15
+      bit_size: 1
+    - name: VLDF16
+      bit_offset: 16
+      bit_size: 1
+    - name: VLDF17
+      bit_offset: 17
+      bit_size: 1
+    - name: VLDF18
+      bit_offset: 18
+      bit_size: 1
+    - name: VLDF19
+      bit_offset: 19
+      bit_size: 1
+    - name: VLDF20
+      bit_offset: 20
+      bit_size: 1
+    - name: VLDF21
+      bit_offset: 21
+      bit_size: 1
+    - name: VLDF22
+      bit_offset: 22
+      bit_size: 1
+    - name: VLDF23
+      bit_offset: 23
+      bit_size: 1
+    - name: VLDF24
+      bit_offset: 24
+      bit_size: 1
+    - name: VLDF25
+      bit_offset: 25
+      bit_size: 1
+    - name: VLDF26
+      bit_offset: 26
+      bit_size: 1
+    - name: VLDF27
+      bit_offset: 27
+      bit_size: 1
+    - name: VLDF28
+      bit_offset: 28
+      bit_size: 1
+    - name: VLDF29
+      bit_offset: 29
+      bit_size: 1
+    - name: VLDF30
+      bit_offset: 30
+      bit_size: 1
+    - name: VLDF31
+      bit_offset: 31
+      bit_size: 1
 fieldset/BSEC_SFSRx:
   description: ''
   fields:
-  - name: SFW0
-    bit_offset: 0
-    bit_size: 1
-  - name: SFW1
-    bit_offset: 1
-    bit_size: 1
-  - name: SFW2
-    bit_offset: 2
-    bit_size: 1
-  - name: SFW3
-    bit_offset: 3
-    bit_size: 1
-  - name: SFW4
-    bit_offset: 4
-    bit_size: 1
-  - name: SFW5
-    bit_offset: 5
-    bit_size: 1
-  - name: SFW6
-    bit_offset: 6
-    bit_size: 1
-  - name: SFW7
-    bit_offset: 7
-    bit_size: 1
-  - name: SFW8
-    bit_offset: 8
-    bit_size: 1
-  - name: SFW9
-    bit_offset: 9
-    bit_size: 1
-  - name: SFW10
-    bit_offset: 10
-    bit_size: 1
-  - name: SFW11
-    bit_offset: 11
-    bit_size: 1
-  - name: SFW12
-    bit_offset: 12
-    bit_size: 1
-  - name: SFW13
-    bit_offset: 13
-    bit_size: 1
-  - name: SFW14
-    bit_offset: 14
-    bit_size: 1
-  - name: SFW15
-    bit_offset: 15
-    bit_size: 1
-  - name: SFW16
-    bit_offset: 16
-    bit_size: 1
-  - name: SFW17
-    bit_offset: 17
-    bit_size: 1
-  - name: SFW18
-    bit_offset: 18
-    bit_size: 1
-  - name: SFW19
-    bit_offset: 19
-    bit_size: 1
-  - name: SFW20
-    bit_offset: 20
-    bit_size: 1
-  - name: SFW21
-    bit_offset: 21
-    bit_size: 1
-  - name: SFW22
-    bit_offset: 22
-    bit_size: 1
-  - name: SFW23
-    bit_offset: 23
-    bit_size: 1
-  - name: SFW24
-    bit_offset: 24
-    bit_size: 1
-  - name: SFW25
-    bit_offset: 25
-    bit_size: 1
-  - name: SFW26
-    bit_offset: 26
-    bit_size: 1
-  - name: SFW27
-    bit_offset: 27
-    bit_size: 1
-  - name: SFW28
-    bit_offset: 28
-    bit_size: 1
-  - name: SFW29
-    bit_offset: 29
-    bit_size: 1
-  - name: SFW30
-    bit_offset: 30
-    bit_size: 1
-  - name: SFW31
-    bit_offset: 31
-    bit_size: 1
+    - name: SFW0
+      bit_offset: 0
+      bit_size: 1
+    - name: SFW1
+      bit_offset: 1
+      bit_size: 1
+    - name: SFW2
+      bit_offset: 2
+      bit_size: 1
+    - name: SFW3
+      bit_offset: 3
+      bit_size: 1
+    - name: SFW4
+      bit_offset: 4
+      bit_size: 1
+    - name: SFW5
+      bit_offset: 5
+      bit_size: 1
+    - name: SFW6
+      bit_offset: 6
+      bit_size: 1
+    - name: SFW7
+      bit_offset: 7
+      bit_size: 1
+    - name: SFW8
+      bit_offset: 8
+      bit_size: 1
+    - name: SFW9
+      bit_offset: 9
+      bit_size: 1
+    - name: SFW10
+      bit_offset: 10
+      bit_size: 1
+    - name: SFW11
+      bit_offset: 11
+      bit_size: 1
+    - name: SFW12
+      bit_offset: 12
+      bit_size: 1
+    - name: SFW13
+      bit_offset: 13
+      bit_size: 1
+    - name: SFW14
+      bit_offset: 14
+      bit_size: 1
+    - name: SFW15
+      bit_offset: 15
+      bit_size: 1
+    - name: SFW16
+      bit_offset: 16
+      bit_size: 1
+    - name: SFW17
+      bit_offset: 17
+      bit_size: 1
+    - name: SFW18
+      bit_offset: 18
+      bit_size: 1
+    - name: SFW19
+      bit_offset: 19
+      bit_size: 1
+    - name: SFW20
+      bit_offset: 20
+      bit_size: 1
+    - name: SFW21
+      bit_offset: 21
+      bit_size: 1
+    - name: SFW22
+      bit_offset: 22
+      bit_size: 1
+    - name: SFW23
+      bit_offset: 23
+      bit_size: 1
+    - name: SFW24
+      bit_offset: 24
+      bit_size: 1
+    - name: SFW25
+      bit_offset: 25
+      bit_size: 1
+    - name: SFW26
+      bit_offset: 26
+      bit_size: 1
+    - name: SFW27
+      bit_offset: 27
+      bit_size: 1
+    - name: SFW28
+      bit_offset: 28
+      bit_size: 1
+    - name: SFW29
+      bit_offset: 29
+      bit_size: 1
+    - name: SFW30
+      bit_offset: 30
+      bit_size: 1
+    - name: SFW31
+      bit_offset: 31
+      bit_size: 1
 fieldset/BSEC_OTPCR:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 0
-    bit_size: 9
-    description: Fuse word address
-  - name: PROG
-    bit_offset: 13
-    bit_size: 1
-    description: Fuse word programming
-  - name: PPLOCK
-    bit_offset: 14
-    bit_size: 1
-    description: Permanent programming lock
-  - name: LASTCID
-    bit_offset: 19
-    bit_size: 3
-    description: Last CID
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 9
+      description: Fuse word address
+    - name: PROG
+      bit_offset: 13
+      bit_size: 1
+      description: Fuse word programming
+    - name: PPLOCK
+      bit_offset: 14
+      bit_size: 1
+      description: Permanent programming lock
+    - name: LASTCID
+      bit_offset: 19
+      bit_size: 3
+      description: Last CID
 fieldset/BSEC_WDR:
   description: ''
   fields:
-  - name: WRDATA
-    bit_offset: 0
-    bit_size: 32
-    description: OTP write data
+    - name: WRDATA
+      bit_offset: 0
+      bit_size: 32
+      description: OTP write data
 fieldset/BSEC_SCRATCHRx:
   description: ''
   fields:
-  - name: SDATA
-    bit_offset: 0
-    bit_size: 32
-    description: Scratch data
+    - name: SDATA
+      bit_offset: 0
+      bit_size: 32
+      description: Scratch data
 fieldset/BSEC_LOCKR:
   description: ''
   fields:
-  - name: GWLOCK
-    bit_offset: 0
-    bit_size: 1
-    description: Global write lock
-  - name: DENLOCK
-    bit_offset: 1
-    bit_size: 1
-    description: Debug enable register sticky lock
-  - name: HKLOCK
-    bit_offset: 2
-    bit_size: 1
-    description: Hardware key lock
+    - name: GWLOCK
+      bit_offset: 0
+      bit_size: 1
+      description: Global write lock
+    - name: DENLOCK
+      bit_offset: 1
+      bit_size: 1
+      description: Debug enable register sticky lock
+    - name: HKLOCK
+      bit_offset: 2
+      bit_size: 1
+      description: Hardware key lock
 fieldset/BSEC_JTAGINR:
   description: ''
   fields:
-  - name: JDATAIN
-    bit_offset: 0
-    bit_size: 32
-    description: JTAG input data
+    - name: JDATAIN
+      bit_offset: 0
+      bit_size: 32
+      description: JTAG input data
 fieldset/BSEC_JTAGOUTR:
   description: ''
   fields:
-  - name: JDATAOUT
-    bit_offset: 0
-    bit_size: 32
-    description: JTAG output data
+    - name: JDATAOUT
+      bit_offset: 0
+      bit_size: 32
+      description: JTAG output data
 fieldset/BSEC_DENR:
   description: ''
   fields:
-  - name: DBGENA
-    bit_offset: 1
-    bit_size: 1
-    description: Debug enable for Cortex A
-  - name: NIDENA
-    bit_offset: 2
-    bit_size: 1
-    description: Non invasive debug enable for Cortex A
-  - name: DEVICEEN
-    bit_offset: 3
-    bit_size: 1
-    description: Device debug enable
-  - name: HDPEN
-    bit_offset: 4
-    bit_size: 1
-    description: Hardware debug port enable
-  - name: SPIDENA
-    bit_offset: 5
-    bit_size: 1
-    description: Secure privilege invasive debug enable for Cortex A
-  - name: SPNIDENA
-    bit_offset: 6
-    bit_size: 1
-    description: Secure privilege non-invasive debug enable for Cortex A
-  - name: DBGSWEN
-    bit_offset: 7
-    bit_size: 1
-    description: Self-hosted debug enable
-  - name: DBGENM
-    bit_offset: 8
-    bit_size: 1
-    description: Debug enable for Cortex M
-  - name: NIDENM
-    bit_offset: 9
-    bit_size: 1
-    description: Non invasive debug enable for Cortex M
-  - name: SPIDENM
-    bit_offset: 10
-    bit_size: 1
-    description: Secure privilege invasive debug enable for Cortex M
-  - name: SPNIDENM
-    bit_offset: 11
-    bit_size: 1
-    description: Secure privilege non-invasive debug enable for Cortex M
-  - name: CFGSDIS
-    bit_offset: 12
-    bit_size: 1
-    description: CFGSDISABLE
-  - name: CP15SDIS
-    bit_offset: 13
-    bit_size: 2
-    description: CP15SDISABLE for core x (x=0 or 1)
+    - name: DBGENA
+      bit_offset: 1
+      bit_size: 1
+      description: Debug enable for Cortex A
+    - name: NIDENA
+      bit_offset: 2
+      bit_size: 1
+      description: Non invasive debug enable for Cortex A
+    - name: DEVICEEN
+      bit_offset: 3
+      bit_size: 1
+      description: Device debug enable
+    - name: HDPEN
+      bit_offset: 4
+      bit_size: 1
+      description: Hardware debug port enable
+    - name: SPIDENA
+      bit_offset: 5
+      bit_size: 1
+      description: Secure privilege invasive debug enable for Cortex A
+    - name: SPNIDENA
+      bit_offset: 6
+      bit_size: 1
+      description: Secure privilege non-invasive debug enable for Cortex A
+    - name: DBGSWEN
+      bit_offset: 7
+      bit_size: 1
+      description: Self-hosted debug enable
+    - name: DBGENM
+      bit_offset: 8
+      bit_size: 1
+      description: Debug enable for Cortex M
+    - name: NIDENM
+      bit_offset: 9
+      bit_size: 1
+      description: Non invasive debug enable for Cortex M
+    - name: SPIDENM
+      bit_offset: 10
+      bit_size: 1
+      description: Secure privilege invasive debug enable for Cortex M
+    - name: SPNIDENM
+      bit_offset: 11
+      bit_size: 1
+      description: Secure privilege non-invasive debug enable for Cortex M
+    - name: CFGSDIS
+      bit_offset: 12
+      bit_size: 1
+      description: CFGSDISABLE
+    - name: CP15SDIS
+      bit_offset: 13
+      bit_size: 2
+      description: CP15SDISABLE for core x (x=0 or 1)
 fieldset/BSEC_UNMAPR:
   description: ''
   fields:
-  - name: UNMAP
-    bit_offset: 0
-    bit_size: 32
-    description: unmap key
+    - name: UNMAP
+      bit_offset: 0
+      bit_size: 32
+      description: unmap key
 fieldset/BSEC_SR:
   description: ''
   fields:
-  - name: HVALID
-    bit_offset: 1
-    bit_size: 1
-    description: Hardware key valid
-  - name: NVSTATE
-    bit_offset: 26
-    bit_size: 6
-    description: Non-volatile state
+    - name: HVALID
+      bit_offset: 1
+      bit_size: 1
+      description: Hardware key valid
+    - name: NVSTATE
+      bit_offset: 26
+      bit_size: 6
+      description: Non-volatile state
 fieldset/BSEC_OTPSR:
   description: ''
   fields:
-  - name: BUSY
-    bit_offset: 0
-    bit_size: 1
-    description: Busy flag
-  - name: HIDEUP
-    bit_offset: 2
-    bit_size: 1
-    description: Hide upper fuse words
-  - name: OTPNVIR
-    bit_offset: 4
-    bit_size: 1
-    description: OTP not virgin
-  - name: OTPERR
-    bit_offset: 5
-    bit_size: 1
-    description: OTP with error
-  - name: OTPSEC
-    bit_offset: 6
-    bit_size: 1
-    description: OTP with single error correction
-  - name: PROGFAIL
-    bit_offset: 16
-    bit_size: 1
-    description: Programming failed
-  - name: DISTURBF
-    bit_offset: 17
-    bit_size: 1
-    description: Disturb flag
-  - name: DEDF
-    bit_offset: 18
-    bit_size: 1
-    description: Double error detection flag
-  - name: SECF
-    bit_offset: 19
-    bit_size: 1
-    description: Single error correction flag
-  - name: PPLF
-    bit_offset: 20
-    bit_size: 1
-    description: Permanent programming lock flag
-  - name: PPLMF
-    bit_offset: 21
-    bit_size: 1
-    description: Permanent programming lock mismatch flag
-  - name: AMEF
-    bit_offset: 22
-    bit_size: 1
-    description: Addresses mismatch error flag
+    - name: BUSY
+      bit_offset: 0
+      bit_size: 1
+      description: Busy flag
+    - name: HIDEUP
+      bit_offset: 2
+      bit_size: 1
+      description: Hide upper fuse words
+    - name: OTPNVIR
+      bit_offset: 4
+      bit_size: 1
+      description: OTP not virgin
+    - name: OTPERR
+      bit_offset: 5
+      bit_size: 1
+      description: OTP with error
+    - name: OTPSEC
+      bit_offset: 6
+      bit_size: 1
+      description: OTP with single error correction
+    - name: PROGFAIL
+      bit_offset: 16
+      bit_size: 1
+      description: Programming failed
+    - name: DISTURBF
+      bit_offset: 17
+      bit_size: 1
+      description: Disturb flag
+    - name: DEDF
+      bit_offset: 18
+      bit_size: 1
+      description: Double error detection flag
+    - name: SECF
+      bit_offset: 19
+      bit_size: 1
+      description: Single error correction flag
+    - name: PPLF
+      bit_offset: 20
+      bit_size: 1
+      description: Permanent programming lock flag
+    - name: PPLMF
+      bit_offset: 21
+      bit_size: 1
+      description: Permanent programming lock mismatch flag
+    - name: AMEF
+      bit_offset: 22
+      bit_size: 1
+      description: Addresses mismatch error flag
 fieldset/BSEC_WOSCRx:
   description: ''
   fields:
-  - name: WOSDATA
-    bit_offset: 0
-    bit_size: 32
-    description: Write once scratch data
+    - name: WOSDATA
+      bit_offset: 0
+      bit_size: 32
+      description: Write once scratch data
 fieldset/BSEC_HRCR:
   description: ''
   fields:
-  - name: HRC
-    bit_offset: 0
-    bit_size: 32
-    description: hot reset counter
+    - name: HRC
+      bit_offset: 0
+      bit_size: 32
+      description: hot reset counter
 fieldset/BSEC_WRCR:
   description: ''
   fields:
-  - name: WRC
-    bit_offset: 0
-    bit_size: 32
-    description: warm reset counter
+    - name: WRC
+      bit_offset: 0
+      bit_size: 32
+      description: warm reset counter
 fieldset/BSEC_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: minor revision information
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: major revision information
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: minor revision information
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: major revision information
 fieldset/BSEC_IPIDR:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 32
-    description: BSEC identification
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+      description: BSEC identification
 fieldset/BSEC_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: BSEC size identification
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: BSEC size identification

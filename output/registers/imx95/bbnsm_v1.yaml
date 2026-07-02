@@ -1,248 +1,248 @@
 block/BBNSM:
   description: ''
   items:
-  - name: BBNSM_VID
-    byte_offset: 0
-  - name: BBNSM_FEATURES
-    byte_offset: 4
-  - name: BBNSM_CTRL
-    byte_offset: 8
-    fieldset: BBNSM_BBNSM_CTRL
-  - name: BBNSM_INT_EN
-    byte_offset: 16
-  - name: BBNSM_EVENTS
-    byte_offset: 20
-    fieldset: BBNSM_BBNSM_EVENTS
-  - name: BBNSM_PAD_CTRL
-    byte_offset: 36
-  - name: BBNSM_RTC_LS
-    byte_offset: 64
-    fieldset: BBNSM_BBNSM_RTC_LS
-  - name: BBNSM_RTC_MS
-    byte_offset: 68
-    fieldset: BBNSM_BBNSM_RTC_MS
-  - name: BBNSM_TA
-    byte_offset: 80
-    fieldset: BBNSM_BBNSM_TA
-  - name: GPR
-    byte_offset: 768
-    array:
-      len: 8
-      stride: 4
-    fieldset: BBNSM_GPR
+    - name: BBNSM_VID
+      byte_offset: 0
+    - name: BBNSM_FEATURES
+      byte_offset: 4
+    - name: BBNSM_CTRL
+      byte_offset: 8
+      fieldset: BBNSM_BBNSM_CTRL
+    - name: BBNSM_INT_EN
+      byte_offset: 16
+    - name: BBNSM_EVENTS
+      byte_offset: 20
+      fieldset: BBNSM_BBNSM_EVENTS
+    - name: BBNSM_PAD_CTRL
+      byte_offset: 36
+    - name: BBNSM_RTC_LS
+      byte_offset: 64
+      fieldset: BBNSM_BBNSM_RTC_LS
+    - name: BBNSM_RTC_MS
+      byte_offset: 68
+      fieldset: BBNSM_BBNSM_RTC_MS
+    - name: BBNSM_TA
+      byte_offset: 80
+      fieldset: BBNSM_BBNSM_TA
+    - name: GPR
+      byte_offset: 768
+      array:
+        len: 8
+        stride: 4
+      fieldset: BBNSM_GPR
 fieldset/BBNSM_BBNSM_VID_BBNSM:
   description: ''
   fields:
-  - name: IPID
-    bit_offset: 0
-    bit_size: 8
-    description: BBNSM IP ID
-  - name: REV
-    bit_offset: 8
-    bit_size: 8
-    description: BBNSM IP ID
-  - name: VID
-    bit_offset: 16
-    bit_size: 8
-    description: BBNSM Revision
+    - name: IPID
+      bit_offset: 0
+      bit_size: 8
+      description: BBNSM IP ID
+    - name: REV
+      bit_offset: 8
+      bit_size: 8
+      description: BBNSM IP ID
+    - name: VID
+      bit_offset: 16
+      bit_size: 8
+      description: BBNSM Revision
 fieldset/BBNSM_BBNSM_FEATURES_GPR:
   description: ''
   fields:
-  - name: SZ
-    bit_offset: 2
-    bit_size: 6
+    - name: SZ
+      bit_offset: 2
+      bit_size: 6
 fieldset/BBNSM_BBNSM_CTRL_RTC:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 2
+    - name: EN
+      bit_offset: 0
+      bit_size: 2
 fieldset/BBNSM_BBNSM_CTRL_TA:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 2
-    bit_size: 2
+    - name: EN
+      bit_offset: 2
+      bit_size: 2
 fieldset/BBNSM_BBNSM_CTRL_CAL:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 4
-    bit_size: 1
-  - name: VAL
-    bit_offset: 8
-    bit_size: 5
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+    - name: VAL
+      bit_offset: 8
+      bit_size: 5
 fieldset/BBNSM_BBNSM_CTRL_BTN:
   description: ''
   fields:
-  - name: TIMEOUT
-    bit_offset: 16
-    bit_size: 2
-  - name: CONFIG
-    bit_offset: 26
-    bit_size: 3
+    - name: TIMEOUT
+      bit_offset: 16
+      bit_size: 2
+    - name: CONFIG
+      bit_offset: 26
+      bit_size: 3
 fieldset/BBNSM_BBNSM_CTRL:
   description: ''
   fields:
-  - name: DEBOUNCE
-    bit_offset: 18
-    bit_size: 2
-  - name: TOSP
-    bit_offset: 25
-    bit_size: 1
+    - name: DEBOUNCE
+      bit_offset: 18
+      bit_size: 2
+    - name: TOSP
+      bit_offset: 25
+      bit_size: 1
 fieldset/BBNSM_BBNSM_CTRL_TURN_ON:
   description: ''
   fields:
-  - name: TIME
-    bit_offset: 20
-    bit_size: 2
+    - name: TIME
+      bit_offset: 20
+      bit_size: 2
 fieldset/BBNSM_BBNSM_CTRL_PK:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 22
-    bit_size: 1
-  - name: OVR
-    bit_offset: 23
-    bit_size: 1
+    - name: EN
+      bit_offset: 22
+      bit_size: 1
+    - name: OVR
+      bit_offset: 23
+      bit_size: 1
 fieldset/BBNSM_BBNSM_CTRL_DP:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 24
-    bit_size: 1
+    - name: EN
+      bit_offset: 24
+      bit_size: 1
 fieldset/BBNSM_BBNSM_INT_EN_RTC_INT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 2
+    - name: EN
+      bit_offset: 0
+      bit_size: 2
 fieldset/BBNSM_BBNSM_INT_EN_TA_INT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 2
-    bit_size: 2
+    - name: EN
+      bit_offset: 2
+      bit_size: 2
 fieldset/BBNSM_BBNSM_INT_EN_BTN_INT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 4
-    bit_size: 1
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
 fieldset/BBNSM_BBNSM_EVENTS_RTC:
   description: ''
   fields:
-  - name: ROLL
-    bit_offset: 0
-    bit_size: 2
+    - name: ROLL
+      bit_offset: 0
+      bit_size: 2
 fieldset/BBNSM_BBNSM_EVENTS:
   description: ''
   fields:
-  - name: TA
-    bit_offset: 2
-    bit_size: 2
-  - name: BTN
-    bit_offset: 7
-    bit_size: 1
-  - name: BI
-    bit_offset: 8
-    bit_size: 1
-    description: Button Interrupt
-  - name: WUR
-    bit_offset: 9
-    bit_size: 1
-    description: Button Interrupt
+    - name: TA
+      bit_offset: 2
+      bit_size: 2
+    - name: BTN
+      bit_offset: 7
+      bit_size: 1
+    - name: BI
+      bit_offset: 8
+      bit_size: 1
+      description: Button Interrupt
+    - name: WUR
+      bit_offset: 9
+      bit_size: 1
+      description: Button Interrupt
 fieldset/BBNSM_BBNSM_EVENTS_EMG:
   description: ''
   fields:
-  - name: 'OFF'
-    bit_offset: 4
-    bit_size: 1
+    - name: 'OFF'
+      bit_offset: 4
+      bit_size: 1
 fieldset/BBNSM_BBNSM_EVENTS_PWR:
   description: ''
   fields:
-  - name: 'OFF'
-    bit_offset: 5
-    bit_size: 1
-  - name: 'ON'
-    bit_offset: 6
-    bit_size: 1
+    - name: 'OFF'
+      bit_offset: 5
+      bit_size: 1
+    - name: 'ON'
+      bit_offset: 6
+      bit_size: 1
 fieldset/BBNSM_BBNSM_PAD_CTRL_PAD:
   description: ''
   fields:
-  - name: CTRL0
-    bit_offset: 0
-    bit_size: 1
-  - name: CTRL1
-    bit_offset: 1
-    bit_size: 1
-  - name: CTRL2
-    bit_offset: 2
-    bit_size: 1
-  - name: CTRL3
-    bit_offset: 3
-    bit_size: 1
-  - name: CTRL4
-    bit_offset: 4
-    bit_size: 1
-  - name: CTRL5
-    bit_offset: 5
-    bit_size: 1
-  - name: CTRL6
-    bit_offset: 6
-    bit_size: 1
-  - name: CTRL7
-    bit_offset: 7
-    bit_size: 1
-  - name: CTRL8
-    bit_offset: 8
-    bit_size: 1
-  - name: CTRL9
-    bit_offset: 9
-    bit_size: 1
-  - name: CTRL10
-    bit_offset: 10
-    bit_size: 1
-  - name: CTRL11
-    bit_offset: 11
-    bit_size: 1
-  - name: CTRL12
-    bit_offset: 12
-    bit_size: 1
-  - name: CTRL13
-    bit_offset: 13
-    bit_size: 1
-  - name: CTRL14
-    bit_offset: 14
-    bit_size: 1
-  - name: CTRL15
-    bit_offset: 15
-    bit_size: 1
+    - name: CTRL0
+      bit_offset: 0
+      bit_size: 1
+    - name: CTRL1
+      bit_offset: 1
+      bit_size: 1
+    - name: CTRL2
+      bit_offset: 2
+      bit_size: 1
+    - name: CTRL3
+      bit_offset: 3
+      bit_size: 1
+    - name: CTRL4
+      bit_offset: 4
+      bit_size: 1
+    - name: CTRL5
+      bit_offset: 5
+      bit_size: 1
+    - name: CTRL6
+      bit_offset: 6
+      bit_size: 1
+    - name: CTRL7
+      bit_offset: 7
+      bit_size: 1
+    - name: CTRL8
+      bit_offset: 8
+      bit_size: 1
+    - name: CTRL9
+      bit_offset: 9
+      bit_size: 1
+    - name: CTRL10
+      bit_offset: 10
+      bit_size: 1
+    - name: CTRL11
+      bit_offset: 11
+      bit_size: 1
+    - name: CTRL12
+      bit_offset: 12
+      bit_size: 1
+    - name: CTRL13
+      bit_offset: 13
+      bit_size: 1
+    - name: CTRL14
+      bit_offset: 14
+      bit_size: 1
+    - name: CTRL15
+      bit_offset: 15
+      bit_size: 1
 fieldset/BBNSM_BBNSM_RTC_LS:
   description: ''
   fields:
-  - name: RTC
-    bit_offset: 0
-    bit_size: 32
-    description: Real-time Counter
+    - name: RTC
+      bit_offset: 0
+      bit_size: 32
+      description: Real-time Counter
 fieldset/BBNSM_BBNSM_RTC_MS:
   description: ''
   fields:
-  - name: RTC
-    bit_offset: 0
-    bit_size: 15
-    description: Real-Time Counter
+    - name: RTC
+      bit_offset: 0
+      bit_size: 15
+      description: Real-Time Counter
 fieldset/BBNSM_BBNSM_TA:
   description: ''
   fields:
-  - name: TA
-    bit_offset: 0
-    bit_size: 32
-    description: Time Alarm Value
+    - name: TA
+      bit_offset: 0
+      bit_size: 32
+      description: Time Alarm Value
 fieldset/BBNSM_GPR:
   description: ''
   fields:
-  - name: GPR
-    bit_offset: 0
-    bit_size: 32
-    description: 32 bits of the GPR.
+    - name: GPR
+      bit_offset: 0
+      bit_size: 32
+      description: 32 bits of the GPR.

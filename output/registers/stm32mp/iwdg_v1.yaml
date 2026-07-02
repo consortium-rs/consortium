@@ -1,165 +1,165 @@
 block/IWDG:
   description: ''
   items:
-  - name: CR
-    byte_offset: 0
-    description: Control register
-  - name: MR
-    byte_offset: 4
-    description: Mask register
-  - name: SCR
-    byte_offset: 8
-    description: Status set clear register
-  - name: SR
-    byte_offset: 12
-    description: Status register
-    fieldset: IWDG_SR
-  - name: KR
-    byte_offset: 0
-    description: IWDG key register
-    fieldset: IWDG_KR
-  - name: PR
-    byte_offset: 4
-    description: IWDG prescaler register
-    fieldset: IWDG_PR
-  - name: RLR
-    byte_offset: 8
-    description: IWDG reload register
-    fieldset: IWDG_RLR
-  - name: SR
-    byte_offset: 12
-    description: IWDG status register
-    fieldset: IWDG_SR
-  - name: WINR
-    byte_offset: 16
-    description: IWDG window register
-    fieldset: IWDG_WINR
-  - name: EWCR
-    byte_offset: 20
-    description: IWDG early wakeup interrupt register
-    fieldset: IWDG_EWCR
-  - name: ICR
-    byte_offset: 24
-    description: IWDG Interrupt clear register
-    fieldset: IWDG_ICR
-  - name: HWCFGR
-    byte_offset: 1008
-    description: IWDG hardware configuration register
-    fieldset: IWDG_HWCFGR
-  - name: VERR
-    byte_offset: 1012
-    description: IWDG version register
-    fieldset: IWDG_VERR
-  - name: IDR
-    byte_offset: 1016
-    description: IWDG identification register
-    fieldset: IWDG_IDR
-  - name: SIDR
-    byte_offset: 1020
-    description: IWDG size identification register
-    fieldset: IWDG_SIDR
+    - name: CR
+      byte_offset: 0
+      description: Control register
+    - name: MR
+      byte_offset: 4
+      description: Mask register
+    - name: SCR
+      byte_offset: 8
+      description: Status set clear register
+    - name: SR
+      byte_offset: 12
+      description: Status register
+      fieldset: IWDG_SR
+    - name: KR
+      byte_offset: 0
+      description: IWDG key register
+      fieldset: IWDG_KR
+    - name: PR
+      byte_offset: 4
+      description: IWDG prescaler register
+      fieldset: IWDG_PR
+    - name: RLR
+      byte_offset: 8
+      description: IWDG reload register
+      fieldset: IWDG_RLR
+    - name: SR
+      byte_offset: 12
+      description: IWDG status register
+      fieldset: IWDG_SR
+    - name: WINR
+      byte_offset: 16
+      description: IWDG window register
+      fieldset: IWDG_WINR
+    - name: EWCR
+      byte_offset: 20
+      description: IWDG early wakeup interrupt register
+      fieldset: IWDG_EWCR
+    - name: ICR
+      byte_offset: 24
+      description: IWDG Interrupt clear register
+      fieldset: IWDG_ICR
+    - name: HWCFGR
+      byte_offset: 1008
+      description: IWDG hardware configuration register
+      fieldset: IWDG_HWCFGR
+    - name: VERR
+      byte_offset: 1012
+      description: IWDG version register
+      fieldset: IWDG_VERR
+    - name: IDR
+      byte_offset: 1016
+      description: IWDG identification register
+      fieldset: IWDG_IDR
+    - name: SIDR
+      byte_offset: 1020
+      description: IWDG size identification register
+      fieldset: IWDG_SIDR
 fieldset/IWDG_SR:
   description: ''
   fields:
-  - name: PVU
-    bit_offset: 0
-    bit_size: 1
-    description: Watchdog prescaler value update
-  - name: RVU
-    bit_offset: 1
-    bit_size: 1
-    description: Watchdog counter reload value update
-  - name: WVU
-    bit_offset: 2
-    bit_size: 1
-    description: Watchdog counter window value update
-  - name: EWU
-    bit_offset: 3
-    bit_size: 1
-    description: Watchdog interrupt comparator value update
-  - name: ONF
-    bit_offset: 8
-    bit_size: 1
-    description: Watchdog Enable status bit
-  - name: EWIF
-    bit_offset: 15
-    bit_size: 1
-    description: Watchdog Early Interrupt flag
+    - name: PVU
+      bit_offset: 0
+      bit_size: 1
+      description: Watchdog prescaler value update
+    - name: RVU
+      bit_offset: 1
+      bit_size: 1
+      description: Watchdog counter reload value update
+    - name: WVU
+      bit_offset: 2
+      bit_size: 1
+      description: Watchdog counter window value update
+    - name: EWU
+      bit_offset: 3
+      bit_size: 1
+      description: Watchdog interrupt comparator value update
+    - name: ONF
+      bit_offset: 8
+      bit_size: 1
+      description: Watchdog Enable status bit
+    - name: EWIF
+      bit_offset: 15
+      bit_size: 1
+      description: Watchdog Early Interrupt flag
 fieldset/IWDG_KR:
   description: ''
   fields:
-  - name: KEY
-    bit_offset: 0
-    bit_size: 16
-    description: Key value (write only, read 0x0000)
+    - name: KEY
+      bit_offset: 0
+      bit_size: 16
+      description: Key value (write only, read 0x0000)
 fieldset/IWDG_PR:
   description: ''
   fields:
-  - name: PR
-    bit_offset: 0
-    bit_size: 4
-    description: Prescaler divider
+    - name: PR
+      bit_offset: 0
+      bit_size: 4
+      description: Prescaler divider
 fieldset/IWDG_RLR:
   description: ''
   fields:
-  - name: RL
-    bit_offset: 0
-    bit_size: 12
-    description: Watchdog counter reload value
+    - name: RL
+      bit_offset: 0
+      bit_size: 12
+      description: Watchdog counter reload value
 fieldset/IWDG_WINR:
   description: ''
   fields:
-  - name: WIN
-    bit_offset: 0
-    bit_size: 12
-    description: Watchdog counter window value
+    - name: WIN
+      bit_offset: 0
+      bit_size: 12
+      description: Watchdog counter window value
 fieldset/IWDG_EWCR:
   description: ''
   fields:
-  - name: EWIT
-    bit_offset: 0
-    bit_size: 12
-    description: Watchdog counter window value
-  - name: EWIE
-    bit_offset: 15
-    bit_size: 1
-    description: Watchdog early interrupt enable
+    - name: EWIT
+      bit_offset: 0
+      bit_size: 12
+      description: Watchdog counter window value
+    - name: EWIE
+      bit_offset: 15
+      bit_size: 1
+      description: Watchdog early interrupt enable
 fieldset/IWDG_ICR:
   description: ''
   fields:
-  - name: EWIC
-    bit_offset: 15
-    bit_size: 1
-    description: Watchdog early interrupt acknowledge
+    - name: EWIC
+      bit_offset: 15
+      bit_size: 1
+      description: Watchdog early interrupt acknowledge
 fieldset/IWDG_HWCFGR:
   description: ''
   fields:
-  - name: WINDOW
-    bit_offset: 0
-    bit_size: 4
-    description: Support of Window function
+    - name: WINDOW
+      bit_offset: 0
+      bit_size: 4
+      description: Support of Window function
 fieldset/IWDG_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: Minor revision
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: Major revision
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: Minor revision
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: Major revision
 fieldset/IWDG_IDR:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 32
-    description: IWDG identifier
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+      description: IWDG identifier
 fieldset/IWDG_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: IWDG size identifier
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: IWDG size identifier

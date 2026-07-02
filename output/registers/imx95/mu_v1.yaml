@@ -1,378 +1,378 @@
 block/MU:
   description: ''
   items:
-  - name: VER
-    byte_offset: 0
-    fieldset: MU_VER
-  - name: PAR
-    byte_offset: 4
-  - name: CR
-    byte_offset: 8
-    fieldset: MU_CR
-  - name: SR
-    byte_offset: 12
-    fieldset: MU_SR
-  - name: CCR0
-    byte_offset: 16
-    fieldset: MU_CCR0
-  - name: CIER0
-    byte_offset: 20
-    fieldset: MU_CIER0
-  - name: CSSR0
-    byte_offset: 24
-    fieldset: MU_CSSR0
-  - name: CSR0
-    byte_offset: 28
-    fieldset: MU_CSR0
-  - name: FCR
-    byte_offset: 256
-    fieldset: MU_FCR
-  - name: FSR
-    byte_offset: 260
-    fieldset: MU_FSR
-  - name: GIER
-    byte_offset: 272
-    fieldset: MU_GIER
-  - name: GCR
-    byte_offset: 276
-    fieldset: MU_GCR
-  - name: GSR
-    byte_offset: 280
-    fieldset: MU_GSR
-  - name: TCR
-    byte_offset: 288
-    fieldset: MU_TCR
-  - name: TSR
-    byte_offset: 292
-    fieldset: MU_TSR
-  - name: RCR
-    byte_offset: 296
-    fieldset: MU_RCR
-  - name: RSR
-    byte_offset: 300
-    fieldset: MU_RSR
-  - name: TR
-    byte_offset: 512
-    array:
-      len: 4
-      stride: 4
-  - name: RR
-    byte_offset: 640
-    array:
-      len: 4
-      stride: 4
+    - name: VER
+      byte_offset: 0
+      fieldset: MU_VER
+    - name: PAR
+      byte_offset: 4
+    - name: CR
+      byte_offset: 8
+      fieldset: MU_CR
+    - name: SR
+      byte_offset: 12
+      fieldset: MU_SR
+    - name: CCR0
+      byte_offset: 16
+      fieldset: MU_CCR0
+    - name: CIER0
+      byte_offset: 20
+      fieldset: MU_CIER0
+    - name: CSSR0
+      byte_offset: 24
+      fieldset: MU_CSSR0
+    - name: CSR0
+      byte_offset: 28
+      fieldset: MU_CSR0
+    - name: FCR
+      byte_offset: 256
+      fieldset: MU_FCR
+    - name: FSR
+      byte_offset: 260
+      fieldset: MU_FSR
+    - name: GIER
+      byte_offset: 272
+      fieldset: MU_GIER
+    - name: GCR
+      byte_offset: 276
+      fieldset: MU_GCR
+    - name: GSR
+      byte_offset: 280
+      fieldset: MU_GSR
+    - name: TCR
+      byte_offset: 288
+      fieldset: MU_TCR
+    - name: TSR
+      byte_offset: 292
+      fieldset: MU_TSR
+    - name: RCR
+      byte_offset: 296
+      fieldset: MU_RCR
+    - name: RSR
+      byte_offset: 300
+      fieldset: MU_RSR
+    - name: TR
+      byte_offset: 512
+      array:
+        len: 4
+        stride: 4
+    - name: RR
+      byte_offset: 640
+      array:
+        len: 4
+        stride: 4
 fieldset/MU_VER:
   description: ''
   fields:
-  - name: FEATURE
-    bit_offset: 0
-    bit_size: 16
-    description: Feature Set Number
-  - name: MINOR
-    bit_offset: 16
-    bit_size: 8
-    description: Feature Set Number
-  - name: MAJOR
-    bit_offset: 24
-    bit_size: 8
-    description: Minor Version Number
+    - name: FEATURE
+      bit_offset: 0
+      bit_size: 16
+      description: Feature Set Number
+    - name: MINOR
+      bit_offset: 16
+      bit_size: 8
+      description: Feature Set Number
+    - name: MAJOR
+      bit_offset: 24
+      bit_size: 8
+      description: Minor Version Number
 fieldset/MU_PAR_TR:
   description: ''
   fields:
-  - name: NUM
-    bit_offset: 0
-    bit_size: 8
-    description: Transmit Register Number
+    - name: NUM
+      bit_offset: 0
+      bit_size: 8
+      description: Transmit Register Number
 fieldset/MU_PAR_RR:
   description: ''
   fields:
-  - name: NUM
-    bit_offset: 8
-    bit_size: 8
-    description: Transmit Register Number
+    - name: NUM
+      bit_offset: 8
+      bit_size: 8
+      description: Transmit Register Number
 fieldset/MU_PAR_GIR:
   description: ''
   fields:
-  - name: NUM
-    bit_offset: 16
-    bit_size: 8
-    description: Receive Register Number
+    - name: NUM
+      bit_offset: 16
+      bit_size: 8
+      description: Receive Register Number
 fieldset/MU_PAR_FLAG:
   description: ''
   fields:
-  - name: WIDTH
-    bit_offset: 24
-    bit_size: 8
-    description: General-Purpose Interrupt Request Number
+    - name: WIDTH
+      bit_offset: 24
+      bit_size: 8
+      description: General-Purpose Interrupt Request Number
 fieldset/MU_CR:
   description: ''
   fields:
-  - name: MUR
-    bit_offset: 0
-    bit_size: 1
-  - name: MURIE
-    bit_offset: 1
-    bit_size: 1
+    - name: MUR
+      bit_offset: 0
+      bit_size: 1
+    - name: MURIE
+      bit_offset: 1
+      bit_size: 1
 fieldset/MU_SR:
   description: ''
   fields:
-  - name: MURS
-    bit_offset: 0
-    bit_size: 1
-  - name: MURIP
-    bit_offset: 1
-    bit_size: 1
-  - name: EP
-    bit_offset: 2
-    bit_size: 1
-  - name: FUP
-    bit_offset: 3
-    bit_size: 1
-  - name: GIRP
-    bit_offset: 4
-    bit_size: 1
-  - name: TEP
-    bit_offset: 5
-    bit_size: 1
-  - name: RFP
-    bit_offset: 6
-    bit_size: 1
-  - name: CEP
-    bit_offset: 7
-    bit_size: 1
+    - name: MURS
+      bit_offset: 0
+      bit_size: 1
+    - name: MURIP
+      bit_offset: 1
+      bit_size: 1
+    - name: EP
+      bit_offset: 2
+      bit_size: 1
+    - name: FUP
+      bit_offset: 3
+      bit_size: 1
+    - name: GIRP
+      bit_offset: 4
+      bit_size: 1
+    - name: TEP
+      bit_offset: 5
+      bit_size: 1
+    - name: RFP
+      bit_offset: 6
+      bit_size: 1
+    - name: CEP
+      bit_offset: 7
+      bit_size: 1
 fieldset/MU_CCR0:
   description: ''
   fields:
-  - name: NMI
-    bit_offset: 0
-    bit_size: 1
-  - name: HR
-    bit_offset: 1
-    bit_size: 1
-  - name: HRM
-    bit_offset: 2
-    bit_size: 1
-  - name: RSTH
-    bit_offset: 4
-    bit_size: 1
-  - name: BOOT
-    bit_offset: 5
-    bit_size: 2
+    - name: NMI
+      bit_offset: 0
+      bit_size: 1
+    - name: HR
+      bit_offset: 1
+      bit_size: 1
+    - name: HRM
+      bit_offset: 2
+      bit_size: 1
+    - name: RSTH
+      bit_offset: 4
+      bit_size: 1
+    - name: BOOT
+      bit_offset: 5
+      bit_size: 2
 fieldset/MU_CIER0:
   description: ''
   fields:
-  - name: HRIE
-    bit_offset: 1
-    bit_size: 1
-  - name: RUNIE
-    bit_offset: 2
-    bit_size: 1
-  - name: RAIE
-    bit_offset: 3
-    bit_size: 1
-  - name: HALTIE
-    bit_offset: 4
-    bit_size: 1
-  - name: WAITIE
-    bit_offset: 5
-    bit_size: 1
-  - name: STOPIE
-    bit_offset: 6
-    bit_size: 1
-  - name: PDIE
-    bit_offset: 7
-    bit_size: 1
+    - name: HRIE
+      bit_offset: 1
+      bit_size: 1
+    - name: RUNIE
+      bit_offset: 2
+      bit_size: 1
+    - name: RAIE
+      bit_offset: 3
+      bit_size: 1
+    - name: HALTIE
+      bit_offset: 4
+      bit_size: 1
+    - name: WAITIE
+      bit_offset: 5
+      bit_size: 1
+    - name: STOPIE
+      bit_offset: 6
+      bit_size: 1
+    - name: PDIE
+      bit_offset: 7
+      bit_size: 1
 fieldset/MU_CSSR0:
   description: ''
   fields:
-  - name: NMIC
-    bit_offset: 0
-    bit_size: 1
-  - name: HRIP
-    bit_offset: 1
-    bit_size: 1
-  - name: RUN
-    bit_offset: 2
-    bit_size: 1
-  - name: RAIP
-    bit_offset: 3
-    bit_size: 1
-  - name: HALT
-    bit_offset: 4
-    bit_size: 1
-  - name: WAIT
-    bit_offset: 5
-    bit_size: 1
-  - name: STOP
-    bit_offset: 6
-    bit_size: 1
-  - name: PD
-    bit_offset: 7
-    bit_size: 1
+    - name: NMIC
+      bit_offset: 0
+      bit_size: 1
+    - name: HRIP
+      bit_offset: 1
+      bit_size: 1
+    - name: RUN
+      bit_offset: 2
+      bit_size: 1
+    - name: RAIP
+      bit_offset: 3
+      bit_size: 1
+    - name: HALT
+      bit_offset: 4
+      bit_size: 1
+    - name: WAIT
+      bit_offset: 5
+      bit_size: 1
+    - name: STOP
+      bit_offset: 6
+      bit_size: 1
+    - name: PD
+      bit_offset: 7
+      bit_size: 1
 fieldset/MU_CSR0:
   description: ''
   fields:
-  - name: HRIP
-    bit_offset: 1
-    bit_size: 1
-  - name: RUN
-    bit_offset: 2
-    bit_size: 1
-  - name: RAIP
-    bit_offset: 3
-    bit_size: 1
-  - name: HALT
-    bit_offset: 4
-    bit_size: 1
-  - name: WAIT
-    bit_offset: 5
-    bit_size: 1
-  - name: STOP
-    bit_offset: 6
-    bit_size: 1
-  - name: PD
-    bit_offset: 7
-    bit_size: 1
+    - name: HRIP
+      bit_offset: 1
+      bit_size: 1
+    - name: RUN
+      bit_offset: 2
+      bit_size: 1
+    - name: RAIP
+      bit_offset: 3
+      bit_size: 1
+    - name: HALT
+      bit_offset: 4
+      bit_size: 1
+    - name: WAIT
+      bit_offset: 5
+      bit_size: 1
+    - name: STOP
+      bit_offset: 6
+      bit_size: 1
+    - name: PD
+      bit_offset: 7
+      bit_size: 1
 fieldset/MU_FCR:
   description: ''
   fields:
-  - name: F0
-    bit_offset: 0
-    bit_size: 1
-  - name: F1
-    bit_offset: 1
-    bit_size: 1
-  - name: F2
-    bit_offset: 2
-    bit_size: 1
+    - name: F0
+      bit_offset: 0
+      bit_size: 1
+    - name: F1
+      bit_offset: 1
+      bit_size: 1
+    - name: F2
+      bit_offset: 2
+      bit_size: 1
 fieldset/MU_FSR:
   description: ''
   fields:
-  - name: F0
-    bit_offset: 0
-    bit_size: 1
-  - name: F1
-    bit_offset: 1
-    bit_size: 1
-  - name: F2
-    bit_offset: 2
-    bit_size: 1
+    - name: F0
+      bit_offset: 0
+      bit_size: 1
+    - name: F1
+      bit_offset: 1
+      bit_size: 1
+    - name: F2
+      bit_offset: 2
+      bit_size: 1
 fieldset/MU_GIER:
   description: ''
   fields:
-  - name: GIE0
-    bit_offset: 0
-    bit_size: 1
-  - name: GIE1
-    bit_offset: 1
-    bit_size: 1
-  - name: GIE2
-    bit_offset: 2
-    bit_size: 1
-  - name: GIE3
-    bit_offset: 3
-    bit_size: 1
+    - name: GIE0
+      bit_offset: 0
+      bit_size: 1
+    - name: GIE1
+      bit_offset: 1
+      bit_size: 1
+    - name: GIE2
+      bit_offset: 2
+      bit_size: 1
+    - name: GIE3
+      bit_offset: 3
+      bit_size: 1
 fieldset/MU_GCR:
   description: ''
   fields:
-  - name: GIR0
-    bit_offset: 0
-    bit_size: 1
-  - name: GIR1
-    bit_offset: 1
-    bit_size: 1
-  - name: GIR2
-    bit_offset: 2
-    bit_size: 1
-  - name: GIR3
-    bit_offset: 3
-    bit_size: 1
+    - name: GIR0
+      bit_offset: 0
+      bit_size: 1
+    - name: GIR1
+      bit_offset: 1
+      bit_size: 1
+    - name: GIR2
+      bit_offset: 2
+      bit_size: 1
+    - name: GIR3
+      bit_offset: 3
+      bit_size: 1
 fieldset/MU_GSR:
   description: ''
   fields:
-  - name: GIP0
-    bit_offset: 0
-    bit_size: 1
-  - name: GIP1
-    bit_offset: 1
-    bit_size: 1
-  - name: GIP2
-    bit_offset: 2
-    bit_size: 1
-  - name: GIP3
-    bit_offset: 3
-    bit_size: 1
+    - name: GIP0
+      bit_offset: 0
+      bit_size: 1
+    - name: GIP1
+      bit_offset: 1
+      bit_size: 1
+    - name: GIP2
+      bit_offset: 2
+      bit_size: 1
+    - name: GIP3
+      bit_offset: 3
+      bit_size: 1
 fieldset/MU_TCR:
   description: ''
   fields:
-  - name: TIE0
-    bit_offset: 0
-    bit_size: 1
-  - name: TIE1
-    bit_offset: 1
-    bit_size: 1
-  - name: TIE2
-    bit_offset: 2
-    bit_size: 1
-  - name: TIE3
-    bit_offset: 3
-    bit_size: 1
+    - name: TIE0
+      bit_offset: 0
+      bit_size: 1
+    - name: TIE1
+      bit_offset: 1
+      bit_size: 1
+    - name: TIE2
+      bit_offset: 2
+      bit_size: 1
+    - name: TIE3
+      bit_offset: 3
+      bit_size: 1
 fieldset/MU_TSR:
   description: ''
   fields:
-  - name: TE0
-    bit_offset: 0
-    bit_size: 1
-  - name: TE1
-    bit_offset: 1
-    bit_size: 1
-  - name: TE2
-    bit_offset: 2
-    bit_size: 1
-  - name: TE3
-    bit_offset: 3
-    bit_size: 1
+    - name: TE0
+      bit_offset: 0
+      bit_size: 1
+    - name: TE1
+      bit_offset: 1
+      bit_size: 1
+    - name: TE2
+      bit_offset: 2
+      bit_size: 1
+    - name: TE3
+      bit_offset: 3
+      bit_size: 1
 fieldset/MU_RCR:
   description: ''
   fields:
-  - name: RIE0
-    bit_offset: 0
-    bit_size: 1
-  - name: RIE1
-    bit_offset: 1
-    bit_size: 1
-  - name: RIE2
-    bit_offset: 2
-    bit_size: 1
-  - name: RIE3
-    bit_offset: 3
-    bit_size: 1
+    - name: RIE0
+      bit_offset: 0
+      bit_size: 1
+    - name: RIE1
+      bit_offset: 1
+      bit_size: 1
+    - name: RIE2
+      bit_offset: 2
+      bit_size: 1
+    - name: RIE3
+      bit_offset: 3
+      bit_size: 1
 fieldset/MU_RSR:
   description: ''
   fields:
-  - name: RF0
-    bit_offset: 0
-    bit_size: 1
-  - name: RF1
-    bit_offset: 1
-    bit_size: 1
-  - name: RF2
-    bit_offset: 2
-    bit_size: 1
-  - name: RF3
-    bit_offset: 3
-    bit_size: 1
+    - name: RF0
+      bit_offset: 0
+      bit_size: 1
+    - name: RF1
+      bit_offset: 1
+      bit_size: 1
+    - name: RF2
+      bit_offset: 2
+      bit_size: 1
+    - name: RF3
+      bit_offset: 3
+      bit_size: 1
 fieldset/MU_TR_TR:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
-    description: MUB Transmit Data
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+      description: MUB Transmit Data
 fieldset/MU_RR_RR:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
-    description: MUB Receive Data
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+      description: MUB Receive Data

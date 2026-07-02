@@ -1,1830 +1,1830 @@
 block/NEUTRON_NPU:
   description: ''
   items:
-  - name: RESETCTRL
-    byte_offset: 0
-    fieldset: NEUTRON_NPU_RESETCTRL
-  - name: STATUSERR
-    byte_offset: 4
-    fieldset: NEUTRON_NPU_STATUSERR
-  - name: INTENA
-    byte_offset: 8
-    fieldset: NEUTRON_NPU_INTENA
-  - name: INTCLR
-    byte_offset: 12
-    fieldset: NEUTRON_NPU_INTCLR
-  - name: CYCLOW
-    byte_offset: 16
-  - name: CYCHIGH
-    byte_offset: 20
-  - name: DDRLATENT
-    byte_offset: 24
-    fieldset: NEUTRON_NPU_DDRLATENT
-  - name: DDRSPREAD
-    byte_offset: 28
-    fieldset: NEUTRON_NPU_DDRSPREAD
-  - name: DDRRCNTS
-    byte_offset: 32
-  - name: DDRWWORDS
-    byte_offset: 36
-    fieldset: NEUTRON_NPU_DDRWWORDS
-  - name: DDRRWORDS
-    byte_offset: 40
-    fieldset: NEUTRON_NPU_DDRRWORDS
-  - name: DDRSTALL
-    byte_offset: 44
-    fieldset: NEUTRON_NPU_DDRSTALL
-  - name: NSTALL
-    byte_offset: 48
-    fieldset: NEUTRON_NPU_NSTALL
-  - name: NACT
-    byte_offset: 52
-    fieldset: NEUTRON_NPU_NACT
-  - name: EVTRCCFG
-    byte_offset: 80
-    fieldset: NEUTRON_NPU_EVTRCCFG
-  - name: EVTRCDATA
-    byte_offset: 84
-    fieldset: NEUTRON_NPU_EVTRCDATA
-  - name: ZVIV2P0
-    byte_offset: 96
-    fieldset: NEUTRON_NPU_ZVIV2P0
-  - name: ZVIV2P1
-    byte_offset: 100
-    fieldset: NEUTRON_NPU_ZVIV2P1
-  - name: ZVIV2P2
-    byte_offset: 104
-    fieldset: NEUTRON_NPU_ZVIV2P2
-  - name: ZVIV2P3
-    byte_offset: 108
-    fieldset: NEUTRON_NPU_ZVIV2P3
-  - name: TTCTRL
-    byte_offset: 128
-    fieldset: NEUTRON_NPU_TTCTRL
-  - name: TTSADDR
-    byte_offset: 132
-    fieldset: NEUTRON_NPU_TTSADDR
-  - name: TTDADDR
-    byte_offset: 136
-    fieldset: NEUTRON_NPU_TTDADDR
-  - name: TTCTRL2
-    byte_offset: 140
-    fieldset: NEUTRON_NPU_TTCTRL2
-  - name: CONFIG
-    byte_offset: 144
-    fieldset: NEUTRON_NPU_CONFIG
-  - name: STATUS
-    byte_offset: 148
-    fieldset: NEUTRON_NPU_STATUS
-  - name: DFORDER
-    byte_offset: 152
-    fieldset: NEUTRON_NPU_DFORDER
-  - name: DPORDER
-    byte_offset: 156
-    fieldset: NEUTRON_NPU_DPORDER
-  - name: DCTRL0_FETCH
-    byte_offset: 160
-    fieldset: NEUTRON_NPU_DCTRL0_FETCH
-  - name: DCTRL1_FETCH
-    byte_offset: 164
-    fieldset: NEUTRON_NPU_DCTRL1_FETCH
-  - name: DCTRL2_FETCH
-    byte_offset: 168
-    fieldset: NEUTRON_NPU_DCTRL2_FETCH
-  - name: DCTRL3_FETCH
-    byte_offset: 172
-    fieldset: NEUTRON_NPU_DCTRL3_FETCH
-  - name: DSADDR0
-    byte_offset: 176
-    fieldset: NEUTRON_NPU_DSADDR0
-  - name: DSADDR1
-    byte_offset: 180
-    fieldset: NEUTRON_NPU_DSADDR1
-  - name: DSADDR2
-    byte_offset: 184
-    fieldset: NEUTRON_NPU_DSADDR2
-  - name: DSADDR3
-    byte_offset: 188
-    fieldset: NEUTRON_NPU_DSADDR3
-  - name: DDADDR0
-    byte_offset: 192
-    fieldset: NEUTRON_NPU_DDADDR0
-  - name: DDADDR1
-    byte_offset: 196
-    fieldset: NEUTRON_NPU_DDADDR1
-  - name: DDADDR2
-    byte_offset: 200
-    fieldset: NEUTRON_NPU_DDADDR2
-  - name: DDADDR3
-    byte_offset: 204
-    fieldset: NEUTRON_NPU_DDADDR3
-  - name: DCTRL2_0
-    byte_offset: 208
-    fieldset: NEUTRON_NPU_DCTRL2_0
-  - name: DCTRL2_1
-    byte_offset: 212
-    fieldset: NEUTRON_NPU_DCTRL2_1
-  - name: DCTRL2_2
-    byte_offset: 216
-    fieldset: NEUTRON_NPU_DCTRL2_2
-  - name: DCTRL2_3
-    byte_offset: 220
-    fieldset: NEUTRON_NPU_DCTRL2_3
-  - name: WCTRL
-    byte_offset: 224
-    fieldset: NEUTRON_NPU_WCTRL
-  - name: WSADDR
-    byte_offset: 228
-    fieldset: NEUTRON_NPU_WSADDR
-  - name: WDADDR
-    byte_offset: 232
-    fieldset: NEUTRON_NPU_WDADDR
-  - name: DCTRL3_0
-    byte_offset: 240
-    fieldset: NEUTRON_NPU_DCTRL3_0
-  - name: DCTRL3_1
-    byte_offset: 244
-    fieldset: NEUTRON_NPU_DCTRL3_1
-  - name: DCTRL3_2
-    byte_offset: 248
-    fieldset: NEUTRON_NPU_DCTRL3_2
-  - name: DCTRL3_3
-    byte_offset: 252
-    fieldset: NEUTRON_NPU_DCTRL3_3
-  - name: WCTRL2_0
-    byte_offset: 256
-    fieldset: NEUTRON_NPU_WCTRL2_0
-  - name: WCTRL3_0
-    byte_offset: 260
-    fieldset: NEUTRON_NPU_WCTRL3_0
-  - name: WPEND1
-    byte_offset: 264
-  - name: WPEND2
-    byte_offset: 268
-  - name: APPCTRL_SOC
-    byte_offset: 512
-    fieldset: NEUTRON_NPU_APPCTRL_SOC
-  - name: APPSTATUS
-    byte_offset: 516
-    fieldset: NEUTRON_NPU_APPSTATUS
-  - name: BASEDDRL
-    byte_offset: 520
-    fieldset: NEUTRON_NPU_BASEDDRL
-  - name: BASEDDRH
-    byte_offset: 524
-  - name: INPUT
-    byte_offset: 528
-    fieldset: NEUTRON_NPU_INPUT
-  - name: INPUT2
-    byte_offset: 532
-    fieldset: NEUTRON_NPU_INPUT2
-  - name: OUTPUT
-    byte_offset: 536
-    fieldset: NEUTRON_NPU_OUTPUT
-  - name: OUTPUT2
-    byte_offset: 540
-    fieldset: NEUTRON_NPU_OUTPUT2
-  - name: CODEOFF
-    byte_offset: 544
-    fieldset: NEUTRON_NPU_CODEOFF
-  - name: DATAOFF
-    byte_offset: 548
-    fieldset: NEUTRON_NPU_DATAOFF
-  - name: RINGCTRL
-    byte_offset: 560
-    fieldset: NEUTRON_NPU_RINGCTRL
-  - name: TAIL
-    byte_offset: 568
-    fieldset: NEUTRON_NPU_TAIL
-  - name: HEAD
-    byte_offset: 572
-    fieldset: NEUTRON_NPU_HEAD
-  - name: MBOX
-    byte_offset: 576
-    array:
-      len: 8
-      stride: 4
-    fieldset: NEUTRON_NPU_MBOX
-  - name: BASEINOUTL
-    byte_offset: 640
-    fieldset: NEUTRON_NPU_BASEINOUTL
-  - name: BASEINOUTH
-    byte_offset: 644
-  - name: BASESPILLL
-    byte_offset: 648
-    fieldset: NEUTRON_NPU_BASESPILLL
-  - name: BASESPILLH
-    byte_offset: 652
-    fieldset: NEUTRON_NPU_BASESPILLH
-  - name: DECOMPCTRL
-    byte_offset: 768
-    fieldset: NEUTRON_NPU_DECOMPCTRL
-  - name: DECOMPSTAT
-    byte_offset: 772
-    fieldset: NEUTRON_NPU_DECOMPSTAT
-  - name: GROUP_BASE
-    byte_offset: 776
-    fieldset: NEUTRON_NPU_GROUP_BASE
-  - name: GROUP_LEN
-    byte_offset: 784
-    fieldset: NEUTRON_NPU_GROUP_LEN
-  - name: CRYPTO
-    byte_offset: 832
-    fieldset: NEUTRON_NPU_CRYPTO
-  - name: PRIVDDRL
-    byte_offset: 836
-    fieldset: NEUTRON_NPU_PRIVDDRL
-  - name: PRIVDDRH
-    byte_offset: 840
-    fieldset: NEUTRON_NPU_PRIVDDRH
-  - name: SESSIONIV
-    byte_offset: 844
-    fieldset: NEUTRON_NPU_SESSIONIV
-  - name: INFCOUNT
-    byte_offset: 848
-    fieldset: NEUTRON_NPU_INFCOUNT
-  - name: FLAYERNUM
-    byte_offset: 852
-    fieldset: NEUTRON_NPU_FLAYERNUM
-  - name: PLAYERNUM
-    byte_offset: 856
-    fieldset: NEUTRON_NPU_PLAYERNUM
-  - name: AXIOPT
-    byte_offset: 864
-    fieldset: NEUTRON_NPU_AXIOPT
-  - name: V2P_DATA
-    byte_offset: 1024
-    array:
-      len: 16
-      stride: 4
-  - name: V2P_WEIGHTS
-    byte_offset: 1088
-    array:
-      len: 16
-      stride: 4
-  - name: V2P_RESULTS
-    byte_offset: 1152
-    array:
-      len: 16
-      stride: 4
-  - name: LISTEN
-    byte_offset: 1264
-    fieldset: NEUTRON_NPU_LISTEN
+    - name: RESETCTRL
+      byte_offset: 0
+      fieldset: NEUTRON_NPU_RESETCTRL
+    - name: STATUSERR
+      byte_offset: 4
+      fieldset: NEUTRON_NPU_STATUSERR
+    - name: INTENA
+      byte_offset: 8
+      fieldset: NEUTRON_NPU_INTENA
+    - name: INTCLR
+      byte_offset: 12
+      fieldset: NEUTRON_NPU_INTCLR
+    - name: CYCLOW
+      byte_offset: 16
+    - name: CYCHIGH
+      byte_offset: 20
+    - name: DDRLATENT
+      byte_offset: 24
+      fieldset: NEUTRON_NPU_DDRLATENT
+    - name: DDRSPREAD
+      byte_offset: 28
+      fieldset: NEUTRON_NPU_DDRSPREAD
+    - name: DDRRCNTS
+      byte_offset: 32
+    - name: DDRWWORDS
+      byte_offset: 36
+      fieldset: NEUTRON_NPU_DDRWWORDS
+    - name: DDRRWORDS
+      byte_offset: 40
+      fieldset: NEUTRON_NPU_DDRRWORDS
+    - name: DDRSTALL
+      byte_offset: 44
+      fieldset: NEUTRON_NPU_DDRSTALL
+    - name: NSTALL
+      byte_offset: 48
+      fieldset: NEUTRON_NPU_NSTALL
+    - name: NACT
+      byte_offset: 52
+      fieldset: NEUTRON_NPU_NACT
+    - name: EVTRCCFG
+      byte_offset: 80
+      fieldset: NEUTRON_NPU_EVTRCCFG
+    - name: EVTRCDATA
+      byte_offset: 84
+      fieldset: NEUTRON_NPU_EVTRCDATA
+    - name: ZVIV2P0
+      byte_offset: 96
+      fieldset: NEUTRON_NPU_ZVIV2P0
+    - name: ZVIV2P1
+      byte_offset: 100
+      fieldset: NEUTRON_NPU_ZVIV2P1
+    - name: ZVIV2P2
+      byte_offset: 104
+      fieldset: NEUTRON_NPU_ZVIV2P2
+    - name: ZVIV2P3
+      byte_offset: 108
+      fieldset: NEUTRON_NPU_ZVIV2P3
+    - name: TTCTRL
+      byte_offset: 128
+      fieldset: NEUTRON_NPU_TTCTRL
+    - name: TTSADDR
+      byte_offset: 132
+      fieldset: NEUTRON_NPU_TTSADDR
+    - name: TTDADDR
+      byte_offset: 136
+      fieldset: NEUTRON_NPU_TTDADDR
+    - name: TTCTRL2
+      byte_offset: 140
+      fieldset: NEUTRON_NPU_TTCTRL2
+    - name: CONFIG
+      byte_offset: 144
+      fieldset: NEUTRON_NPU_CONFIG
+    - name: STATUS
+      byte_offset: 148
+      fieldset: NEUTRON_NPU_STATUS
+    - name: DFORDER
+      byte_offset: 152
+      fieldset: NEUTRON_NPU_DFORDER
+    - name: DPORDER
+      byte_offset: 156
+      fieldset: NEUTRON_NPU_DPORDER
+    - name: DCTRL0_FETCH
+      byte_offset: 160
+      fieldset: NEUTRON_NPU_DCTRL0_FETCH
+    - name: DCTRL1_FETCH
+      byte_offset: 164
+      fieldset: NEUTRON_NPU_DCTRL1_FETCH
+    - name: DCTRL2_FETCH
+      byte_offset: 168
+      fieldset: NEUTRON_NPU_DCTRL2_FETCH
+    - name: DCTRL3_FETCH
+      byte_offset: 172
+      fieldset: NEUTRON_NPU_DCTRL3_FETCH
+    - name: DSADDR0
+      byte_offset: 176
+      fieldset: NEUTRON_NPU_DSADDR0
+    - name: DSADDR1
+      byte_offset: 180
+      fieldset: NEUTRON_NPU_DSADDR1
+    - name: DSADDR2
+      byte_offset: 184
+      fieldset: NEUTRON_NPU_DSADDR2
+    - name: DSADDR3
+      byte_offset: 188
+      fieldset: NEUTRON_NPU_DSADDR3
+    - name: DDADDR0
+      byte_offset: 192
+      fieldset: NEUTRON_NPU_DDADDR0
+    - name: DDADDR1
+      byte_offset: 196
+      fieldset: NEUTRON_NPU_DDADDR1
+    - name: DDADDR2
+      byte_offset: 200
+      fieldset: NEUTRON_NPU_DDADDR2
+    - name: DDADDR3
+      byte_offset: 204
+      fieldset: NEUTRON_NPU_DDADDR3
+    - name: DCTRL2_0
+      byte_offset: 208
+      fieldset: NEUTRON_NPU_DCTRL2_0
+    - name: DCTRL2_1
+      byte_offset: 212
+      fieldset: NEUTRON_NPU_DCTRL2_1
+    - name: DCTRL2_2
+      byte_offset: 216
+      fieldset: NEUTRON_NPU_DCTRL2_2
+    - name: DCTRL2_3
+      byte_offset: 220
+      fieldset: NEUTRON_NPU_DCTRL2_3
+    - name: WCTRL
+      byte_offset: 224
+      fieldset: NEUTRON_NPU_WCTRL
+    - name: WSADDR
+      byte_offset: 228
+      fieldset: NEUTRON_NPU_WSADDR
+    - name: WDADDR
+      byte_offset: 232
+      fieldset: NEUTRON_NPU_WDADDR
+    - name: DCTRL3_0
+      byte_offset: 240
+      fieldset: NEUTRON_NPU_DCTRL3_0
+    - name: DCTRL3_1
+      byte_offset: 244
+      fieldset: NEUTRON_NPU_DCTRL3_1
+    - name: DCTRL3_2
+      byte_offset: 248
+      fieldset: NEUTRON_NPU_DCTRL3_2
+    - name: DCTRL3_3
+      byte_offset: 252
+      fieldset: NEUTRON_NPU_DCTRL3_3
+    - name: WCTRL2_0
+      byte_offset: 256
+      fieldset: NEUTRON_NPU_WCTRL2_0
+    - name: WCTRL3_0
+      byte_offset: 260
+      fieldset: NEUTRON_NPU_WCTRL3_0
+    - name: WPEND1
+      byte_offset: 264
+    - name: WPEND2
+      byte_offset: 268
+    - name: APPCTRL_SOC
+      byte_offset: 512
+      fieldset: NEUTRON_NPU_APPCTRL_SOC
+    - name: APPSTATUS
+      byte_offset: 516
+      fieldset: NEUTRON_NPU_APPSTATUS
+    - name: BASEDDRL
+      byte_offset: 520
+      fieldset: NEUTRON_NPU_BASEDDRL
+    - name: BASEDDRH
+      byte_offset: 524
+    - name: INPUT
+      byte_offset: 528
+      fieldset: NEUTRON_NPU_INPUT
+    - name: INPUT2
+      byte_offset: 532
+      fieldset: NEUTRON_NPU_INPUT2
+    - name: OUTPUT
+      byte_offset: 536
+      fieldset: NEUTRON_NPU_OUTPUT
+    - name: OUTPUT2
+      byte_offset: 540
+      fieldset: NEUTRON_NPU_OUTPUT2
+    - name: CODEOFF
+      byte_offset: 544
+      fieldset: NEUTRON_NPU_CODEOFF
+    - name: DATAOFF
+      byte_offset: 548
+      fieldset: NEUTRON_NPU_DATAOFF
+    - name: RINGCTRL
+      byte_offset: 560
+      fieldset: NEUTRON_NPU_RINGCTRL
+    - name: TAIL
+      byte_offset: 568
+      fieldset: NEUTRON_NPU_TAIL
+    - name: HEAD
+      byte_offset: 572
+      fieldset: NEUTRON_NPU_HEAD
+    - name: MBOX
+      byte_offset: 576
+      array:
+        len: 8
+        stride: 4
+      fieldset: NEUTRON_NPU_MBOX
+    - name: BASEINOUTL
+      byte_offset: 640
+      fieldset: NEUTRON_NPU_BASEINOUTL
+    - name: BASEINOUTH
+      byte_offset: 644
+    - name: BASESPILLL
+      byte_offset: 648
+      fieldset: NEUTRON_NPU_BASESPILLL
+    - name: BASESPILLH
+      byte_offset: 652
+      fieldset: NEUTRON_NPU_BASESPILLH
+    - name: DECOMPCTRL
+      byte_offset: 768
+      fieldset: NEUTRON_NPU_DECOMPCTRL
+    - name: DECOMPSTAT
+      byte_offset: 772
+      fieldset: NEUTRON_NPU_DECOMPSTAT
+    - name: GROUP_BASE
+      byte_offset: 776
+      fieldset: NEUTRON_NPU_GROUP_BASE
+    - name: GROUP_LEN
+      byte_offset: 784
+      fieldset: NEUTRON_NPU_GROUP_LEN
+    - name: CRYPTO
+      byte_offset: 832
+      fieldset: NEUTRON_NPU_CRYPTO
+    - name: PRIVDDRL
+      byte_offset: 836
+      fieldset: NEUTRON_NPU_PRIVDDRL
+    - name: PRIVDDRH
+      byte_offset: 840
+      fieldset: NEUTRON_NPU_PRIVDDRH
+    - name: SESSIONIV
+      byte_offset: 844
+      fieldset: NEUTRON_NPU_SESSIONIV
+    - name: INFCOUNT
+      byte_offset: 848
+      fieldset: NEUTRON_NPU_INFCOUNT
+    - name: FLAYERNUM
+      byte_offset: 852
+      fieldset: NEUTRON_NPU_FLAYERNUM
+    - name: PLAYERNUM
+      byte_offset: 856
+      fieldset: NEUTRON_NPU_PLAYERNUM
+    - name: AXIOPT
+      byte_offset: 864
+      fieldset: NEUTRON_NPU_AXIOPT
+    - name: V2P_DATA
+      byte_offset: 1024
+      array:
+        len: 16
+        stride: 4
+    - name: V2P_WEIGHTS
+      byte_offset: 1088
+      array:
+        len: 16
+        stride: 4
+    - name: V2P_RESULTS
+      byte_offset: 1152
+      array:
+        len: 16
+        stride: 4
+    - name: LISTEN
+      byte_offset: 1264
+      fieldset: NEUTRON_NPU_LISTEN
 fieldset/NEUTRON_NPU_RESETCTRL:
   description: ''
   fields:
-  - name: ZVRUN
-    bit_offset: 0
-    bit_size: 1
-  - name: OCMCNT
-    bit_offset: 1
-    bit_size: 3
-    description: OCMCNT
-  - name: NRUN
-    bit_offset: 4
-    bit_size: 4
-    description: OCMCNT
-  - name: MEMENA
-    bit_offset: 8
-    bit_size: 4
-    description: NRUN
-  - name: ZMEMFREE
-    bit_offset: 12
-    bit_size: 1
-    description: MEMENA
-  - name: DMRESET
-    bit_offset: 15
-    bit_size: 1
-  - name: NGANGDIS
-    bit_offset: 16
-    bit_size: 4
-    description: NGANGDIS
-  - name: OCMEN
-    bit_offset: 30
-    bit_size: 1
-    description: NGANGDIS
-  - name: ZVCLKEN
-    bit_offset: 31
-    bit_size: 1
+    - name: ZVRUN
+      bit_offset: 0
+      bit_size: 1
+    - name: OCMCNT
+      bit_offset: 1
+      bit_size: 3
+      description: OCMCNT
+    - name: NRUN
+      bit_offset: 4
+      bit_size: 4
+      description: OCMCNT
+    - name: MEMENA
+      bit_offset: 8
+      bit_size: 4
+      description: NRUN
+    - name: ZMEMFREE
+      bit_offset: 12
+      bit_size: 1
+      description: MEMENA
+    - name: DMRESET
+      bit_offset: 15
+      bit_size: 1
+    - name: NGANGDIS
+      bit_offset: 16
+      bit_size: 4
+      description: NGANGDIS
+    - name: OCMEN
+      bit_offset: 30
+      bit_size: 1
+      description: NGANGDIS
+    - name: ZVCLKEN
+      bit_offset: 31
+      bit_size: 1
 fieldset/NEUTRON_NPU_STATUSERR:
   description: ''
   fields:
-  - name: ZVHALT
-    bit_offset: 0
-    bit_size: 1
-    description: Zen-V core HALT
-  - name: ZVFAULT
-    bit_offset: 1
-    bit_size: 1
-    description: Zen-V core HALT
-  - name: NRAERR
-    bit_offset: 4
-    bit_size: 1
-    description: Zen-V core fault
-  - name: NWAERR
-    bit_offset: 5
-    bit_size: 1
-    description: NRAERR
-  - name: NDAERR
-    bit_offset: 6
-    bit_size: 1
-    description: NWAERR
-  - name: REQCONT
-    bit_offset: 8
-    bit_size: 1
-    description: NDAERR
-  - name: REQCONTID
-    bit_offset: 9
-    bit_size: 8
-    description: REQCONT
-  - name: OCMECCCORR
-    bit_offset: 20
-    bit_size: 8
-    description: REQCONTID
-  - name: OCMECCFATAL
-    bit_offset: 28
-    bit_size: 1
-    description: OCMECCCORR
-  - name: MBOXINT
-    bit_offset: 31
-    bit_size: 1
-    description: Message Box Interrupt
+    - name: ZVHALT
+      bit_offset: 0
+      bit_size: 1
+      description: Zen-V core HALT
+    - name: ZVFAULT
+      bit_offset: 1
+      bit_size: 1
+      description: Zen-V core HALT
+    - name: NRAERR
+      bit_offset: 4
+      bit_size: 1
+      description: Zen-V core fault
+    - name: NWAERR
+      bit_offset: 5
+      bit_size: 1
+      description: NRAERR
+    - name: NDAERR
+      bit_offset: 6
+      bit_size: 1
+      description: NWAERR
+    - name: REQCONT
+      bit_offset: 8
+      bit_size: 1
+      description: NDAERR
+    - name: REQCONTID
+      bit_offset: 9
+      bit_size: 8
+      description: REQCONT
+    - name: OCMECCCORR
+      bit_offset: 20
+      bit_size: 8
+      description: REQCONTID
+    - name: OCMECCFATAL
+      bit_offset: 28
+      bit_size: 1
+      description: OCMECCCORR
+    - name: MBOXINT
+      bit_offset: 31
+      bit_size: 1
+      description: Message Box Interrupt
 fieldset/NEUTRON_NPU_STATUSERR_INFDONE:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 30
-    bit_size: 1
-    description: OCMECCFATAL
+    - name: CLR
+      bit_offset: 30
+      bit_size: 1
+      description: OCMECCFATAL
 fieldset/NEUTRON_NPU_INTENA:
   description: ''
   fields:
-  - name: ZVHALT
-    bit_offset: 0
-    bit_size: 1
-    description: Zen-V Halt
-  - name: INFDONE
-    bit_offset: 1
-    bit_size: 1
-    description: Zen-V Halt
-  - name: MBOX
-    bit_offset: 2
-    bit_size: 1
-    description: Inference Done
-  - name: SHUTDOWN
-    bit_offset: 7
-    bit_size: 1
-    description: Mailbox
-  - name: AERR
-    bit_offset: 16
-    bit_size: 1
-    description: Shutdown
-  - name: REQCONT
-    bit_offset: 17
-    bit_size: 1
-    description: AERR
-  - name: OCMECCSAT
-    bit_offset: 18
-    bit_size: 1
-    description: REQCONT
-  - name: OCMECCFATAL
-    bit_offset: 19
-    bit_size: 1
-    description: OCMECCSAT
-  - name: ZVFAULT
-    bit_offset: 20
-    bit_size: 1
-    description: OCMECCFATAL
+    - name: ZVHALT
+      bit_offset: 0
+      bit_size: 1
+      description: Zen-V Halt
+    - name: INFDONE
+      bit_offset: 1
+      bit_size: 1
+      description: Zen-V Halt
+    - name: MBOX
+      bit_offset: 2
+      bit_size: 1
+      description: Inference Done
+    - name: SHUTDOWN
+      bit_offset: 7
+      bit_size: 1
+      description: Mailbox
+    - name: AERR
+      bit_offset: 16
+      bit_size: 1
+      description: Shutdown
+    - name: REQCONT
+      bit_offset: 17
+      bit_size: 1
+      description: AERR
+    - name: OCMECCSAT
+      bit_offset: 18
+      bit_size: 1
+      description: REQCONT
+    - name: OCMECCFATAL
+      bit_offset: 19
+      bit_size: 1
+      description: OCMECCSAT
+    - name: ZVFAULT
+      bit_offset: 20
+      bit_size: 1
+      description: OCMECCFATAL
 fieldset/NEUTRON_NPU_INTCLR:
   description: ''
   fields:
-  - name: ZVHALT
-    bit_offset: 0
-    bit_size: 1
-    description: ZVHALT
-  - name: INFDONE
-    bit_offset: 1
-    bit_size: 1
-    description: ZVHALT
-  - name: MBOX
-    bit_offset: 2
-    bit_size: 1
-    description: Inference Done
-  - name: SHUTDOWN
-    bit_offset: 7
-    bit_size: 1
-    description: Mailbox
-  - name: AERR
-    bit_offset: 16
-    bit_size: 1
-    description: SHUTDOWN
-  - name: REQCONT
-    bit_offset: 17
-    bit_size: 1
-    description: AERR
-  - name: OCMECCSAT
-    bit_offset: 18
-    bit_size: 1
-    description: REQCONT
-  - name: OCMECCFATAL
-    bit_offset: 19
-    bit_size: 1
-    description: OCMECCSAT
-  - name: ZVFAULT
-    bit_offset: 20
-    bit_size: 1
-    description: OCMECCFATAL
+    - name: ZVHALT
+      bit_offset: 0
+      bit_size: 1
+      description: ZVHALT
+    - name: INFDONE
+      bit_offset: 1
+      bit_size: 1
+      description: ZVHALT
+    - name: MBOX
+      bit_offset: 2
+      bit_size: 1
+      description: Inference Done
+    - name: SHUTDOWN
+      bit_offset: 7
+      bit_size: 1
+      description: Mailbox
+    - name: AERR
+      bit_offset: 16
+      bit_size: 1
+      description: SHUTDOWN
+    - name: REQCONT
+      bit_offset: 17
+      bit_size: 1
+      description: AERR
+    - name: OCMECCSAT
+      bit_offset: 18
+      bit_size: 1
+      description: REQCONT
+    - name: OCMECCFATAL
+      bit_offset: 19
+      bit_size: 1
+      description: OCMECCSAT
+    - name: ZVFAULT
+      bit_offset: 20
+      bit_size: 1
+      description: OCMECCFATAL
 fieldset/NEUTRON_NPU_CYCLOW_CNT:
   description: ''
   fields:
-  - name: LOW
-    bit_offset: 0
-    bit_size: 32
-    description: CNT_LOW
+    - name: LOW
+      bit_offset: 0
+      bit_size: 32
+      description: CNT_LOW
 fieldset/NEUTRON_NPU_CYCHIGH_CNT:
   description: ''
   fields:
-  - name: HIGH
-    bit_offset: 0
-    bit_size: 32
-    description: CNT_HIGH
+    - name: HIGH
+      bit_offset: 0
+      bit_size: 32
+      description: CNT_HIGH
 fieldset/NEUTRON_NPU_DDRLATENT:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 32
-    description: CNT
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
+      description: CNT
 fieldset/NEUTRON_NPU_DDRSPREAD:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 32
-    description: CNT
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
+      description: CNT
 fieldset/NEUTRON_NPU_DDRRCNTS_CNT:
   description: ''
   fields:
-  - name: DDRR
-    bit_offset: 0
-    bit_size: 32
-    description: CNT_DDRR
+    - name: DDRR
+      bit_offset: 0
+      bit_size: 32
+      description: CNT_DDRR
 fieldset/NEUTRON_NPU_DDRWWORDS:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 32
-    description: Count
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
+      description: Count
 fieldset/NEUTRON_NPU_DDRRWORDS:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 32
-    description: CNT
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
+      description: CNT
 fieldset/NEUTRON_NPU_DDRSTALL:
   description: ''
   fields:
-  - name: REQSTALLS
-    bit_offset: 0
-    bit_size: 16
-    description: REQSTALLS
-  - name: WSTALLS
-    bit_offset: 16
-    bit_size: 16
-    description: REQSTALLS
+    - name: REQSTALLS
+      bit_offset: 0
+      bit_size: 16
+      description: REQSTALLS
+    - name: WSTALLS
+      bit_offset: 16
+      bit_size: 16
+      description: REQSTALLS
 fieldset/NEUTRON_NPU_NSTALL:
   description: ''
   fields:
-  - name: DSTALLS
-    bit_offset: 0
-    bit_size: 16
-    description: DSTALLS
-  - name: WSTALLS
-    bit_offset: 16
-    bit_size: 16
-    description: DSTALLS
+    - name: DSTALLS
+      bit_offset: 0
+      bit_size: 16
+      description: DSTALLS
+    - name: WSTALLS
+      bit_offset: 16
+      bit_size: 16
+      description: DSTALLS
 fieldset/NEUTRON_NPU_NACT:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 32
-    description: CNT
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
+      description: CNT
 fieldset/NEUTRON_NPU_EVTRCCFG:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-    description: Enable
-  - name: DIV
-    bit_offset: 2
-    bit_size: 2
-    description: Enable
-  - name: TSTAMP
-    bit_offset: 4
-    bit_size: 8
-  - name: RW
-    bit_offset: 12
-    bit_size: 4
-    description: Read Write
-  - name: START
-    bit_offset: 16
-    bit_size: 8
-    description: Read Write
-  - name: END
-    bit_offset: 24
-    bit_size: 4
-    description: End trace event
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Enable
+    - name: DIV
+      bit_offset: 2
+      bit_size: 2
+      description: Enable
+    - name: TSTAMP
+      bit_offset: 4
+      bit_size: 8
+    - name: RW
+      bit_offset: 12
+      bit_size: 4
+      description: Read Write
+    - name: START
+      bit_offset: 16
+      bit_size: 8
+      description: Read Write
+    - name: END
+      bit_offset: 24
+      bit_size: 4
+      description: End trace event
 fieldset/NEUTRON_NPU_EVTRCDATA:
   description: ''
   fields:
-  - name: PUSH
-    bit_offset: 0
-    bit_size: 1
-    description: Push
-  - name: TYPE
-    bit_offset: 4
-    bit_size: 3
-    description: Push
-  - name: DATA
-    bit_offset: 16
-    bit_size: 16
-    description: Optional data
+    - name: PUSH
+      bit_offset: 0
+      bit_size: 1
+      description: Push
+    - name: TYPE
+      bit_offset: 4
+      bit_size: 3
+      description: Push
+    - name: DATA
+      bit_offset: 16
+      bit_size: 16
+      description: Optional data
 fieldset/NEUTRON_NPU_ZVIV2P0:
   description: ''
   fields:
-  - name: ERROR
-    bit_offset: 0
-    bit_size: 1
-    description: ERROR
-  - name: DATA1
-    bit_offset: 1
-    bit_size: 1
-    description: ERROR
-  - name: DATA2
-    bit_offset: 2
-    bit_size: 1
-    description: DATA1
-  - name: DATA3
-    bit_offset: 3
-    bit_size: 1
-    description: DATA2
-  - name: MATCH1
-    bit_offset: 8
-    bit_size: 8
-    description: DATA3
-  - name: MATCH2
-    bit_offset: 16
-    bit_size: 8
-    description: MATCH1
-  - name: MATCH3
-    bit_offset: 24
-    bit_size: 8
-    description: MATCH2
+    - name: ERROR
+      bit_offset: 0
+      bit_size: 1
+      description: ERROR
+    - name: DATA1
+      bit_offset: 1
+      bit_size: 1
+      description: ERROR
+    - name: DATA2
+      bit_offset: 2
+      bit_size: 1
+      description: DATA1
+    - name: DATA3
+      bit_offset: 3
+      bit_size: 1
+      description: DATA2
+    - name: MATCH1
+      bit_offset: 8
+      bit_size: 8
+      description: DATA3
+    - name: MATCH2
+      bit_offset: 16
+      bit_size: 8
+      description: MATCH1
+    - name: MATCH3
+      bit_offset: 24
+      bit_size: 8
+      description: MATCH2
 fieldset/NEUTRON_NPU_ZVIV2P1:
   description: ''
   fields:
-  - name: MATCH0
-    bit_offset: 0
-    bit_size: 8
-    description: MATCH0
-  - name: MATCH1
-    bit_offset: 8
-    bit_size: 8
-    description: MATCH0
-  - name: MATCH2
-    bit_offset: 16
-    bit_size: 8
-    description: MATCH1
-  - name: MATCH3
-    bit_offset: 24
-    bit_size: 8
-    description: MATCH2
+    - name: MATCH0
+      bit_offset: 0
+      bit_size: 8
+      description: MATCH0
+    - name: MATCH1
+      bit_offset: 8
+      bit_size: 8
+      description: MATCH0
+    - name: MATCH2
+      bit_offset: 16
+      bit_size: 8
+      description: MATCH1
+    - name: MATCH3
+      bit_offset: 24
+      bit_size: 8
+      description: MATCH2
 fieldset/NEUTRON_NPU_ZVIV2P2:
   description: ''
   fields:
-  - name: MATCH0
-    bit_offset: 0
-    bit_size: 8
-    description: MATCH0
-  - name: MATCH1
-    bit_offset: 8
-    bit_size: 8
-    description: MATCH0
-  - name: MATCH2
-    bit_offset: 16
-    bit_size: 8
-    description: MATCH1
-  - name: MATCH3
-    bit_offset: 24
-    bit_size: 8
-    description: MATCH2
+    - name: MATCH0
+      bit_offset: 0
+      bit_size: 8
+      description: MATCH0
+    - name: MATCH1
+      bit_offset: 8
+      bit_size: 8
+      description: MATCH0
+    - name: MATCH2
+      bit_offset: 16
+      bit_size: 8
+      description: MATCH1
+    - name: MATCH3
+      bit_offset: 24
+      bit_size: 8
+      description: MATCH2
 fieldset/NEUTRON_NPU_ZVIV2P3:
   description: ''
   fields:
-  - name: MATCH0
-    bit_offset: 0
-    bit_size: 8
-    description: MATCH0
-  - name: MATCH1
-    bit_offset: 8
-    bit_size: 8
-    description: MATCH0
-  - name: MATCH2
-    bit_offset: 16
-    bit_size: 8
-    description: MATCH1
-  - name: MATCH3
-    bit_offset: 24
-    bit_size: 8
-    description: MATCH2
+    - name: MATCH0
+      bit_offset: 0
+      bit_size: 8
+      description: MATCH0
+    - name: MATCH1
+      bit_offset: 8
+      bit_size: 8
+      description: MATCH0
+    - name: MATCH2
+      bit_offset: 16
+      bit_size: 8
+      description: MATCH1
+    - name: MATCH3
+      bit_offset: 24
+      bit_size: 8
+      description: MATCH2
 fieldset/NEUTRON_NPU_TTCTRL:
   description: ''
   fields:
-  - name: STRIDE
-    bit_offset: 0
-    bit_size: 8
-    description: Stride
-  - name: SIZE
-    bit_offset: 8
-    bit_size: 14
-    description: Stride
-  - name: ITER
-    bit_offset: 22
-    bit_size: 10
-    description: Size
+    - name: STRIDE
+      bit_offset: 0
+      bit_size: 8
+      description: Stride
+    - name: SIZE
+      bit_offset: 8
+      bit_size: 14
+      description: Stride
+    - name: ITER
+      bit_offset: 22
+      bit_size: 10
+      description: Size
 fieldset/NEUTRON_NPU_TTSADDR:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 0
-    bit_size: 32
-    description: Address
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Address
 fieldset/NEUTRON_NPU_TTDADDR:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 0
-    bit_size: 32
-    description: Address
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Address
 fieldset/NEUTRON_NPU_TTCTRL2:
   description: ''
   fields:
-  - name: DSTLEN
-    bit_offset: 0
-    bit_size: 19
-    description: Destination Length
-  - name: MODE
-    bit_offset: 22
-    bit_size: 2
-    description: Destination Length
-  - name: PAD
-    bit_offset: 24
-    bit_size: 8
-    description: Pad
+    - name: DSTLEN
+      bit_offset: 0
+      bit_size: 19
+      description: Destination Length
+    - name: MODE
+      bit_offset: 22
+      bit_size: 2
+      description: Destination Length
+    - name: PAD
+      bit_offset: 24
+      bit_size: 8
+      description: Pad
 fieldset/NEUTRON_NPU_CONFIG:
   description: ''
   fields:
-  - name: TTINTENA
-    bit_offset: 0
-    bit_size: 1
-  - name: FINTENA
-    bit_offset: 1
-    bit_size: 1
-  - name: PINTENA
-    bit_offset: 2
-    bit_size: 1
-  - name: WINTENA
-    bit_offset: 3
-    bit_size: 1
-  - name: ERRENA
-    bit_offset: 4
-    bit_size: 1
-  - name: RELEASE
-    bit_offset: 7
-    bit_size: 1
-  - name: TTINT
-    bit_offset: 8
-    bit_size: 1
-  - name: FINT
-    bit_offset: 9
-    bit_size: 1
-  - name: PINT
-    bit_offset: 10
-    bit_size: 1
-  - name: WINT
-    bit_offset: 11
-    bit_size: 1
-  - name: EINT
-    bit_offset: 12
-    bit_size: 1
-  - name: TTWFIENA
-    bit_offset: 16
-    bit_size: 1
-  - name: FWFIENA
-    bit_offset: 17
-    bit_size: 1
-  - name: PWFIENA
-    bit_offset: 18
-    bit_size: 1
-  - name: WWFIENA
-    bit_offset: 19
-    bit_size: 1
+    - name: TTINTENA
+      bit_offset: 0
+      bit_size: 1
+    - name: FINTENA
+      bit_offset: 1
+      bit_size: 1
+    - name: PINTENA
+      bit_offset: 2
+      bit_size: 1
+    - name: WINTENA
+      bit_offset: 3
+      bit_size: 1
+    - name: ERRENA
+      bit_offset: 4
+      bit_size: 1
+    - name: RELEASE
+      bit_offset: 7
+      bit_size: 1
+    - name: TTINT
+      bit_offset: 8
+      bit_size: 1
+    - name: FINT
+      bit_offset: 9
+      bit_size: 1
+    - name: PINT
+      bit_offset: 10
+      bit_size: 1
+    - name: WINT
+      bit_offset: 11
+      bit_size: 1
+    - name: EINT
+      bit_offset: 12
+      bit_size: 1
+    - name: TTWFIENA
+      bit_offset: 16
+      bit_size: 1
+    - name: FWFIENA
+      bit_offset: 17
+      bit_size: 1
+    - name: PWFIENA
+      bit_offset: 18
+      bit_size: 1
+    - name: WWFIENA
+      bit_offset: 19
+      bit_size: 1
 fieldset/NEUTRON_NPU_STATUS:
   description: ''
   fields:
-  - name: TTERRD
-    bit_offset: 0
-    bit_size: 1
-  - name: TTERRS
-    bit_offset: 1
-    bit_size: 1
-  - name: DERRD
-    bit_offset: 4
-    bit_size: 4
-  - name: DERRS
-    bit_offset: 8
-    bit_size: 4
-    description: 'Data Channel Error: Destination'
-  - name: WERRD
-    bit_offset: 12
-    bit_size: 1
-    description: Data Channel Error Source
-  - name: WERRS
-    bit_offset: 13
-    bit_size: 1
-  - name: XERR
-    bit_offset: 15
-    bit_size: 1
-  - name: LRDSTALL
-    bit_offset: 16
-    bit_size: 1
-  - name: LWRSTALL
-    bit_offset: 17
-    bit_size: 1
-  - name: XRDSTALL
-    bit_offset: 18
-    bit_size: 1
-  - name: XWRSTALL
-    bit_offset: 19
-    bit_size: 1
-  - name: DECOMPERR
-    bit_offset: 20
-    bit_size: 1
-  - name: RERR
-    bit_offset: 30
-    bit_size: 1
-  - name: WERR
-    bit_offset: 31
-    bit_size: 1
+    - name: TTERRD
+      bit_offset: 0
+      bit_size: 1
+    - name: TTERRS
+      bit_offset: 1
+      bit_size: 1
+    - name: DERRD
+      bit_offset: 4
+      bit_size: 4
+    - name: DERRS
+      bit_offset: 8
+      bit_size: 4
+      description: 'Data Channel Error: Destination'
+    - name: WERRD
+      bit_offset: 12
+      bit_size: 1
+      description: Data Channel Error Source
+    - name: WERRS
+      bit_offset: 13
+      bit_size: 1
+    - name: XERR
+      bit_offset: 15
+      bit_size: 1
+    - name: LRDSTALL
+      bit_offset: 16
+      bit_size: 1
+    - name: LWRSTALL
+      bit_offset: 17
+      bit_size: 1
+    - name: XRDSTALL
+      bit_offset: 18
+      bit_size: 1
+    - name: XWRSTALL
+      bit_offset: 19
+      bit_size: 1
+    - name: DECOMPERR
+      bit_offset: 20
+      bit_size: 1
+    - name: RERR
+      bit_offset: 30
+      bit_size: 1
+    - name: WERR
+      bit_offset: 31
+      bit_size: 1
 fieldset/NEUTRON_NPU_DFORDER:
   description: ''
   fields:
-  - name: INDEX
-    bit_offset: 0
-    bit_size: 2
-    description: Index
-  - name: STALL
-    bit_offset: 2
-    bit_size: 1
-    description: Index
-  - name: LIST0
-    bit_offset: 4
-    bit_size: 3
-    description: List 0
-  - name: LIST1
-    bit_offset: 8
-    bit_size: 3
-    description: List 0
-  - name: LIST2
-    bit_offset: 12
-    bit_size: 3
-    description: List 1
-  - name: LIST3
-    bit_offset: 16
-    bit_size: 3
-    description: List 2
-  - name: ADD
-    bit_offset: 24
-    bit_size: 3
-    description: List 3
+    - name: INDEX
+      bit_offset: 0
+      bit_size: 2
+      description: Index
+    - name: STALL
+      bit_offset: 2
+      bit_size: 1
+      description: Index
+    - name: LIST0
+      bit_offset: 4
+      bit_size: 3
+      description: List 0
+    - name: LIST1
+      bit_offset: 8
+      bit_size: 3
+      description: List 0
+    - name: LIST2
+      bit_offset: 12
+      bit_size: 3
+      description: List 1
+    - name: LIST3
+      bit_offset: 16
+      bit_size: 3
+      description: List 2
+    - name: ADD
+      bit_offset: 24
+      bit_size: 3
+      description: List 3
 fieldset/NEUTRON_NPU_DPORDER:
   description: ''
   fields:
-  - name: INDEX
-    bit_offset: 0
-    bit_size: 2
-    description: Index
-  - name: STALL
-    bit_offset: 2
-    bit_size: 1
-    description: Index
-  - name: LIST0
-    bit_offset: 4
-    bit_size: 3
-    description: List 0
-  - name: LIST1
-    bit_offset: 8
-    bit_size: 3
-    description: List 0
-  - name: LIST2
-    bit_offset: 12
-    bit_size: 3
-    description: List 1
-  - name: LIST3
-    bit_offset: 16
-    bit_size: 3
-    description: List 2
-  - name: ADD
-    bit_offset: 24
-    bit_size: 3
-    description: List 3
+    - name: INDEX
+      bit_offset: 0
+      bit_size: 2
+      description: Index
+    - name: STALL
+      bit_offset: 2
+      bit_size: 1
+      description: Index
+    - name: LIST0
+      bit_offset: 4
+      bit_size: 3
+      description: List 0
+    - name: LIST1
+      bit_offset: 8
+      bit_size: 3
+      description: List 0
+    - name: LIST2
+      bit_offset: 12
+      bit_size: 3
+      description: List 1
+    - name: LIST3
+      bit_offset: 16
+      bit_size: 3
+      description: List 2
+    - name: ADD
+      bit_offset: 24
+      bit_size: 3
+      description: List 3
 fieldset/NEUTRON_NPU_DCTRL0_FETCH:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-    description: Mode
-  - name: SRCEQDST
-    bit_offset: 2
-    bit_size: 1
-    description: Mode
-  - name: PADINSERT
-    bit_offset: 3
-    bit_size: 1
-    description: SRCEQDST
-  - name: DESTLEN
-    bit_offset: 4
-    bit_size: 16
-    description: Pad Insert
-  - name: PADCNT
-    bit_offset: 20
-    bit_size: 4
-    description: Destination Length
-  - name: PADBYTE
-    bit_offset: 24
-    bit_size: 8
-    description: Pad Count
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+      description: Mode
+    - name: SRCEQDST
+      bit_offset: 2
+      bit_size: 1
+      description: Mode
+    - name: PADINSERT
+      bit_offset: 3
+      bit_size: 1
+      description: SRCEQDST
+    - name: DESTLEN
+      bit_offset: 4
+      bit_size: 16
+      description: Pad Insert
+    - name: PADCNT
+      bit_offset: 20
+      bit_size: 4
+      description: Destination Length
+    - name: PADBYTE
+      bit_offset: 24
+      bit_size: 8
+      description: Pad Count
 fieldset/NEUTRON_NPU_DCTRL0_PUSH:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-  - name: SRCEQDST
-    bit_offset: 2
-    bit_size: 1
-    description: SRCEQDST
-  - name: DESTLEN
-    bit_offset: 4
-    bit_size: 16
-    description: SRCEQDST
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+    - name: SRCEQDST
+      bit_offset: 2
+      bit_size: 1
+      description: SRCEQDST
+    - name: DESTLEN
+      bit_offset: 4
+      bit_size: 16
+      description: SRCEQDST
 fieldset/NEUTRON_NPU_DCTRL1_FETCH:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-    description: Mode
-  - name: SRCEQDST
-    bit_offset: 2
-    bit_size: 1
-    description: Mode
-  - name: PADINSERT
-    bit_offset: 3
-    bit_size: 1
-    description: SRCEQDST
-  - name: DESTLEN
-    bit_offset: 4
-    bit_size: 16
-    description: Pad Insert
-  - name: PADCNT
-    bit_offset: 20
-    bit_size: 4
-    description: Destination Length
-  - name: PADBYTE
-    bit_offset: 24
-    bit_size: 8
-    description: Pad Count
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+      description: Mode
+    - name: SRCEQDST
+      bit_offset: 2
+      bit_size: 1
+      description: Mode
+    - name: PADINSERT
+      bit_offset: 3
+      bit_size: 1
+      description: SRCEQDST
+    - name: DESTLEN
+      bit_offset: 4
+      bit_size: 16
+      description: Pad Insert
+    - name: PADCNT
+      bit_offset: 20
+      bit_size: 4
+      description: Destination Length
+    - name: PADBYTE
+      bit_offset: 24
+      bit_size: 8
+      description: Pad Count
 fieldset/NEUTRON_NPU_DCTRL1_PUSH:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-  - name: SRCEQDST
-    bit_offset: 2
-    bit_size: 1
-    description: SRCEQDST
-  - name: DESTLEN
-    bit_offset: 4
-    bit_size: 16
-    description: SRCEQDST
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+    - name: SRCEQDST
+      bit_offset: 2
+      bit_size: 1
+      description: SRCEQDST
+    - name: DESTLEN
+      bit_offset: 4
+      bit_size: 16
+      description: SRCEQDST
 fieldset/NEUTRON_NPU_DCTRL2_FETCH:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-    description: Mode
-  - name: SRCEQDST
-    bit_offset: 2
-    bit_size: 1
-    description: Mode
-  - name: PADINSERT
-    bit_offset: 3
-    bit_size: 1
-    description: SRCEQDST
-  - name: DESTLEN
-    bit_offset: 4
-    bit_size: 16
-    description: Pad Insert
-  - name: PADCNT
-    bit_offset: 20
-    bit_size: 4
-    description: Destination Length
-  - name: PADBYTE
-    bit_offset: 24
-    bit_size: 8
-    description: Pad Count
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+      description: Mode
+    - name: SRCEQDST
+      bit_offset: 2
+      bit_size: 1
+      description: Mode
+    - name: PADINSERT
+      bit_offset: 3
+      bit_size: 1
+      description: SRCEQDST
+    - name: DESTLEN
+      bit_offset: 4
+      bit_size: 16
+      description: Pad Insert
+    - name: PADCNT
+      bit_offset: 20
+      bit_size: 4
+      description: Destination Length
+    - name: PADBYTE
+      bit_offset: 24
+      bit_size: 8
+      description: Pad Count
 fieldset/NEUTRON_NPU_DCTRL2_PUSH:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-  - name: SRCEQDST
-    bit_offset: 2
-    bit_size: 1
-    description: SRCEQDST
-  - name: PADINSERT
-    bit_offset: 3
-    bit_size: 1
-    description: SRCEQDST
-  - name: DESTLEN
-    bit_offset: 4
-    bit_size: 16
-    description: Pad Insert
-  - name: PADCNT
-    bit_offset: 20
-    bit_size: 4
-    description: Destination Length
-  - name: PADBYTE
-    bit_offset: 24
-    bit_size: 8
-    description: Pad Count
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+    - name: SRCEQDST
+      bit_offset: 2
+      bit_size: 1
+      description: SRCEQDST
+    - name: PADINSERT
+      bit_offset: 3
+      bit_size: 1
+      description: SRCEQDST
+    - name: DESTLEN
+      bit_offset: 4
+      bit_size: 16
+      description: Pad Insert
+    - name: PADCNT
+      bit_offset: 20
+      bit_size: 4
+      description: Destination Length
+    - name: PADBYTE
+      bit_offset: 24
+      bit_size: 8
+      description: Pad Count
 fieldset/NEUTRON_NPU_DCTRL3_FETCH:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-    description: Mode
-  - name: SRCEQDST
-    bit_offset: 2
-    bit_size: 1
-    description: Mode
-  - name: PADINSERT
-    bit_offset: 3
-    bit_size: 1
-    description: SRCEQDST
-  - name: DESTLEN
-    bit_offset: 4
-    bit_size: 16
-    description: Pad Insert
-  - name: PADCNT
-    bit_offset: 20
-    bit_size: 4
-    description: Destination Length
-  - name: PADBYTE
-    bit_offset: 24
-    bit_size: 8
-    description: Pad Count
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+      description: Mode
+    - name: SRCEQDST
+      bit_offset: 2
+      bit_size: 1
+      description: Mode
+    - name: PADINSERT
+      bit_offset: 3
+      bit_size: 1
+      description: SRCEQDST
+    - name: DESTLEN
+      bit_offset: 4
+      bit_size: 16
+      description: Pad Insert
+    - name: PADCNT
+      bit_offset: 20
+      bit_size: 4
+      description: Destination Length
+    - name: PADBYTE
+      bit_offset: 24
+      bit_size: 8
+      description: Pad Count
 fieldset/NEUTRON_NPU_DCTRL3_PUSH:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-  - name: SRCEQDST
-    bit_offset: 2
-    bit_size: 1
-    description: SRCEQDST
-  - name: PADINSERT
-    bit_offset: 3
-    bit_size: 1
-    description: SRCEQDST
-  - name: DESTLEN
-    bit_offset: 4
-    bit_size: 16
-    description: Pad Insert
-  - name: PADCNT
-    bit_offset: 20
-    bit_size: 4
-    description: Destination Length
-  - name: PADBYTE
-    bit_offset: 24
-    bit_size: 8
-    description: Pad Count
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+    - name: SRCEQDST
+      bit_offset: 2
+      bit_size: 1
+      description: SRCEQDST
+    - name: PADINSERT
+      bit_offset: 3
+      bit_size: 1
+      description: SRCEQDST
+    - name: DESTLEN
+      bit_offset: 4
+      bit_size: 16
+      description: Pad Insert
+    - name: PADCNT
+      bit_offset: 20
+      bit_size: 4
+      description: Destination Length
+    - name: PADBYTE
+      bit_offset: 24
+      bit_size: 8
+      description: Pad Count
 fieldset/NEUTRON_NPU_DSADDR0:
   description: ''
   fields:
-  - name: DSADDR0
-    bit_offset: 0
-    bit_size: 32
-    description: DSADDR0
+    - name: DSADDR0
+      bit_offset: 0
+      bit_size: 32
+      description: DSADDR0
 fieldset/NEUTRON_NPU_DSADDR1:
   description: ''
   fields:
-  - name: DSADDR1
-    bit_offset: 0
-    bit_size: 32
-    description: DSADDR1
+    - name: DSADDR1
+      bit_offset: 0
+      bit_size: 32
+      description: DSADDR1
 fieldset/NEUTRON_NPU_DSADDR2:
   description: ''
   fields:
-  - name: DSADDR2
-    bit_offset: 0
-    bit_size: 32
-    description: DSADDR2
+    - name: DSADDR2
+      bit_offset: 0
+      bit_size: 32
+      description: DSADDR2
 fieldset/NEUTRON_NPU_DSADDR3:
   description: ''
   fields:
-  - name: DSADDR3
-    bit_offset: 0
-    bit_size: 32
-    description: DSADDR3
+    - name: DSADDR3
+      bit_offset: 0
+      bit_size: 32
+      description: DSADDR3
 fieldset/NEUTRON_NPU_DDADDR0:
   description: ''
   fields:
-  - name: DDADDR0
-    bit_offset: 0
-    bit_size: 32
-    description: DDADDR0
+    - name: DDADDR0
+      bit_offset: 0
+      bit_size: 32
+      description: DDADDR0
 fieldset/NEUTRON_NPU_DDADDR1:
   description: ''
   fields:
-  - name: DDADDR1
-    bit_offset: 0
-    bit_size: 32
-    description: DDADDR1
+    - name: DDADDR1
+      bit_offset: 0
+      bit_size: 32
+      description: DDADDR1
 fieldset/NEUTRON_NPU_DDADDR2:
   description: ''
   fields:
-  - name: DDADDR2
-    bit_offset: 0
-    bit_size: 32
-    description: DDADDR2
+    - name: DDADDR2
+      bit_offset: 0
+      bit_size: 32
+      description: DDADDR2
 fieldset/NEUTRON_NPU_DDADDR3:
   description: ''
   fields:
-  - name: DDADDR3
-    bit_offset: 0
-    bit_size: 32
-    description: DDADDR3
+    - name: DDADDR3
+      bit_offset: 0
+      bit_size: 32
+      description: DDADDR3
 fieldset/NEUTRON_NPU_DCTRL2_0:
   description: ''
   fields:
-  - name: SRCLEN
-    bit_offset: 0
-    bit_size: 14
-    description: SRCLEN
-  - name: SBIT
-    bit_offset: 16
-    bit_size: 1
-    description: SRCLEN
-  - name: ITER
-    bit_offset: 20
-    bit_size: 12
-    description: SBIT
+    - name: SRCLEN
+      bit_offset: 0
+      bit_size: 14
+      description: SRCLEN
+    - name: SBIT
+      bit_offset: 16
+      bit_size: 1
+      description: SRCLEN
+    - name: ITER
+      bit_offset: 20
+      bit_size: 12
+      description: SBIT
 fieldset/NEUTRON_NPU_DCTRL2_1:
   description: ''
   fields:
-  - name: SRCLEN1
-    bit_offset: 0
-    bit_size: 14
-    description: SRCLEN1
-  - name: SBIT
-    bit_offset: 16
-    bit_size: 1
-    description: SRCLEN1
-  - name: ITER1
-    bit_offset: 20
-    bit_size: 12
-    description: SBIT
+    - name: SRCLEN1
+      bit_offset: 0
+      bit_size: 14
+      description: SRCLEN1
+    - name: SBIT
+      bit_offset: 16
+      bit_size: 1
+      description: SRCLEN1
+    - name: ITER1
+      bit_offset: 20
+      bit_size: 12
+      description: SBIT
 fieldset/NEUTRON_NPU_DCTRL2_2:
   description: ''
   fields:
-  - name: SRCLEN2
-    bit_offset: 0
-    bit_size: 14
-    description: SRCLEN2
-  - name: SBIT
-    bit_offset: 16
-    bit_size: 1
-    description: SRCLEN2
-  - name: ITER2
-    bit_offset: 20
-    bit_size: 12
-    description: SBIT
+    - name: SRCLEN2
+      bit_offset: 0
+      bit_size: 14
+      description: SRCLEN2
+    - name: SBIT
+      bit_offset: 16
+      bit_size: 1
+      description: SRCLEN2
+    - name: ITER2
+      bit_offset: 20
+      bit_size: 12
+      description: SBIT
 fieldset/NEUTRON_NPU_DCTRL2_3:
   description: ''
   fields:
-  - name: SRCLEN3
-    bit_offset: 0
-    bit_size: 14
-    description: SRCLEN3
-  - name: SBIT
-    bit_offset: 16
-    bit_size: 1
-    description: SRCLEN3
-  - name: ITER3
-    bit_offset: 20
-    bit_size: 12
-    description: SBIT
+    - name: SRCLEN3
+      bit_offset: 0
+      bit_size: 14
+      description: SRCLEN3
+    - name: SBIT
+      bit_offset: 16
+      bit_size: 1
+      description: SRCLEN3
+    - name: ITER3
+      bit_offset: 20
+      bit_size: 12
+      description: SBIT
 fieldset/NEUTRON_NPU_WCTRL:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-  - name: SRCEQDST
-    bit_offset: 2
-    bit_size: 1
-    description: SRCEQDST
-  - name: PADINSERT
-    bit_offset: 3
-    bit_size: 1
-    description: SRCEQDST
-  - name: LEN
-    bit_offset: 4
-    bit_size: 16
-    description: Pad Insert
-  - name: PADCNT
-    bit_offset: 20
-    bit_size: 4
-    description: LEN
-  - name: PADBYTE
-    bit_offset: 24
-    bit_size: 8
-    description: Pad Count
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+    - name: SRCEQDST
+      bit_offset: 2
+      bit_size: 1
+      description: SRCEQDST
+    - name: PADINSERT
+      bit_offset: 3
+      bit_size: 1
+      description: SRCEQDST
+    - name: LEN
+      bit_offset: 4
+      bit_size: 16
+      description: Pad Insert
+    - name: PADCNT
+      bit_offset: 20
+      bit_size: 4
+      description: LEN
+    - name: PADBYTE
+      bit_offset: 24
+      bit_size: 8
+      description: Pad Count
 fieldset/NEUTRON_NPU_WSADDR:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 4
-    bit_size: 28
-    description: ADDR
+    - name: ADDR
+      bit_offset: 4
+      bit_size: 28
+      description: ADDR
 fieldset/NEUTRON_NPU_WDADDR:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 4
-    bit_size: 28
-    description: ADDR
+    - name: ADDR
+      bit_offset: 4
+      bit_size: 28
+      description: ADDR
 fieldset/NEUTRON_NPU_DCTRL3_0:
   description: ''
   fields:
-  - name: SRCSTRIDE
-    bit_offset: 0
-    bit_size: 16
-    description: SRCSTRIDE
-  - name: DSTSTRIDE
-    bit_offset: 16
-    bit_size: 16
-    description: SRCSTRIDE
+    - name: SRCSTRIDE
+      bit_offset: 0
+      bit_size: 16
+      description: SRCSTRIDE
+    - name: DSTSTRIDE
+      bit_offset: 16
+      bit_size: 16
+      description: SRCSTRIDE
 fieldset/NEUTRON_NPU_DCTRL3_1:
   description: ''
   fields:
-  - name: SRCSTRIDE
-    bit_offset: 0
-    bit_size: 16
-    description: SRCSTRIDE
-  - name: DSTSTRIDE
-    bit_offset: 16
-    bit_size: 16
-    description: SRCSTRIDE
+    - name: SRCSTRIDE
+      bit_offset: 0
+      bit_size: 16
+      description: SRCSTRIDE
+    - name: DSTSTRIDE
+      bit_offset: 16
+      bit_size: 16
+      description: SRCSTRIDE
 fieldset/NEUTRON_NPU_DCTRL3_2:
   description: ''
   fields:
-  - name: SRCSTRIDE
-    bit_offset: 0
-    bit_size: 16
-    description: SRCSTRIDE
-  - name: DSTSTRIDE
-    bit_offset: 16
-    bit_size: 16
-    description: SRCSTRIDE
+    - name: SRCSTRIDE
+      bit_offset: 0
+      bit_size: 16
+      description: SRCSTRIDE
+    - name: DSTSTRIDE
+      bit_offset: 16
+      bit_size: 16
+      description: SRCSTRIDE
 fieldset/NEUTRON_NPU_DCTRL3_3:
   description: ''
   fields:
-  - name: SRCSTRIDE
-    bit_offset: 0
-    bit_size: 16
-    description: SRCSTRIDE
-  - name: DSTSTRIDE
-    bit_offset: 16
-    bit_size: 16
-    description: SRCSTRIDE
+    - name: SRCSTRIDE
+      bit_offset: 0
+      bit_size: 16
+      description: SRCSTRIDE
+    - name: DSTSTRIDE
+      bit_offset: 16
+      bit_size: 16
+      description: SRCSTRIDE
 fieldset/NEUTRON_NPU_WCTRL2_0:
   description: ''
   fields:
-  - name: SRCLEN
-    bit_offset: 0
-    bit_size: 14
-    description: SRCLEN
-  - name: SBIT
-    bit_offset: 16
-    bit_size: 1
-    description: SRCLEN
-  - name: ITER
-    bit_offset: 20
-    bit_size: 12
-    description: SBIT
+    - name: SRCLEN
+      bit_offset: 0
+      bit_size: 14
+      description: SRCLEN
+    - name: SBIT
+      bit_offset: 16
+      bit_size: 1
+      description: SRCLEN
+    - name: ITER
+      bit_offset: 20
+      bit_size: 12
+      description: SBIT
 fieldset/NEUTRON_NPU_WCTRL3_0:
   description: ''
   fields:
-  - name: SRCSTRIDE
-    bit_offset: 0
-    bit_size: 16
-    description: SRCSTRIDE
-  - name: DSTSTRIDE
-    bit_offset: 16
-    bit_size: 16
-    description: SRCSTRIDE
+    - name: SRCSTRIDE
+      bit_offset: 0
+      bit_size: 16
+      description: SRCSTRIDE
+    - name: DSTSTRIDE
+      bit_offset: 16
+      bit_size: 16
+      description: SRCSTRIDE
 fieldset/NEUTRON_NPU_WPEND1_WPEND1:
   description: ''
   fields:
-  - name: ZONE0
-    bit_offset: 0
-    bit_size: 16
-    description: WPEND1_ZONE0
-  - name: ZONE1
-    bit_offset: 16
-    bit_size: 16
-    description: WPEND1_ZONE0
+    - name: ZONE0
+      bit_offset: 0
+      bit_size: 16
+      description: WPEND1_ZONE0
+    - name: ZONE1
+      bit_offset: 16
+      bit_size: 16
+      description: WPEND1_ZONE0
 fieldset/NEUTRON_NPU_WPEND2_WPEND2:
   description: ''
   fields:
-  - name: ZONE2
-    bit_offset: 0
-    bit_size: 16
-    description: WPEND1_ZONE0
-  - name: ZONE3
-    bit_offset: 16
-    bit_size: 16
-    description: WPEND1_ZONE0
+    - name: ZONE2
+      bit_offset: 0
+      bit_size: 16
+      description: WPEND1_ZONE0
+    - name: ZONE3
+      bit_offset: 16
+      bit_size: 16
+      description: WPEND1_ZONE0
 fieldset/NEUTRON_NPU_APPCTRL_SOC:
   description: ''
   fields:
-  - name: INFCONT
-    bit_offset: 0
-    bit_size: 1
-    description: INFCONT
-  - name: INFHALT
-    bit_offset: 1
-    bit_size: 1
-    description: INFCONT
-  - name: IMGPONG
-    bit_offset: 4
-    bit_size: 1
-    description: IMGPONG
-  - name: RESDONE
-    bit_offset: 5
-    bit_size: 1
-    description: IMGPONG
-  - name: RINGSTALL
-    bit_offset: 8
-    bit_size: 1
-    description: RESDONE
-  - name: INTDONEENA2
-    bit_offset: 9
-    bit_size: 1
-    description: RINGSTALL
-  - name: INTMBOXENA2
-    bit_offset: 10
-    bit_size: 1
-    description: INTMBOXENA
-  - name: MBZVWR
-    bit_offset: 16
-    bit_size: 8
-    description: MBZVWR
-  - name: MBSOCWR
-    bit_offset: 24
-    bit_size: 8
-    description: MBZVWR
+    - name: INFCONT
+      bit_offset: 0
+      bit_size: 1
+      description: INFCONT
+    - name: INFHALT
+      bit_offset: 1
+      bit_size: 1
+      description: INFCONT
+    - name: IMGPONG
+      bit_offset: 4
+      bit_size: 1
+      description: IMGPONG
+    - name: RESDONE
+      bit_offset: 5
+      bit_size: 1
+      description: IMGPONG
+    - name: RINGSTALL
+      bit_offset: 8
+      bit_size: 1
+      description: RESDONE
+    - name: INTDONEENA2
+      bit_offset: 9
+      bit_size: 1
+      description: RINGSTALL
+    - name: INTMBOXENA2
+      bit_offset: 10
+      bit_size: 1
+      description: INTMBOXENA
+    - name: MBZVWR
+      bit_offset: 16
+      bit_size: 8
+      description: MBZVWR
+    - name: MBSOCWR
+      bit_offset: 24
+      bit_size: 8
+      description: MBZVWR
 fieldset/NEUTRON_NPU_APPCTRL_SOC_SYS:
   description: ''
   fields:
-  - name: SHUTDOWN
-    bit_offset: 2
-    bit_size: 1
-    description: INFHALT
+    - name: SHUTDOWN
+      bit_offset: 2
+      bit_size: 1
+      description: INFHALT
 fieldset/NEUTRON_NPU_APPCTRL_ZV:
   description: ''
   fields:
-  - name: INFCONT
-    bit_offset: 0
-    bit_size: 1
-    description: INFCONT
-  - name: INFHALT
-    bit_offset: 1
-    bit_size: 1
-    description: INFCONT
-  - name: IMGPONG
-    bit_offset: 4
-    bit_size: 1
-    description: IMGPONG
-  - name: RESDONE
-    bit_offset: 5
-    bit_size: 1
-    description: IMGPONG
-  - name: RINGSTALL
-    bit_offset: 8
-    bit_size: 1
-    description: RESDONE
-  - name: INTDONEENA1
-    bit_offset: 9
-    bit_size: 1
-    description: RINGSTALL
-  - name: INTMBOXENA1
-    bit_offset: 10
-    bit_size: 1
-    description: INTDONEENA
-  - name: MBZVWR
-    bit_offset: 16
-    bit_size: 8
-    description: INTMBOXENA
-  - name: MBSOCWR
-    bit_offset: 24
-    bit_size: 8
-    description: MBZVWR
+    - name: INFCONT
+      bit_offset: 0
+      bit_size: 1
+      description: INFCONT
+    - name: INFHALT
+      bit_offset: 1
+      bit_size: 1
+      description: INFCONT
+    - name: IMGPONG
+      bit_offset: 4
+      bit_size: 1
+      description: IMGPONG
+    - name: RESDONE
+      bit_offset: 5
+      bit_size: 1
+      description: IMGPONG
+    - name: RINGSTALL
+      bit_offset: 8
+      bit_size: 1
+      description: RESDONE
+    - name: INTDONEENA1
+      bit_offset: 9
+      bit_size: 1
+      description: RINGSTALL
+    - name: INTMBOXENA1
+      bit_offset: 10
+      bit_size: 1
+      description: INTDONEENA
+    - name: MBZVWR
+      bit_offset: 16
+      bit_size: 8
+      description: INTMBOXENA
+    - name: MBSOCWR
+      bit_offset: 24
+      bit_size: 8
+      description: MBZVWR
 fieldset/NEUTRON_NPU_APPCTRL_ZV_SYS:
   description: ''
   fields:
-  - name: SHUTDOWN
-    bit_offset: 2
-    bit_size: 1
-    description: INFHALT
+    - name: SHUTDOWN
+      bit_offset: 2
+      bit_size: 1
+      description: INFHALT
 fieldset/NEUTRON_NPU_APPSTATUS:
   description: ''
   fields:
-  - name: INFDONE
-    bit_offset: 0
-    bit_size: 1
-    description: Inference Done
-  - name: INFHALTED
-    bit_offset: 1
-    bit_size: 1
-    description: Inference Done
-  - name: INFBUFFHALF
-    bit_offset: 2
-    bit_size: 1
-    description: INFHALTED
-  - name: INFOUTHALF
-    bit_offset: 3
-    bit_size: 1
-    description: INFBUFFHALF
-  - name: MBOX
-    bit_offset: 4
-    bit_size: 1
-    description: INFOUTHALF
-  - name: FAULTCAUSE
-    bit_offset: 16
-    bit_size: 6
-    description: Mailbox
+    - name: INFDONE
+      bit_offset: 0
+      bit_size: 1
+      description: Inference Done
+    - name: INFHALTED
+      bit_offset: 1
+      bit_size: 1
+      description: Inference Done
+    - name: INFBUFFHALF
+      bit_offset: 2
+      bit_size: 1
+      description: INFHALTED
+    - name: INFOUTHALF
+      bit_offset: 3
+      bit_size: 1
+      description: INFBUFFHALF
+    - name: MBOX
+      bit_offset: 4
+      bit_size: 1
+      description: INFOUTHALF
+    - name: FAULTCAUSE
+      bit_offset: 16
+      bit_size: 6
+      description: Mailbox
 fieldset/NEUTRON_NPU_BASEDDRL:
   description: ''
   fields:
-  - name: SPLITPRIV
-    bit_offset: 0
-    bit_size: 1
-    description: SPLITPRIV
-  - name: LIMITMB
-    bit_offset: 8
-    bit_size: 9
-    description: SPLITPRIV
-  - name: BASEDDRL
-    bit_offset: 20
-    bit_size: 12
-    description: LIMITMB
+    - name: SPLITPRIV
+      bit_offset: 0
+      bit_size: 1
+      description: SPLITPRIV
+    - name: LIMITMB
+      bit_offset: 8
+      bit_size: 9
+      description: SPLITPRIV
+    - name: BASEDDRL
+      bit_offset: 20
+      bit_size: 12
+      description: LIMITMB
 fieldset/NEUTRON_NPU_INPUT:
   description: ''
   fields:
-  - name: INPUT
-    bit_offset: 4
-    bit_size: 22
-    description: INPUT
-  - name: INOUT
-    bit_offset: 31
-    bit_size: 1
-    description: INPUT
+    - name: INPUT
+      bit_offset: 4
+      bit_size: 22
+      description: INPUT
+    - name: INOUT
+      bit_offset: 31
+      bit_size: 1
+      description: INPUT
 fieldset/NEUTRON_NPU_INPUT2:
   description: ''
   fields:
-  - name: INPUT2
-    bit_offset: 4
-    bit_size: 22
-    description: INPUT2
-  - name: INOUT
-    bit_offset: 31
-    bit_size: 1
-    description: INPUT2
+    - name: INPUT2
+      bit_offset: 4
+      bit_size: 22
+      description: INPUT2
+    - name: INOUT
+      bit_offset: 31
+      bit_size: 1
+      description: INPUT2
 fieldset/NEUTRON_NPU_OUTPUT:
   description: ''
   fields:
-  - name: OUTPUT
-    bit_offset: 4
-    bit_size: 22
-    description: OUTPUT
-  - name: INOUT
-    bit_offset: 31
-    bit_size: 1
-    description: OUTPUT
+    - name: OUTPUT
+      bit_offset: 4
+      bit_size: 22
+      description: OUTPUT
+    - name: INOUT
+      bit_offset: 31
+      bit_size: 1
+      description: OUTPUT
 fieldset/NEUTRON_NPU_OUTPUT2:
   description: ''
   fields:
-  - name: OUTPUT2
-    bit_offset: 4
-    bit_size: 22
-    description: OUTPUT2
-  - name: INOUT
-    bit_offset: 31
-    bit_size: 1
-    description: OUTPUT2
+    - name: OUTPUT2
+      bit_offset: 4
+      bit_size: 22
+      description: OUTPUT2
+    - name: INOUT
+      bit_offset: 31
+      bit_size: 1
+      description: OUTPUT2
 fieldset/NEUTRON_NPU_CODEOFF:
   description: ''
   fields:
-  - name: CODEOFF
-    bit_offset: 4
-    bit_size: 23
-    description: CODEOFF
+    - name: CODEOFF
+      bit_offset: 4
+      bit_size: 23
+      description: CODEOFF
 fieldset/NEUTRON_NPU_DATAOFF:
   description: ''
   fields:
-  - name: DATAOFF
-    bit_offset: 4
-    bit_size: 23
-    description: DATAOFF
+    - name: DATAOFF
+      bit_offset: 4
+      bit_size: 23
+      description: DATAOFF
 fieldset/NEUTRON_NPU_RINGCTRL:
   description: ''
   fields:
-  - name: RINGSZ
-    bit_offset: 0
-    bit_size: 8
-    description: RINGSZ
-  - name: RINGADDR
-    bit_offset: 8
-    bit_size: 6
-    description: RINGSZ
+    - name: RINGSZ
+      bit_offset: 0
+      bit_size: 8
+      description: RINGSZ
+    - name: RINGADDR
+      bit_offset: 8
+      bit_size: 6
+      description: RINGSZ
 fieldset/NEUTRON_NPU_TAIL:
   description: ''
   fields:
-  - name: TAIL
-    bit_offset: 0
-    bit_size: 16
-    description: TAIL
+    - name: TAIL
+      bit_offset: 0
+      bit_size: 16
+      description: TAIL
 fieldset/NEUTRON_NPU_HEAD:
   description: ''
   fields:
-  - name: HEAD
-    bit_offset: 0
-    bit_size: 16
-    description: HEAD
+    - name: HEAD
+      bit_offset: 0
+      bit_size: 16
+      description: HEAD
 fieldset/NEUTRON_NPU_MBOX:
   description: ''
   fields:
-  - name: MBOX
-    bit_offset: 0
-    bit_size: 32
-    description: Mailbox
+    - name: MBOX
+      bit_offset: 0
+      bit_size: 32
+      description: Mailbox
 fieldset/NEUTRON_NPU_BASEINOUTL:
   description: ''
   fields:
-  - name: LIMITMB
-    bit_offset: 8
-    bit_size: 9
-    description: LIMITMB
-  - name: BASEINOUTL
-    bit_offset: 20
-    bit_size: 12
-    description: LIMITMB
+    - name: LIMITMB
+      bit_offset: 8
+      bit_size: 9
+      description: LIMITMB
+    - name: BASEINOUTL
+      bit_offset: 20
+      bit_size: 12
+      description: LIMITMB
 fieldset/NEUTRON_NPU_BASESPILLL:
   description: ''
   fields:
-  - name: SPLITPRIV
-    bit_offset: 0
-    bit_size: 1
-    description: SPLITPRIV
-  - name: LIMITMB
-    bit_offset: 8
-    bit_size: 9
-    description: SPLITPRIV
-  - name: BASESPILLL
-    bit_offset: 20
-    bit_size: 12
-    description: LIMITMB
+    - name: SPLITPRIV
+      bit_offset: 0
+      bit_size: 1
+      description: SPLITPRIV
+    - name: LIMITMB
+      bit_offset: 8
+      bit_size: 9
+      description: SPLITPRIV
+    - name: BASESPILLL
+      bit_offset: 20
+      bit_size: 12
+      description: LIMITMB
 fieldset/NEUTRON_NPU_BASESPILLH:
   description: ''
   fields:
-  - name: BASESPILLH
-    bit_offset: 0
-    bit_size: 17
-    description: BASESPILLH
+    - name: BASESPILLH
+      bit_offset: 0
+      bit_size: 17
+      description: BASESPILLH
 fieldset/NEUTRON_NPU_DECOMPCTRL:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-    description: Enable
-  - name: BYPASS
-    bit_offset: 1
-    bit_size: 1
-    description: Enable
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Enable
+    - name: BYPASS
+      bit_offset: 1
+      bit_size: 1
+      description: Enable
 fieldset/NEUTRON_NPU_DECOMPCTRL_NEW:
   description: ''
   fields:
-  - name: META
-    bit_offset: 4
-    bit_size: 2
-    description: Bypass
-  - name: GROUP
-    bit_offset: 8
-    bit_size: 1
-    description: NEW_META
+    - name: META
+      bit_offset: 4
+      bit_size: 2
+      description: Bypass
+    - name: GROUP
+      bit_offset: 8
+      bit_size: 1
+      description: NEW_META
 fieldset/NEUTRON_NPU_DECOMPCTRL_SKIP:
   description: ''
   fields:
-  - name: LEN
-    bit_offset: 20
-    bit_size: 12
-    description: NEW_GROUP
+    - name: LEN
+      bit_offset: 20
+      bit_size: 12
+      description: NEW_GROUP
 fieldset/NEUTRON_NPU_DECOMPSTAT:
   description: ''
   fields:
-  - name: DONE
-    bit_offset: 0
-    bit_size: 1
-    description: DONE
-  - name: ACTIVE
-    bit_offset: 1
-    bit_size: 1
-    description: DONE
+    - name: DONE
+      bit_offset: 0
+      bit_size: 1
+      description: DONE
+    - name: ACTIVE
+      bit_offset: 1
+      bit_size: 1
+      description: DONE
 fieldset/NEUTRON_NPU_DECOMPSTAT_ERR:
   description: ''
   fields:
-  - name: DECOMP
-    bit_offset: 2
-    bit_size: 1
-    description: ACTIVE
-  - name: BUS
-    bit_offset: 3
-    bit_size: 1
-    description: ERR_DECOMP
-  - name: OVER
-    bit_offset: 4
-    bit_size: 1
-    description: ERR_BUS
-  - name: UNDER
-    bit_offset: 5
-    bit_size: 1
-    description: ERR_OVER
+    - name: DECOMP
+      bit_offset: 2
+      bit_size: 1
+      description: ACTIVE
+    - name: BUS
+      bit_offset: 3
+      bit_size: 1
+      description: ERR_DECOMP
+    - name: OVER
+      bit_offset: 4
+      bit_size: 1
+      description: ERR_BUS
+    - name: UNDER
+      bit_offset: 5
+      bit_size: 1
+      description: ERR_OVER
 fieldset/NEUTRON_NPU_GROUP_BASE:
   description: ''
   fields:
-  - name: OFFSET
-    bit_offset: 4
-    bit_size: 27
-    description: OFFSET
+    - name: OFFSET
+      bit_offset: 4
+      bit_size: 27
+      description: OFFSET
 fieldset/NEUTRON_NPU_GROUP_LEN:
   description: ''
   fields:
-  - name: LEN
-    bit_offset: 4
-    bit_size: 14
-    description: LEN
+    - name: LEN
+      bit_offset: 4
+      bit_size: 14
+      description: LEN
 fieldset/NEUTRON_NPU_CRYPTO:
   description: ''
   fields:
-  - name: CRYPTOLOCK
-    bit_offset: 0
-    bit_size: 1
-    description: CRYPTOLOCK
-  - name: DBGLOCK
-    bit_offset: 1
-    bit_size: 1
-    description: CRYPTOLOCK
-  - name: PCLOCK
-    bit_offset: 2
-    bit_size: 1
-    description: DBGLOCK
-  - name: CRYPTOMODEL
-    bit_offset: 8
-    bit_size: 1
-    description: PCLOCK
-  - name: ZERORAM
-    bit_offset: 9
-    bit_size: 1
-    description: CRYPTOMODEL
+    - name: CRYPTOLOCK
+      bit_offset: 0
+      bit_size: 1
+      description: CRYPTOLOCK
+    - name: DBGLOCK
+      bit_offset: 1
+      bit_size: 1
+      description: CRYPTOLOCK
+    - name: PCLOCK
+      bit_offset: 2
+      bit_size: 1
+      description: DBGLOCK
+    - name: CRYPTOMODEL
+      bit_offset: 8
+      bit_size: 1
+      description: PCLOCK
+    - name: ZERORAM
+      bit_offset: 9
+      bit_size: 1
+      description: CRYPTOMODEL
 fieldset/NEUTRON_NPU_PRIVDDRL:
   description: ''
   fields:
-  - name: SPLITPRIV
-    bit_offset: 0
-    bit_size: 1
-    description: SPLITPRIV
-  - name: LIMITMB
-    bit_offset: 8
-    bit_size: 9
-    description: SPLITPRIV
-  - name: PRIVDDRL
-    bit_offset: 20
-    bit_size: 12
-    description: LIMITMB
+    - name: SPLITPRIV
+      bit_offset: 0
+      bit_size: 1
+      description: SPLITPRIV
+    - name: LIMITMB
+      bit_offset: 8
+      bit_size: 9
+      description: SPLITPRIV
+    - name: PRIVDDRL
+      bit_offset: 20
+      bit_size: 12
+      description: LIMITMB
 fieldset/NEUTRON_NPU_PRIVDDRH:
   description: ''
   fields:
-  - name: BASEDDRH1
-    bit_offset: 0
-    bit_size: 17
-    description: BASEDDRH
-  - name: BASEDDRH2
-    bit_offset: 17
-    bit_size: 1
-    description: BASEDDRH
+    - name: BASEDDRH1
+      bit_offset: 0
+      bit_size: 17
+      description: BASEDDRH
+    - name: BASEDDRH2
+      bit_offset: 17
+      bit_size: 1
+      description: BASEDDRH
 fieldset/NEUTRON_NPU_SESSIONIV:
   description: ''
   fields:
-  - name: NONCE
-    bit_offset: 0
-    bit_size: 32
-    description: NONCE
+    - name: NONCE
+      bit_offset: 0
+      bit_size: 32
+      description: NONCE
 fieldset/NEUTRON_NPU_INFCOUNT:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 32
-    description: COUNT
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
+      description: COUNT
 fieldset/NEUTRON_NPU_FLAYERNUM:
   description: ''
   fields:
-  - name: NUM
-    bit_offset: 0
-    bit_size: 16
-    description: NUM
+    - name: NUM
+      bit_offset: 0
+      bit_size: 16
+      description: NUM
 fieldset/NEUTRON_NPU_PLAYERNUM:
   description: ''
   fields:
-  - name: NUM
-    bit_offset: 0
-    bit_size: 16
-    description: NUM
+    - name: NUM
+      bit_offset: 0
+      bit_size: 16
+      description: NUM
 fieldset/NEUTRON_NPU_AXIOPT:
   description: ''
   fields:
-  - name: ARLEN
-    bit_offset: 0
-    bit_size: 8
-    description: ARLEN
-  - name: AWLEN
-    bit_offset: 8
-    bit_size: 8
-    description: ARLEN
-  - name: ARTRIG
-    bit_offset: 16
-    bit_size: 8
-    description: AWLEN
-  - name: USEOT
-    bit_offset: 24
-    bit_size: 1
-    description: ARTRIG
-  - name: RRDCNT
-    bit_offset: 28
-    bit_size: 4
-    description: Use Out Standing
+    - name: ARLEN
+      bit_offset: 0
+      bit_size: 8
+      description: ARLEN
+    - name: AWLEN
+      bit_offset: 8
+      bit_size: 8
+      description: ARLEN
+    - name: ARTRIG
+      bit_offset: 16
+      bit_size: 8
+      description: AWLEN
+    - name: USEOT
+      bit_offset: 24
+      bit_size: 1
+      description: ARTRIG
+    - name: RRDCNT
+      bit_offset: 28
+      bit_size: 4
+      description: Use Out Standing
 fieldset/NEUTRON_NPU_V2P_DATA_D:
   description: ''
   fields:
-  - name: VMAP0
-    bit_offset: 0
-    bit_size: 6
-    description: VMAP0
-  - name: WRUPD0
-    bit_offset: 7
-    bit_size: 1
-    description: VMAP0
-  - name: VMAP1
-    bit_offset: 8
-    bit_size: 6
-    description: WRUPD0
-  - name: WRUPD1
-    bit_offset: 15
-    bit_size: 1
-    description: VMAP1
-  - name: VMAP2
-    bit_offset: 16
-    bit_size: 6
-    description: WRUPD1
-  - name: WRUP2
-    bit_offset: 23
-    bit_size: 1
-    description: VMAP2
-  - name: VMAP3
-    bit_offset: 24
-    bit_size: 6
-    description: WRUP2
-  - name: WRUPD3
-    bit_offset: 31
-    bit_size: 1
-    description: VMAP3
+    - name: VMAP0
+      bit_offset: 0
+      bit_size: 6
+      description: VMAP0
+    - name: WRUPD0
+      bit_offset: 7
+      bit_size: 1
+      description: VMAP0
+    - name: VMAP1
+      bit_offset: 8
+      bit_size: 6
+      description: WRUPD0
+    - name: WRUPD1
+      bit_offset: 15
+      bit_size: 1
+      description: VMAP1
+    - name: VMAP2
+      bit_offset: 16
+      bit_size: 6
+      description: WRUPD1
+    - name: WRUP2
+      bit_offset: 23
+      bit_size: 1
+      description: VMAP2
+    - name: VMAP3
+      bit_offset: 24
+      bit_size: 6
+      description: WRUP2
+    - name: WRUPD3
+      bit_offset: 31
+      bit_size: 1
+      description: VMAP3
 fieldset/NEUTRON_NPU_V2P_WEIGHTS_W:
   description: ''
   fields:
-  - name: VMAP0
-    bit_offset: 0
-    bit_size: 6
-    description: VMAP0
-  - name: WRUPD0
-    bit_offset: 7
-    bit_size: 1
-    description: VMAP0
-  - name: VMAP1
-    bit_offset: 8
-    bit_size: 6
-    description: WRUPD0
-  - name: WRUPD1
-    bit_offset: 15
-    bit_size: 1
-    description: VMAP1
-  - name: VMAP2
-    bit_offset: 16
-    bit_size: 6
-    description: WRUPD1
-  - name: WRUP2
-    bit_offset: 23
-    bit_size: 1
-    description: VMAP2
-  - name: VMAP3
-    bit_offset: 24
-    bit_size: 6
-    description: WRUP2
-  - name: WRUPD3
-    bit_offset: 31
-    bit_size: 1
-    description: VMAP3
+    - name: VMAP0
+      bit_offset: 0
+      bit_size: 6
+      description: VMAP0
+    - name: WRUPD0
+      bit_offset: 7
+      bit_size: 1
+      description: VMAP0
+    - name: VMAP1
+      bit_offset: 8
+      bit_size: 6
+      description: WRUPD0
+    - name: WRUPD1
+      bit_offset: 15
+      bit_size: 1
+      description: VMAP1
+    - name: VMAP2
+      bit_offset: 16
+      bit_size: 6
+      description: WRUPD1
+    - name: WRUP2
+      bit_offset: 23
+      bit_size: 1
+      description: VMAP2
+    - name: VMAP3
+      bit_offset: 24
+      bit_size: 6
+      description: WRUP2
+    - name: WRUPD3
+      bit_offset: 31
+      bit_size: 1
+      description: VMAP3
 fieldset/NEUTRON_NPU_V2P_RESULTS_R:
   description: ''
   fields:
-  - name: VMAP0
-    bit_offset: 0
-    bit_size: 6
-    description: VMAP0
-  - name: WRUPD0
-    bit_offset: 7
-    bit_size: 1
-    description: VMAP0
-  - name: VMAP1
-    bit_offset: 8
-    bit_size: 6
-    description: WRUPD0
-  - name: WRUPD1
-    bit_offset: 15
-    bit_size: 1
-    description: VMAP1
-  - name: VMAP2
-    bit_offset: 16
-    bit_size: 6
-    description: WRUPD1
-  - name: WRUP2
-    bit_offset: 23
-    bit_size: 1
-    description: VMAP2
-  - name: VMAP3
-    bit_offset: 24
-    bit_size: 6
-    description: WRUP2
-  - name: WRUPD3
-    bit_offset: 31
-    bit_size: 1
-    description: VMAP3
+    - name: VMAP0
+      bit_offset: 0
+      bit_size: 6
+      description: VMAP0
+    - name: WRUPD0
+      bit_offset: 7
+      bit_size: 1
+      description: VMAP0
+    - name: VMAP1
+      bit_offset: 8
+      bit_size: 6
+      description: WRUPD0
+    - name: WRUPD1
+      bit_offset: 15
+      bit_size: 1
+      description: VMAP1
+    - name: VMAP2
+      bit_offset: 16
+      bit_size: 6
+      description: WRUPD1
+    - name: WRUP2
+      bit_offset: 23
+      bit_size: 1
+      description: VMAP2
+    - name: VMAP3
+      bit_offset: 24
+      bit_size: 6
+      description: WRUP2
+    - name: WRUPD3
+      bit_offset: 31
+      bit_size: 1
+      description: VMAP3
 fieldset/NEUTRON_NPU_LISTEN:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-  - name: LISTENER1
-    bit_offset: 5
-    bit_size: 1
-  - name: LISTENER2
-    bit_offset: 6
-    bit_size: 1
-  - name: LISTENER3
-    bit_offset: 7
-    bit_size: 1
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+    - name: LISTENER1
+      bit_offset: 5
+      bit_size: 1
+    - name: LISTENER2
+      bit_offset: 6
+      bit_size: 1
+    - name: LISTENER3
+      bit_offset: 7
+      bit_size: 1

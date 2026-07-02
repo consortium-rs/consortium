@@ -1,1452 +1,1452 @@
 block/MIPI_DSI:
   description: ''
   items:
-  - name: VERSION
-    byte_offset: 0
-    fieldset: MIPI_DSI_VERSION
-  - name: PWR_UP
-    byte_offset: 4
-    fieldset: MIPI_DSI_PWR_UP
-  - name: CLKMGR_CFG
-    byte_offset: 8
-  - name: DPI_VCID
-    byte_offset: 12
-  - name: DPI_COLOR_CODING
-    byte_offset: 16
-  - name: DPI_CFG_POL
-    byte_offset: 20
-  - name: DPI_LP_CMD_TIM
-    byte_offset: 24
-  - name: PCKHDL_CFG
-    byte_offset: 44
-  - name: GEN_VCID
-    byte_offset: 48
-  - name: MODE_CFG
-    byte_offset: 52
-  - name: VID_MODE_CFG
-    byte_offset: 56
-  - name: VID_PKT_SIZE
-    byte_offset: 60
-  - name: VID_NUM_CHUNKS
-    byte_offset: 64
-  - name: VID_NULL_SIZE
-    byte_offset: 68
-  - name: VID_HSA_TIME
-    byte_offset: 72
-  - name: VID_HBP_TIME
-    byte_offset: 76
-  - name: VID_HLINE_TIME
-    byte_offset: 80
-  - name: VID_VSA_LINES
-    byte_offset: 84
-  - name: VID_VBP_LINES
-    byte_offset: 88
-  - name: VID_VFP_LINES
-    byte_offset: 92
-  - name: VID_VACTIVE_LINES
-    byte_offset: 96
-  - name: EDPI_CMD_SIZE
-    byte_offset: 100
-  - name: CMD_MODE_CFG
-    byte_offset: 104
-  - name: GEN_HDR
-    byte_offset: 108
-  - name: GEN_PLD_DATA
-    byte_offset: 112
-  - name: CMD_PKT_STATUS
-    byte_offset: 116
-  - name: TO_CNT_CFG
-    byte_offset: 120
-  - name: HS_RD_TO_CNT
-    byte_offset: 124
-  - name: LP_RD_TO_CNT
-    byte_offset: 128
-  - name: HS_WR_TO_CNT
-    byte_offset: 132
-  - name: LP_WR_TO_CNT
-    byte_offset: 136
-  - name: BTA_TO_CNT
-    byte_offset: 140
-  - name: SDF_3D
-    byte_offset: 144
-  - name: LPCLK_CTRL
-    byte_offset: 148
-  - name: PHY_TMR_LPCLK_CFG
-    byte_offset: 152
-  - name: PHY_TMR_CFG
-    byte_offset: 156
-  - name: PHY_RSTZ
-    byte_offset: 160
-  - name: PHY_IF_CFG
-    byte_offset: 164
-  - name: PHY_ULPS_CTRL
-    byte_offset: 168
-  - name: PHY_TX_TRIGGERS
-    byte_offset: 172
-  - name: PHY_STATUS
-    byte_offset: 176
-  - name: PHY_TST_CTRL0
-    byte_offset: 180
-  - name: PHY_TST_CTRL1
-    byte_offset: 184
-  - name: INT_ST0
-    byte_offset: 188
-  - name: INT_ST1
-    byte_offset: 192
-  - name: INT_MSK0
-    byte_offset: 196
-  - name: INT_MSK1
-    byte_offset: 200
-  - name: PHY_CAL
-    byte_offset: 204
-    fieldset: MIPI_DSI_PHY_CAL
-  - name: INT_FORCE0
-    byte_offset: 216
-  - name: INT_FORCE1
-    byte_offset: 220
-  - name: AUTO_ULPS_MODE
-    byte_offset: 224
-  - name: AUTO_ULPS_ENTRY_DELAY
-    byte_offset: 228
-  - name: AUTO_ULPS_WAKEUP_TIME
-    byte_offset: 232
-  - name: DSC_PARAMETER
-    byte_offset: 240
-  - name: PHY_TMR_RD_CFG
-    byte_offset: 244
-  - name: AUTO_ULPS_MIN_TIME
-    byte_offset: 248
-  - name: VID_SHADOW_CTRL
-    byte_offset: 256
-  - name: DPI_VCID_ACT
-    byte_offset: 268
-  - name: DPI_COLOR_CODING_ACT
-    byte_offset: 272
-  - name: DPI_LP_CMD_TIM_ACT
-    byte_offset: 280
-  - name: EDPI_TE_HW_CFG
-    byte_offset: 284
-  - name: VID_MODE_CFG_ACT
-    byte_offset: 312
-  - name: VID_PKT_SIZE_ACT
-    byte_offset: 316
-  - name: VID_NUM_CHUNKS_ACT
-    byte_offset: 320
-  - name: VID_NULL_SIZE_ACT
-    byte_offset: 324
-  - name: VID_HSA_TIME_ACT
-    byte_offset: 328
-  - name: VID_HBP_TIME_ACT
-    byte_offset: 332
-  - name: VID_HLINE_TIME_ACT
-    byte_offset: 336
-  - name: VID_VSA_LINES_ACT
-    byte_offset: 340
-  - name: VID_VBP_LINES_ACT
-    byte_offset: 344
-  - name: VID_VFP_LINES_ACT
-    byte_offset: 348
-  - name: VID_VACTIVE_LINES_ACT
-    byte_offset: 352
-  - name: VID_PKT_STATUS
-    byte_offset: 360
-  - name: SDF_3D_ACT
-    byte_offset: 400
+    - name: VERSION
+      byte_offset: 0
+      fieldset: MIPI_DSI_VERSION
+    - name: PWR_UP
+      byte_offset: 4
+      fieldset: MIPI_DSI_PWR_UP
+    - name: CLKMGR_CFG
+      byte_offset: 8
+    - name: DPI_VCID
+      byte_offset: 12
+    - name: DPI_COLOR_CODING
+      byte_offset: 16
+    - name: DPI_CFG_POL
+      byte_offset: 20
+    - name: DPI_LP_CMD_TIM
+      byte_offset: 24
+    - name: PCKHDL_CFG
+      byte_offset: 44
+    - name: GEN_VCID
+      byte_offset: 48
+    - name: MODE_CFG
+      byte_offset: 52
+    - name: VID_MODE_CFG
+      byte_offset: 56
+    - name: VID_PKT_SIZE
+      byte_offset: 60
+    - name: VID_NUM_CHUNKS
+      byte_offset: 64
+    - name: VID_NULL_SIZE
+      byte_offset: 68
+    - name: VID_HSA_TIME
+      byte_offset: 72
+    - name: VID_HBP_TIME
+      byte_offset: 76
+    - name: VID_HLINE_TIME
+      byte_offset: 80
+    - name: VID_VSA_LINES
+      byte_offset: 84
+    - name: VID_VBP_LINES
+      byte_offset: 88
+    - name: VID_VFP_LINES
+      byte_offset: 92
+    - name: VID_VACTIVE_LINES
+      byte_offset: 96
+    - name: EDPI_CMD_SIZE
+      byte_offset: 100
+    - name: CMD_MODE_CFG
+      byte_offset: 104
+    - name: GEN_HDR
+      byte_offset: 108
+    - name: GEN_PLD_DATA
+      byte_offset: 112
+    - name: CMD_PKT_STATUS
+      byte_offset: 116
+    - name: TO_CNT_CFG
+      byte_offset: 120
+    - name: HS_RD_TO_CNT
+      byte_offset: 124
+    - name: LP_RD_TO_CNT
+      byte_offset: 128
+    - name: HS_WR_TO_CNT
+      byte_offset: 132
+    - name: LP_WR_TO_CNT
+      byte_offset: 136
+    - name: BTA_TO_CNT
+      byte_offset: 140
+    - name: SDF_3D
+      byte_offset: 144
+    - name: LPCLK_CTRL
+      byte_offset: 148
+    - name: PHY_TMR_LPCLK_CFG
+      byte_offset: 152
+    - name: PHY_TMR_CFG
+      byte_offset: 156
+    - name: PHY_RSTZ
+      byte_offset: 160
+    - name: PHY_IF_CFG
+      byte_offset: 164
+    - name: PHY_ULPS_CTRL
+      byte_offset: 168
+    - name: PHY_TX_TRIGGERS
+      byte_offset: 172
+    - name: PHY_STATUS
+      byte_offset: 176
+    - name: PHY_TST_CTRL0
+      byte_offset: 180
+    - name: PHY_TST_CTRL1
+      byte_offset: 184
+    - name: INT_ST0
+      byte_offset: 188
+    - name: INT_ST1
+      byte_offset: 192
+    - name: INT_MSK0
+      byte_offset: 196
+    - name: INT_MSK1
+      byte_offset: 200
+    - name: PHY_CAL
+      byte_offset: 204
+      fieldset: MIPI_DSI_PHY_CAL
+    - name: INT_FORCE0
+      byte_offset: 216
+    - name: INT_FORCE1
+      byte_offset: 220
+    - name: AUTO_ULPS_MODE
+      byte_offset: 224
+    - name: AUTO_ULPS_ENTRY_DELAY
+      byte_offset: 228
+    - name: AUTO_ULPS_WAKEUP_TIME
+      byte_offset: 232
+    - name: DSC_PARAMETER
+      byte_offset: 240
+    - name: PHY_TMR_RD_CFG
+      byte_offset: 244
+    - name: AUTO_ULPS_MIN_TIME
+      byte_offset: 248
+    - name: VID_SHADOW_CTRL
+      byte_offset: 256
+    - name: DPI_VCID_ACT
+      byte_offset: 268
+    - name: DPI_COLOR_CODING_ACT
+      byte_offset: 272
+    - name: DPI_LP_CMD_TIM_ACT
+      byte_offset: 280
+    - name: EDPI_TE_HW_CFG
+      byte_offset: 284
+    - name: VID_MODE_CFG_ACT
+      byte_offset: 312
+    - name: VID_PKT_SIZE_ACT
+      byte_offset: 316
+    - name: VID_NUM_CHUNKS_ACT
+      byte_offset: 320
+    - name: VID_NULL_SIZE_ACT
+      byte_offset: 324
+    - name: VID_HSA_TIME_ACT
+      byte_offset: 328
+    - name: VID_HBP_TIME_ACT
+      byte_offset: 332
+    - name: VID_HLINE_TIME_ACT
+      byte_offset: 336
+    - name: VID_VSA_LINES_ACT
+      byte_offset: 340
+    - name: VID_VBP_LINES_ACT
+      byte_offset: 344
+    - name: VID_VFP_LINES_ACT
+      byte_offset: 348
+    - name: VID_VACTIVE_LINES_ACT
+      byte_offset: 352
+    - name: VID_PKT_STATUS
+      byte_offset: 360
+    - name: SDF_3D_ACT
+      byte_offset: 400
 fieldset/MIPI_DSI_VERSION:
   description: ''
   fields:
-  - name: version
-    bit_offset: 0
-    bit_size: 32
+    - name: version
+      bit_offset: 0
+      bit_size: 32
 fieldset/MIPI_DSI_PWR_UP:
   description: ''
   fields:
-  - name: shutdownz
-    bit_offset: 0
-    bit_size: 1
+    - name: shutdownz
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_DSI_CLKMGR_CFG_tx_esc_clk:
   description: ''
   fields:
-  - name: division
-    bit_offset: 0
-    bit_size: 8
+    - name: division
+      bit_offset: 0
+      bit_size: 8
 fieldset/MIPI_DSI_CLKMGR_CFG_to_clk:
   description: ''
   fields:
-  - name: division
-    bit_offset: 8
-    bit_size: 8
+    - name: division
+      bit_offset: 8
+      bit_size: 8
 fieldset/MIPI_DSI_DPI_VCID_dpi:
   description: ''
   fields:
-  - name: vcid
-    bit_offset: 0
-    bit_size: 2
+    - name: vcid
+      bit_offset: 0
+      bit_size: 2
 fieldset/MIPI_DSI_DPI_COLOR_CODING_dpi_color:
   description: ''
   fields:
-  - name: coding
-    bit_offset: 0
-    bit_size: 4
+    - name: coding
+      bit_offset: 0
+      bit_size: 4
 fieldset/MIPI_DSI_DPI_COLOR_CODING_loosely18:
   description: ''
   fields:
-  - name: en
-    bit_offset: 8
-    bit_size: 1
+    - name: en
+      bit_offset: 8
+      bit_size: 1
 fieldset/MIPI_DSI_DPI_CFG_POL_dataen_active:
   description: ''
   fields:
-  - name: low
-    bit_offset: 0
-    bit_size: 1
+    - name: low
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_DSI_DPI_CFG_POL_vsync_active:
   description: ''
   fields:
-  - name: low
-    bit_offset: 1
-    bit_size: 1
+    - name: low
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_DSI_DPI_CFG_POL_hsync_active:
   description: ''
   fields:
-  - name: low
-    bit_offset: 2
-    bit_size: 1
+    - name: low
+      bit_offset: 2
+      bit_size: 1
 fieldset/MIPI_DSI_DPI_CFG_POL_shutd_active:
   description: ''
   fields:
-  - name: low
-    bit_offset: 3
-    bit_size: 1
+    - name: low
+      bit_offset: 3
+      bit_size: 1
 fieldset/MIPI_DSI_DPI_CFG_POL_colorm_active:
   description: ''
   fields:
-  - name: low
-    bit_offset: 4
-    bit_size: 1
+    - name: low
+      bit_offset: 4
+      bit_size: 1
 fieldset/MIPI_DSI_DPI_LP_CMD_TIM_invact_lpcmd:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 8
+    - name: time
+      bit_offset: 0
+      bit_size: 8
 fieldset/MIPI_DSI_DPI_LP_CMD_TIM_outvact_lpcmd:
   description: ''
   fields:
-  - name: time
-    bit_offset: 16
-    bit_size: 8
+    - name: time
+      bit_offset: 16
+      bit_size: 8
 fieldset/MIPI_DSI_PCKHDL_CFG_eotp_tx:
   description: ''
   fields:
-  - name: en
-    bit_offset: 0
-    bit_size: 1
+    - name: en
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_DSI_PCKHDL_CFG_eotp_rx:
   description: ''
   fields:
-  - name: en
-    bit_offset: 1
-    bit_size: 1
+    - name: en
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_DSI_PCKHDL_CFG_bta:
   description: ''
   fields:
-  - name: en
-    bit_offset: 2
-    bit_size: 1
+    - name: en
+      bit_offset: 2
+      bit_size: 1
 fieldset/MIPI_DSI_PCKHDL_CFG_ecc_rx:
   description: ''
   fields:
-  - name: en
-    bit_offset: 3
-    bit_size: 1
+    - name: en
+      bit_offset: 3
+      bit_size: 1
 fieldset/MIPI_DSI_PCKHDL_CFG_crc_rx:
   description: ''
   fields:
-  - name: en
-    bit_offset: 4
-    bit_size: 1
+    - name: en
+      bit_offset: 4
+      bit_size: 1
 fieldset/MIPI_DSI_PCKHDL_CFG_eotp_tx_lp:
   description: ''
   fields:
-  - name: en
-    bit_offset: 5
-    bit_size: 1
+    - name: en
+      bit_offset: 5
+      bit_size: 1
 fieldset/MIPI_DSI_GEN_VCID_gen_vcid:
   description: ''
   fields:
-  - name: rx
-    bit_offset: 0
-    bit_size: 2
+    - name: rx
+      bit_offset: 0
+      bit_size: 2
 fieldset/MIPI_DSI_GEN_VCID_gen_vcid_tear:
   description: ''
   fields:
-  - name: auto
-    bit_offset: 8
-    bit_size: 2
+    - name: auto
+      bit_offset: 8
+      bit_size: 2
 fieldset/MIPI_DSI_GEN_VCID_gen_vcid_tx:
   description: ''
   fields:
-  - name: auto
-    bit_offset: 16
-    bit_size: 2
+    - name: auto
+      bit_offset: 16
+      bit_size: 2
 fieldset/MIPI_DSI_MODE_CFG_cmd_video:
   description: ''
   fields:
-  - name: mode
-    bit_offset: 0
-    bit_size: 1
+    - name: mode
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_vid_mode:
   description: ''
   fields:
-  - name: type
-    bit_offset: 0
-    bit_size: 2
+    - name: type
+      bit_offset: 0
+      bit_size: 2
 fieldset/MIPI_DSI_VID_MODE_CFG_lp_vsa:
   description: ''
   fields:
-  - name: en
-    bit_offset: 8
-    bit_size: 1
+    - name: en
+      bit_offset: 8
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_lp_vbp:
   description: ''
   fields:
-  - name: en
-    bit_offset: 9
-    bit_size: 1
+    - name: en
+      bit_offset: 9
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_lp_vfp:
   description: ''
   fields:
-  - name: en
-    bit_offset: 10
-    bit_size: 1
+    - name: en
+      bit_offset: 10
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_lp_vact:
   description: ''
   fields:
-  - name: en
-    bit_offset: 11
-    bit_size: 1
+    - name: en
+      bit_offset: 11
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_lp_hbp:
   description: ''
   fields:
-  - name: en
-    bit_offset: 12
-    bit_size: 1
+    - name: en
+      bit_offset: 12
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_lp_hfp:
   description: ''
   fields:
-  - name: en
-    bit_offset: 13
-    bit_size: 1
+    - name: en
+      bit_offset: 13
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_frame_bta_ack:
   description: ''
   fields:
-  - name: en
-    bit_offset: 14
-    bit_size: 1
+    - name: en
+      bit_offset: 14
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_lp_cmd:
   description: ''
   fields:
-  - name: en
-    bit_offset: 15
-    bit_size: 1
+    - name: en
+      bit_offset: 15
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_vpg:
   description: ''
   fields:
-  - name: en
-    bit_offset: 16
-    bit_size: 1
-  - name: mode
-    bit_offset: 20
-    bit_size: 1
-  - name: orientation
-    bit_offset: 24
-    bit_size: 1
+    - name: en
+      bit_offset: 16
+      bit_size: 1
+    - name: mode
+      bit_offset: 20
+      bit_size: 1
+    - name: orientation
+      bit_offset: 24
+      bit_size: 1
 fieldset/MIPI_DSI_VID_PKT_SIZE_vid_pkt:
   description: ''
   fields:
-  - name: size
-    bit_offset: 0
-    bit_size: 14
+    - name: size
+      bit_offset: 0
+      bit_size: 14
 fieldset/MIPI_DSI_VID_NUM_CHUNKS_vid_num:
   description: ''
   fields:
-  - name: chunks
-    bit_offset: 0
-    bit_size: 13
+    - name: chunks
+      bit_offset: 0
+      bit_size: 13
 fieldset/MIPI_DSI_VID_NULL_SIZE_vid_null:
   description: ''
   fields:
-  - name: size
-    bit_offset: 0
-    bit_size: 13
+    - name: size
+      bit_offset: 0
+      bit_size: 13
 fieldset/MIPI_DSI_VID_HSA_TIME_vid_hsa:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 12
+    - name: time
+      bit_offset: 0
+      bit_size: 12
 fieldset/MIPI_DSI_VID_HBP_TIME_vid_hbp:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 12
+    - name: time
+      bit_offset: 0
+      bit_size: 12
 fieldset/MIPI_DSI_VID_HLINE_TIME_vid_hline:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 15
+    - name: time
+      bit_offset: 0
+      bit_size: 15
 fieldset/MIPI_DSI_VID_VSA_LINES_vsa:
   description: ''
   fields:
-  - name: lines
-    bit_offset: 0
-    bit_size: 10
+    - name: lines
+      bit_offset: 0
+      bit_size: 10
 fieldset/MIPI_DSI_VID_VBP_LINES_vbp:
   description: ''
   fields:
-  - name: lines
-    bit_offset: 0
-    bit_size: 10
+    - name: lines
+      bit_offset: 0
+      bit_size: 10
 fieldset/MIPI_DSI_VID_VFP_LINES_vfp:
   description: ''
   fields:
-  - name: lines
-    bit_offset: 0
-    bit_size: 10
+    - name: lines
+      bit_offset: 0
+      bit_size: 10
 fieldset/MIPI_DSI_VID_VACTIVE_LINES_v_active:
   description: ''
   fields:
-  - name: lines
-    bit_offset: 0
-    bit_size: 14
+    - name: lines
+      bit_offset: 0
+      bit_size: 14
 fieldset/MIPI_DSI_EDPI_CMD_SIZE_edpi_allowed_cmd:
   description: ''
   fields:
-  - name: size
-    bit_offset: 0
-    bit_size: 16
+    - name: size
+      bit_offset: 0
+      bit_size: 16
 fieldset/MIPI_DSI_CMD_MODE_CFG_tear_fx:
   description: ''
   fields:
-  - name: en
-    bit_offset: 0
-    bit_size: 1
+    - name: en
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_MODE_CFG_ack_rqst:
   description: ''
   fields:
-  - name: en
-    bit_offset: 1
-    bit_size: 1
+    - name: en
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_MODE_CFG_gen_sw_0p:
   description: ''
   fields:
-  - name: tx
-    bit_offset: 8
-    bit_size: 1
+    - name: tx
+      bit_offset: 8
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_MODE_CFG_gen_sw_1p:
   description: ''
   fields:
-  - name: tx
-    bit_offset: 9
-    bit_size: 1
+    - name: tx
+      bit_offset: 9
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_MODE_CFG_gen_sw_2p:
   description: ''
   fields:
-  - name: tx
-    bit_offset: 10
-    bit_size: 1
+    - name: tx
+      bit_offset: 10
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_MODE_CFG_gen_sr_0p:
   description: ''
   fields:
-  - name: tx
-    bit_offset: 11
-    bit_size: 1
+    - name: tx
+      bit_offset: 11
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_MODE_CFG_gen_sr_1p:
   description: ''
   fields:
-  - name: tx
-    bit_offset: 12
-    bit_size: 1
+    - name: tx
+      bit_offset: 12
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_MODE_CFG_gen_sr_2p:
   description: ''
   fields:
-  - name: tx
-    bit_offset: 13
-    bit_size: 1
+    - name: tx
+      bit_offset: 13
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_MODE_CFG_gen_lw:
   description: ''
   fields:
-  - name: tx
-    bit_offset: 14
-    bit_size: 1
+    - name: tx
+      bit_offset: 14
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_MODE_CFG_dcs_sw_0p:
   description: ''
   fields:
-  - name: tx
-    bit_offset: 16
-    bit_size: 1
+    - name: tx
+      bit_offset: 16
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_MODE_CFG_dcs_sw_1p:
   description: ''
   fields:
-  - name: tx
-    bit_offset: 17
-    bit_size: 1
+    - name: tx
+      bit_offset: 17
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_MODE_CFG_dcs_sr_0p:
   description: ''
   fields:
-  - name: tx
-    bit_offset: 18
-    bit_size: 1
+    - name: tx
+      bit_offset: 18
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_MODE_CFG_dcs_lw:
   description: ''
   fields:
-  - name: tx
-    bit_offset: 19
-    bit_size: 1
+    - name: tx
+      bit_offset: 19
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_MODE_CFG_max_rd_pkt:
   description: ''
   fields:
-  - name: size
-    bit_offset: 24
-    bit_size: 1
+    - name: size
+      bit_offset: 24
+      bit_size: 1
 fieldset/MIPI_DSI_GEN_HDR_gen:
   description: ''
   fields:
-  - name: dt
-    bit_offset: 0
-    bit_size: 6
-  - name: vc
-    bit_offset: 6
-    bit_size: 2
+    - name: dt
+      bit_offset: 0
+      bit_size: 6
+    - name: vc
+      bit_offset: 6
+      bit_size: 2
 fieldset/MIPI_DSI_GEN_HDR_gen_wc:
   description: ''
   fields:
-  - name: lsbyte
-    bit_offset: 8
-    bit_size: 8
-  - name: msbyte
-    bit_offset: 16
-    bit_size: 8
+    - name: lsbyte
+      bit_offset: 8
+      bit_size: 8
+    - name: msbyte
+      bit_offset: 16
+      bit_size: 8
 fieldset/MIPI_DSI_GEN_PLD_DATA_gen_pld:
   description: ''
   fields:
-  - name: b1
-    bit_offset: 0
-    bit_size: 8
-  - name: b2
-    bit_offset: 8
-    bit_size: 8
-  - name: b3
-    bit_offset: 16
-    bit_size: 8
-  - name: b4
-    bit_offset: 24
-    bit_size: 8
+    - name: b1
+      bit_offset: 0
+      bit_size: 8
+    - name: b2
+      bit_offset: 8
+      bit_size: 8
+    - name: b3
+      bit_offset: 16
+      bit_size: 8
+    - name: b4
+      bit_offset: 24
+      bit_size: 8
 fieldset/MIPI_DSI_CMD_PKT_STATUS_gen_cmd:
   description: ''
   fields:
-  - name: empty
-    bit_offset: 0
-    bit_size: 1
-  - name: full
-    bit_offset: 1
-    bit_size: 1
+    - name: empty
+      bit_offset: 0
+      bit_size: 1
+    - name: full
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_PKT_STATUS_gen_pld_w:
   description: ''
   fields:
-  - name: empty
-    bit_offset: 2
-    bit_size: 1
-  - name: full
-    bit_offset: 3
-    bit_size: 1
+    - name: empty
+      bit_offset: 2
+      bit_size: 1
+    - name: full
+      bit_offset: 3
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_PKT_STATUS_gen_pld_r:
   description: ''
   fields:
-  - name: empty
-    bit_offset: 4
-    bit_size: 1
-  - name: full
-    bit_offset: 5
-    bit_size: 1
+    - name: empty
+      bit_offset: 4
+      bit_size: 1
+    - name: full
+      bit_offset: 5
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_PKT_STATUS_gen_rd_cmd:
   description: ''
   fields:
-  - name: busy
-    bit_offset: 6
-    bit_size: 1
+    - name: busy
+      bit_offset: 6
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_PKT_STATUS_gen_buff_cmd:
   description: ''
   fields:
-  - name: empty
-    bit_offset: 16
-    bit_size: 1
-  - name: full
-    bit_offset: 17
-    bit_size: 1
+    - name: empty
+      bit_offset: 16
+      bit_size: 1
+    - name: full
+      bit_offset: 17
+      bit_size: 1
 fieldset/MIPI_DSI_CMD_PKT_STATUS_gen_buff_pld:
   description: ''
   fields:
-  - name: empty
-    bit_offset: 18
-    bit_size: 1
-  - name: full
-    bit_offset: 19
-    bit_size: 1
+    - name: empty
+      bit_offset: 18
+      bit_size: 1
+    - name: full
+      bit_offset: 19
+      bit_size: 1
 fieldset/MIPI_DSI_TO_CNT_CFG_lprx_to:
   description: ''
   fields:
-  - name: cnt
-    bit_offset: 0
-    bit_size: 16
+    - name: cnt
+      bit_offset: 0
+      bit_size: 16
 fieldset/MIPI_DSI_TO_CNT_CFG_hstx_to:
   description: ''
   fields:
-  - name: cnt
-    bit_offset: 16
-    bit_size: 16
+    - name: cnt
+      bit_offset: 16
+      bit_size: 16
 fieldset/MIPI_DSI_HS_RD_TO_CNT_hs_rd_to:
   description: ''
   fields:
-  - name: cnt
-    bit_offset: 0
-    bit_size: 16
+    - name: cnt
+      bit_offset: 0
+      bit_size: 16
 fieldset/MIPI_DSI_LP_RD_TO_CNT_lp_rd_to:
   description: ''
   fields:
-  - name: cnt
-    bit_offset: 0
-    bit_size: 16
+    - name: cnt
+      bit_offset: 0
+      bit_size: 16
 fieldset/MIPI_DSI_HS_WR_TO_CNT_hs_wr_to:
   description: ''
   fields:
-  - name: cnt
-    bit_offset: 0
-    bit_size: 16
+    - name: cnt
+      bit_offset: 0
+      bit_size: 16
 fieldset/MIPI_DSI_HS_WR_TO_CNT_presp_to:
   description: ''
   fields:
-  - name: mode
-    bit_offset: 24
-    bit_size: 1
-    description: presp_to_mode
+    - name: mode
+      bit_offset: 24
+      bit_size: 1
+      description: presp_to_mode
 fieldset/MIPI_DSI_LP_WR_TO_CNT_lp_wr_to:
   description: ''
   fields:
-  - name: cnt
-    bit_offset: 0
-    bit_size: 16
+    - name: cnt
+      bit_offset: 0
+      bit_size: 16
 fieldset/MIPI_DSI_BTA_TO_CNT_bta_to:
   description: ''
   fields:
-  - name: cnt
-    bit_offset: 0
-    bit_size: 16
+    - name: cnt
+      bit_offset: 0
+      bit_size: 16
 fieldset/MIPI_DSI_SDF_3D_mode:
   description: ''
   fields:
-  - name: 3d
-    bit_offset: 0
-    bit_size: 2
+    - name: 3d
+      bit_offset: 0
+      bit_size: 2
 fieldset/MIPI_DSI_SDF_3D_format:
   description: ''
   fields:
-  - name: 3d
-    bit_offset: 2
-    bit_size: 2
+    - name: 3d
+      bit_offset: 2
+      bit_size: 2
 fieldset/MIPI_DSI_SDF_3D_second:
   description: ''
   fields:
-  - name: vsync
-    bit_offset: 4
-    bit_size: 1
+    - name: vsync
+      bit_offset: 4
+      bit_size: 1
 fieldset/MIPI_DSI_SDF_3D_right:
   description: ''
   fields:
-  - name: first
-    bit_offset: 5
-    bit_size: 1
+    - name: first
+      bit_offset: 5
+      bit_size: 1
 fieldset/MIPI_DSI_SDF_3D_send_3d:
   description: ''
   fields:
-  - name: cfg
-    bit_offset: 16
-    bit_size: 1
+    - name: cfg
+      bit_offset: 16
+      bit_size: 1
 fieldset/MIPI_DSI_LPCLK_CTRL_phy:
   description: ''
   fields:
-  - name: txrequestclkhs
-    bit_offset: 0
-    bit_size: 1
+    - name: txrequestclkhs
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_DSI_LPCLK_CTRL_auto_clklane:
   description: ''
   fields:
-  - name: ctrl
-    bit_offset: 1
-    bit_size: 1
+    - name: ctrl
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_DSI_PHY_TMR_LPCLK_CFG_phy_clklp2hs:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 10
+    - name: time
+      bit_offset: 0
+      bit_size: 10
 fieldset/MIPI_DSI_PHY_TMR_LPCLK_CFG_phy_clkhs2lp:
   description: ''
   fields:
-  - name: time
-    bit_offset: 16
-    bit_size: 10
+    - name: time
+      bit_offset: 16
+      bit_size: 10
 fieldset/MIPI_DSI_PHY_TMR_CFG_phy_lp2hs:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 10
+    - name: time
+      bit_offset: 0
+      bit_size: 10
 fieldset/MIPI_DSI_PHY_TMR_CFG_phy_hs2lp:
   description: ''
   fields:
-  - name: time
-    bit_offset: 16
-    bit_size: 10
+    - name: time
+      bit_offset: 16
+      bit_size: 10
 fieldset/MIPI_DSI_PHY_RSTZ_phy:
   description: ''
   fields:
-  - name: shutdownz
-    bit_offset: 0
-    bit_size: 1
-  - name: rstz
-    bit_offset: 1
-    bit_size: 1
-  - name: enableclk
-    bit_offset: 2
-    bit_size: 1
-  - name: forcepll
-    bit_offset: 3
-    bit_size: 1
+    - name: shutdownz
+      bit_offset: 0
+      bit_size: 1
+    - name: rstz
+      bit_offset: 1
+      bit_size: 1
+    - name: enableclk
+      bit_offset: 2
+      bit_size: 1
+    - name: forcepll
+      bit_offset: 3
+      bit_size: 1
 fieldset/MIPI_DSI_PHY_IF_CFG_n:
   description: ''
   fields:
-  - name: lanes
-    bit_offset: 0
-    bit_size: 2
+    - name: lanes
+      bit_offset: 0
+      bit_size: 2
 fieldset/MIPI_DSI_PHY_IF_CFG_phy_stop_wait:
   description: ''
   fields:
-  - name: time
-    bit_offset: 8
-    bit_size: 8
+    - name: time
+      bit_offset: 8
+      bit_size: 8
 fieldset/MIPI_DSI_PHY_ULPS_CTRL_phy:
   description: ''
   fields:
-  - name: txrequlpsclk
-    bit_offset: 0
-    bit_size: 1
-  - name: txexitulpsclk
-    bit_offset: 1
-    bit_size: 1
-  - name: txrequlpslan
-    bit_offset: 2
-    bit_size: 1
-  - name: txexitulpslan
-    bit_offset: 3
-    bit_size: 1
+    - name: txrequlpsclk
+      bit_offset: 0
+      bit_size: 1
+    - name: txexitulpsclk
+      bit_offset: 1
+      bit_size: 1
+    - name: txrequlpslan
+      bit_offset: 2
+      bit_size: 1
+    - name: txexitulpslan
+      bit_offset: 3
+      bit_size: 1
 fieldset/MIPI_DSI_PHY_TX_TRIGGERS_phy_tx:
   description: ''
   fields:
-  - name: triggers
-    bit_offset: 0
-    bit_size: 4
+    - name: triggers
+      bit_offset: 0
+      bit_size: 4
 fieldset/MIPI_DSI_PHY_STATUS_phy:
   description: ''
   fields:
-  - name: lock
-    bit_offset: 0
-    bit_size: 1
-  - name: direction
-    bit_offset: 1
-    bit_size: 1
-  - name: stopstateclklane
-    bit_offset: 2
-    bit_size: 1
-  - name: ulpsactivenotclk
-    bit_offset: 3
-    bit_size: 1
-  - name: stopstate0lane
-    bit_offset: 4
-    bit_size: 1
-  - name: ulpsactivenot0lane
-    bit_offset: 5
-    bit_size: 1
-  - name: rxulpsesc0lane
-    bit_offset: 6
-    bit_size: 1
-  - name: stopstate1lane
-    bit_offset: 7
-    bit_size: 1
-  - name: ulpsactivenot1lane
-    bit_offset: 8
-    bit_size: 1
-  - name: stopstate2lane
-    bit_offset: 9
-    bit_size: 1
-  - name: ulpsactivenot2lane
-    bit_offset: 10
-    bit_size: 1
-  - name: stopstate3lane
-    bit_offset: 11
-    bit_size: 1
-  - name: ulpsactivenot3lane
-    bit_offset: 12
-    bit_size: 1
+    - name: lock
+      bit_offset: 0
+      bit_size: 1
+    - name: direction
+      bit_offset: 1
+      bit_size: 1
+    - name: stopstateclklane
+      bit_offset: 2
+      bit_size: 1
+    - name: ulpsactivenotclk
+      bit_offset: 3
+      bit_size: 1
+    - name: stopstate0lane
+      bit_offset: 4
+      bit_size: 1
+    - name: ulpsactivenot0lane
+      bit_offset: 5
+      bit_size: 1
+    - name: rxulpsesc0lane
+      bit_offset: 6
+      bit_size: 1
+    - name: stopstate1lane
+      bit_offset: 7
+      bit_size: 1
+    - name: ulpsactivenot1lane
+      bit_offset: 8
+      bit_size: 1
+    - name: stopstate2lane
+      bit_offset: 9
+      bit_size: 1
+    - name: ulpsactivenot2lane
+      bit_offset: 10
+      bit_size: 1
+    - name: stopstate3lane
+      bit_offset: 11
+      bit_size: 1
+    - name: ulpsactivenot3lane
+      bit_offset: 12
+      bit_size: 1
 fieldset/MIPI_DSI_PHY_TST_CTRL0_phy:
   description: ''
   fields:
-  - name: testclr
-    bit_offset: 0
-    bit_size: 1
-  - name: testclk
-    bit_offset: 1
-    bit_size: 1
+    - name: testclr
+      bit_offset: 0
+      bit_size: 1
+    - name: testclk
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_DSI_PHY_TST_CTRL1_phy:
   description: ''
   fields:
-  - name: testdin
-    bit_offset: 0
-    bit_size: 8
-  - name: testen
-    bit_offset: 16
-    bit_size: 1
+    - name: testdin
+      bit_offset: 0
+      bit_size: 8
+    - name: testen
+      bit_offset: 16
+      bit_size: 1
 fieldset/MIPI_DSI_PHY_TST_CTRL1_pht:
   description: ''
   fields:
-  - name: testdout
-    bit_offset: 8
-    bit_size: 8
+    - name: testdout
+      bit_offset: 8
+      bit_size: 8
 fieldset/MIPI_DSI_INT_ST1_to_hs:
   description: ''
   fields:
-  - name: tx
-    bit_offset: 0
-    bit_size: 1
+    - name: tx
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_DSI_INT_ST1_to_lp:
   description: ''
   fields:
-  - name: rx
-    bit_offset: 1
-    bit_size: 1
+    - name: rx
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_DSI_INT_ST1_ecc_single:
   description: ''
   fields:
-  - name: err
-    bit_offset: 2
-    bit_size: 1
+    - name: err
+      bit_offset: 2
+      bit_size: 1
 fieldset/MIPI_DSI_INT_ST1_ecc_multpl:
   description: ''
   fields:
-  - name: err
-    bit_offset: 3
-    bit_size: 1
+    - name: err
+      bit_offset: 3
+      bit_size: 1
 fieldset/MIPI_DSI_INT_ST1_crc:
   description: ''
   fields:
-  - name: err
-    bit_offset: 4
-    bit_size: 1
+    - name: err
+      bit_offset: 4
+      bit_size: 1
 fieldset/MIPI_DSI_INT_ST1_pkt_size:
   description: ''
   fields:
-  - name: err
-    bit_offset: 5
-    bit_size: 1
+    - name: err
+      bit_offset: 5
+      bit_size: 1
 fieldset/MIPI_DSI_INT_ST1_eopt:
   description: ''
   fields:
-  - name: err
-    bit_offset: 6
-    bit_size: 1
+    - name: err
+      bit_offset: 6
+      bit_size: 1
 fieldset/MIPI_DSI_INT_ST1_dpi_pld_wr:
   description: ''
   fields:
-  - name: err
-    bit_offset: 7
-    bit_size: 1
+    - name: err
+      bit_offset: 7
+      bit_size: 1
 fieldset/MIPI_DSI_INT_ST1_gen_cmd_wr:
   description: ''
   fields:
-  - name: err
-    bit_offset: 8
-    bit_size: 1
+    - name: err
+      bit_offset: 8
+      bit_size: 1
 fieldset/MIPI_DSI_INT_ST1_gen_pld_wr:
   description: ''
   fields:
-  - name: err
-    bit_offset: 9
-    bit_size: 1
+    - name: err
+      bit_offset: 9
+      bit_size: 1
 fieldset/MIPI_DSI_INT_ST1_gen_pld_send:
   description: ''
   fields:
-  - name: err
-    bit_offset: 10
-    bit_size: 1
+    - name: err
+      bit_offset: 10
+      bit_size: 1
 fieldset/MIPI_DSI_INT_ST1_gen_pld_rd:
   description: ''
   fields:
-  - name: err
-    bit_offset: 11
-    bit_size: 1
+    - name: err
+      bit_offset: 11
+      bit_size: 1
 fieldset/MIPI_DSI_INT_ST1_gen_pld_recev:
   description: ''
   fields:
-  - name: err
-    bit_offset: 12
-    bit_size: 1
+    - name: err
+      bit_offset: 12
+      bit_size: 1
 fieldset/MIPI_DSI_INT_ST1_dpi_buff_pld:
   description: ''
   fields:
-  - name: under
-    bit_offset: 19
-    bit_size: 1
+    - name: under
+      bit_offset: 19
+      bit_size: 1
 fieldset/MIPI_DSI_INT_ST1_tear_request:
   description: ''
   fields:
-  - name: err
-    bit_offset: 20
-    bit_size: 1
+    - name: err
+      bit_offset: 20
+      bit_size: 1
 fieldset/MIPI_DSI_INT_MSK1_mask_to_hs:
   description: ''
   fields:
-  - name: tx
-    bit_offset: 0
-    bit_size: 1
-    description: Mask for to_hs_tx
+    - name: tx
+      bit_offset: 0
+      bit_size: 1
+      description: Mask for to_hs_tx
 fieldset/MIPI_DSI_INT_MSK1_mask_to_lp:
   description: ''
   fields:
-  - name: rx
-    bit_offset: 1
-    bit_size: 1
-    description: Mask for to_lp_rx
+    - name: rx
+      bit_offset: 1
+      bit_size: 1
+      description: Mask for to_lp_rx
 fieldset/MIPI_DSI_INT_MSK1_mask_ecc_single:
   description: ''
   fields:
-  - name: err
-    bit_offset: 2
-    bit_size: 1
+    - name: err
+      bit_offset: 2
+      bit_size: 1
 fieldset/MIPI_DSI_INT_MSK1_mask_ecc_multpl:
   description: ''
   fields:
-  - name: err
-    bit_offset: 3
-    bit_size: 1
+    - name: err
+      bit_offset: 3
+      bit_size: 1
 fieldset/MIPI_DSI_INT_MSK1_mask_crc:
   description: ''
   fields:
-  - name: err
-    bit_offset: 4
-    bit_size: 1
-    description: Mask for crc_err
+    - name: err
+      bit_offset: 4
+      bit_size: 1
+      description: Mask for crc_err
 fieldset/MIPI_DSI_INT_MSK1_mask_pkt_size:
   description: ''
   fields:
-  - name: err
-    bit_offset: 5
-    bit_size: 1
-    description: Mask for crc_err
+    - name: err
+      bit_offset: 5
+      bit_size: 1
+      description: Mask for crc_err
 fieldset/MIPI_DSI_INT_MSK1_mask_eopt:
   description: ''
   fields:
-  - name: err
-    bit_offset: 6
-    bit_size: 1
-    description: Mask for eopt_err
+    - name: err
+      bit_offset: 6
+      bit_size: 1
+      description: Mask for eopt_err
 fieldset/MIPI_DSI_INT_MSK1_mask_dpi_pld_wr:
   description: ''
   fields:
-  - name: err
-    bit_offset: 7
-    bit_size: 1
+    - name: err
+      bit_offset: 7
+      bit_size: 1
 fieldset/MIPI_DSI_INT_MSK1_mask_gen_cmd_wr:
   description: ''
   fields:
-  - name: err
-    bit_offset: 8
-    bit_size: 1
+    - name: err
+      bit_offset: 8
+      bit_size: 1
 fieldset/MIPI_DSI_INT_MSK1_mask_gen_pld_wr:
   description: ''
   fields:
-  - name: err
-    bit_offset: 9
-    bit_size: 1
+    - name: err
+      bit_offset: 9
+      bit_size: 1
 fieldset/MIPI_DSI_INT_MSK1_mask_gen_pld_send:
   description: ''
   fields:
-  - name: err
-    bit_offset: 10
-    bit_size: 1
+    - name: err
+      bit_offset: 10
+      bit_size: 1
 fieldset/MIPI_DSI_INT_MSK1_mask_gen_pld_rd:
   description: ''
   fields:
-  - name: err
-    bit_offset: 11
-    bit_size: 1
+    - name: err
+      bit_offset: 11
+      bit_size: 1
 fieldset/MIPI_DSI_INT_MSK1_mask_gen_pld_recev:
   description: ''
   fields:
-  - name: err
-    bit_offset: 12
-    bit_size: 1
+    - name: err
+      bit_offset: 12
+      bit_size: 1
 fieldset/MIPI_DSI_INT_MSK1_mask_dpi_buff_pld:
   description: ''
   fields:
-  - name: under
-    bit_offset: 19
-    bit_size: 1
+    - name: under
+      bit_offset: 19
+      bit_size: 1
 fieldset/MIPI_DSI_INT_MSK1_mask_tear_request:
   description: ''
   fields:
-  - name: err
-    bit_offset: 20
-    bit_size: 1
+    - name: err
+      bit_offset: 20
+      bit_size: 1
 fieldset/MIPI_DSI_PHY_CAL:
   description: ''
   fields:
-  - name: txskewcalhs
-    bit_offset: 0
-    bit_size: 1
+    - name: txskewcalhs
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_DSI_INT_FORCE1_force_to_hs:
   description: ''
   fields:
-  - name: tx
-    bit_offset: 0
-    bit_size: 1
-    description: Force to_hs_tx
+    - name: tx
+      bit_offset: 0
+      bit_size: 1
+      description: Force to_hs_tx
 fieldset/MIPI_DSI_INT_FORCE1_force_to_lp:
   description: ''
   fields:
-  - name: rx
-    bit_offset: 1
-    bit_size: 1
-    description: Force to_lp_rx
+    - name: rx
+      bit_offset: 1
+      bit_size: 1
+      description: Force to_lp_rx
 fieldset/MIPI_DSI_INT_FORCE1_force_ecc_single:
   description: ''
   fields:
-  - name: err
-    bit_offset: 2
-    bit_size: 1
+    - name: err
+      bit_offset: 2
+      bit_size: 1
 fieldset/MIPI_DSI_INT_FORCE1_force_ecc_multpl:
   description: ''
   fields:
-  - name: err
-    bit_offset: 3
-    bit_size: 1
+    - name: err
+      bit_offset: 3
+      bit_size: 1
 fieldset/MIPI_DSI_INT_FORCE1_force_crc:
   description: ''
   fields:
-  - name: err
-    bit_offset: 4
-    bit_size: 1
-    description: Force crc_err
+    - name: err
+      bit_offset: 4
+      bit_size: 1
+      description: Force crc_err
 fieldset/MIPI_DSI_INT_FORCE1_force_pkt_size:
   description: ''
   fields:
-  - name: err
-    bit_offset: 5
-    bit_size: 1
+    - name: err
+      bit_offset: 5
+      bit_size: 1
 fieldset/MIPI_DSI_INT_FORCE1_force_eopt:
   description: ''
   fields:
-  - name: err
-    bit_offset: 6
-    bit_size: 1
-    description: Force eopt_err
+    - name: err
+      bit_offset: 6
+      bit_size: 1
+      description: Force eopt_err
 fieldset/MIPI_DSI_INT_FORCE1_force_dpi_pld_wr:
   description: ''
   fields:
-  - name: err
-    bit_offset: 7
-    bit_size: 1
+    - name: err
+      bit_offset: 7
+      bit_size: 1
 fieldset/MIPI_DSI_INT_FORCE1_force_gen_cmd_wr:
   description: ''
   fields:
-  - name: err
-    bit_offset: 8
-    bit_size: 1
+    - name: err
+      bit_offset: 8
+      bit_size: 1
 fieldset/MIPI_DSI_INT_FORCE1_force_gen_pld_wr:
   description: ''
   fields:
-  - name: err
-    bit_offset: 9
-    bit_size: 1
+    - name: err
+      bit_offset: 9
+      bit_size: 1
 fieldset/MIPI_DSI_INT_FORCE1_force_gen_pld_send:
   description: ''
   fields:
-  - name: err
-    bit_offset: 10
-    bit_size: 1
+    - name: err
+      bit_offset: 10
+      bit_size: 1
 fieldset/MIPI_DSI_INT_FORCE1_force_gen_pld_rd:
   description: ''
   fields:
-  - name: err
-    bit_offset: 11
-    bit_size: 1
+    - name: err
+      bit_offset: 11
+      bit_size: 1
 fieldset/MIPI_DSI_INT_FORCE1_force_gen_pld_recev:
   description: ''
   fields:
-  - name: err
-    bit_offset: 12
-    bit_size: 1
+    - name: err
+      bit_offset: 12
+      bit_size: 1
 fieldset/MIPI_DSI_INT_FORCE1_force_dpi_buff_pld:
   description: ''
   fields:
-  - name: under
-    bit_offset: 19
-    bit_size: 1
+    - name: under
+      bit_offset: 19
+      bit_size: 1
 fieldset/MIPI_DSI_INT_FORCE1_force_tear_request:
   description: ''
   fields:
-  - name: err
-    bit_offset: 20
-    bit_size: 1
+    - name: err
+      bit_offset: 20
+      bit_size: 1
 fieldset/MIPI_DSI_AUTO_ULPS_MODE_auto:
   description: ''
   fields:
-  - name: ulps
-    bit_offset: 0
-    bit_size: 1
+    - name: ulps
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_DSI_AUTO_ULPS_MODE_pll_off:
   description: ''
   fields:
-  - name: ulps
-    bit_offset: 16
-    bit_size: 1
+    - name: ulps
+      bit_offset: 16
+      bit_size: 1
 fieldset/MIPI_DSI_AUTO_ULPS_MODE_pre_pll_off:
   description: ''
   fields:
-  - name: req
-    bit_offset: 17
-    bit_size: 1
+    - name: req
+      bit_offset: 17
+      bit_size: 1
 fieldset/MIPI_DSI_AUTO_ULPS_ENTRY_DELAY_ulps_entry:
   description: ''
   fields:
-  - name: delay
-    bit_offset: 0
-    bit_size: 32
+    - name: delay
+      bit_offset: 0
+      bit_size: 32
 fieldset/MIPI_DSI_AUTO_ULPS_WAKEUP_TIME_twakeup_clk:
   description: ''
   fields:
-  - name: div
-    bit_offset: 0
-    bit_size: 16
+    - name: div
+      bit_offset: 0
+      bit_size: 16
 fieldset/MIPI_DSI_AUTO_ULPS_WAKEUP_TIME_twakeup:
   description: ''
   fields:
-  - name: cnt
-    bit_offset: 16
-    bit_size: 16
-    description: Twakeup counter
+    - name: cnt
+      bit_offset: 16
+      bit_size: 16
+      description: Twakeup counter
 fieldset/MIPI_DSI_DSC_PARAMETER_compression:
   description: ''
   fields:
-  - name: mode
-    bit_offset: 0
-    bit_size: 1
+    - name: mode
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_DSI_DSC_PARAMETER_compress:
   description: ''
   fields:
-  - name: algo
-    bit_offset: 8
-    bit_size: 2
+    - name: algo
+      bit_offset: 8
+      bit_size: 2
 fieldset/MIPI_DSI_DSC_PARAMETER_pps:
   description: ''
   fields:
-  - name: sel
-    bit_offset: 16
-    bit_size: 2
+    - name: sel
+      bit_offset: 16
+      bit_size: 2
 fieldset/MIPI_DSI_PHY_TMR_RD_CFG_max_rd:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 15
+    - name: time
+      bit_offset: 0
+      bit_size: 15
 fieldset/MIPI_DSI_AUTO_ULPS_MIN_TIME_ulps_min:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 12
+    - name: time
+      bit_offset: 0
+      bit_size: 12
 fieldset/MIPI_DSI_VID_SHADOW_CTRL_vid_shadow:
   description: ''
   fields:
-  - name: en
-    bit_offset: 0
-    bit_size: 1
-  - name: req
-    bit_offset: 8
-    bit_size: 1
+    - name: en
+      bit_offset: 0
+      bit_size: 1
+    - name: req
+      bit_offset: 8
+      bit_size: 1
 fieldset/MIPI_DSI_VID_SHADOW_CTRL_vid_shadow_pin:
   description: ''
   fields:
-  - name: req
-    bit_offset: 16
-    bit_size: 1
+    - name: req
+      bit_offset: 16
+      bit_size: 1
 fieldset/MIPI_DSI_DPI_VCID_ACT_dpi:
   description: ''
   fields:
-  - name: vcid
-    bit_offset: 0
-    bit_size: 2
+    - name: vcid
+      bit_offset: 0
+      bit_size: 2
 fieldset/MIPI_DSI_DPI_COLOR_CODING_ACT_dpi_color:
   description: ''
   fields:
-  - name: coding
-    bit_offset: 0
-    bit_size: 4
+    - name: coding
+      bit_offset: 0
+      bit_size: 4
 fieldset/MIPI_DSI_DPI_COLOR_CODING_ACT_loosely18:
   description: ''
   fields:
-  - name: en
-    bit_offset: 8
-    bit_size: 1
+    - name: en
+      bit_offset: 8
+      bit_size: 1
 fieldset/MIPI_DSI_DPI_LP_CMD_TIM_ACT_invact_lpcmd:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 8
+    - name: time
+      bit_offset: 0
+      bit_size: 8
 fieldset/MIPI_DSI_DPI_LP_CMD_TIM_ACT_outvact_lpcmd:
   description: ''
   fields:
-  - name: time
-    bit_offset: 16
-    bit_size: 8
+    - name: time
+      bit_offset: 16
+      bit_size: 8
 fieldset/MIPI_DSI_EDPI_TE_HW_CFG_hw_tear_effect:
   description: ''
   fields:
-  - name: 'on'
-    bit_offset: 0
-    bit_size: 1
-  - name: gen
-    bit_offset: 1
-    bit_size: 1
+    - name: 'on'
+      bit_offset: 0
+      bit_size: 1
+    - name: gen
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_DSI_EDPI_TE_HW_CFG_hw_set_scan:
   description: ''
   fields:
-  - name: line
-    bit_offset: 4
-    bit_size: 1
+    - name: line
+      bit_offset: 4
+      bit_size: 1
 fieldset/MIPI_DSI_EDPI_TE_HW_CFG_scan_line:
   description: ''
   fields:
-  - name: parameter
-    bit_offset: 16
-    bit_size: 16
+    - name: parameter
+      bit_offset: 16
+      bit_size: 16
 fieldset/MIPI_DSI_VID_MODE_CFG_ACT_vid_mode:
   description: ''
   fields:
-  - name: type
-    bit_offset: 0
-    bit_size: 2
+    - name: type
+      bit_offset: 0
+      bit_size: 2
 fieldset/MIPI_DSI_VID_MODE_CFG_ACT_lp_vsa:
   description: ''
   fields:
-  - name: en
-    bit_offset: 2
-    bit_size: 1
+    - name: en
+      bit_offset: 2
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_ACT_lp_vbp:
   description: ''
   fields:
-  - name: en
-    bit_offset: 3
-    bit_size: 1
+    - name: en
+      bit_offset: 3
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_ACT_lp_vfp:
   description: ''
   fields:
-  - name: en
-    bit_offset: 4
-    bit_size: 1
+    - name: en
+      bit_offset: 4
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_ACT_lp_vact:
   description: ''
   fields:
-  - name: en
-    bit_offset: 5
-    bit_size: 1
+    - name: en
+      bit_offset: 5
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_ACT_lp_hbp:
   description: ''
   fields:
-  - name: en
-    bit_offset: 6
-    bit_size: 1
+    - name: en
+      bit_offset: 6
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_ACT_lp_hfp:
   description: ''
   fields:
-  - name: en
-    bit_offset: 7
-    bit_size: 1
+    - name: en
+      bit_offset: 7
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_ACT_frame_bta_ack:
   description: ''
   fields:
-  - name: en
-    bit_offset: 8
-    bit_size: 1
+    - name: en
+      bit_offset: 8
+      bit_size: 1
 fieldset/MIPI_DSI_VID_MODE_CFG_ACT_lp_cmd:
   description: ''
   fields:
-  - name: en
-    bit_offset: 9
-    bit_size: 1
+    - name: en
+      bit_offset: 9
+      bit_size: 1
 fieldset/MIPI_DSI_VID_PKT_SIZE_ACT_vid_pkt:
   description: ''
   fields:
-  - name: size
-    bit_offset: 0
-    bit_size: 14
+    - name: size
+      bit_offset: 0
+      bit_size: 14
 fieldset/MIPI_DSI_VID_NUM_CHUNKS_ACT_vid_num:
   description: ''
   fields:
-  - name: chunks
-    bit_offset: 0
-    bit_size: 13
+    - name: chunks
+      bit_offset: 0
+      bit_size: 13
 fieldset/MIPI_DSI_VID_NULL_SIZE_ACT_vid_null:
   description: ''
   fields:
-  - name: size
-    bit_offset: 0
-    bit_size: 13
+    - name: size
+      bit_offset: 0
+      bit_size: 13
 fieldset/MIPI_DSI_VID_HSA_TIME_ACT_vid_hsa:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 12
+    - name: time
+      bit_offset: 0
+      bit_size: 12
 fieldset/MIPI_DSI_VID_HBP_TIME_ACT_vid_hbp:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 12
+    - name: time
+      bit_offset: 0
+      bit_size: 12
 fieldset/MIPI_DSI_VID_HLINE_TIME_ACT_vid_hline:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 15
+    - name: time
+      bit_offset: 0
+      bit_size: 15
 fieldset/MIPI_DSI_VID_VSA_LINES_ACT_vsa:
   description: ''
   fields:
-  - name: lines
-    bit_offset: 0
-    bit_size: 10
+    - name: lines
+      bit_offset: 0
+      bit_size: 10
 fieldset/MIPI_DSI_VID_VBP_LINES_ACT_vbp:
   description: ''
   fields:
-  - name: lines
-    bit_offset: 0
-    bit_size: 10
+    - name: lines
+      bit_offset: 0
+      bit_size: 10
 fieldset/MIPI_DSI_VID_VFP_LINES_ACT_vfp:
   description: ''
   fields:
-  - name: lines
-    bit_offset: 0
-    bit_size: 10
+    - name: lines
+      bit_offset: 0
+      bit_size: 10
 fieldset/MIPI_DSI_VID_VACTIVE_LINES_ACT_v_active:
   description: ''
   fields:
-  - name: lines
-    bit_offset: 0
-    bit_size: 14
+    - name: lines
+      bit_offset: 0
+      bit_size: 14
 fieldset/MIPI_DSI_VID_PKT_STATUS_dpi_cmd_w:
   description: ''
   fields:
-  - name: empty
-    bit_offset: 0
-    bit_size: 1
-  - name: full
-    bit_offset: 1
-    bit_size: 1
+    - name: empty
+      bit_offset: 0
+      bit_size: 1
+    - name: full
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_DSI_VID_PKT_STATUS_dpi_pld_w:
   description: ''
   fields:
-  - name: empty
-    bit_offset: 2
-    bit_size: 1
-  - name: full
-    bit_offset: 3
-    bit_size: 1
+    - name: empty
+      bit_offset: 2
+      bit_size: 1
+    - name: full
+      bit_offset: 3
+      bit_size: 1
 fieldset/MIPI_DSI_VID_PKT_STATUS_edpi_cmd_w:
   description: ''
   fields:
-  - name: empty
-    bit_offset: 4
-    bit_size: 1
-  - name: full
-    bit_offset: 5
-    bit_size: 1
+    - name: empty
+      bit_offset: 4
+      bit_size: 1
+    - name: full
+      bit_offset: 5
+      bit_size: 1
 fieldset/MIPI_DSI_VID_PKT_STATUS_edpi_pld_w:
   description: ''
   fields:
-  - name: empty
-    bit_offset: 6
-    bit_size: 1
-  - name: full
-    bit_offset: 7
-    bit_size: 1
+    - name: empty
+      bit_offset: 6
+      bit_size: 1
+    - name: full
+      bit_offset: 7
+      bit_size: 1
 fieldset/MIPI_DSI_VID_PKT_STATUS_dpi_buff_pld:
   description: ''
   fields:
-  - name: empty
-    bit_offset: 16
-    bit_size: 1
-  - name: full
-    bit_offset: 17
-    bit_size: 1
+    - name: empty
+      bit_offset: 16
+      bit_size: 1
+    - name: full
+      bit_offset: 17
+      bit_size: 1
 fieldset/MIPI_DSI_VID_PKT_STATUS_edpi_buff_cmd:
   description: ''
   fields:
-  - name: empty
-    bit_offset: 20
-    bit_size: 1
-  - name: full
-    bit_offset: 21
-    bit_size: 1
+    - name: empty
+      bit_offset: 20
+      bit_size: 1
+    - name: full
+      bit_offset: 21
+      bit_size: 1
 fieldset/MIPI_DSI_VID_PKT_STATUS_edpi_buff_pld:
   description: ''
   fields:
-  - name: empty
-    bit_offset: 22
-    bit_size: 1
-  - name: full
-    bit_offset: 23
-    bit_size: 1
+    - name: empty
+      bit_offset: 22
+      bit_size: 1
+    - name: full
+      bit_offset: 23
+      bit_size: 1
 fieldset/MIPI_DSI_SDF_3D_ACT_mode:
   description: ''
   fields:
-  - name: 3d
-    bit_offset: 0
-    bit_size: 2
+    - name: 3d
+      bit_offset: 0
+      bit_size: 2
 fieldset/MIPI_DSI_SDF_3D_ACT_format:
   description: ''
   fields:
-  - name: 3d
-    bit_offset: 2
-    bit_size: 2
+    - name: 3d
+      bit_offset: 2
+      bit_size: 2
 fieldset/MIPI_DSI_SDF_3D_ACT_second:
   description: ''
   fields:
-  - name: vsync
-    bit_offset: 4
-    bit_size: 1
+    - name: vsync
+      bit_offset: 4
+      bit_size: 1
 fieldset/MIPI_DSI_SDF_3D_ACT_right:
   description: ''
   fields:
-  - name: first
-    bit_offset: 5
-    bit_size: 1
+    - name: first
+      bit_offset: 5
+      bit_size: 1
 fieldset/MIPI_DSI_SDF_3D_ACT_send_3d:
   description: ''
   fields:
-  - name: cfg
-    bit_offset: 16
-    bit_size: 1
+    - name: cfg
+      bit_offset: 16
+      bit_size: 1

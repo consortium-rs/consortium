@@ -1,31 +1,31 @@
 block/DMA_Channel:
   description: ''
   items:
-  - name: CLBAR
-    byte_offset: 80
-  - name: CCIDCFGR
-    byte_offset: 84
-  - name: CSEMCR
-    byte_offset: 88
-  - name: CFCR
-    byte_offset: 92
-  - name: CSR
-    byte_offset: 96
-  - name: CCR
-    byte_offset: 100
-  - name: CTR1
-    byte_offset: 144
-  - name: CTR2
-    byte_offset: 148
-  - name: CBR1
-    byte_offset: 152
-  - name: CSAR
-    byte_offset: 156
-  - name: CDAR
-    byte_offset: 160
-  - name: CTR3
-    byte_offset: 164
-  - name: CBR2
-    byte_offset: 168
-  - name: CLLR
-    byte_offset: 204
+    - name: CLBAR
+      byte_offset: 80
+    - name: CCIDCFGR
+      byte_offset: 84
+    - name: CSEMCR
+      byte_offset: 88
+    - name: CFCR
+      byte_offset: 92
+    - name: CSR
+      byte_offset: 96
+    - name: CCR
+      byte_offset: 100
+    - name: CTR1
+      byte_offset: 144
+    - name: CTR2
+      byte_offset: 148
+    - name: CBR1
+      byte_offset: 152
+    - name: CSAR
+      byte_offset: 156
+    - name: CDAR
+      byte_offset: 160
+    - name: CTR3
+      byte_offset: 164
+    - name: CBR2
+      byte_offset: 168
+    - name: CLLR
+      byte_offset: 204

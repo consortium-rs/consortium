@@ -1,55 +1,55 @@
 block/RISC:
   description: ''
   items:
-  - name: CR
-    byte_offset: 0
-    description: RISC Control register
-    fieldset: RISC_CR
-  - name: SECCFGR
-    byte_offset: 16
-    array:
-      len: 6
-      stride: 4
-    description: RISC Security configuration register x, 0x010-0x024
-  - name: PRIVCFGR
-    byte_offset: 48
-    array:
-      len: 6
-      stride: 4
-    description: RISC Privileged configuration register x, 0x030-0x044
-  - name: RCFGLOCKR
-    byte_offset: 80
-    array:
-      len: 6
-      stride: 4
-    description: RISC Resource configuration lock register x, 0x050-0x064
-  - name: REG1ACFGR
-    byte_offset: 2304
-    description: RISAL Region 1 subregion A configuration register
-  - name: REG1BCFGR
-    byte_offset: 2312
-    description: RISAL Region 1 subregion B configuration register
-  - name: REG2ACFGR
-    byte_offset: 2320
-    description: RISAL Region 2 subregion A configuration register
-  - name: REG2BCFGR
-    byte_offset: 2328
-    description: RISAL Region 2 subregion B configuration register
-  - name: REG3ACFGR
-    byte_offset: 2336
-    description: RISAL Region 3 subregion A configuration register
-  - name: REG3AADDR
-    byte_offset: 2340
-    description: RISAL Region 3 subregion A address register
-  - name: REG3BCFGR
-    byte_offset: 2344
-    description: RISAL Region 3 subregion B configuration register
-  - name: REG3BADDR
-    byte_offset: 2348
-    description: RISAL Region 3 subregion B address register
+    - name: CR
+      byte_offset: 0
+      description: RISC Control register
+      fieldset: RISC_CR
+    - name: SECCFGR
+      byte_offset: 16
+      array:
+        len: 6
+        stride: 4
+      description: RISC Security configuration register x, 0x010-0x024
+    - name: PRIVCFGR
+      byte_offset: 48
+      array:
+        len: 6
+        stride: 4
+      description: RISC Privileged configuration register x, 0x030-0x044
+    - name: RCFGLOCKR
+      byte_offset: 80
+      array:
+        len: 6
+        stride: 4
+      description: RISC Resource configuration lock register x, 0x050-0x064
+    - name: REG1ACFGR
+      byte_offset: 2304
+      description: RISAL Region 1 subregion A configuration register
+    - name: REG1BCFGR
+      byte_offset: 2312
+      description: RISAL Region 1 subregion B configuration register
+    - name: REG2ACFGR
+      byte_offset: 2320
+      description: RISAL Region 2 subregion A configuration register
+    - name: REG2BCFGR
+      byte_offset: 2328
+      description: RISAL Region 2 subregion B configuration register
+    - name: REG3ACFGR
+      byte_offset: 2336
+      description: RISAL Region 3 subregion A configuration register
+    - name: REG3AADDR
+      byte_offset: 2340
+      description: RISAL Region 3 subregion A address register
+    - name: REG3BCFGR
+      byte_offset: 2344
+      description: RISAL Region 3 subregion B configuration register
+    - name: REG3BADDR
+      byte_offset: 2348
+      description: RISAL Region 3 subregion B address register
 fieldset/RISC_CR:
   description: ''
   fields:
-  - name: GLOCK
-    bit_offset: 0
-    bit_size: 1
+    - name: GLOCK
+      bit_offset: 0
+      bit_size: 1

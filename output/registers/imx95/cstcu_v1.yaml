@@ -1,217 +1,217 @@
 block/CSTCU:
   description: ''
   items:
-  - name: RUNSWREG
-    byte_offset: 0
-    fieldset: CSTCU_RUNSWREG
-  - name: LSCHLVLD
-    byte_offset: 4
-    fieldset: CSTCU_LSCHLVLD
-  - name: IE
-    byte_offset: 16
-  - name: IF
-    byte_offset: 20
-  - name: ERR_STAT
-    byte_offset: 32
-    fieldset: CSTCU_ERR_STAT
-  - name: ERR_FM
-    byte_offset: 40
-    fieldset: CSTCU_ERR_FM
-  - name: LRFSTAT
-    byte_offset: 48
-    array:
-      len: 1
-      stride: 4
-    fieldset: CSTCU_LRFSTAT
-  - name: LUFSTAT
-    byte_offset: 64
-    array:
-      len: 1
-      stride: 4
-    fieldset: CSTCU_LUFSTAT
-  - name: RDEN
-    byte_offset: 80
-    fieldset: CSTCU_RDEN
-  - name: RDENSTAT
-    byte_offset: 84
-    fieldset: CSTCU_RDENSTAT
-  - name: LASTRDEN
-    byte_offset: 88
-    fieldset: CSTCU_LASTRDEN
-  - name: BYPLSTCU
-    byte_offset: 96
-    array:
-      len: 1
-      stride: 4
-  - name: STAG
-    byte_offset: 112
-  - name: LMBPTR
-    byte_offset: 512
-    array:
-      len: 5
-      stride: 4
-    fieldset: CSTCU_LMBPTR
+    - name: RUNSWREG
+      byte_offset: 0
+      fieldset: CSTCU_RUNSWREG
+    - name: LSCHLVLD
+      byte_offset: 4
+      fieldset: CSTCU_LSCHLVLD
+    - name: IE
+      byte_offset: 16
+    - name: IF
+      byte_offset: 20
+    - name: ERR_STAT
+      byte_offset: 32
+      fieldset: CSTCU_ERR_STAT
+    - name: ERR_FM
+      byte_offset: 40
+      fieldset: CSTCU_ERR_FM
+    - name: LRFSTAT
+      byte_offset: 48
+      array:
+        len: 1
+        stride: 4
+      fieldset: CSTCU_LRFSTAT
+    - name: LUFSTAT
+      byte_offset: 64
+      array:
+        len: 1
+        stride: 4
+      fieldset: CSTCU_LUFSTAT
+    - name: RDEN
+      byte_offset: 80
+      fieldset: CSTCU_RDEN
+    - name: RDENSTAT
+      byte_offset: 84
+      fieldset: CSTCU_RDENSTAT
+    - name: LASTRDEN
+      byte_offset: 88
+      fieldset: CSTCU_LASTRDEN
+    - name: BYPLSTCU
+      byte_offset: 96
+      array:
+        len: 1
+        stride: 4
+    - name: STAG
+      byte_offset: 112
+    - name: LMBPTR
+      byte_offset: 512
+      array:
+        len: 5
+        stride: 4
+      fieldset: CSTCU_LMBPTR
 fieldset/CSTCU_RUNSWREG:
   description: ''
   fields:
-  - name: RUNSW
-    bit_offset: 0
-    bit_size: 1
+    - name: RUNSW
+      bit_offset: 0
+      bit_size: 1
 fieldset/CSTCU_RUNSWREG_SW:
   description: ''
   fields:
-  - name: ABORT
-    bit_offset: 4
-    bit_size: 1
+    - name: ABORT
+      bit_offset: 4
+      bit_size: 1
 fieldset/CSTCU_LSCHLVLD:
   description: ''
   fields:
-  - name: MBPLVLD
-    bit_offset: 8
-    bit_size: 1
+    - name: MBPLVLD
+      bit_offset: 8
+      bit_size: 1
 fieldset/CSTCU_IE_STEND:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 0
-    bit_size: 1
+    - name: IE
+      bit_offset: 0
+      bit_size: 1
 fieldset/CSTCU_IF_STEND:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 0
-    bit_size: 1
+    - name: IF
+      bit_offset: 0
+      bit_size: 1
 fieldset/CSTCU_ERR_STAT_INVP:
   description: ''
   fields:
-  - name: MB
-    bit_offset: 1
-    bit_size: 1
+    - name: MB
+      bit_offset: 1
+      bit_size: 1
 fieldset/CSTCU_ERR_STAT:
   description: ''
   fields:
-  - name: ABORTSW
-    bit_offset: 9
-    bit_size: 1
-  - name: UFSF
-    bit_offset: 16
-    bit_size: 1
-  - name: RFSF
-    bit_offset: 17
-    bit_size: 1
+    - name: ABORTSW
+      bit_offset: 9
+      bit_size: 1
+    - name: UFSF
+      bit_offset: 16
+      bit_size: 1
+    - name: RFSF
+      bit_offset: 17
+      bit_size: 1
 fieldset/CSTCU_ERR_FM:
   description: ''
   fields:
-  - name: INVPFMMB
-    bit_offset: 1
-    bit_size: 1
+    - name: INVPFMMB
+      bit_offset: 1
+      bit_size: 1
 fieldset/CSTCU_LRFSTAT:
   description: ''
   fields:
-  - name: RFSLSTCU0
-    bit_offset: 0
-    bit_size: 1
-  - name: RFSLSTCU1
-    bit_offset: 1
-    bit_size: 1
-  - name: RFSLSTCU2
-    bit_offset: 2
-    bit_size: 1
-  - name: RFSLSTCU3
-    bit_offset: 3
-    bit_size: 1
-  - name: RFSLSTCU4
-    bit_offset: 4
-    bit_size: 1
+    - name: RFSLSTCU0
+      bit_offset: 0
+      bit_size: 1
+    - name: RFSLSTCU1
+      bit_offset: 1
+      bit_size: 1
+    - name: RFSLSTCU2
+      bit_offset: 2
+      bit_size: 1
+    - name: RFSLSTCU3
+      bit_offset: 3
+      bit_size: 1
+    - name: RFSLSTCU4
+      bit_offset: 4
+      bit_size: 1
 fieldset/CSTCU_LUFSTAT:
   description: ''
   fields:
-  - name: UFSLSTCU0
-    bit_offset: 0
-    bit_size: 1
-  - name: UFSLSTCU1
-    bit_offset: 1
-    bit_size: 1
-  - name: UFSLSTCU2
-    bit_offset: 2
-    bit_size: 1
-  - name: UFSLSTCU3
-    bit_offset: 3
-    bit_size: 1
-  - name: UFSLSTCU4
-    bit_offset: 4
-    bit_size: 1
+    - name: UFSLSTCU0
+      bit_offset: 0
+      bit_size: 1
+    - name: UFSLSTCU1
+      bit_offset: 1
+      bit_size: 1
+    - name: UFSLSTCU2
+      bit_offset: 2
+      bit_size: 1
+    - name: UFSLSTCU3
+      bit_offset: 3
+      bit_size: 1
+    - name: UFSLSTCU4
+      bit_offset: 4
+      bit_size: 1
 fieldset/CSTCU_RDEN:
   description: ''
   fields:
-  - name: SERD0
-    bit_offset: 0
-    bit_size: 1
-  - name: SERD1
-    bit_offset: 1
-    bit_size: 1
-  - name: SERD2
-    bit_offset: 2
-    bit_size: 1
+    - name: SERD0
+      bit_offset: 0
+      bit_size: 1
+    - name: SERD1
+      bit_offset: 1
+      bit_size: 1
+    - name: SERD2
+      bit_offset: 2
+      bit_size: 1
 fieldset/CSTCU_RDENSTAT:
   description: ''
   fields:
-  - name: SESRD0
-    bit_offset: 0
-    bit_size: 1
-  - name: SESRD1
-    bit_offset: 1
-    bit_size: 1
-  - name: SESRD2
-    bit_offset: 2
-    bit_size: 1
+    - name: SESRD0
+      bit_offset: 0
+      bit_size: 1
+    - name: SESRD1
+      bit_offset: 1
+      bit_size: 1
+    - name: SESRD2
+      bit_offset: 2
+      bit_size: 1
 fieldset/CSTCU_LASTRDEN:
   description: ''
   fields:
-  - name: LRSERD0
-    bit_offset: 0
-    bit_size: 1
-  - name: LRSERD1
-    bit_offset: 1
-    bit_size: 1
-  - name: LRSERD2
-    bit_offset: 2
-    bit_size: 1
+    - name: LRSERD0
+      bit_offset: 0
+      bit_size: 1
+    - name: LRSERD1
+      bit_offset: 1
+      bit_size: 1
+    - name: LRSERD2
+      bit_offset: 2
+      bit_size: 1
 fieldset/CSTCU_BYPLSTCU_BYP:
   description: ''
   fields:
-  - name: L0
-    bit_offset: 0
-    bit_size: 1
-  - name: L1
-    bit_offset: 1
-    bit_size: 1
-  - name: L2
-    bit_offset: 2
-    bit_size: 1
-  - name: L3
-    bit_offset: 3
-    bit_size: 1
-  - name: L4
-    bit_offset: 4
-    bit_size: 1
+    - name: L0
+      bit_offset: 0
+      bit_size: 1
+    - name: L1
+      bit_offset: 1
+      bit_size: 1
+    - name: L2
+      bit_offset: 2
+      bit_size: 1
+    - name: L3
+      bit_offset: 3
+      bit_size: 1
+    - name: L4
+      bit_offset: 4
+      bit_size: 1
 fieldset/CSTCU_STAG_MB:
   description: ''
   fields:
-  - name: DELAY
-    bit_offset: 8
-    bit_size: 8
-    description: MBIST Delay
+    - name: DELAY
+      bit_offset: 8
+      bit_size: 8
+      description: MBIST Delay
 fieldset/CSTCU_LMBPTR:
   description: ''
   fields:
-  - name: MBPTR
-    bit_offset: 0
-    bit_size: 8
-  - name: MBCSM
-    bit_offset: 8
-    bit_size: 1
-    description: LSTCU Pointer Scheduled During MBIST Run Phase
-  - name: MBEOL
-    bit_offset: 31
-    bit_size: 1
+    - name: MBPTR
+      bit_offset: 0
+      bit_size: 8
+    - name: MBCSM
+      bit_offset: 8
+      bit_size: 1
+      description: LSTCU Pointer Scheduled During MBIST Run Phase
+    - name: MBEOL
+      bit_offset: 31
+      bit_size: 1

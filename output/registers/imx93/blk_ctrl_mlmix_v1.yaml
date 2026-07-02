@@ -1,11 +1,11 @@
 block/BLK_CTRL_MLMIX:
   description: ''
   items:
-  - name: HS_EN
-    byte_offset: 0
+    - name: HS_EN
+      byte_offset: 0
 fieldset/BLK_CTRL_MLMIX_HS_EN_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1

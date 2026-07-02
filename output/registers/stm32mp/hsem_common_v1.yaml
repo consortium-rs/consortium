@@ -1,15 +1,15 @@
 block/HSEM_Common:
   description: ''
   items:
-  - name: IER
-    byte_offset: 0
-    description: HSEM Interrupt enable register
-  - name: ICR
-    byte_offset: 4
-    description: HSEM Interrupt clear register
-  - name: ISR
-    byte_offset: 8
-    description: HSEM Interrupt status register
-  - name: MISR
-    byte_offset: 12
-    description: HSEM Masked interrupt status register
+    - name: IER
+      byte_offset: 0
+      description: HSEM Interrupt enable register
+    - name: ICR
+      byte_offset: 4
+      description: HSEM Interrupt clear register
+    - name: ISR
+      byte_offset: 8
+      description: HSEM Interrupt status register
+    - name: MISR
+      byte_offset: 12
+      description: HSEM Masked interrupt status register

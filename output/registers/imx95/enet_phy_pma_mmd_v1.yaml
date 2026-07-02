@@ -1,384 +1,384 @@
 block/ENET_PHY_PMA_MMD:
   description: ''
   items:
-  - name: VR_XS_PMA_RX_LSTS
-    byte_offset: 65600
-  - name: VR_XS_PMA_MP_12G_16G_25G_TX_GENCTRL0
-    byte_offset: 65632
-  - name: VR_XS_PMA_MP_12G_16G_TX_GENCTRL2
-    byte_offset: 65636
-  - name: VR_XS_PMA_MP_12G_16G_25G_TX_RATE_CTRL
-    byte_offset: 65640
-  - name: VR_XS_PMA_MP_12G_16G_25G_TX_EQ_CTRL0
-    byte_offset: 65644
-  - name: VR_XS_PMA_MP_16G_25G_TX_MISC_CTRL0
-    byte_offset: 65660
-  - name: VR_XS_PMA_MP_12G_16G_25G_RX_GENCTRL0
-    byte_offset: 65696
-  - name: VR_XS_PMA_MP_12G_16G_RX_GENCTRL2
-    byte_offset: 65700
-  - name: VR_XS_PMA_MP_12G_16G_25G_RX_RATE_CTRL
-    byte_offset: 65704
-  - name: VR_XS_PMA_MP_12G_16G_25G_RX_CDR_CTRL
-    byte_offset: 65708
-  - name: VR_XS_PMA_MP_16G_25G_RX_EQ_CTRL0
-    byte_offset: 65712
-  - name: VR_XS_PMA_MP_12G_16G_25G_RX_EQ_CTRL4
-    byte_offset: 65720
-  - name: VR_XS_PMA_MP_12G_16G_25G_DFE_TAP_CTRL0
-    byte_offset: 65724
-  - name: VR_XS_PMA_MP_16G_RX_CDR_CTRL1
-    byte_offset: 65736
-  - name: VR_XS_PMA_MP_16G_25G_RX_GENCTRL4
-    byte_offset: 65744
-  - name: VR_XS_PMA_MP_16G_25G_RX_IQ_CTRL0
-    byte_offset: 65750
-  - name: VR_XS_PMA_MP_12G_16G_25G_MPLL_CMN_CTRL
-    byte_offset: 65760
-  - name: VR_XS_PMA_MP_16G_MPLLA_CTRL1
-    byte_offset: 65764
-  - name: VR_XS_PMA_MP_16G_MPLLA_CTRL3
-    byte_offset: 65774
-  - name: VR_XS_PMA_MP_16G_MPLLA_CTRL4
-    byte_offset: 65778
-  - name: VR_XS_PMA_MP_12G_16G_25G_MISC_CTRL0
-    byte_offset: 65824
-  - name: VR_XS_PMA_MP_12G_16G_25G_VCO_CAL_LD0
-    byte_offset: 65828
-  - name: VR_XS_PMA_MP_16G_25G_VCO_CAL_REF0
-    byte_offset: 65836
-  - name: VR_XS_PMA_MP_12G_16G_25G_MISC_STS
-    byte_offset: 65840
-    fieldset: ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_MISC_STS
-  - name: VR_XS_PMA_MP_12G_16G_25G_SRAM
-    byte_offset: 65846
+    - name: VR_XS_PMA_RX_LSTS
+      byte_offset: 65600
+    - name: VR_XS_PMA_MP_12G_16G_25G_TX_GENCTRL0
+      byte_offset: 65632
+    - name: VR_XS_PMA_MP_12G_16G_TX_GENCTRL2
+      byte_offset: 65636
+    - name: VR_XS_PMA_MP_12G_16G_25G_TX_RATE_CTRL
+      byte_offset: 65640
+    - name: VR_XS_PMA_MP_12G_16G_25G_TX_EQ_CTRL0
+      byte_offset: 65644
+    - name: VR_XS_PMA_MP_16G_25G_TX_MISC_CTRL0
+      byte_offset: 65660
+    - name: VR_XS_PMA_MP_12G_16G_25G_RX_GENCTRL0
+      byte_offset: 65696
+    - name: VR_XS_PMA_MP_12G_16G_RX_GENCTRL2
+      byte_offset: 65700
+    - name: VR_XS_PMA_MP_12G_16G_25G_RX_RATE_CTRL
+      byte_offset: 65704
+    - name: VR_XS_PMA_MP_12G_16G_25G_RX_CDR_CTRL
+      byte_offset: 65708
+    - name: VR_XS_PMA_MP_16G_25G_RX_EQ_CTRL0
+      byte_offset: 65712
+    - name: VR_XS_PMA_MP_12G_16G_25G_RX_EQ_CTRL4
+      byte_offset: 65720
+    - name: VR_XS_PMA_MP_12G_16G_25G_DFE_TAP_CTRL0
+      byte_offset: 65724
+    - name: VR_XS_PMA_MP_16G_RX_CDR_CTRL1
+      byte_offset: 65736
+    - name: VR_XS_PMA_MP_16G_25G_RX_GENCTRL4
+      byte_offset: 65744
+    - name: VR_XS_PMA_MP_16G_25G_RX_IQ_CTRL0
+      byte_offset: 65750
+    - name: VR_XS_PMA_MP_12G_16G_25G_MPLL_CMN_CTRL
+      byte_offset: 65760
+    - name: VR_XS_PMA_MP_16G_MPLLA_CTRL1
+      byte_offset: 65764
+    - name: VR_XS_PMA_MP_16G_MPLLA_CTRL3
+      byte_offset: 65774
+    - name: VR_XS_PMA_MP_16G_MPLLA_CTRL4
+      byte_offset: 65778
+    - name: VR_XS_PMA_MP_12G_16G_25G_MISC_CTRL0
+      byte_offset: 65824
+    - name: VR_XS_PMA_MP_12G_16G_25G_VCO_CAL_LD0
+      byte_offset: 65828
+    - name: VR_XS_PMA_MP_16G_25G_VCO_CAL_REF0
+      byte_offset: 65836
+    - name: VR_XS_PMA_MP_12G_16G_25G_MISC_STS
+      byte_offset: 65840
+      fieldset: ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_MISC_STS
+    - name: VR_XS_PMA_MP_12G_16G_25G_SRAM
+      byte_offset: 65846
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_TX_GENCTRL1_VBOOST:
   description: ''
   fields:
-  - name: LVL
-    bit_offset: 8
-    bit_size: 3
+    - name: LVL
+      bit_offset: 8
+      bit_size: 3
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_TX_GENCTRL2_TX0:
   description: ''
   fields:
-  - name: WIDTH
-    bit_offset: 8
-    bit_size: 2
+    - name: WIDTH
+      bit_offset: 8
+      bit_size: 2
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_TX_BOOST_CTRL_TX0:
   description: ''
   fields:
-  - name: IBOOST
-    bit_offset: 0
-    bit_size: 4
+    - name: IBOOST
+      bit_offset: 0
+      bit_size: 4
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_TX_RATE_CTRL_TX0:
   description: ''
   fields:
-  - name: RATE
-    bit_offset: 0
-    bit_size: 3
+    - name: RATE
+      bit_offset: 0
+      bit_size: 3
 fieldset/ENET_PHY_PMA_MMD_MP_12G_16G_25G_TX_POWER_STATE_CTRL_TX0:
   description: ''
   fields:
-  - name: PSTATE
-    bit_offset: 0
-    bit_size: 2
+    - name: PSTATE
+      bit_offset: 0
+      bit_size: 2
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_TX_EQ_CTRL0_TX_EQ:
   description: ''
   fields:
-  - name: PRE
-    bit_offset: 0
-    bit_size: 6
-  - name: MAIN
-    bit_offset: 8
-    bit_size: 6
+    - name: PRE
+      bit_offset: 0
+      bit_size: 6
+    - name: MAIN
+      bit_offset: 8
+      bit_size: 6
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_TX_EQ_CTRL1_TX_EQ:
   description: ''
   fields:
-  - name: POST
-    bit_offset: 0
-    bit_size: 6
+    - name: POST
+      bit_offset: 0
+      bit_size: 6
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_25G_TX_MISC_CTRL0_TX0:
   description: ''
   fields:
-  - name: MISC
-    bit_offset: 0
-    bit_size: 8
+    - name: MISC
+      bit_offset: 0
+      bit_size: 8
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_RX_GENCTRL2_RX0:
   description: ''
   fields:
-  - name: WIDTH
-    bit_offset: 8
-    bit_size: 2
+    - name: WIDTH
+      bit_offset: 8
+      bit_size: 2
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_RX_RATE_CTRL_RX0:
   description: ''
   fields:
-  - name: RATE
-    bit_offset: 0
-    bit_size: 2
+    - name: RATE
+      bit_offset: 0
+      bit_size: 2
 fieldset/ENET_PHY_PMA_MMD_MP_12G_16G_25G_RX_POWER_STATE_CTRL_RX0:
   description: ''
   fields:
-  - name: PSTATE
-    bit_offset: 0
-    bit_size: 2
+    - name: PSTATE
+      bit_offset: 0
+      bit_size: 2
 fieldset/ENET_PHY_PMA_MMD_MP_12G_16G_25G_RX_POWER_STATE_CTRL_EEE_OVR:
   description: ''
   fields:
-  - name: RIDE
-    bit_offset: 12
-    bit_size: 1
+    - name: RIDE
+      bit_offset: 12
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_RX_ATTN_CTRL_RX0_EQ_ATT:
   description: ''
   fields:
-  - name: LVL
-    bit_offset: 0
-    bit_size: 3
+    - name: LVL
+      bit_offset: 0
+      bit_size: 3
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_RX_EQ_CTRL4_RX_AD:
   description: ''
   fields:
-  - name: REQ
-    bit_offset: 12
-    bit_size: 1
+    - name: REQ
+      bit_offset: 12
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_25G_RX_EQ_CTRL5_RX0_ADPT:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 4
-    bit_size: 2
+    - name: MODE
+      bit_offset: 4
+      bit_size: 2
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_25G_RX_PPM_CTRL0_RX0_CDR_PPM:
   description: ''
   fields:
-  - name: MAX
-    bit_offset: 0
-    bit_size: 5
+    - name: MAX
+      bit_offset: 0
+      bit_size: 5
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_25G_RX_GENCTRL4_RX_TERM:
   description: ''
   fields:
-  - name: OFFSET
-    bit_offset: 0
-    bit_size: 5
+    - name: OFFSET
+      bit_offset: 0
+      bit_size: 5
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_25G_RX_MISC_CTRL0_RX0:
   description: ''
   fields:
-  - name: MISC
-    bit_offset: 0
-    bit_size: 8
+    - name: MISC
+      bit_offset: 0
+      bit_size: 8
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_25G_RX_IQ_CTRL0_RX0_MARGIN:
   description: ''
   fields:
-  - name: IQ
-    bit_offset: 0
-    bit_size: 7
+    - name: IQ
+      bit_offset: 0
+      bit_size: 7
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_25G_RX_IQ_CTRL0_RX0_DELTA:
   description: ''
   fields:
-  - name: IQ
-    bit_offset: 8
-    bit_size: 4
+    - name: IQ
+      bit_offset: 8
+      bit_size: 4
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_MPLLA_CTRL0_MPLLA:
   description: ''
   fields:
-  - name: MULTIPLIER
-    bit_offset: 0
-    bit_size: 8
+    - name: MULTIPLIER
+      bit_offset: 0
+      bit_size: 8
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_MPLLA_CTRL0_MPLLA_CAL:
   description: ''
   fields:
-  - name: DISABLE
-    bit_offset: 15
-    bit_size: 1
+    - name: DISABLE
+      bit_offset: 15
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_MPLLA_CTRL1_MPLLA_SSC:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_MPLLA_CTRL1_MPLLA_SSC_CLK:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 4
-    bit_size: 1
+    - name: SEL
+      bit_offset: 4
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_MPLLA_CTRL1_MPLLA_FRACN:
   description: ''
   fields:
-  - name: CTRL
-    bit_offset: 5
-    bit_size: 11
+    - name: CTRL
+      bit_offset: 5
+      bit_size: 11
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_MPLLA_CTRL2_MPLLA_DIV:
   description: ''
   fields:
-  - name: MULT
-    bit_offset: 0
-    bit_size: 7
+    - name: MULT
+      bit_offset: 0
+      bit_size: 7
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_MPLLA_CTRL2_MPLLA_DIV_CLK:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 7
-    bit_size: 1
+    - name: EN
+      bit_offset: 7
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_MPLLA_CTRL2_MPLLA_DIV8_CLK:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 8
-    bit_size: 1
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_MPLLA_CTRL2_MPLLA_DIV10_CLK:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 9
-    bit_size: 1
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_MPLLA_CTRL2_MPLLA_DIV16P5_CLK:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 10
-    bit_size: 1
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_MPLLA_CTRL2_MPLLA_TX_CLK:
   description: ''
   fields:
-  - name: DIV
-    bit_offset: 11
-    bit_size: 2
+    - name: DIV
+      bit_offset: 11
+      bit_size: 2
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_MPLLA_CTRL2_MPLLA_RECAL_BANK:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 13
-    bit_size: 2
+    - name: SEL
+      bit_offset: 13
+      bit_size: 2
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_MPLLA_CTRL3_MPLLA:
   description: ''
   fields:
-  - name: BANDWIDTH
-    bit_offset: 0
-    bit_size: 16
+    - name: BANDWIDTH
+      bit_offset: 0
+      bit_size: 16
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_MPLLA_CTRL4_MPLLA_SSC_FRQ_CNT:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 0
-    bit_size: 12
+    - name: INT
+      bit_offset: 0
+      bit_size: 12
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_MPLLA_CTRL5_MPLLA_SSC_FRQ_CNT:
   description: ''
   fields:
-  - name: PK
-    bit_offset: 0
-    bit_size: 8
+    - name: PK
+      bit_offset: 0
+      bit_size: 8
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_MPLLA_CTRL5_MPLLA_SSC_SPD:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 8
-    bit_size: 1
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_MISC_CTRL0_RX_VREF:
   description: ''
   fields:
-  - name: CTRL
-    bit_offset: 8
-    bit_size: 5
+    - name: CTRL
+      bit_offset: 8
+      bit_size: 5
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_MISC_CTRL0_RTUNE:
   description: ''
   fields:
-  - name: REQ
-    bit_offset: 13
-    bit_size: 1
+    - name: REQ
+      bit_offset: 13
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_MISC_CTRL0_CR_PARA:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 14
-    bit_size: 1
+    - name: SEL
+      bit_offset: 14
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_MISC_CTRL0_PLL:
   description: ''
   fields:
-  - name: CTRL
-    bit_offset: 15
-    bit_size: 1
+    - name: CTRL
+      bit_offset: 15
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_REF_CLK_CTRL_REF_CLK:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
-  - name: DIV2
-    bit_offset: 2
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: DIV2
+      bit_offset: 2
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_REF_CLK_CTRL_REF:
   description: ''
   fields:
-  - name: RANGE
-    bit_offset: 3
-    bit_size: 3
+    - name: RANGE
+      bit_offset: 3
+      bit_size: 3
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_REF_CLK_CTRL_REF_MPLLA:
   description: ''
   fields:
-  - name: DIV2
-    bit_offset: 6
-    bit_size: 1
+    - name: DIV2
+      bit_offset: 6
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_REF_CLK_CTRL_REF_MPLLB:
   description: ''
   fields:
-  - name: DIV2
-    bit_offset: 7
-    bit_size: 1
+    - name: DIV2
+      bit_offset: 7
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_REF_CLK_CTRL_REF_RPT_CLK:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 8
-    bit_size: 1
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_MISC_STS:
   description: ''
   fields:
-  - name: FOM
-    bit_offset: 0
-    bit_size: 8
+    - name: FOM
+      bit_offset: 0
+      bit_size: 8
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_MISC_STS_RTUNE:
   description: ''
   fields:
-  - name: ACK
-    bit_offset: 8
-    bit_size: 1
+    - name: ACK
+      bit_offset: 8
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_MISC_STS_MPLLA:
   description: ''
   fields:
-  - name: STS
-    bit_offset: 9
-    bit_size: 1
+    - name: STS
+      bit_offset: 9
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_MISC_STS_MPLLB:
   description: ''
   fields:
-  - name: STS
-    bit_offset: 10
-    bit_size: 1
+    - name: STS
+      bit_offset: 10
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_MISC_STS_RX_ADPT:
   description: ''
   fields:
-  - name: ACK
-    bit_offset: 12
-    bit_size: 1
+    - name: ACK
+      bit_offset: 12
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_SRAM_INIT:
   description: ''
   fields:
-  - name: DN
-    bit_offset: 0
-    bit_size: 1
+    - name: DN
+      bit_offset: 0
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_12G_16G_25G_SRAM_EXT_LD:
   description: ''
   fields:
-  - name: DN
-    bit_offset: 1
-    bit_size: 1
+    - name: DN
+      bit_offset: 1
+      bit_size: 1
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_25G_MISC_CTRL2_SUP:
   description: ''
   fields:
-  - name: MISC
-    bit_offset: 0
-    bit_size: 8
+    - name: MISC
+      bit_offset: 0
+      bit_size: 8
 fieldset/ENET_PHY_PMA_MMD_VR_XS_PMA_MP_16G_25G_MISC_CTRL2_REF_CLK_DET:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 8
-    bit_size: 1
+    - name: EN
+      bit_offset: 8
+      bit_size: 1

@@ -1,64 +1,64 @@
 block/DDRMIX_BLK_CTRL:
   description: ''
   items:
-  - name: HWFFC_CTRL
-    byte_offset: 0
-  - name: CA55_SEL_CTRL
-    byte_offset: 4
-  - name: VREF_PSW_CTRL
-    byte_offset: 8
-  - name: DDRC_STOP_CTRL
-    byte_offset: 12
-  - name: AUTO_CG_CTRL
-    byte_offset: 16
+    - name: HWFFC_CTRL
+      byte_offset: 0
+    - name: CA55_SEL_CTRL
+      byte_offset: 4
+    - name: VREF_PSW_CTRL
+      byte_offset: 8
+    - name: DDRC_STOP_CTRL
+      byte_offset: 12
+    - name: AUTO_CG_CTRL
+      byte_offset: 16
 fieldset/DDRMIX_BLK_CTRL_HWFFC_CTRL_HWFFC:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
-  - name: SEL
-    bit_offset: 1
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: SEL
+      bit_offset: 1
+      bit_size: 1
 fieldset/DDRMIX_BLK_CTRL_CA55_SEL_CTRL_CA55:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 1
+    - name: SEL
+      bit_offset: 0
+      bit_size: 1
 fieldset/DDRMIX_BLK_CTRL_VREF_PSW_CTRL_VREF:
   description: ''
   fields:
-  - name: PSW
-    bit_offset: 0
-    bit_size: 1
+    - name: PSW
+      bit_offset: 0
+      bit_size: 1
 fieldset/DDRMIX_BLK_CTRL_DDRC_STOP_CTRL_DDRC:
   description: ''
   fields:
-  - name: STOP
-    bit_offset: 0
-    bit_size: 1
+    - name: STOP
+      bit_offset: 0
+      bit_size: 1
 fieldset/DDRMIX_BLK_CTRL_DDRC_STOP_CTRL_DDRC_STOP:
   description: ''
   fields:
-  - name: ACK
-    bit_offset: 1
-    bit_size: 1
+    - name: ACK
+      bit_offset: 1
+      bit_size: 1
 fieldset/DDRMIX_BLK_CTRL_AUTO_CG_CTRL_SSI_IDLE:
   description: ''
   fields:
-  - name: STRAP
-    bit_offset: 0
-    bit_size: 16
+    - name: STRAP
+      bit_offset: 0
+      bit_size: 16
 fieldset/DDRMIX_BLK_CTRL_AUTO_CG_CTRL_AUTO_CG:
   description: ''
   fields:
-  - name: ENA
-    bit_offset: 16
-    bit_size: 1
+    - name: ENA
+      bit_offset: 16
+      bit_size: 1
 fieldset/DDRMIX_BLK_CTRL_AUTO_CG_CTRL_HWFFC_ACG_FORCE:
   description: ''
   fields:
-  - name: B
-    bit_offset: 17
-    bit_size: 1
+    - name: B
+      bit_offset: 17
+      bit_size: 1

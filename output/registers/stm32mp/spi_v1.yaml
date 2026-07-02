@@ -1,551 +1,551 @@
 block/SPI:
   description: ''
   items:
-  - name: CR1
-    byte_offset: 0
-    description: SPI/I2S Control register 1
-    fieldset: SPI_CR1
-  - name: CR2
-    byte_offset: 4
-    description: SPI Control register 2
-    fieldset: SPI_CR2
-  - name: CFG1
-    byte_offset: 8
-    description: SPI Configuration register 1
-    fieldset: SPI_CFG1
-  - name: CFG2
-    byte_offset: 12
-    description: SPI Configuration register 2
-    fieldset: SPI_CFG2
-  - name: IER
-    byte_offset: 16
-    description: SPI/I2S Interrupt Enable register
-    fieldset: SPI_IER
-  - name: SR
-    byte_offset: 20
-    description: SPI Status register
-    fieldset: SPI_SR
-  - name: IFCR
-    byte_offset: 24
-    description: SPI/I2S Interrupt/Status Flags Clear register
-    fieldset: SPI_IFCR
-  - name: AUTOCR
-    byte_offset: 28
-    description: SPI/I2S Autonomous Mode Control register
-    fieldset: SPI_AUTOCR
-  - name: TXDR
-    byte_offset: 32
-    description: SPI/I2S Transmit data register
-    fieldset: SPI_TXDR
-  - name: RXDR
-    byte_offset: 48
-    description: SPI/I2S Receive data register
-    fieldset: SPI_RXDR
-  - name: CRCPOLY
-    byte_offset: 64
-    description: SPI CRC Polynomial register
-    fieldset: SPI_CRCPOLY
-  - name: TXCRC
-    byte_offset: 68
-    description: SPI Transmitter CRC register
-    fieldset: SPI_TXCRC
-  - name: RXCRC
-    byte_offset: 72
-    description: SPI Receiver CRC register
-    fieldset: SPI_RXCRC
-  - name: UDRDR
-    byte_offset: 76
-    description: SPI Underrun data register
-    fieldset: SPI_UDRDR
-  - name: I2SCFGR
-    byte_offset: 80
-    description: SPI/I2S configuration register
-    fieldset: SPI_I2SCFGR
-  - name: HWCFGR2
-    byte_offset: 1004
-    description: SPI/I2S hardware configuration register 2
-    fieldset: SPI_HWCFGR2
-  - name: HWCFGR1
-    byte_offset: 1008
-    description: SPI/I2S hardware configuration register 1
-    fieldset: SPI_HWCFGR1
-  - name: VERR
-    byte_offset: 1012
-    description: SPI/I2S Version register
-    fieldset: SPI_VERR
-  - name: IPIDR
-    byte_offset: 1016
-    description: SPI/I2S Identification register
-    fieldset: SPI_IPIDR
-  - name: SIDR
-    byte_offset: 1020
-    description: SPI/I2S Size Identification register
-    fieldset: SPI_SIDR
+    - name: CR1
+      byte_offset: 0
+      description: SPI/I2S Control register 1
+      fieldset: SPI_CR1
+    - name: CR2
+      byte_offset: 4
+      description: SPI Control register 2
+      fieldset: SPI_CR2
+    - name: CFG1
+      byte_offset: 8
+      description: SPI Configuration register 1
+      fieldset: SPI_CFG1
+    - name: CFG2
+      byte_offset: 12
+      description: SPI Configuration register 2
+      fieldset: SPI_CFG2
+    - name: IER
+      byte_offset: 16
+      description: SPI/I2S Interrupt Enable register
+      fieldset: SPI_IER
+    - name: SR
+      byte_offset: 20
+      description: SPI Status register
+      fieldset: SPI_SR
+    - name: IFCR
+      byte_offset: 24
+      description: SPI/I2S Interrupt/Status Flags Clear register
+      fieldset: SPI_IFCR
+    - name: AUTOCR
+      byte_offset: 28
+      description: SPI/I2S Autonomous Mode Control register
+      fieldset: SPI_AUTOCR
+    - name: TXDR
+      byte_offset: 32
+      description: SPI/I2S Transmit data register
+      fieldset: SPI_TXDR
+    - name: RXDR
+      byte_offset: 48
+      description: SPI/I2S Receive data register
+      fieldset: SPI_RXDR
+    - name: CRCPOLY
+      byte_offset: 64
+      description: SPI CRC Polynomial register
+      fieldset: SPI_CRCPOLY
+    - name: TXCRC
+      byte_offset: 68
+      description: SPI Transmitter CRC register
+      fieldset: SPI_TXCRC
+    - name: RXCRC
+      byte_offset: 72
+      description: SPI Receiver CRC register
+      fieldset: SPI_RXCRC
+    - name: UDRDR
+      byte_offset: 76
+      description: SPI Underrun data register
+      fieldset: SPI_UDRDR
+    - name: I2SCFGR
+      byte_offset: 80
+      description: SPI/I2S configuration register
+      fieldset: SPI_I2SCFGR
+    - name: HWCFGR2
+      byte_offset: 1004
+      description: SPI/I2S hardware configuration register 2
+      fieldset: SPI_HWCFGR2
+    - name: HWCFGR1
+      byte_offset: 1008
+      description: SPI/I2S hardware configuration register 1
+      fieldset: SPI_HWCFGR1
+    - name: VERR
+      byte_offset: 1012
+      description: SPI/I2S Version register
+      fieldset: SPI_VERR
+    - name: IPIDR
+      byte_offset: 1016
+      description: SPI/I2S Identification register
+      fieldset: SPI_IPIDR
+    - name: SIDR
+      byte_offset: 1020
+      description: SPI/I2S Size Identification register
+      fieldset: SPI_SIDR
 fieldset/SPI_CR1:
   description: ''
   fields:
-  - name: SPE
-    bit_offset: 0
-    bit_size: 1
-    description: Serial Peripheral Enable
-  - name: MASRX
-    bit_offset: 8
-    bit_size: 1
-    description: Master automatic suspension in Receive mode
-  - name: CSTART
-    bit_offset: 9
-    bit_size: 1
-    description: Master transfer start
-  - name: CSUSP
-    bit_offset: 10
-    bit_size: 1
-    description: Master SUSPend request
-  - name: HDDIR
-    bit_offset: 11
-    bit_size: 1
-    description: Rx/Tx direction at Half-duplex mode
-  - name: SSI
-    bit_offset: 12
-    bit_size: 1
-    description: Internal SS signal input level
-  - name: RCRCINI
-    bit_offset: 14
-    bit_size: 1
-    description: CRC calculation initialization pattern control for receiver
-  - name: TCRCINI
-    bit_offset: 15
-    bit_size: 1
-    description: CRC calculation initialization pattern control for transmitter
-  - name: IOLOCK
-    bit_offset: 16
-    bit_size: 1
-    description: Locking the AF configuration of associated IOs
+    - name: SPE
+      bit_offset: 0
+      bit_size: 1
+      description: Serial Peripheral Enable
+    - name: MASRX
+      bit_offset: 8
+      bit_size: 1
+      description: Master automatic suspension in Receive mode
+    - name: CSTART
+      bit_offset: 9
+      bit_size: 1
+      description: Master transfer start
+    - name: CSUSP
+      bit_offset: 10
+      bit_size: 1
+      description: Master SUSPend request
+    - name: HDDIR
+      bit_offset: 11
+      bit_size: 1
+      description: Rx/Tx direction at Half-duplex mode
+    - name: SSI
+      bit_offset: 12
+      bit_size: 1
+      description: Internal SS signal input level
+    - name: RCRCINI
+      bit_offset: 14
+      bit_size: 1
+      description: CRC calculation initialization pattern control for receiver
+    - name: TCRCINI
+      bit_offset: 15
+      bit_size: 1
+      description: CRC calculation initialization pattern control for transmitter
+    - name: IOLOCK
+      bit_offset: 16
+      bit_size: 1
+      description: Locking the AF configuration of associated IOs
 fieldset/SPI_CR2:
   description: ''
   fields:
-  - name: TSIZE
-    bit_offset: 0
-    bit_size: 16
-    description: Number of data at current transfer
+    - name: TSIZE
+      bit_offset: 0
+      bit_size: 16
+      description: Number of data at current transfer
 fieldset/SPI_CFG1:
   description: ''
   fields:
-  - name: DSIZE
-    bit_offset: 0
-    bit_size: 5
-    description: 'DSIZE[4:0]: Bits number in single SPI data frame'
-  - name: FTHLV
-    bit_offset: 5
-    bit_size: 4
-    description: 'FTHVL [3:0]: FIFO threshold level'
-  - name: UDRCFG
-    bit_offset: 9
-    bit_size: 1
-    description: Behavior of Slave transmitter at underrun condition
-  - name: RXDMAEN
-    bit_offset: 14
-    bit_size: 1
-    description: Rx DMA stream enable
-  - name: TXDMAEN
-    bit_offset: 15
-    bit_size: 1
-    description: Tx DMA stream enable
-  - name: CRCSIZE
-    bit_offset: 16
-    bit_size: 5
-    description: 'CRCSIZE [4:0]: Length of CRC frame to be transacted and compared'
-  - name: CRCEN
-    bit_offset: 22
-    bit_size: 1
-    description: Hardware CRC computation enable
-  - name: MBR
-    bit_offset: 28
-    bit_size: 3
-    description: Master baud rate prescaler setting
-  - name: BPASS
-    bit_offset: 31
-    bit_size: 1
-    description: Bypass of the prescaler at master baud rate clock generator
+    - name: DSIZE
+      bit_offset: 0
+      bit_size: 5
+      description: 'DSIZE[4:0]: Bits number in single SPI data frame'
+    - name: FTHLV
+      bit_offset: 5
+      bit_size: 4
+      description: 'FTHVL [3:0]: FIFO threshold level'
+    - name: UDRCFG
+      bit_offset: 9
+      bit_size: 1
+      description: Behavior of Slave transmitter at underrun condition
+    - name: RXDMAEN
+      bit_offset: 14
+      bit_size: 1
+      description: Rx DMA stream enable
+    - name: TXDMAEN
+      bit_offset: 15
+      bit_size: 1
+      description: Tx DMA stream enable
+    - name: CRCSIZE
+      bit_offset: 16
+      bit_size: 5
+      description: 'CRCSIZE [4:0]: Length of CRC frame to be transacted and compared'
+    - name: CRCEN
+      bit_offset: 22
+      bit_size: 1
+      description: Hardware CRC computation enable
+    - name: MBR
+      bit_offset: 28
+      bit_size: 3
+      description: Master baud rate prescaler setting
+    - name: BPASS
+      bit_offset: 31
+      bit_size: 1
+      description: Bypass of the prescaler at master baud rate clock generator
 fieldset/SPI_CFG2:
   description: ''
   fields:
-  - name: MSSI
-    bit_offset: 0
-    bit_size: 4
-    description: Master SS Idleness
-  - name: MIDI
-    bit_offset: 4
-    bit_size: 4
-    description: Master Inter-Data Idleness
-  - name: RDIMM
-    bit_offset: 13
-    bit_size: 1
-    description: RDY signal input master management
-  - name: RDIOP
-    bit_offset: 14
-    bit_size: 1
-    description: RDY signal input/output polarity
-  - name: IOSWP
-    bit_offset: 15
-    bit_size: 1
-    description: Swap functionality of MISO and MOSI pins
-  - name: COMM
-    bit_offset: 17
-    bit_size: 2
-    description: 'COMM [1:0]: SPI Communication Mode'
-  - name: SP
-    bit_offset: 19
-    bit_size: 3
-    description: 'SP[2:0]: Serial Protocol'
-  - name: MASTER
-    bit_offset: 22
-    bit_size: 1
-    description: SPI Master
-  - name: LSBFRST
-    bit_offset: 23
-    bit_size: 1
-    description: Data frame format
-  - name: CPHA
-    bit_offset: 24
-    bit_size: 1
-    description: Clock Phase
-  - name: CPOL
-    bit_offset: 25
-    bit_size: 1
-    description: Clock Polarity
-  - name: SSM
-    bit_offset: 26
-    bit_size: 1
-    description: Software management of SS signal input
-  - name: SSIOP
-    bit_offset: 28
-    bit_size: 1
-    description: SS input/output polarity
-  - name: SSOE
-    bit_offset: 29
-    bit_size: 1
-    description: SS output enable
-  - name: SSOM
-    bit_offset: 30
-    bit_size: 1
-    description: SS output management in master mode
-  - name: AFCNTR
-    bit_offset: 31
-    bit_size: 1
-    description: Alternate function GPIOs control
+    - name: MSSI
+      bit_offset: 0
+      bit_size: 4
+      description: Master SS Idleness
+    - name: MIDI
+      bit_offset: 4
+      bit_size: 4
+      description: Master Inter-Data Idleness
+    - name: RDIMM
+      bit_offset: 13
+      bit_size: 1
+      description: RDY signal input master management
+    - name: RDIOP
+      bit_offset: 14
+      bit_size: 1
+      description: RDY signal input/output polarity
+    - name: IOSWP
+      bit_offset: 15
+      bit_size: 1
+      description: Swap functionality of MISO and MOSI pins
+    - name: COMM
+      bit_offset: 17
+      bit_size: 2
+      description: 'COMM [1:0]: SPI Communication Mode'
+    - name: SP
+      bit_offset: 19
+      bit_size: 3
+      description: 'SP[2:0]: Serial Protocol'
+    - name: MASTER
+      bit_offset: 22
+      bit_size: 1
+      description: SPI Master
+    - name: LSBFRST
+      bit_offset: 23
+      bit_size: 1
+      description: Data frame format
+    - name: CPHA
+      bit_offset: 24
+      bit_size: 1
+      description: Clock Phase
+    - name: CPOL
+      bit_offset: 25
+      bit_size: 1
+      description: Clock Polarity
+    - name: SSM
+      bit_offset: 26
+      bit_size: 1
+      description: Software management of SS signal input
+    - name: SSIOP
+      bit_offset: 28
+      bit_size: 1
+      description: SS input/output polarity
+    - name: SSOE
+      bit_offset: 29
+      bit_size: 1
+      description: SS output enable
+    - name: SSOM
+      bit_offset: 30
+      bit_size: 1
+      description: SS output management in master mode
+    - name: AFCNTR
+      bit_offset: 31
+      bit_size: 1
+      description: Alternate function GPIOs control
 fieldset/SPI_IER:
   description: ''
   fields:
-  - name: RXPIE
-    bit_offset: 0
-    bit_size: 1
-    description: RXP Interrupt Enable
-  - name: TXPIE
-    bit_offset: 1
-    bit_size: 1
-    description: TXP interrupt enable
-  - name: DXPIE
-    bit_offset: 2
-    bit_size: 1
-    description: DXP interrupt enable
-  - name: EOTIE
-    bit_offset: 3
-    bit_size: 1
-    description: EOT/SUSP/TXC interrupt enable
-  - name: TXTFIE
-    bit_offset: 4
-    bit_size: 1
-    description: TXTF interrupt enable
-  - name: UDRIE
-    bit_offset: 5
-    bit_size: 1
-    description: UDR interrupt enable
-  - name: OVRIE
-    bit_offset: 6
-    bit_size: 1
-    description: OVR interrupt enable
-  - name: CRCEIE
-    bit_offset: 7
-    bit_size: 1
-    description: CRC error interrupt enable
-  - name: TIFREIE
-    bit_offset: 8
-    bit_size: 1
-    description: TI Frame Error interrupt enable
-  - name: MODFIE
-    bit_offset: 9
-    bit_size: 1
-    description: Mode Fault interrupt enable
+    - name: RXPIE
+      bit_offset: 0
+      bit_size: 1
+      description: RXP Interrupt Enable
+    - name: TXPIE
+      bit_offset: 1
+      bit_size: 1
+      description: TXP interrupt enable
+    - name: DXPIE
+      bit_offset: 2
+      bit_size: 1
+      description: DXP interrupt enable
+    - name: EOTIE
+      bit_offset: 3
+      bit_size: 1
+      description: EOT/SUSP/TXC interrupt enable
+    - name: TXTFIE
+      bit_offset: 4
+      bit_size: 1
+      description: TXTF interrupt enable
+    - name: UDRIE
+      bit_offset: 5
+      bit_size: 1
+      description: UDR interrupt enable
+    - name: OVRIE
+      bit_offset: 6
+      bit_size: 1
+      description: OVR interrupt enable
+    - name: CRCEIE
+      bit_offset: 7
+      bit_size: 1
+      description: CRC error interrupt enable
+    - name: TIFREIE
+      bit_offset: 8
+      bit_size: 1
+      description: TI Frame Error interrupt enable
+    - name: MODFIE
+      bit_offset: 9
+      bit_size: 1
+      description: Mode Fault interrupt enable
 fieldset/SPI_SR:
   description: ''
   fields:
-  - name: RXP
-    bit_offset: 0
-    bit_size: 1
-    description: Rx-Packet available
-  - name: TXP
-    bit_offset: 1
-    bit_size: 1
-    description: Tx-Packet space available
-  - name: DXP
-    bit_offset: 2
-    bit_size: 1
-    description: Duplex Packet available
-  - name: EOT
-    bit_offset: 3
-    bit_size: 1
-    description: End of transfer
-  - name: TXTF
-    bit_offset: 4
-    bit_size: 1
-    description: Transmission Transfer Filled
-  - name: UDR
-    bit_offset: 5
-    bit_size: 1
-    description: Underrun at Slave transmission mode
-  - name: OVR
-    bit_offset: 6
-    bit_size: 1
-    description: Overrun Error Detected
-  - name: CRCE
-    bit_offset: 7
-    bit_size: 1
-    description: CRC Error Detected
-  - name: TIFRE
-    bit_offset: 8
-    bit_size: 1
-    description: TI frame format error Detected
-  - name: MODF
-    bit_offset: 9
-    bit_size: 1
-    description: Mode Fault Detected
-  - name: SUSP
-    bit_offset: 11
-    bit_size: 1
-    description: Suspension status, SUSP is set by hardware
-  - name: TXC
-    bit_offset: 12
-    bit_size: 1
-    description: TxFIFO transmission complete
-  - name: RXPLVL
-    bit_offset: 13
-    bit_size: 2
-    description: RxFIFO Packing Level
-  - name: RXWNE
-    bit_offset: 15
-    bit_size: 1
-    description: Rx FIFO Word Not Empty
-  - name: CTSIZE
-    bit_offset: 16
-    bit_size: 16
-    description: Number of data frames remaining in TSIZE
+    - name: RXP
+      bit_offset: 0
+      bit_size: 1
+      description: Rx-Packet available
+    - name: TXP
+      bit_offset: 1
+      bit_size: 1
+      description: Tx-Packet space available
+    - name: DXP
+      bit_offset: 2
+      bit_size: 1
+      description: Duplex Packet available
+    - name: EOT
+      bit_offset: 3
+      bit_size: 1
+      description: End of transfer
+    - name: TXTF
+      bit_offset: 4
+      bit_size: 1
+      description: Transmission Transfer Filled
+    - name: UDR
+      bit_offset: 5
+      bit_size: 1
+      description: Underrun at Slave transmission mode
+    - name: OVR
+      bit_offset: 6
+      bit_size: 1
+      description: Overrun Error Detected
+    - name: CRCE
+      bit_offset: 7
+      bit_size: 1
+      description: CRC Error Detected
+    - name: TIFRE
+      bit_offset: 8
+      bit_size: 1
+      description: TI frame format error Detected
+    - name: MODF
+      bit_offset: 9
+      bit_size: 1
+      description: Mode Fault Detected
+    - name: SUSP
+      bit_offset: 11
+      bit_size: 1
+      description: Suspension status, SUSP is set by hardware
+    - name: TXC
+      bit_offset: 12
+      bit_size: 1
+      description: TxFIFO transmission complete
+    - name: RXPLVL
+      bit_offset: 13
+      bit_size: 2
+      description: RxFIFO Packing Level
+    - name: RXWNE
+      bit_offset: 15
+      bit_size: 1
+      description: Rx FIFO Word Not Empty
+    - name: CTSIZE
+      bit_offset: 16
+      bit_size: 16
+      description: Number of data frames remaining in TSIZE
 fieldset/SPI_IFCR:
   description: ''
   fields:
-  - name: EOTC
-    bit_offset: 3
-    bit_size: 1
-    description: End Of Transfer flag clear
-  - name: TXTFC
-    bit_offset: 4
-    bit_size: 1
-    description: Transmission Transfer Filled flag clear
-  - name: UDRC
-    bit_offset: 5
-    bit_size: 1
-    description: Underrun flag clear
-  - name: OVRC
-    bit_offset: 6
-    bit_size: 1
-    description: Overrun flag clear
-  - name: CRCEC
-    bit_offset: 7
-    bit_size: 1
-    description: CRC Error flag clear
-  - name: TIFREC
-    bit_offset: 8
-    bit_size: 1
-    description: TI frame format error flag clear
-  - name: MODFC
-    bit_offset: 9
-    bit_size: 1
-    description: Mode Fault flag clear
-  - name: SUSPC
-    bit_offset: 11
-    bit_size: 1
-    description: SUSPend flag clear
+    - name: EOTC
+      bit_offset: 3
+      bit_size: 1
+      description: End Of Transfer flag clear
+    - name: TXTFC
+      bit_offset: 4
+      bit_size: 1
+      description: Transmission Transfer Filled flag clear
+    - name: UDRC
+      bit_offset: 5
+      bit_size: 1
+      description: Underrun flag clear
+    - name: OVRC
+      bit_offset: 6
+      bit_size: 1
+      description: Overrun flag clear
+    - name: CRCEC
+      bit_offset: 7
+      bit_size: 1
+      description: CRC Error flag clear
+    - name: TIFREC
+      bit_offset: 8
+      bit_size: 1
+      description: TI frame format error flag clear
+    - name: MODFC
+      bit_offset: 9
+      bit_size: 1
+      description: Mode Fault flag clear
+    - name: SUSPC
+      bit_offset: 11
+      bit_size: 1
+      description: SUSPend flag clear
 fieldset/SPI_AUTOCR:
   description: ''
   fields:
-  - name: TRIGSEL
-    bit_offset: 16
-    bit_size: 4
-    description: 'CTRIGSEL [3:0]: Trigger selection'
-  - name: TRIGPOL
-    bit_offset: 20
-    bit_size: 1
-    description: Trigger polarity
-  - name: TRIGEN
-    bit_offset: 21
-    bit_size: 1
-    description: Trigger of CSTART control enable
+    - name: TRIGSEL
+      bit_offset: 16
+      bit_size: 4
+      description: 'CTRIGSEL [3:0]: Trigger selection'
+    - name: TRIGPOL
+      bit_offset: 20
+      bit_size: 1
+      description: Trigger polarity
+    - name: TRIGEN
+      bit_offset: 21
+      bit_size: 1
+      description: Trigger of CSTART control enable
 fieldset/SPI_TXDR:
   description: ''
   fields:
-  - name: TXDR
-    bit_offset: 0
-    bit_size: 32
-    description: Transmit Data Register
+    - name: TXDR
+      bit_offset: 0
+      bit_size: 32
+      description: Transmit Data Register
 fieldset/SPI_RXDR:
   description: ''
   fields:
-  - name: RXDR
-    bit_offset: 0
-    bit_size: 32
-    description: Receive Data Register
+    - name: RXDR
+      bit_offset: 0
+      bit_size: 32
+      description: Receive Data Register
 fieldset/SPI_CRCPOLY:
   description: ''
   fields:
-  - name: CRCPOLY
-    bit_offset: 0
-    bit_size: 32
-    description: CRC Polynomial register
+    - name: CRCPOLY
+      bit_offset: 0
+      bit_size: 32
+      description: CRC Polynomial register
 fieldset/SPI_TXCRC:
   description: ''
   fields:
-  - name: TXCRC
-    bit_offset: 0
-    bit_size: 32
-    description: CRC Register for transmitter
+    - name: TXCRC
+      bit_offset: 0
+      bit_size: 32
+      description: CRC Register for transmitter
 fieldset/SPI_RXCRC:
   description: ''
   fields:
-  - name: RXCRC
-    bit_offset: 0
-    bit_size: 32
-    description: CRC Register for receiver
+    - name: RXCRC
+      bit_offset: 0
+      bit_size: 32
+      description: CRC Register for receiver
 fieldset/SPI_UDRDR:
   description: ''
   fields:
-  - name: UDRDR
-    bit_offset: 0
-    bit_size: 32
-    description: Data at slave underrun condition
+    - name: UDRDR
+      bit_offset: 0
+      bit_size: 32
+      description: Data at slave underrun condition
 fieldset/SPI_I2SCFGR:
   description: ''
   fields:
-  - name: I2SMOD
-    bit_offset: 0
-    bit_size: 1
-    description: I2S mode selection
-  - name: I2SCFG
-    bit_offset: 1
-    bit_size: 3
-    description: I2SCFGR[1:0] bits (I2S configuration mode)
-  - name: I2SSTD
-    bit_offset: 4
-    bit_size: 2
-    description: I2SSTD[1:0] I2S standard selection
-  - name: PCMSYNC
-    bit_offset: 7
-    bit_size: 1
-    description: PCM frame synchronization
-  - name: DATLEN
-    bit_offset: 8
-    bit_size: 2
-    description: DATLEN[1:0] Data length to be transferred
-  - name: CHLEN
-    bit_offset: 10
-    bit_size: 1
-    description: Channel length (number of bits per audio channel)
-  - name: CKPOL
-    bit_offset: 11
-    bit_size: 1
-    description: Serial audio clock polarity
-  - name: FIXCH
-    bit_offset: 12
-    bit_size: 1
-    description: Fixed channel length in SLAVE
-  - name: WSINV
-    bit_offset: 13
-    bit_size: 1
-    description: Word select inversion
-  - name: DATFMT
-    bit_offset: 14
-    bit_size: 1
-    description: Data format
-  - name: I2SDIV
-    bit_offset: 16
-    bit_size: 8
-    description: I2S Linear prescaler
-  - name: ODD
-    bit_offset: 24
-    bit_size: 1
-    description: Odd factor for the prescaler
-  - name: MCKOE
-    bit_offset: 25
-    bit_size: 1
-    description: Master Clock Output Enable
+    - name: I2SMOD
+      bit_offset: 0
+      bit_size: 1
+      description: I2S mode selection
+    - name: I2SCFG
+      bit_offset: 1
+      bit_size: 3
+      description: I2SCFGR[1:0] bits (I2S configuration mode)
+    - name: I2SSTD
+      bit_offset: 4
+      bit_size: 2
+      description: I2SSTD[1:0] I2S standard selection
+    - name: PCMSYNC
+      bit_offset: 7
+      bit_size: 1
+      description: PCM frame synchronization
+    - name: DATLEN
+      bit_offset: 8
+      bit_size: 2
+      description: DATLEN[1:0] Data length to be transferred
+    - name: CHLEN
+      bit_offset: 10
+      bit_size: 1
+      description: Channel length (number of bits per audio channel)
+    - name: CKPOL
+      bit_offset: 11
+      bit_size: 1
+      description: Serial audio clock polarity
+    - name: FIXCH
+      bit_offset: 12
+      bit_size: 1
+      description: Fixed channel length in SLAVE
+    - name: WSINV
+      bit_offset: 13
+      bit_size: 1
+      description: Word select inversion
+    - name: DATFMT
+      bit_offset: 14
+      bit_size: 1
+      description: Data format
+    - name: I2SDIV
+      bit_offset: 16
+      bit_size: 8
+      description: I2S Linear prescaler
+    - name: ODD
+      bit_offset: 24
+      bit_size: 1
+      description: Odd factor for the prescaler
+    - name: MCKOE
+      bit_offset: 25
+      bit_size: 1
+      description: Master Clock Output Enable
 fieldset/SPI_HWCFGR2:
   description: ''
   fields:
-  - name: OPBCFG
-    bit_offset: 0
-    bit_size: 8
-    description: Number of option bits available 0 to 31
+    - name: OPBCFG
+      bit_offset: 0
+      bit_size: 8
+      description: Number of option bits available 0 to 31
 fieldset/SPI_HWCFGR1:
   description: ''
   fields:
-  - name: TXFCFG
-    bit_offset: 0
-    bit_size: 4
-    description: TxFIFO size
-  - name: RXFCFG
-    bit_offset: 4
-    bit_size: 4
-    description: RxFIFO size
-  - name: CRCCFG
-    bit_offset: 8
-    bit_size: 4
-    description: CRC configuration for SPI
-  - name: I2SCFG
-    bit_offset: 12
-    bit_size: 4
-    description: I2S configuration
-  - name: DSCFG
-    bit_offset: 16
-    bit_size: 4
-    description: SPI data size configuration
-  - name: TRGCFG
-    bit_offset: 20
-    bit_size: 4
-    description: Autonomous trigger feature configuration
-  - name: FULLCFG
-    bit_offset: 24
-    bit_size: 4
-    description: SPI2S full feature version configuration
+    - name: TXFCFG
+      bit_offset: 0
+      bit_size: 4
+      description: TxFIFO size
+    - name: RXFCFG
+      bit_offset: 4
+      bit_size: 4
+      description: RxFIFO size
+    - name: CRCCFG
+      bit_offset: 8
+      bit_size: 4
+      description: CRC configuration for SPI
+    - name: I2SCFG
+      bit_offset: 12
+      bit_size: 4
+      description: I2S configuration
+    - name: DSCFG
+      bit_offset: 16
+      bit_size: 4
+      description: SPI data size configuration
+    - name: TRGCFG
+      bit_offset: 20
+      bit_size: 4
+      description: Autonomous trigger feature configuration
+    - name: FULLCFG
+      bit_offset: 24
+      bit_size: 4
+      description: SPI2S full feature version configuration
 fieldset/SPI_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: Minor Revision of the IP
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: Major Revision of the IP
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: Minor Revision of the IP
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: Major Revision of the IP
 fieldset/SPI_IPIDR:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 32
-    description: MCD identification code which identifies the IP
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+      description: MCD identification code which identifies the IP
 fieldset/SPI_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: Size identification
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: Size identification

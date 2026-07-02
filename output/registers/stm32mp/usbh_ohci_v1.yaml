@@ -1,72 +1,72 @@
 block/USBH_OHCI:
   description: ''
   items:
-  - name: HCREVISION
-    byte_offset: 0
-    description: Host Controller Revision
-  - name: HCCONTROL
-    byte_offset: 4
-    description: Host Controller Control
-  - name: HCCOMMANDSTATUS
-    byte_offset: 8
-    description: Host Controller Command Status
-  - name: HCINTERRUPTSTATUS
-    byte_offset: 12
-    description: Host Controller Interrupt Status
-  - name: HCINTERRUPTENABLE
-    byte_offset: 16
-    description: Host Controller Interrupt Enable
-  - name: HCHCCA
-    byte_offset: 24
-    description: Host Controller Communication Area
-  - name: HCPERIODCURRENTED
-    byte_offset: 28
-    description: Current Isochronous or Interrupt ED
-  - name: HCCONTROLHEADED
-    byte_offset: 32
-    description: Control Head ED
-  - name: HCCONTROLCURRENTED
-    byte_offset: 36
-    description: Control Current ED
-  - name: HCBULKHEADED
-    byte_offset: 40
-    description: Bulk Head ED
-  - name: HCBULKCURRENTED
-    byte_offset: 44
-    description: Bulk Current ED
-  - name: HCDONEHEAD
-    byte_offset: 48
-    description: Done Head
-  - name: HCFMINTERVAL
-    byte_offset: 52
-    description: Frame Interval
-  - name: HCFMREMAINING
-    byte_offset: 56
-    description: Frame Remaining
-  - name: HCFMNUMBER
-    byte_offset: 60
-    description: Frame Number
-  - name: PERIODICSTART
-    byte_offset: 64
-    description: Periodic Start
-  - name: HCLSTHRESHOLD
-    byte_offset: 68
-    description: Low-Speed Threshold
-  - name: HCRHDESCRIPTORA
-    byte_offset: 72
-    description: Root Hub Descriptor A
-  - name: HCRHDESCRIPTORB
-    byte_offset: 76
-    description: Root Hub Descriptor B
-  - name: HCRHSTATUS
-    byte_offset: 80
-    description: Root Hub Status
-  - name: HCRHPORTSTATUS0
-    byte_offset: 84
-    description: Root Hub Port Status (Port 1)
-  - name: INSNREG
-    byte_offset: 148
-    array:
-      len: 2
-      stride: 4
-    description: Implementation Registers
+    - name: HCREVISION
+      byte_offset: 0
+      description: Host Controller Revision
+    - name: HCCONTROL
+      byte_offset: 4
+      description: Host Controller Control
+    - name: HCCOMMANDSTATUS
+      byte_offset: 8
+      description: Host Controller Command Status
+    - name: HCINTERRUPTSTATUS
+      byte_offset: 12
+      description: Host Controller Interrupt Status
+    - name: HCINTERRUPTENABLE
+      byte_offset: 16
+      description: Host Controller Interrupt Enable
+    - name: HCHCCA
+      byte_offset: 24
+      description: Host Controller Communication Area
+    - name: HCPERIODCURRENTED
+      byte_offset: 28
+      description: Current Isochronous or Interrupt ED
+    - name: HCCONTROLHEADED
+      byte_offset: 32
+      description: Control Head ED
+    - name: HCCONTROLCURRENTED
+      byte_offset: 36
+      description: Control Current ED
+    - name: HCBULKHEADED
+      byte_offset: 40
+      description: Bulk Head ED
+    - name: HCBULKCURRENTED
+      byte_offset: 44
+      description: Bulk Current ED
+    - name: HCDONEHEAD
+      byte_offset: 48
+      description: Done Head
+    - name: HCFMINTERVAL
+      byte_offset: 52
+      description: Frame Interval
+    - name: HCFMREMAINING
+      byte_offset: 56
+      description: Frame Remaining
+    - name: HCFMNUMBER
+      byte_offset: 60
+      description: Frame Number
+    - name: PERIODICSTART
+      byte_offset: 64
+      description: Periodic Start
+    - name: HCLSTHRESHOLD
+      byte_offset: 68
+      description: Low-Speed Threshold
+    - name: HCRHDESCRIPTORA
+      byte_offset: 72
+      description: Root Hub Descriptor A
+    - name: HCRHDESCRIPTORB
+      byte_offset: 76
+      description: Root Hub Descriptor B
+    - name: HCRHSTATUS
+      byte_offset: 80
+      description: Root Hub Status
+    - name: HCRHPORTSTATUS0
+      byte_offset: 84
+      description: Root Hub Port Status (Port 1)
+    - name: INSNREG
+      byte_offset: 148
+      array:
+        len: 2
+        stride: 4
+      description: Implementation Registers

@@ -1,96 +1,96 @@
 block/FMC_Bank3:
   description: ''
   items:
-  - name: PCR
-    byte_offset: 128
-    description: NAND Flash Programmable control register
-  - name: SR
-    byte_offset: 132
-    description: FMC status register
-  - name: PMEM
-    byte_offset: 136
-    description: Common memory space timing register
-  - name: PATT
-    byte_offset: 140
-    description: Attribute memory space timing registers
-  - name: HPR
-    byte_offset: 144
-    description: FMC Hamming parity result registers
-  - name: HECCR
-    byte_offset: 148
-    description: FMC Hamming code ECC result register
-  - name: IER
-    byte_offset: 384
-    description: FMC NAND Interrupt Enable Register
-  - name: ISR
-    byte_offset: 388
-    description: FMC Controller Interrupt Status Register
-  - name: ICR
-    byte_offset: 392
-    description: FMC NAND Controller Interrupt Clear Register
-  - name: CSQCR
-    byte_offset: 512
-    description: FMC NAND Command Sequencer Control Register
-  - name: CSQCFGR1
-    byte_offset: 516
-    description: FMC NAND Command Sequencer Configuration Register 1
-  - name: CSQCFGR2
-    byte_offset: 520
-    description: FMC NAND Command Sequencer Configuration Register 2
-  - name: CSQCFGR3
-    byte_offset: 524
-    description: FMC NAND sequencer configuration register 3
-  - name: CSQAR1
-    byte_offset: 528
-    description: FMC NAND Command Sequencer Address Register 1
-  - name: CSQAR2
-    byte_offset: 532
-    description: FMC NAND Command Sequencer Address Register 2
-  - name: CSQIER
-    byte_offset: 544
-    description: FMC NAND Command Sequencer Interrupt Enable Register
-  - name: CSQISR
-    byte_offset: 548
-    description: FMC NAND Command Sequencer Interrupt Status Register
-  - name: CSQICR
-    byte_offset: 552
-    description: FMC NAND Command Sequencer Interrupt Clear Register
-  - name: CSQEMSR
-    byte_offset: 560
-    description: FMC Command Sequencer Error Mapping Status register
-  - name: BCHIER
-    byte_offset: 592
-    description: FMC BCH Interrupt enable register
-  - name: BCHISR
-    byte_offset: 596
-    description: FMC BCH Interrupt and Status Register
-  - name: BCHICR
-    byte_offset: 600
-    description: FMC BCH Interrupt Clear Register
-  - name: BCHPBR1
-    byte_offset: 608
-    description: FMC BCH Parity Bits Register 1
-  - name: BCHPBR2
-    byte_offset: 612
-    description: FMC BCH Parity Bits Register 2
-  - name: BCHPBR3
-    byte_offset: 616
-    description: FMC BCH Parity Bits Register 3
-  - name: BCHPBR4
-    byte_offset: 620
-    description: FMC BCH Parity Bits Register 4
-  - name: BCHDSR0
-    byte_offset: 636
-    description: FMC BCH Decoder Status register 0
-  - name: BCHDSR1
-    byte_offset: 640
-    description: FMC BCH Decoder Status register for bank 1
-  - name: BCHDSR2
-    byte_offset: 644
-    description: FMC BCH Decoder Status register for bank 2
-  - name: BCHDSR3
-    byte_offset: 648
-    description: FMC BCH Decoder Status register for bank 3
-  - name: BCHDSR4
-    byte_offset: 652
-    description: FMC BCH Decoder Status register for bank 4
+    - name: PCR
+      byte_offset: 128
+      description: NAND Flash Programmable control register
+    - name: SR
+      byte_offset: 132
+      description: FMC status register
+    - name: PMEM
+      byte_offset: 136
+      description: Common memory space timing register
+    - name: PATT
+      byte_offset: 140
+      description: Attribute memory space timing registers
+    - name: HPR
+      byte_offset: 144
+      description: FMC Hamming parity result registers
+    - name: HECCR
+      byte_offset: 148
+      description: FMC Hamming code ECC result register
+    - name: IER
+      byte_offset: 384
+      description: FMC NAND Interrupt Enable Register
+    - name: ISR
+      byte_offset: 388
+      description: FMC Controller Interrupt Status Register
+    - name: ICR
+      byte_offset: 392
+      description: FMC NAND Controller Interrupt Clear Register
+    - name: CSQCR
+      byte_offset: 512
+      description: FMC NAND Command Sequencer Control Register
+    - name: CSQCFGR1
+      byte_offset: 516
+      description: FMC NAND Command Sequencer Configuration Register 1
+    - name: CSQCFGR2
+      byte_offset: 520
+      description: FMC NAND Command Sequencer Configuration Register 2
+    - name: CSQCFGR3
+      byte_offset: 524
+      description: FMC NAND sequencer configuration register 3
+    - name: CSQAR1
+      byte_offset: 528
+      description: FMC NAND Command Sequencer Address Register 1
+    - name: CSQAR2
+      byte_offset: 532
+      description: FMC NAND Command Sequencer Address Register 2
+    - name: CSQIER
+      byte_offset: 544
+      description: FMC NAND Command Sequencer Interrupt Enable Register
+    - name: CSQISR
+      byte_offset: 548
+      description: FMC NAND Command Sequencer Interrupt Status Register
+    - name: CSQICR
+      byte_offset: 552
+      description: FMC NAND Command Sequencer Interrupt Clear Register
+    - name: CSQEMSR
+      byte_offset: 560
+      description: FMC Command Sequencer Error Mapping Status register
+    - name: BCHIER
+      byte_offset: 592
+      description: FMC BCH Interrupt enable register
+    - name: BCHISR
+      byte_offset: 596
+      description: FMC BCH Interrupt and Status Register
+    - name: BCHICR
+      byte_offset: 600
+      description: FMC BCH Interrupt Clear Register
+    - name: BCHPBR1
+      byte_offset: 608
+      description: FMC BCH Parity Bits Register 1
+    - name: BCHPBR2
+      byte_offset: 612
+      description: FMC BCH Parity Bits Register 2
+    - name: BCHPBR3
+      byte_offset: 616
+      description: FMC BCH Parity Bits Register 3
+    - name: BCHPBR4
+      byte_offset: 620
+      description: FMC BCH Parity Bits Register 4
+    - name: BCHDSR0
+      byte_offset: 636
+      description: FMC BCH Decoder Status register 0
+    - name: BCHDSR1
+      byte_offset: 640
+      description: FMC BCH Decoder Status register for bank 1
+    - name: BCHDSR2
+      byte_offset: 644
+      description: FMC BCH Decoder Status register for bank 2
+    - name: BCHDSR3
+      byte_offset: 648
+      description: FMC BCH Decoder Status register for bank 3
+    - name: BCHDSR4
+      byte_offset: 652
+      description: FMC BCH Decoder Status register for bank 4

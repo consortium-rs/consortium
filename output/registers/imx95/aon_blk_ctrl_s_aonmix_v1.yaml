@@ -1,1340 +1,1340 @@
 block/AON_BLK_CTRL_S_AONMIX:
   description: ''
   items:
-  - name: CM33_IRQ_MASK0
-    byte_offset: 0
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK0
-  - name: CM33_IRQ_MASK1
-    byte_offset: 4
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK1
-  - name: CM33_IRQ_MASK2
-    byte_offset: 8
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK2
-  - name: CM33_IRQ_MASK3
-    byte_offset: 12
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK3
-  - name: CM33_IRQ_MASK4
-    byte_offset: 16
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK4
-  - name: CM33_IRQ_MASK5
-    byte_offset: 20
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK5
-  - name: CM33_IRQ_MASK6
-    byte_offset: 24
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK6
-  - name: CM33_IRQ_MASK7
-    byte_offset: 28
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK7
-  - name: CM33_IRQ_MASK8
-    byte_offset: 32
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK8
-  - name: CM33_IRQ_MASK9
-    byte_offset: 36
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK9
-  - name: CM33_IRQ_MASK10
-    byte_offset: 40
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK10
-  - name: CM33_IRQ_MASK11
-    byte_offset: 44
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK11
-  - name: CA55_IRQ_MASK0
-    byte_offset: 64
-    fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK0
-  - name: CA55_IRQ_MASK1
-    byte_offset: 68
-    fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK1
-  - name: CA55_IRQ_MASK2
-    byte_offset: 72
-    fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK2
-  - name: CA55_IRQ_MASK3
-    byte_offset: 76
-    fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK3
-  - name: CA55_IRQ_MASK4
-    byte_offset: 80
-    fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK4
-  - name: CA55_IRQ_MASK5
-    byte_offset: 84
-    fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK5
-  - name: CA55_IRQ_MASK6
-    byte_offset: 88
-    fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK6
-  - name: CA55_IRQ_MASK7
-    byte_offset: 92
-    fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK7
-  - name: CA55_IRQ_MASK8
-    byte_offset: 96
-    fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK8
-  - name: CA55_IRQ_MASK9
-    byte_offset: 100
-    fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK9
-  - name: CA55_IRQ_MASK10
-    byte_offset: 104
-    fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK10
-  - name: CA55_IRQ_MASK11
-    byte_offset: 108
-    fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK11
-  - name: CM7_IRQ_MASK0
-    byte_offset: 128
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK0
-  - name: CM7_IRQ_MASK1
-    byte_offset: 132
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK1
-  - name: CM7_IRQ_MASK2
-    byte_offset: 136
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK2
-  - name: CM7_IRQ_MASK3
-    byte_offset: 140
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK3
-  - name: CM7_IRQ_MASK4
-    byte_offset: 144
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK4
-  - name: CM7_IRQ_MASK5
-    byte_offset: 148
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK5
-  - name: CM7_IRQ_MASK6
-    byte_offset: 152
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK6
-  - name: CM7_IRQ_MASK7
-    byte_offset: 156
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK7
-  - name: CM7_IRQ_MASK8
-    byte_offset: 160
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK8
-  - name: CM7_IRQ_MASK9
-    byte_offset: 164
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK9
-  - name: CM7_IRQ_MASK10
-    byte_offset: 168
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK10
-  - name: CM7_IRQ_MASK11
-    byte_offset: 172
-    fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK11
-  - name: INITSVTOR
-    byte_offset: 256
-    fieldset: AON_BLK_CTRL_S_AONMIX_INITSVTOR
-  - name: INITNSVTOR
-    byte_offset: 260
-    fieldset: AON_BLK_CTRL_S_AONMIX_INITNSVTOR
-  - name: INITVTOR
-    byte_offset: 264
-    fieldset: AON_BLK_CTRL_S_AONMIX_INITVTOR
-  - name: M33_CFG
-    byte_offset: 288
-    fieldset: AON_BLK_CTRL_S_AONMIX_M33_CFG
-  - name: M7_CFG
-    byte_offset: 292
-    fieldset: AON_BLK_CTRL_S_AONMIX_M7_CFG
-  - name: AXBS_AON_CTRL
-    byte_offset: 304
-  - name: DAP_ACCESS_STKYBIT
-    byte_offset: 308
-    fieldset: AON_BLK_CTRL_S_AONMIX_DAP_ACCESS_STKYBIT
-  - name: LP_HANDSHAKE_ELE
-    byte_offset: 312
-    fieldset: AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_ELE
-  - name: LP_HANDSHAKE2_ELE
-    byte_offset: 316
-    fieldset: AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE2_ELE
-  - name: LP_HANDSHAKE3_ELE
-    byte_offset: 320
-  - name: LP_HANDSHAKE_SM
-    byte_offset: 324
-    fieldset: AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_SM
-  - name: LP_HANDSHAKE2_SM
-    byte_offset: 328
-    fieldset: AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE2_SM
-  - name: LP_HANDSHAKE3_SM
-    byte_offset: 332
-  - name: SM_LP_HANDSHAKE_STATUS
-    byte_offset: 336
-    fieldset: AON_BLK_CTRL_S_AONMIX_SM_LP_HANDSHAKE_STATUS
-  - name: CA55_CPUWAIT
-    byte_offset: 352
-  - name: CA55_RVBARADDR0_L
-    byte_offset: 356
-  - name: CA55_RVBARADDR0_H
-    byte_offset: 360
-  - name: CA55_RVBARADDR1_L
-    byte_offset: 364
-  - name: CA55_RVBARADDR1_H
-    byte_offset: 368
-  - name: CA55_RVBARADDR2_L
-    byte_offset: 372
-  - name: CA55_RVBARADDR2_H
-    byte_offset: 376
-  - name: CA55_RVBARADDR3_L
-    byte_offset: 380
-  - name: CA55_RVBARADDR3_H
-    byte_offset: 384
-  - name: CA55_RVBARADDR4_L
-    byte_offset: 388
-  - name: CA55_RVBARADDR4_H
-    byte_offset: 392
-  - name: CA55_RVBARADDR5_L
-    byte_offset: 396
-  - name: CA55_RVBARADDR5_H
-    byte_offset: 400
-  - name: ELE_IRQ_MASK
-    byte_offset: 416
-  - name: ELE_RESET_REQ_MASK
-    byte_offset: 420
-  - name: ELE_HALT_STATUS
-    byte_offset: 424
-  - name: CA55_MODE
-    byte_offset: 428
-    fieldset: AON_BLK_CTRL_S_AONMIX_CA55_MODE
-  - name: NMI_MASK
-    byte_offset: 432
-    fieldset: AON_BLK_CTRL_S_AONMIX_NMI_MASK
-  - name: NMI_CLR
-    byte_offset: 436
-    fieldset: AON_BLK_CTRL_S_AONMIX_NMI_CLR
-  - name: WDOG_ANY_MASK
-    byte_offset: 440
-    fieldset: AON_BLK_CTRL_S_AONMIX_WDOG_ANY_MASK
-  - name: MISC_CFG
-    byte_offset: 448
-  - name: ELE_GPO_STATUS
-    byte_offset: 456
-  - name: ELE_RST_REQ_STAT
-    byte_offset: 460
-  - name: ELE_IRQ_REQ_STAT
-    byte_offset: 464
-  - name: VDET_CORE
-    byte_offset: 468
-  - name: AGDET
-    byte_offset: 472
+    - name: CM33_IRQ_MASK0
+      byte_offset: 0
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK0
+    - name: CM33_IRQ_MASK1
+      byte_offset: 4
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK1
+    - name: CM33_IRQ_MASK2
+      byte_offset: 8
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK2
+    - name: CM33_IRQ_MASK3
+      byte_offset: 12
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK3
+    - name: CM33_IRQ_MASK4
+      byte_offset: 16
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK4
+    - name: CM33_IRQ_MASK5
+      byte_offset: 20
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK5
+    - name: CM33_IRQ_MASK6
+      byte_offset: 24
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK6
+    - name: CM33_IRQ_MASK7
+      byte_offset: 28
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK7
+    - name: CM33_IRQ_MASK8
+      byte_offset: 32
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK8
+    - name: CM33_IRQ_MASK9
+      byte_offset: 36
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK9
+    - name: CM33_IRQ_MASK10
+      byte_offset: 40
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK10
+    - name: CM33_IRQ_MASK11
+      byte_offset: 44
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK11
+    - name: CA55_IRQ_MASK0
+      byte_offset: 64
+      fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK0
+    - name: CA55_IRQ_MASK1
+      byte_offset: 68
+      fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK1
+    - name: CA55_IRQ_MASK2
+      byte_offset: 72
+      fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK2
+    - name: CA55_IRQ_MASK3
+      byte_offset: 76
+      fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK3
+    - name: CA55_IRQ_MASK4
+      byte_offset: 80
+      fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK4
+    - name: CA55_IRQ_MASK5
+      byte_offset: 84
+      fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK5
+    - name: CA55_IRQ_MASK6
+      byte_offset: 88
+      fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK6
+    - name: CA55_IRQ_MASK7
+      byte_offset: 92
+      fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK7
+    - name: CA55_IRQ_MASK8
+      byte_offset: 96
+      fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK8
+    - name: CA55_IRQ_MASK9
+      byte_offset: 100
+      fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK9
+    - name: CA55_IRQ_MASK10
+      byte_offset: 104
+      fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK10
+    - name: CA55_IRQ_MASK11
+      byte_offset: 108
+      fieldset: AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK11
+    - name: CM7_IRQ_MASK0
+      byte_offset: 128
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK0
+    - name: CM7_IRQ_MASK1
+      byte_offset: 132
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK1
+    - name: CM7_IRQ_MASK2
+      byte_offset: 136
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK2
+    - name: CM7_IRQ_MASK3
+      byte_offset: 140
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK3
+    - name: CM7_IRQ_MASK4
+      byte_offset: 144
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK4
+    - name: CM7_IRQ_MASK5
+      byte_offset: 148
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK5
+    - name: CM7_IRQ_MASK6
+      byte_offset: 152
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK6
+    - name: CM7_IRQ_MASK7
+      byte_offset: 156
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK7
+    - name: CM7_IRQ_MASK8
+      byte_offset: 160
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK8
+    - name: CM7_IRQ_MASK9
+      byte_offset: 164
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK9
+    - name: CM7_IRQ_MASK10
+      byte_offset: 168
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK10
+    - name: CM7_IRQ_MASK11
+      byte_offset: 172
+      fieldset: AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK11
+    - name: INITSVTOR
+      byte_offset: 256
+      fieldset: AON_BLK_CTRL_S_AONMIX_INITSVTOR
+    - name: INITNSVTOR
+      byte_offset: 260
+      fieldset: AON_BLK_CTRL_S_AONMIX_INITNSVTOR
+    - name: INITVTOR
+      byte_offset: 264
+      fieldset: AON_BLK_CTRL_S_AONMIX_INITVTOR
+    - name: M33_CFG
+      byte_offset: 288
+      fieldset: AON_BLK_CTRL_S_AONMIX_M33_CFG
+    - name: M7_CFG
+      byte_offset: 292
+      fieldset: AON_BLK_CTRL_S_AONMIX_M7_CFG
+    - name: AXBS_AON_CTRL
+      byte_offset: 304
+    - name: DAP_ACCESS_STKYBIT
+      byte_offset: 308
+      fieldset: AON_BLK_CTRL_S_AONMIX_DAP_ACCESS_STKYBIT
+    - name: LP_HANDSHAKE_ELE
+      byte_offset: 312
+      fieldset: AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_ELE
+    - name: LP_HANDSHAKE2_ELE
+      byte_offset: 316
+      fieldset: AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE2_ELE
+    - name: LP_HANDSHAKE3_ELE
+      byte_offset: 320
+    - name: LP_HANDSHAKE_SM
+      byte_offset: 324
+      fieldset: AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_SM
+    - name: LP_HANDSHAKE2_SM
+      byte_offset: 328
+      fieldset: AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE2_SM
+    - name: LP_HANDSHAKE3_SM
+      byte_offset: 332
+    - name: SM_LP_HANDSHAKE_STATUS
+      byte_offset: 336
+      fieldset: AON_BLK_CTRL_S_AONMIX_SM_LP_HANDSHAKE_STATUS
+    - name: CA55_CPUWAIT
+      byte_offset: 352
+    - name: CA55_RVBARADDR0_L
+      byte_offset: 356
+    - name: CA55_RVBARADDR0_H
+      byte_offset: 360
+    - name: CA55_RVBARADDR1_L
+      byte_offset: 364
+    - name: CA55_RVBARADDR1_H
+      byte_offset: 368
+    - name: CA55_RVBARADDR2_L
+      byte_offset: 372
+    - name: CA55_RVBARADDR2_H
+      byte_offset: 376
+    - name: CA55_RVBARADDR3_L
+      byte_offset: 380
+    - name: CA55_RVBARADDR3_H
+      byte_offset: 384
+    - name: CA55_RVBARADDR4_L
+      byte_offset: 388
+    - name: CA55_RVBARADDR4_H
+      byte_offset: 392
+    - name: CA55_RVBARADDR5_L
+      byte_offset: 396
+    - name: CA55_RVBARADDR5_H
+      byte_offset: 400
+    - name: ELE_IRQ_MASK
+      byte_offset: 416
+    - name: ELE_RESET_REQ_MASK
+      byte_offset: 420
+    - name: ELE_HALT_STATUS
+      byte_offset: 424
+    - name: CA55_MODE
+      byte_offset: 428
+      fieldset: AON_BLK_CTRL_S_AONMIX_CA55_MODE
+    - name: NMI_MASK
+      byte_offset: 432
+      fieldset: AON_BLK_CTRL_S_AONMIX_NMI_MASK
+    - name: NMI_CLR
+      byte_offset: 436
+      fieldset: AON_BLK_CTRL_S_AONMIX_NMI_CLR
+    - name: WDOG_ANY_MASK
+      byte_offset: 440
+      fieldset: AON_BLK_CTRL_S_AONMIX_WDOG_ANY_MASK
+    - name: MISC_CFG
+      byte_offset: 448
+    - name: ELE_GPO_STATUS
+      byte_offset: 456
+    - name: ELE_RST_REQ_STAT
+      byte_offset: 460
+    - name: ELE_IRQ_REQ_STAT
+      byte_offset: 464
+    - name: VDET_CORE
+      byte_offset: 468
+    - name: AGDET
+      byte_offset: 472
 fieldset/AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK0:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM33 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM33 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK1:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM33 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM33 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK2:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM33 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM33 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK3:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM33 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM33 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK4:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM33 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM33 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK5:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM33 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM33 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK6:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM33 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM33 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK7:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM33 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM33 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK8:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM33 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM33 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK9:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM33 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM33 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK10:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM33 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM33 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM33_IRQ_MASK11:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM33 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM33 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK0:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CA55 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CA55 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK1:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CA55 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CA55 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK2:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CA55 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CA55 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK3:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CA55 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CA55 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK4:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CA55 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CA55 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK5:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CA55 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CA55 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK6:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CA55 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CA55 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK7:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CA55 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CA55 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK8:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CA55 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CA55 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK9:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CA55 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CA55 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK10:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CA55 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CA55 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_IRQ_MASK11:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CA55 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CA55 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK0:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM7 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM7 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK1:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM7 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM7 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK2:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM7 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM7 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK3:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM7 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM7 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK4:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM7 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM7 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK5:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM7 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM7 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK6:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM7 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM7 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK7:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM7 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM7 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK8:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM7 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM7 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK9:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM7 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM7 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK10:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM7 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM7 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_CM7_IRQ_MASK11:
   description: ''
   fields:
-  - name: m
-    bit_offset: 0
-    bit_size: 32
-    description: CM7 IRQ MASK
+    - name: m
+      bit_offset: 0
+      bit_size: 32
+      description: CM7 IRQ MASK
 fieldset/AON_BLK_CTRL_S_AONMIX_INITSVTOR:
   description: ''
   fields:
-  - name: m33
-    bit_offset: 0
-    bit_size: 32
-    description: INITSVTOR
+    - name: m33
+      bit_offset: 0
+      bit_size: 32
+      description: INITSVTOR
 fieldset/AON_BLK_CTRL_S_AONMIX_INITNSVTOR:
   description: ''
   fields:
-  - name: m33
-    bit_offset: 0
-    bit_size: 32
-    description: INITSVTOR
+    - name: m33
+      bit_offset: 0
+      bit_size: 32
+      description: INITSVTOR
 fieldset/AON_BLK_CTRL_S_AONMIX_INITVTOR:
   description: ''
   fields:
-  - name: M7
-    bit_offset: 7
-    bit_size: 25
-    description: INITVTOR
+    - name: M7
+      bit_offset: 7
+      bit_size: 25
+      description: INITVTOR
 fieldset/AON_BLK_CTRL_S_AONMIX_M33_CFG:
   description: ''
   fields:
-  - name: WAIT
-    bit_offset: 2
-    bit_size: 1
-    description: M33 CPU WAIT
+    - name: WAIT
+      bit_offset: 2
+      bit_size: 1
+      description: M33 CPU WAIT
 fieldset/AON_BLK_CTRL_S_AONMIX_M33_CFG_TCM:
   description: ''
   fields:
-  - name: SIZE
-    bit_offset: 3
-    bit_size: 2
-    description: M33 CPU WAIT
+    - name: SIZE
+      bit_offset: 3
+      bit_size: 2
+      description: M33 CPU WAIT
 fieldset/AON_BLK_CTRL_S_AONMIX_M7_CFG_TCM:
   description: ''
   fields:
-  - name: SIZE
-    bit_offset: 0
-    bit_size: 3
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 3
 fieldset/AON_BLK_CTRL_S_AONMIX_M7_CFG:
   description: ''
   fields:
-  - name: WAIT
-    bit_offset: 4
-    bit_size: 1
-    description: M7 CPUWAIT
+    - name: WAIT
+      bit_offset: 4
+      bit_size: 1
+      description: M7 CPUWAIT
 fieldset/AON_BLK_CTRL_S_AONMIX_M7_CFG_CORECLK_FORCE:
   description: ''
   fields:
-  - name: 'ON'
-    bit_offset: 5
-    bit_size: 1
-    description: M7 CPUWAIT
+    - name: 'ON'
+      bit_offset: 5
+      bit_size: 1
+      description: M7 CPUWAIT
 fieldset/AON_BLK_CTRL_S_AONMIX_M7_CFG_HCLK_FORCE:
   description: ''
   fields:
-  - name: 'ON'
-    bit_offset: 6
-    bit_size: 1
+    - name: 'ON'
+      bit_offset: 6
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_AXBS_AON_CTRL_FORCE_ROUND:
   description: ''
   fields:
-  - name: ROBIN
-    bit_offset: 0
-    bit_size: 1
+    - name: ROBIN
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_AXBS_AON_CTRL_M0_HIGH:
   description: ''
   fields:
-  - name: PRIORITY
-    bit_offset: 1
-    bit_size: 1
+    - name: PRIORITY
+      bit_offset: 1
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_AXBS_AON_CTRL_M1_HIGH:
   description: ''
   fields:
-  - name: PRIORITY
-    bit_offset: 2
-    bit_size: 1
+    - name: PRIORITY
+      bit_offset: 2
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_AXBS_AON_CTRL_M2_HIGH:
   description: ''
   fields:
-  - name: PRIORITY
-    bit_offset: 3
-    bit_size: 1
+    - name: PRIORITY
+      bit_offset: 3
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_AXBS_AON_CTRL_M3_HIGH:
   description: ''
   fields:
-  - name: PRIORITY
-    bit_offset: 4
-    bit_size: 1
+    - name: PRIORITY
+      bit_offset: 4
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_AXBS_AON_CTRL_M4_HIGH:
   description: ''
   fields:
-  - name: PRIORITY
-    bit_offset: 5
-    bit_size: 1
+    - name: PRIORITY
+      bit_offset: 5
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_DAP_ACCESS_STKYBIT:
   description: ''
   fields:
-  - name: M33
-    bit_offset: 0
-    bit_size: 1
-  - name: A55
-    bit_offset: 1
-    bit_size: 1
+    - name: M33
+      bit_offset: 0
+      bit_size: 1
+    - name: A55
+      bit_offset: 1
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_ELE:
   description: ''
   fields:
-  - name: aonmix
-    bit_offset: 1
-    bit_size: 1
-  - name: ELE
-    bit_offset: 3
-    bit_size: 1
-  - name: Cameramix
-    bit_offset: 5
-    bit_size: 1
-  - name: display
-    bit_offset: 16
-    bit_size: 1
-  - name: gpu
-    bit_offset: 17
-    bit_size: 1
-  - name: m7mix
-    bit_offset: 20
-    bit_size: 1
-  - name: netc
-    bit_offset: 21
-    bit_size: 1
-  - name: noc
-    bit_offset: 22
-    bit_size: 1
-  - name: npu
-    bit_offset: 23
-    bit_size: 1
-  - name: vpu
-    bit_offset: 24
-    bit_size: 1
+    - name: aonmix
+      bit_offset: 1
+      bit_size: 1
+    - name: ELE
+      bit_offset: 3
+      bit_size: 1
+    - name: Cameramix
+      bit_offset: 5
+      bit_size: 1
+    - name: display
+      bit_offset: 16
+      bit_size: 1
+    - name: gpu
+      bit_offset: 17
+      bit_size: 1
+    - name: m7mix
+      bit_offset: 20
+      bit_size: 1
+    - name: netc
+      bit_offset: 21
+      bit_size: 1
+    - name: noc
+      bit_offset: 22
+      bit_size: 1
+    - name: npu
+      bit_offset: 23
+      bit_size: 1
+    - name: vpu
+      bit_offset: 24
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_ELE_M33:
   description: ''
   fields:
-  - name: platform
-    bit_offset: 2
-    bit_size: 1
+    - name: platform
+      bit_offset: 2
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_ELE_A55:
   description: ''
   fields:
-  - name: cpu0
-    bit_offset: 7
-    bit_size: 1
-  - name: cpu1
-    bit_offset: 8
-    bit_size: 1
-  - name: cpu2
-    bit_offset: 9
-    bit_size: 1
-  - name: cpu3
-    bit_offset: 10
-    bit_size: 1
-  - name: cpu4
-    bit_offset: 11
-    bit_size: 1
-  - name: cpu5
-    bit_offset: 12
-    bit_size: 1
-  - name: platform
-    bit_offset: 13
-    bit_size: 1
+    - name: cpu0
+      bit_offset: 7
+      bit_size: 1
+    - name: cpu1
+      bit_offset: 8
+      bit_size: 1
+    - name: cpu2
+      bit_offset: 9
+      bit_size: 1
+    - name: cpu3
+      bit_offset: 10
+      bit_size: 1
+    - name: cpu4
+      bit_offset: 11
+      bit_size: 1
+    - name: cpu5
+      bit_offset: 12
+      bit_size: 1
+    - name: platform
+      bit_offset: 13
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_ELE_ddrmix:
   description: ''
   fields:
-  - name: top
-    bit_offset: 14
-    bit_size: 1
+    - name: top
+      bit_offset: 14
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_ELE_ddr:
   description: ''
   fields:
-  - name: phy
-    bit_offset: 15
-    bit_size: 1
+    - name: phy
+      bit_offset: 15
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_ELE_hsio:
   description: ''
   fields:
-  - name: top
-    bit_offset: 18
-    bit_size: 1
-  - name: aon
-    bit_offset: 19
-    bit_size: 1
+    - name: top
+      bit_offset: 18
+      bit_size: 1
+    - name: aon
+      bit_offset: 19
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_ELE_wakeupmix:
   description: ''
   fields:
-  - name: top
-    bit_offset: 25
-    bit_size: 1
-  - name: jtag
-    bit_offset: 26
-    bit_size: 1
-  - name: wdog5
-    bit_offset: 28
-    bit_size: 1
+    - name: top
+      bit_offset: 25
+      bit_size: 1
+    - name: jtag
+      bit_offset: 26
+      bit_size: 1
+    - name: wdog5
+      bit_offset: 28
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_ELE_aonmix:
   description: ''
   fields:
-  - name: power
-    bit_offset: 30
-    bit_size: 1
+    - name: power
+      bit_offset: 30
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE2_ELE:
   description: ''
   fields:
-  - name: cameramix
-    bit_offset: 0
-    bit_size: 1
-  - name: ddr
-    bit_offset: 9
-    bit_size: 1
-  - name: display
-    bit_offset: 10
-    bit_size: 1
-  - name: gpu
-    bit_offset: 11
-    bit_size: 1
-  - name: netc
-    bit_offset: 15
-    bit_size: 1
-  - name: noc
-    bit_offset: 16
-    bit_size: 1
-  - name: npu
-    bit_offset: 17
-    bit_size: 1
-  - name: vpu
-    bit_offset: 18
-    bit_size: 1
-  - name: wakeup
-    bit_offset: 19
-    bit_size: 1
-  - name: osc24mhz
-    bit_offset: 20
-    bit_size: 1
+    - name: cameramix
+      bit_offset: 0
+      bit_size: 1
+    - name: ddr
+      bit_offset: 9
+      bit_size: 1
+    - name: display
+      bit_offset: 10
+      bit_size: 1
+    - name: gpu
+      bit_offset: 11
+      bit_size: 1
+    - name: netc
+      bit_offset: 15
+      bit_size: 1
+    - name: noc
+      bit_offset: 16
+      bit_size: 1
+    - name: npu
+      bit_offset: 17
+      bit_size: 1
+    - name: vpu
+      bit_offset: 18
+      bit_size: 1
+    - name: wakeup
+      bit_offset: 19
+      bit_size: 1
+    - name: osc24mhz
+      bit_offset: 20
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE2_ELE_A55:
   description: ''
   fields:
-  - name: cpu0
-    bit_offset: 2
-    bit_size: 1
-  - name: cpu1
-    bit_offset: 3
-    bit_size: 1
-  - name: cpu2
-    bit_offset: 4
-    bit_size: 1
-  - name: cpu3
-    bit_offset: 5
-    bit_size: 1
-  - name: cpu4
-    bit_offset: 6
-    bit_size: 1
-  - name: cpu5
-    bit_offset: 7
-    bit_size: 1
-  - name: platform
-    bit_offset: 8
-    bit_size: 1
+    - name: cpu0
+      bit_offset: 2
+      bit_size: 1
+    - name: cpu1
+      bit_offset: 3
+      bit_size: 1
+    - name: cpu2
+      bit_offset: 4
+      bit_size: 1
+    - name: cpu3
+      bit_offset: 5
+      bit_size: 1
+    - name: cpu4
+      bit_offset: 6
+      bit_size: 1
+    - name: cpu5
+      bit_offset: 7
+      bit_size: 1
+    - name: platform
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE2_ELE_hsio:
   description: ''
   fields:
-  - name: top
-    bit_offset: 12
-    bit_size: 1
-  - name: aon
-    bit_offset: 13
-    bit_size: 1
+    - name: top
+      bit_offset: 12
+      bit_size: 1
+    - name: aon
+      bit_offset: 13
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE2_ELE_m7:
   description: ''
   fields:
-  - name: platform
-    bit_offset: 14
-    bit_size: 1
+    - name: platform
+      bit_offset: 14
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_SM:
   description: ''
   fields:
-  - name: aonmix
-    bit_offset: 1
-    bit_size: 1
-  - name: ELE
-    bit_offset: 3
-    bit_size: 1
-  - name: Cameramix
-    bit_offset: 5
-    bit_size: 1
-  - name: display
-    bit_offset: 16
-    bit_size: 1
-  - name: gpu
-    bit_offset: 17
-    bit_size: 1
-  - name: m7mix
-    bit_offset: 20
-    bit_size: 1
-  - name: netc
-    bit_offset: 21
-    bit_size: 1
-  - name: noc
-    bit_offset: 22
-    bit_size: 1
-  - name: npu
-    bit_offset: 23
-    bit_size: 1
-  - name: vpu
-    bit_offset: 24
-    bit_size: 1
+    - name: aonmix
+      bit_offset: 1
+      bit_size: 1
+    - name: ELE
+      bit_offset: 3
+      bit_size: 1
+    - name: Cameramix
+      bit_offset: 5
+      bit_size: 1
+    - name: display
+      bit_offset: 16
+      bit_size: 1
+    - name: gpu
+      bit_offset: 17
+      bit_size: 1
+    - name: m7mix
+      bit_offset: 20
+      bit_size: 1
+    - name: netc
+      bit_offset: 21
+      bit_size: 1
+    - name: noc
+      bit_offset: 22
+      bit_size: 1
+    - name: npu
+      bit_offset: 23
+      bit_size: 1
+    - name: vpu
+      bit_offset: 24
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_SM_M33:
   description: ''
   fields:
-  - name: platform
-    bit_offset: 2
-    bit_size: 1
+    - name: platform
+      bit_offset: 2
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_SM_A55:
   description: ''
   fields:
-  - name: cpu0
-    bit_offset: 7
-    bit_size: 1
-  - name: cpu1
-    bit_offset: 8
-    bit_size: 1
-  - name: cpu2
-    bit_offset: 9
-    bit_size: 1
-  - name: cpu3
-    bit_offset: 10
-    bit_size: 1
-  - name: cpu4
-    bit_offset: 11
-    bit_size: 1
-  - name: cpu5
-    bit_offset: 12
-    bit_size: 1
-  - name: platform
-    bit_offset: 13
-    bit_size: 1
+    - name: cpu0
+      bit_offset: 7
+      bit_size: 1
+    - name: cpu1
+      bit_offset: 8
+      bit_size: 1
+    - name: cpu2
+      bit_offset: 9
+      bit_size: 1
+    - name: cpu3
+      bit_offset: 10
+      bit_size: 1
+    - name: cpu4
+      bit_offset: 11
+      bit_size: 1
+    - name: cpu5
+      bit_offset: 12
+      bit_size: 1
+    - name: platform
+      bit_offset: 13
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_SM_ddrmix:
   description: ''
   fields:
-  - name: top
-    bit_offset: 14
-    bit_size: 1
+    - name: top
+      bit_offset: 14
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_SM_ddr:
   description: ''
   fields:
-  - name: phy
-    bit_offset: 15
-    bit_size: 1
+    - name: phy
+      bit_offset: 15
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_SM_hsio:
   description: ''
   fields:
-  - name: top
-    bit_offset: 18
-    bit_size: 1
-  - name: aon
-    bit_offset: 19
-    bit_size: 1
+    - name: top
+      bit_offset: 18
+      bit_size: 1
+    - name: aon
+      bit_offset: 19
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_SM_wakeupmix:
   description: ''
   fields:
-  - name: top
-    bit_offset: 25
-    bit_size: 1
-  - name: jtag
-    bit_offset: 26
-    bit_size: 1
-  - name: wdog5
-    bit_offset: 28
-    bit_size: 1
+    - name: top
+      bit_offset: 25
+      bit_size: 1
+    - name: jtag
+      bit_offset: 26
+      bit_size: 1
+    - name: wdog5
+      bit_offset: 28
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE_SM_aonmix:
   description: ''
   fields:
-  - name: power
-    bit_offset: 30
-    bit_size: 1
+    - name: power
+      bit_offset: 30
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE2_SM:
   description: ''
   fields:
-  - name: cameramix
-    bit_offset: 0
-    bit_size: 1
-  - name: ddr
-    bit_offset: 9
-    bit_size: 1
-  - name: display
-    bit_offset: 10
-    bit_size: 1
-  - name: gpu
-    bit_offset: 11
-    bit_size: 1
-  - name: netc
-    bit_offset: 15
-    bit_size: 1
-  - name: noc
-    bit_offset: 16
-    bit_size: 1
-  - name: npu
-    bit_offset: 17
-    bit_size: 1
-  - name: vpu
-    bit_offset: 18
-    bit_size: 1
-  - name: wakeup
-    bit_offset: 19
-    bit_size: 1
-  - name: osc24mhz
-    bit_offset: 20
-    bit_size: 1
+    - name: cameramix
+      bit_offset: 0
+      bit_size: 1
+    - name: ddr
+      bit_offset: 9
+      bit_size: 1
+    - name: display
+      bit_offset: 10
+      bit_size: 1
+    - name: gpu
+      bit_offset: 11
+      bit_size: 1
+    - name: netc
+      bit_offset: 15
+      bit_size: 1
+    - name: noc
+      bit_offset: 16
+      bit_size: 1
+    - name: npu
+      bit_offset: 17
+      bit_size: 1
+    - name: vpu
+      bit_offset: 18
+      bit_size: 1
+    - name: wakeup
+      bit_offset: 19
+      bit_size: 1
+    - name: osc24mhz
+      bit_offset: 20
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE2_SM_A55:
   description: ''
   fields:
-  - name: cpu0
-    bit_offset: 2
-    bit_size: 1
-  - name: cpu1
-    bit_offset: 3
-    bit_size: 1
-  - name: cpu2
-    bit_offset: 4
-    bit_size: 1
-  - name: cpu3
-    bit_offset: 5
-    bit_size: 1
-  - name: cpu4
-    bit_offset: 6
-    bit_size: 1
-  - name: cpu5
-    bit_offset: 7
-    bit_size: 1
-  - name: platform
-    bit_offset: 8
-    bit_size: 1
+    - name: cpu0
+      bit_offset: 2
+      bit_size: 1
+    - name: cpu1
+      bit_offset: 3
+      bit_size: 1
+    - name: cpu2
+      bit_offset: 4
+      bit_size: 1
+    - name: cpu3
+      bit_offset: 5
+      bit_size: 1
+    - name: cpu4
+      bit_offset: 6
+      bit_size: 1
+    - name: cpu5
+      bit_offset: 7
+      bit_size: 1
+    - name: platform
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE2_SM_hsio:
   description: ''
   fields:
-  - name: top
-    bit_offset: 12
-    bit_size: 1
-  - name: aon
-    bit_offset: 13
-    bit_size: 1
+    - name: top
+      bit_offset: 12
+      bit_size: 1
+    - name: aon
+      bit_offset: 13
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_LP_HANDSHAKE2_SM_m7:
   description: ''
   fields:
-  - name: platform
-    bit_offset: 14
-    bit_size: 1
+    - name: platform
+      bit_offset: 14
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_SM_LP_HANDSHAKE_STATUS:
   description: ''
   fields:
-  - name: ack
-    bit_offset: 0
-    bit_size: 1
-  - name: stat
-    bit_offset: 1
-    bit_size: 1
-  - name: idx
-    bit_offset: 2
-    bit_size: 7
-  - name: autoack
-    bit_offset: 9
-    bit_size: 1
+    - name: ack
+      bit_offset: 0
+      bit_size: 1
+    - name: stat
+      bit_offset: 1
+      bit_size: 1
+    - name: idx
+      bit_offset: 2
+      bit_size: 7
+    - name: autoack
+      bit_offset: 9
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_CPUWAIT_CPU0:
   description: ''
   fields:
-  - name: WAIT
-    bit_offset: 0
-    bit_size: 1
+    - name: WAIT
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_CPUWAIT_CPU1:
   description: ''
   fields:
-  - name: WAIT
-    bit_offset: 1
-    bit_size: 1
+    - name: WAIT
+      bit_offset: 1
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_CPUWAIT_CPU2:
   description: ''
   fields:
-  - name: WAIT
-    bit_offset: 2
-    bit_size: 1
+    - name: WAIT
+      bit_offset: 2
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_CPUWAIT_CPU3:
   description: ''
   fields:
-  - name: WAIT
-    bit_offset: 3
-    bit_size: 1
+    - name: WAIT
+      bit_offset: 3
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_CPUWAIT_CPU4:
   description: ''
   fields:
-  - name: WAIT
-    bit_offset: 4
-    bit_size: 1
+    - name: WAIT
+      bit_offset: 4
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_CPUWAIT_CPU5:
   description: ''
   fields:
-  - name: WAIT
-    bit_offset: 5
-    bit_size: 1
+    - name: WAIT
+      bit_offset: 5
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_RVBARADDR0_L_ADDR0:
   description: ''
   fields:
-  - name: L
-    bit_offset: 0
-    bit_size: 32
+    - name: L
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_RVBARADDR0_H_ADDR0:
   description: ''
   fields:
-  - name: H
-    bit_offset: 0
-    bit_size: 6
+    - name: H
+      bit_offset: 0
+      bit_size: 6
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_RVBARADDR1_L_ADDR1:
   description: ''
   fields:
-  - name: L
-    bit_offset: 0
-    bit_size: 32
+    - name: L
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_RVBARADDR1_H_ADDR1:
   description: ''
   fields:
-  - name: H
-    bit_offset: 0
-    bit_size: 6
+    - name: H
+      bit_offset: 0
+      bit_size: 6
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_RVBARADDR2_L_ADDR2:
   description: ''
   fields:
-  - name: L
-    bit_offset: 0
-    bit_size: 32
+    - name: L
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_RVBARADDR2_H_ADDR2:
   description: ''
   fields:
-  - name: H
-    bit_offset: 0
-    bit_size: 6
+    - name: H
+      bit_offset: 0
+      bit_size: 6
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_RVBARADDR3_L_ADDR3:
   description: ''
   fields:
-  - name: L
-    bit_offset: 0
-    bit_size: 32
+    - name: L
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_RVBARADDR3_H_ADDR3:
   description: ''
   fields:
-  - name: H
-    bit_offset: 0
-    bit_size: 6
+    - name: H
+      bit_offset: 0
+      bit_size: 6
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_RVBARADDR4_L_ADDR4:
   description: ''
   fields:
-  - name: L
-    bit_offset: 0
-    bit_size: 32
+    - name: L
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_RVBARADDR4_H_ADDR4:
   description: ''
   fields:
-  - name: H
-    bit_offset: 0
-    bit_size: 6
+    - name: H
+      bit_offset: 0
+      bit_size: 6
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_RVBARADDR5_L_ADDR5:
   description: ''
   fields:
-  - name: L
-    bit_offset: 0
-    bit_size: 32
+    - name: L
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_RVBARADDR5_H_ADDR5:
   description: ''
   fields:
-  - name: H
-    bit_offset: 0
-    bit_size: 6
+    - name: H
+      bit_offset: 0
+      bit_size: 6
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_noclk:
   description: ''
   fields:
-  - name: fdet0
-    bit_offset: 0
-    bit_size: 1
-  - name: fdet1
-    bit_offset: 1
-    bit_size: 1
-  - name: fdet2
-    bit_offset: 2
-    bit_size: 1
-  - name: fdet3
-    bit_offset: 3
-    bit_size: 1
+    - name: fdet0
+      bit_offset: 0
+      bit_size: 1
+    - name: fdet1
+      bit_offset: 1
+      bit_size: 1
+    - name: fdet2
+      bit_offset: 2
+      bit_size: 1
+    - name: fdet3
+      bit_offset: 3
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_reset_req:
   description: ''
   fields:
-  - name: 32k
-    bit_offset: 4
-    bit_size: 1
+    - name: 32k
+      bit_offset: 4
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_reset:
   description: ''
   fields:
-  - name: req
-    bit_offset: 5
-    bit_size: 1
+    - name: req
+      bit_offset: 5
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_sys:
   description: ''
   fields:
-  - name: fail
-    bit_offset: 6
-    bit_size: 1
+    - name: fail
+      bit_offset: 6
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_lc:
   description: ''
   fields:
-  - name: bricked
-    bit_offset: 7
-    bit_size: 1
+    - name: bricked
+      bit_offset: 7
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_wdg:
   description: ''
   fields:
-  - name: reset
-    bit_offset: 9
-    bit_size: 1
+    - name: reset
+      bit_offset: 9
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_mu0a_int_rx_full:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 16
-    bit_size: 1
+    - name: mask
+      bit_offset: 16
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_mu0a_int_tx_empty:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 17
-    bit_size: 1
+    - name: mask
+      bit_offset: 17
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_mu1a_int_rx_full:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 18
-    bit_size: 1
+    - name: mask
+      bit_offset: 18
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_mu1a_int_tx_empty:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 19
-    bit_size: 1
+    - name: mask
+      bit_offset: 19
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_mu2a_int_rx_full:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 20
-    bit_size: 1
+    - name: mask
+      bit_offset: 20
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_mu2a_int_tx_empty:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 21
-    bit_size: 1
+    - name: mask
+      bit_offset: 21
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_mu3a_int_rx_full:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 22
-    bit_size: 1
+    - name: mask
+      bit_offset: 22
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_mu3a_int_tx_empty:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 23
-    bit_size: 1
+    - name: mask
+      bit_offset: 23
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_mu4a_int_rx_full:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 24
-    bit_size: 1
+    - name: mask
+      bit_offset: 24
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_mu4a_int_tx_empty:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 25
-    bit_size: 1
+    - name: mask
+      bit_offset: 25
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_mu5a_int_rx_full:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 26
-    bit_size: 1
+    - name: mask
+      bit_offset: 26
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_mu5a_int_tx_empty:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 27
-    bit_size: 1
+    - name: mask
+      bit_offset: 27
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_event_sys:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 28
-    bit_size: 1
+    - name: mask
+      bit_offset: 28
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_RESET_REQ_MASK_noclk:
   description: ''
   fields:
-  - name: fdet0
-    bit_offset: 0
-    bit_size: 1
-  - name: fdet1
-    bit_offset: 1
-    bit_size: 1
-  - name: fdet2
-    bit_offset: 2
-    bit_size: 1
-  - name: fdet3
-    bit_offset: 3
-    bit_size: 1
+    - name: fdet0
+      bit_offset: 0
+      bit_size: 1
+    - name: fdet1
+      bit_offset: 1
+      bit_size: 1
+    - name: fdet2
+      bit_offset: 2
+      bit_size: 1
+    - name: fdet3
+      bit_offset: 3
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_RESET_REQ_MASK_sys_reset:
   description: ''
   fields:
-  - name: req
-    bit_offset: 4
-    bit_size: 1
+    - name: req
+      bit_offset: 4
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_RESET_REQ_MASK_reset_req:
   description: ''
   fields:
-  - name: 32k
-    bit_offset: 5
-    bit_size: 1
+    - name: 32k
+      bit_offset: 5
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_RESET_REQ_MASK_reset:
   description: ''
   fields:
-  - name: req
-    bit_offset: 6
-    bit_size: 1
+    - name: req
+      bit_offset: 6
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_RESET_REQ_MASK_sys:
   description: ''
   fields:
-  - name: fail
-    bit_offset: 7
-    bit_size: 1
+    - name: fail
+      bit_offset: 7
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_RESET_REQ_MASK_lc:
   description: ''
   fields:
-  - name: bricked
-    bit_offset: 8
-    bit_size: 1
+    - name: bricked
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_RESET_REQ_MASK_wdg:
   description: ''
   fields:
-  - name: reset
-    bit_offset: 10
-    bit_size: 1
+    - name: reset
+      bit_offset: 10
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_HALT_STATUS_ELE_HALT:
   description: ''
   fields:
-  - name: ACK
-    bit_offset: 0
-    bit_size: 1
+    - name: ACK
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_HALT_STATUS_ELE_HALT_EXIT_IRQ:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 8
-    bit_size: 1
+    - name: CLR
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_CA55_MODE:
   description: ''
   fields:
-  - name: AA64nAA32
-    bit_offset: 0
-    bit_size: 6
+    - name: AA64nAA32
+      bit_offset: 0
+      bit_size: 6
 fieldset/AON_BLK_CTRL_S_AONMIX_NMI_MASK:
   description: ''
   fields:
-  - name: CM33
-    bit_offset: 0
-    bit_size: 1
-  - name: CM7
-    bit_offset: 1
-    bit_size: 1
+    - name: CM33
+      bit_offset: 0
+      bit_size: 1
+    - name: CM7
+      bit_offset: 1
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_NMI_MASK_NMI_PIN:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 2
-    bit_size: 1
+    - name: MASK
+      bit_offset: 2
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_NMI_MASK_WDG1_NMI:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 3
-    bit_size: 1
+    - name: MASK
+      bit_offset: 3
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_NMI_MASK_WDG2_NMI:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 4
-    bit_size: 1
+    - name: MASK
+      bit_offset: 4
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_NMI_MASK_WDG3_NMI:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 5
-    bit_size: 1
+    - name: MASK
+      bit_offset: 5
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_NMI_MASK_WDG4_NMI:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 6
-    bit_size: 1
+    - name: MASK
+      bit_offset: 6
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_NMI_MASK_WDG5_NMI:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 7
-    bit_size: 1
+    - name: MASK
+      bit_offset: 7
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_NMI_CLR:
   description: ''
   fields:
-  - name: CM33
-    bit_offset: 0
-    bit_size: 1
-    description: CM33 NMI clear
-  - name: CM7
-    bit_offset: 1
-    bit_size: 1
-    description: CM33 NMI clear
+    - name: CM33
+      bit_offset: 0
+      bit_size: 1
+      description: CM33 NMI clear
+    - name: CM7
+      bit_offset: 1
+      bit_size: 1
+      description: CM33 NMI clear
 fieldset/AON_BLK_CTRL_S_AONMIX_WDOG_ANY_MASK:
   description: ''
   fields:
-  - name: wdog1
-    bit_offset: 0
-    bit_size: 1
-  - name: wdog2
-    bit_offset: 1
-    bit_size: 1
-  - name: wdog3
-    bit_offset: 2
-    bit_size: 1
-  - name: wdog4
-    bit_offset: 3
-    bit_size: 1
-  - name: wdog5
-    bit_offset: 4
-    bit_size: 1
+    - name: wdog1
+      bit_offset: 0
+      bit_size: 1
+    - name: wdog2
+      bit_offset: 1
+      bit_size: 1
+    - name: wdog3
+      bit_offset: 2
+      bit_size: 1
+    - name: wdog4
+      bit_offset: 3
+      bit_size: 1
+    - name: wdog5
+      bit_offset: 4
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_MISC_CFG_netc_cfg_ierb:
   description: ''
   fields:
-  - name: lock
-    bit_offset: 0
-    bit_size: 1
+    - name: lock
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_RST_REQ_STAT_GROUP:
   description: ''
   fields:
-  - name: A
-    bit_offset: 0
-    bit_size: 16
-  - name: B
-    bit_offset: 16
-    bit_size: 16
+    - name: A
+      bit_offset: 0
+      bit_size: 16
+    - name: B
+      bit_offset: 16
+      bit_size: 16
 fieldset/AON_BLK_CTRL_S_AONMIX_ELE_IRQ_REQ_STAT_GROUP:
   description: ''
   fields:
-  - name: C
-    bit_offset: 0
-    bit_size: 16
+    - name: C
+      bit_offset: 0
+      bit_size: 16
 fieldset/AON_BLK_CTRL_S_AONMIX_VDET_CORE_hvd_out_latch_lv:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 0
-    bit_size: 1
+    - name: mask
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_VDET_CORE_lvd_out_latch_lv:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 1
-    bit_size: 1
+    - name: mask
+      bit_offset: 1
+      bit_size: 1
 fieldset/AON_BLK_CTRL_S_AONMIX_AGDET_ipi_int_glitch_detected:
   description: ''
   fields:
-  - name: mask
-    bit_offset: 0
-    bit_size: 1
+    - name: mask
+      bit_offset: 0
+      bit_size: 1

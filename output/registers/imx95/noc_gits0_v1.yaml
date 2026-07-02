@@ -1,892 +1,892 @@
 block/NOC_GITS0:
   description: ''
   items:
-  - name: GITS0_CTLR
-    byte_offset: 0
-    fieldset: NOC_GITS0_GITS0_CTLR
-  - name: GITS0_IIDR
-    byte_offset: 4
-    fieldset: NOC_GITS0_GITS0_IIDR
-  - name: GITS0_TYPER
-    byte_offset: 8
-    fieldset: NOC_GITS0_GITS0_TYPER
-  - name: GITS0_MPAMIDR
-    byte_offset: 16
-    fieldset: NOC_GITS0_GITS0_MPAMIDR
-  - name: GITS0_PARTIDR
-    byte_offset: 20
-    fieldset: NOC_GITS0_GITS0_PARTIDR
-  - name: GITS0_MPIDR
-    byte_offset: 24
-    fieldset: NOC_GITS0_GITS0_MPIDR
-  - name: GITS0_FCTLR
-    byte_offset: 32
-    fieldset: NOC_GITS0_GITS0_FCTLR
-  - name: GITS0_OPR
-    byte_offset: 40
-    fieldset: NOC_GITS0_GITS0_OPR
-  - name: GITS0_OPSR
-    byte_offset: 48
-    fieldset: NOC_GITS0_GITS0_OPSR
-  - name: GITS0_CBASER
-    byte_offset: 128
-    fieldset: NOC_GITS0_GITS0_CBASER
-  - name: GITS0_CWRITER
-    byte_offset: 136
-    fieldset: NOC_GITS0_GITS0_CWRITER
-  - name: GITS0_CREADR
-    byte_offset: 144
-    fieldset: NOC_GITS0_GITS0_CREADR
-  - name: GITS0_BASER0
-    byte_offset: 256
-    fieldset: NOC_GITS0_GITS0_BASER0
-  - name: GITS0_BASER1
-    byte_offset: 264
-    fieldset: NOC_GITS0_GITS0_BASER1
-  - name: GITS0_BASER2
-    byte_offset: 272
-    fieldset: NOC_GITS0_GITS0_BASER2
-  - name: GITS0_BASER3
-    byte_offset: 280
-    fieldset: NOC_GITS0_GITS0_BASER3
-  - name: GITS0_BASER4
-    byte_offset: 288
-    fieldset: NOC_GITS0_GITS0_BASER4
-  - name: GITS0_BASER5
-    byte_offset: 296
-    fieldset: NOC_GITS0_GITS0_BASER5
-  - name: GITS0_BASER6
-    byte_offset: 304
-    fieldset: NOC_GITS0_GITS0_BASER6
-  - name: GITS0_BASER7
-    byte_offset: 312
-    fieldset: NOC_GITS0_GITS0_BASER7
-  - name: GITS0_CFGID
-    byte_offset: 61440
-    fieldset: NOC_GITS0_GITS0_CFGID
-  - name: GITS0_PIDR4
-    byte_offset: 65488
-    fieldset: NOC_GITS0_GITS0_PIDR4
-  - name: GITS0_PIDR5
-    byte_offset: 65492
-    fieldset: NOC_GITS0_GITS0_PIDR5
-  - name: GITS0_PIDR6
-    byte_offset: 65496
-    fieldset: NOC_GITS0_GITS0_PIDR6
-  - name: GITS0_PIDR7
-    byte_offset: 65500
-    fieldset: NOC_GITS0_GITS0_PIDR7
-  - name: GITS0_PIDR0
-    byte_offset: 65504
-    fieldset: NOC_GITS0_GITS0_PIDR0
-  - name: GITS0_PIDR1
-    byte_offset: 65508
-    fieldset: NOC_GITS0_GITS0_PIDR1
-  - name: GITS0_PIDR2
-    byte_offset: 65512
-    fieldset: NOC_GITS0_GITS0_PIDR2
-  - name: GITS0_PIDR3
-    byte_offset: 65516
-    fieldset: NOC_GITS0_GITS0_PIDR3
-  - name: GITS0_CIDR0
-    byte_offset: 65520
-    fieldset: NOC_GITS0_GITS0_CIDR0
-  - name: GITS0_CIDR1
-    byte_offset: 65524
-    fieldset: NOC_GITS0_GITS0_CIDR1
-  - name: GITS0_CIDR2
-    byte_offset: 65528
-    fieldset: NOC_GITS0_GITS0_CIDR2
-  - name: GITS0_CIDR3
-    byte_offset: 65532
-    fieldset: NOC_GITS0_GITS0_CIDR3
+    - name: GITS0_CTLR
+      byte_offset: 0
+      fieldset: NOC_GITS0_GITS0_CTLR
+    - name: GITS0_IIDR
+      byte_offset: 4
+      fieldset: NOC_GITS0_GITS0_IIDR
+    - name: GITS0_TYPER
+      byte_offset: 8
+      fieldset: NOC_GITS0_GITS0_TYPER
+    - name: GITS0_MPAMIDR
+      byte_offset: 16
+      fieldset: NOC_GITS0_GITS0_MPAMIDR
+    - name: GITS0_PARTIDR
+      byte_offset: 20
+      fieldset: NOC_GITS0_GITS0_PARTIDR
+    - name: GITS0_MPIDR
+      byte_offset: 24
+      fieldset: NOC_GITS0_GITS0_MPIDR
+    - name: GITS0_FCTLR
+      byte_offset: 32
+      fieldset: NOC_GITS0_GITS0_FCTLR
+    - name: GITS0_OPR
+      byte_offset: 40
+      fieldset: NOC_GITS0_GITS0_OPR
+    - name: GITS0_OPSR
+      byte_offset: 48
+      fieldset: NOC_GITS0_GITS0_OPSR
+    - name: GITS0_CBASER
+      byte_offset: 128
+      fieldset: NOC_GITS0_GITS0_CBASER
+    - name: GITS0_CWRITER
+      byte_offset: 136
+      fieldset: NOC_GITS0_GITS0_CWRITER
+    - name: GITS0_CREADR
+      byte_offset: 144
+      fieldset: NOC_GITS0_GITS0_CREADR
+    - name: GITS0_BASER0
+      byte_offset: 256
+      fieldset: NOC_GITS0_GITS0_BASER0
+    - name: GITS0_BASER1
+      byte_offset: 264
+      fieldset: NOC_GITS0_GITS0_BASER1
+    - name: GITS0_BASER2
+      byte_offset: 272
+      fieldset: NOC_GITS0_GITS0_BASER2
+    - name: GITS0_BASER3
+      byte_offset: 280
+      fieldset: NOC_GITS0_GITS0_BASER3
+    - name: GITS0_BASER4
+      byte_offset: 288
+      fieldset: NOC_GITS0_GITS0_BASER4
+    - name: GITS0_BASER5
+      byte_offset: 296
+      fieldset: NOC_GITS0_GITS0_BASER5
+    - name: GITS0_BASER6
+      byte_offset: 304
+      fieldset: NOC_GITS0_GITS0_BASER6
+    - name: GITS0_BASER7
+      byte_offset: 312
+      fieldset: NOC_GITS0_GITS0_BASER7
+    - name: GITS0_CFGID
+      byte_offset: 61440
+      fieldset: NOC_GITS0_GITS0_CFGID
+    - name: GITS0_PIDR4
+      byte_offset: 65488
+      fieldset: NOC_GITS0_GITS0_PIDR4
+    - name: GITS0_PIDR5
+      byte_offset: 65492
+      fieldset: NOC_GITS0_GITS0_PIDR5
+    - name: GITS0_PIDR6
+      byte_offset: 65496
+      fieldset: NOC_GITS0_GITS0_PIDR6
+    - name: GITS0_PIDR7
+      byte_offset: 65500
+      fieldset: NOC_GITS0_GITS0_PIDR7
+    - name: GITS0_PIDR0
+      byte_offset: 65504
+      fieldset: NOC_GITS0_GITS0_PIDR0
+    - name: GITS0_PIDR1
+      byte_offset: 65508
+      fieldset: NOC_GITS0_GITS0_PIDR1
+    - name: GITS0_PIDR2
+      byte_offset: 65512
+      fieldset: NOC_GITS0_GITS0_PIDR2
+    - name: GITS0_PIDR3
+      byte_offset: 65516
+      fieldset: NOC_GITS0_GITS0_PIDR3
+    - name: GITS0_CIDR0
+      byte_offset: 65520
+      fieldset: NOC_GITS0_GITS0_CIDR0
+    - name: GITS0_CIDR1
+      byte_offset: 65524
+      fieldset: NOC_GITS0_GITS0_CIDR1
+    - name: GITS0_CIDR2
+      byte_offset: 65528
+      fieldset: NOC_GITS0_GITS0_CIDR2
+    - name: GITS0_CIDR3
+      byte_offset: 65532
+      fieldset: NOC_GITS0_GITS0_CIDR3
 fieldset/NOC_GITS0_GITS0_CTLR:
   description: ''
   fields:
-  - name: Enabled
-    bit_offset: 0
-    bit_size: 1
-    description: Enabled
-  - name: RESERVED0
-    bit_offset: 1
-    bit_size: 30
-    description: Enabled
-  - name: Quiescent
-    bit_offset: 31
-    bit_size: 1
-    description: RESERVED0
+    - name: Enabled
+      bit_offset: 0
+      bit_size: 1
+      description: Enabled
+    - name: RESERVED0
+      bit_offset: 1
+      bit_size: 30
+      description: Enabled
+    - name: Quiescent
+      bit_offset: 31
+      bit_size: 1
+      description: RESERVED0
 fieldset/NOC_GITS0_GITS0_IIDR:
   description: ''
   fields:
-  - name: Implementer
-    bit_offset: 0
-    bit_size: 12
-    description: Implementer
-  - name: Revision
-    bit_offset: 12
-    bit_size: 4
-    description: Implementer
-  - name: Variant
-    bit_offset: 16
-    bit_size: 4
-    description: Revision
-  - name: RESERVED0
-    bit_offset: 20
-    bit_size: 4
-    description: Variant
-  - name: ProductID
-    bit_offset: 24
-    bit_size: 8
-    description: RESERVED0
+    - name: Implementer
+      bit_offset: 0
+      bit_size: 12
+      description: Implementer
+    - name: Revision
+      bit_offset: 12
+      bit_size: 4
+      description: Implementer
+    - name: Variant
+      bit_offset: 16
+      bit_size: 4
+      description: Revision
+    - name: RESERVED0
+      bit_offset: 20
+      bit_size: 4
+      description: Variant
+    - name: ProductID
+      bit_offset: 24
+      bit_size: 8
+      description: RESERVED0
 fieldset/NOC_GITS0_GITS0_TYPER:
   description: ''
   fields:
-  - name: Physical
-    bit_offset: 0
-    bit_size: 1
-    description: Physical
-  - name: Virtual
-    bit_offset: 1
-    bit_size: 1
-    description: Physical
-  - name: CCT
-    bit_offset: 2
-    bit_size: 1
-    description: Virtual
-  - name: RESERVED0
-    bit_offset: 3
-    bit_size: 1
-    description: CCT
-  - name: ITTEntrySize
-    bit_offset: 4
-    bit_size: 4
-    description: RESERVED0
-  - name: IDBits
-    bit_offset: 8
-    bit_size: 5
-    description: IDBits
-  - name: DevBits
-    bit_offset: 13
-    bit_size: 5
-    description: IDBits
-  - name: SEIS
-    bit_offset: 18
-    bit_size: 1
-    description: DevBits
-  - name: PTA
-    bit_offset: 19
-    bit_size: 1
-    description: SEIS
-  - name: RESERVED1
-    bit_offset: 20
-    bit_size: 4
-    description: PTA
-  - name: HCC
-    bit_offset: 24
-    bit_size: 8
-    description: RESERVED1
-  - name: CIDBits
-    bit_offset: 32
-    bit_size: 4
-    description: HCC
-  - name: CIL
-    bit_offset: 36
-    bit_size: 1
-    description: CIDBits
-  - name: VMOVP
-    bit_offset: 37
-    bit_size: 1
-    description: CIL
-  - name: MPAM
-    bit_offset: 38
-    bit_size: 1
-    description: VMOVP
-  - name: VSGI
-    bit_offset: 39
-    bit_size: 1
-    description: MPAM
-  - name: VMAPP
-    bit_offset: 40
-    bit_size: 1
-    description: VSGI
-  - name: SVPET
-    bit_offset: 41
-    bit_size: 2
-    description: VMAPP
-  - name: nID
-    bit_offset: 43
-    bit_size: 1
-    description: SVPET
-  - name: RESERVED2
-    bit_offset: 44
-    bit_size: 2
-    description: nID
-  - name: INV
-    bit_offset: 46
-    bit_size: 1
-    description: RESERVED2
-  - name: RESERVED3
-    bit_offset: 47
-    bit_size: 17
-    description: INV
+    - name: Physical
+      bit_offset: 0
+      bit_size: 1
+      description: Physical
+    - name: Virtual
+      bit_offset: 1
+      bit_size: 1
+      description: Physical
+    - name: CCT
+      bit_offset: 2
+      bit_size: 1
+      description: Virtual
+    - name: RESERVED0
+      bit_offset: 3
+      bit_size: 1
+      description: CCT
+    - name: ITTEntrySize
+      bit_offset: 4
+      bit_size: 4
+      description: RESERVED0
+    - name: IDBits
+      bit_offset: 8
+      bit_size: 5
+      description: IDBits
+    - name: DevBits
+      bit_offset: 13
+      bit_size: 5
+      description: IDBits
+    - name: SEIS
+      bit_offset: 18
+      bit_size: 1
+      description: DevBits
+    - name: PTA
+      bit_offset: 19
+      bit_size: 1
+      description: SEIS
+    - name: RESERVED1
+      bit_offset: 20
+      bit_size: 4
+      description: PTA
+    - name: HCC
+      bit_offset: 24
+      bit_size: 8
+      description: RESERVED1
+    - name: CIDBits
+      bit_offset: 32
+      bit_size: 4
+      description: HCC
+    - name: CIL
+      bit_offset: 36
+      bit_size: 1
+      description: CIDBits
+    - name: VMOVP
+      bit_offset: 37
+      bit_size: 1
+      description: CIL
+    - name: MPAM
+      bit_offset: 38
+      bit_size: 1
+      description: VMOVP
+    - name: VSGI
+      bit_offset: 39
+      bit_size: 1
+      description: MPAM
+    - name: VMAPP
+      bit_offset: 40
+      bit_size: 1
+      description: VSGI
+    - name: SVPET
+      bit_offset: 41
+      bit_size: 2
+      description: VMAPP
+    - name: nID
+      bit_offset: 43
+      bit_size: 1
+      description: SVPET
+    - name: RESERVED2
+      bit_offset: 44
+      bit_size: 2
+      description: nID
+    - name: INV
+      bit_offset: 46
+      bit_size: 1
+      description: RESERVED2
+    - name: RESERVED3
+      bit_offset: 47
+      bit_size: 17
+      description: INV
 fieldset/NOC_GITS0_GITS0_MPAMIDR_PARTID:
   description: ''
   fields:
-  - name: MAX
-    bit_offset: 0
-    bit_size: 16
-    description: PARTID_MAX
+    - name: MAX
+      bit_offset: 0
+      bit_size: 16
+      description: PARTID_MAX
 fieldset/NOC_GITS0_GITS0_MPAMIDR_PMG:
   description: ''
   fields:
-  - name: MAX
-    bit_offset: 16
-    bit_size: 8
-    description: PARTID_MAX
+    - name: MAX
+      bit_offset: 16
+      bit_size: 8
+      description: PARTID_MAX
 fieldset/NOC_GITS0_GITS0_MPAMIDR:
   description: ''
   fields:
-  - name: RESERVED0
-    bit_offset: 24
-    bit_size: 8
-    description: PMG_MAX
+    - name: RESERVED0
+      bit_offset: 24
+      bit_size: 8
+      description: PMG_MAX
 fieldset/NOC_GITS0_GITS0_PARTIDR:
   description: ''
   fields:
-  - name: PARTID
-    bit_offset: 0
-    bit_size: 9
-    description: PARTID
-  - name: RESERVED0
-    bit_offset: 9
-    bit_size: 7
-    description: PARTID
-  - name: PMG
-    bit_offset: 16
-    bit_size: 1
-    description: RESERVED0
-  - name: RESERVED1
-    bit_offset: 17
-    bit_size: 15
-    description: PMG
+    - name: PARTID
+      bit_offset: 0
+      bit_size: 9
+      description: PARTID
+    - name: RESERVED0
+      bit_offset: 9
+      bit_size: 7
+      description: PARTID
+    - name: PMG
+      bit_offset: 16
+      bit_size: 1
+      description: RESERVED0
+    - name: RESERVED1
+      bit_offset: 17
+      bit_size: 15
+      description: PMG
 fieldset/NOC_GITS0_GITS0_MPIDR:
   description: ''
   fields:
-  - name: RESERVED0
-    bit_offset: 0
-    bit_size: 8
-    description: RESERVED0
-  - name: Aff1
-    bit_offset: 8
-    bit_size: 8
-    description: RESERVED0
-  - name: Aff2
-    bit_offset: 16
-    bit_size: 8
-    description: Aff1
-  - name: Aff3
-    bit_offset: 24
-    bit_size: 8
-    description: Aff2
+    - name: RESERVED0
+      bit_offset: 0
+      bit_size: 8
+      description: RESERVED0
+    - name: Aff1
+      bit_offset: 8
+      bit_size: 8
+      description: RESERVED0
+    - name: Aff2
+      bit_offset: 16
+      bit_size: 8
+      description: Aff1
+    - name: Aff3
+      bit_offset: 24
+      bit_size: 8
+      description: Aff2
 fieldset/NOC_GITS0_GITS0_FCTLR:
   description: ''
   fields:
-  - name: SIP
-    bit_offset: 0
-    bit_size: 1
-    description: SIP
-  - name: LTE
-    bit_offset: 1
-    bit_size: 1
-    description: SIP
-  - name: UEE
-    bit_offset: 2
-    bit_size: 1
-    description: LTE
-  - name: CEE
-    bit_offset: 3
-    bit_size: 1
-    description: UEE
-  - name: CGO
-    bit_offset: 4
-    bit_size: 3
-    description: CEE
-  - name: LEO
-    bit_offset: 7
-    bit_size: 1
-    description: CGO
-  - name: AEE
-    bit_offset: 8
-    bit_size: 1
-    description: LEO
-  - name: QD
-    bit_offset: 9
-    bit_size: 1
-    description: AEE
-  - name: QAK
-    bit_offset: 10
-    bit_size: 1
-    description: QD
-  - name: RESERVED0
-    bit_offset: 14
-    bit_size: 2
-    description: RESERVED0
-  - name: ICC
-    bit_offset: 16
-    bit_size: 1
-    description: RESERVED0
-  - name: IDC
-    bit_offset: 17
-    bit_size: 1
-    description: ICC
-  - name: IEC
-    bit_offset: 18
-    bit_size: 1
-    description: IDC
-  - name: RESERVED1
-    bit_offset: 19
-    bit_size: 1
-    description: IEC
-  - name: RESERVED2
-    bit_offset: 24
-    bit_size: 4
-    description: lpi_cr_init
-  - name: PWE
-    bit_offset: 30
-    bit_size: 1
-    description: cmd_flush
-  - name: DCC
-    bit_offset: 31
-    bit_size: 1
-    description: PWE
+    - name: SIP
+      bit_offset: 0
+      bit_size: 1
+      description: SIP
+    - name: LTE
+      bit_offset: 1
+      bit_size: 1
+      description: SIP
+    - name: UEE
+      bit_offset: 2
+      bit_size: 1
+      description: LTE
+    - name: CEE
+      bit_offset: 3
+      bit_size: 1
+      description: UEE
+    - name: CGO
+      bit_offset: 4
+      bit_size: 3
+      description: CEE
+    - name: LEO
+      bit_offset: 7
+      bit_size: 1
+      description: CGO
+    - name: AEE
+      bit_offset: 8
+      bit_size: 1
+      description: LEO
+    - name: QD
+      bit_offset: 9
+      bit_size: 1
+      description: AEE
+    - name: QAK
+      bit_offset: 10
+      bit_size: 1
+      description: QD
+    - name: RESERVED0
+      bit_offset: 14
+      bit_size: 2
+      description: RESERVED0
+    - name: ICC
+      bit_offset: 16
+      bit_size: 1
+      description: RESERVED0
+    - name: IDC
+      bit_offset: 17
+      bit_size: 1
+      description: ICC
+    - name: IEC
+      bit_offset: 18
+      bit_size: 1
+      description: IDC
+    - name: RESERVED1
+      bit_offset: 19
+      bit_size: 1
+      description: IEC
+    - name: RESERVED2
+      bit_offset: 24
+      bit_size: 4
+      description: lpi_cr_init
+    - name: PWE
+      bit_offset: 30
+      bit_size: 1
+      description: cmd_flush
+    - name: DCC
+      bit_offset: 31
+      bit_size: 1
+      description: PWE
 fieldset/NOC_GITS0_GITS0_FCTLR_poison:
   description: ''
   fields:
-  - name: check
-    bit_offset: 11
-    bit_size: 1
-    description: QAK
+    - name: check
+      bit_offset: 11
+      bit_size: 1
+      description: QAK
 fieldset/NOC_GITS0_GITS0_FCTLR_ll_lpi_cr:
   description: ''
   fields:
-  - name: init
-    bit_offset: 12
-    bit_size: 2
-    description: ll_lpi_cr_init
+    - name: init
+      bit_offset: 12
+      bit_size: 2
+      description: ll_lpi_cr_init
 fieldset/NOC_GITS0_GITS0_FCTLR_lpi_cr:
   description: ''
   fields:
-  - name: init
-    bit_offset: 20
-    bit_size: 4
-    description: RESERVED1
+    - name: init
+      bit_offset: 20
+      bit_size: 4
+      description: RESERVED1
 fieldset/NOC_GITS0_GITS0_FCTLR_cmd:
   description: ''
   fields:
-  - name: flush
-    bit_offset: 28
-    bit_size: 2
-    description: RESERVED2
+    - name: flush
+      bit_offset: 28
+      bit_size: 2
+      description: RESERVED2
 fieldset/NOC_GITS0_GITS0_OPR_EVENT:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 20
-    description: EVENT_ID
+    - name: ID
+      bit_offset: 0
+      bit_size: 20
+      description: EVENT_ID
 fieldset/NOC_GITS0_GITS0_OPR:
   description: ''
   fields:
-  - name: RESERVED0
-    bit_offset: 20
-    bit_size: 12
-    description: EVENT_ID
-  - name: RESERVED1
-    bit_offset: 56
-    bit_size: 4
-    description: DEVICE_ID
+    - name: RESERVED0
+      bit_offset: 20
+      bit_size: 12
+      description: EVENT_ID
+    - name: RESERVED1
+      bit_offset: 56
+      bit_size: 4
+      description: DEVICE_ID
 fieldset/NOC_GITS0_GITS0_OPR_DEVICE:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 32
-    bit_size: 24
-    description: RESERVED0
+    - name: ID
+      bit_offset: 32
+      bit_size: 24
+      description: RESERVED0
 fieldset/NOC_GITS0_GITS0_OPR_LOCK:
   description: ''
   fields:
-  - name: TYPE
-    bit_offset: 60
-    bit_size: 4
-    description: RESERVED1
+    - name: TYPE
+      bit_offset: 60
+      bit_size: 4
+      description: RESERVED1
 fieldset/NOC_GITS0_GITS0_OPSR:
   description: ''
   fields:
-  - name: PID
-    bit_offset: 0
-    bit_size: 16
-    description: PID
-  - name: RESERVED0
-    bit_offset: 16
-    bit_size: 16
-    description: PID
-  - name: TARGET
-    bit_offset: 32
-    bit_size: 14
-    description: RESERVED0
-  - name: RESERVED1
-    bit_offset: 46
-    bit_size: 2
-    description: TARGET
-  - name: VIRT
-    bit_offset: 49
-    bit_size: 1
-    description: VIRT
-  - name: RESERVED2
-    bit_offset: 50
-    bit_size: 11
-    description: VIRT
+    - name: PID
+      bit_offset: 0
+      bit_size: 16
+      description: PID
+    - name: RESERVED0
+      bit_offset: 16
+      bit_size: 16
+      description: PID
+    - name: TARGET
+      bit_offset: 32
+      bit_size: 14
+      description: RESERVED0
+    - name: RESERVED1
+      bit_offset: 46
+      bit_size: 2
+      description: TARGET
+    - name: VIRT
+      bit_offset: 49
+      bit_size: 1
+      description: VIRT
+    - name: RESERVED2
+      bit_offset: 50
+      bit_size: 11
+      description: VIRT
 fieldset/NOC_GITS0_GITS0_OPSR_ENTRY:
   description: ''
   fields:
-  - name: LOCKED
-    bit_offset: 48
-    bit_size: 1
-    description: RESERVED1
+    - name: LOCKED
+      bit_offset: 48
+      bit_size: 1
+      description: RESERVED1
 fieldset/NOC_GITS0_GITS0_OPSR_REQUEST_IN:
   description: ''
   fields:
-  - name: PROGRESS
-    bit_offset: 61
-    bit_size: 1
-    description: RESERVED2
+    - name: PROGRESS
+      bit_offset: 61
+      bit_size: 1
+      description: RESERVED2
 fieldset/NOC_GITS0_GITS0_OPSR_REQUEST:
   description: ''
   fields:
-  - name: PASS
-    bit_offset: 62
-    bit_size: 1
-    description: REQUEST_PASS
-  - name: COMPLETE
-    bit_offset: 63
-    bit_size: 1
+    - name: PASS
+      bit_offset: 62
+      bit_size: 1
+      description: REQUEST_PASS
+    - name: COMPLETE
+      bit_offset: 63
+      bit_size: 1
 fieldset/NOC_GITS0_GITS0_CBASER:
   description: ''
   fields:
-  - name: Size
-    bit_offset: 0
-    bit_size: 8
-    description: Size
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 2
-    description: Size
-  - name: Shareability
-    bit_offset: 10
-    bit_size: 2
-    description: RESERVED0
-  - name: PhysicalAddress
-    bit_offset: 12
-    bit_size: 24
-    description: PhysicalAddress
-  - name: RESERVED1
-    bit_offset: 36
-    bit_size: 17
-    description: RESERVED1
-  - name: OuterCacheability
-    bit_offset: 53
-    bit_size: 3
-    description: RESERVED1
-  - name: RESERVED2
-    bit_offset: 56
-    bit_size: 3
-    description: RESERVED2
-  - name: Cacheability
-    bit_offset: 59
-    bit_size: 3
-    description: RESERVED2
-  - name: RESERVED3
-    bit_offset: 62
-    bit_size: 1
-    description: RESERVED3
-  - name: Valid
-    bit_offset: 63
-    bit_size: 1
-    description: RESERVED3
+    - name: Size
+      bit_offset: 0
+      bit_size: 8
+      description: Size
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 2
+      description: Size
+    - name: Shareability
+      bit_offset: 10
+      bit_size: 2
+      description: RESERVED0
+    - name: PhysicalAddress
+      bit_offset: 12
+      bit_size: 24
+      description: PhysicalAddress
+    - name: RESERVED1
+      bit_offset: 36
+      bit_size: 17
+      description: RESERVED1
+    - name: OuterCacheability
+      bit_offset: 53
+      bit_size: 3
+      description: RESERVED1
+    - name: RESERVED2
+      bit_offset: 56
+      bit_size: 3
+      description: RESERVED2
+    - name: Cacheability
+      bit_offset: 59
+      bit_size: 3
+      description: RESERVED2
+    - name: RESERVED3
+      bit_offset: 62
+      bit_size: 1
+      description: RESERVED3
+    - name: Valid
+      bit_offset: 63
+      bit_size: 1
+      description: RESERVED3
 fieldset/NOC_GITS0_GITS0_CWRITER:
   description: ''
   fields:
-  - name: Retry
-    bit_offset: 0
-    bit_size: 1
-    description: Retry
-  - name: RESERVED0
-    bit_offset: 1
-    bit_size: 4
-    description: Retry
-  - name: Offset
-    bit_offset: 5
-    bit_size: 15
-    description: RESERVED0
-  - name: RESERVED1
-    bit_offset: 20
-    bit_size: 44
-    description: Offset
+    - name: Retry
+      bit_offset: 0
+      bit_size: 1
+      description: Retry
+    - name: RESERVED0
+      bit_offset: 1
+      bit_size: 4
+      description: Retry
+    - name: Offset
+      bit_offset: 5
+      bit_size: 15
+      description: RESERVED0
+    - name: RESERVED1
+      bit_offset: 20
+      bit_size: 44
+      description: Offset
 fieldset/NOC_GITS0_GITS0_CREADR:
   description: ''
   fields:
-  - name: Stalled
-    bit_offset: 0
-    bit_size: 1
-    description: Stalled
-  - name: RESERVED0
-    bit_offset: 1
-    bit_size: 4
-    description: Stalled
-  - name: Offset
-    bit_offset: 5
-    bit_size: 15
-    description: RESERVED0
-  - name: RESERVED1
-    bit_offset: 20
-    bit_size: 44
-    description: Offset
+    - name: Stalled
+      bit_offset: 0
+      bit_size: 1
+      description: Stalled
+    - name: RESERVED0
+      bit_offset: 1
+      bit_size: 4
+      description: Stalled
+    - name: Offset
+      bit_offset: 5
+      bit_size: 15
+      description: RESERVED0
+    - name: RESERVED1
+      bit_offset: 20
+      bit_size: 44
+      description: Offset
 fieldset/NOC_GITS0_GITS0_BASER0:
   description: ''
   fields:
-  - name: Size
-    bit_offset: 0
-    bit_size: 8
-    description: Size
-  - name: PageSize
-    bit_offset: 8
-    bit_size: 2
-    description: Size
-  - name: Shareability
-    bit_offset: 10
-    bit_size: 2
-    description: PageSize
-  - name: PhysicalAddress
-    bit_offset: 12
-    bit_size: 24
-    description: PhysicalAddress
-  - name: RESERVED0
-    bit_offset: 36
-    bit_size: 12
-    description: RESERVED0
-  - name: EntrySize
-    bit_offset: 48
-    bit_size: 5
-    description: RESERVED0
-  - name: OuterCacheability
-    bit_offset: 53
-    bit_size: 3
-    description: EntrySize
-  - name: Type
-    bit_offset: 56
-    bit_size: 3
-    description: Type
-  - name: Cacheability
-    bit_offset: 59
-    bit_size: 3
-    description: Type
-  - name: Indirect
-    bit_offset: 62
-    bit_size: 1
-    description: Indirect
-  - name: Valid
-    bit_offset: 63
-    bit_size: 1
-    description: Indirect
+    - name: Size
+      bit_offset: 0
+      bit_size: 8
+      description: Size
+    - name: PageSize
+      bit_offset: 8
+      bit_size: 2
+      description: Size
+    - name: Shareability
+      bit_offset: 10
+      bit_size: 2
+      description: PageSize
+    - name: PhysicalAddress
+      bit_offset: 12
+      bit_size: 24
+      description: PhysicalAddress
+    - name: RESERVED0
+      bit_offset: 36
+      bit_size: 12
+      description: RESERVED0
+    - name: EntrySize
+      bit_offset: 48
+      bit_size: 5
+      description: RESERVED0
+    - name: OuterCacheability
+      bit_offset: 53
+      bit_size: 3
+      description: EntrySize
+    - name: Type
+      bit_offset: 56
+      bit_size: 3
+      description: Type
+    - name: Cacheability
+      bit_offset: 59
+      bit_size: 3
+      description: Type
+    - name: Indirect
+      bit_offset: 62
+      bit_size: 1
+      description: Indirect
+    - name: Valid
+      bit_offset: 63
+      bit_size: 1
+      description: Indirect
 fieldset/NOC_GITS0_GITS0_BASER1:
   description: ''
   fields:
-  - name: Size
-    bit_offset: 0
-    bit_size: 8
-    description: Size
-  - name: PageSize
-    bit_offset: 8
-    bit_size: 2
-    description: Size
-  - name: Shareability
-    bit_offset: 10
-    bit_size: 2
-    description: PageSize
-  - name: PhysicalAddress
-    bit_offset: 12
-    bit_size: 24
-    description: PhysicalAddress
-  - name: RESERVED0
-    bit_offset: 36
-    bit_size: 12
-    description: RESERVED0
-  - name: EntrySize
-    bit_offset: 48
-    bit_size: 5
-    description: RESERVED0
-  - name: OuterCacheability
-    bit_offset: 53
-    bit_size: 3
-    description: EntrySize
-  - name: Type
-    bit_offset: 56
-    bit_size: 3
-    description: Type
-  - name: Cacheability
-    bit_offset: 59
-    bit_size: 3
-    description: Type
-  - name: Indirect
-    bit_offset: 62
-    bit_size: 1
-    description: Indirect
-  - name: Valid
-    bit_offset: 63
-    bit_size: 1
-    description: Indirect
+    - name: Size
+      bit_offset: 0
+      bit_size: 8
+      description: Size
+    - name: PageSize
+      bit_offset: 8
+      bit_size: 2
+      description: Size
+    - name: Shareability
+      bit_offset: 10
+      bit_size: 2
+      description: PageSize
+    - name: PhysicalAddress
+      bit_offset: 12
+      bit_size: 24
+      description: PhysicalAddress
+    - name: RESERVED0
+      bit_offset: 36
+      bit_size: 12
+      description: RESERVED0
+    - name: EntrySize
+      bit_offset: 48
+      bit_size: 5
+      description: RESERVED0
+    - name: OuterCacheability
+      bit_offset: 53
+      bit_size: 3
+      description: EntrySize
+    - name: Type
+      bit_offset: 56
+      bit_size: 3
+      description: Type
+    - name: Cacheability
+      bit_offset: 59
+      bit_size: 3
+      description: Type
+    - name: Indirect
+      bit_offset: 62
+      bit_size: 1
+      description: Indirect
+    - name: Valid
+      bit_offset: 63
+      bit_size: 1
+      description: Indirect
 fieldset/NOC_GITS0_GITS0_BASER2:
   description: ''
   fields:
-  - name: RESERVED
-    bit_offset: 0
-    bit_size: 64
-    description: RESERVED
+    - name: RESERVED
+      bit_offset: 0
+      bit_size: 64
+      description: RESERVED
 fieldset/NOC_GITS0_GITS0_BASER3:
   description: ''
   fields:
-  - name: RESERVED
-    bit_offset: 0
-    bit_size: 64
-    description: RESERVED
+    - name: RESERVED
+      bit_offset: 0
+      bit_size: 64
+      description: RESERVED
 fieldset/NOC_GITS0_GITS0_BASER4:
   description: ''
   fields:
-  - name: RESERVED
-    bit_offset: 0
-    bit_size: 64
-    description: RESERVED
+    - name: RESERVED
+      bit_offset: 0
+      bit_size: 64
+      description: RESERVED
 fieldset/NOC_GITS0_GITS0_BASER5:
   description: ''
   fields:
-  - name: RESERVED
-    bit_offset: 0
-    bit_size: 64
-    description: RESERVED
+    - name: RESERVED
+      bit_offset: 0
+      bit_size: 64
+      description: RESERVED
 fieldset/NOC_GITS0_GITS0_BASER6:
   description: ''
   fields:
-  - name: RESERVED
-    bit_offset: 0
-    bit_size: 64
-    description: RESERVED
+    - name: RESERVED
+      bit_offset: 0
+      bit_size: 64
+      description: RESERVED
 fieldset/NOC_GITS0_GITS0_BASER7:
   description: ''
   fields:
-  - name: RESERVED
-    bit_offset: 0
-    bit_size: 64
-    description: RESERVED
+    - name: RESERVED
+      bit_offset: 0
+      bit_size: 64
+      description: RESERVED
 fieldset/NOC_GITS0_GITS0_CFGID_ITS:
   description: ''
   fields:
-  - name: NUMBER
-    bit_offset: 0
-    bit_size: 8
-    description: ITS_NUMBER
+    - name: NUMBER
+      bit_offset: 0
+      bit_size: 8
+      description: ITS_NUMBER
 fieldset/NOC_GITS0_GITS0_CFGID_LPI_Credit:
   description: ''
   fields:
-  - name: Count
-    bit_offset: 8
-    bit_size: 4
-    description: ITS_NUMBER
+    - name: Count
+      bit_offset: 8
+      bit_size: 4
+      description: ITS_NUMBER
 fieldset/NOC_GITS0_GITS0_CFGID_Target:
   description: ''
   fields:
-  - name: Bits
-    bit_offset: 12
-    bit_size: 4
-    description: Target_Bits
+    - name: Bits
+      bit_offset: 12
+      bit_size: 4
+      description: Target_Bits
 fieldset/NOC_GITS0_GITS0_CFGID_Low_Latency:
   description: ''
   fields:
-  - name: Support
-    bit_offset: 17
-    bit_size: 1
-    description: MSI_64
+    - name: Support
+      bit_offset: 17
+      bit_size: 1
+      description: MSI_64
 fieldset/NOC_GITS0_GITS0_CFGID_Cache:
   description: ''
   fields:
-  - name: ECC
-    bit_offset: 18
-    bit_size: 1
-    description: Cache_ECC
+    - name: ECC
+      bit_offset: 18
+      bit_size: 1
+      description: Cache_ECC
 fieldset/NOC_GITS0_GITS0_CFGID:
   description: ''
   fields:
-  - name: RESERVED0
-    bit_offset: 19
-    bit_size: 1
-    description: Cache_ECC
-  - name: RESERVED1
-    bit_offset: 40
-    bit_size: 24
-    description: RESERVED1
+    - name: RESERVED0
+      bit_offset: 19
+      bit_size: 1
+      description: Cache_ECC
+    - name: RESERVED1
+      bit_offset: 40
+      bit_size: 24
+      description: RESERVED1
 fieldset/NOC_GITS0_GITS0_CFGID_Collection_Cache_Index:
   description: ''
   fields:
-  - name: Bits
-    bit_offset: 20
-    bit_size: 4
-    description: RESERVED0
+    - name: Bits
+      bit_offset: 20
+      bit_size: 4
+      description: RESERVED0
 fieldset/NOC_GITS0_GITS0_CFGID_Device_Cache_Index:
   description: ''
   fields:
-  - name: Bits
-    bit_offset: 24
-    bit_size: 4
+    - name: Bits
+      bit_offset: 24
+      bit_size: 4
 fieldset/NOC_GITS0_GITS0_CFGID_Event_Cache_Index:
   description: ''
   fields:
-  - name: Bits
-    bit_offset: 28
-    bit_size: 4
+    - name: Bits
+      bit_offset: 28
+      bit_size: 4
 fieldset/NOC_GITS0_GITS0_CFGID_Vpe:
   description: ''
   fields:
-  - name: Bits
-    bit_offset: 32
-    bit_size: 4
-    description: Vpe_Bits
+    - name: Bits
+      bit_offset: 32
+      bit_size: 4
+      description: Vpe_Bits
 fieldset/NOC_GITS0_GITS0_CFGID_Low_Latency_Lpi_Credit:
   description: ''
   fields:
-  - name: Count
-    bit_offset: 36
-    bit_size: 4
-    description: Vpe_Bits
+    - name: Count
+      bit_offset: 36
+      bit_size: 4
+      description: Vpe_Bits
 fieldset/NOC_GITS0_GITS0_PIDR4:
   description: ''
   fields:
-  - name: SIZE
-    bit_offset: 4
-    bit_size: 4
-    description: DES_2
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: SIZE
+    - name: SIZE
+      bit_offset: 4
+      bit_size: 4
+      description: DES_2
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: SIZE
 fieldset/NOC_GITS0_GITS0_PIDR5:
   description: ''
   fields:
-  - name: RESERVED
-    bit_offset: 0
-    bit_size: 8
-    description: RESERVED
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: RESERVED
+    - name: RESERVED
+      bit_offset: 0
+      bit_size: 8
+      description: RESERVED
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: RESERVED
 fieldset/NOC_GITS0_GITS0_PIDR6:
   description: ''
   fields:
-  - name: RESERVED
-    bit_offset: 0
-    bit_size: 8
-    description: RESERVED
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: RESERVED
+    - name: RESERVED
+      bit_offset: 0
+      bit_size: 8
+      description: RESERVED
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: RESERVED
 fieldset/NOC_GITS0_GITS0_PIDR7:
   description: ''
   fields:
-  - name: RESERVED
-    bit_offset: 0
-    bit_size: 8
-    description: RESERVED
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: RESERVED
+    - name: RESERVED
+      bit_offset: 0
+      bit_size: 8
+      description: RESERVED
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: RESERVED
 fieldset/NOC_GITS0_GITS0_PIDR0:
   description: ''
   fields:
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: PART_0
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: PART_0
 fieldset/NOC_GITS0_GITS0_PIDR1:
   description: ''
   fields:
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: DES_0
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: DES_0
 fieldset/NOC_GITS0_GITS0_PIDR2:
   description: ''
   fields:
-  - name: JEDEC
-    bit_offset: 3
-    bit_size: 1
-    description: DES_1
-  - name: REVISION
-    bit_offset: 4
-    bit_size: 4
-    description: JEDEC
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: REVISION
+    - name: JEDEC
+      bit_offset: 3
+      bit_size: 1
+      description: DES_1
+    - name: REVISION
+      bit_offset: 4
+      bit_size: 4
+      description: JEDEC
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: REVISION
 fieldset/NOC_GITS0_GITS0_PIDR3:
   description: ''
   fields:
-  - name: CMOD
-    bit_offset: 0
-    bit_size: 3
-    description: CMOD
-  - name: RESERVED0
-    bit_offset: 3
-    bit_size: 1
-    description: CMOD
-  - name: REVAND
-    bit_offset: 4
-    bit_size: 4
-    description: RESERVED0
-  - name: RESERVED1
-    bit_offset: 8
-    bit_size: 24
-    description: REVAND
+    - name: CMOD
+      bit_offset: 0
+      bit_size: 3
+      description: CMOD
+    - name: RESERVED0
+      bit_offset: 3
+      bit_size: 1
+      description: CMOD
+    - name: REVAND
+      bit_offset: 4
+      bit_size: 4
+      description: RESERVED0
+    - name: RESERVED1
+      bit_offset: 8
+      bit_size: 24
+      description: REVAND
 fieldset/NOC_GITS0_GITS0_CIDR0:
   description: ''
   fields:
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: PRMBL_0
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: PRMBL_0
 fieldset/NOC_GITS0_GITS0_CIDR1:
   description: ''
   fields:
-  - name: CLASS
-    bit_offset: 4
-    bit_size: 4
-    description: PRMBL_1
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: CLASS
+    - name: CLASS
+      bit_offset: 4
+      bit_size: 4
+      description: PRMBL_1
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: CLASS
 fieldset/NOC_GITS0_GITS0_CIDR2:
   description: ''
   fields:
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: PRMBL_2
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: PRMBL_2
 fieldset/NOC_GITS0_GITS0_CIDR3:
   description: ''
   fields:
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: PRMBL_3
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: PRMBL_3

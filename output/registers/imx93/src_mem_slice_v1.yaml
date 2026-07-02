@@ -1,99 +1,99 @@
 block/SRC_MEM_SLICE:
   description: ''
   items:
-  - name: MEM_CTRL
-    byte_offset: 4
-  - name: MEMLP_CTRL_0
-    byte_offset: 8
-  - name: MEMLP_CTRL_1
-    byte_offset: 16
-  - name: MEMLP_CTRL_2
-    byte_offset: 20
-  - name: MEM_STAT
-    byte_offset: 24
+    - name: MEM_CTRL
+      byte_offset: 4
+    - name: MEMLP_CTRL_0
+      byte_offset: 8
+    - name: MEMLP_CTRL_1
+      byte_offset: 16
+    - name: MEMLP_CTRL_2
+      byte_offset: 20
+    - name: MEM_STAT
+      byte_offset: 24
 fieldset/SRC_MEM_SLICE_MEM_CTRL_SW_MEM:
   description: ''
   fields:
-  - name: CTRL
-    bit_offset: 0
-    bit_size: 1
+    - name: CTRL
+      bit_offset: 0
+      bit_size: 1
 fieldset/SRC_MEM_SLICE_MEM_CTRL_MEM_LP:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 1
-    bit_size: 1
-  - name: EN
-    bit_offset: 2
-    bit_size: 1
+    - name: MODE
+      bit_offset: 1
+      bit_size: 1
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
 fieldset/SRC_MEM_SLICE_MEM_CTRL_MEM_LF_CNT:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 8
-    bit_size: 8
+    - name: CFG
+      bit_offset: 8
+      bit_size: 8
 fieldset/SRC_MEM_SLICE_MEM_CTRL_MEM_HF_CNT:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 16
-    bit_size: 8
+    - name: CFG
+      bit_offset: 16
+      bit_size: 8
 fieldset/SRC_MEM_SLICE_MEM_CTRL_LOCK:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 24
-    bit_size: 1
+    - name: CFG
+      bit_offset: 24
+      bit_size: 1
 fieldset/SRC_MEM_SLICE_MEMLP_CTRL_0_MEMLP_ENT:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 32
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
 fieldset/SRC_MEM_SLICE_MEMLP_CTRL_1_MEMLP_RET_PGEN:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 32
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
 fieldset/SRC_MEM_SLICE_MEMLP_CTRL_2_MEMLP_EXT:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 32
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
 fieldset/SRC_MEM_SLICE_MEM_STAT_MEM_FSM:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 0
-    bit_size: 4
-    description: MEM FSM status
+    - name: STAT
+      bit_offset: 0
+      bit_size: 4
+      description: MEM FSM status
 fieldset/SRC_MEM_SLICE_MEM_STAT_RET2N:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 4
-    bit_size: 1
-    description: RET2N status
+    - name: STAT
+      bit_offset: 4
+      bit_size: 1
+      description: RET2N status
 fieldset/SRC_MEM_SLICE_MEM_STAT_RET1N:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 5
-    bit_size: 1
-    description: RET2N status
+    - name: STAT
+      bit_offset: 5
+      bit_size: 1
+      description: RET2N status
 fieldset/SRC_MEM_SLICE_MEM_STAT_PGEN:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 6
-    bit_size: 1
-    description: RET1N status
+    - name: STAT
+      bit_offset: 6
+      bit_size: 1
+      description: RET1N status
 fieldset/SRC_MEM_SLICE_MEM_STAT_MEM:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 8
-    bit_size: 1
-    description: PGEN status
+    - name: STAT
+      bit_offset: 8
+      bit_size: 1
+      description: PGEN status

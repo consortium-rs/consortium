@@ -1,179 +1,179 @@
 block/GPC_GLOBAL:
   description: ''
   items:
-  - name: AUTHEN_CTRL
-    byte_offset: 4
-    fieldset: GPC_GLOBAL_AUTHEN_CTRL
-  - name: GPC_DOMAIN
-    byte_offset: 16
-  - name: GPC_MASTER
-    byte_offset: 28
-  - name: GPC_SYS_SLEEP
-    byte_offset: 64
-  - name: PMIC_CTRL
-    byte_offset: 256
-  - name: PMIC_PRE_DLY_CTRL
-    byte_offset: 260
-  - name: PMIC_STBY_ACK_CTRL
-    byte_offset: 264
-  - name: GPC_ROSC_CTRL
-    byte_offset: 512
-  - name: GPC_AON_MEM_CTRL
-    byte_offset: 516
-  - name: GPC_EFUSE_CTRL
-    byte_offset: 520
+    - name: AUTHEN_CTRL
+      byte_offset: 4
+      fieldset: GPC_GLOBAL_AUTHEN_CTRL
+    - name: GPC_DOMAIN
+      byte_offset: 16
+    - name: GPC_MASTER
+      byte_offset: 28
+    - name: GPC_SYS_SLEEP
+      byte_offset: 64
+    - name: PMIC_CTRL
+      byte_offset: 256
+    - name: PMIC_PRE_DLY_CTRL
+      byte_offset: 260
+    - name: PMIC_STBY_ACK_CTRL
+      byte_offset: 264
+    - name: GPC_ROSC_CTRL
+      byte_offset: 512
+    - name: GPC_AON_MEM_CTRL
+      byte_offset: 516
+    - name: GPC_EFUSE_CTRL
+      byte_offset: 520
 fieldset/GPC_GLOBAL_AUTHEN_CTRL_LOCK:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 7
-    bit_size: 1
-  - name: SETTING
-    bit_offset: 11
-    bit_size: 1
-  - name: LIST
-    bit_offset: 15
-    bit_size: 1
+    - name: CFG
+      bit_offset: 7
+      bit_size: 1
+    - name: SETTING
+      bit_offset: 11
+      bit_size: 1
+    - name: LIST
+      bit_offset: 15
+      bit_size: 1
 fieldset/GPC_GLOBAL_AUTHEN_CTRL:
   description: ''
   fields:
-  - name: USER
-    bit_offset: 8
-    bit_size: 1
-  - name: NONSECURE
-    bit_offset: 9
-    bit_size: 1
+    - name: USER
+      bit_offset: 8
+      bit_size: 1
+    - name: NONSECURE
+      bit_offset: 9
+      bit_size: 1
 fieldset/GPC_GLOBAL_AUTHEN_CTRL_WHITE:
   description: ''
   fields:
-  - name: LIST
-    bit_offset: 16
-    bit_size: 16
-    description: Domain ID white list
+    - name: LIST
+      bit_offset: 16
+      bit_size: 16
+      description: Domain ID white list
 fieldset/GPC_GLOBAL_GPC_DOMAIN_CPU0:
   description: ''
   fields:
-  - name: DOMAIN
-    bit_offset: 0
-    bit_size: 4
-    description: CPU0 domain assignment
+    - name: DOMAIN
+      bit_offset: 0
+      bit_size: 4
+      description: CPU0 domain assignment
 fieldset/GPC_GLOBAL_GPC_DOMAIN_CPU1:
   description: ''
   fields:
-  - name: DOMAIN
-    bit_offset: 4
-    bit_size: 4
-    description: CPU1 domain assignment
+    - name: DOMAIN
+      bit_offset: 4
+      bit_size: 4
+      description: CPU1 domain assignment
 fieldset/GPC_GLOBAL_GPC_DOMAIN_CPU2:
   description: ''
   fields:
-  - name: DOMAIN
-    bit_offset: 8
-    bit_size: 4
-    description: CPU2 domain assignment
+    - name: DOMAIN
+      bit_offset: 8
+      bit_size: 4
+      description: CPU2 domain assignment
 fieldset/GPC_GLOBAL_GPC_DOMAIN_CPU3:
   description: ''
   fields:
-  - name: DOMAIN
-    bit_offset: 12
-    bit_size: 4
-    description: CPU3 domain assignment
+    - name: DOMAIN
+      bit_offset: 12
+      bit_size: 4
+      description: CPU3 domain assignment
 fieldset/GPC_GLOBAL_GPC_MASTER_CPU0:
   description: ''
   fields:
-  - name: MASTER
-    bit_offset: 0
-    bit_size: 1
+    - name: MASTER
+      bit_offset: 0
+      bit_size: 1
 fieldset/GPC_GLOBAL_GPC_MASTER_CPU1:
   description: ''
   fields:
-  - name: MASTER
-    bit_offset: 1
-    bit_size: 1
+    - name: MASTER
+      bit_offset: 1
+      bit_size: 1
 fieldset/GPC_GLOBAL_GPC_MASTER_CPU2:
   description: ''
   fields:
-  - name: MASTER
-    bit_offset: 2
-    bit_size: 1
+    - name: MASTER
+      bit_offset: 2
+      bit_size: 1
 fieldset/GPC_GLOBAL_GPC_MASTER_CPU3:
   description: ''
   fields:
-  - name: MASTER
-    bit_offset: 3
-    bit_size: 1
+    - name: MASTER
+      bit_offset: 3
+      bit_size: 1
 fieldset/GPC_GLOBAL_GPC_SYS_SLEEP_FORCE_CPU0:
   description: ''
   fields:
-  - name: DISABLE
-    bit_offset: 16
-    bit_size: 1
+    - name: DISABLE
+      bit_offset: 16
+      bit_size: 1
 fieldset/GPC_GLOBAL_GPC_SYS_SLEEP_FORCE_CPU1:
   description: ''
   fields:
-  - name: DISABLE
-    bit_offset: 17
-    bit_size: 1
+    - name: DISABLE
+      bit_offset: 17
+      bit_size: 1
 fieldset/GPC_GLOBAL_GPC_SYS_SLEEP_FORCE_CPU2:
   description: ''
   fields:
-  - name: DISABLE
-    bit_offset: 18
-    bit_size: 1
+    - name: DISABLE
+      bit_offset: 18
+      bit_size: 1
 fieldset/GPC_GLOBAL_GPC_SYS_SLEEP_FORCE_CPU3:
   description: ''
   fields:
-  - name: DISABLE
-    bit_offset: 19
-    bit_size: 1
+    - name: DISABLE
+      bit_offset: 19
+      bit_size: 1
 fieldset/GPC_GLOBAL_PMIC_CTRL_PMIC_STBY:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
 fieldset/GPC_GLOBAL_PMIC_PRE_DLY_CTRL_DLY_PRE_STBY:
   description: ''
   fields:
-  - name: 'ON'
-    bit_offset: 0
-    bit_size: 16
-  - name: 'OFF'
-    bit_offset: 16
-    bit_size: 16
+    - name: 'ON'
+      bit_offset: 0
+      bit_size: 16
+    - name: 'OFF'
+      bit_offset: 16
+      bit_size: 16
 fieldset/GPC_GLOBAL_PMIC_STBY_ACK_CTRL_STBY_ON_CNT:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 0
-    bit_size: 12
-  - name: MODE
-    bit_offset: 14
-    bit_size: 2
+    - name: CFG
+      bit_offset: 0
+      bit_size: 12
+    - name: MODE
+      bit_offset: 14
+      bit_size: 2
 fieldset/GPC_GLOBAL_PMIC_STBY_ACK_CTRL_STBY_OFF_CNT:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 16
-    bit_size: 12
-  - name: MODE
-    bit_offset: 30
-    bit_size: 2
+    - name: CFG
+      bit_offset: 16
+      bit_size: 12
+    - name: MODE
+      bit_offset: 30
+      bit_size: 2
 fieldset/GPC_GLOBAL_GPC_ROSC_CTRL_ROSC_OFF:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
 fieldset/GPC_GLOBAL_GPC_AON_MEM_CTRL_AON_MEM_LP:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
 fieldset/GPC_GLOBAL_GPC_EFUSE_CTRL_EFUSE_PD:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1

@@ -1,96 +1,96 @@
 block/WDOG:
   description: ''
   items:
-  - name: CS
-    byte_offset: 0
-    fieldset: WDOG_CS
-  - name: CNT
-    byte_offset: 4
-    fieldset: WDOG_CNT
-  - name: TOVAL
-    byte_offset: 8
-    fieldset: WDOG_TOVAL
-  - name: WIN
-    byte_offset: 12
-    fieldset: WDOG_WIN
+    - name: CS
+      byte_offset: 0
+      fieldset: WDOG_CS
+    - name: CNT
+      byte_offset: 4
+      fieldset: WDOG_CNT
+    - name: TOVAL
+      byte_offset: 8
+      fieldset: WDOG_TOVAL
+    - name: WIN
+      byte_offset: 12
+      fieldset: WDOG_WIN
 fieldset/WDOG_CS:
   description: ''
   fields:
-  - name: STOP
-    bit_offset: 0
-    bit_size: 1
-  - name: WAIT
-    bit_offset: 1
-    bit_size: 1
-  - name: DBG
-    bit_offset: 2
-    bit_size: 1
-  - name: TST
-    bit_offset: 3
-    bit_size: 2
-  - name: UPDATE
-    bit_offset: 5
-    bit_size: 1
-  - name: INT
-    bit_offset: 6
-    bit_size: 1
-  - name: EN
-    bit_offset: 7
-    bit_size: 1
-  - name: CLK
-    bit_offset: 8
-    bit_size: 2
-  - name: RCS
-    bit_offset: 10
-    bit_size: 1
-  - name: ULK
-    bit_offset: 11
-    bit_size: 1
-  - name: PRES
-    bit_offset: 12
-    bit_size: 1
-  - name: CMD32EN
-    bit_offset: 13
-    bit_size: 1
-  - name: FLG
-    bit_offset: 14
-    bit_size: 1
-  - name: WIN
-    bit_offset: 15
-    bit_size: 1
-  - name: CLEAR
-    bit_offset: 16
-    bit_size: 1
+    - name: STOP
+      bit_offset: 0
+      bit_size: 1
+    - name: WAIT
+      bit_offset: 1
+      bit_size: 1
+    - name: DBG
+      bit_offset: 2
+      bit_size: 1
+    - name: TST
+      bit_offset: 3
+      bit_size: 2
+    - name: UPDATE
+      bit_offset: 5
+      bit_size: 1
+    - name: INT
+      bit_offset: 6
+      bit_size: 1
+    - name: EN
+      bit_offset: 7
+      bit_size: 1
+    - name: CLK
+      bit_offset: 8
+      bit_size: 2
+    - name: RCS
+      bit_offset: 10
+      bit_size: 1
+    - name: ULK
+      bit_offset: 11
+      bit_size: 1
+    - name: PRES
+      bit_offset: 12
+      bit_size: 1
+    - name: CMD32EN
+      bit_offset: 13
+      bit_size: 1
+    - name: FLG
+      bit_offset: 14
+      bit_size: 1
+    - name: WIN
+      bit_offset: 15
+      bit_size: 1
+    - name: CLEAR
+      bit_offset: 16
+      bit_size: 1
 fieldset/WDOG_CNT:
   description: ''
   fields:
-  - name: CNTLOW
-    bit_offset: 0
-    bit_size: 8
-    description: Counter Low Byte
-  - name: CNTHIGH
-    bit_offset: 8
-    bit_size: 8
-    description: Counter Low Byte
+    - name: CNTLOW
+      bit_offset: 0
+      bit_size: 8
+      description: Counter Low Byte
+    - name: CNTHIGH
+      bit_offset: 8
+      bit_size: 8
+      description: Counter Low Byte
 fieldset/WDOG_TOVAL:
   description: ''
   fields:
-  - name: TOVALLOW
-    bit_offset: 0
-    bit_size: 8
-    description: Timeout Value Low
-  - name: TOVALHIGH
-    bit_offset: 8
-    bit_size: 8
-    description: Timeout Value Low
+    - name: TOVALLOW
+      bit_offset: 0
+      bit_size: 8
+      description: Timeout Value Low
+    - name: TOVALHIGH
+      bit_offset: 8
+      bit_size: 8
+      description: Timeout Value Low
 fieldset/WDOG_WIN:
   description: ''
   fields:
-  - name: WINLOW
-    bit_offset: 0
-    bit_size: 8
-    description: Low Byte
-  - name: WINHIGH
-    bit_offset: 8
-    bit_size: 8
-    description: Low Byte
+    - name: WINLOW
+      bit_offset: 0
+      bit_size: 8
+      description: Low Byte
+    - name: WINHIGH
+      bit_offset: 8
+      bit_size: 8
+      description: Low Byte

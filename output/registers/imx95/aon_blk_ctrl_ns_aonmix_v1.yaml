@@ -1,1063 +1,1063 @@
 block/AON_BLK_CTRL_NS_AONMIX:
   description: ''
   items:
-  - name: GPC_CFG
-    byte_offset: 0
-  - name: UPPER_ADDR
-    byte_offset: 4
-    fieldset: AON_BLK_CTRL_NS_AONMIX_UPPER_ADDR
-  - name: IPG_DEBUG_CM33
-    byte_offset: 8
-    fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CM33
-  - name: IPG_DEBUG_CA55C0
-    byte_offset: 12
-    fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C0
-  - name: IPG_DEBUG_CA55C1
-    byte_offset: 16
-    fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C1
-  - name: IPG_DEBUG_CA55C2
-    byte_offset: 20
-    fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C2
-  - name: IPG_DEBUG_CA55C3
-    byte_offset: 24
-    fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C3
-  - name: IPG_DEBUG_CA55C4
-    byte_offset: 28
-    fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C4
-  - name: IPG_DEBUG_CA55C5
-    byte_offset: 32
-    fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C5
-  - name: IPG_DEBUG_CM7
-    byte_offset: 36
-    fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CM7
-  - name: FUSE_ACC_DIS
-    byte_offset: 40
-  - name: OCOTP_FUSE_DATA0
-    byte_offset: 48
-  - name: OCOTP_FUSE_DATA1
-    byte_offset: 52
-  - name: OCOTP_FUSE_DATA2
-    byte_offset: 56
-  - name: OCOTP_FUSE_DATA3
-    byte_offset: 60
-  - name: OCOTP_FUSE_DATA4
-    byte_offset: 64
-  - name: OCOTP_FUSE_DATA5
-    byte_offset: 68
-  - name: OCOTP_FUSE_DATA6
-    byte_offset: 72
-  - name: OCOTP_FUSE_DATA7
-    byte_offset: 76
-  - name: OCOTP_FUSE_DATA8
-    byte_offset: 80
-  - name: OCOTP_FUSE_DATA9
-    byte_offset: 84
-  - name: OCOTP_FUSE_DATA10
-    byte_offset: 88
-  - name: OCOTP_FUSE_DATA11
-    byte_offset: 92
-  - name: OCOTP_FUSE_DATA12
-    byte_offset: 96
-  - name: OCOTP_FUSE_DATA13
-    byte_offset: 100
-  - name: OCOTP_FUSE_DATA14
-    byte_offset: 104
-  - name: OCOTP_FUSE_DATA15
-    byte_offset: 108
-  - name: I3C1_WAKEUP
-    byte_offset: 112
-  - name: OCOTP_STATUS
-    byte_offset: 116
-    fieldset: AON_BLK_CTRL_NS_AONMIX_OCOTP_STATUS
-  - name: PDM_CLK_SEL
-    byte_offset: 120
-    fieldset: AON_BLK_CTRL_NS_AONMIX_PDM_CLK_SEL
-  - name: I3C1_SDA_IRQ
-    byte_offset: 124
-    fieldset: AON_BLK_CTRL_NS_AONMIX_I3C1_SDA_IRQ
-  - name: SSI
-    byte_offset: 128
-  - name: FASTBOOT_ENABLE
-    byte_offset: 132
-  - name: MQS_SETTINGS
-    byte_offset: 136
-    fieldset: AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS
-  - name: ELE_FW_PRESENT
-    byte_offset: 140
-  - name: AOMIX_SPARE_FUSE
-    byte_offset: 144
-  - name: IPG_STOP_CTL
-    byte_offset: 148
-  - name: IPG_STOP_ACK_STATUS
-    byte_offset: 152
-  - name: IPG_DOZE_CTL
-    byte_offset: 156
-  - name: QREQ_N
-    byte_offset: 160
-    fieldset: AON_BLK_CTRL_NS_AONMIX_QREQ_N
-  - name: SAI_MCLK
-    byte_offset: 164
-  - name: QACTIVE
-    byte_offset: 168
-    fieldset: AON_BLK_CTRL_NS_AONMIX_QACTIVE
-  - name: QDENY
-    byte_offset: 172
-    fieldset: AON_BLK_CTRL_NS_AONMIX_QDENY
-  - name: QACCEPT_N
-    byte_offset: 176
-    fieldset: AON_BLK_CTRL_NS_AONMIX_QACCEPT_N
+    - name: GPC_CFG
+      byte_offset: 0
+    - name: UPPER_ADDR
+      byte_offset: 4
+      fieldset: AON_BLK_CTRL_NS_AONMIX_UPPER_ADDR
+    - name: IPG_DEBUG_CM33
+      byte_offset: 8
+      fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CM33
+    - name: IPG_DEBUG_CA55C0
+      byte_offset: 12
+      fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C0
+    - name: IPG_DEBUG_CA55C1
+      byte_offset: 16
+      fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C1
+    - name: IPG_DEBUG_CA55C2
+      byte_offset: 20
+      fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C2
+    - name: IPG_DEBUG_CA55C3
+      byte_offset: 24
+      fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C3
+    - name: IPG_DEBUG_CA55C4
+      byte_offset: 28
+      fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C4
+    - name: IPG_DEBUG_CA55C5
+      byte_offset: 32
+      fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C5
+    - name: IPG_DEBUG_CM7
+      byte_offset: 36
+      fieldset: AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CM7
+    - name: FUSE_ACC_DIS
+      byte_offset: 40
+    - name: OCOTP_FUSE_DATA0
+      byte_offset: 48
+    - name: OCOTP_FUSE_DATA1
+      byte_offset: 52
+    - name: OCOTP_FUSE_DATA2
+      byte_offset: 56
+    - name: OCOTP_FUSE_DATA3
+      byte_offset: 60
+    - name: OCOTP_FUSE_DATA4
+      byte_offset: 64
+    - name: OCOTP_FUSE_DATA5
+      byte_offset: 68
+    - name: OCOTP_FUSE_DATA6
+      byte_offset: 72
+    - name: OCOTP_FUSE_DATA7
+      byte_offset: 76
+    - name: OCOTP_FUSE_DATA8
+      byte_offset: 80
+    - name: OCOTP_FUSE_DATA9
+      byte_offset: 84
+    - name: OCOTP_FUSE_DATA10
+      byte_offset: 88
+    - name: OCOTP_FUSE_DATA11
+      byte_offset: 92
+    - name: OCOTP_FUSE_DATA12
+      byte_offset: 96
+    - name: OCOTP_FUSE_DATA13
+      byte_offset: 100
+    - name: OCOTP_FUSE_DATA14
+      byte_offset: 104
+    - name: OCOTP_FUSE_DATA15
+      byte_offset: 108
+    - name: I3C1_WAKEUP
+      byte_offset: 112
+    - name: OCOTP_STATUS
+      byte_offset: 116
+      fieldset: AON_BLK_CTRL_NS_AONMIX_OCOTP_STATUS
+    - name: PDM_CLK_SEL
+      byte_offset: 120
+      fieldset: AON_BLK_CTRL_NS_AONMIX_PDM_CLK_SEL
+    - name: I3C1_SDA_IRQ
+      byte_offset: 124
+      fieldset: AON_BLK_CTRL_NS_AONMIX_I3C1_SDA_IRQ
+    - name: SSI
+      byte_offset: 128
+    - name: FASTBOOT_ENABLE
+      byte_offset: 132
+    - name: MQS_SETTINGS
+      byte_offset: 136
+      fieldset: AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS
+    - name: ELE_FW_PRESENT
+      byte_offset: 140
+    - name: AOMIX_SPARE_FUSE
+      byte_offset: 144
+    - name: IPG_STOP_CTL
+      byte_offset: 148
+    - name: IPG_STOP_ACK_STATUS
+      byte_offset: 152
+    - name: IPG_DOZE_CTL
+      byte_offset: 156
+    - name: QREQ_N
+      byte_offset: 160
+      fieldset: AON_BLK_CTRL_NS_AONMIX_QREQ_N
+    - name: SAI_MCLK
+      byte_offset: 164
+    - name: QACTIVE
+      byte_offset: 168
+      fieldset: AON_BLK_CTRL_NS_AONMIX_QACTIVE
+    - name: QDENY
+      byte_offset: 172
+      fieldset: AON_BLK_CTRL_NS_AONMIX_QDENY
+    - name: QACCEPT_N
+      byte_offset: 176
+      fieldset: AON_BLK_CTRL_NS_AONMIX_QACCEPT_N
 fieldset/AON_BLK_CTRL_NS_AONMIX_GPC_CFG_M33_SLEEP:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 1
+    - name: SEL
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_GPC_CFG_M7_SLEEP:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 1
-    bit_size: 1
+    - name: SEL
+      bit_offset: 1
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_UPPER_ADDR:
   description: ''
   fields:
-  - name: ELE
-    bit_offset: 0
-    bit_size: 4
-    description: address bit [35:32] for ELE
+    - name: ELE
+      bit_offset: 0
+      bit_size: 4
+      description: address bit [35:32] for ELE
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CM33:
   description: ''
   fields:
-  - name: can1
-    bit_offset: 0
-    bit_size: 1
-  - name: lpi2c1
-    bit_offset: 2
-    bit_size: 1
-  - name: lpi2c2
-    bit_offset: 3
-    bit_size: 1
-  - name: lpit1
-    bit_offset: 4
-    bit_size: 1
-  - name: lpspi1
-    bit_offset: 5
-    bit_size: 1
-  - name: lpspi2
-    bit_offset: 6
-    bit_size: 1
-  - name: lptmr1
-    bit_offset: 7
-    bit_size: 1
-  - name: sai1
-    bit_offset: 8
-    bit_size: 1
-  - name: tpm1
-    bit_offset: 9
-    bit_size: 1
-  - name: tpm2
-    bit_offset: 10
-    bit_size: 1
-  - name: wdog1
-    bit_offset: 11
-    bit_size: 1
-  - name: wdog2
-    bit_offset: 12
-    bit_size: 1
-  - name: i3c1
-    bit_offset: 13
-    bit_size: 1
-  - name: pdm
-    bit_offset: 14
-    bit_size: 1
+    - name: can1
+      bit_offset: 0
+      bit_size: 1
+    - name: lpi2c1
+      bit_offset: 2
+      bit_size: 1
+    - name: lpi2c2
+      bit_offset: 3
+      bit_size: 1
+    - name: lpit1
+      bit_offset: 4
+      bit_size: 1
+    - name: lpspi1
+      bit_offset: 5
+      bit_size: 1
+    - name: lpspi2
+      bit_offset: 6
+      bit_size: 1
+    - name: lptmr1
+      bit_offset: 7
+      bit_size: 1
+    - name: sai1
+      bit_offset: 8
+      bit_size: 1
+    - name: tpm1
+      bit_offset: 9
+      bit_size: 1
+    - name: tpm2
+      bit_offset: 10
+      bit_size: 1
+    - name: wdog1
+      bit_offset: 11
+      bit_size: 1
+    - name: wdog2
+      bit_offset: 12
+      bit_size: 1
+    - name: i3c1
+      bit_offset: 13
+      bit_size: 1
+    - name: pdm
+      bit_offset: 14
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CM33_sys:
   description: ''
   fields:
-  - name: ctr1
-    bit_offset: 15
-    bit_size: 1
+    - name: ctr1
+      bit_offset: 15
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C0:
   description: ''
   fields:
-  - name: can1
-    bit_offset: 0
-    bit_size: 1
-  - name: lpi2c1
-    bit_offset: 2
-    bit_size: 1
-  - name: lpi2c2
-    bit_offset: 3
-    bit_size: 1
-  - name: lpit1
-    bit_offset: 4
-    bit_size: 1
-  - name: lpspi1
-    bit_offset: 5
-    bit_size: 1
-  - name: lpspi2
-    bit_offset: 6
-    bit_size: 1
-  - name: lptmr1
-    bit_offset: 7
-    bit_size: 1
-  - name: sai1
-    bit_offset: 8
-    bit_size: 1
-  - name: tpm1
-    bit_offset: 9
-    bit_size: 1
-  - name: tpm2
-    bit_offset: 10
-    bit_size: 1
-  - name: wdog1
-    bit_offset: 11
-    bit_size: 1
-  - name: wdog2
-    bit_offset: 12
-    bit_size: 1
-  - name: i3c1
-    bit_offset: 13
-    bit_size: 1
-  - name: pdm
-    bit_offset: 14
-    bit_size: 1
+    - name: can1
+      bit_offset: 0
+      bit_size: 1
+    - name: lpi2c1
+      bit_offset: 2
+      bit_size: 1
+    - name: lpi2c2
+      bit_offset: 3
+      bit_size: 1
+    - name: lpit1
+      bit_offset: 4
+      bit_size: 1
+    - name: lpspi1
+      bit_offset: 5
+      bit_size: 1
+    - name: lpspi2
+      bit_offset: 6
+      bit_size: 1
+    - name: lptmr1
+      bit_offset: 7
+      bit_size: 1
+    - name: sai1
+      bit_offset: 8
+      bit_size: 1
+    - name: tpm1
+      bit_offset: 9
+      bit_size: 1
+    - name: tpm2
+      bit_offset: 10
+      bit_size: 1
+    - name: wdog1
+      bit_offset: 11
+      bit_size: 1
+    - name: wdog2
+      bit_offset: 12
+      bit_size: 1
+    - name: i3c1
+      bit_offset: 13
+      bit_size: 1
+    - name: pdm
+      bit_offset: 14
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C0_sys:
   description: ''
   fields:
-  - name: ctr1
-    bit_offset: 15
-    bit_size: 1
+    - name: ctr1
+      bit_offset: 15
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C1:
   description: ''
   fields:
-  - name: can1
-    bit_offset: 0
-    bit_size: 1
-  - name: lpi2c1
-    bit_offset: 2
-    bit_size: 1
-  - name: lpi2c2
-    bit_offset: 3
-    bit_size: 1
-  - name: lpit1
-    bit_offset: 4
-    bit_size: 1
-  - name: lpspi1
-    bit_offset: 5
-    bit_size: 1
-  - name: lpspi2
-    bit_offset: 6
-    bit_size: 1
-  - name: lptmr1
-    bit_offset: 7
-    bit_size: 1
-  - name: sai1
-    bit_offset: 8
-    bit_size: 1
-  - name: tpm1
-    bit_offset: 9
-    bit_size: 1
-  - name: tpm2
-    bit_offset: 10
-    bit_size: 1
-  - name: wdog1
-    bit_offset: 11
-    bit_size: 1
-  - name: wdog2
-    bit_offset: 12
-    bit_size: 1
-  - name: i3c1
-    bit_offset: 13
-    bit_size: 1
-  - name: pdm
-    bit_offset: 14
-    bit_size: 1
+    - name: can1
+      bit_offset: 0
+      bit_size: 1
+    - name: lpi2c1
+      bit_offset: 2
+      bit_size: 1
+    - name: lpi2c2
+      bit_offset: 3
+      bit_size: 1
+    - name: lpit1
+      bit_offset: 4
+      bit_size: 1
+    - name: lpspi1
+      bit_offset: 5
+      bit_size: 1
+    - name: lpspi2
+      bit_offset: 6
+      bit_size: 1
+    - name: lptmr1
+      bit_offset: 7
+      bit_size: 1
+    - name: sai1
+      bit_offset: 8
+      bit_size: 1
+    - name: tpm1
+      bit_offset: 9
+      bit_size: 1
+    - name: tpm2
+      bit_offset: 10
+      bit_size: 1
+    - name: wdog1
+      bit_offset: 11
+      bit_size: 1
+    - name: wdog2
+      bit_offset: 12
+      bit_size: 1
+    - name: i3c1
+      bit_offset: 13
+      bit_size: 1
+    - name: pdm
+      bit_offset: 14
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C1_sys:
   description: ''
   fields:
-  - name: ctr1
-    bit_offset: 15
-    bit_size: 1
+    - name: ctr1
+      bit_offset: 15
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C2:
   description: ''
   fields:
-  - name: can1
-    bit_offset: 0
-    bit_size: 1
-  - name: lpi2c1
-    bit_offset: 2
-    bit_size: 1
-  - name: lpi2c2
-    bit_offset: 3
-    bit_size: 1
-  - name: lpit1
-    bit_offset: 4
-    bit_size: 1
-  - name: lpspi1
-    bit_offset: 5
-    bit_size: 1
-  - name: lpspi2
-    bit_offset: 6
-    bit_size: 1
-  - name: lptmr1
-    bit_offset: 7
-    bit_size: 1
-  - name: sai1
-    bit_offset: 8
-    bit_size: 1
-  - name: tpm1
-    bit_offset: 9
-    bit_size: 1
-  - name: tpm2
-    bit_offset: 10
-    bit_size: 1
-  - name: wdog1
-    bit_offset: 11
-    bit_size: 1
-  - name: wdog2
-    bit_offset: 12
-    bit_size: 1
-  - name: i3c1
-    bit_offset: 13
-    bit_size: 1
-  - name: pdm
-    bit_offset: 14
-    bit_size: 1
+    - name: can1
+      bit_offset: 0
+      bit_size: 1
+    - name: lpi2c1
+      bit_offset: 2
+      bit_size: 1
+    - name: lpi2c2
+      bit_offset: 3
+      bit_size: 1
+    - name: lpit1
+      bit_offset: 4
+      bit_size: 1
+    - name: lpspi1
+      bit_offset: 5
+      bit_size: 1
+    - name: lpspi2
+      bit_offset: 6
+      bit_size: 1
+    - name: lptmr1
+      bit_offset: 7
+      bit_size: 1
+    - name: sai1
+      bit_offset: 8
+      bit_size: 1
+    - name: tpm1
+      bit_offset: 9
+      bit_size: 1
+    - name: tpm2
+      bit_offset: 10
+      bit_size: 1
+    - name: wdog1
+      bit_offset: 11
+      bit_size: 1
+    - name: wdog2
+      bit_offset: 12
+      bit_size: 1
+    - name: i3c1
+      bit_offset: 13
+      bit_size: 1
+    - name: pdm
+      bit_offset: 14
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C2_sys:
   description: ''
   fields:
-  - name: ctr1
-    bit_offset: 15
-    bit_size: 1
+    - name: ctr1
+      bit_offset: 15
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C3:
   description: ''
   fields:
-  - name: can1
-    bit_offset: 0
-    bit_size: 1
-  - name: lpi2c1
-    bit_offset: 2
-    bit_size: 1
-  - name: lpi2c2
-    bit_offset: 3
-    bit_size: 1
-  - name: lpit1
-    bit_offset: 4
-    bit_size: 1
-  - name: lpspi1
-    bit_offset: 5
-    bit_size: 1
-  - name: lpspi2
-    bit_offset: 6
-    bit_size: 1
-  - name: lptmr1
-    bit_offset: 7
-    bit_size: 1
-  - name: sai1
-    bit_offset: 8
-    bit_size: 1
-  - name: tpm1
-    bit_offset: 9
-    bit_size: 1
-  - name: tpm2
-    bit_offset: 10
-    bit_size: 1
-  - name: wdog1
-    bit_offset: 11
-    bit_size: 1
-  - name: wdog2
-    bit_offset: 12
-    bit_size: 1
-  - name: i3c1
-    bit_offset: 13
-    bit_size: 1
-  - name: pdm
-    bit_offset: 14
-    bit_size: 1
+    - name: can1
+      bit_offset: 0
+      bit_size: 1
+    - name: lpi2c1
+      bit_offset: 2
+      bit_size: 1
+    - name: lpi2c2
+      bit_offset: 3
+      bit_size: 1
+    - name: lpit1
+      bit_offset: 4
+      bit_size: 1
+    - name: lpspi1
+      bit_offset: 5
+      bit_size: 1
+    - name: lpspi2
+      bit_offset: 6
+      bit_size: 1
+    - name: lptmr1
+      bit_offset: 7
+      bit_size: 1
+    - name: sai1
+      bit_offset: 8
+      bit_size: 1
+    - name: tpm1
+      bit_offset: 9
+      bit_size: 1
+    - name: tpm2
+      bit_offset: 10
+      bit_size: 1
+    - name: wdog1
+      bit_offset: 11
+      bit_size: 1
+    - name: wdog2
+      bit_offset: 12
+      bit_size: 1
+    - name: i3c1
+      bit_offset: 13
+      bit_size: 1
+    - name: pdm
+      bit_offset: 14
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C3_sys:
   description: ''
   fields:
-  - name: ctr1
-    bit_offset: 15
-    bit_size: 1
+    - name: ctr1
+      bit_offset: 15
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C4:
   description: ''
   fields:
-  - name: can1
-    bit_offset: 0
-    bit_size: 1
-  - name: lpi2c1
-    bit_offset: 2
-    bit_size: 1
-  - name: lpi2c2
-    bit_offset: 3
-    bit_size: 1
-  - name: lpit1
-    bit_offset: 4
-    bit_size: 1
-  - name: lpspi1
-    bit_offset: 5
-    bit_size: 1
-  - name: lpspi2
-    bit_offset: 6
-    bit_size: 1
-  - name: lptmr1
-    bit_offset: 7
-    bit_size: 1
-  - name: sai1
-    bit_offset: 8
-    bit_size: 1
-  - name: tpm1
-    bit_offset: 9
-    bit_size: 1
-  - name: tpm2
-    bit_offset: 10
-    bit_size: 1
-  - name: wdog1
-    bit_offset: 11
-    bit_size: 1
-  - name: wdog2
-    bit_offset: 12
-    bit_size: 1
-  - name: i3c1
-    bit_offset: 13
-    bit_size: 1
-  - name: pdm
-    bit_offset: 14
-    bit_size: 1
+    - name: can1
+      bit_offset: 0
+      bit_size: 1
+    - name: lpi2c1
+      bit_offset: 2
+      bit_size: 1
+    - name: lpi2c2
+      bit_offset: 3
+      bit_size: 1
+    - name: lpit1
+      bit_offset: 4
+      bit_size: 1
+    - name: lpspi1
+      bit_offset: 5
+      bit_size: 1
+    - name: lpspi2
+      bit_offset: 6
+      bit_size: 1
+    - name: lptmr1
+      bit_offset: 7
+      bit_size: 1
+    - name: sai1
+      bit_offset: 8
+      bit_size: 1
+    - name: tpm1
+      bit_offset: 9
+      bit_size: 1
+    - name: tpm2
+      bit_offset: 10
+      bit_size: 1
+    - name: wdog1
+      bit_offset: 11
+      bit_size: 1
+    - name: wdog2
+      bit_offset: 12
+      bit_size: 1
+    - name: i3c1
+      bit_offset: 13
+      bit_size: 1
+    - name: pdm
+      bit_offset: 14
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C4_sys:
   description: ''
   fields:
-  - name: ctr1
-    bit_offset: 15
-    bit_size: 1
+    - name: ctr1
+      bit_offset: 15
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C5:
   description: ''
   fields:
-  - name: can1
-    bit_offset: 0
-    bit_size: 1
-  - name: lpi2c1
-    bit_offset: 2
-    bit_size: 1
-  - name: lpi2c2
-    bit_offset: 3
-    bit_size: 1
-  - name: lpit1
-    bit_offset: 4
-    bit_size: 1
-  - name: lpspi1
-    bit_offset: 5
-    bit_size: 1
-  - name: lpspi2
-    bit_offset: 6
-    bit_size: 1
-  - name: lptmr1
-    bit_offset: 7
-    bit_size: 1
-  - name: sai1
-    bit_offset: 8
-    bit_size: 1
-  - name: tpm1
-    bit_offset: 9
-    bit_size: 1
-  - name: tpm2
-    bit_offset: 10
-    bit_size: 1
-  - name: wdog1
-    bit_offset: 11
-    bit_size: 1
-  - name: wdog2
-    bit_offset: 12
-    bit_size: 1
-  - name: i3c1
-    bit_offset: 13
-    bit_size: 1
-  - name: pdm
-    bit_offset: 14
-    bit_size: 1
+    - name: can1
+      bit_offset: 0
+      bit_size: 1
+    - name: lpi2c1
+      bit_offset: 2
+      bit_size: 1
+    - name: lpi2c2
+      bit_offset: 3
+      bit_size: 1
+    - name: lpit1
+      bit_offset: 4
+      bit_size: 1
+    - name: lpspi1
+      bit_offset: 5
+      bit_size: 1
+    - name: lpspi2
+      bit_offset: 6
+      bit_size: 1
+    - name: lptmr1
+      bit_offset: 7
+      bit_size: 1
+    - name: sai1
+      bit_offset: 8
+      bit_size: 1
+    - name: tpm1
+      bit_offset: 9
+      bit_size: 1
+    - name: tpm2
+      bit_offset: 10
+      bit_size: 1
+    - name: wdog1
+      bit_offset: 11
+      bit_size: 1
+    - name: wdog2
+      bit_offset: 12
+      bit_size: 1
+    - name: i3c1
+      bit_offset: 13
+      bit_size: 1
+    - name: pdm
+      bit_offset: 14
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C5_sys:
   description: ''
   fields:
-  - name: ctr1
-    bit_offset: 15
-    bit_size: 1
+    - name: ctr1
+      bit_offset: 15
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CM7:
   description: ''
   fields:
-  - name: can1
-    bit_offset: 0
-    bit_size: 1
-  - name: lpi2c1
-    bit_offset: 2
-    bit_size: 1
-  - name: lpi2c2
-    bit_offset: 3
-    bit_size: 1
-  - name: lpit1
-    bit_offset: 4
-    bit_size: 1
-  - name: lpspi1
-    bit_offset: 5
-    bit_size: 1
-  - name: lpspi2
-    bit_offset: 6
-    bit_size: 1
-  - name: lptmr1
-    bit_offset: 7
-    bit_size: 1
-  - name: sai1
-    bit_offset: 8
-    bit_size: 1
-  - name: tpm1
-    bit_offset: 9
-    bit_size: 1
-  - name: tpm2
-    bit_offset: 10
-    bit_size: 1
-  - name: wdog1
-    bit_offset: 11
-    bit_size: 1
-  - name: wdog2
-    bit_offset: 12
-    bit_size: 1
-  - name: i3c1
-    bit_offset: 13
-    bit_size: 1
-  - name: pdm
-    bit_offset: 14
-    bit_size: 1
+    - name: can1
+      bit_offset: 0
+      bit_size: 1
+    - name: lpi2c1
+      bit_offset: 2
+      bit_size: 1
+    - name: lpi2c2
+      bit_offset: 3
+      bit_size: 1
+    - name: lpit1
+      bit_offset: 4
+      bit_size: 1
+    - name: lpspi1
+      bit_offset: 5
+      bit_size: 1
+    - name: lpspi2
+      bit_offset: 6
+      bit_size: 1
+    - name: lptmr1
+      bit_offset: 7
+      bit_size: 1
+    - name: sai1
+      bit_offset: 8
+      bit_size: 1
+    - name: tpm1
+      bit_offset: 9
+      bit_size: 1
+    - name: tpm2
+      bit_offset: 10
+      bit_size: 1
+    - name: wdog1
+      bit_offset: 11
+      bit_size: 1
+    - name: wdog2
+      bit_offset: 12
+      bit_size: 1
+    - name: i3c1
+      bit_offset: 13
+      bit_size: 1
+    - name: pdm
+      bit_offset: 14
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DEBUG_CM7_sys:
   description: ''
   fields:
-  - name: ctr1
-    bit_offset: 15
-    bit_size: 1
+    - name: ctr1
+      bit_offset: 15
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_FUSE_ACC_DIS_OSCCA_FUSE_READ:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 0
-    bit_size: 1
+    - name: DIS
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA0_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA0
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA0
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA1_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA1
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA1
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA2_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA2
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA2
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA3_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA3
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA3
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA4_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA4
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA4
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA5_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA5
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA5
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA6_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA6
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA6
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA7_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA7
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA7
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA8_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA8
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA8
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA9_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA9
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA9
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA10_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA10
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA10
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA11_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA11
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA11
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA12_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA12
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA12
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA13_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA13
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA13
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA14_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA14
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA14
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA15_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA15
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA15
+      bit_offset: 0
+      bit_size: 32
 fieldset/AON_BLK_CTRL_NS_AONMIX_I3C1_WAKEUP_irq:
   description: ''
   fields:
-  - name: clr
-    bit_offset: 0
-    bit_size: 1
+    - name: clr
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_OCOTP_STATUS:
   description: ''
   fields:
-  - name: busy
-    bit_offset: 0
-    bit_size: 1
+    - name: busy
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_PDM_CLK_SEL:
   description: ''
   fields:
-  - name: sel
-    bit_offset: 0
-    bit_size: 1
+    - name: sel
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_I3C1_SDA_IRQ:
   description: ''
   fields:
-  - name: enable
-    bit_offset: 0
-    bit_size: 1
+    - name: enable
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_SSI_PAUSE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 1
+    - name: MODE
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_SSI_BLKHOLE_MODE:
   description: ''
   fields:
-  - name: B
-    bit_offset: 1
-    bit_size: 1
+    - name: B
+      bit_offset: 1
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_FASTBOOT_ENABLE_FASTBOOT:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 2
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 2
 fieldset/AON_BLK_CTRL_NS_AONMIX_FASTBOOT_ENABLE_BP_FASTBOOT:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 2
-    bit_size: 2
+    - name: ENABLE
+      bit_offset: 2
+      bit_size: 2
 fieldset/AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_MQS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 1
-    bit_size: 1
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_SOFT:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 2
-    bit_size: 1
+    - name: RESET
+      bit_offset: 2
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS:
   description: ''
   fields:
-  - name: OVERSAMPLE
-    bit_offset: 3
-    bit_size: 1
+    - name: OVERSAMPLE
+      bit_offset: 3
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_MQS_SETTINGS_CLK:
   description: ''
   fields:
-  - name: DIVIDE
-    bit_offset: 8
-    bit_size: 8
+    - name: DIVIDE
+      bit_offset: 8
+      bit_size: 8
 fieldset/AON_BLK_CTRL_NS_AONMIX_ELE_FW_PRESENT_ELE_fw:
   description: ''
   fields:
-  - name: present
-    bit_offset: 0
-    bit_size: 1
+    - name: present
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_AOMIX_SPARE_FUSE_Spare:
   description: ''
   fields:
-  - name: fuse
-    bit_offset: 0
-    bit_size: 2
+    - name: fuse
+      bit_offset: 0
+      bit_size: 2
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_STOP_CTL_can1:
   description: ''
   fields:
-  - name: stop
-    bit_offset: 0
-    bit_size: 1
+    - name: stop
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_STOP_CTL_edma3_1:
   description: ''
   fields:
-  - name: stop
-    bit_offset: 1
-    bit_size: 1
+    - name: stop
+      bit_offset: 1
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_STOP_CTL_pdm:
   description: ''
   fields:
-  - name: stop
-    bit_offset: 9
-    bit_size: 1
+    - name: stop
+      bit_offset: 9
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_STOP_CTL_tpm1:
   description: ''
   fields:
-  - name: stop
-    bit_offset: 11
-    bit_size: 1
+    - name: stop
+      bit_offset: 11
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_STOP_CTL_tpm2:
   description: ''
   fields:
-  - name: stop
-    bit_offset: 12
-    bit_size: 1
+    - name: stop
+      bit_offset: 12
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_STOP_ACK_STATUS_can1_stop:
   description: ''
   fields:
-  - name: ack
-    bit_offset: 0
-    bit_size: 1
+    - name: ack
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_STOP_ACK_STATUS_pdm_stop:
   description: ''
   fields:
-  - name: ack
-    bit_offset: 9
-    bit_size: 1
+    - name: ack
+      bit_offset: 9
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DOZE_CTL_can1:
   description: ''
   fields:
-  - name: doze
-    bit_offset: 0
-    bit_size: 1
+    - name: doze
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DOZE_CTL_lpi2c1:
   description: ''
   fields:
-  - name: doze
-    bit_offset: 2
-    bit_size: 1
+    - name: doze
+      bit_offset: 2
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DOZE_CTL_lpi2c2:
   description: ''
   fields:
-  - name: doze
-    bit_offset: 3
-    bit_size: 1
+    - name: doze
+      bit_offset: 3
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DOZE_CTL_lpit1:
   description: ''
   fields:
-  - name: doze
-    bit_offset: 4
-    bit_size: 1
+    - name: doze
+      bit_offset: 4
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DOZE_CTL_lpspi1:
   description: ''
   fields:
-  - name: doze
-    bit_offset: 5
-    bit_size: 1
+    - name: doze
+      bit_offset: 5
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DOZE_CTL_lpspi2:
   description: ''
   fields:
-  - name: doze
-    bit_offset: 6
-    bit_size: 1
+    - name: doze
+      bit_offset: 6
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DOZE_CTL_lpuart1:
   description: ''
   fields:
-  - name: doze
-    bit_offset: 7
-    bit_size: 1
+    - name: doze
+      bit_offset: 7
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DOZE_CTL_lpuart2:
   description: ''
   fields:
-  - name: doze
-    bit_offset: 8
-    bit_size: 1
+    - name: doze
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DOZE_CTL_pdm:
   description: ''
   fields:
-  - name: doze
-    bit_offset: 9
-    bit_size: 1
+    - name: doze
+      bit_offset: 9
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DOZE_CTL_tpm1:
   description: ''
   fields:
-  - name: doze
-    bit_offset: 11
-    bit_size: 1
+    - name: doze
+      bit_offset: 11
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_IPG_DOZE_CTL_tpm2:
   description: ''
   fields:
-  - name: doze
-    bit_offset: 12
-    bit_size: 1
+    - name: doze
+      bit_offset: 12
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_QREQ_N:
   description: ''
   fields:
-  - name: lpi2c1
-    bit_offset: 1
-    bit_size: 1
-  - name: lpi2c2
-    bit_offset: 2
-    bit_size: 1
-  - name: lpspi1
-    bit_offset: 4
-    bit_size: 1
-  - name: lpspi2
-    bit_offset: 5
-    bit_size: 1
-  - name: lpuart1
-    bit_offset: 6
-    bit_size: 1
-  - name: lpuart2
-    bit_offset: 7
-    bit_size: 1
+    - name: lpi2c1
+      bit_offset: 1
+      bit_size: 1
+    - name: lpi2c2
+      bit_offset: 2
+      bit_size: 1
+    - name: lpspi1
+      bit_offset: 4
+      bit_size: 1
+    - name: lpspi2
+      bit_offset: 5
+      bit_size: 1
+    - name: lpuart1
+      bit_offset: 6
+      bit_size: 1
+    - name: lpuart2
+      bit_offset: 7
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_QREQ_N_ips:
   description: ''
   fields:
-  - name: lpi2c1
-    bit_offset: 8
-    bit_size: 1
-  - name: lpi2c2
-    bit_offset: 9
-    bit_size: 1
-  - name: lpspi1
-    bit_offset: 11
-    bit_size: 1
-  - name: lpspi2
-    bit_offset: 12
-    bit_size: 1
-  - name: sai
-    bit_offset: 15
-    bit_size: 1
+    - name: lpi2c1
+      bit_offset: 8
+      bit_size: 1
+    - name: lpi2c2
+      bit_offset: 9
+      bit_size: 1
+    - name: lpspi1
+      bit_offset: 11
+      bit_size: 1
+    - name: lpspi2
+      bit_offset: 12
+      bit_size: 1
+    - name: sai
+      bit_offset: 15
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_QREQ_N_ahb:
   description: ''
   fields:
-  - name: gpio
-    bit_offset: 10
-    bit_size: 1
+    - name: gpio
+      bit_offset: 10
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_QREQ_N_apb:
   description: ''
   fields:
-  - name: lpuart1
-    bit_offset: 13
-    bit_size: 1
-  - name: lpuart2
-    bit_offset: 14
-    bit_size: 1
+    - name: lpuart1
+      bit_offset: 13
+      bit_size: 1
+    - name: lpuart2
+      bit_offset: 14
+      bit_size: 1
 fieldset/AON_BLK_CTRL_NS_AONMIX_SAI_MCLK_sai_mclk:
   description: ''
   fields:
-  - name: req
-    bit_offset: 0
-    bit_size: 1
-  - name: ack
-    bit_offset: 1
-    bit_size: 1
-    description: SAI MCLK ack
+    - name: req
+      bit_offset: 0
+      bit_size: 1
+    - name: ack
+      bit_offset: 1
+      bit_size: 1
+      description: SAI MCLK ack
 fieldset/AON_BLK_CTRL_NS_AONMIX_SAI_MCLK_sai:
   description: ''
   fields:
-  - name: qactive
-    bit_offset: 2
-    bit_size: 1
-    description: SAI qactive
+    - name: qactive
+      bit_offset: 2
+      bit_size: 1
+      description: SAI qactive
 fieldset/AON_BLK_CTRL_NS_AONMIX_QACTIVE:
   description: ''
   fields:
-  - name: lpi2c1
-    bit_offset: 1
-    bit_size: 1
-    description: lpi2c1
-  - name: lpi2c2
-    bit_offset: 2
-    bit_size: 1
-    description: lpi2c1
-  - name: lpspi1
-    bit_offset: 4
-    bit_size: 1
-    description: lpi2c2
-  - name: lpspi2
-    bit_offset: 5
-    bit_size: 1
-    description: lpspi1
-  - name: lpuart1
-    bit_offset: 6
-    bit_size: 1
-    description: lpspi2
-  - name: lpuart2
-    bit_offset: 7
-    bit_size: 1
-    description: lpuart2
+    - name: lpi2c1
+      bit_offset: 1
+      bit_size: 1
+      description: lpi2c1
+    - name: lpi2c2
+      bit_offset: 2
+      bit_size: 1
+      description: lpi2c1
+    - name: lpspi1
+      bit_offset: 4
+      bit_size: 1
+      description: lpi2c2
+    - name: lpspi2
+      bit_offset: 5
+      bit_size: 1
+      description: lpspi1
+    - name: lpuart1
+      bit_offset: 6
+      bit_size: 1
+      description: lpspi2
+    - name: lpuart2
+      bit_offset: 7
+      bit_size: 1
+      description: lpuart2
 fieldset/AON_BLK_CTRL_NS_AONMIX_QACTIVE_ips:
   description: ''
   fields:
-  - name: lpi2c1
-    bit_offset: 8
-    bit_size: 1
-    description: ips_lpi2c1
-  - name: lpi2c2
-    bit_offset: 9
-    bit_size: 1
-    description: ips_lpi2c2
-  - name: lpspi1
-    bit_offset: 11
-    bit_size: 1
-    description: ips_lpspi1
-  - name: lpspi2
-    bit_offset: 12
-    bit_size: 1
-    description: ips_lpspi2
-  - name: sai
-    bit_offset: 15
-    bit_size: 1
-    description: ips_sai
+    - name: lpi2c1
+      bit_offset: 8
+      bit_size: 1
+      description: ips_lpi2c1
+    - name: lpi2c2
+      bit_offset: 9
+      bit_size: 1
+      description: ips_lpi2c2
+    - name: lpspi1
+      bit_offset: 11
+      bit_size: 1
+      description: ips_lpspi1
+    - name: lpspi2
+      bit_offset: 12
+      bit_size: 1
+      description: ips_lpspi2
+    - name: sai
+      bit_offset: 15
+      bit_size: 1
+      description: ips_sai
 fieldset/AON_BLK_CTRL_NS_AONMIX_QACTIVE_ahb:
   description: ''
   fields:
-  - name: gpio
-    bit_offset: 10
-    bit_size: 1
-    description: ahb_gpio
+    - name: gpio
+      bit_offset: 10
+      bit_size: 1
+      description: ahb_gpio
 fieldset/AON_BLK_CTRL_NS_AONMIX_QACTIVE_apb:
   description: ''
   fields:
-  - name: lpuart1
-    bit_offset: 13
-    bit_size: 1
-    description: apb_lpuart1
-  - name: lpuart2
-    bit_offset: 14
-    bit_size: 1
-    description: apb_lpuart2
+    - name: lpuart1
+      bit_offset: 13
+      bit_size: 1
+      description: apb_lpuart1
+    - name: lpuart2
+      bit_offset: 14
+      bit_size: 1
+      description: apb_lpuart2
 fieldset/AON_BLK_CTRL_NS_AONMIX_QDENY:
   description: ''
   fields:
-  - name: lpi2c1
-    bit_offset: 1
-    bit_size: 1
-    description: lpi2c1
-  - name: lpi2c2
-    bit_offset: 2
-    bit_size: 1
-    description: lpi2c1
-  - name: lpspi1
-    bit_offset: 4
-    bit_size: 1
-    description: lpi2c2
-  - name: lpspi2
-    bit_offset: 5
-    bit_size: 1
-    description: lpspi1
-  - name: lpuart1
-    bit_offset: 6
-    bit_size: 1
-    description: lpspi2
-  - name: lpuart2
-    bit_offset: 7
-    bit_size: 1
-    description: lpuart1
+    - name: lpi2c1
+      bit_offset: 1
+      bit_size: 1
+      description: lpi2c1
+    - name: lpi2c2
+      bit_offset: 2
+      bit_size: 1
+      description: lpi2c1
+    - name: lpspi1
+      bit_offset: 4
+      bit_size: 1
+      description: lpi2c2
+    - name: lpspi2
+      bit_offset: 5
+      bit_size: 1
+      description: lpspi1
+    - name: lpuart1
+      bit_offset: 6
+      bit_size: 1
+      description: lpspi2
+    - name: lpuart2
+      bit_offset: 7
+      bit_size: 1
+      description: lpuart1
 fieldset/AON_BLK_CTRL_NS_AONMIX_QACCEPT_N:
   description: ''
   fields:
-  - name: lpi2c1
-    bit_offset: 1
-    bit_size: 1
-    description: lpi2c1
-  - name: lpi2c2
-    bit_offset: 2
-    bit_size: 1
-    description: lpi2c2
-  - name: lpspi1
-    bit_offset: 4
-    bit_size: 1
-    description: lpspi1
-  - name: lpspi2
-    bit_offset: 5
-    bit_size: 1
-    description: lpspi2
-  - name: lpuart1
-    bit_offset: 6
-    bit_size: 1
-    description: lpuart1
-  - name: lpuart2
-    bit_offset: 7
-    bit_size: 1
-    description: lpuart2
+    - name: lpi2c1
+      bit_offset: 1
+      bit_size: 1
+      description: lpi2c1
+    - name: lpi2c2
+      bit_offset: 2
+      bit_size: 1
+      description: lpi2c2
+    - name: lpspi1
+      bit_offset: 4
+      bit_size: 1
+      description: lpspi1
+    - name: lpspi2
+      bit_offset: 5
+      bit_size: 1
+      description: lpspi2
+    - name: lpuart1
+      bit_offset: 6
+      bit_size: 1
+      description: lpuart1
+    - name: lpuart2
+      bit_offset: 7
+      bit_size: 1
+      description: lpuart2
 fieldset/AON_BLK_CTRL_NS_AONMIX_QACCEPT_N_ips:
   description: ''
   fields:
-  - name: lpi2c1
-    bit_offset: 8
-    bit_size: 1
-    description: ips_lpi2c1
-  - name: lpi2c2
-    bit_offset: 9
-    bit_size: 1
-    description: ips_lpi2c2
-  - name: lpspi1
-    bit_offset: 11
-    bit_size: 1
-    description: ips_lpspi1
-  - name: lpspi2
-    bit_offset: 12
-    bit_size: 1
-    description: ips_lpspi2
-  - name: sai
-    bit_offset: 15
-    bit_size: 1
-    description: ips_sai
+    - name: lpi2c1
+      bit_offset: 8
+      bit_size: 1
+      description: ips_lpi2c1
+    - name: lpi2c2
+      bit_offset: 9
+      bit_size: 1
+      description: ips_lpi2c2
+    - name: lpspi1
+      bit_offset: 11
+      bit_size: 1
+      description: ips_lpspi1
+    - name: lpspi2
+      bit_offset: 12
+      bit_size: 1
+      description: ips_lpspi2
+    - name: sai
+      bit_offset: 15
+      bit_size: 1
+      description: ips_sai
 fieldset/AON_BLK_CTRL_NS_AONMIX_QACCEPT_N_ahb:
   description: ''
   fields:
-  - name: gpio
-    bit_offset: 10
-    bit_size: 1
-    description: ahb_gpio
+    - name: gpio
+      bit_offset: 10
+      bit_size: 1
+      description: ahb_gpio
 fieldset/AON_BLK_CTRL_NS_AONMIX_QACCEPT_N_apb:
   description: ''
   fields:
-  - name: lpuart1
-    bit_offset: 13
-    bit_size: 1
-    description: apb_lpuart1
-  - name: lpuart2
-    bit_offset: 14
-    bit_size: 1
-    description: apb_lpuart2
+    - name: lpuart1
+      bit_offset: 13
+      bit_size: 1
+      description: apb_lpuart1
+    - name: lpuart2
+      bit_offset: 14
+      bit_size: 1
+      description: apb_lpuart2

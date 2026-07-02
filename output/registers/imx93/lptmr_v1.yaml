@@ -1,68 +1,68 @@
 block/LPTMR:
   description: ''
   items:
-  - name: CSR
-    byte_offset: 0
-    fieldset: LPTMR_CSR
-  - name: PSR
-    byte_offset: 4
-    fieldset: LPTMR_PSR
-  - name: CMR
-    byte_offset: 8
-    fieldset: LPTMR_CMR
-  - name: CNR
-    byte_offset: 12
-    fieldset: LPTMR_CNR
+    - name: CSR
+      byte_offset: 0
+      fieldset: LPTMR_CSR
+    - name: PSR
+      byte_offset: 4
+      fieldset: LPTMR_PSR
+    - name: CMR
+      byte_offset: 8
+      fieldset: LPTMR_CMR
+    - name: CNR
+      byte_offset: 12
+      fieldset: LPTMR_CNR
 fieldset/LPTMR_CSR:
   description: ''
   fields:
-  - name: TEN
-    bit_offset: 0
-    bit_size: 1
-  - name: TMS
-    bit_offset: 1
-    bit_size: 1
-  - name: TFC
-    bit_offset: 2
-    bit_size: 1
-  - name: TPP
-    bit_offset: 3
-    bit_size: 1
-  - name: TPS
-    bit_offset: 4
-    bit_size: 2
-  - name: TIE
-    bit_offset: 6
-    bit_size: 1
-  - name: TCF
-    bit_offset: 7
-    bit_size: 1
-  - name: TDRE
-    bit_offset: 8
-    bit_size: 1
+    - name: TEN
+      bit_offset: 0
+      bit_size: 1
+    - name: TMS
+      bit_offset: 1
+      bit_size: 1
+    - name: TFC
+      bit_offset: 2
+      bit_size: 1
+    - name: TPP
+      bit_offset: 3
+      bit_size: 1
+    - name: TPS
+      bit_offset: 4
+      bit_size: 2
+    - name: TIE
+      bit_offset: 6
+      bit_size: 1
+    - name: TCF
+      bit_offset: 7
+      bit_size: 1
+    - name: TDRE
+      bit_offset: 8
+      bit_size: 1
 fieldset/LPTMR_PSR:
   description: ''
   fields:
-  - name: PCS
-    bit_offset: 0
-    bit_size: 2
-  - name: PBYP
-    bit_offset: 2
-    bit_size: 1
-  - name: PRESCALE
-    bit_offset: 3
-    bit_size: 4
+    - name: PCS
+      bit_offset: 0
+      bit_size: 2
+    - name: PBYP
+      bit_offset: 2
+      bit_size: 1
+    - name: PRESCALE
+      bit_offset: 3
+      bit_size: 4
 fieldset/LPTMR_CMR:
   description: ''
   fields:
-  - name: COMPARE
-    bit_offset: 0
-    bit_size: 32
-    description: Compare Value
+    - name: COMPARE
+      bit_offset: 0
+      bit_size: 32
+      description: Compare Value
 fieldset/LPTMR_CNR:
   description: ''
   fields:
-  - name: COUNTER
-    bit_offset: 0
-    bit_size: 32
-    description: Counter Value
+    - name: COUNTER
+      bit_offset: 0
+      bit_size: 32
+      description: Counter Value

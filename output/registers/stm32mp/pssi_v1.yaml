@@ -1,92 +1,92 @@
 block/PSSI:
   description: ''
   items:
-  - name: CR
-    byte_offset: 0
-    description: PSSI control register 1
-    fieldset: PSSI_CR
-  - name: SR
-    byte_offset: 4
-    description: PSSI status register
-    fieldset: PSSI_SR
-  - name: RIS
-    byte_offset: 8
-    description: PSSI raw interrupt status register
-  - name: IER
-    byte_offset: 12
-    description: PSSI interrupt enable register
-  - name: MIS
-    byte_offset: 16
-    description: PSSI masked interrupt status register
-  - name: ICR
-    byte_offset: 20
-    description: PSSI interrupt clear register
-  - name: DR
-    byte_offset: 40
-    description: PSSI data register
-    fieldset: PSSI_DR
-  - name: HWCFGR
-    byte_offset: 1008
-    description: PSSI IP HW configuration register
-  - name: VERR
-    byte_offset: 1012
-    description: PSSI IP version register
-  - name: IPIDR
-    byte_offset: 1016
-    description: PSSI IP ID register
-  - name: SIDR
-    byte_offset: 1020
-    description: PSSI SIZE ID register
+    - name: CR
+      byte_offset: 0
+      description: PSSI control register 1
+      fieldset: PSSI_CR
+    - name: SR
+      byte_offset: 4
+      description: PSSI status register
+      fieldset: PSSI_SR
+    - name: RIS
+      byte_offset: 8
+      description: PSSI raw interrupt status register
+    - name: IER
+      byte_offset: 12
+      description: PSSI interrupt enable register
+    - name: MIS
+      byte_offset: 16
+      description: PSSI masked interrupt status register
+    - name: ICR
+      byte_offset: 20
+      description: PSSI interrupt clear register
+    - name: DR
+      byte_offset: 40
+      description: PSSI data register
+      fieldset: PSSI_DR
+    - name: HWCFGR
+      byte_offset: 1008
+      description: PSSI IP HW configuration register
+    - name: VERR
+      byte_offset: 1012
+      description: PSSI IP version register
+    - name: IPIDR
+      byte_offset: 1016
+      description: PSSI IP ID register
+    - name: SIDR
+      byte_offset: 1020
+      description: PSSI SIZE ID register
 fieldset/PSSI_CR:
   description: ''
   fields:
-  - name: OUTEN
-    bit_offset: 31
-    bit_size: 1
-    description: Data direction selection
-  - name: DMAEN
-    bit_offset: 30
-    bit_size: 1
-    description: DMA enable
-  - name: DERDYCFG
-    bit_offset: 18
-    bit_size: 3
-    description: Data enable and ready configuration
-  - name: ENABLE
-    bit_offset: 14
-    bit_size: 1
-    description: PSSI enable
-  - name: EDM
-    bit_offset: 10
-    bit_size: 2
-    description: Extended data mode
-  - name: RDYPOL
-    bit_offset: 8
-    bit_size: 1
-    description: Ready polarity
-  - name: DEPOL
-    bit_offset: 6
-    bit_size: 1
-    description: Data enable polarity
-  - name: CKPOL
-    bit_offset: 5
-    bit_size: 1
-    description: Parallel data clock polarity
+    - name: OUTEN
+      bit_offset: 31
+      bit_size: 1
+      description: Data direction selection
+    - name: DMAEN
+      bit_offset: 30
+      bit_size: 1
+      description: DMA enable
+    - name: DERDYCFG
+      bit_offset: 18
+      bit_size: 3
+      description: Data enable and ready configuration
+    - name: ENABLE
+      bit_offset: 14
+      bit_size: 1
+      description: PSSI enable
+    - name: EDM
+      bit_offset: 10
+      bit_size: 2
+      description: Extended data mode
+    - name: RDYPOL
+      bit_offset: 8
+      bit_size: 1
+      description: Ready polarity
+    - name: DEPOL
+      bit_offset: 6
+      bit_size: 1
+      description: Data enable polarity
+    - name: CKPOL
+      bit_offset: 5
+      bit_size: 1
+      description: Parallel data clock polarity
 fieldset/PSSI_SR:
   description: ''
   fields:
-  - name: RTT1B
-    bit_offset: 3
-    bit_size: 1
-    description: Ready to transfer one byte
-  - name: RTT4B
-    bit_offset: 2
-    bit_size: 1
-    description: Ready to transfer four bytes
+    - name: RTT1B
+      bit_offset: 3
+      bit_size: 1
+      description: Ready to transfer one byte
+    - name: RTT4B
+      bit_offset: 2
+      bit_size: 1
+      description: Ready to transfer four bytes
 fieldset/PSSI_DR:
   description: ''
   fields:
-  - name: DR
-    bit_offset: 0
-    bit_size: 32
-    description: Data register
+    - name: DR
+      bit_offset: 0
+      bit_size: 32
+      description: Data register

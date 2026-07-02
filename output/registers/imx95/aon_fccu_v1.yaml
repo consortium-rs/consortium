@@ -1,2034 +1,2034 @@
 block/AON_FCCU:
   description: ''
   items:
-  - name: GRKNTIMC
-    byte_offset: 768
-    array:
-      len: 1
-      stride: 4
-    fieldset: AON_FCCU_GRKNTIMC
-  - name: GFLTRC_C0
-    byte_offset: 1088
-    fieldset: AON_FCCU_GFLTRC_C0
-  - name: GFLTRC_C1
-    byte_offset: 1092
-    fieldset: AON_FCCU_GFLTRC_C1
-  - name: GFLTRC_C2
-    byte_offset: 1096
-    fieldset: AON_FCCU_GFLTRC_C2
-  - name: GRKNTIMS
-    byte_offset: 3328
-    fieldset: AON_FCCU_GRKNTIMS
-  - name: GINTOVFS
-    byte_offset: 3336
-    fieldset: AON_FCCU_GINTOVFS
-  - name: GMEOUTDC
-    byte_offset: 3360
-    fieldset: AON_FCCU_GMEOUTDC
-  - name: GEOUTTCT
-    byte_offset: 3364
-    fieldset: AON_FCCU_GEOUTTCT
-  - name: GLB_EOUT_GEOUTPNC
-    byte_offset: 3376
-    array:
-      len: 2
-      stride: 20
-  - name: GDBGCFG
-    byte_offset: 4016
-    fieldset: AON_FCCU_GDBGCFG
-  - name: GDBGSTAT
-    byte_offset: 4020
-    fieldset: AON_FCCU_GDBGSTAT
-  - name: GDPFSTAT
-    byte_offset: 4024
-    fieldset: AON_FCCU_GDPFSTAT
-  - name: GDALTRLD
-    byte_offset: 4028
-    fieldset: AON_FCCU_GDALTRLD
-  - name: FHCFG0
-    byte_offset: 1310720
-    fieldset: AON_FCCU_FHCFG0
-  - name: FHSRVDS0
-    byte_offset: 1310724
-    fieldset: AON_FCCU_FHSRVDS0
-  - name: FHFLTENC0_0
-    byte_offset: 1310736
-    fieldset: AON_FCCU_FHFLTENC0_0
-  - name: FHFLTENC0_1
-    byte_offset: 1310740
-    fieldset: AON_FCCU_FHFLTENC0_1
-  - name: FHFLTENC0_2
-    byte_offset: 1310744
-    fieldset: AON_FCCU_FHFLTENC0_2
-  - name: FHFLTS0_0
-    byte_offset: 1310800
-    fieldset: AON_FCCU_FHFLTS0_0
-  - name: FHFLTS0_1
-    byte_offset: 1310804
-    fieldset: AON_FCCU_FHFLTS0_1
-  - name: FHFLTS0_2
-    byte_offset: 1310808
-    fieldset: AON_FCCU_FHFLTS0_2
-  - name: FHFLTRKC0_0
-    byte_offset: 1310864
-    fieldset: AON_FCCU_FHFLTRKC0_0
-  - name: FHFLTRKC0_1
-    byte_offset: 1310868
-    fieldset: AON_FCCU_FHFLTRKC0_1
-  - name: FHFLTRKC0_2
-    byte_offset: 1310872
-    fieldset: AON_FCCU_FHFLTRKC0_2
-  - name: FHFLTRKC0_3
-    byte_offset: 1310876
-    fieldset: AON_FCCU_FHFLTRKC0_3
-  - name: FHFLTRKC0_4
-    byte_offset: 1310880
-    fieldset: AON_FCCU_FHFLTRKC0_4
-  - name: FHFLTRKC0_5
-    byte_offset: 1310884
-    fieldset: AON_FCCU_FHFLTRKC0_5
-  - name: FHFLTRKC0_6
-    byte_offset: 1310888
-    fieldset: AON_FCCU_FHFLTRKC0_6
-  - name: FHFLTRKC0_7
-    byte_offset: 1310892
-    fieldset: AON_FCCU_FHFLTRKC0_7
-  - name: FHFLTRKC0_8
-    byte_offset: 1310896
-    fieldset: AON_FCCU_FHFLTRKC0_8
-  - name: FHFLTRKC0_9
-    byte_offset: 1310900
-    fieldset: AON_FCCU_FHFLTRKC0_9
-  - name: FHFLTRKC0_10
-    byte_offset: 1310904
-    fieldset: AON_FCCU_FHFLTRKC0_10
-  - name: FHFLTRKC0_11
-    byte_offset: 1310908
-    fieldset: AON_FCCU_FHFLTRKC0_11
-  - name: FHFLTRKC0_12
-    byte_offset: 1310912
-    fieldset: AON_FCCU_FHFLTRKC0_12
-  - name: FHFLTRKC0_13
-    byte_offset: 1310916
-    fieldset: AON_FCCU_FHFLTRKC0_13
-  - name: FHFLTRKC0_14
-    byte_offset: 1310920
-    fieldset: AON_FCCU_FHFLTRKC0_14
-  - name: FHFLTRKC0_15
-    byte_offset: 1310924
-    fieldset: AON_FCCU_FHFLTRKC0_15
-  - name: FHFLTRKC0_16
-    byte_offset: 1310928
-    fieldset: AON_FCCU_FHFLTRKC0_16
-  - name: FHFLTRKC0_17
-    byte_offset: 1310932
-    fieldset: AON_FCCU_FHFLTRKC0_17
-  - name: FHFLTRKC0_18
-    byte_offset: 1310936
-    fieldset: AON_FCCU_FHFLTRKC0_18
-  - name: FHFLTRKC0_19
-    byte_offset: 1310940
-    fieldset: AON_FCCU_FHFLTRKC0_19
-  - name: FHIMRKC0_00
-    byte_offset: 1311376
-    fieldset: AON_FCCU_FHIMRKC0_00
-  - name: FHDLRKC0_00
-    byte_offset: 1311392
-    fieldset: AON_FCCU_FHDLRKC0_00
-  - name: FHIMRKC0_10
-    byte_offset: 1311408
-    fieldset: AON_FCCU_FHIMRKC0_10
-  - name: FHDLRKC0_10
-    byte_offset: 1311424
-    fieldset: AON_FCCU_FHDLRKC0_10
-  - name: FHIMRKC0_20
-    byte_offset: 1311440
-    fieldset: AON_FCCU_FHIMRKC0_20
-  - name: FHDLRKC0_20
-    byte_offset: 1311456
-    fieldset: AON_FCCU_FHDLRKC0_20
-  - name: FHIMRKC0_30
-    byte_offset: 1311472
-    fieldset: AON_FCCU_FHIMRKC0_30
-  - name: FHDLRKC0_30
-    byte_offset: 1311488
-    fieldset: AON_FCCU_FHDLRKC0_30
-  - name: FHIMRKC0_40
-    byte_offset: 1311504
-    fieldset: AON_FCCU_FHIMRKC0_40
-  - name: FHDLRKC0_40
-    byte_offset: 1311520
-    fieldset: AON_FCCU_FHDLRKC0_40
-  - name: FHIMRKC0_50
-    byte_offset: 1311536
-    fieldset: AON_FCCU_FHIMRKC0_50
-  - name: FHDLRKC0_50
-    byte_offset: 1311552
-    fieldset: AON_FCCU_FHDLRKC0_50
-  - name: FHIMRKC0_60
-    byte_offset: 1311568
-    fieldset: AON_FCCU_FHIMRKC0_60
-  - name: FHDLRKC0_60
-    byte_offset: 1311584
-    fieldset: AON_FCCU_FHDLRKC0_60
-  - name: FHIMRKC0_70
-    byte_offset: 1311600
-    fieldset: AON_FCCU_FHIMRKC0_70
-  - name: FHDLRKC0_70
-    byte_offset: 1311616
-    fieldset: AON_FCCU_FHDLRKC0_70
+    - name: GRKNTIMC
+      byte_offset: 768
+      array:
+        len: 1
+        stride: 4
+      fieldset: AON_FCCU_GRKNTIMC
+    - name: GFLTRC_C0
+      byte_offset: 1088
+      fieldset: AON_FCCU_GFLTRC_C0
+    - name: GFLTRC_C1
+      byte_offset: 1092
+      fieldset: AON_FCCU_GFLTRC_C1
+    - name: GFLTRC_C2
+      byte_offset: 1096
+      fieldset: AON_FCCU_GFLTRC_C2
+    - name: GRKNTIMS
+      byte_offset: 3328
+      fieldset: AON_FCCU_GRKNTIMS
+    - name: GINTOVFS
+      byte_offset: 3336
+      fieldset: AON_FCCU_GINTOVFS
+    - name: GMEOUTDC
+      byte_offset: 3360
+      fieldset: AON_FCCU_GMEOUTDC
+    - name: GEOUTTCT
+      byte_offset: 3364
+      fieldset: AON_FCCU_GEOUTTCT
+    - name: GLB_EOUT_GEOUTPNC
+      byte_offset: 3376
+      array:
+        len: 2
+        stride: 20
+    - name: GDBGCFG
+      byte_offset: 4016
+      fieldset: AON_FCCU_GDBGCFG
+    - name: GDBGSTAT
+      byte_offset: 4020
+      fieldset: AON_FCCU_GDBGSTAT
+    - name: GDPFSTAT
+      byte_offset: 4024
+      fieldset: AON_FCCU_GDPFSTAT
+    - name: GDALTRLD
+      byte_offset: 4028
+      fieldset: AON_FCCU_GDALTRLD
+    - name: FHCFG0
+      byte_offset: 1310720
+      fieldset: AON_FCCU_FHCFG0
+    - name: FHSRVDS0
+      byte_offset: 1310724
+      fieldset: AON_FCCU_FHSRVDS0
+    - name: FHFLTENC0_0
+      byte_offset: 1310736
+      fieldset: AON_FCCU_FHFLTENC0_0
+    - name: FHFLTENC0_1
+      byte_offset: 1310740
+      fieldset: AON_FCCU_FHFLTENC0_1
+    - name: FHFLTENC0_2
+      byte_offset: 1310744
+      fieldset: AON_FCCU_FHFLTENC0_2
+    - name: FHFLTS0_0
+      byte_offset: 1310800
+      fieldset: AON_FCCU_FHFLTS0_0
+    - name: FHFLTS0_1
+      byte_offset: 1310804
+      fieldset: AON_FCCU_FHFLTS0_1
+    - name: FHFLTS0_2
+      byte_offset: 1310808
+      fieldset: AON_FCCU_FHFLTS0_2
+    - name: FHFLTRKC0_0
+      byte_offset: 1310864
+      fieldset: AON_FCCU_FHFLTRKC0_0
+    - name: FHFLTRKC0_1
+      byte_offset: 1310868
+      fieldset: AON_FCCU_FHFLTRKC0_1
+    - name: FHFLTRKC0_2
+      byte_offset: 1310872
+      fieldset: AON_FCCU_FHFLTRKC0_2
+    - name: FHFLTRKC0_3
+      byte_offset: 1310876
+      fieldset: AON_FCCU_FHFLTRKC0_3
+    - name: FHFLTRKC0_4
+      byte_offset: 1310880
+      fieldset: AON_FCCU_FHFLTRKC0_4
+    - name: FHFLTRKC0_5
+      byte_offset: 1310884
+      fieldset: AON_FCCU_FHFLTRKC0_5
+    - name: FHFLTRKC0_6
+      byte_offset: 1310888
+      fieldset: AON_FCCU_FHFLTRKC0_6
+    - name: FHFLTRKC0_7
+      byte_offset: 1310892
+      fieldset: AON_FCCU_FHFLTRKC0_7
+    - name: FHFLTRKC0_8
+      byte_offset: 1310896
+      fieldset: AON_FCCU_FHFLTRKC0_8
+    - name: FHFLTRKC0_9
+      byte_offset: 1310900
+      fieldset: AON_FCCU_FHFLTRKC0_9
+    - name: FHFLTRKC0_10
+      byte_offset: 1310904
+      fieldset: AON_FCCU_FHFLTRKC0_10
+    - name: FHFLTRKC0_11
+      byte_offset: 1310908
+      fieldset: AON_FCCU_FHFLTRKC0_11
+    - name: FHFLTRKC0_12
+      byte_offset: 1310912
+      fieldset: AON_FCCU_FHFLTRKC0_12
+    - name: FHFLTRKC0_13
+      byte_offset: 1310916
+      fieldset: AON_FCCU_FHFLTRKC0_13
+    - name: FHFLTRKC0_14
+      byte_offset: 1310920
+      fieldset: AON_FCCU_FHFLTRKC0_14
+    - name: FHFLTRKC0_15
+      byte_offset: 1310924
+      fieldset: AON_FCCU_FHFLTRKC0_15
+    - name: FHFLTRKC0_16
+      byte_offset: 1310928
+      fieldset: AON_FCCU_FHFLTRKC0_16
+    - name: FHFLTRKC0_17
+      byte_offset: 1310932
+      fieldset: AON_FCCU_FHFLTRKC0_17
+    - name: FHFLTRKC0_18
+      byte_offset: 1310936
+      fieldset: AON_FCCU_FHFLTRKC0_18
+    - name: FHFLTRKC0_19
+      byte_offset: 1310940
+      fieldset: AON_FCCU_FHFLTRKC0_19
+    - name: FHIMRKC0_00
+      byte_offset: 1311376
+      fieldset: AON_FCCU_FHIMRKC0_00
+    - name: FHDLRKC0_00
+      byte_offset: 1311392
+      fieldset: AON_FCCU_FHDLRKC0_00
+    - name: FHIMRKC0_10
+      byte_offset: 1311408
+      fieldset: AON_FCCU_FHIMRKC0_10
+    - name: FHDLRKC0_10
+      byte_offset: 1311424
+      fieldset: AON_FCCU_FHDLRKC0_10
+    - name: FHIMRKC0_20
+      byte_offset: 1311440
+      fieldset: AON_FCCU_FHIMRKC0_20
+    - name: FHDLRKC0_20
+      byte_offset: 1311456
+      fieldset: AON_FCCU_FHDLRKC0_20
+    - name: FHIMRKC0_30
+      byte_offset: 1311472
+      fieldset: AON_FCCU_FHIMRKC0_30
+    - name: FHDLRKC0_30
+      byte_offset: 1311488
+      fieldset: AON_FCCU_FHDLRKC0_30
+    - name: FHIMRKC0_40
+      byte_offset: 1311504
+      fieldset: AON_FCCU_FHIMRKC0_40
+    - name: FHDLRKC0_40
+      byte_offset: 1311520
+      fieldset: AON_FCCU_FHDLRKC0_40
+    - name: FHIMRKC0_50
+      byte_offset: 1311536
+      fieldset: AON_FCCU_FHIMRKC0_50
+    - name: FHDLRKC0_50
+      byte_offset: 1311552
+      fieldset: AON_FCCU_FHDLRKC0_50
+    - name: FHIMRKC0_60
+      byte_offset: 1311568
+      fieldset: AON_FCCU_FHIMRKC0_60
+    - name: FHDLRKC0_60
+      byte_offset: 1311584
+      fieldset: AON_FCCU_FHDLRKC0_60
+    - name: FHIMRKC0_70
+      byte_offset: 1311600
+      fieldset: AON_FCCU_FHIMRKC0_70
+    - name: FHDLRKC0_70
+      byte_offset: 1311616
+      fieldset: AON_FCCU_FHDLRKC0_70
 fieldset/AON_FCCU_GRKNTIMC:
   description: ''
   fields:
-  - name: RKTIMCFG
-    bit_offset: 0
-    bit_size: 32
-    description: Reaction Timer Period
+    - name: RKTIMCFG
+      bit_offset: 0
+      bit_size: 32
+      description: Reaction Timer Period
 fieldset/AON_FCCU_GFLTRC_C0:
   description: ''
   fields:
-  - name: RHWSW0
-    bit_offset: 0
-    bit_size: 1
-  - name: RHWSW1
-    bit_offset: 1
-    bit_size: 1
-  - name: RHWSW2
-    bit_offset: 2
-    bit_size: 1
-  - name: RHWSW3
-    bit_offset: 3
-    bit_size: 1
-  - name: RHWSW4
-    bit_offset: 4
-    bit_size: 1
-  - name: RHWSW5
-    bit_offset: 5
-    bit_size: 1
-  - name: RHWSW6
-    bit_offset: 6
-    bit_size: 1
-  - name: RHWSW7
-    bit_offset: 7
-    bit_size: 1
-  - name: RHWSW8
-    bit_offset: 8
-    bit_size: 1
-  - name: RHWSW9
-    bit_offset: 9
-    bit_size: 1
-  - name: RHWSW10
-    bit_offset: 10
-    bit_size: 1
-  - name: RHWSW11
-    bit_offset: 11
-    bit_size: 1
-  - name: RHWSW12
-    bit_offset: 12
-    bit_size: 1
-  - name: RHWSW13
-    bit_offset: 13
-    bit_size: 1
-  - name: RHWSW14
-    bit_offset: 14
-    bit_size: 1
-  - name: RHWSW15
-    bit_offset: 15
-    bit_size: 1
-  - name: RHWSW16
-    bit_offset: 16
-    bit_size: 1
-  - name: RHWSW17
-    bit_offset: 17
-    bit_size: 1
-  - name: RHWSW18
-    bit_offset: 18
-    bit_size: 1
-  - name: RHWSW19
-    bit_offset: 19
-    bit_size: 1
-  - name: RHWSW20
-    bit_offset: 20
-    bit_size: 1
-  - name: RHWSW21
-    bit_offset: 21
-    bit_size: 1
-  - name: RHWSW22
-    bit_offset: 22
-    bit_size: 1
-  - name: RHWSW23
-    bit_offset: 23
-    bit_size: 1
-  - name: RHWSW24
-    bit_offset: 24
-    bit_size: 1
-  - name: RHWSW25
-    bit_offset: 25
-    bit_size: 1
-  - name: RHWSW26
-    bit_offset: 26
-    bit_size: 1
-  - name: RHWSW27
-    bit_offset: 27
-    bit_size: 1
-  - name: RHWSW28
-    bit_offset: 28
-    bit_size: 1
-  - name: RHWSW29
-    bit_offset: 29
-    bit_size: 1
-  - name: RHWSW30
-    bit_offset: 30
-    bit_size: 1
-  - name: RHWSW31
-    bit_offset: 31
-    bit_size: 1
+    - name: RHWSW0
+      bit_offset: 0
+      bit_size: 1
+    - name: RHWSW1
+      bit_offset: 1
+      bit_size: 1
+    - name: RHWSW2
+      bit_offset: 2
+      bit_size: 1
+    - name: RHWSW3
+      bit_offset: 3
+      bit_size: 1
+    - name: RHWSW4
+      bit_offset: 4
+      bit_size: 1
+    - name: RHWSW5
+      bit_offset: 5
+      bit_size: 1
+    - name: RHWSW6
+      bit_offset: 6
+      bit_size: 1
+    - name: RHWSW7
+      bit_offset: 7
+      bit_size: 1
+    - name: RHWSW8
+      bit_offset: 8
+      bit_size: 1
+    - name: RHWSW9
+      bit_offset: 9
+      bit_size: 1
+    - name: RHWSW10
+      bit_offset: 10
+      bit_size: 1
+    - name: RHWSW11
+      bit_offset: 11
+      bit_size: 1
+    - name: RHWSW12
+      bit_offset: 12
+      bit_size: 1
+    - name: RHWSW13
+      bit_offset: 13
+      bit_size: 1
+    - name: RHWSW14
+      bit_offset: 14
+      bit_size: 1
+    - name: RHWSW15
+      bit_offset: 15
+      bit_size: 1
+    - name: RHWSW16
+      bit_offset: 16
+      bit_size: 1
+    - name: RHWSW17
+      bit_offset: 17
+      bit_size: 1
+    - name: RHWSW18
+      bit_offset: 18
+      bit_size: 1
+    - name: RHWSW19
+      bit_offset: 19
+      bit_size: 1
+    - name: RHWSW20
+      bit_offset: 20
+      bit_size: 1
+    - name: RHWSW21
+      bit_offset: 21
+      bit_size: 1
+    - name: RHWSW22
+      bit_offset: 22
+      bit_size: 1
+    - name: RHWSW23
+      bit_offset: 23
+      bit_size: 1
+    - name: RHWSW24
+      bit_offset: 24
+      bit_size: 1
+    - name: RHWSW25
+      bit_offset: 25
+      bit_size: 1
+    - name: RHWSW26
+      bit_offset: 26
+      bit_size: 1
+    - name: RHWSW27
+      bit_offset: 27
+      bit_size: 1
+    - name: RHWSW28
+      bit_offset: 28
+      bit_size: 1
+    - name: RHWSW29
+      bit_offset: 29
+      bit_size: 1
+    - name: RHWSW30
+      bit_offset: 30
+      bit_size: 1
+    - name: RHWSW31
+      bit_offset: 31
+      bit_size: 1
 fieldset/AON_FCCU_GFLTRC_C1:
   description: ''
   fields:
-  - name: RHWSW32
-    bit_offset: 0
-    bit_size: 1
-  - name: RHWSW33
-    bit_offset: 1
-    bit_size: 1
-  - name: RHWSW34
-    bit_offset: 2
-    bit_size: 1
-  - name: RHWSW35
-    bit_offset: 3
-    bit_size: 1
-  - name: RHWSW36
-    bit_offset: 4
-    bit_size: 1
-  - name: RHWSW37
-    bit_offset: 5
-    bit_size: 1
-  - name: RHWSW38
-    bit_offset: 6
-    bit_size: 1
-  - name: RHWSW39
-    bit_offset: 7
-    bit_size: 1
-  - name: RHWSW40
-    bit_offset: 8
-    bit_size: 1
-  - name: RHWSW41
-    bit_offset: 9
-    bit_size: 1
-  - name: RHWSW42
-    bit_offset: 10
-    bit_size: 1
-  - name: RHWSW43
-    bit_offset: 11
-    bit_size: 1
-  - name: RHWSW44
-    bit_offset: 12
-    bit_size: 1
-  - name: RHWSW45
-    bit_offset: 13
-    bit_size: 1
-  - name: RHWSW46
-    bit_offset: 14
-    bit_size: 1
-  - name: RHWSW47
-    bit_offset: 15
-    bit_size: 1
-  - name: RHWSW48
-    bit_offset: 16
-    bit_size: 1
-  - name: RHWSW49
-    bit_offset: 17
-    bit_size: 1
-  - name: RHWSW50
-    bit_offset: 18
-    bit_size: 1
-  - name: RHWSW51
-    bit_offset: 19
-    bit_size: 1
-  - name: RHWSW52
-    bit_offset: 20
-    bit_size: 1
-  - name: RHWSW53
-    bit_offset: 21
-    bit_size: 1
-  - name: RHWSW54
-    bit_offset: 22
-    bit_size: 1
-  - name: RHWSW55
-    bit_offset: 23
-    bit_size: 1
-  - name: RHWSW56
-    bit_offset: 24
-    bit_size: 1
-  - name: RHWSW57
-    bit_offset: 25
-    bit_size: 1
-  - name: RHWSW58
-    bit_offset: 26
-    bit_size: 1
-  - name: RHWSW59
-    bit_offset: 27
-    bit_size: 1
-  - name: RHWSW60
-    bit_offset: 28
-    bit_size: 1
-  - name: RHWSW61
-    bit_offset: 29
-    bit_size: 1
-  - name: RHWSW62
-    bit_offset: 30
-    bit_size: 1
-  - name: RHWSW63
-    bit_offset: 31
-    bit_size: 1
+    - name: RHWSW32
+      bit_offset: 0
+      bit_size: 1
+    - name: RHWSW33
+      bit_offset: 1
+      bit_size: 1
+    - name: RHWSW34
+      bit_offset: 2
+      bit_size: 1
+    - name: RHWSW35
+      bit_offset: 3
+      bit_size: 1
+    - name: RHWSW36
+      bit_offset: 4
+      bit_size: 1
+    - name: RHWSW37
+      bit_offset: 5
+      bit_size: 1
+    - name: RHWSW38
+      bit_offset: 6
+      bit_size: 1
+    - name: RHWSW39
+      bit_offset: 7
+      bit_size: 1
+    - name: RHWSW40
+      bit_offset: 8
+      bit_size: 1
+    - name: RHWSW41
+      bit_offset: 9
+      bit_size: 1
+    - name: RHWSW42
+      bit_offset: 10
+      bit_size: 1
+    - name: RHWSW43
+      bit_offset: 11
+      bit_size: 1
+    - name: RHWSW44
+      bit_offset: 12
+      bit_size: 1
+    - name: RHWSW45
+      bit_offset: 13
+      bit_size: 1
+    - name: RHWSW46
+      bit_offset: 14
+      bit_size: 1
+    - name: RHWSW47
+      bit_offset: 15
+      bit_size: 1
+    - name: RHWSW48
+      bit_offset: 16
+      bit_size: 1
+    - name: RHWSW49
+      bit_offset: 17
+      bit_size: 1
+    - name: RHWSW50
+      bit_offset: 18
+      bit_size: 1
+    - name: RHWSW51
+      bit_offset: 19
+      bit_size: 1
+    - name: RHWSW52
+      bit_offset: 20
+      bit_size: 1
+    - name: RHWSW53
+      bit_offset: 21
+      bit_size: 1
+    - name: RHWSW54
+      bit_offset: 22
+      bit_size: 1
+    - name: RHWSW55
+      bit_offset: 23
+      bit_size: 1
+    - name: RHWSW56
+      bit_offset: 24
+      bit_size: 1
+    - name: RHWSW57
+      bit_offset: 25
+      bit_size: 1
+    - name: RHWSW58
+      bit_offset: 26
+      bit_size: 1
+    - name: RHWSW59
+      bit_offset: 27
+      bit_size: 1
+    - name: RHWSW60
+      bit_offset: 28
+      bit_size: 1
+    - name: RHWSW61
+      bit_offset: 29
+      bit_size: 1
+    - name: RHWSW62
+      bit_offset: 30
+      bit_size: 1
+    - name: RHWSW63
+      bit_offset: 31
+      bit_size: 1
 fieldset/AON_FCCU_GFLTRC_C2:
   description: ''
   fields:
-  - name: RHWSW64
-    bit_offset: 0
-    bit_size: 1
-  - name: RHWSW65
-    bit_offset: 1
-    bit_size: 1
-  - name: RHWSW66
-    bit_offset: 2
-    bit_size: 1
-  - name: RHWSW67
-    bit_offset: 3
-    bit_size: 1
-  - name: RHWSW68
-    bit_offset: 4
-    bit_size: 1
-  - name: RHWSW69
-    bit_offset: 5
-    bit_size: 1
-  - name: RHWSW70
-    bit_offset: 6
-    bit_size: 1
-  - name: RHWSW71
-    bit_offset: 7
-    bit_size: 1
-  - name: RHWSW72
-    bit_offset: 8
-    bit_size: 1
-  - name: RHWSW73
-    bit_offset: 9
-    bit_size: 1
-  - name: RHWSW74
-    bit_offset: 10
-    bit_size: 1
-  - name: RHWSW75
-    bit_offset: 11
-    bit_size: 1
-  - name: RHWSW76
-    bit_offset: 12
-    bit_size: 1
-  - name: RHWSW77
-    bit_offset: 13
-    bit_size: 1
-  - name: RHWSW78
-    bit_offset: 14
-    bit_size: 1
-  - name: RHWSW79
-    bit_offset: 15
-    bit_size: 1
+    - name: RHWSW64
+      bit_offset: 0
+      bit_size: 1
+    - name: RHWSW65
+      bit_offset: 1
+      bit_size: 1
+    - name: RHWSW66
+      bit_offset: 2
+      bit_size: 1
+    - name: RHWSW67
+      bit_offset: 3
+      bit_size: 1
+    - name: RHWSW68
+      bit_offset: 4
+      bit_size: 1
+    - name: RHWSW69
+      bit_offset: 5
+      bit_size: 1
+    - name: RHWSW70
+      bit_offset: 6
+      bit_size: 1
+    - name: RHWSW71
+      bit_offset: 7
+      bit_size: 1
+    - name: RHWSW72
+      bit_offset: 8
+      bit_size: 1
+    - name: RHWSW73
+      bit_offset: 9
+      bit_size: 1
+    - name: RHWSW74
+      bit_offset: 10
+      bit_size: 1
+    - name: RHWSW75
+      bit_offset: 11
+      bit_size: 1
+    - name: RHWSW76
+      bit_offset: 12
+      bit_size: 1
+    - name: RHWSW77
+      bit_offset: 13
+      bit_size: 1
+    - name: RHWSW78
+      bit_offset: 14
+      bit_size: 1
+    - name: RHWSW79
+      bit_offset: 15
+      bit_size: 1
 fieldset/AON_FCCU_GRKNTIMS:
   description: ''
   fields:
-  - name: RKTIMVAL
-    bit_offset: 0
-    bit_size: 32
-    description: Current Reaction Timer
+    - name: RKTIMVAL
+      bit_offset: 0
+      bit_size: 32
+      description: Current Reaction Timer
 fieldset/AON_FCCU_GINTOVFS:
   description: ''
   fields:
-  - name: FSMSTATE
-    bit_offset: 0
-    bit_size: 2
-  - name: FLTSERV
-    bit_offset: 7
-    bit_size: 1
+    - name: FSMSTATE
+      bit_offset: 0
+      bit_size: 2
+    - name: FLTSERV
+      bit_offset: 7
+      bit_size: 1
 fieldset/AON_FCCU_GINTOVFS_SERV:
   description: ''
   fields:
-  - name: DID
-    bit_offset: 16
-    bit_size: 4
-    description: Domain Being Serviced
+    - name: DID
+      bit_offset: 16
+      bit_size: 4
+      description: Domain Being Serviced
 fieldset/AON_FCCU_GMEOUTDC:
   description: ''
   fields:
-  - name: EOUTMIND
-    bit_offset: 0
-    bit_size: 32
-    description: EOUT Minimum Duration
+    - name: EOUTMIND
+      bit_offset: 0
+      bit_size: 32
+      description: EOUT Minimum Duration
 fieldset/AON_FCCU_GEOUTTCT:
   description: ''
   fields:
-  - name: TMRDIS0
-    bit_offset: 0
-    bit_size: 1
-  - name: TMRDIS1
-    bit_offset: 1
-    bit_size: 1
+    - name: TMRDIS0
+      bit_offset: 0
+      bit_size: 1
+    - name: TMRDIS1
+      bit_offset: 1
+      bit_size: 1
 fieldset/AON_FCCU_GEOUTPNC_OBE:
   description: ''
   fields:
-  - name: VALID
-    bit_offset: 0
-    bit_size: 1
-  - name: STAT
-    bit_offset: 1
-    bit_size: 1
+    - name: VALID
+      bit_offset: 0
+      bit_size: 1
+    - name: STAT
+      bit_offset: 1
+      bit_size: 1
 fieldset/AON_FCCU_GEOUTPNC_DO:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 3
-    bit_size: 1
+    - name: STAT
+      bit_offset: 3
+      bit_size: 1
 fieldset/AON_FCCU_GEOUTPNC_VAL:
   description: ''
   fields:
-  - name: CTRL
-    bit_offset: 4
-    bit_size: 2
+    - name: CTRL
+      bit_offset: 4
+      bit_size: 2
 fieldset/AON_FCCU_GEOUTPNC:
   description: ''
   fields:
-  - name: IBE
-    bit_offset: 8
-    bit_size: 1
+    - name: IBE
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_GEOUTPNC_IND:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 9
-    bit_size: 1
+    - name: STAT
+      bit_offset: 9
+      bit_size: 1
 fieldset/AON_FCCU_GEOUTPNC_INV:
   description: ''
   fields:
-  - name: IP
-    bit_offset: 10
-    bit_size: 1
+    - name: IP
+      bit_offset: 10
+      bit_size: 1
 fieldset/AON_FCCU_GEOUTPNC_SOC_PAD:
   description: ''
   fields:
-  - name: CTRL0
-    bit_offset: 16
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL1
-    bit_offset: 17
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL2
-    bit_offset: 18
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL3
-    bit_offset: 19
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL4
-    bit_offset: 20
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL5
-    bit_offset: 21
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL6
-    bit_offset: 22
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL7
-    bit_offset: 23
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL8
-    bit_offset: 24
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL9
-    bit_offset: 25
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL10
-    bit_offset: 26
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL11
-    bit_offset: 27
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL12
-    bit_offset: 28
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL13
-    bit_offset: 29
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL14
-    bit_offset: 30
-    bit_size: 1
-    description: Chip Pad Control
-  - name: CTRL15
-    bit_offset: 31
-    bit_size: 1
-    description: Chip Pad Control
+    - name: CTRL0
+      bit_offset: 16
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL1
+      bit_offset: 17
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL2
+      bit_offset: 18
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL3
+      bit_offset: 19
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL4
+      bit_offset: 20
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL5
+      bit_offset: 21
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL6
+      bit_offset: 22
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL7
+      bit_offset: 23
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL8
+      bit_offset: 24
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL9
+      bit_offset: 25
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL10
+      bit_offset: 26
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL11
+      bit_offset: 27
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL12
+      bit_offset: 28
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL13
+      bit_offset: 29
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL14
+      bit_offset: 30
+      bit_size: 1
+      description: Chip Pad Control
+    - name: CTRL15
+      bit_offset: 31
+      bit_size: 1
+      description: Chip Pad Control
 fieldset/AON_FCCU_GEOUTPMC:
   description: ''
   fields:
-  - name: SPLENB0
-    bit_offset: 0
-    bit_size: 1
-    description: Special Enable Pins
-  - name: SPLENB1
-    bit_offset: 1
-    bit_size: 1
-    description: Special Enable Pins
-  - name: SPLENB2
-    bit_offset: 2
-    bit_size: 1
-    description: Special Enable Pins
-  - name: SPLENB3
-    bit_offset: 3
-    bit_size: 1
-    description: Special Enable Pins
+    - name: SPLENB0
+      bit_offset: 0
+      bit_size: 1
+      description: Special Enable Pins
+    - name: SPLENB1
+      bit_offset: 1
+      bit_size: 1
+      description: Special Enable Pins
+    - name: SPLENB2
+      bit_offset: 2
+      bit_size: 1
+      description: Special Enable Pins
+    - name: SPLENB3
+      bit_offset: 3
+      bit_size: 1
+      description: Special Enable Pins
 fieldset/AON_FCCU_GEOUTMC:
   description: ''
   fields:
-  - name: EOUTM
-    bit_offset: 0
-    bit_size: 3
-  - name: INV
-    bit_offset: 3
-    bit_size: 1
+    - name: EOUTM
+      bit_offset: 0
+      bit_size: 3
+    - name: INV
+      bit_offset: 3
+      bit_size: 1
 fieldset/AON_FCCU_GEOUTTMS:
   description: ''
   fields:
-  - name: EOUTDVAL
-    bit_offset: 0
-    bit_size: 32
-    description: EOUT Timer Current Value
+    - name: EOUTDVAL
+      bit_offset: 0
+      bit_size: 32
+      description: EOUT Timer Current Value
 fieldset/AON_FCCU_GEOUTDIC_DID:
   description: ''
   fields:
-  - name: EOUT
-    bit_offset: 0
-    bit_size: 4
-    description: DID for Fault on EOUT
+    - name: EOUT
+      bit_offset: 0
+      bit_size: 4
+      description: DID for Fault on EOUT
 fieldset/AON_FCCU_GDBGCFG:
   description: ''
   fields:
-  - name: FRZ
-    bit_offset: 16
-    bit_size: 1
+    - name: FRZ
+      bit_offset: 16
+      bit_size: 1
 fieldset/AON_FCCU_GDBGSTAT:
   description: ''
   fields:
-  - name: FLTIND
-    bit_offset: 0
-    bit_size: 8
-    description: Fault Index
+    - name: FLTIND
+      bit_offset: 0
+      bit_size: 8
+      description: Fault Index
 fieldset/AON_FCCU_GDPFSTAT:
   description: ''
   fields:
-  - name: PENDFLT0
-    bit_offset: 0
-    bit_size: 1
-    description: Pending Fault Status
-  - name: PENDFLT1
-    bit_offset: 1
-    bit_size: 1
-    description: Pending Fault Status
+    - name: PENDFLT0
+      bit_offset: 0
+      bit_size: 1
+      description: Pending Fault Status
+    - name: PENDFLT1
+      bit_offset: 1
+      bit_size: 1
+      description: Pending Fault Status
 fieldset/AON_FCCU_GDALTRLD:
   description: ''
   fields:
-  - name: ALTRLD0
-    bit_offset: 0
-    bit_size: 1
-  - name: ALTRLD1
-    bit_offset: 1
-    bit_size: 1
-    description: Alternate Timer Reload Status
+    - name: ALTRLD0
+      bit_offset: 0
+      bit_size: 1
+    - name: ALTRLD1
+      bit_offset: 1
+      bit_size: 1
+      description: Alternate Timer Reload Status
 fieldset/AON_FCCU_FHCFG0:
   description: ''
   fields:
-  - name: FHIDEN
-    bit_offset: 0
-    bit_size: 1
+    - name: FHIDEN
+      bit_offset: 0
+      bit_size: 1
 fieldset/AON_FCCU_FHSRVDS0_SERV:
   description: ''
   fields:
-  - name: DID
-    bit_offset: 0
-    bit_size: 4
-    description: DID Being Serviced
+    - name: DID
+      bit_offset: 0
+      bit_size: 4
+      description: DID Being Serviced
 fieldset/AON_FCCU_FHSRVDS0:
   description: ''
   fields:
-  - name: AGGFLTS
-    bit_offset: 8
-    bit_size: 1
-    description: DID Being Serviced
+    - name: AGGFLTS
+      bit_offset: 8
+      bit_size: 1
+      description: DID Being Serviced
 fieldset/AON_FCCU_FHFLTENC0_0:
   description: ''
   fields:
-  - name: EN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EN1
-    bit_offset: 1
-    bit_size: 1
-  - name: EN2
-    bit_offset: 2
-    bit_size: 1
-  - name: EN3
-    bit_offset: 3
-    bit_size: 1
-  - name: EN4
-    bit_offset: 4
-    bit_size: 1
-  - name: EN5
-    bit_offset: 5
-    bit_size: 1
-  - name: EN6
-    bit_offset: 6
-    bit_size: 1
-  - name: EN7
-    bit_offset: 7
-    bit_size: 1
-  - name: EN8
-    bit_offset: 8
-    bit_size: 1
-  - name: EN9
-    bit_offset: 9
-    bit_size: 1
-  - name: EN10
-    bit_offset: 10
-    bit_size: 1
-  - name: EN11
-    bit_offset: 11
-    bit_size: 1
-  - name: EN12
-    bit_offset: 12
-    bit_size: 1
-  - name: EN13
-    bit_offset: 13
-    bit_size: 1
-  - name: EN14
-    bit_offset: 14
-    bit_size: 1
-  - name: EN15
-    bit_offset: 15
-    bit_size: 1
-  - name: EN16
-    bit_offset: 16
-    bit_size: 1
-  - name: EN17
-    bit_offset: 17
-    bit_size: 1
-  - name: EN18
-    bit_offset: 18
-    bit_size: 1
-  - name: EN19
-    bit_offset: 19
-    bit_size: 1
-  - name: EN20
-    bit_offset: 20
-    bit_size: 1
-  - name: EN21
-    bit_offset: 21
-    bit_size: 1
-  - name: EN22
-    bit_offset: 22
-    bit_size: 1
-  - name: EN23
-    bit_offset: 23
-    bit_size: 1
-  - name: EN24
-    bit_offset: 24
-    bit_size: 1
-  - name: EN25
-    bit_offset: 25
-    bit_size: 1
-  - name: EN26
-    bit_offset: 26
-    bit_size: 1
-  - name: EN27
-    bit_offset: 27
-    bit_size: 1
-  - name: EN28
-    bit_offset: 28
-    bit_size: 1
-  - name: EN29
-    bit_offset: 29
-    bit_size: 1
-  - name: EN30
-    bit_offset: 30
-    bit_size: 1
-  - name: EN31
-    bit_offset: 31
-    bit_size: 1
+    - name: EN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EN1
+      bit_offset: 1
+      bit_size: 1
+    - name: EN2
+      bit_offset: 2
+      bit_size: 1
+    - name: EN3
+      bit_offset: 3
+      bit_size: 1
+    - name: EN4
+      bit_offset: 4
+      bit_size: 1
+    - name: EN5
+      bit_offset: 5
+      bit_size: 1
+    - name: EN6
+      bit_offset: 6
+      bit_size: 1
+    - name: EN7
+      bit_offset: 7
+      bit_size: 1
+    - name: EN8
+      bit_offset: 8
+      bit_size: 1
+    - name: EN9
+      bit_offset: 9
+      bit_size: 1
+    - name: EN10
+      bit_offset: 10
+      bit_size: 1
+    - name: EN11
+      bit_offset: 11
+      bit_size: 1
+    - name: EN12
+      bit_offset: 12
+      bit_size: 1
+    - name: EN13
+      bit_offset: 13
+      bit_size: 1
+    - name: EN14
+      bit_offset: 14
+      bit_size: 1
+    - name: EN15
+      bit_offset: 15
+      bit_size: 1
+    - name: EN16
+      bit_offset: 16
+      bit_size: 1
+    - name: EN17
+      bit_offset: 17
+      bit_size: 1
+    - name: EN18
+      bit_offset: 18
+      bit_size: 1
+    - name: EN19
+      bit_offset: 19
+      bit_size: 1
+    - name: EN20
+      bit_offset: 20
+      bit_size: 1
+    - name: EN21
+      bit_offset: 21
+      bit_size: 1
+    - name: EN22
+      bit_offset: 22
+      bit_size: 1
+    - name: EN23
+      bit_offset: 23
+      bit_size: 1
+    - name: EN24
+      bit_offset: 24
+      bit_size: 1
+    - name: EN25
+      bit_offset: 25
+      bit_size: 1
+    - name: EN26
+      bit_offset: 26
+      bit_size: 1
+    - name: EN27
+      bit_offset: 27
+      bit_size: 1
+    - name: EN28
+      bit_offset: 28
+      bit_size: 1
+    - name: EN29
+      bit_offset: 29
+      bit_size: 1
+    - name: EN30
+      bit_offset: 30
+      bit_size: 1
+    - name: EN31
+      bit_offset: 31
+      bit_size: 1
 fieldset/AON_FCCU_FHFLTENC0_1:
   description: ''
   fields:
-  - name: EN32
-    bit_offset: 0
-    bit_size: 1
-  - name: EN33
-    bit_offset: 1
-    bit_size: 1
-  - name: EN34
-    bit_offset: 2
-    bit_size: 1
-  - name: EN35
-    bit_offset: 3
-    bit_size: 1
-  - name: EN36
-    bit_offset: 4
-    bit_size: 1
-  - name: EN37
-    bit_offset: 5
-    bit_size: 1
-  - name: EN38
-    bit_offset: 6
-    bit_size: 1
-  - name: EN39
-    bit_offset: 7
-    bit_size: 1
-  - name: EN40
-    bit_offset: 8
-    bit_size: 1
-  - name: EN41
-    bit_offset: 9
-    bit_size: 1
-  - name: EN42
-    bit_offset: 10
-    bit_size: 1
-  - name: EN43
-    bit_offset: 11
-    bit_size: 1
-  - name: EN44
-    bit_offset: 12
-    bit_size: 1
-  - name: EN45
-    bit_offset: 13
-    bit_size: 1
-  - name: EN46
-    bit_offset: 14
-    bit_size: 1
-  - name: EN47
-    bit_offset: 15
-    bit_size: 1
-  - name: EN48
-    bit_offset: 16
-    bit_size: 1
-  - name: EN49
-    bit_offset: 17
-    bit_size: 1
-  - name: EN50
-    bit_offset: 18
-    bit_size: 1
-  - name: EN51
-    bit_offset: 19
-    bit_size: 1
-  - name: EN52
-    bit_offset: 20
-    bit_size: 1
-  - name: EN53
-    bit_offset: 21
-    bit_size: 1
-  - name: EN54
-    bit_offset: 22
-    bit_size: 1
-  - name: EN55
-    bit_offset: 23
-    bit_size: 1
-  - name: EN56
-    bit_offset: 24
-    bit_size: 1
-  - name: EN57
-    bit_offset: 25
-    bit_size: 1
-  - name: EN58
-    bit_offset: 26
-    bit_size: 1
-  - name: EN59
-    bit_offset: 27
-    bit_size: 1
-  - name: EN60
-    bit_offset: 28
-    bit_size: 1
-  - name: EN61
-    bit_offset: 29
-    bit_size: 1
-  - name: EN62
-    bit_offset: 30
-    bit_size: 1
-  - name: EN63
-    bit_offset: 31
-    bit_size: 1
+    - name: EN32
+      bit_offset: 0
+      bit_size: 1
+    - name: EN33
+      bit_offset: 1
+      bit_size: 1
+    - name: EN34
+      bit_offset: 2
+      bit_size: 1
+    - name: EN35
+      bit_offset: 3
+      bit_size: 1
+    - name: EN36
+      bit_offset: 4
+      bit_size: 1
+    - name: EN37
+      bit_offset: 5
+      bit_size: 1
+    - name: EN38
+      bit_offset: 6
+      bit_size: 1
+    - name: EN39
+      bit_offset: 7
+      bit_size: 1
+    - name: EN40
+      bit_offset: 8
+      bit_size: 1
+    - name: EN41
+      bit_offset: 9
+      bit_size: 1
+    - name: EN42
+      bit_offset: 10
+      bit_size: 1
+    - name: EN43
+      bit_offset: 11
+      bit_size: 1
+    - name: EN44
+      bit_offset: 12
+      bit_size: 1
+    - name: EN45
+      bit_offset: 13
+      bit_size: 1
+    - name: EN46
+      bit_offset: 14
+      bit_size: 1
+    - name: EN47
+      bit_offset: 15
+      bit_size: 1
+    - name: EN48
+      bit_offset: 16
+      bit_size: 1
+    - name: EN49
+      bit_offset: 17
+      bit_size: 1
+    - name: EN50
+      bit_offset: 18
+      bit_size: 1
+    - name: EN51
+      bit_offset: 19
+      bit_size: 1
+    - name: EN52
+      bit_offset: 20
+      bit_size: 1
+    - name: EN53
+      bit_offset: 21
+      bit_size: 1
+    - name: EN54
+      bit_offset: 22
+      bit_size: 1
+    - name: EN55
+      bit_offset: 23
+      bit_size: 1
+    - name: EN56
+      bit_offset: 24
+      bit_size: 1
+    - name: EN57
+      bit_offset: 25
+      bit_size: 1
+    - name: EN58
+      bit_offset: 26
+      bit_size: 1
+    - name: EN59
+      bit_offset: 27
+      bit_size: 1
+    - name: EN60
+      bit_offset: 28
+      bit_size: 1
+    - name: EN61
+      bit_offset: 29
+      bit_size: 1
+    - name: EN62
+      bit_offset: 30
+      bit_size: 1
+    - name: EN63
+      bit_offset: 31
+      bit_size: 1
 fieldset/AON_FCCU_FHFLTENC0_2:
   description: ''
   fields:
-  - name: EN64
-    bit_offset: 0
-    bit_size: 1
-  - name: EN65
-    bit_offset: 1
-    bit_size: 1
-  - name: EN66
-    bit_offset: 2
-    bit_size: 1
-  - name: EN67
-    bit_offset: 3
-    bit_size: 1
-  - name: EN68
-    bit_offset: 4
-    bit_size: 1
-  - name: EN69
-    bit_offset: 5
-    bit_size: 1
-  - name: EN70
-    bit_offset: 6
-    bit_size: 1
-  - name: EN71
-    bit_offset: 7
-    bit_size: 1
-  - name: EN72
-    bit_offset: 8
-    bit_size: 1
-  - name: EN73
-    bit_offset: 9
-    bit_size: 1
-  - name: EN74
-    bit_offset: 10
-    bit_size: 1
-  - name: EN75
-    bit_offset: 11
-    bit_size: 1
-  - name: EN76
-    bit_offset: 12
-    bit_size: 1
-  - name: EN77
-    bit_offset: 13
-    bit_size: 1
-  - name: EN78
-    bit_offset: 14
-    bit_size: 1
-  - name: EN79
-    bit_offset: 15
-    bit_size: 1
+    - name: EN64
+      bit_offset: 0
+      bit_size: 1
+    - name: EN65
+      bit_offset: 1
+      bit_size: 1
+    - name: EN66
+      bit_offset: 2
+      bit_size: 1
+    - name: EN67
+      bit_offset: 3
+      bit_size: 1
+    - name: EN68
+      bit_offset: 4
+      bit_size: 1
+    - name: EN69
+      bit_offset: 5
+      bit_size: 1
+    - name: EN70
+      bit_offset: 6
+      bit_size: 1
+    - name: EN71
+      bit_offset: 7
+      bit_size: 1
+    - name: EN72
+      bit_offset: 8
+      bit_size: 1
+    - name: EN73
+      bit_offset: 9
+      bit_size: 1
+    - name: EN74
+      bit_offset: 10
+      bit_size: 1
+    - name: EN75
+      bit_offset: 11
+      bit_size: 1
+    - name: EN76
+      bit_offset: 12
+      bit_size: 1
+    - name: EN77
+      bit_offset: 13
+      bit_size: 1
+    - name: EN78
+      bit_offset: 14
+      bit_size: 1
+    - name: EN79
+      bit_offset: 15
+      bit_size: 1
 fieldset/AON_FCCU_FHFLTS0_0:
   description: ''
   fields:
-  - name: STAT0
-    bit_offset: 0
-    bit_size: 1
-  - name: STAT1
-    bit_offset: 1
-    bit_size: 1
-  - name: STAT2
-    bit_offset: 2
-    bit_size: 1
-  - name: STAT3
-    bit_offset: 3
-    bit_size: 1
-  - name: STAT4
-    bit_offset: 4
-    bit_size: 1
-  - name: STAT5
-    bit_offset: 5
-    bit_size: 1
-  - name: STAT6
-    bit_offset: 6
-    bit_size: 1
-  - name: STAT7
-    bit_offset: 7
-    bit_size: 1
-  - name: STAT8
-    bit_offset: 8
-    bit_size: 1
-  - name: STAT9
-    bit_offset: 9
-    bit_size: 1
-  - name: STAT10
-    bit_offset: 10
-    bit_size: 1
-  - name: STAT11
-    bit_offset: 11
-    bit_size: 1
-  - name: STAT12
-    bit_offset: 12
-    bit_size: 1
-  - name: STAT13
-    bit_offset: 13
-    bit_size: 1
-  - name: STAT14
-    bit_offset: 14
-    bit_size: 1
-  - name: STAT15
-    bit_offset: 15
-    bit_size: 1
-  - name: STAT16
-    bit_offset: 16
-    bit_size: 1
-  - name: STAT17
-    bit_offset: 17
-    bit_size: 1
-  - name: STAT18
-    bit_offset: 18
-    bit_size: 1
-  - name: STAT19
-    bit_offset: 19
-    bit_size: 1
-  - name: STAT20
-    bit_offset: 20
-    bit_size: 1
-  - name: STAT21
-    bit_offset: 21
-    bit_size: 1
-  - name: STAT22
-    bit_offset: 22
-    bit_size: 1
-  - name: STAT23
-    bit_offset: 23
-    bit_size: 1
-  - name: STAT24
-    bit_offset: 24
-    bit_size: 1
-  - name: STAT25
-    bit_offset: 25
-    bit_size: 1
-  - name: STAT26
-    bit_offset: 26
-    bit_size: 1
-  - name: STAT27
-    bit_offset: 27
-    bit_size: 1
-  - name: STAT28
-    bit_offset: 28
-    bit_size: 1
-  - name: STAT29
-    bit_offset: 29
-    bit_size: 1
-  - name: STAT30
-    bit_offset: 30
-    bit_size: 1
-  - name: STAT31
-    bit_offset: 31
-    bit_size: 1
+    - name: STAT0
+      bit_offset: 0
+      bit_size: 1
+    - name: STAT1
+      bit_offset: 1
+      bit_size: 1
+    - name: STAT2
+      bit_offset: 2
+      bit_size: 1
+    - name: STAT3
+      bit_offset: 3
+      bit_size: 1
+    - name: STAT4
+      bit_offset: 4
+      bit_size: 1
+    - name: STAT5
+      bit_offset: 5
+      bit_size: 1
+    - name: STAT6
+      bit_offset: 6
+      bit_size: 1
+    - name: STAT7
+      bit_offset: 7
+      bit_size: 1
+    - name: STAT8
+      bit_offset: 8
+      bit_size: 1
+    - name: STAT9
+      bit_offset: 9
+      bit_size: 1
+    - name: STAT10
+      bit_offset: 10
+      bit_size: 1
+    - name: STAT11
+      bit_offset: 11
+      bit_size: 1
+    - name: STAT12
+      bit_offset: 12
+      bit_size: 1
+    - name: STAT13
+      bit_offset: 13
+      bit_size: 1
+    - name: STAT14
+      bit_offset: 14
+      bit_size: 1
+    - name: STAT15
+      bit_offset: 15
+      bit_size: 1
+    - name: STAT16
+      bit_offset: 16
+      bit_size: 1
+    - name: STAT17
+      bit_offset: 17
+      bit_size: 1
+    - name: STAT18
+      bit_offset: 18
+      bit_size: 1
+    - name: STAT19
+      bit_offset: 19
+      bit_size: 1
+    - name: STAT20
+      bit_offset: 20
+      bit_size: 1
+    - name: STAT21
+      bit_offset: 21
+      bit_size: 1
+    - name: STAT22
+      bit_offset: 22
+      bit_size: 1
+    - name: STAT23
+      bit_offset: 23
+      bit_size: 1
+    - name: STAT24
+      bit_offset: 24
+      bit_size: 1
+    - name: STAT25
+      bit_offset: 25
+      bit_size: 1
+    - name: STAT26
+      bit_offset: 26
+      bit_size: 1
+    - name: STAT27
+      bit_offset: 27
+      bit_size: 1
+    - name: STAT28
+      bit_offset: 28
+      bit_size: 1
+    - name: STAT29
+      bit_offset: 29
+      bit_size: 1
+    - name: STAT30
+      bit_offset: 30
+      bit_size: 1
+    - name: STAT31
+      bit_offset: 31
+      bit_size: 1
 fieldset/AON_FCCU_FHFLTS0_1:
   description: ''
   fields:
-  - name: STAT32
-    bit_offset: 0
-    bit_size: 1
-  - name: STAT33
-    bit_offset: 1
-    bit_size: 1
-  - name: STAT34
-    bit_offset: 2
-    bit_size: 1
-  - name: STAT35
-    bit_offset: 3
-    bit_size: 1
-  - name: STAT36
-    bit_offset: 4
-    bit_size: 1
-  - name: STAT37
-    bit_offset: 5
-    bit_size: 1
-  - name: STAT38
-    bit_offset: 6
-    bit_size: 1
-  - name: STAT39
-    bit_offset: 7
-    bit_size: 1
-  - name: STAT40
-    bit_offset: 8
-    bit_size: 1
-  - name: STAT41
-    bit_offset: 9
-    bit_size: 1
-  - name: STAT42
-    bit_offset: 10
-    bit_size: 1
-  - name: STAT43
-    bit_offset: 11
-    bit_size: 1
-  - name: STAT44
-    bit_offset: 12
-    bit_size: 1
-  - name: STAT45
-    bit_offset: 13
-    bit_size: 1
-  - name: STAT46
-    bit_offset: 14
-    bit_size: 1
-  - name: STAT47
-    bit_offset: 15
-    bit_size: 1
-  - name: STAT48
-    bit_offset: 16
-    bit_size: 1
-  - name: STAT49
-    bit_offset: 17
-    bit_size: 1
-  - name: STAT50
-    bit_offset: 18
-    bit_size: 1
-  - name: STAT51
-    bit_offset: 19
-    bit_size: 1
-  - name: STAT52
-    bit_offset: 20
-    bit_size: 1
-  - name: STAT53
-    bit_offset: 21
-    bit_size: 1
-  - name: STAT54
-    bit_offset: 22
-    bit_size: 1
-  - name: STAT55
-    bit_offset: 23
-    bit_size: 1
-  - name: STAT56
-    bit_offset: 24
-    bit_size: 1
-  - name: STAT57
-    bit_offset: 25
-    bit_size: 1
-  - name: STAT58
-    bit_offset: 26
-    bit_size: 1
-  - name: STAT59
-    bit_offset: 27
-    bit_size: 1
-  - name: STAT60
-    bit_offset: 28
-    bit_size: 1
-  - name: STAT61
-    bit_offset: 29
-    bit_size: 1
-  - name: STAT62
-    bit_offset: 30
-    bit_size: 1
-  - name: STAT63
-    bit_offset: 31
-    bit_size: 1
+    - name: STAT32
+      bit_offset: 0
+      bit_size: 1
+    - name: STAT33
+      bit_offset: 1
+      bit_size: 1
+    - name: STAT34
+      bit_offset: 2
+      bit_size: 1
+    - name: STAT35
+      bit_offset: 3
+      bit_size: 1
+    - name: STAT36
+      bit_offset: 4
+      bit_size: 1
+    - name: STAT37
+      bit_offset: 5
+      bit_size: 1
+    - name: STAT38
+      bit_offset: 6
+      bit_size: 1
+    - name: STAT39
+      bit_offset: 7
+      bit_size: 1
+    - name: STAT40
+      bit_offset: 8
+      bit_size: 1
+    - name: STAT41
+      bit_offset: 9
+      bit_size: 1
+    - name: STAT42
+      bit_offset: 10
+      bit_size: 1
+    - name: STAT43
+      bit_offset: 11
+      bit_size: 1
+    - name: STAT44
+      bit_offset: 12
+      bit_size: 1
+    - name: STAT45
+      bit_offset: 13
+      bit_size: 1
+    - name: STAT46
+      bit_offset: 14
+      bit_size: 1
+    - name: STAT47
+      bit_offset: 15
+      bit_size: 1
+    - name: STAT48
+      bit_offset: 16
+      bit_size: 1
+    - name: STAT49
+      bit_offset: 17
+      bit_size: 1
+    - name: STAT50
+      bit_offset: 18
+      bit_size: 1
+    - name: STAT51
+      bit_offset: 19
+      bit_size: 1
+    - name: STAT52
+      bit_offset: 20
+      bit_size: 1
+    - name: STAT53
+      bit_offset: 21
+      bit_size: 1
+    - name: STAT54
+      bit_offset: 22
+      bit_size: 1
+    - name: STAT55
+      bit_offset: 23
+      bit_size: 1
+    - name: STAT56
+      bit_offset: 24
+      bit_size: 1
+    - name: STAT57
+      bit_offset: 25
+      bit_size: 1
+    - name: STAT58
+      bit_offset: 26
+      bit_size: 1
+    - name: STAT59
+      bit_offset: 27
+      bit_size: 1
+    - name: STAT60
+      bit_offset: 28
+      bit_size: 1
+    - name: STAT61
+      bit_offset: 29
+      bit_size: 1
+    - name: STAT62
+      bit_offset: 30
+      bit_size: 1
+    - name: STAT63
+      bit_offset: 31
+      bit_size: 1
 fieldset/AON_FCCU_FHFLTS0_2:
   description: ''
   fields:
-  - name: STAT64
-    bit_offset: 0
-    bit_size: 1
-  - name: STAT65
-    bit_offset: 1
-    bit_size: 1
-  - name: STAT66
-    bit_offset: 2
-    bit_size: 1
-  - name: STAT67
-    bit_offset: 3
-    bit_size: 1
-  - name: STAT68
-    bit_offset: 4
-    bit_size: 1
-  - name: STAT69
-    bit_offset: 5
-    bit_size: 1
-  - name: STAT70
-    bit_offset: 6
-    bit_size: 1
-  - name: STAT71
-    bit_offset: 7
-    bit_size: 1
-  - name: STAT72
-    bit_offset: 8
-    bit_size: 1
-  - name: STAT73
-    bit_offset: 9
-    bit_size: 1
-  - name: STAT74
-    bit_offset: 10
-    bit_size: 1
-  - name: STAT75
-    bit_offset: 11
-    bit_size: 1
-  - name: STAT76
-    bit_offset: 12
-    bit_size: 1
-  - name: STAT77
-    bit_offset: 13
-    bit_size: 1
-  - name: STAT78
-    bit_offset: 14
-    bit_size: 1
-  - name: STAT79
-    bit_offset: 15
-    bit_size: 1
+    - name: STAT64
+      bit_offset: 0
+      bit_size: 1
+    - name: STAT65
+      bit_offset: 1
+      bit_size: 1
+    - name: STAT66
+      bit_offset: 2
+      bit_size: 1
+    - name: STAT67
+      bit_offset: 3
+      bit_size: 1
+    - name: STAT68
+      bit_offset: 4
+      bit_size: 1
+    - name: STAT69
+      bit_offset: 5
+      bit_size: 1
+    - name: STAT70
+      bit_offset: 6
+      bit_size: 1
+    - name: STAT71
+      bit_offset: 7
+      bit_size: 1
+    - name: STAT72
+      bit_offset: 8
+      bit_size: 1
+    - name: STAT73
+      bit_offset: 9
+      bit_size: 1
+    - name: STAT74
+      bit_offset: 10
+      bit_size: 1
+    - name: STAT75
+      bit_offset: 11
+      bit_size: 1
+    - name: STAT76
+      bit_offset: 12
+      bit_size: 1
+    - name: STAT77
+      bit_offset: 13
+      bit_size: 1
+    - name: STAT78
+      bit_offset: 14
+      bit_size: 1
+    - name: STAT79
+      bit_offset: 15
+      bit_size: 1
 fieldset/AON_FCCU_FHFLTRKC0_0:
   description: ''
   fields:
-  - name: RKNSEL0
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL1
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL2
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL3
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL0
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL1
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL2
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL3
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_1:
   description: ''
   fields:
-  - name: RKNSEL4
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL5
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL6
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL7
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL4
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL5
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL6
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL7
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_2:
   description: ''
   fields:
-  - name: RKNSEL8
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL9
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL10
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL11
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL8
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL9
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL10
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL11
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_3:
   description: ''
   fields:
-  - name: RKNSEL12
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL13
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL14
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL15
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL12
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL13
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL14
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL15
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_4:
   description: ''
   fields:
-  - name: RKNSEL16
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL17
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL18
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL19
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL16
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL17
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL18
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL19
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_5:
   description: ''
   fields:
-  - name: RKNSEL20
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL21
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL22
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL23
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL20
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL21
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL22
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL23
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_6:
   description: ''
   fields:
-  - name: RKNSEL24
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL25
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL26
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL27
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL24
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL25
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL26
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL27
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_7:
   description: ''
   fields:
-  - name: RKNSEL28
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL29
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL30
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL31
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL28
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL29
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL30
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL31
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_8:
   description: ''
   fields:
-  - name: RKNSEL32
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL33
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL34
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL35
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL32
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL33
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL34
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL35
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_9:
   description: ''
   fields:
-  - name: RKNSEL36
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL37
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL38
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL39
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL36
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL37
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL38
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL39
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_10:
   description: ''
   fields:
-  - name: RKNSEL40
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL41
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL42
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL43
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL40
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL41
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL42
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL43
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_11:
   description: ''
   fields:
-  - name: RKNSEL44
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL45
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL46
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL47
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL44
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL45
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL46
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL47
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_12:
   description: ''
   fields:
-  - name: RKNSEL48
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL49
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL50
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL51
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL48
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL49
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL50
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL51
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_13:
   description: ''
   fields:
-  - name: RKNSEL52
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL53
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL54
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL55
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL52
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL53
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL54
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL55
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_14:
   description: ''
   fields:
-  - name: RKNSEL56
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL57
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL58
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL59
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL56
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL57
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL58
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL59
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_15:
   description: ''
   fields:
-  - name: RKNSEL60
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL61
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL62
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL63
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL60
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL61
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL62
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL63
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_16:
   description: ''
   fields:
-  - name: RKNSEL64
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL65
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL66
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL67
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL64
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL65
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL66
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL67
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_17:
   description: ''
   fields:
-  - name: RKNSEL68
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL69
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL70
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL71
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL68
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL69
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL70
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL71
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_18:
   description: ''
   fields:
-  - name: RKNSEL72
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL73
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL74
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL75
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL72
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL73
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL74
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL75
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHFLTRKC0_19:
   description: ''
   fields:
-  - name: RKNSEL76
-    bit_offset: 0
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL77
-    bit_offset: 8
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL78
-    bit_offset: 16
-    bit_size: 3
-    description: Reaction Selection
-  - name: RKNSEL79
-    bit_offset: 24
-    bit_size: 3
-    description: Reaction Selection
+    - name: RKNSEL76
+      bit_offset: 0
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL77
+      bit_offset: 8
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL78
+      bit_offset: 16
+      bit_size: 3
+      description: Reaction Selection
+    - name: RKNSEL79
+      bit_offset: 24
+      bit_size: 3
+      description: Reaction Selection
 fieldset/AON_FCCU_FHIMRKC0_00:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHDLRKC0_00:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHIMRKC0_10:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHDLRKC0_10:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHIMRKC0_20:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHDLRKC0_20:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHIMRKC0_30:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHDLRKC0_30:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHIMRKC0_40:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHDLRKC0_40:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHIMRKC0_50:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHDLRKC0_50:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHIMRKC0_60:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHDLRKC0_60:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHIMRKC0_70:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1
 fieldset/AON_FCCU_FHDLRKC0_70:
   description: ''
   fields:
-  - name: EOUTEN0
-    bit_offset: 0
-    bit_size: 1
-  - name: EOUTEN1
-    bit_offset: 1
-    bit_size: 1
-  - name: RKNEN0
-    bit_offset: 2
-    bit_size: 1
-  - name: RKNEN1
-    bit_offset: 3
-    bit_size: 1
-  - name: RKNEN2
-    bit_offset: 4
-    bit_size: 1
-  - name: RKNEN3
-    bit_offset: 5
-    bit_size: 1
-  - name: RKNEN4
-    bit_offset: 6
-    bit_size: 1
-  - name: RKNEN5
-    bit_offset: 7
-    bit_size: 1
-  - name: RKNEN6
-    bit_offset: 8
-    bit_size: 1
+    - name: EOUTEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: EOUTEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: RKNEN0
+      bit_offset: 2
+      bit_size: 1
+    - name: RKNEN1
+      bit_offset: 3
+      bit_size: 1
+    - name: RKNEN2
+      bit_offset: 4
+      bit_size: 1
+    - name: RKNEN3
+      bit_offset: 5
+      bit_size: 1
+    - name: RKNEN4
+      bit_offset: 6
+      bit_size: 1
+    - name: RKNEN5
+      bit_offset: 7
+      bit_size: 1
+    - name: RKNEN6
+      bit_offset: 8
+      bit_size: 1

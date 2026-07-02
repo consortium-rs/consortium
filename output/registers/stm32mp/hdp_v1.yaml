@@ -1,134 +1,134 @@
 block/HDP:
   description: ''
   items:
-  - name: CTRL
-    byte_offset: 0
-    description: HDP control register
-    fieldset: HDP_CTRL
-  - name: MUX
-    byte_offset: 4
-    description: HDP multiplexer control register
-    fieldset: HDP_MUX
-  - name: VAL
-    byte_offset: 16
-    description: HDP read back value register
-    fieldset: HDP_VAL
-  - name: GPOSET
-    byte_offset: 20
-    description: HDP general purpose output set register
-    fieldset: HDP_GPOSET
-  - name: GPOCLR
-    byte_offset: 24
-    description: HDP general purpose output clear register
-    fieldset: HDP_GPOCLR
-  - name: GPOVAL
-    byte_offset: 28
-    description: HDP general purpose output value register
-    fieldset: HDP_GPOVAL
-  - name: VERR
-    byte_offset: 1012
-    description: HDP version register
-    fieldset: HDP_VERR
-  - name: IPIDR
-    byte_offset: 1016
-    description: HDP identification register
-    fieldset: HDP_IPIDR
-  - name: SIDR
-    byte_offset: 1020
-    description: HDP size identification register
-    fieldset: HDP_SIDR
+    - name: CTRL
+      byte_offset: 0
+      description: HDP control register
+      fieldset: HDP_CTRL
+    - name: MUX
+      byte_offset: 4
+      description: HDP multiplexer control register
+      fieldset: HDP_MUX
+    - name: VAL
+      byte_offset: 16
+      description: HDP read back value register
+      fieldset: HDP_VAL
+    - name: GPOSET
+      byte_offset: 20
+      description: HDP general purpose output set register
+      fieldset: HDP_GPOSET
+    - name: GPOCLR
+      byte_offset: 24
+      description: HDP general purpose output clear register
+      fieldset: HDP_GPOCLR
+    - name: GPOVAL
+      byte_offset: 28
+      description: HDP general purpose output value register
+      fieldset: HDP_GPOVAL
+    - name: VERR
+      byte_offset: 1012
+      description: HDP version register
+      fieldset: HDP_VERR
+    - name: IPIDR
+      byte_offset: 1016
+      description: HDP identification register
+      fieldset: HDP_IPIDR
+    - name: SIDR
+      byte_offset: 1020
+      description: HDP size identification register
+      fieldset: HDP_SIDR
 fieldset/HDP_CTRL:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
-    description: Enable HDP, valid if enabled in BSEC
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+      description: Enable HDP, valid if enabled in BSEC
 fieldset/HDP_MUX:
   description: ''
   fields:
-  - name: MUX0
-    bit_offset: 0
-    bit_size: 4
-    description: Select the HDP0 output among the 16 available signals
-  - name: MUX1
-    bit_offset: 4
-    bit_size: 4
-    description: Select the HDP1 output among the 16 available signals
-  - name: MUX2
-    bit_offset: 8
-    bit_size: 4
-    description: Select the HDP2 output among the 16 available signals
-  - name: MUX3
-    bit_offset: 12
-    bit_size: 4
-    description: Select the HDP3 output among the 16 available signals
-  - name: MUX4
-    bit_offset: 16
-    bit_size: 4
-    description: Select the HDP4 output among the 16 available signals
-  - name: MUX5
-    bit_offset: 20
-    bit_size: 4
-    description: Select the HDP5 output among the 16 available signals
-  - name: MUX6
-    bit_offset: 24
-    bit_size: 4
-    description: Select the HDP6 output among the 16 available signals
-  - name: MUX7
-    bit_offset: 28
-    bit_size: 4
-    description: Select the HDP7 output among the 16 available signals
+    - name: MUX0
+      bit_offset: 0
+      bit_size: 4
+      description: Select the HDP0 output among the 16 available signals
+    - name: MUX1
+      bit_offset: 4
+      bit_size: 4
+      description: Select the HDP1 output among the 16 available signals
+    - name: MUX2
+      bit_offset: 8
+      bit_size: 4
+      description: Select the HDP2 output among the 16 available signals
+    - name: MUX3
+      bit_offset: 12
+      bit_size: 4
+      description: Select the HDP3 output among the 16 available signals
+    - name: MUX4
+      bit_offset: 16
+      bit_size: 4
+      description: Select the HDP4 output among the 16 available signals
+    - name: MUX5
+      bit_offset: 20
+      bit_size: 4
+      description: Select the HDP5 output among the 16 available signals
+    - name: MUX6
+      bit_offset: 24
+      bit_size: 4
+      description: Select the HDP6 output among the 16 available signals
+    - name: MUX7
+      bit_offset: 28
+      bit_size: 4
+      description: Select the HDP7 output among the 16 available signals
 fieldset/HDP_VAL:
   description: ''
   fields:
-  - name: HDPVAL
-    bit_offset: 0
-    bit_size: 8
-    description: Value of the HDP signals
+    - name: HDPVAL
+      bit_offset: 0
+      bit_size: 8
+      description: Value of the HDP signals
 fieldset/HDP_GPOSET:
   description: ''
   fields:
-  - name: HDPGPOSET
-    bit_offset: 0
-    bit_size: 8
-    description: When a bit is written to 1, the corresponding HDP GPO is set
+    - name: HDPGPOSET
+      bit_offset: 0
+      bit_size: 8
+      description: When a bit is written to 1, the corresponding HDP GPO is set
 fieldset/HDP_GPOCLR:
   description: ''
   fields:
-  - name: HDPGPOCLR
-    bit_offset: 0
-    bit_size: 8
-    description: When a bit is written to 1, the corresponding HDP GPO is cleared
+    - name: HDPGPOCLR
+      bit_offset: 0
+      bit_size: 8
+      description: When a bit is written to 1, the corresponding HDP GPO is cleared
 fieldset/HDP_GPOVAL:
   description: ''
   fields:
-  - name: HDPGPOVAL
-    bit_offset: 0
-    bit_size: 8
-    description: When written, define the value of the HDP GPO
+    - name: HDPGPOVAL
+      bit_offset: 0
+      bit_size: 8
+      description: When written, define the value of the HDP GPO
 fieldset/HDP_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: HDP minor revision
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: HDP major revision
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: HDP minor revision
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: HDP major revision
 fieldset/HDP_IPIDR:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 32
-    description: HDP identifier
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+      description: HDP identifier
 fieldset/HDP_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: Size identifier
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: Size identifier

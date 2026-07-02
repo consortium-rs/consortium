@@ -1,1087 +1,1087 @@
 block/AUDIO_XCVR:
   description: ''
   items:
-  - name: VERSION
-    byte_offset: 2048
-    fieldset: AUDIO_XCVR_VERSION
-  - name: EXT_CTRL_RW
-    byte_offset: 2064
-  - name: EXT_CTRL_SET
-    byte_offset: 2068
-  - name: EXT_CTRL_CLR
-    byte_offset: 2072
-  - name: EXT_CTRL_TOG
-    byte_offset: 2076
-  - name: EXT_STATUS_RW
-    byte_offset: 2080
-  - name: EXT_STATUS_SET
-    byte_offset: 2084
-  - name: EXT_STATUS_CLR
-    byte_offset: 2088
-  - name: EXT_STATUS_TOG
-    byte_offset: 2092
-  - name: EXT_IER0_RW
-    byte_offset: 2096
-  - name: EXT_IER0_SET
-    byte_offset: 2100
-  - name: EXT_IER0_CLR
-    byte_offset: 2104
-  - name: EXT_IER0_TOG
-    byte_offset: 2108
-  - name: EXT_IER1_RW
-    byte_offset: 2112
-  - name: EXT_IER1_SET
-    byte_offset: 2116
-  - name: EXT_IER1_CLR
-    byte_offset: 2120
-  - name: EXT_IER1_TOG
-    byte_offset: 2124
-  - name: EXT_ISR_RW
-    byte_offset: 2128
-  - name: EXT_ISR_SET
-    byte_offset: 2132
-  - name: EXT_ISR_CLR
-    byte_offset: 2136
-  - name: EXT_ISR_TOG
-    byte_offset: 2140
-  - name: IER_RW
-    byte_offset: 2160
-  - name: IER_SET
-    byte_offset: 2164
-  - name: IER_CLR
-    byte_offset: 2168
-  - name: IER_TOG
-    byte_offset: 2172
-  - name: ISR_RW
-    byte_offset: 2176
-  - name: ISR_SET
-    byte_offset: 2180
-  - name: ISR_CLR
-    byte_offset: 2184
-  - name: ISR_TOG
-    byte_offset: 2188
-  - name: PHY_AI_CTRL_RW
-    byte_offset: 2192
-  - name: PHY_AI_CTRL_SET
-    byte_offset: 2196
-  - name: PHY_AI_CTRL_CLR
-    byte_offset: 2200
-  - name: PHY_AI_CTRL_TOG
-    byte_offset: 2204
-  - name: PHY_AI_WDATA
-    byte_offset: 2208
-    fieldset: AUDIO_XCVR_PHY_AI_WDATA
-  - name: PHY_AI_RDATA
-    byte_offset: 2212
-    fieldset: AUDIO_XCVR_PHY_AI_RDATA
-  - name: DPATH_STATUS
-    byte_offset: 2216
-  - name: RX_CMDC_CTRL_RW
-    byte_offset: 2240
-  - name: RX_CMDC_CTRL_SET
-    byte_offset: 2244
-  - name: RX_CMDC_CTRL_CLR
-    byte_offset: 2248
-  - name: RX_CMDC_CTRL_TOG
-    byte_offset: 2252
-  - name: RX_CMDC_STATUS
-    byte_offset: 2256
-  - name: RX_CMDC_TX_DATA
-    byte_offset: 2272
-  - name: RX_CMDC_RX_DATA
-    byte_offset: 2288
-  - name: RX_DATAPATH_CTRL_RW
-    byte_offset: 2432
-  - name: RX_DATAPATH_CTRL_SET
-    byte_offset: 2436
-  - name: RX_DATAPATH_CTRL_CLR
-    byte_offset: 2440
-  - name: RX_DATAPATH_CTRL_TOG
-    byte_offset: 2444
-  - name: RX_CS_DATA_BITS
-    byte_offset: 2448
-    array:
-      len: 6
-      stride: 4
-  - name: RX_USER_DATA_BITS
-    byte_offset: 2472
-    array:
-      len: 6
-      stride: 4
-  - name: RX_DPATH_CNTR_CTRL_RW
-    byte_offset: 2496
-  - name: RX_DPATH_CNTR_CTRL_SET
-    byte_offset: 2500
-  - name: RX_DPATH_CNTR_CTRL_CLR
-    byte_offset: 2504
-  - name: RX_DPATH_CNTR_CTRL_TOG
-    byte_offset: 2508
-  - name: RX_DPATH_TSCR
-    byte_offset: 2512
-    fieldset: AUDIO_XCVR_RX_DPATH_TSCR
-  - name: RX_DPATH_BCR
-    byte_offset: 2516
-    fieldset: AUDIO_XCVR_RX_DPATH_BCR
-  - name: RX_DPATH_BCTR
-    byte_offset: 2520
-  - name: RX_DPATH_BCRR
-    byte_offset: 2524
-  - name: DMAC_PRE_MATCH_VAL_RW
-    byte_offset: 2528
-  - name: DMAC_PRE_MATCH_VAL_SET
-    byte_offset: 2532
-  - name: DMAC_PRE_MATCH_VAL_CLR
-    byte_offset: 2536
-  - name: DMAC_PRE_MATCH_VAL_TOG
-    byte_offset: 2540
-  - name: DMAC_DTS_PRE_MATCH_VAL_RW
-    byte_offset: 2544
-  - name: DMAC_DTS_PRE_MATCH_VAL_SET
-    byte_offset: 2548
-  - name: DMAC_DTS_PRE_MATCH_VAL_CLR
-    byte_offset: 2552
-  - name: DMAC_DTS_PRE_MATCH_VAL_TOG
-    byte_offset: 2556
-  - name: RX_DPATH_PRE_ERR
-    byte_offset: 2560
-    fieldset: AUDIO_XCVR_RX_DPATH_PRE_ERR
-  - name: RX_DPATH_PARITY_ERR
-    byte_offset: 2564
-    fieldset: AUDIO_XCVR_RX_DPATH_PARITY_ERR
-  - name: RX_DPATH_PKT_CNT
-    byte_offset: 2576
-    fieldset: AUDIO_XCVR_RX_DPATH_PKT_CNT
-  - name: RX_DPATH_ONE_BIT_ERR_CNT
-    byte_offset: 2580
-    fieldset: AUDIO_XCVR_RX_DPATH_ONE_BIT_ERR_CNT
-  - name: DMAC_PRE_MATCH_OFFSET
-    byte_offset: 2584
-  - name: TX_DATAPATH_CTRL_RW
-    byte_offset: 2592
-  - name: TX_DATAPATH_CTRL_SET
-    byte_offset: 2596
-  - name: TX_DATAPATH_CTRL_CLR
-    byte_offset: 2600
-  - name: TX_DATAPATH_CTRL_TOG
-    byte_offset: 2604
-  - name: TX_CS_DATA_BITS
-    byte_offset: 2608
-    array:
-      len: 6
-      stride: 4
-  - name: TX_USER_DATA_BITS
-    byte_offset: 2632
-    array:
-      len: 6
-      stride: 4
-  - name: TX_DPATH_CNTR_CTRL_RW
-    byte_offset: 2656
-  - name: TX_DPATH_CNTR_CTRL_SET
-    byte_offset: 2660
-  - name: TX_DPATH_CNTR_CTRL_CLR
-    byte_offset: 2664
-  - name: TX_DPATH_CNTR_CTRL_TOG
-    byte_offset: 2668
-  - name: TX_DPATH_TSCR
-    byte_offset: 2672
-    fieldset: AUDIO_XCVR_TX_DPATH_TSCR
-  - name: TX_DPATH_BCR
-    byte_offset: 2676
-    fieldset: AUDIO_XCVR_TX_DPATH_BCR
-  - name: TX_DPATH_BCTR
-    byte_offset: 2680
-  - name: TX_DPATH_BCRR
-    byte_offset: 2684
-  - name: HPD_DBNC_CTRL_RW
-    byte_offset: 2720
-  - name: HPD_DBNC_CTRL_SET
-    byte_offset: 2724
-  - name: HPD_DBNC_CTRL_CLR
-    byte_offset: 2728
-  - name: HPD_DBNC_CTRL_TOG
-    byte_offset: 2732
+    - name: VERSION
+      byte_offset: 2048
+      fieldset: AUDIO_XCVR_VERSION
+    - name: EXT_CTRL_RW
+      byte_offset: 2064
+    - name: EXT_CTRL_SET
+      byte_offset: 2068
+    - name: EXT_CTRL_CLR
+      byte_offset: 2072
+    - name: EXT_CTRL_TOG
+      byte_offset: 2076
+    - name: EXT_STATUS_RW
+      byte_offset: 2080
+    - name: EXT_STATUS_SET
+      byte_offset: 2084
+    - name: EXT_STATUS_CLR
+      byte_offset: 2088
+    - name: EXT_STATUS_TOG
+      byte_offset: 2092
+    - name: EXT_IER0_RW
+      byte_offset: 2096
+    - name: EXT_IER0_SET
+      byte_offset: 2100
+    - name: EXT_IER0_CLR
+      byte_offset: 2104
+    - name: EXT_IER0_TOG
+      byte_offset: 2108
+    - name: EXT_IER1_RW
+      byte_offset: 2112
+    - name: EXT_IER1_SET
+      byte_offset: 2116
+    - name: EXT_IER1_CLR
+      byte_offset: 2120
+    - name: EXT_IER1_TOG
+      byte_offset: 2124
+    - name: EXT_ISR_RW
+      byte_offset: 2128
+    - name: EXT_ISR_SET
+      byte_offset: 2132
+    - name: EXT_ISR_CLR
+      byte_offset: 2136
+    - name: EXT_ISR_TOG
+      byte_offset: 2140
+    - name: IER_RW
+      byte_offset: 2160
+    - name: IER_SET
+      byte_offset: 2164
+    - name: IER_CLR
+      byte_offset: 2168
+    - name: IER_TOG
+      byte_offset: 2172
+    - name: ISR_RW
+      byte_offset: 2176
+    - name: ISR_SET
+      byte_offset: 2180
+    - name: ISR_CLR
+      byte_offset: 2184
+    - name: ISR_TOG
+      byte_offset: 2188
+    - name: PHY_AI_CTRL_RW
+      byte_offset: 2192
+    - name: PHY_AI_CTRL_SET
+      byte_offset: 2196
+    - name: PHY_AI_CTRL_CLR
+      byte_offset: 2200
+    - name: PHY_AI_CTRL_TOG
+      byte_offset: 2204
+    - name: PHY_AI_WDATA
+      byte_offset: 2208
+      fieldset: AUDIO_XCVR_PHY_AI_WDATA
+    - name: PHY_AI_RDATA
+      byte_offset: 2212
+      fieldset: AUDIO_XCVR_PHY_AI_RDATA
+    - name: DPATH_STATUS
+      byte_offset: 2216
+    - name: RX_CMDC_CTRL_RW
+      byte_offset: 2240
+    - name: RX_CMDC_CTRL_SET
+      byte_offset: 2244
+    - name: RX_CMDC_CTRL_CLR
+      byte_offset: 2248
+    - name: RX_CMDC_CTRL_TOG
+      byte_offset: 2252
+    - name: RX_CMDC_STATUS
+      byte_offset: 2256
+    - name: RX_CMDC_TX_DATA
+      byte_offset: 2272
+    - name: RX_CMDC_RX_DATA
+      byte_offset: 2288
+    - name: RX_DATAPATH_CTRL_RW
+      byte_offset: 2432
+    - name: RX_DATAPATH_CTRL_SET
+      byte_offset: 2436
+    - name: RX_DATAPATH_CTRL_CLR
+      byte_offset: 2440
+    - name: RX_DATAPATH_CTRL_TOG
+      byte_offset: 2444
+    - name: RX_CS_DATA_BITS
+      byte_offset: 2448
+      array:
+        len: 6
+        stride: 4
+    - name: RX_USER_DATA_BITS
+      byte_offset: 2472
+      array:
+        len: 6
+        stride: 4
+    - name: RX_DPATH_CNTR_CTRL_RW
+      byte_offset: 2496
+    - name: RX_DPATH_CNTR_CTRL_SET
+      byte_offset: 2500
+    - name: RX_DPATH_CNTR_CTRL_CLR
+      byte_offset: 2504
+    - name: RX_DPATH_CNTR_CTRL_TOG
+      byte_offset: 2508
+    - name: RX_DPATH_TSCR
+      byte_offset: 2512
+      fieldset: AUDIO_XCVR_RX_DPATH_TSCR
+    - name: RX_DPATH_BCR
+      byte_offset: 2516
+      fieldset: AUDIO_XCVR_RX_DPATH_BCR
+    - name: RX_DPATH_BCTR
+      byte_offset: 2520
+    - name: RX_DPATH_BCRR
+      byte_offset: 2524
+    - name: DMAC_PRE_MATCH_VAL_RW
+      byte_offset: 2528
+    - name: DMAC_PRE_MATCH_VAL_SET
+      byte_offset: 2532
+    - name: DMAC_PRE_MATCH_VAL_CLR
+      byte_offset: 2536
+    - name: DMAC_PRE_MATCH_VAL_TOG
+      byte_offset: 2540
+    - name: DMAC_DTS_PRE_MATCH_VAL_RW
+      byte_offset: 2544
+    - name: DMAC_DTS_PRE_MATCH_VAL_SET
+      byte_offset: 2548
+    - name: DMAC_DTS_PRE_MATCH_VAL_CLR
+      byte_offset: 2552
+    - name: DMAC_DTS_PRE_MATCH_VAL_TOG
+      byte_offset: 2556
+    - name: RX_DPATH_PRE_ERR
+      byte_offset: 2560
+      fieldset: AUDIO_XCVR_RX_DPATH_PRE_ERR
+    - name: RX_DPATH_PARITY_ERR
+      byte_offset: 2564
+      fieldset: AUDIO_XCVR_RX_DPATH_PARITY_ERR
+    - name: RX_DPATH_PKT_CNT
+      byte_offset: 2576
+      fieldset: AUDIO_XCVR_RX_DPATH_PKT_CNT
+    - name: RX_DPATH_ONE_BIT_ERR_CNT
+      byte_offset: 2580
+      fieldset: AUDIO_XCVR_RX_DPATH_ONE_BIT_ERR_CNT
+    - name: DMAC_PRE_MATCH_OFFSET
+      byte_offset: 2584
+    - name: TX_DATAPATH_CTRL_RW
+      byte_offset: 2592
+    - name: TX_DATAPATH_CTRL_SET
+      byte_offset: 2596
+    - name: TX_DATAPATH_CTRL_CLR
+      byte_offset: 2600
+    - name: TX_DATAPATH_CTRL_TOG
+      byte_offset: 2604
+    - name: TX_CS_DATA_BITS
+      byte_offset: 2608
+      array:
+        len: 6
+        stride: 4
+    - name: TX_USER_DATA_BITS
+      byte_offset: 2632
+      array:
+        len: 6
+        stride: 4
+    - name: TX_DPATH_CNTR_CTRL_RW
+      byte_offset: 2656
+    - name: TX_DPATH_CNTR_CTRL_SET
+      byte_offset: 2660
+    - name: TX_DPATH_CNTR_CTRL_CLR
+      byte_offset: 2664
+    - name: TX_DPATH_CNTR_CTRL_TOG
+      byte_offset: 2668
+    - name: TX_DPATH_TSCR
+      byte_offset: 2672
+      fieldset: AUDIO_XCVR_TX_DPATH_TSCR
+    - name: TX_DPATH_BCR
+      byte_offset: 2676
+      fieldset: AUDIO_XCVR_TX_DPATH_BCR
+    - name: TX_DPATH_BCTR
+      byte_offset: 2680
+    - name: TX_DPATH_BCRR
+      byte_offset: 2684
+    - name: HPD_DBNC_CTRL_RW
+      byte_offset: 2720
+    - name: HPD_DBNC_CTRL_SET
+      byte_offset: 2724
+    - name: HPD_DBNC_CTRL_CLR
+      byte_offset: 2728
+    - name: HPD_DBNC_CTRL_TOG
+      byte_offset: 2732
 fieldset/AUDIO_XCVR_VERSION:
   description: ''
   fields:
-  - name: VERID
-    bit_offset: 0
-    bit_size: 32
-    description: Version ID
+    - name: VERID
+      bit_offset: 0
+      bit_size: 32
+      description: Version ID
 fieldset/AUDIO_XCVR_EXT_CTRL_TX_FIFO:
   description: ''
   fields:
-  - name: WMARK
-    bit_offset: 0
-    bit_size: 7
+    - name: WMARK
+      bit_offset: 0
+      bit_size: 7
 fieldset/AUDIO_XCVR_EXT_CTRL_RX_FIFO:
   description: ''
   fields:
-  - name: WMARK
-    bit_offset: 8
-    bit_size: 7
+    - name: WMARK
+      bit_offset: 8
+      bit_size: 7
 fieldset/AUDIO_XCVR_EXT_CTRL_FABRIC_RR:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 15
-    bit_size: 1
+    - name: SEL
+      bit_offset: 15
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_CTRL:
   description: ''
   fields:
-  - name: PAGE
-    bit_offset: 16
-    bit_size: 4
-    description: Page Select.
+    - name: PAGE
+      bit_offset: 16
+      bit_size: 4
+      description: Page Select.
 fieldset/AUDIO_XCVR_EXT_CTRL_CORE_SLEEP_HOLD_REQ:
   description: ''
   fields:
-  - name: B
-    bit_offset: 21
-    bit_size: 1
-    description: Page Select.
+    - name: B
+      bit_offset: 21
+      bit_size: 1
+      description: Page Select.
 fieldset/AUDIO_XCVR_EXT_CTRL_CORE:
   description: ''
   fields:
-  - name: WAIT
-    bit_offset: 22
-    bit_size: 1
-    description: Stop executing code
-  - name: RESET
-    bit_offset: 31
-    bit_size: 1
-    description: M0+ Reset
+    - name: WAIT
+      bit_offset: 22
+      bit_size: 1
+      description: Stop executing code
+    - name: RESET
+      bit_offset: 31
+      bit_size: 1
+      description: M0+ Reset
 fieldset/AUDIO_XCVR_EXT_CTRL_SPDIF:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 23
-    bit_size: 1
-    description: Stop executing code
+    - name: MODE
+      bit_offset: 23
+      bit_size: 1
+      description: Stop executing code
 fieldset/AUDIO_XCVR_EXT_CTRL_SDMA_WR_REQ:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 24
-    bit_size: 1
+    - name: DIS
+      bit_offset: 24
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_CTRL_SDMA_RD_REQ:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 25
-    bit_size: 1
+    - name: DIS
+      bit_offset: 25
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_CTRL_TX_DPATH:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 27
-    bit_size: 1
+    - name: RESET
+      bit_offset: 27
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_CTRL_RX_DPATH:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 28
-    bit_size: 1
+    - name: RESET
+      bit_offset: 28
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_CTRL_TX_CMDC:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 29
-    bit_size: 1
+    - name: RESET
+      bit_offset: 29
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_CTRL_RX_CMDC:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 30
-    bit_size: 1
+    - name: RESET
+      bit_offset: 30
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_STATUS_NO_TX_FIFO:
   description: ''
   fields:
-  - name: ENTRIES
-    bit_offset: 0
-    bit_size: 8
+    - name: ENTRIES
+      bit_offset: 0
+      bit_size: 8
 fieldset/AUDIO_XCVR_EXT_STATUS_NO_RX_FIFO:
   description: ''
   fields:
-  - name: ENTRIES
-    bit_offset: 8
-    bit_size: 8
+    - name: ENTRIES
+      bit_offset: 8
+      bit_size: 8
 fieldset/AUDIO_XCVR_EXT_STATUS_CM0:
   description: ''
   fields:
-  - name: SLEEPING
-    bit_offset: 16
-    bit_size: 1
-    description: CM0 is in Sleep mode.
+    - name: SLEEPING
+      bit_offset: 16
+      bit_size: 1
+      description: CM0 is in Sleep mode.
 fieldset/AUDIO_XCVR_EXT_STATUS_CM0_DEEP:
   description: ''
   fields:
-  - name: SLEEP
-    bit_offset: 17
-    bit_size: 1
+    - name: SLEEP
+      bit_offset: 17
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_STATUS_CM0_SLEEP_HOLD_ACK:
   description: ''
   fields:
-  - name: B
-    bit_offset: 18
-    bit_size: 1
+    - name: B
+      bit_offset: 18
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_STATUS_TX_PIPE:
   description: ''
   fields:
-  - name: EMPTY
-    bit_offset: 21
-    bit_size: 1
+    - name: EMPTY
+      bit_offset: 21
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_STATUS_RX_CMDC_RESP:
   description: ''
   fields:
-  - name: TO
-    bit_offset: 23
-    bit_size: 1
+    - name: TO
+      bit_offset: 23
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_STATUS_RX_CMDC_COMMA:
   description: ''
   fields:
-  - name: TO
-    bit_offset: 25
-    bit_size: 1
+    - name: TO
+      bit_offset: 25
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_STATUS_HEARTBEAT:
   description: ''
   fields:
-  - name: STATUS
-    bit_offset: 27
-    bit_size: 1
+    - name: STATUS
+      bit_offset: 27
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_STATUS_NEW_UD4:
   description: ''
   fields:
-  - name: REC
-    bit_offset: 28
-    bit_size: 1
-    description: New user data
+    - name: REC
+      bit_offset: 28
+      bit_size: 1
+      description: New user data
 fieldset/AUDIO_XCVR_EXT_STATUS_NEW_UD5:
   description: ''
   fields:
-  - name: REC
-    bit_offset: 29
-    bit_size: 1
-    description: New user data
+    - name: REC
+      bit_offset: 29
+      bit_size: 1
+      description: New user data
 fieldset/AUDIO_XCVR_EXT_STATUS_NEW_UD6:
   description: ''
   fields:
-  - name: REC
-    bit_offset: 30
-    bit_size: 1
-    description: New user data
+    - name: REC
+      bit_offset: 30
+      bit_size: 1
+      description: New user data
 fieldset/AUDIO_XCVR_EXT_STATUS_HPD:
   description: ''
   fields:
-  - name: I
-    bit_offset: 31
-    bit_size: 1
-    description: HPD Input status
+    - name: I
+      bit_offset: 31
+      bit_size: 1
+      description: HPD Input status
 fieldset/AUDIO_XCVR_EXT_ISR_RX_NEW_CH:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 0
-    bit_size: 1
+    - name: STAT
+      bit_offset: 0
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_RX_NEW_USR:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 1
-    bit_size: 1
+    - name: DATA
+      bit_offset: 1
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_MUTE:
   description: ''
   fields:
-  - name: DET
-    bit_offset: 2
-    bit_size: 1
+    - name: DET
+      bit_offset: 2
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_CMDC_RESP_TO:
   description: ''
   fields:
-  - name: ERR
-    bit_offset: 3
-    bit_size: 1
+    - name: ERR
+      bit_offset: 3
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_ECC:
   description: ''
   fields:
-  - name: ERR
-    bit_offset: 4
-    bit_size: 1
+    - name: ERR
+      bit_offset: 4
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_PREAMBLE:
   description: ''
   fields:
-  - name: MISMATCH
-    bit_offset: 5
-    bit_size: 1
+    - name: MISMATCH
+      bit_offset: 5
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_FIFO_OFLOW_UFLOW:
   description: ''
   fields:
-  - name: ERR
-    bit_offset: 6
-    bit_size: 1
+    - name: ERR
+      bit_offset: 6
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR:
   description: ''
   fields:
-  - name: OHPD
-    bit_offset: 8
-    bit_size: 1
-    description: HPD output driver
+    - name: OHPD
+      bit_offset: 8
+      bit_size: 1
+      description: HPD output driver
 fieldset/AUDIO_XCVR_EXT_ISR_DMAC_NO_DATA:
   description: ''
   fields:
-  - name: REC
-    bit_offset: 9
-    bit_size: 1
-    description: HPD output driver
+    - name: REC
+      bit_offset: 9
+      bit_size: 1
+      description: HPD output driver
 fieldset/AUDIO_XCVR_EXT_ISR_FMT_CHG:
   description: ''
   fields:
-  - name: DET
-    bit_offset: 10
-    bit_size: 1
+    - name: DET
+      bit_offset: 10
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_HB_STATE:
   description: ''
   fields:
-  - name: CHG
-    bit_offset: 11
-    bit_size: 1
+    - name: CHG
+      bit_offset: 11
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_CMDC_STATUS:
   description: ''
   fields:
-  - name: UPDATE
-    bit_offset: 12
-    bit_size: 1
+    - name: UPDATE
+      bit_offset: 12
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_TEMP_UPDATE:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 13
-    bit_size: 1
+    - name: INT
+      bit_offset: 13
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_DMA_RD:
   description: ''
   fields:
-  - name: REQ
-    bit_offset: 14
-    bit_size: 1
+    - name: REQ
+      bit_offset: 14
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_DMA_WR:
   description: ''
   fields:
-  - name: REQ
-    bit_offset: 15
-    bit_size: 1
+    - name: REQ
+      bit_offset: 15
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_RX_BME_BIT:
   description: ''
   fields:
-  - name: ERR
-    bit_offset: 16
-    bit_size: 1
+    - name: ERR
+      bit_offset: 16
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_PREAMBLE_MATCH:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 17
-    bit_size: 1
+    - name: INT
+      bit_offset: 17
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_M_W_PRE:
   description: ''
   fields:
-  - name: MISMATCH
-    bit_offset: 18
-    bit_size: 1
+    - name: MISMATCH
+      bit_offset: 18
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_B_PRE:
   description: ''
   fields:
-  - name: MISMATCH
-    bit_offset: 19
-    bit_size: 1
+    - name: MISMATCH
+      bit_offset: 19
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_UNEXP_PRE:
   description: ''
   fields:
-  - name: REC
-    bit_offset: 20
-    bit_size: 1
+    - name: REC
+      bit_offset: 20
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_CS_OR_UD:
   description: ''
   fields:
-  - name: OFLOW
-    bit_offset: 22
-    bit_size: 1
+    - name: OFLOW
+      bit_offset: 22
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_NEW_BLK:
   description: ''
   fields:
-  - name: RCVD
-    bit_offset: 23
-    bit_size: 1
+    - name: RCVD
+      bit_offset: 23
+      bit_size: 1
 fieldset/AUDIO_XCVR_EXT_ISR_SPARE:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 24
-    bit_size: 8
+    - name: INT
+      bit_offset: 24
+      bit_size: 8
 fieldset/AUDIO_XCVR_IER_HPD_TGL:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 15
-    bit_size: 1
+    - name: IE
+      bit_offset: 15
+      bit_size: 1
 fieldset/AUDIO_XCVR_IER_FMT_CHG:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 18
-    bit_size: 1
-    description: Format Change interrupt.
+    - name: IE
+      bit_offset: 18
+      bit_size: 1
+      description: Format Change interrupt.
 fieldset/AUDIO_XCVR_IER_SET_SPDIF_RX:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 20
-    bit_size: 1
-    description: Format Change interrupt.
+    - name: IE
+      bit_offset: 20
+      bit_size: 1
+      description: Format Change interrupt.
 fieldset/AUDIO_XCVR_IER_SET_SPDIF_TX:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 21
-    bit_size: 1
+    - name: IE
+      bit_offset: 21
+      bit_size: 1
 fieldset/AUDIO_XCVR_IER_SW_HPD_TGL:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 24
-    bit_size: 1
+    - name: IE
+      bit_offset: 24
+      bit_size: 1
 fieldset/AUDIO_XCVR_ISR_HPD:
   description: ''
   fields:
-  - name: TGL
-    bit_offset: 15
-    bit_size: 1
+    - name: TGL
+      bit_offset: 15
+      bit_size: 1
 fieldset/AUDIO_XCVR_ISR_FMT_CHG:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 18
-    bit_size: 1
-    description: HPD pin level change interrupt
+    - name: INT
+      bit_offset: 18
+      bit_size: 1
+      description: HPD pin level change interrupt
 fieldset/AUDIO_XCVR_ISR_SET_SPDIF_RX:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 20
-    bit_size: 1
-    description: Format Change interrupt.
+    - name: MODE
+      bit_offset: 20
+      bit_size: 1
+      description: Format Change interrupt.
 fieldset/AUDIO_XCVR_PHY_AI_CTRL_AI:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 0
-    bit_size: 8
-    description: AI ADDR value
-  - name: RESETN
-    bit_offset: 15
-    bit_size: 1
-    description: AI ADDR value
-  - name: RWB
-    bit_offset: 31
-    bit_size: 1
-    description: AI Read / write control bit
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 8
+      description: AI ADDR value
+    - name: RESETN
+      bit_offset: 15
+      bit_size: 1
+      description: AI ADDR value
+    - name: RWB
+      bit_offset: 31
+      bit_size: 1
+      description: AI Read / write control bit
 fieldset/AUDIO_XCVR_PHY_AI_WDATA:
   description: ''
   fields:
-  - name: WDATA
-    bit_offset: 0
-    bit_size: 32
-    description: Write data
+    - name: WDATA
+      bit_offset: 0
+      bit_size: 32
+      description: Write data
 fieldset/AUDIO_XCVR_PHY_AI_RDATA:
   description: ''
   fields:
-  - name: RDATA
-    bit_offset: 0
-    bit_size: 32
-    description: Read data
+    - name: RDATA
+      bit_offset: 0
+      bit_size: 32
+      description: Read data
 fieldset/AUDIO_XCVR_DPATH_STATUS_RX_FRM:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 8
+    - name: CNT
+      bit_offset: 0
+      bit_size: 8
 fieldset/AUDIO_XCVR_DPATH_STATUS_TX_FRM:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 8
-    bit_size: 8
+    - name: CNT
+      bit_offset: 8
+      bit_size: 8
 fieldset/AUDIO_XCVR_RX_CMDC_CTRL_COMMA:
   description: ''
   fields:
-  - name: BITS
-    bit_offset: 0
-    bit_size: 5
-  - name: EN
-    bit_offset: 7
-    bit_size: 1
+    - name: BITS
+      bit_offset: 0
+      bit_size: 5
+    - name: EN
+      bit_offset: 7
+      bit_size: 1
 fieldset/AUDIO_XCVR_RX_CMDC_CTRL_RESPONSE:
   description: ''
   fields:
-  - name: TIME
-    bit_offset: 8
-    bit_size: 5
+    - name: TIME
+      bit_offset: 8
+      bit_size: 5
 fieldset/AUDIO_XCVR_RX_CMDC_CTRL_TURNOVER:
   description: ''
   fields:
-  - name: TIME
-    bit_offset: 16
-    bit_size: 4
+    - name: TIME
+      bit_offset: 16
+      bit_size: 4
 fieldset/AUDIO_XCVR_RX_CMDC_CTRL_TX_DRIVE:
   description: ''
   fields:
-  - name: STOP
-    bit_offset: 20
-    bit_size: 3
+    - name: STOP
+      bit_offset: 20
+      bit_size: 3
 fieldset/AUDIO_XCVR_RX_CMDC_CTRL_LBACK:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
-    description: Loopback enable
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+      description: Loopback enable
 fieldset/AUDIO_XCVR_RX_CMDC_STATUS_CMDC:
   description: ''
   fields:
-  - name: STATE
-    bit_offset: 16
-    bit_size: 4
+    - name: STATE
+      bit_offset: 16
+      bit_size: 4
 fieldset/AUDIO_XCVR_RX_CMDC_TX_DATA_TX:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 26
-    description: Transmit data
+    - name: DATA
+      bit_offset: 0
+      bit_size: 26
+      description: Transmit data
 fieldset/AUDIO_XCVR_RX_CMDC_TX_DATA_DATA:
   description: ''
   fields:
-  - name: VALID
-    bit_offset: 31
-    bit_size: 1
-    description: Transmit data
+    - name: VALID
+      bit_offset: 31
+      bit_size: 1
+      description: Transmit data
 fieldset/AUDIO_XCVR_RX_CMDC_RX_DATA_RX:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 26
-    description: Receive data
+    - name: DATA
+      bit_offset: 0
+      bit_size: 26
+      description: Receive data
 fieldset/AUDIO_XCVR_RX_CMDC_RX_DATA_CLR_RX:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 31
-    bit_size: 1
-    description: Receive data
+    - name: DATA
+      bit_offset: 31
+      bit_size: 1
+      description: Receive data
 fieldset/AUDIO_XCVR_RX_DATAPATH_CTRL_PAPB_FIFO:
   description: ''
   fields:
-  - name: STATUS
-    bit_offset: 0
-    bit_size: 1
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 1
 fieldset/AUDIO_XCVR_RX_DATAPATH_CTRL_ECC_VUC_BITS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 3
-    bit_size: 1
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
 fieldset/AUDIO_XCVR_RX_DATAPATH_CTRL_EN_COMP_PARITY:
   description: ''
   fields:
-  - name: CALC
-    bit_offset: 4
-    bit_size: 1
+    - name: CALC
+      bit_offset: 4
+      bit_size: 1
 fieldset/AUDIO_XCVR_RX_DATAPATH_CTRL_RST_PKT_CNT:
   description: ''
   fields:
-  - name: FIFO
-    bit_offset: 5
-    bit_size: 1
+    - name: FIFO
+      bit_offset: 5
+      bit_size: 1
 fieldset/AUDIO_XCVR_RX_DATAPATH_CTRL_STORE:
   description: ''
   fields:
-  - name: FMT
-    bit_offset: 6
-    bit_size: 1
+    - name: FMT
+      bit_offset: 6
+      bit_size: 1
 fieldset/AUDIO_XCVR_RX_DATAPATH_CTRL_EN_PARITY:
   description: ''
   fields:
-  - name: CALC
-    bit_offset: 7
-    bit_size: 1
+    - name: CALC
+      bit_offset: 7
+      bit_size: 1
 fieldset/AUDIO_XCVR_RX_DATAPATH_CTRL:
   description: ''
   fields:
-  - name: UDR
-    bit_offset: 8
-    bit_size: 1
-    description: User data reset
-  - name: CSR
-    bit_offset: 9
-    bit_size: 1
-    description: User data reset
-  - name: UDA
-    bit_offset: 10
-    bit_size: 1
-    description: Channel Status reset
-  - name: CSA
-    bit_offset: 11
-    bit_size: 1
-    description: User Data Acknowledge
-  - name: PABS
-    bit_offset: 19
-    bit_size: 1
-    description: Enable preamble search
-  - name: BLKC
-    bit_offset: 21
-    bit_size: 1
-    description: Block Compressed data
-  - name: PRC
-    bit_offset: 28
-    bit_size: 1
-    description: Process Compressed
-  - name: COMP
-    bit_offset: 29
-    bit_size: 1
-    description: Process Compressed
-  - name: FSM
-    bit_offset: 30
-    bit_size: 2
+    - name: UDR
+      bit_offset: 8
+      bit_size: 1
+      description: User data reset
+    - name: CSR
+      bit_offset: 9
+      bit_size: 1
+      description: User data reset
+    - name: UDA
+      bit_offset: 10
+      bit_size: 1
+      description: Channel Status reset
+    - name: CSA
+      bit_offset: 11
+      bit_size: 1
+      description: User Data Acknowledge
+    - name: PABS
+      bit_offset: 19
+      bit_size: 1
+      description: Enable preamble search
+    - name: BLKC
+      bit_offset: 21
+      bit_size: 1
+      description: Block Compressed data
+    - name: PRC
+      bit_offset: 28
+      bit_size: 1
+      description: Process Compressed
+    - name: COMP
+      bit_offset: 29
+      bit_size: 1
+      description: Process Compressed
+    - name: FSM
+      bit_offset: 30
+      bit_size: 2
 fieldset/AUDIO_XCVR_RX_DATAPATH_CTRL_CLR_RX:
   description: ''
   fields:
-  - name: FIFO
-    bit_offset: 12
-    bit_size: 1
-    description: Clear Receive FIFO
+    - name: FIFO
+      bit_offset: 12
+      bit_size: 1
+      description: Clear Receive FIFO
 fieldset/AUDIO_XCVR_RX_DATAPATH_CTRL_DIS_B_PRE_ERR:
   description: ''
   fields:
-  - name: CHK
-    bit_offset: 13
-    bit_size: 1
+    - name: CHK
+      bit_offset: 13
+      bit_size: 1
 fieldset/AUDIO_XCVR_RX_DATAPATH_CTRL_RX_DATA:
   description: ''
   fields:
-  - name: FMT
-    bit_offset: 14
-    bit_size: 2
+    - name: FMT
+      bit_offset: 14
+      bit_size: 2
 fieldset/AUDIO_XCVR_RX_DATAPATH_CTRL_DTS:
   description: ''
   fields:
-  - name: CDS
-    bit_offset: 20
-    bit_size: 1
+    - name: CDS
+      bit_offset: 20
+      bit_size: 1
 fieldset/AUDIO_XCVR_RX_DATAPATH_CTRL_MUTE:
   description: ''
   fields:
-  - name: CTRL
-    bit_offset: 22
-    bit_size: 1
-    description: Block Compressed data
-  - name: MODE
-    bit_offset: 23
-    bit_size: 1
-    description: Mute mode control
+    - name: CTRL
+      bit_offset: 22
+      bit_size: 1
+      description: Block Compressed data
+    - name: MODE
+      bit_offset: 23
+      bit_size: 1
+      description: Mute mode control
 fieldset/AUDIO_XCVR_RX_DATAPATH_CTRL_FMT_CHG:
   description: ''
   fields:
-  - name: CTRL
-    bit_offset: 24
-    bit_size: 1
-  - name: MODE
-    bit_offset: 25
-    bit_size: 1
+    - name: CTRL
+      bit_offset: 24
+      bit_size: 1
+    - name: MODE
+      bit_offset: 25
+      bit_size: 1
 fieldset/AUDIO_XCVR_RX_DATAPATH_CTRL_LAYB:
   description: ''
   fields:
-  - name: CTRL
-    bit_offset: 26
-    bit_size: 1
-    description: Layout B mode control
-  - name: MODE
-    bit_offset: 27
-    bit_size: 1
-    description: Layout B
+    - name: CTRL
+      bit_offset: 26
+      bit_size: 1
+      description: Layout B mode control
+    - name: MODE
+      bit_offset: 27
+      bit_size: 1
+      description: Layout B
 fieldset/AUDIO_XCVR_RX_CS_DATA_BITS_CS:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
-    description: Channel Status bits
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+      description: Channel Status bits
 fieldset/AUDIO_XCVR_RX_USER_DATA_BITS_U:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
-    description: User data bits
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+      description: User data bits
 fieldset/AUDIO_XCVR_RX_DPATH_CNTR_CTRL_TS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
-    description: Timestamp counter enable
-  - name: INC
-    bit_offset: 1
-    bit_size: 1
-    description: Timestamp Increment
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+      description: Timestamp counter enable
+    - name: INC
+      bit_offset: 1
+      bit_size: 1
+      description: Timestamp Increment
 fieldset/AUDIO_XCVR_RX_DPATH_CNTR_CTRL_RST_BIT:
   description: ''
   fields:
-  - name: CNTR
-    bit_offset: 8
-    bit_size: 1
+    - name: CNTR
+      bit_offset: 8
+      bit_size: 1
 fieldset/AUDIO_XCVR_RX_DPATH_CNTR_CTRL_RST_TS:
   description: ''
   fields:
-  - name: CNTR
-    bit_offset: 9
-    bit_size: 1
+    - name: CNTR
+      bit_offset: 9
+      bit_size: 1
 fieldset/AUDIO_XCVR_RX_DPATH_TSCR:
   description: ''
   fields:
-  - name: CVAL
-    bit_offset: 0
-    bit_size: 32
-    description: Timestamp counter value
+    - name: CVAL
+      bit_offset: 0
+      bit_size: 32
+      description: Timestamp counter value
 fieldset/AUDIO_XCVR_RX_DPATH_BCR:
   description: ''
   fields:
-  - name: CVAL
-    bit_offset: 0
-    bit_size: 32
-    description: Bit count value
+    - name: CVAL
+      bit_offset: 0
+      bit_size: 32
+      description: Bit count value
 fieldset/AUDIO_XCVR_RX_DPATH_BCTR_BCT:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 32
-    description: Bit count timestamp value
+    - name: VAL
+      bit_offset: 0
+      bit_size: 32
+      description: Bit count timestamp value
 fieldset/AUDIO_XCVR_RX_DPATH_BCRR_BCT:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 32
-    description: Bit count timestamp value
+    - name: VAL
+      bit_offset: 0
+      bit_size: 32
+      description: Bit count timestamp value
 fieldset/AUDIO_XCVR_DMAC_PRE_MATCH_VAL_PB:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 16
-    description: Preamble PB value
+    - name: VAL
+      bit_offset: 0
+      bit_size: 16
+      description: Preamble PB value
 fieldset/AUDIO_XCVR_DMAC_PRE_MATCH_VAL_PA:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 16
-    bit_size: 16
-    description: Preamble PA value
+    - name: VAL
+      bit_offset: 16
+      bit_size: 16
+      description: Preamble PA value
 fieldset/AUDIO_XCVR_DMAC_DTS_PRE_MATCH_VAL_DTS_PB:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 16
+    - name: VAL
+      bit_offset: 0
+      bit_size: 16
 fieldset/AUDIO_XCVR_DMAC_DTS_PRE_MATCH_VAL_DTS_PA:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 16
-    bit_size: 16
+    - name: VAL
+      bit_offset: 16
+      bit_size: 16
 fieldset/AUDIO_XCVR_RX_DPATH_PRE_ERR_PRE:
   description: ''
   fields:
-  - name: ERRS
-    bit_offset: 0
-    bit_size: 16
-    description: Preamble Error counter
+    - name: ERRS
+      bit_offset: 0
+      bit_size: 16
+      description: Preamble Error counter
 fieldset/AUDIO_XCVR_RX_DPATH_PRE_ERR:
   description: ''
   fields:
-  - name: CLEAR
-    bit_offset: 31
-    bit_size: 1
-    description: Clear bit for error counter.
+    - name: CLEAR
+      bit_offset: 31
+      bit_size: 1
+      description: Clear bit for error counter.
 fieldset/AUDIO_XCVR_RX_DPATH_PARITY_ERR_PRE:
   description: ''
   fields:
-  - name: ERRS
-    bit_offset: 0
-    bit_size: 16
-    description: Preamble Error counter
+    - name: ERRS
+      bit_offset: 0
+      bit_size: 16
+      description: Preamble Error counter
 fieldset/AUDIO_XCVR_RX_DPATH_PARITY_ERR:
   description: ''
   fields:
-  - name: CLEAR
-    bit_offset: 31
-    bit_size: 1
+    - name: CLEAR
+      bit_offset: 31
+      bit_size: 1
 fieldset/AUDIO_XCVR_RX_DPATH_PKT_CNT:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 31
-    description: Data packet counter
+    - name: VAL
+      bit_offset: 0
+      bit_size: 31
+      description: Data packet counter
 fieldset/AUDIO_XCVR_RX_DPATH_ONE_BIT_ERR_CNT:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 16
+    - name: VAL
+      bit_offset: 0
+      bit_size: 16
 fieldset/AUDIO_XCVR_DMAC_PRE_MATCH_OFFSET_PA:
   description: ''
   fields:
-  - name: OFFSET
-    bit_offset: 0
-    bit_size: 32
+    - name: OFFSET
+      bit_offset: 0
+      bit_size: 32
 fieldset/AUDIO_XCVR_TX_DATAPATH_CTRL_CS:
   description: ''
   fields:
-  - name: ACK
-    bit_offset: 0
-    bit_size: 1
-    description: Channel Status ACK
-  - name: MOD
-    bit_offset: 2
-    bit_size: 1
-    description: User Data ACK
+    - name: ACK
+      bit_offset: 0
+      bit_size: 1
+      description: Channel Status ACK
+    - name: MOD
+      bit_offset: 2
+      bit_size: 1
+      description: User Data ACK
 fieldset/AUDIO_XCVR_TX_DATAPATH_CTRL_UD:
   description: ''
   fields:
-  - name: ACK
-    bit_offset: 1
-    bit_size: 1
-    description: User Data ACK
-  - name: MOD
-    bit_offset: 3
-    bit_size: 1
-    description: Enable User Data insertion
+    - name: ACK
+      bit_offset: 1
+      bit_size: 1
+      description: User Data ACK
+    - name: MOD
+      bit_offset: 3
+      bit_size: 1
+      description: Enable User Data insertion
 fieldset/AUDIO_XCVR_TX_DATAPATH_CTRL_VLD:
   description: ''
   fields:
-  - name: MOD
-    bit_offset: 4
-    bit_size: 1
-    description: Enable Valid bit insertion
+    - name: MOD
+      bit_offset: 4
+      bit_size: 1
+      description: Enable Valid bit insertion
 fieldset/AUDIO_XCVR_TX_DATAPATH_CTRL_FRM:
   description: ''
   fields:
-  - name: VLD
-    bit_offset: 5
-    bit_size: 1
-    description: Valid bit value
-  - name: FMT
-    bit_offset: 11
-    bit_size: 1
-    description: Frame format of input data
+    - name: VLD
+      bit_offset: 5
+      bit_size: 1
+      description: Valid bit value
+    - name: FMT
+      bit_offset: 11
+      bit_size: 1
+      description: Frame format of input data
 fieldset/AUDIO_XCVR_TX_DATAPATH_CTRL_EN:
   description: ''
   fields:
-  - name: PARITY
-    bit_offset: 6
-    bit_size: 1
-    description: Enable parity insertion
-  - name: PREAMBLE
-    bit_offset: 7
-    bit_size: 1
+    - name: PARITY
+      bit_offset: 6
+      bit_size: 1
+      description: Enable parity insertion
+    - name: PREAMBLE
+      bit_offset: 7
+      bit_size: 1
 fieldset/AUDIO_XCVR_TX_DATAPATH_CTRL_BYPASS:
   description: ''
   fields:
-  - name: FEM
-    bit_offset: 10
-    bit_size: 1
+    - name: FEM
+      bit_offset: 10
+      bit_size: 1
 fieldset/AUDIO_XCVR_TX_DATAPATH_CTRL_TX:
   description: ''
   fields:
-  - name: FORMAT
-    bit_offset: 12
-    bit_size: 2
-    description: Transmit data format
+    - name: FORMAT
+      bit_offset: 12
+      bit_size: 2
+      description: Transmit data format
 fieldset/AUDIO_XCVR_TX_DATAPATH_CTRL_STRT_DATA:
   description: ''
   fields:
-  - name: TX
-    bit_offset: 14
-    bit_size: 1
+    - name: TX
+      bit_offset: 14
+      bit_size: 1
 fieldset/AUDIO_XCVR_TX_CS_DATA_BITS_CS:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
-    description: Channel Status bits / block
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+      description: Channel Status bits / block
 fieldset/AUDIO_XCVR_TX_USER_DATA_BITS_U:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
-    description: User data bits/block
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+      description: User data bits/block
 fieldset/AUDIO_XCVR_TX_DPATH_CNTR_CTRL_TS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
-    description: Timestamp counter enable
-  - name: INC
-    bit_offset: 1
-    bit_size: 1
-    description: Timestamp Increment
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+      description: Timestamp counter enable
+    - name: INC
+      bit_offset: 1
+      bit_size: 1
+      description: Timestamp Increment
 fieldset/AUDIO_XCVR_TX_DPATH_CNTR_CTRL_RST_BIT:
   description: ''
   fields:
-  - name: CNTR
-    bit_offset: 8
-    bit_size: 1
+    - name: CNTR
+      bit_offset: 8
+      bit_size: 1
 fieldset/AUDIO_XCVR_TX_DPATH_CNTR_CTRL_RST_TS:
   description: ''
   fields:
-  - name: CNTR
-    bit_offset: 9
-    bit_size: 1
+    - name: CNTR
+      bit_offset: 9
+      bit_size: 1
 fieldset/AUDIO_XCVR_TX_DPATH_TSCR:
   description: ''
   fields:
-  - name: CVAL
-    bit_offset: 0
-    bit_size: 32
-    description: Timestamp counter value
+    - name: CVAL
+      bit_offset: 0
+      bit_size: 32
+      description: Timestamp counter value
 fieldset/AUDIO_XCVR_TX_DPATH_BCR:
   description: ''
   fields:
-  - name: CVAL
-    bit_offset: 0
-    bit_size: 32
-    description: Bit count value
+    - name: CVAL
+      bit_offset: 0
+      bit_size: 32
+      description: Bit count value
 fieldset/AUDIO_XCVR_TX_DPATH_BCTR_BCT:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 32
-    description: Bit count timestamp value
+    - name: VAL
+      bit_offset: 0
+      bit_size: 32
+      description: Bit count timestamp value
 fieldset/AUDIO_XCVR_TX_DPATH_BCRR_BCT:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 32
-    description: Bit count timestamp value
+    - name: VAL
+      bit_offset: 0
+      bit_size: 32
+      description: Bit count timestamp value
 fieldset/AUDIO_XCVR_HPD_DBNC_CTRL:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 32
-    description: HDP pin debounce interval
+    - name: VAL
+      bit_offset: 0
+      bit_size: 32
+      description: HDP pin debounce interval

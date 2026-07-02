@@ -1,511 +1,511 @@
 block/HSEM:
   description: ''
   items:
-  - name: R
-    byte_offset: 0
-    array:
-      len: 16
-      stride: 4
-    description: HSEM register
-    fieldset: HSEM_R
-  - name: RLR
-    byte_offset: 128
-    array:
-      len: 16
-      stride: 4
-    description: HSEM read lock register
-    fieldset: HSEM_RLR
-  - name: C1IER
-    byte_offset: 256
-    description: HSEM non-secure Interrupt enable register
-    fieldset: HSEM_C1IER
-  - name: C1ICR
-    byte_offset: 260
-    description: HSEM non-secure Interrupt clear register
-    fieldset: HSEM_C1ICR
-  - name: C1ISR
-    byte_offset: 264
-    description: HSEM non-secure Interrupt status register
-    fieldset: HSEM_C1ISR
-  - name: C1MISR
-    byte_offset: 268
-    description: HSEM Masked non-secure interrupt status register
-    fieldset: HSEM_C1MISR
-  - name: C2IER
-    byte_offset: 272
-    description: HSEM non-secure Interrupt enable register
-  - name: C2ICR
-    byte_offset: 276
-    description: HSEM non-secure Interrupt clear register
-  - name: C2ISR
-    byte_offset: 280
-    description: HSEM non-secure Interrupt status register
-  - name: C2MISR
-    byte_offset: 284
-    description: HSEM Masked non-secure interrupt status register
-  - name: C3IER
-    byte_offset: 288
-    description: HSEM non-secure Interrupt enable register
-  - name: C3ICR
-    byte_offset: 292
-    description: HSEM non-secure Interrupt clear register
-  - name: C3ISR
-    byte_offset: 296
-    description: HSEM non-secure Interrupt status register
-  - name: C3MISR
-    byte_offset: 300
-    description: HSEM Masked non-secure interrupt status register
-  - name: SC1IER
-    byte_offset: 384
-    description: HSEM secure interrupt enable register
-    fieldset: HSEM_SC1IER
-  - name: SC1ICR
-    byte_offset: 388
-    description: HSEM secure interrupt clear register
-    fieldset: HSEM_SC1ICR
-  - name: SC1ISR
-    byte_offset: 392
-    description: HSEM Secure interrupt status register
-    fieldset: HSEM_SC1ISR
-  - name: SC1MISR
-    byte_offset: 396
-    description: HSEM Secure masked interrupt status register
-    fieldset: HSEM_SC1MISR
-  - name: SC2IER
-    byte_offset: 400
-    description: HSEM secure interrupt enable register
-  - name: SC2ICR
-    byte_offset: 404
-    description: HSEM secure interrupt clear register
-  - name: SC2ISR
-    byte_offset: 408
-    description: HSEM Secure interrupt status register
-  - name: SC2MISR
-    byte_offset: 412
-    description: HSEM Secure masked interrupt status register
-  - name: SC3IER
-    byte_offset: 416
-    description: HSEM secure interrupt enable register
-  - name: SC3ICR
-    byte_offset: 420
-    description: HSEM secure interrupt clear register
-  - name: SC3ISR
-    byte_offset: 424
-    description: HSEM Secure interrupt status register
-  - name: SC3MISR
-    byte_offset: 428
-    description: HSEM Secure masked interrupt status register
-  - name: SECCFGR
-    byte_offset: 512
-    description: HSEM Security configuration register
-    fieldset: HSEM_SECCFGR
-  - name: PRIVCFGR
-    byte_offset: 528
-    description: HSEM Privilege configuration register
-    fieldset: HSEM_PRIVCFGR
-  - name: C1CIDCFGR
-    byte_offset: 544
-    description: HSEM processor 1 CID configuration register
-    fieldset: HSEM_C1CIDCFGR
-  - name: C2CIDCFGR
-    byte_offset: 548
-    description: HSEM processor 2 CID configuration register
-    fieldset: HSEM_C2CIDCFGR
-  - name: C3CIDCFGR
-    byte_offset: 552
-    description: HSEM processor 3 CID configuration register
-    fieldset: HSEM_C3CIDCFGR
-  - name: CR
-    byte_offset: 560
-    description: HSEM Clear register
-    fieldset: HSEM_CR
-  - name: KEYR
-    byte_offset: 564
-    description: HSEM clear key register
-    fieldset: HSEM_KEYR
-  - name: G0CIDCFGR
-    byte_offset: 576
-    description: HSEM CID configuration register
-    fieldset: HSEM_G0CIDCFGR
-  - name: G1CIDCFGR
-    byte_offset: 580
-    description: HSEM CID configuration register
-    fieldset: HSEM_G1CIDCFGR
-  - name: G2CIDCFGR
-    byte_offset: 584
-    description: HSEM CID configuration register
-    fieldset: HSEM_G2CIDCFGR
-  - name: G3CIDCFGR
-    byte_offset: 588
-    description: HSEM CID configuration register
-    fieldset: HSEM_G3CIDCFGR
-  - name: HWCFGR2
-    byte_offset: 1004
-    description: HSEM hardware configuration register 2
-    fieldset: HSEM_HWCFGR2
-  - name: HWCFGR1
-    byte_offset: 1008
-    description: HSEM hardware configuration register 1
-    fieldset: HSEM_HWCFGR1
-  - name: VERR
-    byte_offset: 1012
-    description: HSEM IP version register
-    fieldset: HSEM_VERR
-  - name: IPIDR
-    byte_offset: 1016
-    description: HSEM IP identification register
-    fieldset: HSEM_IPIDR
-  - name: SIDR
-    byte_offset: 1020
-    description: HSEM size identification register
-    fieldset: HSEM_SIDR
+    - name: R
+      byte_offset: 0
+      array:
+        len: 16
+        stride: 4
+      description: HSEM register
+      fieldset: HSEM_R
+    - name: RLR
+      byte_offset: 128
+      array:
+        len: 16
+        stride: 4
+      description: HSEM read lock register
+      fieldset: HSEM_RLR
+    - name: C1IER
+      byte_offset: 256
+      description: HSEM non-secure Interrupt enable register
+      fieldset: HSEM_C1IER
+    - name: C1ICR
+      byte_offset: 260
+      description: HSEM non-secure Interrupt clear register
+      fieldset: HSEM_C1ICR
+    - name: C1ISR
+      byte_offset: 264
+      description: HSEM non-secure Interrupt status register
+      fieldset: HSEM_C1ISR
+    - name: C1MISR
+      byte_offset: 268
+      description: HSEM Masked non-secure interrupt status register
+      fieldset: HSEM_C1MISR
+    - name: C2IER
+      byte_offset: 272
+      description: HSEM non-secure Interrupt enable register
+    - name: C2ICR
+      byte_offset: 276
+      description: HSEM non-secure Interrupt clear register
+    - name: C2ISR
+      byte_offset: 280
+      description: HSEM non-secure Interrupt status register
+    - name: C2MISR
+      byte_offset: 284
+      description: HSEM Masked non-secure interrupt status register
+    - name: C3IER
+      byte_offset: 288
+      description: HSEM non-secure Interrupt enable register
+    - name: C3ICR
+      byte_offset: 292
+      description: HSEM non-secure Interrupt clear register
+    - name: C3ISR
+      byte_offset: 296
+      description: HSEM non-secure Interrupt status register
+    - name: C3MISR
+      byte_offset: 300
+      description: HSEM Masked non-secure interrupt status register
+    - name: SC1IER
+      byte_offset: 384
+      description: HSEM secure interrupt enable register
+      fieldset: HSEM_SC1IER
+    - name: SC1ICR
+      byte_offset: 388
+      description: HSEM secure interrupt clear register
+      fieldset: HSEM_SC1ICR
+    - name: SC1ISR
+      byte_offset: 392
+      description: HSEM Secure interrupt status register
+      fieldset: HSEM_SC1ISR
+    - name: SC1MISR
+      byte_offset: 396
+      description: HSEM Secure masked interrupt status register
+      fieldset: HSEM_SC1MISR
+    - name: SC2IER
+      byte_offset: 400
+      description: HSEM secure interrupt enable register
+    - name: SC2ICR
+      byte_offset: 404
+      description: HSEM secure interrupt clear register
+    - name: SC2ISR
+      byte_offset: 408
+      description: HSEM Secure interrupt status register
+    - name: SC2MISR
+      byte_offset: 412
+      description: HSEM Secure masked interrupt status register
+    - name: SC3IER
+      byte_offset: 416
+      description: HSEM secure interrupt enable register
+    - name: SC3ICR
+      byte_offset: 420
+      description: HSEM secure interrupt clear register
+    - name: SC3ISR
+      byte_offset: 424
+      description: HSEM Secure interrupt status register
+    - name: SC3MISR
+      byte_offset: 428
+      description: HSEM Secure masked interrupt status register
+    - name: SECCFGR
+      byte_offset: 512
+      description: HSEM Security configuration register
+      fieldset: HSEM_SECCFGR
+    - name: PRIVCFGR
+      byte_offset: 528
+      description: HSEM Privilege configuration register
+      fieldset: HSEM_PRIVCFGR
+    - name: C1CIDCFGR
+      byte_offset: 544
+      description: HSEM processor 1 CID configuration register
+      fieldset: HSEM_C1CIDCFGR
+    - name: C2CIDCFGR
+      byte_offset: 548
+      description: HSEM processor 2 CID configuration register
+      fieldset: HSEM_C2CIDCFGR
+    - name: C3CIDCFGR
+      byte_offset: 552
+      description: HSEM processor 3 CID configuration register
+      fieldset: HSEM_C3CIDCFGR
+    - name: CR
+      byte_offset: 560
+      description: HSEM Clear register
+      fieldset: HSEM_CR
+    - name: KEYR
+      byte_offset: 564
+      description: HSEM clear key register
+      fieldset: HSEM_KEYR
+    - name: G0CIDCFGR
+      byte_offset: 576
+      description: HSEM CID configuration register
+      fieldset: HSEM_G0CIDCFGR
+    - name: G1CIDCFGR
+      byte_offset: 580
+      description: HSEM CID configuration register
+      fieldset: HSEM_G1CIDCFGR
+    - name: G2CIDCFGR
+      byte_offset: 584
+      description: HSEM CID configuration register
+      fieldset: HSEM_G2CIDCFGR
+    - name: G3CIDCFGR
+      byte_offset: 588
+      description: HSEM CID configuration register
+      fieldset: HSEM_G3CIDCFGR
+    - name: HWCFGR2
+      byte_offset: 1004
+      description: HSEM hardware configuration register 2
+      fieldset: HSEM_HWCFGR2
+    - name: HWCFGR1
+      byte_offset: 1008
+      description: HSEM hardware configuration register 1
+      fieldset: HSEM_HWCFGR1
+    - name: VERR
+      byte_offset: 1012
+      description: HSEM IP version register
+      fieldset: HSEM_VERR
+    - name: IPIDR
+      byte_offset: 1016
+      description: HSEM IP identification register
+      fieldset: HSEM_IPIDR
+    - name: SIDR
+      byte_offset: 1020
+      description: HSEM size identification register
+      fieldset: HSEM_SIDR
 fieldset/HSEM_R:
   description: ''
   fields:
-  - name: PROCID
-    bit_offset: 0
-    bit_size: 8
-    description: Semaphore PROCID.
-  - name: LOCKID
-    bit_offset: 8
-    bit_size: 4
-    description: Semaphore LOCKID.
-  - name: SEC
-    bit_offset: 12
-    bit_size: 1
-    description: Semaphore secure.
-  - name: PRIV
-    bit_offset: 13
-    bit_size: 1
-    description: Semaphore privilege.
-  - name: CFEN
-    bit_offset: 30
-    bit_size: 1
-    description: Semaphore CID filter indication.
-  - name: LOCK
-    bit_offset: 31
-    bit_size: 1
-    description: Lock indication.
+    - name: PROCID
+      bit_offset: 0
+      bit_size: 8
+      description: Semaphore PROCID.
+    - name: LOCKID
+      bit_offset: 8
+      bit_size: 4
+      description: Semaphore LOCKID.
+    - name: SEC
+      bit_offset: 12
+      bit_size: 1
+      description: Semaphore secure.
+    - name: PRIV
+      bit_offset: 13
+      bit_size: 1
+      description: Semaphore privilege.
+    - name: CFEN
+      bit_offset: 30
+      bit_size: 1
+      description: Semaphore CID filter indication.
+    - name: LOCK
+      bit_offset: 31
+      bit_size: 1
+      description: Lock indication.
 fieldset/HSEM_RLR:
   description: ''
   fields:
-  - name: PROCID
-    bit_offset: 0
-    bit_size: 8
-    description: Semaphore PROCID.
-  - name: LOCKID
-    bit_offset: 8
-    bit_size: 4
-    description: Semaphore LOCKID.
-  - name: SEC
-    bit_offset: 12
-    bit_size: 1
-    description: Semaphore secure.
-  - name: PRIV
-    bit_offset: 13
-    bit_size: 1
-    description: Semaphore privilege.
-  - name: CFEN
-    bit_offset: 30
-    bit_size: 1
-    description: Semaphore CID filter indication.
-  - name: LOCK
-    bit_offset: 31
-    bit_size: 1
-    description: Lock indication.
+    - name: PROCID
+      bit_offset: 0
+      bit_size: 8
+      description: Semaphore PROCID.
+    - name: LOCKID
+      bit_offset: 8
+      bit_size: 4
+      description: Semaphore LOCKID.
+    - name: SEC
+      bit_offset: 12
+      bit_size: 1
+      description: Semaphore secure.
+    - name: PRIV
+      bit_offset: 13
+      bit_size: 1
+      description: Semaphore privilege.
+    - name: CFEN
+      bit_offset: 30
+      bit_size: 1
+      description: Semaphore CID filter indication.
+    - name: LOCK
+      bit_offset: 31
+      bit_size: 1
+      description: Lock indication.
 fieldset/HSEM_C1IER:
   description: ''
   fields:
-  - name: ISE0
-    bit_offset: 0
-    bit_size: 1
-    description: semaphore 0 , interrupt 0 enable bit.
-  - name: ISE1
-    bit_offset: 1
-    bit_size: 1
-    description: semaphore 1 , interrupt 0 enable bit.
-  - name: ISE2
-    bit_offset: 2
-    bit_size: 1
-    description: semaphore 2 , interrupt 0 enable bit.
-  - name: ISE3
-    bit_offset: 3
-    bit_size: 1
-    description: semaphore 3 , interrupt 0 enable bit.
-  - name: ISE4
-    bit_offset: 4
-    bit_size: 1
-    description: semaphore 4 , interrupt 0 enable bit.
-  - name: ISE5
-    bit_offset: 5
-    bit_size: 1
-    description: semaphore 5 interrupt 0 enable bit.
-  - name: ISE6
-    bit_offset: 6
-    bit_size: 1
-    description: semaphore 6 interrupt 0 enable bit.
-  - name: ISE7
-    bit_offset: 7
-    bit_size: 1
-    description: semaphore 7 interrupt 0 enable bit.
-  - name: ISE8
-    bit_offset: 8
-    bit_size: 1
-    description: semaphore 8 interrupt 0 enable bit.
-  - name: ISE9
-    bit_offset: 9
-    bit_size: 1
-    description: semaphore 9 interrupt 0 enable bit.
-  - name: ISE10
-    bit_offset: 10
-    bit_size: 1
-    description: semaphore 10 interrupt 0 enable bit.
-  - name: ISE11
-    bit_offset: 11
-    bit_size: 1
-    description: semaphore 11 interrupt 0 enable bit.
-  - name: ISE12
-    bit_offset: 12
-    bit_size: 1
-    description: semaphore 12 interrupt 0 enable bit.
-  - name: ISE13
-    bit_offset: 13
-    bit_size: 1
-    description: semaphore 13 interrupt 0 enable bit.
-  - name: ISE14
-    bit_offset: 14
-    bit_size: 1
-    description: semaphore 14 interrupt 0 enable bit.
-  - name: ISE15
-    bit_offset: 15
-    bit_size: 1
-    description: semaphore 15 interrupt 0 enable bit.
+    - name: ISE0
+      bit_offset: 0
+      bit_size: 1
+      description: semaphore 0 , interrupt 0 enable bit.
+    - name: ISE1
+      bit_offset: 1
+      bit_size: 1
+      description: semaphore 1 , interrupt 0 enable bit.
+    - name: ISE2
+      bit_offset: 2
+      bit_size: 1
+      description: semaphore 2 , interrupt 0 enable bit.
+    - name: ISE3
+      bit_offset: 3
+      bit_size: 1
+      description: semaphore 3 , interrupt 0 enable bit.
+    - name: ISE4
+      bit_offset: 4
+      bit_size: 1
+      description: semaphore 4 , interrupt 0 enable bit.
+    - name: ISE5
+      bit_offset: 5
+      bit_size: 1
+      description: semaphore 5 interrupt 0 enable bit.
+    - name: ISE6
+      bit_offset: 6
+      bit_size: 1
+      description: semaphore 6 interrupt 0 enable bit.
+    - name: ISE7
+      bit_offset: 7
+      bit_size: 1
+      description: semaphore 7 interrupt 0 enable bit.
+    - name: ISE8
+      bit_offset: 8
+      bit_size: 1
+      description: semaphore 8 interrupt 0 enable bit.
+    - name: ISE9
+      bit_offset: 9
+      bit_size: 1
+      description: semaphore 9 interrupt 0 enable bit.
+    - name: ISE10
+      bit_offset: 10
+      bit_size: 1
+      description: semaphore 10 interrupt 0 enable bit.
+    - name: ISE11
+      bit_offset: 11
+      bit_size: 1
+      description: semaphore 11 interrupt 0 enable bit.
+    - name: ISE12
+      bit_offset: 12
+      bit_size: 1
+      description: semaphore 12 interrupt 0 enable bit.
+    - name: ISE13
+      bit_offset: 13
+      bit_size: 1
+      description: semaphore 13 interrupt 0 enable bit.
+    - name: ISE14
+      bit_offset: 14
+      bit_size: 1
+      description: semaphore 14 interrupt 0 enable bit.
+    - name: ISE15
+      bit_offset: 15
+      bit_size: 1
+      description: semaphore 15 interrupt 0 enable bit.
 fieldset/HSEM_C1ICR:
   description: ''
   fields:
-  - name: ISC
-    bit_offset: 0
-    bit_size: 16
-    description: non-secure Interrupt(n) semaphore x clear bit. (x = 0 to 15)
+    - name: ISC
+      bit_offset: 0
+      bit_size: 16
+      description: non-secure Interrupt(n) semaphore x clear bit. (x = 0 to 15)
 fieldset/HSEM_C1ISR:
   description: ''
   fields:
-  - name: ISF
-    bit_offset: 0
-    bit_size: 16
-    description: non-secure Interrupt(n) semaphore x status bit before enable (mask).
-      (x = 0 to 15)
+    - name: ISF
+      bit_offset: 0
+      bit_size: 16
+      description: non-secure Interrupt(n) semaphore x status bit before enable (mask).
+        (x = 0 to 15)
 fieldset/HSEM_C1MISR:
   description: ''
   fields:
-  - name: MISF
-    bit_offset: 0
-    bit_size: 16
-    description: masked non-secure interrupt(n) semaphore x status bit after enable
-      (mask). (x = 0 to 15)
+    - name: MISF
+      bit_offset: 0
+      bit_size: 16
+      description: masked non-secure interrupt(n) semaphore x status bit after enable
+        (mask). (x = 0 to 15)
 fieldset/HSEM_SC1IER:
   description: ''
   fields:
-  - name: SISE
-    bit_offset: 0
-    bit_size: 16
-    description: Secure interrupt(n) semaphore x enable bit. (x = 0 to 15)
+    - name: SISE
+      bit_offset: 0
+      bit_size: 16
+      description: Secure interrupt(n) semaphore x enable bit. (x = 0 to 15)
 fieldset/HSEM_SC1ICR:
   description: ''
   fields:
-  - name: SISC
-    bit_offset: 0
-    bit_size: 16
-    description: Secure interrupt(n) semaphore x clear bit. (x = 0 to 15)
+    - name: SISC
+      bit_offset: 0
+      bit_size: 16
+      description: Secure interrupt(n) semaphore x clear bit. (x = 0 to 15)
 fieldset/HSEM_SC1ISR:
   description: ''
   fields:
-  - name: SISF
-    bit_offset: 0
-    bit_size: 16
-    description: Secure interrupt(n) semaphore x status bit before enable (mask).
-      (x = 0 to 15)
+    - name: SISF
+      bit_offset: 0
+      bit_size: 16
+      description: Secure interrupt(n) semaphore x status bit before enable (mask).
+        (x = 0 to 15)
 fieldset/HSEM_SC1MISR:
   description: ''
   fields:
-  - name: SMISF
-    bit_offset: 0
-    bit_size: 16
-    description: Secure masked interrupt(n) semaphore x status bit after enable (mask).
-      (x = 0 to 15)
+    - name: SMISF
+      bit_offset: 0
+      bit_size: 16
+      description: Secure masked interrupt(n) semaphore x status bit after enable (mask).
+        (x = 0 to 15)
 fieldset/HSEM_SECCFGR:
   description: ''
   fields:
-  - name: SEC
-    bit_offset: 0
-    bit_size: 16
-    description: Semaphore x security attribute. (x = 0 to 15)
+    - name: SEC
+      bit_offset: 0
+      bit_size: 16
+      description: Semaphore x security attribute. (x = 0 to 15)
 fieldset/HSEM_PRIVCFGR:
   description: ''
   fields:
-  - name: PRIV
-    bit_offset: 0
-    bit_size: 16
-    description: Semaphore x privilege attribute. (x = 0 to 15)
+    - name: PRIV
+      bit_offset: 0
+      bit_size: 16
+      description: Semaphore x privilege attribute. (x = 0 to 15)
 fieldset/HSEM_C1CIDCFGR:
   description: ''
   fields:
-  - name: CFEN
-    bit_offset: 0
-    bit_size: 1
-    description: CPUn CID filtering enabled for HSEM_(S)CnIER, HSEM_(S)CnICR, HSEM_(S)CnISR,
-      and HSEM_(S)CnMISR registers and for white list filter usage in HSEM_GpCIDCFGR.SEM_WLIST_Cn
-  - name: CID
-    bit_offset: 4
-    bit_size: 4
-    description: CPUn CID domain identification
+    - name: CFEN
+      bit_offset: 0
+      bit_size: 1
+      description: CPUn CID filtering enabled for HSEM_(S)CnIER, HSEM_(S)CnICR, HSEM_(S)CnISR,
+        and HSEM_(S)CnMISR registers and for white list filter usage in HSEM_GpCIDCFGR.SEM_WLIST_Cn
+    - name: CID
+      bit_offset: 4
+      bit_size: 4
+      description: CPUn CID domain identification
 fieldset/HSEM_C2CIDCFGR:
   description: ''
   fields:
-  - name: CFEN
-    bit_offset: 0
-    bit_size: 1
-    description: CPUn CID filtering enabled for HSEM_(S)CnIER, HSEM_(S)CnICR, HSEM_(S)CnISR,
-      and HSEM_(S)CnMISR registers and for white list filter usage in HSEM_GpCIDCFGR.SEM_WLIST_Cn
-  - name: CID
-    bit_offset: 4
-    bit_size: 4
-    description: CPUn CID domain identification
+    - name: CFEN
+      bit_offset: 0
+      bit_size: 1
+      description: CPUn CID filtering enabled for HSEM_(S)CnIER, HSEM_(S)CnICR, HSEM_(S)CnISR,
+        and HSEM_(S)CnMISR registers and for white list filter usage in HSEM_GpCIDCFGR.SEM_WLIST_Cn
+    - name: CID
+      bit_offset: 4
+      bit_size: 4
+      description: CPUn CID domain identification
 fieldset/HSEM_C3CIDCFGR:
   description: ''
   fields:
-  - name: CFEN
-    bit_offset: 0
-    bit_size: 1
-    description: CPUn CID filtering enabled for HSEM_(S)CnIER, HSEM_(S)CnICR, HSEM_(S)CnISR,
-      and HSEM_(S)CnMISR registers and for white list filter usage in HSEM_GpCIDCFGR.SEM_WLIST_Cn
-  - name: CID
-    bit_offset: 4
-    bit_size: 4
-    description: CPUn CID domain identification
+    - name: CFEN
+      bit_offset: 0
+      bit_size: 1
+      description: CPUn CID filtering enabled for HSEM_(S)CnIER, HSEM_(S)CnICR, HSEM_(S)CnISR,
+        and HSEM_(S)CnMISR registers and for white list filter usage in HSEM_GpCIDCFGR.SEM_WLIST_Cn
+    - name: CID
+      bit_offset: 4
+      bit_size: 4
+      description: CPUn CID domain identification
 fieldset/HSEM_CR:
   description: ''
   fields:
-  - name: CFEN
-    bit_offset: 0
-    bit_size: 1
-    description: Semaphore CID filtered.
-  - name: LOCKID
-    bit_offset: 8
-    bit_size: 4
-    description: LOCKID of semaphores to be cleared.
-  - name: SEC
-    bit_offset: 12
-    bit_size: 1
-    description: SEC value of semaphores to be cleared.
-  - name: PRIV
-    bit_offset: 13
-    bit_size: 1
-    description: PRIV value of semaphores to be cleared.
-  - name: KEY
-    bit_offset: 16
-    bit_size: 16
-    description: Semaphore clear Key.
+    - name: CFEN
+      bit_offset: 0
+      bit_size: 1
+      description: Semaphore CID filtered.
+    - name: LOCKID
+      bit_offset: 8
+      bit_size: 4
+      description: LOCKID of semaphores to be cleared.
+    - name: SEC
+      bit_offset: 12
+      bit_size: 1
+      description: SEC value of semaphores to be cleared.
+    - name: PRIV
+      bit_offset: 13
+      bit_size: 1
+      description: PRIV value of semaphores to be cleared.
+    - name: KEY
+      bit_offset: 16
+      bit_size: 16
+      description: Semaphore clear Key.
 fieldset/HSEM_KEYR:
   description: ''
   fields:
-  - name: KEY
-    bit_offset: 16
-    bit_size: 16
-    description: Semaphore Clear Key.
+    - name: KEY
+      bit_offset: 16
+      bit_size: 16
+      description: Semaphore Clear Key.
 fieldset/HSEM_G0CIDCFGR:
   description: ''
   fields:
-  - name: CFEN
-    bit_offset: 0
-    bit_size: 1
-    description: Semaphore group p global CID filtering enable.
+    - name: CFEN
+      bit_offset: 0
+      bit_size: 1
+      description: Semaphore group p global CID filtering enable.
 fieldset/HSEM_G1CIDCFGR:
   description: ''
   fields:
-  - name: CFEN
-    bit_offset: 0
-    bit_size: 1
-    description: Semaphore group p global CID filtering enable.
+    - name: CFEN
+      bit_offset: 0
+      bit_size: 1
+      description: Semaphore group p global CID filtering enable.
 fieldset/HSEM_G2CIDCFGR:
   description: ''
   fields:
-  - name: CFEN
-    bit_offset: 0
-    bit_size: 1
-    description: Semaphore group p global CID filtering enable.
+    - name: CFEN
+      bit_offset: 0
+      bit_size: 1
+      description: Semaphore group p global CID filtering enable.
 fieldset/HSEM_G3CIDCFGR:
   description: ''
   fields:
-  - name: CFEN
-    bit_offset: 0
-    bit_size: 1
-    description: Semaphore group p global CID filtering enable.
+    - name: CFEN
+      bit_offset: 0
+      bit_size: 1
+      description: Semaphore group p global CID filtering enable.
 fieldset/HSEM_HWCFGR2:
   description: ''
   fields:
-  - name: MASTERID1
-    bit_offset: 0
-    bit_size: 4
-    description: Hardware configuration valid bus masters ID1
-  - name: MASTERID2
-    bit_offset: 4
-    bit_size: 4
-    description: Hardware configuration valid bus masters ID2
-  - name: MASTERID3
-    bit_offset: 8
-    bit_size: 4
-    description: Hardware configuration valid bus masters ID3
-  - name: MASTERID4
-    bit_offset: 12
-    bit_size: 4
-    description: Hardware configuration valid bus masters ID4
+    - name: MASTERID1
+      bit_offset: 0
+      bit_size: 4
+      description: Hardware configuration valid bus masters ID1
+    - name: MASTERID2
+      bit_offset: 4
+      bit_size: 4
+      description: Hardware configuration valid bus masters ID2
+    - name: MASTERID3
+      bit_offset: 8
+      bit_size: 4
+      description: Hardware configuration valid bus masters ID3
+    - name: MASTERID4
+      bit_offset: 12
+      bit_size: 4
+      description: Hardware configuration valid bus masters ID4
 fieldset/HSEM_HWCFGR1:
   description: ''
   fields:
-  - name: NBSEM
-    bit_offset: 0
-    bit_size: 8
-    description: Hardware configuration number of semaphores
-  - name: NBINT
-    bit_offset: 8
-    bit_size: 4
-    description: Hardware configuration number of interrupts/supported number of master
-      ID
-  - name: SECEN
-    bit_offset: 16
-    bit_size: 1
-    description: Hardware Configuration security protection enable
-  - name: PRIVEN
-    bit_offset: 17
-    bit_size: 1
-    description: Hardware Configuration privilege protection enable
-  - name: CFEN
-    bit_offset: 18
-    bit_size: 1
-    description: Hardware Configuration compartment filtering enable
+    - name: NBSEM
+      bit_offset: 0
+      bit_size: 8
+      description: Hardware configuration number of semaphores
+    - name: NBINT
+      bit_offset: 8
+      bit_size: 4
+      description: Hardware configuration number of interrupts/supported number of master
+        ID
+    - name: SECEN
+      bit_offset: 16
+      bit_size: 1
+      description: Hardware Configuration security protection enable
+    - name: PRIVEN
+      bit_offset: 17
+      bit_size: 1
+      description: Hardware Configuration privilege protection enable
+    - name: CFEN
+      bit_offset: 18
+      bit_size: 1
+      description: Hardware Configuration compartment filtering enable
 fieldset/HSEM_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: IP minor revision number
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: IP major revision number
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: IP minor revision number
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: IP major revision number
 fieldset/HSEM_IPIDR:
   description: ''
   fields:
-  - name: IPID
-    bit_offset: 0
-    bit_size: 32
-    description: IP identification
+    - name: IPID
+      bit_offset: 0
+      bit_size: 32
+      description: IP identification
 fieldset/HSEM_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: IP size identification
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: IP size identification

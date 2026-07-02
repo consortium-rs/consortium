@@ -1,57 +1,57 @@
 block/BBSM_TCU:
   description: ''
   items:
-  - name: TCU_MAGIC_KW__MAGIC_KW0
-    byte_offset: 1024
-    fieldset: BBSM_TCU_TCU_MAGIC_KW__MAGIC_KW0
-  - name: TCU_MAGIC_KW__MAGIC_KW1
-    byte_offset: 1040
-    fieldset: BBSM_TCU_TCU_MAGIC_KW__MAGIC_KW1
-  - name: TCU_PLL_COUNTER
-    byte_offset: 3072
+    - name: TCU_MAGIC_KW__MAGIC_KW0
+      byte_offset: 1024
+      fieldset: BBSM_TCU_TCU_MAGIC_KW__MAGIC_KW0
+    - name: TCU_MAGIC_KW__MAGIC_KW1
+      byte_offset: 1040
+      fieldset: BBSM_TCU_TCU_MAGIC_KW__MAGIC_KW1
+    - name: TCU_PLL_COUNTER
+      byte_offset: 3072
 fieldset/BBSM_TCU_TCU_MAGIC_KW__MAGIC_KW0:
   description: ''
   fields:
-  - name: out
-    bit_offset: 0
-    bit_size: 32
+    - name: out
+      bit_offset: 0
+      bit_size: 32
 fieldset/BBSM_TCU_TCU_MAGIC_KW__MAGIC_KW1:
   description: ''
   fields:
-  - name: out
-    bit_offset: 0
-    bit_size: 32
+    - name: out
+      bit_offset: 0
+      bit_size: 32
 fieldset/BBSM_TCU_TCU_PLL_COUNTER_pll_count_rst:
   description: ''
   fields:
-  - name: n
-    bit_offset: 0
-    bit_size: 1
+    - name: n
+      bit_offset: 0
+      bit_size: 1
 fieldset/BBSM_TCU_TCU_PLL_COUNTER_pll_count:
   description: ''
   fields:
-  - name: start
-    bit_offset: 1
-    bit_size: 1
-  - name: cnt
-    bit_offset: 16
-    bit_size: 16
-    description: pll count cnt
+    - name: start
+      bit_offset: 1
+      bit_size: 1
+    - name: cnt
+      bit_offset: 16
+      bit_size: 16
+      description: pll count cnt
 fieldset/BBSM_TCU_TCU_PLL_COUNTER_pll_count_div:
   description: ''
   fields:
-  - name: en
-    bit_offset: 2
-    bit_size: 1
+    - name: en
+      bit_offset: 2
+      bit_size: 1
 fieldset/BBSM_TCU_TCU_PLL_COUNTER_pll_count_clk:
   description: ''
   fields:
-  - name: sel
-    bit_offset: 3
-    bit_size: 3
+    - name: sel
+      bit_offset: 3
+      bit_size: 3
 fieldset/BBSM_TCU_TCU_PLL_COUNTER_pll_count_ref:
   description: ''
   fields:
-  - name: val
-    bit_offset: 8
-    bit_size: 8
+    - name: val
+      bit_offset: 8
+      bit_size: 8

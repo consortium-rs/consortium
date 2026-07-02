@@ -1,68 +1,68 @@
 block/RIMC:
   description: ''
   items:
-  - name: CR
-    byte_offset: 3072
-    description: RIMC Configuration register
-    fieldset: RIMC_CR
-  - name: SR
-    byte_offset: 3076
-    description: RIMC Status register
-    fieldset: RIMC_SR
-  - name: ATTR
-    byte_offset: 3088
-    array:
-      len: 16
-      stride: 4
-    description: RIMC Attribute register x, 0xC10-0xC4C
-    fieldset: RIMC_ATTR
+    - name: CR
+      byte_offset: 3072
+      description: RIMC Configuration register
+      fieldset: RIMC_CR
+    - name: SR
+      byte_offset: 3076
+      description: RIMC Status register
+      fieldset: RIMC_SR
+    - name: ATTR
+      byte_offset: 3088
+      array:
+        len: 16
+        stride: 4
+      description: RIMC Attribute register x, 0xC10-0xC4C
+      fieldset: RIMC_ATTR
 fieldset/RIMC_CR:
   description: ''
   fields:
-  - name: GLOCK
-    bit_offset: 0
-    bit_size: 1
-    description: '0x00000001'
-  - name: WUCDONE
-    bit_offset: 1
-    bit_size: 1
-    description: '0x00000002'
-  - name: TDCID
-    bit_offset: 4
-    bit_size: 3
-    description: '0x00000000'
-  - name: DAPCID
-    bit_offset: 8
-    bit_size: 3
-    description: '0x00000000'
-  - name: DDEN
-    bit_offset: 15
-    bit_size: 1
+    - name: GLOCK
+      bit_offset: 0
+      bit_size: 1
+      description: '0x00000001'
+    - name: WUCDONE
+      bit_offset: 1
+      bit_size: 1
+      description: '0x00000002'
+    - name: TDCID
+      bit_offset: 4
+      bit_size: 3
+      description: '0x00000000'
+    - name: DAPCID
+      bit_offset: 8
+      bit_size: 3
+      description: '0x00000000'
+    - name: DDEN
+      bit_offset: 15
+      bit_size: 1
 fieldset/RIMC_SR:
   description: ''
   fields:
-  - name: GDPEN
-    bit_offset: 0
-    bit_size: 1
-    description: '0x00000001'
-  - name: WUCEN
-    bit_offset: 1
-    bit_size: 1
+    - name: GDPEN
+      bit_offset: 0
+      bit_size: 1
+      description: '0x00000001'
+    - name: WUCEN
+      bit_offset: 1
+      bit_size: 1
 fieldset/RIMC_ATTR:
   description: ''
   fields:
-  - name: CIDSEL
-    bit_offset: 2
-    bit_size: 1
-    description: '0x00000004'
-  - name: MCID
-    bit_offset: 4
-    bit_size: 3
-    description: '0x00000000'
-  - name: MSEC
-    bit_offset: 8
-    bit_size: 1
-    description: '0x00000100'
-  - name: MPRIV
-    bit_offset: 9
-    bit_size: 1
+    - name: CIDSEL
+      bit_offset: 2
+      bit_size: 1
+      description: '0x00000004'
+    - name: MCID
+      bit_offset: 4
+      bit_size: 3
+      description: '0x00000000'
+    - name: MSEC
+      bit_offset: 8
+      bit_size: 1
+      description: '0x00000100'
+    - name: MPRIV
+      bit_offset: 9
+      bit_size: 1

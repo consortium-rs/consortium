@@ -1,849 +1,849 @@
 block/USB3_GLUE:
   description: ''
   items:
-  - name: USB3_CTRL0
-    byte_offset: 0
-    fieldset: USB3_GLUE_USB3_CTRL0
-  - name: USB3_CTRL1
-    byte_offset: 4
-  - name: USB3_STS0
-    byte_offset: 32
-    fieldset: USB3_GLUE_USB3_STS0
-  - name: PHY_CTRL0
-    byte_offset: 64
-    fieldset: USB3_GLUE_PHY_CTRL0
-  - name: PHY_CTRL1
-    byte_offset: 68
-    fieldset: USB3_GLUE_PHY_CTRL1
-  - name: PHY_CTRL2
-    byte_offset: 72
-    fieldset: USB3_GLUE_PHY_CTRL2
-  - name: PHY_CTRL3
-    byte_offset: 76
-    fieldset: USB3_GLUE_PHY_CTRL3
-  - name: PHY_CTRL4
-    byte_offset: 80
-  - name: PHY_CTRL5
-    byte_offset: 84
-  - name: PHY_CTRL6
-    byte_offset: 88
-  - name: PHY_CRCTL
-    byte_offset: 112
-  - name: PHY_CRSR
-    byte_offset: 116
-  - name: PHY_STATUS0
-    byte_offset: 128
-    fieldset: USB3_GLUE_PHY_STATUS0
+    - name: USB3_CTRL0
+      byte_offset: 0
+      fieldset: USB3_GLUE_USB3_CTRL0
+    - name: USB3_CTRL1
+      byte_offset: 4
+    - name: USB3_STS0
+      byte_offset: 32
+      fieldset: USB3_GLUE_USB3_STS0
+    - name: PHY_CTRL0
+      byte_offset: 64
+      fieldset: USB3_GLUE_PHY_CTRL0
+    - name: PHY_CTRL1
+      byte_offset: 68
+      fieldset: USB3_GLUE_PHY_CTRL1
+    - name: PHY_CTRL2
+      byte_offset: 72
+      fieldset: USB3_GLUE_PHY_CTRL2
+    - name: PHY_CTRL3
+      byte_offset: 76
+      fieldset: USB3_GLUE_PHY_CTRL3
+    - name: PHY_CTRL4
+      byte_offset: 80
+    - name: PHY_CTRL5
+      byte_offset: 84
+    - name: PHY_CTRL6
+      byte_offset: 88
+    - name: PHY_CRCTL
+      byte_offset: 112
+    - name: PHY_CRSR
+      byte_offset: 116
+    - name: PHY_STATUS0
+      byte_offset: 128
+      fieldset: USB3_GLUE_PHY_STATUS0
 fieldset/USB3_GLUE_USB3_CTRL0_BUS_CLKEN:
   description: ''
   fields:
-  - name: GS
-    bit_offset: 0
-    bit_size: 1
-  - name: GM
-    bit_offset: 1
-    bit_size: 1
+    - name: GS
+      bit_offset: 0
+      bit_size: 1
+    - name: GM
+      bit_offset: 1
+      bit_size: 1
 fieldset/USB3_GLUE_USB3_CTRL0_BIGENDIAN:
   description: ''
   fields:
-  - name: GS
-    bit_offset: 2
-    bit_size: 1
+    - name: GS
+      bit_offset: 2
+      bit_size: 1
 fieldset/USB3_GLUE_USB3_CTRL0_PME:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 3
-    bit_size: 1
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
 fieldset/USB3_GLUE_USB3_CTRL0_HOST_U2_PORT:
   description: ''
   fields:
-  - name: DISABLE
-    bit_offset: 6
-    bit_size: 1
+    - name: DISABLE
+      bit_offset: 6
+      bit_size: 1
 fieldset/USB3_GLUE_USB3_CTRL0_HOST_U3_PORT:
   description: ''
   fields:
-  - name: DISABLE
-    bit_offset: 7
-    bit_size: 1
+    - name: DISABLE
+      bit_offset: 7
+      bit_size: 1
 fieldset/USB3_GLUE_USB3_CTRL0_BUS_FILTER:
   description: ''
   fields:
-  - name: BYPASS
-    bit_offset: 8
-    bit_size: 4
+    - name: BYPASS
+      bit_offset: 8
+      bit_size: 4
 fieldset/USB3_GLUE_USB3_CTRL0_HOST_PORT_POWER_CONTROL:
   description: ''
   fields:
-  - name: PRESENT
-    bit_offset: 12
-    bit_size: 1
+    - name: PRESENT
+      bit_offset: 12
+      bit_size: 1
 fieldset/USB3_GLUE_USB3_CTRL0_xHC:
   description: ''
   fields:
-  - name: BME
-    bit_offset: 14
-    bit_size: 1
+    - name: BME
+      bit_offset: 14
+      bit_size: 1
 fieldset/USB3_GLUE_USB3_CTRL0_FLADJ_30MHZ:
   description: ''
   fields:
-  - name: REG
-    bit_offset: 16
-    bit_size: 6
+    - name: REG
+      bit_offset: 16
+      bit_size: 6
 fieldset/USB3_GLUE_USB3_CTRL0_HUB_PORT_PERM:
   description: ''
   fields:
-  - name: ATTACH
-    bit_offset: 22
-    bit_size: 2
+    - name: ATTACH
+      bit_offset: 22
+      bit_size: 2
 fieldset/USB3_GLUE_USB3_CTRL0_UTMIOTG_IDDIG:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 24
-    bit_size: 1
+    - name: SEL
+      bit_offset: 24
+      bit_size: 1
 fieldset/USB3_GLUE_USB3_CTRL0:
   description: ''
   fields:
-  - name: StartRxDetU3RxDet
-    bit_offset: 25
-    bit_size: 1
+    - name: StartRxDetU3RxDet
+      bit_offset: 25
+      bit_size: 1
 fieldset/USB3_GLUE_USB3_CTRL0_USB3_CTRL:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 31
-    bit_size: 1
+    - name: RESET
+      bit_offset: 31
+      bit_size: 1
 fieldset/USB3_GLUE_USB3_CTRL1_OB:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 5
-    description: Observe Select
+    - name: SEL
+      bit_offset: 0
+      bit_size: 5
+      description: Observe Select
 fieldset/USB3_GLUE_USB3_CTRL1_OC:
   description: ''
   fields:
-  - name: POLARITY
-    bit_offset: 16
-    bit_size: 1
-    description: Observe Select
+    - name: POLARITY
+      bit_offset: 16
+      bit_size: 1
+      description: Observe Select
 fieldset/USB3_GLUE_USB3_CTRL1_POWER:
   description: ''
   fields:
-  - name: POLARITY
-    bit_offset: 17
-    bit_size: 1
+    - name: POLARITY
+      bit_offset: 17
+      bit_size: 1
 fieldset/USB3_GLUE_USB3_STS0_HOST_CURRENT:
   description: ''
   fields:
-  - name: BELT
-    bit_offset: 0
-    bit_size: 12
+    - name: BELT
+      bit_offset: 0
+      bit_size: 12
 fieldset/USB3_GLUE_USB3_STS0_HOST_SYSTEM:
   description: ''
   fields:
-  - name: ERR
-    bit_offset: 12
-    bit_size: 1
-    description: Host System Error
+    - name: ERR
+      bit_offset: 12
+      bit_size: 1
+      description: Host System Error
 fieldset/USB3_GLUE_USB3_STS0_BC_CHIRP:
   description: ''
   fields:
-  - name: 'ON'
-    bit_offset: 13
-    bit_size: 1
-    description: Chirp Signal Enable
+    - name: 'ON'
+      bit_offset: 13
+      bit_size: 1
+      description: Chirp Signal Enable
 fieldset/USB3_GLUE_USB3_STS0_PME:
   description: ''
   fields:
-  - name: GENERATION
-    bit_offset: 14
-    bit_size: 1
-    description: PME# Generation
+    - name: GENERATION
+      bit_offset: 14
+      bit_size: 1
+      description: PME# Generation
 fieldset/USB3_GLUE_USB3_STS0:
   description: ''
   fields:
-  - name: IDDIG
-    bit_offset: 15
-    bit_size: 1
+    - name: IDDIG
+      bit_offset: 15
+      bit_size: 1
 fieldset/USB3_GLUE_USB3_STS0_DisRxDetU3RxDet:
   description: ''
   fields:
-  - name: ACK
-    bit_offset: 16
-    bit_size: 1
+    - name: ACK
+      bit_offset: 16
+      bit_size: 1
 fieldset/USB3_GLUE_USB3_STS0_CLK_GATE:
   description: ''
   fields:
-  - name: CTRL
-    bit_offset: 17
-    bit_size: 3
-    description: Clock Gating Control
+    - name: CTRL
+      bit_offset: 17
+      bit_size: 3
+      description: Clock Gating Control
 fieldset/USB3_GLUE_PHY_CTRL0_REF_USE:
   description: ''
   fields:
-  - name: PAD
-    bit_offset: 0
-    bit_size: 1
-    description: Reference clock Use Pad
+    - name: PAD
+      bit_offset: 0
+      bit_size: 1
+      description: Reference clock Use Pad
 fieldset/USB3_GLUE_PHY_CTRL0_REF:
   description: ''
   fields:
-  - name: CLKDIV2
-    bit_offset: 1
-    bit_size: 1
+    - name: CLKDIV2
+      bit_offset: 1
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL0_REF_SSP:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 2
-    bit_size: 1
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL0:
   description: ''
   fields:
-  - name: REFCLKSEL
-    bit_offset: 3
-    bit_size: 2
-  - name: FSEL
-    bit_offset: 5
-    bit_size: 6
+    - name: REFCLKSEL
+      bit_offset: 3
+      bit_size: 2
+    - name: FSEL
+      bit_offset: 5
+      bit_size: 6
 fieldset/USB3_GLUE_PHY_CTRL0_SSC:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 11
-    bit_size: 1
-    description: Spread Spectrum Enable
-  - name: RANGE
-    bit_offset: 21
-    bit_size: 3
+    - name: EN
+      bit_offset: 11
+      bit_size: 1
+      description: Spread Spectrum Enable
+    - name: RANGE
+      bit_offset: 21
+      bit_size: 3
 fieldset/USB3_GLUE_PHY_CTRL0_SSC_REF_CLK:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 12
-    bit_size: 9
-    description: Spread Spectrum Enable
+    - name: SEL
+      bit_offset: 12
+      bit_size: 9
+      description: Spread Spectrum Enable
 fieldset/USB3_GLUE_PHY_CTRL0_MPLL_REFSSC_CLK:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 24
-    bit_size: 1
+    - name: EN
+      bit_offset: 24
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL0_MPLL:
   description: ''
   fields:
-  - name: MULTIPLIER
-    bit_offset: 25
-    bit_size: 7
+    - name: MULTIPLIER
+      bit_offset: 25
+      bit_size: 7
 fieldset/USB3_GLUE_PHY_CTRL1_PHY:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 0
-    bit_size: 1
+    - name: RESET
+      bit_offset: 0
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL1:
   description: ''
   fields:
-  - name: COMMONONN
-    bit_offset: 1
-    bit_size: 1
-  - name: RETENABLEN
-    bit_offset: 2
-    bit_size: 1
-    description: Lowered Digital Supply
-  - name: ATERESET
-    bit_offset: 3
-    bit_size: 1
-  - name: LOOPBACKENB0
-    bit_offset: 9
-    bit_size: 1
-    description: Loopback Enable
-  - name: VATESTENB
-    bit_offset: 12
-    bit_size: 2
-  - name: AUTORSMENB0
-    bit_offset: 16
-    bit_size: 1
-    description: Resistor Tune Request
-  - name: DCDENB
-    bit_offset: 17
-    bit_size: 1
-  - name: CHRGSEL
-    bit_offset: 18
-    bit_size: 1
-  - name: VDATSRCENB
-    bit_offset: 19
-    bit_size: 1
-  - name: VDATDETENB
-    bit_offset: 20
-    bit_size: 1
-  - name: CHRGSRCPUENB0
-    bit_offset: 21
-    bit_size: 2
-  - name: VDATREFTUNE0
-    bit_offset: 23
-    bit_size: 2
-  - name: HSXCVREXTCTL0
-    bit_offset: 25
-    bit_size: 1
+    - name: COMMONONN
+      bit_offset: 1
+      bit_size: 1
+    - name: RETENABLEN
+      bit_offset: 2
+      bit_size: 1
+      description: Lowered Digital Supply
+    - name: ATERESET
+      bit_offset: 3
+      bit_size: 1
+    - name: LOOPBACKENB0
+      bit_offset: 9
+      bit_size: 1
+      description: Loopback Enable
+    - name: VATESTENB
+      bit_offset: 12
+      bit_size: 2
+    - name: AUTORSMENB0
+      bit_offset: 16
+      bit_size: 1
+      description: Resistor Tune Request
+    - name: DCDENB
+      bit_offset: 17
+      bit_size: 1
+    - name: CHRGSEL
+      bit_offset: 18
+      bit_size: 1
+    - name: VDATSRCENB
+      bit_offset: 19
+      bit_size: 1
+    - name: VDATDETENB
+      bit_offset: 20
+      bit_size: 1
+    - name: CHRGSRCPUENB0
+      bit_offset: 21
+      bit_size: 2
+    - name: VDATREFTUNE0
+      bit_offset: 23
+      bit_size: 2
+    - name: HSXCVREXTCTL0
+      bit_offset: 25
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL1_ACJT:
   description: ''
   fields:
-  - name: LEVEL
-    bit_offset: 4
-    bit_size: 5
+    - name: LEVEL
+      bit_offset: 4
+      bit_size: 5
 fieldset/USB3_GLUE_PHY_CTRL1_PHY_TEST_POWERDOWN:
   description: ''
   fields:
-  - name: SSP
-    bit_offset: 10
-    bit_size: 1
-  - name: HSP
-    bit_offset: 11
-    bit_size: 1
+    - name: SSP
+      bit_offset: 10
+      bit_size: 1
+    - name: HSP
+      bit_offset: 11
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL1_TEST:
   description: ''
   fields:
-  - name: BURNIN
-    bit_offset: 14
-    bit_size: 1
-    description: Test Burning
+    - name: BURNIN
+      bit_offset: 14
+      bit_size: 1
+      description: Test Burning
 fieldset/USB3_GLUE_PHY_CTRL1_RTUNE:
   description: ''
   fields:
-  - name: REQ
-    bit_offset: 15
-    bit_size: 1
-    description: Test Burning
+    - name: REQ
+      bit_offset: 15
+      bit_size: 1
+      description: Test Burning
 fieldset/USB3_GLUE_PHY_CTRL1_TYPEC_FLIP:
   description: ''
   fields:
-  - name: INVERT
-    bit_offset: 26
-    bit_size: 1
+    - name: INVERT
+      bit_offset: 26
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL1_SYS_VBUSVALID:
   description: ''
   fields:
-  - name: SW
-    bit_offset: 28
-    bit_size: 1
+    - name: SW
+      bit_offset: 28
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL1_USB_DEV:
   description: ''
   fields:
-  - name: POR
-    bit_offset: 29
-    bit_size: 1
-    description: PoR as USB Device
+    - name: POR
+      bit_offset: 29
+      bit_size: 1
+      description: PoR as USB Device
 fieldset/USB3_GLUE_PHY_CTRL1_TCA_APB_RESET:
   description: ''
   fields:
-  - name: SW
-    bit_offset: 30
-    bit_size: 1
+    - name: SW
+      bit_offset: 30
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL2:
   description: ''
   fields:
-  - name: BYPASSSEL
-    bit_offset: 0
-    bit_size: 1
-    description: Bypass Select
-  - name: BYPASSDPEN
-    bit_offset: 1
-    bit_size: 1
-    description: Bypass Select
-  - name: BYPASSDPDATA
-    bit_offset: 2
-    bit_size: 1
-    description: Bypass DP Enable
-  - name: BYPASSDMEN
-    bit_offset: 3
-    bit_size: 1
-    description: Bypass DM Enable
-  - name: BYPASSDMDATA
-    bit_offset: 4
-    bit_size: 1
-    description: Bypass DM Enable
-  - name: FSDATAEXT
-    bit_offset: 5
-    bit_size: 1
-    description: USB 1.1 SE0 Generation
-  - name: FSSE0EXT
-    bit_offset: 6
-    bit_size: 1
-    description: USB 1.1 SE0 Generation
-  - name: FSXCVROWNER
-    bit_offset: 7
-    bit_size: 1
-  - name: TXENABLEN
-    bit_offset: 8
-    bit_size: 1
-  - name: OTGDISABLE
-    bit_offset: 9
-    bit_size: 1
-    description: OTG Disable
-  - name: VBUSVLDEXT
-    bit_offset: 10
-    bit_size: 1
-    description: OTG Disable
-  - name: VBUSVLDEXTSEL
-    bit_offset: 11
-    bit_size: 1
-  - name: TXBITSTUFFENH
-    bit_offset: 12
-    bit_size: 1
-  - name: TXBITSTUFFEN
-    bit_offset: 13
-    bit_size: 1
-    description: TX Bit Stuff Enable
-  - name: RX0LOSLFPSEN
-    bit_offset: 16
-    bit_size: 1
-  - name: RX1LOSLFPSEN
-    bit_offset: 20
-    bit_size: 1
+    - name: BYPASSSEL
+      bit_offset: 0
+      bit_size: 1
+      description: Bypass Select
+    - name: BYPASSDPEN
+      bit_offset: 1
+      bit_size: 1
+      description: Bypass Select
+    - name: BYPASSDPDATA
+      bit_offset: 2
+      bit_size: 1
+      description: Bypass DP Enable
+    - name: BYPASSDMEN
+      bit_offset: 3
+      bit_size: 1
+      description: Bypass DM Enable
+    - name: BYPASSDMDATA
+      bit_offset: 4
+      bit_size: 1
+      description: Bypass DM Enable
+    - name: FSDATAEXT
+      bit_offset: 5
+      bit_size: 1
+      description: USB 1.1 SE0 Generation
+    - name: FSSE0EXT
+      bit_offset: 6
+      bit_size: 1
+      description: USB 1.1 SE0 Generation
+    - name: FSXCVROWNER
+      bit_offset: 7
+      bit_size: 1
+    - name: TXENABLEN
+      bit_offset: 8
+      bit_size: 1
+    - name: OTGDISABLE
+      bit_offset: 9
+      bit_size: 1
+      description: OTG Disable
+    - name: VBUSVLDEXT
+      bit_offset: 10
+      bit_size: 1
+      description: OTG Disable
+    - name: VBUSVLDEXTSEL
+      bit_offset: 11
+      bit_size: 1
+    - name: TXBITSTUFFENH
+      bit_offset: 12
+      bit_size: 1
+    - name: TXBITSTUFFEN
+      bit_offset: 13
+      bit_size: 1
+      description: TX Bit Stuff Enable
+    - name: RX0LOSLFPSEN
+      bit_offset: 16
+      bit_size: 1
+    - name: RX1LOSLFPSEN
+      bit_offset: 20
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL2_UTMOTG:
   description: ''
   fields:
-  - name: IDPULLUP
-    bit_offset: 14
-    bit_size: 1
+    - name: IDPULLUP
+      bit_offset: 14
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL2_REF_REPEAT_CLK:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 15
-    bit_size: 1
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL2_REF_USE:
   description: ''
   fields:
-  - name: XO
-    bit_offset: 17
-    bit_size: 1
+    - name: XO
+      bit_offset: 17
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL2_REF_XO:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 18
-    bit_size: 1
+    - name: EN
+      bit_offset: 18
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL2_DRVVBUS_GF:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 19
-    bit_size: 1
+    - name: EN
+      bit_offset: 19
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL2_sys_vbusvalid:
   description: ''
   fields:
-  - name: sel
-    bit_offset: 21
-    bit_size: 2
+    - name: sel
+      bit_offset: 21
+      bit_size: 2
 fieldset/USB3_GLUE_PHY_CTRL3:
   description: ''
   fields:
-  - name: COMPDISTUNE
-    bit_offset: 0
-    bit_size: 3
-  - name: OTGTUNE
-    bit_offset: 3
-    bit_size: 3
-  - name: SQRXTUNE
-    bit_offset: 6
-    bit_size: 3
-  - name: TXFSLSTUNE
-    bit_offset: 9
-    bit_size: 4
-  - name: TXHSXVTUNE
-    bit_offset: 13
-    bit_size: 2
-  - name: TXPREEMPAMPTUNE
-    bit_offset: 15
-    bit_size: 2
-  - name: TXPREEMPPULSETUNE
-    bit_offset: 17
-    bit_size: 1
-  - name: TXRESTUNE
-    bit_offset: 18
-    bit_size: 2
-  - name: TXRISETUNE
-    bit_offset: 20
-    bit_size: 2
-  - name: TXVREFTUNE
-    bit_offset: 22
-    bit_size: 4
+    - name: COMPDISTUNE
+      bit_offset: 0
+      bit_size: 3
+    - name: OTGTUNE
+      bit_offset: 3
+      bit_size: 3
+    - name: SQRXTUNE
+      bit_offset: 6
+      bit_size: 3
+    - name: TXFSLSTUNE
+      bit_offset: 9
+      bit_size: 4
+    - name: TXHSXVTUNE
+      bit_offset: 13
+      bit_size: 2
+    - name: TXPREEMPAMPTUNE
+      bit_offset: 15
+      bit_size: 2
+    - name: TXPREEMPPULSETUNE
+      bit_offset: 17
+      bit_size: 1
+    - name: TXRESTUNE
+      bit_offset: 18
+      bit_size: 2
+    - name: TXRISETUNE
+      bit_offset: 20
+      bit_size: 2
+    - name: TXVREFTUNE
+      bit_offset: 22
+      bit_size: 4
 fieldset/USB3_GLUE_PHY_CTRL3_LOS:
   description: ''
   fields:
-  - name: BIAS
-    bit_offset: 26
-    bit_size: 3
+    - name: BIAS
+      bit_offset: 26
+      bit_size: 3
 fieldset/USB3_GLUE_PHY_CTRL3_TX_VBOOST:
   description: ''
   fields:
-  - name: LVL
-    bit_offset: 29
-    bit_size: 3
+    - name: LVL
+      bit_offset: 29
+      bit_size: 3
 fieldset/USB3_GLUE_PHY_CTRL4_LOS:
   description: ''
   fields:
-  - name: LEVEL
-    bit_offset: 0
-    bit_size: 5
+    - name: LEVEL
+      bit_offset: 0
+      bit_size: 5
 fieldset/USB3_GLUE_PHY_CTRL4_PCS_RX_LOS_MASK:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 5
-    bit_size: 10
+    - name: VAL
+      bit_offset: 5
+      bit_size: 10
 fieldset/USB3_GLUE_PHY_CTRL4_PCS_TX_DEEMPH:
   description: ''
   fields:
-  - name: 3P5DB
-    bit_offset: 15
-    bit_size: 6
-  - name: 6DB
-    bit_offset: 21
-    bit_size: 6
+    - name: 3P5DB
+      bit_offset: 15
+      bit_size: 6
+    - name: 6DB
+      bit_offset: 21
+      bit_size: 6
 fieldset/USB3_GLUE_PHY_CTRL4_LANE0_TX_TERM:
   description: ''
   fields:
-  - name: OFFSET
-    bit_offset: 27
-    bit_size: 5
+    - name: OFFSET
+      bit_offset: 27
+      bit_size: 5
 fieldset/USB3_GLUE_PHY_CTRL5_PCS_TX_SWING:
   description: ''
   fields:
-  - name: FULL
-    bit_offset: 0
-    bit_size: 7
+    - name: FULL
+      bit_offset: 0
+      bit_size: 7
 fieldset/USB3_GLUE_PHY_CTRL5_LANE1_TX_TERM:
   description: ''
   fields:
-  - name: OFFSET
-    bit_offset: 7
-    bit_size: 5
+    - name: OFFSET
+      bit_offset: 7
+      bit_size: 5
 fieldset/USB3_GLUE_PHY_CTRL5_TERMSEL:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 12
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 12
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_PHY_TERMSEL_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 13
-    bit_size: 1
+    - name: SEL
+      bit_offset: 13
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_OPMODE:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 14
-    bit_size: 2
+    - name: OVERRIDE
+      bit_offset: 14
+      bit_size: 2
 fieldset/USB3_GLUE_PHY_CTRL5_OPMODE_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 16
-    bit_size: 1
+    - name: SEL
+      bit_offset: 16
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_XCVRSEL:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 17
-    bit_size: 2
+    - name: OVERRIDE
+      bit_offset: 17
+      bit_size: 2
 fieldset/USB3_GLUE_PHY_CTRL5_XCVRSEL_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 19
-    bit_size: 1
+    - name: SEL
+      bit_offset: 19
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_DPPULLDOWN:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 20
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 20
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_DPPULLDOWN_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 21
-    bit_size: 1
+    - name: SEL
+      bit_offset: 21
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_DMPULLDOWN:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 22
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 22
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_DMPULLDOWN_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 23
-    bit_size: 1
+    - name: SEL
+      bit_offset: 23
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_SLEEP_N:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 24
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 24
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_SLEEP_N_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 25
-    bit_size: 1
+    - name: SEL
+      bit_offset: 25
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_SUSPEND_N:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 26
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 26
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_SUSPEND_N_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 27
-    bit_size: 1
+    - name: SEL
+      bit_offset: 27
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_DRVVBUS:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 28
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 28
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_DRVVBUS_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 29
-    bit_size: 1
+    - name: SEL
+      bit_offset: 29
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_USB2PHY_RESET:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 30
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 30
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL5_USB2PHY_RESET_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 31
-    bit_size: 1
+    - name: SEL
+      bit_offset: 31
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL6_ALT_CLK:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 1
-  - name: EN
-    bit_offset: 1
-    bit_size: 1
-    description: Alternate Clock Enable
+    - name: SEL
+      bit_offset: 0
+      bit_size: 1
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+      description: Alternate Clock Enable
 fieldset/USB3_GLUE_PHY_CTRL6_LANE0_TX2RX:
   description: ''
   fields:
-  - name: LOOPBK
-    bit_offset: 2
-    bit_size: 1
-    description: Loopback
+    - name: LOOPBK
+      bit_offset: 2
+      bit_size: 1
+      description: Loopback
 fieldset/USB3_GLUE_PHY_CTRL6_LANE0_EXT_PCLK:
   description: ''
   fields:
-  - name: REQ
-    bit_offset: 3
-    bit_size: 1
+    - name: REQ
+      bit_offset: 3
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL6_PIPE3_RESET_N:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 19
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 19
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL6_PIPE3_RESET_N_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 20
-    bit_size: 1
+    - name: SEL
+      bit_offset: 20
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL6_TxDetectRxLoopbk:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 21
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 21
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL6_TxDetectRxLoopbk_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 22
-    bit_size: 1
+    - name: SEL
+      bit_offset: 22
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL6_TxElecIdle:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 23
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 23
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL6_TxElecIdle_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 24
-    bit_size: 1
+    - name: SEL
+      bit_offset: 24
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL6_PowerDown:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 25
-    bit_size: 2
+    - name: OVERRIDE
+      bit_offset: 25
+      bit_size: 2
 fieldset/USB3_GLUE_PHY_CTRL6_POWERDOWN_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 27
-    bit_size: 1
+    - name: SEL
+      bit_offset: 27
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL6_RXTERMINATION:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 28
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 28
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL6_RXTERMINATION_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 29
-    bit_size: 1
+    - name: SEL
+      bit_offset: 29
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL6_TxOnesZeros:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 30
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 30
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CTRL6_TxOnesZeros_OVERRIDE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 31
-    bit_size: 1
+    - name: SEL
+      bit_offset: 31
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CRCTL_CR_DATA:
   description: ''
   fields:
-  - name: IN
-    bit_offset: 0
-    bit_size: 16
+    - name: IN
+      bit_offset: 0
+      bit_size: 16
 fieldset/USB3_GLUE_PHY_CRCTL_CR_CAP:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 16
-    bit_size: 1
-  - name: DATA
-    bit_offset: 17
-    bit_size: 1
+    - name: ADDR
+      bit_offset: 16
+      bit_size: 1
+    - name: DATA
+      bit_offset: 17
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CRCTL_CR:
   description: ''
   fields:
-  - name: WRITE
-    bit_offset: 18
-    bit_size: 1
-  - name: READ
-    bit_offset: 19
-    bit_size: 1
+    - name: WRITE
+      bit_offset: 18
+      bit_size: 1
+    - name: READ
+      bit_offset: 19
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_CRSR_CR_DATA:
   description: ''
   fields:
-  - name: OUT
-    bit_offset: 0
-    bit_size: 16
+    - name: OUT
+      bit_offset: 0
+      bit_size: 16
 fieldset/USB3_GLUE_PHY_CRSR_CR:
   description: ''
   fields:
-  - name: ACK
-    bit_offset: 16
-    bit_size: 1
+    - name: ACK
+      bit_offset: 16
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_STATUS0_PIPE0_POWER:
   description: ''
   fields:
-  - name: PRESENT
-    bit_offset: 0
-    bit_size: 1
+    - name: PRESENT
+      bit_offset: 0
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_STATUS0:
   description: ''
   fields:
-  - name: FSLSRCV
-    bit_offset: 1
-    bit_size: 1
-  - name: FSVMINUS
-    bit_offset: 2
-    bit_size: 1
-  - name: FSVPLUS
-    bit_offset: 3
-    bit_size: 1
-  - name: CHGDET
-    bit_offset: 4
-    bit_size: 1
-  - name: OTGSESSVLD
-    bit_offset: 7
-    bit_size: 1
-  - name: TCAMISCCTRL
-    bit_offset: 8
-    bit_size: 6
-  - name: LINESTATE
-    bit_offset: 16
-    bit_size: 2
-    description: Realtime Linestate
-  - name: VBUSVALID
-    bit_offset: 18
-    bit_size: 1
-    description: Realtime Linestate
-  - name: BVALID
-    bit_offset: 19
-    bit_size: 1
-  - name: TCAIDDIG
-    bit_offset: 20
-    bit_size: 1
-  - name: SSRXDETDIS
-    bit_offset: 21
-    bit_size: 1
+    - name: FSLSRCV
+      bit_offset: 1
+      bit_size: 1
+    - name: FSVMINUS
+      bit_offset: 2
+      bit_size: 1
+    - name: FSVPLUS
+      bit_offset: 3
+      bit_size: 1
+    - name: CHGDET
+      bit_offset: 4
+      bit_size: 1
+    - name: OTGSESSVLD
+      bit_offset: 7
+      bit_size: 1
+    - name: TCAMISCCTRL
+      bit_offset: 8
+      bit_size: 6
+    - name: LINESTATE
+      bit_offset: 16
+      bit_size: 2
+      description: Realtime Linestate
+    - name: VBUSVALID
+      bit_offset: 18
+      bit_size: 1
+      description: Realtime Linestate
+    - name: BVALID
+      bit_offset: 19
+      bit_size: 1
+    - name: TCAIDDIG
+      bit_offset: 20
+      bit_size: 1
+    - name: SSRXDETDIS
+      bit_offset: 21
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_STATUS0_REF_CLKREQ:
   description: ''
   fields:
-  - name: N
-    bit_offset: 5
-    bit_size: 1
+    - name: N
+      bit_offset: 5
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_STATUS0_RTUNE:
   description: ''
   fields:
-  - name: ACK
-    bit_offset: 6
-    bit_size: 1
-    description: Resistor Tune Acknowledge
+    - name: ACK
+      bit_offset: 6
+      bit_size: 1
+      description: Resistor Tune Acknowledge
 fieldset/USB3_GLUE_PHY_STATUS0_LINESTATE:
   description: ''
   fields:
-  - name: DELAY
-    bit_offset: 14
-    bit_size: 2
-    description: Linestate Delay
+    - name: DELAY
+      bit_offset: 14
+      bit_size: 2
+      description: Linestate Delay
 fieldset/USB3_GLUE_PHY_STATUS0_TCA_DRV_HOST:
   description: ''
   fields:
-  - name: VBUS
-    bit_offset: 22
-    bit_size: 1
+    - name: VBUS
+      bit_offset: 22
+      bit_size: 1
 fieldset/USB3_GLUE_PHY_STATUS0_PIPE_CLK:
   description: ''
   fields:
-  - name: VLD
-    bit_offset: 30
-    bit_size: 1
-    description: Pipe 3 Clock Valid
+    - name: VLD
+      bit_offset: 30
+      bit_size: 1
+      description: Pipe 3 Clock Valid
 fieldset/USB3_GLUE_PHY_STATUS0_UTMI_CLK:
   description: ''
   fields:
-  - name: VLD
-    bit_offset: 31
-    bit_size: 1
-    description: UTMI Clock Valid
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+      description: UTMI Clock Valid

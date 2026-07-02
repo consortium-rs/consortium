@@ -1,124 +1,124 @@
 block/ENET_PHY_MAC_ADAPTER:
   description: ''
   items:
-  - name: MAC_ADAPTER_LOCK_PHY
-    byte_offset: 512
-    fieldset: ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_PHY
-  - name: MAC_ADAPTER_LOCK_MPLLA
-    byte_offset: 516
-    fieldset: ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_MPLLA
-  - name: MAC_ADAPTER_LOCK_MPLLB
-    byte_offset: 520
-    fieldset: ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_MPLLB
-  - name: MAC_ADAPTER_LOCK_ROM
-    byte_offset: 524
-    fieldset: ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_ROM
-  - name: MAC_ADAPTER_LOCK_RAM
-    byte_offset: 528
-    fieldset: ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_RAM
-  - name: MAC_ADAPTER_ERROR_EVENT
-    byte_offset: 532
+    - name: MAC_ADAPTER_LOCK_PHY
+      byte_offset: 512
+      fieldset: ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_PHY
+    - name: MAC_ADAPTER_LOCK_MPLLA
+      byte_offset: 516
+      fieldset: ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_MPLLA
+    - name: MAC_ADAPTER_LOCK_MPLLB
+      byte_offset: 520
+      fieldset: ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_MPLLB
+    - name: MAC_ADAPTER_LOCK_ROM
+      byte_offset: 524
+      fieldset: ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_ROM
+    - name: MAC_ADAPTER_LOCK_RAM
+      byte_offset: 528
+      fieldset: ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_RAM
+    - name: MAC_ADAPTER_ERROR_EVENT
+      byte_offset: 532
 fieldset/ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_PHY_LOCK:
   description: ''
   fields:
-  - name: OWNER
-    bit_offset: 0
-    bit_size: 4
+    - name: OWNER
+      bit_offset: 0
+      bit_size: 4
 fieldset/ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_PHY:
   description: ''
   fields:
-  - name: LOCK
-    bit_offset: 7
-    bit_size: 1
-  - name: WHOAMI
-    bit_offset: 12
-    bit_size: 4
-    description: Port ID
+    - name: LOCK
+      bit_offset: 7
+      bit_size: 1
+    - name: WHOAMI
+      bit_offset: 12
+      bit_size: 4
+      description: Port ID
 fieldset/ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_MPLLA_LOCK:
   description: ''
   fields:
-  - name: OWNER
-    bit_offset: 0
-    bit_size: 4
+    - name: OWNER
+      bit_offset: 0
+      bit_size: 4
 fieldset/ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_MPLLA:
   description: ''
   fields:
-  - name: LOCK
-    bit_offset: 7
-    bit_size: 1
-  - name: WHOAMI
-    bit_offset: 12
-    bit_size: 4
-    description: Port ID
+    - name: LOCK
+      bit_offset: 7
+      bit_size: 1
+    - name: WHOAMI
+      bit_offset: 12
+      bit_size: 4
+      description: Port ID
 fieldset/ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_MPLLB_LOCK:
   description: ''
   fields:
-  - name: OWNER
-    bit_offset: 0
-    bit_size: 4
+    - name: OWNER
+      bit_offset: 0
+      bit_size: 4
 fieldset/ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_MPLLB:
   description: ''
   fields:
-  - name: LOCK
-    bit_offset: 7
-    bit_size: 1
-  - name: WHOAMI
-    bit_offset: 12
-    bit_size: 4
-    description: Port ID
+    - name: LOCK
+      bit_offset: 7
+      bit_size: 1
+    - name: WHOAMI
+      bit_offset: 12
+      bit_size: 4
+      description: Port ID
 fieldset/ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_ROM_LOCK:
   description: ''
   fields:
-  - name: OWNER
-    bit_offset: 0
-    bit_size: 4
+    - name: OWNER
+      bit_offset: 0
+      bit_size: 4
 fieldset/ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_ROM:
   description: ''
   fields:
-  - name: LOCK
-    bit_offset: 7
-    bit_size: 1
-  - name: WHOAMI
-    bit_offset: 12
-    bit_size: 4
-    description: Port ID
+    - name: LOCK
+      bit_offset: 7
+      bit_size: 1
+    - name: WHOAMI
+      bit_offset: 12
+      bit_size: 4
+      description: Port ID
 fieldset/ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_RAM_LOCK:
   description: ''
   fields:
-  - name: OWNER
-    bit_offset: 0
-    bit_size: 4
+    - name: OWNER
+      bit_offset: 0
+      bit_size: 4
 fieldset/ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_LOCK_RAM:
   description: ''
   fields:
-  - name: LOCK
-    bit_offset: 7
-    bit_size: 1
-  - name: WHOAMI
-    bit_offset: 12
-    bit_size: 4
-    description: Port ID
+    - name: LOCK
+      bit_offset: 7
+      bit_size: 1
+    - name: WHOAMI
+      bit_offset: 12
+      bit_size: 4
+      description: Port ID
 fieldset/ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_ERROR_EVENT_SGMII_RX_FIFO:
   description: ''
   fields:
-  - name: OVF
-    bit_offset: 0
-    bit_size: 1
+    - name: OVF
+      bit_offset: 0
+      bit_size: 1
 fieldset/ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_ERROR_EVENT_SGMII_TX_FIFO:
   description: ''
   fields:
-  - name: UDF
-    bit_offset: 4
-    bit_size: 1
+    - name: UDF
+      bit_offset: 4
+      bit_size: 1
 fieldset/ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_ERROR_EVENT_XGMII_RX_FIFO:
   description: ''
   fields:
-  - name: OVF
-    bit_offset: 8
-    bit_size: 1
+    - name: OVF
+      bit_offset: 8
+      bit_size: 1
 fieldset/ENET_PHY_MAC_ADAPTER_MAC_ADAPTER_ERROR_EVENT_XGMII_TX_FIFO:
   description: ''
   fields:
-  - name: UDF
-    bit_offset: 12
-    bit_size: 1
+    - name: UDF
+      bit_offset: 12
+      bit_size: 1

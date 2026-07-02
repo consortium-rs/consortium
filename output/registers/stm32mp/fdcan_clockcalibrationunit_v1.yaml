@@ -1,21 +1,21 @@
 block/FDCAN_ClockCalibrationUnit:
   description: ''
   items:
-  - name: CREL
-    byte_offset: 0
-    description: Clock Calibration Unit Core Release register
-  - name: CCFG
-    byte_offset: 4
-    description: Calibration Configuration register
-  - name: CSTAT
-    byte_offset: 8
-    description: Calibration Status register
-  - name: CWD
-    byte_offset: 12
-    description: Calibration Watchdog register
-  - name: IR
-    byte_offset: 16
-    description: CCU Interrupt register
-  - name: IE
-    byte_offset: 20
-    description: CCU Interrupt Enable register
+    - name: CREL
+      byte_offset: 0
+      description: Clock Calibration Unit Core Release register
+    - name: CCFG
+      byte_offset: 4
+      description: Calibration Configuration register
+    - name: CSTAT
+      byte_offset: 8
+      description: Calibration Status register
+    - name: CWD
+      byte_offset: 12
+      description: Calibration Watchdog register
+    - name: IR
+      byte_offset: 16
+      description: CCU Interrupt register
+    - name: IE
+      byte_offset: 20
+      description: CCU Interrupt Enable register

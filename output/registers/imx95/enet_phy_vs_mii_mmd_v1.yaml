@@ -1,165 +1,165 @@
 block/ENET_PHY_VS_MII_MMD:
   description: ''
   items:
-  - name: SR_MII_CTRL
-    byte_offset: 0
-    fieldset: ENET_PHY_VS_MII_MMD_SR_MII_CTRL
-  - name: VR_MII_DIG_CTRL1
-    byte_offset: 65536
-    fieldset: ENET_PHY_VS_MII_MMD_VR_MII_DIG_CTRL1
-  - name: VR_MII_AN_INTR_STS
-    byte_offset: 65540
-  - name: VR_MII_LINK_TIMER_CTRL
-    byte_offset: 65556
+    - name: SR_MII_CTRL
+      byte_offset: 0
+      fieldset: ENET_PHY_VS_MII_MMD_SR_MII_CTRL
+    - name: VR_MII_DIG_CTRL1
+      byte_offset: 65536
+      fieldset: ENET_PHY_VS_MII_MMD_VR_MII_DIG_CTRL1
+    - name: VR_MII_AN_INTR_STS
+      byte_offset: 65540
+    - name: VR_MII_LINK_TIMER_CTRL
+      byte_offset: 65556
 fieldset/ENET_PHY_VS_MII_MMD_SR_MII_CTRL:
   description: ''
   fields:
-  - name: SS5
-    bit_offset: 5
-    bit_size: 1
-    description: Speed Selection
-  - name: SS6
-    bit_offset: 6
-    bit_size: 1
-    description: Speed Selection
-  - name: LPM
-    bit_offset: 11
-    bit_size: 1
-  - name: SS13
-    bit_offset: 13
-    bit_size: 1
-    description: Speed Selection (LSB)
-  - name: LBE
-    bit_offset: 14
-    bit_size: 1
-  - name: RST
-    bit_offset: 15
-    bit_size: 1
-    description: Soft Reset (RW, SC Type)
+    - name: SS5
+      bit_offset: 5
+      bit_size: 1
+      description: Speed Selection
+    - name: SS6
+      bit_offset: 6
+      bit_size: 1
+      description: Speed Selection
+    - name: LPM
+      bit_offset: 11
+      bit_size: 1
+    - name: SS13
+      bit_offset: 13
+      bit_size: 1
+      description: Speed Selection (LSB)
+    - name: LBE
+      bit_offset: 14
+      bit_size: 1
+    - name: RST
+      bit_offset: 15
+      bit_size: 1
+      description: Soft Reset (RW, SC Type)
 fieldset/ENET_PHY_VS_MII_MMD_SR_MII_CTRL_DUPLEX:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 8
-    bit_size: 1
-    description: Speed Selection
+    - name: MODE
+      bit_offset: 8
+      bit_size: 1
+      description: Speed Selection
 fieldset/ENET_PHY_VS_MII_MMD_SR_MII_CTRL_RESTART:
   description: ''
   fields:
-  - name: AN
-    bit_offset: 9
-    bit_size: 1
+    - name: AN
+      bit_offset: 9
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_SR_MII_CTRL_AN:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 12
-    bit_size: 1
+    - name: ENABLE
+      bit_offset: 12
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_DIG_CTRL1_BYP:
   description: ''
   fields:
-  - name: PWRUP
-    bit_offset: 1
-    bit_size: 1
+    - name: PWRUP
+      bit_offset: 1
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_DIG_CTRL1_CL37_TMR_OVR:
   description: ''
   fields:
-  - name: RIDE
-    bit_offset: 3
-    bit_size: 1
+    - name: RIDE
+      bit_offset: 3
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_DIG_CTRL1_EN:
   description: ''
   fields:
-  - name: 100M
-    bit_offset: 5
-    bit_size: 1
-  - name: VSMMD1
-    bit_offset: 13
-    bit_size: 1
+    - name: 100M
+      bit_offset: 5
+      bit_size: 1
+    - name: VSMMD1
+      bit_offset: 13
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_DIG_CTRL1_PRE:
   description: ''
   fields:
-  - name: EMP
-    bit_offset: 6
-    bit_size: 1
+    - name: EMP
+      bit_offset: 6
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_DIG_CTRL1_MAC_AUTO:
   description: ''
   fields:
-  - name: SW
-    bit_offset: 9
-    bit_size: 1
+    - name: SW
+      bit_offset: 9
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_DIG_CTRL1:
   description: ''
   fields:
-  - name: PWRSV
-    bit_offset: 11
-    bit_size: 1
-  - name: R2TLBE
-    bit_offset: 14
-    bit_size: 1
+    - name: PWRSV
+      bit_offset: 11
+      bit_size: 1
+    - name: R2TLBE
+      bit_offset: 14
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_DIG_CTRL1_VR:
   description: ''
   fields:
-  - name: RST
-    bit_offset: 15
-    bit_size: 1
+    - name: RST
+      bit_offset: 15
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_AN_CTRL_MII_AN_INTR:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_AN_CTRL_PCS:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 1
-    bit_size: 2
+    - name: MODE
+      bit_offset: 1
+      bit_size: 2
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_AN_CTRL_TX:
   description: ''
   fields:
-  - name: CONFIG
-    bit_offset: 3
-    bit_size: 1
+    - name: CONFIG
+      bit_offset: 3
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_AN_CTRL_SGMII_LINK:
   description: ''
   fields:
-  - name: STS
-    bit_offset: 4
-    bit_size: 1
+    - name: STS
+      bit_offset: 4
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_AN_CTRL_MII:
   description: ''
   fields:
-  - name: CTRL
-    bit_offset: 8
-    bit_size: 1
+    - name: CTRL
+      bit_offset: 8
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_AN_CTRL_IND_TX:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 9
-    bit_size: 1
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_AN_INTR_STS_CL37_ANCMPLT:
   description: ''
   fields:
-  - name: INTR
-    bit_offset: 0
-    bit_size: 1
+    - name: INTR
+      bit_offset: 0
+      bit_size: 1
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_AN_INTR_STS_CL37_ANSGM:
   description: ''
   fields:
-  - name: STS
-    bit_offset: 1
-    bit_size: 4
+    - name: STS
+      bit_offset: 1
+      bit_size: 4
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_AN_INTR_STS_USXG_AN:
   description: ''
   fields:
-  - name: STS
-    bit_offset: 8
-    bit_size: 7
+    - name: STS
+      bit_offset: 8
+      bit_size: 7
 fieldset/ENET_PHY_VS_MII_MMD_VR_MII_LINK_TIMER_CTRL_CL37_LINK:
   description: ''
   fields:
-  - name: TIME
-    bit_offset: 0
-    bit_size: 16
+    - name: TIME
+      bit_offset: 0
+      bit_size: 16

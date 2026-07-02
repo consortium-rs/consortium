@@ -1,9 +1,9 @@
 block/RISC_Comp:
   description: ''
   items:
-  - name: CIDCFGR
-    byte_offset: 0
-    description: RISC CID configuration register for peripheral x
-  - name: SEMCR
-    byte_offset: 4
-    description: RISC Semaphore control register for peripheral x
+    - name: CIDCFGR
+      byte_offset: 0
+      description: RISC CID configuration register for peripheral x
+    - name: SEMCR
+      byte_offset: 4
+      description: RISC Semaphore control register for peripheral x

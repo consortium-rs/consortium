@@ -1,36 +1,36 @@
 block/SERC:
   description: ''
   items:
-  - name: IER
-    byte_offset: 0
-    array:
-      len: 6
-      stride: 4
-    description: SERC Interrupt Enable registers
-  - name: ISR
-    byte_offset: 64
-    array:
-      len: 6
-      stride: 4
-    description: SERC Interrupt Status registers
-  - name: ICR
-    byte_offset: 128
-    array:
-      len: 6
-      stride: 4
-    description: SERC Interrupt Clear registers
-  - name: ENABLE
-    byte_offset: 256
-    description: SERF Enable register
-  - name: HWCFGR
-    byte_offset: 1008
-    description: SERF HardWare Configuration register
-  - name: VERR
-    byte_offset: 1012
-    description: SERF Version register
-  - name: IPIDR
-    byte_offset: 1016
-    description: SERF IP Identification register
-  - name: SIDR
-    byte_offset: 1020
-    description: SERF Size Identification register
+    - name: IER
+      byte_offset: 0
+      array:
+        len: 6
+        stride: 4
+      description: SERC Interrupt Enable registers
+    - name: ISR
+      byte_offset: 64
+      array:
+        len: 6
+        stride: 4
+      description: SERC Interrupt Status registers
+    - name: ICR
+      byte_offset: 128
+      array:
+        len: 6
+        stride: 4
+      description: SERC Interrupt Clear registers
+    - name: ENABLE
+      byte_offset: 256
+      description: SERF Enable register
+    - name: HWCFGR
+      byte_offset: 1008
+      description: SERF HardWare Configuration register
+    - name: VERR
+      byte_offset: 1012
+      description: SERF Version register
+    - name: IPIDR
+      byte_offset: 1016
+      description: SERF IP Identification register
+    - name: SIDR
+      byte_offset: 1020
+      description: SERF Size Identification register

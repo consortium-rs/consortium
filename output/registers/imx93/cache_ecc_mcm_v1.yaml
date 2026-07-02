@@ -1,458 +1,458 @@
 block/CACHE_ECC_MCM:
   description: ''
   items:
-  - name: CACHE_ECCR
-    byte_offset: 0
-  - name: INT_STATUS
-    byte_offset: 32
-  - name: INT_STAT_EN
-    byte_offset: 36
-  - name: INT_SIG_EN
-    byte_offset: 40
-  - name: CODE_CACHE_ECC_SINGLE_ERROR_INFO
-    byte_offset: 92
-  - name: CODE_CACHE_ECC_SINGLE_ERROR_ADDR
-    byte_offset: 96
-  - name: CODE_CACHE_ECC_MULTI_ERROR_INFO
-    byte_offset: 104
-  - name: SYSTEM_CACHE_ECC_SINGLE_ERROR_INFO
-    byte_offset: 116
-  - name: SYSTEM_CACHE_ECC_SINGLE_ERROR_ADDR
-    byte_offset: 120
-  - name: SYSTEM_CACHE_ECC_MULTI_ERROR_INFO
-    byte_offset: 128
-  - name: SYSTEM_CACHE_ECC_MULTI_ERROR_DATA
-    byte_offset: 132
-  - name: CODE_CACHE_TAG0_ECC_ERROR_INJEC
-    byte_offset: 140
-  - name: CODE_CACHE_TAG1_ECC_ERROR_INJEC
-    byte_offset: 144
-  - name: CODE_CACHE_DATA0_ECC_ERROR_INJEC
-    byte_offset: 148
-  - name: CODE_CACHE_DATA1_ECC_ERROR_INJEC
-    byte_offset: 152
-  - name: SYTEM_CACHE_TAG0_ECC_ERROR_INJEC
-    byte_offset: 156
-  - name: SYSTEM_CACHE_TAG1_ECC_ERROR_INJEC
-    byte_offset: 160
-  - name: SYSTEM_CACHE_DATA0_ECC_ERROR_INJEC
-    byte_offset: 164
-  - name: STSTEM_CACHE_DATA1_ECC_ERROR_INJEC
-    byte_offset: 168
+    - name: CACHE_ECCR
+      byte_offset: 0
+    - name: INT_STATUS
+      byte_offset: 32
+    - name: INT_STAT_EN
+      byte_offset: 36
+    - name: INT_SIG_EN
+      byte_offset: 40
+    - name: CODE_CACHE_ECC_SINGLE_ERROR_INFO
+      byte_offset: 92
+    - name: CODE_CACHE_ECC_SINGLE_ERROR_ADDR
+      byte_offset: 96
+    - name: CODE_CACHE_ECC_MULTI_ERROR_INFO
+      byte_offset: 104
+    - name: SYSTEM_CACHE_ECC_SINGLE_ERROR_INFO
+      byte_offset: 116
+    - name: SYSTEM_CACHE_ECC_SINGLE_ERROR_ADDR
+      byte_offset: 120
+    - name: SYSTEM_CACHE_ECC_MULTI_ERROR_INFO
+      byte_offset: 128
+    - name: SYSTEM_CACHE_ECC_MULTI_ERROR_DATA
+      byte_offset: 132
+    - name: CODE_CACHE_TAG0_ECC_ERROR_INJEC
+      byte_offset: 140
+    - name: CODE_CACHE_TAG1_ECC_ERROR_INJEC
+      byte_offset: 144
+    - name: CODE_CACHE_DATA0_ECC_ERROR_INJEC
+      byte_offset: 148
+    - name: CODE_CACHE_DATA1_ECC_ERROR_INJEC
+      byte_offset: 152
+    - name: SYTEM_CACHE_TAG0_ECC_ERROR_INJEC
+      byte_offset: 156
+    - name: SYSTEM_CACHE_TAG1_ECC_ERROR_INJEC
+      byte_offset: 160
+    - name: SYSTEM_CACHE_DATA0_ECC_ERROR_INJEC
+      byte_offset: 164
+    - name: STSTEM_CACHE_DATA1_ECC_ERROR_INJEC
+      byte_offset: 168
 fieldset/CACHE_ECC_MCM_CACHE_ECCR_WECC:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 0
-    bit_size: 1
+    - name: DIS
+      bit_offset: 0
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_CACHE_ECCR_RECC:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 1
-    bit_size: 1
+    - name: DIS
+      bit_offset: 1
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STATUS_CODE_CACHE_ECC_ERRM:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 8
-    bit_size: 1
+    - name: INT
+      bit_offset: 8
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STATUS_CODE_CACHE_ECC_ERRS:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 9
-    bit_size: 1
+    - name: INT
+      bit_offset: 9
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STATUS_CODE_CACHE_ECC_ERRM_OVER:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 10
-    bit_size: 1
+    - name: INT
+      bit_offset: 10
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STATUS_CODE_CACHE_ECC_ERRS_OVER:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 11
-    bit_size: 1
+    - name: INT
+      bit_offset: 11
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STATUS_SYSTEM_CACHE_ECC_ERRM:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 12
-    bit_size: 1
+    - name: INT
+      bit_offset: 12
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STATUS_SYSTEM_CACHE_ECC_ERRS:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 13
-    bit_size: 1
+    - name: INT
+      bit_offset: 13
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STATUS_SYSTEM_CACHE_ECC_ERRM_OVER:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 14
-    bit_size: 1
+    - name: INT
+      bit_offset: 14
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STATUS_SYSTEM_CACHE_ECC_ERRS_OVER:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 15
-    bit_size: 1
+    - name: INT
+      bit_offset: 15
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STAT_EN_CODE_CACHE_ERRM_INT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 8
-    bit_size: 1
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STAT_EN_CODE_CACHE_ERRS_INT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 9
-    bit_size: 1
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STAT_EN_CODE_CACHE_ERRM_OVER_INT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 10
-    bit_size: 1
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STAT_EN_CODE_CACHE_ERRS_OVER_INT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 11
-    bit_size: 1
+    - name: EN
+      bit_offset: 11
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STAT_EN_SYSTEM_CACHE_ECC_ERRM_INT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 12
-    bit_size: 1
+    - name: EN
+      bit_offset: 12
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STAT_EN_SYSTEM_CACHE_ECC_ERRS_INT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 13
-    bit_size: 1
+    - name: EN
+      bit_offset: 13
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STAT_EN_SYSTEM_CACHE_ECC_ERRM_OVER_INT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 14
-    bit_size: 1
+    - name: EN
+      bit_offset: 14
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_STAT_EN_SYSTEM_CACHE_ECC_ERRS_OVER_INT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 15
-    bit_size: 1
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_SIG_EN_CODE_CACHE_ERRM_INT_SIG:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 8
-    bit_size: 1
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_SIG_EN_CODE_CACHE_ERRS_INT_SIG:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 9
-    bit_size: 1
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_SIG_EN_CODE_CACHE_ERRM_OVER_INT_SIG:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 10
-    bit_size: 1
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_SIG_EN_CODE_CACHE_ERRS_OVER_INT_SIG:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 11
-    bit_size: 1
+    - name: EN
+      bit_offset: 11
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_SIG_EN_SYSTEM_CACHE_ERRM_INT_SIG:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 12
-    bit_size: 1
+    - name: EN
+      bit_offset: 12
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_SIG_EN_SYSTEM_CACHE_ERRS_INT_SIG:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 13
-    bit_size: 1
+    - name: EN
+      bit_offset: 13
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_SIG_EN_SYSTEM_CACHE_ERRM_OVER_INT_SIG:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 14
-    bit_size: 1
+    - name: EN
+      bit_offset: 14
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_INT_SIG_EN_SYSTEM_CACHE_ERRS_OVER_INT_SIG:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 15
-    bit_size: 1
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_CODE_CACHE_ECC_SINGLE_ERROR_INFO_CODE_CACHE_ECCS:
   description: ''
   fields:
-  - name: TAG
-    bit_offset: 0
-    bit_size: 1
-  - name: CMD
-    bit_offset: 1
-    bit_size: 1
-  - name: EFMST
-    bit_offset: 4
-    bit_size: 4
-  - name: EFPRT
-    bit_offset: 8
-    bit_size: 6
-  - name: EFSYN
-    bit_offset: 16
-    bit_size: 7
+    - name: TAG
+      bit_offset: 0
+      bit_size: 1
+    - name: CMD
+      bit_offset: 1
+      bit_size: 1
+    - name: EFMST
+      bit_offset: 4
+      bit_size: 4
+    - name: EFPRT
+      bit_offset: 8
+      bit_size: 6
+    - name: EFSYN
+      bit_offset: 16
+      bit_size: 7
 fieldset/CACHE_ECC_MCM_CODE_CACHE_ECC_SINGLE_ERROR_ADDR_CODE_CACHE_ECCS_ERRED:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 0
-    bit_size: 32
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
 fieldset/CACHE_ECC_MCM_CODE_CACHE_ECC_MULTI_ERROR_INFO_CODE_CACHE_ECCM:
   description: ''
   fields:
-  - name: TAG
-    bit_offset: 0
-    bit_size: 1
-  - name: CMD
-    bit_offset: 1
-    bit_size: 1
-  - name: EFMST
-    bit_offset: 4
-    bit_size: 4
-  - name: EFPRT
-    bit_offset: 8
-    bit_size: 6
-  - name: EFSYN
-    bit_offset: 16
-    bit_size: 7
+    - name: TAG
+      bit_offset: 0
+      bit_size: 1
+    - name: CMD
+      bit_offset: 1
+      bit_size: 1
+    - name: EFMST
+      bit_offset: 4
+      bit_size: 4
+    - name: EFPRT
+      bit_offset: 8
+      bit_size: 6
+    - name: EFSYN
+      bit_offset: 16
+      bit_size: 7
 fieldset/CACHE_ECC_MCM_SYSTEM_CACHE_ECC_SINGLE_ERROR_INFO_SYSTEM_CACHE_ECCS:
   description: ''
   fields:
-  - name: TAG
-    bit_offset: 0
-    bit_size: 1
-  - name: CMD
-    bit_offset: 1
-    bit_size: 1
-  - name: EFMST
-    bit_offset: 4
-    bit_size: 4
-  - name: EFPRT
-    bit_offset: 8
-    bit_size: 6
-  - name: EFSYN
-    bit_offset: 16
-    bit_size: 7
+    - name: TAG
+      bit_offset: 0
+      bit_size: 1
+    - name: CMD
+      bit_offset: 1
+      bit_size: 1
+    - name: EFMST
+      bit_offset: 4
+      bit_size: 4
+    - name: EFPRT
+      bit_offset: 8
+      bit_size: 6
+    - name: EFSYN
+      bit_offset: 16
+      bit_size: 7
 fieldset/CACHE_ECC_MCM_SYSTEM_CACHE_ECC_SINGLE_ERROR_ADDR_SYSTEM_CACHE_ECCS_ERRED:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 0
-    bit_size: 32
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
 fieldset/CACHE_ECC_MCM_SYSTEM_CACHE_ECC_MULTI_ERROR_INFO_SYSTEM_CACHE_ECCM:
   description: ''
   fields:
-  - name: TAG
-    bit_offset: 0
-    bit_size: 1
-  - name: CMD
-    bit_offset: 1
-    bit_size: 1
-  - name: EFMST
-    bit_offset: 4
-    bit_size: 4
-  - name: EFPRT
-    bit_offset: 8
-    bit_size: 6
-  - name: EFSYN
-    bit_offset: 16
-    bit_size: 7
+    - name: TAG
+      bit_offset: 0
+      bit_size: 1
+    - name: CMD
+      bit_offset: 1
+      bit_size: 1
+    - name: EFMST
+      bit_offset: 4
+      bit_size: 4
+    - name: EFPRT
+      bit_offset: 8
+      bit_size: 6
+    - name: EFSYN
+      bit_offset: 16
+      bit_size: 7
 fieldset/CACHE_ECC_MCM_SYSTEM_CACHE_ECC_MULTI_ERROR_DATA_SYSTEM_CACHE_ECCM_ERRED:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
 fieldset/CACHE_ECC_MCM_CODE_CACHE_TAG0_ECC_ERROR_INJEC_CODE_CACHE_TAG0:
   description: ''
   fields:
-  - name: ERR1BIT
-    bit_offset: 0
-    bit_size: 7
-  - name: ERR2BIT
-    bit_offset: 8
-    bit_size: 7
-  - name: FR11BI
-    bit_offset: 16
-    bit_size: 1
-  - name: FR1NCI
-    bit_offset: 17
-    bit_size: 1
-  - name: FRC1BI
-    bit_offset: 18
-    bit_size: 1
-  - name: FRCNCI
-    bit_offset: 19
-    bit_size: 1
+    - name: ERR1BIT
+      bit_offset: 0
+      bit_size: 7
+    - name: ERR2BIT
+      bit_offset: 8
+      bit_size: 7
+    - name: FR11BI
+      bit_offset: 16
+      bit_size: 1
+    - name: FR1NCI
+      bit_offset: 17
+      bit_size: 1
+    - name: FRC1BI
+      bit_offset: 18
+      bit_size: 1
+    - name: FRCNCI
+      bit_offset: 19
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_CODE_CACHE_TAG1_ECC_ERROR_INJEC_CODE_CACHE_TAG1:
   description: ''
   fields:
-  - name: ERR1BIT
-    bit_offset: 0
-    bit_size: 7
-  - name: ERR2BIT
-    bit_offset: 8
-    bit_size: 7
-  - name: FR11BI
-    bit_offset: 16
-    bit_size: 1
-  - name: FR1NCI
-    bit_offset: 17
-    bit_size: 1
-  - name: FRC1BI
-    bit_offset: 18
-    bit_size: 1
-  - name: FRCNCI
-    bit_offset: 19
-    bit_size: 1
+    - name: ERR1BIT
+      bit_offset: 0
+      bit_size: 7
+    - name: ERR2BIT
+      bit_offset: 8
+      bit_size: 7
+    - name: FR11BI
+      bit_offset: 16
+      bit_size: 1
+    - name: FR1NCI
+      bit_offset: 17
+      bit_size: 1
+    - name: FRC1BI
+      bit_offset: 18
+      bit_size: 1
+    - name: FRCNCI
+      bit_offset: 19
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_CODE_CACHE_DATA0_ECC_ERROR_INJEC_CODE_CACHE_DATA0:
   description: ''
   fields:
-  - name: ERR1BIT
-    bit_offset: 0
-    bit_size: 7
-  - name: ERR2BIT
-    bit_offset: 8
-    bit_size: 7
-  - name: FR11BI
-    bit_offset: 16
-    bit_size: 1
-  - name: FR1NCI
-    bit_offset: 17
-    bit_size: 1
-  - name: FRC1BI
-    bit_offset: 18
-    bit_size: 1
-  - name: FRCNCI
-    bit_offset: 19
-    bit_size: 1
+    - name: ERR1BIT
+      bit_offset: 0
+      bit_size: 7
+    - name: ERR2BIT
+      bit_offset: 8
+      bit_size: 7
+    - name: FR11BI
+      bit_offset: 16
+      bit_size: 1
+    - name: FR1NCI
+      bit_offset: 17
+      bit_size: 1
+    - name: FRC1BI
+      bit_offset: 18
+      bit_size: 1
+    - name: FRCNCI
+      bit_offset: 19
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_CODE_CACHE_DATA1_ECC_ERROR_INJEC_CODE_CACHE_DATA1:
   description: ''
   fields:
-  - name: ERR1BIT
-    bit_offset: 0
-    bit_size: 7
-  - name: ERR2BIT
-    bit_offset: 8
-    bit_size: 7
-  - name: FR11BI
-    bit_offset: 16
-    bit_size: 1
-  - name: FR1NCI
-    bit_offset: 17
-    bit_size: 1
-  - name: FRC1BI
-    bit_offset: 18
-    bit_size: 1
-  - name: FRCNCI
-    bit_offset: 19
-    bit_size: 1
+    - name: ERR1BIT
+      bit_offset: 0
+      bit_size: 7
+    - name: ERR2BIT
+      bit_offset: 8
+      bit_size: 7
+    - name: FR11BI
+      bit_offset: 16
+      bit_size: 1
+    - name: FR1NCI
+      bit_offset: 17
+      bit_size: 1
+    - name: FRC1BI
+      bit_offset: 18
+      bit_size: 1
+    - name: FRCNCI
+      bit_offset: 19
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_SYTEM_CACHE_TAG0_ECC_ERROR_INJEC_SYSTEM_CACHE_TAG0:
   description: ''
   fields:
-  - name: ERR1BIT
-    bit_offset: 0
-    bit_size: 7
-  - name: ERR2BIT
-    bit_offset: 8
-    bit_size: 7
-  - name: FR11BI
-    bit_offset: 16
-    bit_size: 1
-  - name: FR1NCI
-    bit_offset: 17
-    bit_size: 1
-  - name: FRC1BI
-    bit_offset: 18
-    bit_size: 1
-  - name: FRCNCI
-    bit_offset: 19
-    bit_size: 1
+    - name: ERR1BIT
+      bit_offset: 0
+      bit_size: 7
+    - name: ERR2BIT
+      bit_offset: 8
+      bit_size: 7
+    - name: FR11BI
+      bit_offset: 16
+      bit_size: 1
+    - name: FR1NCI
+      bit_offset: 17
+      bit_size: 1
+    - name: FRC1BI
+      bit_offset: 18
+      bit_size: 1
+    - name: FRCNCI
+      bit_offset: 19
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_SYSTEM_CACHE_TAG1_ECC_ERROR_INJEC_SYSTEM_CACHE_TAG1:
   description: ''
   fields:
-  - name: ERR1BIT
-    bit_offset: 0
-    bit_size: 7
-  - name: FR11BI
-    bit_offset: 16
-    bit_size: 1
-  - name: FR1NCI
-    bit_offset: 17
-    bit_size: 1
-  - name: FRC1BI
-    bit_offset: 18
-    bit_size: 1
-  - name: FRCNCI
-    bit_offset: 19
-    bit_size: 1
+    - name: ERR1BIT
+      bit_offset: 0
+      bit_size: 7
+    - name: FR11BI
+      bit_offset: 16
+      bit_size: 1
+    - name: FR1NCI
+      bit_offset: 17
+      bit_size: 1
+    - name: FRC1BI
+      bit_offset: 18
+      bit_size: 1
+    - name: FRCNCI
+      bit_offset: 19
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_SYSTEM_CACHE_TAG1_ECC_ERROR_INJEC_SYSTEMCACHE_TAG1:
   description: ''
   fields:
-  - name: ERR2BIT
-    bit_offset: 8
-    bit_size: 7
+    - name: ERR2BIT
+      bit_offset: 8
+      bit_size: 7
 fieldset/CACHE_ECC_MCM_SYSTEM_CACHE_DATA0_ECC_ERROR_INJEC_SYSTEM_CACHE_DATA0:
   description: ''
   fields:
-  - name: ERR1BIT
-    bit_offset: 0
-    bit_size: 7
-  - name: ERR2BIT
-    bit_offset: 8
-    bit_size: 7
-  - name: FR11BI
-    bit_offset: 16
-    bit_size: 1
-  - name: FR1NCI
-    bit_offset: 17
-    bit_size: 1
-  - name: FRC1BI
-    bit_offset: 18
-    bit_size: 1
-  - name: FRCNCI
-    bit_offset: 19
-    bit_size: 1
+    - name: ERR1BIT
+      bit_offset: 0
+      bit_size: 7
+    - name: ERR2BIT
+      bit_offset: 8
+      bit_size: 7
+    - name: FR11BI
+      bit_offset: 16
+      bit_size: 1
+    - name: FR1NCI
+      bit_offset: 17
+      bit_size: 1
+    - name: FRC1BI
+      bit_offset: 18
+      bit_size: 1
+    - name: FRCNCI
+      bit_offset: 19
+      bit_size: 1
 fieldset/CACHE_ECC_MCM_STSTEM_CACHE_DATA1_ECC_ERROR_INJEC_SYSTEM_CACHE_DATA1:
   description: ''
   fields:
-  - name: ERR1BIT
-    bit_offset: 0
-    bit_size: 7
-  - name: ERR2BIT
-    bit_offset: 8
-    bit_size: 7
-  - name: FR11BI
-    bit_offset: 16
-    bit_size: 1
-  - name: FR1NCI
-    bit_offset: 17
-    bit_size: 1
-  - name: FRC1BI
-    bit_offset: 18
-    bit_size: 1
-  - name: FRCNCI
-    bit_offset: 19
-    bit_size: 1
+    - name: ERR1BIT
+      bit_offset: 0
+      bit_size: 7
+    - name: ERR2BIT
+      bit_offset: 8
+      bit_size: 7
+    - name: FR11BI
+      bit_offset: 16
+      bit_size: 1
+    - name: FR1NCI
+      bit_offset: 17
+      bit_size: 1
+    - name: FRC1BI
+      bit_offset: 18
+      bit_size: 1
+    - name: FRCNCI
+      bit_offset: 19
+      bit_size: 1

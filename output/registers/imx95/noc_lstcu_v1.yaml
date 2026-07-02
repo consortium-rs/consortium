@@ -1,87 +1,87 @@
 block/NOC_LSTCU:
   description: ''
   items:
-  - name: ERR_STAT
-    byte_offset: 8
-    fieldset: NOC_LSTCU_ERR_STAT
-  - name: ERR_FM
-    byte_offset: 16
-    fieldset: NOC_LSTCU_ERR_FM
-  - name: MB_RSTAT0
-    byte_offset: 96
-    fieldset: NOC_LSTCU_MB_RSTAT0
-  - name: MBFM0
-    byte_offset: 384
-    fieldset: NOC_LSTCU_MBFM0
-  - name: STAG
-    byte_offset: 608
-  - name: PH1_DUR
-    byte_offset: 624
-    fieldset: NOC_LSTCU_PH1_DUR
-  - name: MBPTR
-    byte_offset: 768
-    array:
-      len: 1
-      stride: 4
-    fieldset: NOC_LSTCU_MBPTR
+    - name: ERR_STAT
+      byte_offset: 8
+      fieldset: NOC_LSTCU_ERR_STAT
+    - name: ERR_FM
+      byte_offset: 16
+      fieldset: NOC_LSTCU_ERR_FM
+    - name: MB_RSTAT0
+      byte_offset: 96
+      fieldset: NOC_LSTCU_MB_RSTAT0
+    - name: MBFM0
+      byte_offset: 384
+      fieldset: NOC_LSTCU_MBFM0
+    - name: STAG
+      byte_offset: 608
+    - name: PH1_DUR
+      byte_offset: 624
+      fieldset: NOC_LSTCU_PH1_DUR
+    - name: MBPTR
+      byte_offset: 768
+      array:
+        len: 1
+        stride: 4
+      fieldset: NOC_LSTCU_MBPTR
 fieldset/NOC_LSTCU_ERR_STAT_INVP:
   description: ''
   fields:
-  - name: MB
-    bit_offset: 1
-    bit_size: 1
+    - name: MB
+      bit_offset: 1
+      bit_size: 1
 fieldset/NOC_LSTCU_ERR_STAT:
   description: ''
   fields:
-  - name: UFSF
-    bit_offset: 16
-    bit_size: 1
-  - name: RFSF
-    bit_offset: 17
-    bit_size: 1
+    - name: UFSF
+      bit_offset: 16
+      bit_size: 1
+    - name: RFSF
+      bit_offset: 17
+      bit_size: 1
 fieldset/NOC_LSTCU_ERR_FM:
   description: ''
   fields:
-  - name: INVPFMMB
-    bit_offset: 1
-    bit_size: 1
+    - name: INVPFMMB
+      bit_offset: 1
+      bit_size: 1
 fieldset/NOC_LSTCU_MB_RSTAT0:
   description: ''
   fields:
-  - name: MBSTAT0
-    bit_offset: 0
-    bit_size: 1
+    - name: MBSTAT0
+      bit_offset: 0
+      bit_size: 1
 fieldset/NOC_LSTCU_MBFM0:
   description: ''
   fields:
-  - name: MBSTATFM0
-    bit_offset: 0
-    bit_size: 1
+    - name: MBSTATFM0
+      bit_offset: 0
+      bit_size: 1
 fieldset/NOC_LSTCU_STAG_MB:
   description: ''
   fields:
-  - name: DELAY
-    bit_offset: 8
-    bit_size: 8
-    description: MBIST Delay
+    - name: DELAY
+      bit_offset: 8
+      bit_size: 8
+      description: MBIST Delay
 fieldset/NOC_LSTCU_PH1_DUR:
   description: ''
   fields:
-  - name: PH1DUR
-    bit_offset: 0
-    bit_size: 10
-    description: Phase 1 Duration
+    - name: PH1DUR
+      bit_offset: 0
+      bit_size: 10
+      description: Phase 1 Duration
 fieldset/NOC_LSTCU_MBPTR:
   description: ''
   fields:
-  - name: MBPTR
-    bit_offset: 0
-    bit_size: 8
-    description: MBIST Pointer
-  - name: MBCSM
-    bit_offset: 8
-    bit_size: 1
-    description: MBIST Pointer
-  - name: MBEOL
-    bit_offset: 31
-    bit_size: 1
+    - name: MBPTR
+      bit_offset: 0
+      bit_size: 8
+      description: MBIST Pointer
+    - name: MBCSM
+      bit_offset: 8
+      bit_size: 1
+      description: MBIST Pointer
+    - name: MBEOL
+      bit_offset: 31
+      bit_size: 1

@@ -1,396 +1,396 @@
 block/LPSPI:
   description: ''
   items:
-  - name: VERID
-    byte_offset: 0
-    fieldset: LPSPI_VERID
-  - name: PARAM
-    byte_offset: 4
-    fieldset: LPSPI_PARAM
-  - name: CR
-    byte_offset: 16
-    fieldset: LPSPI_CR
-  - name: SR
-    byte_offset: 20
-    fieldset: LPSPI_SR
-  - name: IER
-    byte_offset: 24
-    fieldset: LPSPI_IER
-  - name: DER
-    byte_offset: 28
-    fieldset: LPSPI_DER
-  - name: CFGR0
-    byte_offset: 32
-    fieldset: LPSPI_CFGR0
-  - name: CFGR1
-    byte_offset: 36
-    fieldset: LPSPI_CFGR1
-  - name: DMR0
-    byte_offset: 48
-    fieldset: LPSPI_DMR0
-  - name: DMR1
-    byte_offset: 52
-    fieldset: LPSPI_DMR1
-  - name: CCR
-    byte_offset: 64
-    fieldset: LPSPI_CCR
-  - name: CCR1
-    byte_offset: 68
-    fieldset: LPSPI_CCR1
-  - name: FCR
-    byte_offset: 88
-    fieldset: LPSPI_FCR
-  - name: FSR
-    byte_offset: 92
-    fieldset: LPSPI_FSR
-  - name: TCR
-    byte_offset: 96
-    fieldset: LPSPI_TCR
-  - name: TDR
-    byte_offset: 100
-    fieldset: LPSPI_TDR
-  - name: RSR
-    byte_offset: 112
-    fieldset: LPSPI_RSR
-  - name: RDR
-    byte_offset: 116
-    fieldset: LPSPI_RDR
-  - name: RDROR
-    byte_offset: 120
-    fieldset: LPSPI_RDROR
-  - name: TCBR
-    byte_offset: 1020
-    fieldset: LPSPI_TCBR
-  - name: TDBR
-    byte_offset: 1024
-    array:
-      len: 128
-      stride: 4
-    fieldset: LPSPI_TDBR
-  - name: RDBR
-    byte_offset: 1536
-    array:
-      len: 128
-      stride: 4
-    fieldset: LPSPI_RDBR
+    - name: VERID
+      byte_offset: 0
+      fieldset: LPSPI_VERID
+    - name: PARAM
+      byte_offset: 4
+      fieldset: LPSPI_PARAM
+    - name: CR
+      byte_offset: 16
+      fieldset: LPSPI_CR
+    - name: SR
+      byte_offset: 20
+      fieldset: LPSPI_SR
+    - name: IER
+      byte_offset: 24
+      fieldset: LPSPI_IER
+    - name: DER
+      byte_offset: 28
+      fieldset: LPSPI_DER
+    - name: CFGR0
+      byte_offset: 32
+      fieldset: LPSPI_CFGR0
+    - name: CFGR1
+      byte_offset: 36
+      fieldset: LPSPI_CFGR1
+    - name: DMR0
+      byte_offset: 48
+      fieldset: LPSPI_DMR0
+    - name: DMR1
+      byte_offset: 52
+      fieldset: LPSPI_DMR1
+    - name: CCR
+      byte_offset: 64
+      fieldset: LPSPI_CCR
+    - name: CCR1
+      byte_offset: 68
+      fieldset: LPSPI_CCR1
+    - name: FCR
+      byte_offset: 88
+      fieldset: LPSPI_FCR
+    - name: FSR
+      byte_offset: 92
+      fieldset: LPSPI_FSR
+    - name: TCR
+      byte_offset: 96
+      fieldset: LPSPI_TCR
+    - name: TDR
+      byte_offset: 100
+      fieldset: LPSPI_TDR
+    - name: RSR
+      byte_offset: 112
+      fieldset: LPSPI_RSR
+    - name: RDR
+      byte_offset: 116
+      fieldset: LPSPI_RDR
+    - name: RDROR
+      byte_offset: 120
+      fieldset: LPSPI_RDROR
+    - name: TCBR
+      byte_offset: 1020
+      fieldset: LPSPI_TCBR
+    - name: TDBR
+      byte_offset: 1024
+      array:
+        len: 128
+        stride: 4
+      fieldset: LPSPI_TDBR
+    - name: RDBR
+      byte_offset: 1536
+      array:
+        len: 128
+        stride: 4
+      fieldset: LPSPI_RDBR
 fieldset/LPSPI_VERID:
   description: ''
   fields:
-  - name: FEATURE
-    bit_offset: 0
-    bit_size: 16
-  - name: MINOR
-    bit_offset: 16
-    bit_size: 8
-    description: Minor Version Number
-  - name: MAJOR
-    bit_offset: 24
-    bit_size: 8
-    description: Minor Version Number
+    - name: FEATURE
+      bit_offset: 0
+      bit_size: 16
+    - name: MINOR
+      bit_offset: 16
+      bit_size: 8
+      description: Minor Version Number
+    - name: MAJOR
+      bit_offset: 24
+      bit_size: 8
+      description: Minor Version Number
 fieldset/LPSPI_PARAM:
   description: ''
   fields:
-  - name: TXFIFO
-    bit_offset: 0
-    bit_size: 8
-    description: Transmit FIFO Size
-  - name: RXFIFO
-    bit_offset: 8
-    bit_size: 8
-    description: Transmit FIFO Size
-  - name: PCSNUM
-    bit_offset: 16
-    bit_size: 8
-    description: Receive FIFO Size
+    - name: TXFIFO
+      bit_offset: 0
+      bit_size: 8
+      description: Transmit FIFO Size
+    - name: RXFIFO
+      bit_offset: 8
+      bit_size: 8
+      description: Transmit FIFO Size
+    - name: PCSNUM
+      bit_offset: 16
+      bit_size: 8
+      description: Receive FIFO Size
 fieldset/LPSPI_CR:
   description: ''
   fields:
-  - name: MEN
-    bit_offset: 0
-    bit_size: 1
-  - name: RST
-    bit_offset: 1
-    bit_size: 1
-  - name: DOZEN
-    bit_offset: 2
-    bit_size: 1
-  - name: DBGEN
-    bit_offset: 3
-    bit_size: 1
-  - name: RTF
-    bit_offset: 8
-    bit_size: 1
-  - name: RRF
-    bit_offset: 9
-    bit_size: 1
+    - name: MEN
+      bit_offset: 0
+      bit_size: 1
+    - name: RST
+      bit_offset: 1
+      bit_size: 1
+    - name: DOZEN
+      bit_offset: 2
+      bit_size: 1
+    - name: DBGEN
+      bit_offset: 3
+      bit_size: 1
+    - name: RTF
+      bit_offset: 8
+      bit_size: 1
+    - name: RRF
+      bit_offset: 9
+      bit_size: 1
 fieldset/LPSPI_SR:
   description: ''
   fields:
-  - name: TDF
-    bit_offset: 0
-    bit_size: 1
-  - name: RDF
-    bit_offset: 1
-    bit_size: 1
-  - name: WCF
-    bit_offset: 8
-    bit_size: 1
-  - name: FCF
-    bit_offset: 9
-    bit_size: 1
-  - name: TCF
-    bit_offset: 10
-    bit_size: 1
-  - name: TEF
-    bit_offset: 11
-    bit_size: 1
-  - name: REF
-    bit_offset: 12
-    bit_size: 1
-  - name: DMF
-    bit_offset: 13
-    bit_size: 1
-  - name: MBF
-    bit_offset: 24
-    bit_size: 1
+    - name: TDF
+      bit_offset: 0
+      bit_size: 1
+    - name: RDF
+      bit_offset: 1
+      bit_size: 1
+    - name: WCF
+      bit_offset: 8
+      bit_size: 1
+    - name: FCF
+      bit_offset: 9
+      bit_size: 1
+    - name: TCF
+      bit_offset: 10
+      bit_size: 1
+    - name: TEF
+      bit_offset: 11
+      bit_size: 1
+    - name: REF
+      bit_offset: 12
+      bit_size: 1
+    - name: DMF
+      bit_offset: 13
+      bit_size: 1
+    - name: MBF
+      bit_offset: 24
+      bit_size: 1
 fieldset/LPSPI_IER:
   description: ''
   fields:
-  - name: TDIE
-    bit_offset: 0
-    bit_size: 1
-  - name: RDIE
-    bit_offset: 1
-    bit_size: 1
-  - name: WCIE
-    bit_offset: 8
-    bit_size: 1
-  - name: FCIE
-    bit_offset: 9
-    bit_size: 1
-  - name: TCIE
-    bit_offset: 10
-    bit_size: 1
-  - name: TEIE
-    bit_offset: 11
-    bit_size: 1
-  - name: REIE
-    bit_offset: 12
-    bit_size: 1
-  - name: DMIE
-    bit_offset: 13
-    bit_size: 1
+    - name: TDIE
+      bit_offset: 0
+      bit_size: 1
+    - name: RDIE
+      bit_offset: 1
+      bit_size: 1
+    - name: WCIE
+      bit_offset: 8
+      bit_size: 1
+    - name: FCIE
+      bit_offset: 9
+      bit_size: 1
+    - name: TCIE
+      bit_offset: 10
+      bit_size: 1
+    - name: TEIE
+      bit_offset: 11
+      bit_size: 1
+    - name: REIE
+      bit_offset: 12
+      bit_size: 1
+    - name: DMIE
+      bit_offset: 13
+      bit_size: 1
 fieldset/LPSPI_DER:
   description: ''
   fields:
-  - name: TDDE
-    bit_offset: 0
-    bit_size: 1
-  - name: RDDE
-    bit_offset: 1
-    bit_size: 1
-  - name: FCDE
-    bit_offset: 9
-    bit_size: 1
+    - name: TDDE
+      bit_offset: 0
+      bit_size: 1
+    - name: RDDE
+      bit_offset: 1
+      bit_size: 1
+    - name: FCDE
+      bit_offset: 9
+      bit_size: 1
 fieldset/LPSPI_CFGR0:
   description: ''
   fields:
-  - name: CIRFIFO
-    bit_offset: 8
-    bit_size: 1
-  - name: RDMO
-    bit_offset: 9
-    bit_size: 1
+    - name: CIRFIFO
+      bit_offset: 8
+      bit_size: 1
+    - name: RDMO
+      bit_offset: 9
+      bit_size: 1
 fieldset/LPSPI_CFGR1:
   description: ''
   fields:
-  - name: MASTER
-    bit_offset: 0
-    bit_size: 1
-  - name: SAMPLE
-    bit_offset: 1
-    bit_size: 1
-  - name: AUTOPCS
-    bit_offset: 2
-    bit_size: 1
-  - name: NOSTALL
-    bit_offset: 3
-    bit_size: 1
-  - name: PARTIAL
-    bit_offset: 4
-    bit_size: 1
-  - name: PCSPOL
-    bit_offset: 8
-    bit_size: 3
-  - name: MATCFG
-    bit_offset: 16
-    bit_size: 3
-  - name: PINCFG
-    bit_offset: 24
-    bit_size: 2
-  - name: OUTCFG
-    bit_offset: 26
-    bit_size: 1
+    - name: MASTER
+      bit_offset: 0
+      bit_size: 1
+    - name: SAMPLE
+      bit_offset: 1
+      bit_size: 1
+    - name: AUTOPCS
+      bit_offset: 2
+      bit_size: 1
+    - name: NOSTALL
+      bit_offset: 3
+      bit_size: 1
+    - name: PARTIAL
+      bit_offset: 4
+      bit_size: 1
+    - name: PCSPOL
+      bit_offset: 8
+      bit_size: 3
+    - name: MATCFG
+      bit_offset: 16
+      bit_size: 3
+    - name: PINCFG
+      bit_offset: 24
+      bit_size: 2
+    - name: OUTCFG
+      bit_offset: 26
+      bit_size: 1
 fieldset/LPSPI_DMR0:
   description: ''
   fields:
-  - name: MATCH0
-    bit_offset: 0
-    bit_size: 32
-    description: Match 0 Value
+    - name: MATCH0
+      bit_offset: 0
+      bit_size: 32
+      description: Match 0 Value
 fieldset/LPSPI_DMR1:
   description: ''
   fields:
-  - name: MATCH1
-    bit_offset: 0
-    bit_size: 32
-    description: Match 1 Value
+    - name: MATCH1
+      bit_offset: 0
+      bit_size: 32
+      description: Match 1 Value
 fieldset/LPSPI_CCR:
   description: ''
   fields:
-  - name: SCKDIV
-    bit_offset: 0
-    bit_size: 8
-    description: SCK Divider
-  - name: DBT
-    bit_offset: 8
-    bit_size: 8
-    description: SCK Divider
-  - name: PCSSCK
-    bit_offset: 16
-    bit_size: 8
-    description: Delay Between Transfers
-  - name: SCKPCS
-    bit_offset: 24
-    bit_size: 8
-    description: PCS-to-SCK Delay
+    - name: SCKDIV
+      bit_offset: 0
+      bit_size: 8
+      description: SCK Divider
+    - name: DBT
+      bit_offset: 8
+      bit_size: 8
+      description: SCK Divider
+    - name: PCSSCK
+      bit_offset: 16
+      bit_size: 8
+      description: Delay Between Transfers
+    - name: SCKPCS
+      bit_offset: 24
+      bit_size: 8
+      description: PCS-to-SCK Delay
 fieldset/LPSPI_CCR1:
   description: ''
   fields:
-  - name: SCKSET
-    bit_offset: 0
-    bit_size: 8
-    description: SCK Setup
-  - name: SCKHLD
-    bit_offset: 8
-    bit_size: 8
-    description: SCK Setup
-  - name: PCSPCS
-    bit_offset: 16
-    bit_size: 8
-    description: SCK Hold
-  - name: SCKSCK
-    bit_offset: 24
-    bit_size: 8
-    description: PCS to PCS Delay
+    - name: SCKSET
+      bit_offset: 0
+      bit_size: 8
+      description: SCK Setup
+    - name: SCKHLD
+      bit_offset: 8
+      bit_size: 8
+      description: SCK Setup
+    - name: PCSPCS
+      bit_offset: 16
+      bit_size: 8
+      description: SCK Hold
+    - name: SCKSCK
+      bit_offset: 24
+      bit_size: 8
+      description: PCS to PCS Delay
 fieldset/LPSPI_FCR:
   description: ''
   fields:
-  - name: TXWATER
-    bit_offset: 0
-    bit_size: 4
-    description: Transmit FIFO Watermark
-  - name: RXWATER
-    bit_offset: 16
-    bit_size: 4
-    description: Transmit FIFO Watermark
+    - name: TXWATER
+      bit_offset: 0
+      bit_size: 4
+      description: Transmit FIFO Watermark
+    - name: RXWATER
+      bit_offset: 16
+      bit_size: 4
+      description: Transmit FIFO Watermark
 fieldset/LPSPI_FSR:
   description: ''
   fields:
-  - name: TXCOUNT
-    bit_offset: 0
-    bit_size: 5
-    description: Transmit FIFO Count
-  - name: RXCOUNT
-    bit_offset: 16
-    bit_size: 5
-    description: Transmit FIFO Count
+    - name: TXCOUNT
+      bit_offset: 0
+      bit_size: 5
+      description: Transmit FIFO Count
+    - name: RXCOUNT
+      bit_offset: 16
+      bit_size: 5
+      description: Transmit FIFO Count
 fieldset/LPSPI_TCR:
   description: ''
   fields:
-  - name: FRAMESZ
-    bit_offset: 0
-    bit_size: 12
-    description: Frame Size
-  - name: TXMSK
-    bit_offset: 18
-    bit_size: 1
-    description: Frame Size
-  - name: RXMSK
-    bit_offset: 19
-    bit_size: 1
-  - name: CONTC
-    bit_offset: 20
-    bit_size: 1
-  - name: CONT
-    bit_offset: 21
-    bit_size: 1
-  - name: BYSW
-    bit_offset: 22
-    bit_size: 1
-  - name: LSBF
-    bit_offset: 23
-    bit_size: 1
-  - name: PCS
-    bit_offset: 24
-    bit_size: 2
-  - name: PRESCALE
-    bit_offset: 27
-    bit_size: 3
-  - name: CPHA
-    bit_offset: 30
-    bit_size: 1
-  - name: CPOL
-    bit_offset: 31
-    bit_size: 1
+    - name: FRAMESZ
+      bit_offset: 0
+      bit_size: 12
+      description: Frame Size
+    - name: TXMSK
+      bit_offset: 18
+      bit_size: 1
+      description: Frame Size
+    - name: RXMSK
+      bit_offset: 19
+      bit_size: 1
+    - name: CONTC
+      bit_offset: 20
+      bit_size: 1
+    - name: CONT
+      bit_offset: 21
+      bit_size: 1
+    - name: BYSW
+      bit_offset: 22
+      bit_size: 1
+    - name: LSBF
+      bit_offset: 23
+      bit_size: 1
+    - name: PCS
+      bit_offset: 24
+      bit_size: 2
+    - name: PRESCALE
+      bit_offset: 27
+      bit_size: 3
+    - name: CPHA
+      bit_offset: 30
+      bit_size: 1
+    - name: CPOL
+      bit_offset: 31
+      bit_size: 1
 fieldset/LPSPI_TDR:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
-    description: Transmit Data
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+      description: Transmit Data
 fieldset/LPSPI_RSR:
   description: ''
   fields:
-  - name: SOF
-    bit_offset: 0
-    bit_size: 1
-  - name: RXEMPTY
-    bit_offset: 1
-    bit_size: 1
+    - name: SOF
+      bit_offset: 0
+      bit_size: 1
+    - name: RXEMPTY
+      bit_offset: 1
+      bit_size: 1
 fieldset/LPSPI_RDR:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
-    description: Receive Data
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+      description: Receive Data
 fieldset/LPSPI_RDROR:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
-    description: Receive Data
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+      description: Receive Data
 fieldset/LPSPI_TCBR:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
-    description: Command Data
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+      description: Command Data
 fieldset/LPSPI_TDBR:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
-    description: Data
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+      description: Data
 fieldset/LPSPI_RDBR:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
-    description: Data
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+      description: Data

@@ -1,246 +1,246 @@
 block/ENET_PHY:
   description: ''
   items:
-  - name: SUP_DIG_MPLLA_MPLL_PWR_CTL_MPLL_OVRD
-    byte_offset: 131112
-  - name: SUP_DIG_MPLLB_MPLL_PWR_CTL_MPLL_OVRD
-    byte_offset: 262184
-  - name: LANE0_DIG_TX_PWRCTL_TX_PWRUP_TIME_3
-    byte_offset: 393356
-  - name: LANE0_DIG_RX_PWRCTL_RX_PWRUP_TIME_1
-    byte_offset: 393396
-  - name: LANE0_DIG_RX_PWRCTL_RX_PWRUP_TIME_3
-    byte_offset: 393404
-  - name: LANE0_DIG_RX_ADPTCTL_ADPT_CFG_1
-    byte_offset: 393492
-  - name: RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL
-    byte_offset: 394244
-  - name: RAWLANE0_DIG_AON_FAST_FLAGS
-    byte_offset: 394344
-  - name: RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_1
-    byte_offset: 394744
+    - name: SUP_DIG_MPLLA_MPLL_PWR_CTL_MPLL_OVRD
+      byte_offset: 131112
+    - name: SUP_DIG_MPLLB_MPLL_PWR_CTL_MPLL_OVRD
+      byte_offset: 262184
+    - name: LANE0_DIG_TX_PWRCTL_TX_PWRUP_TIME_3
+      byte_offset: 393356
+    - name: LANE0_DIG_RX_PWRCTL_RX_PWRUP_TIME_1
+      byte_offset: 393396
+    - name: LANE0_DIG_RX_PWRCTL_RX_PWRUP_TIME_3
+      byte_offset: 393404
+    - name: LANE0_DIG_RX_ADPTCTL_ADPT_CFG_1
+      byte_offset: 393492
+    - name: RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL
+      byte_offset: 394244
+    - name: RAWLANE0_DIG_AON_FAST_FLAGS
+      byte_offset: 394344
+    - name: RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_1
+      byte_offset: 394744
 fieldset/ENET_PHY_SUP_DIG_MPLLA_MPLL_PWR_CTL_MPLL_OVRD_OVRD:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 1
+    - name: SEL
+      bit_offset: 0
+      bit_size: 1
 fieldset/ENET_PHY_SUP_DIG_MPLLB_MPLL_PWR_CTL_MPLL_OVRD_OVRD:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 1
+    - name: SEL
+      bit_offset: 0
+      bit_size: 1
 fieldset/ENET_PHY_LANE0_DIG_TX_PWRCTL_TX_PWRUP_TIME_3_TX_RXDET:
   description: ''
   fields:
-  - name: TIME
-    bit_offset: 0
-    bit_size: 10
+    - name: TIME
+      bit_offset: 0
+      bit_size: 10
 fieldset/ENET_PHY_LANE0_DIG_TX_PWRCTL_TX_PWRUP_TIME_3_TX_RESET:
   description: ''
   fields:
-  - name: TIME
-    bit_offset: 11
-    bit_size: 2
+    - name: TIME
+      bit_offset: 11
+      bit_size: 2
 fieldset/ENET_PHY_LANE0_DIG_RX_PWRCTL_RX_PWRUP_TIME_1_RX_RATE:
   description: ''
   fields:
-  - name: TIME
-    bit_offset: 0
-    bit_size: 2
+    - name: TIME
+      bit_offset: 0
+      bit_size: 2
 fieldset/ENET_PHY_LANE0_DIG_RX_PWRCTL_RX_PWRUP_TIME_1_RX_VREG_EN:
   description: ''
   fields:
-  - name: TIME
-    bit_offset: 2
-    bit_size: 7
+    - name: TIME
+      bit_offset: 2
+      bit_size: 7
 fieldset/ENET_PHY_LANE0_DIG_RX_PWRCTL_RX_PWRUP_TIME_3_RX_CLK_DCC_EN:
   description: ''
   fields:
-  - name: TIME
-    bit_offset: 0
-    bit_size: 10
+    - name: TIME
+      bit_offset: 0
+      bit_size: 10
 fieldset/ENET_PHY_LANE0_DIG_RX_ADPTCTL_ADPT_CFG_1_N_WAIT:
   description: ''
   fields:
-  - name: ASM1
-    bit_offset: 0
-    bit_size: 7
+    - name: ASM1
+      bit_offset: 0
+      bit_size: 7
 fieldset/ENET_PHY_LANE0_DIG_RX_ADPTCTL_ADPT_CFG_1_CTLE_POLE_OVRD:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 8
-    bit_size: 2
-  - name: EN
-    bit_offset: 10
-    bit_size: 1
+    - name: VAL
+      bit_offset: 8
+      bit_size: 2
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
 fieldset/ENET_PHY_LANE0_DIG_RX_ADPTCTL_ADPT_CFG_1_DFE_T1_ANA:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 11
-    bit_size: 1
+    - name: DIS
+      bit_offset: 11
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_REF_CAL:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 0
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 0
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_IQ_ADAPT:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 1
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 1
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_IQ_DELTA:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 2
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 2
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_IQ_CAL:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 3
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 3
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_TX_INC_DEC:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 4
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 4
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_FOM:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 5
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 5
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_PHS_CAL_EXT:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 6
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 6
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_PHS_CAL:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 7
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 7
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_AFE_CAL:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 8
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 8
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_AFE_ADAPT:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 9
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 9
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_DFE_CAL_EXT:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 10
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 10
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_DFE_CAL:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 11
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 11
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_DFE_ADAPT:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 12
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 12
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_REF_CAL_EXT:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 13
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 13
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_SKIP_RX_VGA_EXT:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 14
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 14
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_FAST_FLAGS_FAST_RX_STARTUP:
   description: ''
   fields:
-  - name: CAL
-    bit_offset: 0
-    bit_size: 1
+    - name: CAL
+      bit_offset: 0
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_FAST_FLAGS_FAST_RX:
   description: ''
   fields:
-  - name: ADAPT
-    bit_offset: 1
-    bit_size: 1
-  - name: PWRUP
-    bit_offset: 7
-    bit_size: 1
+    - name: ADAPT
+      bit_offset: 1
+      bit_size: 1
+    - name: PWRUP
+      bit_offset: 7
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_FAST_FLAGS_FAST_RX_CONT:
   description: ''
   fields:
-  - name: ADAPT
-    bit_offset: 2
-    bit_size: 1
+    - name: ADAPT
+      bit_offset: 2
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_FAST_FLAGS_FAST_RX_CONT_CAL:
   description: ''
   fields:
-  - name: ADAPT
-    bit_offset: 3
-    bit_size: 1
+    - name: ADAPT
+      bit_offset: 3
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_FAST_FLAGS_FAST:
   description: ''
   fields:
-  - name: SUP
-    bit_offset: 4
-    bit_size: 1
+    - name: SUP
+      bit_offset: 4
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_FAST_FLAGS_FAST_TX_CMN:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 5
-    bit_size: 1
+    - name: MODE
+      bit_offset: 5
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_FAST_FLAGS_FAST_TX:
   description: ''
   fields:
-  - name: RXDET
-    bit_offset: 6
-    bit_size: 1
+    - name: RXDET
+      bit_offset: 6
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_FAST_FLAGS_FAST_RX_VCO:
   description: ''
   fields:
-  - name: WAIT
-    bit_offset: 8
-    bit_size: 1
-  - name: CAL
-    bit_offset: 9
-    bit_size: 1
+    - name: WAIT
+      bit_offset: 8
+      bit_size: 1
+    - name: CAL
+      bit_offset: 9
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_1_SKIP_RX_ERROR_CAL:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 0
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 0
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_1_SKIP_RX_BYPASS_CAL:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 1
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 1
+      bit_size: 1
 fieldset/ENET_PHY_RAWLANE0_DIG_AON_RX_STARTUP_ALGO_CTL_1_SKIP_RX_VGA_SLICER_CAL:
   description: ''
   fields:
-  - name: STARTUP
-    bit_offset: 2
-    bit_size: 1
+    - name: STARTUP
+      bit_offset: 2
+      bit_size: 1

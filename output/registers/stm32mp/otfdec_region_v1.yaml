@@ -1,21 +1,21 @@
 block/OTFDEC_Region:
   description: ''
   items:
-  - name: REG_CONFIGR
-    byte_offset: 32
-  - name: REG_START_ADDR
-    byte_offset: 36
-  - name: REG_END_ADDR
-    byte_offset: 40
-  - name: REG_NONCER0
-    byte_offset: 44
-  - name: REG_NONCER1
-    byte_offset: 48
-  - name: REG_KEYR0
-    byte_offset: 52
-  - name: REG_KEYR1
-    byte_offset: 56
-  - name: REG_KEYR2
-    byte_offset: 60
-  - name: REG_KEYR3
-    byte_offset: 64
+    - name: REG_CONFIGR
+      byte_offset: 32
+    - name: REG_START_ADDR
+      byte_offset: 36
+    - name: REG_END_ADDR
+      byte_offset: 40
+    - name: REG_NONCER0
+      byte_offset: 44
+    - name: REG_NONCER1
+      byte_offset: 48
+    - name: REG_KEYR0
+      byte_offset: 52
+    - name: REG_KEYR1
+      byte_offset: 56
+    - name: REG_KEYR2
+      byte_offset: 60
+    - name: REG_KEYR3
+      byte_offset: 64

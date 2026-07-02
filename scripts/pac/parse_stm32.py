@@ -8,8 +8,14 @@ from typing import Dict, List, Any, Optional, Tuple, Set
 import argparse
 
 from common import (
-    safe_hex_to_int, evaluate_expr, popcount, calc_bit_size_from_mask,
-    write_yaml, write_json, extract_description, strip_suffix
+    safe_hex_to_int,
+    evaluate_expr,
+    popcount,
+    calc_bit_size_from_mask,
+    write_yaml,
+    write_json,
+    extract_description,
+    strip_suffix,
 )
 
 
@@ -17,10 +23,10 @@ DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 OUTPUT_DIR = Path(__file__).resolve().parents[2] / "output"
 
 FAMILY_REPRESENTATIVES = {
-    'stm32mp21_cm33': 'stm32mp215fxx_cm33.h',
-    'stm32mp23_cm33': 'stm32mp235fxx_cm33.h',
-    'stm32mp25_cm33': 'stm32mp257fxx_cm33.h',
-    'stm32mp25_cm0p': 'stm32mp257fxx_cm0.h',
+    "stm32mp21_cm33": "stm32mp215fxx_cm33.h",
+    "stm32mp23_cm33": "stm32mp235fxx_cm33.h",
+    "stm32mp25_cm33": "stm32mp257fxx_cm33.h",
+    "stm32mp25_cm0p": "stm32mp257fxx_cm0.h",
 }
 
 
@@ -31,12 +37,12 @@ class STM32HeaderParser:
             self.content = f.read()
 
         # Extract family and core from path
-        parts = header_path.parent.name.split('_')
+        parts = header_path.parent.name.split("_")
         self.family_prefix = parts[0]  # stm32mp25, stm32mp21, etc.
         self.core = parts[1]  # cm33, cm0p
 
         # Extract chip variant from filename (e.g., stm32mp215fxx → mp215f)
-        match = re.search(r'stm32(mp\d[a-z]?)xx', header_path.stem)
+        match = re.search(r"stm32(mp\d[a-z]?)xx", header_path.stem)
         self.chip_variant = match.group(1) if match else "unknown"
 
         self.irqs: List[Dict[str, Any]] = []
@@ -47,27 +53,28 @@ class STM32HeaderParser:
     @staticmethod
     def _is_aggregate_alias(field_name: str, field_names: Set[str]) -> bool:
         """Return true for CMSIS aggregate aliases covered by concrete fields."""
-        if field_name.endswith('x'):
+        if field_name.endswith("x"):
             return True
-        if field_name == 'LPUART':
+        if field_name == "LPUART":
             return True
-        if field_name == 'CCC' and {'RNW', 'ADD'}.issubset(field_names):
+        if field_name == "CCC" and {"RNW", "ADD"}.issubset(field_names):
             return True
         return any(
-            other.startswith(field_name)
-            and other[len(field_name):].isdigit()
+            other.startswith(field_name) and other[len(field_name) :].isdigit()
             for other in field_names
             if other != field_name
         )
 
     @classmethod
-    def _prune_overlapping_fields(cls, fields: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def _prune_overlapping_fields(
+        cls, fields: List[Dict[str, Any]]
+    ) -> List[Dict[str, Any]]:
         """Drop aggregate/alternate CMSIS aliases that cannot be represented in chiptool IR."""
-        field_names = {field['name'] for field in fields}
+        field_names = {field["name"] for field in fields}
         remove: Set[int] = set()
 
         for i, field in enumerate(fields):
-            field_mask = field.get('_mask', 0)
+            field_mask = field.get("_mask", 0)
             if not field_mask:
                 continue
 
@@ -75,19 +82,19 @@ class STM32HeaderParser:
                 if i == j:
                     continue
 
-                other_mask = other.get('_mask', 0)
+                other_mask = other.get("_mask", 0)
                 if not other_mask or not (field_mask & other_mask):
                     continue
 
-                if cls._is_aggregate_alias(field['name'], field_names):
+                if cls._is_aggregate_alias(field["name"], field_names):
                     remove.add(i)
                     break
 
-                if cls._is_aggregate_alias(other['name'], field_names):
+                if cls._is_aggregate_alias(other["name"], field_names):
                     continue
 
-                same_offset = field['bit_offset'] == other['bit_offset']
-                narrower = field['bit_size'] < other['bit_size']
+                same_offset = field["bit_offset"] == other["bit_offset"]
+                narrower = field["bit_size"] < other["bit_size"]
                 if same_offset and narrower:
                     remove.add(i)
                     break
@@ -96,10 +103,10 @@ class STM32HeaderParser:
         for i, field in enumerate(fields):
             if i in remove:
                 continue
-            field.pop('_mask', None)
+            field.pop("_mask", None)
             pruned.append(field)
 
-        pruned.sort(key=lambda f: (f['bit_offset'], f['name']))
+        pruned.sort(key=lambda f: (f["bit_offset"], f["name"]))
         return pruned
 
     def strip_preprocessor(self):
@@ -107,43 +114,47 @@ class STM32HeaderParser:
         # Simple approach: remove #if/#endif lines but keep content
         lines = []
         skip_depth = 0
-        for line in self.content.split('\n'):
+        for line in self.content.split("\n"):
             stripped = line.strip()
-            if stripped.startswith('#if'):
+            if stripped.startswith("#if"):
                 skip_depth += 1
                 continue
-            elif stripped.startswith('#elif'):
+            elif stripped.startswith("#elif"):
                 skip_depth = max(0, skip_depth - 1)
                 skip_depth += 1
                 continue
-            elif stripped.startswith('#else'):
+            elif stripped.startswith("#else"):
                 # For #else, we want to keep the else branch
                 skip_depth = max(0, skip_depth - 1)
                 continue
-            elif stripped.startswith('#endif'):
+            elif stripped.startswith("#endif"):
                 skip_depth = max(0, skip_depth - 1)
                 continue
 
             lines.append(line)
 
-        self.content = '\n'.join(lines)
+        self.content = "\n".join(lines)
 
     def parse_irq_enum(self):
         """Extract IRQ enum entries."""
         # Find enum block
-        match = re.search(r'typedef\s+enum\s*\{(.*?)\}\s*IRQn_Type\s*;', self.content, re.DOTALL)
+        match = re.search(
+            r"typedef\s+enum\s*\{(.*?)\}\s*IRQn_Type\s*;", self.content, re.DOTALL
+        )
         if not match:
             return
 
         enum_body = match.group(1)
 
-        for line in enum_body.split('\n'):
+        for line in enum_body.split("\n"):
             line = line.strip()
-            if not line or line.startswith('/*') or line.startswith('//'):
+            if not line or line.startswith("/*") or line.startswith("//"):
                 continue
 
             # Match: NAME_IRQn = VALUE, /*!< description */
-            entry_match = re.match(r'(\w+_IRQn)\s*=\s*(-?\d+)\s*,?\s*(?:/\*!<\s*(.*?)\s*\*/)?', line)
+            entry_match = re.match(
+                r"(\w+_IRQn)\s*=\s*(-?\d+)\s*,?\s*(?:/\*!<\s*(.*?)\s*\*/)?", line
+            )
             if not entry_match:
                 continue
 
@@ -152,36 +163,38 @@ class STM32HeaderParser:
             description = entry_match.group(3) or ""
 
             # Skip reserved entries
-            if 'RESERVED' in name_with_suffix.upper() or 'MAX_IRQ' in name_with_suffix:
+            if "RESERVED" in name_with_suffix.upper() or "MAX_IRQ" in name_with_suffix:
                 continue
 
             # Skip negative values (ARM core exceptions)
             if value < 0:
                 continue
 
-            name = strip_suffix(name_with_suffix, '_IRQn')
-            self.irqs.append({
-                'name': name,
-                'value': value,
-                'description': description.strip()
-            })
+            name = strip_suffix(name_with_suffix, "_IRQn")
+            self.irqs.append(
+                {"name": name, "value": value, "description": description.strip()}
+            )
 
     def parse_peripheral_structs(self):
         """Extract typedef struct definitions."""
         # Find all struct blocks
-        pattern = r'typedef\s+struct\s*\{(.*?)\}\s*(\w+_TypeDef)\s*;'
+        pattern = r"typedef\s+struct\s*\{(.*?)\}\s*(\w+_TypeDef)\s*;"
 
         for match in re.finditer(pattern, self.content, re.DOTALL):
             struct_body = match.group(1)
             struct_name_with_suffix = match.group(2)
-            struct_name = strip_suffix(struct_name_with_suffix, '_TypeDef')
+            struct_name = strip_suffix(struct_name_with_suffix, "_TypeDef")
 
             items = []
             current_offset = 0
 
-            for line in struct_body.split('\n'):
+            for line in struct_body.split("\n"):
                 line_stripped = line.strip()
-                if not line_stripped or line_stripped.startswith('/*') or line_stripped.startswith('//'):
+                if (
+                    not line_stripped
+                    or line_stripped.startswith("/*")
+                    or line_stripped.startswith("//")
+                ):
                     continue
 
                 # Parse field declaration
@@ -191,7 +204,10 @@ class STM32HeaderParser:
                 # uint32_t RESERVED[N];
 
                 # Extract qualifier and type
-                qualifier_match = re.match(r'(__IO|__I|__O)?\s*(uint32_t|uint8_t|uint16_t|uint64_t)\s+(\w+)(?:\[(\d+)\])?\s*;', line_stripped)
+                qualifier_match = re.match(
+                    r"(__IO|__I|__O)?\s*(uint32_t|uint8_t|uint16_t|uint64_t)\s+(\w+)(?:\[(\d+)\])?\s*;",
+                    line_stripped,
+                )
                 if not qualifier_match:
                     continue
 
@@ -201,29 +217,39 @@ class STM32HeaderParser:
                 array_len = qualifier_match.group(4)
 
                 # Skip reserved fields
-                if field_name.startswith('RESERVED'):
+                if field_name.startswith("RESERVED"):
                     # Track the gap in offset
                     if array_len:
-                        type_size = {'uint8_t': 1, 'uint16_t': 2, 'uint32_t': 4, 'uint64_t': 8}[field_type]
+                        type_size = {
+                            "uint8_t": 1,
+                            "uint16_t": 2,
+                            "uint32_t": 4,
+                            "uint64_t": 8,
+                        }[field_type]
                         current_offset += int(array_len) * type_size
                     else:
-                        type_size = {'uint8_t': 1, 'uint16_t': 2, 'uint32_t': 4, 'uint64_t': 8}[field_type]
+                        type_size = {
+                            "uint8_t": 1,
+                            "uint16_t": 2,
+                            "uint32_t": 4,
+                            "uint64_t": 8,
+                        }[field_type]
                         current_offset += type_size
                     continue
 
                 # Determine access
-                if qualifier == '__IO':
-                    access = 'read-write'
-                elif qualifier == '__I':
-                    access = 'read-only'
-                elif qualifier == '__O':
-                    access = 'write-only'
+                if qualifier == "__IO":
+                    access = "read-write"
+                elif qualifier == "__I":
+                    access = "read-only"
+                elif qualifier == "__O":
+                    access = "write-only"
                 else:
                     continue
 
                 # Extract byte offset from comment
                 byte_offset = current_offset
-                offset_match = re.search(r'Address offset:\s*0x([0-9a-fA-F]+)', line)
+                offset_match = re.search(r"Address offset:\s*0x([0-9a-fA-F]+)", line)
                 if offset_match:
                     byte_offset = int(offset_match.group(1), 16)
                     current_offset = byte_offset
@@ -232,30 +258,40 @@ class STM32HeaderParser:
                 description = extract_description(line)
 
                 item: Dict[str, Any] = {
-                    'name': field_name,
-                    'byte_offset': byte_offset,
+                    "name": field_name,
+                    "byte_offset": byte_offset,
                 }
 
                 if array_len:
-                    type_size = {'uint8_t': 1, 'uint16_t': 2, 'uint32_t': 4, 'uint64_t': 8}[field_type]
-                    item['array'] = {
-                        'len': int(array_len),
-                        'stride': type_size,
+                    type_size = {
+                        "uint8_t": 1,
+                        "uint16_t": 2,
+                        "uint32_t": 4,
+                        "uint64_t": 8,
+                    }[field_type]
+                    item["array"] = {
+                        "len": int(array_len),
+                        "stride": type_size,
                     }
                     current_offset = byte_offset + int(array_len) * type_size
                 else:
-                    type_size = {'uint8_t': 1, 'uint16_t': 2, 'uint32_t': 4, 'uint64_t': 8}[field_type]
+                    type_size = {
+                        "uint8_t": 1,
+                        "uint16_t": 2,
+                        "uint32_t": 4,
+                        "uint64_t": 8,
+                    }[field_type]
                     current_offset = byte_offset + type_size
 
                 if description:
-                    item['description'] = description
+                    item["description"] = description
 
                 items.append(item)
 
             if items:
                 self.blocks[struct_name] = {
-                    'description': '',
-                    'items': items,
+                    "description": "",
+                    "items": items,
                 }
 
     def parse_bitfield_macros(self):
@@ -266,11 +302,13 @@ class STM32HeaderParser:
         descriptions: Dict[str, str] = {}
 
         # Find all _Pos and _Msk defines
-        for match in re.finditer(r'#define\s+(\w+)_Pos\s+\((\d+)U?\)', self.content):
+        for match in re.finditer(r"#define\s+(\w+)_Pos\s+\((\d+)U?\)", self.content):
             name = match.group(1)
             pos_defs[name] = int(match.group(2))
 
-        for match in re.finditer(r'#define\s+(\w+)_Msk\s+\((0x[0-9a-fA-F]+)UL\s*<<\s*\w+_Pos\)', self.content):
+        for match in re.finditer(
+            r"#define\s+(\w+)_Msk\s+\((0x[0-9a-fA-F]+)UL\s*<<\s*\w+_Pos\)", self.content
+        ):
             name = match.group(1)
             mask_val = safe_hex_to_int(match.group(2))
             if mask_val is not None:
@@ -279,13 +317,17 @@ class STM32HeaderParser:
         # Extract descriptions from alias macros (e.g., #define FIELD FIELD_Msk /*!< description */)
         for field_name in msk_defs.keys():
             # Look for: #define FIELDNAME FIELDNAME_Msk /*!< description */
-            alias_pattern = rf'#define\s+{re.escape(field_name)}\s+{re.escape(field_name)}_Msk\s+(.*?\*/)'
+            alias_pattern = rf"#define\s+{re.escape(field_name)}\s+{re.escape(field_name)}_Msk\s+(.*?\*/)"
             alias_match = re.search(alias_pattern, self.content)
             if alias_match:
-                descriptions[field_name] = extract_description(f'/* {alias_match.group(1)}')
+                descriptions[field_name] = extract_description(
+                    f"/* {alias_match.group(1)}"
+                )
             else:
                 # Fall back to _Msk line (may just be hex value like /*!< 0x000000FF */)
-                msk_pattern = rf'#define\s+{re.escape(field_name)}_Msk\s+.*?(\/\*.*?\*\/)'
+                msk_pattern = (
+                    rf"#define\s+{re.escape(field_name)}_Msk\s+.*?(\/\*.*?\*\/)"
+                )
                 msk_match = re.search(msk_pattern, self.content, re.DOTALL)
                 if msk_match:
                     descriptions[field_name] = extract_description(msk_match.group(1))
@@ -298,11 +340,11 @@ class STM32HeaderParser:
                 continue
 
             mask_val = msk_defs[field_name]
-            description = descriptions.get(field_name, '')
+            description = descriptions.get(field_name, "")
 
             # Extract register name from field_name (PERIPH_REG_FIELD → PERIPH_REG)
             # Split on last underscore before the field name
-            parts = field_name.rsplit('_', 1)
+            parts = field_name.rsplit("_", 1)
             if len(parts) == 2:
                 reg_name = parts[0]
             else:
@@ -315,22 +357,22 @@ class STM32HeaderParser:
             bit_size = calc_bit_size_from_mask(mask_val)
 
             field: Dict[str, Any] = {
-                'name': parts[1],
-                'bit_offset': bit_offset,
-                'bit_size': bit_size,
-                '_mask': mask_val << bit_offset,
+                "name": parts[1],
+                "bit_offset": bit_offset,
+                "bit_size": bit_size,
+                "_mask": mask_val << bit_offset,
             }
 
             if description:
-                field['description'] = description
+                field["description"] = description
 
             fieldsets_dict[reg_name].append(field)
 
         # Convert to fieldsets
         for reg_name, fields in fieldsets_dict.items():
             self.fieldsets[reg_name] = {
-                'description': '',
-                'fields': self._prune_overlapping_fields(fields),
+                "description": "",
+                "fields": self._prune_overlapping_fields(fields),
             }
 
     def parse_base_addresses_and_instances(self):
@@ -339,21 +381,24 @@ class STM32HeaderParser:
         symbols: Dict[str, int] = {}
 
         # Known anchors
-        symbols['PERIPH_BASE_NS'] = 0x40000000
-        symbols['MPU_AXI_BUS_MEMORY_BASE'] = 0x50000000
+        symbols["PERIPH_BASE_NS"] = 0x40000000
+        symbols["MPU_AXI_BUS_MEMORY_BASE"] = 0x50000000
 
         # Parse all _BASE_NS defines
-        for match in re.finditer(r'#define\s+(\w+)_BASE_NS\s+\((.*?)\)', self.content):
+        for match in re.finditer(r"#define\s+(\w+)_BASE_NS\s+\((.*?)\)", self.content):
             name = match.group(1)
             expr = match.group(2)
             val = evaluate_expr(expr, symbols)
             if val is not None:
-                symbols[f'{name}_BASE_NS'] = val
+                symbols[f"{name}_BASE_NS"] = val
 
         # Parse instance casts (NAME_NS -> (TYPE_TypeDef *) NAME_BASE_NS)
         instances: Dict[str, Tuple[str, int]] = {}
 
-        for match in re.finditer(r'#define\s+(\w+)_NS\s+\(\((\w+)_TypeDef\s*\*\)\s*(\w+_BASE_NS)\)', self.content):
+        for match in re.finditer(
+            r"#define\s+(\w+)_NS\s+\(\((\w+)_TypeDef\s*\*\)\s*(\w+_BASE_NS)\)",
+            self.content,
+        ):
             instance_name = match.group(1)
             block_type = match.group(2)
             base_macro = match.group(3)
@@ -364,50 +409,54 @@ class STM32HeaderParser:
 
         # Build peripherals list from instances
         for instance_name, (block_type, base_addr) in instances.items():
-            self.peripherals.append({
-                'name': instance_name,
-                'base_address': f'0x{base_addr:08x}',
-                'block': f'{block_type.lower()}/{block_type}',
-            })
+            self.peripherals.append(
+                {
+                    "name": instance_name,
+                    "base_address": f"0x{base_addr:08x}",
+                    "block": f"{block_type.lower()}/{block_type}",
+                }
+            )
 
     def link_blocks_to_fieldsets(self):
         """Link block items to their fieldsets."""
         for block_name, block_data in self.blocks.items():
-            for item in block_data['items']:
-                reg_name = item['name']
-                fieldset_name = f'{block_name}_{reg_name}'
+            for item in block_data["items"]:
+                reg_name = item["name"]
+                fieldset_name = f"{block_name}_{reg_name}"
 
                 if fieldset_name in self.fieldsets:
-                    item['fieldset'] = fieldset_name
+                    item["fieldset"] = fieldset_name
 
     def emit_outputs(self):
         """Write YAML and JSON files."""
         # Write register YAMLs
         for block_name, block_data in self.blocks.items():
-            yaml_path = OUTPUT_DIR / 'registers' / 'stm32mp' / f'{block_name.lower()}_v1.yaml'
-            data = {f'block/{block_name}': block_data}
+            yaml_path = (
+                OUTPUT_DIR / "registers" / "stm32mp" / f"{block_name.lower()}_v1.yaml"
+            )
+            data = {f"block/{block_name}": block_data}
 
             # Add corresponding fieldsets
-            for item in block_data.get('items', []):
-                if 'fieldset' in item:
-                    fs_name = item['fieldset']
+            for item in block_data.get("items", []):
+                if "fieldset" in item:
+                    fs_name = item["fieldset"]
                     if fs_name in self.fieldsets:
-                        data[f'fieldset/{fs_name}'] = self.fieldsets[fs_name]
+                        data[f"fieldset/{fs_name}"] = self.fieldsets[fs_name]
 
             write_yaml(data, yaml_path)
             print(f"Wrote {yaml_path}")
 
         # Write chip JSON
-        chip_name = f'{self.family_prefix}_{self.chip_variant}_{self.core}'
+        chip_name = f"{self.family_prefix}_{self.chip_variant}_{self.core}"
         chip_json = {
-            'name': chip_name,
-            'family': self.family_prefix,
-            'core': self.core,
-            'irqs': self.irqs,
-            'peripherals': sorted(self.peripherals, key=lambda x: x['name']),
+            "name": chip_name,
+            "family": self.family_prefix,
+            "core": self.core,
+            "irqs": self.irqs,
+            "peripherals": sorted(self.peripherals, key=lambda x: x["name"]),
         }
 
-        json_path = OUTPUT_DIR / 'chips' / f'{chip_name}.json'
+        json_path = OUTPUT_DIR / "chips" / f"{chip_name}.json"
         write_json(chip_json, json_path)
         print(f"Wrote {json_path}")
 
@@ -423,13 +472,18 @@ class STM32HeaderParser:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Parse STM32MP CMSIS headers')
-    parser.add_argument('--family', choices=list(FAMILY_REPRESENTATIVES.keys()),
-                        help='Family to parse')
-    parser.add_argument('--all', action='store_true', help='Parse all families')
+    parser = argparse.ArgumentParser(description="Parse STM32MP CMSIS headers")
+    parser.add_argument(
+        "--family", choices=list(FAMILY_REPRESENTATIVES.keys()), help="Family to parse"
+    )
+    parser.add_argument("--all", action="store_true", help="Parse all families")
     args = parser.parse_args()
 
-    families_to_parse = FAMILY_REPRESENTATIVES.keys() if args.all else ([args.family] if args.family else [])
+    families_to_parse = (
+        FAMILY_REPRESENTATIVES.keys()
+        if args.all
+        else ([args.family] if args.family else [])
+    )
 
     if not families_to_parse:
         print("Error: specify --family or --all")
@@ -448,5 +502,5 @@ def main():
         p.parse()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

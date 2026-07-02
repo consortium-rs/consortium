@@ -1,318 +1,318 @@
 block/LDB:
   description: ''
   items:
-  - name: LVDS_PHY_CLOCK_CONTROL
-    byte_offset: 0
-  - name: PIXEL_MAPPER_CONTROL
-    byte_offset: 4
-  - name: LVDS0_CONTROL
-    byte_offset: 8
-  - name: LVDS1_CONTROL
-    byte_offset: 12
+    - name: LVDS_PHY_CLOCK_CONTROL
+      byte_offset: 0
+    - name: PIXEL_MAPPER_CONTROL
+      byte_offset: 4
+    - name: LVDS0_CONTROL
+      byte_offset: 8
+    - name: LVDS1_CONTROL
+      byte_offset: 12
 fieldset/LDB_LVDS_PHY_CLOCK_CONTROL_LVDS_PHY:
   description: ''
   fields:
-  - name: DIV
-    bit_offset: 0
-    bit_size: 1
+    - name: DIV
+      bit_offset: 0
+      bit_size: 1
 fieldset/LDB_LVDS_PHY_CLOCK_CONTROL_Serializer_Ch0_clock:
   description: ''
   fields:
-  - name: Ctrl
-    bit_offset: 1
-    bit_size: 1
+    - name: Ctrl
+      bit_offset: 1
+      bit_size: 1
 fieldset/LDB_LVDS_PHY_CLOCK_CONTROL_Serializer_Ch1_clock:
   description: ''
   fields:
-  - name: Ctrl
-    bit_offset: 2
-    bit_size: 1
+    - name: Ctrl
+      bit_offset: 2
+      bit_size: 1
 fieldset/LDB_LVDS_PHY_CLOCK_CONTROL_PixelMapper_Di0_clock:
   description: ''
   fields:
-  - name: Ctrl
-    bit_offset: 3
-    bit_size: 1
+    - name: Ctrl
+      bit_offset: 3
+      bit_size: 1
 fieldset/LDB_LVDS_PHY_CLOCK_CONTROL_PixelMapper_Di1_clock:
   description: ''
   fields:
-  - name: Ctrl
-    bit_offset: 4
-    bit_size: 1
+    - name: Ctrl
+      bit_offset: 4
+      bit_size: 1
 fieldset/LDB_PIXEL_MAPPER_CONTROL_CH0:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
 fieldset/LDB_PIXEL_MAPPER_CONTROL_CH1:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 2
+    - name: MODE
+      bit_offset: 2
+      bit_size: 2
 fieldset/LDB_PIXEL_MAPPER_CONTROL_SPLIT:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 4
-    bit_size: 1
+    - name: MODE
+      bit_offset: 4
+      bit_size: 1
 fieldset/LDB_PIXEL_MAPPER_CONTROL_CH0_DATA:
   description: ''
   fields:
-  - name: WIDTH
-    bit_offset: 5
-    bit_size: 1
+    - name: WIDTH
+      bit_offset: 5
+      bit_size: 1
 fieldset/LDB_PIXEL_MAPPER_CONTROL_CH0_BIT:
   description: ''
   fields:
-  - name: MAPPING
-    bit_offset: 6
-    bit_size: 1
+    - name: MAPPING
+      bit_offset: 6
+      bit_size: 1
 fieldset/LDB_PIXEL_MAPPER_CONTROL_CH1_DATA:
   description: ''
   fields:
-  - name: WIDTH
-    bit_offset: 7
-    bit_size: 1
+    - name: WIDTH
+      bit_offset: 7
+      bit_size: 1
 fieldset/LDB_PIXEL_MAPPER_CONTROL_CH1_BIT:
   description: ''
   fields:
-  - name: MAPPING
-    bit_offset: 8
-    bit_size: 1
+    - name: MAPPING
+      bit_offset: 8
+      bit_size: 1
 fieldset/LDB_PIXEL_MAPPER_CONTROL_DI0_VSYNC:
   description: ''
   fields:
-  - name: POLARITY
-    bit_offset: 9
-    bit_size: 1
+    - name: POLARITY
+      bit_offset: 9
+      bit_size: 1
 fieldset/LDB_PIXEL_MAPPER_CONTROL_DI1_VSYNC:
   description: ''
   fields:
-  - name: POLARITY
-    bit_offset: 10
-    bit_size: 1
+    - name: POLARITY
+      bit_offset: 10
+      bit_size: 1
 fieldset/LDB_PIXEL_MAPPER_CONTROL_CH0_ASYNC_FIFO:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 11
-    bit_size: 1
+    - name: RESET
+      bit_offset: 11
+      bit_size: 1
 fieldset/LDB_PIXEL_MAPPER_CONTROL_CH1_ASYNC_FIFO:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 12
-    bit_size: 1
+    - name: RESET
+      bit_offset: 12
+      bit_size: 1
 fieldset/LDB_PIXEL_MAPPER_CONTROL_DI0_HSYNC:
   description: ''
   fields:
-  - name: POLARITY
-    bit_offset: 13
-    bit_size: 1
+    - name: POLARITY
+      bit_offset: 13
+      bit_size: 1
 fieldset/LDB_PIXEL_MAPPER_CONTROL_DI1_HSYNC:
   description: ''
   fields:
-  - name: POLARITY
-    bit_offset: 14
-    bit_size: 1
+    - name: POLARITY
+      bit_offset: 14
+      bit_size: 1
 fieldset/LDB_PIXEL_MAPPER_CONTROL_BGREF:
   description: ''
   fields:
-  - name: RRMODE
-    bit_offset: 15
-    bit_size: 1
+    - name: RRMODE
+      bit_offset: 15
+      bit_size: 1
 fieldset/LDB_PIXEL_MAPPER_CONTROL_VSYNC_ADJ:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 19
-    bit_size: 1
+    - name: EN
+      bit_offset: 19
+      bit_size: 1
 fieldset/LDB_PIXEL_MAPPER_CONTROL_ASYNC_FIFO:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 24
-    bit_size: 1
-  - name: THRESHOLD
-    bit_offset: 25
-    bit_size: 3
+    - name: ENABLE
+      bit_offset: 24
+      bit_size: 1
+    - name: THRESHOLD
+      bit_offset: 25
+      bit_size: 3
 fieldset/LDB_LVDS0_CONTROL_CH0:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
 fieldset/LDB_LVDS0_CONTROL_LVDS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 1
-    bit_size: 1
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
 fieldset/LDB_LVDS0_CONTROL_BG:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 2
-    bit_size: 1
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
 fieldset/LDB_LVDS0_CONTROL_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 3
-    bit_size: 1
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
 fieldset/LDB_LVDS0_CONTROL_PRE_EMPH:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 4
-    bit_size: 1
-  - name: ADJ
-    bit_offset: 5
-    bit_size: 3
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+    - name: ADJ
+      bit_offset: 5
+      bit_size: 3
 fieldset/LDB_LVDS0_CONTROL_CM:
   description: ''
   fields:
-  - name: ADJ
-    bit_offset: 8
-    bit_size: 3
+    - name: ADJ
+      bit_offset: 8
+      bit_size: 3
 fieldset/LDB_LVDS0_CONTROL_CC:
   description: ''
   fields:
-  - name: ADJ
-    bit_offset: 11
-    bit_size: 3
-    description: Output common mode (Vos) adjustment
+    - name: ADJ
+      bit_offset: 11
+      bit_size: 3
+      description: Output common mode (Vos) adjustment
 fieldset/LDB_LVDS0_CONTROL_SLEW:
   description: ''
   fields:
-  - name: ADJ
-    bit_offset: 14
-    bit_size: 3
-    description: Output current adjustment
+    - name: ADJ
+      bit_offset: 14
+      bit_size: 3
+      description: Output current adjustment
 fieldset/LDB_LVDS0_CONTROL_VBG:
   description: ''
   fields:
-  - name: ADJ
-    bit_offset: 17
-    bit_size: 3
-    description: Bandgap adjustment
+    - name: ADJ
+      bit_offset: 17
+      bit_size: 3
+      description: Bandgap adjustment
 fieldset/LDB_LVDS0_CONTROL_TEST:
   description: ''
   fields:
-  - name: DIV4
-    bit_offset: 20
-    bit_size: 1
-    description: Bandgap adjustment
-  - name: EN
-    bit_offset: 21
-    bit_size: 1
+    - name: DIV4
+      bit_offset: 20
+      bit_size: 1
+      description: Bandgap adjustment
+    - name: EN
+      bit_offset: 21
+      bit_size: 1
 fieldset/LDB_LVDS0_CONTROL_TEST_MUX:
   description: ''
   fields:
-  - name: SRC
-    bit_offset: 22
-    bit_size: 2
+    - name: SRC
+      bit_offset: 22
+      bit_size: 2
 fieldset/LDB_LVDS0_CONTROL_TEST_RANDOM_NUM:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 24
-    bit_size: 1
+    - name: EN
+      bit_offset: 24
+      bit_size: 1
 fieldset/LDB_LVDS0_CONTROL_SPARE:
   description: ''
   fields:
-  - name: IN
-    bit_offset: 25
-    bit_size: 3
-    description: Spare ports
+    - name: IN
+      bit_offset: 25
+      bit_size: 3
+      description: Spare ports
 fieldset/LDB_LVDS1_CONTROL_CH0:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
 fieldset/LDB_LVDS1_CONTROL_LVDS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 1
-    bit_size: 1
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
 fieldset/LDB_LVDS1_CONTROL_BG:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 2
-    bit_size: 1
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
 fieldset/LDB_LVDS1_CONTROL_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 3
-    bit_size: 1
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
 fieldset/LDB_LVDS1_CONTROL_PRE_EMPH:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 4
-    bit_size: 1
-  - name: ADJ
-    bit_offset: 5
-    bit_size: 3
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+    - name: ADJ
+      bit_offset: 5
+      bit_size: 3
 fieldset/LDB_LVDS1_CONTROL_CM:
   description: ''
   fields:
-  - name: ADJ
-    bit_offset: 8
-    bit_size: 3
+    - name: ADJ
+      bit_offset: 8
+      bit_size: 3
 fieldset/LDB_LVDS1_CONTROL_CC:
   description: ''
   fields:
-  - name: ADJ
-    bit_offset: 11
-    bit_size: 3
-    description: Output common mode (Vos) adjustment
+    - name: ADJ
+      bit_offset: 11
+      bit_size: 3
+      description: Output common mode (Vos) adjustment
 fieldset/LDB_LVDS1_CONTROL_SLEW:
   description: ''
   fields:
-  - name: ADJ
-    bit_offset: 14
-    bit_size: 3
-    description: Output current adjustment
+    - name: ADJ
+      bit_offset: 14
+      bit_size: 3
+      description: Output current adjustment
 fieldset/LDB_LVDS1_CONTROL_VBG:
   description: ''
   fields:
-  - name: ADJ
-    bit_offset: 17
-    bit_size: 3
-    description: Bandgap adjustment
+    - name: ADJ
+      bit_offset: 17
+      bit_size: 3
+      description: Bandgap adjustment
 fieldset/LDB_LVDS1_CONTROL_TEST:
   description: ''
   fields:
-  - name: DIV4
-    bit_offset: 20
-    bit_size: 1
-    description: Bandgap adjustment
-  - name: EN
-    bit_offset: 21
-    bit_size: 1
+    - name: DIV4
+      bit_offset: 20
+      bit_size: 1
+      description: Bandgap adjustment
+    - name: EN
+      bit_offset: 21
+      bit_size: 1
 fieldset/LDB_LVDS1_CONTROL_TEST_MUX:
   description: ''
   fields:
-  - name: SRC
-    bit_offset: 22
-    bit_size: 2
+    - name: SRC
+      bit_offset: 22
+      bit_size: 2
 fieldset/LDB_LVDS1_CONTROL_TEST_RANDOM_NUM:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 24
-    bit_size: 1
+    - name: EN
+      bit_offset: 24
+      bit_size: 1
 fieldset/LDB_LVDS1_CONTROL_SPARE:
   description: ''
   fields:
-  - name: IN
-    bit_offset: 25
-    bit_size: 3
-    description: Spare ports
+    - name: IN
+      bit_offset: 25
+      bit_size: 3
+      description: Spare ports

@@ -1,240 +1,240 @@
 block/DCACHE:
   description: ''
   items:
-  - name: CR
-    byte_offset: 0
-    description: DCACHE control register
-    fieldset: DCACHE_CR
-  - name: SR
-    byte_offset: 4
-    description: DCACHE status register
-    fieldset: DCACHE_SR
-  - name: IER
-    byte_offset: 8
-    description: DCACHE interrupt enable register
-    fieldset: DCACHE_IER
-  - name: FCR
-    byte_offset: 12
-    description: DCACHE flag clear register
-    fieldset: DCACHE_FCR
-  - name: RHMONR
-    byte_offset: 16
-    description: DCACHE read-hit monitor register
-    fieldset: DCACHE_RHMONR
-  - name: RMMONR
-    byte_offset: 20
-    description: DCACHE read-miss monitor register
-    fieldset: DCACHE_RMMONR
-  - name: WHMONR
-    byte_offset: 32
-    description: DCACHE write-hit monitor register
-    fieldset: DCACHE_WHMONR
-  - name: WMMONR
-    byte_offset: 36
-    description: DCACHE write-miss monitor register
-    fieldset: DCACHE_WMMONR
-  - name: CMDRSADDRR
-    byte_offset: 40
-    description: DCACHE command range start address register
-    fieldset: DCACHE_CMDRSADDRR
-  - name: CMDREADDRR
-    byte_offset: 44
-    description: DCACHE command range end address register
-    fieldset: DCACHE_CMDREADDRR
-  - name: HWCFGR
-    byte_offset: 1008
-    description: DCACHE hardware configuration register
-    fieldset: DCACHE_HWCFGR
-  - name: VERR
-    byte_offset: 1012
-    description: DCACHE version register
-    fieldset: DCACHE_VERR
-  - name: IPIDR
-    byte_offset: 1016
-    description: DCACHE IP identification register
-  - name: SIDR
-    byte_offset: 1020
-    description: DCACHE IP size identification register
+    - name: CR
+      byte_offset: 0
+      description: DCACHE control register
+      fieldset: DCACHE_CR
+    - name: SR
+      byte_offset: 4
+      description: DCACHE status register
+      fieldset: DCACHE_SR
+    - name: IER
+      byte_offset: 8
+      description: DCACHE interrupt enable register
+      fieldset: DCACHE_IER
+    - name: FCR
+      byte_offset: 12
+      description: DCACHE flag clear register
+      fieldset: DCACHE_FCR
+    - name: RHMONR
+      byte_offset: 16
+      description: DCACHE read-hit monitor register
+      fieldset: DCACHE_RHMONR
+    - name: RMMONR
+      byte_offset: 20
+      description: DCACHE read-miss monitor register
+      fieldset: DCACHE_RMMONR
+    - name: WHMONR
+      byte_offset: 32
+      description: DCACHE write-hit monitor register
+      fieldset: DCACHE_WHMONR
+    - name: WMMONR
+      byte_offset: 36
+      description: DCACHE write-miss monitor register
+      fieldset: DCACHE_WMMONR
+    - name: CMDRSADDRR
+      byte_offset: 40
+      description: DCACHE command range start address register
+      fieldset: DCACHE_CMDRSADDRR
+    - name: CMDREADDRR
+      byte_offset: 44
+      description: DCACHE command range end address register
+      fieldset: DCACHE_CMDREADDRR
+    - name: HWCFGR
+      byte_offset: 1008
+      description: DCACHE hardware configuration register
+      fieldset: DCACHE_HWCFGR
+    - name: VERR
+      byte_offset: 1012
+      description: DCACHE version register
+      fieldset: DCACHE_VERR
+    - name: IPIDR
+      byte_offset: 1016
+      description: DCACHE IP identification register
+    - name: SIDR
+      byte_offset: 1020
+      description: DCACHE IP size identification register
 fieldset/DCACHE_CR:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
-    description: enable
-  - name: CACHEINV
-    bit_offset: 1
-    bit_size: 1
-    description: full cache invalidation
-  - name: CACHECMD
-    bit_offset: 8
-    bit_size: 3
-    description: cache command maintenance operation (cleans and/or invalidates an
-      address range)
-  - name: STARTCMD
-    bit_offset: 11
-    bit_size: 1
-    description: starts maintenance command (maintenance operation defined in CACHECMD).
-  - name: RHITMEN
-    bit_offset: 16
-    bit_size: 1
-    description: read-hit monitor enable
-  - name: RMISSMEN
-    bit_offset: 17
-    bit_size: 1
-    description: read-miss monitor enable
-  - name: RHITMRST
-    bit_offset: 18
-    bit_size: 1
-    description: read-hit monitor reset
-  - name: RMISSMRST
-    bit_offset: 19
-    bit_size: 1
-    description: read-miss monitor reset
-  - name: WHITMEN
-    bit_offset: 20
-    bit_size: 1
-    description: write-hit monitor enable
-  - name: WMISSMEN
-    bit_offset: 21
-    bit_size: 1
-    description: write-miss monitor enable
-  - name: WHITMRST
-    bit_offset: 22
-    bit_size: 1
-    description: write-hit monitor reset
-  - name: WMISSMRST
-    bit_offset: 23
-    bit_size: 1
-    description: write-miss monitor reset
-  - name: HBURST
-    bit_offset: 31
-    bit_size: 1
-    description: output burst type for cache master port read accesses
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+      description: enable
+    - name: CACHEINV
+      bit_offset: 1
+      bit_size: 1
+      description: full cache invalidation
+    - name: CACHECMD
+      bit_offset: 8
+      bit_size: 3
+      description: cache command maintenance operation (cleans and/or invalidates an
+        address range)
+    - name: STARTCMD
+      bit_offset: 11
+      bit_size: 1
+      description: starts maintenance command (maintenance operation defined in CACHECMD).
+    - name: RHITMEN
+      bit_offset: 16
+      bit_size: 1
+      description: read-hit monitor enable
+    - name: RMISSMEN
+      bit_offset: 17
+      bit_size: 1
+      description: read-miss monitor enable
+    - name: RHITMRST
+      bit_offset: 18
+      bit_size: 1
+      description: read-hit monitor reset
+    - name: RMISSMRST
+      bit_offset: 19
+      bit_size: 1
+      description: read-miss monitor reset
+    - name: WHITMEN
+      bit_offset: 20
+      bit_size: 1
+      description: write-hit monitor enable
+    - name: WMISSMEN
+      bit_offset: 21
+      bit_size: 1
+      description: write-miss monitor enable
+    - name: WHITMRST
+      bit_offset: 22
+      bit_size: 1
+      description: write-hit monitor reset
+    - name: WMISSMRST
+      bit_offset: 23
+      bit_size: 1
+      description: write-miss monitor reset
+    - name: HBURST
+      bit_offset: 31
+      bit_size: 1
+      description: output burst type for cache master port read accesses
 fieldset/DCACHE_SR:
   description: ''
   fields:
-  - name: BUSYF
-    bit_offset: 0
-    bit_size: 1
-    description: full invalidate busy flag
-  - name: BSYENDF
-    bit_offset: 1
-    bit_size: 1
-    description: full invalidate busy end flag
-  - name: ERRF
-    bit_offset: 2
-    bit_size: 1
-    description: cache error flag
-  - name: BUSYCMDF
-    bit_offset: 3
-    bit_size: 1
-    description: command busy flag
-  - name: CMDENDF
-    bit_offset: 4
-    bit_size: 1
-    description: command end flag
+    - name: BUSYF
+      bit_offset: 0
+      bit_size: 1
+      description: full invalidate busy flag
+    - name: BSYENDF
+      bit_offset: 1
+      bit_size: 1
+      description: full invalidate busy end flag
+    - name: ERRF
+      bit_offset: 2
+      bit_size: 1
+      description: cache error flag
+    - name: BUSYCMDF
+      bit_offset: 3
+      bit_size: 1
+      description: command busy flag
+    - name: CMDENDF
+      bit_offset: 4
+      bit_size: 1
+      description: command end flag
 fieldset/DCACHE_IER:
   description: ''
   fields:
-  - name: BSYENDIE
-    bit_offset: 1
-    bit_size: 1
-    description: interrupt enable on busy end
-  - name: ERRIE
-    bit_offset: 2
-    bit_size: 1
-    description: interrupt enable on cache error
-  - name: CMDENDIE
-    bit_offset: 4
-    bit_size: 1
-    description: interrupt enable on command end
+    - name: BSYENDIE
+      bit_offset: 1
+      bit_size: 1
+      description: interrupt enable on busy end
+    - name: ERRIE
+      bit_offset: 2
+      bit_size: 1
+      description: interrupt enable on cache error
+    - name: CMDENDIE
+      bit_offset: 4
+      bit_size: 1
+      description: interrupt enable on command end
 fieldset/DCACHE_FCR:
   description: ''
   fields:
-  - name: CBSYENDF
-    bit_offset: 1
-    bit_size: 1
-    description: clear full invalidate busy end flag
-  - name: CERRF
-    bit_offset: 2
-    bit_size: 1
-    description: clear cache error flag
-  - name: CCMDENDF
-    bit_offset: 4
-    bit_size: 1
-    description: clear command end flag
+    - name: CBSYENDF
+      bit_offset: 1
+      bit_size: 1
+      description: clear full invalidate busy end flag
+    - name: CERRF
+      bit_offset: 2
+      bit_size: 1
+      description: clear cache error flag
+    - name: CCMDENDF
+      bit_offset: 4
+      bit_size: 1
+      description: clear command end flag
 fieldset/DCACHE_RHMONR:
   description: ''
   fields:
-  - name: RHITMON
-    bit_offset: 0
-    bit_size: 32
-    description: cache read-hit monitor counter
+    - name: RHITMON
+      bit_offset: 0
+      bit_size: 32
+      description: cache read-hit monitor counter
 fieldset/DCACHE_RMMONR:
   description: ''
   fields:
-  - name: RMISSMON
-    bit_offset: 0
-    bit_size: 16
-    description: cache read-miss monitor counter
+    - name: RMISSMON
+      bit_offset: 0
+      bit_size: 16
+      description: cache read-miss monitor counter
 fieldset/DCACHE_WHMONR:
   description: ''
   fields:
-  - name: WHITMON
-    bit_offset: 0
-    bit_size: 32
-    description: cache write-hit monitor counter
+    - name: WHITMON
+      bit_offset: 0
+      bit_size: 32
+      description: cache write-hit monitor counter
 fieldset/DCACHE_WMMONR:
   description: ''
   fields:
-  - name: WMISSMON
-    bit_offset: 0
-    bit_size: 16
-    description: cache write-miss monitor counter
+    - name: WMISSMON
+      bit_offset: 0
+      bit_size: 16
+      description: cache write-miss monitor counter
 fieldset/DCACHE_CMDRSADDRR:
   description: ''
   fields:
-  - name: CMDSTARTADDR
-    bit_offset: 5
-    bit_size: 27
-    description: start address of range to which the cache maintenance command specified
-      in DCACHE_CR.CACHECMD field applies
+    - name: CMDSTARTADDR
+      bit_offset: 5
+      bit_size: 27
+      description: start address of range to which the cache maintenance command specified
+        in DCACHE_CR.CACHECMD field applies
 fieldset/DCACHE_CMDREADDRR:
   description: ''
   fields:
-  - name: CMDENDADDR
-    bit_offset: 5
-    bit_size: 27
-    description: end address of range to which the cache maintenance command specified
-      in DCACHE_CR.CACHECMD field applies
+    - name: CMDENDADDR
+      bit_offset: 5
+      bit_size: 27
+      description: end address of range to which the cache maintenance command specified
+        in DCACHE_CR.CACHECMD field applies
 fieldset/DCACHE_HWCFGR:
   description: ''
   fields:
-  - name: WAYS
-    bit_offset: 0
-    bit_size: 2
-    description: cache associativity, number of ways
-  - name: SIZE
-    bit_offset: 4
-    bit_size: 3
-    description: cache size
-  - name: LWIDTH
-    bit_offset: 9
-    bit_size: 2
-    description: cache line width
-  - name: MASTERSIZE
-    bit_offset: 23
-    bit_size: 2
-    description: data size of AHB master interface
+    - name: WAYS
+      bit_offset: 0
+      bit_size: 2
+      description: cache associativity, number of ways
+    - name: SIZE
+      bit_offset: 4
+      bit_size: 3
+      description: cache size
+    - name: LWIDTH
+      bit_offset: 9
+      bit_size: 2
+      description: cache line width
+    - name: MASTERSIZE
+      bit_offset: 23
+      bit_size: 2
+      description: data size of AHB master interface
 fieldset/DCACHE_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: minor IP revision
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: major IP revision
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: minor IP revision
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: major IP revision

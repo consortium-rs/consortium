@@ -1,838 +1,838 @@
 block/NETC_ENETC:
   description: ''
   items:
-  - name: ECAPR0
-    byte_offset: 0
-    fieldset: NETC_ENETC_ECAPR0
-  - name: ECAPR1
-    byte_offset: 4
-  - name: ECAPR2
-    byte_offset: 8
-  - name: PMR
-    byte_offset: 16
-    fieldset: NETC_ENETC_PMR
-  - name: PONVLANR
-    byte_offset: 128
-    fieldset: NETC_ENETC_PONVLANR
-  - name: PINVLANR
-    byte_offset: 132
-    fieldset: NETC_ENETC_PINVLANR
-  - name: PVCLCTR
-    byte_offset: 136
-    fieldset: NETC_ENETC_PVCLCTR
-  - name: PARCSCR
-    byte_offset: 156
-    fieldset: NETC_ENETC_PARCSCR
-  - name: PARCECR
-    byte_offset: 160
-    array:
-      len: 4
-      stride: 4
-    fieldset: NETC_ENETC_PARCECR
-  - name: PPAUONTR
-    byte_offset: 264
-    fieldset: NETC_ENETC_PPAUONTR
-  - name: PPAUOFFTR
-    byte_offset: 268
-    fieldset: NETC_ENETC_PPAUOFFTR
-  - name: PRXMBER
-    byte_offset: 288
-    fieldset: NETC_ENETC_PRXMBER
-  - name: PRXMBLR
-    byte_offset: 292
-    fieldset: NETC_ENETC_PRXMBLR
-  - name: PRXBCR
-    byte_offset: 296
-    fieldset: NETC_ENETC_PRXBCR
-  - name: PRXBCHWMR
-    byte_offset: 300
-    fieldset: NETC_ENETC_PRXBCHWMR
-  - name: PICDRADCR_PICDRDCR
-    byte_offset: 320
-    array:
-      len: 4
-      stride: 16
-  - name: PICPDSR
-    byte_offset: 384
-  - name: PSIPMMR
-    byte_offset: 512
-  - name: PSIPVMR
-    byte_offset: 516
-  - name: PBFDSIR
-    byte_offset: 520
-  - name: PFDMSAPR
-    byte_offset: 524
-  - name: PRSSCAPR
-    byte_offset: 576
-  - name: PRSSCR
-    byte_offset: 580
-  - name: PRSSKR0
-    byte_offset: 592
-  - name: PRSSKR1
-    byte_offset: 596
-  - name: PRSSKR2
-    byte_offset: 600
-  - name: PRSSKR3
-    byte_offset: 604
-  - name: PRSSKR4
-    byte_offset: 608
-  - name: PRSSKR5
-    byte_offset: 612
-  - name: PRSSKR6
-    byte_offset: 616
-  - name: PRSSKR7
-    byte_offset: 620
-  - name: PRSSKR8
-    byte_offset: 624
-  - name: PRSSKR9
-    byte_offset: 628
-  - name: PSIMAFCAPR
-    byte_offset: 640
-  - name: PUFDMFR
-    byte_offset: 644
-  - name: PMFDMFR
-    byte_offset: 648
-  - name: PSIVLANFCAPR
-    byte_offset: 704
-  - name: PSIVLANFMR
-    byte_offset: 708
-    fieldset: NETC_ENETC_PSIVLANFMR
-  - name: PUFDVFR
-    byte_offset: 720
-  - name: PMFDVFR
-    byte_offset: 724
-  - name: PBFDVFR
-    byte_offset: 728
-  - name: PLPMR
-    byte_offset: 832
-    fieldset: NETC_ENETC_PLPMR
-  - name: PWOSR
-    byte_offset: 836
-    fieldset: NETC_ENETC_PWOSR
-  - name: IPV2ICMPMR0
-    byte_offset: 880
-    fieldset: NETC_ENETC_IPV2ICMPMR0
-  - name: PRIO2TCMR0
-    byte_offset: 896
-    fieldset: NETC_ENETC_PRIO2TCMR0
-  - name: PTCTSDR
-    byte_offset: 912
-    array:
-      len: 8
-      stride: 4
-    fieldset: NETC_ENETC_PTCTSDR
-  - name: SMCAPR
-    byte_offset: 2048
-    fieldset: NETC_ENETC_SMCAPR
-  - name: NUM_SI_PSIPMAR0
-    byte_offset: 8192
-    array:
-      len: 3
-      stride: 128
+    - name: ECAPR0
+      byte_offset: 0
+      fieldset: NETC_ENETC_ECAPR0
+    - name: ECAPR1
+      byte_offset: 4
+    - name: ECAPR2
+      byte_offset: 8
+    - name: PMR
+      byte_offset: 16
+      fieldset: NETC_ENETC_PMR
+    - name: PONVLANR
+      byte_offset: 128
+      fieldset: NETC_ENETC_PONVLANR
+    - name: PINVLANR
+      byte_offset: 132
+      fieldset: NETC_ENETC_PINVLANR
+    - name: PVCLCTR
+      byte_offset: 136
+      fieldset: NETC_ENETC_PVCLCTR
+    - name: PARCSCR
+      byte_offset: 156
+      fieldset: NETC_ENETC_PARCSCR
+    - name: PARCECR
+      byte_offset: 160
+      array:
+        len: 4
+        stride: 4
+      fieldset: NETC_ENETC_PARCECR
+    - name: PPAUONTR
+      byte_offset: 264
+      fieldset: NETC_ENETC_PPAUONTR
+    - name: PPAUOFFTR
+      byte_offset: 268
+      fieldset: NETC_ENETC_PPAUOFFTR
+    - name: PRXMBER
+      byte_offset: 288
+      fieldset: NETC_ENETC_PRXMBER
+    - name: PRXMBLR
+      byte_offset: 292
+      fieldset: NETC_ENETC_PRXMBLR
+    - name: PRXBCR
+      byte_offset: 296
+      fieldset: NETC_ENETC_PRXBCR
+    - name: PRXBCHWMR
+      byte_offset: 300
+      fieldset: NETC_ENETC_PRXBCHWMR
+    - name: PICDRADCR_PICDRDCR
+      byte_offset: 320
+      array:
+        len: 4
+        stride: 16
+    - name: PICPDSR
+      byte_offset: 384
+    - name: PSIPMMR
+      byte_offset: 512
+    - name: PSIPVMR
+      byte_offset: 516
+    - name: PBFDSIR
+      byte_offset: 520
+    - name: PFDMSAPR
+      byte_offset: 524
+    - name: PRSSCAPR
+      byte_offset: 576
+    - name: PRSSCR
+      byte_offset: 580
+    - name: PRSSKR0
+      byte_offset: 592
+    - name: PRSSKR1
+      byte_offset: 596
+    - name: PRSSKR2
+      byte_offset: 600
+    - name: PRSSKR3
+      byte_offset: 604
+    - name: PRSSKR4
+      byte_offset: 608
+    - name: PRSSKR5
+      byte_offset: 612
+    - name: PRSSKR6
+      byte_offset: 616
+    - name: PRSSKR7
+      byte_offset: 620
+    - name: PRSSKR8
+      byte_offset: 624
+    - name: PRSSKR9
+      byte_offset: 628
+    - name: PSIMAFCAPR
+      byte_offset: 640
+    - name: PUFDMFR
+      byte_offset: 644
+    - name: PMFDMFR
+      byte_offset: 648
+    - name: PSIVLANFCAPR
+      byte_offset: 704
+    - name: PSIVLANFMR
+      byte_offset: 708
+      fieldset: NETC_ENETC_PSIVLANFMR
+    - name: PUFDVFR
+      byte_offset: 720
+    - name: PMFDVFR
+      byte_offset: 724
+    - name: PBFDVFR
+      byte_offset: 728
+    - name: PLPMR
+      byte_offset: 832
+      fieldset: NETC_ENETC_PLPMR
+    - name: PWOSR
+      byte_offset: 836
+      fieldset: NETC_ENETC_PWOSR
+    - name: IPV2ICMPMR0
+      byte_offset: 880
+      fieldset: NETC_ENETC_IPV2ICMPMR0
+    - name: PRIO2TCMR0
+      byte_offset: 896
+      fieldset: NETC_ENETC_PRIO2TCMR0
+    - name: PTCTSDR
+      byte_offset: 912
+      array:
+        len: 8
+        stride: 4
+      fieldset: NETC_ENETC_PTCTSDR
+    - name: SMCAPR
+      byte_offset: 2048
+      fieldset: NETC_ENETC_SMCAPR
+    - name: NUM_SI_PSIPMAR0
+      byte_offset: 8192
+      array:
+        len: 3
+        stride: 128
 fieldset/NETC_ENETC_ECAPR0:
   description: ''
   fields:
-  - name: RFS
-    bit_offset: 2
-    bit_size: 1
-  - name: TSD
-    bit_offset: 5
-    bit_size: 1
-  - name: RSS
-    bit_offset: 8
-    bit_size: 1
-  - name: RSC
-    bit_offset: 9
-    bit_size: 1
-  - name: LSO
-    bit_offset: 10
-    bit_size: 1
-  - name: WO
-    bit_offset: 13
-    bit_size: 1
-  - name: FS
-    bit_offset: 16
-    bit_size: 1
+    - name: RFS
+      bit_offset: 2
+      bit_size: 1
+    - name: TSD
+      bit_offset: 5
+      bit_size: 1
+    - name: RSS
+      bit_offset: 8
+      bit_size: 1
+    - name: RSC
+      bit_offset: 9
+      bit_size: 1
+    - name: LSO
+      bit_offset: 10
+      bit_size: 1
+    - name: WO
+      bit_offset: 13
+      bit_size: 1
+    - name: FS
+      bit_offset: 16
+      bit_size: 1
 fieldset/NETC_ENETC_ECAPR1_NUM:
   description: ''
   fields:
-  - name: TCS
-    bit_offset: 4
-    bit_size: 3
-  - name: MCH
-    bit_offset: 8
-    bit_size: 2
-  - name: UCH
-    bit_offset: 10
-    bit_size: 2
-  - name: MSIX
-    bit_offset: 12
-    bit_size: 11
-    description: Number of MSI-X
-  - name: VSI
-    bit_offset: 24
-    bit_size: 4
-    description: Number of MSI-X
-  - name: IPV
-    bit_offset: 31
-    bit_size: 1
+    - name: TCS
+      bit_offset: 4
+      bit_size: 3
+    - name: MCH
+      bit_offset: 8
+      bit_size: 2
+    - name: UCH
+      bit_offset: 10
+      bit_size: 2
+    - name: MSIX
+      bit_offset: 12
+      bit_size: 11
+      description: Number of MSI-X
+    - name: VSI
+      bit_offset: 24
+      bit_size: 4
+      description: Number of MSI-X
+    - name: IPV
+      bit_offset: 31
+      bit_size: 1
 fieldset/NETC_ENETC_ECAPR2_NUM_TX:
   description: ''
   fields:
-  - name: BDR
-    bit_offset: 0
-    bit_size: 10
+    - name: BDR
+      bit_offset: 0
+      bit_size: 10
 fieldset/NETC_ENETC_ECAPR2_NUM_RX:
   description: ''
   fields:
-  - name: BDR
-    bit_offset: 16
-    bit_size: 10
+    - name: BDR
+      bit_offset: 16
+      bit_size: 10
 fieldset/NETC_ENETC_PMR:
   description: ''
   fields:
-  - name: SI0EN
-    bit_offset: 16
-    bit_size: 1
-  - name: SI1EN
-    bit_offset: 17
-    bit_size: 1
-  - name: SI2EN
-    bit_offset: 18
-    bit_size: 1
+    - name: SI0EN
+      bit_offset: 16
+      bit_size: 1
+    - name: SI1EN
+      bit_offset: 17
+      bit_size: 1
+    - name: SI2EN
+      bit_offset: 18
+      bit_size: 1
 fieldset/NETC_ENETC_PONVLANR:
   description: ''
   fields:
-  - name: VID
-    bit_offset: 0
-    bit_size: 12
-  - name: DEI
-    bit_offset: 12
-    bit_size: 1
-  - name: PCP
-    bit_offset: 13
-    bit_size: 3
-  - name: TPID
-    bit_offset: 16
-    bit_size: 2
-  - name: PNE
-    bit_offset: 18
-    bit_size: 1
-  - name: VZE
-    bit_offset: 19
-    bit_size: 1
+    - name: VID
+      bit_offset: 0
+      bit_size: 12
+    - name: DEI
+      bit_offset: 12
+      bit_size: 1
+    - name: PCP
+      bit_offset: 13
+      bit_size: 3
+    - name: TPID
+      bit_offset: 16
+      bit_size: 2
+    - name: PNE
+      bit_offset: 18
+      bit_size: 1
+    - name: VZE
+      bit_offset: 19
+      bit_size: 1
 fieldset/NETC_ENETC_PINVLANR:
   description: ''
   fields:
-  - name: VID
-    bit_offset: 0
-    bit_size: 12
-  - name: DEI
-    bit_offset: 12
-    bit_size: 1
-  - name: PCP
-    bit_offset: 13
-    bit_size: 3
-  - name: TPID
-    bit_offset: 16
-    bit_size: 2
-  - name: PNE
-    bit_offset: 18
-    bit_size: 1
-  - name: VZE
-    bit_offset: 19
-    bit_size: 1
+    - name: VID
+      bit_offset: 0
+      bit_size: 12
+    - name: DEI
+      bit_offset: 12
+      bit_size: 1
+    - name: PCP
+      bit_offset: 13
+      bit_size: 3
+    - name: TPID
+      bit_offset: 16
+      bit_size: 2
+    - name: PNE
+      bit_offset: 18
+      bit_size: 1
+    - name: VZE
+      bit_offset: 19
+      bit_size: 1
 fieldset/NETC_ENETC_PVCLCTR:
   description: ''
   fields:
-  - name: OAI
-    bit_offset: 9
-    bit_size: 1
+    - name: OAI
+      bit_offset: 9
+      bit_size: 1
 fieldset/NETC_ENETC_PARCSCR:
   description: ''
   fields:
-  - name: L4CD
-    bit_offset: 0
-    bit_size: 1
-  - name: L3CD
-    bit_offset: 1
-    bit_size: 1
+    - name: L4CD
+      bit_offset: 0
+      bit_size: 1
+    - name: L3CD
+      bit_offset: 1
+      bit_size: 1
 fieldset/NETC_ENETC_PARCECR:
   description: ''
   fields:
-  - name: CP
-    bit_offset: 0
-    bit_size: 4
-    description: CP
-  - name: EN
-    bit_offset: 5
-    bit_size: 1
-    description: CP
-  - name: ETYPE
-    bit_offset: 16
-    bit_size: 16
-    description: EN
+    - name: CP
+      bit_offset: 0
+      bit_size: 4
+      description: CP
+    - name: EN
+      bit_offset: 5
+      bit_size: 1
+      description: CP
+    - name: ETYPE
+      bit_offset: 16
+      bit_size: 16
+      description: EN
 fieldset/NETC_ENETC_PPAUONTR:
   description: ''
   fields:
-  - name: THRESH
-    bit_offset: 0
-    bit_size: 24
+    - name: THRESH
+      bit_offset: 0
+      bit_size: 24
 fieldset/NETC_ENETC_PPAUOFFTR:
   description: ''
   fields:
-  - name: THRESH
-    bit_offset: 0
-    bit_size: 24
+    - name: THRESH
+      bit_offset: 0
+      bit_size: 24
 fieldset/NETC_ENETC_PRXMBER:
   description: ''
   fields:
-  - name: AMOUNT
-    bit_offset: 0
-    bit_size: 24
+    - name: AMOUNT
+      bit_offset: 0
+      bit_size: 24
 fieldset/NETC_ENETC_PRXMBLR:
   description: ''
   fields:
-  - name: LIMIT
-    bit_offset: 0
-    bit_size: 24
+    - name: LIMIT
+      bit_offset: 0
+      bit_size: 24
 fieldset/NETC_ENETC_PRXBCR:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 24
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 24
 fieldset/NETC_ENETC_PRXBCHWMR:
   description: ''
   fields:
-  - name: WATERMARK
-    bit_offset: 0
-    bit_size: 24
+    - name: WATERMARK
+      bit_offset: 0
+      bit_size: 24
 fieldset/NETC_ENETC_PICDRDCR:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 32
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PICDRDCRRR:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 32
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PICPDSR_DR0:
   description: ''
   fields:
-  - name: P0DS
-    bit_offset: 0
-    bit_size: 1
-  - name: P1DS
-    bit_offset: 4
-    bit_size: 1
+    - name: P0DS
+      bit_offset: 0
+      bit_size: 1
+    - name: P1DS
+      bit_offset: 4
+      bit_size: 1
 fieldset/NETC_ENETC_PICPDSR_DR1:
   description: ''
   fields:
-  - name: P0DS
-    bit_offset: 8
-    bit_size: 1
-  - name: P1DS
-    bit_offset: 12
-    bit_size: 1
+    - name: P0DS
+      bit_offset: 8
+      bit_size: 1
+    - name: P1DS
+      bit_offset: 12
+      bit_size: 1
 fieldset/NETC_ENETC_PICPDSR_DR2:
   description: ''
   fields:
-  - name: P0DS
-    bit_offset: 16
-    bit_size: 1
-  - name: P1DS
-    bit_offset: 20
-    bit_size: 1
+    - name: P0DS
+      bit_offset: 16
+      bit_size: 1
+    - name: P1DS
+      bit_offset: 20
+      bit_size: 1
 fieldset/NETC_ENETC_PICPDSR_DR3:
   description: ''
   fields:
-  - name: P0DS
-    bit_offset: 24
-    bit_size: 1
-  - name: P1DS
-    bit_offset: 28
-    bit_size: 1
+    - name: P0DS
+      bit_offset: 24
+      bit_size: 1
+    - name: P1DS
+      bit_offset: 28
+      bit_size: 1
 fieldset/NETC_ENETC_PSIPMMR_SI0_MAC:
   description: ''
   fields:
-  - name: UP
-    bit_offset: 0
-    bit_size: 1
-  - name: MP
-    bit_offset: 16
-    bit_size: 1
+    - name: UP
+      bit_offset: 0
+      bit_size: 1
+    - name: MP
+      bit_offset: 16
+      bit_size: 1
 fieldset/NETC_ENETC_PSIPMMR_SI1_MAC:
   description: ''
   fields:
-  - name: UP
-    bit_offset: 1
-    bit_size: 1
-  - name: MP
-    bit_offset: 17
-    bit_size: 1
+    - name: UP
+      bit_offset: 1
+      bit_size: 1
+    - name: MP
+      bit_offset: 17
+      bit_size: 1
 fieldset/NETC_ENETC_PSIPMMR_SI2_MAC:
   description: ''
   fields:
-  - name: UP
-    bit_offset: 2
-    bit_size: 1
-  - name: MP
-    bit_offset: 18
-    bit_size: 1
+    - name: UP
+      bit_offset: 2
+      bit_size: 1
+    - name: MP
+      bit_offset: 18
+      bit_size: 1
 fieldset/NETC_ENETC_PSIPVMR_SI0_VLAN:
   description: ''
   fields:
-  - name: P
-    bit_offset: 0
-    bit_size: 1
-  - name: UTA
-    bit_offset: 16
-    bit_size: 1
+    - name: P
+      bit_offset: 0
+      bit_size: 1
+    - name: UTA
+      bit_offset: 16
+      bit_size: 1
 fieldset/NETC_ENETC_PSIPVMR_SI1_VLAN:
   description: ''
   fields:
-  - name: P
-    bit_offset: 1
-    bit_size: 1
-  - name: UTA
-    bit_offset: 17
-    bit_size: 1
+    - name: P
+      bit_offset: 1
+      bit_size: 1
+    - name: UTA
+      bit_offset: 17
+      bit_size: 1
 fieldset/NETC_ENETC_PSIPVMR_SI2_VLAN:
   description: ''
   fields:
-  - name: P
-    bit_offset: 2
-    bit_size: 1
-  - name: UTA
-    bit_offset: 18
-    bit_size: 1
+    - name: P
+      bit_offset: 2
+      bit_size: 1
+    - name: UTA
+      bit_offset: 18
+      bit_size: 1
 fieldset/NETC_ENETC_PBFDSIR_FRAME:
   description: ''
   fields:
-  - name: DROP
-    bit_offset: 0
-    bit_size: 32
+    - name: DROP
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PFDMSAPR_FRAME:
   description: ''
   fields:
-  - name: DROP
-    bit_offset: 0
-    bit_size: 32
+    - name: DROP
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PRSSCAPR_NUM:
   description: ''
   fields:
-  - name: RSS
-    bit_offset: 0
-    bit_size: 4
+    - name: RSS
+      bit_offset: 0
+      bit_size: 4
 fieldset/NETC_ENETC_PRSSCR_IP4TCP:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 0
-    bit_size: 1
+    - name: DIS
+      bit_offset: 0
+      bit_size: 1
 fieldset/NETC_ENETC_PRSSCR_IP4:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 1
-    bit_size: 1
-    description: IPv4 packet disable.
+    - name: DIS
+      bit_offset: 1
+      bit_size: 1
+      description: IPv4 packet disable.
 fieldset/NETC_ENETC_PRSSCR_IP6TCP:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 2
-    bit_size: 1
-    description: IPv4 packet disable.
+    - name: DIS
+      bit_offset: 2
+      bit_size: 1
+      description: IPv4 packet disable.
 fieldset/NETC_ENETC_PRSSCR_IP4UDP:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 3
-    bit_size: 1
-    description: IPv4 with UDP disable.
+    - name: DIS
+      bit_offset: 3
+      bit_size: 1
+      description: IPv4 with UDP disable.
 fieldset/NETC_ENETC_PRSSCR_IP6UDP:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 4
-    bit_size: 1
-    description: IPv4 with UDP disable.
+    - name: DIS
+      bit_offset: 4
+      bit_size: 1
+      description: IPv4 with UDP disable.
 fieldset/NETC_ENETC_PRSSCR_IP6:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 5
-    bit_size: 1
-    description: IPv6 with UDP disable.
+    - name: DIS
+      bit_offset: 5
+      bit_size: 1
+      description: IPv6 with UDP disable.
 fieldset/NETC_ENETC_PRSSKR0_RSS:
   description: ''
   fields:
-  - name: KEY
-    bit_offset: 0
-    bit_size: 32
+    - name: KEY
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PRSSKR1_RSS:
   description: ''
   fields:
-  - name: KEY
-    bit_offset: 0
-    bit_size: 32
+    - name: KEY
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PRSSKR2_RSS:
   description: ''
   fields:
-  - name: KEY
-    bit_offset: 0
-    bit_size: 32
+    - name: KEY
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PRSSKR3_RSS:
   description: ''
   fields:
-  - name: KEY
-    bit_offset: 0
-    bit_size: 32
+    - name: KEY
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PRSSKR4_RSS:
   description: ''
   fields:
-  - name: KEY
-    bit_offset: 0
-    bit_size: 32
+    - name: KEY
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PRSSKR5_RSS:
   description: ''
   fields:
-  - name: KEY
-    bit_offset: 0
-    bit_size: 32
+    - name: KEY
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PRSSKR6_RSS:
   description: ''
   fields:
-  - name: KEY
-    bit_offset: 0
-    bit_size: 32
+    - name: KEY
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PRSSKR7_RSS:
   description: ''
   fields:
-  - name: KEY
-    bit_offset: 0
-    bit_size: 32
+    - name: KEY
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PRSSKR8_RSS:
   description: ''
   fields:
-  - name: KEY
-    bit_offset: 0
-    bit_size: 32
+    - name: KEY
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PRSSKR9_RSS:
   description: ''
   fields:
-  - name: KEY
-    bit_offset: 0
-    bit_size: 32
+    - name: KEY
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PSIMAFCAPR_NUM_MAC:
   description: ''
   fields:
-  - name: AFTE
-    bit_offset: 0
-    bit_size: 12
+    - name: AFTE
+      bit_offset: 0
+      bit_size: 12
 fieldset/NETC_ENETC_PUFDMFR_FRAME:
   description: ''
   fields:
-  - name: DROP
-    bit_offset: 0
-    bit_size: 32
+    - name: DROP
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PMFDMFR_FRAME:
   description: ''
   fields:
-  - name: DROP
-    bit_offset: 0
-    bit_size: 32
+    - name: DROP
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PSIVLANFCAPR_NUM_VLAN:
   description: ''
   fields:
-  - name: FTE
-    bit_offset: 0
-    bit_size: 12
+    - name: FTE
+      bit_offset: 0
+      bit_size: 12
 fieldset/NETC_ENETC_PSIVLANFMR:
   description: ''
   fields:
-  - name: VS
-    bit_offset: 0
-    bit_size: 1
+    - name: VS
+      bit_offset: 0
+      bit_size: 1
 fieldset/NETC_ENETC_PUFDVFR_FRAME:
   description: ''
   fields:
-  - name: DROP
-    bit_offset: 0
-    bit_size: 32
+    - name: DROP
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PMFDVFR_FRAME:
   description: ''
   fields:
-  - name: DROP
-    bit_offset: 0
-    bit_size: 32
+    - name: DROP
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PBFDVFR_FRAME:
   description: ''
   fields:
-  - name: DROP
-    bit_offset: 0
-    bit_size: 32
+    - name: DROP
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PLPMR:
   description: ''
   fields:
-  - name: WME
-    bit_offset: 0
-    bit_size: 1
+    - name: WME
+      bit_offset: 0
+      bit_size: 1
 fieldset/NETC_ENETC_PWOSR:
   description: ''
   fields:
-  - name: WOLA
-    bit_offset: 0
-    bit_size: 1
-  - name: ICMB
-    bit_offset: 1
-    bit_size: 1
+    - name: WOLA
+      bit_offset: 0
+      bit_size: 1
+    - name: ICMB
+      bit_offset: 1
+      bit_size: 1
 fieldset/NETC_ENETC_IPV2ICMPMR0:
   description: ''
   fields:
-  - name: IPV0ICM
-    bit_offset: 0
-    bit_size: 1
-  - name: IPV1ICM
-    bit_offset: 4
-    bit_size: 1
-  - name: IPV2ICM
-    bit_offset: 8
-    bit_size: 1
-  - name: IPV3ICM
-    bit_offset: 12
-    bit_size: 1
-  - name: IPV4ICM
-    bit_offset: 16
-    bit_size: 1
-  - name: IPV5ICM
-    bit_offset: 20
-    bit_size: 1
-  - name: IPV6ICM
-    bit_offset: 24
-    bit_size: 1
-  - name: IPV7ICM
-    bit_offset: 28
-    bit_size: 1
+    - name: IPV0ICM
+      bit_offset: 0
+      bit_size: 1
+    - name: IPV1ICM
+      bit_offset: 4
+      bit_size: 1
+    - name: IPV2ICM
+      bit_offset: 8
+      bit_size: 1
+    - name: IPV3ICM
+      bit_offset: 12
+      bit_size: 1
+    - name: IPV4ICM
+      bit_offset: 16
+      bit_size: 1
+    - name: IPV5ICM
+      bit_offset: 20
+      bit_size: 1
+    - name: IPV6ICM
+      bit_offset: 24
+      bit_size: 1
+    - name: IPV7ICM
+      bit_offset: 28
+      bit_size: 1
 fieldset/NETC_ENETC_PRIO2TCMR0:
   description: ''
   fields:
-  - name: PRIO0TC
-    bit_offset: 0
-    bit_size: 3
-  - name: PRIO1TC
-    bit_offset: 4
-    bit_size: 3
-  - name: PRIO2TC
-    bit_offset: 8
-    bit_size: 3
-  - name: PRIO3TC
-    bit_offset: 12
-    bit_size: 3
-  - name: PRIO4TC
-    bit_offset: 16
-    bit_size: 3
-  - name: PRIO5TC
-    bit_offset: 20
-    bit_size: 3
-  - name: PRIO6TC
-    bit_offset: 24
-    bit_size: 3
-  - name: PRIO7TC
-    bit_offset: 28
-    bit_size: 3
+    - name: PRIO0TC
+      bit_offset: 0
+      bit_size: 3
+    - name: PRIO1TC
+      bit_offset: 4
+      bit_size: 3
+    - name: PRIO2TC
+      bit_offset: 8
+      bit_size: 3
+    - name: PRIO3TC
+      bit_offset: 12
+      bit_size: 3
+    - name: PRIO4TC
+      bit_offset: 16
+      bit_size: 3
+    - name: PRIO5TC
+      bit_offset: 20
+      bit_size: 3
+    - name: PRIO6TC
+      bit_offset: 24
+      bit_size: 3
+    - name: PRIO7TC
+      bit_offset: 28
+      bit_size: 3
 fieldset/NETC_ENETC_PTCTSDR:
   description: ''
   fields:
-  - name: TSDE
-    bit_offset: 31
-    bit_size: 1
+    - name: TSDE
+      bit_offset: 31
+      bit_size: 1
 fieldset/NETC_ENETC_SMCAPR:
   description: ''
   fields:
-  - name: SM
-    bit_offset: 0
-    bit_size: 1
+    - name: SM
+      bit_offset: 0
+      bit_size: 1
 fieldset/NETC_ENETC_PSIPMAR0_PRIM_MAC:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 0
-    bit_size: 32
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PSIPMAR1_PRIM_MAC:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 0
-    bit_size: 16
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 16
 fieldset/NETC_ENETC_PSIVLANR:
   description: ''
   fields:
-  - name: VID
-    bit_offset: 0
-    bit_size: 12
-  - name: DEI
-    bit_offset: 12
-    bit_size: 1
-  - name: PCP
-    bit_offset: 13
-    bit_size: 3
-  - name: TPID
-    bit_offset: 16
-    bit_size: 2
-  - name: TXTAGR
-    bit_offset: 20
-    bit_size: 4
-  - name: VTEA
-    bit_offset: 30
-    bit_size: 1
-  - name: E
-    bit_offset: 31
-    bit_size: 1
+    - name: VID
+      bit_offset: 0
+      bit_size: 12
+    - name: DEI
+      bit_offset: 12
+      bit_size: 1
+    - name: PCP
+      bit_offset: 13
+      bit_size: 3
+    - name: TPID
+      bit_offset: 16
+      bit_size: 2
+    - name: TXTAGR
+      bit_offset: 20
+      bit_size: 4
+    - name: VTEA
+      bit_offset: 30
+      bit_size: 1
+    - name: E
+      bit_offset: 31
+      bit_size: 1
 fieldset/NETC_ENETC_PSICFGR0_NUM_TX:
   description: ''
   fields:
-  - name: BDR
-    bit_offset: 0
-    bit_size: 7
+    - name: BDR
+      bit_offset: 0
+      bit_size: 7
 fieldset/NETC_ENETC_PSICFGR0:
   description: ''
   fields:
-  - name: VTIA
-    bit_offset: 10
-    bit_size: 1
-  - name: SPE
-    bit_offset: 11
-    bit_size: 1
-  - name: VTE
-    bit_offset: 12
-    bit_size: 1
-  - name: VASE
-    bit_offset: 13
-    bit_size: 1
-  - name: SIVIE
-    bit_offset: 14
-    bit_size: 1
-  - name: ASE
-    bit_offset: 15
-    bit_size: 1
-  - name: SIVC
-    bit_offset: 24
-    bit_size: 4
-  - name: SIBW
-    bit_offset: 28
-    bit_size: 4
+    - name: VTIA
+      bit_offset: 10
+      bit_size: 1
+    - name: SPE
+      bit_offset: 11
+      bit_size: 1
+    - name: VTE
+      bit_offset: 12
+      bit_size: 1
+    - name: VASE
+      bit_offset: 13
+      bit_size: 1
+    - name: SIVIE
+      bit_offset: 14
+      bit_size: 1
+    - name: ASE
+      bit_offset: 15
+      bit_size: 1
+    - name: SIVC
+      bit_offset: 24
+      bit_size: 4
+    - name: SIBW
+      bit_offset: 28
+      bit_size: 4
 fieldset/NETC_ENETC_PSICFGR0_NUM_RX:
   description: ''
   fields:
-  - name: BDR
-    bit_offset: 16
-    bit_size: 7
+    - name: BDR
+      bit_offset: 16
+      bit_size: 7
 fieldset/NETC_ENETC_PSICFGR1_TC0:
   description: ''
   fields:
-  - name: MAP
-    bit_offset: 0
-    bit_size: 3
+    - name: MAP
+      bit_offset: 0
+      bit_size: 3
 fieldset/NETC_ENETC_PSICFGR1_TC1:
   description: ''
   fields:
-  - name: MAP
-    bit_offset: 4
-    bit_size: 3
+    - name: MAP
+      bit_offset: 4
+      bit_size: 3
 fieldset/NETC_ENETC_PSICFGR1_TC2:
   description: ''
   fields:
-  - name: MAP
-    bit_offset: 8
-    bit_size: 3
+    - name: MAP
+      bit_offset: 8
+      bit_size: 3
 fieldset/NETC_ENETC_PSICFGR1_TC3:
   description: ''
   fields:
-  - name: MAP
-    bit_offset: 12
-    bit_size: 3
+    - name: MAP
+      bit_offset: 12
+      bit_size: 3
 fieldset/NETC_ENETC_PSICFGR1_TC4:
   description: ''
   fields:
-  - name: MAP
-    bit_offset: 16
-    bit_size: 3
+    - name: MAP
+      bit_offset: 16
+      bit_size: 3
 fieldset/NETC_ENETC_PSICFGR1_TC5:
   description: ''
   fields:
-  - name: MAP
-    bit_offset: 20
-    bit_size: 3
+    - name: MAP
+      bit_offset: 20
+      bit_size: 3
 fieldset/NETC_ENETC_PSICFGR1_TC6:
   description: ''
   fields:
-  - name: MAP
-    bit_offset: 24
-    bit_size: 3
+    - name: MAP
+      bit_offset: 24
+      bit_size: 3
 fieldset/NETC_ENETC_PSICFGR1_TC7:
   description: ''
   fields:
-  - name: MAP
-    bit_offset: 28
-    bit_size: 3
+    - name: MAP
+      bit_offset: 28
+      bit_size: 3
 fieldset/NETC_ENETC_PSICFGR2_NUM:
   description: ''
   fields:
-  - name: MSIX
-    bit_offset: 0
-    bit_size: 6
-    description: Number of MSI-X
+    - name: MSIX
+      bit_offset: 0
+      bit_size: 6
+      description: Number of MSI-X
 fieldset/NETC_ENETC_PSIVMAFCFGR_NUM_MAC:
   description: ''
   fields:
-  - name: AFTE
-    bit_offset: 0
-    bit_size: 8
+    - name: AFTE
+      bit_offset: 0
+      bit_size: 8
 fieldset/NETC_ENETC_PSIVLANFCFGR_NUM_VLAN:
   description: ''
   fields:
-  - name: FTE
-    bit_offset: 0
-    bit_size: 8
+    - name: FTE
+      bit_offset: 0
+      bit_size: 8
 fieldset/NETC_ENETC_PSIUMHFR0_MAC_HASH_FLT:
   description: ''
   fields:
-  - name: LOW
-    bit_offset: 0
-    bit_size: 32
+    - name: LOW
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PSIUMHFR1_MAC_HASH_FLT:
   description: ''
   fields:
-  - name: HIGH
-    bit_offset: 0
-    bit_size: 32
+    - name: HIGH
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PSIMMHFR0_MAC_HASH_FLT:
   description: ''
   fields:
-  - name: LOW
-    bit_offset: 0
-    bit_size: 32
+    - name: LOW
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PSIMMHFR1_MAC_HASH_FLT:
   description: ''
   fields:
-  - name: HIGH
-    bit_offset: 0
-    bit_size: 32
+    - name: HIGH
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PSIVHFR0_VLAN_HASH_FLT:
   description: ''
   fields:
-  - name: LOW
-    bit_offset: 0
-    bit_size: 32
+    - name: LOW
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_ENETC_PSIVHFR1_VLAN_HASH_FLT:
   description: ''
   fields:
-  - name: HIGH
-    bit_offset: 0
-    bit_size: 32
+    - name: HIGH
+      bit_offset: 0
+      bit_size: 32

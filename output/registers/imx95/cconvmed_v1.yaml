@@ -1,15 +1,15 @@
 block/CCONVMED:
   description: ''
   items:
-  - name: CTRL_CAM
-    byte_offset: 0
-    array:
-      len: 1
-      stride: 4
-    fieldset: CCONVMED_CTRL_CAM
+    - name: CTRL_CAM
+      byte_offset: 0
+      array:
+        len: 1
+        stride: 4
+      fieldset: CCONVMED_CTRL_CAM
 fieldset/CCONVMED_CTRL_CAM:
   description: ''
   fields:
-  - name: FLT
-    bit_offset: 4
-    bit_size: 2
+    - name: FLT
+      bit_offset: 4
+      bit_size: 2

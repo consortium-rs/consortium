@@ -1,21 +1,21 @@
 block/CAMERA_DSI_CAMID_CSR:
   description: ''
   items:
-  - name: ISP_CAMID
-    byte_offset: 0
-    fieldset: CAMERA_DSI_CAMID_CSR_ISP_CAMID
+    - name: ISP_CAMID
+      byte_offset: 0
+      fieldset: CAMERA_DSI_CAMID_CSR_ISP_CAMID
 fieldset/CAMERA_DSI_CAMID_CSR_ISP_CAMID:
   description: ''
   fields:
-  - name: AWUSER0
-    bit_offset: 0
-    bit_size: 3
-  - name: AWUSER1
-    bit_offset: 4
-    bit_size: 3
-  - name: ARUSER0
-    bit_offset: 8
-    bit_size: 3
-  - name: ARUSER1
-    bit_offset: 12
-    bit_size: 3
+    - name: AWUSER0
+      bit_offset: 0
+      bit_size: 3
+    - name: AWUSER1
+      bit_offset: 4
+      bit_size: 3
+    - name: ARUSER0
+      bit_offset: 8
+      bit_size: 3
+    - name: ARUSER1
+      bit_offset: 12
+      bit_size: 3

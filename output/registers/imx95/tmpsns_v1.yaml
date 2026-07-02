@@ -1,1124 +1,1124 @@
 block/TMPSNS:
   description: ''
   items:
-  - name: CTRL0
-    byte_offset: 0
-  - name: CTRL0_SET
-    byte_offset: 4
-  - name: CTRL0_CLR
-    byte_offset: 8
-  - name: CTRL0_TOG
-    byte_offset: 12
-  - name: STAT0
-    byte_offset: 16
-    fieldset: TMPSNS_STAT0
-  - name: STAT0_SET
-    byte_offset: 20
-    fieldset: TMPSNS_STAT0_SET
-  - name: STAT0_CLR
-    byte_offset: 24
-    fieldset: TMPSNS_STAT0_CLR
-  - name: STAT0_TOG
-    byte_offset: 28
-    fieldset: TMPSNS_STAT0_TOG
-  - name: DATA0
-    byte_offset: 32
-  - name: DATA0_SET
-    byte_offset: 36
-  - name: DATA0_CLR
-    byte_offset: 40
-  - name: DATA0_TOG
-    byte_offset: 44
-  - name: THR_CTRL01
-    byte_offset: 48
-  - name: THR_CTRL01_SET
-    byte_offset: 52
-  - name: THR_CTRL01_CLR
-    byte_offset: 56
-  - name: THR_CTRL01_TOG
-    byte_offset: 60
-  - name: THR_CTRL23
-    byte_offset: 64
-  - name: THR_CTRL23_SET
-    byte_offset: 68
-  - name: THR_CTRL23_CLR
-    byte_offset: 72
-  - name: THR_CTRL23_TOG
-    byte_offset: 76
-  - name: CTRL1
-    byte_offset: 512
-    fieldset: TMPSNS_CTRL1
-  - name: CTRL1_SET
-    byte_offset: 516
-    fieldset: TMPSNS_CTRL1_SET
-  - name: CTRL1_CLR
-    byte_offset: 520
-    fieldset: TMPSNS_CTRL1_CLR
-  - name: CTRL1_TOG
-    byte_offset: 524
-    fieldset: TMPSNS_CTRL1_TOG
-  - name: STAT1
-    byte_offset: 528
-    fieldset: TMPSNS_STAT1
-  - name: STAT1_SET
-    byte_offset: 532
-    fieldset: TMPSNS_STAT1_SET
-  - name: STAT1_CLR
-    byte_offset: 536
-    fieldset: TMPSNS_STAT1_CLR
-  - name: STAT1_TOG
-    byte_offset: 540
-    fieldset: TMPSNS_STAT1_TOG
-  - name: DATA1
-    byte_offset: 544
-  - name: DATA1_SET
-    byte_offset: 548
-  - name: DATA1_CLR
-    byte_offset: 552
-  - name: DATA1_TOG
-    byte_offset: 556
-  - name: THR_CTRL45
-    byte_offset: 592
-  - name: THR_CTRL45_SET
-    byte_offset: 596
-  - name: THR_CTRL45_CLR
-    byte_offset: 600
-  - name: THR_CTRL45_TOG
-    byte_offset: 604
-  - name: PERIOD_CTRL
-    byte_offset: 624
-  - name: PERIOD_CTRL_SET
-    byte_offset: 628
-  - name: PERIOD_CTRL_CLR
-    byte_offset: 632
-  - name: PERIOD_CTRL_TOG
-    byte_offset: 636
-  - name: REF_DIV
-    byte_offset: 640
-    fieldset: TMPSNS_REF_DIV
-  - name: PUD_ST_CTRL
-    byte_offset: 688
-    fieldset: TMPSNS_PUD_ST_CTRL
-  - name: PUD_ST_CTRL_SET
-    byte_offset: 692
-    fieldset: TMPSNS_PUD_ST_CTRL_SET
-  - name: PUD_ST_CTRL_CLR
-    byte_offset: 696
-    fieldset: TMPSNS_PUD_ST_CTRL_CLR
-  - name: PUD_ST_CTRL_TOG
-    byte_offset: 700
-    fieldset: TMPSNS_PUD_ST_CTRL_TOG
+    - name: CTRL0
+      byte_offset: 0
+    - name: CTRL0_SET
+      byte_offset: 4
+    - name: CTRL0_CLR
+      byte_offset: 8
+    - name: CTRL0_TOG
+      byte_offset: 12
+    - name: STAT0
+      byte_offset: 16
+      fieldset: TMPSNS_STAT0
+    - name: STAT0_SET
+      byte_offset: 20
+      fieldset: TMPSNS_STAT0_SET
+    - name: STAT0_CLR
+      byte_offset: 24
+      fieldset: TMPSNS_STAT0_CLR
+    - name: STAT0_TOG
+      byte_offset: 28
+      fieldset: TMPSNS_STAT0_TOG
+    - name: DATA0
+      byte_offset: 32
+    - name: DATA0_SET
+      byte_offset: 36
+    - name: DATA0_CLR
+      byte_offset: 40
+    - name: DATA0_TOG
+      byte_offset: 44
+    - name: THR_CTRL01
+      byte_offset: 48
+    - name: THR_CTRL01_SET
+      byte_offset: 52
+    - name: THR_CTRL01_CLR
+      byte_offset: 56
+    - name: THR_CTRL01_TOG
+      byte_offset: 60
+    - name: THR_CTRL23
+      byte_offset: 64
+    - name: THR_CTRL23_SET
+      byte_offset: 68
+    - name: THR_CTRL23_CLR
+      byte_offset: 72
+    - name: THR_CTRL23_TOG
+      byte_offset: 76
+    - name: CTRL1
+      byte_offset: 512
+      fieldset: TMPSNS_CTRL1
+    - name: CTRL1_SET
+      byte_offset: 516
+      fieldset: TMPSNS_CTRL1_SET
+    - name: CTRL1_CLR
+      byte_offset: 520
+      fieldset: TMPSNS_CTRL1_CLR
+    - name: CTRL1_TOG
+      byte_offset: 524
+      fieldset: TMPSNS_CTRL1_TOG
+    - name: STAT1
+      byte_offset: 528
+      fieldset: TMPSNS_STAT1
+    - name: STAT1_SET
+      byte_offset: 532
+      fieldset: TMPSNS_STAT1_SET
+    - name: STAT1_CLR
+      byte_offset: 536
+      fieldset: TMPSNS_STAT1_CLR
+    - name: STAT1_TOG
+      byte_offset: 540
+      fieldset: TMPSNS_STAT1_TOG
+    - name: DATA1
+      byte_offset: 544
+    - name: DATA1_SET
+      byte_offset: 548
+    - name: DATA1_CLR
+      byte_offset: 552
+    - name: DATA1_TOG
+      byte_offset: 556
+    - name: THR_CTRL45
+      byte_offset: 592
+    - name: THR_CTRL45_SET
+      byte_offset: 596
+    - name: THR_CTRL45_CLR
+      byte_offset: 600
+    - name: THR_CTRL45_TOG
+      byte_offset: 604
+    - name: PERIOD_CTRL
+      byte_offset: 624
+    - name: PERIOD_CTRL_SET
+      byte_offset: 628
+    - name: PERIOD_CTRL_CLR
+      byte_offset: 632
+    - name: PERIOD_CTRL_TOG
+      byte_offset: 636
+    - name: REF_DIV
+      byte_offset: 640
+      fieldset: TMPSNS_REF_DIV
+    - name: PUD_ST_CTRL
+      byte_offset: 688
+      fieldset: TMPSNS_PUD_ST_CTRL
+    - name: PUD_ST_CTRL_SET
+      byte_offset: 692
+      fieldset: TMPSNS_PUD_ST_CTRL_SET
+    - name: PUD_ST_CTRL_CLR
+      byte_offset: 696
+      fieldset: TMPSNS_PUD_ST_CTRL_CLR
+    - name: PUD_ST_CTRL_TOG
+      byte_offset: 700
+      fieldset: TMPSNS_PUD_ST_CTRL_TOG
 fieldset/TMPSNS_CTRL0_THR0:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-  - name: IE
-    bit_offset: 8
-    bit_size: 1
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+    - name: IE
+      bit_offset: 8
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_THR1:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 2
-  - name: IE
-    bit_offset: 9
-    bit_size: 1
+    - name: MODE
+      bit_offset: 2
+      bit_size: 2
+    - name: IE
+      bit_offset: 9
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_THR2:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 4
-    bit_size: 2
-  - name: IE
-    bit_offset: 10
-    bit_size: 1
+    - name: MODE
+      bit_offset: 4
+      bit_size: 2
+    - name: IE
+      bit_offset: 10
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_DRDY0:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 16
-    bit_size: 1
-    description: Filter Length for Threshold Flag
+    - name: IE
+      bit_offset: 16
+      bit_size: 1
+      description: Filter Length for Threshold Flag
 fieldset/TMPSNS_CTRL0_FILT0_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 20
-    bit_size: 1
+    - name: CLR
+      bit_offset: 20
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_FILT1_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 21
-    bit_size: 1
+    - name: CLR
+      bit_offset: 21
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_FILT2_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 22
-    bit_size: 1
+    - name: CLR
+      bit_offset: 22
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_SET_THR0:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-    description: Threshold0 Comparator Mode
-  - name: IE
-    bit_offset: 8
-    bit_size: 1
-    description: Threshold2 Comparator Mode
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+      description: Threshold0 Comparator Mode
+    - name: IE
+      bit_offset: 8
+      bit_size: 1
+      description: Threshold2 Comparator Mode
 fieldset/TMPSNS_CTRL0_SET_THR1:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 2
-    description: Threshold0 Comparator Mode
-  - name: IE
-    bit_offset: 9
-    bit_size: 1
+    - name: MODE
+      bit_offset: 2
+      bit_size: 2
+      description: Threshold0 Comparator Mode
+    - name: IE
+      bit_offset: 9
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_SET_THR2:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 4
-    bit_size: 2
-    description: Threshold1 Comparator Mode
-  - name: IE
-    bit_offset: 10
-    bit_size: 1
+    - name: MODE
+      bit_offset: 4
+      bit_size: 2
+      description: Threshold1 Comparator Mode
+    - name: IE
+      bit_offset: 10
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_SET_DRDY0:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 16
-    bit_size: 1
+    - name: IE
+      bit_offset: 16
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_SET_FILT0_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 20
-    bit_size: 1
-    description: Data-Ready Interrupt Enable
+    - name: CLR
+      bit_offset: 20
+      bit_size: 1
+      description: Data-Ready Interrupt Enable
 fieldset/TMPSNS_CTRL0_SET_FILT1_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 21
-    bit_size: 1
+    - name: CLR
+      bit_offset: 21
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_SET_FILT2_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 22
-    bit_size: 1
+    - name: CLR
+      bit_offset: 22
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_CLR_THR0:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-    description: Threshold0 Comparator Mode
-  - name: IE
-    bit_offset: 8
-    bit_size: 1
-    description: Threshold2 Comparator Mode
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+      description: Threshold0 Comparator Mode
+    - name: IE
+      bit_offset: 8
+      bit_size: 1
+      description: Threshold2 Comparator Mode
 fieldset/TMPSNS_CTRL0_CLR_THR1:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 2
-    description: Threshold0 Comparator Mode
-  - name: IE
-    bit_offset: 9
-    bit_size: 1
+    - name: MODE
+      bit_offset: 2
+      bit_size: 2
+      description: Threshold0 Comparator Mode
+    - name: IE
+      bit_offset: 9
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_CLR_THR2:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 4
-    bit_size: 2
-    description: Threshold1 Comparator Mode
-  - name: IE
-    bit_offset: 10
-    bit_size: 1
+    - name: MODE
+      bit_offset: 4
+      bit_size: 2
+      description: Threshold1 Comparator Mode
+    - name: IE
+      bit_offset: 10
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_CLR_DRDY0:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 16
-    bit_size: 1
+    - name: IE
+      bit_offset: 16
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_CLR_FILT0_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 20
-    bit_size: 1
-    description: Data-Ready Interrupt Enable
+    - name: CLR
+      bit_offset: 20
+      bit_size: 1
+      description: Data-Ready Interrupt Enable
 fieldset/TMPSNS_CTRL0_CLR_FILT1_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 21
-    bit_size: 1
+    - name: CLR
+      bit_offset: 21
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_CLR_FILT2_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 22
-    bit_size: 1
+    - name: CLR
+      bit_offset: 22
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_TOG_THR0:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-    description: Threshold0 Comparator Mode
-  - name: IE
-    bit_offset: 8
-    bit_size: 1
-    description: Threshold2 Comparator Mode
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+      description: Threshold0 Comparator Mode
+    - name: IE
+      bit_offset: 8
+      bit_size: 1
+      description: Threshold2 Comparator Mode
 fieldset/TMPSNS_CTRL0_TOG_THR1:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 2
-    description: Threshold0 Comparator Mode
-  - name: IE
-    bit_offset: 9
-    bit_size: 1
+    - name: MODE
+      bit_offset: 2
+      bit_size: 2
+      description: Threshold0 Comparator Mode
+    - name: IE
+      bit_offset: 9
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_TOG_THR2:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 4
-    bit_size: 2
-    description: Threshold1 Comparator Mode
-  - name: IE
-    bit_offset: 10
-    bit_size: 1
+    - name: MODE
+      bit_offset: 4
+      bit_size: 2
+      description: Threshold1 Comparator Mode
+    - name: IE
+      bit_offset: 10
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_TOG_DRDY0:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 16
-    bit_size: 1
+    - name: IE
+      bit_offset: 16
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_TOG_FILT0_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 20
-    bit_size: 1
-    description: Data-Ready Interrupt Enable
+    - name: CLR
+      bit_offset: 20
+      bit_size: 1
+      description: Data-Ready Interrupt Enable
 fieldset/TMPSNS_CTRL0_TOG_FILT1_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 21
-    bit_size: 1
+    - name: CLR
+      bit_offset: 21
+      bit_size: 1
 fieldset/TMPSNS_CTRL0_TOG_FILT2_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 22
-    bit_size: 1
+    - name: CLR
+      bit_offset: 22
+      bit_size: 1
 fieldset/TMPSNS_STAT0_THR0:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 8
-    bit_size: 1
-  - name: STAT
-    bit_offset: 12
-    bit_size: 1
-    description: Threshold0 State
+    - name: IF
+      bit_offset: 8
+      bit_size: 1
+    - name: STAT
+      bit_offset: 12
+      bit_size: 1
+      description: Threshold0 State
 fieldset/TMPSNS_STAT0_THR1:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 9
-    bit_size: 1
-  - name: STAT
-    bit_offset: 13
-    bit_size: 1
-    description: Threshold0 State
+    - name: IF
+      bit_offset: 9
+      bit_size: 1
+    - name: STAT
+      bit_offset: 13
+      bit_size: 1
+      description: Threshold0 State
 fieldset/TMPSNS_STAT0_THR2:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 10
-    bit_size: 1
-  - name: STAT
-    bit_offset: 14
-    bit_size: 1
-    description: Threshold1 State
+    - name: IF
+      bit_offset: 10
+      bit_size: 1
+    - name: STAT
+      bit_offset: 14
+      bit_size: 1
+      description: Threshold1 State
 fieldset/TMPSNS_STAT0_DRDY0:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 16
-    bit_size: 1
-    description: Threshold2 State
+    - name: IF
+      bit_offset: 16
+      bit_size: 1
+      description: Threshold2 State
 fieldset/TMPSNS_STAT0:
   description: ''
   fields:
-  - name: IDLE
-    bit_offset: 31
-    bit_size: 1
+    - name: IDLE
+      bit_offset: 31
+      bit_size: 1
 fieldset/TMPSNS_STAT0_SET_THR0:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 8
-    bit_size: 1
-    description: Threshold0 Status Flag
-  - name: STAT
-    bit_offset: 12
-    bit_size: 1
-    description: Threshold2 Status Flag
+    - name: IF
+      bit_offset: 8
+      bit_size: 1
+      description: Threshold0 Status Flag
+    - name: STAT
+      bit_offset: 12
+      bit_size: 1
+      description: Threshold2 Status Flag
 fieldset/TMPSNS_STAT0_SET_THR1:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 9
-    bit_size: 1
-    description: Threshold0 Status Flag
-  - name: STAT
-    bit_offset: 13
-    bit_size: 1
-    description: Threshold0 State
+    - name: IF
+      bit_offset: 9
+      bit_size: 1
+      description: Threshold0 Status Flag
+    - name: STAT
+      bit_offset: 13
+      bit_size: 1
+      description: Threshold0 State
 fieldset/TMPSNS_STAT0_SET_THR2:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 10
-    bit_size: 1
-    description: Threshold1 Status Flag
-  - name: STAT
-    bit_offset: 14
-    bit_size: 1
-    description: Threshold1 State
+    - name: IF
+      bit_offset: 10
+      bit_size: 1
+      description: Threshold1 Status Flag
+    - name: STAT
+      bit_offset: 14
+      bit_size: 1
+      description: Threshold1 State
 fieldset/TMPSNS_STAT0_SET_DRDY0:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 16
-    bit_size: 1
-    description: Threshold2 State
+    - name: IF
+      bit_offset: 16
+      bit_size: 1
+      description: Threshold2 State
 fieldset/TMPSNS_STAT0_SET:
   description: ''
   fields:
-  - name: IDLE
-    bit_offset: 31
-    bit_size: 1
-    description: Data Ready Flag
+    - name: IDLE
+      bit_offset: 31
+      bit_size: 1
+      description: Data Ready Flag
 fieldset/TMPSNS_STAT0_CLR_THR0:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 8
-    bit_size: 1
-    description: Threshold0 Status Flag
-  - name: STAT
-    bit_offset: 12
-    bit_size: 1
-    description: Threshold2 Status Flag
+    - name: IF
+      bit_offset: 8
+      bit_size: 1
+      description: Threshold0 Status Flag
+    - name: STAT
+      bit_offset: 12
+      bit_size: 1
+      description: Threshold2 Status Flag
 fieldset/TMPSNS_STAT0_CLR_THR1:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 9
-    bit_size: 1
-    description: Threshold0 Status Flag
-  - name: STAT
-    bit_offset: 13
-    bit_size: 1
-    description: Threshold0 State
+    - name: IF
+      bit_offset: 9
+      bit_size: 1
+      description: Threshold0 Status Flag
+    - name: STAT
+      bit_offset: 13
+      bit_size: 1
+      description: Threshold0 State
 fieldset/TMPSNS_STAT0_CLR_THR2:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 10
-    bit_size: 1
-    description: Threshold1 Status Flag
-  - name: STAT
-    bit_offset: 14
-    bit_size: 1
-    description: Threshold1 State
+    - name: IF
+      bit_offset: 10
+      bit_size: 1
+      description: Threshold1 Status Flag
+    - name: STAT
+      bit_offset: 14
+      bit_size: 1
+      description: Threshold1 State
 fieldset/TMPSNS_STAT0_CLR_DRDY0:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 16
-    bit_size: 1
-    description: Threshold2 State
+    - name: IF
+      bit_offset: 16
+      bit_size: 1
+      description: Threshold2 State
 fieldset/TMPSNS_STAT0_CLR:
   description: ''
   fields:
-  - name: IDLE
-    bit_offset: 31
-    bit_size: 1
-    description: Data Ready Flag
+    - name: IDLE
+      bit_offset: 31
+      bit_size: 1
+      description: Data Ready Flag
 fieldset/TMPSNS_STAT0_TOG_THR0:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 8
-    bit_size: 1
-    description: Threshold0 Status Flag
-  - name: STAT
-    bit_offset: 12
-    bit_size: 1
-    description: Threshold2 Status Flag
+    - name: IF
+      bit_offset: 8
+      bit_size: 1
+      description: Threshold0 Status Flag
+    - name: STAT
+      bit_offset: 12
+      bit_size: 1
+      description: Threshold2 Status Flag
 fieldset/TMPSNS_STAT0_TOG_THR1:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 9
-    bit_size: 1
-    description: Threshold0 Status Flag
-  - name: STAT
-    bit_offset: 13
-    bit_size: 1
-    description: Threshold0 State
+    - name: IF
+      bit_offset: 9
+      bit_size: 1
+      description: Threshold0 Status Flag
+    - name: STAT
+      bit_offset: 13
+      bit_size: 1
+      description: Threshold0 State
 fieldset/TMPSNS_STAT0_TOG_THR2:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 10
-    bit_size: 1
-    description: Threshold1 Status Flag
-  - name: STAT
-    bit_offset: 14
-    bit_size: 1
-    description: Threshold1 State
+    - name: IF
+      bit_offset: 10
+      bit_size: 1
+      description: Threshold1 Status Flag
+    - name: STAT
+      bit_offset: 14
+      bit_size: 1
+      description: Threshold1 State
 fieldset/TMPSNS_STAT0_TOG_DRDY0:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 16
-    bit_size: 1
-    description: Threshold2 State
+    - name: IF
+      bit_offset: 16
+      bit_size: 1
+      description: Threshold2 State
 fieldset/TMPSNS_STAT0_TOG:
   description: ''
   fields:
-  - name: IDLE
-    bit_offset: 31
-    bit_size: 1
-    description: Data Ready Flag
+    - name: IDLE
+      bit_offset: 31
+      bit_size: 1
+      description: Data Ready Flag
 fieldset/TMPSNS_DATA0_DATA:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 16
-    description: Temperature Data Value
+    - name: VAL
+      bit_offset: 0
+      bit_size: 16
+      description: Temperature Data Value
 fieldset/TMPSNS_DATA0_SET_DATA:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 16
-    description: Temperature Data Value
+    - name: VAL
+      bit_offset: 0
+      bit_size: 16
+      description: Temperature Data Value
 fieldset/TMPSNS_DATA0_CLR_DATA:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 16
-    description: Temperature Data Value
+    - name: VAL
+      bit_offset: 0
+      bit_size: 16
+      description: Temperature Data Value
 fieldset/TMPSNS_DATA0_TOG_DATA:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 16
-    description: Temperature Data Value
+    - name: VAL
+      bit_offset: 0
+      bit_size: 16
+      description: Temperature Data Value
 fieldset/TMPSNS_THR_CTRL01_TEMPERATURE:
   description: ''
   fields:
-  - name: THRESHOLD0
-    bit_offset: 0
-    bit_size: 16
-  - name: THRESHOLD1
-    bit_offset: 16
-    bit_size: 16
+    - name: THRESHOLD0
+      bit_offset: 0
+      bit_size: 16
+    - name: THRESHOLD1
+      bit_offset: 16
+      bit_size: 16
 fieldset/TMPSNS_THR_CTRL01_SET_TEMPERATURE:
   description: ''
   fields:
-  - name: THRESHOLD0
-    bit_offset: 0
-    bit_size: 16
-  - name: THRESHOLD1
-    bit_offset: 16
-    bit_size: 16
+    - name: THRESHOLD0
+      bit_offset: 0
+      bit_size: 16
+    - name: THRESHOLD1
+      bit_offset: 16
+      bit_size: 16
 fieldset/TMPSNS_THR_CTRL01_CLR_TEMPERATURE:
   description: ''
   fields:
-  - name: THRESHOLD0
-    bit_offset: 0
-    bit_size: 16
-  - name: THRESHOLD1
-    bit_offset: 16
-    bit_size: 16
+    - name: THRESHOLD0
+      bit_offset: 0
+      bit_size: 16
+    - name: THRESHOLD1
+      bit_offset: 16
+      bit_size: 16
 fieldset/TMPSNS_THR_CTRL01_TOG_TEMPERATURE:
   description: ''
   fields:
-  - name: THRESHOLD0
-    bit_offset: 0
-    bit_size: 16
-  - name: THRESHOLD1
-    bit_offset: 16
-    bit_size: 16
+    - name: THRESHOLD0
+      bit_offset: 0
+      bit_size: 16
+    - name: THRESHOLD1
+      bit_offset: 16
+      bit_size: 16
 fieldset/TMPSNS_THR_CTRL23_TEMPERATURE:
   description: ''
   fields:
-  - name: THRESHOLD2
-    bit_offset: 0
-    bit_size: 16
+    - name: THRESHOLD2
+      bit_offset: 0
+      bit_size: 16
 fieldset/TMPSNS_THR_CTRL23_SET_TEMPERATURE:
   description: ''
   fields:
-  - name: THRESHOLD2
-    bit_offset: 0
-    bit_size: 16
+    - name: THRESHOLD2
+      bit_offset: 0
+      bit_size: 16
 fieldset/TMPSNS_THR_CTRL23_CLR_TEMPERATURE:
   description: ''
   fields:
-  - name: THRESHOLD2
-    bit_offset: 0
-    bit_size: 16
+    - name: THRESHOLD2
+      bit_offset: 0
+      bit_size: 16
 fieldset/TMPSNS_THR_CTRL23_TOG_TEMPERATURE:
   description: ''
   fields:
-  - name: THRESHOLD2
-    bit_offset: 0
-    bit_size: 16
+    - name: THRESHOLD2
+      bit_offset: 0
+      bit_size: 16
 fieldset/TMPSNS_CTRL1_THR4:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-  - name: IE
-    bit_offset: 8
-    bit_size: 1
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+    - name: IE
+      bit_offset: 8
+      bit_size: 1
 fieldset/TMPSNS_CTRL1_THR5:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 2
-  - name: IE
-    bit_offset: 9
-    bit_size: 1
+    - name: MODE
+      bit_offset: 2
+      bit_size: 2
+    - name: IE
+      bit_offset: 9
+      bit_size: 1
 fieldset/TMPSNS_CTRL1_DRDY1:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 16
-    bit_size: 1
-    description: Filter Length for Threshold Flag
+    - name: IE
+      bit_offset: 16
+      bit_size: 1
+      description: Filter Length for Threshold Flag
 fieldset/TMPSNS_CTRL1:
   description: ''
   fields:
-  - name: RESOLUTION
-    bit_offset: 18
-    bit_size: 2
-  - name: STOP
-    bit_offset: 29
-    bit_size: 1
-  - name: START
-    bit_offset: 30
-    bit_size: 1
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
+    - name: RESOLUTION
+      bit_offset: 18
+      bit_size: 2
+    - name: STOP
+      bit_offset: 29
+      bit_size: 1
+    - name: START
+      bit_offset: 30
+      bit_size: 1
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
 fieldset/TMPSNS_CTRL1_FILT4_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 20
-    bit_size: 1
+    - name: CLR
+      bit_offset: 20
+      bit_size: 1
 fieldset/TMPSNS_CTRL1_FILT5_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 21
-    bit_size: 1
+    - name: CLR
+      bit_offset: 21
+      bit_size: 1
 fieldset/TMPSNS_CTRL1_MEAS:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 24
-    bit_size: 2
+    - name: MODE
+      bit_offset: 24
+      bit_size: 2
 fieldset/TMPSNS_CTRL1_SET_THR4:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-    description: Threshold4 Comparator Mode
-  - name: IE
-    bit_offset: 8
-    bit_size: 1
-    description: Threshold5 Comparator Mode
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+      description: Threshold4 Comparator Mode
+    - name: IE
+      bit_offset: 8
+      bit_size: 1
+      description: Threshold5 Comparator Mode
 fieldset/TMPSNS_CTRL1_SET_THR5:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 2
-    description: Threshold4 Comparator Mode
-  - name: IE
-    bit_offset: 9
-    bit_size: 1
+    - name: MODE
+      bit_offset: 2
+      bit_size: 2
+      description: Threshold4 Comparator Mode
+    - name: IE
+      bit_offset: 9
+      bit_size: 1
 fieldset/TMPSNS_CTRL1_SET_DRDY1:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 16
-    bit_size: 1
+    - name: IE
+      bit_offset: 16
+      bit_size: 1
 fieldset/TMPSNS_CTRL1_SET:
   description: ''
   fields:
-  - name: RESOLUTION
-    bit_offset: 18
-    bit_size: 2
-    description: Data-Ready Interrupt Enable
-  - name: STOP
-    bit_offset: 29
-    bit_size: 1
-    description: Measurement Mode
-  - name: START
-    bit_offset: 30
-    bit_size: 1
-    description: Stop Measurement
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
-    description: Start Measurement
+    - name: RESOLUTION
+      bit_offset: 18
+      bit_size: 2
+      description: Data-Ready Interrupt Enable
+    - name: STOP
+      bit_offset: 29
+      bit_size: 1
+      description: Measurement Mode
+    - name: START
+      bit_offset: 30
+      bit_size: 1
+      description: Stop Measurement
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
+      description: Start Measurement
 fieldset/TMPSNS_CTRL1_SET_FILT4_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 20
-    bit_size: 1
-    description: Resolution Mode
+    - name: CLR
+      bit_offset: 20
+      bit_size: 1
+      description: Resolution Mode
 fieldset/TMPSNS_CTRL1_SET_FILT5_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 21
-    bit_size: 1
+    - name: CLR
+      bit_offset: 21
+      bit_size: 1
 fieldset/TMPSNS_CTRL1_SET_MEAS:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 24
-    bit_size: 2
-    description: Measurement Mode
+    - name: MODE
+      bit_offset: 24
+      bit_size: 2
+      description: Measurement Mode
 fieldset/TMPSNS_CTRL1_CLR_THR4:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-    description: Threshold4 Comparator Mode
-  - name: IE
-    bit_offset: 8
-    bit_size: 1
-    description: Threshold5 Comparator Mode
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+      description: Threshold4 Comparator Mode
+    - name: IE
+      bit_offset: 8
+      bit_size: 1
+      description: Threshold5 Comparator Mode
 fieldset/TMPSNS_CTRL1_CLR_THR5:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 2
-    description: Threshold4 Comparator Mode
-  - name: IE
-    bit_offset: 9
-    bit_size: 1
+    - name: MODE
+      bit_offset: 2
+      bit_size: 2
+      description: Threshold4 Comparator Mode
+    - name: IE
+      bit_offset: 9
+      bit_size: 1
 fieldset/TMPSNS_CTRL1_CLR_DRDY1:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 16
-    bit_size: 1
+    - name: IE
+      bit_offset: 16
+      bit_size: 1
 fieldset/TMPSNS_CTRL1_CLR:
   description: ''
   fields:
-  - name: RESOLUTION
-    bit_offset: 18
-    bit_size: 2
-    description: Data-Ready Interrupt Enable
-  - name: STOP
-    bit_offset: 29
-    bit_size: 1
-    description: Measurement Mode
-  - name: START
-    bit_offset: 30
-    bit_size: 1
-    description: Stop Measurement
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
-    description: Start Measurement
+    - name: RESOLUTION
+      bit_offset: 18
+      bit_size: 2
+      description: Data-Ready Interrupt Enable
+    - name: STOP
+      bit_offset: 29
+      bit_size: 1
+      description: Measurement Mode
+    - name: START
+      bit_offset: 30
+      bit_size: 1
+      description: Stop Measurement
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
+      description: Start Measurement
 fieldset/TMPSNS_CTRL1_CLR_FILT4_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 20
-    bit_size: 1
-    description: Resolution Mode
+    - name: CLR
+      bit_offset: 20
+      bit_size: 1
+      description: Resolution Mode
 fieldset/TMPSNS_CTRL1_CLR_FILT5_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 21
-    bit_size: 1
+    - name: CLR
+      bit_offset: 21
+      bit_size: 1
 fieldset/TMPSNS_CTRL1_CLR_MEAS:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 24
-    bit_size: 2
-    description: Measurement Mode
+    - name: MODE
+      bit_offset: 24
+      bit_size: 2
+      description: Measurement Mode
 fieldset/TMPSNS_CTRL1_TOG_THR4:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
-    description: Threshold4 Comparator Mode
-  - name: IE
-    bit_offset: 8
-    bit_size: 1
-    description: Threshold5 Comparator Mode
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
+      description: Threshold4 Comparator Mode
+    - name: IE
+      bit_offset: 8
+      bit_size: 1
+      description: Threshold5 Comparator Mode
 fieldset/TMPSNS_CTRL1_TOG_THR5:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 2
-    description: Threshold4 Comparator Mode
-  - name: IE
-    bit_offset: 9
-    bit_size: 1
+    - name: MODE
+      bit_offset: 2
+      bit_size: 2
+      description: Threshold4 Comparator Mode
+    - name: IE
+      bit_offset: 9
+      bit_size: 1
 fieldset/TMPSNS_CTRL1_TOG_DRDY1:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 16
-    bit_size: 1
+    - name: IE
+      bit_offset: 16
+      bit_size: 1
 fieldset/TMPSNS_CTRL1_TOG:
   description: ''
   fields:
-  - name: RESOLUTION
-    bit_offset: 18
-    bit_size: 2
-    description: Data-Ready Interrupt Enable
-  - name: STOP
-    bit_offset: 29
-    bit_size: 1
-    description: Measurement Mode
-  - name: START
-    bit_offset: 30
-    bit_size: 1
-    description: Stop Measurement
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
-    description: Start Measurement
+    - name: RESOLUTION
+      bit_offset: 18
+      bit_size: 2
+      description: Data-Ready Interrupt Enable
+    - name: STOP
+      bit_offset: 29
+      bit_size: 1
+      description: Measurement Mode
+    - name: START
+      bit_offset: 30
+      bit_size: 1
+      description: Stop Measurement
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
+      description: Start Measurement
 fieldset/TMPSNS_CTRL1_TOG_FILT4_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 20
-    bit_size: 1
-    description: Resolution Mode
+    - name: CLR
+      bit_offset: 20
+      bit_size: 1
+      description: Resolution Mode
 fieldset/TMPSNS_CTRL1_TOG_FILT5_CNT:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 21
-    bit_size: 1
+    - name: CLR
+      bit_offset: 21
+      bit_size: 1
 fieldset/TMPSNS_CTRL1_TOG_MEAS:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 24
-    bit_size: 2
-    description: Measurement Mode
+    - name: MODE
+      bit_offset: 24
+      bit_size: 2
+      description: Measurement Mode
 fieldset/TMPSNS_STAT1_THR4:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 8
-    bit_size: 1
-  - name: STAT
-    bit_offset: 12
-    bit_size: 1
-    description: Threshold4 State
+    - name: IF
+      bit_offset: 8
+      bit_size: 1
+    - name: STAT
+      bit_offset: 12
+      bit_size: 1
+      description: Threshold4 State
 fieldset/TMPSNS_STAT1_THR5:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 9
-    bit_size: 1
-  - name: STAT
-    bit_offset: 13
-    bit_size: 1
-    description: Threshold4 State
+    - name: IF
+      bit_offset: 9
+      bit_size: 1
+    - name: STAT
+      bit_offset: 13
+      bit_size: 1
+      description: Threshold4 State
 fieldset/TMPSNS_STAT1_DRDY1:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 16
-    bit_size: 1
-    description: Threshold5 State
+    - name: IF
+      bit_offset: 16
+      bit_size: 1
+      description: Threshold5 State
 fieldset/TMPSNS_STAT1:
   description: ''
   fields:
-  - name: IDLE
-    bit_offset: 31
-    bit_size: 1
+    - name: IDLE
+      bit_offset: 31
+      bit_size: 1
 fieldset/TMPSNS_STAT1_SET_THR4:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 8
-    bit_size: 1
-    description: Threshold4 Status Flag
-  - name: STAT
-    bit_offset: 12
-    bit_size: 1
-    description: Threshold5 Status Flag
+    - name: IF
+      bit_offset: 8
+      bit_size: 1
+      description: Threshold4 Status Flag
+    - name: STAT
+      bit_offset: 12
+      bit_size: 1
+      description: Threshold5 Status Flag
 fieldset/TMPSNS_STAT1_SET_THR5:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 9
-    bit_size: 1
-    description: Threshold4 Status Flag
-  - name: STAT
-    bit_offset: 13
-    bit_size: 1
-    description: Threshold4 State
+    - name: IF
+      bit_offset: 9
+      bit_size: 1
+      description: Threshold4 Status Flag
+    - name: STAT
+      bit_offset: 13
+      bit_size: 1
+      description: Threshold4 State
 fieldset/TMPSNS_STAT1_SET_DRDY1:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 16
-    bit_size: 1
-    description: Threshold5 State
+    - name: IF
+      bit_offset: 16
+      bit_size: 1
+      description: Threshold5 State
 fieldset/TMPSNS_STAT1_SET:
   description: ''
   fields:
-  - name: IDLE
-    bit_offset: 31
-    bit_size: 1
-    description: Data Ready Flag
+    - name: IDLE
+      bit_offset: 31
+      bit_size: 1
+      description: Data Ready Flag
 fieldset/TMPSNS_STAT1_CLR_THR4:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 8
-    bit_size: 1
-    description: Threshold4 Status Flag
-  - name: STAT
-    bit_offset: 12
-    bit_size: 1
-    description: Threshold5 Status Flag
+    - name: IF
+      bit_offset: 8
+      bit_size: 1
+      description: Threshold4 Status Flag
+    - name: STAT
+      bit_offset: 12
+      bit_size: 1
+      description: Threshold5 Status Flag
 fieldset/TMPSNS_STAT1_CLR_THR5:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 9
-    bit_size: 1
-    description: Threshold4 Status Flag
-  - name: STAT
-    bit_offset: 13
-    bit_size: 1
-    description: Threshold4 State
+    - name: IF
+      bit_offset: 9
+      bit_size: 1
+      description: Threshold4 Status Flag
+    - name: STAT
+      bit_offset: 13
+      bit_size: 1
+      description: Threshold4 State
 fieldset/TMPSNS_STAT1_CLR_DRDY1:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 16
-    bit_size: 1
-    description: Threshold5 State
+    - name: IF
+      bit_offset: 16
+      bit_size: 1
+      description: Threshold5 State
 fieldset/TMPSNS_STAT1_CLR:
   description: ''
   fields:
-  - name: IDLE
-    bit_offset: 31
-    bit_size: 1
-    description: Data Ready Flag
+    - name: IDLE
+      bit_offset: 31
+      bit_size: 1
+      description: Data Ready Flag
 fieldset/TMPSNS_STAT1_TOG_THR4:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 8
-    bit_size: 1
-    description: Threshold4 Status Flag
-  - name: STAT
-    bit_offset: 12
-    bit_size: 1
-    description: Threshold5 Status Flag
+    - name: IF
+      bit_offset: 8
+      bit_size: 1
+      description: Threshold4 Status Flag
+    - name: STAT
+      bit_offset: 12
+      bit_size: 1
+      description: Threshold5 Status Flag
 fieldset/TMPSNS_STAT1_TOG_THR5:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 9
-    bit_size: 1
-    description: Threshold4 Status Flag
-  - name: STAT
-    bit_offset: 13
-    bit_size: 1
-    description: Threshold4 State
+    - name: IF
+      bit_offset: 9
+      bit_size: 1
+      description: Threshold4 Status Flag
+    - name: STAT
+      bit_offset: 13
+      bit_size: 1
+      description: Threshold4 State
 fieldset/TMPSNS_STAT1_TOG_DRDY1:
   description: ''
   fields:
-  - name: IF
-    bit_offset: 16
-    bit_size: 1
-    description: Threshold5 State
+    - name: IF
+      bit_offset: 16
+      bit_size: 1
+      description: Threshold5 State
 fieldset/TMPSNS_STAT1_TOG:
   description: ''
   fields:
-  - name: IDLE
-    bit_offset: 31
-    bit_size: 1
-    description: Data Ready Flag
+    - name: IDLE
+      bit_offset: 31
+      bit_size: 1
+      description: Data Ready Flag
 fieldset/TMPSNS_DATA1_DATA:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 16
-    description: Temperature Data Value
+    - name: VAL
+      bit_offset: 0
+      bit_size: 16
+      description: Temperature Data Value
 fieldset/TMPSNS_DATA1_SET_DATA:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 16
-    description: Temperature Data Value
+    - name: VAL
+      bit_offset: 0
+      bit_size: 16
+      description: Temperature Data Value
 fieldset/TMPSNS_DATA1_CLR_DATA:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 16
-    description: Temperature Data Value
+    - name: VAL
+      bit_offset: 0
+      bit_size: 16
+      description: Temperature Data Value
 fieldset/TMPSNS_DATA1_TOG_DATA:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 0
-    bit_size: 16
-    description: Temperature Data Value
+    - name: VAL
+      bit_offset: 0
+      bit_size: 16
+      description: Temperature Data Value
 fieldset/TMPSNS_THR_CTRL45_TEMPERATURE:
   description: ''
   fields:
-  - name: THRESHOLD4
-    bit_offset: 0
-    bit_size: 16
-  - name: THRESHOLD5
-    bit_offset: 16
-    bit_size: 16
+    - name: THRESHOLD4
+      bit_offset: 0
+      bit_size: 16
+    - name: THRESHOLD5
+      bit_offset: 16
+      bit_size: 16
 fieldset/TMPSNS_THR_CTRL45_SET_TEMPERATURE:
   description: ''
   fields:
-  - name: THRESHOLD4
-    bit_offset: 0
-    bit_size: 16
-  - name: THRESHOLD5
-    bit_offset: 16
-    bit_size: 16
+    - name: THRESHOLD4
+      bit_offset: 0
+      bit_size: 16
+    - name: THRESHOLD5
+      bit_offset: 16
+      bit_size: 16
 fieldset/TMPSNS_THR_CTRL45_CLR_TEMPERATURE:
   description: ''
   fields:
-  - name: THRESHOLD4
-    bit_offset: 0
-    bit_size: 16
-  - name: THRESHOLD5
-    bit_offset: 16
-    bit_size: 16
+    - name: THRESHOLD4
+      bit_offset: 0
+      bit_size: 16
+    - name: THRESHOLD5
+      bit_offset: 16
+      bit_size: 16
 fieldset/TMPSNS_THR_CTRL45_TOG_TEMPERATURE:
   description: ''
   fields:
-  - name: THRESHOLD4
-    bit_offset: 0
-    bit_size: 16
-  - name: THRESHOLD5
-    bit_offset: 16
-    bit_size: 16
+    - name: THRESHOLD4
+      bit_offset: 0
+      bit_size: 16
+    - name: THRESHOLD5
+      bit_offset: 16
+      bit_size: 16
 fieldset/TMPSNS_PERIOD_CTRL_MEAS:
   description: ''
   fields:
-  - name: FREQ
-    bit_offset: 0
-    bit_size: 24
+    - name: FREQ
+      bit_offset: 0
+      bit_size: 24
 fieldset/TMPSNS_PERIOD_CTRL_SET_MEAS:
   description: ''
   fields:
-  - name: FREQ
-    bit_offset: 0
-    bit_size: 24
+    - name: FREQ
+      bit_offset: 0
+      bit_size: 24
 fieldset/TMPSNS_PERIOD_CTRL_CLR_MEAS:
   description: ''
   fields:
-  - name: FREQ
-    bit_offset: 0
-    bit_size: 24
+    - name: FREQ
+      bit_offset: 0
+      bit_size: 24
 fieldset/TMPSNS_PERIOD_CTRL_TOG_MEAS:
   description: ''
   fields:
-  - name: FREQ
-    bit_offset: 0
-    bit_size: 24
+    - name: FREQ
+      bit_offset: 0
+      bit_size: 24
 fieldset/TMPSNS_REF_DIV:
   description: ''
   fields:
-  - name: DIV
-    bit_offset: 16
-    bit_size: 8
-  - name: DE
-    bit_offset: 31
-    bit_size: 1
+    - name: DIV
+      bit_offset: 16
+      bit_size: 8
+    - name: DE
+      bit_offset: 31
+      bit_size: 1
 fieldset/TMPSNS_PUD_ST_CTRL:
   description: ''
   fields:
-  - name: PUD
-    bit_offset: 16
-    bit_size: 8
-    description: Power-Up Delay
+    - name: PUD
+      bit_offset: 16
+      bit_size: 8
+      description: Power-Up Delay
 fieldset/TMPSNS_PUD_ST_CTRL_SET:
   description: ''
   fields:
-  - name: PUD
-    bit_offset: 16
-    bit_size: 8
-    description: Power-Up Delay
+    - name: PUD
+      bit_offset: 16
+      bit_size: 8
+      description: Power-Up Delay
 fieldset/TMPSNS_PUD_ST_CTRL_CLR:
   description: ''
   fields:
-  - name: PUD
-    bit_offset: 16
-    bit_size: 8
-    description: Power-Up Delay
+    - name: PUD
+      bit_offset: 16
+      bit_size: 8
+      description: Power-Up Delay
 fieldset/TMPSNS_PUD_ST_CTRL_TOG:
   description: ''
   fields:
-  - name: PUD
-    bit_offset: 16
-    bit_size: 8
-    description: Power-Up Delay
+    - name: PUD
+      bit_offset: 16
+      bit_size: 8
+      description: Power-Up Delay

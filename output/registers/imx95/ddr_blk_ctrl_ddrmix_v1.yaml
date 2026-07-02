@@ -1,230 +1,230 @@
 block/DDR_BLK_CTRL_DDRMIX:
   description: ''
   items:
-  - name: HWFFC_CTRL
-    byte_offset: 0
-  - name: DDRC_STOP_CTRL
-    byte_offset: 12
-  - name: AUTO_CG_CTRL
-    byte_offset: 16
-  - name: DDRC_EXCLUSIVE_EN
-    byte_offset: 24
-  - name: DDRC_URGENT_EN
-    byte_offset: 28
-  - name: RT_MASTER_ID_0_1
-    byte_offset: 32
-  - name: RT_MASTER_ID_2_3
-    byte_offset: 36
-  - name: AXI_PARITY_ERR_INJECT
-    byte_offset: 44
-  - name: RT_MASTER_ID_4_5
-    byte_offset: 48
-  - name: RT_MASTER_ID_6_7
-    byte_offset: 52
+    - name: HWFFC_CTRL
+      byte_offset: 0
+    - name: DDRC_STOP_CTRL
+      byte_offset: 12
+    - name: AUTO_CG_CTRL
+      byte_offset: 16
+    - name: DDRC_EXCLUSIVE_EN
+      byte_offset: 24
+    - name: DDRC_URGENT_EN
+      byte_offset: 28
+    - name: RT_MASTER_ID_0_1
+      byte_offset: 32
+    - name: RT_MASTER_ID_2_3
+      byte_offset: 36
+    - name: AXI_PARITY_ERR_INJECT
+      byte_offset: 44
+    - name: RT_MASTER_ID_4_5
+      byte_offset: 48
+    - name: RT_MASTER_ID_6_7
+      byte_offset: 52
 fieldset/DDR_BLK_CTRL_DDRMIX_HWFFC_CTRL_HWFFC:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
-  - name: SEL
-    bit_offset: 1
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: SEL
+      bit_offset: 1
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_DDRC_STOP_CTRL_DDRC:
   description: ''
   fields:
-  - name: STOP
-    bit_offset: 0
-    bit_size: 1
+    - name: STOP
+      bit_offset: 0
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_DDRC_STOP_CTRL_DDRC_STOP:
   description: ''
   fields:
-  - name: ACK
-    bit_offset: 1
-    bit_size: 1
+    - name: ACK
+      bit_offset: 1
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_DDRC_STOP_CTRL_DDRC_DRAM_SELF:
   description: ''
   fields:
-  - name: REFRESH
-    bit_offset: 2
-    bit_size: 1
+    - name: REFRESH
+      bit_offset: 2
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_DDRC_STOP_CTRL_DDRC_STOP_HOLD:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 4
-    bit_size: 1
-  - name: PERIOD
-    bit_offset: 8
-    bit_size: 24
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+    - name: PERIOD
+      bit_offset: 8
+      bit_size: 24
 fieldset/DDR_BLK_CTRL_DDRMIX_AUTO_CG_CTRL_SSI_IDLE:
   description: ''
   fields:
-  - name: STRAP
-    bit_offset: 0
-    bit_size: 16
+    - name: STRAP
+      bit_offset: 0
+      bit_size: 16
 fieldset/DDR_BLK_CTRL_DDRMIX_AUTO_CG_CTRL_AUTO_CG:
   description: ''
   fields:
-  - name: ENA
-    bit_offset: 16
-    bit_size: 1
+    - name: ENA
+      bit_offset: 16
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_AUTO_CG_CTRL_HWFFC_ACG_FORCE:
   description: ''
   fields:
-  - name: B
-    bit_offset: 17
-    bit_size: 1
+    - name: B
+      bit_offset: 17
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_AUTO_CG_CTRL_GATE_DDRC:
   description: ''
   fields:
-  - name: CLK
-    bit_offset: 24
-    bit_size: 1
+    - name: CLK
+      bit_offset: 24
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_AUTO_CG_CTRL_GATE_DDRC_IPS:
   description: ''
   fields:
-  - name: CLK
-    bit_offset: 26
-    bit_size: 1
+    - name: CLK
+      bit_offset: 26
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_AUTO_CG_CTRL_GATE_DDRPHY:
   description: ''
   fields:
-  - name: DFICLK
-    bit_offset: 28
-    bit_size: 1
-  - name: APBCLK
-    bit_offset: 30
-    bit_size: 1
+    - name: DFICLK
+      bit_offset: 28
+      bit_size: 1
+    - name: APBCLK
+      bit_offset: 30
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_DDRC_EXCLUSIVE_EN_EXCLUSIVE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_DDRC_URGENT_EN_READ_URGENT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_DDRC_URGENT_EN_AR_RT_URGENT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 1
-    bit_size: 1
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_RT_MASTER_ID_0_1_RANGE_0:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 6
-  - name: MASK
-    bit_offset: 8
-    bit_size: 6
-  - name: EN
-    bit_offset: 15
-    bit_size: 1
+    - name: ID
+      bit_offset: 0
+      bit_size: 6
+    - name: MASK
+      bit_offset: 8
+      bit_size: 6
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_RT_MASTER_ID_0_1_RANGE_1:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 16
-    bit_size: 6
-  - name: MASK
-    bit_offset: 24
-    bit_size: 6
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
+    - name: ID
+      bit_offset: 16
+      bit_size: 6
+    - name: MASK
+      bit_offset: 24
+      bit_size: 6
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_RT_MASTER_ID_2_3_RANGE_2:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 6
-  - name: MASK
-    bit_offset: 8
-    bit_size: 6
-  - name: EN
-    bit_offset: 15
-    bit_size: 1
+    - name: ID
+      bit_offset: 0
+      bit_size: 6
+    - name: MASK
+      bit_offset: 8
+      bit_size: 6
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_RT_MASTER_ID_2_3_RANGE_3:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 16
-    bit_size: 6
-  - name: MASK
-    bit_offset: 24
-    bit_size: 6
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
+    - name: ID
+      bit_offset: 16
+      bit_size: 6
+    - name: MASK
+      bit_offset: 24
+      bit_size: 6
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_AXI_PARITY_ERR_INJECT_WDATA_ERR:
   description: ''
   fields:
-  - name: INJ
-    bit_offset: 0
-    bit_size: 1
+    - name: INJ
+      bit_offset: 0
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_AXI_PARITY_ERR_INJECT_RDATA_ERR:
   description: ''
   fields:
-  - name: INJ
-    bit_offset: 1
-    bit_size: 1
+    - name: INJ
+      bit_offset: 1
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_AXI_PARITY_ERR_INJECT_RDATA_ERR_INJ:
   description: ''
   fields:
-  - name: DDRC
-    bit_offset: 2
-    bit_size: 1
+    - name: DDRC
+      bit_offset: 2
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_RT_MASTER_ID_4_5_RANGE_4:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 6
-  - name: MASK
-    bit_offset: 8
-    bit_size: 6
-  - name: EN
-    bit_offset: 15
-    bit_size: 1
+    - name: ID
+      bit_offset: 0
+      bit_size: 6
+    - name: MASK
+      bit_offset: 8
+      bit_size: 6
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_RT_MASTER_ID_4_5_RANGE_5:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 16
-    bit_size: 6
-  - name: MASK
-    bit_offset: 24
-    bit_size: 6
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
+    - name: ID
+      bit_offset: 16
+      bit_size: 6
+    - name: MASK
+      bit_offset: 24
+      bit_size: 6
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_RT_MASTER_ID_6_7_RANGE_6:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 6
-  - name: MASK
-    bit_offset: 8
-    bit_size: 6
-  - name: EN
-    bit_offset: 15
-    bit_size: 1
+    - name: ID
+      bit_offset: 0
+      bit_size: 6
+    - name: MASK
+      bit_offset: 8
+      bit_size: 6
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
 fieldset/DDR_BLK_CTRL_DDRMIX_RT_MASTER_ID_6_7_RANGE_7:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 16
-    bit_size: 6
-  - name: MASK
-    bit_offset: 24
-    bit_size: 6
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
+    - name: ID
+      bit_offset: 16
+      bit_size: 6
+    - name: MASK
+      bit_offset: 24
+      bit_size: 6
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
