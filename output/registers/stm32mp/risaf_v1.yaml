@@ -1,129 +1,129 @@
 block/RISAF:
   description: ''
   items:
-  - name: CR
-    byte_offset: 0
-    description: RISAF Configuration register
-    fieldset: RISAF_CR
-  - name: SR
-    byte_offset: 4
-    description: RISAF Status register
-    fieldset: RISAF_SR
-  - name: IASR
-    byte_offset: 8
-    description: RISAF Illegal access status register
-    fieldset: RISAF_IASR
-  - name: IACR
-    byte_offset: 12
-    description: RISAF Illegal access clear register
-    fieldset: RISAF_IACR
-  - name: KEYR
-    byte_offset: 32
-    array:
-      len: 4
-      stride: 4
-    description: RISAF Encryption key register x, 0x030-0x03C
-  - name: HWCFGR
-    byte_offset: 4080
-    description: RISAF HW configuration register
-    fieldset: RISAF_HWCFGR
-  - name: VERR
-    byte_offset: 4084
-    description: RISAF Version register
-    fieldset: RISAF_VERR
-  - name: IPIDR
-    byte_offset: 4088
-    description: RISAF Identification register
-    fieldset: RISAF_IPIDR
-  - name: SIDR
-    byte_offset: 4092
-    description: RISAF Size ID register
-    fieldset: RISAF_SIDR
+    - name: CR
+      byte_offset: 0
+      description: RISAF Configuration register
+      fieldset: RISAF_CR
+    - name: SR
+      byte_offset: 4
+      description: RISAF Status register
+      fieldset: RISAF_SR
+    - name: IASR
+      byte_offset: 8
+      description: RISAF Illegal access status register
+      fieldset: RISAF_IASR
+    - name: IACR
+      byte_offset: 12
+      description: RISAF Illegal access clear register
+      fieldset: RISAF_IACR
+    - name: KEYR
+      byte_offset: 32
+      array:
+        len: 4
+        stride: 4
+      description: RISAF Encryption key register x, 0x030-0x03C
+    - name: HWCFGR
+      byte_offset: 4080
+      description: RISAF HW configuration register
+      fieldset: RISAF_HWCFGR
+    - name: VERR
+      byte_offset: 4084
+      description: RISAF Version register
+      fieldset: RISAF_VERR
+    - name: IPIDR
+      byte_offset: 4088
+      description: RISAF Identification register
+      fieldset: RISAF_IPIDR
+    - name: SIDR
+      byte_offset: 4092
+      description: RISAF Size ID register
+      fieldset: RISAF_SIDR
 fieldset/RISAF_CR:
   description: ''
   fields:
-  - name: GLOCK
-    bit_offset: 0
-    bit_size: 1
+    - name: GLOCK
+      bit_offset: 0
+      bit_size: 1
 fieldset/RISAF_SR:
   description: ''
   fields:
-  - name: KEYVALID
-    bit_offset: 0
-    bit_size: 1
-    description: '0x00000001'
-  - name: KEYRDY
-    bit_offset: 1
-    bit_size: 1
-    description: '0x00000002'
-  - name: ENCDIS
-    bit_offset: 2
-    bit_size: 1
+    - name: KEYVALID
+      bit_offset: 0
+      bit_size: 1
+      description: '0x00000001'
+    - name: KEYRDY
+      bit_offset: 1
+      bit_size: 1
+      description: '0x00000002'
+    - name: ENCDIS
+      bit_offset: 2
+      bit_size: 1
 fieldset/RISAF_IASR:
   description: ''
   fields:
-  - name: CAEF
-    bit_offset: 0
-    bit_size: 1
-    description: '0x00000001'
-  - name: IAEF0
-    bit_offset: 1
-    bit_size: 1
-    description: '0x00000002'
-  - name: IAEF1
-    bit_offset: 2
-    bit_size: 1
+    - name: CAEF
+      bit_offset: 0
+      bit_size: 1
+      description: '0x00000001'
+    - name: IAEF0
+      bit_offset: 1
+      bit_size: 1
+      description: '0x00000002'
+    - name: IAEF1
+      bit_offset: 2
+      bit_size: 1
 fieldset/RISAF_IACR:
   description: ''
   fields:
-  - name: CAEF
-    bit_offset: 0
-    bit_size: 1
-    description: '0x00000001'
-  - name: IAEF0
-    bit_offset: 1
-    bit_size: 1
-    description: '0x00000002'
-  - name: IAEF1
-    bit_offset: 2
-    bit_size: 1
+    - name: CAEF
+      bit_offset: 0
+      bit_size: 1
+      description: '0x00000001'
+    - name: IAEF0
+      bit_offset: 1
+      bit_size: 1
+      description: '0x00000002'
+    - name: IAEF1
+      bit_offset: 2
+      bit_size: 1
 fieldset/RISAF_HWCFGR:
   description: ''
   fields:
-  - name: CFG1
-    bit_offset: 0
-    bit_size: 8
-    description: '0x000000FF'
-  - name: CFG2
-    bit_offset: 8
-    bit_size: 8
-    description: '0x0000FF00'
-  - name: CFG3
-    bit_offset: 16
-    bit_size: 8
-    description: '0x00FF0000'
-  - name: CFG4
-    bit_offset: 24
-    bit_size: 8
+    - name: CFG1
+      bit_offset: 0
+      bit_size: 8
+      description: '0x000000FF'
+    - name: CFG2
+      bit_offset: 8
+      bit_size: 8
+      description: '0x0000FF00'
+    - name: CFG3
+      bit_offset: 16
+      bit_size: 8
+      description: '0x00FF0000'
+    - name: CFG4
+      bit_offset: 24
+      bit_size: 8
 fieldset/RISAF_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: '0x0000000F'
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: '0x0000000F'
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
 fieldset/RISAF_IPIDR:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 32
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
 fieldset/RISAF_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
+    - name: SID
+      bit_offset: 0
+      bit_size: 32

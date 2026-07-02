@@ -1,298 +1,298 @@
 block/BLK_CTRL_NS_AONMIX:
   description: ''
   items:
-  - name: IPG_DEBUG_CA55C0
-    byte_offset: 12
-    fieldset: BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C0
-  - name: QCH_DIS
-    byte_offset: 20
-    fieldset: BLK_CTRL_NS_AONMIX_QCH_DIS
-  - name: MQS_SETTINGS
-    byte_offset: 32
-    fieldset: BLK_CTRL_NS_AONMIX_MQS_SETTINGS
-  - name: FUSE_ACC_DIS
-    byte_offset: 40
-  - name: OCOTP_FUSE_DATA0
-    byte_offset: 48
-  - name: OCOTP_FUSE_DATA1
-    byte_offset: 52
-  - name: OCOTP_FUSE_DATA2
-    byte_offset: 56
-  - name: OCOTP_FUSE_DATA3
-    byte_offset: 60
-  - name: OCOTP_FUSE_DATA4
-    byte_offset: 64
-  - name: OCOTP_FUSE_DATA5
-    byte_offset: 68
-  - name: OCOTP_FUSE_DATA6
-    byte_offset: 72
-  - name: OCOTP_FUSE_DATA7
-    byte_offset: 76
-  - name: OCOTP_FUSE_DATA8
-    byte_offset: 80
-  - name: OCOTP_FUSE_DATA9
-    byte_offset: 84
-  - name: OCOTP_FUSE_DATA10
-    byte_offset: 88
-  - name: OCOTP_FUSE_DATA11
-    byte_offset: 92
-  - name: OCOTP_FUSE_DATA12
-    byte_offset: 96
-  - name: OCOTP_FUSE_DATA13
-    byte_offset: 100
-  - name: OCOTP_FUSE_DATA14
-    byte_offset: 104
-  - name: OCOTP_FUSE_DATA15
-    byte_offset: 108
-  - name: I3C1_WAKEUP
-    byte_offset: 112
-  - name: OCOTP_STATUS
-    byte_offset: 116
-    fieldset: BLK_CTRL_NS_AONMIX_OCOTP_STATUS
-  - name: PDM_CLK_SEL
-    byte_offset: 120
-    fieldset: BLK_CTRL_NS_AONMIX_PDM_CLK_SEL
-  - name: I3C1_SDA_IRQ
-    byte_offset: 124
-    fieldset: BLK_CTRL_NS_AONMIX_I3C1_SDA_IRQ
-  - name: FASTBOOT_ENABLE
-    byte_offset: 128
-  - name: EDGELOCK_FW_PRESENT
-    byte_offset: 132
+    - name: IPG_DEBUG_CA55C0
+      byte_offset: 12
+      fieldset: BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C0
+    - name: QCH_DIS
+      byte_offset: 20
+      fieldset: BLK_CTRL_NS_AONMIX_QCH_DIS
+    - name: MQS_SETTINGS
+      byte_offset: 32
+      fieldset: BLK_CTRL_NS_AONMIX_MQS_SETTINGS
+    - name: FUSE_ACC_DIS
+      byte_offset: 40
+    - name: OCOTP_FUSE_DATA0
+      byte_offset: 48
+    - name: OCOTP_FUSE_DATA1
+      byte_offset: 52
+    - name: OCOTP_FUSE_DATA2
+      byte_offset: 56
+    - name: OCOTP_FUSE_DATA3
+      byte_offset: 60
+    - name: OCOTP_FUSE_DATA4
+      byte_offset: 64
+    - name: OCOTP_FUSE_DATA5
+      byte_offset: 68
+    - name: OCOTP_FUSE_DATA6
+      byte_offset: 72
+    - name: OCOTP_FUSE_DATA7
+      byte_offset: 76
+    - name: OCOTP_FUSE_DATA8
+      byte_offset: 80
+    - name: OCOTP_FUSE_DATA9
+      byte_offset: 84
+    - name: OCOTP_FUSE_DATA10
+      byte_offset: 88
+    - name: OCOTP_FUSE_DATA11
+      byte_offset: 92
+    - name: OCOTP_FUSE_DATA12
+      byte_offset: 96
+    - name: OCOTP_FUSE_DATA13
+      byte_offset: 100
+    - name: OCOTP_FUSE_DATA14
+      byte_offset: 104
+    - name: OCOTP_FUSE_DATA15
+      byte_offset: 108
+    - name: I3C1_WAKEUP
+      byte_offset: 112
+    - name: OCOTP_STATUS
+      byte_offset: 116
+      fieldset: BLK_CTRL_NS_AONMIX_OCOTP_STATUS
+    - name: PDM_CLK_SEL
+      byte_offset: 120
+      fieldset: BLK_CTRL_NS_AONMIX_PDM_CLK_SEL
+    - name: I3C1_SDA_IRQ
+      byte_offset: 124
+      fieldset: BLK_CTRL_NS_AONMIX_I3C1_SDA_IRQ
+    - name: FASTBOOT_ENABLE
+      byte_offset: 128
+    - name: EDGELOCK_FW_PRESENT
+      byte_offset: 132
 fieldset/BLK_CTRL_NS_AONMIX_IPG_DEBUG_CA55C0:
   description: ''
   fields:
-  - name: CAN1
-    bit_offset: 0
-    bit_size: 1
-  - name: LPI2C1
-    bit_offset: 2
-    bit_size: 1
-  - name: LPI2C2
-    bit_offset: 3
-    bit_size: 1
-  - name: LPIT1
-    bit_offset: 4
-    bit_size: 1
-  - name: LPSPI1
-    bit_offset: 5
-    bit_size: 1
-  - name: LPSPI2
-    bit_offset: 6
-    bit_size: 1
-  - name: LPTMR1
-    bit_offset: 7
-    bit_size: 1
-  - name: SAI1
-    bit_offset: 8
-    bit_size: 1
-  - name: TPM1
-    bit_offset: 9
-    bit_size: 1
-  - name: TPM2
-    bit_offset: 10
-    bit_size: 1
-  - name: WDOG1
-    bit_offset: 11
-    bit_size: 1
-  - name: WDOG2
-    bit_offset: 12
-    bit_size: 1
-  - name: I3C1
-    bit_offset: 13
-    bit_size: 1
-  - name: PDM
-    bit_offset: 14
-    bit_size: 1
+    - name: CAN1
+      bit_offset: 0
+      bit_size: 1
+    - name: LPI2C1
+      bit_offset: 2
+      bit_size: 1
+    - name: LPI2C2
+      bit_offset: 3
+      bit_size: 1
+    - name: LPIT1
+      bit_offset: 4
+      bit_size: 1
+    - name: LPSPI1
+      bit_offset: 5
+      bit_size: 1
+    - name: LPSPI2
+      bit_offset: 6
+      bit_size: 1
+    - name: LPTMR1
+      bit_offset: 7
+      bit_size: 1
+    - name: SAI1
+      bit_offset: 8
+      bit_size: 1
+    - name: TPM1
+      bit_offset: 9
+      bit_size: 1
+    - name: TPM2
+      bit_offset: 10
+      bit_size: 1
+    - name: WDOG1
+      bit_offset: 11
+      bit_size: 1
+    - name: WDOG2
+      bit_offset: 12
+      bit_size: 1
+    - name: I3C1
+      bit_offset: 13
+      bit_size: 1
+    - name: PDM
+      bit_offset: 14
+      bit_size: 1
 fieldset/BLK_CTRL_NS_AONMIX_QCH_DIS:
   description: ''
   fields:
-  - name: GPIO1
-    bit_offset: 0
-    bit_size: 1
-  - name: LPUART1
-    bit_offset: 1
-    bit_size: 1
-  - name: LPUART2
-    bit_offset: 2
-    bit_size: 1
-  - name: LPSPI1
-    bit_offset: 3
-    bit_size: 1
-  - name: LPSPI2
-    bit_offset: 4
-    bit_size: 1
-  - name: SAI1
-    bit_offset: 5
-    bit_size: 1
+    - name: GPIO1
+      bit_offset: 0
+      bit_size: 1
+    - name: LPUART1
+      bit_offset: 1
+      bit_size: 1
+    - name: LPUART2
+      bit_offset: 2
+      bit_size: 1
+    - name: LPSPI1
+      bit_offset: 3
+      bit_size: 1
+    - name: LPSPI2
+      bit_offset: 4
+      bit_size: 1
+    - name: SAI1
+      bit_offset: 5
+      bit_size: 1
 fieldset/BLK_CTRL_NS_AONMIX_MQS_SETTINGS_MQS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 1
-    bit_size: 1
-    description: MQS Enable
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+      description: MQS Enable
 fieldset/BLK_CTRL_NS_AONMIX_MQS_SETTINGS_SOFT:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 2
-    bit_size: 1
-    description: Software Reset
+    - name: RESET
+      bit_offset: 2
+      bit_size: 1
+      description: Software Reset
 fieldset/BLK_CTRL_NS_AONMIX_MQS_SETTINGS:
   description: ''
   fields:
-  - name: OVERSAMPLE
-    bit_offset: 3
-    bit_size: 1
-    description: Oversample enable
+    - name: OVERSAMPLE
+      bit_offset: 3
+      bit_size: 1
+      description: Oversample enable
 fieldset/BLK_CTRL_NS_AONMIX_MQS_SETTINGS_CLK:
   description: ''
   fields:
-  - name: DIVIDE
-    bit_offset: 8
-    bit_size: 8
+    - name: DIVIDE
+      bit_offset: 8
+      bit_size: 8
 fieldset/BLK_CTRL_NS_AONMIX_FUSE_ACC_DIS_OSCCA_FUSE_READ:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 0
-    bit_size: 1
+    - name: DIS
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA0_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA0
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA0
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA1_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA1
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA1
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA2_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA2
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA2
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA3_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA3
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA3
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA4_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA4
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA4
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA5_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA5
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA5
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA6_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA6
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA6
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA7_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA7
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA7
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA8_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA8
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA8
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA9_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA9
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA9
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA10_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA10
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA10
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA11_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA11
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA11
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA12_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA12
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA12
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA13_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA13
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA13
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA14_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA14
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA14
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_FUSE_DATA15_OCOTP_FUSE:
   description: ''
   fields:
-  - name: DATA15
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA15
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_NS_AONMIX_I3C1_WAKEUP_IRQ:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 0
-    bit_size: 1
+    - name: CLR
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_NS_AONMIX_OCOTP_STATUS:
   description: ''
   fields:
-  - name: BUSY
-    bit_offset: 0
-    bit_size: 1
+    - name: BUSY
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_NS_AONMIX_PDM_CLK_SEL:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 1
+    - name: SEL
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_NS_AONMIX_I3C1_SDA_IRQ:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_NS_AONMIX_FASTBOOT_ENABLE_FASTBOOT:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 2
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 2
 fieldset/BLK_CTRL_NS_AONMIX_FASTBOOT_ENABLE_BP_FASTBOOT:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 2
-    bit_size: 2
+    - name: ENABLE
+      bit_offset: 2
+      bit_size: 2
 fieldset/BLK_CTRL_NS_AONMIX_EDGELOCK_FW_PRESENT_EDGELOCK_FW:
   description: ''
   fields:
-  - name: PRESENT
-    bit_offset: 0
-    bit_size: 1
+    - name: PRESENT
+      bit_offset: 0
+      bit_size: 1

@@ -1,1485 +1,1485 @@
 block/CAMERA_MIPI_CSI2:
   description: ''
   items:
-  - name: VERSION
-    byte_offset: 0
-    fieldset: CAMERA_MIPI_CSI2_VERSION
-  - name: N_LANES
-    byte_offset: 4
-  - name: CSI2_RESETN
-    byte_offset: 8
-  - name: INT_ST_MAIN
-    byte_offset: 12
-  - name: DATA_IDS_1
-    byte_offset: 16
-  - name: DATA_IDS_2
-    byte_offset: 20
-  - name: DATA_IDS_VC_1
-    byte_offset: 48
-  - name: DATA_IDS_VC_2
-    byte_offset: 52
-  - name: PHY_SHUTDOWNZ
-    byte_offset: 64
-  - name: DPHY_RSTZ
-    byte_offset: 68
-  - name: PHY_RX
-    byte_offset: 72
-  - name: PHY_STOPSTATE
-    byte_offset: 76
-  - name: PHY_TEST_CTRL0
-    byte_offset: 80
-  - name: PHY_TEST_CTRL1
-    byte_offset: 84
-  - name: VC_EXTENSION
-    byte_offset: 200
-    fieldset: CAMERA_MIPI_CSI2_VC_EXTENSION
-  - name: PHY_CAL
-    byte_offset: 204
-    fieldset: CAMERA_MIPI_CSI2_PHY_CAL
-  - name: INT_ST_PHY_FATAL
-    byte_offset: 224
-  - name: INT_MSK_PHY_FATAL
-    byte_offset: 228
-  - name: INT_FORCE_PHY_FATAL
-    byte_offset: 232
-  - name: INT_ST_PKT_FATAL
-    byte_offset: 240
-  - name: INT_MSK_PKT_FATAL
-    byte_offset: 244
-  - name: INT_FORCE_PKT_FATAL
-    byte_offset: 248
-  - name: INT_ST_PHY
-    byte_offset: 272
-  - name: INT_MSK_PHY
-    byte_offset: 276
-  - name: INT_FORCE_PHY
-    byte_offset: 280
-  - name: INT_ST_LINE
-    byte_offset: 304
-  - name: INT_MSK_LINE
-    byte_offset: 308
-  - name: INT_FORCE_LINE
-    byte_offset: 312
-  - name: INT_ST_BNDRY_FRAME_FATAL
-    byte_offset: 640
-  - name: INT_MSK_BNDRY_FRAME_FATAL
-    byte_offset: 644
-  - name: INT_FORCE_BNDRY_FRAME_FATAL
-    byte_offset: 648
-  - name: INT_ST_SEQ_FRAME_FATAL
-    byte_offset: 656
-  - name: INT_MSK_SEQ_FRAME_FATAL
-    byte_offset: 660
-  - name: INT_FORCE_SEQ_FRAME_FATAL
-    byte_offset: 664
-  - name: INT_ST_CRC_FRAME_FATAL
-    byte_offset: 672
-  - name: INT_MSK_CRC_FRAME_FATAL
-    byte_offset: 676
-  - name: INT_FORCE_CRC_FRAME_FATAL
-    byte_offset: 680
-  - name: INT_ST_PLD_CRC_FATAL
-    byte_offset: 688
-  - name: INT_MSK_PLD_CRC_FATAL
-    byte_offset: 692
-  - name: INT_FORCE_PLD_CRC_FATAL
-    byte_offset: 696
-  - name: INT_ST_DATA_ID
-    byte_offset: 704
-  - name: INT_MSK_DATA_ID
-    byte_offset: 708
-  - name: INT_FORCE_DATA_ID
-    byte_offset: 712
-  - name: INT_ST_ECC_CORRECTED
-    byte_offset: 720
-  - name: INT_MSK_ECC_CORRECTED
-    byte_offset: 724
-  - name: INT_FORCE_ECC_CORRECTED
-    byte_offset: 728
-  - name: SCRAMBLING
-    byte_offset: 768
-  - name: SCRAMBLING_SEED1
-    byte_offset: 772
-  - name: SCRAMBLING_SEED2
-    byte_offset: 776
-  - name: SCRAMBLING_SEED3
-    byte_offset: 780
-  - name: SCRAMBLING_SEED4
-    byte_offset: 784
+    - name: VERSION
+      byte_offset: 0
+      fieldset: CAMERA_MIPI_CSI2_VERSION
+    - name: N_LANES
+      byte_offset: 4
+    - name: CSI2_RESETN
+      byte_offset: 8
+    - name: INT_ST_MAIN
+      byte_offset: 12
+    - name: DATA_IDS_1
+      byte_offset: 16
+    - name: DATA_IDS_2
+      byte_offset: 20
+    - name: DATA_IDS_VC_1
+      byte_offset: 48
+    - name: DATA_IDS_VC_2
+      byte_offset: 52
+    - name: PHY_SHUTDOWNZ
+      byte_offset: 64
+    - name: DPHY_RSTZ
+      byte_offset: 68
+    - name: PHY_RX
+      byte_offset: 72
+    - name: PHY_STOPSTATE
+      byte_offset: 76
+    - name: PHY_TEST_CTRL0
+      byte_offset: 80
+    - name: PHY_TEST_CTRL1
+      byte_offset: 84
+    - name: VC_EXTENSION
+      byte_offset: 200
+      fieldset: CAMERA_MIPI_CSI2_VC_EXTENSION
+    - name: PHY_CAL
+      byte_offset: 204
+      fieldset: CAMERA_MIPI_CSI2_PHY_CAL
+    - name: INT_ST_PHY_FATAL
+      byte_offset: 224
+    - name: INT_MSK_PHY_FATAL
+      byte_offset: 228
+    - name: INT_FORCE_PHY_FATAL
+      byte_offset: 232
+    - name: INT_ST_PKT_FATAL
+      byte_offset: 240
+    - name: INT_MSK_PKT_FATAL
+      byte_offset: 244
+    - name: INT_FORCE_PKT_FATAL
+      byte_offset: 248
+    - name: INT_ST_PHY
+      byte_offset: 272
+    - name: INT_MSK_PHY
+      byte_offset: 276
+    - name: INT_FORCE_PHY
+      byte_offset: 280
+    - name: INT_ST_LINE
+      byte_offset: 304
+    - name: INT_MSK_LINE
+      byte_offset: 308
+    - name: INT_FORCE_LINE
+      byte_offset: 312
+    - name: INT_ST_BNDRY_FRAME_FATAL
+      byte_offset: 640
+    - name: INT_MSK_BNDRY_FRAME_FATAL
+      byte_offset: 644
+    - name: INT_FORCE_BNDRY_FRAME_FATAL
+      byte_offset: 648
+    - name: INT_ST_SEQ_FRAME_FATAL
+      byte_offset: 656
+    - name: INT_MSK_SEQ_FRAME_FATAL
+      byte_offset: 660
+    - name: INT_FORCE_SEQ_FRAME_FATAL
+      byte_offset: 664
+    - name: INT_ST_CRC_FRAME_FATAL
+      byte_offset: 672
+    - name: INT_MSK_CRC_FRAME_FATAL
+      byte_offset: 676
+    - name: INT_FORCE_CRC_FRAME_FATAL
+      byte_offset: 680
+    - name: INT_ST_PLD_CRC_FATAL
+      byte_offset: 688
+    - name: INT_MSK_PLD_CRC_FATAL
+      byte_offset: 692
+    - name: INT_FORCE_PLD_CRC_FATAL
+      byte_offset: 696
+    - name: INT_ST_DATA_ID
+      byte_offset: 704
+    - name: INT_MSK_DATA_ID
+      byte_offset: 708
+    - name: INT_FORCE_DATA_ID
+      byte_offset: 712
+    - name: INT_ST_ECC_CORRECTED
+      byte_offset: 720
+    - name: INT_MSK_ECC_CORRECTED
+      byte_offset: 724
+    - name: INT_FORCE_ECC_CORRECTED
+      byte_offset: 728
+    - name: SCRAMBLING
+      byte_offset: 768
+    - name: SCRAMBLING_SEED1
+      byte_offset: 772
+    - name: SCRAMBLING_SEED2
+      byte_offset: 776
+    - name: SCRAMBLING_SEED3
+      byte_offset: 780
+    - name: SCRAMBLING_SEED4
+      byte_offset: 784
 fieldset/CAMERA_MIPI_CSI2_VERSION:
   description: ''
   fields:
-  - name: version
-    bit_offset: 0
-    bit_size: 32
+    - name: version
+      bit_offset: 0
+      bit_size: 32
 fieldset/CAMERA_MIPI_CSI2_N_LANES_n:
   description: ''
   fields:
-  - name: lanes
-    bit_offset: 0
-    bit_size: 3
+    - name: lanes
+      bit_offset: 0
+      bit_size: 3
 fieldset/CAMERA_MIPI_CSI2_CSI2_RESETN_csi2:
   description: ''
   fields:
-  - name: resetn
-    bit_offset: 0
-    bit_size: 1
+    - name: resetn
+      bit_offset: 0
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_MAIN_status_int_st_phy:
   description: ''
   fields:
-  - name: fatal
-    bit_offset: 0
-    bit_size: 1
+    - name: fatal
+      bit_offset: 0
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_MAIN_status_int_st_pkt:
   description: ''
   fields:
-  - name: fatal
-    bit_offset: 1
-    bit_size: 1
+    - name: fatal
+      bit_offset: 1
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_MAIN_status_int_st_bndry_frame:
   description: ''
   fields:
-  - name: fatal
-    bit_offset: 2
-    bit_size: 1
+    - name: fatal
+      bit_offset: 2
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_MAIN_status_int_st_seq_frame:
   description: ''
   fields:
-  - name: fatal
-    bit_offset: 3
-    bit_size: 1
+    - name: fatal
+      bit_offset: 3
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_MAIN_status_int_st_crc_frame:
   description: ''
   fields:
-  - name: fatal
-    bit_offset: 4
-    bit_size: 1
+    - name: fatal
+      bit_offset: 4
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_MAIN_status_int_st_pld_crc:
   description: ''
   fields:
-  - name: fatal
-    bit_offset: 5
-    bit_size: 1
+    - name: fatal
+      bit_offset: 5
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_MAIN_status_int_st_data:
   description: ''
   fields:
-  - name: id
-    bit_offset: 6
-    bit_size: 1
+    - name: id
+      bit_offset: 6
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_MAIN_status_int_st_ecc:
   description: ''
   fields:
-  - name: corrected
-    bit_offset: 7
-    bit_size: 1
+    - name: corrected
+      bit_offset: 7
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_MAIN_status_int_st:
   description: ''
   fields:
-  - name: phy
-    bit_offset: 16
-    bit_size: 1
-  - name: line
-    bit_offset: 17
-    bit_size: 1
+    - name: phy
+      bit_offset: 16
+      bit_size: 1
+    - name: line
+      bit_offset: 17
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_1_di0:
   description: ''
   fields:
-  - name: dt
-    bit_offset: 0
-    bit_size: 6
+    - name: dt
+      bit_offset: 0
+      bit_size: 6
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_1_di1:
   description: ''
   fields:
-  - name: dt
-    bit_offset: 8
-    bit_size: 6
+    - name: dt
+      bit_offset: 8
+      bit_size: 6
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_1_di2:
   description: ''
   fields:
-  - name: dt
-    bit_offset: 16
-    bit_size: 6
+    - name: dt
+      bit_offset: 16
+      bit_size: 6
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_1_di3:
   description: ''
   fields:
-  - name: dt
-    bit_offset: 24
-    bit_size: 6
+    - name: dt
+      bit_offset: 24
+      bit_size: 6
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_2_di4:
   description: ''
   fields:
-  - name: dt
-    bit_offset: 0
-    bit_size: 6
+    - name: dt
+      bit_offset: 0
+      bit_size: 6
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_2_di5:
   description: ''
   fields:
-  - name: dt
-    bit_offset: 8
-    bit_size: 6
+    - name: dt
+      bit_offset: 8
+      bit_size: 6
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_2_di6:
   description: ''
   fields:
-  - name: dt
-    bit_offset: 16
-    bit_size: 6
+    - name: dt
+      bit_offset: 16
+      bit_size: 6
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_2_di7:
   description: ''
   fields:
-  - name: dt
-    bit_offset: 24
-    bit_size: 6
+    - name: dt
+      bit_offset: 24
+      bit_size: 6
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_VC_1_di0:
   description: ''
   fields:
-  - name: vc
-    bit_offset: 0
-    bit_size: 2
+    - name: vc
+      bit_offset: 0
+      bit_size: 2
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_VC_1_di1:
   description: ''
   fields:
-  - name: vc
-    bit_offset: 8
-    bit_size: 2
+    - name: vc
+      bit_offset: 8
+      bit_size: 2
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_VC_1_di2:
   description: ''
   fields:
-  - name: vc
-    bit_offset: 16
-    bit_size: 2
+    - name: vc
+      bit_offset: 16
+      bit_size: 2
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_VC_1_di3:
   description: ''
   fields:
-  - name: vc
-    bit_offset: 24
-    bit_size: 2
+    - name: vc
+      bit_offset: 24
+      bit_size: 2
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_VC_2_di4:
   description: ''
   fields:
-  - name: vc
-    bit_offset: 0
-    bit_size: 2
+    - name: vc
+      bit_offset: 0
+      bit_size: 2
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_VC_2_di5:
   description: ''
   fields:
-  - name: vc
-    bit_offset: 8
-    bit_size: 2
+    - name: vc
+      bit_offset: 8
+      bit_size: 2
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_VC_2_di6:
   description: ''
   fields:
-  - name: vc
-    bit_offset: 16
-    bit_size: 2
+    - name: vc
+      bit_offset: 16
+      bit_size: 2
 fieldset/CAMERA_MIPI_CSI2_DATA_IDS_VC_2_di7:
   description: ''
   fields:
-  - name: vc
-    bit_offset: 24
-    bit_size: 2
+    - name: vc
+      bit_offset: 24
+      bit_size: 2
 fieldset/CAMERA_MIPI_CSI2_PHY_SHUTDOWNZ_phy:
   description: ''
   fields:
-  - name: shutdownz
-    bit_offset: 0
-    bit_size: 1
+    - name: shutdownz
+      bit_offset: 0
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_DPHY_RSTZ_dphy:
   description: ''
   fields:
-  - name: rstz
-    bit_offset: 0
-    bit_size: 1
+    - name: rstz
+      bit_offset: 0
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_PHY_RX_phy:
   description: ''
   fields:
-  - name: rxulpsclknot
-    bit_offset: 16
-    bit_size: 1
-  - name: rxclkactivehs
-    bit_offset: 17
-    bit_size: 1
+    - name: rxulpsclknot
+      bit_offset: 16
+      bit_size: 1
+    - name: rxclkactivehs
+      bit_offset: 17
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_PHY_STOPSTATE_phy:
   description: ''
   fields:
-  - name: stopstateclk
-    bit_offset: 16
-    bit_size: 1
+    - name: stopstateclk
+      bit_offset: 16
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_PHY_TEST_CTRL0_phy:
   description: ''
   fields:
-  - name: testclr
-    bit_offset: 0
-    bit_size: 1
-  - name: testclk
-    bit_offset: 1
-    bit_size: 1
+    - name: testclr
+      bit_offset: 0
+      bit_size: 1
+    - name: testclk
+      bit_offset: 1
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_PHY_TEST_CTRL1_phy:
   description: ''
   fields:
-  - name: testdin
-    bit_offset: 0
-    bit_size: 8
-  - name: testdout
-    bit_offset: 8
-    bit_size: 8
-  - name: testen
-    bit_offset: 16
-    bit_size: 1
+    - name: testdin
+      bit_offset: 0
+      bit_size: 8
+    - name: testdout
+      bit_offset: 8
+      bit_size: 8
+    - name: testen
+      bit_offset: 16
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_VC_EXTENSION:
   description: ''
   fields:
-  - name: vcx
-    bit_offset: 0
-    bit_size: 1
+    - name: vcx
+      bit_offset: 0
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_PHY_CAL:
   description: ''
   fields:
-  - name: rxskewcalhs
-    bit_offset: 0
-    bit_size: 1
+    - name: rxskewcalhs
+      bit_offset: 0
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_PKT_FATAL_err_ecc:
   description: ''
   fields:
-  - name: double
-    bit_offset: 0
-    bit_size: 1
+    - name: double
+      bit_offset: 0
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_PKT_FATAL_shorter:
   description: ''
   fields:
-  - name: payload
-    bit_offset: 1
-    bit_size: 1
+    - name: payload
+      bit_offset: 1
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_MSK_PKT_FATAL_mask_err_ecc:
   description: ''
   fields:
-  - name: double
-    bit_offset: 0
-    bit_size: 1
+    - name: double
+      bit_offset: 0
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_MSK_PKT_FATAL_mask_shorter:
   description: ''
   fields:
-  - name: payload
-    bit_offset: 1
-    bit_size: 1
+    - name: payload
+      bit_offset: 1
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_FORCE_PKT_FATAL_force_err_ecc:
   description: ''
   fields:
-  - name: double
-    bit_offset: 0
-    bit_size: 1
+    - name: double
+      bit_offset: 0
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_FORCE_PKT_FATAL_force_shorter:
   description: ''
   fields:
-  - name: payload
-    bit_offset: 1
-    bit_size: 1
+    - name: payload
+      bit_offset: 1
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_LINE_err_l_bndry_match:
   description: ''
   fields:
-  - name: di0
-    bit_offset: 0
-    bit_size: 1
-  - name: di1
-    bit_offset: 1
-    bit_size: 1
-  - name: di2
-    bit_offset: 2
-    bit_size: 1
-  - name: di3
-    bit_offset: 3
-    bit_size: 1
-  - name: di4
-    bit_offset: 4
-    bit_size: 1
-  - name: di5
-    bit_offset: 5
-    bit_size: 1
-  - name: di6
-    bit_offset: 6
-    bit_size: 1
-  - name: di7
-    bit_offset: 7
-    bit_size: 1
+    - name: di0
+      bit_offset: 0
+      bit_size: 1
+    - name: di1
+      bit_offset: 1
+      bit_size: 1
+    - name: di2
+      bit_offset: 2
+      bit_size: 1
+    - name: di3
+      bit_offset: 3
+      bit_size: 1
+    - name: di4
+      bit_offset: 4
+      bit_size: 1
+    - name: di5
+      bit_offset: 5
+      bit_size: 1
+    - name: di6
+      bit_offset: 6
+      bit_size: 1
+    - name: di7
+      bit_offset: 7
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_LINE_err_l_seq:
   description: ''
   fields:
-  - name: di0
-    bit_offset: 16
-    bit_size: 1
-  - name: di1
-    bit_offset: 17
-    bit_size: 1
-  - name: di2
-    bit_offset: 18
-    bit_size: 1
-  - name: di3
-    bit_offset: 19
-    bit_size: 1
-  - name: di4
-    bit_offset: 20
-    bit_size: 1
-  - name: di5
-    bit_offset: 21
-    bit_size: 1
-  - name: di6
-    bit_offset: 22
-    bit_size: 1
-  - name: di7
-    bit_offset: 23
-    bit_size: 1
+    - name: di0
+      bit_offset: 16
+      bit_size: 1
+    - name: di1
+      bit_offset: 17
+      bit_size: 1
+    - name: di2
+      bit_offset: 18
+      bit_size: 1
+    - name: di3
+      bit_offset: 19
+      bit_size: 1
+    - name: di4
+      bit_offset: 20
+      bit_size: 1
+    - name: di5
+      bit_offset: 21
+      bit_size: 1
+    - name: di6
+      bit_offset: 22
+      bit_size: 1
+    - name: di7
+      bit_offset: 23
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_MSK_LINE_mask_err_l_bndry_match:
   description: ''
   fields:
-  - name: di0
-    bit_offset: 0
-    bit_size: 1
-  - name: di1
-    bit_offset: 1
-    bit_size: 1
-  - name: di2
-    bit_offset: 2
-    bit_size: 1
-  - name: di3
-    bit_offset: 3
-    bit_size: 1
-  - name: di4
-    bit_offset: 4
-    bit_size: 1
-  - name: di5
-    bit_offset: 5
-    bit_size: 1
-  - name: di6
-    bit_offset: 6
-    bit_size: 1
-  - name: di7
-    bit_offset: 7
-    bit_size: 1
+    - name: di0
+      bit_offset: 0
+      bit_size: 1
+    - name: di1
+      bit_offset: 1
+      bit_size: 1
+    - name: di2
+      bit_offset: 2
+      bit_size: 1
+    - name: di3
+      bit_offset: 3
+      bit_size: 1
+    - name: di4
+      bit_offset: 4
+      bit_size: 1
+    - name: di5
+      bit_offset: 5
+      bit_size: 1
+    - name: di6
+      bit_offset: 6
+      bit_size: 1
+    - name: di7
+      bit_offset: 7
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_MSK_LINE_mask_err_l_seq:
   description: ''
   fields:
-  - name: di0
-    bit_offset: 16
-    bit_size: 1
-  - name: di1
-    bit_offset: 17
-    bit_size: 1
-  - name: di2
-    bit_offset: 18
-    bit_size: 1
-  - name: di3
-    bit_offset: 19
-    bit_size: 1
-  - name: di4
-    bit_offset: 20
-    bit_size: 1
-  - name: di5
-    bit_offset: 21
-    bit_size: 1
-  - name: di6
-    bit_offset: 22
-    bit_size: 1
-  - name: di7
-    bit_offset: 23
-    bit_size: 1
+    - name: di0
+      bit_offset: 16
+      bit_size: 1
+    - name: di1
+      bit_offset: 17
+      bit_size: 1
+    - name: di2
+      bit_offset: 18
+      bit_size: 1
+    - name: di3
+      bit_offset: 19
+      bit_size: 1
+    - name: di4
+      bit_offset: 20
+      bit_size: 1
+    - name: di5
+      bit_offset: 21
+      bit_size: 1
+    - name: di6
+      bit_offset: 22
+      bit_size: 1
+    - name: di7
+      bit_offset: 23
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_FORCE_LINE_force_err_l_bndry_match:
   description: ''
   fields:
-  - name: di0
-    bit_offset: 0
-    bit_size: 1
-  - name: di1
-    bit_offset: 1
-    bit_size: 1
-  - name: di2
-    bit_offset: 2
-    bit_size: 1
-  - name: di3
-    bit_offset: 3
-    bit_size: 1
-  - name: di4
-    bit_offset: 4
-    bit_size: 1
-  - name: di5
-    bit_offset: 5
-    bit_size: 1
-  - name: di6
-    bit_offset: 6
-    bit_size: 1
-  - name: di7
-    bit_offset: 7
-    bit_size: 1
+    - name: di0
+      bit_offset: 0
+      bit_size: 1
+    - name: di1
+      bit_offset: 1
+      bit_size: 1
+    - name: di2
+      bit_offset: 2
+      bit_size: 1
+    - name: di3
+      bit_offset: 3
+      bit_size: 1
+    - name: di4
+      bit_offset: 4
+      bit_size: 1
+    - name: di5
+      bit_offset: 5
+      bit_size: 1
+    - name: di6
+      bit_offset: 6
+      bit_size: 1
+    - name: di7
+      bit_offset: 7
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_FORCE_LINE_force_err_l_seq:
   description: ''
   fields:
-  - name: di0
-    bit_offset: 16
-    bit_size: 1
-  - name: di1
-    bit_offset: 17
-    bit_size: 1
-  - name: di2
-    bit_offset: 18
-    bit_size: 1
-  - name: di3
-    bit_offset: 19
-    bit_size: 1
-  - name: di4
-    bit_offset: 20
-    bit_size: 1
-  - name: di5
-    bit_offset: 21
-    bit_size: 1
-  - name: di6
-    bit_offset: 22
-    bit_size: 1
-  - name: di7
-    bit_offset: 23
-    bit_size: 1
+    - name: di0
+      bit_offset: 16
+      bit_size: 1
+    - name: di1
+      bit_offset: 17
+      bit_size: 1
+    - name: di2
+      bit_offset: 18
+      bit_size: 1
+    - name: di3
+      bit_offset: 19
+      bit_size: 1
+    - name: di4
+      bit_offset: 20
+      bit_size: 1
+    - name: di5
+      bit_offset: 21
+      bit_size: 1
+    - name: di6
+      bit_offset: 22
+      bit_size: 1
+    - name: di7
+      bit_offset: 23
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_BNDRY_FRAME_FATAL_err_f_bndry_match:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_MSK_BNDRY_FRAME_FATAL_err_f_bndry_match:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_FORCE_BNDRY_FRAME_FATAL_err_f_bndry_match:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_SEQ_FRAME_FATAL_err_f_seq:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_MSK_SEQ_FRAME_FATAL_err_f_seq:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_FORCE_SEQ_FRAME_FATAL_err_f_seq:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_CRC_FRAME_FATAL_err_frame_data:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_MSK_CRC_FRAME_FATAL_err_frame_data:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_FORCE_CRC_FRAME_FATAL_err_frame_data:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_PLD_CRC_FATAL_err_crc:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_MSK_PLD_CRC_FATAL_err_crc:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_FORCE_PLD_CRC_FATAL_err_crc:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_DATA_ID_err_id:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_MSK_DATA_ID_err_id:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_FORCE_DATA_ID_err_id:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_ST_ECC_CORRECTED_err_ecc_corrected:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_MSK_ECC_CORRECTED_err_ecc_corrected:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_INT_FORCE_ECC_CORRECTED_err_ecc_corrected:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-  - name: vc1
-    bit_offset: 1
-    bit_size: 1
-  - name: vc2
-    bit_offset: 2
-    bit_size: 1
-  - name: vc3
-    bit_offset: 3
-    bit_size: 1
-  - name: vc4
-    bit_offset: 4
-    bit_size: 1
-  - name: vc5
-    bit_offset: 5
-    bit_size: 1
-  - name: vc6
-    bit_offset: 6
-    bit_size: 1
-  - name: vc7
-    bit_offset: 7
-    bit_size: 1
-  - name: vc8
-    bit_offset: 8
-    bit_size: 1
-  - name: vc9
-    bit_offset: 9
-    bit_size: 1
-  - name: vc10
-    bit_offset: 10
-    bit_size: 1
-  - name: vc11
-    bit_offset: 11
-    bit_size: 1
-  - name: vc12
-    bit_offset: 12
-    bit_size: 1
-  - name: vc13
-    bit_offset: 13
-    bit_size: 1
-  - name: vc14
-    bit_offset: 14
-    bit_size: 1
-  - name: vc15
-    bit_offset: 15
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+    - name: vc1
+      bit_offset: 1
+      bit_size: 1
+    - name: vc2
+      bit_offset: 2
+      bit_size: 1
+    - name: vc3
+      bit_offset: 3
+      bit_size: 1
+    - name: vc4
+      bit_offset: 4
+      bit_size: 1
+    - name: vc5
+      bit_offset: 5
+      bit_size: 1
+    - name: vc6
+      bit_offset: 6
+      bit_size: 1
+    - name: vc7
+      bit_offset: 7
+      bit_size: 1
+    - name: vc8
+      bit_offset: 8
+      bit_size: 1
+    - name: vc9
+      bit_offset: 9
+      bit_size: 1
+    - name: vc10
+      bit_offset: 10
+      bit_size: 1
+    - name: vc11
+      bit_offset: 11
+      bit_size: 1
+    - name: vc12
+      bit_offset: 12
+      bit_size: 1
+    - name: vc13
+      bit_offset: 13
+      bit_size: 1
+    - name: vc14
+      bit_offset: 14
+      bit_size: 1
+    - name: vc15
+      bit_offset: 15
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_SCRAMBLING_scramble:
   description: ''
   fields:
-  - name: enable
-    bit_offset: 0
-    bit_size: 1
+    - name: enable
+      bit_offset: 0
+      bit_size: 1
 fieldset/CAMERA_MIPI_CSI2_SCRAMBLING_SEED1_scramble_seed:
   description: ''
   fields:
-  - name: lane1
-    bit_offset: 0
-    bit_size: 16
+    - name: lane1
+      bit_offset: 0
+      bit_size: 16
 fieldset/CAMERA_MIPI_CSI2_SCRAMBLING_SEED2_scramble_seed:
   description: ''
   fields:
-  - name: lane2
-    bit_offset: 0
-    bit_size: 16
+    - name: lane2
+      bit_offset: 0
+      bit_size: 16
 fieldset/CAMERA_MIPI_CSI2_SCRAMBLING_SEED3_scramble_seed:
   description: ''
   fields:
-  - name: lane3
-    bit_offset: 0
-    bit_size: 16
+    - name: lane3
+      bit_offset: 0
+      bit_size: 16
 fieldset/CAMERA_MIPI_CSI2_SCRAMBLING_SEED4_scramble_seed:
   description: ''
   fields:
-  - name: lane4
-    bit_offset: 0
-    bit_size: 16
+    - name: lane4
+      bit_offset: 0
+      bit_size: 16

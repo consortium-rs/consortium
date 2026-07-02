@@ -12,7 +12,7 @@ def safe_hex_to_int(hex_str: str) -> Optional[int]:
     if not hex_str:
         return None
     # Remove UL, u, L suffixes
-    clean = re.sub(r'[uUlL]+$', '', hex_str.strip())
+    clean = re.sub(r"[uUlL]+$", "", hex_str.strip())
     try:
         return int(clean, 0)
     except ValueError:
@@ -21,21 +21,21 @@ def safe_hex_to_int(hex_str: str) -> Optional[int]:
 
 def evaluate_expr(expr: str, symbols: Dict[str, int]) -> Optional[int]:
     """Evaluate simple arithmetic expressions like 'BASE + 0x1000'."""
-    expr = expr.replace('UL', '').replace('u', '').replace('L', '').strip()
+    expr = expr.replace("UL", "").replace("u", "").replace("L", "").strip()
 
     # Handle simple addition/subtraction
-    terms = re.split(r'([+-])', expr)
+    terms = re.split(r"([+-])", expr)
     if not terms:
         return None
 
     result = 0
-    op = '+'
+    op = "+"
 
     for term in terms:
         term = term.strip()
         if not term:
             continue
-        if term in ('+', '-'):
+        if term in ("+", "-"):
             op = term
             continue
 
@@ -48,7 +48,7 @@ def evaluate_expr(expr: str, symbols: Dict[str, int]) -> Optional[int]:
         if val is None:
             return None
 
-        if op == '+':
+        if op == "+":
             result += val
         else:
             result -= val
@@ -82,39 +82,39 @@ def calc_bit_size_from_mask(mask_val: int) -> int:
 def write_yaml(data: Dict[str, Any], path: Path) -> None:
     """Write data to YAML file."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, 'w') as f:
+    with open(path, "w") as f:
         yaml.dump(data, f, default_flow_style=False, sort_keys=False)
 
 
 def write_json(data: Dict[str, Any], path: Path) -> None:
     """Write data to JSON file."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, 'w') as f:
+    with open(path, "w") as f:
         json.dump(data, f, indent=2)
 
 
 def extract_description(line: str) -> str:
     """Extract description from C comment (/*!< ... */ or /** ... */)."""
     # Match /* ... */ with optional !, <, and whitespace
-    match = re.search(r'/\*\s*!?<?[^\*]*?\*/', line)
+    match = re.search(r"/\*\s*!?<?[^\*]*?\*/", line)
     if not match:
         return ""
 
     desc = match.group(0)
 
     # Remove comment markers and artifacts
-    desc = desc.replace('/*', '').replace('*/', '').strip()
-    desc = re.sub(r'^[*!<\s]+', '', desc).strip()
+    desc = desc.replace("/*", "").replace("*/", "").strip()
+    desc = re.sub(r"^[*!<\s]+", "", desc).strip()
 
     # Remove Doxygen tags like @name, @brief, etc
-    desc = re.sub(r'\s*@\w+.*$', '', desc)
+    desc = re.sub(r"\s*@\w+.*$", "", desc)
 
     # Remove Address offset and array metadata
-    desc = re.sub(r'[,;]*\s*(?:[aA]ddress\s+)?offset:.*$', '', desc)
-    desc = re.sub(r'[,;]*\s*(?:array\s+)?step:.*$', '', desc)
+    desc = re.sub(r"[,;]*\s*(?:[aA]ddress\s+)?offset:.*$", "", desc)
+    desc = re.sub(r"[,;]*\s*(?:array\s+)?step:.*$", "", desc)
 
     # Normalize whitespace
-    desc = re.sub(r'\s+', ' ', desc).strip()
+    desc = re.sub(r"\s+", " ", desc).strip()
 
     return desc
 
@@ -122,5 +122,5 @@ def extract_description(line: str) -> str:
 def strip_suffix(name: str, suffix: str) -> str:
     """Remove suffix from name if present."""
     if name.endswith(suffix):
-        return name[:-len(suffix)]
+        return name[: -len(suffix)]
     return name

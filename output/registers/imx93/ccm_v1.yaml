@@ -1,805 +1,805 @@
 block/CCM:
   description: ''
   items:
-  - name: RW
-    byte_offset: 0
-  - name: SET
-    byte_offset: 4
-  - name: CLR
-    byte_offset: 8
-  - name: TOG
-    byte_offset: 12
-  - name: STATUS0
-    byte_offset: 32
-  - name: RW
-    byte_offset: 48
-  - name: SET
-    byte_offset: 52
-  - name: CLR
-    byte_offset: 56
-  - name: TOG
-    byte_offset: 60
-  - name: RW
-    byte_offset: 18448
-  - name: SET
-    byte_offset: 18452
-  - name: CLR
-    byte_offset: 18456
-  - name: TOG
-    byte_offset: 18460
-  - name: RW
-    byte_offset: 18464
-  - name: SET
-    byte_offset: 18468
-  - name: CLR
-    byte_offset: 18472
-  - name: TOG
-    byte_offset: 18476
-  - name: RW
-    byte_offset: 18480
-  - name: SET
-    byte_offset: 18484
-  - name: CLR
-    byte_offset: 18488
-  - name: TOG
-    byte_offset: 18492
-  - name: RW
-    byte_offset: 18496
-  - name: SET
-    byte_offset: 18500
-  - name: CLR
-    byte_offset: 18504
-  - name: TOG
-    byte_offset: 18508
-  - name: RW
-    byte_offset: 18512
-  - name: SET
-    byte_offset: 18516
-  - name: CLR
-    byte_offset: 18520
-  - name: TOG
-    byte_offset: 18524
-  - name: RW
-    byte_offset: 18544
-  - name: SET
-    byte_offset: 18548
-  - name: CLR
-    byte_offset: 18552
-  - name: TOG
-    byte_offset: 18556
-  - name: RW
-    byte_offset: 19456
-  - name: SET
-    byte_offset: 19460
-  - name: CLR
-    byte_offset: 19464
-  - name: TOG
-    byte_offset: 19468
-  - name: RW
-    byte_offset: 19472
-  - name: SET
-    byte_offset: 19476
-  - name: CLR
-    byte_offset: 19480
-  - name: TOG
-    byte_offset: 19484
-  - name: DIRECT
-    byte_offset: 20480
-  - name: LPM_STATUS0
-    byte_offset: 20484
-  - name: LPM_STATUS1
-    byte_offset: 20488
-  - name: LPM0
-    byte_offset: 20496
-  - name: LPM1
-    byte_offset: 20500
-  - name: LPM_CUR
-    byte_offset: 20508
-  - name: STATUS0
-    byte_offset: 20512
-  - name: STATUS1
-    byte_offset: 20516
-  - name: AUTHEN
-    byte_offset: 20528
-  - name: DIRECT
-    byte_offset: 32768
-  - name: LPM_STATUS0
-    byte_offset: 32772
-  - name: LPM_STATUS1
-    byte_offset: 32776
-  - name: LPM0
-    byte_offset: 32784
-  - name: LPM1
-    byte_offset: 32788
-  - name: LPM_CUR
-    byte_offset: 32796
-  - name: STATUS0
-    byte_offset: 32800
-  - name: STATUS1
-    byte_offset: 32804
-  - name: AUTHEN
-    byte_offset: 32816
+    - name: RW
+      byte_offset: 0
+    - name: SET
+      byte_offset: 4
+    - name: CLR
+      byte_offset: 8
+    - name: TOG
+      byte_offset: 12
+    - name: STATUS0
+      byte_offset: 32
+    - name: RW
+      byte_offset: 48
+    - name: SET
+      byte_offset: 52
+    - name: CLR
+      byte_offset: 56
+    - name: TOG
+      byte_offset: 60
+    - name: RW
+      byte_offset: 18448
+    - name: SET
+      byte_offset: 18452
+    - name: CLR
+      byte_offset: 18456
+    - name: TOG
+      byte_offset: 18460
+    - name: RW
+      byte_offset: 18464
+    - name: SET
+      byte_offset: 18468
+    - name: CLR
+      byte_offset: 18472
+    - name: TOG
+      byte_offset: 18476
+    - name: RW
+      byte_offset: 18480
+    - name: SET
+      byte_offset: 18484
+    - name: CLR
+      byte_offset: 18488
+    - name: TOG
+      byte_offset: 18492
+    - name: RW
+      byte_offset: 18496
+    - name: SET
+      byte_offset: 18500
+    - name: CLR
+      byte_offset: 18504
+    - name: TOG
+      byte_offset: 18508
+    - name: RW
+      byte_offset: 18512
+    - name: SET
+      byte_offset: 18516
+    - name: CLR
+      byte_offset: 18520
+    - name: TOG
+      byte_offset: 18524
+    - name: RW
+      byte_offset: 18544
+    - name: SET
+      byte_offset: 18548
+    - name: CLR
+      byte_offset: 18552
+    - name: TOG
+      byte_offset: 18556
+    - name: RW
+      byte_offset: 19456
+    - name: SET
+      byte_offset: 19460
+    - name: CLR
+      byte_offset: 19464
+    - name: TOG
+      byte_offset: 19468
+    - name: RW
+      byte_offset: 19472
+    - name: SET
+      byte_offset: 19476
+    - name: CLR
+      byte_offset: 19480
+    - name: TOG
+      byte_offset: 19484
+    - name: DIRECT
+      byte_offset: 20480
+    - name: LPM_STATUS0
+      byte_offset: 20484
+    - name: LPM_STATUS1
+      byte_offset: 20488
+    - name: LPM0
+      byte_offset: 20496
+    - name: LPM1
+      byte_offset: 20500
+    - name: LPM_CUR
+      byte_offset: 20508
+    - name: STATUS0
+      byte_offset: 20512
+    - name: STATUS1
+      byte_offset: 20516
+    - name: AUTHEN
+      byte_offset: 20528
+    - name: DIRECT
+      byte_offset: 32768
+    - name: LPM_STATUS0
+      byte_offset: 32772
+    - name: LPM_STATUS1
+      byte_offset: 32776
+    - name: LPM0
+      byte_offset: 32784
+    - name: LPM1
+      byte_offset: 32788
+    - name: LPM_CUR
+      byte_offset: 32796
+    - name: STATUS0
+      byte_offset: 32800
+    - name: STATUS1
+      byte_offset: 32804
+    - name: AUTHEN
+      byte_offset: 32816
 fieldset/CCM_CLOCK_ROOT:
   description: ''
   fields:
-  - name: DIV
-    bit_offset: 0
-    bit_size: 8
-    description: Clock division fraction.
-  - name: MUX
-    bit_offset: 8
-    bit_size: 2
-    description: Clock division fraction.
-  - name: 'OFF'
-    bit_offset: 24
-    bit_size: 1
+    - name: DIV
+      bit_offset: 0
+      bit_size: 8
+      description: Clock division fraction.
+    - name: MUX
+      bit_offset: 8
+      bit_size: 2
+      description: Clock division fraction.
+    - name: 'OFF'
+      bit_offset: 24
+      bit_size: 1
 fieldset/CCM_CLOCK_ROOT_STATUS0:
   description: ''
   fields:
-  - name: DIV
-    bit_offset: 0
-    bit_size: 8
-    description: Current clock root DIV setting
-  - name: MUX
-    bit_offset: 8
-    bit_size: 2
-    description: Current clock root DIV setting
-  - name: 'OFF'
-    bit_offset: 24
-    bit_size: 1
-    description: Current clock root MUX setting
-  - name: CHANGING
-    bit_offset: 31
-    bit_size: 1
+    - name: DIV
+      bit_offset: 0
+      bit_size: 8
+      description: Current clock root DIV setting
+    - name: MUX
+      bit_offset: 8
+      bit_size: 2
+      description: Current clock root DIV setting
+    - name: 'OFF'
+      bit_offset: 24
+      bit_size: 1
+      description: Current clock root MUX setting
+    - name: CHANGING
+      bit_offset: 31
+      bit_size: 1
 fieldset/CCM_CLOCK_ROOT_STATUS0_SLICE:
   description: ''
   fields:
-  - name: BUSY
-    bit_offset: 28
-    bit_size: 1
+    - name: BUSY
+      bit_offset: 28
+      bit_size: 1
 fieldset/CCM_CLOCK_ROOT_TZ:
   description: ''
   fields:
-  - name: USER
-    bit_offset: 8
-    bit_size: 1
-  - name: NS
-    bit_offset: 9
-    bit_size: 1
+    - name: USER
+      bit_offset: 8
+      bit_size: 1
+    - name: NS
+      bit_offset: 9
+      bit_size: 1
 fieldset/CCM_CLOCK_ROOT_LOCK:
   description: ''
   fields:
-  - name: TZ
-    bit_offset: 11
-    bit_size: 1
-  - name: LIST
-    bit_offset: 15
-    bit_size: 1
+    - name: TZ
+      bit_offset: 11
+      bit_size: 1
+    - name: LIST
+      bit_offset: 15
+      bit_size: 1
 fieldset/CCM_CLOCK_ROOT_WHITE:
   description: ''
   fields:
-  - name: LIST
-    bit_offset: 16
-    bit_size: 16
-    description: Whitelist settings
+    - name: LIST
+      bit_offset: 16
+      bit_size: 16
+      description: Whitelist settings
 fieldset/CCM_GPR_SHARED0_AUTHEN_TZ:
   description: ''
   fields:
-  - name: USER
-    bit_offset: 8
-    bit_size: 1
-  - name: NS
-    bit_offset: 9
-    bit_size: 1
+    - name: USER
+      bit_offset: 8
+      bit_size: 1
+    - name: NS
+      bit_offset: 9
+      bit_size: 1
 fieldset/CCM_GPR_SHARED0_AUTHEN_LOCK:
   description: ''
   fields:
-  - name: TZ
-    bit_offset: 11
-    bit_size: 1
-  - name: LIST
-    bit_offset: 15
-    bit_size: 1
+    - name: TZ
+      bit_offset: 11
+      bit_size: 1
+    - name: LIST
+      bit_offset: 15
+      bit_size: 1
 fieldset/CCM_GPR_SHARED0_AUTHEN_WHITE:
   description: ''
   fields:
-  - name: LIST
-    bit_offset: 16
-    bit_size: 16
-    description: Whitelist settings
+    - name: LIST
+      bit_offset: 16
+      bit_size: 16
+      description: Whitelist settings
 fieldset/CCM_GPR_SHARED1_CA55_CLOCK:
   description: ''
   fields:
-  - name: SELECT
-    bit_offset: 0
-    bit_size: 1
+    - name: SELECT
+      bit_offset: 0
+      bit_size: 1
 fieldset/CCM_GPR_SHARED1_AUTHEN_TZ:
   description: ''
   fields:
-  - name: USER
-    bit_offset: 8
-    bit_size: 1
-  - name: NS
-    bit_offset: 9
-    bit_size: 1
+    - name: USER
+      bit_offset: 8
+      bit_size: 1
+    - name: NS
+      bit_offset: 9
+      bit_size: 1
 fieldset/CCM_GPR_SHARED1_AUTHEN_LOCK:
   description: ''
   fields:
-  - name: TZ
-    bit_offset: 11
-    bit_size: 1
-  - name: LIST
-    bit_offset: 15
-    bit_size: 1
+    - name: TZ
+      bit_offset: 11
+      bit_size: 1
+    - name: LIST
+      bit_offset: 15
+      bit_size: 1
 fieldset/CCM_GPR_SHARED1_AUTHEN_WHITE:
   description: ''
   fields:
-  - name: LIST
-    bit_offset: 16
-    bit_size: 16
-    description: Whitelist settings
+    - name: LIST
+      bit_offset: 16
+      bit_size: 16
+      description: Whitelist settings
 fieldset/CCM_GPR_SHARED2_DRAM_PLL:
   description: ''
   fields:
-  - name: BYPASS
-    bit_offset: 0
-    bit_size: 1
+    - name: BYPASS
+      bit_offset: 0
+      bit_size: 1
 fieldset/CCM_GPR_SHARED2_AUTHEN_TZ:
   description: ''
   fields:
-  - name: USER
-    bit_offset: 8
-    bit_size: 1
-  - name: NS
-    bit_offset: 9
-    bit_size: 1
+    - name: USER
+      bit_offset: 8
+      bit_size: 1
+    - name: NS
+      bit_offset: 9
+      bit_size: 1
 fieldset/CCM_GPR_SHARED2_AUTHEN_LOCK:
   description: ''
   fields:
-  - name: TZ
-    bit_offset: 11
-    bit_size: 1
-  - name: LIST
-    bit_offset: 15
-    bit_size: 1
+    - name: TZ
+      bit_offset: 11
+      bit_size: 1
+    - name: LIST
+      bit_offset: 15
+      bit_size: 1
 fieldset/CCM_GPR_SHARED2_AUTHEN_WHITE:
   description: ''
   fields:
-  - name: LIST
-    bit_offset: 16
-    bit_size: 16
-    description: Whitelist settings
+    - name: LIST
+      bit_offset: 16
+      bit_size: 16
+      description: Whitelist settings
 fieldset/CCM_GPR_SHARED_TZ:
   description: ''
   fields:
-  - name: USER
-    bit_offset: 8
-    bit_size: 1
-  - name: NS
-    bit_offset: 9
-    bit_size: 1
+    - name: USER
+      bit_offset: 8
+      bit_size: 1
+    - name: NS
+      bit_offset: 9
+      bit_size: 1
 fieldset/CCM_GPR_SHARED_LOCK:
   description: ''
   fields:
-  - name: TZ
-    bit_offset: 11
-    bit_size: 1
-  - name: LIST
-    bit_offset: 15
-    bit_size: 1
+    - name: TZ
+      bit_offset: 11
+      bit_size: 1
+    - name: LIST
+      bit_offset: 15
+      bit_size: 1
 fieldset/CCM_GPR_SHARED_WHITE:
   description: ''
   fields:
-  - name: LIST
-    bit_offset: 16
-    bit_size: 16
-    description: Whitelist settings
+    - name: LIST
+      bit_offset: 16
+      bit_size: 16
+      description: Whitelist settings
 fieldset/CCM_GPR_PRIVATE:
   description: ''
   fields:
-  - name: GPR
-    bit_offset: 0
-    bit_size: 32
-    description: GP register
+    - name: GPR
+      bit_offset: 0
+      bit_size: 32
+      description: GP register
 fieldset/CCM_GPR_PRIVATE_TZ:
   description: ''
   fields:
-  - name: USER
-    bit_offset: 8
-    bit_size: 1
-  - name: NS
-    bit_offset: 9
-    bit_size: 1
+    - name: USER
+      bit_offset: 8
+      bit_size: 1
+    - name: NS
+      bit_offset: 9
+      bit_size: 1
 fieldset/CCM_GPR_PRIVATE_LOCK:
   description: ''
   fields:
-  - name: TZ
-    bit_offset: 11
-    bit_size: 1
-  - name: LIST
-    bit_offset: 15
-    bit_size: 1
+    - name: TZ
+      bit_offset: 11
+      bit_size: 1
+    - name: LIST
+      bit_offset: 15
+      bit_size: 1
 fieldset/CCM_GPR_PRIVATE_WHITE:
   description: ''
   fields:
-  - name: LIST
-    bit_offset: 16
-    bit_size: 16
-    description: Whitelist settings
+    - name: LIST
+      bit_offset: 16
+      bit_size: 16
+      description: Whitelist settings
 fieldset/CCM_OSCPLL_DIRECT:
   description: ''
   fields:
-  - name: 'ON'
-    bit_offset: 0
-    bit_size: 1
+    - name: 'ON'
+      bit_offset: 0
+      bit_size: 1
 fieldset/CCM_OSCPLL_LPM_STATUS0_CPU_MODE:
   description: ''
   fields:
-  - name: DOMAIN0
-    bit_offset: 0
-    bit_size: 2
-  - name: DOMAIN1
-    bit_offset: 4
-    bit_size: 2
-  - name: DOMAIN2
-    bit_offset: 8
-    bit_size: 2
-  - name: DOMAIN3
-    bit_offset: 12
-    bit_size: 2
-  - name: DOMAIN4
-    bit_offset: 16
-    bit_size: 2
-  - name: DOMAIN5
-    bit_offset: 20
-    bit_size: 2
-  - name: DOMAIN6
-    bit_offset: 24
-    bit_size: 2
-  - name: DOMAIN7
-    bit_offset: 28
-    bit_size: 2
+    - name: DOMAIN0
+      bit_offset: 0
+      bit_size: 2
+    - name: DOMAIN1
+      bit_offset: 4
+      bit_size: 2
+    - name: DOMAIN2
+      bit_offset: 8
+      bit_size: 2
+    - name: DOMAIN3
+      bit_offset: 12
+      bit_size: 2
+    - name: DOMAIN4
+      bit_offset: 16
+      bit_size: 2
+    - name: DOMAIN5
+      bit_offset: 20
+      bit_size: 2
+    - name: DOMAIN6
+      bit_offset: 24
+      bit_size: 2
+    - name: DOMAIN7
+      bit_offset: 28
+      bit_size: 2
 fieldset/CCM_OSCPLL_LPM_STATUS0_TRANS_REQ:
   description: ''
   fields:
-  - name: DOMAIN0
-    bit_offset: 2
-    bit_size: 1
-  - name: DOMAIN1
-    bit_offset: 6
-    bit_size: 1
-  - name: DOMAIN2
-    bit_offset: 10
-    bit_size: 1
-  - name: DOMAIN3
-    bit_offset: 14
-    bit_size: 1
-  - name: DOMAIN4
-    bit_offset: 18
-    bit_size: 1
-  - name: DOMAIN5
-    bit_offset: 22
-    bit_size: 1
-  - name: DOMAIN6
-    bit_offset: 26
-    bit_size: 1
-  - name: DOMAIN7
-    bit_offset: 30
-    bit_size: 1
+    - name: DOMAIN0
+      bit_offset: 2
+      bit_size: 1
+    - name: DOMAIN1
+      bit_offset: 6
+      bit_size: 1
+    - name: DOMAIN2
+      bit_offset: 10
+      bit_size: 1
+    - name: DOMAIN3
+      bit_offset: 14
+      bit_size: 1
+    - name: DOMAIN4
+      bit_offset: 18
+      bit_size: 1
+    - name: DOMAIN5
+      bit_offset: 22
+      bit_size: 1
+    - name: DOMAIN6
+      bit_offset: 26
+      bit_size: 1
+    - name: DOMAIN7
+      bit_offset: 30
+      bit_size: 1
 fieldset/CCM_OSCPLL_LPM_STATUS1_CPU_MODE:
   description: ''
   fields:
-  - name: DOMAIN8
-    bit_offset: 0
-    bit_size: 2
-  - name: DOMAIN9
-    bit_offset: 4
-    bit_size: 2
-  - name: DOMAIN10
-    bit_offset: 8
-    bit_size: 2
-  - name: DOMAIN11
-    bit_offset: 12
-    bit_size: 2
-  - name: DOMAIN12
-    bit_offset: 16
-    bit_size: 2
-  - name: DOMAIN13
-    bit_offset: 20
-    bit_size: 2
-  - name: DOMAIN14
-    bit_offset: 24
-    bit_size: 2
-  - name: DOMAIN15
-    bit_offset: 28
-    bit_size: 2
+    - name: DOMAIN8
+      bit_offset: 0
+      bit_size: 2
+    - name: DOMAIN9
+      bit_offset: 4
+      bit_size: 2
+    - name: DOMAIN10
+      bit_offset: 8
+      bit_size: 2
+    - name: DOMAIN11
+      bit_offset: 12
+      bit_size: 2
+    - name: DOMAIN12
+      bit_offset: 16
+      bit_size: 2
+    - name: DOMAIN13
+      bit_offset: 20
+      bit_size: 2
+    - name: DOMAIN14
+      bit_offset: 24
+      bit_size: 2
+    - name: DOMAIN15
+      bit_offset: 28
+      bit_size: 2
 fieldset/CCM_OSCPLL_LPM_STATUS1_TRANS_REQ:
   description: ''
   fields:
-  - name: DOMAIN8
-    bit_offset: 2
-    bit_size: 1
-  - name: DOMAIN9
-    bit_offset: 6
-    bit_size: 1
-  - name: DOMAIN10
-    bit_offset: 10
-    bit_size: 1
-  - name: DOMAIN11
-    bit_offset: 14
-    bit_size: 1
-  - name: DOMAIN12
-    bit_offset: 18
-    bit_size: 1
-  - name: DOMAIN13
-    bit_offset: 22
-    bit_size: 1
-  - name: DOMAIN14
-    bit_offset: 26
-    bit_size: 1
-  - name: DOMAIN15
-    bit_offset: 30
-    bit_size: 1
+    - name: DOMAIN8
+      bit_offset: 2
+      bit_size: 1
+    - name: DOMAIN9
+      bit_offset: 6
+      bit_size: 1
+    - name: DOMAIN10
+      bit_offset: 10
+      bit_size: 1
+    - name: DOMAIN11
+      bit_offset: 14
+      bit_size: 1
+    - name: DOMAIN12
+      bit_offset: 18
+      bit_size: 1
+    - name: DOMAIN13
+      bit_offset: 22
+      bit_size: 1
+    - name: DOMAIN14
+      bit_offset: 26
+      bit_size: 1
+    - name: DOMAIN15
+      bit_offset: 30
+      bit_size: 1
 fieldset/CCM_OSCPLL_LPM0_LPM_SETTING:
   description: ''
   fields:
-  - name: D0
-    bit_offset: 0
-    bit_size: 3
-  - name: D1
-    bit_offset: 4
-    bit_size: 3
-  - name: D2
-    bit_offset: 8
-    bit_size: 3
-  - name: D3
-    bit_offset: 12
-    bit_size: 3
-  - name: D4
-    bit_offset: 16
-    bit_size: 3
-  - name: D5
-    bit_offset: 20
-    bit_size: 3
-  - name: D6
-    bit_offset: 24
-    bit_size: 3
-  - name: D7
-    bit_offset: 28
-    bit_size: 3
+    - name: D0
+      bit_offset: 0
+      bit_size: 3
+    - name: D1
+      bit_offset: 4
+      bit_size: 3
+    - name: D2
+      bit_offset: 8
+      bit_size: 3
+    - name: D3
+      bit_offset: 12
+      bit_size: 3
+    - name: D4
+      bit_offset: 16
+      bit_size: 3
+    - name: D5
+      bit_offset: 20
+      bit_size: 3
+    - name: D6
+      bit_offset: 24
+      bit_size: 3
+    - name: D7
+      bit_offset: 28
+      bit_size: 3
 fieldset/CCM_OSCPLL_LPM1_LPM_SETTING:
   description: ''
   fields:
-  - name: D8
-    bit_offset: 0
-    bit_size: 3
-  - name: D9
-    bit_offset: 4
-    bit_size: 3
-  - name: D10
-    bit_offset: 8
-    bit_size: 3
-  - name: D11
-    bit_offset: 12
-    bit_size: 3
-  - name: D12
-    bit_offset: 16
-    bit_size: 3
-  - name: D13
-    bit_offset: 20
-    bit_size: 3
-  - name: D14
-    bit_offset: 24
-    bit_size: 3
-  - name: D15
-    bit_offset: 28
-    bit_size: 3
+    - name: D8
+      bit_offset: 0
+      bit_size: 3
+    - name: D9
+      bit_offset: 4
+      bit_size: 3
+    - name: D10
+      bit_offset: 8
+      bit_size: 3
+    - name: D11
+      bit_offset: 12
+      bit_size: 3
+    - name: D12
+      bit_offset: 16
+      bit_size: 3
+    - name: D13
+      bit_offset: 20
+      bit_size: 3
+    - name: D14
+      bit_offset: 24
+      bit_size: 3
+    - name: D15
+      bit_offset: 28
+      bit_size: 3
 fieldset/CCM_OSCPLL_LPM_CUR_LPM_SETTING:
   description: ''
   fields:
-  - name: CUR
-    bit_offset: 0
-    bit_size: 3
+    - name: CUR
+      bit_offset: 0
+      bit_size: 3
 fieldset/CCM_OSCPLL_STATUS0:
   description: ''
   fields:
-  - name: 'ON'
-    bit_offset: 0
-    bit_size: 1
+    - name: 'ON'
+      bit_offset: 0
+      bit_size: 1
 fieldset/CCM_OSCPLL_STATUS0_STATUS:
   description: ''
   fields:
-  - name: EARLY
-    bit_offset: 4
-    bit_size: 1
-  - name: LATE
-    bit_offset: 5
-    bit_size: 1
+    - name: EARLY
+      bit_offset: 4
+      bit_size: 1
+    - name: LATE
+      bit_offset: 5
+      bit_size: 1
 fieldset/CCM_OSCPLL_STATUS0_IN:
   description: ''
   fields:
-  - name: USE
-    bit_offset: 12
-    bit_size: 1
+    - name: USE
+      bit_offset: 12
+      bit_size: 1
 fieldset/CCM_OSCPLL_STATUS1_DOMAIN:
   description: ''
   fields:
-  - name: ACTIVE
-    bit_offset: 0
-    bit_size: 16
-    description: Domain active
-  - name: ENABLE
-    bit_offset: 16
-    bit_size: 16
-    description: Domain enable
+    - name: ACTIVE
+      bit_offset: 0
+      bit_size: 16
+      description: Domain active
+    - name: ENABLE
+      bit_offset: 16
+      bit_size: 16
+      description: Domain enable
 fieldset/CCM_OSCPLL_AUTHEN_CPULPM:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 1
+    - name: MODE
+      bit_offset: 2
+      bit_size: 1
 fieldset/CCM_OSCPLL_AUTHEN_AUTO:
   description: ''
   fields:
-  - name: CTRL
-    bit_offset: 3
-    bit_size: 1
+    - name: CTRL
+      bit_offset: 3
+      bit_size: 1
 fieldset/CCM_OSCPLL_AUTHEN_LOCK:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 7
-    bit_size: 1
-  - name: TZ
-    bit_offset: 11
-    bit_size: 1
-  - name: LIST
-    bit_offset: 15
-    bit_size: 1
+    - name: MODE
+      bit_offset: 7
+      bit_size: 1
+    - name: TZ
+      bit_offset: 11
+      bit_size: 1
+    - name: LIST
+      bit_offset: 15
+      bit_size: 1
 fieldset/CCM_OSCPLL_AUTHEN_TZ:
   description: ''
   fields:
-  - name: USER
-    bit_offset: 8
-    bit_size: 1
-  - name: NS
-    bit_offset: 9
-    bit_size: 1
+    - name: USER
+      bit_offset: 8
+      bit_size: 1
+    - name: NS
+      bit_offset: 9
+      bit_size: 1
 fieldset/CCM_OSCPLL_AUTHEN_WHITE:
   description: ''
   fields:
-  - name: LIST
-    bit_offset: 16
-    bit_size: 16
-    description: Whitelist
+    - name: LIST
+      bit_offset: 16
+      bit_size: 16
+      description: Whitelist
 fieldset/CCM_LPCG_DIRECT:
   description: ''
   fields:
-  - name: 'ON'
-    bit_offset: 0
-    bit_size: 1
+    - name: 'ON'
+      bit_offset: 0
+      bit_size: 1
 fieldset/CCM_LPCG_DIRECT_CLKOFF_ACK_TIMEOUT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 2
-    bit_size: 1
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
 fieldset/CCM_LPCG_LPM_STATUS0_CPU_MODE:
   description: ''
   fields:
-  - name: DOMAIN0
-    bit_offset: 0
-    bit_size: 2
-  - name: DOMAIN1
-    bit_offset: 4
-    bit_size: 2
-  - name: DOMAIN2
-    bit_offset: 8
-    bit_size: 2
-  - name: DOMAIN3
-    bit_offset: 12
-    bit_size: 2
-  - name: DOMAIN4
-    bit_offset: 16
-    bit_size: 2
-  - name: DOMAIN5
-    bit_offset: 20
-    bit_size: 2
-  - name: DOMAIN6
-    bit_offset: 24
-    bit_size: 2
-  - name: DOMAIN7
-    bit_offset: 28
-    bit_size: 2
+    - name: DOMAIN0
+      bit_offset: 0
+      bit_size: 2
+    - name: DOMAIN1
+      bit_offset: 4
+      bit_size: 2
+    - name: DOMAIN2
+      bit_offset: 8
+      bit_size: 2
+    - name: DOMAIN3
+      bit_offset: 12
+      bit_size: 2
+    - name: DOMAIN4
+      bit_offset: 16
+      bit_size: 2
+    - name: DOMAIN5
+      bit_offset: 20
+      bit_size: 2
+    - name: DOMAIN6
+      bit_offset: 24
+      bit_size: 2
+    - name: DOMAIN7
+      bit_offset: 28
+      bit_size: 2
 fieldset/CCM_LPCG_LPM_STATUS0_TRANS_REQ:
   description: ''
   fields:
-  - name: DOMAIN0
-    bit_offset: 2
-    bit_size: 1
-  - name: DOMAIN1
-    bit_offset: 6
-    bit_size: 1
-  - name: DOMAIN2
-    bit_offset: 10
-    bit_size: 1
-  - name: DOMAIN3
-    bit_offset: 14
-    bit_size: 1
-  - name: DOMAIN4
-    bit_offset: 18
-    bit_size: 1
-  - name: DOMAIN5
-    bit_offset: 22
-    bit_size: 1
-  - name: DOMAIN6
-    bit_offset: 26
-    bit_size: 1
-  - name: DOMAIN7
-    bit_offset: 30
-    bit_size: 1
+    - name: DOMAIN0
+      bit_offset: 2
+      bit_size: 1
+    - name: DOMAIN1
+      bit_offset: 6
+      bit_size: 1
+    - name: DOMAIN2
+      bit_offset: 10
+      bit_size: 1
+    - name: DOMAIN3
+      bit_offset: 14
+      bit_size: 1
+    - name: DOMAIN4
+      bit_offset: 18
+      bit_size: 1
+    - name: DOMAIN5
+      bit_offset: 22
+      bit_size: 1
+    - name: DOMAIN6
+      bit_offset: 26
+      bit_size: 1
+    - name: DOMAIN7
+      bit_offset: 30
+      bit_size: 1
 fieldset/CCM_LPCG_LPM_STATUS1_CPU_MODE:
   description: ''
   fields:
-  - name: DOMAIN8
-    bit_offset: 0
-    bit_size: 2
-  - name: DOMAIN9
-    bit_offset: 4
-    bit_size: 2
-  - name: DOMAIN10
-    bit_offset: 8
-    bit_size: 2
-  - name: DOMAIN11
-    bit_offset: 12
-    bit_size: 2
-  - name: DOMAIN12
-    bit_offset: 16
-    bit_size: 2
-  - name: DOMAIN13
-    bit_offset: 20
-    bit_size: 2
-  - name: DOMAIN14
-    bit_offset: 24
-    bit_size: 2
-  - name: DOMAIN15
-    bit_offset: 28
-    bit_size: 2
+    - name: DOMAIN8
+      bit_offset: 0
+      bit_size: 2
+    - name: DOMAIN9
+      bit_offset: 4
+      bit_size: 2
+    - name: DOMAIN10
+      bit_offset: 8
+      bit_size: 2
+    - name: DOMAIN11
+      bit_offset: 12
+      bit_size: 2
+    - name: DOMAIN12
+      bit_offset: 16
+      bit_size: 2
+    - name: DOMAIN13
+      bit_offset: 20
+      bit_size: 2
+    - name: DOMAIN14
+      bit_offset: 24
+      bit_size: 2
+    - name: DOMAIN15
+      bit_offset: 28
+      bit_size: 2
 fieldset/CCM_LPCG_LPM_STATUS1_TRANS_REQ:
   description: ''
   fields:
-  - name: DOMAIN8
-    bit_offset: 2
-    bit_size: 1
-  - name: DOMAIN9
-    bit_offset: 6
-    bit_size: 1
-  - name: DOMAIN10
-    bit_offset: 10
-    bit_size: 1
-  - name: DOMAIN11
-    bit_offset: 14
-    bit_size: 1
-  - name: DOMAIN12
-    bit_offset: 18
-    bit_size: 1
-  - name: DOMAIN13
-    bit_offset: 22
-    bit_size: 1
-  - name: DOMAIN14
-    bit_offset: 26
-    bit_size: 1
-  - name: DOMAIN15
-    bit_offset: 30
-    bit_size: 1
+    - name: DOMAIN8
+      bit_offset: 2
+      bit_size: 1
+    - name: DOMAIN9
+      bit_offset: 6
+      bit_size: 1
+    - name: DOMAIN10
+      bit_offset: 10
+      bit_size: 1
+    - name: DOMAIN11
+      bit_offset: 14
+      bit_size: 1
+    - name: DOMAIN12
+      bit_offset: 18
+      bit_size: 1
+    - name: DOMAIN13
+      bit_offset: 22
+      bit_size: 1
+    - name: DOMAIN14
+      bit_offset: 26
+      bit_size: 1
+    - name: DOMAIN15
+      bit_offset: 30
+      bit_size: 1
 fieldset/CCM_LPCG_LPM0_LPM_SETTING:
   description: ''
   fields:
-  - name: D0
-    bit_offset: 0
-    bit_size: 3
-  - name: D1
-    bit_offset: 4
-    bit_size: 3
-  - name: D2
-    bit_offset: 8
-    bit_size: 3
-  - name: D3
-    bit_offset: 12
-    bit_size: 3
-  - name: D4
-    bit_offset: 16
-    bit_size: 3
-  - name: D5
-    bit_offset: 20
-    bit_size: 3
-  - name: D6
-    bit_offset: 24
-    bit_size: 3
-  - name: D7
-    bit_offset: 28
-    bit_size: 3
+    - name: D0
+      bit_offset: 0
+      bit_size: 3
+    - name: D1
+      bit_offset: 4
+      bit_size: 3
+    - name: D2
+      bit_offset: 8
+      bit_size: 3
+    - name: D3
+      bit_offset: 12
+      bit_size: 3
+    - name: D4
+      bit_offset: 16
+      bit_size: 3
+    - name: D5
+      bit_offset: 20
+      bit_size: 3
+    - name: D6
+      bit_offset: 24
+      bit_size: 3
+    - name: D7
+      bit_offset: 28
+      bit_size: 3
 fieldset/CCM_LPCG_LPM1_LPM_SETTING:
   description: ''
   fields:
-  - name: D8
-    bit_offset: 0
-    bit_size: 3
-  - name: D9
-    bit_offset: 4
-    bit_size: 3
-  - name: D10
-    bit_offset: 8
-    bit_size: 3
-  - name: D11
-    bit_offset: 12
-    bit_size: 3
-  - name: D12
-    bit_offset: 16
-    bit_size: 3
-  - name: D13
-    bit_offset: 20
-    bit_size: 3
-  - name: D14
-    bit_offset: 24
-    bit_size: 3
-  - name: D15
-    bit_offset: 28
-    bit_size: 3
+    - name: D8
+      bit_offset: 0
+      bit_size: 3
+    - name: D9
+      bit_offset: 4
+      bit_size: 3
+    - name: D10
+      bit_offset: 8
+      bit_size: 3
+    - name: D11
+      bit_offset: 12
+      bit_size: 3
+    - name: D12
+      bit_offset: 16
+      bit_size: 3
+    - name: D13
+      bit_offset: 20
+      bit_size: 3
+    - name: D14
+      bit_offset: 24
+      bit_size: 3
+    - name: D15
+      bit_offset: 28
+      bit_size: 3
 fieldset/CCM_LPCG_LPM_CUR_LPM_SETTING:
   description: ''
   fields:
-  - name: CUR
-    bit_offset: 0
-    bit_size: 3
+    - name: CUR
+      bit_offset: 0
+      bit_size: 3
 fieldset/CCM_LPCG_STATUS0:
   description: ''
   fields:
-  - name: 'ON'
-    bit_offset: 0
-    bit_size: 1
+    - name: 'ON'
+      bit_offset: 0
+      bit_size: 1
 fieldset/CCM_LPCG_STATUS1_DOMAIN:
   description: ''
   fields:
-  - name: ACTIVE
-    bit_offset: 0
-    bit_size: 16
-    description: Domain active
-  - name: ENABLE
-    bit_offset: 16
-    bit_size: 16
-    description: Domain active
+    - name: ACTIVE
+      bit_offset: 0
+      bit_size: 16
+      description: Domain active
+    - name: ENABLE
+      bit_offset: 16
+      bit_size: 16
+      description: Domain active
 fieldset/CCM_LPCG_AUTHEN_CPULPM:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 1
+    - name: MODE
+      bit_offset: 2
+      bit_size: 1
 fieldset/CCM_LPCG_AUTHEN_LOCK:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 7
-    bit_size: 1
-  - name: TZ
-    bit_offset: 11
-    bit_size: 1
-  - name: LIST
-    bit_offset: 15
-    bit_size: 1
+    - name: MODE
+      bit_offset: 7
+      bit_size: 1
+    - name: TZ
+      bit_offset: 11
+      bit_size: 1
+    - name: LIST
+      bit_offset: 15
+      bit_size: 1
 fieldset/CCM_LPCG_AUTHEN_TZ:
   description: ''
   fields:
-  - name: USER
-    bit_offset: 8
-    bit_size: 1
-  - name: NS
-    bit_offset: 9
-    bit_size: 1
+    - name: USER
+      bit_offset: 8
+      bit_size: 1
+    - name: NS
+      bit_offset: 9
+      bit_size: 1
 fieldset/CCM_LPCG_AUTHEN_WHITE:
   description: ''
   fields:
-  - name: LIST
-    bit_offset: 16
-    bit_size: 16
-    description: Whitelist
+    - name: LIST
+      bit_offset: 16
+      bit_size: 16
+      description: Whitelist

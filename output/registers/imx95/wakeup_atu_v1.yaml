@@ -1,488 +1,488 @@
 block/WAKEUP_ATU:
   description: ''
   items:
-  - name: ATUCR
-    byte_offset: 0
-    fieldset: WAKEUP_ATU_ATUCR
-  - name: ATUSR
-    byte_offset: 4
-  - name: IP_REV_1
-    byte_offset: 8
-  - name: IP_REV_2
-    byte_offset: 12
-  - name: PMCR
-    byte_offset: 28
-  - name: ACORE_OWAR0
-    byte_offset: 260
-    fieldset: WAKEUP_ATU_ACORE_OWAR0
-  - name: ACORE_OTEAR0
-    byte_offset: 264
-    fieldset: WAKEUP_ATU_ACORE_OTEAR0
-  - name: ACORE_OWBAR1
-    byte_offset: 272
-    fieldset: WAKEUP_ATU_ACORE_OWBAR1
-  - name: ACORE_OWAR1
-    byte_offset: 276
-    fieldset: WAKEUP_ATU_ACORE_OWAR1
-  - name: ACORE_OTEAR1
-    byte_offset: 280
-    fieldset: WAKEUP_ATU_ACORE_OTEAR1
-  - name: ACORE_OTAR1
-    byte_offset: 284
-    fieldset: WAKEUP_ATU_ACORE_OTAR1
-  - name: ACORE_OWBAR2
-    byte_offset: 288
-    fieldset: WAKEUP_ATU_ACORE_OWBAR2
-  - name: ACORE_OWAR2
-    byte_offset: 292
-    fieldset: WAKEUP_ATU_ACORE_OWAR2
-  - name: ACORE_OTEAR2
-    byte_offset: 296
-    fieldset: WAKEUP_ATU_ACORE_OTEAR2
-  - name: ACORE_OTAR2
-    byte_offset: 300
-    fieldset: WAKEUP_ATU_ACORE_OTAR2
-  - name: ACORE_OWBAR3
-    byte_offset: 304
-    fieldset: WAKEUP_ATU_ACORE_OWBAR3
-  - name: ACORE_OWAR3
-    byte_offset: 308
-    fieldset: WAKEUP_ATU_ACORE_OWAR3
-  - name: ACORE_OTEAR3
-    byte_offset: 312
-    fieldset: WAKEUP_ATU_ACORE_OTEAR3
-  - name: ACORE_OTAR3
-    byte_offset: 316
-    fieldset: WAKEUP_ATU_ACORE_OTAR3
-  - name: ACORE_OWBAR4
-    byte_offset: 320
-    fieldset: WAKEUP_ATU_ACORE_OWBAR4
-  - name: ACORE_OWAR4
-    byte_offset: 324
-    fieldset: WAKEUP_ATU_ACORE_OWAR4
-  - name: ACORE_OTEAR4
-    byte_offset: 328
-    fieldset: WAKEUP_ATU_ACORE_OTEAR4
-  - name: ACORE_OTAR4
-    byte_offset: 332
-    fieldset: WAKEUP_ATU_ACORE_OTAR4
-  - name: ACORE_OWBAR5
-    byte_offset: 336
-    fieldset: WAKEUP_ATU_ACORE_OWBAR5
-  - name: ACORE_OWAR5
-    byte_offset: 340
-    fieldset: WAKEUP_ATU_ACORE_OWAR5
-  - name: ACORE_OTEAR5
-    byte_offset: 344
-    fieldset: WAKEUP_ATU_ACORE_OTEAR5
-  - name: ACORE_OTAR5
-    byte_offset: 348
-    fieldset: WAKEUP_ATU_ACORE_OTAR5
-  - name: ACORE_OWBAR6
-    byte_offset: 352
-    fieldset: WAKEUP_ATU_ACORE_OWBAR6
-  - name: ACORE_OWAR6
-    byte_offset: 356
-    fieldset: WAKEUP_ATU_ACORE_OWAR6
-  - name: ACORE_OTEAR6
-    byte_offset: 360
-    fieldset: WAKEUP_ATU_ACORE_OTEAR6
-  - name: ACORE_OTAR6
-    byte_offset: 364
-    fieldset: WAKEUP_ATU_ACORE_OTAR6
-  - name: ACORE_OWBAR7
-    byte_offset: 368
-    fieldset: WAKEUP_ATU_ACORE_OWBAR7
-  - name: ACORE_OTEAR7
-    byte_offset: 376
-    fieldset: WAKEUP_ATU_ACORE_OTEAR7
-  - name: ACORE_OTAR7
-    byte_offset: 380
-    fieldset: WAKEUP_ATU_ACORE_OTAR7
+    - name: ATUCR
+      byte_offset: 0
+      fieldset: WAKEUP_ATU_ATUCR
+    - name: ATUSR
+      byte_offset: 4
+    - name: IP_REV_1
+      byte_offset: 8
+    - name: IP_REV_2
+      byte_offset: 12
+    - name: PMCR
+      byte_offset: 28
+    - name: ACORE_OWAR0
+      byte_offset: 260
+      fieldset: WAKEUP_ATU_ACORE_OWAR0
+    - name: ACORE_OTEAR0
+      byte_offset: 264
+      fieldset: WAKEUP_ATU_ACORE_OTEAR0
+    - name: ACORE_OWBAR1
+      byte_offset: 272
+      fieldset: WAKEUP_ATU_ACORE_OWBAR1
+    - name: ACORE_OWAR1
+      byte_offset: 276
+      fieldset: WAKEUP_ATU_ACORE_OWAR1
+    - name: ACORE_OTEAR1
+      byte_offset: 280
+      fieldset: WAKEUP_ATU_ACORE_OTEAR1
+    - name: ACORE_OTAR1
+      byte_offset: 284
+      fieldset: WAKEUP_ATU_ACORE_OTAR1
+    - name: ACORE_OWBAR2
+      byte_offset: 288
+      fieldset: WAKEUP_ATU_ACORE_OWBAR2
+    - name: ACORE_OWAR2
+      byte_offset: 292
+      fieldset: WAKEUP_ATU_ACORE_OWAR2
+    - name: ACORE_OTEAR2
+      byte_offset: 296
+      fieldset: WAKEUP_ATU_ACORE_OTEAR2
+    - name: ACORE_OTAR2
+      byte_offset: 300
+      fieldset: WAKEUP_ATU_ACORE_OTAR2
+    - name: ACORE_OWBAR3
+      byte_offset: 304
+      fieldset: WAKEUP_ATU_ACORE_OWBAR3
+    - name: ACORE_OWAR3
+      byte_offset: 308
+      fieldset: WAKEUP_ATU_ACORE_OWAR3
+    - name: ACORE_OTEAR3
+      byte_offset: 312
+      fieldset: WAKEUP_ATU_ACORE_OTEAR3
+    - name: ACORE_OTAR3
+      byte_offset: 316
+      fieldset: WAKEUP_ATU_ACORE_OTAR3
+    - name: ACORE_OWBAR4
+      byte_offset: 320
+      fieldset: WAKEUP_ATU_ACORE_OWBAR4
+    - name: ACORE_OWAR4
+      byte_offset: 324
+      fieldset: WAKEUP_ATU_ACORE_OWAR4
+    - name: ACORE_OTEAR4
+      byte_offset: 328
+      fieldset: WAKEUP_ATU_ACORE_OTEAR4
+    - name: ACORE_OTAR4
+      byte_offset: 332
+      fieldset: WAKEUP_ATU_ACORE_OTAR4
+    - name: ACORE_OWBAR5
+      byte_offset: 336
+      fieldset: WAKEUP_ATU_ACORE_OWBAR5
+    - name: ACORE_OWAR5
+      byte_offset: 340
+      fieldset: WAKEUP_ATU_ACORE_OWAR5
+    - name: ACORE_OTEAR5
+      byte_offset: 344
+      fieldset: WAKEUP_ATU_ACORE_OTEAR5
+    - name: ACORE_OTAR5
+      byte_offset: 348
+      fieldset: WAKEUP_ATU_ACORE_OTAR5
+    - name: ACORE_OWBAR6
+      byte_offset: 352
+      fieldset: WAKEUP_ATU_ACORE_OWBAR6
+    - name: ACORE_OWAR6
+      byte_offset: 356
+      fieldset: WAKEUP_ATU_ACORE_OWAR6
+    - name: ACORE_OTEAR6
+      byte_offset: 360
+      fieldset: WAKEUP_ATU_ACORE_OTEAR6
+    - name: ACORE_OTAR6
+      byte_offset: 364
+      fieldset: WAKEUP_ATU_ACORE_OTAR6
+    - name: ACORE_OWBAR7
+      byte_offset: 368
+      fieldset: WAKEUP_ATU_ACORE_OWBAR7
+    - name: ACORE_OTEAR7
+      byte_offset: 376
+      fieldset: WAKEUP_ATU_ACORE_OTEAR7
+    - name: ACORE_OTAR7
+      byte_offset: 380
+      fieldset: WAKEUP_ATU_ACORE_OTAR7
 fieldset/WAKEUP_ATU_ATUCR:
   description: ''
   fields:
-  - name: Spare4
-    bit_offset: 0
-    bit_size: 1
-    description: Spare 4
-  - name: Spare3
-    bit_offset: 1
-    bit_size: 1
-    description: Spare 4
-  - name: Spare2
-    bit_offset: 2
-    bit_size: 1
-    description: Spare 3
-  - name: Spare1
-    bit_offset: 3
-    bit_size: 1
-    description: Spare 2
+    - name: Spare4
+      bit_offset: 0
+      bit_size: 1
+      description: Spare 4
+    - name: Spare3
+      bit_offset: 1
+      bit_size: 1
+      description: Spare 4
+    - name: Spare2
+      bit_offset: 2
+      bit_size: 1
+      description: Spare 3
+    - name: Spare1
+      bit_offset: 3
+      bit_size: 1
+      description: Spare 2
 fieldset/WAKEUP_ATU_ATUSR_MISS:
   description: ''
   fields:
-  - name: ALL
-    bit_offset: 0
-    bit_size: 1
+    - name: ALL
+      bit_offset: 0
+      bit_size: 1
 fieldset/WAKEUP_ATU_ATUSR_PGERR:
   description: ''
   fields:
-  - name: W1
-    bit_offset: 1
-    bit_size: 1
-  - name: W2
-    bit_offset: 2
-    bit_size: 1
-  - name: W3
-    bit_offset: 3
-    bit_size: 1
-  - name: W4
-    bit_offset: 4
-    bit_size: 1
-  - name: W5
-    bit_offset: 5
-    bit_size: 1
-  - name: W6
-    bit_offset: 6
-    bit_size: 1
-  - name: W7
-    bit_offset: 7
-    bit_size: 1
+    - name: W1
+      bit_offset: 1
+      bit_size: 1
+    - name: W2
+      bit_offset: 2
+      bit_size: 1
+    - name: W3
+      bit_offset: 3
+      bit_size: 1
+    - name: W4
+      bit_offset: 4
+      bit_size: 1
+    - name: W5
+      bit_offset: 5
+      bit_size: 1
+    - name: W6
+      bit_offset: 6
+      bit_size: 1
+    - name: W7
+      bit_offset: 7
+      bit_size: 1
 fieldset/WAKEUP_ATU_IP_REV_1_IP:
   description: ''
   fields:
-  - name: MN
-    bit_offset: 0
-    bit_size: 8
-    description: Minor revision
-  - name: MJ
-    bit_offset: 8
-    bit_size: 8
-    description: Minor revision
-  - name: ID
-    bit_offset: 16
-    bit_size: 16
-    description: Major revision
+    - name: MN
+      bit_offset: 0
+      bit_size: 8
+      description: Minor revision
+    - name: MJ
+      bit_offset: 8
+      bit_size: 8
+      description: Minor revision
+    - name: ID
+      bit_offset: 16
+      bit_size: 16
+      description: Major revision
 fieldset/WAKEUP_ATU_IP_REV_2_IP:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 0
-    bit_size: 8
-    description: Configuration options
-  - name: ERR
-    bit_offset: 8
-    bit_size: 8
-    description: Configuration options
-  - name: INT
-    bit_offset: 16
-    bit_size: 8
-    description: Errata revision level
+    - name: CFG
+      bit_offset: 0
+      bit_size: 8
+      description: Configuration options
+    - name: ERR
+      bit_offset: 8
+      bit_size: 8
+      description: Configuration options
+    - name: INT
+      bit_offset: 16
+      bit_size: 8
+      description: Errata revision level
 fieldset/WAKEUP_ATU_PMCR_PM2:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 8
-  - name: TYP
-    bit_offset: 14
-    bit_size: 2
-    description: Task Mark 2 Value
+    - name: SEL
+      bit_offset: 0
+      bit_size: 8
+    - name: TYP
+      bit_offset: 14
+      bit_size: 2
+      description: Task Mark 2 Value
 fieldset/WAKEUP_ATU_PMCR_TM2:
   description: ''
   fields:
-  - name: MSK
-    bit_offset: 8
-    bit_size: 3
-    description: Task Mark 2 Mask
-  - name: VAL
-    bit_offset: 11
-    bit_size: 3
-    description: Task Mark 2 Mask
+    - name: MSK
+      bit_offset: 8
+      bit_size: 3
+      description: Task Mark 2 Mask
+    - name: VAL
+      bit_offset: 11
+      bit_size: 3
+      description: Task Mark 2 Mask
 fieldset/WAKEUP_ATU_PMCR_PM1:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 16
-    bit_size: 8
-  - name: TYP
-    bit_offset: 30
-    bit_size: 2
-    description: Task Mark 1 Value
+    - name: SEL
+      bit_offset: 16
+      bit_size: 8
+    - name: TYP
+      bit_offset: 30
+      bit_size: 2
+      description: Task Mark 1 Value
 fieldset/WAKEUP_ATU_PMCR_TM1:
   description: ''
   fields:
-  - name: MSK
-    bit_offset: 24
-    bit_size: 3
-    description: Task Mark 1 Mask
-  - name: VAL
-    bit_offset: 27
-    bit_size: 3
-    description: Task Mark 1 Mask
+    - name: MSK
+      bit_offset: 24
+      bit_size: 3
+      description: Task Mark 1 Mask
+    - name: VAL
+      bit_offset: 27
+      bit_size: 3
+      description: Task Mark 1 Mask
 fieldset/WAKEUP_ATU_ACORE_OWAR0:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
 fieldset/WAKEUP_ATU_ACORE_OTEAR0:
   description: ''
   fields:
-  - name: TEA
-    bit_offset: 0
-    bit_size: 32
-    description: Translated Extended Address
+    - name: TEA
+      bit_offset: 0
+      bit_size: 32
+      description: Translated Extended Address
 fieldset/WAKEUP_ATU_ACORE_OWBAR1:
   description: ''
   fields:
-  - name: OWS
-    bit_offset: 0
-    bit_size: 5
-  - name: WBA
-    bit_offset: 16
-    bit_size: 12
-    description: Window Base Address
+    - name: OWS
+      bit_offset: 0
+      bit_size: 5
+    - name: WBA
+      bit_offset: 16
+      bit_size: 12
+      description: Window Base Address
 fieldset/WAKEUP_ATU_ACORE_OWBAR1_DOMAIN:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 28
-    bit_size: 4
-    description: Window Base Address
+    - name: ID
+      bit_offset: 28
+      bit_size: 4
+      description: Window Base Address
 fieldset/WAKEUP_ATU_ACORE_OWAR1:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
 fieldset/WAKEUP_ATU_ACORE_OTEAR1:
   description: ''
   fields:
-  - name: TEA
-    bit_offset: 0
-    bit_size: 32
-    description: Translated Extended Address
+    - name: TEA
+      bit_offset: 0
+      bit_size: 32
+      description: Translated Extended Address
 fieldset/WAKEUP_ATU_ACORE_OTAR1:
   description: ''
   fields:
-  - name: TA
-    bit_offset: 16
-    bit_size: 16
-    description: Translated Address
+    - name: TA
+      bit_offset: 16
+      bit_size: 16
+      description: Translated Address
 fieldset/WAKEUP_ATU_ACORE_OWBAR2:
   description: ''
   fields:
-  - name: OWS
-    bit_offset: 0
-    bit_size: 5
-  - name: WBA
-    bit_offset: 16
-    bit_size: 12
-    description: Window Base Address
+    - name: OWS
+      bit_offset: 0
+      bit_size: 5
+    - name: WBA
+      bit_offset: 16
+      bit_size: 12
+      description: Window Base Address
 fieldset/WAKEUP_ATU_ACORE_OWBAR2_DOMAIN:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 28
-    bit_size: 4
-    description: Window Base Address
+    - name: ID
+      bit_offset: 28
+      bit_size: 4
+      description: Window Base Address
 fieldset/WAKEUP_ATU_ACORE_OWAR2:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
 fieldset/WAKEUP_ATU_ACORE_OTEAR2:
   description: ''
   fields:
-  - name: TEA
-    bit_offset: 0
-    bit_size: 32
-    description: Translated Extended Address
+    - name: TEA
+      bit_offset: 0
+      bit_size: 32
+      description: Translated Extended Address
 fieldset/WAKEUP_ATU_ACORE_OTAR2:
   description: ''
   fields:
-  - name: TA
-    bit_offset: 16
-    bit_size: 16
-    description: Translated Address
+    - name: TA
+      bit_offset: 16
+      bit_size: 16
+      description: Translated Address
 fieldset/WAKEUP_ATU_ACORE_OWBAR3:
   description: ''
   fields:
-  - name: OWS
-    bit_offset: 0
-    bit_size: 5
-  - name: WBA
-    bit_offset: 16
-    bit_size: 12
-    description: Window Base Address
+    - name: OWS
+      bit_offset: 0
+      bit_size: 5
+    - name: WBA
+      bit_offset: 16
+      bit_size: 12
+      description: Window Base Address
 fieldset/WAKEUP_ATU_ACORE_OWBAR3_DOMAIN:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 28
-    bit_size: 4
-    description: Window Base Address
+    - name: ID
+      bit_offset: 28
+      bit_size: 4
+      description: Window Base Address
 fieldset/WAKEUP_ATU_ACORE_OWAR3:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
 fieldset/WAKEUP_ATU_ACORE_OTEAR3:
   description: ''
   fields:
-  - name: TEA
-    bit_offset: 0
-    bit_size: 32
-    description: Translated Extended Address
+    - name: TEA
+      bit_offset: 0
+      bit_size: 32
+      description: Translated Extended Address
 fieldset/WAKEUP_ATU_ACORE_OTAR3:
   description: ''
   fields:
-  - name: TA
-    bit_offset: 16
-    bit_size: 16
-    description: Translated Address
+    - name: TA
+      bit_offset: 16
+      bit_size: 16
+      description: Translated Address
 fieldset/WAKEUP_ATU_ACORE_OWBAR4:
   description: ''
   fields:
-  - name: OWS
-    bit_offset: 0
-    bit_size: 5
-  - name: WBA
-    bit_offset: 16
-    bit_size: 12
-    description: Window Base Address
+    - name: OWS
+      bit_offset: 0
+      bit_size: 5
+    - name: WBA
+      bit_offset: 16
+      bit_size: 12
+      description: Window Base Address
 fieldset/WAKEUP_ATU_ACORE_OWBAR4_DOMAIN:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 28
-    bit_size: 4
-    description: Window Base Address
+    - name: ID
+      bit_offset: 28
+      bit_size: 4
+      description: Window Base Address
 fieldset/WAKEUP_ATU_ACORE_OWAR4:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
 fieldset/WAKEUP_ATU_ACORE_OTEAR4:
   description: ''
   fields:
-  - name: TEA
-    bit_offset: 0
-    bit_size: 32
-    description: Translated Extended Address
+    - name: TEA
+      bit_offset: 0
+      bit_size: 32
+      description: Translated Extended Address
 fieldset/WAKEUP_ATU_ACORE_OTAR4:
   description: ''
   fields:
-  - name: TA
-    bit_offset: 16
-    bit_size: 16
-    description: Translated Address
+    - name: TA
+      bit_offset: 16
+      bit_size: 16
+      description: Translated Address
 fieldset/WAKEUP_ATU_ACORE_OWBAR5:
   description: ''
   fields:
-  - name: OWS
-    bit_offset: 0
-    bit_size: 5
-  - name: WBA
-    bit_offset: 16
-    bit_size: 12
-    description: Window Base Address
+    - name: OWS
+      bit_offset: 0
+      bit_size: 5
+    - name: WBA
+      bit_offset: 16
+      bit_size: 12
+      description: Window Base Address
 fieldset/WAKEUP_ATU_ACORE_OWBAR5_DOMAIN:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 28
-    bit_size: 4
-    description: Window Base Address
+    - name: ID
+      bit_offset: 28
+      bit_size: 4
+      description: Window Base Address
 fieldset/WAKEUP_ATU_ACORE_OWAR5:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
 fieldset/WAKEUP_ATU_ACORE_OTEAR5:
   description: ''
   fields:
-  - name: TEA
-    bit_offset: 0
-    bit_size: 32
-    description: Translated Extended Address
+    - name: TEA
+      bit_offset: 0
+      bit_size: 32
+      description: Translated Extended Address
 fieldset/WAKEUP_ATU_ACORE_OTAR5:
   description: ''
   fields:
-  - name: TA
-    bit_offset: 16
-    bit_size: 16
-    description: Translated Address
+    - name: TA
+      bit_offset: 16
+      bit_size: 16
+      description: Translated Address
 fieldset/WAKEUP_ATU_ACORE_OWBAR6:
   description: ''
   fields:
-  - name: OWS
-    bit_offset: 0
-    bit_size: 5
-  - name: WBA
-    bit_offset: 16
-    bit_size: 12
-    description: Window Base Address
+    - name: OWS
+      bit_offset: 0
+      bit_size: 5
+    - name: WBA
+      bit_offset: 16
+      bit_size: 12
+      description: Window Base Address
 fieldset/WAKEUP_ATU_ACORE_OWBAR6_DOMAIN:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 28
-    bit_size: 4
-    description: Window Base Address
+    - name: ID
+      bit_offset: 28
+      bit_size: 4
+      description: Window Base Address
 fieldset/WAKEUP_ATU_ACORE_OWAR6:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
 fieldset/WAKEUP_ATU_ACORE_OTEAR6:
   description: ''
   fields:
-  - name: TEA
-    bit_offset: 0
-    bit_size: 32
-    description: Translated Extended Address
+    - name: TEA
+      bit_offset: 0
+      bit_size: 32
+      description: Translated Extended Address
 fieldset/WAKEUP_ATU_ACORE_OTAR6:
   description: ''
   fields:
-  - name: TA
-    bit_offset: 16
-    bit_size: 16
-    description: Translated Address
+    - name: TA
+      bit_offset: 16
+      bit_size: 16
+      description: Translated Address
 fieldset/WAKEUP_ATU_ACORE_OWBAR7:
   description: ''
   fields:
-  - name: OWS
-    bit_offset: 0
-    bit_size: 5
-  - name: WBA
-    bit_offset: 16
-    bit_size: 12
-    description: Window Base Address
+    - name: OWS
+      bit_offset: 0
+      bit_size: 5
+    - name: WBA
+      bit_offset: 16
+      bit_size: 12
+      description: Window Base Address
 fieldset/WAKEUP_ATU_ACORE_OWBAR7_DOMAIN:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 28
-    bit_size: 4
-    description: Window Base Address
+    - name: ID
+      bit_offset: 28
+      bit_size: 4
+      description: Window Base Address
 fieldset/WAKEUP_ATU_ACORE_OTEAR7:
   description: ''
   fields:
-  - name: TEA
-    bit_offset: 0
-    bit_size: 32
-    description: Translated Extended Address
+    - name: TEA
+      bit_offset: 0
+      bit_size: 32
+      description: Translated Extended Address
 fieldset/WAKEUP_ATU_ACORE_OTAR7:
   description: ''
   fields:
-  - name: TA
-    bit_offset: 16
-    bit_size: 16
-    description: Translated Address
+    - name: TA
+      bit_offset: 16
+      bit_size: 16
+      description: Translated Address

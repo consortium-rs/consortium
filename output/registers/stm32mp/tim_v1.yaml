@@ -1,982 +1,982 @@
 block/TIM:
   description: ''
   items:
-  - name: CR1
-    byte_offset: 0
-    description: TIM control register 1
-    fieldset: TIM_CR1
-  - name: CR2
-    byte_offset: 4
-    description: TIM control register 2
-    fieldset: TIM_CR2
-  - name: SMCR
-    byte_offset: 8
-    description: TIM slave mode control register
-    fieldset: TIM_SMCR
-  - name: DIER
-    byte_offset: 12
-    description: TIM DMA/interrupt enable register
-    fieldset: TIM_DIER
-  - name: SR
-    byte_offset: 16
-    description: TIM status register
-    fieldset: TIM_SR
-  - name: EGR
-    byte_offset: 20
-    description: TIM event generation register
-    fieldset: TIM_EGR
-  - name: CCMR1
-    byte_offset: 24
-    description: TIM capture/compare mode register 1
-    fieldset: TIM_CCMR1
-  - name: CCMR2
-    byte_offset: 28
-    description: TIM capture/compare mode register 2
-    fieldset: TIM_CCMR2
-  - name: CCER
-    byte_offset: 32
-    description: TIM capture/compare enable register
-    fieldset: TIM_CCER
-  - name: CNT
-    byte_offset: 36
-    description: TIM counter register
-    fieldset: TIM_CNT
-  - name: PSC
-    byte_offset: 40
-    description: TIM prescaler
-    fieldset: TIM_PSC
-  - name: ARR
-    byte_offset: 44
-    description: TIM auto-reload register
-    fieldset: TIM_ARR
-  - name: RCR
-    byte_offset: 48
-    description: TIM repetition counter register
-    fieldset: TIM_RCR
-  - name: CCR1
-    byte_offset: 52
-    description: TIM capture/compare register 1
-    fieldset: TIM_CCR1
-  - name: CCR2
-    byte_offset: 56
-    description: TIM capture/compare register 2
-    fieldset: TIM_CCR2
-  - name: CCR3
-    byte_offset: 60
-    description: TIM capture/compare register 3
-    fieldset: TIM_CCR3
-  - name: CCR4
-    byte_offset: 64
-    description: TIM capture/compare register 4
-    fieldset: TIM_CCR4
-  - name: BDTR
-    byte_offset: 68
-    description: TIM break and dead-time register
-    fieldset: TIM_BDTR
-  - name: CCR5
-    byte_offset: 72
-    description: TIM capture/compare register 5
-    fieldset: TIM_CCR5
-  - name: CCR6
-    byte_offset: 76
-    description: TIM capture/compare register 6
-    fieldset: TIM_CCR6
-  - name: CCMR3
-    byte_offset: 80
-    description: TIM capture/compare mode register 3
-    fieldset: TIM_CCMR3
-  - name: DTR2
-    byte_offset: 84
-    description: TIM timer deadtime register 2
-    fieldset: TIM_DTR2
-  - name: ECR
-    byte_offset: 88
-    description: TIM timer encoder control register
-    fieldset: TIM_ECR
-  - name: TISEL
-    byte_offset: 92
-    description: TIM timer Input Selection register
-    fieldset: TIM_TISEL
-  - name: AF1
-    byte_offset: 96
-    description: TIM alternate function option register 1
-  - name: AF2
-    byte_offset: 100
-    description: TIM alternate function option register 2
-  - name: DCR
-    byte_offset: 988
-    description: TIM DMA control register
-    fieldset: TIM_DCR
-  - name: DMAR
-    byte_offset: 992
-    description: TIM DMA address for full transfer
-    fieldset: TIM_DMAR
-  - name: HWCFGR2
-    byte_offset: 1004
-    description: TIM hardware configuration 2 register
-  - name: HWCFGR1
-    byte_offset: 1008
-    description: TIM hardware configuration 1 register
-  - name: VERR
-    byte_offset: 1012
-    description: TIM version register
-    fieldset: TIM_VERR
-  - name: IPIDR
-    byte_offset: 1016
-    description: TIM IP identification register
-    fieldset: TIM_IPIDR
-  - name: SIDR
-    byte_offset: 1020
-    description: TIM size ID register
-    fieldset: TIM_SIDR
+    - name: CR1
+      byte_offset: 0
+      description: TIM control register 1
+      fieldset: TIM_CR1
+    - name: CR2
+      byte_offset: 4
+      description: TIM control register 2
+      fieldset: TIM_CR2
+    - name: SMCR
+      byte_offset: 8
+      description: TIM slave mode control register
+      fieldset: TIM_SMCR
+    - name: DIER
+      byte_offset: 12
+      description: TIM DMA/interrupt enable register
+      fieldset: TIM_DIER
+    - name: SR
+      byte_offset: 16
+      description: TIM status register
+      fieldset: TIM_SR
+    - name: EGR
+      byte_offset: 20
+      description: TIM event generation register
+      fieldset: TIM_EGR
+    - name: CCMR1
+      byte_offset: 24
+      description: TIM capture/compare mode register 1
+      fieldset: TIM_CCMR1
+    - name: CCMR2
+      byte_offset: 28
+      description: TIM capture/compare mode register 2
+      fieldset: TIM_CCMR2
+    - name: CCER
+      byte_offset: 32
+      description: TIM capture/compare enable register
+      fieldset: TIM_CCER
+    - name: CNT
+      byte_offset: 36
+      description: TIM counter register
+      fieldset: TIM_CNT
+    - name: PSC
+      byte_offset: 40
+      description: TIM prescaler
+      fieldset: TIM_PSC
+    - name: ARR
+      byte_offset: 44
+      description: TIM auto-reload register
+      fieldset: TIM_ARR
+    - name: RCR
+      byte_offset: 48
+      description: TIM repetition counter register
+      fieldset: TIM_RCR
+    - name: CCR1
+      byte_offset: 52
+      description: TIM capture/compare register 1
+      fieldset: TIM_CCR1
+    - name: CCR2
+      byte_offset: 56
+      description: TIM capture/compare register 2
+      fieldset: TIM_CCR2
+    - name: CCR3
+      byte_offset: 60
+      description: TIM capture/compare register 3
+      fieldset: TIM_CCR3
+    - name: CCR4
+      byte_offset: 64
+      description: TIM capture/compare register 4
+      fieldset: TIM_CCR4
+    - name: BDTR
+      byte_offset: 68
+      description: TIM break and dead-time register
+      fieldset: TIM_BDTR
+    - name: CCR5
+      byte_offset: 72
+      description: TIM capture/compare register 5
+      fieldset: TIM_CCR5
+    - name: CCR6
+      byte_offset: 76
+      description: TIM capture/compare register 6
+      fieldset: TIM_CCR6
+    - name: CCMR3
+      byte_offset: 80
+      description: TIM capture/compare mode register 3
+      fieldset: TIM_CCMR3
+    - name: DTR2
+      byte_offset: 84
+      description: TIM timer deadtime register 2
+      fieldset: TIM_DTR2
+    - name: ECR
+      byte_offset: 88
+      description: TIM timer encoder control register
+      fieldset: TIM_ECR
+    - name: TISEL
+      byte_offset: 92
+      description: TIM timer Input Selection register
+      fieldset: TIM_TISEL
+    - name: AF1
+      byte_offset: 96
+      description: TIM alternate function option register 1
+    - name: AF2
+      byte_offset: 100
+      description: TIM alternate function option register 2
+    - name: DCR
+      byte_offset: 988
+      description: TIM DMA control register
+      fieldset: TIM_DCR
+    - name: DMAR
+      byte_offset: 992
+      description: TIM DMA address for full transfer
+      fieldset: TIM_DMAR
+    - name: HWCFGR2
+      byte_offset: 1004
+      description: TIM hardware configuration 2 register
+    - name: HWCFGR1
+      byte_offset: 1008
+      description: TIM hardware configuration 1 register
+    - name: VERR
+      byte_offset: 1012
+      description: TIM version register
+      fieldset: TIM_VERR
+    - name: IPIDR
+      byte_offset: 1016
+      description: TIM IP identification register
+      fieldset: TIM_IPIDR
+    - name: SIDR
+      byte_offset: 1020
+      description: TIM size ID register
+      fieldset: TIM_SIDR
 fieldset/TIM_CR1:
   description: ''
   fields:
-  - name: CEN
-    bit_offset: 0
-    bit_size: 1
-    description: Counter enable
-  - name: UDIS
-    bit_offset: 1
-    bit_size: 1
-    description: Update disable
-  - name: URS
-    bit_offset: 2
-    bit_size: 1
-    description: Update request source
-  - name: OPM
-    bit_offset: 3
-    bit_size: 1
-    description: One pulse mode
-  - name: DIR
-    bit_offset: 4
-    bit_size: 1
-    description: Direction
-  - name: CMS
-    bit_offset: 5
-    bit_size: 2
-    description: CMS[1:0] bits (Center-aligned mode selection)
-  - name: ARPE
-    bit_offset: 7
-    bit_size: 1
-    description: Auto-reload preload enable
-  - name: CKD
-    bit_offset: 8
-    bit_size: 2
-    description: CKD[1:0] bits (clock division)
-  - name: UIFREMAP
-    bit_offset: 11
-    bit_size: 1
-    description: Update interrupt flag remap
-  - name: DITHEN
-    bit_offset: 12
-    bit_size: 1
-    description: Dithering enable
+    - name: CEN
+      bit_offset: 0
+      bit_size: 1
+      description: Counter enable
+    - name: UDIS
+      bit_offset: 1
+      bit_size: 1
+      description: Update disable
+    - name: URS
+      bit_offset: 2
+      bit_size: 1
+      description: Update request source
+    - name: OPM
+      bit_offset: 3
+      bit_size: 1
+      description: One pulse mode
+    - name: DIR
+      bit_offset: 4
+      bit_size: 1
+      description: Direction
+    - name: CMS
+      bit_offset: 5
+      bit_size: 2
+      description: CMS[1:0] bits (Center-aligned mode selection)
+    - name: ARPE
+      bit_offset: 7
+      bit_size: 1
+      description: Auto-reload preload enable
+    - name: CKD
+      bit_offset: 8
+      bit_size: 2
+      description: CKD[1:0] bits (clock division)
+    - name: UIFREMAP
+      bit_offset: 11
+      bit_size: 1
+      description: Update interrupt flag remap
+    - name: DITHEN
+      bit_offset: 12
+      bit_size: 1
+      description: Dithering enable
 fieldset/TIM_CR2:
   description: ''
   fields:
-  - name: CCPC
-    bit_offset: 0
-    bit_size: 1
-    description: Capture/Compare Preloaded Control
-  - name: CCUS
-    bit_offset: 2
-    bit_size: 1
-    description: Capture/Compare Control Update Selection
-  - name: CCDS
-    bit_offset: 3
-    bit_size: 1
-    description: Capture/Compare DMA Selection
-  - name: MMS
-    bit_offset: 4
-    bit_size: 22
-    description: MMS[3:0] bits (Master Mode Selection)
-  - name: TI1S
-    bit_offset: 7
-    bit_size: 1
-    description: TI1 Selection
-  - name: OIS1
-    bit_offset: 8
-    bit_size: 1
-    description: Output Idle state 1 (OC1 output)
-  - name: OIS1N
-    bit_offset: 9
-    bit_size: 1
-    description: Output Idle state 1 (OC1N output)
-  - name: OIS2
-    bit_offset: 10
-    bit_size: 1
-    description: Output Idle state 2 (OC2 output)
-  - name: OIS2N
-    bit_offset: 11
-    bit_size: 1
-    description: Output Idle state 2 (OC2N output)
-  - name: OIS3
-    bit_offset: 12
-    bit_size: 1
-    description: Output Idle state 3 (OC3 output)
-  - name: OIS3N
-    bit_offset: 13
-    bit_size: 1
-    description: Output Idle state 3 (OC3N output)
-  - name: OIS4
-    bit_offset: 14
-    bit_size: 1
-    description: Output Idle state 4 (OC4 output)
-  - name: OIS4N
-    bit_offset: 15
-    bit_size: 1
-    description: Output Idle state 4 (OC4N output)
-  - name: OIS5
-    bit_offset: 16
-    bit_size: 1
-    description: Output Idle state 5 (OC5 output)
-  - name: OIS6
-    bit_offset: 18
-    bit_size: 1
-    description: Output Idle state 6 (OC6 output)
-  - name: MMS2
-    bit_offset: 20
-    bit_size: 4
-    description: MMS[2:0] bits (Master Mode Selection)
+    - name: CCPC
+      bit_offset: 0
+      bit_size: 1
+      description: Capture/Compare Preloaded Control
+    - name: CCUS
+      bit_offset: 2
+      bit_size: 1
+      description: Capture/Compare Control Update Selection
+    - name: CCDS
+      bit_offset: 3
+      bit_size: 1
+      description: Capture/Compare DMA Selection
+    - name: MMS
+      bit_offset: 4
+      bit_size: 22
+      description: MMS[3:0] bits (Master Mode Selection)
+    - name: TI1S
+      bit_offset: 7
+      bit_size: 1
+      description: TI1 Selection
+    - name: OIS1
+      bit_offset: 8
+      bit_size: 1
+      description: Output Idle state 1 (OC1 output)
+    - name: OIS1N
+      bit_offset: 9
+      bit_size: 1
+      description: Output Idle state 1 (OC1N output)
+    - name: OIS2
+      bit_offset: 10
+      bit_size: 1
+      description: Output Idle state 2 (OC2 output)
+    - name: OIS2N
+      bit_offset: 11
+      bit_size: 1
+      description: Output Idle state 2 (OC2N output)
+    - name: OIS3
+      bit_offset: 12
+      bit_size: 1
+      description: Output Idle state 3 (OC3 output)
+    - name: OIS3N
+      bit_offset: 13
+      bit_size: 1
+      description: Output Idle state 3 (OC3N output)
+    - name: OIS4
+      bit_offset: 14
+      bit_size: 1
+      description: Output Idle state 4 (OC4 output)
+    - name: OIS4N
+      bit_offset: 15
+      bit_size: 1
+      description: Output Idle state 4 (OC4N output)
+    - name: OIS5
+      bit_offset: 16
+      bit_size: 1
+      description: Output Idle state 5 (OC5 output)
+    - name: OIS6
+      bit_offset: 18
+      bit_size: 1
+      description: Output Idle state 6 (OC6 output)
+    - name: MMS2
+      bit_offset: 20
+      bit_size: 4
+      description: MMS[2:0] bits (Master Mode Selection)
 fieldset/TIM_SMCR:
   description: ''
   fields:
-  - name: SMS
-    bit_offset: 0
-    bit_size: 17
-    description: SMS[2:0] bits (Slave mode selection)
-  - name: TS
-    bit_offset: 4
-    bit_size: 18
-    description: TS[2:0] bits (Trigger selection)
-  - name: MSM
-    bit_offset: 7
-    bit_size: 1
-    description: Master/slave mode
-  - name: ETF
-    bit_offset: 8
-    bit_size: 4
-    description: ETF[3:0] bits (External trigger filter)
-  - name: ETPS
-    bit_offset: 12
-    bit_size: 2
-    description: ETPS[1:0] bits (External trigger prescaler)
-  - name: ECE
-    bit_offset: 14
-    bit_size: 1
-    description: External clock enable
-  - name: ETP
-    bit_offset: 15
-    bit_size: 1
-    description: External trigger polarity
-  - name: SMSPE
-    bit_offset: 24
-    bit_size: 1
-    description: SMS preload enable
-  - name: SMSPS
-    bit_offset: 25
-    bit_size: 1
-    description: SMS preload source
+    - name: SMS
+      bit_offset: 0
+      bit_size: 17
+      description: SMS[2:0] bits (Slave mode selection)
+    - name: TS
+      bit_offset: 4
+      bit_size: 18
+      description: TS[2:0] bits (Trigger selection)
+    - name: MSM
+      bit_offset: 7
+      bit_size: 1
+      description: Master/slave mode
+    - name: ETF
+      bit_offset: 8
+      bit_size: 4
+      description: ETF[3:0] bits (External trigger filter)
+    - name: ETPS
+      bit_offset: 12
+      bit_size: 2
+      description: ETPS[1:0] bits (External trigger prescaler)
+    - name: ECE
+      bit_offset: 14
+      bit_size: 1
+      description: External clock enable
+    - name: ETP
+      bit_offset: 15
+      bit_size: 1
+      description: External trigger polarity
+    - name: SMSPE
+      bit_offset: 24
+      bit_size: 1
+      description: SMS preload enable
+    - name: SMSPS
+      bit_offset: 25
+      bit_size: 1
+      description: SMS preload source
 fieldset/TIM_DIER:
   description: ''
   fields:
-  - name: UIE
-    bit_offset: 0
-    bit_size: 1
-    description: Update interrupt enable
-  - name: CC1IE
-    bit_offset: 1
-    bit_size: 1
-    description: Capture/Compare 1 interrupt enable
-  - name: CC2IE
-    bit_offset: 2
-    bit_size: 1
-    description: Capture/Compare 2 interrupt enable
-  - name: CC3IE
-    bit_offset: 3
-    bit_size: 1
-    description: Capture/Compare 3 interrupt enable
-  - name: CC4IE
-    bit_offset: 4
-    bit_size: 1
-    description: Capture/Compare 4 interrupt enable
-  - name: COMIE
-    bit_offset: 5
-    bit_size: 1
-    description: COM interrupt enable
-  - name: TIE
-    bit_offset: 6
-    bit_size: 1
-    description: Trigger interrupt enable
-  - name: BIE
-    bit_offset: 7
-    bit_size: 1
-    description: Break interrupt enable
-  - name: UDE
-    bit_offset: 8
-    bit_size: 1
-    description: Update DMA request enable
-  - name: CC1DE
-    bit_offset: 9
-    bit_size: 1
-    description: Capture/Compare 1 DMA request enable
-  - name: CC2DE
-    bit_offset: 10
-    bit_size: 1
-    description: Capture/Compare 2 DMA request enable
-  - name: CC3DE
-    bit_offset: 11
-    bit_size: 1
-    description: Capture/Compare 3 DMA request enable
-  - name: CC4DE
-    bit_offset: 12
-    bit_size: 1
-    description: Capture/Compare 4 DMA request enable
-  - name: COMDE
-    bit_offset: 13
-    bit_size: 1
-    description: COM DMA request enable
-  - name: TDE
-    bit_offset: 14
-    bit_size: 1
-    description: Trigger DMA request enable
-  - name: IDXIE
-    bit_offset: 20
-    bit_size: 1
-    description: Encoder index interrupt enable
-  - name: DIRIE
-    bit_offset: 21
-    bit_size: 1
-    description: Encoder direction change interrupt enable
-  - name: IERRIE
-    bit_offset: 22
-    bit_size: 1
-    description: Encoder index error enable
-  - name: TERRIE
-    bit_offset: 23
-    bit_size: 1
-    description: Encoder transition error enable
+    - name: UIE
+      bit_offset: 0
+      bit_size: 1
+      description: Update interrupt enable
+    - name: CC1IE
+      bit_offset: 1
+      bit_size: 1
+      description: Capture/Compare 1 interrupt enable
+    - name: CC2IE
+      bit_offset: 2
+      bit_size: 1
+      description: Capture/Compare 2 interrupt enable
+    - name: CC3IE
+      bit_offset: 3
+      bit_size: 1
+      description: Capture/Compare 3 interrupt enable
+    - name: CC4IE
+      bit_offset: 4
+      bit_size: 1
+      description: Capture/Compare 4 interrupt enable
+    - name: COMIE
+      bit_offset: 5
+      bit_size: 1
+      description: COM interrupt enable
+    - name: TIE
+      bit_offset: 6
+      bit_size: 1
+      description: Trigger interrupt enable
+    - name: BIE
+      bit_offset: 7
+      bit_size: 1
+      description: Break interrupt enable
+    - name: UDE
+      bit_offset: 8
+      bit_size: 1
+      description: Update DMA request enable
+    - name: CC1DE
+      bit_offset: 9
+      bit_size: 1
+      description: Capture/Compare 1 DMA request enable
+    - name: CC2DE
+      bit_offset: 10
+      bit_size: 1
+      description: Capture/Compare 2 DMA request enable
+    - name: CC3DE
+      bit_offset: 11
+      bit_size: 1
+      description: Capture/Compare 3 DMA request enable
+    - name: CC4DE
+      bit_offset: 12
+      bit_size: 1
+      description: Capture/Compare 4 DMA request enable
+    - name: COMDE
+      bit_offset: 13
+      bit_size: 1
+      description: COM DMA request enable
+    - name: TDE
+      bit_offset: 14
+      bit_size: 1
+      description: Trigger DMA request enable
+    - name: IDXIE
+      bit_offset: 20
+      bit_size: 1
+      description: Encoder index interrupt enable
+    - name: DIRIE
+      bit_offset: 21
+      bit_size: 1
+      description: Encoder direction change interrupt enable
+    - name: IERRIE
+      bit_offset: 22
+      bit_size: 1
+      description: Encoder index error enable
+    - name: TERRIE
+      bit_offset: 23
+      bit_size: 1
+      description: Encoder transition error enable
 fieldset/TIM_SR:
   description: ''
   fields:
-  - name: UIF
-    bit_offset: 0
-    bit_size: 1
-    description: Update interrupt Flag
-  - name: CC1IF
-    bit_offset: 1
-    bit_size: 1
-    description: Capture/Compare 1 interrupt Flag
-  - name: CC2IF
-    bit_offset: 2
-    bit_size: 1
-    description: Capture/Compare 2 interrupt Flag
-  - name: CC3IF
-    bit_offset: 3
-    bit_size: 1
-    description: Capture/Compare 3 interrupt Flag
-  - name: CC4IF
-    bit_offset: 4
-    bit_size: 1
-    description: Capture/Compare 4 interrupt Flag
-  - name: COMIF
-    bit_offset: 5
-    bit_size: 1
-    description: COM interrupt Flag
-  - name: TIF
-    bit_offset: 6
-    bit_size: 1
-    description: Trigger interrupt Flag
-  - name: BIF
-    bit_offset: 7
-    bit_size: 1
-    description: Break interrupt Flag
-  - name: B2IF
-    bit_offset: 8
-    bit_size: 1
-    description: Break 2 interrupt Flag
-  - name: CC1OF
-    bit_offset: 9
-    bit_size: 1
-    description: Capture/Compare 1 Overcapture Flag
-  - name: CC2OF
-    bit_offset: 10
-    bit_size: 1
-    description: Capture/Compare 2 Overcapture Flag
-  - name: CC3OF
-    bit_offset: 11
-    bit_size: 1
-    description: Capture/Compare 3 Overcapture Flag
-  - name: CC4OF
-    bit_offset: 12
-    bit_size: 1
-    description: Capture/Compare 4 Overcapture Flag
-  - name: SBIF
-    bit_offset: 13
-    bit_size: 1
-    description: System Break interrupt Flag
-  - name: CC5IF
-    bit_offset: 16
-    bit_size: 1
-    description: Capture/Compare 5 interrupt Flag
-  - name: CC6IF
-    bit_offset: 17
-    bit_size: 1
-    description: Capture/Compare 6 interrupt Flag
-  - name: IDXF
-    bit_offset: 20
-    bit_size: 1
-    description: Encoder index interrupt flag
-  - name: DIRF
-    bit_offset: 21
-    bit_size: 1
-    description: Encoder direction change interrupt flag
-  - name: IERRF
-    bit_offset: 22
-    bit_size: 1
-    description: Encoder index error flag
-  - name: TERRF
-    bit_offset: 23
-    bit_size: 1
-    description: Encoder transition error flag
+    - name: UIF
+      bit_offset: 0
+      bit_size: 1
+      description: Update interrupt Flag
+    - name: CC1IF
+      bit_offset: 1
+      bit_size: 1
+      description: Capture/Compare 1 interrupt Flag
+    - name: CC2IF
+      bit_offset: 2
+      bit_size: 1
+      description: Capture/Compare 2 interrupt Flag
+    - name: CC3IF
+      bit_offset: 3
+      bit_size: 1
+      description: Capture/Compare 3 interrupt Flag
+    - name: CC4IF
+      bit_offset: 4
+      bit_size: 1
+      description: Capture/Compare 4 interrupt Flag
+    - name: COMIF
+      bit_offset: 5
+      bit_size: 1
+      description: COM interrupt Flag
+    - name: TIF
+      bit_offset: 6
+      bit_size: 1
+      description: Trigger interrupt Flag
+    - name: BIF
+      bit_offset: 7
+      bit_size: 1
+      description: Break interrupt Flag
+    - name: B2IF
+      bit_offset: 8
+      bit_size: 1
+      description: Break 2 interrupt Flag
+    - name: CC1OF
+      bit_offset: 9
+      bit_size: 1
+      description: Capture/Compare 1 Overcapture Flag
+    - name: CC2OF
+      bit_offset: 10
+      bit_size: 1
+      description: Capture/Compare 2 Overcapture Flag
+    - name: CC3OF
+      bit_offset: 11
+      bit_size: 1
+      description: Capture/Compare 3 Overcapture Flag
+    - name: CC4OF
+      bit_offset: 12
+      bit_size: 1
+      description: Capture/Compare 4 Overcapture Flag
+    - name: SBIF
+      bit_offset: 13
+      bit_size: 1
+      description: System Break interrupt Flag
+    - name: CC5IF
+      bit_offset: 16
+      bit_size: 1
+      description: Capture/Compare 5 interrupt Flag
+    - name: CC6IF
+      bit_offset: 17
+      bit_size: 1
+      description: Capture/Compare 6 interrupt Flag
+    - name: IDXF
+      bit_offset: 20
+      bit_size: 1
+      description: Encoder index interrupt flag
+    - name: DIRF
+      bit_offset: 21
+      bit_size: 1
+      description: Encoder direction change interrupt flag
+    - name: IERRF
+      bit_offset: 22
+      bit_size: 1
+      description: Encoder index error flag
+    - name: TERRF
+      bit_offset: 23
+      bit_size: 1
+      description: Encoder transition error flag
 fieldset/TIM_EGR:
   description: ''
   fields:
-  - name: UG
-    bit_offset: 0
-    bit_size: 1
-    description: Update Generation
-  - name: CC1G
-    bit_offset: 1
-    bit_size: 1
-    description: Capture/Compare 1 Generation
-  - name: CC2G
-    bit_offset: 2
-    bit_size: 1
-    description: Capture/Compare 2 Generation
-  - name: CC3G
-    bit_offset: 3
-    bit_size: 1
-    description: Capture/Compare 3 Generation
-  - name: CC4G
-    bit_offset: 4
-    bit_size: 1
-    description: Capture/Compare 4 Generation
-  - name: COMG
-    bit_offset: 5
-    bit_size: 1
-    description: Capture/Compare Control Update Generation
-  - name: TG
-    bit_offset: 6
-    bit_size: 1
-    description: Trigger Generation
-  - name: BG
-    bit_offset: 7
-    bit_size: 1
-    description: Break Generation
-  - name: B2G
-    bit_offset: 8
-    bit_size: 1
-    description: Break 2 Generation
+    - name: UG
+      bit_offset: 0
+      bit_size: 1
+      description: Update Generation
+    - name: CC1G
+      bit_offset: 1
+      bit_size: 1
+      description: Capture/Compare 1 Generation
+    - name: CC2G
+      bit_offset: 2
+      bit_size: 1
+      description: Capture/Compare 2 Generation
+    - name: CC3G
+      bit_offset: 3
+      bit_size: 1
+      description: Capture/Compare 3 Generation
+    - name: CC4G
+      bit_offset: 4
+      bit_size: 1
+      description: Capture/Compare 4 Generation
+    - name: COMG
+      bit_offset: 5
+      bit_size: 1
+      description: Capture/Compare Control Update Generation
+    - name: TG
+      bit_offset: 6
+      bit_size: 1
+      description: Trigger Generation
+    - name: BG
+      bit_offset: 7
+      bit_size: 1
+      description: Break Generation
+    - name: B2G
+      bit_offset: 8
+      bit_size: 1
+      description: Break 2 Generation
 fieldset/TIM_CCMR1:
   description: ''
   fields:
-  - name: CC1S
-    bit_offset: 0
-    bit_size: 2
-    description: CC1S[1:0] bits (Capture/Compare 1 Selection)
-  - name: CC2S
-    bit_offset: 8
-    bit_size: 2
-    description: CC2S[1:0] bits (Capture/Compare 2 Selection)
-  - name: IC1PSC
-    bit_offset: 2
-    bit_size: 2
-    description: IC1PSC[1:0] bits (Input Capture 1 Prescaler)
-  - name: IC1F
-    bit_offset: 4
-    bit_size: 4
-    description: IC1F[3:0] bits (Input Capture 1 Filter)
-  - name: IC2PSC
-    bit_offset: 10
-    bit_size: 2
-    description: IC2PSC[1:0] bits (Input Capture 2 Prescaler)
-  - name: IC2F
-    bit_offset: 12
-    bit_size: 4
-    description: IC2F[3:0] bits (Input Capture 2 Filter)
-  - name: OC1FE
-    bit_offset: 2
-    bit_size: 1
-    description: Output Compare 1 Fast enable
-  - name: OC1PE
-    bit_offset: 3
-    bit_size: 1
-    description: Output Compare 1 Preload enable
-  - name: OC1M
-    bit_offset: 4
-    bit_size: 13
-    description: OC1M[2:0] bits (Output Compare 1 Mode)
-  - name: OC1CE
-    bit_offset: 7
-    bit_size: 1
-    description: Output Compare 1 Clear Enable
-  - name: OC2FE
-    bit_offset: 10
-    bit_size: 1
-    description: Output Compare 2 Fast enable
-  - name: OC2PE
-    bit_offset: 11
-    bit_size: 1
-    description: Output Compare 2 Preload enable
-  - name: OC2M
-    bit_offset: 12
-    bit_size: 13
-    description: OC2M[2:0] bits (Output Compare 2 Mode)
-  - name: OC2CE
-    bit_offset: 15
-    bit_size: 1
-    description: Output Compare 2 Clear Enable
+    - name: CC1S
+      bit_offset: 0
+      bit_size: 2
+      description: CC1S[1:0] bits (Capture/Compare 1 Selection)
+    - name: CC2S
+      bit_offset: 8
+      bit_size: 2
+      description: CC2S[1:0] bits (Capture/Compare 2 Selection)
+    - name: IC1PSC
+      bit_offset: 2
+      bit_size: 2
+      description: IC1PSC[1:0] bits (Input Capture 1 Prescaler)
+    - name: IC1F
+      bit_offset: 4
+      bit_size: 4
+      description: IC1F[3:0] bits (Input Capture 1 Filter)
+    - name: IC2PSC
+      bit_offset: 10
+      bit_size: 2
+      description: IC2PSC[1:0] bits (Input Capture 2 Prescaler)
+    - name: IC2F
+      bit_offset: 12
+      bit_size: 4
+      description: IC2F[3:0] bits (Input Capture 2 Filter)
+    - name: OC1FE
+      bit_offset: 2
+      bit_size: 1
+      description: Output Compare 1 Fast enable
+    - name: OC1PE
+      bit_offset: 3
+      bit_size: 1
+      description: Output Compare 1 Preload enable
+    - name: OC1M
+      bit_offset: 4
+      bit_size: 13
+      description: OC1M[2:0] bits (Output Compare 1 Mode)
+    - name: OC1CE
+      bit_offset: 7
+      bit_size: 1
+      description: Output Compare 1 Clear Enable
+    - name: OC2FE
+      bit_offset: 10
+      bit_size: 1
+      description: Output Compare 2 Fast enable
+    - name: OC2PE
+      bit_offset: 11
+      bit_size: 1
+      description: Output Compare 2 Preload enable
+    - name: OC2M
+      bit_offset: 12
+      bit_size: 13
+      description: OC2M[2:0] bits (Output Compare 2 Mode)
+    - name: OC2CE
+      bit_offset: 15
+      bit_size: 1
+      description: Output Compare 2 Clear Enable
 fieldset/TIM_CCMR2:
   description: ''
   fields:
-  - name: CC3S
-    bit_offset: 0
-    bit_size: 2
-    description: CC3S[1:0] bits (Capture/Compare 3 Selection)
-  - name: CC4S
-    bit_offset: 8
-    bit_size: 2
-    description: CC4S[1:0] bits (Capture/Compare 4 Selection)
-  - name: IC3PSC
-    bit_offset: 2
-    bit_size: 2
-    description: IC3PSC[1:0] bits (Input Capture 3 Prescaler)
-  - name: IC3F
-    bit_offset: 4
-    bit_size: 4
-    description: IC3F[3:0] bits (Input Capture 3 Filter)
-  - name: IC4PSC
-    bit_offset: 10
-    bit_size: 2
-    description: IC4PSC[1:0] bits (Input Capture 4 Prescaler)
-  - name: IC4F
-    bit_offset: 12
-    bit_size: 4
-    description: IC4F[3:0] bits (Input Capture 4 Filter)
-  - name: OC3FE
-    bit_offset: 2
-    bit_size: 1
-    description: Output Compare 3 Fast enable
-  - name: OC3PE
-    bit_offset: 3
-    bit_size: 1
-    description: Output Compare 3 Preload enable
-  - name: OC3M
-    bit_offset: 4
-    bit_size: 13
-    description: OC3M[2:0] bits (Output Compare 3 Mode)
-  - name: OC3CE
-    bit_offset: 7
-    bit_size: 1
-    description: Output Compare 3 Clear Enable
-  - name: OC4FE
-    bit_offset: 10
-    bit_size: 1
-    description: Output Compare 4 Fast enable
-  - name: OC4PE
-    bit_offset: 11
-    bit_size: 1
-    description: Output Compare 4 Preload enable
-  - name: OC4M
-    bit_offset: 12
-    bit_size: 13
-    description: OC4M[2:0] bits (Output Compare 4 Mode)
-  - name: OC4CE
-    bit_offset: 15
-    bit_size: 1
-    description: Output Compare 4 Clear Enable
+    - name: CC3S
+      bit_offset: 0
+      bit_size: 2
+      description: CC3S[1:0] bits (Capture/Compare 3 Selection)
+    - name: CC4S
+      bit_offset: 8
+      bit_size: 2
+      description: CC4S[1:0] bits (Capture/Compare 4 Selection)
+    - name: IC3PSC
+      bit_offset: 2
+      bit_size: 2
+      description: IC3PSC[1:0] bits (Input Capture 3 Prescaler)
+    - name: IC3F
+      bit_offset: 4
+      bit_size: 4
+      description: IC3F[3:0] bits (Input Capture 3 Filter)
+    - name: IC4PSC
+      bit_offset: 10
+      bit_size: 2
+      description: IC4PSC[1:0] bits (Input Capture 4 Prescaler)
+    - name: IC4F
+      bit_offset: 12
+      bit_size: 4
+      description: IC4F[3:0] bits (Input Capture 4 Filter)
+    - name: OC3FE
+      bit_offset: 2
+      bit_size: 1
+      description: Output Compare 3 Fast enable
+    - name: OC3PE
+      bit_offset: 3
+      bit_size: 1
+      description: Output Compare 3 Preload enable
+    - name: OC3M
+      bit_offset: 4
+      bit_size: 13
+      description: OC3M[2:0] bits (Output Compare 3 Mode)
+    - name: OC3CE
+      bit_offset: 7
+      bit_size: 1
+      description: Output Compare 3 Clear Enable
+    - name: OC4FE
+      bit_offset: 10
+      bit_size: 1
+      description: Output Compare 4 Fast enable
+    - name: OC4PE
+      bit_offset: 11
+      bit_size: 1
+      description: Output Compare 4 Preload enable
+    - name: OC4M
+      bit_offset: 12
+      bit_size: 13
+      description: OC4M[2:0] bits (Output Compare 4 Mode)
+    - name: OC4CE
+      bit_offset: 15
+      bit_size: 1
+      description: Output Compare 4 Clear Enable
 fieldset/TIM_CCER:
   description: ''
   fields:
-  - name: CC1E
-    bit_offset: 0
-    bit_size: 1
-    description: Capture/Compare 1 output enable
-  - name: CC1P
-    bit_offset: 1
-    bit_size: 1
-    description: Capture/Compare 1 output Polarity
-  - name: CC1NE
-    bit_offset: 2
-    bit_size: 1
-    description: Capture/Compare 1 Complementary output enable
-  - name: CC1NP
-    bit_offset: 3
-    bit_size: 1
-    description: Capture/Compare 1 Complementary output Polarity
-  - name: CC2E
-    bit_offset: 4
-    bit_size: 1
-    description: Capture/Compare 2 output enable
-  - name: CC2P
-    bit_offset: 5
-    bit_size: 1
-    description: Capture/Compare 2 output Polarity
-  - name: CC2NE
-    bit_offset: 6
-    bit_size: 1
-    description: Capture/Compare 2 Complementary output enable
-  - name: CC2NP
-    bit_offset: 7
-    bit_size: 1
-    description: Capture/Compare 2 Complementary output Polarity
-  - name: CC3E
-    bit_offset: 8
-    bit_size: 1
-    description: apture/Compare 3 output enable
-  - name: CC3P
-    bit_offset: 9
-    bit_size: 1
-    description: Capture/Compare 3 output Polarity
-  - name: CC3NE
-    bit_offset: 10
-    bit_size: 1
-    description: Capture/Compare 3 Complementary output enable
-  - name: CC3NP
-    bit_offset: 11
-    bit_size: 1
-    description: Capture/Compare 3 Complementary output Polarity
-  - name: CC4E
-    bit_offset: 12
-    bit_size: 1
-    description: Capture/Compare 4 output enable
-  - name: CC4P
-    bit_offset: 13
-    bit_size: 1
-    description: Capture/Compare 4 output Polarity
-  - name: CC4NE
-    bit_offset: 14
-    bit_size: 1
-    description: Capture/Compare 4 Complementary output enable
-  - name: CC4NP
-    bit_offset: 15
-    bit_size: 1
-    description: Capture/Compare 4 Complementary output Polarity
-  - name: CC5E
-    bit_offset: 16
-    bit_size: 1
-    description: Capture/Compare 5 output enable
-  - name: CC5P
-    bit_offset: 17
-    bit_size: 1
-    description: Capture/Compare 5 output Polarity
-  - name: CC6E
-    bit_offset: 20
-    bit_size: 1
-    description: Capture/Compare 6 output enable
-  - name: CC6P
-    bit_offset: 21
-    bit_size: 1
-    description: Capture/Compare 6 output Polarity
+    - name: CC1E
+      bit_offset: 0
+      bit_size: 1
+      description: Capture/Compare 1 output enable
+    - name: CC1P
+      bit_offset: 1
+      bit_size: 1
+      description: Capture/Compare 1 output Polarity
+    - name: CC1NE
+      bit_offset: 2
+      bit_size: 1
+      description: Capture/Compare 1 Complementary output enable
+    - name: CC1NP
+      bit_offset: 3
+      bit_size: 1
+      description: Capture/Compare 1 Complementary output Polarity
+    - name: CC2E
+      bit_offset: 4
+      bit_size: 1
+      description: Capture/Compare 2 output enable
+    - name: CC2P
+      bit_offset: 5
+      bit_size: 1
+      description: Capture/Compare 2 output Polarity
+    - name: CC2NE
+      bit_offset: 6
+      bit_size: 1
+      description: Capture/Compare 2 Complementary output enable
+    - name: CC2NP
+      bit_offset: 7
+      bit_size: 1
+      description: Capture/Compare 2 Complementary output Polarity
+    - name: CC3E
+      bit_offset: 8
+      bit_size: 1
+      description: apture/Compare 3 output enable
+    - name: CC3P
+      bit_offset: 9
+      bit_size: 1
+      description: Capture/Compare 3 output Polarity
+    - name: CC3NE
+      bit_offset: 10
+      bit_size: 1
+      description: Capture/Compare 3 Complementary output enable
+    - name: CC3NP
+      bit_offset: 11
+      bit_size: 1
+      description: Capture/Compare 3 Complementary output Polarity
+    - name: CC4E
+      bit_offset: 12
+      bit_size: 1
+      description: Capture/Compare 4 output enable
+    - name: CC4P
+      bit_offset: 13
+      bit_size: 1
+      description: Capture/Compare 4 output Polarity
+    - name: CC4NE
+      bit_offset: 14
+      bit_size: 1
+      description: Capture/Compare 4 Complementary output enable
+    - name: CC4NP
+      bit_offset: 15
+      bit_size: 1
+      description: Capture/Compare 4 Complementary output Polarity
+    - name: CC5E
+      bit_offset: 16
+      bit_size: 1
+      description: Capture/Compare 5 output enable
+    - name: CC5P
+      bit_offset: 17
+      bit_size: 1
+      description: Capture/Compare 5 output Polarity
+    - name: CC6E
+      bit_offset: 20
+      bit_size: 1
+      description: Capture/Compare 6 output enable
+    - name: CC6P
+      bit_offset: 21
+      bit_size: 1
+      description: Capture/Compare 6 output Polarity
 fieldset/TIM_CNT:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 32
-    description: Counter Value
-  - name: UIFCPY
-    bit_offset: 31
-    bit_size: 1
-    description: Update interrupt flag copy (if UIFREMAP=1)
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
+      description: Counter Value
+    - name: UIFCPY
+      bit_offset: 31
+      bit_size: 1
+      description: Update interrupt flag copy (if UIFREMAP=1)
 fieldset/TIM_PSC:
   description: ''
   fields:
-  - name: PSC
-    bit_offset: 0
-    bit_size: 16
-    description: Prescaler Value
+    - name: PSC
+      bit_offset: 0
+      bit_size: 16
+      description: Prescaler Value
 fieldset/TIM_ARR:
   description: ''
   fields:
-  - name: ARR
-    bit_offset: 0
-    bit_size: 32
-    description: Actual auto-reload Value
+    - name: ARR
+      bit_offset: 0
+      bit_size: 32
+      description: Actual auto-reload Value
 fieldset/TIM_RCR:
   description: ''
   fields:
-  - name: REP
-    bit_offset: 0
-    bit_size: 16
-    description: Repetition Counter Value
+    - name: REP
+      bit_offset: 0
+      bit_size: 16
+      description: Repetition Counter Value
 fieldset/TIM_CCR1:
   description: ''
   fields:
-  - name: CCR1
-    bit_offset: 0
-    bit_size: 32
-    description: Capture/Compare 1 Value
+    - name: CCR1
+      bit_offset: 0
+      bit_size: 32
+      description: Capture/Compare 1 Value
 fieldset/TIM_CCR2:
   description: ''
   fields:
-  - name: CCR2
-    bit_offset: 0
-    bit_size: 32
-    description: Capture/Compare 2 Value
+    - name: CCR2
+      bit_offset: 0
+      bit_size: 32
+      description: Capture/Compare 2 Value
 fieldset/TIM_CCR3:
   description: ''
   fields:
-  - name: CCR3
-    bit_offset: 0
-    bit_size: 32
-    description: Capture/Compare 3 Value
+    - name: CCR3
+      bit_offset: 0
+      bit_size: 32
+      description: Capture/Compare 3 Value
 fieldset/TIM_CCR4:
   description: ''
   fields:
-  - name: CCR4
-    bit_offset: 0
-    bit_size: 32
-    description: apture/Compare 4 Value
+    - name: CCR4
+      bit_offset: 0
+      bit_size: 32
+      description: apture/Compare 4 Value
 fieldset/TIM_BDTR:
   description: ''
   fields:
-  - name: DTG
-    bit_offset: 0
-    bit_size: 8
-    description: DTG[0:7] bits (Dead-Time Generator set-up)
-  - name: LOCK
-    bit_offset: 8
-    bit_size: 2
-    description: LOCK[1:0] bits (Lock Configuration)
-  - name: OSSI
-    bit_offset: 10
-    bit_size: 1
-    description: Off-State Selection for Idle mode
-  - name: OSSR
-    bit_offset: 11
-    bit_size: 1
-    description: Off-State Selection for Run mode
-  - name: BKE
-    bit_offset: 12
-    bit_size: 1
-    description: Break enable for Break 1
-  - name: BKP
-    bit_offset: 13
-    bit_size: 1
-    description: Break Polarity for Break 1
-  - name: AOE
-    bit_offset: 14
-    bit_size: 1
-    description: Automatic Output enable
-  - name: MOE
-    bit_offset: 15
-    bit_size: 1
-    description: Main Output enable
-  - name: BKF
-    bit_offset: 16
-    bit_size: 4
-    description: Break Filter for Break 1
-  - name: BK2F
-    bit_offset: 20
-    bit_size: 4
-    description: Break Filter for Break 2
-  - name: BK2E
-    bit_offset: 24
-    bit_size: 1
-    description: Break enable for Break 2
-  - name: BK2P
-    bit_offset: 25
-    bit_size: 1
-    description: Break Polarity for Break 2
-  - name: BKDSRM
-    bit_offset: 26
-    bit_size: 1
-    description: Break disarming/re-arming
-  - name: BK2DSRM
-    bit_offset: 27
-    bit_size: 1
-    description: Break2 disarming/re-arming
-  - name: BKBID
-    bit_offset: 28
-    bit_size: 1
-    description: Break BIDirectional
-  - name: BK2BID
-    bit_offset: 29
-    bit_size: 1
-    description: Break2 BIDirectional
+    - name: DTG
+      bit_offset: 0
+      bit_size: 8
+      description: DTG[0:7] bits (Dead-Time Generator set-up)
+    - name: LOCK
+      bit_offset: 8
+      bit_size: 2
+      description: LOCK[1:0] bits (Lock Configuration)
+    - name: OSSI
+      bit_offset: 10
+      bit_size: 1
+      description: Off-State Selection for Idle mode
+    - name: OSSR
+      bit_offset: 11
+      bit_size: 1
+      description: Off-State Selection for Run mode
+    - name: BKE
+      bit_offset: 12
+      bit_size: 1
+      description: Break enable for Break 1
+    - name: BKP
+      bit_offset: 13
+      bit_size: 1
+      description: Break Polarity for Break 1
+    - name: AOE
+      bit_offset: 14
+      bit_size: 1
+      description: Automatic Output enable
+    - name: MOE
+      bit_offset: 15
+      bit_size: 1
+      description: Main Output enable
+    - name: BKF
+      bit_offset: 16
+      bit_size: 4
+      description: Break Filter for Break 1
+    - name: BK2F
+      bit_offset: 20
+      bit_size: 4
+      description: Break Filter for Break 2
+    - name: BK2E
+      bit_offset: 24
+      bit_size: 1
+      description: Break enable for Break 2
+    - name: BK2P
+      bit_offset: 25
+      bit_size: 1
+      description: Break Polarity for Break 2
+    - name: BKDSRM
+      bit_offset: 26
+      bit_size: 1
+      description: Break disarming/re-arming
+    - name: BK2DSRM
+      bit_offset: 27
+      bit_size: 1
+      description: Break2 disarming/re-arming
+    - name: BKBID
+      bit_offset: 28
+      bit_size: 1
+      description: Break BIDirectional
+    - name: BK2BID
+      bit_offset: 29
+      bit_size: 1
+      description: Break2 BIDirectional
 fieldset/TIM_CCR5:
   description: ''
   fields:
-  - name: CCR5
-    bit_offset: 0
-    bit_size: 20
-    description: Capture/Compare 5 Value
-  - name: GC5C1
-    bit_offset: 29
-    bit_size: 1
-    description: Group Channel 5 and Channel 1
-  - name: GC5C2
-    bit_offset: 30
-    bit_size: 1
-    description: Group Channel 5 and Channel 2
-  - name: GC5C3
-    bit_offset: 31
-    bit_size: 1
-    description: Group Channel 5 and Channel 3
+    - name: CCR5
+      bit_offset: 0
+      bit_size: 20
+      description: Capture/Compare 5 Value
+    - name: GC5C1
+      bit_offset: 29
+      bit_size: 1
+      description: Group Channel 5 and Channel 1
+    - name: GC5C2
+      bit_offset: 30
+      bit_size: 1
+      description: Group Channel 5 and Channel 2
+    - name: GC5C3
+      bit_offset: 31
+      bit_size: 1
+      description: Group Channel 5 and Channel 3
 fieldset/TIM_CCR6:
   description: ''
   fields:
-  - name: CCR6
-    bit_offset: 0
-    bit_size: 20
-    description: Capture/Compare 6 Value
+    - name: CCR6
+      bit_offset: 0
+      bit_size: 20
+      description: Capture/Compare 6 Value
 fieldset/TIM_CCMR3:
   description: ''
   fields:
-  - name: OC5FE
-    bit_offset: 2
-    bit_size: 1
-    description: Output Compare 5 Fast enable
-  - name: OC5PE
-    bit_offset: 3
-    bit_size: 1
-    description: Output Compare 5 Preload enable
-  - name: OC5M
-    bit_offset: 4
-    bit_size: 13
-    description: OC5M[3:0] bits (Output Compare 5 Mode)
-  - name: OC5CE
-    bit_offset: 7
-    bit_size: 1
-    description: Output Compare 5 Clear Enable
-  - name: OC6FE
-    bit_offset: 10
-    bit_size: 1
-    description: Output Compare 6 Fast enable
-  - name: OC6PE
-    bit_offset: 11
-    bit_size: 1
-    description: Output Compare 6 Preload enable
-  - name: OC6M
-    bit_offset: 12
-    bit_size: 13
-    description: OC6M[3:0] bits (Output Compare 6 Mode)
-  - name: OC6CE
-    bit_offset: 15
-    bit_size: 1
-    description: Output Compare 6 Clear Enable
+    - name: OC5FE
+      bit_offset: 2
+      bit_size: 1
+      description: Output Compare 5 Fast enable
+    - name: OC5PE
+      bit_offset: 3
+      bit_size: 1
+      description: Output Compare 5 Preload enable
+    - name: OC5M
+      bit_offset: 4
+      bit_size: 13
+      description: OC5M[3:0] bits (Output Compare 5 Mode)
+    - name: OC5CE
+      bit_offset: 7
+      bit_size: 1
+      description: Output Compare 5 Clear Enable
+    - name: OC6FE
+      bit_offset: 10
+      bit_size: 1
+      description: Output Compare 6 Fast enable
+    - name: OC6PE
+      bit_offset: 11
+      bit_size: 1
+      description: Output Compare 6 Preload enable
+    - name: OC6M
+      bit_offset: 12
+      bit_size: 13
+      description: OC6M[3:0] bits (Output Compare 6 Mode)
+    - name: OC6CE
+      bit_offset: 15
+      bit_size: 1
+      description: Output Compare 6 Clear Enable
 fieldset/TIM_DTR2:
   description: ''
   fields:
-  - name: DTGF
-    bit_offset: 0
-    bit_size: 8
-    description: DTGF[7:0] bits (Deadtime falling edge generator setup)
-  - name: DTAE
-    bit_offset: 16
-    bit_size: 1
-    description: Deadtime asymmetric enable
-  - name: DTPE
-    bit_offset: 17
-    bit_size: 1
-    description: Deadtime prelaod enable
+    - name: DTGF
+      bit_offset: 0
+      bit_size: 8
+      description: DTGF[7:0] bits (Deadtime falling edge generator setup)
+    - name: DTAE
+      bit_offset: 16
+      bit_size: 1
+      description: Deadtime asymmetric enable
+    - name: DTPE
+      bit_offset: 17
+      bit_size: 1
+      description: Deadtime prelaod enable
 fieldset/TIM_ECR:
   description: ''
   fields:
-  - name: IE
-    bit_offset: 0
-    bit_size: 1
-    description: Index enable
-  - name: IDIR
-    bit_offset: 1
-    bit_size: 2
-    description: IDIR[1:0] bits (Index direction)
-  - name: IBLK
-    bit_offset: 3
-    bit_size: 2
-    description: IBLK[1:0] bits (Index blanking)
-  - name: FIDX
-    bit_offset: 5
-    bit_size: 1
-    description: First index enable
-  - name: IPOS
-    bit_offset: 6
-    bit_size: 2
-    description: IPOS[1:0] bits (Index positioning)
-  - name: PW
-    bit_offset: 16
-    bit_size: 8
-    description: PW[7:0] bits (Pulse width)
-  - name: PWPRSC
-    bit_offset: 24
-    bit_size: 3
-    description: PWPRSC[2:0] bits (Pulse width prescaler)
+    - name: IE
+      bit_offset: 0
+      bit_size: 1
+      description: Index enable
+    - name: IDIR
+      bit_offset: 1
+      bit_size: 2
+      description: IDIR[1:0] bits (Index direction)
+    - name: IBLK
+      bit_offset: 3
+      bit_size: 2
+      description: IBLK[1:0] bits (Index blanking)
+    - name: FIDX
+      bit_offset: 5
+      bit_size: 1
+      description: First index enable
+    - name: IPOS
+      bit_offset: 6
+      bit_size: 2
+      description: IPOS[1:0] bits (Index positioning)
+    - name: PW
+      bit_offset: 16
+      bit_size: 8
+      description: PW[7:0] bits (Pulse width)
+    - name: PWPRSC
+      bit_offset: 24
+      bit_size: 3
+      description: PWPRSC[2:0] bits (Pulse width prescaler)
 fieldset/TIM_TISEL:
   description: ''
   fields:
-  - name: TI1SEL
-    bit_offset: 0
-    bit_size: 4
-    description: TI1SEL[3:0] bits (TIM1 TI1 SEL)
-  - name: TI2SEL
-    bit_offset: 8
-    bit_size: 4
-    description: TI2SEL[3:0] bits (TIM1 TI2 SEL)
-  - name: TI3SEL
-    bit_offset: 16
-    bit_size: 4
-    description: TI3SEL[3:0] bits (TIM1 TI3 SEL)
-  - name: TI4SEL
-    bit_offset: 24
-    bit_size: 4
-    description: TI4SEL[3:0] bits (TIM1 TI4 SEL)
+    - name: TI1SEL
+      bit_offset: 0
+      bit_size: 4
+      description: TI1SEL[3:0] bits (TIM1 TI1 SEL)
+    - name: TI2SEL
+      bit_offset: 8
+      bit_size: 4
+      description: TI2SEL[3:0] bits (TIM1 TI2 SEL)
+    - name: TI3SEL
+      bit_offset: 16
+      bit_size: 4
+      description: TI3SEL[3:0] bits (TIM1 TI3 SEL)
+    - name: TI4SEL
+      bit_offset: 24
+      bit_size: 4
+      description: TI4SEL[3:0] bits (TIM1 TI4 SEL)
 fieldset/TIM_DCR:
   description: ''
   fields:
-  - name: DBA
-    bit_offset: 0
-    bit_size: 5
-    description: DBA[4:0] bits (DMA Base Address)
-  - name: DBL
-    bit_offset: 8
-    bit_size: 5
-    description: DBL[4:0] bits (DMA Burst Length)
-  - name: DBSS
-    bit_offset: 16
-    bit_size: 4
-    description: DBSS[19:16] bits (DMA Burst Source Selection)
+    - name: DBA
+      bit_offset: 0
+      bit_size: 5
+      description: DBA[4:0] bits (DMA Base Address)
+    - name: DBL
+      bit_offset: 8
+      bit_size: 5
+      description: DBL[4:0] bits (DMA Burst Length)
+    - name: DBSS
+      bit_offset: 16
+      bit_size: 4
+      description: DBSS[19:16] bits (DMA Burst Source Selection)
 fieldset/TIM_DMAR:
   description: ''
   fields:
-  - name: DMAB
-    bit_offset: 0
-    bit_size: 32
-    description: DMA register for burst accesses
+    - name: DMAB
+      bit_offset: 0
+      bit_size: 32
+      description: DMA register for burst accesses
 fieldset/TIM_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 3
-    description: TIM Minor version
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 3
-    description: TIM Major version
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 3
+      description: TIM Minor version
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 3
+      description: TIM Major version
 fieldset/TIM_IPIDR:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 32
-    description: TIM ID
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+      description: TIM ID
 fieldset/TIM_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: TIM Size ID
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: TIM Size ID

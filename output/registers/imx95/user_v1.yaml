@@ -1,27 +1,27 @@
 block/USER:
   description: ''
   items:
-  - name: LATEST_FLUSH
-    byte_offset: 0
-    fieldset: USER_LATEST_FLUSH
+    - name: LATEST_FLUSH
+      byte_offset: 0
+      fieldset: USER_LATEST_FLUSH
 fieldset/USER_LATEST_FLUSH_flush:
   description: ''
   fields:
-  - name: id
-    bit_offset: 0
-    bit_size: 24
-    description: flush_id
+    - name: id
+      bit_offset: 0
+      bit_size: 24
+      description: flush_id
 fieldset/USER_LATEST_FLUSH_reserved_word0_bit24:
   description: ''
   fields:
-  - name: width7
-    bit_offset: 24
-    bit_size: 7
-    description: flush_id
+    - name: width7
+      bit_offset: 24
+      bit_size: 7
+      description: flush_id
 fieldset/USER_LATEST_FLUSH:
   description: ''
   fields:
-  - name: ACTIVE
-    bit_offset: 31
-    bit_size: 1
-    description: ACTIVE
+    - name: ACTIVE
+      bit_offset: 31
+      bit_size: 1
+      description: ACTIVE

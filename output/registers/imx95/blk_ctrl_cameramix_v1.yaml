@@ -1,842 +1,842 @@
 block/BLK_CTRL_CAMERAMIX:
   description: ''
   items:
-  - name: ISP_CLOCK_GATING_CONTROL
-    byte_offset: 0
-  - name: ISP_AXCACHE_CONTROL
-    byte_offset: 4
-    fieldset: BLK_CTRL_CAMERAMIX_ISP_AXCACHE_CONTROL
-  - name: ISP_QOS_SETTING
-    byte_offset: 8
-    fieldset: BLK_CTRL_CAMERAMIX_ISP_QOS_SETTING
-  - name: ISI_AXCACHE_CONTROL
-    byte_offset: 12
-    fieldset: BLK_CTRL_CAMERAMIX_ISI_AXCACHE_CONTROL
-  - name: ISI_QOS_SETTING
-    byte_offset: 16
-    fieldset: BLK_CTRL_CAMERAMIX_ISI_QOS_SETTING
-  - name: PANIC_QOS
-    byte_offset: 20
-  - name: INIT_PENDING_TX
-    byte_offset: 24
-  - name: CSI0_VC_INTERLACED_LINE_COUNT_SET
-    byte_offset: 32
-    array:
-      len: 8
-      stride: 4
-  - name: CSI0_VC_INTERLACED_CTRL
-    byte_offset: 64
-  - name: CSI0_VC_INTERLACED_ERROR
-    byte_offset: 68
-  - name: CSI0_YUV420_FIRST_LINE_EVEN
-    byte_offset: 72
-    fieldset: BLK_CTRL_CAMERAMIX_CSI0_YUV420_FIRST_LINE_EVEN
-  - name: CSI0_RAW32_CTR
-    byte_offset: 80
-  - name: CSI0_STREAM_FENCING_CTRL
-    byte_offset: 84
-  - name: CSI0_STREAM_FENCING_STATUS
-    byte_offset: 88
-  - name: CSI0_NP_DATA_TYPE_VC
-    byte_offset: 96
-    array:
-      len: 8
-      stride: 4
-  - name: CSI0_PIXEL_DATA_CTRL_VC
-    byte_offset: 128
-    array:
-      len: 8
-      stride: 4
-  - name: CSI0_ROUTE_PIXEL_DATA_TYPE_VC
-    byte_offset: 160
-    array:
-      len: 8
-      stride: 4
-    fieldset: BLK_CTRL_CAMERAMIX_CSI0_ROUTE_PIXEL_DATA_TYPE_VC
-  - name: CSI0_NON_PIXEL_DATA_CTRL_VC
-    byte_offset: 192
-    array:
-      len: 8
-      stride: 4
-  - name: CSI0_PIXEL_DATA_TYPE_VC
-    byte_offset: 224
-    array:
-      len: 8
-      stride: 4
-  - name: CSI0_PIXEL_DATA_TYPE_ERR_VC
-    byte_offset: 256
-    array:
-      len: 8
-      stride: 4
-  - name: CSI1_VC_INTERLACED_LINE_COUNT_SET
-    byte_offset: 288
-    array:
-      len: 8
-      stride: 4
-  - name: CSI1_VC_INTERLACED_CTRL
-    byte_offset: 320
-  - name: CSI1_VC_INTERLACED_ERROR
-    byte_offset: 324
-  - name: CSI1_YUV420_FIRST_LINE_EVEN
-    byte_offset: 328
-    fieldset: BLK_CTRL_CAMERAMIX_CSI1_YUV420_FIRST_LINE_EVEN
-  - name: CSI1_RAW32_CTR
-    byte_offset: 336
-  - name: CSI1_STREAM_FENCING_CTRL
-    byte_offset: 340
-  - name: CSI1_STREAM_FENCING_STATUS
-    byte_offset: 344
-  - name: CSI1_NP_DATA_TYPE_VC
-    byte_offset: 352
-    array:
-      len: 8
-      stride: 4
-  - name: CSI1_PIXEL_DATA_CTRL_VC
-    byte_offset: 384
-    array:
-      len: 8
-      stride: 4
-  - name: CSI1_ROUTE_PIXEL_DATA_TYPE_VC
-    byte_offset: 416
-    array:
-      len: 8
-      stride: 4
-    fieldset: BLK_CTRL_CAMERAMIX_CSI1_ROUTE_PIXEL_DATA_TYPE_VC
-  - name: CSI1_NON_PIXEL_DATA_CTRL_VC
-    byte_offset: 448
-    array:
-      len: 8
-      stride: 4
-  - name: CSI1_PIXEL_DATA_TYPE_VC
-    byte_offset: 480
-    array:
-      len: 8
-      stride: 4
-  - name: CSI1_PIXEL_DATA_TYPE_ERR_VC
-    byte_offset: 512
-    array:
-      len: 8
-      stride: 4
-  - name: CSI0_PIXEL_LINK_RAW10_FORMAT
-    byte_offset: 544
-    fieldset: BLK_CTRL_CAMERAMIX_CSI0_PIXEL_LINK_RAW10_FORMAT
-  - name: CSI1_PIXEL_LINK_RAW10_FORMAT
-    byte_offset: 548
-    fieldset: BLK_CTRL_CAMERAMIX_CSI1_PIXEL_LINK_RAW10_FORMAT
-  - name: CSI0_BUFFER_OVERFLOW
-    byte_offset: 552
-  - name: CSI1_BUFFER_OVERFLOW
-    byte_offset: 556
-  - name: LPCAC_ERROR
-    byte_offset: 788
-    fieldset: BLK_CTRL_CAMERAMIX_LPCAC_ERROR
-  - name: LPCAC_ERROR_ADDR
-    byte_offset: 792
-  - name: LPCAC_ERROR_DATA
-    byte_offset: 796
-  - name: ISP_CONFIG
-    byte_offset: 800
+    - name: ISP_CLOCK_GATING_CONTROL
+      byte_offset: 0
+    - name: ISP_AXCACHE_CONTROL
+      byte_offset: 4
+      fieldset: BLK_CTRL_CAMERAMIX_ISP_AXCACHE_CONTROL
+    - name: ISP_QOS_SETTING
+      byte_offset: 8
+      fieldset: BLK_CTRL_CAMERAMIX_ISP_QOS_SETTING
+    - name: ISI_AXCACHE_CONTROL
+      byte_offset: 12
+      fieldset: BLK_CTRL_CAMERAMIX_ISI_AXCACHE_CONTROL
+    - name: ISI_QOS_SETTING
+      byte_offset: 16
+      fieldset: BLK_CTRL_CAMERAMIX_ISI_QOS_SETTING
+    - name: PANIC_QOS
+      byte_offset: 20
+    - name: INIT_PENDING_TX
+      byte_offset: 24
+    - name: CSI0_VC_INTERLACED_LINE_COUNT_SET
+      byte_offset: 32
+      array:
+        len: 8
+        stride: 4
+    - name: CSI0_VC_INTERLACED_CTRL
+      byte_offset: 64
+    - name: CSI0_VC_INTERLACED_ERROR
+      byte_offset: 68
+    - name: CSI0_YUV420_FIRST_LINE_EVEN
+      byte_offset: 72
+      fieldset: BLK_CTRL_CAMERAMIX_CSI0_YUV420_FIRST_LINE_EVEN
+    - name: CSI0_RAW32_CTR
+      byte_offset: 80
+    - name: CSI0_STREAM_FENCING_CTRL
+      byte_offset: 84
+    - name: CSI0_STREAM_FENCING_STATUS
+      byte_offset: 88
+    - name: CSI0_NP_DATA_TYPE_VC
+      byte_offset: 96
+      array:
+        len: 8
+        stride: 4
+    - name: CSI0_PIXEL_DATA_CTRL_VC
+      byte_offset: 128
+      array:
+        len: 8
+        stride: 4
+    - name: CSI0_ROUTE_PIXEL_DATA_TYPE_VC
+      byte_offset: 160
+      array:
+        len: 8
+        stride: 4
+      fieldset: BLK_CTRL_CAMERAMIX_CSI0_ROUTE_PIXEL_DATA_TYPE_VC
+    - name: CSI0_NON_PIXEL_DATA_CTRL_VC
+      byte_offset: 192
+      array:
+        len: 8
+        stride: 4
+    - name: CSI0_PIXEL_DATA_TYPE_VC
+      byte_offset: 224
+      array:
+        len: 8
+        stride: 4
+    - name: CSI0_PIXEL_DATA_TYPE_ERR_VC
+      byte_offset: 256
+      array:
+        len: 8
+        stride: 4
+    - name: CSI1_VC_INTERLACED_LINE_COUNT_SET
+      byte_offset: 288
+      array:
+        len: 8
+        stride: 4
+    - name: CSI1_VC_INTERLACED_CTRL
+      byte_offset: 320
+    - name: CSI1_VC_INTERLACED_ERROR
+      byte_offset: 324
+    - name: CSI1_YUV420_FIRST_LINE_EVEN
+      byte_offset: 328
+      fieldset: BLK_CTRL_CAMERAMIX_CSI1_YUV420_FIRST_LINE_EVEN
+    - name: CSI1_RAW32_CTR
+      byte_offset: 336
+    - name: CSI1_STREAM_FENCING_CTRL
+      byte_offset: 340
+    - name: CSI1_STREAM_FENCING_STATUS
+      byte_offset: 344
+    - name: CSI1_NP_DATA_TYPE_VC
+      byte_offset: 352
+      array:
+        len: 8
+        stride: 4
+    - name: CSI1_PIXEL_DATA_CTRL_VC
+      byte_offset: 384
+      array:
+        len: 8
+        stride: 4
+    - name: CSI1_ROUTE_PIXEL_DATA_TYPE_VC
+      byte_offset: 416
+      array:
+        len: 8
+        stride: 4
+      fieldset: BLK_CTRL_CAMERAMIX_CSI1_ROUTE_PIXEL_DATA_TYPE_VC
+    - name: CSI1_NON_PIXEL_DATA_CTRL_VC
+      byte_offset: 448
+      array:
+        len: 8
+        stride: 4
+    - name: CSI1_PIXEL_DATA_TYPE_VC
+      byte_offset: 480
+      array:
+        len: 8
+        stride: 4
+    - name: CSI1_PIXEL_DATA_TYPE_ERR_VC
+      byte_offset: 512
+      array:
+        len: 8
+        stride: 4
+    - name: CSI0_PIXEL_LINK_RAW10_FORMAT
+      byte_offset: 544
+      fieldset: BLK_CTRL_CAMERAMIX_CSI0_PIXEL_LINK_RAW10_FORMAT
+    - name: CSI1_PIXEL_LINK_RAW10_FORMAT
+      byte_offset: 548
+      fieldset: BLK_CTRL_CAMERAMIX_CSI1_PIXEL_LINK_RAW10_FORMAT
+    - name: CSI0_BUFFER_OVERFLOW
+      byte_offset: 552
+    - name: CSI1_BUFFER_OVERFLOW
+      byte_offset: 556
+    - name: LPCAC_ERROR
+      byte_offset: 788
+      fieldset: BLK_CTRL_CAMERAMIX_LPCAC_ERROR
+    - name: LPCAC_ERROR_ADDR
+      byte_offset: 792
+    - name: LPCAC_ERROR_DATA
+      byte_offset: 796
+    - name: ISP_CONFIG
+      byte_offset: 800
 fieldset/BLK_CTRL_CAMERAMIX_ISP_CLOCK_GATING_CONTROL_ISP_AXI:
   description: ''
   fields:
-  - name: CLOCK
-    bit_offset: 4
-    bit_size: 1
+    - name: CLOCK
+      bit_offset: 4
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_ISP_CLOCK_GATING_CONTROL_ISP_PIXEL:
   description: ''
   fields:
-  - name: CLOCK
-    bit_offset: 5
-    bit_size: 1
+    - name: CLOCK
+      bit_offset: 5
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_ISP_CLOCK_GATING_CONTROL_ISP_ISP:
   description: ''
   fields:
-  - name: CLOCK
-    bit_offset: 6
-    bit_size: 1
+    - name: CLOCK
+      bit_offset: 6
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_ISP_AXCACHE_CONTROL:
   description: ''
   fields:
-  - name: ARCACHE
-    bit_offset: 0
-    bit_size: 4
-  - name: AWCACHE
-    bit_offset: 8
-    bit_size: 4
+    - name: ARCACHE
+      bit_offset: 0
+      bit_size: 4
+    - name: AWCACHE
+      bit_offset: 8
+      bit_size: 4
 fieldset/BLK_CTRL_CAMERAMIX_ISP_QOS_SETTING:
   description: ''
   fields:
-  - name: AWQOS
-    bit_offset: 0
-    bit_size: 3
-  - name: ARQOS
-    bit_offset: 8
-    bit_size: 3
+    - name: AWQOS
+      bit_offset: 0
+      bit_size: 3
+    - name: ARQOS
+      bit_offset: 8
+      bit_size: 3
 fieldset/BLK_CTRL_CAMERAMIX_ISP_QOS_SETTING_AR_LOCAL_PANIC:
   description: ''
   fields:
-  - name: QOS
-    bit_offset: 12
-    bit_size: 3
+    - name: QOS
+      bit_offset: 12
+      bit_size: 3
 fieldset/BLK_CTRL_CAMERAMIX_ISI_AXCACHE_CONTROL:
   description: ''
   fields:
-  - name: ARCACHE
-    bit_offset: 0
-    bit_size: 4
-  - name: AWCACHE
-    bit_offset: 8
-    bit_size: 4
+    - name: ARCACHE
+      bit_offset: 0
+      bit_size: 4
+    - name: AWCACHE
+      bit_offset: 8
+      bit_size: 4
 fieldset/BLK_CTRL_CAMERAMIX_ISI_QOS_SETTING:
   description: ''
   fields:
-  - name: AWQOS
-    bit_offset: 0
-    bit_size: 3
+    - name: AWQOS
+      bit_offset: 0
+      bit_size: 3
 fieldset/BLK_CTRL_CAMERAMIX_PANIC_QOS_PANIC:
   description: ''
   fields:
-  - name: QOS
-    bit_offset: 0
-    bit_size: 3
+    - name: QOS
+      bit_offset: 0
+      bit_size: 3
 fieldset/BLK_CTRL_CAMERAMIX_INIT_PENDING_TX_READ:
   description: ''
   fields:
-  - name: ISI
-    bit_offset: 4
-    bit_size: 1
+    - name: ISI
+      bit_offset: 4
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_INIT_PENDING_TX_WRITE_Y:
   description: ''
   fields:
-  - name: ISI
-    bit_offset: 5
-    bit_size: 1
+    - name: ISI
+      bit_offset: 5
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_INIT_PENDING_TX_WRITE_U:
   description: ''
   fields:
-  - name: ISI
-    bit_offset: 6
-    bit_size: 1
+    - name: ISI
+      bit_offset: 6
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_INIT_PENDING_TX_WRITE_V:
   description: ''
   fields:
-  - name: ISI
-    bit_offset: 7
-    bit_size: 1
+    - name: ISI
+      bit_offset: 7
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_VC_INTERLACED_LINE_COUNT_SET_ODD_LINE:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 14
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 14
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_VC_INTERLACED_LINE_COUNT_SET_EVEN_LINE:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 16
-    bit_size: 14
+    - name: COUNT
+      bit_offset: 16
+      bit_size: 14
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_VC_INTERLACED_CTRL_CSI0_VC0_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_VC_INTERLACED_CTRL_CSI0_VC1_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 2
+    - name: MODE
+      bit_offset: 2
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_VC_INTERLACED_CTRL_CSI0_VC2_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 4
-    bit_size: 2
+    - name: MODE
+      bit_offset: 4
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_VC_INTERLACED_CTRL_CSI0_VC3_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 6
-    bit_size: 2
+    - name: MODE
+      bit_offset: 6
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_VC_INTERLACED_CTRL_CSI0_VC4_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 8
-    bit_size: 2
+    - name: MODE
+      bit_offset: 8
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_VC_INTERLACED_CTRL_CSI0_VC5_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 10
-    bit_size: 2
+    - name: MODE
+      bit_offset: 10
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_VC_INTERLACED_CTRL_CSI0_VC6_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 12
-    bit_size: 2
+    - name: MODE
+      bit_offset: 12
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_VC_INTERLACED_CTRL_CSI0_VC7_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 14
-    bit_size: 2
+    - name: MODE
+      bit_offset: 14
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_VC_INTERLACED_ERROR_CSI0:
   description: ''
   fields:
-  - name: VC0
-    bit_offset: 0
-    bit_size: 1
-  - name: VC1
-    bit_offset: 1
-    bit_size: 1
-  - name: VC2
-    bit_offset: 2
-    bit_size: 1
-  - name: VC3
-    bit_offset: 3
-    bit_size: 1
-  - name: VC4
-    bit_offset: 4
-    bit_size: 1
-  - name: VC5
-    bit_offset: 5
-    bit_size: 1
-  - name: VC6
-    bit_offset: 6
-    bit_size: 1
-  - name: VC7
-    bit_offset: 7
-    bit_size: 1
+    - name: VC0
+      bit_offset: 0
+      bit_size: 1
+    - name: VC1
+      bit_offset: 1
+      bit_size: 1
+    - name: VC2
+      bit_offset: 2
+      bit_size: 1
+    - name: VC3
+      bit_offset: 3
+      bit_size: 1
+    - name: VC4
+      bit_offset: 4
+      bit_size: 1
+    - name: VC5
+      bit_offset: 5
+      bit_size: 1
+    - name: VC6
+      bit_offset: 6
+      bit_size: 1
+    - name: VC7
+      bit_offset: 7
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_YUV420_FIRST_LINE_EVEN:
   description: ''
   fields:
-  - name: VC0
-    bit_offset: 0
-    bit_size: 1
-  - name: VC1
-    bit_offset: 1
-    bit_size: 1
-  - name: VC2
-    bit_offset: 2
-    bit_size: 1
-  - name: VC3
-    bit_offset: 3
-    bit_size: 1
-  - name: VC4
-    bit_offset: 4
-    bit_size: 1
-  - name: VC5
-    bit_offset: 5
-    bit_size: 1
-  - name: VC6
-    bit_offset: 6
-    bit_size: 1
-  - name: VC7
-    bit_offset: 7
-    bit_size: 1
+    - name: VC0
+      bit_offset: 0
+      bit_size: 1
+    - name: VC1
+      bit_offset: 1
+      bit_size: 1
+    - name: VC2
+      bit_offset: 2
+      bit_size: 1
+    - name: VC3
+      bit_offset: 3
+      bit_size: 1
+    - name: VC4
+      bit_offset: 4
+      bit_size: 1
+    - name: VC5
+      bit_offset: 5
+      bit_size: 1
+    - name: VC6
+      bit_offset: 6
+      bit_size: 1
+    - name: VC7
+      bit_offset: 7
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_RAW32_CTR_CSI0_VC0_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 1
+    - name: MODE
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_RAW32_CTR_CSI0_VC1_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 1
-    bit_size: 1
+    - name: MODE
+      bit_offset: 1
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_RAW32_CTR_CSI0_VC2_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 1
+    - name: MODE
+      bit_offset: 2
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_RAW32_CTR_CSI0_VC3_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 3
-    bit_size: 1
+    - name: MODE
+      bit_offset: 3
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_RAW32_CTR_CSI0_VC4_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 4
-    bit_size: 1
+    - name: MODE
+      bit_offset: 4
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_RAW32_CTR_CSI0_VC5_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 5
-    bit_size: 1
+    - name: MODE
+      bit_offset: 5
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_RAW32_CTR_CSI0_VC6_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 6
-    bit_size: 1
+    - name: MODE
+      bit_offset: 6
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_RAW32_CTR_CSI0_VC7_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 7
-    bit_size: 1
+    - name: MODE
+      bit_offset: 7
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_RAW32_CTR_CSI0_RAW_SWAP:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 8
-    bit_size: 8
+    - name: MODE
+      bit_offset: 8
+      bit_size: 8
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_STREAM_FENCING_CTRL_CSI0_FENCING:
   description: ''
   fields:
-  - name: CONTROL
-    bit_offset: 0
-    bit_size: 8
+    - name: CONTROL
+      bit_offset: 0
+      bit_size: 8
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_STREAM_FENCING_CTRL_CSI0_RESET_FENCING:
   description: ''
   fields:
-  - name: SM
-    bit_offset: 8
-    bit_size: 8
+    - name: SM
+      bit_offset: 8
+      bit_size: 8
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_STREAM_FENCING_STATUS_CSI0_FENCING:
   description: ''
   fields:
-  - name: STATUS
-    bit_offset: 0
-    bit_size: 8
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 8
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_NP_DATA_TYPE_VC_CSI0_VC0_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_NP_DATA_TYPE_VC_CSI0_VC1_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_NP_DATA_TYPE_VC_CSI0_VC2_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_NP_DATA_TYPE_VC_CSI0_VC3_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_NP_DATA_TYPE_VC_CSI0_VC4_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_NP_DATA_TYPE_VC_CSI0_VC5_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_NP_DATA_TYPE_VC_CSI0_VC6_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_NP_DATA_TYPE_VC_CSI0_VC7_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_PIXEL_DATA_CTRL_VC_REROUTE:
   description: ''
   fields:
-  - name: VC
-    bit_offset: 0
-    bit_size: 1
+    - name: VC
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_PIXEL_DATA_CTRL_VC_NEW:
   description: ''
   fields:
-  - name: VC
-    bit_offset: 1
-    bit_size: 3
+    - name: VC
+      bit_offset: 1
+      bit_size: 3
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_ROUTE_PIXEL_DATA_TYPE_VC:
   description: ''
   fields:
-  - name: OTHERS
-    bit_offset: 0
-    bit_size: 13
-  - name: RAW
-    bit_offset: 15
-    bit_size: 9
+    - name: OTHERS
+      bit_offset: 0
+      bit_size: 13
+    - name: RAW
+      bit_offset: 15
+      bit_size: 9
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_NON_PIXEL_DATA_CTRL_VC_REROUTE:
   description: ''
   fields:
-  - name: VC
-    bit_offset: 0
-    bit_size: 1
+    - name: VC
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_NON_PIXEL_DATA_CTRL_VC_NEW:
   description: ''
   fields:
-  - name: VC
-    bit_offset: 1
-    bit_size: 3
+    - name: VC
+      bit_offset: 1
+      bit_size: 3
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_PIXEL_DATA_TYPE_VC_TYPE:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 24
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 24
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_PIXEL_DATA_TYPE_ERR_VC_TYPE:
   description: ''
   fields:
-  - name: ERROR
-    bit_offset: 0
-    bit_size: 24
+    - name: ERROR
+      bit_offset: 0
+      bit_size: 24
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_VC_INTERLACED_LINE_COUNT_SET_ODD_LINE:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 14
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 14
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_VC_INTERLACED_LINE_COUNT_SET_EVEN_LINE:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 16
-    bit_size: 14
+    - name: COUNT
+      bit_offset: 16
+      bit_size: 14
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_VC_INTERLACED_CTRL_CSI1_VC0_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 2
+    - name: MODE
+      bit_offset: 0
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_VC_INTERLACED_CTRL_CSI1_VC1_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 2
+    - name: MODE
+      bit_offset: 2
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_VC_INTERLACED_CTRL_CSI1_VC2_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 4
-    bit_size: 2
+    - name: MODE
+      bit_offset: 4
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_VC_INTERLACED_CTRL_CSI1_VC3_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 6
-    bit_size: 2
+    - name: MODE
+      bit_offset: 6
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_VC_INTERLACED_CTRL_CSI1_VC4_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 8
-    bit_size: 2
+    - name: MODE
+      bit_offset: 8
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_VC_INTERLACED_CTRL_CSI1_VC5_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 10
-    bit_size: 2
+    - name: MODE
+      bit_offset: 10
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_VC_INTERLACED_CTRL_CSI1_VC6_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 12
-    bit_size: 2
+    - name: MODE
+      bit_offset: 12
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_VC_INTERLACED_CTRL_CSI1_VC7_INTERLACE:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 14
-    bit_size: 2
+    - name: MODE
+      bit_offset: 14
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_VC_INTERLACED_ERROR_CSI1:
   description: ''
   fields:
-  - name: VC0
-    bit_offset: 0
-    bit_size: 1
-  - name: VC1
-    bit_offset: 1
-    bit_size: 1
-  - name: VC2
-    bit_offset: 2
-    bit_size: 1
-  - name: VC3
-    bit_offset: 3
-    bit_size: 1
-  - name: VC4
-    bit_offset: 4
-    bit_size: 1
-  - name: VC5
-    bit_offset: 5
-    bit_size: 1
-  - name: VC6
-    bit_offset: 6
-    bit_size: 1
-  - name: VC7
-    bit_offset: 7
-    bit_size: 1
+    - name: VC0
+      bit_offset: 0
+      bit_size: 1
+    - name: VC1
+      bit_offset: 1
+      bit_size: 1
+    - name: VC2
+      bit_offset: 2
+      bit_size: 1
+    - name: VC3
+      bit_offset: 3
+      bit_size: 1
+    - name: VC4
+      bit_offset: 4
+      bit_size: 1
+    - name: VC5
+      bit_offset: 5
+      bit_size: 1
+    - name: VC6
+      bit_offset: 6
+      bit_size: 1
+    - name: VC7
+      bit_offset: 7
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_YUV420_FIRST_LINE_EVEN:
   description: ''
   fields:
-  - name: VC0
-    bit_offset: 0
-    bit_size: 1
-  - name: VC1
-    bit_offset: 1
-    bit_size: 1
-  - name: VC2
-    bit_offset: 2
-    bit_size: 1
-  - name: VC3
-    bit_offset: 3
-    bit_size: 1
-  - name: VC4
-    bit_offset: 4
-    bit_size: 1
-  - name: VC5
-    bit_offset: 5
-    bit_size: 1
-  - name: VC6
-    bit_offset: 6
-    bit_size: 1
-  - name: VC7
-    bit_offset: 7
-    bit_size: 1
+    - name: VC0
+      bit_offset: 0
+      bit_size: 1
+    - name: VC1
+      bit_offset: 1
+      bit_size: 1
+    - name: VC2
+      bit_offset: 2
+      bit_size: 1
+    - name: VC3
+      bit_offset: 3
+      bit_size: 1
+    - name: VC4
+      bit_offset: 4
+      bit_size: 1
+    - name: VC5
+      bit_offset: 5
+      bit_size: 1
+    - name: VC6
+      bit_offset: 6
+      bit_size: 1
+    - name: VC7
+      bit_offset: 7
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_RAW32_CTR_CSI1_VC0_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 1
+    - name: MODE
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_RAW32_CTR_CSI1_VC1_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 1
-    bit_size: 1
+    - name: MODE
+      bit_offset: 1
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_RAW32_CTR_CSI1_VC2_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 1
+    - name: MODE
+      bit_offset: 2
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_RAW32_CTR_CSI1_VC3_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 3
-    bit_size: 1
+    - name: MODE
+      bit_offset: 3
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_RAW32_CTR_CSI1_VC4_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 4
-    bit_size: 1
+    - name: MODE
+      bit_offset: 4
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_RAW32_CTR_CSI1_VC5_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 5
-    bit_size: 1
+    - name: MODE
+      bit_offset: 5
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_RAW32_CTR_CSI1_VC6_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 6
-    bit_size: 1
+    - name: MODE
+      bit_offset: 6
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_RAW32_CTR_CSI1_VC7_RAW32:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 7
-    bit_size: 1
+    - name: MODE
+      bit_offset: 7
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_RAW32_CTR_CSI1_RAW_SWAP:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 8
-    bit_size: 8
+    - name: MODE
+      bit_offset: 8
+      bit_size: 8
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_STREAM_FENCING_CTRL_CSI1_FENCING:
   description: ''
   fields:
-  - name: CONTROL
-    bit_offset: 0
-    bit_size: 8
+    - name: CONTROL
+      bit_offset: 0
+      bit_size: 8
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_STREAM_FENCING_CTRL_CSI1_RESET_FENCING:
   description: ''
   fields:
-  - name: SM
-    bit_offset: 8
-    bit_size: 8
+    - name: SM
+      bit_offset: 8
+      bit_size: 8
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_STREAM_FENCING_STATUS_CSI1_FENCING:
   description: ''
   fields:
-  - name: STATUS
-    bit_offset: 0
-    bit_size: 8
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 8
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_NP_DATA_TYPE_VC_CSI1_VC0_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_NP_DATA_TYPE_VC_CSI1_VC1_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_NP_DATA_TYPE_VC_CSI1_VC2_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_NP_DATA_TYPE_VC_CSI1_VC3_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_NP_DATA_TYPE_VC_CSI1_VC4_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_NP_DATA_TYPE_VC_CSI1_VC5_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_NP_DATA_TYPE_VC_CSI1_VC6_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_NP_DATA_TYPE_VC_CSI1_VC7_NP_DATA_TYPE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 22
+    - name: EN
+      bit_offset: 0
+      bit_size: 22
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_PIXEL_DATA_CTRL_VC_REROUTE:
   description: ''
   fields:
-  - name: VC
-    bit_offset: 0
-    bit_size: 1
+    - name: VC
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_PIXEL_DATA_CTRL_VC_NEW:
   description: ''
   fields:
-  - name: VC
-    bit_offset: 1
-    bit_size: 3
+    - name: VC
+      bit_offset: 1
+      bit_size: 3
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_ROUTE_PIXEL_DATA_TYPE_VC:
   description: ''
   fields:
-  - name: OTHERS
-    bit_offset: 0
-    bit_size: 13
-  - name: RAW
-    bit_offset: 15
-    bit_size: 9
+    - name: OTHERS
+      bit_offset: 0
+      bit_size: 13
+    - name: RAW
+      bit_offset: 15
+      bit_size: 9
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_NON_PIXEL_DATA_CTRL_VC_REROUTE:
   description: ''
   fields:
-  - name: VC
-    bit_offset: 0
-    bit_size: 1
+    - name: VC
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_NON_PIXEL_DATA_CTRL_VC_NEW:
   description: ''
   fields:
-  - name: VC
-    bit_offset: 1
-    bit_size: 3
+    - name: VC
+      bit_offset: 1
+      bit_size: 3
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_PIXEL_DATA_TYPE_VC_TYPE:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 24
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 24
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_PIXEL_DATA_TYPE_ERR_VC_TYPE:
   description: ''
   fields:
-  - name: ERROR
-    bit_offset: 0
-    bit_size: 24
+    - name: ERROR
+      bit_offset: 0
+      bit_size: 24
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_PIXEL_LINK_RAW10_FORMAT:
   description: ''
   fields:
-  - name: RAW10P
-    bit_offset: 0
-    bit_size: 8
-    description: RAW10P
+    - name: RAW10P
+      bit_offset: 0
+      bit_size: 8
+      description: RAW10P
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_PIXEL_LINK_RAW10_FORMAT:
   description: ''
   fields:
-  - name: RAW10P
-    bit_offset: 0
-    bit_size: 8
-    description: RAW10P
+    - name: RAW10P
+      bit_offset: 0
+      bit_size: 8
+      description: RAW10P
 fieldset/BLK_CTRL_CAMERAMIX_CSI0_BUFFER_OVERFLOW_BUFFER:
   description: ''
   fields:
-  - name: OVERFLOW
-    bit_offset: 0
-    bit_size: 1
+    - name: OVERFLOW
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_CSI1_BUFFER_OVERFLOW_BUFFER:
   description: ''
   fields:
-  - name: OVERFLOW
-    bit_offset: 0
-    bit_size: 1
+    - name: OVERFLOW
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_LPCAC_ERROR_CACHE:
   description: ''
   fields:
-  - name: PE
-    bit_offset: 0
-    bit_size: 1
-  - name: WE
-    bit_offset: 1
-    bit_size: 1
+    - name: PE
+      bit_offset: 0
+      bit_size: 1
+    - name: WE
+      bit_offset: 1
+      bit_size: 1
 fieldset/BLK_CTRL_CAMERAMIX_LPCAC_ERROR:
   description: ''
   fields:
-  - name: BUSERR
-    bit_offset: 2
-    bit_size: 2
+    - name: BUSERR
+      bit_offset: 2
+      bit_size: 2
 fieldset/BLK_CTRL_CAMERAMIX_LPCAC_ERROR_ADDR_BUSERR:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 0
-    bit_size: 32
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_CAMERAMIX_LPCAC_ERROR_DATA_BUSERR:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 32
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_CAMERAMIX_ISP_CONFIG_PIXEL_LINK:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 2
+    - name: SEL
+      bit_offset: 0
+      bit_size: 2

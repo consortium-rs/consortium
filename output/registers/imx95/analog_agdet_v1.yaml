@@ -1,106 +1,106 @@
 block/ANALOG_AGDET:
   description: ''
   items:
-  - name: GD_TEST
-    byte_offset: 4
-  - name: GD_MISC
-    byte_offset: 8
-  - name: GD_CTRL
-    byte_offset: 512
-    fieldset: ANALOG_AGDET_GD_CTRL
+    - name: GD_TEST
+      byte_offset: 4
+    - name: GD_MISC
+      byte_offset: 8
+    - name: GD_CTRL
+      byte_offset: 512
+      fieldset: ANALOG_AGDET_GD_CTRL
 fieldset/ANALOG_AGDET_GD_TEST_TEST:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
-  - name: DONE
-    bit_offset: 8
-    bit_size: 1
-  - name: SEL
-    bit_offset: 20
-    bit_size: 4
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: DONE
+      bit_offset: 8
+      bit_size: 1
+    - name: SEL
+      bit_offset: 20
+      bit_size: 4
 fieldset/ANALOG_AGDET_GD_TEST_TEST_VOLTAGE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 4
-    bit_size: 4
+    - name: SEL
+      bit_offset: 4
+      bit_size: 4
 fieldset/ANALOG_AGDET_GD_TEST_TEST_NEG:
   description: ''
   fields:
-  - name: DETECTED
-    bit_offset: 10
-    bit_size: 1
+    - name: DETECTED
+      bit_offset: 10
+      bit_size: 1
 fieldset/ANALOG_AGDET_GD_TEST_TEST_POS:
   description: ''
   fields:
-  - name: DETECTED
-    bit_offset: 11
-    bit_size: 1
+    - name: DETECTED
+      bit_offset: 11
+      bit_size: 1
 fieldset/ANALOG_AGDET_GD_TEST_TEST_DURATION:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 24
-    bit_size: 8
+    - name: SEL
+      bit_offset: 24
+      bit_size: 8
 fieldset/ANALOG_AGDET_GD_MISC_glitch_det:
   description: ''
   fields:
-  - name: trim
-    bit_offset: 24
-    bit_size: 8
+    - name: trim
+      bit_offset: 24
+      bit_size: 8
 fieldset/ANALOG_AGDET_GD_CTRL:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
 fieldset/ANALOG_AGDET_GD_CTRL_RST:
   description: ''
   fields:
-  - name: LATCH
-    bit_offset: 1
-    bit_size: 1
+    - name: LATCH
+      bit_offset: 1
+      bit_size: 1
 fieldset/ANALOG_AGDET_GD_CTRL_TH_LO:
   description: ''
   fields:
-  - name: TRIM
-    bit_offset: 8
-    bit_size: 4
+    - name: TRIM
+      bit_offset: 8
+      bit_size: 4
 fieldset/ANALOG_AGDET_GD_CTRL_TH_HI:
   description: ''
   fields:
-  - name: TRIM
-    bit_offset: 12
-    bit_size: 4
+    - name: TRIM
+      bit_offset: 12
+      bit_size: 4
 fieldset/ANALOG_AGDET_GD_CTRL_NEG:
   description: ''
   fields:
-  - name: DETECTED
-    bit_offset: 16
-    bit_size: 1
+    - name: DETECTED
+      bit_offset: 16
+      bit_size: 1
 fieldset/ANALOG_AGDET_GD_CTRL_POS:
   description: ''
   fields:
-  - name: DETECTED
-    bit_offset: 17
-    bit_size: 1
+    - name: DETECTED
+      bit_offset: 17
+      bit_size: 1
 fieldset/ANALOG_AGDET_GD_CTRL_NEG_DET:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 24
-    bit_size: 1
+    - name: MASK
+      bit_offset: 24
+      bit_size: 1
 fieldset/ANALOG_AGDET_GD_CTRL_POS_DET:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 25
-    bit_size: 1
+    - name: MASK
+      bit_offset: 25
+      bit_size: 1
 fieldset/ANALOG_AGDET_GD_CTRL_AUTO:
   description: ''
   fields:
-  - name: RST
-    bit_offset: 28
-    bit_size: 1
+    - name: RST
+      bit_offset: 28
+      bit_size: 1

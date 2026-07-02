@@ -1,15 +1,15 @@
 block/DOORBELLS:
   description: ''
   items:
-  - name: DOORBELL_DOORBELL
-    byte_offset: 0
-    array:
-      len: 64
-      stride: 65536
+    - name: DOORBELL_DOORBELL
+      byte_offset: 0
+      array:
+        len: 64
+        stride: 65536
 fieldset/DOORBELLS_DOORBELL:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: MASK
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: MASK

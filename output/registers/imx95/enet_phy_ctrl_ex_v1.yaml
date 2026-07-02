@@ -1,67 +1,67 @@
 block/ENET_PHY_CTRL_EX:
   description: ''
   items:
-  - name: GLOBAL_CTRL_EX_0
-    byte_offset: 276
-  - name: GLOBAL_CTRL_EX_1
-    byte_offset: 280
-  - name: GLOBAL_CTRL_EX_4
-    byte_offset: 292
-  - name: MPLLA_CTRL_EX_0
-    byte_offset: 131244
-  - name: MPLLB_CTRL_EX_0
-    byte_offset: 262316
+    - name: GLOBAL_CTRL_EX_0
+      byte_offset: 276
+    - name: GLOBAL_CTRL_EX_1
+      byte_offset: 280
+    - name: GLOBAL_CTRL_EX_4
+      byte_offset: 292
+    - name: MPLLA_CTRL_EX_0
+      byte_offset: 131244
+    - name: MPLLB_CTRL_EX_0
+      byte_offset: 262316
 fieldset/ENET_PHY_CTRL_EX_GLOBAL_CTRL_EX_0_PHY_SRAM:
   description: ''
   fields:
-  - name: BYPASS
-    bit_offset: 0
-    bit_size: 1
+    - name: BYPASS
+      bit_offset: 0
+      bit_size: 1
 fieldset/ENET_PHY_CTRL_EX_GLOBAL_CTRL_EX_1_PHY_TEST_STOP_CLK:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 4
-    bit_size: 1
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
 fieldset/ENET_PHY_CTRL_EX_GLOBAL_CTRL_EX_4_PHY_VPH:
   description: ''
   fields:
-  - name: NOMINAL
-    bit_offset: 0
-    bit_size: 2
+    - name: NOMINAL
+      bit_offset: 0
+      bit_size: 2
 fieldset/ENET_PHY_CTRL_EX_GLOBAL_CTRL_EX_4_PHY_PCS_PWR:
   description: ''
   fields:
-  - name: STABLE
-    bit_offset: 8
-    bit_size: 1
+    - name: STABLE
+      bit_offset: 8
+      bit_size: 1
 fieldset/ENET_PHY_CTRL_EX_GLOBAL_CTRL_EX_4_PHY_PG_MODE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 10
-    bit_size: 1
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
 fieldset/ENET_PHY_CTRL_EX_GLOBAL_CTRL_EX_4_PHY_PG:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 12
-    bit_size: 1
+    - name: RESET
+      bit_offset: 12
+      bit_size: 1
 fieldset/ENET_PHY_CTRL_EX_GLOBAL_CTRL_EX_4_PHY_PMA_PWR:
   description: ''
   fields:
-  - name: STABLE
-    bit_offset: 14
-    bit_size: 1
+    - name: STABLE
+      bit_offset: 14
+      bit_size: 1
 fieldset/ENET_PHY_CTRL_EX_MPLLA_CTRL_EX_0_PHY_MPLLA_FORCE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
 fieldset/ENET_PHY_CTRL_EX_MPLLB_CTRL_EX_0_PHY_MPLLB_FORCE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1

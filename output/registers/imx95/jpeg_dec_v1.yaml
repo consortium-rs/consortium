@@ -1,18 +1,18 @@
 block/JPEG_DEC:
   description: ''
   items:
-  - name: CTRL
-    byte_offset: 52
-    fieldset: JPEG_DEC_CTRL
+    - name: CTRL
+      byte_offset: 52
+      fieldset: JPEG_DEC_CTRL
 fieldset/JPEG_DEC_CTRL:
   description: ''
   fields:
-  - name: LP
-    bit_offset: 0
-    bit_size: 1
-  - name: SWR
-    bit_offset: 1
-    bit_size: 1
-  - name: GO
-    bit_offset: 2
-    bit_size: 1
+    - name: LP
+      bit_offset: 0
+      bit_size: 1
+    - name: SWR
+      bit_offset: 1
+      bit_size: 1
+    - name: GO
+      bit_offset: 2
+      bit_size: 1

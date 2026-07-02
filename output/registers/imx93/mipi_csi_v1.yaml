@@ -1,693 +1,693 @@
 block/MIPI_CSI:
   description: ''
   items:
-  - name: VERSION
-    byte_offset: 0
-    fieldset: MIPI_CSI_VERSION
-  - name: N_LANES
-    byte_offset: 4
-  - name: CSI2_RESETN
-    byte_offset: 8
-  - name: INT_ST_MAIN
-    byte_offset: 12
-  - name: PHY_SHUTDOWNZ
-    byte_offset: 64
-  - name: DPHY_RSTZ
-    byte_offset: 68
-  - name: PHY_RX
-    byte_offset: 72
-  - name: PHY_STOPSTATE
-    byte_offset: 76
-  - name: PHY_TEST_CTRL0
-    byte_offset: 80
-  - name: PHY_TEST_CTRL1
-    byte_offset: 84
-  - name: PPI_PG_PATTERN_VRES
-    byte_offset: 96
-  - name: PPI_PG_PATTERN_HRES
-    byte_offset: 100
-  - name: PPI_PG_CONFIG
-    byte_offset: 104
-  - name: PPI_PG_ENABLE
-    byte_offset: 108
-  - name: PPI_PG_STATUS
-    byte_offset: 112
-  - name: IPI_MODE
-    byte_offset: 128
-  - name: IPI_VCID
-    byte_offset: 132
-  - name: IPI_DATA_TYPE
-    byte_offset: 136
-  - name: IPI_MEM_FLUSH
-    byte_offset: 140
-  - name: IPI_HSA_TIME
-    byte_offset: 144
-  - name: IPI_HBP_TIME
-    byte_offset: 148
-  - name: IPI_HSD_TIME
-    byte_offset: 152
-  - name: IPI_HLINE_TIME
-    byte_offset: 156
-  - name: IPI_SOFTRSTN
-    byte_offset: 160
-  - name: IPI_ADV_FEATURES
-    byte_offset: 172
-  - name: IPI_VSA_LINES
-    byte_offset: 176
-  - name: IPI_VBP_LINES
-    byte_offset: 180
-  - name: IPI_VFP_LINES
-    byte_offset: 184
-  - name: IPI_VACTIVE_LINES
-    byte_offset: 188
-  - name: INT_ST_PHY_FATAL
-    byte_offset: 224
-  - name: INT_MSK_PHY_FATAL
-    byte_offset: 228
-  - name: INT_FORCE_PHY_FATAL
-    byte_offset: 232
-  - name: INT_ST_PKT_FATAL
-    byte_offset: 240
-  - name: INT_MSK_PKT_FATAL
-    byte_offset: 244
-  - name: INT_FORCE_PKT_FATAL
-    byte_offset: 248
-  - name: INT_ST_PHY
-    byte_offset: 272
-  - name: INT_MSK_PHY
-    byte_offset: 276
-  - name: INT_FORCE_PHY
-    byte_offset: 280
-  - name: INT_ST_IPI_FATAL
-    byte_offset: 320
-  - name: INT_MSK_IPI_FATAL
-    byte_offset: 324
-  - name: INT_FORCE_IPI_FATAL
-    byte_offset: 328
-  - name: INT_ST_BNDRY_FRAME_FATAL
-    byte_offset: 640
-  - name: INT_MSK_BNDRY_FRAME_FATAL
-    byte_offset: 644
-  - name: INT_FORCE_BNDRY_FRAME_FATAL
-    byte_offset: 648
-  - name: INT_ST_SEQ_FRAME_FATAL
-    byte_offset: 656
-  - name: INT_MSK_SEQ_FRAME_FATAL
-    byte_offset: 660
-  - name: INT_FORCE_SEQ_FRAME_FATAL
-    byte_offset: 664
-  - name: INT_ST_CRC_FRAME_FATAL
-    byte_offset: 672
-  - name: INT_MSK_CRC_FRAME_FATAL
-    byte_offset: 676
-  - name: INT_FORCE_CRC_FRAME_FATAL
-    byte_offset: 680
-  - name: INT_ST_PLD_CRC_FATAL
-    byte_offset: 688
-  - name: INT_MSK_PLD_CRC_FATAL
-    byte_offset: 692
-  - name: INT_FORCE_PLD_CRC_FATAL
-    byte_offset: 696
-  - name: INT_ST_DATA_ID
-    byte_offset: 704
-  - name: INT_MSK_DATA_ID
-    byte_offset: 708
-  - name: INT_FORCE_DATA_ID
-    byte_offset: 712
-  - name: INT_ST_ECC_CORRECTED
-    byte_offset: 720
-  - name: INT_MSK_ECC_CORRECTED
-    byte_offset: 724
-  - name: INT_FORCE_ECC_CORRECTED
-    byte_offset: 728
-  - name: SCRAMBLING
-    byte_offset: 768
-  - name: SCRAMBLING_SEED1
-    byte_offset: 772
-  - name: SCRAMBLING_SEED2
-    byte_offset: 776
+    - name: VERSION
+      byte_offset: 0
+      fieldset: MIPI_CSI_VERSION
+    - name: N_LANES
+      byte_offset: 4
+    - name: CSI2_RESETN
+      byte_offset: 8
+    - name: INT_ST_MAIN
+      byte_offset: 12
+    - name: PHY_SHUTDOWNZ
+      byte_offset: 64
+    - name: DPHY_RSTZ
+      byte_offset: 68
+    - name: PHY_RX
+      byte_offset: 72
+    - name: PHY_STOPSTATE
+      byte_offset: 76
+    - name: PHY_TEST_CTRL0
+      byte_offset: 80
+    - name: PHY_TEST_CTRL1
+      byte_offset: 84
+    - name: PPI_PG_PATTERN_VRES
+      byte_offset: 96
+    - name: PPI_PG_PATTERN_HRES
+      byte_offset: 100
+    - name: PPI_PG_CONFIG
+      byte_offset: 104
+    - name: PPI_PG_ENABLE
+      byte_offset: 108
+    - name: PPI_PG_STATUS
+      byte_offset: 112
+    - name: IPI_MODE
+      byte_offset: 128
+    - name: IPI_VCID
+      byte_offset: 132
+    - name: IPI_DATA_TYPE
+      byte_offset: 136
+    - name: IPI_MEM_FLUSH
+      byte_offset: 140
+    - name: IPI_HSA_TIME
+      byte_offset: 144
+    - name: IPI_HBP_TIME
+      byte_offset: 148
+    - name: IPI_HSD_TIME
+      byte_offset: 152
+    - name: IPI_HLINE_TIME
+      byte_offset: 156
+    - name: IPI_SOFTRSTN
+      byte_offset: 160
+    - name: IPI_ADV_FEATURES
+      byte_offset: 172
+    - name: IPI_VSA_LINES
+      byte_offset: 176
+    - name: IPI_VBP_LINES
+      byte_offset: 180
+    - name: IPI_VFP_LINES
+      byte_offset: 184
+    - name: IPI_VACTIVE_LINES
+      byte_offset: 188
+    - name: INT_ST_PHY_FATAL
+      byte_offset: 224
+    - name: INT_MSK_PHY_FATAL
+      byte_offset: 228
+    - name: INT_FORCE_PHY_FATAL
+      byte_offset: 232
+    - name: INT_ST_PKT_FATAL
+      byte_offset: 240
+    - name: INT_MSK_PKT_FATAL
+      byte_offset: 244
+    - name: INT_FORCE_PKT_FATAL
+      byte_offset: 248
+    - name: INT_ST_PHY
+      byte_offset: 272
+    - name: INT_MSK_PHY
+      byte_offset: 276
+    - name: INT_FORCE_PHY
+      byte_offset: 280
+    - name: INT_ST_IPI_FATAL
+      byte_offset: 320
+    - name: INT_MSK_IPI_FATAL
+      byte_offset: 324
+    - name: INT_FORCE_IPI_FATAL
+      byte_offset: 328
+    - name: INT_ST_BNDRY_FRAME_FATAL
+      byte_offset: 640
+    - name: INT_MSK_BNDRY_FRAME_FATAL
+      byte_offset: 644
+    - name: INT_FORCE_BNDRY_FRAME_FATAL
+      byte_offset: 648
+    - name: INT_ST_SEQ_FRAME_FATAL
+      byte_offset: 656
+    - name: INT_MSK_SEQ_FRAME_FATAL
+      byte_offset: 660
+    - name: INT_FORCE_SEQ_FRAME_FATAL
+      byte_offset: 664
+    - name: INT_ST_CRC_FRAME_FATAL
+      byte_offset: 672
+    - name: INT_MSK_CRC_FRAME_FATAL
+      byte_offset: 676
+    - name: INT_FORCE_CRC_FRAME_FATAL
+      byte_offset: 680
+    - name: INT_ST_PLD_CRC_FATAL
+      byte_offset: 688
+    - name: INT_MSK_PLD_CRC_FATAL
+      byte_offset: 692
+    - name: INT_FORCE_PLD_CRC_FATAL
+      byte_offset: 696
+    - name: INT_ST_DATA_ID
+      byte_offset: 704
+    - name: INT_MSK_DATA_ID
+      byte_offset: 708
+    - name: INT_FORCE_DATA_ID
+      byte_offset: 712
+    - name: INT_ST_ECC_CORRECTED
+      byte_offset: 720
+    - name: INT_MSK_ECC_CORRECTED
+      byte_offset: 724
+    - name: INT_FORCE_ECC_CORRECTED
+      byte_offset: 728
+    - name: SCRAMBLING
+      byte_offset: 768
+    - name: SCRAMBLING_SEED1
+      byte_offset: 772
+    - name: SCRAMBLING_SEED2
+      byte_offset: 776
 fieldset/MIPI_CSI_VERSION:
   description: ''
   fields:
-  - name: version
-    bit_offset: 0
-    bit_size: 32
+    - name: version
+      bit_offset: 0
+      bit_size: 32
 fieldset/MIPI_CSI_N_LANES_n:
   description: ''
   fields:
-  - name: lanes
-    bit_offset: 0
-    bit_size: 3
+    - name: lanes
+      bit_offset: 0
+      bit_size: 3
 fieldset/MIPI_CSI_CSI2_RESETN_csi2:
   description: ''
   fields:
-  - name: resetn
-    bit_offset: 0
-    bit_size: 1
+    - name: resetn
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_MAIN_status_int_phy:
   description: ''
   fields:
-  - name: fatal
-    bit_offset: 0
-    bit_size: 1
+    - name: fatal
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_MAIN_status_int_pkt:
   description: ''
   fields:
-  - name: fatal
-    bit_offset: 1
-    bit_size: 1
+    - name: fatal
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_MAIN_status_int_bndry_frame:
   description: ''
   fields:
-  - name: fatal
-    bit_offset: 2
-    bit_size: 1
+    - name: fatal
+      bit_offset: 2
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_MAIN_status_int_seq_frame:
   description: ''
   fields:
-  - name: fatal
-    bit_offset: 3
-    bit_size: 1
+    - name: fatal
+      bit_offset: 3
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_MAIN_status_int_crc_frame:
   description: ''
   fields:
-  - name: fatal
-    bit_offset: 4
-    bit_size: 1
+    - name: fatal
+      bit_offset: 4
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_MAIN_status_int_pld_crc:
   description: ''
   fields:
-  - name: fatal
-    bit_offset: 5
-    bit_size: 1
+    - name: fatal
+      bit_offset: 5
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_MAIN_status_int_data:
   description: ''
   fields:
-  - name: id
-    bit_offset: 6
-    bit_size: 1
+    - name: id
+      bit_offset: 6
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_MAIN_status_int_ecc:
   description: ''
   fields:
-  - name: corrected
-    bit_offset: 7
-    bit_size: 1
+    - name: corrected
+      bit_offset: 7
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_MAIN_status_int:
   description: ''
   fields:
-  - name: phy
-    bit_offset: 16
-    bit_size: 1
+    - name: phy
+      bit_offset: 16
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_MAIN_status_int_ipi:
   description: ''
   fields:
-  - name: fatal
-    bit_offset: 18
-    bit_size: 1
+    - name: fatal
+      bit_offset: 18
+      bit_size: 1
 fieldset/MIPI_CSI_PHY_SHUTDOWNZ_phy:
   description: ''
   fields:
-  - name: shutdownz
-    bit_offset: 0
-    bit_size: 1
-    description: Shutdown input.
+    - name: shutdownz
+      bit_offset: 0
+      bit_size: 1
+      description: Shutdown input.
 fieldset/MIPI_CSI_DPHY_RSTZ_dphy:
   description: ''
   fields:
-  - name: rstz
-    bit_offset: 0
-    bit_size: 1
-    description: PHY reset output.
+    - name: rstz
+      bit_offset: 0
+      bit_size: 1
+      description: PHY reset output.
 fieldset/MIPI_CSI_PHY_RX_phy:
   description: ''
   fields:
-  - name: rxulpsclknot
-    bit_offset: 16
-    bit_size: 1
-    description: Active Low.
-  - name: rxclkactivehs
-    bit_offset: 17
-    bit_size: 1
+    - name: rxulpsclknot
+      bit_offset: 16
+      bit_size: 1
+      description: Active Low.
+    - name: rxclkactivehs
+      bit_offset: 17
+      bit_size: 1
 fieldset/MIPI_CSI_PHY_STOPSTATE_phy:
   description: ''
   fields:
-  - name: stopstateclk
-    bit_offset: 16
-    bit_size: 1
+    - name: stopstateclk
+      bit_offset: 16
+      bit_size: 1
 fieldset/MIPI_CSI_PHY_TEST_CTRL0_phy:
   description: ''
   fields:
-  - name: testclr
-    bit_offset: 0
-    bit_size: 1
-  - name: testclk
-    bit_offset: 1
-    bit_size: 1
+    - name: testclr
+      bit_offset: 0
+      bit_size: 1
+    - name: testclk
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_CSI_PHY_TEST_CTRL1_phy:
   description: ''
   fields:
-  - name: testdin
-    bit_offset: 0
-    bit_size: 8
-  - name: testdout
-    bit_offset: 8
-    bit_size: 8
-  - name: testen
-    bit_offset: 16
-    bit_size: 1
-    description: PHY test enable
+    - name: testdin
+      bit_offset: 0
+      bit_size: 8
+    - name: testdout
+      bit_offset: 8
+      bit_size: 8
+    - name: testen
+      bit_offset: 16
+      bit_size: 1
+      description: PHY test enable
 fieldset/MIPI_CSI_PPI_PG_PATTERN_VRES_ppi_pg_pattern:
   description: ''
   fields:
-  - name: vres
-    bit_offset: 0
-    bit_size: 16
+    - name: vres
+      bit_offset: 0
+      bit_size: 16
 fieldset/MIPI_CSI_PPI_PG_PATTERN_HRES_ppi_pg_pattern:
   description: ''
   fields:
-  - name: hres
-    bit_offset: 0
-    bit_size: 16
+    - name: hres
+      bit_offset: 0
+      bit_size: 16
 fieldset/MIPI_CSI_PPI_PG_CONFIG_ppi_pg:
   description: ''
   fields:
-  - name: pattern
-    bit_offset: 0
-    bit_size: 1
-  - name: datatype
-    bit_offset: 8
-    bit_size: 6
-  - name: vc
-    bit_offset: 14
-    bit_size: 2
+    - name: pattern
+      bit_offset: 0
+      bit_size: 1
+    - name: datatype
+      bit_offset: 8
+      bit_size: 6
+    - name: vc
+      bit_offset: 14
+      bit_size: 2
 fieldset/MIPI_CSI_PPI_PG_ENABLE_ppi_pg:
   description: ''
   fields:
-  - name: enable
-    bit_offset: 0
-    bit_size: 1
+    - name: enable
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_PPI_PG_STATUS_ppi_pg:
   description: ''
   fields:
-  - name: status
-    bit_offset: 0
-    bit_size: 1
+    - name: status
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_IPI_MODE_ipi:
   description: ''
   fields:
-  - name: mode
-    bit_offset: 0
-    bit_size: 1
-  - name: enable
-    bit_offset: 24
-    bit_size: 1
-    description: Enables the interface.
+    - name: mode
+      bit_offset: 0
+      bit_size: 1
+    - name: enable
+      bit_offset: 24
+      bit_size: 1
+      description: Enables the interface.
 fieldset/MIPI_CSI_IPI_MODE_ipi_color:
   description: ''
   fields:
-  - name: com
-    bit_offset: 8
-    bit_size: 1
+    - name: com
+      bit_offset: 8
+      bit_size: 1
 fieldset/MIPI_CSI_IPI_MODE_ipi_cut:
   description: ''
   fields:
-  - name: through
-    bit_offset: 16
-    bit_size: 1
+    - name: through
+      bit_offset: 16
+      bit_size: 1
 fieldset/MIPI_CSI_IPI_VCID_ip:
   description: ''
   fields:
-  - name: vcid
-    bit_offset: 0
-    bit_size: 2
+    - name: vcid
+      bit_offset: 0
+      bit_size: 2
 fieldset/MIPI_CSI_IPI_DATA_TYPE_ipi_data:
   description: ''
   fields:
-  - name: type
-    bit_offset: 0
-    bit_size: 6
+    - name: type
+      bit_offset: 0
+      bit_size: 6
 fieldset/MIPI_CSI_IPI_DATA_TYPE_embedded:
   description: ''
   fields:
-  - name: data
-    bit_offset: 8
-    bit_size: 1
+    - name: data
+      bit_offset: 8
+      bit_size: 1
 fieldset/MIPI_CSI_IPI_MEM_FLUSH_ipi:
   description: ''
   fields:
-  - name: flush
-    bit_offset: 0
-    bit_size: 1
-    description: Flush IPI memory.
+    - name: flush
+      bit_offset: 0
+      bit_size: 1
+      description: Flush IPI memory.
 fieldset/MIPI_CSI_IPI_MEM_FLUSH_ipi_auto:
   description: ''
   fields:
-  - name: flush
-    bit_offset: 8
-    bit_size: 1
+    - name: flush
+      bit_offset: 8
+      bit_size: 1
 fieldset/MIPI_CSI_IPI_HSA_TIME_ipi_hsa:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 12
+    - name: time
+      bit_offset: 0
+      bit_size: 12
 fieldset/MIPI_CSI_IPI_HBP_TIME_ipi_hbp:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 12
+    - name: time
+      bit_offset: 0
+      bit_size: 12
 fieldset/MIPI_CSI_IPI_HSD_TIME_ipi_hsd:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 12
+    - name: time
+      bit_offset: 0
+      bit_size: 12
 fieldset/MIPI_CSI_IPI_HLINE_TIME_ipi_hline:
   description: ''
   fields:
-  - name: time
-    bit_offset: 0
-    bit_size: 15
+    - name: time
+      bit_offset: 0
+      bit_size: 15
 fieldset/MIPI_CSI_IPI_SOFTRSTN_ipi:
   description: ''
   fields:
-  - name: softrstn
-    bit_offset: 0
-    bit_size: 1
-    description: Resets IPI one.
+    - name: softrstn
+      bit_offset: 0
+      bit_size: 1
+      description: Resets IPI one.
 fieldset/MIPI_CSI_IPI_ADV_FEATURES_ipi_dt:
   description: ''
   fields:
-  - name: overwrite
-    bit_offset: 0
-    bit_size: 1
+    - name: overwrite
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_IPI_ADV_FEATURES_ipi:
   description: ''
   fields:
-  - name: dt
-    bit_offset: 8
-    bit_size: 6
-    description: Datatype to overwrite.
+    - name: dt
+      bit_offset: 8
+      bit_size: 6
+      description: Datatype to overwrite.
 fieldset/MIPI_CSI_IPI_ADV_FEATURES_line_event:
   description: ''
   fields:
-  - name: selection
-    bit_offset: 16
-    bit_size: 1
+    - name: selection
+      bit_offset: 16
+      bit_size: 1
 fieldset/MIPI_CSI_IPI_ADV_FEATURES_en:
   description: ''
   fields:
-  - name: video
-    bit_offset: 17
-    bit_size: 1
-  - name: 'null'
-    bit_offset: 19
-    bit_size: 1
-  - name: blanking
-    bit_offset: 20
-    bit_size: 1
-  - name: embedded
-    bit_offset: 21
-    bit_size: 1
+    - name: video
+      bit_offset: 17
+      bit_size: 1
+    - name: 'null'
+      bit_offset: 19
+      bit_size: 1
+    - name: blanking
+      bit_offset: 20
+      bit_size: 1
+    - name: embedded
+      bit_offset: 21
+      bit_size: 1
 fieldset/MIPI_CSI_IPI_ADV_FEATURES_en_line:
   description: ''
   fields:
-  - name: start
-    bit_offset: 18
-    bit_size: 1
+    - name: start
+      bit_offset: 18
+      bit_size: 1
 fieldset/MIPI_CSI_IPI_ADV_FEATURES_ipi_sync_event:
   description: ''
   fields:
-  - name: mode
-    bit_offset: 24
-    bit_size: 1
+    - name: mode
+      bit_offset: 24
+      bit_size: 1
 fieldset/MIPI_CSI_IPI_VSA_LINES_ipi_vsa:
   description: ''
   fields:
-  - name: lines
-    bit_offset: 0
-    bit_size: 10
+    - name: lines
+      bit_offset: 0
+      bit_size: 10
 fieldset/MIPI_CSI_IPI_VBP_LINES_ipi_vbp:
   description: ''
   fields:
-  - name: lines
-    bit_offset: 0
-    bit_size: 10
+    - name: lines
+      bit_offset: 0
+      bit_size: 10
 fieldset/MIPI_CSI_IPI_VFP_LINES_ipi_vfp:
   description: ''
   fields:
-  - name: lines
-    bit_offset: 0
-    bit_size: 10
+    - name: lines
+      bit_offset: 0
+      bit_size: 10
 fieldset/MIPI_CSI_IPI_VACTIVE_LINES_ipi_vactive:
   description: ''
   fields:
-  - name: lines
-    bit_offset: 0
-    bit_size: 14
+    - name: lines
+      bit_offset: 0
+      bit_size: 14
 fieldset/MIPI_CSI_INT_ST_PKT_FATAL_err_ecc:
   description: ''
   fields:
-  - name: double
-    bit_offset: 0
-    bit_size: 1
+    - name: double
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_PKT_FATAL_shorter:
   description: ''
   fields:
-  - name: payload
-    bit_offset: 1
-    bit_size: 1
+    - name: payload
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_CSI_INT_MSK_PKT_FATAL_mask_err_ecc:
   description: ''
   fields:
-  - name: double
-    bit_offset: 0
-    bit_size: 1
+    - name: double
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_MSK_PKT_FATAL_mask_shorter:
   description: ''
   fields:
-  - name: payload
-    bit_offset: 1
-    bit_size: 1
+    - name: payload
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_CSI_INT_FORCE_PKT_FATAL_force_err_ecc:
   description: ''
   fields:
-  - name: double
-    bit_offset: 0
-    bit_size: 1
+    - name: double
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_FORCE_PKT_FATAL_force_shorter:
   description: ''
   fields:
-  - name: payload
-    bit_offset: 1
-    bit_size: 1
+    - name: payload
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_IPI_FATAL_pixel_if_fifo:
   description: ''
   fields:
-  - name: underflow
-    bit_offset: 0
-    bit_size: 1
-  - name: overflow
-    bit_offset: 1
-    bit_size: 1
+    - name: underflow
+      bit_offset: 0
+      bit_size: 1
+    - name: overflow
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_IPI_FATAL_pixel_if_fifo_nempty:
   description: ''
   fields:
-  - name: fs
-    bit_offset: 3
-    bit_size: 1
+    - name: fs
+      bit_offset: 3
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_IPI_FATAL_int_event_fifo:
   description: ''
   fields:
-  - name: overflow
-    bit_offset: 5
-    bit_size: 1
+    - name: overflow
+      bit_offset: 5
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_IPI_FATAL_int_pulse_delay:
   description: ''
   fields:
-  - name: overflow
-    bit_offset: 6
-    bit_size: 1
+    - name: overflow
+      bit_offset: 6
+      bit_size: 1
 fieldset/MIPI_CSI_INT_MSK_IPI_FATAL_msk_pixel_if_fifo:
   description: ''
   fields:
-  - name: underflow
-    bit_offset: 0
-    bit_size: 1
-  - name: overflow
-    bit_offset: 1
-    bit_size: 1
+    - name: underflow
+      bit_offset: 0
+      bit_size: 1
+    - name: overflow
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_CSI_INT_MSK_IPI_FATAL_msk_pixel_if_fifo_nempty:
   description: ''
   fields:
-  - name: fs
-    bit_offset: 3
-    bit_size: 1
+    - name: fs
+      bit_offset: 3
+      bit_size: 1
 fieldset/MIPI_CSI_INT_MSK_IPI_FATAL_msk_int_event_fifo:
   description: ''
   fields:
-  - name: overflow
-    bit_offset: 5
-    bit_size: 1
+    - name: overflow
+      bit_offset: 5
+      bit_size: 1
 fieldset/MIPI_CSI_INT_MSK_IPI_FATAL_msk_int_pulse_delay:
   description: ''
   fields:
-  - name: overflow
-    bit_offset: 6
-    bit_size: 1
+    - name: overflow
+      bit_offset: 6
+      bit_size: 1
 fieldset/MIPI_CSI_INT_FORCE_IPI_FATAL_pixel_if_fifo:
   description: ''
   fields:
-  - name: underflow
-    bit_offset: 0
-    bit_size: 1
-  - name: overflow
-    bit_offset: 1
-    bit_size: 1
+    - name: underflow
+      bit_offset: 0
+      bit_size: 1
+    - name: overflow
+      bit_offset: 1
+      bit_size: 1
 fieldset/MIPI_CSI_INT_FORCE_IPI_FATAL_pixel_if_fifo_nempty:
   description: ''
   fields:
-  - name: fs
-    bit_offset: 3
-    bit_size: 1
+    - name: fs
+      bit_offset: 3
+      bit_size: 1
 fieldset/MIPI_CSI_INT_FORCE_IPI_FATAL_int_event_fifo:
   description: ''
   fields:
-  - name: overflow
-    bit_offset: 5
-    bit_size: 1
+    - name: overflow
+      bit_offset: 5
+      bit_size: 1
 fieldset/MIPI_CSI_INT_FORCE_IPI_FATAL_int_pulse_delay:
   description: ''
   fields:
-  - name: overflow
-    bit_offset: 6
-    bit_size: 1
+    - name: overflow
+      bit_offset: 6
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_BNDRY_FRAME_FATAL_err:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_MSK_BNDRY_FRAME_FATAL_err:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_FORCE_BNDRY_FRAME_FATAL_err:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_SEQ_FRAME_FATAL_err_f_seq:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_MSK_SEQ_FRAME_FATAL_err_f_seq:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_FORCE_SEQ_FRAME_FATAL_err_f_seq:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_CRC_FRAME_FATAL_err_frame_data:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_MSK_CRC_FRAME_FATAL_err_frame_data:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_FORCE_CRC_FRAME_FATAL_err_frame_data:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_PLD_CRC_FATAL_err_crc:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_MSK_PLD_CRC_FATAL_err_crc:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_FORCE_PLD_CRC_FATAL_err_crc:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_ST_DATA_ID_err_id:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_MSK_DATA_ID_err_id:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-    description: Mask for err_id_vc0.
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+      description: Mask for err_id_vc0.
 fieldset/MIPI_CSI_INT_FORCE_DATA_ID_err_id:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
-    description: Force err_id_vc0.
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
+      description: Force err_id_vc0.
 fieldset/MIPI_CSI_INT_ST_ECC_CORRECTED_err_ecc_corrected:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_MSK_ECC_CORRECTED_err_ecc_corrected:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_INT_FORCE_ECC_CORRECTED_err_ecc_corrected:
   description: ''
   fields:
-  - name: vc0
-    bit_offset: 0
-    bit_size: 1
+    - name: vc0
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_SCRAMBLING_scramble:
   description: ''
   fields:
-  - name: enable
-    bit_offset: 0
-    bit_size: 1
+    - name: enable
+      bit_offset: 0
+      bit_size: 1
 fieldset/MIPI_CSI_SCRAMBLING_SEED1_scramble_seed:
   description: ''
   fields:
-  - name: lane1
-    bit_offset: 0
-    bit_size: 16
+    - name: lane1
+      bit_offset: 0
+      bit_size: 16
 fieldset/MIPI_CSI_SCRAMBLING_SEED2_scramble_seed:
   description: ''
   fields:
-  - name: lane2
-    bit_offset: 0
-    bit_size: 16
+    - name: lane2
+      bit_offset: 0
+      bit_size: 16

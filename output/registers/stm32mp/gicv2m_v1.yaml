@@ -1,27 +1,27 @@
 block/GICV2M:
   description: ''
   items:
-  - name: TYPER
-    byte_offset: 8
-    description: GICV2M typer register
-  - name: SETSPI
-    byte_offset: 64
-    description: GICV2M set SPI register
-  - name: MISC_CTRL
-    byte_offset: 256
-    description: GICV2M MISC CTRL register
-  - name: IIDR
-    byte_offset: 4044
-    description: GICV2M IIDR register
-    fieldset: GICV2M_IIDR
+    - name: TYPER
+      byte_offset: 8
+      description: GICV2M typer register
+    - name: SETSPI
+      byte_offset: 64
+      description: GICV2M set SPI register
+    - name: MISC_CTRL
+      byte_offset: 256
+      description: GICV2M MISC CTRL register
+    - name: IIDR
+      byte_offset: 4044
+      description: GICV2M IIDR register
+      fieldset: GICV2M_IIDR
 fieldset/GICV2M_IIDR:
   description: ''
   fields:
-  - name: IMPLEMENTER
-    bit_offset: 0
-    bit_size: 12
-    description: JEP106 code of the company that implements the GICV2M
-  - name: REVISION
-    bit_offset: 12
-    bit_size: 4
-    description: Revision number for the component
+    - name: IMPLEMENTER
+      bit_offset: 0
+      bit_size: 12
+      description: JEP106 code of the company that implements the GICV2M
+    - name: REVISION
+      bit_offset: 12
+      bit_size: 4
+      description: Revision number for the component

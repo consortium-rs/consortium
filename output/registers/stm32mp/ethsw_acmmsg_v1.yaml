@@ -1,39 +1,39 @@
 block/ETHSW_ACMMSG:
   description: ''
   items:
-  - name: MSGBUFDESC
-    byte_offset: 0
-    array:
-      len: 64
-      stride: 4
-    description: Message Buffer Descriptor x
-  - name: LOCKCTRLLOW
-    byte_offset: 512
-    description: Message Buffer Locking Control Low
-  - name: LOCKCTRLHIGH
-    byte_offset: 516
-    description: Message Buffer Locking Control High
-  - name: RESETCTRLLOW
-    byte_offset: 768
-    description: Message Buffer Reset Control Low
-  - name: RESETCTRLHIGH
-    byte_offset: 772
-    description: Message Buffer Reset Control High
-  - name: IRQSTATUSLOW
-    byte_offset: 1024
-    description: Message Buffer IRQ Control Low
-  - name: IRQSTATUSHIGH
-    byte_offset: 1028
-    description: Message Buffer IRQ Control High
-  - name: IRQTESTLOW
-    byte_offset: 1040
-    description: Message Buffer IRQ Test Low
-  - name: IRQTESTHIGH
-    byte_offset: 1044
-    description: Message Buffer IRQ Test High
-  - name: MSGBUFSTATUS
-    byte_offset: 1536
-    array:
-      len: 64
-      stride: 4
-    description: Message Buffer Status x
+    - name: MSGBUFDESC
+      byte_offset: 0
+      array:
+        len: 64
+        stride: 4
+      description: Message Buffer Descriptor x
+    - name: LOCKCTRLLOW
+      byte_offset: 512
+      description: Message Buffer Locking Control Low
+    - name: LOCKCTRLHIGH
+      byte_offset: 516
+      description: Message Buffer Locking Control High
+    - name: RESETCTRLLOW
+      byte_offset: 768
+      description: Message Buffer Reset Control Low
+    - name: RESETCTRLHIGH
+      byte_offset: 772
+      description: Message Buffer Reset Control High
+    - name: IRQSTATUSLOW
+      byte_offset: 1024
+      description: Message Buffer IRQ Control Low
+    - name: IRQSTATUSHIGH
+      byte_offset: 1028
+      description: Message Buffer IRQ Control High
+    - name: IRQTESTLOW
+      byte_offset: 1040
+      description: Message Buffer IRQ Test Low
+    - name: IRQTESTHIGH
+      byte_offset: 1044
+      description: Message Buffer IRQ Test High
+    - name: MSGBUFSTATUS
+      byte_offset: 1536
+      array:
+        len: 64
+        stride: 4
+      description: Message Buffer Status x

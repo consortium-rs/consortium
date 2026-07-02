@@ -1,788 +1,788 @@
 block/NOC_GICP:
   description: ''
   items:
-  - name: GICP_EVCNTR0
-    byte_offset: 0
-    fieldset: NOC_GICP_GICP_EVCNTR0
-  - name: GICP_EVCNTR1
-    byte_offset: 4
-    fieldset: NOC_GICP_GICP_EVCNTR1
-  - name: GICP_EVCNTR2
-    byte_offset: 8
-    fieldset: NOC_GICP_GICP_EVCNTR2
-  - name: GICP_EVCNTR3
-    byte_offset: 12
-    fieldset: NOC_GICP_GICP_EVCNTR3
-  - name: GICP_EVCNTR4
-    byte_offset: 16
-    fieldset: NOC_GICP_GICP_EVCNTR4
-  - name: GICP_EVTYPER0
-    byte_offset: 1024
-    fieldset: NOC_GICP_GICP_EVTYPER0
-  - name: GICP_EVTYPER1
-    byte_offset: 1028
-    fieldset: NOC_GICP_GICP_EVTYPER1
-  - name: GICP_EVTYPER2
-    byte_offset: 1032
-    fieldset: NOC_GICP_GICP_EVTYPER2
-  - name: GICP_EVTYPER3
-    byte_offset: 1036
-    fieldset: NOC_GICP_GICP_EVTYPER3
-  - name: GICP_EVTYPER4
-    byte_offset: 1040
-    fieldset: NOC_GICP_GICP_EVTYPER4
-  - name: GICP_SVR0
-    byte_offset: 1536
-    fieldset: NOC_GICP_GICP_SVR0
-  - name: GICP_SVR1
-    byte_offset: 1540
-    fieldset: NOC_GICP_GICP_SVR1
-  - name: GICP_SVR2
-    byte_offset: 1544
-    fieldset: NOC_GICP_GICP_SVR2
-  - name: GICP_SVR3
-    byte_offset: 1548
-    fieldset: NOC_GICP_GICP_SVR3
-  - name: GICP_SVR4
-    byte_offset: 1552
-    fieldset: NOC_GICP_GICP_SVR4
-  - name: GICP_FR0
-    byte_offset: 2560
-    fieldset: NOC_GICP_GICP_FR0
-  - name: GICP_FR1
-    byte_offset: 2564
-    fieldset: NOC_GICP_GICP_FR1
-  - name: GICP_FR2
-    byte_offset: 2568
-    fieldset: NOC_GICP_GICP_FR2
-  - name: GICP_FR3
-    byte_offset: 2572
-    fieldset: NOC_GICP_GICP_FR3
-  - name: GICP_FR4
-    byte_offset: 2576
-    fieldset: NOC_GICP_GICP_FR4
-  - name: GICP_CNTENSET0
-    byte_offset: 3072
-    fieldset: NOC_GICP_GICP_CNTENSET0
-  - name: GICP_CNTENCLR0
-    byte_offset: 3104
-    fieldset: NOC_GICP_GICP_CNTENCLR0
-  - name: GICP_INTENSET0
-    byte_offset: 3136
-    fieldset: NOC_GICP_GICP_INTENSET0
-  - name: GICP_INTENCLR0
-    byte_offset: 3168
-    fieldset: NOC_GICP_GICP_INTENCLR0
-  - name: GICP_OVSCLR0
-    byte_offset: 3200
-    fieldset: NOC_GICP_GICP_OVSCLR0
-  - name: GICP_OVSSET0
-    byte_offset: 3264
-    fieldset: NOC_GICP_GICP_OVSSET0
-  - name: GICP_CAPR
-    byte_offset: 3464
-    fieldset: NOC_GICP_GICP_CAPR
-  - name: GICP_CFGR
-    byte_offset: 3584
-    fieldset: NOC_GICP_GICP_CFGR
-  - name: GICP_CR
-    byte_offset: 3588
-    fieldset: NOC_GICP_GICP_CR
-  - name: GICP_IRQCR
-    byte_offset: 3664
-    fieldset: NOC_GICP_GICP_IRQCR
-  - name: GICP_PMAUTHSTATUS
-    byte_offset: 4024
-    fieldset: NOC_GICP_GICP_PMAUTHSTATUS
-  - name: GICP_PMDEVARCH
-    byte_offset: 4028
-    fieldset: NOC_GICP_GICP_PMDEVARCH
-  - name: GICP_PMDEVTYPE
-    byte_offset: 4044
-    fieldset: NOC_GICP_GICP_PMDEVTYPE
-  - name: GICP_PIDR4
-    byte_offset: 4048
-    fieldset: NOC_GICP_GICP_PIDR4
-  - name: GICP_PIDR5
-    byte_offset: 4052
-    fieldset: NOC_GICP_GICP_PIDR5
-  - name: GICP_PIDR6
-    byte_offset: 4056
-    fieldset: NOC_GICP_GICP_PIDR6
-  - name: GICP_PIDR7
-    byte_offset: 4060
-    fieldset: NOC_GICP_GICP_PIDR7
-  - name: GICP_PIDR0
-    byte_offset: 4064
-    fieldset: NOC_GICP_GICP_PIDR0
-  - name: GICP_PIDR1
-    byte_offset: 4068
-    fieldset: NOC_GICP_GICP_PIDR1
-  - name: GICP_PIDR2
-    byte_offset: 4072
-    fieldset: NOC_GICP_GICP_PIDR2
-  - name: GICP_PIDR3
-    byte_offset: 4076
-    fieldset: NOC_GICP_GICP_PIDR3
-  - name: GICP_CIDR0
-    byte_offset: 4080
-    fieldset: NOC_GICP_GICP_CIDR0
-  - name: GICP_CIDR1
-    byte_offset: 4084
-    fieldset: NOC_GICP_GICP_CIDR1
-  - name: GICP_CIDR2
-    byte_offset: 4088
-    fieldset: NOC_GICP_GICP_CIDR2
-  - name: GICP_CIDR3
-    byte_offset: 4092
-    fieldset: NOC_GICP_GICP_CIDR3
+    - name: GICP_EVCNTR0
+      byte_offset: 0
+      fieldset: NOC_GICP_GICP_EVCNTR0
+    - name: GICP_EVCNTR1
+      byte_offset: 4
+      fieldset: NOC_GICP_GICP_EVCNTR1
+    - name: GICP_EVCNTR2
+      byte_offset: 8
+      fieldset: NOC_GICP_GICP_EVCNTR2
+    - name: GICP_EVCNTR3
+      byte_offset: 12
+      fieldset: NOC_GICP_GICP_EVCNTR3
+    - name: GICP_EVCNTR4
+      byte_offset: 16
+      fieldset: NOC_GICP_GICP_EVCNTR4
+    - name: GICP_EVTYPER0
+      byte_offset: 1024
+      fieldset: NOC_GICP_GICP_EVTYPER0
+    - name: GICP_EVTYPER1
+      byte_offset: 1028
+      fieldset: NOC_GICP_GICP_EVTYPER1
+    - name: GICP_EVTYPER2
+      byte_offset: 1032
+      fieldset: NOC_GICP_GICP_EVTYPER2
+    - name: GICP_EVTYPER3
+      byte_offset: 1036
+      fieldset: NOC_GICP_GICP_EVTYPER3
+    - name: GICP_EVTYPER4
+      byte_offset: 1040
+      fieldset: NOC_GICP_GICP_EVTYPER4
+    - name: GICP_SVR0
+      byte_offset: 1536
+      fieldset: NOC_GICP_GICP_SVR0
+    - name: GICP_SVR1
+      byte_offset: 1540
+      fieldset: NOC_GICP_GICP_SVR1
+    - name: GICP_SVR2
+      byte_offset: 1544
+      fieldset: NOC_GICP_GICP_SVR2
+    - name: GICP_SVR3
+      byte_offset: 1548
+      fieldset: NOC_GICP_GICP_SVR3
+    - name: GICP_SVR4
+      byte_offset: 1552
+      fieldset: NOC_GICP_GICP_SVR4
+    - name: GICP_FR0
+      byte_offset: 2560
+      fieldset: NOC_GICP_GICP_FR0
+    - name: GICP_FR1
+      byte_offset: 2564
+      fieldset: NOC_GICP_GICP_FR1
+    - name: GICP_FR2
+      byte_offset: 2568
+      fieldset: NOC_GICP_GICP_FR2
+    - name: GICP_FR3
+      byte_offset: 2572
+      fieldset: NOC_GICP_GICP_FR3
+    - name: GICP_FR4
+      byte_offset: 2576
+      fieldset: NOC_GICP_GICP_FR4
+    - name: GICP_CNTENSET0
+      byte_offset: 3072
+      fieldset: NOC_GICP_GICP_CNTENSET0
+    - name: GICP_CNTENCLR0
+      byte_offset: 3104
+      fieldset: NOC_GICP_GICP_CNTENCLR0
+    - name: GICP_INTENSET0
+      byte_offset: 3136
+      fieldset: NOC_GICP_GICP_INTENSET0
+    - name: GICP_INTENCLR0
+      byte_offset: 3168
+      fieldset: NOC_GICP_GICP_INTENCLR0
+    - name: GICP_OVSCLR0
+      byte_offset: 3200
+      fieldset: NOC_GICP_GICP_OVSCLR0
+    - name: GICP_OVSSET0
+      byte_offset: 3264
+      fieldset: NOC_GICP_GICP_OVSSET0
+    - name: GICP_CAPR
+      byte_offset: 3464
+      fieldset: NOC_GICP_GICP_CAPR
+    - name: GICP_CFGR
+      byte_offset: 3584
+      fieldset: NOC_GICP_GICP_CFGR
+    - name: GICP_CR
+      byte_offset: 3588
+      fieldset: NOC_GICP_GICP_CR
+    - name: GICP_IRQCR
+      byte_offset: 3664
+      fieldset: NOC_GICP_GICP_IRQCR
+    - name: GICP_PMAUTHSTATUS
+      byte_offset: 4024
+      fieldset: NOC_GICP_GICP_PMAUTHSTATUS
+    - name: GICP_PMDEVARCH
+      byte_offset: 4028
+      fieldset: NOC_GICP_GICP_PMDEVARCH
+    - name: GICP_PMDEVTYPE
+      byte_offset: 4044
+      fieldset: NOC_GICP_GICP_PMDEVTYPE
+    - name: GICP_PIDR4
+      byte_offset: 4048
+      fieldset: NOC_GICP_GICP_PIDR4
+    - name: GICP_PIDR5
+      byte_offset: 4052
+      fieldset: NOC_GICP_GICP_PIDR5
+    - name: GICP_PIDR6
+      byte_offset: 4056
+      fieldset: NOC_GICP_GICP_PIDR6
+    - name: GICP_PIDR7
+      byte_offset: 4060
+      fieldset: NOC_GICP_GICP_PIDR7
+    - name: GICP_PIDR0
+      byte_offset: 4064
+      fieldset: NOC_GICP_GICP_PIDR0
+    - name: GICP_PIDR1
+      byte_offset: 4068
+      fieldset: NOC_GICP_GICP_PIDR1
+    - name: GICP_PIDR2
+      byte_offset: 4072
+      fieldset: NOC_GICP_GICP_PIDR2
+    - name: GICP_PIDR3
+      byte_offset: 4076
+      fieldset: NOC_GICP_GICP_PIDR3
+    - name: GICP_CIDR0
+      byte_offset: 4080
+      fieldset: NOC_GICP_GICP_CIDR0
+    - name: GICP_CIDR1
+      byte_offset: 4084
+      fieldset: NOC_GICP_GICP_CIDR1
+    - name: GICP_CIDR2
+      byte_offset: 4088
+      fieldset: NOC_GICP_GICP_CIDR2
+    - name: GICP_CIDR3
+      byte_offset: 4092
+      fieldset: NOC_GICP_GICP_CIDR3
 fieldset/NOC_GICP_GICP_EVCNTR0:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 32
-    description: COUNT
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
+      description: COUNT
 fieldset/NOC_GICP_GICP_EVCNTR1:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 32
-    description: COUNT
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
+      description: COUNT
 fieldset/NOC_GICP_GICP_EVCNTR2:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 32
-    description: COUNT
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
+      description: COUNT
 fieldset/NOC_GICP_GICP_EVCNTR3:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 32
-    description: COUNT
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
+      description: COUNT
 fieldset/NOC_GICP_GICP_EVCNTR4:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 32
-    description: COUNT
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
+      description: COUNT
 fieldset/NOC_GICP_GICP_EVTYPER0:
   description: ''
   fields:
-  - name: EVENT
-    bit_offset: 0
-    bit_size: 8
-    description: EVENT
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 8
-    description: EVENT
-  - name: RESERVED1
-    bit_offset: 18
-    bit_size: 13
-    description: EVENT_TYPE
-  - name: OVCAP
-    bit_offset: 31
-    bit_size: 1
-    description: RESERVED1
+    - name: EVENT
+      bit_offset: 0
+      bit_size: 8
+      description: EVENT
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 8
+      description: EVENT
+    - name: RESERVED1
+      bit_offset: 18
+      bit_size: 13
+      description: EVENT_TYPE
+    - name: OVCAP
+      bit_offset: 31
+      bit_size: 1
+      description: RESERVED1
 fieldset/NOC_GICP_GICP_EVTYPER0_EVENT:
   description: ''
   fields:
-  - name: TYPE
-    bit_offset: 16
-    bit_size: 2
-    description: RESERVED0
+    - name: TYPE
+      bit_offset: 16
+      bit_size: 2
+      description: RESERVED0
 fieldset/NOC_GICP_GICP_EVTYPER1:
   description: ''
   fields:
-  - name: EVENT
-    bit_offset: 0
-    bit_size: 8
-    description: EVENT
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 8
-    description: EVENT
-  - name: RESERVED1
-    bit_offset: 18
-    bit_size: 13
-    description: EVENT_TYPE
-  - name: OVCAP
-    bit_offset: 31
-    bit_size: 1
-    description: RESERVED1
+    - name: EVENT
+      bit_offset: 0
+      bit_size: 8
+      description: EVENT
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 8
+      description: EVENT
+    - name: RESERVED1
+      bit_offset: 18
+      bit_size: 13
+      description: EVENT_TYPE
+    - name: OVCAP
+      bit_offset: 31
+      bit_size: 1
+      description: RESERVED1
 fieldset/NOC_GICP_GICP_EVTYPER1_EVENT:
   description: ''
   fields:
-  - name: TYPE
-    bit_offset: 16
-    bit_size: 2
-    description: RESERVED0
+    - name: TYPE
+      bit_offset: 16
+      bit_size: 2
+      description: RESERVED0
 fieldset/NOC_GICP_GICP_EVTYPER2:
   description: ''
   fields:
-  - name: EVENT
-    bit_offset: 0
-    bit_size: 8
-    description: EVENT
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 8
-    description: EVENT
-  - name: RESERVED1
-    bit_offset: 18
-    bit_size: 13
-    description: EVENT_TYPE
-  - name: OVCAP
-    bit_offset: 31
-    bit_size: 1
-    description: RESERVED1
+    - name: EVENT
+      bit_offset: 0
+      bit_size: 8
+      description: EVENT
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 8
+      description: EVENT
+    - name: RESERVED1
+      bit_offset: 18
+      bit_size: 13
+      description: EVENT_TYPE
+    - name: OVCAP
+      bit_offset: 31
+      bit_size: 1
+      description: RESERVED1
 fieldset/NOC_GICP_GICP_EVTYPER2_EVENT:
   description: ''
   fields:
-  - name: TYPE
-    bit_offset: 16
-    bit_size: 2
-    description: RESERVED0
+    - name: TYPE
+      bit_offset: 16
+      bit_size: 2
+      description: RESERVED0
 fieldset/NOC_GICP_GICP_EVTYPER3:
   description: ''
   fields:
-  - name: EVENT
-    bit_offset: 0
-    bit_size: 8
-    description: EVENT
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 8
-    description: EVENT
-  - name: RESERVED1
-    bit_offset: 18
-    bit_size: 13
-    description: EVENT_TYPE
-  - name: OVCAP
-    bit_offset: 31
-    bit_size: 1
-    description: RESERVED1
+    - name: EVENT
+      bit_offset: 0
+      bit_size: 8
+      description: EVENT
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 8
+      description: EVENT
+    - name: RESERVED1
+      bit_offset: 18
+      bit_size: 13
+      description: EVENT_TYPE
+    - name: OVCAP
+      bit_offset: 31
+      bit_size: 1
+      description: RESERVED1
 fieldset/NOC_GICP_GICP_EVTYPER3_EVENT:
   description: ''
   fields:
-  - name: TYPE
-    bit_offset: 16
-    bit_size: 2
-    description: RESERVED0
+    - name: TYPE
+      bit_offset: 16
+      bit_size: 2
+      description: RESERVED0
 fieldset/NOC_GICP_GICP_EVTYPER4:
   description: ''
   fields:
-  - name: EVENT
-    bit_offset: 0
-    bit_size: 8
-    description: EVENT
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 8
-    description: EVENT
-  - name: RESERVED1
-    bit_offset: 18
-    bit_size: 13
-    description: EVENT_TYPE
-  - name: OVCAP
-    bit_offset: 31
-    bit_size: 1
-    description: RESERVED1
+    - name: EVENT
+      bit_offset: 0
+      bit_size: 8
+      description: EVENT
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 8
+      description: EVENT
+    - name: RESERVED1
+      bit_offset: 18
+      bit_size: 13
+      description: EVENT_TYPE
+    - name: OVCAP
+      bit_offset: 31
+      bit_size: 1
+      description: RESERVED1
 fieldset/NOC_GICP_GICP_EVTYPER4_EVENT:
   description: ''
   fields:
-  - name: TYPE
-    bit_offset: 16
-    bit_size: 2
-    description: RESERVED0
+    - name: TYPE
+      bit_offset: 16
+      bit_size: 2
+      description: RESERVED0
 fieldset/NOC_GICP_GICP_SVR0:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 32
-    description: COUNT
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
+      description: COUNT
 fieldset/NOC_GICP_GICP_SVR1:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 32
-    description: COUNT
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
+      description: COUNT
 fieldset/NOC_GICP_GICP_SVR2:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 32
-    description: COUNT
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
+      description: COUNT
 fieldset/NOC_GICP_GICP_SVR3:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 32
-    description: COUNT
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
+      description: COUNT
 fieldset/NOC_GICP_GICP_SVR4:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 32
-    description: COUNT
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
+      description: COUNT
 fieldset/NOC_GICP_GICP_FR0:
   description: ''
   fields:
-  - name: Filter
-    bit_offset: 0
-    bit_size: 16
-    description: Filter
-  - name: RESERVED0
-    bit_offset: 16
-    bit_size: 13
-    description: Filter
-  - name: FilterEncoding
-    bit_offset: 29
-    bit_size: 1
-    description: RESERVED0
-  - name: FilterType
-    bit_offset: 30
-    bit_size: 2
-    description: FilterType
+    - name: Filter
+      bit_offset: 0
+      bit_size: 16
+      description: Filter
+    - name: RESERVED0
+      bit_offset: 16
+      bit_size: 13
+      description: Filter
+    - name: FilterEncoding
+      bit_offset: 29
+      bit_size: 1
+      description: RESERVED0
+    - name: FilterType
+      bit_offset: 30
+      bit_size: 2
+      description: FilterType
 fieldset/NOC_GICP_GICP_FR1:
   description: ''
   fields:
-  - name: Filter
-    bit_offset: 0
-    bit_size: 16
-    description: Filter
-  - name: RESERVED0
-    bit_offset: 16
-    bit_size: 13
-    description: Filter
-  - name: FilterEncoding
-    bit_offset: 29
-    bit_size: 1
-    description: RESERVED0
-  - name: FilterType
-    bit_offset: 30
-    bit_size: 2
-    description: FilterType
+    - name: Filter
+      bit_offset: 0
+      bit_size: 16
+      description: Filter
+    - name: RESERVED0
+      bit_offset: 16
+      bit_size: 13
+      description: Filter
+    - name: FilterEncoding
+      bit_offset: 29
+      bit_size: 1
+      description: RESERVED0
+    - name: FilterType
+      bit_offset: 30
+      bit_size: 2
+      description: FilterType
 fieldset/NOC_GICP_GICP_FR2:
   description: ''
   fields:
-  - name: Filter
-    bit_offset: 0
-    bit_size: 16
-    description: Filter
-  - name: RESERVED0
-    bit_offset: 16
-    bit_size: 13
-    description: Filter
-  - name: FilterEncoding
-    bit_offset: 29
-    bit_size: 1
-    description: RESERVED0
-  - name: FilterType
-    bit_offset: 30
-    bit_size: 2
-    description: FilterType
+    - name: Filter
+      bit_offset: 0
+      bit_size: 16
+      description: Filter
+    - name: RESERVED0
+      bit_offset: 16
+      bit_size: 13
+      description: Filter
+    - name: FilterEncoding
+      bit_offset: 29
+      bit_size: 1
+      description: RESERVED0
+    - name: FilterType
+      bit_offset: 30
+      bit_size: 2
+      description: FilterType
 fieldset/NOC_GICP_GICP_FR3:
   description: ''
   fields:
-  - name: Filter
-    bit_offset: 0
-    bit_size: 16
-    description: Filter
-  - name: RESERVED0
-    bit_offset: 16
-    bit_size: 13
-    description: Filter
-  - name: FilterEncoding
-    bit_offset: 29
-    bit_size: 1
-    description: RESERVED0
-  - name: FilterType
-    bit_offset: 30
-    bit_size: 2
-    description: FilterType
+    - name: Filter
+      bit_offset: 0
+      bit_size: 16
+      description: Filter
+    - name: RESERVED0
+      bit_offset: 16
+      bit_size: 13
+      description: Filter
+    - name: FilterEncoding
+      bit_offset: 29
+      bit_size: 1
+      description: RESERVED0
+    - name: FilterType
+      bit_offset: 30
+      bit_size: 2
+      description: FilterType
 fieldset/NOC_GICP_GICP_FR4:
   description: ''
   fields:
-  - name: Filter
-    bit_offset: 0
-    bit_size: 16
-    description: Filter
-  - name: RESERVED0
-    bit_offset: 16
-    bit_size: 13
-    description: Filter
-  - name: FilterEncoding
-    bit_offset: 29
-    bit_size: 1
-    description: RESERVED0
-  - name: FilterType
-    bit_offset: 30
-    bit_size: 2
-    description: FilterType
+    - name: Filter
+      bit_offset: 0
+      bit_size: 16
+      description: Filter
+    - name: RESERVED0
+      bit_offset: 16
+      bit_size: 13
+      description: Filter
+    - name: FilterEncoding
+      bit_offset: 29
+      bit_size: 1
+      description: RESERVED0
+    - name: FilterType
+      bit_offset: 30
+      bit_size: 2
+      description: FilterType
 fieldset/NOC_GICP_GICP_CNTENSET0:
   description: ''
   fields:
-  - name: CNTEN0
-    bit_offset: 0
-    bit_size: 1
-    description: CNTEN0
-  - name: CNTEN1
-    bit_offset: 1
-    bit_size: 1
-    description: CNTEN0
-  - name: CNTEN2
-    bit_offset: 2
-    bit_size: 1
-    description: CNTEN1
-  - name: CNTEN3
-    bit_offset: 3
-    bit_size: 1
-    description: CNTEN2
-  - name: CNTEN4
-    bit_offset: 4
-    bit_size: 1
-    description: CNTEN3
-  - name: RESERVED0
-    bit_offset: 5
-    bit_size: 59
-    description: CNTEN4
+    - name: CNTEN0
+      bit_offset: 0
+      bit_size: 1
+      description: CNTEN0
+    - name: CNTEN1
+      bit_offset: 1
+      bit_size: 1
+      description: CNTEN0
+    - name: CNTEN2
+      bit_offset: 2
+      bit_size: 1
+      description: CNTEN1
+    - name: CNTEN3
+      bit_offset: 3
+      bit_size: 1
+      description: CNTEN2
+    - name: CNTEN4
+      bit_offset: 4
+      bit_size: 1
+      description: CNTEN3
+    - name: RESERVED0
+      bit_offset: 5
+      bit_size: 59
+      description: CNTEN4
 fieldset/NOC_GICP_GICP_CNTENCLR0:
   description: ''
   fields:
-  - name: CNTEN0
-    bit_offset: 0
-    bit_size: 1
-    description: CNTEN0
-  - name: CNTEN1
-    bit_offset: 1
-    bit_size: 1
-    description: CNTEN0
-  - name: CNTEN2
-    bit_offset: 2
-    bit_size: 1
-    description: CNTEN1
-  - name: CNTEN3
-    bit_offset: 3
-    bit_size: 1
-    description: CNTEN2
-  - name: CNTEN4
-    bit_offset: 4
-    bit_size: 1
-    description: CNTEN3
-  - name: RESERVED0
-    bit_offset: 5
-    bit_size: 59
-    description: CNTEN4
+    - name: CNTEN0
+      bit_offset: 0
+      bit_size: 1
+      description: CNTEN0
+    - name: CNTEN1
+      bit_offset: 1
+      bit_size: 1
+      description: CNTEN0
+    - name: CNTEN2
+      bit_offset: 2
+      bit_size: 1
+      description: CNTEN1
+    - name: CNTEN3
+      bit_offset: 3
+      bit_size: 1
+      description: CNTEN2
+    - name: CNTEN4
+      bit_offset: 4
+      bit_size: 1
+      description: CNTEN3
+    - name: RESERVED0
+      bit_offset: 5
+      bit_size: 59
+      description: CNTEN4
 fieldset/NOC_GICP_GICP_INTENSET0:
   description: ''
   fields:
-  - name: INTEN
-    bit_offset: 0
-    bit_size: 5
-    description: INTEN
-  - name: RESERVED0
-    bit_offset: 5
-    bit_size: 59
-    description: INTEN
+    - name: INTEN
+      bit_offset: 0
+      bit_size: 5
+      description: INTEN
+    - name: RESERVED0
+      bit_offset: 5
+      bit_size: 59
+      description: INTEN
 fieldset/NOC_GICP_GICP_INTENCLR0:
   description: ''
   fields:
-  - name: INTEN
-    bit_offset: 0
-    bit_size: 5
-    description: INTEN
-  - name: RESERVED0
-    bit_offset: 5
-    bit_size: 59
-    description: INTEN
+    - name: INTEN
+      bit_offset: 0
+      bit_size: 5
+      description: INTEN
+    - name: RESERVED0
+      bit_offset: 5
+      bit_size: 59
+      description: INTEN
 fieldset/NOC_GICP_GICP_OVSCLR0:
   description: ''
   fields:
-  - name: OVS
-    bit_offset: 0
-    bit_size: 5
-    description: OVS
-  - name: RESERVED0
-    bit_offset: 5
-    bit_size: 59
-    description: OVS
+    - name: OVS
+      bit_offset: 0
+      bit_size: 5
+      description: OVS
+    - name: RESERVED0
+      bit_offset: 5
+      bit_size: 59
+      description: OVS
 fieldset/NOC_GICP_GICP_OVSSET0:
   description: ''
   fields:
-  - name: OVS
-    bit_offset: 0
-    bit_size: 5
-    description: OVS
-  - name: RESERVED0
-    bit_offset: 5
-    bit_size: 59
-    description: OVS
+    - name: OVS
+      bit_offset: 0
+      bit_size: 5
+      description: OVS
+    - name: RESERVED0
+      bit_offset: 5
+      bit_size: 59
+      description: OVS
 fieldset/NOC_GICP_GICP_CAPR:
   description: ''
   fields:
-  - name: CAPTURE
-    bit_offset: 0
-    bit_size: 1
-    description: CAPTURE
-  - name: RESERVED0
-    bit_offset: 1
-    bit_size: 31
-    description: CAPTURE
+    - name: CAPTURE
+      bit_offset: 0
+      bit_size: 1
+      description: CAPTURE
+    - name: RESERVED0
+      bit_offset: 1
+      bit_size: 31
+      description: CAPTURE
 fieldset/NOC_GICP_GICP_CFGR:
   description: ''
   fields:
-  - name: NCTR
-    bit_offset: 0
-    bit_size: 6
-    description: NCTR
-  - name: RESERVED0
-    bit_offset: 6
-    bit_size: 2
-    description: NCTR
-  - name: SIZE
-    bit_offset: 8
-    bit_size: 6
-    description: RESERVED0
-  - name: RESERVED1
-    bit_offset: 14
-    bit_size: 8
-    description: SIZE
-  - name: CAPTURE
-    bit_offset: 22
-    bit_size: 1
-    description: RESERVED1
-  - name: RESERVED2
-    bit_offset: 23
-    bit_size: 9
-    description: CAPTURE
+    - name: NCTR
+      bit_offset: 0
+      bit_size: 6
+      description: NCTR
+    - name: RESERVED0
+      bit_offset: 6
+      bit_size: 2
+      description: NCTR
+    - name: SIZE
+      bit_offset: 8
+      bit_size: 6
+      description: RESERVED0
+    - name: RESERVED1
+      bit_offset: 14
+      bit_size: 8
+      description: SIZE
+    - name: CAPTURE
+      bit_offset: 22
+      bit_size: 1
+      description: RESERVED1
+    - name: RESERVED2
+      bit_offset: 23
+      bit_size: 9
+      description: CAPTURE
 fieldset/NOC_GICP_GICP_CR:
   description: ''
   fields:
-  - name: E
-    bit_offset: 0
-    bit_size: 1
-    description: E
-  - name: RESERVED0
-    bit_offset: 1
-    bit_size: 31
-    description: E
+    - name: E
+      bit_offset: 0
+      bit_size: 1
+      description: E
+    - name: RESERVED0
+      bit_offset: 1
+      bit_size: 31
+      description: E
 fieldset/NOC_GICP_GICP_IRQCR:
   description: ''
   fields:
-  - name: SPIID
-    bit_offset: 0
-    bit_size: 13
-    description: SPIID
-  - name: RESERVED0
-    bit_offset: 13
-    bit_size: 19
-    description: SPIID
+    - name: SPIID
+      bit_offset: 0
+      bit_size: 13
+      description: SPIID
+    - name: RESERVED0
+      bit_offset: 13
+      bit_size: 19
+      description: SPIID
 fieldset/NOC_GICP_GICP_PMAUTHSTATUS:
   description: ''
   fields:
-  - name: NSE
-    bit_offset: 0
-    bit_size: 1
-    description: NSE
-  - name: NSI
-    bit_offset: 1
-    bit_size: 1
-    description: NSE
-  - name: NSNE
-    bit_offset: 2
-    bit_size: 1
-    description: NSI
-  - name: NSNI
-    bit_offset: 3
-    bit_size: 1
-    description: NSNE
-  - name: SE
-    bit_offset: 4
-    bit_size: 1
-    description: NSNI
-  - name: SI
-    bit_offset: 5
-    bit_size: 1
-    description: SE
-  - name: SNE
-    bit_offset: 6
-    bit_size: 1
-    description: SI
-  - name: SNI
-    bit_offset: 7
-    bit_size: 1
-    description: SNE
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: SNI
+    - name: NSE
+      bit_offset: 0
+      bit_size: 1
+      description: NSE
+    - name: NSI
+      bit_offset: 1
+      bit_size: 1
+      description: NSE
+    - name: NSNE
+      bit_offset: 2
+      bit_size: 1
+      description: NSI
+    - name: NSNI
+      bit_offset: 3
+      bit_size: 1
+      description: NSNE
+    - name: SE
+      bit_offset: 4
+      bit_size: 1
+      description: NSNI
+    - name: SI
+      bit_offset: 5
+      bit_size: 1
+      description: SE
+    - name: SNE
+      bit_offset: 6
+      bit_size: 1
+      description: SI
+    - name: SNI
+      bit_offset: 7
+      bit_size: 1
+      description: SNE
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: SNI
 fieldset/NOC_GICP_GICP_PMDEVARCH:
   description: ''
   fields:
-  - name: ARCHID
-    bit_offset: 0
-    bit_size: 16
-    description: ARCHID
-  - name: REVISION
-    bit_offset: 16
-    bit_size: 4
-    description: ARCHID
-  - name: PRESENT
-    bit_offset: 20
-    bit_size: 1
-    description: REVISION
-  - name: ARCHITECT
-    bit_offset: 21
-    bit_size: 11
-    description: PRESENT
+    - name: ARCHID
+      bit_offset: 0
+      bit_size: 16
+      description: ARCHID
+    - name: REVISION
+      bit_offset: 16
+      bit_size: 4
+      description: ARCHID
+    - name: PRESENT
+      bit_offset: 20
+      bit_size: 1
+      description: REVISION
+    - name: ARCHITECT
+      bit_offset: 21
+      bit_size: 11
+      description: PRESENT
 fieldset/NOC_GICP_GICP_PMDEVTYPE:
   description: ''
   fields:
-  - name: Class
-    bit_offset: 0
-    bit_size: 4
-    description: Class
-  - name: SubType
-    bit_offset: 4
-    bit_size: 4
-    description: Class
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: SubType
+    - name: Class
+      bit_offset: 0
+      bit_size: 4
+      description: Class
+    - name: SubType
+      bit_offset: 4
+      bit_size: 4
+      description: Class
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: SubType
 fieldset/NOC_GICP_GICP_PIDR4:
   description: ''
   fields:
-  - name: SIZE
-    bit_offset: 4
-    bit_size: 4
-    description: DES_2
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: SIZE
+    - name: SIZE
+      bit_offset: 4
+      bit_size: 4
+      description: DES_2
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: SIZE
 fieldset/NOC_GICP_GICP_PIDR5:
   description: ''
   fields:
-  - name: RESERVED
-    bit_offset: 0
-    bit_size: 8
-    description: RESERVED
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: RESERVED
+    - name: RESERVED
+      bit_offset: 0
+      bit_size: 8
+      description: RESERVED
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: RESERVED
 fieldset/NOC_GICP_GICP_PIDR6:
   description: ''
   fields:
-  - name: RESERVED
-    bit_offset: 0
-    bit_size: 8
-    description: RESERVED
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: RESERVED
+    - name: RESERVED
+      bit_offset: 0
+      bit_size: 8
+      description: RESERVED
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: RESERVED
 fieldset/NOC_GICP_GICP_PIDR7:
   description: ''
   fields:
-  - name: RESERVED
-    bit_offset: 0
-    bit_size: 8
-    description: RESERVED
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: RESERVED
+    - name: RESERVED
+      bit_offset: 0
+      bit_size: 8
+      description: RESERVED
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: RESERVED
 fieldset/NOC_GICP_GICP_PIDR0:
   description: ''
   fields:
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: PART_0
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: PART_0
 fieldset/NOC_GICP_GICP_PIDR1:
   description: ''
   fields:
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: DES_0
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: DES_0
 fieldset/NOC_GICP_GICP_PIDR2:
   description: ''
   fields:
-  - name: JEDEC
-    bit_offset: 3
-    bit_size: 1
-    description: DES_1
-  - name: REVISION
-    bit_offset: 4
-    bit_size: 4
-    description: JEDEC
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: REVISION
+    - name: JEDEC
+      bit_offset: 3
+      bit_size: 1
+      description: DES_1
+    - name: REVISION
+      bit_offset: 4
+      bit_size: 4
+      description: JEDEC
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: REVISION
 fieldset/NOC_GICP_GICP_PIDR3:
   description: ''
   fields:
-  - name: CMOD
-    bit_offset: 0
-    bit_size: 3
-    description: CMOD
-  - name: RESERVED0
-    bit_offset: 3
-    bit_size: 1
-    description: CMOD
-  - name: REVAND
-    bit_offset: 4
-    bit_size: 4
-    description: RESERVED0
-  - name: RESERVED1
-    bit_offset: 8
-    bit_size: 24
-    description: REVAND
+    - name: CMOD
+      bit_offset: 0
+      bit_size: 3
+      description: CMOD
+    - name: RESERVED0
+      bit_offset: 3
+      bit_size: 1
+      description: CMOD
+    - name: REVAND
+      bit_offset: 4
+      bit_size: 4
+      description: RESERVED0
+    - name: RESERVED1
+      bit_offset: 8
+      bit_size: 24
+      description: REVAND
 fieldset/NOC_GICP_GICP_CIDR0:
   description: ''
   fields:
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: PRMBL_0
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: PRMBL_0
 fieldset/NOC_GICP_GICP_CIDR1:
   description: ''
   fields:
-  - name: CLASS
-    bit_offset: 4
-    bit_size: 4
-    description: PRMBL_1
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: CLASS
+    - name: CLASS
+      bit_offset: 4
+      bit_size: 4
+      description: PRMBL_1
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: CLASS
 fieldset/NOC_GICP_GICP_CIDR2:
   description: ''
   fields:
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: PRMBL_2
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: PRMBL_2
 fieldset/NOC_GICP_GICP_CIDR3:
   description: ''
   fields:
-  - name: RESERVED0
-    bit_offset: 8
-    bit_size: 24
-    description: PRMBL_3
+    - name: RESERVED0
+      bit_offset: 8
+      bit_size: 24
+      description: PRMBL_3

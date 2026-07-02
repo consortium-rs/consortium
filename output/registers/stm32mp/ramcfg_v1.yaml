@@ -1,162 +1,162 @@
 block/RAMCFG:
   description: ''
   items:
-  - name: CR
-    byte_offset: 0
-    description: Control Register
-    fieldset: RAMCFG_CR
-  - name: IER
-    byte_offset: 4
-    description: Interrupt Enable Register
-    fieldset: RAMCFG_IER
-  - name: ISR
-    byte_offset: 8
-    description: Interrupt Status Register
-    fieldset: RAMCFG_ISR
-  - name: SEAR
-    byte_offset: 12
-    description: ECC Single Error Address Register
-  - name: DEAR
-    byte_offset: 16
-    description: ECC Double Error Address Register
-  - name: ICR
-    byte_offset: 20
-    description: Interrupt Clear Register
-    fieldset: RAMCFG_ICR
-  - name: ECCKEY
-    byte_offset: 36
-    description: ECC Key Register
-  - name: ERKEYR
-    byte_offset: 40
-    description: Erase Key Register
-    fieldset: RAMCFG_ERKEYR
-  - name: CCR1
-    byte_offset: 48
-    description: CRC Control Register 1
-    fieldset: RAMCFG_CCR1
-  - name: CCR2
-    byte_offset: 52
-    description: CRC Control Register 2
-    fieldset: RAMCFG_CCR2
-  - name: CRSR
-    byte_offset: 56
-    description: CRC Reference Signature Register
-    fieldset: RAMCFG_CRSR
-  - name: CSR
-    byte_offset: 60
-    description: CRC Status Register
-    fieldset: RAMCFG_CSR
-  - name: CCSR
-    byte_offset: 64
-    description: CRC Calculated Signature Register
-    fieldset: RAMCFG_CCSR
+    - name: CR
+      byte_offset: 0
+      description: Control Register
+      fieldset: RAMCFG_CR
+    - name: IER
+      byte_offset: 4
+      description: Interrupt Enable Register
+      fieldset: RAMCFG_IER
+    - name: ISR
+      byte_offset: 8
+      description: Interrupt Status Register
+      fieldset: RAMCFG_ISR
+    - name: SEAR
+      byte_offset: 12
+      description: ECC Single Error Address Register
+    - name: DEAR
+      byte_offset: 16
+      description: ECC Double Error Address Register
+    - name: ICR
+      byte_offset: 20
+      description: Interrupt Clear Register
+      fieldset: RAMCFG_ICR
+    - name: ECCKEY
+      byte_offset: 36
+      description: ECC Key Register
+    - name: ERKEYR
+      byte_offset: 40
+      description: Erase Key Register
+      fieldset: RAMCFG_ERKEYR
+    - name: CCR1
+      byte_offset: 48
+      description: CRC Control Register 1
+      fieldset: RAMCFG_CCR1
+    - name: CCR2
+      byte_offset: 52
+      description: CRC Control Register 2
+      fieldset: RAMCFG_CCR2
+    - name: CRSR
+      byte_offset: 56
+      description: CRC Reference Signature Register
+      fieldset: RAMCFG_CRSR
+    - name: CSR
+      byte_offset: 60
+      description: CRC Status Register
+      fieldset: RAMCFG_CSR
+    - name: CCSR
+      byte_offset: 64
+      description: CRC Calculated Signature Register
+      fieldset: RAMCFG_CCSR
 fieldset/RAMCFG_CR:
   description: ''
   fields:
-  - name: ECCE
-    bit_offset: 0
-    bit_size: 1
-    description: ECC Enable
-  - name: ALE
-    bit_offset: 4
-    bit_size: 1
-    description: Address Latch Enable
-  - name: SRAMER
-    bit_offset: 8
-    bit_size: 1
-    description: SRAM Erase
-  - name: SRAMHWERDIS
-    bit_offset: 12
-    bit_size: 1
-    description: SRAM Hardware Erase Disable
+    - name: ECCE
+      bit_offset: 0
+      bit_size: 1
+      description: ECC Enable
+    - name: ALE
+      bit_offset: 4
+      bit_size: 1
+      description: Address Latch Enable
+    - name: SRAMER
+      bit_offset: 8
+      bit_size: 1
+      description: SRAM Erase
+    - name: SRAMHWERDIS
+      bit_offset: 12
+      bit_size: 1
+      description: SRAM Hardware Erase Disable
 fieldset/RAMCFG_IER:
   description: ''
   fields:
-  - name: SEIE
-    bit_offset: 0
-    bit_size: 1
-    description: ECC Single Error Interrupt Enable
-  - name: DEIE
-    bit_offset: 1
-    bit_size: 1
-    description: ECC Double Error Interrupt Enable
+    - name: SEIE
+      bit_offset: 0
+      bit_size: 1
+      description: ECC Single Error Interrupt Enable
+    - name: DEIE
+      bit_offset: 1
+      bit_size: 1
+      description: ECC Double Error Interrupt Enable
 fieldset/RAMCFG_ISR:
   description: ''
   fields:
-  - name: SEC
-    bit_offset: 0
-    bit_size: 1
-    description: ECC Single Error Corrected
-  - name: DED
-    bit_offset: 1
-    bit_size: 1
-    description: ECC Double Error Detected
-  - name: SRAMBUSY
-    bit_offset: 8
-    bit_size: 1
-    description: SRAM busy with erase operation
+    - name: SEC
+      bit_offset: 0
+      bit_size: 1
+      description: ECC Single Error Corrected
+    - name: DED
+      bit_offset: 1
+      bit_size: 1
+      description: ECC Double Error Detected
+    - name: SRAMBUSY
+      bit_offset: 8
+      bit_size: 1
+      description: SRAM busy with erase operation
 fieldset/RAMCFG_ICR:
   description: ''
   fields:
-  - name: CSEC
-    bit_offset: 0
-    bit_size: 1
-    description: Clear ECC Single Error Corrected
-  - name: CDED
-    bit_offset: 1
-    bit_size: 1
-    description: Clear ECC Double Error Detected
+    - name: CSEC
+      bit_offset: 0
+      bit_size: 1
+      description: Clear ECC Single Error Corrected
+    - name: CDED
+      bit_offset: 1
+      bit_size: 1
+      description: Clear ECC Double Error Detected
 fieldset/RAMCFG_ERKEYR:
   description: ''
   fields:
-  - name: ERASEKEY
-    bit_offset: 0
-    bit_size: 8
-    description: Erase Write Protection Key
+    - name: ERASEKEY
+      bit_offset: 0
+      bit_size: 8
+      description: Erase Write Protection Key
 fieldset/RAMCFG_CCR1:
   description: ''
   fields:
-  - name: CRCC
-    bit_offset: 0
-    bit_size: 2
-    description: CRC configuration
-  - name: CRCBS
-    bit_offset: 4
-    bit_size: 3
-    description: CRC Buffer Size
+    - name: CRCC
+      bit_offset: 0
+      bit_size: 2
+      description: CRC configuration
+    - name: CRCBS
+      bit_offset: 4
+      bit_size: 3
+      description: CRC Buffer Size
 fieldset/RAMCFG_CCR2:
   description: ''
   fields:
-  - name: CRCCS
-    bit_offset: 0
-    bit_size: 1
-    description: CRC computation start
-  - name: CRCFC
-    bit_offset: 31
-    bit_size: 1
-    description: CRC flags clear
+    - name: CRCCS
+      bit_offset: 0
+      bit_size: 1
+      description: CRC computation start
+    - name: CRCFC
+      bit_offset: 31
+      bit_size: 1
+      description: CRC flags clear
 fieldset/RAMCFG_CRSR:
   description: ''
   fields:
-  - name: CRCRS
-    bit_offset: 0
-    bit_size: 32
-    description: CRC reference signature
+    - name: CRCRS
+      bit_offset: 0
+      bit_size: 32
+      description: CRC reference signature
 fieldset/RAMCFG_CSR:
   description: ''
   fields:
-  - name: CRCEOC
-    bit_offset: 0
-    bit_size: 1
-    description: CRC End Of Computation flag
-  - name: CRCSCS
-    bit_offset: 1
-    bit_size: 1
-    description: CRC Signature Check Status flag
+    - name: CRCEOC
+      bit_offset: 0
+      bit_size: 1
+      description: CRC End Of Computation flag
+    - name: CRCSCS
+      bit_offset: 1
+      bit_size: 1
+      description: CRC Signature Check Status flag
 fieldset/RAMCFG_CCSR:
   description: ''
   fields:
-  - name: CRCCS
-    bit_offset: 0
-    bit_size: 32
-    description: CRC calculated signature
+    - name: CRCCS
+      bit_offset: 0
+      bit_size: 32
+      description: CRC calculated signature

@@ -1,1477 +1,1477 @@
 block/USDHC:
   description: ''
   items:
-  - name: DS_ADDR
-    byte_offset: 0
-  - name: BLK_ATT
-    byte_offset: 4
-    fieldset: USDHC_BLK_ATT
-  - name: CMD_ARG
-    byte_offset: 8
-    fieldset: USDHC_CMD_ARG
-  - name: CMD_XFR_TYP
-    byte_offset: 12
-    fieldset: USDHC_CMD_XFR_TYP
-  - name: CMD_RSP0
-    byte_offset: 16
-    fieldset: USDHC_CMD_RSP0
-  - name: CMD_RSP1
-    byte_offset: 20
-    fieldset: USDHC_CMD_RSP1
-  - name: CMD_RSP2
-    byte_offset: 24
-    fieldset: USDHC_CMD_RSP2
-  - name: CMD_RSP3
-    byte_offset: 28
-    fieldset: USDHC_CMD_RSP3
-  - name: DATA_BUFF_ACC_PORT
-    byte_offset: 32
-    fieldset: USDHC_DATA_BUFF_ACC_PORT
-  - name: PRES_STATE
-    byte_offset: 36
-    fieldset: USDHC_PRES_STATE
-  - name: PROT_CTRL
-    byte_offset: 40
-    fieldset: USDHC_PROT_CTRL
-  - name: SYS_CTRL
-    byte_offset: 44
-    fieldset: USDHC_SYS_CTRL
-  - name: INT_STATUS
-    byte_offset: 48
-    fieldset: USDHC_INT_STATUS
-  - name: INT_STATUS_EN
-    byte_offset: 52
-    fieldset: USDHC_INT_STATUS_EN
-  - name: INT_SIGNAL_EN
-    byte_offset: 56
-    fieldset: USDHC_INT_SIGNAL_EN
-  - name: AUTOCMD12_ERR_STATUS
-    byte_offset: 60
-    fieldset: USDHC_AUTOCMD12_ERR_STATUS
-  - name: HOST_CTRL_CAP
-    byte_offset: 64
-    fieldset: USDHC_HOST_CTRL_CAP
-  - name: WTMK_LVL
-    byte_offset: 68
-  - name: MIX_CTRL
-    byte_offset: 72
-    fieldset: USDHC_MIX_CTRL
-  - name: FORCE_EVENT
-    byte_offset: 80
-    fieldset: USDHC_FORCE_EVENT
-  - name: ADMA_ERR_STATUS
-    byte_offset: 84
-    fieldset: USDHC_ADMA_ERR_STATUS
-  - name: ADMA_SYS_ADDR
-    byte_offset: 88
-  - name: DLL_CTRL
-    byte_offset: 96
-  - name: DLL_STATUS
-    byte_offset: 100
-  - name: CLK_TUNE_CTRL_STATUS
-    byte_offset: 104
-  - name: STROBE_DLL_CTRL
-    byte_offset: 112
-  - name: STROBE_DLL_STATUS
-    byte_offset: 116
-  - name: VEND_SPEC
-    byte_offset: 192
-    fieldset: USDHC_VEND_SPEC
-  - name: MMC_BOOT
-    byte_offset: 196
-  - name: VEND_SPEC2
-    byte_offset: 200
-  - name: TUNING_CTRL
-    byte_offset: 204
-  - name: CQVER
-    byte_offset: 256
-  - name: CQCAP
-    byte_offset: 260
-    fieldset: USDHC_CQCAP
-  - name: CQCFG
-    byte_offset: 264
-    fieldset: USDHC_CQCFG
-  - name: CQCTL
-    byte_offset: 268
-    fieldset: USDHC_CQCTL
-  - name: CQIS
-    byte_offset: 272
-    fieldset: USDHC_CQIS
-  - name: CQISTE
-    byte_offset: 276
-  - name: CQISGE
-    byte_offset: 280
-  - name: CQIC
-    byte_offset: 284
-    fieldset: USDHC_CQIC
-  - name: CQTDLBA
-    byte_offset: 288
-    fieldset: USDHC_CQTDLBA
-  - name: CQTDLBAU
-    byte_offset: 292
-    fieldset: USDHC_CQTDLBAU
-  - name: CQTDBR
-    byte_offset: 296
-    fieldset: USDHC_CQTDBR
-  - name: CQTCN
-    byte_offset: 300
-    fieldset: USDHC_CQTCN
-  - name: CQDQS
-    byte_offset: 304
-    fieldset: USDHC_CQDQS
-  - name: CQDPT
-    byte_offset: 308
-    fieldset: USDHC_CQDPT
-  - name: CQTCLR
-    byte_offset: 312
-    fieldset: USDHC_CQTCLR
-  - name: CQSSC1
-    byte_offset: 320
-    fieldset: USDHC_CQSSC1
-  - name: CQSSC2
-    byte_offset: 324
-    fieldset: USDHC_CQSSC2
-  - name: CQCRDCT
-    byte_offset: 328
-    fieldset: USDHC_CQCRDCT
-  - name: CQRMEM
-    byte_offset: 336
-    fieldset: USDHC_CQRMEM
-  - name: CQTERRI
-    byte_offset: 340
-    fieldset: USDHC_CQTERRI
-  - name: CQCRI
-    byte_offset: 344
-    fieldset: USDHC_CQCRI
-  - name: CQCRA
-    byte_offset: 348
-    fieldset: USDHC_CQCRA
+    - name: DS_ADDR
+      byte_offset: 0
+    - name: BLK_ATT
+      byte_offset: 4
+      fieldset: USDHC_BLK_ATT
+    - name: CMD_ARG
+      byte_offset: 8
+      fieldset: USDHC_CMD_ARG
+    - name: CMD_XFR_TYP
+      byte_offset: 12
+      fieldset: USDHC_CMD_XFR_TYP
+    - name: CMD_RSP0
+      byte_offset: 16
+      fieldset: USDHC_CMD_RSP0
+    - name: CMD_RSP1
+      byte_offset: 20
+      fieldset: USDHC_CMD_RSP1
+    - name: CMD_RSP2
+      byte_offset: 24
+      fieldset: USDHC_CMD_RSP2
+    - name: CMD_RSP3
+      byte_offset: 28
+      fieldset: USDHC_CMD_RSP3
+    - name: DATA_BUFF_ACC_PORT
+      byte_offset: 32
+      fieldset: USDHC_DATA_BUFF_ACC_PORT
+    - name: PRES_STATE
+      byte_offset: 36
+      fieldset: USDHC_PRES_STATE
+    - name: PROT_CTRL
+      byte_offset: 40
+      fieldset: USDHC_PROT_CTRL
+    - name: SYS_CTRL
+      byte_offset: 44
+      fieldset: USDHC_SYS_CTRL
+    - name: INT_STATUS
+      byte_offset: 48
+      fieldset: USDHC_INT_STATUS
+    - name: INT_STATUS_EN
+      byte_offset: 52
+      fieldset: USDHC_INT_STATUS_EN
+    - name: INT_SIGNAL_EN
+      byte_offset: 56
+      fieldset: USDHC_INT_SIGNAL_EN
+    - name: AUTOCMD12_ERR_STATUS
+      byte_offset: 60
+      fieldset: USDHC_AUTOCMD12_ERR_STATUS
+    - name: HOST_CTRL_CAP
+      byte_offset: 64
+      fieldset: USDHC_HOST_CTRL_CAP
+    - name: WTMK_LVL
+      byte_offset: 68
+    - name: MIX_CTRL
+      byte_offset: 72
+      fieldset: USDHC_MIX_CTRL
+    - name: FORCE_EVENT
+      byte_offset: 80
+      fieldset: USDHC_FORCE_EVENT
+    - name: ADMA_ERR_STATUS
+      byte_offset: 84
+      fieldset: USDHC_ADMA_ERR_STATUS
+    - name: ADMA_SYS_ADDR
+      byte_offset: 88
+    - name: DLL_CTRL
+      byte_offset: 96
+    - name: DLL_STATUS
+      byte_offset: 100
+    - name: CLK_TUNE_CTRL_STATUS
+      byte_offset: 104
+    - name: STROBE_DLL_CTRL
+      byte_offset: 112
+    - name: STROBE_DLL_STATUS
+      byte_offset: 116
+    - name: VEND_SPEC
+      byte_offset: 192
+      fieldset: USDHC_VEND_SPEC
+    - name: MMC_BOOT
+      byte_offset: 196
+    - name: VEND_SPEC2
+      byte_offset: 200
+    - name: TUNING_CTRL
+      byte_offset: 204
+    - name: CQVER
+      byte_offset: 256
+    - name: CQCAP
+      byte_offset: 260
+      fieldset: USDHC_CQCAP
+    - name: CQCFG
+      byte_offset: 264
+      fieldset: USDHC_CQCFG
+    - name: CQCTL
+      byte_offset: 268
+      fieldset: USDHC_CQCTL
+    - name: CQIS
+      byte_offset: 272
+      fieldset: USDHC_CQIS
+    - name: CQISTE
+      byte_offset: 276
+    - name: CQISGE
+      byte_offset: 280
+    - name: CQIC
+      byte_offset: 284
+      fieldset: USDHC_CQIC
+    - name: CQTDLBA
+      byte_offset: 288
+      fieldset: USDHC_CQTDLBA
+    - name: CQTDLBAU
+      byte_offset: 292
+      fieldset: USDHC_CQTDLBAU
+    - name: CQTDBR
+      byte_offset: 296
+      fieldset: USDHC_CQTDBR
+    - name: CQTCN
+      byte_offset: 300
+      fieldset: USDHC_CQTCN
+    - name: CQDQS
+      byte_offset: 304
+      fieldset: USDHC_CQDQS
+    - name: CQDPT
+      byte_offset: 308
+      fieldset: USDHC_CQDPT
+    - name: CQTCLR
+      byte_offset: 312
+      fieldset: USDHC_CQTCLR
+    - name: CQSSC1
+      byte_offset: 320
+      fieldset: USDHC_CQSSC1
+    - name: CQSSC2
+      byte_offset: 324
+      fieldset: USDHC_CQSSC2
+    - name: CQCRDCT
+      byte_offset: 328
+      fieldset: USDHC_CQCRDCT
+    - name: CQRMEM
+      byte_offset: 336
+      fieldset: USDHC_CQRMEM
+    - name: CQTERRI
+      byte_offset: 340
+      fieldset: USDHC_CQTERRI
+    - name: CQCRI
+      byte_offset: 344
+      fieldset: USDHC_CQCRI
+    - name: CQCRA
+      byte_offset: 348
+      fieldset: USDHC_CQCRA
 fieldset/USDHC_DS_ADDR_DS:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 0
-    bit_size: 32
-    description: System address
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: System address
 fieldset/USDHC_BLK_ATT:
   description: ''
   fields:
-  - name: BLKSIZE
-    bit_offset: 0
-    bit_size: 13
-  - name: BLKCNT
-    bit_offset: 16
-    bit_size: 16
+    - name: BLKSIZE
+      bit_offset: 0
+      bit_size: 13
+    - name: BLKCNT
+      bit_offset: 16
+      bit_size: 16
 fieldset/USDHC_CMD_ARG:
   description: ''
   fields:
-  - name: CMDARG
-    bit_offset: 0
-    bit_size: 32
-    description: Command argument
+    - name: CMDARG
+      bit_offset: 0
+      bit_size: 32
+      description: Command argument
 fieldset/USDHC_CMD_XFR_TYP:
   description: ''
   fields:
-  - name: DMAEN
-    bit_offset: 0
-    bit_size: 1
-  - name: BCEN
-    bit_offset: 1
-    bit_size: 1
-  - name: AC12EN
-    bit_offset: 2
-    bit_size: 1
-  - name: DTDSEL
-    bit_offset: 4
-    bit_size: 1
-  - name: MSBSEL
-    bit_offset: 5
-    bit_size: 1
-  - name: AC23EN
-    bit_offset: 7
-    bit_size: 1
-  - name: RSPTYP
-    bit_offset: 16
-    bit_size: 2
-  - name: CCCEN
-    bit_offset: 19
-    bit_size: 1
-  - name: CICEN
-    bit_offset: 20
-    bit_size: 1
-  - name: DPSEL
-    bit_offset: 21
-    bit_size: 1
-  - name: CMDTYP
-    bit_offset: 22
-    bit_size: 2
-  - name: CMDINX
-    bit_offset: 24
-    bit_size: 6
-    description: Command index
+    - name: DMAEN
+      bit_offset: 0
+      bit_size: 1
+    - name: BCEN
+      bit_offset: 1
+      bit_size: 1
+    - name: AC12EN
+      bit_offset: 2
+      bit_size: 1
+    - name: DTDSEL
+      bit_offset: 4
+      bit_size: 1
+    - name: MSBSEL
+      bit_offset: 5
+      bit_size: 1
+    - name: AC23EN
+      bit_offset: 7
+      bit_size: 1
+    - name: RSPTYP
+      bit_offset: 16
+      bit_size: 2
+    - name: CCCEN
+      bit_offset: 19
+      bit_size: 1
+    - name: CICEN
+      bit_offset: 20
+      bit_size: 1
+    - name: DPSEL
+      bit_offset: 21
+      bit_size: 1
+    - name: CMDTYP
+      bit_offset: 22
+      bit_size: 2
+    - name: CMDINX
+      bit_offset: 24
+      bit_size: 6
+      description: Command index
 fieldset/USDHC_CMD_XFR_TYP_DDR:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 3
-    bit_size: 1
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
 fieldset/USDHC_CMD_XFR_TYP_NIBBLE:
   description: ''
   fields:
-  - name: POS
-    bit_offset: 6
-    bit_size: 1
+    - name: POS
+      bit_offset: 6
+      bit_size: 1
 fieldset/USDHC_CMD_RSP0:
   description: ''
   fields:
-  - name: CMDRSP0
-    bit_offset: 0
-    bit_size: 32
-    description: Command response 0
+    - name: CMDRSP0
+      bit_offset: 0
+      bit_size: 32
+      description: Command response 0
 fieldset/USDHC_CMD_RSP1:
   description: ''
   fields:
-  - name: CMDRSP1
-    bit_offset: 0
-    bit_size: 32
-    description: Command response 1
+    - name: CMDRSP1
+      bit_offset: 0
+      bit_size: 32
+      description: Command response 1
 fieldset/USDHC_CMD_RSP2:
   description: ''
   fields:
-  - name: CMDRSP2
-    bit_offset: 0
-    bit_size: 32
-    description: Command response 2
+    - name: CMDRSP2
+      bit_offset: 0
+      bit_size: 32
+      description: Command response 2
 fieldset/USDHC_CMD_RSP3:
   description: ''
   fields:
-  - name: CMDRSP3
-    bit_offset: 0
-    bit_size: 32
-    description: Command response 3
+    - name: CMDRSP3
+      bit_offset: 0
+      bit_size: 32
+      description: Command response 3
 fieldset/USDHC_DATA_BUFF_ACC_PORT:
   description: ''
   fields:
-  - name: DATCONT
-    bit_offset: 0
-    bit_size: 32
-    description: Data content
+    - name: DATCONT
+      bit_offset: 0
+      bit_size: 32
+      description: Data content
 fieldset/USDHC_PRES_STATE:
   description: ''
   fields:
-  - name: CIHB
-    bit_offset: 0
-    bit_size: 1
-  - name: CDIHB
-    bit_offset: 1
-    bit_size: 1
-  - name: DLA
-    bit_offset: 2
-    bit_size: 1
-  - name: SDSTB
-    bit_offset: 3
-    bit_size: 1
-  - name: WTA
-    bit_offset: 8
-    bit_size: 1
-  - name: RTA
-    bit_offset: 9
-    bit_size: 1
-  - name: BWEN
-    bit_offset: 10
-    bit_size: 1
-  - name: BREN
-    bit_offset: 11
-    bit_size: 1
-  - name: RTR
-    bit_offset: 12
-    bit_size: 1
-  - name: TSCD
-    bit_offset: 15
-    bit_size: 1
-  - name: CINST
-    bit_offset: 16
-    bit_size: 1
-  - name: CDPL
-    bit_offset: 18
-    bit_size: 1
-  - name: WPSPL
-    bit_offset: 19
-    bit_size: 1
-  - name: CLSL
-    bit_offset: 23
-    bit_size: 1
-    description: CMD line signal level
-  - name: DLSL
-    bit_offset: 24
-    bit_size: 8
-    description: CMD line signal level
+    - name: CIHB
+      bit_offset: 0
+      bit_size: 1
+    - name: CDIHB
+      bit_offset: 1
+      bit_size: 1
+    - name: DLA
+      bit_offset: 2
+      bit_size: 1
+    - name: SDSTB
+      bit_offset: 3
+      bit_size: 1
+    - name: WTA
+      bit_offset: 8
+      bit_size: 1
+    - name: RTA
+      bit_offset: 9
+      bit_size: 1
+    - name: BWEN
+      bit_offset: 10
+      bit_size: 1
+    - name: BREN
+      bit_offset: 11
+      bit_size: 1
+    - name: RTR
+      bit_offset: 12
+      bit_size: 1
+    - name: TSCD
+      bit_offset: 15
+      bit_size: 1
+    - name: CINST
+      bit_offset: 16
+      bit_size: 1
+    - name: CDPL
+      bit_offset: 18
+      bit_size: 1
+    - name: WPSPL
+      bit_offset: 19
+      bit_size: 1
+    - name: CLSL
+      bit_offset: 23
+      bit_size: 1
+      description: CMD line signal level
+    - name: DLSL
+      bit_offset: 24
+      bit_size: 8
+      description: CMD line signal level
 fieldset/USDHC_PROT_CTRL:
   description: ''
   fields:
-  - name: DTW
-    bit_offset: 1
-    bit_size: 2
-  - name: D3CD
-    bit_offset: 3
-    bit_size: 1
-  - name: EMODE
-    bit_offset: 4
-    bit_size: 2
-  - name: DMASEL
-    bit_offset: 8
-    bit_size: 2
-  - name: SABGREQ
-    bit_offset: 16
-    bit_size: 1
-  - name: CREQ
-    bit_offset: 17
-    bit_size: 1
-  - name: RWCTL
-    bit_offset: 18
-    bit_size: 1
-  - name: IABG
-    bit_offset: 19
-    bit_size: 1
-  - name: WECINT
-    bit_offset: 24
-    bit_size: 1
-  - name: WECINS
-    bit_offset: 25
-    bit_size: 1
-  - name: WECRM
-    bit_offset: 26
-    bit_size: 1
+    - name: DTW
+      bit_offset: 1
+      bit_size: 2
+    - name: D3CD
+      bit_offset: 3
+      bit_size: 1
+    - name: EMODE
+      bit_offset: 4
+      bit_size: 2
+    - name: DMASEL
+      bit_offset: 8
+      bit_size: 2
+    - name: SABGREQ
+      bit_offset: 16
+      bit_size: 1
+    - name: CREQ
+      bit_offset: 17
+      bit_size: 1
+    - name: RWCTL
+      bit_offset: 18
+      bit_size: 1
+    - name: IABG
+      bit_offset: 19
+      bit_size: 1
+    - name: WECINT
+      bit_offset: 24
+      bit_size: 1
+    - name: WECINS
+      bit_offset: 25
+      bit_size: 1
+    - name: WECRM
+      bit_offset: 26
+      bit_size: 1
 fieldset/USDHC_PROT_CTRL_RD_DONE_NO:
   description: ''
   fields:
-  - name: 8CLK
-    bit_offset: 20
-    bit_size: 1
+    - name: 8CLK
+      bit_offset: 20
+      bit_size: 1
 fieldset/USDHC_PROT_CTRL_NON_EXACT_BLK:
   description: ''
   fields:
-  - name: RD
-    bit_offset: 30
-    bit_size: 1
+    - name: RD
+      bit_offset: 30
+      bit_size: 1
 fieldset/USDHC_SYS_CTRL:
   description: ''
   fields:
-  - name: DVS
-    bit_offset: 4
-    bit_size: 4
-  - name: SDCLKFS
-    bit_offset: 8
-    bit_size: 8
-    description: SDCLK frequency select
-  - name: DTOCV
-    bit_offset: 16
-    bit_size: 4
-    description: SDCLK frequency select
-  - name: RSTA
-    bit_offset: 24
-    bit_size: 1
-    description: Hardware reset
-  - name: RSTC
-    bit_offset: 25
-    bit_size: 1
-  - name: RSTD
-    bit_offset: 26
-    bit_size: 1
-  - name: INITA
-    bit_offset: 27
-    bit_size: 1
-    description: Initialization active
-  - name: RSTT
-    bit_offset: 28
-    bit_size: 1
-    description: Initialization active
+    - name: DVS
+      bit_offset: 4
+      bit_size: 4
+    - name: SDCLKFS
+      bit_offset: 8
+      bit_size: 8
+      description: SDCLK frequency select
+    - name: DTOCV
+      bit_offset: 16
+      bit_size: 4
+      description: SDCLK frequency select
+    - name: RSTA
+      bit_offset: 24
+      bit_size: 1
+      description: Hardware reset
+    - name: RSTC
+      bit_offset: 25
+      bit_size: 1
+    - name: RSTD
+      bit_offset: 26
+      bit_size: 1
+    - name: INITA
+      bit_offset: 27
+      bit_size: 1
+      description: Initialization active
+    - name: RSTT
+      bit_offset: 28
+      bit_size: 1
+      description: Initialization active
 fieldset/USDHC_SYS_CTRL_RST:
   description: ''
   fields:
-  - name: FIFO
-    bit_offset: 22
-    bit_size: 1
-    description: Reset the async FIFO
+    - name: FIFO
+      bit_offset: 22
+      bit_size: 1
+      description: Reset the async FIFO
 fieldset/USDHC_SYS_CTRL_IPP_RST:
   description: ''
   fields:
-  - name: N
-    bit_offset: 23
-    bit_size: 1
-    description: Reset the async FIFO
+    - name: N
+      bit_offset: 23
+      bit_size: 1
+      description: Reset the async FIFO
 fieldset/USDHC_INT_STATUS:
   description: ''
   fields:
-  - name: CC
-    bit_offset: 0
-    bit_size: 1
-  - name: TC
-    bit_offset: 1
-    bit_size: 1
-  - name: BGE
-    bit_offset: 2
-    bit_size: 1
-  - name: DINT
-    bit_offset: 3
-    bit_size: 1
-  - name: BWR
-    bit_offset: 4
-    bit_size: 1
-  - name: BRR
-    bit_offset: 5
-    bit_size: 1
-  - name: CINS
-    bit_offset: 6
-    bit_size: 1
-  - name: CRM
-    bit_offset: 7
-    bit_size: 1
-  - name: CINT
-    bit_offset: 8
-    bit_size: 1
-  - name: RTE
-    bit_offset: 12
-    bit_size: 1
-  - name: TP
-    bit_offset: 13
-    bit_size: 1
-  - name: CQI
-    bit_offset: 14
-    bit_size: 1
-    description: Command queuing interrupt
-  - name: CTOE
-    bit_offset: 16
-    bit_size: 1
-  - name: CCE
-    bit_offset: 17
-    bit_size: 1
-  - name: CEBE
-    bit_offset: 18
-    bit_size: 1
-  - name: CIE
-    bit_offset: 19
-    bit_size: 1
-  - name: DTOE
-    bit_offset: 20
-    bit_size: 1
-  - name: DCE
-    bit_offset: 21
-    bit_size: 1
-  - name: DEBE
-    bit_offset: 22
-    bit_size: 1
-  - name: AC12E
-    bit_offset: 24
-    bit_size: 1
-  - name: TNE
-    bit_offset: 26
-    bit_size: 1
-  - name: DMAE
-    bit_offset: 28
-    bit_size: 1
+    - name: CC
+      bit_offset: 0
+      bit_size: 1
+    - name: TC
+      bit_offset: 1
+      bit_size: 1
+    - name: BGE
+      bit_offset: 2
+      bit_size: 1
+    - name: DINT
+      bit_offset: 3
+      bit_size: 1
+    - name: BWR
+      bit_offset: 4
+      bit_size: 1
+    - name: BRR
+      bit_offset: 5
+      bit_size: 1
+    - name: CINS
+      bit_offset: 6
+      bit_size: 1
+    - name: CRM
+      bit_offset: 7
+      bit_size: 1
+    - name: CINT
+      bit_offset: 8
+      bit_size: 1
+    - name: RTE
+      bit_offset: 12
+      bit_size: 1
+    - name: TP
+      bit_offset: 13
+      bit_size: 1
+    - name: CQI
+      bit_offset: 14
+      bit_size: 1
+      description: Command queuing interrupt
+    - name: CTOE
+      bit_offset: 16
+      bit_size: 1
+    - name: CCE
+      bit_offset: 17
+      bit_size: 1
+    - name: CEBE
+      bit_offset: 18
+      bit_size: 1
+    - name: CIE
+      bit_offset: 19
+      bit_size: 1
+    - name: DTOE
+      bit_offset: 20
+      bit_size: 1
+    - name: DCE
+      bit_offset: 21
+      bit_size: 1
+    - name: DEBE
+      bit_offset: 22
+      bit_size: 1
+    - name: AC12E
+      bit_offset: 24
+      bit_size: 1
+    - name: TNE
+      bit_offset: 26
+      bit_size: 1
+    - name: DMAE
+      bit_offset: 28
+      bit_size: 1
 fieldset/USDHC_INT_STATUS_ERR_INT:
   description: ''
   fields:
-  - name: STATUS
-    bit_offset: 15
-    bit_size: 1
-    description: Command queuing interrupt
+    - name: STATUS
+      bit_offset: 15
+      bit_size: 1
+      description: Command queuing interrupt
 fieldset/USDHC_INT_STATUS_EN:
   description: ''
   fields:
-  - name: CCSEN
-    bit_offset: 0
-    bit_size: 1
-  - name: TCSEN
-    bit_offset: 1
-    bit_size: 1
-  - name: BGESEN
-    bit_offset: 2
-    bit_size: 1
-  - name: DINTSEN
-    bit_offset: 3
-    bit_size: 1
-  - name: BWRSEN
-    bit_offset: 4
-    bit_size: 1
-  - name: BRRSEN
-    bit_offset: 5
-    bit_size: 1
-  - name: CINSSEN
-    bit_offset: 6
-    bit_size: 1
-  - name: CRMSEN
-    bit_offset: 7
-    bit_size: 1
-  - name: CINTSEN
-    bit_offset: 8
-    bit_size: 1
-  - name: RTESEN
-    bit_offset: 12
-    bit_size: 1
-  - name: TPSEN
-    bit_offset: 13
-    bit_size: 1
-  - name: CQISEN
-    bit_offset: 14
-    bit_size: 1
-  - name: CTOESEN
-    bit_offset: 16
-    bit_size: 1
-  - name: CCESEN
-    bit_offset: 17
-    bit_size: 1
-  - name: CEBESEN
-    bit_offset: 18
-    bit_size: 1
-  - name: CIESEN
-    bit_offset: 19
-    bit_size: 1
-  - name: DTOESEN
-    bit_offset: 20
-    bit_size: 1
-  - name: DCESEN
-    bit_offset: 21
-    bit_size: 1
-  - name: DEBESEN
-    bit_offset: 22
-    bit_size: 1
-  - name: AC12ESEN
-    bit_offset: 24
-    bit_size: 1
-  - name: TNESEN
-    bit_offset: 26
-    bit_size: 1
-  - name: DMAESEN
-    bit_offset: 28
-    bit_size: 1
+    - name: CCSEN
+      bit_offset: 0
+      bit_size: 1
+    - name: TCSEN
+      bit_offset: 1
+      bit_size: 1
+    - name: BGESEN
+      bit_offset: 2
+      bit_size: 1
+    - name: DINTSEN
+      bit_offset: 3
+      bit_size: 1
+    - name: BWRSEN
+      bit_offset: 4
+      bit_size: 1
+    - name: BRRSEN
+      bit_offset: 5
+      bit_size: 1
+    - name: CINSSEN
+      bit_offset: 6
+      bit_size: 1
+    - name: CRMSEN
+      bit_offset: 7
+      bit_size: 1
+    - name: CINTSEN
+      bit_offset: 8
+      bit_size: 1
+    - name: RTESEN
+      bit_offset: 12
+      bit_size: 1
+    - name: TPSEN
+      bit_offset: 13
+      bit_size: 1
+    - name: CQISEN
+      bit_offset: 14
+      bit_size: 1
+    - name: CTOESEN
+      bit_offset: 16
+      bit_size: 1
+    - name: CCESEN
+      bit_offset: 17
+      bit_size: 1
+    - name: CEBESEN
+      bit_offset: 18
+      bit_size: 1
+    - name: CIESEN
+      bit_offset: 19
+      bit_size: 1
+    - name: DTOESEN
+      bit_offset: 20
+      bit_size: 1
+    - name: DCESEN
+      bit_offset: 21
+      bit_size: 1
+    - name: DEBESEN
+      bit_offset: 22
+      bit_size: 1
+    - name: AC12ESEN
+      bit_offset: 24
+      bit_size: 1
+    - name: TNESEN
+      bit_offset: 26
+      bit_size: 1
+    - name: DMAESEN
+      bit_offset: 28
+      bit_size: 1
 fieldset/USDHC_INT_SIGNAL_EN:
   description: ''
   fields:
-  - name: CCIEN
-    bit_offset: 0
-    bit_size: 1
-  - name: TCIEN
-    bit_offset: 1
-    bit_size: 1
-  - name: BGEIEN
-    bit_offset: 2
-    bit_size: 1
-  - name: DINTIEN
-    bit_offset: 3
-    bit_size: 1
-  - name: BWRIEN
-    bit_offset: 4
-    bit_size: 1
-  - name: BRRIEN
-    bit_offset: 5
-    bit_size: 1
-  - name: CINSIEN
-    bit_offset: 6
-    bit_size: 1
-  - name: CRMIEN
-    bit_offset: 7
-    bit_size: 1
-  - name: CINTIEN
-    bit_offset: 8
-    bit_size: 1
-  - name: RTEIEN
-    bit_offset: 12
-    bit_size: 1
-  - name: TPIEN
-    bit_offset: 13
-    bit_size: 1
-  - name: CQIIEN
-    bit_offset: 14
-    bit_size: 1
-  - name: CTOEIEN
-    bit_offset: 16
-    bit_size: 1
-  - name: CCEIEN
-    bit_offset: 17
-    bit_size: 1
-  - name: CEBEIEN
-    bit_offset: 18
-    bit_size: 1
-  - name: CIEIEN
-    bit_offset: 19
-    bit_size: 1
-  - name: DTOEIEN
-    bit_offset: 20
-    bit_size: 1
-  - name: DCEIEN
-    bit_offset: 21
-    bit_size: 1
-  - name: DEBEIEN
-    bit_offset: 22
-    bit_size: 1
-  - name: AC12EIEN
-    bit_offset: 24
-    bit_size: 1
-  - name: TNEIEN
-    bit_offset: 26
-    bit_size: 1
-  - name: DMAEIEN
-    bit_offset: 28
-    bit_size: 1
+    - name: CCIEN
+      bit_offset: 0
+      bit_size: 1
+    - name: TCIEN
+      bit_offset: 1
+      bit_size: 1
+    - name: BGEIEN
+      bit_offset: 2
+      bit_size: 1
+    - name: DINTIEN
+      bit_offset: 3
+      bit_size: 1
+    - name: BWRIEN
+      bit_offset: 4
+      bit_size: 1
+    - name: BRRIEN
+      bit_offset: 5
+      bit_size: 1
+    - name: CINSIEN
+      bit_offset: 6
+      bit_size: 1
+    - name: CRMIEN
+      bit_offset: 7
+      bit_size: 1
+    - name: CINTIEN
+      bit_offset: 8
+      bit_size: 1
+    - name: RTEIEN
+      bit_offset: 12
+      bit_size: 1
+    - name: TPIEN
+      bit_offset: 13
+      bit_size: 1
+    - name: CQIIEN
+      bit_offset: 14
+      bit_size: 1
+    - name: CTOEIEN
+      bit_offset: 16
+      bit_size: 1
+    - name: CCEIEN
+      bit_offset: 17
+      bit_size: 1
+    - name: CEBEIEN
+      bit_offset: 18
+      bit_size: 1
+    - name: CIEIEN
+      bit_offset: 19
+      bit_size: 1
+    - name: DTOEIEN
+      bit_offset: 20
+      bit_size: 1
+    - name: DCEIEN
+      bit_offset: 21
+      bit_size: 1
+    - name: DEBEIEN
+      bit_offset: 22
+      bit_size: 1
+    - name: AC12EIEN
+      bit_offset: 24
+      bit_size: 1
+    - name: TNEIEN
+      bit_offset: 26
+      bit_size: 1
+    - name: DMAEIEN
+      bit_offset: 28
+      bit_size: 1
 fieldset/USDHC_AUTOCMD12_ERR_STATUS:
   description: ''
   fields:
-  - name: AC12NE
-    bit_offset: 0
-    bit_size: 1
-  - name: AC12TOE
-    bit_offset: 1
-    bit_size: 1
-  - name: AC12CE
-    bit_offset: 2
-    bit_size: 1
-  - name: AC12EBE
-    bit_offset: 3
-    bit_size: 1
-  - name: AC12IE
-    bit_offset: 4
-    bit_size: 1
-  - name: CNIBAC12E
-    bit_offset: 7
-    bit_size: 1
+    - name: AC12NE
+      bit_offset: 0
+      bit_size: 1
+    - name: AC12TOE
+      bit_offset: 1
+      bit_size: 1
+    - name: AC12CE
+      bit_offset: 2
+      bit_size: 1
+    - name: AC12EBE
+      bit_offset: 3
+      bit_size: 1
+    - name: AC12IE
+      bit_offset: 4
+      bit_size: 1
+    - name: CNIBAC12E
+      bit_offset: 7
+      bit_size: 1
 fieldset/USDHC_AUTOCMD12_ERR_STATUS_EXECUTE:
   description: ''
   fields:
-  - name: TUNING
-    bit_offset: 22
-    bit_size: 1
+    - name: TUNING
+      bit_offset: 22
+      bit_size: 1
 fieldset/USDHC_AUTOCMD12_ERR_STATUS_SMP_CLK:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 23
-    bit_size: 1
+    - name: SEL
+      bit_offset: 23
+      bit_size: 1
 fieldset/USDHC_HOST_CTRL_CAP_SDR50:
   description: ''
   fields:
-  - name: SUPPORT
-    bit_offset: 0
-    bit_size: 1
-    description: SDR50 support
+    - name: SUPPORT
+      bit_offset: 0
+      bit_size: 1
+      description: SDR50 support
 fieldset/USDHC_HOST_CTRL_CAP_SDR104:
   description: ''
   fields:
-  - name: SUPPORT
-    bit_offset: 1
-    bit_size: 1
-    description: SDR104 support
+    - name: SUPPORT
+      bit_offset: 1
+      bit_size: 1
+      description: SDR104 support
 fieldset/USDHC_HOST_CTRL_CAP_DDR50:
   description: ''
   fields:
-  - name: SUPPORT
-    bit_offset: 2
-    bit_size: 1
-    description: DDR50 support
+    - name: SUPPORT
+      bit_offset: 2
+      bit_size: 1
+      description: DDR50 support
 fieldset/USDHC_HOST_CTRL_CAP_USE_TUNING:
   description: ''
   fields:
-  - name: SDR50
-    bit_offset: 13
-    bit_size: 1
+    - name: SDR50
+      bit_offset: 13
+      bit_size: 1
 fieldset/USDHC_HOST_CTRL_CAP:
   description: ''
   fields:
-  - name: MBL
-    bit_offset: 16
-    bit_size: 3
-  - name: ADMAS
-    bit_offset: 20
-    bit_size: 1
-  - name: HSS
-    bit_offset: 21
-    bit_size: 1
-  - name: DMAS
-    bit_offset: 22
-    bit_size: 1
-  - name: SRS
-    bit_offset: 23
-    bit_size: 1
-  - name: VS33
-    bit_offset: 24
-    bit_size: 1
-  - name: VS30
-    bit_offset: 25
-    bit_size: 1
+    - name: MBL
+      bit_offset: 16
+      bit_size: 3
+    - name: ADMAS
+      bit_offset: 20
+      bit_size: 1
+    - name: HSS
+      bit_offset: 21
+      bit_size: 1
+    - name: DMAS
+      bit_offset: 22
+      bit_size: 1
+    - name: SRS
+      bit_offset: 23
+      bit_size: 1
+    - name: VS33
+      bit_offset: 24
+      bit_size: 1
+    - name: VS30
+      bit_offset: 25
+      bit_size: 1
 fieldset/USDHC_WTMK_LVL_RD:
   description: ''
   fields:
-  - name: WML
-    bit_offset: 0
-    bit_size: 8
-    description: Read watermark level
+    - name: WML
+      bit_offset: 0
+      bit_size: 8
+      description: Read watermark level
 fieldset/USDHC_WTMK_LVL_WR:
   description: ''
   fields:
-  - name: WML
-    bit_offset: 16
-    bit_size: 8
-    description: Read watermark level
+    - name: WML
+      bit_offset: 16
+      bit_size: 8
+      description: Read watermark level
 fieldset/USDHC_MIX_CTRL:
   description: ''
   fields:
-  - name: DMAEN
-    bit_offset: 0
-    bit_size: 1
-  - name: BCEN
-    bit_offset: 1
-    bit_size: 1
-  - name: AC12EN
-    bit_offset: 2
-    bit_size: 1
-  - name: DTDSEL
-    bit_offset: 4
-    bit_size: 1
-    description: Dual data rate mode selection
-  - name: MSBSEL
-    bit_offset: 5
-    bit_size: 1
-  - name: AC23EN
-    bit_offset: 7
-    bit_size: 1
-    description: Nibble position indication
+    - name: DMAEN
+      bit_offset: 0
+      bit_size: 1
+    - name: BCEN
+      bit_offset: 1
+      bit_size: 1
+    - name: AC12EN
+      bit_offset: 2
+      bit_size: 1
+    - name: DTDSEL
+      bit_offset: 4
+      bit_size: 1
+      description: Dual data rate mode selection
+    - name: MSBSEL
+      bit_offset: 5
+      bit_size: 1
+    - name: AC23EN
+      bit_offset: 7
+      bit_size: 1
+      description: Nibble position indication
 fieldset/USDHC_MIX_CTRL_DDR:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 3
-    bit_size: 1
-    description: Dual data rate mode selection
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+      description: Dual data rate mode selection
 fieldset/USDHC_MIX_CTRL_NIBBLE:
   description: ''
   fields:
-  - name: POS
-    bit_offset: 6
-    bit_size: 1
+    - name: POS
+      bit_offset: 6
+      bit_size: 1
 fieldset/USDHC_MIX_CTRL_EXE:
   description: ''
   fields:
-  - name: TUNE
-    bit_offset: 22
-    bit_size: 1
-    description: Auto CMD23 enable
+    - name: TUNE
+      bit_offset: 22
+      bit_size: 1
+      description: Auto CMD23 enable
 fieldset/USDHC_MIX_CTRL_SMP_CLK:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 23
-    bit_size: 1
+    - name: SEL
+      bit_offset: 23
+      bit_size: 1
 fieldset/USDHC_MIX_CTRL_AUTO_TUNE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 24
-    bit_size: 1
+    - name: EN
+      bit_offset: 24
+      bit_size: 1
 fieldset/USDHC_MIX_CTRL_FBCLK:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 25
-    bit_size: 1
+    - name: SEL
+      bit_offset: 25
+      bit_size: 1
 fieldset/USDHC_MIX_CTRL_HS400:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 26
-    bit_size: 1
-    description: Enable HS400 mode
+    - name: MODE
+      bit_offset: 26
+      bit_size: 1
+      description: Enable HS400 mode
 fieldset/USDHC_MIX_CTRL_EN_HS400:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 27
-    bit_size: 1
-    description: Enable HS400 mode
+    - name: MODE
+      bit_offset: 27
+      bit_size: 1
+      description: Enable HS400 mode
 fieldset/USDHC_FORCE_EVENT:
   description: ''
   fields:
-  - name: FEVTAC12NE
-    bit_offset: 0
-    bit_size: 1
-  - name: FEVTAC12TOE
-    bit_offset: 1
-    bit_size: 1
-  - name: FEVTAC12CE
-    bit_offset: 2
-    bit_size: 1
-  - name: FEVTAC12EBE
-    bit_offset: 3
-    bit_size: 1
-  - name: FEVTAC12IE
-    bit_offset: 4
-    bit_size: 1
-  - name: FEVTCNIBAC12E
-    bit_offset: 7
-    bit_size: 1
-  - name: FEVTCTOE
-    bit_offset: 16
-    bit_size: 1
-  - name: FEVTCCE
-    bit_offset: 17
-    bit_size: 1
-  - name: FEVTCEBE
-    bit_offset: 18
-    bit_size: 1
-    description: Force event command CRC error
-  - name: FEVTCIE
-    bit_offset: 19
-    bit_size: 1
-  - name: FEVTDTOE
-    bit_offset: 20
-    bit_size: 1
-    description: Force event command index error
-  - name: FEVTDCE
-    bit_offset: 21
-    bit_size: 1
-    description: Force event data CRC error
-  - name: FEVTDEBE
-    bit_offset: 22
-    bit_size: 1
-    description: Force event data CRC error
-  - name: FEVTAC12E
-    bit_offset: 24
-    bit_size: 1
-  - name: FEVTTNE
-    bit_offset: 26
-    bit_size: 1
-    description: Force tuning error
-  - name: FEVTDMAE
-    bit_offset: 28
-    bit_size: 1
-    description: Force tuning error
-  - name: FEVTCINT
-    bit_offset: 31
-    bit_size: 1
-    description: Force event DMA error
+    - name: FEVTAC12NE
+      bit_offset: 0
+      bit_size: 1
+    - name: FEVTAC12TOE
+      bit_offset: 1
+      bit_size: 1
+    - name: FEVTAC12CE
+      bit_offset: 2
+      bit_size: 1
+    - name: FEVTAC12EBE
+      bit_offset: 3
+      bit_size: 1
+    - name: FEVTAC12IE
+      bit_offset: 4
+      bit_size: 1
+    - name: FEVTCNIBAC12E
+      bit_offset: 7
+      bit_size: 1
+    - name: FEVTCTOE
+      bit_offset: 16
+      bit_size: 1
+    - name: FEVTCCE
+      bit_offset: 17
+      bit_size: 1
+    - name: FEVTCEBE
+      bit_offset: 18
+      bit_size: 1
+      description: Force event command CRC error
+    - name: FEVTCIE
+      bit_offset: 19
+      bit_size: 1
+    - name: FEVTDTOE
+      bit_offset: 20
+      bit_size: 1
+      description: Force event command index error
+    - name: FEVTDCE
+      bit_offset: 21
+      bit_size: 1
+      description: Force event data CRC error
+    - name: FEVTDEBE
+      bit_offset: 22
+      bit_size: 1
+      description: Force event data CRC error
+    - name: FEVTAC12E
+      bit_offset: 24
+      bit_size: 1
+    - name: FEVTTNE
+      bit_offset: 26
+      bit_size: 1
+      description: Force tuning error
+    - name: FEVTDMAE
+      bit_offset: 28
+      bit_size: 1
+      description: Force tuning error
+    - name: FEVTCINT
+      bit_offset: 31
+      bit_size: 1
+      description: Force event DMA error
 fieldset/USDHC_ADMA_ERR_STATUS:
   description: ''
   fields:
-  - name: ADMAES
-    bit_offset: 0
-    bit_size: 2
-  - name: ADMALME
-    bit_offset: 2
-    bit_size: 1
-  - name: ADMADCE
-    bit_offset: 3
-    bit_size: 1
+    - name: ADMAES
+      bit_offset: 0
+      bit_size: 2
+    - name: ADMALME
+      bit_offset: 2
+      bit_size: 1
+    - name: ADMADCE
+      bit_offset: 3
+      bit_size: 1
 fieldset/USDHC_ADMA_SYS_ADDR_ADS:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 2
-    bit_size: 30
-    description: ADMA system address
+    - name: ADDR
+      bit_offset: 2
+      bit_size: 30
+      description: ADMA system address
 fieldset/USDHC_DLL_CTRL_DLL_CTRL:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-    description: DLL and delay chain
-  - name: RESET
-    bit_offset: 1
-    bit_size: 1
-    description: DLL reset
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: DLL and delay chain
+    - name: RESET
+      bit_offset: 1
+      bit_size: 1
+      description: DLL reset
 fieldset/USDHC_DLL_CTRL_DLL_CTRL_SLV_FORCE:
   description: ''
   fields:
-  - name: UPD
-    bit_offset: 2
-    bit_size: 1
-    description: DLL reset
+    - name: UPD
+      bit_offset: 2
+      bit_size: 1
+      description: DLL reset
 fieldset/USDHC_DLL_CTRL_DLL_CTRL_SLV_DLY:
   description: ''
   fields:
-  - name: TARGET0
-    bit_offset: 3
-    bit_size: 4
-  - name: TARGET1
-    bit_offset: 16
-    bit_size: 3
+    - name: TARGET0
+      bit_offset: 3
+      bit_size: 4
+    - name: TARGET1
+      bit_offset: 16
+      bit_size: 3
 fieldset/USDHC_DLL_CTRL_DLL_CTRL_GATE:
   description: ''
   fields:
-  - name: UPDATE
-    bit_offset: 7
-    bit_size: 1
+    - name: UPDATE
+      bit_offset: 7
+      bit_size: 1
 fieldset/USDHC_DLL_CTRL_DLL_CTRL_SLV:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 8
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 8
+      bit_size: 1
 fieldset/USDHC_DLL_CTRL_DLL_CTRL_SLV_OVERRIDE:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 9
-    bit_size: 7
+    - name: VAL
+      bit_offset: 9
+      bit_size: 7
 fieldset/USDHC_DLL_CTRL_DLL_CTRL_SLV_UPDATE:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 20
-    bit_size: 8
+    - name: INT
+      bit_offset: 20
+      bit_size: 8
 fieldset/USDHC_DLL_CTRL_DLL_CTRL_REF_UPDATE:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 28
-    bit_size: 4
+    - name: INT
+      bit_offset: 28
+      bit_size: 4
 fieldset/USDHC_DLL_STATUS_DLL_STS_SLV:
   description: ''
   fields:
-  - name: LOCK
-    bit_offset: 0
-    bit_size: 1
-  - name: SEL
-    bit_offset: 2
-    bit_size: 7
+    - name: LOCK
+      bit_offset: 0
+      bit_size: 1
+    - name: SEL
+      bit_offset: 2
+      bit_size: 7
 fieldset/USDHC_DLL_STATUS_DLL_STS_REF:
   description: ''
   fields:
-  - name: LOCK
-    bit_offset: 1
-    bit_size: 1
-  - name: SEL
-    bit_offset: 9
-    bit_size: 7
+    - name: LOCK
+      bit_offset: 1
+      bit_size: 1
+    - name: SEL
+      bit_offset: 9
+      bit_size: 7
 fieldset/USDHC_CLK_TUNE_CTRL_STATUS_DLY_CELL_SET:
   description: ''
   fields:
-  - name: POST
-    bit_offset: 0
-    bit_size: 4
-  - name: OUT
-    bit_offset: 4
-    bit_size: 4
-  - name: PRE
-    bit_offset: 8
-    bit_size: 7
+    - name: POST
+      bit_offset: 0
+      bit_size: 4
+    - name: OUT
+      bit_offset: 4
+      bit_size: 4
+    - name: PRE
+      bit_offset: 8
+      bit_size: 7
 fieldset/USDHC_CLK_TUNE_CTRL_STATUS_NXT:
   description: ''
   fields:
-  - name: ERR
-    bit_offset: 15
-    bit_size: 1
-    description: NXT error
+    - name: ERR
+      bit_offset: 15
+      bit_size: 1
+      description: NXT error
 fieldset/USDHC_CLK_TUNE_CTRL_STATUS_TAP_SEL:
   description: ''
   fields:
-  - name: POST
-    bit_offset: 16
-    bit_size: 4
-    description: NXT error
-  - name: OUT
-    bit_offset: 20
-    bit_size: 4
-  - name: PRE
-    bit_offset: 24
-    bit_size: 7
-    description: TAP_SEL_PRE
+    - name: POST
+      bit_offset: 16
+      bit_size: 4
+      description: NXT error
+    - name: OUT
+      bit_offset: 20
+      bit_size: 4
+    - name: PRE
+      bit_offset: 24
+      bit_size: 7
+      description: TAP_SEL_PRE
 fieldset/USDHC_CLK_TUNE_CTRL_STATUS_PRE:
   description: ''
   fields:
-  - name: ERR
-    bit_offset: 31
-    bit_size: 1
-    description: PRE error
+    - name: ERR
+      bit_offset: 31
+      bit_size: 1
+      description: PRE error
 fieldset/USDHC_STROBE_DLL_CTRL_STROBE_DLL_CTRL:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: RESET
-    bit_offset: 1
-    bit_size: 1
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: RESET
+      bit_offset: 1
+      bit_size: 1
 fieldset/USDHC_STROBE_DLL_CTRL_STROBE_DLL_CTRL_SLV_FORCE:
   description: ''
   fields:
-  - name: UPD
-    bit_offset: 2
-    bit_size: 1
+    - name: UPD
+      bit_offset: 2
+      bit_size: 1
 fieldset/USDHC_STROBE_DLL_CTRL_STROBE_DLL_CTRL_SLV_DLY:
   description: ''
   fields:
-  - name: TARGET
-    bit_offset: 3
-    bit_size: 4
+    - name: TARGET
+      bit_offset: 3
+      bit_size: 4
 fieldset/USDHC_STROBE_DLL_CTRL_STROBE_DLL_CTRL_GATE:
   description: ''
   fields:
-  - name: UPDATE
-    bit_offset: 7
-    bit_size: 1
+    - name: UPDATE
+      bit_offset: 7
+      bit_size: 1
 fieldset/USDHC_STROBE_DLL_CTRL_STROBE_DLL_CTRL_SLV:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 8
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 8
+      bit_size: 1
 fieldset/USDHC_STROBE_DLL_CTRL_STROBE_DLL_CTRL_SLV_OVERRIDE:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 9
-    bit_size: 7
+    - name: VAL
+      bit_offset: 9
+      bit_size: 7
 fieldset/USDHC_STROBE_DLL_CTRL_STROBE_DLL_CTRL_SLV_UPDATE:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 20
-    bit_size: 8
+    - name: INT
+      bit_offset: 20
+      bit_size: 8
 fieldset/USDHC_STROBE_DLL_CTRL_STROBE_DLL_CTRL_REF_UPDATE:
   description: ''
   fields:
-  - name: INT
-    bit_offset: 28
-    bit_size: 4
+    - name: INT
+      bit_offset: 28
+      bit_size: 4
 fieldset/USDHC_STROBE_DLL_STATUS_STROBE_DLL_STS_SLV:
   description: ''
   fields:
-  - name: LOCK
-    bit_offset: 0
-    bit_size: 1
-  - name: SEL
-    bit_offset: 2
-    bit_size: 7
+    - name: LOCK
+      bit_offset: 0
+      bit_size: 1
+    - name: SEL
+      bit_offset: 2
+      bit_size: 7
 fieldset/USDHC_STROBE_DLL_STATUS_STROBE_DLL_STS_REF:
   description: ''
   fields:
-  - name: LOCK
-    bit_offset: 1
-    bit_size: 1
-  - name: SEL
-    bit_offset: 9
-    bit_size: 7
+    - name: LOCK
+      bit_offset: 1
+      bit_size: 1
+    - name: SEL
+      bit_offset: 9
+      bit_size: 7
 fieldset/USDHC_VEND_SPEC:
   description: ''
   fields:
-  - name: VSELECT
-    bit_offset: 1
-    bit_size: 1
+    - name: VSELECT
+      bit_offset: 1
+      bit_size: 1
 fieldset/USDHC_VEND_SPEC_AC12_WR_CHKBUSY:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 3
-    bit_size: 1
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
 fieldset/USDHC_VEND_SPEC_FRC_SDCLK:
   description: ''
   fields:
-  - name: 'ON'
-    bit_offset: 8
-    bit_size: 1
+    - name: 'ON'
+      bit_offset: 8
+      bit_size: 1
 fieldset/USDHC_VEND_SPEC_CRC_CHK:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 15
-    bit_size: 1
+    - name: DIS
+      bit_offset: 15
+      bit_size: 1
 fieldset/USDHC_VEND_SPEC_CMD_BYTE:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
 fieldset/USDHC_MMC_BOOT_DTOCV:
   description: ''
   fields:
-  - name: ACK
-    bit_offset: 0
-    bit_size: 4
+    - name: ACK
+      bit_offset: 0
+      bit_size: 4
 fieldset/USDHC_MMC_BOOT_BOOT:
   description: ''
   fields:
-  - name: ACK
-    bit_offset: 4
-    bit_size: 1
-  - name: MODE
-    bit_offset: 5
-    bit_size: 1
-  - name: EN
-    bit_offset: 6
-    bit_size: 1
+    - name: ACK
+      bit_offset: 4
+      bit_size: 1
+    - name: MODE
+      bit_offset: 5
+      bit_size: 1
+    - name: EN
+      bit_offset: 6
+      bit_size: 1
 fieldset/USDHC_MMC_BOOT_AUTO_SABG:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 7
-    bit_size: 1
-    description: Auto stop at block gap
+    - name: EN
+      bit_offset: 7
+      bit_size: 1
+      description: Auto stop at block gap
 fieldset/USDHC_MMC_BOOT_DISABLE_TIME:
   description: ''
   fields:
-  - name: OUT
-    bit_offset: 8
-    bit_size: 1
-    description: Auto stop at block gap
+    - name: OUT
+      bit_offset: 8
+      bit_size: 1
+      description: Auto stop at block gap
 fieldset/USDHC_MMC_BOOT_BOOT_BLK:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 16
-    bit_size: 16
+    - name: CNT
+      bit_offset: 16
+      bit_size: 16
 fieldset/USDHC_VEND_SPEC2_CARD_INT_D3:
   description: ''
   fields:
-  - name: TEST
-    bit_offset: 3
-    bit_size: 1
+    - name: TEST
+      bit_offset: 3
+      bit_size: 1
 fieldset/USDHC_VEND_SPEC2_TUNING_BIT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 4
-    bit_size: 2
+    - name: EN
+      bit_offset: 4
+      bit_size: 2
 fieldset/USDHC_VEND_SPEC2_TUNING_CMD:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 6
-    bit_size: 1
+    - name: EN
+      bit_offset: 6
+      bit_size: 1
 fieldset/USDHC_VEND_SPEC2_HS400_WR_CLK_STOP:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 10
-    bit_size: 1
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
 fieldset/USDHC_VEND_SPEC2_HS400_RD_CLK_STOP:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 11
-    bit_size: 1
+    - name: EN
+      bit_offset: 11
+      bit_size: 1
 fieldset/USDHC_VEND_SPEC2_ACMD23_ARGU2:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 12
-    bit_size: 1
+    - name: EN
+      bit_offset: 12
+      bit_size: 1
 fieldset/USDHC_VEND_SPEC2_EN_32K:
   description: ''
   fields:
-  - name: CLK
-    bit_offset: 15
-    bit_size: 1
+    - name: CLK
+      bit_offset: 15
+      bit_size: 1
 fieldset/USDHC_VEND_SPEC2_FBCLK_TAP:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 16
-    bit_size: 16
+    - name: SEL
+      bit_offset: 16
+      bit_size: 16
 fieldset/USDHC_TUNING_CTRL_TUNING_START:
   description: ''
   fields:
-  - name: TAP
-    bit_offset: 0
-    bit_size: 7
-    description: Tuning start
+    - name: TAP
+      bit_offset: 0
+      bit_size: 7
+      description: Tuning start
 fieldset/USDHC_TUNING_CTRL_DIS_CMD_CHK_FOR_STD:
   description: ''
   fields:
-  - name: TUNING
-    bit_offset: 7
-    bit_size: 1
+    - name: TUNING
+      bit_offset: 7
+      bit_size: 1
 fieldset/USDHC_TUNING_CTRL_TUNING:
   description: ''
   fields:
-  - name: COUNTER
-    bit_offset: 8
-    bit_size: 8
-    description: Tuning counter
-  - name: STEP
-    bit_offset: 16
-    bit_size: 3
-    description: TUNING_STEP
-  - name: WINDOW
-    bit_offset: 20
-    bit_size: 3
-    description: TUNING_STEP
+    - name: COUNTER
+      bit_offset: 8
+      bit_size: 8
+      description: Tuning counter
+    - name: STEP
+      bit_offset: 16
+      bit_size: 3
+      description: TUNING_STEP
+    - name: WINDOW
+      bit_offset: 20
+      bit_size: 3
+      description: TUNING_STEP
 fieldset/USDHC_TUNING_CTRL_STD_TUNING:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 24
-    bit_size: 1
-    description: Data window
+    - name: EN
+      bit_offset: 24
+      bit_size: 1
+      description: Data window
 fieldset/USDHC_CQVER_VERSION:
   description: ''
   fields:
-  - name: SUFFIX
-    bit_offset: 0
-    bit_size: 4
-    description: eMMC version suffix
+    - name: SUFFIX
+      bit_offset: 0
+      bit_size: 4
+      description: eMMC version suffix
 fieldset/USDHC_CQVER_MINOR:
   description: ''
   fields:
-  - name: VN
-    bit_offset: 4
-    bit_size: 4
-    description: eMMC version suffix
+    - name: VN
+      bit_offset: 4
+      bit_size: 4
+      description: eMMC version suffix
 fieldset/USDHC_CQVER_MAJOR:
   description: ''
   fields:
-  - name: VN
-    bit_offset: 8
-    bit_size: 4
-    description: eMMC minor version number
+    - name: VN
+      bit_offset: 8
+      bit_size: 4
+      description: eMMC minor version number
 fieldset/USDHC_CQCAP:
   description: ''
   fields:
-  - name: ITCFVAL
-    bit_offset: 0
-    bit_size: 10
-  - name: ITCFMUL
-    bit_offset: 12
-    bit_size: 4
-    description: Internal timer clock frequency value
+    - name: ITCFVAL
+      bit_offset: 0
+      bit_size: 10
+    - name: ITCFMUL
+      bit_offset: 12
+      bit_size: 4
+      description: Internal timer clock frequency value
 fieldset/USDHC_CQCFG:
   description: ''
   fields:
-  - name: CQUE
-    bit_offset: 0
-    bit_size: 1
-    description: Command queuing enable
-  - name: TDS
-    bit_offset: 8
-    bit_size: 1
-    description: Command queuing enable
-  - name: DCMDE
-    bit_offset: 12
-    bit_size: 1
+    - name: CQUE
+      bit_offset: 0
+      bit_size: 1
+      description: Command queuing enable
+    - name: TDS
+      bit_offset: 8
+      bit_size: 1
+      description: Command queuing enable
+    - name: DCMDE
+      bit_offset: 12
+      bit_size: 1
 fieldset/USDHC_CQCTL:
   description: ''
   fields:
-  - name: HALT
-    bit_offset: 0
-    bit_size: 1
-    description: Halt
-  - name: CLEAR
-    bit_offset: 8
-    bit_size: 1
-    description: Halt
+    - name: HALT
+      bit_offset: 0
+      bit_size: 1
+      description: Halt
+    - name: CLEAR
+      bit_offset: 8
+      bit_size: 1
+      description: Halt
 fieldset/USDHC_CQIS:
   description: ''
   fields:
-  - name: HAC
-    bit_offset: 0
-    bit_size: 1
-    description: Halt complete interrupt
-  - name: TCC
-    bit_offset: 1
-    bit_size: 1
-    description: Halt complete interrupt
-  - name: RED
-    bit_offset: 2
-    bit_size: 1
-    description: Task complete interrupt
-  - name: TCL
-    bit_offset: 3
-    bit_size: 1
-    description: Response error detected interrupt
+    - name: HAC
+      bit_offset: 0
+      bit_size: 1
+      description: Halt complete interrupt
+    - name: TCC
+      bit_offset: 1
+      bit_size: 1
+      description: Halt complete interrupt
+    - name: RED
+      bit_offset: 2
+      bit_size: 1
+      description: Task complete interrupt
+    - name: TCL
+      bit_offset: 3
+      bit_size: 1
+      description: Response error detected interrupt
 fieldset/USDHC_CQISTE_HAC:
   description: ''
   fields:
-  - name: STE
-    bit_offset: 0
-    bit_size: 1
+    - name: STE
+      bit_offset: 0
+      bit_size: 1
 fieldset/USDHC_CQISTE_TCC:
   description: ''
   fields:
-  - name: STE
-    bit_offset: 1
-    bit_size: 1
+    - name: STE
+      bit_offset: 1
+      bit_size: 1
 fieldset/USDHC_CQISTE_RED:
   description: ''
   fields:
-  - name: STE
-    bit_offset: 2
-    bit_size: 1
+    - name: STE
+      bit_offset: 2
+      bit_size: 1
 fieldset/USDHC_CQISTE_TCL:
   description: ''
   fields:
-  - name: STE
-    bit_offset: 3
-    bit_size: 1
+    - name: STE
+      bit_offset: 3
+      bit_size: 1
 fieldset/USDHC_CQISGE_HAC:
   description: ''
   fields:
-  - name: SGE
-    bit_offset: 0
-    bit_size: 1
-    description: Halt complete signal enable
+    - name: SGE
+      bit_offset: 0
+      bit_size: 1
+      description: Halt complete signal enable
 fieldset/USDHC_CQISGE_TCC:
   description: ''
   fields:
-  - name: SGE
-    bit_offset: 1
-    bit_size: 1
-    description: Halt complete signal enable
+    - name: SGE
+      bit_offset: 1
+      bit_size: 1
+      description: Halt complete signal enable
 fieldset/USDHC_CQISGE_RED:
   description: ''
   fields:
-  - name: SGE
-    bit_offset: 2
-    bit_size: 1
-    description: Task complete signal enable
+    - name: SGE
+      bit_offset: 2
+      bit_size: 1
+      description: Task complete signal enable
 fieldset/USDHC_CQISGE_TCL:
   description: ''
   fields:
-  - name: SGE
-    bit_offset: 3
-    bit_size: 1
-    description: Response error detected signal enable
+    - name: SGE
+      bit_offset: 3
+      bit_size: 1
+      description: Response error detected signal enable
 fieldset/USDHC_CQIC:
   description: ''
   fields:
-  - name: ICTOVAL
-    bit_offset: 0
-    bit_size: 7
-  - name: ICTOVALWEN
-    bit_offset: 7
-    bit_size: 1
-    description: Interrupt coalescing timeout value
-  - name: ICCTH
-    bit_offset: 8
-    bit_size: 5
-  - name: ICCTHWEN
-    bit_offset: 15
-    bit_size: 1
-    description: Interrupt coalescing counter threshold
-  - name: ICCTR
-    bit_offset: 16
-    bit_size: 1
-    description: Counter and timer reset
-  - name: ICSB
-    bit_offset: 20
-    bit_size: 1
-    description: Counter and timer reset
-  - name: ICENDIS
-    bit_offset: 31
-    bit_size: 1
+    - name: ICTOVAL
+      bit_offset: 0
+      bit_size: 7
+    - name: ICTOVALWEN
+      bit_offset: 7
+      bit_size: 1
+      description: Interrupt coalescing timeout value
+    - name: ICCTH
+      bit_offset: 8
+      bit_size: 5
+    - name: ICCTHWEN
+      bit_offset: 15
+      bit_size: 1
+      description: Interrupt coalescing counter threshold
+    - name: ICCTR
+      bit_offset: 16
+      bit_size: 1
+      description: Counter and timer reset
+    - name: ICSB
+      bit_offset: 20
+      bit_size: 1
+      description: Counter and timer reset
+    - name: ICENDIS
+      bit_offset: 31
+      bit_size: 1
 fieldset/USDHC_CQTDLBA:
   description: ''
   fields:
-  - name: TDLBA
-    bit_offset: 0
-    bit_size: 32
+    - name: TDLBA
+      bit_offset: 0
+      bit_size: 32
 fieldset/USDHC_CQTDLBAU:
   description: ''
   fields:
-  - name: TDLBAU
-    bit_offset: 0
-    bit_size: 32
+    - name: TDLBAU
+      bit_offset: 0
+      bit_size: 32
 fieldset/USDHC_CQTDBR:
   description: ''
   fields:
-  - name: TDBR
-    bit_offset: 0
-    bit_size: 32
-    description: Task doorbell
+    - name: TDBR
+      bit_offset: 0
+      bit_size: 32
+      description: Task doorbell
 fieldset/USDHC_CQTCN:
   description: ''
   fields:
-  - name: TCN
-    bit_offset: 0
-    bit_size: 32
-    description: Task complete notification
+    - name: TCN
+      bit_offset: 0
+      bit_size: 32
+      description: Task complete notification
 fieldset/USDHC_CQDQS:
   description: ''
   fields:
-  - name: DQS
-    bit_offset: 0
-    bit_size: 32
-    description: Device queue status
+    - name: DQS
+      bit_offset: 0
+      bit_size: 32
+      description: Device queue status
 fieldset/USDHC_CQDPT:
   description: ''
   fields:
-  - name: DPT
-    bit_offset: 0
-    bit_size: 32
-    description: Device pending tasks
+    - name: DPT
+      bit_offset: 0
+      bit_size: 32
+      description: Device pending tasks
 fieldset/USDHC_CQTCLR:
   description: ''
   fields:
-  - name: TCLR
-    bit_offset: 0
-    bit_size: 32
-    description: Task clear
+    - name: TCLR
+      bit_offset: 0
+      bit_size: 32
+      description: Task clear
 fieldset/USDHC_CQSSC1:
   description: ''
   fields:
-  - name: CIT
-    bit_offset: 0
-    bit_size: 16
-    description: Send status command idle timer
-  - name: CBC
-    bit_offset: 16
-    bit_size: 4
-    description: Send status command idle timer
+    - name: CIT
+      bit_offset: 0
+      bit_size: 16
+      description: Send status command idle timer
+    - name: CBC
+      bit_offset: 16
+      bit_size: 4
+      description: Send status command idle timer
 fieldset/USDHC_CQSSC2:
   description: ''
   fields:
-  - name: SSC2
-    bit_offset: 0
-    bit_size: 16
-    description: Send queue status RCA
+    - name: SSC2
+      bit_offset: 0
+      bit_size: 16
+      description: Send queue status RCA
 fieldset/USDHC_CQCRDCT:
   description: ''
   fields:
-  - name: CRDCT
-    bit_offset: 0
-    bit_size: 32
-    description: Direct command last response
+    - name: CRDCT
+      bit_offset: 0
+      bit_size: 32
+      description: Direct command last response
 fieldset/USDHC_CQRMEM:
   description: ''
   fields:
-  - name: RMEM
-    bit_offset: 0
-    bit_size: 32
+    - name: RMEM
+      bit_offset: 0
+      bit_size: 32
 fieldset/USDHC_CQTERRI:
   description: ''
   fields:
-  - name: RMECI
-    bit_offset: 0
-    bit_size: 6
-  - name: RMETID
-    bit_offset: 8
-    bit_size: 5
-    description: Response mode error command index
-  - name: RMEFV
-    bit_offset: 15
-    bit_size: 1
-    description: Response mode error task ID
-  - name: DTECI
-    bit_offset: 16
-    bit_size: 6
-    description: Response mode error fields valid
-  - name: DTETID
-    bit_offset: 24
-    bit_size: 5
-    description: Data transfer error command index
-  - name: DTEFV
-    bit_offset: 31
-    bit_size: 1
-    description: Data transfer error task ID
+    - name: RMECI
+      bit_offset: 0
+      bit_size: 6
+    - name: RMETID
+      bit_offset: 8
+      bit_size: 5
+      description: Response mode error command index
+    - name: RMEFV
+      bit_offset: 15
+      bit_size: 1
+      description: Response mode error task ID
+    - name: DTECI
+      bit_offset: 16
+      bit_size: 6
+      description: Response mode error fields valid
+    - name: DTETID
+      bit_offset: 24
+      bit_size: 5
+      description: Data transfer error command index
+    - name: DTEFV
+      bit_offset: 31
+      bit_size: 1
+      description: Data transfer error task ID
 fieldset/USDHC_CQCRI:
   description: ''
   fields:
-  - name: LCMDRI
-    bit_offset: 0
-    bit_size: 6
-    description: Last command response index
+    - name: LCMDRI
+      bit_offset: 0
+      bit_size: 6
+      description: Last command response index
 fieldset/USDHC_CQCRA:
   description: ''
   fields:
-  - name: LCMDRA
-    bit_offset: 0
-    bit_size: 32
+    - name: LCMDRA
+      bit_offset: 0
+      bit_size: 32

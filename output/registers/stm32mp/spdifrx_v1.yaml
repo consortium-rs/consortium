@@ -1,241 +1,241 @@
 block/SPDIFRX:
   description: ''
   items:
-  - name: CR
-    byte_offset: 0
-    description: SPDIFRX control register
-    fieldset: SPDIFRX_CR
-  - name: IMR
-    byte_offset: 4
-    description: SPDIFRX interrupt mask register
-    fieldset: SPDIFRX_IMR
-  - name: SR
-    byte_offset: 8
-    description: SPDIFRX status register
-    fieldset: SPDIFRX_SR
-  - name: IFCR
-    byte_offset: 12
-    description: SPDIFRX interrupt Flag Clear register
-    fieldset: SPDIFRX_IFCR
-  - name: DR
-    byte_offset: 16
-    description: SPDIFRX data input register
-  - name: CSR
-    byte_offset: 20
-    description: SPDIFRX channel Status register
-    fieldset: SPDIFRX_CSR
-  - name: DIR
-    byte_offset: 24
-    description: SPDIFRX debug Information register
-    fieldset: SPDIFRX_DIR
-  - name: VERR
-    byte_offset: 847
-    description: SPDIFRX version register
-    fieldset: SPDIFRX_VERR
-  - name: IPIDR
-    byte_offset: 1016
-    description: SPDIFRX identification register
-  - name: SIDR
-    byte_offset: 1020
-    description: SPDIFRX size ID register
-    fieldset: SPDIFRX_SIDR
+    - name: CR
+      byte_offset: 0
+      description: SPDIFRX control register
+      fieldset: SPDIFRX_CR
+    - name: IMR
+      byte_offset: 4
+      description: SPDIFRX interrupt mask register
+      fieldset: SPDIFRX_IMR
+    - name: SR
+      byte_offset: 8
+      description: SPDIFRX status register
+      fieldset: SPDIFRX_SR
+    - name: IFCR
+      byte_offset: 12
+      description: SPDIFRX interrupt Flag Clear register
+      fieldset: SPDIFRX_IFCR
+    - name: DR
+      byte_offset: 16
+      description: SPDIFRX data input register
+    - name: CSR
+      byte_offset: 20
+      description: SPDIFRX channel Status register
+      fieldset: SPDIFRX_CSR
+    - name: DIR
+      byte_offset: 24
+      description: SPDIFRX debug Information register
+      fieldset: SPDIFRX_DIR
+    - name: VERR
+      byte_offset: 847
+      description: SPDIFRX version register
+      fieldset: SPDIFRX_VERR
+    - name: IPIDR
+      byte_offset: 1016
+      description: SPDIFRX identification register
+    - name: SIDR
+      byte_offset: 1020
+      description: SPDIFRX size ID register
+      fieldset: SPDIFRX_SIDR
 fieldset/SPDIFRX_CR:
   description: ''
   fields:
-  - name: SPDIFRXEN
-    bit_offset: 0
-    bit_size: 2
-    description: Peripheral Block Enable
-  - name: RXDMAEN
-    bit_offset: 2
-    bit_size: 1
-    description: Receiver DMA Enable for data flow
-  - name: RXSTEO
-    bit_offset: 3
-    bit_size: 1
-    description: Stereo Mode
-  - name: DRFMT
-    bit_offset: 4
-    bit_size: 2
-    description: RX Data format
-  - name: PMSK
-    bit_offset: 6
-    bit_size: 1
-    description: Mask Parity error bit
-  - name: VMSK
-    bit_offset: 7
-    bit_size: 1
-    description: Mask of Validity bit
-  - name: CUMSK
-    bit_offset: 8
-    bit_size: 1
-    description: Mask of channel status and user bits
-  - name: PTMSK
-    bit_offset: 9
-    bit_size: 1
-    description: Mask of Preamble Type bits
-  - name: CBDMAEN
-    bit_offset: 10
-    bit_size: 1
-    description: Control Buffer DMA ENable for control flow
-  - name: CHSEL
-    bit_offset: 11
-    bit_size: 1
-    description: Channel Selection
-  - name: NBTR
-    bit_offset: 12
-    bit_size: 2
-    description: Maximum allowed re-tries during synchronization phase
-  - name: WFA
-    bit_offset: 14
-    bit_size: 1
-    description: Wait For Activity
-  - name: INSEL
-    bit_offset: 16
-    bit_size: 3
-    description: SPDIF input selection
-  - name: CKSEN
-    bit_offset: 20
-    bit_size: 1
-    description: Symbol Clock Enable
-  - name: CKSBKPEN
-    bit_offset: 21
-    bit_size: 1
-    description: Backup Symbol Clock Enable
+    - name: SPDIFRXEN
+      bit_offset: 0
+      bit_size: 2
+      description: Peripheral Block Enable
+    - name: RXDMAEN
+      bit_offset: 2
+      bit_size: 1
+      description: Receiver DMA Enable for data flow
+    - name: RXSTEO
+      bit_offset: 3
+      bit_size: 1
+      description: Stereo Mode
+    - name: DRFMT
+      bit_offset: 4
+      bit_size: 2
+      description: RX Data format
+    - name: PMSK
+      bit_offset: 6
+      bit_size: 1
+      description: Mask Parity error bit
+    - name: VMSK
+      bit_offset: 7
+      bit_size: 1
+      description: Mask of Validity bit
+    - name: CUMSK
+      bit_offset: 8
+      bit_size: 1
+      description: Mask of channel status and user bits
+    - name: PTMSK
+      bit_offset: 9
+      bit_size: 1
+      description: Mask of Preamble Type bits
+    - name: CBDMAEN
+      bit_offset: 10
+      bit_size: 1
+      description: Control Buffer DMA ENable for control flow
+    - name: CHSEL
+      bit_offset: 11
+      bit_size: 1
+      description: Channel Selection
+    - name: NBTR
+      bit_offset: 12
+      bit_size: 2
+      description: Maximum allowed re-tries during synchronization phase
+    - name: WFA
+      bit_offset: 14
+      bit_size: 1
+      description: Wait For Activity
+    - name: INSEL
+      bit_offset: 16
+      bit_size: 3
+      description: SPDIF input selection
+    - name: CKSEN
+      bit_offset: 20
+      bit_size: 1
+      description: Symbol Clock Enable
+    - name: CKSBKPEN
+      bit_offset: 21
+      bit_size: 1
+      description: Backup Symbol Clock Enable
 fieldset/SPDIFRX_IMR:
   description: ''
   fields:
-  - name: RXNEIE
-    bit_offset: 0
-    bit_size: 1
-    description: RXNE interrupt enable
-  - name: CSRNEIE
-    bit_offset: 1
-    bit_size: 1
-    description: Control Buffer Ready Interrupt Enable
-  - name: PERRIE
-    bit_offset: 2
-    bit_size: 1
-    description: Parity error interrupt enable
-  - name: OVRIE
-    bit_offset: 3
-    bit_size: 1
-    description: Overrun error Interrupt Enable
-  - name: SBLKIE
-    bit_offset: 4
-    bit_size: 1
-    description: Synchronization Block Detected Interrupt Enable
-  - name: SYNCDIE
-    bit_offset: 5
-    bit_size: 1
-    description: Synchronization Done
-  - name: IFEIE
-    bit_offset: 6
-    bit_size: 1
-    description: Serial Interface Error Interrupt Enable
+    - name: RXNEIE
+      bit_offset: 0
+      bit_size: 1
+      description: RXNE interrupt enable
+    - name: CSRNEIE
+      bit_offset: 1
+      bit_size: 1
+      description: Control Buffer Ready Interrupt Enable
+    - name: PERRIE
+      bit_offset: 2
+      bit_size: 1
+      description: Parity error interrupt enable
+    - name: OVRIE
+      bit_offset: 3
+      bit_size: 1
+      description: Overrun error Interrupt Enable
+    - name: SBLKIE
+      bit_offset: 4
+      bit_size: 1
+      description: Synchronization Block Detected Interrupt Enable
+    - name: SYNCDIE
+      bit_offset: 5
+      bit_size: 1
+      description: Synchronization Done
+    - name: IFEIE
+      bit_offset: 6
+      bit_size: 1
+      description: Serial Interface Error Interrupt Enable
 fieldset/SPDIFRX_SR:
   description: ''
   fields:
-  - name: RXNE
-    bit_offset: 0
-    bit_size: 1
-    description: Read data register not empty
-  - name: CSRNE
-    bit_offset: 1
-    bit_size: 1
-    description: The Control Buffer register is not empty
-  - name: PERR
-    bit_offset: 2
-    bit_size: 1
-    description: Parity error
-  - name: OVR
-    bit_offset: 3
-    bit_size: 1
-    description: Overrun error
-  - name: SBD
-    bit_offset: 4
-    bit_size: 1
-    description: Synchronization Block Detected
-  - name: SYNCD
-    bit_offset: 5
-    bit_size: 1
-    description: Synchronization Done
-  - name: FERR
-    bit_offset: 6
-    bit_size: 1
-    description: Framing error
-  - name: SERR
-    bit_offset: 7
-    bit_size: 1
-    description: Synchronization error
-  - name: TERR
-    bit_offset: 8
-    bit_size: 1
-    description: Time-out error
-  - name: WIDTH5
-    bit_offset: 16
-    bit_size: 15
-    description: Duration of 5 symbols counted with spdif_clk
+    - name: RXNE
+      bit_offset: 0
+      bit_size: 1
+      description: Read data register not empty
+    - name: CSRNE
+      bit_offset: 1
+      bit_size: 1
+      description: The Control Buffer register is not empty
+    - name: PERR
+      bit_offset: 2
+      bit_size: 1
+      description: Parity error
+    - name: OVR
+      bit_offset: 3
+      bit_size: 1
+      description: Overrun error
+    - name: SBD
+      bit_offset: 4
+      bit_size: 1
+      description: Synchronization Block Detected
+    - name: SYNCD
+      bit_offset: 5
+      bit_size: 1
+      description: Synchronization Done
+    - name: FERR
+      bit_offset: 6
+      bit_size: 1
+      description: Framing error
+    - name: SERR
+      bit_offset: 7
+      bit_size: 1
+      description: Synchronization error
+    - name: TERR
+      bit_offset: 8
+      bit_size: 1
+      description: Time-out error
+    - name: WIDTH5
+      bit_offset: 16
+      bit_size: 15
+      description: Duration of 5 symbols counted with spdif_clk
 fieldset/SPDIFRX_IFCR:
   description: ''
   fields:
-  - name: PERRCF
-    bit_offset: 2
-    bit_size: 1
-    description: Clears the Parity error flag
-  - name: OVRCF
-    bit_offset: 3
-    bit_size: 1
-    description: Clears the Overrun error flag
-  - name: SBDCF
-    bit_offset: 4
-    bit_size: 1
-    description: Clears the Synchronization Block Detected flag
-  - name: SYNCDCF
-    bit_offset: 5
-    bit_size: 1
-    description: Clears the Synchronization Done flag
+    - name: PERRCF
+      bit_offset: 2
+      bit_size: 1
+      description: Clears the Parity error flag
+    - name: OVRCF
+      bit_offset: 3
+      bit_size: 1
+      description: Clears the Overrun error flag
+    - name: SBDCF
+      bit_offset: 4
+      bit_size: 1
+      description: Clears the Synchronization Block Detected flag
+    - name: SYNCDCF
+      bit_offset: 5
+      bit_size: 1
+      description: Clears the Synchronization Done flag
 fieldset/SPDIFRX_CSR:
   description: ''
   fields:
-  - name: USR
-    bit_offset: 0
-    bit_size: 16
-    description: User data information
-  - name: CS
-    bit_offset: 16
-    bit_size: 8
-    description: Channel A status information
-  - name: SOB
-    bit_offset: 24
-    bit_size: 1
-    description: Start Of Block
+    - name: USR
+      bit_offset: 0
+      bit_size: 16
+      description: User data information
+    - name: CS
+      bit_offset: 16
+      bit_size: 8
+      description: Channel A status information
+    - name: SOB
+      bit_offset: 24
+      bit_size: 1
+      description: Start Of Block
 fieldset/SPDIFRX_DIR:
   description: ''
   fields:
-  - name: THI
-    bit_offset: 0
-    bit_size: 13
-    description: Threshold LOW
-  - name: TLO
-    bit_offset: 16
-    bit_size: 13
-    description: Threshold HIGH
+    - name: THI
+      bit_offset: 0
+      bit_size: 13
+      description: Threshold LOW
+    - name: TLO
+      bit_offset: 16
+      bit_size: 13
+      description: Threshold HIGH
 fieldset/SPDIFRX_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: SPDIFRX Minor revision
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: SPDIFRX Major revision
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: SPDIFRX Minor revision
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: SPDIFRX Major revision
 fieldset/SPDIFRX_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: Size of the memory region allocated to SPDIFRX registers
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: Size of the memory region allocated to SPDIFRX registers

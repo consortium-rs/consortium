@@ -1,79 +1,79 @@
 block/SYS_CTR_COMPARE:
   description: ''
   items:
-  - name: CMPCVL0
-    byte_offset: 32
-    fieldset: SYS_CTR_COMPARE_CMPCVL0
-  - name: CMPCVH0
-    byte_offset: 36
-    fieldset: SYS_CTR_COMPARE_CMPCVH0
-  - name: CMPCR0
-    byte_offset: 44
-    fieldset: SYS_CTR_COMPARE_CMPCR0
-  - name: CMPCVL1
-    byte_offset: 288
-    fieldset: SYS_CTR_COMPARE_CMPCVL1
-  - name: CMPCVH1
-    byte_offset: 292
-    fieldset: SYS_CTR_COMPARE_CMPCVH1
-  - name: CMPCR1
-    byte_offset: 300
-    fieldset: SYS_CTR_COMPARE_CMPCR1
-  - name: CNTID0
-    byte_offset: 4048
-    fieldset: SYS_CTR_COMPARE_CNTID0
+    - name: CMPCVL0
+      byte_offset: 32
+      fieldset: SYS_CTR_COMPARE_CMPCVL0
+    - name: CMPCVH0
+      byte_offset: 36
+      fieldset: SYS_CTR_COMPARE_CMPCVH0
+    - name: CMPCR0
+      byte_offset: 44
+      fieldset: SYS_CTR_COMPARE_CMPCR0
+    - name: CMPCVL1
+      byte_offset: 288
+      fieldset: SYS_CTR_COMPARE_CMPCVL1
+    - name: CMPCVH1
+      byte_offset: 292
+      fieldset: SYS_CTR_COMPARE_CMPCVH1
+    - name: CMPCR1
+      byte_offset: 300
+      fieldset: SYS_CTR_COMPARE_CMPCR1
+    - name: CNTID0
+      byte_offset: 4048
+      fieldset: SYS_CTR_COMPARE_CNTID0
 fieldset/SYS_CTR_COMPARE_CMPCVL0:
   description: ''
   fields:
-  - name: CMPCV0
-    bit_offset: 0
-    bit_size: 32
+    - name: CMPCV0
+      bit_offset: 0
+      bit_size: 32
 fieldset/SYS_CTR_COMPARE_CMPCVH0:
   description: ''
   fields:
-  - name: CMPCV1
-    bit_offset: 0
-    bit_size: 24
+    - name: CMPCV1
+      bit_offset: 0
+      bit_size: 24
 fieldset/SYS_CTR_COMPARE_CMPCR0:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
-  - name: IMASK
-    bit_offset: 1
-    bit_size: 1
-  - name: ISTAT
-    bit_offset: 2
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: IMASK
+      bit_offset: 1
+      bit_size: 1
+    - name: ISTAT
+      bit_offset: 2
+      bit_size: 1
 fieldset/SYS_CTR_COMPARE_CMPCVL1:
   description: ''
   fields:
-  - name: CMPCV0
-    bit_offset: 0
-    bit_size: 32
+    - name: CMPCV0
+      bit_offset: 0
+      bit_size: 32
 fieldset/SYS_CTR_COMPARE_CMPCVH1:
   description: ''
   fields:
-  - name: CMPCV1
-    bit_offset: 0
-    bit_size: 24
+    - name: CMPCV1
+      bit_offset: 0
+      bit_size: 24
 fieldset/SYS_CTR_COMPARE_CMPCR1:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
-  - name: IMASK
-    bit_offset: 1
-    bit_size: 1
-  - name: ISTAT
-    bit_offset: 2
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: IMASK
+      bit_offset: 1
+      bit_size: 1
+    - name: ISTAT
+      bit_offset: 2
+      bit_size: 1
 fieldset/SYS_CTR_COMPARE_CNTID0:
   description: ''
   fields:
-  - name: CNTID
-    bit_offset: 0
-    bit_size: 32
-    description: Counter Identification
+    - name: CNTID
+      bit_offset: 0
+      bit_size: 32
+      description: Counter Identification

@@ -1,39 +1,39 @@
 block/RISAF_Region:
   description: ''
   items:
-  - name: CFGR
-    byte_offset: 0
-    description: RISAF Region x configuration register
-  - name: STARTR
-    byte_offset: 4
-    description: RISAF Region x start address register
-  - name: ENDR
-    byte_offset: 8
-    description: RISAF Region x end address register
-  - name: CIDCFGR
-    byte_offset: 12
-    description: RISAF Region x CID configuration register
-  - name: ACFGR
-    byte_offset: 16
-    description: RISAF Region x subregion A configuration register
-  - name: ASTARTR
-    byte_offset: 20
-    description: RISAF Region x subregion A start address register
-  - name: AENDR
-    byte_offset: 24
-    description: RISAF Region x subregion A end address register
-  - name: ANESTR
-    byte_offset: 28
-    description: RISAF Region x subregion A nested mode register
-  - name: BCFGR
-    byte_offset: 32
-    description: RISAF Region x subregion B configuration register
-  - name: BSTARTR
-    byte_offset: 36
-    description: RISAF Region x subregion B start address register
-  - name: BENDR
-    byte_offset: 40
-    description: RISAF Region x subregion B end address register
-  - name: BNESTR
-    byte_offset: 44
-    description: RISAF Region x subregion B nested mode register
+    - name: CFGR
+      byte_offset: 0
+      description: RISAF Region x configuration register
+    - name: STARTR
+      byte_offset: 4
+      description: RISAF Region x start address register
+    - name: ENDR
+      byte_offset: 8
+      description: RISAF Region x end address register
+    - name: CIDCFGR
+      byte_offset: 12
+      description: RISAF Region x CID configuration register
+    - name: ACFGR
+      byte_offset: 16
+      description: RISAF Region x subregion A configuration register
+    - name: ASTARTR
+      byte_offset: 20
+      description: RISAF Region x subregion A start address register
+    - name: AENDR
+      byte_offset: 24
+      description: RISAF Region x subregion A end address register
+    - name: ANESTR
+      byte_offset: 28
+      description: RISAF Region x subregion A nested mode register
+    - name: BCFGR
+      byte_offset: 32
+      description: RISAF Region x subregion B configuration register
+    - name: BSTARTR
+      byte_offset: 36
+      description: RISAF Region x subregion B start address register
+    - name: BENDR
+      byte_offset: 40
+      description: RISAF Region x subregion B end address register
+    - name: BNESTR
+      byte_offset: 44
+      description: RISAF Region x subregion B nested mode register

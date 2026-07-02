@@ -1,177 +1,177 @@
 block/ICACHE:
   description: ''
   items:
-  - name: CR
-    byte_offset: 0
-    description: ICACHE control register
-    fieldset: ICACHE_CR
-  - name: SR
-    byte_offset: 4
-    description: ICACHE status register
-    fieldset: ICACHE_SR
-  - name: IER
-    byte_offset: 8
-    description: ICACHE interrupt enable register
-    fieldset: ICACHE_IER
-  - name: FCR
-    byte_offset: 12
-    description: ICACHE flag clear register
-    fieldset: ICACHE_FCR
-  - name: HMONR
-    byte_offset: 16
-    description: ICACHE hit monitor register
-    fieldset: ICACHE_HMONR
-  - name: MMONR
-    byte_offset: 20
-    description: ICACHE miss monitor register
-    fieldset: ICACHE_MMONR
-  - name: CRR0
-    byte_offset: 32
-    description: ICACHE region 0 configuration register
-  - name: CRR1
-    byte_offset: 36
-    description: ICACHE region 1 configuration register
-  - name: CRR2
-    byte_offset: 40
-    description: ICACHE region 2 configuration register
-  - name: CRR3
-    byte_offset: 44
-    description: ICACHE region 3 configuration register
-  - name: HWCFGR
-    byte_offset: 1008
-    description: ICACHE hardware configuration register
-    fieldset: ICACHE_HWCFGR
-  - name: VERR
-    byte_offset: 1012
-    description: ICACHE version register
-    fieldset: ICACHE_VERR
-  - name: IPIDR
-    byte_offset: 1016
-    description: ICACHE IP identification register
-  - name: SIDR
-    byte_offset: 1020
-    description: ICACHE IP size identification register
+    - name: CR
+      byte_offset: 0
+      description: ICACHE control register
+      fieldset: ICACHE_CR
+    - name: SR
+      byte_offset: 4
+      description: ICACHE status register
+      fieldset: ICACHE_SR
+    - name: IER
+      byte_offset: 8
+      description: ICACHE interrupt enable register
+      fieldset: ICACHE_IER
+    - name: FCR
+      byte_offset: 12
+      description: ICACHE flag clear register
+      fieldset: ICACHE_FCR
+    - name: HMONR
+      byte_offset: 16
+      description: ICACHE hit monitor register
+      fieldset: ICACHE_HMONR
+    - name: MMONR
+      byte_offset: 20
+      description: ICACHE miss monitor register
+      fieldset: ICACHE_MMONR
+    - name: CRR0
+      byte_offset: 32
+      description: ICACHE region 0 configuration register
+    - name: CRR1
+      byte_offset: 36
+      description: ICACHE region 1 configuration register
+    - name: CRR2
+      byte_offset: 40
+      description: ICACHE region 2 configuration register
+    - name: CRR3
+      byte_offset: 44
+      description: ICACHE region 3 configuration register
+    - name: HWCFGR
+      byte_offset: 1008
+      description: ICACHE hardware configuration register
+      fieldset: ICACHE_HWCFGR
+    - name: VERR
+      byte_offset: 1012
+      description: ICACHE version register
+      fieldset: ICACHE_VERR
+    - name: IPIDR
+      byte_offset: 1016
+      description: ICACHE IP identification register
+    - name: SIDR
+      byte_offset: 1020
+      description: ICACHE IP size identification register
 fieldset/ICACHE_CR:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
-    description: enable
-  - name: CACHEINV
-    bit_offset: 1
-    bit_size: 1
-    description: cache invalidation
-  - name: WAYSEL
-    bit_offset: 2
-    bit_size: 1
-    description: cache associativity mode selection
-  - name: HITMEN
-    bit_offset: 16
-    bit_size: 1
-    description: hit monitor enable
-  - name: MISSMEN
-    bit_offset: 17
-    bit_size: 1
-    description: miss monitor enable
-  - name: HITMRST
-    bit_offset: 18
-    bit_size: 1
-    description: hit monitor reset
-  - name: MISSMRST
-    bit_offset: 19
-    bit_size: 1
-    description: miss monitor reset
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+      description: enable
+    - name: CACHEINV
+      bit_offset: 1
+      bit_size: 1
+      description: cache invalidation
+    - name: WAYSEL
+      bit_offset: 2
+      bit_size: 1
+      description: cache associativity mode selection
+    - name: HITMEN
+      bit_offset: 16
+      bit_size: 1
+      description: hit monitor enable
+    - name: MISSMEN
+      bit_offset: 17
+      bit_size: 1
+      description: miss monitor enable
+    - name: HITMRST
+      bit_offset: 18
+      bit_size: 1
+      description: hit monitor reset
+    - name: MISSMRST
+      bit_offset: 19
+      bit_size: 1
+      description: miss monitor reset
 fieldset/ICACHE_SR:
   description: ''
   fields:
-  - name: BUSYF
-    bit_offset: 0
-    bit_size: 1
-    description: busy flag
-  - name: BSYENDF
-    bit_offset: 1
-    bit_size: 1
-    description: busy end flag
-  - name: ERRF
-    bit_offset: 2
-    bit_size: 1
-    description: cache error flag
+    - name: BUSYF
+      bit_offset: 0
+      bit_size: 1
+      description: busy flag
+    - name: BSYENDF
+      bit_offset: 1
+      bit_size: 1
+      description: busy end flag
+    - name: ERRF
+      bit_offset: 2
+      bit_size: 1
+      description: cache error flag
 fieldset/ICACHE_IER:
   description: ''
   fields:
-  - name: BSYENDIE
-    bit_offset: 1
-    bit_size: 1
-    description: interrupt enable on busy end
-  - name: ERRIE
-    bit_offset: 2
-    bit_size: 1
-    description: interrupt enable on cache error
+    - name: BSYENDIE
+      bit_offset: 1
+      bit_size: 1
+      description: interrupt enable on busy end
+    - name: ERRIE
+      bit_offset: 2
+      bit_size: 1
+      description: interrupt enable on cache error
 fieldset/ICACHE_FCR:
   description: ''
   fields:
-  - name: CBSYENDF
-    bit_offset: 1
-    bit_size: 1
-    description: clear busy end flag
-  - name: CERRF
-    bit_offset: 2
-    bit_size: 1
-    description: clear cache error flag
+    - name: CBSYENDF
+      bit_offset: 1
+      bit_size: 1
+      description: clear busy end flag
+    - name: CERRF
+      bit_offset: 2
+      bit_size: 1
+      description: clear cache error flag
 fieldset/ICACHE_HMONR:
   description: ''
   fields:
-  - name: HITMON
-    bit_offset: 0
-    bit_size: 32
-    description: cache hit monitor counter
+    - name: HITMON
+      bit_offset: 0
+      bit_size: 32
+      description: cache hit monitor counter
 fieldset/ICACHE_MMONR:
   description: ''
   fields:
-  - name: MISSMON
-    bit_offset: 0
-    bit_size: 16
-    description: cache miss monitor counter
+    - name: MISSMON
+      bit_offset: 0
+      bit_size: 16
+      description: cache miss monitor counter
 fieldset/ICACHE_HWCFGR:
   description: ''
   fields:
-  - name: WAYS
-    bit_offset: 0
-    bit_size: 2
-    description: cache associativity, number of ways
-  - name: SIZE
-    bit_offset: 4
-    bit_size: 3
-    description: cache size
-  - name: LWIDTH
-    bit_offset: 9
-    bit_size: 2
-    description: cache line width
-  - name: RANGE
-    bit_offset: 12
-    bit_size: 4
-    description: range granularity of remapped memory regions
-  - name: REGION
-    bit_offset: 16
-    bit_size: 3
-    description: number of regions that can be remapped
-  - name: FMASTER
-    bit_offset: 21
-    bit_size: 2
-    description: data size of the first AHB master interface (master1)
-  - name: SMASTER
-    bit_offset: 23
-    bit_size: 2
-    description: data size of the second AHB master interface (master2)
+    - name: WAYS
+      bit_offset: 0
+      bit_size: 2
+      description: cache associativity, number of ways
+    - name: SIZE
+      bit_offset: 4
+      bit_size: 3
+      description: cache size
+    - name: LWIDTH
+      bit_offset: 9
+      bit_size: 2
+      description: cache line width
+    - name: RANGE
+      bit_offset: 12
+      bit_size: 4
+      description: range granularity of remapped memory regions
+    - name: REGION
+      bit_offset: 16
+      bit_size: 3
+      description: number of regions that can be remapped
+    - name: FMASTER
+      bit_offset: 21
+      bit_size: 2
+      description: data size of the first AHB master interface (master1)
+    - name: SMASTER
+      bit_offset: 23
+      bit_size: 2
+      description: data size of the second AHB master interface (master2)
 fieldset/ICACHE_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: minor IP revision
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: major IP revision
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: minor IP revision
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: major IP revision

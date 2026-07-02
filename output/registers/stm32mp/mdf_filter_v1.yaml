@@ -1,63 +1,63 @@
 block/MDF_Filter:
   description: ''
   items:
-  - name: SITFCR
-    byte_offset: 128
-    description: MDF Serial Interface Control Register
-  - name: BSMXCR
-    byte_offset: 132
-    description: MDF Bitstream Matrix Control Register
-  - name: DFLTCR
-    byte_offset: 136
-    description: MDF Digital Filter Control Register
-  - name: DFLTCICR
-    byte_offset: 140
-    description: MDF MCIC Configuration Register
-  - name: DFLTRSFR
-    byte_offset: 144
-    description: MDF Reshape Filter Configuration Register
-  - name: DFLTINTR
-    byte_offset: 148
-    description: MDF Integrator Configuration Register
-  - name: OLDCR
-    byte_offset: 152
-    description: MDF Out-Of Limit Detector Control Register
-  - name: OLDTHLR
-    byte_offset: 156
-    description: MDF OLD Threshold Low Register
-  - name: OLDTHHR
-    byte_offset: 160
-    description: MDF OLD Threshold High Register
-  - name: DLYCR
-    byte_offset: 164
-    description: MDF Delay control Register
-  - name: SCDCR
-    byte_offset: 168
-    description: MDF short circuit detector control Register
-  - name: DFLTIER
-    byte_offset: 172
-    description: MDF DFLT Interrupt enable Register
-  - name: DFLTISR
-    byte_offset: 176
-    description: MDF DFLT Interrupt status Register
-  - name: OECCR
-    byte_offset: 180
-    description: MDF Offset Error Compensation Control Register
-  - name: SADCR
-    byte_offset: 184
-    description: MDF SAD Control Register
-  - name: SADCFGR
-    byte_offset: 188
-    description: MDF SAD configuration register
-  - name: SADSDLVR
-    byte_offset: 192
-    description: MDF SAD Sound level Register
-  - name: SADANLVR
-    byte_offset: 196
-    description: MDF SAD Ambient Noise level Register
-  - name: SNPSDR
-    byte_offset: 236
-    description: MDF Snapshot Data Register
-  - name: DFLTDR
-    byte_offset: 240
-    description: MDF Digital Filter Data Register
+    - name: SITFCR
+      byte_offset: 128
+      description: MDF Serial Interface Control Register
+    - name: BSMXCR
+      byte_offset: 132
+      description: MDF Bitstream Matrix Control Register
+    - name: DFLTCR
+      byte_offset: 136
+      description: MDF Digital Filter Control Register
+    - name: DFLTCICR
+      byte_offset: 140
+      description: MDF MCIC Configuration Register
+    - name: DFLTRSFR
+      byte_offset: 144
+      description: MDF Reshape Filter Configuration Register
+    - name: DFLTINTR
+      byte_offset: 148
+      description: MDF Integrator Configuration Register
+    - name: OLDCR
+      byte_offset: 152
+      description: MDF Out-Of Limit Detector Control Register
+    - name: OLDTHLR
+      byte_offset: 156
+      description: MDF OLD Threshold Low Register
+    - name: OLDTHHR
+      byte_offset: 160
+      description: MDF OLD Threshold High Register
+    - name: DLYCR
+      byte_offset: 164
+      description: MDF Delay control Register
+    - name: SCDCR
+      byte_offset: 168
+      description: MDF short circuit detector control Register
+    - name: DFLTIER
+      byte_offset: 172
+      description: MDF DFLT Interrupt enable Register
+    - name: DFLTISR
+      byte_offset: 176
+      description: MDF DFLT Interrupt status Register
+    - name: OECCR
+      byte_offset: 180
+      description: MDF Offset Error Compensation Control Register
+    - name: SADCR
+      byte_offset: 184
+      description: MDF SAD Control Register
+    - name: SADCFGR
+      byte_offset: 188
+      description: MDF SAD configuration register
+    - name: SADSDLVR
+      byte_offset: 192
+      description: MDF SAD Sound level Register
+    - name: SADANLVR
+      byte_offset: 196
+      description: MDF SAD Ambient Noise level Register
+    - name: SNPSDR
+      byte_offset: 236
+      description: MDF Snapshot Data Register
+    - name: DFLTDR
+      byte_offset: 240
+      description: MDF Digital Filter Data Register

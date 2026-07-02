@@ -1,145 +1,145 @@
 block/RNG:
   description: ''
   items:
-  - name: CR
-    byte_offset: 0
-    description: RNG control register
-    fieldset: RNG_CR
-  - name: SR
-    byte_offset: 4
-    description: RNG status register
-    fieldset: RNG_SR
-  - name: DR
-    byte_offset: 8
-    description: RNG data register
-    fieldset: RNG_DR
-  - name: NSCR
-    byte_offset: 12
-    description: RNG noise source control register
-  - name: HTCR
-    byte_offset: 16
-    description: RNG health test control register
-    fieldset: RNG_HTCR
-  - name: HWCFGR
-    byte_offset: 1008
-    description: RNG hardware configuration register
-    fieldset: RNG_HWCFGR
-  - name: VERR
-    byte_offset: 1012
-    description: RNG version register
-    fieldset: RNG_VERR
-  - name: IPIDR
-    byte_offset: 1016
-    description: RNG identification register
-    fieldset: RNG_IPIDR
-  - name: SIDR
-    byte_offset: 1020
-    description: RNG size identification register
-    fieldset: RNG_SIDR
+    - name: CR
+      byte_offset: 0
+      description: RNG control register
+      fieldset: RNG_CR
+    - name: SR
+      byte_offset: 4
+      description: RNG status register
+      fieldset: RNG_SR
+    - name: DR
+      byte_offset: 8
+      description: RNG data register
+      fieldset: RNG_DR
+    - name: NSCR
+      byte_offset: 12
+      description: RNG noise source control register
+    - name: HTCR
+      byte_offset: 16
+      description: RNG health test control register
+      fieldset: RNG_HTCR
+    - name: HWCFGR
+      byte_offset: 1008
+      description: RNG hardware configuration register
+      fieldset: RNG_HWCFGR
+    - name: VERR
+      byte_offset: 1012
+      description: RNG version register
+      fieldset: RNG_VERR
+    - name: IPIDR
+      byte_offset: 1016
+      description: RNG identification register
+      fieldset: RNG_IPIDR
+    - name: SIDR
+      byte_offset: 1020
+      description: RNG size identification register
+      fieldset: RNG_SIDR
 fieldset/RNG_CR:
   description: ''
   fields:
-  - name: RNGEN
-    bit_offset: 2
-    bit_size: 1
-    description: '0x00000004'
-  - name: IE
-    bit_offset: 3
-    bit_size: 1
-    description: '0x00000008'
-  - name: CED
-    bit_offset: 5
-    bit_size: 1
-    description: '0x00000020'
-  - name: ARDIS
-    bit_offset: 7
-    bit_size: 1
-    description: '0x00000080'
-  - name: NISTC
-    bit_offset: 12
-    bit_size: 1
-    description: '0x00001000'
-  - name: CLKDIV
-    bit_offset: 16
-    bit_size: 4
-    description: '0x00010000'
-  - name: CONDRST
-    bit_offset: 30
-    bit_size: 1
-    description: '0x40000000'
-  - name: CONFIGLOCK
-    bit_offset: 31
-    bit_size: 1
+    - name: RNGEN
+      bit_offset: 2
+      bit_size: 1
+      description: '0x00000004'
+    - name: IE
+      bit_offset: 3
+      bit_size: 1
+      description: '0x00000008'
+    - name: CED
+      bit_offset: 5
+      bit_size: 1
+      description: '0x00000020'
+    - name: ARDIS
+      bit_offset: 7
+      bit_size: 1
+      description: '0x00000080'
+    - name: NISTC
+      bit_offset: 12
+      bit_size: 1
+      description: '0x00001000'
+    - name: CLKDIV
+      bit_offset: 16
+      bit_size: 4
+      description: '0x00010000'
+    - name: CONDRST
+      bit_offset: 30
+      bit_size: 1
+      description: '0x40000000'
+    - name: CONFIGLOCK
+      bit_offset: 31
+      bit_size: 1
 fieldset/RNG_SR:
   description: ''
   fields:
-  - name: DRDY
-    bit_offset: 0
-    bit_size: 1
-    description: Data ready
-  - name: CECS
-    bit_offset: 1
-    bit_size: 1
-    description: Clock error current status
-  - name: SECS
-    bit_offset: 2
-    bit_size: 1
-    description: Seed error current status
-  - name: CEIS
-    bit_offset: 5
-    bit_size: 1
-    description: Clock error interrupt status
-  - name: SEIS
-    bit_offset: 6
-    bit_size: 1
-    description: Seed error interrupt status
+    - name: DRDY
+      bit_offset: 0
+      bit_size: 1
+      description: Data ready
+    - name: CECS
+      bit_offset: 1
+      bit_size: 1
+      description: Clock error current status
+    - name: SECS
+      bit_offset: 2
+      bit_size: 1
+      description: Seed error current status
+    - name: CEIS
+      bit_offset: 5
+      bit_size: 1
+      description: Clock error interrupt status
+    - name: SEIS
+      bit_offset: 6
+      bit_size: 1
+      description: Seed error interrupt status
 fieldset/RNG_DR:
   description: ''
   fields:
-  - name: RNDATA
-    bit_offset: 0
-    bit_size: 32
-    description: Random data
+    - name: RNDATA
+      bit_offset: 0
+      bit_size: 32
+      description: Random data
 fieldset/RNG_HTCR:
   description: ''
   fields:
-  - name: HTCFG
-    bit_offset: 0
-    bit_size: 32
-    description: health test configuration
+    - name: HTCFG
+      bit_offset: 0
+      bit_size: 32
+      description: health test configuration
 fieldset/RNG_HWCFGR:
   description: ''
   fields:
-  - name: CFG1
-    bit_offset: 0
-    bit_size: 8
-    description: Hardware generic 1
-  - name: CFG2
-    bit_offset: 8
-    bit_size: 8
-    description: Hardware generic 2
+    - name: CFG1
+      bit_offset: 0
+      bit_size: 8
+      description: Hardware generic 1
+    - name: CFG2
+      bit_offset: 8
+      bit_size: 8
+      description: Hardware generic 2
 fieldset/RNG_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: RNG minor revision
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: RNG major revision
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: RNG minor revision
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: RNG major revision
 fieldset/RNG_IPIDR:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 32
-    description: RNG identification code
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+      description: RNG identification code
 fieldset/RNG_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: RNG size identification code
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: RNG size identification code

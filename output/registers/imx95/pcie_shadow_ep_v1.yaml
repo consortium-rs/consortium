@@ -1,83 +1,83 @@
 block/PCIE_SHADOW_EP:
   description: ''
   items:
-  - name: BAR0_MASK_REG
-    byte_offset: 16
-  - name: BAR1_MASK_REG
-    byte_offset: 20
-  - name: BAR2_MASK_REG
-    byte_offset: 24
-  - name: BAR3_MASK_REG
-    byte_offset: 28
-  - name: BAR4_MASK_REG
-    byte_offset: 32
-  - name: BAR5_MASK_REG
-    byte_offset: 36
-  - name: EXP_ROM_BAR_MASK_REG
-    byte_offset: 48
+    - name: BAR0_MASK_REG
+      byte_offset: 16
+    - name: BAR1_MASK_REG
+      byte_offset: 20
+    - name: BAR2_MASK_REG
+      byte_offset: 24
+    - name: BAR3_MASK_REG
+      byte_offset: 28
+    - name: BAR4_MASK_REG
+      byte_offset: 32
+    - name: BAR5_MASK_REG
+      byte_offset: 36
+    - name: EXP_ROM_BAR_MASK_REG
+      byte_offset: 48
 fieldset/PCIE_SHADOW_EP_BAR0_MASK_REG_PCI_TYPE0_BAR0:
   description: ''
   fields:
-  - name: ENABLED
-    bit_offset: 0
-    bit_size: 1
-  - name: MASK
-    bit_offset: 1
-    bit_size: 31
+    - name: ENABLED
+      bit_offset: 0
+      bit_size: 1
+    - name: MASK
+      bit_offset: 1
+      bit_size: 31
 fieldset/PCIE_SHADOW_EP_BAR1_MASK_REG_PCI_TYPE0_BAR1:
   description: ''
   fields:
-  - name: ENABLED
-    bit_offset: 0
-    bit_size: 1
-  - name: MASK
-    bit_offset: 1
-    bit_size: 31
+    - name: ENABLED
+      bit_offset: 0
+      bit_size: 1
+    - name: MASK
+      bit_offset: 1
+      bit_size: 31
 fieldset/PCIE_SHADOW_EP_BAR2_MASK_REG_PCI_TYPE0_BAR2:
   description: ''
   fields:
-  - name: ENABLED
-    bit_offset: 0
-    bit_size: 1
-  - name: MASK
-    bit_offset: 1
-    bit_size: 31
+    - name: ENABLED
+      bit_offset: 0
+      bit_size: 1
+    - name: MASK
+      bit_offset: 1
+      bit_size: 31
 fieldset/PCIE_SHADOW_EP_BAR3_MASK_REG_PCI_TYPE0_BAR3:
   description: ''
   fields:
-  - name: ENABLED
-    bit_offset: 0
-    bit_size: 1
-  - name: MASK
-    bit_offset: 1
-    bit_size: 31
+    - name: ENABLED
+      bit_offset: 0
+      bit_size: 1
+    - name: MASK
+      bit_offset: 1
+      bit_size: 31
 fieldset/PCIE_SHADOW_EP_BAR4_MASK_REG_PCI_TYPE0_BAR4:
   description: ''
   fields:
-  - name: ENABLED
-    bit_offset: 0
-    bit_size: 1
-  - name: MASK
-    bit_offset: 1
-    bit_size: 31
+    - name: ENABLED
+      bit_offset: 0
+      bit_size: 1
+    - name: MASK
+      bit_offset: 1
+      bit_size: 31
 fieldset/PCIE_SHADOW_EP_BAR5_MASK_REG_PCI_TYPE0_BAR5:
   description: ''
   fields:
-  - name: ENABLED
-    bit_offset: 0
-    bit_size: 1
-  - name: MASK
-    bit_offset: 1
-    bit_size: 31
+    - name: ENABLED
+      bit_offset: 0
+      bit_size: 1
+    - name: MASK
+      bit_offset: 1
+      bit_size: 31
 fieldset/PCIE_SHADOW_EP_EXP_ROM_BAR_MASK_REG_ROM_BAR:
   description: ''
   fields:
-  - name: ENABLED
-    bit_offset: 0
-    bit_size: 1
+    - name: ENABLED
+      bit_offset: 0
+      bit_size: 1
 fieldset/PCIE_SHADOW_EP_EXP_ROM_BAR_MASK_REG_ROM:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 1
-    bit_size: 31
+    - name: MASK
+      bit_offset: 1
+      bit_size: 31

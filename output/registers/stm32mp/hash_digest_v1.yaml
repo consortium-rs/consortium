@@ -1,9 +1,9 @@
 block/HASH_DIGEST:
   description: ''
   items:
-  - name: HR
-    byte_offset: 784
-    array:
-      len: 50
-      stride: 4
-    description: HASH digest registers
+    - name: HR
+      byte_offset: 784
+      array:
+        len: 50
+        stride: 4
+      description: HASH digest registers

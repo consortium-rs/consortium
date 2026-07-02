@@ -1,502 +1,502 @@
 block/BLK_CTRL_S_AONMIX:
   description: ''
   items:
-  - name: CM33_IRQ_MASK
-    byte_offset: 0
-    array:
-      len: 7
-      stride: 4
-    fieldset: BLK_CTRL_S_AONMIX_CM33_IRQ_MASK
-  - name: INITNSVTOR
-    byte_offset: 28
-    fieldset: BLK_CTRL_S_AONMIX_INITNSVTOR
-  - name: CA55_IRQ_MASK
-    byte_offset: 64
-    array:
-      len: 6
-      stride: 4
-    fieldset: BLK_CTRL_S_AONMIX_CA55_IRQ_MASK
-  - name: CA55_IRQ_MASK6
-    byte_offset: 88
-    fieldset: BLK_CTRL_S_AONMIX_CA55_IRQ_MASK6
-  - name: INITSVTOR
-    byte_offset: 92
-    fieldset: BLK_CTRL_S_AONMIX_INITSVTOR
-  - name: M33_CFG
-    byte_offset: 96
-    fieldset: BLK_CTRL_S_AONMIX_M33_CFG
-  - name: DAP_ACCESS_STKYBIT
-    byte_offset: 256
-    fieldset: BLK_CTRL_S_AONMIX_DAP_ACCESS_STKYBIT
-  - name: LP_HANDSHAKE
-    byte_offset: 272
-  - name: LP_HANDSHAKE2
-    byte_offset: 276
-    fieldset: BLK_CTRL_S_AONMIX_LP_HANDSHAKE2
-  - name: CA55_CPUWAIT
-    byte_offset: 280
-  - name: CA55_RVBARADDR0_L
-    byte_offset: 284
-  - name: CA55_RVBARADDR0_H
-    byte_offset: 288
-  - name: CA55_RVBARADDR1_L
-    byte_offset: 292
-  - name: CA55_RVBARADDR1_H
-    byte_offset: 296
-  - name: ELE_IRQ_MASK
-    byte_offset: 300
-  - name: ELE_RESET_REQ_MASK
-    byte_offset: 304
-  - name: ELE_HALT_ST
-    byte_offset: 308
-  - name: CA55_MODE
-    byte_offset: 312
-    fieldset: BLK_CTRL_S_AONMIX_CA55_MODE
-  - name: NMI_MASK
-    byte_offset: 316
-    fieldset: BLK_CTRL_S_AONMIX_NMI_MASK
-  - name: NMI_CLR
-    byte_offset: 320
-    fieldset: BLK_CTRL_S_AONMIX_NMI_CLR
-  - name: WDOG_ANY_MASK
-    byte_offset: 324
-    fieldset: BLK_CTRL_S_AONMIX_WDOG_ANY_MASK
-  - name: ELEV1_IPI_NOCLK_REF1
-    byte_offset: 328
+    - name: CM33_IRQ_MASK
+      byte_offset: 0
+      array:
+        len: 7
+        stride: 4
+      fieldset: BLK_CTRL_S_AONMIX_CM33_IRQ_MASK
+    - name: INITNSVTOR
+      byte_offset: 28
+      fieldset: BLK_CTRL_S_AONMIX_INITNSVTOR
+    - name: CA55_IRQ_MASK
+      byte_offset: 64
+      array:
+        len: 6
+        stride: 4
+      fieldset: BLK_CTRL_S_AONMIX_CA55_IRQ_MASK
+    - name: CA55_IRQ_MASK6
+      byte_offset: 88
+      fieldset: BLK_CTRL_S_AONMIX_CA55_IRQ_MASK6
+    - name: INITSVTOR
+      byte_offset: 92
+      fieldset: BLK_CTRL_S_AONMIX_INITSVTOR
+    - name: M33_CFG
+      byte_offset: 96
+      fieldset: BLK_CTRL_S_AONMIX_M33_CFG
+    - name: DAP_ACCESS_STKYBIT
+      byte_offset: 256
+      fieldset: BLK_CTRL_S_AONMIX_DAP_ACCESS_STKYBIT
+    - name: LP_HANDSHAKE
+      byte_offset: 272
+    - name: LP_HANDSHAKE2
+      byte_offset: 276
+      fieldset: BLK_CTRL_S_AONMIX_LP_HANDSHAKE2
+    - name: CA55_CPUWAIT
+      byte_offset: 280
+    - name: CA55_RVBARADDR0_L
+      byte_offset: 284
+    - name: CA55_RVBARADDR0_H
+      byte_offset: 288
+    - name: CA55_RVBARADDR1_L
+      byte_offset: 292
+    - name: CA55_RVBARADDR1_H
+      byte_offset: 296
+    - name: ELE_IRQ_MASK
+      byte_offset: 300
+    - name: ELE_RESET_REQ_MASK
+      byte_offset: 304
+    - name: ELE_HALT_ST
+      byte_offset: 308
+    - name: CA55_MODE
+      byte_offset: 312
+      fieldset: BLK_CTRL_S_AONMIX_CA55_MODE
+    - name: NMI_MASK
+      byte_offset: 316
+      fieldset: BLK_CTRL_S_AONMIX_NMI_MASK
+    - name: NMI_CLR
+      byte_offset: 320
+      fieldset: BLK_CTRL_S_AONMIX_NMI_CLR
+    - name: WDOG_ANY_MASK
+      byte_offset: 324
+      fieldset: BLK_CTRL_S_AONMIX_WDOG_ANY_MASK
+    - name: ELEV1_IPI_NOCLK_REF1
+      byte_offset: 328
 fieldset/BLK_CTRL_S_AONMIX_CM33_IRQ_MASK:
   description: ''
   fields:
-  - name: M
-    bit_offset: 0
-    bit_size: 32
+    - name: M
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_S_AONMIX_INITNSVTOR:
   description: ''
   fields:
-  - name: M
-    bit_offset: 0
-    bit_size: 32
-    description: INITSVTOR
+    - name: M
+      bit_offset: 0
+      bit_size: 32
+      description: INITSVTOR
 fieldset/BLK_CTRL_S_AONMIX_CA55_IRQ_MASK:
   description: ''
   fields:
-  - name: M
-    bit_offset: 0
-    bit_size: 32
+    - name: M
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_S_AONMIX_CA55_IRQ_MASK6:
   description: ''
   fields:
-  - name: M
-    bit_offset: 0
-    bit_size: 32
+    - name: M
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_S_AONMIX_INITSVTOR:
   description: ''
   fields:
-  - name: M
-    bit_offset: 0
-    bit_size: 32
-    description: INITSVTOR
+    - name: M
+      bit_offset: 0
+      bit_size: 32
+      description: INITSVTOR
 fieldset/BLK_CTRL_S_AONMIX_M33_CFG:
   description: ''
   fields:
-  - name: WAIT
-    bit_offset: 2
-    bit_size: 1
-    description: M33 CPU WAIT
+    - name: WAIT
+      bit_offset: 2
+      bit_size: 1
+      description: M33 CPU WAIT
 fieldset/BLK_CTRL_S_AONMIX_M33_CFG_TCM:
   description: ''
   fields:
-  - name: SIZE
-    bit_offset: 3
-    bit_size: 2
-    description: M33 CPU WAIT
+    - name: SIZE
+      bit_offset: 3
+      bit_size: 2
+      description: M33 CPU WAIT
 fieldset/BLK_CTRL_S_AONMIX_DAP_ACCESS_STKYBIT:
   description: ''
   fields:
-  - name: M33
-    bit_offset: 0
-    bit_size: 1
-  - name: A55
-    bit_offset: 1
-    bit_size: 1
+    - name: M33
+      bit_offset: 0
+      bit_size: 1
+    - name: A55
+      bit_offset: 1
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_CA55_CPU0_COLD_RST_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_CA55_CPU0_LP_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 1
-    bit_size: 1
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_CA55_CPU1_COLD_RST_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 2
-    bit_size: 1
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_CA55_CPU1_LP_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 3
-    bit_size: 1
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_CA55_PLT_COLD_RST_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 4
-    bit_size: 1
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_CA55_PLT_LP_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 5
-    bit_size: 1
+    - name: EN
+      bit_offset: 5
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_CM33_PLT_COLD_RST_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 6
-    bit_size: 1
+    - name: EN
+      bit_offset: 6
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_AONMIX_COLD_RST_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 7
-    bit_size: 1
+    - name: EN
+      bit_offset: 7
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_WAKEUPMIX_COLD_RST_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 8
-    bit_size: 1
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_WAKEUPMIX_LP_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 9
-    bit_size: 1
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_NICMIX_COLD_RST_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 10
-    bit_size: 1
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_NICMIX_LP_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 11
-    bit_size: 1
+    - name: EN
+      bit_offset: 11
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_MEDIAMIX_COLD_RST_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 12
-    bit_size: 1
+    - name: EN
+      bit_offset: 12
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_MEDIAMIX_LP_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 13
-    bit_size: 1
+    - name: EN
+      bit_offset: 13
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_HSIOMIX_COLD_RST_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 14
-    bit_size: 1
+    - name: EN
+      bit_offset: 14
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_AON_TRDC_CLK_OFF_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 15
-    bit_size: 1
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_WAKEUP_TRDC_CLK_OFF_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 16
-    bit_size: 1
+    - name: EN
+      bit_offset: 16
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_FLEXSPI_CLK_OFF_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 17
-    bit_size: 1
+    - name: EN
+      bit_offset: 17
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_NIC_APB_CLK_OFF_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 18
-    bit_size: 1
+    - name: EN
+      bit_offset: 18
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_NIC_MEDIA_CLK_OFF_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 19
-    bit_size: 1
+    - name: EN
+      bit_offset: 19
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_USB_CLK_OFF_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 20
-    bit_size: 1
+    - name: EN
+      bit_offset: 20
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_CM33_CLK_OFF_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 21
-    bit_size: 1
+    - name: EN
+      bit_offset: 21
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_A55_CLK_OFF_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 22
-    bit_size: 1
+    - name: EN
+      bit_offset: 22
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_ELE_CLK_OFF_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 23
-    bit_size: 1
+    - name: EN
+      bit_offset: 23
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_ELE_CLK_ON_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 24
-    bit_size: 1
+    - name: EN
+      bit_offset: 24
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_A55_CLK_ON_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 25
-    bit_size: 1
+    - name: EN
+      bit_offset: 25
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_CM33_CLK_ON_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 26
-    bit_size: 1
+    - name: EN
+      bit_offset: 26
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_USB_CLK_ON_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 27
-    bit_size: 1
+    - name: EN
+      bit_offset: 27
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_NIC_MEDIA_CLK_ON_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 28
-    bit_size: 1
+    - name: EN
+      bit_offset: 28
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_NIC_APB_CLK_ON_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 29
-    bit_size: 1
+    - name: EN
+      bit_offset: 29
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_FLEXSPI_CLK_ON_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 30
-    bit_size: 1
+    - name: EN
+      bit_offset: 30
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE_WAKEUPMIX_TRDC_CLK_ON_HS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_LP_HANDSHAKE2:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_CA55_CPUWAIT_CPU0:
   description: ''
   fields:
-  - name: WAIT
-    bit_offset: 0
-    bit_size: 1
+    - name: WAIT
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_CA55_CPUWAIT_CPU1:
   description: ''
   fields:
-  - name: WAIT
-    bit_offset: 1
-    bit_size: 1
+    - name: WAIT
+      bit_offset: 1
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_CA55_RVBARADDR0_L_ADDR0:
   description: ''
   fields:
-  - name: L
-    bit_offset: 0
-    bit_size: 32
+    - name: L
+      bit_offset: 0
+      bit_size: 32
 fieldset/BLK_CTRL_S_AONMIX_CA55_RVBARADDR0_H_ADDR0:
   description: ''
   fields:
-  - name: H
-    bit_offset: 0
-    bit_size: 6
-    description: Higher address bits
+    - name: H
+      bit_offset: 0
+      bit_size: 6
+      description: Higher address bits
 fieldset/BLK_CTRL_S_AONMIX_CA55_RVBARADDR1_L_ADDR1:
   description: ''
   fields:
-  - name: L
-    bit_offset: 0
-    bit_size: 32
-    description: CA55_RVBARADDR1_L
+    - name: L
+      bit_offset: 0
+      bit_size: 32
+      description: CA55_RVBARADDR1_L
 fieldset/BLK_CTRL_S_AONMIX_CA55_RVBARADDR1_H_ADDR1:
   description: ''
   fields:
-  - name: H
-    bit_offset: 0
-    bit_size: 6
-    description: CA55_RVBARADDR1_H
+    - name: H
+      bit_offset: 0
+      bit_size: 6
+      description: CA55_RVBARADDR1_H
 fieldset/BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_NOCLK:
   description: ''
   fields:
-  - name: REF2
-    bit_offset: 0
-    bit_size: 1
-  - name: REF1
-    bit_offset: 1
-    bit_size: 1
-  - name: 32K
-    bit_offset: 4
-    bit_size: 1
+    - name: REF2
+      bit_offset: 0
+      bit_size: 1
+    - name: REF1
+      bit_offset: 1
+      bit_size: 1
+    - name: 32K
+      bit_offset: 4
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_LMDA_32K_RESET:
   description: ''
   fields:
-  - name: REQ
-    bit_offset: 2
-    bit_size: 1
+    - name: REQ
+      bit_offset: 2
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_LMDA_RESET:
   description: ''
   fields:
-  - name: REQ
-    bit_offset: 3
-    bit_size: 1
+    - name: REQ
+      bit_offset: 3
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_LMDA_SYS:
   description: ''
   fields:
-  - name: FAIL
-    bit_offset: 5
-    bit_size: 1
+    - name: FAIL
+      bit_offset: 5
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_LC:
   description: ''
   fields:
-  - name: BRICKED
-    bit_offset: 6
-    bit_size: 1
+    - name: BRICKED
+      bit_offset: 6
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELE_IRQ_MASK_WDG:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 8
-    bit_size: 1
+    - name: RESET
+      bit_offset: 8
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELE_RESET_REQ_MASK_NOCLK:
   description: ''
   fields:
-  - name: REF2
-    bit_offset: 0
-    bit_size: 1
-  - name: REF1
-    bit_offset: 1
-    bit_size: 1
-  - name: 32K
-    bit_offset: 4
-    bit_size: 1
+    - name: REF2
+      bit_offset: 0
+      bit_size: 1
+    - name: REF1
+      bit_offset: 1
+      bit_size: 1
+    - name: 32K
+      bit_offset: 4
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELE_RESET_REQ_MASK_LMDA_32K_RESET:
   description: ''
   fields:
-  - name: REQ
-    bit_offset: 2
-    bit_size: 1
+    - name: REQ
+      bit_offset: 2
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELE_RESET_REQ_MASK_LMDA_RESET:
   description: ''
   fields:
-  - name: REQ
-    bit_offset: 3
-    bit_size: 1
+    - name: REQ
+      bit_offset: 3
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELE_RESET_REQ_MASK_LMDA_SYS:
   description: ''
   fields:
-  - name: FAIL
-    bit_offset: 5
-    bit_size: 1
+    - name: FAIL
+      bit_offset: 5
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELE_RESET_REQ_MASK_LC:
   description: ''
   fields:
-  - name: BRICKED
-    bit_offset: 6
-    bit_size: 1
+    - name: BRICKED
+      bit_offset: 6
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELE_RESET_REQ_MASK_PUF:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 7
-    bit_size: 1
+    - name: RESET
+      bit_offset: 7
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELE_RESET_REQ_MASK_WDG:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 8
-    bit_size: 1
+    - name: RESET
+      bit_offset: 8
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELE_HALT_ST_ELE_HALT:
   description: ''
   fields:
-  - name: ACK
-    bit_offset: 0
-    bit_size: 1
+    - name: ACK
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELE_HALT_ST_ELE_HALT_EXIT_IRQ:
   description: ''
   fields:
-  - name: CLR
-    bit_offset: 8
-    bit_size: 1
+    - name: CLR
+      bit_offset: 8
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_CA55_MODE:
   description: ''
   fields:
-  - name: AA64NAA32
-    bit_offset: 0
-    bit_size: 2
+    - name: AA64NAA32
+      bit_offset: 0
+      bit_size: 2
 fieldset/BLK_CTRL_S_AONMIX_NMI_MASK:
   description: ''
   fields:
-  - name: CM33
-    bit_offset: 0
-    bit_size: 1
+    - name: CM33
+      bit_offset: 0
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_NMI_CLR:
   description: ''
   fields:
-  - name: CM33
-    bit_offset: 0
-    bit_size: 1
-    description: NMI clear
+    - name: CM33
+      bit_offset: 0
+      bit_size: 1
+      description: NMI clear
 fieldset/BLK_CTRL_S_AONMIX_WDOG_ANY_MASK:
   description: ''
   fields:
-  - name: WDOG1
-    bit_offset: 0
-    bit_size: 1
-  - name: WDOG2
-    bit_offset: 1
-    bit_size: 1
-  - name: WDOG3
-    bit_offset: 2
-    bit_size: 1
-  - name: WDOG4
-    bit_offset: 3
-    bit_size: 1
-  - name: WDOG5
-    bit_offset: 4
-    bit_size: 1
+    - name: WDOG1
+      bit_offset: 0
+      bit_size: 1
+    - name: WDOG2
+      bit_offset: 1
+      bit_size: 1
+    - name: WDOG3
+      bit_offset: 2
+      bit_size: 1
+    - name: WDOG4
+      bit_offset: 3
+      bit_size: 1
+    - name: WDOG5
+      bit_offset: 4
+      bit_size: 1
 fieldset/BLK_CTRL_S_AONMIX_ELEV1_IPI_NOCLK_REF1_SLOW:
   description: ''
   fields:
-  - name: CLEAR
-    bit_offset: 0
-    bit_size: 1
+    - name: CLEAR
+      bit_offset: 0
+      bit_size: 1

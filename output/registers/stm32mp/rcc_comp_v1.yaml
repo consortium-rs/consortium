@@ -1,9 +1,9 @@
 block/RCC_Comp:
   description: ''
   items:
-  - name: CIDCFGR
-    byte_offset: 0
-    description: RCC Resource x CID Configuration Register
-  - name: SEMCR
-    byte_offset: 4
-    description: RCC Resource x Semaphore Control Register
+    - name: CIDCFGR
+      byte_offset: 0
+      description: RCC Resource x CID Configuration Register
+    - name: SEMCR
+      byte_offset: 4
+      description: RCC Resource x Semaphore Control Register

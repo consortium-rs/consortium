@@ -1,493 +1,493 @@
 block/COREMIX:
   description: ''
   items:
-  - name: AUTHEN_CTRL
-    byte_offset: 4
-  - name: LPM_SETTING_0
-    byte_offset: 16
-  - name: LPM_SETTING_1
-    byte_offset: 20
-  - name: LPM_SETTING_2
-    byte_offset: 24
-  - name: SLICE_SW_CTRL
-    byte_offset: 32
-  - name: IRST_REQ_CTRL
-    byte_offset: 36
-  - name: A55_HDSK_ACK_CTRL
-    byte_offset: 64
-  - name: A55_HDSK_ACK_STAT
-    byte_offset: 68
-  - name: SYSMAN_ACK_CTRL
-    byte_offset: 72
-  - name: SYSMAN_ACK_STAT
-    byte_offset: 76
-  - name: SSAR_ACK_CTRL
-    byte_offset: 80
-  - name: SSAR_ACK_STAT
-    byte_offset: 84
-    fieldset: COREMIX_SSAR_ACK_STAT
-  - name: PSW_ACK_CTRL_0
-    byte_offset: 128
-  - name: PSW_ACK_CTRL_1
-    byte_offset: 132
-  - name: PSW_ACK_STAT
-    byte_offset: 136
-  - name: UPI_STAT_0
-    byte_offset: 160
-  - name: UPI_STAT_1
-    byte_offset: 164
-  - name: UPI_STAT_2
-    byte_offset: 168
-  - name: UPI_STAT_3
-    byte_offset: 172
-  - name: FSM_STAT
-    byte_offset: 176
-  - name: FUNC_STAT
-    byte_offset: 180
-  - name: RSTR_STAT
-    byte_offset: 184
+    - name: AUTHEN_CTRL
+      byte_offset: 4
+    - name: LPM_SETTING_0
+      byte_offset: 16
+    - name: LPM_SETTING_1
+      byte_offset: 20
+    - name: LPM_SETTING_2
+      byte_offset: 24
+    - name: SLICE_SW_CTRL
+      byte_offset: 32
+    - name: IRST_REQ_CTRL
+      byte_offset: 36
+    - name: A55_HDSK_ACK_CTRL
+      byte_offset: 64
+    - name: A55_HDSK_ACK_STAT
+      byte_offset: 68
+    - name: SYSMAN_ACK_CTRL
+      byte_offset: 72
+    - name: SYSMAN_ACK_STAT
+      byte_offset: 76
+    - name: SSAR_ACK_CTRL
+      byte_offset: 80
+    - name: SSAR_ACK_STAT
+      byte_offset: 84
+      fieldset: COREMIX_SSAR_ACK_STAT
+    - name: PSW_ACK_CTRL_0
+      byte_offset: 128
+    - name: PSW_ACK_CTRL_1
+      byte_offset: 132
+    - name: PSW_ACK_STAT
+      byte_offset: 136
+    - name: UPI_STAT_0
+      byte_offset: 160
+    - name: UPI_STAT_1
+      byte_offset: 164
+    - name: UPI_STAT_2
+      byte_offset: 168
+    - name: UPI_STAT_3
+      byte_offset: 172
+    - name: FSM_STAT
+      byte_offset: 176
+    - name: FUNC_STAT
+      byte_offset: 180
+    - name: RSTR_STAT
+      byte_offset: 184
 fieldset/COREMIX_AUTHEN_CTRL_LPM:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 2
-    bit_size: 1
+    - name: MODE
+      bit_offset: 2
+      bit_size: 1
 fieldset/COREMIX_AUTHEN_CTRL_LOCK:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 7
-    bit_size: 1
-  - name: TZ
-    bit_offset: 11
-    bit_size: 1
-  - name: LIST
-    bit_offset: 15
-    bit_size: 1
+    - name: CFG
+      bit_offset: 7
+      bit_size: 1
+    - name: TZ
+      bit_offset: 11
+      bit_size: 1
+    - name: LIST
+      bit_offset: 15
+      bit_size: 1
 fieldset/COREMIX_AUTHEN_CTRL_TZ:
   description: ''
   fields:
-  - name: USER
-    bit_offset: 8
-    bit_size: 1
-  - name: NS
-    bit_offset: 9
-    bit_size: 1
+    - name: USER
+      bit_offset: 8
+      bit_size: 1
+    - name: NS
+      bit_offset: 9
+      bit_size: 1
 fieldset/COREMIX_AUTHEN_CTRL_WHITE:
   description: ''
   fields:
-  - name: LIST
-    bit_offset: 16
-    bit_size: 16
+    - name: LIST
+      bit_offset: 16
+      bit_size: 16
 fieldset/COREMIX_LPM_SETTING_0_LPM_SETTING:
   description: ''
   fields:
-  - name: CD
-    bit_offset: 0
-    bit_size: 3
+    - name: CD
+      bit_offset: 0
+      bit_size: 3
 fieldset/COREMIX_LPM_SETTING_1_LPM_SETTING:
   description: ''
   fields:
-  - name: D0
-    bit_offset: 0
-    bit_size: 3
-  - name: D1
-    bit_offset: 4
-    bit_size: 3
-  - name: D2
-    bit_offset: 8
-    bit_size: 3
-  - name: D3
-    bit_offset: 12
-    bit_size: 3
-  - name: D4
-    bit_offset: 16
-    bit_size: 3
-  - name: D5
-    bit_offset: 20
-    bit_size: 3
-  - name: D6
-    bit_offset: 24
-    bit_size: 3
-  - name: D7
-    bit_offset: 28
-    bit_size: 3
+    - name: D0
+      bit_offset: 0
+      bit_size: 3
+    - name: D1
+      bit_offset: 4
+      bit_size: 3
+    - name: D2
+      bit_offset: 8
+      bit_size: 3
+    - name: D3
+      bit_offset: 12
+      bit_size: 3
+    - name: D4
+      bit_offset: 16
+      bit_size: 3
+    - name: D5
+      bit_offset: 20
+      bit_size: 3
+    - name: D6
+      bit_offset: 24
+      bit_size: 3
+    - name: D7
+      bit_offset: 28
+      bit_size: 3
 fieldset/COREMIX_LPM_SETTING_2_LPM_SETTING:
   description: ''
   fields:
-  - name: D8
-    bit_offset: 0
-    bit_size: 3
-  - name: D9
-    bit_offset: 4
-    bit_size: 3
-  - name: D10
-    bit_offset: 8
-    bit_size: 3
-  - name: D11
-    bit_offset: 12
-    bit_size: 3
-  - name: D12
-    bit_offset: 16
-    bit_size: 3
-  - name: D13
-    bit_offset: 20
-    bit_size: 3
-  - name: D14
-    bit_offset: 24
-    bit_size: 3
-  - name: D15
-    bit_offset: 28
-    bit_size: 3
+    - name: D8
+      bit_offset: 0
+      bit_size: 3
+    - name: D9
+      bit_offset: 4
+      bit_size: 3
+    - name: D10
+      bit_offset: 8
+      bit_size: 3
+    - name: D11
+      bit_offset: 12
+      bit_size: 3
+    - name: D12
+      bit_offset: 16
+      bit_size: 3
+    - name: D13
+      bit_offset: 20
+      bit_size: 3
+    - name: D14
+      bit_offset: 24
+      bit_size: 3
+    - name: D15
+      bit_offset: 28
+      bit_size: 3
 fieldset/COREMIX_SLICE_SW_CTRL_PDN:
   description: ''
   fields:
-  - name: SOFT
-    bit_offset: 31
-    bit_size: 1
+    - name: SOFT
+      bit_offset: 31
+      bit_size: 1
 fieldset/COREMIX_A55_HDSK_ACK_CTRL_A55_HDSK_CNT:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 0
-    bit_size: 8
+    - name: CFG
+      bit_offset: 0
+      bit_size: 8
 fieldset/COREMIX_A55_HDSK_ACK_CTRL_CNT:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 30
-    bit_size: 2
+    - name: MODE
+      bit_offset: 30
+      bit_size: 2
 fieldset/COREMIX_A55_HDSK_ACK_STAT_PDN_ACK:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 8
+    - name: CNT
+      bit_offset: 0
+      bit_size: 8
 fieldset/COREMIX_A55_HDSK_ACK_STAT_PUP_ACK:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 16
-    bit_size: 8
+    - name: CNT
+      bit_offset: 16
+      bit_size: 8
 fieldset/COREMIX_A55_HDSK_ACK_STAT_BUSY_A55_PDN:
   description: ''
   fields:
-  - name: HDSK
-    bit_offset: 30
-    bit_size: 1
+    - name: HDSK
+      bit_offset: 30
+      bit_size: 1
 fieldset/COREMIX_A55_HDSK_ACK_STAT_BUSY_A55_PUP:
   description: ''
   fields:
-  - name: HDSK
-    bit_offset: 31
-    bit_size: 1
+    - name: HDSK
+      bit_offset: 31
+      bit_size: 1
 fieldset/COREMIX_SYSMAN_ACK_CTRL_SYSMAN_CNT:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 0
-    bit_size: 8
+    - name: CFG
+      bit_offset: 0
+      bit_size: 8
 fieldset/COREMIX_SYSMAN_ACK_CTRL_CNT:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 30
-    bit_size: 2
+    - name: MODE
+      bit_offset: 30
+      bit_size: 2
 fieldset/COREMIX_SYSMAN_ACK_STAT_PDN_ACK:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 8
+    - name: CNT
+      bit_offset: 0
+      bit_size: 8
 fieldset/COREMIX_SYSMAN_ACK_STAT_PUP_ACK:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 16
-    bit_size: 8
+    - name: CNT
+      bit_offset: 16
+      bit_size: 8
 fieldset/COREMIX_SYSMAN_ACK_STAT_BUSY_SYSMAN:
   description: ''
   fields:
-  - name: PDN
-    bit_offset: 30
-    bit_size: 1
-  - name: PUP
-    bit_offset: 31
-    bit_size: 1
+    - name: PDN
+      bit_offset: 30
+      bit_size: 1
+    - name: PUP
+      bit_offset: 31
+      bit_size: 1
 fieldset/COREMIX_SSAR_ACK_CTRL_SSAR_CNT:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 0
-    bit_size: 14
+    - name: CFG
+      bit_offset: 0
+      bit_size: 14
 fieldset/COREMIX_SSAR_ACK_CTRL_CNT:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 30
-    bit_size: 2
+    - name: MODE
+      bit_offset: 30
+      bit_size: 2
 fieldset/COREMIX_SSAR_ACK_STAT_SAVE_ACK:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 14
+    - name: CNT
+      bit_offset: 0
+      bit_size: 14
 fieldset/COREMIX_SSAR_ACK_STAT_RESTORE_ACK:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 14
-    bit_size: 14
+    - name: CNT
+      bit_offset: 14
+      bit_size: 14
 fieldset/COREMIX_SSAR_ACK_STAT:
   description: ''
   fields:
-  - name: SAVED
-    bit_offset: 29
-    bit_size: 1
+    - name: SAVED
+      bit_offset: 29
+      bit_size: 1
 fieldset/COREMIX_SSAR_ACK_STAT_BUSY:
   description: ''
   fields:
-  - name: SAVED
-    bit_offset: 30
-    bit_size: 1
-  - name: RESTORE
-    bit_offset: 31
-    bit_size: 1
+    - name: SAVED
+      bit_offset: 30
+      bit_size: 1
+    - name: RESTORE
+      bit_offset: 31
+      bit_size: 1
 fieldset/COREMIX_PSW_ACK_CTRL_0_PUP_LF_CNT:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 0
-    bit_size: 10
+    - name: CFG
+      bit_offset: 0
+      bit_size: 10
 fieldset/COREMIX_PSW_ACK_CTRL_0_PUP_HF_CNT:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 16
-    bit_size: 10
+    - name: CFG
+      bit_offset: 16
+      bit_size: 10
 fieldset/COREMIX_PSW_ACK_CTRL_0_CNT:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 28
-    bit_size: 2
+    - name: MODE
+      bit_offset: 28
+      bit_size: 2
 fieldset/COREMIX_PSW_ACK_CTRL_0_LF_ACK:
   description: ''
   fields:
-  - name: INVERT
-    bit_offset: 30
-    bit_size: 1
+    - name: INVERT
+      bit_offset: 30
+      bit_size: 1
 fieldset/COREMIX_PSW_ACK_CTRL_0_HF_ACK:
   description: ''
   fields:
-  - name: INVERT
-    bit_offset: 31
-    bit_size: 1
+    - name: INVERT
+      bit_offset: 31
+      bit_size: 1
 fieldset/COREMIX_PSW_ACK_CTRL_1_PDN_LF_CNT:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 0
-    bit_size: 10
+    - name: CFG
+      bit_offset: 0
+      bit_size: 10
 fieldset/COREMIX_PSW_ACK_CTRL_1_PDN_HF_CNT:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 16
-    bit_size: 10
+    - name: CFG
+      bit_offset: 16
+      bit_size: 10
 fieldset/COREMIX_PSW_ACK_STAT_LF_ACK:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 10
-    description: LF PSW acknowledge count
-  - name: STAT
-    bit_offset: 30
-    bit_size: 1
+    - name: CNT
+      bit_offset: 0
+      bit_size: 10
+      description: LF PSW acknowledge count
+    - name: STAT
+      bit_offset: 30
+      bit_size: 1
 fieldset/COREMIX_PSW_ACK_STAT_HF_ACK:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 16
-    bit_size: 10
-    description: HF PSW acknowledge count
-  - name: STAT
-    bit_offset: 31
-    bit_size: 1
+    - name: CNT
+      bit_offset: 16
+      bit_size: 10
+      description: HF PSW acknowledge count
+    - name: STAT
+      bit_offset: 31
+      bit_size: 1
 fieldset/COREMIX_UPI_STAT_0_UPI_ISO:
   description: ''
   fields:
-  - name: REQUEST
-    bit_offset: 0
-    bit_size: 16
+    - name: REQUEST
+      bit_offset: 0
+      bit_size: 16
 fieldset/COREMIX_UPI_STAT_0_UPI_POWER:
   description: ''
   fields:
-  - name: REQUEST
-    bit_offset: 16
-    bit_size: 16
+    - name: REQUEST
+      bit_offset: 16
+      bit_size: 16
 fieldset/COREMIX_UPI_STAT_1_UPI_RESET:
   description: ''
   fields:
-  - name: REQUEST
-    bit_offset: 0
-    bit_size: 16
+    - name: REQUEST
+      bit_offset: 0
+      bit_size: 16
 fieldset/COREMIX_UPI_STAT_1_UPI_SSAR:
   description: ''
   fields:
-  - name: REQUEST
-    bit_offset: 16
-    bit_size: 16
+    - name: REQUEST
+      bit_offset: 16
+      bit_size: 16
 fieldset/COREMIX_UPI_STAT_2_UPI_A55_HDSK:
   description: ''
   fields:
-  - name: REQUEST
-    bit_offset: 16
-    bit_size: 16
+    - name: REQUEST
+      bit_offset: 16
+      bit_size: 16
 fieldset/COREMIX_UPI_STAT_3_UPI_MEM:
   description: ''
   fields:
-  - name: REQUEST
-    bit_offset: 0
-    bit_size: 16
+    - name: REQUEST
+      bit_offset: 0
+      bit_size: 16
 fieldset/COREMIX_UPI_STAT_3_UPI_SYSMAN:
   description: ''
   fields:
-  - name: REQUEST
-    bit_offset: 16
-    bit_size: 16
+    - name: REQUEST
+      bit_offset: 16
+      bit_size: 16
 fieldset/COREMIX_FSM_STAT_PSW:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 0
-    bit_size: 4
-    description: Power switch FSM status
+    - name: STAT
+      bit_offset: 0
+      bit_size: 4
+      description: Power switch FSM status
 fieldset/COREMIX_FSM_STAT_RST:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 4
-    bit_size: 4
-    description: Power switch FSM status
+    - name: STAT
+      bit_offset: 4
+      bit_size: 4
+      description: Power switch FSM status
 fieldset/COREMIX_FSM_STAT_ISO:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 8
-    bit_size: 4
-    description: Isolation FSM status
+    - name: STAT
+      bit_offset: 8
+      bit_size: 4
+      description: Isolation FSM status
 fieldset/COREMIX_FSM_STAT_RST_STAT:
   description: ''
   fields:
-  - name: 4BIT
-    bit_offset: 15
-    bit_size: 1
-    description: Isolation FSM status
+    - name: 4BIT
+      bit_offset: 15
+      bit_size: 1
+      description: Isolation FSM status
 fieldset/COREMIX_FSM_STAT_SSAR:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 16
-    bit_size: 3
-    description: SSAR FSM status
+    - name: STAT
+      bit_offset: 16
+      bit_size: 3
+      description: SSAR FSM status
 fieldset/COREMIX_FSM_STAT_A55_HDSK:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 20
-    bit_size: 4
-    description: SSAR FSM status
+    - name: STAT
+      bit_offset: 20
+      bit_size: 4
+      description: SSAR FSM status
 fieldset/COREMIX_FSM_STAT_MEM:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 24
-    bit_size: 3
-    description: Memory FSM status
+    - name: STAT
+      bit_offset: 24
+      bit_size: 3
+      description: Memory FSM status
 fieldset/COREMIX_FSM_STAT_SYSMAN:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 28
-    bit_size: 4
-    description: Memory FSM status
+    - name: STAT
+      bit_offset: 28
+      bit_size: 4
+      description: Memory FSM status
 fieldset/COREMIX_FUNC_STAT_PSW:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 0
-    bit_size: 1
+    - name: STAT
+      bit_offset: 0
+      bit_size: 1
 fieldset/COREMIX_FUNC_STAT_RST:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 2
-    bit_size: 1
+    - name: STAT
+      bit_offset: 2
+      bit_size: 1
 fieldset/COREMIX_FUNC_STAT_ISO:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 4
-    bit_size: 1
+    - name: STAT
+      bit_offset: 4
+      bit_size: 1
 fieldset/COREMIX_FUNC_STAT_SSAR:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 8
-    bit_size: 1
+    - name: STAT
+      bit_offset: 8
+      bit_size: 1
 fieldset/COREMIX_FUNC_STAT_A55_HDSK:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 10
-    bit_size: 1
+    - name: STAT
+      bit_offset: 10
+      bit_size: 1
 fieldset/COREMIX_FUNC_STAT_MEM:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 12
-    bit_size: 1
+    - name: STAT
+      bit_offset: 12
+      bit_size: 1
 fieldset/COREMIX_FUNC_STAT_SYSMAN:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 14
-    bit_size: 1
+    - name: STAT
+      bit_offset: 14
+      bit_size: 1
 fieldset/COREMIX_RSTR_STAT_RSTR_0_RST:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 0
-    bit_size: 1
-  - name: BUSY
-    bit_offset: 16
-    bit_size: 1
+    - name: STAT
+      bit_offset: 0
+      bit_size: 1
+    - name: BUSY
+      bit_offset: 16
+      bit_size: 1
 fieldset/COREMIX_RSTR_STAT_RSTR_1_RST:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 1
-    bit_size: 1
-  - name: BUSY
-    bit_offset: 17
-    bit_size: 1
+    - name: STAT
+      bit_offset: 1
+      bit_size: 1
+    - name: BUSY
+      bit_offset: 17
+      bit_size: 1
 fieldset/COREMIX_RSTR_STAT_RSTR_2_RST:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 2
-    bit_size: 1
-  - name: BUSY
-    bit_offset: 18
-    bit_size: 1
+    - name: STAT
+      bit_offset: 2
+      bit_size: 1
+    - name: BUSY
+      bit_offset: 18
+      bit_size: 1
 fieldset/COREMIX_RSTR_STAT_RSTR_3_RST:
   description: ''
   fields:
-  - name: STAT
-    bit_offset: 3
-    bit_size: 1
-  - name: BUSY
-    bit_offset: 19
-    bit_size: 1
+    - name: STAT
+      bit_offset: 3
+      bit_size: 1
+    - name: BUSY
+      bit_offset: 19
+      bit_size: 1

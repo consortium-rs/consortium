@@ -1,195 +1,195 @@
 block/TTCAN:
   description: ''
   items:
-  - name: CREL
-    byte_offset: 0
-    description: FDCAN Core Release register
-  - name: ENDN
-    byte_offset: 4
-    description: FDCAN Endian register
-  - name: DBTP
-    byte_offset: 12
-    description: FDCAN Data Bit Timing & Prescaler register
-  - name: TEST
-    byte_offset: 16
-    description: FDCAN Test register
-  - name: RWD
-    byte_offset: 20
-    description: FDCAN RAM Watchdog register
-  - name: CCCR
-    byte_offset: 24
-    description: FDCAN CC Control register
-  - name: NBTP
-    byte_offset: 28
-    description: FDCAN Nominal Bit Timing & Prescaler register
-  - name: TSCC
-    byte_offset: 32
-    description: FDCAN Timestamp Counter Configuration register
-  - name: TSCV
-    byte_offset: 36
-    description: FDCAN Timestamp Counter Value register
-  - name: TOCC
-    byte_offset: 40
-    description: FDCAN Timeout Counter Configuration register
-  - name: TOCV
-    byte_offset: 44
-    description: FDCAN Timeout Counter Value register
-  - name: ECR
-    byte_offset: 64
-    description: FDCAN Error Counter register
-  - name: PSR
-    byte_offset: 68
-    description: FDCAN Protocol Status register
-  - name: TDCR
-    byte_offset: 72
-    description: FDCAN Transmitter Delay Compensation register
-  - name: IR
-    byte_offset: 80
-    description: FDCAN Interrupt register
-  - name: IE
-    byte_offset: 84
-    description: FDCAN Interrupt Enable register
-  - name: ILS
-    byte_offset: 88
-    description: FDCAN Interrupt Line Select register
-  - name: ILE
-    byte_offset: 92
-    description: FDCAN Interrupt Line Enable register
-  - name: GFC
-    byte_offset: 128
-    description: FDCAN Global Filter Configuration register
-  - name: SIDFC
-    byte_offset: 132
-    description: FDCAN Standard ID Filter Configuration register
-  - name: XIDFC
-    byte_offset: 136
-    description: FDCAN Extended ID Filter Configuration register
-  - name: XIDAM
-    byte_offset: 144
-    description: FDCAN Extended ID AND Mask register
-  - name: HPMS
-    byte_offset: 148
-    description: FDCAN High Priority Message Status register
-  - name: NDAT1
-    byte_offset: 152
-    description: FDCAN New Data 1 register
-  - name: NDAT2
-    byte_offset: 156
-    description: FDCAN New Data 2 register
-  - name: RXF0C
-    byte_offset: 160
-    description: FDCAN Rx FIFO 0 Configuration register
-  - name: RXF0S
-    byte_offset: 164
-    description: FDCAN Rx FIFO 0 Status register
-  - name: RXF0A
-    byte_offset: 168
-    description: FDCAN Rx FIFO 0 Acknowledge register
-  - name: RXBC
-    byte_offset: 172
-    description: FDCAN Rx Buffer Configuration register
-  - name: RXF1C
-    byte_offset: 176
-    description: FDCAN Rx FIFO 1 Configuration register
-  - name: RXF1S
-    byte_offset: 180
-    description: FDCAN Rx FIFO 1 Status register
-  - name: RXF1A
-    byte_offset: 184
-    description: FDCAN Rx FIFO 1 Acknowledge register
-  - name: RXESC
-    byte_offset: 188
-    description: FDCAN Rx Buffer/FIFO Element Size Configuration register
-  - name: TXBC
-    byte_offset: 192
-    description: FDCAN Tx Buffer Configuration register
-  - name: TXFQS
-    byte_offset: 196
-    description: FDCAN Tx FIFO/Queue Status register
-  - name: TXESC
-    byte_offset: 200
-    description: FDCAN Tx Buffer Element Size Configuration register
-  - name: TXBRP
-    byte_offset: 204
-    description: FDCAN Tx Buffer Request Pending register
-  - name: TXBAR
-    byte_offset: 208
-    description: FDCAN Tx Buffer Add Request register
-  - name: TXBCR
-    byte_offset: 212
-    description: FDCAN Tx Buffer Cancellation Request register
-  - name: TXBTO
-    byte_offset: 216
-    description: FDCAN Tx Buffer Transmission Occurred register
-  - name: TXBCF
-    byte_offset: 220
-    description: FDCAN Tx Buffer Cancellation Finished register
-  - name: TXBTIE
-    byte_offset: 224
-    description: FDCAN Tx Buffer Transmission Interrupt Enable register
-  - name: TXBCIE
-    byte_offset: 228
-    description: FDCAN Tx Buffer Cancellation Finished Interrupt Enable register
-  - name: TXEFC
-    byte_offset: 240
-    description: FDCAN Tx Event FIFO Configuration register
-  - name: TXEFS
-    byte_offset: 244
-    description: FDCAN Tx Event FIFO Status register
-  - name: TXEFA
-    byte_offset: 248
-    description: FDCAN Tx Event FIFO Acknowledge register
-  - name: TTTMC
-    byte_offset: 256
-    description: TT Trigger Memory Configuration register
-  - name: TTRMC
-    byte_offset: 260
-    description: TT Reference Message Configuration register
-  - name: TTOCF
-    byte_offset: 264
-    description: TT Operation Configuration register
-  - name: TTMLM
-    byte_offset: 268
-    description: TT Matrix Limits register
-  - name: TURCF
-    byte_offset: 272
-    description: TUR Configuration register
-  - name: TTOCN
-    byte_offset: 276
-    description: TT Operation Control register
-  - name: TTGTP
-    byte_offset: 280
-    description: TT Global Time Preset register
-  - name: TTTMK
-    byte_offset: 284
-    description: TT Time Mark register
-  - name: TTIR
-    byte_offset: 288
-    description: TT Interrupt register
-  - name: TTIE
-    byte_offset: 292
-    description: TT Interrupt Enable register
-  - name: TTILS
-    byte_offset: 296
-    description: TT Interrupt Line Select register
-  - name: TTOST
-    byte_offset: 300
-    description: TT Operation Status register
-  - name: TURNA
-    byte_offset: 304
-    description: TT TUR Numerator Actual register
-  - name: TTLGT
-    byte_offset: 308
-    description: TT Local and Global Time register
-  - name: TTCTC
-    byte_offset: 312
-    description: TT Cycle Time and Count register
-  - name: TTCPT
-    byte_offset: 316
-    description: TT Capture Time register
-  - name: TTCSM
-    byte_offset: 320
-    description: TT Cycle Sync Mark register
-  - name: TTTS
-    byte_offset: 768
-    description: TT Trigger Select register
+    - name: CREL
+      byte_offset: 0
+      description: FDCAN Core Release register
+    - name: ENDN
+      byte_offset: 4
+      description: FDCAN Endian register
+    - name: DBTP
+      byte_offset: 12
+      description: FDCAN Data Bit Timing & Prescaler register
+    - name: TEST
+      byte_offset: 16
+      description: FDCAN Test register
+    - name: RWD
+      byte_offset: 20
+      description: FDCAN RAM Watchdog register
+    - name: CCCR
+      byte_offset: 24
+      description: FDCAN CC Control register
+    - name: NBTP
+      byte_offset: 28
+      description: FDCAN Nominal Bit Timing & Prescaler register
+    - name: TSCC
+      byte_offset: 32
+      description: FDCAN Timestamp Counter Configuration register
+    - name: TSCV
+      byte_offset: 36
+      description: FDCAN Timestamp Counter Value register
+    - name: TOCC
+      byte_offset: 40
+      description: FDCAN Timeout Counter Configuration register
+    - name: TOCV
+      byte_offset: 44
+      description: FDCAN Timeout Counter Value register
+    - name: ECR
+      byte_offset: 64
+      description: FDCAN Error Counter register
+    - name: PSR
+      byte_offset: 68
+      description: FDCAN Protocol Status register
+    - name: TDCR
+      byte_offset: 72
+      description: FDCAN Transmitter Delay Compensation register
+    - name: IR
+      byte_offset: 80
+      description: FDCAN Interrupt register
+    - name: IE
+      byte_offset: 84
+      description: FDCAN Interrupt Enable register
+    - name: ILS
+      byte_offset: 88
+      description: FDCAN Interrupt Line Select register
+    - name: ILE
+      byte_offset: 92
+      description: FDCAN Interrupt Line Enable register
+    - name: GFC
+      byte_offset: 128
+      description: FDCAN Global Filter Configuration register
+    - name: SIDFC
+      byte_offset: 132
+      description: FDCAN Standard ID Filter Configuration register
+    - name: XIDFC
+      byte_offset: 136
+      description: FDCAN Extended ID Filter Configuration register
+    - name: XIDAM
+      byte_offset: 144
+      description: FDCAN Extended ID AND Mask register
+    - name: HPMS
+      byte_offset: 148
+      description: FDCAN High Priority Message Status register
+    - name: NDAT1
+      byte_offset: 152
+      description: FDCAN New Data 1 register
+    - name: NDAT2
+      byte_offset: 156
+      description: FDCAN New Data 2 register
+    - name: RXF0C
+      byte_offset: 160
+      description: FDCAN Rx FIFO 0 Configuration register
+    - name: RXF0S
+      byte_offset: 164
+      description: FDCAN Rx FIFO 0 Status register
+    - name: RXF0A
+      byte_offset: 168
+      description: FDCAN Rx FIFO 0 Acknowledge register
+    - name: RXBC
+      byte_offset: 172
+      description: FDCAN Rx Buffer Configuration register
+    - name: RXF1C
+      byte_offset: 176
+      description: FDCAN Rx FIFO 1 Configuration register
+    - name: RXF1S
+      byte_offset: 180
+      description: FDCAN Rx FIFO 1 Status register
+    - name: RXF1A
+      byte_offset: 184
+      description: FDCAN Rx FIFO 1 Acknowledge register
+    - name: RXESC
+      byte_offset: 188
+      description: FDCAN Rx Buffer/FIFO Element Size Configuration register
+    - name: TXBC
+      byte_offset: 192
+      description: FDCAN Tx Buffer Configuration register
+    - name: TXFQS
+      byte_offset: 196
+      description: FDCAN Tx FIFO/Queue Status register
+    - name: TXESC
+      byte_offset: 200
+      description: FDCAN Tx Buffer Element Size Configuration register
+    - name: TXBRP
+      byte_offset: 204
+      description: FDCAN Tx Buffer Request Pending register
+    - name: TXBAR
+      byte_offset: 208
+      description: FDCAN Tx Buffer Add Request register
+    - name: TXBCR
+      byte_offset: 212
+      description: FDCAN Tx Buffer Cancellation Request register
+    - name: TXBTO
+      byte_offset: 216
+      description: FDCAN Tx Buffer Transmission Occurred register
+    - name: TXBCF
+      byte_offset: 220
+      description: FDCAN Tx Buffer Cancellation Finished register
+    - name: TXBTIE
+      byte_offset: 224
+      description: FDCAN Tx Buffer Transmission Interrupt Enable register
+    - name: TXBCIE
+      byte_offset: 228
+      description: FDCAN Tx Buffer Cancellation Finished Interrupt Enable register
+    - name: TXEFC
+      byte_offset: 240
+      description: FDCAN Tx Event FIFO Configuration register
+    - name: TXEFS
+      byte_offset: 244
+      description: FDCAN Tx Event FIFO Status register
+    - name: TXEFA
+      byte_offset: 248
+      description: FDCAN Tx Event FIFO Acknowledge register
+    - name: TTTMC
+      byte_offset: 256
+      description: TT Trigger Memory Configuration register
+    - name: TTRMC
+      byte_offset: 260
+      description: TT Reference Message Configuration register
+    - name: TTOCF
+      byte_offset: 264
+      description: TT Operation Configuration register
+    - name: TTMLM
+      byte_offset: 268
+      description: TT Matrix Limits register
+    - name: TURCF
+      byte_offset: 272
+      description: TUR Configuration register
+    - name: TTOCN
+      byte_offset: 276
+      description: TT Operation Control register
+    - name: TTGTP
+      byte_offset: 280
+      description: TT Global Time Preset register
+    - name: TTTMK
+      byte_offset: 284
+      description: TT Time Mark register
+    - name: TTIR
+      byte_offset: 288
+      description: TT Interrupt register
+    - name: TTIE
+      byte_offset: 292
+      description: TT Interrupt Enable register
+    - name: TTILS
+      byte_offset: 296
+      description: TT Interrupt Line Select register
+    - name: TTOST
+      byte_offset: 300
+      description: TT Operation Status register
+    - name: TURNA
+      byte_offset: 304
+      description: TT TUR Numerator Actual register
+    - name: TTLGT
+      byte_offset: 308
+      description: TT Local and Global Time register
+    - name: TTCTC
+      byte_offset: 312
+      description: TT Cycle Time and Count register
+    - name: TTCPT
+      byte_offset: 316
+      description: TT Capture Time register
+    - name: TTCSM
+      byte_offset: 320
+      description: TT Cycle Sync Mark register
+    - name: TTTS
+      byte_offset: 768
+      description: TT Trigger Select register

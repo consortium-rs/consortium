@@ -1,509 +1,509 @@
 block/CRYP:
   description: ''
   items:
-  - name: CR
-    byte_offset: 0
-    description: CRYP control register
-    fieldset: CRYP_CR
-  - name: SR
-    byte_offset: 4
-    description: CRYP status register
-    fieldset: CRYP_SR
-  - name: DIN
-    byte_offset: 8
-    description: CRYP data input register
-  - name: DOUT
-    byte_offset: 12
-    description: CRYP data output register
-  - name: DMACR
-    byte_offset: 16
-    description: CRYP DMA control register
-    fieldset: CRYP_DMACR
-  - name: IMSCR
-    byte_offset: 20
-    description: CRYP interrupt mask set/clear register
-    fieldset: CRYP_IMSCR
-  - name: RISR
-    byte_offset: 24
-    description: CRYP raw interrupt status register
-    fieldset: CRYP_RISR
-  - name: MISR
-    byte_offset: 28
-    description: CRYP masked interrupt status register
-    fieldset: CRYP_MISR
-  - name: K0LR
-    byte_offset: 32
-    description: CRYP key left register 0
-    fieldset: CRYP_K0LR
-  - name: K0RR
-    byte_offset: 36
-    description: CRYP key right register 0
-    fieldset: CRYP_K0RR
-  - name: K1LR
-    byte_offset: 40
-    description: CRYP key left register 1
-    fieldset: CRYP_K1LR
-  - name: K1RR
-    byte_offset: 44
-    description: CRYP key right register 1
-    fieldset: CRYP_K1RR
-  - name: K2LR
-    byte_offset: 48
-    description: CRYP key left register 2
-    fieldset: CRYP_K2LR
-  - name: K2RR
-    byte_offset: 52
-    description: CRYP key right register 2
-    fieldset: CRYP_K2RR
-  - name: K3LR
-    byte_offset: 56
-    description: CRYP key left register 3
-    fieldset: CRYP_K3LR
-  - name: K3RR
-    byte_offset: 60
-    description: CRYP key right register 3
-    fieldset: CRYP_K3RR
-  - name: IV0LR
-    byte_offset: 64
-    description: CRYP initialization vector left-word register 0
-    fieldset: CRYP_IV0LR
-  - name: IV0RR
-    byte_offset: 68
-    description: CRYP initialization vector right-word register 0
-    fieldset: CRYP_IV0RR
-  - name: IV1LR
-    byte_offset: 72
-    description: CRYP initialization vector left-word register 1
-    fieldset: CRYP_IV1LR
-  - name: IV1RR
-    byte_offset: 76
-    description: CRYP initialization vector right-word register 1
-    fieldset: CRYP_IV1RR
-  - name: CSGCMCCM0R
-    byte_offset: 80
-    description: CRYP GCM/GMAC or CCM/CMAC context swap register 0
-    fieldset: CRYP_CSGCMCCM0R
-  - name: CSGCMCCM1R
-    byte_offset: 84
-    description: CRYP GCM/GMAC or CCM/CMAC context swap register 1
-    fieldset: CRYP_CSGCMCCM1R
-  - name: CSGCMCCM2R
-    byte_offset: 88
-    description: CRYP GCM/GMAC or CCM/CMAC context swap register 2
-    fieldset: CRYP_CSGCMCCM2R
-  - name: CSGCMCCM3R
-    byte_offset: 92
-    description: CRYP GCM/GMAC or CCM/CMAC context swap register 3
-    fieldset: CRYP_CSGCMCCM3R
-  - name: CSGCMCCM4R
-    byte_offset: 96
-    description: CRYP GCM/GMAC or CCM/CMAC context swap register 4
-    fieldset: CRYP_CSGCMCCM4R
-  - name: CSGCMCCM5R
-    byte_offset: 100
-    description: CRYP GCM/GMAC or CCM/CMAC context swap register 5
-    fieldset: CRYP_CSGCMCCM5R
-  - name: CSGCMCCM6R
-    byte_offset: 104
-    description: CRYP GCM/GMAC or CCM/CMAC context swap register 6
-    fieldset: CRYP_CSGCMCCM6R
-  - name: CSGCMCCM7R
-    byte_offset: 108
-    description: CRYP GCM/GMAC or CCM/CMAC context swap register 7
-    fieldset: CRYP_CSGCMCCM7R
-  - name: CSGCM0R
-    byte_offset: 112
-    description: CRYP GCM/GMAC context swap register 0
-    fieldset: CRYP_CSGCM0R
-  - name: CSGCM1R
-    byte_offset: 116
-    description: CRYP GCM/GMAC context swap register 1
-    fieldset: CRYP_CSGCM1R
-  - name: CSGCM2R
-    byte_offset: 120
-    description: CRYP GCM/GMAC context swap register 2
-    fieldset: CRYP_CSGCM2R
-  - name: CSGCM3R
-    byte_offset: 124
-    description: CRYP GCM/GMAC context swap register 3
-    fieldset: CRYP_CSGCM3R
-  - name: CSGCM4R
-    byte_offset: 128
-    description: CRYP GCM/GMAC context swap register 4
-    fieldset: CRYP_CSGCM4R
-  - name: CSGCM5R
-    byte_offset: 132
-    description: CRYP GCM/GMAC context swap register 5
-    fieldset: CRYP_CSGCM5R
-  - name: CSGCM6R
-    byte_offset: 136
-    description: CRYP GCM/GMAC context swap register 6
-    fieldset: CRYP_CSGCM6R
-  - name: CSGCM7R
-    byte_offset: 140
-    description: CRYP GCM/GMAC context swap register 7
-    fieldset: CRYP_CSGCM7R
-  - name: HWCFGR
-    byte_offset: 1008
-    description: CRYP hardware configuration register
-    fieldset: CRYP_HWCFGR
-  - name: VERR
-    byte_offset: 1012
-    description: CRYP version register
-    fieldset: CRYP_VERR
-  - name: IPIDR
-    byte_offset: 1016
-    description: CRYP identification
-    fieldset: CRYP_IPIDR
-  - name: SIDR
-    byte_offset: 1020
-    description: CRYP size identification register
-    fieldset: CRYP_SIDR
+    - name: CR
+      byte_offset: 0
+      description: CRYP control register
+      fieldset: CRYP_CR
+    - name: SR
+      byte_offset: 4
+      description: CRYP status register
+      fieldset: CRYP_SR
+    - name: DIN
+      byte_offset: 8
+      description: CRYP data input register
+    - name: DOUT
+      byte_offset: 12
+      description: CRYP data output register
+    - name: DMACR
+      byte_offset: 16
+      description: CRYP DMA control register
+      fieldset: CRYP_DMACR
+    - name: IMSCR
+      byte_offset: 20
+      description: CRYP interrupt mask set/clear register
+      fieldset: CRYP_IMSCR
+    - name: RISR
+      byte_offset: 24
+      description: CRYP raw interrupt status register
+      fieldset: CRYP_RISR
+    - name: MISR
+      byte_offset: 28
+      description: CRYP masked interrupt status register
+      fieldset: CRYP_MISR
+    - name: K0LR
+      byte_offset: 32
+      description: CRYP key left register 0
+      fieldset: CRYP_K0LR
+    - name: K0RR
+      byte_offset: 36
+      description: CRYP key right register 0
+      fieldset: CRYP_K0RR
+    - name: K1LR
+      byte_offset: 40
+      description: CRYP key left register 1
+      fieldset: CRYP_K1LR
+    - name: K1RR
+      byte_offset: 44
+      description: CRYP key right register 1
+      fieldset: CRYP_K1RR
+    - name: K2LR
+      byte_offset: 48
+      description: CRYP key left register 2
+      fieldset: CRYP_K2LR
+    - name: K2RR
+      byte_offset: 52
+      description: CRYP key right register 2
+      fieldset: CRYP_K2RR
+    - name: K3LR
+      byte_offset: 56
+      description: CRYP key left register 3
+      fieldset: CRYP_K3LR
+    - name: K3RR
+      byte_offset: 60
+      description: CRYP key right register 3
+      fieldset: CRYP_K3RR
+    - name: IV0LR
+      byte_offset: 64
+      description: CRYP initialization vector left-word register 0
+      fieldset: CRYP_IV0LR
+    - name: IV0RR
+      byte_offset: 68
+      description: CRYP initialization vector right-word register 0
+      fieldset: CRYP_IV0RR
+    - name: IV1LR
+      byte_offset: 72
+      description: CRYP initialization vector left-word register 1
+      fieldset: CRYP_IV1LR
+    - name: IV1RR
+      byte_offset: 76
+      description: CRYP initialization vector right-word register 1
+      fieldset: CRYP_IV1RR
+    - name: CSGCMCCM0R
+      byte_offset: 80
+      description: CRYP GCM/GMAC or CCM/CMAC context swap register 0
+      fieldset: CRYP_CSGCMCCM0R
+    - name: CSGCMCCM1R
+      byte_offset: 84
+      description: CRYP GCM/GMAC or CCM/CMAC context swap register 1
+      fieldset: CRYP_CSGCMCCM1R
+    - name: CSGCMCCM2R
+      byte_offset: 88
+      description: CRYP GCM/GMAC or CCM/CMAC context swap register 2
+      fieldset: CRYP_CSGCMCCM2R
+    - name: CSGCMCCM3R
+      byte_offset: 92
+      description: CRYP GCM/GMAC or CCM/CMAC context swap register 3
+      fieldset: CRYP_CSGCMCCM3R
+    - name: CSGCMCCM4R
+      byte_offset: 96
+      description: CRYP GCM/GMAC or CCM/CMAC context swap register 4
+      fieldset: CRYP_CSGCMCCM4R
+    - name: CSGCMCCM5R
+      byte_offset: 100
+      description: CRYP GCM/GMAC or CCM/CMAC context swap register 5
+      fieldset: CRYP_CSGCMCCM5R
+    - name: CSGCMCCM6R
+      byte_offset: 104
+      description: CRYP GCM/GMAC or CCM/CMAC context swap register 6
+      fieldset: CRYP_CSGCMCCM6R
+    - name: CSGCMCCM7R
+      byte_offset: 108
+      description: CRYP GCM/GMAC or CCM/CMAC context swap register 7
+      fieldset: CRYP_CSGCMCCM7R
+    - name: CSGCM0R
+      byte_offset: 112
+      description: CRYP GCM/GMAC context swap register 0
+      fieldset: CRYP_CSGCM0R
+    - name: CSGCM1R
+      byte_offset: 116
+      description: CRYP GCM/GMAC context swap register 1
+      fieldset: CRYP_CSGCM1R
+    - name: CSGCM2R
+      byte_offset: 120
+      description: CRYP GCM/GMAC context swap register 2
+      fieldset: CRYP_CSGCM2R
+    - name: CSGCM3R
+      byte_offset: 124
+      description: CRYP GCM/GMAC context swap register 3
+      fieldset: CRYP_CSGCM3R
+    - name: CSGCM4R
+      byte_offset: 128
+      description: CRYP GCM/GMAC context swap register 4
+      fieldset: CRYP_CSGCM4R
+    - name: CSGCM5R
+      byte_offset: 132
+      description: CRYP GCM/GMAC context swap register 5
+      fieldset: CRYP_CSGCM5R
+    - name: CSGCM6R
+      byte_offset: 136
+      description: CRYP GCM/GMAC context swap register 6
+      fieldset: CRYP_CSGCM6R
+    - name: CSGCM7R
+      byte_offset: 140
+      description: CRYP GCM/GMAC context swap register 7
+      fieldset: CRYP_CSGCM7R
+    - name: HWCFGR
+      byte_offset: 1008
+      description: CRYP hardware configuration register
+      fieldset: CRYP_HWCFGR
+    - name: VERR
+      byte_offset: 1012
+      description: CRYP version register
+      fieldset: CRYP_VERR
+    - name: IPIDR
+      byte_offset: 1016
+      description: CRYP identification
+      fieldset: CRYP_IPIDR
+    - name: SIDR
+      byte_offset: 1020
+      description: CRYP size identification register
+      fieldset: CRYP_SIDR
 fieldset/CRYP_CR:
   description: ''
   fields:
-  - name: ALGODIR
-    bit_offset: 2
-    bit_size: 1
-    description: '0x00000004'
-  - name: ALGOMODE
-    bit_offset: 3
-    bit_size: 17
-    description: '0x00000008'
-  - name: DATATYPE
-    bit_offset: 6
-    bit_size: 2
-    description: '0x00000040'
-  - name: KEYSIZE
-    bit_offset: 8
-    bit_size: 2
-    description: '0x00000100'
-  - name: FFLUSH
-    bit_offset: 14
-    bit_size: 1
-    description: '0x00004000'
-  - name: CRYPEN
-    bit_offset: 15
-    bit_size: 1
-    description: '0x00008000'
-  - name: NPBLB
-    bit_offset: 20
-    bit_size: 4
-    description: '0x00F00000'
-  - name: KMOD
-    bit_offset: 24
-    bit_size: 2
-    description: '0x03000000'
-  - name: IPRST
-    bit_offset: 31
-    bit_size: 1
+    - name: ALGODIR
+      bit_offset: 2
+      bit_size: 1
+      description: '0x00000004'
+    - name: ALGOMODE
+      bit_offset: 3
+      bit_size: 17
+      description: '0x00000008'
+    - name: DATATYPE
+      bit_offset: 6
+      bit_size: 2
+      description: '0x00000040'
+    - name: KEYSIZE
+      bit_offset: 8
+      bit_size: 2
+      description: '0x00000100'
+    - name: FFLUSH
+      bit_offset: 14
+      bit_size: 1
+      description: '0x00004000'
+    - name: CRYPEN
+      bit_offset: 15
+      bit_size: 1
+      description: '0x00008000'
+    - name: NPBLB
+      bit_offset: 20
+      bit_size: 4
+      description: '0x00F00000'
+    - name: KMOD
+      bit_offset: 24
+      bit_size: 2
+      description: '0x03000000'
+    - name: IPRST
+      bit_offset: 31
+      bit_size: 1
 fieldset/CRYP_SR:
   description: ''
   fields:
-  - name: IFEM
-    bit_offset: 0
-    bit_size: 1
-    description: '0x00000001'
-  - name: IFNF
-    bit_offset: 1
-    bit_size: 1
-    description: '0x00000002'
-  - name: OFNE
-    bit_offset: 2
-    bit_size: 1
-    description: '0x00000004'
-  - name: OFFU
-    bit_offset: 3
-    bit_size: 1
-    description: '0x00000008'
-  - name: BUSY
-    bit_offset: 4
-    bit_size: 1
-    description: '0x00000010'
-  - name: KERF
-    bit_offset: 6
-    bit_size: 1
-    description: '0x00000040'
-  - name: KEYVALID
-    bit_offset: 7
-    bit_size: 1
+    - name: IFEM
+      bit_offset: 0
+      bit_size: 1
+      description: '0x00000001'
+    - name: IFNF
+      bit_offset: 1
+      bit_size: 1
+      description: '0x00000002'
+    - name: OFNE
+      bit_offset: 2
+      bit_size: 1
+      description: '0x00000004'
+    - name: OFFU
+      bit_offset: 3
+      bit_size: 1
+      description: '0x00000008'
+    - name: BUSY
+      bit_offset: 4
+      bit_size: 1
+      description: '0x00000010'
+    - name: KERF
+      bit_offset: 6
+      bit_size: 1
+      description: '0x00000040'
+    - name: KEYVALID
+      bit_offset: 7
+      bit_size: 1
 fieldset/CRYP_DMACR:
   description: ''
   fields:
-  - name: DIEN
-    bit_offset: 0
-    bit_size: 1
-    description: '0x00000001'
-  - name: DOEN
-    bit_offset: 1
-    bit_size: 1
+    - name: DIEN
+      bit_offset: 0
+      bit_size: 1
+      description: '0x00000001'
+    - name: DOEN
+      bit_offset: 1
+      bit_size: 1
 fieldset/CRYP_IMSCR:
   description: ''
   fields:
-  - name: INIM
-    bit_offset: 0
-    bit_size: 1
-    description: '0x00000001'
-  - name: OUTIM
-    bit_offset: 1
-    bit_size: 1
+    - name: INIM
+      bit_offset: 0
+      bit_size: 1
+      description: '0x00000001'
+    - name: OUTIM
+      bit_offset: 1
+      bit_size: 1
 fieldset/CRYP_RISR:
   description: ''
   fields:
-  - name: OUTRIS
-    bit_offset: 0
-    bit_size: 1
-    description: '0x00000001'
-  - name: INRIS
-    bit_offset: 1
-    bit_size: 1
+    - name: OUTRIS
+      bit_offset: 0
+      bit_size: 1
+      description: '0x00000001'
+    - name: INRIS
+      bit_offset: 1
+      bit_size: 1
 fieldset/CRYP_MISR:
   description: ''
   fields:
-  - name: INMIS
-    bit_offset: 0
-    bit_size: 1
-    description: '0x00000001'
-  - name: OUTMIS
-    bit_offset: 1
-    bit_size: 1
+    - name: INMIS
+      bit_offset: 0
+      bit_size: 1
+      description: '0x00000001'
+    - name: OUTMIS
+      bit_offset: 1
+      bit_size: 1
 fieldset/CRYP_K0LR:
   description: ''
   fields:
-  - name: K
-    bit_offset: 0
-    bit_size: 32
-    description: Key bit x (x&#160;=&#160; 255 to 224)
+    - name: K
+      bit_offset: 0
+      bit_size: 32
+      description: Key bit x (x&#160;=&#160; 255 to 224)
 fieldset/CRYP_K0RR:
   description: ''
   fields:
-  - name: K
-    bit_offset: 0
-    bit_size: 32
-    description: Key bit x (x&#160;=&#160; 223 to 192)
+    - name: K
+      bit_offset: 0
+      bit_size: 32
+      description: Key bit x (x&#160;=&#160; 223 to 192)
 fieldset/CRYP_K1LR:
   description: ''
   fields:
-  - name: K
-    bit_offset: 0
-    bit_size: 32
-    description: Key bit x (x&#160;=&#160; 191 to 160)
+    - name: K
+      bit_offset: 0
+      bit_size: 32
+      description: Key bit x (x&#160;=&#160; 191 to 160)
 fieldset/CRYP_K1RR:
   description: ''
   fields:
-  - name: K
-    bit_offset: 0
-    bit_size: 32
-    description: Key bit x (x&#160;=&#160; 159 to 128)
+    - name: K
+      bit_offset: 0
+      bit_size: 32
+      description: Key bit x (x&#160;=&#160; 159 to 128)
 fieldset/CRYP_K2LR:
   description: ''
   fields:
-  - name: K
-    bit_offset: 0
-    bit_size: 32
-    description: Key bit x (x&#160;=&#160; 127 to 96)
+    - name: K
+      bit_offset: 0
+      bit_size: 32
+      description: Key bit x (x&#160;=&#160; 127 to 96)
 fieldset/CRYP_K2RR:
   description: ''
   fields:
-  - name: K
-    bit_offset: 0
-    bit_size: 32
-    description: Key bit x (x&#160;=&#160; 95 to 64)
+    - name: K
+      bit_offset: 0
+      bit_size: 32
+      description: Key bit x (x&#160;=&#160; 95 to 64)
 fieldset/CRYP_K3LR:
   description: ''
   fields:
-  - name: K
-    bit_offset: 0
-    bit_size: 32
-    description: Key bit x (x&#160;=&#160; 63 to 32)
+    - name: K
+      bit_offset: 0
+      bit_size: 32
+      description: Key bit x (x&#160;=&#160; 63 to 32)
 fieldset/CRYP_K3RR:
   description: ''
   fields:
-  - name: K
-    bit_offset: 0
-    bit_size: 32
-    description: Key bit x (x&#160;=&#160; 31 to 0)
+    - name: K
+      bit_offset: 0
+      bit_size: 32
+      description: Key bit x (x&#160;=&#160; 31 to 0)
 fieldset/CRYP_IV0LR:
   description: ''
   fields:
-  - name: IVI
-    bit_offset: 0
-    bit_size: 32
-    description: Initialization vector bit x (x&#160;=&#160; 127 to 96)
+    - name: IVI
+      bit_offset: 0
+      bit_size: 32
+      description: Initialization vector bit x (x&#160;=&#160; 127 to 96)
 fieldset/CRYP_IV0RR:
   description: ''
   fields:
-  - name: IVI
-    bit_offset: 0
-    bit_size: 32
-    description: Initialization vector bit x (x&#160;=&#160; 95 to 64)
+    - name: IVI
+      bit_offset: 0
+      bit_size: 32
+      description: Initialization vector bit x (x&#160;=&#160; 95 to 64)
 fieldset/CRYP_IV1LR:
   description: ''
   fields:
-  - name: IVI
-    bit_offset: 0
-    bit_size: 32
-    description: Initialization vector bit x (x&#160;=&#160; 63 to 32)
+    - name: IVI
+      bit_offset: 0
+      bit_size: 32
+      description: Initialization vector bit x (x&#160;=&#160; 63 to 32)
 fieldset/CRYP_IV1RR:
   description: ''
   fields:
-  - name: IVI
-    bit_offset: 0
-    bit_size: 32
-    description: Initialization vector bit x (x&#160;=&#160; 31 to 0)
+    - name: IVI
+      bit_offset: 0
+      bit_size: 32
+      description: Initialization vector bit x (x&#160;=&#160; 31 to 0)
 fieldset/CRYP_CSGCMCCM0R:
   description: ''
   fields:
-  - name: CSGCMCCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC and CCM modes
+    - name: CSGCMCCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC and CCM modes
 fieldset/CRYP_CSGCMCCM1R:
   description: ''
   fields:
-  - name: CSGCMCCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC and CCM modes
+    - name: CSGCMCCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC and CCM modes
 fieldset/CRYP_CSGCMCCM2R:
   description: ''
   fields:
-  - name: CSGCMCCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC and CCM modes
+    - name: CSGCMCCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC and CCM modes
 fieldset/CRYP_CSGCMCCM3R:
   description: ''
   fields:
-  - name: CSGCMCCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC and CCM modes
+    - name: CSGCMCCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC and CCM modes
 fieldset/CRYP_CSGCMCCM4R:
   description: ''
   fields:
-  - name: CSGCMCCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC and CCM modes
+    - name: CSGCMCCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC and CCM modes
 fieldset/CRYP_CSGCMCCM5R:
   description: ''
   fields:
-  - name: CSGCMCCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC and CCM modes
+    - name: CSGCMCCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC and CCM modes
 fieldset/CRYP_CSGCMCCM6R:
   description: ''
   fields:
-  - name: CSGCMCCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC and CCM modes
+    - name: CSGCMCCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC and CCM modes
 fieldset/CRYP_CSGCMCCM7R:
   description: ''
   fields:
-  - name: CSGCMCCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC and CCM modes
+    - name: CSGCMCCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC and CCM modes
 fieldset/CRYP_CSGCM0R:
   description: ''
   fields:
-  - name: CSGCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC modes
+    - name: CSGCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC modes
 fieldset/CRYP_CSGCM1R:
   description: ''
   fields:
-  - name: CSGCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC modes
+    - name: CSGCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC modes
 fieldset/CRYP_CSGCM2R:
   description: ''
   fields:
-  - name: CSGCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC modes
+    - name: CSGCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC modes
 fieldset/CRYP_CSGCM3R:
   description: ''
   fields:
-  - name: CSGCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC modes
+    - name: CSGCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC modes
 fieldset/CRYP_CSGCM4R:
   description: ''
   fields:
-  - name: CSGCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC modes
+    - name: CSGCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC modes
 fieldset/CRYP_CSGCM5R:
   description: ''
   fields:
-  - name: CSGCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC modes
+    - name: CSGCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC modes
 fieldset/CRYP_CSGCM6R:
   description: ''
   fields:
-  - name: CSGCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC modes
+    - name: CSGCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC modes
 fieldset/CRYP_CSGCM7R:
   description: ''
   fields:
-  - name: CSGCM
-    bit_offset: 0
-    bit_size: 32
-    description: Context swap for GCM/GMAC modes
+    - name: CSGCM
+      bit_offset: 0
+      bit_size: 32
+      description: Context swap for GCM/GMAC modes
 fieldset/CRYP_HWCFGR:
   description: ''
   fields:
-  - name: CFG1
-    bit_offset: 0
-    bit_size: 4
-    description: Hardware Generic 1
-  - name: CFG2
-    bit_offset: 4
-    bit_size: 4
-    description: Hardware Generic 2
-  - name: CFG3
-    bit_offset: 8
-    bit_size: 4
-    description: Hardware Generic 3
-  - name: CFG4
-    bit_offset: 12
-    bit_size: 4
-    description: Hardware Generic 4
+    - name: CFG1
+      bit_offset: 0
+      bit_size: 4
+      description: Hardware Generic 1
+    - name: CFG2
+      bit_offset: 4
+      bit_size: 4
+      description: Hardware Generic 2
+    - name: CFG3
+      bit_offset: 8
+      bit_size: 4
+      description: Hardware Generic 3
+    - name: CFG4
+      bit_offset: 12
+      bit_size: 4
+      description: Hardware Generic 4
 fieldset/CRYP_VERR:
   description: ''
   fields:
-  - name: MINVER
-    bit_offset: 0
-    bit_size: 4
-    description: CRYP processor minor version
-  - name: MAJVER
-    bit_offset: 4
-    bit_size: 4
-    description: CRYP processor major version
+    - name: MINVER
+      bit_offset: 0
+      bit_size: 4
+      description: CRYP processor minor version
+    - name: MAJVER
+      bit_offset: 4
+      bit_size: 4
+      description: CRYP processor major version
 fieldset/CRYP_IPIDR:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 32
-    description: Identification code
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+      description: Identification code
 fieldset/CRYP_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: Size identification code
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: Size identification code

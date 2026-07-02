@@ -1,635 +1,635 @@
 block/LPUART:
   description: ''
   items:
-  - name: VERID
-    byte_offset: 0
-    fieldset: LPUART_VERID
-  - name: PARAM
-    byte_offset: 4
-    fieldset: LPUART_PARAM
-  - name: GLOBAL
-    byte_offset: 8
-    fieldset: LPUART_GLOBAL
-  - name: PINCFG
-    byte_offset: 12
-    fieldset: LPUART_PINCFG
-  - name: BAUD
-    byte_offset: 16
-    fieldset: LPUART_BAUD
-  - name: STAT
-    byte_offset: 20
-    fieldset: LPUART_STAT
-  - name: CTRL
-    byte_offset: 24
-    fieldset: LPUART_CTRL
-  - name: DATA
-    byte_offset: 28
-    fieldset: LPUART_DATA
-  - name: MATCH
-    byte_offset: 32
-    fieldset: LPUART_MATCH
-  - name: MODIR
-    byte_offset: 36
-    fieldset: LPUART_MODIR
-  - name: FIFO
-    byte_offset: 40
-    fieldset: LPUART_FIFO
-  - name: WATER
-    byte_offset: 44
-    fieldset: LPUART_WATER
-  - name: DATARO
-    byte_offset: 48
-    fieldset: LPUART_DATARO
-  - name: MCR
-    byte_offset: 64
-    fieldset: LPUART_MCR
-  - name: MSR
-    byte_offset: 68
-    fieldset: LPUART_MSR
-  - name: REIR
-    byte_offset: 72
-    fieldset: LPUART_REIR
-  - name: TEIR
-    byte_offset: 76
-    fieldset: LPUART_TEIR
-  - name: HDCR
-    byte_offset: 80
-    fieldset: LPUART_HDCR
-  - name: TOCR
-    byte_offset: 88
-    fieldset: LPUART_TOCR
-  - name: TOSR
-    byte_offset: 92
-    fieldset: LPUART_TOSR
-  - name: TIMEOUT
-    byte_offset: 96
-    array:
-      len: 4
-      stride: 4
-    fieldset: LPUART_TIMEOUT
-  - name: TCBR
-    byte_offset: 512
-    array:
-      len: 128
-      stride: 4
-    fieldset: LPUART_TCBR
-  - name: TDBR
-    byte_offset: 1024
-    array:
-      len: 256
-      stride: 4
-    fieldset: LPUART_TDBR
+    - name: VERID
+      byte_offset: 0
+      fieldset: LPUART_VERID
+    - name: PARAM
+      byte_offset: 4
+      fieldset: LPUART_PARAM
+    - name: GLOBAL
+      byte_offset: 8
+      fieldset: LPUART_GLOBAL
+    - name: PINCFG
+      byte_offset: 12
+      fieldset: LPUART_PINCFG
+    - name: BAUD
+      byte_offset: 16
+      fieldset: LPUART_BAUD
+    - name: STAT
+      byte_offset: 20
+      fieldset: LPUART_STAT
+    - name: CTRL
+      byte_offset: 24
+      fieldset: LPUART_CTRL
+    - name: DATA
+      byte_offset: 28
+      fieldset: LPUART_DATA
+    - name: MATCH
+      byte_offset: 32
+      fieldset: LPUART_MATCH
+    - name: MODIR
+      byte_offset: 36
+      fieldset: LPUART_MODIR
+    - name: FIFO
+      byte_offset: 40
+      fieldset: LPUART_FIFO
+    - name: WATER
+      byte_offset: 44
+      fieldset: LPUART_WATER
+    - name: DATARO
+      byte_offset: 48
+      fieldset: LPUART_DATARO
+    - name: MCR
+      byte_offset: 64
+      fieldset: LPUART_MCR
+    - name: MSR
+      byte_offset: 68
+      fieldset: LPUART_MSR
+    - name: REIR
+      byte_offset: 72
+      fieldset: LPUART_REIR
+    - name: TEIR
+      byte_offset: 76
+      fieldset: LPUART_TEIR
+    - name: HDCR
+      byte_offset: 80
+      fieldset: LPUART_HDCR
+    - name: TOCR
+      byte_offset: 88
+      fieldset: LPUART_TOCR
+    - name: TOSR
+      byte_offset: 92
+      fieldset: LPUART_TOSR
+    - name: TIMEOUT
+      byte_offset: 96
+      array:
+        len: 4
+        stride: 4
+      fieldset: LPUART_TIMEOUT
+    - name: TCBR
+      byte_offset: 512
+      array:
+        len: 128
+        stride: 4
+      fieldset: LPUART_TCBR
+    - name: TDBR
+      byte_offset: 1024
+      array:
+        len: 256
+        stride: 4
+      fieldset: LPUART_TDBR
 fieldset/LPUART_VERID:
   description: ''
   fields:
-  - name: FEATURE
-    bit_offset: 0
-    bit_size: 16
-  - name: MINOR
-    bit_offset: 16
-    bit_size: 8
-    description: Minor Version Number
-  - name: MAJOR
-    bit_offset: 24
-    bit_size: 8
-    description: Minor Version Number
+    - name: FEATURE
+      bit_offset: 0
+      bit_size: 16
+    - name: MINOR
+      bit_offset: 16
+      bit_size: 8
+      description: Minor Version Number
+    - name: MAJOR
+      bit_offset: 24
+      bit_size: 8
+      description: Minor Version Number
 fieldset/LPUART_PARAM:
   description: ''
   fields:
-  - name: TXFIFO
-    bit_offset: 0
-    bit_size: 8
-    description: Transmit FIFO Size
-  - name: RXFIFO
-    bit_offset: 8
-    bit_size: 8
-    description: Transmit FIFO Size
+    - name: TXFIFO
+      bit_offset: 0
+      bit_size: 8
+      description: Transmit FIFO Size
+    - name: RXFIFO
+      bit_offset: 8
+      bit_size: 8
+      description: Transmit FIFO Size
 fieldset/LPUART_GLOBAL:
   description: ''
   fields:
-  - name: RST
-    bit_offset: 1
-    bit_size: 1
+    - name: RST
+      bit_offset: 1
+      bit_size: 1
 fieldset/LPUART_PINCFG:
   description: ''
   fields:
-  - name: TRGSEL
-    bit_offset: 0
-    bit_size: 2
+    - name: TRGSEL
+      bit_offset: 0
+      bit_size: 2
 fieldset/LPUART_BAUD:
   description: ''
   fields:
-  - name: SBR
-    bit_offset: 0
-    bit_size: 13
-    description: Baud Rate Modulo Divisor
-  - name: SBNS
-    bit_offset: 13
-    bit_size: 1
-    description: Baud Rate Modulo Divisor
-  - name: RXEDGIE
-    bit_offset: 14
-    bit_size: 1
-  - name: LBKDIE
-    bit_offset: 15
-    bit_size: 1
-  - name: RESYNCDIS
-    bit_offset: 16
-    bit_size: 1
-  - name: BOTHEDGE
-    bit_offset: 17
-    bit_size: 1
-  - name: MATCFG
-    bit_offset: 18
-    bit_size: 2
-  - name: RIDMAE
-    bit_offset: 20
-    bit_size: 1
-  - name: RDMAE
-    bit_offset: 21
-    bit_size: 1
-  - name: TDMAE
-    bit_offset: 23
-    bit_size: 1
-  - name: OSR
-    bit_offset: 24
-    bit_size: 5
-  - name: M10
-    bit_offset: 29
-    bit_size: 1
-  - name: MAEN2
-    bit_offset: 30
-    bit_size: 1
-  - name: MAEN1
-    bit_offset: 31
-    bit_size: 1
+    - name: SBR
+      bit_offset: 0
+      bit_size: 13
+      description: Baud Rate Modulo Divisor
+    - name: SBNS
+      bit_offset: 13
+      bit_size: 1
+      description: Baud Rate Modulo Divisor
+    - name: RXEDGIE
+      bit_offset: 14
+      bit_size: 1
+    - name: LBKDIE
+      bit_offset: 15
+      bit_size: 1
+    - name: RESYNCDIS
+      bit_offset: 16
+      bit_size: 1
+    - name: BOTHEDGE
+      bit_offset: 17
+      bit_size: 1
+    - name: MATCFG
+      bit_offset: 18
+      bit_size: 2
+    - name: RIDMAE
+      bit_offset: 20
+      bit_size: 1
+    - name: RDMAE
+      bit_offset: 21
+      bit_size: 1
+    - name: TDMAE
+      bit_offset: 23
+      bit_size: 1
+    - name: OSR
+      bit_offset: 24
+      bit_size: 5
+    - name: M10
+      bit_offset: 29
+      bit_size: 1
+    - name: MAEN2
+      bit_offset: 30
+      bit_size: 1
+    - name: MAEN1
+      bit_offset: 31
+      bit_size: 1
 fieldset/LPUART_STAT:
   description: ''
   fields:
-  - name: LBKFE
-    bit_offset: 0
-    bit_size: 1
-  - name: AME
-    bit_offset: 1
-    bit_size: 1
-  - name: MSF
-    bit_offset: 8
-    bit_size: 1
-  - name: TSF
-    bit_offset: 9
-    bit_size: 1
-  - name: MA2F
-    bit_offset: 14
-    bit_size: 1
-  - name: MA1F
-    bit_offset: 15
-    bit_size: 1
-  - name: PF
-    bit_offset: 16
-    bit_size: 1
-  - name: FE
-    bit_offset: 17
-    bit_size: 1
-  - name: NF
-    bit_offset: 18
-    bit_size: 1
-  - name: OR
-    bit_offset: 19
-    bit_size: 1
-  - name: IDLE
-    bit_offset: 20
-    bit_size: 1
-  - name: RDRF
-    bit_offset: 21
-    bit_size: 1
-  - name: TC
-    bit_offset: 22
-    bit_size: 1
-  - name: TDRE
-    bit_offset: 23
-    bit_size: 1
-  - name: RAF
-    bit_offset: 24
-    bit_size: 1
-  - name: LBKDE
-    bit_offset: 25
-    bit_size: 1
-  - name: BRK13
-    bit_offset: 26
-    bit_size: 1
-  - name: RWUID
-    bit_offset: 27
-    bit_size: 1
-  - name: RXINV
-    bit_offset: 28
-    bit_size: 1
-  - name: MSBF
-    bit_offset: 29
-    bit_size: 1
-  - name: RXEDGIF
-    bit_offset: 30
-    bit_size: 1
-  - name: LBKDIF
-    bit_offset: 31
-    bit_size: 1
+    - name: LBKFE
+      bit_offset: 0
+      bit_size: 1
+    - name: AME
+      bit_offset: 1
+      bit_size: 1
+    - name: MSF
+      bit_offset: 8
+      bit_size: 1
+    - name: TSF
+      bit_offset: 9
+      bit_size: 1
+    - name: MA2F
+      bit_offset: 14
+      bit_size: 1
+    - name: MA1F
+      bit_offset: 15
+      bit_size: 1
+    - name: PF
+      bit_offset: 16
+      bit_size: 1
+    - name: FE
+      bit_offset: 17
+      bit_size: 1
+    - name: NF
+      bit_offset: 18
+      bit_size: 1
+    - name: OR
+      bit_offset: 19
+      bit_size: 1
+    - name: IDLE
+      bit_offset: 20
+      bit_size: 1
+    - name: RDRF
+      bit_offset: 21
+      bit_size: 1
+    - name: TC
+      bit_offset: 22
+      bit_size: 1
+    - name: TDRE
+      bit_offset: 23
+      bit_size: 1
+    - name: RAF
+      bit_offset: 24
+      bit_size: 1
+    - name: LBKDE
+      bit_offset: 25
+      bit_size: 1
+    - name: BRK13
+      bit_offset: 26
+      bit_size: 1
+    - name: RWUID
+      bit_offset: 27
+      bit_size: 1
+    - name: RXINV
+      bit_offset: 28
+      bit_size: 1
+    - name: MSBF
+      bit_offset: 29
+      bit_size: 1
+    - name: RXEDGIF
+      bit_offset: 30
+      bit_size: 1
+    - name: LBKDIF
+      bit_offset: 31
+      bit_size: 1
 fieldset/LPUART_CTRL:
   description: ''
   fields:
-  - name: PT
-    bit_offset: 0
-    bit_size: 1
-  - name: PE
-    bit_offset: 1
-    bit_size: 1
-  - name: ILT
-    bit_offset: 2
-    bit_size: 1
-  - name: WAKE
-    bit_offset: 3
-    bit_size: 1
-  - name: M
-    bit_offset: 4
-    bit_size: 1
-  - name: RSRC
-    bit_offset: 5
-    bit_size: 1
-  - name: DOZEEN
-    bit_offset: 6
-    bit_size: 1
-  - name: LOOPS
-    bit_offset: 7
-    bit_size: 1
-  - name: IDLECFG
-    bit_offset: 8
-    bit_size: 3
-  - name: M7
-    bit_offset: 11
-    bit_size: 1
-  - name: MA2IE
-    bit_offset: 14
-    bit_size: 1
-  - name: MA1IE
-    bit_offset: 15
-    bit_size: 1
-  - name: SBK
-    bit_offset: 16
-    bit_size: 1
-  - name: RWU
-    bit_offset: 17
-    bit_size: 1
-  - name: RE
-    bit_offset: 18
-    bit_size: 1
-  - name: TE
-    bit_offset: 19
-    bit_size: 1
-  - name: ILIE
-    bit_offset: 20
-    bit_size: 1
-  - name: RIE
-    bit_offset: 21
-    bit_size: 1
-  - name: TCIE
-    bit_offset: 22
-    bit_size: 1
-  - name: TIE
-    bit_offset: 23
-    bit_size: 1
-  - name: PEIE
-    bit_offset: 24
-    bit_size: 1
-  - name: FEIE
-    bit_offset: 25
-    bit_size: 1
-  - name: NEIE
-    bit_offset: 26
-    bit_size: 1
-  - name: ORIE
-    bit_offset: 27
-    bit_size: 1
-  - name: TXINV
-    bit_offset: 28
-    bit_size: 1
-  - name: TXDIR
-    bit_offset: 29
-    bit_size: 1
-  - name: R9T8
-    bit_offset: 30
-    bit_size: 1
-    description: Receive Bit 9 Transmit Bit 8
-  - name: R8T9
-    bit_offset: 31
-    bit_size: 1
-    description: Receive Bit 9 Transmit Bit 8
+    - name: PT
+      bit_offset: 0
+      bit_size: 1
+    - name: PE
+      bit_offset: 1
+      bit_size: 1
+    - name: ILT
+      bit_offset: 2
+      bit_size: 1
+    - name: WAKE
+      bit_offset: 3
+      bit_size: 1
+    - name: M
+      bit_offset: 4
+      bit_size: 1
+    - name: RSRC
+      bit_offset: 5
+      bit_size: 1
+    - name: DOZEEN
+      bit_offset: 6
+      bit_size: 1
+    - name: LOOPS
+      bit_offset: 7
+      bit_size: 1
+    - name: IDLECFG
+      bit_offset: 8
+      bit_size: 3
+    - name: M7
+      bit_offset: 11
+      bit_size: 1
+    - name: MA2IE
+      bit_offset: 14
+      bit_size: 1
+    - name: MA1IE
+      bit_offset: 15
+      bit_size: 1
+    - name: SBK
+      bit_offset: 16
+      bit_size: 1
+    - name: RWU
+      bit_offset: 17
+      bit_size: 1
+    - name: RE
+      bit_offset: 18
+      bit_size: 1
+    - name: TE
+      bit_offset: 19
+      bit_size: 1
+    - name: ILIE
+      bit_offset: 20
+      bit_size: 1
+    - name: RIE
+      bit_offset: 21
+      bit_size: 1
+    - name: TCIE
+      bit_offset: 22
+      bit_size: 1
+    - name: TIE
+      bit_offset: 23
+      bit_size: 1
+    - name: PEIE
+      bit_offset: 24
+      bit_size: 1
+    - name: FEIE
+      bit_offset: 25
+      bit_size: 1
+    - name: NEIE
+      bit_offset: 26
+      bit_size: 1
+    - name: ORIE
+      bit_offset: 27
+      bit_size: 1
+    - name: TXINV
+      bit_offset: 28
+      bit_size: 1
+    - name: TXDIR
+      bit_offset: 29
+      bit_size: 1
+    - name: R9T8
+      bit_offset: 30
+      bit_size: 1
+      description: Receive Bit 9 Transmit Bit 8
+    - name: R8T9
+      bit_offset: 31
+      bit_size: 1
+      description: Receive Bit 9 Transmit Bit 8
 fieldset/LPUART_DATA:
   description: ''
   fields:
-  - name: R0T0
-    bit_offset: 0
-    bit_size: 1
-  - name: R1T1
-    bit_offset: 1
-    bit_size: 1
-    description: Read receive FIFO bit 0 or write transmit FIFO bit 0
-  - name: R2T2
-    bit_offset: 2
-    bit_size: 1
-    description: Read receive FIFO bit 1 or write transmit FIFO bit 1
-  - name: R3T3
-    bit_offset: 3
-    bit_size: 1
-    description: Read receive FIFO bit 2 or write transmit FIFO bit 2
-  - name: R4T4
-    bit_offset: 4
-    bit_size: 1
-    description: Read receive FIFO bit 3 or write transmit FIFO bit 3
-  - name: R5T5
-    bit_offset: 5
-    bit_size: 1
-    description: Read receive FIFO bit 4 or write transmit FIFO bit 4
-  - name: R6T6
-    bit_offset: 6
-    bit_size: 1
-    description: Read receive FIFO bit 5 or write transmit FIFO bit 5
-  - name: R7T7
-    bit_offset: 7
-    bit_size: 1
-    description: Read receive FIFO bit 6 or write transmit FIFO bit 6
-  - name: R8T8
-    bit_offset: 8
-    bit_size: 1
-    description: Read receive FIFO bit 7 or write transmit FIFO bit 7
-  - name: R9T9
-    bit_offset: 9
-    bit_size: 1
-    description: Read receive FIFO bit 8 or write transmit FIFO bit 8
-  - name: LINBRK
-    bit_offset: 10
-    bit_size: 1
-    description: Read receive FIFO bit 9 or write transmit FIFO bit 9
-  - name: IDLINE
-    bit_offset: 11
-    bit_size: 1
-  - name: RXEMPT
-    bit_offset: 12
-    bit_size: 1
-  - name: FRETSC
-    bit_offset: 13
-    bit_size: 1
-  - name: PARITYE
-    bit_offset: 14
-    bit_size: 1
-  - name: NOISY
-    bit_offset: 15
-    bit_size: 1
+    - name: R0T0
+      bit_offset: 0
+      bit_size: 1
+    - name: R1T1
+      bit_offset: 1
+      bit_size: 1
+      description: Read receive FIFO bit 0 or write transmit FIFO bit 0
+    - name: R2T2
+      bit_offset: 2
+      bit_size: 1
+      description: Read receive FIFO bit 1 or write transmit FIFO bit 1
+    - name: R3T3
+      bit_offset: 3
+      bit_size: 1
+      description: Read receive FIFO bit 2 or write transmit FIFO bit 2
+    - name: R4T4
+      bit_offset: 4
+      bit_size: 1
+      description: Read receive FIFO bit 3 or write transmit FIFO bit 3
+    - name: R5T5
+      bit_offset: 5
+      bit_size: 1
+      description: Read receive FIFO bit 4 or write transmit FIFO bit 4
+    - name: R6T6
+      bit_offset: 6
+      bit_size: 1
+      description: Read receive FIFO bit 5 or write transmit FIFO bit 5
+    - name: R7T7
+      bit_offset: 7
+      bit_size: 1
+      description: Read receive FIFO bit 6 or write transmit FIFO bit 6
+    - name: R8T8
+      bit_offset: 8
+      bit_size: 1
+      description: Read receive FIFO bit 7 or write transmit FIFO bit 7
+    - name: R9T9
+      bit_offset: 9
+      bit_size: 1
+      description: Read receive FIFO bit 8 or write transmit FIFO bit 8
+    - name: LINBRK
+      bit_offset: 10
+      bit_size: 1
+      description: Read receive FIFO bit 9 or write transmit FIFO bit 9
+    - name: IDLINE
+      bit_offset: 11
+      bit_size: 1
+    - name: RXEMPT
+      bit_offset: 12
+      bit_size: 1
+    - name: FRETSC
+      bit_offset: 13
+      bit_size: 1
+    - name: PARITYE
+      bit_offset: 14
+      bit_size: 1
+    - name: NOISY
+      bit_offset: 15
+      bit_size: 1
 fieldset/LPUART_MATCH:
   description: ''
   fields:
-  - name: MA1
-    bit_offset: 0
-    bit_size: 10
-    description: Match Address 1
-  - name: MA2
-    bit_offset: 16
-    bit_size: 10
-    description: Match Address 1
+    - name: MA1
+      bit_offset: 0
+      bit_size: 10
+      description: Match Address 1
+    - name: MA2
+      bit_offset: 16
+      bit_size: 10
+      description: Match Address 1
 fieldset/LPUART_MODIR:
   description: ''
   fields:
-  - name: TXCTSE
-    bit_offset: 0
-    bit_size: 1
-  - name: TXRTSE
-    bit_offset: 1
-    bit_size: 1
-  - name: TXRTSPOL
-    bit_offset: 2
-    bit_size: 1
-  - name: RXRTSE
-    bit_offset: 3
-    bit_size: 1
-  - name: TXCTSC
-    bit_offset: 4
-    bit_size: 1
-  - name: TXCTSSRC
-    bit_offset: 5
-    bit_size: 1
-  - name: RTSWATER
-    bit_offset: 8
-    bit_size: 4
-    description: Receive RTS Configuration
-  - name: TNP
-    bit_offset: 16
-    bit_size: 2
-    description: Receive RTS Configuration
-  - name: IREN
-    bit_offset: 18
-    bit_size: 1
+    - name: TXCTSE
+      bit_offset: 0
+      bit_size: 1
+    - name: TXRTSE
+      bit_offset: 1
+      bit_size: 1
+    - name: TXRTSPOL
+      bit_offset: 2
+      bit_size: 1
+    - name: RXRTSE
+      bit_offset: 3
+      bit_size: 1
+    - name: TXCTSC
+      bit_offset: 4
+      bit_size: 1
+    - name: TXCTSSRC
+      bit_offset: 5
+      bit_size: 1
+    - name: RTSWATER
+      bit_offset: 8
+      bit_size: 4
+      description: Receive RTS Configuration
+    - name: TNP
+      bit_offset: 16
+      bit_size: 2
+      description: Receive RTS Configuration
+    - name: IREN
+      bit_offset: 18
+      bit_size: 1
 fieldset/LPUART_FIFO:
   description: ''
   fields:
-  - name: RXFIFOSIZE
-    bit_offset: 0
-    bit_size: 3
-  - name: RXFE
-    bit_offset: 3
-    bit_size: 1
-  - name: TXFIFOSIZE
-    bit_offset: 4
-    bit_size: 3
-  - name: TXFE
-    bit_offset: 7
-    bit_size: 1
-  - name: RXUFE
-    bit_offset: 8
-    bit_size: 1
-  - name: TXOFE
-    bit_offset: 9
-    bit_size: 1
-  - name: RXIDEN
-    bit_offset: 10
-    bit_size: 3
-  - name: RXFLUSH
-    bit_offset: 14
-    bit_size: 1
-  - name: TXFLUSH
-    bit_offset: 15
-    bit_size: 1
-  - name: RXUF
-    bit_offset: 16
-    bit_size: 1
-  - name: TXOF
-    bit_offset: 17
-    bit_size: 1
-  - name: RXEMPT
-    bit_offset: 22
-    bit_size: 1
-  - name: TXEMPT
-    bit_offset: 23
-    bit_size: 1
+    - name: RXFIFOSIZE
+      bit_offset: 0
+      bit_size: 3
+    - name: RXFE
+      bit_offset: 3
+      bit_size: 1
+    - name: TXFIFOSIZE
+      bit_offset: 4
+      bit_size: 3
+    - name: TXFE
+      bit_offset: 7
+      bit_size: 1
+    - name: RXUFE
+      bit_offset: 8
+      bit_size: 1
+    - name: TXOFE
+      bit_offset: 9
+      bit_size: 1
+    - name: RXIDEN
+      bit_offset: 10
+      bit_size: 3
+    - name: RXFLUSH
+      bit_offset: 14
+      bit_size: 1
+    - name: TXFLUSH
+      bit_offset: 15
+      bit_size: 1
+    - name: RXUF
+      bit_offset: 16
+      bit_size: 1
+    - name: TXOF
+      bit_offset: 17
+      bit_size: 1
+    - name: RXEMPT
+      bit_offset: 22
+      bit_size: 1
+    - name: TXEMPT
+      bit_offset: 23
+      bit_size: 1
 fieldset/LPUART_WATER:
   description: ''
   fields:
-  - name: TXWATER
-    bit_offset: 0
-    bit_size: 4
-    description: Transmit Watermark
-  - name: TXCOUNT
-    bit_offset: 8
-    bit_size: 5
-    description: Transmit Watermark
-  - name: RXWATER
-    bit_offset: 16
-    bit_size: 4
-    description: Transmit Counter
-  - name: RXCOUNT
-    bit_offset: 24
-    bit_size: 5
-    description: Receive Watermark
+    - name: TXWATER
+      bit_offset: 0
+      bit_size: 4
+      description: Transmit Watermark
+    - name: TXCOUNT
+      bit_offset: 8
+      bit_size: 5
+      description: Transmit Watermark
+    - name: RXWATER
+      bit_offset: 16
+      bit_size: 4
+      description: Transmit Counter
+    - name: RXCOUNT
+      bit_offset: 24
+      bit_size: 5
+      description: Receive Watermark
 fieldset/LPUART_DATARO:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 16
-    description: Receive Data
+    - name: DATA
+      bit_offset: 0
+      bit_size: 16
+      description: Receive Data
 fieldset/LPUART_MCR:
   description: ''
   fields:
-  - name: CTS
-    bit_offset: 0
-    bit_size: 1
-  - name: DSR
-    bit_offset: 1
-    bit_size: 1
-  - name: RIN
-    bit_offset: 2
-    bit_size: 1
-  - name: DCD
-    bit_offset: 3
-    bit_size: 1
-  - name: DTR
-    bit_offset: 8
-    bit_size: 1
-  - name: RTS
-    bit_offset: 9
-    bit_size: 1
+    - name: CTS
+      bit_offset: 0
+      bit_size: 1
+    - name: DSR
+      bit_offset: 1
+      bit_size: 1
+    - name: RIN
+      bit_offset: 2
+      bit_size: 1
+    - name: DCD
+      bit_offset: 3
+      bit_size: 1
+    - name: DTR
+      bit_offset: 8
+      bit_size: 1
+    - name: RTS
+      bit_offset: 9
+      bit_size: 1
 fieldset/LPUART_MSR:
   description: ''
   fields:
-  - name: DCTS
-    bit_offset: 0
-    bit_size: 1
-  - name: DDSR
-    bit_offset: 1
-    bit_size: 1
-  - name: DRI
-    bit_offset: 2
-    bit_size: 1
-  - name: DDCD
-    bit_offset: 3
-    bit_size: 1
-  - name: CTS
-    bit_offset: 4
-    bit_size: 1
-  - name: DSR
-    bit_offset: 5
-    bit_size: 1
-  - name: RIN
-    bit_offset: 6
-    bit_size: 1
-  - name: DCD
-    bit_offset: 7
-    bit_size: 1
+    - name: DCTS
+      bit_offset: 0
+      bit_size: 1
+    - name: DDSR
+      bit_offset: 1
+      bit_size: 1
+    - name: DRI
+      bit_offset: 2
+      bit_size: 1
+    - name: DDCD
+      bit_offset: 3
+      bit_size: 1
+    - name: CTS
+      bit_offset: 4
+      bit_size: 1
+    - name: DSR
+      bit_offset: 5
+      bit_size: 1
+    - name: RIN
+      bit_offset: 6
+      bit_size: 1
+    - name: DCD
+      bit_offset: 7
+      bit_size: 1
 fieldset/LPUART_REIR:
   description: ''
   fields:
-  - name: IDTIME
-    bit_offset: 0
-    bit_size: 14
-    description: Idle Time
+    - name: IDTIME
+      bit_offset: 0
+      bit_size: 14
+      description: Idle Time
 fieldset/LPUART_TEIR:
   description: ''
   fields:
-  - name: IDTIME
-    bit_offset: 0
-    bit_size: 14
-    description: Idle Time
+    - name: IDTIME
+      bit_offset: 0
+      bit_size: 14
+      description: Idle Time
 fieldset/LPUART_HDCR:
   description: ''
   fields:
-  - name: TXSTALL
-    bit_offset: 0
-    bit_size: 1
-  - name: RXSEL
-    bit_offset: 1
-    bit_size: 1
-  - name: RXWRMSK
-    bit_offset: 2
-    bit_size: 1
-  - name: RXMSK
-    bit_offset: 3
-    bit_size: 1
-  - name: RTSEXT
-    bit_offset: 8
-    bit_size: 8
-    description: RTS Extended
+    - name: TXSTALL
+      bit_offset: 0
+      bit_size: 1
+    - name: RXSEL
+      bit_offset: 1
+      bit_size: 1
+    - name: RXWRMSK
+      bit_offset: 2
+      bit_size: 1
+    - name: RXMSK
+      bit_offset: 3
+      bit_size: 1
+    - name: RTSEXT
+      bit_offset: 8
+      bit_size: 8
+      description: RTS Extended
 fieldset/LPUART_TOCR:
   description: ''
   fields:
-  - name: TOEN
-    bit_offset: 0
-    bit_size: 4
-    description: Timeout Enable
-  - name: TOIE
-    bit_offset: 8
-    bit_size: 4
-    description: Timeout Enable
+    - name: TOEN
+      bit_offset: 0
+      bit_size: 4
+      description: Timeout Enable
+    - name: TOIE
+      bit_offset: 8
+      bit_size: 4
+      description: Timeout Enable
 fieldset/LPUART_TOSR:
   description: ''
   fields:
-  - name: TOZ
-    bit_offset: 0
-    bit_size: 4
-    description: Timeout Zero
-  - name: TOF
-    bit_offset: 8
-    bit_size: 4
-    description: Timeout Zero
+    - name: TOZ
+      bit_offset: 0
+      bit_size: 4
+      description: Timeout Zero
+    - name: TOF
+      bit_offset: 8
+      bit_size: 4
+      description: Timeout Zero
 fieldset/LPUART_TIMEOUT:
   description: ''
   fields:
-  - name: TIMEOUT
-    bit_offset: 0
-    bit_size: 14
-    description: Timeout Value
-  - name: CFG
-    bit_offset: 30
-    bit_size: 2
-    description: Timeout Value
+    - name: TIMEOUT
+      bit_offset: 0
+      bit_size: 14
+      description: Timeout Value
+    - name: CFG
+      bit_offset: 30
+      bit_size: 2
+      description: Timeout Value
 fieldset/LPUART_TCBR:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 16
-    description: Data
+    - name: DATA
+      bit_offset: 0
+      bit_size: 16
+      description: Data
 fieldset/LPUART_TDBR:
   description: ''
   fields:
-  - name: DATA0
-    bit_offset: 0
-    bit_size: 8
-    description: Data0
-  - name: DATA1
-    bit_offset: 8
-    bit_size: 8
-    description: Data0
-  - name: DATA2
-    bit_offset: 16
-    bit_size: 8
-    description: Data1
-  - name: DATA3
-    bit_offset: 24
-    bit_size: 8
-    description: Data2
+    - name: DATA0
+      bit_offset: 0
+      bit_size: 8
+      description: Data0
+    - name: DATA1
+      bit_offset: 8
+      bit_size: 8
+      description: Data0
+    - name: DATA2
+      bit_offset: 16
+      bit_size: 8
+      description: Data1
+    - name: DATA3
+      bit_offset: 24
+      bit_size: 8
+      description: Data2

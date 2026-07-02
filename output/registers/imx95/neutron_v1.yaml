@@ -1,927 +1,927 @@
 block/NEUTRON:
   description: ''
   items:
-  - name: CTRL
-    byte_offset: 0
-  - name: FORMAT
-    byte_offset: 4
-    fieldset: NEUTRON_FORMAT
-  - name: LENGTH
-    byte_offset: 8
-    fieldset: NEUTRON_LENGTH
-  - name: WEIGHTBASE
-    byte_offset: 12
-    fieldset: NEUTRON_WEIGHTBASE
-  - name: BIASBASE
-    byte_offset: 16
-    fieldset: NEUTRON_BIASBASE
-  - name: ARGMAXBASE
-    byte_offset: 20
-    fieldset: NEUTRON_ARGMAXBASE
-  - name: SCALEBASE
-    byte_offset: 24
-    fieldset: NEUTRON_SCALEBASE
-  - name: ACTCTRL
-    byte_offset: 28
-    fieldset: NEUTRON_ACTCTRL
-  - name: DEQUANT
-    byte_offset: 32
-  - name: BATCH
-    byte_offset: 36
-    fieldset: NEUTRON_BATCH
-  - name: RESCTRL
-    byte_offset: 40
-  - name: RES_Y
-    byte_offset: 44
-    fieldset: NEUTRON_RES_Y
-  - name: RES_X
-    byte_offset: 48
-    fieldset: NEUTRON_RES_X
-  - name: ASYMCTRL
-    byte_offset: 56
-  - name: FLUSH
-    byte_offset: 60
-    fieldset: NEUTRON_FLUSH
-  - name: INTR
-    byte_offset: 64
-    fieldset: NEUTRON_INTR
-  - name: WEIGHTCTRL
-    byte_offset: 68
-  - name: CIRCADDR
-    byte_offset: 72
-    fieldset: NEUTRON_CIRCADDR
-  - name: PROGSEQ
-    byte_offset: 76
-    fieldset: NEUTRON_PROGSEQ
-  - name: SCRATCH0_2
-    byte_offset: 80
-    array:
-      len: 3
-      stride: 4
-    fieldset: NEUTRON_SCRATCH0_2
-  - name: CODEBOOK
-    byte_offset: 96
-    array:
-      len: 16
-      stride: 4
-    fieldset: NEUTRON_CODEBOOK
-  - name: CANVAS_SIZE
-    byte_offset: 160
-    fieldset: NEUTRON_CANVAS_SIZE
-  - name: CANVAS_READ_CONV
-    byte_offset: 164
-    fieldset: NEUTRON_CANVAS_READ_CONV
-  - name: CANVAS_LOAD_PAD
-    byte_offset: 168
-    fieldset: NEUTRON_CANVAS_LOAD_PAD
-  - name: CANVAS_LOAD_Y
-    byte_offset: 172
-    fieldset: NEUTRON_CANVAS_LOAD_Y
-  - name: CANVAS_LOAD_X
-    byte_offset: 176
-    fieldset: NEUTRON_CANVAS_LOAD_X
-  - name: CANVAS_LOAD_BATCH
-    byte_offset: 180
-    fieldset: NEUTRON_CANVAS_LOAD_BATCH
-  - name: CANVAS_LOAD_OUTER_BATCH
-    byte_offset: 184
-    fieldset: NEUTRON_CANVAS_LOAD_OUTER_BATCH
-  - name: CANVAS_SECONDARY_READ
-    byte_offset: 188
-  - name: CANVAS_SECOND_Y_ADJ
-    byte_offset: 192
-    fieldset: NEUTRON_CANVAS_SECOND_Y_ADJ
-  - name: CANVAS_PDS_POS
-    byte_offset: 196
-  - name: CANVAS_PDS_PAD
-    byte_offset: 200
-    fieldset: NEUTRON_CANVAS_PDS_PAD
-  - name: CANVAS_PDS_STRIDES
-    byte_offset: 204
-    fieldset: NEUTRON_CANVAS_PDS_STRIDES
-  - name: SCRATCH3_5
-    byte_offset: 208
-    array:
-      len: 3
-      stride: 4
-    fieldset: NEUTRON_SCRATCH3_5
-  - name: ACTCTRL2
-    byte_offset: 224
-  - name: INTERPOLBASE
-    byte_offset: 228
-    fieldset: NEUTRON_INTERPOLBASE
-  - name: CANVAS_PDS_INP
-    byte_offset: 232
-    fieldset: NEUTRON_CANVAS_PDS_INP
-  - name: CANVAS_SECOND_X_ADJ
-    byte_offset: 236
-    fieldset: NEUTRON_CANVAS_SECOND_X_ADJ
-  - name: INTERPOLOFF
-    byte_offset: 240
-    fieldset: NEUTRON_INTERPOLOFF
-  - name: ACTCTRL3
-    byte_offset: 244
-    fieldset: NEUTRON_ACTCTRL3
-  - name: DATABASE
-    byte_offset: 256
-    fieldset: NEUTRON_DATABASE
-  - name: RESBASE
-    byte_offset: 384
-    fieldset: NEUTRON_RESBASE
-  - name: ID
-    byte_offset: 1020
-    fieldset: NEUTRON_ID
+    - name: CTRL
+      byte_offset: 0
+    - name: FORMAT
+      byte_offset: 4
+      fieldset: NEUTRON_FORMAT
+    - name: LENGTH
+      byte_offset: 8
+      fieldset: NEUTRON_LENGTH
+    - name: WEIGHTBASE
+      byte_offset: 12
+      fieldset: NEUTRON_WEIGHTBASE
+    - name: BIASBASE
+      byte_offset: 16
+      fieldset: NEUTRON_BIASBASE
+    - name: ARGMAXBASE
+      byte_offset: 20
+      fieldset: NEUTRON_ARGMAXBASE
+    - name: SCALEBASE
+      byte_offset: 24
+      fieldset: NEUTRON_SCALEBASE
+    - name: ACTCTRL
+      byte_offset: 28
+      fieldset: NEUTRON_ACTCTRL
+    - name: DEQUANT
+      byte_offset: 32
+    - name: BATCH
+      byte_offset: 36
+      fieldset: NEUTRON_BATCH
+    - name: RESCTRL
+      byte_offset: 40
+    - name: RES_Y
+      byte_offset: 44
+      fieldset: NEUTRON_RES_Y
+    - name: RES_X
+      byte_offset: 48
+      fieldset: NEUTRON_RES_X
+    - name: ASYMCTRL
+      byte_offset: 56
+    - name: FLUSH
+      byte_offset: 60
+      fieldset: NEUTRON_FLUSH
+    - name: INTR
+      byte_offset: 64
+      fieldset: NEUTRON_INTR
+    - name: WEIGHTCTRL
+      byte_offset: 68
+    - name: CIRCADDR
+      byte_offset: 72
+      fieldset: NEUTRON_CIRCADDR
+    - name: PROGSEQ
+      byte_offset: 76
+      fieldset: NEUTRON_PROGSEQ
+    - name: SCRATCH0_2
+      byte_offset: 80
+      array:
+        len: 3
+        stride: 4
+      fieldset: NEUTRON_SCRATCH0_2
+    - name: CODEBOOK
+      byte_offset: 96
+      array:
+        len: 16
+        stride: 4
+      fieldset: NEUTRON_CODEBOOK
+    - name: CANVAS_SIZE
+      byte_offset: 160
+      fieldset: NEUTRON_CANVAS_SIZE
+    - name: CANVAS_READ_CONV
+      byte_offset: 164
+      fieldset: NEUTRON_CANVAS_READ_CONV
+    - name: CANVAS_LOAD_PAD
+      byte_offset: 168
+      fieldset: NEUTRON_CANVAS_LOAD_PAD
+    - name: CANVAS_LOAD_Y
+      byte_offset: 172
+      fieldset: NEUTRON_CANVAS_LOAD_Y
+    - name: CANVAS_LOAD_X
+      byte_offset: 176
+      fieldset: NEUTRON_CANVAS_LOAD_X
+    - name: CANVAS_LOAD_BATCH
+      byte_offset: 180
+      fieldset: NEUTRON_CANVAS_LOAD_BATCH
+    - name: CANVAS_LOAD_OUTER_BATCH
+      byte_offset: 184
+      fieldset: NEUTRON_CANVAS_LOAD_OUTER_BATCH
+    - name: CANVAS_SECONDARY_READ
+      byte_offset: 188
+    - name: CANVAS_SECOND_Y_ADJ
+      byte_offset: 192
+      fieldset: NEUTRON_CANVAS_SECOND_Y_ADJ
+    - name: CANVAS_PDS_POS
+      byte_offset: 196
+    - name: CANVAS_PDS_PAD
+      byte_offset: 200
+      fieldset: NEUTRON_CANVAS_PDS_PAD
+    - name: CANVAS_PDS_STRIDES
+      byte_offset: 204
+      fieldset: NEUTRON_CANVAS_PDS_STRIDES
+    - name: SCRATCH3_5
+      byte_offset: 208
+      array:
+        len: 3
+        stride: 4
+      fieldset: NEUTRON_SCRATCH3_5
+    - name: ACTCTRL2
+      byte_offset: 224
+    - name: INTERPOLBASE
+      byte_offset: 228
+      fieldset: NEUTRON_INTERPOLBASE
+    - name: CANVAS_PDS_INP
+      byte_offset: 232
+      fieldset: NEUTRON_CANVAS_PDS_INP
+    - name: CANVAS_SECOND_X_ADJ
+      byte_offset: 236
+      fieldset: NEUTRON_CANVAS_SECOND_X_ADJ
+    - name: INTERPOLOFF
+      byte_offset: 240
+      fieldset: NEUTRON_INTERPOLOFF
+    - name: ACTCTRL3
+      byte_offset: 244
+      fieldset: NEUTRON_ACTCTRL3
+    - name: DATABASE
+      byte_offset: 256
+      fieldset: NEUTRON_DATABASE
+    - name: RESBASE
+      byte_offset: 384
+      fieldset: NEUTRON_RESBASE
+    - name: ID
+      byte_offset: 1020
+      fieldset: NEUTRON_ID
 fieldset/NEUTRON_CTRL_PIPELINE:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 16
-    description: Pipeline Enable
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 16
+      description: Pipeline Enable
 fieldset/NEUTRON_CTRL_CTRL_SHADOW:
   description: ''
   fields:
-  - name: BUSY
-    bit_offset: 31
-    bit_size: 1
-    description: Pipeline Enable
+    - name: BUSY
+      bit_offset: 31
+      bit_size: 1
+      description: Pipeline Enable
 fieldset/NEUTRON_FORMAT:
   description: ''
   fields:
-  - name: WSIZE
-    bit_offset: 0
-    bit_size: 2
-    description: Size Weights
-  - name: DSIZE
-    bit_offset: 2
-    bit_size: 2
-    description: Size Weights
-  - name: BSIZE
-    bit_offset: 4
-    bit_size: 2
-    description: Size Data
-  - name: RSIZE
-    bit_offset: 6
-    bit_size: 2
-    description: Size Bias
-  - name: INTRLVRES
-    bit_offset: 9
-    bit_size: 1
-    description: Interleave Results
-  - name: SLOW16BIT
-    bit_offset: 10
-    bit_size: 1
-    description: Interleave Results
-  - name: ACCDNSHIFT
-    bit_offset: 12
-    bit_size: 2
-    description: Slow 16-bit mode
-  - name: VECTMULT
-    bit_offset: 30
-    bit_size: 1
-    description: Vector Multiplication
-  - name: COMPMULT
-    bit_offset: 31
-    bit_size: 1
-    description: Vector Multiplication
+    - name: WSIZE
+      bit_offset: 0
+      bit_size: 2
+      description: Size Weights
+    - name: DSIZE
+      bit_offset: 2
+      bit_size: 2
+      description: Size Weights
+    - name: BSIZE
+      bit_offset: 4
+      bit_size: 2
+      description: Size Data
+    - name: RSIZE
+      bit_offset: 6
+      bit_size: 2
+      description: Size Bias
+    - name: INTRLVRES
+      bit_offset: 9
+      bit_size: 1
+      description: Interleave Results
+    - name: SLOW16BIT
+      bit_offset: 10
+      bit_size: 1
+      description: Interleave Results
+    - name: ACCDNSHIFT
+      bit_offset: 12
+      bit_size: 2
+      description: Slow 16-bit mode
+    - name: VECTMULT
+      bit_offset: 30
+      bit_size: 1
+      description: Vector Multiplication
+    - name: COMPMULT
+      bit_offset: 31
+      bit_size: 1
+      description: Vector Multiplication
 fieldset/NEUTRON_FORMAT_SCALER:
   description: ''
   fields:
-  - name: SIZE
-    bit_offset: 8
-    bit_size: 1
-    description: Size of Post-Scaler
+    - name: SIZE
+      bit_offset: 8
+      bit_size: 1
+      description: Size of Post-Scaler
 fieldset/NEUTRON_FORMAT_DONT:
   description: ''
   fields:
-  - name: REARRANGEW
-    bit_offset: 15
-    bit_size: 1
-    description: Use Weights
+    - name: REARRANGEW
+      bit_offset: 15
+      bit_size: 1
+      description: Use Weights
 fieldset/NEUTRON_FORMAT_SIGN:
   description: ''
   fields:
-  - name: W
-    bit_offset: 16
-    bit_size: 1
-    description: Use Weights
-  - name: D
-    bit_offset: 17
-    bit_size: 1
-    description: Signed Weights
-  - name: B
-    bit_offset: 18
-    bit_size: 1
-    description: Signed Data
-  - name: R
-    bit_offset: 19
-    bit_size: 1
-    description: Signed bias
+    - name: W
+      bit_offset: 16
+      bit_size: 1
+      description: Use Weights
+    - name: D
+      bit_offset: 17
+      bit_size: 1
+      description: Signed Weights
+    - name: B
+      bit_offset: 18
+      bit_size: 1
+      description: Signed Data
+    - name: R
+      bit_offset: 19
+      bit_size: 1
+      description: Signed bias
 fieldset/NEUTRON_FORMAT_STICKY:
   description: ''
   fields:
-  - name: MODEL
-    bit_offset: 23
-    bit_size: 1
-    description: Signed Result
+    - name: MODEL
+      bit_offset: 23
+      bit_size: 1
+      description: Signed Result
 fieldset/NEUTRON_FORMAT_USE:
   description: ''
   fields:
-  - name: B
-    bit_offset: 24
-    bit_size: 1
-    description: Sticky model restart
-  - name: SCALER
-    bit_offset: 26
-    bit_size: 1
-    description: Use Bias
+    - name: B
+      bit_offset: 24
+      bit_size: 1
+      description: Sticky model restart
+    - name: SCALER
+      bit_offset: 26
+      bit_size: 1
+      description: Use Bias
 fieldset/NEUTRON_FORMAT_ACTIVATION:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 27
-    bit_size: 3
-    description: Use scaler
+    - name: MODE
+      bit_offset: 27
+      bit_size: 3
+      description: Use scaler
 fieldset/NEUTRON_LENGTH:
   description: ''
   fields:
-  - name: ROWS
-    bit_offset: 0
-    bit_size: 16
-    description: Rows
-  - name: DATA
-    bit_offset: 16
-    bit_size: 16
-    description: Rows
+    - name: ROWS
+      bit_offset: 0
+      bit_size: 16
+      description: Rows
+    - name: DATA
+      bit_offset: 16
+      bit_size: 16
+      description: Rows
 fieldset/NEUTRON_WEIGHTBASE:
   description: ''
   fields:
-  - name: BASE
-    bit_offset: 0
-    bit_size: 32
-    description: Base
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+      description: Base
 fieldset/NEUTRON_BIASBASE:
   description: ''
   fields:
-  - name: BASE
-    bit_offset: 0
-    bit_size: 32
-    description: Base address for Bases
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+      description: Base address for Bases
 fieldset/NEUTRON_ARGMAXBASE:
   description: ''
   fields:
-  - name: BASE
-    bit_offset: 0
-    bit_size: 32
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
 fieldset/NEUTRON_SCALEBASE:
   description: ''
   fields:
-  - name: BASE
-    bit_offset: 0
-    bit_size: 32
-    description: Base address for Scalers
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+      description: Base address for Scalers
 fieldset/NEUTRON_ACTCTRL:
   description: ''
   fields:
-  - name: CLIPMAX
-    bit_offset: 0
-    bit_size: 16
-    description: Clip max value
-  - name: CLIPMIN
-    bit_offset: 16
-    bit_size: 16
-    description: Clip max value
+    - name: CLIPMAX
+      bit_offset: 0
+      bit_size: 16
+      description: Clip max value
+    - name: CLIPMIN
+      bit_offset: 16
+      bit_size: 16
+      description: Clip max value
 fieldset/NEUTRON_DEQUANT_CMN:
   description: ''
   fields:
-  - name: SHIFT
-    bit_offset: 0
-    bit_size: 6
-    description: Common Shift factor
+    - name: SHIFT
+      bit_offset: 0
+      bit_size: 6
+      description: Common Shift factor
 fieldset/NEUTRON_DEQUANT_USE_FP16:
   description: ''
   fields:
-  - name: BIAS
-    bit_offset: 6
-    bit_size: 1
-    description: Common Shift factor
+    - name: BIAS
+      bit_offset: 6
+      bit_size: 1
+      description: Common Shift factor
 fieldset/NEUTRON_DEQUANT_USE_COMMON:
   description: ''
   fields:
-  - name: DEQUANT
-    bit_offset: 7
-    bit_size: 1
+    - name: DEQUANT
+      bit_offset: 7
+      bit_size: 1
 fieldset/NEUTRON_DEQUANT_ACT:
   description: ''
   fields:
-  - name: 'OFF'
-    bit_offset: 8
-    bit_size: 8
-    description: Activation Offset
+    - name: 'OFF'
+      bit_offset: 8
+      bit_size: 8
+      description: Activation Offset
 fieldset/NEUTRON_DEQUANT_CMN_SCALER:
   description: ''
   fields:
-  - name: VAL
-    bit_offset: 16
-    bit_size: 16
-    description: Activation Offset
+    - name: VAL
+      bit_offset: 16
+      bit_size: 16
+      description: Activation Offset
 fieldset/NEUTRON_BATCH:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 16
-    description: Matrix by Column
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 16
+      description: Matrix by Column
 fieldset/NEUTRON_RESCTRL_PIPE:
   description: ''
   fields:
-  - name: STRIDE
-    bit_offset: 0
-    bit_size: 4
-    description: Skip unused pipelines
+    - name: STRIDE
+      bit_offset: 0
+      bit_size: 4
+      description: Skip unused pipelines
 fieldset/NEUTRON_RESCTRL_POOLX:
   description: ''
   fields:
-  - name: SIZE
-    bit_offset: 4
-    bit_size: 12
-    description: Skip unused pipelines
+    - name: SIZE
+      bit_offset: 4
+      bit_size: 12
+      description: Skip unused pipelines
 fieldset/NEUTRON_RESCTRL_POOLY:
   description: ''
   fields:
-  - name: SIZE
-    bit_offset: 16
-    bit_size: 3
-    description: Output max Pool X
+    - name: SIZE
+      bit_offset: 16
+      bit_size: 3
+      description: Output max Pool X
 fieldset/NEUTRON_RESCTRL_POOL:
   description: ''
   fields:
-  - name: DEPTH
-    bit_offset: 19
-    bit_size: 2
-    description: Output max Pool Y
-  - name: DEF0
-    bit_offset: 29
-    bit_size: 1
-    description: Force Max Pool to Zero
-  - name: ADDER
-    bit_offset: 30
-    bit_size: 1
-    description: Force Max Pool to Zero
-  - name: RESTART
-    bit_offset: 31
-    bit_size: 1
-    description: Vector Addition
+    - name: DEPTH
+      bit_offset: 19
+      bit_size: 2
+      description: Output max Pool Y
+    - name: DEF0
+      bit_offset: 29
+      bit_size: 1
+      description: Force Max Pool to Zero
+    - name: ADDER
+      bit_offset: 30
+      bit_size: 1
+      description: Force Max Pool to Zero
+    - name: RESTART
+      bit_offset: 31
+      bit_size: 1
+      description: Vector Addition
 fieldset/NEUTRON_RESCTRL_ARGMAX:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 23
-    bit_size: 1
-    description: Pooling Depth
-  - name: BYTE
-    bit_offset: 24
-    bit_size: 1
-    description: ARGMAX Byte
+    - name: EN
+      bit_offset: 23
+      bit_size: 1
+      description: Pooling Depth
+    - name: BYTE
+      bit_offset: 24
+      bit_size: 1
+      description: ARGMAX Byte
 fieldset/NEUTRON_RESCTRL_IGNORE:
   description: ''
   fields:
-  - name: POOL
-    bit_offset: 25
-    bit_size: 1
-    description: ARGMAX Byte
-  - name: RESULTS
-    bit_offset: 26
-    bit_size: 1
-    description: IGNORE POOL
+    - name: POOL
+      bit_offset: 25
+      bit_size: 1
+      description: ARGMAX Byte
+    - name: RESULTS
+      bit_offset: 26
+      bit_size: 1
+      description: IGNORE POOL
 fieldset/NEUTRON_RESCTRL_PARTIAL:
   description: ''
   fields:
-  - name: REUSE
-    bit_offset: 27
-    bit_size: 1
-    description: IGNORE RESULTS
-  - name: RESTORE
-    bit_offset: 28
-    bit_size: 1
-    description: Partial Reuse
+    - name: REUSE
+      bit_offset: 27
+      bit_size: 1
+      description: IGNORE RESULTS
+    - name: RESTORE
+      bit_offset: 28
+      bit_size: 1
+      description: Partial Reuse
 fieldset/NEUTRON_RES_Y:
   description: ''
   fields:
-  - name: STRIDE
-    bit_offset: 0
-    bit_size: 28
-    description: Y-Stride
-  - name: COUNT
-    bit_offset: 28
-    bit_size: 4
-    description: Y-Stride
+    - name: STRIDE
+      bit_offset: 0
+      bit_size: 28
+      description: Y-Stride
+    - name: COUNT
+      bit_offset: 28
+      bit_size: 4
+      description: Y-Stride
 fieldset/NEUTRON_RES_X:
   description: ''
   fields:
-  - name: STRIDE
-    bit_offset: 0
-    bit_size: 16
-    description: X-Stride
-  - name: COUNT
-    bit_offset: 16
-    bit_size: 16
-    description: X-Stride
+    - name: STRIDE
+      bit_offset: 0
+      bit_size: 16
+      description: X-Stride
+    - name: COUNT
+      bit_offset: 16
+      bit_size: 16
+      description: X-Stride
 fieldset/NEUTRON_FLUSH:
   description: ''
   fields:
-  - name: JOB
-    bit_offset: 0
-    bit_size: 1
-    description: All Batches FLUSH execute
-  - name: BATCH
-    bit_offset: 1
-    bit_size: 1
-    description: All Batches FLUSH execute
+    - name: JOB
+      bit_offset: 0
+      bit_size: 1
+      description: All Batches FLUSH execute
+    - name: BATCH
+      bit_offset: 1
+      bit_size: 1
+      description: All Batches FLUSH execute
 fieldset/NEUTRON_INTR:
   description: ''
   fields:
-  - name: INTREN
-    bit_offset: 0
-    bit_size: 1
-    description: Interrupt Enable
-  - name: EVENTEN
-    bit_offset: 1
-    bit_size: 1
-    description: Interrupt Enable
-  - name: MODE
-    bit_offset: 4
-    bit_size: 2
-    description: Error Trap for RES Bus
+    - name: INTREN
+      bit_offset: 0
+      bit_size: 1
+      description: Interrupt Enable
+    - name: EVENTEN
+      bit_offset: 1
+      bit_size: 1
+      description: Interrupt Enable
+    - name: MODE
+      bit_offset: 4
+      bit_size: 2
+      description: Error Trap for RES Bus
 fieldset/NEUTRON_INTR_ERRORTRAP:
   description: ''
   fields:
-  - name: M
-    bit_offset: 2
-    bit_size: 1
-    description: Event Enable
-  - name: R
-    bit_offset: 3
-    bit_size: 1
-    description: Error Trap
+    - name: M
+      bit_offset: 2
+      bit_size: 1
+      description: Event Enable
+    - name: R
+      bit_offset: 3
+      bit_size: 1
+      description: Error Trap
 fieldset/NEUTRON_INTR_EVENT:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 6
-    bit_size: 2
-    description: Event mode
+    - name: MODE
+      bit_offset: 6
+      bit_size: 2
+      description: Event mode
 fieldset/NEUTRON_WEIGHTCTRL_WCTRL_USE_MINI:
   description: ''
   fields:
-  - name: W
-    bit_offset: 0
-    bit_size: 1
+    - name: W
+      bit_offset: 0
+      bit_size: 1
 fieldset/NEUTRON_WEIGHTCTRL_WCTRL_MINI_W:
   description: ''
   fields:
-  - name: SIZE
-    bit_offset: 1
-    bit_size: 3
-    description: Mini Weight Size
+    - name: SIZE
+      bit_offset: 1
+      bit_size: 3
+      description: Mini Weight Size
 fieldset/NEUTRON_WEIGHTCTRL_WCTRL_USE:
   description: ''
   fields:
-  - name: CODEBOOK
-    bit_offset: 4
-    bit_size: 1
-    description: Codebook
+    - name: CODEBOOK
+      bit_offset: 4
+      bit_size: 1
+      description: Codebook
 fieldset/NEUTRON_WEIGHTCTRL_WCTRL_MUL_BY_1:
   description: ''
   fields:
-  - name: SELECTIVE
-    bit_offset: 6
-    bit_size: 1
+    - name: SELECTIVE
+      bit_offset: 6
+      bit_size: 1
 fieldset/NEUTRON_WEIGHTCTRL_SQUARE:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 8
-    bit_size: 1
-    description: Square data
+    - name: DATA
+      bit_offset: 8
+      bit_size: 1
+      description: Square data
 fieldset/NEUTRON_WEIGHTCTRL_MULT_WT_DATA:
   description: ''
   fields:
-  - name: NEG
-    bit_offset: 9
-    bit_size: 1
-    description: Square data
+    - name: NEG
+      bit_offset: 9
+      bit_size: 1
+      description: Square data
 fieldset/NEUTRON_WEIGHTCTRL_USE_WEIGHT:
   description: ''
   fields:
-  - name: COLUMN
-    bit_offset: 10
-    bit_size: 1
+    - name: COLUMN
+      bit_offset: 10
+      bit_size: 1
 fieldset/NEUTRON_WEIGHTCTRL_DEPRUNE:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 11
-    bit_size: 1
-    description: Enable Deprune
+    - name: ENABLE
+      bit_offset: 11
+      bit_size: 1
+      description: Enable Deprune
 fieldset/NEUTRON_WEIGHTCTRL_DEPRUNE_COMP:
   description: ''
   fields:
-  - name: SIZE
-    bit_offset: 12
-    bit_size: 20
+    - name: SIZE
+      bit_offset: 12
+      bit_size: 20
 fieldset/NEUTRON_CIRCADDR:
   description: ''
   fields:
-  - name: DATMASK
-    bit_offset: 0
-    bit_size: 16
-    description: Data circular address mask
-  - name: RESMASK
-    bit_offset: 16
-    bit_size: 16
-    description: Data circular address mask
+    - name: DATMASK
+      bit_offset: 0
+      bit_size: 16
+      description: Data circular address mask
+    - name: RESMASK
+      bit_offset: 16
+      bit_size: 16
+      description: Data circular address mask
 fieldset/NEUTRON_PROGSEQ:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-  - name: BASE
-    bit_offset: 2
-    bit_size: 30
-    description: Enable Register loading Sequencer
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+    - name: BASE
+      bit_offset: 2
+      bit_size: 30
+      description: Enable Register loading Sequencer
 fieldset/NEUTRON_SCRATCH0_2:
   description: ''
   fields:
-  - name: SCR
-    bit_offset: 0
-    bit_size: 32
-    description: Scratch
+    - name: SCR
+      bit_offset: 0
+      bit_size: 32
+      description: Scratch
 fieldset/NEUTRON_CODEBOOK:
   description: ''
   fields:
-  - name: CODE
-    bit_offset: 0
-    bit_size: 32
-    description: Codebook code
+    - name: CODE
+      bit_offset: 0
+      bit_size: 32
+      description: Codebook code
 fieldset/NEUTRON_CANVAS_SIZE:
   description: ''
   fields:
-  - name: XTOTAL
-    bit_offset: 0
-    bit_size: 16
-    description: Canvas XTOTAL
+    - name: XTOTAL
+      bit_offset: 0
+      bit_size: 16
+      description: Canvas XTOTAL
 fieldset/NEUTRON_CANVAS_SIZE_PIPE_Y:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 16
-    bit_size: 8
-    description: Canvas XTOTAL
+    - name: CNT
+      bit_offset: 16
+      bit_size: 8
+      description: Canvas XTOTAL
 fieldset/NEUTRON_CANVAS_SIZE_LOAD:
   description: ''
   fields:
-  - name: HEIGHT
-    bit_offset: 24
-    bit_size: 3
-    description: Load Height
+    - name: HEIGHT
+      bit_offset: 24
+      bit_size: 3
+      description: Load Height
 fieldset/NEUTRON_CANVAS_SIZE_READ:
   description: ''
   fields:
-  - name: HEIGHT
-    bit_offset: 27
-    bit_size: 3
-    description: Load Height
+    - name: HEIGHT
+      bit_offset: 27
+      bit_size: 3
+      description: Load Height
 fieldset/NEUTRON_CANVAS_READ_CONV_X:
   description: ''
   fields:
-  - name: SIZE
-    bit_offset: 0
-    bit_size: 16
-    description: Convolution X Size
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 16
+      description: Convolution X Size
 fieldset/NEUTRON_CANVAS_READ_CONV:
   description: ''
   fields:
-  - name: STRIDE
-    bit_offset: 16
-    bit_size: 15
-    description: Convolution X Size
-  - name: STRIDE2EN
-    bit_offset: 31
-    bit_size: 1
-    description: Conv Stride
+    - name: STRIDE
+      bit_offset: 16
+      bit_size: 15
+      description: Convolution X Size
+    - name: STRIDE2EN
+      bit_offset: 31
+      bit_size: 1
+      description: Conv Stride
 fieldset/NEUTRON_CANVAS_LOAD_PAD:
   description: ''
   fields:
-  - name: TOP
-    bit_offset: 0
-    bit_size: 6
-    description: Top Padding
-  - name: LEFT
-    bit_offset: 8
-    bit_size: 16
-    description: Top Padding
-  - name: VAL
-    bit_offset: 24
-    bit_size: 8
-    description: Horizontal Padding
+    - name: TOP
+      bit_offset: 0
+      bit_size: 6
+      description: Top Padding
+    - name: LEFT
+      bit_offset: 8
+      bit_size: 16
+      description: Top Padding
+    - name: VAL
+      bit_offset: 24
+      bit_size: 8
+      description: Horizontal Padding
 fieldset/NEUTRON_CANVAS_LOAD_Y:
   description: ''
   fields:
-  - name: INC
-    bit_offset: 0
-    bit_size: 22
-    description: Y Stride
-  - name: COUNT
-    bit_offset: 22
-    bit_size: 10
-    description: Y Stride
+    - name: INC
+      bit_offset: 0
+      bit_size: 22
+      description: Y Stride
+    - name: COUNT
+      bit_offset: 22
+      bit_size: 10
+      description: Y Stride
 fieldset/NEUTRON_CANVAS_LOAD_X:
   description: ''
   fields:
-  - name: STRIDE
-    bit_offset: 0
-    bit_size: 20
-    description: Offset
-  - name: COUNT
-    bit_offset: 20
-    bit_size: 8
-    description: Offset
+    - name: STRIDE
+      bit_offset: 0
+      bit_size: 20
+      description: Offset
+    - name: COUNT
+      bit_offset: 20
+      bit_size: 8
+      description: Offset
 fieldset/NEUTRON_CANVAS_LOAD_BATCH:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 12
-    description: Canvas Batch Count
-  - name: INC
-    bit_offset: 12
-    bit_size: 20
-    description: Canvas Batch Count
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 12
+      description: Canvas Batch Count
+    - name: INC
+      bit_offset: 12
+      bit_size: 20
+      description: Canvas Batch Count
 fieldset/NEUTRON_CANVAS_LOAD_OUTER_BATCH:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 12
-    description: Canvas Outer Batch Count
-  - name: INC
-    bit_offset: 12
-    bit_size: 20
-    description: Canvas Outer Batch Inc
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 12
+      description: Canvas Outer Batch Count
+    - name: INC
+      bit_offset: 12
+      bit_size: 20
+      description: Canvas Outer Batch Inc
 fieldset/NEUTRON_CANVAS_SECONDARY_READ_SEC:
   description: ''
   fields:
-  - name: DATA
-    bit_offset: 0
-    bit_size: 8
-    description: Data Consumed Value
-  - name: HEIGHT
-    bit_offset: 8
-    bit_size: 4
-  - name: EN
-    bit_offset: 19
-    bit_size: 1
-    description: Enable Secondary Setting
+    - name: DATA
+      bit_offset: 0
+      bit_size: 8
+      description: Data Consumed Value
+    - name: HEIGHT
+      bit_offset: 8
+      bit_size: 4
+    - name: EN
+      bit_offset: 19
+      bit_size: 1
+      description: Enable Secondary Setting
 fieldset/NEUTRON_CANVAS_SECONDARY_READ_SEC_Y:
   description: ''
   fields:
-  - name: CFG
-    bit_offset: 12
-    bit_size: 7
+    - name: CFG
+      bit_offset: 12
+      bit_size: 7
 fieldset/NEUTRON_CANVAS_SECOND_Y_ADJ:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 4
-    description: Count between adjustments
-  - name: START
-    bit_offset: 4
-    bit_size: 4
-    description: Start
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 4
+      description: Count between adjustments
+    - name: START
+      bit_offset: 4
+      bit_size: 4
+      description: Start
 fieldset/NEUTRON_CANVAS_SECOND_Y_ADJ_UNSIGNED:
   description: ''
   fields:
-  - name: STRIDE
-    bit_offset: 10
-    bit_size: 22
-    description: Start
+    - name: STRIDE
+      bit_offset: 10
+      bit_size: 22
+      description: Start
 fieldset/NEUTRON_CANVAS_PDS_POS_POS:
   description: ''
   fields:
-  - name: Y
-    bit_offset: 0
-    bit_size: 12
-    description: POS_Y
-  - name: X
-    bit_offset: 12
-    bit_size: 12
-    description: POS_Y
+    - name: Y
+      bit_offset: 0
+      bit_size: 12
+      description: POS_Y
+    - name: X
+      bit_offset: 12
+      bit_size: 12
+      description: POS_Y
 fieldset/NEUTRON_CANVAS_PDS_PAD:
   description: ''
   fields:
-  - name: PADT
-    bit_offset: 0
-    bit_size: 5
-    description: PADT
-  - name: PADL
-    bit_offset: 5
-    bit_size: 5
-    description: PADT
-  - name: PADB
-    bit_offset: 10
-    bit_size: 5
-    description: PADL
-  - name: PADR
-    bit_offset: 15
-    bit_size: 5
-    description: PADB
-  - name: ENP0PAD
-    bit_offset: 31
-    bit_size: 1
-    description: PADR
+    - name: PADT
+      bit_offset: 0
+      bit_size: 5
+      description: PADT
+    - name: PADL
+      bit_offset: 5
+      bit_size: 5
+      description: PADT
+    - name: PADB
+      bit_offset: 10
+      bit_size: 5
+      description: PADL
+    - name: PADR
+      bit_offset: 15
+      bit_size: 5
+      description: PADB
+    - name: ENP0PAD
+      bit_offset: 31
+      bit_size: 1
+      description: PADR
 fieldset/NEUTRON_CANVAS_PDS_STRIDES:
   description: ''
   fields:
-  - name: DilationH
-    bit_offset: 0
-    bit_size: 5
-    description: DilationH
-  - name: DilationW
-    bit_offset: 5
-    bit_size: 5
-    description: DilationW
-  - name: StrideH
-    bit_offset: 10
-    bit_size: 5
-    description: StrideH
-  - name: StrideW
-    bit_offset: 15
-    bit_size: 5
-    description: StrideH
-  - name: KernelH
-    bit_offset: 20
-    bit_size: 6
-    description: StrideW
-  - name: KernelW
-    bit_offset: 26
-    bit_size: 6
-    description: KernelH
+    - name: DilationH
+      bit_offset: 0
+      bit_size: 5
+      description: DilationH
+    - name: DilationW
+      bit_offset: 5
+      bit_size: 5
+      description: DilationW
+    - name: StrideH
+      bit_offset: 10
+      bit_size: 5
+      description: StrideH
+    - name: StrideW
+      bit_offset: 15
+      bit_size: 5
+      description: StrideH
+    - name: KernelH
+      bit_offset: 20
+      bit_size: 6
+      description: StrideW
+    - name: KernelW
+      bit_offset: 26
+      bit_size: 6
+      description: KernelH
 fieldset/NEUTRON_SCRATCH3_5:
   description: ''
   fields:
-  - name: SCR
-    bit_offset: 0
-    bit_size: 32
-    description: Scratch
+    - name: SCR
+      bit_offset: 0
+      bit_size: 32
+      description: Scratch
 fieldset/NEUTRON_ACTCTRL2_UPPER_ACT:
   description: ''
   fields:
-  - name: SCALE
-    bit_offset: 0
-    bit_size: 10
+    - name: SCALE
+      bit_offset: 0
+      bit_size: 10
 fieldset/NEUTRON_ACTCTRL2_HW:
   description: ''
   fields:
-  - name: INTERPOLATE
-    bit_offset: 10
-    bit_size: 1
+    - name: INTERPOLATE
+      bit_offset: 10
+      bit_size: 1
 fieldset/NEUTRON_ACTCTRL2_INTERPOLATE:
   description: ''
   fields:
-  - name: ORDER
-    bit_offset: 11
-    bit_size: 2
+    - name: ORDER
+      bit_offset: 11
+      bit_size: 2
 fieldset/NEUTRON_ACTCTRL2_INTERPOLATOR:
   description: ''
   fields:
-  - name: BITS
-    bit_offset: 13
-    bit_size: 4
-  - name: BYTES
-    bit_offset: 17
-    bit_size: 1
+    - name: BITS
+      bit_offset: 13
+      bit_size: 4
+    - name: BYTES
+      bit_offset: 17
+      bit_size: 1
 fieldset/NEUTRON_ACTCTRL2_INTERPOLATOR_POST:
   description: ''
   fields:
-  - name: PROC
-    bit_offset: 18
-    bit_size: 1
-  - name: SCALE
-    bit_offset: 20
-    bit_size: 12
+    - name: PROC
+      bit_offset: 18
+      bit_size: 1
+    - name: SCALE
+      bit_offset: 20
+      bit_size: 12
 fieldset/NEUTRON_ACTCTRL2_INTERPOLATOR_UNSIGNED:
   description: ''
   fields:
-  - name: SAT
-    bit_offset: 19
-    bit_size: 1
+    - name: SAT
+      bit_offset: 19
+      bit_size: 1
 fieldset/NEUTRON_INTERPOLBASE:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 2
-    bit_size: 30
-    description: Interpolator base address value
+    - name: ADDR
+      bit_offset: 2
+      bit_size: 30
+      description: Interpolator base address value
 fieldset/NEUTRON_CANVAS_PDS_INP_INP:
   description: ''
   fields:
-  - name: H
-    bit_offset: 0
-    bit_size: 12
-    description: INP_H
-  - name: W
-    bit_offset: 12
-    bit_size: 12
-    description: INP_H
+    - name: H
+      bit_offset: 0
+      bit_size: 12
+      description: INP_H
+    - name: W
+      bit_offset: 12
+      bit_size: 12
+      description: INP_H
 fieldset/NEUTRON_CANVAS_PDS_INP:
   description: ''
   fields:
-  - name: CinReads
-    bit_offset: 24
-    bit_size: 8
-    description: INP_W
+    - name: CinReads
+      bit_offset: 24
+      bit_size: 8
+      description: INP_W
 fieldset/NEUTRON_CANVAS_SECOND_X_ADJ:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 4
-    description: Count between adjustments
-  - name: START
-    bit_offset: 4
-    bit_size: 4
-    description: Start
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 4
+      description: Count between adjustments
+    - name: START
+      bit_offset: 4
+      bit_size: 4
+      description: Start
 fieldset/NEUTRON_CANVAS_SECOND_X_ADJ_SIGNED:
   description: ''
   fields:
-  - name: STRIDE
-    bit_offset: 10
-    bit_size: 22
-    description: Start
+    - name: STRIDE
+      bit_offset: 10
+      bit_size: 22
+      description: Start
 fieldset/NEUTRON_INTERPOLOFF:
   description: ''
   fields:
-  - name: OFFSET
-    bit_offset: 0
-    bit_size: 16
-    description: Interpolator Offset
+    - name: OFFSET
+      bit_offset: 0
+      bit_size: 16
+      description: Interpolator Offset
 fieldset/NEUTRON_ACTCTRL3:
   description: ''
   fields:
-  - name: ACTCTRL3
-    bit_offset: 0
-    bit_size: 10
-    description: Activation scale
+    - name: ACTCTRL3
+      bit_offset: 0
+      bit_size: 10
+      description: Activation scale
 fieldset/NEUTRON_ACTCTRL3_EN_ALT:
   description: ''
   fields:
-  - name: SCALE
-    bit_offset: 16
-    bit_size: 1
-    description: Activation scale
+    - name: SCALE
+      bit_offset: 16
+      bit_size: 1
+      description: Activation scale
 fieldset/NEUTRON_DATABASE:
   description: ''
   fields:
-  - name: BASE
-    bit_offset: 0
-    bit_size: 32
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
 fieldset/NEUTRON_RESBASE:
   description: ''
   fields:
-  - name: BASE
-    bit_offset: 0
-    bit_size: 32
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
 fieldset/NEUTRON_ID:
   description: ''
   fields:
-  - name: MACS
-    bit_offset: 0
-    bit_size: 4
-    description: MACS Number
-  - name: PIPELINES
-    bit_offset: 4
-    bit_size: 4
-    description: MACS Number
-  - name: CANVAS
-    bit_offset: 8
-    bit_size: 1
-    description: PIPELINES Number
-  - name: POOLING
-    bit_offset: 9
-    bit_size: 1
-    description: Canvas Presence
-  - name: RESBUS
-    bit_offset: 10
-    bit_size: 1
-    description: Pooling Presence
-  - name: VERSION
-    bit_offset: 16
-    bit_size: 12
-    description: Separate Results Number
-  - name: ARCH
-    bit_offset: 28
-    bit_size: 4
-    description: Version ID
+    - name: MACS
+      bit_offset: 0
+      bit_size: 4
+      description: MACS Number
+    - name: PIPELINES
+      bit_offset: 4
+      bit_size: 4
+      description: MACS Number
+    - name: CANVAS
+      bit_offset: 8
+      bit_size: 1
+      description: PIPELINES Number
+    - name: POOLING
+      bit_offset: 9
+      bit_size: 1
+      description: Canvas Presence
+    - name: RESBUS
+      bit_offset: 10
+      bit_size: 1
+      description: Pooling Presence
+    - name: VERSION
+      bit_offset: 16
+      bit_size: 12
+      description: Separate Results Number
+    - name: ARCH
+      bit_offset: 28
+      bit_size: 4
+      description: Version ID

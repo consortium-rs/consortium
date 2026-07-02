@@ -1,1424 +1,1424 @@
 block/TAMP:
   description: ''
   items:
-  - name: CR1
-    byte_offset: 0
-    description: TAMP control register 1
-    fieldset: TAMP_CR1
-  - name: CR2
-    byte_offset: 4
-    description: TAMP control register 2
-    fieldset: TAMP_CR2
-  - name: CR3
-    byte_offset: 8
-    description: TAMP control register 3
-    fieldset: TAMP_CR3
-  - name: FLTCR
-    byte_offset: 12
-    description: TAMP filter control register
-    fieldset: TAMP_FLTCR
-  - name: ATCR1
-    byte_offset: 16
-    description: TAMP active tamper control register 1
-    fieldset: TAMP_ATCR1
-  - name: ATSEEDR
-    byte_offset: 20
-    description: TAMP active tamper seed register
-    fieldset: TAMP_ATSEEDR
-  - name: ATOR
-    byte_offset: 24
-    description: TAMP active tamper output register
-    fieldset: TAMP_ATOR
-  - name: ATCR2
-    byte_offset: 28
-    description: TAMP active tamper control register 2
-    fieldset: TAMP_ATCR2
-  - name: SECCFGR
-    byte_offset: 32
-    description: TAMP secure mode register
-    fieldset: TAMP_SECCFGR
-  - name: PRIVCR
-    byte_offset: 36
-    description: TAMP privilege mode control register
-    fieldset: TAMP_PRIVCR
-  - name: IER
-    byte_offset: 44
-    description: TAMP interrupt enable register
-    fieldset: TAMP_IER
-  - name: SR
-    byte_offset: 48
-    description: TAMP status register
-    fieldset: TAMP_SR
-  - name: MISR
-    byte_offset: 52
-    description: TAMP non-secure masked interrupt status register
-    fieldset: TAMP_MISR
-  - name: SMISR
-    byte_offset: 56
-    description: TAMP secure masked interrupt status register
-    fieldset: TAMP_SMISR
-  - name: SCR
-    byte_offset: 60
-    description: TAMP status clear register
-    fieldset: TAMP_SCR
-  - name: COUNT1R
-    byte_offset: 64
-    description: TAMP monotonic counter 1 register
-  - name: COUNT2R
-    byte_offset: 68
-    description: TAMP monotonic counter 2 register
-  - name: OR
-    byte_offset: 80
-    description: TAMP option register
-  - name: ERCFGR
-    byte_offset: 84
-    description: TAMP erase configuration register
-  - name: BKPRIFR1
-    byte_offset: 112
-    description: TAMP Backup registers RIF register 1
-    fieldset: TAMP_BKPRIFR1
-  - name: BKPRIFR2
-    byte_offset: 116
-    description: TAMP Backup registers RIF register 2
-    fieldset: TAMP_BKPRIFR2
-  - name: BKPRIFR3
-    byte_offset: 120
-    description: TAMP Backup registers RIF register 3
-    fieldset: TAMP_BKPRIFR3
-  - name: RCIDCFGR
-    byte_offset: 128
-    array:
-      len: 3
-      stride: 4
-    description: TAMP Resource CID configuration register
-    fieldset: TAMP_RCIDCFGR
-  - name: BKP0R
-    byte_offset: 256
-    description: TAMP backup register 0
-  - name: BKP1R
-    byte_offset: 260
-    description: TAMP backup register 1
-  - name: BKP2R
-    byte_offset: 264
-    description: TAMP backup register 2
-  - name: BKP3R
-    byte_offset: 268
-    description: TAMP backup register 3
-  - name: BKP4R
-    byte_offset: 272
-    description: TAMP backup register 4
-  - name: BKP5R
-    byte_offset: 276
-    description: TAMP backup register 5
-  - name: BKP6R
-    byte_offset: 280
-    description: TAMP backup register 6
-  - name: BKP7R
-    byte_offset: 284
-    description: TAMP backup register 7
-  - name: BKP8R
-    byte_offset: 288
-    description: TAMP backup register 8
-  - name: BKP9R
-    byte_offset: 292
-    description: TAMP backup register 9
-  - name: BKP10R
-    byte_offset: 296
-    description: TAMP backup register 10
-  - name: BKP11R
-    byte_offset: 300
-    description: TAMP backup register 11
-  - name: BKP12R
-    byte_offset: 304
-    description: TAMP backup register 12
-  - name: BKP13R
-    byte_offset: 308
-    description: TAMP backup register 13
-  - name: BKP14R
-    byte_offset: 312
-    description: TAMP backup register 14
-  - name: BKP15R
-    byte_offset: 316
-    description: TAMP backup register 15
-  - name: BKP16R
-    byte_offset: 320
-    description: TAMP backup register 16
-  - name: BKP17R
-    byte_offset: 324
-    description: TAMP backup register 17
-  - name: BKP18R
-    byte_offset: 328
-    description: TAMP backup register 18
-  - name: BKP19R
-    byte_offset: 332
-    description: TAMP backup register 19
-  - name: BKP20R
-    byte_offset: 336
-    description: TAMP backup register 20
-  - name: BKP21R
-    byte_offset: 340
-    description: TAMP backup register 21
-  - name: BKP22R
-    byte_offset: 344
-    description: TAMP backup register 22
-  - name: BKP23R
-    byte_offset: 348
-    description: TAMP backup register 23
-  - name: BKP24R
-    byte_offset: 352
-    description: TAMP backup register 24
-  - name: BKP25R
-    byte_offset: 356
-    description: TAMP backup register 25
-  - name: BKP26R
-    byte_offset: 360
-    description: TAMP backup register 26
-  - name: BKP27R
-    byte_offset: 364
-    description: TAMP backup register 27
-  - name: BKP28R
-    byte_offset: 368
-    description: TAMP backup register 28
-  - name: BKP29R
-    byte_offset: 372
-    description: TAMP backup register 29
-  - name: BKP30R
-    byte_offset: 376
-    description: TAMP backup register 30
-  - name: BKP31R
-    byte_offset: 380
-    description: TAMP backup register 31
-  - name: BKP32R
-    byte_offset: 384
-    description: TAMP backup register 32
-  - name: BKP33R
-    byte_offset: 388
-    description: TAMP backup register 33
-  - name: BKP34R
-    byte_offset: 392
-    description: TAMP backup register 34
-  - name: BKP35R
-    byte_offset: 396
-    description: TAMP backup register 35
-  - name: BKP36R
-    byte_offset: 400
-    description: TAMP backup register 36
-  - name: BKP37R
-    byte_offset: 404
-    description: TAMP backup register 37
-  - name: BKP38R
-    byte_offset: 408
-    description: TAMP backup register 38
-  - name: BKP39R
-    byte_offset: 412
-    description: TAMP backup register 39
-  - name: BKP40R
-    byte_offset: 416
-    description: TAMP backup register 40
-  - name: BKP41R
-    byte_offset: 420
-    description: TAMP backup register 41
-  - name: BKP42R
-    byte_offset: 424
-    description: TAMP backup register 42
-  - name: BKP43R
-    byte_offset: 428
-    description: TAMP backup register 43
-  - name: BKP44R
-    byte_offset: 432
-    description: TAMP backup register 44
-  - name: BKP45R
-    byte_offset: 436
-    description: TAMP backup register 45
-  - name: BKP46R
-    byte_offset: 440
-    description: TAMP backup register 46
-  - name: BKP47R
-    byte_offset: 444
-    description: TAMP backup register 47
-  - name: BKP48R
-    byte_offset: 448
-    description: TAMP backup register 48
-  - name: BKP49R
-    byte_offset: 452
-    description: TAMP backup register 49
-  - name: BKP50R
-    byte_offset: 456
-    description: TAMP backup register 50
-  - name: BKP51R
-    byte_offset: 460
-    description: TAMP backup register 51
-  - name: BKP52R
-    byte_offset: 464
-    description: TAMP backup register 52
-  - name: BKP53R
-    byte_offset: 468
-    description: TAMP backup register 53
-  - name: BKP54R
-    byte_offset: 472
-    description: TAMP backup register 54
-  - name: BKP55R
-    byte_offset: 476
-    description: TAMP backup register 55
-  - name: BKP56R
-    byte_offset: 480
-    description: TAMP backup register 56
-  - name: BKP57R
-    byte_offset: 484
-    description: TAMP backup register 57
-  - name: BKP58R
-    byte_offset: 488
-    description: TAMP backup register 58
-  - name: BKP59R
-    byte_offset: 492
-    description: TAMP backup register 59
-  - name: BKP60R
-    byte_offset: 496
-    description: TAMP backup register 60
-  - name: BKP61R
-    byte_offset: 500
-    description: TAMP backup register 61
-  - name: BKP62R
-    byte_offset: 504
-    description: TAMP backup register 62
-  - name: BKP63R
-    byte_offset: 508
-    description: TAMP backup register 63
-  - name: BKP64R
-    byte_offset: 512
-    description: TAMP backup register 64
-  - name: BKP65R
-    byte_offset: 516
-    description: TAMP backup register 65
-  - name: BKP66R
-    byte_offset: 520
-    description: TAMP backup register 66
-  - name: BKP67R
-    byte_offset: 524
-    description: TAMP backup register 67
-  - name: BKP68R
-    byte_offset: 528
-    description: TAMP backup register 68
-  - name: BKP69R
-    byte_offset: 532
-    description: TAMP backup register 69
-  - name: BKP70R
-    byte_offset: 536
-    description: TAMP backup register 70
-  - name: BKP71R
-    byte_offset: 540
-    description: TAMP backup register 71
-  - name: BKP72R
-    byte_offset: 544
-    description: TAMP backup register 72
-  - name: BKP73R
-    byte_offset: 548
-    description: TAMP backup register 73
-  - name: BKP74R
-    byte_offset: 552
-    description: TAMP backup register 74
-  - name: BKP75R
-    byte_offset: 556
-    description: TAMP backup register 75
-  - name: BKP76R
-    byte_offset: 560
-    description: TAMP backup register 76
-  - name: BKP77R
-    byte_offset: 564
-    description: TAMP backup register 77
-  - name: BKP78R
-    byte_offset: 568
-    description: TAMP backup register 78
-  - name: BKP79R
-    byte_offset: 572
-    description: TAMP backup register 79
-  - name: BKP80R
-    byte_offset: 576
-    description: TAMP backup register 80
-  - name: BKP81R
-    byte_offset: 580
-    description: TAMP backup register 81
-  - name: BKP82R
-    byte_offset: 584
-    description: TAMP backup register 82
-  - name: BKP83R
-    byte_offset: 588
-    description: TAMP backup register 83
-  - name: BKP84R
-    byte_offset: 592
-    description: TAMP backup register 84
-  - name: BKP85R
-    byte_offset: 596
-    description: TAMP backup register 85
-  - name: BKP86R
-    byte_offset: 600
-    description: TAMP backup register 86
-  - name: BKP87R
-    byte_offset: 604
-    description: TAMP backup register 87
-  - name: BKP88R
-    byte_offset: 608
-    description: TAMP backup register 88
-  - name: BKP89R
-    byte_offset: 612
-    description: TAMP backup register 89
-  - name: BKP90R
-    byte_offset: 616
-    description: TAMP backup register 90
-  - name: BKP91R
-    byte_offset: 620
-    description: TAMP backup register 91
-  - name: BKP92R
-    byte_offset: 624
-    description: TAMP backup register 92
-  - name: BKP93R
-    byte_offset: 628
-    description: TAMP backup register 93
-  - name: BKP94R
-    byte_offset: 632
-    description: TAMP backup register 94
-  - name: BKP95R
-    byte_offset: 636
-    description: TAMP backup register 95
-  - name: BKP96R
-    byte_offset: 640
-    description: TAMP backup register 96
-  - name: BKP97R
-    byte_offset: 644
-    description: TAMP backup register 97
-  - name: BKP98R
-    byte_offset: 648
-    description: TAMP backup register 98
-  - name: BKP99R
-    byte_offset: 652
-    description: TAMP backup register 99
-  - name: BKP100R
-    byte_offset: 656
-    description: TAMP backup register 100
-  - name: BKP101R
-    byte_offset: 660
-    description: TAMP backup register 101
-  - name: BKP102R
-    byte_offset: 664
-    description: TAMP backup register 102
-  - name: BKP103R
-    byte_offset: 668
-    description: TAMP backup register 103
-  - name: BKP104R
-    byte_offset: 672
-    description: TAMP backup register 104
-  - name: BKP105R
-    byte_offset: 676
-    description: TAMP backup register 105
-  - name: BKP106R
-    byte_offset: 680
-    description: TAMP backup register 106
-  - name: BKP107R
-    byte_offset: 684
-    description: TAMP backup register 107
-  - name: BKP108R
-    byte_offset: 688
-    description: TAMP backup register 108
-  - name: BKP109R
-    byte_offset: 692
-    description: TAMP backup register 109
-  - name: BKP110R
-    byte_offset: 696
-    description: TAMP backup register 110
-  - name: BKP111R
-    byte_offset: 700
-    description: TAMP backup register 111
-  - name: BKP112R
-    byte_offset: 704
-    description: TAMP backup register 112
-  - name: BKP113R
-    byte_offset: 708
-    description: TAMP backup register 113
-  - name: BKP114R
-    byte_offset: 712
-    description: TAMP backup register 114
-  - name: BKP115R
-    byte_offset: 716
-    description: TAMP backup register 115
-  - name: BKP116R
-    byte_offset: 720
-    description: TAMP backup register 116
-  - name: BKP117R
-    byte_offset: 724
-    description: TAMP backup register 117
-  - name: BKP118R
-    byte_offset: 728
-    description: TAMP backup register 118
-  - name: BKP119R
-    byte_offset: 732
-    description: TAMP backup register 119
-  - name: BKP120R
-    byte_offset: 736
-    description: TAMP backup register 120
-  - name: BKP121R
-    byte_offset: 740
-    description: TAMP backup register 121
-  - name: BKP122R
-    byte_offset: 744
-    description: TAMP backup register 122
-  - name: BKP123R
-    byte_offset: 748
-    description: TAMP backup register 123
-  - name: BKP124R
-    byte_offset: 752
-    description: TAMP backup register 124
-  - name: BKP125R
-    byte_offset: 756
-    description: TAMP backup register 125
-  - name: BKP126R
-    byte_offset: 760
-    description: TAMP backup register 126
-  - name: BKP127R
-    byte_offset: 764
-    description: TAMP backup register 127
-  - name: HWCFGR2
-    byte_offset: 1004
-    description: TAMP hardware configuration register 2
-    fieldset: TAMP_HWCFGR2
-  - name: HWCFGR1
-    byte_offset: 1008
-    description: TAMP hardware configuration register 1
-    fieldset: TAMP_HWCFGR1
-  - name: VERR
-    byte_offset: 1012
-    description: TAMP version register
-    fieldset: TAMP_VERR
-  - name: IPIDR
-    byte_offset: 1016
-    description: TAMP identification register
-    fieldset: TAMP_IPIDR
-  - name: SIDR
-    byte_offset: 1020
-    description: TAMP size identification register
-    fieldset: TAMP_SIDR
+    - name: CR1
+      byte_offset: 0
+      description: TAMP control register 1
+      fieldset: TAMP_CR1
+    - name: CR2
+      byte_offset: 4
+      description: TAMP control register 2
+      fieldset: TAMP_CR2
+    - name: CR3
+      byte_offset: 8
+      description: TAMP control register 3
+      fieldset: TAMP_CR3
+    - name: FLTCR
+      byte_offset: 12
+      description: TAMP filter control register
+      fieldset: TAMP_FLTCR
+    - name: ATCR1
+      byte_offset: 16
+      description: TAMP active tamper control register 1
+      fieldset: TAMP_ATCR1
+    - name: ATSEEDR
+      byte_offset: 20
+      description: TAMP active tamper seed register
+      fieldset: TAMP_ATSEEDR
+    - name: ATOR
+      byte_offset: 24
+      description: TAMP active tamper output register
+      fieldset: TAMP_ATOR
+    - name: ATCR2
+      byte_offset: 28
+      description: TAMP active tamper control register 2
+      fieldset: TAMP_ATCR2
+    - name: SECCFGR
+      byte_offset: 32
+      description: TAMP secure mode register
+      fieldset: TAMP_SECCFGR
+    - name: PRIVCR
+      byte_offset: 36
+      description: TAMP privilege mode control register
+      fieldset: TAMP_PRIVCR
+    - name: IER
+      byte_offset: 44
+      description: TAMP interrupt enable register
+      fieldset: TAMP_IER
+    - name: SR
+      byte_offset: 48
+      description: TAMP status register
+      fieldset: TAMP_SR
+    - name: MISR
+      byte_offset: 52
+      description: TAMP non-secure masked interrupt status register
+      fieldset: TAMP_MISR
+    - name: SMISR
+      byte_offset: 56
+      description: TAMP secure masked interrupt status register
+      fieldset: TAMP_SMISR
+    - name: SCR
+      byte_offset: 60
+      description: TAMP status clear register
+      fieldset: TAMP_SCR
+    - name: COUNT1R
+      byte_offset: 64
+      description: TAMP monotonic counter 1 register
+    - name: COUNT2R
+      byte_offset: 68
+      description: TAMP monotonic counter 2 register
+    - name: OR
+      byte_offset: 80
+      description: TAMP option register
+    - name: ERCFGR
+      byte_offset: 84
+      description: TAMP erase configuration register
+    - name: BKPRIFR1
+      byte_offset: 112
+      description: TAMP Backup registers RIF register 1
+      fieldset: TAMP_BKPRIFR1
+    - name: BKPRIFR2
+      byte_offset: 116
+      description: TAMP Backup registers RIF register 2
+      fieldset: TAMP_BKPRIFR2
+    - name: BKPRIFR3
+      byte_offset: 120
+      description: TAMP Backup registers RIF register 3
+      fieldset: TAMP_BKPRIFR3
+    - name: RCIDCFGR
+      byte_offset: 128
+      array:
+        len: 3
+        stride: 4
+      description: TAMP Resource CID configuration register
+      fieldset: TAMP_RCIDCFGR
+    - name: BKP0R
+      byte_offset: 256
+      description: TAMP backup register 0
+    - name: BKP1R
+      byte_offset: 260
+      description: TAMP backup register 1
+    - name: BKP2R
+      byte_offset: 264
+      description: TAMP backup register 2
+    - name: BKP3R
+      byte_offset: 268
+      description: TAMP backup register 3
+    - name: BKP4R
+      byte_offset: 272
+      description: TAMP backup register 4
+    - name: BKP5R
+      byte_offset: 276
+      description: TAMP backup register 5
+    - name: BKP6R
+      byte_offset: 280
+      description: TAMP backup register 6
+    - name: BKP7R
+      byte_offset: 284
+      description: TAMP backup register 7
+    - name: BKP8R
+      byte_offset: 288
+      description: TAMP backup register 8
+    - name: BKP9R
+      byte_offset: 292
+      description: TAMP backup register 9
+    - name: BKP10R
+      byte_offset: 296
+      description: TAMP backup register 10
+    - name: BKP11R
+      byte_offset: 300
+      description: TAMP backup register 11
+    - name: BKP12R
+      byte_offset: 304
+      description: TAMP backup register 12
+    - name: BKP13R
+      byte_offset: 308
+      description: TAMP backup register 13
+    - name: BKP14R
+      byte_offset: 312
+      description: TAMP backup register 14
+    - name: BKP15R
+      byte_offset: 316
+      description: TAMP backup register 15
+    - name: BKP16R
+      byte_offset: 320
+      description: TAMP backup register 16
+    - name: BKP17R
+      byte_offset: 324
+      description: TAMP backup register 17
+    - name: BKP18R
+      byte_offset: 328
+      description: TAMP backup register 18
+    - name: BKP19R
+      byte_offset: 332
+      description: TAMP backup register 19
+    - name: BKP20R
+      byte_offset: 336
+      description: TAMP backup register 20
+    - name: BKP21R
+      byte_offset: 340
+      description: TAMP backup register 21
+    - name: BKP22R
+      byte_offset: 344
+      description: TAMP backup register 22
+    - name: BKP23R
+      byte_offset: 348
+      description: TAMP backup register 23
+    - name: BKP24R
+      byte_offset: 352
+      description: TAMP backup register 24
+    - name: BKP25R
+      byte_offset: 356
+      description: TAMP backup register 25
+    - name: BKP26R
+      byte_offset: 360
+      description: TAMP backup register 26
+    - name: BKP27R
+      byte_offset: 364
+      description: TAMP backup register 27
+    - name: BKP28R
+      byte_offset: 368
+      description: TAMP backup register 28
+    - name: BKP29R
+      byte_offset: 372
+      description: TAMP backup register 29
+    - name: BKP30R
+      byte_offset: 376
+      description: TAMP backup register 30
+    - name: BKP31R
+      byte_offset: 380
+      description: TAMP backup register 31
+    - name: BKP32R
+      byte_offset: 384
+      description: TAMP backup register 32
+    - name: BKP33R
+      byte_offset: 388
+      description: TAMP backup register 33
+    - name: BKP34R
+      byte_offset: 392
+      description: TAMP backup register 34
+    - name: BKP35R
+      byte_offset: 396
+      description: TAMP backup register 35
+    - name: BKP36R
+      byte_offset: 400
+      description: TAMP backup register 36
+    - name: BKP37R
+      byte_offset: 404
+      description: TAMP backup register 37
+    - name: BKP38R
+      byte_offset: 408
+      description: TAMP backup register 38
+    - name: BKP39R
+      byte_offset: 412
+      description: TAMP backup register 39
+    - name: BKP40R
+      byte_offset: 416
+      description: TAMP backup register 40
+    - name: BKP41R
+      byte_offset: 420
+      description: TAMP backup register 41
+    - name: BKP42R
+      byte_offset: 424
+      description: TAMP backup register 42
+    - name: BKP43R
+      byte_offset: 428
+      description: TAMP backup register 43
+    - name: BKP44R
+      byte_offset: 432
+      description: TAMP backup register 44
+    - name: BKP45R
+      byte_offset: 436
+      description: TAMP backup register 45
+    - name: BKP46R
+      byte_offset: 440
+      description: TAMP backup register 46
+    - name: BKP47R
+      byte_offset: 444
+      description: TAMP backup register 47
+    - name: BKP48R
+      byte_offset: 448
+      description: TAMP backup register 48
+    - name: BKP49R
+      byte_offset: 452
+      description: TAMP backup register 49
+    - name: BKP50R
+      byte_offset: 456
+      description: TAMP backup register 50
+    - name: BKP51R
+      byte_offset: 460
+      description: TAMP backup register 51
+    - name: BKP52R
+      byte_offset: 464
+      description: TAMP backup register 52
+    - name: BKP53R
+      byte_offset: 468
+      description: TAMP backup register 53
+    - name: BKP54R
+      byte_offset: 472
+      description: TAMP backup register 54
+    - name: BKP55R
+      byte_offset: 476
+      description: TAMP backup register 55
+    - name: BKP56R
+      byte_offset: 480
+      description: TAMP backup register 56
+    - name: BKP57R
+      byte_offset: 484
+      description: TAMP backup register 57
+    - name: BKP58R
+      byte_offset: 488
+      description: TAMP backup register 58
+    - name: BKP59R
+      byte_offset: 492
+      description: TAMP backup register 59
+    - name: BKP60R
+      byte_offset: 496
+      description: TAMP backup register 60
+    - name: BKP61R
+      byte_offset: 500
+      description: TAMP backup register 61
+    - name: BKP62R
+      byte_offset: 504
+      description: TAMP backup register 62
+    - name: BKP63R
+      byte_offset: 508
+      description: TAMP backup register 63
+    - name: BKP64R
+      byte_offset: 512
+      description: TAMP backup register 64
+    - name: BKP65R
+      byte_offset: 516
+      description: TAMP backup register 65
+    - name: BKP66R
+      byte_offset: 520
+      description: TAMP backup register 66
+    - name: BKP67R
+      byte_offset: 524
+      description: TAMP backup register 67
+    - name: BKP68R
+      byte_offset: 528
+      description: TAMP backup register 68
+    - name: BKP69R
+      byte_offset: 532
+      description: TAMP backup register 69
+    - name: BKP70R
+      byte_offset: 536
+      description: TAMP backup register 70
+    - name: BKP71R
+      byte_offset: 540
+      description: TAMP backup register 71
+    - name: BKP72R
+      byte_offset: 544
+      description: TAMP backup register 72
+    - name: BKP73R
+      byte_offset: 548
+      description: TAMP backup register 73
+    - name: BKP74R
+      byte_offset: 552
+      description: TAMP backup register 74
+    - name: BKP75R
+      byte_offset: 556
+      description: TAMP backup register 75
+    - name: BKP76R
+      byte_offset: 560
+      description: TAMP backup register 76
+    - name: BKP77R
+      byte_offset: 564
+      description: TAMP backup register 77
+    - name: BKP78R
+      byte_offset: 568
+      description: TAMP backup register 78
+    - name: BKP79R
+      byte_offset: 572
+      description: TAMP backup register 79
+    - name: BKP80R
+      byte_offset: 576
+      description: TAMP backup register 80
+    - name: BKP81R
+      byte_offset: 580
+      description: TAMP backup register 81
+    - name: BKP82R
+      byte_offset: 584
+      description: TAMP backup register 82
+    - name: BKP83R
+      byte_offset: 588
+      description: TAMP backup register 83
+    - name: BKP84R
+      byte_offset: 592
+      description: TAMP backup register 84
+    - name: BKP85R
+      byte_offset: 596
+      description: TAMP backup register 85
+    - name: BKP86R
+      byte_offset: 600
+      description: TAMP backup register 86
+    - name: BKP87R
+      byte_offset: 604
+      description: TAMP backup register 87
+    - name: BKP88R
+      byte_offset: 608
+      description: TAMP backup register 88
+    - name: BKP89R
+      byte_offset: 612
+      description: TAMP backup register 89
+    - name: BKP90R
+      byte_offset: 616
+      description: TAMP backup register 90
+    - name: BKP91R
+      byte_offset: 620
+      description: TAMP backup register 91
+    - name: BKP92R
+      byte_offset: 624
+      description: TAMP backup register 92
+    - name: BKP93R
+      byte_offset: 628
+      description: TAMP backup register 93
+    - name: BKP94R
+      byte_offset: 632
+      description: TAMP backup register 94
+    - name: BKP95R
+      byte_offset: 636
+      description: TAMP backup register 95
+    - name: BKP96R
+      byte_offset: 640
+      description: TAMP backup register 96
+    - name: BKP97R
+      byte_offset: 644
+      description: TAMP backup register 97
+    - name: BKP98R
+      byte_offset: 648
+      description: TAMP backup register 98
+    - name: BKP99R
+      byte_offset: 652
+      description: TAMP backup register 99
+    - name: BKP100R
+      byte_offset: 656
+      description: TAMP backup register 100
+    - name: BKP101R
+      byte_offset: 660
+      description: TAMP backup register 101
+    - name: BKP102R
+      byte_offset: 664
+      description: TAMP backup register 102
+    - name: BKP103R
+      byte_offset: 668
+      description: TAMP backup register 103
+    - name: BKP104R
+      byte_offset: 672
+      description: TAMP backup register 104
+    - name: BKP105R
+      byte_offset: 676
+      description: TAMP backup register 105
+    - name: BKP106R
+      byte_offset: 680
+      description: TAMP backup register 106
+    - name: BKP107R
+      byte_offset: 684
+      description: TAMP backup register 107
+    - name: BKP108R
+      byte_offset: 688
+      description: TAMP backup register 108
+    - name: BKP109R
+      byte_offset: 692
+      description: TAMP backup register 109
+    - name: BKP110R
+      byte_offset: 696
+      description: TAMP backup register 110
+    - name: BKP111R
+      byte_offset: 700
+      description: TAMP backup register 111
+    - name: BKP112R
+      byte_offset: 704
+      description: TAMP backup register 112
+    - name: BKP113R
+      byte_offset: 708
+      description: TAMP backup register 113
+    - name: BKP114R
+      byte_offset: 712
+      description: TAMP backup register 114
+    - name: BKP115R
+      byte_offset: 716
+      description: TAMP backup register 115
+    - name: BKP116R
+      byte_offset: 720
+      description: TAMP backup register 116
+    - name: BKP117R
+      byte_offset: 724
+      description: TAMP backup register 117
+    - name: BKP118R
+      byte_offset: 728
+      description: TAMP backup register 118
+    - name: BKP119R
+      byte_offset: 732
+      description: TAMP backup register 119
+    - name: BKP120R
+      byte_offset: 736
+      description: TAMP backup register 120
+    - name: BKP121R
+      byte_offset: 740
+      description: TAMP backup register 121
+    - name: BKP122R
+      byte_offset: 744
+      description: TAMP backup register 122
+    - name: BKP123R
+      byte_offset: 748
+      description: TAMP backup register 123
+    - name: BKP124R
+      byte_offset: 752
+      description: TAMP backup register 124
+    - name: BKP125R
+      byte_offset: 756
+      description: TAMP backup register 125
+    - name: BKP126R
+      byte_offset: 760
+      description: TAMP backup register 126
+    - name: BKP127R
+      byte_offset: 764
+      description: TAMP backup register 127
+    - name: HWCFGR2
+      byte_offset: 1004
+      description: TAMP hardware configuration register 2
+      fieldset: TAMP_HWCFGR2
+    - name: HWCFGR1
+      byte_offset: 1008
+      description: TAMP hardware configuration register 1
+      fieldset: TAMP_HWCFGR1
+    - name: VERR
+      byte_offset: 1012
+      description: TAMP version register
+      fieldset: TAMP_VERR
+    - name: IPIDR
+      byte_offset: 1016
+      description: TAMP identification register
+      fieldset: TAMP_IPIDR
+    - name: SIDR
+      byte_offset: 1020
+      description: TAMP size identification register
+      fieldset: TAMP_SIDR
 fieldset/TAMP_CR1:
   description: ''
   fields:
-  - name: TAMP1E
-    bit_offset: 0
-    bit_size: 1
-    description: 0x00000001U
-  - name: TAMP2E
-    bit_offset: 1
-    bit_size: 1
-    description: 0x00000002U
-  - name: TAMP3E
-    bit_offset: 2
-    bit_size: 1
-    description: 0x00000004U
-  - name: TAMP4E
-    bit_offset: 3
-    bit_size: 1
-    description: 0x00000008U
-  - name: TAMP5E
-    bit_offset: 4
-    bit_size: 1
-    description: 0x00000010U
-  - name: TAMP6E
-    bit_offset: 5
-    bit_size: 1
-    description: 0x00000020U
-  - name: TAMP7E
-    bit_offset: 6
-    bit_size: 1
-    description: 0x00000040U
-  - name: TAMP8E
-    bit_offset: 7
-    bit_size: 1
-    description: 0x00000080U
-  - name: ITAMP1E
-    bit_offset: 16
-    bit_size: 1
-    description: 0x00010000U
-  - name: ITAMP2E
-    bit_offset: 17
-    bit_size: 1
-    description: 0x00040000U
-  - name: ITAMP3E
-    bit_offset: 18
-    bit_size: 1
-    description: 0x00040000U
-  - name: ITAMP4E
-    bit_offset: 19
-    bit_size: 1
-    description: 0x00080000U
-  - name: ITAMP5E
-    bit_offset: 20
-    bit_size: 1
-    description: 0x00100000U
-  - name: ITAMP6E
-    bit_offset: 21
-    bit_size: 1
-    description: 0x00200000U
-  - name: ITAMP7E
-    bit_offset: 22
-    bit_size: 1
-    description: 0x00400000U
-  - name: ITAMP8E
-    bit_offset: 23
-    bit_size: 1
-    description: 0x00800000U
-  - name: ITAMP9E
-    bit_offset: 24
-    bit_size: 1
-    description: 0x01000000U
-  - name: ITAMP10E
-    bit_offset: 25
-    bit_size: 1
-    description: 0x02000000U
-  - name: ITAMP11E
-    bit_offset: 26
-    bit_size: 1
-    description: 0x04000000U
-  - name: ITAMP12E
-    bit_offset: 27
-    bit_size: 1
-    description: 0x08000000U
-  - name: ITAMP14E
-    bit_offset: 29
-    bit_size: 1
-    description: 0x20000000U
-  - name: ITAMP15E
-    bit_offset: 30
-    bit_size: 1
+    - name: TAMP1E
+      bit_offset: 0
+      bit_size: 1
+      description: 0x00000001U
+    - name: TAMP2E
+      bit_offset: 1
+      bit_size: 1
+      description: 0x00000002U
+    - name: TAMP3E
+      bit_offset: 2
+      bit_size: 1
+      description: 0x00000004U
+    - name: TAMP4E
+      bit_offset: 3
+      bit_size: 1
+      description: 0x00000008U
+    - name: TAMP5E
+      bit_offset: 4
+      bit_size: 1
+      description: 0x00000010U
+    - name: TAMP6E
+      bit_offset: 5
+      bit_size: 1
+      description: 0x00000020U
+    - name: TAMP7E
+      bit_offset: 6
+      bit_size: 1
+      description: 0x00000040U
+    - name: TAMP8E
+      bit_offset: 7
+      bit_size: 1
+      description: 0x00000080U
+    - name: ITAMP1E
+      bit_offset: 16
+      bit_size: 1
+      description: 0x00010000U
+    - name: ITAMP2E
+      bit_offset: 17
+      bit_size: 1
+      description: 0x00040000U
+    - name: ITAMP3E
+      bit_offset: 18
+      bit_size: 1
+      description: 0x00040000U
+    - name: ITAMP4E
+      bit_offset: 19
+      bit_size: 1
+      description: 0x00080000U
+    - name: ITAMP5E
+      bit_offset: 20
+      bit_size: 1
+      description: 0x00100000U
+    - name: ITAMP6E
+      bit_offset: 21
+      bit_size: 1
+      description: 0x00200000U
+    - name: ITAMP7E
+      bit_offset: 22
+      bit_size: 1
+      description: 0x00400000U
+    - name: ITAMP8E
+      bit_offset: 23
+      bit_size: 1
+      description: 0x00800000U
+    - name: ITAMP9E
+      bit_offset: 24
+      bit_size: 1
+      description: 0x01000000U
+    - name: ITAMP10E
+      bit_offset: 25
+      bit_size: 1
+      description: 0x02000000U
+    - name: ITAMP11E
+      bit_offset: 26
+      bit_size: 1
+      description: 0x04000000U
+    - name: ITAMP12E
+      bit_offset: 27
+      bit_size: 1
+      description: 0x08000000U
+    - name: ITAMP14E
+      bit_offset: 29
+      bit_size: 1
+      description: 0x20000000U
+    - name: ITAMP15E
+      bit_offset: 30
+      bit_size: 1
 fieldset/TAMP_CR2:
   description: ''
   fields:
-  - name: TAMP1NOER
-    bit_offset: 0
-    bit_size: 1
-    description: 0x00000001U
-  - name: TAMP2NOER
-    bit_offset: 1
-    bit_size: 1
-    description: 0x00000002U
-  - name: TAMP3NOER
-    bit_offset: 2
-    bit_size: 1
-    description: 0x00000004U
-  - name: TAMP4NOER
-    bit_offset: 3
-    bit_size: 1
-    description: 0x00000008U
-  - name: TAMP5NOER
-    bit_offset: 4
-    bit_size: 1
-    description: 0x00000010U
-  - name: TAMP6NOER
-    bit_offset: 5
-    bit_size: 1
-    description: 0x00000020U
-  - name: TAMP7NOER
-    bit_offset: 6
-    bit_size: 1
-    description: 0x00000040U
-  - name: TAMP8NOER
-    bit_offset: 7
-    bit_size: 1
-    description: 0x00000080U
-  - name: TAMP1MSK
-    bit_offset: 16
-    bit_size: 1
-    description: 0x00010000U
-  - name: TAMP2MSK
-    bit_offset: 17
-    bit_size: 1
-    description: 0x00020000U
-  - name: TAMP3MSK
-    bit_offset: 18
-    bit_size: 1
-    description: 0x00040000U
-  - name: BKERASE
-    bit_offset: 23
-    bit_size: 1
-    description: 0x00800000U
-  - name: TAMP1TRG
-    bit_offset: 24
-    bit_size: 1
-    description: 0x01000000U
-  - name: TAMP2TRG
-    bit_offset: 25
-    bit_size: 1
-    description: 0x02000000U
-  - name: TAMP3TRG
-    bit_offset: 26
-    bit_size: 1
-    description: 0x04000000U
-  - name: TAMP4TRG
-    bit_offset: 27
-    bit_size: 1
-    description: 0x08000000U
-  - name: TAMP5TRG
-    bit_offset: 28
-    bit_size: 1
-    description: 0x10000000U
-  - name: TAMP6TRG
-    bit_offset: 29
-    bit_size: 1
-    description: 0x20000000U
-  - name: TAMP7TRG
-    bit_offset: 30
-    bit_size: 1
-    description: 0x40000000U
-  - name: TAMP8TRG
-    bit_offset: 31
-    bit_size: 1
+    - name: TAMP1NOER
+      bit_offset: 0
+      bit_size: 1
+      description: 0x00000001U
+    - name: TAMP2NOER
+      bit_offset: 1
+      bit_size: 1
+      description: 0x00000002U
+    - name: TAMP3NOER
+      bit_offset: 2
+      bit_size: 1
+      description: 0x00000004U
+    - name: TAMP4NOER
+      bit_offset: 3
+      bit_size: 1
+      description: 0x00000008U
+    - name: TAMP5NOER
+      bit_offset: 4
+      bit_size: 1
+      description: 0x00000010U
+    - name: TAMP6NOER
+      bit_offset: 5
+      bit_size: 1
+      description: 0x00000020U
+    - name: TAMP7NOER
+      bit_offset: 6
+      bit_size: 1
+      description: 0x00000040U
+    - name: TAMP8NOER
+      bit_offset: 7
+      bit_size: 1
+      description: 0x00000080U
+    - name: TAMP1MSK
+      bit_offset: 16
+      bit_size: 1
+      description: 0x00010000U
+    - name: TAMP2MSK
+      bit_offset: 17
+      bit_size: 1
+      description: 0x00020000U
+    - name: TAMP3MSK
+      bit_offset: 18
+      bit_size: 1
+      description: 0x00040000U
+    - name: BKERASE
+      bit_offset: 23
+      bit_size: 1
+      description: 0x00800000U
+    - name: TAMP1TRG
+      bit_offset: 24
+      bit_size: 1
+      description: 0x01000000U
+    - name: TAMP2TRG
+      bit_offset: 25
+      bit_size: 1
+      description: 0x02000000U
+    - name: TAMP3TRG
+      bit_offset: 26
+      bit_size: 1
+      description: 0x04000000U
+    - name: TAMP4TRG
+      bit_offset: 27
+      bit_size: 1
+      description: 0x08000000U
+    - name: TAMP5TRG
+      bit_offset: 28
+      bit_size: 1
+      description: 0x10000000U
+    - name: TAMP6TRG
+      bit_offset: 29
+      bit_size: 1
+      description: 0x20000000U
+    - name: TAMP7TRG
+      bit_offset: 30
+      bit_size: 1
+      description: 0x40000000U
+    - name: TAMP8TRG
+      bit_offset: 31
+      bit_size: 1
 fieldset/TAMP_CR3:
   description: ''
   fields:
-  - name: ITAMP1NOER
-    bit_offset: 0
-    bit_size: 1
-    description: 0x00000001U
-  - name: ITAMP2NOER
-    bit_offset: 1
-    bit_size: 1
-    description: 0x00000002U
-  - name: ITAMP3NOER
-    bit_offset: 2
-    bit_size: 1
-    description: 0x00000004U
-  - name: ITAMP4NOER
-    bit_offset: 3
-    bit_size: 1
-    description: 0x00000008U
-  - name: ITAMP5NOER
-    bit_offset: 4
-    bit_size: 1
-    description: 0x00000010U
-  - name: ITAMP6NOER
-    bit_offset: 5
-    bit_size: 1
-    description: 0x00000020U
-  - name: ITAMP8NOER
-    bit_offset: 7
-    bit_size: 1
-    description: 0x00000080U
-  - name: ITAMP9NOER
-    bit_offset: 8
-    bit_size: 1
-    description: 0x00000100U
-  - name: ITAMP10NOER
-    bit_offset: 9
-    bit_size: 1
-    description: 0x00000200U
-  - name: ITAMP11NOER
-    bit_offset: 10
-    bit_size: 1
-    description: 0x00000400U
-  - name: ITAMP12NOER
-    bit_offset: 11
-    bit_size: 1
-    description: 0x00000800U
-  - name: ITAMP14NOER
-    bit_offset: 13
-    bit_size: 1
-    description: 0x00002000U
-  - name: ITAMP15NOER
-    bit_offset: 14
-    bit_size: 1
+    - name: ITAMP1NOER
+      bit_offset: 0
+      bit_size: 1
+      description: 0x00000001U
+    - name: ITAMP2NOER
+      bit_offset: 1
+      bit_size: 1
+      description: 0x00000002U
+    - name: ITAMP3NOER
+      bit_offset: 2
+      bit_size: 1
+      description: 0x00000004U
+    - name: ITAMP4NOER
+      bit_offset: 3
+      bit_size: 1
+      description: 0x00000008U
+    - name: ITAMP5NOER
+      bit_offset: 4
+      bit_size: 1
+      description: 0x00000010U
+    - name: ITAMP6NOER
+      bit_offset: 5
+      bit_size: 1
+      description: 0x00000020U
+    - name: ITAMP8NOER
+      bit_offset: 7
+      bit_size: 1
+      description: 0x00000080U
+    - name: ITAMP9NOER
+      bit_offset: 8
+      bit_size: 1
+      description: 0x00000100U
+    - name: ITAMP10NOER
+      bit_offset: 9
+      bit_size: 1
+      description: 0x00000200U
+    - name: ITAMP11NOER
+      bit_offset: 10
+      bit_size: 1
+      description: 0x00000400U
+    - name: ITAMP12NOER
+      bit_offset: 11
+      bit_size: 1
+      description: 0x00000800U
+    - name: ITAMP14NOER
+      bit_offset: 13
+      bit_size: 1
+      description: 0x00002000U
+    - name: ITAMP15NOER
+      bit_offset: 14
+      bit_size: 1
 fieldset/TAMP_FLTCR:
   description: ''
   fields:
-  - name: TAMPFREQ
-    bit_offset: 0
-    bit_size: 3
-    description: 0x00000001U
-  - name: TAMPFLT
-    bit_offset: 3
-    bit_size: 2
-    description: 0x00000008U
-  - name: TAMPPRCH
-    bit_offset: 5
-    bit_size: 2
-    description: 0x00000020U
-  - name: TAMPPUDIS
-    bit_offset: 7
-    bit_size: 1
+    - name: TAMPFREQ
+      bit_offset: 0
+      bit_size: 3
+      description: 0x00000001U
+    - name: TAMPFLT
+      bit_offset: 3
+      bit_size: 2
+      description: 0x00000008U
+    - name: TAMPPRCH
+      bit_offset: 5
+      bit_size: 2
+      description: 0x00000020U
+    - name: TAMPPUDIS
+      bit_offset: 7
+      bit_size: 1
 fieldset/TAMP_ATCR1:
   description: ''
   fields:
-  - name: TAMP1AM
-    bit_offset: 0
-    bit_size: 1
-    description: 0x00000001U
-  - name: TAMP2AM
-    bit_offset: 1
-    bit_size: 1
-    description: 0x00000002U
-  - name: TAMP3AM
-    bit_offset: 2
-    bit_size: 1
-    description: 0x00000004U
-  - name: TAMP4AM
-    bit_offset: 3
-    bit_size: 1
-    description: 0x00000008U
-  - name: TAMP5AM
-    bit_offset: 4
-    bit_size: 1
-    description: 0x00000010U
-  - name: TAMP6AM
-    bit_offset: 5
-    bit_size: 1
-    description: 0x00000010U
-  - name: TAMP7AM
-    bit_offset: 6
-    bit_size: 1
-    description: 0x00000040U
-  - name: TAMP8AM
-    bit_offset: 7
-    bit_size: 1
-    description: 0x00000080U
-  - name: ATOSEL1
-    bit_offset: 8
-    bit_size: 2
-    description: 0x00000100U
-  - name: ATOSEL2
-    bit_offset: 10
-    bit_size: 2
-    description: 0x00000400U
-  - name: ATOSEL3
-    bit_offset: 12
-    bit_size: 2
-    description: 0x00001000U
-  - name: ATOSEL4
-    bit_offset: 14
-    bit_size: 2
-    description: 0x00004000U
-  - name: ATCKSEL
-    bit_offset: 16
-    bit_size: 3
-    description: 0x00010000U
-  - name: ATPER
-    bit_offset: 24
-    bit_size: 4
-    description: 0x01000000U
-  - name: ATOSHARE
-    bit_offset: 30
-    bit_size: 1
-    description: 0x40000000U
-  - name: FLTEN
-    bit_offset: 31
-    bit_size: 1
+    - name: TAMP1AM
+      bit_offset: 0
+      bit_size: 1
+      description: 0x00000001U
+    - name: TAMP2AM
+      bit_offset: 1
+      bit_size: 1
+      description: 0x00000002U
+    - name: TAMP3AM
+      bit_offset: 2
+      bit_size: 1
+      description: 0x00000004U
+    - name: TAMP4AM
+      bit_offset: 3
+      bit_size: 1
+      description: 0x00000008U
+    - name: TAMP5AM
+      bit_offset: 4
+      bit_size: 1
+      description: 0x00000010U
+    - name: TAMP6AM
+      bit_offset: 5
+      bit_size: 1
+      description: 0x00000010U
+    - name: TAMP7AM
+      bit_offset: 6
+      bit_size: 1
+      description: 0x00000040U
+    - name: TAMP8AM
+      bit_offset: 7
+      bit_size: 1
+      description: 0x00000080U
+    - name: ATOSEL1
+      bit_offset: 8
+      bit_size: 2
+      description: 0x00000100U
+    - name: ATOSEL2
+      bit_offset: 10
+      bit_size: 2
+      description: 0x00000400U
+    - name: ATOSEL3
+      bit_offset: 12
+      bit_size: 2
+      description: 0x00001000U
+    - name: ATOSEL4
+      bit_offset: 14
+      bit_size: 2
+      description: 0x00004000U
+    - name: ATCKSEL
+      bit_offset: 16
+      bit_size: 3
+      description: 0x00010000U
+    - name: ATPER
+      bit_offset: 24
+      bit_size: 4
+      description: 0x01000000U
+    - name: ATOSHARE
+      bit_offset: 30
+      bit_size: 1
+      description: 0x40000000U
+    - name: FLTEN
+      bit_offset: 31
+      bit_size: 1
 fieldset/TAMP_ATSEEDR:
   description: ''
   fields:
-  - name: SEED
-    bit_offset: 0
-    bit_size: 32
+    - name: SEED
+      bit_offset: 0
+      bit_size: 32
 fieldset/TAMP_ATOR:
   description: ''
   fields:
-  - name: PRNG
-    bit_offset: 0
-    bit_size: 8
-    description: 0x00000001U
+    - name: PRNG
+      bit_offset: 0
+      bit_size: 8
+      description: 0x00000001U
 fieldset/TAMP_ATCR2:
   description: ''
   fields:
-  - name: ATOSEL1
-    bit_offset: 8
-    bit_size: 3
-    description: 0x00000100U
-  - name: ATOSEL2
-    bit_offset: 11
-    bit_size: 3
-    description: 0x00000800U
-  - name: ATOSEL3
-    bit_offset: 14
-    bit_size: 3
-    description: 0x00004000U
-  - name: ATOSEL4
-    bit_offset: 17
-    bit_size: 3
-    description: 0x00020000U
-  - name: ATOSEL5
-    bit_offset: 20
-    bit_size: 3
-    description: 0x00100000U
-  - name: ATOSEL6
-    bit_offset: 23
-    bit_size: 3
-    description: 0x00800000U
-  - name: ATOSEL7
-    bit_offset: 26
-    bit_size: 3
-    description: 0x04000000U
-  - name: ATOSEL8
-    bit_offset: 29
-    bit_size: 3
-    description: 0x20000000U
+    - name: ATOSEL1
+      bit_offset: 8
+      bit_size: 3
+      description: 0x00000100U
+    - name: ATOSEL2
+      bit_offset: 11
+      bit_size: 3
+      description: 0x00000800U
+    - name: ATOSEL3
+      bit_offset: 14
+      bit_size: 3
+      description: 0x00004000U
+    - name: ATOSEL4
+      bit_offset: 17
+      bit_size: 3
+      description: 0x00020000U
+    - name: ATOSEL5
+      bit_offset: 20
+      bit_size: 3
+      description: 0x00100000U
+    - name: ATOSEL6
+      bit_offset: 23
+      bit_size: 3
+      description: 0x00800000U
+    - name: ATOSEL7
+      bit_offset: 26
+      bit_size: 3
+      description: 0x04000000U
+    - name: ATOSEL8
+      bit_offset: 29
+      bit_size: 3
+      description: 0x20000000U
 fieldset/TAMP_SECCFGR:
   description: ''
   fields:
-  - name: BKPRWSEC
-    bit_offset: 0
-    bit_size: 8
-    description: 0x00000001U
-  - name: CNT2SEC
-    bit_offset: 14
-    bit_size: 1
-    description: 0x00004000U
-  - name: CNT1SEC
-    bit_offset: 15
-    bit_size: 1
-    description: 0x00008000U
-  - name: BKPWSEC
-    bit_offset: 16
-    bit_size: 8
-    description: 0x00010000U
-  - name: SMKLOCK
-    bit_offset: 30
-    bit_size: 1
-    description: 0x40000000U
-  - name: TAMPSEC
-    bit_offset: 31
-    bit_size: 1
+    - name: BKPRWSEC
+      bit_offset: 0
+      bit_size: 8
+      description: 0x00000001U
+    - name: CNT2SEC
+      bit_offset: 14
+      bit_size: 1
+      description: 0x00004000U
+    - name: CNT1SEC
+      bit_offset: 15
+      bit_size: 1
+      description: 0x00008000U
+    - name: BKPWSEC
+      bit_offset: 16
+      bit_size: 8
+      description: 0x00010000U
+    - name: SMKLOCK
+      bit_offset: 30
+      bit_size: 1
+      description: 0x40000000U
+    - name: TAMPSEC
+      bit_offset: 31
+      bit_size: 1
 fieldset/TAMP_PRIVCR:
   description: ''
   fields:
-  - name: CNT2PRIV
-    bit_offset: 15
-    bit_size: 1
-    description: 0x00004000U
-  - name: CNT1PRIV
-    bit_offset: 15
-    bit_size: 1
-    description: 0x00008000U
-  - name: BKPRWPRIV
-    bit_offset: 29
-    bit_size: 1
-    description: 0x20000000U
-  - name: BKPWPRIV
-    bit_offset: 30
-    bit_size: 1
-    description: 0x40000000U
-  - name: TAMPPRIV
-    bit_offset: 31
-    bit_size: 1
+    - name: CNT2PRIV
+      bit_offset: 15
+      bit_size: 1
+      description: 0x00004000U
+    - name: CNT1PRIV
+      bit_offset: 15
+      bit_size: 1
+      description: 0x00008000U
+    - name: BKPRWPRIV
+      bit_offset: 29
+      bit_size: 1
+      description: 0x20000000U
+    - name: BKPWPRIV
+      bit_offset: 30
+      bit_size: 1
+      description: 0x40000000U
+    - name: TAMPPRIV
+      bit_offset: 31
+      bit_size: 1
 fieldset/TAMP_IER:
   description: ''
   fields:
-  - name: TAMP1IE
-    bit_offset: 0
-    bit_size: 1
-    description: 0x00000001U
-  - name: TAMP2IE
-    bit_offset: 1
-    bit_size: 1
-    description: 0x00000002U
-  - name: TAMP3IE
-    bit_offset: 2
-    bit_size: 1
-    description: 0x00000004U
-  - name: TAMP4IE
-    bit_offset: 3
-    bit_size: 1
-    description: 0x00000008U
-  - name: TAMP5IE
-    bit_offset: 4
-    bit_size: 1
-    description: 0x00000010U
-  - name: TAMP6IE
-    bit_offset: 5
-    bit_size: 1
-    description: 0x00000020U
-  - name: TAMP7IE
-    bit_offset: 6
-    bit_size: 1
-    description: 0x00000040U
-  - name: TAMP8IE
-    bit_offset: 7
-    bit_size: 1
-    description: 0x00000080U
-  - name: ITAMP1IE
-    bit_offset: 16
-    bit_size: 1
-    description: 0x00010000U
-  - name: ITAMP2IE
-    bit_offset: 17
-    bit_size: 1
-    description: 0x00020000U
-  - name: ITAMP3IE
-    bit_offset: 18
-    bit_size: 1
-    description: 0x00040000U
-  - name: ITAMP4IE
-    bit_offset: 19
-    bit_size: 1
-    description: 0x00040000U
-  - name: ITAMP5IE
-    bit_offset: 20
-    bit_size: 1
-    description: 0x00100000U
-  - name: ITAMP6IE
-    bit_offset: 21
-    bit_size: 1
-    description: 0x00200000U
-  - name: ITAMP7IE
-    bit_offset: 22
-    bit_size: 1
-    description: 0x00400000U
-  - name: ITAMP8IE
-    bit_offset: 23
-    bit_size: 1
-    description: 0x00800000U
-  - name: ITAMP9IE
-    bit_offset: 24
-    bit_size: 1
-    description: 0x01000000U
-  - name: ITAMP10IE
-    bit_offset: 25
-    bit_size: 1
-    description: 0x02000000U
-  - name: ITAMP11IE
-    bit_offset: 26
-    bit_size: 1
-    description: 0x04000000U
-  - name: ITAMP12IE
-    bit_offset: 27
-    bit_size: 1
-    description: 0x08000000U
-  - name: ITAMP14IE
-    bit_offset: 29
-    bit_size: 1
-    description: 0x20000000U
-  - name: ITAMP15IE
-    bit_offset: 30
-    bit_size: 1
+    - name: TAMP1IE
+      bit_offset: 0
+      bit_size: 1
+      description: 0x00000001U
+    - name: TAMP2IE
+      bit_offset: 1
+      bit_size: 1
+      description: 0x00000002U
+    - name: TAMP3IE
+      bit_offset: 2
+      bit_size: 1
+      description: 0x00000004U
+    - name: TAMP4IE
+      bit_offset: 3
+      bit_size: 1
+      description: 0x00000008U
+    - name: TAMP5IE
+      bit_offset: 4
+      bit_size: 1
+      description: 0x00000010U
+    - name: TAMP6IE
+      bit_offset: 5
+      bit_size: 1
+      description: 0x00000020U
+    - name: TAMP7IE
+      bit_offset: 6
+      bit_size: 1
+      description: 0x00000040U
+    - name: TAMP8IE
+      bit_offset: 7
+      bit_size: 1
+      description: 0x00000080U
+    - name: ITAMP1IE
+      bit_offset: 16
+      bit_size: 1
+      description: 0x00010000U
+    - name: ITAMP2IE
+      bit_offset: 17
+      bit_size: 1
+      description: 0x00020000U
+    - name: ITAMP3IE
+      bit_offset: 18
+      bit_size: 1
+      description: 0x00040000U
+    - name: ITAMP4IE
+      bit_offset: 19
+      bit_size: 1
+      description: 0x00040000U
+    - name: ITAMP5IE
+      bit_offset: 20
+      bit_size: 1
+      description: 0x00100000U
+    - name: ITAMP6IE
+      bit_offset: 21
+      bit_size: 1
+      description: 0x00200000U
+    - name: ITAMP7IE
+      bit_offset: 22
+      bit_size: 1
+      description: 0x00400000U
+    - name: ITAMP8IE
+      bit_offset: 23
+      bit_size: 1
+      description: 0x00800000U
+    - name: ITAMP9IE
+      bit_offset: 24
+      bit_size: 1
+      description: 0x01000000U
+    - name: ITAMP10IE
+      bit_offset: 25
+      bit_size: 1
+      description: 0x02000000U
+    - name: ITAMP11IE
+      bit_offset: 26
+      bit_size: 1
+      description: 0x04000000U
+    - name: ITAMP12IE
+      bit_offset: 27
+      bit_size: 1
+      description: 0x08000000U
+    - name: ITAMP14IE
+      bit_offset: 29
+      bit_size: 1
+      description: 0x20000000U
+    - name: ITAMP15IE
+      bit_offset: 30
+      bit_size: 1
 fieldset/TAMP_SR:
   description: ''
   fields:
-  - name: TAMP1F
-    bit_offset: 0
-    bit_size: 1
-    description: 0x00000001U
-  - name: TAMP2F
-    bit_offset: 1
-    bit_size: 1
-    description: 0x00000002U
-  - name: TAMP3F
-    bit_offset: 2
-    bit_size: 1
-    description: 0x00000004U
-  - name: TAMP4F
-    bit_offset: 3
-    bit_size: 1
-    description: 0x00000008U
-  - name: TAMP5F
-    bit_offset: 4
-    bit_size: 1
-    description: 0x00000010U
-  - name: TAMP6F
-    bit_offset: 5
-    bit_size: 1
-    description: 0x00000020U
-  - name: TAMP7F
-    bit_offset: 6
-    bit_size: 1
-    description: 0x00000040U
-  - name: TAMP8F
-    bit_offset: 7
-    bit_size: 1
-    description: 0x00000080U
-  - name: ITAMP1F
-    bit_offset: 16
-    bit_size: 1
-    description: 0x00010000U
-  - name: ITAMP2F
-    bit_offset: 17
-    bit_size: 1
-    description: 0x00020000U
-  - name: ITAMP3F
-    bit_offset: 18
-    bit_size: 1
-    description: 0x00040000U
-  - name: ITAMP4F
-    bit_offset: 19
-    bit_size: 1
-    description: 0x00040000U
-  - name: ITAMP5F
-    bit_offset: 20
-    bit_size: 1
-    description: 0x00100000U
-  - name: ITAMP6F
-    bit_offset: 21
-    bit_size: 1
-    description: 0x00200000U
-  - name: ITAMP7F
-    bit_offset: 22
-    bit_size: 1
-    description: 0x00400000U
-  - name: ITAMP8F
-    bit_offset: 23
-    bit_size: 1
-    description: 0x00800000U
-  - name: ITAMP9F
-    bit_offset: 24
-    bit_size: 1
-    description: 0x01000000U
-  - name: ITAMP10F
-    bit_offset: 25
-    bit_size: 1
-    description: 0x02000000U
-  - name: ITAMP11F
-    bit_offset: 26
-    bit_size: 1
-    description: 0x04000000U
-  - name: ITAMP12F
-    bit_offset: 27
-    bit_size: 1
-    description: 0x08000000U
-  - name: ITAMP14F
-    bit_offset: 29
-    bit_size: 1
-    description: 0x20000000U
-  - name: ITAMP15F
-    bit_offset: 30
-    bit_size: 1
+    - name: TAMP1F
+      bit_offset: 0
+      bit_size: 1
+      description: 0x00000001U
+    - name: TAMP2F
+      bit_offset: 1
+      bit_size: 1
+      description: 0x00000002U
+    - name: TAMP3F
+      bit_offset: 2
+      bit_size: 1
+      description: 0x00000004U
+    - name: TAMP4F
+      bit_offset: 3
+      bit_size: 1
+      description: 0x00000008U
+    - name: TAMP5F
+      bit_offset: 4
+      bit_size: 1
+      description: 0x00000010U
+    - name: TAMP6F
+      bit_offset: 5
+      bit_size: 1
+      description: 0x00000020U
+    - name: TAMP7F
+      bit_offset: 6
+      bit_size: 1
+      description: 0x00000040U
+    - name: TAMP8F
+      bit_offset: 7
+      bit_size: 1
+      description: 0x00000080U
+    - name: ITAMP1F
+      bit_offset: 16
+      bit_size: 1
+      description: 0x00010000U
+    - name: ITAMP2F
+      bit_offset: 17
+      bit_size: 1
+      description: 0x00020000U
+    - name: ITAMP3F
+      bit_offset: 18
+      bit_size: 1
+      description: 0x00040000U
+    - name: ITAMP4F
+      bit_offset: 19
+      bit_size: 1
+      description: 0x00040000U
+    - name: ITAMP5F
+      bit_offset: 20
+      bit_size: 1
+      description: 0x00100000U
+    - name: ITAMP6F
+      bit_offset: 21
+      bit_size: 1
+      description: 0x00200000U
+    - name: ITAMP7F
+      bit_offset: 22
+      bit_size: 1
+      description: 0x00400000U
+    - name: ITAMP8F
+      bit_offset: 23
+      bit_size: 1
+      description: 0x00800000U
+    - name: ITAMP9F
+      bit_offset: 24
+      bit_size: 1
+      description: 0x01000000U
+    - name: ITAMP10F
+      bit_offset: 25
+      bit_size: 1
+      description: 0x02000000U
+    - name: ITAMP11F
+      bit_offset: 26
+      bit_size: 1
+      description: 0x04000000U
+    - name: ITAMP12F
+      bit_offset: 27
+      bit_size: 1
+      description: 0x08000000U
+    - name: ITAMP14F
+      bit_offset: 29
+      bit_size: 1
+      description: 0x20000000U
+    - name: ITAMP15F
+      bit_offset: 30
+      bit_size: 1
 fieldset/TAMP_MISR:
   description: ''
   fields:
-  - name: TAMP1MF
-    bit_offset: 0
-    bit_size: 1
-    description: 0x00000001U
-  - name: TAMP2MF
-    bit_offset: 1
-    bit_size: 1
-    description: 0x00000002U
-  - name: TAMP3MF
-    bit_offset: 2
-    bit_size: 1
-    description: 0x00000004U
-  - name: TAMP4MF
-    bit_offset: 3
-    bit_size: 1
-    description: 0x00000008U
-  - name: TAMP5MF
-    bit_offset: 4
-    bit_size: 1
-    description: 0x00000010U
-  - name: TAMP6MF
-    bit_offset: 5
-    bit_size: 1
-    description: 0x00000020U
-  - name: TAMP7MF
-    bit_offset: 6
-    bit_size: 1
-    description: 0x00000040U
-  - name: TAMP8MF
-    bit_offset: 7
-    bit_size: 1
-    description: 0x00000080U
-  - name: ITAMP1MF
-    bit_offset: 16
-    bit_size: 1
-    description: 0x00010000U
-  - name: ITAMP2MF
-    bit_offset: 17
-    bit_size: 1
-    description: 0x00020000U
-  - name: ITAMP3MF
-    bit_offset: 18
-    bit_size: 1
-    description: 0x00040000U
-  - name: ITAMP4MF
-    bit_offset: 19
-    bit_size: 1
-    description: 0x00080000U
-  - name: ITAMP5MF
-    bit_offset: 20
-    bit_size: 1
-    description: 0x00100000U
-  - name: ITAMP6MF
-    bit_offset: 21
-    bit_size: 1
-    description: 0x00200000U
-  - name: ITAMP7MF
-    bit_offset: 22
-    bit_size: 1
-    description: 0x00400000U
-  - name: ITAMP8MF
-    bit_offset: 23
-    bit_size: 1
-    description: 0x00800000U
-  - name: ITAMP9MF
-    bit_offset: 24
-    bit_size: 1
-    description: 0x01000000U
-  - name: ITAMP10MF
-    bit_offset: 25
-    bit_size: 1
-    description: 0x02000000U
-  - name: ITAMP11MF
-    bit_offset: 26
-    bit_size: 1
-    description: 0x04000000U
-  - name: ITAMP12MF
-    bit_offset: 27
-    bit_size: 1
-    description: 0x08000000U
-  - name: ITAMP14MF
-    bit_offset: 29
-    bit_size: 1
-    description: 0x20000000U
-  - name: ITAMP15MF
-    bit_offset: 30
-    bit_size: 1
+    - name: TAMP1MF
+      bit_offset: 0
+      bit_size: 1
+      description: 0x00000001U
+    - name: TAMP2MF
+      bit_offset: 1
+      bit_size: 1
+      description: 0x00000002U
+    - name: TAMP3MF
+      bit_offset: 2
+      bit_size: 1
+      description: 0x00000004U
+    - name: TAMP4MF
+      bit_offset: 3
+      bit_size: 1
+      description: 0x00000008U
+    - name: TAMP5MF
+      bit_offset: 4
+      bit_size: 1
+      description: 0x00000010U
+    - name: TAMP6MF
+      bit_offset: 5
+      bit_size: 1
+      description: 0x00000020U
+    - name: TAMP7MF
+      bit_offset: 6
+      bit_size: 1
+      description: 0x00000040U
+    - name: TAMP8MF
+      bit_offset: 7
+      bit_size: 1
+      description: 0x00000080U
+    - name: ITAMP1MF
+      bit_offset: 16
+      bit_size: 1
+      description: 0x00010000U
+    - name: ITAMP2MF
+      bit_offset: 17
+      bit_size: 1
+      description: 0x00020000U
+    - name: ITAMP3MF
+      bit_offset: 18
+      bit_size: 1
+      description: 0x00040000U
+    - name: ITAMP4MF
+      bit_offset: 19
+      bit_size: 1
+      description: 0x00080000U
+    - name: ITAMP5MF
+      bit_offset: 20
+      bit_size: 1
+      description: 0x00100000U
+    - name: ITAMP6MF
+      bit_offset: 21
+      bit_size: 1
+      description: 0x00200000U
+    - name: ITAMP7MF
+      bit_offset: 22
+      bit_size: 1
+      description: 0x00400000U
+    - name: ITAMP8MF
+      bit_offset: 23
+      bit_size: 1
+      description: 0x00800000U
+    - name: ITAMP9MF
+      bit_offset: 24
+      bit_size: 1
+      description: 0x01000000U
+    - name: ITAMP10MF
+      bit_offset: 25
+      bit_size: 1
+      description: 0x02000000U
+    - name: ITAMP11MF
+      bit_offset: 26
+      bit_size: 1
+      description: 0x04000000U
+    - name: ITAMP12MF
+      bit_offset: 27
+      bit_size: 1
+      description: 0x08000000U
+    - name: ITAMP14MF
+      bit_offset: 29
+      bit_size: 1
+      description: 0x20000000U
+    - name: ITAMP15MF
+      bit_offset: 30
+      bit_size: 1
 fieldset/TAMP_SMISR:
   description: ''
   fields:
-  - name: TAMP1MF
-    bit_offset: 0
-    bit_size: 1
-    description: 0x00000001U
-  - name: TAMP2MF
-    bit_offset: 1
-    bit_size: 1
-    description: 0x00000002U
-  - name: TAMP3MF
-    bit_offset: 2
-    bit_size: 1
-    description: 0x00000004U
-  - name: TAMP4MF
-    bit_offset: 3
-    bit_size: 1
-    description: 0x00000008U
-  - name: TAMP5MF
-    bit_offset: 4
-    bit_size: 1
-    description: 0x00000010U
-  - name: TAMP6MF
-    bit_offset: 5
-    bit_size: 1
-    description: 0x00000020U
-  - name: TAMP7MF
-    bit_offset: 6
-    bit_size: 1
-    description: 0x00000040U
-  - name: TAMP8MF
-    bit_offset: 7
-    bit_size: 1
-    description: 0x00000080U
-  - name: ITAMP1MF
-    bit_offset: 16
-    bit_size: 1
-    description: 0x00010000U
-  - name: ITAMP2MF
-    bit_offset: 17
-    bit_size: 1
-    description: 0x00020000U
-  - name: ITAMP3MF
-    bit_offset: 18
-    bit_size: 1
-    description: 0x00040000U
-  - name: ITAMP4MF
-    bit_offset: 19
-    bit_size: 1
-    description: 0x00080000U
-  - name: ITAMP5MF
-    bit_offset: 20
-    bit_size: 1
-    description: 0x00100000U
-  - name: ITAMP6MF
-    bit_offset: 21
-    bit_size: 1
-    description: 0x00200000U
-  - name: ITAMP7MF
-    bit_offset: 22
-    bit_size: 1
-    description: 0x00400000U
-  - name: ITAMP8MF
-    bit_offset: 23
-    bit_size: 1
-    description: 0x00800000U
-  - name: ITAMP9MF
-    bit_offset: 24
-    bit_size: 1
-    description: 0x01000000U
-  - name: ITAMP10MF
-    bit_offset: 25
-    bit_size: 1
-    description: 0x020400000U
-  - name: ITAMP11MF
-    bit_offset: 26
-    bit_size: 1
-    description: 0x020400000U
-  - name: ITAMP12MF
-    bit_offset: 27
-    bit_size: 1
-    description: 0x080000000U
-  - name: ITAMP14MF
-    bit_offset: 29
-    bit_size: 1
-    description: 0x200000000U
-  - name: ITAMP15MF
-    bit_offset: 30
-    bit_size: 1
+    - name: TAMP1MF
+      bit_offset: 0
+      bit_size: 1
+      description: 0x00000001U
+    - name: TAMP2MF
+      bit_offset: 1
+      bit_size: 1
+      description: 0x00000002U
+    - name: TAMP3MF
+      bit_offset: 2
+      bit_size: 1
+      description: 0x00000004U
+    - name: TAMP4MF
+      bit_offset: 3
+      bit_size: 1
+      description: 0x00000008U
+    - name: TAMP5MF
+      bit_offset: 4
+      bit_size: 1
+      description: 0x00000010U
+    - name: TAMP6MF
+      bit_offset: 5
+      bit_size: 1
+      description: 0x00000020U
+    - name: TAMP7MF
+      bit_offset: 6
+      bit_size: 1
+      description: 0x00000040U
+    - name: TAMP8MF
+      bit_offset: 7
+      bit_size: 1
+      description: 0x00000080U
+    - name: ITAMP1MF
+      bit_offset: 16
+      bit_size: 1
+      description: 0x00010000U
+    - name: ITAMP2MF
+      bit_offset: 17
+      bit_size: 1
+      description: 0x00020000U
+    - name: ITAMP3MF
+      bit_offset: 18
+      bit_size: 1
+      description: 0x00040000U
+    - name: ITAMP4MF
+      bit_offset: 19
+      bit_size: 1
+      description: 0x00080000U
+    - name: ITAMP5MF
+      bit_offset: 20
+      bit_size: 1
+      description: 0x00100000U
+    - name: ITAMP6MF
+      bit_offset: 21
+      bit_size: 1
+      description: 0x00200000U
+    - name: ITAMP7MF
+      bit_offset: 22
+      bit_size: 1
+      description: 0x00400000U
+    - name: ITAMP8MF
+      bit_offset: 23
+      bit_size: 1
+      description: 0x00800000U
+    - name: ITAMP9MF
+      bit_offset: 24
+      bit_size: 1
+      description: 0x01000000U
+    - name: ITAMP10MF
+      bit_offset: 25
+      bit_size: 1
+      description: 0x020400000U
+    - name: ITAMP11MF
+      bit_offset: 26
+      bit_size: 1
+      description: 0x020400000U
+    - name: ITAMP12MF
+      bit_offset: 27
+      bit_size: 1
+      description: 0x080000000U
+    - name: ITAMP14MF
+      bit_offset: 29
+      bit_size: 1
+      description: 0x200000000U
+    - name: ITAMP15MF
+      bit_offset: 30
+      bit_size: 1
 fieldset/TAMP_SCR:
   description: ''
   fields:
-  - name: CTAMP1F
-    bit_offset: 0
-    bit_size: 1
-    description: 0x00000001U
-  - name: CTAMP2F
-    bit_offset: 1
-    bit_size: 1
-    description: 0x00000002U
-  - name: CTAMP3F
-    bit_offset: 2
-    bit_size: 1
-    description: 0x00000004U
-  - name: CTAMP4F
-    bit_offset: 3
-    bit_size: 1
-    description: 0x00000008U
-  - name: CTAMP5F
-    bit_offset: 4
-    bit_size: 1
-    description: 0x00000010U
-  - name: CTAMP6F
-    bit_offset: 5
-    bit_size: 1
-    description: 0x00000020U
-  - name: CTAMP7F
-    bit_offset: 6
-    bit_size: 1
-    description: 0x00000040U
-  - name: CTAMP8F
-    bit_offset: 7
-    bit_size: 1
-    description: 0x00000080U
-  - name: CITAMP1F
-    bit_offset: 16
-    bit_size: 1
-    description: 0x00010000U
-  - name: CITAMP2F
-    bit_offset: 17
-    bit_size: 1
-    description: 0x00020000U
-  - name: CITAMP3F
-    bit_offset: 18
-    bit_size: 1
-    description: 0x00040000U
-  - name: CITAMP4F
-    bit_offset: 19
-    bit_size: 1
-    description: 0x00080000U
-  - name: CITAMP5F
-    bit_offset: 20
-    bit_size: 1
-    description: 0x00100000U
-  - name: CITAMP6F
-    bit_offset: 21
-    bit_size: 1
-    description: 0x00200000U
-  - name: CITAMP7F
-    bit_offset: 22
-    bit_size: 1
-    description: 0x00400000U
-  - name: CITAMP8F
-    bit_offset: 23
-    bit_size: 1
-    description: 0x00800000U
-  - name: CITAMP9F
-    bit_offset: 24
-    bit_size: 1
-    description: 0x01000000U
-  - name: CITAMP10F
-    bit_offset: 25
-    bit_size: 1
-    description: 0x02000000U
-  - name: CITAMP11F
-    bit_offset: 26
-    bit_size: 1
-    description: 0x04000000U
-  - name: CITAMP12F
-    bit_offset: 27
-    bit_size: 1
-    description: 0x08000000U
-  - name: CITAMP14F
-    bit_offset: 29
-    bit_size: 1
-    description: 0x20000000U
-  - name: CITAMP15F
-    bit_offset: 30
-    bit_size: 1
+    - name: CTAMP1F
+      bit_offset: 0
+      bit_size: 1
+      description: 0x00000001U
+    - name: CTAMP2F
+      bit_offset: 1
+      bit_size: 1
+      description: 0x00000002U
+    - name: CTAMP3F
+      bit_offset: 2
+      bit_size: 1
+      description: 0x00000004U
+    - name: CTAMP4F
+      bit_offset: 3
+      bit_size: 1
+      description: 0x00000008U
+    - name: CTAMP5F
+      bit_offset: 4
+      bit_size: 1
+      description: 0x00000010U
+    - name: CTAMP6F
+      bit_offset: 5
+      bit_size: 1
+      description: 0x00000020U
+    - name: CTAMP7F
+      bit_offset: 6
+      bit_size: 1
+      description: 0x00000040U
+    - name: CTAMP8F
+      bit_offset: 7
+      bit_size: 1
+      description: 0x00000080U
+    - name: CITAMP1F
+      bit_offset: 16
+      bit_size: 1
+      description: 0x00010000U
+    - name: CITAMP2F
+      bit_offset: 17
+      bit_size: 1
+      description: 0x00020000U
+    - name: CITAMP3F
+      bit_offset: 18
+      bit_size: 1
+      description: 0x00040000U
+    - name: CITAMP4F
+      bit_offset: 19
+      bit_size: 1
+      description: 0x00080000U
+    - name: CITAMP5F
+      bit_offset: 20
+      bit_size: 1
+      description: 0x00100000U
+    - name: CITAMP6F
+      bit_offset: 21
+      bit_size: 1
+      description: 0x00200000U
+    - name: CITAMP7F
+      bit_offset: 22
+      bit_size: 1
+      description: 0x00400000U
+    - name: CITAMP8F
+      bit_offset: 23
+      bit_size: 1
+      description: 0x00800000U
+    - name: CITAMP9F
+      bit_offset: 24
+      bit_size: 1
+      description: 0x01000000U
+    - name: CITAMP10F
+      bit_offset: 25
+      bit_size: 1
+      description: 0x02000000U
+    - name: CITAMP11F
+      bit_offset: 26
+      bit_size: 1
+      description: 0x04000000U
+    - name: CITAMP12F
+      bit_offset: 27
+      bit_size: 1
+      description: 0x08000000U
+    - name: CITAMP14F
+      bit_offset: 29
+      bit_size: 1
+      description: 0x20000000U
+    - name: CITAMP15F
+      bit_offset: 30
+      bit_size: 1
 fieldset/TAMP_BKPRIFR1:
   description: ''
   fields:
-  - name: BKPRWRIF
-    bit_offset: 0
-    bit_size: 8
+    - name: BKPRWRIF
+      bit_offset: 0
+      bit_size: 8
 fieldset/TAMP_BKPRIFR2:
   description: ''
   fields:
-  - name: BKPRWRIF
-    bit_offset: 0
-    bit_size: 8
+    - name: BKPRWRIF
+      bit_offset: 0
+      bit_size: 8
 fieldset/TAMP_BKPRIFR3:
   description: ''
   fields:
-  - name: BKPRWRIF1
-    bit_offset: 0
-    bit_size: 8
-    description: 0x000000FFU
-  - name: BKPRWRIF2
-    bit_offset: 16
-    bit_size: 8
+    - name: BKPRWRIF1
+      bit_offset: 0
+      bit_size: 8
+      description: 0x000000FFU
+    - name: BKPRWRIF2
+      bit_offset: 16
+      bit_size: 8
 fieldset/TAMP_RCIDCFGR:
   description: ''
   fields:
-  - name: CFEN
-    bit_offset: 0
-    bit_size: 1
-    description: 0x00000001U
-  - name: CID
-    bit_offset: 4
-    bit_size: 4
+    - name: CFEN
+      bit_offset: 0
+      bit_size: 1
+      description: 0x00000001U
+    - name: CID
+      bit_offset: 4
+      bit_size: 4
 fieldset/TAMP_HWCFGR2:
   description: ''
   fields:
-  - name: RIF
-    bit_offset: 12
-    bit_size: 4
+    - name: RIF
+      bit_offset: 12
+      bit_size: 4
 fieldset/TAMP_HWCFGR1:
   description: ''
   fields:
-  - name: TAMPER
-    bit_offset: 8
-    bit_size: 4
-    description: 0x00000F00U
+    - name: TAMPER
+      bit_offset: 8
+      bit_size: 4
+      description: 0x00000F00U
 fieldset/TAMP_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 3
-    description: TAMP Minor version
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 3
-    description: TAMP Major version
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 3
+      description: TAMP Minor version
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 3
+      description: TAMP Major version
 fieldset/TAMP_IPIDR:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 32
-    description: TAMP ID
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+      description: TAMP ID
 fieldset/TAMP_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: TAMP Size ID
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: TAMP Size ID

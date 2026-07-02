@@ -1,16 +1,16 @@
 block/NOC_GITS0TRANSLATER:
   description: ''
   items:
-  - name: GITS0_TRANSLATER
-    byte_offset: 64
-    fieldset: NOC_GITS0TRANSLATER_GITS0_TRANSLATER
+    - name: GITS0_TRANSLATER
+      byte_offset: 64
+      fieldset: NOC_GITS0TRANSLATER_GITS0_TRANSLATER
 fieldset/NOC_GITS0TRANSLATER_GITS0_TRANSLATER:
   description: ''
   fields:
-  - name: InterruptID
-    bit_offset: 0
-    bit_size: 32
-  - name: DeviceID
-    bit_offset: 32
-    bit_size: 32
-    description: DeviceID
+    - name: InterruptID
+      bit_offset: 0
+      bit_size: 32
+    - name: DeviceID
+      bit_offset: 32
+      bit_size: 32
+      description: DeviceID

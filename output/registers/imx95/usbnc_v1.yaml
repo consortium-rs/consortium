@@ -1,164 +1,164 @@
 block/USBNC:
   description: ''
   items:
-  - name: CTRL1
-    byte_offset: 0
-    fieldset: USBNC_CTRL1
-  - name: CTRL2
-    byte_offset: 4
-  - name: UTMIPHY_CFG1
-    byte_offset: 48
-    fieldset: USBNC_UTMIPHY_CFG1
-  - name: UTMIPHY_CFG2
-    byte_offset: 52
-    fieldset: USBNC_UTMIPHY_CFG2
-  - name: UTMIPHY_STATUS
-    byte_offset: 60
+    - name: CTRL1
+      byte_offset: 0
+      fieldset: USBNC_CTRL1
+    - name: CTRL2
+      byte_offset: 4
+    - name: UTMIPHY_CFG1
+      byte_offset: 48
+      fieldset: USBNC_UTMIPHY_CFG1
+    - name: UTMIPHY_CFG2
+      byte_offset: 52
+      fieldset: USBNC_UTMIPHY_CFG2
+    - name: UTMIPHY_STATUS
+      byte_offset: 60
 fieldset/USBNC_CTRL1_OVER_CUR:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 7
-    bit_size: 1
-  - name: POL
-    bit_offset: 8
-    bit_size: 1
+    - name: DIS
+      bit_offset: 7
+      bit_size: 1
+    - name: POL
+      bit_offset: 8
+      bit_size: 1
 fieldset/USBNC_CTRL1_PWR:
   description: ''
   fields:
-  - name: POL
-    bit_offset: 9
-    bit_size: 1
+    - name: POL
+      bit_offset: 9
+      bit_size: 1
 fieldset/USBNC_CTRL1:
   description: ''
   fields:
-  - name: WIE
-    bit_offset: 10
-    bit_size: 1
-  - name: WIR
-    bit_offset: 31
-    bit_size: 1
+    - name: WIE
+      bit_offset: 10
+      bit_size: 1
+    - name: WIR
+      bit_offset: 31
+      bit_size: 1
 fieldset/USBNC_CTRL1_WKUP_SW:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 14
-    bit_size: 1
+    - name: EN
+      bit_offset: 14
+      bit_size: 1
 fieldset/USBNC_CTRL1_WKUP:
   description: ''
   fields:
-  - name: SW
-    bit_offset: 15
-    bit_size: 1
+    - name: SW
+      bit_offset: 15
+      bit_size: 1
 fieldset/USBNC_CTRL1_WKUP_ID:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 16
-    bit_size: 1
+    - name: EN
+      bit_offset: 16
+      bit_size: 1
 fieldset/USBNC_CTRL1_WKUP_VBUS:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 17
-    bit_size: 1
+    - name: EN
+      bit_offset: 17
+      bit_size: 1
 fieldset/USBNC_CTRL1_WKUP_DPDM:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 29
-    bit_size: 1
+    - name: EN
+      bit_offset: 29
+      bit_size: 1
 fieldset/USBNC_CTRL2_VBUS_SOURCE:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 2
+    - name: SEL
+      bit_offset: 0
+      bit_size: 2
 fieldset/USBNC_CTRL2_AUTURESUME:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 2
-    bit_size: 1
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
 fieldset/USBNC_CTRL2_LOWSPEED:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 3
-    bit_size: 1
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
 fieldset/USBNC_CTRL2_OPMODE:
   description: ''
   fields:
-  - name: OVERRIDE
-    bit_offset: 6
-    bit_size: 2
-  - name: OVERRIDEEN
-    bit_offset: 8
-    bit_size: 1
+    - name: OVERRIDE
+      bit_offset: 6
+      bit_size: 2
+    - name: OVERRIDEEN
+      bit_offset: 8
+      bit_size: 1
 fieldset/USBNC_CTRL2_SHORT_PKT:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 23
-    bit_size: 1
+    - name: EN
+      bit_offset: 23
+      bit_size: 1
 fieldset/USBNC_CTRL2_UTMI_CLK:
   description: ''
   fields:
-  - name: VLD
-    bit_offset: 31
-    bit_size: 1
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
 fieldset/USBNC_UTMIPHY_CFG1:
   description: ''
   fields:
-  - name: COMMONONN
-    bit_offset: 0
-    bit_size: 1
-  - name: COMPDISTUNE0
-    bit_offset: 4
-    bit_size: 3
-  - name: SQRXTUNE0
-    bit_offset: 7
-    bit_size: 3
-  - name: OTGTUNE0
-    bit_offset: 10
-    bit_size: 3
-  - name: TXHSXVTUNE0
-    bit_offset: 13
-    bit_size: 2
-  - name: TXFSLSTUNE0
-    bit_offset: 16
-    bit_size: 4
-  - name: TXVREFTUNE0
-    bit_offset: 20
-    bit_size: 4
-  - name: TXRISETUNE0
-    bit_offset: 24
-    bit_size: 2
-  - name: TXRESTUNE0
-    bit_offset: 26
-    bit_size: 2
-  - name: TXPREEMPAMPTUNE0
-    bit_offset: 28
-    bit_size: 2
-  - name: TXPREEMPPULSETUNE0
-    bit_offset: 30
-    bit_size: 1
+    - name: COMMONONN
+      bit_offset: 0
+      bit_size: 1
+    - name: COMPDISTUNE0
+      bit_offset: 4
+      bit_size: 3
+    - name: SQRXTUNE0
+      bit_offset: 7
+      bit_size: 3
+    - name: OTGTUNE0
+      bit_offset: 10
+      bit_size: 3
+    - name: TXHSXVTUNE0
+      bit_offset: 13
+      bit_size: 2
+    - name: TXFSLSTUNE0
+      bit_offset: 16
+      bit_size: 4
+    - name: TXVREFTUNE0
+      bit_offset: 20
+      bit_size: 4
+    - name: TXRISETUNE0
+      bit_offset: 24
+      bit_size: 2
+    - name: TXRESTUNE0
+      bit_offset: 26
+      bit_size: 2
+    - name: TXPREEMPAMPTUNE0
+      bit_offset: 28
+      bit_size: 2
+    - name: TXPREEMPPULSETUNE0
+      bit_offset: 30
+      bit_size: 1
 fieldset/USBNC_UTMIPHY_CFG1_PHY_POR:
   description: ''
   fields:
-  - name: SW
-    bit_offset: 15
-    bit_size: 1
+    - name: SW
+      bit_offset: 15
+      bit_size: 1
 fieldset/USBNC_UTMIPHY_CFG2:
   description: ''
   fields:
-  - name: DRVVBUS0
-    bit_offset: 16
-    bit_size: 1
+    - name: DRVVBUS0
+      bit_offset: 16
+      bit_size: 1
 fieldset/USBNC_UTMIPHY_STATUS_VBUS:
   description: ''
   fields:
-  - name: VALID
-    bit_offset: 3
-    bit_size: 1
-    description: VBUS Valid Signal
+    - name: VALID
+      bit_offset: 3
+      bit_size: 1
+      description: VBUS Valid Signal

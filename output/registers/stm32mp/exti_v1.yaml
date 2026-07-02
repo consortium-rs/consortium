@@ -1,179 +1,179 @@
 block/EXTI:
   description: ''
   items:
-  - name: RTSR1
-    byte_offset: 0
-    description: EXTI rising trigger selection register
-  - name: FTSR1
-    byte_offset: 4
-    description: EXTI falling trigger selection register
-  - name: SWIER1
-    byte_offset: 8
-    description: EXTI software interrupt event register
-  - name: RPR1
-    byte_offset: 12
-    description: EXTI rising edge pending register
-  - name: FPR1
-    byte_offset: 16
-    description: EXTI falling edge pending register
-  - name: SECCFGR1
-    byte_offset: 20
-    description: EXTI security configuration register
-  - name: PRIVCFGR1
-    byte_offset: 24
-    description: EXTI Privilege configuration register
-  - name: RTSR2
-    byte_offset: 32
-    description: EXTI rising trigger selection register
-  - name: FTSR2
-    byte_offset: 36
-    description: EXTI falling trigger selection register
-  - name: SWIER2
-    byte_offset: 40
-    description: EXTI software interrupt event register
-  - name: RPR2
-    byte_offset: 44
-    description: EXTI rising edge pending register
-  - name: FPR2
-    byte_offset: 48
-    description: EXTI falling edge pending register
-  - name: SECCFGR2
-    byte_offset: 52
-    description: EXTI security enable register
-  - name: PRIVCFGR2
-    byte_offset: 56
-    description: EXTI Privilege enable register
-  - name: RTSR3
-    byte_offset: 64
-    description: EXTI rising trigger selection register
-  - name: FTSR3
-    byte_offset: 68
-    description: EXTI falling trigger selection register
-  - name: SWIER3
-    byte_offset: 72
-    description: EXTI software interrupt event register
-  - name: RPR3
-    byte_offset: 76
-    description: EXTI rising edge pending register
-  - name: FPR3
-    byte_offset: 80
-    description: EXTI falling edge pending register
-  - name: SECCFGR3
-    byte_offset: 84
-    description: EXTI security enable register
-  - name: PRIVCFGR3
-    byte_offset: 88
-    description: EXTI Privilege enable register
-  - name: EXTICR
-    byte_offset: 96
-    array:
-      len: 4
-      stride: 4
-    description: EXTI external interrupt selection register 1
-  - name: LOCKR
-    byte_offset: 112
-    description: EXTI lock register
-    fieldset: EXTI_LOCKR
-  - name: C1IMR1
-    byte_offset: 128
-    description: EXTI CPU1 wakeup with interrupt mask register
-  - name: C1IMR2
-    byte_offset: 144
-    description: EXTI CPU1 wakeup with interrupt mask register
-  - name: C1IMR3
-    byte_offset: 160
-    description: EXTI CPU1 wakeup with interrupt mask register
-  - name: C2IMR1
-    byte_offset: 192
-    description: EXTI CPU2 wakeup with interrupt mask register
-  - name: C2EMR1
-    byte_offset: 196
-    description: EXTI CPU2 wakeup with event mask register
-  - name: C2IMR2
-    byte_offset: 208
-    description: EXTI CPU2 wakeup with interrupt mask register
-  - name: C2EMR2
-    byte_offset: 212
-    description: EXTI CPU2 wakeup with event mask register
-  - name: C2IMR3
-    byte_offset: 224
-    description: EXTI CPU2 wakeup with interrupt mask register
-  - name: C2EMR3
-    byte_offset: 228
-    description: EXTI CPU2 wakeup with event mask register
-  - name: C3IMR1
-    byte_offset: 256
-    description: EXTI CPU3 wakeup with interrupt mask register
-  - name: C3EMR1
-    byte_offset: 260
-    description: EXTI CPU3 wakeup with event mask register
-  - name: C3IMR2
-    byte_offset: 272
-    description: EXTI CPU3 wakeup with interrupt mask register
-  - name: C3EMR2
-    byte_offset: 276
-    description: EXTI CPU3 wakeup with event mask register
-  - name: C3IMR3
-    byte_offset: 288
-    description: EXTI CPU3 wakeup with interrupt mask register
-  - name: ECIDCFGR
-    byte_offset: 384
-    array:
-      len: 96
-      stride: 4
-    description: EXTI configurable event CID Config register
-  - name: C1CIDCFGR
-    byte_offset: 768
-    description: EXTI processor 1 CID configuration register
-  - name: C2CIDCFGR
-    byte_offset: 772
-    description: EXTI processor 2 CID configuration register
-  - name: C3CIDCFGR
-    byte_offset: 776
-    description: EXTI processor 3 CID configuration register
-  - name: HWCFGR13
-    byte_offset: 960
-    description: EXTI Hardware configuration register 13
-  - name: HWCFGR12
-    byte_offset: 964
-    description: EXTI Hardware configuration register 12
-  - name: HWCFGR11
-    byte_offset: 968
-    description: EXTI Hardware configuration register 11
-  - name: HWCFGR7
-    byte_offset: 984
-    description: EXTI Hardware configuration register 7
-  - name: HWCFGR6
-    byte_offset: 988
-    description: EXTI Hardware configuration register 6
-  - name: HWCFGR5
-    byte_offset: 992
-    description: EXTI Hardware configuration register 5
-  - name: HWCFGR4
-    byte_offset: 996
-    description: EXTI Hardware configuration register 4
-  - name: HWCFGR3
-    byte_offset: 1000
-    description: EXTI Hardware configuration register 3
-  - name: HWCFGR2
-    byte_offset: 1004
-    description: EXTI Hardware configuration register 2
-  - name: HWCFGR1
-    byte_offset: 1008
-    description: EXTI Hardware configuration register 1
-  - name: VERR
-    byte_offset: 1012
-    description: EXTI IP Version register
-  - name: IPIDR
-    byte_offset: 1016
-    description: EXTI Identification register
-  - name: SIDR
-    byte_offset: 1020
-    description: EXTI Size ID register
+    - name: RTSR1
+      byte_offset: 0
+      description: EXTI rising trigger selection register
+    - name: FTSR1
+      byte_offset: 4
+      description: EXTI falling trigger selection register
+    - name: SWIER1
+      byte_offset: 8
+      description: EXTI software interrupt event register
+    - name: RPR1
+      byte_offset: 12
+      description: EXTI rising edge pending register
+    - name: FPR1
+      byte_offset: 16
+      description: EXTI falling edge pending register
+    - name: SECCFGR1
+      byte_offset: 20
+      description: EXTI security configuration register
+    - name: PRIVCFGR1
+      byte_offset: 24
+      description: EXTI Privilege configuration register
+    - name: RTSR2
+      byte_offset: 32
+      description: EXTI rising trigger selection register
+    - name: FTSR2
+      byte_offset: 36
+      description: EXTI falling trigger selection register
+    - name: SWIER2
+      byte_offset: 40
+      description: EXTI software interrupt event register
+    - name: RPR2
+      byte_offset: 44
+      description: EXTI rising edge pending register
+    - name: FPR2
+      byte_offset: 48
+      description: EXTI falling edge pending register
+    - name: SECCFGR2
+      byte_offset: 52
+      description: EXTI security enable register
+    - name: PRIVCFGR2
+      byte_offset: 56
+      description: EXTI Privilege enable register
+    - name: RTSR3
+      byte_offset: 64
+      description: EXTI rising trigger selection register
+    - name: FTSR3
+      byte_offset: 68
+      description: EXTI falling trigger selection register
+    - name: SWIER3
+      byte_offset: 72
+      description: EXTI software interrupt event register
+    - name: RPR3
+      byte_offset: 76
+      description: EXTI rising edge pending register
+    - name: FPR3
+      byte_offset: 80
+      description: EXTI falling edge pending register
+    - name: SECCFGR3
+      byte_offset: 84
+      description: EXTI security enable register
+    - name: PRIVCFGR3
+      byte_offset: 88
+      description: EXTI Privilege enable register
+    - name: EXTICR
+      byte_offset: 96
+      array:
+        len: 4
+        stride: 4
+      description: EXTI external interrupt selection register 1
+    - name: LOCKR
+      byte_offset: 112
+      description: EXTI lock register
+      fieldset: EXTI_LOCKR
+    - name: C1IMR1
+      byte_offset: 128
+      description: EXTI CPU1 wakeup with interrupt mask register
+    - name: C1IMR2
+      byte_offset: 144
+      description: EXTI CPU1 wakeup with interrupt mask register
+    - name: C1IMR3
+      byte_offset: 160
+      description: EXTI CPU1 wakeup with interrupt mask register
+    - name: C2IMR1
+      byte_offset: 192
+      description: EXTI CPU2 wakeup with interrupt mask register
+    - name: C2EMR1
+      byte_offset: 196
+      description: EXTI CPU2 wakeup with event mask register
+    - name: C2IMR2
+      byte_offset: 208
+      description: EXTI CPU2 wakeup with interrupt mask register
+    - name: C2EMR2
+      byte_offset: 212
+      description: EXTI CPU2 wakeup with event mask register
+    - name: C2IMR3
+      byte_offset: 224
+      description: EXTI CPU2 wakeup with interrupt mask register
+    - name: C2EMR3
+      byte_offset: 228
+      description: EXTI CPU2 wakeup with event mask register
+    - name: C3IMR1
+      byte_offset: 256
+      description: EXTI CPU3 wakeup with interrupt mask register
+    - name: C3EMR1
+      byte_offset: 260
+      description: EXTI CPU3 wakeup with event mask register
+    - name: C3IMR2
+      byte_offset: 272
+      description: EXTI CPU3 wakeup with interrupt mask register
+    - name: C3EMR2
+      byte_offset: 276
+      description: EXTI CPU3 wakeup with event mask register
+    - name: C3IMR3
+      byte_offset: 288
+      description: EXTI CPU3 wakeup with interrupt mask register
+    - name: ECIDCFGR
+      byte_offset: 384
+      array:
+        len: 96
+        stride: 4
+      description: EXTI configurable event CID Config register
+    - name: C1CIDCFGR
+      byte_offset: 768
+      description: EXTI processor 1 CID configuration register
+    - name: C2CIDCFGR
+      byte_offset: 772
+      description: EXTI processor 2 CID configuration register
+    - name: C3CIDCFGR
+      byte_offset: 776
+      description: EXTI processor 3 CID configuration register
+    - name: HWCFGR13
+      byte_offset: 960
+      description: EXTI Hardware configuration register 13
+    - name: HWCFGR12
+      byte_offset: 964
+      description: EXTI Hardware configuration register 12
+    - name: HWCFGR11
+      byte_offset: 968
+      description: EXTI Hardware configuration register 11
+    - name: HWCFGR7
+      byte_offset: 984
+      description: EXTI Hardware configuration register 7
+    - name: HWCFGR6
+      byte_offset: 988
+      description: EXTI Hardware configuration register 6
+    - name: HWCFGR5
+      byte_offset: 992
+      description: EXTI Hardware configuration register 5
+    - name: HWCFGR4
+      byte_offset: 996
+      description: EXTI Hardware configuration register 4
+    - name: HWCFGR3
+      byte_offset: 1000
+      description: EXTI Hardware configuration register 3
+    - name: HWCFGR2
+      byte_offset: 1004
+      description: EXTI Hardware configuration register 2
+    - name: HWCFGR1
+      byte_offset: 1008
+      description: EXTI Hardware configuration register 1
+    - name: VERR
+      byte_offset: 1012
+      description: EXTI IP Version register
+    - name: IPIDR
+      byte_offset: 1016
+      description: EXTI Identification register
+    - name: SIDR
+      byte_offset: 1020
+      description: EXTI Size ID register
 fieldset/EXTI_LOCKR:
   description: ''
   fields:
-  - name: GLOCK
-    bit_offset: 0
-    bit_size: 1
-    description: global security locked
+    - name: GLOCK
+      bit_offset: 0
+      bit_size: 1
+      description: global security locked

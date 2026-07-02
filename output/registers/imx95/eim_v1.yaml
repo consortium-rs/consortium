@@ -1,422 +1,422 @@
 block/EIM:
   description: ''
   items:
-  - name: EIMCR
-    byte_offset: 0
-    fieldset: EIM_EIMCR
-  - name: EICHEN
-    byte_offset: 4
-    fieldset: EIM_EICHEN
-  - name: EICHD0_WORD0
-    byte_offset: 256
-  - name: EICHD0_WORD1
-    byte_offset: 260
-  - name: EICHD0_WORD2
-    byte_offset: 264
-  - name: EICHD0_WORD3
-    byte_offset: 268
-  - name: EICHD0_WORD4
-    byte_offset: 272
-  - name: EICHD1_WORD0
-    byte_offset: 320
-  - name: EICHD1_WORD1
-    byte_offset: 324
-  - name: EICHD1_WORD2
-    byte_offset: 328
-  - name: EICHD1_WORD3
-    byte_offset: 332
-  - name: EICHD1_WORD4
-    byte_offset: 336
-  - name: EICHD2_WORD0
-    byte_offset: 384
-  - name: EICHD2_WORD1
-    byte_offset: 388
-  - name: EICHD2_WORD2
-    byte_offset: 392
-  - name: EICHD2_WORD3
-    byte_offset: 396
-  - name: EICHD2_WORD4
-    byte_offset: 400
-  - name: EICHD3_WORD0
-    byte_offset: 448
-  - name: EICHD3_WORD1
-    byte_offset: 452
-  - name: EICHD3_WORD2
-    byte_offset: 456
-  - name: EICHD3_WORD3
-    byte_offset: 460
-  - name: EICHD3_WORD4
-    byte_offset: 464
-  - name: EICHD4_WORD0
-    byte_offset: 512
-  - name: EICHD4_WORD1
-    byte_offset: 516
-  - name: EICHD4_WORD2
-    byte_offset: 520
-  - name: EICHD4_WORD3
-    byte_offset: 524
-  - name: EICHD4_WORD4
-    byte_offset: 528
-  - name: EICHD5_WORD0
-    byte_offset: 576
-  - name: EICHD5_WORD1
-    byte_offset: 580
-  - name: EICHD6_WORD0
-    byte_offset: 640
-  - name: EICHD6_WORD1
-    byte_offset: 644
-  - name: EICHD7_WORD0
-    byte_offset: 704
-  - name: EICHD7_WORD1
-    byte_offset: 708
-  - name: EICHD7_WORD2
-    byte_offset: 712
-  - name: EICHD8_WORD0
-    byte_offset: 768
-  - name: EICHD8_WORD1
-    byte_offset: 772
-  - name: EICHD9_WORD0
-    byte_offset: 832
-  - name: EICHD9_WORD1
-    byte_offset: 836
-  - name: EICHD10_WORD0
-    byte_offset: 896
-  - name: EICHD10_WORD1
-    byte_offset: 900
-  - name: EICHD11_WORD0
-    byte_offset: 960
-  - name: EICHD11_WORD1
-    byte_offset: 964
-  - name: EICHD12_WORD0
-    byte_offset: 1024
-  - name: EICHD12_WORD1
-    byte_offset: 1028
+    - name: EIMCR
+      byte_offset: 0
+      fieldset: EIM_EIMCR
+    - name: EICHEN
+      byte_offset: 4
+      fieldset: EIM_EICHEN
+    - name: EICHD0_WORD0
+      byte_offset: 256
+    - name: EICHD0_WORD1
+      byte_offset: 260
+    - name: EICHD0_WORD2
+      byte_offset: 264
+    - name: EICHD0_WORD3
+      byte_offset: 268
+    - name: EICHD0_WORD4
+      byte_offset: 272
+    - name: EICHD1_WORD0
+      byte_offset: 320
+    - name: EICHD1_WORD1
+      byte_offset: 324
+    - name: EICHD1_WORD2
+      byte_offset: 328
+    - name: EICHD1_WORD3
+      byte_offset: 332
+    - name: EICHD1_WORD4
+      byte_offset: 336
+    - name: EICHD2_WORD0
+      byte_offset: 384
+    - name: EICHD2_WORD1
+      byte_offset: 388
+    - name: EICHD2_WORD2
+      byte_offset: 392
+    - name: EICHD2_WORD3
+      byte_offset: 396
+    - name: EICHD2_WORD4
+      byte_offset: 400
+    - name: EICHD3_WORD0
+      byte_offset: 448
+    - name: EICHD3_WORD1
+      byte_offset: 452
+    - name: EICHD3_WORD2
+      byte_offset: 456
+    - name: EICHD3_WORD3
+      byte_offset: 460
+    - name: EICHD3_WORD4
+      byte_offset: 464
+    - name: EICHD4_WORD0
+      byte_offset: 512
+    - name: EICHD4_WORD1
+      byte_offset: 516
+    - name: EICHD4_WORD2
+      byte_offset: 520
+    - name: EICHD4_WORD3
+      byte_offset: 524
+    - name: EICHD4_WORD4
+      byte_offset: 528
+    - name: EICHD5_WORD0
+      byte_offset: 576
+    - name: EICHD5_WORD1
+      byte_offset: 580
+    - name: EICHD6_WORD0
+      byte_offset: 640
+    - name: EICHD6_WORD1
+      byte_offset: 644
+    - name: EICHD7_WORD0
+      byte_offset: 704
+    - name: EICHD7_WORD1
+      byte_offset: 708
+    - name: EICHD7_WORD2
+      byte_offset: 712
+    - name: EICHD8_WORD0
+      byte_offset: 768
+    - name: EICHD8_WORD1
+      byte_offset: 772
+    - name: EICHD9_WORD0
+      byte_offset: 832
+    - name: EICHD9_WORD1
+      byte_offset: 836
+    - name: EICHD10_WORD0
+      byte_offset: 896
+    - name: EICHD10_WORD1
+      byte_offset: 900
+    - name: EICHD11_WORD0
+      byte_offset: 960
+    - name: EICHD11_WORD1
+      byte_offset: 964
+    - name: EICHD12_WORD0
+      byte_offset: 1024
+    - name: EICHD12_WORD1
+      byte_offset: 1028
 fieldset/EIM_EIMCR:
   description: ''
   fields:
-  - name: GEIEN
-    bit_offset: 0
-    bit_size: 1
+    - name: GEIEN
+      bit_offset: 0
+      bit_size: 1
 fieldset/EIM_EICHEN:
   description: ''
   fields:
-  - name: EICH12EN
-    bit_offset: 19
-    bit_size: 1
-  - name: EICH11EN
-    bit_offset: 20
-    bit_size: 1
-  - name: EICH10EN
-    bit_offset: 21
-    bit_size: 1
-  - name: EICH9EN
-    bit_offset: 22
-    bit_size: 1
-  - name: EICH8EN
-    bit_offset: 23
-    bit_size: 1
-  - name: EICH7EN
-    bit_offset: 24
-    bit_size: 1
-  - name: EICH6EN
-    bit_offset: 25
-    bit_size: 1
-  - name: EICH5EN
-    bit_offset: 26
-    bit_size: 1
-  - name: EICH4EN
-    bit_offset: 27
-    bit_size: 1
-  - name: EICH3EN
-    bit_offset: 28
-    bit_size: 1
-  - name: EICH2EN
-    bit_offset: 29
-    bit_size: 1
-  - name: EICH1EN
-    bit_offset: 30
-    bit_size: 1
-  - name: EICH0EN
-    bit_offset: 31
-    bit_size: 1
+    - name: EICH12EN
+      bit_offset: 19
+      bit_size: 1
+    - name: EICH11EN
+      bit_offset: 20
+      bit_size: 1
+    - name: EICH10EN
+      bit_offset: 21
+      bit_size: 1
+    - name: EICH9EN
+      bit_offset: 22
+      bit_size: 1
+    - name: EICH8EN
+      bit_offset: 23
+      bit_size: 1
+    - name: EICH7EN
+      bit_offset: 24
+      bit_size: 1
+    - name: EICH6EN
+      bit_offset: 25
+      bit_size: 1
+    - name: EICH5EN
+      bit_offset: 26
+      bit_size: 1
+    - name: EICH4EN
+      bit_offset: 27
+      bit_size: 1
+    - name: EICH3EN
+      bit_offset: 28
+      bit_size: 1
+    - name: EICH2EN
+      bit_offset: 29
+      bit_size: 1
+    - name: EICH1EN
+      bit_offset: 30
+      bit_size: 1
+    - name: EICH0EN
+      bit_offset: 31
+      bit_size: 1
 fieldset/EIM_EICHD0_WORD0_CHKBIT:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 12
-    bit_size: 20
+    - name: MASK
+      bit_offset: 12
+      bit_size: 20
 fieldset/EIM_EICHD0_WORD1_B0_3DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
 fieldset/EIM_EICHD0_WORD2_B4_7DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD0_WORD3_B8_11DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD0_WORD4_B12_15DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD1_WORD0_CHKBIT:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 16
-    bit_size: 16
+    - name: MASK
+      bit_offset: 16
+      bit_size: 16
 fieldset/EIM_EICHD1_WORD1_B0_3DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
 fieldset/EIM_EICHD1_WORD2_B4_7DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD1_WORD3_B8_11DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD1_WORD4_B12_15DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD2_WORD0_CHKBIT:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 4
-    bit_size: 28
+    - name: MASK
+      bit_offset: 4
+      bit_size: 28
 fieldset/EIM_EICHD2_WORD1_B0_3DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 8
+    - name: MASK
+      bit_offset: 0
+      bit_size: 8
 fieldset/EIM_EICHD2_WORD2_B4_7DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD2_WORD3_B8_11DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD2_WORD4_B12_15DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD3_WORD0_CHKBIT:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 4
-    bit_size: 28
+    - name: MASK
+      bit_offset: 4
+      bit_size: 28
 fieldset/EIM_EICHD3_WORD1_B0_3DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
 fieldset/EIM_EICHD3_WORD2_B4_7DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD3_WORD3_B8_11DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD3_WORD4_B12_15DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD4_WORD0_CHKBIT:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 4
-    bit_size: 28
+    - name: MASK
+      bit_offset: 4
+      bit_size: 28
 fieldset/EIM_EICHD4_WORD1_B0_3DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD4_WORD2_B4_7DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD4_WORD3_B8_11DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD4_WORD4_B12_15DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD5_WORD0_CHKBIT:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 25
-    bit_size: 7
-    description: Checkbit Mask
+    - name: MASK
+      bit_offset: 25
+      bit_size: 7
+      description: Checkbit Mask
 fieldset/EIM_EICHD5_WORD1_B0_3DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD6_WORD0_CHKBIT:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 25
-    bit_size: 7
-    description: Checkbit Mask
+    - name: MASK
+      bit_offset: 25
+      bit_size: 7
+      description: Checkbit Mask
 fieldset/EIM_EICHD6_WORD1_B0_3DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
 fieldset/EIM_EICHD7_WORD0_CHKBIT:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 24
-    bit_size: 8
+    - name: MASK
+      bit_offset: 24
+      bit_size: 8
 fieldset/EIM_EICHD7_WORD1_B0_3DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD7_WORD2_B4_7DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD8_WORD0_CHKBIT:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 25
-    bit_size: 7
+    - name: MASK
+      bit_offset: 25
+      bit_size: 7
 fieldset/EIM_EICHD8_WORD1_B0_3DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
 fieldset/EIM_EICHD9_WORD0_CHKBIT:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 25
-    bit_size: 7
-    description: Checkbit Mask
+    - name: MASK
+      bit_offset: 25
+      bit_size: 7
+      description: Checkbit Mask
 fieldset/EIM_EICHD9_WORD1_B0_3DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 32
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 32
+      description: Data Mask Field
 fieldset/EIM_EICHD10_WORD0_CHKBIT:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 30
-    bit_size: 2
-    description: Checkbit Mask
+    - name: MASK
+      bit_offset: 30
+      bit_size: 2
+      description: Checkbit Mask
 fieldset/EIM_EICHD10_WORD1_B0_3DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 1
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 1
+      description: Data Mask Field
 fieldset/EIM_EICHD11_WORD0_CHKBIT:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 27
-    bit_size: 5
-    description: Checkbit Mask
+    - name: MASK
+      bit_offset: 27
+      bit_size: 5
+      description: Checkbit Mask
 fieldset/EIM_EICHD11_WORD1_B0_3DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 1
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 1
+      description: Data Mask Field
 fieldset/EIM_EICHD12_WORD0_CHKBIT:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 25
-    bit_size: 7
-    description: Checkbit Mask
+    - name: MASK
+      bit_offset: 25
+      bit_size: 7
+      description: Checkbit Mask
 fieldset/EIM_EICHD12_WORD1_B0_3DATA:
   description: ''
   fields:
-  - name: MASK
-    bit_offset: 0
-    bit_size: 1
-    description: Data Mask Field
+    - name: MASK
+      bit_offset: 0
+      bit_size: 1
+      description: Data Mask Field

@@ -1,2174 +1,2174 @@
 block/MMU_TBU_ME4:
   description: ''
   items:
-  - name: SMMU_PIDR4
-    byte_offset: 4048
-    fieldset: MMU_TBU_ME4_SMMU_PIDR4
-  - name: SMMU_PIDR5
-    byte_offset: 4052
-  - name: SMMU_PIDR6
-    byte_offset: 4056
-  - name: SMMU_PIDR7
-    byte_offset: 4060
-  - name: SMMU_PIDR0
-    byte_offset: 4064
-  - name: SMMU_PIDR1
-    byte_offset: 4068
-  - name: SMMU_PIDR2
-    byte_offset: 4072
-    fieldset: MMU_TBU_ME4_SMMU_PIDR2
-  - name: SMMU_PIDR3
-    byte_offset: 4076
-    fieldset: MMU_TBU_ME4_SMMU_PIDR3
-  - name: SMMU_CIDR0
-    byte_offset: 4080
-    fieldset: MMU_TBU_ME4_SMMU_CIDR0
-  - name: SMMU_CIDR1
-    byte_offset: 4084
-    fieldset: MMU_TBU_ME4_SMMU_CIDR1
-  - name: SMMU_CIDR2
-    byte_offset: 4088
-    fieldset: MMU_TBU_ME4_SMMU_CIDR2
-  - name: SMMU_CIDR3
-    byte_offset: 4092
-    fieldset: MMU_TBU_ME4_SMMU_CIDR3
-  - name: SMMU_PMCG_EVTYPER0
-    byte_offset: 9216
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER0
-  - name: SMMU_PMCG_EVTYPER1
-    byte_offset: 9220
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER1
-  - name: SMMU_PMCG_EVTYPER2
-    byte_offset: 9224
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER2
-  - name: SMMU_PMCG_EVTYPER3
-    byte_offset: 9228
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER3
-  - name: SMMU_PMCG_EVTYPER4
-    byte_offset: 9232
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER4
-  - name: SMMU_PMCG_EVTYPER5
-    byte_offset: 9236
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER5
-  - name: SMMU_PMCG_EVTYPER6
-    byte_offset: 9240
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER6
-  - name: SMMU_PMCG_EVTYPER7
-    byte_offset: 9244
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER7
-  - name: SMMU_PMCG_EVTYPER8
-    byte_offset: 9248
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER8
-  - name: SMMU_PMCG_EVTYPER9
-    byte_offset: 9252
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER9
-  - name: SMMU_PMCG_EVTYPER10
-    byte_offset: 9256
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER10
-  - name: SMMU_PMCG_EVTYPER11
-    byte_offset: 9260
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER11
-  - name: SMMU_PMCG_EVTYPER12
-    byte_offset: 9264
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER12
-  - name: SMMU_PMCG_EVTYPER13
-    byte_offset: 9268
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER13
-  - name: SMMU_PMCG_EVTYPER14
-    byte_offset: 9272
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER14
-  - name: SMMU_PMCG_EVTYPER15
-    byte_offset: 9276
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER15
-  - name: SMMU_PMCG_SMR0
-    byte_offset: 10752
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_SMR0
-  - name: SMMU_PMCG_CNTENSET0
-    byte_offset: 11264
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_CNTENSET0
-  - name: SMMU_PMCG_CNTENCLR0
-    byte_offset: 11296
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_CNTENCLR0
-  - name: SMMU_PMCG_INTENSET0
-    byte_offset: 11328
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_INTENSET0
-  - name: SMMU_PMCG_INTENCLR0
-    byte_offset: 11360
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_INTENCLR0
-  - name: SMMU_PMCG_SCR
-    byte_offset: 11768
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_SCR
-  - name: SMMU_PMCG_CFGR
-    byte_offset: 11776
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_CFGR
-  - name: SMMU_PMCG_CR
-    byte_offset: 11780
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_CR
-  - name: SMMU_PMCG_CEID0_LO
-    byte_offset: 11808
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_CEID0_LO
-  - name: SMMU_PMCG_CEID0_HI
-    byte_offset: 11812
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_CEID0_HI
-  - name: SMMU_PMCG_CEID1_LO
-    byte_offset: 11816
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_CEID1_LO
-  - name: SMMU_PMCG_CEID1_HI
-    byte_offset: 11820
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_CEID1_HI
-  - name: SMMU_PMCG_IRQ_CTRL
-    byte_offset: 11856
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_IRQ_CTRL
-  - name: SMMU_PMCG_IRQ_CTRLACK
-    byte_offset: 11860
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_IRQ_CTRLACK
-  - name: SMMU_PMCG_AIDR
-    byte_offset: 11888
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_AIDR
-  - name: SMMU_PMCG_PMAUTHSTATUS
-    byte_offset: 12216
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_PMAUTHSTATUS
-  - name: SMMU_PMCG_PMDEVARCH
-    byte_offset: 12220
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_PMDEVARCH
-  - name: SMMU_PMCG_PMDEVTYPE
-    byte_offset: 12236
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_PMDEVTYPE
-  - name: SMMU_PMCG_PIDR4
-    byte_offset: 12240
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_PIDR4
-  - name: SMMU_PMCG_PIDR5
-    byte_offset: 12244
-  - name: SMMU_PMCG_PIDR6
-    byte_offset: 12248
-  - name: SMMU_PMCG_PIDR7
-    byte_offset: 12252
-  - name: SMMU_PMCG_PIDR0
-    byte_offset: 12256
-  - name: SMMU_PMCG_PIDR1
-    byte_offset: 12260
-  - name: SMMU_PMCG_PIDR2
-    byte_offset: 12264
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_PIDR2
-  - name: SMMU_PMCG_PIDR3
-    byte_offset: 12268
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_PIDR3
-  - name: SMMU_PMCG_CIDR0
-    byte_offset: 12272
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_CIDR0
-  - name: SMMU_PMCG_CIDR1
-    byte_offset: 12276
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_CIDR1
-  - name: SMMU_PMCG_CIDR2
-    byte_offset: 12280
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_CIDR2
-  - name: SMMU_PMCG_CIDR3
-    byte_offset: 12284
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_CIDR3
-  - name: MPAMF_IDR_LO_NS
-    byte_offset: 12288
-    fieldset: MMU_TBU_ME4_MPAMF_IDR_LO_NS
-  - name: MPAMF_IDR_HI_NS
-    byte_offset: 12292
-  - name: MPAMF_IIDR_NS
-    byte_offset: 12312
-    fieldset: MMU_TBU_ME4_MPAMF_IIDR_NS
-  - name: MPAMF_AIDR_NS
-    byte_offset: 12320
-    fieldset: MMU_TBU_ME4_MPAMF_AIDR_NS
-  - name: MPAMF_CCAP_IDR_NS
-    byte_offset: 12344
-  - name: MPAMF_MSMON_IDR_NS
-    byte_offset: 12416
-  - name: MPAMF_CSUMON_IDR_NS
-    byte_offset: 12424
-  - name: MPAMCFG_PART_SEL_NS
-    byte_offset: 12544
-    fieldset: MMU_TBU_ME4_MPAMCFG_PART_SEL_NS
-  - name: MPAMCFG_CMAX_NS
-    byte_offset: 12552
-    fieldset: MMU_TBU_ME4_MPAMCFG_CMAX_NS
-  - name: MSMON_CFG_SEL_NS
-    byte_offset: 14336
-    fieldset: MMU_TBU_ME4_MSMON_CFG_SEL_NS
-  - name: MSMON_CAPT_EVNT_NS
-    byte_offset: 14344
-    fieldset: MMU_TBU_ME4_MSMON_CAPT_EVNT_NS
-  - name: MSMON_CFG_CSU_FLT_NS
-    byte_offset: 14352
-    fieldset: MMU_TBU_ME4_MSMON_CFG_CSU_FLT_NS
-  - name: MSMON_CFG_CSU_CTL_NS
-    byte_offset: 14360
-    fieldset: MMU_TBU_ME4_MSMON_CFG_CSU_CTL_NS
-  - name: MSMON_CSU_NS
-    byte_offset: 14400
-    fieldset: MMU_TBU_ME4_MSMON_CSU_NS
-  - name: MSMON_CSU_CAPTURE_NS
-    byte_offset: 14408
-    fieldset: MMU_TBU_ME4_MSMON_CSU_CAPTURE_NS
-  - name: TBU_CTRL
-    byte_offset: 36352
-    fieldset: MMU_TBU_ME4_TBU_CTRL
-  - name: TBU_LTI_PORT_RESOURCE_LIMIT
-    byte_offset: 36356
-  - name: TBU_SCR
-    byte_offset: 36376
-  - name: ITEN
-    byte_offset: 36384
-    fieldset: MMU_TBU_ME4_ITEN
-  - name: ITOP_TBU
-    byte_offset: 36388
-  - name: ITIN_TBU
-    byte_offset: 36392
-  - name: TBU_SYSDISC0
-    byte_offset: 36400
-  - name: TBU_SYSDISC1
-    byte_offset: 36404
-  - name: TBU_SYSDISC2
-    byte_offset: 36408
-  - name: TBU_SYSDISC3
-    byte_offset: 36412
-  - name: TBU_SYSDISC4
-    byte_offset: 36416
-  - name: TBU_SYSDISC5
-    byte_offset: 36420
-  - name: TBU_SYSDISC6
-    byte_offset: 36424
-  - name: TBU_SYSDISC7
-    byte_offset: 36428
-  - name: TBU_SYSDISC8
-    byte_offset: 36432
-  - name: TBU_SYSDISC9
-    byte_offset: 36436
-  - name: TBU_SYSDISC10
-    byte_offset: 36440
-  - name: TBU_SYSDISC11
-    byte_offset: 36444
-  - name: TBU_SYSDISC12
-    byte_offset: 36448
-  - name: TBU_SYSDISC13
-    byte_offset: 36452
-  - name: TBU_SYSDISC14
-    byte_offset: 36456
-  - name: TBU_ERRFR_LO
-    byte_offset: 36480
-    fieldset: MMU_TBU_ME4_TBU_ERRFR_LO
-  - name: TBU_ERRFR_HI
-    byte_offset: 36484
-  - name: TBU_ERRCTLR_LO
-    byte_offset: 36488
-    fieldset: MMU_TBU_ME4_TBU_ERRCTLR_LO
-  - name: TBU_ERRCTLR_HI
-    byte_offset: 36492
-  - name: TBU_ERRSTATUS_LO
-    byte_offset: 36496
-    fieldset: MMU_TBU_ME4_TBU_ERRSTATUS_LO
-  - name: TBU_ERRSTATUS_HI
-    byte_offset: 36500
-  - name: TBU_ERRGEN_LO
-    byte_offset: 36544
-    fieldset: MMU_TBU_ME4_TBU_ERRGEN_LO
-  - name: TBU_ERRGEN_HI
-    byte_offset: 36548
-  - name: MPAMF_IDR_LO_S
-    byte_offset: 45056
-    fieldset: MMU_TBU_ME4_MPAMF_IDR_LO_S
-  - name: MPAMF_IDR_HI_S
-    byte_offset: 45060
-  - name: MPAMF_SIDR_S
-    byte_offset: 45064
-  - name: MPAMF_IIDR_S
-    byte_offset: 45080
-    fieldset: MMU_TBU_ME4_MPAMF_IIDR_S
-  - name: MPAMF_AIDR_S
-    byte_offset: 45088
-    fieldset: MMU_TBU_ME4_MPAMF_AIDR_S
-  - name: MPAMF_CCAP_IDR_S
-    byte_offset: 45112
-  - name: MPAMF_MSMON_IDR_S
-    byte_offset: 45184
-  - name: MPAMF_CSUMON_IDR_S
-    byte_offset: 45192
-  - name: MPAMCFG_PART_SEL_S
-    byte_offset: 45312
-    fieldset: MMU_TBU_ME4_MPAMCFG_PART_SEL_S
-  - name: MPAMCFG_CMAX_S
-    byte_offset: 45320
-    fieldset: MMU_TBU_ME4_MPAMCFG_CMAX_S
-  - name: MSMON_CFG_SEL_S
-    byte_offset: 47104
-    fieldset: MMU_TBU_ME4_MSMON_CFG_SEL_S
-  - name: MSMON_CAPT_EVNT_S
-    byte_offset: 47112
-    fieldset: MMU_TBU_ME4_MSMON_CAPT_EVNT_S
-  - name: MSMON_CFG_CSU_FLT_S
-    byte_offset: 47120
-    fieldset: MMU_TBU_ME4_MSMON_CFG_CSU_FLT_S
-  - name: MSMON_CFG_CSU_CTL_S
-    byte_offset: 47128
-    fieldset: MMU_TBU_ME4_MSMON_CFG_CSU_CTL_S
-  - name: MSMON_CSU_S
-    byte_offset: 47168
-    fieldset: MMU_TBU_ME4_MSMON_CSU_S
-  - name: MSMON_CSU_CAPTURE_S
-    byte_offset: 47176
-    fieldset: MMU_TBU_ME4_MSMON_CSU_CAPTURE_S
-  - name: SMMU_PMCG_EVCNTR0
-    byte_offset: 73728
-  - name: SMMU_PMCG_EVCNTR1
-    byte_offset: 73732
-  - name: SMMU_PMCG_EVCNTR2
-    byte_offset: 73736
-  - name: SMMU_PMCG_EVCNTR3
-    byte_offset: 73740
-  - name: SMMU_PMCG_EVCNTR4
-    byte_offset: 73744
-  - name: SMMU_PMCG_EVCNTR5
-    byte_offset: 73748
-  - name: SMMU_PMCG_EVCNTR6
-    byte_offset: 73752
-  - name: SMMU_PMCG_EVCNTR7
-    byte_offset: 73756
-  - name: SMMU_PMCG_EVCNTR8
-    byte_offset: 73760
-  - name: SMMU_PMCG_EVCNTR9
-    byte_offset: 73764
-  - name: SMMU_PMCG_EVCNTR10
-    byte_offset: 73768
-  - name: SMMU_PMCG_EVCNTR11
-    byte_offset: 73772
-  - name: SMMU_PMCG_EVCNTR12
-    byte_offset: 73776
-  - name: SMMU_PMCG_EVCNTR13
-    byte_offset: 73780
-  - name: SMMU_PMCG_EVCNTR14
-    byte_offset: 73784
-  - name: SMMU_PMCG_EVCNTR15
-    byte_offset: 73788
-  - name: SMMU_PMCG_SVR0
-    byte_offset: 75264
-  - name: SMMU_PMCG_SVR1
-    byte_offset: 75268
-  - name: SMMU_PMCG_SVR2
-    byte_offset: 75272
-  - name: SMMU_PMCG_SVR3
-    byte_offset: 75276
-  - name: SMMU_PMCG_SVR4
-    byte_offset: 75280
-  - name: SMMU_PMCG_SVR5
-    byte_offset: 75284
-  - name: SMMU_PMCG_SVR6
-    byte_offset: 75288
-  - name: SMMU_PMCG_SVR7
-    byte_offset: 75292
-  - name: SMMU_PMCG_SVR8
-    byte_offset: 75296
-  - name: SMMU_PMCG_SVR9
-    byte_offset: 75300
-  - name: SMMU_PMCG_SVR10
-    byte_offset: 75304
-  - name: SMMU_PMCG_SVR11
-    byte_offset: 75308
-  - name: SMMU_PMCG_SVR12
-    byte_offset: 75312
-  - name: SMMU_PMCG_SVR13
-    byte_offset: 75316
-  - name: SMMU_PMCG_SVR14
-    byte_offset: 75320
-  - name: SMMU_PMCG_SVR15
-    byte_offset: 75324
-  - name: SMMU_PMCG_OVSCLR0
-    byte_offset: 76928
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_OVSCLR0
-  - name: SMMU_PMCG_OVSSET0
-    byte_offset: 76992
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_OVSSET0
-  - name: SMMU_PMCG_CAPR
-    byte_offset: 77192
-    fieldset: MMU_TBU_ME4_SMMU_PMCG_CAPR
+    - name: SMMU_PIDR4
+      byte_offset: 4048
+      fieldset: MMU_TBU_ME4_SMMU_PIDR4
+    - name: SMMU_PIDR5
+      byte_offset: 4052
+    - name: SMMU_PIDR6
+      byte_offset: 4056
+    - name: SMMU_PIDR7
+      byte_offset: 4060
+    - name: SMMU_PIDR0
+      byte_offset: 4064
+    - name: SMMU_PIDR1
+      byte_offset: 4068
+    - name: SMMU_PIDR2
+      byte_offset: 4072
+      fieldset: MMU_TBU_ME4_SMMU_PIDR2
+    - name: SMMU_PIDR3
+      byte_offset: 4076
+      fieldset: MMU_TBU_ME4_SMMU_PIDR3
+    - name: SMMU_CIDR0
+      byte_offset: 4080
+      fieldset: MMU_TBU_ME4_SMMU_CIDR0
+    - name: SMMU_CIDR1
+      byte_offset: 4084
+      fieldset: MMU_TBU_ME4_SMMU_CIDR1
+    - name: SMMU_CIDR2
+      byte_offset: 4088
+      fieldset: MMU_TBU_ME4_SMMU_CIDR2
+    - name: SMMU_CIDR3
+      byte_offset: 4092
+      fieldset: MMU_TBU_ME4_SMMU_CIDR3
+    - name: SMMU_PMCG_EVTYPER0
+      byte_offset: 9216
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER0
+    - name: SMMU_PMCG_EVTYPER1
+      byte_offset: 9220
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER1
+    - name: SMMU_PMCG_EVTYPER2
+      byte_offset: 9224
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER2
+    - name: SMMU_PMCG_EVTYPER3
+      byte_offset: 9228
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER3
+    - name: SMMU_PMCG_EVTYPER4
+      byte_offset: 9232
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER4
+    - name: SMMU_PMCG_EVTYPER5
+      byte_offset: 9236
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER5
+    - name: SMMU_PMCG_EVTYPER6
+      byte_offset: 9240
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER6
+    - name: SMMU_PMCG_EVTYPER7
+      byte_offset: 9244
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER7
+    - name: SMMU_PMCG_EVTYPER8
+      byte_offset: 9248
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER8
+    - name: SMMU_PMCG_EVTYPER9
+      byte_offset: 9252
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER9
+    - name: SMMU_PMCG_EVTYPER10
+      byte_offset: 9256
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER10
+    - name: SMMU_PMCG_EVTYPER11
+      byte_offset: 9260
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER11
+    - name: SMMU_PMCG_EVTYPER12
+      byte_offset: 9264
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER12
+    - name: SMMU_PMCG_EVTYPER13
+      byte_offset: 9268
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER13
+    - name: SMMU_PMCG_EVTYPER14
+      byte_offset: 9272
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER14
+    - name: SMMU_PMCG_EVTYPER15
+      byte_offset: 9276
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_EVTYPER15
+    - name: SMMU_PMCG_SMR0
+      byte_offset: 10752
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_SMR0
+    - name: SMMU_PMCG_CNTENSET0
+      byte_offset: 11264
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_CNTENSET0
+    - name: SMMU_PMCG_CNTENCLR0
+      byte_offset: 11296
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_CNTENCLR0
+    - name: SMMU_PMCG_INTENSET0
+      byte_offset: 11328
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_INTENSET0
+    - name: SMMU_PMCG_INTENCLR0
+      byte_offset: 11360
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_INTENCLR0
+    - name: SMMU_PMCG_SCR
+      byte_offset: 11768
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_SCR
+    - name: SMMU_PMCG_CFGR
+      byte_offset: 11776
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_CFGR
+    - name: SMMU_PMCG_CR
+      byte_offset: 11780
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_CR
+    - name: SMMU_PMCG_CEID0_LO
+      byte_offset: 11808
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_CEID0_LO
+    - name: SMMU_PMCG_CEID0_HI
+      byte_offset: 11812
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_CEID0_HI
+    - name: SMMU_PMCG_CEID1_LO
+      byte_offset: 11816
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_CEID1_LO
+    - name: SMMU_PMCG_CEID1_HI
+      byte_offset: 11820
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_CEID1_HI
+    - name: SMMU_PMCG_IRQ_CTRL
+      byte_offset: 11856
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_IRQ_CTRL
+    - name: SMMU_PMCG_IRQ_CTRLACK
+      byte_offset: 11860
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_IRQ_CTRLACK
+    - name: SMMU_PMCG_AIDR
+      byte_offset: 11888
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_AIDR
+    - name: SMMU_PMCG_PMAUTHSTATUS
+      byte_offset: 12216
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_PMAUTHSTATUS
+    - name: SMMU_PMCG_PMDEVARCH
+      byte_offset: 12220
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_PMDEVARCH
+    - name: SMMU_PMCG_PMDEVTYPE
+      byte_offset: 12236
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_PMDEVTYPE
+    - name: SMMU_PMCG_PIDR4
+      byte_offset: 12240
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_PIDR4
+    - name: SMMU_PMCG_PIDR5
+      byte_offset: 12244
+    - name: SMMU_PMCG_PIDR6
+      byte_offset: 12248
+    - name: SMMU_PMCG_PIDR7
+      byte_offset: 12252
+    - name: SMMU_PMCG_PIDR0
+      byte_offset: 12256
+    - name: SMMU_PMCG_PIDR1
+      byte_offset: 12260
+    - name: SMMU_PMCG_PIDR2
+      byte_offset: 12264
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_PIDR2
+    - name: SMMU_PMCG_PIDR3
+      byte_offset: 12268
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_PIDR3
+    - name: SMMU_PMCG_CIDR0
+      byte_offset: 12272
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_CIDR0
+    - name: SMMU_PMCG_CIDR1
+      byte_offset: 12276
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_CIDR1
+    - name: SMMU_PMCG_CIDR2
+      byte_offset: 12280
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_CIDR2
+    - name: SMMU_PMCG_CIDR3
+      byte_offset: 12284
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_CIDR3
+    - name: MPAMF_IDR_LO_NS
+      byte_offset: 12288
+      fieldset: MMU_TBU_ME4_MPAMF_IDR_LO_NS
+    - name: MPAMF_IDR_HI_NS
+      byte_offset: 12292
+    - name: MPAMF_IIDR_NS
+      byte_offset: 12312
+      fieldset: MMU_TBU_ME4_MPAMF_IIDR_NS
+    - name: MPAMF_AIDR_NS
+      byte_offset: 12320
+      fieldset: MMU_TBU_ME4_MPAMF_AIDR_NS
+    - name: MPAMF_CCAP_IDR_NS
+      byte_offset: 12344
+    - name: MPAMF_MSMON_IDR_NS
+      byte_offset: 12416
+    - name: MPAMF_CSUMON_IDR_NS
+      byte_offset: 12424
+    - name: MPAMCFG_PART_SEL_NS
+      byte_offset: 12544
+      fieldset: MMU_TBU_ME4_MPAMCFG_PART_SEL_NS
+    - name: MPAMCFG_CMAX_NS
+      byte_offset: 12552
+      fieldset: MMU_TBU_ME4_MPAMCFG_CMAX_NS
+    - name: MSMON_CFG_SEL_NS
+      byte_offset: 14336
+      fieldset: MMU_TBU_ME4_MSMON_CFG_SEL_NS
+    - name: MSMON_CAPT_EVNT_NS
+      byte_offset: 14344
+      fieldset: MMU_TBU_ME4_MSMON_CAPT_EVNT_NS
+    - name: MSMON_CFG_CSU_FLT_NS
+      byte_offset: 14352
+      fieldset: MMU_TBU_ME4_MSMON_CFG_CSU_FLT_NS
+    - name: MSMON_CFG_CSU_CTL_NS
+      byte_offset: 14360
+      fieldset: MMU_TBU_ME4_MSMON_CFG_CSU_CTL_NS
+    - name: MSMON_CSU_NS
+      byte_offset: 14400
+      fieldset: MMU_TBU_ME4_MSMON_CSU_NS
+    - name: MSMON_CSU_CAPTURE_NS
+      byte_offset: 14408
+      fieldset: MMU_TBU_ME4_MSMON_CSU_CAPTURE_NS
+    - name: TBU_CTRL
+      byte_offset: 36352
+      fieldset: MMU_TBU_ME4_TBU_CTRL
+    - name: TBU_LTI_PORT_RESOURCE_LIMIT
+      byte_offset: 36356
+    - name: TBU_SCR
+      byte_offset: 36376
+    - name: ITEN
+      byte_offset: 36384
+      fieldset: MMU_TBU_ME4_ITEN
+    - name: ITOP_TBU
+      byte_offset: 36388
+    - name: ITIN_TBU
+      byte_offset: 36392
+    - name: TBU_SYSDISC0
+      byte_offset: 36400
+    - name: TBU_SYSDISC1
+      byte_offset: 36404
+    - name: TBU_SYSDISC2
+      byte_offset: 36408
+    - name: TBU_SYSDISC3
+      byte_offset: 36412
+    - name: TBU_SYSDISC4
+      byte_offset: 36416
+    - name: TBU_SYSDISC5
+      byte_offset: 36420
+    - name: TBU_SYSDISC6
+      byte_offset: 36424
+    - name: TBU_SYSDISC7
+      byte_offset: 36428
+    - name: TBU_SYSDISC8
+      byte_offset: 36432
+    - name: TBU_SYSDISC9
+      byte_offset: 36436
+    - name: TBU_SYSDISC10
+      byte_offset: 36440
+    - name: TBU_SYSDISC11
+      byte_offset: 36444
+    - name: TBU_SYSDISC12
+      byte_offset: 36448
+    - name: TBU_SYSDISC13
+      byte_offset: 36452
+    - name: TBU_SYSDISC14
+      byte_offset: 36456
+    - name: TBU_ERRFR_LO
+      byte_offset: 36480
+      fieldset: MMU_TBU_ME4_TBU_ERRFR_LO
+    - name: TBU_ERRFR_HI
+      byte_offset: 36484
+    - name: TBU_ERRCTLR_LO
+      byte_offset: 36488
+      fieldset: MMU_TBU_ME4_TBU_ERRCTLR_LO
+    - name: TBU_ERRCTLR_HI
+      byte_offset: 36492
+    - name: TBU_ERRSTATUS_LO
+      byte_offset: 36496
+      fieldset: MMU_TBU_ME4_TBU_ERRSTATUS_LO
+    - name: TBU_ERRSTATUS_HI
+      byte_offset: 36500
+    - name: TBU_ERRGEN_LO
+      byte_offset: 36544
+      fieldset: MMU_TBU_ME4_TBU_ERRGEN_LO
+    - name: TBU_ERRGEN_HI
+      byte_offset: 36548
+    - name: MPAMF_IDR_LO_S
+      byte_offset: 45056
+      fieldset: MMU_TBU_ME4_MPAMF_IDR_LO_S
+    - name: MPAMF_IDR_HI_S
+      byte_offset: 45060
+    - name: MPAMF_SIDR_S
+      byte_offset: 45064
+    - name: MPAMF_IIDR_S
+      byte_offset: 45080
+      fieldset: MMU_TBU_ME4_MPAMF_IIDR_S
+    - name: MPAMF_AIDR_S
+      byte_offset: 45088
+      fieldset: MMU_TBU_ME4_MPAMF_AIDR_S
+    - name: MPAMF_CCAP_IDR_S
+      byte_offset: 45112
+    - name: MPAMF_MSMON_IDR_S
+      byte_offset: 45184
+    - name: MPAMF_CSUMON_IDR_S
+      byte_offset: 45192
+    - name: MPAMCFG_PART_SEL_S
+      byte_offset: 45312
+      fieldset: MMU_TBU_ME4_MPAMCFG_PART_SEL_S
+    - name: MPAMCFG_CMAX_S
+      byte_offset: 45320
+      fieldset: MMU_TBU_ME4_MPAMCFG_CMAX_S
+    - name: MSMON_CFG_SEL_S
+      byte_offset: 47104
+      fieldset: MMU_TBU_ME4_MSMON_CFG_SEL_S
+    - name: MSMON_CAPT_EVNT_S
+      byte_offset: 47112
+      fieldset: MMU_TBU_ME4_MSMON_CAPT_EVNT_S
+    - name: MSMON_CFG_CSU_FLT_S
+      byte_offset: 47120
+      fieldset: MMU_TBU_ME4_MSMON_CFG_CSU_FLT_S
+    - name: MSMON_CFG_CSU_CTL_S
+      byte_offset: 47128
+      fieldset: MMU_TBU_ME4_MSMON_CFG_CSU_CTL_S
+    - name: MSMON_CSU_S
+      byte_offset: 47168
+      fieldset: MMU_TBU_ME4_MSMON_CSU_S
+    - name: MSMON_CSU_CAPTURE_S
+      byte_offset: 47176
+      fieldset: MMU_TBU_ME4_MSMON_CSU_CAPTURE_S
+    - name: SMMU_PMCG_EVCNTR0
+      byte_offset: 73728
+    - name: SMMU_PMCG_EVCNTR1
+      byte_offset: 73732
+    - name: SMMU_PMCG_EVCNTR2
+      byte_offset: 73736
+    - name: SMMU_PMCG_EVCNTR3
+      byte_offset: 73740
+    - name: SMMU_PMCG_EVCNTR4
+      byte_offset: 73744
+    - name: SMMU_PMCG_EVCNTR5
+      byte_offset: 73748
+    - name: SMMU_PMCG_EVCNTR6
+      byte_offset: 73752
+    - name: SMMU_PMCG_EVCNTR7
+      byte_offset: 73756
+    - name: SMMU_PMCG_EVCNTR8
+      byte_offset: 73760
+    - name: SMMU_PMCG_EVCNTR9
+      byte_offset: 73764
+    - name: SMMU_PMCG_EVCNTR10
+      byte_offset: 73768
+    - name: SMMU_PMCG_EVCNTR11
+      byte_offset: 73772
+    - name: SMMU_PMCG_EVCNTR12
+      byte_offset: 73776
+    - name: SMMU_PMCG_EVCNTR13
+      byte_offset: 73780
+    - name: SMMU_PMCG_EVCNTR14
+      byte_offset: 73784
+    - name: SMMU_PMCG_EVCNTR15
+      byte_offset: 73788
+    - name: SMMU_PMCG_SVR0
+      byte_offset: 75264
+    - name: SMMU_PMCG_SVR1
+      byte_offset: 75268
+    - name: SMMU_PMCG_SVR2
+      byte_offset: 75272
+    - name: SMMU_PMCG_SVR3
+      byte_offset: 75276
+    - name: SMMU_PMCG_SVR4
+      byte_offset: 75280
+    - name: SMMU_PMCG_SVR5
+      byte_offset: 75284
+    - name: SMMU_PMCG_SVR6
+      byte_offset: 75288
+    - name: SMMU_PMCG_SVR7
+      byte_offset: 75292
+    - name: SMMU_PMCG_SVR8
+      byte_offset: 75296
+    - name: SMMU_PMCG_SVR9
+      byte_offset: 75300
+    - name: SMMU_PMCG_SVR10
+      byte_offset: 75304
+    - name: SMMU_PMCG_SVR11
+      byte_offset: 75308
+    - name: SMMU_PMCG_SVR12
+      byte_offset: 75312
+    - name: SMMU_PMCG_SVR13
+      byte_offset: 75316
+    - name: SMMU_PMCG_SVR14
+      byte_offset: 75320
+    - name: SMMU_PMCG_SVR15
+      byte_offset: 75324
+    - name: SMMU_PMCG_OVSCLR0
+      byte_offset: 76928
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_OVSCLR0
+    - name: SMMU_PMCG_OVSSET0
+      byte_offset: 76992
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_OVSSET0
+    - name: SMMU_PMCG_CAPR
+      byte_offset: 77192
+      fieldset: MMU_TBU_ME4_SMMU_PMCG_CAPR
 fieldset/MMU_TBU_ME4_SMMU_PIDR4:
   description: ''
   fields:
-  - name: SIZE
-    bit_offset: 4
-    bit_size: 4
-    description: DES_2
+    - name: SIZE
+      bit_offset: 4
+      bit_size: 4
+      description: DES_2
 fieldset/MMU_TBU_ME4_SMMU_PIDR2:
   description: ''
   fields:
-  - name: JEDEC
-    bit_offset: 3
-    bit_size: 1
-    description: DES_1
-  - name: REVISION
-    bit_offset: 4
-    bit_size: 4
-    description: JEDEC
+    - name: JEDEC
+      bit_offset: 3
+      bit_size: 1
+      description: DES_1
+    - name: REVISION
+      bit_offset: 4
+      bit_size: 4
+      description: JEDEC
 fieldset/MMU_TBU_ME4_SMMU_PIDR3:
   description: ''
   fields:
-  - name: CMOD
-    bit_offset: 0
-    bit_size: 4
-    description: CMOD
-  - name: REVAND
-    bit_offset: 4
-    bit_size: 4
-    description: CMOD
+    - name: CMOD
+      bit_offset: 0
+      bit_size: 4
+      description: CMOD
+    - name: REVAND
+      bit_offset: 4
+      bit_size: 4
+      description: CMOD
 fieldset/MMU_TBU_ME4_SMMU_CIDR0:
   description: ''
   fields:
-  - name: PREAMBLE
-    bit_offset: 0
-    bit_size: 8
-    description: PREAMBLE
+    - name: PREAMBLE
+      bit_offset: 0
+      bit_size: 8
+      description: PREAMBLE
 fieldset/MMU_TBU_ME4_SMMU_CIDR1:
   description: ''
   fields:
-  - name: PREAMBLE
-    bit_offset: 0
-    bit_size: 4
-    description: PREAMBLE
-  - name: CLASS
-    bit_offset: 4
-    bit_size: 4
-    description: PREAMBLE
+    - name: PREAMBLE
+      bit_offset: 0
+      bit_size: 4
+      description: PREAMBLE
+    - name: CLASS
+      bit_offset: 4
+      bit_size: 4
+      description: PREAMBLE
 fieldset/MMU_TBU_ME4_SMMU_CIDR2:
   description: ''
   fields:
-  - name: PREAMBLE
-    bit_offset: 0
-    bit_size: 8
-    description: PREAMBLE
+    - name: PREAMBLE
+      bit_offset: 0
+      bit_size: 8
+      description: PREAMBLE
 fieldset/MMU_TBU_ME4_SMMU_CIDR3:
   description: ''
   fields:
-  - name: PREAMBLE
-    bit_offset: 0
-    bit_size: 8
-    description: PREAMBLE
+    - name: PREAMBLE
+      bit_offset: 0
+      bit_size: 8
+      description: PREAMBLE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER0:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: OVFCAP
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: OVFCAP
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER0_FILTER_SID:
   description: ''
   fields:
-  - name: SPAN
-    bit_offset: 29
-    bit_size: 1
-    description: EVNT
+    - name: SPAN
+      bit_offset: 29
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER0_FILTER_SEC:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 30
-    bit_size: 1
+    - name: SID
+      bit_offset: 30
+      bit_size: 1
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER1:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER2:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER3:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER4:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER5:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER6:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER7:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER8:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER9:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER10:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER11:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER12:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER13:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER14:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVTYPER15:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 0
-    bit_size: 8
-    description: EVNT
-  - name: OVFCAP
-    bit_offset: 31
-    bit_size: 1
-    description: EVNT
+    - name: EVNT
+      bit_offset: 0
+      bit_size: 8
+      description: EVNT
+    - name: OVFCAP
+      bit_offset: 31
+      bit_size: 1
+      description: EVNT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SMR0:
   description: ''
   fields:
-  - name: STREAMID
-    bit_offset: 0
-    bit_size: 24
-    description: STREAMID
+    - name: STREAMID
+      bit_offset: 0
+      bit_size: 24
+      description: STREAMID
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CNTENSET0:
   description: ''
   fields:
-  - name: CNTEN
-    bit_offset: 0
-    bit_size: 32
-    description: CNTEN
+    - name: CNTEN
+      bit_offset: 0
+      bit_size: 32
+      description: CNTEN
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CNTENCLR0:
   description: ''
   fields:
-  - name: CNTEN
-    bit_offset: 0
-    bit_size: 32
-    description: CNTEN
+    - name: CNTEN
+      bit_offset: 0
+      bit_size: 32
+      description: CNTEN
 fieldset/MMU_TBU_ME4_SMMU_PMCG_INTENSET0:
   description: ''
   fields:
-  - name: INTEN
-    bit_offset: 0
-    bit_size: 32
-    description: INTEN
+    - name: INTEN
+      bit_offset: 0
+      bit_size: 32
+      description: INTEN
 fieldset/MMU_TBU_ME4_SMMU_PMCG_INTENCLR0:
   description: ''
   fields:
-  - name: INTEN
-    bit_offset: 0
-    bit_size: 32
-    description: INTEN
+    - name: INTEN
+      bit_offset: 0
+      bit_size: 32
+      description: INTEN
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SCR:
   description: ''
   fields:
-  - name: SO
-    bit_offset: 0
-    bit_size: 1
-    description: SO
-  - name: NSRA
-    bit_offset: 1
-    bit_size: 1
-    description: SO
-  - name: NSMSI
-    bit_offset: 2
-    bit_size: 1
-    description: NSRA
+    - name: SO
+      bit_offset: 0
+      bit_size: 1
+      description: SO
+    - name: NSRA
+      bit_offset: 1
+      bit_size: 1
+      description: SO
+    - name: NSMSI
+      bit_offset: 2
+      bit_size: 1
+      description: NSRA
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SCR_READS_AS:
   description: ''
   fields:
-  - name: ONE
-    bit_offset: 31
-    bit_size: 1
-    description: NSMSI
+    - name: ONE
+      bit_offset: 31
+      bit_size: 1
+      description: NSMSI
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CFGR:
   description: ''
   fields:
-  - name: NCTR
-    bit_offset: 0
-    bit_size: 6
-    description: NCTR
-  - name: SIZE
-    bit_offset: 8
-    bit_size: 6
-    description: NCTR
-  - name: MSI
-    bit_offset: 21
-    bit_size: 1
-    description: MSI
-  - name: CAPTURE
-    bit_offset: 22
-    bit_size: 1
-    description: MSI
-  - name: MPAM
-    bit_offset: 24
-    bit_size: 1
-    description: MPAM
+    - name: NCTR
+      bit_offset: 0
+      bit_size: 6
+      description: NCTR
+    - name: SIZE
+      bit_offset: 8
+      bit_size: 6
+      description: NCTR
+    - name: MSI
+      bit_offset: 21
+      bit_size: 1
+      description: MSI
+    - name: CAPTURE
+      bit_offset: 22
+      bit_size: 1
+      description: MSI
+    - name: MPAM
+      bit_offset: 24
+      bit_size: 1
+      description: MPAM
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CFGR_RELOC:
   description: ''
   fields:
-  - name: CTRS
-    bit_offset: 20
-    bit_size: 1
-    description: SIZE
+    - name: CTRS
+      bit_offset: 20
+      bit_size: 1
+      description: SIZE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CFGR_SID_FILTER:
   description: ''
   fields:
-  - name: TYPE
-    bit_offset: 23
-    bit_size: 1
-    description: CAPTURE
+    - name: TYPE
+      bit_offset: 23
+      bit_size: 1
+      description: CAPTURE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CR:
   description: ''
   fields:
-  - name: E
-    bit_offset: 0
-    bit_size: 1
-    description: E
+    - name: E
+      bit_offset: 0
+      bit_size: 1
+      description: E
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CEID0_LO:
   description: ''
   fields:
-  - name: N
-    bit_offset: 0
-    bit_size: 32
-    description: N
+    - name: N
+      bit_offset: 0
+      bit_size: 32
+      description: N
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CEID0_HI:
   description: ''
   fields:
-  - name: N
-    bit_offset: 0
-    bit_size: 32
-    description: N
+    - name: N
+      bit_offset: 0
+      bit_size: 32
+      description: N
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CEID1_LO:
   description: ''
   fields:
-  - name: N
-    bit_offset: 0
-    bit_size: 32
-    description: N
+    - name: N
+      bit_offset: 0
+      bit_size: 32
+      description: N
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CEID1_HI:
   description: ''
   fields:
-  - name: N
-    bit_offset: 0
-    bit_size: 32
-    description: N
+    - name: N
+      bit_offset: 0
+      bit_size: 32
+      description: N
 fieldset/MMU_TBU_ME4_SMMU_PMCG_IRQ_CTRL:
   description: ''
   fields:
-  - name: IRQEN
-    bit_offset: 0
-    bit_size: 1
-    description: IRQEN
+    - name: IRQEN
+      bit_offset: 0
+      bit_size: 1
+      description: IRQEN
 fieldset/MMU_TBU_ME4_SMMU_PMCG_IRQ_CTRLACK:
   description: ''
   fields:
-  - name: IRQEN
-    bit_offset: 0
-    bit_size: 1
-    description: IRQEN
+    - name: IRQEN
+      bit_offset: 0
+      bit_size: 1
+      description: IRQEN
 fieldset/MMU_TBU_ME4_SMMU_PMCG_AIDR:
   description: ''
   fields:
-  - name: ARCHMINORREV
-    bit_offset: 0
-    bit_size: 4
-    description: ARCHMINORREV
-  - name: ARCHMAJORREV
-    bit_offset: 4
-    bit_size: 4
-    description: ARCHMAJORREV
+    - name: ARCHMINORREV
+      bit_offset: 0
+      bit_size: 4
+      description: ARCHMINORREV
+    - name: ARCHMAJORREV
+      bit_offset: 4
+      bit_size: 4
+      description: ARCHMAJORREV
 fieldset/MMU_TBU_ME4_SMMU_PMCG_PMAUTHSTATUS:
   description: ''
   fields:
-  - name: NSE
-    bit_offset: 0
-    bit_size: 1
-    description: NSE
-  - name: NSI
-    bit_offset: 1
-    bit_size: 1
-    description: NSE
-  - name: NSNE
-    bit_offset: 2
-    bit_size: 1
-    description: NSI
-  - name: NSNI
-    bit_offset: 3
-    bit_size: 1
-    description: NSNE
-  - name: SE
-    bit_offset: 4
-    bit_size: 1
-    description: NSNI
-  - name: SI
-    bit_offset: 5
-    bit_size: 1
-    description: SE
-  - name: SNE
-    bit_offset: 6
-    bit_size: 1
-    description: SI
-  - name: SNI
-    bit_offset: 7
-    bit_size: 1
-    description: SNE
+    - name: NSE
+      bit_offset: 0
+      bit_size: 1
+      description: NSE
+    - name: NSI
+      bit_offset: 1
+      bit_size: 1
+      description: NSE
+    - name: NSNE
+      bit_offset: 2
+      bit_size: 1
+      description: NSI
+    - name: NSNI
+      bit_offset: 3
+      bit_size: 1
+      description: NSNE
+    - name: SE
+      bit_offset: 4
+      bit_size: 1
+      description: NSNI
+    - name: SI
+      bit_offset: 5
+      bit_size: 1
+      description: SE
+    - name: SNE
+      bit_offset: 6
+      bit_size: 1
+      description: SI
+    - name: SNI
+      bit_offset: 7
+      bit_size: 1
+      description: SNE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_PMDEVARCH:
   description: ''
   fields:
-  - name: ARCHID
-    bit_offset: 0
-    bit_size: 16
-    description: ARCHID
-  - name: REVISION
-    bit_offset: 16
-    bit_size: 4
-    description: ARCHID
-  - name: PRESENT
-    bit_offset: 20
-    bit_size: 1
-    description: PRESENT
-  - name: ARCHITECT
-    bit_offset: 21
-    bit_size: 11
-    description: ARCHITECT
+    - name: ARCHID
+      bit_offset: 0
+      bit_size: 16
+      description: ARCHID
+    - name: REVISION
+      bit_offset: 16
+      bit_size: 4
+      description: ARCHID
+    - name: PRESENT
+      bit_offset: 20
+      bit_size: 1
+      description: PRESENT
+    - name: ARCHITECT
+      bit_offset: 21
+      bit_size: 11
+      description: ARCHITECT
 fieldset/MMU_TBU_ME4_SMMU_PMCG_PMDEVTYPE:
   description: ''
   fields:
-  - name: CLS
-    bit_offset: 0
-    bit_size: 4
-    description: CLS
+    - name: CLS
+      bit_offset: 0
+      bit_size: 4
+      description: CLS
 fieldset/MMU_TBU_ME4_SMMU_PMCG_PMDEVTYPE_SUB:
   description: ''
   fields:
-  - name: TYPE
-    bit_offset: 4
-    bit_size: 4
-    description: CLS
+    - name: TYPE
+      bit_offset: 4
+      bit_size: 4
+      description: CLS
 fieldset/MMU_TBU_ME4_SMMU_PMCG_PIDR4:
   description: ''
   fields:
-  - name: SIZE
-    bit_offset: 4
-    bit_size: 4
-    description: DES_2
+    - name: SIZE
+      bit_offset: 4
+      bit_size: 4
+      description: DES_2
 fieldset/MMU_TBU_ME4_SMMU_PMCG_PIDR2:
   description: ''
   fields:
-  - name: JEDEC
-    bit_offset: 3
-    bit_size: 1
-    description: DES_1
-  - name: REVISION
-    bit_offset: 4
-    bit_size: 4
-    description: JEDEC
+    - name: JEDEC
+      bit_offset: 3
+      bit_size: 1
+      description: DES_1
+    - name: REVISION
+      bit_offset: 4
+      bit_size: 4
+      description: JEDEC
 fieldset/MMU_TBU_ME4_SMMU_PMCG_PIDR3:
   description: ''
   fields:
-  - name: CMOD
-    bit_offset: 0
-    bit_size: 4
-    description: CMOD
-  - name: REVAND
-    bit_offset: 4
-    bit_size: 4
-    description: CMOD
+    - name: CMOD
+      bit_offset: 0
+      bit_size: 4
+      description: CMOD
+    - name: REVAND
+      bit_offset: 4
+      bit_size: 4
+      description: CMOD
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CIDR0:
   description: ''
   fields:
-  - name: PREAMBLE
-    bit_offset: 0
-    bit_size: 8
-    description: PREAMBLE
+    - name: PREAMBLE
+      bit_offset: 0
+      bit_size: 8
+      description: PREAMBLE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CIDR1:
   description: ''
   fields:
-  - name: PREAMBLE
-    bit_offset: 0
-    bit_size: 4
-    description: PREAMBLE
-  - name: CLASS
-    bit_offset: 4
-    bit_size: 4
-    description: PREAMBLE
+    - name: PREAMBLE
+      bit_offset: 0
+      bit_size: 4
+      description: PREAMBLE
+    - name: CLASS
+      bit_offset: 4
+      bit_size: 4
+      description: PREAMBLE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CIDR2:
   description: ''
   fields:
-  - name: PREAMBLE
-    bit_offset: 0
-    bit_size: 8
-    description: PREAMBLE
+    - name: PREAMBLE
+      bit_offset: 0
+      bit_size: 8
+      description: PREAMBLE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CIDR3:
   description: ''
   fields:
-  - name: PREAMBLE
-    bit_offset: 0
-    bit_size: 8
-    description: PREAMBLE
+    - name: PREAMBLE
+      bit_offset: 0
+      bit_size: 8
+      description: PREAMBLE
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_NS_PARTID:
   description: ''
   fields:
-  - name: MAX
-    bit_offset: 0
-    bit_size: 16
-    description: PARTID_MAX
+    - name: MAX
+      bit_offset: 0
+      bit_size: 16
+      description: PARTID_MAX
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_NS_PMG:
   description: ''
   fields:
-  - name: MAX
-    bit_offset: 16
-    bit_size: 8
-    description: PMG_MAX
+    - name: MAX
+      bit_offset: 16
+      bit_size: 8
+      description: PMG_MAX
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_NS_HAS_CCAP:
   description: ''
   fields:
-  - name: PART
-    bit_offset: 24
-    bit_size: 1
-    description: PMG_MAX
+    - name: PART
+      bit_offset: 24
+      bit_size: 1
+      description: PMG_MAX
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_NS_HAS_CPOR:
   description: ''
   fields:
-  - name: PART
-    bit_offset: 25
-    bit_size: 1
-    description: HAS_CPOR_PART
+    - name: PART
+      bit_offset: 25
+      bit_size: 1
+      description: HAS_CPOR_PART
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_NS_HAS_MBW:
   description: ''
   fields:
-  - name: PART
-    bit_offset: 26
-    bit_size: 1
-    description: HAS_MBW_PART
+    - name: PART
+      bit_offset: 26
+      bit_size: 1
+      description: HAS_MBW_PART
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_NS_HAS_PRI:
   description: ''
   fields:
-  - name: PART
-    bit_offset: 27
-    bit_size: 1
-    description: HAS_PRI_PART
+    - name: PART
+      bit_offset: 27
+      bit_size: 1
+      description: HAS_PRI_PART
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_NS:
   description: ''
   fields:
-  - name: EXT
-    bit_offset: 28
-    bit_size: 1
-    description: EXT
+    - name: EXT
+      bit_offset: 28
+      bit_size: 1
+      description: EXT
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_NS_HAS_IMPL:
   description: ''
   fields:
-  - name: IDR
-    bit_offset: 29
-    bit_size: 1
-    description: EXT
+    - name: IDR
+      bit_offset: 29
+      bit_size: 1
+      description: EXT
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_NS_HAS:
   description: ''
   fields:
-  - name: MSMON
-    bit_offset: 30
-    bit_size: 1
-    description: HAS_MSMON
+    - name: MSMON
+      bit_offset: 30
+      bit_size: 1
+      description: HAS_MSMON
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_NS_HAS_PARTID:
   description: ''
   fields:
-  - name: NRW
-    bit_offset: 31
-    bit_size: 1
+    - name: NRW
+      bit_offset: 31
+      bit_size: 1
 fieldset/MMU_TBU_ME4_MPAMF_IDR_HI_NS_HAS:
   description: ''
   fields:
-  - name: RIS
-    bit_offset: 0
-    bit_size: 1
-    description: HAS_RIS
-  - name: ESR
-    bit_offset: 7
-    bit_size: 1
-    description: HAS_ESR
+    - name: RIS
+      bit_offset: 0
+      bit_size: 1
+      description: HAS_RIS
+    - name: ESR
+      bit_offset: 7
+      bit_size: 1
+      description: HAS_ESR
 fieldset/MMU_TBU_ME4_MPAMF_IDR_HI_NS_NO_IMPL:
   description: ''
   fields:
-  - name: PART
-    bit_offset: 4
-    bit_size: 1
-    description: HAS_RIS
-  - name: MSMON
-    bit_offset: 5
-    bit_size: 1
-    description: NO_IMPL_MSMON
+    - name: PART
+      bit_offset: 4
+      bit_size: 1
+      description: HAS_RIS
+    - name: MSMON
+      bit_offset: 5
+      bit_size: 1
+      description: NO_IMPL_MSMON
 fieldset/MMU_TBU_ME4_MPAMF_IDR_HI_NS_HAS_EXTD:
   description: ''
   fields:
-  - name: ESR
-    bit_offset: 6
-    bit_size: 1
-    description: HAS_EXTD_ESR
+    - name: ESR
+      bit_offset: 6
+      bit_size: 1
+      description: HAS_EXTD_ESR
 fieldset/MMU_TBU_ME4_MPAMF_IDR_HI_NS_RIS:
   description: ''
   fields:
-  - name: MAX
-    bit_offset: 24
-    bit_size: 4
-    description: HAS_ESR
+    - name: MAX
+      bit_offset: 24
+      bit_size: 4
+      description: HAS_ESR
 fieldset/MMU_TBU_ME4_MPAMF_IIDR_NS:
   description: ''
   fields:
-  - name: Implementer
-    bit_offset: 0
-    bit_size: 12
-    description: Implementer
-  - name: Revision
-    bit_offset: 12
-    bit_size: 4
-    description: Revision
-  - name: Variant
-    bit_offset: 16
-    bit_size: 4
-    description: Revision
-  - name: ProductID
-    bit_offset: 20
-    bit_size: 12
-    description: Variant
+    - name: Implementer
+      bit_offset: 0
+      bit_size: 12
+      description: Implementer
+    - name: Revision
+      bit_offset: 12
+      bit_size: 4
+      description: Revision
+    - name: Variant
+      bit_offset: 16
+      bit_size: 4
+      description: Revision
+    - name: ProductID
+      bit_offset: 20
+      bit_size: 12
+      description: Variant
 fieldset/MMU_TBU_ME4_MPAMF_AIDR_NS:
   description: ''
   fields:
-  - name: ArchMinorRev
-    bit_offset: 0
-    bit_size: 4
-    description: ArchMinorRev
-  - name: ArchMajorRev
-    bit_offset: 4
-    bit_size: 4
-    description: ArchMajorRev
+    - name: ArchMinorRev
+      bit_offset: 0
+      bit_size: 4
+      description: ArchMinorRev
+    - name: ArchMajorRev
+      bit_offset: 4
+      bit_size: 4
+      description: ArchMajorRev
 fieldset/MMU_TBU_ME4_MPAMF_CCAP_IDR_NS_CMAX:
   description: ''
   fields:
-  - name: WD
-    bit_offset: 0
-    bit_size: 6
-    description: CMAX_WD
+    - name: WD
+      bit_offset: 0
+      bit_size: 6
+      description: CMAX_WD
 fieldset/MMU_TBU_ME4_MPAMF_MSMON_IDR_NS_MSMON:
   description: ''
   fields:
-  - name: CSU
-    bit_offset: 16
-    bit_size: 1
-    description: MSMON_CSU
-  - name: MBWU
-    bit_offset: 17
-    bit_size: 1
-    description: MSMON_MBWU
+    - name: CSU
+      bit_offset: 16
+      bit_size: 1
+      description: MSMON_CSU
+    - name: MBWU
+      bit_offset: 17
+      bit_size: 1
+      description: MSMON_MBWU
 fieldset/MMU_TBU_ME4_MPAMF_MSMON_IDR_NS_HAS_LOCAL_CAPT:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 31
-    bit_size: 1
+    - name: EVNT
+      bit_offset: 31
+      bit_size: 1
 fieldset/MMU_TBU_ME4_MPAMF_CSUMON_IDR_NS_NUM:
   description: ''
   fields:
-  - name: MON
-    bit_offset: 0
-    bit_size: 16
-    description: NUM_MON
+    - name: MON
+      bit_offset: 0
+      bit_size: 16
+      description: NUM_MON
 fieldset/MMU_TBU_ME4_MPAMF_CSUMON_IDR_NS_HAS:
   description: ''
   fields:
-  - name: CAPTURE
-    bit_offset: 31
-    bit_size: 1
-    description: HAS_CAPTURE
+    - name: CAPTURE
+      bit_offset: 31
+      bit_size: 1
+      description: HAS_CAPTURE
 fieldset/MMU_TBU_ME4_MPAMCFG_PART_SEL_NS_PARTID:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 16
-    description: PARTID_SEL
+    - name: SEL
+      bit_offset: 0
+      bit_size: 16
+      description: PARTID_SEL
 fieldset/MMU_TBU_ME4_MPAMCFG_PART_SEL_NS:
   description: ''
   fields:
-  - name: INTERNAL
-    bit_offset: 16
-    bit_size: 1
-    description: INTERNAL
-  - name: RIS
-    bit_offset: 24
-    bit_size: 4
-    description: RIS
+    - name: INTERNAL
+      bit_offset: 16
+      bit_size: 1
+      description: INTERNAL
+    - name: RIS
+      bit_offset: 24
+      bit_size: 4
+      description: RIS
 fieldset/MMU_TBU_ME4_MPAMCFG_CMAX_NS:
   description: ''
   fields:
-  - name: CMAX
-    bit_offset: 0
-    bit_size: 16
-    description: CMAX
+    - name: CMAX
+      bit_offset: 0
+      bit_size: 16
+      description: CMAX
 fieldset/MMU_TBU_ME4_MSMON_CFG_SEL_NS_MON:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 16
-    description: MON_SEL
+    - name: SEL
+      bit_offset: 0
+      bit_size: 16
+      description: MON_SEL
 fieldset/MMU_TBU_ME4_MSMON_CFG_SEL_NS:
   description: ''
   fields:
-  - name: RIS
-    bit_offset: 24
-    bit_size: 4
-    description: MON_SEL
+    - name: RIS
+      bit_offset: 24
+      bit_size: 4
+      description: MON_SEL
 fieldset/MMU_TBU_ME4_MSMON_CAPT_EVNT_NS:
   description: ''
   fields:
-  - name: NOW
-    bit_offset: 0
-    bit_size: 1
-    description: NOW
-  - name: ALL
-    bit_offset: 1
-    bit_size: 1
-    description: NOW
+    - name: NOW
+      bit_offset: 0
+      bit_size: 1
+      description: NOW
+    - name: ALL
+      bit_offset: 1
+      bit_size: 1
+      description: NOW
 fieldset/MMU_TBU_ME4_MSMON_CFG_CSU_FLT_NS:
   description: ''
   fields:
-  - name: PARTID
-    bit_offset: 0
-    bit_size: 16
-    description: PARTID
-  - name: PMG
-    bit_offset: 16
-    bit_size: 8
-    description: PMG
+    - name: PARTID
+      bit_offset: 0
+      bit_size: 16
+      description: PARTID
+    - name: PMG
+      bit_offset: 16
+      bit_size: 8
+      description: PMG
 fieldset/MMU_TBU_ME4_MSMON_CFG_CSU_CTL_NS:
   description: ''
   fields:
-  - name: TYPE
-    bit_offset: 0
-    bit_size: 8
-    description: TYPE
-  - name: SUBTYPE
-    bit_offset: 20
-    bit_size: 4
-    description: SUBTYPE
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
-    description: EN
+    - name: TYPE
+      bit_offset: 0
+      bit_size: 8
+      description: TYPE
+    - name: SUBTYPE
+      bit_offset: 20
+      bit_size: 4
+      description: SUBTYPE
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+      description: EN
 fieldset/MMU_TBU_ME4_MSMON_CFG_CSU_CTL_NS_MATCH:
   description: ''
   fields:
-  - name: PARTID
-    bit_offset: 16
-    bit_size: 1
-    description: TYPE
-  - name: PMG
-    bit_offset: 17
-    bit_size: 1
-    description: MATCH_PMG
+    - name: PARTID
+      bit_offset: 16
+      bit_size: 1
+      description: TYPE
+    - name: PMG
+      bit_offset: 17
+      bit_size: 1
+      description: MATCH_PMG
 fieldset/MMU_TBU_ME4_MSMON_CFG_CSU_CTL_NS_OFLOW:
   description: ''
   fields:
-  - name: FRZ
-    bit_offset: 24
-    bit_size: 1
-    description: OFLOW_FRZ
-  - name: INTR
-    bit_offset: 25
-    bit_size: 1
-    description: OFLOW_INTR
-  - name: STATUS
-    bit_offset: 26
-    bit_size: 1
+    - name: FRZ
+      bit_offset: 24
+      bit_size: 1
+      description: OFLOW_FRZ
+    - name: INTR
+      bit_offset: 25
+      bit_size: 1
+      description: OFLOW_INTR
+    - name: STATUS
+      bit_offset: 26
+      bit_size: 1
 fieldset/MMU_TBU_ME4_MSMON_CFG_CSU_CTL_NS_CAPT:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 27
-    bit_size: 1
-    description: CAPT_RESET
-  - name: EVNT
-    bit_offset: 28
-    bit_size: 3
-    description: CAPT_EVNT
+    - name: RESET
+      bit_offset: 27
+      bit_size: 1
+      description: CAPT_RESET
+    - name: EVNT
+      bit_offset: 28
+      bit_size: 3
+      description: CAPT_EVNT
 fieldset/MMU_TBU_ME4_MSMON_CSU_NS:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 31
-    description: VALUE
-  - name: NRDY
-    bit_offset: 31
-    bit_size: 1
-    description: VALUE
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 31
+      description: VALUE
+    - name: NRDY
+      bit_offset: 31
+      bit_size: 1
+      description: VALUE
 fieldset/MMU_TBU_ME4_MSMON_CSU_CAPTURE_NS:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 31
-    description: VALUE
-  - name: NRDY
-    bit_offset: 31
-    bit_size: 1
-    description: VALUE
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 31
+      description: VALUE
+    - name: NRDY
+      bit_offset: 31
+      bit_size: 1
+      description: VALUE
 fieldset/MMU_TBU_ME4_TBU_CTRL:
   description: ''
   fields:
-  - name: AUX0
-    bit_offset: 0
-    bit_size: 1
-    description: AUX0
-  - name: AUX1
-    bit_offset: 1
-    bit_size: 1
-    description: AUX0
-  - name: AUX2
-    bit_offset: 2
-    bit_size: 1
-    description: AUX1
-  - name: AUX3
-    bit_offset: 3
-    bit_size: 1
-    description: AUX2
-  - name: AUX4
-    bit_offset: 4
-    bit_size: 1
-    description: AUX3
-  - name: AUX5
-    bit_offset: 5
-    bit_size: 1
-    description: AUX4
-  - name: AUX6
-    bit_offset: 6
-    bit_size: 1
-    description: AUX5
-  - name: AUX7
-    bit_offset: 7
-    bit_size: 1
-    description: AUX6
-  - name: AUX8
-    bit_offset: 8
-    bit_size: 1
-    description: AUX7
-  - name: AUX9
-    bit_offset: 9
-    bit_size: 1
-    description: AUX8
-  - name: AUX10
-    bit_offset: 10
-    bit_size: 1
-    description: AUX9
-  - name: AUX11
-    bit_offset: 11
-    bit_size: 1
-    description: AUX10
-  - name: AUX13
-    bit_offset: 13
-    bit_size: 1
-    description: AUX13
-  - name: AUX14
-    bit_offset: 14
-    bit_size: 1
-    description: AUX13
-  - name: AUX15
-    bit_offset: 15
-    bit_size: 1
-    description: AUX14
+    - name: AUX0
+      bit_offset: 0
+      bit_size: 1
+      description: AUX0
+    - name: AUX1
+      bit_offset: 1
+      bit_size: 1
+      description: AUX0
+    - name: AUX2
+      bit_offset: 2
+      bit_size: 1
+      description: AUX1
+    - name: AUX3
+      bit_offset: 3
+      bit_size: 1
+      description: AUX2
+    - name: AUX4
+      bit_offset: 4
+      bit_size: 1
+      description: AUX3
+    - name: AUX5
+      bit_offset: 5
+      bit_size: 1
+      description: AUX4
+    - name: AUX6
+      bit_offset: 6
+      bit_size: 1
+      description: AUX5
+    - name: AUX7
+      bit_offset: 7
+      bit_size: 1
+      description: AUX6
+    - name: AUX8
+      bit_offset: 8
+      bit_size: 1
+      description: AUX7
+    - name: AUX9
+      bit_offset: 9
+      bit_size: 1
+      description: AUX8
+    - name: AUX10
+      bit_offset: 10
+      bit_size: 1
+      description: AUX9
+    - name: AUX11
+      bit_offset: 11
+      bit_size: 1
+      description: AUX10
+    - name: AUX13
+      bit_offset: 13
+      bit_size: 1
+      description: AUX13
+    - name: AUX14
+      bit_offset: 14
+      bit_size: 1
+      description: AUX13
+    - name: AUX15
+      bit_offset: 15
+      bit_size: 1
+      description: AUX14
 fieldset/MMU_TBU_ME4_TBU_CTRL_LTI_PORT_RESOURCE_LIMIT:
   description: ''
   fields:
-  - name: DISABLE
-    bit_offset: 12
-    bit_size: 1
-    description: AUX11
+    - name: DISABLE
+      bit_offset: 12
+      bit_size: 1
+      description: AUX11
 fieldset/MMU_TBU_ME4_TBU_LTI_PORT_RESOURCE_LIMIT_LTI_PORT_RESOURCE:
   description: ''
   fields:
-  - name: LIMIT0
-    bit_offset: 0
-    bit_size: 4
-  - name: LIMIT1
-    bit_offset: 4
-    bit_size: 4
-  - name: LIMIT2
-    bit_offset: 8
-    bit_size: 4
-  - name: LIMIT3
-    bit_offset: 12
-    bit_size: 4
-  - name: LIMIT4
-    bit_offset: 16
-    bit_size: 4
-  - name: LIMIT5
-    bit_offset: 20
-    bit_size: 4
-  - name: LIMIT6
-    bit_offset: 24
-    bit_size: 4
-  - name: LIMIT7
-    bit_offset: 28
-    bit_size: 4
+    - name: LIMIT0
+      bit_offset: 0
+      bit_size: 4
+    - name: LIMIT1
+      bit_offset: 4
+      bit_size: 4
+    - name: LIMIT2
+      bit_offset: 8
+      bit_size: 4
+    - name: LIMIT3
+      bit_offset: 12
+      bit_size: 4
+    - name: LIMIT4
+      bit_offset: 16
+      bit_size: 4
+    - name: LIMIT5
+      bit_offset: 20
+      bit_size: 4
+    - name: LIMIT6
+      bit_offset: 24
+      bit_size: 4
+    - name: LIMIT7
+      bit_offset: 28
+      bit_size: 4
 fieldset/MMU_TBU_ME4_TBU_SCR_NS:
   description: ''
   fields:
-  - name: UARCH
-    bit_offset: 0
-    bit_size: 1
-    description: NS_UARCH
-  - name: RAS
-    bit_offset: 1
-    bit_size: 1
-    description: NS_UARCH
+    - name: UARCH
+      bit_offset: 0
+      bit_size: 1
+      description: NS_UARCH
+    - name: RAS
+      bit_offset: 1
+      bit_size: 1
+      description: NS_UARCH
 fieldset/MMU_TBU_ME4_ITEN:
   description: ''
   fields:
-  - name: ITEN
-    bit_offset: 0
-    bit_size: 1
-    description: ITEN
+    - name: ITEN
+      bit_offset: 0
+      bit_size: 1
+      description: ITEN
 fieldset/MMU_TBU_ME4_ITOP_TBU_ras:
   description: ''
   fields:
-  - name: cri
-    bit_offset: 0
-    bit_size: 1
-    description: ras_cri
-  - name: eri
-    bit_offset: 1
-    bit_size: 1
-    description: ras_cri
-  - name: fhi
-    bit_offset: 2
-    bit_size: 1
-    description: ras_eri
+    - name: cri
+      bit_offset: 0
+      bit_size: 1
+      description: ras_cri
+    - name: eri
+      bit_offset: 1
+      bit_size: 1
+      description: ras_cri
+    - name: fhi
+      bit_offset: 2
+      bit_size: 1
+      description: ras_eri
 fieldset/MMU_TBU_ME4_ITOP_TBU_pmu_snapshot:
   description: ''
   fields:
-  - name: ack
-    bit_offset: 3
-    bit_size: 1
-    description: ras_fhi
+    - name: ack
+      bit_offset: 3
+      bit_size: 1
+      description: ras_fhi
 fieldset/MMU_TBU_ME4_ITOP_TBU_pmu:
   description: ''
   fields:
-  - name: irpt
-    bit_offset: 4
-    bit_size: 1
-    description: pmu_irpt
+    - name: irpt
+      bit_offset: 4
+      bit_size: 1
+      description: pmu_irpt
 fieldset/MMU_TBU_ME4_ITIN_TBU_pmu_snapshot:
   description: ''
   fields:
-  - name: req
-    bit_offset: 0
-    bit_size: 1
-    description: pmu_snapshot_req
+    - name: req
+      bit_offset: 0
+      bit_size: 1
+      description: pmu_snapshot_req
 fieldset/MMU_TBU_ME4_TBU_SYSDISC0_TBUCFG_MTLB:
   description: ''
   fields:
-  - name: DEPTH
-    bit_offset: 0
-    bit_size: 17
+    - name: DEPTH
+      bit_offset: 0
+      bit_size: 17
 fieldset/MMU_TBU_ME4_TBU_SYSDISC1_TBUCFG_UTLB:
   description: ''
   fields:
-  - name: DEPTH
-    bit_offset: 0
-    bit_size: 7
+    - name: DEPTH
+      bit_offset: 0
+      bit_size: 7
 fieldset/MMU_TBU_ME4_TBU_SYSDISC2_TBUCFG_MTLB:
   description: ''
   fields:
-  - name: WAYS
-    bit_offset: 0
-    bit_size: 5
+    - name: WAYS
+      bit_offset: 0
+      bit_size: 5
 fieldset/MMU_TBU_ME4_TBU_SYSDISC3_TBUCFG_MTLB:
   description: ''
   fields:
-  - name: BANKS
-    bit_offset: 0
-    bit_size: 3
+    - name: BANKS
+      bit_offset: 0
+      bit_size: 3
 fieldset/MMU_TBU_ME4_TBU_SYSDISC4_TBUCFG_XLATE:
   description: ''
   fields:
-  - name: SLOTS
-    bit_offset: 0
-    bit_size: 13
+    - name: SLOTS
+      bit_offset: 0
+      bit_size: 13
 fieldset/MMU_TBU_ME4_TBU_SYSDISC5_TBUCFG_PMU:
   description: ''
   fields:
-  - name: COUNTERS
-    bit_offset: 0
-    bit_size: 6
+    - name: COUNTERS
+      bit_offset: 0
+      bit_size: 6
 fieldset/MMU_TBU_ME4_TBU_SYSDISC6_TBUCFG_SID:
   description: ''
   fields:
-  - name: WIDTH
-    bit_offset: 0
-    bit_size: 5
+    - name: WIDTH
+      bit_offset: 0
+      bit_size: 5
 fieldset/MMU_TBU_ME4_TBU_SYSDISC7_TBUCFG_SSID:
   description: ''
   fields:
-  - name: WIDTH
-    bit_offset: 0
-    bit_size: 5
+    - name: WIDTH
+      bit_offset: 0
+      bit_size: 5
 fieldset/MMU_TBU_ME4_TBU_SYSDISC8_TBUCFG_DIRECT:
   description: ''
   fields:
-  - name: IDX
-    bit_offset: 0
-    bit_size: 1
+    - name: IDX
+      bit_offset: 0
+      bit_size: 1
 fieldset/MMU_TBU_ME4_TBU_SYSDISC9_TBUCFG_MTLB:
   description: ''
   fields:
-  - name: PARTS
-    bit_offset: 0
-    bit_size: 5
+    - name: PARTS
+      bit_offset: 0
+      bit_size: 5
 fieldset/MMU_TBU_ME4_TBU_SYSDISC10_TBUCFG_LTI_OG:
   description: ''
   fields:
-  - name: WIDTH
-    bit_offset: 0
-    bit_size: 6
+    - name: WIDTH
+      bit_offset: 0
+      bit_size: 6
 fieldset/MMU_TBU_ME4_TBU_SYSDISC11_TBUCFG_PARTID:
   description: ''
   fields:
-  - name: WIDTH
-    bit_offset: 0
-    bit_size: 4
+    - name: WIDTH
+      bit_offset: 0
+      bit_size: 4
 fieldset/MMU_TBU_ME4_TBU_SYSDISC12_TBUCFG_HZRD:
   description: ''
   fields:
-  - name: ENTRIES
-    bit_offset: 0
-    bit_size: 7
+    - name: ENTRIES
+      bit_offset: 0
+      bit_size: 7
 fieldset/MMU_TBU_ME4_TBU_SYSDISC13_TBUCFG_SLOTRAM:
   description: ''
   fields:
-  - name: TYPE
-    bit_offset: 0
-    bit_size: 2
+    - name: TYPE
+      bit_offset: 0
+      bit_size: 2
 fieldset/MMU_TBU_ME4_TBU_SYSDISC14_TBUCFG_CACHERAM:
   description: ''
   fields:
-  - name: TYPE
-    bit_offset: 0
-    bit_size: 2
+    - name: TYPE
+      bit_offset: 0
+      bit_size: 2
 fieldset/MMU_TBU_ME4_TBU_ERRFR_LO:
   description: ''
   fields:
-  - name: ED
-    bit_offset: 0
-    bit_size: 2
-    description: ED
-  - name: UI
-    bit_offset: 4
-    bit_size: 2
-    description: ED
-  - name: FI
-    bit_offset: 6
-    bit_size: 2
-    description: UI
-  - name: UE
-    bit_offset: 8
-    bit_size: 2
-    description: FI
-  - name: CFI
-    bit_offset: 10
-    bit_size: 2
-    description: UE
-  - name: CEC
-    bit_offset: 12
-    bit_size: 3
-    description: CFI
-  - name: RP
-    bit_offset: 15
-    bit_size: 1
-    description: CEC
-  - name: DUI
-    bit_offset: 16
-    bit_size: 2
-    description: RP
-  - name: CEO
-    bit_offset: 18
-    bit_size: 2
-    description: DUI
-  - name: INJ
-    bit_offset: 20
-    bit_size: 2
-    description: CEO
-  - name: CI
-    bit_offset: 22
-    bit_size: 2
-    description: INJ
-  - name: TS
-    bit_offset: 24
-    bit_size: 2
-    description: CI
+    - name: ED
+      bit_offset: 0
+      bit_size: 2
+      description: ED
+    - name: UI
+      bit_offset: 4
+      bit_size: 2
+      description: ED
+    - name: FI
+      bit_offset: 6
+      bit_size: 2
+      description: UI
+    - name: UE
+      bit_offset: 8
+      bit_size: 2
+      description: FI
+    - name: CFI
+      bit_offset: 10
+      bit_size: 2
+      description: UE
+    - name: CEC
+      bit_offset: 12
+      bit_size: 3
+      description: CFI
+    - name: RP
+      bit_offset: 15
+      bit_size: 1
+      description: CEC
+    - name: DUI
+      bit_offset: 16
+      bit_size: 2
+      description: RP
+    - name: CEO
+      bit_offset: 18
+      bit_size: 2
+      description: DUI
+    - name: INJ
+      bit_offset: 20
+      bit_size: 2
+      description: CEO
+    - name: CI
+      bit_offset: 22
+      bit_size: 2
+      description: INJ
+    - name: TS
+      bit_offset: 24
+      bit_size: 2
+      description: CI
 fieldset/MMU_TBU_ME4_TBU_ERRCTLR_LO:
   description: ''
   fields:
-  - name: FI
-    bit_offset: 3
-    bit_size: 1
-    description: FI
+    - name: FI
+      bit_offset: 3
+      bit_size: 1
+      description: FI
 fieldset/MMU_TBU_ME4_TBU_ERRSTATUS_LO:
   description: ''
   fields:
-  - name: SERR
-    bit_offset: 0
-    bit_size: 8
-    description: SERR
-  - name: IERR
-    bit_offset: 8
-    bit_size: 8
-    description: SERR
-  - name: CI
-    bit_offset: 19
-    bit_size: 1
-    description: CI
-  - name: UET
-    bit_offset: 20
-    bit_size: 2
-    description: CI
-  - name: PN
-    bit_offset: 22
-    bit_size: 1
-    description: PN
-  - name: DE
-    bit_offset: 23
-    bit_size: 1
-    description: PN
-  - name: CE
-    bit_offset: 24
-    bit_size: 2
-    description: DE
-  - name: MV
-    bit_offset: 26
-    bit_size: 1
-    description: MV
-  - name: OF
-    bit_offset: 27
-    bit_size: 1
-    description: MV
-  - name: ER
-    bit_offset: 28
-    bit_size: 1
-    description: OF
-  - name: UE
-    bit_offset: 29
-    bit_size: 1
-    description: ER
-  - name: V
-    bit_offset: 30
-    bit_size: 1
-    description: UE
-  - name: AV
-    bit_offset: 31
-    bit_size: 1
-    description: V
+    - name: SERR
+      bit_offset: 0
+      bit_size: 8
+      description: SERR
+    - name: IERR
+      bit_offset: 8
+      bit_size: 8
+      description: SERR
+    - name: CI
+      bit_offset: 19
+      bit_size: 1
+      description: CI
+    - name: UET
+      bit_offset: 20
+      bit_size: 2
+      description: CI
+    - name: PN
+      bit_offset: 22
+      bit_size: 1
+      description: PN
+    - name: DE
+      bit_offset: 23
+      bit_size: 1
+      description: PN
+    - name: CE
+      bit_offset: 24
+      bit_size: 2
+      description: DE
+    - name: MV
+      bit_offset: 26
+      bit_size: 1
+      description: MV
+    - name: OF
+      bit_offset: 27
+      bit_size: 1
+      description: MV
+    - name: ER
+      bit_offset: 28
+      bit_size: 1
+      description: OF
+    - name: UE
+      bit_offset: 29
+      bit_size: 1
+      description: ER
+    - name: V
+      bit_offset: 30
+      bit_size: 1
+      description: UE
+    - name: AV
+      bit_offset: 31
+      bit_size: 1
+      description: V
 fieldset/MMU_TBU_ME4_TBU_ERRGEN_LO:
   description: ''
   fields:
-  - name: SERR
-    bit_offset: 0
-    bit_size: 8
-    description: SERR
-  - name: IERR
-    bit_offset: 8
-    bit_size: 8
-    description: SERR
-  - name: CI
-    bit_offset: 19
-    bit_size: 1
-    description: IERR
-  - name: UET
-    bit_offset: 20
-    bit_size: 2
-    description: CI
-  - name: PN
-    bit_offset: 22
-    bit_size: 1
-    description: UET
-  - name: DE
-    bit_offset: 23
-    bit_size: 1
-    description: PN
-  - name: CE
-    bit_offset: 24
-    bit_size: 2
-    description: DE
-  - name: OF
-    bit_offset: 27
-    bit_size: 1
-    description: CE
-  - name: ER
-    bit_offset: 28
-    bit_size: 1
-    description: OF
-  - name: UE
-    bit_offset: 29
-    bit_size: 1
-    description: ER
-  - name: V
-    bit_offset: 30
-    bit_size: 1
-    description: UE
+    - name: SERR
+      bit_offset: 0
+      bit_size: 8
+      description: SERR
+    - name: IERR
+      bit_offset: 8
+      bit_size: 8
+      description: SERR
+    - name: CI
+      bit_offset: 19
+      bit_size: 1
+      description: IERR
+    - name: UET
+      bit_offset: 20
+      bit_size: 2
+      description: CI
+    - name: PN
+      bit_offset: 22
+      bit_size: 1
+      description: UET
+    - name: DE
+      bit_offset: 23
+      bit_size: 1
+      description: PN
+    - name: CE
+      bit_offset: 24
+      bit_size: 2
+      description: DE
+    - name: OF
+      bit_offset: 27
+      bit_size: 1
+      description: CE
+    - name: ER
+      bit_offset: 28
+      bit_size: 1
+      description: OF
+    - name: UE
+      bit_offset: 29
+      bit_size: 1
+      description: ER
+    - name: V
+      bit_offset: 30
+      bit_size: 1
+      description: UE
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_S_PARTID:
   description: ''
   fields:
-  - name: MAX
-    bit_offset: 0
-    bit_size: 16
-    description: PARTID_MAX
+    - name: MAX
+      bit_offset: 0
+      bit_size: 16
+      description: PARTID_MAX
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_S_PMG:
   description: ''
   fields:
-  - name: MAX
-    bit_offset: 16
-    bit_size: 8
-    description: PMG_MAX
+    - name: MAX
+      bit_offset: 16
+      bit_size: 8
+      description: PMG_MAX
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_S_HAS_CCAP:
   description: ''
   fields:
-  - name: PART
-    bit_offset: 24
-    bit_size: 1
-    description: PMG_MAX
+    - name: PART
+      bit_offset: 24
+      bit_size: 1
+      description: PMG_MAX
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_S_HAS_CPOR:
   description: ''
   fields:
-  - name: PART
-    bit_offset: 25
-    bit_size: 1
-    description: HAS_CPOR_PART
+    - name: PART
+      bit_offset: 25
+      bit_size: 1
+      description: HAS_CPOR_PART
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_S_HAS_MBW:
   description: ''
   fields:
-  - name: PART
-    bit_offset: 26
-    bit_size: 1
-    description: HAS_MBW_PART
+    - name: PART
+      bit_offset: 26
+      bit_size: 1
+      description: HAS_MBW_PART
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_S_HAS_PRI:
   description: ''
   fields:
-  - name: PART
-    bit_offset: 27
-    bit_size: 1
-    description: HAS_PRI_PART
+    - name: PART
+      bit_offset: 27
+      bit_size: 1
+      description: HAS_PRI_PART
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_S:
   description: ''
   fields:
-  - name: EXT
-    bit_offset: 28
-    bit_size: 1
-    description: EXT
+    - name: EXT
+      bit_offset: 28
+      bit_size: 1
+      description: EXT
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_S_HAS_IMPL:
   description: ''
   fields:
-  - name: IDR
-    bit_offset: 29
-    bit_size: 1
-    description: EXT
+    - name: IDR
+      bit_offset: 29
+      bit_size: 1
+      description: EXT
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_S_HAS:
   description: ''
   fields:
-  - name: MSMON
-    bit_offset: 30
-    bit_size: 1
-    description: HAS_MSMON
+    - name: MSMON
+      bit_offset: 30
+      bit_size: 1
+      description: HAS_MSMON
 fieldset/MMU_TBU_ME4_MPAMF_IDR_LO_S_HAS_PARTID:
   description: ''
   fields:
-  - name: NRW
-    bit_offset: 31
-    bit_size: 1
+    - name: NRW
+      bit_offset: 31
+      bit_size: 1
 fieldset/MMU_TBU_ME4_MPAMF_IDR_HI_S_HAS:
   description: ''
   fields:
-  - name: RIS
-    bit_offset: 0
-    bit_size: 1
-    description: HAS_RIS
-  - name: ESR
-    bit_offset: 7
-    bit_size: 1
-    description: HAS_ESR
+    - name: RIS
+      bit_offset: 0
+      bit_size: 1
+      description: HAS_RIS
+    - name: ESR
+      bit_offset: 7
+      bit_size: 1
+      description: HAS_ESR
 fieldset/MMU_TBU_ME4_MPAMF_IDR_HI_S_NO_IMPL:
   description: ''
   fields:
-  - name: PART
-    bit_offset: 4
-    bit_size: 1
-    description: HAS_RIS
-  - name: MSMON
-    bit_offset: 5
-    bit_size: 1
-    description: NO_IMPL_MSMON
+    - name: PART
+      bit_offset: 4
+      bit_size: 1
+      description: HAS_RIS
+    - name: MSMON
+      bit_offset: 5
+      bit_size: 1
+      description: NO_IMPL_MSMON
 fieldset/MMU_TBU_ME4_MPAMF_IDR_HI_S_HAS_EXTD:
   description: ''
   fields:
-  - name: ESR
-    bit_offset: 6
-    bit_size: 1
-    description: HAS_EXTD_ESR
+    - name: ESR
+      bit_offset: 6
+      bit_size: 1
+      description: HAS_EXTD_ESR
 fieldset/MMU_TBU_ME4_MPAMF_IDR_HI_S_RIS:
   description: ''
   fields:
-  - name: MAX
-    bit_offset: 24
-    bit_size: 4
-    description: HAS_ESR
+    - name: MAX
+      bit_offset: 24
+      bit_size: 4
+      description: HAS_ESR
 fieldset/MMU_TBU_ME4_MPAMF_SIDR_S_PARTID:
   description: ''
   fields:
-  - name: MAX
-    bit_offset: 0
-    bit_size: 16
-    description: PARTID_MAX
+    - name: MAX
+      bit_offset: 0
+      bit_size: 16
+      description: PARTID_MAX
 fieldset/MMU_TBU_ME4_MPAMF_SIDR_S_PMG:
   description: ''
   fields:
-  - name: MAX
-    bit_offset: 16
-    bit_size: 8
-    description: PMG_MAX
+    - name: MAX
+      bit_offset: 16
+      bit_size: 8
+      description: PMG_MAX
 fieldset/MMU_TBU_ME4_MPAMF_IIDR_S:
   description: ''
   fields:
-  - name: Implementer
-    bit_offset: 0
-    bit_size: 12
-    description: Implementer
-  - name: Revision
-    bit_offset: 12
-    bit_size: 4
-    description: Revision
-  - name: Variant
-    bit_offset: 16
-    bit_size: 4
-    description: Revision
-  - name: ProductID
-    bit_offset: 20
-    bit_size: 12
-    description: Variant
+    - name: Implementer
+      bit_offset: 0
+      bit_size: 12
+      description: Implementer
+    - name: Revision
+      bit_offset: 12
+      bit_size: 4
+      description: Revision
+    - name: Variant
+      bit_offset: 16
+      bit_size: 4
+      description: Revision
+    - name: ProductID
+      bit_offset: 20
+      bit_size: 12
+      description: Variant
 fieldset/MMU_TBU_ME4_MPAMF_AIDR_S:
   description: ''
   fields:
-  - name: ArchMinorRev
-    bit_offset: 0
-    bit_size: 4
-    description: ArchMinorRev
-  - name: ArchMajorRev
-    bit_offset: 4
-    bit_size: 4
-    description: ArchMajorRev
+    - name: ArchMinorRev
+      bit_offset: 0
+      bit_size: 4
+      description: ArchMinorRev
+    - name: ArchMajorRev
+      bit_offset: 4
+      bit_size: 4
+      description: ArchMajorRev
 fieldset/MMU_TBU_ME4_MPAMF_CCAP_IDR_S_CMAX:
   description: ''
   fields:
-  - name: WD
-    bit_offset: 0
-    bit_size: 6
-    description: CMAX_WD
+    - name: WD
+      bit_offset: 0
+      bit_size: 6
+      description: CMAX_WD
 fieldset/MMU_TBU_ME4_MPAMF_MSMON_IDR_S_MSMON:
   description: ''
   fields:
-  - name: CSU
-    bit_offset: 16
-    bit_size: 1
-    description: MSMON_CSU
-  - name: MBWU
-    bit_offset: 17
-    bit_size: 1
-    description: MSMON_MBWU
+    - name: CSU
+      bit_offset: 16
+      bit_size: 1
+      description: MSMON_CSU
+    - name: MBWU
+      bit_offset: 17
+      bit_size: 1
+      description: MSMON_MBWU
 fieldset/MMU_TBU_ME4_MPAMF_MSMON_IDR_S_HAS_LOCAL_CAPT:
   description: ''
   fields:
-  - name: EVNT
-    bit_offset: 31
-    bit_size: 1
+    - name: EVNT
+      bit_offset: 31
+      bit_size: 1
 fieldset/MMU_TBU_ME4_MPAMF_CSUMON_IDR_S_NUM:
   description: ''
   fields:
-  - name: MON
-    bit_offset: 0
-    bit_size: 16
-    description: NUM_MON
+    - name: MON
+      bit_offset: 0
+      bit_size: 16
+      description: NUM_MON
 fieldset/MMU_TBU_ME4_MPAMF_CSUMON_IDR_S_HAS:
   description: ''
   fields:
-  - name: CAPTURE
-    bit_offset: 31
-    bit_size: 1
-    description: HAS_CAPTURE
+    - name: CAPTURE
+      bit_offset: 31
+      bit_size: 1
+      description: HAS_CAPTURE
 fieldset/MMU_TBU_ME4_MPAMCFG_PART_SEL_S_PARTID:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 16
-    description: PARTID_SEL
+    - name: SEL
+      bit_offset: 0
+      bit_size: 16
+      description: PARTID_SEL
 fieldset/MMU_TBU_ME4_MPAMCFG_PART_SEL_S:
   description: ''
   fields:
-  - name: INTERNAL
-    bit_offset: 16
-    bit_size: 1
-    description: INTERNAL
-  - name: RIS
-    bit_offset: 24
-    bit_size: 4
-    description: RIS
+    - name: INTERNAL
+      bit_offset: 16
+      bit_size: 1
+      description: INTERNAL
+    - name: RIS
+      bit_offset: 24
+      bit_size: 4
+      description: RIS
 fieldset/MMU_TBU_ME4_MPAMCFG_CMAX_S:
   description: ''
   fields:
-  - name: CMAX
-    bit_offset: 0
-    bit_size: 16
-    description: CMAX
+    - name: CMAX
+      bit_offset: 0
+      bit_size: 16
+      description: CMAX
 fieldset/MMU_TBU_ME4_MSMON_CFG_SEL_S_MON:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 16
-    description: MON_SEL
+    - name: SEL
+      bit_offset: 0
+      bit_size: 16
+      description: MON_SEL
 fieldset/MMU_TBU_ME4_MSMON_CFG_SEL_S:
   description: ''
   fields:
-  - name: RIS
-    bit_offset: 24
-    bit_size: 4
-    description: MON_SEL
+    - name: RIS
+      bit_offset: 24
+      bit_size: 4
+      description: MON_SEL
 fieldset/MMU_TBU_ME4_MSMON_CAPT_EVNT_S:
   description: ''
   fields:
-  - name: NOW
-    bit_offset: 0
-    bit_size: 1
-    description: NOW
-  - name: ALL
-    bit_offset: 1
-    bit_size: 1
-    description: NOW
+    - name: NOW
+      bit_offset: 0
+      bit_size: 1
+      description: NOW
+    - name: ALL
+      bit_offset: 1
+      bit_size: 1
+      description: NOW
 fieldset/MMU_TBU_ME4_MSMON_CFG_CSU_FLT_S:
   description: ''
   fields:
-  - name: PARTID
-    bit_offset: 0
-    bit_size: 16
-    description: PARTID
-  - name: PMG
-    bit_offset: 16
-    bit_size: 8
-    description: PARTID
+    - name: PARTID
+      bit_offset: 0
+      bit_size: 16
+      description: PARTID
+    - name: PMG
+      bit_offset: 16
+      bit_size: 8
+      description: PARTID
 fieldset/MMU_TBU_ME4_MSMON_CFG_CSU_CTL_S:
   description: ''
   fields:
-  - name: TYPE
-    bit_offset: 0
-    bit_size: 8
-    description: TYPE
-  - name: SUBTYPE
-    bit_offset: 20
-    bit_size: 4
-    description: SUBTYPE
-  - name: EN
-    bit_offset: 31
-    bit_size: 1
-    description: EN
+    - name: TYPE
+      bit_offset: 0
+      bit_size: 8
+      description: TYPE
+    - name: SUBTYPE
+      bit_offset: 20
+      bit_size: 4
+      description: SUBTYPE
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+      description: EN
 fieldset/MMU_TBU_ME4_MSMON_CFG_CSU_CTL_S_MATCH:
   description: ''
   fields:
-  - name: PARTID
-    bit_offset: 16
-    bit_size: 1
-    description: TYPE
-  - name: PMG
-    bit_offset: 17
-    bit_size: 1
-    description: MATCH_PMG
+    - name: PARTID
+      bit_offset: 16
+      bit_size: 1
+      description: TYPE
+    - name: PMG
+      bit_offset: 17
+      bit_size: 1
+      description: MATCH_PMG
 fieldset/MMU_TBU_ME4_MSMON_CFG_CSU_CTL_S_OFLOW:
   description: ''
   fields:
-  - name: FRZ
-    bit_offset: 24
-    bit_size: 1
-    description: OFLOW_FRZ
-  - name: INTR
-    bit_offset: 25
-    bit_size: 1
-    description: OFLOW_INTR
-  - name: STATUS
-    bit_offset: 26
-    bit_size: 1
-    description: OFLOW_STATUS
+    - name: FRZ
+      bit_offset: 24
+      bit_size: 1
+      description: OFLOW_FRZ
+    - name: INTR
+      bit_offset: 25
+      bit_size: 1
+      description: OFLOW_INTR
+    - name: STATUS
+      bit_offset: 26
+      bit_size: 1
+      description: OFLOW_STATUS
 fieldset/MMU_TBU_ME4_MSMON_CFG_CSU_CTL_S_CAPT:
   description: ''
   fields:
-  - name: RESET
-    bit_offset: 27
-    bit_size: 1
-    description: CAPT_RESET
-  - name: EVNT
-    bit_offset: 28
-    bit_size: 3
-    description: CAPT_EVNT
+    - name: RESET
+      bit_offset: 27
+      bit_size: 1
+      description: CAPT_RESET
+    - name: EVNT
+      bit_offset: 28
+      bit_size: 3
+      description: CAPT_EVNT
 fieldset/MMU_TBU_ME4_MSMON_CSU_S:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 31
-    description: VALUE
-  - name: NRDY
-    bit_offset: 31
-    bit_size: 1
-    description: VALUE
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 31
+      description: VALUE
+    - name: NRDY
+      bit_offset: 31
+      bit_size: 1
+      description: VALUE
 fieldset/MMU_TBU_ME4_MSMON_CSU_CAPTURE_S:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 31
-    description: VALUE
-  - name: NRDY
-    bit_offset: 31
-    bit_size: 1
-    description: VALUE
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 31
+      description: VALUE
+    - name: NRDY
+      bit_offset: 31
+      bit_size: 1
+      description: VALUE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR0_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
-    description: COUNTER_VALUE
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
+      description: COUNTER_VALUE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR1_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
-    description: COUNTER_VALUE
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
+      description: COUNTER_VALUE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR2_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
-    description: COUNTER_VALUE
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
+      description: COUNTER_VALUE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR3_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
-    description: COUNTER_VALUE
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
+      description: COUNTER_VALUE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR4_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
-    description: COUNTER_VALUE
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
+      description: COUNTER_VALUE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR5_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
-    description: COUNTER_VALUE
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
+      description: COUNTER_VALUE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR6_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
-    description: COUNTER_VALUE
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
+      description: COUNTER_VALUE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR7_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
-    description: COUNTER_VALUE
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
+      description: COUNTER_VALUE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR8_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
-    description: COUNTER_VALUE
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
+      description: COUNTER_VALUE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR9_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
-    description: COUNTER_VALUE
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
+      description: COUNTER_VALUE
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR10_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR11_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR12_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR13_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR14_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_EVCNTR15_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR0_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR1_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR2_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR3_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR4_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR5_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR6_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR7_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR8_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR9_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR10_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR11_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR12_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR13_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR14_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_SVR15_SHADOW_COUNTER:
   description: ''
   fields:
-  - name: VALUE
-    bit_offset: 0
-    bit_size: 32
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
 fieldset/MMU_TBU_ME4_SMMU_PMCG_OVSCLR0:
   description: ''
   fields:
-  - name: OVS
-    bit_offset: 0
-    bit_size: 32
-    description: OVS
+    - name: OVS
+      bit_offset: 0
+      bit_size: 32
+      description: OVS
 fieldset/MMU_TBU_ME4_SMMU_PMCG_OVSSET0:
   description: ''
   fields:
-  - name: OVS
-    bit_offset: 0
-    bit_size: 32
-    description: OVS
+    - name: OVS
+      bit_offset: 0
+      bit_size: 32
+      description: OVS
 fieldset/MMU_TBU_ME4_SMMU_PMCG_CAPR:
   description: ''
   fields:
-  - name: CAPTURE
-    bit_offset: 0
-    bit_size: 1
-    description: CAPTURE
+    - name: CAPTURE
+      bit_offset: 0
+      bit_size: 1
+      description: CAPTURE

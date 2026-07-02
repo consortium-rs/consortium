@@ -1,96 +1,96 @@
 block/WWDG:
   description: ''
   items:
-  - name: CR
-    byte_offset: 0
-    description: Control register
-    fieldset: WWDG_CR
-  - name: CFR
-    byte_offset: 4
-    description: Configuration register
-    fieldset: WWDG_CFR
-  - name: SR
-    byte_offset: 8
-    description: Status register
-    fieldset: WWDG_SR
-  - name: HWCFGR
-    byte_offset: 1008
-    description: WWDG hardware configuration register
-    fieldset: WWDG_HWCFGR
-  - name: VERR
-    byte_offset: 1012
-    description: WWDG version register
-    fieldset: WWDG_VERR
-  - name: IPIDR
-    byte_offset: 1016
-    description: WWDG ID register
-    fieldset: WWDG_IPIDR
-  - name: SIDR
-    byte_offset: 1020
-    description: WWDG size ID register
-    fieldset: WWDG_SIDR
+    - name: CR
+      byte_offset: 0
+      description: Control register
+      fieldset: WWDG_CR
+    - name: CFR
+      byte_offset: 4
+      description: Configuration register
+      fieldset: WWDG_CFR
+    - name: SR
+      byte_offset: 8
+      description: Status register
+      fieldset: WWDG_SR
+    - name: HWCFGR
+      byte_offset: 1008
+      description: WWDG hardware configuration register
+      fieldset: WWDG_HWCFGR
+    - name: VERR
+      byte_offset: 1012
+      description: WWDG version register
+      fieldset: WWDG_VERR
+    - name: IPIDR
+      byte_offset: 1016
+      description: WWDG ID register
+      fieldset: WWDG_IPIDR
+    - name: SIDR
+      byte_offset: 1020
+      description: WWDG size ID register
+      fieldset: WWDG_SIDR
 fieldset/WWDG_CR:
   description: ''
   fields:
-  - name: T
-    bit_offset: 0
-    bit_size: 7
-    description: 7-bit counter (MSB to LSB)
-  - name: WDGA
-    bit_offset: 7
-    bit_size: 1
-    description: Activation bit
+    - name: T
+      bit_offset: 0
+      bit_size: 7
+      description: 7-bit counter (MSB to LSB)
+    - name: WDGA
+      bit_offset: 7
+      bit_size: 1
+      description: Activation bit
 fieldset/WWDG_CFR:
   description: ''
   fields:
-  - name: W
-    bit_offset: 0
-    bit_size: 7
-    description: 7-bit window value
-  - name: EWI
-    bit_offset: 9
-    bit_size: 1
-    description: Early wakeup interrupt
-  - name: WDGTB
-    bit_offset: 11
-    bit_size: 3
-    description: Timer base
+    - name: W
+      bit_offset: 0
+      bit_size: 7
+      description: 7-bit window value
+    - name: EWI
+      bit_offset: 9
+      bit_size: 1
+      description: Early wakeup interrupt
+    - name: WDGTB
+      bit_offset: 11
+      bit_size: 3
+      description: Timer base
 fieldset/WWDG_SR:
   description: ''
   fields:
-  - name: EWIF
-    bit_offset: 0
-    bit_size: 1
-    description: Early wakeup interrupt flag
+    - name: EWIF
+      bit_offset: 0
+      bit_size: 1
+      description: Early wakeup interrupt flag
 fieldset/WWDG_HWCFGR:
   description: ''
   fields:
-  - name: PREDIV
-    bit_offset: 0
-    bit_size: 16
-    description: The watchdog clock is prescaled by 4096 (PREDIV[15:0] + 1).
+    - name: PREDIV
+      bit_offset: 0
+      bit_size: 16
+      description: The watchdog clock is prescaled by 4096 (PREDIV[15:0] + 1).
 fieldset/WWDG_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: IP version minor revision info
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: IP version major revision info
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: IP version minor revision info
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: IP version major revision info
 fieldset/WWDG_IPIDR:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 32
-    description: WWDG peripheral identifier
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+      description: WWDG peripheral identifier
 fieldset/WWDG_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: The address decoding range is 1 Kbyte
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: The address decoding range is 1 Kbyte

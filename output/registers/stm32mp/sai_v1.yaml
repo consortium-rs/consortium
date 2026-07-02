@@ -1,128 +1,128 @@
 block/SAI:
   description: ''
   items:
-  - name: GCR
-    byte_offset: 0
-    description: SAI global configuration register
-    fieldset: SAI_GCR
-  - name: PDMCR
-    byte_offset: 68
-    description: SAI PDM control register
-    fieldset: SAI_PDMCR
-  - name: PDMDLY
-    byte_offset: 72
-    description: SAI PDM delay register
-    fieldset: SAI_PDMDLY
-  - name: HWCFGR
-    byte_offset: 1008
-    description: SAI HW Configuration register
-  - name: VERR
-    byte_offset: 1012
-    description: SAI Version register
-    fieldset: SAI_VERR
-  - name: IPIDR
-    byte_offset: 1016
-    description: SAI Identification register
-    fieldset: SAI_IPIDR
-  - name: SIDR
-    byte_offset: 1020
-    description: SAI Size Identification register
-    fieldset: SAI_SIDR
+    - name: GCR
+      byte_offset: 0
+      description: SAI global configuration register
+      fieldset: SAI_GCR
+    - name: PDMCR
+      byte_offset: 68
+      description: SAI PDM control register
+      fieldset: SAI_PDMCR
+    - name: PDMDLY
+      byte_offset: 72
+      description: SAI PDM delay register
+      fieldset: SAI_PDMDLY
+    - name: HWCFGR
+      byte_offset: 1008
+      description: SAI HW Configuration register
+    - name: VERR
+      byte_offset: 1012
+      description: SAI Version register
+      fieldset: SAI_VERR
+    - name: IPIDR
+      byte_offset: 1016
+      description: SAI Identification register
+      fieldset: SAI_IPIDR
+    - name: SIDR
+      byte_offset: 1020
+      description: SAI Size Identification register
+      fieldset: SAI_SIDR
 fieldset/SAI_GCR:
   description: ''
   fields:
-  - name: SYNCIN
-    bit_offset: 0
-    bit_size: 2
-    description: SYNCIN[1:0] bits (Synchronization Inputs)
-  - name: SYNCOUT
-    bit_offset: 4
-    bit_size: 2
-    description: SYNCOUT[1:0] bits (Synchronization Outputs)
+    - name: SYNCIN
+      bit_offset: 0
+      bit_size: 2
+      description: SYNCIN[1:0] bits (Synchronization Inputs)
+    - name: SYNCOUT
+      bit_offset: 4
+      bit_size: 2
+      description: SYNCOUT[1:0] bits (Synchronization Outputs)
 fieldset/SAI_PDMCR:
   description: ''
   fields:
-  - name: PDMEN
-    bit_offset: 0
-    bit_size: 1
-    description: PDM Enable
-  - name: MICNBR
-    bit_offset: 4
-    bit_size: 2
-    description: Number of microphones
-  - name: CKEN1
-    bit_offset: 8
-    bit_size: 1
-    description: Clock enable of bitstream clock number 1
-  - name: CKEN2
-    bit_offset: 9
-    bit_size: 1
-    description: Clock enable of bitstream clock number 2
-  - name: CKEN3
-    bit_offset: 10
-    bit_size: 1
-    description: Clock enable of bitstream clock number 3
-  - name: CKEN4
-    bit_offset: 11
-    bit_size: 1
-    description: Clock enable of bitstream clock number 4
+    - name: PDMEN
+      bit_offset: 0
+      bit_size: 1
+      description: PDM Enable
+    - name: MICNBR
+      bit_offset: 4
+      bit_size: 2
+      description: Number of microphones
+    - name: CKEN1
+      bit_offset: 8
+      bit_size: 1
+      description: Clock enable of bitstream clock number 1
+    - name: CKEN2
+      bit_offset: 9
+      bit_size: 1
+      description: Clock enable of bitstream clock number 2
+    - name: CKEN3
+      bit_offset: 10
+      bit_size: 1
+      description: Clock enable of bitstream clock number 3
+    - name: CKEN4
+      bit_offset: 11
+      bit_size: 1
+      description: Clock enable of bitstream clock number 4
 fieldset/SAI_PDMDLY:
   description: ''
   fields:
-  - name: DLYM1L
-    bit_offset: 0
-    bit_size: 3
-    description: DLYM1L[2:0] (Delay line adjust for left microphone of pair 1)
-  - name: DLYM1R
-    bit_offset: 4
-    bit_size: 3
-    description: DLYM1R[2:0] (Delay line adjust for right microphone of pair 1)
-  - name: DLYM2L
-    bit_offset: 8
-    bit_size: 3
-    description: DLYM2L[2:0] (Delay line adjust for left microphone of pair 2)
-  - name: DLYM2R
-    bit_offset: 12
-    bit_size: 3
-    description: DLYM2R[2:0] (Delay line adjust for right microphone of pair 2)
-  - name: DLYM3L
-    bit_offset: 16
-    bit_size: 3
-    description: DLYM3L[2:0] (Delay line adjust for left microphone of pair 3)
-  - name: DLYM3R
-    bit_offset: 20
-    bit_size: 3
-    description: DLYM3R[2:0] (Delay line adjust for right microphone of pair 3)
-  - name: DLYM4L
-    bit_offset: 24
-    bit_size: 3
-    description: DLYM4L[2:0] (Delay line adjust for left microphone of pair 4)
-  - name: DLYM4R
-    bit_offset: 28
-    bit_size: 3
-    description: DLYM4R[2:0] (Delay line adjust for right microphone of pair 4)
+    - name: DLYM1L
+      bit_offset: 0
+      bit_size: 3
+      description: DLYM1L[2:0] (Delay line adjust for left microphone of pair 1)
+    - name: DLYM1R
+      bit_offset: 4
+      bit_size: 3
+      description: DLYM1R[2:0] (Delay line adjust for right microphone of pair 1)
+    - name: DLYM2L
+      bit_offset: 8
+      bit_size: 3
+      description: DLYM2L[2:0] (Delay line adjust for left microphone of pair 2)
+    - name: DLYM2R
+      bit_offset: 12
+      bit_size: 3
+      description: DLYM2R[2:0] (Delay line adjust for right microphone of pair 2)
+    - name: DLYM3L
+      bit_offset: 16
+      bit_size: 3
+      description: DLYM3L[2:0] (Delay line adjust for left microphone of pair 3)
+    - name: DLYM3R
+      bit_offset: 20
+      bit_size: 3
+      description: DLYM3R[2:0] (Delay line adjust for right microphone of pair 3)
+    - name: DLYM4L
+      bit_offset: 24
+      bit_size: 3
+      description: DLYM4L[2:0] (Delay line adjust for left microphone of pair 4)
+    - name: DLYM4R
+      bit_offset: 28
+      bit_size: 3
+      description: DLYM4R[2:0] (Delay line adjust for right microphone of pair 4)
 fieldset/SAI_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: Minor Revision number
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: Major Revision number
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: Minor Revision number
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: Major Revision number
 fieldset/SAI_IPIDR:
   description: ''
   fields:
-  - name: IPID
-    bit_offset: 0
-    bit_size: 32
-    description: IP Identification
+    - name: IPID
+      bit_offset: 0
+      bit_size: 32
+      description: IP Identification
 fieldset/SAI_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: IP size identification
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: IP size identification

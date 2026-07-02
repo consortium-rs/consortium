@@ -1,46 +1,46 @@
 block/DF:
   description: ''
   items:
-  - name: NEO_PIPE2_DF_CONF_CTRL_CAM
-    byte_offset: 0
-  - name: NEO_PIPE2_DF_CONF_TH_SCALE_CAM
-    byte_offset: 4
-  - name: NEO_PIPE2_DF_CONF_BLEND_SHIFT_CAM
-    byte_offset: 8
-  - name: NEO_PIPE2_DF_CONF_BLEND_TH0_CAM
-    byte_offset: 12
-  - name: NEO_PIPE2_DF_CONF_EDGECNT_CAM
-    byte_offset: 16
+    - name: NEO_PIPE2_DF_CONF_CTRL_CAM
+      byte_offset: 0
+    - name: NEO_PIPE2_DF_CONF_TH_SCALE_CAM
+      byte_offset: 4
+    - name: NEO_PIPE2_DF_CONF_BLEND_SHIFT_CAM
+      byte_offset: 8
+    - name: NEO_PIPE2_DF_CONF_BLEND_TH0_CAM
+      byte_offset: 12
+    - name: NEO_PIPE2_DF_CONF_EDGECNT_CAM
+      byte_offset: 16
 fieldset/DF_CTRL_CAM:
   description: ''
   fields:
-  - name: DEBUG
-    bit_offset: 8
-    bit_size: 3
-  - name: ENABLE
-    bit_offset: 31
-    bit_size: 1
+    - name: DEBUG
+      bit_offset: 8
+      bit_size: 3
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
 fieldset/DF_TH_SCALE_CAM:
   description: ''
   fields:
-  - name: SCALE
-    bit_offset: 0
-    bit_size: 20
+    - name: SCALE
+      bit_offset: 0
+      bit_size: 20
 fieldset/DF_BLEND_SHIFT_CAM:
   description: ''
   fields:
-  - name: SHIFT
-    bit_offset: 0
-    bit_size: 6
+    - name: SHIFT
+      bit_offset: 0
+      bit_size: 6
 fieldset/DF_BLEND_TH0_CAM:
   description: ''
   fields:
-  - name: TH
-    bit_offset: 0
-    bit_size: 20
+    - name: TH
+      bit_offset: 0
+      bit_size: 20
 fieldset/DF_EDGECNT_CAM_EDGE:
   description: ''
   fields:
-  - name: PIXELS
-    bit_offset: 0
-    bit_size: 24
+    - name: PIXELS
+      bit_offset: 0
+      bit_size: 24

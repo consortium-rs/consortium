@@ -1,148 +1,148 @@
 block/PKA:
   description: ''
   items:
-  - name: CR
-    byte_offset: 0
-    description: PKA control register
-    fieldset: PKA_CR
-  - name: SR
-    byte_offset: 4
-    description: PKA status register
-    fieldset: PKA_SR
-  - name: CLRFR
-    byte_offset: 8
-    description: PKA clear flag register
-    fieldset: PKA_CLRFR
-  - name: HWCFGR
-    byte_offset: 8176
-    description: PKA hardware configuration register
-    fieldset: PKA_HWCFGR
-  - name: VERR
-    byte_offset: 8180
-    description: PKA version register
-    fieldset: PKA_VERR
-  - name: IPIDR
-    byte_offset: 8184
-    description: PKA identification register
-    fieldset: PKA_IPIDR
-  - name: SIDR
-    byte_offset: 8188
-    description: PKA size ID register
-    fieldset: PKA_SIDR
+    - name: CR
+      byte_offset: 0
+      description: PKA control register
+      fieldset: PKA_CR
+    - name: SR
+      byte_offset: 4
+      description: PKA status register
+      fieldset: PKA_SR
+    - name: CLRFR
+      byte_offset: 8
+      description: PKA clear flag register
+      fieldset: PKA_CLRFR
+    - name: HWCFGR
+      byte_offset: 8176
+      description: PKA hardware configuration register
+      fieldset: PKA_HWCFGR
+    - name: VERR
+      byte_offset: 8180
+      description: PKA version register
+      fieldset: PKA_VERR
+    - name: IPIDR
+      byte_offset: 8184
+      description: PKA identification register
+      fieldset: PKA_IPIDR
+    - name: SIDR
+      byte_offset: 8188
+      description: PKA size ID register
+      fieldset: PKA_SIDR
 fieldset/PKA_CR:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
-    description: PKA enable
-  - name: START
-    bit_offset: 1
-    bit_size: 1
-    description: Start operation
-  - name: MODE
-    bit_offset: 8
-    bit_size: 6
-    description: MODE[5:0] PKA operation code
-  - name: PROCENDIE
-    bit_offset: 17
-    bit_size: 1
-    description: End of operation interrupt enable
-  - name: RAMERRIE
-    bit_offset: 19
-    bit_size: 1
-    description: RAM error interrupt enable
-  - name: ADDRERRIE
-    bit_offset: 20
-    bit_size: 1
-    description: addr error interrupt enable
-  - name: OPERRIE
-    bit_offset: 21
-    bit_size: 1
-    description: oper error interrupt enable
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+      description: PKA enable
+    - name: START
+      bit_offset: 1
+      bit_size: 1
+      description: Start operation
+    - name: MODE
+      bit_offset: 8
+      bit_size: 6
+      description: MODE[5:0] PKA operation code
+    - name: PROCENDIE
+      bit_offset: 17
+      bit_size: 1
+      description: End of operation interrupt enable
+    - name: RAMERRIE
+      bit_offset: 19
+      bit_size: 1
+      description: RAM error interrupt enable
+    - name: ADDRERRIE
+      bit_offset: 20
+      bit_size: 1
+      description: addr error interrupt enable
+    - name: OPERRIE
+      bit_offset: 21
+      bit_size: 1
+      description: oper error interrupt enable
 fieldset/PKA_SR:
   description: ''
   fields:
-  - name: INITOK
-    bit_offset: 0
-    bit_size: 1
-    description: init ok
-  - name: LMF
-    bit_offset: 1
-    bit_size: 1
-    description: Limited mode flag
-  - name: BUSY
-    bit_offset: 16
-    bit_size: 1
-    description: PKA operation is in progress
-  - name: PROCENDF
-    bit_offset: 17
-    bit_size: 1
-    description: PKA end of operation flag
-  - name: RAMERRF
-    bit_offset: 19
-    bit_size: 1
-    description: PKA RAM error flag
-  - name: ADDRERRF
-    bit_offset: 20
-    bit_size: 1
-    description: Address error flag
-  - name: OPERRF
-    bit_offset: 21
-    bit_size: 1
-    description: Operation error flag
+    - name: INITOK
+      bit_offset: 0
+      bit_size: 1
+      description: init ok
+    - name: LMF
+      bit_offset: 1
+      bit_size: 1
+      description: Limited mode flag
+    - name: BUSY
+      bit_offset: 16
+      bit_size: 1
+      description: PKA operation is in progress
+    - name: PROCENDF
+      bit_offset: 17
+      bit_size: 1
+      description: PKA end of operation flag
+    - name: RAMERRF
+      bit_offset: 19
+      bit_size: 1
+      description: PKA RAM error flag
+    - name: ADDRERRF
+      bit_offset: 20
+      bit_size: 1
+      description: Address error flag
+    - name: OPERRF
+      bit_offset: 21
+      bit_size: 1
+      description: Operation error flag
 fieldset/PKA_CLRFR:
   description: ''
   fields:
-  - name: PROCENDFC
-    bit_offset: 17
-    bit_size: 1
-    description: Clear PKA end of operation flag
-  - name: RAMERRFC
-    bit_offset: 19
-    bit_size: 1
-    description: Clear PKA RAM error flag
-  - name: ADDRERRFC
-    bit_offset: 20
-    bit_size: 1
-    description: Clear address error flag
-  - name: OPERRFC
-    bit_offset: 21
-    bit_size: 1
-    description: Clear operation error flag
+    - name: PROCENDFC
+      bit_offset: 17
+      bit_size: 1
+      description: Clear PKA end of operation flag
+    - name: RAMERRFC
+      bit_offset: 19
+      bit_size: 1
+      description: Clear PKA RAM error flag
+    - name: ADDRERRFC
+      bit_offset: 20
+      bit_size: 1
+      description: Clear address error flag
+    - name: OPERRFC
+      bit_offset: 21
+      bit_size: 1
+      description: Clear operation error flag
 fieldset/PKA_HWCFGR:
   description: ''
   fields:
-  - name: CFG1
-    bit_offset: 0
-    bit_size: 3
-    description: '0x00000004'
-  - name: CFG2
-    bit_offset: 4
-    bit_size: 3
-    description: '0x00000040'
+    - name: CFG1
+      bit_offset: 0
+      bit_size: 3
+      description: '0x00000004'
+    - name: CFG2
+      bit_offset: 4
+      bit_size: 3
+      description: '0x00000040'
 fieldset/PKA_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 3
-    description: '0x00000004'
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 3
-    description: '0x00000040'
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 3
+      description: '0x00000004'
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 3
+      description: '0x00000040'
 fieldset/PKA_IPIDR:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 32
-    description: '0xFFFFFFFF'
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+      description: '0xFFFFFFFF'
 fieldset/PKA_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: Size identification code
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: Size identification code

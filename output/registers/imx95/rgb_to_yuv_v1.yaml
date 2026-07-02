@@ -1,95 +1,95 @@
 block/RGB_TO_YUV:
   description: ''
   items:
-  - name: NEO_PIPE2_CSC_CONF_GAIN_CTRL_CAM
-    byte_offset: 0
-  - name: NEO_PIPE2_CSC_CONF_MAT0_CAM
-    byte_offset: 4
-  - name: NEO_PIPE2_CSC_CONF_MAT1_CAM
-    byte_offset: 8
-  - name: NEO_PIPE2_CSC_CONF_MAT2_CAM
-    byte_offset: 12
-  - name: NEO_PIPE2_CSC_CONF_MAT3_CAM
-    byte_offset: 16
-  - name: NEO_PIPE2_CSC_CONF_MAT4_CAM
-    byte_offset: 20
-  - name: NEO_PIPE2_CSC_CONF_MAT5_CAM
-    byte_offset: 24
-  - name: NEO_PIPE2_CSC_CONF_OFFSET0_CAM
-    byte_offset: 32
-  - name: NEO_PIPE2_CSC_CONF_OFFSET1_CAM
-    byte_offset: 36
-  - name: NEO_PIPE2_CSC_CONF_OFFSET2_CAM
-    byte_offset: 40
+    - name: NEO_PIPE2_CSC_CONF_GAIN_CTRL_CAM
+      byte_offset: 0
+    - name: NEO_PIPE2_CSC_CONF_MAT0_CAM
+      byte_offset: 4
+    - name: NEO_PIPE2_CSC_CONF_MAT1_CAM
+      byte_offset: 8
+    - name: NEO_PIPE2_CSC_CONF_MAT2_CAM
+      byte_offset: 12
+    - name: NEO_PIPE2_CSC_CONF_MAT3_CAM
+      byte_offset: 16
+    - name: NEO_PIPE2_CSC_CONF_MAT4_CAM
+      byte_offset: 20
+    - name: NEO_PIPE2_CSC_CONF_MAT5_CAM
+      byte_offset: 24
+    - name: NEO_PIPE2_CSC_CONF_OFFSET0_CAM
+      byte_offset: 32
+    - name: NEO_PIPE2_CSC_CONF_OFFSET1_CAM
+      byte_offset: 36
+    - name: NEO_PIPE2_CSC_CONF_OFFSET2_CAM
+      byte_offset: 40
 fieldset/RGB_TO_YUV_GAIN_CTRL_CAM:
   description: ''
   fields:
-  - name: RGAIN
-    bit_offset: 0
-    bit_size: 16
-  - name: BGAIN
-    bit_offset: 16
-    bit_size: 16
+    - name: RGAIN
+      bit_offset: 0
+      bit_size: 16
+    - name: BGAIN
+      bit_offset: 16
+      bit_size: 16
 fieldset/RGB_TO_YUV_MAT0_CAM:
   description: ''
   fields:
-  - name: R0C0
-    bit_offset: 0
-    bit_size: 16
-  - name: R0C1
-    bit_offset: 16
-    bit_size: 16
+    - name: R0C0
+      bit_offset: 0
+      bit_size: 16
+    - name: R0C1
+      bit_offset: 16
+      bit_size: 16
 fieldset/RGB_TO_YUV_MAT1_CAM:
   description: ''
   fields:
-  - name: R0C2
-    bit_offset: 0
-    bit_size: 16
+    - name: R0C2
+      bit_offset: 0
+      bit_size: 16
 fieldset/RGB_TO_YUV_MAT2_CAM:
   description: ''
   fields:
-  - name: R1C0
-    bit_offset: 0
-    bit_size: 16
-  - name: R1C1
-    bit_offset: 16
-    bit_size: 16
+    - name: R1C0
+      bit_offset: 0
+      bit_size: 16
+    - name: R1C1
+      bit_offset: 16
+      bit_size: 16
 fieldset/RGB_TO_YUV_MAT3_CAM:
   description: ''
   fields:
-  - name: R1C2
-    bit_offset: 0
-    bit_size: 16
+    - name: R1C2
+      bit_offset: 0
+      bit_size: 16
 fieldset/RGB_TO_YUV_MAT4_CAM:
   description: ''
   fields:
-  - name: R2C0
-    bit_offset: 0
-    bit_size: 16
-  - name: R2C1
-    bit_offset: 16
-    bit_size: 16
+    - name: R2C0
+      bit_offset: 0
+      bit_size: 16
+    - name: R2C1
+      bit_offset: 16
+      bit_size: 16
 fieldset/RGB_TO_YUV_MAT5_CAM:
   description: ''
   fields:
-  - name: R2C2
-    bit_offset: 0
-    bit_size: 16
+    - name: R2C2
+      bit_offset: 0
+      bit_size: 16
 fieldset/RGB_TO_YUV_OFFSET0_CAM:
   description: ''
   fields:
-  - name: OFFSET
-    bit_offset: 0
-    bit_size: 21
+    - name: OFFSET
+      bit_offset: 0
+      bit_size: 21
 fieldset/RGB_TO_YUV_OFFSET1_CAM:
   description: ''
   fields:
-  - name: OFFSET
-    bit_offset: 0
-    bit_size: 21
+    - name: OFFSET
+      bit_offset: 0
+      bit_size: 21
 fieldset/RGB_TO_YUV_OFFSET2_CAM:
   description: ''
   fields:
-  - name: OFFSET
-    bit_offset: 0
-    bit_size: 21
+    - name: OFFSET
+      bit_offset: 0
+      bit_size: 21

@@ -1,48 +1,48 @@
 block/VPU_BLK_CTRL_VPUMIX:
   description: ''
   items:
-  - name: VPU_STATUS
-    byte_offset: 0
-  - name: INIT_PENDING_TX
-    byte_offset: 4
-  - name: CLOCK_GATING_CONTROL
-    byte_offset: 8
+    - name: VPU_STATUS
+      byte_offset: 0
+    - name: INIT_PENDING_TX
+      byte_offset: 4
+    - name: CLOCK_GATING_CONTROL
+      byte_offset: 8
 fieldset/VPU_BLK_CTRL_VPUMIX_VPU_STATUS_VPU:
   description: ''
   fields:
-  - name: IDLE
-    bit_offset: 0
-    bit_size: 1
+    - name: IDLE
+      bit_offset: 0
+      bit_size: 1
 fieldset/VPU_BLK_CTRL_VPUMIX_INIT_PENDING_TX_VPU:
   description: ''
   fields:
-  - name: Primary
-    bit_offset: 0
-    bit_size: 1
-  - name: Secondary
-    bit_offset: 1
-    bit_size: 1
+    - name: Primary
+      bit_offset: 0
+      bit_size: 1
+    - name: Secondary
+      bit_offset: 1
+      bit_size: 1
 fieldset/VPU_BLK_CTRL_VPUMIX_INIT_PENDING_TX_JPEG:
   description: ''
   fields:
-  - name: Encode
-    bit_offset: 2
-    bit_size: 1
-  - name: Decode
-    bit_offset: 3
-    bit_size: 1
+    - name: Encode
+      bit_offset: 2
+      bit_size: 1
+    - name: Decode
+      bit_offset: 3
+      bit_size: 1
 fieldset/VPU_BLK_CTRL_VPUMIX_CLOCK_GATING_CONTROL_Wave:
   description: ''
   fields:
-  - name: VPU
-    bit_offset: 0
-    bit_size: 1
+    - name: VPU
+      bit_offset: 0
+      bit_size: 1
 fieldset/VPU_BLK_CTRL_VPUMIX_CLOCK_GATING_CONTROL_JPEG:
   description: ''
   fields:
-  - name: ENC
-    bit_offset: 1
-    bit_size: 1
-  - name: DEC
-    bit_offset: 2
-    bit_size: 1
+    - name: ENC
+      bit_offset: 1
+      bit_size: 1
+    - name: DEC
+      bit_offset: 2
+      bit_size: 1

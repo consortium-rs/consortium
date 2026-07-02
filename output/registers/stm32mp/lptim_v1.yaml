@@ -1,477 +1,477 @@
 block/LPTIM:
   description: ''
   items:
-  - name: ISR
-    byte_offset: 0
-    description: LPTIM interrupt and status register
-    fieldset: LPTIM_ISR
-  - name: ICR
-    byte_offset: 4
-    description: LPTIM interrupt clear register
-    fieldset: LPTIM_ICR
-  - name: DIER
-    byte_offset: 8
-    description: LPTIM interrupt enable register
-    fieldset: LPTIM_DIER
-  - name: CFGR
-    byte_offset: 12
-    description: LPTIM configuration register
-    fieldset: LPTIM_CFGR
-  - name: CR
-    byte_offset: 16
-    description: LPTIM control register
-    fieldset: LPTIM_CR
-  - name: CCR1
-    byte_offset: 20
-    description: LPTIM compare register 1
-    fieldset: LPTIM_CCR1
-  - name: ARR
-    byte_offset: 24
-    description: LPTIM autoreload register
-    fieldset: LPTIM_ARR
-  - name: CNT
-    byte_offset: 28
-    description: LPTIM counter register
-    fieldset: LPTIM_CNT
-  - name: OR
-    byte_offset: 32
-    description: LPTIM1 option register
-  - name: CFGR2
-    byte_offset: 36
-    description: LPTIM configuration register 2
-    fieldset: LPTIM_CFGR2
-  - name: RCR
-    byte_offset: 40
-    description: LPTIM repetition register
-    fieldset: LPTIM_RCR
-  - name: CCMR1
-    byte_offset: 44
-    description: LPTIM capture/compare mode register 1
-    fieldset: LPTIM_CCMR1
-  - name: CCR2
-    byte_offset: 52
-    description: LPTIM compare register 2
-    fieldset: LPTIM_CCR2
-  - name: HWCFGR2
-    byte_offset: 1004
-    description: LPTIM peripheral hardware configuration register 2
-    fieldset: LPTIM_HWCFGR2
-  - name: HWCFGR1
-    byte_offset: 1008
-    description: LPTIM peripheral hardware configuration register 1
-    fieldset: LPTIM_HWCFGR1
-  - name: VERR
-    byte_offset: 1012
-    description: LPTIM peripheral version identification register
-    fieldset: LPTIM_VERR
-  - name: PIDR
-    byte_offset: 1016
-    description: LPTIM peripheral type identification register
-  - name: SIDR
-    byte_offset: 1020
-    description: LPTIM registers map size identification register
+    - name: ISR
+      byte_offset: 0
+      description: LPTIM interrupt and status register
+      fieldset: LPTIM_ISR
+    - name: ICR
+      byte_offset: 4
+      description: LPTIM interrupt clear register
+      fieldset: LPTIM_ICR
+    - name: DIER
+      byte_offset: 8
+      description: LPTIM interrupt enable register
+      fieldset: LPTIM_DIER
+    - name: CFGR
+      byte_offset: 12
+      description: LPTIM configuration register
+      fieldset: LPTIM_CFGR
+    - name: CR
+      byte_offset: 16
+      description: LPTIM control register
+      fieldset: LPTIM_CR
+    - name: CCR1
+      byte_offset: 20
+      description: LPTIM compare register 1
+      fieldset: LPTIM_CCR1
+    - name: ARR
+      byte_offset: 24
+      description: LPTIM autoreload register
+      fieldset: LPTIM_ARR
+    - name: CNT
+      byte_offset: 28
+      description: LPTIM counter register
+      fieldset: LPTIM_CNT
+    - name: OR
+      byte_offset: 32
+      description: LPTIM1 option register
+    - name: CFGR2
+      byte_offset: 36
+      description: LPTIM configuration register 2
+      fieldset: LPTIM_CFGR2
+    - name: RCR
+      byte_offset: 40
+      description: LPTIM repetition register
+      fieldset: LPTIM_RCR
+    - name: CCMR1
+      byte_offset: 44
+      description: LPTIM capture/compare mode register 1
+      fieldset: LPTIM_CCMR1
+    - name: CCR2
+      byte_offset: 52
+      description: LPTIM compare register 2
+      fieldset: LPTIM_CCR2
+    - name: HWCFGR2
+      byte_offset: 1004
+      description: LPTIM peripheral hardware configuration register 2
+      fieldset: LPTIM_HWCFGR2
+    - name: HWCFGR1
+      byte_offset: 1008
+      description: LPTIM peripheral hardware configuration register 1
+      fieldset: LPTIM_HWCFGR1
+    - name: VERR
+      byte_offset: 1012
+      description: LPTIM peripheral version identification register
+      fieldset: LPTIM_VERR
+    - name: PIDR
+      byte_offset: 1016
+      description: LPTIM peripheral type identification register
+    - name: SIDR
+      byte_offset: 1020
+      description: LPTIM registers map size identification register
 fieldset/LPTIM_ISR:
   description: ''
   fields:
-  - name: CC1IF
-    bit_offset: 0
-    bit_size: 1
-    description: Capture/Compare 1 interrupt flag
-  - name: ARRM
-    bit_offset: 1
-    bit_size: 1
-    description: Autoreload match
-  - name: EXTTRIG
-    bit_offset: 2
-    bit_size: 1
-    description: External trigger edge event
-  - name: CMP1OK
-    bit_offset: 3
-    bit_size: 1
-    description: Compare register 1 update OK
-  - name: ARROK
-    bit_offset: 4
-    bit_size: 1
-    description: Autoreload register update OK
-  - name: UP
-    bit_offset: 5
-    bit_size: 1
-    description: Counter direction change down to up
-  - name: DOWN
-    bit_offset: 6
-    bit_size: 1
-    description: Counter direction change up to down
-  - name: UE
-    bit_offset: 7
-    bit_size: 1
-    description: LPTIM update event occurred
-  - name: REPOK
-    bit_offset: 8
-    bit_size: 1
-    description: Repetition register update OK
-  - name: CC2IF
-    bit_offset: 9
-    bit_size: 1
-    description: Capture/Compare 2 interrupt flag
-  - name: CC1OF
-    bit_offset: 12
-    bit_size: 1
-    description: Capture 1 over-capture flag
-  - name: CC2OF
-    bit_offset: 13
-    bit_size: 1
-    description: Capture 2 over-capture flag
-  - name: CMP2OK
-    bit_offset: 19
-    bit_size: 1
-    description: Compare register 2 update OK
-  - name: DIEROK
-    bit_offset: 24
-    bit_size: 1
-    description: Interrupt enable register update OK
+    - name: CC1IF
+      bit_offset: 0
+      bit_size: 1
+      description: Capture/Compare 1 interrupt flag
+    - name: ARRM
+      bit_offset: 1
+      bit_size: 1
+      description: Autoreload match
+    - name: EXTTRIG
+      bit_offset: 2
+      bit_size: 1
+      description: External trigger edge event
+    - name: CMP1OK
+      bit_offset: 3
+      bit_size: 1
+      description: Compare register 1 update OK
+    - name: ARROK
+      bit_offset: 4
+      bit_size: 1
+      description: Autoreload register update OK
+    - name: UP
+      bit_offset: 5
+      bit_size: 1
+      description: Counter direction change down to up
+    - name: DOWN
+      bit_offset: 6
+      bit_size: 1
+      description: Counter direction change up to down
+    - name: UE
+      bit_offset: 7
+      bit_size: 1
+      description: LPTIM update event occurred
+    - name: REPOK
+      bit_offset: 8
+      bit_size: 1
+      description: Repetition register update OK
+    - name: CC2IF
+      bit_offset: 9
+      bit_size: 1
+      description: Capture/Compare 2 interrupt flag
+    - name: CC1OF
+      bit_offset: 12
+      bit_size: 1
+      description: Capture 1 over-capture flag
+    - name: CC2OF
+      bit_offset: 13
+      bit_size: 1
+      description: Capture 2 over-capture flag
+    - name: CMP2OK
+      bit_offset: 19
+      bit_size: 1
+      description: Compare register 2 update OK
+    - name: DIEROK
+      bit_offset: 24
+      bit_size: 1
+      description: Interrupt enable register update OK
 fieldset/LPTIM_ICR:
   description: ''
   fields:
-  - name: CC1CF
-    bit_offset: 0
-    bit_size: 1
-    description: Capture/compare 1 clear flag
-  - name: ARRMCF
-    bit_offset: 1
-    bit_size: 1
-    description: Autoreload match clear flag
-  - name: EXTTRIGCF
-    bit_offset: 2
-    bit_size: 1
-    description: External trigger valid edge clear flag
-  - name: CMP1OKCF
-    bit_offset: 3
-    bit_size: 1
-    description: Compare register 1 update OK clear flag
-  - name: ARROKCF
-    bit_offset: 4
-    bit_size: 1
-    description: Autoreload register update OK clear flag
-  - name: UPCF
-    bit_offset: 5
-    bit_size: 1
-    description: Direction change to UP clear flag
-  - name: DOWNCF
-    bit_offset: 6
-    bit_size: 1
-    description: Direction change to down clear flag
-  - name: UECF
-    bit_offset: 7
-    bit_size: 1
-    description: Update event clear flag
-  - name: REPOKCF
-    bit_offset: 8
-    bit_size: 1
-    description: Repetition register update OK clear flag
-  - name: CC2CF
-    bit_offset: 9
-    bit_size: 1
-    description: Capture/compare 2 clear flag
-  - name: CC1OCF
-    bit_offset: 12
-    bit_size: 1
-    description: Capture/compare 1 over-capture clear flag
-  - name: CC2OCF
-    bit_offset: 13
-    bit_size: 1
-    description: Capture/compare 2 over-capture clear flag
-  - name: CMP2OKCF
-    bit_offset: 19
-    bit_size: 1
-    description: Compare register 2 update OK clear flag
-  - name: DIEROKCF
-    bit_offset: 24
-    bit_size: 1
-    description: Interrupt enable register update OK clear flag
+    - name: CC1CF
+      bit_offset: 0
+      bit_size: 1
+      description: Capture/compare 1 clear flag
+    - name: ARRMCF
+      bit_offset: 1
+      bit_size: 1
+      description: Autoreload match clear flag
+    - name: EXTTRIGCF
+      bit_offset: 2
+      bit_size: 1
+      description: External trigger valid edge clear flag
+    - name: CMP1OKCF
+      bit_offset: 3
+      bit_size: 1
+      description: Compare register 1 update OK clear flag
+    - name: ARROKCF
+      bit_offset: 4
+      bit_size: 1
+      description: Autoreload register update OK clear flag
+    - name: UPCF
+      bit_offset: 5
+      bit_size: 1
+      description: Direction change to UP clear flag
+    - name: DOWNCF
+      bit_offset: 6
+      bit_size: 1
+      description: Direction change to down clear flag
+    - name: UECF
+      bit_offset: 7
+      bit_size: 1
+      description: Update event clear flag
+    - name: REPOKCF
+      bit_offset: 8
+      bit_size: 1
+      description: Repetition register update OK clear flag
+    - name: CC2CF
+      bit_offset: 9
+      bit_size: 1
+      description: Capture/compare 2 clear flag
+    - name: CC1OCF
+      bit_offset: 12
+      bit_size: 1
+      description: Capture/compare 1 over-capture clear flag
+    - name: CC2OCF
+      bit_offset: 13
+      bit_size: 1
+      description: Capture/compare 2 over-capture clear flag
+    - name: CMP2OKCF
+      bit_offset: 19
+      bit_size: 1
+      description: Compare register 2 update OK clear flag
+    - name: DIEROKCF
+      bit_offset: 24
+      bit_size: 1
+      description: Interrupt enable register update OK clear flag
 fieldset/LPTIM_DIER:
   description: ''
   fields:
-  - name: CC1IE
-    bit_offset: 0
-    bit_size: 1
-    description: Capture/compare 1 interrupt enable
-  - name: ARRMIE
-    bit_offset: 1
-    bit_size: 1
-    description: Autoreload match Interrupt Enable
-  - name: EXTTRIGIE
-    bit_offset: 2
-    bit_size: 1
-    description: External trigger valid edge Interrupt Enable
-  - name: CMP1OKIE
-    bit_offset: 3
-    bit_size: 1
-    description: Compare register 1 update OK interrupt enable
-  - name: ARROKIE
-    bit_offset: 4
-    bit_size: 1
-    description: Autoreload register update OK Interrupt Enable
-  - name: UPIE
-    bit_offset: 5
-    bit_size: 1
-    description: Direction change to UP Interrupt Enable
-  - name: DOWNIE
-    bit_offset: 6
-    bit_size: 1
-    description: Direction change to down Interrupt Enable
-  - name: UEIE
-    bit_offset: 7
-    bit_size: 1
-    description: Update event interrupt enable
-  - name: REPOKIE
-    bit_offset: 8
-    bit_size: 1
-    description: Repetition register update OK interrupt Enable
-  - name: CC2IE
-    bit_offset: 9
-    bit_size: 1
-    description: Capture/compare 2 interrupt enable
-  - name: CC1OIE
-    bit_offset: 12
-    bit_size: 1
-    description: Capture/compare 1 over-capture interrupt enable
-  - name: CC2OIE
-    bit_offset: 13
-    bit_size: 1
-    description: Capture/compare 2 over-capture interrupt enable
-  - name: CC1DE
-    bit_offset: 16
-    bit_size: 1
-    description: Capture/compare 1 DMA request enable
-  - name: CMP2OKIE
-    bit_offset: 19
-    bit_size: 1
-    description: Compare register 2 update OK interrupt enable
-  - name: UEDE
-    bit_offset: 23
-    bit_size: 1
-    description: Update event DMA request enable
-  - name: CC2DE
-    bit_offset: 25
-    bit_size: 1
-    description: Capture/compare 2 DMA request enable
+    - name: CC1IE
+      bit_offset: 0
+      bit_size: 1
+      description: Capture/compare 1 interrupt enable
+    - name: ARRMIE
+      bit_offset: 1
+      bit_size: 1
+      description: Autoreload match Interrupt Enable
+    - name: EXTTRIGIE
+      bit_offset: 2
+      bit_size: 1
+      description: External trigger valid edge Interrupt Enable
+    - name: CMP1OKIE
+      bit_offset: 3
+      bit_size: 1
+      description: Compare register 1 update OK interrupt enable
+    - name: ARROKIE
+      bit_offset: 4
+      bit_size: 1
+      description: Autoreload register update OK Interrupt Enable
+    - name: UPIE
+      bit_offset: 5
+      bit_size: 1
+      description: Direction change to UP Interrupt Enable
+    - name: DOWNIE
+      bit_offset: 6
+      bit_size: 1
+      description: Direction change to down Interrupt Enable
+    - name: UEIE
+      bit_offset: 7
+      bit_size: 1
+      description: Update event interrupt enable
+    - name: REPOKIE
+      bit_offset: 8
+      bit_size: 1
+      description: Repetition register update OK interrupt Enable
+    - name: CC2IE
+      bit_offset: 9
+      bit_size: 1
+      description: Capture/compare 2 interrupt enable
+    - name: CC1OIE
+      bit_offset: 12
+      bit_size: 1
+      description: Capture/compare 1 over-capture interrupt enable
+    - name: CC2OIE
+      bit_offset: 13
+      bit_size: 1
+      description: Capture/compare 2 over-capture interrupt enable
+    - name: CC1DE
+      bit_offset: 16
+      bit_size: 1
+      description: Capture/compare 1 DMA request enable
+    - name: CMP2OKIE
+      bit_offset: 19
+      bit_size: 1
+      description: Compare register 2 update OK interrupt enable
+    - name: UEDE
+      bit_offset: 23
+      bit_size: 1
+      description: Update event DMA request enable
+    - name: CC2DE
+      bit_offset: 25
+      bit_size: 1
+      description: Capture/compare 2 DMA request enable
 fieldset/LPTIM_CFGR:
   description: ''
   fields:
-  - name: CKSEL
-    bit_offset: 0
-    bit_size: 1
-    description: Clock selector
-  - name: CKPOL
-    bit_offset: 1
-    bit_size: 2
-    description: Clock Polarity
-  - name: CKFLT
-    bit_offset: 3
-    bit_size: 2
-    description: Configurable digital filter for external clock
-  - name: TRGFLT
-    bit_offset: 6
-    bit_size: 2
-    description: Configurable digital filter for trigger
-  - name: PRESC
-    bit_offset: 9
-    bit_size: 3
-    description: Clock prescaler
-  - name: TRIGSEL
-    bit_offset: 13
-    bit_size: 3
-    description: Trigger selector
-  - name: TRIGEN
-    bit_offset: 17
-    bit_size: 2
-    description: Trigger enable and polarity
-  - name: TIMOUT
-    bit_offset: 19
-    bit_size: 1
-    description: Timeout enable
-  - name: WAVE
-    bit_offset: 20
-    bit_size: 1
-    description: Waveform shape
-  - name: WAVPOL
-    bit_offset: 21
-    bit_size: 1
-    description: Waveform shape polarity
-  - name: PRELOAD
-    bit_offset: 22
-    bit_size: 1
-    description: Registers update mode
-  - name: COUNTMODE
-    bit_offset: 23
-    bit_size: 1
-    description: counter mode enabled
-  - name: ENC
-    bit_offset: 24
-    bit_size: 1
-    description: Encoder mode enable
+    - name: CKSEL
+      bit_offset: 0
+      bit_size: 1
+      description: Clock selector
+    - name: CKPOL
+      bit_offset: 1
+      bit_size: 2
+      description: Clock Polarity
+    - name: CKFLT
+      bit_offset: 3
+      bit_size: 2
+      description: Configurable digital filter for external clock
+    - name: TRGFLT
+      bit_offset: 6
+      bit_size: 2
+      description: Configurable digital filter for trigger
+    - name: PRESC
+      bit_offset: 9
+      bit_size: 3
+      description: Clock prescaler
+    - name: TRIGSEL
+      bit_offset: 13
+      bit_size: 3
+      description: Trigger selector
+    - name: TRIGEN
+      bit_offset: 17
+      bit_size: 2
+      description: Trigger enable and polarity
+    - name: TIMOUT
+      bit_offset: 19
+      bit_size: 1
+      description: Timeout enable
+    - name: WAVE
+      bit_offset: 20
+      bit_size: 1
+      description: Waveform shape
+    - name: WAVPOL
+      bit_offset: 21
+      bit_size: 1
+      description: Waveform shape polarity
+    - name: PRELOAD
+      bit_offset: 22
+      bit_size: 1
+      description: Registers update mode
+    - name: COUNTMODE
+      bit_offset: 23
+      bit_size: 1
+      description: counter mode enabled
+    - name: ENC
+      bit_offset: 24
+      bit_size: 1
+      description: Encoder mode enable
 fieldset/LPTIM_CR:
   description: ''
   fields:
-  - name: ENABLE
-    bit_offset: 0
-    bit_size: 1
-    description: LPTIM enable
-  - name: SNGSTRT
-    bit_offset: 1
-    bit_size: 1
-    description: LPTIM start in Single mode
-  - name: CNTSTRT
-    bit_offset: 2
-    bit_size: 1
-    description: Timer start in Continuous mode
-  - name: COUNTRST
-    bit_offset: 3
-    bit_size: 1
-    description: Counter reset
-  - name: RSTARE
-    bit_offset: 4
-    bit_size: 1
-    description: Reset after read enable
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: LPTIM enable
+    - name: SNGSTRT
+      bit_offset: 1
+      bit_size: 1
+      description: LPTIM start in Single mode
+    - name: CNTSTRT
+      bit_offset: 2
+      bit_size: 1
+      description: Timer start in Continuous mode
+    - name: COUNTRST
+      bit_offset: 3
+      bit_size: 1
+      description: Counter reset
+    - name: RSTARE
+      bit_offset: 4
+      bit_size: 1
+      description: Reset after read enable
 fieldset/LPTIM_CCR1:
   description: ''
   fields:
-  - name: CCR1
-    bit_offset: 0
-    bit_size: 16
-    description: Capture/compare 1 value
+    - name: CCR1
+      bit_offset: 0
+      bit_size: 16
+      description: Capture/compare 1 value
 fieldset/LPTIM_ARR:
   description: ''
   fields:
-  - name: ARR
-    bit_offset: 0
-    bit_size: 16
-    description: Auto reload value
+    - name: ARR
+      bit_offset: 0
+      bit_size: 16
+      description: Auto reload value
 fieldset/LPTIM_CNT:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 16
-    description: Counter value
+    - name: CNT
+      bit_offset: 0
+      bit_size: 16
+      description: Counter value
 fieldset/LPTIM_CFGR2:
   description: ''
   fields:
-  - name: IN1SEL
-    bit_offset: 0
-    bit_size: 2
-    description: LPTIM input 1 selection
-  - name: IN2SEL
-    bit_offset: 4
-    bit_size: 2
-    description: LPTIM input 2 selection
-  - name: IC1SEL
-    bit_offset: 16
-    bit_size: 2
-    description: LPTIM input capture 1 selection
-  - name: IC2SEL
-    bit_offset: 20
-    bit_size: 2
-    description: LPTIM input capture 2 selection
+    - name: IN1SEL
+      bit_offset: 0
+      bit_size: 2
+      description: LPTIM input 1 selection
+    - name: IN2SEL
+      bit_offset: 4
+      bit_size: 2
+      description: LPTIM input 2 selection
+    - name: IC1SEL
+      bit_offset: 16
+      bit_size: 2
+      description: LPTIM input capture 1 selection
+    - name: IC2SEL
+      bit_offset: 20
+      bit_size: 2
+      description: LPTIM input capture 2 selection
 fieldset/LPTIM_RCR:
   description: ''
   fields:
-  - name: REP
-    bit_offset: 0
-    bit_size: 8
-    description: Repetition register value
+    - name: REP
+      bit_offset: 0
+      bit_size: 8
+      description: Repetition register value
 fieldset/LPTIM_CCMR1:
   description: ''
   fields:
-  - name: CC1SEL
-    bit_offset: 0
-    bit_size: 1
-    description: Capture/compare 1 selection
-  - name: CC1E
-    bit_offset: 1
-    bit_size: 1
-    description: Capture/compare 1 output enable
-  - name: CC1P
-    bit_offset: 2
-    bit_size: 2
-    description: Capture/compare 1 output polarity
-  - name: IC1PSC
-    bit_offset: 8
-    bit_size: 2
-    description: Input capture 1 prescaler
-  - name: IC1F
-    bit_offset: 12
-    bit_size: 2
-    description: Input capture 1 filter
-  - name: CC2SEL
-    bit_offset: 16
-    bit_size: 1
-    description: Capture/compare 2 selection
-  - name: CC2E
-    bit_offset: 17
-    bit_size: 1
-    description: Capture/compare 2 output enable
-  - name: CC2P
-    bit_offset: 18
-    bit_size: 2
-    description: Capture/compare 2 output polarity
-  - name: IC2PSC
-    bit_offset: 24
-    bit_size: 2
-    description: Input capture 2 prescaler
-  - name: IC2F
-    bit_offset: 28
-    bit_size: 2
-    description: Input capture 2 filter
+    - name: CC1SEL
+      bit_offset: 0
+      bit_size: 1
+      description: Capture/compare 1 selection
+    - name: CC1E
+      bit_offset: 1
+      bit_size: 1
+      description: Capture/compare 1 output enable
+    - name: CC1P
+      bit_offset: 2
+      bit_size: 2
+      description: Capture/compare 1 output polarity
+    - name: IC1PSC
+      bit_offset: 8
+      bit_size: 2
+      description: Input capture 1 prescaler
+    - name: IC1F
+      bit_offset: 12
+      bit_size: 2
+      description: Input capture 1 filter
+    - name: CC2SEL
+      bit_offset: 16
+      bit_size: 1
+      description: Capture/compare 2 selection
+    - name: CC2E
+      bit_offset: 17
+      bit_size: 1
+      description: Capture/compare 2 output enable
+    - name: CC2P
+      bit_offset: 18
+      bit_size: 2
+      description: Capture/compare 2 output polarity
+    - name: IC2PSC
+      bit_offset: 24
+      bit_size: 2
+      description: Input capture 2 prescaler
+    - name: IC2F
+      bit_offset: 28
+      bit_size: 2
+      description: Input capture 2 filter
 fieldset/LPTIM_CCR2:
   description: ''
   fields:
-  - name: CCR2
-    bit_offset: 0
-    bit_size: 16
-    description: Capture/compare 2 value
+    - name: CCR2
+      bit_offset: 0
+      bit_size: 16
+      description: Capture/compare 2 value
 fieldset/LPTIM_HWCFGR2:
   description: ''
   fields:
-  - name: CFG1
-    bit_offset: 0
-    bit_size: 4
-    description: peripheral hardware configuration 1
-  - name: CFG2
-    bit_offset: 8
-    bit_size: 8
-    description: peripheral hardware configuration 2
-  - name: CFG3
-    bit_offset: 16
-    bit_size: 1
-    description: peripheral hardware configuration 3
+    - name: CFG1
+      bit_offset: 0
+      bit_size: 4
+      description: peripheral hardware configuration 1
+    - name: CFG2
+      bit_offset: 8
+      bit_size: 8
+      description: peripheral hardware configuration 2
+    - name: CFG3
+      bit_offset: 16
+      bit_size: 1
+      description: peripheral hardware configuration 3
 fieldset/LPTIM_HWCFGR1:
   description: ''
   fields:
-  - name: CFG1
-    bit_offset: 0
-    bit_size: 8
-    description: peripheral hardware configuration 1
-  - name: CFG2
-    bit_offset: 8
-    bit_size: 8
-    description: peripheral hardware configuration 2
-  - name: CFG3
-    bit_offset: 16
-    bit_size: 4
-    description: peripheral hardware configuration 3
-  - name: CFG4
-    bit_offset: 24
-    bit_size: 8
-    description: peripheral hardware configuration 4
+    - name: CFG1
+      bit_offset: 0
+      bit_size: 8
+      description: peripheral hardware configuration 1
+    - name: CFG2
+      bit_offset: 8
+      bit_size: 8
+      description: peripheral hardware configuration 2
+    - name: CFG3
+      bit_offset: 16
+      bit_size: 4
+      description: peripheral hardware configuration 3
+    - name: CFG4
+      bit_offset: 24
+      bit_size: 8
+      description: peripheral hardware configuration 4
 fieldset/LPTIM_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: Minor revision
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: Major revision
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: Minor revision
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: Major revision

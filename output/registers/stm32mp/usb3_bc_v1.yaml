@@ -1,12 +1,12 @@
 block/USB3_BC:
   description: ''
   items:
-  - name: BCFG
-    byte_offset: 0
-    description: (null) @ offset 0x0
-  - name: BCEVT
-    byte_offset: 8
-    description: (null) @ offset 0x8
-  - name: BCEVTEN
-    byte_offset: 12
-    description: (null) @ offset 0xc
+    - name: BCFG
+      byte_offset: 0
+      description: (null) @ offset 0x0
+    - name: BCEVT
+      byte_offset: 8
+      description: (null) @ offset 0x8
+    - name: BCEVTEN
+      byte_offset: 12
+      description: (null) @ offset 0xc

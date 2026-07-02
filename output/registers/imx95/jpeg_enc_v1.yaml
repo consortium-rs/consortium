@@ -1,445 +1,445 @@
 block/JPEG_ENC:
   description: ''
   items:
-  - name: CONTROL_MODE
-    byte_offset: 0
-  - name: CONTROL_CFG_MODE
-    byte_offset: 4
-  - name: CONTROL_QUALITY
-    byte_offset: 8
-  - name: CONTROL_RC_REGS_SEL
-    byte_offset: 16
-  - name: CONTROL_LUMTH
-    byte_offset: 20
-  - name: CONTROL_CHRTH
-    byte_offset: 24
-  - name: CONTROL_NOMFRSIZE_LO
-    byte_offset: 64
-  - name: CONTROL_NOMFRSIZE_HI
-    byte_offset: 68
-  - name: CONTROL_OFBSIZE_LO
-    byte_offset: 72
-  - name: CONTROL_OFBSIZE_HI
-    byte_offset: 76
-  - name: STATUS_STATUS_3
-    byte_offset: 12
-  - name: STATUS_STATUS_7
-    byte_offset: 28
-  - name: STATUS_STATUS_8
-    byte_offset: 32
-  - name: STATUS_STATUS_9
-    byte_offset: 36
-  - name: STATUS_STATUS_10
-    byte_offset: 40
-  - name: STATUS_STATUS_11
-    byte_offset: 44
-  - name: STATUS_STATUS_12
-    byte_offset: 48
-  - name: STATUS_STATUS_13
-    byte_offset: 52
-  - name: STATUS_STATUS_14
-    byte_offset: 56
-  - name: STATUS_STATUS_15
-    byte_offset: 60
+    - name: CONTROL_MODE
+      byte_offset: 0
+    - name: CONTROL_CFG_MODE
+      byte_offset: 4
+    - name: CONTROL_QUALITY
+      byte_offset: 8
+    - name: CONTROL_RC_REGS_SEL
+      byte_offset: 16
+    - name: CONTROL_LUMTH
+      byte_offset: 20
+    - name: CONTROL_CHRTH
+      byte_offset: 24
+    - name: CONTROL_NOMFRSIZE_LO
+      byte_offset: 64
+    - name: CONTROL_NOMFRSIZE_HI
+      byte_offset: 68
+    - name: CONTROL_OFBSIZE_LO
+      byte_offset: 72
+    - name: CONTROL_OFBSIZE_HI
+      byte_offset: 76
+    - name: STATUS_STATUS_3
+      byte_offset: 12
+    - name: STATUS_STATUS_7
+      byte_offset: 28
+    - name: STATUS_STATUS_8
+      byte_offset: 32
+    - name: STATUS_STATUS_9
+      byte_offset: 36
+    - name: STATUS_STATUS_10
+      byte_offset: 40
+    - name: STATUS_STATUS_11
+      byte_offset: 44
+    - name: STATUS_STATUS_12
+      byte_offset: 48
+    - name: STATUS_STATUS_13
+      byte_offset: 52
+    - name: STATUS_STATUS_14
+      byte_offset: 56
+    - name: STATUS_STATUS_15
+      byte_offset: 60
 fieldset/JPEG_ENC_MODE:
   description: ''
   fields:
-  - name: LP
-    bit_offset: 0
-    bit_size: 1
-  - name: SWR
-    bit_offset: 1
-    bit_size: 1
-  - name: MS
-    bit_offset: 3
-    bit_size: 1
-  - name: EXTSEQ
-    bit_offset: 4
-    bit_size: 1
-  - name: CONF
-    bit_offset: 5
-    bit_size: 1
-  - name: GO
-    bit_offset: 6
-    bit_size: 1
+    - name: LP
+      bit_offset: 0
+      bit_size: 1
+    - name: SWR
+      bit_offset: 1
+      bit_size: 1
+    - name: MS
+      bit_offset: 3
+      bit_size: 1
+    - name: EXTSEQ
+      bit_offset: 4
+      bit_size: 1
+    - name: CONF
+      bit_offset: 5
+      bit_size: 1
+    - name: GO
+      bit_offset: 6
+      bit_size: 1
 fieldset/JPEG_ENC_MODE_AUTOCLR:
   description: ''
   fields:
-  - name: CONF
-    bit_offset: 7
-    bit_size: 1
-  - name: GO
-    bit_offset: 8
-    bit_size: 1
+    - name: CONF
+      bit_offset: 7
+      bit_size: 1
+    - name: GO
+      bit_offset: 8
+      bit_size: 1
 fieldset/JPEG_ENC_CFG_MODE:
   description: ''
   fields:
-  - name: MSOF0
-    bit_offset: 0
-    bit_size: 1
-  - name: MDRI
-    bit_offset: 1
-    bit_size: 1
-  - name: MDQT
-    bit_offset: 2
-    bit_size: 1
-  - name: MDHT
-    bit_offset: 3
-    bit_size: 1
-  - name: MSOS
-    bit_offset: 4
-    bit_size: 1
-  - name: MDNL
-    bit_offset: 5
-    bit_size: 1
-  - name: MAPP
-    bit_offset: 6
-    bit_size: 1
-  - name: MCOM
-    bit_offset: 7
-    bit_size: 1
-  - name: DICOM
-    bit_offset: 10
-    bit_size: 1
+    - name: MSOF0
+      bit_offset: 0
+      bit_size: 1
+    - name: MDRI
+      bit_offset: 1
+      bit_size: 1
+    - name: MDQT
+      bit_offset: 2
+      bit_size: 1
+    - name: MDHT
+      bit_offset: 3
+      bit_size: 1
+    - name: MSOS
+      bit_offset: 4
+      bit_size: 1
+    - name: MDNL
+      bit_offset: 5
+      bit_size: 1
+    - name: MAPP
+      bit_offset: 6
+      bit_size: 1
+    - name: MCOM
+      bit_offset: 7
+      bit_size: 1
+    - name: DICOM
+      bit_offset: 10
+      bit_size: 1
 fieldset/JPEG_ENC_CFG_MODE_COMB:
   description: ''
   fields:
-  - name: DQT
-    bit_offset: 8
-    bit_size: 1
-  - name: DHT
-    bit_offset: 9
-    bit_size: 1
+    - name: DQT
+      bit_offset: 8
+      bit_size: 1
+    - name: DHT
+      bit_offset: 9
+      bit_size: 1
 fieldset/JPEG_ENC_QUALITY:
   description: ''
   fields:
-  - name: QUALITY
-    bit_offset: 0
-    bit_size: 7
-    description: Quality Factor
+    - name: QUALITY
+      bit_offset: 0
+      bit_size: 7
+      description: Quality Factor
 fieldset/JPEG_ENC_RC_REGS_SEL_RC_REGS:
   description: ''
   fields:
-  - name: SEL
-    bit_offset: 0
-    bit_size: 2
+    - name: SEL
+      bit_offset: 0
+      bit_size: 2
 fieldset/JPEG_ENC_LUMTH:
   description: ''
   fields:
-  - name: LUMTH
-    bit_offset: 0
-    bit_size: 16
-    description: Luminance Threshold
+    - name: LUMTH
+      bit_offset: 0
+      bit_size: 16
+      description: Luminance Threshold
 fieldset/JPEG_ENC_CHRTH:
   description: ''
   fields:
-  - name: CHRTH
-    bit_offset: 0
-    bit_size: 16
-    description: Chrominance Threshold
+    - name: CHRTH
+      bit_offset: 0
+      bit_size: 16
+      description: Chrominance Threshold
 fieldset/JPEG_ENC_NOMFRSIZE_LO_NOMFRSIZE:
   description: ''
   fields:
-  - name: LO
-    bit_offset: 0
-    bit_size: 16
-    description: Nominal Frame Size Low
+    - name: LO
+      bit_offset: 0
+      bit_size: 16
+      description: Nominal Frame Size Low
 fieldset/JPEG_ENC_NOMFRSIZE_HI_NOMFRSIZE:
   description: ''
   fields:
-  - name: HI
-    bit_offset: 0
-    bit_size: 16
-    description: Nominal Frame Size High
+    - name: HI
+      bit_offset: 0
+      bit_size: 16
+      description: Nominal Frame Size High
 fieldset/JPEG_ENC_OFBSIZE_LO_OFBSIZE:
   description: ''
   fields:
-  - name: LO
-    bit_offset: 0
-    bit_size: 16
-    description: FIFO Buffer Size Low
+    - name: LO
+      bit_offset: 0
+      bit_size: 16
+      description: FIFO Buffer Size Low
 fieldset/JPEG_ENC_OFBSIZE_HI_OFBSIZE:
   description: ''
   fields:
-  - name: HI
-    bit_offset: 0
-    bit_size: 16
-    description: FIFO Buffer Size High
+    - name: HI
+      bit_offset: 0
+      bit_size: 16
+      description: FIFO Buffer Size High
 fieldset/JPEG_ENC_STATUS_0:
   description: ''
   fields:
-  - name: X
-    bit_offset: 0
-    bit_size: 16
-    description: Image width
+    - name: X
+      bit_offset: 0
+      bit_size: 16
+      description: Image width
 fieldset/JPEG_ENC_STATUS_1:
   description: ''
   fields:
-  - name: Y
-    bit_offset: 0
-    bit_size: 16
-    description: Image Height
+    - name: Y
+      bit_offset: 0
+      bit_size: 16
+      description: Image Height
 fieldset/JPEG_ENC_STATUS_2:
   description: ''
   fields:
-  - name: HMCU
-    bit_offset: 0
-    bit_size: 16
-    description: Horizontal MCU
+    - name: HMCU
+      bit_offset: 0
+      bit_size: 16
+      description: Horizontal MCU
 fieldset/JPEG_ENC_STATUS_3:
   description: ''
   fields:
-  - name: VMCU
-    bit_offset: 0
-    bit_size: 16
-    description: Vertical MCU
+    - name: VMCU
+      bit_offset: 0
+      bit_size: 16
+      description: Vertical MCU
 fieldset/JPEG_ENC_STATUS_4:
   description: ''
   fields:
-  - name: Tq0
-    bit_offset: 0
-    bit_size: 2
-    description: Table Quantization 0 ID
-  - name: V0
-    bit_offset: 2
-    bit_size: 3
-    description: Table Quantization 0 ID
-  - name: H0
-    bit_offset: 5
-    bit_size: 3
-    description: Vertical Sampling 0
-  - name: C0
-    bit_offset: 8
-    bit_size: 8
-    description: Horizontal Sampling 0
+    - name: Tq0
+      bit_offset: 0
+      bit_size: 2
+      description: Table Quantization 0 ID
+    - name: V0
+      bit_offset: 2
+      bit_size: 3
+      description: Table Quantization 0 ID
+    - name: H0
+      bit_offset: 5
+      bit_size: 3
+      description: Vertical Sampling 0
+    - name: C0
+      bit_offset: 8
+      bit_size: 8
+      description: Horizontal Sampling 0
 fieldset/JPEG_ENC_STATUS_5:
   description: ''
   fields:
-  - name: Tq1
-    bit_offset: 0
-    bit_size: 2
-    description: Table Quantization 1 ID
-  - name: V1
-    bit_offset: 2
-    bit_size: 3
-    description: Table Quantization 1 ID
-  - name: H1
-    bit_offset: 5
-    bit_size: 3
-    description: Vertical Sampling 1
-  - name: C1
-    bit_offset: 8
-    bit_size: 8
-    description: Horizontal Sampling 1
+    - name: Tq1
+      bit_offset: 0
+      bit_size: 2
+      description: Table Quantization 1 ID
+    - name: V1
+      bit_offset: 2
+      bit_size: 3
+      description: Table Quantization 1 ID
+    - name: H1
+      bit_offset: 5
+      bit_size: 3
+      description: Vertical Sampling 1
+    - name: C1
+      bit_offset: 8
+      bit_size: 8
+      description: Horizontal Sampling 1
 fieldset/JPEG_ENC_STATUS_6:
   description: ''
   fields:
-  - name: Tq2
-    bit_offset: 0
-    bit_size: 2
-    description: Table Quantization 2 ID
-  - name: V2
-    bit_offset: 2
-    bit_size: 3
-    description: Table Quantization 2 ID
-  - name: H2
-    bit_offset: 5
-    bit_size: 3
-    description: Vertical Sampling 2
-  - name: C2
-    bit_offset: 8
-    bit_size: 8
-    description: Horizontal Sampling 2 ID
+    - name: Tq2
+      bit_offset: 0
+      bit_size: 2
+      description: Table Quantization 2 ID
+    - name: V2
+      bit_offset: 2
+      bit_size: 3
+      description: Table Quantization 2 ID
+    - name: H2
+      bit_offset: 5
+      bit_size: 3
+      description: Vertical Sampling 2
+    - name: C2
+      bit_offset: 8
+      bit_size: 8
+      description: Horizontal Sampling 2 ID
 fieldset/JPEG_ENC_STATUS_7:
   description: ''
   fields:
-  - name: Tq3
-    bit_offset: 0
-    bit_size: 2
-    description: Table Quantization 3 ID
-  - name: V3
-    bit_offset: 2
-    bit_size: 3
-    description: Table Quantization 3 ID
-  - name: H3
-    bit_offset: 5
-    bit_size: 3
-    description: Vertical Sampling 3
-  - name: C3
-    bit_offset: 8
-    bit_size: 8
-    description: Horizontal Sampling 3
+    - name: Tq3
+      bit_offset: 0
+      bit_size: 2
+      description: Table Quantization 3 ID
+    - name: V3
+      bit_offset: 2
+      bit_size: 3
+      description: Table Quantization 3 ID
+    - name: H3
+      bit_offset: 5
+      bit_size: 3
+      description: Vertical Sampling 3
+    - name: C3
+      bit_offset: 8
+      bit_size: 8
+      description: Horizontal Sampling 3
 fieldset/JPEG_ENC_STATUS_8:
   description: ''
   fields:
-  - name: Nf
-    bit_offset: 0
-    bit_size: 8
-    description: Number of Components in Frame
-  - name: QUALITY
-    bit_offset: 8
-    bit_size: 8
-    description: Number of Components in Frame
+    - name: Nf
+      bit_offset: 0
+      bit_size: 8
+      description: Number of Components in Frame
+    - name: QUALITY
+      bit_offset: 8
+      bit_size: 8
+      description: Number of Components in Frame
 fieldset/JPEG_ENC_STATUS_9:
   description: ''
   fields:
-  - name: DRI
-    bit_offset: 0
-    bit_size: 16
-    description: Define Restart Interval
+    - name: DRI
+      bit_offset: 0
+      bit_size: 16
+      description: Define Restart Interval
 fieldset/JPEG_ENC_STATUS_10:
   description: ''
   fields:
-  - name: Ns
-    bit_offset: 0
-    bit_size: 4
-    description: Number of Components in Scan
-  - name: NBMCU
-    bit_offset: 4
-    bit_size: 4
-    description: Number of Components in Scan
-  - name: Vmax
-    bit_offset: 8
-    bit_size: 4
-    description: Number of Data Unit per MCU
-  - name: Hmax
-    bit_offset: 12
-    bit_size: 4
-    description: Maximum Vertical Sampling
+    - name: Ns
+      bit_offset: 0
+      bit_size: 4
+      description: Number of Components in Scan
+    - name: NBMCU
+      bit_offset: 4
+      bit_size: 4
+      description: Number of Components in Scan
+    - name: Vmax
+      bit_offset: 8
+      bit_size: 4
+      description: Number of Data Unit per MCU
+    - name: Hmax
+      bit_offset: 12
+      bit_size: 4
+      description: Maximum Vertical Sampling
 fieldset/JPEG_ENC_STATUS_11:
   description: ''
   fields:
-  - name: VHS0
-    bit_offset: 0
-    bit_size: 4
-    description: VHS0
-  - name: VHS1
-    bit_offset: 4
-    bit_size: 4
-    description: VHS0
-  - name: VHS2
-    bit_offset: 8
-    bit_size: 4
-    description: VHS1
-  - name: VHS3
-    bit_offset: 12
-    bit_size: 4
-    description: VHS2
+    - name: VHS0
+      bit_offset: 0
+      bit_size: 4
+      description: VHS0
+    - name: VHS1
+      bit_offset: 4
+      bit_size: 4
+      description: VHS0
+    - name: VHS2
+      bit_offset: 8
+      bit_size: 4
+      description: VHS1
+    - name: VHS3
+      bit_offset: 12
+      bit_size: 4
+      description: VHS2
 fieldset/JPEG_ENC_STATUS_12_COM:
   description: ''
   fields:
-  - name: E
-    bit_offset: 0
-    bit_size: 1
+    - name: E
+      bit_offset: 0
+      bit_size: 1
 fieldset/JPEG_ENC_STATUS_12_APPn:
   description: ''
   fields:
-  - name: E
-    bit_offset: 1
-    bit_size: 1
+    - name: E
+      bit_offset: 1
+      bit_size: 1
 fieldset/JPEG_ENC_STATUS_12_DRI:
   description: ''
   fields:
-  - name: E
-    bit_offset: 2
-    bit_size: 1
+    - name: E
+      bit_offset: 2
+      bit_size: 1
 fieldset/JPEG_ENC_STATUS_12_DNL:
   description: ''
   fields:
-  - name: E
-    bit_offset: 3
-    bit_size: 1
+    - name: E
+      bit_offset: 3
+      bit_size: 1
 fieldset/JPEG_ENC_STATUS_12_DHT:
   description: ''
   fields:
-  - name: E
-    bit_offset: 4
-    bit_size: 1
+    - name: E
+      bit_offset: 4
+      bit_size: 1
 fieldset/JPEG_ENC_STATUS_12_DQT:
   description: ''
   fields:
-  - name: E
-    bit_offset: 5
-    bit_size: 1
+    - name: E
+      bit_offset: 5
+      bit_size: 1
 fieldset/JPEG_ENC_STATUS_12_SOS:
   description: ''
   fields:
-  - name: E
-    bit_offset: 6
-    bit_size: 1
+    - name: E
+      bit_offset: 6
+      bit_size: 1
 fieldset/JPEG_ENC_STATUS_12_SOF:
   description: ''
   fields:
-  - name: E
-    bit_offset: 7
-    bit_size: 1
+    - name: E
+      bit_offset: 7
+      bit_size: 1
 fieldset/JPEG_ENC_STATUS_12:
   description: ''
   fields:
-  - name: CONFIGERROR
-    bit_offset: 8
-    bit_size: 1
-  - name: SCANACTIVE
-    bit_offset: 11
-    bit_size: 1
+    - name: CONFIGERROR
+      bit_offset: 8
+      bit_size: 1
+    - name: SCANACTIVE
+      bit_offset: 11
+      bit_size: 1
 fieldset/JPEG_ENC_STATUS_12_JPEGIN:
   description: ''
   fields:
-  - name: RDY
-    bit_offset: 9
-    bit_size: 1
+    - name: RDY
+      bit_offset: 9
+      bit_size: 1
 fieldset/JPEG_ENC_STATUS_12_PIXELIN:
   description: ''
   fields:
-  - name: RDY
-    bit_offset: 10
-    bit_size: 1
+    - name: RDY
+      bit_offset: 10
+      bit_size: 1
 fieldset/JPEG_ENC_STATUS_13_CFG:
   description: ''
   fields:
-  - name: MODE
-    bit_offset: 0
-    bit_size: 16
-    description: Configuration Mode
+    - name: MODE
+      bit_offset: 0
+      bit_size: 16
+      description: Configuration Mode
 fieldset/JPEG_ENC_STATUS_14_RC:
   description: ''
   fields:
-  - name: REGS0
-    bit_offset: 0
-    bit_size: 16
-    description: Rate Control Register Set 0
+    - name: REGS0
+      bit_offset: 0
+      bit_size: 16
+      description: Rate Control Register Set 0
 fieldset/JPEG_ENC_STATUS_15_RC:
   description: ''
   fields:
-  - name: REGS1
-    bit_offset: 0
-    bit_size: 16
-    description: Rate Control Register Set 1
+    - name: REGS1
+      bit_offset: 0
+      bit_size: 16
+      description: Rate Control Register Set 1
 fieldset/JPEG_ENC_STATUS_16_NOMFRSIZE:
   description: ''
   fields:
-  - name: LO
-    bit_offset: 0
-    bit_size: 16
-    description: Nominal Frame Size Low
+    - name: LO
+      bit_offset: 0
+      bit_size: 16
+      description: Nominal Frame Size Low
 fieldset/JPEG_ENC_STATUS_17_NOMFRSIZE:
   description: ''
   fields:
-  - name: HI
-    bit_offset: 0
-    bit_size: 16
-    description: Nominal Frame Size High
+    - name: HI
+      bit_offset: 0
+      bit_size: 16
+      description: Nominal Frame Size High
 fieldset/JPEG_ENC_STATUS_18_OFBSIZE:
   description: ''
   fields:
-  - name: LO
-    bit_offset: 0
-    bit_size: 16
-    description: FIFO Buffer Size Low
+    - name: LO
+      bit_offset: 0
+      bit_size: 16
+      description: FIFO Buffer Size Low
 fieldset/JPEG_ENC_STATUS_19_OFBSIZE:
   description: ''
   fields:
-  - name: HI
-    bit_offset: 0
-    bit_size: 16
-    description: FIFO Buffer Size High
+    - name: HI
+      bit_offset: 0
+      bit_size: 16
+      description: FIFO Buffer Size High

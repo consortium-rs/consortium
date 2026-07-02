@@ -1,552 +1,552 @@
 block/NETC_PORT:
   description: ''
   items:
-  - name: PCAPR
-    byte_offset: 0
-    fieldset: NETC_PORT_PCAPR
-  - name: PMCAPR
-    byte_offset: 4
-    fieldset: NETC_PORT_PMCAPR
-  - name: PIOCAPR
-    byte_offset: 8
-    fieldset: NETC_PORT_PIOCAPR
-  - name: PCR
-    byte_offset: 16
-    fieldset: NETC_PORT_PCR
-  - name: PMAR0
-    byte_offset: 32
-  - name: PMAR1
-    byte_offset: 36
-  - name: PTAR
-    byte_offset: 80
-    fieldset: NETC_PORT_PTAR
-  - name: PQOSMR
-    byte_offset: 84
-    fieldset: NETC_PORT_PQOSMR
-  - name: PPCR
-    byte_offset: 128
-    fieldset: NETC_PORT_PPCR
-  - name: PIPFCR
-    byte_offset: 132
-    fieldset: NETC_PORT_PIPFCR
-  - name: PSGCR
-    byte_offset: 160
-    fieldset: NETC_PORT_PSGCR
-  - name: POR
-    byte_offset: 256
-    fieldset: NETC_PORT_POR
-  - name: PSR
-    byte_offset: 260
-  - name: PRXSDUOR
-    byte_offset: 264
-  - name: PTXSDUOR
-    byte_offset: 268
-  - name: PTGSCR
-    byte_offset: 272
-    fieldset: NETC_PORT_PTGSCR
-  - name: PTGAGLSR
-    byte_offset: 276
-    fieldset: NETC_PORT_PTGAGLSR
-  - name: PTGAGLLR
-    byte_offset: 280
-  - name: PTGOGLLR
-    byte_offset: 284
-  - name: PTGSATOR
-    byte_offset: 288
-  - name: PTGSHAR
-    byte_offset: 292
-    fieldset: NETC_PORT_PTGSHAR
-  - name: PTGSRAR
-    byte_offset: 296
-    fieldset: NETC_PORT_PTGSRAR
-  - name: PTGSHCR
-    byte_offset: 300
-  - name: PFPCR
-    byte_offset: 308
-  - name: PDGSR
-    byte_offset: 312
-  - name: PRXDCR
-    byte_offset: 448
-    fieldset: NETC_PORT_PRXDCR
-  - name: PRXDCRR0
-    byte_offset: 456
-    fieldset: NETC_PORT_PRXDCRR0
-  - name: PRXDCRR1
-    byte_offset: 460
-    fieldset: NETC_PORT_PRXDCRR1
-  - name: TCT_NUM_PTGSTCSR
-    byte_offset: 512
-    array:
-      len: 8
-      stride: 32
-  - name: PISIDCR
-    byte_offset: 1120
-    fieldset: NETC_PORT_PISIDCR
+    - name: PCAPR
+      byte_offset: 0
+      fieldset: NETC_PORT_PCAPR
+    - name: PMCAPR
+      byte_offset: 4
+      fieldset: NETC_PORT_PMCAPR
+    - name: PIOCAPR
+      byte_offset: 8
+      fieldset: NETC_PORT_PIOCAPR
+    - name: PCR
+      byte_offset: 16
+      fieldset: NETC_PORT_PCR
+    - name: PMAR0
+      byte_offset: 32
+    - name: PMAR1
+      byte_offset: 36
+    - name: PTAR
+      byte_offset: 80
+      fieldset: NETC_PORT_PTAR
+    - name: PQOSMR
+      byte_offset: 84
+      fieldset: NETC_PORT_PQOSMR
+    - name: PPCR
+      byte_offset: 128
+      fieldset: NETC_PORT_PPCR
+    - name: PIPFCR
+      byte_offset: 132
+      fieldset: NETC_PORT_PIPFCR
+    - name: PSGCR
+      byte_offset: 160
+      fieldset: NETC_PORT_PSGCR
+    - name: POR
+      byte_offset: 256
+      fieldset: NETC_PORT_POR
+    - name: PSR
+      byte_offset: 260
+    - name: PRXSDUOR
+      byte_offset: 264
+    - name: PTXSDUOR
+      byte_offset: 268
+    - name: PTGSCR
+      byte_offset: 272
+      fieldset: NETC_PORT_PTGSCR
+    - name: PTGAGLSR
+      byte_offset: 276
+      fieldset: NETC_PORT_PTGAGLSR
+    - name: PTGAGLLR
+      byte_offset: 280
+    - name: PTGOGLLR
+      byte_offset: 284
+    - name: PTGSATOR
+      byte_offset: 288
+    - name: PTGSHAR
+      byte_offset: 292
+      fieldset: NETC_PORT_PTGSHAR
+    - name: PTGSRAR
+      byte_offset: 296
+      fieldset: NETC_PORT_PTGSRAR
+    - name: PTGSHCR
+      byte_offset: 300
+    - name: PFPCR
+      byte_offset: 308
+    - name: PDGSR
+      byte_offset: 312
+    - name: PRXDCR
+      byte_offset: 448
+      fieldset: NETC_PORT_PRXDCR
+    - name: PRXDCRR0
+      byte_offset: 456
+      fieldset: NETC_PORT_PRXDCRR0
+    - name: PRXDCRR1
+      byte_offset: 460
+      fieldset: NETC_PORT_PRXDCRR1
+    - name: TCT_NUM_PTGSTCSR
+      byte_offset: 512
+      array:
+        len: 8
+        stride: 32
+    - name: PISIDCR
+      byte_offset: 1120
+      fieldset: NETC_PORT_PISIDCR
 fieldset/NETC_PORT_PCAPR_LINK:
   description: ''
   fields:
-  - name: TYPE
-    bit_offset: 4
-    bit_size: 1
+    - name: TYPE
+      bit_offset: 4
+      bit_size: 1
 fieldset/NETC_PORT_PCAPR_NUM:
   description: ''
   fields:
-  - name: TC
-    bit_offset: 12
-    bit_size: 4
-  - name: CBS
-    bit_offset: 20
-    bit_size: 3
+    - name: TC
+      bit_offset: 12
+      bit_size: 4
+    - name: CBS
+      bit_offset: 20
+      bit_size: 3
 fieldset/NETC_PORT_PCAPR:
   description: ''
   fields:
-  - name: TGS
-    bit_offset: 28
-    bit_size: 1
-    description: Time Gate Scheduling
-  - name: CBS
-    bit_offset: 29
-    bit_size: 1
-    description: Time Gate Scheduling
+    - name: TGS
+      bit_offset: 28
+      bit_size: 1
+      description: Time Gate Scheduling
+    - name: CBS
+      bit_offset: 29
+      bit_size: 1
+      description: Time Gate Scheduling
 fieldset/NETC_PORT_PMCAPR_MAC:
   description: ''
   fields:
-  - name: VAR
-    bit_offset: 0
-    bit_size: 3
-    description: MAC Variant
+    - name: VAR
+      bit_offset: 0
+      bit_size: 3
+      description: MAC Variant
 fieldset/NETC_PORT_PMCAPR:
   description: ''
   fields:
-  - name: EFPAD
-    bit_offset: 4
-    bit_size: 2
-    description: MAC Variant
-  - name: HD
-    bit_offset: 8
-    bit_size: 1
-  - name: FP
-    bit_offset: 9
-    bit_size: 2
+    - name: EFPAD
+      bit_offset: 4
+      bit_size: 2
+      description: MAC Variant
+    - name: HD
+      bit_offset: 8
+      bit_size: 1
+    - name: FP
+      bit_offset: 9
+      bit_size: 2
 fieldset/NETC_PORT_PMCAPR_MIN:
   description: ''
   fields:
-  - name: MPDU
-    bit_offset: 12
-    bit_size: 1
-    description: Indicates if frame preemption is supported
+    - name: MPDU
+      bit_offset: 12
+      bit_size: 1
+      description: Indicates if frame preemption is supported
 fieldset/NETC_PORT_PMCAPR_MII:
   description: ''
   fields:
-  - name: PROT
-    bit_offset: 24
-    bit_size: 4
+    - name: PROT
+      bit_offset: 24
+      bit_size: 4
 fieldset/NETC_PORT_PIOCAPR_PCS:
   description: ''
   fields:
-  - name: PROT
-    bit_offset: 0
-    bit_size: 16
-    description: PCS protocols supported
+    - name: PROT
+      bit_offset: 0
+      bit_size: 16
+      description: PCS protocols supported
 fieldset/NETC_PORT_PIOCAPR_IO:
   description: ''
   fields:
-  - name: VAR
-    bit_offset: 24
-    bit_size: 4
-    description: PCS protocols supported
+    - name: VAR
+      bit_offset: 24
+      bit_size: 4
+      description: PCS protocols supported
 fieldset/NETC_PORT_PIOCAPR:
   description: ''
   fields:
-  - name: EMDIO
-    bit_offset: 28
-    bit_size: 1
-    description: IO Variants supported
-  - name: REVMII
-    bit_offset: 31
-    bit_size: 1
-    description: RevMII MII rate
+    - name: EMDIO
+      bit_offset: 28
+      bit_size: 1
+      description: IO Variants supported
+    - name: REVMII
+      bit_offset: 31
+      bit_size: 1
+      description: RevMII MII rate
 fieldset/NETC_PORT_PIOCAPR_REVMII:
   description: ''
   fields:
-  - name: RATE
-    bit_offset: 30
-    bit_size: 1
-    description: RevMII MII rate
+    - name: RATE
+      bit_offset: 30
+      bit_size: 1
+      description: RevMII MII rate
 fieldset/NETC_PORT_PCR_HDR:
   description: ''
   fields:
-  - name: FMT
-    bit_offset: 0
-    bit_size: 1
+    - name: FMT
+      bit_offset: 0
+      bit_size: 1
 fieldset/NETC_PORT_PCR:
   description: ''
   fields:
-  - name: L2DOSE
-    bit_offset: 4
-    bit_size: 1
-  - name: L3DOSE
-    bit_offset: 5
-    bit_size: 1
-  - name: PSPEED
-    bit_offset: 16
-    bit_size: 14
-    description: Port Speed
+    - name: L2DOSE
+      bit_offset: 4
+      bit_size: 1
+    - name: L3DOSE
+      bit_offset: 5
+      bit_size: 1
+    - name: PSPEED
+      bit_offset: 16
+      bit_size: 14
+      description: Port Speed
 fieldset/NETC_PORT_PCR_TIMER:
   description: ''
   fields:
-  - name: CS
-    bit_offset: 8
-    bit_size: 1
+    - name: CS
+      bit_offset: 8
+      bit_size: 1
 fieldset/NETC_PORT_PMAR0_PRIM_MAC:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 0
-    bit_size: 32
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_PORT_PMAR1_PRIM_MAC:
   description: ''
   fields:
-  - name: ADDR
-    bit_offset: 0
-    bit_size: 16
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 16
 fieldset/NETC_PORT_PTAR:
   description: ''
   fields:
-  - name: OVTPIDL
-    bit_offset: 0
-    bit_size: 4
-  - name: IVTPIDL
-    bit_offset: 4
-    bit_size: 4
+    - name: OVTPIDL
+      bit_offset: 0
+      bit_size: 4
+    - name: IVTPIDL
+      bit_offset: 4
+      bit_size: 4
 fieldset/NETC_PORT_PQOSMR:
   description: ''
   fields:
-  - name: VS
-    bit_offset: 0
-    bit_size: 1
-  - name: VE
-    bit_offset: 1
-    bit_size: 1
-  - name: DDR
-    bit_offset: 2
-    bit_size: 2
-  - name: DIPV
-    bit_offset: 4
-    bit_size: 3
-  - name: VQMP
-    bit_offset: 16
-    bit_size: 4
-    description: Mapping profile index
+    - name: VS
+      bit_offset: 0
+      bit_size: 1
+    - name: VE
+      bit_offset: 1
+      bit_size: 1
+    - name: DDR
+      bit_offset: 2
+      bit_size: 2
+    - name: DIPV
+      bit_offset: 4
+      bit_size: 3
+    - name: VQMP
+      bit_offset: 16
+      bit_size: 4
+      description: Mapping profile index
 fieldset/NETC_PORT_PPCR:
   description: ''
   fields:
-  - name: L1PFS
-    bit_offset: 1
-    bit_size: 5
-  - name: L2PFS
-    bit_offset: 9
-    bit_size: 5
-  - name: L3HFP
-    bit_offset: 16
-    bit_size: 1
-  - name: L3PFS
-    bit_offset: 17
-    bit_size: 5
-  - name: L4HFP
-    bit_offset: 24
-    bit_size: 1
-  - name: L4PFS
-    bit_offset: 25
-    bit_size: 5
+    - name: L1PFS
+      bit_offset: 1
+      bit_size: 5
+    - name: L2PFS
+      bit_offset: 9
+      bit_size: 5
+    - name: L3HFP
+      bit_offset: 16
+      bit_size: 1
+    - name: L3PFS
+      bit_offset: 17
+      bit_size: 5
+    - name: L4HFP
+      bit_offset: 24
+      bit_size: 1
+    - name: L4PFS
+      bit_offset: 25
+      bit_size: 5
 fieldset/NETC_PORT_PIPFCR:
   description: ''
   fields:
-  - name: EN
-    bit_offset: 0
-    bit_size: 1
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
 fieldset/NETC_PORT_PSGCR:
   description: ''
   fields:
-  - name: PDELAY
-    bit_offset: 0
-    bit_size: 24
-  - name: OGC
-    bit_offset: 31
-    bit_size: 1
+    - name: PDELAY
+      bit_offset: 0
+      bit_size: 24
+    - name: OGC
+      bit_offset: 31
+      bit_size: 1
 fieldset/NETC_PORT_POR:
   description: ''
   fields:
-  - name: TXDIS
-    bit_offset: 0
-    bit_size: 1
-    description: Tx Disable
-  - name: RXDIS
-    bit_offset: 1
-    bit_size: 1
-    description: Tx Disable
+    - name: TXDIS
+      bit_offset: 0
+      bit_size: 1
+      description: Tx Disable
+    - name: RXDIS
+      bit_offset: 1
+      bit_size: 1
+      description: Tx Disable
 fieldset/NETC_PORT_PSR_TX:
   description: ''
   fields:
-  - name: BUSY
-    bit_offset: 0
-    bit_size: 1
+    - name: BUSY
+      bit_offset: 0
+      bit_size: 1
 fieldset/NETC_PORT_PSR_RX:
   description: ''
   fields:
-  - name: BUSY
-    bit_offset: 1
-    bit_size: 1
+    - name: BUSY
+      bit_offset: 1
+      bit_size: 1
 fieldset/NETC_PORT_PRXSDUOR_PPDU:
   description: ''
   fields:
-  - name: BCO
-    bit_offset: 0
-    bit_size: 5
-    description: PPDU Byte count overhead
+    - name: BCO
+      bit_offset: 0
+      bit_size: 5
+      description: PPDU Byte count overhead
 fieldset/NETC_PORT_PRXSDUOR_MACSEC:
   description: ''
   fields:
-  - name: BCO
-    bit_offset: 8
-    bit_size: 5
-    description: PPDU Byte count overhead
+    - name: BCO
+      bit_offset: 8
+      bit_size: 5
+      description: PPDU Byte count overhead
 fieldset/NETC_PORT_PTXSDUOR_PPDU:
   description: ''
   fields:
-  - name: BCO
-    bit_offset: 0
-    bit_size: 5
-    description: PPDU Byte count overhead
+    - name: BCO
+      bit_offset: 0
+      bit_size: 5
+      description: PPDU Byte count overhead
 fieldset/NETC_PORT_PTXSDUOR_MACSEC:
   description: ''
   fields:
-  - name: BCO
-    bit_offset: 8
-    bit_size: 5
-    description: PPDU Byte count overhead
+    - name: BCO
+      bit_offset: 8
+      bit_size: 5
+      description: PPDU Byte count overhead
 fieldset/NETC_PORT_PTGSCR:
   description: ''
   fields:
-  - name: TGE
-    bit_offset: 31
-    bit_size: 1
+    - name: TGE
+      bit_offset: 31
+      bit_size: 1
 fieldset/NETC_PORT_PTGAGLSR:
   description: ''
   fields:
-  - name: TG
-    bit_offset: 0
-    bit_size: 1
+    - name: TG
+      bit_offset: 0
+      bit_size: 1
 fieldset/NETC_PORT_PTGAGLSR_CFG:
   description: ''
   fields:
-  - name: PEND
-    bit_offset: 1
-    bit_size: 1
+    - name: PEND
+      bit_offset: 1
+      bit_size: 1
 fieldset/NETC_PORT_PTGAGLLR_ADMIN_GATE_LIST:
   description: ''
   fields:
-  - name: LENGTH
-    bit_offset: 0
-    bit_size: 16
+    - name: LENGTH
+      bit_offset: 0
+      bit_size: 16
 fieldset/NETC_PORT_PTGOGLLR_OPER_GATE_LIST:
   description: ''
   fields:
-  - name: LENGTH
-    bit_offset: 0
-    bit_size: 16
+    - name: LENGTH
+      bit_offset: 0
+      bit_size: 16
 fieldset/NETC_PORT_PTGSATOR_ADV_TIME:
   description: ''
   fields:
-  - name: OFFSET
-    bit_offset: 0
-    bit_size: 16
+    - name: OFFSET
+      bit_offset: 0
+      bit_size: 16
 fieldset/NETC_PORT_PTGSHAR:
   description: ''
   fields:
-  - name: HOLDADVANCE
-    bit_offset: 0
-    bit_size: 16
+    - name: HOLDADVANCE
+      bit_offset: 0
+      bit_size: 16
 fieldset/NETC_PORT_PTGSRAR:
   description: ''
   fields:
-  - name: RELEASEADVANCE
-    bit_offset: 0
-    bit_size: 16
+    - name: RELEASEADVANCE
+      bit_offset: 0
+      bit_size: 16
 fieldset/NETC_PORT_PTGSHCR_HOLD:
   description: ''
   fields:
-  - name: SKEW
-    bit_offset: 0
-    bit_size: 20
+    - name: SKEW
+      bit_offset: 0
+      bit_size: 20
 fieldset/NETC_PORT_PFPCR_FPE:
   description: ''
   fields:
-  - name: TC0
-    bit_offset: 0
-    bit_size: 1
-  - name: TC1
-    bit_offset: 1
-    bit_size: 1
-  - name: TC2
-    bit_offset: 2
-    bit_size: 1
-  - name: TC3
-    bit_offset: 3
-    bit_size: 1
-  - name: TC4
-    bit_offset: 4
-    bit_size: 1
-  - name: TC5
-    bit_offset: 5
-    bit_size: 1
-  - name: TC6
-    bit_offset: 6
-    bit_size: 1
-  - name: TC7
-    bit_offset: 7
-    bit_size: 1
+    - name: TC0
+      bit_offset: 0
+      bit_size: 1
+    - name: TC1
+      bit_offset: 1
+      bit_size: 1
+    - name: TC2
+      bit_offset: 2
+      bit_size: 1
+    - name: TC3
+      bit_offset: 3
+      bit_size: 1
+    - name: TC4
+      bit_offset: 4
+      bit_size: 1
+    - name: TC5
+      bit_offset: 5
+      bit_size: 1
+    - name: TC6
+      bit_offset: 6
+      bit_size: 1
+    - name: TC7
+      bit_offset: 7
+      bit_size: 1
 fieldset/NETC_PORT_PDGSR_DGS:
   description: ''
   fields:
-  - name: TC0
-    bit_offset: 0
-    bit_size: 1
-  - name: TC1
-    bit_offset: 1
-    bit_size: 1
-  - name: TC2
-    bit_offset: 2
-    bit_size: 1
-  - name: TC3
-    bit_offset: 3
-    bit_size: 1
-  - name: TC4
-    bit_offset: 4
-    bit_size: 1
-  - name: TC5
-    bit_offset: 5
-    bit_size: 1
-  - name: TC6
-    bit_offset: 6
-    bit_size: 1
-  - name: TC7
-    bit_offset: 7
-    bit_size: 1
+    - name: TC0
+      bit_offset: 0
+      bit_size: 1
+    - name: TC1
+      bit_offset: 1
+      bit_size: 1
+    - name: TC2
+      bit_offset: 2
+      bit_size: 1
+    - name: TC3
+      bit_offset: 3
+      bit_size: 1
+    - name: TC4
+      bit_offset: 4
+      bit_size: 1
+    - name: TC5
+      bit_offset: 5
+      bit_size: 1
+    - name: TC6
+      bit_offset: 6
+      bit_size: 1
+    - name: TC7
+      bit_offset: 7
+      bit_size: 1
 fieldset/NETC_PORT_PRXDCR:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 32
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_PORT_PRXDCRR0:
   description: ''
   fields:
-  - name: PCDR
-    bit_offset: 0
-    bit_size: 1
-  - name: SMREDR
-    bit_offset: 1
-    bit_size: 1
-  - name: RXDISDR
-    bit_offset: 2
-    bit_size: 1
-  - name: IPFDR
-    bit_offset: 3
-    bit_size: 1
-  - name: RPDR
-    bit_offset: 4
-    bit_size: 1
-  - name: ISFDR
-    bit_offset: 5
-    bit_size: 1
-  - name: SGCDR
-    bit_offset: 6
-    bit_size: 1
-  - name: SGOEDR
-    bit_offset: 7
-    bit_size: 1
-  - name: MSDUEDR
-    bit_offset: 8
-    bit_size: 1
-  - name: ITEDR
-    bit_offset: 11
-    bit_size: 1
-  - name: ECCEDR
-    bit_offset: 12
-    bit_size: 1
-  - name: SIFDR
-    bit_offset: 13
-    bit_size: 1
-  - name: L2DOSDR
-    bit_offset: 14
-    bit_size: 1
-  - name: L3DOSDR
-    bit_offset: 15
-    bit_size: 1
+    - name: PCDR
+      bit_offset: 0
+      bit_size: 1
+    - name: SMREDR
+      bit_offset: 1
+      bit_size: 1
+    - name: RXDISDR
+      bit_offset: 2
+      bit_size: 1
+    - name: IPFDR
+      bit_offset: 3
+      bit_size: 1
+    - name: RPDR
+      bit_offset: 4
+      bit_size: 1
+    - name: ISFDR
+      bit_offset: 5
+      bit_size: 1
+    - name: SGCDR
+      bit_offset: 6
+      bit_size: 1
+    - name: SGOEDR
+      bit_offset: 7
+      bit_size: 1
+    - name: MSDUEDR
+      bit_offset: 8
+      bit_size: 1
+    - name: ITEDR
+      bit_offset: 11
+      bit_size: 1
+    - name: ECCEDR
+      bit_offset: 12
+      bit_size: 1
+    - name: SIFDR
+      bit_offset: 13
+      bit_size: 1
+    - name: L2DOSDR
+      bit_offset: 14
+      bit_size: 1
+    - name: L3DOSDR
+      bit_offset: 15
+      bit_size: 1
 fieldset/NETC_PORT_PRXDCRR1:
   description: ''
   fields:
-  - name: ENTRYID
-    bit_offset: 0
-    bit_size: 16
-  - name: TT
-    bit_offset: 28
-    bit_size: 4
+    - name: ENTRYID
+      bit_offset: 0
+      bit_size: 16
+    - name: TT
+      bit_offset: 28
+      bit_size: 4
 fieldset/NETC_PORT_PTGSTCSR_LH:
   description: ''
   fields:
-  - name: STATE
-    bit_offset: 16
-    bit_size: 1
+    - name: STATE
+      bit_offset: 16
+      bit_size: 1
 fieldset/NETC_PORT_PTCTMSDUR:
   description: ''
   fields:
-  - name: MAXSDU
-    bit_offset: 0
-    bit_size: 16
+    - name: MAXSDU
+      bit_offset: 0
+      bit_size: 16
 fieldset/NETC_PORT_PTCTMSDUR_SDU:
   description: ''
   fields:
-  - name: TYPE
-    bit_offset: 16
-    bit_size: 2
+    - name: TYPE
+      bit_offset: 16
+      bit_size: 2
 fieldset/NETC_PORT_PTCTMSDUR_SF_MAXSDU:
   description: ''
   fields:
-  - name: DIS
-    bit_offset: 24
-    bit_size: 1
+    - name: DIS
+      bit_offset: 24
+      bit_size: 1
 fieldset/NETC_PORT_PTCCBSR0:
   description: ''
   fields:
-  - name: BW
-    bit_offset: 0
-    bit_size: 7
-  - name: FRACT
-    bit_offset: 16
-    bit_size: 4
-  - name: CBSE
-    bit_offset: 31
-    bit_size: 1
+    - name: BW
+      bit_offset: 0
+      bit_size: 7
+    - name: FRACT
+      bit_offset: 16
+      bit_size: 4
+    - name: CBSE
+      bit_offset: 31
+      bit_size: 1
 fieldset/NETC_PORT_PTCCBSR1_HI:
   description: ''
   fields:
-  - name: CREDIT
-    bit_offset: 0
-    bit_size: 32
+    - name: CREDIT
+      bit_offset: 0
+      bit_size: 32
 fieldset/NETC_PORT_PISIDCR:
   description: ''
   fields:
-  - name: KCPAIR
-    bit_offset: 0
-    bit_size: 1
-  - name: KC0EN
-    bit_offset: 1
-    bit_size: 1
-  - name: KC1EN
-    bit_offset: 2
-    bit_size: 1
-  - name: ISEID
-    bit_offset: 16
-    bit_size: 16
+    - name: KCPAIR
+      bit_offset: 0
+      bit_size: 1
+    - name: KC0EN
+      bit_offset: 1
+      bit_size: 1
+    - name: KC1EN
+      bit_offset: 2
+      bit_size: 1
+    - name: ISEID
+      bit_offset: 16
+      bit_size: 16

@@ -1,1595 +1,1595 @@
 block/CSI:
   description: ''
   items:
-  - name: CR
-    byte_offset: 0
-    description: CSI-2 Host control register
-    fieldset: CSI_CR
-  - name: PCR
-    byte_offset: 4
-    description: CSI-2 Host DPHY_RX control register
-    fieldset: CSI_PCR
-  - name: VC0CFGR1
-    byte_offset: 16
-    description: CSI-2 Host virtual channel 0 configuration register 1
-    fieldset: CSI_VC0CFGR1
-  - name: VC0CFGR2
-    byte_offset: 20
-    description: CSI-2 Host virtual channel 0 configuration register 2
-    fieldset: CSI_VC0CFGR2
-  - name: VC0CFGR3
-    byte_offset: 24
-    description: CSI-2 Host virtual channel 0 configuration register 3
-    fieldset: CSI_VC0CFGR3
-  - name: VC0CFGR4
-    byte_offset: 28
-    description: CSI-2 Host virtual channel 0 configuration register 4
-    fieldset: CSI_VC0CFGR4
-  - name: VC1CFGR1
-    byte_offset: 32
-    description: CSI-2 Host virtual channel 1 configuration register 1
-    fieldset: CSI_VC1CFGR1
-  - name: VC1CFGR2
-    byte_offset: 36
-    description: CSI-2 Host virtual channel 1 configuration register 2
-    fieldset: CSI_VC1CFGR2
-  - name: VC1CFGR3
-    byte_offset: 40
-    description: CSI-2 Host virtual channel 1 configuration register 3
-    fieldset: CSI_VC1CFGR3
-  - name: VC1CFGR4
-    byte_offset: 44
-    description: CSI-2 Host virtual channel 1 configuration register 4
-    fieldset: CSI_VC1CFGR4
-  - name: VC2CFGR1
-    byte_offset: 48
-    description: CSI-2 Host virtual channel 2 configuration register 1
-    fieldset: CSI_VC2CFGR1
-  - name: VC2CFGR2
-    byte_offset: 52
-    description: CSI-2 Host virtual channel 2 configuration register 2
-    fieldset: CSI_VC2CFGR2
-  - name: VC2CFGR3
-    byte_offset: 56
-    description: CSI-2 Host virtual channel 2 configuration register 3
-    fieldset: CSI_VC2CFGR3
-  - name: VC2CFGR4
-    byte_offset: 60
-    description: CSI-2 Host virtual channel 2 configuration register 4
-    fieldset: CSI_VC2CFGR4
-  - name: VC3CFGR1
-    byte_offset: 64
-    description: CSI-2 Host virtual channel 3 configuration register 1
-    fieldset: CSI_VC3CFGR1
-  - name: VC3CFGR2
-    byte_offset: 68
-    description: CSI-2 Host virtual channel 3 configuration register 2
-    fieldset: CSI_VC3CFGR2
-  - name: VC3CFGR3
-    byte_offset: 72
-    description: CSI-2 Host virtual channel 3 configuration register 3
-    fieldset: CSI_VC3CFGR3
-  - name: VC3CFGR4
-    byte_offset: 76
-    description: CSI-2 Host virtual channel 3 configuration register 4
-    fieldset: CSI_VC3CFGR4
-  - name: LB0CFGR
-    byte_offset: 80
-    description: CSI-2 Host line byte 0 configuration register
-    fieldset: CSI_LB0CFGR
-  - name: LB1CFGR
-    byte_offset: 84
-    description: CSI-2 Host line byte 1 configuration register
-    fieldset: CSI_LB1CFGR
-  - name: LB2CFGR
-    byte_offset: 88
-    description: CSI-2 Host line byte 2 configuration register
-    fieldset: CSI_LB2CFGR
-  - name: LB3CFGR
-    byte_offset: 92
-    description: CSI-2 Host line byte 3 configuration register
-    fieldset: CSI_LB3CFGR
-  - name: TIM0CFGR
-    byte_offset: 96
-    description: CSI-2 Host timer 0 configuration register
-    fieldset: CSI_TIM0CFGR
-  - name: TIM1CFGR
-    byte_offset: 100
-    description: CSI-2 Host timer 1 configuration register
-    fieldset: CSI_TIM1CFGR
-  - name: TIM2CFGR
-    byte_offset: 104
-    description: CSI-2 Host timer 2 configuration register
-    fieldset: CSI_TIM2CFGR
-  - name: TIM3CFGR
-    byte_offset: 108
-    description: CSI-2 Host timer 3 configuration register
-    fieldset: CSI_TIM3CFGR
-  - name: LMCFGR
-    byte_offset: 112
-    description: CSI-2 Host lane merger configuration register
-    fieldset: CSI_LMCFGR
-  - name: PRGITR
-    byte_offset: 116
-    description: CSI-2 Host program interrupt register
-    fieldset: CSI_PRGITR
-  - name: WDR
-    byte_offset: 120
-    description: CSI-2 Host watchdog register
-    fieldset: CSI_WDR
-  - name: IER0
-    byte_offset: 128
-    description: CSI-2 Host Interrupt enable register 0
-    fieldset: CSI_IER0
-  - name: IER1
-    byte_offset: 132
-    description: CSI-2 Host Interrupt enable register 1
-    fieldset: CSI_IER1
-  - name: SR0
-    byte_offset: 144
-    description: CSI-2 Host status register 0
-    fieldset: CSI_SR0
-  - name: SR1
-    byte_offset: 148
-    description: CSI-2 Host status register 1
-    fieldset: CSI_SR1
-  - name: FCR0
-    byte_offset: 256
-    description: CSI-2 Host Flag clear register 0
-    fieldset: CSI_FCR0
-  - name: FCR1
-    byte_offset: 260
-    description: CSI-2 Host Flag clear register 1
-    fieldset: CSI_FCR1
-  - name: SPDFR
-    byte_offset: 272
-    description: CSI-2 Host short packet data field register
-    fieldset: CSI_SPDFR
-  - name: ERR1
-    byte_offset: 276
-    description: CSI-2 Host error register 1
-    fieldset: CSI_ERR1
-  - name: ERR2
-    byte_offset: 280
-    description: CSI-2 Host error register 2
-    fieldset: CSI_ERR2
-  - name: HHWCFGR
-    byte_offset: 4080
-    description: CSI-2 Host hardware configuration register
-    fieldset: CSI_HHWCFGR
-  - name: HVERR
-    byte_offset: 4084
-    description: CSI-2 Host version register
-    fieldset: CSI_HVERR
-  - name: HIPIDR
-    byte_offset: 4088
-    description: CSI-2 Host identification register
-    fieldset: CSI_HIPIDR
-  - name: HSIDR
-    byte_offset: 4092
-    description: CSI-2 Host size identification register
-    fieldset: CSI_HSIDR
-  - name: PRCR
-    byte_offset: 4096
-    description: CSI PHY reset control register
-    fieldset: CSI_PRCR
-  - name: PMCR
-    byte_offset: 4100
-    description: CSI PHY mode control register
-    fieldset: CSI_PMCR
-  - name: PFCR
-    byte_offset: 4104
-    description: CSI PHY frequency control register
-    fieldset: CSI_PFCR
-  - name: PTCR0
-    byte_offset: 4112
-    description: CSI PHY test control register 0
-    fieldset: CSI_PTCR0
-  - name: PTCR1
-    byte_offset: 4116
-    description: CSI PHY test control register 1
-    fieldset: CSI_PTCR1
-  - name: PTSR
-    byte_offset: 4120
-    description: CSI PHY test status register
-    fieldset: CSI_PTSR
-  - name: HWCFGR
-    byte_offset: 8176
-    description: CSI-2 Host hardware configuration register
-    fieldset: CSI_HWCFGR
-  - name: VERR
-    byte_offset: 8180
-    description: CSI-2 Host version register
-    fieldset: CSI_VERR
-  - name: IPIDR
-    byte_offset: 8184
-    description: CSI-2 Host identification register
-    fieldset: CSI_IPIDR
-  - name: SIDR
-    byte_offset: 8188
-    description: CSI-2 Host size identification register
-    fieldset: CSI_SIDR
+    - name: CR
+      byte_offset: 0
+      description: CSI-2 Host control register
+      fieldset: CSI_CR
+    - name: PCR
+      byte_offset: 4
+      description: CSI-2 Host DPHY_RX control register
+      fieldset: CSI_PCR
+    - name: VC0CFGR1
+      byte_offset: 16
+      description: CSI-2 Host virtual channel 0 configuration register 1
+      fieldset: CSI_VC0CFGR1
+    - name: VC0CFGR2
+      byte_offset: 20
+      description: CSI-2 Host virtual channel 0 configuration register 2
+      fieldset: CSI_VC0CFGR2
+    - name: VC0CFGR3
+      byte_offset: 24
+      description: CSI-2 Host virtual channel 0 configuration register 3
+      fieldset: CSI_VC0CFGR3
+    - name: VC0CFGR4
+      byte_offset: 28
+      description: CSI-2 Host virtual channel 0 configuration register 4
+      fieldset: CSI_VC0CFGR4
+    - name: VC1CFGR1
+      byte_offset: 32
+      description: CSI-2 Host virtual channel 1 configuration register 1
+      fieldset: CSI_VC1CFGR1
+    - name: VC1CFGR2
+      byte_offset: 36
+      description: CSI-2 Host virtual channel 1 configuration register 2
+      fieldset: CSI_VC1CFGR2
+    - name: VC1CFGR3
+      byte_offset: 40
+      description: CSI-2 Host virtual channel 1 configuration register 3
+      fieldset: CSI_VC1CFGR3
+    - name: VC1CFGR4
+      byte_offset: 44
+      description: CSI-2 Host virtual channel 1 configuration register 4
+      fieldset: CSI_VC1CFGR4
+    - name: VC2CFGR1
+      byte_offset: 48
+      description: CSI-2 Host virtual channel 2 configuration register 1
+      fieldset: CSI_VC2CFGR1
+    - name: VC2CFGR2
+      byte_offset: 52
+      description: CSI-2 Host virtual channel 2 configuration register 2
+      fieldset: CSI_VC2CFGR2
+    - name: VC2CFGR3
+      byte_offset: 56
+      description: CSI-2 Host virtual channel 2 configuration register 3
+      fieldset: CSI_VC2CFGR3
+    - name: VC2CFGR4
+      byte_offset: 60
+      description: CSI-2 Host virtual channel 2 configuration register 4
+      fieldset: CSI_VC2CFGR4
+    - name: VC3CFGR1
+      byte_offset: 64
+      description: CSI-2 Host virtual channel 3 configuration register 1
+      fieldset: CSI_VC3CFGR1
+    - name: VC3CFGR2
+      byte_offset: 68
+      description: CSI-2 Host virtual channel 3 configuration register 2
+      fieldset: CSI_VC3CFGR2
+    - name: VC3CFGR3
+      byte_offset: 72
+      description: CSI-2 Host virtual channel 3 configuration register 3
+      fieldset: CSI_VC3CFGR3
+    - name: VC3CFGR4
+      byte_offset: 76
+      description: CSI-2 Host virtual channel 3 configuration register 4
+      fieldset: CSI_VC3CFGR4
+    - name: LB0CFGR
+      byte_offset: 80
+      description: CSI-2 Host line byte 0 configuration register
+      fieldset: CSI_LB0CFGR
+    - name: LB1CFGR
+      byte_offset: 84
+      description: CSI-2 Host line byte 1 configuration register
+      fieldset: CSI_LB1CFGR
+    - name: LB2CFGR
+      byte_offset: 88
+      description: CSI-2 Host line byte 2 configuration register
+      fieldset: CSI_LB2CFGR
+    - name: LB3CFGR
+      byte_offset: 92
+      description: CSI-2 Host line byte 3 configuration register
+      fieldset: CSI_LB3CFGR
+    - name: TIM0CFGR
+      byte_offset: 96
+      description: CSI-2 Host timer 0 configuration register
+      fieldset: CSI_TIM0CFGR
+    - name: TIM1CFGR
+      byte_offset: 100
+      description: CSI-2 Host timer 1 configuration register
+      fieldset: CSI_TIM1CFGR
+    - name: TIM2CFGR
+      byte_offset: 104
+      description: CSI-2 Host timer 2 configuration register
+      fieldset: CSI_TIM2CFGR
+    - name: TIM3CFGR
+      byte_offset: 108
+      description: CSI-2 Host timer 3 configuration register
+      fieldset: CSI_TIM3CFGR
+    - name: LMCFGR
+      byte_offset: 112
+      description: CSI-2 Host lane merger configuration register
+      fieldset: CSI_LMCFGR
+    - name: PRGITR
+      byte_offset: 116
+      description: CSI-2 Host program interrupt register
+      fieldset: CSI_PRGITR
+    - name: WDR
+      byte_offset: 120
+      description: CSI-2 Host watchdog register
+      fieldset: CSI_WDR
+    - name: IER0
+      byte_offset: 128
+      description: CSI-2 Host Interrupt enable register 0
+      fieldset: CSI_IER0
+    - name: IER1
+      byte_offset: 132
+      description: CSI-2 Host Interrupt enable register 1
+      fieldset: CSI_IER1
+    - name: SR0
+      byte_offset: 144
+      description: CSI-2 Host status register 0
+      fieldset: CSI_SR0
+    - name: SR1
+      byte_offset: 148
+      description: CSI-2 Host status register 1
+      fieldset: CSI_SR1
+    - name: FCR0
+      byte_offset: 256
+      description: CSI-2 Host Flag clear register 0
+      fieldset: CSI_FCR0
+    - name: FCR1
+      byte_offset: 260
+      description: CSI-2 Host Flag clear register 1
+      fieldset: CSI_FCR1
+    - name: SPDFR
+      byte_offset: 272
+      description: CSI-2 Host short packet data field register
+      fieldset: CSI_SPDFR
+    - name: ERR1
+      byte_offset: 276
+      description: CSI-2 Host error register 1
+      fieldset: CSI_ERR1
+    - name: ERR2
+      byte_offset: 280
+      description: CSI-2 Host error register 2
+      fieldset: CSI_ERR2
+    - name: HHWCFGR
+      byte_offset: 4080
+      description: CSI-2 Host hardware configuration register
+      fieldset: CSI_HHWCFGR
+    - name: HVERR
+      byte_offset: 4084
+      description: CSI-2 Host version register
+      fieldset: CSI_HVERR
+    - name: HIPIDR
+      byte_offset: 4088
+      description: CSI-2 Host identification register
+      fieldset: CSI_HIPIDR
+    - name: HSIDR
+      byte_offset: 4092
+      description: CSI-2 Host size identification register
+      fieldset: CSI_HSIDR
+    - name: PRCR
+      byte_offset: 4096
+      description: CSI PHY reset control register
+      fieldset: CSI_PRCR
+    - name: PMCR
+      byte_offset: 4100
+      description: CSI PHY mode control register
+      fieldset: CSI_PMCR
+    - name: PFCR
+      byte_offset: 4104
+      description: CSI PHY frequency control register
+      fieldset: CSI_PFCR
+    - name: PTCR0
+      byte_offset: 4112
+      description: CSI PHY test control register 0
+      fieldset: CSI_PTCR0
+    - name: PTCR1
+      byte_offset: 4116
+      description: CSI PHY test control register 1
+      fieldset: CSI_PTCR1
+    - name: PTSR
+      byte_offset: 4120
+      description: CSI PHY test status register
+      fieldset: CSI_PTSR
+    - name: HWCFGR
+      byte_offset: 8176
+      description: CSI-2 Host hardware configuration register
+      fieldset: CSI_HWCFGR
+    - name: VERR
+      byte_offset: 8180
+      description: CSI-2 Host version register
+      fieldset: CSI_VERR
+    - name: IPIDR
+      byte_offset: 8184
+      description: CSI-2 Host identification register
+      fieldset: CSI_IPIDR
+    - name: SIDR
+      byte_offset: 8188
+      description: CSI-2 Host size identification register
+      fieldset: CSI_SIDR
 fieldset/CSI_CR:
   description: ''
   fields:
-  - name: CSIEN
-    bit_offset: 0
-    bit_size: 1
-    description: CSI-2 enable
-  - name: VC0START
-    bit_offset: 2
-    bit_size: 1
-    description: Virtual channel 0 start
-  - name: VC0STOP
-    bit_offset: 3
-    bit_size: 1
-    description: Virtual channel 0 stop
-  - name: VC1START
-    bit_offset: 6
-    bit_size: 1
-    description: Virtual channel 1 start
-  - name: VC1STOP
-    bit_offset: 7
-    bit_size: 1
-    description: Virtual channel 1 stop
-  - name: VC2START
-    bit_offset: 10
-    bit_size: 1
-    description: Virtual channel 2 start
-  - name: VC2STOP
-    bit_offset: 11
-    bit_size: 1
-    description: Virtual channel 2 stop
-  - name: VC3START
-    bit_offset: 14
-    bit_size: 1
-    description: Virtual channel 3 start
-  - name: VC3STOP
-    bit_offset: 15
-    bit_size: 1
-    description: Virtual channel 3 stop
+    - name: CSIEN
+      bit_offset: 0
+      bit_size: 1
+      description: CSI-2 enable
+    - name: VC0START
+      bit_offset: 2
+      bit_size: 1
+      description: Virtual channel 0 start
+    - name: VC0STOP
+      bit_offset: 3
+      bit_size: 1
+      description: Virtual channel 0 stop
+    - name: VC1START
+      bit_offset: 6
+      bit_size: 1
+      description: Virtual channel 1 start
+    - name: VC1STOP
+      bit_offset: 7
+      bit_size: 1
+      description: Virtual channel 1 stop
+    - name: VC2START
+      bit_offset: 10
+      bit_size: 1
+      description: Virtual channel 2 start
+    - name: VC2STOP
+      bit_offset: 11
+      bit_size: 1
+      description: Virtual channel 2 stop
+    - name: VC3START
+      bit_offset: 14
+      bit_size: 1
+      description: Virtual channel 3 start
+    - name: VC3STOP
+      bit_offset: 15
+      bit_size: 1
+      description: Virtual channel 3 stop
 fieldset/CSI_PCR:
   description: ''
   fields:
-  - name: PWRDOWN
-    bit_offset: 0
-    bit_size: 1
-    description: Virtual channel 3 start
-  - name: CLEN
-    bit_offset: 1
-    bit_size: 1
-    description: Clock lane enable
-  - name: DL0EN
-    bit_offset: 2
-    bit_size: 1
-    description: D-PHY_RX data lane 0 enable
-  - name: DL1EN
-    bit_offset: 3
-    bit_size: 1
-    description: D-PHY_RX data lane 1 enable
+    - name: PWRDOWN
+      bit_offset: 0
+      bit_size: 1
+      description: Virtual channel 3 start
+    - name: CLEN
+      bit_offset: 1
+      bit_size: 1
+      description: Clock lane enable
+    - name: DL0EN
+      bit_offset: 2
+      bit_size: 1
+      description: D-PHY_RX data lane 0 enable
+    - name: DL1EN
+      bit_offset: 3
+      bit_size: 1
+      description: D-PHY_RX data lane 1 enable
 fieldset/CSI_VC0CFGR1:
   description: ''
   fields:
-  - name: ALLDT
-    bit_offset: 0
-    bit_size: 1
-    description: All data types enable for the virtual channel x
-  - name: DT0EN
-    bit_offset: 1
-    bit_size: 1
-    description: Data type 0 enable
-  - name: DT1EN
-    bit_offset: 2
-    bit_size: 1
-    description: Data type 1 enable
-  - name: DT2EN
-    bit_offset: 3
-    bit_size: 1
-    description: Data type 2 enable
-  - name: DT3EN
-    bit_offset: 4
-    bit_size: 1
-    description: Data type 3 enable
-  - name: DT4EN
-    bit_offset: 5
-    bit_size: 1
-    description: Data type 4 enable
-  - name: DT5EN
-    bit_offset: 6
-    bit_size: 1
-    description: Data type 5 enable
-  - name: DT6EN
-    bit_offset: 7
-    bit_size: 1
-    description: Data type 6 enable
-  - name: CDTFT
-    bit_offset: 8
-    bit_size: 5
-    description: Common format for all data types
-  - name: DT0
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 0 class selection for virtual channel x
-  - name: DT0FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 0 format
+    - name: ALLDT
+      bit_offset: 0
+      bit_size: 1
+      description: All data types enable for the virtual channel x
+    - name: DT0EN
+      bit_offset: 1
+      bit_size: 1
+      description: Data type 0 enable
+    - name: DT1EN
+      bit_offset: 2
+      bit_size: 1
+      description: Data type 1 enable
+    - name: DT2EN
+      bit_offset: 3
+      bit_size: 1
+      description: Data type 2 enable
+    - name: DT3EN
+      bit_offset: 4
+      bit_size: 1
+      description: Data type 3 enable
+    - name: DT4EN
+      bit_offset: 5
+      bit_size: 1
+      description: Data type 4 enable
+    - name: DT5EN
+      bit_offset: 6
+      bit_size: 1
+      description: Data type 5 enable
+    - name: DT6EN
+      bit_offset: 7
+      bit_size: 1
+      description: Data type 6 enable
+    - name: CDTFT
+      bit_offset: 8
+      bit_size: 5
+      description: Common format for all data types
+    - name: DT0
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 0 class selection for virtual channel x
+    - name: DT0FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 0 format
 fieldset/CSI_VC0CFGR2:
   description: ''
   fields:
-  - name: DT1
-    bit_offset: 0
-    bit_size: 6
-    description: Data type 1 class selection for virtual channel x
-  - name: DT1FT
-    bit_offset: 8
-    bit_size: 5
-    description: Data type 1 format
-  - name: DT2
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 2 class selection for virtual channel x
-  - name: DT2FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 2 format
+    - name: DT1
+      bit_offset: 0
+      bit_size: 6
+      description: Data type 1 class selection for virtual channel x
+    - name: DT1FT
+      bit_offset: 8
+      bit_size: 5
+      description: Data type 1 format
+    - name: DT2
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 2 class selection for virtual channel x
+    - name: DT2FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 2 format
 fieldset/CSI_VC0CFGR3:
   description: ''
   fields:
-  - name: DT3
-    bit_offset: 0
-    bit_size: 6
-    description: Data type 3 class selection for virtual channel x
-  - name: DT3FT
-    bit_offset: 8
-    bit_size: 5
-    description: Data type 3 format
-  - name: DT4
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 4 class selection for virtual channel x
-  - name: DT4FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 4 format
+    - name: DT3
+      bit_offset: 0
+      bit_size: 6
+      description: Data type 3 class selection for virtual channel x
+    - name: DT3FT
+      bit_offset: 8
+      bit_size: 5
+      description: Data type 3 format
+    - name: DT4
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 4 class selection for virtual channel x
+    - name: DT4FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 4 format
 fieldset/CSI_VC0CFGR4:
   description: ''
   fields:
-  - name: DT5
-    bit_offset: 0
-    bit_size: 6
-    description: Data type 5 class selection for virtual channel x
-  - name: DT5FT
-    bit_offset: 8
-    bit_size: 5
-    description: Data type 5 format
-  - name: DT6
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 6 class selection for virtual channel x
-  - name: DT6FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 6 format
+    - name: DT5
+      bit_offset: 0
+      bit_size: 6
+      description: Data type 5 class selection for virtual channel x
+    - name: DT5FT
+      bit_offset: 8
+      bit_size: 5
+      description: Data type 5 format
+    - name: DT6
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 6 class selection for virtual channel x
+    - name: DT6FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 6 format
 fieldset/CSI_VC1CFGR1:
   description: ''
   fields:
-  - name: ALLDT
-    bit_offset: 0
-    bit_size: 1
-    description: All data types enable for the virtual channel x
-  - name: DT0EN
-    bit_offset: 1
-    bit_size: 1
-    description: Data type 0 enable
-  - name: DT1EN
-    bit_offset: 2
-    bit_size: 1
-    description: Data type 1 enable
-  - name: DT2EN
-    bit_offset: 3
-    bit_size: 1
-    description: Data type 2 enable
-  - name: DT3EN
-    bit_offset: 4
-    bit_size: 1
-    description: Data type 3 enable
-  - name: DT4EN
-    bit_offset: 5
-    bit_size: 1
-    description: Data type 4 enable
-  - name: DT5EN
-    bit_offset: 6
-    bit_size: 1
-    description: Data type 5 enable
-  - name: DT6EN
-    bit_offset: 7
-    bit_size: 1
-    description: Data type 6 enable
-  - name: CDTFT
-    bit_offset: 8
-    bit_size: 5
-    description: Common format for all data types
-  - name: DT0
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 0 class selection for virtual channel x
-  - name: DT0FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 0 format
+    - name: ALLDT
+      bit_offset: 0
+      bit_size: 1
+      description: All data types enable for the virtual channel x
+    - name: DT0EN
+      bit_offset: 1
+      bit_size: 1
+      description: Data type 0 enable
+    - name: DT1EN
+      bit_offset: 2
+      bit_size: 1
+      description: Data type 1 enable
+    - name: DT2EN
+      bit_offset: 3
+      bit_size: 1
+      description: Data type 2 enable
+    - name: DT3EN
+      bit_offset: 4
+      bit_size: 1
+      description: Data type 3 enable
+    - name: DT4EN
+      bit_offset: 5
+      bit_size: 1
+      description: Data type 4 enable
+    - name: DT5EN
+      bit_offset: 6
+      bit_size: 1
+      description: Data type 5 enable
+    - name: DT6EN
+      bit_offset: 7
+      bit_size: 1
+      description: Data type 6 enable
+    - name: CDTFT
+      bit_offset: 8
+      bit_size: 5
+      description: Common format for all data types
+    - name: DT0
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 0 class selection for virtual channel x
+    - name: DT0FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 0 format
 fieldset/CSI_VC1CFGR2:
   description: ''
   fields:
-  - name: DT1
-    bit_offset: 0
-    bit_size: 6
-    description: Data type 1 class selection for virtual channel x
-  - name: DT1FT
-    bit_offset: 8
-    bit_size: 5
-    description: Data type 1 format
-  - name: DT2
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 2 class selection for virtual channel x
-  - name: DT2FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 2 format
+    - name: DT1
+      bit_offset: 0
+      bit_size: 6
+      description: Data type 1 class selection for virtual channel x
+    - name: DT1FT
+      bit_offset: 8
+      bit_size: 5
+      description: Data type 1 format
+    - name: DT2
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 2 class selection for virtual channel x
+    - name: DT2FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 2 format
 fieldset/CSI_VC1CFGR3:
   description: ''
   fields:
-  - name: DT3
-    bit_offset: 0
-    bit_size: 6
-    description: Data type 3 class selection for virtual channel x
-  - name: DT3FT
-    bit_offset: 8
-    bit_size: 5
-    description: Data type 3 format
-  - name: DT4
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 4 class selection for virtual channel x
-  - name: DT4FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 4 format
+    - name: DT3
+      bit_offset: 0
+      bit_size: 6
+      description: Data type 3 class selection for virtual channel x
+    - name: DT3FT
+      bit_offset: 8
+      bit_size: 5
+      description: Data type 3 format
+    - name: DT4
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 4 class selection for virtual channel x
+    - name: DT4FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 4 format
 fieldset/CSI_VC1CFGR4:
   description: ''
   fields:
-  - name: DT5
-    bit_offset: 0
-    bit_size: 6
-    description: Data type 5 class selection for virtual channel x
-  - name: DT5FT
-    bit_offset: 8
-    bit_size: 5
-    description: Data type 5 format
-  - name: DT6
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 6 class selection for virtual channel x
-  - name: DT6FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 6 format
+    - name: DT5
+      bit_offset: 0
+      bit_size: 6
+      description: Data type 5 class selection for virtual channel x
+    - name: DT5FT
+      bit_offset: 8
+      bit_size: 5
+      description: Data type 5 format
+    - name: DT6
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 6 class selection for virtual channel x
+    - name: DT6FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 6 format
 fieldset/CSI_VC2CFGR1:
   description: ''
   fields:
-  - name: ALLDT
-    bit_offset: 0
-    bit_size: 1
-    description: All data types enable for the virtual channel x
-  - name: DT0EN
-    bit_offset: 1
-    bit_size: 1
-    description: Data type 0 enable
-  - name: DT1EN
-    bit_offset: 2
-    bit_size: 1
-    description: Data type 1 enable
-  - name: DT2EN
-    bit_offset: 3
-    bit_size: 1
-    description: Data type 2 enable
-  - name: DT3EN
-    bit_offset: 4
-    bit_size: 1
-    description: Data type 3 enable
-  - name: DT4EN
-    bit_offset: 5
-    bit_size: 1
-    description: Data type 4 enable
-  - name: DT5EN
-    bit_offset: 6
-    bit_size: 1
-    description: Data type 5 enable
-  - name: DT6EN
-    bit_offset: 7
-    bit_size: 1
-    description: Data type 6 enable
-  - name: CDTFT
-    bit_offset: 8
-    bit_size: 5
-    description: Common format for all data types
-  - name: DT0
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 0 class selection for virtual channel x
-  - name: DT0FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 0 format
+    - name: ALLDT
+      bit_offset: 0
+      bit_size: 1
+      description: All data types enable for the virtual channel x
+    - name: DT0EN
+      bit_offset: 1
+      bit_size: 1
+      description: Data type 0 enable
+    - name: DT1EN
+      bit_offset: 2
+      bit_size: 1
+      description: Data type 1 enable
+    - name: DT2EN
+      bit_offset: 3
+      bit_size: 1
+      description: Data type 2 enable
+    - name: DT3EN
+      bit_offset: 4
+      bit_size: 1
+      description: Data type 3 enable
+    - name: DT4EN
+      bit_offset: 5
+      bit_size: 1
+      description: Data type 4 enable
+    - name: DT5EN
+      bit_offset: 6
+      bit_size: 1
+      description: Data type 5 enable
+    - name: DT6EN
+      bit_offset: 7
+      bit_size: 1
+      description: Data type 6 enable
+    - name: CDTFT
+      bit_offset: 8
+      bit_size: 5
+      description: Common format for all data types
+    - name: DT0
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 0 class selection for virtual channel x
+    - name: DT0FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 0 format
 fieldset/CSI_VC2CFGR2:
   description: ''
   fields:
-  - name: DT1
-    bit_offset: 0
-    bit_size: 6
-    description: Data type 1 class selection for virtual channel x
-  - name: DT1FT
-    bit_offset: 8
-    bit_size: 5
-    description: Data type 1 format
-  - name: DT2
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 2 class selection for virtual channel x
-  - name: DT2FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 2 format
+    - name: DT1
+      bit_offset: 0
+      bit_size: 6
+      description: Data type 1 class selection for virtual channel x
+    - name: DT1FT
+      bit_offset: 8
+      bit_size: 5
+      description: Data type 1 format
+    - name: DT2
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 2 class selection for virtual channel x
+    - name: DT2FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 2 format
 fieldset/CSI_VC2CFGR3:
   description: ''
   fields:
-  - name: DT3
-    bit_offset: 0
-    bit_size: 6
-    description: Data type 3 class selection for virtual channel x
-  - name: DT3FT
-    bit_offset: 8
-    bit_size: 5
-    description: Data type 3 format
-  - name: DT4
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 4 class selection for virtual channel x
-  - name: DT4FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 4 format
+    - name: DT3
+      bit_offset: 0
+      bit_size: 6
+      description: Data type 3 class selection for virtual channel x
+    - name: DT3FT
+      bit_offset: 8
+      bit_size: 5
+      description: Data type 3 format
+    - name: DT4
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 4 class selection for virtual channel x
+    - name: DT4FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 4 format
 fieldset/CSI_VC2CFGR4:
   description: ''
   fields:
-  - name: DT5
-    bit_offset: 0
-    bit_size: 6
-    description: Data type 5 class selection for virtual channel x
-  - name: DT5FT
-    bit_offset: 8
-    bit_size: 5
-    description: Data type 5 format
-  - name: DT6
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 6 class selection for virtual channel x
-  - name: DT6FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 6 format
+    - name: DT5
+      bit_offset: 0
+      bit_size: 6
+      description: Data type 5 class selection for virtual channel x
+    - name: DT5FT
+      bit_offset: 8
+      bit_size: 5
+      description: Data type 5 format
+    - name: DT6
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 6 class selection for virtual channel x
+    - name: DT6FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 6 format
 fieldset/CSI_VC3CFGR1:
   description: ''
   fields:
-  - name: ALLDT
-    bit_offset: 0
-    bit_size: 1
-    description: All data types enable for the virtual channel x
-  - name: DT0EN
-    bit_offset: 1
-    bit_size: 1
-    description: Data type 0 enable
-  - name: DT1EN
-    bit_offset: 2
-    bit_size: 1
-    description: Data type 1 enable
-  - name: DT2EN
-    bit_offset: 3
-    bit_size: 1
-    description: Data type 2 enable
-  - name: DT3EN
-    bit_offset: 4
-    bit_size: 1
-    description: Data type 3 enable
-  - name: DT4EN
-    bit_offset: 5
-    bit_size: 1
-    description: Data type 4 enable
-  - name: DT5EN
-    bit_offset: 6
-    bit_size: 1
-    description: Data type 5 enable
-  - name: DT6EN
-    bit_offset: 7
-    bit_size: 1
-    description: Data type 6 enable
-  - name: CDTFT
-    bit_offset: 8
-    bit_size: 5
-    description: Common format for all data types
-  - name: DT0
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 0 class selection for virtual channel x
-  - name: DT0FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 0 format
+    - name: ALLDT
+      bit_offset: 0
+      bit_size: 1
+      description: All data types enable for the virtual channel x
+    - name: DT0EN
+      bit_offset: 1
+      bit_size: 1
+      description: Data type 0 enable
+    - name: DT1EN
+      bit_offset: 2
+      bit_size: 1
+      description: Data type 1 enable
+    - name: DT2EN
+      bit_offset: 3
+      bit_size: 1
+      description: Data type 2 enable
+    - name: DT3EN
+      bit_offset: 4
+      bit_size: 1
+      description: Data type 3 enable
+    - name: DT4EN
+      bit_offset: 5
+      bit_size: 1
+      description: Data type 4 enable
+    - name: DT5EN
+      bit_offset: 6
+      bit_size: 1
+      description: Data type 5 enable
+    - name: DT6EN
+      bit_offset: 7
+      bit_size: 1
+      description: Data type 6 enable
+    - name: CDTFT
+      bit_offset: 8
+      bit_size: 5
+      description: Common format for all data types
+    - name: DT0
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 0 class selection for virtual channel x
+    - name: DT0FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 0 format
 fieldset/CSI_VC3CFGR2:
   description: ''
   fields:
-  - name: DT1
-    bit_offset: 0
-    bit_size: 6
-    description: Data type 1 class selection for virtual channel x
-  - name: DT1FT
-    bit_offset: 8
-    bit_size: 5
-    description: Data type 1 format
-  - name: DT2
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 2 class selection for virtual channel x
-  - name: DT2FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 2 format
+    - name: DT1
+      bit_offset: 0
+      bit_size: 6
+      description: Data type 1 class selection for virtual channel x
+    - name: DT1FT
+      bit_offset: 8
+      bit_size: 5
+      description: Data type 1 format
+    - name: DT2
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 2 class selection for virtual channel x
+    - name: DT2FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 2 format
 fieldset/CSI_VC3CFGR3:
   description: ''
   fields:
-  - name: DT3
-    bit_offset: 0
-    bit_size: 6
-    description: Data type 3 class selection for virtual channel x
-  - name: DT3FT
-    bit_offset: 8
-    bit_size: 5
-    description: Data type 3 format
-  - name: DT4
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 4 class selection for virtual channel x
-  - name: DT4FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 4 format
+    - name: DT3
+      bit_offset: 0
+      bit_size: 6
+      description: Data type 3 class selection for virtual channel x
+    - name: DT3FT
+      bit_offset: 8
+      bit_size: 5
+      description: Data type 3 format
+    - name: DT4
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 4 class selection for virtual channel x
+    - name: DT4FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 4 format
 fieldset/CSI_VC3CFGR4:
   description: ''
   fields:
-  - name: DT5
-    bit_offset: 0
-    bit_size: 6
-    description: Data type 5 class selection for virtual channel x
-  - name: DT5FT
-    bit_offset: 8
-    bit_size: 5
-    description: Data type 5 format
-  - name: DT6
-    bit_offset: 16
-    bit_size: 6
-    description: Data type 6 class selection for virtual channel x
-  - name: DT6FT
-    bit_offset: 24
-    bit_size: 5
-    description: Data type 6 format
+    - name: DT5
+      bit_offset: 0
+      bit_size: 6
+      description: Data type 5 class selection for virtual channel x
+    - name: DT5FT
+      bit_offset: 8
+      bit_size: 5
+      description: Data type 5 format
+    - name: DT6
+      bit_offset: 16
+      bit_size: 6
+      description: Data type 6 class selection for virtual channel x
+    - name: DT6FT
+      bit_offset: 24
+      bit_size: 5
+      description: Data type 6 format
 fieldset/CSI_LB0CFGR:
   description: ''
   fields:
-  - name: BYTECNT
-    bit_offset: 0
-    bit_size: 16
-    description: Byte counter
-  - name: LINECNT
-    bit_offset: 16
-    bit_size: 16
-    description: Line counter
+    - name: BYTECNT
+      bit_offset: 0
+      bit_size: 16
+      description: Byte counter
+    - name: LINECNT
+      bit_offset: 16
+      bit_size: 16
+      description: Line counter
 fieldset/CSI_LB1CFGR:
   description: ''
   fields:
-  - name: BYTECNT
-    bit_offset: 0
-    bit_size: 16
-    description: Byte counter
-  - name: LINECNT
-    bit_offset: 16
-    bit_size: 16
-    description: Line counter
+    - name: BYTECNT
+      bit_offset: 0
+      bit_size: 16
+      description: Byte counter
+    - name: LINECNT
+      bit_offset: 16
+      bit_size: 16
+      description: Line counter
 fieldset/CSI_LB2CFGR:
   description: ''
   fields:
-  - name: BYTECNT
-    bit_offset: 0
-    bit_size: 16
-    description: Byte counter
-  - name: LINECNT
-    bit_offset: 16
-    bit_size: 16
-    description: Line counter
+    - name: BYTECNT
+      bit_offset: 0
+      bit_size: 16
+      description: Byte counter
+    - name: LINECNT
+      bit_offset: 16
+      bit_size: 16
+      description: Line counter
 fieldset/CSI_LB3CFGR:
   description: ''
   fields:
-  - name: BYTECNT
-    bit_offset: 0
-    bit_size: 16
-    description: Byte counter
-  - name: LINECNT
-    bit_offset: 16
-    bit_size: 16
-    description: Line counter
+    - name: BYTECNT
+      bit_offset: 0
+      bit_size: 16
+      description: Byte counter
+    - name: LINECNT
+      bit_offset: 16
+      bit_size: 16
+      description: Line counter
 fieldset/CSI_TIM0CFGR:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 25
-    description: Clock cycle counter
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 25
+      description: Clock cycle counter
 fieldset/CSI_TIM1CFGR:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 25
-    description: Clock cycle counter
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 25
+      description: Clock cycle counter
 fieldset/CSI_TIM2CFGR:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 25
-    description: Clock cycle counter
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 25
+      description: Clock cycle counter
 fieldset/CSI_TIM3CFGR:
   description: ''
   fields:
-  - name: COUNT
-    bit_offset: 0
-    bit_size: 25
-    description: Clock cycle counter
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 25
+      description: Clock cycle counter
 fieldset/CSI_LMCFGR:
   description: ''
   fields:
-  - name: LANENB
-    bit_offset: 8
-    bit_size: 3
-    description: Number of lanes
-  - name: DL0MAP
-    bit_offset: 16
-    bit_size: 3
-    description: Physical mapping of logical data lane 0
-  - name: DL1MAP
-    bit_offset: 20
-    bit_size: 3
-    description: Physical mapping of logical data lane 1
+    - name: LANENB
+      bit_offset: 8
+      bit_size: 3
+      description: Number of lanes
+    - name: DL0MAP
+      bit_offset: 16
+      bit_size: 3
+      description: Physical mapping of logical data lane 0
+    - name: DL1MAP
+      bit_offset: 20
+      bit_size: 3
+      description: Physical mapping of logical data lane 1
 fieldset/CSI_PRGITR:
   description: ''
   fields:
-  - name: LB0VC
-    bit_offset: 0
-    bit_size: 2
-    description: Line/Byte counter 0 linked to a virtual channel
-  - name: LB0EN
-    bit_offset: 3
-    bit_size: 1
-    description: Line/Byte 0counter enable
-  - name: LB1VC
-    bit_offset: 4
-    bit_size: 2
-    description: Line/Byte counter 1 linked to a virtual channel
-  - name: LB1EN
-    bit_offset: 7
-    bit_size: 1
-    description: Line/Byte 1 counter enable
-  - name: LB2VC
-    bit_offset: 8
-    bit_size: 2
-    description: Line/Byte counter 2 linked to a virtual channel
-  - name: LB2EN
-    bit_offset: 11
-    bit_size: 1
-    description: Line/Byte 2 counter enable
-  - name: LB3VC
-    bit_offset: 12
-    bit_size: 2
-    description: Line/Byte counter 3 linked to a virtual channel
-  - name: LB3EN
-    bit_offset: 15
-    bit_size: 1
-    description: Line/Byte 3 counter enable
-  - name: TIM0VC
-    bit_offset: 16
-    bit_size: 2
-    description: TIM0 base time linked to a virtual channel
-  - name: TIM0EOF
-    bit_offset: 18
-    bit_size: 1
-    description: TIM0 base time starting from the end of frame
-  - name: TIM0EN
-    bit_offset: 19
-    bit_size: 1
-    description: TIM0 base time enable
-  - name: TIM1VC
-    bit_offset: 20
-    bit_size: 2
-    description: TIM1 base time linked to a virtual channel
-  - name: TIM1EOF
-    bit_offset: 22
-    bit_size: 1
-    description: TIM1 base time starting from the end of frame
-  - name: TIM1EN
-    bit_offset: 23
-    bit_size: 1
-    description: TIM1 base time enable
-  - name: TIM2VC
-    bit_offset: 24
-    bit_size: 2
-    description: TIM2 base time linked to a virtual channel
-  - name: TIM2EOF
-    bit_offset: 26
-    bit_size: 1
-    description: TIM2 base time starting from the end of frame
-  - name: TIM2EN
-    bit_offset: 27
-    bit_size: 1
-    description: TIM2 base time enable
-  - name: TIM3VC
-    bit_offset: 28
-    bit_size: 2
-    description: TIM3 base time linked to a virtual channel
-  - name: TIM3EOF
-    bit_offset: 30
-    bit_size: 1
-    description: TIM3 base time starting from the end of frame
-  - name: TIM3EN
-    bit_offset: 31
-    bit_size: 1
-    description: TIM3 base time enable
+    - name: LB0VC
+      bit_offset: 0
+      bit_size: 2
+      description: Line/Byte counter 0 linked to a virtual channel
+    - name: LB0EN
+      bit_offset: 3
+      bit_size: 1
+      description: Line/Byte 0counter enable
+    - name: LB1VC
+      bit_offset: 4
+      bit_size: 2
+      description: Line/Byte counter 1 linked to a virtual channel
+    - name: LB1EN
+      bit_offset: 7
+      bit_size: 1
+      description: Line/Byte 1 counter enable
+    - name: LB2VC
+      bit_offset: 8
+      bit_size: 2
+      description: Line/Byte counter 2 linked to a virtual channel
+    - name: LB2EN
+      bit_offset: 11
+      bit_size: 1
+      description: Line/Byte 2 counter enable
+    - name: LB3VC
+      bit_offset: 12
+      bit_size: 2
+      description: Line/Byte counter 3 linked to a virtual channel
+    - name: LB3EN
+      bit_offset: 15
+      bit_size: 1
+      description: Line/Byte 3 counter enable
+    - name: TIM0VC
+      bit_offset: 16
+      bit_size: 2
+      description: TIM0 base time linked to a virtual channel
+    - name: TIM0EOF
+      bit_offset: 18
+      bit_size: 1
+      description: TIM0 base time starting from the end of frame
+    - name: TIM0EN
+      bit_offset: 19
+      bit_size: 1
+      description: TIM0 base time enable
+    - name: TIM1VC
+      bit_offset: 20
+      bit_size: 2
+      description: TIM1 base time linked to a virtual channel
+    - name: TIM1EOF
+      bit_offset: 22
+      bit_size: 1
+      description: TIM1 base time starting from the end of frame
+    - name: TIM1EN
+      bit_offset: 23
+      bit_size: 1
+      description: TIM1 base time enable
+    - name: TIM2VC
+      bit_offset: 24
+      bit_size: 2
+      description: TIM2 base time linked to a virtual channel
+    - name: TIM2EOF
+      bit_offset: 26
+      bit_size: 1
+      description: TIM2 base time starting from the end of frame
+    - name: TIM2EN
+      bit_offset: 27
+      bit_size: 1
+      description: TIM2 base time enable
+    - name: TIM3VC
+      bit_offset: 28
+      bit_size: 2
+      description: TIM3 base time linked to a virtual channel
+    - name: TIM3EOF
+      bit_offset: 30
+      bit_size: 1
+      description: TIM3 base time starting from the end of frame
+    - name: TIM3EN
+      bit_offset: 31
+      bit_size: 1
+      description: TIM3 base time enable
 fieldset/CSI_WDR:
   description: ''
   fields:
-  - name: CNT
-    bit_offset: 0
-    bit_size: 32
-    description: Watchdog counter
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
+      description: Watchdog counter
 fieldset/CSI_IER0:
   description: ''
   fields:
-  - name: LB0IE
-    bit_offset: 0
-    bit_size: 1
-    description: Line byte counter 0 interrupt enable
-  - name: LB1IE
-    bit_offset: 1
-    bit_size: 1
-    description: Line byte counter 1 interrupt enable
-  - name: LB2IE
-    bit_offset: 2
-    bit_size: 1
-    description: Line byte counter 2 interrupt enable
-  - name: LB3IE
-    bit_offset: 3
-    bit_size: 1
-    description: Line byte counter 3 interrupt enable
-  - name: TIM0IE
-    bit_offset: 4
-    bit_size: 1
-    description: Timer 0 interrupt enable
-  - name: TIM1IE
-    bit_offset: 5
-    bit_size: 1
-    description: Timer 1 interrupt enable
-  - name: TIM2IE
-    bit_offset: 6
-    bit_size: 1
-    description: Timer 2 interrupt enable
-  - name: TIM3IE
-    bit_offset: 7
-    bit_size: 1
-    description: Timer 3 interrupt enable
-  - name: SOF0IE
-    bit_offset: 8
-    bit_size: 1
-    description: Start of frame for virtual channel 0 interrupt enable
-  - name: SOF1IE
-    bit_offset: 9
-    bit_size: 1
-    description: Start of frame for virtual channel 1 interrupt enable
-  - name: SOF2IE
-    bit_offset: 10
-    bit_size: 1
-    description: Start of frame for virtual channel 2 interrupt enable
-  - name: SOF3IE
-    bit_offset: 11
-    bit_size: 1
-    description: Start of frame for virtual channel 3 interrupt enable
-  - name: EOF0IE
-    bit_offset: 12
-    bit_size: 1
-    description: End of frame for virtual channel 0 interrupt enable
-  - name: EOF1IE
-    bit_offset: 13
-    bit_size: 1
-    description: End of frame for virtual channel 1 interrupt enable
-  - name: EOF2IE
-    bit_offset: 14
-    bit_size: 1
-    description: End of frame for virtual channel 2 interrupt enable
-  - name: EOF3IE
-    bit_offset: 15
-    bit_size: 1
-    description: End of frame for virtual channel 3 interrupt enable
-  - name: SPKTIE
-    bit_offset: 16
-    bit_size: 1
-    description: Short packet interrupt enable
-  - name: CCFIFOFIE
-    bit_offset: 21
-    bit_size: 1
-    description: Clock changer FIFO full interrupt enable
-  - name: CRCERRIE
-    bit_offset: 24
-    bit_size: 1
-    description: CRC error interrupt enable
-  - name: ECCERRIE
-    bit_offset: 25
-    bit_size: 1
-    description: ECC error interrupt enable
-  - name: CECCERRIE
-    bit_offset: 26
-    bit_size: 1
-    description: Corrected ECC error interrupt enable
-  - name: IDERRIE
-    bit_offset: 27
-    bit_size: 1
-    description: Data type ID error interrupt enable
-  - name: SPKTERRIE
-    bit_offset: 28
-    bit_size: 1
-    description: Short packet error interrupt enable
-  - name: WDERRIE
-    bit_offset: 29
-    bit_size: 1
-    description: Watchdog error interrupt enable
-  - name: SYNCERRIE
-    bit_offset: 30
-    bit_size: 1
-    description: Invalid synchronization error interrupt enable
+    - name: LB0IE
+      bit_offset: 0
+      bit_size: 1
+      description: Line byte counter 0 interrupt enable
+    - name: LB1IE
+      bit_offset: 1
+      bit_size: 1
+      description: Line byte counter 1 interrupt enable
+    - name: LB2IE
+      bit_offset: 2
+      bit_size: 1
+      description: Line byte counter 2 interrupt enable
+    - name: LB3IE
+      bit_offset: 3
+      bit_size: 1
+      description: Line byte counter 3 interrupt enable
+    - name: TIM0IE
+      bit_offset: 4
+      bit_size: 1
+      description: Timer 0 interrupt enable
+    - name: TIM1IE
+      bit_offset: 5
+      bit_size: 1
+      description: Timer 1 interrupt enable
+    - name: TIM2IE
+      bit_offset: 6
+      bit_size: 1
+      description: Timer 2 interrupt enable
+    - name: TIM3IE
+      bit_offset: 7
+      bit_size: 1
+      description: Timer 3 interrupt enable
+    - name: SOF0IE
+      bit_offset: 8
+      bit_size: 1
+      description: Start of frame for virtual channel 0 interrupt enable
+    - name: SOF1IE
+      bit_offset: 9
+      bit_size: 1
+      description: Start of frame for virtual channel 1 interrupt enable
+    - name: SOF2IE
+      bit_offset: 10
+      bit_size: 1
+      description: Start of frame for virtual channel 2 interrupt enable
+    - name: SOF3IE
+      bit_offset: 11
+      bit_size: 1
+      description: Start of frame for virtual channel 3 interrupt enable
+    - name: EOF0IE
+      bit_offset: 12
+      bit_size: 1
+      description: End of frame for virtual channel 0 interrupt enable
+    - name: EOF1IE
+      bit_offset: 13
+      bit_size: 1
+      description: End of frame for virtual channel 1 interrupt enable
+    - name: EOF2IE
+      bit_offset: 14
+      bit_size: 1
+      description: End of frame for virtual channel 2 interrupt enable
+    - name: EOF3IE
+      bit_offset: 15
+      bit_size: 1
+      description: End of frame for virtual channel 3 interrupt enable
+    - name: SPKTIE
+      bit_offset: 16
+      bit_size: 1
+      description: Short packet interrupt enable
+    - name: CCFIFOFIE
+      bit_offset: 21
+      bit_size: 1
+      description: Clock changer FIFO full interrupt enable
+    - name: CRCERRIE
+      bit_offset: 24
+      bit_size: 1
+      description: CRC error interrupt enable
+    - name: ECCERRIE
+      bit_offset: 25
+      bit_size: 1
+      description: ECC error interrupt enable
+    - name: CECCERRIE
+      bit_offset: 26
+      bit_size: 1
+      description: Corrected ECC error interrupt enable
+    - name: IDERRIE
+      bit_offset: 27
+      bit_size: 1
+      description: Data type ID error interrupt enable
+    - name: SPKTERRIE
+      bit_offset: 28
+      bit_size: 1
+      description: Short packet error interrupt enable
+    - name: WDERRIE
+      bit_offset: 29
+      bit_size: 1
+      description: Watchdog error interrupt enable
+    - name: SYNCERRIE
+      bit_offset: 30
+      bit_size: 1
+      description: Invalid synchronization error interrupt enable
 fieldset/CSI_IER1:
   description: ''
   fields:
-  - name: ESOTDL0IE
-    bit_offset: 0
-    bit_size: 1
-    description: Start of transmission error interrupt enable on lane 0
-  - name: ESOTSYNCDL0IE
-    bit_offset: 1
-    bit_size: 1
-    description: Start of transmission synchronization interrupt error enable on lane
-      0
-  - name: EESCDL0IE
-    bit_offset: 2
-    bit_size: 1
-    description: D-PHY_RX lane 0 escape entry error interrupt enable
-  - name: ESYNCESCDL0IE
-    bit_offset: 3
-    bit_size: 1
-    description: D-PHY_RX lane 0 low power data transmission synchronization error
-      interrupt enable
-  - name: ECTRLDL0IE
-    bit_offset: 4
-    bit_size: 1
-    description: D-PHY_RX lane 0 control error interrupt enable
-  - name: ESOTDL1IE
-    bit_offset: 8
-    bit_size: 1
-    description: Start of transmission error interrupt enable on lane 1
-  - name: ESOTSYNCDL1IE
-    bit_offset: 9
-    bit_size: 1
-    description: Start of transmission synchronization interrupt error enable on lane
-      1
-  - name: EESCDL1IE
-    bit_offset: 10
-    bit_size: 1
-    description: D-PHY_RX lane 1 escape entry error interrupt enable
-  - name: ESYNCESCDL1IE
-    bit_offset: 11
-    bit_size: 1
-    description: D-PHY_RX lane 1 low power data transmission synchronization error
-      interrupt enable
-  - name: ECTRLDL1IE
-    bit_offset: 12
-    bit_size: 1
-    description: D-PHY_RX lane 1 control error interrupt enable
+    - name: ESOTDL0IE
+      bit_offset: 0
+      bit_size: 1
+      description: Start of transmission error interrupt enable on lane 0
+    - name: ESOTSYNCDL0IE
+      bit_offset: 1
+      bit_size: 1
+      description: Start of transmission synchronization interrupt error enable on lane
+        0
+    - name: EESCDL0IE
+      bit_offset: 2
+      bit_size: 1
+      description: D-PHY_RX lane 0 escape entry error interrupt enable
+    - name: ESYNCESCDL0IE
+      bit_offset: 3
+      bit_size: 1
+      description: D-PHY_RX lane 0 low power data transmission synchronization error
+        interrupt enable
+    - name: ECTRLDL0IE
+      bit_offset: 4
+      bit_size: 1
+      description: D-PHY_RX lane 0 control error interrupt enable
+    - name: ESOTDL1IE
+      bit_offset: 8
+      bit_size: 1
+      description: Start of transmission error interrupt enable on lane 1
+    - name: ESOTSYNCDL1IE
+      bit_offset: 9
+      bit_size: 1
+      description: Start of transmission synchronization interrupt error enable on lane
+        1
+    - name: EESCDL1IE
+      bit_offset: 10
+      bit_size: 1
+      description: D-PHY_RX lane 1 escape entry error interrupt enable
+    - name: ESYNCESCDL1IE
+      bit_offset: 11
+      bit_size: 1
+      description: D-PHY_RX lane 1 low power data transmission synchronization error
+        interrupt enable
+    - name: ECTRLDL1IE
+      bit_offset: 12
+      bit_size: 1
+      description: D-PHY_RX lane 1 control error interrupt enable
 fieldset/CSI_SR0:
   description: ''
   fields:
-  - name: LB0F
-    bit_offset: 0
-    bit_size: 1
-    description: Line byte counter 0 flag
-  - name: LB1F
-    bit_offset: 1
-    bit_size: 1
-    description: Line byte counter 1 flag
-  - name: LB2F
-    bit_offset: 2
-    bit_size: 1
-    description: Line byte counter 2 flag
-  - name: LB3F
-    bit_offset: 3
-    bit_size: 1
-    description: Line byte counter 3 flag
-  - name: TIM0F
-    bit_offset: 4
-    bit_size: 1
-    description: Timer 0 flag
-  - name: TIM1F
-    bit_offset: 5
-    bit_size: 1
-    description: Timer 1 flag
-  - name: TIM2F
-    bit_offset: 6
-    bit_size: 1
-    description: Timer 2 flag
-  - name: TIM3F
-    bit_offset: 7
-    bit_size: 1
-    description: Timer 3 flag
-  - name: SOF0F
-    bit_offset: 8
-    bit_size: 1
-    description: Start of frame flag for virtual channel 0
-  - name: SOF1F
-    bit_offset: 9
-    bit_size: 1
-    description: Start of frame flag for virtual channel 1
-  - name: SOF2F
-    bit_offset: 10
-    bit_size: 1
-    description: Start of frame flag for virtual channel 2
-  - name: SOF3F
-    bit_offset: 11
-    bit_size: 1
-    description: Start of frame flag for virtual channel 3
-  - name: EOF0F
-    bit_offset: 12
-    bit_size: 1
-    description: End of frame flag for virtual channel 0
-  - name: EOF1F
-    bit_offset: 13
-    bit_size: 1
-    description: End of frame flag for virtual channel 1
-  - name: EOF2F
-    bit_offset: 14
-    bit_size: 1
-    description: End of frame flag for virtual channel 2
-  - name: EOF3F
-    bit_offset: 15
-    bit_size: 1
-    description: End of frame flag for virtual channel 3
-  - name: SPKTF
-    bit_offset: 16
-    bit_size: 1
-    description: Short packet flag
-  - name: VC0STATEF
-    bit_offset: 17
-    bit_size: 1
-    description: Virtual channel 0 state flag
-  - name: VC1STATEF
-    bit_offset: 18
-    bit_size: 1
-    description: Virtual channel 1 state flag
-  - name: VC2STATEF
-    bit_offset: 19
-    bit_size: 1
-    description: Virtual channel 2 state flag
-  - name: VC3STATEF
-    bit_offset: 20
-    bit_size: 1
-    description: Virtual channel 3 state flag
-  - name: CCFIFOFF
-    bit_offset: 21
-    bit_size: 1
-    description: Clock changer FIFO full flag
-  - name: CRCERRF
-    bit_offset: 24
-    bit_size: 1
-    description: CRC error flag
-  - name: ECCERRF
-    bit_offset: 25
-    bit_size: 1
-    description: ECC error flag
-  - name: CECCERRF
-    bit_offset: 26
-    bit_size: 1
-    description: Corrected ECC error flag
-  - name: IDERRF
-    bit_offset: 27
-    bit_size: 1
-    description: Data type ID error flag
-  - name: SPKTERRF
-    bit_offset: 28
-    bit_size: 1
-    description: Short packet error flag
-  - name: WDERRF
-    bit_offset: 29
-    bit_size: 1
-    description: Watchdog error flag
-  - name: SYNCERRF
-    bit_offset: 30
-    bit_size: 1
-    description: Invalid synchronization error flag
+    - name: LB0F
+      bit_offset: 0
+      bit_size: 1
+      description: Line byte counter 0 flag
+    - name: LB1F
+      bit_offset: 1
+      bit_size: 1
+      description: Line byte counter 1 flag
+    - name: LB2F
+      bit_offset: 2
+      bit_size: 1
+      description: Line byte counter 2 flag
+    - name: LB3F
+      bit_offset: 3
+      bit_size: 1
+      description: Line byte counter 3 flag
+    - name: TIM0F
+      bit_offset: 4
+      bit_size: 1
+      description: Timer 0 flag
+    - name: TIM1F
+      bit_offset: 5
+      bit_size: 1
+      description: Timer 1 flag
+    - name: TIM2F
+      bit_offset: 6
+      bit_size: 1
+      description: Timer 2 flag
+    - name: TIM3F
+      bit_offset: 7
+      bit_size: 1
+      description: Timer 3 flag
+    - name: SOF0F
+      bit_offset: 8
+      bit_size: 1
+      description: Start of frame flag for virtual channel 0
+    - name: SOF1F
+      bit_offset: 9
+      bit_size: 1
+      description: Start of frame flag for virtual channel 1
+    - name: SOF2F
+      bit_offset: 10
+      bit_size: 1
+      description: Start of frame flag for virtual channel 2
+    - name: SOF3F
+      bit_offset: 11
+      bit_size: 1
+      description: Start of frame flag for virtual channel 3
+    - name: EOF0F
+      bit_offset: 12
+      bit_size: 1
+      description: End of frame flag for virtual channel 0
+    - name: EOF1F
+      bit_offset: 13
+      bit_size: 1
+      description: End of frame flag for virtual channel 1
+    - name: EOF2F
+      bit_offset: 14
+      bit_size: 1
+      description: End of frame flag for virtual channel 2
+    - name: EOF3F
+      bit_offset: 15
+      bit_size: 1
+      description: End of frame flag for virtual channel 3
+    - name: SPKTF
+      bit_offset: 16
+      bit_size: 1
+      description: Short packet flag
+    - name: VC0STATEF
+      bit_offset: 17
+      bit_size: 1
+      description: Virtual channel 0 state flag
+    - name: VC1STATEF
+      bit_offset: 18
+      bit_size: 1
+      description: Virtual channel 1 state flag
+    - name: VC2STATEF
+      bit_offset: 19
+      bit_size: 1
+      description: Virtual channel 2 state flag
+    - name: VC3STATEF
+      bit_offset: 20
+      bit_size: 1
+      description: Virtual channel 3 state flag
+    - name: CCFIFOFF
+      bit_offset: 21
+      bit_size: 1
+      description: Clock changer FIFO full flag
+    - name: CRCERRF
+      bit_offset: 24
+      bit_size: 1
+      description: CRC error flag
+    - name: ECCERRF
+      bit_offset: 25
+      bit_size: 1
+      description: ECC error flag
+    - name: CECCERRF
+      bit_offset: 26
+      bit_size: 1
+      description: Corrected ECC error flag
+    - name: IDERRF
+      bit_offset: 27
+      bit_size: 1
+      description: Data type ID error flag
+    - name: SPKTERRF
+      bit_offset: 28
+      bit_size: 1
+      description: Short packet error flag
+    - name: WDERRF
+      bit_offset: 29
+      bit_size: 1
+      description: Watchdog error flag
+    - name: SYNCERRF
+      bit_offset: 30
+      bit_size: 1
+      description: Invalid synchronization error flag
 fieldset/CSI_SR1:
   description: ''
   fields:
-  - name: ESOTDL0F
-    bit_offset: 0
-    bit_size: 1
-    description: Start of transmission error flag on lane 0
-  - name: ESOTSYNCDL0F
-    bit_offset: 1
-    bit_size: 1
-    description: Start of transmission synchronization error flag on lane 0
-  - name: EESCDL0F
-    bit_offset: 2
-    bit_size: 1
-    description: D-PHY_RX lane 0 escape entry error flag
-  - name: ESYNCESCDL0F
-    bit_offset: 3
-    bit_size: 1
-    description: D-PHY_RX lane 0 low power data transmission synchronization error
-      flag
-  - name: ECTRLDL0F
-    bit_offset: 4
-    bit_size: 1
-    description: D-PHY_RX lane 0 control error flag
-  - name: ESOTDL1F
-    bit_offset: 8
-    bit_size: 1
-    description: Start of transmission error flag on lane 1
-  - name: ESOTSYNCDL1F
-    bit_offset: 9
-    bit_size: 1
-    description: Start of transmission synchronization error flag on lane 1
-  - name: EESCDL1F
-    bit_offset: 10
-    bit_size: 1
-    description: D-PHY_RX lane 1 escape entry error flag
-  - name: ESYNCESCDL1F
-    bit_offset: 11
-    bit_size: 1
-    description: D-PHY_RX lane 1 low power data transmission synchronization error
-      flag
-  - name: ECTRLDL1F
-    bit_offset: 12
-    bit_size: 1
-    description: D-PHY_RX lane 1 control error flag
-  - name: ACTDL0F
-    bit_offset: 16
-    bit_size: 1
-    description: D-PHY_RX lane 0 High speed reception active
-  - name: SYNCDL0F
-    bit_offset: 17
-    bit_size: 1
-    description: D-PHY_RX lane 0 receiver synchronization observed
-  - name: SKCALDL0F
-    bit_offset: 18
-    bit_size: 1
-    description: D-PHY_RX lane 0 High speed skew calibration
-  - name: STOPDL0F
-    bit_offset: 19
-    bit_size: 1
-    description: D-PHY_RX receiver data lane 0 in stop state
-  - name: ULPNDL0F
-    bit_offset: 20
-    bit_size: 1
-    description: D-PHY_RX receiver Ultra low power state (not) Active on data lane
-      00
-  - name: ACTDL1F
-    bit_offset: 22
-    bit_size: 1
-    description: D-PHY_RX lane 1 High speed reception active
-  - name: SYNCDL1F
-    bit_offset: 23
-    bit_size: 1
-    description: D-PHY_RX lane 1 receiver synchronization observed
-  - name: SKCALDL1F
-    bit_offset: 24
-    bit_size: 1
-    description: D-PHY_RX lane 1 High speed skew calibration
-  - name: STOPDL1F
-    bit_offset: 25
-    bit_size: 1
-    description: D-PHY_RX receiver data lane 1 in stop state
-  - name: ULPNDL1F
-    bit_offset: 26
-    bit_size: 1
-    description: D-PHY_RX receiver Ultra low power state (not) Active on data lane
-      1
-  - name: STOPCLF
-    bit_offset: 28
-    bit_size: 1
-    description: D-PHY_RX receiver in stop state for the clock lane
-  - name: ULPNACTF
-    bit_offset: 29
-    bit_size: 1
-    description: D-PHY_RX receiver ULP state (not) active
-  - name: ULPNCLF
-    bit_offset: 30
-    bit_size: 1
-    description: D-PHY_RX receiver Ultra-Low power state (not) on clock lane
-  - name: ACTCLF
-    bit_offset: 31
-    bit_size: 1
-    description: D-PHY_RX receiver clock active flag
+    - name: ESOTDL0F
+      bit_offset: 0
+      bit_size: 1
+      description: Start of transmission error flag on lane 0
+    - name: ESOTSYNCDL0F
+      bit_offset: 1
+      bit_size: 1
+      description: Start of transmission synchronization error flag on lane 0
+    - name: EESCDL0F
+      bit_offset: 2
+      bit_size: 1
+      description: D-PHY_RX lane 0 escape entry error flag
+    - name: ESYNCESCDL0F
+      bit_offset: 3
+      bit_size: 1
+      description: D-PHY_RX lane 0 low power data transmission synchronization error
+        flag
+    - name: ECTRLDL0F
+      bit_offset: 4
+      bit_size: 1
+      description: D-PHY_RX lane 0 control error flag
+    - name: ESOTDL1F
+      bit_offset: 8
+      bit_size: 1
+      description: Start of transmission error flag on lane 1
+    - name: ESOTSYNCDL1F
+      bit_offset: 9
+      bit_size: 1
+      description: Start of transmission synchronization error flag on lane 1
+    - name: EESCDL1F
+      bit_offset: 10
+      bit_size: 1
+      description: D-PHY_RX lane 1 escape entry error flag
+    - name: ESYNCESCDL1F
+      bit_offset: 11
+      bit_size: 1
+      description: D-PHY_RX lane 1 low power data transmission synchronization error
+        flag
+    - name: ECTRLDL1F
+      bit_offset: 12
+      bit_size: 1
+      description: D-PHY_RX lane 1 control error flag
+    - name: ACTDL0F
+      bit_offset: 16
+      bit_size: 1
+      description: D-PHY_RX lane 0 High speed reception active
+    - name: SYNCDL0F
+      bit_offset: 17
+      bit_size: 1
+      description: D-PHY_RX lane 0 receiver synchronization observed
+    - name: SKCALDL0F
+      bit_offset: 18
+      bit_size: 1
+      description: D-PHY_RX lane 0 High speed skew calibration
+    - name: STOPDL0F
+      bit_offset: 19
+      bit_size: 1
+      description: D-PHY_RX receiver data lane 0 in stop state
+    - name: ULPNDL0F
+      bit_offset: 20
+      bit_size: 1
+      description: D-PHY_RX receiver Ultra low power state (not) Active on data lane
+        00
+    - name: ACTDL1F
+      bit_offset: 22
+      bit_size: 1
+      description: D-PHY_RX lane 1 High speed reception active
+    - name: SYNCDL1F
+      bit_offset: 23
+      bit_size: 1
+      description: D-PHY_RX lane 1 receiver synchronization observed
+    - name: SKCALDL1F
+      bit_offset: 24
+      bit_size: 1
+      description: D-PHY_RX lane 1 High speed skew calibration
+    - name: STOPDL1F
+      bit_offset: 25
+      bit_size: 1
+      description: D-PHY_RX receiver data lane 1 in stop state
+    - name: ULPNDL1F
+      bit_offset: 26
+      bit_size: 1
+      description: D-PHY_RX receiver Ultra low power state (not) Active on data lane
+        1
+    - name: STOPCLF
+      bit_offset: 28
+      bit_size: 1
+      description: D-PHY_RX receiver in stop state for the clock lane
+    - name: ULPNACTF
+      bit_offset: 29
+      bit_size: 1
+      description: D-PHY_RX receiver ULP state (not) active
+    - name: ULPNCLF
+      bit_offset: 30
+      bit_size: 1
+      description: D-PHY_RX receiver Ultra-Low power state (not) on clock lane
+    - name: ACTCLF
+      bit_offset: 31
+      bit_size: 1
+      description: D-PHY_RX receiver clock active flag
 fieldset/CSI_FCR0:
   description: ''
   fields:
-  - name: CLB0F
-    bit_offset: 0
-    bit_size: 1
-    description: Clear Line byte counter 0 flag
-  - name: CLB1F
-    bit_offset: 1
-    bit_size: 1
-    description: Clear Line byte counter 1 flag
-  - name: CLB2F
-    bit_offset: 2
-    bit_size: 1
-    description: Clear Line byte counter 2 flag
-  - name: CLB3F
-    bit_offset: 3
-    bit_size: 1
-    description: Clear Line byte counter 3 flag
-  - name: CTIM0F
-    bit_offset: 4
-    bit_size: 1
-    description: Clear Timer 0 flag
-  - name: CTIM1F
-    bit_offset: 5
-    bit_size: 1
-    description: Clear Timer 1 flag
-  - name: CTIM2F
-    bit_offset: 6
-    bit_size: 1
-    description: Clear Timer 2 flag
-  - name: CTIM3F
-    bit_offset: 7
-    bit_size: 1
-    description: Clear Timer 3 flag
-  - name: CSOF0F
-    bit_offset: 8
-    bit_size: 1
-    description: Clear Start of frame flag for virtual channel 0
-  - name: CSOF1F
-    bit_offset: 9
-    bit_size: 1
-    description: Clear Start of frame flag for virtual channel 1
-  - name: CSOF2F
-    bit_offset: 10
-    bit_size: 1
-    description: Clear Start of frame flag for virtual channel 2
-  - name: CSOF3F
-    bit_offset: 11
-    bit_size: 1
-    description: Clear Start of frame flag for virtual channel 3
-  - name: CEOF0F
-    bit_offset: 12
-    bit_size: 1
-    description: Clear End of frame flag for virtual channel 0
-  - name: CEOF1F
-    bit_offset: 13
-    bit_size: 1
-    description: Clear End of frame flag for virtual channel 1
-  - name: CEOF2F
-    bit_offset: 14
-    bit_size: 1
-    description: Clear End of frame flag for virtual channel 2
-  - name: CEOF3F
-    bit_offset: 15
-    bit_size: 1
-    description: Clear End of frame flag for virtual channel 3
-  - name: CSPKTF
-    bit_offset: 16
-    bit_size: 1
-    description: Clear Short packet flag
-  - name: CCCFIFOFF
-    bit_offset: 21
-    bit_size: 1
-    description: Clear Clock changer FIFO full flag
-  - name: CCRCERRF
-    bit_offset: 24
-    bit_size: 1
-    description: Clear CRC error flag
-  - name: CECCERRF
-    bit_offset: 25
-    bit_size: 1
-    description: Clear ECC error flag
-  - name: CCECCERRF
-    bit_offset: 26
-    bit_size: 1
-    description: Clear Corrected ECC error flag
-  - name: CIDERRF
-    bit_offset: 27
-    bit_size: 1
-    description: Clear Data type ID error flag
-  - name: CSPKTERRF
-    bit_offset: 28
-    bit_size: 1
-    description: Clear Short packet error flag
-  - name: CWDERRF
-    bit_offset: 29
-    bit_size: 1
-    description: Clear Watchdog error flag
-  - name: CSYNCERRF
-    bit_offset: 30
-    bit_size: 1
-    description: Clear Invalid synchronization error flag
+    - name: CLB0F
+      bit_offset: 0
+      bit_size: 1
+      description: Clear Line byte counter 0 flag
+    - name: CLB1F
+      bit_offset: 1
+      bit_size: 1
+      description: Clear Line byte counter 1 flag
+    - name: CLB2F
+      bit_offset: 2
+      bit_size: 1
+      description: Clear Line byte counter 2 flag
+    - name: CLB3F
+      bit_offset: 3
+      bit_size: 1
+      description: Clear Line byte counter 3 flag
+    - name: CTIM0F
+      bit_offset: 4
+      bit_size: 1
+      description: Clear Timer 0 flag
+    - name: CTIM1F
+      bit_offset: 5
+      bit_size: 1
+      description: Clear Timer 1 flag
+    - name: CTIM2F
+      bit_offset: 6
+      bit_size: 1
+      description: Clear Timer 2 flag
+    - name: CTIM3F
+      bit_offset: 7
+      bit_size: 1
+      description: Clear Timer 3 flag
+    - name: CSOF0F
+      bit_offset: 8
+      bit_size: 1
+      description: Clear Start of frame flag for virtual channel 0
+    - name: CSOF1F
+      bit_offset: 9
+      bit_size: 1
+      description: Clear Start of frame flag for virtual channel 1
+    - name: CSOF2F
+      bit_offset: 10
+      bit_size: 1
+      description: Clear Start of frame flag for virtual channel 2
+    - name: CSOF3F
+      bit_offset: 11
+      bit_size: 1
+      description: Clear Start of frame flag for virtual channel 3
+    - name: CEOF0F
+      bit_offset: 12
+      bit_size: 1
+      description: Clear End of frame flag for virtual channel 0
+    - name: CEOF1F
+      bit_offset: 13
+      bit_size: 1
+      description: Clear End of frame flag for virtual channel 1
+    - name: CEOF2F
+      bit_offset: 14
+      bit_size: 1
+      description: Clear End of frame flag for virtual channel 2
+    - name: CEOF3F
+      bit_offset: 15
+      bit_size: 1
+      description: Clear End of frame flag for virtual channel 3
+    - name: CSPKTF
+      bit_offset: 16
+      bit_size: 1
+      description: Clear Short packet flag
+    - name: CCCFIFOFF
+      bit_offset: 21
+      bit_size: 1
+      description: Clear Clock changer FIFO full flag
+    - name: CCRCERRF
+      bit_offset: 24
+      bit_size: 1
+      description: Clear CRC error flag
+    - name: CECCERRF
+      bit_offset: 25
+      bit_size: 1
+      description: Clear ECC error flag
+    - name: CCECCERRF
+      bit_offset: 26
+      bit_size: 1
+      description: Clear Corrected ECC error flag
+    - name: CIDERRF
+      bit_offset: 27
+      bit_size: 1
+      description: Clear Data type ID error flag
+    - name: CSPKTERRF
+      bit_offset: 28
+      bit_size: 1
+      description: Clear Short packet error flag
+    - name: CWDERRF
+      bit_offset: 29
+      bit_size: 1
+      description: Clear Watchdog error flag
+    - name: CSYNCERRF
+      bit_offset: 30
+      bit_size: 1
+      description: Clear Invalid synchronization error flag
 fieldset/CSI_FCR1:
   description: ''
   fields:
-  - name: CESOTDL0F
-    bit_offset: 0
-    bit_size: 1
-    description: Clear Start of transmission error flag on lane 0
-  - name: CESOTSYNCDL0F
-    bit_offset: 1
-    bit_size: 1
-    description: Clear Start of transmission synchronization error flag on lane 0
-  - name: CEESCDL0F
-    bit_offset: 2
-    bit_size: 1
-    description: Clear D-PHY_RX lane 0 escape entry error flag
-  - name: CESYNCESCDL0F
-    bit_offset: 3
-    bit_size: 1
-    description: Clear D-PHY_RX lane 0 low power data transmission synchronization
-      error flag
-  - name: CECTRLDL0F
-    bit_offset: 4
-    bit_size: 1
-    description: Clear D-PHY_RX lane 0 control error flag
-  - name: CESOTDL1F
-    bit_offset: 8
-    bit_size: 1
-    description: Clear Start of transmission error flag on lane 1
-  - name: CESOTSYNCDL1F
-    bit_offset: 9
-    bit_size: 1
-    description: Clear Start of transmission synchronization error flag on lane 1
-  - name: CEESCDL1F
-    bit_offset: 10
-    bit_size: 1
-    description: Clear D-PHY_RX lane 1 escape entry error flag
-  - name: CESYNCESCDL1F
-    bit_offset: 11
-    bit_size: 1
-    description: Clear D-PHY_RX lane 1 low power data transmission synchronization
-      error flag
-  - name: CECTRLDL1F
-    bit_offset: 12
-    bit_size: 1
-    description: Clear D-PHY_RX lane 1 control error flag
+    - name: CESOTDL0F
+      bit_offset: 0
+      bit_size: 1
+      description: Clear Start of transmission error flag on lane 0
+    - name: CESOTSYNCDL0F
+      bit_offset: 1
+      bit_size: 1
+      description: Clear Start of transmission synchronization error flag on lane 0
+    - name: CEESCDL0F
+      bit_offset: 2
+      bit_size: 1
+      description: Clear D-PHY_RX lane 0 escape entry error flag
+    - name: CESYNCESCDL0F
+      bit_offset: 3
+      bit_size: 1
+      description: Clear D-PHY_RX lane 0 low power data transmission synchronization
+        error flag
+    - name: CECTRLDL0F
+      bit_offset: 4
+      bit_size: 1
+      description: Clear D-PHY_RX lane 0 control error flag
+    - name: CESOTDL1F
+      bit_offset: 8
+      bit_size: 1
+      description: Clear Start of transmission error flag on lane 1
+    - name: CESOTSYNCDL1F
+      bit_offset: 9
+      bit_size: 1
+      description: Clear Start of transmission synchronization error flag on lane 1
+    - name: CEESCDL1F
+      bit_offset: 10
+      bit_size: 1
+      description: Clear D-PHY_RX lane 1 escape entry error flag
+    - name: CESYNCESCDL1F
+      bit_offset: 11
+      bit_size: 1
+      description: Clear D-PHY_RX lane 1 low power data transmission synchronization
+        error flag
+    - name: CECTRLDL1F
+      bit_offset: 12
+      bit_size: 1
+      description: Clear D-PHY_RX lane 1 control error flag
 fieldset/CSI_SPDFR:
   description: ''
   fields:
-  - name: DATAFIELD
-    bit_offset: 0
-    bit_size: 16
-    description: Data field
-  - name: DATATYPE
-    bit_offset: 16
-    bit_size: 6
-    description: Data type class
-  - name: VCHANNEL
-    bit_offset: 22
-    bit_size: 2
-    description: Virtual channel
+    - name: DATAFIELD
+      bit_offset: 0
+      bit_size: 16
+      description: Data field
+    - name: DATATYPE
+      bit_offset: 16
+      bit_size: 6
+      description: Data type class
+    - name: VCHANNEL
+      bit_offset: 22
+      bit_size: 2
+      description: Virtual channel
 fieldset/CSI_ERR1:
   description: ''
   fields:
-  - name: CRCDTERR
-    bit_offset: 0
-    bit_size: 6
-    description: Data type having a CRC error
-  - name: CRCVCERR
-    bit_offset: 6
-    bit_size: 2
-    description: Virtual channel having a CRC error
-  - name: CECCDTERR
-    bit_offset: 8
-    bit_size: 6
-    description: Data type having a corrected ECC error
-  - name: CECCVCERR
-    bit_offset: 14
-    bit_size: 2
-    description: Virtual channel having a corrected ECC error
-  - name: IDDTERR
-    bit_offset: 16
-    bit_size: 6
-    description: Data type in error
-  - name: IDVCERR
-    bit_offset: 22
-    bit_size: 2
-    description: Virtual channel having ID error
+    - name: CRCDTERR
+      bit_offset: 0
+      bit_size: 6
+      description: Data type having a CRC error
+    - name: CRCVCERR
+      bit_offset: 6
+      bit_size: 2
+      description: Virtual channel having a CRC error
+    - name: CECCDTERR
+      bit_offset: 8
+      bit_size: 6
+      description: Data type having a corrected ECC error
+    - name: CECCVCERR
+      bit_offset: 14
+      bit_size: 2
+      description: Virtual channel having a corrected ECC error
+    - name: IDDTERR
+      bit_offset: 16
+      bit_size: 6
+      description: Data type in error
+    - name: IDVCERR
+      bit_offset: 22
+      bit_size: 2
+      description: Virtual channel having ID error
 fieldset/CSI_ERR2:
   description: ''
   fields:
-  - name: SPKTDTERR
-    bit_offset: 0
-    bit_size: 6
-    description: Data type having a short packet error
-  - name: SPKTVCERR
-    bit_offset: 6
-    bit_size: 2
-    description: Virtual channel having a short packet error
-  - name: WDVCERR
-    bit_offset: 16
-    bit_size: 2
-    description: Virtual channel having a watchdog error
-  - name: SYNCVCERR
-    bit_offset: 18
-    bit_size: 2
-    description: Virtual channel having synchronization error
+    - name: SPKTDTERR
+      bit_offset: 0
+      bit_size: 6
+      description: Data type having a short packet error
+    - name: SPKTVCERR
+      bit_offset: 6
+      bit_size: 2
+      description: Virtual channel having a short packet error
+    - name: WDVCERR
+      bit_offset: 16
+      bit_size: 2
+      description: Virtual channel having a watchdog error
+    - name: SYNCVCERR
+      bit_offset: 18
+      bit_size: 2
+      description: Virtual channel having synchronization error
 fieldset/CSI_HHWCFGR:
   description: ''
   fields:
-  - name: TECHNO
-    bit_offset: 0
-    bit_size: 4
-    description: Technology
+    - name: TECHNO
+      bit_offset: 0
+      bit_size: 4
+      description: Technology
 fieldset/CSI_HVERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: Major revision
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: Major revision
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: Major revision
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: Major revision
 fieldset/CSI_HIPIDR:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 32
-    description: Identification code
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+      description: Identification code
 fieldset/CSI_HSIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: Size and ID
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: Size and ID
 fieldset/CSI_PRCR:
   description: ''
   fields:
-  - name: PEN
-    bit_offset: 1
-    bit_size: 1
-    description: When set to 0, this bit places the digital section of the D-PHY in
-      the reset state
+    - name: PEN
+      bit_offset: 1
+      bit_size: 1
+      description: When set to 0, this bit places the digital section of the D-PHY in
+        the reset state
 fieldset/CSI_PMCR:
   description: ''
   fields:
-  - name: FRXMDL0
-    bit_offset: 0
-    bit_size: 1
-    description: Force to Rx Mode the Data Lane 0
-  - name: FRXMDL1
-    bit_offset: 1
-    bit_size: 1
-    description: Force to Rx Mode the Data Lane 1
-  - name: FTXSMDL0
-    bit_offset: 2
-    bit_size: 1
-    description: Force to Tx Stop Mode the Data Lane 0
-  - name: DTDL
-    bit_offset: 4
-    bit_size: 1
-    description: Disable Turn-around Data Lane 0
-  - name: RTDL0
-    bit_offset: 8
-    bit_size: 1
-    description: Turn-around Request Data Lane 0
-  - name: TUESDL0
-    bit_offset: 12
-    bit_size: 1
-    description: Tx ULP Escape-mode Data Lane 0
-  - name: TUEXDL0
-    bit_offset: 16
-    bit_size: 1
-    description: Tx ULP Exit-sequence Data Lane 0
+    - name: FRXMDL0
+      bit_offset: 0
+      bit_size: 1
+      description: Force to Rx Mode the Data Lane 0
+    - name: FRXMDL1
+      bit_offset: 1
+      bit_size: 1
+      description: Force to Rx Mode the Data Lane 1
+    - name: FTXSMDL0
+      bit_offset: 2
+      bit_size: 1
+      description: Force to Tx Stop Mode the Data Lane 0
+    - name: DTDL
+      bit_offset: 4
+      bit_size: 1
+      description: Disable Turn-around Data Lane 0
+    - name: RTDL0
+      bit_offset: 8
+      bit_size: 1
+      description: Turn-around Request Data Lane 0
+    - name: TUESDL0
+      bit_offset: 12
+      bit_size: 1
+      description: Tx ULP Escape-mode Data Lane 0
+    - name: TUEXDL0
+      bit_offset: 16
+      bit_size: 1
+      description: Tx ULP Exit-sequence Data Lane 0
 fieldset/CSI_PFCR:
   description: ''
   fields:
-  - name: CCFR
-    bit_offset: 0
-    bit_size: 6
-    description: Configuration Clock Frequency Range selection
-  - name: HSFR
-    bit_offset: 8
-    bit_size: 7
-    description: PHY-high-speed Frequency Range selection
-  - name: DLD
-    bit_offset: 16
-    bit_size: 1
-    description: Data Lane Direction of lane0
+    - name: CCFR
+      bit_offset: 0
+      bit_size: 6
+      description: Configuration Clock Frequency Range selection
+    - name: HSFR
+      bit_offset: 8
+      bit_size: 7
+      description: PHY-high-speed Frequency Range selection
+    - name: DLD
+      bit_offset: 16
+      bit_size: 1
+      description: Data Lane Direction of lane0
 fieldset/CSI_PTCR0:
   description: ''
   fields:
-  - name: TCKEN
-    bit_offset: 0
-    bit_size: 1
-    description: Test-interface Clock Enable for the TDI bus into the PHY
-  - name: TRSEN
-    bit_offset: 1
-    bit_size: 1
-    description: Test-interface Reset Enable for the TDI bus into the PHY
+    - name: TCKEN
+      bit_offset: 0
+      bit_size: 1
+      description: Test-interface Clock Enable for the TDI bus into the PHY
+    - name: TRSEN
+      bit_offset: 1
+      bit_size: 1
+      description: Test-interface Reset Enable for the TDI bus into the PHY
 fieldset/CSI_PTCR1:
   description: ''
   fields:
-  - name: TDI
-    bit_offset: 0
-    bit_size: 8
-    description: Test-interface Data In
-  - name: TWM
-    bit_offset: 16
-    bit_size: 1
-    description: Test-interface Write Mode selector
+    - name: TDI
+      bit_offset: 0
+      bit_size: 8
+      description: Test-interface Data In
+    - name: TWM
+      bit_offset: 16
+      bit_size: 1
+      description: Test-interface Write Mode selector
 fieldset/CSI_PTSR:
   description: ''
   fields:
-  - name: TDO
-    bit_offset: 0
-    bit_size: 8
-    description: CSI PHY test interface data output bus for read-back and internal
-      probing functionalities
+    - name: TDO
+      bit_offset: 0
+      bit_size: 8
+      description: CSI PHY test interface data output bus for read-back and internal
+        probing functionalities
 fieldset/CSI_HWCFGR:
   description: ''
   fields:
-  - name: TECHNO
-    bit_offset: 0
-    bit_size: 4
-    description: Technology
-  - name: LANES
-    bit_offset: 4
-    bit_size: 4
-    description: amount of CSI DataLanes (excluding the ClockLane thus)
+    - name: TECHNO
+      bit_offset: 0
+      bit_size: 4
+      description: Technology
+    - name: LANES
+      bit_offset: 4
+      bit_size: 4
+      description: amount of CSI DataLanes (excluding the ClockLane thus)
 fieldset/CSI_VERR:
   description: ''
   fields:
-  - name: MINREV
-    bit_offset: 0
-    bit_size: 4
-    description: Major revision
-  - name: MAJREV
-    bit_offset: 4
-    bit_size: 4
-    description: Major revision
+    - name: MINREV
+      bit_offset: 0
+      bit_size: 4
+      description: Major revision
+    - name: MAJREV
+      bit_offset: 4
+      bit_size: 4
+      description: Major revision
 fieldset/CSI_IPIDR:
   description: ''
   fields:
-  - name: ID
-    bit_offset: 0
-    bit_size: 32
-    description: Identification code
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+      description: Identification code
 fieldset/CSI_SIDR:
   description: ''
   fields:
-  - name: SID
-    bit_offset: 0
-    bit_size: 32
-    description: Size and ID
+    - name: SID
+      bit_offset: 0
+      bit_size: 32
+      description: Size and ID
