@@ -22,9 +22,16 @@
 //! `const` context using these helpers, so the values are baked into the
 //! firmware/application binary with no runtime file or environment access.
 //!
+//! This crate is `no_std` and dependency-free so `no_std` consumers (e.g.
+//! `consortium-dbg`'s logger on a bare-metal target) can use it without pulling
+//! in the std-only schema crate. `consortium-cfg-common` re-exports it as its
+//! `env_value` module for host-side consumers.
+//!
 //! Both decimal (`262049792`) and hexadecimal (`0x204C_0000`) forms are
 //! accepted, and `_` digit separators are ignored, so the raw `Consortium.toml`
 //! representation can be passed through verbatim.
+
+#![no_std]
 
 /// Parses an unsigned integer from a string in a `const` context.
 ///

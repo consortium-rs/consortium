@@ -88,23 +88,27 @@ pub fn render_unit(config: &SystemdUnitConfig) -> String {
         .clone()
         .unwrap_or_else(|| "Consortium application daemon".to_string());
 
-    format!(
-        "[Unit]\n\
-         Description={description}\n\
-         After=network.target\n\
-         \n\
-         [Service]\n\
-         Type=simple\n\
-         ExecStart={exec_start}\n\
-         WorkingDirectory={working_directory}\n\
-         Restart={restart}\n\
-         \n\
-         [Install]\n\
-         WantedBy=multi-user.target\n",
-        exec_start = config.exec_start,
-        working_directory = config.working_directory,
-        restart = config.restart.as_str(),
-    )
+    let mut ini = ini::Ini::new();
+    ini.with_section(Some("Unit"))
+        .set("Description", description)
+        .set("After", "network.target");
+    ini.with_section(Some("Service"))
+        .set("Type", "simple")
+        .set("ExecStart", &config.exec_start)
+        .set("WorkingDirectory", &config.working_directory)
+        .set("Restart", config.restart.as_str());
+    ini.with_section(Some("Install"))
+        .set("WantedBy", "multi-user.target");
+
+    // systemd expects `key=value` (no spaces around the separator).
+    let opts = ini::WriteOption {
+        kv_separator: "=",
+        ..Default::default()
+    };
+    let mut buf = Vec::new();
+    ini.write_to_opt(&mut buf, opts)
+        .expect("writing an in-memory INI cannot fail");
+    String::from_utf8(buf).expect("systemd unit fields are UTF-8")
 }
 
 /// Renders `config` and writes it to `dir/<unit_name>.service`, returning the

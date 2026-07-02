@@ -400,6 +400,7 @@ version = "0.1.0"
 dependencies = [
  "consortium-cfg",
  "consortium-cfg-common",
+ "rust-ini",
  "serde",
  "syn",
  "thiserror",
@@ -440,6 +441,7 @@ name = "consortium-cfg-common"
 version = "0.1.0"
 dependencies = [
  "consortium-dts",
+ "consortium-env-value",
  "serde",
  "serde_yaml",
  "tempfile",
@@ -492,7 +494,7 @@ name = "consortium-dbg"
 version = "0.1.0"
 dependencies = [
  "bitflags 2.11.1",
- "consortium-cfg-common",
+ "consortium-env-value",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
  "consortium-ipc-doorbell-mu",
@@ -513,6 +515,10 @@ dependencies = [
  "serde",
  "thiserror",
 ]
+
+[[package]]
+name = "consortium-env-value"
+version = "0.1.0"
 
 [[package]]
 name = "consortium-ffi"
@@ -611,7 +617,6 @@ name = "consortium-ipc-transport-memory"
 version = "0.1.0"
 dependencies = [
  "atomic-waker",
- "consortium-cfg-common",
  "consortium-codec",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
@@ -741,6 +746,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "const-random"
+version = "0.1.18"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "87e00182fe74b066627d63b85fd550ac2998d4b0bd86bfed477a0ae4c7c71359"
+dependencies = [
+ "const-random-macro",
+]
+
+[[package]]
+name = "const-random-macro"
+version = "0.1.16"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f9d839f2a20b0aee515dc581a6172f2321f96cab76c1a38a4c584a194955390e"
+dependencies = [
+ "getrandom 0.2.17",
+ "once_cell",
+ "tiny-keccak",
+]
+
+[[package]]
 name = "cordyceps"
 version = "0.3.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -779,26 +804,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cortex-m-rt"
-version = "0.7.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "801d4dec46b34c299ccf6b036717ae0fce602faa4f4fe816d9013b9a7c9f5ba6"
-dependencies = [
- "cortex-m-rt-macros",
-]
-
-[[package]]
-name = "cortex-m-rt-macros"
-version = "0.7.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e37549a379a9e0e6e576fd208ee60394ccb8be963889eebba3ffe0980364f472"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "crc32fast"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -812,6 +817,12 @@ name = "critical-section"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "790eea4361631c5e7d22598ecd5723ff611904e3344ce8720784c93e3d83d40b"
+
+[[package]]
+name = "crunchy"
+version = "0.2.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "460fbee9c2c2f33933d720630a6a0bac33ba7053db5344fac858d4b8952d77d5"
 
 [[package]]
 name = "darling"
@@ -954,6 +965,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "aeda16ab4059c5fd2a83f2b9c9e9c981327b18aa8e3b313f7e6563799d4f093e"
 
 [[package]]
+name = "dlv-list"
+version = "0.5.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "442039f5147480ba31067cb00ada1adae6892028e40e45fc5de7b7df6dcc1b5f"
+dependencies = [
+ "const-random",
+]
+
+[[package]]
 name = "document-features"
 version = "0.2.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -975,7 +995,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5d0d3b15c9d7dc4fec1d8cb77112472fb008b3b28c51ad23838d83587a6d2f1e"
 dependencies = [
  "cordyceps",
- "cortex-m",
  "critical-section",
  "document-features",
  "embassy-executor-macros",
@@ -1282,6 +1301,17 @@ dependencies = [
 
 [[package]]
 name = "getrandom"
+version = "0.2.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ff2abc00be7fca6ebc474524697ae276ad847ad0a6b3faa4bcb027e9a4614ad0"
+dependencies = [
+ "cfg-if",
+ "libc",
+ "wasi",
+]
+
+[[package]]
+name = "getrandom"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0de51e6874e94e7bf76d726fc5d13ba782deca734ff60d5bb2fb2607c7406555"
@@ -1421,6 +1451,12 @@ checksum = "47d60b12902ba28e2730cd37e95b8c9223af2808df9e902d4df49588d1470606"
 dependencies = [
  "byteorder",
 ]
+
+[[package]]
+name = "hashbrown"
+version = "0.14.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e5274423e17b7c9fc20b6e7e208532f9b19825d82dfd615708b70edd83df41f1"
 
 [[package]]
 name = "hashbrown"
@@ -1768,109 +1804,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "melt-pot-imx95-app"
-version = "0.1.0"
-dependencies = [
- "consortium-codec",
- "consortium-dbg",
- "consortium-hmi",
- "consortium-ipc",
- "consortium-ipc-doorbell-mu",
- "consortium-ipc-transport-memory",
- "consortium-tee",
- "glib",
- "melt-pot-imx95-ta",
- "melt-pot-shared",
- "optee-teec",
- "serde",
- "serde_json",
- "tokio",
-]
-
-[[package]]
-name = "melt-pot-imx95-mcu"
-version = "0.1.0"
-dependencies = [
- "consortium-codec",
- "consortium-dbg",
- "consortium-ipc",
- "consortium-ipc-doorbell-mu",
- "consortium-ipc-transport-memory",
- "cortex-m",
- "cortex-m-rt",
- "defmt",
- "embassy-executor",
- "melt-pot-shared",
- "panic-halt",
-]
-
-[[package]]
-name = "melt-pot-imx95-ta"
-version = "0.1.0"
-dependencies = [
- "consortium-cfg-common",
- "consortium-tee",
- "optee-teec",
- "optee-utee",
- "optee-utee-build",
- "optee-utee-sys",
-]
-
-[[package]]
 name = "melt-pot-shared"
 version = "0.1.0"
 dependencies = [
  "consortium-ipc",
  "serde",
-]
-
-[[package]]
-name = "melt-pot-stm32mp25-app"
-version = "0.1.0"
-dependencies = [
- "consortium-codec",
- "consortium-dbg",
- "consortium-hmi",
- "consortium-ipc",
- "consortium-ipc-doorbell-hsem",
- "consortium-ipc-transport-memory",
- "consortium-tee",
- "glib",
- "melt-pot-shared",
- "melt-pot-stm32mp25-ta",
- "optee-teec",
- "serde",
- "serde_json",
- "tokio",
-]
-
-[[package]]
-name = "melt-pot-stm32mp25-mcu"
-version = "0.1.0"
-dependencies = [
- "consortium-codec",
- "consortium-dbg",
- "consortium-ipc",
- "consortium-ipc-doorbell-hsem",
- "consortium-ipc-transport-memory",
- "cortex-m",
- "cortex-m-rt",
- "defmt",
- "embassy-executor",
- "melt-pot-shared",
- "panic-halt",
-]
-
-[[package]]
-name = "melt-pot-stm32mp25-ta"
-version = "0.1.0"
-dependencies = [
- "consortium-cfg-common",
- "consortium-tee",
- "optee-teec",
- "optee-utee",
- "optee-utee-build",
- "optee-utee-sys",
 ]
 
 [[package]]
@@ -2213,6 +2151,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "ordered-multimap"
+version = "0.7.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "49203cdcae0030493bad186b28da2fa25645fa276a51b6fec8010d281e02ef79"
+dependencies = [
+ "dlv-list",
+ "hashbrown 0.14.5",
+]
+
+[[package]]
 name = "ort"
 version = "2.0.0-rc.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2229,12 +2177,6 @@ name = "ort-sys"
 version = "2.0.0-rc.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d7b497d21a8b6fbb4b5a544f8fadb77e801a09ae0add9e411d31c6f89e3c1e90"
-
-[[package]]
-name = "panic-halt"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "de96540e0ebde571dc55c73d60ef407c653844e6f9a1e2fdbd40c07b9252d812"
 
 [[package]]
 name = "parking_lot"
@@ -2542,6 +2484,16 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "rust-ini"
+version = "0.21.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "796e8d2b6696392a43bea58116b667fb4c29727dc5abd27d6acf338bb4f688c7"
+dependencies = [
+ "cfg-if",
+ "ordered-multimap",
 ]
 
 [[package]]
@@ -2874,7 +2826,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "32497e9a4c7b38532efcdebeef879707aa9f794296a4f0244f6f69e9bc8574bd"
 dependencies = [
  "fastrand",
- "getrandom",
+ "getrandom 0.4.2",
  "once_cell",
  "rustix",
  "windows-sys 0.61.2",
@@ -2946,6 +2898,15 @@ checksum = "71c652a3727a9cbb9a02f707f530b618ce00d0ccd762009c8c23bd191df3c17d"
 dependencies = [
  "num-conv",
  "time-core",
+]
+
+[[package]]
+name = "tiny-keccak"
+version = "2.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2c9d3793400a45f954c52e73d068316d76b6f4e36977e3fcebb13a2721e80237"
+dependencies = [
+ "crunchy",
 ]
 
 [[package]]

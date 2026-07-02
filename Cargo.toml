@@ -15,12 +15,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [workspace]
-members = [
-  "crates/*",
+members = ["crates/*", "examples/melt-pot/shared"]
+# The per-endpoint example crates are built by the `consortium` build pipeline,
+# not plain `cargo build`: each `include!`s a generated `src/consortium.gen.rs`
+# and builds into its own per-crate `target/` (matching the pipeline's ELF-path
+# resolution). Excluding them keeps `cargo check`/`just check` on the workspace
+# from requiring those generated modules to be present. The `shared` crate has
+# no generated code and stays a member so host checks cover it.
+exclude = [
   "examples/melt-pot/imx95/app",
   "examples/melt-pot/imx95/mcu",
   "examples/melt-pot/imx95/ta",
-  "examples/melt-pot/shared",
   "examples/melt-pot/stm32mp25/app",
   "examples/melt-pot/stm32mp25/mcu",
   "examples/melt-pot/stm32mp25/ta",

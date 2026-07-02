@@ -14,60 +14,57 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+# This crate is built by the `consortium` build pipeline, which writes the
+# generated `src/consortium.gen.rs` (IPC endpoints + MPU/NVIC bring-up) this
+# firmware `include!`s, then cross-compiles it. It is intentionally excluded
+# from the workspace so it builds into its own per-crate `target/`.
 [package]
-description       = "melt-pot MCU firmware for STM32MP25 Cortex-M33"
-edition.workspace = true
-license.workspace = true
-name              = "melt-pot-stm32mp25-mcu"
-version.workspace = true
+description = "melt-pot MCU firmware for STM32MP25 Cortex-M33"
+edition     = "2024"
+license     = "Apache-2.0"
+name        = "melt-pot-stm32mp25-mcu"
+version     = "0.1.0"
 
 # Cross-compile target: thumbv8m.main-none-eabi  (Cortex-M33)
-# Example: cargo build -p melt-pot-stm32mp25-mcu --features firmware --target thumbv8m.main-none-eabi --release
-
-[features]
-default = []
-firmware = [
-  "dep:consortium-codec",
-  "dep:consortium-dbg",
-  "dep:consortium-ipc",
-  "dep:consortium-ipc-doorbell-hsem",
-  "dep:consortium-ipc-transport-memory",
-  "dep:cortex-m",
-  "dep:cortex-m-rt",
-  "dep:defmt",
-  "dep:embassy-executor",
-  "dep:melt-pot-shared",
-  "dep:panic-halt",
-]
+# Built via `consortium build --manifest ../Consortium.toml`.
 
 [[bin]]
-name              = "melt-pot-stm32mp25-mcu"
-path              = "src/main.rs"
-required-features = ["firmware"]
+name = "melt-pot-stm32mp25-mcu"
+path = "src/main.rs"
 
 [dependencies]
-melt-pot-shared = { optional = true, path = "../../shared" }
+melt-pot-shared = { path = "../../shared" }
 
+# Named directly by the generated `consortium.gen.rs`.
 consortium-codec = { default-features = false, features = [
   "postcard",
-], optional = true, path = "../../../../crates/consortium-codec" }
-consortium-dbg = { default-features = false, features = [
-  "logger",
-], optional = true, path = "../../../../crates/consortium-dbg" }
-consortium-ipc = { default-features = false, optional = true, path = "../../../../crates/consortium-ipc" }
+], path = "../../../../crates/consortium-codec" }
+consortium-ipc = { default-features = false, path = "../../../../crates/consortium-ipc" }
 consortium-ipc-doorbell-hsem = { default-features = false, features = [
   "stm32mp25",
-], optional = true, path = "../../../../crates/consortium-ipc-doorbell-hsem" }
-consortium-ipc-transport-memory = { default-features = false, optional = true, path = "../../../../crates/consortium-ipc-transport-memory" }
+], path = "../../../../crates/consortium-ipc-doorbell-hsem" }
+consortium-ipc-transport-memory = { default-features = false, features = [
+  "stm32mp25x",
+], path = "../../../../crates/consortium-ipc-transport-memory" }
+consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory" }
+consortium-runtime-mcu = { default-features = false, path = "../../../../crates/consortium-runtime-mcu" }
 
-cortex-m = { optional = true, version = "0.7" }
-cortex-m-rt = { optional = true, version = "0.7" }
-defmt = { optional = true, version = "1.1.0" }
+# Firmware runtime.
+consortium-dbg = { default-features = false, features = [
+  "logger",
+], path = "../../../../crates/consortium-dbg" }
+cortex-m = "0.7"
+cortex-m-rt = "0.7"
+defmt = "1.1.0"
 embassy-executor = { default-features = false, features = [
   "executor-thread",
   "platform-cortex-m",
-], optional = true, version = "0.10.0" }
-panic-halt = { optional = true, version = "0.2" }
+], version = "0.10.0" }
+panic-halt = "0.2"
 
-[lints]
-workspace = true
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+lto   = true
+panic = "abort"

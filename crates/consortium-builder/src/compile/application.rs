@@ -21,8 +21,8 @@ use tokio::process::Command;
 use super::Compiler;
 use crate::compile::env::{DbgConfig, HmiConfig, SharedMemConfig};
 use crate::compile::utils::{
-    clean_path, elf_path, inject_dbg, inject_hmi, inject_shared_mem, resolve_cargo,
-    resolve_cross_tool, resolve_rustc, verify_elf,
+    clean_path, elf_path, inject_dbg, inject_hmi, inject_shared_mem, resolve_cargo, resolve_rustc,
+    verify_elf,
 };
 
 /// Error type for application compilation.
@@ -55,9 +55,7 @@ struct CrossCompiler {
 impl CrossCompiler {
     /// Detect the cross-compiler in priority order:
     /// 1. `CC` / `CXX` env vars (explicit, platform-agnostic)
-    /// 2. STM32MP2 / OpenSTLinux pattern (`aarch64-ostl-linux-gcc`)
-    /// 3. i.MX Yocto pattern (`aarch64-poky-linux-gcc`)
-    /// 4. `None` → generic Rust linker
+    /// 2. `None` → generic Rust linker
     fn detect() -> Self {
         // 1. Explicit CC/CXX: honour whatever the user or SDK set
         if let Ok(cc) = std::env::var("CC") {
@@ -68,29 +66,7 @@ impl CrossCompiler {
             };
         }
 
-        // 2. STM32MP2 / OpenSTLinux
-        if let (Ok(cc), Ok(cxx)) = (
-            resolve_cross_tool("aarch64-ostl-linux-gcc"),
-            resolve_cross_tool("aarch64-ostl-linux-g++"),
-        ) {
-            return CrossCompiler {
-                cc: Some(cc),
-                cxx: Some(cxx),
-            };
-        }
-
-        // 3. i.MX Yocto (Poky)
-        if let (Ok(cc), Ok(cxx)) = (
-            resolve_cross_tool("aarch64-poky-linux-gcc"),
-            resolve_cross_tool("aarch64-poky-linux-g++"),
-        ) {
-            return CrossCompiler {
-                cc: Some(cc),
-                cxx: Some(cxx),
-            };
-        }
-
-        // 4. Nothing found
+        // 2. Nothing found
         CrossCompiler {
             cc: None,
             cxx: None,
@@ -105,19 +81,16 @@ struct SdkEnv {
     arch_flags: String,
     /// Native sysroot used to strip SDK entries from PATH
     native_sysroot: String,
-    /// Optional extra RUSTFLAGS (`OSTL_SDK_EXTRA_FLAGS`)
-    extra_flags: String,
 }
 
 impl SdkEnv {
     fn resolve() -> Result<Self, ApplicationCompileError> {
-        let sysroot = std::env::var("OSTL_SDK_SYSROOT")
-            .or_else(|_| std::env::var("SDKTARGETSYSROOT"))
+        let sysroot = std::env::var("SDKTARGETSYSROOT")
             .or_else(|_| std::env::var("OECORE_TARGET_SYSROOT"))
             .map_err(|_| {
                 ApplicationCompileError::SysrootError(
                     "Could not determine target sysroot. \
-                 Set OSTL_SDK_SYSROOT or source a Yocto environment-setup script."
+                 Set SDKTARGETSYSROOT or source a Yocto environment-setup script."
                         .to_string(),
                 )
             })?;
@@ -134,14 +107,11 @@ impl SdkEnv {
         let arch_flags = std::env::var("OECORE_TUNE_CCARGS")
             .unwrap_or_else(|_| "-mcpu=cortex-a35+crc -mbranch-protection=standard".to_string());
 
-        let extra_flags = std::env::var("OSTL_SDK_EXTRA_FLAGS").unwrap_or_default();
-
         Ok(SdkEnv {
             sysroot,
             cross: CrossCompiler::detect(),
             arch_flags,
             native_sysroot,
-            extra_flags,
         })
     }
 
@@ -152,7 +122,7 @@ impl SdkEnv {
             .map(|f| format!(" -C link-arg={f}"))
             .collect();
 
-        let mut flags = match &self.cross.cc {
+        match &self.cross.cc {
             Some(cc) => format!(
                 "-C linker={cc} -C link-arg=--sysroot={sysroot}{arch_link_args}",
                 sysroot = self.sysroot,
@@ -161,34 +131,23 @@ impl SdkEnv {
                 "-C link-arg=--sysroot={sysroot}{arch_link_args}",
                 sysroot = self.sysroot,
             ),
-        };
-
-        if !self.extra_flags.is_empty() {
-            flags.push(' ');
-            flags.push_str(&self.extra_flags);
         }
-
-        flags
     }
 }
 
-/// Build parameters for a Linux application (typically targeting an OpenSTLinux / Yocto A-core).
+/// Build parameters for a Linux application (typically targeting a Yocto A-core).
 ///
 /// # Environment variables (in priority order)
 ///
 /// Cross-compiler detection:
 ///   `CC` / `CXX`: explicit cross-compiler (any Yocto flavor)
-///   Auto-detected: `aarch64-ostl-linux-gcc` (STM32MP2) or `aarch64-poky-linux-gcc` (i.MX Yocto)
 ///   Fallback: generic Rust linker
 ///
 /// Sysroot:
-///   `OSTL_SDK_SYSROOT` > `SDKTARGETSYSROOT` > `OECORE_TARGET_SYSROOT`
+///   `SDKTARGETSYSROOT` > `OECORE_TARGET_SYSROOT`
 ///
 /// Rustup overrides:
 ///   `CONSORTIUM_RUSTC`, `CONSORTIUM_CARGO`
-///
-/// Extra flags:
-///   `OSTL_SDK_EXTRA_FLAGS`: appended verbatim to RUSTFLAGS
 ///
 /// HMI (when `hmi` is `Some`):
 ///   `CONSORTIUM_HMI_DIST`: absolute path to the compiled frontend dist directory
@@ -210,7 +169,7 @@ pub struct ApplicationConfiguration {
     pub dbg: Option<DbgConfig>,
 }
 
-/// Compiler for Linux applications targeting Yocto / OpenSTLinux A-cores.
+/// Compiler for Linux applications targeting Yocto A-cores.
 pub struct ApplicationCompiler;
 
 impl Compiler for ApplicationCompiler {
