@@ -1,0 +1,651 @@
+block/AXBS:
+  description: ''
+  items:
+  - name: PRS0
+    byte_offset: 0
+    fieldset: AXBS_PRS0
+  - name: CRS0
+    byte_offset: 16
+    fieldset: AXBS_CRS0
+  - name: PRS1
+    byte_offset: 256
+    fieldset: AXBS_PRS1
+  - name: CRS1
+    byte_offset: 272
+    fieldset: AXBS_CRS1
+  - name: PRS2
+    byte_offset: 512
+    fieldset: AXBS_PRS2
+  - name: CRS2
+    byte_offset: 528
+    fieldset: AXBS_CRS2
+  - name: PRS3
+    byte_offset: 768
+    fieldset: AXBS_PRS3
+  - name: CRS3
+    byte_offset: 784
+    fieldset: AXBS_CRS3
+  - name: PRS4
+    byte_offset: 1024
+    fieldset: AXBS_PRS4
+  - name: CRS4
+    byte_offset: 1040
+    fieldset: AXBS_CRS4
+  - name: PRS5
+    byte_offset: 1280
+    fieldset: AXBS_PRS5
+  - name: CRS5
+    byte_offset: 1296
+    fieldset: AXBS_CRS5
+  - name: PRS6
+    byte_offset: 1536
+    fieldset: AXBS_PRS6
+  - name: CRS6
+    byte_offset: 1552
+    fieldset: AXBS_CRS6
+  - name: PRS7
+    byte_offset: 1792
+    fieldset: AXBS_PRS7
+  - name: CRS7
+    byte_offset: 1808
+    fieldset: AXBS_CRS7
+  - name: MGPCR0
+    byte_offset: 2048
+    fieldset: AXBS_MGPCR0
+  - name: MGPCR1
+    byte_offset: 2304
+    fieldset: AXBS_MGPCR1
+  - name: MGPCR2
+    byte_offset: 2560
+    fieldset: AXBS_MGPCR2
+  - name: MGPCR3
+    byte_offset: 2816
+    fieldset: AXBS_MGPCR3
+  - name: MGPCR4
+    byte_offset: 3072
+    fieldset: AXBS_MGPCR4
+  - name: MGPCR5
+    byte_offset: 3328
+    fieldset: AXBS_MGPCR5
+  - name: MGPCR6
+    byte_offset: 3584
+    fieldset: AXBS_MGPCR6
+  - name: MGPCR7
+    byte_offset: 3840
+    fieldset: AXBS_MGPCR7
+fieldset/AXBS_PRS0:
+  description: ''
+  fields:
+  - name: M0
+    bit_offset: 0
+    bit_size: 3
+  - name: M1
+    bit_offset: 4
+    bit_size: 3
+  - name: M2
+    bit_offset: 8
+    bit_size: 3
+  - name: M3
+    bit_offset: 12
+    bit_size: 3
+  - name: M4
+    bit_offset: 16
+    bit_size: 3
+  - name: M5
+    bit_offset: 20
+    bit_size: 3
+  - name: M6
+    bit_offset: 24
+    bit_size: 3
+  - name: M7
+    bit_offset: 28
+    bit_size: 3
+fieldset/AXBS_CRS0:
+  description: ''
+  fields:
+  - name: PARK
+    bit_offset: 0
+    bit_size: 3
+  - name: PCTL
+    bit_offset: 4
+    bit_size: 2
+  - name: ARB
+    bit_offset: 8
+    bit_size: 2
+  - name: HPE0
+    bit_offset: 16
+    bit_size: 1
+  - name: HPE1
+    bit_offset: 17
+    bit_size: 1
+  - name: HPE2
+    bit_offset: 18
+    bit_size: 1
+  - name: HPE3
+    bit_offset: 19
+    bit_size: 1
+  - name: HPE4
+    bit_offset: 20
+    bit_size: 1
+  - name: HPE5
+    bit_offset: 21
+    bit_size: 1
+  - name: HPE6
+    bit_offset: 22
+    bit_size: 1
+  - name: HPE7
+    bit_offset: 23
+    bit_size: 1
+  - name: RO
+    bit_offset: 31
+    bit_size: 1
+fieldset/AXBS_PRS1:
+  description: ''
+  fields:
+  - name: M0
+    bit_offset: 0
+    bit_size: 3
+  - name: M1
+    bit_offset: 4
+    bit_size: 3
+  - name: M2
+    bit_offset: 8
+    bit_size: 3
+  - name: M3
+    bit_offset: 12
+    bit_size: 3
+  - name: M4
+    bit_offset: 16
+    bit_size: 3
+  - name: M5
+    bit_offset: 20
+    bit_size: 3
+  - name: M6
+    bit_offset: 24
+    bit_size: 3
+  - name: M7
+    bit_offset: 28
+    bit_size: 3
+fieldset/AXBS_CRS1:
+  description: ''
+  fields:
+  - name: PARK
+    bit_offset: 0
+    bit_size: 3
+  - name: PCTL
+    bit_offset: 4
+    bit_size: 2
+  - name: ARB
+    bit_offset: 8
+    bit_size: 2
+  - name: HPE0
+    bit_offset: 16
+    bit_size: 1
+  - name: HPE1
+    bit_offset: 17
+    bit_size: 1
+  - name: HPE2
+    bit_offset: 18
+    bit_size: 1
+  - name: HPE3
+    bit_offset: 19
+    bit_size: 1
+  - name: HPE4
+    bit_offset: 20
+    bit_size: 1
+  - name: HPE5
+    bit_offset: 21
+    bit_size: 1
+  - name: HPE6
+    bit_offset: 22
+    bit_size: 1
+  - name: HPE7
+    bit_offset: 23
+    bit_size: 1
+  - name: RO
+    bit_offset: 31
+    bit_size: 1
+fieldset/AXBS_PRS2:
+  description: ''
+  fields:
+  - name: M0
+    bit_offset: 0
+    bit_size: 3
+  - name: M1
+    bit_offset: 4
+    bit_size: 3
+  - name: M2
+    bit_offset: 8
+    bit_size: 3
+  - name: M3
+    bit_offset: 12
+    bit_size: 3
+  - name: M4
+    bit_offset: 16
+    bit_size: 3
+  - name: M5
+    bit_offset: 20
+    bit_size: 3
+  - name: M6
+    bit_offset: 24
+    bit_size: 3
+  - name: M7
+    bit_offset: 28
+    bit_size: 3
+fieldset/AXBS_CRS2:
+  description: ''
+  fields:
+  - name: PARK
+    bit_offset: 0
+    bit_size: 3
+  - name: PCTL
+    bit_offset: 4
+    bit_size: 2
+  - name: ARB
+    bit_offset: 8
+    bit_size: 2
+  - name: HPE0
+    bit_offset: 16
+    bit_size: 1
+  - name: HPE1
+    bit_offset: 17
+    bit_size: 1
+  - name: HPE2
+    bit_offset: 18
+    bit_size: 1
+  - name: HPE3
+    bit_offset: 19
+    bit_size: 1
+  - name: HPE4
+    bit_offset: 20
+    bit_size: 1
+  - name: HPE5
+    bit_offset: 21
+    bit_size: 1
+  - name: HPE6
+    bit_offset: 22
+    bit_size: 1
+  - name: HPE7
+    bit_offset: 23
+    bit_size: 1
+  - name: RO
+    bit_offset: 31
+    bit_size: 1
+fieldset/AXBS_PRS3:
+  description: ''
+  fields:
+  - name: M0
+    bit_offset: 0
+    bit_size: 3
+  - name: M1
+    bit_offset: 4
+    bit_size: 3
+  - name: M2
+    bit_offset: 8
+    bit_size: 3
+  - name: M3
+    bit_offset: 12
+    bit_size: 3
+  - name: M4
+    bit_offset: 16
+    bit_size: 3
+  - name: M5
+    bit_offset: 20
+    bit_size: 3
+  - name: M6
+    bit_offset: 24
+    bit_size: 3
+  - name: M7
+    bit_offset: 28
+    bit_size: 3
+fieldset/AXBS_CRS3:
+  description: ''
+  fields:
+  - name: PARK
+    bit_offset: 0
+    bit_size: 3
+  - name: PCTL
+    bit_offset: 4
+    bit_size: 2
+  - name: ARB
+    bit_offset: 8
+    bit_size: 2
+  - name: HPE0
+    bit_offset: 16
+    bit_size: 1
+  - name: HPE1
+    bit_offset: 17
+    bit_size: 1
+  - name: HPE2
+    bit_offset: 18
+    bit_size: 1
+  - name: HPE3
+    bit_offset: 19
+    bit_size: 1
+  - name: HPE4
+    bit_offset: 20
+    bit_size: 1
+  - name: HPE5
+    bit_offset: 21
+    bit_size: 1
+  - name: HPE6
+    bit_offset: 22
+    bit_size: 1
+  - name: HPE7
+    bit_offset: 23
+    bit_size: 1
+  - name: RO
+    bit_offset: 31
+    bit_size: 1
+fieldset/AXBS_PRS4:
+  description: ''
+  fields:
+  - name: M0
+    bit_offset: 0
+    bit_size: 3
+  - name: M1
+    bit_offset: 4
+    bit_size: 3
+  - name: M2
+    bit_offset: 8
+    bit_size: 3
+  - name: M3
+    bit_offset: 12
+    bit_size: 3
+  - name: M4
+    bit_offset: 16
+    bit_size: 3
+  - name: M5
+    bit_offset: 20
+    bit_size: 3
+  - name: M6
+    bit_offset: 24
+    bit_size: 3
+  - name: M7
+    bit_offset: 28
+    bit_size: 3
+fieldset/AXBS_CRS4:
+  description: ''
+  fields:
+  - name: PARK
+    bit_offset: 0
+    bit_size: 3
+  - name: PCTL
+    bit_offset: 4
+    bit_size: 2
+  - name: ARB
+    bit_offset: 8
+    bit_size: 2
+  - name: HPE0
+    bit_offset: 16
+    bit_size: 1
+  - name: HPE1
+    bit_offset: 17
+    bit_size: 1
+  - name: HPE2
+    bit_offset: 18
+    bit_size: 1
+  - name: HPE3
+    bit_offset: 19
+    bit_size: 1
+  - name: HPE4
+    bit_offset: 20
+    bit_size: 1
+  - name: HPE5
+    bit_offset: 21
+    bit_size: 1
+  - name: HPE6
+    bit_offset: 22
+    bit_size: 1
+  - name: HPE7
+    bit_offset: 23
+    bit_size: 1
+  - name: RO
+    bit_offset: 31
+    bit_size: 1
+fieldset/AXBS_PRS5:
+  description: ''
+  fields:
+  - name: M0
+    bit_offset: 0
+    bit_size: 3
+  - name: M1
+    bit_offset: 4
+    bit_size: 3
+  - name: M2
+    bit_offset: 8
+    bit_size: 3
+  - name: M3
+    bit_offset: 12
+    bit_size: 3
+  - name: M4
+    bit_offset: 16
+    bit_size: 3
+  - name: M5
+    bit_offset: 20
+    bit_size: 3
+  - name: M6
+    bit_offset: 24
+    bit_size: 3
+  - name: M7
+    bit_offset: 28
+    bit_size: 3
+fieldset/AXBS_CRS5:
+  description: ''
+  fields:
+  - name: PARK
+    bit_offset: 0
+    bit_size: 3
+  - name: PCTL
+    bit_offset: 4
+    bit_size: 2
+  - name: ARB
+    bit_offset: 8
+    bit_size: 2
+  - name: HPE0
+    bit_offset: 16
+    bit_size: 1
+  - name: HPE1
+    bit_offset: 17
+    bit_size: 1
+  - name: HPE2
+    bit_offset: 18
+    bit_size: 1
+  - name: HPE3
+    bit_offset: 19
+    bit_size: 1
+  - name: HPE4
+    bit_offset: 20
+    bit_size: 1
+  - name: HPE5
+    bit_offset: 21
+    bit_size: 1
+  - name: HPE6
+    bit_offset: 22
+    bit_size: 1
+  - name: HPE7
+    bit_offset: 23
+    bit_size: 1
+  - name: RO
+    bit_offset: 31
+    bit_size: 1
+fieldset/AXBS_PRS6:
+  description: ''
+  fields:
+  - name: M0
+    bit_offset: 0
+    bit_size: 3
+  - name: M1
+    bit_offset: 4
+    bit_size: 3
+  - name: M2
+    bit_offset: 8
+    bit_size: 3
+  - name: M3
+    bit_offset: 12
+    bit_size: 3
+  - name: M4
+    bit_offset: 16
+    bit_size: 3
+  - name: M5
+    bit_offset: 20
+    bit_size: 3
+  - name: M6
+    bit_offset: 24
+    bit_size: 3
+  - name: M7
+    bit_offset: 28
+    bit_size: 3
+fieldset/AXBS_CRS6:
+  description: ''
+  fields:
+  - name: PARK
+    bit_offset: 0
+    bit_size: 3
+  - name: PCTL
+    bit_offset: 4
+    bit_size: 2
+  - name: ARB
+    bit_offset: 8
+    bit_size: 2
+  - name: HPE0
+    bit_offset: 16
+    bit_size: 1
+  - name: HPE1
+    bit_offset: 17
+    bit_size: 1
+  - name: HPE2
+    bit_offset: 18
+    bit_size: 1
+  - name: HPE3
+    bit_offset: 19
+    bit_size: 1
+  - name: HPE4
+    bit_offset: 20
+    bit_size: 1
+  - name: HPE5
+    bit_offset: 21
+    bit_size: 1
+  - name: HPE6
+    bit_offset: 22
+    bit_size: 1
+  - name: HPE7
+    bit_offset: 23
+    bit_size: 1
+  - name: RO
+    bit_offset: 31
+    bit_size: 1
+fieldset/AXBS_PRS7:
+  description: ''
+  fields:
+  - name: M0
+    bit_offset: 0
+    bit_size: 3
+  - name: M1
+    bit_offset: 4
+    bit_size: 3
+  - name: M2
+    bit_offset: 8
+    bit_size: 3
+  - name: M3
+    bit_offset: 12
+    bit_size: 3
+  - name: M4
+    bit_offset: 16
+    bit_size: 3
+  - name: M5
+    bit_offset: 20
+    bit_size: 3
+  - name: M6
+    bit_offset: 24
+    bit_size: 3
+  - name: M7
+    bit_offset: 28
+    bit_size: 3
+fieldset/AXBS_CRS7:
+  description: ''
+  fields:
+  - name: PARK
+    bit_offset: 0
+    bit_size: 3
+  - name: PCTL
+    bit_offset: 4
+    bit_size: 2
+  - name: ARB
+    bit_offset: 8
+    bit_size: 2
+  - name: HPE0
+    bit_offset: 16
+    bit_size: 1
+  - name: HPE1
+    bit_offset: 17
+    bit_size: 1
+  - name: HPE2
+    bit_offset: 18
+    bit_size: 1
+  - name: HPE3
+    bit_offset: 19
+    bit_size: 1
+  - name: HPE4
+    bit_offset: 20
+    bit_size: 1
+  - name: HPE5
+    bit_offset: 21
+    bit_size: 1
+  - name: HPE6
+    bit_offset: 22
+    bit_size: 1
+  - name: HPE7
+    bit_offset: 23
+    bit_size: 1
+  - name: RO
+    bit_offset: 31
+    bit_size: 1
+fieldset/AXBS_MGPCR0:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3
+fieldset/AXBS_MGPCR1:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3
+fieldset/AXBS_MGPCR2:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3
+fieldset/AXBS_MGPCR3:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3
+fieldset/AXBS_MGPCR4:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3
+fieldset/AXBS_MGPCR5:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3
+fieldset/AXBS_MGPCR6:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3
+fieldset/AXBS_MGPCR7:
+  description: ''
+  fields:
+  - name: AULB
+    bit_offset: 0
+    bit_size: 3

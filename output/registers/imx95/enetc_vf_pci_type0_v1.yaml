@@ -1,0 +1,588 @@
+block/ENETC_VF_PCI_TYPE0:
+  description: ''
+  items:
+  - name: PCI_CFH_DID_VID
+    byte_offset: 0
+  - name: PCI_CFH_CMD
+    byte_offset: 4
+  - name: PCI_CFH_REVID_CLASSCODE
+    byte_offset: 8
+  - name: PCI_CFH_CL_SIZE
+    byte_offset: 12
+  - name: PCI_CFH_BAR0
+    byte_offset: 16
+    fieldset: ENETC_VF_PCI_TYPE0_PCI_CFH_BAR0
+  - name: PCI_CFH_BAR1
+    byte_offset: 20
+    fieldset: ENETC_VF_PCI_TYPE0_PCI_CFH_BAR1
+  - name: PCI_CFH_BAR2
+    byte_offset: 24
+    fieldset: ENETC_VF_PCI_TYPE0_PCI_CFH_BAR2
+  - name: PCI_CFH_BAR3
+    byte_offset: 28
+    fieldset: ENETC_VF_PCI_TYPE0_PCI_CFH_BAR3
+  - name: PCI_CFH_BAR4
+    byte_offset: 32
+    fieldset: ENETC_VF_PCI_TYPE0_PCI_CFH_BAR4
+  - name: PCI_CFH_BAR5
+    byte_offset: 36
+    fieldset: ENETC_VF_PCI_TYPE0_PCI_CFH_BAR5
+  - name: PCI_CFH_CARDBUS_CIS
+    byte_offset: 40
+  - name: PCI_CFH_SUBSYS_VID
+    byte_offset: 44
+  - name: PCI_CFH_EXP_ROM_BA
+    byte_offset: 48
+  - name: PCI_CFH_CAP_PTR
+    byte_offset: 52
+  - name: PCI_CFC_PCIE_CAP_LIST
+    byte_offset: 64
+  - name: PCI_CFC_PCIE_DEV_CAP
+    byte_offset: 68
+  - name: PCI_CFC_PCIE_DEV_CTL
+    byte_offset: 72
+  - name: PCI_CFC_PCIE_DEV_CAP2
+    byte_offset: 100
+  - name: PCI_CFC_PCIE_DEV_CTL2
+    byte_offset: 104
+  - name: PCI_CFC_MSIX_CAP_LIST
+    byte_offset: 128
+  - name: PCI_CFC_MSIX_TABLE_OFF_BIR
+    byte_offset: 132
+  - name: PCI_CFC_MSIX_PBA_OFF_BIR
+    byte_offset: 136
+  - name: PCIE_CFC_AER_EXT_CAP_HDR
+    byte_offset: 256
+  - name: PCIE_CFC_AER_UCORR_ERR_STAT
+    byte_offset: 260
+  - name: PCIE_CFC_AER_UCORR_ERR_MASK
+    byte_offset: 264
+  - name: PCIE_CFC_AER_UCORR_ERR_SEV
+    byte_offset: 268
+  - name: PCIE_CFC_AER_CORR_ERR_STAT
+    byte_offset: 272
+  - name: PCIE_CFC_AER_CORR_ERR_MASK
+    byte_offset: 276
+  - name: PCIE_CFC_AER_CAP_CTL
+    byte_offset: 280
+  - name: PCIE_CFC_ACS_CAP_HDR
+    byte_offset: 304
+  - name: PCIE_CFC_ACS_CAP
+    byte_offset: 308
+  - name: PCIE_CFC_RTR_CAP_HDR
+    byte_offset: 320
+  - name: PCIE_CFC_RTR_RTR1
+    byte_offset: 324
+    fieldset: ENETC_VF_PCI_TYPE0_PCIE_CFC_RTR_RTR1
+  - name: PCIE_CFC_RTR_RTR2
+    byte_offset: 328
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_DID_VID_VENDOR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_DID_VID_DEVICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 16
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_CMD_BUS_MASTER:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_STAT_CAP:
+  description: ''
+  fields:
+  - name: LIST
+    bit_offset: 4
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_REVID_CLASSCODE_REV:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 8
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_REVID_CLASSCODE_CLASS:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 8
+    bit_size: 24
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_CL_SIZE_CACHE_LINE:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 8
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_LAT_TIMER_LATENCY:
+  description: ''
+  fields:
+  - name: TIMER
+    bit_offset: 0
+    bit_size: 8
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_HDR_TYPE_HDR:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 7
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_HDR_TYPE_MULT_FUNC:
+  description: ''
+  fields:
+  - name: DEV
+    bit_offset: 7
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BIST:
+  description: ''
+  fields:
+  - name: BIST
+    bit_offset: 0
+    bit_size: 8
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR0_MEM_IO:
+  description: ''
+  fields:
+  - name: IND
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR0_MEM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 1
+    bit_size: 2
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR0_PF:
+  description: ''
+  fields:
+  - name: MEM
+    bit_offset: 3
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR0:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 4
+    bit_size: 28
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR1_MEM_IO:
+  description: ''
+  fields:
+  - name: IND
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR1_MEM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 1
+    bit_size: 2
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR1_PF:
+  description: ''
+  fields:
+  - name: MEM
+    bit_offset: 3
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR1:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 4
+    bit_size: 28
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR2_MEM_IO:
+  description: ''
+  fields:
+  - name: IND
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR2_MEM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 1
+    bit_size: 2
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR2_PF:
+  description: ''
+  fields:
+  - name: MEM
+    bit_offset: 3
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR2:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 4
+    bit_size: 28
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR3_MEM_IO:
+  description: ''
+  fields:
+  - name: IND
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR3_MEM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 1
+    bit_size: 2
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR3_PF:
+  description: ''
+  fields:
+  - name: MEM
+    bit_offset: 3
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR3:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 4
+    bit_size: 28
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR4_MEM_IO:
+  description: ''
+  fields:
+  - name: IND
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR4_MEM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 1
+    bit_size: 2
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR4_PF:
+  description: ''
+  fields:
+  - name: MEM
+    bit_offset: 3
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR4:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 4
+    bit_size: 28
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR5_MEM_IO:
+  description: ''
+  fields:
+  - name: IND
+    bit_offset: 0
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR5_MEM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 1
+    bit_size: 2
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR5_PF:
+  description: ''
+  fields:
+  - name: MEM
+    bit_offset: 3
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_BAR5:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 4
+    bit_size: 28
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_CARDBUS_CIS_CARDBUS_CIS:
+  description: ''
+  fields:
+  - name: PTR
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_SUBSYS_VID_SYBSYSTEM_VENDOR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_SUBSYS_ID_SYBSYSTEM:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_EXP_ROM_BA_EXP_ROM:
+  description: ''
+  fields:
+  - name: BA
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFH_CAP_PTR_CAP:
+  description: ''
+  fields:
+  - name: PTR
+    bit_offset: 0
+    bit_size: 8
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_PCIE_CAP_LIST_CAP:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 8
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_PCIE_CAP_LIST_NEXT_CAP:
+  description: ''
+  fields:
+  - name: PTR
+    bit_offset: 8
+    bit_size: 8
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_PCIE_CAP_CAP:
+  description: ''
+  fields:
+  - name: VER
+    bit_offset: 0
+    bit_size: 4
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_PCIE_CAP_DEV_PORT:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 4
+    bit_size: 4
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_PCIE_CAP_INT_MSG:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 9
+    bit_size: 5
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_PCIE_DEV_CAP_FLR:
+  description: ''
+  fields:
+  - name: CAP
+    bit_offset: 28
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_PCIE_DEV_CTL_INIT:
+  description: ''
+  fields:
+  - name: FLR
+    bit_offset: 15
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_PCIE_DEV_STAT_TRANS:
+  description: ''
+  fields:
+  - name: PEND
+    bit_offset: 5
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_PCIE_DEV_CAP2_CMPL_TO_RNG:
+  description: ''
+  fields:
+  - name: SUPP
+    bit_offset: 0
+    bit_size: 4
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_PCIE_DEV_CAP2_CMPL_TO_DIS:
+  description: ''
+  fields:
+  - name: SUPP
+    bit_offset: 4
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_PCIE_DEV_CTL2_CMPL_TO:
+  description: ''
+  fields:
+  - name: VALUE
+    bit_offset: 0
+    bit_size: 4
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_MSIX_CAP_LIST_CAP:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 8
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_MSIX_CAP_LIST_NEXT_CAP:
+  description: ''
+  fields:
+  - name: PTR
+    bit_offset: 8
+    bit_size: 8
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_MSIX_MSG_CTL_TABLE:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 11
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_MSIX_MSG_CTL_FUNC:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 14
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_MSIX_MSG_CTL_MSIX:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_MSIX_TABLE_OFF_BIR_TABLE:
+  description: ''
+  fields:
+  - name: BIR
+    bit_offset: 0
+    bit_size: 3
+  - name: OFFSET
+    bit_offset: 3
+    bit_size: 29
+fieldset/ENETC_VF_PCI_TYPE0_PCI_CFC_MSIX_PBA_OFF_BIR_PBA:
+  description: ''
+  fields:
+  - name: BIR
+    bit_offset: 0
+    bit_size: 3
+  - name: OFFSET
+    bit_offset: 3
+    bit_size: 29
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_AER_EXT_CAP_HDR_PCIE_EXT_CAP:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_AER_EXT_CAP_HDR_CAP:
+  description: ''
+  fields:
+  - name: VER
+    bit_offset: 16
+    bit_size: 4
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_AER_EXT_CAP_HDR_NEXT_CAP:
+  description: ''
+  fields:
+  - name: 'OFF'
+    bit_offset: 20
+    bit_size: 12
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_AER_UCORR_ERR_STAT_UCORR_INT:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 22
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_AER_UCORR_ERR_MASK_UCORR_INT_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 22
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_AER_UCORR_ERR_SEV_UCORR_INT:
+  description: ''
+  fields:
+  - name: SEV
+    bit_offset: 22
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_AER_CORR_ERR_STAT_CORR_INT:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 14
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_AER_CORR_ERR_MASK_CORR_INT:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 14
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_AER_CAP_CTL_FIRST_ERR:
+  description: ''
+  fields:
+  - name: PTR
+    bit_offset: 0
+    bit_size: 5
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_ACS_CAP_HDR_PCIE_EXT_CAP:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_ACS_CAP_HDR_CAP:
+  description: ''
+  fields:
+  - name: VER
+    bit_offset: 16
+    bit_size: 4
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_ACS_CAP_HDR_NEXT_CAP:
+  description: ''
+  fields:
+  - name: 'OFF'
+    bit_offset: 20
+    bit_size: 12
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_ACS_CAP_ACS_TRANS:
+  description: ''
+  fields:
+  - name: BLOCK
+    bit_offset: 1
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_ACS_CAP_ACS_P2P_REQ:
+  description: ''
+  fields:
+  - name: REDIR
+    bit_offset: 2
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_ACS_CAP_ACS_DIR_TRANS:
+  description: ''
+  fields:
+  - name: P2P
+    bit_offset: 6
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_ACS_CTL_ACS_TRANS_BLOCK:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_ACS_CTL_ACS_P2P_REQ_REDIR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_ACS_CTL_ACS_DIR_TRANS_P2P:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 6
+    bit_size: 1
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_RTR_CAP_HDR_PCIE_EXT_CAP:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_RTR_CAP_HDR_CAP:
+  description: ''
+  fields:
+  - name: VER
+    bit_offset: 16
+    bit_size: 4
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_RTR_CAP_HDR_NEXT_CAP:
+  description: ''
+  fields:
+  - name: 'OFF'
+    bit_offset: 20
+    bit_size: 12
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_RTR_RTR1_RESET:
+  description: ''
+  fields:
+  - name: TIME
+    bit_offset: 0
+    bit_size: 12
+    description: Reset Time
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_RTR_RTR1:
+  description: ''
+  fields:
+  - name: VALID
+    bit_offset: 31
+    bit_size: 1
+    description: Valid
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_RTR_RTR2_FLR:
+  description: ''
+  fields:
+  - name: TIME
+    bit_offset: 0
+    bit_size: 12
+    description: FLR Time
+fieldset/ENETC_VF_PCI_TYPE0_PCIE_CFC_RTR_RTR2_D3HOT_D0:
+  description: ''
+  fields:
+  - name: TIME
+    bit_offset: 12
+    bit_size: 12

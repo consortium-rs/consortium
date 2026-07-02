@@ -1,0 +1,1832 @@
+block/DSI:
+  description: ''
+  items:
+  - name: VR
+    byte_offset: 0
+    description: DSI Host version register
+    fieldset: DSI_VR
+  - name: CR
+    byte_offset: 4
+    description: DSI Host control register
+    fieldset: DSI_CR
+  - name: CCR
+    byte_offset: 8
+    description: DSI Host clock control register
+    fieldset: DSI_CCR
+  - name: LVCIDR
+    byte_offset: 12
+    description: DSI Host LTDC VCID register
+    fieldset: DSI_LVCIDR
+  - name: LCOLCR
+    byte_offset: 16
+    description: DSI Host LTDC color coding register
+    fieldset: DSI_LCOLCR
+  - name: LPCR
+    byte_offset: 20
+    description: DSI Host LTDC polarity configuration register
+    fieldset: DSI_LPCR
+  - name: LPMCR
+    byte_offset: 24
+    description: DSI Host low-power mode configuration register
+    fieldset: DSI_LPMCR
+  - name: PCR
+    byte_offset: 44
+    description: DSI Host protocol configuration register
+    fieldset: DSI_PCR
+  - name: GVCIDR
+    byte_offset: 48
+    description: DSI Host generic VCID register
+    fieldset: DSI_GVCIDR
+  - name: MCR
+    byte_offset: 52
+    description: DSI Host mode configuration register
+    fieldset: DSI_MCR
+  - name: VMCR
+    byte_offset: 56
+    description: DSI Host video mode configuration register
+    fieldset: DSI_VMCR
+  - name: VPCR
+    byte_offset: 60
+    description: DSI Host video packet configuration register
+    fieldset: DSI_VPCR
+  - name: VCCR
+    byte_offset: 64
+    description: DSI Host video chunks configuration register
+    fieldset: DSI_VCCR
+  - name: VNPCR
+    byte_offset: 68
+    description: DSI Host video null packet configuration register
+    fieldset: DSI_VNPCR
+  - name: VHSACR
+    byte_offset: 72
+    description: DSI Host video HSA configuration register
+    fieldset: DSI_VHSACR
+  - name: VHBPCR
+    byte_offset: 76
+    description: DSI Host video HBP configuration register
+    fieldset: DSI_VHBPCR
+  - name: VLCR
+    byte_offset: 80
+    description: DSI Host video line configuration register
+    fieldset: DSI_VLCR
+  - name: VVSACR
+    byte_offset: 84
+    description: DSI Host video VSA configuration register
+    fieldset: DSI_VVSACR
+  - name: VVBPCR
+    byte_offset: 88
+    description: DSI Host video VBP configuration register
+    fieldset: DSI_VVBPCR
+  - name: VVFPCR
+    byte_offset: 92
+    description: DSI Host video VFP configuration register
+    fieldset: DSI_VVFPCR
+  - name: VVACR
+    byte_offset: 96
+    description: DSI Host video VA configuration register
+    fieldset: DSI_VVACR
+  - name: LCCR
+    byte_offset: 100
+    description: DSI Host LTDC command configuration register
+    fieldset: DSI_LCCR
+  - name: CMCR
+    byte_offset: 104
+    description: DSI Host command mode configuration register
+    fieldset: DSI_CMCR
+  - name: GHCR
+    byte_offset: 108
+    description: DSI Host generic header configuration register
+    fieldset: DSI_GHCR
+  - name: GPDR
+    byte_offset: 112
+    description: DSI Host generic payload data register
+    fieldset: DSI_GPDR
+  - name: GPSR
+    byte_offset: 116
+    description: DSI Host generic packet status register
+    fieldset: DSI_GPSR
+  - name: TCCR0
+    byte_offset: 120
+    description: DSI Host timeout counter configuration register 0
+  - name: TCCR1
+    byte_offset: 124
+    description: DSI Host timeout counter configuration register 1
+  - name: TCCR2
+    byte_offset: 128
+    description: DSI Host timeout counter configuration register 2
+  - name: TCCR3
+    byte_offset: 132
+    description: DSI Host timeout counter configuration register 3
+    fieldset: DSI_TCCR3
+  - name: TCCR4
+    byte_offset: 136
+    description: DSI Host timeout counter configuration register 4
+  - name: TCCR5
+    byte_offset: 140
+    description: DSI Host timeout counter configuration register 5
+  - name: TDCR
+    byte_offset: 144
+    description: DSI Host 3D configuration register
+    fieldset: DSI_TDCR
+  - name: CLCR
+    byte_offset: 148
+    description: DSI Host clock lane configuration register
+    fieldset: DSI_CLCR
+  - name: CLTCR
+    byte_offset: 152
+    description: DSI Host clock lane timer configuration register
+  - name: DLTCR
+    byte_offset: 156
+    description: DSI Host data lane timer configuration register
+  - name: PCTLR
+    byte_offset: 160
+    description: DSI Host PHY control register
+    fieldset: DSI_PCTLR
+  - name: PCONFR
+    byte_offset: 164
+    description: DSI Host PHY configuration register
+    fieldset: DSI_PCONFR
+  - name: PUCR
+    byte_offset: 168
+    description: DSI Host PHY ULPS control register
+    fieldset: DSI_PUCR
+  - name: PTTCR
+    byte_offset: 172
+    description: DSI Host PHY TX triggers configuration register
+  - name: PSR
+    byte_offset: 176
+    description: DSI Host PHY status register
+    fieldset: DSI_PSR
+  - name: PTCR0
+    byte_offset: 180
+    description: DSI Host PHY test control register 0
+    fieldset: DSI_PTCR0
+  - name: PTCR1
+    byte_offset: 184
+    description: DSI Host PHY test control register 1
+    fieldset: DSI_PTCR1
+  - name: ISR0
+    byte_offset: 188
+    description: DSI Host interrupt and status register 0
+    fieldset: DSI_ISR0
+  - name: ISR1
+    byte_offset: 192
+    description: DSI Host interrupt and status register 1
+    fieldset: DSI_ISR1
+  - name: IER0
+    byte_offset: 196
+    description: DSI Host interrupt enable register 0
+    fieldset: DSI_IER0
+  - name: IER1
+    byte_offset: 200
+    description: DSI Host interrupt enable register 1
+    fieldset: DSI_IER1
+  - name: PCCR
+    byte_offset: 204
+    description: DSI Host PHY calibration control register
+    fieldset: DSI_PCCR
+  - name: FIR0
+    byte_offset: 216
+    description: DSI Host force interrupt register 0
+    fieldset: DSI_FIR0
+  - name: FIR1
+    byte_offset: 220
+    description: DSI Host force interrupt register 1
+    fieldset: DSI_FIR1
+  - name: DLTRCR
+    byte_offset: 244
+    description: DSI Host data lane timer read configuration register
+  - name: VSCR
+    byte_offset: 256
+    description: DSI Host video shadow control register
+    fieldset: DSI_VSCR
+  - name: LCVCIDR
+    byte_offset: 268
+    description: DSI Host LTDC current VCID register
+    fieldset: DSI_LCVCIDR
+  - name: LCCCR
+    byte_offset: 272
+    description: DSI Host LTDC current color coding register
+    fieldset: DSI_LCCCR
+  - name: LPMCCR
+    byte_offset: 280
+    description: DSI Host low-power mode current configuration register
+    fieldset: DSI_LPMCCR
+  - name: VMCCR
+    byte_offset: 312
+    description: DSI Host video mode current configuration register
+    fieldset: DSI_VMCCR
+  - name: VPCCR
+    byte_offset: 316
+    description: DSI Host video packet current configuration register
+    fieldset: DSI_VPCCR
+  - name: VCCCR
+    byte_offset: 320
+    description: DSI Host video chunks current configuration register
+    fieldset: DSI_VCCCR
+  - name: VNPCCR
+    byte_offset: 324
+    description: DSI Host video null packet current configuration register
+    fieldset: DSI_VNPCCR
+  - name: VHSACCR
+    byte_offset: 328
+    description: DSI Host video HSA current configuration register
+    fieldset: DSI_VHSACCR
+  - name: VHBPCCR
+    byte_offset: 332
+    description: DSI Host video HBP current configuration register
+    fieldset: DSI_VHBPCCR
+  - name: VLCCR
+    byte_offset: 336
+    description: DSI Host video line current configuration register
+    fieldset: DSI_VLCCR
+  - name: VVSACCR
+    byte_offset: 340
+    description: DSI Host video VSA current configuration register
+    fieldset: DSI_VVSACCR
+  - name: VVBPCCR
+    byte_offset: 344
+    description: DSI Host video VBP current configuration register
+    fieldset: DSI_VVBPCCR
+  - name: VVFPCCR
+    byte_offset: 348
+    description: DSI Host video VFP current configuration register
+    fieldset: DSI_VVFPCCR
+  - name: VVACCR
+    byte_offset: 352
+    description: DSI Host video VA current configuration register
+    fieldset: DSI_VVACCR
+  - name: TDCCR
+    byte_offset: 400
+    description: DSI Host 3D current configuration register
+    fieldset: DSI_TDCCR
+  - name: WCFGR
+    byte_offset: 1024
+    description: DSI wrapper configuration register
+    fieldset: DSI_WCFGR
+  - name: WCR
+    byte_offset: 1028
+    description: DSI wrapper control register
+    fieldset: DSI_WCR
+  - name: WIER
+    byte_offset: 1032
+    description: DSI wrapper interrupt enable register
+    fieldset: DSI_WIER
+  - name: WISR
+    byte_offset: 1036
+    description: DSI wrapper interrupt and status register
+    fieldset: DSI_WISR
+  - name: WIFCR
+    byte_offset: 1040
+    description: DSI wrapper interrupt flag clear register
+    fieldset: DSI_WIFCR
+  - name: WPCR0
+    byte_offset: 1048
+    description: DSI wrapper PHY configuration register 0
+    fieldset: DSI_WPCR0
+  - name: WPCR1
+    byte_offset: 1072
+    description: DSI wrapper PHY configuration register 1
+    fieldset: DSI_WPCR1
+  - name: WRPCR0
+    byte_offset: 1076
+    description: DSI wrapper regulator and PLL configuration register 0
+    fieldset: DSI_WRPCR0
+  - name: WRPCR1
+    byte_offset: 1080
+    description: DSI wrapper regulator and PLL configuration register 1
+    fieldset: DSI_WRPCR1
+  - name: WRPCR2
+    byte_offset: 1084
+    description: DSI wrapper regulator and PLL configuration register 2
+    fieldset: DSI_WRPCR2
+  - name: WRPSR0
+    byte_offset: 1088
+    description: DSI wrapper regulator and PLL status register 0
+    fieldset: DSI_WRPSR0
+  - name: WRPSR1
+    byte_offset: 1092
+    description: DSI wrapper regulator and PLL status register 1
+    fieldset: DSI_WRPSR1
+  - name: WCRB
+    byte_offset: 1152
+    description: DSI wrapper control register bis
+    fieldset: DSI_WCRB
+  - name: HWCFGR
+    byte_offset: 2032
+    description: DSI Host hardware configuration register
+    fieldset: DSI_HWCFGR
+  - name: VERR
+    byte_offset: 2036
+    description: DSI Host version register
+    fieldset: DSI_VERR
+  - name: IPIDR
+    byte_offset: 2040
+    description: DSI Host identification register
+    fieldset: DSI_IPIDR
+  - name: SIDR
+    byte_offset: 2044
+    description: DSI Host size identification register
+    fieldset: DSI_SIDR
+fieldset/DSI_VR:
+  description: ''
+  fields:
+  - name: VERSION
+    bit_offset: 0
+    bit_size: 32
+    description: Version of the DSI Host
+fieldset/DSI_CR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+    description: Enable
+fieldset/DSI_CCR:
+  description: ''
+  fields:
+  - name: TXECKDIV
+    bit_offset: 0
+    bit_size: 8
+    description: TX escape clock division
+  - name: TOCKDIV
+    bit_offset: 8
+    bit_size: 8
+    description: Timeout clock division
+fieldset/DSI_LVCIDR:
+  description: ''
+  fields:
+  - name: VCID
+    bit_offset: 0
+    bit_size: 2
+    description: Virtual channel ID
+fieldset/DSI_LCOLCR:
+  description: ''
+  fields:
+  - name: COLC
+    bit_offset: 0
+    bit_size: 4
+    description: Color coding
+  - name: LPE
+    bit_offset: 8
+    bit_size: 1
+    description: Loosely packet enable
+fieldset/DSI_LPCR:
+  description: ''
+  fields:
+  - name: DEP
+    bit_offset: 0
+    bit_size: 1
+    description: Data enable polarity
+  - name: VSP
+    bit_offset: 1
+    bit_size: 1
+    description: VSYNC polarity
+  - name: HSP
+    bit_offset: 2
+    bit_size: 1
+    description: HSYNC polarity
+fieldset/DSI_LPMCR:
+  description: ''
+  fields:
+  - name: VLPSIZE
+    bit_offset: 0
+    bit_size: 8
+    description: VACT largest packet size
+  - name: LPSIZE
+    bit_offset: 16
+    bit_size: 8
+    description: Largest packet size
+fieldset/DSI_PCR:
+  description: ''
+  fields:
+  - name: ETTXE
+    bit_offset: 0
+    bit_size: 1
+    description: EoTp transmission enable
+  - name: ETRXE
+    bit_offset: 1
+    bit_size: 1
+    description: EoTp reception enable
+  - name: BTAE
+    bit_offset: 2
+    bit_size: 1
+    description: Bus-turn-around enable
+  - name: ECCRXE
+    bit_offset: 3
+    bit_size: 1
+    description: ECC reception enable
+  - name: CRCRXE
+    bit_offset: 4
+    bit_size: 1
+    description: CRC reception enable
+fieldset/DSI_GVCIDR:
+  description: ''
+  fields:
+  - name: VCID
+    bit_offset: 0
+    bit_size: 2
+    description: Virtual channel ID
+fieldset/DSI_MCR:
+  description: ''
+  fields:
+  - name: CMDM
+    bit_offset: 0
+    bit_size: 1
+    description: Command mode
+fieldset/DSI_VMCR:
+  description: ''
+  fields:
+  - name: VMT
+    bit_offset: 0
+    bit_size: 2
+    description: Video mode type
+  - name: LPVSAE
+    bit_offset: 8
+    bit_size: 1
+    description: Low-power vertical sync active enable
+  - name: LPVBPE
+    bit_offset: 9
+    bit_size: 1
+    description: Low-power vertical back-porch enable
+  - name: LPVFPE
+    bit_offset: 10
+    bit_size: 1
+    description: Low-power vertical front-porch enable
+  - name: LPVAE
+    bit_offset: 11
+    bit_size: 1
+    description: Low-power vertical active enable
+  - name: LPHBPE
+    bit_offset: 12
+    bit_size: 1
+    description: Low-power horizontal back-porch enable
+  - name: LPHFPE
+    bit_offset: 13
+    bit_size: 1
+    description: Low-power horizontal front-porch enable
+  - name: FBTAAE
+    bit_offset: 14
+    bit_size: 1
+    description: Frame bus-turn-around acknowledge enable
+  - name: LPCE
+    bit_offset: 15
+    bit_size: 1
+    description: Low-power command enable
+  - name: PGE
+    bit_offset: 16
+    bit_size: 1
+    description: Pattern generator enable
+  - name: PGM
+    bit_offset: 20
+    bit_size: 1
+    description: Pattern generator mode
+  - name: PGO
+    bit_offset: 24
+    bit_size: 1
+    description: Pattern generator orientation
+fieldset/DSI_VPCR:
+  description: ''
+  fields:
+  - name: VPSIZE
+    bit_offset: 0
+    bit_size: 14
+    description: Video packet size
+fieldset/DSI_VCCR:
+  description: ''
+  fields:
+  - name: NUMC
+    bit_offset: 0
+    bit_size: 13
+    description: Number of chunks
+fieldset/DSI_VNPCR:
+  description: ''
+  fields:
+  - name: NPSIZE
+    bit_offset: 0
+    bit_size: 13
+    description: Null packet size
+fieldset/DSI_VHSACR:
+  description: ''
+  fields:
+  - name: HSA
+    bit_offset: 0
+    bit_size: 12
+    description: Horizontal synchronism active duration
+fieldset/DSI_VHBPCR:
+  description: ''
+  fields:
+  - name: HBP
+    bit_offset: 0
+    bit_size: 12
+    description: Horizontal back-porch duration
+fieldset/DSI_VLCR:
+  description: ''
+  fields:
+  - name: HLINE
+    bit_offset: 0
+    bit_size: 15
+    description: Horizontal line duration
+fieldset/DSI_VVSACR:
+  description: ''
+  fields:
+  - name: VSA
+    bit_offset: 0
+    bit_size: 10
+    description: Vertical synchronism active duration
+fieldset/DSI_VVBPCR:
+  description: ''
+  fields:
+  - name: VBP
+    bit_offset: 0
+    bit_size: 10
+    description: Vertical back-porch duration
+fieldset/DSI_VVFPCR:
+  description: ''
+  fields:
+  - name: VFP
+    bit_offset: 0
+    bit_size: 10
+    description: Vertical front-porch duration
+fieldset/DSI_VVACR:
+  description: ''
+  fields:
+  - name: VA
+    bit_offset: 0
+    bit_size: 14
+    description: Vertical active duration
+fieldset/DSI_LCCR:
+  description: ''
+  fields:
+  - name: CMDSIZE
+    bit_offset: 0
+    bit_size: 16
+    description: Command size
+fieldset/DSI_CMCR:
+  description: ''
+  fields:
+  - name: TEARE
+    bit_offset: 0
+    bit_size: 1
+    description: Tearing effect acknowledge request enable
+  - name: ARE
+    bit_offset: 1
+    bit_size: 1
+    description: Acknowledge request enable
+  - name: GSW0TX
+    bit_offset: 8
+    bit_size: 1
+    description: Generic short write zero parameters transmission
+  - name: GSW1TX
+    bit_offset: 9
+    bit_size: 1
+    description: Generic short write one parameters transmission
+  - name: GSW2TX
+    bit_offset: 10
+    bit_size: 1
+    description: Generic short write two parameters transmission
+  - name: GSR0TX
+    bit_offset: 11
+    bit_size: 1
+    description: Generic short read zero parameters transmission
+  - name: GSR1TX
+    bit_offset: 12
+    bit_size: 1
+    description: Generic short read one parameters transmission
+  - name: GSR2TX
+    bit_offset: 13
+    bit_size: 1
+    description: Generic short read two parameters transmission
+  - name: GLWTX
+    bit_offset: 14
+    bit_size: 1
+    description: Generic long write transmission
+  - name: DSW0TX
+    bit_offset: 16
+    bit_size: 1
+    description: DCS short write zero parameter transmission
+  - name: DSW1TX
+    bit_offset: 17
+    bit_size: 1
+    description: DCS short read one parameter transmission
+  - name: DSR0TX
+    bit_offset: 18
+    bit_size: 1
+    description: DCS short read zero parameter transmission
+  - name: DLWTX
+    bit_offset: 19
+    bit_size: 1
+    description: DCS long write transmission
+  - name: MRDPS
+    bit_offset: 24
+    bit_size: 1
+    description: Maximum read packet size
+fieldset/DSI_GHCR:
+  description: ''
+  fields:
+  - name: DT
+    bit_offset: 0
+    bit_size: 6
+    description: Type
+  - name: VCID
+    bit_offset: 6
+    bit_size: 2
+    description: Channel
+  - name: WCLSB
+    bit_offset: 8
+    bit_size: 8
+    description: WordCount LSB
+  - name: WCMSB
+    bit_offset: 16
+    bit_size: 8
+    description: WordCount MSB
+fieldset/DSI_GPDR:
+  description: ''
+  fields:
+  - name: DATA1
+    bit_offset: 0
+    bit_size: 8
+    description: Payload byte 1
+  - name: DATA2
+    bit_offset: 8
+    bit_size: 8
+    description: Payload byte 2
+  - name: DATA3
+    bit_offset: 16
+    bit_size: 8
+    description: Payload byte 3
+  - name: DATA4
+    bit_offset: 24
+    bit_size: 8
+    description: Payload byte 4
+fieldset/DSI_GPSR:
+  description: ''
+  fields:
+  - name: CMDFE
+    bit_offset: 0
+    bit_size: 1
+    description: Command FIFO empty
+  - name: CMDFF
+    bit_offset: 1
+    bit_size: 1
+    description: Command FIFO full
+  - name: PWRFE
+    bit_offset: 2
+    bit_size: 1
+    description: Payload write FIFO empty
+  - name: PWRFF
+    bit_offset: 3
+    bit_size: 1
+    description: Payload write FIFO full
+  - name: PRDFE
+    bit_offset: 4
+    bit_size: 1
+    description: Payload read FIFO empty
+  - name: PRDFF
+    bit_offset: 5
+    bit_size: 1
+    description: Payload read FIFO full
+  - name: RCB
+    bit_offset: 6
+    bit_size: 1
+    description: Read command busy
+fieldset/DSI_TCCR3:
+  description: ''
+  fields:
+  - name: PM
+    bit_offset: 24
+    bit_size: 1
+    description: Presp mode
+fieldset/DSI_TDCR:
+  description: ''
+  fields:
+  - name: M3D
+    bit_offset: 0
+    bit_size: 2
+    description: 3D mode
+  - name: F3D
+    bit_offset: 2
+    bit_size: 2
+    description: 3D format
+  - name: SVS
+    bit_offset: 4
+    bit_size: 1
+    description: Second VSYNC
+  - name: RF
+    bit_offset: 5
+    bit_size: 1
+    description: Right first
+  - name: S3DC
+    bit_offset: 16
+    bit_size: 1
+    description: Send 3D control
+fieldset/DSI_CLCR:
+  description: ''
+  fields:
+  - name: DPCC
+    bit_offset: 0
+    bit_size: 1
+    description: D-PHY clock control
+  - name: ACR
+    bit_offset: 1
+    bit_size: 1
+    description: Automatic clock lane control
+fieldset/DSI_PCTLR:
+  description: ''
+  fields:
+  - name: PWEN
+    bit_offset: 0
+    bit_size: 1
+    description: Power Enable
+  - name: DEN
+    bit_offset: 1
+    bit_size: 1
+    description: Digital enable
+  - name: CKEN
+    bit_offset: 2
+    bit_size: 1
+    description: Clock enable
+  - name: UCKEN
+    bit_offset: 3
+    bit_size: 1
+    description: ULPS Clock enable
+fieldset/DSI_PCONFR:
+  description: ''
+  fields:
+  - name: NL
+    bit_offset: 0
+    bit_size: 2
+    description: Number of lanes
+fieldset/DSI_PUCR:
+  description: ''
+  fields:
+  - name: URCL
+    bit_offset: 0
+    bit_size: 1
+    description: ULPS request on clock lane
+  - name: UECL
+    bit_offset: 1
+    bit_size: 1
+    description: ULPS exit on clock lane
+  - name: URDL
+    bit_offset: 2
+    bit_size: 1
+    description: ULPS request on data lane
+  - name: UEDL
+    bit_offset: 3
+    bit_size: 1
+    description: ULPS exit on data lane
+fieldset/DSI_PSR:
+  description: ''
+  fields:
+  - name: PL
+    bit_offset: 0
+    bit_size: 1
+    description: PHY lock
+  - name: PD
+    bit_offset: 1
+    bit_size: 1
+    description: PHY direction
+  - name: PSSC
+    bit_offset: 2
+    bit_size: 1
+    description: PHY stop state clock lane
+  - name: UANC
+    bit_offset: 3
+    bit_size: 1
+    description: ULPS active not clock lane
+  - name: PSS0
+    bit_offset: 4
+    bit_size: 1
+    description: PHY stop state lane 0
+  - name: UAN0
+    bit_offset: 5
+    bit_size: 1
+    description: ULPS active not lane 0
+  - name: RUE0
+    bit_offset: 6
+    bit_size: 1
+    description: RX ULPS escape lane 0
+  - name: PSS1
+    bit_offset: 7
+    bit_size: 1
+    description: PHY stop state lane 1
+  - name: UAN1
+    bit_offset: 8
+    bit_size: 1
+    description: ULPS active not lane 1
+  - name: PSS2
+    bit_offset: 9
+    bit_size: 1
+    description: PHY stop state lane 2
+  - name: UAN2
+    bit_offset: 10
+    bit_size: 1
+    description: ULPS active not lane 2
+  - name: PSS3
+    bit_offset: 11
+    bit_size: 1
+    description: PHY stop state lane 3
+  - name: UAN3
+    bit_offset: 12
+    bit_size: 1
+    description: ULPS active not lane 3
+fieldset/DSI_PTCR0:
+  description: ''
+  fields:
+  - name: TRSEN
+    bit_offset: 0
+    bit_size: 1
+    description: 'Test-interface Reset Enable for the TDI bus into the D-PHY:'
+  - name: TCKEN
+    bit_offset: 1
+    bit_size: 1
+    description: 'Test-interface Clock Enable for the TDI bus into the PHY:'
+fieldset/DSI_PTCR1:
+  description: ''
+  fields:
+  - name: TDI
+    bit_offset: 0
+    bit_size: 8
+    description: Test Data In
+  - name: TDO
+    bit_offset: 8
+    bit_size: 8
+    description: Test Data Out
+  - name: TWM
+    bit_offset: 16
+    bit_size: 1
+    description: 'Test Write Mode, selects the test write access performed to the
+      D-PHY:'
+fieldset/DSI_ISR0:
+  description: ''
+  fields:
+  - name: AE0
+    bit_offset: 0
+    bit_size: 1
+    description: Acknowledge error 0
+  - name: AE1
+    bit_offset: 1
+    bit_size: 1
+    description: Acknowledge error 1
+  - name: AE2
+    bit_offset: 2
+    bit_size: 1
+    description: Acknowledge error 2
+  - name: AE3
+    bit_offset: 3
+    bit_size: 1
+    description: Acknowledge error 3
+  - name: AE4
+    bit_offset: 4
+    bit_size: 1
+    description: Acknowledge error 4
+  - name: AE5
+    bit_offset: 5
+    bit_size: 1
+    description: Acknowledge error 5
+  - name: AE6
+    bit_offset: 6
+    bit_size: 1
+    description: Acknowledge error 6
+  - name: AE7
+    bit_offset: 7
+    bit_size: 1
+    description: Acknowledge error 7
+  - name: AE8
+    bit_offset: 8
+    bit_size: 1
+    description: Acknowledge error 8
+  - name: AE9
+    bit_offset: 9
+    bit_size: 1
+    description: Acknowledge error 9
+  - name: AE10
+    bit_offset: 10
+    bit_size: 1
+    description: Acknowledge error 10
+  - name: AE11
+    bit_offset: 11
+    bit_size: 1
+    description: Acknowledge error 11
+  - name: AE12
+    bit_offset: 12
+    bit_size: 1
+    description: Acknowledge error 12
+  - name: AE13
+    bit_offset: 13
+    bit_size: 1
+    description: Acknowledge error 13
+  - name: AE14
+    bit_offset: 14
+    bit_size: 1
+    description: Acknowledge error 14
+  - name: AE15
+    bit_offset: 15
+    bit_size: 1
+    description: Acknowledge error 15
+  - name: PE0
+    bit_offset: 16
+    bit_size: 1
+    description: PHY error 0
+  - name: PE1
+    bit_offset: 17
+    bit_size: 1
+    description: PHY error 1
+  - name: PE2
+    bit_offset: 18
+    bit_size: 1
+    description: PHY error 2
+  - name: PE3
+    bit_offset: 19
+    bit_size: 1
+    description: PHY error 3
+  - name: PE4
+    bit_offset: 20
+    bit_size: 1
+    description: PHY error 4
+fieldset/DSI_ISR1:
+  description: ''
+  fields:
+  - name: TOHSTX
+    bit_offset: 0
+    bit_size: 1
+    description: Timeout high-speed transmission
+  - name: TOLPRX
+    bit_offset: 1
+    bit_size: 1
+    description: Timeout low-power reception
+  - name: ECCSE
+    bit_offset: 2
+    bit_size: 1
+    description: ECC single-bit error
+  - name: ECCME
+    bit_offset: 3
+    bit_size: 1
+    description: ECC multi-bit error
+  - name: CRCE
+    bit_offset: 4
+    bit_size: 1
+    description: CRC error
+  - name: PSE
+    bit_offset: 5
+    bit_size: 1
+    description: Packet size error
+  - name: EOTPE
+    bit_offset: 6
+    bit_size: 1
+    description: EoTp error
+  - name: LPWRE
+    bit_offset: 7
+    bit_size: 1
+    description: LTDC payload write error
+  - name: GCWRE
+    bit_offset: 8
+    bit_size: 1
+    description: Generic command write error
+  - name: GPWRE
+    bit_offset: 9
+    bit_size: 1
+    description: Generic payload write error
+  - name: GPTXE
+    bit_offset: 10
+    bit_size: 1
+    description: Generic payload transmit error
+  - name: GPRDE
+    bit_offset: 11
+    bit_size: 1
+    description: Generic payload read error
+  - name: GPRXE
+    bit_offset: 12
+    bit_size: 1
+    description: Generic payload receive error
+  - name: DCFFE
+    bit_offset: 13
+    bit_size: 1
+    description: DBI command FIFO full error
+  - name: DDFFE
+    bit_offset: 14
+    bit_size: 1
+    description: DBI data FIFO full error
+  - name: DRUE
+    bit_offset: 15
+    bit_size: 1
+    description: DCS read underflow error
+  - name: DROE
+    bit_offset: 16
+    bit_size: 1
+    description: DBI read overflow error
+  - name: DICE
+    bit_offset: 17
+    bit_size: 1
+    description: DBI illegal command error
+  - name: VMPUE
+    bit_offset: 19
+    bit_size: 1
+    description: Video mode underflow error
+  - name: TEE
+    bit_offset: 20
+    bit_size: 1
+    description: Tear effect error
+fieldset/DSI_IER0:
+  description: ''
+  fields:
+  - name: AE0IE
+    bit_offset: 0
+    bit_size: 1
+    description: Acknowledge error 0 interrupt enable
+  - name: AE1IE
+    bit_offset: 1
+    bit_size: 1
+    description: Acknowledge error 1 interrupt enable
+  - name: AE2IE
+    bit_offset: 2
+    bit_size: 1
+    description: Acknowledge error 2 interrupt enable
+  - name: AE3IE
+    bit_offset: 3
+    bit_size: 1
+    description: Acknowledge error 3 interrupt enable
+  - name: AE4IE
+    bit_offset: 4
+    bit_size: 1
+    description: Acknowledge error 4 interrupt enable
+  - name: AE5IE
+    bit_offset: 5
+    bit_size: 1
+    description: Acknowledge error 5 interrupt enable
+  - name: AE6IE
+    bit_offset: 6
+    bit_size: 1
+    description: Acknowledge error 6 interrupt enable
+  - name: AE7IE
+    bit_offset: 7
+    bit_size: 1
+    description: Acknowledge error 7 interrupt enable
+  - name: AE8IE
+    bit_offset: 8
+    bit_size: 1
+    description: Acknowledge error 8 interrupt enable
+  - name: AE9IE
+    bit_offset: 9
+    bit_size: 1
+    description: Acknowledge error 9 interrupt enable
+  - name: AE10IE
+    bit_offset: 10
+    bit_size: 1
+    description: Acknowledge error 10 interrupt enable
+  - name: AE11IE
+    bit_offset: 11
+    bit_size: 1
+    description: Acknowledge error 11 interrupt enable
+  - name: AE12IE
+    bit_offset: 12
+    bit_size: 1
+    description: Acknowledge error 12 interrupt enable
+  - name: AE13IE
+    bit_offset: 13
+    bit_size: 1
+    description: Acknowledge error 13 interrupt enable
+  - name: AE14IE
+    bit_offset: 14
+    bit_size: 1
+    description: Acknowledge error 14 interrupt enable
+  - name: AE15IE
+    bit_offset: 15
+    bit_size: 1
+    description: Acknowledge error 15 interrupt enable
+  - name: PE0IE
+    bit_offset: 16
+    bit_size: 1
+    description: PHY error 0 interrupt enable
+  - name: PE1IE
+    bit_offset: 17
+    bit_size: 1
+    description: PHY error 1 interrupt enable
+  - name: PE2IE
+    bit_offset: 18
+    bit_size: 1
+    description: PHY error 2 interrupt enable
+  - name: PE3IE
+    bit_offset: 19
+    bit_size: 1
+    description: PHY error 3 interrupt enable
+  - name: PE4IE
+    bit_offset: 20
+    bit_size: 1
+    description: PHY error 4 interrupt enable
+fieldset/DSI_IER1:
+  description: ''
+  fields:
+  - name: TOHSTXIE
+    bit_offset: 0
+    bit_size: 1
+    description: Timeout high-speed transmission interrupt enable
+  - name: TOLPRXIE
+    bit_offset: 1
+    bit_size: 1
+    description: Timeout low-power reception interrupt enable
+  - name: ECCSEIE
+    bit_offset: 2
+    bit_size: 1
+    description: ECC single-bit error interrupt enable
+  - name: ECCMEIE
+    bit_offset: 3
+    bit_size: 1
+    description: ECC multi-bit error interrupt enable
+  - name: CRCEIE
+    bit_offset: 4
+    bit_size: 1
+    description: CRC error interrupt enable
+  - name: PSEIE
+    bit_offset: 5
+    bit_size: 1
+    description: Packet size error interrupt enable
+  - name: EOTPEIE
+    bit_offset: 6
+    bit_size: 1
+    description: EoTp error interrupt enable
+  - name: LPWREIE
+    bit_offset: 7
+    bit_size: 1
+    description: LTDC payload write error interrupt enable
+  - name: GCWREIE
+    bit_offset: 8
+    bit_size: 1
+    description: Generic command write error interrupt enable
+  - name: GPWREIE
+    bit_offset: 9
+    bit_size: 1
+    description: Generic payload write error interrupt enable
+  - name: GPTXEIE
+    bit_offset: 10
+    bit_size: 1
+    description: Generic payload transmit error interrupt enable
+  - name: GPRDEIE
+    bit_offset: 11
+    bit_size: 1
+    description: Generic payload read error interrupt enable
+  - name: GPRXEIE
+    bit_offset: 12
+    bit_size: 1
+    description: Generic payload receive error interrupt enable
+  - name: DCFFIE
+    bit_offset: 13
+    bit_size: 1
+    description: DBI command FIFO full error interrupt enable
+  - name: DDFFIE
+    bit_offset: 14
+    bit_size: 1
+    description: DBI data FIFO full error interrupt enable
+  - name: DRUIE
+    bit_offset: 15
+    bit_size: 1
+    description: DCS read underflow error interrupt enable
+  - name: DROIE
+    bit_offset: 16
+    bit_size: 1
+    description: DBI read overflow error interrupt enable
+  - name: DICIE
+    bit_offset: 17
+    bit_size: 1
+    description: DBI illegal command error interrupt enable
+  - name: VMPUIE
+    bit_offset: 19
+    bit_size: 1
+    description: Video mode underflow error interrupt enable
+  - name: TEIE
+    bit_offset: 20
+    bit_size: 1
+    description: Tear effect error interrupt enable
+fieldset/DSI_PCCR:
+  description: ''
+  fields:
+  - name: CSEN
+    bit_offset: 0
+    bit_size: 1
+    description: 'Calibration Start for the High-Speed Skew of the D-PHY:'
+fieldset/DSI_FIR0:
+  description: ''
+  fields:
+  - name: FAE0
+    bit_offset: 0
+    bit_size: 1
+    description: Force acknowledge error 0
+  - name: FAE1
+    bit_offset: 1
+    bit_size: 1
+    description: Force acknowledge error 1
+  - name: FAE2
+    bit_offset: 2
+    bit_size: 1
+    description: Force acknowledge error 2
+  - name: FAE3
+    bit_offset: 3
+    bit_size: 1
+    description: Force acknowledge error 3
+  - name: FAE4
+    bit_offset: 4
+    bit_size: 1
+    description: Force acknowledge error 4
+  - name: FAE5
+    bit_offset: 5
+    bit_size: 1
+    description: Force acknowledge error 5
+  - name: FAE6
+    bit_offset: 6
+    bit_size: 1
+    description: Force acknowledge error 6
+  - name: FAE7
+    bit_offset: 7
+    bit_size: 1
+    description: Force acknowledge error 7
+  - name: FAE8
+    bit_offset: 8
+    bit_size: 1
+    description: Force acknowledge error 8
+  - name: FAE9
+    bit_offset: 9
+    bit_size: 1
+    description: Force acknowledge error 9
+  - name: FAE10
+    bit_offset: 10
+    bit_size: 1
+    description: Force acknowledge error 10
+  - name: FAE11
+    bit_offset: 11
+    bit_size: 1
+    description: Force acknowledge error 11
+  - name: FAE12
+    bit_offset: 12
+    bit_size: 1
+    description: Force acknowledge error 12
+  - name: FAE13
+    bit_offset: 13
+    bit_size: 1
+    description: Force acknowledge error 13
+  - name: FAE14
+    bit_offset: 14
+    bit_size: 1
+    description: Force acknowledge error 14
+  - name: FAE15
+    bit_offset: 15
+    bit_size: 1
+    description: Force acknowledge error 15
+  - name: FPE0
+    bit_offset: 16
+    bit_size: 1
+    description: Force PHY error 0
+  - name: FPE1
+    bit_offset: 17
+    bit_size: 1
+    description: Force PHY error 1
+  - name: FPE2
+    bit_offset: 18
+    bit_size: 1
+    description: Force PHY error 2
+  - name: FPE3
+    bit_offset: 19
+    bit_size: 1
+    description: Force PHY error 3
+  - name: FPE4
+    bit_offset: 20
+    bit_size: 1
+    description: Force PHY error 4
+fieldset/DSI_FIR1:
+  description: ''
+  fields:
+  - name: FTOHSTX
+    bit_offset: 0
+    bit_size: 1
+    description: Force timeout high-speed transmission
+  - name: FTOLPRX
+    bit_offset: 1
+    bit_size: 1
+    description: Force timeout low-power reception
+  - name: FECCSE
+    bit_offset: 2
+    bit_size: 1
+    description: Force ECC single-bit error
+  - name: FECCME
+    bit_offset: 3
+    bit_size: 1
+    description: Force ECC multi-bit error
+  - name: FCRCE
+    bit_offset: 4
+    bit_size: 1
+    description: Force CRC error
+  - name: FPSE
+    bit_offset: 5
+    bit_size: 1
+    description: Force packet size error
+  - name: FEOTPE
+    bit_offset: 6
+    bit_size: 1
+    description: Force EoTp error
+  - name: FLPWRE
+    bit_offset: 7
+    bit_size: 1
+    description: Force LTDC payload write error
+  - name: FGCWRE
+    bit_offset: 8
+    bit_size: 1
+    description: Force generic command write error
+  - name: FGPWRE
+    bit_offset: 9
+    bit_size: 1
+    description: Force generic payload write error
+  - name: FGPTXE
+    bit_offset: 10
+    bit_size: 1
+    description: Force generic payload transmit error
+  - name: FGPRDE
+    bit_offset: 11
+    bit_size: 1
+    description: Force generic payload read error
+  - name: FGPRXE
+    bit_offset: 12
+    bit_size: 1
+    description: Force generic payload receive error
+fieldset/DSI_VSCR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+    description: Enable
+  - name: UR
+    bit_offset: 8
+    bit_size: 1
+    description: Update register
+fieldset/DSI_LCVCIDR:
+  description: ''
+  fields:
+  - name: VCID
+    bit_offset: 0
+    bit_size: 2
+    description: Virtual channel ID
+fieldset/DSI_LCCCR:
+  description: ''
+  fields:
+  - name: COLC
+    bit_offset: 0
+    bit_size: 4
+    description: Color coding
+  - name: LPE
+    bit_offset: 8
+    bit_size: 1
+    description: Loosely packed enable
+fieldset/DSI_LPMCCR:
+  description: ''
+  fields:
+  - name: VLPSIZE
+    bit_offset: 0
+    bit_size: 8
+    description: VACT largest packet size
+  - name: LPSIZE
+    bit_offset: 16
+    bit_size: 8
+    description: Largest packet size
+fieldset/DSI_VMCCR:
+  description: ''
+  fields:
+  - name: VMT
+    bit_offset: 0
+    bit_size: 2
+    description: Video mode type
+  - name: LPVSAE
+    bit_offset: 2
+    bit_size: 1
+    description: Low-power vertical sync time enable
+  - name: LPVBPE
+    bit_offset: 3
+    bit_size: 1
+    description: Low-power vertical back-porch enable
+  - name: LPVFPE
+    bit_offset: 4
+    bit_size: 1
+    description: Low-power vertical front-porch enable
+  - name: LPVAE
+    bit_offset: 5
+    bit_size: 1
+    description: Low-power vertical active enable
+  - name: LPHBPE
+    bit_offset: 6
+    bit_size: 1
+    description: Low-power horizontal back-porch enable
+  - name: LPHFE
+    bit_offset: 7
+    bit_size: 1
+    description: Low-power horizontal front-porch enable
+  - name: FBTAAE
+    bit_offset: 8
+    bit_size: 1
+    description: Frame BTA acknowledge enable
+  - name: LPCE
+    bit_offset: 9
+    bit_size: 1
+    description: Low-power command enable
+fieldset/DSI_VPCCR:
+  description: ''
+  fields:
+  - name: VPSIZE
+    bit_offset: 0
+    bit_size: 14
+    description: Video packet size
+fieldset/DSI_VCCCR:
+  description: ''
+  fields:
+  - name: NUMC
+    bit_offset: 0
+    bit_size: 13
+    description: Number of chunks
+fieldset/DSI_VNPCCR:
+  description: ''
+  fields:
+  - name: NPSIZE
+    bit_offset: 0
+    bit_size: 13
+    description: Null packet size
+fieldset/DSI_VHSACCR:
+  description: ''
+  fields:
+  - name: HSA
+    bit_offset: 0
+    bit_size: 12
+    description: Horizontal synchronism active duration
+fieldset/DSI_VHBPCCR:
+  description: ''
+  fields:
+  - name: HBP
+    bit_offset: 0
+    bit_size: 12
+    description: Horizontal back-porch duration
+fieldset/DSI_VLCCR:
+  description: ''
+  fields:
+  - name: HLINE
+    bit_offset: 0
+    bit_size: 15
+    description: Horizontal line duration
+fieldset/DSI_VVSACCR:
+  description: ''
+  fields:
+  - name: VSA
+    bit_offset: 0
+    bit_size: 10
+    description: Vertical synchronism active duration
+fieldset/DSI_VVBPCCR:
+  description: ''
+  fields:
+  - name: VBP
+    bit_offset: 0
+    bit_size: 10
+    description: Vertical back-porch duration
+fieldset/DSI_VVFPCCR:
+  description: ''
+  fields:
+  - name: VFP
+    bit_offset: 0
+    bit_size: 10
+    description: Vertical front-porch duration
+fieldset/DSI_VVACCR:
+  description: ''
+  fields:
+  - name: VA
+    bit_offset: 0
+    bit_size: 14
+    description: Vertical active duration
+fieldset/DSI_TDCCR:
+  description: ''
+  fields:
+  - name: M3D
+    bit_offset: 0
+    bit_size: 2
+    description: 3D mode
+  - name: F3D
+    bit_offset: 2
+    bit_size: 2
+    description: 3D format
+  - name: SVS
+    bit_offset: 4
+    bit_size: 1
+    description: Second VSYNC
+  - name: RF
+    bit_offset: 5
+    bit_size: 1
+    description: Right first
+  - name: S3DC
+    bit_offset: 16
+    bit_size: 1
+    description: Send 3D control
+fieldset/DSI_WCFGR:
+  description: ''
+  fields:
+  - name: DSIM
+    bit_offset: 0
+    bit_size: 1
+    description: DSI mode
+  - name: COLMUX
+    bit_offset: 1
+    bit_size: 3
+    description: Color multiplexing
+  - name: TESRC
+    bit_offset: 4
+    bit_size: 1
+    description: TE source
+  - name: TEPOL
+    bit_offset: 5
+    bit_size: 1
+    description: TE polarity
+  - name: AR
+    bit_offset: 6
+    bit_size: 1
+    description: Automatic refresh
+  - name: VSPOL
+    bit_offset: 7
+    bit_size: 1
+    description: VSync polarity
+fieldset/DSI_WCR:
+  description: ''
+  fields:
+  - name: COLM
+    bit_offset: 0
+    bit_size: 1
+    description: Color mode
+  - name: SHTDN
+    bit_offset: 1
+    bit_size: 1
+    description: Shutdown
+  - name: LTDCEN
+    bit_offset: 2
+    bit_size: 1
+    description: LTDC enable
+  - name: DSIEN
+    bit_offset: 3
+    bit_size: 1
+    description: DSI enable
+fieldset/DSI_WIER:
+  description: ''
+  fields:
+  - name: TEIE
+    bit_offset: 0
+    bit_size: 1
+    description: Tearing effect interrupt enable
+  - name: ERIE
+    bit_offset: 1
+    bit_size: 1
+    description: End of refresh interrupt enable
+  - name: PLLLIE
+    bit_offset: 9
+    bit_size: 1
+    description: PLL lock interrupt enable
+  - name: PLLUIE
+    bit_offset: 10
+    bit_size: 1
+    description: PLL unlock interrupt enable
+  - name: LAEIE
+    bit_offset: 13
+    bit_size: 1
+    description: LCD APB Error interrupt flag
+fieldset/DSI_WISR:
+  description: ''
+  fields:
+  - name: TEIF
+    bit_offset: 0
+    bit_size: 1
+    description: Tearing effect interrupt flag
+  - name: ERIF
+    bit_offset: 1
+    bit_size: 1
+    description: End of refresh interrupt flag
+  - name: BUSY
+    bit_offset: 2
+    bit_size: 1
+    description: Busy flag
+  - name: PLLLS
+    bit_offset: 8
+    bit_size: 1
+    description: PLL lock status
+  - name: PLLLIF
+    bit_offset: 9
+    bit_size: 1
+    description: PLL lock interrupt flag
+  - name: PLLUIF
+    bit_offset: 10
+    bit_size: 1
+    description: PLL unlock interrupt flag
+  - name: LAEIF
+    bit_offset: 14
+    bit_size: 1
+    description: LCD APB Error interrupt flag
+fieldset/DSI_WIFCR:
+  description: ''
+  fields:
+  - name: CTEIF
+    bit_offset: 0
+    bit_size: 1
+    description: Clear tearing effect interrupt flag
+  - name: CERIF
+    bit_offset: 1
+    bit_size: 1
+    description: Clear end of refresh interrupt flag
+  - name: CPLLLIF
+    bit_offset: 9
+    bit_size: 1
+    description: Clear PLL lock interrupt flag
+  - name: CPLLUIF
+    bit_offset: 10
+    bit_size: 1
+    description: Clear PLL unlock interrupt flag
+  - name: CLAEIF
+    bit_offset: 14
+    bit_size: 1
+    description: LCD APB Error interrupt flag
+fieldset/DSI_WPCR0:
+  description: ''
+  fields:
+  - name: TDDL
+    bit_offset: 0
+    bit_size: 1
+    description: 'Turnaround Disable Data Lanes:'
+  - name: FTXSMDL
+    bit_offset: 1
+    bit_size: 1
+    description: 'Force to TX Stop Mode the Data Lanes:'
+  - name: RXTRG
+    bit_offset: 4
+    bit_size: 2
+    description: 'Rx Trigger Escape Selection:'
+fieldset/DSI_WPCR1:
+  description: ''
+  fields:
+  - name: CCF
+    bit_offset: 0
+    bit_size: 6
+    description: 'Configuration-Clock Frequency:'
+  - name: HSFR
+    bit_offset: 8
+    bit_size: 7
+    description: 'High Speed Frequency Range in Tx Mode:'
+  - name: DLD
+    bit_offset: 16
+    bit_size: 1
+    description: 'Data Lanes 0 Direction:'
+fieldset/DSI_WRPCR0:
+  description: ''
+  fields:
+  - name: IDF
+    bit_offset: 0
+    bit_size: 4
+    description: 'PLL Input Division ratio:'
+  - name: NDIV
+    bit_offset: 4
+    bit_size: 10
+    description: 'PLL InLoop Division ratio:'
+  - name: PSC
+    bit_offset: 16
+    bit_size: 1
+    description: 'PLL Shadow Control:'
+fieldset/DSI_WRPCR1:
+  description: ''
+  fields:
+  - name: PROP
+    bit_offset: 0
+    bit_size: 6
+    description: 'Proportional Charge Pump:'
+  - name: GMP
+    bit_offset: 6
+    bit_size: 2
+    description: 'Loop-Filter Resistance:'
+  - name: INT
+    bit_offset: 8
+    bit_size: 6
+    description: 'Integral of Charge Pump:'
+  - name: BIAS
+    bit_offset: 16
+    bit_size: 7
+    description: 'Charge Pump Bias:'
+  - name: VCO
+    bit_offset: 24
+    bit_size: 4
+    description: 'VCO Operating Range:'
+  - name: ODF
+    bit_offset: 28
+    bit_size: 2
+    description: 'Output Division Factor :'
+fieldset/DSI_WRPCR2:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 0
+    bit_size: 2
+    description: 'Output Selection for PLL Clock:'
+  - name: PLLEN
+    bit_offset: 8
+    bit_size: 1
+    description: PLL enable
+  - name: UPD
+    bit_offset: 16
+    bit_size: 1
+    description: 'Update (copies) the PLL Shadow Registers to the effective PLL registers:'
+  - name: CLR
+    bit_offset: 24
+    bit_size: 1
+    description: 'Clears the PLL Shadow Registers to their reset value:'
+  - name: FPLLLOCK
+    bit_offset: 28
+    bit_size: 1
+    description: Force PLL lock signal
+fieldset/DSI_WRPSR0:
+  description: ''
+  fields:
+  - name: IDF
+    bit_offset: 0
+    bit_size: 4
+    description: 'Shadow value of: PLL Input Division ratio:'
+  - name: NDIV
+    bit_offset: 4
+    bit_size: 10
+    description: 'Shadow value of: PLL InLoop Division ratio:'
+  - name: PSC
+    bit_offset: 16
+    bit_size: 1
+    description: 'PLL Shadow Control:'
+fieldset/DSI_WRPSR1:
+  description: ''
+  fields:
+  - name: PROP
+    bit_offset: 0
+    bit_size: 6
+    description: 'Proportional Charge Pump:'
+  - name: GMP
+    bit_offset: 6
+    bit_size: 2
+    description: 'GMP Loop-Filter Resistance:'
+  - name: INT
+    bit_offset: 8
+    bit_size: 6
+    description: 'Charge Pump Integral:'
+  - name: BIAS
+    bit_offset: 16
+    bit_size: 7
+    description: 'Charge Pump Bias:'
+  - name: VCO
+    bit_offset: 24
+    bit_size: 4
+    description: 'VCO Operating Range:'
+  - name: ODF
+    bit_offset: 28
+    bit_size: 2
+    description: 'Output Division Factor :'
+fieldset/DSI_WCRB:
+  description: ''
+  fields:
+  - name: LTDCEN
+    bit_offset: 2
+    bit_size: 1
+    description: LTDC enable
+fieldset/DSI_HWCFGR:
+  description: ''
+  fields:
+  - name: TECHNO
+    bit_offset: 0
+    bit_size: 4
+    description: Technology
+  - name: FIFOSIZE
+    bit_offset: 4
+    bit_size: 12
+    description: FIFO size
+  - name: LANES
+    bit_offset: 16
+    bit_size: 4
+    description: Amount of DSI DataLanes per Link (excluding the ClockLane thus).
+  - name: LINKS
+    bit_offset: 20
+    bit_size: 4
+    description: Amount of DSI PHY Linkssize
+fieldset/DSI_VERR:
+  description: ''
+  fields:
+  - name: MINREV
+    bit_offset: 0
+    bit_size: 4
+    description: Minor revision
+  - name: MAJREV
+    bit_offset: 4
+    bit_size: 4
+    description: Major revision
+fieldset/DSI_IPIDR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 32
+    description: Identification code
+fieldset/DSI_SIDR:
+  description: ''
+  fields:
+  - name: SID
+    bit_offset: 0
+    bit_size: 32
+    description: Size and ID

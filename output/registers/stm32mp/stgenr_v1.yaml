@@ -1,0 +1,24 @@
+block/STGENR:
+  description: ''
+  items:
+  - name: CNTCVL
+    byte_offset: 0
+    description: STGENR Current Counter Value Lower Register
+  - name: CNTCVU
+    byte_offset: 4
+    description: STGENR Current Counter Value Upper Register
+  - name: PIDR4
+    byte_offset: 4048
+    description: STGENR Peripheral ID4 Register
+  - name: PIDR
+    byte_offset: 4064
+    array:
+      len: 4
+      stride: 4
+    description: STGENR Peripheral ID0-ID3 Registers
+  - name: CIDR
+    byte_offset: 4080
+    array:
+      len: 4
+      stride: 4
+    description: STGENR Component ID0-ID3 Registers

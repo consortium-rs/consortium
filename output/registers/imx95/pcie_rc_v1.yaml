@@ -1,0 +1,4019 @@
+block/PCIE_RC:
+  description: ''
+  items:
+  - name: TYPE1_DEV_ID_VEND_ID_REG
+    byte_offset: 0
+  - name: TYPE1_STATUS_COMMAND_REG
+    byte_offset: 4
+    fieldset: PCIE_RC_TYPE1_STATUS_COMMAND_REG
+  - name: TYPE1_CLASS_CODE_REV_ID_REG
+    byte_offset: 8
+  - name: TYPE1_BIST_HDR_TYPE_LAT_CACHE_LINE_SIZE_REG
+    byte_offset: 12
+    fieldset: PCIE_RC_TYPE1_BIST_HDR_TYPE_LAT_CACHE_LINE_SIZE_REG
+  - name: BAR0_REG
+    byte_offset: 16
+  - name: BAR1_REG
+    byte_offset: 20
+  - name: SEC_LAT_TIMER_SUB_BUS_SEC_BUS_PRI_BUS_REG
+    byte_offset: 24
+  - name: SEC_STAT_IO_LIMIT_IO_BASE_REG
+    byte_offset: 28
+  - name: MEM_LIMIT_MEM_BASE_REG
+    byte_offset: 32
+  - name: PREF_MEM_LIMIT_PREF_MEM_BASE_REG
+    byte_offset: 36
+  - name: PREF_BASE_UPPER_REG
+    byte_offset: 40
+  - name: PREF_LIMIT_UPPER_REG
+    byte_offset: 44
+  - name: IO_LIMIT_UPPER_IO_BASE_UPPER_REG
+    byte_offset: 48
+  - name: TYPE1_CAP_PTR_REG
+    byte_offset: 52
+  - name: TYPE1_EXP_ROM_BASE_REG
+    byte_offset: 56
+  - name: BRIDGE_CTRL_INT_PIN_INT_LINE_REG
+    byte_offset: 60
+    fieldset: PCIE_RC_BRIDGE_CTRL_INT_PIN_INT_LINE_REG
+  - name: CAP_ID_NXT_PTR_REG
+    byte_offset: 64
+    fieldset: PCIE_RC_CAP_ID_NXT_PTR_REG
+  - name: CON_STATUS_REG
+    byte_offset: 68
+  - name: PCI_MSI_CAP_ID_NEXT_CTRL_REG
+    byte_offset: 80
+  - name: MSI_CAP_OFF_04H_REG
+    byte_offset: 84
+  - name: MSI_CAP_OFF_08H_REG
+    byte_offset: 88
+  - name: MSI_CAP_OFF_0CH_REG
+    byte_offset: 92
+  - name: MSI_CAP_OFF_10H_REG
+    byte_offset: 96
+  - name: MSI_CAP_OFF_14H_REG
+    byte_offset: 100
+  - name: PCIE_CAP_ID_PCIE_NEXT_CAP_PTR_PCIE_CAP_REG
+    byte_offset: 112
+    fieldset: PCIE_RC_PCIE_CAP_ID_PCIE_NEXT_CAP_PTR_PCIE_CAP_REG
+  - name: DEVICE_CAPABILITIES_REG
+    byte_offset: 116
+  - name: DEVICE_CONTROL_DEVICE_STATUS
+    byte_offset: 120
+  - name: LINK_CAPABILITIES_REG
+    byte_offset: 124
+  - name: LINK_CONTROL_LINK_STATUS_REG
+    byte_offset: 128
+  - name: SLOT_CAPABILITIES_REG
+    byte_offset: 132
+  - name: SLOT_CONTROL_SLOT_STATUS
+    byte_offset: 136
+  - name: ROOT_CONTROL_ROOT_CAPABILITIES_REG
+    byte_offset: 140
+  - name: ROOT_STATUS_REG
+    byte_offset: 144
+  - name: DEVICE_CAPABILITIES2_REG
+    byte_offset: 148
+  - name: DEVICE_CONTROL2_DEVICE_STATUS2_REG
+    byte_offset: 152
+  - name: LINK_CAPABILITIES2_REG
+    byte_offset: 156
+  - name: LINK_CONTROL2_LINK_STATUS2_REG
+    byte_offset: 160
+  - name: AER_EXT_CAP_HDR_OFF
+    byte_offset: 256
+  - name: UNCORR_ERR_STATUS_OFF
+    byte_offset: 260
+  - name: UNCORR_ERR_MASK_OFF
+    byte_offset: 264
+  - name: UNCORR_ERR_SEV_OFF
+    byte_offset: 268
+  - name: CORR_ERR_STATUS_OFF
+    byte_offset: 272
+  - name: CORR_ERR_MASK_OFF
+    byte_offset: 276
+  - name: ADV_ERR_CAP_CTRL_OFF
+    byte_offset: 280
+  - name: HDR_LOG_0_OFF
+    byte_offset: 284
+  - name: HDR_LOG_1_OFF
+    byte_offset: 288
+  - name: HDR_LOG_2_OFF
+    byte_offset: 292
+  - name: HDR_LOG_3_OFF
+    byte_offset: 296
+  - name: ROOT_ERR_CMD_OFF
+    byte_offset: 300
+  - name: ROOT_ERR_STATUS_OFF
+    byte_offset: 304
+  - name: ERR_SRC_ID_OFF
+    byte_offset: 308
+  - name: TLP_PREFIX_LOG_1_OFF
+    byte_offset: 312
+  - name: TLP_PREFIX_LOG_2_OFF
+    byte_offset: 316
+  - name: TLP_PREFIX_LOG_3_OFF
+    byte_offset: 320
+  - name: TLP_PREFIX_LOG_4_OFF
+    byte_offset: 324
+  - name: SPCIE_CAP_HEADER_REG
+    byte_offset: 328
+  - name: LINK_CONTROL3_REG
+    byte_offset: 332
+  - name: LANE_ERR_STATUS_REG
+    byte_offset: 336
+  - name: SPCIE_CAP_OFF_0CH_REG
+    byte_offset: 340
+  - name: L1SUB_CAP_HEADER_REG
+    byte_offset: 352
+  - name: L1SUB_CAPABILITY_REG
+    byte_offset: 356
+  - name: L1SUB_CONTROL1_REG
+    byte_offset: 360
+  - name: L1SUB_CONTROL2_REG
+    byte_offset: 364
+  - name: VSECDMA_EXT_CAP_HDR_OFF
+    byte_offset: 368
+    fieldset: PCIE_RC_VSECDMA_EXT_CAP_HDR_OFF
+  - name: VSECDMA_VENDOR_SPECIFIC_HDR_OFF
+    byte_offset: 372
+  - name: VSECDMA_DEVICE_INFORMATION_OFF
+    byte_offset: 376
+    fieldset: PCIE_RC_VSECDMA_DEVICE_INFORMATION_OFF
+  - name: VSECDMA_NUM_CHAN_OFF
+    byte_offset: 380
+  - name: VSECDMA_UNROLL_ADDR_OFFSET_LOW_OFF
+    byte_offset: 384
+  - name: VSECDMA_UNROLL_ADDR_OFFSET_HIGH_OFF
+    byte_offset: 388
+  - name: ACK_LATENCY_TIMER_OFF
+    byte_offset: 1792
+  - name: VENDOR_SPEC_DLLP_OFF
+    byte_offset: 1796
+  - name: PORT_FORCE_OFF
+    byte_offset: 1800
+  - name: ACK_F_ASPM_CTRL_OFF
+    byte_offset: 1804
+  - name: PORT_LINK_CTRL_OFF
+    byte_offset: 1808
+  - name: LANE_SKEW_OFF
+    byte_offset: 1812
+  - name: TIMER_CTRL_MAX_FUNC_NUM_OFF
+    byte_offset: 1816
+  - name: SYMBOL_TIMER_FILTER_1_OFF
+    byte_offset: 1820
+  - name: FILTER_MASK_2_OFF
+    byte_offset: 1824
+  - name: PL_DEBUG0_OFF
+    byte_offset: 1832
+  - name: PL_DEBUG1_OFF
+    byte_offset: 1836
+  - name: TX_P_FC_CREDIT_STATUS_OFF
+    byte_offset: 1840
+  - name: TX_NP_FC_CREDIT_STATUS_OFF
+    byte_offset: 1844
+  - name: TX_CPL_FC_CREDIT_STATUS_OFF
+    byte_offset: 1848
+  - name: QUEUE_STATUS_OFF
+    byte_offset: 1852
+  - name: VC_TX_ARBI_1_OFF
+    byte_offset: 1856
+  - name: VC_TX_ARBI_2_OFF
+    byte_offset: 1860
+  - name: VC0_P_RX_Q_CTRL_OFF
+    byte_offset: 1864
+    fieldset: PCIE_RC_VC0_P_RX_Q_CTRL_OFF
+  - name: VC0_NP_RX_Q_CTRL_OFF
+    byte_offset: 1868
+    fieldset: PCIE_RC_VC0_NP_RX_Q_CTRL_OFF
+  - name: VC0_CPL_RX_Q_CTRL_OFF
+    byte_offset: 1872
+    fieldset: PCIE_RC_VC0_CPL_RX_Q_CTRL_OFF
+  - name: GEN2_CTRL_OFF
+    byte_offset: 2060
+  - name: PHY_STATUS_OFF
+    byte_offset: 2064
+  - name: PHY_CONTROL_OFF
+    byte_offset: 2068
+  - name: TRGT_MAP_CTRL_OFF
+    byte_offset: 2076
+  - name: MSI_CTRL_ADDR_OFF
+    byte_offset: 2080
+  - name: MSI_CTRL_UPPER_ADDR_OFF
+    byte_offset: 2084
+  - name: MSI_CTRL_INT_0_EN_OFF
+    byte_offset: 2088
+  - name: MSI_CTRL_INT_0_MASK_OFF
+    byte_offset: 2092
+  - name: MSI_CTRL_INT_0_STATUS_OFF
+    byte_offset: 2096
+  - name: MSI_CTRL_INT_1_EN_OFF
+    byte_offset: 2100
+  - name: MSI_CTRL_INT_1_MASK_OFF
+    byte_offset: 2104
+  - name: MSI_CTRL_INT_1_STATUS_OFF
+    byte_offset: 2108
+  - name: MSI_CTRL_INT_2_EN_OFF
+    byte_offset: 2112
+  - name: MSI_CTRL_INT_2_MASK_OFF
+    byte_offset: 2116
+  - name: MSI_CTRL_INT_2_STATUS_OFF
+    byte_offset: 2120
+  - name: MSI_CTRL_INT_3_EN_OFF
+    byte_offset: 2124
+  - name: MSI_CTRL_INT_3_MASK_OFF
+    byte_offset: 2128
+  - name: MSI_CTRL_INT_3_STATUS_OFF
+    byte_offset: 2132
+  - name: MSI_CTRL_INT_4_EN_OFF
+    byte_offset: 2136
+  - name: MSI_CTRL_INT_4_MASK_OFF
+    byte_offset: 2140
+  - name: MSI_CTRL_INT_4_STATUS_OFF
+    byte_offset: 2144
+  - name: MSI_CTRL_INT_5_EN_OFF
+    byte_offset: 2148
+  - name: MSI_CTRL_INT_5_MASK_OFF
+    byte_offset: 2152
+  - name: MSI_CTRL_INT_5_STATUS_OFF
+    byte_offset: 2156
+  - name: MSI_CTRL_INT_6_EN_OFF
+    byte_offset: 2160
+  - name: MSI_CTRL_INT_6_MASK_OFF
+    byte_offset: 2164
+  - name: MSI_CTRL_INT_6_STATUS_OFF
+    byte_offset: 2168
+  - name: MSI_CTRL_INT_7_EN_OFF
+    byte_offset: 2172
+  - name: MSI_CTRL_INT_7_MASK_OFF
+    byte_offset: 2176
+  - name: MSI_CTRL_INT_7_STATUS_OFF
+    byte_offset: 2180
+  - name: MSI_GPIO_IO_OFF
+    byte_offset: 2184
+  - name: CLOCK_GATING_CTRL_OFF
+    byte_offset: 2188
+  - name: GEN3_RELATED_OFF
+    byte_offset: 2192
+  - name: GEN3_EQ_CONTROL_OFF
+    byte_offset: 2216
+  - name: GEN3_EQ_FB_MODE_DIR_CHANGE_OFF
+    byte_offset: 2220
+  - name: ORDER_RULE_CTRL_OFF
+    byte_offset: 2228
+  - name: PIPE_LOOPBACK_CONTROL_OFF
+    byte_offset: 2232
+  - name: MISC_CONTROL_1_OFF
+    byte_offset: 2236
+  - name: MULTI_LANE_CONTROL_OFF
+    byte_offset: 2240
+  - name: PHY_INTEROP_CTRL_OFF
+    byte_offset: 2244
+  - name: TRGT_CPL_LUT_DELETE_ENTRY_OFF
+    byte_offset: 2248
+  - name: LINK_FLUSH_CONTROL_OFF
+    byte_offset: 2252
+  - name: AMBA_ERROR_RESPONSE_DEFAULT_OFF
+    byte_offset: 2256
+  - name: AMBA_LINK_TIMEOUT_OFF
+    byte_offset: 2260
+  - name: AMBA_ORDERING_CTRL_OFF
+    byte_offset: 2264
+  - name: COHERENCY_CONTROL_1_OFF
+    byte_offset: 2272
+  - name: COHERENCY_CONTROL_2_OFF
+    byte_offset: 2276
+  - name: COHERENCY_CONTROL_3_OFF
+    byte_offset: 2280
+  - name: AXI_MSTR_MSG_ADDR_LOW_OFF
+    byte_offset: 2288
+  - name: AXI_MSTR_MSG_ADDR_HIGH_OFF
+    byte_offset: 2292
+  - name: PCIE_VERSION_NUMBER_OFF
+    byte_offset: 2296
+  - name: PCIE_VERSION_TYPE_OFF
+    byte_offset: 2300
+  - name: PL_APP_BUS_DEV_NUM_STATUS_OFF
+    byte_offset: 2832
+  - name: PCIPM_TRAFFIC_CTRL_OFF
+    byte_offset: 2844
+  - name: PL_LTR_LATENCY_OFF
+    byte_offset: 2864
+  - name: AUX_CLK_FREQ_OFF
+    byte_offset: 2880
+  - name: L1_SUBSTATES_OFF
+    byte_offset: 2884
+  - name: POWERDOWN_CTRL_STATUS_OFF
+    byte_offset: 2888
+  - name: PHY_INTEROP_CTRL_2_OFF
+    byte_offset: 2892
+  - name: PIPE_RELATED_OFF
+    byte_offset: 2960
+  - name: DBI_FUNCTION_BANK_CTRL_REG_OFF
+    byte_offset: 3196
+  - name: UTILITY_OFF
+    byte_offset: 3200
+    fieldset: PCIE_RC_UTILITY_OFF
+  - name: PM_UTILITY_OFF
+    byte_offset: 3208
+fieldset/PCIE_RC_TYPE1_DEV_ID_VEND_ID_REG_VENDOR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+    description: Vendor ID.
+fieldset/PCIE_RC_TYPE1_DEV_ID_VEND_ID_REG_DEVICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 16
+    description: Device ID.
+fieldset/PCIE_RC_TYPE1_STATUS_COMMAND_REG_IO:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_TYPE1_STATUS_COMMAND_REG:
+  description: ''
+  fields:
+  - name: MSE
+    bit_offset: 1
+    bit_size: 1
+  - name: BME
+    bit_offset: 2
+    bit_size: 1
+    description: Bus Master Enable.
+  - name: SCO
+    bit_offset: 3
+    bit_size: 1
+    description: Special Cycle Enable.
+  - name: VGAPS
+    bit_offset: 5
+    bit_size: 1
+    description: VGA Palette Snoop.
+  - name: PERREN
+    bit_offset: 6
+    bit_size: 1
+  - name: IDSEL
+    bit_offset: 7
+    bit_size: 1
+  - name: SERREN
+    bit_offset: 8
+    bit_size: 1
+  - name: RESERV
+    bit_offset: 11
+    bit_size: 5
+fieldset/PCIE_RC_TYPE1_STATUS_COMMAND_REG_MWI:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_TYPE1_STATUS_COMMAND_REG_INT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+  - name: STATUS
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_RC_TYPE1_STATUS_COMMAND_REG_CAP:
+  description: ''
+  fields:
+  - name: LIST
+    bit_offset: 20
+    bit_size: 1
+    description: Capabilities List.
+fieldset/PCIE_RC_TYPE1_STATUS_COMMAND_REG_FAST_66MHZ:
+  description: ''
+  fields:
+  - name: CAP
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_RC_TYPE1_STATUS_COMMAND_REG_FAST_B2B:
+  description: ''
+  fields:
+  - name: CAP
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_RC_TYPE1_STATUS_COMMAND_REG_MASTER:
+  description: ''
+  fields:
+  - name: DPE
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_RC_TYPE1_STATUS_COMMAND_REG_DEV_SEL:
+  description: ''
+  fields:
+  - name: TIMING
+    bit_offset: 25
+    bit_size: 2
+fieldset/PCIE_RC_TYPE1_STATUS_COMMAND_REG_SIGNALED_TARGET:
+  description: ''
+  fields:
+  - name: ABORT
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_RC_TYPE1_STATUS_COMMAND_REG_RCVD_TARGET:
+  description: ''
+  fields:
+  - name: ABORT
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_RC_TYPE1_STATUS_COMMAND_REG_RCVD_MASTER:
+  description: ''
+  fields:
+  - name: ABORT
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_RC_TYPE1_STATUS_COMMAND_REG_SIGNALED_SYS:
+  description: ''
+  fields:
+  - name: ERROR
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_RC_TYPE1_STATUS_COMMAND_REG_DETECTED_PARITY:
+  description: ''
+  fields:
+  - name: ERROR
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_RC_TYPE1_CLASS_CODE_REV_ID_REG_REVISION:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_TYPE1_CLASS_CODE_REV_ID_REG_PROGRAM:
+  description: ''
+  fields:
+  - name: INTERFACE
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_TYPE1_CLASS_CODE_REV_ID_REG_SUBCLASS:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_RC_TYPE1_CLASS_CODE_REV_ID_REG_BASE_CLASS:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 24
+    bit_size: 8
+fieldset/PCIE_RC_TYPE1_BIST_HDR_TYPE_LAT_CACHE_LINE_SIZE_REG_CACHE_LINE:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_TYPE1_BIST_HDR_TYPE_LAT_CACHE_LINE_SIZE_REG_LATENCY_MASTER:
+  description: ''
+  fields:
+  - name: TIMER
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_TYPE1_BIST_HDR_TYPE_LAT_CACHE_LINE_SIZE_REG_HEADER:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 16
+    bit_size: 7
+fieldset/PCIE_RC_TYPE1_BIST_HDR_TYPE_LAT_CACHE_LINE_SIZE_REG_MULTI:
+  description: ''
+  fields:
+  - name: FUNC
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_RC_TYPE1_BIST_HDR_TYPE_LAT_CACHE_LINE_SIZE_REG:
+  description: ''
+  fields:
+  - name: BIST
+    bit_offset: 24
+    bit_size: 8
+fieldset/PCIE_RC_BAR0_REG_BAR0_MEM:
+  description: ''
+  fields:
+  - name: IO
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_BAR0_REG_BAR0:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 1
+    bit_size: 2
+  - name: PREFETCH
+    bit_offset: 3
+    bit_size: 1
+    description: '- BAR0 Prefetchable.'
+  - name: START
+    bit_offset: 4
+    bit_size: 28
+    description: '- BAR0_START.'
+fieldset/PCIE_RC_BAR1_REG_BAR1_MEM:
+  description: ''
+  fields:
+  - name: IO
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_BAR1_REG_BAR1:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 1
+    bit_size: 2
+  - name: PREFETCH
+    bit_offset: 3
+    bit_size: 1
+    description: '- BAR1 Prefetchable.'
+  - name: START
+    bit_offset: 4
+    bit_size: 28
+    description: '- BAR1 Base Address.'
+fieldset/PCIE_RC_SEC_LAT_TIMER_SUB_BUS_SEC_BUS_PRI_BUS_REG_PRIM:
+  description: ''
+  fields:
+  - name: BUS
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_SEC_LAT_TIMER_SUB_BUS_SEC_BUS_PRI_BUS_REG_SEC:
+  description: ''
+  fields:
+  - name: BUS
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_SEC_LAT_TIMER_SUB_BUS_SEC_BUS_PRI_BUS_REG_SUB:
+  description: ''
+  fields:
+  - name: BUS
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_RC_SEC_LAT_TIMER_SUB_BUS_SEC_BUS_PRI_BUS_REG_SEC_LAT:
+  description: ''
+  fields:
+  - name: TIMER
+    bit_offset: 24
+    bit_size: 8
+fieldset/PCIE_RC_SEC_STAT_IO_LIMIT_IO_BASE_REG_IO:
+  description: ''
+  fields:
+  - name: DECODE
+    bit_offset: 0
+    bit_size: 1
+  - name: RESERV
+    bit_offset: 1
+    bit_size: 3
+    description: Reserved.
+  - name: BASE
+    bit_offset: 4
+    bit_size: 4
+    description: I/O Base Address.
+  - name: RESERV1
+    bit_offset: 9
+    bit_size: 3
+    description: Reserved.
+  - name: LIMIT
+    bit_offset: 12
+    bit_size: 4
+fieldset/PCIE_RC_SEC_STAT_IO_LIMIT_IO_BASE_REG_IO_DECODE:
+  description: ''
+  fields:
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+fieldset/PCIE_RC_SEC_STAT_IO_LIMIT_IO_BASE_REG_SEC_STAT:
+  description: ''
+  fields:
+  - name: RESERV
+    bit_offset: 16
+    bit_size: 7
+  - name: MDPE
+    bit_offset: 24
+    bit_size: 1
+  - name: DPE
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_RC_SEC_STAT_IO_LIMIT_IO_BASE_REG_SEC_STAT_SIG_TRGT:
+  description: ''
+  fields:
+  - name: ABRT
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_RC_SEC_STAT_IO_LIMIT_IO_BASE_REG_SEC_STAT_RCVD_TRGT:
+  description: ''
+  fields:
+  - name: ABRT
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_RC_SEC_STAT_IO_LIMIT_IO_BASE_REG_SEC_STAT_RCVD_MSTR:
+  description: ''
+  fields:
+  - name: ABRT
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_RC_SEC_STAT_IO_LIMIT_IO_BASE_REG_SEC_STAT_RCVD_SYS:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_RC_MEM_LIMIT_MEM_BASE_REG_MEM_BASE:
+  description: ''
+  fields:
+  - name: RESERV
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_RC_MEM_LIMIT_MEM_BASE_REG_MEM:
+  description: ''
+  fields:
+  - name: BASE
+    bit_offset: 4
+    bit_size: 12
+    description: Memory Base Address.
+  - name: LIMIT
+    bit_offset: 20
+    bit_size: 12
+fieldset/PCIE_RC_MEM_LIMIT_MEM_BASE_REG_MEM_LIMIT:
+  description: ''
+  fields:
+  - name: RESERV
+    bit_offset: 16
+    bit_size: 4
+fieldset/PCIE_RC_PREF_MEM_LIMIT_PREF_MEM_BASE_REG_PREF_MEM:
+  description: ''
+  fields:
+  - name: DECODE
+    bit_offset: 0
+    bit_size: 1
+  - name: BASE
+    bit_offset: 4
+    bit_size: 12
+  - name: LIMIT
+    bit_offset: 20
+    bit_size: 12
+fieldset/PCIE_RC_PREF_MEM_LIMIT_PREF_MEM_BASE_REG_PREF:
+  description: ''
+  fields:
+  - name: RESERV
+    bit_offset: 1
+    bit_size: 3
+  - name: RESERV1
+    bit_offset: 17
+    bit_size: 3
+fieldset/PCIE_RC_PREF_MEM_LIMIT_PREF_MEM_BASE_REG_PREF_MEM_LIMIT:
+  description: ''
+  fields:
+  - name: DECODE
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_RC_PREF_BASE_UPPER_REG_PREF_MEM_BASE:
+  description: ''
+  fields:
+  - name: UPPER
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_PREF_LIMIT_UPPER_REG_PREF_MEM_LIMIT:
+  description: ''
+  fields:
+  - name: UPPER
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_IO_LIMIT_UPPER_IO_BASE_UPPER_REG_IO_BASE:
+  description: ''
+  fields:
+  - name: UPPER
+    bit_offset: 0
+    bit_size: 16
+fieldset/PCIE_RC_IO_LIMIT_UPPER_IO_BASE_UPPER_REG_IO_LIMIT:
+  description: ''
+  fields:
+  - name: UPPER
+    bit_offset: 16
+    bit_size: 16
+fieldset/PCIE_RC_TYPE1_CAP_PTR_REG_CAP:
+  description: ''
+  fields:
+  - name: POINTER
+    bit_offset: 0
+    bit_size: 8
+    description: Capabilities Pointer.
+fieldset/PCIE_RC_TYPE1_EXP_ROM_BASE_REG_ROM_BAR:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_TYPE1_EXP_ROM_BASE_REG_ROM_BAR_VALIDATION:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 1
+    bit_size: 3
+  - name: DETAILS
+    bit_offset: 4
+    bit_size: 4
+fieldset/PCIE_RC_TYPE1_EXP_ROM_BASE_REG_EXP_ROM_BASE:
+  description: ''
+  fields:
+  - name: ADDRESS
+    bit_offset: 11
+    bit_size: 21
+fieldset/PCIE_RC_BRIDGE_CTRL_INT_PIN_INT_LINE_REG_INT:
+  description: ''
+  fields:
+  - name: LINE
+    bit_offset: 0
+    bit_size: 8
+  - name: PIN
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_BRIDGE_CTRL_INT_PIN_INT_LINE_REG:
+  description: ''
+  fields:
+  - name: PERE
+    bit_offset: 16
+    bit_size: 1
+  - name: SBR
+    bit_offset: 22
+    bit_size: 1
+    description: Secondary Bus Reset.
+fieldset/PCIE_RC_BRIDGE_CTRL_INT_PIN_INT_LINE_REG_SERR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 17
+    bit_size: 1
+    description: SERR# Enable.
+fieldset/PCIE_RC_BRIDGE_CTRL_INT_PIN_INT_LINE_REG_ISA:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 18
+    bit_size: 1
+fieldset/PCIE_RC_BRIDGE_CTRL_INT_PIN_INT_LINE_REG_VGA:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_RC_BRIDGE_CTRL_INT_PIN_INT_LINE_REG_VGA_16B:
+  description: ''
+  fields:
+  - name: DEC
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_RC_BRIDGE_CTRL_INT_PIN_INT_LINE_REG_MSTR_ABORT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_RC_BRIDGE_CTRL_INT_PIN_INT_LINE_REG_BRIDGE_CTRL:
+  description: ''
+  fields:
+  - name: RESERV
+    bit_offset: 23
+    bit_size: 9
+fieldset/PCIE_RC_CAP_ID_NXT_PTR_REG_PM_CAP:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 8
+    description: Capability ID.
+fieldset/PCIE_RC_CAP_ID_NXT_PTR_REG_PM_NEXT:
+  description: ''
+  fields:
+  - name: POINTER
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_CAP_ID_NXT_PTR_REG_PM_SPEC:
+  description: ''
+  fields:
+  - name: VER
+    bit_offset: 16
+    bit_size: 3
+    description: Version.
+fieldset/PCIE_RC_CAP_ID_NXT_PTR_REG_PME:
+  description: ''
+  fields:
+  - name: CLK
+    bit_offset: 19
+    bit_size: 1
+    description: PME Clock.
+  - name: SUPPORT
+    bit_offset: 27
+    bit_size: 5
+    description: PME_Support.
+fieldset/PCIE_RC_CAP_ID_NXT_PTR_REG:
+  description: ''
+  fields:
+  - name: DSI
+    bit_offset: 21
+    bit_size: 1
+    description: PME Clock.
+fieldset/PCIE_RC_CAP_ID_NXT_PTR_REG_AUX:
+  description: ''
+  fields:
+  - name: CURR
+    bit_offset: 22
+    bit_size: 3
+fieldset/PCIE_RC_CAP_ID_NXT_PTR_REG_D1:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 25
+    bit_size: 1
+    description: D1_Support.
+fieldset/PCIE_RC_CAP_ID_NXT_PTR_REG_D2:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 26
+    bit_size: 1
+    description: D2_Support.
+fieldset/PCIE_RC_CON_STATUS_REG_POWER:
+  description: ''
+  fields:
+  - name: STATE
+    bit_offset: 0
+    bit_size: 2
+fieldset/PCIE_RC_CON_STATUS_REG_NO_SOFT:
+  description: ''
+  fields:
+  - name: RST
+    bit_offset: 3
+    bit_size: 1
+    description: No_Soft_Reset.
+fieldset/PCIE_RC_CON_STATUS_REG_PME:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 8
+    bit_size: 1
+    description: PME_En.
+  - name: STATUS
+    bit_offset: 15
+    bit_size: 1
+    description: Data_Scale.
+fieldset/PCIE_RC_CON_STATUS_REG_DATA:
+  description: ''
+  fields:
+  - name: SELECT
+    bit_offset: 9
+    bit_size: 4
+    description: PME_En.
+  - name: SCALE
+    bit_offset: 13
+    bit_size: 2
+    description: Data_Scale.
+fieldset/PCIE_RC_CON_STATUS_REG_B2_B3:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 22
+    bit_size: 1
+    description: PME_Status.
+fieldset/PCIE_RC_CON_STATUS_REG_BUS_PWR_CLK_CON:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_RC_CON_STATUS_REG_DATA_REG_ADD:
+  description: ''
+  fields:
+  - name: INFO
+    bit_offset: 24
+    bit_size: 8
+    description: Data.
+fieldset/PCIE_RC_PCI_MSI_CAP_ID_NEXT_CTRL_REG_PCI_MSI_CAP:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_PCI_MSI_CAP_ID_NEXT_CTRL_REG_PCI_MSI_CAP_NEXT:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_PCI_MSI_CAP_ID_NEXT_CTRL_REG_PCI_MSI:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_RC_PCI_MSI_CAP_ID_NEXT_CTRL_REG_PCI_MSI_MULTIPLE_MSG:
+  description: ''
+  fields:
+  - name: CAP
+    bit_offset: 17
+    bit_size: 3
+  - name: EN
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_RC_PCI_MSI_CAP_ID_NEXT_CTRL_REG_PCI_MSI_64_BIT_ADDR:
+  description: ''
+  fields:
+  - name: CAP
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_RC_PCI_MSI_CAP_ID_NEXT_CTRL_REG_PCI_PVM:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_RC_PCI_MSI_CAP_ID_NEXT_CTRL_REG_PCI_MSI_EXT_DATA:
+  description: ''
+  fields:
+  - name: CAP
+    bit_offset: 25
+    bit_size: 1
+  - name: EN
+    bit_offset: 26
+    bit_size: 1
+fieldset/PCIE_RC_MSI_CAP_OFF_04H_REG_PCI_MSI_CAP_OFF:
+  description: ''
+  fields:
+  - name: 04H
+    bit_offset: 2
+    bit_size: 30
+fieldset/PCIE_RC_MSI_CAP_OFF_08H_REG_PCI_MSI_CAP_OFF:
+  description: ''
+  fields:
+  - name: 08H
+    bit_offset: 0
+    bit_size: 16
+  - name: 0AH
+    bit_offset: 16
+    bit_size: 16
+fieldset/PCIE_RC_MSI_CAP_OFF_0CH_REG_PCI_MSI_CAP_OFF:
+  description: ''
+  fields:
+  - name: 0CH
+    bit_offset: 0
+    bit_size: 16
+  - name: 0EH
+    bit_offset: 16
+    bit_size: 16
+fieldset/PCIE_RC_MSI_CAP_OFF_10H_REG_PCI_MSI_CAP_OFF:
+  description: ''
+  fields:
+  - name: 10H
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CAP_OFF_14H_REG_PCI_MSI_CAP_OFF:
+  description: ''
+  fields:
+  - name: 14H
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_PCIE_CAP_ID_PCIE_NEXT_CAP_PTR_PCIE_CAP_REG_PCIE_CAP:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 8
+  - name: REG
+    bit_offset: 16
+    bit_size: 4
+fieldset/PCIE_RC_PCIE_CAP_ID_PCIE_NEXT_CAP_PTR_PCIE_CAP_REG_PCIE_CAP_NEXT:
+  description: ''
+  fields:
+  - name: PTR
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_PCIE_CAP_ID_PCIE_NEXT_CAP_PTR_PCIE_CAP_REG_PCIE_DEV_PORT:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 20
+    bit_size: 4
+fieldset/PCIE_RC_PCIE_CAP_ID_PCIE_NEXT_CAP_PTR_PCIE_CAP_REG_PCIE_SLOT:
+  description: ''
+  fields:
+  - name: IMP
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_RC_PCIE_CAP_ID_PCIE_NEXT_CAP_PTR_PCIE_CAP_REG_PCIE_INT_MSG:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 25
+    bit_size: 5
+fieldset/PCIE_RC_PCIE_CAP_ID_PCIE_NEXT_CAP_PTR_PCIE_CAP_REG:
+  description: ''
+  fields:
+  - name: RSVD
+    bit_offset: 30
+    bit_size: 1
+    description: Reserved.
+fieldset/PCIE_RC_DEVICE_CAPABILITIES_REG_PCIE_CAP_MAX_PAYLOAD:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 3
+fieldset/PCIE_RC_DEVICE_CAPABILITIES_REG_PCIE_CAP_PHANTOM_FUNC:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 3
+    bit_size: 2
+fieldset/PCIE_RC_DEVICE_CAPABILITIES_REG_PCIE_CAP_EXT_TAG:
+  description: ''
+  fields:
+  - name: SUPP
+    bit_offset: 5
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CAPABILITIES_REG_PCIE_CAP_ROLE_BASED_ERR:
+  description: ''
+  fields:
+  - name: REPORT
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_CORR_ERR_REPORT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_NON_FATAL_ERR_REPORT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_FATAL_ERR_REPORT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_UNSUPPORT_REQ_REP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_EN_REL:
+  description: ''
+  fields:
+  - name: ORDER
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_MAX_PAYLOAD_SIZE:
+  description: ''
+  fields:
+  - name: CS
+    bit_offset: 5
+    bit_size: 3
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_EXT_TAG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_PHANTOM_FUNC:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 9
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_AUX_POWER_PM:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_EN_NO:
+  description: ''
+  fields:
+  - name: SNOOP
+    bit_offset: 11
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_MAX_READ_REQ:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 12
+    bit_size: 3
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_INITIATE:
+  description: ''
+  fields:
+  - name: FLR
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_CORR_ERR:
+  description: ''
+  fields:
+  - name: DETECTED
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_NON_FATAL_ERR:
+  description: ''
+  fields:
+  - name: DETECTED
+    bit_offset: 17
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_FATAL_ERR:
+  description: ''
+  fields:
+  - name: DETECTED
+    bit_offset: 18
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_UNSUPPORTED_REQ:
+  description: ''
+  fields:
+  - name: DETECTED
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_AUX_POWER:
+  description: ''
+  fields:
+  - name: DETECTED
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL_DEVICE_STATUS_PCIE_CAP_TRANS:
+  description: ''
+  fields:
+  - name: PENDING
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CAPABILITIES_REG_PCIE_CAP_MAX_LINK:
+  description: ''
+  fields:
+  - name: SPEED
+    bit_offset: 0
+    bit_size: 4
+  - name: WIDTH
+    bit_offset: 4
+    bit_size: 6
+fieldset/PCIE_RC_LINK_CAPABILITIES_REG_PCIE_CAP_ACTIVE_STATE_LINK_PM:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 10
+    bit_size: 2
+fieldset/PCIE_RC_LINK_CAPABILITIES_REG_PCIE_CAP_L0S_EXIT:
+  description: ''
+  fields:
+  - name: LATENCY
+    bit_offset: 12
+    bit_size: 3
+fieldset/PCIE_RC_LINK_CAPABILITIES_REG_PCIE_CAP_L1_EXIT:
+  description: ''
+  fields:
+  - name: LATENCY
+    bit_offset: 15
+    bit_size: 3
+fieldset/PCIE_RC_LINK_CAPABILITIES_REG_PCIE_CAP_CLOCK_POWER:
+  description: ''
+  fields:
+  - name: MAN
+    bit_offset: 18
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CAPABILITIES_REG_PCIE_CAP_SURPRISE_DOWN_ERR_REP:
+  description: ''
+  fields:
+  - name: CAP
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CAPABILITIES_REG_PCIE_CAP_DLL_ACTIVE_REP:
+  description: ''
+  fields:
+  - name: CAP
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CAPABILITIES_REG_PCIE_CAP_LINK_BW_NOT:
+  description: ''
+  fields:
+  - name: CAP
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CAPABILITIES_REG_PCIE_CAP_ASPM_OPT:
+  description: ''
+  fields:
+  - name: COMPLIANCE
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CAPABILITIES_REG_PCIE_CAP_PORT:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 24
+    bit_size: 8
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_ACTIVE_STATE_LINK_PM:
+  description: ''
+  fields:
+  - name: CONTROL
+    bit_offset: 0
+    bit_size: 2
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP:
+  description: ''
+  fields:
+  - name: RCB
+    bit_offset: 3
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_LINK:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 4
+    bit_size: 1
+  - name: SPEED
+    bit_offset: 16
+    bit_size: 4
+  - name: TRAINING
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_RETRAIN:
+  description: ''
+  fields:
+  - name: LINK
+    bit_offset: 5
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_COMMON_CLK:
+  description: ''
+  fields:
+  - name: CONFIG
+    bit_offset: 6
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_EXTENDED:
+  description: ''
+  fields:
+  - name: SYNCH
+    bit_offset: 7
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_EN_CLK_POWER:
+  description: ''
+  fields:
+  - name: MAN
+    bit_offset: 8
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_HW_AUTO_WIDTH:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 9
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_LINK_BW_MAN_INT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_LINK_AUTO_BW_INT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_DRS_SIGNALING:
+  description: ''
+  fields:
+  - name: CONTROL
+    bit_offset: 14
+    bit_size: 2
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_NEGO_LINK:
+  description: ''
+  fields:
+  - name: WIDTH
+    bit_offset: 20
+    bit_size: 6
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_SLOT_CLK:
+  description: ''
+  fields:
+  - name: CONFIG
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_DLL:
+  description: ''
+  fields:
+  - name: ACTIVE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_LINK_BW_MAN:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL_LINK_STATUS_REG_PCIE_CAP_LINK_AUTO_BW:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CAPABILITIES_REG_PCIE_CAP_ATTENTION_INDICATOR:
+  description: ''
+  fields:
+  - name: BUTTON
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CAPABILITIES_REG_PCIE_CAP_POWER:
+  description: ''
+  fields:
+  - name: CONTROLLER
+    bit_offset: 1
+    bit_size: 1
+  - name: INDICATOR
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CAPABILITIES_REG_PCIE_CAP_MRL:
+  description: ''
+  fields:
+  - name: SENSOR
+    bit_offset: 2
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CAPABILITIES_REG_PCIE_CAP_ATTENTION:
+  description: ''
+  fields:
+  - name: INDICATOR
+    bit_offset: 3
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CAPABILITIES_REG_PCIE_CAP_HOT_PLUG:
+  description: ''
+  fields:
+  - name: SURPRISE
+    bit_offset: 5
+    bit_size: 1
+  - name: CAPABLE
+    bit_offset: 6
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CAPABILITIES_REG_PCIE_CAP_SLOT_POWER_LIMIT:
+  description: ''
+  fields:
+  - name: VALUE
+    bit_offset: 7
+    bit_size: 8
+  - name: SCALE
+    bit_offset: 15
+    bit_size: 2
+fieldset/PCIE_RC_SLOT_CAPABILITIES_REG_PCIE_CAP_ELECTROMECH:
+  description: ''
+  fields:
+  - name: INTERLOCK
+    bit_offset: 17
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CAPABILITIES_REG_PCIE_CAP_NO_CMD_CPL:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 18
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CAPABILITIES_REG_PCIE_CAP_PHY_SLOT:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 19
+    bit_size: 13
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_ATTENTION_BUTTON_PRESSED:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_POWER_FAULT_DETECTED:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_MRL_SENSOR_CHANGED:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_PRESENCE_DETECT_CHANGE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_CMD_CPL_INT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_HOT_PLUG_INT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 5
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_ATTENTION_INDICATOR:
+  description: ''
+  fields:
+  - name: CTRL
+    bit_offset: 6
+    bit_size: 2
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_POWER_INDICATOR:
+  description: ''
+  fields:
+  - name: CTRL
+    bit_offset: 8
+    bit_size: 2
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_POWER_CONTROLLER:
+  description: ''
+  fields:
+  - name: CTRL
+    bit_offset: 10
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_ELECTROMECH_INTERLOCK:
+  description: ''
+  fields:
+  - name: CTRL
+    bit_offset: 11
+    bit_size: 1
+  - name: STATUS
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_DLL_STATE_CHANGED:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 12
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_ATTENTION_BUTTON:
+  description: ''
+  fields:
+  - name: PRESSED
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_POWER_FAULT:
+  description: ''
+  fields:
+  - name: DETECTED
+    bit_offset: 17
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_MRL_SENSOR:
+  description: ''
+  fields:
+  - name: CHANGED
+    bit_offset: 18
+    bit_size: 1
+  - name: STATE
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_PRESENCE_DETECTED:
+  description: ''
+  fields:
+  - name: CHANGED
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_CMD:
+  description: ''
+  fields:
+  - name: CPLD
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_PRESENCE_DETECT:
+  description: ''
+  fields:
+  - name: STATE
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_RC_SLOT_CONTROL_SLOT_STATUS_PCIE_CAP_DLL_STATE:
+  description: ''
+  fields:
+  - name: CHANGED
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_CONTROL_ROOT_CAPABILITIES_REG_PCIE_CAP_SYS_ERR_ON_CORR_ERR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_CONTROL_ROOT_CAPABILITIES_REG_PCIE_CAP_SYS_ERR_ON_NON_FATAL_ERR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_CONTROL_ROOT_CAPABILITIES_REG_PCIE_CAP_SYS_ERR_ON_FATAL_ERR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_CONTROL_ROOT_CAPABILITIES_REG_PCIE_CAP_PME_INT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_CONTROL_ROOT_CAPABILITIES_REG_PCIE_CAP_CRS_SW_VISIBILITY:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_CONTROL_ROOT_CAPABILITIES_REG_PCIE_CAP_CRS_SW:
+  description: ''
+  fields:
+  - name: VISIBILITY
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_STATUS_REG_PCIE_CAP_PME_REQ:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/PCIE_RC_ROOT_STATUS_REG_PCIE_CAP_PME:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 16
+    bit_size: 1
+  - name: PENDING
+    bit_offset: 17
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CAPABILITIES2_REG_PCIE_CAP_CPL_TIMEOUT:
+  description: ''
+  fields:
+  - name: RANGE
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_RC_DEVICE_CAPABILITIES2_REG_PCIE_CAP_CPL_TIMEOUT_DISABLE:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CAPABILITIES2_REG_PCIE_CAP_ARI_FORWARD:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 5
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CAPABILITIES2_REG_PCIE_CAP_ATOMIC_ROUTING:
+  description: ''
+  fields:
+  - name: SUPP
+    bit_offset: 6
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CAPABILITIES2_REG_PCIE_CAP_32_ATOMIC_CPL:
+  description: ''
+  fields:
+  - name: SUPP
+    bit_offset: 7
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CAPABILITIES2_REG_PCIE_CAP_64_ATOMIC_CPL:
+  description: ''
+  fields:
+  - name: SUPP
+    bit_offset: 8
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CAPABILITIES2_REG_PCIE_CAP_128_CAS_CPL:
+  description: ''
+  fields:
+  - name: SUPP
+    bit_offset: 9
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CAPABILITIES2_REG_PCIE_CAP_NO_RO_EN_PR2PR:
+  description: ''
+  fields:
+  - name: PAR
+    bit_offset: 10
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CAPABILITIES2_REG_PCIE_CAP_LTR:
+  description: ''
+  fields:
+  - name: SUPP
+    bit_offset: 11
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CAPABILITIES2_REG_PCIE_CAP2_10_BIT_TAG_COMP:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CAPABILITIES2_REG_PCIE_CAP2_10_BIT_TAG_REQ:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 17
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CAPABILITIES2_REG_PCIE_CAP_DMWR_CPL:
+  description: ''
+  fields:
+  - name: SUPP
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CAPABILITIES2_REG_PCIE_CAP_DMWR_LEN:
+  description: ''
+  fields:
+  - name: SUPP
+    bit_offset: 29
+    bit_size: 2
+fieldset/PCIE_RC_DEVICE_CONTROL2_DEVICE_STATUS2_REG_PCIE_CAP_CPL_TIMEOUT:
+  description: ''
+  fields:
+  - name: VALUE
+    bit_offset: 0
+    bit_size: 4
+  - name: DISABLE
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL2_DEVICE_STATUS2_REG_PCIE_CAP_ARI_FORWARD_SUPPORT:
+  description: ''
+  fields:
+  - name: CS
+    bit_offset: 5
+    bit_size: 1
+fieldset/PCIE_RC_DEVICE_CONTROL2_DEVICE_STATUS2_REG_PCIE_CAP_LTR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CAPABILITIES2_REG_PCIE_CAP_SUPPORT_LINK_SPEED:
+  description: ''
+  fields:
+  - name: VECTOR
+    bit_offset: 1
+    bit_size: 7
+fieldset/PCIE_RC_LINK_CAPABILITIES2_REG_PCIE_CAP_CROSS_LINK:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 8
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL2_LINK_STATUS2_REG_PCIE_CAP_TARGET_LINK:
+  description: ''
+  fields:
+  - name: SPEED
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_RC_LINK_CONTROL2_LINK_STATUS2_REG_PCIE_CAP_ENTER:
+  description: ''
+  fields:
+  - name: COMPLIANCE
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL2_LINK_STATUS2_REG_PCIE_CAP_HW_AUTO_SPEED:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 5
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL2_LINK_STATUS2_REG_PCIE_CAP_SEL:
+  description: ''
+  fields:
+  - name: DEEMPHASIS
+    bit_offset: 6
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL2_LINK_STATUS2_REG_PCIE_CAP_TX:
+  description: ''
+  fields:
+  - name: MARGIN
+    bit_offset: 7
+    bit_size: 3
+fieldset/PCIE_RC_LINK_CONTROL2_LINK_STATUS2_REG_PCIE_CAP_ENTER_MODIFIED:
+  description: ''
+  fields:
+  - name: COMPLIANCE
+    bit_offset: 10
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL2_LINK_STATUS2_REG_PCIE_CAP_COMPLIANCE:
+  description: ''
+  fields:
+  - name: SOS
+    bit_offset: 11
+    bit_size: 1
+  - name: PRESET
+    bit_offset: 12
+    bit_size: 4
+fieldset/PCIE_RC_LINK_CONTROL2_LINK_STATUS2_REG_PCIE_CAP_CURR:
+  description: ''
+  fields:
+  - name: DEEMPHASIS
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL2_LINK_STATUS2_REG_PCIE_CAP_EQ:
+  description: ''
+  fields:
+  - name: CPL
+    bit_offset: 17
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL2_LINK_STATUS2_REG_PCIE_CAP_EQ_CPL:
+  description: ''
+  fields:
+  - name: P1
+    bit_offset: 18
+    bit_size: 1
+  - name: P2
+    bit_offset: 19
+    bit_size: 1
+  - name: P3
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL2_LINK_STATUS2_REG_PCIE_CAP_LINK_EQ:
+  description: ''
+  fields:
+  - name: REQ
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_RC_AER_EXT_CAP_HDR_OFF_CAP:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+    description: AER Extended Capability ID.
+  - name: VERSION
+    bit_offset: 16
+    bit_size: 4
+fieldset/PCIE_RC_AER_EXT_CAP_HDR_OFF_NEXT:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 20
+    bit_size: 12
+fieldset/PCIE_RC_UNCORR_ERR_STATUS_OFF_DL_PROTOCOL_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_STATUS_OFF_SURPRISE_DOWN_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 5
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_STATUS_OFF_POIS_TLP_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 12
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_STATUS_OFF_FC_PROTOCOL_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_STATUS_OFF_CMPLT_TIMEOUT_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 14
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_STATUS_OFF_CMPLT_ABORT_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_STATUS_OFF_UNEXP_CMPLT_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_STATUS_OFF_REC_OVERFLOW_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 17
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_STATUS_OFF_MALF_TLP_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 18
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_STATUS_OFF_ECRC_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_STATUS_OFF_UNSUPPORTED_REQ_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_STATUS_OFF_INTERNAL_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_MASK_OFF_DL_PROTOCOL_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_MASK_OFF_SURPRISE_DOWN_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 5
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_MASK_OFF_POIS_TLP_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 12
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_MASK_OFF_FC_PROTOCOL_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_MASK_OFF_CMPLT_TIMEOUT_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 14
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_MASK_OFF_CMPLT_ABORT_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_MASK_OFF_UNEXP_CMPLT_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_MASK_OFF_REC_OVERFLOW_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 17
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_MASK_OFF_MALF_TLP_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 18
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_MASK_OFF_ECRC_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_MASK_OFF_UNSUPPORTED_REQ_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_MASK_OFF_INTERNAL_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_SEV_OFF_DL_PROTOCOL_ERR:
+  description: ''
+  fields:
+  - name: SEVERITY
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_SEV_OFF_SURPRISE_DOWN_ERR:
+  description: ''
+  fields:
+  - name: SVRITY
+    bit_offset: 5
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_SEV_OFF_POIS_TLP_ERR:
+  description: ''
+  fields:
+  - name: SEVERITY
+    bit_offset: 12
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_SEV_OFF_FC_PROTOCOL_ERR:
+  description: ''
+  fields:
+  - name: SEVERITY
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_SEV_OFF_CMPLT_TIMEOUT_ERR:
+  description: ''
+  fields:
+  - name: SEVERITY
+    bit_offset: 14
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_SEV_OFF_CMPLT_ABORT_ERR:
+  description: ''
+  fields:
+  - name: SEVERITY
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_SEV_OFF_UNEXP_CMPLT_ERR:
+  description: ''
+  fields:
+  - name: SEVERITY
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_SEV_OFF_REC_OVERFLOW_ERR:
+  description: ''
+  fields:
+  - name: SEVERITY
+    bit_offset: 17
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_SEV_OFF_MALF_TLP_ERR:
+  description: ''
+  fields:
+  - name: SEVERITY
+    bit_offset: 18
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_SEV_OFF_ECRC_ERR:
+  description: ''
+  fields:
+  - name: SEVERITY
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_SEV_OFF_UNSUPPORTED_REQ_ERR:
+  description: ''
+  fields:
+  - name: SEVERITY
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_RC_UNCORR_ERR_SEV_OFF_INTERNAL_ERR:
+  description: ''
+  fields:
+  - name: SEVERITY
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_RC_CORR_ERR_STATUS_OFF_RX_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_CORR_ERR_STATUS_OFF_BAD_TLP:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 6
+    bit_size: 1
+fieldset/PCIE_RC_CORR_ERR_STATUS_OFF_BAD_DLLP:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 7
+    bit_size: 1
+fieldset/PCIE_RC_CORR_ERR_STATUS_OFF_REPLAY_NO_ROLEOVER:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 8
+    bit_size: 1
+fieldset/PCIE_RC_CORR_ERR_STATUS_OFF_RPL_TIMER_TIMEOUT:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 12
+    bit_size: 1
+fieldset/PCIE_RC_CORR_ERR_STATUS_OFF_ADVISORY_NON_FATAL_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_RC_CORR_ERR_STATUS_OFF_CORRECTED_INT_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 14
+    bit_size: 1
+fieldset/PCIE_RC_CORR_ERR_STATUS_OFF_HEADER_LOG_OVERFLOW:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_RC_CORR_ERR_MASK_OFF_RX_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_CORR_ERR_MASK_OFF_BAD_TLP:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 6
+    bit_size: 1
+    description: Bad TLP Mask.
+fieldset/PCIE_RC_CORR_ERR_MASK_OFF_BAD_DLLP:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 7
+    bit_size: 1
+    description: Bad DLLP Mask.
+fieldset/PCIE_RC_CORR_ERR_MASK_OFF_REPLAY_NO_ROLEOVER:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 8
+    bit_size: 1
+fieldset/PCIE_RC_CORR_ERR_MASK_OFF_RPL_TIMER_TIMEOUT:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 12
+    bit_size: 1
+fieldset/PCIE_RC_CORR_ERR_MASK_OFF_ADVISORY_NON_FATAL_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_RC_CORR_ERR_MASK_OFF_CORRECTED_INT_ERR:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 14
+    bit_size: 1
+fieldset/PCIE_RC_CORR_ERR_MASK_OFF_HEADER_LOG_OVERFLOW:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_RC_ADV_ERR_CAP_CTRL_OFF_FIRST_ERR:
+  description: ''
+  fields:
+  - name: POINTER
+    bit_offset: 0
+    bit_size: 5
+fieldset/PCIE_RC_ADV_ERR_CAP_CTRL_OFF_ECRC_GEN:
+  description: ''
+  fields:
+  - name: CAP
+    bit_offset: 5
+    bit_size: 1
+  - name: EN
+    bit_offset: 6
+    bit_size: 1
+fieldset/PCIE_RC_ADV_ERR_CAP_CTRL_OFF_ECRC_CHECK:
+  description: ''
+  fields:
+  - name: CAP
+    bit_offset: 7
+    bit_size: 1
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+fieldset/PCIE_RC_ADV_ERR_CAP_CTRL_OFF_MULTIPLE_HEADER:
+  description: ''
+  fields:
+  - name: CAP
+    bit_offset: 9
+    bit_size: 1
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/PCIE_RC_ADV_ERR_CAP_CTRL_OFF_CTO_PRFX_HDR_LOG:
+  description: ''
+  fields:
+  - name: CAP
+    bit_offset: 12
+    bit_size: 1
+fieldset/PCIE_RC_HDR_LOG_0_OFF_FIRST_DWORD_FIRST:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_0_OFF_FIRST_DWORD_SECOND:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_0_OFF_FIRST_DWORD_THIRD:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_0_OFF_FIRST_DWORD_FOURTH:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 24
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_1_OFF_SECOND_DWORD_FIRST:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_1_OFF_SECOND_DWORD_SECOND:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_1_OFF_SECOND_DWORD_THIRD:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_1_OFF_SECOND_DWORD_FOURTH:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 24
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_2_OFF_THIRD_DWORD_FIRST:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_2_OFF_THIRD_DWORD_SECOND:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_2_OFF_THIRD_DWORD_THIRD:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_2_OFF_THIRD_DWORD_FOURTH:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 24
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_3_OFF_FOURTH_DWORD_FIRST:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_3_OFF_FOURTH_DWORD_SECOND:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_3_OFF_FOURTH_DWORD_THIRD:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_RC_HDR_LOG_3_OFF_FOURTH_DWORD_FOURTH:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 24
+    bit_size: 8
+fieldset/PCIE_RC_ROOT_ERR_CMD_OFF_CORR_ERR_REPORTING:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_ERR_CMD_OFF_NON_FATAL_ERR_REPORTING:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_ERR_CMD_OFF_FATAL_ERR_REPORTING:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_ERR_STATUS_OFF_ERR_COR:
+  description: ''
+  fields:
+  - name: RX
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_ERR_STATUS_OFF_MUL_ERR_COR:
+  description: ''
+  fields:
+  - name: RX
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_ERR_STATUS_OFF_ERR_FATAL_NON_FATAL:
+  description: ''
+  fields:
+  - name: RX
+    bit_offset: 2
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_ERR_STATUS_OFF_MUL_ERR_FATAL_NON_FATAL:
+  description: ''
+  fields:
+  - name: RX
+    bit_offset: 3
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_ERR_STATUS_OFF_FIRST_UNCORR:
+  description: ''
+  fields:
+  - name: FATAL
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_ERR_STATUS_OFF_NON_FATAL_ERR_MSG:
+  description: ''
+  fields:
+  - name: RX
+    bit_offset: 5
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_ERR_STATUS_OFF_FATAL_ERR_MSG:
+  description: ''
+  fields:
+  - name: RX
+    bit_offset: 6
+    bit_size: 1
+fieldset/PCIE_RC_ROOT_ERR_STATUS_OFF_ADV_ERR_INT_MSG:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 27
+    bit_size: 5
+fieldset/PCIE_RC_ERR_SRC_ID_OFF_ERR_COR_SOURCE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/PCIE_RC_ERR_SRC_ID_OFF_ERR_FATAL_NON_FATAL_SOURCE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 16
+fieldset/PCIE_RC_TLP_PREFIX_LOG_1_OFF_CFG_TLP_PFX_LOG_1_FIRST:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_1_OFF_CFG_TLP_PFX_LOG_1_SECOND:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_1_OFF_CFG_TLP_PFX_LOG_1_THIRD:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_1_OFF_CFG_TLP_PFX_LOG_1_FOURTH:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 24
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_2_OFF_CFG_TLP_PFX_LOG_2_FIRST:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_2_OFF_CFG_TLP_PFX_LOG_2_SECOND:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_2_OFF_CFG_TLP_PFX_LOG_2_THIRD:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_2_OFF_CFG_TLP_PFX_LOG_2_FOURTH:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 24
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_3_OFF_CFG_TLP_PFX_LOG_3_FIRST:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_3_OFF_CFG_TLP_PFX_LOG_3_SECOND:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_3_OFF_CFG_TLP_PFX_LOG_3_THIRD:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_3_OFF_CFG_TLP_PFX_LOG_3_FOURTH:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 24
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_4_OFF_CFG_TLP_PFX_LOG_4_FIRST:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_4_OFF_CFG_TLP_PFX_LOG_4_SECOND:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_4_OFF_CFG_TLP_PFX_LOG_4_THIRD:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_RC_TLP_PREFIX_LOG_4_OFF_CFG_TLP_PFX_LOG_4_FOURTH:
+  description: ''
+  fields:
+  - name: BYTE
+    bit_offset: 24
+    bit_size: 8
+fieldset/PCIE_RC_SPCIE_CAP_HEADER_REG_EXTENDED_CAP:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/PCIE_RC_SPCIE_CAP_HEADER_REG_CAP:
+  description: ''
+  fields:
+  - name: VERSION
+    bit_offset: 16
+    bit_size: 4
+fieldset/PCIE_RC_SPCIE_CAP_HEADER_REG_NEXT:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 20
+    bit_size: 12
+fieldset/PCIE_RC_LINK_CONTROL3_REG_PERFORM:
+  description: ''
+  fields:
+  - name: EQ
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_LINK_CONTROL3_REG_EQ_REQ_INT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_LANE_ERR_STATUS_REG_LANE_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 2
+fieldset/PCIE_RC_LANE_ERR_STATUS_REG_RSVDP_LANE_ERR:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 2
+    bit_size: 30
+fieldset/PCIE_RC_SPCIE_CAP_OFF_0CH_REG_DSP_TX:
+  description: ''
+  fields:
+  - name: PRESET0
+    bit_offset: 0
+    bit_size: 4
+  - name: PRESET1
+    bit_offset: 16
+    bit_size: 4
+fieldset/PCIE_RC_SPCIE_CAP_OFF_0CH_REG_DSP_RX_PRESET:
+  description: ''
+  fields:
+  - name: HINT0
+    bit_offset: 4
+    bit_size: 3
+  - name: HINT1
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_RC_SPCIE_CAP_OFF_0CH_REG_USP_TX:
+  description: ''
+  fields:
+  - name: PRESET0
+    bit_offset: 8
+    bit_size: 4
+  - name: PRESET1
+    bit_offset: 24
+    bit_size: 4
+fieldset/PCIE_RC_SPCIE_CAP_OFF_0CH_REG_USP_RX_PRESET:
+  description: ''
+  fields:
+  - name: HINT0
+    bit_offset: 12
+    bit_size: 3
+  - name: HINT1
+    bit_offset: 28
+    bit_size: 3
+fieldset/PCIE_RC_L1SUB_CAP_HEADER_REG_EXTENDED_CAP:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+fieldset/PCIE_RC_L1SUB_CAP_HEADER_REG_CAP:
+  description: ''
+  fields:
+  - name: VERSION
+    bit_offset: 16
+    bit_size: 4
+fieldset/PCIE_RC_L1SUB_CAP_HEADER_REG_NEXT:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 20
+    bit_size: 12
+fieldset/PCIE_RC_L1SUB_CAPABILITY_REG_L1_2_PCIPM:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_L1SUB_CAPABILITY_REG_L1_1_PCIPM:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_L1SUB_CAPABILITY_REG_L1_2_ASPM:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 2
+    bit_size: 1
+fieldset/PCIE_RC_L1SUB_CAPABILITY_REG_L1_1_ASPM:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 3
+    bit_size: 1
+fieldset/PCIE_RC_L1SUB_CAPABILITY_REG_L1_PMSUB:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_L1SUB_CAPABILITY_REG_COMM_MODE:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_L1SUB_CAPABILITY_REG_PWR_ON_SCALE:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 16
+    bit_size: 2
+fieldset/PCIE_RC_L1SUB_CAPABILITY_REG_PWR_ON_VALUE:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 19
+    bit_size: 5
+fieldset/PCIE_RC_L1SUB_CONTROL1_REG_L1_2_PCIPM:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_L1SUB_CONTROL1_REG_L1_1_PCIPM:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_L1SUB_CONTROL1_REG_L1_2_ASPM:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+    description: ASPM L12 Enable.
+fieldset/PCIE_RC_L1SUB_CONTROL1_REG_L1_1_ASPM:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+    description: ASPM L11 Enable.
+fieldset/PCIE_RC_L1SUB_CONTROL1_REG_T_COMMON:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_L1SUB_CONTROL1_REG_L1_2_TH:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 16
+    bit_size: 10
+  - name: SCA
+    bit_offset: 29
+    bit_size: 3
+fieldset/PCIE_RC_L1SUB_CONTROL2_REG_T_POWER_ON:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 0
+    bit_size: 2
+  - name: VALUE
+    bit_offset: 3
+    bit_size: 5
+fieldset/PCIE_RC_VSECDMA_EXT_CAP_HDR_OFF:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+  - name: CAP
+    bit_offset: 16
+    bit_size: 4
+    description: Capability Version.
+fieldset/PCIE_RC_VSECDMA_EXT_CAP_HDR_OFF_NEXT:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 20
+    bit_size: 12
+fieldset/PCIE_RC_VSECDMA_VENDOR_SPECIFIC_HDR_OFF_VSEC:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 16
+    description: VSEC ID.
+  - name: REV
+    bit_offset: 16
+    bit_size: 4
+    description: VSEC Rev.
+  - name: LENGTH
+    bit_offset: 20
+    bit_size: 12
+fieldset/PCIE_RC_VSECDMA_DEVICE_INFORMATION_OFF_MAP:
+  description: ''
+  fields:
+  - name: FORMAT
+    bit_offset: 0
+    bit_size: 3
+fieldset/PCIE_RC_VSECDMA_DEVICE_INFORMATION_OFF:
+  description: ''
+  fields:
+  - name: BARN
+    bit_offset: 8
+    bit_size: 3
+    description: Bar Number.
+  - name: PFN
+    bit_offset: 11
+    bit_size: 5
+  - name: AXI
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_RC_VSECDMA_DEVICE_INFORMATION_OFF_CHANNEL:
+  description: ''
+  fields:
+  - name: SEPARATION
+    bit_offset: 16
+    bit_size: 3
+fieldset/PCIE_RC_VSECDMA_DEVICE_INFORMATION_OFF_MASTER_BUS:
+  description: ''
+  fields:
+  - name: WIDTH
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_RC_VSECDMA_DEVICE_INFORMATION_OFF_MASTER_BURST:
+  description: ''
+  fields:
+  - name: LENGTH
+    bit_offset: 23
+    bit_size: 3
+fieldset/PCIE_RC_VSECDMA_DEVICE_INFORMATION_OFF_MASTER_PAGE_BOUNDARY_POINTER:
+  description: ''
+  fields:
+  - name: WIDTH
+    bit_offset: 26
+    bit_size: 4
+fieldset/PCIE_RC_VSECDMA_NUM_CHAN_OFF_NUM_DMA_WR:
+  description: ''
+  fields:
+  - name: CHAN
+    bit_offset: 0
+    bit_size: 10
+fieldset/PCIE_RC_VSECDMA_NUM_CHAN_OFF_NUM_DMA_RD:
+  description: ''
+  fields:
+  - name: CHAN
+    bit_offset: 16
+    bit_size: 10
+fieldset/PCIE_RC_VSECDMA_UNROLL_ADDR_OFFSET_LOW_OFF_UNROLL_ADDR_OFFSET:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_VSECDMA_UNROLL_ADDR_OFFSET_HIGH_OFF_UNROLL_ADDR_OFFSET:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_ACK_LATENCY_TIMER_OFF_ROUND_TRIP_LATENCY_TIME:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 0
+    bit_size: 16
+fieldset/PCIE_RC_ACK_LATENCY_TIMER_OFF_REPLAY_TIME:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 16
+    bit_size: 16
+fieldset/PCIE_RC_VENDOR_SPEC_DLLP_OFF_VENDOR_SPEC:
+  description: ''
+  fields:
+  - name: DLLP
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_PORT_FORCE_OFF_LINK:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 0
+    bit_size: 8
+    description: Link Number.
+  - name: STATE
+    bit_offset: 16
+    bit_size: 6
+    description: Forced LTSSM State.
+fieldset/PCIE_RC_PORT_FORCE_OFF_FORCED:
+  description: ''
+  fields:
+  - name: LTSSM
+    bit_offset: 8
+    bit_size: 4
+    description: Link Number.
+fieldset/PCIE_RC_PORT_FORCE_OFF_FORCE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_RC_PORT_FORCE_OFF_SUPPORT_PART_LANES_RXEI:
+  description: ''
+  fields:
+  - name: EXIT
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_RC_PORT_FORCE_OFF_DO_DESKEW_FOR:
+  description: ''
+  fields:
+  - name: SRIS
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_RC_ACK_F_ASPM_CTRL_OFF_ACK:
+  description: ''
+  fields:
+  - name: FREQ
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_ACK_F_ASPM_CTRL_OFF_ACK_N:
+  description: ''
+  fields:
+  - name: FTS
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_ACK_F_ASPM_CTRL_OFF_COMMON_CLK_N:
+  description: ''
+  fields:
+  - name: FTS
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_RC_ACK_F_ASPM_CTRL_OFF_L0S_ENTRANCE:
+  description: ''
+  fields:
+  - name: LATENCY
+    bit_offset: 24
+    bit_size: 3
+fieldset/PCIE_RC_ACK_F_ASPM_CTRL_OFF_L1_ENTRANCE:
+  description: ''
+  fields:
+  - name: LATENCY
+    bit_offset: 27
+    bit_size: 3
+fieldset/PCIE_RC_ACK_F_ASPM_CTRL_OFF_ENTER:
+  description: ''
+  fields:
+  - name: ASPM
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_RC_ACK_F_ASPM_CTRL_OFF_ASPM_L1_TIMER:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_RC_PORT_LINK_CTRL_OFF_VENDOR_SPECIFIC_DLLP:
+  description: ''
+  fields:
+  - name: REQ
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_PORT_LINK_CTRL_OFF_SCRAMBLE:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_PORT_LINK_CTRL_OFF_LOOPBACK:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 2
+    bit_size: 1
+fieldset/PCIE_RC_PORT_LINK_CTRL_OFF_RESET:
+  description: ''
+  fields:
+  - name: ASSERT
+    bit_offset: 3
+    bit_size: 1
+fieldset/PCIE_RC_PORT_LINK_CTRL_OFF_DLL_LINK:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 5
+    bit_size: 1
+fieldset/PCIE_RC_PORT_LINK_CTRL_OFF_LINK:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 6
+    bit_size: 1
+  - name: RATE
+    bit_offset: 8
+    bit_size: 4
+  - name: CAPABLE
+    bit_offset: 16
+    bit_size: 6
+fieldset/PCIE_RC_PORT_LINK_CTRL_OFF_FAST_LINK:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 7
+    bit_size: 1
+fieldset/PCIE_RC_PORT_LINK_CTRL_OFF_BEACON:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_RC_PORT_LINK_CTRL_OFF_CORRUPT_LCRC:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 25
+    bit_size: 1
+fieldset/PCIE_RC_PORT_LINK_CTRL_OFF_EXTENDED:
+  description: ''
+  fields:
+  - name: SYNCH
+    bit_offset: 26
+    bit_size: 1
+fieldset/PCIE_RC_PORT_LINK_CTRL_OFF_TRANSMIT_LANE_REVERSALE:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_RC_LANE_SKEW_OFF_INSERT_LANE:
+  description: ''
+  fields:
+  - name: SKEW
+    bit_offset: 0
+    bit_size: 24
+fieldset/PCIE_RC_LANE_SKEW_OFF_FLOW_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_RC_LANE_SKEW_OFF_ACK_NAK:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 25
+    bit_size: 1
+fieldset/PCIE_RC_LANE_SKEW_OFF_ELASTIC_BUFFER:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 26
+    bit_size: 1
+fieldset/PCIE_RC_LANE_SKEW_OFF_IMPLEMENT_NUM:
+  description: ''
+  fields:
+  - name: LANES
+    bit_offset: 27
+    bit_size: 4
+fieldset/PCIE_RC_LANE_SKEW_OFF_DISABLE_LANE_TO_LANE:
+  description: ''
+  fields:
+  - name: DESKEW
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_RC_TIMER_CTRL_MAX_FUNC_NUM_OFF_MAX_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_TIMER_CTRL_MAX_FUNC_NUM_OFF_TIMER_MOD_REPLAY:
+  description: ''
+  fields:
+  - name: TIMER
+    bit_offset: 14
+    bit_size: 5
+fieldset/PCIE_RC_TIMER_CTRL_MAX_FUNC_NUM_OFF_TIMER_MOD_ACK:
+  description: ''
+  fields:
+  - name: NAK
+    bit_offset: 19
+    bit_size: 5
+fieldset/PCIE_RC_TIMER_CTRL_MAX_FUNC_NUM_OFF_UPDATE_FREQ:
+  description: ''
+  fields:
+  - name: TIMER
+    bit_offset: 24
+    bit_size: 5
+fieldset/PCIE_RC_TIMER_CTRL_MAX_FUNC_NUM_OFF_FAST_LINK_SCALING:
+  description: ''
+  fields:
+  - name: FACTOR
+    bit_offset: 29
+    bit_size: 2
+fieldset/PCIE_RC_SYMBOL_TIMER_FILTER_1_OFF_SKP_INT:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 0
+    bit_size: 11
+fieldset/PCIE_RC_SYMBOL_TIMER_FILTER_1_OFF_EIDLE:
+  description: ''
+  fields:
+  - name: TIMER
+    bit_offset: 11
+    bit_size: 4
+fieldset/PCIE_RC_SYMBOL_TIMER_FILTER_1_OFF_DISABLE_FC_WD:
+  description: ''
+  fields:
+  - name: TIMER
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_RC_TX_P_FC_CREDIT_STATUS_OFF_TX_P_DATA_FC:
+  description: ''
+  fields:
+  - name: CREDIT
+    bit_offset: 0
+    bit_size: 12
+fieldset/PCIE_RC_TX_P_FC_CREDIT_STATUS_OFF_TX_P_HEADER_FC:
+  description: ''
+  fields:
+  - name: CREDIT
+    bit_offset: 12
+    bit_size: 8
+fieldset/PCIE_RC_TX_P_FC_CREDIT_STATUS_OFF_RSVDP_TX_P_FC_CREDIT:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 20
+    bit_size: 12
+fieldset/PCIE_RC_TX_NP_FC_CREDIT_STATUS_OFF_TX_NP_DATA_FC:
+  description: ''
+  fields:
+  - name: CREDIT
+    bit_offset: 0
+    bit_size: 12
+fieldset/PCIE_RC_TX_NP_FC_CREDIT_STATUS_OFF_TX_NP_HEADER_FC:
+  description: ''
+  fields:
+  - name: CREDIT
+    bit_offset: 12
+    bit_size: 8
+fieldset/PCIE_RC_TX_NP_FC_CREDIT_STATUS_OFF_RSVDP_TX_NP_FC_CREDIT:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 20
+    bit_size: 12
+fieldset/PCIE_RC_TX_CPL_FC_CREDIT_STATUS_OFF_TX_CPL_DATA_FC:
+  description: ''
+  fields:
+  - name: CREDIT
+    bit_offset: 0
+    bit_size: 12
+fieldset/PCIE_RC_TX_CPL_FC_CREDIT_STATUS_OFF_TX_CPL_HEADER_FC:
+  description: ''
+  fields:
+  - name: CREDIT
+    bit_offset: 12
+    bit_size: 8
+fieldset/PCIE_RC_TX_CPL_FC_CREDIT_STATUS_OFF_RSVDP_TX_CPL_FC_CREDIT:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 20
+    bit_size: 12
+fieldset/PCIE_RC_QUEUE_STATUS_OFF_RX_TLP_FC_CREDIT_NON:
+  description: ''
+  fields:
+  - name: RETURN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_QUEUE_STATUS_OFF_TX_RETRY_BUFFER:
+  description: ''
+  fields:
+  - name: NE
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_QUEUE_STATUS_OFF_RX_QUEUE_NON:
+  description: ''
+  fields:
+  - name: EMPTY
+    bit_offset: 2
+    bit_size: 1
+fieldset/PCIE_RC_QUEUE_STATUS_OFF_RX_QUEUE:
+  description: ''
+  fields:
+  - name: OVERFLOW
+    bit_offset: 3
+    bit_size: 1
+fieldset/PCIE_RC_QUEUE_STATUS_OFF_RX_SERIALIZATION_Q_NON:
+  description: ''
+  fields:
+  - name: EMPTY
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_RC_QUEUE_STATUS_OFF_TIMER_MOD_FLOW:
+  description: ''
+  fields:
+  - name: CONTROL
+    bit_offset: 16
+    bit_size: 13
+fieldset/PCIE_RC_QUEUE_STATUS_OFF_TIMER_MOD_FLOW_CONTROL:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_RC_VC0_P_RX_Q_CTRL_OFF_VC0_P_DATA:
+  description: ''
+  fields:
+  - name: CREDIT
+    bit_offset: 0
+    bit_size: 12
+  - name: SCALE
+    bit_offset: 26
+    bit_size: 2
+fieldset/PCIE_RC_VC0_P_RX_Q_CTRL_OFF_VC0_P_HEADER:
+  description: ''
+  fields:
+  - name: CREDIT
+    bit_offset: 12
+    bit_size: 8
+fieldset/PCIE_RC_VC0_P_RX_Q_CTRL_OFF:
+  description: ''
+  fields:
+  - name: RESERVED4
+    bit_offset: 20
+    bit_size: 1
+    description: Reserved.
+  - name: RESERVED5
+    bit_offset: 28
+    bit_size: 2
+    description: Reserved.
+fieldset/PCIE_RC_VC0_P_RX_Q_CTRL_OFF_VC0_P_TLP_Q:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 21
+    bit_size: 3
+fieldset/PCIE_RC_VC0_P_RX_Q_CTRL_OFF_VC0_P_HDR:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 24
+    bit_size: 2
+fieldset/PCIE_RC_VC0_P_RX_Q_CTRL_OFF_TLP_TYPE_ORDERING:
+  description: ''
+  fields:
+  - name: VC0
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_RC_VC0_P_RX_Q_CTRL_OFF_VC_ORDERING_RX:
+  description: ''
+  fields:
+  - name: Q
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_RC_VC0_NP_RX_Q_CTRL_OFF_VC0_NP_DATA:
+  description: ''
+  fields:
+  - name: CREDIT
+    bit_offset: 0
+    bit_size: 12
+  - name: SCALE
+    bit_offset: 26
+    bit_size: 2
+fieldset/PCIE_RC_VC0_NP_RX_Q_CTRL_OFF_VC0_NP_HEADER:
+  description: ''
+  fields:
+  - name: CREDIT
+    bit_offset: 12
+    bit_size: 8
+fieldset/PCIE_RC_VC0_NP_RX_Q_CTRL_OFF:
+  description: ''
+  fields:
+  - name: RESERVED6
+    bit_offset: 20
+    bit_size: 1
+    description: Reserved.
+  - name: RESERVED7
+    bit_offset: 28
+    bit_size: 4
+    description: Reserved.
+fieldset/PCIE_RC_VC0_NP_RX_Q_CTRL_OFF_VC0_NP_TLP_Q:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 21
+    bit_size: 3
+fieldset/PCIE_RC_VC0_NP_RX_Q_CTRL_OFF_VC0_NP_HDR:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 24
+    bit_size: 2
+fieldset/PCIE_RC_VC0_CPL_RX_Q_CTRL_OFF_VC0_CPL_DATA:
+  description: ''
+  fields:
+  - name: CREDIT
+    bit_offset: 0
+    bit_size: 12
+  - name: SCALE
+    bit_offset: 26
+    bit_size: 2
+fieldset/PCIE_RC_VC0_CPL_RX_Q_CTRL_OFF_VC0_CPL_HEADER:
+  description: ''
+  fields:
+  - name: CREDIT
+    bit_offset: 12
+    bit_size: 8
+fieldset/PCIE_RC_VC0_CPL_RX_Q_CTRL_OFF:
+  description: ''
+  fields:
+  - name: RESERVED8
+    bit_offset: 20
+    bit_size: 1
+    description: Reserved.
+  - name: RESERVED9
+    bit_offset: 28
+    bit_size: 4
+    description: Reserved.
+fieldset/PCIE_RC_VC0_CPL_RX_Q_CTRL_OFF_VC0_CPL_TLP_Q:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 21
+    bit_size: 3
+fieldset/PCIE_RC_VC0_CPL_RX_Q_CTRL_OFF_VC0_CPL_HDR:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 24
+    bit_size: 2
+fieldset/PCIE_RC_GEN2_CTRL_OFF_FAST_TRAINING:
+  description: ''
+  fields:
+  - name: SEQ
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_GEN2_CTRL_OFF_NUM_OF:
+  description: ''
+  fields:
+  - name: LANES
+    bit_offset: 8
+    bit_size: 5
+fieldset/PCIE_RC_GEN2_CTRL_OFF_PRE_DET:
+  description: ''
+  fields:
+  - name: LANE
+    bit_offset: 13
+    bit_size: 3
+fieldset/PCIE_RC_GEN2_CTRL_OFF_AUTO_LANE_FLIP_CTRL:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_RC_GEN2_CTRL_OFF_DIRECT_SPEED:
+  description: ''
+  fields:
+  - name: CHANGE
+    bit_offset: 17
+    bit_size: 1
+fieldset/PCIE_RC_GEN2_CTRL_OFF_CONFIG_PHY_TX:
+  description: ''
+  fields:
+  - name: CHANGE
+    bit_offset: 18
+    bit_size: 1
+fieldset/PCIE_RC_GEN2_CTRL_OFF_CONFIG_TX_COMP:
+  description: ''
+  fields:
+  - name: RX
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_RC_GEN2_CTRL_OFF_SEL:
+  description: ''
+  fields:
+  - name: DEEMPHASIS
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_RC_GEN2_CTRL_OFF_GEN1_EI:
+  description: ''
+  fields:
+  - name: INFERENCE
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_RC_GEN2_CTRL_OFF_SELECT_DEEMPH_VAR:
+  description: ''
+  fields:
+  - name: MUX
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_RC_GEN2_CTRL_OFF_SELECTABLE_DEEMPH_BIT:
+  description: ''
+  fields:
+  - name: MUX
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_RC_GEN2_CTRL_OFF_LANE_UNDER:
+  description: ''
+  fields:
+  - name: TEST
+    bit_offset: 24
+    bit_size: 4
+fieldset/PCIE_RC_GEN2_CTRL_OFF_FORCE_LANE:
+  description: ''
+  fields:
+  - name: FLIP
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_RC_PHY_STATUS_OFF_PHY:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_PHY_CONTROL_OFF_PHY:
+  description: ''
+  fields:
+  - name: CONTROL
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_TRGT_MAP_CTRL_OFF_TARGET_MAP:
+  description: ''
+  fields:
+  - name: PF
+    bit_offset: 0
+    bit_size: 6
+  - name: ROM
+    bit_offset: 6
+    bit_size: 1
+  - name: INDEX
+    bit_offset: 16
+    bit_size: 5
+fieldset/PCIE_RC_MSI_CTRL_ADDR_OFF_MSI_CTRL:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_UPPER_ADDR_OFF_MSI_CTRL_UPPER:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_0_EN_OFF_MSI_CTRL_INT_0:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_0_MASK_OFF_MSI_CTRL_INT_0:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_0_STATUS_OFF_MSI_CTRL_INT_0:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_1_EN_OFF_MSI_CTRL_INT_1:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_1_MASK_OFF_MSI_CTRL_INT_1:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_1_STATUS_OFF_MSI_CTRL_INT_1:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_2_EN_OFF_MSI_CTRL_INT_2:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_2_MASK_OFF_MSI_CTRL_INT_2:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_2_STATUS_OFF_MSI_CTRL_INT_2:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_3_EN_OFF_MSI_CTRL_INT_3:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_3_MASK_OFF_MSI_CTRL_INT_3:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_3_STATUS_OFF_MSI_CTRL_INT_3:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_4_EN_OFF_MSI_CTRL_INT_4:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_4_MASK_OFF_MSI_CTRL_INT_4:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_4_STATUS_OFF_MSI_CTRL_INT_4:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_5_EN_OFF_MSI_CTRL_INT_5:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_5_MASK_OFF_MSI_CTRL_INT_5:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_5_STATUS_OFF_MSI_CTRL_INT_5:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_6_EN_OFF_MSI_CTRL_INT_6:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_6_MASK_OFF_MSI_CTRL_INT_6:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_6_STATUS_OFF_MSI_CTRL_INT_6:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_7_EN_OFF_MSI_CTRL_INT_7:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_7_MASK_OFF_MSI_CTRL_INT_7:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_CTRL_INT_7_STATUS_OFF_MSI_CTRL_INT_7:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_MSI_GPIO_IO_OFF_MSI_GPIO:
+  description: ''
+  fields:
+  - name: REG
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_CLOCK_GATING_CTRL_OFF_RADM_CLK_GATING:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_CLOCK_GATING_CTRL_OFF_AXI_CLK_GATING:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_RELATED_OFF_GEN3_ZRXDC:
+  description: ''
+  fields:
+  - name: NONCOMPL
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_RELATED_OFF_NO_SEED_VALUE:
+  description: ''
+  fields:
+  - name: CHANGE
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_RELATED_OFF_EQ_EIEOS:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 10
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_RELATED_OFF_EQ:
+  description: ''
+  fields:
+  - name: REDO
+    bit_offset: 11
+    bit_size: 1
+    description: Equalization Redo Disable.
+fieldset/PCIE_RC_GEN3_RELATED_OFF_RXEQ_PH01:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 12
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_RELATED_OFF_RXEQ_RGRDLESS:
+  description: ''
+  fields:
+  - name: RXTS
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_RELATED_OFF_GEN3_EQUALIZATION:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_RELATED_OFF_GEN3_DLLP_XMT_DELAY:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 17
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_RELATED_OFF_GEN3_DC_BALANCE:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 18
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_RELATED_OFF_GEN3_EQ_INVREQ_EVAL_DIFF:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_EQ_CONTROL_OFF_GEN3_EQ_FB:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_RC_GEN3_EQ_CONTROL_OFF_GEN3_EQ_PHASE23_EXIT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_EQ_CONTROL_OFF_GEN3_EQ_EVAL_2MS:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 5
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_EQ_CONTROL_OFF_GEN3_LOWER_RATE_EQ_REDO:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 6
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_EQ_CONTROL_OFF_GEN3_EQ_PSET_REQ:
+  description: ''
+  fields:
+  - name: VEC
+    bit_offset: 8
+    bit_size: 16
+fieldset/PCIE_RC_GEN3_EQ_CONTROL_OFF_GEN3_EQ_FOM_INC_INITIAL:
+  description: ''
+  fields:
+  - name: EVAL
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_EQ_CONTROL_OFF_GEN3_EQ_PSET_REQ_AS:
+  description: ''
+  fields:
+  - name: COEF
+    bit_offset: 25
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_EQ_CONTROL_OFF_GEN3_REQ_SEND_CONSEC_EIEOS_FOR_PSET:
+  description: ''
+  fields:
+  - name: MAP
+    bit_offset: 26
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_EQ_CONTROL_OFF_GEN3_EQ_REQ:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 27
+    bit_size: 3
+fieldset/PCIE_RC_GEN3_EQ_CONTROL_OFF_GEN3_SUPPORT_FINITE_EQ:
+  description: ''
+  fields:
+  - name: REQUEST
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_RC_GEN3_EQ_FB_MODE_DIR_CHANGE_OFF_GEN3_EQ_FMDC_T_MIN:
+  description: ''
+  fields:
+  - name: PHASE23
+    bit_offset: 0
+    bit_size: 5
+fieldset/PCIE_RC_GEN3_EQ_FB_MODE_DIR_CHANGE_OFF_GEN3_EQ_FMDC_N:
+  description: ''
+  fields:
+  - name: EVALS
+    bit_offset: 5
+    bit_size: 5
+fieldset/PCIE_RC_GEN3_EQ_FB_MODE_DIR_CHANGE_OFF_GEN3_EQ_FMDC_MAX_PRE_CUSROR:
+  description: ''
+  fields:
+  - name: DELTA
+    bit_offset: 10
+    bit_size: 4
+fieldset/PCIE_RC_GEN3_EQ_FB_MODE_DIR_CHANGE_OFF_GEN3_EQ_FMDC_MAX_POST_CUSROR:
+  description: ''
+  fields:
+  - name: DELTA
+    bit_offset: 14
+    bit_size: 4
+fieldset/PCIE_RC_ORDER_RULE_CTRL_OFF_NP_PASS:
+  description: ''
+  fields:
+  - name: P
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_ORDER_RULE_CTRL_OFF_CPL_PASS:
+  description: ''
+  fields:
+  - name: P
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_PIPE_LOOPBACK_CONTROL_OFF_LPBK:
+  description: ''
+  fields:
+  - name: RXVALID
+    bit_offset: 0
+    bit_size: 16
+fieldset/PCIE_RC_PIPE_LOOPBACK_CONTROL_OFF_RXSTATUS:
+  description: ''
+  fields:
+  - name: LANE
+    bit_offset: 16
+    bit_size: 6
+  - name: VALUE
+    bit_offset: 24
+    bit_size: 3
+fieldset/PCIE_RC_PIPE_LOOPBACK_CONTROL_OFF_PIPE:
+  description: ''
+  fields:
+  - name: LOOPBACK
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_RC_MISC_CONTROL_1_OFF_DBI_RO_WR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_MISC_CONTROL_1_OFF_DEFAULT:
+  description: ''
+  fields:
+  - name: TARGET
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_MISC_CONTROL_1_OFF_UR_CA_MASK_4:
+  description: ''
+  fields:
+  - name: TRGT1
+    bit_offset: 2
+    bit_size: 1
+fieldset/PCIE_RC_MISC_CONTROL_1_OFF_SIMPLIFIED_REPLAY:
+  description: ''
+  fields:
+  - name: TIMER
+    bit_offset: 3
+    bit_size: 1
+fieldset/PCIE_RC_MISC_CONTROL_1_OFF_DISABLE_AUTO_LTR_CLR:
+  description: ''
+  fields:
+  - name: MSG
+    bit_offset: 4
+    bit_size: 1
+fieldset/PCIE_RC_MISC_CONTROL_1_OFF_ARI_DEVICE:
+  description: ''
+  fields:
+  - name: NUMBER
+    bit_offset: 5
+    bit_size: 1
+fieldset/PCIE_RC_MISC_CONTROL_1_OFF_CPLQ_MNG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 6
+    bit_size: 1
+fieldset/PCIE_RC_MISC_CONTROL_1_OFF_CFG_TLP_BYPASS_EN:
+  description: ''
+  fields:
+  - name: REG
+    bit_offset: 7
+    bit_size: 1
+fieldset/PCIE_RC_MISC_CONTROL_1_OFF_CONFIG_LIMIT:
+  description: ''
+  fields:
+  - name: REG
+    bit_offset: 8
+    bit_size: 10
+fieldset/PCIE_RC_MISC_CONTROL_1_OFF_TARGET_ABOVE_CONFIG_LIMIT:
+  description: ''
+  fields:
+  - name: REG
+    bit_offset: 18
+    bit_size: 2
+fieldset/PCIE_RC_MISC_CONTROL_1_OFF_P2P_TRACK_CPL_TO:
+  description: ''
+  fields:
+  - name: REG
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_RC_MISC_CONTROL_1_OFF_P2P_ERR_RPT:
+  description: ''
+  fields:
+  - name: CTRL
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_RC_MISC_CONTROL_1_OFF_PORT_LOGIC_WR:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_RC_MULTI_LANE_CONTROL_OFF_TARGET_LINK:
+  description: ''
+  fields:
+  - name: WIDTH
+    bit_offset: 0
+    bit_size: 6
+fieldset/PCIE_RC_MULTI_LANE_CONTROL_OFF_DIRECT_LINK_WIDTH:
+  description: ''
+  fields:
+  - name: CHANGE
+    bit_offset: 6
+    bit_size: 1
+fieldset/PCIE_RC_MULTI_LANE_CONTROL_OFF_UPCONFIGURE:
+  description: ''
+  fields:
+  - name: SUPPORT
+    bit_offset: 7
+    bit_size: 1
+fieldset/PCIE_RC_PHY_INTEROP_CTRL_OFF_RXSTANDBY:
+  description: ''
+  fields:
+  - name: CONTROL
+    bit_offset: 0
+    bit_size: 7
+fieldset/PCIE_RC_PHY_INTEROP_CTRL_OFF_L1SUB_EXIT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 8
+    bit_size: 1
+fieldset/PCIE_RC_PHY_INTEROP_CTRL_OFF_L1_NOWAIT:
+  description: ''
+  fields:
+  - name: P1
+    bit_offset: 9
+    bit_size: 1
+fieldset/PCIE_RC_PHY_INTEROP_CTRL_OFF_L1_CLK:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 10
+    bit_size: 1
+fieldset/PCIE_RC_PHY_INTEROP_CTRL_OFF_PHY_RST:
+  description: ''
+  fields:
+  - name: TIMER
+    bit_offset: 12
+    bit_size: 18
+fieldset/PCIE_RC_PHY_INTEROP_CTRL_OFF_PHY_PERST_ON_WARM:
+  description: ''
+  fields:
+  - name: RESET
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_RC_TRGT_CPL_LUT_DELETE_ENTRY_OFF_LOOK_UP:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 31
+fieldset/PCIE_RC_TRGT_CPL_LUT_DELETE_ENTRY_OFF_DELETE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_RC_LINK_FLUSH_CONTROL_OFF_AUTO_FLUSH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+  - name: TIMEOUT
+    bit_offset: 24
+    bit_size: 8
+fieldset/PCIE_RC_AMBA_ERROR_RESPONSE_DEFAULT_OFF_AMBA_ERROR_RESPONSE:
+  description: ''
+  fields:
+  - name: GLOBAL
+    bit_offset: 0
+    bit_size: 1
+  - name: VENDORID
+    bit_offset: 2
+    bit_size: 1
+  - name: CRS
+    bit_offset: 3
+    bit_size: 2
+  - name: MAP
+    bit_offset: 10
+    bit_size: 6
+fieldset/PCIE_RC_AMBA_LINK_TIMEOUT_OFF_LINK_TIMEOUT_PERIOD:
+  description: ''
+  fields:
+  - name: DEFAULT
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_RC_AMBA_LINK_TIMEOUT_OFF_LINK_TIMEOUT_ENABLE:
+  description: ''
+  fields:
+  - name: DEFAULT
+    bit_offset: 8
+    bit_size: 1
+fieldset/PCIE_RC_AMBA_ORDERING_CTRL_OFF_AX_SNP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_AMBA_ORDERING_CTRL_OFF_AX_MSTR_ORDR_P_EVENT:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 3
+    bit_size: 2
+fieldset/PCIE_RC_AMBA_ORDERING_CTRL_OFF_AX_MSTR_ZEROLREAD:
+  description: ''
+  fields:
+  - name: FW
+    bit_offset: 7
+    bit_size: 1
+fieldset/PCIE_RC_COHERENCY_CONTROL_1_OFF_CFG_MEMTYPE:
+  description: ''
+  fields:
+  - name: VALUE
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_COHERENCY_CONTROL_1_OFF_CFG_MEMTYPE_BOUNDARY_LOW:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 2
+    bit_size: 30
+fieldset/PCIE_RC_COHERENCY_CONTROL_2_OFF_CFG_MEMTYPE_BOUNDARY_HIGH:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_COHERENCY_CONTROL_3_OFF_CFG_MSTR_ARDOMAIN:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 0
+    bit_size: 2
+  - name: VALUE
+    bit_offset: 16
+    bit_size: 2
+fieldset/PCIE_RC_COHERENCY_CONTROL_3_OFF_CFG_MSTR_ARCACHE:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 3
+    bit_size: 4
+  - name: VALUE
+    bit_offset: 19
+    bit_size: 4
+fieldset/PCIE_RC_COHERENCY_CONTROL_3_OFF_CFG_MSTR_AWDOMAIN:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 8
+    bit_size: 2
+  - name: VALUE
+    bit_offset: 24
+    bit_size: 2
+fieldset/PCIE_RC_COHERENCY_CONTROL_3_OFF_CFG_MSTR_AWCACHE:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 11
+    bit_size: 4
+  - name: VALUE
+    bit_offset: 27
+    bit_size: 4
+fieldset/PCIE_RC_AXI_MSTR_MSG_ADDR_LOW_OFF_CFG_AXIMSTR_MSG_ADDR_LOW:
+  description: ''
+  fields:
+  - name: RESERVED
+    bit_offset: 0
+    bit_size: 12
+fieldset/PCIE_RC_AXI_MSTR_MSG_ADDR_LOW_OFF_CFG_AXIMSTR_MSG_ADDR:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_RC_AXI_MSTR_MSG_ADDR_HIGH_OFF_CFG_AXIMSTR_MSG_ADDR:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_PCIE_VERSION_NUMBER_OFF_VERSION:
+  description: ''
+  fields:
+  - name: NUMBER
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_PCIE_VERSION_TYPE_OFF_VERSION:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_RC_PL_APP_BUS_DEV_NUM_STATUS_OFF_RC_DSW_DEV:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 3
+    bit_size: 5
+fieldset/PCIE_RC_PL_APP_BUS_DEV_NUM_STATUS_OFF_RC_DSW_BUS:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 8
+    bit_size: 8
+fieldset/PCIE_RC_PCIPM_TRAFFIC_CTRL_OFF_PCIPM_VDM_TRAFFIC:
+  description: ''
+  fields:
+  - name: BLOCKED
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_PCIPM_TRAFFIC_CTRL_OFF_PCIPM_NEW_TLP_CLIENT0:
+  description: ''
+  fields:
+  - name: BLOCKED
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_PCIPM_TRAFFIC_CTRL_OFF_PCIPM_NEW_TLP_CLIENT1:
+  description: ''
+  fields:
+  - name: BLOCKED
+    bit_offset: 2
+    bit_size: 1
+fieldset/PCIE_RC_PCIPM_TRAFFIC_CTRL_OFF_PCIPM_NEW_TLP_CLIENT2:
+  description: ''
+  fields:
+  - name: BLOCKED
+    bit_offset: 3
+    bit_size: 1
+fieldset/PCIE_RC_PL_LTR_LATENCY_OFF_SNOOP_LATENCY:
+  description: ''
+  fields:
+  - name: VALUE
+    bit_offset: 0
+    bit_size: 10
+  - name: SCALE
+    bit_offset: 10
+    bit_size: 3
+  - name: REQUIRE
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_RC_PL_LTR_LATENCY_OFF_NO_SNOOP_LATENCY:
+  description: ''
+  fields:
+  - name: VALUE
+    bit_offset: 16
+    bit_size: 10
+  - name: SCALE
+    bit_offset: 26
+    bit_size: 3
+  - name: REQUIRE
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_RC_AUX_CLK_FREQ_OFF_AUX_CLK:
+  description: ''
+  fields:
+  - name: FREQ
+    bit_offset: 0
+    bit_size: 10
+fieldset/PCIE_RC_L1_SUBSTATES_OFF_L1SUB_T_POWER:
+  description: ''
+  fields:
+  - name: 'OFF'
+    bit_offset: 0
+    bit_size: 2
+fieldset/PCIE_RC_L1_SUBSTATES_OFF_L1SUB_T_PCLKACK:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 6
+    bit_size: 2
+  - name: HIGH
+    bit_offset: 9
+    bit_size: 5
+fieldset/PCIE_RC_L1_SUBSTATES_OFF_L1SUB_LOW_POWER_CLOCK_SWITCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 8
+    bit_size: 1
+fieldset/PCIE_RC_POWERDOWN_CTRL_STATUS_OFF_POWERDOWN:
+  description: ''
+  fields:
+  - name: FORCE
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_POWERDOWN_CTRL_STATUS_OFF_POWERDOWN_VMAIN:
+  description: ''
+  fields:
+  - name: ACK
+    bit_offset: 1
+    bit_size: 1
+fieldset/PCIE_RC_POWERDOWN_CTRL_STATUS_OFF_POWERDOWN_MAC:
+  description: ''
+  fields:
+  - name: POWERDOWN
+    bit_offset: 4
+    bit_size: 4
+fieldset/PCIE_RC_POWERDOWN_CTRL_STATUS_OFF_POWERDOWN_PHY:
+  description: ''
+  fields:
+  - name: POWERDOWN
+    bit_offset: 8
+    bit_size: 4
+fieldset/PCIE_RC_PHY_INTEROP_CTRL_2_OFF_PMA_PIPE_RST_DELAY:
+  description: ''
+  fields:
+  - name: TIMER
+    bit_offset: 0
+    bit_size: 6
+fieldset/PCIE_RC_PHY_INTEROP_CTRL_2_OFF_DSP_PCIPM_L1_ENTER:
+  description: ''
+  fields:
+  - name: DELAY
+    bit_offset: 8
+    bit_size: 4
+fieldset/PCIE_RC_PIPE_RELATED_OFF_PIPE_GARBAGE_DATA:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 8
+    bit_size: 1
+fieldset/PCIE_RC_DBI_FUNCTION_BANK_CTRL_REG_OFF_DBI_FUNCTION_BANK_CTRL:
+  description: ''
+  fields:
+  - name: REG
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_RC_UTILITY_OFF:
+  description: ''
+  fields:
+  - name: UTILITY
+    bit_offset: 0
+    bit_size: 32
+    description: Reserved.
+fieldset/PCIE_RC_PM_UTILITY_OFF_PM:
+  description: ''
+  fields:
+  - name: UTILITY
+    bit_offset: 0
+    bit_size: 32
+    description: Reserved.

@@ -1,0 +1,274 @@
+block/BNR:
+  description: ''
+  items:
+  - name: NEO_PIPE1_BNR_CONF_CTRL_CAM
+    byte_offset: 0
+  - name: NEO_PIPE1_BNR_CONF_YPEAK_CAM
+    byte_offset: 4
+  - name: NEO_PIPE1_BNR_CONF_YEDGE_TH0_CAM
+    byte_offset: 8
+  - name: NEO_PIPE1_BNR_CONF_YEDGE_SCALE_CAM
+    byte_offset: 12
+  - name: NEO_PIPE1_BNR_CONF_YEDGES_TH0_CAM
+    byte_offset: 16
+  - name: NEO_PIPE1_BNR_CONF_YEDGES_SCALE_CAM
+    byte_offset: 20
+  - name: NEO_PIPE1_BNR_CONF_YEDGEA_TH0_CAM
+    byte_offset: 24
+  - name: NEO_PIPE1_BNR_CONF_YEDGEA_SCALE_CAM
+    byte_offset: 28
+  - name: NEO_PIPE1_BNR_CONF_YLUMA_X_TH0_CAM
+    byte_offset: 32
+  - name: NEO_PIPE1_BNR_CONF_YLUMA_Y_TH_CAM
+    byte_offset: 36
+  - name: NEO_PIPE1_BNR_CONF_YLUMA_SCALE_CAM
+    byte_offset: 40
+  - name: NEO_PIPE1_BNR_CONF_YALPHA_GAIN_CAM
+    byte_offset: 44
+  - name: NEO_PIPE1_BNR_CONF_CPEAK_CAM
+    byte_offset: 48
+  - name: NEO_PIPE1_BNR_CONF_CEDGE_TH0_CAM
+    byte_offset: 52
+  - name: NEO_PIPE1_BNR_CONF_CEDGE_SCALE_CAM
+    byte_offset: 56
+  - name: NEO_PIPE1_BNR_CONF_CEDGES_TH0_CAM
+    byte_offset: 60
+  - name: NEO_PIPE1_BNR_CONF_CEDGES_SCALE_CAM
+    byte_offset: 64
+  - name: NEO_PIPE1_BNR_CONF_CEDGEA_TH0_CAM
+    byte_offset: 68
+  - name: NEO_PIPE1_BNR_CONF_CEDGEA_SCALE_CAM
+    byte_offset: 72
+  - name: NEO_PIPE1_BNR_CONF_CLUMA_X_TH0_CAM
+    byte_offset: 76
+  - name: NEO_PIPE1_BNR_CONF_CLUMA_Y_TH_CAM
+    byte_offset: 80
+  - name: NEO_PIPE1_BNR_CONF_CLUMA_SCALE_CAM
+    byte_offset: 84
+  - name: NEO_PIPE1_BNR_CONF_CALPHA_GAIN_CAM
+    byte_offset: 88
+  - name: NEO_PIPE1_BNR_CONF_EDGE_STAT_CAM
+    byte_offset: 92
+  - name: NEO_PIPE1_BNR_CONF_EDGES_STAT_CAM
+    byte_offset: 96
+  - name: NEO_PIPE1_BNR_CONF_STRETCH_CAM
+    byte_offset: 100
+fieldset/BNR_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OBPP
+    bit_offset: 2
+    bit_size: 2
+  - name: DEBUG
+    bit_offset: 8
+    bit_size: 3
+  - name: NHOOD
+    bit_offset: 16
+    bit_size: 1
+  - name: ENABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/BNR_YPEAK_CAM_PEAK:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 12
+  - name: SEL
+    bit_offset: 14
+    bit_size: 2
+  - name: HIGH
+    bit_offset: 16
+    bit_size: 12
+  - name: OUTSEL
+    bit_offset: 31
+    bit_size: 1
+fieldset/BNR_YEDGE_TH0_CAM_EDGE:
+  description: ''
+  fields:
+  - name: TH0
+    bit_offset: 0
+    bit_size: 20
+fieldset/BNR_YEDGE_SCALE_CAM:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 0
+    bit_size: 16
+  - name: SHIFT
+    bit_offset: 16
+    bit_size: 5
+fieldset/BNR_YEDGES_TH0_CAM_EDGE:
+  description: ''
+  fields:
+  - name: TH0
+    bit_offset: 0
+    bit_size: 20
+fieldset/BNR_YEDGES_SCALE_CAM:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 0
+    bit_size: 16
+  - name: SHIFT
+    bit_offset: 16
+    bit_size: 5
+fieldset/BNR_YEDGEA_TH0_CAM_EDGE:
+  description: ''
+  fields:
+  - name: TH0
+    bit_offset: 0
+    bit_size: 20
+fieldset/BNR_YEDGEA_SCALE_CAM:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 0
+    bit_size: 16
+  - name: SHIFT
+    bit_offset: 16
+    bit_size: 5
+fieldset/BNR_YLUMA_X_TH0_CAM:
+  description: ''
+  fields:
+  - name: TH
+    bit_offset: 0
+    bit_size: 20
+fieldset/BNR_YLUMA_Y_TH_CAM_LUMA_Y:
+  description: ''
+  fields:
+  - name: TH0
+    bit_offset: 0
+    bit_size: 10
+  - name: TH1
+    bit_offset: 16
+    bit_size: 10
+fieldset/BNR_YLUMA_SCALE_CAM:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 0
+    bit_size: 16
+  - name: SHIFT
+    bit_offset: 16
+    bit_size: 5
+fieldset/BNR_YALPHA_GAIN_CAM:
+  description: ''
+  fields:
+  - name: GAIN
+    bit_offset: 0
+    bit_size: 16
+  - name: OFFSET
+    bit_offset: 16
+    bit_size: 16
+fieldset/BNR_CPEAK_CAM_PEAK:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 12
+  - name: SEL
+    bit_offset: 14
+    bit_size: 2
+  - name: HIGH
+    bit_offset: 16
+    bit_size: 12
+  - name: OUTSEL
+    bit_offset: 31
+    bit_size: 1
+fieldset/BNR_CEDGE_TH0_CAM_EDGE:
+  description: ''
+  fields:
+  - name: TH0
+    bit_offset: 0
+    bit_size: 20
+fieldset/BNR_CEDGE_SCALE_CAM:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 0
+    bit_size: 16
+  - name: SHIFT
+    bit_offset: 16
+    bit_size: 5
+fieldset/BNR_CEDGES_TH0_CAM_EDGE:
+  description: ''
+  fields:
+  - name: TH0
+    bit_offset: 0
+    bit_size: 20
+fieldset/BNR_CEDGES_SCALE_CAM:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 0
+    bit_size: 16
+  - name: SHIFT
+    bit_offset: 16
+    bit_size: 5
+fieldset/BNR_CEDGEA_TH0_CAM_EDGE:
+  description: ''
+  fields:
+  - name: TH0
+    bit_offset: 0
+    bit_size: 20
+fieldset/BNR_CEDGEA_SCALE_CAM:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 0
+    bit_size: 16
+  - name: SHIFT
+    bit_offset: 16
+    bit_size: 5
+fieldset/BNR_CLUMA_X_TH0_CAM:
+  description: ''
+  fields:
+  - name: TH
+    bit_offset: 0
+    bit_size: 20
+fieldset/BNR_CLUMA_Y_TH_CAM_LUMA_Y:
+  description: ''
+  fields:
+  - name: TH0
+    bit_offset: 0
+    bit_size: 10
+  - name: TH1
+    bit_offset: 16
+    bit_size: 10
+fieldset/BNR_CLUMA_SCALE_CAM:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 0
+    bit_size: 16
+  - name: SHIFT
+    bit_offset: 16
+    bit_size: 5
+fieldset/BNR_CALPHA_GAIN_CAM:
+  description: ''
+  fields:
+  - name: GAIN
+    bit_offset: 0
+    bit_size: 16
+  - name: OFFSET
+    bit_offset: 16
+    bit_size: 16
+fieldset/BNR_EDGE_STAT_CAM_EDGE:
+  description: ''
+  fields:
+  - name: PIXELS
+    bit_offset: 0
+    bit_size: 24
+fieldset/BNR_EDGES_STAT_CAM_EDGE:
+  description: ''
+  fields:
+  - name: PIXELS
+    bit_offset: 0
+    bit_size: 24
+fieldset/BNR_STRETCH_CAM:
+  description: ''
+  fields:
+  - name: GAIN
+    bit_offset: 0
+    bit_size: 16

@@ -1,0 +1,6765 @@
+block/NOC_GICT:
+  description: ''
+  items:
+  - name: GICT_ERR0FR
+    byte_offset: 0
+    fieldset: NOC_GICT_GICT_ERR0FR
+  - name: GICT_ERR0CTLR
+    byte_offset: 8
+    fieldset: NOC_GICT_GICT_ERR0CTLR
+  - name: GICT_ERR0STATUS
+    byte_offset: 16
+    fieldset: NOC_GICT_GICT_ERR0STATUS
+  - name: GICT_ERR0ADDR
+    byte_offset: 24
+    fieldset: NOC_GICT_GICT_ERR0ADDR
+  - name: GICT_ERR0MISC0
+    byte_offset: 32
+    fieldset: NOC_GICT_GICT_ERR0MISC0
+  - name: GICT_ERR0MISC1
+    byte_offset: 40
+    fieldset: NOC_GICT_GICT_ERR0MISC1
+  - name: GICT_ERR1FR
+    byte_offset: 64
+    fieldset: NOC_GICT_GICT_ERR1FR
+  - name: GICT_ERR1CTLR
+    byte_offset: 72
+    fieldset: NOC_GICT_GICT_ERR1CTLR
+  - name: GICT_ERR1STATUS
+    byte_offset: 80
+    fieldset: NOC_GICT_GICT_ERR1STATUS
+  - name: GICT_ERR1ADDR
+    byte_offset: 88
+    fieldset: NOC_GICT_GICT_ERR1ADDR
+  - name: GICT_ERR1MISC0
+    byte_offset: 96
+    fieldset: NOC_GICT_GICT_ERR1MISC0
+  - name: GICT_ERR1MISC1
+    byte_offset: 104
+    fieldset: NOC_GICT_GICT_ERR1MISC1
+  - name: GICT_ERR2FR
+    byte_offset: 128
+    fieldset: NOC_GICT_GICT_ERR2FR
+  - name: GICT_ERR2CTLR
+    byte_offset: 136
+    fieldset: NOC_GICT_GICT_ERR2CTLR
+  - name: GICT_ERR2STATUS
+    byte_offset: 144
+    fieldset: NOC_GICT_GICT_ERR2STATUS
+  - name: GICT_ERR2ADDR
+    byte_offset: 152
+    fieldset: NOC_GICT_GICT_ERR2ADDR
+  - name: GICT_ERR2MISC0
+    byte_offset: 160
+    fieldset: NOC_GICT_GICT_ERR2MISC0
+  - name: GICT_ERR2MISC1
+    byte_offset: 168
+    fieldset: NOC_GICT_GICT_ERR2MISC1
+  - name: GICT_ERR3FR
+    byte_offset: 192
+    fieldset: NOC_GICT_GICT_ERR3FR
+  - name: GICT_ERR3CTLR
+    byte_offset: 200
+    fieldset: NOC_GICT_GICT_ERR3CTLR
+  - name: GICT_ERR3STATUS
+    byte_offset: 208
+    fieldset: NOC_GICT_GICT_ERR3STATUS
+  - name: GICT_ERR3ADDR
+    byte_offset: 216
+    fieldset: NOC_GICT_GICT_ERR3ADDR
+  - name: GICT_ERR3MISC0
+    byte_offset: 224
+    fieldset: NOC_GICT_GICT_ERR3MISC0
+  - name: GICT_ERR3MISC1
+    byte_offset: 232
+    fieldset: NOC_GICT_GICT_ERR3MISC1
+  - name: GICT_ERR4FR
+    byte_offset: 256
+    fieldset: NOC_GICT_GICT_ERR4FR
+  - name: GICT_ERR4CTLR
+    byte_offset: 264
+    fieldset: NOC_GICT_GICT_ERR4CTLR
+  - name: GICT_ERR4STATUS
+    byte_offset: 272
+    fieldset: NOC_GICT_GICT_ERR4STATUS
+  - name: GICT_ERR4ADDR
+    byte_offset: 280
+    fieldset: NOC_GICT_GICT_ERR4ADDR
+  - name: GICT_ERR4MISC0
+    byte_offset: 288
+    fieldset: NOC_GICT_GICT_ERR4MISC0
+  - name: GICT_ERR4MISC1
+    byte_offset: 296
+    fieldset: NOC_GICT_GICT_ERR4MISC1
+  - name: GICT_ERR5FR
+    byte_offset: 320
+    fieldset: NOC_GICT_GICT_ERR5FR
+  - name: GICT_ERR5CTLR
+    byte_offset: 328
+    fieldset: NOC_GICT_GICT_ERR5CTLR
+  - name: GICT_ERR5STATUS
+    byte_offset: 336
+    fieldset: NOC_GICT_GICT_ERR5STATUS
+  - name: GICT_ERR5ADDR
+    byte_offset: 344
+    fieldset: NOC_GICT_GICT_ERR5ADDR
+  - name: GICT_ERR5MISC0
+    byte_offset: 352
+    fieldset: NOC_GICT_GICT_ERR5MISC0
+  - name: GICT_ERR5MISC1
+    byte_offset: 360
+    fieldset: NOC_GICT_GICT_ERR5MISC1
+  - name: GICT_ERR6FR
+    byte_offset: 384
+    fieldset: NOC_GICT_GICT_ERR6FR
+  - name: GICT_ERR6CTLR
+    byte_offset: 392
+    fieldset: NOC_GICT_GICT_ERR6CTLR
+  - name: GICT_ERR6STATUS
+    byte_offset: 400
+    fieldset: NOC_GICT_GICT_ERR6STATUS
+  - name: GICT_ERR6ADDR
+    byte_offset: 408
+    fieldset: NOC_GICT_GICT_ERR6ADDR
+  - name: GICT_ERR6MISC0
+    byte_offset: 416
+    fieldset: NOC_GICT_GICT_ERR6MISC0
+  - name: GICT_ERR6MISC1
+    byte_offset: 424
+    fieldset: NOC_GICT_GICT_ERR6MISC1
+  - name: GICT_ERR7FR
+    byte_offset: 448
+    fieldset: NOC_GICT_GICT_ERR7FR
+  - name: GICT_ERR7CTLR
+    byte_offset: 456
+    fieldset: NOC_GICT_GICT_ERR7CTLR
+  - name: GICT_ERR7STATUS
+    byte_offset: 464
+    fieldset: NOC_GICT_GICT_ERR7STATUS
+  - name: GICT_ERR7ADDR
+    byte_offset: 472
+    fieldset: NOC_GICT_GICT_ERR7ADDR
+  - name: GICT_ERR7MISC0
+    byte_offset: 480
+    fieldset: NOC_GICT_GICT_ERR7MISC0
+  - name: GICT_ERR7MISC1
+    byte_offset: 488
+    fieldset: NOC_GICT_GICT_ERR7MISC1
+  - name: GICT_ERR8FR
+    byte_offset: 512
+    fieldset: NOC_GICT_GICT_ERR8FR
+  - name: GICT_ERR8CTLR
+    byte_offset: 520
+    fieldset: NOC_GICT_GICT_ERR8CTLR
+  - name: GICT_ERR8STATUS
+    byte_offset: 528
+    fieldset: NOC_GICT_GICT_ERR8STATUS
+  - name: GICT_ERR8ADDR
+    byte_offset: 536
+    fieldset: NOC_GICT_GICT_ERR8ADDR
+  - name: GICT_ERR8MISC0
+    byte_offset: 544
+    fieldset: NOC_GICT_GICT_ERR8MISC0
+  - name: GICT_ERR8MISC1
+    byte_offset: 552
+    fieldset: NOC_GICT_GICT_ERR8MISC1
+  - name: GICT_ERR9FR
+    byte_offset: 576
+    fieldset: NOC_GICT_GICT_ERR9FR
+  - name: GICT_ERR9CTLR
+    byte_offset: 584
+    fieldset: NOC_GICT_GICT_ERR9CTLR
+  - name: GICT_ERR9STATUS
+    byte_offset: 592
+    fieldset: NOC_GICT_GICT_ERR9STATUS
+  - name: GICT_ERR9ADDR
+    byte_offset: 600
+    fieldset: NOC_GICT_GICT_ERR9ADDR
+  - name: GICT_ERR9MISC0
+    byte_offset: 608
+    fieldset: NOC_GICT_GICT_ERR9MISC0
+  - name: GICT_ERR9MISC1
+    byte_offset: 616
+    fieldset: NOC_GICT_GICT_ERR9MISC1
+  - name: GICT_ERR10FR
+    byte_offset: 640
+    fieldset: NOC_GICT_GICT_ERR10FR
+  - name: GICT_ERR10CTLR
+    byte_offset: 648
+    fieldset: NOC_GICT_GICT_ERR10CTLR
+  - name: GICT_ERR10STATUS
+    byte_offset: 656
+    fieldset: NOC_GICT_GICT_ERR10STATUS
+  - name: GICT_ERR10ADDR
+    byte_offset: 664
+    fieldset: NOC_GICT_GICT_ERR10ADDR
+  - name: GICT_ERR10MISC0
+    byte_offset: 672
+    fieldset: NOC_GICT_GICT_ERR10MISC0
+  - name: GICT_ERR10MISC1
+    byte_offset: 680
+    fieldset: NOC_GICT_GICT_ERR10MISC1
+  - name: GICT_ERR11FR
+    byte_offset: 704
+    fieldset: NOC_GICT_GICT_ERR11FR
+  - name: GICT_ERR11CTLR
+    byte_offset: 712
+    fieldset: NOC_GICT_GICT_ERR11CTLR
+  - name: GICT_ERR11STATUS
+    byte_offset: 720
+    fieldset: NOC_GICT_GICT_ERR11STATUS
+  - name: GICT_ERR11ADDR
+    byte_offset: 728
+    fieldset: NOC_GICT_GICT_ERR11ADDR
+  - name: GICT_ERR11MISC0
+    byte_offset: 736
+    fieldset: NOC_GICT_GICT_ERR11MISC0
+  - name: GICT_ERR11MISC1
+    byte_offset: 744
+    fieldset: NOC_GICT_GICT_ERR11MISC1
+  - name: GICT_ERR12FR
+    byte_offset: 768
+    fieldset: NOC_GICT_GICT_ERR12FR
+  - name: GICT_ERR12CTLR
+    byte_offset: 776
+    fieldset: NOC_GICT_GICT_ERR12CTLR
+  - name: GICT_ERR12STATUS
+    byte_offset: 784
+    fieldset: NOC_GICT_GICT_ERR12STATUS
+  - name: GICT_ERR12ADDR
+    byte_offset: 792
+    fieldset: NOC_GICT_GICT_ERR12ADDR
+  - name: GICT_ERR12MISC0
+    byte_offset: 800
+    fieldset: NOC_GICT_GICT_ERR12MISC0
+  - name: GICT_ERR12MISC1
+    byte_offset: 808
+    fieldset: NOC_GICT_GICT_ERR12MISC1
+  - name: GICT_ERR13FR
+    byte_offset: 832
+    fieldset: NOC_GICT_GICT_ERR13FR
+  - name: GICT_ERR13CTLR
+    byte_offset: 840
+    fieldset: NOC_GICT_GICT_ERR13CTLR
+  - name: GICT_ERR13STATUS
+    byte_offset: 848
+    fieldset: NOC_GICT_GICT_ERR13STATUS
+  - name: GICT_ERR13ADDR
+    byte_offset: 856
+    fieldset: NOC_GICT_GICT_ERR13ADDR
+  - name: GICT_ERR13MISC0
+    byte_offset: 864
+    fieldset: NOC_GICT_GICT_ERR13MISC0
+  - name: GICT_ERR13MISC1
+    byte_offset: 872
+    fieldset: NOC_GICT_GICT_ERR13MISC1
+  - name: GICT_ERR14FR
+    byte_offset: 896
+    fieldset: NOC_GICT_GICT_ERR14FR
+  - name: GICT_ERR14CTLR
+    byte_offset: 904
+    fieldset: NOC_GICT_GICT_ERR14CTLR
+  - name: GICT_ERR14STATUS
+    byte_offset: 912
+    fieldset: NOC_GICT_GICT_ERR14STATUS
+  - name: GICT_ERR14ADDR
+    byte_offset: 920
+    fieldset: NOC_GICT_GICT_ERR14ADDR
+  - name: GICT_ERR14MISC0
+    byte_offset: 928
+    fieldset: NOC_GICT_GICT_ERR14MISC0
+  - name: GICT_ERR14MISC1
+    byte_offset: 936
+    fieldset: NOC_GICT_GICT_ERR14MISC1
+  - name: GICT_ERR15FR
+    byte_offset: 960
+    fieldset: NOC_GICT_GICT_ERR15FR
+  - name: GICT_ERR15CTLR
+    byte_offset: 968
+    fieldset: NOC_GICT_GICT_ERR15CTLR
+  - name: GICT_ERR15STATUS
+    byte_offset: 976
+    fieldset: NOC_GICT_GICT_ERR15STATUS
+  - name: GICT_ERR15ADDR
+    byte_offset: 984
+    fieldset: NOC_GICT_GICT_ERR15ADDR
+  - name: GICT_ERR15MISC0
+    byte_offset: 992
+    fieldset: NOC_GICT_GICT_ERR15MISC0
+  - name: GICT_ERR15MISC1
+    byte_offset: 1000
+    fieldset: NOC_GICT_GICT_ERR15MISC1
+  - name: GICT_ERR16FR
+    byte_offset: 1024
+    fieldset: NOC_GICT_GICT_ERR16FR
+  - name: GICT_ERR16CTLR
+    byte_offset: 1032
+    fieldset: NOC_GICT_GICT_ERR16CTLR
+  - name: GICT_ERR16STATUS
+    byte_offset: 1040
+    fieldset: NOC_GICT_GICT_ERR16STATUS
+  - name: GICT_ERR16ADDR
+    byte_offset: 1048
+    fieldset: NOC_GICT_GICT_ERR16ADDR
+  - name: GICT_ERR16MISC0
+    byte_offset: 1056
+    fieldset: NOC_GICT_GICT_ERR16MISC0
+  - name: GICT_ERR16MISC1
+    byte_offset: 1064
+    fieldset: NOC_GICT_GICT_ERR16MISC1
+  - name: GICT_ERR17FR
+    byte_offset: 1088
+    fieldset: NOC_GICT_GICT_ERR17FR
+  - name: GICT_ERR17CTLR
+    byte_offset: 1096
+    fieldset: NOC_GICT_GICT_ERR17CTLR
+  - name: GICT_ERR17STATUS
+    byte_offset: 1104
+    fieldset: NOC_GICT_GICT_ERR17STATUS
+  - name: GICT_ERR17ADDR
+    byte_offset: 1112
+    fieldset: NOC_GICT_GICT_ERR17ADDR
+  - name: GICT_ERR17MISC0
+    byte_offset: 1120
+    fieldset: NOC_GICT_GICT_ERR17MISC0
+  - name: GICT_ERR17MISC1
+    byte_offset: 1128
+    fieldset: NOC_GICT_GICT_ERR17MISC1
+  - name: GICT_ERR18FR
+    byte_offset: 1152
+    fieldset: NOC_GICT_GICT_ERR18FR
+  - name: GICT_ERR18CTLR
+    byte_offset: 1160
+    fieldset: NOC_GICT_GICT_ERR18CTLR
+  - name: GICT_ERR18STATUS
+    byte_offset: 1168
+    fieldset: NOC_GICT_GICT_ERR18STATUS
+  - name: GICT_ERR18ADDR
+    byte_offset: 1176
+    fieldset: NOC_GICT_GICT_ERR18ADDR
+  - name: GICT_ERR18MISC0
+    byte_offset: 1184
+    fieldset: NOC_GICT_GICT_ERR18MISC0
+  - name: GICT_ERR18MISC1
+    byte_offset: 1192
+    fieldset: NOC_GICT_GICT_ERR18MISC1
+  - name: GICT_ERR19FR
+    byte_offset: 1216
+    fieldset: NOC_GICT_GICT_ERR19FR
+  - name: GICT_ERR19CTLR
+    byte_offset: 1224
+    fieldset: NOC_GICT_GICT_ERR19CTLR
+  - name: GICT_ERR19STATUS
+    byte_offset: 1232
+    fieldset: NOC_GICT_GICT_ERR19STATUS
+  - name: GICT_ERR19ADDR
+    byte_offset: 1240
+    fieldset: NOC_GICT_GICT_ERR19ADDR
+  - name: GICT_ERR19MISC0
+    byte_offset: 1248
+    fieldset: NOC_GICT_GICT_ERR19MISC0
+  - name: GICT_ERR19MISC1
+    byte_offset: 1256
+    fieldset: NOC_GICT_GICT_ERR19MISC1
+  - name: GICT_ERR20FR
+    byte_offset: 1280
+    fieldset: NOC_GICT_GICT_ERR20FR
+  - name: GICT_ERR20CTLR
+    byte_offset: 1288
+    fieldset: NOC_GICT_GICT_ERR20CTLR
+  - name: GICT_ERR20STATUS
+    byte_offset: 1296
+    fieldset: NOC_GICT_GICT_ERR20STATUS
+  - name: GICT_ERR20ADDR
+    byte_offset: 1304
+    fieldset: NOC_GICT_GICT_ERR20ADDR
+  - name: GICT_ERR20MISC0
+    byte_offset: 1312
+    fieldset: NOC_GICT_GICT_ERR20MISC0
+  - name: GICT_ERR20MISC1
+    byte_offset: 1320
+    fieldset: NOC_GICT_GICT_ERR20MISC1
+  - name: GICT_ERR21FR
+    byte_offset: 1344
+    fieldset: NOC_GICT_GICT_ERR21FR
+  - name: GICT_ERR21CTLR
+    byte_offset: 1352
+    fieldset: NOC_GICT_GICT_ERR21CTLR
+  - name: GICT_ERR21STATUS
+    byte_offset: 1360
+    fieldset: NOC_GICT_GICT_ERR21STATUS
+  - name: GICT_ERR21ADDR
+    byte_offset: 1368
+    fieldset: NOC_GICT_GICT_ERR21ADDR
+  - name: GICT_ERR21MISC0
+    byte_offset: 1376
+    fieldset: NOC_GICT_GICT_ERR21MISC0
+  - name: GICT_ERR21MISC1
+    byte_offset: 1384
+    fieldset: NOC_GICT_GICT_ERR21MISC1
+  - name: GICT_ERR22FR
+    byte_offset: 1408
+    fieldset: NOC_GICT_GICT_ERR22FR
+  - name: GICT_ERR22CTLR
+    byte_offset: 1416
+    fieldset: NOC_GICT_GICT_ERR22CTLR
+  - name: GICT_ERR22STATUS
+    byte_offset: 1424
+    fieldset: NOC_GICT_GICT_ERR22STATUS
+  - name: GICT_ERR22ADDR
+    byte_offset: 1432
+    fieldset: NOC_GICT_GICT_ERR22ADDR
+  - name: GICT_ERR22MISC0
+    byte_offset: 1440
+    fieldset: NOC_GICT_GICT_ERR22MISC0
+  - name: GICT_ERR22MISC1
+    byte_offset: 1448
+    fieldset: NOC_GICT_GICT_ERR22MISC1
+  - name: GICT_ERR23FR
+    byte_offset: 1472
+    fieldset: NOC_GICT_GICT_ERR23FR
+  - name: GICT_ERR23CTLR
+    byte_offset: 1480
+    fieldset: NOC_GICT_GICT_ERR23CTLR
+  - name: GICT_ERR23STATUS
+    byte_offset: 1488
+    fieldset: NOC_GICT_GICT_ERR23STATUS
+  - name: GICT_ERR23ADDR
+    byte_offset: 1496
+    fieldset: NOC_GICT_GICT_ERR23ADDR
+  - name: GICT_ERR23MISC0
+    byte_offset: 1504
+    fieldset: NOC_GICT_GICT_ERR23MISC0
+  - name: GICT_ERR23MISC1
+    byte_offset: 1512
+    fieldset: NOC_GICT_GICT_ERR23MISC1
+  - name: GICT_ERR24FR
+    byte_offset: 1536
+    fieldset: NOC_GICT_GICT_ERR24FR
+  - name: GICT_ERR24CTLR
+    byte_offset: 1544
+    fieldset: NOC_GICT_GICT_ERR24CTLR
+  - name: GICT_ERR24STATUS
+    byte_offset: 1552
+    fieldset: NOC_GICT_GICT_ERR24STATUS
+  - name: GICT_ERR24ADDR
+    byte_offset: 1560
+    fieldset: NOC_GICT_GICT_ERR24ADDR
+  - name: GICT_ERR24MISC0
+    byte_offset: 1568
+    fieldset: NOC_GICT_GICT_ERR24MISC0
+  - name: GICT_ERR24MISC1
+    byte_offset: 1576
+    fieldset: NOC_GICT_GICT_ERR24MISC1
+  - name: GICT_ERR25FR
+    byte_offset: 1600
+    fieldset: NOC_GICT_GICT_ERR25FR
+  - name: GICT_ERR25CTLR
+    byte_offset: 1608
+    fieldset: NOC_GICT_GICT_ERR25CTLR
+  - name: GICT_ERR25STATUS
+    byte_offset: 1616
+    fieldset: NOC_GICT_GICT_ERR25STATUS
+  - name: GICT_ERR25ADDR
+    byte_offset: 1624
+    fieldset: NOC_GICT_GICT_ERR25ADDR
+  - name: GICT_ERR25MISC0
+    byte_offset: 1632
+    fieldset: NOC_GICT_GICT_ERR25MISC0
+  - name: GICT_ERR25MISC1
+    byte_offset: 1640
+    fieldset: NOC_GICT_GICT_ERR25MISC1
+  - name: GICT_ERR26FR
+    byte_offset: 1664
+    fieldset: NOC_GICT_GICT_ERR26FR
+  - name: GICT_ERR26CTLR
+    byte_offset: 1672
+    fieldset: NOC_GICT_GICT_ERR26CTLR
+  - name: GICT_ERR26STATUS
+    byte_offset: 1680
+    fieldset: NOC_GICT_GICT_ERR26STATUS
+  - name: GICT_ERR26ADDR
+    byte_offset: 1688
+    fieldset: NOC_GICT_GICT_ERR26ADDR
+  - name: GICT_ERR26MISC0
+    byte_offset: 1696
+    fieldset: NOC_GICT_GICT_ERR26MISC0
+  - name: GICT_ERR26MISC1
+    byte_offset: 1704
+    fieldset: NOC_GICT_GICT_ERR26MISC1
+  - name: GICT_ERR27FR
+    byte_offset: 1728
+    fieldset: NOC_GICT_GICT_ERR27FR
+  - name: GICT_ERR27CTLR
+    byte_offset: 1736
+    fieldset: NOC_GICT_GICT_ERR27CTLR
+  - name: GICT_ERR27STATUS
+    byte_offset: 1744
+    fieldset: NOC_GICT_GICT_ERR27STATUS
+  - name: GICT_ERR27ADDR
+    byte_offset: 1752
+    fieldset: NOC_GICT_GICT_ERR27ADDR
+  - name: GICT_ERR27MISC0
+    byte_offset: 1760
+    fieldset: NOC_GICT_GICT_ERR27MISC0
+  - name: GICT_ERR27MISC1
+    byte_offset: 1768
+    fieldset: NOC_GICT_GICT_ERR27MISC1
+  - name: GICT_ERRGSR0
+    byte_offset: 57344
+    fieldset: NOC_GICT_GICT_ERRGSR0
+  - name: GICT_ERRIRQCR0
+    byte_offset: 59392
+    fieldset: NOC_GICT_GICT_ERRIRQCR0
+  - name: GICT_ERRIRQCR1
+    byte_offset: 59400
+    fieldset: NOC_GICT_GICT_ERRIRQCR1
+  - name: GICT_DEVARCH
+    byte_offset: 65468
+    fieldset: NOC_GICT_GICT_DEVARCH
+  - name: GICT_DEVID
+    byte_offset: 65480
+    fieldset: NOC_GICT_GICT_DEVID
+  - name: GICT_PIDR4
+    byte_offset: 65488
+    fieldset: NOC_GICT_GICT_PIDR4
+  - name: GICT_PIDR5
+    byte_offset: 65492
+    fieldset: NOC_GICT_GICT_PIDR5
+  - name: GICT_PIDR6
+    byte_offset: 65496
+    fieldset: NOC_GICT_GICT_PIDR6
+  - name: GICT_PIDR7
+    byte_offset: 65500
+    fieldset: NOC_GICT_GICT_PIDR7
+  - name: GICT_PIDR0
+    byte_offset: 65504
+    fieldset: NOC_GICT_GICT_PIDR0
+  - name: GICT_PIDR1
+    byte_offset: 65508
+    fieldset: NOC_GICT_GICT_PIDR1
+  - name: GICT_PIDR2
+    byte_offset: 65512
+    fieldset: NOC_GICT_GICT_PIDR2
+  - name: GICT_PIDR3
+    byte_offset: 65516
+    fieldset: NOC_GICT_GICT_PIDR3
+  - name: GICT_CIDR0
+    byte_offset: 65520
+    fieldset: NOC_GICT_GICT_CIDR0
+  - name: GICT_CIDR1
+    byte_offset: 65524
+    fieldset: NOC_GICT_GICT_CIDR1
+  - name: GICT_CIDR2
+    byte_offset: 65528
+    fieldset: NOC_GICT_GICT_CIDR2
+  - name: GICT_CIDR3
+    byte_offset: 65532
+    fieldset: NOC_GICT_GICT_CIDR3
+fieldset/NOC_GICT_GICT_ERR0FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR0CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR0CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR0CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR0CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR0STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR0ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR0MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR0MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR1FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR1CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR1CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR1CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR1CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR1STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR1ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR1MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR1MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR2FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR2CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR2CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR2CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR2CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR2STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR2ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR2MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR2MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR3FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR3CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR3CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR3CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR3CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR3STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR3ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR3MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR3MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR4FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR4CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR4CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR4CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR4CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR4STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR4ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR4MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR4MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR5FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR5CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR5CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR5CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR5CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR5STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR5ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR5MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR5MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR6FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR6CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR6CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR6CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR6CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR6STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR6ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR6MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR6MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR7FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR7CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR7CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR7CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR7CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR7STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR7ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR7MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR7MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR8FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR8CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR8CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR8CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR8CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR8STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR8ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR8MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR8MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR9FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR9CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR9CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR9CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR9CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR9STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR9ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR9MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR9MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR10FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR10CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR10CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR10CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR10CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR10STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR10ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR10MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR10MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR11FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR11CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR11CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR11CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR11CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR11STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR11ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR11MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR11MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR12FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR12CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR12CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR12CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR12CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR12STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR12ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR12MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR12MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR13FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR13CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR13CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR13CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR13CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR13STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR13ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR13MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR13MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR14FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR14CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR14CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR14CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR14CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR14STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR14ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR14MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR14MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR15FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR15CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR15CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR15CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR15CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR15STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR15ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR15MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR15MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR16FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR16CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR16CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR16CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR16CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR16STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR16ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR16MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR16MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR17FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR17CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR17CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR17CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR17CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR17STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR17ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR17MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR17MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR18FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR18CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR18CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR18CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR18CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR18STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR18ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR18MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR18MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR19FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR19CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR19CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR19CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR19CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR19STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR19ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR19MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR19MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR20FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR20CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR20CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR20CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR20CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR20STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR20ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR20MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR20MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR21FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR21CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR21CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR21CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR21CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR21STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR21ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR21MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR21MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR22FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR22CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR22CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR22CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR22CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR22STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR22ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR22MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR22MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR23FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR23CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR23CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR23CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR23CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR23STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR23ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR23MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR23MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR24FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR24CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR24CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR24CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR24CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR24STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR24ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR24MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR24MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR25FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR25CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR25CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR25CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR25CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR25STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR25ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR25MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR25MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR26FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR26CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR26CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR26CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR26CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR26STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR26ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR26MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR26MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERR27FR:
+  description: ''
+  fields:
+  - name: ED
+    bit_offset: 0
+    bit_size: 2
+    description: ED
+  - name: DE
+    bit_offset: 2
+    bit_size: 2
+    description: ED
+  - name: UI
+    bit_offset: 4
+    bit_size: 2
+    description: DE
+  - name: FI
+    bit_offset: 6
+    bit_size: 2
+    description: UI
+  - name: UE
+    bit_offset: 8
+    bit_size: 2
+    description: FI
+  - name: CFI
+    bit_offset: 10
+    bit_size: 2
+    description: UE
+  - name: CEC
+    bit_offset: 12
+    bit_size: 3
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: CEC
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 48
+    description: RP
+fieldset/NOC_GICT_GICT_ERR27CTLR:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 0
+    bit_size: 2
+    description: RESERVED0
+  - name: UI
+    bit_offset: 2
+    bit_size: 1
+    description: RESERVED0
+  - name: FI
+    bit_offset: 3
+    bit_size: 1
+    description: UI
+  - name: UE
+    bit_offset: 4
+    bit_size: 1
+    description: FI
+  - name: RESERVED1
+    bit_offset: 5
+    bit_size: 3
+    description: UE
+  - name: CFI
+    bit_offset: 8
+    bit_size: 1
+    description: RESERVED1
+  - name: RESERVED2
+    bit_offset: 9
+    bit_size: 6
+    description: CFI
+  - name: RP
+    bit_offset: 15
+    bit_size: 1
+    description: RESERVED2
+  - name: RESERVED3
+    bit_offset: 16
+    bit_size: 16
+    description: RP
+  - name: RESERVED4
+    bit_offset: 39
+    bit_size: 25
+    description: DIS_ACE
+fieldset/NOC_GICT_GICT_ERR27CTLR_DIS_COL:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 32
+    bit_size: 1
+    description: RESERVED3
+fieldset/NOC_GICT_GICT_ERR27CTLR_DIS:
+  description: ''
+  fields:
+  - name: DEACT
+    bit_offset: 33
+    bit_size: 1
+    description: DIS_DEACT
+  - name: SGI
+    bit_offset: 37
+    bit_size: 1
+    description: DIS_SGI
+  - name: ACE
+    bit_offset: 38
+    bit_size: 1
+    description: DIS_SGI
+fieldset/NOC_GICT_GICT_ERR27CTLR_DIS_SPI:
+  description: ''
+  fields:
+  - name: OOR
+    bit_offset: 34
+    bit_size: 2
+    description: DIS_DEACT
+  - name: DST
+    bit_offset: 36
+    bit_size: 1
+    description: DIS_SPI_DST
+fieldset/NOC_GICT_GICT_ERR27STATUS:
+  description: ''
+  fields:
+  - name: SERR
+    bit_offset: 0
+    bit_size: 8
+    description: SERR
+  - name: IERR
+    bit_offset: 8
+    bit_size: 8
+    description: SERR
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 4
+    description: IERR
+  - name: UET
+    bit_offset: 20
+    bit_size: 2
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 22
+    bit_size: 2
+    description: UET
+  - name: CE
+    bit_offset: 24
+    bit_size: 2
+    description: RESERVED1
+  - name: MV
+    bit_offset: 26
+    bit_size: 1
+    description: CE
+  - name: OF
+    bit_offset: 27
+    bit_size: 1
+    description: MV
+  - name: ER
+    bit_offset: 28
+    bit_size: 1
+    description: OF
+  - name: UE
+    bit_offset: 29
+    bit_size: 1
+    description: ER
+  - name: V
+    bit_offset: 30
+    bit_size: 1
+    description: UE
+  - name: AV
+    bit_offset: 31
+    bit_size: 1
+    description: V
+  - name: RESERVED2
+    bit_offset: 32
+    bit_size: 32
+    description: AV
+fieldset/NOC_GICT_GICT_ERR27ADDR:
+  description: ''
+  fields:
+  - name: PADDR
+    bit_offset: 0
+    bit_size: 36
+    description: PADDR
+  - name: RESERVED0
+    bit_offset: 36
+    bit_size: 27
+    description: PADDR
+  - name: NS
+    bit_offset: 63
+    bit_size: 1
+    description: RESERVED0
+fieldset/NOC_GICT_GICT_ERR27MISC0:
+  description: ''
+  fields:
+  - name: Data
+    bit_offset: 0
+    bit_size: 32
+    description: Data
+  - name: CNT
+    bit_offset: 32
+    bit_size: 8
+    description: Data
+  - name: OF
+    bit_offset: 40
+    bit_size: 1
+    description: CNT
+  - name: RE
+    bit_offset: 41
+    bit_size: 1
+    description: OF
+  - name: RESERVED0
+    bit_offset: 42
+    bit_size: 22
+    description: RE
+fieldset/NOC_GICT_GICT_ERR27MISC1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 64
+    description: DATA
+fieldset/NOC_GICT_GICT_ERRGSR0:
+  description: ''
+  fields:
+  - name: Status
+    bit_offset: 0
+    bit_size: 64
+    description: Status
+fieldset/NOC_GICT_GICT_ERRIRQCR0:
+  description: ''
+  fields:
+  - name: SPIID
+    bit_offset: 0
+    bit_size: 13
+    description: SPIID
+  - name: RESERVED0
+    bit_offset: 13
+    bit_size: 51
+    description: SPIID
+fieldset/NOC_GICT_GICT_ERRIRQCR1:
+  description: ''
+  fields:
+  - name: SPIID
+    bit_offset: 0
+    bit_size: 13
+    description: SPIID
+  - name: RESERVED0
+    bit_offset: 13
+    bit_size: 51
+    description: SPIID
+fieldset/NOC_GICT_GICT_DEVARCH:
+  description: ''
+  fields:
+  - name: ARCHID
+    bit_offset: 0
+    bit_size: 12
+    description: ARCHID
+  - name: RESERVED0
+    bit_offset: 12
+    bit_size: 4
+    description: ARCHID
+  - name: REVISION
+    bit_offset: 16
+    bit_size: 4
+    description: RESERVED0
+  - name: PRESENT
+    bit_offset: 20
+    bit_size: 1
+    description: REVISION
+  - name: ARCHITECT
+    bit_offset: 21
+    bit_size: 11
+    description: PRESENT
+fieldset/NOC_GICT_GICT_DEVID:
+  description: ''
+  fields:
+  - name: NumRecords
+    bit_offset: 0
+    bit_size: 16
+    description: NumRecords
+  - name: RESERVED0
+    bit_offset: 16
+    bit_size: 16
+    description: NumRecords
+fieldset/NOC_GICT_GICT_PIDR4:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 4
+    bit_size: 4
+    description: DES_2
+  - name: RESERVED0
+    bit_offset: 8
+    bit_size: 24
+    description: SIZE
+fieldset/NOC_GICT_GICT_PIDR5:
+  description: ''
+  fields:
+  - name: RESERVED
+    bit_offset: 0
+    bit_size: 8
+    description: RESERVED
+  - name: RESERVED0
+    bit_offset: 8
+    bit_size: 24
+    description: RESERVED
+fieldset/NOC_GICT_GICT_PIDR6:
+  description: ''
+  fields:
+  - name: RESERVED
+    bit_offset: 0
+    bit_size: 8
+    description: RESERVED
+  - name: RESERVED0
+    bit_offset: 8
+    bit_size: 24
+    description: RESERVED
+fieldset/NOC_GICT_GICT_PIDR7:
+  description: ''
+  fields:
+  - name: RESERVED
+    bit_offset: 0
+    bit_size: 8
+    description: RESERVED
+  - name: RESERVED0
+    bit_offset: 8
+    bit_size: 24
+    description: RESERVED
+fieldset/NOC_GICT_GICT_PIDR0:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 8
+    bit_size: 24
+    description: PART_0
+fieldset/NOC_GICT_GICT_PIDR1:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 8
+    bit_size: 24
+    description: DES_0
+fieldset/NOC_GICT_GICT_PIDR2:
+  description: ''
+  fields:
+  - name: JEDEC
+    bit_offset: 3
+    bit_size: 1
+    description: DES_1
+  - name: REVISION
+    bit_offset: 4
+    bit_size: 4
+    description: JEDEC
+  - name: RESERVED0
+    bit_offset: 8
+    bit_size: 24
+    description: REVISION
+fieldset/NOC_GICT_GICT_PIDR3:
+  description: ''
+  fields:
+  - name: CMOD
+    bit_offset: 0
+    bit_size: 3
+    description: CMOD
+  - name: RESERVED0
+    bit_offset: 3
+    bit_size: 1
+    description: CMOD
+  - name: REVAND
+    bit_offset: 4
+    bit_size: 4
+    description: RESERVED0
+  - name: RESERVED1
+    bit_offset: 8
+    bit_size: 24
+    description: REVAND
+fieldset/NOC_GICT_GICT_CIDR0:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 8
+    bit_size: 24
+    description: PRMBL_0
+fieldset/NOC_GICT_GICT_CIDR1:
+  description: ''
+  fields:
+  - name: CLASS
+    bit_offset: 4
+    bit_size: 4
+    description: PRMBL_1
+  - name: RESERVED0
+    bit_offset: 8
+    bit_size: 24
+    description: CLASS
+fieldset/NOC_GICT_GICT_CIDR2:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 8
+    bit_size: 24
+    description: PRMBL_2
+fieldset/NOC_GICT_GICT_CIDR3:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 8
+    bit_size: 24
+    description: PRMBL_3

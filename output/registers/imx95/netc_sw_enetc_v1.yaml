@@ -1,0 +1,950 @@
+block/NETC_SW_ENETC:
+  description: ''
+  items:
+  - name: IPCAPR
+    byte_offset: 0
+    fieldset: NETC_SW_ENETC_IPCAPR
+  - name: EPCAPR
+    byte_offset: 4
+    fieldset: NETC_SW_ENETC_EPCAPR
+  - name: OSR
+    byte_offset: 16
+    fieldset: NETC_SW_ENETC_OSR
+  - name: CMECR
+    byte_offset: 64
+    fieldset: NETC_SW_ENETC_CMECR
+  - name: CMESR
+    byte_offset: 68
+    fieldset: NETC_SW_ENETC_CMESR
+  - name: CMECTR
+    byte_offset: 76
+    fieldset: NETC_SW_ENETC_CMECTR
+  - name: UNMACECR
+    byte_offset: 96
+    fieldset: NETC_SW_ENETC_UNMACECR
+  - name: UNMACESR
+    byte_offset: 100
+    fieldset: NETC_SW_ENETC_UNMACESR
+  - name: UNMECR
+    byte_offset: 144
+    fieldset: NETC_SW_ENETC_UNMECR
+  - name: UNMESR0
+    byte_offset: 148
+    fieldset: NETC_SW_ENETC_UNMESR0
+  - name: UNMESR1
+    byte_offset: 152
+    fieldset: NETC_SW_ENETC_UNMESR1
+  - name: UNMECTR
+    byte_offset: 156
+    fieldset: NETC_SW_ENETC_UNMECTR
+  - name: UFMECR
+    byte_offset: 160
+    fieldset: NETC_SW_ENETC_UFMECR
+  - name: UFMESR0
+    byte_offset: 164
+    fieldset: NETC_SW_ENETC_UFMESR0
+  - name: UFMESR1
+    byte_offset: 168
+    fieldset: NETC_SW_ENETC_UFMESR1
+  - name: MIRR
+    byte_offset: 208
+    fieldset: NETC_SW_ENETC_MIRR
+  - name: MMSIVR
+    byte_offset: 212
+    fieldset: NETC_SW_ENETC_MMSIVR
+  - name: EMDIOIRR
+    byte_offset: 232
+    fieldset: NETC_SW_ENETC_EMDIOIRR
+  - name: EMDIOMSIVR
+    byte_offset: 236
+    fieldset: NETC_SW_ENETC_EMDIOMSIVR
+  - name: CVLANR1
+    byte_offset: 512
+    fieldset: NETC_SW_ENETC_CVLANR1
+  - name: CVLANR2
+    byte_offset: 516
+    fieldset: NETC_SW_ENETC_CVLANR2
+  - name: DOSL2CR
+    byte_offset: 544
+    fieldset: NETC_SW_ENETC_DOSL2CR
+  - name: DOSL3CR
+    byte_offset: 548
+    fieldset: NETC_SW_ENETC_DOSL3CR
+  - name: NUM_PROFILE_VLANIPVMPR0
+    byte_offset: 768
+  - name: NUM_PROFILE_VLANIPVMPR1
+    byte_offset: 772
+  - name: NUM_PROFILE_VLANDRMPR
+    byte_offset: 776
+  - name: IPFCAPR
+    byte_offset: 1600
+    fieldset: NETC_SW_ENETC_IPFCAPR
+  - name: IPFTCAPR
+    byte_offset: 1604
+  - name: IPFTMOR
+    byte_offset: 1608
+  - name: ITMCAPR
+    byte_offset: 2048
+    fieldset: NETC_SW_ENETC_ITMCAPR
+  - name: RPCAPR
+    byte_offset: 2064
+    fieldset: NETC_SW_ENETC_RPCAPR
+  - name: RPITCAPR
+    byte_offset: 2068
+  - name: RPITMAR
+    byte_offset: 2072
+  - name: RPITOR
+    byte_offset: 2076
+  - name: ISCITCAPR
+    byte_offset: 2084
+  - name: ISCITMAR
+    byte_offset: 2088
+  - name: ISCITOR
+    byte_offset: 2092
+  - name: ISCAPR
+    byte_offset: 2096
+    fieldset: NETC_SW_ENETC_ISCAPR
+  - name: ISITCAPR
+    byte_offset: 2100
+  - name: ISITMAR
+    byte_offset: 2104
+  - name: ISITOR
+    byte_offset: 2108
+  - name: SGCAPR
+    byte_offset: 2144
+  - name: SGIITCAPR
+    byte_offset: 2148
+  - name: SGIITMAR
+    byte_offset: 2152
+  - name: SGIITOR
+    byte_offset: 2156
+  - name: SGCLITCAPR
+    byte_offset: 2164
+  - name: SGCLITMAR
+    byte_offset: 2168
+  - name: SGCLTMOR
+    byte_offset: 2172
+  - name: TGSTCAPR
+    byte_offset: 2260
+  - name: TGSTMOR
+    byte_offset: 2268
+  - name: HTMCAPR
+    byte_offset: 2304
+    fieldset: NETC_SW_ENETC_HTMCAPR
+  - name: HTMOR
+    byte_offset: 2308
+    fieldset: NETC_SW_ENETC_HTMOR
+  - name: ISIDCAPR
+    byte_offset: 2320
+    fieldset: NETC_SW_ENETC_ISIDCAPR
+  - name: ISIDKC0OR
+    byte_offset: 2336
+    fieldset: NETC_SW_ENETC_ISIDKC0OR
+  - name: ISIDKC0CR0
+    byte_offset: 2340
+    fieldset: NETC_SW_ENETC_ISIDKC0CR0
+  - name: ISIDKC0PF0CR
+    byte_offset: 2352
+    fieldset: NETC_SW_ENETC_ISIDKC0PF0CR
+  - name: ISIDKC0PF1CR
+    byte_offset: 2356
+    fieldset: NETC_SW_ENETC_ISIDKC0PF1CR
+  - name: ISIDKC0PF2CR
+    byte_offset: 2360
+    fieldset: NETC_SW_ENETC_ISIDKC0PF2CR
+  - name: ISIDKC0PF3CR
+    byte_offset: 2364
+    fieldset: NETC_SW_ENETC_ISIDKC0PF3CR
+  - name: ISIDKC1OR
+    byte_offset: 2368
+    fieldset: NETC_SW_ENETC_ISIDKC1OR
+  - name: ISIDKC1CR0
+    byte_offset: 2372
+    fieldset: NETC_SW_ENETC_ISIDKC1CR0
+  - name: ISIDKC1PF0CR
+    byte_offset: 2384
+    fieldset: NETC_SW_ENETC_ISIDKC1PF0CR
+  - name: ISIDKC1PF1CR
+    byte_offset: 2388
+    fieldset: NETC_SW_ENETC_ISIDKC1PF1CR
+  - name: ISIDKC1PF2CR
+    byte_offset: 2392
+    fieldset: NETC_SW_ENETC_ISIDKC1PF2CR
+  - name: ISIDKC1PF3CR
+    byte_offset: 2396
+    fieldset: NETC_SW_ENETC_ISIDKC1PF3CR
+  - name: ISFHTOR
+    byte_offset: 2564
+fieldset/NETC_SW_ENETC_IPCAPR:
+  description: ''
+  fields:
+  - name: RP
+    bit_offset: 0
+    bit_size: 1
+    description: Rate Policer
+  - name: IPFLT
+    bit_offset: 1
+    bit_size: 1
+    description: Rate Policer
+  - name: ISID
+    bit_offset: 2
+    bit_size: 1
+    description: Ingress Port Filtering
+  - name: SDU
+    bit_offset: 8
+    bit_size: 5
+    description: Ingress Stream Identification
+fieldset/NETC_SW_ENETC_IPCAPR_NUM:
+  description: ''
+  fields:
+  - name: VQMP
+    bit_offset: 16
+    bit_size: 4
+fieldset/NETC_SW_ENETC_EPCAPR:
+  description: ''
+  fields:
+  - name: SDU
+    bit_offset: 8
+    bit_size: 5
+fieldset/NETC_SW_ENETC_OSR:
+  description: ''
+  fields:
+  - name: STATE
+    bit_offset: 0
+    bit_size: 1
+fieldset/NETC_SW_ENETC_OSR_ITM:
+  description: ''
+  fields:
+  - name: STATE
+    bit_offset: 1
+    bit_size: 1
+fieldset/NETC_SW_ENETC_CMECR:
+  description: ''
+  fields:
+  - name: THRESHOLD
+    bit_offset: 0
+    bit_size: 8
+    description: Threshold
+fieldset/NETC_SW_ENETC_CMESR_LINK_SLICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 5
+    description: Link or Slice ID
+fieldset/NETC_SW_ENETC_CMESR_MEM:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 8
+    bit_size: 5
+    description: Memory ID
+fieldset/NETC_SW_ENETC_CMESR:
+  description: ''
+  fields:
+  - name: SBEE
+    bit_offset: 31
+    bit_size: 1
+    description: Memory ID
+fieldset/NETC_SW_ENETC_CMECTR:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 8
+    description: Count
+fieldset/NETC_SW_ENETC_UNMACECR:
+  description: ''
+  fields:
+  - name: PORT0
+    bit_offset: 0
+    bit_size: 1
+    description: Report disable port
+fieldset/NETC_SW_ENETC_UNMACESR:
+  description: ''
+  fields:
+  - name: PORT0
+    bit_offset: 0
+    bit_size: 1
+    description: Port MAC error
+fieldset/NETC_SW_ENETC_UNMECR:
+  description: ''
+  fields:
+  - name: THRESHOLD
+    bit_offset: 0
+    bit_size: 8
+    description: Threshold
+  - name: RD
+    bit_offset: 31
+    bit_size: 1
+    description: Threshold
+fieldset/NETC_SW_ENETC_UNMESR0_LINK_SLICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 5
+    description: Link or Slice ID
+fieldset/NETC_SW_ENETC_UNMESR0_MEM:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 8
+    bit_size: 5
+    description: Memory ID
+fieldset/NETC_SW_ENETC_UNMESR0:
+  description: ''
+  fields:
+  - name: SYNDROME
+    bit_offset: 16
+    bit_size: 11
+    description: Memory ID
+  - name: MBEE
+    bit_offset: 31
+    bit_size: 1
+    description: Syndrome
+fieldset/NETC_SW_ENETC_UNMESR1:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+    description: Address
+fieldset/NETC_SW_ENETC_UNMECTR:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 8
+    description: Count
+fieldset/NETC_SW_ENETC_UFMECR:
+  description: ''
+  fields:
+  - name: RD
+    bit_offset: 31
+    bit_size: 1
+    description: Report disable
+fieldset/NETC_SW_ENETC_UFMESR0_LINK_SLICE:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 5
+    description: Link or Slice ID
+fieldset/NETC_SW_ENETC_UFMESR0_MEM:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 8
+    bit_size: 5
+    description: Memory ID
+fieldset/NETC_SW_ENETC_UFMESR0:
+  description: ''
+  fields:
+  - name: SYNDROME
+    bit_offset: 16
+    bit_size: 11
+    description: Memory ID
+  - name: M
+    bit_offset: 30
+    bit_size: 1
+    description: Syndrome
+  - name: MBEE
+    bit_offset: 31
+    bit_size: 1
+    description: Multiple
+fieldset/NETC_SW_ENETC_UFMESR1:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+    description: Address
+fieldset/NETC_SW_ENETC_MIRR:
+  description: ''
+  fields:
+  - name: PORT0
+    bit_offset: 0
+    bit_size: 1
+fieldset/NETC_SW_ENETC_MMSIVR:
+  description: ''
+  fields:
+  - name: VECTOR
+    bit_offset: 0
+    bit_size: 6
+fieldset/NETC_SW_ENETC_EMDIOIRR:
+  description: ''
+  fields:
+  - name: PORT0
+    bit_offset: 0
+    bit_size: 1
+fieldset/NETC_SW_ENETC_EMDIOMSIVR:
+  description: ''
+  fields:
+  - name: VECTOR
+    bit_offset: 0
+    bit_size: 6
+fieldset/NETC_SW_ENETC_CVLANR1:
+  description: ''
+  fields:
+  - name: ETYPE
+    bit_offset: 0
+    bit_size: 16
+  - name: V
+    bit_offset: 31
+    bit_size: 1
+fieldset/NETC_SW_ENETC_CVLANR2:
+  description: ''
+  fields:
+  - name: ETYPE
+    bit_offset: 0
+    bit_size: 16
+  - name: V
+    bit_offset: 31
+    bit_size: 1
+fieldset/NETC_SW_ENETC_DOSL2CR:
+  description: ''
+  fields:
+  - name: SAMEADDR
+    bit_offset: 0
+    bit_size: 1
+  - name: MSAMCC
+    bit_offset: 1
+    bit_size: 1
+fieldset/NETC_SW_ENETC_DOSL3CR:
+  description: ''
+  fields:
+  - name: SAMEADDR
+    bit_offset: 0
+    bit_size: 1
+fieldset/NETC_SW_ENETC_IPFCAPR:
+  description: ''
+  fields:
+  - name: RP
+    bit_offset: 0
+    bit_size: 1
+  - name: ISID
+    bit_offset: 1
+    bit_size: 1
+  - name: WOL
+    bit_offset: 3
+    bit_size: 1
+fieldset/NETC_SW_ENETC_IPFCAPR_FWD:
+  description: ''
+  fields:
+  - name: SI
+    bit_offset: 2
+    bit_size: 1
+fieldset/NETC_SW_ENETC_IPFTCAPR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_IPFTMOR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_ITMCAPR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_ITMCAPR_WORD:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 28
+    bit_size: 2
+fieldset/NETC_SW_ENETC_ITMCAPR:
+  description: ''
+  fields:
+  - name: MLOC
+    bit_offset: 30
+    bit_size: 2
+fieldset/NETC_SW_ENETC_RPCAPR:
+  description: ''
+  fields:
+  - name: TRTCM
+    bit_offset: 0
+    bit_size: 1
+  - name: CM
+    bit_offset: 1
+    bit_size: 1
+fieldset/NETC_SW_ENETC_RPITCAPR_NUM:
+  description: ''
+  fields:
+  - name: ENTRIES
+    bit_offset: 0
+    bit_size: 14
+fieldset/NETC_SW_ENETC_RPITMAR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_RPITOR_NUM:
+  description: ''
+  fields:
+  - name: ENTRIES
+    bit_offset: 0
+    bit_size: 14
+fieldset/NETC_SW_ENETC_ISCITCAPR_NUM:
+  description: ''
+  fields:
+  - name: ENTRIES
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_ISCITMAR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_ISCITOR_NUM:
+  description: ''
+  fields:
+  - name: ENTRIES
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_ISCAPR:
+  description: ''
+  fields:
+  - name: SG
+    bit_offset: 3
+    bit_size: 1
+  - name: RP
+    bit_offset: 4
+    bit_size: 1
+  - name: MAXSDU
+    bit_offset: 5
+    bit_size: 1
+  - name: FWD
+    bit_offset: 9
+    bit_size: 1
+fieldset/NETC_SW_ENETC_ISITCAPR_NUM:
+  description: ''
+  fields:
+  - name: ENTRIES
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_ISITMAR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_ISITOR_NUM:
+  description: ''
+  fields:
+  - name: ENTRIES
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_SGCAPR_GLC:
+  description: ''
+  fields:
+  - name: AO
+    bit_offset: 0
+    bit_size: 1
+  - name: GC
+    bit_offset: 1
+    bit_size: 1
+  - name: IO
+    bit_offset: 2
+    bit_size: 1
+  - name: IPV
+    bit_offset: 3
+    bit_size: 1
+  - name: CTD
+    bit_offset: 4
+    bit_size: 1
+fieldset/NETC_SW_ENETC_SGIITCAPR_NUM:
+  description: ''
+  fields:
+  - name: ENTRIES
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_SGIITMAR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_SGIITOR_NUM:
+  description: ''
+  fields:
+  - name: ENTRIES
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_SGCLITCAPR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_SGCLITMAR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_SGCLTMOR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_TGSTCAPR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_TGSTMOR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_HTMCAPR_NUM:
+  description: ''
+  fields:
+  - name: WORDS
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_HTMCAPR_WORD:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 28
+    bit_size: 2
+fieldset/NETC_SW_ENETC_HTMCAPR:
+  description: ''
+  fields:
+  - name: MLOC
+    bit_offset: 30
+    bit_size: 2
+fieldset/NETC_SW_ENETC_HTMOR:
+  description: ''
+  fields:
+  - name: AMOUNT
+    bit_offset: 0
+    bit_size: 16
+  - name: WATERMARK
+    bit_offset: 16
+    bit_size: 16
+fieldset/NETC_SW_ENETC_ISIDCAPR_NUM:
+  description: ''
+  fields:
+  - name: KC
+    bit_offset: 0
+    bit_size: 2
+  - name: PF
+    bit_offset: 2
+    bit_size: 3
+fieldset/NETC_SW_ENETC_ISIDCAPR_MAX:
+  description: ''
+  fields:
+  - name: KSIZE
+    bit_offset: 8
+    bit_size: 5
+fieldset/NETC_SW_ENETC_ISIDCAPR:
+  description: ''
+  fields:
+  - name: UFT
+    bit_offset: 16
+    bit_size: 1
+  - name: ETHFT
+    bit_offset: 17
+    bit_size: 1
+fieldset/NETC_SW_ENETC_ISIDKC0OR_NUM:
+  description: ''
+  fields:
+  - name: ENTRIES
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_ISIDKC0OR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/NETC_SW_ENETC_ISIDKC0CR0:
+  description: ''
+  fields:
+  - name: VALID
+    bit_offset: 0
+    bit_size: 1
+  - name: PORTP
+    bit_offset: 1
+    bit_size: 1
+  - name: DMACP
+    bit_offset: 3
+    bit_size: 1
+  - name: SMACP
+    bit_offset: 4
+    bit_size: 1
+  - name: OVIDP
+    bit_offset: 5
+    bit_size: 1
+  - name: OPCPP
+    bit_offset: 6
+    bit_size: 1
+  - name: IVIDP
+    bit_offset: 7
+    bit_size: 1
+  - name: IPCPP
+    bit_offset: 8
+    bit_size: 1
+  - name: SQTP
+    bit_offset: 9
+    bit_size: 1
+  - name: ETP
+    bit_offset: 10
+    bit_size: 1
+fieldset/NETC_SW_ENETC_ISIDKC0PF0CR:
+  description: ''
+  fields:
+  - name: PFP
+    bit_offset: 0
+    bit_size: 1
+  - name: FBMASK
+    bit_offset: 16
+    bit_size: 3
+  - name: LBMASK
+    bit_offset: 20
+    bit_size: 3
+fieldset/NETC_SW_ENETC_ISIDKC0PF0CR_NUM:
+  description: ''
+  fields:
+  - name: BYTES
+    bit_offset: 1
+    bit_size: 4
+fieldset/NETC_SW_ENETC_ISIDKC0PF0CR_BYTE:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 8
+    bit_size: 7
+fieldset/NETC_SW_ENETC_ISIDKC0PF1CR:
+  description: ''
+  fields:
+  - name: PFP
+    bit_offset: 0
+    bit_size: 1
+  - name: FBMASK
+    bit_offset: 16
+    bit_size: 3
+  - name: LBMASK
+    bit_offset: 20
+    bit_size: 3
+fieldset/NETC_SW_ENETC_ISIDKC0PF1CR_NUM:
+  description: ''
+  fields:
+  - name: BYTES
+    bit_offset: 1
+    bit_size: 4
+fieldset/NETC_SW_ENETC_ISIDKC0PF1CR_BYTE:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 8
+    bit_size: 7
+fieldset/NETC_SW_ENETC_ISIDKC0PF2CR:
+  description: ''
+  fields:
+  - name: PFP
+    bit_offset: 0
+    bit_size: 1
+  - name: FBMASK
+    bit_offset: 16
+    bit_size: 3
+  - name: LBMASK
+    bit_offset: 20
+    bit_size: 3
+fieldset/NETC_SW_ENETC_ISIDKC0PF2CR_NUM:
+  description: ''
+  fields:
+  - name: BYTES
+    bit_offset: 1
+    bit_size: 4
+fieldset/NETC_SW_ENETC_ISIDKC0PF2CR_BYTE:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 8
+    bit_size: 7
+fieldset/NETC_SW_ENETC_ISIDKC0PF3CR:
+  description: ''
+  fields:
+  - name: PFP
+    bit_offset: 0
+    bit_size: 1
+  - name: FBMASK
+    bit_offset: 16
+    bit_size: 3
+  - name: LBMASK
+    bit_offset: 20
+    bit_size: 3
+fieldset/NETC_SW_ENETC_ISIDKC0PF3CR_NUM:
+  description: ''
+  fields:
+  - name: BYTES
+    bit_offset: 1
+    bit_size: 4
+fieldset/NETC_SW_ENETC_ISIDKC0PF3CR_BYTE:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 8
+    bit_size: 7
+fieldset/NETC_SW_ENETC_ISIDKC1OR_NUM:
+  description: ''
+  fields:
+  - name: ENTRIES
+    bit_offset: 0
+    bit_size: 16
+fieldset/NETC_SW_ENETC_ISIDKC1OR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/NETC_SW_ENETC_ISIDKC1CR0:
+  description: ''
+  fields:
+  - name: VALID
+    bit_offset: 0
+    bit_size: 1
+  - name: PORTP
+    bit_offset: 1
+    bit_size: 1
+  - name: DMACP
+    bit_offset: 3
+    bit_size: 1
+  - name: SMACP
+    bit_offset: 4
+    bit_size: 1
+  - name: OVIDP
+    bit_offset: 5
+    bit_size: 1
+  - name: OPCPP
+    bit_offset: 6
+    bit_size: 1
+  - name: IVIDP
+    bit_offset: 7
+    bit_size: 1
+  - name: IPCPP
+    bit_offset: 8
+    bit_size: 1
+  - name: SQTP
+    bit_offset: 9
+    bit_size: 1
+  - name: ETP
+    bit_offset: 10
+    bit_size: 1
+fieldset/NETC_SW_ENETC_ISIDKC1PF0CR:
+  description: ''
+  fields:
+  - name: PFP
+    bit_offset: 0
+    bit_size: 1
+  - name: FBMASK
+    bit_offset: 16
+    bit_size: 3
+  - name: LBMASK
+    bit_offset: 20
+    bit_size: 3
+fieldset/NETC_SW_ENETC_ISIDKC1PF0CR_NUM:
+  description: ''
+  fields:
+  - name: BYTES
+    bit_offset: 1
+    bit_size: 4
+fieldset/NETC_SW_ENETC_ISIDKC1PF0CR_BYTE:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 8
+    bit_size: 7
+fieldset/NETC_SW_ENETC_ISIDKC1PF1CR:
+  description: ''
+  fields:
+  - name: PFP
+    bit_offset: 0
+    bit_size: 1
+  - name: FBMASK
+    bit_offset: 16
+    bit_size: 3
+  - name: LBMASK
+    bit_offset: 20
+    bit_size: 3
+fieldset/NETC_SW_ENETC_ISIDKC1PF1CR_NUM:
+  description: ''
+  fields:
+  - name: BYTES
+    bit_offset: 1
+    bit_size: 4
+fieldset/NETC_SW_ENETC_ISIDKC1PF1CR_BYTE:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 8
+    bit_size: 7
+fieldset/NETC_SW_ENETC_ISIDKC1PF2CR:
+  description: ''
+  fields:
+  - name: PFP
+    bit_offset: 0
+    bit_size: 1
+  - name: FBMASK
+    bit_offset: 16
+    bit_size: 3
+  - name: LBMASK
+    bit_offset: 20
+    bit_size: 3
+fieldset/NETC_SW_ENETC_ISIDKC1PF2CR_NUM:
+  description: ''
+  fields:
+  - name: BYTES
+    bit_offset: 1
+    bit_size: 4
+fieldset/NETC_SW_ENETC_ISIDKC1PF2CR_BYTE:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 8
+    bit_size: 7
+fieldset/NETC_SW_ENETC_ISIDKC1PF3CR:
+  description: ''
+  fields:
+  - name: PFP
+    bit_offset: 0
+    bit_size: 1
+  - name: FBMASK
+    bit_offset: 16
+    bit_size: 3
+  - name: LBMASK
+    bit_offset: 20
+    bit_size: 3
+fieldset/NETC_SW_ENETC_ISIDKC1PF3CR_NUM:
+  description: ''
+  fields:
+  - name: BYTES
+    bit_offset: 1
+    bit_size: 4
+fieldset/NETC_SW_ENETC_ISIDKC1PF3CR_BYTE:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 8
+    bit_size: 7
+fieldset/NETC_SW_ENETC_ISFHTOR_NUM:
+  description: ''
+  fields:
+  - name: ENTRIES
+    bit_offset: 0
+    bit_size: 16

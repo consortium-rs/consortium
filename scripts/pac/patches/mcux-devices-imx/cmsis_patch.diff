@@ -1,0 +1,143 @@
+diff --git a/i.MX93/periph/PERI_DMA4.h b/i.MX93/periph/PERI_DMA4.h
+index aa1a965..3f41f1a 100644
+--- a/i.MX93/periph/PERI_DMA4.h
++++ b/i.MX93/periph/PERI_DMA4.h
+@@ -352,7 +352,7 @@ typedef struct {
+       __IO uint16_t CITER_ELINKYES;                    /**< TCD Current Major Loop Count (Minor Loop Channel Linking Enabled), array offset: 0x10036, array step: 0x1000 */
+     };
+     __IO uint32_t DLAST_SGA;                         /**< TCD Last Destination Address Adjustment / Scatter Gather Address, array offset: 0x10038, array step: 0x1000 */
+-    __IO uint16_t CSR;                               /**< TCD Control and Status, array offset: 0x1003C, array step: 0x1000 */
++    __IO uint16_t TCD_CSR;                           /**< TCD Control and Status, array offset: 0x1003C, array step: 0x1000 */
+     union {                                          /* offset: 0x1003E, array step: 0x1000 */
+       __IO uint16_t BITER_ELINKNO;                     /**< TCD Beginning Major Loop Count (Minor Loop Channel Linking Disabled), array offset: 0x1003E, array step: 0x1000 */
+       __IO uint16_t BITER_ELINKYES;                    /**< TCD Beginning Major Loop Count (Minor Loop Channel Linking Enabled), array offset: 0x1003E, array step: 0x1000 */
+@@ -1098,91 +1098,91 @@ typedef struct {
+ /* The count of DMA4_DLAST_SGA */
+ #define DMA4_DLAST_SGA_COUNT                     (64U)
+ 
+-/*! @name CSR - TCD Control and Status */
++/*! @name TCD_CSR - TCD Control and Status */
+ /*! @{ */
+ 
+-#define DMA4_CSR_START_MASK                      (0x1U)
+-#define DMA4_CSR_START_SHIFT                     (0U)
++#define DMA4_TCD_CSR_START_MASK                  (0x1U)
++#define DMA4_TCD_CSR_START_SHIFT                 (0U)
+ /*! START - Channel Start
+  *  0b0..Do not start
+  *  0b1..Start
+  */
+-#define DMA4_CSR_START(x)                        (((uint16_t)(((uint16_t)(x)) << DMA4_CSR_START_SHIFT)) & DMA4_CSR_START_MASK)
++#define DMA4_TCD_CSR_START(x)                    (((uint16_t)(((uint16_t)(x)) << DMA4_TCD_CSR_START_SHIFT)) & DMA4_TCD_CSR_START_MASK)
+ 
+-#define DMA4_CSR_INTMAJOR_MASK                   (0x2U)
+-#define DMA4_CSR_INTMAJOR_SHIFT                  (1U)
++#define DMA4_TCD_CSR_INTMAJOR_MASK               (0x2U)
++#define DMA4_TCD_CSR_INTMAJOR_SHIFT              (1U)
+ /*! INTMAJOR - Interrupt Enable after Major Iteration Count Completion
+  *  0b0..Disable
+  *  0b1..Enable
+  */
+-#define DMA4_CSR_INTMAJOR(x)                     (((uint16_t)(((uint16_t)(x)) << DMA4_CSR_INTMAJOR_SHIFT)) & DMA4_CSR_INTMAJOR_MASK)
++#define DMA4_TCD_CSR_INTMAJOR(x)                 (((uint16_t)(((uint16_t)(x)) << DMA4_TCD_CSR_INTMAJOR_SHIFT)) & DMA4_TCD_CSR_INTMAJOR_MASK)
+ 
+-#define DMA4_CSR_INTHALF_MASK                    (0x4U)
+-#define DMA4_CSR_INTHALF_SHIFT                   (2U)
++#define DMA4_TCD_CSR_INTHALF_MASK                (0x4U)
++#define DMA4_TCD_CSR_INTHALF_SHIFT               (2U)
+ /*! INTHALF - Interrupt Enable after Major Counter is Half Complete
+  *  0b0..Disable
+  *  0b1..Enable
+  */
+-#define DMA4_CSR_INTHALF(x)                      (((uint16_t)(((uint16_t)(x)) << DMA4_CSR_INTHALF_SHIFT)) & DMA4_CSR_INTHALF_MASK)
++#define DMA4_TCD_CSR_INTHALF(x)                  (((uint16_t)(((uint16_t)(x)) << DMA4_TCD_CSR_INTHALF_SHIFT)) & DMA4_TCD_CSR_INTHALF_MASK)
+ 
+-#define DMA4_CSR_DREQ_MASK                       (0x8U)
+-#define DMA4_CSR_DREQ_SHIFT                      (3U)
++#define DMA4_TCD_CSR_DREQ_MASK                   (0x8U)
++#define DMA4_TCD_CSR_DREQ_SHIFT                  (3U)
+ /*! DREQ - Disable Request
+  *  0b0..No operation
+  *  0b1..Clear ERQ
+  */
+-#define DMA4_CSR_DREQ(x)                         (((uint16_t)(((uint16_t)(x)) << DMA4_CSR_DREQ_SHIFT)) & DMA4_CSR_DREQ_MASK)
++#define DMA4_TCD_CSR_DREQ(x)                     (((uint16_t)(((uint16_t)(x)) << DMA4_TCD_CSR_DREQ_SHIFT)) & DMA4_TCD_CSR_DREQ_MASK)
+ 
+-#define DMA4_CSR_ESG_MASK                        (0x10U)
+-#define DMA4_CSR_ESG_SHIFT                       (4U)
++#define DMA4_TCD_CSR_ESG_MASK                    (0x10U)
++#define DMA4_TCD_CSR_ESG_SHIFT                   (4U)
+ /*! ESG - Enable Scatter/Gather Processing
+  *  0b0..Normal format
+  *  0b1..Scatter/gather format
+  */
+-#define DMA4_CSR_ESG(x)                          (((uint16_t)(((uint16_t)(x)) << DMA4_CSR_ESG_SHIFT)) & DMA4_CSR_ESG_MASK)
++#define DMA4_TCD_CSR_ESG(x)                      (((uint16_t)(((uint16_t)(x)) << DMA4_TCD_CSR_ESG_SHIFT)) & DMA4_TCD_CSR_ESG_MASK)
+ 
+-#define DMA4_CSR_MAJORELINK_MASK                 (0x20U)
+-#define DMA4_CSR_MAJORELINK_SHIFT                (5U)
++#define DMA4_TCD_CSR_MAJORELINK_MASK             (0x20U)
++#define DMA4_TCD_CSR_MAJORELINK_SHIFT            (5U)
+ /*! MAJORELINK - Enable Channel-to-Channel Linking on Major Loop Complete
+  *  0b0..Disable
+  *  0b1..Enable
+  */
+-#define DMA4_CSR_MAJORELINK(x)                   (((uint16_t)(((uint16_t)(x)) << DMA4_CSR_MAJORELINK_SHIFT)) & DMA4_CSR_MAJORELINK_MASK)
++#define DMA4_TCD_CSR_MAJORELINK(x)               (((uint16_t)(((uint16_t)(x)) << DMA4_TCD_CSR_MAJORELINK_SHIFT)) & DMA4_TCD_CSR_MAJORELINK_MASK)
+ 
+-#define DMA4_CSR_EEOP_MASK                       (0x40U)
+-#define DMA4_CSR_EEOP_SHIFT                      (6U)
++#define DMA4_TCD_CSR_EEOP_MASK                   (0x40U)
++#define DMA4_TCD_CSR_EEOP_SHIFT                  (6U)
+ /*! EEOP - Enable End-of-Packet Processing
+  *  0b0..Disable
+  *  0b1..Enable
+  */
+-#define DMA4_CSR_EEOP(x)                         (((uint16_t)(((uint16_t)(x)) << DMA4_CSR_EEOP_SHIFT)) & DMA4_CSR_EEOP_MASK)
++#define DMA4_TCD_CSR_EEOP(x)                     (((uint16_t)(((uint16_t)(x)) << DMA4_TCD_CSR_EEOP_SHIFT)) & DMA4_TCD_CSR_EEOP_MASK)
+ 
+-#define DMA4_CSR_ESDA_MASK                       (0x80U)
+-#define DMA4_CSR_ESDA_SHIFT                      (7U)
++#define DMA4_TCD_CSR_ESDA_MASK                   (0x80U)
++#define DMA4_TCD_CSR_ESDA_SHIFT                  (7U)
+ /*! ESDA - Enable Store Destination Address
+  *  0b0..Disable
+  *  0b1..Enable
+  */
+-#define DMA4_CSR_ESDA(x)                         (((uint16_t)(((uint16_t)(x)) << DMA4_CSR_ESDA_SHIFT)) & DMA4_CSR_ESDA_MASK)
++#define DMA4_TCD_CSR_ESDA(x)                     (((uint16_t)(((uint16_t)(x)) << DMA4_TCD_CSR_ESDA_SHIFT)) & DMA4_TCD_CSR_ESDA_MASK)
+ 
+-#define DMA4_CSR_MAJORLINKCH_MASK                (0x3F00U)
+-#define DMA4_CSR_MAJORLINKCH_SHIFT               (8U)
++#define DMA4_TCD_CSR_MAJORLINKCH_MASK            (0x3F00U)
++#define DMA4_TCD_CSR_MAJORLINKCH_SHIFT           (8U)
+ /*! MAJORLINKCH - Major Loop Link Channel Number */
+-#define DMA4_CSR_MAJORLINKCH(x)                  (((uint16_t)(((uint16_t)(x)) << DMA4_CSR_MAJORLINKCH_SHIFT)) & DMA4_CSR_MAJORLINKCH_MASK)
++#define DMA4_TCD_CSR_MAJORLINKCH(x)              (((uint16_t)(((uint16_t)(x)) << DMA4_TCD_CSR_MAJORLINKCH_SHIFT)) & DMA4_TCD_CSR_MAJORLINKCH_MASK)
+ 
+-#define DMA4_CSR_TMC_MASK                        (0xC000U)
+-#define DMA4_CSR_TMC_SHIFT                       (14U)
++#define DMA4_TCD_CSR_TMC_MASK                    (0xC000U)
++#define DMA4_TCD_CSR_TMC_SHIFT                   (14U)
+ /*! TMC - Transfer Mode Control
+  *  0b00..Read/Write
+  *  0b01..Read-Only
+  *  0b10..Write-Only
+  *  0b11..Reserved
+  */
+-#define DMA4_CSR_TMC(x)                          (((uint16_t)(((uint16_t)(x)) << DMA4_CSR_TMC_SHIFT)) & DMA4_CSR_TMC_MASK)
++#define DMA4_TCD_CSR_TMC(x)                      (((uint16_t)(((uint16_t)(x)) << DMA4_TCD_CSR_TMC_SHIFT)) & DMA4_TCD_CSR_TMC_MASK)
+ /*! @} */
+ 
+-/* The count of DMA4_CSR */
+-#define DMA4_CSR_COUNT                           (64U)
++/* The count of DMA4_TCD_CSR */
++#define DMA4_TCD_CSR_COUNT                       (64U)
+ 
+ /*! @name BITER_ELINKNO - TCD Beginning Major Loop Count (Minor Loop Channel Linking Disabled) */
+ /*! @{ */
+@@ -1264,4 +1264,3 @@ typedef struct {
+ 
+ 
+ #endif  /* PERI_DMA4_H_ */
+-

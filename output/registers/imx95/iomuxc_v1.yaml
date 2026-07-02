@@ -1,0 +1,112 @@
+block/IOMUXC:
+  description: ''
+  items:
+  - name: SW_MUX_CTL_PAD
+    byte_offset: 0
+    array:
+      len: 128
+      stride: 4
+    fieldset: IOMUXC_SW_MUX_CTL_PAD
+  - name: SW_PAD_CTL_PAD
+    byte_offset: 516
+    array:
+      len: 128
+      stride: 4
+    fieldset: IOMUXC_SW_PAD_CTL_PAD
+  - name: SW_PAD_CTL_PAD_FCCU_ERR0
+    byte_offset: 1028
+    fieldset: IOMUXC_SW_PAD_CTL_PAD_FCCU_ERR0
+  - name: SELECT_INPUT
+    byte_offset: 1032
+    array:
+      len: 132
+      stride: 4
+    fieldset: IOMUXC_SELECT_INPUT
+fieldset/IOMUXC_SW_MUX_CTL_PAD_MUX:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 0
+    bit_size: 3
+fieldset/IOMUXC_SW_MUX_CTL_PAD:
+  description: ''
+  fields:
+  - name: SION
+    bit_offset: 4
+    bit_size: 1
+fieldset/IOMUXC_SW_PAD_CTL_PAD:
+  description: ''
+  fields:
+  - name: DSE
+    bit_offset: 1
+    bit_size: 6
+  - name: FSEL1
+    bit_offset: 7
+    bit_size: 2
+  - name: PU
+    bit_offset: 9
+    bit_size: 1
+  - name: PD
+    bit_offset: 10
+    bit_size: 1
+  - name: OD
+    bit_offset: 11
+    bit_size: 1
+  - name: HYS
+    bit_offset: 12
+    bit_size: 1
+  - name: SMC
+    bit_offset: 13
+    bit_size: 3
+  - name: APC
+    bit_offset: 24
+    bit_size: 4
+    description: Domain Access Field
+fieldset/IOMUXC_SW_PAD_CTL_PAD_APC:
+  description: ''
+  fields:
+  - name: LCK
+    bit_offset: 28
+    bit_size: 4
+    description: Domain Access Field
+fieldset/IOMUXC_SW_PAD_CTL_PAD_FCCU_ERR0:
+  description: ''
+  fields:
+  - name: DSE
+    bit_offset: 1
+    bit_size: 6
+  - name: FSEL1
+    bit_offset: 7
+    bit_size: 2
+  - name: PU
+    bit_offset: 9
+    bit_size: 1
+  - name: PD
+    bit_offset: 10
+    bit_size: 1
+  - name: OD
+    bit_offset: 11
+    bit_size: 1
+  - name: HYS
+    bit_offset: 12
+    bit_size: 1
+  - name: SMC
+    bit_offset: 13
+    bit_size: 3
+  - name: APC
+    bit_offset: 24
+    bit_size: 4
+    description: Domain Access Field
+fieldset/IOMUXC_SW_PAD_CTL_PAD_FCCU_ERR0_APC:
+  description: ''
+  fields:
+  - name: LCK
+    bit_offset: 28
+    bit_size: 4
+    description: APC lock bits
+fieldset/IOMUXC_SELECT_INPUT:
+  description: ''
+  fields:
+  - name: DAISY
+    bit_offset: 0
+    bit_size: 2

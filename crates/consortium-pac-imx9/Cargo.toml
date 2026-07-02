@@ -1,0 +1,17 @@
+[package]
+name = "imx9-pac"
+description = "Peripheral Access Crate for the i.MX 9 series of microcontrollers"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[features]
+defmt = ["dep:defmt"]
+imx95 = []
+default = ["imx95"]
+
+[dependencies]
+defmt = { version = "1.0.1", optional = true }
+
+[lints]
+workspace = true

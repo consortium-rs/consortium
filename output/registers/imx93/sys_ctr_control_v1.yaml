@@ -1,0 +1,102 @@
+block/SYS_CTR_CONTROL:
+  description: ''
+  items:
+  - name: CNTCR
+    byte_offset: 0
+    fieldset: SYS_CTR_CONTROL_CNTCR
+  - name: CNTSR
+    byte_offset: 4
+    fieldset: SYS_CTR_CONTROL_CNTSR
+  - name: CNTCV0
+    byte_offset: 8
+    fieldset: SYS_CTR_CONTROL_CNTCV0
+  - name: CNTCV1
+    byte_offset: 12
+    fieldset: SYS_CTR_CONTROL_CNTCV1
+  - name: CNTFID0
+    byte_offset: 32
+    fieldset: SYS_CTR_CONTROL_CNTFID0
+  - name: CNTFID1
+    byte_offset: 36
+    fieldset: SYS_CTR_CONTROL_CNTFID1
+  - name: CNTFID2
+    byte_offset: 40
+    fieldset: SYS_CTR_CONTROL_CNTFID2
+  - name: CNTCR2
+    byte_offset: 192
+  - name: CNTID0
+    byte_offset: 4048
+    fieldset: SYS_CTR_CONTROL_CNTID0
+fieldset/SYS_CTR_CONTROL_CNTCR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+  - name: HDBG
+    bit_offset: 1
+    bit_size: 1
+  - name: FCR0
+    bit_offset: 8
+    bit_size: 1
+  - name: FCR1
+    bit_offset: 9
+    bit_size: 1
+fieldset/SYS_CTR_CONTROL_CNTSR:
+  description: ''
+  fields:
+  - name: DBGH
+    bit_offset: 0
+    bit_size: 1
+  - name: FCA0
+    bit_offset: 8
+    bit_size: 1
+  - name: FCA1
+    bit_offset: 9
+    bit_size: 1
+fieldset/SYS_CTR_CONTROL_CNTCV0:
+  description: ''
+  fields:
+  - name: CNTCV0
+    bit_offset: 0
+    bit_size: 32
+fieldset/SYS_CTR_CONTROL_CNTCV1:
+  description: ''
+  fields:
+  - name: CNTCV1
+    bit_offset: 0
+    bit_size: 24
+fieldset/SYS_CTR_CONTROL_CNTFID0:
+  description: ''
+  fields:
+  - name: CNTFID0
+    bit_offset: 0
+    bit_size: 32
+    description: Counter Frequency ID 0
+fieldset/SYS_CTR_CONTROL_CNTFID1:
+  description: ''
+  fields:
+  - name: CNTFID1
+    bit_offset: 0
+    bit_size: 32
+    description: Counter Frequency ID 1
+fieldset/SYS_CTR_CONTROL_CNTFID2:
+  description: ''
+  fields:
+  - name: CNTFID2
+    bit_offset: 0
+    bit_size: 32
+    description: Counter Frequency ID 2
+fieldset/SYS_CTR_CONTROL_CNTCR2_HWFC:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/SYS_CTR_CONTROL_CNTID0:
+  description: ''
+  fields:
+  - name: CNTID
+    bit_offset: 0
+    bit_size: 32
+    description: Counter Identification

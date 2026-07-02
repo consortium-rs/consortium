@@ -1,0 +1,21 @@
+block/ADC_Common:
+  description: ''
+  items:
+  - name: CSR
+    byte_offset: 768
+    description: ADC common status register
+  - name: CCR
+    byte_offset: 776
+    description: ADC common control register
+  - name: HWCFGR1
+    byte_offset: 1008
+    description: ADC hardware configuration register
+  - name: VERR
+    byte_offset: 1012
+    description: CRC version register
+  - name: IPIDR
+    byte_offset: 1016
+    description: CRC ID register
+  - name: SIDR
+    byte_offset: 1020
+    description: CRC Size ID register

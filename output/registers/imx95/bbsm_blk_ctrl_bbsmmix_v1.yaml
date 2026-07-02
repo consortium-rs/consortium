@@ -1,0 +1,26 @@
+block/BBSM_BLK_CTRL_BBSMMIX:
+  description: ''
+  items:
+  - name: SNVS_CLKRST_CTRL
+    byte_offset: 4
+fieldset/BBSM_BLK_CTRL_BBSMMIX_SNVS_CLKRST_CTRL_test:
+  description: ''
+  fields:
+  - name: sel
+    bit_offset: 4
+    bit_size: 4
+fieldset/BBSM_BLK_CTRL_BBSMMIX_SNVS_CLKRST_CTRL_tst_xtal:
+  description: ''
+  fields:
+  - name: fast
+    bit_offset: 13
+    bit_size: 1
+  - name: slow
+    bit_offset: 14
+    bit_size: 1
+fieldset/BBSM_BLK_CTRL_BBSMMIX_SNVS_CLKRST_CTRL_xtal:
+  description: ''
+  fields:
+  - name: ok
+    bit_offset: 15
+    bit_size: 1

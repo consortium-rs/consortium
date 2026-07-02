@@ -1,0 +1,190 @@
+block/NOC_SRAMCTL:
+  description: ''
+  items:
+  - name: RAMCR
+    byte_offset: 0
+    fieldset: NOC_SRAMCTL_RAMCR
+  - name: RAMIAS
+    byte_offset: 4
+    fieldset: NOC_SRAMCTL_RAMIAS
+  - name: RAMIAE
+    byte_offset: 8
+    fieldset: NOC_SRAMCTL_RAMIAE
+  - name: RAMSR
+    byte_offset: 12
+    fieldset: NOC_SRAMCTL_RAMSR
+  - name: RAMMEMA
+    byte_offset: 16
+    fieldset: NOC_SRAMCTL_RAMMEMA
+  - name: RAMSYSA
+    byte_offset: 24
+    fieldset: NOC_SRAMCTL_RAMSYSA
+  - name: RAMECCNT
+    byte_offset: 28
+    fieldset: NOC_SRAMCTL_RAMECCNT
+  - name: RAMEID0
+    byte_offset: 32
+  - name: RAMEID1
+    byte_offset: 36
+  - name: RAMEIDC
+    byte_offset: 40
+  - name: RAMEIA
+    byte_offset: 48
+    fieldset: NOC_SRAMCTL_RAMEIA
+  - name: RAMEIAM
+    byte_offset: 52
+    fieldset: NOC_SRAMCTL_RAMEIAM
+  - name: RAMMAXA
+    byte_offset: 64
+    fieldset: NOC_SRAMCTL_RAMMAXA
+  - name: RAMCR2
+    byte_offset: 128
+    fieldset: NOC_SRAMCTL_RAMCR2
+fieldset/NOC_SRAMCTL_RAMCR:
+  description: ''
+  fields:
+  - name: INIT
+    bit_offset: 0
+    bit_size: 1
+  - name: IWS
+    bit_offset: 1
+    bit_size: 2
+fieldset/NOC_SRAMCTL_RAMCR_INIT:
+  description: ''
+  fields:
+  - name: SYSA
+    bit_offset: 8
+    bit_size: 1
+fieldset/NOC_SRAMCTL_RAMIAS:
+  description: ''
+  fields:
+  - name: IAS
+    bit_offset: 0
+    bit_size: 32
+    description: Initialization Address Start
+fieldset/NOC_SRAMCTL_RAMIAE:
+  description: ''
+  fields:
+  - name: IAE
+    bit_offset: 0
+    bit_size: 32
+    description: Initialization Address End
+fieldset/NOC_SRAMCTL_RAMSR:
+  description: ''
+  fields:
+  - name: IDONE
+    bit_offset: 0
+    bit_size: 1
+  - name: BUSERR
+    bit_offset: 1
+    bit_size: 1
+  - name: IPEND
+    bit_offset: 2
+    bit_size: 1
+  - name: AVALID
+    bit_offset: 3
+    bit_size: 1
+  - name: AERR
+    bit_offset: 5
+    bit_size: 1
+  - name: MLTERR
+    bit_offset: 6
+    bit_size: 1
+  - name: SGLERR
+    bit_offset: 7
+    bit_size: 1
+  - name: SYND
+    bit_offset: 8
+    bit_size: 8
+    description: ECC Syndrome Value
+  - name: EINFO
+    bit_offset: 16
+    bit_size: 8
+    description: ECC Syndrome Value
+fieldset/NOC_SRAMCTL_RAMMEMA:
+  description: ''
+  fields:
+  - name: MEMA
+    bit_offset: 0
+    bit_size: 17
+    description: RAM Bank Address
+  - name: BANK
+    bit_offset: 20
+    bit_size: 5
+    description: RAM Bank Address
+fieldset/NOC_SRAMCTL_RAMSYSA:
+  description: ''
+  fields:
+  - name: SYSA
+    bit_offset: 0
+    bit_size: 32
+    description: System Address
+fieldset/NOC_SRAMCTL_RAMECCNT:
+  description: ''
+  fields:
+  - name: ECCNT
+    bit_offset: 0
+    bit_size: 8
+    description: ECC Correctable Error Count
+fieldset/NOC_SRAMCTL_RAMEID0_EID:
+  description: ''
+  fields:
+  - name: W0
+    bit_offset: 0
+    bit_size: 32
+    description: Error Injection Data Word 0
+fieldset/NOC_SRAMCTL_RAMEID1_EID:
+  description: ''
+  fields:
+  - name: W1
+    bit_offset: 0
+    bit_size: 32
+    description: Error Injection Data Word 1
+fieldset/NOC_SRAMCTL_RAMEIDC_EID:
+  description: ''
+  fields:
+  - name: CKB
+    bit_offset: 0
+    bit_size: 8
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/NOC_SRAMCTL_RAMEIDC_EIP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 24
+    bit_size: 1
+fieldset/NOC_SRAMCTL_RAMEIDC_EIA:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 30
+    bit_size: 1
+fieldset/NOC_SRAMCTL_RAMEIA:
+  description: ''
+  fields:
+  - name: EIA
+    bit_offset: 0
+    bit_size: 32
+    description: Error Injection Base Address
+fieldset/NOC_SRAMCTL_RAMEIAM:
+  description: ''
+  fields:
+  - name: EIAM
+    bit_offset: 0
+    bit_size: 32
+    description: Error Injection Address Mask
+fieldset/NOC_SRAMCTL_RAMMAXA:
+  description: ''
+  fields:
+  - name: MAXA
+    bit_offset: 0
+    bit_size: 32
+    description: Maximum Address
+fieldset/NOC_SRAMCTL_RAMCR2:
+  description: ''
+  fields:
+  - name: DEM
+    bit_offset: 3
+    bit_size: 1

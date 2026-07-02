@@ -1,0 +1,1137 @@
+block/IPCC:
+  description: ''
+  items:
+  - name: C1CR
+    byte_offset: 0
+    description: IPCC Processor 1 control register
+    fieldset: IPCC_C1CR
+  - name: C1MR
+    byte_offset: 4
+    description: IPCC Processor 1 mask register
+    fieldset: IPCC_C1MR
+  - name: C1SCR
+    byte_offset: 8
+    description: IPCC Processor 1 status set clear register
+    fieldset: IPCC_C1SCR
+  - name: C1TOC2SR
+    byte_offset: 12
+    description: IPCC processor 1 to processor 2 status register
+    fieldset: IPCC_C1TOC2SR
+  - name: C2CR
+    byte_offset: 16
+    description: IPCC Processor 2 control register
+    fieldset: IPCC_C2CR
+  - name: C2MR
+    byte_offset: 20
+    description: IPCC Processor 2 mask register
+    fieldset: IPCC_C2MR
+  - name: C2SCR
+    byte_offset: 24
+    description: IPCC Processor 2 status set clear register
+    fieldset: IPCC_C2SCR
+  - name: C2TOC1SR
+    byte_offset: 28
+    description: IPCC processor 2 to processor 1 status register
+    fieldset: IPCC_C2TOC1SR
+  - name: C1SECCFGR
+    byte_offset: 128
+    description: IPCC Processor 1 security configuration register
+    fieldset: IPCC_C1SECCFGR
+  - name: C1PRIVCFGR
+    byte_offset: 132
+    description: IPCC processor 1 privilege configuration register
+    fieldset: IPCC_C1PRIVCFGR
+  - name: C1CIDCFGR
+    byte_offset: 136
+    description: IPCC processor 1 CID configuration register
+    fieldset: IPCC_C1CIDCFGR
+  - name: C2SECCFGR
+    byte_offset: 144
+    description: IPCC processor 2 security configuration register
+    fieldset: IPCC_C2SECCFGR
+  - name: C2PRIVCFGR
+    byte_offset: 148
+    description: IPCC processor 2 privilege configuration register
+    fieldset: IPCC_C2PRIVCFGR
+  - name: C2CIDCFGR
+    byte_offset: 152
+    description: IPCC processor 2 CID configuration register
+    fieldset: IPCC_C2CIDCFGR
+  - name: HWCFGR
+    byte_offset: 1008
+    description: IPCC Hardware configuration register
+    fieldset: IPCC_HWCFGR
+  - name: VERR
+    byte_offset: 1012
+    description: IPCC IP Version register
+    fieldset: IPCC_VERR
+  - name: IPIDR
+    byte_offset: 1016
+    description: IPCC IP Identification register
+    fieldset: IPCC_IPIDR
+  - name: SIDR
+    byte_offset: 1020
+    description: IPCC Size ID register
+    fieldset: IPCC_SIDR
+fieldset/IPCC_C1CR:
+  description: ''
+  fields:
+  - name: RXOIE
+    bit_offset: 0
+    bit_size: 1
+    description: Processor 1 Receive channel occupied non-secure interrupt enable
+  - name: SECRXOIE
+    bit_offset: 1
+    bit_size: 1
+    description: Processor 1 Receive channel occupied secure interrupt enable
+  - name: TXFIE
+    bit_offset: 16
+    bit_size: 1
+    description: Processor 1Transmit channel free non-secure interrupt enable
+  - name: SECTXFIE
+    bit_offset: 17
+    bit_size: 1
+    description: Processor 1Transmit channel free secure interrupt enable
+fieldset/IPCC_C1MR:
+  description: ''
+  fields:
+  - name: CH1OM
+    bit_offset: 0
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH2OM
+    bit_offset: 1
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH3OM
+    bit_offset: 2
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH4OM
+    bit_offset: 3
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH5OM
+    bit_offset: 4
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH6OM
+    bit_offset: 5
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH7OM
+    bit_offset: 6
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH8OM
+    bit_offset: 7
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH9OM
+    bit_offset: 8
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH10OM
+    bit_offset: 9
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH11OM
+    bit_offset: 10
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH12OM
+    bit_offset: 11
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH13OM
+    bit_offset: 12
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH14OM
+    bit_offset: 13
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH15OM
+    bit_offset: 14
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH16OM
+    bit_offset: 15
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH1FM
+    bit_offset: 16
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH2FM
+    bit_offset: 17
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH3FM
+    bit_offset: 18
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH4FM
+    bit_offset: 19
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH5FM
+    bit_offset: 20
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH6FM
+    bit_offset: 21
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH7FM
+    bit_offset: 22
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH8FM
+    bit_offset: 23
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH9FM
+    bit_offset: 24
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH10FM
+    bit_offset: 25
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH11FM
+    bit_offset: 26
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH12FM
+    bit_offset: 27
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH13FM
+    bit_offset: 28
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH14FM
+    bit_offset: 29
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH15FM
+    bit_offset: 30
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH16FM
+    bit_offset: 31
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+fieldset/IPCC_C1SCR:
+  description: ''
+  fields:
+  - name: CH1C
+    bit_offset: 0
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH2C
+    bit_offset: 1
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH3C
+    bit_offset: 2
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH4C
+    bit_offset: 3
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH5C
+    bit_offset: 4
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH6C
+    bit_offset: 5
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH7C
+    bit_offset: 6
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH8C
+    bit_offset: 7
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH9C
+    bit_offset: 8
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH10C
+    bit_offset: 9
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH11C
+    bit_offset: 10
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH12C
+    bit_offset: 11
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH13C
+    bit_offset: 12
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH14C
+    bit_offset: 13
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH15C
+    bit_offset: 14
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH16C
+    bit_offset: 15
+    bit_size: 1
+    description: Processor 1 Receive channel n status clear
+  - name: CH1S
+    bit_offset: 16
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH2S
+    bit_offset: 17
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH3S
+    bit_offset: 18
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH4S
+    bit_offset: 19
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH5S
+    bit_offset: 20
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH6S
+    bit_offset: 21
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH7S
+    bit_offset: 22
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH8S
+    bit_offset: 23
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH9S
+    bit_offset: 24
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH10S
+    bit_offset: 25
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH11S
+    bit_offset: 26
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH12S
+    bit_offset: 27
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH13S
+    bit_offset: 28
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH14S
+    bit_offset: 29
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH15S
+    bit_offset: 30
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+  - name: CH16S
+    bit_offset: 31
+    bit_size: 1
+    description: Processor 1 transmit channel n status set
+fieldset/IPCC_C1TOC2SR:
+  description: ''
+  fields:
+  - name: CH1F
+    bit_offset: 0
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH2F
+    bit_offset: 1
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH3F
+    bit_offset: 2
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH4F
+    bit_offset: 3
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH5F
+    bit_offset: 4
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH6F
+    bit_offset: 5
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH7F
+    bit_offset: 6
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH8F
+    bit_offset: 7
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH9F
+    bit_offset: 8
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH10F
+    bit_offset: 9
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH11F
+    bit_offset: 10
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH12F
+    bit_offset: 11
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH13F
+    bit_offset: 12
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH14F
+    bit_offset: 13
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH15F
+    bit_offset: 14
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+  - name: CH16F
+    bit_offset: 15
+    bit_size: 1
+    description: Processor 1 transmit to processor 2 receive channel n status flag
+      before masking
+fieldset/IPCC_C2CR:
+  description: ''
+  fields:
+  - name: RXOIE
+    bit_offset: 0
+    bit_size: 1
+    description: Processor 2 non-secure Receive channel occupied interrupt enable
+  - name: SECRXOIE
+    bit_offset: 1
+    bit_size: 1
+    description: Processor 2 secure Receive channel occupied interrupt enable
+  - name: TXFIE
+    bit_offset: 16
+    bit_size: 1
+    description: Processor 2 non-secure Transmit channel free interrupt enable
+  - name: SECTXFIE
+    bit_offset: 17
+    bit_size: 1
+    description: Processor 2 secure Transmit channel free interrupt enable
+fieldset/IPCC_C2MR:
+  description: ''
+  fields:
+  - name: CH1OM
+    bit_offset: 0
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH2OM
+    bit_offset: 1
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH3OM
+    bit_offset: 2
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH4OM
+    bit_offset: 3
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH5OM
+    bit_offset: 4
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH6OM
+    bit_offset: 5
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH7OM
+    bit_offset: 6
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH8OM
+    bit_offset: 7
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH9OM
+    bit_offset: 8
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH10OM
+    bit_offset: 9
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH11OM
+    bit_offset: 10
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH12OM
+    bit_offset: 11
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH13OM
+    bit_offset: 12
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH14OM
+    bit_offset: 13
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH15OM
+    bit_offset: 14
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH16OM
+    bit_offset: 15
+    bit_size: 1
+    description: Processor 2 receive channel n occupied interrupt mask
+  - name: CH1FM
+    bit_offset: 16
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH2FM
+    bit_offset: 17
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH3FM
+    bit_offset: 18
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH4FM
+    bit_offset: 19
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH5FM
+    bit_offset: 20
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH6FM
+    bit_offset: 21
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH7FM
+    bit_offset: 22
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH8FM
+    bit_offset: 23
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH9FM
+    bit_offset: 24
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH10FM
+    bit_offset: 25
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH11FM
+    bit_offset: 26
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH12FM
+    bit_offset: 27
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH13FM
+    bit_offset: 28
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH14FM
+    bit_offset: 29
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH15FM
+    bit_offset: 30
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+  - name: CH16FM
+    bit_offset: 31
+    bit_size: 1
+    description: Processor 2 Transmit channel n free interrupt mask
+fieldset/IPCC_C2SCR:
+  description: ''
+  fields:
+  - name: CH1C
+    bit_offset: 0
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH2C
+    bit_offset: 1
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH3C
+    bit_offset: 2
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH4C
+    bit_offset: 3
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH5C
+    bit_offset: 4
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH6C
+    bit_offset: 5
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH7C
+    bit_offset: 6
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH8C
+    bit_offset: 7
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH9C
+    bit_offset: 8
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH10C
+    bit_offset: 9
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH11C
+    bit_offset: 10
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH12C
+    bit_offset: 11
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH13C
+    bit_offset: 12
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH14C
+    bit_offset: 13
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH15C
+    bit_offset: 14
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH16C
+    bit_offset: 15
+    bit_size: 1
+    description: Processor 2 receive channel n status clear
+  - name: CH1S
+    bit_offset: 16
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH2S
+    bit_offset: 17
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH3S
+    bit_offset: 18
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH4S
+    bit_offset: 19
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH5S
+    bit_offset: 20
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH6S
+    bit_offset: 21
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH7S
+    bit_offset: 22
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH8S
+    bit_offset: 23
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH9S
+    bit_offset: 24
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH10S
+    bit_offset: 25
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH11S
+    bit_offset: 26
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH12S
+    bit_offset: 27
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH13S
+    bit_offset: 28
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH14S
+    bit_offset: 29
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH15S
+    bit_offset: 30
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+  - name: CH16S
+    bit_offset: 31
+    bit_size: 1
+    description: Processor 2 transmit channel n status set
+fieldset/IPCC_C2TOC1SR:
+  description: ''
+  fields:
+  - name: CH1F
+    bit_offset: 0
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH2F
+    bit_offset: 1
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH3F
+    bit_offset: 2
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH4F
+    bit_offset: 3
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH5F
+    bit_offset: 4
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH6F
+    bit_offset: 5
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH7F
+    bit_offset: 6
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH8F
+    bit_offset: 7
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH9F
+    bit_offset: 8
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH10F
+    bit_offset: 9
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH11F
+    bit_offset: 10
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH12F
+    bit_offset: 11
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH13F
+    bit_offset: 12
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH14F
+    bit_offset: 13
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH15F
+    bit_offset: 14
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+  - name: CH16F
+    bit_offset: 15
+    bit_size: 1
+    description: Processor 2 transmit to processor 1 receive channel n status flag
+      before masking
+fieldset/IPCC_C1SECCFGR:
+  description: ''
+  fields:
+  - name: CH1SEC
+    bit_offset: 0
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH2SEC
+    bit_offset: 1
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH3SEC
+    bit_offset: 2
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH4SEC
+    bit_offset: 3
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH5SEC
+    bit_offset: 4
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH6SEC
+    bit_offset: 5
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH7SEC
+    bit_offset: 6
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH8SEC
+    bit_offset: 7
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH9SEC
+    bit_offset: 8
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH10SEC
+    bit_offset: 9
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH11SEC
+    bit_offset: 10
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH12SEC
+    bit_offset: 11
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH13SEC
+    bit_offset: 12
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH14SEC
+    bit_offset: 13
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH15SEC
+    bit_offset: 14
+    bit_size: 1
+    description: processor 1 channel n security enable
+  - name: CH16SEC
+    bit_offset: 15
+    bit_size: 1
+    description: processor 1 channel n security enable
+fieldset/IPCC_C1PRIVCFGR:
+  description: ''
+  fields:
+  - name: CH1PRIV
+    bit_offset: 0
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH2PRIV
+    bit_offset: 1
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH3PRIV
+    bit_offset: 2
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH4PRIV
+    bit_offset: 3
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH5PRIV
+    bit_offset: 4
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH6PRIV
+    bit_offset: 5
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH7PRIV
+    bit_offset: 6
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH8PRIV
+    bit_offset: 7
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH9PRIV
+    bit_offset: 8
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH10PRIV
+    bit_offset: 9
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH11PRIV
+    bit_offset: 10
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH12PRIV
+    bit_offset: 11
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH13PRIV
+    bit_offset: 12
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH14PRIV
+    bit_offset: 13
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH15PRIV
+    bit_offset: 14
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+  - name: CH16PRIV
+    bit_offset: 15
+    bit_size: 1
+    description: processor 1 channel n privilege enable
+fieldset/IPCC_C1CIDCFGR:
+  description: ''
+  fields:
+  - name: CFEN
+    bit_offset: 0
+    bit_size: 1
+    description: CID filtering enabled for processor 1
+  - name: CID
+    bit_offset: 4
+    bit_size: 4
+    description: processor 1 CID domain identification
+fieldset/IPCC_C2SECCFGR:
+  description: ''
+  fields:
+  - name: CH1SEC
+    bit_offset: 0
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH2SEC
+    bit_offset: 1
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH3SEC
+    bit_offset: 2
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH4SEC
+    bit_offset: 3
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH5SEC
+    bit_offset: 4
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH6SEC
+    bit_offset: 5
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH7SEC
+    bit_offset: 6
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH8SEC
+    bit_offset: 7
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH9SEC
+    bit_offset: 8
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH10SEC
+    bit_offset: 9
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH11SEC
+    bit_offset: 10
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH12SEC
+    bit_offset: 11
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH13SEC
+    bit_offset: 12
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH14SEC
+    bit_offset: 13
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH15SEC
+    bit_offset: 14
+    bit_size: 1
+    description: processor 2 channel n security enable
+  - name: CH16SEC
+    bit_offset: 15
+    bit_size: 1
+    description: processor 2 channel n security enable
+fieldset/IPCC_C2PRIVCFGR:
+  description: ''
+  fields:
+  - name: CH1PRIV
+    bit_offset: 0
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH2PRIV
+    bit_offset: 1
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH3PRIV
+    bit_offset: 2
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH4PRIV
+    bit_offset: 3
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH5PRIV
+    bit_offset: 4
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH6PRIV
+    bit_offset: 5
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH7PRIV
+    bit_offset: 6
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH8PRIV
+    bit_offset: 7
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH9PRIV
+    bit_offset: 8
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH10PRIV
+    bit_offset: 9
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH11PRIV
+    bit_offset: 10
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH12PRIV
+    bit_offset: 11
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH13PRIV
+    bit_offset: 12
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH14PRIV
+    bit_offset: 13
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH15PRIV
+    bit_offset: 14
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+  - name: CH16PRIV
+    bit_offset: 15
+    bit_size: 1
+    description: processor 2 channel n privilege enable
+fieldset/IPCC_C2CIDCFGR:
+  description: ''
+  fields:
+  - name: CFEN
+    bit_offset: 0
+    bit_size: 1
+    description: CID filtering enabled for processor 2
+  - name: CID
+    bit_offset: 4
+    bit_size: 4
+    description: processor 2 CID domain identification
+fieldset/IPCC_HWCFGR:
+  description: ''
+  fields:
+  - name: CHANNELS
+    bit_offset: 0
+    bit_size: 8
+    description: Number of channels per CPU supported by the IP, range 1 to 16
+  - name: SECCTRL
+    bit_offset: 8
+    bit_size: 4
+    description: security options, range 1 to 16
+  - name: OPTBITS
+    bit_offset: 16
+    bit_size: 8
+    description: reserved for future use
+  - name: CIDWIDTH
+    bit_offset: 24
+    bit_size: 4
+    description: CID bit filed width range 0 to 12
+fieldset/IPCC_VERR:
+  description: ''
+  fields:
+  - name: MINREV
+    bit_offset: 0
+    bit_size: 4
+    description: IP Minor Revision number
+  - name: MAJREV
+    bit_offset: 4
+    bit_size: 4
+    description: IP Major Revision number
+fieldset/IPCC_IPIDR:
+  description: ''
+  fields:
+  - name: IPID
+    bit_offset: 0
+    bit_size: 32
+    description: IP identification
+fieldset/IPCC_SIDR:
+  description: ''
+  fields:
+  - name: SID
+    bit_offset: 0
+    bit_size: 32
+    description: IP size identification

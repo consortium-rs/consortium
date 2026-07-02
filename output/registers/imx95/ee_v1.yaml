@@ -1,0 +1,46 @@
+block/EE:
+  description: ''
+  items:
+  - name: NEO_PIPE2_EE_CONF_CTRL_CAM
+    byte_offset: 0
+  - name: NEO_PIPE2_EE_CONF_CORING_CAM
+    byte_offset: 4
+  - name: NEO_PIPE2_EE_CONF_CLIP_CAM
+    byte_offset: 8
+  - name: NEO_PIPE2_EE_CONF_MASKGAIN_CAM
+    byte_offset: 12
+  - name: NEO_PIPE2_EE_CONF_EDGECNT_CAM
+    byte_offset: 16
+fieldset/EE_CTRL_CAM:
+  description: ''
+  fields:
+  - name: DEBUG
+    bit_offset: 8
+    bit_size: 2
+  - name: ENABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/EE_CORING_CAM:
+  description: ''
+  fields:
+  - name: CORING
+    bit_offset: 0
+    bit_size: 20
+fieldset/EE_CLIP_CAM:
+  description: ''
+  fields:
+  - name: CLIP
+    bit_offset: 0
+    bit_size: 20
+fieldset/EE_MASKGAIN_CAM:
+  description: ''
+  fields:
+  - name: GAIN
+    bit_offset: 0
+    bit_size: 8
+fieldset/EE_EDGECNT_CAM_EDGE:
+  description: ''
+  fields:
+  - name: PIXELS
+    bit_offset: 0
+    bit_size: 24

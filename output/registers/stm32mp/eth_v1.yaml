@@ -1,0 +1,3413 @@
+block/ETH:
+  description: ''
+  items:
+  - name: MACCR
+    byte_offset: 0
+    description: Operating mode configuration register
+    fieldset: ETH_MACCR
+  - name: MACECR
+    byte_offset: 4
+    description: Extended operating mode configuration register
+    fieldset: ETH_MACECR
+  - name: MACPFR
+    byte_offset: 8
+    description: Packet filtering control register
+    fieldset: ETH_MACPFR
+  - name: MACWTR
+    byte_offset: 12
+    description: Watchdog timeout register
+    fieldset: ETH_MACWTR
+  - name: MACHT0R
+    byte_offset: 16
+    description: Hash Table 0 register
+    fieldset: ETH_MACHT0R
+  - name: MACHT1R
+    byte_offset: 20
+    description: Hash Table 1 register
+    fieldset: ETH_MACHT1R
+  - name: MACVTCR
+    byte_offset: 80
+    description: VLAN tag control register
+    fieldset: ETH_MACVTCR
+  - name: MACVTDR
+    byte_offset: 84
+    description: VLAN tag data register
+    fieldset: ETH_MACVTDR
+  - name: MACVHTR
+    byte_offset: 88
+    description: VLAN Hash table register
+    fieldset: ETH_MACVHTR
+  - name: MACVIR
+    byte_offset: 96
+    description: VLAN inclusion register
+    fieldset: ETH_MACVIR
+  - name: MACIVIR
+    byte_offset: 100
+    description: Inner VLAN inclusion register
+    fieldset: ETH_MACIVIR
+  - name: MACQ0TXFCR
+    byte_offset: 112
+    description: Tx Queue 0 flow control register
+    fieldset: ETH_MACQ0TXFCR
+  - name: MACRXFCR
+    byte_offset: 144
+    description: Rx flow control register
+    fieldset: ETH_MACRXFCR
+  - name: MACRXQC0R
+    byte_offset: 160
+    description: Rx queue control 0 register
+    fieldset: ETH_MACRXQC0R
+  - name: MACRXQC1R
+    byte_offset: 164
+    description: Rx queue control 1 register
+    fieldset: ETH_MACRXQC1R
+  - name: MACRXQC2R
+    byte_offset: 168
+    description: Rx queue control 2 register
+    fieldset: ETH_MACRXQC2R
+  - name: MACISR
+    byte_offset: 176
+    description: Interrupt status register
+    fieldset: ETH_MACISR
+  - name: MACIER
+    byte_offset: 180
+    description: Interrupt enable register
+    fieldset: ETH_MACIER
+  - name: MACRXTXSR
+    byte_offset: 184
+    description: Rx Tx status register
+    fieldset: ETH_MACRXTXSR
+  - name: MACPCSR
+    byte_offset: 192
+    description: PMT control status register
+    fieldset: ETH_MACPCSR
+  - name: MACRWKPFR
+    byte_offset: 196
+    description: Remote wakeup packet filter register
+    fieldset: ETH_MACRWKPFR
+  - name: MACLCSR
+    byte_offset: 208
+    description: LPI control status register
+    fieldset: ETH_MACLCSR
+  - name: MACLTCR
+    byte_offset: 212
+    description: LPI timers control register
+    fieldset: ETH_MACLTCR
+  - name: MACLETR
+    byte_offset: 216
+    description: LPI entry timer register
+    fieldset: ETH_MACLETR
+  - name: MAC1USTCR
+    byte_offset: 220
+    description: microsecond-tick counter register
+  - name: MACPHYCSR
+    byte_offset: 248
+    description: PHYIF control status register
+    fieldset: ETH_MACPHYCSR
+  - name: MACVR
+    byte_offset: 272
+    description: Version register
+    fieldset: ETH_MACVR
+  - name: MACDR
+    byte_offset: 276
+    description: Debug register
+    fieldset: ETH_MACDR
+  - name: MACHWF0R
+    byte_offset: 284
+    description: HW feature 0 register
+  - name: MACHWF1R
+    byte_offset: 288
+    description: HW feature 1 register
+    fieldset: ETH_MACHWF1R
+  - name: MACHWF2R
+    byte_offset: 292
+    description: HW feature 2 register
+    fieldset: ETH_MACHWF2R
+  - name: MACHWF3R
+    byte_offset: 296
+    description: HW feature 3 register
+  - name: MACMDIOAR
+    byte_offset: 512
+    description: MDIO address register
+    fieldset: ETH_MACMDIOAR
+  - name: MACMDIODR
+    byte_offset: 516
+    description: MDIO data register
+    fieldset: ETH_MACMDIODR
+  - name: MACARPAR
+    byte_offset: 528
+    description: ARP address register
+    fieldset: ETH_MACARPAR
+  - name: MACCSRSWCR
+    byte_offset: 560
+    description: CSR software control register
+  - name: MACA0HR
+    byte_offset: 768
+    description: MAC Address 0 high register
+    fieldset: ETH_MACA0HR
+  - name: MACA0LR
+    byte_offset: 772
+    description: MAC Address 0 low register
+    fieldset: ETH_MACA0LR
+  - name: MACA1HR
+    byte_offset: 776
+    description: MAC Address 1 high register
+    fieldset: ETH_MACA1HR
+  - name: MACA1LR
+    byte_offset: 780
+    description: MAC Address 1 low register
+    fieldset: ETH_MACA1LR
+  - name: MACA2HR
+    byte_offset: 784
+    description: MAC Address 2 high register
+    fieldset: ETH_MACA2HR
+  - name: MACA2LR
+    byte_offset: 788
+    description: MAC Address 2 low register
+    fieldset: ETH_MACA2LR
+  - name: MACA3HR
+    byte_offset: 792
+    description: MAC Address 3 high register
+    fieldset: ETH_MACA3HR
+  - name: MACA3LR
+    byte_offset: 796
+    description: MAC Address 3 low register
+    fieldset: ETH_MACA3LR
+  - name: MMCCR
+    byte_offset: 1792
+    description: MMC control register
+    fieldset: ETH_MMCCR
+  - name: MMCRXIR
+    byte_offset: 1796
+    description: MMC Rx interrupt register
+    fieldset: ETH_MMCRXIR
+  - name: MMCTXIR
+    byte_offset: 1800
+    description: MMC Tx interrupt register
+    fieldset: ETH_MMCTXIR
+  - name: MMCRXIMR
+    byte_offset: 1804
+    description: MMC Rx interrupt mask register
+    fieldset: ETH_MMCRXIMR
+  - name: MMCTXIMR
+    byte_offset: 1808
+    description: MMC Tx interrupt mask register
+    fieldset: ETH_MMCTXIMR
+  - name: MMCTXSCGPR
+    byte_offset: 1868
+    description: Tx single collision good packets register
+    fieldset: ETH_MMCTXSCGPR
+  - name: MMCTXMCGPR
+    byte_offset: 1872
+    description: Tx multiple collision good packets register
+    fieldset: ETH_MMCTXMCGPR
+  - name: MMCTXPCGR
+    byte_offset: 1896
+    description: Tx packet count good register
+    fieldset: ETH_MMCTXPCGR
+  - name: MMCRXCRCEPR
+    byte_offset: 1940
+    description: Rx CRC error packets register
+    fieldset: ETH_MMCRXCRCEPR
+  - name: MMCRXAEPR
+    byte_offset: 1944
+    description: Rx alignment error packets register
+    fieldset: ETH_MMCRXAEPR
+  - name: MMCRXUPGR
+    byte_offset: 1988
+    description: Rx unicast packets good register
+    fieldset: ETH_MMCRXUPGR
+  - name: MMCTXLPIMSTR
+    byte_offset: 2028
+    description: Tx LPI microsecond timer register
+    fieldset: ETH_MMCTXLPIMSTR
+  - name: MMCTXLPITCR
+    byte_offset: 2032
+    description: Tx LPI transition counter register
+    fieldset: ETH_MMCTXLPITCR
+  - name: MMCRXLPIMSTR
+    byte_offset: 2036
+    description: Rx LPI microsecond counter register
+    fieldset: ETH_MMCRXLPIMSTR
+  - name: MMCRXLPITCR
+    byte_offset: 2040
+    description: Rx LPI transition counter register
+    fieldset: ETH_MMCRXLPITCR
+  - name: MACL3L4C0R
+    byte_offset: 2304
+    description: L3 and L4 control 0 register
+    fieldset: ETH_MACL3L4C0R
+  - name: MACL4A0R
+    byte_offset: 2308
+    description: Layer4 address filter 0 register
+    fieldset: ETH_MACL4A0R
+  - name: MACL3A00R
+    byte_offset: 2320
+    description: Layer 3 Address 0 filter 0 register
+    fieldset: ETH_MACL3A00R
+  - name: MACL3A10R
+    byte_offset: 2324
+    description: Layer3 address 1 filter 0 register
+    fieldset: ETH_MACL3A10R
+  - name: MACL3A20
+    byte_offset: 2328
+    description: Layer3 Address 2 filter 0 register
+    fieldset: ETH_MACL3A20
+  - name: MACL3A30
+    byte_offset: 2332
+    description: Layer3 Address 3 filter 0 register
+    fieldset: ETH_MACL3A30
+  - name: MACL3L4C1R
+    byte_offset: 2352
+    description: L3 and L4 control 1 register
+    fieldset: ETH_MACL3L4C1R
+  - name: MACL4A1R
+    byte_offset: 2356
+    description: Layer 4 address filter 1 register
+    fieldset: ETH_MACL4A1R
+  - name: MACL3A01R
+    byte_offset: 2368
+    description: Layer3 address 0 filter 1 Register
+    fieldset: ETH_MACL3A01R
+  - name: MACL3A11R
+    byte_offset: 2372
+    description: Layer3 address 1 filter 1 register
+    fieldset: ETH_MACL3A11R
+  - name: MACL3A21R
+    byte_offset: 2376
+    description: Layer3 address 2 filter 1 Register
+    fieldset: ETH_MACL3A21R
+  - name: MACL3A31R
+    byte_offset: 2380
+    description: Layer3 address 3 filter 1 register
+    fieldset: ETH_MACL3A31R
+  - name: MACTSCR
+    byte_offset: 2816
+    description: Timestamp control Register
+    fieldset: ETH_MACTSCR
+  - name: MACSSIR
+    byte_offset: 2820
+    description: Sub-second increment register
+    fieldset: ETH_MACSSIR
+  - name: MACSTSR
+    byte_offset: 2824
+    description: System time seconds register
+    fieldset: ETH_MACSTSR
+  - name: MACSTNR
+    byte_offset: 2828
+    description: System time nanoseconds register
+    fieldset: ETH_MACSTNR
+  - name: MACSTSUR
+    byte_offset: 2832
+    description: System time seconds update register
+    fieldset: ETH_MACSTSUR
+  - name: MACSTNUR
+    byte_offset: 2836
+    description: System time nanoseconds update register
+    fieldset: ETH_MACSTNUR
+  - name: MACTSAR
+    byte_offset: 2840
+    description: Timestamp addend register
+    fieldset: ETH_MACTSAR
+  - name: MACTSSR
+    byte_offset: 2848
+    description: Timestamp status register
+    fieldset: ETH_MACTSSR
+  - name: MACTXTSSNR
+    byte_offset: 2864
+    description: Tx timestamp status nanoseconds register
+    fieldset: ETH_MACTXTSSNR
+  - name: MACTXTSSSR
+    byte_offset: 2868
+    description: Tx timestamp status seconds register
+    fieldset: ETH_MACTXTSSSR
+  - name: MACACR
+    byte_offset: 2880
+    description: Auxiliary control register
+    fieldset: ETH_MACACR
+  - name: MACATSNR
+    byte_offset: 2888
+    description: Auxiliary timestamp nanoseconds register
+    fieldset: ETH_MACATSNR
+  - name: MACATSSR
+    byte_offset: 2892
+    description: Auxiliary timestamp seconds register
+    fieldset: ETH_MACATSSR
+  - name: MACTSIACR
+    byte_offset: 2896
+    description: Timestamp Ingress asymmetric correction register
+    fieldset: ETH_MACTSIACR
+  - name: MACTSEACR
+    byte_offset: 2900
+    description: Timestamp Egress asymmetric correction register
+    fieldset: ETH_MACTSEACR
+  - name: MACTSICNR
+    byte_offset: 2904
+    description: Timestamp Ingress correction nanosecond register
+    fieldset: ETH_MACTSICNR
+  - name: MACTSECNR
+    byte_offset: 2908
+    description: Timestamp Egress correction nanosecond register
+    fieldset: ETH_MACTSECNR
+  - name: MACPPSCR
+    byte_offset: 2928
+    description: PPS control register [alternate]
+    fieldset: ETH_MACPPSCR
+  - name: MACPPSTTSR
+    byte_offset: 2944
+    description: PPS target time seconds register
+    fieldset: ETH_MACPPSTTSR
+  - name: MACPPSTTNR
+    byte_offset: 2948
+    description: PPS target time nanoseconds register
+    fieldset: ETH_MACPPSTTNR
+  - name: MACPPSIR
+    byte_offset: 2952
+    description: PPS interval register
+    fieldset: ETH_MACPPSIR
+  - name: MACPPSWR
+    byte_offset: 2956
+    description: PPS width register
+    fieldset: ETH_MACPPSWR
+  - name: MACPOCR
+    byte_offset: 3008
+    description: PTP Offload control register
+    fieldset: ETH_MACPOCR
+  - name: MACSPI0R
+    byte_offset: 3012
+    description: PTP Source Port Identity 0 Register
+    fieldset: ETH_MACSPI0R
+  - name: MACSPI1R
+    byte_offset: 3016
+    description: PTP Source port identity 1 register
+    fieldset: ETH_MACSPI1R
+  - name: MACSPI2R
+    byte_offset: 3020
+    description: PTP Source port identity 2 register
+    fieldset: ETH_MACSPI2R
+  - name: MACLMIR
+    byte_offset: 3024
+    description: Log message interval register
+    fieldset: ETH_MACLMIR
+  - name: MTLOMR
+    byte_offset: 3072
+    description: Operating mode Register
+    fieldset: ETH_MTLOMR
+  - name: MTLISR
+    byte_offset: 3104
+    description: Interrupt status Register
+    fieldset: ETH_MTLISR
+  - name: MTLTXQ0OMR
+    byte_offset: 3328
+    description: Tx queue 0 operating mode Register
+    fieldset: ETH_MTLTXQ0OMR
+  - name: MTLTXQ0UR
+    byte_offset: 3332
+    description: Tx queue 0 underflow register
+    fieldset: ETH_MTLTXQ0UR
+  - name: MTLTXQ0DR
+    byte_offset: 3336
+    description: Tx queue 0 debug Register
+    fieldset: ETH_MTLTXQ0DR
+  - name: MTLTXQ0ESR
+    byte_offset: 3348
+    description: Tx queue 0 ETS status Register
+    fieldset: ETH_MTLTXQ0ESR
+  - name: MTLTXQ0QWR
+    byte_offset: 3352
+    description: Tx queue 0 quantum weight Register
+  - name: MTLQ0ICSR
+    byte_offset: 3372
+    description: Queue 0 interrupt control status Register
+    fieldset: ETH_MTLQ0ICSR
+  - name: MTLRXQ0OMR
+    byte_offset: 3376
+    description: Rx queue 0 operating mode register
+    fieldset: ETH_MTLRXQ0OMR
+  - name: MTLRXQ0MPOCR
+    byte_offset: 3380
+    description: Rx queue 0 missed packet and overflow counter register
+    fieldset: ETH_MTLRXQ0MPOCR
+  - name: MTLRXQ0DR
+    byte_offset: 3384
+    description: Rx queue 0 debug register
+    fieldset: ETH_MTLRXQ0DR
+  - name: MTLRXQ0CR
+    byte_offset: 3388
+    description: Rx queue 0 control register
+  - name: MTLTXQ1OMR
+    byte_offset: 3392
+    description: Tx queue 1 operating mode Register
+    fieldset: ETH_MTLTXQ1OMR
+  - name: MTLTXQ1UR
+    byte_offset: 3396
+    description: Tx queue 1 underflow register
+    fieldset: ETH_MTLTXQ1UR
+  - name: MTLTXQ1DR
+    byte_offset: 3400
+    description: Tx queue 1 debug Register
+    fieldset: ETH_MTLTXQ1DR
+  - name: MTLTXQ1ECR
+    byte_offset: 3408
+    description: Tx queue 1 ETS control Register
+    fieldset: ETH_MTLTXQ1ECR
+  - name: MTLTXQ1QWR
+    byte_offset: 3416
+    description: Tx queue 1 quantum weight register
+    fieldset: ETH_MTLTXQ1QWR
+  - name: MTLTXQ1SSCR
+    byte_offset: 3420
+    description: Tx queue 1 send slope credit Register
+    fieldset: ETH_MTLTXQ1SSCR
+  - name: MTLTXQ1HCR
+    byte_offset: 3424
+    description: Tx Queue 1 hiCredit register
+    fieldset: ETH_MTLTXQ1HCR
+  - name: MTLTXQ1LCR
+    byte_offset: 3428
+    description: Tx queue 1 loCredit register
+    fieldset: ETH_MTLTXQ1LCR
+  - name: MTLQ1ICSR
+    byte_offset: 3436
+    description: Queue 1 interrupt control status Register
+    fieldset: ETH_MTLQ1ICSR
+  - name: MTLRXQ1OMR
+    byte_offset: 3440
+    description: Rx queue 1 operating mode register
+    fieldset: ETH_MTLRXQ1OMR
+  - name: MTLRXQ1MPOCR
+    byte_offset: 3444
+    description: Rx queue 1 missed packet and overflow counter register
+    fieldset: ETH_MTLRXQ1MPOCR
+  - name: MTLRXQ1DR
+    byte_offset: 3448
+    description: Rx queue 1 debug register
+    fieldset: ETH_MTLRXQ1DR
+  - name: MTLRXQ1CR
+    byte_offset: 3452
+    description: Rx queue 1 control register
+  - name: DMAMR
+    byte_offset: 4096
+    description: DMA mode register
+    fieldset: ETH_DMAMR
+  - name: DMASBMR
+    byte_offset: 4100
+    description: System bus mode register
+    fieldset: ETH_DMASBMR
+  - name: DMAISR
+    byte_offset: 4104
+    description: Interrupt status register
+    fieldset: ETH_DMAISR
+  - name: DMADSR
+    byte_offset: 4108
+    description: Debug status register
+    fieldset: ETH_DMADSR
+  - name: DMAA4TXACR
+    byte_offset: 4128
+    description: AXI4 transmit channel ACE control register
+    fieldset: ETH_DMAA4TXACR
+  - name: DMAA4RXACR
+    byte_offset: 4132
+    description: AXI4 receive channel ACE control register
+    fieldset: ETH_DMAA4RXACR
+  - name: DMAA4DACR
+    byte_offset: 4136
+    description: AXI4 descriptor ACE control register
+    fieldset: ETH_DMAA4DACR
+  - name: DMALPIEI
+    byte_offset: 4160
+    description: AXI4 LPI Entry Interval register
+  - name: DMAC0CR
+    byte_offset: 4352
+    description: Channel 0 control register
+    fieldset: ETH_DMAC0CR
+  - name: DMAC0TXCR
+    byte_offset: 4356
+    description: Channel 0 transmit control register
+    fieldset: ETH_DMAC0TXCR
+  - name: DMAC0RXCR
+    byte_offset: 4360
+    description: Channel 0 receive control register
+    fieldset: ETH_DMAC0RXCR
+  - name: DMAC0TXDLAR
+    byte_offset: 4372
+    description: Channel 0 Tx descriptor list address register
+    fieldset: ETH_DMAC0TXDLAR
+  - name: DMAC0RXDLAR
+    byte_offset: 4380
+    description: Channel 0 Rx descriptor list address register
+    fieldset: ETH_DMAC0RXDLAR
+  - name: DMAC0TXDTPR
+    byte_offset: 4384
+    description: Channel 0 Tx descriptor tail pointer register
+    fieldset: ETH_DMAC0TXDTPR
+  - name: DMAC0RXDTPR
+    byte_offset: 4392
+    description: Channel 0 Rx descriptor tail pointer register
+    fieldset: ETH_DMAC0RXDTPR
+  - name: DMAC0TXRLR
+    byte_offset: 4396
+    description: Channel 0 Tx descriptor ring length register
+    fieldset: ETH_DMAC0TXRLR
+  - name: DMAC0RXRLR
+    byte_offset: 4400
+    description: Channel 0 Rx descriptor ring length register
+    fieldset: ETH_DMAC0RXRLR
+  - name: DMAC0IER
+    byte_offset: 4404
+    description: Channel 0 interrupt enable register
+    fieldset: ETH_DMAC0IER
+  - name: DMAC0RXIWTR
+    byte_offset: 4408
+    description: Channel 0 Rx interrupt watchdog timer register
+    fieldset: ETH_DMAC0RXIWTR
+  - name: DMAC0SFCSR
+    byte_offset: 4412
+    description: Channel 0 slot function control status register
+    fieldset: ETH_DMAC0SFCSR
+  - name: DMAC0CATXDR
+    byte_offset: 4420
+    description: Channel 0 current application transmit descriptor register
+    fieldset: ETH_DMAC0CATXDR
+  - name: DMAC0CARXDR
+    byte_offset: 4428
+    description: Channel 0 current application receive descriptor register
+    fieldset: ETH_DMAC0CARXDR
+  - name: DMAC0CATXBR
+    byte_offset: 4436
+    description: Channel 0 current application transmit buffer register
+    fieldset: ETH_DMAC0CATXBR
+  - name: DMAC0CARXBR
+    byte_offset: 4444
+    description: Channel 0 current application receive buffer register
+    fieldset: ETH_DMAC0CARXBR
+  - name: DMAC0SR
+    byte_offset: 4448
+    description: Channel 0 status register
+    fieldset: ETH_DMAC0SR
+  - name: DMAC0MFCR
+    byte_offset: 4452
+    description: Channel 0 missed frame count register
+    fieldset: ETH_DMAC0MFCR
+  - name: DMAC1CR
+    byte_offset: 4480
+    description: Channel 1 control register
+    fieldset: ETH_DMAC1CR
+  - name: DMAC1TXCR
+    byte_offset: 4484
+    description: Channel 1 transmit control register
+    fieldset: ETH_DMAC1TXCR
+  - name: DMAC1TXDLAR
+    byte_offset: 4500
+    description: Channel 1 Tx descriptor list address register
+    fieldset: ETH_DMAC1TXDLAR
+  - name: DMAC1TXDTPR
+    byte_offset: 4512
+    description: Channel 1 Tx descriptor tail pointer register
+    fieldset: ETH_DMAC1TXDTPR
+  - name: DMAC1TXRLR
+    byte_offset: 4524
+    description: Channel 1 Tx descriptor ring length register
+    fieldset: ETH_DMAC1TXRLR
+  - name: DMAC1IER
+    byte_offset: 4532
+    description: Channel 1 interrupt enable register
+    fieldset: ETH_DMAC1IER
+  - name: DMAC1SFCSR
+    byte_offset: 4540
+    description: Channel 1 slot function control status register
+    fieldset: ETH_DMAC1SFCSR
+  - name: DMAC1CATXDR
+    byte_offset: 4548
+    description: Channel 1 current application transmit descriptor register
+    fieldset: ETH_DMAC1CATXDR
+  - name: DMAC1CATXBR
+    byte_offset: 4564
+    description: Channel 1 current application transmit buffer register
+    fieldset: ETH_DMAC1CATXBR
+  - name: DMAC1SR
+    byte_offset: 4576
+    description: Channel 1 status register
+    fieldset: ETH_DMAC1SR
+  - name: DMAC1MFCR
+    byte_offset: 4580
+    description: Channel 1 missed frame count register
+    fieldset: ETH_DMAC1MFCR
+fieldset/ETH_MACCR:
+  description: ''
+  fields:
+  - name: RE
+    bit_offset: 0
+    bit_size: 1
+    description: Receiver Enable
+  - name: TE
+    bit_offset: 1
+    bit_size: 1
+    description: Transmitter Enable
+  - name: PRELEN
+    bit_offset: 2
+    bit_size: 2
+    description: Preamble Length for Transmit packets
+  - name: DC
+    bit_offset: 4
+    bit_size: 1
+    description: Deferral Check
+  - name: BL
+    bit_offset: 5
+    bit_size: 2
+    description: Back-Off Limit
+  - name: DR
+    bit_offset: 8
+    bit_size: 1
+    description: Disable Retry
+  - name: DCRS
+    bit_offset: 9
+    bit_size: 1
+    description: Disable Carrier Sense During Transmission
+  - name: DO
+    bit_offset: 10
+    bit_size: 1
+    description: Disable Receive Own
+  - name: ECRSFD
+    bit_offset: 11
+    bit_size: 1
+    description: Enable Carrier Sense Before Transmission in Full-Duplex Mode
+  - name: LM
+    bit_offset: 12
+    bit_size: 1
+    description: Loopback Mode
+  - name: DM
+    bit_offset: 13
+    bit_size: 1
+    description: Duplex Mode
+  - name: FES
+    bit_offset: 14
+    bit_size: 1
+    description: MAC Speed
+  - name: PS
+    bit_offset: 15
+    bit_size: 1
+    description: Port Select
+  - name: JE
+    bit_offset: 16
+    bit_size: 1
+    description: Jumbo Packet Enable
+  - name: JD
+    bit_offset: 17
+    bit_size: 1
+    description: Jabber Disable
+  - name: BE
+    bit_offset: 18
+    bit_size: 1
+    description: Packet Burst Enable
+  - name: WD
+    bit_offset: 19
+    bit_size: 1
+    description: Watchdog Disable
+  - name: ACS
+    bit_offset: 20
+    bit_size: 1
+    description: Automatic Pad or CRC Stripping
+  - name: CST
+    bit_offset: 21
+    bit_size: 1
+    description: CRC stripping for Type packets
+  - name: S2KP
+    bit_offset: 22
+    bit_size: 1
+    description: IEEE 802.3as Support for 2K Packets
+  - name: GPSLCE
+    bit_offset: 23
+    bit_size: 1
+    description: Giant Packet Size Limit Control Enable
+  - name: IPG
+    bit_offset: 24
+    bit_size: 3
+    description: Inter-Packet Gap
+  - name: IPC
+    bit_offset: 27
+    bit_size: 1
+    description: Checksum Offload
+  - name: SARC
+    bit_offset: 28
+    bit_size: 3
+    description: Source Address Insertion or Replacement Control
+  - name: ARPEN
+    bit_offset: 31
+    bit_size: 1
+    description: ARP Offload Enable
+fieldset/ETH_MACECR:
+  description: ''
+  fields:
+  - name: GPSL
+    bit_offset: 0
+    bit_size: 14
+    description: Giant Packet Size Limit
+  - name: DCRCC
+    bit_offset: 16
+    bit_size: 1
+    description: Disable CRC Checking for Received Packets
+  - name: SPEN
+    bit_offset: 17
+    bit_size: 1
+    description: Slow Protocol Detection Enable
+  - name: USP
+    bit_offset: 18
+    bit_size: 1
+    description: Unicast Slow Protocol Packet Detect
+  - name: EIPGEN
+    bit_offset: 24
+    bit_size: 1
+    description: Extended Inter-Packet Gap Enable
+  - name: EIPG
+    bit_offset: 25
+    bit_size: 5
+    description: Extended Inter-Packet Gap
+fieldset/ETH_MACPFR:
+  description: ''
+  fields:
+  - name: PR
+    bit_offset: 0
+    bit_size: 1
+    description: Promiscuous Mode
+  - name: HUC
+    bit_offset: 1
+    bit_size: 1
+    description: Hash Unicast
+  - name: HMC
+    bit_offset: 2
+    bit_size: 1
+    description: Hash Multicast
+  - name: DAIF
+    bit_offset: 3
+    bit_size: 1
+    description: DA Inverse Filtering
+  - name: PM
+    bit_offset: 4
+    bit_size: 1
+    description: Pass All Multicast
+  - name: DBF
+    bit_offset: 5
+    bit_size: 1
+    description: Disable Broadcast Packets
+  - name: PCF
+    bit_offset: 6
+    bit_size: 2
+    description: Pass Control Packets
+  - name: SAIF
+    bit_offset: 8
+    bit_size: 1
+    description: SA Inverse Filtering
+  - name: SAF
+    bit_offset: 9
+    bit_size: 1
+    description: Source Address Filter Enable
+  - name: HPF
+    bit_offset: 10
+    bit_size: 1
+    description: Hash or Perfect Filter
+  - name: VTFE
+    bit_offset: 16
+    bit_size: 1
+    description: VLAN Tag Filter Enable
+  - name: IPFE
+    bit_offset: 20
+    bit_size: 1
+    description: Layer 3 and Layer 4 Filter Enable
+  - name: DNTU
+    bit_offset: 21
+    bit_size: 1
+    description: Drop Non-TCP/UDP over IP Packets
+  - name: RA
+    bit_offset: 31
+    bit_size: 1
+    description: Receive All
+fieldset/ETH_MACWTR:
+  description: ''
+  fields:
+  - name: WTO
+    bit_offset: 0
+    bit_size: 4
+    description: Watchdog Timeout
+  - name: PWE
+    bit_offset: 8
+    bit_size: 1
+    description: Programmable Watchdog Enable
+fieldset/ETH_MACHT0R:
+  description: ''
+  fields:
+  - name: HT31T0
+    bit_offset: 0
+    bit_size: 32
+    description: MAC Hash Table First 32 Bits
+fieldset/ETH_MACHT1R:
+  description: ''
+  fields:
+  - name: HT63T32
+    bit_offset: 0
+    bit_size: 32
+    description: MAC Hash Table Second 32 Bits
+fieldset/ETH_MACVTCR:
+  description: ''
+  fields:
+  - name: OB
+    bit_offset: 0
+    bit_size: 1
+    description: Operation Busy
+  - name: CT
+    bit_offset: 1
+    bit_size: 1
+    description: Command Type
+  - name: OFS
+    bit_offset: 2
+    bit_size: 2
+    description: Offset
+  - name: ETV
+    bit_offset: 16
+    bit_size: 1
+    description: Enable 12-Bit VLAN Tag Comparison
+  - name: VTIM
+    bit_offset: 17
+    bit_size: 1
+    description: VLAN Tag Inverse Match Enable
+  - name: ESVL
+    bit_offset: 18
+    bit_size: 1
+    description: Enable S-VLAN
+  - name: ERSVLM
+    bit_offset: 19
+    bit_size: 1
+    description: Enable Receive S-VLAN Match
+  - name: DOVLTC
+    bit_offset: 20
+    bit_size: 1
+    description: Disable VLAN Type Check
+  - name: EVLS
+    bit_offset: 21
+    bit_size: 2
+    description: Enable VLAN Tag Stripping on Receive
+  - name: EVLRXS
+    bit_offset: 24
+    bit_size: 1
+    description: Enable VLAN Tag in Rx status
+  - name: VTHM
+    bit_offset: 25
+    bit_size: 1
+    description: VLAN Tag Hash Table Match Enable
+  - name: EDVLP
+    bit_offset: 26
+    bit_size: 1
+    description: Enable Double VLAN Processing
+  - name: ERIVLT
+    bit_offset: 27
+    bit_size: 1
+    description: Enable Inner VLAN Tag
+  - name: EIVLS
+    bit_offset: 28
+    bit_size: 2
+    description: Enable Inner VLAN Tag Stripping on Receive
+  - name: EIVLRXS
+    bit_offset: 31
+    bit_size: 1
+    description: Enable Inner VLAN Tag in Rx Status
+fieldset/ETH_MACVTDR:
+  description: ''
+  fields:
+  - name: VID
+    bit_offset: 0
+    bit_size: 16
+    description: VLAN Tag Identifier field of VLAN tag
+  - name: VEN
+    bit_offset: 16
+    bit_size: 1
+    description: '0x00010000'
+  - name: ETV
+    bit_offset: 17
+    bit_size: 1
+    description: Enable 12-Bit or 16-bit VLAN Tag Comparison
+  - name: DOVLTC
+    bit_offset: 18
+    bit_size: 1
+    description: Disable VLAN Type Check
+  - name: ERSVLM
+    bit_offset: 19
+    bit_size: 1
+    description: Enable Receive S-VLAN Match
+  - name: ERIVLT
+    bit_offset: 20
+    bit_size: 1
+    description: Enable Inner VLAN Tag
+  - name: DMACHEN
+    bit_offset: 24
+    bit_size: 1
+    description: DMA Channel Enable
+  - name: DMACHN
+    bit_offset: 25
+    bit_size: 1
+    description: '0x02000000'
+fieldset/ETH_MACVHTR:
+  description: ''
+  fields:
+  - name: VLHT
+    bit_offset: 0
+    bit_size: 16
+    description: VLAN Hash Table
+fieldset/ETH_MACVIR:
+  description: ''
+  fields:
+  - name: VLT
+    bit_offset: 0
+    bit_size: 16
+    description: VLAN Tag for Transmit Packets
+  - name: VLC
+    bit_offset: 16
+    bit_size: 2
+    description: VLAN Tag Control in Transmit Packets
+  - name: VLP
+    bit_offset: 18
+    bit_size: 1
+    description: VLAN Priority Control
+  - name: CSVL
+    bit_offset: 19
+    bit_size: 1
+    description: C-VLAN or S-VLAN
+  - name: VLTI
+    bit_offset: 20
+    bit_size: 1
+    description: VLAN Tag Input
+fieldset/ETH_MACIVIR:
+  description: ''
+  fields:
+  - name: VLT
+    bit_offset: 0
+    bit_size: 16
+    description: VLAN Tag for Transmit Packets
+  - name: VLC
+    bit_offset: 16
+    bit_size: 2
+    description: VLAN Tag Control in Transmit Packets
+  - name: VLP
+    bit_offset: 18
+    bit_size: 1
+    description: VLAN Priority Control
+  - name: CSVL
+    bit_offset: 19
+    bit_size: 1
+    description: C-VLAN or S-VLAN
+  - name: VLTI
+    bit_offset: 20
+    bit_size: 1
+    description: VLAN Tag Input
+fieldset/ETH_MACQ0TXFCR:
+  description: ''
+  fields:
+  - name: TFE
+    bit_offset: 1
+    bit_size: 1
+    description: Transmit Flow Control Enable
+  - name: PLT
+    bit_offset: 4
+    bit_size: 3
+    description: Pause Low Threshold
+  - name: DZPQ
+    bit_offset: 7
+    bit_size: 1
+    description: Disable Zero-Quanta Pause
+  - name: PT
+    bit_offset: 16
+    bit_size: 16
+    description: Pause Time
+fieldset/ETH_MACRXFCR:
+  description: ''
+  fields:
+  - name: RFE
+    bit_offset: 0
+    bit_size: 1
+    description: Receive Flow Control Enable
+  - name: UP
+    bit_offset: 1
+    bit_size: 1
+    description: Unicast Pause Packet Detect
+fieldset/ETH_MACRXQC0R:
+  description: ''
+  fields:
+  - name: RXQ0EN
+    bit_offset: 0
+    bit_size: 2
+    description: Receive Queue 0 Enable
+  - name: RXQ1EN
+    bit_offset: 2
+    bit_size: 2
+    description: Receive Queue 1 Enable
+fieldset/ETH_MACRXQC1R:
+  description: ''
+  fields:
+  - name: AVCPQ
+    bit_offset: 0
+    bit_size: 3
+    description: AV Untagged Control Packets Queue
+  - name: AVPTPQ
+    bit_offset: 4
+    bit_size: 3
+    description: AV PTP Packets Queue
+  - name: UPQ
+    bit_offset: 12
+    bit_size: 3
+    description: Untagged Packet Queue
+  - name: MCBCQ
+    bit_offset: 16
+    bit_size: 3
+    description: Multicast and Broadcast Queue
+  - name: MCBCQEN
+    bit_offset: 20
+    bit_size: 1
+    description: Multicast and Broadcast Queue Enable
+  - name: TACPQE
+    bit_offset: 21
+    bit_size: 1
+    description: Tagged AV Control Packets Queuing Enable.
+fieldset/ETH_MACRXQC2R:
+  description: ''
+  fields:
+  - name: PSRQ0
+    bit_offset: 0
+    bit_size: 8
+    description: Priorities Selected in the Receive Queue 0
+  - name: PSRQ1
+    bit_offset: 8
+    bit_size: 8
+    description: Priorities Selected in the Receive Queue 1
+fieldset/ETH_MACISR:
+  description: ''
+  fields:
+  - name: RGSMIIIS
+    bit_offset: 0
+    bit_size: 1
+    description: RGMII or SMII Interrupt Status
+  - name: PHYIS
+    bit_offset: 3
+    bit_size: 1
+    description: PHY Interrupt
+  - name: PMTIS
+    bit_offset: 4
+    bit_size: 1
+    description: PMT Interrupt Status
+  - name: LPIIS
+    bit_offset: 5
+    bit_size: 1
+    description: LPI Interrupt Status
+  - name: MMCIS
+    bit_offset: 8
+    bit_size: 1
+    description: MMC Interrupt Status
+  - name: MMCRXIS
+    bit_offset: 9
+    bit_size: 1
+    description: MMC Receive Interrupt Status
+  - name: MMCTXIS
+    bit_offset: 10
+    bit_size: 1
+    description: MMC Transmit Interrupt Status
+  - name: TSIS
+    bit_offset: 12
+    bit_size: 1
+    description: Timestamp Interrupt Status
+  - name: TXSTSIS
+    bit_offset: 13
+    bit_size: 1
+    description: Transmit Status Interrupt
+  - name: RXSTSIS
+    bit_offset: 14
+    bit_size: 1
+    description: Receive Status Interrupt
+fieldset/ETH_MACIER:
+  description: ''
+  fields:
+  - name: RGSMIIIE
+    bit_offset: 0
+    bit_size: 1
+    description: RGMII or SMII Interrupt Enable
+  - name: PHYIE
+    bit_offset: 3
+    bit_size: 1
+    description: PHY Interrupt Enable
+  - name: PMTIE
+    bit_offset: 4
+    bit_size: 1
+    description: PMT Interrupt Enable
+  - name: LPIIE
+    bit_offset: 5
+    bit_size: 1
+    description: LPI Interrupt Enable
+  - name: TSIE
+    bit_offset: 12
+    bit_size: 1
+    description: Timestamp Interrupt Enable
+  - name: TXSTSIE
+    bit_offset: 13
+    bit_size: 1
+    description: Transmit Status Interrupt Enable
+  - name: RXSTSIE
+    bit_offset: 14
+    bit_size: 1
+    description: Receive Status Interrupt Enable
+fieldset/ETH_MACRXTXSR:
+  description: ''
+  fields:
+  - name: TJT
+    bit_offset: 0
+    bit_size: 1
+    description: Transmit Jabber Timeout
+  - name: NCARR
+    bit_offset: 1
+    bit_size: 1
+    description: No Carrier
+  - name: LCARR
+    bit_offset: 2
+    bit_size: 1
+    description: Loss of Carrier
+  - name: EXDEF
+    bit_offset: 3
+    bit_size: 1
+    description: Excessive Deferral
+  - name: LCOL
+    bit_offset: 4
+    bit_size: 1
+    description: Late Collision
+  - name: EXCOL
+    bit_offset: 5
+    bit_size: 1
+    description: Excessive Collisions
+  - name: RWT
+    bit_offset: 8
+    bit_size: 1
+    description: Receive Watchdog Timeout
+fieldset/ETH_MACPCSR:
+  description: ''
+  fields:
+  - name: PWRDWN
+    bit_offset: 0
+    bit_size: 1
+    description: Power Down
+  - name: MGKPKTEN
+    bit_offset: 1
+    bit_size: 1
+    description: Magic Packet Enable
+  - name: RWKPKTEN
+    bit_offset: 2
+    bit_size: 1
+    description: Remote wakeup Packet Enable
+  - name: MGKPRCVD
+    bit_offset: 5
+    bit_size: 1
+    description: Magic Packet Received
+  - name: RWKPRCVD
+    bit_offset: 6
+    bit_size: 1
+    description: Remote wakeup Packet Received
+  - name: GLBLUCAST
+    bit_offset: 9
+    bit_size: 1
+    description: Global Unicast
+  - name: RWKPFE
+    bit_offset: 10
+    bit_size: 1
+    description: Remote wakeup Packet Forwarding Enable
+  - name: RWKPTR
+    bit_offset: 24
+    bit_size: 5
+    description: Remote wakeup FIFO Pointer
+  - name: RWKFILTRST
+    bit_offset: 31
+    bit_size: 1
+    description: Remote wakeup Packet Filter Register Pointer Reset
+fieldset/ETH_MACRWKPFR:
+  description: ''
+  fields:
+  - name: MACRWKPFR
+    bit_offset: 0
+    bit_size: 32
+    description: Remote wakeup packet filter
+fieldset/ETH_MACLCSR:
+  description: ''
+  fields:
+  - name: TLPIEN
+    bit_offset: 0
+    bit_size: 1
+    description: Transmit LPI Entry
+  - name: TLPIEX
+    bit_offset: 1
+    bit_size: 1
+    description: Transmit LPI Exit
+  - name: RLPIEN
+    bit_offset: 2
+    bit_size: 1
+    description: Receive LPI Entry
+  - name: RLPIEX
+    bit_offset: 3
+    bit_size: 1
+    description: Receive LPI Exit
+  - name: TLPIST
+    bit_offset: 8
+    bit_size: 1
+    description: Transmit LPI State
+  - name: RLPIST
+    bit_offset: 9
+    bit_size: 1
+    description: Receive LPI State
+  - name: LPIEN
+    bit_offset: 16
+    bit_size: 1
+    description: LPI Enable
+  - name: PLS
+    bit_offset: 17
+    bit_size: 1
+    description: PHY Link Status
+  - name: PLSEN
+    bit_offset: 18
+    bit_size: 1
+    description: PHY Link Status Enable
+  - name: LPITXA
+    bit_offset: 19
+    bit_size: 1
+    description: LPI Tx Automate
+  - name: LPITE
+    bit_offset: 20
+    bit_size: 1
+    description: LPI Timer Enable
+  - name: LPITCSE
+    bit_offset: 21
+    bit_size: 1
+    description: LPI Tx Clock Stop Enable
+fieldset/ETH_MACLTCR:
+  description: ''
+  fields:
+  - name: TWT
+    bit_offset: 0
+    bit_size: 16
+    description: LPI TW Timer
+  - name: LST
+    bit_offset: 16
+    bit_size: 10
+    description: LPI LS Timer
+fieldset/ETH_MACLETR:
+  description: ''
+  fields:
+  - name: LPIET
+    bit_offset: 3
+    bit_size: 17
+    description: LPI Entry Timer
+fieldset/ETH_MACPHYCSR:
+  description: ''
+  fields:
+  - name: TC
+    bit_offset: 0
+    bit_size: 1
+    description: Transmit Configuration in RGMII, SGMII, or SMII
+  - name: LUD
+    bit_offset: 1
+    bit_size: 1
+    description: Link Up or Down
+  - name: LNKMOD
+    bit_offset: 16
+    bit_size: 1
+    description: Link Mode
+  - name: LNKSPEED
+    bit_offset: 17
+    bit_size: 2
+    description: Link Speed
+  - name: LNKSTS
+    bit_offset: 19
+    bit_size: 1
+    description: Link Status
+fieldset/ETH_MACVR:
+  description: ''
+  fields:
+  - name: SNPSVER
+    bit_offset: 0
+    bit_size: 8
+    description: IP version
+  - name: USERVER
+    bit_offset: 8
+    bit_size: 8
+    description: ST-defined version
+fieldset/ETH_MACDR:
+  description: ''
+  fields:
+  - name: RPESTS
+    bit_offset: 0
+    bit_size: 1
+    description: MAC GMII or MII Receive Protocol Engine Status
+  - name: RFCFCSTS
+    bit_offset: 1
+    bit_size: 2
+    description: MAC Receive Packet Controller FIFO Status
+  - name: TPESTS
+    bit_offset: 16
+    bit_size: 1
+    description: MAC GMII or MII Transmit Protocol Engine Status
+  - name: TFCSTS
+    bit_offset: 17
+    bit_size: 2
+    description: MAC Transmit Packet Controller Status
+fieldset/ETH_MACHWF1R:
+  description: ''
+  fields:
+  - name: RXFIFOSIZE
+    bit_offset: 0
+    bit_size: 5
+    description: MTL Receive FIFO Size
+  - name: TXFIFOSIZE
+    bit_offset: 6
+    bit_size: 5
+    description: MTL Transmit FIFO Size
+  - name: OSTEN
+    bit_offset: 11
+    bit_size: 1
+    description: One-Step Timestamping Enable
+  - name: PTOEN
+    bit_offset: 12
+    bit_size: 1
+    description: PTP Offload Enable
+  - name: ADVTHWORD
+    bit_offset: 13
+    bit_size: 1
+    description: IEEE 1588 High Word Register Enable
+  - name: ADDR64
+    bit_offset: 14
+    bit_size: 2
+    description: Address width
+  - name: DCBEN
+    bit_offset: 16
+    bit_size: 1
+    description: DCB Feature Enable
+  - name: SPHEN
+    bit_offset: 17
+    bit_size: 1
+    description: Split Header Feature Enable
+  - name: TSOEN
+    bit_offset: 18
+    bit_size: 1
+    description: TCP Segmentation Offload Enable
+  - name: DBGMEMA
+    bit_offset: 19
+    bit_size: 1
+    description: DMA Debug Registers Enable
+  - name: AVSEL
+    bit_offset: 20
+    bit_size: 1
+    description: AV Feature Enable
+  - name: HASHTBLSZ
+    bit_offset: 24
+    bit_size: 2
+    description: Hash Table Size
+  - name: L3L4FNUM
+    bit_offset: 27
+    bit_size: 4
+    description: Total number of L3 or L4 Filters
+fieldset/ETH_MACHWF2R:
+  description: ''
+  fields:
+  - name: RXQCNT
+    bit_offset: 0
+    bit_size: 4
+    description: Number of MTL Receive Queues
+  - name: TXQCNT
+    bit_offset: 6
+    bit_size: 4
+    description: Number of MTL Transmit Queues
+  - name: RXCHCNT
+    bit_offset: 12
+    bit_size: 4
+    description: Number of DMA Receive Channels
+  - name: TXCHCNT
+    bit_offset: 18
+    bit_size: 4
+    description: Number of DMA Transmit Channels
+  - name: PPSOUTNUM
+    bit_offset: 24
+    bit_size: 3
+    description: Number of PPS Outputs
+  - name: AUXSNAPNUM
+    bit_offset: 28
+    bit_size: 3
+    description: Number of Auxiliary Snapshot Inputs
+fieldset/ETH_MACMDIOAR:
+  description: ''
+  fields:
+  - name: GB
+    bit_offset: 0
+    bit_size: 1
+    description: GMII Busy
+  - name: C45E
+    bit_offset: 1
+    bit_size: 1
+    description: Clause 45 PHY Enable
+  - name: GOC
+    bit_offset: 2
+    bit_size: 2
+    description: GMII Operation Command
+  - name: SKAP
+    bit_offset: 4
+    bit_size: 1
+    description: Skip Address Packet
+  - name: CR
+    bit_offset: 8
+    bit_size: 4
+    description: CSR Clock Range
+  - name: NTC
+    bit_offset: 12
+    bit_size: 3
+    description: Number of Training Clocks
+  - name: RDA
+    bit_offset: 16
+    bit_size: 5
+    description: Register/Device Address
+  - name: PA
+    bit_offset: 21
+    bit_size: 5
+    description: Physical Layer Address
+  - name: BTB
+    bit_offset: 26
+    bit_size: 1
+    description: Back to Back transactions
+  - name: PSE
+    bit_offset: 27
+    bit_size: 1
+    description: Preamble Suppression Enable
+fieldset/ETH_MACMDIODR:
+  description: ''
+  fields:
+  - name: GD
+    bit_offset: 0
+    bit_size: 16
+    description: GMII Data
+  - name: RA
+    bit_offset: 16
+    bit_size: 16
+    description: Register Address
+fieldset/ETH_MACARPAR:
+  description: ''
+  fields:
+  - name: ARPPA
+    bit_offset: 0
+    bit_size: 32
+    description: ARP Protocol Address
+fieldset/ETH_MACA0HR:
+  description: ''
+  fields:
+  - name: ADDRHI
+    bit_offset: 0
+    bit_size: 16
+    description: MAC Address0[47:32]
+  - name: AE
+    bit_offset: 31
+    bit_size: 1
+    description: Address Enable
+fieldset/ETH_MACA0LR:
+  description: ''
+  fields:
+  - name: ADDRLO
+    bit_offset: 0
+    bit_size: 32
+    description: MAC Address x [31:0] (x = 0 to 3)
+fieldset/ETH_MACA1HR:
+  description: ''
+  fields:
+  - name: ADDRHI
+    bit_offset: 0
+    bit_size: 16
+    description: MAC Address1 [47:32]
+  - name: MBC
+    bit_offset: 24
+    bit_size: 6
+    description: Mask Byte Control
+  - name: SA
+    bit_offset: 30
+    bit_size: 1
+    description: Source Address
+  - name: AE
+    bit_offset: 31
+    bit_size: 1
+    description: Address Enable
+fieldset/ETH_MACA1LR:
+  description: ''
+  fields:
+  - name: ADDRLO
+    bit_offset: 0
+    bit_size: 32
+    description: MAC Address x [31:0] (x = 0 to 3)
+fieldset/ETH_MACA2HR:
+  description: ''
+  fields:
+  - name: ADDRHI
+    bit_offset: 0
+    bit_size: 16
+    description: MAC Address1 [47:32]
+  - name: MBC
+    bit_offset: 24
+    bit_size: 6
+    description: Mask Byte Control
+  - name: SA
+    bit_offset: 30
+    bit_size: 1
+    description: Source Address
+  - name: AE
+    bit_offset: 31
+    bit_size: 1
+    description: Address Enable
+fieldset/ETH_MACA2LR:
+  description: ''
+  fields:
+  - name: ADDRLO
+    bit_offset: 0
+    bit_size: 32
+    description: MAC Address x [31:0] (x = 0 to 3)
+fieldset/ETH_MACA3HR:
+  description: ''
+  fields:
+  - name: ADDRHI
+    bit_offset: 0
+    bit_size: 16
+    description: MAC Address1 [47:32]
+  - name: MBC
+    bit_offset: 24
+    bit_size: 6
+    description: Mask Byte Control
+  - name: SA
+    bit_offset: 30
+    bit_size: 1
+    description: Source Address
+  - name: AE
+    bit_offset: 31
+    bit_size: 1
+    description: Address Enable
+fieldset/ETH_MACA3LR:
+  description: ''
+  fields:
+  - name: ADDRLO
+    bit_offset: 0
+    bit_size: 32
+    description: MAC Address x [31:0] (x = 0 to 3)
+fieldset/ETH_MMCCR:
+  description: ''
+  fields:
+  - name: CNTRST
+    bit_offset: 0
+    bit_size: 1
+    description: Counters Reset
+  - name: CNTSTOPRO
+    bit_offset: 1
+    bit_size: 1
+    description: Counter Stop Rollover
+  - name: RSTONRD
+    bit_offset: 2
+    bit_size: 1
+    description: Reset on Read
+  - name: CNTFREEZ
+    bit_offset: 3
+    bit_size: 1
+    description: MMC Counter Freeze
+  - name: CNTPRST
+    bit_offset: 4
+    bit_size: 1
+    description: Counters Preset
+  - name: CNTPRSTLVL
+    bit_offset: 5
+    bit_size: 1
+    description: Full-Half Preset
+  - name: UCDBC
+    bit_offset: 8
+    bit_size: 1
+    description: Update MMC Counters for Dropped Broadcast Packets
+fieldset/ETH_MMCRXIR:
+  description: ''
+  fields:
+  - name: RXCRCERPIS
+    bit_offset: 5
+    bit_size: 1
+    description: MMC Receive CRC Error Packet Counter Interrupt Status
+  - name: RXALGNERPIS
+    bit_offset: 6
+    bit_size: 1
+    description: MMC Receive Alignment Error Packet Counter Interrupt Status
+  - name: RXUCGPIS
+    bit_offset: 17
+    bit_size: 1
+    description: MMC Receive Unicast Good Packet Counter Interrupt Status
+  - name: RXLPIUSCIS
+    bit_offset: 26
+    bit_size: 1
+    description: MMC Receive LPI microsecond counter interrupt status
+  - name: RXLPITRCIS
+    bit_offset: 27
+    bit_size: 1
+    description: MMC Receive LPI transition counter interrupt status
+fieldset/ETH_MMCTXIR:
+  description: ''
+  fields:
+  - name: TXSCOLGPIS
+    bit_offset: 14
+    bit_size: 1
+    description: MMC Transmit Single Collision Good Packet Counter Interrupt Status
+  - name: TXMCOLGPIS
+    bit_offset: 15
+    bit_size: 1
+    description: MMC Transmit Multiple Collision Good Packet Counter Interrupt Status
+  - name: TXGPKTIS
+    bit_offset: 21
+    bit_size: 1
+    description: MMC Transmit Good Packet Counter Interrupt Status
+  - name: TXLPIUSCIS
+    bit_offset: 26
+    bit_size: 1
+    description: MMC Transmit LPI microsecond counter interrupt status
+  - name: TXLPITRCIS
+    bit_offset: 27
+    bit_size: 1
+    description: MMC Transmit LPI transition counter interrupt status
+fieldset/ETH_MMCRXIMR:
+  description: ''
+  fields:
+  - name: RXCRCERPIM
+    bit_offset: 5
+    bit_size: 1
+    description: MMC Receive CRC Error Packet Counter Interrupt Mask
+  - name: RXALGNERPIM
+    bit_offset: 6
+    bit_size: 1
+    description: MMC Receive Alignment Error Packet Counter Interrupt Mask
+  - name: RXUCGPIM
+    bit_offset: 17
+    bit_size: 1
+    description: MMC Receive Unicast Good Packet Counter Interrupt Mask
+  - name: RXLPIUSCIM
+    bit_offset: 26
+    bit_size: 1
+    description: MMC Receive LPI microsecond counter interrupt Mask
+  - name: RXLPITRCIM
+    bit_offset: 27
+    bit_size: 1
+    description: MMC Receive LPI transition counter interrupt Mask
+fieldset/ETH_MMCTXIMR:
+  description: ''
+  fields:
+  - name: TXSCOLGPIM
+    bit_offset: 14
+    bit_size: 1
+    description: MMC Transmit Single Collision Good Packet Counter Interrupt Mask
+  - name: TXMCOLGPIM
+    bit_offset: 15
+    bit_size: 1
+    description: MMC Transmit Multiple Collision Good Packet Counter Interrupt Mask
+  - name: TXGPKTIM
+    bit_offset: 21
+    bit_size: 1
+    description: MMC Transmit Good Packet Counter Interrupt Mask
+  - name: TXLPIUSCIM
+    bit_offset: 26
+    bit_size: 1
+    description: MMC Transmit LPI microsecond counter interrupt Mask
+  - name: TXLPITRCIM
+    bit_offset: 27
+    bit_size: 1
+    description: MMC Transmit LPI transition counter interrupt Mask
+fieldset/ETH_MMCTXSCGPR:
+  description: ''
+  fields:
+  - name: TXSNGLCOLG
+    bit_offset: 0
+    bit_size: 32
+    description: Tx Single Collision Good Packets
+fieldset/ETH_MMCTXMCGPR:
+  description: ''
+  fields:
+  - name: TXMULTCOLG
+    bit_offset: 0
+    bit_size: 32
+    description: Tx Multiple Collision Good Packets
+fieldset/ETH_MMCTXPCGR:
+  description: ''
+  fields:
+  - name: TXPKTG
+    bit_offset: 0
+    bit_size: 32
+    description: Tx Packet Count Good
+fieldset/ETH_MMCRXCRCEPR:
+  description: ''
+  fields:
+  - name: RXCRCERR
+    bit_offset: 0
+    bit_size: 32
+    description: Rx CRC Error Packets
+fieldset/ETH_MMCRXAEPR:
+  description: ''
+  fields:
+  - name: RXALGNERR
+    bit_offset: 0
+    bit_size: 32
+    description: Rx Alignment Error Packets
+fieldset/ETH_MMCRXUPGR:
+  description: ''
+  fields:
+  - name: RXUCASTG
+    bit_offset: 0
+    bit_size: 32
+    description: Rx Unicast Packets Good
+fieldset/ETH_MMCTXLPIMSTR:
+  description: ''
+  fields:
+  - name: TXLPIUSC
+    bit_offset: 0
+    bit_size: 32
+    description: Tx LPI Microseconds Counter
+fieldset/ETH_MMCTXLPITCR:
+  description: ''
+  fields:
+  - name: TXLPITRC
+    bit_offset: 0
+    bit_size: 32
+    description: Tx LPI Transition counter
+fieldset/ETH_MMCRXLPIMSTR:
+  description: ''
+  fields:
+  - name: RXLPIUSC
+    bit_offset: 0
+    bit_size: 32
+    description: Rx LPI Microseconds Counter
+fieldset/ETH_MMCRXLPITCR:
+  description: ''
+  fields:
+  - name: RXLPITRC
+    bit_offset: 0
+    bit_size: 32
+    description: Rx LPI Transition counter
+fieldset/ETH_MACL3L4C0R:
+  description: ''
+  fields:
+  - name: L3PEN0
+    bit_offset: 0
+    bit_size: 1
+    description: Layer 3 Protocol Enable
+  - name: L3SAM0
+    bit_offset: 2
+    bit_size: 1
+    description: Layer 3 IP SA Match Enable
+  - name: L3SAIM0
+    bit_offset: 3
+    bit_size: 1
+    description: Layer 3 IP SA Inverse Match Enable
+  - name: L3DAM0
+    bit_offset: 4
+    bit_size: 1
+    description: Layer 3 IP DA Match Enable
+  - name: L3DAIM0
+    bit_offset: 5
+    bit_size: 1
+    description: Layer 3 IP DA Inverse Match Enable
+  - name: L3HSBM0
+    bit_offset: 6
+    bit_size: 5
+    description: Layer 3 IP SA Higher Bits Match
+  - name: L3HDBM0
+    bit_offset: 11
+    bit_size: 5
+    description: Layer 3 IP DA Higher Bits Match
+  - name: L4PEN0
+    bit_offset: 16
+    bit_size: 1
+    description: Layer 4 Protocol Enable
+  - name: L4SPM0
+    bit_offset: 18
+    bit_size: 1
+    description: Layer 4 Source Port Match Enable
+  - name: L4SPIM0
+    bit_offset: 19
+    bit_size: 1
+    description: Layer 4 Source Port Inverse Match Enable
+  - name: L4DPM0
+    bit_offset: 20
+    bit_size: 1
+    description: Layer 4 Destination Port Match Enable
+  - name: L4DPIM0
+    bit_offset: 21
+    bit_size: 1
+    description: Layer 4 Destination Port Inverse Match Enable
+fieldset/ETH_MACL4A0R:
+  description: ''
+  fields:
+  - name: L4SP0
+    bit_offset: 0
+    bit_size: 16
+    description: Layer 4 Source Port Number Field
+  - name: L4DP0
+    bit_offset: 16
+    bit_size: 16
+    description: Layer 4 Destination Port Number Field
+fieldset/ETH_MACL3A00R:
+  description: ''
+  fields:
+  - name: L3A00
+    bit_offset: 0
+    bit_size: 32
+    description: Layer 3 Address 0 Field
+fieldset/ETH_MACL3A10R:
+  description: ''
+  fields:
+  - name: L3A10
+    bit_offset: 0
+    bit_size: 32
+    description: Layer 3 Address 1 Field
+fieldset/ETH_MACL3A20:
+  description: ''
+  fields:
+  - name: L3A20
+    bit_offset: 0
+    bit_size: 32
+    description: Layer 3 Address 2 Field
+fieldset/ETH_MACL3A30:
+  description: ''
+  fields:
+  - name: L3A30
+    bit_offset: 0
+    bit_size: 32
+    description: Layer 3 Address 3 Field
+fieldset/ETH_MACL3L4C1R:
+  description: ''
+  fields:
+  - name: L3PEN1
+    bit_offset: 0
+    bit_size: 1
+    description: Layer 3 Protocol Enable
+  - name: L3SAM1
+    bit_offset: 2
+    bit_size: 1
+    description: Layer 3 IP SA Match Enable
+  - name: L3SAIM1
+    bit_offset: 3
+    bit_size: 1
+    description: Layer 3 IP SA Inverse Match Enable
+  - name: L3DAM1
+    bit_offset: 4
+    bit_size: 1
+    description: Layer 3 IP DA Match Enable
+  - name: L3DAIM1
+    bit_offset: 5
+    bit_size: 1
+    description: Layer 3 IP DA Inverse Match Enable
+  - name: L3HSBM1
+    bit_offset: 6
+    bit_size: 5
+    description: Layer 3 IP SA Higher Bits Match
+  - name: L3HDBM1
+    bit_offset: 11
+    bit_size: 5
+    description: Layer 3 IP DA Higher Bits Match
+  - name: L4PEN1
+    bit_offset: 16
+    bit_size: 1
+    description: Layer 4 Protocol Enable
+  - name: L4SPM1
+    bit_offset: 18
+    bit_size: 1
+    description: Layer 4 Source Port Match Enable
+  - name: L4SPIM1
+    bit_offset: 19
+    bit_size: 1
+    description: Layer 4 Source Port Inverse Match Enable
+  - name: L4DPM1
+    bit_offset: 20
+    bit_size: 1
+    description: Layer 4 Destination Port Match Enable
+  - name: L4DPIM1
+    bit_offset: 21
+    bit_size: 1
+    description: Layer 4 Destination Port Inverse Match Enable
+fieldset/ETH_MACL4A1R:
+  description: ''
+  fields:
+  - name: L4SP1
+    bit_offset: 0
+    bit_size: 16
+    description: Layer 4 Source Port Number Field
+  - name: L4DP1
+    bit_offset: 16
+    bit_size: 16
+    description: Layer 4 Destination Port Number Field
+fieldset/ETH_MACL3A01R:
+  description: ''
+  fields:
+  - name: L3A01
+    bit_offset: 0
+    bit_size: 32
+    description: Layer 3 Address 0 Field
+fieldset/ETH_MACL3A11R:
+  description: ''
+  fields:
+  - name: L3A11
+    bit_offset: 0
+    bit_size: 32
+    description: Layer 3 Address 1 Field
+fieldset/ETH_MACL3A21R:
+  description: ''
+  fields:
+  - name: L3A21
+    bit_offset: 0
+    bit_size: 32
+    description: Layer 3 Address 2 Field
+fieldset/ETH_MACL3A31R:
+  description: ''
+  fields:
+  - name: L3A31
+    bit_offset: 0
+    bit_size: 32
+    description: Layer 3 Address 3 Field
+fieldset/ETH_MACTSCR:
+  description: ''
+  fields:
+  - name: TSENA
+    bit_offset: 0
+    bit_size: 1
+    description: Enable Timestamp
+  - name: TSCFUPDT
+    bit_offset: 1
+    bit_size: 1
+    description: Fine or Coarse Timestamp Update
+  - name: TSINIT
+    bit_offset: 2
+    bit_size: 1
+    description: Initialize Timestamp
+  - name: TSUPDT
+    bit_offset: 3
+    bit_size: 1
+    description: Update Timestamp
+  - name: TSADDREG
+    bit_offset: 5
+    bit_size: 1
+    description: Update Addend Register
+  - name: PTGE
+    bit_offset: 6
+    bit_size: 1
+    description: Update Addend Register
+  - name: TSENALL
+    bit_offset: 8
+    bit_size: 1
+    description: Enable Timestamp for All Packets
+  - name: TSCTRLSSR
+    bit_offset: 9
+    bit_size: 1
+    description: Timestamp Digital or Binary Rollover Control
+  - name: TSVER2ENA
+    bit_offset: 10
+    bit_size: 1
+    description: Enable PTP Packet Processing for Version 2 Format
+  - name: TSIPENA
+    bit_offset: 11
+    bit_size: 1
+    description: Enable Processing of PTP over Ethernet Packets
+  - name: TSIPV6ENA
+    bit_offset: 12
+    bit_size: 1
+    description: Enable Processing of PTP Packets Sent over IPv6-UDP
+  - name: TSIPV4ENA
+    bit_offset: 13
+    bit_size: 1
+    description: Enable Processing of PTP Packets Sent over IPv4-UDP
+  - name: TSEVNTENA
+    bit_offset: 14
+    bit_size: 1
+    description: Enable Timestamp Snapshot for Event Messages
+  - name: TSMSTRENA
+    bit_offset: 15
+    bit_size: 1
+    description: Enable Snapshot for Messages Relevant to Master
+  - name: SNAPTYPSEL
+    bit_offset: 16
+    bit_size: 2
+    description: Select PTP packets for Taking Snapshots
+  - name: TSENMACADDR
+    bit_offset: 18
+    bit_size: 1
+    description: Enable MAC Address for PTP Packet Filtering
+  - name: ESTI
+    bit_offset: 20
+    bit_size: 1
+    description: Enable checksum correction during OST for PTP over UDP/IPv4 packets
+  - name: TXTSSTSM
+    bit_offset: 24
+    bit_size: 1
+    description: Transmit Timestamp Status Mode
+  - name: AV8021ASMEN
+    bit_offset: 28
+    bit_size: 1
+    description: AV 802.1AS Mode Enable
+fieldset/ETH_MACSSIR:
+  description: ''
+  fields:
+  - name: SSINC
+    bit_offset: 16
+    bit_size: 8
+    description: Sub-second Increment Value
+fieldset/ETH_MACSTSR:
+  description: ''
+  fields:
+  - name: TSS
+    bit_offset: 0
+    bit_size: 32
+    description: Timestamp Second
+fieldset/ETH_MACSTNR:
+  description: ''
+  fields:
+  - name: TSSS
+    bit_offset: 0
+    bit_size: 31
+    description: Timestamp Sub-seconds
+fieldset/ETH_MACSTSUR:
+  description: ''
+  fields:
+  - name: TSS
+    bit_offset: 0
+    bit_size: 32
+    description: Timestamp Seconds
+fieldset/ETH_MACSTNUR:
+  description: ''
+  fields:
+  - name: TSSS
+    bit_offset: 0
+    bit_size: 31
+    description: Timestamp Sub-seconds
+  - name: ADDSUB
+    bit_offset: 31
+    bit_size: 1
+    description: Add or Subtract Time
+fieldset/ETH_MACTSAR:
+  description: ''
+  fields:
+  - name: TSAR
+    bit_offset: 0
+    bit_size: 32
+    description: Timestamp Addend Register
+fieldset/ETH_MACTSSR:
+  description: ''
+  fields:
+  - name: TSSOVF
+    bit_offset: 0
+    bit_size: 1
+    description: Timestamp Seconds Overflow
+  - name: TSTARGT0
+    bit_offset: 1
+    bit_size: 1
+    description: Timestamp Target Time Reached
+  - name: AUXTSTRIG
+    bit_offset: 2
+    bit_size: 1
+    description: Auxiliary Timestamp Trigger Snapshot
+  - name: TSTRGTERR0
+    bit_offset: 3
+    bit_size: 1
+    description: Timestamp Target Time Error
+  - name: TXTSSIS
+    bit_offset: 15
+    bit_size: 1
+    description: Tx Timestamp Status Interrupt Status
+  - name: ATSSTN
+    bit_offset: 16
+    bit_size: 4
+    description: Auxiliary Timestamp Snapshot Trigger Identifier
+  - name: ATSSTM
+    bit_offset: 24
+    bit_size: 1
+    description: Auxiliary Timestamp Snapshot Trigger Missed
+  - name: ATSNS
+    bit_offset: 25
+    bit_size: 5
+    description: Number of Auxiliary Timestamp Snapshots
+fieldset/ETH_MACTXTSSNR:
+  description: ''
+  fields:
+  - name: TXTSSLO
+    bit_offset: 0
+    bit_size: 31
+    description: Transmit Timestamp Status Low
+  - name: TXTSSMIS
+    bit_offset: 31
+    bit_size: 1
+    description: Transmit Timestamp Status Missed
+fieldset/ETH_MACTXTSSSR:
+  description: ''
+  fields:
+  - name: TXTSSHI
+    bit_offset: 0
+    bit_size: 32
+    description: Transmit Timestamp Status High
+fieldset/ETH_MACACR:
+  description: ''
+  fields:
+  - name: ATSFC
+    bit_offset: 0
+    bit_size: 1
+    description: Auxiliary Snapshot FIFO Clear
+  - name: ATSEN0
+    bit_offset: 4
+    bit_size: 1
+    description: Auxiliary Snapshot 0 Enable
+  - name: ATSEN1
+    bit_offset: 5
+    bit_size: 1
+    description: Auxiliary Snapshot 1 Enable
+  - name: ATSEN2
+    bit_offset: 6
+    bit_size: 1
+    description: Auxiliary Snapshot 2 Enable
+  - name: ATSEN3
+    bit_offset: 7
+    bit_size: 1
+    description: Auxiliary Snapshot 3 Enable
+fieldset/ETH_MACATSNR:
+  description: ''
+  fields:
+  - name: AUXTSLO
+    bit_offset: 0
+    bit_size: 31
+    description: Auxiliary Timestamp
+fieldset/ETH_MACATSSR:
+  description: ''
+  fields:
+  - name: AUXTSHI
+    bit_offset: 0
+    bit_size: 32
+    description: Auxiliary Timestamp
+fieldset/ETH_MACTSIACR:
+  description: ''
+  fields:
+  - name: OSTIAC
+    bit_offset: 0
+    bit_size: 32
+    description: One-Step Timestamp Ingress Asymmetry Correction
+fieldset/ETH_MACTSEACR:
+  description: ''
+  fields:
+  - name: OSTEAC
+    bit_offset: 0
+    bit_size: 32
+    description: One-Step Timestamp Egress Asymmetry Correction
+fieldset/ETH_MACTSICNR:
+  description: ''
+  fields:
+  - name: TSIC
+    bit_offset: 0
+    bit_size: 32
+    description: Timestamp Ingress Correction
+fieldset/ETH_MACTSECNR:
+  description: ''
+  fields:
+  - name: TSEC
+    bit_offset: 0
+    bit_size: 32
+    description: Timestamp Egress Correction
+fieldset/ETH_MACPPSCR:
+  description: ''
+  fields:
+  - name: PPSCTRL
+    bit_offset: 0
+    bit_size: 4
+    description: PPS Output Frequency Control
+  - name: PPSEN0
+    bit_offset: 4
+    bit_size: 1
+    description: Flexible PPS Output Mode Enable
+  - name: TRGTMODSEL0
+    bit_offset: 5
+    bit_size: 2
+    description: Target Time Register Mode for PPS Output
+  - name: PPSCMD
+    bit_offset: 0
+    bit_size: 4
+    description: Flexible PPS Output (ptp_pps_o[0]) Control
+fieldset/ETH_MACPPSTTSR:
+  description: ''
+  fields:
+  - name: TSTRH0
+    bit_offset: 0
+    bit_size: 32
+    description: PPS Target Time Seconds Register
+fieldset/ETH_MACPPSTTNR:
+  description: ''
+  fields:
+  - name: TTSL0
+    bit_offset: 0
+    bit_size: 31
+    description: Target Time Low for PPS Register
+  - name: TRGTBUSY0
+    bit_offset: 31
+    bit_size: 1
+    description: PPS Target Time Register Busy
+fieldset/ETH_MACPPSIR:
+  description: ''
+  fields:
+  - name: PPSINT0
+    bit_offset: 0
+    bit_size: 32
+    description: PPS Output Signal Interval
+fieldset/ETH_MACPPSWR:
+  description: ''
+  fields:
+  - name: PPSWIDTH0
+    bit_offset: 0
+    bit_size: 32
+    description: PPS Output Signal Width
+fieldset/ETH_MACPOCR:
+  description: ''
+  fields:
+  - name: PTOEN
+    bit_offset: 0
+    bit_size: 1
+    description: PTP Offload Enable
+  - name: ASYNCEN
+    bit_offset: 1
+    bit_size: 1
+    description: Automatic PTP SYNC message Enable
+  - name: APDREQEN
+    bit_offset: 2
+    bit_size: 1
+    description: Automatic PTP Pdelay_Req message Enable
+  - name: ASYNCTRIG
+    bit_offset: 4
+    bit_size: 1
+    description: Automatic PTP SYNC message Trigger
+  - name: APDREQTRIG
+    bit_offset: 5
+    bit_size: 1
+    description: Automatic PTP Pdelay_Req message Trigger
+  - name: DRRDIS
+    bit_offset: 6
+    bit_size: 1
+    description: Disable PTO Delay Request/Response response generation
+  - name: DN
+    bit_offset: 8
+    bit_size: 8
+    description: Domain Number
+fieldset/ETH_MACSPI0R:
+  description: ''
+  fields:
+  - name: SPI0
+    bit_offset: 0
+    bit_size: 32
+    description: Source Port Identity 0
+fieldset/ETH_MACSPI1R:
+  description: ''
+  fields:
+  - name: SPI1
+    bit_offset: 0
+    bit_size: 32
+    description: Source Port Identity 1
+fieldset/ETH_MACSPI2R:
+  description: ''
+  fields:
+  - name: SPI2
+    bit_offset: 0
+    bit_size: 16
+    description: Source Port Identity 2
+fieldset/ETH_MACLMIR:
+  description: ''
+  fields:
+  - name: LSI
+    bit_offset: 0
+    bit_size: 8
+    description: Log Sync Interval
+  - name: DRSYNCR
+    bit_offset: 8
+    bit_size: 3
+    description: Delay_Req to SYNC Ratio
+  - name: LMPDRI
+    bit_offset: 24
+    bit_size: 8
+    description: Log Min Pdelay_Req Interval
+fieldset/ETH_MTLOMR:
+  description: ''
+  fields:
+  - name: DTXSTS
+    bit_offset: 1
+    bit_size: 1
+    description: Drop Transmit Status
+  - name: RAA
+    bit_offset: 2
+    bit_size: 1
+    description: Receive Arbitration Algorithm
+  - name: SCHALG
+    bit_offset: 5
+    bit_size: 2
+    description: Tx Scheduling Algorithm
+  - name: CNTPRST
+    bit_offset: 8
+    bit_size: 1
+    description: Counters Preset
+  - name: CNTCLR
+    bit_offset: 9
+    bit_size: 1
+    description: Counters Reset
+fieldset/ETH_MTLISR:
+  description: ''
+  fields:
+  - name: Q0IS
+    bit_offset: 0
+    bit_size: 1
+    description: Queue 0 interrupt status
+  - name: Q1IS
+    bit_offset: 1
+    bit_size: 1
+    description: Queue 1 interrupt status
+fieldset/ETH_MTLTXQ0OMR:
+  description: ''
+  fields:
+  - name: FTQ
+    bit_offset: 0
+    bit_size: 1
+    description: Flush Transmit Queue
+  - name: TSF
+    bit_offset: 1
+    bit_size: 1
+    description: Transmit Store and Forward
+  - name: TXQEN
+    bit_offset: 2
+    bit_size: 2
+    description: Transmit Queue Enable
+  - name: TTC
+    bit_offset: 4
+    bit_size: 3
+    description: Transmit Threshold Control
+  - name: TQS
+    bit_offset: 16
+    bit_size: 9
+    description: Transmit Queue Size
+fieldset/ETH_MTLTXQ0UR:
+  description: ''
+  fields:
+  - name: UFFRMCNT
+    bit_offset: 0
+    bit_size: 11
+    description: Underflow Packet Counter
+  - name: UFCNTOVF
+    bit_offset: 11
+    bit_size: 1
+    description: Overflow Bit for Underflow Packet Counter
+fieldset/ETH_MTLTXQ0DR:
+  description: ''
+  fields:
+  - name: TXQPAUSED
+    bit_offset: 0
+    bit_size: 1
+    description: Transmit Queue in Pause
+  - name: TRCSTS
+    bit_offset: 1
+    bit_size: 2
+    description: MTL Tx Queue Read Controller Status
+  - name: TWCSTS
+    bit_offset: 3
+    bit_size: 1
+    description: MTL Tx Queue Write Controller Status
+  - name: TXQSTS
+    bit_offset: 4
+    bit_size: 1
+    description: MTL Tx Queue Not Empty Status
+  - name: TXSTSFSTS
+    bit_offset: 5
+    bit_size: 1
+    description: MTL Tx Status FIFO Full Status
+  - name: PTXQ
+    bit_offset: 16
+    bit_size: 3
+    description: Number of Packets in the Transmit Queue
+  - name: STXSTSF
+    bit_offset: 20
+    bit_size: 3
+    description: Number of Status Words in Tx Status FIFO of Queue
+fieldset/ETH_MTLTXQ0ESR:
+  description: ''
+  fields:
+  - name: ABS
+    bit_offset: 0
+    bit_size: 24
+    description: Average Bits per Slot
+fieldset/ETH_MTLQ0ICSR:
+  description: ''
+  fields:
+  - name: TXUNFIS
+    bit_offset: 0
+    bit_size: 1
+    description: Transmit Queue Underflow Interrupt Status
+  - name: ABPSIS
+    bit_offset: 1
+    bit_size: 1
+    description: Average Bits Per Slot Interrupt Status
+  - name: TXUIE
+    bit_offset: 8
+    bit_size: 1
+    description: Transmit Queue Underflow Interrupt Enable
+  - name: ABPSIE
+    bit_offset: 9
+    bit_size: 1
+    description: Average Bits Per Slot Interrupt Enable
+  - name: RXOVFIS
+    bit_offset: 16
+    bit_size: 1
+    description: Receive Queue Overflow Interrupt Status
+  - name: RXOIE
+    bit_offset: 24
+    bit_size: 1
+    description: Receive Queue Overflow Interrupt Enable
+fieldset/ETH_MTLRXQ0OMR:
+  description: ''
+  fields:
+  - name: RTC
+    bit_offset: 0
+    bit_size: 2
+    description: Receive Queue Threshold Control
+  - name: FUP
+    bit_offset: 3
+    bit_size: 1
+    description: Forward Undersized Good Packets
+  - name: FEP
+    bit_offset: 4
+    bit_size: 1
+    description: Forward Error Packets
+  - name: RSF
+    bit_offset: 5
+    bit_size: 1
+    description: Receive Queue Store and Forward
+  - name: EHFC
+    bit_offset: 7
+    bit_size: 1
+    description: Enable Hardware Flow Control
+  - name: RFA
+    bit_offset: 8
+    bit_size: 3
+    description: Threshold for Activating Flow Control (in half-duplex and full-duplex
+  - name: RFD
+    bit_offset: 14
+    bit_size: 3
+    description: Threshold for Deactivating Flow Control (in half-duplex and full-duplex
+      modes)
+  - name: RQS
+    bit_offset: 20
+    bit_size: 4
+    description: Receive Queue Size
+fieldset/ETH_MTLRXQ0MPOCR:
+  description: ''
+  fields:
+  - name: OVFPKTCNT
+    bit_offset: 0
+    bit_size: 11
+    description: Overflow Packet Counter
+  - name: OVFCNTOVF
+    bit_offset: 11
+    bit_size: 1
+    description: Overflow Counter Overflow Bit
+  - name: MISPKTCNT
+    bit_offset: 16
+    bit_size: 11
+    description: Missed Packet Counter
+  - name: MISCNTOVF
+    bit_offset: 27
+    bit_size: 1
+    description: Missed Packet Counter Overflow Bit
+fieldset/ETH_MTLRXQ0DR:
+  description: ''
+  fields:
+  - name: RWCSTS
+    bit_offset: 0
+    bit_size: 1
+    description: MTL Rx Queue Write Controller Active Status
+  - name: RRCSTS
+    bit_offset: 1
+    bit_size: 2
+    description: MTL Rx Queue Read Controller State
+  - name: RXQSTS
+    bit_offset: 4
+    bit_size: 2
+    description: MTL Rx Queue Fill-Level Status
+  - name: PRXQ
+    bit_offset: 16
+    bit_size: 14
+    description: Number of Packets in Receive Queue
+fieldset/ETH_MTLTXQ1OMR:
+  description: ''
+  fields:
+  - name: FTQ
+    bit_offset: 0
+    bit_size: 1
+    description: Flush Transmit Queue
+  - name: TSF
+    bit_offset: 1
+    bit_size: 1
+    description: Transmit Store and Forward
+  - name: TXQEN
+    bit_offset: 2
+    bit_size: 2
+    description: Transmit Queue Enable
+  - name: TTC
+    bit_offset: 4
+    bit_size: 3
+    description: Transmit Threshold Control
+  - name: TQS
+    bit_offset: 16
+    bit_size: 9
+    description: Transmit Queue Size
+fieldset/ETH_MTLTXQ1UR:
+  description: ''
+  fields:
+  - name: UFFRMCNT
+    bit_offset: 0
+    bit_size: 11
+    description: Underflow Packet Counter
+  - name: UFCNTOVF
+    bit_offset: 11
+    bit_size: 1
+    description: Overflow Bit for Underflow Packet Counter
+fieldset/ETH_MTLTXQ1DR:
+  description: ''
+  fields:
+  - name: TXQPAUSED
+    bit_offset: 0
+    bit_size: 1
+    description: Transmit Queue in Pause
+  - name: TRCSTS
+    bit_offset: 1
+    bit_size: 2
+    description: MTL Tx Queue Read Controller Status
+  - name: TWCSTS
+    bit_offset: 3
+    bit_size: 1
+    description: MTL Tx Queue Write Controller Status
+  - name: TXQSTS
+    bit_offset: 4
+    bit_size: 1
+    description: MTL Tx Queue Not Empty Status
+  - name: TXSTSFSTS
+    bit_offset: 5
+    bit_size: 1
+    description: MTL Tx Status FIFO Full Status
+  - name: PTXQ
+    bit_offset: 16
+    bit_size: 3
+    description: Number of Packets in the Transmit Queue
+  - name: STXSTSF
+    bit_offset: 20
+    bit_size: 3
+    description: Number of Status Words in Tx Status FIFO of Queue
+fieldset/ETH_MTLTXQ1ECR:
+  description: ''
+  fields:
+  - name: AVALG
+    bit_offset: 2
+    bit_size: 1
+    description: AV Algorithm
+  - name: CC
+    bit_offset: 3
+    bit_size: 1
+    description: Credit Control
+  - name: SLC
+    bit_offset: 4
+    bit_size: 3
+    description: Slot Count
+fieldset/ETH_MTLTXQ1QWR:
+  description: ''
+  fields:
+  - name: ISCQW
+    bit_offset: 0
+    bit_size: 21
+    description: idleSlopeCredit value for queue 1
+fieldset/ETH_MTLTXQ1SSCR:
+  description: ''
+  fields:
+  - name: SSC
+    bit_offset: 0
+    bit_size: 14
+    description: sendSlopeCredit Value
+fieldset/ETH_MTLTXQ1HCR:
+  description: ''
+  fields:
+  - name: HC
+    bit_offset: 0
+    bit_size: 29
+    description: hiCredit Value
+fieldset/ETH_MTLTXQ1LCR:
+  description: ''
+  fields:
+  - name: LC
+    bit_offset: 0
+    bit_size: 29
+    description: loCredit Value
+fieldset/ETH_MTLQ1ICSR:
+  description: ''
+  fields:
+  - name: TXUNFIS
+    bit_offset: 0
+    bit_size: 1
+    description: Transmit Queue Underflow Interrupt Status
+  - name: ABPSIS
+    bit_offset: 1
+    bit_size: 1
+    description: Average Bits Per Slot Interrupt Status
+  - name: TXUIE
+    bit_offset: 8
+    bit_size: 1
+    description: Transmit Queue Underflow Interrupt Enable
+  - name: ABPSIE
+    bit_offset: 9
+    bit_size: 1
+    description: Average Bits Per Slot Interrupt Enable
+  - name: RXOVFIS
+    bit_offset: 16
+    bit_size: 1
+    description: Receive Queue Overflow Interrupt Status
+  - name: RXOIE
+    bit_offset: 24
+    bit_size: 1
+    description: Receive Queue Overflow Interrupt Enable
+fieldset/ETH_MTLRXQ1OMR:
+  description: ''
+  fields:
+  - name: RTC
+    bit_offset: 0
+    bit_size: 2
+    description: Receive Queue Threshold Control
+  - name: FUP
+    bit_offset: 3
+    bit_size: 1
+    description: Forward Undersized Good Packets
+  - name: FEP
+    bit_offset: 4
+    bit_size: 1
+    description: Forward Error Packets
+  - name: RSF
+    bit_offset: 5
+    bit_size: 1
+    description: Receive Queue Store and Forward
+  - name: EHFC
+    bit_offset: 7
+    bit_size: 1
+    description: Enable Hardware Flow Control
+  - name: RFA
+    bit_offset: 8
+    bit_size: 3
+    description: Threshold for Activating Flow Control (in half-duplex and full-duplex
+  - name: RFD
+    bit_offset: 14
+    bit_size: 3
+    description: Threshold for Deactivating Flow Control (in half-duplex and full-duplex
+      modes)
+  - name: RQS
+    bit_offset: 20
+    bit_size: 4
+    description: Receive Queue Size
+fieldset/ETH_MTLRXQ1MPOCR:
+  description: ''
+  fields:
+  - name: OVFPKTCNT
+    bit_offset: 0
+    bit_size: 11
+    description: Overflow Packet Counter
+  - name: OVFCNTOVF
+    bit_offset: 11
+    bit_size: 1
+    description: Overflow Counter Overflow Bit
+  - name: MISPKTCNT
+    bit_offset: 16
+    bit_size: 11
+    description: Missed Packet Counter
+  - name: MISCNTOVF
+    bit_offset: 27
+    bit_size: 1
+    description: Missed Packet Counter Overflow Bit
+fieldset/ETH_MTLRXQ1DR:
+  description: ''
+  fields:
+  - name: RWCSTS
+    bit_offset: 0
+    bit_size: 1
+    description: MTL Rx Queue Write Controller Active Status
+  - name: RRCSTS
+    bit_offset: 1
+    bit_size: 2
+    description: MTL Rx Queue Read Controller State
+  - name: RXQSTS
+    bit_offset: 4
+    bit_size: 2
+    description: MTL Rx Queue Fill-Level Status
+  - name: PRXQ
+    bit_offset: 16
+    bit_size: 14
+    description: Number of Packets in Receive Queue
+fieldset/ETH_DMAMR:
+  description: ''
+  fields:
+  - name: SWR
+    bit_offset: 0
+    bit_size: 1
+    description: Software Reset
+  - name: TAA
+    bit_offset: 2
+    bit_size: 3
+    description: Transmit Arbitration Algorithm
+  - name: DSPW
+    bit_offset: 8
+    bit_size: 1
+    description: Descriptor Posted Write
+  - name: TXPR
+    bit_offset: 11
+    bit_size: 1
+    description: Transmit priority
+  - name: INTM
+    bit_offset: 16
+    bit_size: 2
+    description: Interrupt Mode
+fieldset/ETH_DMASBMR:
+  description: ''
+  fields:
+  - name: FB
+    bit_offset: 0
+    bit_size: 1
+    description: Fixed Burst Length
+  - name: BLEN4
+    bit_offset: 1
+    bit_size: 1
+    description: AXI Burst Length 4
+  - name: BLEN8
+    bit_offset: 2
+    bit_size: 1
+    description: AXI Burst Length 8
+  - name: BLEN16
+    bit_offset: 3
+    bit_size: 1
+    description: AXI Burst Length 16
+  - name: BLEN32
+    bit_offset: 4
+    bit_size: 1
+    description: AXI Burst Length 32
+  - name: BLEN64
+    bit_offset: 5
+    bit_size: 1
+    description: AXI Burst Length 64
+  - name: BLEN128
+    bit_offset: 6
+    bit_size: 1
+    description: AXI Burst Length 128
+  - name: BLEN256
+    bit_offset: 7
+    bit_size: 1
+    description: AXI Burst Length 256
+  - name: AAL
+    bit_offset: 12
+    bit_size: 1
+    description: Address-Aligned Beats
+  - name: ONEKBBE
+    bit_offset: 13
+    bit_size: 1
+    description: 1 Kbyte Boundary Crossing Enable for the AXI Master
+fieldset/ETH_DMAISR:
+  description: ''
+  fields:
+  - name: DC0IS
+    bit_offset: 0
+    bit_size: 1
+    description: DMA Channel 0 Interrupt Status
+  - name: DC1IS
+    bit_offset: 1
+    bit_size: 1
+    description: DMA Channel 1 Interrupt Status
+  - name: MTLIS
+    bit_offset: 16
+    bit_size: 1
+    description: MTL Interrupt Status
+  - name: MACIS
+    bit_offset: 17
+    bit_size: 1
+    description: MAC Interrupt Status
+fieldset/ETH_DMADSR:
+  description: ''
+  fields:
+  - name: AXWHSTS
+    bit_offset: 0
+    bit_size: 1
+    description: AXI Master Write Channel
+  - name: AXRHSTS
+    bit_offset: 1
+    bit_size: 1
+    description: AXI Master Read Channel Status
+  - name: RPS0
+    bit_offset: 8
+    bit_size: 4
+    description: DMA Channel 0 Receive Process State
+  - name: TPS0
+    bit_offset: 12
+    bit_size: 4
+    description: DMA Channel 0 Transmit Process State
+  - name: RPS1
+    bit_offset: 16
+    bit_size: 4
+    description: DMA Channel 1 Receive Process State
+  - name: TPS1
+    bit_offset: 20
+    bit_size: 4
+    description: DMA Channel 1 Transmit Process State
+fieldset/ETH_DMAA4TXACR:
+  description: ''
+  fields:
+  - name: TDRC
+    bit_offset: 0
+    bit_size: 4
+    description: Transmit DMA Read Descriptor Cache Control
+  - name: TEC
+    bit_offset: 8
+    bit_size: 4
+    description: Transmit DMA Extended Packet Buffer or TSO Payload Cache Control
+  - name: THC
+    bit_offset: 16
+    bit_size: 4
+    description: Transmit DMA First Packet Buffer or TSO Header Cache Control
+fieldset/ETH_DMAA4RXACR:
+  description: ''
+  fields:
+  - name: RDWC
+    bit_offset: 0
+    bit_size: 4
+    description: Receive DMA Write Descriptor Cache Control
+  - name: RPC
+    bit_offset: 8
+    bit_size: 4
+    description: Receive DMA Payload Cache Control
+  - name: RHC
+    bit_offset: 16
+    bit_size: 4
+    description: Receive DMA Header Cache Control
+  - name: RDC
+    bit_offset: 24
+    bit_size: 4
+    description: Receive DMA Buffer Cache Control
+fieldset/ETH_DMAA4DACR:
+  description: ''
+  fields:
+  - name: TDWC
+    bit_offset: 0
+    bit_size: 4
+    description: Transmit DMA Write Descriptor Cache control
+  - name: TDWD
+    bit_offset: 4
+    bit_size: 2
+    description: Transmit DMA Write Descriptor Domain control
+  - name: RDRC
+    bit_offset: 8
+    bit_size: 4
+    description: Receive DMA Read Descriptor Cache control
+fieldset/ETH_DMAC0CR:
+  description: ''
+  fields:
+  - name: MSS
+    bit_offset: 0
+    bit_size: 14
+    description: Maximum Segment Size
+  - name: PBLX8
+    bit_offset: 16
+    bit_size: 1
+    description: 8xPBL mode
+  - name: DSL
+    bit_offset: 18
+    bit_size: 3
+    description: Descriptor Skip Length
+fieldset/ETH_DMAC0TXCR:
+  description: ''
+  fields:
+  - name: ST
+    bit_offset: 0
+    bit_size: 1
+    description: Start or Stop Transmission Command
+  - name: TCW
+    bit_offset: 1
+    bit_size: 3
+    description: Transmit Channel Weight
+  - name: OSF
+    bit_offset: 4
+    bit_size: 1
+    description: Operate on Second Packet
+  - name: TSE
+    bit_offset: 12
+    bit_size: 1
+    description: TCP Segmentation Enabled
+  - name: IPBL
+    bit_offset: 15
+    bit_size: 1
+    description: TCP Segmentation Enabled
+  - name: TXPBL
+    bit_offset: 16
+    bit_size: 6
+    description: Transmit Programmable Burst Length
+  - name: TQOS
+    bit_offset: 24
+    bit_size: 4
+    description: Transmit QOS.
+fieldset/ETH_DMAC0RXCR:
+  description: ''
+  fields:
+  - name: SR
+    bit_offset: 0
+    bit_size: 1
+    description: Start or Stop Receive
+  - name: RBSZ
+    bit_offset: 1
+    bit_size: 14
+    description: Receive Buffer size
+  - name: RXPBL
+    bit_offset: 16
+    bit_size: 6
+    description: Receive Programmable Burst Length
+  - name: RQOS
+    bit_offset: 24
+    bit_size: 4
+    description: Rx AXI4 QOS.
+  - name: RPF
+    bit_offset: 31
+    bit_size: 1
+    description: DMA Rx Channel0 Packet Flush
+fieldset/ETH_DMAC0TXDLAR:
+  description: ''
+  fields:
+  - name: TDESLA
+    bit_offset: 3
+    bit_size: 29
+    description: Start of Transmit List
+fieldset/ETH_DMAC0RXDLAR:
+  description: ''
+  fields:
+  - name: RDESLA
+    bit_offset: 3
+    bit_size: 29
+    description: Start of Receive List
+fieldset/ETH_DMAC0TXDTPR:
+  description: ''
+  fields:
+  - name: TDT
+    bit_offset: 3
+    bit_size: 29
+    description: Transmit Descriptor Tail Pointer
+fieldset/ETH_DMAC0RXDTPR:
+  description: ''
+  fields:
+  - name: RDT
+    bit_offset: 3
+    bit_size: 29
+    description: Receive Descriptor Tail Pointer
+fieldset/ETH_DMAC0TXRLR:
+  description: ''
+  fields:
+  - name: TDRL
+    bit_offset: 0
+    bit_size: 10
+    description: Transmit Descriptor Ring Length
+fieldset/ETH_DMAC0RXRLR:
+  description: ''
+  fields:
+  - name: RDRL
+    bit_offset: 0
+    bit_size: 10
+    description: Receive Descriptor Ring Length
+fieldset/ETH_DMAC0IER:
+  description: ''
+  fields:
+  - name: TIE
+    bit_offset: 0
+    bit_size: 1
+    description: Transmit Interrupt Enable
+  - name: TXSE
+    bit_offset: 1
+    bit_size: 1
+    description: Transmit Stopped Enable
+  - name: TBUE
+    bit_offset: 2
+    bit_size: 1
+    description: Transmit Buffer Unavailable Enable
+  - name: RIE
+    bit_offset: 6
+    bit_size: 1
+    description: Receive Interrupt Enable
+  - name: RBUE
+    bit_offset: 7
+    bit_size: 1
+    description: Receive Buffer Unavailable Enable
+  - name: RSE
+    bit_offset: 8
+    bit_size: 1
+    description: Receive Stopped Enable
+  - name: RWTE
+    bit_offset: 9
+    bit_size: 1
+    description: Receive Watchdog Timeout Enable
+  - name: ETIE
+    bit_offset: 10
+    bit_size: 1
+    description: Early Transmit Interrupt Enable
+  - name: ERIE
+    bit_offset: 11
+    bit_size: 1
+    description: Early Receive Interrupt Enable
+  - name: FBEE
+    bit_offset: 12
+    bit_size: 1
+    description: Fatal Bus Error Enable
+  - name: CDEE
+    bit_offset: 13
+    bit_size: 1
+    description: Context Descriptor Error Enable
+  - name: AIE
+    bit_offset: 14
+    bit_size: 1
+    description: Abnormal Interrupt Summary Enable
+  - name: NIE
+    bit_offset: 15
+    bit_size: 1
+    description: Normal Interrupt Summary Enable
+fieldset/ETH_DMAC0RXIWTR:
+  description: ''
+  fields:
+  - name: RWT
+    bit_offset: 0
+    bit_size: 8
+    description: Receive Interrupt Watchdog Timer Count
+fieldset/ETH_DMAC0SFCSR:
+  description: ''
+  fields:
+  - name: ESC
+    bit_offset: 0
+    bit_size: 1
+    description: Enable Slot Comparison
+  - name: ASC
+    bit_offset: 1
+    bit_size: 1
+    description: Advance Slot Check
+  - name: RSN
+    bit_offset: 16
+    bit_size: 4
+    description: Reference Slot Number
+fieldset/ETH_DMAC0CATXDR:
+  description: ''
+  fields:
+  - name: CURTDESAPTR
+    bit_offset: 0
+    bit_size: 32
+    description: Application Transmit Descriptor Address Pointer
+fieldset/ETH_DMAC0CARXDR:
+  description: ''
+  fields:
+  - name: CURRDESAPTR
+    bit_offset: 0
+    bit_size: 32
+    description: Application Receive Descriptor Address Pointer
+fieldset/ETH_DMAC0CATXBR:
+  description: ''
+  fields:
+  - name: CURTBUFAPTR
+    bit_offset: 0
+    bit_size: 32
+    description: Application Transmit Buffer Address Pointer
+fieldset/ETH_DMAC0CARXBR:
+  description: ''
+  fields:
+  - name: CURRBUFAPTR
+    bit_offset: 0
+    bit_size: 32
+    description: Application Receive Buffer Address Pointer
+fieldset/ETH_DMAC0SR:
+  description: ''
+  fields:
+  - name: TI
+    bit_offset: 0
+    bit_size: 1
+    description: Transmit Interrupt
+  - name: TPS
+    bit_offset: 1
+    bit_size: 1
+    description: Transmit Process Stopped
+  - name: TBU
+    bit_offset: 2
+    bit_size: 1
+    description: Transmit Buffer Unavailable
+  - name: RI
+    bit_offset: 6
+    bit_size: 1
+    description: Receive Interrupt
+  - name: RBU
+    bit_offset: 7
+    bit_size: 1
+    description: Receive Buffer Unavailable
+  - name: RPS
+    bit_offset: 8
+    bit_size: 1
+    description: Receive Process Stopped
+  - name: RWT
+    bit_offset: 9
+    bit_size: 1
+    description: Receive Watchdog Timeout
+  - name: ETI
+    bit_offset: 10
+    bit_size: 1
+    description: Early Transmit Interrupt
+  - name: ERI
+    bit_offset: 11
+    bit_size: 1
+    description: Early Receive Interrupt
+  - name: FBE
+    bit_offset: 12
+    bit_size: 1
+    description: Fatal Bus Error
+  - name: CDE
+    bit_offset: 13
+    bit_size: 1
+    description: Context Descriptor Error
+  - name: AIS
+    bit_offset: 14
+    bit_size: 1
+    description: Abnormal Interrupt Summary
+  - name: NIS
+    bit_offset: 15
+    bit_size: 1
+    description: Normal Interrupt Summary
+  - name: TEB
+    bit_offset: 16
+    bit_size: 3
+    description: Tx DMA Error Bits
+  - name: REB
+    bit_offset: 19
+    bit_size: 3
+    description: Rx DMA Error Bits
+fieldset/ETH_DMAC0MFCR:
+  description: ''
+  fields:
+  - name: MFC
+    bit_offset: 0
+    bit_size: 11
+    description: Dropped Packet Counters
+  - name: MFCO
+    bit_offset: 15
+    bit_size: 1
+    description: Overflow status of the MFC Counter
+fieldset/ETH_DMAC1CR:
+  description: ''
+  fields:
+  - name: MSS
+    bit_offset: 0
+    bit_size: 14
+    description: Maximum Segment Size
+  - name: PBLX8
+    bit_offset: 16
+    bit_size: 1
+    description: 8xPBL mode
+  - name: DSL
+    bit_offset: 18
+    bit_size: 3
+    description: Descriptor Skip Length
+fieldset/ETH_DMAC1TXCR:
+  description: ''
+  fields:
+  - name: ST
+    bit_offset: 0
+    bit_size: 1
+    description: Start or Stop Transmission Command
+  - name: TCW
+    bit_offset: 1
+    bit_size: 3
+    description: Transmit Channel Weight
+  - name: OSF
+    bit_offset: 4
+    bit_size: 1
+    description: Operate on Second Packet
+  - name: TSE
+    bit_offset: 12
+    bit_size: 1
+    description: TCP Segmentation Enabled
+  - name: TXPBL
+    bit_offset: 16
+    bit_size: 6
+    description: Transmit Programmable Burst Length
+  - name: TQOS
+    bit_offset: 24
+    bit_size: 4
+    description: Transmit QOS.
+fieldset/ETH_DMAC1TXDLAR:
+  description: ''
+  fields:
+  - name: TDESLA
+    bit_offset: 3
+    bit_size: 29
+    description: Start of Transmit List
+fieldset/ETH_DMAC1TXDTPR:
+  description: ''
+  fields:
+  - name: TDT
+    bit_offset: 3
+    bit_size: 29
+    description: Transmit Descriptor Tail Pointer
+fieldset/ETH_DMAC1TXRLR:
+  description: ''
+  fields:
+  - name: TDRL
+    bit_offset: 0
+    bit_size: 10
+    description: Transmit Descriptor Ring Length
+fieldset/ETH_DMAC1IER:
+  description: ''
+  fields:
+  - name: TIE
+    bit_offset: 0
+    bit_size: 1
+    description: Transmit Interrupt Enable
+  - name: TXSE
+    bit_offset: 1
+    bit_size: 1
+    description: Transmit Stopped Enable
+  - name: TBUE
+    bit_offset: 2
+    bit_size: 1
+    description: Transmit Buffer Unavailable Enable
+  - name: RIE
+    bit_offset: 6
+    bit_size: 1
+    description: Receive Interrupt Enable
+  - name: RBUE
+    bit_offset: 7
+    bit_size: 1
+    description: Receive Buffer Unavailable Enable
+  - name: RSE
+    bit_offset: 8
+    bit_size: 1
+    description: Receive Stopped Enable
+  - name: RWTE
+    bit_offset: 9
+    bit_size: 1
+    description: Receive Watchdog Timeout Enable
+  - name: ETIE
+    bit_offset: 10
+    bit_size: 1
+    description: Early Transmit Interrupt Enable
+  - name: ERIE
+    bit_offset: 11
+    bit_size: 1
+    description: Early Receive Interrupt Enable
+  - name: FBEE
+    bit_offset: 12
+    bit_size: 1
+    description: Fatal Bus Error Enable
+  - name: CDEE
+    bit_offset: 13
+    bit_size: 1
+    description: Context Descriptor Error Enable
+  - name: AIE
+    bit_offset: 14
+    bit_size: 1
+    description: Abnormal Interrupt Summary Enable
+  - name: NIE
+    bit_offset: 15
+    bit_size: 1
+    description: Normal Interrupt Summary Enable
+fieldset/ETH_DMAC1SFCSR:
+  description: ''
+  fields:
+  - name: ESC
+    bit_offset: 0
+    bit_size: 1
+    description: Enable Slot Comparison
+  - name: ASC
+    bit_offset: 1
+    bit_size: 1
+    description: Advance Slot Check
+  - name: RSN
+    bit_offset: 16
+    bit_size: 4
+    description: Reference Slot Number
+fieldset/ETH_DMAC1CATXDR:
+  description: ''
+  fields:
+  - name: CURTDESAPTR
+    bit_offset: 0
+    bit_size: 32
+    description: Application Transmit Descriptor Address Pointer
+fieldset/ETH_DMAC1CATXBR:
+  description: ''
+  fields:
+  - name: CURTBUFAPTR
+    bit_offset: 0
+    bit_size: 32
+    description: Application Transmit Buffer Address Pointer
+fieldset/ETH_DMAC1SR:
+  description: ''
+  fields:
+  - name: TI
+    bit_offset: 0
+    bit_size: 1
+    description: Transmit Interrupt
+  - name: TPS
+    bit_offset: 1
+    bit_size: 1
+    description: Transmit Process Stopped
+  - name: TBU
+    bit_offset: 2
+    bit_size: 1
+    description: Transmit Buffer Unavailable
+  - name: RI
+    bit_offset: 6
+    bit_size: 1
+    description: Receive Interrupt
+  - name: RBU
+    bit_offset: 7
+    bit_size: 1
+    description: Receive Buffer Unavailable
+  - name: RPS
+    bit_offset: 8
+    bit_size: 1
+    description: Receive Process Stopped
+  - name: RWT
+    bit_offset: 9
+    bit_size: 1
+    description: Receive Watchdog Timeout
+  - name: ETI
+    bit_offset: 10
+    bit_size: 1
+    description: Early Transmit Interrupt
+  - name: ERI
+    bit_offset: 11
+    bit_size: 1
+    description: Early Receive Interrupt
+  - name: FBE
+    bit_offset: 12
+    bit_size: 1
+    description: Fatal Bus Error
+  - name: CDE
+    bit_offset: 13
+    bit_size: 1
+    description: Context Descriptor Error
+  - name: AIS
+    bit_offset: 14
+    bit_size: 1
+    description: Abnormal Interrupt Summary
+  - name: NIS
+    bit_offset: 15
+    bit_size: 1
+    description: Normal Interrupt Summary
+  - name: TEB
+    bit_offset: 16
+    bit_size: 3
+    description: Tx DMA Error Bits
+  - name: REB
+    bit_offset: 19
+    bit_size: 3
+    description: Rx DMA Error Bits
+fieldset/ETH_DMAC1MFCR:
+  description: ''
+  fields:
+  - name: MFC
+    bit_offset: 0
+    bit_size: 11
+    description: Dropped Packet Counters
+  - name: MFCO
+    bit_offset: 15
+    bit_size: 1
+    description: Overflow status of the MFC Counter

@@ -1,0 +1,44 @@
+block/NR:
+  description: ''
+  items:
+  - name: NEO_PIPE2_NR_CONF_CTRL_CAM
+    byte_offset: 0
+  - name: NEO_PIPE2_NR_CONF_BLEND_SCALE_CAM
+    byte_offset: 4
+  - name: NEO_PIPE2_NR_CONF_BLEND_TH0_CAM
+    byte_offset: 8
+  - name: NEO_PIPE2_NR_CONF_EDGECNT_CAM
+    byte_offset: 16
+fieldset/NR_CTRL_CAM:
+  description: ''
+  fields:
+  - name: DEBUG
+    bit_offset: 8
+    bit_size: 2
+  - name: ENABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/NR_BLEND_SCALE_CAM:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 0
+    bit_size: 16
+  - name: SHIFT
+    bit_offset: 16
+    bit_size: 8
+  - name: GAIN
+    bit_offset: 24
+    bit_size: 8
+fieldset/NR_BLEND_TH0_CAM:
+  description: ''
+  fields:
+  - name: TH
+    bit_offset: 0
+    bit_size: 20
+fieldset/NR_EDGECNT_CAM_EDGE:
+  description: ''
+  fields:
+  - name: PIXELS
+    bit_offset: 0
+    bit_size: 24

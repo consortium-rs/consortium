@@ -1,0 +1,147 @@
+block/CA35SYSCFG:
+  description: ''
+  items:
+  - name: ETR_LPI_CR
+    byte_offset: 0
+    description: CA35SS ETR low-power interface control register
+  - name: ETR_LPI_SR
+    byte_offset: 4
+    description: CA35SS ETR low-power interface status register
+  - name: STM_NSGUAREN_CR
+    byte_offset: 8
+    description: CA35SS STM non-secure guaranteed access register
+  - name: TRACE_CLK_DIV_CR
+    byte_offset: 12
+    description: CA35SS TPIU export clock divider register
+  - name: DBGPWR_CR
+    byte_offset: 16
+    description: CA35SS Cortex-A35 core debug power mode register
+    fieldset: CA35SYSCFG_DBGPWR_CR
+  - name: DBGL1RSTDISABLE_CR
+    byte_offset: 20
+    description: CA35SS Cortex-A35 L1 data cache register
+    fieldset: CA35SYSCFG_DBGL1RSTDISABLE_CR
+  - name: DBGPWR_SR
+    byte_offset: 24
+    description: CA35SS Cortex-A35 debug power register
+    fieldset: CA35SYSCFG_DBGPWR_SR
+  - name: EDBGACK_SR
+    byte_offset: 28
+    description: CA35SS Cortex-A35 debug mode status register
+  - name: AARCH_MODE_CR
+    byte_offset: 128
+    description: CA35SS architecture mode register
+    fieldset: CA35SYSCFG_AARCH_MODE_CR
+  - name: VBAR_CR
+    byte_offset: 132
+    description: CA35SS 64-bit mode reset vector register
+    fieldset: CA35SYSCFG_VBAR_CR
+  - name: M33_ACCESS_CR
+    byte_offset: 136
+    description: Cortex-M33 boot register access rights register
+  - name: M33_TZEN_CR
+    byte_offset: 160
+    description: Cortex-M33 secure extension enable register
+  - name: M33_INITSVTOR_CR
+    byte_offset: 164
+    description: Cortex-M33 secure vector address register
+    fieldset: CA35SYSCFG_M33_INITSVTOR_CR
+  - name: M33_INITNSVTOR_CR
+    byte_offset: 168
+    description: Cortex-M33 non-secure vector address register
+    fieldset: CA35SYSCFG_M33_INITNSVTOR_CR
+  - name: VERR
+    byte_offset: 500
+    description: CA35SS version register
+    fieldset: CA35SYSCFG_VERR
+  - name: IPIDR
+    byte_offset: 504
+    description: CA35SS ID register
+    fieldset: CA35SYSCFG_IPIDR
+  - name: SIDR
+    byte_offset: 508
+    description: CA35SS Size ID register
+    fieldset: CA35SYSCFG_SIDR
+fieldset/CA35SYSCFG_DBGPWR_CR:
+  description: ''
+  fields:
+  - name: DBGPWRUP0
+    bit_offset: 0
+    bit_size: 1
+  - name: DBGPWRUP1
+    bit_offset: 1
+    bit_size: 1
+fieldset/CA35SYSCFG_DBGL1RSTDISABLE_CR:
+  description: ''
+  fields:
+  - name: DBGL1RSTDIS
+    bit_offset: 0
+    bit_size: 1
+fieldset/CA35SYSCFG_DBGPWR_SR:
+  description: ''
+  fields:
+  - name: DBGNOPWRDWN0
+    bit_offset: 0
+    bit_size: 1
+  - name: DBGNOPWRDWN1
+    bit_offset: 1
+    bit_size: 1
+  - name: DBGPWRUPREQ0
+    bit_offset: 2
+    bit_size: 1
+  - name: DBGPWRUPREQ1
+    bit_offset: 3
+    bit_size: 1
+fieldset/CA35SYSCFG_AARCH_MODE_CR:
+  description: ''
+  fields:
+  - name: AA64NAA32
+    bit_offset: 0
+    bit_size: 1
+fieldset/CA35SYSCFG_VBAR_CR:
+  description: ''
+  fields:
+  - name: RVBARADDRL
+    bit_offset: 2
+    bit_size: 30
+    description: Set the value of reset vector at the boundaries of the Cortex-A35
+      cores
+fieldset/CA35SYSCFG_M33_INITSVTOR_CR:
+  description: ''
+  fields:
+  - name: INITSVTOR
+    bit_offset: 7
+    bit_size: 25
+    description: Secure vector table offset
+fieldset/CA35SYSCFG_M33_INITNSVTOR_CR:
+  description: ''
+  fields:
+  - name: INITNSVTOR
+    bit_offset: 7
+    bit_size: 25
+    description: Non-secure vector table offset
+fieldset/CA35SYSCFG_VERR:
+  description: ''
+  fields:
+  - name: MINREV
+    bit_offset: 0
+    bit_size: 4
+    description: minor revision information
+  - name: MAJREV
+    bit_offset: 4
+    bit_size: 4
+    description: major revision information
+fieldset/CA35SYSCFG_IPIDR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 32
+    description: BSEC identification
+fieldset/CA35SYSCFG_SIDR:
+  description: ''
+  fields:
+  - name: SID
+    bit_offset: 0
+    bit_size: 32
+    description: BSEC size identification

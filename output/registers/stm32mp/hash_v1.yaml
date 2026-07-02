@@ -1,0 +1,167 @@
+block/HASH:
+  description: ''
+  items:
+  - name: CR
+    byte_offset: 0
+    description: HASH control register
+    fieldset: HASH_CR
+  - name: DIN
+    byte_offset: 4
+    description: HASH data input register
+    fieldset: HASH_DIN
+  - name: STR
+    byte_offset: 8
+    description: HASH start register
+    fieldset: HASH_STR
+  - name: HR
+    byte_offset: 12
+    array:
+      len: 5
+      stride: 4
+    description: HASH digest registers
+  - name: IMR
+    byte_offset: 32
+    description: HASH interrupt enable register
+    fieldset: HASH_IMR
+  - name: SR
+    byte_offset: 36
+    description: HASH status register
+    fieldset: HASH_SR
+  - name: SHA3CFGR
+    byte_offset: 40
+    description: HASH SHA3 config. register
+    fieldset: HASH_SHA3CFGR
+  - name: CSR
+    byte_offset: 248
+    array:
+      len: 103
+      stride: 4
+    description: HASH context swap registers
+  - name: HR2
+    byte_offset: 784
+    array:
+      len: 50
+      stride: 4
+    description: HASH digest supplementary registers
+  - name: HWCFGR
+    byte_offset: 1008
+    description: HASH Hardware configuration register
+  - name: VERR
+    byte_offset: 1012
+    description: HASH Version register
+  - name: IPIDR
+    byte_offset: 1016
+    description: HASH identification register
+  - name: MID
+    byte_offset: 1020
+    description: HASH Hardware Magic ID register
+fieldset/HASH_CR:
+  description: ''
+  fields:
+  - name: INIT
+    bit_offset: 2
+    bit_size: 1
+    description: Initialize message digest calculation
+  - name: DMAE
+    bit_offset: 3
+    bit_size: 1
+    description: DMA enable
+  - name: DATATYPE
+    bit_offset: 4
+    bit_size: 2
+    description: Data type selection
+  - name: MODE
+    bit_offset: 6
+    bit_size: 1
+    description: Mode selection
+  - name: NBW
+    bit_offset: 8
+    bit_size: 4
+    description: Number of words already pushed
+  - name: DINNE
+    bit_offset: 12
+    bit_size: 1
+    description: DIN not empty
+  - name: MDMAT
+    bit_offset: 13
+    bit_size: 1
+    description: Multiple DMA transfers
+  - name: LKEY
+    bit_offset: 16
+    bit_size: 1
+    description: Long key selection
+  - name: ALGO
+    bit_offset: 17
+    bit_size: 4
+    description: Algorithm selection
+fieldset/HASH_DIN:
+  description: ''
+  fields:
+  - name: DATAIN
+    bit_offset: 0
+    bit_size: 32
+    description: Data input
+fieldset/HASH_STR:
+  description: ''
+  fields:
+  - name: NBLW
+    bit_offset: 0
+    bit_size: 5
+    description: Number of valid bits in the last word
+  - name: DCAL
+    bit_offset: 8
+    bit_size: 1
+    description: Digest calculation
+fieldset/HASH_IMR:
+  description: ''
+  fields:
+  - name: DINIE
+    bit_offset: 0
+    bit_size: 1
+    description: Data input interrupt enable
+  - name: DCIE
+    bit_offset: 1
+    bit_size: 1
+    description: Digest calculation completion interrupt enable
+fieldset/HASH_SR:
+  description: ''
+  fields:
+  - name: DINIS
+    bit_offset: 0
+    bit_size: 1
+    description: Data input interrupt status
+  - name: DCIS
+    bit_offset: 1
+    bit_size: 1
+    description: Digest calculation completion interrupt status
+  - name: DMAS
+    bit_offset: 2
+    bit_size: 1
+    description: DMA Status
+  - name: BUSY
+    bit_offset: 3
+    bit_size: 1
+    description: Busy bit
+  - name: NBWP
+    bit_offset: 9
+    bit_size: 6
+    description: Number of words already pushed
+  - name: DINNE
+    bit_offset: 15
+    bit_size: 1
+    description: DIN not empty
+  - name: NBWE
+    bit_offset: 16
+    bit_size: 6
+    description: Number of words expected
+fieldset/HASH_SHA3CFGR:
+  description: ''
+  fields:
+  - name: PADBYTE
+    bit_offset: 0
+    bit_size: 8
+    description: Padding byte value
+  - name: PADCONFIG
+    bit_offset: 8
+    bit_size: 1
+    description: Padding bit configuration

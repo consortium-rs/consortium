@@ -1,0 +1,311 @@
+block/M7_A7_APB_MCM:
+  description: ''
+  items:
+  - name: ERR_INFO_EN
+    byte_offset: 36
+  - name: ITCM_ECC_SINGLE_ERROR_INFO
+    byte_offset: 60
+    fieldset: M7_A7_APB_MCM_ITCM_ECC_SINGLE_ERROR_INFO
+  - name: ITCM_ECC_SINGLE_ERROR_ADDR
+    byte_offset: 64
+  - name: ITCM_ECC_SINGLE_ERROR_DATA_LSB
+    byte_offset: 68
+  - name: ITCM_ECC_SINGLE_ERROR_DATA_MSB
+    byte_offset: 72
+  - name: ITCM_ECC_MULTI_ERROR_INFO
+    byte_offset: 76
+    fieldset: M7_A7_APB_MCM_ITCM_ECC_MULTI_ERROR_INFO
+  - name: ITCM_ECC_MULTI_ERROR_ADDR
+    byte_offset: 80
+  - name: ITCM_ECC_MULTI_ERROR_DATA_LSB
+    byte_offset: 84
+  - name: ITCM_ECC_MULTI_ERROR_DATA_MSB
+    byte_offset: 88
+  - name: D0TCM_ECC_SINGLE_ERROR_INFO
+    byte_offset: 92
+    fieldset: M7_A7_APB_MCM_D0TCM_ECC_SINGLE_ERROR_INFO
+  - name: D0TCM_ECC_SINGLE_ERROR_ADDR
+    byte_offset: 96
+  - name: D0TCM_ECC_SINGLE_ERROR_DATA
+    byte_offset: 100
+  - name: D0TCM_ECC_MULTI_ERROR_INFO
+    byte_offset: 104
+    fieldset: M7_A7_APB_MCM_D0TCM_ECC_MULTI_ERROR_INFO
+  - name: D0TCM_ECC_MULTI_ERROR_ADDR
+    byte_offset: 108
+  - name: D0TCM_ECC_MULTI_ERROR_DATA
+    byte_offset: 112
+  - name: D1TCM_ECC_SINGLE_ERROR_INFO
+    byte_offset: 116
+    fieldset: M7_A7_APB_MCM_D1TCM_ECC_SINGLE_ERROR_INFO
+  - name: D1TCM_ECC_SINGLE_ERROR_ADDR
+    byte_offset: 120
+  - name: D1TCM_ECC_SINGLE_ERROR_DATA
+    byte_offset: 124
+  - name: D1TCM_ECC_MULTI_ERROR_INFO
+    byte_offset: 128
+    fieldset: M7_A7_APB_MCM_D1TCM_ECC_MULTI_ERROR_INFO
+  - name: D1TCM_ECC_MULTI_ERROR_ADDR
+    byte_offset: 132
+  - name: D1TCM_ECC_MULTI_ERROR_DATA
+    byte_offset: 136
+  - name: FCCU_SW_FAULTS
+    byte_offset: 156
+fieldset/M7_A7_APB_MCM_ERR_INFO_EN_ITCM_ERRM_INFO:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+fieldset/M7_A7_APB_MCM_ERR_INFO_EN_ITCM_ERRS_INFO:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 9
+    bit_size: 1
+fieldset/M7_A7_APB_MCM_ERR_INFO_EN_D0TCM_ERRM_INFO:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/M7_A7_APB_MCM_ERR_INFO_EN_D0TCM_ERRS_INFO:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/M7_A7_APB_MCM_ERR_INFO_EN_D1TCM_ERRM_INFO:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 12
+    bit_size: 1
+fieldset/M7_A7_APB_MCM_ERR_INFO_EN_D1TCM_ERRS_INFO:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 13
+    bit_size: 1
+fieldset/M7_A7_APB_MCM_ITCM_ECC_SINGLE_ERROR_INFO_ITCM_ECCS:
+  description: ''
+  fields:
+  - name: EFW
+    bit_offset: 0
+    bit_size: 1
+  - name: EFSIZ
+    bit_offset: 1
+    bit_size: 3
+  - name: EFMST
+    bit_offset: 4
+    bit_size: 4
+  - name: EFPRT
+    bit_offset: 8
+    bit_size: 4
+fieldset/M7_A7_APB_MCM_ITCM_ECC_SINGLE_ERROR_INFO:
+  description: ''
+  fields:
+  - name: Reserved
+    bit_offset: 20
+    bit_size: 12
+    description: Reserved
+fieldset/M7_A7_APB_MCM_ITCM_ECC_SINGLE_ERROR_ADDR_ITCM_ECCS_ERRED:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/M7_A7_APB_MCM_ITCM_ECC_SINGLE_ERROR_DATA_LSB_ITCM_ECCS_ERRED_DATA:
+  description: ''
+  fields:
+  - name: LSB
+    bit_offset: 0
+    bit_size: 32
+fieldset/M7_A7_APB_MCM_ITCM_ECC_SINGLE_ERROR_DATA_MSB_ITCM_ECCS_ERRED_DATA:
+  description: ''
+  fields:
+  - name: MSB
+    bit_offset: 0
+    bit_size: 32
+fieldset/M7_A7_APB_MCM_ITCM_ECC_MULTI_ERROR_INFO_ITCM_ECCM:
+  description: ''
+  fields:
+  - name: EFW
+    bit_offset: 0
+    bit_size: 1
+  - name: EFSIZ
+    bit_offset: 1
+    bit_size: 3
+  - name: EFMST
+    bit_offset: 4
+    bit_size: 4
+  - name: EFPRT
+    bit_offset: 8
+    bit_size: 4
+fieldset/M7_A7_APB_MCM_ITCM_ECC_MULTI_ERROR_INFO:
+  description: ''
+  fields:
+  - name: Reserved
+    bit_offset: 20
+    bit_size: 12
+    description: Reserved
+fieldset/M7_A7_APB_MCM_ITCM_ECC_MULTI_ERROR_ADDR_ITCM_ECCM_ERRED:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/M7_A7_APB_MCM_ITCM_ECC_MULTI_ERROR_DATA_LSB_ITCM_ECCM_ERRED_DATA:
+  description: ''
+  fields:
+  - name: LSB
+    bit_offset: 0
+    bit_size: 32
+fieldset/M7_A7_APB_MCM_ITCM_ECC_MULTI_ERROR_DATA_MSB_ITCM_ECCM_ERRED_DATA:
+  description: ''
+  fields:
+  - name: MSB
+    bit_offset: 0
+    bit_size: 32
+fieldset/M7_A7_APB_MCM_D0TCM_ECC_SINGLE_ERROR_INFO_D0TCM_ECCS:
+  description: ''
+  fields:
+  - name: EFW
+    bit_offset: 0
+    bit_size: 1
+  - name: EFSIZ
+    bit_offset: 1
+    bit_size: 3
+  - name: EFMST
+    bit_offset: 4
+    bit_size: 4
+  - name: EFPRT
+    bit_offset: 8
+    bit_size: 4
+fieldset/M7_A7_APB_MCM_D0TCM_ECC_SINGLE_ERROR_INFO:
+  description: ''
+  fields:
+  - name: Reserved
+    bit_offset: 19
+    bit_size: 13
+    description: Reserved
+fieldset/M7_A7_APB_MCM_D0TCM_ECC_SINGLE_ERROR_ADDR_D0TCM_ECCS_ERRED:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/M7_A7_APB_MCM_D0TCM_ECC_SINGLE_ERROR_DATA_D0TCM_ECCS_ERRED:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 32
+fieldset/M7_A7_APB_MCM_D0TCM_ECC_MULTI_ERROR_INFO_D0TCM_ECCM:
+  description: ''
+  fields:
+  - name: EFW
+    bit_offset: 0
+    bit_size: 1
+  - name: EFSIZ
+    bit_offset: 1
+    bit_size: 3
+  - name: EFMST
+    bit_offset: 4
+    bit_size: 4
+  - name: EFPRT
+    bit_offset: 8
+    bit_size: 4
+fieldset/M7_A7_APB_MCM_D0TCM_ECC_MULTI_ERROR_INFO:
+  description: ''
+  fields:
+  - name: Reserved
+    bit_offset: 19
+    bit_size: 13
+    description: Reserved
+fieldset/M7_A7_APB_MCM_D0TCM_ECC_MULTI_ERROR_ADDR_D0TCM_ECCM_ERRED:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/M7_A7_APB_MCM_D0TCM_ECC_MULTI_ERROR_DATA_D0TCM_ECCM_ERRED:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 32
+fieldset/M7_A7_APB_MCM_D1TCM_ECC_SINGLE_ERROR_INFO_D1TCM_ECCS:
+  description: ''
+  fields:
+  - name: EFW
+    bit_offset: 0
+    bit_size: 1
+  - name: EFSIZ
+    bit_offset: 1
+    bit_size: 3
+  - name: EFMST
+    bit_offset: 4
+    bit_size: 4
+  - name: EFPRT
+    bit_offset: 8
+    bit_size: 4
+fieldset/M7_A7_APB_MCM_D1TCM_ECC_SINGLE_ERROR_INFO:
+  description: ''
+  fields:
+  - name: Reserved
+    bit_offset: 19
+    bit_size: 13
+    description: Reserved
+fieldset/M7_A7_APB_MCM_D1TCM_ECC_SINGLE_ERROR_ADDR_D1TCM_ECCS_ERRED:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/M7_A7_APB_MCM_D1TCM_ECC_SINGLE_ERROR_DATA_D1TCM_ECCS_ERRED:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 32
+fieldset/M7_A7_APB_MCM_D1TCM_ECC_MULTI_ERROR_INFO_D1TCM_ECCM:
+  description: ''
+  fields:
+  - name: EFW
+    bit_offset: 0
+    bit_size: 1
+  - name: EFSIZ
+    bit_offset: 1
+    bit_size: 3
+  - name: EFMST
+    bit_offset: 4
+    bit_size: 4
+  - name: EFPRT
+    bit_offset: 8
+    bit_size: 4
+fieldset/M7_A7_APB_MCM_D1TCM_ECC_MULTI_ERROR_INFO:
+  description: ''
+  fields:
+  - name: Reserved
+    bit_offset: 19
+    bit_size: 13
+    description: Reserved
+fieldset/M7_A7_APB_MCM_D1TCM_ECC_MULTI_ERROR_ADDR_D1TCM_ECCM_ERRED:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+fieldset/M7_A7_APB_MCM_D1TCM_ECC_MULTI_ERROR_DATA_D1TCM_ECCM_ERRED:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 32
+fieldset/M7_A7_APB_MCM_FCCU_SW_FAULTS_FCCU_SW:
+  description: ''
+  fields:
+  - name: FAULTS
+    bit_offset: 0
+    bit_size: 6

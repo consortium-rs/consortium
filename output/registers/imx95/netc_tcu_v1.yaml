@@ -1,0 +1,170 @@
+block/NETC_TCU:
+  description: ''
+  items:
+  - name: TCU_MAGIC_KW__MAGIC_KW0
+    byte_offset: 1024
+    fieldset: NETC_TCU_TCU_MAGIC_KW__MAGIC_KW0
+  - name: TCU_MAGIC_KW__MAGIC_KW1
+    byte_offset: 1040
+    fieldset: NETC_TCU_TCU_MAGIC_KW__MAGIC_KW1
+  - name: TCU_SCM
+    byte_offset: 1296
+  - name: TCU_SCM_SEL
+    byte_offset: 1312
+  - name: TCU_ENET_BS
+    byte_offset: 1328
+  - name: TCU_DFT_DIVIDER
+    byte_offset: 1376
+  - name: TCU_ENET_REF_CLK_SEL
+    byte_offset: 2144
+  - name: TCU_PLL_COUNTER
+    byte_offset: 3072
+  - name: TCU_DFT_FUSE
+    byte_offset: 3136
+fieldset/NETC_TCU_TCU_MAGIC_KW__MAGIC_KW0:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_TCU_TCU_MAGIC_KW__MAGIC_KW1:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 32
+fieldset/NETC_TCU_TCU_SCM_scm_test:
+  description: ''
+  fields:
+  - name: mode
+    bit_offset: 0
+    bit_size: 1
+    description: SCM test mode
+fieldset/NETC_TCU_TCU_SCM_scm_obst_rst:
+  description: ''
+  fields:
+  - name: b
+    bit_offset: 1
+    bit_size: 1
+    description: SCM test mode
+fieldset/NETC_TCU_TCU_SCM_scm:
+  description: ''
+  fields:
+  - name: result
+    bit_offset: 2
+    bit_size: 16
+    description: SCM results
+fieldset/NETC_TCU_TCU_SCM_SEL_scm:
+  description: ''
+  fields:
+  - name: sel
+    bit_offset: 0
+    bit_size: 32
+    description: SCM clock sel
+fieldset/NETC_TCU_TCU_ENET_BS_enet_bs:
+  description: ''
+  fields:
+  - name: tdi
+    bit_offset: 0
+    bit_size: 1
+    description: enet_bs tdi
+  - name: acmode
+    bit_offset: 1
+    bit_size: 1
+    description: enet_bs tdi
+  - name: actest
+    bit_offset: 2
+    bit_size: 1
+    description: enet_bs_actest
+  - name: cdr
+    bit_offset: 3
+    bit_size: 1
+    description: enet_bs_cdr
+  - name: udr
+    bit_offset: 4
+    bit_size: 1
+    description: enet_bs_cdr
+  - name: ce
+    bit_offset: 5
+    bit_size: 1
+    description: enet_bs_udr
+  - name: sdr
+    bit_offset: 7
+    bit_size: 1
+    description: enet_bs_sdr
+  - name: tdo
+    bit_offset: 31
+    bit_size: 1
+    description: enet_bs_tdo
+fieldset/NETC_TCU_TCU_ENET_BS_enet_bs_rx:
+  description: ''
+  fields:
+  - name: init
+    bit_offset: 6
+    bit_size: 1
+    description: enet_bs_ce
+  - name: bigswing
+    bit_offset: 9
+    bit_size: 1
+  - name: level
+    bit_offset: 10
+    bit_size: 5
+fieldset/NETC_TCU_TCU_ENET_BS_enet_bs_tx:
+  description: ''
+  fields:
+  - name: lowswing
+    bit_offset: 8
+    bit_size: 1
+    description: enet_bs_sdr
+fieldset/NETC_TCU_TCU_DFT_DIVIDER_tcu_dft_divider:
+  description: ''
+  fields:
+  - name: disable
+    bit_offset: 0
+    bit_size: 1
+fieldset/NETC_TCU_TCU_ENET_REF_CLK_SEL_enet_ref_clk:
+  description: ''
+  fields:
+  - name: sel
+    bit_offset: 0
+    bit_size: 1
+fieldset/NETC_TCU_TCU_PLL_COUNTER_pll_count_rst:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 0
+    bit_size: 1
+fieldset/NETC_TCU_TCU_PLL_COUNTER_pll_count:
+  description: ''
+  fields:
+  - name: start
+    bit_offset: 1
+    bit_size: 1
+  - name: cnt
+    bit_offset: 16
+    bit_size: 16
+    description: pll count cnt
+fieldset/NETC_TCU_TCU_PLL_COUNTER_pll_count_div:
+  description: ''
+  fields:
+  - name: en
+    bit_offset: 2
+    bit_size: 1
+fieldset/NETC_TCU_TCU_PLL_COUNTER_pll_count_clk:
+  description: ''
+  fields:
+  - name: sel
+    bit_offset: 3
+    bit_size: 3
+fieldset/NETC_TCU_TCU_PLL_COUNTER_pll_count_ref:
+  description: ''
+  fields:
+  - name: val
+    bit_offset: 8
+    bit_size: 8
+fieldset/NETC_TCU_TCU_DFT_FUSE_tcu_dft_fuse:
+  description: ''
+  fields:
+  - name: disable
+    bit_offset: 0
+    bit_size: 1

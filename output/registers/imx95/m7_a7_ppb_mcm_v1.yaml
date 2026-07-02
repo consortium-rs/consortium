@@ -1,0 +1,82 @@
+block/M7_A7_PPB_MCM:
+  description: ''
+  items:
+  - name: ISCR
+    byte_offset: 16
+    fieldset: M7_A7_PPB_MCM_ISCR
+  - name: CFGSTCALIB
+    byte_offset: 20
+    fieldset: M7_A7_PPB_MCM_CFGSTCALIB
+  - name: PID
+    byte_offset: 24
+    fieldset: M7_A7_PPB_MCM_PID
+fieldset/M7_A7_PPB_MCM_ISCR:
+  description: ''
+  fields:
+  - name: WABS
+    bit_offset: 5
+    bit_size: 1
+  - name: WABSO
+    bit_offset: 6
+    bit_size: 1
+  - name: FIOC
+    bit_offset: 8
+    bit_size: 1
+  - name: FDZC
+    bit_offset: 9
+    bit_size: 1
+  - name: FOFC
+    bit_offset: 10
+    bit_size: 1
+  - name: FUFC
+    bit_offset: 11
+    bit_size: 1
+  - name: FIXC
+    bit_offset: 12
+    bit_size: 1
+  - name: FIDC
+    bit_offset: 15
+    bit_size: 1
+  - name: WABE
+    bit_offset: 21
+    bit_size: 1
+  - name: FIOCE
+    bit_offset: 24
+    bit_size: 1
+  - name: FDZCE
+    bit_offset: 25
+    bit_size: 1
+  - name: FOFCE
+    bit_offset: 26
+    bit_size: 1
+  - name: FUFCE
+    bit_offset: 27
+    bit_size: 1
+  - name: FIXCE
+    bit_offset: 28
+    bit_size: 1
+  - name: FIDCE
+    bit_offset: 31
+    bit_size: 1
+fieldset/M7_A7_PPB_MCM_CFGSTCALIB:
+  description: ''
+  fields:
+  - name: TENMS
+    bit_offset: 0
+    bit_size: 24
+    description: Ten milliseconds
+  - name: SKEW
+    bit_offset: 24
+    bit_size: 1
+    description: Ten milliseconds
+  - name: NOREF
+    bit_offset: 25
+    bit_size: 1
+    description: No Reference Clock
+fieldset/M7_A7_PPB_MCM_PID:
+  description: ''
+  fields:
+  - name: PID
+    bit_offset: 0
+    bit_size: 8
+    description: Process ID

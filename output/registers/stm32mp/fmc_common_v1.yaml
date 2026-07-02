@@ -1,0 +1,69 @@
+block/FMC_Common:
+  description: ''
+  items:
+  - name: CFGR
+    byte_offset: 32
+    description: FMC common configuration register
+  - name: SECCFGR
+    byte_offset: 768
+    description: FMC security configuration register
+  - name: PRIVCFGR
+    byte_offset: 772
+    description: FMC security configuration register
+  - name: RCFGLOCK
+    byte_offset: 776
+    description: FMC CID configuration lock register
+  - name: CIDCFGR0
+    byte_offset: 780
+    description: FMC resource 0 CID Register
+  - name: SEMCR0
+    byte_offset: 784
+    description: FMC Resource 0 Semaphore Control Register
+  - name: CIDCFGR1
+    byte_offset: 788
+    description: FMC resource 1 CID Register
+  - name: SEMCR1
+    byte_offset: 792
+    description: FMC Resource 1 Semaphore Control Register
+  - name: CIDCFGR2
+    byte_offset: 796
+    description: FMC resource 2 CID Register
+  - name: SEMCR2
+    byte_offset: 800
+    description: FMC Resource 2 Semaphore Control Register
+  - name: CIDCFGR3
+    byte_offset: 804
+    description: FMC resource 3 CID Register
+  - name: SEMCR3
+    byte_offset: 808
+    description: FMC Resource 3 Semaphore Control Register
+  - name: CIDCFGR4
+    byte_offset: 812
+    description: FMC resource 4 CID Register
+  - name: SEMCR4
+    byte_offset: 816
+    description: FMC Resource 4 Semaphore Control Register
+  - name: CIDCFGR5
+    byte_offset: 820
+    description: FMC resource 5 CID Register
+  - name: SEMCR5
+    byte_offset: 824
+    description: FMC Resource 5 Semaphore Control Register
+  - name: HWCFGR3
+    byte_offset: 1000
+    description: FMC Hardware configuration register 3
+  - name: HWCFGR2
+    byte_offset: 1004
+    description: FMC Hardware configuration register 2
+  - name: HWCFGR1
+    byte_offset: 1008
+    description: FMC Hardware configuration register 1
+  - name: VERR
+    byte_offset: 1012
+    description: FMC Version register
+  - name: IPIDR
+    byte_offset: 1016
+    description: FMC Identification register
+  - name: SIDR
+    byte_offset: 1020
+    description: FMC Size Identification register

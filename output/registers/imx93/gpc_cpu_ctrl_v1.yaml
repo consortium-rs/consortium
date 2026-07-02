@@ -1,0 +1,739 @@
+block/GPC_CPU_CTRL:
+  description: ''
+  items:
+  - name: CM_AUTHEN_CTRL
+    byte_offset: 4
+    fieldset: GPC_CPU_CTRL_CM_AUTHEN_CTRL
+  - name: CM_MISC
+    byte_offset: 12
+  - name: CM_MODE_CTRL
+    byte_offset: 16
+  - name: CM_MODE_STAT
+    byte_offset: 20
+  - name: CM_PIN_STAT
+    byte_offset: 24
+  - name: CM_IRQ_WAKEUP_MASK_0
+    byte_offset: 256
+  - name: CM_IRQ_WAKEUP_MASK_1
+    byte_offset: 260
+  - name: CM_IRQ_WAKEUP_MASK_2
+    byte_offset: 264
+  - name: CM_IRQ_WAKEUP_MASK_3
+    byte_offset: 268
+  - name: CM_IRQ_WAKEUP_MASK_4
+    byte_offset: 272
+  - name: CM_IRQ_WAKEUP_MASK_5
+    byte_offset: 276
+  - name: CM_IRQ_WAKEUP_MASK_6
+    byte_offset: 280
+  - name: CM_IRQ_WAKEUP_MASK_7
+    byte_offset: 284
+  - name: CM_NON_IRQ_WAKEUP_MASK
+    byte_offset: 320
+  - name: CM_IRQ_WAKEUP_STAT_0
+    byte_offset: 336
+  - name: CM_IRQ_WAKEUP_STAT_1
+    byte_offset: 340
+  - name: CM_IRQ_WAKEUP_STAT_2
+    byte_offset: 344
+  - name: CM_IRQ_WAKEUP_STAT_3
+    byte_offset: 348
+  - name: CM_IRQ_WAKEUP_STAT_4
+    byte_offset: 352
+  - name: CM_IRQ_WAKEUP_STAT_5
+    byte_offset: 356
+  - name: CM_IRQ_WAKEUP_STAT_6
+    byte_offset: 360
+  - name: CM_IRQ_WAKEUP_STAT_7
+    byte_offset: 364
+  - name: CM_NON_IRQ_WAKEUP_STAT
+    byte_offset: 400
+  - name: CM_SLEEP_A55_HDSK_CTRL
+    byte_offset: 512
+    fieldset: GPC_CPU_CTRL_CM_SLEEP_A55_HDSK_CTRL
+  - name: CM_SLEEP_SSAR_CTRL
+    byte_offset: 520
+    fieldset: GPC_CPU_CTRL_CM_SLEEP_SSAR_CTRL
+  - name: CM_SLEEP_LPCG_CTRL
+    byte_offset: 528
+    fieldset: GPC_CPU_CTRL_CM_SLEEP_LPCG_CTRL
+  - name: CM_SLEEP_PLL_CTRL
+    byte_offset: 536
+    fieldset: GPC_CPU_CTRL_CM_SLEEP_PLL_CTRL
+  - name: CM_SLEEP_ISO_CTRL
+    byte_offset: 544
+    fieldset: GPC_CPU_CTRL_CM_SLEEP_ISO_CTRL
+  - name: CM_SLEEP_MEM_CTRL
+    byte_offset: 552
+    fieldset: GPC_CPU_CTRL_CM_SLEEP_MEM_CTRL
+  - name: CM_SLEEP_RESET_CTRL
+    byte_offset: 560
+    fieldset: GPC_CPU_CTRL_CM_SLEEP_RESET_CTRL
+  - name: CM_SLEEP_POWER_CTRL
+    byte_offset: 568
+    fieldset: GPC_CPU_CTRL_CM_SLEEP_POWER_CTRL
+  - name: CM_SLEEP_RSV2_CTRL
+    byte_offset: 576
+    fieldset: GPC_CPU_CTRL_CM_SLEEP_RSV2_CTRL
+  - name: CM_WAKEUP_RSV2_CTRL
+    byte_offset: 648
+    fieldset: GPC_CPU_CTRL_CM_WAKEUP_RSV2_CTRL
+  - name: CM_WAKEUP_POWER_CTRL
+    byte_offset: 656
+    fieldset: GPC_CPU_CTRL_CM_WAKEUP_POWER_CTRL
+  - name: CM_WAKEUP_MEM_CTRL
+    byte_offset: 664
+    fieldset: GPC_CPU_CTRL_CM_WAKEUP_MEM_CTRL
+  - name: CM_WAKEUP_RESET_CTRL
+    byte_offset: 672
+    fieldset: GPC_CPU_CTRL_CM_WAKEUP_RESET_CTRL
+  - name: CM_WAKEUP_ISO_CTRL
+    byte_offset: 680
+    fieldset: GPC_CPU_CTRL_CM_WAKEUP_ISO_CTRL
+  - name: CM_WAKEUP_PLL_CTRL
+    byte_offset: 688
+    fieldset: GPC_CPU_CTRL_CM_WAKEUP_PLL_CTRL
+  - name: CM_WAKEUP_LPCG_CTRL
+    byte_offset: 696
+    fieldset: GPC_CPU_CTRL_CM_WAKEUP_LPCG_CTRL
+  - name: CM_WAKEUP_MTR_CTRL
+    byte_offset: 704
+    fieldset: GPC_CPU_CTRL_CM_WAKEUP_MTR_CTRL
+  - name: CM_WAKEUP_SSAR_CTRL
+    byte_offset: 712
+    fieldset: GPC_CPU_CTRL_CM_WAKEUP_SSAR_CTRL
+  - name: CM_WAKEUP_A55_HDSK_CTRL
+    byte_offset: 720
+    fieldset: GPC_CPU_CTRL_CM_WAKEUP_A55_HDSK_CTRL
+  - name: CM_SYS_SLEEP_CTRL
+    byte_offset: 896
+  - name: CM_DEBUG
+    byte_offset: 912
+fieldset/GPC_CPU_CTRL_CM_AUTHEN_CTRL_LOCK:
+  description: ''
+  fields:
+  - name: CFG
+    bit_offset: 7
+    bit_size: 1
+  - name: SETTING
+    bit_offset: 11
+    bit_size: 1
+  - name: LIST
+    bit_offset: 15
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_AUTHEN_CTRL:
+  description: ''
+  fields:
+  - name: USER
+    bit_offset: 8
+    bit_size: 1
+  - name: NONSECURE
+    bit_offset: 9
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_AUTHEN_CTRL_WHITE:
+  description: ''
+  fields:
+  - name: LIST
+    bit_offset: 16
+    bit_size: 16
+    description: Domain ID white list
+fieldset/GPC_CPU_CTRL_CM_MISC_NMI:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 0
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_MISC_SLEEP_HOLD:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+  - name: STAT
+    bit_offset: 2
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_MISC_GIC_WAKEUP:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 4
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_MISC_IRQ:
+  description: ''
+  fields:
+  - name: MUX
+    bit_offset: 5
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_MISC_SW:
+  description: ''
+  fields:
+  - name: WAKEUP
+    bit_offset: 6
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_MODE_CTRL_CPU_MODE:
+  description: ''
+  fields:
+  - name: TARGET
+    bit_offset: 0
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_MODE_STAT_CPU_MODE:
+  description: ''
+  fields:
+  - name: CURRENT
+    bit_offset: 0
+    bit_size: 2
+  - name: PREVIOUS
+    bit_offset: 2
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_MODE_STAT_SLEEP_TRANS:
+  description: ''
+  fields:
+  - name: BUSY
+    bit_offset: 8
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_MODE_STAT_WAKEUP_TRANS:
+  description: ''
+  fields:
+  - name: BUSY
+    bit_offset: 9
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_MODE_STAT_SLEEPING:
+  description: ''
+  fields:
+  - name: IDLE
+    bit_offset: 10
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_MODE_STAT_SLEEP:
+  description: ''
+  fields:
+  - name: REQUEST
+    bit_offset: 16
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_MODE_STAT_WAKEUP:
+  description: ''
+  fields:
+  - name: REQUEST
+    bit_offset: 18
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_MODE_STAT_FSM:
+  description: ''
+  fields:
+  - name: STATE
+    bit_offset: 24
+    bit_size: 5
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_A55_HDSK_REQUEST:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 0
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_SSAR_REQUEST:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 1
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_LPCG_REQUEST:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 2
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_PLL_REQUEST:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_ISO_REQUEST:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 4
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_MEM_REQUEST:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 5
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_RESET_REQUEST:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 6
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_POWER_REQUEST:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 7
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_MTR_REQUEST:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 8
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_A55_HDSK_DONE:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 16
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_SSAR_DONE:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 17
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_LPCG_DONE:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 18
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_PLL_DONE:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 19
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_ISO_DONE:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 20
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_MEM_DONE:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 21
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_RESET_DONE:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 22
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_POWER_DONE:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 23
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_MTR_DONE:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 24
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_CPU_MODE:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 29
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_PIN_STAT_DEBUG_WAKEUP_ACK:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_NON_IRQ_WAKEUP_MASK_EVENT_WAKEUP:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_NON_IRQ_WAKEUP_MASK_DEBUG_WAKEUP:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 1
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_NON_IRQ_WAKEUP_STAT_EVENT_WAKEUP:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 0
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_NON_IRQ_WAKEUP_STAT_DEBUG_WAKEUP:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 1
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_SLEEP_A55_HDSK_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_SLEEP_A55_HDSK_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_SLEEP_A55_HDSK_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_SLEEP_SSAR_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_SLEEP_SSAR_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_SLEEP_SSAR_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_SLEEP_LPCG_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_SLEEP_LPCG_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_SLEEP_LPCG_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_SLEEP_PLL_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_SLEEP_PLL_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_SLEEP_PLL_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_SLEEP_ISO_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_SLEEP_ISO_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_SLEEP_ISO_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_SLEEP_MEM_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_SLEEP_MEM_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_SLEEP_MEM_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_SLEEP_RESET_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_SLEEP_RESET_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_SLEEP_RESET_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_SLEEP_POWER_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_SLEEP_POWER_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_SLEEP_POWER_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_SLEEP_RSV2_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_SLEEP_RSV2_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_SLEEP_RSV2_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_RSV2_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_RSV2_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_RSV2_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_POWER_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_POWER_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_POWER_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_MEM_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_MEM_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_MEM_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_RESET_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_RESET_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_RESET_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_ISO_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_ISO_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_ISO_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_PLL_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_PLL_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_PLL_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_LPCG_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_LPCG_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_LPCG_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_MTR_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_MTR_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_MTR_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_SSAR_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_SSAR_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_SSAR_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_A55_HDSK_CTRL_STEP:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_A55_HDSK_CTRL_CNT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 2
+fieldset/GPC_CPU_CTRL_CM_WAKEUP_A55_HDSK_CTRL:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_SYS_SLEEP_CTRL_SS:
+  description: ''
+  fields:
+  - name: WAIT
+    bit_offset: 0
+    bit_size: 1
+  - name: STOP
+    bit_offset: 1
+    bit_size: 1
+  - name: SUSPEND
+    bit_offset: 2
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_SYS_SLEEP_CTRL_SYS_SLEEP:
+  description: ''
+  fields:
+  - name: BUSY
+    bit_offset: 16
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_SYS_SLEEP_CTRL_SYS_WAKEUP:
+  description: ''
+  fields:
+  - name: BUSY
+    bit_offset: 17
+    bit_size: 1
+fieldset/GPC_CPU_CTRL_CM_DEBUG_PRETEND:
+  description: ''
+  fields:
+  - name: SLEEP
+    bit_offset: 0
+    bit_size: 1

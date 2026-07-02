@@ -1,0 +1,33 @@
+block/RIFSC_ID:
+  description: ''
+  items:
+  - name: PPSR0
+    byte_offset: 4016
+    description: RIFSC peripheral protection status register 0
+  - name: PPSR1
+    byte_offset: 4020
+    description: RIFSC peripheral protection status register 1
+  - name: PPSR2
+    byte_offset: 4024
+    description: RIFSC peripheral protection status register 2
+  - name: PPSR3
+    byte_offset: 4028
+    description: RIFSC peripheral protection status register 3
+  - name: HWCFGR3
+    byte_offset: 4072
+    description: RIFSC HW configuration register 3
+  - name: HWCFGR2
+    byte_offset: 4076
+    description: RIFSC HW configuration register 2
+  - name: HWCFGR1
+    byte_offset: 4080
+    description: RIFSC HW configuration register 1
+  - name: VERR
+    byte_offset: 4084
+    description: RIFSC Version register
+  - name: IPIDR
+    byte_offset: 4088
+    description: RIFSC Identification register
+  - name: SIDR
+    byte_offset: 4092
+    description: RIFSC Size ID register

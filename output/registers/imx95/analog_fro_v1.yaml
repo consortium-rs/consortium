@@ -1,0 +1,227 @@
+block/ANALOG_FRO:
+  description: ''
+  items:
+  - name: CSR_RW
+    byte_offset: 512
+  - name: CSR_SET
+    byte_offset: 516
+  - name: CSR_CLR
+    byte_offset: 520
+  - name: CSR_TOG
+    byte_offset: 524
+  - name: CNFG1_RW
+    byte_offset: 528
+  - name: CNFG1_SET
+    byte_offset: 532
+  - name: CNFG1_CLR
+    byte_offset: 536
+  - name: CNFG1_TOG
+    byte_offset: 540
+  - name: CNFG2_RW
+    byte_offset: 544
+  - name: CNFG2_SET
+    byte_offset: 548
+  - name: CNFG2_CLR
+    byte_offset: 552
+  - name: CNFG2_TOG
+    byte_offset: 556
+  - name: FROTRIM_RW
+    byte_offset: 560
+  - name: FROTRIM_SET
+    byte_offset: 564
+  - name: FROTRIM_CLR
+    byte_offset: 568
+  - name: FROTRIM_TOG
+    byte_offset: 572
+  - name: TEXPCNT_RW
+    byte_offset: 576
+  - name: TEXPCNT_SET
+    byte_offset: 580
+  - name: TEXPCNT_CLR
+    byte_offset: 584
+  - name: TEXPCNT_TOG
+    byte_offset: 588
+  - name: AUTOTRIM_RW
+    byte_offset: 592
+  - name: AUTOTRIM_SET
+    byte_offset: 596
+  - name: AUTOTRIM_CLR
+    byte_offset: 600
+  - name: AUTOTRIM_TOG
+    byte_offset: 604
+  - name: TRIMCNT_RW
+    byte_offset: 608
+  - name: TRIMCNT_SET
+    byte_offset: 612
+  - name: TRIMCNT_CLR
+    byte_offset: 616
+  - name: TRIMCNT_TOG
+    byte_offset: 620
+  - name: CNFG3_RW
+    byte_offset: 640
+  - name: CNFG3_SET
+    byte_offset: 644
+  - name: CNFG3_CLR
+    byte_offset: 648
+  - name: CNFG3_TOG
+    byte_offset: 652
+fieldset/ANALOG_FRO_CSR:
+  description: ''
+  fields:
+  - name: FROEN
+    bit_offset: 0
+    bit_size: 1
+  - name: SMODE
+    bit_offset: 1
+    bit_size: 1
+  - name: TREN
+    bit_offset: 4
+    bit_size: 1
+  - name: TRUPEN
+    bit_offset: 5
+    bit_size: 1
+  - name: COARSEN
+    bit_offset: 6
+    bit_size: 1
+  - name: TUNEONCE
+    bit_offset: 7
+    bit_size: 1
+    description: Tune Once Control
+  - name: CLKGATE
+    bit_offset: 8
+    bit_size: 5
+    description: Tune Once Control
+  - name: TRUPREQ
+    bit_offset: 18
+    bit_size: 1
+fieldset/ANALOG_FRO_CSR_LOL:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 16
+    bit_size: 1
+fieldset/ANALOG_FRO_CSR_TUNE:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 17
+    bit_size: 1
+fieldset/ANALOG_FRO_CSR_TRIM:
+  description: ''
+  fields:
+  - name: LOCK
+    bit_offset: 24
+    bit_size: 1
+fieldset/ANALOG_FRO_CSR_TUNEONCE:
+  description: ''
+  fields:
+  - name: DONE
+    bit_offset: 25
+    bit_size: 1
+fieldset/ANALOG_FRO_CNFG1:
+  description: ''
+  fields:
+  - name: REFDIV
+    bit_offset: 0
+    bit_size: 11
+    description: OSC Reference Clock Divider
+  - name: FSTUPEN
+    bit_offset: 11
+    bit_size: 1
+    description: OSC Reference Clock Divider
+  - name: RFCLKCNT
+    bit_offset: 16
+    bit_size: 16
+    description: Reference Clock Counter
+fieldset/ANALOG_FRO_CNFG1_LOL_ERR:
+  description: ''
+  fields:
+  - name: IE
+    bit_offset: 12
+    bit_size: 1
+fieldset/ANALOG_FRO_CNFG1_TUNE_ERR:
+  description: ''
+  fields:
+  - name: IE
+    bit_offset: 13
+    bit_size: 1
+fieldset/ANALOG_FRO_CNFG1_TRUPREQ:
+  description: ''
+  fields:
+  - name: IE
+    bit_offset: 14
+    bit_size: 1
+fieldset/ANALOG_FRO_CNFG2:
+  description: ''
+  fields:
+  - name: FRODIV
+    bit_offset: 0
+    bit_size: 3
+    description: FRO Clock Divider
+  - name: CLKGATE
+    bit_offset: 4
+    bit_size: 1
+    description: FRO Clock Divider
+fieldset/ANALOG_FRO_CNFG2_TRIM1:
+  description: ''
+  fields:
+  - name: DELAY
+    bit_offset: 16
+    bit_size: 12
+    description: FRO 8M Clock Gate Enable
+fieldset/ANALOG_FRO_FROTRIM_FINE:
+  description: ''
+  fields:
+  - name: TRIM
+    bit_offset: 0
+    bit_size: 7
+    description: Fine Trim
+fieldset/ANALOG_FRO_FROTRIM_COARSE:
+  description: ''
+  fields:
+  - name: TRIM
+    bit_offset: 7
+    bit_size: 5
+    description: Fine Trim
+fieldset/ANALOG_FRO_FROTRIM:
+  description: ''
+  fields:
+  - name: TRIMTEMP
+    bit_offset: 16
+    bit_size: 6
+    description: Coarse Trim
+fieldset/ANALOG_FRO_TEXPCNT:
+  description: ''
+  fields:
+  - name: TEXPCNT
+    bit_offset: 0
+    bit_size: 16
+    description: Trim Expected Count
+fieldset/ANALOG_FRO_TEXPCNT_TEXPCNT:
+  description: ''
+  fields:
+  - name: RANGE
+    bit_offset: 16
+    bit_size: 8
+    description: Trim Expected Count
+fieldset/ANALOG_FRO_AUTOTRIM:
+  description: ''
+  fields:
+  - name: AUTOTRIM
+    bit_offset: 0
+    bit_size: 12
+    description: Auto Tune Trim Value
+fieldset/ANALOG_FRO_TRIMCNT:
+  description: ''
+  fields:
+  - name: TRIMCNT
+    bit_offset: 0
+    bit_size: 32
+    description: Trim Count
+fieldset/ANALOG_FRO_CNFG3_TRIM2:
+  description: ''
+  fields:
+  - name: DELAY
+    bit_offset: 0
+    bit_size: 12
+    description: Trim 2 Delay Register

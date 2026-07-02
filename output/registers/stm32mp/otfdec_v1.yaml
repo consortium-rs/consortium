@@ -1,0 +1,130 @@
+block/OTFDEC:
+  description: ''
+  items:
+  - name: CR
+    byte_offset: 0
+    description: OTFDEC Control register
+    fieldset: OTFDEC_CR
+  - name: ISR
+    byte_offset: 768
+    description: OTFDEC Interrupt Status register
+    fieldset: OTFDEC_ISR
+  - name: ICR
+    byte_offset: 772
+    description: OTFDEC Interrupt Clear register
+    fieldset: OTFDEC_ICR
+  - name: IER
+    byte_offset: 776
+    description: OTFDEC Interrupt Enable register
+    fieldset: OTFDEC_IER
+  - name: HWCFGR
+    byte_offset: 1008
+    description: OTFDEC hardware configuration register
+    fieldset: OTFDEC_HWCFGR
+  - name: VERR
+    byte_offset: 1012
+    description: OTFDEC version register
+    fieldset: OTFDEC_VERR
+  - name: IPIDR
+    byte_offset: 1016
+    description: OTFDEC identification register
+    fieldset: OTFDEC_IPIDR
+  - name: SIDR
+    byte_offset: 1020
+    description: OTFDEC size ID register
+    fieldset: OTFDEC_SIDR
+fieldset/OTFDEC_CR:
+  description: ''
+  fields:
+  - name: ENC
+    bit_offset: 0
+    bit_size: 1
+    description: Encryption mode bit
+fieldset/OTFDEC_ISR:
+  description: ''
+  fields:
+  - name: SEIF
+    bit_offset: 0
+    bit_size: 1
+    description: Security Error Interrupt Flag status bit before enable (mask)
+  - name: XONEIF
+    bit_offset: 1
+    bit_size: 1
+    description: Execute-only Error Interrupt Flag status bit before enable (mask)
+  - name: KEIF
+    bit_offset: 2
+    bit_size: 1
+    description: Key Error Interrupt Flag status bit before enable (mask)
+fieldset/OTFDEC_ICR:
+  description: ''
+  fields:
+  - name: SEIF
+    bit_offset: 0
+    bit_size: 1
+    description: Security Error Interrupt Flag clear bit
+  - name: XONEIF
+    bit_offset: 1
+    bit_size: 1
+    description: Execute-only Error Interrupt Flag clear bit
+  - name: KEIF
+    bit_offset: 2
+    bit_size: 1
+    description: Key Error Interrupt Flag clear bit
+fieldset/OTFDEC_IER:
+  description: ''
+  fields:
+  - name: SEIE
+    bit_offset: 0
+    bit_size: 1
+    description: Security Error Interrupt Enable bit
+  - name: XONEIE
+    bit_offset: 1
+    bit_size: 1
+    description: Execute-only Error Interrupt Enable bit
+  - name: KEIE
+    bit_offset: 2
+    bit_size: 1
+fieldset/OTFDEC_HWCFGR:
+  description: ''
+  fields:
+  - name: CFG1
+    bit_offset: 0
+    bit_size: 8
+    description: HW Generic 1
+  - name: CFG2
+    bit_offset: 8
+    bit_size: 8
+    description: HW Generic 2
+  - name: CFG3
+    bit_offset: 16
+    bit_size: 8
+    description: HW Generic 3
+  - name: CFG4
+    bit_offset: 24
+    bit_size: 4
+    description: HW Generic 4
+fieldset/OTFDEC_VERR:
+  description: ''
+  fields:
+  - name: MINREV
+    bit_offset: 0
+    bit_size: 4
+    description: Minor revision
+  - name: MAJREV
+    bit_offset: 4
+    bit_size: 4
+    description: Major revision
+fieldset/OTFDEC_IPIDR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 32
+    description: Identification Code
+fieldset/OTFDEC_SIDR:
+  description: ''
+  fields:
+  - name: SID
+    bit_offset: 0
+    bit_size: 32
+    description: Size Identification Code

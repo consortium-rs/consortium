@@ -1,0 +1,153 @@
+block/HDR_DECOMPRESS0:
+  description: ''
+  items:
+  - name: PIPE1_HDR_DECOMP_CTRL_CAM
+    byte_offset: 0
+  - name: PIPE1_HDR_DECOMP_KNEE_POINT1_CAM
+    byte_offset: 4
+  - name: PIPE1_HDR_DECOMP_KNEE_POINT2_CAM
+    byte_offset: 8
+  - name: PIPE1_HDR_DECOMP_KNEE_POINT3_CAM
+    byte_offset: 12
+  - name: PIPE1_HDR_DECOMP_KNEE_POINT4_CAM
+    byte_offset: 16
+  - name: PIPE1_HDR_DECOMP_KNEE_OFFSET0_CAM
+    byte_offset: 20
+  - name: PIPE1_HDR_DECOMP_KNEE_OFFSET1_CAM
+    byte_offset: 24
+  - name: PIPE1_HDR_DECOMP_KNEE_OFFSET2_CAM
+    byte_offset: 28
+  - name: PIPE1_HDR_DECOMP_KNEE_OFFSET3_CAM
+    byte_offset: 32
+  - name: PIPE1_HDR_DECOMP_KNEE_OFFSET4_CAM
+    byte_offset: 36
+  - name: PIPE1_HDR_DECOMP_KNEE_RATIO01_CAM
+    byte_offset: 40
+  - name: PIPE1_HDR_DECOMP_KNEE_RATIO23_CAM
+    byte_offset: 44
+  - name: PIPE1_HDR_DECOMP_KNEE_RATIO4_CAM
+    byte_offset: 48
+  - name: PIPE1_HDR_DECOMP_KNEE_NPOINT0_CAM
+    byte_offset: 52
+  - name: PIPE1_HDR_DECOMP_KNEE_NPOINT1_CAM
+    byte_offset: 56
+  - name: PIPE1_HDR_DECOMP_KNEE_NPOINT2_CAM
+    byte_offset: 60
+  - name: PIPE1_HDR_DECOMP_KNEE_NPOINT3_CAM
+    byte_offset: 64
+  - name: PIPE1_HDR_DECOMP_KNEE_NPOINT4_CAM
+    byte_offset: 68
+fieldset/HDR_DECOMPRESS0_CTRL_CAM:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/HDR_DECOMPRESS0_KNEE_POINT1_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 16
+fieldset/HDR_DECOMPRESS0_KNEE_POINT2_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 16
+fieldset/HDR_DECOMPRESS0_KNEE_POINT3_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 16
+fieldset/HDR_DECOMPRESS0_KNEE_POINT4_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 16
+fieldset/HDR_DECOMPRESS0_KNEE_OFFSET0_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 16
+fieldset/HDR_DECOMPRESS0_KNEE_OFFSET1_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 16
+fieldset/HDR_DECOMPRESS0_KNEE_OFFSET2_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 16
+fieldset/HDR_DECOMPRESS0_KNEE_OFFSET3_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 16
+fieldset/HDR_DECOMPRESS0_KNEE_OFFSET4_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 16
+fieldset/HDR_DECOMPRESS0_KNEE_RATIO01_CAM:
+  description: ''
+  fields:
+  - name: RATIO0
+    bit_offset: 0
+    bit_size: 12
+  - name: RATIO1
+    bit_offset: 16
+    bit_size: 12
+fieldset/HDR_DECOMPRESS0_KNEE_RATIO23_CAM:
+  description: ''
+  fields:
+  - name: RATIO2
+    bit_offset: 0
+    bit_size: 12
+  - name: RATIO3
+    bit_offset: 16
+    bit_size: 12
+fieldset/HDR_DECOMPRESS0_KNEE_RATIO4_CAM:
+  description: ''
+  fields:
+  - name: RATIO4
+    bit_offset: 0
+    bit_size: 12
+fieldset/HDR_DECOMPRESS0_KNEE_NPOINT0_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 20
+fieldset/HDR_DECOMPRESS0_KNEE_NPOINT1_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 20
+fieldset/HDR_DECOMPRESS0_KNEE_NPOINT2_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 20
+fieldset/HDR_DECOMPRESS0_KNEE_NPOINT3_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 20
+fieldset/HDR_DECOMPRESS0_KNEE_NPOINT4_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 20

@@ -1,0 +1,823 @@
+block/ADC:
+  description: ''
+  items:
+  - name: ISR
+    byte_offset: 0
+    description: ADC interrupt and status register
+    fieldset: ADC_ISR
+  - name: IER
+    byte_offset: 4
+    description: ADC interrupt enable register
+    fieldset: ADC_IER
+  - name: CR
+    byte_offset: 8
+    description: ADC control register
+    fieldset: ADC_CR
+  - name: CFGR1
+    byte_offset: 12
+    description: ADC configuration register 1
+    fieldset: ADC_CFGR1
+  - name: CFGR2
+    byte_offset: 16
+    description: ADC configuration register 2
+    fieldset: ADC_CFGR2
+  - name: SMPR1
+    byte_offset: 20
+    description: ADC sample time register 1
+    fieldset: ADC_SMPR1
+  - name: SMPR2
+    byte_offset: 24
+    description: ADC sample time register 2
+    fieldset: ADC_SMPR2
+  - name: PCSEL
+    byte_offset: 28
+    description: ADC channel preselection register
+    fieldset: ADC_PCSEL
+  - name: SQR1
+    byte_offset: 48
+    description: ADC regular sequence register 1
+    fieldset: ADC_SQR1
+  - name: SQR2
+    byte_offset: 52
+    description: ADC regular sequence register 2
+    fieldset: ADC_SQR2
+  - name: SQR3
+    byte_offset: 56
+    description: ADC regular sequence register 3
+    fieldset: ADC_SQR3
+  - name: SQR4
+    byte_offset: 60
+    description: ADC regular sequence register 4
+    fieldset: ADC_SQR4
+  - name: DR
+    byte_offset: 64
+    description: ADC regular data register
+    fieldset: ADC_DR
+  - name: JSQR
+    byte_offset: 76
+    description: ADC injected sequence register
+    fieldset: ADC_JSQR
+  - name: OFCFGR1
+    byte_offset: 80
+    description: ADC offset configuration register 1
+    fieldset: ADC_OFCFGR1
+  - name: OFCFGR2
+    byte_offset: 84
+    description: ADC offset configuration register 2
+    fieldset: ADC_OFCFGR2
+  - name: OFCFGR3
+    byte_offset: 88
+    description: ADC offset configuration register 3
+    fieldset: ADC_OFCFGR3
+  - name: OFCFGR4
+    byte_offset: 92
+    description: ADC offset configuration register 4
+    fieldset: ADC_OFCFGR4
+  - name: OFR1
+    byte_offset: 96
+    description: ADC offset register 1
+    fieldset: ADC_OFR1
+  - name: OFR2
+    byte_offset: 100
+    description: ADC offset register 2
+    fieldset: ADC_OFR2
+  - name: OFR3
+    byte_offset: 104
+    description: ADC offset register 3
+    fieldset: ADC_OFR3
+  - name: OFR4
+    byte_offset: 108
+    description: ADC offset register 4
+    fieldset: ADC_OFR4
+  - name: GCOMP
+    byte_offset: 112
+    description: ADC gain compensation register
+    fieldset: ADC_GCOMP
+  - name: JDR1
+    byte_offset: 128
+    description: ADC injected data register 1
+    fieldset: ADC_JDR1
+  - name: JDR2
+    byte_offset: 132
+    description: ADC injected data register 2
+    fieldset: ADC_JDR2
+  - name: JDR3
+    byte_offset: 136
+    description: ADC injected data register 3
+    fieldset: ADC_JDR3
+  - name: JDR4
+    byte_offset: 140
+    description: ADC injected data register 4
+    fieldset: ADC_JDR4
+  - name: AWD2CR
+    byte_offset: 160
+    description: ADC analog watchdog 2 configuration register
+    fieldset: ADC_AWD2CR
+  - name: AWD3CR
+    byte_offset: 164
+    description: ADC analog watchdog 3 configuration register
+    fieldset: ADC_AWD3CR
+  - name: AWD1LTR
+    byte_offset: 168
+    description: ADC analog watchdog 1 low threshold register
+    fieldset: ADC_AWD1LTR
+  - name: AWD1HTR
+    byte_offset: 172
+    description: ADC analog watchdog 1 high threshold register
+    fieldset: ADC_AWD1HTR
+  - name: AWD2LTR
+    byte_offset: 176
+    description: ADC analog watchdog 2 low threshold register
+    fieldset: ADC_AWD2LTR
+  - name: AWD2HTR
+    byte_offset: 180
+    description: ADC analog watchdog 2 high threshold register
+    fieldset: ADC_AWD2HTR
+  - name: AWD3LTR
+    byte_offset: 184
+    description: ADC analog watchdog 3 low threshold register
+    fieldset: ADC_AWD3LTR
+  - name: AWD3HTR
+    byte_offset: 188
+    description: ADC analog watchdog 3 high threshold register
+    fieldset: ADC_AWD3HTR
+  - name: DIFSEL
+    byte_offset: 192
+    description: ADC differential mode selection register
+    fieldset: ADC_DIFSEL
+  - name: CALFACT
+    byte_offset: 196
+    description: ADC calibration factors
+    fieldset: ADC_CALFACT
+  - name: OR
+    byte_offset: 208
+    description: ADC option register
+    fieldset: ADC_OR
+fieldset/ADC_ISR:
+  description: ''
+  fields:
+  - name: ADRDY
+    bit_offset: 0
+    bit_size: 1
+    description: ADC ready flag
+  - name: EOSMP
+    bit_offset: 1
+    bit_size: 1
+    description: ADC group regular end of sampling flag
+  - name: EOC
+    bit_offset: 2
+    bit_size: 1
+    description: ADC group regular end of unitary conversion flag
+  - name: EOS
+    bit_offset: 3
+    bit_size: 1
+    description: ADC group regular end of sequence conversions flag
+  - name: OVR
+    bit_offset: 4
+    bit_size: 1
+    description: ADC group regular overrun flag
+  - name: JEOC
+    bit_offset: 5
+    bit_size: 1
+    description: ADC group injected end of unitary conversion flag
+  - name: JEOS
+    bit_offset: 6
+    bit_size: 1
+    description: ADC group injected end of sequence conversions flag
+  - name: AWD1
+    bit_offset: 7
+    bit_size: 1
+    description: ADC analog watchdog 1 flag
+  - name: AWD2
+    bit_offset: 8
+    bit_size: 1
+    description: ADC analog watchdog 2 flag
+  - name: AWD3
+    bit_offset: 9
+    bit_size: 1
+    description: ADC analog watchdog 3 flag
+fieldset/ADC_IER:
+  description: ''
+  fields:
+  - name: ADRDYIE
+    bit_offset: 0
+    bit_size: 1
+    description: ADC ready interrupt
+  - name: EOSMPIE
+    bit_offset: 1
+    bit_size: 1
+    description: ADC group regular end of sampling interrupt
+  - name: EOCIE
+    bit_offset: 2
+    bit_size: 1
+    description: ADC group regular end of unitary conversion interrupt
+  - name: EOSIE
+    bit_offset: 3
+    bit_size: 1
+    description: ADC group regular end of sequence conversions interrupt
+  - name: OVRIE
+    bit_offset: 4
+    bit_size: 1
+    description: ADC group regular overrun interrupt
+  - name: JEOCIE
+    bit_offset: 5
+    bit_size: 1
+    description: ADC group injected end of unitary conversion interrupt
+  - name: JEOSIE
+    bit_offset: 6
+    bit_size: 1
+    description: ADC group injected end of sequence conversions interrupt
+  - name: AWD1IE
+    bit_offset: 7
+    bit_size: 1
+    description: ADC analog watchdog 1 interrupt
+  - name: AWD2IE
+    bit_offset: 8
+    bit_size: 1
+    description: ADC analog watchdog 2 interrupt
+  - name: AWD3IE
+    bit_offset: 9
+    bit_size: 1
+    description: ADC analog watchdog 3 interrupt
+fieldset/ADC_CR:
+  description: ''
+  fields:
+  - name: ADEN
+    bit_offset: 0
+    bit_size: 1
+    description: ADC enable
+  - name: ADDIS
+    bit_offset: 1
+    bit_size: 1
+    description: ADC disable
+  - name: ADSTART
+    bit_offset: 2
+    bit_size: 1
+    description: ADC group regular conversion start
+  - name: JADSTART
+    bit_offset: 3
+    bit_size: 1
+    description: ADC group injected conversion start
+  - name: ADSTP
+    bit_offset: 4
+    bit_size: 1
+    description: ADC group regular conversion stop
+  - name: JADSTP
+    bit_offset: 5
+    bit_size: 1
+    description: ADC group injected conversion stop
+  - name: DEEPPWD
+    bit_offset: 29
+    bit_size: 1
+    description: ADC deep power down enable
+  - name: ADCALDIF
+    bit_offset: 30
+    bit_size: 1
+    description: ADC differential mode for calibration
+  - name: ADCAL
+    bit_offset: 31
+    bit_size: 1
+    description: ADC calibration
+fieldset/ADC_CFGR1:
+  description: ''
+  fields:
+  - name: DMNGT
+    bit_offset: 0
+    bit_size: 2
+    description: ADC data management configuration
+  - name: RES
+    bit_offset: 2
+    bit_size: 2
+    description: ADC data resolution
+  - name: EXTSEL
+    bit_offset: 5
+    bit_size: 5
+    description: ADC group regular external trigger source
+  - name: EXTEN
+    bit_offset: 10
+    bit_size: 2
+    description: ADC group regular external trigger polarity
+  - name: OVRMOD
+    bit_offset: 12
+    bit_size: 1
+    description: ADC group regular overrun configuration
+  - name: CONT
+    bit_offset: 13
+    bit_size: 1
+    description: ADC group regular continuous conversion mode
+  - name: AUTDLY
+    bit_offset: 14
+    bit_size: 1
+    description: ADC low power auto wait
+  - name: DISCEN
+    bit_offset: 16
+    bit_size: 1
+    description: ADC group regular sequencer discontinuous mode
+  - name: DISCNUM
+    bit_offset: 17
+    bit_size: 3
+    description: ADC group regular sequencer discontinuous number of ranks
+  - name: JDISCEN
+    bit_offset: 20
+    bit_size: 1
+    description: ADC group injected sequencer discontinuous mode
+  - name: AWD1SGL
+    bit_offset: 22
+    bit_size: 1
+    description: ADC analog watchdog 1 monitoring a single channel or all channels
+  - name: AWD1EN
+    bit_offset: 23
+    bit_size: 1
+    description: ADC analog watchdog 1 enable on scope ADC group regular
+  - name: JAWD1EN
+    bit_offset: 24
+    bit_size: 1
+    description: ADC analog watchdog 1 enable on scope ADC group injected
+  - name: JAUTO
+    bit_offset: 25
+    bit_size: 1
+    description: ADC group injected automatic trigger mode
+  - name: AWD1CH
+    bit_offset: 26
+    bit_size: 5
+    description: ADC analog watchdog 1 monitored channel selection
+fieldset/ADC_CFGR2:
+  description: ''
+  fields:
+  - name: ROVSE
+    bit_offset: 0
+    bit_size: 1
+    description: ADC oversampler enable on scope ADC group regular
+  - name: JOVSE
+    bit_offset: 1
+    bit_size: 1
+    description: ADC oversampler enable on scope ADC group injected
+  - name: OVSS
+    bit_offset: 5
+    bit_size: 4
+    description: ADC oversampling shift
+  - name: TROVS
+    bit_offset: 9
+    bit_size: 1
+    description: ADC oversampling discontinuous mode (triggered mode) for ADC group
+      regular
+  - name: ROVSM
+    bit_offset: 10
+    bit_size: 1
+    description: ADC oversampling mode managing interlaced conversions of ADC group
+      regular and group injected
+  - name: BULB
+    bit_offset: 13
+    bit_size: 1
+    description: ADC bulb sampling mode
+  - name: SWTRIG
+    bit_offset: 14
+    bit_size: 1
+    description: ADC software trigger bit for sampling time control trigger mode
+  - name: SMPTRIG
+    bit_offset: 15
+    bit_size: 1
+    description: ADC sampling time control trigger mode
+  - name: OVSR
+    bit_offset: 16
+    bit_size: 10
+    description: ADC oversampling ratio
+  - name: LSHIFT
+    bit_offset: 28
+    bit_size: 4
+    description: ADC left shift factor
+fieldset/ADC_SMPR1:
+  description: ''
+  fields:
+  - name: SMP0
+    bit_offset: 0
+    bit_size: 3
+    description: ADC channel 0 sampling time selection
+  - name: SMP1
+    bit_offset: 3
+    bit_size: 3
+    description: ADC channel 1 sampling time selection
+  - name: SMP2
+    bit_offset: 6
+    bit_size: 3
+    description: ADC channel 2 sampling time selection
+  - name: SMP3
+    bit_offset: 9
+    bit_size: 3
+    description: ADC channel 3 sampling time selection
+  - name: SMP4
+    bit_offset: 12
+    bit_size: 3
+    description: ADC channel 4 sampling time selection
+  - name: SMP5
+    bit_offset: 15
+    bit_size: 3
+    description: ADC channel 5 sampling time selection
+  - name: SMP6
+    bit_offset: 18
+    bit_size: 3
+    description: ADC channel 6 sampling time selection
+  - name: SMP7
+    bit_offset: 21
+    bit_size: 3
+    description: ADC channel 7 sampling time selection
+  - name: SMP8
+    bit_offset: 24
+    bit_size: 3
+    description: ADC channel 8 sampling time selection
+  - name: SMP9
+    bit_offset: 27
+    bit_size: 3
+    description: ADC channel 9 sampling time selection
+fieldset/ADC_SMPR2:
+  description: ''
+  fields:
+  - name: SMP10
+    bit_offset: 0
+    bit_size: 3
+    description: ADC channel 10 sampling time selection
+  - name: SMP11
+    bit_offset: 3
+    bit_size: 3
+    description: ADC channel 11 sampling time selection
+  - name: SMP12
+    bit_offset: 6
+    bit_size: 3
+    description: ADC channel 12 sampling time selection
+  - name: SMP13
+    bit_offset: 9
+    bit_size: 3
+    description: ADC channel 13 sampling time selection
+  - name: SMP14
+    bit_offset: 12
+    bit_size: 3
+    description: ADC channel 14 sampling time selection
+  - name: SMP15
+    bit_offset: 15
+    bit_size: 3
+    description: ADC channel 15 sampling time selection
+  - name: SMP16
+    bit_offset: 18
+    bit_size: 3
+    description: ADC channel 16 sampling time selection
+  - name: SMP17
+    bit_offset: 21
+    bit_size: 3
+    description: ADC channel 17 sampling time selection
+  - name: SMP18
+    bit_offset: 24
+    bit_size: 3
+    description: ADC channel 18 sampling time selection
+  - name: SMP19
+    bit_offset: 27
+    bit_size: 3
+    description: ADC Channel 19 Sampling time selection
+fieldset/ADC_PCSEL:
+  description: ''
+  fields:
+  - name: PCSEL
+    bit_offset: 0
+    bit_size: 20
+    description: ADC channel preselection
+fieldset/ADC_SQR1:
+  description: ''
+  fields:
+  - name: L
+    bit_offset: 0
+    bit_size: 4
+    description: ADC group regular sequencer scan length
+  - name: SQ1
+    bit_offset: 6
+    bit_size: 5
+    description: ADC group regular sequencer rank 1
+  - name: SQ2
+    bit_offset: 12
+    bit_size: 5
+    description: ADC group regular sequencer rank 2
+  - name: SQ3
+    bit_offset: 18
+    bit_size: 5
+    description: ADC group regular sequencer rank 3
+  - name: SQ4
+    bit_offset: 24
+    bit_size: 5
+    description: ADC group regular sequencer rank 4
+fieldset/ADC_SQR2:
+  description: ''
+  fields:
+  - name: SQ5
+    bit_offset: 0
+    bit_size: 5
+    description: ADC group regular sequencer rank 5
+  - name: SQ6
+    bit_offset: 6
+    bit_size: 5
+    description: ADC group regular sequencer rank 6
+  - name: SQ7
+    bit_offset: 12
+    bit_size: 5
+    description: ADC group regular sequencer rank 7
+  - name: SQ8
+    bit_offset: 18
+    bit_size: 5
+    description: ADC group regular sequencer rank 8
+  - name: SQ9
+    bit_offset: 24
+    bit_size: 5
+    description: ADC group regular sequencer rank 9
+fieldset/ADC_SQR3:
+  description: ''
+  fields:
+  - name: SQ10
+    bit_offset: 0
+    bit_size: 5
+    description: ADC group regular sequencer rank 10
+  - name: SQ11
+    bit_offset: 6
+    bit_size: 5
+    description: ADC group regular sequencer rank 11
+  - name: SQ12
+    bit_offset: 12
+    bit_size: 5
+    description: ADC group regular sequencer rank 12
+  - name: SQ13
+    bit_offset: 18
+    bit_size: 5
+    description: ADC group regular sequencer rank 13
+  - name: SQ14
+    bit_offset: 24
+    bit_size: 5
+    description: ADC group regular sequencer rank 14
+fieldset/ADC_SQR4:
+  description: ''
+  fields:
+  - name: SQ15
+    bit_offset: 0
+    bit_size: 5
+    description: ADC group regular sequencer rank 15
+  - name: SQ16
+    bit_offset: 6
+    bit_size: 5
+    description: ADC group regular sequencer rank 16
+fieldset/ADC_DR:
+  description: ''
+  fields:
+  - name: RDATA
+    bit_offset: 0
+    bit_size: 32
+    description: ADC group regular conversion data
+fieldset/ADC_JSQR:
+  description: ''
+  fields:
+  - name: JL
+    bit_offset: 0
+    bit_size: 2
+    description: ADC group injected sequencer scan length
+  - name: JEXTSEL
+    bit_offset: 2
+    bit_size: 5
+    description: ADC group injected external trigger source
+  - name: JEXTEN
+    bit_offset: 7
+    bit_size: 2
+    description: ADC group injected external trigger polarity
+  - name: JSQ1
+    bit_offset: 9
+    bit_size: 5
+    description: ADC group injected sequencer rank 1
+  - name: JSQ2
+    bit_offset: 15
+    bit_size: 5
+    description: ADC group injected sequencer rank 2
+  - name: JSQ3
+    bit_offset: 21
+    bit_size: 5
+    description: ADC group injected sequencer rank 3
+  - name: JSQ4
+    bit_offset: 27
+    bit_size: 5
+    description: ADC group injected sequencer rank 4
+fieldset/ADC_OFCFGR1:
+  description: ''
+  fields:
+  - name: POSOFF
+    bit_offset: 24
+    bit_size: 1
+    description: ADC offset instance 1 positive offset enable
+  - name: USAT
+    bit_offset: 25
+    bit_size: 1
+    description: ADC offset instance 1 unsigned saturation value
+  - name: SSAT
+    bit_offset: 26
+    bit_size: 1
+    description: ADC offset instance 1 signed satuaration enable
+fieldset/ADC_OFCFGR2:
+  description: ''
+  fields:
+  - name: POSOFF
+    bit_offset: 24
+    bit_size: 1
+    description: ADC offset instance 2 positive offset enable
+  - name: USAT
+    bit_offset: 25
+    bit_size: 1
+    description: ADC offset instance 2 unsigned saturation value
+  - name: SSAT
+    bit_offset: 26
+    bit_size: 1
+    description: ADC offset instance 2 signed satuaration enable
+fieldset/ADC_OFCFGR3:
+  description: ''
+  fields:
+  - name: POSOFF
+    bit_offset: 24
+    bit_size: 1
+    description: ADC offset instance 3 positive offset enable
+  - name: USAT
+    bit_offset: 25
+    bit_size: 1
+    description: ADC offset instance 3 unsigned saturation value
+  - name: SSAT
+    bit_offset: 26
+    bit_size: 1
+    description: ADC offset instance 3 signed satuaration enable
+fieldset/ADC_OFCFGR4:
+  description: ''
+  fields:
+  - name: POSOFF
+    bit_offset: 24
+    bit_size: 1
+    description: ADC offset instance 4 positive offset enable
+  - name: USAT
+    bit_offset: 25
+    bit_size: 1
+    description: ADC offset instance 4 unsigned saturation value
+  - name: SSAT
+    bit_offset: 26
+    bit_size: 1
+    description: ADC offset instance 4 signed satuaration enable
+fieldset/ADC_OFR1:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 22
+    description: ADC offset instance 1 offset level
+fieldset/ADC_OFR2:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 22
+    description: ADC offset instance 2 offset level
+fieldset/ADC_OFR3:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 22
+    description: ADC offset instance 3 offset level
+fieldset/ADC_OFR4:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 22
+    description: ADC offset instance 4 offset level
+fieldset/ADC_GCOMP:
+  description: ''
+  fields:
+  - name: GCOMPCOEFF
+    bit_offset: 0
+    bit_size: 14
+    description: Gain compensation coefficient
+  - name: GCOMP
+    bit_offset: 31
+    bit_size: 1
+    description: Gain compensation mode
+fieldset/ADC_JDR1:
+  description: ''
+  fields:
+  - name: JDATA
+    bit_offset: 0
+    bit_size: 32
+    description: ADC group injected sequencer rank 1 conversion data
+fieldset/ADC_JDR2:
+  description: ''
+  fields:
+  - name: JDATA
+    bit_offset: 0
+    bit_size: 32
+    description: ADC group injected sequencer rank 2 conversion data
+fieldset/ADC_JDR3:
+  description: ''
+  fields:
+  - name: JDATA
+    bit_offset: 0
+    bit_size: 32
+    description: ADC group injected sequencer rank 3 conversion data
+fieldset/ADC_JDR4:
+  description: ''
+  fields:
+  - name: JDATA
+    bit_offset: 0
+    bit_size: 32
+    description: ADC group injected sequencer rank 4 conversion data
+fieldset/ADC_AWD2CR:
+  description: ''
+  fields:
+  - name: AWD2CH
+    bit_offset: 0
+    bit_size: 20
+    description: ADC analog watchdog 2 monitored channel selection
+fieldset/ADC_AWD3CR:
+  description: ''
+  fields:
+  - name: AWD3CH
+    bit_offset: 0
+    bit_size: 20
+    description: ADC analog watchdog 3 monitored channel selection
+fieldset/ADC_AWD1LTR:
+  description: ''
+  fields:
+  - name: LTR
+    bit_offset: 0
+    bit_size: 23
+    description: ADC analog watchdog 1 threshold low
+fieldset/ADC_AWD1HTR:
+  description: ''
+  fields:
+  - name: HTR
+    bit_offset: 0
+    bit_size: 23
+    description: ADC analog watchdog 1 threshold high
+  - name: AWDFILT
+    bit_offset: 29
+    bit_size: 3
+    description: ADC analog watchdog 1 filtering
+fieldset/ADC_AWD2LTR:
+  description: ''
+  fields:
+  - name: LTR
+    bit_offset: 0
+    bit_size: 23
+    description: ADC analog watchdog 2 threshold low
+fieldset/ADC_AWD2HTR:
+  description: ''
+  fields:
+  - name: HTR
+    bit_offset: 0
+    bit_size: 23
+    description: ADC analog watchdog 2 threshold high
+fieldset/ADC_AWD3LTR:
+  description: ''
+  fields:
+  - name: LTR
+    bit_offset: 0
+    bit_size: 23
+    description: ADC analog watchdog 3 threshold low
+fieldset/ADC_AWD3HTR:
+  description: ''
+  fields:
+  - name: HTR
+    bit_offset: 0
+    bit_size: 23
+    description: ADC analog watchdog 3 threshold high
+fieldset/ADC_DIFSEL:
+  description: ''
+  fields:
+  - name: DIFSEL
+    bit_offset: 0
+    bit_size: 20
+    description: ADC channel differential or single-ended mode selection
+fieldset/ADC_CALFACT:
+  description: ''
+  fields:
+  - name: CALADDOS
+    bit_offset: 31
+    bit_size: 1
+    description: ADC calibration additional offset mode
+fieldset/ADC_OR:
+  description: ''
+  fields:
+  - name: SELREF
+    bit_offset: 0
+    bit_size: 1
+    description: ADC internal path to internal reference voltage
+  - name: SELBG
+    bit_offset: 1
+    bit_size: 1
+    description: ADC internal path to bandgap
+  - name: VDDCOREEN
+    bit_offset: 2
+    bit_size: 1
+    description: ADC internal path to VDDCORE
+  - name: VDDCPUEN
+    bit_offset: 3
+    bit_size: 1
+    description: ADC internal path to VDDCPU
+  - name: VDDGPUEN
+    bit_offset: 4
+    bit_size: 1
+    description: ADC internal path to VDDGPU

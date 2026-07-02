@@ -1,0 +1,376 @@
+block/USB3_PHY_TCA:
+  description: ''
+  items:
+  - name: TCA_CLK_RST
+    byte_offset: 0
+  - name: TCA_INTR_EN
+    byte_offset: 4
+  - name: TCA_INTR_STS
+    byte_offset: 8
+  - name: TCA_GCFG
+    byte_offset: 16
+  - name: TCA_TCPC
+    byte_offset: 20
+  - name: TCA_SYSMODE_CFG
+    byte_offset: 24
+  - name: TCA_CTRLSYNCMODE_CFG0
+    byte_offset: 32
+  - name: TCA_CTRLSYNCMODE_CFG1
+    byte_offset: 36
+  - name: TCA_CTRLSYNCMODE_DBG0
+    byte_offset: 40
+  - name: TCA_CTRLSYNCMODE_DBG1
+    byte_offset: 44
+  - name: TCA_PSTATE
+    byte_offset: 48
+  - name: TCA_GEN_STATUS
+    byte_offset: 52
+  - name: TCA_VBUS_CTRL
+    byte_offset: 64
+  - name: TCA_VBUS_STATUS
+    byte_offset: 68
+  - name: TCA_INFO
+    byte_offset: 252
+fieldset/USB3_PHY_TCA_TCA_CLK_RST_SUSPEND_CLK:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_CLK_RST_TCA_REF_CLK:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_CLK_RST_PHY_RST:
+  description: ''
+  fields:
+  - name: SW
+    bit_offset: 8
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_CLK_RST_XA_RST:
+  description: ''
+  fields:
+  - name: SW
+    bit_offset: 9
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_INTR_EN_XA_ACK_EVT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_INTR_EN_XA_TIMEOUT_EVT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_INTR_EN_SYS_VBUSVALID_EVT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_INTR_EN_TCA_VBUSVALID_EVT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_INTR_EN_TCA_DRV_HOST_VBUS_EVT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 12
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_INTR_STS_XA_ACK:
+  description: ''
+  fields:
+  - name: EVT
+    bit_offset: 0
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_INTR_STS_XA_TIMEOUT:
+  description: ''
+  fields:
+  - name: EVT
+    bit_offset: 1
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_INTR_STS_SYS_VBUSVALID:
+  description: ''
+  fields:
+  - name: EVT
+    bit_offset: 8
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_INTR_STS_SYS:
+  description: ''
+  fields:
+  - name: VBUSVALID
+    bit_offset: 9
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_INTR_STS_TCA_VBUSVALID:
+  description: ''
+  fields:
+  - name: EVT
+    bit_offset: 10
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_INTR_STS_TCA:
+  description: ''
+  fields:
+  - name: VBUSVALID
+    bit_offset: 11
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_INTR_STS_TCA_DRV_HOST_VBUS:
+  description: ''
+  fields:
+  - name: EVT
+    bit_offset: 12
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_INTR_STS_TCA_DRV_HOST:
+  description: ''
+  fields:
+  - name: VBUS
+    bit_offset: 13
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_GCFG_OP:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 0
+    bit_size: 2
+fieldset/USB3_PHY_TCA_TCA_GCFG_ROLE:
+  description: ''
+  fields:
+  - name: HSTDEV
+    bit_offset: 4
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_TCPC_TCPC_MUX:
+  description: ''
+  fields:
+  - name: CONTROL
+    bit_offset: 0
+    bit_size: 2
+fieldset/USB3_PHY_TCA_TCA_TCPC_TCPC_CONNECTOR:
+  description: ''
+  fields:
+  - name: ORIENTATION
+    bit_offset: 2
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_TCPC_TCPC_LOW_POWER:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_TCPC_TCPC:
+  description: ''
+  fields:
+  - name: VALID
+    bit_offset: 4
+    bit_size: 1
+    description: TCPC Valid
+fieldset/USB3_PHY_TCA_TCA_SYSMODE_CFG_TYPEC:
+  description: ''
+  fields:
+  - name: FLIP
+    bit_offset: 2
+    bit_size: 1
+  - name: DISABLE
+    bit_offset: 3
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_CTRLSYNCMODE_CFG0_SSTX_DETRX_REQ_BLOCK:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_CTRLSYNCMODE_CFG0_SS_HDSHK:
+  description: ''
+  fields:
+  - name: REQ
+    bit_offset: 8
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_CTRLSYNCMODE_CFG0_AUTO_SAFE:
+  description: ''
+  fields:
+  - name: STATE
+    bit_offset: 16
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_CTRLSYNCMODE_CFG1_XA_TIMEOUT:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 0
+    bit_size: 20
+fieldset/USB3_PHY_TCA_TCA_CTRLSYNCMODE_DBG0_SS_RXDETECT:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 4
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_CTRLSYNCMODE_DBG0_SS_RXDETECT_DISABLE:
+  description: ''
+  fields:
+  - name: ACK
+    bit_offset: 5
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_CTRLSYNCMODE_DBG0_XBAR:
+  description: ''
+  fields:
+  - name: READY
+    bit_offset: 12
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_CTRLSYNCMODE_DBG0_PSTATE:
+  description: ''
+  fields:
+  - name: SYNCED
+    bit_offset: 13
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_CTRLSYNCMODE_DBG0_PSTATE_TIMEOUT:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 14
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_CTRLSYNCMODE_DBG0_XA_REQ_COMPL:
+  description: ''
+  fields:
+  - name: MULT
+    bit_offset: 15
+    bit_size: 5
+fieldset/USB3_PHY_TCA_TCA_CTRLSYNCMODE_DBG0_CTRL_IF_OVRRD:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 2
+  - name: VAL
+    bit_offset: 28
+    bit_size: 2
+fieldset/USB3_PHY_TCA_TCA_CTRLSYNCMODE_DBG1_XA_REQ_COMPL:
+  description: ''
+  fields:
+  - name: CYCLES
+    bit_offset: 0
+    bit_size: 16
+fieldset/USB3_PHY_TCA_TCA_CTRLSYNCMODE_DBG1_XA_REQ_COMPL_CYCLES:
+  description: ''
+  fields:
+  - name: OVERRUN
+    bit_offset: 16
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_PSTATE_PIPE0:
+  description: ''
+  fields:
+  - name: POWERDOWN
+    bit_offset: 0
+    bit_size: 2
+fieldset/USB3_PHY_TCA_TCA_PSTATE_RX_PLL:
+  description: ''
+  fields:
+  - name: STATE
+    bit_offset: 2
+    bit_size: 1
+    description: RX PLL State
+fieldset/USB3_PHY_TCA_TCA_PSTATE_TX:
+  description: ''
+  fields:
+  - name: STATE
+    bit_offset: 3
+    bit_size: 1
+    description: TX State
+fieldset/USB3_PHY_TCA_TCA_PSTATE_TX_CM:
+  description: ''
+  fields:
+  - name: STATE
+    bit_offset: 4
+    bit_size: 1
+    description: TX State
+fieldset/USB3_PHY_TCA_TCA_GEN_STATUS_PHY_TYPEC:
+  description: ''
+  fields:
+  - name: FLIP
+    bit_offset: 2
+    bit_size: 1
+  - name: DISABLE
+    bit_offset: 3
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_GEN_STATUS_TYPEC_FLIP:
+  description: ''
+  fields:
+  - name: INVERT
+    bit_offset: 4
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_GEN_STATUS_REF_CLK:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 8
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_GEN_STATUS_USB_DEV:
+  description: ''
+  fields:
+  - name: POR
+    bit_offset: 12
+    bit_size: 1
+    description: USB Device PoR
+fieldset/USB3_PHY_TCA_TCA_VBUS_CTRL_VBUSVALID:
+  description: ''
+  fields:
+  - name: OVERRD
+    bit_offset: 0
+    bit_size: 2
+fieldset/USB3_PHY_TCA_TCA_VBUS_CTRL_POWERPRESENT:
+  description: ''
+  fields:
+  - name: OVERRD
+    bit_offset: 2
+    bit_size: 2
+fieldset/USB3_PHY_TCA_TCA_VBUS_CTRL_DRV_HOST_VBUS:
+  description: ''
+  fields:
+  - name: OVERRD
+    bit_offset: 4
+    bit_size: 2
+fieldset/USB3_PHY_TCA_TCA_VBUS_CTRL_TCA:
+  description: ''
+  fields:
+  - name: IDDIG
+    bit_offset: 8
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_VBUS_CTRL_TCA_MISC:
+  description: ''
+  fields:
+  - name: CTRL
+    bit_offset: 9
+    bit_size: 6
+fieldset/USB3_PHY_TCA_TCA_VBUS_STATUS_SYS:
+  description: ''
+  fields:
+  - name: VBUSVALID
+    bit_offset: 0
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_VBUS_STATUS_TCA:
+  description: ''
+  fields:
+  - name: VBUSVALID
+    bit_offset: 1
+    bit_size: 1
+    description: TCA VBus Valid
+  - name: POWERPRESENT
+    bit_offset: 2
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_VBUS_STATUS_TCA_DRV_HOST:
+  description: ''
+  fields:
+  - name: VBUS
+    bit_offset: 3
+    bit_size: 1
+fieldset/USB3_PHY_TCA_TCA_INFO_VERSION:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 32
+    description: Version ID For TCA

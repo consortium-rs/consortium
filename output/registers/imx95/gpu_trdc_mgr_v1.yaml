@@ -1,0 +1,3541 @@
+block/GPU_TRDC_MGR:
+  description: ''
+  items:
+  - name: TRDC_CR
+    byte_offset: 0
+    fieldset: GPU_TRDC_MGR_TRDC_CR
+  - name: TRDC_HWCFG0
+    byte_offset: 240
+    fieldset: GPU_TRDC_MGR_TRDC_HWCFG0
+  - name: TRDC_HWCFG1
+    byte_offset: 244
+    fieldset: GPU_TRDC_MGR_TRDC_HWCFG1
+  - name: DACFG0
+    byte_offset: 256
+    fieldset: GPU_TRDC_MGR_DACFG0
+  - name: TRDC_IDAU_CR
+    byte_offset: 448
+    fieldset: GPU_TRDC_MGR_TRDC_IDAU_CR
+  - name: TRDC_FLW_CTL
+    byte_offset: 480
+    fieldset: GPU_TRDC_MGR_TRDC_FLW_CTL
+  - name: TRDC_FLW_PBASE
+    byte_offset: 484
+    fieldset: GPU_TRDC_MGR_TRDC_FLW_PBASE
+  - name: TRDC_FLW_ABASE
+    byte_offset: 488
+  - name: TRDC_FLW_BCNT
+    byte_offset: 492
+    fieldset: GPU_TRDC_MGR_TRDC_FLW_BCNT
+  - name: TRDC_FDID
+    byte_offset: 508
+    fieldset: GPU_TRDC_MGR_TRDC_FDID
+  - name: TRDC_DERRLOC
+    byte_offset: 512
+    array:
+      len: 16
+      stride: 4
+    fieldset: GPU_TRDC_MGR_TRDC_DERRLOC
+  - name: MBC_DERR_W0
+    byte_offset: 1024
+  - name: MBC_DERR_W1
+    byte_offset: 1028
+  - name: MBC_DERR_W3
+    byte_offset: 1036
+  - name: MRC_DERR_W0
+    byte_offset: 1152
+  - name: MRC_DERR_W1
+    byte_offset: 1156
+  - name: MRC_DERR_W3
+    byte_offset: 1164
+  - name: MDA_W0_0_DFMT1
+    byte_offset: 2048
+    fieldset: GPU_TRDC_MGR_MDA_W0_0_DFMT1
+  - name: MDA_W0_1_DFMT1
+    byte_offset: 2080
+    fieldset: GPU_TRDC_MGR_MDA_W0_1_DFMT1
+  - name: MBC0_MEM_GLBCFG
+    byte_offset: 65536
+    array:
+      len: 4
+      stride: 4
+    fieldset: GPU_TRDC_MGR_MBC0_MEM_GLBCFG
+  - name: MBC0_NSE_BLK_INDEX
+    byte_offset: 65552
+    fieldset: GPU_TRDC_MGR_MBC0_NSE_BLK_INDEX
+  - name: MBC0_NSE_BLK_SET
+    byte_offset: 65556
+    fieldset: GPU_TRDC_MGR_MBC0_NSE_BLK_SET
+  - name: MBC0_NSE_BLK_CLR
+    byte_offset: 65560
+    fieldset: GPU_TRDC_MGR_MBC0_NSE_BLK_CLR
+  - name: MBC0_NSE_BLK_CLR_ALL
+    byte_offset: 65564
+    fieldset: GPU_TRDC_MGR_MBC0_NSE_BLK_CLR_ALL
+  - name: MBC0_MEMN_GLBAC
+    byte_offset: 65568
+    array:
+      len: 8
+      stride: 4
+    fieldset: GPU_TRDC_MGR_MBC0_MEMN_GLBAC
+  - name: MBC0_DOM0_MEM0_BLK_CFG_W0
+    byte_offset: 65600
+    fieldset: GPU_TRDC_MGR_MBC0_DOM0_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM0_MEM0_BLK_NSE_W0
+    byte_offset: 65856
+    fieldset: GPU_TRDC_MGR_MBC0_DOM0_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM1_MEM0_BLK_CFG_W0
+    byte_offset: 66112
+    fieldset: GPU_TRDC_MGR_MBC0_DOM1_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM1_MEM0_BLK_NSE_W0
+    byte_offset: 66368
+    fieldset: GPU_TRDC_MGR_MBC0_DOM1_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM2_MEM0_BLK_CFG_W0
+    byte_offset: 66624
+    fieldset: GPU_TRDC_MGR_MBC0_DOM2_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM2_MEM0_BLK_NSE_W0
+    byte_offset: 66880
+    fieldset: GPU_TRDC_MGR_MBC0_DOM2_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM3_MEM0_BLK_CFG_W0
+    byte_offset: 67136
+    fieldset: GPU_TRDC_MGR_MBC0_DOM3_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM3_MEM0_BLK_NSE_W0
+    byte_offset: 67392
+    fieldset: GPU_TRDC_MGR_MBC0_DOM3_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM4_MEM0_BLK_CFG_W0
+    byte_offset: 67648
+    fieldset: GPU_TRDC_MGR_MBC0_DOM4_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM4_MEM0_BLK_NSE_W0
+    byte_offset: 67904
+    fieldset: GPU_TRDC_MGR_MBC0_DOM4_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM5_MEM0_BLK_CFG_W0
+    byte_offset: 68160
+    fieldset: GPU_TRDC_MGR_MBC0_DOM5_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM5_MEM0_BLK_NSE_W0
+    byte_offset: 68416
+    fieldset: GPU_TRDC_MGR_MBC0_DOM5_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM6_MEM0_BLK_CFG_W0
+    byte_offset: 68672
+    fieldset: GPU_TRDC_MGR_MBC0_DOM6_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM6_MEM0_BLK_NSE_W0
+    byte_offset: 68928
+    fieldset: GPU_TRDC_MGR_MBC0_DOM6_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM7_MEM0_BLK_CFG_W0
+    byte_offset: 69184
+    fieldset: GPU_TRDC_MGR_MBC0_DOM7_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM7_MEM0_BLK_NSE_W0
+    byte_offset: 69440
+    fieldset: GPU_TRDC_MGR_MBC0_DOM7_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM8_MEM0_BLK_CFG_W0
+    byte_offset: 69696
+    fieldset: GPU_TRDC_MGR_MBC0_DOM8_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM8_MEM0_BLK_NSE_W0
+    byte_offset: 69952
+    fieldset: GPU_TRDC_MGR_MBC0_DOM8_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM9_MEM0_BLK_CFG_W0
+    byte_offset: 70208
+    fieldset: GPU_TRDC_MGR_MBC0_DOM9_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM9_MEM0_BLK_NSE_W0
+    byte_offset: 70464
+    fieldset: GPU_TRDC_MGR_MBC0_DOM9_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM10_MEM0_BLK_CFG_W0
+    byte_offset: 70720
+    fieldset: GPU_TRDC_MGR_MBC0_DOM10_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM10_MEM0_BLK_NSE_W0
+    byte_offset: 70976
+    fieldset: GPU_TRDC_MGR_MBC0_DOM10_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM11_MEM0_BLK_CFG_W0
+    byte_offset: 71232
+    fieldset: GPU_TRDC_MGR_MBC0_DOM11_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM11_MEM0_BLK_NSE_W0
+    byte_offset: 71488
+    fieldset: GPU_TRDC_MGR_MBC0_DOM11_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM12_MEM0_BLK_CFG_W0
+    byte_offset: 71744
+    fieldset: GPU_TRDC_MGR_MBC0_DOM12_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM12_MEM0_BLK_NSE_W0
+    byte_offset: 72000
+    fieldset: GPU_TRDC_MGR_MBC0_DOM12_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM13_MEM0_BLK_CFG_W0
+    byte_offset: 72256
+    fieldset: GPU_TRDC_MGR_MBC0_DOM13_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM13_MEM0_BLK_NSE_W0
+    byte_offset: 72512
+    fieldset: GPU_TRDC_MGR_MBC0_DOM13_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM14_MEM0_BLK_CFG_W0
+    byte_offset: 72768
+    fieldset: GPU_TRDC_MGR_MBC0_DOM14_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM14_MEM0_BLK_NSE_W0
+    byte_offset: 73024
+    fieldset: GPU_TRDC_MGR_MBC0_DOM14_MEM0_BLK_NSE_W0
+  - name: MBC0_DOM15_MEM0_BLK_CFG_W0
+    byte_offset: 73280
+    fieldset: GPU_TRDC_MGR_MBC0_DOM15_MEM0_BLK_CFG_W0
+  - name: MBC0_DOM15_MEM0_BLK_NSE_W0
+    byte_offset: 73536
+    fieldset: GPU_TRDC_MGR_MBC0_DOM15_MEM0_BLK_NSE_W0
+  - name: MRC0_GLBCFG
+    byte_offset: 73728
+    fieldset: GPU_TRDC_MGR_MRC0_GLBCFG
+  - name: MRC0_NSE_RGN_INDIRECT
+    byte_offset: 73744
+  - name: MRC0_NSE_RGN_SET
+    byte_offset: 73748
+    fieldset: GPU_TRDC_MGR_MRC0_NSE_RGN_SET
+  - name: MRC0_NSE_RGN_CLR
+    byte_offset: 73752
+    fieldset: GPU_TRDC_MGR_MRC0_NSE_RGN_CLR
+  - name: MRC0_NSE_RGN_CLR_ALL
+    byte_offset: 73756
+  - name: MRC0_GLBAC
+    byte_offset: 73760
+    array:
+      len: 8
+      stride: 4
+    fieldset: GPU_TRDC_MGR_MRC0_GLBAC
+  - name: MRC0_DOM0_RGD_W0
+    byte_offset: 73792
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM0_RGD_NSE
+    byte_offset: 73920
+    fieldset: GPU_TRDC_MGR_MRC0_DOM0_RGD_NSE
+  - name: MRC0_DOM1_RGD_W0
+    byte_offset: 74048
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM1_RGD_NSE
+    byte_offset: 74176
+    fieldset: GPU_TRDC_MGR_MRC0_DOM1_RGD_NSE
+  - name: MRC0_DOM2_RGD_W0
+    byte_offset: 74304
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM2_RGD_NSE
+    byte_offset: 74432
+    fieldset: GPU_TRDC_MGR_MRC0_DOM2_RGD_NSE
+  - name: MRC0_DOM3_RGD_W0
+    byte_offset: 74560
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM3_RGD_NSE
+    byte_offset: 74688
+    fieldset: GPU_TRDC_MGR_MRC0_DOM3_RGD_NSE
+  - name: MRC0_DOM4_RGD_W0
+    byte_offset: 74816
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM4_RGD_NSE
+    byte_offset: 74944
+    fieldset: GPU_TRDC_MGR_MRC0_DOM4_RGD_NSE
+  - name: MRC0_DOM5_RGD_W0
+    byte_offset: 75072
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM5_RGD_NSE
+    byte_offset: 75200
+    fieldset: GPU_TRDC_MGR_MRC0_DOM5_RGD_NSE
+  - name: MRC0_DOM6_RGD_W0
+    byte_offset: 75328
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM6_RGD_NSE
+    byte_offset: 75456
+    fieldset: GPU_TRDC_MGR_MRC0_DOM6_RGD_NSE
+  - name: MRC0_DOM7_RGD_W0
+    byte_offset: 75584
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM7_RGD_NSE
+    byte_offset: 75712
+    fieldset: GPU_TRDC_MGR_MRC0_DOM7_RGD_NSE
+  - name: MRC0_DOM8_RGD_W0
+    byte_offset: 75840
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM8_RGD_NSE
+    byte_offset: 75968
+    fieldset: GPU_TRDC_MGR_MRC0_DOM8_RGD_NSE
+  - name: MRC0_DOM9_RGD_W0
+    byte_offset: 76096
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM9_RGD_NSE
+    byte_offset: 76224
+    fieldset: GPU_TRDC_MGR_MRC0_DOM9_RGD_NSE
+  - name: MRC0_DOM10_RGD_W0
+    byte_offset: 76352
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM10_RGD_NSE
+    byte_offset: 76480
+    fieldset: GPU_TRDC_MGR_MRC0_DOM10_RGD_NSE
+  - name: MRC0_DOM11_RGD_W0
+    byte_offset: 76608
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM11_RGD_NSE
+    byte_offset: 76736
+    fieldset: GPU_TRDC_MGR_MRC0_DOM11_RGD_NSE
+  - name: MRC0_DOM12_RGD_W0
+    byte_offset: 76864
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM12_RGD_NSE
+    byte_offset: 76992
+    fieldset: GPU_TRDC_MGR_MRC0_DOM12_RGD_NSE
+  - name: MRC0_DOM13_RGD_W0
+    byte_offset: 77120
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM13_RGD_NSE
+    byte_offset: 77248
+    fieldset: GPU_TRDC_MGR_MRC0_DOM13_RGD_NSE
+  - name: MRC0_DOM14_RGD_W0
+    byte_offset: 77376
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM14_RGD_NSE
+    byte_offset: 77504
+    fieldset: GPU_TRDC_MGR_MRC0_DOM14_RGD_NSE
+  - name: MRC0_DOM15_RGD_W0
+    byte_offset: 77632
+    array:
+      len: 4
+      stride: 8
+  - name: MRC0_DOM15_RGD_NSE
+    byte_offset: 77760
+    fieldset: GPU_TRDC_MGR_MRC0_DOM15_RGD_NSE
+fieldset/GPU_TRDC_MGR_TRDC_CR:
+  description: ''
+  fields:
+  - name: GVLDM
+    bit_offset: 0
+    bit_size: 1
+  - name: HRL
+    bit_offset: 1
+    bit_size: 4
+    description: Hardware Revision Level
+  - name: GVLDB
+    bit_offset: 14
+    bit_size: 1
+    description: Hardware Revision Level
+  - name: GVLDR
+    bit_offset: 15
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_TRDC_HWCFG0:
+  description: ''
+  fields:
+  - name: NDID
+    bit_offset: 0
+    bit_size: 5
+    description: Number of domains
+  - name: NMSTR
+    bit_offset: 8
+    bit_size: 8
+    description: Number of domains
+  - name: NMBC
+    bit_offset: 16
+    bit_size: 4
+    description: Number of bus initiators
+  - name: NMRC
+    bit_offset: 24
+    bit_size: 5
+    description: Number of MBCs
+  - name: MID
+    bit_offset: 29
+    bit_size: 3
+    description: Number of MRCs
+fieldset/GPU_TRDC_MGR_TRDC_HWCFG1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier number
+fieldset/GPU_TRDC_MGR_DACFG0:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_DACFG1:
+  description: ''
+  fields:
+  - name: NMDAR
+    bit_offset: 0
+    bit_size: 4
+  - name: NCM
+    bit_offset: 7
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_TRDC_IDAU_CR:
+  description: ''
+  fields:
+  - name: VLD
+    bit_offset: 0
+    bit_size: 1
+    description: Valid
+  - name: CFGSECEXT
+    bit_offset: 3
+    bit_size: 1
+    description: Valid
+  - name: MPUSDIS
+    bit_offset: 4
+    bit_size: 1
+  - name: MPUNSDIS
+    bit_offset: 5
+    bit_size: 1
+  - name: SAUDIS
+    bit_offset: 6
+    bit_size: 1
+  - name: LKSVTAIRCR
+    bit_offset: 8
+    bit_size: 1
+  - name: LKNSVTOR
+    bit_offset: 9
+    bit_size: 1
+  - name: LKSMPU
+    bit_offset: 10
+    bit_size: 1
+  - name: LKNSMPU
+    bit_offset: 11
+    bit_size: 1
+  - name: LKSAU
+    bit_offset: 12
+    bit_size: 1
+  - name: PCURRNS
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_TRDC_FLW_CTL:
+  description: ''
+  fields:
+  - name: LK
+    bit_offset: 30
+    bit_size: 1
+  - name: V
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_TRDC_FLW_PBASE:
+  description: ''
+  fields:
+  - name: PBASE
+    bit_offset: 0
+    bit_size: 32
+    description: Physical base address
+fieldset/GPU_TRDC_MGR_TRDC_FLW_ABASE_ABASE:
+  description: ''
+  fields:
+  - name: L
+    bit_offset: 15
+    bit_size: 7
+    description: Array base address low
+  - name: H
+    bit_offset: 22
+    bit_size: 10
+    description: Array base address high
+fieldset/GPU_TRDC_MGR_TRDC_FLW_BCNT:
+  description: ''
+  fields:
+  - name: BCNT
+    bit_offset: 0
+    bit_size: 15
+    description: Block Count
+fieldset/GPU_TRDC_MGR_TRDC_FDID:
+  description: ''
+  fields:
+  - name: FDID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain ID of Faulted Access
+fieldset/GPU_TRDC_MGR_TRDC_DERRLOC:
+  description: ''
+  fields:
+  - name: MBCINST
+    bit_offset: 0
+    bit_size: 8
+    description: MBC instance
+  - name: MRCINST
+    bit_offset: 16
+    bit_size: 16
+    description: MBC instance
+fieldset/GPU_TRDC_MGR_W0:
+  description: ''
+  fields:
+  - name: EADDR
+    bit_offset: 0
+    bit_size: 32
+    description: Error address
+fieldset/GPU_TRDC_MGR_W1:
+  description: ''
+  fields:
+  - name: EDID
+    bit_offset: 0
+    bit_size: 4
+    description: Error domain identifier
+  - name: NSE
+    bit_offset: 4
+    bit_size: 1
+    description: Valid
+  - name: EATR
+    bit_offset: 8
+    bit_size: 3
+    description: Bus protect error
+  - name: ERW
+    bit_offset: 11
+    bit_size: 1
+  - name: EPORT
+    bit_offset: 24
+    bit_size: 3
+    description: Error port
+  - name: EST
+    bit_offset: 30
+    bit_size: 2
+    description: Error port
+fieldset/GPU_TRDC_MGR_W1_SLV_DID:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 4
+    bit_size: 1
+    description: Error domain identifier
+fieldset/GPU_TRDC_MGR_W1_SLV_PA:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 5
+    bit_size: 1
+    description: DID check error
+fieldset/GPU_TRDC_MGR_W1_SLV_SA:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 6
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_W1_SLV:
+  description: ''
+  fields:
+  - name: ABORT
+    bit_offset: 7
+    bit_size: 1
+    description: Bus protect error
+fieldset/GPU_TRDC_MGR_W3:
+  description: ''
+  fields:
+  - name: RECR
+    bit_offset: 30
+    bit_size: 2
+    description: Rearm Error Capture Registers
+fieldset/GPU_TRDC_MGR_MDA_W0_0_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+    description: Domain identifier
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+    description: Stream ID
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MDA_W0_1_DFMT1:
+  description: ''
+  fields:
+  - name: DID
+    bit_offset: 0
+    bit_size: 4
+    description: Domain identifier
+  - name: PA
+    bit_offset: 4
+    bit_size: 2
+    description: Domain identifier
+  - name: SA
+    bit_offset: 6
+    bit_size: 2
+  - name: DIDB
+    bit_offset: 8
+    bit_size: 1
+  - name: SID
+    bit_offset: 22
+    bit_size: 6
+    description: Stream ID
+  - name: KPA
+    bit_offset: 28
+    bit_size: 1
+    description: Stream ID
+  - name: DFMT
+    bit_offset: 29
+    bit_size: 1
+  - name: LK1
+    bit_offset: 30
+    bit_size: 1
+  - name: VLD
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_MEM_GLBCFG:
+  description: ''
+  fields:
+  - name: NBLKS
+    bit_offset: 0
+    bit_size: 10
+fieldset/GPU_TRDC_MGR_MBC0_MEM_GLBCFG_SIZE:
+  description: ''
+  fields:
+  - name: LOG2
+    bit_offset: 16
+    bit_size: 5
+    description: Log2 size per block
+fieldset/GPU_TRDC_MGR_MBC0_NSE_BLK_INDEX:
+  description: ''
+  fields:
+  - name: AI
+    bit_offset: 0
+    bit_size: 1
+  - name: WNDX
+    bit_offset: 2
+    bit_size: 4
+fieldset/GPU_TRDC_MGR_MBC0_NSE_BLK_INDEX_MEM:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 8
+    bit_size: 4
+    description: Memory Select
+fieldset/GPU_TRDC_MGR_MBC0_NSE_BLK_INDEX_DID:
+  description: ''
+  fields:
+  - name: SEL0
+    bit_offset: 16
+    bit_size: 1
+  - name: SEL1
+    bit_offset: 17
+    bit_size: 1
+  - name: SEL2
+    bit_offset: 18
+    bit_size: 1
+  - name: SEL3
+    bit_offset: 19
+    bit_size: 1
+  - name: SEL4
+    bit_offset: 20
+    bit_size: 1
+  - name: SEL5
+    bit_offset: 21
+    bit_size: 1
+  - name: SEL6
+    bit_offset: 22
+    bit_size: 1
+  - name: SEL7
+    bit_offset: 23
+    bit_size: 1
+  - name: SEL8
+    bit_offset: 24
+    bit_size: 1
+  - name: SEL9
+    bit_offset: 25
+    bit_size: 1
+  - name: SEL10
+    bit_offset: 26
+    bit_size: 1
+  - name: SEL11
+    bit_offset: 27
+    bit_size: 1
+  - name: SEL12
+    bit_offset: 28
+    bit_size: 1
+  - name: SEL13
+    bit_offset: 29
+    bit_size: 1
+  - name: SEL14
+    bit_offset: 30
+    bit_size: 1
+  - name: SEL15
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_NSE_BLK_SET:
+  description: ''
+  fields:
+  - name: W1SET
+    bit_offset: 0
+    bit_size: 32
+    description: Write-1 Set
+fieldset/GPU_TRDC_MGR_MBC0_NSE_BLK_CLR:
+  description: ''
+  fields:
+  - name: W1CLR
+    bit_offset: 0
+    bit_size: 32
+    description: Write-1 Clear
+fieldset/GPU_TRDC_MGR_MBC0_NSE_BLK_CLR_ALL:
+  description: ''
+  fields:
+  - name: MEMSEL
+    bit_offset: 8
+    bit_size: 4
+    description: Memory Select
+fieldset/GPU_TRDC_MGR_MBC0_NSE_BLK_CLR_ALL_DID:
+  description: ''
+  fields:
+  - name: SEL0
+    bit_offset: 16
+    bit_size: 1
+  - name: SEL1
+    bit_offset: 17
+    bit_size: 1
+  - name: SEL2
+    bit_offset: 18
+    bit_size: 1
+  - name: SEL3
+    bit_offset: 19
+    bit_size: 1
+  - name: SEL4
+    bit_offset: 20
+    bit_size: 1
+  - name: SEL5
+    bit_offset: 21
+    bit_size: 1
+  - name: SEL6
+    bit_offset: 22
+    bit_size: 1
+  - name: SEL7
+    bit_offset: 23
+    bit_size: 1
+  - name: SEL8
+    bit_offset: 24
+    bit_size: 1
+  - name: SEL9
+    bit_offset: 25
+    bit_size: 1
+  - name: SEL10
+    bit_offset: 26
+    bit_size: 1
+  - name: SEL11
+    bit_offset: 27
+    bit_size: 1
+  - name: SEL12
+    bit_offset: 28
+    bit_size: 1
+  - name: SEL13
+    bit_offset: 29
+    bit_size: 1
+  - name: SEL14
+    bit_offset: 30
+    bit_size: 1
+  - name: SEL15
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_MEMN_GLBAC:
+  description: ''
+  fields:
+  - name: NUX
+    bit_offset: 0
+    bit_size: 1
+  - name: NUW
+    bit_offset: 1
+    bit_size: 1
+  - name: NUR
+    bit_offset: 2
+    bit_size: 1
+  - name: NPX
+    bit_offset: 4
+    bit_size: 1
+  - name: NPW
+    bit_offset: 5
+    bit_size: 1
+  - name: NPR
+    bit_offset: 6
+    bit_size: 1
+  - name: SUX
+    bit_offset: 8
+    bit_size: 1
+  - name: SUW
+    bit_offset: 9
+    bit_size: 1
+  - name: SUR
+    bit_offset: 10
+    bit_size: 1
+  - name: SPX
+    bit_offset: 12
+    bit_size: 1
+  - name: SPW
+    bit_offset: 13
+    bit_size: 1
+  - name: SPR
+    bit_offset: 14
+    bit_size: 1
+  - name: LK
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM0_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM0_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM1_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM1_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM2_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM2_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM3_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM3_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM4_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM4_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM5_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM5_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM6_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM6_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM7_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM7_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM8_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM8_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM9_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM9_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM10_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM10_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM11_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM11_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM12_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM12_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM13_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM13_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM14_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM14_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM15_MEM0_BLK_CFG_W0:
+  description: ''
+  fields:
+  - name: MBACSEL0
+    bit_offset: 0
+    bit_size: 3
+  - name: NSE0
+    bit_offset: 3
+    bit_size: 1
+  - name: MBACSEL1
+    bit_offset: 4
+    bit_size: 3
+  - name: NSE1
+    bit_offset: 7
+    bit_size: 1
+  - name: MBACSEL2
+    bit_offset: 8
+    bit_size: 3
+  - name: NSE2
+    bit_offset: 11
+    bit_size: 1
+  - name: MBACSEL3
+    bit_offset: 12
+    bit_size: 3
+  - name: NSE3
+    bit_offset: 15
+    bit_size: 1
+  - name: MBACSEL4
+    bit_offset: 16
+    bit_size: 3
+  - name: NSE4
+    bit_offset: 19
+    bit_size: 1
+  - name: MBACSEL5
+    bit_offset: 20
+    bit_size: 3
+  - name: NSE5
+    bit_offset: 23
+    bit_size: 1
+  - name: MBACSEL6
+    bit_offset: 24
+    bit_size: 3
+  - name: NSE6
+    bit_offset: 27
+    bit_size: 1
+  - name: MBACSEL7
+    bit_offset: 28
+    bit_size: 3
+  - name: NSE7
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MBC0_DOM15_MEM0_BLK_NSE_W0:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+  - name: BIT4
+    bit_offset: 4
+    bit_size: 1
+  - name: BIT5
+    bit_offset: 5
+    bit_size: 1
+  - name: BIT6
+    bit_offset: 6
+    bit_size: 1
+  - name: BIT7
+    bit_offset: 7
+    bit_size: 1
+  - name: BIT8
+    bit_offset: 8
+    bit_size: 1
+  - name: BIT9
+    bit_offset: 9
+    bit_size: 1
+  - name: BIT10
+    bit_offset: 10
+    bit_size: 1
+  - name: BIT11
+    bit_offset: 11
+    bit_size: 1
+  - name: BIT12
+    bit_offset: 12
+    bit_size: 1
+  - name: BIT13
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT14
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT15
+    bit_offset: 15
+    bit_size: 1
+  - name: BIT16
+    bit_offset: 16
+    bit_size: 1
+  - name: BIT17
+    bit_offset: 17
+    bit_size: 1
+  - name: BIT18
+    bit_offset: 18
+    bit_size: 1
+  - name: BIT19
+    bit_offset: 19
+    bit_size: 1
+  - name: BIT20
+    bit_offset: 20
+    bit_size: 1
+  - name: BIT21
+    bit_offset: 21
+    bit_size: 1
+  - name: BIT22
+    bit_offset: 22
+    bit_size: 1
+  - name: BIT23
+    bit_offset: 23
+    bit_size: 1
+  - name: BIT24
+    bit_offset: 24
+    bit_size: 1
+  - name: BIT25
+    bit_offset: 25
+    bit_size: 1
+  - name: BIT26
+    bit_offset: 26
+    bit_size: 1
+  - name: BIT27
+    bit_offset: 27
+    bit_size: 1
+  - name: BIT28
+    bit_offset: 28
+    bit_size: 1
+  - name: BIT29
+    bit_offset: 29
+    bit_size: 1
+  - name: BIT30
+    bit_offset: 30
+    bit_size: 1
+  - name: BIT31
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_GLBCFG:
+  description: ''
+  fields:
+  - name: NRGNS
+    bit_offset: 0
+    bit_size: 5
+    description: Number of regions [1-16]
+fieldset/GPU_TRDC_MGR_MRC0_NSE_RGN_INDIRECT_DID:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 16
+    bit_size: 16
+    description: DID Select
+fieldset/GPU_TRDC_MGR_MRC0_NSE_RGN_SET:
+  description: ''
+  fields:
+  - name: W1SET
+    bit_offset: 0
+    bit_size: 16
+    description: Write-1 Set
+fieldset/GPU_TRDC_MGR_MRC0_NSE_RGN_CLR:
+  description: ''
+  fields:
+  - name: W1CLR
+    bit_offset: 0
+    bit_size: 16
+    description: Write-1 Clear
+fieldset/GPU_TRDC_MGR_MRC0_NSE_RGN_CLR_ALL_DID:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 16
+    bit_size: 16
+    description: DID Select
+fieldset/GPU_TRDC_MGR_MRC0_GLBAC:
+  description: ''
+  fields:
+  - name: NUX
+    bit_offset: 0
+    bit_size: 1
+  - name: NUW
+    bit_offset: 1
+    bit_size: 1
+  - name: NUR
+    bit_offset: 2
+    bit_size: 1
+  - name: NPX
+    bit_offset: 4
+    bit_size: 1
+  - name: NPW
+    bit_offset: 5
+    bit_size: 1
+  - name: NPR
+    bit_offset: 6
+    bit_size: 1
+  - name: SUX
+    bit_offset: 8
+    bit_size: 1
+  - name: SUW
+    bit_offset: 9
+    bit_size: 1
+  - name: SUR
+    bit_offset: 10
+    bit_size: 1
+  - name: SPX
+    bit_offset: 12
+    bit_size: 1
+  - name: SPW
+    bit_offset: 13
+    bit_size: 1
+  - name: SPR
+    bit_offset: 14
+    bit_size: 1
+  - name: LK
+    bit_offset: 31
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_W0_STRT:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 14
+    bit_size: 18
+    description: Start Address
+fieldset/GPU_TRDC_MGR_W1_END:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 14
+    bit_size: 18
+    description: End Address
+fieldset/GPU_TRDC_MGR_MRC0_DOM0_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM1_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM2_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM3_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM4_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM5_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM6_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM7_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM8_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM9_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM10_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM11_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM12_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM13_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM14_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1
+fieldset/GPU_TRDC_MGR_MRC0_DOM15_RGD_NSE:
+  description: ''
+  fields:
+  - name: BIT0
+    bit_offset: 0
+    bit_size: 1
+  - name: BIT1
+    bit_offset: 1
+    bit_size: 1
+  - name: BIT2
+    bit_offset: 2
+    bit_size: 1
+  - name: BIT3
+    bit_offset: 3
+    bit_size: 1

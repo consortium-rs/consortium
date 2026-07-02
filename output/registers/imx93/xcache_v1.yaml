@@ -1,0 +1,98 @@
+block/XCACHE:
+  description: ''
+  items:
+  - name: CCR
+    byte_offset: 0
+    fieldset: XCACHE_CCR
+  - name: CLCR
+    byte_offset: 4
+    fieldset: XCACHE_CLCR
+  - name: CSAR
+    byte_offset: 8
+    fieldset: XCACHE_CSAR
+  - name: CCVR
+    byte_offset: 12
+    fieldset: XCACHE_CCVR
+fieldset/XCACHE_CCR:
+  description: ''
+  fields:
+  - name: ENCACHE
+    bit_offset: 0
+    bit_size: 1
+  - name: FRCWT
+    bit_offset: 2
+    bit_size: 1
+  - name: FRCNOALLC
+    bit_offset: 3
+    bit_size: 1
+  - name: INVW0
+    bit_offset: 24
+    bit_size: 1
+  - name: PUSHW0
+    bit_offset: 25
+    bit_size: 1
+  - name: INVW1
+    bit_offset: 26
+    bit_size: 1
+  - name: PUSHW1
+    bit_offset: 27
+    bit_size: 1
+  - name: GO
+    bit_offset: 31
+    bit_size: 1
+fieldset/XCACHE_CLCR:
+  description: ''
+  fields:
+  - name: LGO
+    bit_offset: 0
+    bit_size: 1
+  - name: CACHEADDR
+    bit_offset: 2
+    bit_size: 12
+    description: Cache Address
+  - name: WSEL
+    bit_offset: 14
+    bit_size: 1
+    description: Cache Address
+  - name: TDSEL
+    bit_offset: 16
+    bit_size: 1
+  - name: LCIVB
+    bit_offset: 20
+    bit_size: 1
+    description: Line Command Initial Valid
+  - name: LCIMB
+    bit_offset: 21
+    bit_size: 1
+    description: Line Command Initial Valid
+  - name: LCWAY
+    bit_offset: 22
+    bit_size: 1
+    description: Line Command Initial Modified
+  - name: LCMD
+    bit_offset: 24
+    bit_size: 2
+    description: Line Command Way
+  - name: LADSEL
+    bit_offset: 26
+    bit_size: 1
+  - name: LACC
+    bit_offset: 27
+    bit_size: 1
+fieldset/XCACHE_CSAR:
+  description: ''
+  fields:
+  - name: LGO
+    bit_offset: 0
+    bit_size: 1
+  - name: PHYADDR
+    bit_offset: 2
+    bit_size: 30
+    description: Physical Address
+fieldset/XCACHE_CCVR:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 32
+    description: Cache Read/Write Data

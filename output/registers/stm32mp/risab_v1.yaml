@@ -1,0 +1,416 @@
+block/RISAB:
+  description: ''
+  items:
+  - name: CR
+    byte_offset: 0
+    description: RISAB Configuration register
+    fieldset: RISAB_CR
+  - name: IASR
+    byte_offset: 8
+    description: RISAB Illegal access status register
+    fieldset: RISAB_IASR
+  - name: IACR
+    byte_offset: 12
+    description: RISAB Illegal access clear register
+    fieldset: RISAB_IACR
+  - name: RIFLOCKR
+    byte_offset: 16
+    description: RISAB RIF configuration lock register
+    fieldset: RISAB_RIFLOCKR
+  - name: IAESR
+    byte_offset: 32
+    description: RISAB Illegal access error status register
+    fieldset: RISAB_IAESR
+  - name: IADDR
+    byte_offset: 36
+    description: RISAB Illegal address register
+    fieldset: RISAB_IADDR
+  - name: PGSECCFGR
+    byte_offset: 256
+    array:
+      len: 32
+      stride: 4
+    description: RISAB Page x Security configuration register, 0x100-0x17C
+    fieldset: RISAB_PGSECCFGR
+  - name: PGPRIVCFGR
+    byte_offset: 512
+    array:
+      len: 32
+      stride: 4
+    description: RISAB Page x Privileged configuration register, 0x200-0x27C
+    fieldset: RISAB_PGPRIVCFGR
+  - name: PGC2PRIVCFGR
+    byte_offset: 1536
+    array:
+      len: 32
+      stride: 4
+    description: RISAB Page x privileged configuration register for compartment 2,
+      0x600-0x67C
+    fieldset: RISAB_PGC2PRIVCFGR
+  - name: PGCIDCFGR
+    byte_offset: 2336
+    array:
+      len: 32
+      stride: 4
+    description: RISAB Compartment configuration for page x, 0xA00-0xA7C
+    fieldset: RISAB_PGCIDCFGR
+  - name: HWCFGR3
+    byte_offset: 4072
+    description: RISAB HW configuration register 3
+  - name: HWCFGR2
+    byte_offset: 4076
+    description: RISAB HW configuration register 2
+  - name: HWCFGR1
+    byte_offset: 4080
+    description: RISAB HW configuration register 1
+  - name: VERR
+    byte_offset: 4084
+    description: RISAB Version register
+    fieldset: RISAB_VERR
+  - name: IPIDR
+    byte_offset: 4088
+    description: RISAB Identification register
+    fieldset: RISAB_IPIDR
+  - name: SIDR
+    byte_offset: 4092
+    description: RISAB Size ID register
+    fieldset: RISAB_SIDR
+fieldset/RISAB_CR:
+  description: ''
+  fields:
+  - name: GLOCK
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: SRWIAD
+    bit_offset: 31
+    bit_size: 1
+fieldset/RISAB_IASR:
+  description: ''
+  fields:
+  - name: CAEF
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: IAEF
+    bit_offset: 1
+    bit_size: 1
+fieldset/RISAB_IACR:
+  description: ''
+  fields:
+  - name: CAEF
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: IAEF
+    bit_offset: 1
+    bit_size: 1
+fieldset/RISAB_RIFLOCKR:
+  description: ''
+  fields:
+  - name: RLOCK
+    bit_offset: 0
+    bit_size: 32
+    description: '0xFFFFFFFF'
+  - name: RLOCK0
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: RLOCK1
+    bit_offset: 1
+    bit_size: 1
+    description: '0x00000002'
+  - name: RLOCK2
+    bit_offset: 2
+    bit_size: 1
+    description: '0x00000004'
+  - name: RLOCK3
+    bit_offset: 3
+    bit_size: 1
+    description: '0x00000008'
+  - name: RLOCK4
+    bit_offset: 4
+    bit_size: 1
+    description: '0x00000010'
+  - name: RLOCK5
+    bit_offset: 5
+    bit_size: 1
+    description: '0x00000020'
+  - name: RLOCK6
+    bit_offset: 6
+    bit_size: 1
+    description: '0x00000040'
+  - name: RLOCK7
+    bit_offset: 7
+    bit_size: 1
+    description: '0x00000080'
+  - name: RLOCK8
+    bit_offset: 8
+    bit_size: 1
+    description: '0x00000100'
+  - name: RLOCK9
+    bit_offset: 9
+    bit_size: 1
+    description: '0x00000200'
+  - name: RLOCK10
+    bit_offset: 10
+    bit_size: 1
+    description: '0x00000400'
+  - name: RLOCK11
+    bit_offset: 11
+    bit_size: 1
+    description: '0x00000800'
+  - name: RLOCK12
+    bit_offset: 12
+    bit_size: 1
+    description: '0x00001000'
+  - name: RLOCK13
+    bit_offset: 13
+    bit_size: 1
+    description: '0x00002000'
+  - name: RLOCK14
+    bit_offset: 14
+    bit_size: 1
+    description: '0x00004000'
+  - name: RLOCK15
+    bit_offset: 15
+    bit_size: 1
+    description: '0x00008000'
+  - name: RLOCK16
+    bit_offset: 16
+    bit_size: 1
+    description: '0x00010000'
+  - name: RLOCK17
+    bit_offset: 17
+    bit_size: 1
+    description: '0x00020000'
+  - name: RLOCK18
+    bit_offset: 18
+    bit_size: 1
+    description: '0x00040000'
+  - name: RLOCK19
+    bit_offset: 19
+    bit_size: 1
+    description: '0x00080000'
+  - name: RLOCK20
+    bit_offset: 20
+    bit_size: 1
+    description: '0x00100000'
+  - name: RLOCK21
+    bit_offset: 21
+    bit_size: 1
+    description: '0x00200000'
+  - name: RLOCK22
+    bit_offset: 22
+    bit_size: 1
+    description: '0x00400000'
+  - name: RLOCK23
+    bit_offset: 23
+    bit_size: 1
+    description: '0x00800000'
+  - name: RLOCK24
+    bit_offset: 24
+    bit_size: 1
+    description: '0x01000000'
+  - name: RLOCK25
+    bit_offset: 25
+    bit_size: 1
+    description: '0x02000000'
+  - name: RLOCK26
+    bit_offset: 26
+    bit_size: 1
+    description: '0x04000000'
+  - name: RLOCK27
+    bit_offset: 27
+    bit_size: 1
+    description: '0x08000000'
+  - name: RLOCK28
+    bit_offset: 28
+    bit_size: 1
+    description: '0x10000000'
+  - name: RLOCK29
+    bit_offset: 29
+    bit_size: 1
+    description: '0x20000000'
+  - name: RLOCK30
+    bit_offset: 30
+    bit_size: 1
+    description: '0x40000000'
+  - name: RLOCK31
+    bit_offset: 31
+    bit_size: 1
+fieldset/RISAB_IAESR:
+  description: ''
+  fields:
+  - name: IACID
+    bit_offset: 0
+    bit_size: 3
+    description: '0x00000000'
+  - name: IAPRIV
+    bit_offset: 4
+    bit_size: 1
+    description: '0x00000010'
+  - name: IASEC
+    bit_offset: 5
+    bit_size: 1
+    description: '0x00000020'
+  - name: IANRW
+    bit_offset: 7
+    bit_size: 1
+fieldset/RISAB_IADDR:
+  description: ''
+  fields:
+  - name: IADD
+    bit_offset: 0
+    bit_size: 32
+fieldset/RISAB_PGSECCFGR:
+  description: ''
+  fields:
+  - name: SEC
+    bit_offset: 0
+    bit_size: 8
+    description: '0x000000FF'
+  - name: SEC0
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: SEC1
+    bit_offset: 1
+    bit_size: 1
+    description: '0x00000002'
+  - name: SEC2
+    bit_offset: 2
+    bit_size: 1
+    description: '0x00000004'
+  - name: SEC3
+    bit_offset: 3
+    bit_size: 1
+    description: '0x00000008'
+  - name: SEC4
+    bit_offset: 4
+    bit_size: 1
+    description: '0x00000010'
+  - name: SEC5
+    bit_offset: 5
+    bit_size: 1
+    description: '0x00000020'
+  - name: SEC6
+    bit_offset: 6
+    bit_size: 1
+    description: '0x00000040'
+  - name: SEC7
+    bit_offset: 7
+    bit_size: 1
+fieldset/RISAB_PGPRIVCFGR:
+  description: ''
+  fields:
+  - name: PRIV
+    bit_offset: 0
+    bit_size: 8
+    description: '0x000000FF'
+  - name: PRIV0
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: PRIV1
+    bit_offset: 1
+    bit_size: 1
+    description: '0x00000002'
+  - name: PRIV2
+    bit_offset: 2
+    bit_size: 1
+    description: '0x00000004'
+  - name: PRIV3
+    bit_offset: 3
+    bit_size: 1
+    description: '0x00000008'
+  - name: PRIV4
+    bit_offset: 4
+    bit_size: 1
+    description: '0x00000010'
+  - name: PRIV5
+    bit_offset: 5
+    bit_size: 1
+    description: '0x00000020'
+  - name: PRIV6
+    bit_offset: 6
+    bit_size: 1
+    description: '0x00000040'
+  - name: PRIV7
+    bit_offset: 7
+    bit_size: 1
+fieldset/RISAB_PGC2PRIVCFGR:
+  description: ''
+  fields:
+  - name: PRIV
+    bit_offset: 0
+    bit_size: 8
+    description: '0x000000FF'
+  - name: PRIV0
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: PRIV1
+    bit_offset: 1
+    bit_size: 1
+    description: '0x00000002'
+  - name: PRIV2
+    bit_offset: 2
+    bit_size: 1
+    description: '0x00000004'
+  - name: PRIV3
+    bit_offset: 3
+    bit_size: 1
+    description: '0x00000008'
+  - name: PRIV4
+    bit_offset: 4
+    bit_size: 1
+    description: '0x00000010'
+  - name: PRIV5
+    bit_offset: 5
+    bit_size: 1
+    description: '0x00000020'
+  - name: PRIV6
+    bit_offset: 6
+    bit_size: 1
+    description: '0x00000040'
+  - name: PRIV7
+    bit_offset: 7
+    bit_size: 1
+fieldset/RISAB_PGCIDCFGR:
+  description: ''
+  fields:
+  - name: CFEN
+    bit_offset: 0
+    bit_size: 1
+    description: '0x00000001'
+  - name: DCEN
+    bit_offset: 2
+    bit_size: 1
+    description: '0x00000004'
+  - name: DCCID
+    bit_offset: 4
+    bit_size: 3
+    description: '0x00000000'
+fieldset/RISAB_VERR:
+  description: ''
+  fields:
+  - name: MINREV
+    bit_offset: 0
+    bit_size: 4
+    description: '0x0000000F'
+  - name: MAJREV
+    bit_offset: 4
+    bit_size: 4
+fieldset/RISAB_IPIDR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 32
+fieldset/RISAB_SIDR:
+  description: ''
+  fields:
+  - name: SID
+    bit_offset: 0
+    bit_size: 32

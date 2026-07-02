@@ -1,0 +1,66 @@
+block/DDRPERFM:
+  description: ''
+  items:
+  - name: CTRL
+    byte_offset: 0
+    description: Control Register
+  - name: IMSK
+    byte_offset: 4
+    description: Interrupt Mask Register
+  - name: ICLR
+    byte_offset: 8
+    description: Interrupt Clear Register
+  - name: CLR
+    byte_offset: 12
+    description: Interrupt Counter Clear Register
+  - name: CFG0
+    byte_offset: 16
+    description: Configuration Register 0
+  - name: CFG1
+    byte_offset: 20
+    description: Configuration Register 1
+  - name: CFG2
+    byte_offset: 24
+    description: Configuration Register 2
+  - name: CFG3
+    byte_offset: 28
+    description: Configuration Register 3
+  - name: CFG4
+    byte_offset: 32
+    description: Configuration Register 4
+  - name: CFG5
+    byte_offset: 36
+    description: Event Counter Enable Register
+  - name: DRAMINF
+    byte_offset: 40
+    description: DRAM Information Register
+  - name: EVCNT0
+    byte_offset: 64
+    description: Event Counter 0 Register
+  - name: EVCNT1
+    byte_offset: 68
+    description: Event Counter 1 Register
+  - name: EVCNT2
+    byte_offset: 72
+    description: Event Counter 2 Register
+  - name: EVCNT3
+    byte_offset: 76
+    description: Event Counter 3 Register
+  - name: EVCNT4
+    byte_offset: 80
+    description: Event Counter 4 Register
+  - name: EVCNT5
+    byte_offset: 84
+    description: Event Counter 5 Register
+  - name: EVCNT6
+    byte_offset: 88
+    description: Event Counter 6 Register
+  - name: EVCNT7
+    byte_offset: 92
+    description: Event Counter 7 Register
+  - name: TCNT
+    byte_offset: 96
+    description: Time Counter Register
+  - name: STATUS
+    byte_offset: 128
+    description: Status Register

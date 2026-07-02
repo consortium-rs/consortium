@@ -1,0 +1,361 @@
+block/DDRC:
+  description: ''
+  items:
+  - name: MSTR
+    byte_offset: 0
+    description: DDRCTRL master register 0
+    fieldset: DDRC_MSTR
+  - name: STAT
+    byte_offset: 4
+    description: DDRCTRL operating mode status register
+  - name: MRCTRL0
+    byte_offset: 16
+    description: DDRCTRL mode register read/write control register 0
+  - name: MRCTRL1
+    byte_offset: 20
+    description: DDRCTRL mode register read/write control register 1
+  - name: MRSTAT
+    byte_offset: 24
+    description: DDRCTRL mode register read/write status register
+  - name: MRCTRL2
+    byte_offset: 28
+    description: DDRCTRL mode register read/write control register 2
+  - name: DERATEEN
+    byte_offset: 32
+    description: DDRCTRL temperature derate enable register
+  - name: DERATEINT
+    byte_offset: 36
+    description: DDRCTRL temperature derate interval register
+  - name: DERATECTL
+    byte_offset: 44
+    description: DDRCTRL temperature derate control register
+  - name: PWRCTL
+    byte_offset: 48
+    description: DDRCTRL low power control register
+  - name: PWRTMG
+    byte_offset: 52
+    description: DDRCTRL low power timing register
+  - name: HWLPCTL
+    byte_offset: 56
+    description: DDRCTRL hardware low power control register
+  - name: RFSHCTL0
+    byte_offset: 80
+    description: DDRCTRL refresh control register 0
+  - name: RFSHCTL1
+    byte_offset: 84
+    description: DDRCTRL refresh control register 1
+  - name: RFSHCTL3
+    byte_offset: 96
+    description: DDRCTRL refresh control register 3
+  - name: RFSHTMG
+    byte_offset: 100
+    description: DDRCTRL refresh timing register
+  - name: RFSHTMG1
+    byte_offset: 104
+    description: DDRCTRL refresh timing register 1
+  - name: CRCPARCTL0
+    byte_offset: 192
+    description: DDRCTRL CRC parity control register 0
+  - name: CRCPARCTL1
+    byte_offset: 196
+    description: DDRCTRL CRC parity control register 1
+  - name: CRCPARSTAT
+    byte_offset: 204
+    description: DDRCTRL CRC parity status register
+  - name: INIT0
+    byte_offset: 208
+    description: DDRCTRL SDRAM initialization register 0
+  - name: INIT1
+    byte_offset: 212
+    description: DDRCTRL SDRAM initialization register 1
+  - name: INIT2
+    byte_offset: 216
+    description: DDRCTRL SDRAM initialization register 2
+  - name: INIT3
+    byte_offset: 220
+    description: DDRCTRL SDRAM initialization register 3
+  - name: INIT4
+    byte_offset: 224
+    description: DDRCTRL SDRAM initialization register 4
+  - name: INIT5
+    byte_offset: 228
+    description: DDRCTRL SDRAM initialization register 5
+  - name: INIT6
+    byte_offset: 232
+    description: DDRCTRL SDRAM initialization register 6
+  - name: INIT7
+    byte_offset: 236
+    description: DDRCTRL SDRAM initialization register 7
+  - name: DIMMCTL
+    byte_offset: 240
+    description: DDRCTRL DIMM control register
+  - name: RANKCTL
+    byte_offset: 244
+    description: DDRCTRL rank control register
+  - name: RANKCTL1
+    byte_offset: 248
+    description: DDRCTRL rank control register 1
+  - name: DRAMTMG0
+    byte_offset: 256
+    description: DDRCTRL SDRAM timing register 0
+  - name: DRAMTMG1
+    byte_offset: 260
+    description: DDRCTRL SDRAM timing register 1
+  - name: DRAMTMG2
+    byte_offset: 264
+    description: DDRCTRL SDRAM timing register 2
+  - name: DRAMTMG3
+    byte_offset: 268
+    description: DDRCTRL SDRAM timing register 3
+  - name: DRAMTMG4
+    byte_offset: 272
+    description: DDRCTRL SDRAM timing register 4
+  - name: DRAMTMG5
+    byte_offset: 276
+    description: DDRCTRL SDRAM timing register 5
+  - name: DRAMTMG6
+    byte_offset: 280
+    description: DDRCTRL SDRAM timing register 6
+  - name: DRAMTMG7
+    byte_offset: 284
+    description: DDRCTRL SDRAM timing register 7
+  - name: DRAMTMG8
+    byte_offset: 288
+    description: DDRCTRL SDRAM timing register 8
+  - name: DRAMTMG9
+    byte_offset: 292
+    description: DDRCTRL SDRAM timing register 9
+  - name: DRAMTMG10
+    byte_offset: 296
+    description: DDRCTRL SDRAM timing register 10
+  - name: DRAMTMG11
+    byte_offset: 300
+    description: DDRCTRL SDRAM timing register 11
+  - name: DRAMTMG12
+    byte_offset: 304
+    description: DDRCTRL SDRAM timing register 12
+  - name: DRAMTMG13
+    byte_offset: 308
+    description: DDRCTRL SDRAM timing register 13
+  - name: DRAMTMG14
+    byte_offset: 312
+    description: DDRCTRL SDRAM timing register 14
+  - name: DRAMTMG15
+    byte_offset: 316
+    description: DDRCTRL SDRAM timing register 15
+  - name: ZQCTL0
+    byte_offset: 384
+    description: DDRCTRL ZQ control register 0
+  - name: ZQCTL1
+    byte_offset: 388
+    description: DDRCTRL ZQ control register 1
+  - name: ZQCTL2
+    byte_offset: 392
+    description: DDRCTRL ZQ control register 2
+  - name: ZQSTAT
+    byte_offset: 396
+    description: DDRCTRL ZQ status register
+  - name: DFITMG0
+    byte_offset: 400
+    description: DDRCTRL DFI timing register 0
+  - name: DFITMG1
+    byte_offset: 404
+    description: DDRCTRL DFI timing register 1
+  - name: DFILPCFG0
+    byte_offset: 408
+    description: DDRCTRL low power configuration register 0
+  - name: DFILPCFG1
+    byte_offset: 412
+    description: DDRCTRL low power configuration register 1
+  - name: DFIUPD0
+    byte_offset: 416
+    description: DDRCTRL DFI update register 0
+  - name: DFIUPD1
+    byte_offset: 420
+    description: DDRCTRL DFI update register 1
+  - name: DFIUPD2
+    byte_offset: 424
+    description: DDRCTRL DFI update register 2
+  - name: DFIMISC
+    byte_offset: 432
+    description: DDRCTRL DFI miscellaneous control register
+  - name: DFITMG2
+    byte_offset: 436
+    description: DDRCTRL DFI timing register 2
+  - name: DFITMG3
+    byte_offset: 440
+    description: DDRCTRL DFI timing register 3
+  - name: DFISTAT
+    byte_offset: 444
+    description: DDRCTRL DFI status register
+  - name: DBICTL
+    byte_offset: 448
+    description: DDRCTRL DM/DBI control register
+  - name: DFIPHYMSTR
+    byte_offset: 452
+    description: DDRCTRL DFI PHY master register
+  - name: ADDRMAP0
+    byte_offset: 512
+    description: DDRCTRL address map register 0
+  - name: ADDRMAP1
+    byte_offset: 516
+    description: DDRCTRL address map register 1
+  - name: ADDRMAP2
+    byte_offset: 520
+    description: DDRCTRL address map register 2
+  - name: ADDRMAP3
+    byte_offset: 524
+    description: DDRCTRL address map register 3
+  - name: ADDRMAP4
+    byte_offset: 528
+    description: DDRCTRL address map register 4
+  - name: ADDRMAP5
+    byte_offset: 532
+    description: DDRCTRL address map register 5
+  - name: ADDRMAP6
+    byte_offset: 536
+    description: DDRCTRL address register 6
+  - name: ADDRMAP7
+    byte_offset: 540
+    description: DDRCTRL address register 7
+  - name: ADDRMAP8
+    byte_offset: 544
+    description: DDRCTRL address register 8
+  - name: ADDRMAP9
+    byte_offset: 548
+    description: DDRCTRL address map register 9
+  - name: ADDRMAP10
+    byte_offset: 552
+    description: DDRCTRL address map register 10
+  - name: ADDRMAP11
+    byte_offset: 556
+    description: DDRCTRL address map register 11
+  - name: ODTCFG
+    byte_offset: 576
+    description: DDRCTRL ODT configuration register
+  - name: ODTMAP
+    byte_offset: 580
+    description: DDRCTRL ODT/Rank map register
+  - name: SCHED
+    byte_offset: 592
+    description: DDRCTRL scheduler control register
+  - name: SCHED1
+    byte_offset: 596
+    description: DDRCTRL scheduler control register 1
+  - name: PERFHPR1
+    byte_offset: 604
+    description: DDRCTRL high priority read CAM register 1
+  - name: PERFLPR1
+    byte_offset: 612
+    description: DDRCTRL low priority read CAM register 1
+  - name: PERFWR1
+    byte_offset: 620
+    description: DDRCTRL write CAM register 1
+  - name: SCHED3
+    byte_offset: 624
+    description: DDRCTRL scheduler control register 3
+  - name: SCHED4
+    byte_offset: 628
+    description: DDRCTRL scheduler control register 4
+  - name: DBG0
+    byte_offset: 768
+    description: DDRCTRL debug register 0
+  - name: DBG1
+    byte_offset: 772
+    description: DDRCTRL debug register 1
+  - name: DBGCAM
+    byte_offset: 776
+    description: DDRCTRL CAM debug register
+  - name: DBGCMD
+    byte_offset: 780
+    description: DDRCTRL command debug register
+  - name: DBGSTAT
+    byte_offset: 784
+    description: DDRCTRL status debug register
+  - name: SWCTL
+    byte_offset: 800
+    description: DDRCTRL software register programming control enable
+  - name: SWSTAT
+    byte_offset: 804
+    description: DDRCTRL software register programming control status
+  - name: SWCTLSTATIC
+    byte_offset: 808
+    description: Static Registers Write Enable
+  - name: POISONCFG
+    byte_offset: 876
+    description: DDRCTRL AXI Poison configuration register
+  - name: POISONSTAT
+    byte_offset: 880
+    description: DDRCTRL AXI Poison status register
+  - name: DERATESTAT
+    byte_offset: 1008
+    description: DDRCTRL temperature derate status register
+  - name: PSTAT
+    byte_offset: 1020
+    description: DDRCTRL port status register
+  - name: PCCFG
+    byte_offset: 1024
+    description: DDRCTRL port common configuration register
+  - name: PCFGR_0
+    byte_offset: 1028
+    description: DDRCTRL port 0 configuration read register
+  - name: PCFGW_0
+    byte_offset: 1032
+    description: DDRCTRL port 0 configuration write register
+  - name: PCTRL_0
+    byte_offset: 1168
+    description: DDRCTRL port 0 control register
+  - name: PCFGQOS0_0
+    byte_offset: 1172
+    description: DDRCTRL port 0 read Q0S configuration register 0
+  - name: PCFGQOS1_0
+    byte_offset: 1176
+    description: DDRCTRL port 0 read Q0S configuration register 1
+  - name: PCFGWQOS0_0
+    byte_offset: 1180
+    description: DDRCTRL port 0 write Q0S configuration register 0
+  - name: PCFGWQOS1_0
+    byte_offset: 1184
+    description: DDRCTRL port 0 write Q0S configuration register 1
+  - name: PCFGR_1
+    byte_offset: 1204
+    description: DDRCTRL port 1 configuration read register
+  - name: PCFGW_1
+    byte_offset: 1208
+    description: DDRCTRL port 1 configuration write register
+  - name: PCTRL_1
+    byte_offset: 1344
+    description: DDRCTRL port 1 control register
+  - name: PCFGQOS0_1
+    byte_offset: 1348
+    description: DDRCTRL port 1 read Q0S configuration register 0
+  - name: PCFGQOS1_1
+    byte_offset: 1352
+    description: DDRCTRL port 1 read Q0S configuration register 1
+  - name: PCFGWQOS0_1
+    byte_offset: 1356
+    description: DDRCTRL port 1 write Q0S configuration register 0
+  - name: PCFGWQOS1_1
+    byte_offset: 1360
+    description: DDRCTRL port 1 write Q0S configuration register 1
+  - name: UMCTL2_VER_NUMBER
+    byte_offset: 4080
+    description: DDRCTRL UMCTL2 version number register
+  - name: UMCTL2_VER_TYPE
+    byte_offset: 4084
+    description: UMCTL2 Version Type Register
+fieldset/DDRC_MSTR:
+  description: ''
+  fields:
+  - name: DDR3
+    bit_offset: 0
+    bit_size: 1
+    description: Selects DDR3 SDRAM
+  - name: DDR4
+    bit_offset: 4
+    bit_size: 1
+    description: Selects DDR4 SDRAM
+  - name: LPDDR4
+    bit_offset: 5
+    bit_size: 1
+    description: Selects LPDDR4 SDRAM

@@ -1,0 +1,204 @@
+block/USB3_GBL:
+  description: ''
+  items:
+  - name: GSBUSCFG0
+    byte_offset: 0
+    description: (null) @ offset 0x0
+  - name: GSBUSCFG1
+    byte_offset: 4
+    description: (null) @ offset 0x4
+  - name: GTXTHRCFG
+    byte_offset: 8
+    description: (null) @ offset 0x8
+  - name: GRXTHRCFG
+    byte_offset: 12
+    description: (null) @ offset 0xc
+  - name: GCTL
+    byte_offset: 16
+    description: (null) @ offset 0x10
+  - name: GPMSTS
+    byte_offset: 20
+    description: (null) @ offset 0x14
+  - name: GSTS
+    byte_offset: 24
+    description: (null) @ offset 0x18
+  - name: GUCTL1
+    byte_offset: 28
+    description: (null) @ offset 0x1c
+  - name: GSNPSID
+    byte_offset: 32
+    description: (null) @ offset 0x20
+  - name: GGPIO
+    byte_offset: 36
+    description: (null) @ offset 0x24
+  - name: GUID
+    byte_offset: 40
+    description: (null) @ offset 0x28
+  - name: GUCTL
+    byte_offset: 44
+    description: (null) @ offset 0x2c
+  - name: GBUSERRADDRLO
+    byte_offset: 48
+    description: (null) @ offset 0x30
+  - name: GBUSERRADDRHI
+    byte_offset: 52
+    description: (null) @ offset 0x34
+  - name: GPRTBIMAPLO
+    byte_offset: 56
+    description: (null) @ offset 0x38
+  - name: GPRTBIMAPHI
+    byte_offset: 60
+    description: (null) @ offset 0x3c
+  - name: GHWPARAMS0
+    byte_offset: 64
+    description: (null) @ offset 0x40
+  - name: GHWPARAMS1
+    byte_offset: 68
+    description: (null) @ offset 0x44
+  - name: GHWPARAMS2
+    byte_offset: 72
+    description: (null) @ offset 0x48
+  - name: GHWPARAMS3
+    byte_offset: 76
+    description: (null) @ offset 0x4c
+  - name: GHWPARAMS4
+    byte_offset: 80
+    description: (null) @ offset 0x50
+  - name: GHWPARAMS5
+    byte_offset: 84
+    description: (null) @ offset 0x54
+  - name: GHWPARAMS6
+    byte_offset: 88
+    description: (null) @ offset 0x58
+  - name: GHWPARAMS7
+    byte_offset: 92
+    description: (null) @ offset 0x5c
+  - name: GDBGFIFOSPACE
+    byte_offset: 96
+    description: (null) @ offset 0x60
+  - name: GDBGLTSSM
+    byte_offset: 100
+    description: (null) @ offset 0x64
+  - name: GDBGLNMCC
+    byte_offset: 104
+    description: (null) @ offset 0x68
+  - name: GDBGBMU
+    byte_offset: 108
+    description: (null) @ offset 0x6c
+  - name: GDBGLSPMUX_HST
+    byte_offset: 112
+    description: (null) @ offset 0x70
+  - name: GDBGLSP
+    byte_offset: 116
+    description: (null) @ offset 0x74
+  - name: GDBGEPINFO0
+    byte_offset: 120
+    description: (null) @ offset 0x78
+  - name: GDBGEPINFO1
+    byte_offset: 124
+    description: (null) @ offset 0x7c
+  - name: GPRTBIMAP_HSLO
+    byte_offset: 128
+    description: (null) @ offset 0x80
+  - name: GPRTBIMAP_HSHI
+    byte_offset: 132
+    description: (null) @ offset 0x84
+  - name: GPRTBIMAP_FSLO
+    byte_offset: 136
+    description: (null) @ offset 0x88
+  - name: GPRTBIMAP_FSHI
+    byte_offset: 140
+    description: (null) @ offset 0x8c
+  - name: GUCTL2
+    byte_offset: 156
+    description: (null) @ offset 0x9c
+  - name: GUSB2PHYCFG
+    byte_offset: 256
+    description: (null) @ offset 0x100
+  - name: GUSB2PHYACC_UTMI
+    byte_offset: 384
+    description: (null) @ offset 0x180
+  - name: GUSB3PIPECTL
+    byte_offset: 448
+    description: (null) @ offset 0x1c0
+  - name: GTXFIFOSIZ0
+    byte_offset: 512
+    description: (null) @ offset 0x200
+  - name: GTXFIFOSIZ1
+    byte_offset: 516
+    description: (null) @ offset 0x204
+  - name: GTXFIFOSIZ2
+    byte_offset: 520
+    description: (null) @ offset 0x208
+  - name: GTXFIFOSIZ3
+    byte_offset: 524
+    description: (null) @ offset 0x20c
+  - name: GTXFIFOSIZ4
+    byte_offset: 528
+    description: (null) @ offset 0x210
+  - name: GTXFIFOSIZ5
+    byte_offset: 532
+    description: (null) @ offset 0x214
+  - name: GTXFIFOSIZ6
+    byte_offset: 536
+    description: (null) @ offset 0x218
+  - name: GTXFIFOSIZ7
+    byte_offset: 540
+    description: (null) @ offset 0x21c
+  - name: GTXFIFOSIZ8
+    byte_offset: 544
+    description: (null) @ offset 0x220
+  - name: GTXFIFOSIZ9
+    byte_offset: 548
+    description: (null) @ offset 0x224
+  - name: GTXFIFOSIZ10
+    byte_offset: 552
+    description: (null) @ offset 0x228
+  - name: GTXFIFOSIZ11
+    byte_offset: 556
+    description: (null) @ offset 0x22c
+  - name: GRXFIFOSIZ0
+    byte_offset: 640
+    description: (null) @ offset 0x280
+  - name: GRXFIFOSIZ1
+    byte_offset: 644
+    description: (null) @ offset 0x284
+  - name: GRXFIFOSIZ2
+    byte_offset: 648
+    description: (null) @ offset 0x288
+  - name: GEVNTADRLO
+    byte_offset: 768
+    description: (null) @ offset 0x300
+  - name: GEVNTADRHI
+    byte_offset: 772
+    description: (null) @ offset 0x304
+  - name: GEVNTSIZ
+    byte_offset: 776
+    description: (null) @ offset 0x308
+  - name: GEVNTCOUNT
+    byte_offset: 780
+    description: (null) @ offset 0x30c
+  - name: GHWPARAMS8
+    byte_offset: 1280
+    description: (null) @ offset 0x500
+  - name: GUCTL3
+    byte_offset: 1292
+    description: (null) @ offset 0x50C
+  - name: GTXFIFOPRIDEV
+    byte_offset: 1296
+    description: (null) @ offset 0x510
+  - name: GTXFIFOPRIHST
+    byte_offset: 1304
+    description: (null) @ offset 0x518
+  - name: GRXFIFOPRIHST
+    byte_offset: 1308
+    description: (null) @ offset 0x51c
+  - name: GDMAHLRATIO
+    byte_offset: 1316
+    description: (null) @ offset 0x524
+  - name: GFLADJ
+    byte_offset: 1328
+    description: (null) @ offset 0x530
+  - name: USB3_GUSB2RHBCTL
+    byte_offset: 1344
+    description: (null) @ offset 0x540

@@ -1,0 +1,138 @@
+{
+  "name": "stm32mp25_unknown_cm0p",
+  "family": "stm32mp25",
+  "core": "cm0p",
+  "irqs": [
+    {
+      "name": "IWDG5",
+      "value": 0,
+      "description": "Independent Watchdog 5 Early interrupt"
+    },
+    {
+      "name": "WWDG2",
+      "value": 1,
+      "description": "Window Watchdog 2 Early Wakeup interrupt"
+    },
+    {
+      "name": "TAMP",
+      "value": 2,
+      "description": "Tamper interrupt"
+    },
+    {
+      "name": "EXTI2_L",
+      "value": 5,
+      "description": "EXTI2 lines 0 to 7 interrupt"
+    },
+    {
+      "name": "EXTI2_H",
+      "value": 6,
+      "description": "EXTI2 lines 8 to 15 interrupt"
+    },
+    {
+      "name": "LPDMA_Channel0",
+      "value": 7,
+      "description": "LPDMA Channel0 interrupt"
+    },
+    {
+      "name": "LPDMA_Channel1",
+      "value": 8,
+      "description": "LPDMA Channel1 interrupt"
+    },
+    {
+      "name": "LPDMA_Channel2",
+      "value": 9,
+      "description": "LPDMA Channel2 interrupt"
+    },
+    {
+      "name": "LPDMA_Channel3",
+      "value": 10,
+      "description": "LPDMA Channel3 interrupt"
+    },
+    {
+      "name": "LPUART1",
+      "value": 11,
+      "description": "LPUART1 global interrupt"
+    },
+    {
+      "name": "SPI8",
+      "value": 12,
+      "description": "SPI8 global interrupt"
+    },
+    {
+      "name": "IPCC2_RX",
+      "value": 13,
+      "description": "Mailbox 2 RX Occupied interrupt"
+    },
+    {
+      "name": "IPCC2_TX",
+      "value": 14,
+      "description": "Mailbox 2 TX Free interrupt"
+    },
+    {
+      "name": "I2C8",
+      "value": 15,
+      "description": "I2C8 global interrupt"
+    },
+    {
+      "name": "I3C4",
+      "value": 16,
+      "description": "I3C4 global interrupt"
+    },
+    {
+      "name": "LPTIM3",
+      "value": 18,
+      "description": "LPTIMER3 global interrupt"
+    },
+    {
+      "name": "LPTIM4",
+      "value": 19,
+      "description": "LPTIMER4 global interrupt"
+    },
+    {
+      "name": "LPTIM5",
+      "value": 20,
+      "description": "LPTIMER5 global interrupt"
+    },
+    {
+      "name": "HSEM",
+      "value": 21,
+      "description": "HSEM non-secure interrupt"
+    },
+    {
+      "name": "ADF1_FLT",
+      "value": 23,
+      "description": "ADF1 Filter global interrupt"
+    },
+    {
+      "name": "CPU1_SEV",
+      "value": 25,
+      "description": "Cortex-A35 Send Event through EXTI2"
+    },
+    {
+      "name": "CPU2_SEV",
+      "value": 26,
+      "description": "Cortex-M33 Send Event through EXTI2"
+    },
+    {
+      "name": "VDDCPU_VD",
+      "value": 27,
+      "description": "VDDCPU voltage detector interrupt"
+    },
+    {
+      "name": "VDDCORE_VD",
+      "value": 28,
+      "description": "VDDCORE voltage detector interrupt"
+    },
+    {
+      "name": "CTI_IRQ0",
+      "value": 30,
+      "description": "CTI IRQ0"
+    },
+    {
+      "name": "CTI_IRQ1",
+      "value": 31,
+      "description": "CTI IRQ1"
+    }
+  ],
+  "peripherals": []
+}
