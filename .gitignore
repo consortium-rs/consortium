@@ -29,3 +29,10 @@ target
 /target
 
 node_modules
+
+# PAC: vendor CMSIS headers staged by `just pac-prepare` (regenerated locally)
+/data
+
+# Python bytecode caches (PAC tooling under scripts/pac)
+__pycache__/
+*.py[cod]

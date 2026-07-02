@@ -9,7 +9,7 @@ from typing import Dict, List, Tuple, Set
 
 import yaml
 
-OUTPUT_DIR = Path(__file__).parent.parent / "output"
+OUTPUT_DIR = Path(__file__).resolve().parents[2] / "output"
 
 
 def validate_yaml_syntax(file_path: Path) -> Tuple[bool, str]:

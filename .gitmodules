@@ -1,0 +1,9 @@
+[submodule "imx-sm"]
+	path = submodules/imx-sm
+	url = https://github.com/nxp-imx/imx-sm.git
+[submodule "mcux-devices-imx"]
+	path = submodules/mcux-devices-imx
+	url = https://github.com/nxp-mcuxpresso/mcux-devices-imx.git
+[submodule "STM32CubeMP2"]
+	path = submodules/STM32CubeMP2
+	url = https://github.com/STMicroelectronics/STM32CubeMP2.git

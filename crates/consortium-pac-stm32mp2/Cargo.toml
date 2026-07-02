@@ -1,5 +1,5 @@
 [package]
-name = "stm32mp2-pac"
+name = "consortium-pac-stm32mp2"
 description = "Peripheral Access Crate for the STM32MP2 series of microcontrollers"
 version.workspace = true
 edition.workspace = true

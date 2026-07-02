@@ -1,0 +1,8 @@
+# Generated peripheral access crates (chiptool output). Exclude from GitHub
+# Linguist language statistics so the machine-generated register definitions do
+# not dominate the repository's language breakdown.
+crates/consortium-pac-imx9/src/** linguist-generated=true
+crates/consortium-pac-stm32mp2/src/** linguist-generated=true
+
+# Generated chiptool IR (register YAML) and chip descriptor JSON.
+output/** linguist-generated=true
