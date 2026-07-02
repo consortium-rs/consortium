@@ -1,0 +1,810 @@
+block/NOC_BLK_CTRL_NOCMIX:
+  description: ''
+  items:
+  - name: DEXSC_ERR
+    byte_offset: 0
+  - name: CACHE_ATTR
+    byte_offset: 12
+  - name: TIE_VALUE
+    byte_offset: 36
+    fieldset: NOC_BLK_CTRL_NOCMIX_TIE_VALUE
+  - name: AXI_LIMIT_BEAT_LIMITER_0
+    byte_offset: 40
+    fieldset: NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_0
+  - name: AXI_LIMIT_BEAT_LIMITER_1
+    byte_offset: 44
+    fieldset: NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_1
+  - name: AXI_LIMIT_BEAT_LIMITER_2
+    byte_offset: 48
+    fieldset: NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_2
+  - name: AXI_LIMIT_BEAT_LIMITER_3
+    byte_offset: 52
+    fieldset: NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_3
+  - name: AXI_LIMIT_BEAT_LIMITER_4
+    byte_offset: 56
+    fieldset: NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_4
+  - name: AXI_LIMIT_BEAT_LIMITER_5
+    byte_offset: 60
+    fieldset: NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_5
+  - name: AXI_LIMIT_BEAT_LIMITER_6
+    byte_offset: 64
+    fieldset: NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_6
+  - name: AXI_LIMIT_BEAT_LIMITER_7
+    byte_offset: 68
+    fieldset: NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_7
+  - name: AXI_LIMIT_BEAT_LIMITER_8
+    byte_offset: 72
+    fieldset: NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_8
+  - name: AXI_LIMIT_BEAT_LIMITER_9
+    byte_offset: 76
+    fieldset: NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_9
+  - name: AXI_LIMIT_BEAT_LIMITER_10
+    byte_offset: 80
+    fieldset: NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_10
+  - name: WAKEUPMIX_PRESSURE_HURRY
+    byte_offset: 84
+    fieldset: NOC_BLK_CTRL_NOCMIX_WAKEUPMIX_PRESSURE_HURRY
+  - name: VPUMIX_PRESSURE_HURRY
+    byte_offset: 88
+    fieldset: NOC_BLK_CTRL_NOCMIX_VPUMIX_PRESSURE_HURRY
+  - name: HSIOMIX_PRESSURE_HURRY
+    byte_offset: 92
+    fieldset: NOC_BLK_CTRL_NOCMIX_HSIOMIX_PRESSURE_HURRY
+  - name: MMU700_PRESSURE_HURRY
+    byte_offset: 96
+    fieldset: NOC_BLK_CTRL_NOCMIX_MMU700_PRESSURE_HURRY
+  - name: NETCMIX_PRESSURE_HURRY
+    byte_offset: 100
+    fieldset: NOC_BLK_CTRL_NOCMIX_NETCMIX_PRESSURE_HURRY
+  - name: DISPLAYMIX_RT_PRESSURE_HURRY
+    byte_offset: 104
+    fieldset: NOC_BLK_CTRL_NOCMIX_DISPLAYMIX_RT_PRESSURE_HURRY
+  - name: GPUMIX_PRESSURE_HURRY
+    byte_offset: 108
+    fieldset: NOC_BLK_CTRL_NOCMIX_GPUMIX_PRESSURE_HURRY
+  - name: NPUMIX_PRESSURE_HURRY
+    byte_offset: 112
+    fieldset: NOC_BLK_CTRL_NOCMIX_NPUMIX_PRESSURE_HURRY
+  - name: GIC700_PRESSURE_HURRY
+    byte_offset: 116
+    fieldset: NOC_BLK_CTRL_NOCMIX_GIC700_PRESSURE_HURRY
+  - name: CORTEXAMIX_B_PRESSURE_HURRY
+    byte_offset: 120
+    fieldset: NOC_BLK_CTRL_NOCMIX_CORTEXAMIX_B_PRESSURE_HURRY
+  - name: CORTEXAMIX_A_PRESSURE_HURRY
+    byte_offset: 124
+    fieldset: NOC_BLK_CTRL_NOCMIX_CORTEXAMIX_A_PRESSURE_HURRY
+  - name: OCRAM_SGLECC_ERR_INT
+    byte_offset: 128
+  - name: NIU_TO_CTRL_WAKEUP
+    byte_offset: 192
+    fieldset: NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_WAKEUP
+  - name: NIU_TO_CTRL_CORTEXA
+    byte_offset: 196
+    fieldset: NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_CORTEXA
+  - name: NIU_TO_CTRL_GIC700
+    byte_offset: 200
+    fieldset: NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_GIC700
+  - name: NIU_TO_CTRL_NPU
+    byte_offset: 204
+    fieldset: NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_NPU
+  - name: NIU_TO_CTRL_GPU
+    byte_offset: 208
+    fieldset: NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_GPU
+  - name: NIU_TO_CTRL_CAMERA
+    byte_offset: 212
+    fieldset: NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_CAMERA
+  - name: NIU_TO_CTRL_DISPLAY_RT
+    byte_offset: 216
+    fieldset: NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_DISPLAY_RT
+  - name: NIU_TO_CTRL_NETC
+    byte_offset: 220
+    fieldset: NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_NETC
+  - name: NIU_TO_CTRL_MMU700
+    byte_offset: 224
+    fieldset: NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_MMU700
+  - name: NIU_TO_CTRL_HSIO
+    byte_offset: 228
+    fieldset: NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_HSIO
+  - name: NIU_TO_CTRL_DISPLAY_BE
+    byte_offset: 232
+    fieldset: NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_DISPLAY_BE
+  - name: NIU_TO_CTRL_VPU
+    byte_offset: 236
+    fieldset: NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_VPU
+  - name: INITIATOR_TIMEOUT
+    byte_offset: 240
+fieldset/NOC_BLK_CTRL_NOCMIX_DEXSC_ERR_NPU_ERR_RESP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_DEXSC_ERR_NPU_EXC_ERR_RESP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_DEXSC_ERR_NPU_LOCK_ERR_RESP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_CACHE_ATTR_WAKEUPMIX_ARCACHE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_CACHE_ATTR_WAKEUPMIX_AWCACHE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_CACHE_ATTR_CACHE_ARCACHE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_CACHE_ATTR_CACHE_AWCACHE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_CACHE_ATTR_HSIOMIX_ARCACHE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_CACHE_ATTR_HSIOMIX_AWCACHE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 5
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_CACHE_ATTR_WAKEUPMIX:
+  description: ''
+  fields:
+  - name: ARCACHE
+    bit_offset: 16
+    bit_size: 1
+  - name: AWCACHE
+    bit_offset: 17
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_CACHE_ATTR_CACHE:
+  description: ''
+  fields:
+  - name: ARCACHE
+    bit_offset: 18
+    bit_size: 1
+  - name: AWCACHE
+    bit_offset: 19
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_CACHE_ATTR_HSIOMIX:
+  description: ''
+  fields:
+  - name: ARCACHE
+    bit_offset: 20
+    bit_size: 1
+  - name: AWCACHE
+    bit_offset: 21
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_TIE_VALUE_AIPS4:
+  description: ''
+  fields:
+  - name: HBSTRB
+    bit_offset: 0
+    bit_size: 4
+fieldset/NOC_BLK_CTRL_NOCMIX_TIE_VALUE_GICT_ALLOW:
+  description: ''
+  fields:
+  - name: NS
+    bit_offset: 6
+    bit_size: 1
+    description: GICT_ALLOW_NS
+fieldset/NOC_BLK_CTRL_NOCMIX_TIE_VALUE_GICP_ALLOW:
+  description: ''
+  fields:
+  - name: NS
+    bit_offset: 7
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_TIE_VALUE_ARSNOOP:
+  description: ''
+  fields:
+  - name: S
+    bit_offset: 18
+    bit_size: 4
+    description: ARSNOOP_S tie
+fieldset/NOC_BLK_CTRL_NOCMIX_TIE_VALUE_AWSNOOP:
+  description: ''
+  fields:
+  - name: S
+    bit_offset: 22
+    bit_size: 4
+    description: AWNSOOP_S tie
+fieldset/NOC_BLK_CTRL_NOCMIX_TIE_VALUE:
+  description: ''
+  fields:
+  - name: DFTRAMHOLD
+    bit_offset: 29
+    bit_size: 1
+    description: DFTRAMHOLD tie
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_0:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_0_BEAT:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 16
+    bit_size: 16
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_1:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_1_BEAT:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 16
+    bit_size: 16
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_2:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_2_BEAT:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 16
+    bit_size: 16
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_3:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_3_BEAT:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 16
+    bit_size: 16
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_4:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_4_BEAT:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 16
+    bit_size: 16
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_5:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_5_BEAT:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 16
+    bit_size: 16
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_6:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_6_BEAT:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 16
+    bit_size: 16
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_7:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_7_BEAT:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 16
+    bit_size: 16
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_8:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_8_BEAT:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 16
+    bit_size: 16
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_9:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_9_BEAT:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 16
+    bit_size: 16
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_10:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_AXI_LIMIT_BEAT_LIMITER_10_BEAT:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 16
+    bit_size: 16
+fieldset/NOC_BLK_CTRL_NOCMIX_WAKEUPMIX_PRESSURE_HURRY:
+  description: ''
+  fields:
+  - name: HURRY
+    bit_offset: 0
+    bit_size: 3
+  - name: PRESSURE
+    bit_offset: 3
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_VPUMIX_PRESSURE_HURRY:
+  description: ''
+  fields:
+  - name: HURRY
+    bit_offset: 0
+    bit_size: 3
+  - name: PRESSURE
+    bit_offset: 3
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_HSIOMIX_PRESSURE_HURRY:
+  description: ''
+  fields:
+  - name: HURRY
+    bit_offset: 0
+    bit_size: 3
+  - name: PRESSURE
+    bit_offset: 3
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_MMU700_PRESSURE_HURRY:
+  description: ''
+  fields:
+  - name: HURRY
+    bit_offset: 0
+    bit_size: 3
+  - name: PRESSURE
+    bit_offset: 3
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_NETCMIX_PRESSURE_HURRY:
+  description: ''
+  fields:
+  - name: HURRY
+    bit_offset: 0
+    bit_size: 3
+  - name: PRESSURE
+    bit_offset: 3
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_DISPLAYMIX_RT_PRESSURE_HURRY:
+  description: ''
+  fields:
+  - name: HURRY
+    bit_offset: 0
+    bit_size: 3
+  - name: PRESSURE
+    bit_offset: 3
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_GPUMIX_PRESSURE_HURRY:
+  description: ''
+  fields:
+  - name: HURRY
+    bit_offset: 0
+    bit_size: 3
+  - name: PRESSURE
+    bit_offset: 3
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_NPUMIX_PRESSURE_HURRY:
+  description: ''
+  fields:
+  - name: HURRY
+    bit_offset: 0
+    bit_size: 3
+  - name: PRESSURE
+    bit_offset: 3
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_GIC700_PRESSURE_HURRY:
+  description: ''
+  fields:
+  - name: HURRY
+    bit_offset: 0
+    bit_size: 3
+  - name: PRESSURE
+    bit_offset: 3
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_CORTEXAMIX_B_PRESSURE_HURRY:
+  description: ''
+  fields:
+  - name: HURRY
+    bit_offset: 0
+    bit_size: 3
+  - name: PRESSURE
+    bit_offset: 3
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_CORTEXAMIX_A_PRESSURE_HURRY:
+  description: ''
+  fields:
+  - name: HURRY
+    bit_offset: 0
+    bit_size: 3
+  - name: PRESSURE
+    bit_offset: 3
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_OCRAM_SGLECC_ERR_INT_SGL_ECC_ERR:
+  description: ''
+  fields:
+  - name: IF
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_WAKEUP_CLK_DIV:
+  description: ''
+  fields:
+  - name: RATIO
+    bit_offset: 0
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_WAKEUP:
+  description: ''
+  fields:
+  - name: UPD
+    bit_offset: 15
+    bit_size: 1
+  - name: DIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_CORTEXA_CLK_DIV:
+  description: ''
+  fields:
+  - name: RATIO
+    bit_offset: 0
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_CORTEXA:
+  description: ''
+  fields:
+  - name: UPD
+    bit_offset: 15
+    bit_size: 1
+  - name: DIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_GIC700_CLK_DIV:
+  description: ''
+  fields:
+  - name: RATIO
+    bit_offset: 0
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_GIC700:
+  description: ''
+  fields:
+  - name: UPD
+    bit_offset: 15
+    bit_size: 1
+  - name: DIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_NPU_CLK_DIV:
+  description: ''
+  fields:
+  - name: RATIO
+    bit_offset: 0
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_NPU:
+  description: ''
+  fields:
+  - name: UPD
+    bit_offset: 15
+    bit_size: 1
+  - name: DIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_GPU_CLK_DIV:
+  description: ''
+  fields:
+  - name: RATIO
+    bit_offset: 0
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_GPU:
+  description: ''
+  fields:
+  - name: UPD
+    bit_offset: 15
+    bit_size: 1
+  - name: DIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_CAMERA_CLK_DIV:
+  description: ''
+  fields:
+  - name: RATIO
+    bit_offset: 0
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_CAMERA:
+  description: ''
+  fields:
+  - name: UPD
+    bit_offset: 15
+    bit_size: 1
+  - name: DIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_DISPLAY_RT_CLK_DIV:
+  description: ''
+  fields:
+  - name: RATIO
+    bit_offset: 0
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_DISPLAY_RT:
+  description: ''
+  fields:
+  - name: UPD
+    bit_offset: 15
+    bit_size: 1
+  - name: DIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_NETC_CLK_DIV:
+  description: ''
+  fields:
+  - name: RATIO
+    bit_offset: 0
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_NETC:
+  description: ''
+  fields:
+  - name: UPD
+    bit_offset: 15
+    bit_size: 1
+  - name: DIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_MMU700_CLK_DIV:
+  description: ''
+  fields:
+  - name: RATIO
+    bit_offset: 0
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_MMU700:
+  description: ''
+  fields:
+  - name: UPD
+    bit_offset: 15
+    bit_size: 1
+  - name: DIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_HSIO_CLK_DIV:
+  description: ''
+  fields:
+  - name: RATIO
+    bit_offset: 0
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_HSIO:
+  description: ''
+  fields:
+  - name: UPD
+    bit_offset: 15
+    bit_size: 1
+  - name: DIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_DISPLAY_BE_CLK_DIV:
+  description: ''
+  fields:
+  - name: RATIO
+    bit_offset: 0
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_DISPLAY_BE:
+  description: ''
+  fields:
+  - name: UPD
+    bit_offset: 15
+    bit_size: 1
+  - name: DIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_VPU_CLK_DIV:
+  description: ''
+  fields:
+  - name: RATIO
+    bit_offset: 0
+    bit_size: 3
+fieldset/NOC_BLK_CTRL_NOCMIX_NIU_TO_CTRL_VPU:
+  description: ''
+  fields:
+  - name: UPD
+    bit_offset: 15
+    bit_size: 1
+  - name: DIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_creg:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_0_rd:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 1
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_0_wr:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 2
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_1a_rd:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 3
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_1a_wr:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 4
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_1b_rd:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 5
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_1b_wr:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 6
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_2_rd:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 7
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_2_wr:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 8
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_3_rd:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 9
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_3_wr:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 10
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_4_rd:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 11
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_4_wr:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 12
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_5_rd:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 13
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_5_wr:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 14
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_6_rd:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 15
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_7_rd:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 17
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_7_wr:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 18
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_8_rd:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 19
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_8_wr:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 20
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_9_rd:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 21
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_9_wr:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 22
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_10_rd:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 23
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_10_wr:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 24
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_11_rd:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 25
+    bit_size: 1
+fieldset/NOC_BLK_CTRL_NOCMIX_INITIATOR_TIMEOUT_m_e_11_wr:
+  description: ''
+  fields:
+  - name: timeout
+    bit_offset: 26
+    bit_size: 1

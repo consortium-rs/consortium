@@ -1,0 +1,187 @@
+block/PLL:
+  description: ''
+  items:
+  - name: CTRL_RW
+    byte_offset: 0
+  - name: CTRL_SET
+    byte_offset: 4
+  - name: CTRL_CLR
+    byte_offset: 8
+  - name: CTRL_TOG
+    byte_offset: 12
+  - name: SPREAD_SPECTRUM_RW
+    byte_offset: 48
+  - name: SPREAD_SPECTRUM_SET
+    byte_offset: 52
+  - name: SPREAD_SPECTRUM_CLR
+    byte_offset: 56
+  - name: SPREAD_SPECTRUM_TOG
+    byte_offset: 60
+  - name: NUMERATOR_RW
+    byte_offset: 64
+  - name: NUMERATOR_SET
+    byte_offset: 68
+  - name: NUMERATOR_CLR
+    byte_offset: 72
+  - name: NUMERATOR_TOG
+    byte_offset: 76
+  - name: DENOMINATOR_RW
+    byte_offset: 80
+  - name: DENOMINATOR_SET
+    byte_offset: 84
+  - name: DENOMINATOR_CLR
+    byte_offset: 88
+  - name: DENOMINATOR_TOG
+    byte_offset: 92
+  - name: DIV_RW
+    byte_offset: 96
+  - name: DIV_SET
+    byte_offset: 100
+  - name: DIV_CLR
+    byte_offset: 104
+  - name: DIV_TOG
+    byte_offset: 108
+  - name: DFS_CTRL_RW
+    byte_offset: 112
+    array:
+      len: 4
+      stride: 32
+  - name: PLL_STATUS
+    byte_offset: 240
+  - name: DFS_STATUS
+    byte_offset: 244
+fieldset/PLL_CTRL:
+  description: ''
+  fields:
+  - name: POWERUP
+    bit_offset: 0
+    bit_size: 1
+  - name: SPREADCTL
+    bit_offset: 8
+    bit_size: 1
+fieldset/PLL_CTRL_CLKMUX:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+  - name: BYPASS
+    bit_offset: 2
+    bit_size: 1
+fieldset/PLL_CTRL_HW_CTRL:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 16
+    bit_size: 1
+fieldset/PLL_CTRL_LOCK:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 31
+    bit_size: 1
+fieldset/PLL_SPREAD_SPECTRUM:
+  description: ''
+  fields:
+  - name: STEP
+    bit_offset: 0
+    bit_size: 15
+    description: Step
+  - name: ENABLE
+    bit_offset: 15
+    bit_size: 1
+    description: Step
+  - name: STOP
+    bit_offset: 16
+    bit_size: 16
+    description: Stop
+fieldset/PLL_NUMERATOR:
+  description: ''
+  fields:
+  - name: MFN
+    bit_offset: 2
+    bit_size: 30
+    description: Numerator
+fieldset/PLL_DENOMINATOR:
+  description: ''
+  fields:
+  - name: MFD
+    bit_offset: 0
+    bit_size: 30
+    description: Denominator
+fieldset/PLL_DIV:
+  description: ''
+  fields:
+  - name: ODIV
+    bit_offset: 0
+    bit_size: 8
+  - name: RDIV
+    bit_offset: 13
+    bit_size: 3
+    description: Output Frequency Divider for Clock Output
+  - name: MFI
+    bit_offset: 16
+    bit_size: 9
+    description: Integer Portion of Loop Divider
+fieldset/PLL_DFS_HW_CTRL:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 16
+    bit_size: 1
+fieldset/PLL_DFS_BYPASS:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PLL_DFS_CLKOUT_DIVBY2:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 29
+    bit_size: 1
+fieldset/PLL_DFS_CLKOUT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 30
+    bit_size: 1
+fieldset/PLL_DFS:
+  description: ''
+  fields:
+  - name: MFN
+    bit_offset: 0
+    bit_size: 3
+    description: MFN
+  - name: MFI
+    bit_offset: 8
+    bit_size: 8
+    description: MFN
+  - name: ENABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/PLL_PLL_STATUS_PLL:
+  description: ''
+  fields:
+  - name: LOCK
+    bit_offset: 0
+    bit_size: 1
+    description: MFI
+  - name: LOL
+    bit_offset: 1
+    bit_size: 1
+    description: PLL_LOCK
+fieldset/PLL_PLL_STATUS_ANA:
+  description: ''
+  fields:
+  - name: MFN
+    bit_offset: 2
+    bit_size: 30
+    description: PLL_LOL
+fieldset/PLL_DFS_STATUS_DFS:
+  description: ''
+  fields:
+  - name: OK
+    bit_offset: 0
+    bit_size: 4

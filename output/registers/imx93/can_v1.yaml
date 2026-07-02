@@ -1,0 +1,1095 @@
+block/CAN:
+  description: ''
+  items:
+  - name: MCR
+    byte_offset: 0
+    fieldset: CAN_MCR
+  - name: CTRL1
+    byte_offset: 4
+    fieldset: CAN_CTRL1
+  - name: TIMER
+    byte_offset: 8
+    fieldset: CAN_TIMER
+  - name: RXMGMASK
+    byte_offset: 16
+    fieldset: CAN_RXMGMASK
+  - name: RX14MASK
+    byte_offset: 20
+    fieldset: CAN_RX14MASK
+  - name: RX15MASK
+    byte_offset: 24
+    fieldset: CAN_RX15MASK
+  - name: ECR
+    byte_offset: 28
+    fieldset: CAN_ECR
+  - name: ESR1
+    byte_offset: 32
+    fieldset: CAN_ESR1
+  - name: IMASK2
+    byte_offset: 36
+    fieldset: CAN_IMASK2
+  - name: IMASK1
+    byte_offset: 40
+    fieldset: CAN_IMASK1
+  - name: IFLAG2
+    byte_offset: 44
+    fieldset: CAN_IFLAG2
+  - name: IFLAG1
+    byte_offset: 48
+    fieldset: CAN_IFLAG1
+  - name: CTRL2
+    byte_offset: 52
+    fieldset: CAN_CTRL2
+  - name: ESR2
+    byte_offset: 56
+    fieldset: CAN_ESR2
+  - name: CRCR
+    byte_offset: 68
+    fieldset: CAN_CRCR
+  - name: RXFGMASK
+    byte_offset: 72
+    fieldset: CAN_RXFGMASK
+  - name: RXFIR
+    byte_offset: 76
+    fieldset: CAN_RXFIR
+  - name: CBT
+    byte_offset: 80
+    fieldset: CAN_CBT
+  - name: IMASK3
+    byte_offset: 108
+    fieldset: CAN_IMASK3
+  - name: IFLAG3
+    byte_offset: 116
+    fieldset: CAN_IFLAG3
+  - name: ET
+    byte_offset: 120
+    fieldset: CAN_ET
+  - name: FLTCONF_IE
+    byte_offset: 124
+  - name: CS
+    byte_offset: 128
+    fieldset: CAN_CS
+  - name: ID
+    byte_offset: 132
+    fieldset: CAN_ID
+  - name: WORD
+    byte_offset: 136
+    array:
+      len: 16
+      stride: 4
+  - name: RXIMR
+    byte_offset: 2176
+    array:
+      len: 96
+      stride: 4
+    fieldset: CAN_RXIMR
+  - name: MECR
+    byte_offset: 2784
+    fieldset: CAN_MECR
+  - name: ERRIAR
+    byte_offset: 2788
+  - name: ERRIDPR
+    byte_offset: 2792
+    fieldset: CAN_ERRIDPR
+  - name: ERRIPPR
+    byte_offset: 2796
+    fieldset: CAN_ERRIPPR
+  - name: RERRAR
+    byte_offset: 2800
+    fieldset: CAN_RERRAR
+  - name: RERRDR
+    byte_offset: 2804
+    fieldset: CAN_RERRDR
+  - name: RERRSYNR
+    byte_offset: 2808
+    fieldset: CAN_RERRSYNR
+  - name: ERRSR
+    byte_offset: 2812
+    fieldset: CAN_ERRSR
+  - name: EPRS
+    byte_offset: 3056
+    fieldset: CAN_EPRS
+  - name: ENCBT
+    byte_offset: 3060
+    fieldset: CAN_ENCBT
+  - name: EDCBT
+    byte_offset: 3064
+    fieldset: CAN_EDCBT
+  - name: ETDC
+    byte_offset: 3068
+    fieldset: CAN_ETDC
+  - name: FDCTRL
+    byte_offset: 3072
+    fieldset: CAN_FDCTRL
+  - name: FDCBT
+    byte_offset: 3076
+    fieldset: CAN_FDCBT
+  - name: FDCRC
+    byte_offset: 3080
+  - name: ERFCR
+    byte_offset: 3084
+    fieldset: CAN_ERFCR
+  - name: ERFIER
+    byte_offset: 3088
+    fieldset: CAN_ERFIER
+  - name: ERFSR
+    byte_offset: 3092
+    fieldset: CAN_ERFSR
+  - name: FDLCR
+    byte_offset: 3096
+  - name: HR_TIME_STAMP
+    byte_offset: 3120
+    array:
+      len: 96
+      stride: 4
+    fieldset: CAN_HR_TIME_STAMP
+  - name: ERFFEL
+    byte_offset: 12288
+    array:
+      len: 128
+      stride: 4
+    fieldset: CAN_ERFFEL
+fieldset/CAN_MCR:
+  description: ''
+  fields:
+  - name: MAXMB
+    bit_offset: 0
+    bit_size: 7
+  - name: TPOE
+    bit_offset: 7
+    bit_size: 1
+    description: Number of the Last Message Buffer
+  - name: IDAM
+    bit_offset: 8
+    bit_size: 2
+  - name: TPOV
+    bit_offset: 10
+    bit_size: 1
+  - name: FDEN
+    bit_offset: 11
+    bit_size: 1
+  - name: AEN
+    bit_offset: 12
+    bit_size: 1
+  - name: LPRIOEN
+    bit_offset: 13
+    bit_size: 1
+  - name: DMA
+    bit_offset: 15
+    bit_size: 1
+  - name: IRMQ
+    bit_offset: 16
+    bit_size: 1
+  - name: SRXDIS
+    bit_offset: 17
+    bit_size: 1
+  - name: DOZE
+    bit_offset: 18
+    bit_size: 1
+  - name: WAKSRC
+    bit_offset: 19
+    bit_size: 1
+  - name: LPMACK
+    bit_offset: 20
+    bit_size: 1
+  - name: WRNEN
+    bit_offset: 21
+    bit_size: 1
+  - name: SLFWAK
+    bit_offset: 22
+    bit_size: 1
+  - name: SUPV
+    bit_offset: 23
+    bit_size: 1
+  - name: FRZACK
+    bit_offset: 24
+    bit_size: 1
+  - name: SOFTRST
+    bit_offset: 25
+    bit_size: 1
+  - name: WAKMSK
+    bit_offset: 26
+    bit_size: 1
+  - name: NOTRDY
+    bit_offset: 27
+    bit_size: 1
+  - name: HALT
+    bit_offset: 28
+    bit_size: 1
+  - name: RFEN
+    bit_offset: 29
+    bit_size: 1
+  - name: FRZ
+    bit_offset: 30
+    bit_size: 1
+  - name: MDIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/CAN_CTRL1:
+  description: ''
+  fields:
+  - name: PROPSEG
+    bit_offset: 0
+    bit_size: 3
+    description: Propagation Segment
+  - name: LOM
+    bit_offset: 3
+    bit_size: 1
+    description: Propagation Segment
+  - name: LBUF
+    bit_offset: 4
+    bit_size: 1
+  - name: TSYN
+    bit_offset: 5
+    bit_size: 1
+  - name: BOFFREC
+    bit_offset: 6
+    bit_size: 1
+  - name: SMP
+    bit_offset: 7
+    bit_size: 1
+  - name: ROM
+    bit_offset: 8
+    bit_size: 1
+  - name: RWRNMSK
+    bit_offset: 10
+    bit_size: 1
+  - name: TWRNMSK
+    bit_offset: 11
+    bit_size: 1
+  - name: LPB
+    bit_offset: 12
+    bit_size: 1
+  - name: CLKSRC
+    bit_offset: 13
+    bit_size: 1
+  - name: ERRMSK
+    bit_offset: 14
+    bit_size: 1
+  - name: BOFFMSK
+    bit_offset: 15
+    bit_size: 1
+  - name: PSEG2
+    bit_offset: 16
+    bit_size: 3
+    description: Phase Segment 2
+  - name: PSEG1
+    bit_offset: 19
+    bit_size: 3
+    description: Phase Segment 2
+  - name: RJW
+    bit_offset: 22
+    bit_size: 2
+    description: Phase Segment 1
+  - name: PRESDIV
+    bit_offset: 24
+    bit_size: 8
+    description: Resync Jump Width
+fieldset/CAN_TIMER:
+  description: ''
+  fields:
+  - name: TIMER
+    bit_offset: 0
+    bit_size: 16
+    description: Timer Value
+fieldset/CAN_RXMGMASK:
+  description: ''
+  fields:
+  - name: MG
+    bit_offset: 0
+    bit_size: 32
+fieldset/CAN_RX14MASK:
+  description: ''
+  fields:
+  - name: RX14M
+    bit_offset: 0
+    bit_size: 32
+    description: RX Buffer 14 Mask Bits
+fieldset/CAN_RX15MASK:
+  description: ''
+  fields:
+  - name: RX15M
+    bit_offset: 0
+    bit_size: 32
+    description: RX Buffer 15 Mask Bits
+fieldset/CAN_ECR:
+  description: ''
+  fields:
+  - name: TXERRCNT
+    bit_offset: 0
+    bit_size: 8
+    description: Transmit Error Counter
+  - name: RXERRCNT
+    bit_offset: 8
+    bit_size: 8
+    description: Transmit Error Counter
+fieldset/CAN_ECR_TXERRCNT:
+  description: ''
+  fields:
+  - name: FAST
+    bit_offset: 16
+    bit_size: 8
+    description: Receive Error Counter
+fieldset/CAN_ECR_RXERRCNT:
+  description: ''
+  fields:
+  - name: FAST
+    bit_offset: 24
+    bit_size: 8
+fieldset/CAN_ESR1:
+  description: ''
+  fields:
+  - name: WAKINT
+    bit_offset: 0
+    bit_size: 1
+  - name: ERRINT
+    bit_offset: 1
+    bit_size: 1
+  - name: BOFFINT
+    bit_offset: 2
+    bit_size: 1
+  - name: RX
+    bit_offset: 3
+    bit_size: 1
+  - name: FLTCONF
+    bit_offset: 4
+    bit_size: 2
+  - name: TX
+    bit_offset: 6
+    bit_size: 1
+  - name: IDLE
+    bit_offset: 7
+    bit_size: 1
+  - name: RXWRN
+    bit_offset: 8
+    bit_size: 1
+  - name: TXWRN
+    bit_offset: 9
+    bit_size: 1
+  - name: STFERR
+    bit_offset: 10
+    bit_size: 1
+  - name: FRMERR
+    bit_offset: 11
+    bit_size: 1
+  - name: CRCERR
+    bit_offset: 12
+    bit_size: 1
+  - name: ACKERR
+    bit_offset: 13
+    bit_size: 1
+  - name: BIT0ERR
+    bit_offset: 14
+    bit_size: 1
+  - name: BIT1ERR
+    bit_offset: 15
+    bit_size: 1
+  - name: RWRNINT
+    bit_offset: 16
+    bit_size: 1
+  - name: TWRNINT
+    bit_offset: 17
+    bit_size: 1
+  - name: SYNCH
+    bit_offset: 18
+    bit_size: 1
+  - name: BOFFDONEINT
+    bit_offset: 19
+    bit_size: 1
+  - name: ERROVR
+    bit_offset: 21
+    bit_size: 1
+  - name: ATP
+    bit_offset: 22
+    bit_size: 1
+  - name: PTA
+    bit_offset: 23
+    bit_size: 1
+fieldset/CAN_ESR1_ERRINT:
+  description: ''
+  fields:
+  - name: FAST
+    bit_offset: 20
+    bit_size: 1
+fieldset/CAN_ESR1_STFERR:
+  description: ''
+  fields:
+  - name: FAST
+    bit_offset: 26
+    bit_size: 1
+fieldset/CAN_ESR1_FRMERR:
+  description: ''
+  fields:
+  - name: FAST
+    bit_offset: 27
+    bit_size: 1
+fieldset/CAN_ESR1_CRCERR:
+  description: ''
+  fields:
+  - name: FAST
+    bit_offset: 28
+    bit_size: 1
+fieldset/CAN_ESR1_BIT0ERR:
+  description: ''
+  fields:
+  - name: FAST
+    bit_offset: 30
+    bit_size: 1
+fieldset/CAN_ESR1_BIT1ERR:
+  description: ''
+  fields:
+  - name: FAST
+    bit_offset: 31
+    bit_size: 1
+fieldset/CAN_IMASK2:
+  description: ''
+  fields:
+  - name: BUF63TO32M
+    bit_offset: 0
+    bit_size: 32
+    description: Buffer MBi Mask
+fieldset/CAN_IMASK1:
+  description: ''
+  fields:
+  - name: BUF31TO0M
+    bit_offset: 0
+    bit_size: 32
+    description: Buffer MBi Mask
+fieldset/CAN_IFLAG2:
+  description: ''
+  fields:
+  - name: BUF63TO32I
+    bit_offset: 0
+    bit_size: 32
+    description: Buffer MBi Interrupt
+fieldset/CAN_IFLAG1:
+  description: ''
+  fields:
+  - name: BUF0I
+    bit_offset: 0
+    bit_size: 1
+  - name: BUF4TO1I
+    bit_offset: 1
+    bit_size: 4
+  - name: BUF5I
+    bit_offset: 5
+    bit_size: 1
+    description: Buffer MBi Interrupt or Reserved
+  - name: BUF6I
+    bit_offset: 6
+    bit_size: 1
+  - name: BUF7I
+    bit_offset: 7
+    bit_size: 1
+  - name: BUF31TO8I
+    bit_offset: 8
+    bit_size: 24
+    description: Buffer MBi Interrupt
+fieldset/CAN_CTRL2:
+  description: ''
+  fields:
+  - name: RETRY
+    bit_offset: 2
+    bit_size: 3
+  - name: TSTAMPCAP
+    bit_offset: 6
+    bit_size: 2
+  - name: MBTSBASE
+    bit_offset: 8
+    bit_size: 2
+  - name: EDFLTDIS
+    bit_offset: 11
+    bit_size: 1
+  - name: ISOCANFDEN
+    bit_offset: 12
+    bit_size: 1
+  - name: BTE
+    bit_offset: 13
+    bit_size: 1
+  - name: PREXCEN
+    bit_offset: 14
+    bit_size: 1
+  - name: EACEN
+    bit_offset: 16
+    bit_size: 1
+  - name: RRS
+    bit_offset: 17
+    bit_size: 1
+  - name: MRP
+    bit_offset: 18
+    bit_size: 1
+  - name: TASD
+    bit_offset: 19
+    bit_size: 5
+  - name: RFFN
+    bit_offset: 24
+    bit_size: 4
+    description: Transmission Arbitration Start Delay
+  - name: WRMFRZ
+    bit_offset: 28
+    bit_size: 1
+    description: Number of Legacy Receive FIFO Filters
+  - name: ECRWRE
+    bit_offset: 29
+    bit_size: 1
+  - name: BOFFDONEMSK
+    bit_offset: 30
+    bit_size: 1
+fieldset/CAN_CTRL2_FLT:
+  description: ''
+  fields:
+  - name: RXN
+    bit_offset: 10
+    bit_size: 1
+fieldset/CAN_CTRL2_TIMER:
+  description: ''
+  fields:
+  - name: SRC
+    bit_offset: 15
+    bit_size: 1
+fieldset/CAN_CTRL2_ERRMSK:
+  description: ''
+  fields:
+  - name: FAST
+    bit_offset: 31
+    bit_size: 1
+fieldset/CAN_ESR2_RX_PIN:
+  description: ''
+  fields:
+  - name: ST
+    bit_offset: 12
+    bit_size: 1
+fieldset/CAN_ESR2:
+  description: ''
+  fields:
+  - name: IMB
+    bit_offset: 13
+    bit_size: 1
+  - name: VPS
+    bit_offset: 14
+    bit_size: 1
+  - name: LPTM
+    bit_offset: 16
+    bit_size: 7
+fieldset/CAN_CRCR:
+  description: ''
+  fields:
+  - name: TXCRC
+    bit_offset: 0
+    bit_size: 15
+    description: Transmitted CRC value
+  - name: MBCRC
+    bit_offset: 16
+    bit_size: 7
+    description: Transmitted CRC value
+fieldset/CAN_RXFGMASK:
+  description: ''
+  fields:
+  - name: FGM
+    bit_offset: 0
+    bit_size: 32
+    description: Legacy RX FIFO Global Mask Bits
+fieldset/CAN_RXFIR:
+  description: ''
+  fields:
+  - name: IDHIT
+    bit_offset: 0
+    bit_size: 9
+fieldset/CAN_CBT:
+  description: ''
+  fields:
+  - name: EPSEG2
+    bit_offset: 0
+    bit_size: 5
+    description: Extended Phase Segment 2
+  - name: EPSEG1
+    bit_offset: 5
+    bit_size: 5
+    description: Extended Phase Segment 2
+  - name: EPROPSEG
+    bit_offset: 10
+    bit_size: 6
+    description: Extended Phase Segment 1
+  - name: ERJW
+    bit_offset: 16
+    bit_size: 5
+    description: Extended Propagation Segment
+  - name: EPRESDIV
+    bit_offset: 21
+    bit_size: 10
+    description: Extended Resync Jump Width
+  - name: BTF
+    bit_offset: 31
+    bit_size: 1
+    description: Extended Prescaler Division Factor
+fieldset/CAN_IMASK3:
+  description: ''
+  fields:
+  - name: BUF95TO64M
+    bit_offset: 0
+    bit_size: 32
+    description: Buffer MBi Mask
+fieldset/CAN_IFLAG3:
+  description: ''
+  fields:
+  - name: BUF95TO64
+    bit_offset: 0
+    bit_size: 32
+    description: Buffer MBi Interrupt
+fieldset/CAN_ET:
+  description: ''
+  fields:
+  - name: TIMER
+    bit_offset: 0
+    bit_size: 32
+    description: Timer
+fieldset/CAN_FLTCONF_IE_ATP:
+  description: ''
+  fields:
+  - name: IE
+    bit_offset: 0
+    bit_size: 1
+fieldset/CAN_FLTCONF_IE_PTA:
+  description: ''
+  fields:
+  - name: IE
+    bit_offset: 1
+    bit_size: 1
+fieldset/CAN_CS_TIME:
+  description: ''
+  fields:
+  - name: STAMP
+    bit_offset: 0
+    bit_size: 16
+fieldset/CAN_CS:
+  description: ''
+  fields:
+  - name: DLC
+    bit_offset: 16
+    bit_size: 4
+  - name: RTR
+    bit_offset: 20
+    bit_size: 1
+    description: Length of the data to be stored/transmitted.
+  - name: IDE
+    bit_offset: 21
+    bit_size: 1
+    description: Remote Transmission Request. One/zero for remote/data frame.
+  - name: SRR
+    bit_offset: 22
+    bit_size: 1
+    description: ID Extended. One/zero for extended/standard format frame.
+  - name: CODE
+    bit_offset: 24
+    bit_size: 4
+    description: Substitute Remote Request. Contains a fixed recessive bit.
+  - name: ESI
+    bit_offset: 29
+    bit_size: 1
+  - name: BRS
+    bit_offset: 30
+    bit_size: 1
+  - name: EDL
+    bit_offset: 31
+    bit_size: 1
+fieldset/CAN_ID:
+  description: ''
+  fields:
+  - name: EXT
+    bit_offset: 0
+    bit_size: 18
+  - name: STD
+    bit_offset: 18
+    bit_size: 11
+    description: Contains extended (LOW word) identifier of message buffer.
+  - name: PRIO
+    bit_offset: 29
+    bit_size: 3
+fieldset/CAN_RXIMR:
+  description: ''
+  fields:
+  - name: MI
+    bit_offset: 0
+    bit_size: 32
+    description: Individual Mask Bits
+fieldset/CAN_MECR:
+  description: ''
+  fields:
+  - name: NCEFAFRZ
+    bit_offset: 7
+    bit_size: 1
+  - name: ECCDIS
+    bit_offset: 8
+    bit_size: 1
+  - name: RERRDIS
+    bit_offset: 9
+    bit_size: 1
+  - name: EXTERRIE
+    bit_offset: 13
+    bit_size: 1
+  - name: FAERRIE
+    bit_offset: 14
+    bit_size: 1
+  - name: HAERRIE
+    bit_offset: 15
+    bit_size: 1
+  - name: ECRWRDIS
+    bit_offset: 31
+    bit_size: 1
+fieldset/CAN_MECR_CEI:
+  description: ''
+  fields:
+  - name: MSK
+    bit_offset: 16
+    bit_size: 1
+fieldset/CAN_MECR_FANCEI:
+  description: ''
+  fields:
+  - name: MSK
+    bit_offset: 18
+    bit_size: 1
+fieldset/CAN_MECR_HANCEI:
+  description: ''
+  fields:
+  - name: MSK
+    bit_offset: 19
+    bit_size: 1
+fieldset/CAN_ERRIAR_INJADDR:
+  description: ''
+  fields:
+  - name: L
+    bit_offset: 0
+    bit_size: 2
+  - name: H
+    bit_offset: 2
+    bit_size: 12
+    description: Error Injection Address Low
+fieldset/CAN_ERRIDPR:
+  description: ''
+  fields:
+  - name: DFLIP
+    bit_offset: 0
+    bit_size: 32
+    description: Data Flip Pattern
+fieldset/CAN_ERRIPPR:
+  description: ''
+  fields:
+  - name: PFLIP0
+    bit_offset: 0
+    bit_size: 5
+  - name: PFLIP1
+    bit_offset: 8
+    bit_size: 5
+  - name: PFLIP2
+    bit_offset: 16
+    bit_size: 5
+    description: Parity Flip Pattern for Byte 1
+  - name: PFLIP3
+    bit_offset: 24
+    bit_size: 5
+    description: Parity Flip Pattern for Byte 2
+fieldset/CAN_RERRAR:
+  description: ''
+  fields:
+  - name: ERRADDR
+    bit_offset: 0
+    bit_size: 14
+    description: Address Where Error Detected
+  - name: SAID
+    bit_offset: 16
+    bit_size: 3
+    description: Address Where Error Detected
+  - name: NCE
+    bit_offset: 24
+    bit_size: 1
+    description: SAID
+fieldset/CAN_RERRDR:
+  description: ''
+  fields:
+  - name: RDATA
+    bit_offset: 0
+    bit_size: 32
+fieldset/CAN_RERRSYNR:
+  description: ''
+  fields:
+  - name: SYND0
+    bit_offset: 0
+    bit_size: 5
+  - name: BE0
+    bit_offset: 7
+    bit_size: 1
+    description: Error Syndrome for Byte 0 (Least Significant)
+  - name: SYND1
+    bit_offset: 8
+    bit_size: 5
+    description: Error Syndrome for Byte 1
+  - name: BE1
+    bit_offset: 15
+    bit_size: 1
+    description: Error Syndrome for Byte 1
+  - name: SYND2
+    bit_offset: 16
+    bit_size: 5
+    description: Error Syndrome for Byte 2
+  - name: BE2
+    bit_offset: 23
+    bit_size: 1
+    description: Error Syndrome for Byte 2
+  - name: SYND3
+    bit_offset: 24
+    bit_size: 5
+  - name: BE3
+    bit_offset: 31
+    bit_size: 1
+    description: Error Syndrome for Byte 3 (Most Significant)
+fieldset/CAN_ERRSR:
+  description: ''
+  fields:
+  - name: CEIOF
+    bit_offset: 0
+    bit_size: 1
+  - name: FANCEIOF
+    bit_offset: 2
+    bit_size: 1
+  - name: HANCEIOF
+    bit_offset: 3
+    bit_size: 1
+  - name: CEIF
+    bit_offset: 16
+    bit_size: 1
+  - name: FANCEIF
+    bit_offset: 18
+    bit_size: 1
+  - name: HANCEIF
+    bit_offset: 19
+    bit_size: 1
+fieldset/CAN_EPRS:
+  description: ''
+  fields:
+  - name: ENPRESDIV
+    bit_offset: 0
+    bit_size: 10
+  - name: EDPRESDIV
+    bit_offset: 16
+    bit_size: 10
+    description: Extended Nominal Prescaler Division Factor
+fieldset/CAN_ENCBT:
+  description: ''
+  fields:
+  - name: NTSEG1
+    bit_offset: 0
+    bit_size: 8
+    description: Nominal Time Segment 1
+  - name: NTSEG2
+    bit_offset: 12
+    bit_size: 7
+    description: Nominal Time Segment 1
+  - name: NRJW
+    bit_offset: 22
+    bit_size: 7
+    description: Nominal Time Segment 2
+fieldset/CAN_EDCBT:
+  description: ''
+  fields:
+  - name: DTSEG1
+    bit_offset: 0
+    bit_size: 5
+    description: Data Phase Segment 1
+  - name: DTSEG2
+    bit_offset: 12
+    bit_size: 4
+    description: Data Phase Segment 1
+  - name: DRJW
+    bit_offset: 22
+    bit_size: 4
+    description: Data Phase Time Segment 2
+fieldset/CAN_ETDC:
+  description: ''
+  fields:
+  - name: ETDCVAL
+    bit_offset: 0
+    bit_size: 8
+  - name: ETDCFAIL
+    bit_offset: 15
+    bit_size: 1
+    description: Enhanced Transceiver Delay Compensation Value
+  - name: ETDCOFF
+    bit_offset: 16
+    bit_size: 7
+  - name: TDMDIS
+    bit_offset: 30
+    bit_size: 1
+    description: Enhanced Transceiver Delay Compensation Offset
+  - name: ETDCEN
+    bit_offset: 31
+    bit_size: 1
+fieldset/CAN_FDCTRL:
+  description: ''
+  fields:
+  - name: TDCVAL
+    bit_offset: 0
+    bit_size: 6
+  - name: TDCOFF
+    bit_offset: 8
+    bit_size: 5
+    description: Transceiver Delay Compensation Value
+  - name: TDCFAIL
+    bit_offset: 14
+    bit_size: 1
+    description: Transceiver Delay Compensation Offset
+  - name: TDCEN
+    bit_offset: 15
+    bit_size: 1
+  - name: MBDSR0
+    bit_offset: 16
+    bit_size: 2
+  - name: MBDSR1
+    bit_offset: 19
+    bit_size: 2
+  - name: MBDSR2
+    bit_offset: 22
+    bit_size: 2
+  - name: FDRATE
+    bit_offset: 31
+    bit_size: 1
+fieldset/CAN_FDCBT:
+  description: ''
+  fields:
+  - name: FPSEG2
+    bit_offset: 0
+    bit_size: 3
+    description: Fast Phase Segment 2
+  - name: FPSEG1
+    bit_offset: 5
+    bit_size: 3
+    description: Fast Phase Segment 2
+  - name: FPROPSEG
+    bit_offset: 10
+    bit_size: 5
+    description: Fast Phase Segment 1
+  - name: FRJW
+    bit_offset: 16
+    bit_size: 3
+    description: Fast Propagation Segment
+  - name: FPRESDIV
+    bit_offset: 20
+    bit_size: 10
+    description: Fast Resync Jump Width
+fieldset/CAN_FDCRC_FD:
+  description: ''
+  fields:
+  - name: TXCRC
+    bit_offset: 0
+    bit_size: 21
+  - name: MBCRC
+    bit_offset: 24
+    bit_size: 7
+    description: Extended Transmitted CRC value
+fieldset/CAN_ERFCR:
+  description: ''
+  fields:
+  - name: ERFWM
+    bit_offset: 0
+    bit_size: 5
+    description: Enhanced RX FIFO Watermark
+  - name: NFE
+    bit_offset: 8
+    bit_size: 6
+    description: Enhanced RX FIFO Watermark
+  - name: NEXIF
+    bit_offset: 16
+    bit_size: 7
+    description: Number of Enhanced RX FIFO Filter Elements
+  - name: DMALW
+    bit_offset: 26
+    bit_size: 5
+    description: Number of Extended ID Filter Elements
+  - name: ERFEN
+    bit_offset: 31
+    bit_size: 1
+    description: DMA Last Word
+fieldset/CAN_ERFIER:
+  description: ''
+  fields:
+  - name: ERFDAIE
+    bit_offset: 28
+    bit_size: 1
+  - name: ERFWMIIE
+    bit_offset: 29
+    bit_size: 1
+  - name: ERFOVFIE
+    bit_offset: 30
+    bit_size: 1
+  - name: ERFUFWIE
+    bit_offset: 31
+    bit_size: 1
+fieldset/CAN_ERFSR:
+  description: ''
+  fields:
+  - name: ERFEL
+    bit_offset: 0
+    bit_size: 6
+    description: Enhanced RX FIFO Elements
+  - name: ERFF
+    bit_offset: 16
+    bit_size: 1
+    description: Enhanced RX FIFO Elements
+  - name: ERFE
+    bit_offset: 17
+    bit_size: 1
+  - name: ERFCLR
+    bit_offset: 27
+    bit_size: 1
+  - name: ERFDA
+    bit_offset: 28
+    bit_size: 1
+  - name: ERFWMI
+    bit_offset: 29
+    bit_size: 1
+  - name: ERFOVF
+    bit_offset: 30
+    bit_size: 1
+  - name: ERFUFW
+    bit_offset: 31
+    bit_size: 1
+fieldset/CAN_FDLCR_CMDR:
+  description: ''
+  fields:
+  - name: HS
+    bit_offset: 0
+    bit_size: 1
+fieldset/CAN_FDLCR_RSDR:
+  description: ''
+  fields:
+  - name: HS
+    bit_offset: 1
+    bit_size: 1
+fieldset/CAN_FDLCR_ACK:
+  description: ''
+  fields:
+  - name: RESP
+    bit_offset: 4
+    bit_size: 1
+  - name: TOL
+    bit_offset: 5
+    bit_size: 1
+fieldset/CAN_FDLCR_TX:
+  description: ''
+  fields:
+  - name: SYNC
+    bit_offset: 6
+    bit_size: 1
+fieldset/CAN_HR_TIME_STAMP:
+  description: ''
+  fields:
+  - name: TS
+    bit_offset: 0
+    bit_size: 32
+    description: High-Resolution Timestamp
+fieldset/CAN_ERFFEL:
+  description: ''
+  fields:
+  - name: FEL
+    bit_offset: 0
+    bit_size: 32
+    description: Filter Element Bits

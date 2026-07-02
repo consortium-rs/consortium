@@ -1,0 +1,33 @@
+block/IPC:
+  description: ''
+  items:
+  - name: CONFIG
+    byte_offset: 0
+fieldset/IPC_CONFIG_MASTERID0:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 4
+  - name: LOCK
+    bit_offset: 16
+    bit_size: 4
+    description: Data bits for Cortex M33
+fieldset/IPC_CONFIG_MASTERID1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 4
+    bit_size: 4
+  - name: LOCK
+    bit_offset: 20
+    bit_size: 4
+fieldset/IPC_CONFIG_MASTERID2:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 8
+    bit_size: 4
+  - name: LOCK
+    bit_offset: 24
+    bit_size: 4

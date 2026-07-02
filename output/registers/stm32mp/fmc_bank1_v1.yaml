@@ -1,0 +1,10 @@
+block/FMC_Bank1:
+  description: ''
+  items:
+  - name: BTCR
+    byte_offset: 0
+    array:
+      len: 8
+      stride: 4
+    description: NOR/PSRAM chip-select control register(BCR) and chip-select timing
+      register(BTR)

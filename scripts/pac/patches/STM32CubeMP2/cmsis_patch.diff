@@ -1,0 +1,1064 @@
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211axx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211axx_ca35.h
+index 4792a446..8ed10ae3 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211axx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211axx_ca35.h
+@@ -6694,11 +6694,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+@@ -43238,7 +43238,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211axx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211axx_cm33.h
+index 97eea138..b9906c4c 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211axx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211axx_cm33.h
+@@ -45014,7 +45014,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211cxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211cxx_ca35.h
+index ae9105d5..b3de2efe 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211cxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211cxx_ca35.h
+@@ -6866,11 +6866,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+@@ -44500,7 +44500,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211cxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211cxx_cm33.h
+index 5e78da26..6a6e7c1e 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211cxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211cxx_cm33.h
+@@ -46380,7 +46380,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211dxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211dxx_ca35.h
+index 5519f07f..d552ae3d 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211dxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211dxx_ca35.h
+@@ -6694,11 +6694,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+@@ -43238,7 +43238,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211dxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211dxx_cm33.h
+index ddb5e004..3da22677 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211dxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211dxx_cm33.h
+@@ -45014,7 +45014,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211fxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211fxx_ca35.h
+index d3577df1..98f47f1c 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211fxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211fxx_ca35.h
+@@ -6866,11 +6866,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+@@ -44500,7 +44500,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211fxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211fxx_cm33.h
+index 8c6ff3c2..ece3540a 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211fxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211fxx_cm33.h
+@@ -46380,7 +46380,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213axx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213axx_ca35.h
+index b156ef94..d196561f 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213axx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213axx_ca35.h
+@@ -6803,11 +6803,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+@@ -44785,7 +44785,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213axx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213axx_cm33.h
+index f7768f68..a9eb8262 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213axx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213axx_cm33.h
+@@ -46591,7 +46591,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213cxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213cxx_ca35.h
+index 428dad16..ac7fc757 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213cxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213cxx_ca35.h
+@@ -6975,11 +6975,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+@@ -46047,7 +46047,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213cxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213cxx_cm33.h
+index 949a0efe..de3d5640 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213cxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213cxx_cm33.h
+@@ -47957,7 +47957,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213dxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213dxx_ca35.h
+index bdbba42e..0d216722 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213dxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213dxx_ca35.h
+@@ -6803,11 +6803,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+@@ -44785,7 +44785,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213dxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213dxx_cm33.h
+index 974a57dd..6b445766 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213dxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213dxx_cm33.h
+@@ -46591,7 +46591,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213fxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213fxx_ca35.h
+index 1aa1a1ac..d7612819 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213fxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213fxx_ca35.h
+@@ -6975,11 +6975,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+@@ -46047,7 +46047,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213fxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213fxx_cm33.h
+index 22831660..cb40a0d6 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213fxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213fxx_cm33.h
+@@ -47957,7 +47957,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215axx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215axx_ca35.h
+index 03d7bf2c..da9de14d 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215axx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215axx_ca35.h
+@@ -6885,11 +6885,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+@@ -45904,7 +45904,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215axx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215axx_cm33.h
+index 9d73fded..18ce08a1 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215axx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215axx_cm33.h
+@@ -47726,7 +47726,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215cxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215cxx_ca35.h
+index 4830b99a..870684db 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215cxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215cxx_ca35.h
+@@ -7057,11 +7057,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+@@ -47166,7 +47166,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215cxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215cxx_cm33.h
+index 736f9a88..d8f7eeb4 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215cxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215cxx_cm33.h
+@@ -49092,7 +49092,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215dxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215dxx_ca35.h
+index 2f6dacc8..5c942488 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215dxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215dxx_ca35.h
+@@ -6885,11 +6885,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+@@ -45904,7 +45904,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215dxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215dxx_cm33.h
+index 49dafc19..2cb95877 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215dxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215dxx_cm33.h
+@@ -47726,7 +47726,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215fxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215fxx_ca35.h
+index 8b0684a5..c84aa8cf 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215fxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215fxx_ca35.h
+@@ -7057,11 +7057,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+@@ -47166,7 +47166,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215fxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215fxx_cm33.h
+index 53254217..42c5bd14 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215fxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215fxx_cm33.h
+@@ -49092,7 +49092,7 @@ typedef struct
+ #define USB_OTG_GCCFG_FSVPLUS_Msk                (0x1UL << USB_OTG_GCCFG_FSVPLUS_Pos)          /*!< 0x00000002 */
+ #define USB_OTG_GCCFG_FSVPLUS                    USB_OTG_GCCFG_FSVPLUS_Msk                    /*!< Single-Ended DP2 indicator DP voltage level  */
+ #define USB_OTG_GCCFG_FSVMINUS_Pos               (2U)
+-#define USB_OTG_GCCFG_FSVMINUS_Msk               0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
++#define USB_OTG_GCCFG_FSVMINUS_Msk               (0x1UL << USB_OTG_GCCFG_FSVMINUS_Pos)         /*!< 0x00000004 */
+ #define USB_OTG_GCCFG_FSVMINUS                   USB_OTG_GCCFG_FSVMINUS_Msk                  /*!< Single-Ended DM2 indicator DM voltage level  */
+ #define USB_OTG_GCCFG_SESSVLD_Pos                (3U)
+ #define USB_OTG_GCCFG_SESSVLD_Msk                (0x1UL << USB_OTG_GCCFG_SESSVLD_Pos)          /*!< 0x00000008 */
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231axx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231axx_ca35.h
+index 64df801e..ef7362da 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231axx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231axx_ca35.h
+@@ -7164,11 +7164,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231cxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231cxx_ca35.h
+index 4fb192a6..a767bc4a 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231cxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231cxx_ca35.h
+@@ -7309,11 +7309,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231dxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231dxx_ca35.h
+index 047839a3..5a523493 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231dxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231dxx_ca35.h
+@@ -7164,11 +7164,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231fxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231fxx_ca35.h
+index 4afb3ec4..9fe9f371 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231fxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231fxx_ca35.h
+@@ -7309,11 +7309,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233axx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233axx_ca35.h
+index 97d4acbb..0c67048c 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233axx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233axx_ca35.h
+@@ -7273,11 +7273,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233cxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233cxx_ca35.h
+index 9e0b0338..682ed3ec 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233cxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233cxx_ca35.h
+@@ -7418,11 +7418,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233dxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233dxx_ca35.h
+index 4fe9ba6c..01989884 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233dxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233dxx_ca35.h
+@@ -7273,11 +7273,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233fxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233fxx_ca35.h
+index 11bf4fdd..1f331590 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233fxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233fxx_ca35.h
+@@ -7418,11 +7418,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235axx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235axx_ca35.h
+index 0d2b4ebf..8390d7e9 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235axx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235axx_ca35.h
+@@ -7525,11 +7525,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235cxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235cxx_ca35.h
+index b417025e..53f5bfdf 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235cxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235cxx_ca35.h
+@@ -7670,11 +7670,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235dxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235dxx_ca35.h
+index 1f0f16ae..20c9c3c6 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235dxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235dxx_ca35.h
+@@ -7525,11 +7525,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235fxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235fxx_ca35.h
+index caf0ff79..901d7a93 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235fxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235fxx_ca35.h
+@@ -7670,11 +7670,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251axx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251axx_ca35.h
+index e28e72f3..e5b9ff63 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251axx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251axx_ca35.h
+@@ -7200,11 +7200,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251cxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251cxx_ca35.h
+index 82835b0f..367351bb 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251cxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251cxx_ca35.h
+@@ -7345,11 +7345,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251dxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251dxx_ca35.h
+index 9264133d..e1793abe 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251dxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251dxx_ca35.h
+@@ -7200,11 +7200,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251fxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251fxx_ca35.h
+index e33a0ba0..8371c3fe 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251fxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251fxx_ca35.h
+@@ -7345,11 +7345,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253axx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253axx_ca35.h
+index 01f49fe2..d79edbd6 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253axx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253axx_ca35.h
+@@ -7311,11 +7311,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253cxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253cxx_ca35.h
+index f0f1bb07..ef548a00 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253cxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253cxx_ca35.h
+@@ -7456,11 +7456,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253dxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253dxx_ca35.h
+index 80b2b071..1c6730a7 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253dxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253dxx_ca35.h
+@@ -7311,11 +7311,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253fxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253fxx_ca35.h
+index c573afe4..9c20d9ab 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253fxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253fxx_ca35.h
+@@ -7456,11 +7456,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255axx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255axx_ca35.h
+index 3e6d69d3..6da7f3ac 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255axx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255axx_ca35.h
+@@ -7565,11 +7565,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255cxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255cxx_ca35.h
+index c85ae181..aec15209 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255cxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255cxx_ca35.h
+@@ -7710,11 +7710,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255dxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255dxx_ca35.h
+index 0ee1868d..499d0e28 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255dxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255dxx_ca35.h
+@@ -7565,11 +7565,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255fxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255fxx_ca35.h
+index ebce7c77..b0eb95d2 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255fxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255fxx_ca35.h
+@@ -7710,11 +7710,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257axx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257axx_ca35.h
+index 4709f592..57a21e1c 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257axx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257axx_ca35.h
+@@ -7596,11 +7596,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257cxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257cxx_ca35.h
+index 0cee4c0e..2d33c38e 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257cxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257cxx_ca35.h
+@@ -7741,11 +7741,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257dxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257dxx_ca35.h
+index f0aad365..15049564 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257dxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257dxx_ca35.h
+@@ -7596,11 +7596,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257fxx_ca35.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257fxx_ca35.h
+index bc24a841..deb90c6e 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257fxx_ca35.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257fxx_ca35.h
+@@ -7741,11 +7741,11 @@ typedef struct
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WC1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos              (8U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) *!< 0x00000100 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Pos) /*!< 0x00000100 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSREQ_Msk           /*!<  */
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos              (9U)
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) *!< 0x00000200 */
+-#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           *!<  */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk              (0x1UL << CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Pos) /*!< 0x00000200 */
++#define CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK                  CA35SSC_LPI_TSGEN_NTS_CR_WC1_TS_CSYSACK_Msk           /*!<  */
+ 
+ /*********  Bit definition for CA35SSC_LPI_TSGEN_NTS_CR_WT1 register  *********/
+ #define CA35SSC_LPI_TSGEN_NTS_CR_WT1_TS_CSYSREQ_Pos              (8U)

@@ -1,0 +1,253 @@
+block/ENETC_PF_EMDIO:
+  description: ''
+  items:
+  - name: EMDIO_CFG
+    byte_offset: 7168
+    fieldset: ENETC_PF_EMDIO_EMDIO_CFG
+  - name: EMDIO_CTL
+    byte_offset: 7172
+    fieldset: ENETC_PF_EMDIO_EMDIO_CTL
+  - name: EMDIO_DATA
+    byte_offset: 7176
+  - name: EMDIO_ADDR
+    byte_offset: 7180
+    fieldset: ENETC_PF_EMDIO_EMDIO_ADDR
+  - name: EMDIO_STAT
+    byte_offset: 7184
+    fieldset: ENETC_PF_EMDIO_EMDIO_STAT
+  - name: PHY_STATUS_CFG
+    byte_offset: 7200
+    fieldset: ENETC_PF_EMDIO_PHY_STATUS_CFG
+  - name: PHY_STATUS_CTL
+    byte_offset: 7204
+  - name: PHY_STATUS_DATA
+    byte_offset: 7208
+  - name: PHY_STATUS_ADDR
+    byte_offset: 7212
+    fieldset: ENETC_PF_EMDIO_PHY_STATUS_ADDR
+  - name: PHY_STATUS_EVENT
+    byte_offset: 7216
+  - name: PHY_STATUS_MASK
+    byte_offset: 7220
+  - name: MDIO_CFG
+    byte_offset: 7232
+fieldset/ENETC_PF_EMDIO_EMDIO_CFG:
+  description: ''
+  fields:
+  - name: BSY2
+    bit_offset: 0
+    bit_size: 1
+  - name: ENC45
+    bit_offset: 6
+    bit_size: 1
+  - name: WHOAMI
+    bit_offset: 16
+    bit_size: 3
+    description: Returns the virtual port ID.
+  - name: EHOLD
+    bit_offset: 22
+    bit_size: 1
+  - name: NEG
+    bit_offset: 23
+    bit_size: 1
+  - name: CIM
+    bit_offset: 29
+    bit_size: 1
+  - name: CMP
+    bit_offset: 30
+    bit_size: 1
+  - name: BSY1
+    bit_offset: 31
+    bit_size: 1
+fieldset/ENETC_PF_EMDIO_EMDIO_CFG_MDIO_RD:
+  description: ''
+  fields:
+  - name: ER
+    bit_offset: 1
+    bit_size: 1
+fieldset/ENETC_PF_EMDIO_EMDIO_CFG_MDIO:
+  description: ''
+  fields:
+  - name: HOLD
+    bit_offset: 2
+    bit_size: 3
+fieldset/ENETC_PF_EMDIO_EMDIO_CFG_PRE:
+  description: ''
+  fields:
+  - name: DIS
+    bit_offset: 5
+    bit_size: 1
+fieldset/ENETC_PF_EMDIO_EMDIO_CFG_MDIO_CLK:
+  description: ''
+  fields:
+  - name: DIV
+    bit_offset: 7
+    bit_size: 9
+    description: MDIO Clock Divisor
+fieldset/ENETC_PF_EMDIO_EMDIO_CFG_ADDR:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 28
+    bit_size: 1
+fieldset/ENETC_PF_EMDIO_EMDIO_CTL_DEV:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 5
+fieldset/ENETC_PF_EMDIO_EMDIO_CTL_PORT:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 5
+    bit_size: 5
+fieldset/ENETC_PF_EMDIO_EMDIO_CTL_POST:
+  description: ''
+  fields:
+  - name: INC
+    bit_offset: 14
+    bit_size: 1
+fieldset/ENETC_PF_EMDIO_EMDIO_CTL:
+  description: ''
+  fields:
+  - name: READ
+    bit_offset: 15
+    bit_size: 1
+    description: MDIO read initiation.
+  - name: BSY
+    bit_offset: 31
+    bit_size: 1
+    description: MDIO read initiation.
+fieldset/ENETC_PF_EMDIO_EMDIO_DATA_MDIO:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 16
+    description: 16-bit MDIO data.
+fieldset/ENETC_PF_EMDIO_EMDIO_ADDR:
+  description: ''
+  fields:
+  - name: REGADDR
+    bit_offset: 0
+    bit_size: 16
+    description: MDIO PHY register address.
+fieldset/ENETC_PF_EMDIO_EMDIO_STAT:
+  description: ''
+  fields:
+  - name: BSY
+    bit_offset: 0
+    bit_size: 1
+    description: Global MDIO busy
+fieldset/ENETC_PF_EMDIO_EMDIO_STAT_WHT:
+  description: ''
+  fields:
+  - name: LIST
+    bit_offset: 8
+    bit_size: 5
+    description: Global MDIO busy
+fieldset/ENETC_PF_EMDIO_EMDIO_STAT_WHT_LIST:
+  description: ''
+  fields:
+  - name: ENA
+    bit_offset: 15
+    bit_size: 1
+fieldset/ENETC_PF_EMDIO_EMDIO_STAT_PORT:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 16
+    bit_size: 3
+    description: Port ID
+fieldset/ENETC_PF_EMDIO_EMDIO_STAT_REQ:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 19
+    bit_size: 1
+    description: Port ID
+fieldset/ENETC_PF_EMDIO_PHY_STATUS_CFG:
+  description: ''
+  fields:
+  - name: BSY
+    bit_offset: 0
+    bit_size: 1
+    description: MDIO busy
+fieldset/ENETC_PF_EMDIO_PHY_STATUS_CFG_MDIO_RD:
+  description: ''
+  fields:
+  - name: ER
+    bit_offset: 1
+    bit_size: 1
+    description: MDIO busy
+fieldset/ENETC_PF_EMDIO_PHY_STATUS_CFG_STATUS:
+  description: ''
+  fields:
+  - name: INTERVAL
+    bit_offset: 16
+    bit_size: 16
+fieldset/ENETC_PF_EMDIO_PHY_STATUS_CTL_DEV:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 5
+fieldset/ENETC_PF_EMDIO_PHY_STATUS_CTL_PORT:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 5
+    bit_size: 5
+fieldset/ENETC_PF_EMDIO_PHY_STATUS_DATA_MDIO:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 16
+    description: 16-bit MDIO data
+fieldset/ENETC_PF_EMDIO_PHY_STATUS_DATA_CURR:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 16
+    bit_size: 16
+    description: Current count
+fieldset/ENETC_PF_EMDIO_PHY_STATUS_ADDR:
+  description: ''
+  fields:
+  - name: REGADDR
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_PF_EMDIO_PHY_STATUS_EVENT_STATUS_EVENT:
+  description: ''
+  fields:
+  - name: HL
+    bit_offset: 0
+    bit_size: 16
+  - name: LH
+    bit_offset: 16
+    bit_size: 16
+fieldset/ENETC_PF_EMDIO_PHY_STATUS_MASK_STATUS_MASK:
+  description: ''
+  fields:
+  - name: HL
+    bit_offset: 0
+    bit_size: 16
+  - name: LH
+    bit_offset: 16
+    bit_size: 16
+fieldset/ENETC_PF_EMDIO_MDIO_CFG_MDIO:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 4
+    bit_size: 1
+    description: MDIO pin mode
+fieldset/ENETC_PF_EMDIO_MDIO_CFG_MDC:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 5
+    bit_size: 1
+    description: MDIO pin mode

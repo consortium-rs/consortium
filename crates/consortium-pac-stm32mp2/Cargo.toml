@@ -1,0 +1,17 @@
+[package]
+name = "stm32mp2-pac"
+description = "Peripheral Access Crate for the STM32MP2 series of microcontrollers"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[features]
+defmt = ["dep:defmt"]
+stm32mp257 = []
+default = ["stm32mp257"]
+
+[dependencies]
+defmt = { version = "1.0.1", optional = true }
+
+[lints]
+workspace = true

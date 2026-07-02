@@ -1,0 +1,15 @@
+block/ISP:
+  description: ''
+  items:
+  - name: ALIAS_REG
+    byte_offset: 0
+    array:
+      len: 84
+      stride: 4
+    fieldset: ISP_ALIAS_REG
+fieldset/ISP_ALIAS_REG:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 0
+    bit_size: 32

@@ -1,0 +1,2179 @@
+{
+  "name": "stm32mp21_unknown_cm33",
+  "family": "stm32mp21",
+  "core": "cm33",
+  "irqs": [
+    {
+      "name": "PVD",
+      "value": 0,
+      "description": "PVD detector through EXTI"
+    },
+    {
+      "name": "PVM",
+      "value": 1,
+      "description": "PVM detector through EXTI"
+    },
+    {
+      "name": "IWDG3",
+      "value": 2,
+      "description": "Independent Watchdog 3  Early wake interrupt"
+    },
+    {
+      "name": "IWDG4",
+      "value": 3,
+      "description": "Independent Watchdog 4  Early wake interrupt"
+    },
+    {
+      "name": "IWDG1_RST",
+      "value": 4,
+      "description": "Independent Watchdog 1 Reset through EXTI"
+    },
+    {
+      "name": "IWDG2_RST",
+      "value": 5,
+      "description": "Independent Watchdog 2 Reset through EXTI"
+    },
+    {
+      "name": "IWDG4_RST",
+      "value": 6,
+      "description": "Independent Watchdog 4 Reset through EXTI"
+    },
+    {
+      "name": "WWDG1",
+      "value": 7,
+      "description": "Window Watchdog 1 Early Wakeup interrupt"
+    },
+    {
+      "name": "TAMP",
+      "value": 10,
+      "description": "Tamper interrupt (include LSECSS interrupts)"
+    },
+    {
+      "name": "RTC",
+      "value": 11,
+      "description": "RTC global  interrupt"
+    },
+    {
+      "name": "TAMP_S",
+      "value": 12,
+      "description": "Tamper secure  interrupt (include LSECSS interrupts)"
+    },
+    {
+      "name": "RTC_S",
+      "value": 13,
+      "description": "RTC global secure  interrupt"
+    },
+    {
+      "name": "RCC",
+      "value": 14,
+      "description": "RCC global interrupt"
+    },
+    {
+      "name": "EXTI2_0",
+      "value": 15,
+      "description": "EXTI2 Line 0 interrupt"
+    },
+    {
+      "name": "EXTI2_1",
+      "value": 16,
+      "description": "EXTI2 Line 1 interrupt"
+    },
+    {
+      "name": "EXTI2_2",
+      "value": 17,
+      "description": "EXTI2 Line 2 interrupt"
+    },
+    {
+      "name": "EXTI2_3",
+      "value": 18,
+      "description": "EXTI2 Line 3 interrupt"
+    },
+    {
+      "name": "EXTI2_4",
+      "value": 19,
+      "description": "EXTI2 Line 4 interrupt"
+    },
+    {
+      "name": "EXTI2_5",
+      "value": 20,
+      "description": "EXTI2 Line 5 interrupt"
+    },
+    {
+      "name": "EXTI2_6",
+      "value": 21,
+      "description": "EXTI2 Line 6 interrupt"
+    },
+    {
+      "name": "EXTI2_7",
+      "value": 22,
+      "description": "EXTI2 Line 7 interrupt"
+    },
+    {
+      "name": "EXTI2_8",
+      "value": 23,
+      "description": "EXTI2 Line 8 interrupt"
+    },
+    {
+      "name": "EXTI2_9",
+      "value": 24,
+      "description": "EXTI2 Line 9 interrupt"
+    },
+    {
+      "name": "EXTI2_10",
+      "value": 25,
+      "description": "EXTI2 Line 10 interrupt"
+    },
+    {
+      "name": "EXTI2_11",
+      "value": 26,
+      "description": "EXTI2 Line 11 interrupt"
+    },
+    {
+      "name": "EXTI2_12",
+      "value": 27,
+      "description": "EXTI2 Line 12 interrupt"
+    },
+    {
+      "name": "EXTI2_13",
+      "value": 28,
+      "description": "EXTI2 Line 13 interrupt"
+    },
+    {
+      "name": "EXTI2_14",
+      "value": 29,
+      "description": "EXTI2 Line 14 interrupt"
+    },
+    {
+      "name": "EXTI2_15",
+      "value": 30,
+      "description": "EXTI2 Line 15 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel0",
+      "value": 31,
+      "description": "HPDMA1 Channel0 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel1",
+      "value": 32,
+      "description": "HPDMA1 Channel1 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel2",
+      "value": 33,
+      "description": "HPDMA1 Channel2 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel3",
+      "value": 34,
+      "description": "HPDMA1 Channel3 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel4",
+      "value": 35,
+      "description": "HPDMA1 Channel4 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel5",
+      "value": 36,
+      "description": "HPDMA1 Channel5 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel6",
+      "value": 37,
+      "description": "HPDMA1 Channel6 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel7",
+      "value": 38,
+      "description": "HPDMA1 Channel7 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel8",
+      "value": 39,
+      "description": "HPDMA1 Channel8 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel9",
+      "value": 40,
+      "description": "HPDMA1 Channel9 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel10",
+      "value": 41,
+      "description": "HPDMA1 Channel10 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel11",
+      "value": 42,
+      "description": "HPDMA1 Channel11 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel12",
+      "value": 43,
+      "description": "HPDMA1 Channel12 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel13",
+      "value": 44,
+      "description": "HPDMA1 Channel13 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel14",
+      "value": 45,
+      "description": "HPDMA1 Channel14 interrupt"
+    },
+    {
+      "name": "HPDMA1_Channel15",
+      "value": 46,
+      "description": "HPDMA1 Channel15 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel0",
+      "value": 47,
+      "description": "HPDMA2 Channel0 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel1",
+      "value": 48,
+      "description": "HPDMA2 Channel1 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel2",
+      "value": 49,
+      "description": "HPDMA2 Channel2 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel3",
+      "value": 50,
+      "description": "HPDMA2 Channel3 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel4",
+      "value": 51,
+      "description": "HPDMA2 Channel4 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel5",
+      "value": 52,
+      "description": "HPDMA2 Channel5 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel6",
+      "value": 53,
+      "description": "HPDMA2 Channel6 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel7",
+      "value": 54,
+      "description": "HPDMA2 Channel7 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel8",
+      "value": 55,
+      "description": "HPDMA2 Channel8 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel9",
+      "value": 56,
+      "description": "HPDMA2 Channel9 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel10",
+      "value": 57,
+      "description": "HPDMA2 Channel10 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel11",
+      "value": 58,
+      "description": "HPDMA2 Channel11 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel12",
+      "value": 59,
+      "description": "HPDMA2 Channel12 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel13",
+      "value": 60,
+      "description": "HPDMA2 Channel13 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel14",
+      "value": 61,
+      "description": "HPDMA2 Channel14 interrupt"
+    },
+    {
+      "name": "HPDMA2_Channel15",
+      "value": 62,
+      "description": "HPDMA2 Channel15 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel0",
+      "value": 63,
+      "description": "HPDMA3 Channel0 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel1",
+      "value": 64,
+      "description": "HPDMA3 Channel1 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel2",
+      "value": 65,
+      "description": "HPDMA3 Channel2 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel3",
+      "value": 66,
+      "description": "HPDMA3 Channel3 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel4",
+      "value": 67,
+      "description": "HPDMA3 Channel4 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel5",
+      "value": 68,
+      "description": "HPDMA3 Channel5 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel6",
+      "value": 69,
+      "description": "HPDMA3 Channel6 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel7",
+      "value": 70,
+      "description": "HPDMA3 Channel7 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel8",
+      "value": 71,
+      "description": "HPDMA3 Channel8 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel9",
+      "value": 72,
+      "description": "HPDMA3 Channel9 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel10",
+      "value": 73,
+      "description": "HPDMA3 Channel10 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel11",
+      "value": 74,
+      "description": "HPDMA3 Channel11 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel12",
+      "value": 75,
+      "description": "HPDMA3 Channel12 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel13",
+      "value": 76,
+      "description": "HPDMA3 Channel13 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel14",
+      "value": 77,
+      "description": "HPDMA3 Channel14 interrupt"
+    },
+    {
+      "name": "HPDMA3_Channel15",
+      "value": 78,
+      "description": "HPDMA3 Channel15 interrupt"
+    },
+    {
+      "name": "ICACHE",
+      "value": 79,
+      "description": "ICACHE interrupt"
+    },
+    {
+      "name": "DCACHE",
+      "value": 80,
+      "description": "DCACHE interrupt"
+    },
+    {
+      "name": "ADC1",
+      "value": 81,
+      "description": "ADC1 interrupt"
+    },
+    {
+      "name": "ADC2",
+      "value": 82,
+      "description": "ADC2  interrupt"
+    },
+    {
+      "name": "FDCAN_CAL",
+      "value": 83,
+      "description": "FDCAN CCU interrupt"
+    },
+    {
+      "name": "FDCAN1_IT0",
+      "value": 84,
+      "description": "FDCAN1 interrupt 0"
+    },
+    {
+      "name": "FDCAN2_IT0",
+      "value": 85,
+      "description": "FDCAN2 interrupt 0"
+    },
+    {
+      "name": "FDCAN1_IT1",
+      "value": 86,
+      "description": "FDCAN1 interrupt 1"
+    },
+    {
+      "name": "FDCAN2_IT1",
+      "value": 87,
+      "description": "FDCAN2 interrupt 1"
+    },
+    {
+      "name": "TIM1_BRK",
+      "value": 88,
+      "description": "TIM1 Break interrupt"
+    },
+    {
+      "name": "TIM1_UP",
+      "value": 89,
+      "description": "TIM1 Update interrupt"
+    },
+    {
+      "name": "TIM1_TRG_COM",
+      "value": 90,
+      "description": "TIM1 Trigger and Commutation interrupts"
+    },
+    {
+      "name": "TIM1_CC",
+      "value": 91,
+      "description": "TIM1 Capture Compare interrupt"
+    },
+    {
+      "name": "TIM2",
+      "value": 92,
+      "description": "TIM2 global interrupt"
+    },
+    {
+      "name": "TIM3",
+      "value": 93,
+      "description": "TIM3 global interrupt"
+    },
+    {
+      "name": "TIM4",
+      "value": 94,
+      "description": "TIM4 global interrupt"
+    },
+    {
+      "name": "I2C1",
+      "value": 95,
+      "description": "I2C1 Global interrupt"
+    },
+    {
+      "name": "I3C1",
+      "value": 96,
+      "description": "I3C1 Global interrupt"
+    },
+    {
+      "name": "I2C2",
+      "value": 97,
+      "description": "I2C2 Global interrupt"
+    },
+    {
+      "name": "I3C2",
+      "value": 98,
+      "description": "I3C2 Global interrupt"
+    },
+    {
+      "name": "SPI1",
+      "value": 99,
+      "description": "SPI1 global interrupt"
+    },
+    {
+      "name": "SPI2",
+      "value": 100,
+      "description": "SPI2 global interrupt"
+    },
+    {
+      "name": "USART1",
+      "value": 101,
+      "description": "USART1 global interrupt"
+    },
+    {
+      "name": "USART2",
+      "value": 102,
+      "description": "USART2 global interrupt"
+    },
+    {
+      "name": "USART3",
+      "value": 103,
+      "description": "USART3 global interrupt"
+    },
+    {
+      "name": "TIM8_BRK",
+      "value": 105,
+      "description": "TIM8 Break interrupt"
+    },
+    {
+      "name": "TIM8_UP",
+      "value": 106,
+      "description": "TIM8 Update interrupt"
+    },
+    {
+      "name": "TIM8_TRG_COM",
+      "value": 107,
+      "description": "TIM8 Trigger & Commutation interrupt"
+    },
+    {
+      "name": "TIM8_CC",
+      "value": 108,
+      "description": "TIM8 Capture Compare interrupt"
+    },
+    {
+      "name": "FMC",
+      "value": 109,
+      "description": "FMC Global interrupt"
+    },
+    {
+      "name": "SDMMC1",
+      "value": 110,
+      "description": "SDMMC1 Global interrupt"
+    },
+    {
+      "name": "TIM5",
+      "value": 111,
+      "description": "TIM5 Global interrupt"
+    },
+    {
+      "name": "SPI3",
+      "value": 112,
+      "description": "SPI3 Global interrupt"
+    },
+    {
+      "name": "UART4",
+      "value": 113,
+      "description": "UART4 global interrupt"
+    },
+    {
+      "name": "UART5",
+      "value": 114,
+      "description": "UART5 global interrupt"
+    },
+    {
+      "name": "TIM6",
+      "value": 115,
+      "description": "TIM6 global interrupt"
+    },
+    {
+      "name": "TIM7",
+      "value": 116,
+      "description": "TIM7 global interrupt"
+    },
+    {
+      "name": "ETH1_SBD",
+      "value": 117,
+      "description": "ETH1 global interrupt"
+    },
+    {
+      "name": "ETH1_PMT",
+      "value": 118,
+      "description": "ETH1 Wkup interrupt (PMT)"
+    },
+    {
+      "name": "ETH1_LPI",
+      "value": 119,
+      "description": "ETH1 LPI interrupt"
+    },
+    {
+      "name": "ETH2_SBD",
+      "value": 120,
+      "description": "ETH2 global interrupt"
+    },
+    {
+      "name": "ETH2_PMT",
+      "value": 121,
+      "description": "ETH2 Wkup interrupt (PMT)"
+    },
+    {
+      "name": "ETH2_LPI",
+      "value": 122,
+      "description": "ETH2 LPI interrupt"
+    },
+    {
+      "name": "USART6",
+      "value": 123,
+      "description": "USART6 global interrupt"
+    },
+    {
+      "name": "I2C3",
+      "value": 124,
+      "description": "I2C3 Global interrupt"
+    },
+    {
+      "name": "I3C3",
+      "value": 125,
+      "description": "I3C3  Global interrupt"
+    },
+    {
+      "name": "USBH_EHCI",
+      "value": 126,
+      "description": "USB Host EHCI Interrupt"
+    },
+    {
+      "name": "USBH_OHCI",
+      "value": 127,
+      "description": "USB Host OHCI Interrupt"
+    },
+    {
+      "name": "DCMI_PSSI",
+      "value": 128,
+      "description": "DCMI & PSSI global interrupt"
+    },
+    {
+      "name": "CSI2HOST",
+      "value": 129,
+      "description": "CSI2 Host controller interrupt"
+    },
+    {
+      "name": "CRYP1",
+      "value": 131,
+      "description": "Crypto1 interrupt"
+    },
+    {
+      "name": "HASH1",
+      "value": 132,
+      "description": "Hash1  interrupt"
+    },
+    {
+      "name": "PKA",
+      "value": 133,
+      "description": "PKA interrupt"
+    },
+    {
+      "name": "FPU",
+      "value": 134,
+      "description": "FPU global interrupt"
+    },
+    {
+      "name": "UART7",
+      "value": 135,
+      "description": "UART7 global interrupt"
+    },
+    {
+      "name": "LPUART1",
+      "value": 136,
+      "description": "LPUART1 global interrupt"
+    },
+    {
+      "name": "SPI4",
+      "value": 137,
+      "description": "SPI4 global interrupt"
+    },
+    {
+      "name": "SPI5",
+      "value": 138,
+      "description": "SPI5 global interrupt"
+    },
+    {
+      "name": "SPI6",
+      "value": 139,
+      "description": "SPI6 global interrupt"
+    },
+    {
+      "name": "SAI1",
+      "value": 140,
+      "description": "SAI1 global interrupt"
+    },
+    {
+      "name": "LTDC",
+      "value": 141,
+      "description": "LTDC global interrupt"
+    },
+    {
+      "name": "LTDC_ER",
+      "value": 142,
+      "description": "LTDC global error interrupt"
+    },
+    {
+      "name": "LTDC_SEC",
+      "value": 143,
+      "description": "LTDC security global interrupt"
+    },
+    {
+      "name": "LTDC_SEC_ER",
+      "value": 144,
+      "description": "LTDC security global error interrupt"
+    },
+    {
+      "name": "SAI2",
+      "value": 145,
+      "description": "SAI2 global interrupt"
+    },
+    {
+      "name": "OCTOSPI1",
+      "value": 146,
+      "description": "OCTOSPI1 global interrupt"
+    },
+    {
+      "name": "OTFDEC1",
+      "value": 148,
+      "description": "OTFDEC1 interrupt"
+    },
+    {
+      "name": "LPTIM1",
+      "value": 149,
+      "description": "LPTIMER1 global interrupt"
+    },
+    {
+      "name": "USBH_WAKEUP",
+      "value": 150,
+      "description": "USBH Remote  Wake up from USB2PHY1"
+    },
+    {
+      "name": "SPDIFRX",
+      "value": 151,
+      "description": "SPDIFRX global interrupt"
+    },
+    {
+      "name": "IPCC1_RX",
+      "value": 152,
+      "description": "Mailbox 1 RX Occupied interrupt"
+    },
+    {
+      "name": "IPCC1_TX",
+      "value": 153,
+      "description": "Mailbox 1 TX Free  interrupt"
+    },
+    {
+      "name": "IPCC1_RX_S",
+      "value": 154,
+      "description": "Mailbox 1 RX Occupied  secure interrupt"
+    },
+    {
+      "name": "IPCC1_TX_S",
+      "value": 155,
+      "description": "Mailbox 1 TX Free  secure interrupt"
+    },
+    {
+      "name": "SAES",
+      "value": 156,
+      "description": "Secure AES"
+    },
+    {
+      "name": "CRYP2",
+      "value": 157,
+      "description": "Crypto2 interrupt"
+    },
+    {
+      "name": "OTG_WAKEUP",
+      "value": 158,
+      "description": "USB2 DR Remote  Wake up from USB2PHY2"
+    },
+    {
+      "name": "MDF1_FLT0",
+      "value": 160,
+      "description": "MDF1 Filter0 Interrupt"
+    },
+    {
+      "name": "MDF1_FLT1",
+      "value": 161,
+      "description": "MDF1 Filter1 Interrupt"
+    },
+    {
+      "name": "MDF1_FLT2",
+      "value": 162,
+      "description": "MDF1 Filter2 Interrupt"
+    },
+    {
+      "name": "MDF1_FLT3",
+      "value": 163,
+      "description": "MDF1 Filter3 Interrupt"
+    },
+    {
+      "name": "SAI3",
+      "value": 164,
+      "description": "SAI3 global interrupt"
+    },
+    {
+      "name": "TIM15",
+      "value": 165,
+      "description": "TIM15 global interrupt"
+    },
+    {
+      "name": "TIM16",
+      "value": 166,
+      "description": "TIM16 global interrupt"
+    },
+    {
+      "name": "TIM17",
+      "value": 167,
+      "description": "TIM17 global interrupt"
+    },
+    {
+      "name": "TIM12",
+      "value": 168,
+      "description": "TIM12 global interrupt"
+    },
+    {
+      "name": "SDMMC2",
+      "value": 169,
+      "description": "SDMMC2 global interrupt"
+    },
+    {
+      "name": "DCMIPP",
+      "value": 170,
+      "description": "DCMIPP global interrupt"
+    },
+    {
+      "name": "nCTIIRQ1",
+      "value": 171,
+      "description": "Cortex-M33 CTI interrupt 1"
+    },
+    {
+      "name": "nCTIIRQ2",
+      "value": 172,
+      "description": "Cortex-M33 CTI interrupt 2"
+    },
+    {
+      "name": "TIM13",
+      "value": 173,
+      "description": "TIM13 global interrupt"
+    },
+    {
+      "name": "TIM14",
+      "value": 174,
+      "description": "TIM14 global interrupt"
+    },
+    {
+      "name": "TIM10",
+      "value": 175,
+      "description": "TIM10 global interrupt"
+    },
+    {
+      "name": "RNG1",
+      "value": 176,
+      "description": "RNG1 interrupt"
+    },
+    {
+      "name": "HASH2",
+      "value": 178,
+      "description": "Hash2  interrupt"
+    },
+    {
+      "name": "SDMMC3",
+      "value": 179,
+      "description": "SDMMC3 Global interrupt"
+    },
+    {
+      "name": "LPTIM2",
+      "value": 180,
+      "description": "LPTIMER2 global interrupt"
+    },
+    {
+      "name": "LPTIM3",
+      "value": 181,
+      "description": "LPTIMER3 global interrupt"
+    },
+    {
+      "name": "LPTIM4",
+      "value": 182,
+      "description": "LPTIMER4 global interrupt"
+    },
+    {
+      "name": "LPTIM5",
+      "value": 183,
+      "description": "LPTIMER5 global interrupt"
+    },
+    {
+      "name": "CPU1_SEV",
+      "value": 185,
+      "description": "Cortex-A35 Send Event through EXTI"
+    },
+    {
+      "name": "RCC_WAKEUP",
+      "value": 186,
+      "description": "RCC CPU2 Wake up interrupt"
+    },
+    {
+      "name": "SAI4",
+      "value": 187,
+      "description": "SAI4 global interrupt"
+    },
+    {
+      "name": "DTS",
+      "value": 188,
+      "description": "Temperature sensor interrupt"
+    },
+    {
+      "name": "TIM11",
+      "value": 189,
+      "description": "TIM11 global interrupt"
+    },
+    {
+      "name": "CPU2_WAKEUP_PIN",
+      "value": 190,
+      "description": "Interrupt for all 6 wake-up enabled by CPU2"
+    },
+    {
+      "name": "OTG",
+      "value": 191,
+      "description": "USB2 DR global interrupt"
+    },
+    {
+      "name": "RNG2",
+      "value": 192,
+      "description": "RNG2 interrupt"
+    },
+    {
+      "name": "SERF",
+      "value": 195,
+      "description": "SERF global interrupt"
+    },
+    {
+      "name": "RAMCFG",
+      "value": 197,
+      "description": "RAM configuration global interrupt"
+    },
+    {
+      "name": "DDRCTRL",
+      "value": 198,
+      "description": "DDRCTRL interrupt"
+    },
+    {
+      "name": "DDRPHYC",
+      "value": 199,
+      "description": "DDRPHY interrupt (active low)"
+    },
+    {
+      "name": "DFI_ERR",
+      "value": 200,
+      "description": "DDRPHY DFI error Interrupt"
+    },
+    {
+      "name": "IAC",
+      "value": 201,
+      "description": "RIF Illegal access Controller interrupt"
+    },
+    {
+      "name": "VDDCPU_VD",
+      "value": 202,
+      "description": "VDDCPU voltage detector"
+    },
+    {
+      "name": "VDDCORE_VD",
+      "value": 203,
+      "description": "VDDCORE voltage detector"
+    },
+    {
+      "name": "HPDMA1_WKUP",
+      "value": 205,
+      "description": "HPDMA1 channel 0 to 15 wake up"
+    },
+    {
+      "name": "HPDMA2_WKUP",
+      "value": 206,
+      "description": "HPDMA2 channel 0 to 15 wake up"
+    },
+    {
+      "name": "HPDMA3_WKUP",
+      "value": 207,
+      "description": "HPDMA3 channel 0 to 15 wake up"
+    },
+    {
+      "name": "DBG_AUTH_HOST",
+      "value": 208,
+      "description": "Debugger has written DBG_AUTH_HOST register"
+    },
+    {
+      "name": "DBG_AUTH_ACK",
+      "value": 209,
+      "description": "Debugger has read DBG_AUTH_ACKregister"
+    },
+    {
+      "name": "RCC_HSI_FMON",
+      "value": 210,
+      "description": "HSI Frequency Monitor"
+    },
+    {
+      "name": "RCC_MSI_FMON",
+      "value": 211,
+      "description": "MSI Frequency Monitor"
+    },
+    {
+      "name": "EXTI1_0",
+      "value": 268,
+      "description": "EXTI1 Line 0 interrupt"
+    },
+    {
+      "name": "EXTI1_1",
+      "value": 269,
+      "description": "EXTI1 Line 1 interrupt"
+    },
+    {
+      "name": "EXTI1_2",
+      "value": 270,
+      "description": "EXTI1 Line 2 interrupt"
+    },
+    {
+      "name": "EXTI1_3",
+      "value": 271,
+      "description": "EXTI1 Line 3 interrupt"
+    },
+    {
+      "name": "EXTI1_4",
+      "value": 272,
+      "description": "EXTI1 Line 4 interrupt"
+    },
+    {
+      "name": "EXTI1_5",
+      "value": 273,
+      "description": "EXTI1 Line 5 interrupt"
+    },
+    {
+      "name": "EXTI1_6",
+      "value": 274,
+      "description": "EXTI1 Line 6 interrupt"
+    },
+    {
+      "name": "EXTI1_7",
+      "value": 275,
+      "description": "EXTI1 Line 7 interrupt"
+    },
+    {
+      "name": "EXTI1_8",
+      "value": 276,
+      "description": "EXTI1 Line 8 interrupt"
+    },
+    {
+      "name": "EXTI1_9",
+      "value": 277,
+      "description": "EXTI1 Line 9 interrupt"
+    },
+    {
+      "name": "EXTI1_10",
+      "value": 278,
+      "description": "EXTI1 Line 10 interrupt"
+    },
+    {
+      "name": "EXTI1_11",
+      "value": 279,
+      "description": "EXTI1 Line 11 interrupt"
+    },
+    {
+      "name": "EXTI1_12",
+      "value": 280,
+      "description": "EXTI1 Line 12 interrupt"
+    },
+    {
+      "name": "EXTI1_13",
+      "value": 281,
+      "description": "EXTI1 Line 13 interrupt"
+    },
+    {
+      "name": "EXTI1_14",
+      "value": 282,
+      "description": "EXTI1 Line 14 interrupt"
+    },
+    {
+      "name": "EXTI1_15",
+      "value": 283,
+      "description": "EXTI1 Line 15 interrupt"
+    },
+    {
+      "name": "DDRPERFM",
+      "value": 310,
+      "description": "DDR Performance Monitor Interrupt"
+    }
+  ],
+  "peripherals": [
+    {
+      "name": "ADC1",
+      "base_address": "0x404e0000",
+      "block": "adc/ADC"
+    },
+    {
+      "name": "ADC1_COMMON",
+      "base_address": "0x404e0300",
+      "block": "adc_common/ADC_Common"
+    },
+    {
+      "name": "ADC2",
+      "base_address": "0x404f0000",
+      "block": "adc/ADC"
+    },
+    {
+      "name": "ADC2_COMMON",
+      "base_address": "0x404f0300",
+      "block": "adc_common/ADC_Common"
+    },
+    {
+      "name": "ADF1",
+      "base_address": "0x46220000",
+      "block": "mdf/MDF"
+    },
+    {
+      "name": "ADF1_Filter0",
+      "base_address": "0x46220080",
+      "block": "mdf_filter/MDF_Filter"
+    },
+    {
+      "name": "BSEC",
+      "base_address": "0x44000000",
+      "block": "bsec/BSEC"
+    },
+    {
+      "name": "CA35SYSCFG",
+      "base_address": "0x48802000",
+      "block": "ca35syscfg/CA35SYSCFG"
+    },
+    {
+      "name": "CRC",
+      "base_address": "0x404c0000",
+      "block": "crc/CRC"
+    },
+    {
+      "name": "CRYP1",
+      "base_address": "0x42030000",
+      "block": "cryp/CRYP"
+    },
+    {
+      "name": "CRYP2",
+      "base_address": "0x42040000",
+      "block": "cryp/CRYP"
+    },
+    {
+      "name": "CSI",
+      "base_address": "0x48020000",
+      "block": "csi/CSI"
+    },
+    {
+      "name": "DBGMCU",
+      "base_address": "0x440a0000",
+      "block": "dbgmcu/DBGMCU"
+    },
+    {
+      "name": "DCACHE",
+      "base_address": "0x40480000",
+      "block": "dcache/DCACHE"
+    },
+    {
+      "name": "DCMI",
+      "base_address": "0x404a0000",
+      "block": "dcmi/DCMI"
+    },
+    {
+      "name": "DCMIPP",
+      "base_address": "0x48030000",
+      "block": "dcmipp/DCMIPP"
+    },
+    {
+      "name": "DDRC",
+      "base_address": "0x48040000",
+      "block": "ddrc/DDRC"
+    },
+    {
+      "name": "DDRDBG",
+      "base_address": "0x48050000",
+      "block": "ddrdbg/DDRDBG"
+    },
+    {
+      "name": "DDRPERFM",
+      "base_address": "0x480c0000",
+      "block": "ddrperfm/DDRPERFM"
+    },
+    {
+      "name": "DDRPHYC",
+      "base_address": "0x48c00000",
+      "block": "ddrphyc/DDRPHYC"
+    },
+    {
+      "name": "DTS",
+      "base_address": "0x44070000",
+      "block": "dts/DTS"
+    },
+    {
+      "name": "ETH1",
+      "base_address": "0x482c0000",
+      "block": "eth/ETH"
+    },
+    {
+      "name": "ETH2",
+      "base_address": "0x482d0000",
+      "block": "eth/ETH"
+    },
+    {
+      "name": "EXTI1",
+      "base_address": "0x44220000",
+      "block": "exti/EXTI"
+    },
+    {
+      "name": "EXTI1_C1",
+      "base_address": "0x44220080",
+      "block": "exti_core/EXTI_Core"
+    },
+    {
+      "name": "EXTI1_C2",
+      "base_address": "0x442200c0",
+      "block": "exti_core/EXTI_Core"
+    },
+    {
+      "name": "EXTI2",
+      "base_address": "0x442d0000",
+      "block": "exti/EXTI"
+    },
+    {
+      "name": "EXTI2_C1",
+      "base_address": "0x442d0080",
+      "block": "exti_core/EXTI_Core"
+    },
+    {
+      "name": "EXTI2_C2",
+      "base_address": "0x442d00c0",
+      "block": "exti_core/EXTI_Core"
+    },
+    {
+      "name": "EXTI2_C3",
+      "base_address": "0x442d0100",
+      "block": "exti_core/EXTI_Core"
+    },
+    {
+      "name": "FDCAN_CCU",
+      "base_address": "0x40300000",
+      "block": "fdcan_clockcalibrationunit/FDCAN_ClockCalibrationUnit"
+    },
+    {
+      "name": "FMC_Bank1E_R",
+      "base_address": "0x48200104",
+      "block": "fmc_bank1e/FMC_Bank1E"
+    },
+    {
+      "name": "FMC_Bank1_R",
+      "base_address": "0x48200000",
+      "block": "fmc_bank1/FMC_Bank1"
+    },
+    {
+      "name": "FMC_Bank3_R",
+      "base_address": "0x48200080",
+      "block": "fmc_bank3/FMC_Bank3"
+    },
+    {
+      "name": "FMC_Common_R",
+      "base_address": "0x48200020",
+      "block": "fmc_common/FMC_Common"
+    },
+    {
+      "name": "GPIOA",
+      "base_address": "0x44240000",
+      "block": "gpio/GPIO"
+    },
+    {
+      "name": "GPIOB",
+      "base_address": "0x44250000",
+      "block": "gpio/GPIO"
+    },
+    {
+      "name": "GPIOC",
+      "base_address": "0x44260000",
+      "block": "gpio/GPIO"
+    },
+    {
+      "name": "GPIOD",
+      "base_address": "0x44270000",
+      "block": "gpio/GPIO"
+    },
+    {
+      "name": "GPIOE",
+      "base_address": "0x44280000",
+      "block": "gpio/GPIO"
+    },
+    {
+      "name": "GPIOF",
+      "base_address": "0x44290000",
+      "block": "gpio/GPIO"
+    },
+    {
+      "name": "GPIOG",
+      "base_address": "0x442a0000",
+      "block": "gpio/GPIO"
+    },
+    {
+      "name": "GPIOH",
+      "base_address": "0x442b0000",
+      "block": "gpio/GPIO"
+    },
+    {
+      "name": "GPIOI",
+      "base_address": "0x442c0000",
+      "block": "gpio/GPIO"
+    },
+    {
+      "name": "GPIOZ",
+      "base_address": "0x46200000",
+      "block": "gpio/GPIO"
+    },
+    {
+      "name": "HASH1",
+      "base_address": "0x42030400",
+      "block": "hash/HASH"
+    },
+    {
+      "name": "HASH1_DIGEST",
+      "base_address": "0x42030710",
+      "block": "hash_digest/HASH_DIGEST"
+    },
+    {
+      "name": "HASH2",
+      "base_address": "0x42010000",
+      "block": "hash/HASH"
+    },
+    {
+      "name": "HASH2_DIGEST",
+      "base_address": "0x42010310",
+      "block": "hash_digest/HASH_DIGEST"
+    },
+    {
+      "name": "HDP",
+      "base_address": "0x44090000",
+      "block": "hdp/HDP"
+    },
+    {
+      "name": "HPDMA1",
+      "base_address": "0x40400000",
+      "block": "dma/DMA"
+    },
+    {
+      "name": "HPDMA1_Channel0",
+      "base_address": "0x40400050",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel1",
+      "base_address": "0x404000d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel10",
+      "base_address": "0x40400550",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel11",
+      "base_address": "0x404005d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel12",
+      "base_address": "0x40400650",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel13",
+      "base_address": "0x404006d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel14",
+      "base_address": "0x40400750",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel15",
+      "base_address": "0x404007d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel2",
+      "base_address": "0x40400150",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel3",
+      "base_address": "0x404001d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel4",
+      "base_address": "0x40400250",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel5",
+      "base_address": "0x404002d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel6",
+      "base_address": "0x40400350",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel7",
+      "base_address": "0x404003d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel8",
+      "base_address": "0x40400450",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA1_Channel9",
+      "base_address": "0x404004d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2",
+      "base_address": "0x40410000",
+      "block": "dma/DMA"
+    },
+    {
+      "name": "HPDMA2_Channel0",
+      "base_address": "0x40410050",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel1",
+      "base_address": "0x404100d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel10",
+      "base_address": "0x40410550",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel11",
+      "base_address": "0x404105d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel12",
+      "base_address": "0x40410650",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel13",
+      "base_address": "0x404106d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel14",
+      "base_address": "0x40410750",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel15",
+      "base_address": "0x404107d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel2",
+      "base_address": "0x40410150",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel3",
+      "base_address": "0x404101d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel4",
+      "base_address": "0x40410250",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel5",
+      "base_address": "0x404102d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel6",
+      "base_address": "0x40410350",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel7",
+      "base_address": "0x404103d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel8",
+      "base_address": "0x40410450",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA2_Channel9",
+      "base_address": "0x404104d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3",
+      "base_address": "0x40420000",
+      "block": "dma/DMA"
+    },
+    {
+      "name": "HPDMA3_Channel0",
+      "base_address": "0x40420050",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel1",
+      "base_address": "0x404200d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel10",
+      "base_address": "0x40420550",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel11",
+      "base_address": "0x404205d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel12",
+      "base_address": "0x40420650",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel13",
+      "base_address": "0x404206d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel14",
+      "base_address": "0x40420750",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel15",
+      "base_address": "0x404207d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel2",
+      "base_address": "0x40420150",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel3",
+      "base_address": "0x404201d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel4",
+      "base_address": "0x40420250",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel5",
+      "base_address": "0x404202d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel6",
+      "base_address": "0x40420350",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel7",
+      "base_address": "0x404203d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel8",
+      "base_address": "0x40420450",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "HPDMA3_Channel9",
+      "base_address": "0x404204d0",
+      "block": "dma_channel/DMA_Channel"
+    },
+    {
+      "name": "I2C1",
+      "base_address": "0x40170000",
+      "block": "i2c/I2C"
+    },
+    {
+      "name": "I2C2",
+      "base_address": "0x40180000",
+      "block": "i2c/I2C"
+    },
+    {
+      "name": "I2C3",
+      "base_address": "0x46040000",
+      "block": "i2c/I2C"
+    },
+    {
+      "name": "I3C1",
+      "base_address": "0x40190000",
+      "block": "i3c/I3C"
+    },
+    {
+      "name": "I3C2",
+      "base_address": "0x401a0000",
+      "block": "i3c/I3C"
+    },
+    {
+      "name": "I3C3",
+      "base_address": "0x46080000",
+      "block": "i3c/I3C"
+    },
+    {
+      "name": "IAC",
+      "base_address": "0x42090000",
+      "block": "iac/IAC"
+    },
+    {
+      "name": "ICACHE",
+      "base_address": "0x40470000",
+      "block": "icache/ICACHE"
+    },
+    {
+      "name": "IPCC1",
+      "base_address": "0x40490000",
+      "block": "ipcc/IPCC"
+    },
+    {
+      "name": "IWDG1",
+      "base_address": "0x44010000",
+      "block": "iwdg/IWDG"
+    },
+    {
+      "name": "IWDG2",
+      "base_address": "0x44020000",
+      "block": "iwdg/IWDG"
+    },
+    {
+      "name": "IWDG3",
+      "base_address": "0x44030000",
+      "block": "iwdg/IWDG"
+    },
+    {
+      "name": "IWDG4",
+      "base_address": "0x44040000",
+      "block": "iwdg/IWDG"
+    },
+    {
+      "name": "LPTIM1",
+      "base_address": "0x40090000",
+      "block": "lptim/LPTIM"
+    },
+    {
+      "name": "LPTIM2",
+      "base_address": "0x400a0000",
+      "block": "lptim/LPTIM"
+    },
+    {
+      "name": "LPTIM3",
+      "base_address": "0x46050000",
+      "block": "lptim/LPTIM"
+    },
+    {
+      "name": "LPTIM4",
+      "base_address": "0x46060000",
+      "block": "lptim/LPTIM"
+    },
+    {
+      "name": "LPTIM5",
+      "base_address": "0x46070000",
+      "block": "lptim/LPTIM"
+    },
+    {
+      "name": "LPUART1",
+      "base_address": "0x46030000",
+      "block": "usart/USART"
+    },
+    {
+      "name": "LTDC",
+      "base_address": "0x48010000",
+      "block": "ltdc/LTDC"
+    },
+    {
+      "name": "MDF1",
+      "base_address": "0x404d0000",
+      "block": "mdf/MDF"
+    },
+    {
+      "name": "MDF1_Filter0",
+      "base_address": "0x404d0080",
+      "block": "mdf_filter/MDF_Filter"
+    },
+    {
+      "name": "MDF1_Filter1",
+      "base_address": "0x404d0100",
+      "block": "mdf_filter/MDF_Filter"
+    },
+    {
+      "name": "MDF1_Filter2",
+      "base_address": "0x404d0180",
+      "block": "mdf_filter/MDF_Filter"
+    },
+    {
+      "name": "MDF1_Filter3",
+      "base_address": "0x404d0200",
+      "block": "mdf_filter/MDF_Filter"
+    },
+    {
+      "name": "MDF1_Filter4",
+      "base_address": "0x404d0280",
+      "block": "mdf_filter/MDF_Filter"
+    },
+    {
+      "name": "MDF1_Filter5",
+      "base_address": "0x404d0300",
+      "block": "mdf_filter/MDF_Filter"
+    },
+    {
+      "name": "MDF1_Filter6",
+      "base_address": "0x404d0380",
+      "block": "mdf_filter/MDF_Filter"
+    },
+    {
+      "name": "MDF1_Filter7",
+      "base_address": "0x404d0400",
+      "block": "mdf_filter/MDF_Filter"
+    },
+    {
+      "name": "OCTOSPI1",
+      "base_address": "0x40430000",
+      "block": "octospi/OCTOSPI"
+    },
+    {
+      "name": "OTFDEC1",
+      "base_address": "0x40450000",
+      "block": "otfdec/OTFDEC"
+    },
+    {
+      "name": "OTFDEC1_REGION1",
+      "base_address": "0x40450020",
+      "block": "otfdec_region/OTFDEC_Region"
+    },
+    {
+      "name": "OTFDEC1_REGION2",
+      "base_address": "0x40450050",
+      "block": "otfdec_region/OTFDEC_Region"
+    },
+    {
+      "name": "OTFDEC1_REGION3",
+      "base_address": "0x40450080",
+      "block": "otfdec_region/OTFDEC_Region"
+    },
+    {
+      "name": "OTFDEC1_REGION4",
+      "base_address": "0x404500b0",
+      "block": "otfdec_region/OTFDEC_Region"
+    },
+    {
+      "name": "OTFDEC2",
+      "base_address": "0x40460000",
+      "block": "otfdec/OTFDEC"
+    },
+    {
+      "name": "OTFDEC2_REGION1",
+      "base_address": "0x40460020",
+      "block": "otfdec_region/OTFDEC_Region"
+    },
+    {
+      "name": "OTFDEC2_REGION2",
+      "base_address": "0x40460050",
+      "block": "otfdec_region/OTFDEC_Region"
+    },
+    {
+      "name": "OTFDEC2_REGION3",
+      "base_address": "0x40460080",
+      "block": "otfdec_region/OTFDEC_Region"
+    },
+    {
+      "name": "OTFDEC2_REGION4",
+      "base_address": "0x404600b0",
+      "block": "otfdec_region/OTFDEC_Region"
+    },
+    {
+      "name": "PKA",
+      "base_address": "0x42032000",
+      "block": "pka/PKA"
+    },
+    {
+      "name": "PSSI",
+      "base_address": "0x404b0000",
+      "block": "pssi/PSSI"
+    },
+    {
+      "name": "PWR",
+      "base_address": "0x44210000",
+      "block": "pwr/PWR"
+    },
+    {
+      "name": "RAMCFG_BKPSRAM",
+      "base_address": "0x42070380",
+      "block": "ramcfg/RAMCFG"
+    },
+    {
+      "name": "RAMCFG_RETRAM",
+      "base_address": "0x42070180",
+      "block": "ramcfg/RAMCFG"
+    },
+    {
+      "name": "RAMCFG_SRAM1",
+      "base_address": "0x42070080",
+      "block": "ramcfg/RAMCFG"
+    },
+    {
+      "name": "RAMCFG_SYSRAM",
+      "base_address": "0x42070000",
+      "block": "ramcfg/RAMCFG"
+    },
+    {
+      "name": "RCC",
+      "base_address": "0x44200000",
+      "block": "rcc/RCC"
+    },
+    {
+      "name": "RIFSC_ID",
+      "base_address": "0x42080fb0",
+      "block": "rifsc_id/RIFSC_ID"
+    },
+    {
+      "name": "RIMC",
+      "base_address": "0x42080c00",
+      "block": "rimc/RIMC"
+    },
+    {
+      "name": "RISAB1",
+      "base_address": "0x420f0000",
+      "block": "risab/RISAB"
+    },
+    {
+      "name": "RISAB2",
+      "base_address": "0x42100000",
+      "block": "risab/RISAB"
+    },
+    {
+      "name": "RISAB3",
+      "base_address": "0x42110000",
+      "block": "risab/RISAB"
+    },
+    {
+      "name": "RISAB5",
+      "base_address": "0x42130000",
+      "block": "risab/RISAB"
+    },
+    {
+      "name": "RISAF1",
+      "base_address": "0x420a0000",
+      "block": "risaf/RISAF"
+    },
+    {
+      "name": "RISAF2",
+      "base_address": "0x420b0000",
+      "block": "risaf/RISAF"
+    },
+    {
+      "name": "RISAF4",
+      "base_address": "0x420d0000",
+      "block": "risaf/RISAF"
+    },
+    {
+      "name": "RISC",
+      "base_address": "0x42080000",
+      "block": "risc/RISC"
+    },
+    {
+      "name": "RNG1",
+      "base_address": "0x42030800",
+      "block": "rng/RNG"
+    },
+    {
+      "name": "RNG2",
+      "base_address": "0x42020000",
+      "block": "rng/RNG"
+    },
+    {
+      "name": "RTC",
+      "base_address": "0x46000000",
+      "block": "rtc/RTC"
+    },
+    {
+      "name": "SAES",
+      "base_address": "0x42030c00",
+      "block": "saes/SAES"
+    },
+    {
+      "name": "SAI1",
+      "base_address": "0x40290000",
+      "block": "sai/SAI"
+    },
+    {
+      "name": "SAI1_Block_A",
+      "base_address": "0x40290004",
+      "block": "sai_block/SAI_Block"
+    },
+    {
+      "name": "SAI1_Block_B",
+      "base_address": "0x40290024",
+      "block": "sai_block/SAI_Block"
+    },
+    {
+      "name": "SAI2",
+      "base_address": "0x402a0000",
+      "block": "sai/SAI"
+    },
+    {
+      "name": "SAI2_Block_A",
+      "base_address": "0x402a0004",
+      "block": "sai_block/SAI_Block"
+    },
+    {
+      "name": "SAI2_Block_B",
+      "base_address": "0x402a0024",
+      "block": "sai_block/SAI_Block"
+    },
+    {
+      "name": "SAI3",
+      "base_address": "0x402b0000",
+      "block": "sai/SAI"
+    },
+    {
+      "name": "SAI3_Block_A",
+      "base_address": "0x402b0004",
+      "block": "sai_block/SAI_Block"
+    },
+    {
+      "name": "SAI3_Block_B",
+      "base_address": "0x402b0024",
+      "block": "sai_block/SAI_Block"
+    },
+    {
+      "name": "SAI4",
+      "base_address": "0x40340000",
+      "block": "sai/SAI"
+    },
+    {
+      "name": "SAI4_Block_A",
+      "base_address": "0x40340004",
+      "block": "sai_block/SAI_Block"
+    },
+    {
+      "name": "SAI4_Block_B",
+      "base_address": "0x40340024",
+      "block": "sai_block/SAI_Block"
+    },
+    {
+      "name": "SDMMC1",
+      "base_address": "0x48220000",
+      "block": "sdmmc/SDMMC"
+    },
+    {
+      "name": "SDMMC2",
+      "base_address": "0x48230000",
+      "block": "sdmmc/SDMMC"
+    },
+    {
+      "name": "SDMMC3",
+      "base_address": "0x48240000",
+      "block": "sdmmc/SDMMC"
+    },
+    {
+      "name": "SERC",
+      "base_address": "0x44080000",
+      "block": "serc/SERC"
+    },
+    {
+      "name": "SPDIFRX",
+      "base_address": "0x400d0000",
+      "block": "spdifrx/SPDIFRX"
+    },
+    {
+      "name": "SPI1",
+      "base_address": "0x40230000",
+      "block": "spi/SPI"
+    },
+    {
+      "name": "SPI2",
+      "base_address": "0x400b0000",
+      "block": "spi/SPI"
+    },
+    {
+      "name": "SPI3",
+      "base_address": "0x400c0000",
+      "block": "spi/SPI"
+    },
+    {
+      "name": "SPI4",
+      "base_address": "0x40240000",
+      "block": "spi/SPI"
+    },
+    {
+      "name": "SPI5",
+      "base_address": "0x40280000",
+      "block": "spi/SPI"
+    },
+    {
+      "name": "SPI6",
+      "base_address": "0x46020000",
+      "block": "spi/SPI"
+    },
+    {
+      "name": "STGENC",
+      "base_address": "0x48080000",
+      "block": "stgenc/STGENC"
+    },
+    {
+      "name": "STGENR",
+      "base_address": "0x48070000",
+      "block": "stgenr/STGENR"
+    },
+    {
+      "name": "SYSCFG",
+      "base_address": "0x44230000",
+      "block": "syscfg/SYSCFG"
+    },
+    {
+      "name": "TAMP",
+      "base_address": "0x46010000",
+      "block": "tamp/TAMP"
+    },
+    {
+      "name": "TIM1",
+      "base_address": "0x40200000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM10",
+      "base_address": "0x401c0000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM11",
+      "base_address": "0x401d0000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM12",
+      "base_address": "0x40060000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM13",
+      "base_address": "0x40070000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM14",
+      "base_address": "0x40080000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM15",
+      "base_address": "0x40250000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM16",
+      "base_address": "0x40260000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM17",
+      "base_address": "0x40270000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM2",
+      "base_address": "0x40000000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM3",
+      "base_address": "0x40010000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM4",
+      "base_address": "0x40020000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM5",
+      "base_address": "0x40030000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM6",
+      "base_address": "0x40040000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM7",
+      "base_address": "0x40050000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "TIM8",
+      "base_address": "0x40210000",
+      "block": "tim/TIM"
+    },
+    {
+      "name": "UART4",
+      "base_address": "0x40100000",
+      "block": "usart/USART"
+    },
+    {
+      "name": "UART5",
+      "base_address": "0x40110000",
+      "block": "usart/USART"
+    },
+    {
+      "name": "UART7",
+      "base_address": "0x40370000",
+      "block": "usart/USART"
+    },
+    {
+      "name": "USART1",
+      "base_address": "0x40330000",
+      "block": "usart/USART"
+    },
+    {
+      "name": "USART2",
+      "base_address": "0x400e0000",
+      "block": "usart/USART"
+    },
+    {
+      "name": "USART3",
+      "base_address": "0x400f0000",
+      "block": "usart/USART"
+    },
+    {
+      "name": "USART6",
+      "base_address": "0x40220000",
+      "block": "usart/USART"
+    },
+    {
+      "name": "USBH_EHCI",
+      "base_address": "0x482f0000",
+      "block": "usbh_ehci/USBH_EHCI"
+    },
+    {
+      "name": "USBH_OHCI",
+      "base_address": "0x482e0000",
+      "block": "usbh_ohci/USBH_OHCI"
+    },
+    {
+      "name": "VREFBUF",
+      "base_address": "0x44060000",
+      "block": "vrefbuf/VREFBUF"
+    },
+    {
+      "name": "WWDG1",
+      "base_address": "0x44050000",
+      "block": "wwdg/WWDG"
+    }
+  ]
+}

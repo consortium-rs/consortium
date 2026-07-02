@@ -1,0 +1,156 @@
+block/IR_COMPRESS:
+  description: ''
+  items:
+  - name: NEO_PIPE1_IR_COMP_CONF_CTRL_CAM
+    byte_offset: 0
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_POINT1_CAM
+    byte_offset: 4
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_POINT2_CAM
+    byte_offset: 8
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_POINT3_CAM
+    byte_offset: 12
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_POINT4_CAM
+    byte_offset: 16
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_OFFSET0_CAM
+    byte_offset: 20
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_OFFSET1_CAM
+    byte_offset: 24
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_OFFSET2_CAM
+    byte_offset: 28
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_OFFSET3_CAM
+    byte_offset: 32
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_OFFSET4_CAM
+    byte_offset: 36
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_RATIO01_CAM
+    byte_offset: 40
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_RATIO23_CAM
+    byte_offset: 44
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_RATIO4_CAM
+    byte_offset: 48
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_NPOINT0_CAM
+    byte_offset: 52
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_NPOINT1_CAM
+    byte_offset: 56
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_NPOINT2_CAM
+    byte_offset: 60
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_NPOINT3_CAM
+    byte_offset: 64
+  - name: NEO_PIPE1_IR_COMP_CONF_KNEE_NPOINT4_CAM
+    byte_offset: 68
+fieldset/IR_COMPRESS_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OBPP
+    bit_offset: 0
+    bit_size: 1
+  - name: ENABLE
+    bit_offset: 31
+    bit_size: 1
+fieldset/IR_COMPRESS_KNEE_POINT1_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 20
+fieldset/IR_COMPRESS_KNEE_POINT2_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 20
+fieldset/IR_COMPRESS_KNEE_POINT3_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 20
+fieldset/IR_COMPRESS_KNEE_POINT4_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 20
+fieldset/IR_COMPRESS_KNEE_OFFSET0_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 20
+fieldset/IR_COMPRESS_KNEE_OFFSET1_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 20
+fieldset/IR_COMPRESS_KNEE_OFFSET2_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 20
+fieldset/IR_COMPRESS_KNEE_OFFSET3_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 20
+fieldset/IR_COMPRESS_KNEE_OFFSET4_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 20
+fieldset/IR_COMPRESS_KNEE_RATIO01_CAM:
+  description: ''
+  fields:
+  - name: RATIO0
+    bit_offset: 0
+    bit_size: 16
+  - name: RATIO1
+    bit_offset: 16
+    bit_size: 16
+fieldset/IR_COMPRESS_KNEE_RATIO23_CAM:
+  description: ''
+  fields:
+  - name: RATIO2
+    bit_offset: 0
+    bit_size: 16
+  - name: RATIO3
+    bit_offset: 16
+    bit_size: 16
+fieldset/IR_COMPRESS_KNEE_RATIO4_CAM:
+  description: ''
+  fields:
+  - name: RATIO4
+    bit_offset: 0
+    bit_size: 16
+fieldset/IR_COMPRESS_KNEE_NPOINT0_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 16
+fieldset/IR_COMPRESS_KNEE_NPOINT1_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 16
+fieldset/IR_COMPRESS_KNEE_NPOINT2_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 16
+fieldset/IR_COMPRESS_KNEE_NPOINT3_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 16
+fieldset/IR_COMPRESS_KNEE_NPOINT4_CAM:
+  description: ''
+  fields:
+  - name: KNEEPOINT
+    bit_offset: 0
+    bit_size: 16

@@ -1,0 +1,48 @@
+block/USBH_EHCI:
+  description: ''
+  items:
+  - name: HCCAPBASE
+    byte_offset: 0
+    description: Capability Register
+  - name: HCSPARAMS
+    byte_offset: 4
+    description: Structural Parameter Register
+  - name: HCCPARAMS
+    byte_offset: 8
+    description: Capability Parameter Register
+  - name: USBCMD
+    byte_offset: 16
+    description: USB Command Register
+  - name: USBSTS
+    byte_offset: 20
+    description: USB Status Register
+  - name: USBINTR
+    byte_offset: 24
+    description: USB Interrupt Enable Register
+  - name: FRINDEX
+    byte_offset: 28
+    description: USB Frame Index Register
+  - name: CTRLDSSEGMENT
+    byte_offset: 32
+    description: Control Data Structure Selector Register
+  - name: PERIODICLISTBASE
+    byte_offset: 36
+    description: Periodic Frame List Base Address Register
+  - name: ASYNCLISTADDR
+    byte_offset: 40
+    description: Asynchronous List Address Register
+  - name: CONFIGFLAG
+    byte_offset: 80
+    description: Configure Flag Register
+  - name: PORTSC
+    byte_offset: 84
+    array:
+      len: 1
+      stride: 4
+    description: Port Status and Control Register
+  - name: INSNREG
+    byte_offset: 148
+    array:
+      len: 7
+      stride: 4
+    description: Implementation Register

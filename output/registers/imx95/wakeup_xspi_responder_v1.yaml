@@ -1,0 +1,257 @@
+block/WAKEUP_XSPI_RESPONDER:
+  description: ''
+  items:
+  - name: MODULE_CONTROL
+    byte_offset: 0
+    fieldset: WAKEUP_XSPI_RESPONDER_MODULE_CONTROL
+  - name: READ_COMMAND_CONTROL
+    byte_offset: 4
+    fieldset: WAKEUP_XSPI_RESPONDER_READ_COMMAND_CONTROL
+  - name: READ_REGISTER_COMMAND0
+    byte_offset: 8
+    fieldset: WAKEUP_XSPI_RESPONDER_READ_REGISTER_COMMAND0
+  - name: READ_COMMAND1
+    byte_offset: 12
+    fieldset: WAKEUP_XSPI_RESPONDER_READ_COMMAND1
+  - name: READ_COMMAND2
+    byte_offset: 16
+    fieldset: WAKEUP_XSPI_RESPONDER_READ_COMMAND2
+  - name: WRITE_COMMAND_CONTROL
+    byte_offset: 20
+    fieldset: WAKEUP_XSPI_RESPONDER_WRITE_COMMAND_CONTROL
+  - name: WRITE_REGISTER_COMMAND0
+    byte_offset: 24
+    fieldset: WAKEUP_XSPI_RESPONDER_WRITE_REGISTER_COMMAND0
+  - name: WRITE_COMMAND1
+    byte_offset: 28
+    fieldset: WAKEUP_XSPI_RESPONDER_WRITE_COMMAND1
+  - name: WRITE_COMMAND2
+    byte_offset: 32
+    fieldset: WAKEUP_XSPI_RESPONDER_WRITE_COMMAND2
+  - name: RW_COMMAND_BASE
+    byte_offset: 36
+    fieldset: WAKEUP_XSPI_RESPONDER_RW_COMMAND_BASE
+  - name: CMD1_RANGE
+    byte_offset: 40
+    fieldset: WAKEUP_XSPI_RESPONDER_CMD1_RANGE
+  - name: CMD2_RANGE
+    byte_offset: 44
+    fieldset: WAKEUP_XSPI_RESPONDER_CMD2_RANGE
+  - name: MODULE_STATUS
+    byte_offset: 48
+    fieldset: WAKEUP_XSPI_RESPONDER_MODULE_STATUS
+  - name: MODULE_INT
+    byte_offset: 52
+    fieldset: WAKEUP_XSPI_RESPONDER_MODULE_INT
+  - name: MODULE_INTEN
+    byte_offset: 56
+    fieldset: WAKEUP_XSPI_RESPONDER_MODULE_INTEN
+  - name: SPI_MAIL_CTRL
+    byte_offset: 60
+    fieldset: WAKEUP_XSPI_RESPONDER_SPI_MAIL_CTRL
+  - name: SPIMAIL0
+    byte_offset: 64
+    fieldset: WAKEUP_XSPI_RESPONDER_SPIMAIL0
+  - name: SPIMAIL
+    byte_offset: 68
+    array:
+      len: 8
+      stride: 4
+    fieldset: WAKEUP_XSPI_RESPONDER_SPIMAIL
+fieldset/WAKEUP_XSPI_RESPONDER_MODULE_CONTROL:
+  description: ''
+  fields:
+  - name: SWRESET
+    bit_offset: 0
+    bit_size: 1
+  - name: IOMODE
+    bit_offset: 1
+    bit_size: 2
+  - name: DQSSTOP
+    bit_offset: 3
+    bit_size: 1
+  - name: CSMASK
+    bit_offset: 4
+    bit_size: 1
+  - name: BLKREAD
+    bit_offset: 5
+    bit_size: 1
+  - name: BLKWRITE
+    bit_offset: 6
+    bit_size: 1
+  - name: BLKNXTWR
+    bit_offset: 7
+    bit_size: 1
+  - name: BLKNXTRD
+    bit_offset: 8
+    bit_size: 1
+  - name: ALLOWONEWR
+    bit_offset: 9
+    bit_size: 1
+  - name: ALLOWONERD
+    bit_offset: 10
+    bit_size: 1
+  - name: CMDRANGEBASEUPDATE
+    bit_offset: 11
+    bit_size: 1
+fieldset/WAKEUP_XSPI_RESPONDER_READ_COMMAND_CONTROL:
+  description: ''
+  fields:
+  - name: RDFETCHSIZE
+    bit_offset: 0
+    bit_size: 2
+  - name: RDWM
+    bit_offset: 2
+    bit_size: 6
+  - name: RDOT
+    bit_offset: 8
+    bit_size: 1
+  - name: WMEN
+    bit_offset: 9
+    bit_size: 1
+fieldset/WAKEUP_XSPI_RESPONDER_READ_REGISTER_COMMAND0:
+  description: ''
+  fields:
+  - name: DUMMYCYCLES
+    bit_offset: 0
+    bit_size: 16
+  - name: COMMANDSET
+    bit_offset: 16
+    bit_size: 16
+fieldset/WAKEUP_XSPI_RESPONDER_READ_COMMAND1:
+  description: ''
+  fields:
+  - name: DUMMYCYCLES
+    bit_offset: 0
+    bit_size: 16
+  - name: COMMANDSET
+    bit_offset: 16
+    bit_size: 16
+fieldset/WAKEUP_XSPI_RESPONDER_READ_COMMAND2:
+  description: ''
+  fields:
+  - name: DUMMYCYCLES
+    bit_offset: 0
+    bit_size: 16
+  - name: COMMANDSET
+    bit_offset: 16
+    bit_size: 16
+fieldset/WAKEUP_XSPI_RESPONDER_WRITE_COMMAND_CONTROL:
+  description: ''
+  fields:
+  - name: WRWM
+    bit_offset: 0
+    bit_size: 2
+fieldset/WAKEUP_XSPI_RESPONDER_WRITE_REGISTER_COMMAND0:
+  description: ''
+  fields:
+  - name: COMMANDSET
+    bit_offset: 16
+    bit_size: 16
+fieldset/WAKEUP_XSPI_RESPONDER_WRITE_COMMAND1:
+  description: ''
+  fields:
+  - name: COMMANDSET
+    bit_offset: 16
+    bit_size: 16
+fieldset/WAKEUP_XSPI_RESPONDER_WRITE_COMMAND2:
+  description: ''
+  fields:
+  - name: COMMANDSET
+    bit_offset: 16
+    bit_size: 16
+fieldset/WAKEUP_XSPI_RESPONDER_RW_COMMAND_BASE:
+  description: ''
+  fields:
+  - name: ADDRBASE1
+    bit_offset: 0
+    bit_size: 16
+  - name: ADDRBASE2
+    bit_offset: 16
+    bit_size: 16
+fieldset/WAKEUP_XSPI_RESPONDER_CMD1_RANGE:
+  description: ''
+  fields:
+  - name: RANGE
+    bit_offset: 10
+    bit_size: 22
+    description: Memory Range
+fieldset/WAKEUP_XSPI_RESPONDER_CMD2_RANGE:
+  description: ''
+  fields:
+  - name: RANGE
+    bit_offset: 10
+    bit_size: 22
+    description: Memory Range
+fieldset/WAKEUP_XSPI_RESPONDER_MODULE_STATUS:
+  description: ''
+  fields:
+  - name: WIP
+    bit_offset: 0
+    bit_size: 1
+  - name: AXIREADIDLE
+    bit_offset: 1
+    bit_size: 1
+  - name: REGRWIDLE
+    bit_offset: 2
+    bit_size: 1
+  - name: SEQIDLE
+    bit_offset: 3
+    bit_size: 1
+  - name: RDOFR
+    bit_offset: 4
+    bit_size: 4
+  - name: WROFR
+    bit_offset: 8
+    bit_size: 4
+  - name: ALLOWAXIRD
+    bit_offset: 12
+    bit_size: 1
+  - name: ALLOWAXIWR
+    bit_offset: 13
+    bit_size: 1
+fieldset/WAKEUP_XSPI_RESPONDER_MODULE_INT:
+  description: ''
+  fields:
+  - name: WOF
+    bit_offset: 0
+    bit_size: 1
+  - name: RUF
+    bit_offset: 1
+    bit_size: 1
+  - name: ERRCMD
+    bit_offset: 2
+    bit_size: 1
+fieldset/WAKEUP_XSPI_RESPONDER_MODULE_INTEN:
+  description: ''
+  fields:
+  - name: WOFEN
+    bit_offset: 0
+    bit_size: 1
+  - name: RUFEN
+    bit_offset: 1
+    bit_size: 1
+  - name: ERRCMDEN
+    bit_offset: 2
+    bit_size: 1
+fieldset/WAKEUP_XSPI_RESPONDER_SPI_MAIL_CTRL:
+  description: ''
+  fields:
+  - name: CLRINT
+    bit_offset: 0
+    bit_size: 1
+  - name: SPIINTEN
+    bit_offset: 1
+    bit_size: 1
+fieldset/WAKEUP_XSPI_RESPONDER_SPIMAIL0:
+  description: ''
+  fields:
+  - name: MAILn
+    bit_offset: 0
+    bit_size: 32
+fieldset/WAKEUP_XSPI_RESPONDER_SPIMAIL:
+  description: ''
+  fields:
+  - name: MAIL
+    bit_offset: 0
+    bit_size: 32

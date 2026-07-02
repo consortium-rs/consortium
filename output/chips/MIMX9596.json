@@ -1,0 +1,3169 @@
+{
+  "name": "MIMX9596",
+  "family": "imx95",
+  "core": "cm7",
+  "irqs": [
+    {
+      "name": "CAN1",
+      "value": 8,
+      "description": "CAN1 interrupt"
+    },
+    {
+      "name": "CAN1_ERROR",
+      "value": 9,
+      "description": "CAN1 error interrupt"
+    },
+    {
+      "name": "GPIO1_0",
+      "value": 10,
+      "description": "General Purpose Input/Output 1 interrupt 0"
+    },
+    {
+      "name": "GPIO1_1",
+      "value": 11,
+      "description": "General Purpose Input/Output 1 interrupt 1"
+    },
+    {
+      "name": "I3C1",
+      "value": 12,
+      "description": "Improved Inter-Integrated Circuit 1 interrupt"
+    },
+    {
+      "name": "LPI2C1",
+      "value": 13,
+      "description": "Low Power Inter-Integrated Circuit module 1"
+    },
+    {
+      "name": "LPI2C2",
+      "value": 14,
+      "description": "Low Power Inter-Integrated Circuit module 2"
+    },
+    {
+      "name": "LPIT1",
+      "value": 15,
+      "description": "Low Power Periodic Interrupt Timer 1"
+    },
+    {
+      "name": "LPSPI1",
+      "value": 16,
+      "description": "Low Power Serial Peripheral Interface 1"
+    },
+    {
+      "name": "LPSPI2",
+      "value": 17,
+      "description": "Low Power Serial Peripheral Interface 2"
+    },
+    {
+      "name": "LPTMR1",
+      "value": 18,
+      "description": "Low Power Timer 1"
+    },
+    {
+      "name": "LPUART1",
+      "value": 19,
+      "description": "Low Power UART 1"
+    },
+    {
+      "name": "LPUART2",
+      "value": 20,
+      "description": "Low Power UART 2"
+    },
+    {
+      "name": "V2X_FH_APCH0",
+      "value": 27,
+      "description": "V2X-FH MU APCH0 (APP0) interrupt"
+    },
+    {
+      "name": "V2X_FH_APHSM1",
+      "value": 28,
+      "description": "V2X-FH MU APHSM1 (HSM1) interrupt"
+    },
+    {
+      "name": "TPM1",
+      "value": 29,
+      "description": "Timer PWM module 1"
+    },
+    {
+      "name": "TPM2",
+      "value": 30,
+      "description": "Timer PWM module 2"
+    },
+    {
+      "name": "WDOG1",
+      "value": 31,
+      "description": "Watchdog 1 Interrupt"
+    },
+    {
+      "name": "WDOG2",
+      "value": 32,
+      "description": "Watchdog 2 Interrupt"
+    },
+    {
+      "name": "TRDC_MGR_A",
+      "value": 33,
+      "description": "AONMIX TRDC transfer error interrupt"
+    },
+    {
+      "name": "SAI1",
+      "value": 34,
+      "description": "Serial Audio Interface 1"
+    },
+    {
+      "name": "CAN2",
+      "value": 38,
+      "description": "CAN2 interrupt"
+    },
+    {
+      "name": "CAN2_ERROR",
+      "value": 39,
+      "description": "CAN2 error interrupt"
+    },
+    {
+      "name": "CAN3",
+      "value": 40,
+      "description": "CAN3 interrupt"
+    },
+    {
+      "name": "CAN3_ERROR",
+      "value": 41,
+      "description": "CAN3 error interrupt"
+    },
+    {
+      "name": "CAN4",
+      "value": 42,
+      "description": "CAN4 interrupt"
+    },
+    {
+      "name": "CAN4_ERROR",
+      "value": 43,
+      "description": "CAN4 error interrupt"
+    },
+    {
+      "name": "CAN5",
+      "value": 44,
+      "description": "CAN5 interrupt"
+    },
+    {
+      "name": "CAN5_ERROR",
+      "value": 45,
+      "description": "CAN5 error interrupt"
+    },
+    {
+      "name": "FLEXIO1",
+      "value": 46,
+      "description": "Flexible IO 1 interrupt"
+    },
+    {
+      "name": "FLEXIO2",
+      "value": 47,
+      "description": "Flexible IO 2 interrupt"
+    },
+    {
+      "name": "FlexSPI1",
+      "value": 48,
+      "description": "FlexSPI controller interface interrupt 1"
+    },
+    {
+      "name": "GPIO2_0",
+      "value": 49,
+      "description": "General Purpose Input/Output 2 interrupt 0"
+    },
+    {
+      "name": "GPIO2_1",
+      "value": 50,
+      "description": "General Purpose Input/Output 2 interrupt 1"
+    },
+    {
+      "name": "GPIO3_0",
+      "value": 51,
+      "description": "General Purpose Input/Output 3 interrupt 0"
+    },
+    {
+      "name": "GPIO3_1",
+      "value": 52,
+      "description": "General Purpose Input/Output 3 interrupt 1"
+    },
+    {
+      "name": "GPIO4_0",
+      "value": 53,
+      "description": "General Purpose Input/Output 4 interrupt 0"
+    },
+    {
+      "name": "GPIO4_1",
+      "value": 54,
+      "description": "General Purpose Input/Output 4 interrupt 1"
+    },
+    {
+      "name": "GPIO5_0",
+      "value": 55,
+      "description": "General Purpose Input/Output 5 interrupt 0"
+    },
+    {
+      "name": "GPIO5_1",
+      "value": 56,
+      "description": "General Purpose Input/Output 5 interrupt 1"
+    },
+    {
+      "name": "I3C2",
+      "value": 57,
+      "description": "Improved Inter-Integrated Circuit 2 interrupt"
+    },
+    {
+      "name": "LPI2C3",
+      "value": 58,
+      "description": "Low Power Inter-Integrated Circuit module 3"
+    },
+    {
+      "name": "LPI2C4",
+      "value": 59,
+      "description": "Low Power Inter-Integrated Circuit module 4"
+    },
+    {
+      "name": "LPIT2",
+      "value": 60,
+      "description": "Low Power Periodic Interrupt Timer 2"
+    },
+    {
+      "name": "LPSPI3",
+      "value": 61,
+      "description": "Low Power Serial Peripheral Interface 3"
+    },
+    {
+      "name": "LPSPI4",
+      "value": 62,
+      "description": "Low Power Serial Peripheral Interface 4"
+    },
+    {
+      "name": "LPTMR2",
+      "value": 63,
+      "description": "Low Power Timer 2"
+    },
+    {
+      "name": "LPUART3",
+      "value": 64,
+      "description": "Low Power UART 3"
+    },
+    {
+      "name": "LPUART4",
+      "value": 65,
+      "description": "Low Power UART 4"
+    },
+    {
+      "name": "LPUART5",
+      "value": 66,
+      "description": "Low Power UART 5"
+    },
+    {
+      "name": "LPUART6",
+      "value": 67,
+      "description": "Low Power UART 6"
+    },
+    {
+      "name": "LPUART7",
+      "value": 68,
+      "description": "Low Power UART 7"
+    },
+    {
+      "name": "LPUART8",
+      "value": 69,
+      "description": "Low Power UART 8"
+    },
+    {
+      "name": "TPM3",
+      "value": 73,
+      "description": "Timer PWM module 3"
+    },
+    {
+      "name": "TPM4",
+      "value": 74,
+      "description": "Timer PWM module 4"
+    },
+    {
+      "name": "TPM5",
+      "value": 75,
+      "description": "Timer PWM module 5"
+    },
+    {
+      "name": "TPM6",
+      "value": 76,
+      "description": "Timer PWM module 6"
+    },
+    {
+      "name": "WDOG3",
+      "value": 77,
+      "description": "Watchdog 3 Interrupt"
+    },
+    {
+      "name": "WDOG4",
+      "value": 78,
+      "description": "Watchdog 4 Interrupt"
+    },
+    {
+      "name": "WDOG5",
+      "value": 79,
+      "description": "Watchdog 5 Interrupt"
+    },
+    {
+      "name": "TMPSNS1_THR1",
+      "value": 80,
+      "description": "ANAMIX TempSensor non-secure interrupt from Threshold 1"
+    },
+    {
+      "name": "TMPSNS1_THR2",
+      "value": 81,
+      "description": "ANAMIX TempSensor non-secure interrupt from Threshold 2"
+    },
+    {
+      "name": "TMPSNS1_DRDY",
+      "value": 82,
+      "description": "ANAMIX TempSensor non-secure data ready interrupt"
+    },
+    {
+      "name": "TMPSNS2_THR1",
+      "value": 83,
+      "description": "CORTEXAMIX TempSensor non-secure interrupt from Threshold 1"
+    },
+    {
+      "name": "TMPSNS2_THR2",
+      "value": 84,
+      "description": "CORTEXAMIX TempSensor non-secure interrupt from Threshold 2"
+    },
+    {
+      "name": "TMPSNS2_DRDY",
+      "value": 85,
+      "description": "CORTEXAMIX TempSensor non-secure data ready interrupt"
+    },
+    {
+      "name": "uSDHC1",
+      "value": 86,
+      "description": "ultra Secure Digital Host Controller interrupt 1"
+    },
+    {
+      "name": "uSDHC2",
+      "value": 87,
+      "description": "ultra Secure Digital Host Controller interrupt 2"
+    },
+    {
+      "name": "DMA3_ERROR",
+      "value": 95,
+      "description": "eDMA1 error interrupt"
+    },
+    {
+      "name": "DMA3_0",
+      "value": 96,
+      "description": "eDMA1 channel 0 interrupt"
+    },
+    {
+      "name": "DMA3_1",
+      "value": 97,
+      "description": "eDMA1 channel 1 interrupt"
+    },
+    {
+      "name": "DMA3_2",
+      "value": 98,
+      "description": "eDMA1 channel 2 interrupt"
+    },
+    {
+      "name": "DMA3_3",
+      "value": 99,
+      "description": "eDMA1 channel 3 interrupt"
+    },
+    {
+      "name": "DMA3_4",
+      "value": 100,
+      "description": "eDMA1 channel 4 interrupt"
+    },
+    {
+      "name": "DMA3_5",
+      "value": 101,
+      "description": "eDMA1 channel 5 interrupt"
+    },
+    {
+      "name": "DMA3_6",
+      "value": 102,
+      "description": "eDMA1 channel 6 interrupt"
+    },
+    {
+      "name": "DMA3_7",
+      "value": 103,
+      "description": "eDMA1 channel 7 interrupt"
+    },
+    {
+      "name": "DMA3_8",
+      "value": 104,
+      "description": "eDMA1 channel 8 interrupt"
+    },
+    {
+      "name": "DMA3_9",
+      "value": 105,
+      "description": "eDMA1 channel 9 interrupt"
+    },
+    {
+      "name": "DMA3_10",
+      "value": 106,
+      "description": "eDMA1 channel 10 interrupt"
+    },
+    {
+      "name": "DMA3_11",
+      "value": 107,
+      "description": "eDMA1 channel 11 interrupt"
+    },
+    {
+      "name": "DMA3_12",
+      "value": 108,
+      "description": "eDMA1 channel 12 interrupt"
+    },
+    {
+      "name": "DMA3_13",
+      "value": 109,
+      "description": "eDMA1 channel 13 interrupt"
+    },
+    {
+      "name": "DMA3_14",
+      "value": 110,
+      "description": "eDMA1 channel 14 interrupt"
+    },
+    {
+      "name": "DMA3_15",
+      "value": 111,
+      "description": "eDMA1 channel 15 interrupt"
+    },
+    {
+      "name": "DMA3_16",
+      "value": 112,
+      "description": "eDMA1 channel 16 interrupt"
+    },
+    {
+      "name": "DMA3_17",
+      "value": 113,
+      "description": "eDMA1 channel 17 interrupt"
+    },
+    {
+      "name": "DMA3_18",
+      "value": 114,
+      "description": "eDMA1 channel 18 interrupt"
+    },
+    {
+      "name": "DMA3_19",
+      "value": 115,
+      "description": "eDMA1 channel 19 interrupt"
+    },
+    {
+      "name": "DMA3_20",
+      "value": 116,
+      "description": "eDMA1 channel 20 interrupt"
+    },
+    {
+      "name": "DMA3_21",
+      "value": 117,
+      "description": "eDMA1 channel 21 interrupt"
+    },
+    {
+      "name": "DMA3_22",
+      "value": 118,
+      "description": "eDMA1 channel 22 interrupt"
+    },
+    {
+      "name": "DMA3_23",
+      "value": 119,
+      "description": "eDMA1 channel 23 interrupt"
+    },
+    {
+      "name": "DMA3_24",
+      "value": 120,
+      "description": "eDMA1 channel 24 interrupt"
+    },
+    {
+      "name": "DMA3_25",
+      "value": 121,
+      "description": "eDMA1 channel 25 interrupt"
+    },
+    {
+      "name": "DMA3_26",
+      "value": 122,
+      "description": "eDMA1 channel 26 interrupt"
+    },
+    {
+      "name": "DMA3_27",
+      "value": 123,
+      "description": "eDMA1 channel 27 interrupt"
+    },
+    {
+      "name": "DMA3_28",
+      "value": 124,
+      "description": "eDMA1 channel 28 interrupt"
+    },
+    {
+      "name": "DMA3_29",
+      "value": 125,
+      "description": "eDMA1 channel 29 interrupt"
+    },
+    {
+      "name": "DMA3_30",
+      "value": 126,
+      "description": "eDMA1 channel 30 interrupt"
+    },
+    {
+      "name": "DMA5_2_ERROR",
+      "value": 127,
+      "description": "eDMA2 error interrupt"
+    },
+    {
+      "name": "DMA5_2_0_1",
+      "value": 128,
+      "description": "eDMA2 channel 0/1 interrupt"
+    },
+    {
+      "name": "DMA5_2_2_3",
+      "value": 129,
+      "description": "eDMA2 channel 2/3 interrupt"
+    },
+    {
+      "name": "DMA5_2_4_5",
+      "value": 130,
+      "description": "eDMA2 channel 4/5 interrupt"
+    },
+    {
+      "name": "DMA5_2_6_7",
+      "value": 131,
+      "description": "eDMA2 channel 6/7 interrupt"
+    },
+    {
+      "name": "DMA5_2_8_9",
+      "value": 132,
+      "description": "eDMA2 channel 8/9 interrupt"
+    },
+    {
+      "name": "DMA5_2_10_11",
+      "value": 133,
+      "description": "eDMA2 channel 10/11 interrupt"
+    },
+    {
+      "name": "DMA5_2_12_13",
+      "value": 134,
+      "description": "eDMA2 channel 12/13 interrupt"
+    },
+    {
+      "name": "DMA5_2_14_15",
+      "value": 135,
+      "description": "eDMA2 channel 14/15 interrupt"
+    },
+    {
+      "name": "DMA5_2_16_17",
+      "value": 136,
+      "description": "eDMA2 channel 16/17 interrupt"
+    },
+    {
+      "name": "DMA5_2_18_19",
+      "value": 137,
+      "description": "eDMA2 channel 18/19 interrupt"
+    },
+    {
+      "name": "DMA5_2_20_21",
+      "value": 138,
+      "description": "eDMA2 channel 20/21 interrupt"
+    },
+    {
+      "name": "DMA5_2_22_23",
+      "value": 139,
+      "description": "eDMA2 channel 22/23 interrupt"
+    },
+    {
+      "name": "DMA5_2_24_25",
+      "value": 140,
+      "description": "eDMA2 channel 24/25 interrupt"
+    },
+    {
+      "name": "DMA5_2_26_27",
+      "value": 141,
+      "description": "eDMA2 channel 26/27 interrupt"
+    },
+    {
+      "name": "DMA5_2_28_29",
+      "value": 142,
+      "description": "eDMA2 channel 28/29 interrupt"
+    },
+    {
+      "name": "DMA5_2_30_31",
+      "value": 143,
+      "description": "eDMA2 channel 30/31 interrupt"
+    },
+    {
+      "name": "DMA5_2_32_33",
+      "value": 144,
+      "description": "eDMA2 channel 32/33 interrupt"
+    },
+    {
+      "name": "DMA5_2_34_35",
+      "value": 145,
+      "description": "eDMA2 channel 34/35 interrupt"
+    },
+    {
+      "name": "DMA5_2_36_37",
+      "value": 146,
+      "description": "eDMA2 channel 36/37 interrupt"
+    },
+    {
+      "name": "DMA5_2_38_39",
+      "value": 147,
+      "description": "eDMA2 channel 38/39 interrupt"
+    },
+    {
+      "name": "DMA5_2_40_41",
+      "value": 148,
+      "description": "eDMA2 channel 40/41 interrupt"
+    },
+    {
+      "name": "DMA5_2_42_43",
+      "value": 149,
+      "description": "eDMA2 channel 42/43 interrupt"
+    },
+    {
+      "name": "DMA5_2_44_45",
+      "value": 150,
+      "description": "eDMA2 channel 44/45 interrupt"
+    },
+    {
+      "name": "DMA5_2_46_47",
+      "value": 151,
+      "description": "eDMA2 channel 46/47 interrupt"
+    },
+    {
+      "name": "DMA5_2_48_49",
+      "value": 152,
+      "description": "eDMA2 channel 48/49 interrupt"
+    },
+    {
+      "name": "DMA5_2_50_51",
+      "value": 153,
+      "description": "eDMA2 channel 50/51 interrupt"
+    },
+    {
+      "name": "DMA5_2_52_53",
+      "value": 154,
+      "description": "eDMA2 channel 52/53 interrupt"
+    },
+    {
+      "name": "DMA5_2_54_55",
+      "value": 155,
+      "description": "eDMA2 channel 54/55 interrupt"
+    },
+    {
+      "name": "DMA5_2_56_57",
+      "value": 156,
+      "description": "eDMA2 channel 56/57 interrupt"
+    },
+    {
+      "name": "DMA5_2_58_59",
+      "value": 157,
+      "description": "eDMA2 channel 58/59 interrupt"
+    },
+    {
+      "name": "DMA5_2_60_61",
+      "value": 158,
+      "description": "eDMA2 channel 60/61 interrupt"
+    },
+    {
+      "name": "DMA5_2_62_63",
+      "value": 159,
+      "description": "eDMA2 channel 62/63 interrupt"
+    },
+    {
+      "name": "SAI2",
+      "value": 169,
+      "description": "Serial Audio Interface 2"
+    },
+    {
+      "name": "SAI3",
+      "value": 170,
+      "description": "Serial Audio Interface 3"
+    },
+    {
+      "name": "SAI4",
+      "value": 171,
+      "description": "Serial Audio Interface 4"
+    },
+    {
+      "name": "SAI5",
+      "value": 172,
+      "description": "Serial Audio Interface 5"
+    },
+    {
+      "name": "USB1",
+      "value": 175,
+      "description": "USB-1 Interrupt"
+    },
+    {
+      "name": "USB2",
+      "value": 176,
+      "description": "USB-2 Interrupt"
+    },
+    {
+      "name": "LPSPI5",
+      "value": 177,
+      "description": "Low Power Serial Peripheral Interface 5"
+    },
+    {
+      "name": "LPSPI6",
+      "value": 178,
+      "description": "Low Power Serial Peripheral Interface 6"
+    },
+    {
+      "name": "LPSPI7",
+      "value": 179,
+      "description": "Low Power Serial Peripheral Interface 7"
+    },
+    {
+      "name": "LPSPI8",
+      "value": 180,
+      "description": "Low Power Serial Peripheral Interface 8"
+    },
+    {
+      "name": "LPI2C5",
+      "value": 181,
+      "description": "Low Power Inter-Integrated Circuit module 5"
+    },
+    {
+      "name": "LPI2C6",
+      "value": 182,
+      "description": "Low Power Inter-Integrated Circuit module 6"
+    },
+    {
+      "name": "LPI2C7",
+      "value": 183,
+      "description": "Low Power Inter-Integrated Circuit module 7"
+    },
+    {
+      "name": "LPI2C8",
+      "value": 184,
+      "description": "Low Power Inter-Integrated Circuit module 8"
+    },
+    {
+      "name": "PDM_HWVAD_ERROR",
+      "value": 185,
+      "description": "PDM interrupt"
+    },
+    {
+      "name": "PDM_HWVAD_EVENT",
+      "value": 186,
+      "description": "PDM interrupt"
+    },
+    {
+      "name": "PDM_ERROR",
+      "value": 187,
+      "description": "PDM interrupt"
+    },
+    {
+      "name": "PDM_EVENT",
+      "value": 188,
+      "description": "PDM interrupt"
+    },
+    {
+      "name": "uSDHC3",
+      "value": 191,
+      "description": "ultra Secure Digital Host Controller interrupt 3"
+    },
+    {
+      "name": "ADC_ER",
+      "value": 199,
+      "description": "ADC interrupt"
+    },
+    {
+      "name": "ADC_WD",
+      "value": 200,
+      "description": "ADC interrupt"
+    },
+    {
+      "name": "ADC_EOC",
+      "value": 201,
+      "description": "ADC interrupt"
+    },
+    {
+      "name": "MU5_A",
+      "value": 205,
+      "description": "AONMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUA"
+    },
+    {
+      "name": "MU6_A",
+      "value": 206,
+      "description": "AONMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUA"
+    },
+    {
+      "name": "MU7_B",
+      "value": 207,
+      "description": "WAKEUPMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUB"
+    },
+    {
+      "name": "MU8_B",
+      "value": 208,
+      "description": "WAKEUPMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUB"
+    },
+    {
+      "name": "DISP_IRQSTEER0",
+      "value": 214,
+      "description": "DISPLAYMIX IRQSTEER 0"
+    },
+    {
+      "name": "DISP_IRQSTEER1",
+      "value": 215,
+      "description": "DISPLAYMIX IRQSTEER 1"
+    },
+    {
+      "name": "DISP_IRQSTEER2",
+      "value": 216,
+      "description": "DISPLAYMIX IRQSTEER 2"
+    },
+    {
+      "name": "DISP_IRQSTEER3",
+      "value": 217,
+      "description": "DISPLAYMIX IRQSTEER 3"
+    },
+    {
+      "name": "DISP_IRQSTEER4",
+      "value": 218,
+      "description": "DISPLAYMIX IRQSTEER 4"
+    },
+    {
+      "name": "DISP_IRQSTEER7",
+      "value": 219,
+      "description": "DISPLAYMIX IRQSTEER 7"
+    },
+    {
+      "name": "ISI",
+      "value": 221,
+      "description": "CAMERAMIX ISI interrupt Channel 0"
+    },
+    {
+      "name": "IRQSTEER_0",
+      "value": 224,
+      "description": "IRQSTEER0 interrupt"
+    },
+    {
+      "name": "IRQSTEER_1",
+      "value": 225,
+      "description": "IRQSTEER1 interrupt"
+    },
+    {
+      "name": "IRQSTEER_2",
+      "value": 226,
+      "description": "IRQSTEER2 interrupt"
+    },
+    {
+      "name": "IRQSTEER_3",
+      "value": 227,
+      "description": "IRQSTEER3 interrupt"
+    },
+    {
+      "name": "IRQSTEER_4",
+      "value": 228,
+      "description": "IRQSTEER4 interrupt"
+    },
+    {
+      "name": "IRQSTEER_5",
+      "value": 229,
+      "description": "IRQSTEER5 interrupt"
+    },
+    {
+      "name": "IRQSTEER_6",
+      "value": 230,
+      "description": "IRQSTEER6 interrupt"
+    },
+    {
+      "name": "IRQSTEER_7",
+      "value": 231,
+      "description": "IRQSTEER7 interrupt"
+    },
+    {
+      "name": "IRQSTEER_8",
+      "value": 232,
+      "description": "IRQSTEER8 interrupt"
+    },
+    {
+      "name": "IRQSTEER_9",
+      "value": 233,
+      "description": "IRQSTEER9 interrupt"
+    },
+    {
+      "name": "MU1_A",
+      "value": 234,
+      "description": "AONMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUA"
+    },
+    {
+      "name": "MU1_B",
+      "value": 235,
+      "description": "AONMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUB"
+    },
+    {
+      "name": "MU2_A",
+      "value": 236,
+      "description": "AONMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUA"
+    },
+    {
+      "name": "MU2_B",
+      "value": 237,
+      "description": "AONMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUB"
+    },
+    {
+      "name": "MU3_A",
+      "value": 238,
+      "description": "AONMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUA"
+    },
+    {
+      "name": "MU3_B",
+      "value": 239,
+      "description": "AONMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUB"
+    },
+    {
+      "name": "MU4_A",
+      "value": 240,
+      "description": "AONMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUA"
+    },
+    {
+      "name": "MU4_B",
+      "value": 241,
+      "description": "AONMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUB"
+    },
+    {
+      "name": "MU5_B",
+      "value": 242,
+      "description": "AONMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUB"
+    },
+    {
+      "name": "MU6_B",
+      "value": 243,
+      "description": "AONMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUB"
+    },
+    {
+      "name": "MU7_A",
+      "value": 244,
+      "description": "WAKEUPMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUA"
+    },
+    {
+      "name": "MU8_A",
+      "value": 245,
+      "description": "WAKEUPMIX MU Ored of all (tx,rx,gp,core,murip) interrupt to MUA"
+    },
+    {
+      "name": "MSGINTR1",
+      "value": 246,
+      "description": "MSGINTR Instance 1, Interrupt"
+    },
+    {
+      "name": "MSGINTR2",
+      "value": 247,
+      "description": "MSGINTR Instance 2, Interrupts"
+    },
+    {
+      "name": "DMA5_3_0_1",
+      "value": 266,
+      "description": "eDMA3 channel 0/1 interrupt"
+    },
+    {
+      "name": "DMA5_3_2_3",
+      "value": 267,
+      "description": "eDMA3 channel 2/3 interrupt"
+    },
+    {
+      "name": "DMA5_3_4_5",
+      "value": 268,
+      "description": "eDMA3 channel 4/5 interrupt"
+    },
+    {
+      "name": "DMA5_3_6_7",
+      "value": 269,
+      "description": "eDMA3 channel 6/7 interrupt"
+    },
+    {
+      "name": "DMA5_3_8_9",
+      "value": 270,
+      "description": "eDMA3 channel 8/9 interrupt"
+    },
+    {
+      "name": "DMA5_3_10_11",
+      "value": 271,
+      "description": "eDMA3 channel 10/11 interrupt"
+    },
+    {
+      "name": "DMA5_3_12_13",
+      "value": 272,
+      "description": "eDMA3 channel 12/13 interrupt"
+    },
+    {
+      "name": "DMA5_3_14_15",
+      "value": 273,
+      "description": "eDMA3 channel 14/15 interrupt"
+    },
+    {
+      "name": "DMA5_3_16_17",
+      "value": 274,
+      "description": "eDMA3 channel 16/17 interrupt"
+    },
+    {
+      "name": "DMA5_3_18_19",
+      "value": 275,
+      "description": "eDMA3 channel 18/19 interrupt"
+    },
+    {
+      "name": "DMA5_3_20_21",
+      "value": 276,
+      "description": "eDMA3 channel 20/21 interrupt"
+    },
+    {
+      "name": "DMA5_3_22_23",
+      "value": 277,
+      "description": "eDMA3 channel 22/23 interrupt"
+    },
+    {
+      "name": "DMA5_3_24_25",
+      "value": 278,
+      "description": "eDMA3 channel 24/25 interrupt"
+    },
+    {
+      "name": "DMA5_3_26_27",
+      "value": 279,
+      "description": "eDMA3 channel 26/27 interrupt"
+    },
+    {
+      "name": "DMA5_3_28_29",
+      "value": 280,
+      "description": "eDMA3 channel 29/29 interrupt"
+    },
+    {
+      "name": "DMA5_3_30_31",
+      "value": 281,
+      "description": "eDMA3 channel 30/31 interrupt"
+    },
+    {
+      "name": "DMA5_3_32_33",
+      "value": 282,
+      "description": "eDMA3 channel 32/33 interrupt"
+    },
+    {
+      "name": "DMA5_3_34_35",
+      "value": 283,
+      "description": "eDMA3 channel 34/35 interrupt"
+    },
+    {
+      "name": "DMA5_3_36_37",
+      "value": 284,
+      "description": "eDMA3 channel 36/37 interrupt"
+    },
+    {
+      "name": "DMA5_3_38_39",
+      "value": 285,
+      "description": "eDMA3 channel 38/39 interrupt"
+    },
+    {
+      "name": "DMA5_3_40_41",
+      "value": 286,
+      "description": "eDMA3 channel 40/41 interrupt"
+    },
+    {
+      "name": "DMA5_3_42_43",
+      "value": 287,
+      "description": "eDMA3 channel 42/43 interrupt"
+    },
+    {
+      "name": "DMA5_3_44_45",
+      "value": 288,
+      "description": "eDMA3 channel 44/45 interrupt"
+    },
+    {
+      "name": "DMA5_3_46_47",
+      "value": 289,
+      "description": "eDMA3 channel 46/47 interrupt"
+    },
+    {
+      "name": "DMA5_3_48_49",
+      "value": 290,
+      "description": "eDMA3 channel 48/49 interrupt"
+    },
+    {
+      "name": "DMA5_3_50_51",
+      "value": 291,
+      "description": "eDMA3 channel 50/51 interrupt"
+    },
+    {
+      "name": "DMA5_3_52_53",
+      "value": 292,
+      "description": "eDMA3 channel 52/53 interrupt"
+    },
+    {
+      "name": "DMA5_3_54_55",
+      "value": 293,
+      "description": "eDMA3 channel 54/55 interrupt"
+    },
+    {
+      "name": "DMA5_3_56_57",
+      "value": 294,
+      "description": "eDMA3 channel 56/57 interrupt"
+    },
+    {
+      "name": "DMA5_3_58_59",
+      "value": 295,
+      "description": "eDMA3 channel 58/59 interrupt"
+    },
+    {
+      "name": "DMA5_3_60_61",
+      "value": 296,
+      "description": "eDMA3 channel 60/61 interrupt"
+    },
+    {
+      "name": "DMA5_3_62_63",
+      "value": 297,
+      "description": "eDMA3 channel 62/63 interrupt"
+    },
+    {
+      "name": "DMA5_4_ERROR",
+      "value": 361,
+      "description": "CAMERAMIX EDMA error interrupt"
+    },
+    {
+      "name": "DMA5_4_0_1",
+      "value": 362,
+      "description": "CAMERAMIX EDMA channel 0 interrupt"
+    },
+    {
+      "name": "DMA5_4_2_3",
+      "value": 363,
+      "description": "CAMERAMIX EDMA channel 2 interrupt"
+    },
+    {
+      "name": "DMA5_4_4_5",
+      "value": 364,
+      "description": "CAMERAMIX EDMA channel 4 interrupt"
+    },
+    {
+      "name": "DMA5_4_6_7",
+      "value": 365,
+      "description": "CAMERAMIX EDMA channel 6 interrupt"
+    },
+    {
+      "name": "DMA5_4_8_9",
+      "value": 366,
+      "description": "CAMERAMIX EDMA channel 8 interrupt"
+    },
+    {
+      "name": "DMA5_4_10_11",
+      "value": 367,
+      "description": "CAMERAMIX EDMA channel 10 interrupt"
+    },
+    {
+      "name": "DMA5_4_12_13",
+      "value": 368,
+      "description": "CAMERAMIX EDMA channel 12 interrupt"
+    },
+    {
+      "name": "DMA5_4_14_15",
+      "value": 369,
+      "description": "CAMERAMIX EDMA channel 14 interrupt"
+    },
+    {
+      "name": "DMA5_4_16_17",
+      "value": 370,
+      "description": "CAMERAMIX EDMA channel 16 interrupt"
+    },
+    {
+      "name": "DMA5_4_18_19",
+      "value": 371,
+      "description": "CAMERAMIX EDMA channel 18 interrupt"
+    },
+    {
+      "name": "DMA5_4_20_21",
+      "value": 372,
+      "description": "CAMERAMIX EDMA channel 20 interrupt"
+    },
+    {
+      "name": "DMA5_4_22_23",
+      "value": 373,
+      "description": "CAMERAMIX EDMA channel 22 interrupt"
+    },
+    {
+      "name": "DMA5_4_24_25",
+      "value": 374,
+      "description": "CAMERAMIX EDMA channel 24 interrupt"
+    },
+    {
+      "name": "DMA5_4_26_27",
+      "value": 375,
+      "description": "CAMERAMIX EDMA channel 26 interrupt"
+    },
+    {
+      "name": "DMA5_4_28_29",
+      "value": 376,
+      "description": "CAMERAMIX EDMA channel 28 interrupt"
+    },
+    {
+      "name": "DMA5_4_30_31",
+      "value": 377,
+      "description": "CAMERAMIX EDMA channel 30 interrupt"
+    }
+  ],
+  "peripherals": [
+    {
+      "name": "ADC",
+      "base_address": "0x44530000",
+      "block": "adc/ADC"
+    },
+    {
+      "name": "ANALOG_CMU0",
+      "base_address": "0x44670000",
+      "block": "cmu/CMU"
+    },
+    {
+      "name": "ANALOG__AGDET",
+      "base_address": "0x44487000",
+      "block": "analog_agdet/ANALOG_AGDET"
+    },
+    {
+      "name": "ANALOG__AUDIO_FRACT_PLL1",
+      "base_address": "0x44481100",
+      "block": "pll/PLL"
+    },
+    {
+      "name": "ANALOG__AUDIO_FRACT_PLL2",
+      "base_address": "0x44481200",
+      "block": "pll/PLL"
+    },
+    {
+      "name": "ANALOG__FRO",
+      "base_address": "0x44485000",
+      "block": "analog_fro/ANALOG_FRO"
+    },
+    {
+      "name": "ANALOG__OSC24M",
+      "base_address": "0x44480000",
+      "block": "analog_osc24m/ANALOG_OSC24M"
+    },
+    {
+      "name": "ANALOG__PMRO",
+      "base_address": "0x44484000",
+      "block": "analog_pmro/ANALOG_PMRO"
+    },
+    {
+      "name": "ANALOG__SYS_FRACT_PLL1",
+      "base_address": "0x44481000",
+      "block": "pll/PLL"
+    },
+    {
+      "name": "ANALOG__TCU",
+      "base_address": "0x444c0000",
+      "block": "analog_tcu/ANALOG_TCU"
+    },
+    {
+      "name": "ANALOG__TRGMUX",
+      "base_address": "0x44531000",
+      "block": "analog_trgmux/ANALOG_TRGMUX"
+    },
+    {
+      "name": "ANALOG__VDET",
+      "base_address": "0x44486000",
+      "block": "analog_vdet/ANALOG_VDET"
+    },
+    {
+      "name": "ANALOG__VIDEO_FRACT_PLL1",
+      "base_address": "0x44481300",
+      "block": "pll/PLL"
+    },
+    {
+      "name": "AON_CMUA1",
+      "base_address": "0x44540000",
+      "block": "aon_cmu/AON_CMU"
+    },
+    {
+      "name": "AON_CMUA2",
+      "base_address": "0x44650000",
+      "block": "aon_cmu/AON_CMU"
+    },
+    {
+      "name": "AON__AXBS",
+      "base_address": "0x44510000",
+      "block": "axbs/AXBS"
+    },
+    {
+      "name": "AON__BLK_CTRL_AONMIX1",
+      "base_address": "0x44210000",
+      "block": "aon_blk_ctrl_ns_aonmix/AON_BLK_CTRL_NS_AONMIX"
+    },
+    {
+      "name": "AON__BLK_CTRL_S_AONMIX2",
+      "base_address": "0x444f0000",
+      "block": "aon_blk_ctrl_s_aonmix/AON_BLK_CTRL_S_AONMIX"
+    },
+    {
+      "name": "AON__CRCA",
+      "base_address": "0x44660000",
+      "block": "crca/CRCA"
+    },
+    {
+      "name": "AON__CSTCU",
+      "base_address": "0x44590000",
+      "block": "cstcu/CSTCU"
+    },
+    {
+      "name": "AON__EIMA",
+      "base_address": "0x44550000",
+      "block": "eim/EIM"
+    },
+    {
+      "name": "AON__FCCU",
+      "base_address": "0x44570000",
+      "block": "aon_fccu/AON_FCCU"
+    },
+    {
+      "name": "AON__IOMUXC0__IOMUXC_GPR",
+      "base_address": "0x443d0000",
+      "block": "iomuxc_gpr/IOMUXC_GPR"
+    },
+    {
+      "name": "AON__LSTCUA",
+      "base_address": "0x445a0000",
+      "block": "lstcu/LSTCU"
+    },
+    {
+      "name": "AON__M33_CACHE_CTRL_ECC0__CM33_CACHE_ECC_MCM",
+      "base_address": "0x44401000",
+      "block": "cache_ecc_mcm/CACHE_ECC_MCM"
+    },
+    {
+      "name": "AON__M33_CACHE_CTRL_ECC0__CM33_TCM_MCM",
+      "base_address": "0x44420000",
+      "block": "tcm_ecc_mcm/TCM_ECC_MCM"
+    },
+    {
+      "name": "AON__M33_PCF1",
+      "base_address": "0x443e0000",
+      "block": "aon_syspm/AON_SYSPM"
+    },
+    {
+      "name": "AON__M33_PSF1",
+      "base_address": "0x443f0000",
+      "block": "aon_syspm/AON_SYSPM"
+    },
+    {
+      "name": "AON__MCM",
+      "base_address": "0xe0080000",
+      "block": "aon_mcm/AON_MCM"
+    },
+    {
+      "name": "AON__ROMCP1",
+      "base_address": "0x44430000",
+      "block": "aon_romcp/AON_ROMCP"
+    },
+    {
+      "name": "AON__SYS_CTR1__SYS_CTR_COMPARE",
+      "base_address": "0x442a0000",
+      "block": "sys_ctr_compare/SYS_CTR_COMPARE"
+    },
+    {
+      "name": "AON__SYS_CTR1__SYS_CTR_CONTROL",
+      "base_address": "0x44290000",
+      "block": "sys_ctr1/SYS_CTR1"
+    },
+    {
+      "name": "AON__SYS_CTR1__SYS_CTR_READ",
+      "base_address": "0x442b0000",
+      "block": "sys_ctr_read/SYS_CTR_READ"
+    },
+    {
+      "name": "AON__TCU",
+      "base_address": "0x444b0000",
+      "block": "aon_tcu/AON_TCU"
+    },
+    {
+      "name": "BBSM__BBNSM",
+      "base_address": "0x44440000",
+      "block": "bbnsm/BBNSM"
+    },
+    {
+      "name": "BBSM__BLK_CTRL_BBSMMIX_BBSMMIX1",
+      "base_address": "0x44410000",
+      "block": "bbsm_blk_ctrl_bbsmmix/BBSM_BLK_CTRL_BBSMMIX"
+    },
+    {
+      "name": "BBSM__TCU_BBSMMIX",
+      "base_address": "0x444e0000",
+      "block": "bbsm_tcu/BBSM_TCU"
+    },
+    {
+      "name": "BLK_CTRL_CAMERAMIX",
+      "base_address": "0x4ac10000",
+      "block": "blk_ctrl_cameramix/BLK_CTRL_CAMERAMIX"
+    },
+    {
+      "name": "BLK_CTRL_NETCMIX",
+      "base_address": "0x4c810000",
+      "block": "blk_ctrl_netcmix/BLK_CTRL_NETCMIX"
+    },
+    {
+      "name": "CAMERA__DSI_CAMID_CSR",
+      "base_address": "0x4ade0000",
+      "block": "camera_dsi_camid_csr/CAMERA_DSI_CAMID_CSR"
+    },
+    {
+      "name": "CAMERA__DSI_CSI_COMBO_COMPLEX_CSI1__CSI",
+      "base_address": "0x4ad40000",
+      "block": "csi/CSI"
+    },
+    {
+      "name": "CAMERA__DSI_MASTER_CSR",
+      "base_address": "0x4ad10000",
+      "block": "camera_dsi_master_csr/CAMERA_DSI_MASTER_CSR"
+    },
+    {
+      "name": "CAMERA__DSI_OR_CSI_PHY_CSR",
+      "base_address": "0x4ad20000",
+      "block": "camera_dsi_or_csi_phy_csr/CAMERA_DSI_OR_CSI_PHY_CSR"
+    },
+    {
+      "name": "CAMERA__DSI_STREAM_CSR",
+      "base_address": "0x4ad00000",
+      "block": "camera_dsi_stream_csr/CAMERA_DSI_STREAM_CSR"
+    },
+    {
+      "name": "CAMERA__ISI",
+      "base_address": "0x4ad50000",
+      "block": "isi/ISI"
+    },
+    {
+      "name": "CAMERA__ISP__ALIAS",
+      "base_address": "0x4ae02000",
+      "block": "isp/ISP"
+    },
+    {
+      "name": "CAMERA__ISP__AUTOFOCUS",
+      "base_address": "0x4ae01700",
+      "block": "autofocus/AUTOFOCUS"
+    },
+    {
+      "name": "CAMERA__ISP__BNR",
+      "base_address": "0x4ae00800",
+      "block": "bnr/BNR"
+    },
+    {
+      "name": "CAMERA__ISP__CAS",
+      "base_address": "0x4ae01500",
+      "block": "cas/CAS"
+    },
+    {
+      "name": "CAMERA__ISP__CCONVMED",
+      "base_address": "0x4ae014c0",
+      "block": "cconvmed/CCONVMED"
+    },
+    {
+      "name": "CAMERA__ISP__COLOR_TEMP",
+      "base_address": "0x4ae00400",
+      "block": "color_temp/COLOR_TEMP"
+    },
+    {
+      "name": "CAMERA__ISP__DEMOSAIC",
+      "base_address": "0x4ae01180",
+      "block": "demosaic/DEMOSAIC"
+    },
+    {
+      "name": "CAMERA__ISP__DF",
+      "base_address": "0x4ae01440",
+      "block": "df/DF"
+    },
+    {
+      "name": "CAMERA__ISP__DRC",
+      "base_address": "0x4ae01300",
+      "block": "drc/DRC"
+    },
+    {
+      "name": "CAMERA__ISP__EE",
+      "base_address": "0x4ae01480",
+      "block": "ee/EE"
+    },
+    {
+      "name": "CAMERA__ISP__GCM",
+      "base_address": "0x4ae01600",
+      "block": "gcm/GCM"
+    },
+    {
+      "name": "CAMERA__ISP__HC",
+      "base_address": "0x4ae000c0",
+      "block": "hc/HC"
+    },
+    {
+      "name": "CAMERA__ISP__HDR_DECOMPRESS0",
+      "base_address": "0x4ae00100",
+      "block": "hdr_decompress0/HDR_DECOMPRESS0"
+    },
+    {
+      "name": "CAMERA__ISP__HDR_DECOMPRESS1",
+      "base_address": "0x4ae00180",
+      "block": "hdr_decompress1/HDR_DECOMPRESS1"
+    },
+    {
+      "name": "CAMERA__ISP__HDR_MERGE",
+      "base_address": "0x4ae00300",
+      "block": "hdr_merge/HDR_MERGE"
+    },
+    {
+      "name": "CAMERA__ISP__IDBG1",
+      "base_address": "0x4ae00fc0",
+      "block": "idbg1/IDBG1"
+    },
+    {
+      "name": "CAMERA__ISP__IDBG2",
+      "base_address": "0x4ae01fc0",
+      "block": "idbg2/IDBG2"
+    },
+    {
+      "name": "CAMERA__ISP__IR_COMPRESS",
+      "base_address": "0x4ae00780",
+      "block": "ir_compress/IR_COMPRESS"
+    },
+    {
+      "name": "CAMERA__ISP__NR",
+      "base_address": "0x4ae01400",
+      "block": "nr/NR"
+    },
+    {
+      "name": "CAMERA__ISP__OB_WB0",
+      "base_address": "0x4ae00200",
+      "block": "ob_wb0/OB_WB0"
+    },
+    {
+      "name": "CAMERA__ISP__OB_WB1",
+      "base_address": "0x4ae00240",
+      "block": "ob_wb1/OB_WB1"
+    },
+    {
+      "name": "CAMERA__ISP__OB_WB2",
+      "base_address": "0x4ae00280",
+      "block": "ob_wb2/OB_WB2"
+    },
+    {
+      "name": "CAMERA__ISP__PACKETIZER",
+      "base_address": "0x4ae01580",
+      "block": "packetizer/PACKETIZER"
+    },
+    {
+      "name": "CAMERA__ISP__PIPE_CONF",
+      "base_address": "0x4ae00000",
+      "block": "pipe_conf/PIPE_CONF"
+    },
+    {
+      "name": "CAMERA__ISP__RGBIR",
+      "base_address": "0x4ae00600",
+      "block": "rgbir/RGBIR"
+    },
+    {
+      "name": "CAMERA__ISP__RGB_TO_YUV",
+      "base_address": "0x4ae011c0",
+      "block": "rgb_to_yuv/RGB_TO_YUV"
+    },
+    {
+      "name": "CAMERA__ISP__STAT",
+      "base_address": "0x4ae00700",
+      "block": "stat/STAT"
+    },
+    {
+      "name": "CAMERA__ISP__VIGNETTING",
+      "base_address": "0x4ae00900",
+      "block": "vignetting/VIGNETTING"
+    },
+    {
+      "name": "CAMERA__MUI_A1__MUA",
+      "base_address": "0x4ac60000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "CAMERA__MUI_A2__MUA",
+      "base_address": "0x4ac70000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "CAMERA__MUI_A3__MUA",
+      "base_address": "0x4ac80000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "CAMERA__MUI_A4__MUA",
+      "base_address": "0x4ac90000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "CAMERA__MUI_A5__MUA",
+      "base_address": "0x4aca0000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "CAMERA__MUI_A6__MUA",
+      "base_address": "0x4acb0000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "CAMERA__MUI_A7__MUA",
+      "base_address": "0x4acc0000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "CAMERA__MUI_A8__MUA",
+      "base_address": "0x4acd0000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "CAMERA__MUI_A9__MUA",
+      "base_address": "0x4ace0000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "CAMERA__OCRAM_MECC",
+      "base_address": "0x4add0000",
+      "block": "ocram/OCRAM"
+    },
+    {
+      "name": "CAMERA__TCU",
+      "base_address": "0x4ac00000",
+      "block": "camera_tcu/CAMERA_TCU"
+    },
+    {
+      "name": "CAN1",
+      "base_address": "0x443a0000",
+      "block": "can/CAN"
+    },
+    {
+      "name": "CAN2",
+      "base_address": "0x425b0000",
+      "block": "can/CAN"
+    },
+    {
+      "name": "CAN3",
+      "base_address": "0x42600000",
+      "block": "can/CAN"
+    },
+    {
+      "name": "CAN4",
+      "base_address": "0x427c0000",
+      "block": "can/CAN"
+    },
+    {
+      "name": "CAN5",
+      "base_address": "0x427d0000",
+      "block": "can/CAN"
+    },
+    {
+      "name": "CCMSRCGPC__GPC__GPC_GLOBAL",
+      "base_address": "0x44474800",
+      "block": "gpc_global/GPC_GLOBAL"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__SRC_CENTRAL_REG",
+      "base_address": "0x44460000",
+      "block": "src_general_reg/SRC_GENERAL_REG"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_ANAMIX",
+      "base_address": "0x44460400",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_AONMIX",
+      "base_address": "0x44460800",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_AONMIX_MEM",
+      "base_address": "0x44460900",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_BBSMMIX",
+      "base_address": "0x44460c00",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CAMERAMIX",
+      "base_address": "0x44461000",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CAMERAMIX_MEM",
+      "base_address": "0x44461100",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CCMSRCGPCMIX",
+      "base_address": "0x44461400",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CORTEXMIX_CORE0_MEM",
+      "base_address": "0x44461900",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CORTEXMIX_CORE1",
+      "base_address": "0x44461c00",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CORTEXMIX_CORE1_MEM",
+      "base_address": "0x44461d00",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CORTEXMIX_CORE2",
+      "base_address": "0x44462000",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CORTEXMIX_CORE2_MEM",
+      "base_address": "0x44462100",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CORTEXMIX_CORE3",
+      "base_address": "0x44462400",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CORTEXMIX_CORE3_MEM",
+      "base_address": "0x44462500",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CORTEXMIX_CORE4",
+      "base_address": "0x44462800",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CORTEXMIX_CORE4_MEM",
+      "base_address": "0x44462900",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CORTEXMIX_CORE5",
+      "base_address": "0x44462c00",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CORTEXMIX_CORE5_MEM",
+      "base_address": "0x44462d00",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CORTEXMIX_PLATFORM_MEM0",
+      "base_address": "0x44463100",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_CORTEXMIX_PLATFORM_MEM1",
+      "base_address": "0x44463120",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_DDRMIX",
+      "base_address": "0x44463400",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_DDRMIX_MEM",
+      "base_address": "0x44463500",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_DISPLAYMIX",
+      "base_address": "0x44463800",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_DISPLAYMIX_MEM",
+      "base_address": "0x44463900",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_GPUMIX",
+      "base_address": "0x44463c00",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_GPUMIX_MEM",
+      "base_address": "0x44463d00",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_HSIOMIX_MEM",
+      "base_address": "0x44464100",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_HSIOMIX_TOP",
+      "base_address": "0x44464000",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_HSIOMIX_WAON",
+      "base_address": "0x44464400",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_M7MIX",
+      "base_address": "0x44464800",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_M7MIX_MEM",
+      "base_address": "0x44464900",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_NETCMIX",
+      "base_address": "0x44464c00",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_NETCMIX_MEM",
+      "base_address": "0x44464d00",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_NOCMIX",
+      "base_address": "0x44465000",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_NOCMIX_MEM0",
+      "base_address": "0x44465100",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_NOCMIX_MEM1",
+      "base_address": "0x44465120",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_NPUMIX",
+      "base_address": "0x44465400",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_NPUMIX_MEM",
+      "base_address": "0x44465500",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_VPUMIX",
+      "base_address": "0x44465800",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_VPUMIX_MEM",
+      "base_address": "0x44465900",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_WAKEUPMIX",
+      "base_address": "0x44465c00",
+      "block": "src_xspr/SRC_XSPR"
+    },
+    {
+      "name": "CCMSRCGPC__SRC__XSPR_WAKEUPMIX_MEM",
+      "base_address": "0x44465d00",
+      "block": "src_mem/SRC_MEM"
+    },
+    {
+      "name": "CCMSRCGPC__TCU",
+      "base_address": "0x444d0000",
+      "block": "ccmsrcgpc_tcu/CCMSRCGPC_TCU"
+    },
+    {
+      "name": "CCM_CTRL",
+      "base_address": "0x44450000",
+      "block": "ccm/CCM"
+    },
+    {
+      "name": "CORTEXA__FRACT_PLL_ARMPLL",
+      "base_address": "0x44481600",
+      "block": "pll/PLL"
+    },
+    {
+      "name": "CORTEXA__TCU",
+      "base_address": "0x4a400000",
+      "block": "cortexa_tcu/CORTEXA_TCU"
+    },
+    {
+      "name": "CORTEX_A55_CORE",
+      "base_address": "0x44461800",
+      "block": "coremix/COREMIX"
+    },
+    {
+      "name": "CORTEX_A55_PLATFORM",
+      "base_address": "0x44463000",
+      "block": "core_platform/CORE_PLATFORM"
+    },
+    {
+      "name": "DDRC",
+      "base_address": "0x4e080000",
+      "block": "ddrc/DDRC"
+    },
+    {
+      "name": "DDRC_CMU1",
+      "base_address": "0x4e060000",
+      "block": "cmu/CMU"
+    },
+    {
+      "name": "DDRC_CMU2",
+      "base_address": "0x4e070000",
+      "block": "cmu/CMU"
+    },
+    {
+      "name": "DDRC__BLK_CTRL_DDRMIX",
+      "base_address": "0x4e010000",
+      "block": "ddr_blk_ctrl_ddrmix/DDR_BLK_CTRL_DDRMIX"
+    },
+    {
+      "name": "DDRC__FRACT_PLL",
+      "base_address": "0x44481700",
+      "block": "pll/PLL"
+    },
+    {
+      "name": "DDRC__LSTCU",
+      "base_address": "0x4e050000",
+      "block": "lstcu/LSTCU"
+    },
+    {
+      "name": "DDRC__TCU",
+      "base_address": "0x4e000000",
+      "block": "ddr_tcu/DDR_TCU"
+    },
+    {
+      "name": "DISPLAY_SEERIS",
+      "base_address": "0x4b400000",
+      "block": "display_seeris/DISPLAY_SEERIS"
+    },
+    {
+      "name": "DISPLAY__BLK_CTRL_DISPLAYMIX",
+      "base_address": "0x4b010000",
+      "block": "display_blk_ctrl_displaymix/DISPLAY_BLK_CTRL_DISPLAYMIX"
+    },
+    {
+      "name": "DISPLAY__FRACT_PLL",
+      "base_address": "0x44481900",
+      "block": "pll/PLL"
+    },
+    {
+      "name": "DISPLAY__OCRAM_MECC",
+      "base_address": "0x4b0f0000",
+      "block": "ocram/OCRAM"
+    },
+    {
+      "name": "DISPLAY__PIXEL_INTERLEAVER1",
+      "base_address": "0x4b0d0000",
+      "block": "display_interleaver/DISPLAY_INTERLEAVER"
+    },
+    {
+      "name": "DISPLAY__PIXEL_MAPPER",
+      "base_address": "0x4b000000",
+      "block": "display_pixel_mapper/DISPLAY_PIXEL_MAPPER"
+    },
+    {
+      "name": "DISPLAY__TCU",
+      "base_address": "0x4b000000",
+      "block": "display_tcu/DISPLAY_TCU"
+    },
+    {
+      "name": "DMA3",
+      "base_address": "0x44000000",
+      "block": "dma/DMA"
+    },
+    {
+      "name": "DPU_IRQSTEER",
+      "base_address": "0x4b0b0000",
+      "block": "dpu_irqsteer/DPU_IRQSTEER"
+    },
+    {
+      "name": "EDMA5_2",
+      "base_address": "0x42000000",
+      "block": "dma5/DMA5"
+    },
+    {
+      "name": "EDMA5_3",
+      "base_address": "0x42210000",
+      "block": "dma5/DMA5"
+    },
+    {
+      "name": "EDMA5_4",
+      "base_address": "0x4ae10000",
+      "block": "dma5/DMA5"
+    },
+    {
+      "name": "EMDIO0_PCI_HDR_TYPE0",
+      "base_address": "0x4cb00000",
+      "block": "enetc_pci_type0/ENETC_PCI_TYPE0"
+    },
+    {
+      "name": "EMDIO_BASE",
+      "base_address": "0x4cce0000",
+      "block": "enetc_pf_emdio/ENETC_PF_EMDIO"
+    },
+    {
+      "name": "EMDIO_GLOBAL",
+      "base_address": "0x4ccf0000",
+      "block": "enetc_global/ENETC_GLOBAL"
+    },
+    {
+      "name": "ENETC0_BASE",
+      "base_address": "0x4cc10000",
+      "block": "netc_enetc/NETC_ENETC"
+    },
+    {
+      "name": "ENETC0_COMMON",
+      "base_address": "0x4cc11000",
+      "block": "netc_sw_enetc/NETC_SW_ENETC"
+    },
+    {
+      "name": "ENETC0_ETH_MAC_PORT",
+      "base_address": "0x4cc15000",
+      "block": "netc_eth_link/NETC_ETH_LINK"
+    },
+    {
+      "name": "ENETC0_GLOBAL",
+      "base_address": "0x4cc20000",
+      "block": "enetc/ENETC"
+    },
+    {
+      "name": "ENETC0_PCI_HDR_TYPE0",
+      "base_address": "0x4ca00000",
+      "block": "enetc_pci_type0/ENETC_PCI_TYPE0"
+    },
+    {
+      "name": "ENETC0_PORT",
+      "base_address": "0x4cc14000",
+      "block": "netc_port/NETC_PORT"
+    },
+    {
+      "name": "ENETC0_PSI",
+      "base_address": "0x4cc00000",
+      "block": "enetc_si/ENETC_SI"
+    },
+    {
+      "name": "ENETC1_BASE",
+      "base_address": "0x4cc50000",
+      "block": "netc_enetc/NETC_ENETC"
+    },
+    {
+      "name": "ENETC1_COMMON",
+      "base_address": "0x4cc51000",
+      "block": "netc_sw_enetc/NETC_SW_ENETC"
+    },
+    {
+      "name": "ENETC1_ETH_MAC_PORT",
+      "base_address": "0x4cc55000",
+      "block": "netc_eth_link/NETC_ETH_LINK"
+    },
+    {
+      "name": "ENETC1_GLOBAL",
+      "base_address": "0x4cc60000",
+      "block": "enetc_global/ENETC_GLOBAL"
+    },
+    {
+      "name": "ENETC1_PCI_HDR_TYPE0",
+      "base_address": "0x4ca40000",
+      "block": "enetc_pci_type0/ENETC_PCI_TYPE0"
+    },
+    {
+      "name": "ENETC1_PORT",
+      "base_address": "0x4cc54000",
+      "block": "netc_port/NETC_PORT"
+    },
+    {
+      "name": "ENETC1_PSI",
+      "base_address": "0x4cc40000",
+      "block": "enetc_si/ENETC_SI"
+    },
+    {
+      "name": "ENETC2_BASE",
+      "base_address": "0x4cc90000",
+      "block": "netc_enetc/NETC_ENETC"
+    },
+    {
+      "name": "ENETC2_COMMON",
+      "base_address": "0x4cc91000",
+      "block": "netc_sw_enetc/NETC_SW_ENETC"
+    },
+    {
+      "name": "ENETC2_ETH_MAC_PORT",
+      "base_address": "0x4cc95000",
+      "block": "netc_eth_link/NETC_ETH_LINK"
+    },
+    {
+      "name": "ENETC2_GLOBAL",
+      "base_address": "0x4cca0000",
+      "block": "enetc_global/ENETC_GLOBAL"
+    },
+    {
+      "name": "ENETC2_PCI_HDR_TYPE0",
+      "base_address": "0x4ca80000",
+      "block": "enetc_pci_type0/ENETC_PCI_TYPE0"
+    },
+    {
+      "name": "ENETC2_PORT",
+      "base_address": "0x4cc94000",
+      "block": "netc_port/NETC_PORT"
+    },
+    {
+      "name": "ENETC2_PSI",
+      "base_address": "0x4cc80000",
+      "block": "enetc_si/ENETC_SI"
+    },
+    {
+      "name": "ENETC_VSI0",
+      "base_address": "0x4cd20000",
+      "block": "enetc_si/ENETC_SI"
+    },
+    {
+      "name": "ENETC_VSI1",
+      "base_address": "0x4cd30000",
+      "block": "enetc_si/ENETC_SI"
+    },
+    {
+      "name": "ENETC_VSI2",
+      "base_address": "0x4cd40000",
+      "block": "enetc_si/ENETC_SI"
+    },
+    {
+      "name": "ENETC_VSI3",
+      "base_address": "0x4cd50000",
+      "block": "enetc_si/ENETC_SI"
+    },
+    {
+      "name": "ENETC_VSI4",
+      "base_address": "0x4cd60000",
+      "block": "enetc_si/ENETC_SI"
+    },
+    {
+      "name": "ENETC_VSI5",
+      "base_address": "0x4cd70000",
+      "block": "enetc_si/ENETC_SI"
+    },
+    {
+      "name": "ENET_PHY_MAC_ADAPTER",
+      "base_address": "0x003e0000",
+      "block": "enet_phy_mac_adapter/ENET_PHY_MAC_ADAPTER"
+    },
+    {
+      "name": "ENET_PHY_PMA_MMD",
+      "base_address": "0x00020000",
+      "block": "enet_phy_pma_mmd/ENET_PHY_PMA_MMD"
+    },
+    {
+      "name": "ENET_PHY_VS_MII_MMD",
+      "base_address": "0x003e0000",
+      "block": "enet_phy_vs_mii_mmd/ENET_PHY_VS_MII_MMD"
+    },
+    {
+      "name": "ENET_PHY_XS_PCS_MMD",
+      "base_address": "0x00060000",
+      "block": "enet_phy_xs_pcs_mmd/ENET_PHY_XS_PCS_MMD"
+    },
+    {
+      "name": "FLEXIO1",
+      "base_address": "0x425c0000",
+      "block": "flexio/FLEXIO"
+    },
+    {
+      "name": "FLEXIO2",
+      "base_address": "0x425d0000",
+      "block": "flexio/FLEXIO"
+    },
+    {
+      "name": "FLEXSPI",
+      "base_address": "0x425e0000",
+      "block": "flexspi/FLEXSPI"
+    },
+    {
+      "name": "GPC_CTRL_CA55_0",
+      "base_address": "0x44471000",
+      "block": "gpc/GPC"
+    },
+    {
+      "name": "GPC_CTRL_CA55_1",
+      "base_address": "0x44471800",
+      "block": "gpc/GPC"
+    },
+    {
+      "name": "GPC_CTRL_CA55_2",
+      "base_address": "0x44472000",
+      "block": "gpc/GPC"
+    },
+    {
+      "name": "GPC_CTRL_CA55_3",
+      "base_address": "0x44472800",
+      "block": "gpc/GPC"
+    },
+    {
+      "name": "GPC_CTRL_CA55_4",
+      "base_address": "0x44473000",
+      "block": "gpc/GPC"
+    },
+    {
+      "name": "GPC_CTRL_CA55_5",
+      "base_address": "0x44473800",
+      "block": "gpc/GPC"
+    },
+    {
+      "name": "GPC_CTRL_CA55_CLUSTER",
+      "base_address": "0x44474000",
+      "block": "gpc/GPC"
+    },
+    {
+      "name": "GPC_CTRL_CM33",
+      "base_address": "0x44470000",
+      "block": "core_clk/CORE_CLK"
+    },
+    {
+      "name": "GPC_CTRL_CM7",
+      "base_address": "0x44470800",
+      "block": "core_clk/CORE_CLK"
+    },
+    {
+      "name": "GPIO1",
+      "base_address": "0x47400000",
+      "block": "rgpio/RGPIO"
+    },
+    {
+      "name": "GPIO2",
+      "base_address": "0x43810000",
+      "block": "rgpio/RGPIO"
+    },
+    {
+      "name": "GPIO3",
+      "base_address": "0x43820000",
+      "block": "rgpio/RGPIO"
+    },
+    {
+      "name": "GPIO4",
+      "base_address": "0x43840000",
+      "block": "rgpio/RGPIO"
+    },
+    {
+      "name": "GPIO5",
+      "base_address": "0x43850000",
+      "block": "rgpio/RGPIO"
+    },
+    {
+      "name": "GPU__BLK_CTRL_GPUMIX",
+      "base_address": "0x4d810000",
+      "block": "gpu_blk_ctrl_gpumix/GPU_BLK_CTRL_GPUMIX"
+    },
+    {
+      "name": "GPU__REG__DOORBELLS",
+      "base_address": "0x4d980000",
+      "block": "doorbells/DOORBELLS"
+    },
+    {
+      "name": "GPU__REG__GPU_REGISTERS",
+      "base_address": "0x4d900000",
+      "block": "gpu_registers/GPU_REGISTERS"
+    },
+    {
+      "name": "GPU__REG__IPA_CONTROL",
+      "base_address": "0x4d940000",
+      "block": "ipa_control/IPA_CONTROL"
+    },
+    {
+      "name": "GPU__REG__USER",
+      "base_address": "0x4d910000",
+      "block": "user/USER"
+    },
+    {
+      "name": "GPU__TCU",
+      "base_address": "0x4d800000",
+      "block": "gpu_tcu/GPU_TCU"
+    },
+    {
+      "name": "HSIO__BLK_CTRL_HSIOMIX",
+      "base_address": "0x4c010000",
+      "block": "hsio_blk_ctrl_hsiomix/HSIO_BLK_CTRL_HSIOMIX"
+    },
+    {
+      "name": "HSIO__GHZ_LN_PLL",
+      "base_address": "0x44481800",
+      "block": "hsio_ghz_ln_pll/HSIO_GHZ_LN_PLL"
+    },
+    {
+      "name": "HSIO__PCIE1__PCIE_DMA_IATU",
+      "base_address": "0x4c360000",
+      "block": "pcie_dma_iatu/PCIE_DMA_IATU"
+    },
+    {
+      "name": "HSIO__PCIE1__PCIE_EP",
+      "base_address": "0x4c300000",
+      "block": "pcie_ep/PCIE_EP"
+    },
+    {
+      "name": "HSIO__PCIE1__PCIE_RC",
+      "base_address": "0x4c300000",
+      "block": "pcie_rc/PCIE_RC"
+    },
+    {
+      "name": "HSIO__PCIE1__PCIE_SHADOW_EP",
+      "base_address": "0x4c320000",
+      "block": "pcie_shadow_ep/PCIE_SHADOW_EP"
+    },
+    {
+      "name": "HSIO__PCIE1__SERDES_SS",
+      "base_address": "0x4c340000",
+      "block": "serdes_ss/SerDes_SS"
+    },
+    {
+      "name": "HSIO__PCIE2__PCIE_DMA_IATU",
+      "base_address": "0x4c3e0000",
+      "block": "pcie_dma_iatu/PCIE_DMA_IATU"
+    },
+    {
+      "name": "HSIO__PCIE2__PCIE_EP",
+      "base_address": "0x4c380000",
+      "block": "pcie_ep/PCIE_EP"
+    },
+    {
+      "name": "HSIO__PCIE2__PCIE_RC",
+      "base_address": "0x4c380000",
+      "block": "pcie_rc/PCIE_RC"
+    },
+    {
+      "name": "HSIO__PCIE2__PCIE_SHADOW_EP",
+      "base_address": "0x4c3a0000",
+      "block": "pcie_shadow_ep/PCIE_SHADOW_EP"
+    },
+    {
+      "name": "HSIO__PCIE2__SERDES_SS",
+      "base_address": "0x4c3c0000",
+      "block": "serdes_ss/SerDes_SS"
+    },
+    {
+      "name": "HSIO__TCU",
+      "base_address": "0x4c000000",
+      "block": "hsio_tcu/HSIO_TCU"
+    },
+    {
+      "name": "HSIO__USB_3_01__GLUE",
+      "base_address": "0x4c1f0000",
+      "block": "usb3_glue/USB3_GLUE"
+    },
+    {
+      "name": "HSIO__USB_3_01__USB3",
+      "base_address": "0x4c100000",
+      "block": "usb3_core/USB3_CORE"
+    },
+    {
+      "name": "HSIO__USB_3_0_PHY__TCA",
+      "base_address": "0x4c1fc000",
+      "block": "usb3_phy_tca/USB3_PHY_TCA"
+    },
+    {
+      "name": "I3C1",
+      "base_address": "0x44330000",
+      "block": "i3c/I3C"
+    },
+    {
+      "name": "I3C2",
+      "base_address": "0x42520000",
+      "block": "i3c/I3C"
+    },
+    {
+      "name": "INTM",
+      "base_address": "0x44580000",
+      "block": "intm/INTM"
+    },
+    {
+      "name": "IOMUXC",
+      "base_address": "0x443c0000",
+      "block": "iomuxc/IOMUXC"
+    },
+    {
+      "name": "IRQSTEER",
+      "base_address": "0x44680000",
+      "block": "irqsteer/IRQSTEER"
+    },
+    {
+      "name": "LPI2C1",
+      "base_address": "0x44340000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPI2C2",
+      "base_address": "0x44350000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPI2C3",
+      "base_address": "0x42530000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPI2C4",
+      "base_address": "0x42540000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPI2C5",
+      "base_address": "0x426b0000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPI2C6",
+      "base_address": "0x426c0000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPI2C7",
+      "base_address": "0x426d0000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPI2C8",
+      "base_address": "0x426e0000",
+      "block": "lpi2c/LPI2C"
+    },
+    {
+      "name": "LPIT1",
+      "base_address": "0x442f0000",
+      "block": "lpit/LPIT"
+    },
+    {
+      "name": "LPIT2",
+      "base_address": "0x424c0000",
+      "block": "lpit/LPIT"
+    },
+    {
+      "name": "LPSPI1",
+      "base_address": "0x44360000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPSPI2",
+      "base_address": "0x44370000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPSPI3",
+      "base_address": "0x42550000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPSPI4",
+      "base_address": "0x42560000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPSPI5",
+      "base_address": "0x426f0000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPSPI6",
+      "base_address": "0x42700000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPSPI7",
+      "base_address": "0x42710000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPSPI8",
+      "base_address": "0x42720000",
+      "block": "lpspi/LPSPI"
+    },
+    {
+      "name": "LPTMR1",
+      "base_address": "0x44300000",
+      "block": "lptmr/LPTMR"
+    },
+    {
+      "name": "LPTMR2",
+      "base_address": "0x424d0000",
+      "block": "lptmr/LPTMR"
+    },
+    {
+      "name": "LPUART1",
+      "base_address": "0x44380000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LPUART2",
+      "base_address": "0x44390000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LPUART3",
+      "base_address": "0x42570000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LPUART4",
+      "base_address": "0x42580000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LPUART5",
+      "base_address": "0x42590000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LPUART6",
+      "base_address": "0x425a0000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LPUART7",
+      "base_address": "0x42690000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LPUART8",
+      "base_address": "0x426a0000",
+      "block": "lpuart/LPUART"
+    },
+    {
+      "name": "LVDS",
+      "base_address": "0x4b0c0000",
+      "block": "ldb/LDB"
+    },
+    {
+      "name": "M33_CACHE_CTRLPC",
+      "base_address": "0x44400000",
+      "block": "xcache/XCACHE"
+    },
+    {
+      "name": "M33_CACHE_CTRLPS",
+      "base_address": "0x44400800",
+      "block": "xcache/XCACHE"
+    },
+    {
+      "name": "M7_CMUM0",
+      "base_address": "0x4a080000",
+      "block": "cmu/CMU"
+    },
+    {
+      "name": "M7_CMUM1",
+      "base_address": "0x4a090000",
+      "block": "cmu/CMU"
+    },
+    {
+      "name": "M7__A7_APB_MCM1",
+      "base_address": "0x4a0a0000",
+      "block": "m7_a7_apb_mcm/M7_A7_APB_MCM"
+    },
+    {
+      "name": "M7__EIM",
+      "base_address": "0x4a060000",
+      "block": "eim/EIM"
+    },
+    {
+      "name": "M7__ERM",
+      "base_address": "0x4a070000",
+      "block": "erm/ERM"
+    },
+    {
+      "name": "M7__LSTCU_M7MIX",
+      "base_address": "0x4a050000",
+      "block": "lstcu/LSTCU"
+    },
+    {
+      "name": "M7__TCU",
+      "base_address": "0x4a000000",
+      "block": "m7_tcu/M7_TCU"
+    },
+    {
+      "name": "MIPI_CSI2",
+      "base_address": "0x4ad30000",
+      "block": "camera_mipi_csi2/CAMERA_MIPI_CSI2"
+    },
+    {
+      "name": "MIPI_DSI",
+      "base_address": "0x4acf0000",
+      "block": "mipi_dsi/MIPI_DSI"
+    },
+    {
+      "name": "MSGINTR1",
+      "base_address": "0x44690000",
+      "block": "msgintr/MSGINTR"
+    },
+    {
+      "name": "MSGINTR2",
+      "base_address": "0x446a0000",
+      "block": "msgintr/MSGINTR"
+    },
+    {
+      "name": "MU5_MUA",
+      "base_address": "0x44610000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "MU7_MUB",
+      "base_address": "0x42440000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "MU8_MUB",
+      "base_address": "0x42740000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "NETC_IERB",
+      "base_address": "0x4cde0000",
+      "block": "netc_ierb/NETC_IERB"
+    },
+    {
+      "name": "NETC_PRIV",
+      "base_address": "0x4cdf0000",
+      "block": "netc_priv/NETC_PRIV"
+    },
+    {
+      "name": "NETC_VF1_PCI_HDR_TYPE0",
+      "base_address": "0x4ca10000",
+      "block": "enetc_vf_pci_type0/ENETC_VF_PCI_TYPE0"
+    },
+    {
+      "name": "NETC_VF2_PCI_HDR_TYPE0",
+      "base_address": "0x4ca20000",
+      "block": "enetc_vf_pci_type0/ENETC_VF_PCI_TYPE0"
+    },
+    {
+      "name": "NETC_VF3_PCI_HDR_TYPE0",
+      "base_address": "0x4ca50000",
+      "block": "enetc_vf_pci_type0/ENETC_VF_PCI_TYPE0"
+    },
+    {
+      "name": "NETC_VF4_PCI_HDR_TYPE0",
+      "base_address": "0x4ca60000",
+      "block": "enetc_vf_pci_type0/ENETC_VF_PCI_TYPE0"
+    },
+    {
+      "name": "NETC_VF5_PCI_HDR_TYPE0",
+      "base_address": "0x4ca90000",
+      "block": "enetc_vf_pci_type0/ENETC_VF_PCI_TYPE0"
+    },
+    {
+      "name": "NETC_VF6_PCI_HDR_TYPE0",
+      "base_address": "0x4caa0000",
+      "block": "enetc_vf_pci_type0/ENETC_VF_PCI_TYPE0"
+    },
+    {
+      "name": "NETC__IEPRC_1__IEPRC_B0_EC_F0_PCI_HDR_TYPE0",
+      "base_address": "0x4ca08000",
+      "block": "ieprc_pci/ieprc_pci"
+    },
+    {
+      "name": "NETC__IEPRC_1__IEPRC_B1_EC_F0_PCI_HDR_TYPE0",
+      "base_address": "0x4cb08000",
+      "block": "ieprc_pci/ieprc_pci"
+    },
+    {
+      "name": "NETC__IEPRC_1__IEPRC_IERB",
+      "base_address": "0x4c8a0000",
+      "block": "ieprc_ierb/ieprc_ierb"
+    },
+    {
+      "name": "NETC__IEPRC_1__IEPRC_PRB",
+      "base_address": "0x4c8b0000",
+      "block": "ieprc_prb/ieprc_prb"
+    },
+    {
+      "name": "NETC__TCU",
+      "base_address": "0x4c800000",
+      "block": "netc_tcu/NETC_TCU"
+    },
+    {
+      "name": "NOC_CMUN0",
+      "base_address": "0x49070000",
+      "block": "noc_cmu/NOC_CMU"
+    },
+    {
+      "name": "NOC_CMUN1",
+      "base_address": "0x49080000",
+      "block": "noc_cmu/NOC_CMU"
+    },
+    {
+      "name": "NOC__BLK_CTRL_NOCMIX",
+      "base_address": "0x49000000",
+      "block": "noc_blk_ctrl_nocmix/NOC_BLK_CTRL_NOCMIX"
+    },
+    {
+      "name": "NOC__EIMN",
+      "base_address": "0x49270000",
+      "block": "noc_eim/NOC_EIM"
+    },
+    {
+      "name": "NOC__GIC__GICA",
+      "base_address": "0x48010000",
+      "block": "noc_gica/NOC_GICA"
+    },
+    {
+      "name": "NOC__GIC__GICD",
+      "base_address": "0x48000000",
+      "block": "noc_gicd/NOC_GICD"
+    },
+    {
+      "name": "NOC__GIC__GICDA",
+      "base_address": "0x48120000",
+      "block": "noc_gicda/NOC_GICDA"
+    },
+    {
+      "name": "NOC__GIC__GICP",
+      "base_address": "0x48030000",
+      "block": "noc_gicp/NOC_GICP"
+    },
+    {
+      "name": "NOC__GIC__GICRLPI0",
+      "base_address": "0x48060000",
+      "block": "noc_gicrlpi0/NOC_GICRLPI0"
+    },
+    {
+      "name": "NOC__GIC__GICRLPI1",
+      "base_address": "0x48080000",
+      "block": "noc_gicrlpi1/NOC_GICRLPI1"
+    },
+    {
+      "name": "NOC__GIC__GICRLPI2",
+      "base_address": "0x480a0000",
+      "block": "noc_gicrlpi2/NOC_GICRLPI2"
+    },
+    {
+      "name": "NOC__GIC__GICRLPI3",
+      "base_address": "0x480c0000",
+      "block": "noc_gicrlpi3/NOC_GICRLPI3"
+    },
+    {
+      "name": "NOC__GIC__GICRLPI4",
+      "base_address": "0x480e0000",
+      "block": "noc_gicrlpi4/NOC_GICRLPI4"
+    },
+    {
+      "name": "NOC__GIC__GICRLPI5",
+      "base_address": "0x48100000",
+      "block": "noc_gicrlpi5/NOC_GICRLPI5"
+    },
+    {
+      "name": "NOC__GIC__GICRSGI0",
+      "base_address": "0x48070000",
+      "block": "noc_gicrsgi0/NOC_GICRSGI0"
+    },
+    {
+      "name": "NOC__GIC__GICRSGI1",
+      "base_address": "0x48090000",
+      "block": "noc_gicrsgi1/NOC_GICRSGI1"
+    },
+    {
+      "name": "NOC__GIC__GICRSGI2",
+      "base_address": "0x480b0000",
+      "block": "noc_gicrsgi2/NOC_GICRSGI2"
+    },
+    {
+      "name": "NOC__GIC__GICRSGI3",
+      "base_address": "0x480d0000",
+      "block": "noc_gicrsgi3/NOC_GICRSGI3"
+    },
+    {
+      "name": "NOC__GIC__GICRSGI4",
+      "base_address": "0x480f0000",
+      "block": "noc_gicrsgi4/NOC_GICRSGI4"
+    },
+    {
+      "name": "NOC__GIC__GICRSGI5",
+      "base_address": "0x48110000",
+      "block": "noc_gicrsgi5/NOC_GICRSGI5"
+    },
+    {
+      "name": "NOC__GIC__GICT",
+      "base_address": "0x48020000",
+      "block": "noc_gict/NOC_GICT"
+    },
+    {
+      "name": "NOC__GIC__GITS0",
+      "base_address": "0x48040000",
+      "block": "noc_gits0/NOC_GITS0"
+    },
+    {
+      "name": "NOC__GIC__GITS0TRANSLATER",
+      "base_address": "0x48050000",
+      "block": "noc_gits0translater/NOC_GITS0TRANSLATER"
+    },
+    {
+      "name": "NOC__LSTCUN",
+      "base_address": "0x490b0000",
+      "block": "noc_lstcu/NOC_LSTCU"
+    },
+    {
+      "name": "NOC__MMU_TBU_TCU__TBU0",
+      "base_address": "0x49110000",
+      "block": "mmu_tbu0/MMU_TBU0"
+    },
+    {
+      "name": "NOC__MMU_TBU_TCU__TBU1",
+      "base_address": "0x49130000",
+      "block": "mmu_tbu1/MMU_TBU1"
+    },
+    {
+      "name": "NOC__MMU_TBU_TCU__TBU10",
+      "base_address": "0x49230000",
+      "block": "mmu_tbu_me10/MMU_TBU_ME10"
+    },
+    {
+      "name": "NOC__MMU_TBU_TCU__TBU11",
+      "base_address": "0x49250000",
+      "block": "mmu_tbu_me11/MMU_TBU_ME11"
+    },
+    {
+      "name": "NOC__MMU_TBU_TCU__TBU2",
+      "base_address": "0x49150000",
+      "block": "mmu_tbu2/MMU_TBU2"
+    },
+    {
+      "name": "NOC__MMU_TBU_TCU__TBU3",
+      "base_address": "0x49170000",
+      "block": "mmu_tbu_me3/MMU_TBU_ME3"
+    },
+    {
+      "name": "NOC__MMU_TBU_TCU__TBU4",
+      "base_address": "0x49190000",
+      "block": "mmu_tbu_me4/MMU_TBU_ME4"
+    },
+    {
+      "name": "NOC__MMU_TBU_TCU__TBU5",
+      "base_address": "0x491b0000",
+      "block": "mmu_tbu_me5/MMU_TBU_ME5"
+    },
+    {
+      "name": "NOC__MMU_TBU_TCU__TBU6",
+      "base_address": "0x491d0000",
+      "block": "mmu_tbu_me6/MMU_TBU_ME6"
+    },
+    {
+      "name": "NOC__MMU_TBU_TCU__TBU7",
+      "base_address": "0x491f0000",
+      "block": "mmu_tbu_me7/MMU_TBU_ME7"
+    },
+    {
+      "name": "NOC__MMU_TBU_TCU__TBU9",
+      "base_address": "0x49210000",
+      "block": "mmu_tbu_me9/MMU_TBU_ME9"
+    },
+    {
+      "name": "NOC__MMU_TBU_TCU__TCU",
+      "base_address": "0x490d0000",
+      "block": "mmu_tcu/MMU_TCU"
+    },
+    {
+      "name": "NOC__SRAMCTL",
+      "base_address": "0x490a0000",
+      "block": "noc_sramctl/NOC_SRAMCTL"
+    },
+    {
+      "name": "NOC__TCU",
+      "base_address": "0x49040000",
+      "block": "noc_tcu/NOC_TCU"
+    },
+    {
+      "name": "NPU__EIM_NPUMIX",
+      "base_address": "0x4a860000",
+      "block": "eim/EIM"
+    },
+    {
+      "name": "NPU__LSTCU_NPUMIX",
+      "base_address": "0x4a850000",
+      "block": "lstcu/LSTCU"
+    },
+    {
+      "name": "NPU__NEUTRON_NPU__NEUTRON0__NEUTRON",
+      "base_address": "0x4abc0000",
+      "block": "neutron/NEUTRON"
+    },
+    {
+      "name": "NPU__NEUTRON_NPU__NEUTRON1__NEUTRON",
+      "base_address": "0x4abc1000",
+      "block": "neutron/NEUTRON"
+    },
+    {
+      "name": "NPU__NEUTRON_NPU__NEUTRON2__NEUTRON",
+      "base_address": "0x4abc2000",
+      "block": "neutron/NEUTRON"
+    },
+    {
+      "name": "NPU__NEUTRON_NPU__NEUTRON3__NEUTRON",
+      "base_address": "0x4abc3000",
+      "block": "neutron/NEUTRON"
+    },
+    {
+      "name": "NPU__NEUTRON_NPU__NEUTRON_GANGED__NEUTRON",
+      "base_address": "0x4abc4000",
+      "block": "neutron/NEUTRON"
+    },
+    {
+      "name": "NPU__NEUTRON_NPU__NEUTRON_S__MMR_SOC",
+      "base_address": "0x4ab00000",
+      "block": "neutron_npu/NEUTRON_NPU"
+    },
+    {
+      "name": "NPU__NEUTRON_NPU__NEUTRON_S__MMR_ZV",
+      "base_address": "0x4ab80000",
+      "block": "neutrons/neutrons"
+    },
+    {
+      "name": "NPU__TCU",
+      "base_address": "0x4a800000",
+      "block": "npu_tcu/NPU_TCU"
+    },
+    {
+      "name": "OTFAD",
+      "base_address": "0x425e0000",
+      "block": "otfad/OTFAD"
+    },
+    {
+      "name": "PDM",
+      "base_address": "0x44520000",
+      "block": "pdm/PDM"
+    },
+    {
+      "name": "SAI1",
+      "base_address": "0x443b0000",
+      "block": "i2s/I2S"
+    },
+    {
+      "name": "SAI2",
+      "base_address": "0x4c880000",
+      "block": "i2s/I2S"
+    },
+    {
+      "name": "SAI3",
+      "base_address": "0x42650000",
+      "block": "i2s/I2S"
+    },
+    {
+      "name": "SAI4",
+      "base_address": "0x42660000",
+      "block": "i2s/I2S"
+    },
+    {
+      "name": "SAI5",
+      "base_address": "0x42670000",
+      "block": "i2s/I2S"
+    },
+    {
+      "name": "SEMA42_1",
+      "base_address": "0x44260000",
+      "block": "sema42/SEMA42"
+    },
+    {
+      "name": "SEMA42_2",
+      "base_address": "0x42450000",
+      "block": "sema42/SEMA42"
+    },
+    {
+      "name": "TMPSNS1",
+      "base_address": "0x44482000",
+      "block": "tmpsns/TMPSNS"
+    },
+    {
+      "name": "TMPSNS2",
+      "base_address": "0x4a440000",
+      "block": "tmpsns/TMPSNS"
+    },
+    {
+      "name": "TMR0_BASE",
+      "base_address": "0x4ccc0000",
+      "block": "enetc_pf_tmr/ENETC_PF_TMR"
+    },
+    {
+      "name": "TMR0_GLOBAL",
+      "base_address": "0x4ccd0000",
+      "block": "enetc_global/ENETC_GLOBAL"
+    },
+    {
+      "name": "TMR0_PCI_HDR_TYPE0",
+      "base_address": "0x4cac0000",
+      "block": "enetc_pci_type0/ENETC_PCI_TYPE0"
+    },
+    {
+      "name": "TPM1",
+      "base_address": "0x44310000",
+      "block": "tpm/TPM"
+    },
+    {
+      "name": "TPM2",
+      "base_address": "0x44320000",
+      "block": "tpm/TPM"
+    },
+    {
+      "name": "TPM3",
+      "base_address": "0x424e0000",
+      "block": "tpm/TPM"
+    },
+    {
+      "name": "TPM4",
+      "base_address": "0x424f0000",
+      "block": "tpm/TPM"
+    },
+    {
+      "name": "TPM5",
+      "base_address": "0x42500000",
+      "block": "tpm/TPM"
+    },
+    {
+      "name": "TPM6",
+      "base_address": "0x42510000",
+      "block": "tpm/TPM"
+    },
+    {
+      "name": "TRDC1",
+      "base_address": "0x44270000",
+      "block": "trdc_mbc2/TRDC_MBC2"
+    },
+    {
+      "name": "TSTMR1",
+      "base_address": "0x442c0000",
+      "block": "tstmr/TSTMR"
+    },
+    {
+      "name": "TSTMR2",
+      "base_address": "0x42480000",
+      "block": "tstmr/TSTMR"
+    },
+    {
+      "name": "USBC",
+      "base_address": "0x4c200000",
+      "block": "usb/USB"
+    },
+    {
+      "name": "USBNC",
+      "base_address": "0x4c200200",
+      "block": "usbnc/USBNC"
+    },
+    {
+      "name": "USDHC1",
+      "base_address": "0x42850000",
+      "block": "usdhc/USDHC"
+    },
+    {
+      "name": "USDHC2",
+      "base_address": "0x42860000",
+      "block": "usdhc/USDHC"
+    },
+    {
+      "name": "USDHC3",
+      "base_address": "0x428b0000",
+      "block": "usdhc/USDHC"
+    },
+    {
+      "name": "VPU__BLK_CTRL_VPUMIX",
+      "base_address": "0x4c410000",
+      "block": "vpu_blk_ctrl_vpumix/VPU_BLK_CTRL_VPUMIX"
+    },
+    {
+      "name": "VPU__JPEG_DEC1",
+      "base_address": "0x4c500100",
+      "block": "jpeg_dec/JPEG_DEC"
+    },
+    {
+      "name": "VPU__JPEG_DEC_WRAP0",
+      "base_address": "0x4c500000",
+      "block": "jpeg_dec_wrap/JPEG_DEC_WRAP"
+    },
+    {
+      "name": "VPU__JPEG_ENC",
+      "base_address": "0x4c550100",
+      "block": "jpeg_enc/JPEG_ENC"
+    },
+    {
+      "name": "VPU__JPEG_ENC_WRAP",
+      "base_address": "0x4c550000",
+      "block": "vpu_jpeg_enc_wrap/VPU_JPEG_ENC_WRAP"
+    },
+    {
+      "name": "VPU__TCU",
+      "base_address": "0x4c400000",
+      "block": "vpu_tcu/VPU_TCU"
+    },
+    {
+      "name": "VPU__VPU__VPU_CODEC",
+      "base_address": "0x4c480000",
+      "block": "vpu/VPU"
+    },
+    {
+      "name": "WAKEUP_CMU1",
+      "base_address": "0x42750000",
+      "block": "cmu/CMU"
+    },
+    {
+      "name": "WAKEUP_CMU2",
+      "base_address": "0x427a0000",
+      "block": "cmu/CMU"
+    },
+    {
+      "name": "WAKEUP__AHBRM1",
+      "base_address": "0x425e0000",
+      "block": "wakeup_ahbrm/WAKEUP_AHBRM"
+    },
+    {
+      "name": "WAKEUP__ATUA",
+      "base_address": "0x42760000",
+      "block": "wakeup_atu/WAKEUP_ATU"
+    },
+    {
+      "name": "WAKEUP__ATUM",
+      "base_address": "0x42770000",
+      "block": "wakeup_atu/WAKEUP_ATU"
+    },
+    {
+      "name": "WAKEUP__AUDIO_XCVR",
+      "base_address": "0x42680000",
+      "block": "audio_xcvr/AUDIO_XCVR"
+    },
+    {
+      "name": "WAKEUP__BLK_CTRL_WAKEUPMIX",
+      "base_address": "0x42420000",
+      "block": "blk_ctrl_wakeupmix/BLK_CTRL_WAKEUPMIX"
+    },
+    {
+      "name": "WAKEUP__DMA_CRC2",
+      "base_address": "0x427b0000",
+      "block": "wakeup_dma_crc/WAKEUP_DMA_CRC"
+    },
+    {
+      "name": "WAKEUP__EIMW",
+      "base_address": "0x42780000",
+      "block": "eim/EIM"
+    },
+    {
+      "name": "WAKEUP__ROMCP2",
+      "base_address": "0x42640000",
+      "block": "wakeup_romcp/WAKEUP_ROMCP"
+    },
+    {
+      "name": "WAKEUP__XSPI_RESPONDER",
+      "base_address": "0x428a0000",
+      "block": "wakeup_xspi_responder/WAKEUP_XSPI_RESPONDER"
+    },
+    {
+      "name": "WDOG1",
+      "base_address": "0x442d0000",
+      "block": "wdog/WDOG"
+    },
+    {
+      "name": "WDOG2",
+      "base_address": "0x442e0000",
+      "block": "wdog/WDOG"
+    },
+    {
+      "name": "WDOG3",
+      "base_address": "0x42490000",
+      "block": "wdog/WDOG"
+    },
+    {
+      "name": "WDOG4",
+      "base_address": "0x424a0000",
+      "block": "wdog/WDOG"
+    },
+    {
+      "name": "WDOG5",
+      "base_address": "0x424b0000",
+      "block": "wdog/WDOG"
+    }
+  ]
+}

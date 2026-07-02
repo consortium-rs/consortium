@@ -1,0 +1,418 @@
+block/ENETC_GLOBAL:
+  description: ''
+  items:
+  - name: SMDTR
+    byte_offset: 4
+    fieldset: ENETC_GLOBAL_SMDTR
+  - name: SMACR
+    byte_offset: 8
+    fieldset: ENETC_GLOBAL_SMACR
+  - name: SMCLWMR
+    byte_offset: 16
+    fieldset: ENETC_GLOBAL_SMCLWMR
+  - name: SMBUCR
+    byte_offset: 20
+    fieldset: ENETC_GLOBAL_SMBUCR
+  - name: SMBUCHWMR
+    byte_offset: 24
+    fieldset: ENETC_GLOBAL_SMBUCHWMR
+  - name: SMLCR
+    byte_offset: 28
+    fieldset: ENETC_GLOBAL_SMLCR
+  - name: HBTCAPR
+    byte_offset: 32
+  - name: HBTOR0
+    byte_offset: 36
+  - name: HBTOR2
+    byte_offset: 44
+  - name: SMERBCAPR
+    byte_offset: 64
+    fieldset: ENETC_GLOBAL_SMERBCAPR
+  - name: SMERBOR0
+    byte_offset: 68
+    fieldset: ENETC_GLOBAL_SMERBOR0
+  - name: SMERBOR1
+    byte_offset: 72
+    fieldset: ENETC_GLOBAL_SMERBOR1
+  - name: PCE_SL_PCEOR
+    byte_offset: 256
+  - name: PCE_SL_RFEOR
+    byte_offset: 260
+  - name: NETCCLKR
+    byte_offset: 356
+    fieldset: ENETC_GLOBAL_NETCCLKR
+  - name: HTA_LOOP_HTACAPR
+    byte_offset: 512
+  - name: HTA_LOOP_HTARFCOR
+    byte_offset: 516
+  - name: HTA_LOOP_HTAHPBCOR
+    byte_offset: 520
+  - name: HTA_LOOP_HTALPBCOR
+    byte_offset: 524
+  - name: HTA_LOOP_HTATFCOR
+    byte_offset: 548
+  - name: ARRAY_NUM_RC_RCSBRLAR
+    byte_offset: 768
+  - name: ARRAY_NUM_RC_RCSBRLHWMR
+    byte_offset: 772
+  - name: ARRAY_NUM_RC_RCSBWLAR
+    byte_offset: 776
+  - name: ARRAY_NUM_RC_RCSBWLHWMR
+    byte_offset: 780
+  - name: IPBRR0
+    byte_offset: 3064
+  - name: IPBRR1
+    byte_offset: 3068
+  - name: FBLPR
+    byte_offset: 3328
+    array:
+      len: 2
+      stride: 4
+  - name: EMDIO_EMDIOUFSBECR
+    byte_offset: 3616
+  - name: EMDIO_EMDIOUFSBESR
+    byte_offset: 3620
+fieldset/ENETC_GLOBAL_SMDTR:
+  description: ''
+  fields:
+  - name: THRESH
+    bit_offset: 0
+    bit_size: 24
+fieldset/ENETC_GLOBAL_SMACR:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/ENETC_GLOBAL_SMCLWMR:
+  description: ''
+  fields:
+  - name: WATERMARK
+    bit_offset: 0
+    bit_size: 24
+fieldset/ENETC_GLOBAL_SMBUCR:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/ENETC_GLOBAL_SMBUCHWMR:
+  description: ''
+  fields:
+  - name: WATERMARK
+    bit_offset: 0
+    bit_size: 24
+fieldset/ENETC_GLOBAL_SMLCR:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 24
+  - name: IFLC
+    bit_offset: 30
+    bit_size: 1
+    description: Determinate number of lost words
+  - name: IFDC
+    bit_offset: 31
+    bit_size: 1
+    description: Indeterminate free list corruption
+fieldset/ENETC_GLOBAL_HBTCAPR_NUM:
+  description: ''
+  fields:
+  - name: ENTRIES
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_GLOBAL_HBTCAPR_MAX:
+  description: ''
+  fields:
+  - name: COL
+    bit_offset: 24
+    bit_size: 3
+  - name: VISITS
+    bit_offset: 28
+    bit_size: 4
+fieldset/ENETC_GLOBAL_HBTOR0_NUM:
+  description: ''
+  fields:
+  - name: ENTRIES
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_GLOBAL_HBTOR0_HWM:
+  description: ''
+  fields:
+  - name: ENTRIES
+    bit_offset: 16
+    bit_size: 16
+fieldset/ENETC_GLOBAL_HBTOR2_RUN_AVG:
+  description: ''
+  fields:
+  - name: FRACT
+    bit_offset: 0
+    bit_size: 8
+  - name: INT
+    bit_offset: 8
+    bit_size: 8
+fieldset/ENETC_GLOBAL_HBTOR2_HWM:
+  description: ''
+  fields:
+  - name: COL
+    bit_offset: 16
+    bit_size: 4
+fieldset/ENETC_GLOBAL_SMERBCAPR:
+  description: ''
+  fields:
+  - name: THRESH
+    bit_offset: 0
+    bit_size: 24
+  - name: MLOC
+    bit_offset: 30
+    bit_size: 2
+    description: Word Size
+fieldset/ENETC_GLOBAL_SMERBCAPR_WORD:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 28
+    bit_size: 2
+    description: Word Size
+fieldset/ENETC_GLOBAL_SMERBOR0:
+  description: ''
+  fields:
+  - name: AMOUNT
+    bit_offset: 0
+    bit_size: 24
+fieldset/ENETC_GLOBAL_SMERBOR1:
+  description: ''
+  fields:
+  - name: WATERMARK
+    bit_offset: 0
+    bit_size: 24
+    description: High Watermark
+fieldset/ENETC_GLOBAL_PCEOR_NUM:
+  description: ''
+  fields:
+  - name: FRAMES
+    bit_offset: 0
+    bit_size: 7
+fieldset/ENETC_GLOBAL_PCEOR_HWM:
+  description: ''
+  fields:
+  - name: FRAMES
+    bit_offset: 8
+    bit_size: 7
+fieldset/ENETC_GLOBAL_PCEOR_MAX:
+  description: ''
+  fields:
+  - name: FRAMES
+    bit_offset: 16
+    bit_size: 7
+fieldset/ENETC_GLOBAL_RFEOR_NUM:
+  description: ''
+  fields:
+  - name: FRAMES
+    bit_offset: 0
+    bit_size: 6
+fieldset/ENETC_GLOBAL_RFEOR_HWM:
+  description: ''
+  fields:
+  - name: FRAMES
+    bit_offset: 8
+    bit_size: 6
+fieldset/ENETC_GLOBAL_RFEOR_MAX:
+  description: ''
+  fields:
+  - name: FRAMES
+    bit_offset: 16
+    bit_size: 6
+fieldset/ENETC_GLOBAL_NETCCLKR:
+  description: ''
+  fields:
+  - name: FREQ
+    bit_offset: 0
+    bit_size: 11
+    description: Frequency
+fieldset/ENETC_GLOBAL_HTACAPR_MAX_RX:
+  description: ''
+  fields:
+  - name: FRAMES
+    bit_offset: 0
+    bit_size: 8
+fieldset/ENETC_GLOBAL_HTACAPR_MAX_TX:
+  description: ''
+  fields:
+  - name: FRAMES
+    bit_offset: 8
+    bit_size: 8
+fieldset/ENETC_GLOBAL_HTARFCOR_HP:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 8
+  - name: HWM
+    bit_offset: 8
+    bit_size: 8
+fieldset/ENETC_GLOBAL_HTARFCOR_LP:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 16
+    bit_size: 8
+  - name: HWM
+    bit_offset: 24
+    bit_size: 8
+fieldset/ENETC_GLOBAL_HTAHPBCOR_HP:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_GLOBAL_HTAHPBCOR:
+  description: ''
+  fields:
+  - name: HWM
+    bit_offset: 16
+    bit_size: 16
+fieldset/ENETC_GLOBAL_HTALPBCOR_LP:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 16
+fieldset/ENETC_GLOBAL_HTALPBCOR:
+  description: ''
+  fields:
+  - name: HWM
+    bit_offset: 16
+    bit_size: 16
+fieldset/ENETC_GLOBAL_HTATFCOR_HP:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 8
+  - name: HWM
+    bit_offset: 8
+    bit_size: 8
+fieldset/ENETC_GLOBAL_HTATFCOR_LP:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 16
+    bit_size: 8
+  - name: HWM
+    bit_offset: 24
+    bit_size: 8
+fieldset/ENETC_GLOBAL_RCSBRLAR:
+  description: ''
+  fields:
+  - name: FRACT
+    bit_offset: 0
+    bit_size: 8
+  - name: INT
+    bit_offset: 8
+    bit_size: 12
+fieldset/ENETC_GLOBAL_RCSBRLHWMR:
+  description: ''
+  fields:
+  - name: FRACT
+    bit_offset: 0
+    bit_size: 8
+  - name: INT
+    bit_offset: 8
+    bit_size: 12
+fieldset/ENETC_GLOBAL_RCSBWLAR:
+  description: ''
+  fields:
+  - name: FRACT
+    bit_offset: 0
+    bit_size: 8
+  - name: INT
+    bit_offset: 8
+    bit_size: 12
+fieldset/ENETC_GLOBAL_RCSBWLHWMR:
+  description: ''
+  fields:
+  - name: FRACT
+    bit_offset: 0
+    bit_size: 8
+  - name: INT
+    bit_offset: 8
+    bit_size: 12
+fieldset/ENETC_GLOBAL_IPBRR0_IP:
+  description: ''
+  fields:
+  - name: MN
+    bit_offset: 0
+    bit_size: 8
+  - name: MJ
+    bit_offset: 8
+    bit_size: 8
+fieldset/ENETC_GLOBAL_IPBRR1_IP:
+  description: ''
+  fields:
+  - name: CFG
+    bit_offset: 0
+    bit_size: 8
+  - name: MNT
+    bit_offset: 8
+    bit_size: 8
+  - name: INT
+    bit_offset: 16
+    bit_size: 8
+fieldset/ENETC_GLOBAL_FBLPR_PARAM:
+  description: ''
+  fields:
+  - name: VAL
+    bit_offset: 0
+    bit_size: 32
+fieldset/ENETC_GLOBAL_EMDIOUFSBECR:
+  description: ''
+  fields:
+  - name: RD
+    bit_offset: 31
+    bit_size: 1
+    description: Report disable
+fieldset/ENETC_GLOBAL_EMDIOUFSBESR_SB:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 4
+    description: System Bus ID
+fieldset/ENETC_GLOBAL_EMDIOUFSBESR:
+  description: ''
+  fields:
+  - name: M
+    bit_offset: 30
+    bit_size: 1
+    description: System Bus ID
+  - name: SBE
+    bit_offset: 31
+    bit_size: 1
+    description: Multiple
+fieldset/ENETC_GLOBAL_TUFSBECR:
+  description: ''
+  fields:
+  - name: RD
+    bit_offset: 31
+    bit_size: 1
+    description: Report disable
+fieldset/ENETC_GLOBAL_TUFSBESR_SB:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 4
+    description: System Bus ID
+fieldset/ENETC_GLOBAL_TUFSBESR:
+  description: ''
+  fields:
+  - name: M
+    bit_offset: 30
+    bit_size: 1
+    description: System Bus ID
+  - name: SBE
+    bit_offset: 31
+    bit_size: 1
+    description: Multiple

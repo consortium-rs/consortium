@@ -1,0 +1,58 @@
+block/OCTOSPIM:
+  description: ''
+  items:
+  - name: CR
+    byte_offset: 0
+    description: OCTOSPI IO Manager Control register
+    fieldset: OCTOSPIM_CR
+  - name: HWCFGR
+    byte_offset: 1008
+    description: OCTOSPI IO Manager hardware configuration register
+  - name: VERR
+    byte_offset: 1012
+    description: OCTOSPI IO Manager version register
+    fieldset: OCTOSPIM_VERR
+  - name: IDR
+    byte_offset: 1016
+    description: OCTOSPI IO Manager identification
+    fieldset: OCTOSPIM_IDR
+  - name: SIDR
+    byte_offset: 1020
+    description: OCTOSPI IO Manager size identification register
+    fieldset: OCTOSPIM_SIDR
+fieldset/OCTOSPIM_CR:
+  description: ''
+  fields:
+  - name: MUXEN
+    bit_offset: 0
+    bit_size: 1
+    description: Multiplexed mode enable
+  - name: MODE
+    bit_offset: 1
+    bit_size: 1
+    description: OCTOSPIM multiplexing mode
+fieldset/OCTOSPIM_VERR:
+  description: ''
+  fields:
+  - name: MINVER
+    bit_offset: 0
+    bit_size: 4
+    description: OCTOSPIM minor version
+  - name: MAJVER
+    bit_offset: 4
+    bit_size: 4
+    description: OCTOSPIM major version
+fieldset/OCTOSPIM_IDR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 32
+    description: OCTOSPIM identification
+fieldset/OCTOSPIM_SIDR:
+  description: ''
+  fields:
+  - name: SID
+    bit_offset: 0
+    bit_size: 32
+    description: Size identifier

@@ -1,0 +1,895 @@
+block/LVDS:
+  description: ''
+  items:
+  - name: CR
+    byte_offset: 0
+    description: LVDS configuration register
+    fieldset: LVDS_CR
+  - name: DMLCR0
+    byte_offset: 4
+    description: LVDS data mapping lsb configuration register 0
+    fieldset: LVDS_DMLCR0
+  - name: DMMCR0
+    byte_offset: 8
+    description: LVDS data mapping msb configuration register 0
+    fieldset: LVDS_DMMCR0
+  - name: DMLCR1
+    byte_offset: 12
+    description: LVDS data mapping lsb configuration register 1
+    fieldset: LVDS_DMLCR1
+  - name: DMMCR1
+    byte_offset: 16
+    description: LVDS data mapping msb configuration register 1
+    fieldset: LVDS_DMMCR1
+  - name: DMLCR2
+    byte_offset: 20
+    description: LVDS data mapping lsb configuration register 2
+    fieldset: LVDS_DMLCR2
+  - name: DMMCR2
+    byte_offset: 24
+    description: LVDS data mapping msb configuration register 2
+    fieldset: LVDS_DMMCR2
+  - name: DMLCR3
+    byte_offset: 28
+    description: LVDS data mapping lsb configuration register 3
+    fieldset: LVDS_DMLCR3
+  - name: DMMCR3
+    byte_offset: 32
+    description: LVDS data mapping msb configuration register 3
+    fieldset: LVDS_DMMCR3
+  - name: DMLCR4
+    byte_offset: 36
+    description: LVDS data mapping lsb configuration register 4
+    fieldset: LVDS_DMLCR4
+  - name: DMMCR4
+    byte_offset: 40
+    description: LVDS data mapping msb configuration register 4
+    fieldset: LVDS_DMMCR4
+  - name: CDL1CR
+    byte_offset: 44
+    description: LVDS channel distrib link 1configuration register
+    fieldset: LVDS_CDL1CR
+  - name: CDL2CR
+    byte_offset: 48
+    description: LVDS channel distrib link 2 configuration register
+    fieldset: LVDS_CDL2CR
+  - name: PMGCR
+    byte_offset: 4096
+    description: LVDS PHY-Master global control register
+  - name: PMPEACR
+    byte_offset: 4100
+    description: LVDS PHY-Master pre-emphasis amplitude control register
+  - name: PMPETCR
+    byte_offset: 4104
+    description: LVDS PHY-Master pre-emphasis time control register
+  - name: PMCMCR1
+    byte_offset: 4108
+    description: LVDS PHY-Master current mode control register 1
+  - name: PMCMCR2
+    byte_offset: 4112
+    description: LVDS PHY-Master current mode control register 2
+  - name: PMRLPCR
+    byte_offset: 4116
+    description: LVDS PHY-Master Rx loopback control register
+  - name: PMRLPSR
+    byte_offset: 4120
+    description: LVDS PHY-master Rx loopback status register
+  - name: PMFCR
+    byte_offset: 4124
+    description: LVDS PHY-Master flipedge control register
+  - name: PMSCR
+    byte_offset: 4128
+    description: LVDS PHY-Master serial control register
+  - name: PMSCR1
+    byte_offset: 4132
+    description: LVDS PHY-Master spare control register 1
+  - name: PMSCR2
+    byte_offset: 4136
+    description: LVDS PHY-Master spare control register 2
+  - name: PMBCR1
+    byte_offset: 4140
+    description: LVDS PHY-Master bias control register 1
+  - name: PMBCR2
+    byte_offset: 4144
+    description: LVDS PHY-Master bias control register 2
+  - name: PMBCR3
+    byte_offset: 4148
+    description: LVDS PHY-Master bias control register 3
+  - name: PMBCR4
+    byte_offset: 4152
+    description: LVDS PHY-Master bias control register 4
+  - name: PMBCR5
+    byte_offset: 4156
+    description: LVDS PHY-Master bias control register 5
+  - name: PMICR
+    byte_offset: 4160
+    description: LVDS PHY-Master impedance control register
+  - name: PMMBCCR
+    byte_offset: 4164
+    description: LVDS PHY-Master monitor bandgap current control register
+  - name: PMMBCSR
+    byte_offset: 4168
+    description: LVDS PHY-Master monitor bandgap current status register
+  - name: PMMBLCR
+    byte_offset: 4172
+    description: LVDS PHY-Master monitor bandgap loop control register
+  - name: PMMBLSR
+    byte_offset: 4176
+    description: LVDS PHY-Master monitor bandgap loop status register
+  - name: PMMBOVCR
+    byte_offset: 4180
+    description: LVDS PHY-Master monitor bandgap output voltage control register
+  - name: PMMBOVSR
+    byte_offset: 4184
+    description: LVDS PHY-Master monitor bandgap output voltage status register
+  - name: PMMPLOVCR
+    byte_offset: 4188
+    description: LVDS PHY-Master monitor PLL LDO output voltage control register
+  - name: PMMPLOVSR
+    byte_offset: 4192
+    description: LVDS PHY-Master monitor PLL LDO output voltage status register
+  - name: PMMPLCR
+    byte_offset: 4196
+    description: LVDS PHY-Master monitor PLL lock control register
+  - name: PMMPLSR
+    byte_offset: 4200
+    description: LVDS PHY-Master monitor PLL lock status register
+  - name: PMMPROCR
+    byte_offset: 4204
+    description: LVDS PHY-Master monitor PLL reference OK control register
+  - name: PMMPROSR
+    byte_offset: 4208
+    description: LVDS PHY-Master monitor PLL reference OK status register
+  - name: PMMSCCR
+    byte_offset: 4212
+    description: LVDS PHY-Master monitor serializer clock control register
+  - name: PMMSCSR
+    byte_offset: 4216
+    description: LVDS PHY-Master monitor serializer clock status register
+  - name: PMMSCR
+    byte_offset: 4220
+    description: LVDS PHY-Master monitor serializer control register
+  - name: PMMSSR
+    byte_offset: 4224
+    description: LVDS PHY-Master monitor serializer status register
+  - name: PMDCR
+    byte_offset: 4228
+    description: LVDS PHY-Master debug control register
+  - name: PMSSR1
+    byte_offset: 4232
+    description: LVDS PHY-Master spare status register 1
+  - name: PMSSR2
+    byte_offset: 4236
+    description: LVDS PHY-Master spare status register 2
+  - name: PMCFGCR
+    byte_offset: 4256
+    description: LVDS PHY-Master configuration control register
+  - name: PMPLLCR1
+    byte_offset: 4288
+    description: LVDS PHY-Master PLL_MODE 1 control register
+  - name: PMPLLCR2
+    byte_offset: 4292
+    description: LVDS PHY-Master PLL_MODE 2 control register
+  - name: PMPLLSR
+    byte_offset: 4296
+    description: LVDS PHY-Master PLL status register
+  - name: PMPLLSDCR1
+    byte_offset: 4300
+    description: LVDS PHY-Master PLL_SD_1 control register
+  - name: PMPLLSDCR2
+    byte_offset: 4304
+    description: LVDS PHY-Master PLL_SD_2 control register
+  - name: PMPLLTWGCR1
+    byte_offset: 4308
+    description: LVDS PHY-Master PLL_TWG_1 control register
+  - name: PMPLLTWGCR2
+    byte_offset: 4312
+    description: LVDS PHY-Master PLL_TWG_2 control register
+  - name: PMPLLLDOCR
+    byte_offset: 4316
+    description: LVDS PHY-Master PLL_LDO control register
+  - name: PMPLLCPCR
+    byte_offset: 4320
+    description: LVDS PHY-Master PLL_CP control register
+  - name: PMPLLCFGCR
+    byte_offset: 4324
+    description: LVDS PHY-Master PLL_CFG control register
+  - name: PMPLLTESTCR
+    byte_offset: 4328
+    description: LVDS PHY-Master PLL_TEST control register
+  - name: PSGCR
+    byte_offset: 4352
+    description: LVDS PHY-Slave global control register
+  - name: PSPEACR
+    byte_offset: 4356
+    description: LVDS PHY-Slave pre-emphasis amplitude control register
+  - name: PSPETCR
+    byte_offset: 4360
+    description: LVDS PHY-Slave pre-emphasis time control register
+  - name: PSCMCR1
+    byte_offset: 4364
+    description: LVDS PHY-Slave current mode control register 1
+  - name: PSCMCR2
+    byte_offset: 4368
+    description: LVDS PHY-Slave current mode control register 2
+  - name: PSRLPCR
+    byte_offset: 4372
+    description: LVDS PHY-Slave Rx loopback control register
+  - name: PSRLPSR
+    byte_offset: 4376
+    description: LVDS PHY-slave Rx loopback status register
+  - name: PSFCR
+    byte_offset: 4380
+    description: LVDS PHY-Slave flipedge control register
+  - name: PSSCR
+    byte_offset: 4384
+    description: LVDS PHY-Slave serial control register
+  - name: PSSCR1
+    byte_offset: 4388
+    description: LVDS PHY-Slave spare control register 1
+  - name: PSSCR2
+    byte_offset: 4392
+    description: LVDS PHY-Slave spare control register 2
+  - name: PSBCR1
+    byte_offset: 4396
+    description: LVDS PHY-Slave bias control register 1
+  - name: PSBCR2
+    byte_offset: 4400
+    description: LVDS PHY-Slave bias control register 2
+  - name: PSBCR3
+    byte_offset: 4404
+    description: LVDS PHY-Slave bias control register 3
+  - name: PSBCR4
+    byte_offset: 4408
+    description: LVDS PHY-Slave bias control register 4
+  - name: PSBCR5
+    byte_offset: 4412
+    description: LVDS PHY-Slave bias control register 5
+  - name: PSICR
+    byte_offset: 4416
+    description: LVDS PHY-Slave impedance control register
+  - name: PSMBCCR
+    byte_offset: 4420
+    description: LVDS PHY-Slave monitor bandgap current control register
+  - name: PSMBCSR
+    byte_offset: 4424
+    description: LVDS PHY-Slave monitor bandgap current status register
+  - name: PSMBLCR
+    byte_offset: 4428
+    description: LVDS PHY-Slave monitor bandgap loop control register
+  - name: PSMBLSR
+    byte_offset: 4432
+    description: LVDS PHY-Slave monitor bandgap loop status register
+  - name: PSMBOVCR
+    byte_offset: 4436
+    description: LVDS PHY-Slave monitor bandgap output voltage control register
+  - name: PSMBOVSR
+    byte_offset: 4440
+    description: LVDS PHY-Slave monitor bandgap output voltage status register
+  - name: PSMPLOVCR
+    byte_offset: 4444
+    description: LVDS PHY-Slave monitor PLL LDO output voltage control register
+  - name: PSMPLOVSR
+    byte_offset: 4448
+    description: LVDS PHY-Slave monitor PLL LDO output voltage status register
+  - name: PSMPLCR
+    byte_offset: 4452
+    description: LVDS PHY-Slave monitor PLL lock control register
+  - name: PSMPLSR
+    byte_offset: 4456
+    description: LVDS PHY-Slave monitor PLL lock status register
+  - name: PSMPROCR
+    byte_offset: 4460
+    description: LVDS PHY-Slave monitor PLL reference OK control register
+  - name: PSMPROSR
+    byte_offset: 4464
+    description: LVDS PHY-Slave monitor PLL reference OK status register
+  - name: PSMSCCR
+    byte_offset: 4468
+    description: LVDS PHY-Slave monitor serializer clock control register
+  - name: PSMSCSR
+    byte_offset: 4472
+    description: LVDS PHY-Slave monitor serializer clock status register
+  - name: PSMSCR
+    byte_offset: 4476
+    description: LVDS PHY-Slave monitor serializer control register
+  - name: PSMSSR
+    byte_offset: 4480
+    description: LVDS PHY-Slave monitor serializer status register
+  - name: PSDCR
+    byte_offset: 4484
+    description: LVDS PHY-Slave debug control register
+  - name: PSSSR1
+    byte_offset: 4488
+    description: LVDS PHY-Slave spare status register 1
+  - name: PSSSR2
+    byte_offset: 4492
+    description: LVDS PHY-Slave spare status register 2
+  - name: PSCFGCR
+    byte_offset: 4512
+    description: LVDS PHY-Slave configuration control register
+  - name: WCLKCR
+    byte_offset: 4528
+    description: LVDS wrapper clock control register
+    fieldset: LVDS_WCLKCR
+  - name: PSPLLCR1
+    byte_offset: 4544
+    description: LVDS PHY-Slave PLL_MODE 1 control register
+  - name: PSPLLCR2
+    byte_offset: 4548
+    description: LVDS PHY-Slave PLL_MODE 2 control register
+  - name: PSPLLSR
+    byte_offset: 4552
+    description: LVDS PHY-Slave PLL status register
+  - name: PSPLLSDCR1
+    byte_offset: 4556
+    description: LVDS PHY-Slave PLL_SD_1 control register
+  - name: PSPLLSDCR2
+    byte_offset: 4560
+    description: LVDS PHY-Slave PLL_SD_2 control register
+  - name: PSPLLTWGCR1
+    byte_offset: 4564
+    description: LVDS PHY-Slave PLL_TWG_1 control register
+  - name: PSPLLTWGCR2
+    byte_offset: 4568
+    description: LVDS PHY-Slave PLL_TWG_2 control register
+  - name: PSPLLLDOCR
+    byte_offset: 4572
+    description: LVDS PHY-Slave PLL_LDO control register
+  - name: PSPLLCPCR
+    byte_offset: 4576
+    description: LVDS PHY-Slave PLL_CP control register
+  - name: PSPLLCFGCR
+    byte_offset: 4580
+    description: LVDS PHY-Slave PLL_CFG control register
+  - name: PSPLLTESTCR
+    byte_offset: 4584
+    description: LVDS PHY-Slave PLL_TEST control register
+  - name: PMATCR1
+    byte_offset: 4608
+    description: LVDS PHY-Master analog test control register 1
+    fieldset: LVDS_PMATCR1
+  - name: PMATCR2
+    byte_offset: 4612
+    description: LVDS PHY-Master analog test control register 2
+    fieldset: LVDS_PMATCR2
+  - name: PMDTCR1
+    byte_offset: 4616
+    description: LVDS PHY-Master digital test control register 1
+    fieldset: LVDS_PMDTCR1
+  - name: PMDTCR2
+    byte_offset: 4620
+    description: LVDS PHY-Master digital test control register 2
+    fieldset: LVDS_PMDTCR2
+  - name: PMDTSR
+    byte_offset: 4624
+    description: LVDS PHY-Master digital test status register
+    fieldset: LVDS_PMDTSR
+  - name: PSATCR1
+    byte_offset: 4640
+    description: LVDS PHY-Slave analog test control register 1
+    fieldset: LVDS_PSATCR1
+  - name: PSATCR2
+    byte_offset: 4644
+    description: LVDS PHY-Slave analog test control register 2
+    fieldset: LVDS_PSATCR2
+  - name: PSDTCR1
+    byte_offset: 4648
+    description: LVDS PHY-Slave digital test control register 1
+    fieldset: LVDS_PSDTCR1
+  - name: PSDTCR2
+    byte_offset: 4652
+    description: LVDS PHY-Slave digital test control register 2
+    fieldset: LVDS_PSDTCR2
+  - name: PSDTSR
+    byte_offset: 4656
+    description: LVDS PHY-Slave digital test status register
+    fieldset: LVDS_PSDTSR
+  - name: HWCFGR
+    byte_offset: 8176
+    description: LVDS HW configuration register
+    fieldset: LVDS_HWCFGR
+  - name: VERR
+    byte_offset: 8180
+    description: LVDS Version register
+    fieldset: LVDS_VERR
+  - name: IPIDR
+    byte_offset: 8184
+    description: LVDS Identification register
+    fieldset: LVDS_IPIDR
+  - name: SIDR
+    byte_offset: 8188
+    description: LVDS Size Identification register
+    fieldset: LVDS_SIDR
+fieldset/LVDS_CR:
+  description: ''
+  fields:
+  - name: LVDSEN
+    bit_offset: 0
+    bit_size: 1
+    description: LVDS PHY Enable
+  - name: HSPOL
+    bit_offset: 1
+    bit_size: 1
+    description: HS Polarity (polarity of the horizontal synchronisation)
+  - name: VSPOL
+    bit_offset: 2
+    bit_size: 1
+    description: VS Polarity (polarity of the vertical synchronization)
+  - name: DEPOL
+    bit_offset: 3
+    bit_size: 1
+    description: DE Polarity (polarity of the data enable)
+  - name: CI
+    bit_offset: 4
+    bit_size: 1
+    description: Control Internal (software controlled bit, that can be inserted among
+      output data)
+  - name: LKMOD
+    bit_offset: 5
+    bit_size: 1
+    description: Link Mode, for both Links
+  - name: LKPHA
+    bit_offset: 6
+    bit_size: 1
+    description: Link Phase, for both Links
+  - name: LK1POL
+    bit_offset: 16
+    bit_size: 5
+    description: Link-1 output Polarity, defined per output Data/Clock Lane, from
+      Lane-[4:0]
+  - name: LK2POL
+    bit_offset: 21
+    bit_size: 5
+    description: Link-2 output Polarity, defined per output Data/Clock Lane, from
+      Lane-[4:0]
+fieldset/LVDS_DMLCR0:
+  description: ''
+  fields:
+  - name: MAP0
+    bit_offset: 0
+    bit_size: 5
+    description: Mapping for bit 0 of that DataLane.
+  - name: MAP1
+    bit_offset: 5
+    bit_size: 5
+    description: Mapping for bit 1 of that DataLane.
+  - name: MAP2
+    bit_offset: 10
+    bit_size: 5
+    description: Mapping for bit 2 of that DataLane.
+  - name: MAP3
+    bit_offset: 15
+    bit_size: 5
+    description: Mapping for bit 3 of that DataLane.
+fieldset/LVDS_DMMCR0:
+  description: ''
+  fields:
+  - name: MAP4
+    bit_offset: 0
+    bit_size: 5
+    description: Mapping for bit 4 of that DataLane.
+  - name: MAP5
+    bit_offset: 5
+    bit_size: 5
+    description: Mapping for bit 5 of that DataLane.
+  - name: MAP6
+    bit_offset: 10
+    bit_size: 5
+    description: Mapping for bit 6 of that DataLane.
+fieldset/LVDS_DMLCR1:
+  description: ''
+  fields:
+  - name: MAP0
+    bit_offset: 0
+    bit_size: 5
+    description: Mapping for bit 0 of that DataLane.
+  - name: MAP1
+    bit_offset: 5
+    bit_size: 5
+    description: Mapping for bit 1 of that DataLane.
+  - name: MAP2
+    bit_offset: 10
+    bit_size: 5
+    description: Mapping for bit 2 of that DataLane.
+  - name: MAP3
+    bit_offset: 15
+    bit_size: 5
+    description: Mapping for bit 3 of that DataLane.
+fieldset/LVDS_DMMCR1:
+  description: ''
+  fields:
+  - name: MAP4
+    bit_offset: 0
+    bit_size: 5
+    description: Mapping for bit 4 of that DataLane.
+  - name: MAP5
+    bit_offset: 5
+    bit_size: 5
+    description: Mapping for bit 5 of that DataLane.
+  - name: MAP6
+    bit_offset: 10
+    bit_size: 5
+    description: Mapping for bit 6 of that DataLane.
+fieldset/LVDS_DMLCR2:
+  description: ''
+  fields:
+  - name: MAP0
+    bit_offset: 0
+    bit_size: 5
+    description: Mapping for bit 0 of that DataLane.
+  - name: MAP1
+    bit_offset: 5
+    bit_size: 5
+    description: Mapping for bit 1 of that DataLane.
+  - name: MAP2
+    bit_offset: 10
+    bit_size: 5
+    description: Mapping for bit 2 of that DataLane.
+  - name: MAP3
+    bit_offset: 15
+    bit_size: 5
+    description: Mapping for bit 3 of that DataLane.
+fieldset/LVDS_DMMCR2:
+  description: ''
+  fields:
+  - name: MAP4
+    bit_offset: 0
+    bit_size: 5
+    description: Mapping for bit 4 of that DataLane.
+  - name: MAP5
+    bit_offset: 5
+    bit_size: 5
+    description: Mapping for bit 5 of that DataLane.
+  - name: MAP6
+    bit_offset: 10
+    bit_size: 5
+    description: Mapping for bit 6 of that DataLane.
+fieldset/LVDS_DMLCR3:
+  description: ''
+  fields:
+  - name: MAP0
+    bit_offset: 0
+    bit_size: 5
+    description: Mapping for bit 0 of that DataLane.
+  - name: MAP1
+    bit_offset: 5
+    bit_size: 5
+    description: Mapping for bit 1 of that DataLane.
+  - name: MAP2
+    bit_offset: 10
+    bit_size: 5
+    description: Mapping for bit 2 of that DataLane.
+  - name: MAP3
+    bit_offset: 15
+    bit_size: 5
+    description: Mapping for bit 3 of that DataLane.
+fieldset/LVDS_DMMCR3:
+  description: ''
+  fields:
+  - name: MAP4
+    bit_offset: 0
+    bit_size: 5
+    description: Mapping for bit 4 of that DataLane.
+  - name: MAP5
+    bit_offset: 5
+    bit_size: 5
+    description: Mapping for bit 5 of that DataLane.
+  - name: MAP6
+    bit_offset: 10
+    bit_size: 5
+    description: Mapping for bit 6 of that DataLane.
+fieldset/LVDS_DMLCR4:
+  description: ''
+  fields:
+  - name: MAP0
+    bit_offset: 0
+    bit_size: 5
+    description: Mapping for bit 0 of that DataLane.
+  - name: MAP1
+    bit_offset: 5
+    bit_size: 5
+    description: Mapping for bit 1 of that DataLane.
+  - name: MAP2
+    bit_offset: 10
+    bit_size: 5
+    description: Mapping for bit 2 of that DataLane.
+  - name: MAP3
+    bit_offset: 15
+    bit_size: 5
+    description: Mapping for bit 3 of that DataLane.
+fieldset/LVDS_DMMCR4:
+  description: ''
+  fields:
+  - name: MAP4
+    bit_offset: 0
+    bit_size: 5
+    description: Mapping for bit 4 of that DataLane.
+  - name: MAP5
+    bit_offset: 5
+    bit_size: 5
+    description: Mapping for bit 5 of that DataLane.
+  - name: MAP6
+    bit_offset: 10
+    bit_size: 5
+    description: Mapping for bit 6 of that DataLane.
+fieldset/LVDS_CDL1CR:
+  description: ''
+  fields:
+  - name: DISTR0
+    bit_offset: 0
+    bit_size: 4
+    description: channel distribution for Lane 0
+  - name: DISTR1
+    bit_offset: 4
+    bit_size: 4
+    description: channel distribution for Lane 1
+  - name: DISTR2
+    bit_offset: 8
+    bit_size: 4
+    description: channel distribution for Lane 2
+  - name: DISTR3
+    bit_offset: 12
+    bit_size: 4
+    description: channel distribution for Lane 3
+  - name: DISTR4
+    bit_offset: 16
+    bit_size: 4
+    description: channel distribution for Lane 4
+fieldset/LVDS_CDL2CR:
+  description: ''
+  fields:
+  - name: DISTR0
+    bit_offset: 0
+    bit_size: 4
+    description: channel distribution for Lane 0
+  - name: DISTR1
+    bit_offset: 4
+    bit_size: 4
+    description: channel distribution for Lane 1
+  - name: DISTR2
+    bit_offset: 8
+    bit_size: 4
+    description: channel distribution for Lane 2
+  - name: DISTR3
+    bit_offset: 12
+    bit_size: 4
+    description: channel distribution for Lane 3
+  - name: DISTR4
+    bit_offset: 16
+    bit_size: 4
+    description: channel distribution for Lane 4
+  - name: PRBS
+    bit_offset: 24
+    bit_size: 2
+    description: PRBS polynome type
+fieldset/LVDS_WCLKCR:
+  description: ''
+  fields:
+  - name: SRCSEL
+    bit_offset: 8
+    bit_size: 1
+    description: 'Source Selection for the Pixel Clock, between master and slave PHY:'
+fieldset/LVDS_PMATCR1:
+  description: ''
+  fields:
+  - name: PMATDL0
+    bit_offset: 0
+    bit_size: 8
+    description: PHY Master Analog Test Data Lane 0.
+  - name: PMATDL1
+    bit_offset: 8
+    bit_size: 8
+    description: PHY Master Analog Test Data Lane 1.
+  - name: PMATDL2
+    bit_offset: 16
+    bit_size: 8
+    description: PHY Master Analog Test Data Lane 2.
+  - name: PMATDL3
+    bit_offset: 24
+    bit_size: 8
+    description: PHY Master Analog Test Data Lane 3.
+fieldset/LVDS_PMATCR2:
+  description: ''
+  fields:
+  - name: PMATDL4
+    bit_offset: 0
+    bit_size: 8
+    description: PHY Master Analog Test Data Lane 4.
+  - name: PMATB
+    bit_offset: 8
+    bit_size: 8
+    description: Phy Master Analog Test Bias
+  - name: PMATPC
+    bit_offset: 16
+    bit_size: 7
+    description: Phy Master Analog Test PLL Control
+fieldset/LVDS_PMDTCR1:
+  description: ''
+  fields:
+  - name: PMDTDL0
+    bit_offset: 0
+    bit_size: 8
+    description: PHY Master Digital Test Data Lane 0.
+  - name: PMDTDL1
+    bit_offset: 8
+    bit_size: 8
+    description: PHY Master Digital Test Data Lane 1.
+  - name: PMDTDL2
+    bit_offset: 16
+    bit_size: 8
+    description: PHY Master Digital Test Data Lane 2.
+  - name: PMDTDL3
+    bit_offset: 24
+    bit_size: 8
+    description: PHY Master Digital Test Data Lane 3.
+fieldset/LVDS_PMDTCR2:
+  description: ''
+  fields:
+  - name: PMDTDL4
+    bit_offset: 0
+    bit_size: 8
+    description: PHY Master Digital Test Data Lane 4.
+  - name: PMDTMC
+    bit_offset: 8
+    bit_size: 7
+    description: Phy Master Digital Test Mux Control
+fieldset/LVDS_PMDTSR:
+  description: ''
+  fields:
+  - name: PMDTDLS0
+    bit_offset: 0
+    bit_size: 1
+    description: Phy Master Digital Test Data Lane Status 0.
+  - name: PMDTDLS1
+    bit_offset: 1
+    bit_size: 1
+    description: Phy Master Digital Test Data Lane Status 1.
+  - name: PMDTDLS2
+    bit_offset: 2
+    bit_size: 1
+    description: Phy Master Digital Test Data Lane Status 2.
+  - name: PMDTDLS3
+    bit_offset: 3
+    bit_size: 1
+    description: Phy Master Digital Test Data Lane Status 3.
+  - name: PMDTDLS4
+    bit_offset: 4
+    bit_size: 1
+    description: Phy Master Digital Test Data Lane Status 4.
+  - name: PMDTPS
+    bit_offset: 5
+    bit_size: 1
+    description: Phy Master Digital Test PLL Status
+fieldset/LVDS_PSATCR1:
+  description: ''
+  fields:
+  - name: PSATDL0
+    bit_offset: 0
+    bit_size: 8
+    description: PHY Slave Analog Test Data Lane 0.
+  - name: PSATDL1
+    bit_offset: 8
+    bit_size: 8
+    description: PHY Slave Analog Test Data Lane 1.
+  - name: PSATDL2
+    bit_offset: 16
+    bit_size: 8
+    description: PHY Slave Analog Test Data Lane 2.
+  - name: PSATDL3
+    bit_offset: 24
+    bit_size: 8
+    description: PHY Slave Analog Test Data Lane 3.
+fieldset/LVDS_PSATCR2:
+  description: ''
+  fields:
+  - name: PSATDL4
+    bit_offset: 0
+    bit_size: 8
+    description: PHY Slave Analog Test Data Lane 4.
+  - name: PSATB
+    bit_offset: 8
+    bit_size: 8
+    description: Phy Slave Analog Test Bias
+  - name: PSATPC
+    bit_offset: 16
+    bit_size: 7
+    description: Phy Slave Analog Test PLL Control
+fieldset/LVDS_PSDTCR1:
+  description: ''
+  fields:
+  - name: PSDTDL0
+    bit_offset: 0
+    bit_size: 8
+    description: PHY Slave Digital Test Data Lane 0.
+  - name: PSDTDL1
+    bit_offset: 8
+    bit_size: 8
+    description: PHY Slave Digital Test Data Lane 1.
+  - name: PSDTDL2
+    bit_offset: 16
+    bit_size: 8
+    description: PHY Slave Digital Test Data Lane 2.
+  - name: PSDTDL3
+    bit_offset: 24
+    bit_size: 8
+    description: PHY Slave Digital Test Data Lane 3.
+fieldset/LVDS_PSDTCR2:
+  description: ''
+  fields:
+  - name: PSDTDL4
+    bit_offset: 0
+    bit_size: 8
+    description: PHY Slave Digital Test Data Lane 4.
+  - name: PSDTMC
+    bit_offset: 8
+    bit_size: 7
+    description: Phy Slave Digital Test Mux Control
+fieldset/LVDS_PSDTSR:
+  description: ''
+  fields:
+  - name: PSDTDLS0
+    bit_offset: 0
+    bit_size: 1
+    description: Phy Slave Digital Test Data Lane Status 0.
+  - name: PSDTDLS1
+    bit_offset: 1
+    bit_size: 1
+    description: Phy Slave Digital Test Data Lane Status 1.
+  - name: PSDTDLS2
+    bit_offset: 2
+    bit_size: 1
+    description: Phy Slave Digital Test Data Lane Status 2.
+  - name: PSDTDLS3
+    bit_offset: 3
+    bit_size: 1
+    description: Phy Slave Digital Test Data Lane Status 3.
+  - name: PSDTDLS4
+    bit_offset: 4
+    bit_size: 1
+    description: Phy Slave Digital Test Data Lane Status 4.
+  - name: PSDTPS
+    bit_offset: 5
+    bit_size: 1
+    description: Phy Slave Digital Test PLL Status
+fieldset/LVDS_HWCFGR:
+  description: ''
+  fields:
+  - name: TECHNO
+    bit_offset: 0
+    bit_size: 4
+    description: 'Techno (and version) of PHY used:'
+  - name: LANES
+    bit_offset: 4
+    bit_size: 4
+    description: amount of LVDS PHY Lanes (including the LVDS PHY ClockLane) in one
+      Link.
+  - name: LINKS
+    bit_offset: 8
+    bit_size: 4
+    description: amount of LVDS PHY Links.
+fieldset/LVDS_VERR:
+  description: ''
+  fields:
+  - name: MINREV
+    bit_offset: 0
+    bit_size: 4
+    description: Minor Revision of the LVDS PHY Host
+  - name: MAJREV
+    bit_offset: 4
+    bit_size: 4
+    description: Major Revision of the LVDS PHY Host
+fieldset/LVDS_IPIDR:
+  description: ''
+  fields:
+  - name: IDR
+    bit_offset: 0
+    bit_size: 32
+    description: 'LVDS PHY Host Identification: 0x0016_00A1'
+fieldset/LVDS_SIDR:
+  description: ''
+  fields:
+  - name: SID
+    bit_offset: 0
+    bit_size: 32
+    description: 'LVDS PHY Host address space: 8kB (4kB for Host, 4kB for PHY/Wrapper)'

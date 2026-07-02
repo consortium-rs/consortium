@@ -1,0 +1,15 @@
+block/USB3_LINK:
+  description: ''
+  items:
+  - name: LU1LFPSRXTIM
+    byte_offset: 0
+    description: (null) @ offset 0x0
+  - name: SETTINGS
+    byte_offset: 32
+    description: (null) @ offset 0x20
+  - name: LLUCTL
+    byte_offset: 36
+    description: (null) @ offset 0x24
+  - name: LPTMDPDELAY
+    byte_offset: 40
+    description: (null) @ offset 0x28

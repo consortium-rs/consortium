@@ -1,0 +1,87 @@
+block/STAT:
+  description: ''
+  items:
+  - name: ROI0_POS_CAM
+    byte_offset: 0
+    fieldset: STAT_ROI0_POS_CAM
+  - name: ROI0_SIZE_CAM
+    byte_offset: 4
+    fieldset: STAT_ROI0_SIZE_CAM
+  - name: ROI1_POS_CAM
+    byte_offset: 8
+    fieldset: STAT_ROI1_POS_CAM
+  - name: ROI1_SIZE_CAM
+    byte_offset: 12
+    fieldset: STAT_ROI1_SIZE_CAM
+  - name: CTRL_CAM
+    byte_offset: 32
+    fieldset: STAT_CTRL_CAM
+  - name: SCALE_CAM
+    byte_offset: 36
+    fieldset: STAT_SCALE_CAM
+fieldset/STAT_ROI0_POS_CAM:
+  description: ''
+  fields:
+  - name: XPOS
+    bit_offset: 0
+    bit_size: 16
+  - name: YPOS
+    bit_offset: 16
+    bit_size: 16
+fieldset/STAT_ROI0_SIZE_CAM:
+  description: ''
+  fields:
+  - name: WIDTH
+    bit_offset: 0
+    bit_size: 16
+  - name: HEIGHT
+    bit_offset: 16
+    bit_size: 16
+fieldset/STAT_ROI1_POS_CAM:
+  description: ''
+  fields:
+  - name: XPOS
+    bit_offset: 0
+    bit_size: 16
+  - name: YPOS
+    bit_offset: 16
+    bit_size: 16
+fieldset/STAT_ROI1_SIZE_CAM:
+  description: ''
+  fields:
+  - name: WIDTH
+    bit_offset: 0
+    bit_size: 16
+  - name: HEIGHT
+    bit_offset: 16
+    bit_size: 16
+fieldset/STAT_CTRL_CAM_LIN_VS:
+  description: ''
+  fields:
+  - name: LOG
+    bit_offset: 0
+    bit_size: 1
+fieldset/STAT_CTRL_CAM_DIR_VS:
+  description: ''
+  fields:
+  - name: DIF
+    bit_offset: 1
+    bit_size: 1
+fieldset/STAT_CTRL_CAM:
+  description: ''
+  fields:
+  - name: PATTERN
+    bit_offset: 2
+    bit_size: 1
+  - name: CHANNEL
+    bit_offset: 8
+    bit_size: 4
+  - name: OFFSET
+    bit_offset: 16
+    bit_size: 16
+fieldset/STAT_SCALE_CAM:
+  description: ''
+  fields:
+  - name: SCALE
+    bit_offset: 0
+    bit_size: 24

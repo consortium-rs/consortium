@@ -1,0 +1,27 @@
+block/SAI_Block:
+  description: ''
+  items:
+  - name: CR1
+    byte_offset: 4
+    description: SAI block x configuration register 1
+  - name: CR2
+    byte_offset: 8
+    description: SAI block x configuration register 2
+  - name: FRCR
+    byte_offset: 12
+    description: SAI block x frame configuration register
+  - name: SLOTR
+    byte_offset: 16
+    description: SAI block x slot register
+  - name: IMR
+    byte_offset: 20
+    description: SAI block x interrupt mask register
+  - name: SR
+    byte_offset: 24
+    description: SAI block x status register
+  - name: CLRFR
+    byte_offset: 28
+    description: SAI block x clear flag register
+  - name: DR
+    byte_offset: 32
+    description: SAI block x data register

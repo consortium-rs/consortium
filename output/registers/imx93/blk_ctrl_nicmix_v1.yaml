@@ -1,0 +1,302 @@
+block/BLK_CTRL_NICMIX:
+  description: ''
+  items:
+  - name: DEXSC_ERR
+    byte_offset: 0
+  - name: OCRAM_RMW
+    byte_offset: 4
+  - name: AXI_LIMIT_WAKEUPMIX
+    byte_offset: 8
+    fieldset: BLK_CTRL_NICMIX_AXI_LIMIT_WAKEUPMIX
+  - name: CACHE_ATTR
+    byte_offset: 12
+  - name: WAKEUPMIX_QOS
+    byte_offset: 16
+  - name: CACHE_QOS
+    byte_offset: 20
+  - name: MLMIX0_QOS
+    byte_offset: 24
+  - name: MLMIX1_QOS
+    byte_offset: 28
+  - name: HSIOMIX_QOS
+    byte_offset: 32
+  - name: TIE_VALUE
+    byte_offset: 36
+    fieldset: BLK_CTRL_NICMIX_TIE_VALUE
+fieldset/BLK_CTRL_NICMIX_DEXSC_ERR_OCRAM_ERR_RESP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_DEXSC_ERR_OCRAM_EXC_ERR_RESP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_DEXSC_ERR_OCRAM_LOCK_ERR_RESP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_DEXSC_ERR_DRAM_ERR_RESP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_DEXSC_ERR_DRAM_EXC_ERR_RESP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 17
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_DEXSC_ERR_DRAM_LOCK_ERR_RESP:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 18
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_OCRAM_RMW_RMW_WAIT:
+  description: ''
+  fields:
+  - name: BVALID
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_AXI_LIMIT_WAKEUPMIX:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_AXI_LIMIT_WAKEUPMIX_BEAT:
+  description: ''
+  fields:
+  - name: LIMIT
+    bit_offset: 16
+    bit_size: 16
+fieldset/BLK_CTRL_NICMIX_CACHE_ATTR_WAKEUPMIX_ARCACHE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_CACHE_ATTR_WAKEUPMIX_AWCACHE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_CACHE_ATTR_CACHE_ARCACHE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_CACHE_ATTR_CACHE_AWCACHE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_CACHE_ATTR_HSIOMIX_ARCACHE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_CACHE_ATTR_HSIOMIX_AWCACHE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 5
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_CACHE_ATTR_WAKEUPMIX:
+  description: ''
+  fields:
+  - name: ARCACHE
+    bit_offset: 16
+    bit_size: 1
+  - name: AWCACHE
+    bit_offset: 17
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_CACHE_ATTR_CACHE:
+  description: ''
+  fields:
+  - name: ARCACHE
+    bit_offset: 18
+    bit_size: 1
+  - name: AWCACHE
+    bit_offset: 19
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_CACHE_ATTR_HSIOMIX:
+  description: ''
+  fields:
+  - name: ARCACHE
+    bit_offset: 20
+    bit_size: 1
+  - name: AWCACHE
+    bit_offset: 21
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_WAKEUPMIX_QOS_PANIC:
+  description: ''
+  fields:
+  - name: AW
+    bit_offset: 0
+    bit_size: 4
+  - name: AR
+    bit_offset: 4
+    bit_size: 4
+fieldset/BLK_CTRL_NICMIX_CACHE_QOS_PANIC:
+  description: ''
+  fields:
+  - name: AW
+    bit_offset: 0
+    bit_size: 4
+  - name: AR
+    bit_offset: 4
+    bit_size: 4
+fieldset/BLK_CTRL_NICMIX_CACHE_QOS_DEFAULT:
+  description: ''
+  fields:
+  - name: AW
+    bit_offset: 16
+    bit_size: 4
+  - name: AR
+    bit_offset: 20
+    bit_size: 4
+fieldset/BLK_CTRL_NICMIX_MLMIX0_QOS_PANIC:
+  description: ''
+  fields:
+  - name: AW
+    bit_offset: 0
+    bit_size: 4
+  - name: AR
+    bit_offset: 4
+    bit_size: 4
+fieldset/BLK_CTRL_NICMIX_MLMIX0_QOS_DEFAULT:
+  description: ''
+  fields:
+  - name: AW
+    bit_offset: 16
+    bit_size: 4
+  - name: AR
+    bit_offset: 20
+    bit_size: 4
+fieldset/BLK_CTRL_NICMIX_MLMIX1_QOS_PANIC:
+  description: ''
+  fields:
+  - name: AW
+    bit_offset: 0
+    bit_size: 4
+  - name: AR
+    bit_offset: 4
+    bit_size: 4
+fieldset/BLK_CTRL_NICMIX_MLMIX1_QOS_DEFAULT:
+  description: ''
+  fields:
+  - name: AW
+    bit_offset: 16
+    bit_size: 4
+  - name: AR
+    bit_offset: 20
+    bit_size: 4
+fieldset/BLK_CTRL_NICMIX_HSIOMIX_QOS_PANIC:
+  description: ''
+  fields:
+  - name: AW
+    bit_offset: 0
+    bit_size: 4
+  - name: AR
+    bit_offset: 4
+    bit_size: 4
+fieldset/BLK_CTRL_NICMIX_HSIOMIX_QOS_DEFAULT:
+  description: ''
+  fields:
+  - name: AW
+    bit_offset: 16
+    bit_size: 4
+  - name: AR
+    bit_offset: 20
+    bit_size: 4
+fieldset/BLK_CTRL_NICMIX_TIE_VALUE_AIPS4:
+  description: ''
+  fields:
+  - name: HBSTRB
+    bit_offset: 0
+    bit_size: 4
+fieldset/BLK_CTRL_NICMIX_TIE_VALUE_XCPT:
+  description: ''
+  fields:
+  - name: RTN
+    bit_offset: 4
+    bit_size: 2
+fieldset/BLK_CTRL_NICMIX_TIE_VALUE_GICT_ALLOW:
+  description: ''
+  fields:
+  - name: NS
+    bit_offset: 6
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_TIE_VALUE_GICP_ALLOW:
+  description: ''
+  fields:
+  - name: NS
+    bit_offset: 7
+    bit_size: 1
+fieldset/BLK_CTRL_NICMIX_TIE_VALUE_ARBAR:
+  description: ''
+  fields:
+  - name: S
+    bit_offset: 8
+    bit_size: 2
+    description: GIC600.ARBAR_S
+fieldset/BLK_CTRL_NICMIX_TIE_VALUE_AWBAR:
+  description: ''
+  fields:
+  - name: S
+    bit_offset: 10
+    bit_size: 2
+    description: GIC600.ARBAR_S
+fieldset/BLK_CTRL_NICMIX_TIE_VALUE_ARUSER:
+  description: ''
+  fields:
+  - name: S
+    bit_offset: 12
+    bit_size: 3
+    description: GIC600.AWBAR_S
+fieldset/BLK_CTRL_NICMIX_TIE_VALUE_AWUSER:
+  description: ''
+  fields:
+  - name: S
+    bit_offset: 15
+    bit_size: 3
+    description: GIC600.AWUSER_S
+fieldset/BLK_CTRL_NICMIX_TIE_VALUE_ARSNOOP:
+  description: ''
+  fields:
+  - name: S
+    bit_offset: 18
+    bit_size: 4
+    description: GIC600.arsnoop_s
+fieldset/BLK_CTRL_NICMIX_TIE_VALUE_AWSNOOP:
+  description: ''
+  fields:
+  - name: S
+    bit_offset: 22
+    bit_size: 3
+    description: GIC600.awsnoop_s
+fieldset/BLK_CTRL_NICMIX_TIE_VALUE_HPROT_GPV:
+  description: ''
+  fields:
+  - name: CENTRAL
+    bit_offset: 25
+    bit_size: 4
+fieldset/BLK_CTRL_NICMIX_TIE_VALUE:
+  description: ''
+  fields:
+  - name: DFTRAMHOLD
+    bit_offset: 29
+    bit_size: 1
+    description: GIC600.dftramhold

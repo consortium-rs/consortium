@@ -1,0 +1,66 @@
+block/NOC_CMU:
+  description: ''
+  items:
+  - name: GCR
+    byte_offset: 0
+    fieldset: NOC_CMU_GCR
+  - name: RCCR
+    byte_offset: 4
+  - name: HTCR
+    byte_offset: 8
+    fieldset: NOC_CMU_HTCR
+  - name: LTCR
+    byte_offset: 12
+    fieldset: NOC_CMU_LTCR
+  - name: SR
+    byte_offset: 16
+    fieldset: NOC_CMU_SR
+  - name: IER
+    byte_offset: 20
+    fieldset: NOC_CMU_IER
+fieldset/NOC_CMU_GCR:
+  description: ''
+  fields:
+  - name: FCE
+    bit_offset: 0
+    bit_size: 1
+fieldset/NOC_CMU_RCCR_REF:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 0
+    bit_size: 16
+    description: Reference clock count
+fieldset/NOC_CMU_HTCR:
+  description: ''
+  fields:
+  - name: HFREF
+    bit_offset: 0
+    bit_size: 24
+fieldset/NOC_CMU_LTCR:
+  description: ''
+  fields:
+  - name: LFREF
+    bit_offset: 0
+    bit_size: 24
+fieldset/NOC_CMU_SR:
+  description: ''
+  fields:
+  - name: FLL
+    bit_offset: 0
+    bit_size: 1
+  - name: FHH
+    bit_offset: 1
+    bit_size: 1
+  - name: RS
+    bit_offset: 4
+    bit_size: 1
+fieldset/NOC_CMU_IER:
+  description: ''
+  fields:
+  - name: FLLAIE
+    bit_offset: 2
+    bit_size: 1
+  - name: FHHAIE
+    bit_offset: 3
+    bit_size: 1

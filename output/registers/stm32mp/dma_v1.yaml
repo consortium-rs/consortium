@@ -1,0 +1,406 @@
+block/DMA:
+  description: ''
+  items:
+  - name: SECCFGR
+    byte_offset: 0
+    description: DMA secure configuration register
+    fieldset: DMA_SECCFGR
+  - name: PRIVCFGR
+    byte_offset: 4
+    description: DMA privileged configuration register
+    fieldset: DMA_PRIVCFGR
+  - name: RCFGLOCKR
+    byte_offset: 8
+    description: DMA configuration lock register
+    fieldset: DMA_RCFGLOCKR
+  - name: MISR
+    byte_offset: 12
+    description: DMA non secure masked interrupt status register
+    fieldset: DMA_MISR
+  - name: SMISR
+    byte_offset: 16
+    description: DMA secure masked interrupt status register
+    fieldset: DMA_SMISR
+  - name: HWCFGR13
+    byte_offset: 4032
+    description: HPDMA hardware configuration 13 register
+  - name: HWCFGR12
+    byte_offset: 4036
+    description: HPDMA hardware configuration 12 register
+  - name: HWCFGR11
+    byte_offset: 4040
+    description: HPDMA hardware configuration 11 register
+  - name: HWCFGR10
+    byte_offset: 4044
+    description: HPDMA hardware configuration 10 register
+  - name: HWCFGR9
+    byte_offset: 4048
+    description: HPDMA hardware configuration 9 register
+  - name: HWCFGR8
+    byte_offset: 4052
+    description: HPDMA hardware configuration 8 register
+  - name: HWCFGR7
+    byte_offset: 4056
+    description: HPDMA hardware configuration 7 register
+  - name: HWCFGR6
+    byte_offset: 4060
+    description: HPDMA hardware configuration 6 register
+  - name: HWCFGR5
+    byte_offset: 4064
+    description: HPDMA hardware configuration 5 register
+  - name: HWCFGR4
+    byte_offset: 4068
+    description: HPDMA hardware configuration 4 register
+  - name: HWCFGR3
+    byte_offset: 4072
+    description: HPDMA hardware configuration 3 register
+  - name: HWCFGR2
+    byte_offset: 4076
+    description: HPDMA hardware configuration 2 register
+  - name: HWCFGR1
+    byte_offset: 4080
+    description: HPDMA hardware configuration 1 register
+  - name: VERR
+    byte_offset: 4084
+    description: HPDMA version register
+  - name: IPIDR
+    byte_offset: 4088
+    description: HPDMA identification register
+  - name: SIDR
+    byte_offset: 4092
+    description: HPDMA size identification register
+fieldset/DMA_SECCFGR:
+  description: ''
+  fields:
+  - name: SEC0
+    bit_offset: 0
+    bit_size: 1
+    description: Secure State of Channel 0
+  - name: SEC1
+    bit_offset: 1
+    bit_size: 1
+    description: Secure State of Channel 1
+  - name: SEC2
+    bit_offset: 2
+    bit_size: 1
+    description: Secure State of Channel 2
+  - name: SEC3
+    bit_offset: 3
+    bit_size: 1
+    description: Secure State of Channel 3
+  - name: SEC4
+    bit_offset: 4
+    bit_size: 1
+    description: Secure State of Channel 4
+  - name: SEC5
+    bit_offset: 5
+    bit_size: 1
+    description: Secure State of Channel 5
+  - name: SEC6
+    bit_offset: 6
+    bit_size: 1
+    description: Secure State of Channel 6
+  - name: SEC7
+    bit_offset: 7
+    bit_size: 1
+    description: Secure State of Channel 7
+  - name: SEC8
+    bit_offset: 8
+    bit_size: 1
+    description: Secure State of Channel 8
+  - name: SEC9
+    bit_offset: 9
+    bit_size: 1
+    description: Secure State of Channel 9
+  - name: SEC10
+    bit_offset: 10
+    bit_size: 1
+    description: Secure State of Channel 10
+  - name: SEC11
+    bit_offset: 11
+    bit_size: 1
+    description: Secure State of Channel 11
+  - name: SEC12
+    bit_offset: 12
+    bit_size: 1
+    description: Secure State of Channel 12
+  - name: SEC13
+    bit_offset: 13
+    bit_size: 1
+    description: Secure State of Channel 13
+  - name: SEC14
+    bit_offset: 14
+    bit_size: 1
+    description: Secure State of Channel 14
+  - name: SEC15
+    bit_offset: 15
+    bit_size: 1
+    description: '0x00008000'
+fieldset/DMA_PRIVCFGR:
+  description: ''
+  fields:
+  - name: PRIV0
+    bit_offset: 0
+    bit_size: 1
+    description: Privileged State of Channel 0
+  - name: PRIV1
+    bit_offset: 1
+    bit_size: 1
+    description: Privileged State of Channel 1
+  - name: PRIV2
+    bit_offset: 2
+    bit_size: 1
+    description: Privileged State of Channel 2
+  - name: PRIV3
+    bit_offset: 3
+    bit_size: 1
+    description: Privileged State of Channel 3
+  - name: PRIV4
+    bit_offset: 4
+    bit_size: 1
+    description: Privileged State of Channel 4
+  - name: PRIV5
+    bit_offset: 5
+    bit_size: 1
+    description: Privileged State of Channel 5
+  - name: PRIV6
+    bit_offset: 6
+    bit_size: 1
+    description: Privileged State of Channel 6
+  - name: PRIV7
+    bit_offset: 7
+    bit_size: 1
+    description: Privileged State of Channel 7
+  - name: PRIV8
+    bit_offset: 8
+    bit_size: 1
+    description: Privileged State of Channel 8
+  - name: PRIV9
+    bit_offset: 9
+    bit_size: 1
+    description: Privileged State of Channel 9
+  - name: PRIV10
+    bit_offset: 10
+    bit_size: 1
+    description: Privileged State of Channel 10
+  - name: PRIV11
+    bit_offset: 11
+    bit_size: 1
+    description: Privileged State of Channel 11
+  - name: PRIV12
+    bit_offset: 12
+    bit_size: 1
+    description: Privileged State of Channel 12
+  - name: PRIV13
+    bit_offset: 13
+    bit_size: 1
+    description: Privileged State of Channel 13
+  - name: PRIV14
+    bit_offset: 14
+    bit_size: 1
+    description: Privileged State of Channel 14
+  - name: PRIV15
+    bit_offset: 15
+    bit_size: 1
+    description: Privileged State of Channel 15
+fieldset/DMA_RCFGLOCKR:
+  description: ''
+  fields:
+  - name: LOCK0
+    bit_offset: 0
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK1
+    bit_offset: 1
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK2
+    bit_offset: 2
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK3
+    bit_offset: 3
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK4
+    bit_offset: 4
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK5
+    bit_offset: 5
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK6
+    bit_offset: 6
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK7
+    bit_offset: 7
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK8
+    bit_offset: 8
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK9
+    bit_offset: 9
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK10
+    bit_offset: 10
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK11
+    bit_offset: 11
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK12
+    bit_offset: 12
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK13
+    bit_offset: 13
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK14
+    bit_offset: 14
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+  - name: LOCK15
+    bit_offset: 15
+    bit_size: 1
+    description: lock the configuration of the DMA_SECCFGR
+fieldset/DMA_MISR:
+  description: ''
+  fields:
+  - name: MIS0
+    bit_offset: 0
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 0
+  - name: MIS1
+    bit_offset: 1
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 1
+  - name: MIS2
+    bit_offset: 2
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 2
+  - name: MIS3
+    bit_offset: 3
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 3
+  - name: MIS4
+    bit_offset: 4
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 4
+  - name: MIS5
+    bit_offset: 5
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 5
+  - name: MIS6
+    bit_offset: 6
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 6
+  - name: MIS7
+    bit_offset: 7
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 7
+  - name: MIS8
+    bit_offset: 8
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 8
+  - name: MIS9
+    bit_offset: 9
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 9
+  - name: MIS10
+    bit_offset: 10
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 10
+  - name: MIS11
+    bit_offset: 11
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 11
+  - name: MIS12
+    bit_offset: 12
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 12
+  - name: MIS13
+    bit_offset: 13
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 13
+  - name: MIS14
+    bit_offset: 14
+    bit_size: 1
+    description: Masked Interrupt State of Non-Secure Channel 14
+  - name: MIS15
+    bit_offset: 15
+    bit_size: 1
+    description: '0x00008000'
+fieldset/DMA_SMISR:
+  description: ''
+  fields:
+  - name: MIS0
+    bit_offset: 0
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 0
+  - name: MIS1
+    bit_offset: 1
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 1
+  - name: MIS2
+    bit_offset: 2
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 2
+  - name: MIS3
+    bit_offset: 3
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 3
+  - name: MIS4
+    bit_offset: 4
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 4
+  - name: MIS5
+    bit_offset: 5
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 5
+  - name: MIS6
+    bit_offset: 6
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 6
+  - name: MIS7
+    bit_offset: 7
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 7
+  - name: MIS8
+    bit_offset: 8
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 8
+  - name: MIS9
+    bit_offset: 9
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 9
+  - name: MIS10
+    bit_offset: 10
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 10
+  - name: MIS11
+    bit_offset: 11
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 11
+  - name: MIS12
+    bit_offset: 12
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 12
+  - name: MIS13
+    bit_offset: 13
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 13
+  - name: MIS14
+    bit_offset: 14
+    bit_size: 1
+    description: Masked Interrupt State of Secure Channel 14
+  - name: MIS15
+    bit_offset: 15
+    bit_size: 1
+    description: '0x00008000'

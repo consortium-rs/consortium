@@ -1,0 +1,21 @@
+block/EXTI_Core:
+  description: ''
+  items:
+  - name: IMR1
+    byte_offset: 0
+    description: EXTI Interrupt mask register
+  - name: EMR1
+    byte_offset: 4
+    description: EXTI Event mask register
+  - name: IMR2
+    byte_offset: 16
+    description: EXTI Interrupt mask register
+  - name: EMR2
+    byte_offset: 20
+    description: EXTI Event mask register
+  - name: IMR3
+    byte_offset: 32
+    description: EXTI Interrupt mask register
+  - name: EMR3
+    byte_offset: 36
+    description: EXTI Event mask register

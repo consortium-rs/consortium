@@ -1,0 +1,37 @@
+block/VREFBUF:
+  description: ''
+  items:
+  - name: CSR
+    byte_offset: 0
+    description: VREFBUF control and status register
+    fieldset: VREFBUF_CSR
+  - name: CCR
+    byte_offset: 4
+    description: VREFBUF calibration and control register
+    fieldset: VREFBUF_CCR
+fieldset/VREFBUF_CSR:
+  description: ''
+  fields:
+  - name: ENVR
+    bit_offset: 0
+    bit_size: 1
+    description: Voltage reference buffer enable
+  - name: HIZ
+    bit_offset: 1
+    bit_size: 1
+    description: High impedance mode
+  - name: VRS
+    bit_offset: 4
+    bit_size: 1
+    description: Voltage reference scale
+  - name: VRR
+    bit_offset: 3
+    bit_size: 1
+    description: Voltage reference buffer ready
+fieldset/VREFBUF_CCR:
+  description: ''
+  fields:
+  - name: TRIM
+    bit_offset: 0
+    bit_size: 6
+    description: TRIM[5:0] bits (Trimming code)

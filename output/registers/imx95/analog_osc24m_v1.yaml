@@ -1,0 +1,20 @@
+block/ANALOG_OSC24M:
+  description: ''
+  items:
+  - name: DIGPROG_DEVICE_ID
+    byte_offset: 2048
+fieldset/ANALOG_OSC24M_DIGPROG_DEVICE_ID_DIGPROG:
+  description: ''
+  fields:
+  - name: MINOR
+    bit_offset: 0
+    bit_size: 8
+fieldset/ANALOG_OSC24M_DIGPROG_DEVICE_ID_DIGPROG_MAJOR:
+  description: ''
+  fields:
+  - name: LOWER
+    bit_offset: 8
+    bit_size: 8
+  - name: UPPER
+    bit_offset: 16
+    bit_size: 8

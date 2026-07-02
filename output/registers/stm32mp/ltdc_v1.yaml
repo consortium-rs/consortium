@@ -1,0 +1,723 @@
+block/LTDC:
+  description: ''
+  items:
+  - name: IDR
+    byte_offset: 0
+    description: LTDC identification register
+    fieldset: LTDC_IDR
+  - name: LCR
+    byte_offset: 4
+    description: LDTC layer count register
+    fieldset: LTDC_LCR
+  - name: SSCR
+    byte_offset: 8
+    description: LTDC synchronization size configuration register
+    fieldset: LTDC_SSCR
+  - name: BPCR
+    byte_offset: 12
+    description: LTDC back porch configuration register
+    fieldset: LTDC_BPCR
+  - name: AWCR
+    byte_offset: 16
+    description: LTDC active width configuration register
+    fieldset: LTDC_AWCR
+  - name: TWCR
+    byte_offset: 20
+    description: LTDC total width configuration register
+    fieldset: LTDC_TWCR
+  - name: GCR
+    byte_offset: 24
+    description: LTDC global control register
+    fieldset: LTDC_GCR
+  - name: GC1R
+    byte_offset: 28
+    description: LTDC global configuration 1 register
+    fieldset: LTDC_GC1R
+  - name: GC2R
+    byte_offset: 32
+    description: LTDC global configuration 2 register
+    fieldset: LTDC_GC2R
+  - name: SRCR
+    byte_offset: 36
+    description: LTDC shadow reload configuration register
+    fieldset: LTDC_SRCR
+  - name: GCCR
+    byte_offset: 40
+    description: LTDC gamma correction configuration register
+    fieldset: LTDC_GCCR
+  - name: BCCR
+    byte_offset: 44
+    description: LTDC background color configuration register
+    fieldset: LTDC_BCCR
+  - name: IER
+    byte_offset: 52
+    description: LTDC interrupt enable register
+    fieldset: LTDC_IER
+  - name: ISR
+    byte_offset: 56
+    description: LTDC interrupt status register
+    fieldset: LTDC_ISR
+  - name: ICR
+    byte_offset: 60
+    description: LTDC interrupt clear register
+    fieldset: LTDC_ICR
+  - name: LIPCR
+    byte_offset: 64
+    description: LTDC line interrupt position configuration register
+    fieldset: LTDC_LIPCR
+  - name: CPSR
+    byte_offset: 68
+    description: LTDC current position status register
+    fieldset: LTDC_CPSR
+  - name: CDSR
+    byte_offset: 72
+    description: LTDC current display status register
+    fieldset: LTDC_CDSR
+  - name: EDCR
+    byte_offset: 96
+    description: LTDC external display control register
+    fieldset: LTDC_EDCR
+  - name: IER2
+    byte_offset: 100
+    description: LTDC interrupt enable register 2
+    fieldset: LTDC_IER2
+  - name: ISR2
+    byte_offset: 104
+    description: LTDC interrupt status register 2
+    fieldset: LTDC_ISR2
+  - name: ICR2
+    byte_offset: 108
+    description: LTDC interrupt clear register 2
+    fieldset: LTDC_ICR2
+  - name: LIPCR2
+    byte_offset: 112
+    description: LTDC line interrupt position configuration register 2
+  - name: ECRCR
+    byte_offset: 120
+    description: LTDC expected CRC register
+    fieldset: LTDC_ECRCR
+  - name: CCRCR
+    byte_offset: 124
+    description: LTDC computed CRC register
+    fieldset: LTDC_CCRCR
+  - name: RB0AR
+    byte_offset: 128
+    description: LTDC rotation buffer 0 address register
+    fieldset: LTDC_RB0AR
+  - name: RB1AR
+    byte_offset: 132
+    description: LTDC rotation buffer 1 address register
+    fieldset: LTDC_RB1AR
+  - name: RBPR
+    byte_offset: 136
+    description: LTDC rotation buffer pitch register
+    fieldset: LTDC_RBPR
+  - name: RIFCR
+    byte_offset: 140
+    description: LTDC rotation intermediate frame color register
+    fieldset: LTDC_RIFCR
+  - name: FUTR
+    byte_offset: 144
+    description: LTDC FIFO underrun threshold register
+    fieldset: LTDC_FUTR
+fieldset/LTDC_IDR:
+  description: ''
+  fields:
+  - name: REV
+    bit_offset: 0
+    bit_size: 8
+    description: revision
+  - name: MINVER
+    bit_offset: 8
+    bit_size: 8
+    description: minor version
+  - name: MAJVER
+    bit_offset: 16
+    bit_size: 8
+    description: major version
+fieldset/LTDC_LCR:
+  description: ''
+  fields:
+  - name: LNBR
+    bit_offset: 0
+    bit_size: 8
+    description: number of layers
+fieldset/LTDC_SSCR:
+  description: ''
+  fields:
+  - name: VSH
+    bit_offset: 0
+    bit_size: 16
+    description: vertical synchronization height (in units of horizontal scan line)
+  - name: HSW
+    bit_offset: 16
+    bit_size: 16
+    description: horizontal synchronization width (in units of pixel clock period)
+fieldset/LTDC_BPCR:
+  description: ''
+  fields:
+  - name: AVBP
+    bit_offset: 0
+    bit_size: 16
+    description: accumulated Vertical back porch (in units of horizontal scan line)
+  - name: AHBP
+    bit_offset: 16
+    bit_size: 16
+    description: accumulated horizontal back porch (in units of pixel clock period)
+fieldset/LTDC_AWCR:
+  description: ''
+  fields:
+  - name: AAH
+    bit_offset: 0
+    bit_size: 16
+    description: accumulated active height (in units of horizontal scan line)
+  - name: AAW
+    bit_offset: 16
+    bit_size: 16
+    description: accumulated active width (in units of pixel clock period)
+fieldset/LTDC_TWCR:
+  description: ''
+  fields:
+  - name: TOTALH
+    bit_offset: 0
+    bit_size: 16
+    description: total height (in units of horizontal scan line)
+  - name: TOTALW
+    bit_offset: 16
+    bit_size: 16
+    description: total width (in units of pixel clock period)
+fieldset/LTDC_GCR:
+  description: ''
+  fields:
+  - name: LTDCEN
+    bit_offset: 0
+    bit_size: 1
+    description: LTDC global enable
+  - name: GAMEN
+    bit_offset: 1
+    bit_size: 1
+    description: Gamma correction enable
+  - name: ROTEN
+    bit_offset: 2
+    bit_size: 1
+    description: Rotation enable
+  - name: DBW
+    bit_offset: 4
+    bit_size: 3
+    description: dither blue width
+  - name: DGW
+    bit_offset: 8
+    bit_size: 3
+    description: dither green width
+  - name: DRW
+    bit_offset: 12
+    bit_size: 3
+    description: dither red width
+  - name: DEN
+    bit_offset: 16
+    bit_size: 1
+    description: dither enable
+  - name: BCKEN
+    bit_offset: 17
+    bit_size: 1
+    description: background layer enable
+  - name: CRCEN
+    bit_offset: 19
+    bit_size: 1
+    description: CRC enable
+  - name: SFEN
+    bit_offset: 24
+    bit_size: 1
+    description: 'single-frame mode: mode enable'
+  - name: SFSWTR
+    bit_offset: 25
+    bit_size: 1
+    description: 'single-frame mode: software trigger'
+  - name: SFEXEN
+    bit_offset: 26
+    bit_size: 1
+    description: 'single-frame mode: external trigger enable'
+  - name: PCPOL
+    bit_offset: 28
+    bit_size: 1
+    description: pixel clock polarity
+  - name: DEPOL
+    bit_offset: 29
+    bit_size: 1
+    description: blanking (no data/pixel) polarity
+  - name: VSPOL
+    bit_offset: 30
+    bit_size: 1
+    description: vertical synchronization polarity
+  - name: HSPOL
+    bit_offset: 31
+    bit_size: 1
+    description: horizontal synchronization polarity
+fieldset/LTDC_GC1R:
+  description: ''
+  fields:
+  - name: WBCH
+    bit_offset: 0
+    bit_size: 4
+    description: width of blue channel output
+  - name: WGCH
+    bit_offset: 4
+    bit_size: 4
+    description: width of green channel output
+  - name: WRCH
+    bit_offset: 8
+    bit_size: 4
+    description: width of red channel output
+  - name: PRBA
+    bit_offset: 12
+    bit_size: 1
+    description: precise blending ability
+  - name: DT
+    bit_offset: 14
+    bit_size: 2
+    description: dithering technique implemented
+  - name: GCT
+    bit_offset: 17
+    bit_size: 3
+    description: gamma correction technique implemented
+  - name: SHRA
+    bit_offset: 21
+    bit_size: 1
+    description: shadow registers ability
+  - name: BCP
+    bit_offset: 22
+    bit_size: 1
+    description: background color programmability (unique color blended as background)
+  - name: BBA
+    bit_offset: 23
+    bit_size: 1
+    description: background blending ability
+  - name: LNIP
+    bit_offset: 24
+    bit_size: 1
+    description: 'line-IRQ: line position programmability'
+  - name: TP
+    bit_offset: 25
+    bit_size: 1
+    description: timing programmability
+  - name: SPP
+    bit_offset: 27
+    bit_size: 1
+    description: sync polarity programmability
+  - name: DWP
+    bit_offset: 28
+    bit_size: 1
+    description: dither width programmability
+  - name: STRA
+    bit_offset: 29
+    bit_size: 1
+    description: status register ability
+  - name: CRMA
+    bit_offset: 30
+    bit_size: 1
+    description: configuration reading mode ability
+  - name: BMA
+    bit_offset: 31
+    bit_size: 1
+    description: blind mode ability
+fieldset/LTDC_GC2R:
+  description: ''
+  fields:
+  - name: BLA
+    bit_offset: 0
+    bit_size: 1
+    description: background layer ability (pixels of background layer are read from
+      memory)
+  - name: STSA
+    bit_offset: 1
+    bit_size: 1
+    description: slave timings synchronization ability
+  - name: DVA
+    bit_offset: 2
+    bit_size: 1
+    description: dual-view ability
+  - name: DPA
+    bit_offset: 3
+    bit_size: 1
+    description: secondary RGB output port ability
+  - name: BW
+    bit_offset: 4
+    bit_size: 3
+    description: bus width (log2 of number of bytes)
+  - name: EDCA
+    bit_offset: 7
+    bit_size: 1
+    description: external display control ability
+  - name: OCA
+    bit_offset: 8
+    bit_size: 1
+    description: output conversion ability (RGB to YCbCr)
+  - name: AXIIDA
+    bit_offset: 9
+    bit_size: 1
+    description: AXIID ability
+  - name: ROTA
+    bit_offset: 10
+    bit_size: 1
+    description: rotation support ability
+  - name: SISA
+    bit_offset: 11
+    bit_size: 1
+    description: second interrupt set ability
+  - name: SFA
+    bit_offset: 12
+    bit_size: 1
+    description: single frame mode ability
+  - name: CRCA
+    bit_offset: 13
+    bit_size: 1
+    description: CRC ability
+  - name: BOA
+    bit_offset: 15
+    bit_size: 1
+    description: blending order ability
+fieldset/LTDC_SRCR:
+  description: ''
+  fields:
+  - name: IMR
+    bit_offset: 0
+    bit_size: 1
+    description: immediate reload trigger
+  - name: VBR
+    bit_offset: 1
+    bit_size: 1
+    description: vertical blanking reload request
+fieldset/LTDC_GCCR:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 8
+    description: address of the R,G,B table where the COMP component is written
+  - name: COMP
+    bit_offset: 8
+    bit_size: 8
+    description: color component to be written, in either (or all) the R,G,B tables
+  - name: BEN
+    bit_offset: 16
+    bit_size: 1
+    description: write trigger to the blue table
+  - name: GEN
+    bit_offset: 17
+    bit_size: 1
+    description: write trigger to the green table
+  - name: REN
+    bit_offset: 18
+    bit_size: 1
+    description: write trigger to the red table
+fieldset/LTDC_BCCR:
+  description: ''
+  fields:
+  - name: BCBLUE
+    bit_offset: 0
+    bit_size: 8
+    description: background color blue value
+  - name: BCGREEN
+    bit_offset: 8
+    bit_size: 8
+    description: background color green value
+  - name: BCRED
+    bit_offset: 16
+    bit_size: 8
+    description: background color red value
+fieldset/LTDC_IER:
+  description: ''
+  fields:
+  - name: LIE
+    bit_offset: 0
+    bit_size: 1
+    description: Line interrupt enable
+  - name: FUWIE
+    bit_offset: 1
+    bit_size: 1
+    description: FIFO underrun warning interrupt enable
+  - name: TERRIE
+    bit_offset: 2
+    bit_size: 1
+    description: Transfer Error interrupt enable
+  - name: RRIE
+    bit_offset: 3
+    bit_size: 1
+    description: Register reload interrupt enable
+  - name: FUKIE
+    bit_offset: 6
+    bit_size: 1
+    description: FIFO underrun killing interrupt enable
+  - name: CRCIE
+    bit_offset: 7
+    bit_size: 1
+    description: CRC error interrupt enable
+  - name: FURIE
+    bit_offset: 8
+    bit_size: 1
+    description: FIFO underrun error at rotation interrupt enable
+fieldset/LTDC_ISR:
+  description: ''
+  fields:
+  - name: LIF
+    bit_offset: 0
+    bit_size: 1
+    description: Line interrupt flag
+  - name: FUWIF
+    bit_offset: 1
+    bit_size: 1
+    description: FIFO underrun warning interrupt flag
+  - name: TERRIF
+    bit_offset: 2
+    bit_size: 1
+    description: Transfer error interrupt flag
+  - name: RRIF
+    bit_offset: 3
+    bit_size: 1
+    description: Register reload interrupt flag
+  - name: FUKIF
+    bit_offset: 6
+    bit_size: 1
+    description: FIFO underrun killing interrupt flag
+  - name: CRCIF
+    bit_offset: 7
+    bit_size: 1
+    description: CRC error interrupt flag
+  - name: FURIF
+    bit_offset: 8
+    bit_size: 1
+    description: FIFO underrun error at rotation interrupt flag
+fieldset/LTDC_ICR:
+  description: ''
+  fields:
+  - name: CLIF
+    bit_offset: 0
+    bit_size: 1
+    description: clears the line interrupt flag
+  - name: CFUWIF
+    bit_offset: 1
+    bit_size: 1
+    description: clears the FIFO underrun warning interrupt flag
+  - name: CTERRIF
+    bit_offset: 2
+    bit_size: 1
+    description: clears the transfer error interrupt flag
+  - name: CRRIF
+    bit_offset: 3
+    bit_size: 1
+    description: clears register reload interrupt flag
+  - name: CFUKIF
+    bit_offset: 6
+    bit_size: 1
+    description: clears the FIFO underrun killing interrupt flag
+  - name: CCRCIF
+    bit_offset: 7
+    bit_size: 1
+    description: clears the CRC error interrupt flag
+  - name: CFURIF
+    bit_offset: 8
+    bit_size: 1
+    description: clears FIFO underrun error at rotation interrupt flag
+fieldset/LTDC_LIPCR:
+  description: ''
+  fields:
+  - name: LIPOS
+    bit_offset: 0
+    bit_size: 16
+    description: line interrupt position
+fieldset/LTDC_CPSR:
+  description: ''
+  fields:
+  - name: CYPOS
+    bit_offset: 0
+    bit_size: 16
+    description: current Y position
+  - name: CXPOS
+    bit_offset: 16
+    bit_size: 16
+    description: current X position
+fieldset/LTDC_CDSR:
+  description: ''
+  fields:
+  - name: VDES
+    bit_offset: 0
+    bit_size: 1
+    description: vertical data enable display status
+  - name: HDES
+    bit_offset: 1
+    bit_size: 1
+    description: horizontal data enable display status
+  - name: VSYNCS
+    bit_offset: 2
+    bit_size: 1
+    description: vertical synchronization display status
+  - name: HSYNCS
+    bit_offset: 3
+    bit_size: 1
+    description: horizontal synchronization display status
+fieldset/LTDC_EDCR:
+  description: ''
+  fields:
+  - name: OCYEN
+    bit_offset: 25
+    bit_size: 1
+    description: output conversion to YCbCr 422 enable
+  - name: OCYSEL
+    bit_offset: 26
+    bit_size: 1
+    description: output conversion to YCbCr 422
+  - name: OCYCO
+    bit_offset: 27
+    bit_size: 1
+    description: output conversion to YCbCr 422
+fieldset/LTDC_IER2:
+  description: ''
+  fields:
+  - name: LIE
+    bit_offset: 0
+    bit_size: 1
+    description: Line interrupt enable
+  - name: FUWIE
+    bit_offset: 1
+    bit_size: 1
+    description: FIFO underrun warning interrupt enable
+  - name: TERRIE
+    bit_offset: 2
+    bit_size: 1
+    description: Transfer error interrupt enable
+  - name: RRIE
+    bit_offset: 3
+    bit_size: 1
+    description: Register reload interrupt enable
+  - name: FUKIE
+    bit_offset: 6
+    bit_size: 1
+    description: FIFO underrun killing error interrupt enable
+  - name: CRCIE
+    bit_offset: 7
+    bit_size: 1
+    description: CRC error interrupt enable
+  - name: FURIE
+    bit_offset: 8
+    bit_size: 1
+    description: FIFO underrun error at rotation interrupt enable
+fieldset/LTDC_ISR2:
+  description: ''
+  fields:
+  - name: LIF
+    bit_offset: 0
+    bit_size: 1
+    description: Line interrupt flag
+  - name: FUWIF
+    bit_offset: 1
+    bit_size: 1
+    description: FIFO underrun warning interrupt flag
+  - name: TERRIF
+    bit_offset: 2
+    bit_size: 1
+    description: Transfer error interrupt flag
+  - name: RRIF
+    bit_offset: 3
+    bit_size: 1
+    description: Register reload interrupt flag
+  - name: FUKIF
+    bit_offset: 6
+    bit_size: 1
+    description: '0x00000040'
+  - name: CRCIF
+    bit_offset: 7
+    bit_size: 1
+    description: CRC Error interrupt flag
+  - name: FURIF
+    bit_offset: 8
+    bit_size: 1
+    description: FIFO underrun error at rotation interrupt flag
+fieldset/LTDC_ICR2:
+  description: ''
+  fields:
+  - name: CLIF
+    bit_offset: 0
+    bit_size: 1
+    description: clears the Line interrupt flag
+  - name: CFUWIF
+    bit_offset: 1
+    bit_size: 1
+    description: clears the FIFO underrun warning interrupt flag
+  - name: CTERRIF
+    bit_offset: 2
+    bit_size: 1
+    description: clears the Transfer Error interrupt flag
+  - name: CRRIF
+    bit_offset: 3
+    bit_size: 1
+    description: clears register reload interrupt flag
+  - name: CFUKIF
+    bit_offset: 6
+    bit_size: 1
+    description: clears the FIFO underrun killing error interrupt flag
+  - name: CCRCIF
+    bit_offset: 7
+    bit_size: 1
+    description: clears the CRC error interrupt flag
+  - name: CFURIF
+    bit_offset: 8
+    bit_size: 1
+    description: clears FIFO underrun error at rotation interrupt flag
+fieldset/LTDC_ECRCR:
+  description: ''
+  fields:
+  - name: ECRC
+    bit_offset: 0
+    bit_size: 16
+    description: expected CRC of frame
+fieldset/LTDC_CCRCR:
+  description: ''
+  fields:
+  - name: CCRC
+    bit_offset: 0
+    bit_size: 16
+    description: computed CRC of frame
+fieldset/LTDC_RB0AR:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+    description: address of the rotation buffer 0
+fieldset/LTDC_RB1AR:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 32
+    description: address of the rotation buffer 1
+fieldset/LTDC_RBPR:
+  description: ''
+  fields:
+  - name: PITCH
+    bit_offset: 0
+    bit_size: 16
+    description: pitch in bytes of the rotation buffers 0 and 1
+fieldset/LTDC_RIFCR:
+  description: ''
+  fields:
+  - name: RIFBLUE
+    bit_offset: 0
+    bit_size: 8
+    description: Blue component of the rotation intermediate frame
+  - name: RIFGREEN
+    bit_offset: 8
+    bit_size: 8
+    description: Green component of the rotation intermediate frame
+  - name: RIFRED
+    bit_offset: 16
+    bit_size: 8
+    description: Red component of the rotation intermediate frame
+fieldset/LTDC_FUTR:
+  description: ''
+  fields:
+  - name: THRE
+    bit_offset: 0
+    bit_size: 16
+    description: threshold to trigger a FIFO underrun interrupt (per FIFO word, 64
+      bits)

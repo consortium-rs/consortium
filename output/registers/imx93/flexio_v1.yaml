@@ -1,0 +1,547 @@
+block/FLEXIO:
+  description: ''
+  items:
+  - name: VERID
+    byte_offset: 0
+    fieldset: FLEXIO_VERID
+  - name: PARAM
+    byte_offset: 4
+    fieldset: FLEXIO_PARAM
+  - name: CTRL
+    byte_offset: 8
+    fieldset: FLEXIO_CTRL
+  - name: PIN
+    byte_offset: 12
+    fieldset: FLEXIO_PIN
+  - name: SHIFTSTAT
+    byte_offset: 16
+    fieldset: FLEXIO_SHIFTSTAT
+  - name: SHIFTERR
+    byte_offset: 20
+    fieldset: FLEXIO_SHIFTERR
+  - name: TIMSTAT
+    byte_offset: 24
+    fieldset: FLEXIO_TIMSTAT
+  - name: SHIFTSIEN
+    byte_offset: 32
+    fieldset: FLEXIO_SHIFTSIEN
+  - name: SHIFTEIEN
+    byte_offset: 36
+    fieldset: FLEXIO_SHIFTEIEN
+  - name: TIMIEN
+    byte_offset: 40
+    fieldset: FLEXIO_TIMIEN
+  - name: SHIFTSDEN
+    byte_offset: 48
+    fieldset: FLEXIO_SHIFTSDEN
+  - name: TIMERSDEN
+    byte_offset: 56
+    fieldset: FLEXIO_TIMERSDEN
+  - name: SHIFTSTATE
+    byte_offset: 64
+    fieldset: FLEXIO_SHIFTSTATE
+  - name: TRGSTAT
+    byte_offset: 72
+    fieldset: FLEXIO_TRGSTAT
+  - name: TRIGIEN
+    byte_offset: 76
+    fieldset: FLEXIO_TRIGIEN
+  - name: PINSTAT
+    byte_offset: 80
+    fieldset: FLEXIO_PINSTAT
+  - name: PINIEN
+    byte_offset: 84
+    fieldset: FLEXIO_PINIEN
+  - name: PINREN
+    byte_offset: 88
+    fieldset: FLEXIO_PINREN
+  - name: PINFEN
+    byte_offset: 92
+    fieldset: FLEXIO_PINFEN
+  - name: PINOUTD
+    byte_offset: 96
+    fieldset: FLEXIO_PINOUTD
+  - name: PINOUTE
+    byte_offset: 100
+    fieldset: FLEXIO_PINOUTE
+  - name: PINOUTDIS
+    byte_offset: 104
+    fieldset: FLEXIO_PINOUTDIS
+  - name: PINOUTCLR
+    byte_offset: 108
+    fieldset: FLEXIO_PINOUTCLR
+  - name: PINOUTSET
+    byte_offset: 112
+    fieldset: FLEXIO_PINOUTSET
+  - name: PINOUTTOG
+    byte_offset: 116
+    fieldset: FLEXIO_PINOUTTOG
+  - name: SHIFTCTL
+    byte_offset: 128
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_SHIFTCTL
+  - name: SHIFTCFG
+    byte_offset: 256
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_SHIFTCFG
+  - name: SHIFTBUF
+    byte_offset: 512
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_SHIFTBUF
+  - name: SHIFTBUFBIS
+    byte_offset: 640
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_SHIFTBUFBIS
+  - name: SHIFTBUFBYS
+    byte_offset: 768
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_SHIFTBUFBYS
+  - name: SHIFTBUFBBS
+    byte_offset: 896
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_SHIFTBUFBBS
+  - name: TIMCTL
+    byte_offset: 1024
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_TIMCTL
+  - name: TIMCFG
+    byte_offset: 1152
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_TIMCFG
+  - name: TIMCMP
+    byte_offset: 1280
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_TIMCMP
+  - name: SHIFTBUFNBS
+    byte_offset: 1664
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_SHIFTBUFNBS
+  - name: SHIFTBUFHWS
+    byte_offset: 1792
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_SHIFTBUFHWS
+  - name: SHIFTBUFNIS
+    byte_offset: 1920
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_SHIFTBUFNIS
+  - name: SHIFTBUFOES
+    byte_offset: 2048
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_SHIFTBUFOES
+  - name: SHIFTBUFEOS
+    byte_offset: 2176
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_SHIFTBUFEOS
+  - name: SHIFTBUFHBS
+    byte_offset: 2304
+    array:
+      len: 8
+      stride: 4
+    fieldset: FLEXIO_SHIFTBUFHBS
+fieldset/FLEXIO_VERID:
+  description: ''
+  fields:
+  - name: FEATURE
+    bit_offset: 0
+    bit_size: 16
+  - name: MINOR
+    bit_offset: 16
+    bit_size: 8
+    description: Minor Version Number
+  - name: MAJOR
+    bit_offset: 24
+    bit_size: 8
+    description: Minor Version Number
+fieldset/FLEXIO_PARAM:
+  description: ''
+  fields:
+  - name: SHIFTER
+    bit_offset: 0
+    bit_size: 8
+    description: Shifter Number
+  - name: TIMER
+    bit_offset: 8
+    bit_size: 8
+    description: Shifter Number
+  - name: PIN
+    bit_offset: 16
+    bit_size: 8
+    description: Timer Number
+  - name: TRIGGER
+    bit_offset: 24
+    bit_size: 8
+    description: Pin Number
+fieldset/FLEXIO_CTRL:
+  description: ''
+  fields:
+  - name: FLEXEN
+    bit_offset: 0
+    bit_size: 1
+  - name: SWRST
+    bit_offset: 1
+    bit_size: 1
+  - name: FASTACC
+    bit_offset: 2
+    bit_size: 1
+  - name: DBGE
+    bit_offset: 30
+    bit_size: 1
+  - name: DOZEN
+    bit_offset: 31
+    bit_size: 1
+fieldset/FLEXIO_PIN:
+  description: ''
+  fields:
+  - name: PDI
+    bit_offset: 0
+    bit_size: 32
+    description: Pin Data Input
+fieldset/FLEXIO_SHIFTSTAT:
+  description: ''
+  fields:
+  - name: SSF
+    bit_offset: 0
+    bit_size: 8
+fieldset/FLEXIO_SHIFTERR:
+  description: ''
+  fields:
+  - name: SEF
+    bit_offset: 0
+    bit_size: 8
+fieldset/FLEXIO_TIMSTAT:
+  description: ''
+  fields:
+  - name: TSF
+    bit_offset: 0
+    bit_size: 8
+fieldset/FLEXIO_SHIFTSIEN:
+  description: ''
+  fields:
+  - name: SSIE
+    bit_offset: 0
+    bit_size: 8
+    description: Shifter Status Interrupt Enable
+fieldset/FLEXIO_SHIFTEIEN:
+  description: ''
+  fields:
+  - name: SEIE
+    bit_offset: 0
+    bit_size: 8
+    description: Shifter Error Interrupt Enable
+fieldset/FLEXIO_TIMIEN:
+  description: ''
+  fields:
+  - name: TEIE
+    bit_offset: 0
+    bit_size: 8
+    description: Timer Status Interrupt Enable
+fieldset/FLEXIO_SHIFTSDEN:
+  description: ''
+  fields:
+  - name: SSDE
+    bit_offset: 0
+    bit_size: 8
+    description: Shifter Status DMA Enable
+fieldset/FLEXIO_TIMERSDEN:
+  description: ''
+  fields:
+  - name: TSDE
+    bit_offset: 0
+    bit_size: 8
+    description: Timer Status DMA Enable
+fieldset/FLEXIO_SHIFTSTATE:
+  description: ''
+  fields:
+  - name: STATE
+    bit_offset: 0
+    bit_size: 3
+    description: Current State Pointer
+fieldset/FLEXIO_TRGSTAT:
+  description: ''
+  fields:
+  - name: ETSF
+    bit_offset: 0
+    bit_size: 4
+fieldset/FLEXIO_TRIGIEN:
+  description: ''
+  fields:
+  - name: TRIE
+    bit_offset: 0
+    bit_size: 4
+fieldset/FLEXIO_PINSTAT:
+  description: ''
+  fields:
+  - name: PSF
+    bit_offset: 0
+    bit_size: 32
+fieldset/FLEXIO_PINIEN:
+  description: ''
+  fields:
+  - name: PSIE
+    bit_offset: 0
+    bit_size: 32
+    description: Pin Status Interrupt Enable
+fieldset/FLEXIO_PINREN:
+  description: ''
+  fields:
+  - name: PRE
+    bit_offset: 0
+    bit_size: 32
+    description: Pin Rising Edge
+fieldset/FLEXIO_PINFEN:
+  description: ''
+  fields:
+  - name: PFE
+    bit_offset: 0
+    bit_size: 32
+    description: Pin Falling Edge
+fieldset/FLEXIO_PINOUTD:
+  description: ''
+  fields:
+  - name: OUTD
+    bit_offset: 0
+    bit_size: 32
+    description: Output Data
+fieldset/FLEXIO_PINOUTE:
+  description: ''
+  fields:
+  - name: OUTE
+    bit_offset: 0
+    bit_size: 32
+    description: Output Enable
+fieldset/FLEXIO_PINOUTDIS:
+  description: ''
+  fields:
+  - name: OUTDIS
+    bit_offset: 0
+    bit_size: 32
+    description: Output Disable
+fieldset/FLEXIO_PINOUTCLR:
+  description: ''
+  fields:
+  - name: OUTCLR
+    bit_offset: 0
+    bit_size: 32
+    description: Output Clear
+fieldset/FLEXIO_PINOUTSET:
+  description: ''
+  fields:
+  - name: OUTSET
+    bit_offset: 0
+    bit_size: 32
+    description: Output Set
+fieldset/FLEXIO_PINOUTTOG:
+  description: ''
+  fields:
+  - name: OUTTOG
+    bit_offset: 0
+    bit_size: 32
+    description: Output Toggle
+fieldset/FLEXIO_SHIFTCTL:
+  description: ''
+  fields:
+  - name: SMOD
+    bit_offset: 0
+    bit_size: 3
+  - name: PINPOL
+    bit_offset: 7
+    bit_size: 1
+  - name: PINSEL
+    bit_offset: 8
+    bit_size: 5
+    description: Shifter Pin Select
+  - name: PINCFG
+    bit_offset: 16
+    bit_size: 2
+    description: Shifter Pin Select
+  - name: TIMPOL
+    bit_offset: 23
+    bit_size: 1
+  - name: TIMSEL
+    bit_offset: 24
+    bit_size: 3
+    description: Timer Select
+fieldset/FLEXIO_SHIFTCFG:
+  description: ''
+  fields:
+  - name: SSTART
+    bit_offset: 0
+    bit_size: 2
+  - name: SSTOP
+    bit_offset: 4
+    bit_size: 2
+  - name: INSRC
+    bit_offset: 8
+    bit_size: 1
+  - name: LATST
+    bit_offset: 9
+    bit_size: 1
+  - name: SSIZE
+    bit_offset: 12
+    bit_size: 1
+  - name: PWIDTH
+    bit_offset: 16
+    bit_size: 5
+    description: Parallel Width
+fieldset/FLEXIO_SHIFTBUF:
+  description: ''
+  fields:
+  - name: SHIFTBUF
+    bit_offset: 0
+    bit_size: 32
+    description: Shift Buffer
+fieldset/FLEXIO_SHIFTBUFBIS:
+  description: ''
+  fields:
+  - name: SHIFTBUFBIS
+    bit_offset: 0
+    bit_size: 32
+    description: Shift Buffer
+fieldset/FLEXIO_SHIFTBUFBYS:
+  description: ''
+  fields:
+  - name: SHIFTBUFBYS
+    bit_offset: 0
+    bit_size: 32
+    description: Shift Buffer
+fieldset/FLEXIO_SHIFTBUFBBS:
+  description: ''
+  fields:
+  - name: SHIFTBUFBBS
+    bit_offset: 0
+    bit_size: 32
+    description: Shift Buffer
+fieldset/FLEXIO_TIMCTL:
+  description: ''
+  fields:
+  - name: TIMOD
+    bit_offset: 0
+    bit_size: 3
+  - name: ONETIM
+    bit_offset: 5
+    bit_size: 1
+  - name: PININS
+    bit_offset: 6
+    bit_size: 1
+  - name: PINPOL
+    bit_offset: 7
+    bit_size: 1
+  - name: PINSEL
+    bit_offset: 8
+    bit_size: 5
+    description: Timer Pin Select
+  - name: PINCFG
+    bit_offset: 16
+    bit_size: 2
+    description: Timer Pin Select
+  - name: TRGSRC
+    bit_offset: 22
+    bit_size: 1
+  - name: TRGPOL
+    bit_offset: 23
+    bit_size: 1
+  - name: TRGSEL
+    bit_offset: 24
+    bit_size: 6
+    description: Trigger Select
+fieldset/FLEXIO_TIMCFG:
+  description: ''
+  fields:
+  - name: TSTART
+    bit_offset: 1
+    bit_size: 1
+  - name: TSTOP
+    bit_offset: 4
+    bit_size: 2
+  - name: TIMENA
+    bit_offset: 8
+    bit_size: 3
+  - name: TIMDIS
+    bit_offset: 12
+    bit_size: 3
+  - name: TIMRST
+    bit_offset: 16
+    bit_size: 3
+  - name: TIMDEC
+    bit_offset: 20
+    bit_size: 3
+  - name: TIMOUT
+    bit_offset: 24
+    bit_size: 2
+fieldset/FLEXIO_TIMCMP:
+  description: ''
+  fields:
+  - name: CMP
+    bit_offset: 0
+    bit_size: 16
+    description: Timer Compare Value
+fieldset/FLEXIO_SHIFTBUFNBS:
+  description: ''
+  fields:
+  - name: SHIFTBUFNBS
+    bit_offset: 0
+    bit_size: 32
+    description: Shift Buffer
+fieldset/FLEXIO_SHIFTBUFHWS:
+  description: ''
+  fields:
+  - name: SHIFTBUFHWS
+    bit_offset: 0
+    bit_size: 32
+    description: Shift Buffer
+fieldset/FLEXIO_SHIFTBUFNIS:
+  description: ''
+  fields:
+  - name: SHIFTBUFNIS
+    bit_offset: 0
+    bit_size: 32
+    description: Shift Buffer
+fieldset/FLEXIO_SHIFTBUFOES:
+  description: ''
+  fields:
+  - name: SHIFTBUFOES
+    bit_offset: 0
+    bit_size: 32
+    description: Shift Buffer
+fieldset/FLEXIO_SHIFTBUFEOS:
+  description: ''
+  fields:
+  - name: SHIFTBUFEOS
+    bit_offset: 0
+    bit_size: 32
+    description: Shift Buffer
+fieldset/FLEXIO_SHIFTBUFHBS:
+  description: ''
+  fields:
+  - name: SHIFTBUFHBS
+    bit_offset: 0
+    bit_size: 32
+    description: Shift Buffer

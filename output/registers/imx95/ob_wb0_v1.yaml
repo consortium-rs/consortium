@@ -1,0 +1,55 @@
+block/OB_WB0:
+  description: ''
+  items:
+  - name: NEO_PIPE1_OB_WB_CONF_CTRL_CAM
+    byte_offset: 0
+  - name: NEO_PIPE1_OB_WB_CONF_R_CTRL_CAM
+    byte_offset: 4
+  - name: NEO_PIPE1_OB_WB_CONF_GR_CTRL_CAM
+    byte_offset: 8
+  - name: NEO_PIPE1_OB_WB_CONF_GB_CTRL_CAM
+    byte_offset: 12
+  - name: NEO_PIPE1_OB_WB_CONF_B_CTRL_CAM
+    byte_offset: 16
+fieldset/OB_WB0_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OBPP
+    bit_offset: 2
+    bit_size: 2
+fieldset/OB_WB0_R_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 16
+  - name: GAIN
+    bit_offset: 16
+    bit_size: 16
+fieldset/OB_WB0_GR_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 16
+  - name: GAIN
+    bit_offset: 16
+    bit_size: 16
+fieldset/OB_WB0_GB_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 16
+  - name: GAIN
+    bit_offset: 16
+    bit_size: 16
+fieldset/OB_WB0_B_CTRL_CAM:
+  description: ''
+  fields:
+  - name: OFFSET
+    bit_offset: 0
+    bit_size: 16
+  - name: GAIN
+    bit_offset: 16
+    bit_size: 16

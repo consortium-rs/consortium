@@ -1,0 +1,21 @@
+block/ANALOG_TRGMUX:
+  description: ''
+  items:
+  - name: REG0
+    byte_offset: 0
+    fieldset: ANALOG_TRGMUX_REG0
+fieldset/ANALOG_TRGMUX_REG0:
+  description: ''
+  fields:
+  - name: SEL0
+    bit_offset: 0
+    bit_size: 4
+    description: TRGMUX Source Select 0
+  - name: SEL1
+    bit_offset: 8
+    bit_size: 4
+    description: TRGMUX Source Select 0
+  - name: LK
+    bit_offset: 31
+    bit_size: 1
+    description: TRGMUX Source Select 1

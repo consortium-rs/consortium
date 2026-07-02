@@ -1,0 +1,280 @@
+block/SAES:
+  description: ''
+  items:
+  - name: CR
+    byte_offset: 0
+    description: SAES control register
+    fieldset: SAES_CR
+  - name: SR
+    byte_offset: 4
+    description: SAES status register
+    fieldset: SAES_SR
+  - name: DINR
+    byte_offset: 8
+    description: SAES data input register
+  - name: DOUTR
+    byte_offset: 12
+    description: SAES data output register
+  - name: KEYR0
+    byte_offset: 16
+    description: SAES key register 0
+  - name: KEYR1
+    byte_offset: 20
+    description: SAES key register 1
+  - name: KEYR2
+    byte_offset: 24
+    description: SAES key register 2
+  - name: KEYR3
+    byte_offset: 28
+    description: SAES key register 3
+  - name: IVR0
+    byte_offset: 32
+    description: SAES initialization vector register 0
+  - name: IVR1
+    byte_offset: 36
+    description: SAES initialization vector register 1
+  - name: IVR2
+    byte_offset: 40
+    description: SAES initialization vector register 2
+  - name: IVR3
+    byte_offset: 44
+    description: SAES initialization vector register 3
+  - name: KEYR4
+    byte_offset: 48
+    description: SAES key register 4
+  - name: KEYR5
+    byte_offset: 52
+    description: SAES key register 5
+  - name: KEYR6
+    byte_offset: 56
+    description: SAES key register 6
+  - name: KEYR7
+    byte_offset: 60
+    description: SAES key register 7
+  - name: SUSP0R
+    byte_offset: 64
+    description: SAES suspend register 0
+  - name: SUSP1R
+    byte_offset: 68
+    description: SAES suspend register 1
+  - name: SUSP2R
+    byte_offset: 72
+    description: SAES suspend register 2
+  - name: SUSP3R
+    byte_offset: 76
+    description: SAES suspend register 3
+  - name: SUSP4R
+    byte_offset: 80
+    description: SAES suspend register 4
+  - name: SUSP5R
+    byte_offset: 84
+    description: SAES suspend register 5
+  - name: SUSP6R
+    byte_offset: 88
+    description: SAES suspend register 6
+  - name: SUSP7R
+    byte_offset: 92
+    description: SAES suspend register 7
+  - name: IER
+    byte_offset: 768
+    description: SAES interrupt enable register
+    fieldset: SAES_IER
+  - name: ISR
+    byte_offset: 772
+    description: SAES interrupt status register
+    fieldset: SAES_ISR
+  - name: ICR
+    byte_offset: 776
+    description: SAES interrupt clear register
+    fieldset: SAES_ICR
+  - name: HWCFGR
+    byte_offset: 1008
+    description: SAES hardware configuration register
+    fieldset: SAES_HWCFGR
+  - name: VERR
+    byte_offset: 1012
+    description: SAES version register
+    fieldset: SAES_VERR
+  - name: IPIDR
+    byte_offset: 1016
+    description: SAES identification register
+    fieldset: SAES_IPIDR
+  - name: SIDR
+    byte_offset: 1020
+    description: SAES size ID register
+    fieldset: SAES_SIDR
+fieldset/SAES_CR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+    description: SAES Enable
+  - name: DATATYPE
+    bit_offset: 1
+    bit_size: 2
+    description: Data type selection
+  - name: MODE
+    bit_offset: 3
+    bit_size: 2
+    description: SAES Mode Of Operation
+  - name: CHMOD
+    bit_offset: 5
+    bit_size: 12
+    description: SAES Chaining Mode
+  - name: DMAINEN
+    bit_offset: 11
+    bit_size: 1
+    description: Enable data input phase DMA management
+  - name: DMAOUTEN
+    bit_offset: 12
+    bit_size: 1
+    description: Enable data output phase DMA management
+  - name: GCMPH
+    bit_offset: 13
+    bit_size: 2
+    description: GCM or CCM phase selection
+  - name: KEYSIZE
+    bit_offset: 18
+    bit_size: 1
+    description: Key size selection
+  - name: KEYPROT
+    bit_offset: 19
+    bit_size: 1
+    description: Key protection
+  - name: NPBLB
+    bit_offset: 20
+    bit_size: 4
+    description: Number of padding bytes in last block
+  - name: KMOD
+    bit_offset: 24
+    bit_size: 2
+    description: Key mode selection
+  - name: KSHAREID
+    bit_offset: 26
+    bit_size: 2
+    description: Key Shared ID
+  - name: KEYSEL
+    bit_offset: 28
+    bit_size: 3
+    description: Key Selection
+  - name: IPRST
+    bit_offset: 31
+    bit_size: 1
+    description: SAES IP software reset
+fieldset/SAES_SR:
+  description: ''
+  fields:
+  - name: RDERR
+    bit_offset: 1
+    bit_size: 1
+    description: Read Error Flag
+  - name: WRERR
+    bit_offset: 2
+    bit_size: 1
+    description: Write Error Flag
+  - name: BUSY
+    bit_offset: 3
+    bit_size: 1
+    description: Busy Flag
+  - name: KEYVALID
+    bit_offset: 7
+    bit_size: 1
+    description: KEYVALID Flag
+fieldset/SAES_IER:
+  description: ''
+  fields:
+  - name: CCFIE
+    bit_offset: 0
+    bit_size: 1
+    description: Computation complete flag interrupt enable
+  - name: RWEIE
+    bit_offset: 1
+    bit_size: 1
+    description: Read or write error Interrupt Enable
+  - name: KEIE
+    bit_offset: 2
+    bit_size: 1
+    description: Key error interrupt enable
+  - name: RNGEIE
+    bit_offset: 3
+    bit_size: 1
+    description: RNG error interrupt enable
+fieldset/SAES_ISR:
+  description: ''
+  fields:
+  - name: CCF
+    bit_offset: 0
+    bit_size: 1
+    description: Computation complete flag
+  - name: RWEIF
+    bit_offset: 1
+    bit_size: 1
+    description: Read or write error Interrupt flag
+  - name: KEIF
+    bit_offset: 2
+    bit_size: 1
+    description: Key error interrupt flag
+  - name: RNGEIF
+    bit_offset: 3
+    bit_size: 1
+    description: RNG error interrupt flag
+fieldset/SAES_ICR:
+  description: ''
+  fields:
+  - name: CCF
+    bit_offset: 0
+    bit_size: 1
+    description: Computation complete flag clear
+  - name: RWEIF
+    bit_offset: 1
+    bit_size: 1
+    description: Read or write error Interrupt flag clear
+  - name: KEIF
+    bit_offset: 2
+    bit_size: 1
+    description: Key error interrupt flag clear
+  - name: RNGEIF
+    bit_offset: 3
+    bit_size: 1
+    description: RNG error interrupt flag clear
+fieldset/SAES_HWCFGR:
+  description: ''
+  fields:
+  - name: CFG1
+    bit_offset: 0
+    bit_size: 4
+    description: HW Generic 1
+  - name: CFG2
+    bit_offset: 4
+    bit_size: 4
+    description: Hardware Generic 2
+  - name: CFG3
+    bit_offset: 8
+    bit_size: 4
+    description: Hardware Generic 3
+fieldset/SAES_VERR:
+  description: ''
+  fields:
+  - name: MINREV
+    bit_offset: 0
+    bit_size: 4
+    description: Minor revision
+  - name: MAJREV
+    bit_offset: 4
+    bit_size: 4
+    description: Major revision
+fieldset/SAES_IPIDR:
+  description: ''
+  fields:
+  - name: ID
+    bit_offset: 0
+    bit_size: 32
+    description: Identification code of the peripheral
+fieldset/SAES_SIDR:
+  description: ''
+  fields:
+  - name: SID
+    bit_offset: 0
+    bit_size: 32
+    description: Size identification code

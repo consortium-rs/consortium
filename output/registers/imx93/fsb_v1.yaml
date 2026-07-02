@@ -1,0 +1,216 @@
+block/FSB:
+  description: ''
+  items:
+  - name: VERID
+    byte_offset: 0
+    fieldset: FSB_VERID
+  - name: FSB_STATUS
+    byte_offset: 28
+    fieldset: FSB_FSB_STATUS
+  - name: ACCESS_COUNT
+    byte_offset: 100
+    fieldset: FSB_ACCESS_COUNT
+  - name: FUSE_STAT
+    byte_offset: 4096
+    fieldset: FSB_FUSE_STAT
+  - name: FUSE_EVNT
+    byte_offset: 4100
+    fieldset: FSB_FUSE_EVNT
+  - name: FUSE_INT_EN
+    byte_offset: 4104
+  - name: FUSE_INT
+    byte_offset: 4108
+    fieldset: FSB_FUSE_INT
+  - name: UNPROG_CTR
+    byte_offset: 4224
+    fieldset: FSB_UNPROG_CTR
+  - name: FUSE
+    byte_offset: 32768
+    array:
+      len: 512
+      stride: 4
+    fieldset: FSB_FUSE
+fieldset/FSB_VERID:
+  description: ''
+  fields:
+  - name: MISC
+    bit_offset: 0
+    bit_size: 8
+  - name: ECO
+    bit_offset: 8
+    bit_size: 8
+    description: ECO Version Number
+  - name: MINOR
+    bit_offset: 16
+    bit_size: 8
+    description: ECO Version Number
+  - name: MAJOR
+    bit_offset: 24
+    bit_size: 8
+    description: Minor Version Number
+fieldset/FSB_FSB_STATUS:
+  description: ''
+  fields:
+  - name: VMTR
+    bit_offset: 0
+    bit_size: 1
+    description: MTR Trim fuses valid.
+  - name: VERL
+    bit_offset: 1
+    bit_size: 1
+    description: MTR Trim fuses valid.
+  - name: VMED
+    bit_offset: 2
+    bit_size: 1
+    description: Early fuses valid.
+  - name: VALL
+    bit_offset: 3
+    bit_size: 1
+    description: Medium fuses valid.
+  - name: LMTR
+    bit_offset: 4
+    bit_size: 1
+    description: All fuses valid.
+  - name: LERL
+    bit_offset: 5
+    bit_size: 1
+    description: MTR Trim fuses loaded.
+  - name: LMED
+    bit_offset: 6
+    bit_size: 1
+    description: Early fuses loaded.
+  - name: LALL
+    bit_offset: 7
+    bit_size: 1
+    description: Medium fuses loaded.
+fieldset/FSB_ACCESS_COUNT:
+  description: ''
+  fields:
+  - name: COUNT
+    bit_offset: 0
+    bit_size: 32
+    description: Access Count Register.
+fieldset/FSB_FUSE_STAT_FUSE:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 16
+    description: Fuse address
+  - name: ERR
+    bit_offset: 26
+    bit_size: 1
+    description: Shadow unprogrammed
+fieldset/FSB_FUSE_STAT_SHDW:
+  description: ''
+  fields:
+  - name: ZERO
+    bit_offset: 24
+    bit_size: 1
+    description: Fuse address
+  - name: UNPROG
+    bit_offset: 25
+    bit_size: 1
+    description: Shadow zeroized
+fieldset/FSB_FUSE_STAT:
+  description: ''
+  fields:
+  - name: LOADING
+    bit_offset: 27
+    bit_size: 1
+    description: Fuse error
+fieldset/FSB_FUSE_STAT_RLD:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 28
+    bit_size: 1
+    description: Shadow loading
+fieldset/FSB_FUSE_STAT_RD:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 29
+    bit_size: 1
+    description: Reload error
+fieldset/FSB_FUSE_STAT_ADDR:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 31
+    bit_size: 1
+    description: Read error
+fieldset/FSB_FUSE_EVNT_SHDW:
+  description: ''
+  fields:
+  - name: ZERO
+    bit_offset: 24
+    bit_size: 1
+    description: Shadow zeroized
+  - name: UNPROG
+    bit_offset: 25
+    bit_size: 1
+    description: Shadow zeroized
+fieldset/FSB_FUSE_EVNT_FUSE:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 26
+    bit_size: 1
+    description: Shadow unprogrammed
+fieldset/FSB_FUSE_EVNT:
+  description: ''
+  fields:
+  - name: LOADING
+    bit_offset: 27
+    bit_size: 1
+    description: Fuse error
+fieldset/FSB_FUSE_EVNT_RLD:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 28
+    bit_size: 1
+    description: Shadow loading
+fieldset/FSB_FUSE_EVNT_RD:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 29
+    bit_size: 1
+    description: Reload error
+fieldset/FSB_FUSE_EVNT_ADDR:
+  description: ''
+  fields:
+  - name: ERR
+    bit_offset: 31
+    bit_size: 1
+    description: Read error
+fieldset/FSB_FUSE_INT_EN_INT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 24
+    bit_size: 8
+    description: Interrupt Enables
+fieldset/FSB_FUSE_INT:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 24
+    bit_size: 8
+    description: Interrupts
+fieldset/FSB_UNPROG_CTR:
+  description: ''
+  fields:
+  - name: CTR
+    bit_offset: 0
+    bit_size: 16
+    description: Unprogrammed Fuse Counter
+fieldset/FSB_FUSE:
+  description: ''
+  fields:
+  - name: FUSE
+    bit_offset: 0
+    bit_size: 32
+    description: Fuse Values

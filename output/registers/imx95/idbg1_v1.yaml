@@ -1,0 +1,103 @@
+block/IDBG1:
+  description: ''
+  items:
+  - name: LINE_NUM
+    byte_offset: 0
+  - name: CURR_LINE_NUM
+    byte_offset: 4
+  - name: IMA
+    byte_offset: 8
+    fieldset: IDBG1_IMA
+  - name: IMD
+    byte_offset: 12
+    fieldset: IDBG1_IMD
+  - name: DONE_STAT
+    byte_offset: 16
+    fieldset: IDBG1_DONE_STAT
+fieldset/IDBG1_LINE_NUM_LINE:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 0
+    bit_size: 17
+fieldset/IDBG1_CURR_LINE_NUM_CURR_LINE:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 0
+    bit_size: 17
+fieldset/IDBG1_CURR_LINE_NUM_DBG:
+  description: ''
+  fields:
+  - name: HIT
+    bit_offset: 31
+    bit_size: 1
+fieldset/IDBG1_IMA:
+  description: ''
+  fields:
+  - name: ADDR
+    bit_offset: 0
+    bit_size: 12
+  - name: NAME
+    bit_offset: 16
+    bit_size: 5
+  - name: RDWF
+    bit_offset: 28
+    bit_size: 2
+  - name: WDWF
+    bit_offset: 30
+    bit_size: 2
+fieldset/IDBG1_IMD:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 32
+fieldset/IDBG1_DONE_STAT:
+  description: ''
+  fields:
+  - name: VIG
+    bit_offset: 0
+    bit_size: 1
+  - name: IRCOMP
+    bit_offset: 1
+    bit_size: 1
+  - name: HDRMERGE
+    bit_offset: 2
+    bit_size: 1
+  - name: BNR0
+    bit_offset: 3
+    bit_size: 1
+  - name: STAT
+    bit_offset: 4
+    bit_size: 1
+  - name: CTEMP
+    bit_offset: 5
+    bit_size: 1
+  - name: OBWB1
+    bit_offset: 7
+    bit_size: 1
+  - name: OBWB0
+    bit_offset: 8
+    bit_size: 1
+  - name: HDRDECOMP1
+    bit_offset: 9
+    bit_size: 1
+  - name: HDRDECOMP0
+    bit_offset: 10
+    bit_size: 1
+  - name: HC
+    bit_offset: 11
+    bit_size: 1
+  - name: RGBIR
+    bit_offset: 12
+    bit_size: 1
+  - name: RUN
+    bit_offset: 31
+    bit_size: 1
+fieldset/IDBG1_DONE_STAT_OB:
+  description: ''
+  fields:
+  - name: WB2
+    bit_offset: 6
+    bit_size: 1

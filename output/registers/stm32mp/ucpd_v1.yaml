@@ -1,0 +1,477 @@
+block/UCPD:
+  description: ''
+  items:
+  - name: CFG1
+    byte_offset: 0
+    description: UCPD configuration register 1
+    fieldset: UCPD_CFG1
+  - name: CFG2
+    byte_offset: 4
+    description: UCPD configuration register 2
+    fieldset: UCPD_CFG2
+  - name: CFG3
+    byte_offset: 8
+    description: UCPD configuration register 3
+  - name: CR
+    byte_offset: 12
+    description: UCPD control register
+    fieldset: UCPD_CR
+  - name: IMR
+    byte_offset: 16
+    description: UCPD interrupt mask register
+    fieldset: UCPD_IMR
+  - name: SR
+    byte_offset: 20
+    description: UCPD status register
+    fieldset: UCPD_SR
+  - name: ICR
+    byte_offset: 24
+    description: UCPD interrupt flag clear register
+    fieldset: UCPD_ICR
+  - name: TX_ORDSET
+    byte_offset: 28
+    description: UCPD Tx ordered set type register
+    fieldset: UCPD_TX_ORDSET
+  - name: TX_PAYSZ
+    byte_offset: 32
+    description: UCPD Tx payload size register
+    fieldset: UCPD_TX_PAYSZ
+  - name: TXDR
+    byte_offset: 36
+    description: UCPD Tx data register
+    fieldset: UCPD_TXDR
+  - name: RX_ORDSET
+    byte_offset: 40
+    description: UCPD Rx ordered set type register
+    fieldset: UCPD_RX_ORDSET
+  - name: RX_PAYSZ
+    byte_offset: 44
+    description: UCPD Rx payload size register
+    fieldset: UCPD_RX_PAYSZ
+  - name: RXDR
+    byte_offset: 48
+    description: UCPD Rx data register
+    fieldset: UCPD_RXDR
+  - name: RX_ORDEXT1
+    byte_offset: 52
+    description: UCPD Rx ordered set extension 1 register
+    fieldset: UCPD_RX_ORDEXT1
+  - name: RX_ORDEXT2
+    byte_offset: 56
+    description: UCPD Rx ordered set extension 2 register
+    fieldset: UCPD_RX_ORDEXT2
+  - name: VERR
+    byte_offset: 1012
+    description: UCPD version register
+    fieldset: UCPD_VERR
+  - name: IPIDR
+    byte_offset: 1016
+    description: UCPD identification register
+    fieldset: UCPD_IPIDR
+  - name: SIDR
+    byte_offset: 1020
+    description: UCPD size identification register
+    fieldset: UCPD_SIDR
+fieldset/UCPD_CFG1:
+  description: ''
+  fields:
+  - name: HBITCLKDIV
+    bit_offset: 0
+    bit_size: 6
+    description: Number of cycles (minus 1) for a half bit clock
+  - name: IFRGAP
+    bit_offset: 6
+    bit_size: 5
+    description: Clock divider value to generates Interframe gap
+  - name: TRANSWIN
+    bit_offset: 11
+    bit_size: 5
+    description: Number of cycles (minus 1) of the half bit clock
+  - name: RXORDSETEN
+    bit_offset: 20
+    bit_size: 9
+    description: Receiver ordered set detection enable
+  - name: TXDMAEN
+    bit_offset: 29
+    bit_size: 1
+    description: DMA transmission requests enable
+  - name: RXDMAEN
+    bit_offset: 30
+    bit_size: 1
+    description: DMA reception requests enable
+  - name: UCPDEN
+    bit_offset: 31
+    bit_size: 1
+    description: USB Power Delivery Block Enable
+fieldset/UCPD_CFG2:
+  description: ''
+  fields:
+  - name: RXFILTDIS
+    bit_offset: 0
+    bit_size: 1
+    description: Enables an Rx pre-filter for the BMC decoder
+  - name: RXFILT2N3
+    bit_offset: 1
+    bit_size: 1
+    description: Controls the sampling method for an Rx pre-filter for the BMC decode
+  - name: FORCECLK
+    bit_offset: 2
+    bit_size: 1
+    description: Controls forcing of the clock request UCPDCLK_REQ
+  - name: WUPEN
+    bit_offset: 3
+    bit_size: 1
+    description: Wakeup from STOP enable
+  - name: RXAFILTEN
+    bit_offset: 8
+    bit_size: 1
+    description: RX Analog Filter enable
+fieldset/UCPD_CR:
+  description: ''
+  fields:
+  - name: TXMODE
+    bit_offset: 0
+    bit_size: 2
+    description: Type of Tx packet
+  - name: TXSEND
+    bit_offset: 2
+    bit_size: 1
+    description: Type of Tx packet
+  - name: TXHRST
+    bit_offset: 3
+    bit_size: 1
+    description: Command to send a Tx Hard Reset
+  - name: RXMODE
+    bit_offset: 4
+    bit_size: 1
+    description: Receiver mode
+  - name: PHYRXEN
+    bit_offset: 5
+    bit_size: 1
+    description: Controls enable of USB Power Delivery receiver
+  - name: PHYCCSEL
+    bit_offset: 6
+    bit_size: 1
+  - name: ANASUBMODE
+    bit_offset: 7
+    bit_size: 2
+    description: Analog PHY sub-mode
+  - name: ANAMODE
+    bit_offset: 9
+    bit_size: 1
+    description: Analog PHY working mode
+  - name: CCENABLE
+    bit_offset: 10
+    bit_size: 2
+  - name: USEEXTPHY
+    bit_offset: 12
+    bit_size: 1
+    description: Controls enable of USB Power Delivery transmitter
+  - name: CC2VCONNEN
+    bit_offset: 13
+    bit_size: 1
+    description: VCONN enable for CC2
+  - name: CC1VCONNEN
+    bit_offset: 14
+    bit_size: 1
+    description: VCONN enable for CC1
+  - name: DBATEN
+    bit_offset: 15
+    bit_size: 1
+    description: Enable dead battery behavior (Active High)
+  - name: FRSRXEN
+    bit_offset: 16
+    bit_size: 1
+    description: Enable FRS request detection function
+  - name: FRSTX
+    bit_offset: 17
+    bit_size: 1
+    description: Signal Fast Role Swap request
+  - name: RDCH
+    bit_offset: 18
+    bit_size: 1
+  - name: RPUSBABSENT
+    bit_offset: 19
+    bit_size: 1
+  - name: CC1TCDIS
+    bit_offset: 20
+    bit_size: 1
+    description: The bit allows the Type-C detector for CC0 to be disabled.
+  - name: CC2TCDIS
+    bit_offset: 21
+    bit_size: 1
+    description: The bit allows the Type-C detector for CC2 to be disabled.
+fieldset/UCPD_IMR:
+  description: ''
+  fields:
+  - name: TXISIE
+    bit_offset: 0
+    bit_size: 1
+    description: Enable TXIS interrupt
+  - name: TXMSGDISCIE
+    bit_offset: 1
+    bit_size: 1
+    description: Enable TXMSGDISC interrupt
+  - name: TXMSGSENTIE
+    bit_offset: 2
+    bit_size: 1
+    description: Enable TXMSGSENT interrupt
+  - name: TXMSGABTIE
+    bit_offset: 3
+    bit_size: 1
+    description: Enable TXMSGABT interrupt
+  - name: HRSTDISCIE
+    bit_offset: 4
+    bit_size: 1
+    description: Enable HRSTDISC interrupt
+  - name: HRSTSENTIE
+    bit_offset: 5
+    bit_size: 1
+    description: Enable HRSTSENT interrupt
+  - name: TXUNDIE
+    bit_offset: 6
+    bit_size: 1
+    description: Enable TXUND interrupt
+  - name: RXNEIE
+    bit_offset: 8
+    bit_size: 1
+    description: Enable RXNE interrupt
+  - name: RXORDDETIE
+    bit_offset: 9
+    bit_size: 1
+    description: Enable RXORDDET interrupt
+  - name: RXHRSTDETIE
+    bit_offset: 10
+    bit_size: 1
+    description: Enable RXHRSTDET interrupt
+  - name: RXOVRIE
+    bit_offset: 11
+    bit_size: 1
+    description: Enable RXOVR interrupt
+  - name: RXMSGENDIE
+    bit_offset: 12
+    bit_size: 1
+    description: Enable RXMSGEND interrupt
+  - name: TYPECEVT1IE
+    bit_offset: 14
+    bit_size: 1
+    description: Enable TYPECEVT1IE interrupt
+  - name: TYPECEVT2IE
+    bit_offset: 15
+    bit_size: 1
+    description: Enable TYPECEVT2IE interrupt
+  - name: FRSEVTIE
+    bit_offset: 20
+    bit_size: 1
+    description: Fast Role Swap interrupt
+fieldset/UCPD_SR:
+  description: ''
+  fields:
+  - name: TXIS
+    bit_offset: 0
+    bit_size: 1
+    description: Transmit interrupt status
+  - name: TXMSGDISC
+    bit_offset: 1
+    bit_size: 1
+    description: Transmit message discarded interrupt
+  - name: TXMSGSENT
+    bit_offset: 2
+    bit_size: 1
+    description: Transmit message sent interrupt
+  - name: TXMSGABT
+    bit_offset: 3
+    bit_size: 1
+    description: Transmit message abort interrupt
+  - name: HRSTDISC
+    bit_offset: 4
+    bit_size: 1
+    description: HRST discarded interrupt
+  - name: HRSTSENT
+    bit_offset: 5
+    bit_size: 1
+    description: HRST sent interrupt
+  - name: TXUND
+    bit_offset: 6
+    bit_size: 1
+    description: Tx data underrun condition interrupt
+  - name: RXNE
+    bit_offset: 8
+    bit_size: 1
+    description: Receive data register not empty interrupt
+  - name: RXORDDET
+    bit_offset: 9
+    bit_size: 1
+    description: Rx ordered set (4 K-codes) detected interrupt
+  - name: RXHRSTDET
+    bit_offset: 10
+    bit_size: 1
+    description: Rx Hard Reset detect interrupt
+  - name: RXOVR
+    bit_offset: 11
+    bit_size: 1
+    description: Rx data overflow interrupt
+  - name: RXMSGEND
+    bit_offset: 12
+    bit_size: 1
+    description: Rx message received
+  - name: RXERR
+    bit_offset: 13
+    bit_size: 1
+    description: RX Error
+  - name: TYPECEVT1
+    bit_offset: 14
+    bit_size: 1
+    description: Type C voltage level event on CC1
+  - name: TYPECEVT2
+    bit_offset: 15
+    bit_size: 1
+    description: Type C voltage level event on CC2
+  - name: FRSEVT
+    bit_offset: 20
+    bit_size: 1
+    description: Fast Role Swap detection event
+fieldset/UCPD_ICR:
+  description: ''
+  fields:
+  - name: TXMSGDISCCF
+    bit_offset: 1
+    bit_size: 1
+    description: Tx message discarded flag (TXMSGDISC) clear
+  - name: TXMSGSENTCF
+    bit_offset: 2
+    bit_size: 1
+    description: Tx message sent flag (TXMSGSENT) clear
+  - name: TXMSGABTCF
+    bit_offset: 3
+    bit_size: 1
+    description: Tx message abort flag (TXMSGABT) clear
+  - name: HRSTDISCCF
+    bit_offset: 4
+    bit_size: 1
+    description: Hard reset discarded flag (HRSTDISC) clear
+  - name: HRSTSENTCF
+    bit_offset: 5
+    bit_size: 1
+    description: Hard reset sent flag (HRSTSENT) clear
+  - name: TXUNDCF
+    bit_offset: 6
+    bit_size: 1
+    description: Tx underflow flag (TXUND) clear
+  - name: RXORDDETCF
+    bit_offset: 9
+    bit_size: 1
+    description: Rx ordered set detect flag (RXORDDET) clear
+  - name: RXHRSTDETCF
+    bit_offset: 10
+    bit_size: 1
+    description: Rx Hard Reset detected flag (RXHRSTDET) clear
+  - name: RXOVRCF
+    bit_offset: 11
+    bit_size: 1
+    description: Rx overflow flag (RXOVR) clear
+  - name: RXMSGENDCF
+    bit_offset: 12
+    bit_size: 1
+    description: Rx message received flag (RXMSGEND) clear
+  - name: TYPECEVT1CF
+    bit_offset: 14
+    bit_size: 1
+    description: TypeC event (CC1) flag (TYPECEVT1) clear
+  - name: TYPECEVT2CF
+    bit_offset: 15
+    bit_size: 1
+    description: TypeC event (CC2) flag (TYPECEVT2) clear
+  - name: FRSEVTCF
+    bit_offset: 20
+    bit_size: 1
+    description: Fast Role Swap event flag clear
+fieldset/UCPD_TX_ORDSET:
+  description: ''
+  fields:
+  - name: TXORDSET
+    bit_offset: 0
+    bit_size: 20
+    description: Tx Ordered Set
+fieldset/UCPD_TX_PAYSZ:
+  description: ''
+  fields:
+  - name: TXPAYSZ
+    bit_offset: 0
+    bit_size: 10
+    description: Tx payload size in bytes
+fieldset/UCPD_TXDR:
+  description: ''
+  fields:
+  - name: TXDATA
+    bit_offset: 0
+    bit_size: 8
+    description: Tx Data Register
+fieldset/UCPD_RX_ORDSET:
+  description: ''
+  fields:
+  - name: RXORDSET
+    bit_offset: 0
+    bit_size: 3
+    description: Rx Ordered Set Code detected
+  - name: RXSOP3OF4
+    bit_offset: 3
+    bit_size: 1
+    description: Rx Ordered Set Debug indication
+  - name: RXSOPKINVALID
+    bit_offset: 4
+    bit_size: 3
+    description: Rx Ordered Set corrupted K-Codes (Debug)
+fieldset/UCPD_RX_PAYSZ:
+  description: ''
+  fields:
+  - name: RXPAYSZ
+    bit_offset: 0
+    bit_size: 10
+    description: Rx payload size in bytes
+fieldset/UCPD_RXDR:
+  description: ''
+  fields:
+  - name: RXDATA
+    bit_offset: 0
+    bit_size: 8
+    description: 8-bit receive data
+fieldset/UCPD_RX_ORDEXT1:
+  description: ''
+  fields:
+  - name: RXSOPX1
+    bit_offset: 0
+    bit_size: 20
+    description: RX Ordered Set Extension Register 1
+fieldset/UCPD_RX_ORDEXT2:
+  description: ''
+  fields:
+  - name: RXSOPX2
+    bit_offset: 0
+    bit_size: 20
+    description: RX Ordered Set Extension Register 1
+fieldset/UCPD_VERR:
+  description: ''
+  fields:
+  - name: MINREV
+    bit_offset: 0
+    bit_size: 4
+    description: Minor revision
+  - name: MAJREV
+    bit_offset: 4
+    bit_size: 4
+    description: Major revision
+fieldset/UCPD_IPIDR:
+  description: ''
+  fields:
+  - name: IPID
+    bit_offset: 0
+    bit_size: 32
+    description: Identification code of the peripheral
+fieldset/UCPD_SIDR:
+  description: ''
+  fields:
+  - name: SID
+    bit_offset: 0
+    bit_size: 32
+    description: Size identification code

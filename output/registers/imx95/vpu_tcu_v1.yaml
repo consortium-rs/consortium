@@ -1,0 +1,74 @@
+block/VPU_TCU:
+  description: ''
+  items:
+  - name: TCU_MAGIC_KW__MAGIC_KW0
+    byte_offset: 1024
+    fieldset: VPU_TCU_TCU_MAGIC_KW__MAGIC_KW0
+  - name: TCU_MAGIC_KW__MAGIC_KW1
+    byte_offset: 1040
+    fieldset: VPU_TCU_TCU_MAGIC_KW__MAGIC_KW1
+  - name: TCU_PLL_COUNTER
+    byte_offset: 3072
+  - name: TCU_DFT_FUSE
+    byte_offset: 3136
+fieldset/VPU_TCU_TCU_MAGIC_KW__MAGIC_KW0:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 32
+fieldset/VPU_TCU_TCU_MAGIC_KW__MAGIC_KW1:
+  description: ''
+  fields:
+  - name: out
+    bit_offset: 0
+    bit_size: 32
+fieldset/VPU_TCU_TCU_PLL_COUNTER_pll_count_rst:
+  description: ''
+  fields:
+  - name: n
+    bit_offset: 0
+    bit_size: 1
+    description: pll count reset
+fieldset/VPU_TCU_TCU_PLL_COUNTER_pll_count:
+  description: ''
+  fields:
+  - name: start
+    bit_offset: 1
+    bit_size: 1
+    description: pll count start
+  - name: cnt
+    bit_offset: 16
+    bit_size: 16
+    description: pll count cnt
+fieldset/VPU_TCU_TCU_PLL_COUNTER_pll_count_div:
+  description: ''
+  fields:
+  - name: en
+    bit_offset: 2
+    bit_size: 1
+fieldset/VPU_TCU_TCU_PLL_COUNTER_pll_count_clk:
+  description: ''
+  fields:
+  - name: sel
+    bit_offset: 3
+    bit_size: 3
+fieldset/VPU_TCU_TCU_PLL_COUNTER_pll_count_ref:
+  description: ''
+  fields:
+  - name: val
+    bit_offset: 8
+    bit_size: 8
+fieldset/VPU_TCU_TCU_DFT_FUSE_tcu_dft_fuse:
+  description: ''
+  fields:
+  - name: disable
+    bit_offset: 0
+    bit_size: 1
+fieldset/VPU_TCU_TCU_DFT_FUSE_tcu_fuse:
+  description: ''
+  fields:
+  - name: obs
+    bit_offset: 1
+    bit_size: 3
+    description: fuse observation

@@ -1,0 +1,20 @@
+block/WAKEUP_AHBRM:
+  description: ''
+  items:
+  - name: CR
+    byte_offset: 2048
+    fieldset: WAKEUP_AHBRM_CR
+fieldset/WAKEUP_AHBRM_CR:
+  description: ''
+  fields:
+  - name: ENB
+    bit_offset: 0
+    bit_size: 1
+  - name: LK
+    bit_offset: 3
+    bit_size: 1
+    description: Sticky lock bit
+  - name: RADDR
+    bit_offset: 7
+    bit_size: 21
+    description: Sticky lock bit

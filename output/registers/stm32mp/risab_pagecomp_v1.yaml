@@ -1,0 +1,12 @@
+block/RISAB_PageComp:
+  description: ''
+  items:
+  - name: PRIVCFGR
+    byte_offset: 0
+    description: RISAB Compartment privilege configuration register
+  - name: RDCFGR
+    byte_offset: 8
+    description: RISAB Compartment read configuration register
+  - name: WRCFGR
+    byte_offset: 16
+    description: RISAB Compartment write configuration register

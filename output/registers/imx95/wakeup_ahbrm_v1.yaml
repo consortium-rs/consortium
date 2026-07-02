@@ -1,0 +1,108 @@
+block/WAKEUP_AHBRM:
+  description: ''
+  items:
+  - name: CR
+    byte_offset: 2048
+    fieldset: WAKEUP_AHBRM_CR
+  - name: SR
+    byte_offset: 2052
+    fieldset: WAKEUP_AHBRM_SR
+  - name: TAG
+    byte_offset: 2056
+    fieldset: WAKEUP_AHBRM_TAG
+  - name: DATA
+    byte_offset: 2060
+    fieldset: WAKEUP_AHBRM_DATA
+  - name: DID_CR
+    byte_offset: 2064
+    fieldset: WAKEUP_AHBRM_DID_CR
+  - name: DID_SR
+    byte_offset: 2068
+    fieldset: WAKEUP_AHBRM_DID_SR
+fieldset/WAKEUP_AHBRM_CR:
+  description: ''
+  fields:
+  - name: ENB
+    bit_offset: 0
+    bit_size: 1
+  - name: INV
+    bit_offset: 2
+    bit_size: 1
+    description: Invalidate Tag register.
+  - name: LK
+    bit_offset: 3
+    bit_size: 1
+    description: Invalidate Tag register.
+  - name: RADDR
+    bit_offset: 7
+    bit_size: 21
+    description: Sticky lock bit.
+fieldset/WAKEUP_AHBRM_SR:
+  description: ''
+  fields:
+  - name: ENB
+    bit_offset: 0
+    bit_size: 1
+  - name: INV
+    bit_offset: 2
+    bit_size: 1
+    description: Invalidate Tag register.
+  - name: LK
+    bit_offset: 3
+    bit_size: 1
+    description: Invalidate Tag register.
+  - name: RADDR
+    bit_offset: 7
+    bit_size: 21
+    description: Sticky lock bit.
+fieldset/WAKEUP_AHBRM_TAG:
+  description: ''
+  fields:
+  - name: VLD
+    bit_offset: 0
+    bit_size: 1
+  - name: VADDR
+    bit_offset: 7
+    bit_size: 25
+fieldset/WAKEUP_AHBRM_DATA:
+  description: ''
+  fields:
+  - name: VADDRL
+    bit_offset: 0
+    bit_size: 7
+  - name: PADDR
+    bit_offset: 7
+    bit_size: 21
+  - name: VADDRH
+    bit_offset: 28
+    bit_size: 4
+fieldset/WAKEUP_AHBRM_DID_CR:
+  description: ''
+  fields:
+  - name: LK
+    bit_offset: 0
+    bit_size: 1
+    description: Sticky lock bit.
+  - name: MSK
+    bit_offset: 24
+    bit_size: 4
+    description: Sticky lock bit.
+  - name: VAL
+    bit_offset: 28
+    bit_size: 4
+    description: Domain ID match mask.
+fieldset/WAKEUP_AHBRM_DID_SR:
+  description: ''
+  fields:
+  - name: LK
+    bit_offset: 0
+    bit_size: 1
+    description: Sticky lock bit.
+  - name: MSK
+    bit_offset: 24
+    bit_size: 4
+    description: Sticky lock bit.
+  - name: VAL
+    bit_offset: 28
+    bit_size: 4
+    description: Domain ID match mask.

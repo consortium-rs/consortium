@@ -1,0 +1,4458 @@
+block/PCIE_DMA_IATU:
+  description: ''
+  items:
+  - name: IATU_REGION_CTRL_1_OFF_OUTBOUND_0
+    byte_offset: 0
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_0
+  - name: IATU_REGION_CTRL_2_OFF_OUTBOUND_0
+    byte_offset: 4
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_0
+  - name: IATU_LWR_BASE_ADDR_OFF_OUTBOUND_0
+    byte_offset: 8
+  - name: IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_0
+    byte_offset: 12
+  - name: IATU_LIMIT_ADDR_OFF_OUTBOUND_0
+    byte_offset: 16
+  - name: IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_0
+    byte_offset: 20
+  - name: IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_0
+    byte_offset: 24
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_0
+    byte_offset: 32
+  - name: IATU_REGION_CTRL_1_OFF_INBOUND_0
+    byte_offset: 256
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_0
+  - name: IATU_REGION_CTRL_2_OFF_INBOUND_0
+    byte_offset: 260
+  - name: IATU_LWR_BASE_ADDR_OFF_INBOUND_0
+    byte_offset: 264
+  - name: IATU_UPPER_BASE_ADDR_OFF_INBOUND_0
+    byte_offset: 268
+  - name: IATU_LIMIT_ADDR_OFF_INBOUND_0
+    byte_offset: 272
+  - name: IATU_LWR_TARGET_ADDR_OFF_INBOUND_0
+    byte_offset: 276
+  - name: IATU_UPPER_TARGET_ADDR_OFF_INBOUND_0
+    byte_offset: 280
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_0
+    byte_offset: 288
+  - name: IATU_REGION_CTRL_1_OFF_OUTBOUND_1
+    byte_offset: 512
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_1
+  - name: IATU_REGION_CTRL_2_OFF_OUTBOUND_1
+    byte_offset: 516
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_1
+  - name: IATU_LWR_BASE_ADDR_OFF_OUTBOUND_1
+    byte_offset: 520
+  - name: IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_1
+    byte_offset: 524
+  - name: IATU_LIMIT_ADDR_OFF_OUTBOUND_1
+    byte_offset: 528
+  - name: IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_1
+    byte_offset: 532
+  - name: IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_1
+    byte_offset: 536
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_1
+    byte_offset: 544
+  - name: IATU_REGION_CTRL_1_OFF_INBOUND_1
+    byte_offset: 768
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_1
+  - name: IATU_REGION_CTRL_2_OFF_INBOUND_1
+    byte_offset: 772
+  - name: IATU_LWR_BASE_ADDR_OFF_INBOUND_1
+    byte_offset: 776
+  - name: IATU_UPPER_BASE_ADDR_OFF_INBOUND_1
+    byte_offset: 780
+  - name: IATU_LIMIT_ADDR_OFF_INBOUND_1
+    byte_offset: 784
+  - name: IATU_LWR_TARGET_ADDR_OFF_INBOUND_1
+    byte_offset: 788
+  - name: IATU_UPPER_TARGET_ADDR_OFF_INBOUND_1
+    byte_offset: 792
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_1
+    byte_offset: 800
+  - name: IATU_REGION_CTRL_1_OFF_OUTBOUND_2
+    byte_offset: 1024
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_2
+  - name: IATU_REGION_CTRL_2_OFF_OUTBOUND_2
+    byte_offset: 1028
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_2
+  - name: IATU_LWR_BASE_ADDR_OFF_OUTBOUND_2
+    byte_offset: 1032
+  - name: IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_2
+    byte_offset: 1036
+  - name: IATU_LIMIT_ADDR_OFF_OUTBOUND_2
+    byte_offset: 1040
+  - name: IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_2
+    byte_offset: 1044
+  - name: IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_2
+    byte_offset: 1048
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_2
+    byte_offset: 1056
+  - name: IATU_REGION_CTRL_1_OFF_INBOUND_2
+    byte_offset: 1280
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_2
+  - name: IATU_REGION_CTRL_2_OFF_INBOUND_2
+    byte_offset: 1284
+  - name: IATU_LWR_BASE_ADDR_OFF_INBOUND_2
+    byte_offset: 1288
+  - name: IATU_UPPER_BASE_ADDR_OFF_INBOUND_2
+    byte_offset: 1292
+  - name: IATU_LIMIT_ADDR_OFF_INBOUND_2
+    byte_offset: 1296
+  - name: IATU_LWR_TARGET_ADDR_OFF_INBOUND_2
+    byte_offset: 1300
+  - name: IATU_UPPER_TARGET_ADDR_OFF_INBOUND_2
+    byte_offset: 1304
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_2
+    byte_offset: 1312
+  - name: IATU_REGION_CTRL_1_OFF_OUTBOUND_3
+    byte_offset: 1536
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_3
+  - name: IATU_REGION_CTRL_2_OFF_OUTBOUND_3
+    byte_offset: 1540
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_3
+  - name: IATU_LWR_BASE_ADDR_OFF_OUTBOUND_3
+    byte_offset: 1544
+  - name: IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_3
+    byte_offset: 1548
+  - name: IATU_LIMIT_ADDR_OFF_OUTBOUND_3
+    byte_offset: 1552
+  - name: IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_3
+    byte_offset: 1556
+  - name: IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_3
+    byte_offset: 1560
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_3
+    byte_offset: 1568
+  - name: IATU_REGION_CTRL_1_OFF_INBOUND_3
+    byte_offset: 1792
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_3
+  - name: IATU_REGION_CTRL_2_OFF_INBOUND_3
+    byte_offset: 1796
+  - name: IATU_LWR_BASE_ADDR_OFF_INBOUND_3
+    byte_offset: 1800
+  - name: IATU_UPPER_BASE_ADDR_OFF_INBOUND_3
+    byte_offset: 1804
+  - name: IATU_LIMIT_ADDR_OFF_INBOUND_3
+    byte_offset: 1808
+  - name: IATU_LWR_TARGET_ADDR_OFF_INBOUND_3
+    byte_offset: 1812
+  - name: IATU_UPPER_TARGET_ADDR_OFF_INBOUND_3
+    byte_offset: 1816
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_3
+    byte_offset: 1824
+  - name: IATU_REGION_CTRL_1_OFF_OUTBOUND_4
+    byte_offset: 2048
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_4
+  - name: IATU_REGION_CTRL_2_OFF_OUTBOUND_4
+    byte_offset: 2052
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_4
+  - name: IATU_LWR_BASE_ADDR_OFF_OUTBOUND_4
+    byte_offset: 2056
+  - name: IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_4
+    byte_offset: 2060
+  - name: IATU_LIMIT_ADDR_OFF_OUTBOUND_4
+    byte_offset: 2064
+  - name: IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_4
+    byte_offset: 2068
+  - name: IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_4
+    byte_offset: 2072
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_4
+    byte_offset: 2080
+  - name: IATU_REGION_CTRL_1_OFF_INBOUND_4
+    byte_offset: 2304
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_4
+  - name: IATU_REGION_CTRL_2_OFF_INBOUND_4
+    byte_offset: 2308
+  - name: IATU_LWR_BASE_ADDR_OFF_INBOUND_4
+    byte_offset: 2312
+  - name: IATU_UPPER_BASE_ADDR_OFF_INBOUND_4
+    byte_offset: 2316
+  - name: IATU_LIMIT_ADDR_OFF_INBOUND_4
+    byte_offset: 2320
+  - name: IATU_LWR_TARGET_ADDR_OFF_INBOUND_4
+    byte_offset: 2324
+  - name: IATU_UPPER_TARGET_ADDR_OFF_INBOUND_4
+    byte_offset: 2328
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_4
+    byte_offset: 2336
+  - name: IATU_REGION_CTRL_1_OFF_OUTBOUND_5
+    byte_offset: 2560
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_5
+  - name: IATU_REGION_CTRL_2_OFF_OUTBOUND_5
+    byte_offset: 2564
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_5
+  - name: IATU_LWR_BASE_ADDR_OFF_OUTBOUND_5
+    byte_offset: 2568
+  - name: IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_5
+    byte_offset: 2572
+  - name: IATU_LIMIT_ADDR_OFF_OUTBOUND_5
+    byte_offset: 2576
+  - name: IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_5
+    byte_offset: 2580
+  - name: IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_5
+    byte_offset: 2584
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_5
+    byte_offset: 2592
+  - name: IATU_REGION_CTRL_1_OFF_INBOUND_5
+    byte_offset: 2816
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_5
+  - name: IATU_REGION_CTRL_2_OFF_INBOUND_5
+    byte_offset: 2820
+  - name: IATU_LWR_BASE_ADDR_OFF_INBOUND_5
+    byte_offset: 2824
+  - name: IATU_UPPER_BASE_ADDR_OFF_INBOUND_5
+    byte_offset: 2828
+  - name: IATU_LIMIT_ADDR_OFF_INBOUND_5
+    byte_offset: 2832
+  - name: IATU_LWR_TARGET_ADDR_OFF_INBOUND_5
+    byte_offset: 2836
+  - name: IATU_UPPER_TARGET_ADDR_OFF_INBOUND_5
+    byte_offset: 2840
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_5
+    byte_offset: 2848
+  - name: IATU_REGION_CTRL_1_OFF_OUTBOUND_6
+    byte_offset: 3072
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_6
+  - name: IATU_REGION_CTRL_2_OFF_OUTBOUND_6
+    byte_offset: 3076
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_6
+  - name: IATU_LWR_BASE_ADDR_OFF_OUTBOUND_6
+    byte_offset: 3080
+  - name: IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_6
+    byte_offset: 3084
+  - name: IATU_LIMIT_ADDR_OFF_OUTBOUND_6
+    byte_offset: 3088
+  - name: IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_6
+    byte_offset: 3092
+  - name: IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_6
+    byte_offset: 3096
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_6
+    byte_offset: 3104
+  - name: IATU_REGION_CTRL_1_OFF_INBOUND_6
+    byte_offset: 3328
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_6
+  - name: IATU_REGION_CTRL_2_OFF_INBOUND_6
+    byte_offset: 3332
+  - name: IATU_LWR_BASE_ADDR_OFF_INBOUND_6
+    byte_offset: 3336
+  - name: IATU_UPPER_BASE_ADDR_OFF_INBOUND_6
+    byte_offset: 3340
+  - name: IATU_LIMIT_ADDR_OFF_INBOUND_6
+    byte_offset: 3344
+  - name: IATU_LWR_TARGET_ADDR_OFF_INBOUND_6
+    byte_offset: 3348
+  - name: IATU_UPPER_TARGET_ADDR_OFF_INBOUND_6
+    byte_offset: 3352
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_6
+    byte_offset: 3360
+  - name: IATU_REGION_CTRL_1_OFF_OUTBOUND_7
+    byte_offset: 3584
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_7
+  - name: IATU_REGION_CTRL_2_OFF_OUTBOUND_7
+    byte_offset: 3588
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_7
+  - name: IATU_LWR_BASE_ADDR_OFF_OUTBOUND_7
+    byte_offset: 3592
+  - name: IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_7
+    byte_offset: 3596
+  - name: IATU_LIMIT_ADDR_OFF_OUTBOUND_7
+    byte_offset: 3600
+  - name: IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_7
+    byte_offset: 3604
+  - name: IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_7
+    byte_offset: 3608
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_7
+    byte_offset: 3616
+  - name: IATU_REGION_CTRL_1_OFF_INBOUND_7
+    byte_offset: 3840
+    fieldset: PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_7
+  - name: IATU_REGION_CTRL_2_OFF_INBOUND_7
+    byte_offset: 3844
+  - name: IATU_LWR_BASE_ADDR_OFF_INBOUND_7
+    byte_offset: 3848
+  - name: IATU_UPPER_BASE_ADDR_OFF_INBOUND_7
+    byte_offset: 3852
+  - name: IATU_LIMIT_ADDR_OFF_INBOUND_7
+    byte_offset: 3856
+  - name: IATU_LWR_TARGET_ADDR_OFF_INBOUND_7
+    byte_offset: 3860
+  - name: IATU_UPPER_TARGET_ADDR_OFF_INBOUND_7
+    byte_offset: 3864
+  - name: IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_7
+    byte_offset: 3872
+  - name: DMA_CTRL_DATA_ARB_PRIOR_OFF
+    byte_offset: 65536
+    fieldset: PCIE_DMA_IATU_DMA_CTRL_DATA_ARB_PRIOR_OFF
+  - name: DMA_CTRL_OFF
+    byte_offset: 65544
+  - name: DMA_WRITE_ENGINE_EN_OFF
+    byte_offset: 65548
+  - name: DMA_WRITE_DOORBELL_OFF
+    byte_offset: 65552
+  - name: DMA_WRITE_CHANNEL_ARB_WEIGHT_LOW_OFF
+    byte_offset: 65560
+  - name: DMA_READ_ENGINE_EN_OFF
+    byte_offset: 65580
+  - name: DMA_READ_DOORBELL_OFF
+    byte_offset: 65584
+  - name: DMA_READ_CHANNEL_ARB_WEIGHT_LOW_OFF
+    byte_offset: 65592
+  - name: DMA_WRITE_INT_STATUS_OFF
+    byte_offset: 65612
+  - name: DMA_WRITE_INT_MASK_OFF
+    byte_offset: 65620
+  - name: DMA_WRITE_INT_CLEAR_OFF
+    byte_offset: 65624
+  - name: DMA_WRITE_ERR_STATUS_OFF
+    byte_offset: 65628
+  - name: DMA_WRITE_DONE_IMWR_LOW_OFF
+    byte_offset: 65632
+  - name: DMA_WRITE_DONE_IMWR_HIGH_OFF
+    byte_offset: 65636
+  - name: DMA_WRITE_ABORT_IMWR_LOW_OFF
+    byte_offset: 65640
+  - name: DMA_WRITE_ABORT_IMWR_HIGH_OFF
+    byte_offset: 65644
+  - name: DMA_WRITE_CH01_IMWR_DATA_OFF
+    byte_offset: 65648
+  - name: DMA_WRITE_CH23_IMWR_DATA_OFF
+    byte_offset: 65652
+  - name: DMA_WRITE_LINKED_LIST_ERR_EN_OFF
+    byte_offset: 65680
+  - name: DMA_READ_INT_STATUS_OFF
+    byte_offset: 65696
+  - name: DMA_READ_INT_MASK_OFF
+    byte_offset: 65704
+  - name: DMA_READ_INT_CLEAR_OFF
+    byte_offset: 65708
+  - name: DMA_READ_ERR_STATUS_LOW_OFF
+    byte_offset: 65716
+  - name: DMA_READ_ERR_STATUS_HIGH_OFF
+    byte_offset: 65720
+  - name: DMA_READ_LINKED_LIST_ERR_EN_OFF
+    byte_offset: 65732
+  - name: DMA_READ_DONE_IMWR_LOW_OFF
+    byte_offset: 65740
+  - name: DMA_READ_DONE_IMWR_HIGH_OFF
+    byte_offset: 65744
+  - name: DMA_READ_ABORT_IMWR_LOW_OFF
+    byte_offset: 65748
+  - name: DMA_READ_ABORT_IMWR_HIGH_OFF
+    byte_offset: 65752
+  - name: DMA_READ_CH01_IMWR_DATA_OFF
+    byte_offset: 65756
+  - name: DMA_READ_CH23_IMWR_DATA_OFF
+    byte_offset: 65760
+  - name: DMA_WRITE_ENGINE_HSHAKE_CNT_LOW_OFF
+    byte_offset: 65800
+  - name: DMA_READ_ENGINE_HSHAKE_CNT_LOW_OFF
+    byte_offset: 65816
+  - name: DMA_WRITE_CH0_PWR_EN_OFF
+    byte_offset: 65832
+  - name: DMA_WRITE_CH1_PWR_EN_OFF
+    byte_offset: 65836
+  - name: DMA_WRITE_CH2_PWR_EN_OFF
+    byte_offset: 65840
+  - name: DMA_WRITE_CH3_PWR_EN_OFF
+    byte_offset: 65844
+  - name: DMA_READ_CH0_PWR_EN_OFF
+    byte_offset: 65896
+  - name: DMA_READ_CH1_PWR_EN_OFF
+    byte_offset: 65900
+  - name: DMA_READ_CH2_PWR_EN_OFF
+    byte_offset: 65904
+  - name: DMA_READ_CH3_PWR_EN_OFF
+    byte_offset: 65908
+  - name: DMA_CH_CONTROL1_OFF_WRCH_0
+    byte_offset: 66048
+    fieldset: PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_0
+  - name: DMA_TRANSFER_SIZE_OFF_WRCH_0
+    byte_offset: 66056
+  - name: DMA_SAR_LOW_OFF_WRCH_0
+    byte_offset: 66060
+  - name: DMA_SAR_HIGH_OFF_WRCH_0
+    byte_offset: 66064
+  - name: DMA_DAR_LOW_OFF_WRCH_0
+    byte_offset: 66068
+  - name: DMA_DAR_HIGH_OFF_WRCH_0
+    byte_offset: 66072
+  - name: DMA_LLP_LOW_OFF_WRCH_0
+    byte_offset: 66076
+  - name: DMA_LLP_HIGH_OFF_WRCH_0
+    byte_offset: 66080
+  - name: DMA_CH_CONTROL1_OFF_RDCH_0
+    byte_offset: 66304
+    fieldset: PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_0
+  - name: DMA_TRANSFER_SIZE_OFF_RDCH_0
+    byte_offset: 66312
+  - name: DMA_SAR_LOW_OFF_RDCH_0
+    byte_offset: 66316
+  - name: DMA_SAR_HIGH_OFF_RDCH_0
+    byte_offset: 66320
+  - name: DMA_DAR_LOW_OFF_RDCH_0
+    byte_offset: 66324
+  - name: DMA_DAR_HIGH_OFF_RDCH_0
+    byte_offset: 66328
+  - name: DMA_LLP_LOW_OFF_RDCH_0
+    byte_offset: 66332
+  - name: DMA_LLP_HIGH_OFF_RDCH_0
+    byte_offset: 66336
+  - name: DMA_CH_CONTROL1_OFF_WRCH_1
+    byte_offset: 66560
+    fieldset: PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_1
+  - name: DMA_TRANSFER_SIZE_OFF_WRCH_1
+    byte_offset: 66568
+  - name: DMA_SAR_LOW_OFF_WRCH_1
+    byte_offset: 66572
+  - name: DMA_SAR_HIGH_OFF_WRCH_1
+    byte_offset: 66576
+  - name: DMA_DAR_LOW_OFF_WRCH_1
+    byte_offset: 66580
+  - name: DMA_DAR_HIGH_OFF_WRCH_1
+    byte_offset: 66584
+  - name: DMA_LLP_LOW_OFF_WRCH_1
+    byte_offset: 66588
+  - name: DMA_LLP_HIGH_OFF_WRCH_1
+    byte_offset: 66592
+  - name: DMA_CH_CONTROL1_OFF_RDCH_1
+    byte_offset: 66816
+    fieldset: PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_1
+  - name: DMA_TRANSFER_SIZE_OFF_RDCH_1
+    byte_offset: 66824
+  - name: DMA_SAR_LOW_OFF_RDCH_1
+    byte_offset: 66828
+  - name: DMA_SAR_HIGH_OFF_RDCH_1
+    byte_offset: 66832
+  - name: DMA_DAR_LOW_OFF_RDCH_1
+    byte_offset: 66836
+  - name: DMA_DAR_HIGH_OFF_RDCH_1
+    byte_offset: 66840
+  - name: DMA_LLP_LOW_OFF_RDCH_1
+    byte_offset: 66844
+  - name: DMA_LLP_HIGH_OFF_RDCH_1
+    byte_offset: 66848
+  - name: DMA_CH_CONTROL1_OFF_WRCH_2
+    byte_offset: 67072
+    fieldset: PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_2
+  - name: DMA_TRANSFER_SIZE_OFF_WRCH_2
+    byte_offset: 67080
+  - name: DMA_SAR_LOW_OFF_WRCH_2
+    byte_offset: 67084
+  - name: DMA_SAR_HIGH_OFF_WRCH_2
+    byte_offset: 67088
+  - name: DMA_DAR_LOW_OFF_WRCH_2
+    byte_offset: 67092
+  - name: DMA_DAR_HIGH_OFF_WRCH_2
+    byte_offset: 67096
+  - name: DMA_LLP_LOW_OFF_WRCH_2
+    byte_offset: 67100
+  - name: DMA_LLP_HIGH_OFF_WRCH_2
+    byte_offset: 67104
+  - name: DMA_CH_CONTROL1_OFF_RDCH_2
+    byte_offset: 67328
+    fieldset: PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_2
+  - name: DMA_TRANSFER_SIZE_OFF_RDCH_2
+    byte_offset: 67336
+  - name: DMA_SAR_LOW_OFF_RDCH_2
+    byte_offset: 67340
+  - name: DMA_SAR_HIGH_OFF_RDCH_2
+    byte_offset: 67344
+  - name: DMA_DAR_LOW_OFF_RDCH_2
+    byte_offset: 67348
+  - name: DMA_DAR_HIGH_OFF_RDCH_2
+    byte_offset: 67352
+  - name: DMA_LLP_LOW_OFF_RDCH_2
+    byte_offset: 67356
+  - name: DMA_LLP_HIGH_OFF_RDCH_2
+    byte_offset: 67360
+  - name: DMA_CH_CONTROL1_OFF_WRCH_3
+    byte_offset: 67584
+    fieldset: PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_3
+  - name: DMA_TRANSFER_SIZE_OFF_WRCH_3
+    byte_offset: 67592
+  - name: DMA_SAR_LOW_OFF_WRCH_3
+    byte_offset: 67596
+  - name: DMA_SAR_HIGH_OFF_WRCH_3
+    byte_offset: 67600
+  - name: DMA_DAR_LOW_OFF_WRCH_3
+    byte_offset: 67604
+  - name: DMA_DAR_HIGH_OFF_WRCH_3
+    byte_offset: 67608
+  - name: DMA_LLP_LOW_OFF_WRCH_3
+    byte_offset: 67612
+  - name: DMA_LLP_HIGH_OFF_WRCH_3
+    byte_offset: 67616
+  - name: DMA_CH_CONTROL1_OFF_RDCH_3
+    byte_offset: 67840
+    fieldset: PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_3
+  - name: DMA_TRANSFER_SIZE_OFF_RDCH_3
+    byte_offset: 67848
+  - name: DMA_SAR_LOW_OFF_RDCH_3
+    byte_offset: 67852
+  - name: DMA_SAR_HIGH_OFF_RDCH_3
+    byte_offset: 67856
+  - name: DMA_DAR_LOW_OFF_RDCH_3
+    byte_offset: 67860
+  - name: DMA_DAR_HIGH_OFF_RDCH_3
+    byte_offset: 67864
+  - name: DMA_LLP_LOW_OFF_RDCH_3
+    byte_offset: 67868
+  - name: DMA_LLP_HIGH_OFF_RDCH_3
+    byte_offset: 67872
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_0:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_0_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_0_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_0_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_0:
+  description: ''
+  fields:
+  - name: TAG
+    bit_offset: 8
+    bit_size: 8
+    description: TAG.
+  - name: SNP
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_0_TAG_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_0_FUNC:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_0_TLP_HEADER_FIELDS:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_0_INHIBIT:
+  description: ''
+  fields:
+  - name: PAYLOAD
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_0_HEADER_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_0_DMA:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_0_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_0_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_0_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_OUTBOUND_0_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_0_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_0_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_0_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_0_LWR_TARGET_RW:
+  description: ''
+  fields:
+  - name: OUTBOUND
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_0_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_0_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_0:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+    description: TYPE
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+    description: TC
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+    description: TD
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+    description: ATTR
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_0_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_0_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_BAR:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 8
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_MSG_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_TC_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_TD_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_ATTR_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_FUNC_NUM_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_MSG_CODE_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_SINGLE_ADDR_LOC_TRANS:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_RESPONSE:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 24
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_FUZZY_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_0_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_INBOUND_0_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_INBOUND_0_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_0_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_0_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_INBOUND_0_LWR_TARGET:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_INBOUND_0_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_0_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_1:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_1_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_1_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_1_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_1:
+  description: ''
+  fields:
+  - name: TAG
+    bit_offset: 8
+    bit_size: 8
+    description: TAG.
+  - name: SNP
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_1_TAG_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_1_FUNC:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_1_TLP_HEADER_FIELDS:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_1_INHIBIT:
+  description: ''
+  fields:
+  - name: PAYLOAD
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_1_HEADER_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_1_DMA:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_1_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_1_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_1_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_OUTBOUND_1_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_1_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_1_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_1_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_1_LWR_TARGET_RW:
+  description: ''
+  fields:
+  - name: OUTBOUND
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_1_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_1_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_1:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+    description: TYPE
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+    description: TC
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+    description: TD
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+    description: ATTR
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_1_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_1_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_BAR:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 8
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_MSG_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_TC_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_TD_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_ATTR_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_FUNC_NUM_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_MSG_CODE_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_SINGLE_ADDR_LOC_TRANS:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_RESPONSE:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 24
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_FUZZY_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_1_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_INBOUND_1_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_INBOUND_1_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_1_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_1_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_INBOUND_1_LWR_TARGET:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_INBOUND_1_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_1_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_2:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_2_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_2_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_2_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_2:
+  description: ''
+  fields:
+  - name: TAG
+    bit_offset: 8
+    bit_size: 8
+    description: TAG.
+  - name: SNP
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_2_TAG_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_2_FUNC:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_2_TLP_HEADER_FIELDS:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_2_INHIBIT:
+  description: ''
+  fields:
+  - name: PAYLOAD
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_2_HEADER_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_2_DMA:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_2_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_2_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_2_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_OUTBOUND_2_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_2_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_2_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_2_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_2_LWR_TARGET_RW:
+  description: ''
+  fields:
+  - name: OUTBOUND
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_2_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_2_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_2:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+    description: TYPE
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+    description: TC
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+    description: TD
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+    description: ATTR
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_2_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_2_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_BAR:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 8
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_MSG_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_TC_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_TD_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_ATTR_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_FUNC_NUM_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_MSG_CODE_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_SINGLE_ADDR_LOC_TRANS:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_RESPONSE:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 24
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_FUZZY_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_2_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_INBOUND_2_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_INBOUND_2_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_2_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_2_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_INBOUND_2_LWR_TARGET:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_INBOUND_2_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_2_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_3:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_3_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_3_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_3_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_3:
+  description: ''
+  fields:
+  - name: TAG
+    bit_offset: 8
+    bit_size: 8
+    description: TAG.
+  - name: SNP
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_3_TAG_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_3_FUNC:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_3_TLP_HEADER_FIELDS:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_3_INHIBIT:
+  description: ''
+  fields:
+  - name: PAYLOAD
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_3_HEADER_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_3_DMA:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_3_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_3_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_3_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_OUTBOUND_3_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_3_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_3_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_3_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_3_LWR_TARGET_RW:
+  description: ''
+  fields:
+  - name: OUTBOUND
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_3_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_3_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_3:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+    description: TYPE
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+    description: TC
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+    description: TD
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+    description: ATTR
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_3_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_3_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_BAR:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 8
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_MSG_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_TC_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_TD_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_ATTR_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_FUNC_NUM_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_MSG_CODE_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_SINGLE_ADDR_LOC_TRANS:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_RESPONSE:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 24
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_FUZZY_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_3_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_INBOUND_3_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_INBOUND_3_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_3_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_3_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_INBOUND_3_LWR_TARGET:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_INBOUND_3_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_3_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_4:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_4_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_4_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_4_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_4:
+  description: ''
+  fields:
+  - name: TAG
+    bit_offset: 8
+    bit_size: 8
+    description: TAG.
+  - name: SNP
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_4_TAG_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_4_FUNC:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_4_TLP_HEADER_FIELDS:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_4_INHIBIT:
+  description: ''
+  fields:
+  - name: PAYLOAD
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_4_HEADER_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_4_DMA:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_4_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_4_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_4_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_OUTBOUND_4_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_4_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_4_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_4_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_4_LWR_TARGET_RW:
+  description: ''
+  fields:
+  - name: OUTBOUND
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_4_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_4_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_4:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+    description: TYPE
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+    description: TC
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+    description: TD
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+    description: ATTR
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_4_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_4_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_BAR:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 8
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_MSG_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_TC_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_TD_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_ATTR_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_FUNC_NUM_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_MSG_CODE_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_SINGLE_ADDR_LOC_TRANS:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_RESPONSE:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 24
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_FUZZY_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_4_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_INBOUND_4_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_INBOUND_4_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_4_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_4_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_INBOUND_4_LWR_TARGET:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_INBOUND_4_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_4_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_5:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_5_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_5_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_5_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_5:
+  description: ''
+  fields:
+  - name: TAG
+    bit_offset: 8
+    bit_size: 8
+    description: TAG.
+  - name: SNP
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_5_TAG_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_5_FUNC:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_5_TLP_HEADER_FIELDS:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_5_INHIBIT:
+  description: ''
+  fields:
+  - name: PAYLOAD
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_5_HEADER_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_5_DMA:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_5_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_5_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_5_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_OUTBOUND_5_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_5_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_5_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_5_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_5_LWR_TARGET_RW:
+  description: ''
+  fields:
+  - name: OUTBOUND
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_5_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_5_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_5:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+    description: TYPE
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+    description: TC
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+    description: TD
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+    description: ATTR
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_5_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_5_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_BAR:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 8
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_MSG_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_TC_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_TD_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_ATTR_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_FUNC_NUM_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_MSG_CODE_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_SINGLE_ADDR_LOC_TRANS:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_RESPONSE:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 24
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_FUZZY_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_5_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_INBOUND_5_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_INBOUND_5_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_5_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_5_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_INBOUND_5_LWR_TARGET:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_INBOUND_5_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_5_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_6:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_6_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_6_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_6_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_6:
+  description: ''
+  fields:
+  - name: TAG
+    bit_offset: 8
+    bit_size: 8
+    description: TAG.
+  - name: SNP
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_6_TAG_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_6_FUNC:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_6_TLP_HEADER_FIELDS:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_6_INHIBIT:
+  description: ''
+  fields:
+  - name: PAYLOAD
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_6_HEADER_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_6_DMA:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_6_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_6_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_6_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_OUTBOUND_6_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_6_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_6_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_6_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_6_LWR_TARGET_RW:
+  description: ''
+  fields:
+  - name: OUTBOUND
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_6_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_6_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_6:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+    description: TYPE
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+    description: TC
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+    description: TD
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+    description: ATTR
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_6_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_6_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_BAR:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 8
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_MSG_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_TC_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_TD_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_ATTR_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_FUNC_NUM_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_MSG_CODE_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_SINGLE_ADDR_LOC_TRANS:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_RESPONSE:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 24
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_FUZZY_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_6_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_INBOUND_6_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_INBOUND_6_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_6_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_6_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_INBOUND_6_LWR_TARGET:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_INBOUND_6_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_6_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_7:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_7_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_OUTBOUND_7_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_7_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_7:
+  description: ''
+  fields:
+  - name: TAG
+    bit_offset: 8
+    bit_size: 8
+    description: TAG.
+  - name: SNP
+    bit_offset: 20
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_7_TAG_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_7_FUNC:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_7_TLP_HEADER_FIELDS:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_7_INHIBIT:
+  description: ''
+  fields:
+  - name: PAYLOAD
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_7_HEADER_SUBSTITUTE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_7_DMA:
+  description: ''
+  fields:
+  - name: BYPASS
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_7_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_7_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_OUTBOUND_7_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_OUTBOUND_7_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_OUTBOUND_7_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_7_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_OUTBOUND_7_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_OUTBOUND_7_LWR_TARGET_RW:
+  description: ''
+  fields:
+  - name: OUTBOUND
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_OUTBOUND_7_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_OUTBOUND_7_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_7:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 5
+    description: TYPE
+  - name: TC
+    bit_offset: 5
+    bit_size: 3
+    description: TC
+  - name: TD
+    bit_offset: 8
+    bit_size: 1
+    description: TD
+  - name: ATTR
+    bit_offset: 9
+    bit_size: 2
+    description: ATTR
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_7_INCREASE_REGION:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_1_OFF_INBOUND_7_CTRL_1_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 20
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_MSG:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_BAR:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 8
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_MSG_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 13
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_TC_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_TD_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_ATTR_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 16
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_FUNC_NUM_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_MSG_CODE_MATCH:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 21
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_SINGLE_ADDR_LOC_TRANS:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 23
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_RESPONSE:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 24
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_FUZZY_TYPE_MATCH:
+  description: ''
+  fields:
+  - name: CODE
+    bit_offset: 27
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_CFG_SHIFT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 28
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_INVERT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 29
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_MATCH:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 30
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_REGION_CTRL_2_OFF_INBOUND_7_REGION:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 31
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_IATU_LWR_BASE_ADDR_OFF_INBOUND_7_LWR_BASE:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_BASE_ADDR_OFF_INBOUND_7_UPPER_BASE:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_7_CBUF:
+  description: ''
+  fields:
+  - name: INCR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_IATU_LIMIT_ADDR_OFF_INBOUND_7_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 4
+    bit_size: 8
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_LWR_TARGET_ADDR_OFF_INBOUND_7_LWR_TARGET:
+  description: ''
+  fields:
+  - name: HW
+    bit_offset: 0
+    bit_size: 12
+  - name: RW
+    bit_offset: 12
+    bit_size: 20
+fieldset/PCIE_DMA_IATU_IATU_UPPER_TARGET_ADDR_OFF_INBOUND_7_UPPER_TARGET:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_IATU_UPPR_LIMIT_ADDR_OFF_INBOUND_7_UPPR_LIMIT_ADDR:
+  description: ''
+  fields:
+  - name: RW
+    bit_offset: 0
+    bit_size: 8
+  - name: HW
+    bit_offset: 8
+    bit_size: 24
+fieldset/PCIE_DMA_IATU_DMA_CTRL_DATA_ARB_PRIOR_OFF_RTRGT1:
+  description: ''
+  fields:
+  - name: WEIGHT
+    bit_offset: 0
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_DMA_CTRL_DATA_ARB_PRIOR_OFF_WR_CTRL_TRGT:
+  description: ''
+  fields:
+  - name: WEIGHT
+    bit_offset: 3
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_DMA_CTRL_DATA_ARB_PRIOR_OFF_RD_CTRL_TRGT:
+  description: ''
+  fields:
+  - name: WEIGHT
+    bit_offset: 6
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_DMA_CTRL_DATA_ARB_PRIOR_OFF_RDBUFF_TRGT:
+  description: ''
+  fields:
+  - name: WEIGHT
+    bit_offset: 9
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_DMA_CTRL_DATA_ARB_PRIOR_OFF:
+  description: ''
+  fields:
+  - name: VERSION
+    bit_offset: 12
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_CTRL_OFF_NUM_DMA_WR:
+  description: ''
+  fields:
+  - name: CHAN
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_DMA_CTRL_OFF_NUM_DMA_RD:
+  description: ''
+  fields:
+  - name: CHAN
+    bit_offset: 16
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_DMA_CTRL_OFF_DIS_C2W_CACHE:
+  description: ''
+  fields:
+  - name: WR
+    bit_offset: 24
+    bit_size: 1
+  - name: RD
+    bit_offset: 25
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_WRITE_ENGINE_EN_OFF_DMA_WRITE:
+  description: ''
+  fields:
+  - name: ENGINE
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_WRITE_ENGINE_EN_OFF_DMA_WRITE_ENGINE_EN_HSHAKE:
+  description: ''
+  fields:
+  - name: CH0
+    bit_offset: 16
+    bit_size: 1
+  - name: CH1
+    bit_offset: 17
+    bit_size: 1
+  - name: CH2
+    bit_offset: 18
+    bit_size: 1
+  - name: CH3
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_WRITE_DOORBELL_OFF_WR_DOORBELL:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 0
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_DMA_WRITE_DOORBELL_OFF_WR:
+  description: ''
+  fields:
+  - name: STOP
+    bit_offset: 31
+    bit_size: 1
+    description: Stop.
+fieldset/PCIE_DMA_IATU_DMA_WRITE_CHANNEL_ARB_WEIGHT_LOW_OFF_WRITE_CHANNEL0:
+  description: ''
+  fields:
+  - name: WEIGHT
+    bit_offset: 0
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_WRITE_CHANNEL_ARB_WEIGHT_LOW_OFF_WRITE_CHANNEL1:
+  description: ''
+  fields:
+  - name: WEIGHT
+    bit_offset: 5
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_WRITE_CHANNEL_ARB_WEIGHT_LOW_OFF_WRITE_CHANNEL2:
+  description: ''
+  fields:
+  - name: WEIGHT
+    bit_offset: 10
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_WRITE_CHANNEL_ARB_WEIGHT_LOW_OFF_WRITE_CHANNEL3:
+  description: ''
+  fields:
+  - name: WEIGHT
+    bit_offset: 15
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_READ_ENGINE_EN_OFF_DMA_READ:
+  description: ''
+  fields:
+  - name: ENGINE
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_READ_ENGINE_EN_OFF_DMA_READ_ENGINE_EN_HSHAKE:
+  description: ''
+  fields:
+  - name: CH0
+    bit_offset: 16
+    bit_size: 1
+  - name: CH1
+    bit_offset: 17
+    bit_size: 1
+  - name: CH2
+    bit_offset: 18
+    bit_size: 1
+  - name: CH3
+    bit_offset: 19
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_READ_DOORBELL_OFF_RD_DOORBELL:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 0
+    bit_size: 3
+fieldset/PCIE_DMA_IATU_DMA_READ_DOORBELL_OFF_RD:
+  description: ''
+  fields:
+  - name: STOP
+    bit_offset: 31
+    bit_size: 1
+    description: Stop.
+fieldset/PCIE_DMA_IATU_DMA_READ_CHANNEL_ARB_WEIGHT_LOW_OFF_READ_CHANNEL0:
+  description: ''
+  fields:
+  - name: WEIGHT
+    bit_offset: 0
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_READ_CHANNEL_ARB_WEIGHT_LOW_OFF_READ_CHANNEL1:
+  description: ''
+  fields:
+  - name: WEIGHT
+    bit_offset: 5
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_READ_CHANNEL_ARB_WEIGHT_LOW_OFF_READ_CHANNEL2:
+  description: ''
+  fields:
+  - name: WEIGHT
+    bit_offset: 10
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_READ_CHANNEL_ARB_WEIGHT_LOW_OFF_READ_CHANNEL3:
+  description: ''
+  fields:
+  - name: WEIGHT
+    bit_offset: 15
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_WRITE_INT_STATUS_OFF_WR_DONE_INT:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_DMA_WRITE_INT_STATUS_OFF_WR_ABORT_INT:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 16
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_DMA_WRITE_INT_MASK_OFF_WR_DONE_INT:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_DMA_WRITE_INT_MASK_OFF_WR_ABORT_INT:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 16
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_DMA_WRITE_INT_CLEAR_OFF_WR_DONE_INT:
+  description: ''
+  fields:
+  - name: CLEAR
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_DMA_WRITE_INT_CLEAR_OFF_WR_ABORT_INT:
+  description: ''
+  fields:
+  - name: CLEAR
+    bit_offset: 16
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_DMA_WRITE_ERR_STATUS_OFF_APP_READ_ERR:
+  description: ''
+  fields:
+  - name: DETECT
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_DMA_WRITE_ERR_STATUS_OFF_LINKLIST_ELEMENT_FETCH_ERR:
+  description: ''
+  fields:
+  - name: DETECT
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_DMA_WRITE_DONE_IMWR_LOW_OFF_DMA_WRITE_DONE_LOW:
+  description: ''
+  fields:
+  - name: REG
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_WRITE_DONE_IMWR_HIGH_OFF_DMA_WRITE_DONE_HIGH:
+  description: ''
+  fields:
+  - name: REG
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_WRITE_ABORT_IMWR_LOW_OFF_DMA_WRITE_ABORT_LOW:
+  description: ''
+  fields:
+  - name: REG
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_WRITE_ABORT_IMWR_HIGH_OFF_DMA_WRITE_ABORT_HIGH:
+  description: ''
+  fields:
+  - name: REG
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_WRITE_CH01_IMWR_DATA_OFF_WR_CHANNEL_0:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 16
+fieldset/PCIE_DMA_IATU_DMA_WRITE_CH01_IMWR_DATA_OFF_WR_CHANNEL_1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 16
+    bit_size: 16
+fieldset/PCIE_DMA_IATU_DMA_WRITE_CH23_IMWR_DATA_OFF_WR_CHANNEL_2:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 16
+fieldset/PCIE_DMA_IATU_DMA_WRITE_CH23_IMWR_DATA_OFF_WR_CHANNEL_3:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 16
+    bit_size: 16
+fieldset/PCIE_DMA_IATU_DMA_WRITE_LINKED_LIST_ERR_EN_OFF_WR_CHANNEL:
+  description: ''
+  fields:
+  - name: LLRAIE
+    bit_offset: 0
+    bit_size: 4
+  - name: LLLAIE
+    bit_offset: 16
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_DMA_READ_INT_STATUS_OFF_RD_DONE_INT:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_DMA_READ_INT_STATUS_OFF_RD_ABORT_INT:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 16
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_DMA_READ_INT_MASK_OFF_RD_DONE_INT:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 0
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_DMA_READ_INT_MASK_OFF_RD_ABORT_INT:
+  description: ''
+  fields:
+  - name: MASK
+    bit_offset: 16
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_DMA_READ_INT_CLEAR_OFF_RD_DONE_INT:
+  description: ''
+  fields:
+  - name: CLEAR
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_DMA_READ_INT_CLEAR_OFF_RD_ABORT_INT:
+  description: ''
+  fields:
+  - name: CLEAR
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_DMA_READ_ERR_STATUS_LOW_OFF_APP_WR_ERR:
+  description: ''
+  fields:
+  - name: DETECT
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_DMA_READ_ERR_STATUS_LOW_OFF_LINK_LIST_ELEMENT_FETCH_ERR:
+  description: ''
+  fields:
+  - name: DETECT
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_DMA_READ_ERR_STATUS_HIGH_OFF_UNSUPPORTED:
+  description: ''
+  fields:
+  - name: REQ
+    bit_offset: 0
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_DMA_READ_ERR_STATUS_HIGH_OFF_CPL:
+  description: ''
+  fields:
+  - name: ABORT
+    bit_offset: 8
+    bit_size: 8
+  - name: TIMEOUT
+    bit_offset: 16
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_DMA_READ_ERR_STATUS_HIGH_OFF_DATA:
+  description: ''
+  fields:
+  - name: POISIONING
+    bit_offset: 24
+    bit_size: 8
+fieldset/PCIE_DMA_IATU_DMA_READ_LINKED_LIST_ERR_EN_OFF_RD_CHANNEL:
+  description: ''
+  fields:
+  - name: LLRAIE
+    bit_offset: 0
+    bit_size: 4
+  - name: LLLAIE
+    bit_offset: 16
+    bit_size: 4
+fieldset/PCIE_DMA_IATU_DMA_READ_DONE_IMWR_LOW_OFF_DMA_READ_DONE_LOW:
+  description: ''
+  fields:
+  - name: REG
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_READ_DONE_IMWR_HIGH_OFF_DMA_READ_DONE_HIGH:
+  description: ''
+  fields:
+  - name: REG
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_READ_ABORT_IMWR_LOW_OFF_DMA_READ_ABORT_LOW:
+  description: ''
+  fields:
+  - name: REG
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_READ_ABORT_IMWR_HIGH_OFF_DMA_READ_ABORT_HIGH:
+  description: ''
+  fields:
+  - name: REG
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_READ_CH01_IMWR_DATA_OFF_RD_CHANNEL_0:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 16
+fieldset/PCIE_DMA_IATU_DMA_READ_CH01_IMWR_DATA_OFF_RD_CHANNEL_1:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 16
+    bit_size: 16
+fieldset/PCIE_DMA_IATU_DMA_READ_CH23_IMWR_DATA_OFF_RD_CHANNEL_2:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 16
+fieldset/PCIE_DMA_IATU_DMA_READ_CH23_IMWR_DATA_OFF_RD_CHANNEL_3:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 16
+    bit_size: 16
+fieldset/PCIE_DMA_IATU_DMA_WRITE_ENGINE_HSHAKE_CNT_LOW_OFF_DMA_WRITE_ENGINE_HSHAKE_CNT:
+  description: ''
+  fields:
+  - name: CH0
+    bit_offset: 0
+    bit_size: 5
+  - name: CH1
+    bit_offset: 8
+    bit_size: 5
+  - name: CH2
+    bit_offset: 16
+    bit_size: 5
+  - name: CH3
+    bit_offset: 24
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_READ_ENGINE_HSHAKE_CNT_LOW_OFF_DMA_READ_ENGINE_HSHAKE_CNT:
+  description: ''
+  fields:
+  - name: CH0
+    bit_offset: 0
+    bit_size: 5
+  - name: CH1
+    bit_offset: 8
+    bit_size: 5
+  - name: CH2
+    bit_offset: 16
+    bit_size: 5
+  - name: CH3
+    bit_offset: 24
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_WRITE_CH0_PWR_EN_OFF_DMA_WRITE_CH0_PWR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_WRITE_CH1_PWR_EN_OFF_DMA_WRITE_CH1_PWR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_WRITE_CH2_PWR_EN_OFF_DMA_WRITE_CH2_PWR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_WRITE_CH3_PWR_EN_OFF_DMA_WRITE_CH3_PWR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_READ_CH0_PWR_EN_OFF_DMA_READ_CH0_PWR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_READ_CH1_PWR_EN_OFF_DMA_READ_CH1_PWR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_READ_CH2_PWR_EN_OFF_DMA_READ_CH2_PWR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_READ_CH3_PWR_EN_OFF_DMA_READ_CH3_PWR:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_0:
+  description: ''
+  fields:
+  - name: CB
+    bit_offset: 0
+    bit_size: 1
+    description: Cycle Bit (CB).
+  - name: TCB
+    bit_offset: 1
+    bit_size: 1
+  - name: LLP
+    bit_offset: 2
+    bit_size: 1
+  - name: LIE
+    bit_offset: 3
+    bit_size: 1
+  - name: RIE
+    bit_offset: 4
+    bit_size: 1
+  - name: CS
+    bit_offset: 5
+    bit_size: 2
+  - name: CCS
+    bit_offset: 8
+    bit_size: 1
+  - name: LLE
+    bit_offset: 9
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_0_DMA:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 7
+    bit_size: 1
+  - name: RESERVED1
+    bit_offset: 10
+    bit_size: 2
+  - name: RO
+    bit_offset: 25
+    bit_size: 1
+  - name: RESERVED5
+    bit_offset: 26
+    bit_size: 1
+  - name: TC
+    bit_offset: 27
+    bit_size: 3
+  - name: AT
+    bit_offset: 30
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_0_DMA_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 12
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_0_DMA_MEM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_0_DMA_NS:
+  description: ''
+  fields:
+  - name: DST
+    bit_offset: 23
+    bit_size: 1
+  - name: SRC
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_TRANSFER_SIZE_OFF_WRCH_0_DMA_TRANSFER:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_LOW_OFF_WRCH_0_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_HIGH_OFF_WRCH_0_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_LOW_OFF_WRCH_0_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_HIGH_OFF_WRCH_0_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_LOW_OFF_WRCH_0_LLP:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_HIGH_OFF_WRCH_0_LLP:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_0:
+  description: ''
+  fields:
+  - name: CB
+    bit_offset: 0
+    bit_size: 1
+    description: Cycle Bit (CB).
+  - name: TCB
+    bit_offset: 1
+    bit_size: 1
+  - name: LLP
+    bit_offset: 2
+    bit_size: 1
+  - name: LIE
+    bit_offset: 3
+    bit_size: 1
+  - name: RIE
+    bit_offset: 4
+    bit_size: 1
+  - name: CS
+    bit_offset: 5
+    bit_size: 2
+  - name: CCS
+    bit_offset: 8
+    bit_size: 1
+  - name: LLE
+    bit_offset: 9
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_0_DMA:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 7
+    bit_size: 1
+  - name: RESERVED1
+    bit_offset: 10
+    bit_size: 2
+  - name: RO
+    bit_offset: 25
+    bit_size: 1
+  - name: RESERVED5
+    bit_offset: 26
+    bit_size: 1
+  - name: TC
+    bit_offset: 27
+    bit_size: 3
+  - name: AT
+    bit_offset: 30
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_0_DMA_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 12
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_0_DMA_MEM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_0_DMA_NS:
+  description: ''
+  fields:
+  - name: DST
+    bit_offset: 23
+    bit_size: 1
+  - name: SRC
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_TRANSFER_SIZE_OFF_RDCH_0_DMA_TRANSFER:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_LOW_OFF_RDCH_0_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_HIGH_OFF_RDCH_0_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_LOW_OFF_RDCH_0_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_HIGH_OFF_RDCH_0_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_LOW_OFF_RDCH_0_LLP:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_HIGH_OFF_RDCH_0_LLP:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_1:
+  description: ''
+  fields:
+  - name: CB
+    bit_offset: 0
+    bit_size: 1
+    description: Cycle Bit (CB).
+  - name: TCB
+    bit_offset: 1
+    bit_size: 1
+  - name: LLP
+    bit_offset: 2
+    bit_size: 1
+  - name: LIE
+    bit_offset: 3
+    bit_size: 1
+  - name: RIE
+    bit_offset: 4
+    bit_size: 1
+  - name: CS
+    bit_offset: 5
+    bit_size: 2
+  - name: CCS
+    bit_offset: 8
+    bit_size: 1
+  - name: LLE
+    bit_offset: 9
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_1_DMA:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 7
+    bit_size: 1
+  - name: RESERVED1
+    bit_offset: 10
+    bit_size: 2
+  - name: RO
+    bit_offset: 25
+    bit_size: 1
+  - name: RESERVED5
+    bit_offset: 26
+    bit_size: 1
+  - name: TC
+    bit_offset: 27
+    bit_size: 3
+  - name: AT
+    bit_offset: 30
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_1_DMA_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 12
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_1_DMA_MEM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_1_DMA_NS:
+  description: ''
+  fields:
+  - name: DST
+    bit_offset: 23
+    bit_size: 1
+  - name: SRC
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_TRANSFER_SIZE_OFF_WRCH_1_DMA_TRANSFER:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_LOW_OFF_WRCH_1_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_HIGH_OFF_WRCH_1_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_LOW_OFF_WRCH_1_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_HIGH_OFF_WRCH_1_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_LOW_OFF_WRCH_1_LLP:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_HIGH_OFF_WRCH_1_LLP:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_1:
+  description: ''
+  fields:
+  - name: CB
+    bit_offset: 0
+    bit_size: 1
+    description: Cycle Bit (CB).
+  - name: TCB
+    bit_offset: 1
+    bit_size: 1
+  - name: LLP
+    bit_offset: 2
+    bit_size: 1
+  - name: LIE
+    bit_offset: 3
+    bit_size: 1
+  - name: RIE
+    bit_offset: 4
+    bit_size: 1
+  - name: CS
+    bit_offset: 5
+    bit_size: 2
+  - name: CCS
+    bit_offset: 8
+    bit_size: 1
+  - name: LLE
+    bit_offset: 9
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_1_DMA:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 7
+    bit_size: 1
+  - name: RESERVED1
+    bit_offset: 10
+    bit_size: 2
+  - name: RO
+    bit_offset: 25
+    bit_size: 1
+  - name: RESERVED5
+    bit_offset: 26
+    bit_size: 1
+  - name: TC
+    bit_offset: 27
+    bit_size: 3
+  - name: AT
+    bit_offset: 30
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_1_DMA_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 12
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_1_DMA_MEM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_1_DMA_NS:
+  description: ''
+  fields:
+  - name: DST
+    bit_offset: 23
+    bit_size: 1
+  - name: SRC
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_TRANSFER_SIZE_OFF_RDCH_1_DMA_TRANSFER:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_LOW_OFF_RDCH_1_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_HIGH_OFF_RDCH_1_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_LOW_OFF_RDCH_1_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_HIGH_OFF_RDCH_1_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_LOW_OFF_RDCH_1_LLP:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_HIGH_OFF_RDCH_1_LLP:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_2:
+  description: ''
+  fields:
+  - name: CB
+    bit_offset: 0
+    bit_size: 1
+    description: Cycle Bit (CB).
+  - name: TCB
+    bit_offset: 1
+    bit_size: 1
+  - name: LLP
+    bit_offset: 2
+    bit_size: 1
+  - name: LIE
+    bit_offset: 3
+    bit_size: 1
+  - name: RIE
+    bit_offset: 4
+    bit_size: 1
+  - name: CS
+    bit_offset: 5
+    bit_size: 2
+  - name: CCS
+    bit_offset: 8
+    bit_size: 1
+  - name: LLE
+    bit_offset: 9
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_2_DMA:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 7
+    bit_size: 1
+  - name: RESERVED1
+    bit_offset: 10
+    bit_size: 2
+  - name: RO
+    bit_offset: 25
+    bit_size: 1
+  - name: RESERVED5
+    bit_offset: 26
+    bit_size: 1
+  - name: TC
+    bit_offset: 27
+    bit_size: 3
+  - name: AT
+    bit_offset: 30
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_2_DMA_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 12
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_2_DMA_MEM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_2_DMA_NS:
+  description: ''
+  fields:
+  - name: DST
+    bit_offset: 23
+    bit_size: 1
+  - name: SRC
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_TRANSFER_SIZE_OFF_WRCH_2_DMA_TRANSFER:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_LOW_OFF_WRCH_2_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_HIGH_OFF_WRCH_2_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_LOW_OFF_WRCH_2_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_HIGH_OFF_WRCH_2_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_LOW_OFF_WRCH_2_LLP:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_HIGH_OFF_WRCH_2_LLP:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_2:
+  description: ''
+  fields:
+  - name: CB
+    bit_offset: 0
+    bit_size: 1
+    description: Cycle Bit (CB).
+  - name: TCB
+    bit_offset: 1
+    bit_size: 1
+  - name: LLP
+    bit_offset: 2
+    bit_size: 1
+  - name: LIE
+    bit_offset: 3
+    bit_size: 1
+  - name: RIE
+    bit_offset: 4
+    bit_size: 1
+  - name: CS
+    bit_offset: 5
+    bit_size: 2
+  - name: CCS
+    bit_offset: 8
+    bit_size: 1
+  - name: LLE
+    bit_offset: 9
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_2_DMA:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 7
+    bit_size: 1
+  - name: RESERVED1
+    bit_offset: 10
+    bit_size: 2
+  - name: RO
+    bit_offset: 25
+    bit_size: 1
+  - name: RESERVED5
+    bit_offset: 26
+    bit_size: 1
+  - name: TC
+    bit_offset: 27
+    bit_size: 3
+  - name: AT
+    bit_offset: 30
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_2_DMA_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 12
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_2_DMA_MEM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_2_DMA_NS:
+  description: ''
+  fields:
+  - name: DST
+    bit_offset: 23
+    bit_size: 1
+  - name: SRC
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_TRANSFER_SIZE_OFF_RDCH_2_DMA_TRANSFER:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_LOW_OFF_RDCH_2_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_HIGH_OFF_RDCH_2_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_LOW_OFF_RDCH_2_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_HIGH_OFF_RDCH_2_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_LOW_OFF_RDCH_2_LLP:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_HIGH_OFF_RDCH_2_LLP:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_3:
+  description: ''
+  fields:
+  - name: CB
+    bit_offset: 0
+    bit_size: 1
+    description: Cycle Bit (CB).
+  - name: TCB
+    bit_offset: 1
+    bit_size: 1
+  - name: LLP
+    bit_offset: 2
+    bit_size: 1
+  - name: LIE
+    bit_offset: 3
+    bit_size: 1
+  - name: RIE
+    bit_offset: 4
+    bit_size: 1
+  - name: CS
+    bit_offset: 5
+    bit_size: 2
+  - name: CCS
+    bit_offset: 8
+    bit_size: 1
+  - name: LLE
+    bit_offset: 9
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_3_DMA:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 7
+    bit_size: 1
+  - name: RESERVED1
+    bit_offset: 10
+    bit_size: 2
+  - name: RO
+    bit_offset: 25
+    bit_size: 1
+  - name: RESERVED5
+    bit_offset: 26
+    bit_size: 1
+  - name: TC
+    bit_offset: 27
+    bit_size: 3
+  - name: AT
+    bit_offset: 30
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_3_DMA_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 12
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_3_DMA_MEM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_WRCH_3_DMA_NS:
+  description: ''
+  fields:
+  - name: DST
+    bit_offset: 23
+    bit_size: 1
+  - name: SRC
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_TRANSFER_SIZE_OFF_WRCH_3_DMA_TRANSFER:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_LOW_OFF_WRCH_3_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_HIGH_OFF_WRCH_3_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_LOW_OFF_WRCH_3_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_HIGH_OFF_WRCH_3_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_LOW_OFF_WRCH_3_LLP:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_HIGH_OFF_WRCH_3_LLP:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_3:
+  description: ''
+  fields:
+  - name: CB
+    bit_offset: 0
+    bit_size: 1
+    description: Cycle Bit (CB).
+  - name: TCB
+    bit_offset: 1
+    bit_size: 1
+  - name: LLP
+    bit_offset: 2
+    bit_size: 1
+  - name: LIE
+    bit_offset: 3
+    bit_size: 1
+  - name: RIE
+    bit_offset: 4
+    bit_size: 1
+  - name: CS
+    bit_offset: 5
+    bit_size: 2
+  - name: CCS
+    bit_offset: 8
+    bit_size: 1
+  - name: LLE
+    bit_offset: 9
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_3_DMA:
+  description: ''
+  fields:
+  - name: RESERVED0
+    bit_offset: 7
+    bit_size: 1
+  - name: RESERVED1
+    bit_offset: 10
+    bit_size: 2
+  - name: RO
+    bit_offset: 25
+    bit_size: 1
+  - name: RESERVED5
+    bit_offset: 26
+    bit_size: 1
+  - name: TC
+    bit_offset: 27
+    bit_size: 3
+  - name: AT
+    bit_offset: 30
+    bit_size: 2
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_3_DMA_FUNC:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 12
+    bit_size: 5
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_3_DMA_MEM:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 22
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_CH_CONTROL1_OFF_RDCH_3_DMA_NS:
+  description: ''
+  fields:
+  - name: DST
+    bit_offset: 23
+    bit_size: 1
+  - name: SRC
+    bit_offset: 24
+    bit_size: 1
+fieldset/PCIE_DMA_IATU_DMA_TRANSFER_SIZE_OFF_RDCH_3_DMA_TRANSFER:
+  description: ''
+  fields:
+  - name: SIZE
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_LOW_OFF_RDCH_3_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_SAR_HIGH_OFF_RDCH_3_SRC_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_LOW_OFF_RDCH_3_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_DAR_HIGH_OFF_RDCH_3_DST_ADDR_REG:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_LOW_OFF_RDCH_3_LLP:
+  description: ''
+  fields:
+  - name: LOW
+    bit_offset: 0
+    bit_size: 32
+fieldset/PCIE_DMA_IATU_DMA_LLP_HIGH_OFF_RDCH_3_LLP:
+  description: ''
+  fields:
+  - name: HIGH
+    bit_offset: 0
+    bit_size: 32

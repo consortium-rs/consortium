@@ -1,0 +1,1203 @@
+block/NPU:
+  description: ''
+  items:
+  - name: ID
+    byte_offset: 0
+  - name: STATUS
+    byte_offset: 4
+    fieldset: NPU_STATUS
+  - name: CMD
+    byte_offset: 8
+    fieldset: NPU_CMD
+  - name: RESET
+    byte_offset: 12
+    fieldset: NPU_RESET
+  - name: QBASE0
+    byte_offset: 16
+    fieldset: NPU_QBASE0
+  - name: QBASE1
+    byte_offset: 20
+    fieldset: NPU_QBASE1
+  - name: QREAD
+    byte_offset: 24
+    fieldset: NPU_QREAD
+  - name: QCONFIG
+    byte_offset: 28
+    fieldset: NPU_QCONFIG
+  - name: QSIZE
+    byte_offset: 32
+    fieldset: NPU_QSIZE
+  - name: PROT
+    byte_offset: 36
+    fieldset: NPU_PROT
+  - name: CONFIG
+    byte_offset: 40
+    fieldset: NPU_CONFIG
+  - name: LOCK
+    byte_offset: 44
+    fieldset: NPU_LOCK
+  - name: REGIONCFG
+    byte_offset: 60
+    fieldset: NPU_REGIONCFG
+  - name: AXI_LIMIT0
+    byte_offset: 64
+    fieldset: NPU_AXI_LIMIT0
+  - name: AXI_LIMIT1
+    byte_offset: 68
+    fieldset: NPU_AXI_LIMIT1
+  - name: AXI_LIMIT2
+    byte_offset: 72
+    fieldset: NPU_AXI_LIMIT2
+  - name: AXI_LIMIT3
+    byte_offset: 76
+    fieldset: NPU_AXI_LIMIT3
+  - name: BASEP0
+    byte_offset: 128
+  - name: BASEP1
+    byte_offset: 132
+  - name: BASEP2
+    byte_offset: 136
+  - name: BASEP3
+    byte_offset: 140
+  - name: BASEP4
+    byte_offset: 144
+  - name: BASEP5
+    byte_offset: 148
+  - name: BASEP6
+    byte_offset: 152
+  - name: BASEP7
+    byte_offset: 156
+  - name: BASEP8
+    byte_offset: 160
+  - name: BASEP9
+    byte_offset: 164
+  - name: BASEP10
+    byte_offset: 168
+  - name: BASEP11
+    byte_offset: 172
+  - name: BASEP12
+    byte_offset: 176
+  - name: BASEP13
+    byte_offset: 180
+  - name: BASEP14
+    byte_offset: 184
+  - name: BASEP15
+    byte_offset: 188
+  - name: PMCR
+    byte_offset: 384
+    fieldset: NPU_PMCR
+  - name: PMCNTENSET
+    byte_offset: 388
+    fieldset: NPU_PMCNTENSET
+  - name: PMCNTENCLR
+    byte_offset: 392
+    fieldset: NPU_PMCNTENCLR
+  - name: PMOVSSET
+    byte_offset: 396
+    fieldset: NPU_PMOVSSET
+  - name: PMOVSCLR
+    byte_offset: 400
+    fieldset: NPU_PMOVSCLR
+  - name: PMINTSET
+    byte_offset: 404
+    fieldset: NPU_PMINTSET
+  - name: PMINTCLR
+    byte_offset: 408
+    fieldset: NPU_PMINTCLR
+  - name: PMCCNTR_LO
+    byte_offset: 416
+  - name: PMCCNTR_HI
+    byte_offset: 420
+    fieldset: NPU_PMCCNTR_HI
+  - name: PMCAXI_CHAN
+    byte_offset: 428
+    fieldset: NPU_PMCAXI_CHAN
+  - name: PMEVCNTR0
+    byte_offset: 768
+    fieldset: NPU_PMEVCNTR0
+  - name: PMEVCNTR1
+    byte_offset: 772
+    fieldset: NPU_PMEVCNTR1
+  - name: PMEVCNTR2
+    byte_offset: 776
+    fieldset: NPU_PMEVCNTR2
+  - name: PMEVCNTR3
+    byte_offset: 780
+    fieldset: NPU_PMEVCNTR3
+  - name: PMEVTYPER0
+    byte_offset: 896
+    fieldset: NPU_PMEVTYPER0
+  - name: PMEVTYPER1
+    byte_offset: 900
+    fieldset: NPU_PMEVTYPER1
+  - name: PMEVTYPER2
+    byte_offset: 904
+    fieldset: NPU_PMEVTYPER2
+  - name: PMEVTYPER3
+    byte_offset: 908
+    fieldset: NPU_PMEVTYPER3
+  - name: PID4
+    byte_offset: 4048
+    fieldset: NPU_PID4
+  - name: PID5
+    byte_offset: 4052
+    fieldset: NPU_PID5
+  - name: PID6
+    byte_offset: 4056
+    fieldset: NPU_PID6
+  - name: PID7
+    byte_offset: 4060
+    fieldset: NPU_PID7
+  - name: PID0
+    byte_offset: 4064
+    fieldset: NPU_PID0
+  - name: PID1
+    byte_offset: 4068
+    fieldset: NPU_PID1
+  - name: PID2
+    byte_offset: 4072
+    fieldset: NPU_PID2
+  - name: PID3
+    byte_offset: 4076
+    fieldset: NPU_PID3
+  - name: CID0
+    byte_offset: 4080
+    fieldset: NPU_CID0
+  - name: CID1
+    byte_offset: 4084
+    fieldset: NPU_CID1
+  - name: CID2
+    byte_offset: 4088
+    fieldset: NPU_CID2
+  - name: CID3
+    byte_offset: 4092
+    fieldset: NPU_CID3
+fieldset/NPU_ID_version:
+  description: ''
+  fields:
+  - name: status
+    bit_offset: 0
+    bit_size: 4
+    description: version_status
+  - name: minor
+    bit_offset: 4
+    bit_size: 4
+    description: version_status
+  - name: major
+    bit_offset: 8
+    bit_size: 4
+    description: version_minor
+fieldset/NPU_ID_product:
+  description: ''
+  fields:
+  - name: major
+    bit_offset: 12
+    bit_size: 4
+    description: version_major
+fieldset/NPU_ID_arch_patch:
+  description: ''
+  fields:
+  - name: rev
+    bit_offset: 16
+    bit_size: 4
+    description: product_major
+fieldset/NPU_ID_arch_minor:
+  description: ''
+  fields:
+  - name: rev
+    bit_offset: 20
+    bit_size: 8
+    description: arch_patch_rev
+fieldset/NPU_ID_arch_major:
+  description: ''
+  fields:
+  - name: rev
+    bit_offset: 28
+    bit_size: 4
+    description: arch_minor_rev
+fieldset/NPU_STATUS:
+  description: ''
+  fields:
+  - name: state
+    bit_offset: 0
+    bit_size: 1
+    description: state
+  - name: RES0
+    bit_offset: 9
+    bit_size: 2
+    description: ecc_fault
+fieldset/NPU_STATUS_irq:
+  description: ''
+  fields:
+  - name: raised
+    bit_offset: 1
+    bit_size: 1
+    description: state
+fieldset/NPU_STATUS_bus:
+  description: ''
+  fields:
+  - name: status
+    bit_offset: 2
+    bit_size: 1
+    description: irq_raised
+fieldset/NPU_STATUS_reset:
+  description: ''
+  fields:
+  - name: status
+    bit_offset: 3
+    bit_size: 1
+    description: bus_status
+fieldset/NPU_STATUS_cmd_parse:
+  description: ''
+  fields:
+  - name: error
+    bit_offset: 4
+    bit_size: 1
+    description: reset_status
+fieldset/NPU_STATUS_cmd_end:
+  description: ''
+  fields:
+  - name: reached
+    bit_offset: 5
+    bit_size: 1
+    description: cmd_parse_error
+fieldset/NPU_STATUS_pmu_irq:
+  description: ''
+  fields:
+  - name: raised
+    bit_offset: 6
+    bit_size: 1
+    description: cmd_end_reached
+fieldset/NPU_STATUS_wd:
+  description: ''
+  fields:
+  - name: fault
+    bit_offset: 7
+    bit_size: 1
+    description: pmu_irq_raised
+fieldset/NPU_STATUS_ecc:
+  description: ''
+  fields:
+  - name: fault
+    bit_offset: 8
+    bit_size: 1
+    description: wd_fault
+fieldset/NPU_STATUS_faulting:
+  description: ''
+  fields:
+  - name: interface
+    bit_offset: 11
+    bit_size: 1
+    description: Reserved
+  - name: channel
+    bit_offset: 12
+    bit_size: 4
+    description: faulting_channel
+fieldset/NPU_STATUS_irq_history:
+  description: ''
+  fields:
+  - name: mask
+    bit_offset: 16
+    bit_size: 16
+    description: faulting_channel
+fieldset/NPU_CMD_transition_to_running:
+  description: ''
+  fields:
+  - name: state
+    bit_offset: 0
+    bit_size: 1
+fieldset/NPU_CMD_clear:
+  description: ''
+  fields:
+  - name: irq
+    bit_offset: 1
+    bit_size: 1
+    description: clear_irq
+fieldset/NPU_CMD_clock_q:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 2
+    bit_size: 1
+    description: clear_irq
+fieldset/NPU_CMD_power_q:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 3
+    bit_size: 1
+    description: clock_q_enable
+fieldset/NPU_CMD:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 4
+    bit_size: 12
+    description: power_q_enable
+fieldset/NPU_CMD_clear_irq:
+  description: ''
+  fields:
+  - name: history
+    bit_offset: 16
+    bit_size: 16
+    description: Reserved
+fieldset/NPU_RESET_pending:
+  description: ''
+  fields:
+  - name: CPL
+    bit_offset: 0
+    bit_size: 1
+    description: pending_CPL
+  - name: CSL
+    bit_offset: 1
+    bit_size: 1
+    description: pending_CPL
+fieldset/NPU_RESET:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 2
+    bit_size: 30
+    description: pending_CSL
+fieldset/NPU_QBASE0:
+  description: ''
+  fields:
+  - name: QBASE0
+    bit_offset: 0
+    bit_size: 32
+    description: QBASE0
+fieldset/NPU_QBASE1:
+  description: ''
+  fields:
+  - name: QBASE1
+    bit_offset: 0
+    bit_size: 32
+    description: QBASE1
+fieldset/NPU_QREAD:
+  description: ''
+  fields:
+  - name: QREAD
+    bit_offset: 0
+    bit_size: 32
+    description: QREAD
+fieldset/NPU_QCONFIG:
+  description: ''
+  fields:
+  - name: QCONFIG
+    bit_offset: 0
+    bit_size: 32
+    description: QCONFIG
+fieldset/NPU_QSIZE:
+  description: ''
+  fields:
+  - name: QSIZE
+    bit_offset: 0
+    bit_size: 32
+    description: QSIZE
+fieldset/NPU_PROT_active:
+  description: ''
+  fields:
+  - name: CPL
+    bit_offset: 0
+    bit_size: 1
+    description: QSIZE
+  - name: CSL
+    bit_offset: 1
+    bit_size: 1
+    description: active_CPL
+fieldset/NPU_PROT:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 2
+    bit_size: 30
+    description: active_CSL
+fieldset/NPU_CONFIG_macs_per:
+  description: ''
+  fields:
+  - name: cc
+    bit_offset: 0
+    bit_size: 4
+    description: Reserved
+fieldset/NPU_CONFIG_cmd_stream:
+  description: ''
+  fields:
+  - name: version
+    bit_offset: 4
+    bit_size: 4
+    description: macs_per_cc
+fieldset/NPU_CONFIG_shram:
+  description: ''
+  fields:
+  - name: size
+    bit_offset: 8
+    bit_size: 8
+    description: shram_size
+fieldset/NPU_CONFIG:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 16
+    bit_size: 12
+    description: shram_size
+  - name: product
+    bit_offset: 28
+    bit_size: 4
+    description: Reserved
+fieldset/NPU_LOCK:
+  description: ''
+  fields:
+  - name: LOCK
+    bit_offset: 0
+    bit_size: 32
+    description: LOCK
+fieldset/NPU_REGIONCFG:
+  description: ''
+  fields:
+  - name: region0
+    bit_offset: 0
+    bit_size: 2
+    description: region0
+  - name: region1
+    bit_offset: 2
+    bit_size: 2
+    description: region0
+  - name: region2
+    bit_offset: 4
+    bit_size: 2
+    description: region1
+  - name: region3
+    bit_offset: 6
+    bit_size: 2
+    description: region2
+  - name: region4
+    bit_offset: 8
+    bit_size: 2
+    description: region3
+  - name: region5
+    bit_offset: 10
+    bit_size: 2
+    description: region4
+  - name: region6
+    bit_offset: 12
+    bit_size: 2
+    description: region5
+  - name: region7
+    bit_offset: 14
+    bit_size: 2
+    description: region6
+  - name: RES0
+    bit_offset: 16
+    bit_size: 16
+    description: region7
+fieldset/NPU_AXI_LIMIT0_max:
+  description: ''
+  fields:
+  - name: beats
+    bit_offset: 0
+    bit_size: 2
+    description: max_beats
+fieldset/NPU_AXI_LIMIT0:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 2
+    bit_size: 2
+    description: max_beats
+  - name: memtype
+    bit_offset: 4
+    bit_size: 4
+    description: Reserved
+  - name: RES1
+    bit_offset: 8
+    bit_size: 8
+    description: memtype
+fieldset/NPU_AXI_LIMIT0_max_outstanding_read:
+  description: ''
+  fields:
+  - name: m1
+    bit_offset: 16
+    bit_size: 8
+    description: Reserved
+fieldset/NPU_AXI_LIMIT0_max_outstanding_write:
+  description: ''
+  fields:
+  - name: m1
+    bit_offset: 24
+    bit_size: 8
+fieldset/NPU_AXI_LIMIT1_max:
+  description: ''
+  fields:
+  - name: beats
+    bit_offset: 0
+    bit_size: 2
+    description: max_beats
+fieldset/NPU_AXI_LIMIT1:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 2
+    bit_size: 2
+    description: max_beats
+  - name: memtype
+    bit_offset: 4
+    bit_size: 4
+    description: Reserved
+  - name: RES1
+    bit_offset: 8
+    bit_size: 8
+    description: memtype
+fieldset/NPU_AXI_LIMIT1_max_outstanding_read:
+  description: ''
+  fields:
+  - name: m1
+    bit_offset: 16
+    bit_size: 8
+    description: Reserved
+fieldset/NPU_AXI_LIMIT1_max_outstanding_write:
+  description: ''
+  fields:
+  - name: m1
+    bit_offset: 24
+    bit_size: 8
+fieldset/NPU_AXI_LIMIT2_max:
+  description: ''
+  fields:
+  - name: beats
+    bit_offset: 0
+    bit_size: 2
+    description: max_beats
+fieldset/NPU_AXI_LIMIT2:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 2
+    bit_size: 2
+    description: max_beats
+  - name: memtype
+    bit_offset: 4
+    bit_size: 4
+    description: Reserved
+  - name: RES1
+    bit_offset: 8
+    bit_size: 8
+    description: memtype
+fieldset/NPU_AXI_LIMIT2_max_outstanding_read:
+  description: ''
+  fields:
+  - name: m1
+    bit_offset: 16
+    bit_size: 8
+    description: Reserved
+fieldset/NPU_AXI_LIMIT2_max_outstanding_write:
+  description: ''
+  fields:
+  - name: m1
+    bit_offset: 24
+    bit_size: 8
+fieldset/NPU_AXI_LIMIT3_max:
+  description: ''
+  fields:
+  - name: beats
+    bit_offset: 0
+    bit_size: 2
+    description: max_beats
+fieldset/NPU_AXI_LIMIT3:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 2
+    bit_size: 2
+    description: max_beats
+  - name: memtype
+    bit_offset: 4
+    bit_size: 4
+    description: Reserved
+  - name: RES1
+    bit_offset: 8
+    bit_size: 8
+    description: memtype
+fieldset/NPU_AXI_LIMIT3_max_outstanding_read:
+  description: ''
+  fields:
+  - name: m1
+    bit_offset: 16
+    bit_size: 8
+    description: Reserved
+fieldset/NPU_AXI_LIMIT3_max_outstanding_write:
+  description: ''
+  fields:
+  - name: m1
+    bit_offset: 24
+    bit_size: 8
+fieldset/NPU_BASEP0_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP1_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP2_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP3_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP4_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP5_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP6_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP7_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP8_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP9_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP10_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP11_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP12_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP13_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP14_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_BASEP15_addr:
+  description: ''
+  fields:
+  - name: word
+    bit_offset: 0
+    bit_size: 32
+    description: addr_word
+fieldset/NPU_PMCR_cnt:
+  description: ''
+  fields:
+  - name: en
+    bit_offset: 0
+    bit_size: 1
+    description: cnt_en
+fieldset/NPU_PMCR_event_cnt:
+  description: ''
+  fields:
+  - name: rst
+    bit_offset: 1
+    bit_size: 1
+    description: cnt_en
+fieldset/NPU_PMCR_cycle_cnt:
+  description: ''
+  fields:
+  - name: rst
+    bit_offset: 2
+    bit_size: 1
+    description: event_cnt_rst
+fieldset/NPU_PMCR_mask:
+  description: ''
+  fields:
+  - name: en
+    bit_offset: 3
+    bit_size: 1
+    description: cycle_cnt_rst
+fieldset/NPU_PMCR:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 4
+    bit_size: 7
+    description: mask_en
+  - name: RES1
+    bit_offset: 16
+    bit_size: 16
+    description: num_event_cnt
+fieldset/NPU_PMCR_num_event:
+  description: ''
+  fields:
+  - name: cnt
+    bit_offset: 11
+    bit_size: 5
+    description: Reserved
+fieldset/NPU_PMCNTENSET:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 4
+    bit_size: 27
+    description: EVENT_CNT_3
+fieldset/NPU_PMCNTENSET_CYCLE:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 31
+    bit_size: 1
+    description: Reserved
+fieldset/NPU_PMCNTENCLR:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 4
+    bit_size: 27
+    description: EVENT_CNT_3
+fieldset/NPU_PMCNTENCLR_CYCLE:
+  description: ''
+  fields:
+  - name: CNT
+    bit_offset: 31
+    bit_size: 1
+    description: Reserved
+fieldset/NPU_PMOVSSET_EVENT_CNT_0:
+  description: ''
+  fields:
+  - name: OVF
+    bit_offset: 0
+    bit_size: 1
+    description: EVENT_CNT_0_OVF
+fieldset/NPU_PMOVSSET_EVENT_CNT_1:
+  description: ''
+  fields:
+  - name: OVF
+    bit_offset: 1
+    bit_size: 1
+    description: EVENT_CNT_0_OVF
+fieldset/NPU_PMOVSSET_EVENT_CNT_2:
+  description: ''
+  fields:
+  - name: OVF
+    bit_offset: 2
+    bit_size: 1
+    description: EVENT_CNT_1_OVF
+fieldset/NPU_PMOVSSET_EVENT_CNT_3:
+  description: ''
+  fields:
+  - name: OVF
+    bit_offset: 3
+    bit_size: 1
+    description: EVENT_CNT_2_OVF
+fieldset/NPU_PMOVSSET:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 4
+    bit_size: 27
+    description: EVENT_CNT_3_OVF
+fieldset/NPU_PMOVSSET_CYCLE_CNT:
+  description: ''
+  fields:
+  - name: OVF
+    bit_offset: 31
+    bit_size: 1
+    description: Reserved
+fieldset/NPU_PMOVSCLR_EVENT_CNT_0:
+  description: ''
+  fields:
+  - name: OVF
+    bit_offset: 0
+    bit_size: 1
+    description: EVENT_CNT_0_OVF
+fieldset/NPU_PMOVSCLR_EVENT_CNT_1:
+  description: ''
+  fields:
+  - name: OVF
+    bit_offset: 1
+    bit_size: 1
+    description: EVENT_CNT_0_OVF
+fieldset/NPU_PMOVSCLR_EVENT_CNT_2:
+  description: ''
+  fields:
+  - name: OVF
+    bit_offset: 2
+    bit_size: 1
+    description: EVENT_CNT_1_OVF
+fieldset/NPU_PMOVSCLR_EVENT_CNT_3:
+  description: ''
+  fields:
+  - name: OVF
+    bit_offset: 3
+    bit_size: 1
+    description: EVENT_CNT_2_OVF
+fieldset/NPU_PMOVSCLR:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 4
+    bit_size: 27
+    description: EVENT_CNT_3_OVF
+fieldset/NPU_PMOVSCLR_CYCLE_CNT:
+  description: ''
+  fields:
+  - name: OVF
+    bit_offset: 31
+    bit_size: 1
+    description: Reserved
+fieldset/NPU_PMINTSET_EVENT_CNT_0:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 0
+    bit_size: 1
+    description: EVENT_CNT_0_INT
+fieldset/NPU_PMINTSET_EVENT_CNT_1:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 1
+    bit_size: 1
+    description: EVENT_CNT_0_INT
+fieldset/NPU_PMINTSET_EVENT_CNT_2:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 2
+    bit_size: 1
+    description: EVENT_CNT_1_INT
+fieldset/NPU_PMINTSET_EVENT_CNT_3:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 3
+    bit_size: 1
+    description: EVENT_CNT_2_INT
+fieldset/NPU_PMINTSET:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 4
+    bit_size: 27
+    description: EVENT_CNT_3_INT
+fieldset/NPU_PMINTSET_CYCLE_CNT:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 31
+    bit_size: 1
+    description: Reserved
+fieldset/NPU_PMINTCLR_EVENT_CNT_0:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 0
+    bit_size: 1
+    description: EVENT_CNT_0_INT
+fieldset/NPU_PMINTCLR_EVENT_CNT_1:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 1
+    bit_size: 1
+    description: EVENT_CNT_0_INT
+fieldset/NPU_PMINTCLR_EVENT_CNT_2:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 2
+    bit_size: 1
+    description: EVENT_CNT_1_INT
+fieldset/NPU_PMINTCLR_EVENT_CNT_3:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 3
+    bit_size: 1
+    description: EVENT_CNT_2_INT
+fieldset/NPU_PMINTCLR:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 4
+    bit_size: 27
+    description: EVENT_CNT_3_INT
+fieldset/NPU_PMINTCLR_CYCLE_CNT:
+  description: ''
+  fields:
+  - name: INT
+    bit_offset: 31
+    bit_size: 1
+    description: Reserved
+fieldset/NPU_PMCCNTR_LO_CYCLE_CNT:
+  description: ''
+  fields:
+  - name: LO
+    bit_offset: 0
+    bit_size: 32
+    description: CYCLE_CNT_LO
+fieldset/NPU_PMCCNTR_HI_CYCLE_CNT:
+  description: ''
+  fields:
+  - name: HI
+    bit_offset: 0
+    bit_size: 16
+    description: CYCLE_CNT_HI
+fieldset/NPU_PMCCNTR_HI:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 16
+    bit_size: 16
+    description: CYCLE_CNT_HI
+fieldset/NPU_PMCAXI_CHAN_CH:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 0
+    bit_size: 4
+    description: CH_SEL
+fieldset/NPU_PMCAXI_CHAN:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 4
+    bit_size: 4
+    description: CH_SEL
+  - name: RES1
+    bit_offset: 11
+    bit_size: 21
+    description: BW_CH_SEL_EN
+fieldset/NPU_PMCAXI_CHAN_AXI_CNT:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 8
+    bit_size: 2
+    description: Reserved
+fieldset/NPU_PMCAXI_CHAN_BW_CH_SEL:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+    description: AXI_CNT_SEL
+fieldset/NPU_PMEVCNTR0:
+  description: ''
+  fields:
+  - name: PMEVCNTR0
+    bit_offset: 0
+    bit_size: 32
+fieldset/NPU_PMEVCNTR1:
+  description: ''
+  fields:
+  - name: PMEVCNTR1
+    bit_offset: 0
+    bit_size: 32
+fieldset/NPU_PMEVCNTR2:
+  description: ''
+  fields:
+  - name: PMEVCNTR2
+    bit_offset: 0
+    bit_size: 32
+fieldset/NPU_PMEVCNTR3:
+  description: ''
+  fields:
+  - name: PMEVCNTR3
+    bit_offset: 0
+    bit_size: 32
+fieldset/NPU_PMEVTYPER0_EV:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 10
+    description: EV_TYPE
+fieldset/NPU_PMEVTYPER0:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 10
+    bit_size: 22
+    description: EV_TYPE
+fieldset/NPU_PMEVTYPER1_EV:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 10
+    description: EV_TYPE
+fieldset/NPU_PMEVTYPER1:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 10
+    bit_size: 22
+    description: EV_TYPE
+fieldset/NPU_PMEVTYPER2_EV:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 10
+    description: EV_TYPE
+fieldset/NPU_PMEVTYPER2:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 10
+    bit_size: 22
+    description: EV_TYPE
+fieldset/NPU_PMEVTYPER3_EV:
+  description: ''
+  fields:
+  - name: TYPE
+    bit_offset: 0
+    bit_size: 10
+    description: EV_TYPE
+fieldset/NPU_PMEVTYPER3:
+  description: ''
+  fields:
+  - name: RES0
+    bit_offset: 10
+    bit_size: 22
+    description: EV_TYPE
+fieldset/NPU_PID4:
+  description: ''
+  fields:
+  - name: PID4
+    bit_offset: 0
+    bit_size: 32
+    description: PID4
+fieldset/NPU_PID5:
+  description: ''
+  fields:
+  - name: PID5
+    bit_offset: 0
+    bit_size: 32
+    description: PID4
+fieldset/NPU_PID6:
+  description: ''
+  fields:
+  - name: PID6
+    bit_offset: 0
+    bit_size: 32
+    description: PID5
+fieldset/NPU_PID7:
+  description: ''
+  fields:
+  - name: PID7
+    bit_offset: 0
+    bit_size: 32
+    description: PID6
+fieldset/NPU_PID0:
+  description: ''
+  fields:
+  - name: PID0
+    bit_offset: 0
+    bit_size: 32
+    description: PID7
+fieldset/NPU_PID1:
+  description: ''
+  fields:
+  - name: PID1
+    bit_offset: 0
+    bit_size: 32
+    description: PID0
+fieldset/NPU_PID2:
+  description: ''
+  fields:
+  - name: PID2
+    bit_offset: 0
+    bit_size: 32
+    description: PID1
+fieldset/NPU_PID3:
+  description: ''
+  fields:
+  - name: PID3
+    bit_offset: 0
+    bit_size: 32
+    description: PID2
+fieldset/NPU_CID0:
+  description: ''
+  fields:
+  - name: CID0
+    bit_offset: 0
+    bit_size: 32
+    description: PID3
+fieldset/NPU_CID1:
+  description: ''
+  fields:
+  - name: CID1
+    bit_offset: 0
+    bit_size: 32
+    description: CID0
+fieldset/NPU_CID2:
+  description: ''
+  fields:
+  - name: CID2
+    bit_offset: 0
+    bit_size: 32
+    description: CID1
+fieldset/NPU_CID3:
+  description: ''
+  fields:
+  - name: CID3
+    bit_offset: 0
+    bit_size: 32
+    description: CID2

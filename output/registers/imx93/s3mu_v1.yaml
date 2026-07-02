@@ -1,0 +1,121 @@
+block/S3MU:
+  description: ''
+  items:
+  - name: VER
+    byte_offset: 0
+    fieldset: S3MU_VER
+  - name: PAR
+    byte_offset: 4
+  - name: SR
+    byte_offset: 12
+    fieldset: S3MU_SR
+  - name: TCR
+    byte_offset: 288
+    fieldset: S3MU_TCR
+  - name: TSR
+    byte_offset: 292
+    fieldset: S3MU_TSR
+  - name: RCR
+    byte_offset: 296
+    fieldset: S3MU_RCR
+  - name: RSR
+    byte_offset: 300
+    fieldset: S3MU_RSR
+  - name: UNUSED1
+    byte_offset: 508
+    fieldset: S3MU_UNUSED1
+  - name: TR
+    byte_offset: 512
+    array:
+      len: 8
+      stride: 4
+  - name: RR
+    byte_offset: 640
+    array:
+      len: 4
+      stride: 4
+fieldset/S3MU_VER:
+  description: ''
+  fields:
+  - name: FEATURE
+    bit_offset: 0
+    bit_size: 16
+  - name: MINOR
+    bit_offset: 16
+    bit_size: 8
+    description: Minor Version Number (0x00 )
+  - name: MAJOR
+    bit_offset: 24
+    bit_size: 8
+    description: Minor Version Number (0x00 )
+fieldset/S3MU_PAR_TR:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 0
+    bit_size: 8
+fieldset/S3MU_PAR_RR:
+  description: ''
+  fields:
+  - name: NUM
+    bit_offset: 8
+    bit_size: 8
+    description: Number of Transmit (TRn) registers (8)
+fieldset/S3MU_SR:
+  description: ''
+  fields:
+  - name: TEP
+    bit_offset: 5
+    bit_size: 1
+    description: Transmit Empty Pending
+  - name: RFP
+    bit_offset: 6
+    bit_size: 1
+    description: Transmit Empty Pending
+fieldset/S3MU_TCR:
+  description: ''
+  fields:
+  - name: TEIEn
+    bit_offset: 0
+    bit_size: 8
+fieldset/S3MU_TSR:
+  description: ''
+  fields:
+  - name: TEn
+    bit_offset: 0
+    bit_size: 8
+    description: Transmit Register n Empty
+fieldset/S3MU_RCR:
+  description: ''
+  fields:
+  - name: RFIEn
+    bit_offset: 0
+    bit_size: 4
+fieldset/S3MU_RSR:
+  description: ''
+  fields:
+  - name: RFn
+    bit_offset: 0
+    bit_size: 4
+    description: Receive Register n Full
+fieldset/S3MU_UNUSED1:
+  description: ''
+  fields:
+  - name: DATA16
+    bit_offset: 0
+    bit_size: 16
+    description: Unused 16-bit Register
+fieldset/S3MU_TR_TR:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 32
+    description: Transmit Data
+fieldset/S3MU_RR_RR:
+  description: ''
+  fields:
+  - name: DATA
+    bit_offset: 0
+    bit_size: 32
+    description: Receive Data

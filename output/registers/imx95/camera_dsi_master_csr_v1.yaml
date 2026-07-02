@@ -1,0 +1,54 @@
+block/CAMERA_DSI_MASTER_CSR:
+  description: ''
+  items:
+  - name: DSI_CLOCK_GATING_CONTROL
+    byte_offset: 0
+  - name: DSI_PIXEL_LINK_CONTROL
+    byte_offset: 4
+  - name: DSI_CLOCK_SETTING
+    byte_offset: 8
+fieldset/CAMERA_DSI_MASTER_CSR_DSI_CLOCK_GATING_CONTROL_Display_0_async:
+  description: ''
+  fields:
+  - name: fifo
+    bit_offset: 0
+    bit_size: 1
+fieldset/CAMERA_DSI_MASTER_CSR_DSI_CLOCK_GATING_CONTROL_Display_1_async:
+  description: ''
+  fields:
+  - name: fifo
+    bit_offset: 1
+    bit_size: 1
+fieldset/CAMERA_DSI_MASTER_CSR_DSI_CLOCK_GATING_CONTROL_Dphy_pll:
+  description: ''
+  fields:
+  - name: clkin
+    bit_offset: 2
+    bit_size: 1
+  - name: clkout
+    bit_offset: 3
+    bit_size: 1
+  - name: clkext
+    bit_offset: 4
+    bit_size: 1
+fieldset/CAMERA_DSI_MASTER_CSR_DSI_PIXEL_LINK_CONTROL_Pixel_link:
+  description: ''
+  fields:
+  - name: sel
+    bit_offset: 0
+    bit_size: 1
+fieldset/CAMERA_DSI_MASTER_CSR_DSI_CLOCK_SETTING_Dphy_ref_clock:
+  description: ''
+  fields:
+  - name: div
+    bit_offset: 0
+    bit_size: 4
+  - name: source
+    bit_offset: 7
+    bit_size: 1
+fieldset/CAMERA_DSI_MASTER_CSR_DSI_CLOCK_SETTING_Dphy_pll:
+  description: ''
+  fields:
+  - name: div
+    bit_offset: 8
+    bit_size: 4

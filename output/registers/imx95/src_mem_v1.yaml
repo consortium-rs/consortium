@@ -1,0 +1,49 @@
+block/SRC_MEM:
+  description: ''
+  items:
+  - name: MEM_CTRL
+    byte_offset: 4
+  - name: MEM_STAT
+    byte_offset: 24
+fieldset/SRC_MEM_MEM_CTRL_MEM_LP:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 1
+    bit_size: 1
+fieldset/SRC_MEM_MEM_CTRL_LOCK:
+  description: ''
+  fields:
+  - name: CFG
+    bit_offset: 24
+    bit_size: 1
+fieldset/SRC_MEM_MEM_STAT_MEM_FSM:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 0
+    bit_size: 4
+fieldset/SRC_MEM_MEM_STAT_RET2N:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 4
+    bit_size: 1
+fieldset/SRC_MEM_MEM_STAT_RET1N:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 5
+    bit_size: 1
+fieldset/SRC_MEM_MEM_STAT_PGEN:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 6
+    bit_size: 1
+fieldset/SRC_MEM_MEM_STAT_MEM:
+  description: ''
+  fields:
+  - name: STAT
+    bit_offset: 8
+    bit_size: 1

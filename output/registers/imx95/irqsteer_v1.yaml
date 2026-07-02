@@ -1,0 +1,60 @@
+block/IRQSTEER:
+  description: ''
+  items:
+  - name: CHn_MASK
+    byte_offset: 4
+    array:
+      len: 20
+      stride: 4
+    fieldset: IRQSTEER_CHn_MASK
+  - name: CHn_SET
+    byte_offset: 84
+    array:
+      len: 20
+      stride: 4
+    fieldset: IRQSTEER_CHn_SET
+  - name: CHn_STATUS
+    byte_offset: 164
+    array:
+      len: 20
+      stride: 4
+    fieldset: IRQSTEER_CHn_STATUS
+  - name: CHn_MINTDIS
+    byte_offset: 244
+    fieldset: IRQSTEER_CHn_MINTDIS
+  - name: CHn_MSTRSTAT
+    byte_offset: 248
+    fieldset: IRQSTEER_CHn_MSTRSTAT
+fieldset/IRQSTEER_CHn_MASK:
+  description: ''
+  fields:
+  - name: MASKFLD
+    bit_offset: 0
+    bit_size: 32
+    description: Masks
+fieldset/IRQSTEER_CHn_SET:
+  description: ''
+  fields:
+  - name: FORCEFLD
+    bit_offset: 0
+    bit_size: 32
+    description: Force Interrupt
+fieldset/IRQSTEER_CHn_STATUS:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 32
+    description: Status of an interrupt
+fieldset/IRQSTEER_CHn_MINTDIS:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 0
+    bit_size: 10
+fieldset/IRQSTEER_CHn_MSTRSTAT:
+  description: ''
+  fields:
+  - name: STATUS
+    bit_offset: 0
+    bit_size: 1

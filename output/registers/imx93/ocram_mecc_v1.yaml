@@ -1,0 +1,2572 @@
+block/OCRAM_MECC:
+  description: ''
+  items:
+  - name: SINGLE_ERR_STATUS
+    byte_offset: 0
+  - name: MULTI_ERR_STATUS
+    byte_offset: 4
+  - name: STRB_ERR_STATUS
+    byte_offset: 8
+  - name: ADDR_ERR_STATUS
+    byte_offset: 12
+  - name: SINGLE_ERR_STAT_EN
+    byte_offset: 16
+  - name: MULTI_ERR_STAT_EN
+    byte_offset: 20
+  - name: STRB_ERR_STAT_EN
+    byte_offset: 24
+  - name: ADDR_ERR_STAT_EN
+    byte_offset: 28
+  - name: SINGLE_ERR_SIG_EN
+    byte_offset: 32
+  - name: MULTI_ERR_SIG_EN
+    byte_offset: 36
+  - name: STRB_ERR_SIG_EN
+    byte_offset: 40
+  - name: ADDR_ERR_SIG_EN
+    byte_offset: 44
+  - name: ERR_DATA_INJ_LOW0
+    byte_offset: 48
+  - name: ERR_DATA_INJ_HIGH0
+    byte_offset: 52
+  - name: ERR_ECC_INJ0
+    byte_offset: 56
+  - name: ERR_DATA_INJ_LOW1
+    byte_offset: 60
+  - name: ERR_DATA_INJ_HIGH1
+    byte_offset: 64
+  - name: ERR_ECC_INJ1
+    byte_offset: 68
+  - name: ERR_DATA_INJ_LOW2
+    byte_offset: 72
+  - name: ERR_DATA_INJ_HIGH2
+    byte_offset: 76
+  - name: ERR_ECC_INJ2
+    byte_offset: 80
+  - name: ERR_DATA_INJ_LOW3
+    byte_offset: 84
+  - name: ERR_DATA_INJ_HIGH3
+    byte_offset: 88
+  - name: ERR_ECC_INJ3
+    byte_offset: 92
+  - name: ERR_DATA_INJ_LOW4
+    byte_offset: 96
+  - name: ERR_DATA_INJ_HIGH4
+    byte_offset: 100
+  - name: ERR_ECC_INJ4
+    byte_offset: 104
+  - name: ERR_DATA_INJ_LOW5
+    byte_offset: 108
+  - name: ERR_DATA_INJ_HIGH5
+    byte_offset: 112
+  - name: ERR_ECC_INJ5
+    byte_offset: 116
+  - name: ERR_DATA_INJ_LOW6
+    byte_offset: 120
+  - name: ERR_DATA_INJ_HIGH6
+    byte_offset: 124
+  - name: ERR_ECC_INJ6
+    byte_offset: 128
+  - name: ERR_DATA_INJ_LOW7
+    byte_offset: 132
+  - name: ERR_DATA_INJ_HIGH7
+    byte_offset: 136
+  - name: ERR_ECC_INJ7
+    byte_offset: 140
+  - name: ERR_DATA_INJ_LOW8
+    byte_offset: 144
+  - name: ERR_DATA_INJ_HIGH8
+    byte_offset: 148
+  - name: ERR_ECC_INJ8
+    byte_offset: 152
+  - name: ERR_DATA_INJ_LOW9
+    byte_offset: 156
+  - name: ERR_DATA_INJ_HIGH9
+    byte_offset: 160
+  - name: ERR_ECC_INJ9
+    byte_offset: 164
+  - name: ERR_DATA_INJ_LOW10
+    byte_offset: 168
+  - name: ERR_DATA_INJ_HIGH10
+    byte_offset: 172
+  - name: ERR_ECC_INJ10
+    byte_offset: 176
+  - name: ERR_DATA_INJ_LOW11
+    byte_offset: 180
+  - name: ERR_DATA_INJ_HIGH11
+    byte_offset: 184
+  - name: ERR_ECC_INJ11
+    byte_offset: 188
+  - name: ERR_DATA_INJ_LOW12
+    byte_offset: 192
+  - name: ERR_DATA_INJ_HIGH12
+    byte_offset: 196
+  - name: ERR_ECC_INJ12
+    byte_offset: 200
+  - name: ERR_DATA_INJ_LOW13
+    byte_offset: 204
+  - name: ERR_DATA_INJ_HIGH13
+    byte_offset: 208
+  - name: ERR_ECC_INJ13
+    byte_offset: 212
+  - name: ERR_DATA_INJ_LOW14
+    byte_offset: 216
+  - name: ERR_DATA_INJ_HIGH14
+    byte_offset: 220
+  - name: ERR_ECC_INJ14
+    byte_offset: 224
+  - name: ERR_DATA_INJ_LOW15
+    byte_offset: 228
+  - name: ERR_DATA_INJ_HIGH15
+    byte_offset: 232
+  - name: ERR_ECC_INJ15
+    byte_offset: 236
+  - name: SINGLE_ERR_ADDR_ECC0
+    byte_offset: 240
+  - name: SINGLE_ERR_DATA_LOW0
+    byte_offset: 244
+  - name: SINGLE_ERR_DATA_HIGH0
+    byte_offset: 248
+  - name: SINGLE_ERR_POS_LOW0
+    byte_offset: 252
+  - name: SINGLE_ERR_POS_HIGH0
+    byte_offset: 256
+  - name: SINGLE_ERR_ADDR_ECC1
+    byte_offset: 260
+  - name: SINGLE_ERR_DATA_LOW1
+    byte_offset: 264
+  - name: SINGLE_ERR_DATA_HIGH1
+    byte_offset: 268
+  - name: SINGLE_ERR_POS_LOW1
+    byte_offset: 272
+  - name: SINGLE_ERR_POS_HIGH1
+    byte_offset: 276
+  - name: SINGLE_ERR_ADDR_ECC2
+    byte_offset: 280
+  - name: SINGLE_ERR_DATA_LOW2
+    byte_offset: 284
+  - name: SINGLE_ERR_DATA_HIGH2
+    byte_offset: 288
+  - name: SINGLE_ERR_POS_LOW2
+    byte_offset: 292
+  - name: SINGLE_ERR_POS_HIGH2
+    byte_offset: 296
+  - name: SINGLE_ERR_ADDR_ECC3
+    byte_offset: 300
+  - name: SINGLE_ERR_DATA_LOW3
+    byte_offset: 304
+  - name: SINGLE_ERR_DATA_HIGH3
+    byte_offset: 308
+  - name: SINGLE_ERR_POS_LOW3
+    byte_offset: 312
+  - name: SINGLE_ERR_POS_HIGH3
+    byte_offset: 316
+  - name: SINGLE_ERR_ADDR_ECC4
+    byte_offset: 320
+  - name: SINGLE_ERR_DATA_LOW4
+    byte_offset: 324
+  - name: SINGLE_ERR_DATA_HIGH4
+    byte_offset: 328
+  - name: SINGLE_ERR_POS_LOW4
+    byte_offset: 332
+  - name: SINGLE_ERR_POS_HIGH4
+    byte_offset: 336
+  - name: SINGLE_ERR_ADDR_ECC5
+    byte_offset: 340
+  - name: SINGLE_ERR_DATA_LOW5
+    byte_offset: 344
+  - name: SINGLE_ERR_DATA_HIGH5
+    byte_offset: 348
+  - name: SINGLE_ERR_POS_LOW5
+    byte_offset: 352
+  - name: SINGLE_ERR_POS_HIGH5
+    byte_offset: 356
+  - name: SINGLE_ERR_ADDR_ECC6
+    byte_offset: 360
+  - name: SINGLE_ERR_DATA_LOW6
+    byte_offset: 364
+  - name: SINGLE_ERR_DATA_HIGH6
+    byte_offset: 368
+  - name: SINGLE_ERR_POS_LOW6
+    byte_offset: 372
+  - name: SINGLE_ERR_POS_HIGH6
+    byte_offset: 376
+  - name: SINGLE_ERR_ADDR_ECC7
+    byte_offset: 380
+  - name: SINGLE_ERR_DATA_LOW7
+    byte_offset: 384
+  - name: SINGLE_ERR_DATA_HIGH7
+    byte_offset: 388
+  - name: SINGLE_ERR_POS_LOW7
+    byte_offset: 392
+  - name: SINGLE_ERR_POS_HIGH7
+    byte_offset: 396
+  - name: SINGLE_ERR_ADDR_ECC8
+    byte_offset: 400
+  - name: SINGLE_ERR_DATA_LOW8
+    byte_offset: 404
+  - name: SINGLE_ERR_DATA_HIGH8
+    byte_offset: 408
+  - name: SINGLE_ERR_POS_LOW8
+    byte_offset: 412
+  - name: SINGLE_ERR_POS_HIGH8
+    byte_offset: 416
+  - name: SINGLE_ERR_ADDR_ECC9
+    byte_offset: 420
+  - name: SINGLE_ERR_DATA_LOW9
+    byte_offset: 424
+  - name: SINGLE_ERR_DATA_HIGH9
+    byte_offset: 428
+  - name: SINGLE_ERR_POS_LOW9
+    byte_offset: 432
+  - name: SINGLE_ERR_POS_HIGH9
+    byte_offset: 436
+  - name: SINGLE_ERR_ADDR_ECC10
+    byte_offset: 440
+  - name: SINGLE_ERR_DATA_LOW10
+    byte_offset: 444
+  - name: SINGLE_ERR_DATA_HIGH10
+    byte_offset: 448
+  - name: SINGLE_ERR_POS_LOW10
+    byte_offset: 452
+  - name: SINGLE_ERR_POS_HIGH10
+    byte_offset: 456
+  - name: SINGLE_ERR_ADDR_ECC11
+    byte_offset: 460
+  - name: SINGLE_ERR_DATA_LOW11
+    byte_offset: 464
+  - name: SINGLE_ERR_DATA_HIGH11
+    byte_offset: 468
+  - name: SINGLE_ERR_POS_LOW11
+    byte_offset: 472
+  - name: SINGLE_ERR_POS_HIGH11
+    byte_offset: 476
+  - name: SINGLE_ERR_ADDR_ECC12
+    byte_offset: 480
+  - name: SINGLE_ERR_DATA_LOW12
+    byte_offset: 484
+  - name: SINGLE_ERR_DATA_HIGH12
+    byte_offset: 488
+  - name: SINGLE_ERR_POS_LOW12
+    byte_offset: 492
+  - name: SINGLE_ERR_POS_HIGH12
+    byte_offset: 496
+  - name: SINGLE_ERR_ADDR_ECC13
+    byte_offset: 500
+  - name: SINGLE_ERR_DATA_LOW13
+    byte_offset: 504
+  - name: SINGLE_ERR_DATA_HIGH13
+    byte_offset: 508
+  - name: SINGLE_ERR_POS_LOW13
+    byte_offset: 512
+  - name: SINGLE_ERR_POS_HIGH13
+    byte_offset: 516
+  - name: SINGLE_ERR_ADDR_ECC14
+    byte_offset: 520
+  - name: SINGLE_ERR_DATA_LOW14
+    byte_offset: 524
+  - name: SINGLE_ERR_DATA_HIGH14
+    byte_offset: 528
+  - name: SINGLE_ERR_POS_LOW14
+    byte_offset: 532
+  - name: SINGLE_ERR_POS_HIGH14
+    byte_offset: 536
+  - name: SINGLE_ERR_ADDR_ECC15
+    byte_offset: 540
+  - name: SINGLE_ERR_DATA_LOW15
+    byte_offset: 544
+  - name: SINGLE_ERR_DATA_HIGH15
+    byte_offset: 548
+  - name: SINGLE_ERR_POS_LOW15
+    byte_offset: 552
+  - name: SINGLE_ERR_POS_HIGH15
+    byte_offset: 556
+  - name: MULTI_ERR_ADDR_ECC0
+    byte_offset: 560
+  - name: MULTI_ERR_DATA_LOW0
+    byte_offset: 564
+  - name: MULTI_ERR_DATA_HIGH0
+    byte_offset: 568
+  - name: MULTI_ERR_ADDR_ECC1
+    byte_offset: 572
+  - name: MULTI_ERR_DATA_LOW1
+    byte_offset: 576
+  - name: MULTI_ERR_DATA_HIGH1
+    byte_offset: 580
+  - name: MULTI_ERR_ADDR_ECC2
+    byte_offset: 584
+  - name: MULTI_ERR_DATA_LOW2
+    byte_offset: 588
+  - name: MULTI_ERR_DATA_HIGH2
+    byte_offset: 592
+  - name: MULTI_ERR_ADDR_ECC3
+    byte_offset: 596
+  - name: MULTI_ERR_DATA_LOW3
+    byte_offset: 600
+  - name: MULTI_ERR_DATA_HIGH3
+    byte_offset: 604
+  - name: MULTI_ERR_ADDR_ECC4
+    byte_offset: 608
+  - name: MULTI_ERR_DATA_LOW4
+    byte_offset: 612
+  - name: MULTI_ERR_DATA_HIGH4
+    byte_offset: 616
+  - name: MULTI_ERR_ADDR_ECC5
+    byte_offset: 620
+  - name: MULTI_ERR_DATA_LOW5
+    byte_offset: 624
+  - name: MULTI_ERR_DATA_HIGH5
+    byte_offset: 628
+  - name: MULTI_ERR_ADDR_ECC6
+    byte_offset: 632
+  - name: MULTI_ERR_DATA_LOW6
+    byte_offset: 636
+  - name: MULTI_ERR_DATA_HIGH6
+    byte_offset: 640
+  - name: MULTI_ERR_ADDR_ECC7
+    byte_offset: 644
+  - name: MULTI_ERR_DATA_LOW7
+    byte_offset: 648
+  - name: MULTI_ERR_DATA_HIGH7
+    byte_offset: 652
+  - name: MULTI_ERR_ADDR_ECC8
+    byte_offset: 656
+  - name: MULTI_ERR_DATA_LOW8
+    byte_offset: 660
+  - name: MULTI_ERR_DATA_HIGH8
+    byte_offset: 664
+  - name: MULTI_ERR_ADDR_ECC9
+    byte_offset: 668
+  - name: MULTI_ERR_DATA_LOW9
+    byte_offset: 672
+  - name: MULTI_ERR_DATA_HIGH9
+    byte_offset: 676
+  - name: MULTI_ERR_ADDR_ECC10
+    byte_offset: 680
+  - name: MULTI_ERR_DATA_LOW10
+    byte_offset: 684
+  - name: MULTI_ERR_DATA_HIGH10
+    byte_offset: 688
+  - name: MULTI_ERR_ADDR_ECC11
+    byte_offset: 692
+  - name: MULTI_ERR_DATA_LOW11
+    byte_offset: 696
+  - name: MULTI_ERR_DATA_HIGH11
+    byte_offset: 700
+  - name: MULTI_ERR_ADDR_ECC12
+    byte_offset: 704
+  - name: MULTI_ERR_DATA_LOW12
+    byte_offset: 708
+  - name: MULTI_ERR_DATA_HIGH12
+    byte_offset: 712
+  - name: MULTI_ERR_ADDR_ECC13
+    byte_offset: 716
+  - name: MULTI_ERR_DATA_LOW13
+    byte_offset: 720
+  - name: MULTI_ERR_DATA_HIGH13
+    byte_offset: 724
+  - name: MULTI_ERR_ADDR_ECC14
+    byte_offset: 728
+  - name: MULTI_ERR_DATA_LOW14
+    byte_offset: 732
+  - name: MULTI_ERR_DATA_HIGH14
+    byte_offset: 736
+  - name: MULTI_ERR_ADDR_ECC15
+    byte_offset: 740
+  - name: MULTI_ERR_DATA_LOW15
+    byte_offset: 744
+  - name: MULTI_ERR_DATA_HIGH15
+    byte_offset: 748
+  - name: PIPE_ECC_EN
+    byte_offset: 752
+  - name: PENDING_STAT
+    byte_offset: 756
+  - name: MEM_INIT
+    byte_offset: 760
+fieldset/OCRAM_MECC_SINGLE_ERR_STATUS_SINGLE:
+  description: ''
+  fields:
+  - name: ERR0
+    bit_offset: 0
+    bit_size: 1
+  - name: ERR1
+    bit_offset: 1
+    bit_size: 1
+  - name: ERR2
+    bit_offset: 2
+    bit_size: 1
+  - name: ERR3
+    bit_offset: 3
+    bit_size: 1
+  - name: ERR4
+    bit_offset: 4
+    bit_size: 1
+  - name: ERR5
+    bit_offset: 5
+    bit_size: 1
+  - name: ERR6
+    bit_offset: 6
+    bit_size: 1
+  - name: ERR7
+    bit_offset: 7
+    bit_size: 1
+  - name: ERR8
+    bit_offset: 8
+    bit_size: 1
+  - name: ERR9
+    bit_offset: 9
+    bit_size: 1
+  - name: ERR10
+    bit_offset: 10
+    bit_size: 1
+  - name: ERR11
+    bit_offset: 11
+    bit_size: 1
+  - name: ERR12
+    bit_offset: 12
+    bit_size: 1
+  - name: ERR13
+    bit_offset: 13
+    bit_size: 1
+  - name: ERR14
+    bit_offset: 14
+    bit_size: 1
+  - name: ERR15
+    bit_offset: 15
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STATUS_MULTI:
+  description: ''
+  fields:
+  - name: ERR0
+    bit_offset: 0
+    bit_size: 1
+  - name: ERR1
+    bit_offset: 1
+    bit_size: 1
+  - name: ERR2
+    bit_offset: 2
+    bit_size: 1
+  - name: ERR3
+    bit_offset: 3
+    bit_size: 1
+  - name: ERR4
+    bit_offset: 4
+    bit_size: 1
+  - name: ERR5
+    bit_offset: 5
+    bit_size: 1
+  - name: ERR6
+    bit_offset: 6
+    bit_size: 1
+  - name: ERR7
+    bit_offset: 7
+    bit_size: 1
+  - name: ERR8
+    bit_offset: 8
+    bit_size: 1
+  - name: ERR9
+    bit_offset: 9
+    bit_size: 1
+  - name: ERR10
+    bit_offset: 10
+    bit_size: 1
+  - name: ERR11
+    bit_offset: 11
+    bit_size: 1
+  - name: ERR12
+    bit_offset: 12
+    bit_size: 1
+  - name: ERR13
+    bit_offset: 13
+    bit_size: 1
+  - name: ERR14
+    bit_offset: 14
+    bit_size: 1
+  - name: ERR15
+    bit_offset: 15
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STATUS_STRB:
+  description: ''
+  fields:
+  - name: ERR0
+    bit_offset: 0
+    bit_size: 1
+  - name: ERR1
+    bit_offset: 1
+    bit_size: 1
+  - name: ERR2
+    bit_offset: 2
+    bit_size: 1
+  - name: ERR3
+    bit_offset: 3
+    bit_size: 1
+  - name: ERR4
+    bit_offset: 4
+    bit_size: 1
+  - name: ERR5
+    bit_offset: 5
+    bit_size: 1
+  - name: ERR6
+    bit_offset: 6
+    bit_size: 1
+  - name: ERR7
+    bit_offset: 7
+    bit_size: 1
+  - name: ERR8
+    bit_offset: 8
+    bit_size: 1
+  - name: ERR9
+    bit_offset: 9
+    bit_size: 1
+  - name: ERR10
+    bit_offset: 10
+    bit_size: 1
+  - name: ERR11
+    bit_offset: 11
+    bit_size: 1
+  - name: ERR12
+    bit_offset: 12
+    bit_size: 1
+  - name: ERR13
+    bit_offset: 13
+    bit_size: 1
+  - name: ERR14
+    bit_offset: 14
+    bit_size: 1
+  - name: ERR15
+    bit_offset: 15
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STATUS_ADDR:
+  description: ''
+  fields:
+  - name: ERR0
+    bit_offset: 0
+    bit_size: 1
+  - name: ERR1
+    bit_offset: 1
+    bit_size: 1
+  - name: ERR2
+    bit_offset: 2
+    bit_size: 1
+  - name: ERR3
+    bit_offset: 3
+    bit_size: 1
+  - name: ERR4
+    bit_offset: 4
+    bit_size: 1
+  - name: ERR5
+    bit_offset: 5
+    bit_size: 1
+  - name: ERR6
+    bit_offset: 6
+    bit_size: 1
+  - name: ERR7
+    bit_offset: 7
+    bit_size: 1
+  - name: ERR8
+    bit_offset: 8
+    bit_size: 1
+  - name: ERR9
+    bit_offset: 9
+    bit_size: 1
+  - name: ERR10
+    bit_offset: 10
+    bit_size: 1
+  - name: ERR11
+    bit_offset: 11
+    bit_size: 1
+  - name: ERR12
+    bit_offset: 12
+    bit_size: 1
+  - name: ERR13
+    bit_offset: 13
+    bit_size: 1
+  - name: ERR14
+    bit_offset: 14
+    bit_size: 1
+  - name: ERR15
+    bit_offset: 15
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR0_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR1_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR2_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR3_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR4_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR5_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 5
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR6_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 6
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR7_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 7
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR8_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR9_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 9
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR10_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR11_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR12_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 12
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR13_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 13
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR14_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_STAT_EN_SINGLE_ERR15_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR0_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR1_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR2_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR3_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR4_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR5_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 5
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR6_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 6
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR7_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 7
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR8_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR9_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 9
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR10_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR11_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR12_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 12
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR13_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 13
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR14_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_STAT_EN_MULTI_ERR15_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR0_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR1_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR2_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR3_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR4_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR5_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 5
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR6_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 6
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR7_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 7
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR8_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR9_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 9
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR10_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR11_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR12_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 12
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR13_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 13
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR14_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_STAT_EN_STRB_ERR15_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR0_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR1_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR2_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR3_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR4_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR5_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 5
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR6_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 6
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR7_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 7
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR8_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR9_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 9
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR10_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR11_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR12_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 12
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR13_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 13
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR14_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_STAT_EN_ADDR_ERR15_STAT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR0_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR1_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR2_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR3_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR4_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR5_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 5
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR6_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 6
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR7_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 7
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR8_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR9_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 9
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR10_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR11_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR12_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 12
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR13_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 13
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR14_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/OCRAM_MECC_SINGLE_ERR_SIG_EN_SINGLE_ERR15_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR0_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR1_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR2_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR3_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR4_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR5_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 5
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR6_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 6
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR7_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 7
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR8_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR9_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 9
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR10_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR11_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR12_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 12
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR13_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 13
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR14_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/OCRAM_MECC_MULTI_ERR_SIG_EN_MULTI_ERR15_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR0_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR1_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR2_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR3_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR4_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR5_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 5
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR6_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 6
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR7_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 7
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR8_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR9_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 9
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR10_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR11_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR12_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 12
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR13_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 13
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR14_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/OCRAM_MECC_STRB_ERR_SIG_EN_STRB_ERR15_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR0_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR1_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR2_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR3_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR4_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR5_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 5
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR6_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 6
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR7_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 7
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR8_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 8
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR9_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 9
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR10_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 10
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR11_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 11
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR12_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 12
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR13_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 13
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR14_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 14
+    bit_size: 1
+fieldset/OCRAM_MECC_ADDR_ERR_SIG_EN_ADDR_ERR15_SIG:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 15
+    bit_size: 1
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW0_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW0
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH0_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH0
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ0_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ0
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW1_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW1
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH1_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH1
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ1_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ1
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW2_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW2
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH2_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH2
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ2_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ2
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW3_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW3
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH3_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH3
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ3_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ3
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW4_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW4
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH4_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH4
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ4_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ4
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW5_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW5
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH5_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH5
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ5_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ5
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW6_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW6
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH6_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH6
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ6_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ6
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW7_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW7
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH7_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH7
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ7_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ7
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW8_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW8
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH8_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH8
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ8_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ8
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW9_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW9
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH9_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH9
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ9_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ9
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW10_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW10
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH10_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH10
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ10_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ10
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW11_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW11
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH11_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH11
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ11_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ11
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW12_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW12
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH12_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH12
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ12_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ12
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW13_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW13
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH13_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH13
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ13_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ13
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW14_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW14
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH14_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH14
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ14_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ14
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_ERR_DATA_INJ_LOW15_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: LOW15
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_DATA_INJ_HIGH15_ERR_DATA_INJ:
+  description: ''
+  fields:
+  - name: HIGH15
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_ERR_ECC_INJ15_ERR_ECC:
+  description: ''
+  fields:
+  - name: INJ15
+    bit_offset: 0
+    bit_size: 8
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC0_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC0
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR0
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW0_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW0
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH0_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH0
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW0_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW0
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH0_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH0
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC1_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC1
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR1
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW1_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW1
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH1_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH1
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW1_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW1
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH1_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH1
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC2_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC2
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR2
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW2_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW2
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH2_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH2
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW2_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW2
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH2_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH2
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC3_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC3
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR3
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW3_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW3
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH3_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH3
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW3_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW3
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH3_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH3
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC4_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC4
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR4
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW4_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW4
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH4_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH4
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW4_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW4
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH4_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH4
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC5_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC5
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR5
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW5_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW5
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH5_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH5
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW5_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW5
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH5_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH5
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC6_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC6
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR6
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW6_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW6
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH6_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH6
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW6_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW6
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH6_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH6
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC7_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC7
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR7
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW7_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW7
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH7_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH7
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW7_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW7
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH7_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH7
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC8_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC8
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR8
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW8_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW8
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH8_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH8
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW8_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW8
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH8_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH8
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC9_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC9
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR9
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW9_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW9
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH9_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH9
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW9_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW9
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH9_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH9
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC10_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC10
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR10
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW10_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW10
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH10_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH10
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW10_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW10
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH10_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH10
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC11_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC11
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR11
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW11_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW11
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH11_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH11
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW11_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW11
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH11_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH11
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC12_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC12
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR12
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW12_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW12
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH12_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH12
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW12_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW12
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH12_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH12
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC13_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC13
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR13
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW13_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW13
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH13_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH13
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW13_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW13
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH13_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH13
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC14_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC14
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR14
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW14_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW14
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH14_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH14
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW14_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW14
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH14_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH14
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_ADDR_ECC15_SINGLE_ERR:
+  description: ''
+  fields:
+  - name: ECC15
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR15
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_LOW15_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW15
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_DATA_HIGH15_SINGLE_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH15
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_LOW15_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: LOW15
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_SINGLE_ERR_POS_HIGH15_SINGLE_ERR_POS:
+  description: ''
+  fields:
+  - name: HIGH15
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC0_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC0
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR0
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW0_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW0
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH0_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH0
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC1_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC1
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR1
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW1_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW1
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH1_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH1
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC2_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC2
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR2
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW2_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW2
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH2_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH2
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC3_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC3
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR3
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW3_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW3
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH3_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH3
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC4_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC4
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR4
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW4_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW4
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH4_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH4
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC5_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC5
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR5
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW5_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW5
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH5_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH5
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC6_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC6
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR6
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW6_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW6
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH6_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH6
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC7_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC7
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR7
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW7_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW7
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH7_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH7
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC8_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC8
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR8
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW8_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW8
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH8_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH8
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC9_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC9
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR9
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW9_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW9
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH9_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH9
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC10_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC10
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR10
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW10_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW10
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH10_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH10
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC11_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC11
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR11
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW11_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW11
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH11_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH11
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC12_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC12
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR12
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW12_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW12
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH12_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH12
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC13_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC13
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR13
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW13_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW13
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH13_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH13
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC14_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC14
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR14
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW14_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW14
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH14_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH14
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_ADDR_ECC15_MULTI_ERR:
+  description: ''
+  fields:
+  - name: ECC15
+    bit_offset: 0
+    bit_size: 8
+  - name: ADDR15
+    bit_offset: 8
+    bit_size: 19
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_LOW15_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: LOW15
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_MULTI_ERR_DATA_HIGH15_MULTI_ERR_DATA:
+  description: ''
+  fields:
+  - name: HIGH15
+    bit_offset: 0
+    bit_size: 32
+fieldset/OCRAM_MECC_PIPE_ECC_EN_READ_DATA_WAIT:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/OCRAM_MECC_PIPE_ECC_EN_READ_ADDR_PIPE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 1
+    bit_size: 1
+fieldset/OCRAM_MECC_PIPE_ECC_EN_WRITE_DATA_PIPE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 2
+    bit_size: 1
+fieldset/OCRAM_MECC_PIPE_ECC_EN_WRITE_ADDR_PIPE:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 3
+    bit_size: 1
+fieldset/OCRAM_MECC_PIPE_ECC_EN_ECC:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 4
+    bit_size: 1
+fieldset/OCRAM_MECC_PENDING_STAT_READ_DATA_WAIT:
+  description: ''
+  fields:
+  - name: PENDING
+    bit_offset: 0
+    bit_size: 1
+fieldset/OCRAM_MECC_PENDING_STAT_READ_ADDR_PIPE:
+  description: ''
+  fields:
+  - name: PENDING
+    bit_offset: 1
+    bit_size: 1
+fieldset/OCRAM_MECC_PENDING_STAT_WRITE_DATA_PIPE:
+  description: ''
+  fields:
+  - name: PENDING
+    bit_offset: 2
+    bit_size: 1
+fieldset/OCRAM_MECC_PENDING_STAT_WRITE_ADDR_PIPE:
+  description: ''
+  fields:
+  - name: PENDING
+    bit_offset: 3
+    bit_size: 1
+fieldset/OCRAM_MECC_MEM_INIT_MEM_INIT:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+  - name: DONE
+    bit_offset: 1
+    bit_size: 1

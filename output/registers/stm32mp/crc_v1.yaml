@@ -1,0 +1,71 @@
+block/CRC:
+  description: ''
+  items:
+  - name: DR
+    byte_offset: 0
+    description: CRC Data register
+    fieldset: CRC_DR
+  - name: IDR
+    byte_offset: 4
+    description: CRC Independent data register
+    fieldset: CRC_IDR
+  - name: CR
+    byte_offset: 8
+    description: CRC Control register
+    fieldset: CRC_CR
+  - name: INIT
+    byte_offset: 16
+    description: Initial CRC value register
+    fieldset: CRC_INIT
+  - name: POL
+    byte_offset: 20
+    description: CRC polynomial register
+    fieldset: CRC_POL
+  - name: VERR
+    byte_offset: 1012
+    description: CRC version register
+  - name: IPIDR
+    byte_offset: 1016
+    description: CRC ID register
+  - name: SIDR
+    byte_offset: 1020
+    description: CRC Size ID register
+fieldset/CRC_DR:
+  description: ''
+  fields:
+  - name: DR
+    bit_offset: 0
+    bit_size: 32
+    description: Data register bits
+fieldset/CRC_IDR:
+  description: ''
+  fields:
+  - name: IDR
+    bit_offset: 0
+    bit_size: 32
+    description: General-purpose 32-bit data register bits
+fieldset/CRC_CR:
+  description: ''
+  fields:
+  - name: RESET
+    bit_offset: 0
+    bit_size: 1
+    description: RESET the CRC computation unit bit
+  - name: POLYSIZE
+    bit_offset: 3
+    bit_size: 2
+    description: Polynomial size bits
+fieldset/CRC_INIT:
+  description: ''
+  fields:
+  - name: INIT
+    bit_offset: 0
+    bit_size: 32
+    description: Initial CRC value bits
+fieldset/CRC_POL:
+  description: ''
+  fields:
+  - name: POL
+    bit_offset: 0
+    bit_size: 32
+    description: Coefficients of the polynomial

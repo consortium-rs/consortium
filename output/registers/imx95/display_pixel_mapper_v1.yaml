@@ -1,0 +1,92 @@
+block/DISPLAY_PIXEL_MAPPER:
+  description: ''
+  items:
+  - name: LDB_CTRL
+    byte_offset: 0
+fieldset/DISPLAY_PIXEL_MAPPER_LDB_CTRL_CH0:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 0
+    bit_size: 1
+fieldset/DISPLAY_PIXEL_MAPPER_LDB_CTRL_CH0_DI:
+  description: ''
+  fields:
+  - name: SELECT
+    bit_offset: 1
+    bit_size: 1
+fieldset/DISPLAY_PIXEL_MAPPER_LDB_CTRL_CH1:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 2
+    bit_size: 1
+fieldset/DISPLAY_PIXEL_MAPPER_LDB_CTRL_CH1_DI:
+  description: ''
+  fields:
+  - name: SELECT
+    bit_offset: 3
+    bit_size: 1
+fieldset/DISPLAY_PIXEL_MAPPER_LDB_CTRL_SPLIT:
+  description: ''
+  fields:
+  - name: MODE
+    bit_offset: 4
+    bit_size: 1
+fieldset/DISPLAY_PIXEL_MAPPER_LDB_CTRL_CH0_DATA:
+  description: ''
+  fields:
+  - name: WIDTH
+    bit_offset: 5
+    bit_size: 1
+fieldset/DISPLAY_PIXEL_MAPPER_LDB_CTRL_CH0_BIT:
+  description: ''
+  fields:
+  - name: MAPPING
+    bit_offset: 6
+    bit_size: 1
+fieldset/DISPLAY_PIXEL_MAPPER_LDB_CTRL_CH1_DATA:
+  description: ''
+  fields:
+  - name: WIDTH
+    bit_offset: 7
+    bit_size: 1
+fieldset/DISPLAY_PIXEL_MAPPER_LDB_CTRL_CH1_BIT:
+  description: ''
+  fields:
+  - name: MAPPING
+    bit_offset: 8
+    bit_size: 1
+fieldset/DISPLAY_PIXEL_MAPPER_LDB_CTRL_DI0_VSYNC:
+  description: ''
+  fields:
+  - name: POLARITY
+    bit_offset: 9
+    bit_size: 1
+fieldset/DISPLAY_PIXEL_MAPPER_LDB_CTRL_DI1_VSYNC:
+  description: ''
+  fields:
+  - name: POLARITY
+    bit_offset: 10
+    bit_size: 1
+fieldset/DISPLAY_PIXEL_MAPPER_LDB_CTRL_CH0_ASYNC_FIFO:
+  description: ''
+  fields:
+  - name: RESET
+    bit_offset: 11
+    bit_size: 1
+fieldset/DISPLAY_PIXEL_MAPPER_LDB_CTRL_CH1_ASYNC_FIFO:
+  description: ''
+  fields:
+  - name: RESET
+    bit_offset: 12
+    bit_size: 1
+fieldset/DISPLAY_PIXEL_MAPPER_LDB_CTRL_ASYNC_FIFO:
+  description: ''
+  fields:
+  - name: ENABLE
+    bit_offset: 24
+    bit_size: 1
+  - name: THRESHOLD
+    bit_offset: 25
+    bit_size: 3

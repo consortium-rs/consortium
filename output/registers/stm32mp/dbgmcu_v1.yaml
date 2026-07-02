@@ -1,0 +1,68 @@
+block/DBGMCU:
+  description: ''
+  items:
+  - name: IDCODE
+    byte_offset: 0
+    description: MCU device ID code
+  - name: CR
+    byte_offset: 4
+    description: DBGMCU Configuration Register
+  - name: CRA35
+    byte_offset: 8
+    description: DBGMCU Configuration Register CPU1
+    fieldset: DBGMCU_CRA35
+  - name: AHB2LFZ1
+    byte_offset: 16
+    description: DBGMCU AHB2 (lowest part) Peripheral Freeze Register CPU1
+  - name: AHB2HFZ1
+    byte_offset: 20
+    description: DBGMCU AHB2 (highest part) Peripheral Freeze Register CPU1
+  - name: AHB2LFZ2
+    byte_offset: 24
+    description: DBGMCU AHB2 (lowest part) Peripheral Freeze Register CPU2
+  - name: AHB2HFZ2
+    byte_offset: 28
+    description: DBGMCU AHB2 (highest part) Peripheral Freeze Register CPU2
+  - name: AHBSRFZ1
+    byte_offset: 32
+    description: DBGMCU AHBSR Peripheral Freeze Register CPU1
+  - name: AHBSRFZ2
+    byte_offset: 36
+    description: DBGMCU AHBSR Peripheral Freeze Register CPU2
+  - name: AHBSRFZ3
+    byte_offset: 40
+    description: DBGMCU AHBSR Peripheral Freeze Register CPU3
+  - name: APB1FZ1
+    byte_offset: 44
+    description: DBGMCU APB1 Peripheral Freeze Register CPU1
+  - name: APB1FZ2
+    byte_offset: 48
+    description: DBGMCU APB1 Peripheral Freeze Register CPU2
+  - name: APB2FZ1
+    byte_offset: 52
+    description: DBGMCU APB2 Peripheral Freeze Register CPU1
+  - name: APB2FZ2
+    byte_offset: 56
+    description: DBGMCU APB2 Peripheral Freeze Register CPU2
+  - name: APB3FZ1
+    byte_offset: 60
+    description: DBGMCU APB3 Peripheral Freeze Register CPU1
+  - name: APB3FZ2
+    byte_offset: 64
+    description: DBGMCU APB3 Peripheral Freeze Register CPU2
+  - name: APBSRFZ1
+    byte_offset: 68
+    description: DBGMCU APBSR Peripheral Freeze Register CPU1
+  - name: APBSRFZ2
+    byte_offset: 72
+    description: DBGMCU APBSR Peripheral Freeze Register CPU2
+  - name: APBSRFZ3
+    byte_offset: 76
+    description: DBGMCU APBSR Peripheral Freeze Register CPU3
+fieldset/DBGMCU_CRA35:
+  description: ''
+  fields:
+  - name: WDFZCTL
+    bit_offset: 0
+    bit_size: 1
+    description: IWDG1 behavior when secure debug enabled

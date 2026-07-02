@@ -1,0 +1,101 @@
+block/DISPLAY_BLK_CTRL_DISPLAYMIX:
+  description: ''
+  items:
+  - name: DISPLAY_ENGINES_CLOCK_CONTROL
+    byte_offset: 0
+  - name: PIXEL_INTERLEAVER_CONTROL
+    byte_offset: 4
+    fieldset: DISPLAY_BLK_CTRL_DISPLAYMIX_PIXEL_INTERLEAVER_CONTROL
+  - name: PIXEL_LINK_CTRL
+    byte_offset: 8
+  - name: AXCACHE_CONTROL
+    byte_offset: 24
+    fieldset: DISPLAY_BLK_CTRL_DISPLAYMIX_AXCACHE_CONTROL
+  - name: QOS_SETTING
+    byte_offset: 28
+  - name: DISPLAYENGINE_PLANE_ASSOCIATION
+    byte_offset: 32
+fieldset/DISPLAY_BLK_CTRL_DISPLAYMIX_DISPLAY_ENGINES_CLOCK_CONTROL_DSIP_CLK0:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 0
+    bit_size: 2
+fieldset/DISPLAY_BLK_CTRL_DISPLAYMIX_DISPLAY_ENGINES_CLOCK_CONTROL_DSIP_CLK1:
+  description: ''
+  fields:
+  - name: SEL
+    bit_offset: 2
+    bit_size: 2
+fieldset/DISPLAY_BLK_CTRL_DISPLAYMIX_PIXEL_INTERLEAVER_CONTROL:
+  description: ''
+  fields:
+  - name: Mode
+    bit_offset: 0
+    bit_size: 1
+fieldset/DISPLAY_BLK_CTRL_DISPLAYMIX_PIXEL_INTERLEAVER_CONTROL_Disp_in:
+  description: ''
+  fields:
+  - name: sel
+    bit_offset: 1
+    bit_size: 1
+fieldset/DISPLAY_BLK_CTRL_DISPLAYMIX_PIXEL_LINK_CTRL_PL0:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 0
+    bit_size: 1
+  - name: valid
+    bit_offset: 1
+    bit_size: 1
+fieldset/DISPLAY_BLK_CTRL_DISPLAYMIX_PIXEL_LINK_CTRL_PL1:
+  description: ''
+  fields:
+  - name: enable
+    bit_offset: 4
+    bit_size: 1
+  - name: valid
+    bit_offset: 5
+    bit_size: 1
+fieldset/DISPLAY_BLK_CTRL_DISPLAYMIX_AXCACHE_CONTROL:
+  description: ''
+  fields:
+  - name: ArCache
+    bit_offset: 0
+    bit_size: 4
+  - name: AwCache
+    bit_offset: 8
+    bit_size: 4
+fieldset/DISPLAY_BLK_CTRL_DISPLAYMIX_AXCACHE_CONTROL_CmdSeq:
+  description: ''
+  fields:
+  - name: ArCache
+    bit_offset: 16
+    bit_size: 4
+  - name: AwCache
+    bit_offset: 20
+    bit_size: 4
+fieldset/DISPLAY_BLK_CTRL_DISPLAYMIX_QOS_SETTING_Display:
+  description: ''
+  fields:
+  - name: ArQoS
+    bit_offset: 0
+    bit_size: 3
+fieldset/DISPLAY_BLK_CTRL_DISPLAYMIX_QOS_SETTING_Display_Panic:
+  description: ''
+  fields:
+  - name: QoS
+    bit_offset: 4
+    bit_size: 3
+fieldset/DISPLAY_BLK_CTRL_DISPLAYMIX_QOS_SETTING_Blitter:
+  description: ''
+  fields:
+  - name: AxQoS
+    bit_offset: 8
+    bit_size: 3
+fieldset/DISPLAY_BLK_CTRL_DISPLAYMIX_QOS_SETTING_CmdSeq:
+  description: ''
+  fields:
+  - name: QoS
+    bit_offset: 16
+    bit_size: 3

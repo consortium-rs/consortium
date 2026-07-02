@@ -1,0 +1,92 @@
+block/MDF:
+  description: ''
+  items:
+  - name: GCR
+    byte_offset: 0
+    description: MDF Global Control register
+    fieldset: MDF_GCR
+  - name: CKGCR
+    byte_offset: 4
+    description: MDF Clock Generator Control Register
+    fieldset: MDF_CKGCR
+  - name: OR
+    byte_offset: 32
+    description: MDF Option Register
+    fieldset: MDF_OR
+  - name: HWCFGR
+    byte_offset: 4080
+    description: MDF Hardware Configuration Register
+  - name: VERR
+    byte_offset: 4084
+    description: MDF Version Register
+  - name: IPIDR
+    byte_offset: 4088
+    description: MDF Identification Register
+  - name: SIDR
+    byte_offset: 4092
+    description: MDF Size Identification Register
+fieldset/MDF_GCR:
+  description: ''
+  fields:
+  - name: TRGO
+    bit_offset: 0
+    bit_size: 1
+    description: Trigger output control
+  - name: ILVNB
+    bit_offset: 4
+    bit_size: 4
+    description: Interleaved Number
+fieldset/MDF_CKGCR:
+  description: ''
+  fields:
+  - name: CKDEN
+    bit_offset: 0
+    bit_size: 1
+    description: CKGEN diveders enable
+  - name: CCK0EN
+    bit_offset: 1
+    bit_size: 1
+    description: CCK0 clock enable
+  - name: CCK1EN
+    bit_offset: 2
+    bit_size: 1
+    description: CCK1 clock enable
+  - name: CKGMOD
+    bit_offset: 4
+    bit_size: 1
+    description: Clock genartor mode
+  - name: CCK0DIR
+    bit_offset: 5
+    bit_size: 1
+    description: CCK0 clock direction
+  - name: CCK1DIR
+    bit_offset: 6
+    bit_size: 1
+    description: CCK1 clock direction
+  - name: TRGSENS
+    bit_offset: 8
+    bit_size: 1
+    description: CKGEN trigger sensitivity selection
+  - name: TRGSRC
+    bit_offset: 12
+    bit_size: 4
+    description: Digital Filter trigger signal selection
+  - name: CCKDIV
+    bit_offset: 16
+    bit_size: 4
+    description: Divider to controle the MDF_CCK clock
+  - name: PROCDIV
+    bit_offset: 24
+    bit_size: 7
+    description: Divider to controle the serial interface clock
+  - name: CCKACTIVE
+    bit_offset: 31
+    bit_size: 1
+    description: Clock generator active flag
+fieldset/MDF_OR:
+  description: ''
+  fields:
+  - name: OPTION
+    bit_offset: 0
+    bit_size: 32
+    description: Option Controle Bits

@@ -1,0 +1,104 @@
+block/GPC_GLOBAL:
+  description: ''
+  items:
+  - name: GPC_GLOB_AUTHEN_CTRL
+    byte_offset: 4
+    fieldset: GPC_GLOBAL_GPC_GLOB_AUTHEN_CTRL
+  - name: GPC_MASTER
+    byte_offset: 28
+  - name: GPC_SYS_SLEEP
+    byte_offset: 64
+  - name: GPC_CPU_DOMAIN_ASSIGNMENT
+    byte_offset: 80
+    array:
+      len: 9
+      stride: 4
+  - name: GPC_PMIC_CTRL
+    byte_offset: 256
+  - name: GPC_PMIC_STBY_ACK_CTRL
+    byte_offset: 264
+  - name: GPC_ROSC_CTRL
+    byte_offset: 512
+  - name: GPC_ELE_HDSK_CTRL
+    byte_offset: 524
+fieldset/GPC_GLOBAL_GPC_GLOB_AUTHEN_CTRL_LOCK:
+  description: ''
+  fields:
+  - name: CFG
+    bit_offset: 7
+    bit_size: 1
+  - name: SETTING
+    bit_offset: 11
+    bit_size: 1
+  - name: LIST
+    bit_offset: 15
+    bit_size: 1
+fieldset/GPC_GLOBAL_GPC_GLOB_AUTHEN_CTRL:
+  description: ''
+  fields:
+  - name: USER
+    bit_offset: 8
+    bit_size: 1
+  - name: NONSECURE
+    bit_offset: 9
+    bit_size: 1
+fieldset/GPC_GLOBAL_GPC_GLOB_AUTHEN_CTRL_WHITE:
+  description: ''
+  fields:
+  - name: LIST
+    bit_offset: 16
+    bit_size: 16
+fieldset/GPC_GLOBAL_GPC_MASTER_CPU:
+  description: ''
+  fields:
+  - name: MASTER
+    bit_offset: 0
+    bit_size: 9
+fieldset/GPC_GLOBAL_GPC_SYS_SLEEP_FORCE_CPU:
+  description: ''
+  fields:
+  - name: DISABLE
+    bit_offset: 16
+    bit_size: 9
+fieldset/GPC_GLOBAL_GPC_CPU_DOMAIN_ASSIGNMENT_CPU:
+  description: ''
+  fields:
+  - name: DOMAIN
+    bit_offset: 0
+    bit_size: 4
+fieldset/GPC_GLOBAL_GPC_PMIC_CTRL_PMIC_STBY:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/GPC_GLOBAL_GPC_PMIC_STBY_ACK_CTRL_STBY_ON_CNT:
+  description: ''
+  fields:
+  - name: CFG
+    bit_offset: 0
+    bit_size: 12
+  - name: MODE
+    bit_offset: 14
+    bit_size: 2
+fieldset/GPC_GLOBAL_GPC_PMIC_STBY_ACK_CTRL_STBY_OFF_CNT:
+  description: ''
+  fields:
+  - name: CFG
+    bit_offset: 16
+    bit_size: 12
+  - name: MODE
+    bit_offset: 30
+    bit_size: 2
+fieldset/GPC_GLOBAL_GPC_ROSC_CTRL_ROSC_OFF:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
+fieldset/GPC_GLOBAL_GPC_ELE_HDSK_CTRL_ELE_HDSK:
+  description: ''
+  fields:
+  - name: EN
+    bit_offset: 0
+    bit_size: 1
