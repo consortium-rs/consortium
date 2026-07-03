@@ -525,6 +525,34 @@ name = "consortium-ffi"
 version = "0.1.0"
 
 [[package]]
+name = "consortium-hal"
+version = "0.1.0"
+
+[[package]]
+name = "consortium-hal-imx9"
+version = "0.1.0"
+dependencies = [
+ "consortium-hal",
+ "consortium-pac-imx9",
+ "critical-section",
+ "embassy-sync",
+ "embassy-time-driver",
+ "embassy-time-queue-utils",
+]
+
+[[package]]
+name = "consortium-hal-stm32mp2"
+version = "0.1.0"
+dependencies = [
+ "consortium-hal",
+ "consortium-pac-stm32mp2",
+ "critical-section",
+ "embassy-sync",
+ "embassy-time-driver",
+ "embassy-time-queue-utils",
+]
+
+[[package]]
 name = "consortium-hmi"
 version = "0.1.0"
 dependencies = [

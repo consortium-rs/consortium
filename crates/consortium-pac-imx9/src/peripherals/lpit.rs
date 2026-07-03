@@ -51,6 +51,19 @@ impl LPIT {
         assert!(n < 4usize);
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x20usize + n * 16usize) as _) }
     }
+    #[inline(always)]
+    pub const fn CHANNEL_CVAL(
+        self,
+        n: usize,
+    ) -> crate::common::Reg<LPIT_CVAL_TMR_CUR, crate::common::RW> {
+        assert!(n < 4usize);
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x24usize + n * 16usize) as _) }
+    }
+    #[inline(always)]
+    pub const fn CHANNEL_TCTRL(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+        assert!(n < 4usize);
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x28usize + n * 16usize) as _) }
+    }
 }
 #[doc = ""]
 #[repr(transparent)]

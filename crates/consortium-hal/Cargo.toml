@@ -1,0 +1,14 @@
+[package]
+description       = "Shared HAL traits for Consortium chip support crates"
+edition.workspace = true
+license.workspace = true
+name              = "consortium-hal"
+version.workspace = true
+
+[features]
+default = []
+
+[dependencies]
+
+[lints]
+workspace = true

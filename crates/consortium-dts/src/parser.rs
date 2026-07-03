@@ -15,7 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use crate::ast::{
-    Cell, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference,
+    Cell, Deletion, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference,
     TopLevelItem,
 };
 use crate::error::{DtsError, LexError, ParseError, Span};
@@ -24,6 +24,14 @@ use crate::lexer::{Token, TokenKind, lex};
 /// Parse DTS source into a `File`.
 pub fn parse_dts(source: &str) -> Result<File, DtsError> {
     Ok(Parser::new(source)?.parse_file()?)
+}
+
+/// Collected items from a node or overlay body.
+#[derive(Debug, Default)]
+struct NodeBody {
+    properties: Vec<Property>,
+    children: Vec<Node>,
+    deletions: Vec<Deletion>,
 }
 
 /// Recursive-descent parser for generated DTS fragments.
@@ -62,6 +70,12 @@ impl<'src> Parser<'src> {
                 }
                 TokenKind::MemReserve => file.mem_reserves.push(self.parse_mem_reserve()?),
                 TokenKind::Include => file.includes.push(self.parse_include()?),
+                TokenKind::CppDirective => {
+                    let token = self.advance();
+                    file.items.push(TopLevelItem::CppDirective(
+                        self.text(token.span).trim().to_string(),
+                    ));
+                }
                 _ => file.items.push(self.parse_top_level_item()?),
             }
         }
@@ -78,7 +92,7 @@ impl<'src> Parser<'src> {
             TokenKind::Amp => {
                 let target = self.parse_reference()?;
                 Ok(TopLevelItem::Overlay(
-                    self.parse_overlay_after_target(target)?,
+                    self.parse_overlay_after_target(None, target)?,
                 ))
             }
             TokenKind::DeleteNode => {
@@ -86,6 +100,19 @@ impl<'src> Parser<'src> {
                 let reference = self.parse_reference()?;
                 self.expect(TokenKind::Semi, "`;` after /delete-node/")?;
                 Ok(TopLevelItem::DeleteNode(reference))
+            }
+            // A label applied to a reference override, as in `foo: &bar { ... };`.
+            TokenKind::Ident
+                if self.kind_at(self.pos + 1) == Some(TokenKind::Colon)
+                    && self.kind_at(self.pos + 2) == Some(TokenKind::Amp) =>
+            {
+                let label = self.advance();
+                let label = self.text(label.span).to_string();
+                self.advance();
+                let target = self.parse_reference()?;
+                Ok(TopLevelItem::Overlay(
+                    self.parse_overlay_after_target(Some(label), target)?,
+                ))
             }
             TokenKind::Ident => Ok(TopLevelItem::Root(self.parse_node_or_labeled_node()?)),
             _ => Err(self.expected("top-level DTS item")),
@@ -127,15 +154,21 @@ impl<'src> Parser<'src> {
         }
     }
 
-    fn parse_overlay_after_target(&mut self, target: Reference) -> Result<NodeOverlay, ParseError> {
+    fn parse_overlay_after_target(
+        &mut self,
+        label: Option<String>,
+        target: Reference,
+    ) -> Result<NodeOverlay, ParseError> {
         self.expect(TokenKind::LBrace, "`{` after overlay target")?;
-        let (properties, children) = self.parse_node_body_items()?;
+        let body = self.parse_node_body_items()?;
         self.expect(TokenKind::RBrace, "`}` after overlay body")?;
         self.expect(TokenKind::Semi, "`;` after overlay")?;
         Ok(NodeOverlay {
+            label,
             target,
-            properties,
-            children,
+            properties: body.properties,
+            children: body.children,
+            deletions: body.deletions,
         })
     }
 
@@ -150,53 +183,100 @@ impl<'src> Parser<'src> {
             (None, first_text)
         };
 
-        let unit_address = if self.eat(TokenKind::At).is_some() {
-            Some(self.expect_atom_text("unit address")?)
+        let unit_address = if let Some(at) = self.eat(TokenKind::At) {
+            Some(self.parse_unit_address(at.span.end)?)
         } else {
             None
         };
 
         let node = Node {
+            omit_if_no_ref: false,
             label,
             name,
             unit_address,
             properties: Vec::new(),
             children: Vec::new(),
+            deletions: Vec::new(),
         };
 
         self.parse_node_body_for(node)
     }
 
+    /// Parse a unit address as the contiguous run of tokens following `@`.
+    ///
+    /// Bare hexadecimal addresses such as `204c0000` and comma-separated
+    /// addresses such as `0,0` lex as several tokens, so the address is taken
+    /// as the source slice spanning every token adjacent to `@` up to the next
+    /// whitespace or `{`.
+    fn parse_unit_address(&mut self, at_end: usize) -> Result<String, ParseError> {
+        let start = self.peek().span.start;
+        if start != at_end || !self.is_unit_address_token(self.peek().kind) {
+            return Err(self.expected("unit address"));
+        }
+
+        let mut end = self.advance().span.end;
+        while self.peek().span.start == end && self.is_unit_address_token(self.peek().kind) {
+            end = self.advance().span.end;
+        }
+
+        Ok(self.source[start..end].to_string())
+    }
+
+    fn is_unit_address_token(&self, kind: TokenKind) -> bool {
+        matches!(
+            kind,
+            TokenKind::Ident | TokenKind::Number | TokenKind::Comma
+        )
+    }
+
     fn parse_node_body_for(&mut self, mut node: Node) -> Result<Node, ParseError> {
         self.expect(TokenKind::LBrace, "`{` after node name")?;
-        let (properties, children) = self.parse_node_body_items()?;
-        node.properties = properties;
-        node.children = children;
+        let body = self.parse_node_body_items()?;
+        node.properties = body.properties;
+        node.children = body.children;
+        node.deletions = body.deletions;
         self.expect(TokenKind::RBrace, "`}` after node body")?;
         self.expect(TokenKind::Semi, "`;` after node")?;
         Ok(node)
     }
 
-    fn parse_node_body_items(&mut self) -> Result<(Vec<Property>, Vec<Node>), ParseError> {
-        let mut properties = Vec::new();
-        let mut children = Vec::new();
+    fn parse_node_body_items(&mut self) -> Result<NodeBody, ParseError> {
+        let mut body = NodeBody::default();
 
         while !self.at(TokenKind::RBrace) {
-            if self.at(TokenKind::Eof) {
-                return Err(ParseError::UnexpectedEof {
-                    span: self.peek().span,
-                    context: "node body",
-                });
-            }
-
-            if self.item_is_node() {
-                children.push(self.parse_node_or_labeled_node()?);
-            } else {
-                properties.push(self.parse_property()?);
+            match self.peek().kind {
+                TokenKind::Eof => {
+                    return Err(ParseError::UnexpectedEof {
+                        span: self.peek().span,
+                        context: "node body",
+                    });
+                }
+                TokenKind::OmitIfNoRef => {
+                    self.advance();
+                    let mut child = self.parse_node_or_labeled_node()?;
+                    child.omit_if_no_ref = true;
+                    body.children.push(child);
+                }
+                TokenKind::DeleteProperty => {
+                    self.advance();
+                    let name =
+                        self.expect(TokenKind::Ident, "property name after /delete-property/")?;
+                    let name = self.text(name.span).to_string();
+                    self.expect(TokenKind::Semi, "`;` after /delete-property/")?;
+                    body.deletions.push(Deletion::Property(name));
+                }
+                TokenKind::DeleteNode => {
+                    self.advance();
+                    let reference = self.parse_reference()?;
+                    self.expect(TokenKind::Semi, "`;` after /delete-node/")?;
+                    body.deletions.push(Deletion::Node(reference));
+                }
+                _ if self.item_is_node() => body.children.push(self.parse_node_or_labeled_node()?),
+                _ => body.properties.push(self.parse_property()?),
             }
         }
 
-        Ok((properties, children))
+        Ok(body)
     }
 
     fn item_is_node(&self) -> bool {
@@ -213,9 +293,24 @@ impl<'src> Parser<'src> {
             idx += 1;
         }
         if self.kind_at(idx) == Some(TokenKind::At) {
-            idx += 2;
+            let at_end = self.tokens[idx].span.end;
+            idx += 1;
+            idx = self.skip_unit_address_tokens(idx, at_end);
         }
         self.kind_at(idx) == Some(TokenKind::LBrace)
+    }
+
+    /// Advance `idx` past the contiguous run of tokens forming a unit address.
+    fn skip_unit_address_tokens(&self, mut idx: usize, at_end: usize) -> usize {
+        let mut prev_end = at_end;
+        while let Some(token) = self.tokens.get(idx) {
+            if token.span.start != prev_end || !self.is_unit_address_token(token.kind) {
+                break;
+            }
+            prev_end = token.span.end;
+            idx += 1;
+        }
+        idx
     }
 
     fn parse_property(&mut self) -> Result<Property, ParseError> {
@@ -271,6 +366,15 @@ impl<'src> Parser<'src> {
                 ]))
             }
             TokenKind::Lt => Ok(PropValue::Cells(self.parse_cells()?)),
+            TokenKind::Bits => {
+                self.advance();
+                let width = self.expect(TokenKind::Number, "bit width after /bits/")?;
+                let width = self.parse_number(width.span)? as u32;
+                Ok(PropValue::Bits {
+                    width,
+                    cells: self.parse_cells()?,
+                })
+            }
             TokenKind::LBracket => Ok(PropValue::Bytes(self.parse_bytes()?)),
             TokenKind::Amp => Ok(PropValue::Reference(self.parse_reference()?)),
             _ => self.parse_raw_value(),
@@ -686,6 +790,81 @@ mod tests {
             .to_dts();
 
         assert_eq!(parse_dts(&dts).unwrap().to_dts(), dts);
+    }
+
+    #[test]
+    fn parses_bare_hex_and_comma_unit_addresses() {
+        let file = parse_dts("/ {\n    sram@204c0000 {\n    };\n    bus@0,0 {\n    };\n};\n")
+            .expect("parse should succeed");
+
+        let TopLevelItem::Root(root) = &file.items[0] else {
+            panic!("expected root node");
+        };
+        assert_eq!(root.children[0].name, "sram");
+        assert_eq!(root.children[0].unit_address.as_deref(), Some("204c0000"));
+        assert_eq!(root.children[1].unit_address.as_deref(), Some("0,0"));
+    }
+
+    #[test]
+    fn preserves_preprocessor_directives() {
+        let file =
+            parse_dts("#ifndef GUARD\n#define GUARD\n#define IMX_DSE 0x2\n/ {\n};\n#endif\n")
+                .expect("parse should succeed");
+
+        assert_eq!(
+            file.items[0],
+            TopLevelItem::CppDirective("#ifndef GUARD".to_string())
+        );
+        assert_eq!(
+            file.items[1],
+            TopLevelItem::CppDirective("#define GUARD".to_string())
+        );
+        assert_eq!(
+            file.items[2],
+            TopLevelItem::CppDirective("#define IMX_DSE 0x2".to_string())
+        );
+        assert!(matches!(file.items[3], TopLevelItem::Root(_)));
+        assert_eq!(
+            file.items[4],
+            TopLevelItem::CppDirective("#endif".to_string())
+        );
+    }
+
+    #[test]
+    fn parses_bits_delete_and_omit_directives() {
+        let file = parse_dts(
+            "&pinctrl {\n    default-brightness-level = /bits/ 8 <0 1>;\n    /delete-property/ dmas;\n    /delete-node/ &old;\n\n    /omit-if-no-ref/\n    eth_pins: eth-0 {\n    };\n};\n",
+        )
+        .expect("parse should succeed");
+
+        let TopLevelItem::Overlay(overlay) = &file.items[0] else {
+            panic!("expected overlay");
+        };
+        assert!(matches!(
+            overlay.properties[0].value,
+            Some(PropValue::Bits { width: 8, .. })
+        ));
+        assert_eq!(
+            overlay.deletions,
+            vec![
+                Deletion::Property("dmas".to_string()),
+                Deletion::Node(Reference::label("old")),
+            ]
+        );
+        assert!(overlay.children[0].omit_if_no_ref);
+        assert_eq!(overlay.children[0].label.as_deref(), Some("eth_pins"));
+    }
+
+    #[test]
+    fn parses_labeled_overlay() {
+        let file = parse_dts("m2_usdhc: &usdhc3 {\n    bus-width = <4>;\n};\n")
+            .expect("parse should succeed");
+
+        let TopLevelItem::Overlay(overlay) = &file.items[0] else {
+            panic!("expected overlay");
+        };
+        assert_eq!(overlay.label.as_deref(), Some("m2_usdhc"));
+        assert_eq!(overlay.target, Reference::label("usdhc3"));
     }
 
     #[test]

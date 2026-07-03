@@ -17,7 +17,7 @@
 use core::fmt::Write;
 
 use crate::ast::{
-    Cell, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference,
+    Cell, Deletion, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference,
     TopLevelItem,
 };
 
@@ -150,10 +150,20 @@ impl Codegen {
                     format_reference(reference)
                 );
             }
+            TopLevelItem::CppDirective(directive) => {
+                self.write_indent();
+                self.output.push_str(directive);
+                self.output.push('\n');
+            }
         }
     }
 
     fn print_node(&mut self, node: &Node) {
+        if node.omit_if_no_ref {
+            self.write_indent();
+            self.output.push_str("/omit-if-no-ref/\n");
+        }
+
         self.write_indent();
         if let Some(label) = &node.label {
             let _ = write!(self.output, "{label}: ");
@@ -170,7 +180,7 @@ impl Codegen {
         }
 
         self.indent += 1;
-        self.print_node_body(&node.properties, &node.children);
+        self.print_node_body(&node.properties, &node.children, &node.deletions);
         self.indent -= 1;
 
         self.write_indent();
@@ -179,17 +189,25 @@ impl Codegen {
 
     fn print_overlay(&mut self, overlay: &NodeOverlay) {
         self.write_indent();
+        if let Some(label) = &overlay.label {
+            let _ = write!(self.output, "{label}: ");
+        }
         let _ = writeln!(self.output, "{} {{", format_reference(&overlay.target));
 
         self.indent += 1;
-        self.print_node_body(&overlay.properties, &overlay.children);
+        self.print_node_body(&overlay.properties, &overlay.children, &overlay.deletions);
         self.indent -= 1;
 
         self.write_indent();
         self.output.push_str("};\n");
     }
 
-    fn print_node_body(&mut self, properties: &[Property], children: &[Node]) {
+    fn print_node_body(
+        &mut self,
+        properties: &[Property],
+        children: &[Node],
+        deletions: &[Deletion],
+    ) {
         for property in properties {
             self.print_property(property);
         }
@@ -203,6 +221,26 @@ impl Codegen {
                 self.output.push('\n');
             }
             self.print_node(child);
+        }
+
+        for deletion in deletions {
+            self.print_deletion(deletion);
+        }
+    }
+
+    fn print_deletion(&mut self, deletion: &Deletion) {
+        self.write_indent();
+        match deletion {
+            Deletion::Property(name) => {
+                let _ = writeln!(self.output, "/delete-property/ {name};");
+            }
+            Deletion::Node(reference) => {
+                let _ = writeln!(
+                    self.output,
+                    "/delete-node/ {};",
+                    format_reference(reference)
+                );
+            }
         }
     }
 
@@ -219,6 +257,10 @@ impl Codegen {
     fn print_prop_value(&mut self, value: &PropValue) {
         match value {
             PropValue::Cells(cells) => self.print_cells(cells),
+            PropValue::Bits { width, cells } => {
+                let _ = write!(self.output, "/bits/ {width} ");
+                self.print_cells(cells);
+            }
             PropValue::Strings(strings) => {
                 for (idx, string) in strings.iter().enumerate() {
                     if idx > 0 {

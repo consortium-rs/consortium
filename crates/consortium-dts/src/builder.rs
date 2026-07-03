@@ -15,7 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use crate::ast::{
-    Cell, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference,
+    Cell, Deletion, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference,
     TopLevelItem,
 };
 
@@ -83,11 +83,13 @@ impl Node {
     /// Create a node by name.
     pub fn new(name: impl Into<String>) -> Self {
         Self {
+            omit_if_no_ref: false,
             label: None,
             name: name.into(),
             unit_address: None,
             properties: Vec::new(),
             children: Vec::new(),
+            deletions: Vec::new(),
         }
     }
 
@@ -122,6 +124,18 @@ impl Node {
         self
     }
 
+    /// Mark the node with `/omit-if-no-ref/`.
+    pub fn omit_if_no_ref(mut self) -> Self {
+        self.omit_if_no_ref = true;
+        self
+    }
+
+    /// Add a deletion operation.
+    pub fn deletion(mut self, deletion: Deletion) -> Self {
+        self.deletions.push(deletion);
+        self
+    }
+
     /// Add `status = "okay";`.
     pub fn status_okay(self) -> Self {
         self.property(Property::string("status", "okay"))
@@ -142,10 +156,18 @@ impl NodeOverlay {
     /// Create an overlay from an explicit reference.
     pub fn new(target: Reference) -> Self {
         Self {
+            label: None,
             target,
             properties: Vec::new(),
             children: Vec::new(),
+            deletions: Vec::new(),
         }
+    }
+
+    /// Set the label applied to the override.
+    pub fn with_label(mut self, label: impl Into<String>) -> Self {
+        self.label = Some(label.into());
+        self
     }
 
     /// Add a property.
@@ -157,6 +179,12 @@ impl NodeOverlay {
     /// Add a child node.
     pub fn child(mut self, child: Node) -> Self {
         self.children.push(child);
+        self
+    }
+
+    /// Add a deletion operation.
+    pub fn deletion(mut self, deletion: Deletion) -> Self {
+        self.deletions.push(deletion);
         self
     }
 
