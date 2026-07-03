@@ -17,6 +17,8 @@
 
 //! Shared HAL traits for Consortium chip support crates.
 
+pub mod nvic;
+
 /// Marker for a concrete peripheral instance.
 pub trait Peripheral {
     /// Human-readable peripheral name used by generated chip metadata.

@@ -6,21 +6,32 @@ name              = "consortium-hal-imx9"
 version.workspace = true
 
 [features]
-default          = ["time-driver-lpit"]
+default = ["dma", "time-driver-lpit", "uart"]
+dma = ["dep:critical-section", "dep:embassy-sync"]
 time-driver-lpit = [
   "dep:critical-section",
   "dep:embassy-sync",
   "dep:embassy-time-driver",
   "dep:embassy-time-queue-utils",
 ]
+uart = [
+  "dep:critical-section",
+  "dep:embassy-sync",
+  "dep:embedded-hal-nb",
+  "dep:embedded-io",
+  "dep:embedded-io-async",
+]
 
 [dependencies]
-consortium-hal      = { path = "../consortium-hal" }
-consortium-pac-imx9 = { path = "../consortium-pac-imx9" }
-critical-section    = { optional = true, version = "1.2.0" }
-embassy-sync        = { optional = true, version = "0.8.0" }
-embassy-time-driver = { optional = true, version = "0.2.2" }
+consortium-hal           = { path = "../consortium-hal" }
+consortium-pac-imx9      = { path = "../consortium-pac-imx9" }
+critical-section         = { optional = true, version = "1.2.0" }
+embassy-sync             = { optional = true, version = "0.8.0" }
+embassy-time-driver      = { optional = true, version = "0.2.2" }
 embassy-time-queue-utils = { optional = true, version = "0.3.2" }
+embedded-hal-nb          = { optional = true, version = "1.0.0" }
+embedded-io              = { optional = true, version = "0.6.1" }
+embedded-io-async        = { optional = true, version = "0.6.1" }
 
 [lints]
 workspace = true

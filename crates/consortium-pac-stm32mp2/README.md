@@ -14,5 +14,6 @@ We parse the STM32CubeMP2 header files to generate chiptool-compatible metadata,
 - USART
 - RCC
 - HSEM
+- DMA (HPDMA global + channel blocks)
 
 We are actively working on adding support for more peripherals and improving the existing implementations. Contributions are welcome!
