@@ -27,6 +27,15 @@ pub struct Peripheral {
     /// Whether the peripheral lives in the secure domain.
     #[serde(default)]
     pub secure: bool,
+    /// Bus frequency in Hz, for peripherals that need one (e.g. an I2C bus
+    /// clock). Ignored by peripherals without a configurable rate, such as GPIO.
+    #[serde(default)]
+    pub frequency: Option<u32>,
+    /// Input/functional clock in Hz feeding the peripheral, used to derive
+    /// dividers (e.g. an I2C instance's kernel clock). Required for generated
+    /// I2C bring-up; ignored by GPIO.
+    #[serde(default)]
+    pub clock: Option<u32>,
     /// Signal-to-pin assignments (e.g. `sda = "PB0"`), keyed by signal name.
     #[serde(default)]
     pub pin: HashMap<String, String>,

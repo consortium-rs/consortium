@@ -32,6 +32,7 @@
 #![no_main]
 
 use embassy_executor::Spawner;
+use embassy_time::Timer;
 use melt_pot_shared::SensorReading;
 use panic_halt as _;
 
@@ -48,11 +49,17 @@ defmt::timestamp!("{=u32}", {
     COUNT.fetch_add(1, Ordering::Relaxed)
 });
 
+const LPIT1_BASE: *mut () = 0x442f_0000 as *mut ();
+const LPIT1_IRQ: u16 = 15;
+const LPIT1_CLOCK_HZ: u32 = 24_000_000;
+
 #[embassy_executor::main]
 async fn main(_spawner: Spawner) {
     // Reset the CDBG ring on every boot so a warm reset does not leave a stale,
     // valid-looking descriptor behind. No-op when `[dbg.cm7]` is unconfigured.
     consortium_dbg::logger::ConsortiumLogger::init();
+
+    init_time_driver();
 
     // Bring up MPU + MU7 interrupt, then run the descriptor handshake.
     let connected = match init().connect().await {
@@ -65,6 +72,20 @@ async fn main(_spawner: Spawner) {
         }
     };
     let mut sensor = connected.sensor;
+
+    // Bring up this core's owned peripherals, generated from the `[peripheral.*]`
+    // entries in `../Consortium.toml`. `peripherals()` bakes each base + IRQ in,
+    // enables the I2C interrupt, and returns ready HAL handles. Platform setup
+    // (A-core / system manager) must leave GPIO2 and LPI2C1 clocked for the CM7.
+    let board = peripherals();
+
+    // `gpio2` pin 0 is a status heartbeat toggled once per sample. `lpi2c1` is
+    // the sensor bus a real driver would read to replace `simulated_temperature`.
+    let mut heartbeat = board
+        .gpio2
+        .pin(0)
+        .into_output(consortium_hal_imx9::gpio::Level::Low);
+    let mut _sensor_bus = board.lpi2c1;
 
     let mut seq: u32 = 0;
     loop {
@@ -84,12 +105,30 @@ async fn main(_spawner: Spawner) {
         // skip this sample rather than blocking.
         let _ = sensor.send(&reading).await;
 
+        // Blink the heartbeat so the board shows liveness between samples.
+        heartbeat.toggle();
+
         seq = seq.wrapping_add(1);
 
-        // Delay ~1 s at 800 MHz. Production firmware would use an embassy-time
-        // `Timer` backed by a properly initialised time driver.
-        cortex_m::asm::delay(800_000_000);
+        Timer::after_secs(1).await;
     }
+}
+
+fn init_time_driver() {
+    // FRDM i.MX95 clocks LPIT1 from the 24 MHz AON/root timer domain.
+    // Platform setup must leave LPIT1 clocked and accessible to the CM7.
+    // SAFETY: LPIT1 is reserved for this demo firmware; the IRQ handler below
+    // forwards LPIT1_IRQn to the HAL time driver.
+    unsafe {
+        consortium_hal_imx9::timer_driver::init_timer(LPIT1_BASE, LPIT1_CLOCK_HZ);
+        consortium_hal_imx9::hal::nvic::set_priority(LPIT1_IRQ, 0x80);
+        consortium_hal_imx9::hal::nvic::enable(LPIT1_IRQ);
+    }
+}
+
+#[unsafe(no_mangle)]
+extern "C" fn LPIT1_IRQHandler() {
+    consortium_hal_imx9::timer_driver::on_timer_interrupt();
 }
 
 /// Sine-like walk between 20 °C and 30 °C for demo purposes.

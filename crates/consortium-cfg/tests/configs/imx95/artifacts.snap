@@ -910,5 +910,50 @@ fn _generated() {
         }
         IpcMemoryEndpoints::new()
     }
+    /// Peripherals this core owns, constructed by [`peripherals`].
+    #[cfg(target_arch = "arm")]
+    pub struct Peripherals {
+        pub gpio2: ::consortium_hal_imx9::gpio::Gpio,
+        pub lpi2c1: ::consortium_hal_imx9::i2c::I2c,
+    }
+    #[cfg(target_arch = "arm")]
+    static LPI2C1_STATE: ::consortium_hal_imx9::i2c::I2cState = ::consortium_hal_imx9::i2c::I2cState::new();
+    #[cfg(target_arch = "arm")]
+    #[unsafe(no_mangle)]
+    extern "C" fn LPI2C1_IRQHandler() {
+        LPI2C1_STATE.on_interrupt();
+    }
+    /// Brings up this core's owned peripherals: enables their interrupts
+    /// and constructs the HAL drivers with their bases baked in.
+    ///
+    /// Compiled only for Cortex-M targets; the host trybuild harness skips
+    /// it along with the rest of the peripheral module.
+    #[cfg(target_arch = "arm")]
+    fn peripherals() -> Peripherals {
+        // SAFETY: the interrupt number comes from the validated
+        // Consortium chip map; a handler for it is installed above,
+        // and bring-up runs once before other code masks interrupts.
+        unsafe {
+            ::consortium_hal_imx9::hal::nvic::set_priority(13u16, 0x80u8);
+            ::consortium_hal_imx9::hal::nvic::enable(13u16);
+        }
+        // SAFETY: `base` is this core's validated GPIO port base from
+        // the Consortium chip map, owned exclusively by this driver.
+        let gpio2 = unsafe {
+            ::consortium_hal_imx9::gpio::Gpio::new(1132527616u32 as *mut ())
+        };
+        // SAFETY: `base` is this core's validated I2C base from the
+        // Consortium chip map, owned exclusively by this driver;
+        // its dedicated state's interrupt is routed above.
+        let lpi2c1 = unsafe {
+            ::consortium_hal_imx9::i2c::I2c::new(
+                1144258560u32 as *mut (),
+                24000000u32,
+                100000u32,
+                &LPI2C1_STATE,
+            )
+        };
+        Peripherals { gpio2, lpi2c1 }
+    }
 }
 ```

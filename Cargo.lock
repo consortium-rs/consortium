@@ -429,6 +429,7 @@ dependencies = [
  "quote",
  "rkyv",
  "serde",
+ "serde_json",
  "serde_yaml",
  "syn",
  "thiserror",
@@ -527,6 +528,9 @@ version = "0.1.0"
 [[package]]
 name = "consortium-hal"
 version = "0.1.0"
+dependencies = [
+ "cortex-m",
+]
 
 [[package]]
 name = "consortium-hal-imx9"
@@ -538,6 +542,8 @@ dependencies = [
  "embassy-sync",
  "embassy-time-driver",
  "embassy-time-queue-utils",
+ "embedded-hal 1.0.0",
+ "embedded-hal-async",
  "embedded-hal-nb",
  "embedded-io 0.6.1",
  "embedded-io-async 0.6.1",
@@ -553,6 +559,8 @@ dependencies = [
  "embassy-sync",
  "embassy-time-driver",
  "embassy-time-queue-utils",
+ "embedded-hal 1.0.0",
+ "embedded-hal-async",
  "embedded-hal-nb",
  "embedded-io 0.6.1",
  "embedded-io-async 0.6.1",

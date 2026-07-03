@@ -32,6 +32,7 @@
 #![no_main]
 
 use embassy_executor::Spawner;
+use embassy_time::Timer;
 use melt_pot_shared::SensorReading;
 use panic_halt as _;
 
@@ -48,11 +49,18 @@ defmt::timestamp!("{=u32}", {
     COUNT.fetch_add(1, Ordering::Relaxed)
 });
 
+const RCC_BASE_NS: *mut () = 0x4420_0000 as *mut ();
+const TIM2_BASE_NS: *mut () = 0x4000_0000 as *mut ();
+const TIM2_IRQ: u16 = 105;
+const TIM2_CLOCK_HZ: u32 = 64_000_000;
+
 #[embassy_executor::main]
 async fn main(_spawner: Spawner) {
     // Reset the CDBG ring on every boot so a warm reset does not leave a stale,
     // valid-looking descriptor behind. No-op when `[dbg.cm33]` is unconfigured.
     consortium_dbg::logger::ConsortiumLogger::init();
+
+    init_time_driver();
 
     // Bring up MPU + HSEM interrupt, then run the descriptor handshake.
     let connected = match init().connect().await {
@@ -86,10 +94,33 @@ async fn main(_spawner: Spawner) {
 
         seq = seq.wrapping_add(1);
 
-        // Delay ~1 s at 400 MHz. Production firmware would use an embassy-time
-        // `Timer` backed by a properly initialised time driver.
-        cortex_m::asm::delay(400_000_000);
+        Timer::after_secs(1).await;
     }
+}
+
+fn init_time_driver() {
+    // STM32MP257F CM33 non-secure CMSIS names this TIM2_BASE_NS and TIM2_IRQn.
+    // The boot/runtime handoff must leave TIM2's kernel clock at this rate.
+    // SAFETY: RCC_BASE_NS is the STM32MP257F non-secure RCC register block.
+    let rcc = unsafe { consortium_hal_stm32mp2::pac::peripherals::rcc::RCC::from_ptr(RCC_BASE_NS) };
+    rcc.TIM2CFGR().modify(|w| {
+        w.set_TIM2RST(false);
+        w.set_TIM2EN(true);
+        w.set_TIM2LPEN(true);
+    });
+
+    // SAFETY: TIM2 is reserved for this demo firmware and clocked above; the
+    // IRQ handler below forwards TIM2_IRQn to the HAL time driver.
+    unsafe {
+        consortium_hal_stm32mp2::timer_driver::init_timer(TIM2_BASE_NS, TIM2_CLOCK_HZ);
+        consortium_hal_stm32mp2::hal::nvic::set_priority(TIM2_IRQ, 0x80);
+        consortium_hal_stm32mp2::hal::nvic::enable(TIM2_IRQ);
+    }
+}
+
+#[unsafe(no_mangle)]
+extern "C" fn TIM2_IRQHandler() {
+    consortium_hal_stm32mp2::timer_driver::on_timer_interrupt();
 }
 
 /// Sine-like walk between 20 °C and 30 °C for demo purposes.

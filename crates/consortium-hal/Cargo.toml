@@ -9,6 +9,7 @@ version.workspace = true
 default = []
 
 [dependencies]
+cortex-m = { version = "0.7" }
 
 [lints]
 workspace = true

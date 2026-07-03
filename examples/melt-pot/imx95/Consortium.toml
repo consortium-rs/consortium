@@ -64,3 +64,18 @@ secure   = false
 pin.miso = "PA6"
 pin.mosi = "PA7"
 pin.sck  = "PA5"
+
+# CM7-owned GPIO port for a status heartbeat. `consortium build` bakes the
+# RGPIO2 base into `consortium.gen.rs` and hands back a ready `gpio2` handle.
+[peripheral.gpio2]
+owner  = "cm7"
+secure = false
+
+# CM7-owned I2C bus for a real temperature sensor. The generated bring-up
+# constructs an `lpi2c1` handle (base + IRQ baked in, NVIC enabled) clocked from
+# the 24 MHz LPI2C root at a 100 kHz standard-mode bus rate.
+[peripheral.lpi2c1]
+owner     = "cm7"
+secure    = false
+clock     = 24000000
+frequency = 100000

@@ -23,6 +23,12 @@ pub use consortium_pac_imx9 as pac;
 #[cfg(feature = "dma")]
 pub mod dma;
 
+#[cfg(feature = "gpio")]
+pub mod gpio;
+
+#[cfg(feature = "i2c")]
+pub mod i2c;
+
 #[cfg(feature = "time-driver-lpit")]
 pub mod timer_driver;
 

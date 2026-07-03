@@ -71,6 +71,30 @@ impl Session {
                     chip.clone(),
                 ));
             }
+
+            // A coprocessor may only own a peripheral its core can actually
+            // reach. The owning core's chip dump lists exactly those peripherals,
+            // so presence in that map is the accessibility filter. AP-owned
+            // peripherals are surfaced to Linux via the DTS transpilers instead,
+            // so they are not checked here. When no dump is bundled for the
+            // owning core, the filter cannot be applied and the peripheral is
+            // left unvalidated (it also gets no generated bring-up).
+            if let VisibleCore::Mcore(_) = peripheral.owner {
+                let core = peripheral.owner.to_string();
+                match crate::chipmap::load(chip, &core) {
+                    Ok(map) => {
+                        if !map.contains_peripheral(name) {
+                            return Err(CfgError::PeripheralNotOnCore {
+                                name: name.clone(),
+                                core,
+                                chip: chip.clone(),
+                            });
+                        }
+                    }
+                    Err(CfgError::ChipMapUnavailable { .. }) => {}
+                    Err(err) => return Err(err),
+                }
+            }
         }
 
         Ok(())
@@ -676,6 +700,64 @@ mod tests {
         assert!(matches!(
             Session::from_toml(manifest),
             Err(CfgError::RegionOverlap { .. })
+        ));
+    }
+
+    /// A coprocessor-owned peripheral present in that core's chip map validates.
+    #[test]
+    fn accepts_peripheral_present_on_core() {
+        let manifest = r#"
+            [profile]
+            chip = "stm32mp257fak3"
+            shared = "./shared"
+            deploy_root = "/opt/consortium"
+
+            [[ipc.channel]]
+            name = "probe"
+            doorbell = "hsem"
+            pattern = "memory"
+            primary = "linux"
+            secondary = "cm33"
+            party.linux = { chan = 0, type = "Ping" }
+            config.memory = { base = 0x00400000, length = 0x00002000 }
+            mtu = 128
+
+            [peripheral.i2c1]
+            owner = "cm33"
+            clock = 64000000
+            frequency = 100000
+        "#;
+
+        assert!(Session::from_toml(manifest).is_ok());
+    }
+
+    /// A coprocessor-owned peripheral absent from that core's chip map is
+    /// rejected: the map is the accessibility filter.
+    #[test]
+    fn rejects_peripheral_absent_on_core() {
+        let manifest = r#"
+            [profile]
+            chip = "stm32mp257fak3"
+            shared = "./shared"
+            deploy_root = "/opt/consortium"
+
+            [[ipc.channel]]
+            name = "probe"
+            doorbell = "hsem"
+            pattern = "memory"
+            primary = "linux"
+            secondary = "cm33"
+            party.linux = { chan = 0, type = "Ping" }
+            config.memory = { base = 0x00400000, length = 0x00002000 }
+            mtu = 128
+
+            [peripheral.nonexistent99]
+            owner = "cm33"
+        "#;
+
+        assert!(matches!(
+            Session::from_toml(manifest),
+            Err(CfgError::PeripheralNotOnCore { .. })
         ));
     }
 }

@@ -43,6 +43,7 @@ use crate::components::address::{Address, ApAddress};
 use crate::components::bella::{BellA, HardwareDoorbell};
 use crate::components::dbg::{DebugLogs, DebugRing};
 use crate::components::ipc_shm::{Channel, DoorbellMeta, ShuHan, Transceiver};
+use crate::components::peripheral::{PeripheralInstance, PeripheralKind, Peripherals};
 use crate::components::region::Region;
 use crate::components::uio::{ToUio, UioBacking, UioDevice};
 use crate::{Session, error::CfgError};
@@ -64,6 +65,8 @@ pub struct LoweredIr {
     /// Per-coprocessor debug log rings. Generates no Rust; resolves each
     /// logger's `CONSORTIUM_DBG_*` build-time configuration for the builder.
     pub dbg: DebugLogs,
+    /// Owned peripherals (I2C, GPIO) to bring up per controller core.
+    pub peripherals: Peripherals,
 }
 
 impl LoweredIr {
@@ -266,6 +269,11 @@ impl LoweredIr {
         // The doorbell NVIC enum/impl plus `unmask` statements for this core.
         let nvic = self.bella.nvic_enable(&core);
 
+        // Peripheral (I2C/GPIO) bring-up: the `Peripherals` struct, per-instance
+        // interrupt state/handlers, and a `peripherals()` constructor. Empty for
+        // cores that own no codegen-supported peripheral.
+        let peripherals = self.peripherals.initialize(core);
+
         quote! {
             #endpoints
 
@@ -283,6 +291,8 @@ impl LoweredIr {
                 #nvic
                 IpcMemoryEndpoints::new()
             }
+
+            #peripherals
         }
     }
 }
@@ -292,6 +302,17 @@ impl LoweredIr {
 /// do; ARMv6-M (`cm0p`) has no data cache and no helper.
 fn mcore_has_mpu_helper(name: McoreName) -> bool {
     !matches!(name, McoreName::Cm0p)
+}
+
+/// The chip HAL crate the generated peripheral handles are typed against,
+/// selected by chip family: STM32MP2 uses `consortium-hal-stm32mp2`, and the
+/// i.MX 9 families use `consortium-hal-imx9`.
+fn hal_crate_path(chip: &str) -> String {
+    if chip.to_ascii_lowercase().starts_with("stm32") {
+        "::consortium_hal_stm32mp2".to_string()
+    } else {
+        "::consortium_hal_imx9".to_string()
+    }
 }
 
 impl Session {
@@ -506,6 +527,74 @@ impl Session {
             bella: BellA { bells },
             uio,
             dbg: DebugLogs::new(dbg_rings, self.config.dbg.mode),
+            peripherals: self.lower_peripherals()?,
+        })
+    }
+
+    /// Resolves the `[peripheral.<name>]` entries owned by controller cores into
+    /// the [`Peripherals`] IR, using the per-core chip map for bases and
+    /// interrupt numbers.
+    ///
+    /// Only I2C and GPIO blocks are brought up today; other blocks (and cores
+    /// without a bundled chip map) are skipped, yielding no generated handle.
+    fn lower_peripherals(&self) -> Result<Peripherals, CfgError> {
+        let chip = &self.config.profile.chip;
+        let mut instances = Vec::new();
+
+        for (name, peripheral) in &self.config.peripheral {
+            let VisibleCore::Mcore(_) = peripheral.owner else {
+                continue;
+            };
+            let core = peripheral.owner.to_string();
+            let map = match crate::chipmap::load(chip, &core) {
+                Ok(map) => map,
+                Err(CfgError::ChipMapUnavailable { .. }) => continue,
+                Err(err) => return Err(err),
+            };
+            let Some(entry) = map.peripheral(name) else {
+                continue;
+            };
+            let base = peripheral_absolute_base(&self.database, entry.base, peripheral.secure);
+
+            let kind = match entry.kind() {
+                "i2c" | "lpi2c" => {
+                    let irq = map.irq(name).ok_or_else(|| {
+                        CfgError::Manifest(format!(
+                            "i2c peripheral '{name}' has no interrupt entry in the chip map for '{core}'"
+                        ))
+                    })?;
+                    let clock_hz = peripheral.clock.ok_or_else(|| {
+                        CfgError::Manifest(format!(
+                            "i2c peripheral '{name}' needs `clock` (its input clock in Hz) to generate bring-up"
+                        ))
+                    })?;
+                    let frequency = peripheral.frequency.unwrap_or(100_000);
+                    PeripheralKind::I2c {
+                        clock_hz,
+                        frequency,
+                        irq_number: irq.number,
+                        irq_name: irq.name.clone(),
+                    }
+                }
+                "gpio" | "rgpio" => PeripheralKind::Gpio,
+                // Unsupported block: no generated bring-up.
+                _ => continue,
+            };
+
+            instances.push(PeripheralInstance {
+                owner: peripheral.owner,
+                key: name.clone(),
+                base,
+                kind,
+            });
+        }
+
+        // Deterministic emit order regardless of the config map iteration order.
+        instances.sort_by(|a, b| a.key.cmp(&b.key));
+
+        Ok(Peripherals {
+            hal_crate: hal_crate_path(chip),
+            instances,
         })
     }
 
@@ -600,6 +689,24 @@ fn peripheral_alias(database: &ChipDatabase, secure: bool) -> u32 {
         .iter()
         .find(|alias| alias.secure == secure)
         .map_or(0, |alias| alias.address)
+}
+
+/// The absolute peripheral base a controller core sees, given the non-secure
+/// absolute base from the chip map.
+///
+/// The `output/chips` dumps carry each peripheral's non-secure CMSIS address, so
+/// a non-secure owner uses it unchanged. A secure owner rebases it from the
+/// non-secure world to the secure world (e.g. STM32MP2 `0x4000_0000` →
+/// `0x5000_0000`); chips without peripheral aliases have no such split and the
+/// base is returned unchanged.
+fn peripheral_absolute_base(database: &ChipDatabase, base: u32, secure: bool) -> u32 {
+    if secure {
+        let non_secure = peripheral_alias(database, false);
+        let secure_world = peripheral_alias(database, true);
+        base.wrapping_sub(non_secure).wrapping_add(secure_world)
+    } else {
+        base
+    }
 }
 
 /// Records a doorbell's participating cores, creating the [`HardwareDoorbell`]
