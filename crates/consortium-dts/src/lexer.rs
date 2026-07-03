@@ -36,9 +36,27 @@ pub enum TokenKind {
     /// `/delete-node/`
     #[token("/delete-node/")]
     DeleteNode,
+    /// `/delete-property/`
+    #[token("/delete-property/")]
+    DeleteProperty,
+    /// `/omit-if-no-ref/`
+    #[token("/omit-if-no-ref/")]
+    OmitIfNoRef,
+    /// `/bits/`
+    #[token("/bits/")]
+    Bits,
     /// `#include`
     #[token("#include")]
     Include,
+    /// A C preprocessor directive line, excluding `#include`.
+    ///
+    /// The whole line is captured verbatim so it can be preserved during
+    /// round-tripping. Definitions expanded by these directives are not
+    /// evaluated; macro invocations elsewhere are kept as raw cell text.
+    #[regex(
+        r"#[ \t]*(define|undef|ifdef|ifndef|if|elif|else|endif|error|warning|pragma|line)[^\n]*"
+    )]
+    CppDirective,
     /// `{`
     #[token("{")]
     LBrace,

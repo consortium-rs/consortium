@@ -30,7 +30,7 @@ pub mod lexer;
 pub mod parser;
 
 pub use ast::{
-    Cell, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference,
+    Cell, Deletion, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference,
     TopLevelItem,
 };
 pub use codegen::{Codegen, CodegenOptions, ToDts};

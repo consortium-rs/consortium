@@ -38,11 +38,17 @@ pub enum TopLevelItem {
     Overlay(NodeOverlay),
     /// A top-level delete-node directive.
     DeleteNode(Reference),
+    /// A C preprocessor directive line captured verbatim, such as
+    /// `#define FOO 0x1` or `#ifndef GUARD`. `#include` is modeled by
+    /// [`Include`] instead.
+    CppDirective(String),
 }
 
 /// A DTS node.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Node {
+    /// Emit a leading `/omit-if-no-ref/` marker when true.
+    pub omit_if_no_ref: bool,
     /// Optional node label.
     pub label: Option<String>,
     /// Node name. The root node uses `/`.
@@ -53,17 +59,32 @@ pub struct Node {
     pub properties: Vec<Property>,
     /// Child nodes.
     pub children: Vec<Node>,
+    /// `/delete-property/` and `/delete-node/` operations in this node body.
+    pub deletions: Vec<Deletion>,
 }
 
 /// An overlay node that targets an existing node by label or path.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NodeOverlay {
+    /// Optional label applied to the override, as in `foo: &bar { ... };`.
+    pub label: Option<String>,
     /// Overlay target.
     pub target: Reference,
     /// Properties to merge into the target.
     pub properties: Vec<Property>,
     /// Child nodes to merge into the target.
     pub children: Vec<Node>,
+    /// `/delete-property/` and `/delete-node/` operations in this overlay body.
+    pub deletions: Vec<Deletion>,
+}
+
+/// A `/delete-property/` or `/delete-node/` operation inside a node body.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum Deletion {
+    /// `/delete-property/ name;`
+    Property(String),
+    /// `/delete-node/ &target;`
+    Node(Reference),
 }
 
 /// A DTS property.
@@ -80,6 +101,13 @@ pub struct Property {
 pub enum PropValue {
     /// Cell list, printed inside `<...>`.
     Cells(Vec<Cell>),
+    /// A sized cell list, printed as `/bits/ N <...>`.
+    Bits {
+        /// Cell width in bits, such as `8`, `16`, or `64`.
+        width: u32,
+        /// Cell values.
+        cells: Vec<Cell>,
+    },
     /// One or more string literals.
     Strings(Vec<String>),
     /// Byte array, printed inside `[...]`.
