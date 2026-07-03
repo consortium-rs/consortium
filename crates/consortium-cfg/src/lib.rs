@@ -15,6 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 pub mod bridge;
+pub mod chipmap;
 pub mod components;
 pub mod database;
 pub mod error;

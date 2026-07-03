@@ -48,18 +48,24 @@ consortium-ipc-transport-memory = { default-features = false, features = [
 ], path = "../../../../crates/consortium-ipc-transport-memory" }
 consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory" }
 consortium-runtime-mcu = { default-features = false, path = "../../../../crates/consortium-runtime-mcu" }
+consortium-hal-imx9 = { default-features = false, features = [
+  "gpio",
+  "i2c",
+  "time-driver-lpit",
+], path = "../../../../crates/consortium-hal-imx9" }
 
 # Firmware runtime.
 consortium-dbg = { default-features = false, features = [
   "logger",
 ], path = "../../../../crates/consortium-dbg" }
-cortex-m = "0.7"
+cortex-m = { features = ["critical-section-single-core"], version = "0.7" }
 cortex-m-rt = "0.7"
 defmt = "1.1.0"
 embassy-executor = { default-features = false, features = [
   "executor-thread",
   "platform-cortex-m",
 ], version = "0.10.0" }
+embassy-time = { default-features = false, features = ["tick-hz-24_000_000"], version = "0.5.1" }
 panic-halt = "0.2"
 
 [profile.dev]

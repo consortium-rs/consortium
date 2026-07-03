@@ -5,6 +5,7 @@ extend-exclude = [
   "data/stm32mp",
   "dialogs",
   "sim/renode/stm32mp257/firmware.elf",
+  "submodules",
   "target",
 ]
 

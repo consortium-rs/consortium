@@ -44,6 +44,26 @@ pub enum CfgError {
     #[error("peripheral '{0}' is owned by '{1}', which is not a core on chip '{2}'")]
     OwnerNotVisible(String, String, String),
 
+    #[error("no peripheral/interrupt map is bundled for chip '{chip}' core '{core}'")]
+    ChipMapUnavailable { chip: String, core: String },
+
+    #[error("failed to parse the peripheral map for chip '{chip}' core '{core}': {detail}")]
+    ChipMapParse {
+        chip: String,
+        core: String,
+        detail: String,
+    },
+
+    #[error(
+        "peripheral '{name}' is not accessible from core '{core}' on chip '{chip}'. \
+         Only peripherals present in that core's peripheral map may be assigned to it"
+    )]
+    PeripheralNotOnCore {
+        name: String,
+        core: String,
+        chip: String,
+    },
+
     #[error("IPC channel endpoint '{0}' names core '{1}', which is not visible on chip '{2}'")]
     IpcEndpointNotVisible(String, String, String),
 

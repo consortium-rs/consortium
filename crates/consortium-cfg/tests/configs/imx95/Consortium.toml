@@ -57,3 +57,13 @@ secure   = false
 pin.miso = "PA6"
 pin.mosi = "PA7"
 pin.sck  = "PA5"
+
+[peripheral.lpi2c1]
+owner     = "cm7"
+secure    = false
+clock     = 24000000
+frequency = 100000
+
+[peripheral.gpio2]
+owner  = "cm7"
+secure = false

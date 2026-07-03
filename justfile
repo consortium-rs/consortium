@@ -466,7 +466,14 @@ pac-patch:
         fi
 
         echo "🔧 Patching $submodule..."
-        git -C "$target" apply --ignore-whitespace "${patches[@]}"
+        for patch in "${patches[@]}"; do
+            if git -C "$target" apply --check --reverse --ignore-whitespace "$patch"; then
+                echo "$(basename "$patch") already applied"
+                continue
+            fi
+            git -C "$target" apply --check --ignore-whitespace "$patch"
+            git -C "$target" apply --ignore-whitespace "$patch"
+        done
         echo "$submodule patched"
     done
 
@@ -479,7 +486,14 @@ pac-patch-one submodule:
         echo "No patches found for {{submodule}}"
         exit 0
     fi
-    git -C submodules/{{submodule}} apply --ignore-whitespace "${patches[@]}"
+    for patch in "${patches[@]}"; do
+        if git -C submodules/{{submodule}} apply --check --reverse --ignore-whitespace "$patch"; then
+            echo "$(basename "$patch") already applied"
+            continue
+        fi
+        git -C submodules/{{submodule}} apply --check --ignore-whitespace "$patch"
+        git -C submodules/{{submodule}} apply --ignore-whitespace "$patch"
+    done
 
 # Reset all PAC submodules to upstream HEAD and re-apply patches
 pac-reset:

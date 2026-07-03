@@ -356,8 +356,16 @@ class STM32HeaderParser:
             # Calculate bit size from unshifted mask
             bit_size = calc_bit_size_from_mask(mask_val)
 
+            # Some registers (e.g. GPIO_ADVCFGRL/H) name each per-pin nibble with a
+            # bare number (macro `GPIO_ADVCFGRL_0_Pos`), which cannot be a Rust ident.
+            # Prefix digit-leading field names with the register's last token so the
+            # generated PAC compiles (e.g. `0` -> `ADVCFGRL0`).
+            field_ident = parts[1]
+            if field_ident and field_ident[0].isdigit():
+                field_ident = f"{reg_name.rsplit('_', 1)[-1]}{field_ident}"
+
             field: Dict[str, Any] = {
-                "name": parts[1],
+                "name": field_ident,
                 "bit_offset": bit_offset,
                 "bit_size": bit_size,
                 "_mask": mask_val << bit_offset,

@@ -2424,7 +2424,7 @@ fieldset/GPIO_DELAYRH:
 fieldset/GPIO_ADVCFGRL:
   description: ''
   fields:
-    - name: '0'
+    - name: ADVCFGRL0
       bit_offset: 0
       bit_size: 4
       description: '[3:0]: Port x IO pin configuration (y = 0 to 7)Successful read or
@@ -2432,7 +2432,7 @@ fieldset/GPIO_ADVCFGRL:
         be privileged if PRIVy bit is set in GPIOx_PRIVCFGR.Only authorized CPU can
         read or write this bit, as described in Section1.4: IO pin allocation to compartments.
         Illegal read returns zero. Illegal write is ignored.'
-    - name: '1'
+    - name: ADVCFGRL1
       bit_offset: 4
       bit_size: 4
       description: '[3:0]: Port x IO pin configuration (y = 0 to 7)Successful read or
@@ -2440,7 +2440,7 @@ fieldset/GPIO_ADVCFGRL:
         be privileged if PRIVy bit is set in GPIOx_PRIVCFGR.Only authorized CPU can
         read or write this bit, as described in Section1.4: IO pin allocation to compartments.
         Illegal read returns zero. Illegal write is ignored.'
-    - name: '2'
+    - name: ADVCFGRL2
       bit_offset: 8
       bit_size: 4
       description: '[3:0]: Port x IO pin configuration (y = 0 to 7)Successful read or
@@ -2448,7 +2448,7 @@ fieldset/GPIO_ADVCFGRL:
         be privileged if PRIVy bit is set in GPIOx_PRIVCFGR.Only authorized CPU can
         read or write this bit, as described in Section1.4: IO pin allocation to compartments.
         Illegal read returns zero. Illegal write is ignored.'
-    - name: '3'
+    - name: ADVCFGRL3
       bit_offset: 12
       bit_size: 4
       description: '[3:0]: Port x IO pin configuration (y = 0 to 7)Successful read or
@@ -2456,7 +2456,7 @@ fieldset/GPIO_ADVCFGRL:
         be privileged if PRIVy bit is set in GPIOx_PRIVCFGR.Only authorized CPU can
         read or write this bit, as described in Section1.4: IO pin allocation to compartments.
         Illegal read returns zero. Illegal write is ignored.'
-    - name: '4'
+    - name: ADVCFGRL4
       bit_offset: 16
       bit_size: 4
       description: '[3:0]: Port x IO pin configuration (y = 0 to 7)Successful read or
@@ -2464,7 +2464,7 @@ fieldset/GPIO_ADVCFGRL:
         be privileged if PRIVy bit is set in GPIOx_PRIVCFGR.Only authorized CPU can
         read or write this bit, as described in Section1.4: IO pin allocation to compartments.
         Illegal read returns zero. Illegal write is ignored.'
-    - name: '5'
+    - name: ADVCFGRL5
       bit_offset: 20
       bit_size: 4
       description: '[3:0]: Port x IO pin configuration (y = 0 to 7)Successful read or
@@ -2472,7 +2472,7 @@ fieldset/GPIO_ADVCFGRL:
         be privileged if PRIVy bit is set in GPIOx_PRIVCFGR.Only authorized CPU can
         read or write this bit, as described in Section1.4: IO pin allocation to compartments.
         Illegal read returns zero. Illegal write is ignored.'
-    - name: '6'
+    - name: ADVCFGRL6
       bit_offset: 24
       bit_size: 4
       description: '[3:0]: Port x IO pin configuration (y = 0 to 7)Successful read or
@@ -2480,7 +2480,7 @@ fieldset/GPIO_ADVCFGRL:
         be privileged if PRIVy bit is set in GPIOx_PRIVCFGR.Only authorized CPU can
         read or write this bit, as described in Section1.4: IO pin allocation to compartments.
         Illegal read returns zero. Illegal write is ignored.'
-    - name: '7'
+    - name: ADVCFGRL7
       bit_offset: 28
       bit_size: 4
       description: '[3:0]: Port x IO pin configuration (y = 0 to 7)Successful read or
@@ -2491,7 +2491,7 @@ fieldset/GPIO_ADVCFGRL:
 fieldset/GPIO_ADVCFGRH:
   description: ''
   fields:
-    - name: '8'
+    - name: ADVCFGRH8
       bit_offset: 0
       bit_size: 4
       description: '[3:0]: Port x IO pin y configuration (y = 8 to 15)Successful read
@@ -2499,7 +2499,7 @@ fieldset/GPIO_ADVCFGRH:
         must be privileged if PRIVy bit is set in GPIOx_PRIVCFGR.Only authorized CPU
         can read or write this bit, as described in Section1.4: IO pin allocation to
         compartments. Illegal read returns zero. Illegal write is ignored.'
-    - name: '9'
+    - name: ADVCFGRH9
       bit_offset: 4
       bit_size: 4
       description: '[3:0]: Port x IO pin y configuration (y = 8 to 15)Successful read
@@ -2507,7 +2507,7 @@ fieldset/GPIO_ADVCFGRH:
         must be privileged if PRIVy bit is set in GPIOx_PRIVCFGR.Only authorized CPU
         can read or write this bit, as described in Section1.4: IO pin allocation to
         compartments. Illegal read returns zero. Illegal write is ignored.'
-    - name: '10'
+    - name: ADVCFGRH10
       bit_offset: 8
       bit_size: 4
       description: '[3:0]: Port x IO pin y configuration (y = 8 to 15)Successful read
@@ -2515,7 +2515,7 @@ fieldset/GPIO_ADVCFGRH:
         must be privileged if PRIVy bit is set in GPIOx_PRIVCFGR.Only authorized CPU
         can read or write this bit, as described in Section1.4: IO pin allocation to
         compartments. Illegal read returns zero. Illegal write is ignored.'
-    - name: '11'
+    - name: ADVCFGRH11
       bit_offset: 12
       bit_size: 4
       description: '[3:0]: Port x IO pin y configuration (y = 8 to 15)Successful read
@@ -2523,7 +2523,7 @@ fieldset/GPIO_ADVCFGRH:
         must be privileged if PRIVy bit is set in GPIOx_PRIVCFGR.Only authorized CPU
         can read or write this bit, as described in Section1.4: IO pin allocation to
         compartments. Illegal read returns zero. Illegal write is ignored.'
-    - name: '12'
+    - name: ADVCFGRH12
       bit_offset: 16
       bit_size: 4
       description: '[3:0]: Port x IO pin y configuration (y = 8 to 15)Successful read
@@ -2531,7 +2531,7 @@ fieldset/GPIO_ADVCFGRH:
         must be privileged if PRIVy bit is set in GPIOx_PRIVCFGR.Only authorized CPU
         can read or write this bit, as described in Section1.4: IO pin allocation to
         compartments. Illegal read returns zero. Illegal write is ignored.'
-    - name: '13'
+    - name: ADVCFGRH13
       bit_offset: 20
       bit_size: 4
       description: '[3:0]: Port x IO pin y configuration (y = 8 to 15)Successful read
@@ -2539,7 +2539,7 @@ fieldset/GPIO_ADVCFGRH:
         must be privileged if PRIVy bit is set in GPIOx_PRIVCFGR.Only authorized CPU
         can read or write this bit, as described in Section1.4: IO pin allocation to
         compartments. Illegal read returns zero. Illegal write is ignored.'
-    - name: '14'
+    - name: ADVCFGRH14
       bit_offset: 24
       bit_size: 4
       description: '[3:0]: Port x IO pin y configuration (y = 8 to 15)Successful read
@@ -2547,7 +2547,7 @@ fieldset/GPIO_ADVCFGRH:
         must be privileged if PRIVy bit is set in GPIOx_PRIVCFGR.Only authorized CPU
         can read or write this bit, as described in Section1.4: IO pin allocation to
         compartments. Illegal read returns zero. Illegal write is ignored.'
-    - name: '15'
+    - name: ADVCFGRH15
       bit_offset: 28
       bit_size: 4
       description: '[3:0]: Port x IO pin y configuration (y = 8 to 15)Successful read
