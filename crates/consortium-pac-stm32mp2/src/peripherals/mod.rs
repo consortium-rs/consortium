@@ -1,3 +1,5 @@
+pub mod dma;
+pub mod dma_channel;
 pub mod hsem;
 pub mod i2c;
 pub mod i3c;

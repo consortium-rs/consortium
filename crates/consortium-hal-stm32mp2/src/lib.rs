@@ -20,5 +20,11 @@
 pub use consortium_hal as hal;
 pub use consortium_pac_stm32mp2 as pac;
 
+#[cfg(feature = "dma")]
+pub mod dma;
+
 #[cfg(feature = "time-driver-gp-tim")]
 pub mod timer_driver;
+
+#[cfg(feature = "uart")]
+pub mod uart;
