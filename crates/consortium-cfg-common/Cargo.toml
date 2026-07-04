@@ -22,9 +22,9 @@ name              = "consortium-cfg-common"
 version.workspace = true
 
 [dependencies]
-serde                = { features = ["derive"], version = "1.0.228" }
-consortium-dts       = { path = "../consortium-dts" }
-uuid                 = { features = ["serde"], version = "1.23.4" }
+serde          = { features = ["derive"], version = "1.0.228" }
+consortium-dts = { path = "../consortium-dts" }
+uuid           = { features = ["serde"], version = "1.23.4" }
 
 [dev-dependencies]
 serde_yaml = "0.9"
