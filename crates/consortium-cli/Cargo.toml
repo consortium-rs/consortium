@@ -21,6 +21,10 @@ license.workspace = true
 name              = "consortium-cli"
 version.workspace = true
 
+[[bin]]
+name = "csti"
+path = "src/main.rs"
+
 [dependencies]
 clap               = { features = ["derive"], version = "4.5" }
 consortium-builder = { path = "../consortium-builder" }
