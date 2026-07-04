@@ -20,7 +20,10 @@ use tokio::process::Command;
 
 use super::Compiler;
 use crate::compile::env::{DbgConfig, SharedMemConfig};
-use crate::compile::utils::{elf_path, inject_dbg, inject_shared_mem, resolve_cargo, verify_elf};
+use crate::compile::utils::{
+    elf_path, inject_dbg, inject_shared_mem, resolve_cargo, run_command, verify_elf,
+};
+use crate::progress::BuildReporter;
 
 /// Error type for firmware compilation.
 #[derive(Error, Debug)]
@@ -59,12 +62,11 @@ pub struct FirmwareConfiguration {
 /// Compiler for bare-metal Cortex-M firmware.
 pub struct FirmwareCompiler;
 
-impl Compiler for FirmwareCompiler {
-    type Configuration = FirmwareConfiguration;
-    type Error = FirmwareCompileError;
-    type Output = PathBuf;
-
-    async fn build(config: Self::Configuration) -> Result<Self::Output, Self::Error> {
+impl FirmwareCompiler {
+    pub async fn build_with_reporter(
+        config: FirmwareConfiguration,
+        reporter: Option<&dyn BuildReporter>,
+    ) -> Result<PathBuf, FirmwareCompileError> {
         let cargo = resolve_cargo()
             .await
             .map_err(FirmwareCompileError::CargoResolveError)?;
@@ -82,8 +84,7 @@ impl Compiler for FirmwareCompiler {
             cmd.arg("--release");
         }
 
-        let status = cmd
-            .status()
+        let status = run_command(&mut cmd, reporter)
             .await
             .map_err(|e| FirmwareCompileError::BuildFailed(e.to_string()))?;
 
@@ -104,6 +105,16 @@ impl Compiler for FirmwareCompiler {
             .map_err(FirmwareCompileError::UtilityError)?;
 
         Ok(elf)
+    }
+}
+
+impl Compiler for FirmwareCompiler {
+    type Configuration = FirmwareConfiguration;
+    type Error = FirmwareCompileError;
+    type Output = PathBuf;
+
+    async fn build(config: Self::Configuration) -> Result<Self::Output, Self::Error> {
+        Self::build_with_reporter(config, None).await
     }
 
     async fn output_path(config: &Self::Configuration) -> Result<PathBuf, Self::Error> {

@@ -23,6 +23,7 @@ version.workspace = true
 
 [dependencies]
 consortium-cfg-common           = { path = "../consortium-cfg-common" }
+consortium-data                 = { path = "../consortium-data" }
 consortium-dts                  = { path = "../consortium-dts" }
 consortium-ipc-transport-memory = { path = "../consortium-ipc-transport-memory" }
 prettyplease                    = "0.2.37"

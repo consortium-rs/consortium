@@ -22,7 +22,12 @@ mod shared {
 /// Descriptor-handshake failure, with the doorbell-specific payload
 /// erased so a single error type spans transceivers that use
 /// different doorbells. `no_std`-safe (no `alloc`).
+///
+/// The `Descriptor` payload is surfaced through `Debug` in the
+/// consuming binary, which dead-code analysis cannot see, so allow
+/// the otherwise-"never read" field.
 #[derive(Debug)]
+#[allow(dead_code)]
 enum ConsortiumConnectError {
     /// The descriptor header/channel table was invalid or never reached
     /// the ready state.

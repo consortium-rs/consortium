@@ -22,8 +22,9 @@ use super::Compiler;
 use crate::compile::env::{DbgConfig, HmiConfig, SharedMemConfig};
 use crate::compile::utils::{
     clean_path, elf_path, inject_dbg, inject_hmi, inject_shared_mem, resolve_cargo, resolve_rustc,
-    verify_elf,
+    run_command, verify_elf,
 };
+use crate::progress::BuildReporter;
 
 /// Error type for application compilation.
 #[derive(Error, Debug)]
@@ -172,12 +173,11 @@ pub struct ApplicationConfiguration {
 /// Compiler for Linux applications targeting Yocto A-cores.
 pub struct ApplicationCompiler;
 
-impl Compiler for ApplicationCompiler {
-    type Configuration = ApplicationConfiguration;
-    type Error = ApplicationCompileError;
-    type Output = PathBuf;
-
-    async fn build(config: Self::Configuration) -> Result<Self::Output, Self::Error> {
+impl ApplicationCompiler {
+    pub async fn build_with_reporter(
+        config: ApplicationConfiguration,
+        reporter: Option<&dyn BuildReporter>,
+    ) -> Result<PathBuf, ApplicationCompileError> {
         let sdk = SdkEnv::resolve()?;
 
         let rustc = resolve_rustc()
@@ -227,8 +227,7 @@ impl Compiler for ApplicationCompiler {
             cmd.arg("--release");
         }
 
-        let status = cmd
-            .status()
+        let status = run_command(&mut cmd, reporter)
             .await
             .map_err(|e| ApplicationCompileError::BuildFailed(e.to_string()))?;
 
@@ -249,6 +248,16 @@ impl Compiler for ApplicationCompiler {
             .map_err(ApplicationCompileError::UtilityError)?;
 
         Ok(elf)
+    }
+}
+
+impl Compiler for ApplicationCompiler {
+    type Configuration = ApplicationConfiguration;
+    type Error = ApplicationCompileError;
+    type Output = PathBuf;
+
+    async fn build(config: Self::Configuration) -> Result<Self::Output, Self::Error> {
+        Self::build_with_reporter(config, None).await
     }
 
     async fn output_path(config: &Self::Configuration) -> Result<PathBuf, Self::Error> {

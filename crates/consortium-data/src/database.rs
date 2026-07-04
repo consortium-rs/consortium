@@ -19,7 +19,7 @@
 
 pub use consortium_cfg_common::database::*;
 
-use crate::error::CfgError;
+use crate::error::DataError;
 
 /// A chip-family database bundled into the binary, paired with the part-number
 /// prefix that selects it.
@@ -37,23 +37,23 @@ struct Embedded {
 const DATABASES: &[Embedded] = &[
     Embedded {
         prefix: "stm32mp25",
-        yaml: include_str!("stm32mp25.yaml"),
+        yaml: include_str!("../database/memory/stm32mp25.yaml"),
     },
     Embedded {
         prefix: "stm32mp23",
-        yaml: include_str!("stm32mp23.yaml"),
+        yaml: include_str!("../database/memory/stm32mp23.yaml"),
     },
     Embedded {
         prefix: "stm32mp21",
-        yaml: include_str!("stm32mp21.yaml"),
+        yaml: include_str!("../database/memory/stm32mp21.yaml"),
     },
     Embedded {
         prefix: "mimx95",
-        yaml: include_str!("mimx95.yaml"),
+        yaml: include_str!("../database/memory/mimx95.yaml"),
     },
     Embedded {
         prefix: "mimx93",
-        yaml: include_str!("mimx93.yaml"),
+        yaml: include_str!("../database/memory/mimx93.yaml"),
     },
 ];
 
@@ -65,17 +65,17 @@ const DATABASES: &[Embedded] = &[
 ///
 /// # Errors
 ///
-/// Returns [`CfgError::UnknownChip`] if no family matches, or
-/// [`CfgError::DatabaseParse`] if the bundled YAML fails to deserialize.
-pub fn load(chip: &str) -> Result<ChipDatabase, CfgError> {
+/// Returns [`DataError::UnknownChip`] if no family matches, or
+/// [`DataError::DatabaseParse`] if the bundled YAML fails to deserialize.
+pub fn load(chip: &str) -> Result<ChipDatabase, DataError> {
     let needle = normalize(chip);
     let entry = DATABASES
         .iter()
         .find(|entry| needle.starts_with(entry.prefix))
-        .ok_or_else(|| CfgError::UnknownChip(chip.to_string()))?;
+        .ok_or_else(|| DataError::UnknownChip(chip.to_string()))?;
 
     serde_yaml::from_str(entry.yaml)
-        .map_err(|err| CfgError::DatabaseParse(chip.to_string(), err.to_string()))
+        .map_err(|err| DataError::DatabaseParse(chip.to_string(), err.to_string()))
 }
 
 /// Lowercases the part number and rewrites `imx` aliases to the `mimx`
@@ -105,6 +105,6 @@ mod tests {
 
     #[test]
     fn rejects_unknown_chip() {
-        assert!(matches!(load("acme9000"), Err(CfgError::UnknownChip(_))));
+        assert!(matches!(load("acme9000"), Err(DataError::UnknownChip(_))));
     }
 }

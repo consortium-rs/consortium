@@ -16,9 +16,11 @@
 
 mod compile;
 pub mod pipeline;
+pub mod progress;
 
 // Trait
 pub use compile::Compiler;
+pub use progress::{BuildReporter, BuildStep};
 
 // Deployment artifact rendering
 pub use compile::deploy::systemd::{

@@ -9,7 +9,7 @@ from typing import Dict, List, Tuple, Set
 
 import yaml
 
-OUTPUT_DIR = Path(__file__).resolve().parents[2] / "output"
+OUTPUT_DIR = Path(__file__).resolve().parents[2] / "crates" / "consortium-data" / "database"
 
 
 def validate_yaml_syntax(file_path: Path) -> Tuple[bool, str]:
@@ -166,7 +166,7 @@ def test_register_yamls():
     print("Testing Register YAML Files")
     print("=" * 70)
 
-    registers_dir = OUTPUT_DIR / "registers"
+    registers_dir = OUTPUT_DIR / "peri"
     yaml_files = list(registers_dir.rglob("*_v1.yaml"))
 
     if not yaml_files:
@@ -229,7 +229,7 @@ def test_chip_jsons():
     print("Testing Chip JSON Files")
     print("=" * 70)
 
-    chips_dir = OUTPUT_DIR / "chips"
+    chips_dir = OUTPUT_DIR / "chip"
     json_files = list(chips_dir.glob("*.json"))
 
     if not json_files:

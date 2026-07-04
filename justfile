@@ -436,7 +436,8 @@ license:
 
 # ── PAC generation (consortium-pac-*) ────────────────────────────────────────
 # Tooling for the peripheral access crates. Vendor headers live in `submodules/`,
-# local patches in `scripts/pac/patches/`, generated IR in `output/`. Requires
+# local patches in `scripts/pac/patches/`, generated IR under
+# `crates/consortium-data/database/` (`chip/`, `peri/`). Requires
 # chiptool (see `just setup-chiptool`).
 
 # Initialize the PAC vendor submodules and apply local patches

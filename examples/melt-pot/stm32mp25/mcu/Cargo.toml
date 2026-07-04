@@ -51,11 +51,11 @@ consortium-runtime-mcu = { default-features = false, path = "../../../../crates/
 consortium-hal-stm32mp2 = { default-features = false, features = [
   "time-driver-gp-tim",
 ], path = "../../../../crates/consortium-hal-stm32mp2" }
-
-# Firmware runtime.
 consortium-dbg = { default-features = false, features = [
   "logger",
 ], path = "../../../../crates/consortium-dbg" }
+
+# Firmware runtime.
 cortex-m = { features = ["critical-section-single-core"], version = "0.7" }
 cortex-m-rt = "0.7"
 defmt = "1.1.0"

@@ -21,6 +21,8 @@ use std::collections::HashMap;
 use consortium_cfg_common::config::{Config, MemoryRegion, Party, VisibleCore};
 use consortium_cfg_common::database::{ChipDatabase, HardwareDoorbellPeripheral};
 
+use consortium_data::DataError;
+
 use crate::{database, error::CfgError};
 
 /// A parsed manifest resolved against the database for its target chip.
@@ -39,7 +41,7 @@ impl Session {
     /// # Errors
     ///
     /// - [`CfgError::Manifest`] if the TOML is malformed.
-    /// - [`CfgError::UnknownChip`] / [`CfgError::DatabaseParse`] if the chip
+    /// - [`DataError::UnknownChip`] / [`DataError::DatabaseParse`] if the chip
     ///   cannot be resolved to a bundled database.
     /// - [`CfgError::UnknownDoorbell`] / [`CfgError::OwnerNotVisible`] from
     ///   [`Self::validate`].
@@ -91,8 +93,8 @@ impl Session {
                             });
                         }
                     }
-                    Err(CfgError::ChipMapUnavailable { .. }) => {}
-                    Err(err) => return Err(err),
+                    Err(DataError::ChipMapUnavailable { .. }) => {}
+                    Err(err) => return Err(err.into()),
                 }
             }
         }

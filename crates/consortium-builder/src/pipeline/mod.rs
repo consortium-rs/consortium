@@ -33,6 +33,7 @@
 pub mod application;
 pub mod bitbake;
 pub mod dist;
+pub mod dts;
 pub mod elf_map;
 pub mod firmware;
 pub mod tee;
@@ -46,13 +47,13 @@ use consortium_cfg_common::config::{VisibleCore, XcoreName};
 use consortium_cfg_common::database::Coprocessor;
 use thiserror::Error;
 
-use crate::compile::Compiler;
 use crate::compile::application::{ApplicationCompileError, ApplicationCompiler};
 use crate::compile::deploy::systemd::{self, SystemdRestartPolicy, SystemdUnitConfig};
 use crate::compile::env::SharedMemConfig;
 use crate::compile::firmware::{FirmwareCompileError, FirmwareCompiler};
 use crate::compile::optee::{OpteeCompileError, OpteeCompiler, OpteeConfiguration};
 use crate::compile::web::{HmiCompileError, HmiCompiler, HmiConfiguration};
+use crate::progress::{BuildReporter, BuildStep};
 
 use application::ApplicationBuildPlan;
 use bitbake::{BitbakeAction, BitbakeError};
@@ -184,6 +185,10 @@ pub struct PipelinePlan {
     pub ta: Option<OpteeConfiguration>,
     /// The application build plan and its generated AP init module.
     pub application: ApplicationBuildPlan,
+    /// The Linux UIO device-tree overlay(s) to write under `dist/dts/linux/`,
+    /// as `(file_name, contents)`. Empty when the manifest declares no UIO
+    /// devices.
+    pub dts_files: Vec<(String, String)>,
     /// The systemd unit to render.
     pub systemd: SystemdUnitConfig,
 }
@@ -269,7 +274,12 @@ pub async fn plan(
         &ty_crate,
     )?;
 
-    // Stage 6: systemd unit.
+    // Stage 6: Linux UIO overlay text (rendered from the lowered IR).
+    let dts_files = dts::render_linux_overlay(&ir)
+        .map(|contents| vec![(dts::LINUX_OVERLAY_NAME.to_string(), contents)])
+        .unwrap_or_default();
+
+    // Stage 7: systemd unit.
     let systemd = systemd_config(session, &application.config.path).await?;
 
     Ok(PipelinePlan {
@@ -282,63 +292,185 @@ pub async fn plan(
         hmi_dist,
         ta,
         application,
+        dts_files,
         systemd,
     })
 }
 
 /// Runs the full pipeline, returning the assembled `dist/` root.
 pub async fn run(config: PipelineConfig) -> Result<PathBuf, PipelineError> {
+    run_inner(config, None).await
+}
+
+/// Runs the full pipeline while reporting step progress and subprocess output.
+pub async fn run_with_reporter(
+    config: PipelineConfig,
+    reporter: &dyn BuildReporter,
+) -> Result<PathBuf, PipelineError> {
+    run_inner(config, Some(reporter)).await
+}
+
+async fn run_inner(
+    config: PipelineConfig,
+    reporter: Option<&dyn BuildReporter>,
+) -> Result<PathBuf, PipelineError> {
     let session = load_session(&config.manifest_path).await?;
     let plan = plan(&session, &config).await?;
 
-    // Stage 1: write each firmware's generated module, then compile it.
+    let total_steps = plan.firmware.len()
+        + usize::from(config.hmi.is_some())
+        + usize::from(plan.ta.is_some())
+        + 2
+        + usize::from(config.bitbake.is_some());
+    let mut steps = StepRunner::new(reporter, total_steps);
+
     let mut firmware_outputs = HashMap::new();
     for fw in &plan.firmware {
-        write_generated_module(&fw.config.path, &fw.generated).await?;
-        let elf = FirmwareCompiler::build(fw.config.clone()).await?;
+        let detail = format!("{} ({})", fw.core, fw.config.target);
+        let elf = steps
+            .run("Build firmware", Some(&detail), async {
+                write_generated_module(&fw.config.path, &fw.generated).await?;
+                let elf =
+                    FirmwareCompiler::build_with_reporter(fw.config.clone(), reporter).await?;
+                Ok(elf)
+            })
+            .await?;
         firmware_outputs.insert(fw.core, elf);
     }
 
-    // Stage 3: build the HMI frontend, if configured.
     let hmi_dist = match &config.hmi {
-        Some(hmi) => Some(HmiCompiler::build(hmi.clone()).await?),
+        Some(hmi) => {
+            let detail = hmi.project_dir.display().to_string();
+            Some(
+                steps
+                    .run("Build HMI", Some(&detail), async {
+                        let dist = HmiCompiler::build_with_reporter(hmi.clone(), reporter).await?;
+                        Ok(dist)
+                    })
+                    .await?,
+            )
+        }
         None => None,
     };
 
-    // Stage 4: build + sign the TA, if declared.
     let ta = match plan.ta {
-        Some(ta) => Some(OpteeCompiler::build(ta).await?),
+        Some(ta) => {
+            let detail = if ta.sign {
+                "signed trusted application"
+            } else {
+                "unsigned trusted application"
+            };
+            Some(
+                steps
+                    .run("Build TEE", Some(detail), async {
+                        let ta = OpteeCompiler::build_with_reporter(ta, reporter).await?;
+                        Ok(ta)
+                    })
+                    .await?,
+            )
+        }
         None => None,
     };
 
-    // Stage 5: write the AP module, then compile the application.
-    write_generated_module(&plan.application.config.path, &plan.application.generated).await?;
-    let application = ApplicationCompiler::build(plan.application.config.clone()).await?;
+    let app_detail = plan.application.config.target.clone();
+    let application = steps
+        .run("Build application", Some(&app_detail), async {
+            write_generated_module(&plan.application.config.path, &plan.application.generated)
+                .await?;
+            let app =
+                ApplicationCompiler::build_with_reporter(plan.application.config.clone(), reporter)
+                    .await?;
+            Ok(app)
+        })
+        .await?;
 
-    // Stage 6: render the systemd unit.
     let systemd_units = vec![(
         plan.systemd.file_name(),
         systemd::render_unit(&plan.systemd),
     )];
 
-    // Stage 7: assemble dist/.
+    let dist_detail = config.dist_root.display().to_string();
     let layout = DistLayout::new(&config.dist_root);
-    dist::assemble(
-        &layout,
-        &firmware_outputs,
-        &application,
-        ta.as_deref(),
-        hmi_dist.as_deref(),
-        &systemd_units,
-    )
-    .await?;
+    steps
+        .run("Assemble dist", Some(&dist_detail), async {
+            dist::assemble(
+                &layout,
+                &firmware_outputs,
+                &application,
+                ta.as_deref(),
+                hmi_dist.as_deref(),
+                &plan.dts_files,
+                &systemd_units,
+            )
+            .await?;
+            Ok(())
+        })
+        .await?;
 
-    // Stage 8: optional bitbake hand-off.
     if let Some(action) = &config.bitbake {
-        bitbake::run(action, &config.dist_root).await?;
+        let detail = match action {
+            BitbakeAction::CopyIntoRecipe { recipe_files_dir } => {
+                format!("copy to {}", recipe_files_dir.display())
+            }
+            BitbakeAction::InvokeBitbake { build_dir, recipe } => {
+                format!("{recipe} in {}", build_dir.display())
+            }
+        };
+        steps
+            .run("Run bitbake", Some(&detail), async {
+                bitbake::run_with_reporter(action, &config.dist_root, reporter).await?;
+                Ok(())
+            })
+            .await?;
     }
 
     Ok(config.dist_root)
+}
+
+struct StepRunner<'a> {
+    reporter: Option<&'a dyn BuildReporter>,
+    next: usize,
+    total: usize,
+}
+
+impl<'a> StepRunner<'a> {
+    fn new(reporter: Option<&'a dyn BuildReporter>, total: usize) -> Self {
+        Self {
+            reporter,
+            next: 0,
+            total,
+        }
+    }
+
+    async fn run<T, F>(
+        &mut self,
+        name: &str,
+        detail: Option<&str>,
+        future: F,
+    ) -> Result<T, PipelineError>
+    where
+        F: std::future::Future<Output = Result<T, PipelineError>>,
+    {
+        self.next += 1;
+        let step = BuildStep {
+            index: self.next,
+            total: self.total,
+            name,
+            detail,
+        };
+        if let Some(reporter) = self.reporter {
+            reporter.step_started(step);
+        }
+
+        let result = future.await;
+        if let Some(reporter) = self.reporter {
+            match &result {
+                Ok(_) => reporter.step_succeeded(step),
+                Err(_) => reporter.step_failed(step),
+            }
+        }
+        result
+    }
 }
 
 /// The [`VisibleCore`] a chip-database coprocessor entry names.
@@ -530,10 +662,13 @@ mod tests {
         // (prettyplease may wrap a long `include_bytes!(...)` across lines, so
         // assert on the embedded path literal rather than the whole call.)
         assert!(plan.application.generated.contains("include_bytes!"));
+        // The builder absolutizes (and lexically normalizes) the ELF path before
+        // codegen, so the embedded literal drops the `./` endpoint prefix.
+        let embedded_elf = std::path::absolute(&expected_elf).unwrap();
         assert!(
             plan.application
                 .generated
-                .contains(&format!("\"{}\"", expected_elf.display()))
+                .contains(&format!("\"{}\"", embedded_elf.display()))
         );
         assert_eq!(plan.application.config.target, "aarch64-unknown-linux-gnu");
         assert_eq!(

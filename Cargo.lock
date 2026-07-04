@@ -401,6 +401,7 @@ version = "0.1.0"
 dependencies = [
  "consortium-cfg",
  "consortium-cfg-common",
+ "consortium-dts",
  "rust-ini",
  "serde",
  "syn",
@@ -416,6 +417,7 @@ version = "0.1.0"
 dependencies = [
  "consortium-cfg-common",
  "consortium-codec",
+ "consortium-data",
  "consortium-dts",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
@@ -488,6 +490,17 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "consortium-data"
+version = "0.1.0"
+dependencies = [
+ "consortium-cfg-common",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "thiserror",
 ]
 
 [[package]]
@@ -784,19 +797,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "consortium-tee-test"
-version = "0.1.0"
-dependencies = [
- "consortium-tee",
- "num_enum",
- "optee-teec",
- "optee-utee",
- "optee-utee-build",
- "optee-utee-sys",
- "tokio",
 ]
 
 [[package]]
@@ -1728,12 +1728,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "52ff2c0fe9bc6cb6b14a0592c2ff4fa9ceb83eea9db979b0487cd054946a2b8f"
 
 [[package]]
-name = "libc_alloc"
-version = "1.0.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7581282928bc99698341d1de7590964c28db747c164eaac9409432a3eaed098a"
-
-[[package]]
 name = "libloading"
 version = "0.8.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2147,54 +2141,6 @@ name = "optee-teec-sys"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0c347bdb9105a695c0866c21059e05ef3a2cdc06ec9341432e5f3b400913e392"
-dependencies = [
- "document-features",
-]
-
-[[package]]
-name = "optee-utee"
-version = "0.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5df7ceca067883219717a6fc8c4a3939944b553e0175ba1cbd786d21c21e58b6"
-dependencies = [
- "bitflags 2.11.1",
- "document-features",
- "hex",
- "libc_alloc",
- "optee-utee-macros",
- "optee-utee-sys",
- "strum",
- "uuid",
-]
-
-[[package]]
-name = "optee-utee-build"
-version = "0.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "12dfe889e7e36294be2867c3f13761e87fde0e6780894e2fa6307da61d6ffeeb"
-dependencies = [
- "prettyplease",
- "proc-macro2",
- "quote",
- "syn",
- "uuid",
-]
-
-[[package]]
-name = "optee-utee-macros"
-version = "0.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d77c33900395eb470d7061d5a3d1c9e8cce3dc0ba4051bb5c726cab5c58339c0"
-dependencies = [
- "quote",
- "syn",
-]
-
-[[package]]
-name = "optee-utee-sys"
-version = "0.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "303d1e011be2cdd6271efe7d4053c8375f45fae1aff46382ad6de9172fc19892"
 dependencies = [
  "document-features",
 ]
@@ -2854,27 +2800,6 @@ name = "strsim"
 version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f"
-
-[[package]]
-name = "strum"
-version = "0.28.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9628de9b8791db39ceda2b119bbe13134770b56c138ec1d3af810d045c04f9bd"
-dependencies = [
- "strum_macros",
-]
-
-[[package]]
-name = "strum_macros"
-version = "0.28.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ab85eea0270ee17587ed4156089e10b9e6880ee688791d45a905f5b1ca36f664"
-dependencies = [
- "heck",
- "proc-macro2",
- "quote",
- "syn",
-]
 
 [[package]]
 name = "syn"

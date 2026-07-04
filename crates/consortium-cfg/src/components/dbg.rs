@@ -143,11 +143,15 @@ impl DebugLogs {
             let uio_id = Literal::usize_unsuffixed(ring.ap_uio_id);
             let mmap_id = Literal::usize_unsuffixed(ring.ap_mmap_id);
             let len = Literal::usize_unsuffixed(ring.length as usize);
-            let elf_path = &ring.elf_path;
-            let elf_path_parsed = PathBuf::from(elf_path).canonicalize().unwrap_or_else(|_| {
-                panic!("failed to canonicalize resolved firmware ELF path for {core}: {elf_path}")
-            });
-            let elf_path_normalized = elf_path_parsed.to_string_lossy().replace('\\', "/");
+            // Emit `elf_path` verbatim (only normalizing backslashes for the
+            // string literal). The builder resolves it to an absolute build-host
+            // path before codegen (see [`DebugLogs::with_resolved_elf_paths`] and
+            // the pipeline's `resolve_dbg_elf_paths`), so `include_bytes!`
+            // resolves the same image regardless of where the generated file
+            // lands. Codegen never touches the filesystem: the ELF need not exist
+            // yet (the builder compiles it in a later stage; tests point at a
+            // fixture relative to the emitted crate).
+            let elf_path_normalized = ring.elf_path.replace('\\', "/");
             let label = core.to_string();
             quote! {
                 ::consortium_runtime_app::dbg_console::DbgRingSpec {

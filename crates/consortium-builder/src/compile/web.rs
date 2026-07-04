@@ -28,6 +28,8 @@ use thiserror::Error;
 use tokio::process::Command;
 
 use super::Compiler;
+use crate::compile::utils::run_command;
+use crate::progress::BuildReporter;
 
 /// How the HMI frontend is built.
 ///
@@ -113,12 +115,11 @@ pub struct HmiConfiguration {
 /// Compiler for the HMI frontend: runs the frontend build then verifies dist.
 pub struct HmiCompiler;
 
-impl Compiler for HmiCompiler {
-    type Configuration = HmiConfiguration;
-    type Error = HmiCompileError;
-    type Output = PathBuf;
-
-    async fn build(config: Self::Configuration) -> Result<Self::Output, Self::Error> {
+impl HmiCompiler {
+    pub async fn build_with_reporter(
+        config: HmiConfiguration,
+        reporter: Option<&dyn BuildReporter>,
+    ) -> Result<PathBuf, HmiCompileError> {
         let (program, args) = config.command.program_args();
         if program.is_empty() {
             return Err(HmiCompileError::CommandResolveError(
@@ -133,14 +134,12 @@ impl Compiler for HmiCompiler {
             }
         }
 
-        let status = Command::new(program)
-            .args(&args)
-            .current_dir(&config.project_dir)
-            .status()
-            .await
-            .map_err(|e| {
-                HmiCompileError::BuildFailed(format!("failed to launch `{program}`: {e}"))
-            })?;
+        let mut cmd = Command::new(program);
+        cmd.args(&args).current_dir(&config.project_dir);
+
+        let status = run_command(&mut cmd, reporter).await.map_err(|e| {
+            HmiCompileError::BuildFailed(format!("failed to launch `{program}`: {e}"))
+        })?;
 
         if !status.success() {
             return Err(HmiCompileError::BuildFailed(format!(
@@ -150,6 +149,16 @@ impl Compiler for HmiCompiler {
 
         verify_dist(&config.dist_dir).await?;
         Ok(config.dist_dir)
+    }
+}
+
+impl Compiler for HmiCompiler {
+    type Configuration = HmiConfiguration;
+    type Error = HmiCompileError;
+    type Output = PathBuf;
+
+    async fn build(config: Self::Configuration) -> Result<Self::Output, Self::Error> {
+        Self::build_with_reporter(config, None).await
     }
 
     async fn output_path(config: &Self::Configuration) -> Result<PathBuf, Self::Error> {

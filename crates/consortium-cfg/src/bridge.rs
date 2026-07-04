@@ -46,6 +46,8 @@ use crate::components::ipc_shm::{Channel, DoorbellMeta, ShuHan, Transceiver};
 use crate::components::peripheral::{PeripheralInstance, PeripheralKind, Peripherals};
 use crate::components::region::Region;
 use crate::components::uio::{ToUio, UioBacking, UioDevice};
+use consortium_data::DataError;
+
 use crate::{Session, error::CfgError};
 
 /// The `components` IR lowered from a [`Session`].
@@ -157,7 +159,13 @@ impl LoweredIr {
             #endpoints
 
             /// Aggregate bring-up error for [`init`].
+            ///
+            /// The variant payloads are surfaced through `Debug` in the
+            /// consuming binary (a downstream crate this module is `include!`d
+            /// into), which dead-code analysis cannot see, so allow the
+            /// otherwise-"never read" fields.
             #[derive(Debug)]
+            #[allow(dead_code)]
             enum ConsortiumInitError {
                 /// Opening or mapping a UIO device failed.
                 Uio(::consortium_runtime_app::uio::UioDeviceError),
@@ -548,8 +556,8 @@ impl Session {
             let core = peripheral.owner.to_string();
             let map = match crate::chipmap::load(chip, &core) {
                 Ok(map) => map,
-                Err(CfgError::ChipMapUnavailable { .. }) => continue,
-                Err(err) => return Err(err),
+                Err(DataError::ChipMapUnavailable { .. }) => continue,
+                Err(err) => return Err(err.into()),
             };
             let Some(entry) = map.peripheral(name) else {
                 continue;
@@ -694,7 +702,7 @@ fn peripheral_alias(database: &ChipDatabase, secure: bool) -> u32 {
 /// The absolute peripheral base a controller core sees, given the non-secure
 /// absolute base from the chip map.
 ///
-/// The `output/chips` dumps carry each peripheral's non-secure CMSIS address, so
+/// The chip dumps carry each peripheral's non-secure CMSIS address, so
 /// a non-secure owner uses it unchanged. A secure owner rebases it from the
 /// non-secure world to the secure world (e.g. STM32MP2 `0x4000_0000` →
 /// `0x5000_0000`); chips without peripheral aliases have no such split and the

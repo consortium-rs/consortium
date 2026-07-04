@@ -15,7 +15,7 @@ fn loads_all_database_yaml_files() {
 #[test]
 fn loads_stm32mp21_database_yaml() {
     let database: ChipDatabase = serde_yaml::from_str(include_str!(
-        "../../consortium-cfg/src/database/stm32mp21.yaml"
+        "../../consortium-data/database/memory/stm32mp21.yaml"
     ))
     .expect("stm32mp21 database should match Rust schema");
 
@@ -33,7 +33,7 @@ fn loads_stm32mp21_database_yaml() {
 #[test]
 fn loads_stm32mp23_database_yaml() {
     let database: ChipDatabase = serde_yaml::from_str(include_str!(
-        "../../consortium-cfg/src/database/stm32mp23.yaml"
+        "../../consortium-data/database/memory/stm32mp23.yaml"
     ))
     .expect("stm32mp23 database should match Rust schema");
 
@@ -50,7 +50,7 @@ fn loads_stm32mp23_database_yaml() {
 #[test]
 fn loads_stm32mp25_database_yaml() {
     let database: ChipDatabase = serde_yaml::from_str(include_str!(
-        "../../consortium-cfg/src/database/stm32mp25.yaml"
+        "../../consortium-data/database/memory/stm32mp25.yaml"
     ))
     .expect("stm32mp25 database should match Rust schema");
 
@@ -69,7 +69,7 @@ fn database_yaml_files() -> Vec<PathBuf> {
     let database_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .parent()
         .expect("cfg-common crate should live under crates/")
-        .join("consortium-cfg/src/database");
+        .join("consortium-data/database/memory");
 
     let mut paths = fs::read_dir(database_dir)
         .expect("database directory should be readable")

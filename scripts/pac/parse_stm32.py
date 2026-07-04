@@ -20,7 +20,7 @@ from common import (
 
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "data"
-OUTPUT_DIR = Path(__file__).resolve().parents[2] / "output"
+OUTPUT_DIR = Path(__file__).resolve().parents[2] / "crates" / "consortium-data" / "database"
 
 FAMILY_REPRESENTATIVES = {
     "stm32mp21_cm33": "stm32mp215fxx_cm33.h",
@@ -440,7 +440,7 @@ class STM32HeaderParser:
         # Write register YAMLs
         for block_name, block_data in self.blocks.items():
             yaml_path = (
-                OUTPUT_DIR / "registers" / "stm32mp" / f"{block_name.lower()}_v1.yaml"
+                OUTPUT_DIR / "peri" / "stm32mp" / f"{block_name.lower()}_v1.yaml"
             )
             data = {f"block/{block_name}": block_data}
 
@@ -464,7 +464,9 @@ class STM32HeaderParser:
             "peripherals": sorted(self.peripherals, key=lambda x: x["name"]),
         }
 
-        json_path = OUTPUT_DIR / "chips" / f"{chip_name}.json"
+        # The bundled file is keyed by family + core (the chip-variant segment is
+        # dropped): e.g. `stm32mp25_cm33.json`.
+        json_path = OUTPUT_DIR / "chip" / f"{self.family_prefix}_{self.core}.json"
         write_json(chip_json, json_path)
         print(f"Wrote {json_path}")
 
