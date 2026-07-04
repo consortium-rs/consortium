@@ -145,9 +145,7 @@ impl DebugLogs {
             let len = Literal::usize_unsuffixed(ring.length as usize);
             let elf_path = &ring.elf_path;
             let elf_path_parsed = PathBuf::from(elf_path).canonicalize().unwrap_or_else(|_| {
-                panic!(
-                    "failed to canonicalize resolved firmware ELF path for {core}: {elf_path}"
-                )
+                panic!("failed to canonicalize resolved firmware ELF path for {core}: {elf_path}")
             });
             let elf_path_normalized = elf_path_parsed.to_string_lossy().replace('\\', "/");
             let label = core.to_string();
