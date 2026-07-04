@@ -19,7 +19,8 @@
 //! The debug ring uses the **same** shared-memory format as the IPC region; the
 //! builder injects the `[dbg]` section of `Consortium.toml` as `CONSORTIUM_DBG_*`
 //! environment variables, which this module reads with `option_env!` and parses
-//! in a `const` context. This replaces the previous `extern "C"` linker symbols
+//! in a `const` context. The builder emits numeric values as decimal strings;
+//! this replaces the previous `extern "C"` linker symbols
 //! (`CONSORTIUM_DBG_SRAM_BASE`/`CONSORTIUM_DBG_SRAM_SIZE`) and the matching
 //! `#[no_mangle]` statics the firmware had to define.
 //!
@@ -27,8 +28,6 @@
 //! `false`, [`BASE`] is `0`, and the [`crate::logger::ConsortiumLogger`] becomes
 //! a no-op. Firmware that needs real logging should guard with
 //! [`assert_configured`].
-
-use consortium_env_value::parse_u64;
 
 const fn env_or_zero(value: Option<&str>) -> &str {
     match value {
@@ -41,10 +40,10 @@ const fn env_or_zero(value: Option<&str>) -> &str {
 pub const CONFIGURED: bool = option_env!("CONSORTIUM_DBG_BASE").is_some();
 
 /// Physical base address of the debug region, as seen by the MCU (raw memory).
-pub const BASE: u64 = parse_u64(env_or_zero(option_env!("CONSORTIUM_DBG_BASE")));
+pub const BASE: u64 = const_str::parse!(env_or_zero(option_env!("CONSORTIUM_DBG_BASE")), u64);
 
 /// Length of the debug region in bytes.
-pub const LENGTH: u64 = parse_u64(env_or_zero(option_env!("CONSORTIUM_DBG_LENGTH")));
+pub const LENGTH: u64 = const_str::parse!(env_or_zero(option_env!("CONSORTIUM_DBG_LENGTH")), u64);
 
 /// Debug region base as a raw mutable pointer for the MCU side.
 pub const BASE_PTR: *mut u8 = BASE as *mut u8;

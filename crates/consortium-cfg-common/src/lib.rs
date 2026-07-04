@@ -16,9 +16,3 @@
 
 pub mod config;
 pub mod database;
-
-/// Re-export of the dependency-free [`consortium_env_value`] crate so existing
-/// consumers keep using `consortium_cfg_common::env_value::{parse_u32, parse_u64}`.
-/// The helpers live in their own `no_std` crate so bare-metal consumers can use
-/// them without pulling in this std-only schema crate.
-pub use consortium_env_value as env_value;
