@@ -500,10 +500,12 @@ dependencies = [
  "consortium-ipc-doorbell-hsem",
  "consortium-ipc-doorbell-mu",
  "consortium-shared-memory",
+ "cortex-m",
  "defmt",
  "defmt-decoder",
  "defmt-parser",
  "hex 0.4.3",
+ "riscv",
  "thiserror",
 ]
 
@@ -2273,6 +2275,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "pastey"
+version = "0.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2ee67f1008b1ba2321834326597b8e186293b049a023cdef258527550b9935b4"
+
+[[package]]
 name = "peg"
 version = "0.8.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2526,6 +2534,36 @@ checksum = "cadadef317c2f20755a64d7fdc48f9e7178ee6b0e1f7fce33fa60f1d68a276e6"
 dependencies = [
  "bytecheck",
 ]
+
+[[package]]
+name = "riscv"
+version = "0.16.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e42cdafa0aa3f0f956b7993cace26de5dafff7bb4f2c5b1dcb2c3723f4267a4f"
+dependencies = [
+ "critical-section",
+ "embedded-hal 1.0.0",
+ "pastey",
+ "riscv-macros",
+ "riscv-types",
+]
+
+[[package]]
+name = "riscv-macros"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6ad9f6dda08d90d091bc0743967cab369b8fe39ea74b26783ba2ca5c0ce39e86"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "riscv-types"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d3f2ad9f15a07f4a0e1677124f9120ce7e83ab7e1ca7186af0ca9da529b62e80"
 
 [[package]]
 name = "rkyv"
