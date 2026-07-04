@@ -36,4 +36,4 @@ tokio                 = { default-features = false, features = ["rt"], optional 
 trybuild = "1"
 
 [target.'cfg(target_os = "linux")'.dependencies]
-optee-teec = { optional = true, version = "0.8.0" }
+optee-teec = { optional = true, version = "0.9.0" }

@@ -156,6 +156,9 @@ pub struct PipelineConfig {
     pub hmi: Option<HmiConfiguration>,
     /// OP-TEE toolchain, or `None` (an error if the manifest declares `[tee]`).
     pub tee_toolchain: Option<TeeToolchain>,
+    /// Sign the OP-TEE TA after building it. `false` (from `--skip-tee-sign`)
+    /// stops at the unsigned ELF, so no signer script or keys are needed.
+    pub sign_tee: bool,
     /// Optional bitbake hand-off after `dist/` is assembled.
     pub bitbake: Option<BitbakeAction>,
 }
@@ -253,6 +256,7 @@ pub async fn plan(
         &manifest_dir,
         config.tee_toolchain.as_ref(),
         config.release,
+        config.sign_tee,
     )?;
 
     // Stage 5: application plan (AP module embeds the resolved firmware ELFs).
@@ -496,6 +500,7 @@ mod tests {
                 optee_signer: PathBuf::from("/opt/optee/scripts/sign_encrypt.py"),
                 linker: None,
             }),
+            sign_tee: true,
             bitbake: None,
         };
 

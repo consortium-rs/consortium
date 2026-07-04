@@ -52,13 +52,7 @@ debug   = "http://127.0.0.1:5173/"
 source  = "website"
 build   = "website/dist"
 
-[peripheral.i2c1]
-owner   = "ap"
-secure  = false
-pin.sda = "PB0"
-pin.scl = "PB1"
-
-[peripheral.spi1]
+[peripheral.lpspi1]
 owner    = "cm7"
 secure   = false
 pin.miso = "PA6"
@@ -79,3 +73,5 @@ owner     = "cm7"
 secure    = false
 clock     = 24000000
 frequency = 100000
+pin.sda = "PB0"
+pin.scl = "PB1"

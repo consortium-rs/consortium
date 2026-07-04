@@ -18,7 +18,7 @@
 fn main() -> Result<(), optee_utee_build::Error> {
     use optee_utee_build::TaConfig;
     let ta_config = TaConfig::new_default_with_cargo_env("197c710c-bdab-11eb-8f3f-17a5f698d23b")?;
-    optee_utee_build::build(optee_utee_build::RustEdition::Edition2024, ta_config)
+    optee_utee_build::build(ta_config)
 }
 
 #[cfg(not(all(target_os = "linux", feature = "ta")))]

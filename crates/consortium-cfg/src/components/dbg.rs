@@ -144,13 +144,19 @@ impl DebugLogs {
             let mmap_id = Literal::usize_unsuffixed(ring.ap_mmap_id);
             let len = Literal::usize_unsuffixed(ring.length as usize);
             let elf_path = &ring.elf_path;
+            let elf_path_parsed = PathBuf::from(elf_path).canonicalize().unwrap_or_else(|_| {
+                panic!(
+                    "failed to canonicalize resolved firmware ELF path for {core}: {elf_path}"
+                )
+            });
+            let elf_path_normalized = elf_path_parsed.to_string_lossy().replace('\\', "/");
             let label = core.to_string();
             quote! {
                 ::consortium_runtime_app::dbg_console::DbgRingSpec {
                     uio_id: #uio_id,
                     mmap_id: #mmap_id,
                     len: #len,
-                    elf_bytes: include_bytes!(#elf_path),
+                    elf_bytes: include_bytes!(#elf_path_normalized),
                     label: #label,
                 }
             }
