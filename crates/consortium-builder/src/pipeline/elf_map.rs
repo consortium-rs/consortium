@@ -36,6 +36,11 @@ use super::PipelineError;
 /// [`PipelineError::DbgCoreNotBuilt`] when a debug core was not built — in
 /// practice when `[dbg.<core>]` names a `Manager`-variant coprocessor, which
 /// Stage 1 never compiles.
+///
+/// Each path is made absolute (lexically, without requiring the ELF to exist —
+/// Stage 1 compiles it later) so the AP codegen can embed it verbatim and have
+/// `include_bytes!` resolve the same image regardless of where the generated
+/// file lands.
 pub fn resolve_dbg_elf_paths(
     firmware_outputs: &HashMap<VisibleCore, PathBuf>,
     dbg_cores: impl Iterator<Item = VisibleCore>,
@@ -45,7 +50,8 @@ pub fn resolve_dbg_elf_paths(
         let path = firmware_outputs
             .get(&core)
             .ok_or_else(|| PipelineError::DbgCoreNotBuilt(core.to_string()))?;
-        resolved.insert(core, path.clone());
+        let absolute = std::path::absolute(path).unwrap_or_else(|_| path.clone());
+        resolved.insert(core, absolute);
     }
     Ok(resolved)
 }

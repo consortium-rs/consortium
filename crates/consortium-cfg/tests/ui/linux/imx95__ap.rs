@@ -22,7 +22,12 @@ mod shared {
 /// Descriptor-handshake failure, with the doorbell-specific payload
 /// erased so a single error type spans transceivers that use
 /// different doorbells. `no_std`-safe (no `alloc`).
+///
+/// The `Descriptor` payload is surfaced through `Debug` in the
+/// consuming binary, which dead-code analysis cannot see, so allow
+/// the otherwise-"never read" field.
 #[derive(Debug)]
+#[allow(dead_code)]
 enum ConsortiumConnectError {
     /// The descriptor header/channel table was invalid or never reached
     /// the ready state.
@@ -302,7 +307,13 @@ impl IpcMemoryEndpoints {
     }
 }
 /// Aggregate bring-up error for [`init`].
+///
+/// The variant payloads are surfaced through `Debug` in the
+/// consuming binary (a downstream crate this module is `include!`d
+/// into), which dead-code analysis cannot see, so allow the
+/// otherwise-"never read" fields.
 #[derive(Debug)]
+#[allow(dead_code)]
 enum ConsortiumInitError {
     /// Opening or mapping a UIO device failed.
     Uio(::consortium_runtime_app::uio::UioDeviceError),

@@ -21,11 +21,10 @@ pub enum CfgError {
     #[error("failed to parse Consortium manifest: {0}")]
     Manifest(String),
 
-    #[error("no chip-family database matches chip '{0}'")]
-    UnknownChip(String),
-
-    #[error("failed to parse chip database for '{0}': {1}")]
-    DatabaseParse(String, String),
+    /// Chip-family database and per-core chip-map resolution errors, raised by
+    /// the `consortium-data` loaders.
+    #[error(transparent)]
+    Data(#[from] consortium_data::DataError),
 
     #[error(
         "doorbell '{name}' is not available on chip '{chip}'. Available doorbells: {available}. \
@@ -43,16 +42,6 @@ pub enum CfgError {
 
     #[error("peripheral '{0}' is owned by '{1}', which is not a core on chip '{2}'")]
     OwnerNotVisible(String, String, String),
-
-    #[error("no peripheral/interrupt map is bundled for chip '{chip}' core '{core}'")]
-    ChipMapUnavailable { chip: String, core: String },
-
-    #[error("failed to parse the peripheral map for chip '{chip}' core '{core}': {detail}")]
-    ChipMapParse {
-        chip: String,
-        core: String,
-        detail: String,
-    },
 
     #[error(
         "peripheral '{name}' is not accessible from core '{core}' on chip '{chip}'. \

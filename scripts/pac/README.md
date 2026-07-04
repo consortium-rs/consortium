@@ -69,7 +69,7 @@ Shared utilities:
 
 ## Output Format
 
-### Register YAML (`output/registers/<family>/<periph>_v1.yaml`)
+### Register YAML (`crates/consortium-data/database/peri/<family>/<periph>_v1.yaml`)
 
 Chiptool IR format with blocks and fieldsets:
 
@@ -98,7 +98,7 @@ fieldset/LPUART_VERID:
       description: Feature Identification Number
 ```
 
-### Chip Descriptors (`output/chips/<CHIP>.json`)
+### Chip Descriptors (`crates/consortium-data/database/chip/<CHIP>.json`)
 
 Chip metadata with IRQs and peripheral mappings:
 

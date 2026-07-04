@@ -21,7 +21,8 @@ use tokio::process::Command;
 use uuid::Uuid;
 
 use super::Compiler;
-use crate::compile::utils::{binary_name, elf_path, resolve_cargo, verify_elf};
+use crate::compile::utils::{binary_name, elf_path, resolve_cargo, run_command, verify_elf};
+use crate::progress::BuildReporter;
 
 // Only aarch64-unknown-linux-gnu is currently supported for OP-TEE builds.
 // Armv7 targets (Cortex-A7) are not supported by the OP-TEE SDK, and
@@ -83,12 +84,11 @@ pub struct OpteeConfiguration {
 /// Compiler for OP-TEE Trusted Applications: builds the ELF then signs it.
 pub struct OpteeCompiler;
 
-impl Compiler for OpteeCompiler {
-    type Configuration = OpteeConfiguration;
-    type Error = OpteeCompileError;
-    type Output = PathBuf;
-
-    async fn build(config: Self::Configuration) -> Result<Self::Output, Self::Error> {
+impl OpteeCompiler {
+    pub async fn build_with_reporter(
+        config: OpteeConfiguration,
+        reporter: Option<&dyn BuildReporter>,
+    ) -> Result<PathBuf, OpteeCompileError> {
         // ── Step 1: build ───────────────────────────────────────────────────
         if !config.ta_dev_kit_dir.exists() {
             return Err(OpteeCompileError::TaDevKitNotFound(config.ta_dev_kit_dir));
@@ -128,8 +128,7 @@ impl Compiler for OpteeCompiler {
                 .arg(format!("{OPTEE_TARGET}.linker={linker}"));
         }
 
-        let status = cmd
-            .status()
+        let status = run_command(&mut cmd, reporter)
             .await
             .map_err(|e| OpteeCompileError::BuildFailed(e.to_string()))?;
 
@@ -176,7 +175,8 @@ impl Compiler for OpteeCompiler {
             })?
             .join(format!("{}.ta", config.ta_uuid));
 
-        let status = Command::new(&python)
+        let mut sign_cmd = Command::new(&python);
+        sign_cmd
             .arg(&config.optee_signer)
             .arg("--uuid")
             .arg(config.ta_uuid.to_string())
@@ -186,14 +186,13 @@ impl Compiler for OpteeCompiler {
             .arg(&elf)
             .arg("--out")
             .arg(&ta)
-            .env("TA_DEV_KIT_DIR", &config.ta_dev_kit_dir)
-            .status()
-            .await
-            .map_err(|e| {
-                OpteeCompileError::SigningFailed(format!(
-                    "Failed to execute OP-TEE signer via {python}: {e}"
-                ))
-            })?;
+            .env("TA_DEV_KIT_DIR", &config.ta_dev_kit_dir);
+
+        let status = run_command(&mut sign_cmd, reporter).await.map_err(|e| {
+            OpteeCompileError::SigningFailed(format!(
+                "Failed to execute OP-TEE signer via {python}: {e}"
+            ))
+        })?;
 
         if !status.success() {
             return Err(OpteeCompileError::SigningFailed(format!(
@@ -206,6 +205,16 @@ impl Compiler for OpteeCompiler {
         }
 
         Ok(ta)
+    }
+}
+
+impl Compiler for OpteeCompiler {
+    type Configuration = OpteeConfiguration;
+    type Error = OpteeCompileError;
+    type Output = PathBuf;
+
+    async fn build(config: Self::Configuration) -> Result<Self::Output, Self::Error> {
+        Self::build_with_reporter(config, None).await
     }
 
     async fn output_path(config: &Self::Configuration) -> Result<PathBuf, Self::Error> {

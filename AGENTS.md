@@ -74,12 +74,12 @@ A-core, TEE, HMI, UIO, Cog, WebKit, and Yocto/OpenSTLinux flows are Linux/SDK or
 | Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                |
 | Shared memory   | `consortium-shared-memory`, `consortium-ipc-transport-memory`                                                                |
 | Doorbells       | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-ipcc`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio` |
-| Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`                                                                  |
+| Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`, `consortium-data`                                               |
 | HAL/PAC         | `consortium-hal`, `consortium-hal-imx9`, `consortium-hal-stm32mp2`, `consortium-pac-imx9`, `consortium-pac-stm32mp2`         |
 | Macro helpers   | `consortium-macros-helpers`                                                                                                  |
 | Runtimes/build  | `consortium-runtime-app`, `consortium-runtime-mcu`, `consortium-runtime-spl`, `consortium-builder`, `consortium-cli`         |
 | Debug           | `consortium-dbg`                                                                                                             |
-| TEE             | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`, `consortium-tee-test`                               |
+| TEE             | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`                                                      |
 | HMI/Cog/ORT/FFI | `consortium-hmi`, `cogcore`, `cogcore-sys`, `consortium-ort`, `consortium-ffi`                                               |
 | Examples        | `examples/melt-pot/*` for i.MX95 and STM32MP25 app/MCU/TA/shared message crates                                              |
 

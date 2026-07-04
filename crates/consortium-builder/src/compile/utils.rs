@@ -16,8 +16,10 @@
 
 use crate::compile::env::{DbgConfig, HmiConfig, SharedMemConfig};
 use crate::compile::web::HmiBuildCommand;
+use crate::progress::BuildReporter;
 use std::path::{Path, PathBuf};
-use tokio::io::AsyncReadExt;
+use std::process::{ExitStatus, Stdio};
+use tokio::io::{AsyncRead, AsyncReadExt};
 use tokio::process::Command;
 
 /// Injects a shared-memory region's layout as `CONSORTIUM_<PREFIX>_*` env vars
@@ -58,6 +60,50 @@ pub fn inject_hmi(cmd: &mut Command, config: Option<&HmiConfig>) {
         for (key, value) in hmi.env_pairs() {
             cmd.env(key, value);
         }
+    }
+}
+
+/// Runs a child command, streaming its output through `reporter` when present.
+///
+/// Without a reporter, the command inherits stdout/stderr just like
+/// `Command::status`; with a reporter, output is piped so the CLI can redraw its
+/// sticky status prompt after each chunk.
+pub async fn run_command(
+    cmd: &mut Command,
+    reporter: Option<&dyn BuildReporter>,
+) -> std::io::Result<ExitStatus> {
+    let Some(reporter) = reporter else {
+        return cmd.status().await;
+    };
+
+    cmd.stdout(Stdio::piped()).stderr(Stdio::piped());
+    let mut child = cmd.spawn()?;
+    let stdout = child.stdout.take();
+    let stderr = child.stderr.take();
+
+    let stdout_stream = stream_output(stdout, reporter);
+    let stderr_stream = stream_output(stderr, reporter);
+    let wait = child.wait();
+    let (stdout_result, stderr_result, status) = tokio::join!(stdout_stream, stderr_stream, wait);
+    stdout_result?;
+    stderr_result?;
+    status
+}
+
+async fn stream_output<R>(reader: Option<R>, reporter: &dyn BuildReporter) -> std::io::Result<()>
+where
+    R: AsyncRead + Unpin,
+{
+    let Some(mut reader) = reader else {
+        return Ok(());
+    };
+    let mut buf = [0_u8; 8192];
+    loop {
+        let n = reader.read(&mut buf).await?;
+        if n == 0 {
+            return Ok(());
+        }
+        reporter.command_output(&String::from_utf8_lossy(&buf[..n]));
     }
 }
 

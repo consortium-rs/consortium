@@ -25,6 +25,9 @@ use std::path::{Path, PathBuf};
 use thiserror::Error;
 use tokio::process::Command;
 
+use crate::compile::utils::run_command;
+use crate::progress::BuildReporter;
+
 use super::dist::{DistAssemblyError, copy_dir_recursive};
 
 /// What to do with the assembled `dist/` tree.
@@ -62,13 +65,22 @@ pub enum BitbakeError {
 
 /// Executes `action` against the assembled `dist_root`.
 pub async fn run(action: &BitbakeAction, dist_root: &Path) -> Result<(), BitbakeError> {
+    run_with_reporter(action, dist_root, None).await
+}
+
+/// Executes an action against the assembled dist root, streaming command output.
+pub async fn run_with_reporter(
+    action: &BitbakeAction,
+    dist_root: &Path,
+    reporter: Option<&dyn BuildReporter>,
+) -> Result<(), BitbakeError> {
     match action {
         BitbakeAction::CopyIntoRecipe { recipe_files_dir } => {
             copy_dir_recursive(dist_root, recipe_files_dir).await?;
             Ok(())
         }
         BitbakeAction::InvokeBitbake { build_dir, recipe } => {
-            invoke_bitbake_with("bitbake", build_dir, recipe).await
+            invoke_bitbake_with("bitbake", build_dir, recipe, reporter).await
         }
     }
 }
@@ -79,11 +91,12 @@ async fn invoke_bitbake_with(
     program: &str,
     build_dir: &Path,
     recipe: &str,
+    reporter: Option<&dyn BuildReporter>,
 ) -> Result<(), BitbakeError> {
-    let status = Command::new(program)
-        .arg(recipe)
-        .current_dir(build_dir)
-        .status()
+    let mut cmd = Command::new(program);
+    cmd.arg(recipe).current_dir(build_dir);
+
+    let status = run_command(&mut cmd, reporter)
         .await
         .map_err(|_| BitbakeError::BitbakeNotFound)?;
 
@@ -134,7 +147,7 @@ mod tests {
     #[tokio::test]
     async fn invoke_bitbake_reports_not_found() {
         let base = scratch("notfound");
-        let err = invoke_bitbake_with("consortium-not-a-real-bitbake", &base, "image")
+        let err = invoke_bitbake_with("consortium-not-a-real-bitbake", &base, "image", None)
             .await
             .expect_err("missing bitbake is an error");
         assert!(matches!(err, BitbakeError::BitbakeNotFound));

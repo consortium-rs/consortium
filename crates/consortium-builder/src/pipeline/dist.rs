@@ -27,6 +27,22 @@ use std::path::{Path, PathBuf};
 
 use consortium_cfg_common::config::VisibleCore;
 use thiserror::Error;
+use tokio::process::Command;
+
+/// Preprocessor defines that resolve the `dt-bindings` interrupt macros the UIO
+/// overlay emits (`GIC_SPI`, `IRQ_TYPE_*`), so `dtc` can verify the overlay
+/// without the kernel `dt-bindings` headers on disk. Values match
+/// `dt-bindings/interrupt-controller/{arm-gic,irq}.h`.
+const DT_BINDING_DEFINES: &[&str] = &[
+    "-DGIC_SPI=0",
+    "-DGIC_PPI=1",
+    "-DIRQ_TYPE_NONE=0",
+    "-DIRQ_TYPE_EDGE_RISING=1",
+    "-DIRQ_TYPE_EDGE_FALLING=2",
+    "-DIRQ_TYPE_EDGE_BOTH=3",
+    "-DIRQ_TYPE_LEVEL_HIGH=4",
+    "-DIRQ_TYPE_LEVEL_LOW=8",
+];
 
 /// The `dist/` staging tree layout.
 pub struct DistLayout {
@@ -61,6 +77,11 @@ impl DistLayout {
         self.root.join("www")
     }
 
+    /// The Linux device-tree overlay subdirectory (`<root>/dts/linux`).
+    pub fn dts_linux_dir(&self) -> PathBuf {
+        self.root.join("dts").join("linux")
+    }
+
     /// The systemd unit subdirectory (`<root>/systemd`).
     pub fn systemd_dir(&self) -> PathBuf {
         self.root.join("systemd")
@@ -78,6 +99,24 @@ pub enum DistAssemblyError {
         /// The underlying error.
         source: std::io::Error,
     },
+
+    /// The C preprocessor is needed to resolve the overlay's `dt-bindings`
+    /// macros before `dtc`, but was not found on PATH.
+    #[error("`cpp` not found on PATH; needed to preprocess device-tree overlays before `dtc`")]
+    CppNotFound,
+
+    /// `dtc` (the device-tree compiler) was not found on PATH.
+    #[error("`dtc` not found on PATH; install the device-tree compiler to verify UIO overlays")]
+    DtcNotFound,
+
+    /// `dtc` (or `cpp`) rejected a generated overlay.
+    #[error("device-tree overlay {name} failed verification:\n{message}")]
+    DtsVerify {
+        /// The overlay file name.
+        name: String,
+        /// The `cpp`/`dtc` diagnostics.
+        message: String,
+    },
 }
 
 fn io(path: impl AsRef<Path>, source: std::io::Error) -> DistAssemblyError {
@@ -93,13 +132,19 @@ fn io(path: impl AsRef<Path>, source: std::io::Error) -> DistAssemblyError {
 /// - the application binary → `app/<file_name>`;
 /// - the signed TA (when present) → `ta/<file_name>`;
 /// - the HMI dist tree (when present) → `www/` (copied recursively);
+/// - each `(name, contents)` Linux UIO overlay → `dts/linux/<name>`, each
+///   verified with `dtc` (see [`verify_dts`]);
 /// - each `(name, contents)` systemd unit → `systemd/<name>`.
+///
+/// The overlays are written and verified before the systemd units so a `dtc`
+/// rejection fails the assembly early.
 pub async fn assemble(
     layout: &DistLayout,
     firmware: &HashMap<VisibleCore, PathBuf>,
     application: &Path,
     ta: Option<&Path>,
     hmi_dist: Option<&Path>,
+    dts_files: &[(String, String)],
     systemd_units: &[(String, String)],
 ) -> Result<(), DistAssemblyError> {
     // Firmware ELFs, named by core for the packaging recipe.
@@ -134,6 +179,21 @@ pub async fn assemble(
     if let Some(hmi_dist) = hmi_dist {
         let www = layout.www_dir();
         copy_dir_recursive(hmi_dist, &www).await?;
+    }
+
+    // Linux UIO overlays, written then `dtc`-verified before the systemd units.
+    if !dts_files.is_empty() {
+        let dts_dir = layout.dts_linux_dir();
+        tokio::fs::create_dir_all(&dts_dir)
+            .await
+            .map_err(|e| io(&dts_dir, e))?;
+        for (name, contents) in dts_files {
+            let dest = dts_dir.join(name);
+            tokio::fs::write(&dest, contents)
+                .await
+                .map_err(|e| io(&dest, e))?;
+            verify_dts(name, &dest).await?;
+        }
     }
 
     // systemd units.
@@ -204,6 +264,61 @@ pub(crate) fn copy_dir_recursive<'a>(
     })
 }
 
+/// Verifies a written device-tree overlay compiles.
+///
+/// The overlay carries `dt-bindings` interrupt macros (`GIC_SPI`, `IRQ_TYPE_*`),
+/// so it is first run through `cpp` with those macros defined (see
+/// [`DT_BINDING_DEFINES`]) — keeping the on-disk overlay header-free — and the
+/// preprocessed result is then compiled with `dtc`. Only a non-zero exit is an
+/// error; `dtc`'s overlay-context warnings (missing base-tree `#address-cells`,
+/// unresolved `reg` unit addresses, etc.) go to stderr with a zero exit and are
+/// expected.
+async fn verify_dts(name: &str, dts: &Path) -> Result<(), DistAssemblyError> {
+    // `cpp` resolves the macros into a sibling `<name>.pp` next to the overlay.
+    let preprocessed = dts.with_extension("dts.pp");
+    let cpp = Command::new("cpp")
+        .args(["-nostdinc", "-undef", "-x", "assembler-with-cpp"])
+        .args(DT_BINDING_DEFINES)
+        .arg(dts)
+        .arg("-o")
+        .arg(&preprocessed)
+        .output()
+        .await
+        .map_err(|e| match e.kind() {
+            std::io::ErrorKind::NotFound => DistAssemblyError::CppNotFound,
+            _ => io(dts, e),
+        })?;
+    if !cpp.status.success() {
+        return Err(DistAssemblyError::DtsVerify {
+            name: name.to_string(),
+            message: String::from_utf8_lossy(&cpp.stderr).into_owned(),
+        });
+    }
+
+    // `dtc` compiles the preprocessed overlay; the `.dtb` output is discarded to
+    // stdout (`-o -`) since only the exit status matters here.
+    let dtc = Command::new("dtc")
+        .args(["-I", "dts", "-O", "dtb", "-o", "-"])
+        .arg(&preprocessed)
+        .output()
+        .await
+        .map_err(|e| match e.kind() {
+            std::io::ErrorKind::NotFound => DistAssemblyError::DtcNotFound,
+            _ => io(&preprocessed, e),
+        });
+
+    let _ = tokio::fs::remove_file(&preprocessed).await;
+    let dtc = dtc?;
+
+    if !dtc.status.success() {
+        return Err(DistAssemblyError::DtsVerify {
+            name: name.to_string(),
+            message: String::from_utf8_lossy(&dtc.stderr).into_owned(),
+        });
+    }
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -241,7 +356,7 @@ mod tests {
         )]);
         let units = vec![("consortium-app.service".to_string(), "[Unit]\n".to_string())];
 
-        assemble(&layout, &firmware, &app, Some(&ta), Some(&www), &units)
+        assemble(&layout, &firmware, &app, Some(&ta), Some(&www), &[], &units)
             .await
             .expect("assemble succeeds");
 
@@ -265,13 +380,104 @@ mod tests {
         std::fs::write(&app, [0x7f, b'E', b'L', b'F']).unwrap();
 
         let layout = DistLayout::new(base.join("dist"));
-        assemble(&layout, &HashMap::new(), &app, None, None, &[])
+        assemble(&layout, &HashMap::new(), &app, None, None, &[], &[])
             .await
             .expect("assemble succeeds");
 
         assert!(layout.app_dir().join("app-bin").exists());
         assert!(!layout.ta_dir().exists());
         assert!(!layout.www_dir().exists());
+        assert!(!layout.dts_linux_dir().exists());
+
+        let _ = std::fs::remove_dir_all(&base);
+    }
+
+    /// Whether both `cpp` and `dtc` resolve on PATH; the overlay-verification
+    /// tests are skipped when either is absent (they exercise the real tools).
+    fn dt_tools_available() -> bool {
+        fn on_path(program: &str) -> bool {
+            std::process::Command::new(program)
+                .arg("--version")
+                .stdout(std::process::Stdio::null())
+                .stderr(std::process::Stdio::null())
+                .status()
+                .map(|s| s.success())
+                .unwrap_or(false)
+        }
+        on_path("cpp") && on_path("dtc")
+    }
+
+    /// A minimal overlay carrying the `dt-bindings` interrupt macros, so the
+    /// `cpp` preprocessing step is actually exercised.
+    const SAMPLE_OVERLAY: &str = "/dts-v1/;\n/plugin/;\n\n\
+        / {\n\
+        \treserved-memory {\n\
+        \t\t#address-cells = <0x2>;\n\
+        \t\t#size-cells = <0x2>;\n\
+        \t\tranges;\n\
+        \t\tipc_shm: ipc-shm@20400000 {\n\
+        \t\t\treg = <0x0 0x20400000 0x0 0x8000>;\n\
+        \t\t\tno-map;\n\
+        \t\t};\n\
+        \t};\n\
+        \thsem@6240000 {\n\
+        \t\tcompatible = \"generic-uio\";\n\
+        \t\tinterrupts = <GIC_SPI 199 IRQ_TYPE_LEVEL_HIGH>;\n\
+        \t\tstatus = \"okay\";\n\
+        \t};\n\
+        };\n";
+
+    #[tokio::test]
+    async fn writes_and_verifies_overlay_before_systemd() {
+        if !dt_tools_available() {
+            eprintln!("skipping: `cpp`/`dtc` not on PATH");
+            return;
+        }
+        let base = scratch("dts-ok");
+        let app = base.join("app-bin");
+        std::fs::write(&app, [0x7f, b'E', b'L', b'F']).unwrap();
+
+        let layout = DistLayout::new(base.join("dist"));
+        let dts = vec![(
+            "consortium-uio.dtso".to_string(),
+            SAMPLE_OVERLAY.to_string(),
+        )];
+        let units = vec![("consortium-app.service".to_string(), "[Unit]\n".to_string())];
+
+        assemble(&layout, &HashMap::new(), &app, None, None, &dts, &units)
+            .await
+            .expect("assemble + dtc verify succeeds");
+
+        // The overlay lands under dts/linux/, and the preprocessing temp is gone.
+        let overlay = layout.dts_linux_dir().join("consortium-uio.dtso");
+        assert!(overlay.exists());
+        assert!(!overlay.with_extension("dts.pp").exists());
+        assert!(layout.systemd_dir().join("consortium-app.service").exists());
+
+        let _ = std::fs::remove_dir_all(&base);
+    }
+
+    #[tokio::test]
+    async fn rejects_malformed_overlay() {
+        if !dt_tools_available() {
+            eprintln!("skipping: `cpp`/`dtc` not on PATH");
+            return;
+        }
+        let base = scratch("dts-bad");
+        let app = base.join("app-bin");
+        std::fs::write(&app, [0x7f, b'E', b'L', b'F']).unwrap();
+
+        let layout = DistLayout::new(base.join("dist"));
+        // Missing closing brace: `dtc` rejects it.
+        let dts = vec![("broken.dtso".to_string(), "/dts-v1/;\n/ {\n".to_string())];
+
+        let err = assemble(&layout, &HashMap::new(), &app, None, None, &dts, &[])
+            .await
+            .expect_err("malformed overlay is rejected");
+        assert!(matches!(
+            err,
+            DistAssemblyError::DtsVerify { name, .. } if name == "broken.dtso"
+        ));
 
         let _ = std::fs::remove_dir_all(&base);
     }

@@ -2,4 +2,23 @@
 target = "thumbv7em-none-eabihf"
 
 [target.thumbv7em-none-eabihf]
-rustflags = ["-C", "link-arg=-Tlink.x"]
+rustflags = [
+  # `--nmagic` disables page-alignment of output segments, keeping the linked
+  # firmware compact (no 64 KiB padding gaps) — matches the embassy examples and
+  # suits a remoteproc SRAM-carveout image.
+  "-C",
+  "link-arg=--nmagic",
+  "-C",
+  "link-arg=-Tlink.x",
+  # `defmt.x` is required by defmt: it lays out the interned-string table the
+  # decoder relies on. Must come after `link.x`.
+  "-C",
+  "link-arg=-Tdefmt.x",
+]
+
+[env]
+# defmt's compile-time filter defaults to `error` when DEFMT_LOG is unset, which
+# would drop the `defmt::info!` sensor stream this firmware exists to emit. Match
+# the embassy examples and enable all levels; the CA35 decodes them from the CDBG
+# ring described by `[dbg.cm7]`.
+DEFMT_LOG = "trace"

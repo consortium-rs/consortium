@@ -15,14 +15,17 @@
 // SPDX-License-Identifier: Apache-2.0
 
 pub mod bridge;
-pub mod chipmap;
 pub mod components;
-pub mod database;
 pub mod error;
 pub mod render;
 pub mod session;
 
 pub use render::render;
+
+// The chip-family database and per-core chip maps live in `consortium-data`.
+// Re-export them under their historical paths so existing `crate::database` /
+// `crate::chipmap` references keep resolving.
+pub use consortium_data::{chipmap, database};
 
 pub use consortium_cfg_common::config;
 pub use error::CfgError;

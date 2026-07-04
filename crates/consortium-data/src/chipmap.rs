@@ -15,7 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 //! Per-core peripheral and interrupt maps, embedded at compile time from the
-//! generated `output/chips/*.json` chip dumps.
+//! generated chip dumps (`database/chip/*.json`).
 //!
 //! Each JSON file is a single core's view of a chip: the peripheral MMIO bases
 //! and the NVIC interrupt numbers as extracted from the vendor CMSIS headers.
@@ -25,7 +25,7 @@
 
 use std::collections::HashMap;
 
-use crate::error::CfgError;
+use crate::error::DataError;
 
 /// A chip dump bundled into the binary, paired with the family prefix and core
 /// name that select it.
@@ -46,32 +46,32 @@ const CHIPS: &[Embedded] = &[
     Embedded {
         family: "stm32mp25",
         core: "cm33",
-        json: include_str!("../../../../output/chips/stm32mp25_unknown_cm33.json"),
+        json: include_str!("../database/chip/stm32mp25_cm33.json"),
     },
     Embedded {
         family: "stm32mp25",
         core: "cm0p",
-        json: include_str!("../../../../output/chips/stm32mp25_unknown_cm0p.json"),
+        json: include_str!("../database/chip/stm32mp25_cm0p.json"),
     },
     Embedded {
         family: "stm32mp23",
         core: "cm33",
-        json: include_str!("../../../../output/chips/stm32mp23_unknown_cm33.json"),
+        json: include_str!("../database/chip/stm32mp23_cm33.json"),
     },
     Embedded {
         family: "stm32mp21",
         core: "cm33",
-        json: include_str!("../../../../output/chips/stm32mp21_unknown_cm33.json"),
+        json: include_str!("../database/chip/stm32mp21_cm33.json"),
     },
     Embedded {
         family: "mimx95",
         core: "cm7",
-        json: include_str!("../../../../output/chips/MIMX9596.json"),
+        json: include_str!("../database/chip/mimx95_cm7.json"),
     },
     Embedded {
         family: "mimx93",
         core: "cm33",
-        json: include_str!("../../../../output/chips/MIMX9352.json"),
+        json: include_str!("../database/chip/mimx93_cm33.json"),
     },
 ];
 
@@ -156,20 +156,20 @@ impl ChipMap {
 ///
 /// # Errors
 ///
-/// Returns [`CfgError::ChipMapUnavailable`] when no bundled dump matches, or
-/// [`CfgError::ChipMapParse`] when the dump fails to deserialize.
-pub fn load(chip: &str, core: &str) -> Result<ChipMap, CfgError> {
+/// Returns [`DataError::ChipMapUnavailable`] when no bundled dump matches, or
+/// [`DataError::ChipMapParse`] when the dump fails to deserialize.
+pub fn load(chip: &str, core: &str) -> Result<ChipMap, DataError> {
     let needle = normalize(chip);
     let core_key = core.to_ascii_lowercase();
     let entry = CHIPS
         .iter()
         .find(|entry| needle.starts_with(entry.family) && entry.core == core_key)
-        .ok_or_else(|| CfgError::ChipMapUnavailable {
+        .ok_or_else(|| DataError::ChipMapUnavailable {
             chip: chip.to_string(),
             core: core.to_string(),
         })?;
 
-    let raw: RawChip = serde_json::from_str(entry.json).map_err(|err| CfgError::ChipMapParse {
+    let raw: RawChip = serde_json::from_str(entry.json).map_err(|err| DataError::ChipMapParse {
         chip: chip.to_string(),
         core: core.to_string(),
         detail: err.to_string(),
@@ -177,7 +177,7 @@ pub fn load(chip: &str, core: &str) -> Result<ChipMap, CfgError> {
 
     let mut peripherals = HashMap::with_capacity(raw.peripherals.len());
     for p in raw.peripherals {
-        let base = parse_hex(&p.base_address).ok_or_else(|| CfgError::ChipMapParse {
+        let base = parse_hex(&p.base_address).ok_or_else(|| DataError::ChipMapParse {
             chip: chip.to_string(),
             core: core.to_string(),
             detail: format!(
@@ -256,7 +256,7 @@ mod tests {
     fn rejects_unknown_core() {
         assert!(matches!(
             load("stm32mp257fak3", "cm4"),
-            Err(CfgError::ChipMapUnavailable { .. })
+            Err(DataError::ChipMapUnavailable { .. })
         ));
     }
 }

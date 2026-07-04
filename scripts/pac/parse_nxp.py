@@ -20,7 +20,7 @@ from common import (
 
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "data"
-OUTPUT_DIR = Path(__file__).resolve().parents[2] / "output"
+OUTPUT_DIR = Path(__file__).resolve().parents[2] / "crates" / "consortium-data" / "database"
 
 FAMILY_REPRESENTATIVES = {
     "imx93_cm33": ("MIMX9352_cm33", "MIMX9352_cm33_COMMON.h"),
@@ -580,7 +580,7 @@ class NXPPeripheralParser:
         data.update({f"fieldset/{name}": fs for name, fs in self.fieldsets.items()})
 
         yaml_path = (
-            OUTPUT_DIR / "registers" / "imx93" / f"{self.block_name.lower()}_v1.yaml"
+            OUTPUT_DIR / "peri" / "imx93" / f"{self.block_name.lower()}_v1.yaml"
         )
         write_yaml(data, yaml_path)
         print(f"Wrote {yaml_path}")
@@ -749,7 +749,9 @@ class NXPChipParser:
             "peripherals": sorted(peripherals, key=lambda x: x["name"]),
         }
 
-        json_path = OUTPUT_DIR / "chips" / f"{self.chip_name}.json"
+        # The bundled file is keyed by family + core, with the canonical `mimx`
+        # prefix: e.g. `mimx95_cm7.json`.
+        json_path = OUTPUT_DIR / "chip" / f"m{family}_{self.core}.json"
         write_json(chip_json, json_path)
         print(f"Wrote {json_path}")
 
@@ -783,7 +785,7 @@ def main():
 
         # Determine which subfamily for output (imx93 or imx95)
         subfamily = family.split("_")[0]
-        output_subdir = OUTPUT_DIR / "registers" / subfamily
+        output_subdir = OUTPUT_DIR / "peri" / subfamily
 
         peri_files = sorted(family_dir.glob("PERI_*.h"))
         for peri_file in peri_files:

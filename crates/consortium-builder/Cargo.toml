@@ -24,6 +24,7 @@ version.workspace = true
 [dependencies]
 consortium-cfg        = { path = "../consortium-cfg" }
 consortium-cfg-common = { path = "../consortium-cfg-common" }
+consortium-dts        = { path = "../consortium-dts" }
 rust-ini              = "0.21.3"
 serde                 = { features = ["derive"], version = "1.0.228" }
 syn                   = "2.0.118"

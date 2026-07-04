@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 from typing import Tuple, List
 
-OUTPUT_DIR = Path(__file__).resolve().parents[2] / "output"
+OUTPUT_DIR = Path(__file__).resolve().parents[2] / "crates" / "consortium-data" / "database"
 
 
 def run_chiptool_validate(yaml_file: Path) -> Tuple[bool, str]:
@@ -45,7 +45,7 @@ def validate_all_yamls():
     print("Validating All Register YAML Files with chiptool")
     print("=" * 80)
 
-    registers_dir = OUTPUT_DIR / "registers"
+    registers_dir = OUTPUT_DIR / "peri"
     yaml_files = sorted(registers_dir.rglob("*_v1.yaml"))
 
     if not yaml_files:

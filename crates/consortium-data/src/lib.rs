@@ -1,5 +1,3 @@
-#![cfg_attr(feature = "ta", no_std)]
-#![cfg(target_os = "linux")]
 // Copyright 2026 Ethan Wu
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,13 +14,17 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use consortium_tee::{tee_command, tee_service};
+//! Static chip data for the Consortium project, embedded at compile time.
+//!
+//! This crate owns the chip-family databases (`database/memory/*.yaml`), the
+//! generated per-core chip dumps (`database/chip/*.json`), the extracted
+//! peripheral register definitions (`database/peri/`), and the vendor
+//! device-tree sources (`database/dts/`).
+//! It also owns the resolvers that turn a `[profile] chip` part number into a
+//! parsed [`database::ChipDatabase`] or a per-core [`chipmap::ChipMap`].
 
-#[tee_command]
-pub fn hello_world(a: u32) -> u32 {
-    a
-}
+pub mod chipmap;
+pub mod database;
+mod error;
 
-tee_service! {
-    commands { hello_world }
-}
+pub use error::DataError;
