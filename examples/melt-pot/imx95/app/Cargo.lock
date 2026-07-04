@@ -254,7 +254,6 @@ name = "consortium-cfg-common"
 version = "0.1.0"
 dependencies = [
  "consortium-dts",
- "consortium-env-value",
  "serde",
  "uuid 1.23.4",
 ]
@@ -272,9 +271,9 @@ name = "consortium-dbg"
 version = "0.1.0"
 dependencies = [
  "bitflags 2.13.0",
- "consortium-env-value",
  "consortium-ipc",
  "consortium-shared-memory",
+ "const-str",
  "defmt",
  "defmt-decoder",
  "defmt-parser",
@@ -289,10 +288,6 @@ dependencies = [
  "serde",
  "thiserror",
 ]
-
-[[package]]
-name = "consortium-env-value"
-version = "0.1.0"
 
 [[package]]
 name = "consortium-hmi"
@@ -441,6 +436,12 @@ dependencies = [
  "quote",
  "syn",
 ]
+
+[[package]]
+name = "const-str"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "18f12cc9948ed9604230cdddc7c86e270f9401ccbe3c2e98a4378c5e7632212f"
 
 [[package]]
 name = "core-foundation-sys"

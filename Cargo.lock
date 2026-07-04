@@ -442,7 +442,6 @@ name = "consortium-cfg-common"
 version = "0.1.0"
 dependencies = [
  "consortium-dts",
- "consortium-env-value",
  "serde",
  "serde_yaml",
  "tempfile",
@@ -495,11 +494,11 @@ name = "consortium-dbg"
 version = "0.1.0"
 dependencies = [
  "bitflags 2.11.1",
- "consortium-env-value",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
  "consortium-ipc-doorbell-mu",
  "consortium-shared-memory",
+ "const-str",
  "cortex-m",
  "defmt",
  "defmt-decoder",
@@ -518,10 +517,6 @@ dependencies = [
  "serde",
  "thiserror",
 ]
-
-[[package]]
-name = "consortium-env-value"
-version = "0.1.0"
 
 [[package]]
 name = "consortium-ffi"
@@ -822,6 +817,12 @@ dependencies = [
  "once_cell",
  "tiny-keccak",
 ]
+
+[[package]]
+name = "const-str"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "18f12cc9948ed9604230cdddc7c86e270f9401ccbe3c2e98a4378c5e7632212f"
 
 [[package]]
 name = "cordyceps"

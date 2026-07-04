@@ -240,7 +240,6 @@ pub async fn elf_path(path: &Path, target: &str, release: bool) -> Result<PathBu
 #[cfg(test)]
 mod tests {
     use super::*;
-    use consortium_cfg_common::env_value::{parse_u32, parse_u64};
     use std::collections::HashMap;
     use std::ffi::OsStr;
 
@@ -327,7 +326,8 @@ mod tests {
 
     /// End-to-end: a `Consortium.toml` `[ipc]` table parses into a
     /// [`SharedMemConfig`], the builder injects it as env vars, and parsing those
-    /// values back with the same `const` helpers recovers the original numbers.
+    /// values back as decimals recovers the original numbers.
+    /// Hex TOML literals are normalized to decimal env-var strings.
     #[test]
     fn toml_ipc_section_round_trips_through_injected_env() {
         #[derive(serde::Deserialize)]
@@ -356,9 +356,12 @@ mod tests {
                 .map(String::as_str)
                 .unwrap_or_else(|| panic!("missing CONSORTIUM_IPC_{suffix}"))
         };
-        assert_eq!(parse_u64(read("LENGTH")), cfg.length);
-        assert_eq!(parse_u32(read("UIO")), cfg.uio);
-        assert_eq!(parse_u32(read("MTU")), cfg.mtu);
+        assert_eq!(read("LENGTH"), "4096");
+        assert_eq!(read("UIO"), "0");
+        assert_eq!(read("MTU"), "64");
+        assert_eq!(read("LENGTH").parse::<u64>().unwrap(), cfg.length);
+        assert_eq!(read("UIO").parse::<u32>().unwrap(), cfg.uio);
+        assert_eq!(read("MTU").parse::<u32>().unwrap(), cfg.mtu);
 
         assert!(!vars.contains_key("CONSORTIUM_IPC_BASE"));
         assert_eq!(cfg.uio, 0);

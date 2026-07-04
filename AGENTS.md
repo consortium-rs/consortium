@@ -15,6 +15,10 @@ The current implementation centers on explicit cross-core contracts:
 - Doorbell crates bind hardware signaling to the transport layer.
 - `consortium-cfg-common` and `consortium-cfg` own the current `Consortium.toml`
   schema, chip databases, validation, and DTS/UIO-oriented transpilers.
+- `consortium-hal`, chip HAL crates, and generated PAC crates provide early
+  firmware-side peripheral access for i.MX9 and STM32MP2 targets.
+- `consortium-dbg` implements shared-memory `defmt` logging and an optional panic
+  handler.
 - `consortium-tee` handles the trusted execution environment contracts.
 - `consortium-hmi` provides a Cog/WPE WebKit-based human-computer interface.
 
@@ -34,6 +38,9 @@ just check
 just test ipc host
 just test tee host
 just test hmi host
+just test cfg host
+just test dbg host
+just test codec host
 
 # Run host-side lint bundle
 just lint
@@ -49,9 +56,9 @@ Use `cargo test -p <crate>` for focused validation while iterating. Full-workspa
 commands can hit platform-sensitive crates or code that is mid-migration.
 
 The `justfile` is the command index, but verify recipes against current crates before
-copying them into new docs. Some recipes still mention crates or type names that are not
-present in the current workspace, such as `consortium-common`, `consortium-runtime-prt`,
-`SharedMemConfig`, or `HmiConfig`.
+copying them into new docs. Some target and lint recipes still mention crates or type
+names that are not present in the current workspace, such as `consortium-common`,
+`consortium-runtime-prt`, `consortium-cfg-meta`, `SharedMemConfig`, or `HmiConfig`.
 
 The current target-oriented recipes include A-core Linux (`aarch64-unknown-linux-gnu`,
 `armv7-unknown-linux-gnueabihf`), M-core bare-metal (`thumbv8m.main-none-eabihf`,
@@ -68,12 +75,18 @@ A-core, TEE, HMI, UIO, Cog, WebKit, and Yocto/OpenSTLinux flows are Linux/SDK or
 | Shared memory   | `consortium-shared-memory`, `consortium-ipc-transport-memory`                                                                |
 | Doorbells       | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-ipcc`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio` |
 | Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`                                                                  |
+| HAL/PAC         | `consortium-hal`, `consortium-hal-imx9`, `consortium-hal-stm32mp2`, `consortium-pac-imx9`, `consortium-pac-stm32mp2`         |
 | Macro helpers   | `consortium-macros-helpers`                                                                                                  |
 | Runtimes/build  | `consortium-runtime-app`, `consortium-runtime-mcu`, `consortium-runtime-spl`, `consortium-builder`, `consortium-cli`         |
 | Debug           | `consortium-dbg`                                                                                                             |
 | TEE             | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`, `consortium-tee-test`                               |
 | HMI/Cog/ORT/FFI | `consortium-hmi`, `cogcore`, `cogcore-sys`, `consortium-ort`, `consortium-ffi`                                               |
 | Examples        | `examples/melt-pot/*` for i.MX95 and STM32MP25 app/MCU/TA/shared message crates                                              |
+
+The root workspace includes `crates/*` and `examples/melt-pot/shared`. Per-endpoint
+example crates under `examples/melt-pot/{imx95,stm32mp25}/{app,mcu,ta}` are excluded
+because the builder pipeline generates `src/consortium.gen.rs` for them and resolves
+their artifacts outside plain workspace `cargo check`.
 
 ## IPC Core
 
@@ -98,9 +111,9 @@ buffer sized for the transport MTU. `Tx` channels require `SendTransport`; `Rx`
 channels require `RecvTransport`. `ReceivedMessage` is designed to handle owned codecs
 today and zero-copy codecs later.
 
-`Transceiver<TyTx, TyRx, Tr, C>` is public and wraps paired `Channel<Tx, ...>` and
-`Channel<Rx, ...>` values. If a transport needs separate ownership for Tx/Rx, use the
-transport's split halves before constructing channels.
+`Transceiver<TyTx, TyRx, TrTx, TrRx, C>` is public and wraps paired `Channel<Tx, ...>`
+and `Channel<Rx, ...>` values. If a transport needs separate ownership for Tx/Rx, use
+the transport's split halves before constructing channels.
 
 `IpcSafe` rejects address-space-local constructs such as pointers, references, function
 pointers, `usize`, and `isize`. Add reusable `syn`/AST helpers to
@@ -170,6 +183,22 @@ The `std` doorbell paths are host-testable with fake MMIO and Tokio `Notify`. Ru
 UIO integrations should bind each doorbell notifier to the Linux UIO IRQ fanout before
 receiving.
 
+## HAL and PAC
+
+`consortium-hal` is a small `no_std` trait crate for generated chip metadata and drivers:
+`Peripheral`, `ClockControl`, `InterruptSource`, `MonotonicTimer`, and `nvic::Irq`.
+
+`consortium-pac-imx9` and `consortium-pac-stm32mp2` are generated `no_std` PAC crates.
+Their defaults currently select `imx95` and `stm32mp257`, respectively. PAC generation
+uses the `just pac-*` recipes, vendor submodules under `submodules/`, parser scripts under
+`scripts/pac/`, and generated/validated outputs under `output/` and `data/`. Avoid
+hand-editing generated PAC output unless the recipe or patch workflow calls for it.
+
+`consortium-hal-imx9` and `consortium-hal-stm32mp2` re-export the shared HAL and their
+PAC crates and expose feature-gated DMA, GPIO, I2C, timer-driver, and UART modules. Keep
+these crates firmware-friendly: `no_std`, narrow unsafe blocks, and chip-specific details
+inside the chip HAL rather than the shared HAL traits.
+
 ## Configuration
 
 The authoritative current schema is in `consortium-cfg-common/src/config/`, not in the
@@ -178,7 +207,7 @@ and `consortium-cfg/src/session.rs` tests as the best references.
 
 Current top-level schema:
 
-- `[profile] chip = "..."`
+- `[profile]` contains `chip`, `shared`, and `deploy_root`.
 - `[endpoints]` maps runtime endpoint names to artifact roots.
 - `[dbg.<core>]` declares a defmt logger on coprocessor `<core>` (e.g. `[dbg.cm33]`)
   and contains `memory = { base, length }` and `mtu`. The AP is always the host that
@@ -187,11 +216,12 @@ Current top-level schema:
   the AP consumes the rings: `auto` generates a console that forwards decoded defmt
   frames to `tracing`; `interface` returns reader handles for the integrator. The
   field flattens alongside the `[dbg.<core>]` tables.
-- `[[ipc.channel]]` contains `doorbell`, `pattern`, `party.<name>`, `config.memory`,
-  `mtu`, and optional `codec`.
+- `[[ipc.channel]]` contains `name`, `doorbell`, `pattern`, `primary`, `secondary`,
+  `party.<name>`, `config.memory`, `mtu`, and optional `codec` (default `postcard`).
 - `[tee]` contains the OP-TEE UUID.
-- `[hmi]` contains `engine`, `backend`, optional `debug`, and `build`.
-- `[peripheral.<name>]` contains `owner`, `secure`, and optional pin declarations.
+- `[hmi]` contains `engine`, `backend`, optional `debug`, `source`, and `build`.
+- `[peripheral.<name>]` contains `owner`, `secure`, optional `frequency`, optional
+  `clock`, and optional pin declarations.
 
 `Session::from_toml` parses the manifest, resolves `[profile] chip` through embedded
 YAML chip-family databases, and validates doorbell availability, visible parties,
@@ -199,23 +229,31 @@ channel bounds, duplicate doorbell channels, SRAM bounds, memory overlap, and pe
 owners. Embedded database prefixes currently cover STM32MP21/23/25 and MIMX93/95, with
 `imx93`/`imx95` accepted as aliases for `mimx93`/`mimx95`.
 
-`consortium-cfg` currently includes DTS/UIO-oriented components and transpilers such as
-shared-memory regions to `generic-uio` nodes and Type-A doorbell interrupt enablement.
-Keep config changes centered on the schema types first, then validation, then
-transpilers.
+`consortium-cfg` currently includes lowering, DTS/UIO-oriented components, portable and
+Linux codegen, debug-console codegen, peripheral metadata, and Type-A doorbell interrupt
+enablement. Keep config changes centered on the schema types first, then validation and
+lowering, then generated code and transpilers. Update snapshot tests under
+`crates/consortium-cfg/tests/` when generated output intentionally changes.
 
 ## Build-Time Configuration
 
-The intended builder flow injects compile-time environment variables such as
-`CONSORTIUM_IPC_*`, `CONSORTIUM_DBG_*`, `CONSORTIUM_HMI_*`, and `CONSORTIUM_TEE_UUID`.
-Consumers read them with `option_env!`/`env!` and parse values in `const` contexts with
-`consortium-cfg-common::env_value`.
+The builder flow injects compile-time environment variables such as `CONSORTIUM_IPC_*`,
+`CONSORTIUM_DBG_*`, `CONSORTIUM_HMI_*`, and `CONSORTIUM_TEE_UUID`. Consumers read them
+with `option_env!`/`env!`. The builder emits numeric env-var values as decimal strings;
+firmware-side consumers that need const parsing can use `const-str` and should not depend
+on the std-oriented schema crates.
 
-This layer is currently mid-migration. `consortium-dbg::config` uses the current
-`CONSORTIUM_DBG_BASE`/`CONSORTIUM_DBG_LENGTH` pattern. Some builder and example code
-still refers to older flat `[ipc]`/`[dbg]` tables or removed type names such as
-`SharedMemConfig`. Before extending builder behavior, reconcile it with the current
-`consortium-cfg-common` schema (`MemoryRegion`, `SharedMemory`, `Hmi`, `Dbg`, `Ipc`).
+Current IPC build-time variables are channel-local metadata such as
+`CONSORTIUM_IPC_LENGTH`, `CONSORTIUM_IPC_UIO`, and `CONSORTIUM_IPC_MTU`; the shared
+memory base comes from generated code and UIO mapping, not `CONSORTIUM_IPC_BASE`.
+`consortium-dbg::config` reads `CONSORTIUM_DBG_BASE` and `CONSORTIUM_DBG_LENGTH`.
+`consortium-hmi` reads `CONSORTIUM_HMI_DIST` and optional
+`CONSORTIUM_HMI_DEBUG_URL`. The HMI build command is selected by
+`CONSORTIUM_HMI_BUILD_CMD`, then `vp`, then `npm`.
+
+The build pipeline writes `src/consortium.gen.rs` into generated endpoint crates. The
+example app/MCU crates use `include!("consortium.gen.rs")`; do not expect plain cargo
+commands to work for those crates before the pipeline has generated that file.
 
 ## Runtime Layers
 
@@ -230,6 +268,11 @@ Its default feature is `ipc-shm`.
 
 `consortium-runtime-spl` currently exposes small domain/peripheral/role traits for
 partitioning-oriented code.
+
+`consortium-builder` owns the pipeline for compiling application, firmware, TA, and HMI
+artifacts from a `Consortium.toml` session. It bridges the current config schema into
+generated endpoint modules and compile-time environment variables; prefer extending
+`consortium-cfg` lowering first, then the builder pipeline.
 
 ## TEE
 
@@ -257,9 +300,14 @@ Preserve descriptor discipline when changing debug transport behavior. Host-side
 cover descriptor initialization, ring read/write behavior, decoding fixtures, and
 overflow/error flags.
 
+The optional panic handler emits an error packet, latches panic status in the debug
+descriptor, then waits with the target architecture's WFI instruction.
+
 ## HMI and Cog/WPE
 
-`consortium-hmi` is Linux-only and currently exposes `KioskApp` and `Bridge`.
+`consortium-hmi` is Linux-only and currently exposes `KioskApp` and `Bridge`. In debug
+builds it can load `CONSORTIUM_HMI_DEBUG_URL`; otherwise it serves the compiled dist path
+from `CONSORTIUM_HMI_DIST`.
 `cogcore-sys` owns raw bindgen output and vendored Cog/WPE/WebKit headers; `cogcore`
 wraps a small safe subset and keeps WebKit/WPE types mostly opaque.
 

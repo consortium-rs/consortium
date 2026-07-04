@@ -67,7 +67,8 @@ impl SharedMemConfig {
     ///
     /// The builder emits `CONSORTIUM_<PREFIX>_LENGTH`, `_UIO`, and `_MTU`, where
     /// `<PREFIX>` is `IPC`. Consuming crates read these with `option_env!` and
-    /// parse them in a `const` context.
+    /// parse them in a `const` context. Numeric values are emitted as decimal
+    /// strings even when the source manifest used hexadecimal TOML literals.
     pub fn env_pairs(&self, prefix: &str) -> [(String, String); 3] {
         [
             (
@@ -103,6 +104,7 @@ impl DbgConfig {
     }
 
     /// The `CONSORTIUM_DBG_BASE`/`_LENGTH` pairs `consortium-dbg` reads.
+    /// Numeric values are emitted as decimal strings.
     pub fn env_pairs(&self) -> [(String, String); 2] {
         [
             ("CONSORTIUM_DBG_BASE".to_string(), self.base.to_string()),
@@ -238,7 +240,7 @@ mod tests {
     fn env_pairs_emit_the_ipc_layout_the_app_reads() {
         // The IPC carrier no longer carries a base: nothing reads
         // `CONSORTIUM_IPC_BASE` (the transport resolves its region from generated
-        // code / UIO). Decimal stringification keeps values `parse_u64`-able.
+        // code / UIO). Numeric env-var values are decimal strings.
         let pairs = SAMPLE.env_pairs("IPC");
         assert_eq!(
             pairs,
