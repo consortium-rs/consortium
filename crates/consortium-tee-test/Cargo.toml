@@ -23,7 +23,7 @@ version.workspace = true
 [features]
 ca      = ["consortium-tee/ca", "dep:optee-teec"]
 default = []
-ta      = ["consortium-tee/ta", "dep:optee-utee", "dep:optee-utee-sys"]
+ta      = ["consortium-tee/ta", "dep:optee-utee", "optee-utee/unwind_stubs", "dep:optee-utee-sys"]
 
 [lib]
 crate-type = ["rlib", "staticlib"]
@@ -38,13 +38,13 @@ required-features = ["ta"]
 [target.'cfg(target_os = "linux")'.dependencies]
 consortium-tee = { default-features = false, path = "../consortium-tee" }
 num_enum       = { default-features = false, version = "0.7.6" }
-optee-teec     = { optional = true, version = "0.8.0" }
-optee-utee     = { default-features = false, optional = true, version = "0.8.0" }
-optee-utee-sys = { default-features = false, optional = true, version = "0.8.0" }
+optee-teec     = { optional = true, version = "0.9.0" }
+optee-utee     = { default-features = false, optional = true, version = "0.9.0" }
+optee-utee-sys = { default-features = false, optional = true, version = "0.9.0" }
 tokio          = { features = ["rt"], version = "1.51.1" }
 
 [target.'cfg(target_os = "linux")'.build-dependencies]
-optee-utee-build = "0.8.0"
+optee-utee-build = "0.9.0"
 
 [lints]
 workspace = true

@@ -25,7 +25,7 @@ fn main() -> Result<(), optee_utee_build::Error> {
         panic!("missing {TEE_UUID_ENV}; build this TA through consortium-builder")
     });
     let ta_config = TaConfig::new_default_with_cargo_env(&ta_uuid)?;
-    optee_utee_build::build(optee_utee_build::RustEdition::Edition2024, ta_config)
+    optee_utee_build::build(ta_config)
 }
 
 #[cfg(not(all(target_os = "linux", feature = "ta")))]

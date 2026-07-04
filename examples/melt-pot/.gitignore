@@ -2,3 +2,4 @@
 # absolute firmware-ELF paths) and per-crate build outputs.
 **/src/consortium.gen.rs
 **/target/
+**/dist/

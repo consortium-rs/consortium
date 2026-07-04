@@ -108,7 +108,7 @@ pub fn resolve_cross_tool(tool: &str) -> Result<String, String> {
 /// otherwise the first available known toolchain is used.
 pub fn resolve_hmi_build_command() -> Result<HmiBuildCommand, String> {
     resolve_hmi_build_command_from(std::env::var("CONSORTIUM_HMI_BUILD_CMD").ok(), |tool| {
-        resolve_cross_tool(tool).is_ok()
+        resolve_cross_tool(tool).ok()
     })
 }
 
@@ -117,7 +117,7 @@ pub fn resolve_hmi_build_command() -> Result<HmiBuildCommand, String> {
 /// global `PATH`/env (which parallel tests would race on).
 fn resolve_hmi_build_command_from(
     env_cmd: Option<String>,
-    has_tool: impl Fn(&str) -> bool,
+    resolve_tool: impl Fn(&str) -> Option<String>,
 ) -> Result<HmiBuildCommand, String> {
     if let Some(cmd) = env_cmd {
         let parts: Vec<String> = cmd.split_whitespace().map(String::from).collect();
@@ -126,11 +126,17 @@ fn resolve_hmi_build_command_from(
         }
         return Ok(HmiBuildCommand::Custom(parts));
     }
-    if has_tool("vp") {
-        return Ok(HmiBuildCommand::VpBuild);
+    if let Some(program) = resolve_tool("vp") {
+        return Ok(HmiBuildCommand::Resolved {
+            program,
+            args: vec!["build".to_string()],
+        });
     }
-    if has_tool("npm") {
-        return Ok(HmiBuildCommand::NpmRunBuild);
+    if let Some(program) = resolve_tool("npm") {
+        return Ok(HmiBuildCommand::Resolved {
+            program,
+            args: vec!["run".to_string(), "build".to_string()],
+        });
     }
     Err(
         "no HMI build tool found: set CONSORTIUM_HMI_BUILD_CMD, or install `vp` \
@@ -494,8 +500,10 @@ mod tests {
     #[test]
     fn hmi_command_override_beats_path_tools() {
         // An explicit override is honoured verbatim even when `vp`/`npm` exist.
-        let cmd = resolve_hmi_build_command_from(Some("pnpm build".to_string()), |_| true)
-            .expect("override resolves");
+        let cmd = resolve_hmi_build_command_from(Some("pnpm build".to_string()), |_| {
+            Some("/tools/ignored".to_string())
+        })
+        .expect("override resolves");
         assert_eq!(
             cmd,
             HmiBuildCommand::Custom(vec!["pnpm".to_string(), "build".to_string()])
@@ -504,24 +512,39 @@ mod tests {
 
     #[test]
     fn hmi_command_prefers_vp_then_npm() {
-        // With no override, `vp` wins when present.
-        let cmd = resolve_hmi_build_command_from(None, |tool| tool == "vp" || tool == "npm")
+        // With no override, `vp` wins when present and keeps its resolved path.
+        let cmd = resolve_hmi_build_command_from(None, |tool| Some(format!("/tools/{tool}")))
             .expect("vp resolves");
-        assert_eq!(cmd, HmiBuildCommand::VpBuild);
+        assert_eq!(
+            cmd,
+            HmiBuildCommand::Resolved {
+                program: "/tools/vp".to_string(),
+                args: vec!["build".to_string()],
+            }
+        );
 
         // Falls back to `npm` when only it is on PATH.
-        let cmd = resolve_hmi_build_command_from(None, |tool| tool == "npm").expect("npm resolves");
-        assert_eq!(cmd, HmiBuildCommand::NpmRunBuild);
+        let cmd = resolve_hmi_build_command_from(None, |tool| {
+            (tool == "npm").then(|| "/tools/npm".to_string())
+        })
+        .expect("npm resolves");
+        assert_eq!(
+            cmd,
+            HmiBuildCommand::Resolved {
+                program: "/tools/npm".to_string(),
+                args: vec!["run".to_string(), "build".to_string()],
+            }
+        );
     }
 
     #[test]
     fn hmi_command_errors_when_nothing_available() {
-        let err = resolve_hmi_build_command_from(None, |_| false)
+        let err = resolve_hmi_build_command_from(None, |_| None)
             .expect_err("no tool and no override is an error");
         assert!(err.contains("CONSORTIUM_HMI_BUILD_CMD"));
 
         // An empty override is rejected rather than launching an empty program.
-        let err = resolve_hmi_build_command_from(Some("   ".to_string()), |_| false)
+        let err = resolve_hmi_build_command_from(Some("   ".to_string()), |_| None)
             .expect_err("empty override is an error");
         assert!(err.contains("empty"));
     }

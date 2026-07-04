@@ -9,6 +9,7 @@ version           = "0.1.0"
 
 [target.'cfg(target_os = "linux")'.build-dependencies]
 bindgen    = "0.72"
+cc         = "1.1"
 pkg-config = "0.3.33"
 
 [target.'cfg(target_os = "linux")'.dependencies]

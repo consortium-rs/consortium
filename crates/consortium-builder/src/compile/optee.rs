@@ -21,7 +21,7 @@ use tokio::process::Command;
 use uuid::Uuid;
 
 use super::Compiler;
-use crate::compile::utils::{elf_path, resolve_cargo, verify_elf};
+use crate::compile::utils::{binary_name, elf_path, resolve_cargo, verify_elf};
 
 // Only aarch64-unknown-linux-gnu is currently supported for OP-TEE builds.
 // Armv7 targets (Cortex-A7) are not supported by the OP-TEE SDK, and
@@ -73,6 +73,11 @@ pub struct OpteeConfiguration {
     pub optee_signer: PathBuf,
     /// UUID assigned to this Trusted Application.
     pub ta_uuid: Uuid,
+    /// Sign the built ELF into a loadable `<uuid>.ta`. When `false`, the build
+    /// stops after producing (and verifying) the unsigned ELF and returns that
+    /// path — useful when the OP-TEE signer/keys are unavailable and you only
+    /// need to check that the TA compiles and links.
+    pub sign: bool,
 }
 
 /// Compiler for OP-TEE Trusted Applications: builds the ELF then signs it.
@@ -93,13 +98,26 @@ impl Compiler for OpteeCompiler {
             .await
             .map_err(OpteeCompileError::UtilityError)?;
 
+        // The TA ELF is the `[[bin]]` target (the `#[ta_*]` entry points + the
+        // generated `user_ta_header.rs`), gated behind the `ta` feature. Build it
+        // explicitly: a plain `cargo build` would compile only the default-feature
+        // `rlib` (the `ca` callers) and skip the feature-gated binary entirely.
+        let bin = binary_name(&config.path)
+            .await
+            .map_err(OpteeCompileError::UtilityError)?;
+
         let mut cmd = Command::new(&cargo);
         cmd.arg("build")
+            .arg("--bin")
+            .arg(&bin)
+            .arg("--features")
+            .arg("ta")
             .arg("--target")
             .arg(OPTEE_TARGET)
             .current_dir(&config.path)
             .env("TA_DEV_KIT_DIR", &config.ta_dev_kit_dir)
-            .env(TEE_UUID_ENV, config.ta_uuid.to_string());
+            .env(TEE_UUID_ENV, config.ta_uuid.to_string())
+            .env("RUSTFLAGS", "-C panic=abort".to_string());
 
         if config.release {
             cmd.arg("--release");
@@ -130,6 +148,12 @@ impl Compiler for OpteeCompiler {
         verify_elf(&elf)
             .await
             .map_err(OpteeCompileError::UtilityError)?;
+
+        // Stop at the unsigned ELF when signing is disabled (no signer/keys
+        // required). The dist stage stages whatever path is returned here.
+        if !config.sign {
+            return Ok(elf);
+        }
 
         // ── Step 2: sign ────────────────────────────────────────────────────
         if !config.optee_signer.exists() {
@@ -215,6 +239,7 @@ impl OpteeBuilder {
             ta_dev_kit_dir: env.ta_dev_kit_dir.clone(),
             optee_signer: env.optee_signer.clone(),
             ta_uuid: env.ta_uuid,
+            sign: true,
         })
         .await
         .map_err(|e| e.to_string())

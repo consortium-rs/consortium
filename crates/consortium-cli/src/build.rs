@@ -37,6 +37,11 @@ pub struct BuildArgs {
     #[arg(long)]
     release: bool,
 
+    /// Build the OP-TEE TA but skip signing it into a `<uuid>.ta`. The unsigned
+    /// ELF is staged instead, so no signer script or signing keys are needed.
+    #[arg(long)]
+    skip_tee_sign: bool,
+
     /// Stage the assembled `dist/` tree under a bitbake recipe's `files/` dir.
     #[arg(long, value_name = "DIR")]
     bitbake_files_dir: Option<PathBuf>,
@@ -97,6 +102,7 @@ pub async fn run(args: BuildArgs) -> Result<(), String> {
         release: args.release,
         hmi,
         tee_toolchain,
+        sign_tee: !args.skip_tee_sign,
         bitbake,
     };
 
@@ -123,7 +129,12 @@ pub async fn run(args: BuildArgs) -> Result<(), String> {
         println!("  hmi:      {source}");
     }
     if plan.ta.is_some() {
-        println!("  tee:      trusted application");
+        let signed = if args.skip_tee_sign {
+            " (unsigned: --skip-tee-sign)"
+        } else {
+            ""
+        };
+        println!("  tee:      trusted application{signed}");
     }
     println!("  app:      {}", plan.application.config.target);
 

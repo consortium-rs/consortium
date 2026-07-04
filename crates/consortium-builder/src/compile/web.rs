@@ -40,6 +40,13 @@ pub enum HmiBuildCommand {
     VpBuild,
     /// Node package manager: `npm run build`.
     NpmRunBuild,
+    /// A known tool resolved to an absolute path before any later PATH changes.
+    Resolved {
+        /// Executable path.
+        program: String,
+        /// Arguments passed to the executable.
+        args: Vec<String>,
+    },
     /// An explicit command from `CONSORTIUM_HMI_BUILD_CMD`, split on whitespace;
     /// the first element is the program, the rest its arguments.
     Custom(Vec<String>),
@@ -51,6 +58,9 @@ impl HmiBuildCommand {
         match self {
             Self::VpBuild => ("vp", vec!["build"]),
             Self::NpmRunBuild => ("npm", vec!["run", "build"]),
+            Self::Resolved { program, args } => {
+                (program.as_str(), args.iter().map(String::as_str).collect())
+            }
             Self::Custom(parts) => {
                 let program = parts.first().map(String::as_str).unwrap_or_default();
                 let args = parts.iter().skip(1).map(String::as_str).collect();
@@ -66,6 +76,10 @@ pub enum HmiCompileError {
     /// The frontend build command could not be resolved.
     #[error("Failed to resolve HMI build command: {0}")]
     CommandResolveError(String),
+
+    /// The frontend project directory does not exist.
+    #[error("HMI project directory not found: {0:?}")]
+    ProjectDirNotFound(PathBuf),
 
     /// The frontend build command failed to launch or exited non-zero.
     #[error("HMI build failed: {0}")]
@@ -110,6 +124,13 @@ impl Compiler for HmiCompiler {
             return Err(HmiCompileError::CommandResolveError(
                 "HMI build command is empty".to_string(),
             ));
+        }
+
+        match tokio::fs::metadata(&config.project_dir).await {
+            Ok(meta) if meta.is_dir() => {}
+            Ok(_) | Err(_) => {
+                return Err(HmiCompileError::ProjectDirNotFound(config.project_dir));
+            }
         }
 
         let status = Command::new(program)
@@ -186,6 +207,14 @@ mod tests {
             ("npm", vec!["run", "build"])
         );
         assert_eq!(
+            HmiBuildCommand::Resolved {
+                program: "/tools/vp".into(),
+                args: vec!["build".into()],
+            }
+            .program_args(),
+            ("/tools/vp", vec!["build"])
+        );
+        assert_eq!(
             HmiBuildCommand::Custom(vec!["pnpm".into(), "build".into()]).program_args(),
             ("pnpm", vec!["build"])
         );
@@ -213,6 +242,28 @@ mod tests {
         assert!(dist.join("index.html").exists());
 
         let _ = std::fs::remove_dir_all(&project);
+    }
+
+    #[tokio::test]
+    async fn build_errors_when_project_dir_missing() {
+        let root = tmp_dir("missing-project");
+        let project = root.join("website");
+
+        let cfg = HmiConfiguration {
+            project_dir: project.clone(),
+            dist_dir: project.join("dist"),
+            command: HmiBuildCommand::Custom(vec!["true".into()]),
+        };
+
+        let err = HmiCompiler::build(cfg)
+            .await
+            .expect_err("missing project dir is an error");
+        assert!(matches!(
+            err,
+            HmiCompileError::ProjectDirNotFound(path) if path == project
+        ));
+
+        let _ = std::fs::remove_dir_all(&root);
     }
 
     #[tokio::test]

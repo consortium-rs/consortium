@@ -73,6 +73,7 @@ pub fn plan_ta_build(
     manifest_dir: &Path,
     toolchain: Option<&TeeToolchain>,
     release: bool,
+    sign: bool,
 ) -> Result<Option<OpteeConfiguration>, PipelineError> {
     let Some(tee) = &session.config.tee else {
         return Ok(None);
@@ -93,6 +94,7 @@ pub fn plan_ta_build(
         ta_dev_kit_dir: toolchain.ta_dev_kit_dir.clone(),
         optee_signer: toolchain.optee_signer.clone(),
         ta_uuid: tee.uuid,
+        sign,
     }))
 }
 
@@ -113,7 +115,7 @@ mod tests {
     #[test]
     fn plans_ta_from_manifest_uuid_and_endpoint() {
         let session = Session::from_toml(STM32).expect("manifest loads");
-        let cfg = plan_ta_build(&session, Path::new("/proj"), Some(&toolchain()), true)
+        let cfg = plan_ta_build(&session, Path::new("/proj"), Some(&toolchain()), true, true)
             .expect("plan succeeds")
             .expect("manifest has [tee]");
         assert_eq!(cfg.path, Path::new("/proj/ta"));
@@ -122,12 +124,13 @@ mod tests {
             "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"
         );
         assert!(cfg.release);
+        assert!(cfg.sign);
     }
 
     #[test]
     fn errors_when_toolchain_absent_but_tee_declared() {
         let session = Session::from_toml(STM32).expect("manifest loads");
-        let err = match plan_ta_build(&session, Path::new("/proj"), None, false) {
+        let err = match plan_ta_build(&session, Path::new("/proj"), None, false, true) {
             Ok(_) => panic!("no toolchain is an error when [tee] is present"),
             Err(err) => err,
         };
@@ -142,7 +145,7 @@ mod tests {
             shared = \"./shared\"\n\
             deploy_root = \"/opt/consortium\"\n";
         let session = Session::from_toml(manifest).expect("manifest loads");
-        let plan = plan_ta_build(&session, Path::new("/proj"), Some(&toolchain()), false)
+        let plan = plan_ta_build(&session, Path::new("/proj"), Some(&toolchain()), false, true)
             .expect("plan succeeds");
         assert!(plan.is_none());
     }
