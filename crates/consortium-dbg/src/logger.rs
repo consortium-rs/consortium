@@ -2,7 +2,8 @@
 use defmt::{Logger, global_logger};
 
 use crate::config;
-use crate::descriptor::{Descriptor, Flags};
+use crate::descriptor::{Descriptor, FLAGS_OFFSET, Flags};
+use crate::utils::wv_u16;
 
 #[global_logger]
 pub struct ConsortiumLogger;
@@ -70,6 +71,24 @@ impl ConsortiumLogger {
         // SAFETY: the caller guarantees `base` points at a valid descriptor.
         let descriptor = unsafe { &mut *(base as *mut Descriptor) };
         descriptor.flags.remove(Flags::Writing);
+    }
+
+    /// Latches [`Flags::Panic`] in the descriptor at `base`, preserving any
+    /// error/overflow bits the writer already set.
+    ///
+    /// Called from the panic handler after the panic message has been written so
+    /// the host reader can distinguish a clean end-of-stream from a crash. The
+    /// flags word is written through the volatile helper so the store is not
+    /// elided before the core halts.
+    ///
+    /// # Safety
+    /// `base` must point to a valid debug shared-memory descriptor region.
+    pub unsafe fn mark_panic(base: *mut u8) {
+        // SAFETY: the caller guarantees `base` points at a valid descriptor.
+        let descriptor = unsafe { &mut *(base as *mut Descriptor) };
+        descriptor.flags.insert(Flags::Panic);
+        // SAFETY: the caller guarantees the descriptor fields are valid and coherent.
+        unsafe { wv_u16(base, FLAGS_OFFSET, descriptor.flags.bits()) };
     }
 
     /// Writes one defmt frame payload into the descriptor-backed ring buffer.
@@ -216,6 +235,25 @@ mod tests {
         // Capacity now matches this build and the stale cursor was reset.
         assert_eq!(desc.capacity, SIZE);
         assert_eq!(desc.read_ptr, desc.write_ptr);
+    }
+
+    #[test]
+    fn mark_panic_latches_flag_and_preserves_others() {
+        let mut buf = region();
+        // A live ring that has already latched Overflow before the panic.
+        let mut desc = Descriptor::new(SIZE);
+        desc.flags.insert(Flags::Overflow);
+        // SAFETY: `buf` covers the descriptor.
+        unsafe { desc.write_to_raw_ptr(buf.as_mut_ptr()) };
+
+        // SAFETY: `buf` covers the descriptor.
+        unsafe { ConsortiumLogger::mark_panic(buf.as_mut_ptr()) };
+
+        // SAFETY: written above.
+        let desc = unsafe { Descriptor::from_raw_ptr(buf.as_ptr()) };
+        assert!(desc.flags.contains(Flags::Panic));
+        // The pre-panic Overflow bit is not clobbered.
+        assert!(desc.flags.contains(Flags::Overflow));
     }
 
     #[test]

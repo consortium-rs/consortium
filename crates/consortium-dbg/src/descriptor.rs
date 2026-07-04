@@ -59,6 +59,9 @@ bitflags! {
         /// The last frame was dropped because it did not fit without
         /// overwriting unread data.
         const Overflow = 0b0000_0000_0010_0000;
+        /// The writer panicked; the stream ended abnormally and the frames up to
+        /// this point are the pre-panic log, followed by the panic message.
+        const Panic = 0b0000_0000_0100_0000;
     }
 }
 

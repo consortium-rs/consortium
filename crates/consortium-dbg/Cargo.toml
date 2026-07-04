@@ -5,12 +5,15 @@ name              = "consortium-dbg"
 version.workspace = true
 
 [features]
+arch-cortex-m = ["dep:cortex-m"]
+arch-riscv    = ["dep:riscv"]
 decode        = ["dep:defmt-decoder", "dep:defmt-parser", "host"]
 default       = ["host", "logger"]
 doorbell-hsem = ["consortium-ipc-doorbell-hsem"]
 doorbell-mu   = ["consortium-ipc-doorbell-mu"]
 host          = []
 logger        = []
+panic-handler = ["logger"]
 
 [dependencies]
 bitflags                     = "2.11.1"
@@ -19,9 +22,11 @@ consortium-ipc               = { default-features = false, path = "../consortium
 consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem" }
 consortium-ipc-doorbell-mu   = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu" }
 consortium-shared-memory     = { path = "../consortium-shared-memory" }
+cortex-m                     = { optional = true, version = "0.7" }
 defmt                        = "1.1.0"
 defmt-decoder                = { optional = true, version = "1.1" }
 defmt-parser                 = { optional = true, version = "1" }
+riscv                        = { optional = true, version = "0.16.1" }
 thiserror                    = { default-features = false, version = "2.0" }
 
 [dev-dependencies]
