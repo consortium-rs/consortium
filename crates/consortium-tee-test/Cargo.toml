@@ -23,7 +23,7 @@ version.workspace = true
 [features]
 ca      = ["consortium-tee/ca", "dep:optee-teec"]
 default = []
-ta      = ["consortium-tee/ta", "dep:optee-utee", "optee-utee/unwind_stubs", "dep:optee-utee-sys"]
+ta      = ["consortium-tee/ta", "dep:optee-utee", "dep:optee-utee-sys", "optee-utee/unwind_stubs"]
 
 [lib]
 crate-type = ["rlib", "staticlib"]

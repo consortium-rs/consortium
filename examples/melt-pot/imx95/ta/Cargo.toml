@@ -28,7 +28,7 @@ version     = "0.1.0"
 [features]
 ca      = ["consortium-tee/ca", "dep:optee-teec"]
 default = []
-ta      = ["consortium-tee/ta", "dep:optee-utee", "optee-utee/unwind_stubs", "dep:optee-utee-sys"]
+ta      = ["consortium-tee/ta", "dep:optee-utee", "dep:optee-utee-sys", "optee-utee/unwind_stubs"]
 
 # `lib` (rlib) — the `ca` callers linked into the Linux app.
 # `lib` (staticlib) + `bin` — the OP-TEE TA ELF built for the Secure World.

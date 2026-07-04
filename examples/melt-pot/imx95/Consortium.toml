@@ -73,5 +73,5 @@ owner     = "cm7"
 secure    = false
 clock     = 24000000
 frequency = 100000
-pin.sda = "PB0"
-pin.scl = "PB1"
+pin.sda   = "PB0"
+pin.scl   = "PB1"

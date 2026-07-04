@@ -145,8 +145,14 @@ mod tests {
             shared = \"./shared\"\n\
             deploy_root = \"/opt/consortium\"\n";
         let session = Session::from_toml(manifest).expect("manifest loads");
-        let plan = plan_ta_build(&session, Path::new("/proj"), Some(&toolchain()), false, true)
-            .expect("plan succeeds");
+        let plan = plan_ta_build(
+            &session,
+            Path::new("/proj"),
+            Some(&toolchain()),
+            false,
+            true,
+        )
+        .expect("plan succeeds");
         assert!(plan.is_none());
     }
 }
