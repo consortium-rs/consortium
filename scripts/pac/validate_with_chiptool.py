@@ -7,7 +7,9 @@ import json
 from pathlib import Path
 from typing import Tuple, List
 
-OUTPUT_DIR = Path(__file__).resolve().parents[2] / "crates" / "consortium-data" / "database"
+OUTPUT_DIR = (
+    Path(__file__).resolve().parents[2] / "crates" / "consortium-data" / "database"
+)
 
 
 def run_chiptool_validate(yaml_file: Path) -> Tuple[bool, str]:
