@@ -22,7 +22,9 @@ from common import (
 
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "data"
-OUTPUT_DIR = Path(__file__).resolve().parents[2] / "crates" / "consortium-data" / "database"
+OUTPUT_DIR = (
+    Path(__file__).resolve().parents[2] / "crates" / "consortium-data" / "database"
+)
 
 FAMILY_REPRESENTATIVES = {
     "imx93_cm33": ("MIMX9352_cm33", "MIMX9352_cm33_COMMON.h"),
@@ -74,14 +76,18 @@ def yaml_block_name(data: Dict[str, Any]) -> str:
 def replace_yaml_strings(value: Any, replacements: List[Tuple[Any, str]]) -> Any:
     if isinstance(value, dict):
         return {
-            replace_yaml_strings(key, replacements): replace_yaml_strings(item, replacements)
+            replace_yaml_strings(key, replacements): replace_yaml_strings(
+                item, replacements
+            )
             for key, item in value.items()
         }
     if isinstance(value, list):
         return [replace_yaml_strings(item, replacements) for item in value]
     if isinstance(value, str):
         for old, new in replacements:
-            value = old.sub(new, value) if hasattr(old, "sub") else value.replace(old, new)
+            value = (
+                old.sub(new, value) if hasattr(old, "sub") else value.replace(old, new)
+            )
     return value
 
 
@@ -105,7 +111,7 @@ def numbered_template_replacements(block: str) -> List[Tuple[Any, str]]:
     if block.startswith(("NOC_GICRLPI", "NOC_GICRSGI")):
         match = re.search(r"(\d+)$", block)
         if match:
-            replacements.append((re.compile(fr"GICR{match.group(1)}_"), "GICRN_"))
+            replacements.append((re.compile(rf"GICR{match.group(1)}_"), "GICRN_"))
 
     return replacements
 

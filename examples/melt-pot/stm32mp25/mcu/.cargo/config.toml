@@ -7,8 +7,8 @@ rustflags = [
   # firmware compact (no 64 KiB padding gaps) — matches the embassy examples and
   # suits a remoteproc SRAM-carveout image.
   "-C",
-  "link-arg=--nmagic",
   "-C",
+  "link-arg=--nmagic",
   "link-arg=-Tlink.x",
   # `defmt.x` is required by defmt: it lays out the interned-string table the
   # decoder relies on. Must come after `link.x`.
