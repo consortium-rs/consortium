@@ -69,9 +69,11 @@ Shared utilities:
 
 ## Output Format
 
-### Register YAML (`crates/consortium-data/database/peri/<family>/<periph>_v1.yaml`)
+### Register YAML (`crates/consortium-data/database/peri/imx9/<periph>_<suffix>.yaml`)
 
-Chiptool IR format with blocks and fieldsets:
+Chiptool IR format with blocks and fieldsets. Shared i.MX9 blocks use `_v1`;
+chip-specific blocks use `_mimx93` or `_mimx95`, and repeated numbered blocks
+use `_n` in the stem:
 
 ```yaml
 block/LPUART:

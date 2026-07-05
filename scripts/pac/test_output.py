@@ -167,7 +167,7 @@ def test_register_yamls():
     print("=" * 70)
 
     registers_dir = OUTPUT_DIR / "peri"
-    yaml_files = list(registers_dir.rglob("*_v1.yaml"))
+    yaml_files = list(registers_dir.rglob("*.yaml"))
 
     if not yaml_files:
         print("No register YAML files found")
