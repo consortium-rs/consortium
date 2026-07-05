@@ -46,7 +46,7 @@ def validate_all_yamls():
     print("=" * 80)
 
     registers_dir = OUTPUT_DIR / "peri"
-    yaml_files = sorted(registers_dir.rglob("*_v1.yaml"))
+    yaml_files = sorted(registers_dir.rglob("*.yaml"))
 
     if not yaml_files:
         print("No register YAML files found")

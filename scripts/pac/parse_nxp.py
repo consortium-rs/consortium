@@ -4,6 +4,8 @@
 import re
 import sys
 from pathlib import Path
+
+import yaml
 from typing import Dict, List, Any, Optional, Tuple, Set
 import argparse
 
@@ -26,6 +28,124 @@ FAMILY_REPRESENTATIVES = {
     "imx93_cm33": ("MIMX9352_cm33", "MIMX9352_cm33_COMMON.h"),
     "imx95_cm7": ("MIMX9596_cm7", "MIMX9596_cm7_COMMON.h"),
 }
+
+IMX9_PERI_OUTPUT_DIR = OUTPUT_DIR / "peri" / "imx9"
+IMX9_FAMILY_SUFFIXES = {
+    "imx93": "mimx93",
+    "imx95": "mimx95",
+}
+
+
+def imx9_peripheral_yaml_path(block_name: str, family: str) -> Path:
+    suffix = IMX9_FAMILY_SUFFIXES[family]
+    return IMX9_PERI_OUTPUT_DIR / f"{block_name.lower()}_{suffix}.yaml"
+
+
+def consolidate_identical_imx9_peripherals() -> None:
+    """Collapse matching i.MX93/i.MX95 register YAMLs to a shared _v1 file."""
+    for imx93_path in sorted(IMX9_PERI_OUTPUT_DIR.glob("*_mimx93.yaml")):
+        stem = imx93_path.name.removesuffix("_mimx93.yaml")
+        imx95_path = IMX9_PERI_OUTPUT_DIR / f"{stem}_mimx95.yaml"
+        if not imx95_path.exists():
+            continue
+
+        if imx93_path.read_bytes() != imx95_path.read_bytes():
+            continue
+
+        shared_path = IMX9_PERI_OUTPUT_DIR / f"{stem}_v1.yaml"
+        shared_path.write_bytes(imx93_path.read_bytes())
+        imx93_path.unlink()
+        imx95_path.unlink()
+        print(f"Wrote {shared_path}")
+
+
+def natural_sort_key(path: Path) -> List[Any]:
+    parts = re.split(r"(\d+)", path.name)
+    return [int(part) if part.isdigit() else part for part in parts]
+
+
+def yaml_block_name(data: Dict[str, Any]) -> str:
+    blocks = [key.split("/", 1)[1] for key in data if key.startswith("block/")]
+    if len(blocks) != 1:
+        raise ValueError(f"expected exactly one block in YAML, found {blocks}")
+    return blocks[0]
+
+
+def replace_yaml_strings(value: Any, replacements: List[Tuple[Any, str]]) -> Any:
+    if isinstance(value, dict):
+        return {
+            replace_yaml_strings(key, replacements): replace_yaml_strings(item, replacements)
+            for key, item in value.items()
+        }
+    if isinstance(value, list):
+        return [replace_yaml_strings(item, replacements) for item in value]
+    if isinstance(value, str):
+        for old, new in replacements:
+            value = old.sub(new, value) if hasattr(old, "sub") else value.replace(old, new)
+    return value
+
+
+def drop_yaml_descriptions(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {
+            key: drop_yaml_descriptions(item)
+            for key, item in value.items()
+            if key != "description"
+        }
+    if isinstance(value, list):
+        return [drop_yaml_descriptions(item) for item in value]
+    return value
+
+
+def numbered_template_replacements(block: str) -> List[Tuple[Any, str]]:
+    replacements: List[Tuple[Any, str]] = [(block, re.sub(r"\d+", "N", block))]
+
+    # GIC redistributor register names carry the redistributor index in addition
+    # to the enclosing block name, e.g. `NOC_GICRLPI5_GICR5_CTLR`.
+    if block.startswith(("NOC_GICRLPI", "NOC_GICRSGI")):
+        match = re.search(r"(\d+)$", block)
+        if match:
+            replacements.append((re.compile(fr"GICR{match.group(1)}_"), "GICRN_"))
+
+    return replacements
+
+
+def consolidate_numbered_imx9_peripherals() -> None:
+    """Collapse repeated numbered i.MX9 blocks into _n templates when shaped alike."""
+    groups: Dict[Tuple[str, str], List[Path]] = {}
+    for path in sorted(IMX9_PERI_OUTPUT_DIR.glob("*.yaml")):
+        match = re.match(r"(.+)_(v1|mimx93|mimx95)\.yaml$", path.name)
+        if not match:
+            continue
+
+        stem, suffix = match.groups()
+        template_stem = re.sub(r"\d+", "n", stem)
+        if template_stem == stem:
+            continue
+
+        groups.setdefault((template_stem, suffix), []).append(path)
+
+    for (template_stem, suffix), paths in sorted(groups.items()):
+        if len(paths) < 2:
+            continue
+
+        normalized = []
+        for path in sorted(paths, key=natural_sort_key):
+            data = yaml.safe_load(path.read_text())
+            block = yaml_block_name(data)
+            normalized.append(
+                replace_yaml_strings(data, numbered_template_replacements(block))
+            )
+
+        structural = [drop_yaml_descriptions(data) for data in normalized]
+        if any(data != structural[0] for data in structural[1:]):
+            continue
+
+        template_path = IMX9_PERI_OUTPUT_DIR / f"{template_stem}_{suffix}.yaml"
+        write_yaml(normalized[0], template_path)
+        for path in paths:
+            path.unlink()
+        print(f"Wrote {template_path}")
 
 
 class NXPPeripheralParser:
@@ -557,7 +677,7 @@ class NXPPeripheralParser:
         self.parse_struct()
         self.parse_bitfield_macros()
 
-    def emit_yaml(self):
+    def emit_yaml(self, family: str):
         """Write YAML output."""
         if not self.block_data["items"]:
             return
@@ -579,9 +699,7 @@ class NXPPeripheralParser:
         # fieldsets are already named BLOCKNAME_REGNAME, so add them with fieldset/ prefix
         data.update({f"fieldset/{name}": fs for name, fs in self.fieldsets.items()})
 
-        yaml_path = (
-            OUTPUT_DIR / "peri" / "imx93" / f"{self.block_name.lower()}_v1.yaml"
-        )
+        yaml_path = imx9_peripheral_yaml_path(self.block_name, family)
         write_yaml(data, yaml_path)
         print(f"Wrote {yaml_path}")
 
@@ -783,42 +901,14 @@ def main():
         # Parse all PERI_*.h files
         print(f"Parsing {family}...")
 
-        # Determine which subfamily for output (imx93 or imx95)
+        # Determine which i.MX9 subfamily this input represents.
         subfamily = family.split("_")[0]
-        output_subdir = OUTPUT_DIR / "peri" / subfamily
 
         peri_files = sorted(family_dir.glob("PERI_*.h"))
         for peri_file in peri_files:
             peri_parser = NXPPeripheralParser(peri_file)
             peri_parser.parse()
-
-            # Update output dir for this family
-            peri_parser.block_data["items"]  # Check if has content
-
-            yaml_path = output_subdir / f"{peri_parser.block_name.lower()}_v1.yaml"
-            if peri_parser.block_data["items"]:
-                # Link fieldsets
-                for item in peri_parser.block_data["items"]:
-                    reg_name = item["name"]
-                    # fieldsets stored with full name BLOCKNAME_REGNAME
-                    fieldset_name = f"{peri_parser.block_name}_{reg_name}"
-                    if fieldset_name in peri_parser.fieldsets:
-                        item["fieldset"] = fieldset_name
-
-                peri_parser.block_data["items"] = peri_parser._prune_overlapping_items(
-                    peri_parser.block_data["items"]
-                )
-
-                data = {f"block/{peri_parser.block_name}": peri_parser.block_data}
-                data.update(
-                    {
-                        f"fieldset/{name}": fs
-                        for name, fs in peri_parser.fieldsets.items()
-                    }
-                )
-
-                write_yaml(data, yaml_path)
-                print(f"Wrote {yaml_path}")
+            peri_parser.emit_yaml(subfamily)
 
         # Parse chip descriptor(s)
         chip_header, common_header_name = FAMILY_REPRESENTATIVES[family]
@@ -831,6 +921,9 @@ def main():
 
             chip_parser = NXPChipParser(chip_header_path, common_parser)
             chip_parser.emit_json({})
+
+    consolidate_identical_imx9_peripherals()
+    consolidate_numbered_imx9_peripherals()
 
 
 if __name__ == "__main__":
