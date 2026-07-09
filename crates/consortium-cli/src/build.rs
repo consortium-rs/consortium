@@ -56,31 +56,46 @@ pub struct BuildArgs {
     /// The Yocto build directory `bitbake` is invoked in.
     #[arg(long, value_name = "DIR")]
     bitbake_build_dir: Option<PathBuf>,
+
+    /// Resolve and report the bitbake command without running it. Use when the
+    /// Consortium build and the Yocto/bitbake build run on separate machines:
+    /// `dist/` is assembled here and `bitbake` is run later on the Yocto host.
+    /// Requires `--bitbake-recipe` (+ `--bitbake-build-dir`).
+    #[arg(long)]
+    bitbake_dry_run: bool,
 }
 
-/// Resolves the optional bitbake hand-off from the CLI flags.
-fn resolve_bitbake(args: &BuildArgs) -> Result<Option<BitbakeAction>, String> {
-    match (
-        &args.bitbake_files_dir,
-        &args.bitbake_recipe,
-        &args.bitbake_build_dir,
-    ) {
-        (None, None, None) => Ok(None),
-        (Some(dir), None, None) => Ok(Some(BitbakeAction::CopyIntoRecipe {
+/// Resolves the ordered bitbake hand-off actions from the CLI flags.
+///
+/// Staging (`--bitbake-files-dir`) and invoking (`--bitbake-recipe` +
+/// `--bitbake-build-dir`) compose: when both are given, `dist/` is staged into
+/// the recipe's `files/` dir first, then bitbake runs (or, with
+/// `--bitbake-dry-run`, the command is recorded but not run). This is the
+/// split-machine flow — produce the recipe input here, defer the build.
+fn resolve_bitbake(args: &BuildArgs) -> Result<Vec<BitbakeAction>, String> {
+    let mut actions = Vec::new();
+
+    if let Some(dir) = &args.bitbake_files_dir {
+        actions.push(BitbakeAction::CopyIntoRecipe {
             recipe_files_dir: dir.clone(),
-        })),
-        (None, Some(recipe), Some(build_dir)) => Ok(Some(BitbakeAction::InvokeBitbake {
+        });
+    }
+
+    match (&args.bitbake_recipe, &args.bitbake_build_dir) {
+        (Some(recipe), Some(build_dir)) => actions.push(BitbakeAction::InvokeBitbake {
             build_dir: build_dir.clone(),
             recipe: recipe.clone(),
-        })),
-        (None, Some(_), None) => Err("--bitbake-recipe requires --bitbake-build-dir".to_string()),
-        (None, None, Some(_)) => Err("--bitbake-build-dir requires --bitbake-recipe".to_string()),
-        _ => Err(
-            "choose either --bitbake-files-dir or (--bitbake-recipe + --bitbake-build-dir), \
-             not both"
-                .to_string(),
-        ),
+            dry_run: args.bitbake_dry_run,
+        }),
+        (Some(_), None) => return Err("--bitbake-recipe requires --bitbake-build-dir".to_string()),
+        (None, Some(_)) => return Err("--bitbake-build-dir requires --bitbake-recipe".to_string()),
+        (None, None) if args.bitbake_dry_run => {
+            return Err("--bitbake-dry-run requires --bitbake-recipe".to_string());
+        }
+        (None, None) => {}
     }
+
+    Ok(actions)
 }
 
 #[derive(Clone, Copy)]
@@ -194,7 +209,7 @@ impl StickyReporter {
             .pending_output
             .char_indices()
             .filter_map(|(idx, ch)| (ch == '\n' || ch == '\r').then_some(idx + ch.len_utf8()))
-            .last()
+            .next_back()
         else {
             return String::new();
         };
@@ -262,10 +277,10 @@ impl BuildReporter for StickyReporter {
             let _ = write!(stderr, "\r\x1b[2K");
         }
         let _ = write!(stderr, "{complete}");
-        if self.interactive {
-            if let Some(current) = state.current.as_ref() {
-                let _ = write!(stderr, "\r\x1b[2K{}", self.render_prompt(current));
-            }
+        if self.interactive
+            && let Some(current) = state.current.as_ref()
+        {
+            let _ = write!(stderr, "\r\x1b[2K{}", self.render_prompt(current));
         }
         let _ = stderr.flush();
     }

@@ -7,9 +7,24 @@
 # The Rust compile targets are looked up from the embedded chip database for
 # this chip (CM33 firmware target and CA35 application target); they are not
 # listed here.
-chip        = "stm32mp257fak3"
+chip = "stm32mp257fak3"
+# Development board whose device tree the Linux device tree is built on. Its full
+# file stem is matched against the vendor DTS database; omit it to build on the
+# generic `stm32mp257.dtsi` instead.
+devkit      = "stm32mp257f-dk"
 shared      = "../shared"
 deploy_root = "/opt/consortium"
+# sysroot     = "/workspace/stm32mp-yocto-bsp/build-openstlinuxweston-stm32mp2/tmp-glibc/sysroots"
+sysroot       = "/"
+kernel_recipe = "linux-stm32mp"
+
+# Device-tree generation. Defaults to a merged full `.dts` built on the `devkit`
+# board above. Point `linux` at a kernel checkout to compile the `.dtb` here
+# (those dt-bindings headers are GPL-2.0, so they are never bundled); otherwise
+# the pipeline emits the `.dts` and prints how to compile it.
+[dts]
+# mode  = "merge"        # or "overlay"
+# linux = "~/src/linux"
 
 [endpoints]
 # Runtime endpoint name -> crate root. `cm33` is the single remote coprocessor.

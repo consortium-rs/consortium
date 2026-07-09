@@ -7,9 +7,24 @@
 # The Rust compile targets are looked up from the embedded chip database for
 # this chip (CM7 firmware target and CA55 application target); they are not
 # listed here.
-chip        = "mimx9596xvt"
+chip = "mimx9596xvt"
+# Development board whose device tree the Linux device tree is built on. Its full
+# file stem is matched against the vendor DTS database; omit it to build on the
+# generic `imx95.dtsi` instead.
+devkit      = "imx95-19x19-evk"
 shared      = "../shared"
 deploy_root = "/opt/consortium"
+# sysroot     = "/workspace/imx-yocto-bsp/build/tmp/sysroots"
+sysroot       = "/"
+kernel_recipe = "linux-imx"
+
+# Device-tree generation. Defaults to a merged full `.dts` built on the `devkit`
+# board above. Point `linux` at a kernel checkout to compile the `.dtb` here
+# (those dt-bindings headers are GPL-2.0, so they are never bundled); otherwise
+# the pipeline emits the `.dts` and prints how to compile it.
+[dts]
+# mode  = "merge"        # or "overlay"
+# linux = "~/src/linux"
 
 [endpoints]
 # Runtime endpoint name -> crate root. `cm7` is the single remote coprocessor.

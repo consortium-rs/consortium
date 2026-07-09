@@ -20,6 +20,7 @@ pub mod acore_name;
 pub mod codec;
 pub mod core;
 pub mod dbg;
+pub mod dts;
 pub mod endpoints;
 pub mod hmi;
 pub mod ipc;
@@ -38,6 +39,7 @@ pub use acore_name::AcoreName;
 pub use codec::Codec;
 pub use core::{Core, VisibleCore};
 pub use dbg::{Dbg, DbgCore, DbgMode};
+pub use dts::{Dts, DtsMode};
 pub use endpoints::Endpoints;
 pub use hmi::{Hmi, HmiBackend, HmiEngine};
 pub use ipc::{Ipc, IpcChannel, IpcChannelConfig, IpcEndpoint, IpcPattern};
@@ -65,6 +67,9 @@ pub struct Config {
     /// Debug transport configuration.
     #[serde(default)]
     pub dbg: Dbg,
+    /// Linux device-tree generation configuration.
+    #[serde(default)]
+    pub dts: Dts,
     /// Typed IPC channel declarations.
     #[serde(default)]
     pub ipc: Ipc,

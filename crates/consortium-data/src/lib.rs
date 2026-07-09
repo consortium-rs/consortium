@@ -25,6 +25,7 @@
 
 pub mod chipmap;
 pub mod database;
+pub mod dts;
 mod error;
 
 pub use error::DataError;

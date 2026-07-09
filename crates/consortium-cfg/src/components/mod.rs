@@ -1,6 +1,7 @@
 pub mod address;
 pub mod bella;
 pub mod dbg;
+pub mod dts_render;
 pub mod ipc_shm;
 pub mod memory_to_uio;
 pub mod peripheral;

@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use thiserror::Error;
 use tokio::process::Command;
 
@@ -85,16 +85,26 @@ struct SdkEnv {
 }
 
 impl SdkEnv {
-    fn resolve() -> Result<Self, ApplicationCompileError> {
-        let sysroot = std::env::var("SDKTARGETSYSROOT")
-            .or_else(|_| std::env::var("OECORE_TARGET_SYSROOT"))
-            .map_err(|_| {
-                ApplicationCompileError::SysrootError(
-                    "Could not determine target sysroot. \
-                 Set SDKTARGETSYSROOT or source a Yocto environment-setup script."
-                        .to_string(),
-                )
-            })?;
+    /// Resolve the SDK environment.
+    ///
+    /// `sysroot_override` is the `[profile] sysroot` from the manifest (already
+    /// resolved to an absolute path by the caller). When present it takes
+    /// priority over the `SDKTARGETSYSROOT` / `OECORE_TARGET_SYSROOT` environment
+    /// variables, so a build does not require a sourced SDK environment.
+    fn resolve(sysroot_override: Option<&Path>) -> Result<Self, ApplicationCompileError> {
+        let sysroot = match sysroot_override {
+            Some(path) => path.to_string_lossy().into_owned(),
+            None => std::env::var("SDKTARGETSYSROOT")
+                .or_else(|_| std::env::var("OECORE_TARGET_SYSROOT"))
+                .map_err(|_| {
+                    ApplicationCompileError::SysrootError(
+                        "Could not determine target sysroot. Set the [profile] sysroot in \
+                     Consortium.toml, export SDKTARGETSYSROOT, or source a Yocto \
+                     environment-setup script."
+                            .to_string(),
+                    )
+                })?,
+        };
 
         if !PathBuf::from(&sysroot).exists() {
             return Err(ApplicationCompileError::SysrootError(format!(
@@ -168,6 +178,10 @@ pub struct ApplicationConfiguration {
     pub ipc: Option<SharedMemConfig>,
     /// Debug ring layout, injected as `CONSORTIUM_DBG_*` env vars.
     pub dbg: Option<DbgConfig>,
+    /// Target sysroot from `[profile] sysroot`, resolved to an absolute path.
+    /// Takes priority over the `SDKTARGETSYSROOT` / `OECORE_TARGET_SYSROOT`
+    /// environment variables when present.
+    pub sysroot: Option<PathBuf>,
 }
 
 /// Compiler for Linux applications targeting Yocto A-cores.
@@ -178,7 +192,7 @@ impl ApplicationCompiler {
         config: ApplicationConfiguration,
         reporter: Option<&dyn BuildReporter>,
     ) -> Result<PathBuf, ApplicationCompileError> {
-        let sdk = SdkEnv::resolve()?;
+        let sdk = SdkEnv::resolve(config.sysroot.as_deref())?;
 
         let rustc = resolve_rustc()
             .await
@@ -279,6 +293,7 @@ pub struct ApplicationBuilder {
     pub hmi: Option<HmiConfig>,
     pub ipc: Option<SharedMemConfig>,
     pub dbg: Option<DbgConfig>,
+    pub sysroot: Option<PathBuf>,
 }
 
 impl ApplicationBuilder {
@@ -291,6 +306,7 @@ impl ApplicationBuilder {
             hmi: self.hmi.clone(),
             ipc: self.ipc,
             dbg: self.dbg,
+            sysroot: self.sysroot.clone(),
         })
         .await
         .map_err(|e| e.to_string())
@@ -305,6 +321,7 @@ impl ApplicationBuilder {
             hmi: self.hmi.clone(),
             ipc: self.ipc,
             dbg: self.dbg,
+            sysroot: self.sysroot.clone(),
         })
         .await
         .map_err(|e| e.to_string())

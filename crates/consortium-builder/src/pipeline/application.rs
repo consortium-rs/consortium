@@ -76,6 +76,15 @@ pub fn plan_application_build(
 
     let ipc = ipc_config_for(&session.lower()?, VisibleCore::Ap);
 
+    // A relative `[profile] sysroot` is anchored at the manifest directory; an
+    // absolute one is used verbatim.
+    let sysroot = session
+        .config
+        .profile
+        .sysroot
+        .as_ref()
+        .map(|s| manifest_dir.join(s));
+
     // Substitute the resolved firmware ELF paths into the debug IR, then generate
     // the AP init module that `include_bytes!`es them.
     let mut ir = session.lower()?;
@@ -94,6 +103,7 @@ pub fn plan_application_build(
             // code and the embedded ELF, not via `CONSORTIUM_DBG_*` (those
             // configure a ring *writer*), so no debug layout is injected here.
             dbg: None,
+            sysroot,
         },
         generated,
     })
@@ -169,6 +179,59 @@ mod tests {
         );
         // The AP is the host, so no debug writer layout is injected.
         assert!(plan.config.dbg.is_none());
+
+        // The stm32 example does not declare a sysroot, so none is planned.
+        assert!(plan.config.sysroot.is_none());
+    }
+
+    #[test]
+    fn relative_profile_sysroot_anchors_at_manifest_dir() {
+        let toml = STM32.replace(
+            "deploy_root = \"/opt/consortium\"",
+            "deploy_root = \"/opt/consortium\"\nsysroot     = \"sdk/sysroot\"",
+        );
+        let session = Session::from_toml(&toml).expect("manifest loads");
+        let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
+
+        let plan = plan_application_build(
+            &session,
+            Path::new("/proj"),
+            None,
+            &HashMap::from([(cm33(), PathBuf::from("/build/cm33.elf"))]),
+            false,
+            &ty_crate,
+        )
+        .expect("plan succeeds");
+
+        assert_eq!(
+            plan.config.sysroot.as_deref(),
+            Some(Path::new("/proj/sdk/sysroot"))
+        );
+    }
+
+    #[test]
+    fn absolute_profile_sysroot_used_verbatim() {
+        let toml = STM32.replace(
+            "deploy_root = \"/opt/consortium\"",
+            "deploy_root = \"/opt/consortium\"\nsysroot     = \"/sdk/target/sysroot\"",
+        );
+        let session = Session::from_toml(&toml).expect("manifest loads");
+        let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
+
+        let plan = plan_application_build(
+            &session,
+            Path::new("/proj"),
+            None,
+            &HashMap::from([(cm33(), PathBuf::from("/build/cm33.elf"))]),
+            false,
+            &ty_crate,
+        )
+        .expect("plan succeeds");
+
+        assert_eq!(
+            plan.config.sysroot.as_deref(),
+            Some(Path::new("/sdk/target/sysroot"))
+        );
     }
 
     #[test]
