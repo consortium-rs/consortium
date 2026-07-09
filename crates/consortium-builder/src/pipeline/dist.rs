@@ -82,6 +82,16 @@ impl DistLayout {
         self.root.join("dts").join("linux")
     }
 
+    /// The kernel config-fragment subdirectory (`<root>/kernel`).
+    pub fn kernel_dir(&self) -> PathBuf {
+        self.root.join("kernel")
+    }
+
+    /// The boot-args subdirectory (`<root>/boot`).
+    pub fn boot_dir(&self) -> PathBuf {
+        self.root.join("boot")
+    }
+
     /// The systemd unit subdirectory (`<root>/systemd`).
     pub fn systemd_dir(&self) -> PathBuf {
         self.root.join("systemd")
@@ -132,21 +142,43 @@ fn io(path: impl AsRef<Path>, source: std::io::Error) -> DistAssemblyError {
 /// - the application binary → `app/<file_name>`;
 /// - the signed TA (when present) → `ta/<file_name>`;
 /// - the HMI dist tree (when present) → `www/` (copied recursively);
-/// - each `(name, contents)` Linux UIO overlay → `dts/linux/<name>`, each
-///   verified with `dtc` (see [`verify_dts`]);
+/// - each `(name, contents)` Linux device tree → `dts/linux/<name>`; a `.dtso`
+///   overlay is verified with `dtc` (see [`verify_dts`]), a merged `.dts` is
+///   not (see below);
+/// - each `(name, contents)` kernel config fragment → `kernel/<name>`;
+/// - each `(name, contents)` boot-args file → `boot/<name>`;
 /// - each `(name, contents)` systemd unit → `systemd/<name>`.
 ///
-/// The overlays are written and verified before the systemd units so a `dtc`
-/// rejection fails the assembly early.
+/// A `.dtso` overlay uses only the interrupt macros this module defines, so it is
+/// self-contained enough to `dtc`-verify here (before the systemd units, so a
+/// rejection fails early). A merged `.dts` `#include`s vendor `.dtsi`/`dt-bindings`
+/// headers that are not on disk offline, so it is written but not compiled here;
+/// the kernel build performs the final `dtc`.
+pub struct DistAssemblyInputs<'a> {
+    pub firmware: &'a HashMap<VisibleCore, PathBuf>,
+    pub application: &'a Path,
+    pub ta: Option<&'a Path>,
+    pub hmi_dist: Option<&'a Path>,
+    pub dts_files: &'a [(String, String)],
+    pub kconfig_fragments: &'a [(String, String)],
+    pub boot_files: &'a [(String, String)],
+    pub systemd_units: &'a [(String, String)],
+}
+
 pub async fn assemble(
     layout: &DistLayout,
-    firmware: &HashMap<VisibleCore, PathBuf>,
-    application: &Path,
-    ta: Option<&Path>,
-    hmi_dist: Option<&Path>,
-    dts_files: &[(String, String)],
-    systemd_units: &[(String, String)],
+    inputs: DistAssemblyInputs<'_>,
 ) -> Result<(), DistAssemblyError> {
+    let DistAssemblyInputs {
+        firmware,
+        application,
+        ta,
+        hmi_dist,
+        dts_files,
+        kconfig_fragments,
+        boot_files,
+        systemd_units,
+    } = inputs;
     // Firmware ELFs, named by core for the packaging recipe.
     let firmware_dir = layout.firmware_dir();
     tokio::fs::create_dir_all(&firmware_dir)
@@ -181,7 +213,9 @@ pub async fn assemble(
         copy_dir_recursive(hmi_dist, &www).await?;
     }
 
-    // Linux UIO overlays, written then `dtc`-verified before the systemd units.
+    // Linux device tree, written before the systemd units. A `.dtso` overlay is
+    // `dtc`-verified here; a merged `.dts` pulls in vendor headers we don't have
+    // offline, so it is left for the kernel build to compile.
     if !dts_files.is_empty() {
         let dts_dir = layout.dts_linux_dir();
         tokio::fs::create_dir_all(&dts_dir)
@@ -192,7 +226,37 @@ pub async fn assemble(
             tokio::fs::write(&dest, contents)
                 .await
                 .map_err(|e| io(&dest, e))?;
-            verify_dts(name, &dest).await?;
+            if name.ends_with(".dtso") {
+                verify_dts(name, &dest).await?;
+            }
+        }
+    }
+
+    // Kernel config fragments (plain text; no verification tooling).
+    if !kconfig_fragments.is_empty() {
+        let kernel_dir = layout.kernel_dir();
+        tokio::fs::create_dir_all(&kernel_dir)
+            .await
+            .map_err(|e| io(&kernel_dir, e))?;
+        for (name, contents) in kconfig_fragments {
+            let dest = kernel_dir.join(name);
+            tokio::fs::write(&dest, contents)
+                .await
+                .map_err(|e| io(&dest, e))?;
+        }
+    }
+
+    // Boot-args files (plain text; wired into the bootloader by the integrator).
+    if !boot_files.is_empty() {
+        let boot_dir = layout.boot_dir();
+        tokio::fs::create_dir_all(&boot_dir)
+            .await
+            .map_err(|e| io(&boot_dir, e))?;
+        for (name, contents) in boot_files {
+            let dest = boot_dir.join(name);
+            tokio::fs::write(&dest, contents)
+                .await
+                .map_err(|e| io(&dest, e))?;
         }
     }
 
@@ -355,16 +419,38 @@ mod tests {
             cm33_elf.clone(),
         )]);
         let units = vec![("consortium-app.service".to_string(), "[Unit]\n".to_string())];
+        let kconfig = vec![("uio-enable.cfg".to_string(), "CONFIG_UIO=y\n".to_string())];
+        let boot = vec![("boot.cmd".to_string(), "setenv bootargs\n".to_string())];
 
-        assemble(&layout, &firmware, &app, Some(&ta), Some(&www), &[], &units)
-            .await
-            .expect("assemble succeeds");
+        assemble(
+            &layout,
+            DistAssemblyInputs {
+                firmware: &firmware,
+                application: &app,
+                ta: Some(&ta),
+                hmi_dist: Some(&www),
+                dts_files: &[],
+                kconfig_fragments: &kconfig,
+                boot_files: &boot,
+                systemd_units: &units,
+            },
+        )
+        .await
+        .expect("assemble succeeds");
 
         assert!(layout.firmware_dir().join("cm33.elf").exists());
         assert!(layout.app_dir().join("melt-pot-app").exists());
         assert!(layout.ta_dir().join("uuid.ta").exists());
         assert!(layout.www_dir().join("index.html").exists());
         assert!(layout.www_dir().join("assets").join("app.js").exists());
+        assert_eq!(
+            std::fs::read_to_string(layout.kernel_dir().join("uio-enable.cfg")).unwrap(),
+            "CONFIG_UIO=y\n"
+        );
+        assert_eq!(
+            std::fs::read_to_string(layout.boot_dir().join("boot.cmd")).unwrap(),
+            "setenv bootargs\n"
+        );
         assert_eq!(
             std::fs::read_to_string(layout.systemd_dir().join("consortium-app.service")).unwrap(),
             "[Unit]\n"
@@ -380,14 +466,29 @@ mod tests {
         std::fs::write(&app, [0x7f, b'E', b'L', b'F']).unwrap();
 
         let layout = DistLayout::new(base.join("dist"));
-        assemble(&layout, &HashMap::new(), &app, None, None, &[], &[])
-            .await
-            .expect("assemble succeeds");
+        let firmware = HashMap::new();
+        assemble(
+            &layout,
+            DistAssemblyInputs {
+                firmware: &firmware,
+                application: &app,
+                ta: None,
+                hmi_dist: None,
+                dts_files: &[],
+                kconfig_fragments: &[],
+                boot_files: &[],
+                systemd_units: &[],
+            },
+        )
+        .await
+        .expect("assemble succeeds");
 
         assert!(layout.app_dir().join("app-bin").exists());
         assert!(!layout.ta_dir().exists());
         assert!(!layout.www_dir().exists());
         assert!(!layout.dts_linux_dir().exists());
+        assert!(!layout.kernel_dir().exists());
+        assert!(!layout.boot_dir().exists());
 
         let _ = std::fs::remove_dir_all(&base);
     }
@@ -444,9 +545,22 @@ mod tests {
         )];
         let units = vec![("consortium-app.service".to_string(), "[Unit]\n".to_string())];
 
-        assemble(&layout, &HashMap::new(), &app, None, None, &dts, &units)
-            .await
-            .expect("assemble + dtc verify succeeds");
+        let firmware = HashMap::new();
+        assemble(
+            &layout,
+            DistAssemblyInputs {
+                firmware: &firmware,
+                application: &app,
+                ta: None,
+                hmi_dist: None,
+                dts_files: &dts,
+                kconfig_fragments: &[],
+                boot_files: &[],
+                systemd_units: &units,
+            },
+        )
+        .await
+        .expect("assemble + dtc verify succeeds");
 
         // The overlay lands under dts/linux/, and the preprocessing temp is gone.
         let overlay = layout.dts_linux_dir().join("consortium-uio.dtso");
@@ -471,9 +585,22 @@ mod tests {
         // Missing closing brace: `dtc` rejects it.
         let dts = vec![("broken.dtso".to_string(), "/dts-v1/;\n/ {\n".to_string())];
 
-        let err = assemble(&layout, &HashMap::new(), &app, None, None, &dts, &[])
-            .await
-            .expect_err("malformed overlay is rejected");
+        let firmware = HashMap::new();
+        let err = assemble(
+            &layout,
+            DistAssemblyInputs {
+                firmware: &firmware,
+                application: &app,
+                ta: None,
+                hmi_dist: None,
+                dts_files: &dts,
+                kconfig_fragments: &[],
+                boot_files: &[],
+                systemd_units: &[],
+            },
+        )
+        .await
+        .expect_err("malformed overlay is rejected");
         assert!(matches!(
             err,
             DistAssemblyError::DtsVerify { name, .. } if name == "broken.dtso"

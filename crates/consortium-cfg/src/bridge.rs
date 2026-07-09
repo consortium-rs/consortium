@@ -72,6 +72,32 @@ pub struct LoweredIr {
 }
 
 impl LoweredIr {
+    /// A minimal IR carrying only a UIO device list, for tests that exercise the
+    /// device-tree rendering (which reads nothing else).
+    ///
+    /// Test-only; hidden from the public API surface but reachable from other
+    /// crates' tests (e.g. `consortium-builder`).
+    #[doc(hidden)]
+    pub fn empty_with_uio(uio: Vec<(String, UioDevice)>) -> Self {
+        use crate::components::bella::BellA;
+        use crate::components::dbg::DebugLogs;
+        use crate::components::ipc_shm::ShuHan;
+        use crate::components::peripheral::Peripherals;
+        use consortium_cfg_common::config::DbgMode;
+        use std::collections::HashMap;
+
+        Self {
+            shuhan: ShuHan::new(Vec::new()),
+            bella: BellA { bells: Vec::new() },
+            uio,
+            dbg: DebugLogs::new(HashMap::new(), DbgMode::default()),
+            peripherals: Peripherals {
+                hal_crate: String::new(),
+                instances: Vec::new(),
+            },
+        }
+    }
+
     /// Generates the per-core IPC initialization module.
     ///
     /// Every core gets the `IpcMemoryEndpoints` struct and its `new`

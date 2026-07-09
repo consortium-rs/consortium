@@ -25,7 +25,7 @@ pub use render::render;
 // The chip-family database and per-core chip maps live in `consortium-data`.
 // Re-export them under their historical paths so existing `crate::database` /
 // `crate::chipmap` references keep resolving.
-pub use consortium_data::{chipmap, database};
+pub use consortium_data::{chipmap, database, dts};
 
 pub use consortium_cfg_common::config;
 pub use error::CfgError;

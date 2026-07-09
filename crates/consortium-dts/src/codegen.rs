@@ -212,7 +212,16 @@ impl Codegen {
             self.print_property(property);
         }
 
-        if !properties.is_empty() && !children.is_empty() {
+        // `/delete-property/` and `/delete-node/` are property-level statements
+        // that `dtc` requires *before* any subnode, so they are emitted with the
+        // properties rather than after the children (the parser collects them
+        // separately, losing their original interleaving).
+        for deletion in deletions {
+            self.print_deletion(deletion);
+        }
+
+        let leading = !properties.is_empty() || !deletions.is_empty();
+        if leading && !children.is_empty() {
             self.output.push('\n');
         }
 
@@ -221,10 +230,6 @@ impl Codegen {
                 self.output.push('\n');
             }
             self.print_node(child);
-        }
-
-        for deletion in deletions {
-            self.print_deletion(deletion);
         }
     }
 
@@ -395,6 +400,25 @@ mod tests {
     use crate::{
         Cell, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference,
     };
+
+    #[test]
+    fn deletions_precede_subnodes() {
+        // `dtc` requires `/delete-property/` before any subnode; the node body
+        // must emit deletions with the properties, ahead of the children, even
+        // though the AST stores them in a separate list.
+        use crate::Deletion;
+        let dts = NodeOverlay::label("i2c")
+            .property(Property::string("status", "okay"))
+            .child(Node::with_unit_address("touch", "0x41").status_okay())
+            .deletion(Deletion::Property("dmas".to_string()))
+            .to_dts();
+
+        let del = dts
+            .find("/delete-property/ dmas;")
+            .expect("deletion emitted");
+        let child = dts.find("touch@41").expect("child emitted");
+        assert!(del < child, "deletion must come before the subnode:\n{dts}");
+    }
 
     #[test]
     fn formats_root_and_regular_nodes() {

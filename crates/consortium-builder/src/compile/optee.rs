@@ -117,7 +117,7 @@ impl OpteeCompiler {
             .current_dir(&config.path)
             .env("TA_DEV_KIT_DIR", &config.ta_dev_kit_dir)
             .env(TEE_UUID_ENV, config.ta_uuid.to_string())
-            .env("RUSTFLAGS", "-C panic=abort".to_string());
+            .env("RUSTFLAGS", "-C panic=abort");
 
         if config.release {
             cmd.arg("--release");

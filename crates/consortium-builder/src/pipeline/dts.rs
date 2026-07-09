@@ -14,53 +14,300 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! Renders the Linux `generic-uio` device-tree overlay from the lowered IR.
+//! Renders the Linux-side kernel-config and boot artifacts from the lowered IR.
 //!
-//! Rendering lives here, mirroring how the systemd unit is rendered before the
-//! `dist/` assembly consumes it. Writing the overlay into `dist/dts/linux/` and
-//! verifying it with `dtc` is [`super::dist`]'s job, so this module stays free of
-//! filesystem and toolchain concerns and is a pure IR -> text transform.
+//! The device-tree text itself (merged `.dts` or `.dtso` overlay) is rendered by
+//! [`consortium_cfg::components::dts_render`], which owns the vendor-base
+//! resolution and parsing. This module renders the plainer text artifacts that
+//! accompany it — the kernel config fragment enabling the UIO drivers, the
+//! kernel `.bbappend` that merges it, and the boot-args files that put
+//! `uio_pdrv_genirq.of_id=generic-uio` on the kernel command line — and stays
+//! free of filesystem and toolchain concerns (that is [`super::dist`]'s job).
 
 use consortium_cfg::bridge::LoweredIr;
-use consortium_cfg::components::uio::{RegLayout, reserved_memory_container};
-use consortium_dts::{File, Node, ToDts};
+use consortium_cfg_common::config::DtsMode;
 
-/// File name of the generated Linux overlay under `dist/dts/linux/`.
-pub const LINUX_OVERLAY_NAME: &str = "consortium-uio.dtso";
+pub use consortium_cfg::components::dts_render::{RenderedDts, render_linux_dts};
 
-/// Renders the Linux `generic-uio` overlay for the lowered manifest, or `None`
-/// when the manifest declares no UIO devices.
+/// File name of the generated kernel config fragment under `dist/kernel/`.
+pub const UIO_KCONFIG_NAME: &str = "uio-enable.cfg";
+
+/// Renders the kernel config fragment that enables the drivers the UIO device
+/// tree relies on, or `None` when the manifest declares no UIO devices.
 ///
-/// The overlay is a `/plugin/;` fragment rooted at `/`, holding a single
-/// `reserved-memory` container (aggregating every RAM-backed carveout, when any)
-/// followed by one `generic-uio` node per device. `reg`/cell widths use the
-/// AArch64 wide layout ([`RegLayout::Wide`]).
+/// Always enables the userspace-I/O generic-IRQ drivers the `generic-uio` nodes
+/// bind against:
 ///
-/// The nodes carry `dt-bindings` interrupt macros (`GIC_SPI`, `IRQ_TYPE_*`)
-/// verbatim, so the emitted text is not standalone-compilable: a consumer (and
-/// [`super::dist`]'s verification) must run it through the C preprocessor with
-/// those macros defined before `dtc`.
-pub fn render_linux_overlay(ir: &LoweredIr) -> Option<String> {
+/// - `CONFIG_UIO` — the UIO core;
+/// - `CONFIG_UIO_PDRV_GENIRQ` — the platform driver matched by `generic-uio`;
+/// - `CONFIG_UIO_DMEM_GENIRQ` — its dynamic-memory variant for RAM carveouts.
+///
+/// In [`DtsMode::Overlay`] it additionally enables `CONFIG_OF_OVERLAY` (needed
+/// to apply the overlay) and, when `configfs` is set, `CONFIG_OF_CONFIGFS` (to
+/// apply it at runtime through configfs). A merged `.dts` needs neither.
+///
+/// The fragment is consumed by the integrator's kernel recipe (a
+/// `SRC_URI += "file://..."` merge), not installed into the rootfs.
+pub fn render_uio_kconfig(ir: &LoweredIr, mode: DtsMode, configfs: bool) -> Option<String> {
     if ir.uio.is_empty() {
         return None;
     }
 
-    let mut root = Node::root();
+    let mut out = String::from(
+        "CONFIG_UIO=y\n\
+         CONFIG_UIO_PDRV_GENIRQ=y\n\
+         CONFIG_UIO_DMEM_GENIRQ=y\n",
+    );
+    if mode.is_overlay() {
+        out.push_str("CONFIG_OF_OVERLAY=y\n");
+        if configfs {
+            out.push_str("CONFIG_OF_CONFIGFS=y\n");
+        }
+    }
+    Some(out)
+}
 
-    // Reserved-memory carveouts for the RAM-backed devices are aggregated into
-    // one `/reserved-memory` container at the root, rendered first.
-    let carveouts: Vec<Node> = ir
-        .uio
+/// The `.bbappend` file name for `kernel_recipe`, version-wildcarded so it
+/// applies to whatever kernel version the BSP provides (e.g.
+/// `linux-stm32mp_%.bbappend`).
+pub fn kernel_bbappend_name(kernel_recipe: &str) -> String {
+    format!("{kernel_recipe}_%.bbappend")
+}
+
+/// Renders a kernel `.bbappend` that merges `fragments` into the kernel config
+/// at build time (via `KERNEL_CONFIG_FRAGMENTS`), instead of shipping them in the
+/// rootfs.
+///
+/// The `.cfg` files sit next to the `.bbappend` (both under `dist/kernel/`), so
+/// `FILESEXTRAPATHS:prepend := "${THISDIR}:"` lets bitbake resolve the
+/// `file://<name>` fetches. Returns `None` when there are no fragments.
+pub fn render_kernel_bbappend(fragments: &[String]) -> Option<String> {
+    if fragments.is_empty() {
+        return None;
+    }
+
+    let src_uri = fragments
         .iter()
-        .flat_map(|(name, device)| device.reserved_memory_nodes(name.as_str()))
-        .collect();
-    if let Some(container) = reserved_memory_container(carveouts, RegLayout::Wide) {
-        root = root.child(container);
+        .map(|name| format!("    file://{name} \\"))
+        .collect::<Vec<_>>()
+        .join("\n");
+    let merged = fragments
+        .iter()
+        .map(|name| format!("    ${{WORKDIR}}/{name} \\"))
+        .collect::<Vec<_>>()
+        .join("\n");
+
+    Some(format!(
+        "# Auto-generated by Consortium — do not edit by hand.\n\
+         #\n\
+         # Merges the UIO kernel config fragment(s) into the kernel build. Drop this\n\
+         # file and the sibling `.cfg`(s) into your BSP's kernel recipe directory\n\
+         # (e.g. recipes-kernel/linux/).\n\
+         \n\
+         FILESEXTRAPATHS:prepend := \"${{THISDIR}}:\"\n\
+         \n\
+         SRC_URI += \"\\\n{src_uri}\n\"\n\
+         \n\
+         KERNEL_CONFIG_FRAGMENTS:append = \"\\\n{merged}\n\"\n"
+    ))
+}
+
+/// The kernel command-line argument the `generic-uio` platform driver needs so
+/// it binds the `generic-uio`-compatible nodes.
+const UIO_BOOTARG: &str = "uio_pdrv_genirq.of_id=generic-uio";
+
+/// Renders the boot-args artifacts under `dist/boot/` for the chip family, or
+/// `None` when the manifest declares no UIO devices (no `generic-uio` nodes to
+/// bind, so no boot arg is needed).
+///
+/// The kernel command line cannot be edited live from the pipeline, so these are
+/// files the integrator wires into their build:
+///
+/// - **STM32 / OpenSTLinux** (extlinux boot): an `extlinux-uio.cfg` fragment
+///   appending [`UIO_BOOTARG`] through `UBOOT_EXTLINUX_KERNEL_ARGS`, which
+///   regenerates `extlinux.conf` persistently at build time.
+/// - **NXP i.MX** (scripted boot, no extlinux): a `boot.cmd` U-Boot script
+///   source to compile to `boot.scr` (via `mkimage`) and stage on the FAT boot
+///   partition through `IMAGE_BOOT_FILES`.
+///
+/// Each family also gets a `README` describing the exact integration steps.
+pub fn render_boot(chip: &str, ir: &LoweredIr) -> Vec<(String, String)> {
+    if ir.uio.is_empty() {
+        return Vec::new();
     }
 
-    for (name, device) in &ir.uio {
-        root = root.child(device.to_node(name.as_str()));
+    if is_stm32(chip) {
+        vec![
+            (
+                "extlinux-uio.cfg".to_string(),
+                format!(
+                    "# Auto-generated by Consortium — append the UIO kernel arg to the\n\
+                     # OpenSTLinux extlinux command line. Add to a u-boot bbappend or a\n\
+                     # machine/distro .conf so `extlinux.conf` is regenerated with it.\n\
+                     UBOOT_EXTLINUX_KERNEL_ARGS:append = \" {UIO_BOOTARG}\"\n"
+                ),
+            ),
+            (
+                "README".to_string(),
+                format!(
+                    "Consortium boot-args (STM32 / OpenSTLinux)\n\
+                     =========================================\n\n\
+                     The `generic-uio` driver only binds the Consortium UIO nodes when the\n\
+                     kernel command line carries:\n\n    \
+                     {UIO_BOOTARG}\n\n\
+                     OpenSTLinux boots via extlinux, so this is a build-time change:\n\n\
+                     1. Copy `extlinux-uio.cfg` into your u-boot recipe (or a machine/distro\n\
+                        `.conf`) so its `UBOOT_EXTLINUX_KERNEL_ARGS:append` takes effect.\n\
+                     2. Rebuild; the generated `/boot/mmcN_extlinux/extlinux.conf` `APPEND`\n\
+                        line now ends with the UIO arg.\n\n\
+                     No manual `setenv` at the U-Boot prompt is required.\n"
+                ),
+            ),
+        ]
+    } else {
+        vec![
+            (
+                "boot.cmd".to_string(),
+                format!(
+                    "# Auto-generated by Consortium — U-Boot boot script source.\n\
+                     # Appends the UIO kernel arg to the board's bootargs, then boots as usual.\n\
+                     # Compile and stage it (no U-Boot rebuild needed):\n\
+                     #   mkimage -A arm64 -O linux -T script -C none -d boot.cmd boot.scr\n\
+                     # then add `boot.scr` to IMAGE_BOOT_FILES so wic writes it to the FAT\n\
+                     # boot partition; the i.MX distro bootcmd loads and runs it.\n\
+                     setenv bootargs \"${{bootargs}} {UIO_BOOTARG}\"\n\
+                     run distro_bootcmd\n"
+                ),
+            ),
+            (
+                "README".to_string(),
+                format!(
+                    "Consortium boot-args (NXP i.MX)\n\
+                     ===============================\n\n\
+                     The `generic-uio` driver only binds the Consortium UIO nodes when the\n\
+                     kernel command line carries:\n\n    \
+                     {UIO_BOOTARG}\n\n\
+                     i.MX U-Boot uses a scripted boot (no extlinux.conf), so ship a boot\n\
+                     script rather than editing a `.conf`:\n\n\
+                     1. Compile the script:\n\
+                        mkimage -A arm64 -O linux -T script -C none -d boot.cmd boot.scr\n\
+                     2. Stage `boot.scr` on the FAT boot partition, e.g. in your image recipe:\n\
+                        IMAGE_BOOT_FILES += \"boot.scr\"\n\
+                     3. Boot; U-Boot's distro bootcmd loads `boot.scr`, which appends the UIO\n\
+                        arg to `bootargs` before booting.\n\n\
+                     Alternative (baked into U-Boot): append the arg to `mmcargs` /\n\
+                     `CONFIG_EXTRA_ENV_SETTINGS` via a `u-boot_%.bbappend`.\n"
+                ),
+            ),
+        ]
+    }
+}
+
+/// Whether the chip is an STM32 part (ST / OpenSTLinux flow); otherwise it is
+/// treated as NXP i.MX. Mirrors the family split in
+/// `consortium_cfg::bridge::hal_crate_path`.
+fn is_stm32(chip: &str) -> bool {
+    chip.to_ascii_lowercase().starts_with("stm32")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn ir_with_uio() -> LoweredIr {
+        use consortium_cfg::components::uio::{UioBacking, UioDevice};
+        LoweredIr::empty_with_uio(vec![(
+            "ipc-shm".to_string(),
+            UioDevice {
+                mmap: vec![(0x2040_0000, 0x8000)],
+                irq: None,
+                backing: UioBacking::ReservedMemory,
+            },
+        )])
     }
 
-    Some(File::dtso().item(root).to_dts())
+    #[test]
+    fn kconfig_merge_mode_uses_genirq_symbols_without_overlay() {
+        let cfg = render_uio_kconfig(&ir_with_uio(), DtsMode::Merge, false).unwrap();
+        assert!(cfg.contains("CONFIG_UIO=y"));
+        assert!(cfg.contains("CONFIG_UIO_PDRV_GENIRQ=y"));
+        assert!(cfg.contains("CONFIG_UIO_DMEM_GENIRQ=y"));
+        // No stale GENERIC symbols, and no overlay config in merge mode.
+        assert!(!cfg.contains("GENERIC"));
+        assert!(!cfg.contains("CONFIG_OF_OVERLAY"));
+        assert!(!cfg.contains("CONFIG_OF_CONFIGFS"));
+    }
+
+    #[test]
+    fn kconfig_overlay_mode_enables_of_overlay_and_optional_configfs() {
+        let no_cfgfs = render_uio_kconfig(&ir_with_uio(), DtsMode::Overlay, false).unwrap();
+        assert!(no_cfgfs.contains("CONFIG_OF_OVERLAY=y"));
+        assert!(!no_cfgfs.contains("CONFIG_OF_CONFIGFS"));
+
+        let with_cfgfs = render_uio_kconfig(&ir_with_uio(), DtsMode::Overlay, true).unwrap();
+        assert!(with_cfgfs.contains("CONFIG_OF_CONFIGFS=y"));
+    }
+
+    #[test]
+    fn kconfig_none_without_uio() {
+        let empty = LoweredIr::empty_with_uio(vec![]);
+        assert!(render_uio_kconfig(&empty, DtsMode::Merge, false).is_none());
+    }
+
+    #[test]
+    fn boot_stm32_emits_extlinux_fragment() {
+        let files = render_boot("stm32mp257fak3", &ir_with_uio());
+        let names: Vec<&str> = files.iter().map(|(n, _)| n.as_str()).collect();
+        assert!(names.contains(&"extlinux-uio.cfg"));
+        assert!(names.contains(&"README"));
+        let cfg = &files
+            .iter()
+            .find(|(n, _)| n == "extlinux-uio.cfg")
+            .unwrap()
+            .1;
+        assert!(cfg.contains("UBOOT_EXTLINUX_KERNEL_ARGS:append"));
+        assert!(cfg.contains(UIO_BOOTARG));
+    }
+
+    #[test]
+    fn boot_nxp_emits_boot_cmd() {
+        let files = render_boot("imx95", &ir_with_uio());
+        let names: Vec<&str> = files.iter().map(|(n, _)| n.as_str()).collect();
+        assert!(names.contains(&"boot.cmd"));
+        let cmd = &files.iter().find(|(n, _)| n == "boot.cmd").unwrap().1;
+        assert!(cmd.contains("setenv bootargs"));
+        assert!(cmd.contains(UIO_BOOTARG));
+        assert!(cmd.contains("mkimage"));
+    }
+
+    #[test]
+    fn boot_none_without_uio() {
+        assert!(render_boot("imx95", &LoweredIr::empty_with_uio(vec![])).is_empty());
+    }
+
+    #[test]
+    fn bbappend_name_wildcards_version() {
+        assert_eq!(
+            kernel_bbappend_name("linux-stm32mp"),
+            "linux-stm32mp_%.bbappend"
+        );
+    }
+
+    #[test]
+    fn bbappend_merges_fragments_at_build_time() {
+        let bb = render_kernel_bbappend(&["uio-enable.cfg".to_string()])
+            .expect("fragment present yields a bbappend");
+        assert!(bb.contains("FILESEXTRAPATHS:prepend := \"${THISDIR}:\""));
+        assert!(bb.contains("file://uio-enable.cfg"));
+        assert!(bb.contains("KERNEL_CONFIG_FRAGMENTS:append"));
+        assert!(bb.contains("${WORKDIR}/uio-enable.cfg"));
+        // It is a kernel build input, so it must not touch the rootfs.
+        assert!(!bb.contains("do_install"));
+        assert!(!bb.contains("${D}"));
+    }
+
+    #[test]
+    fn bbappend_none_without_fragments() {
+        assert!(render_kernel_bbappend(&[]).is_none());
+    }
 }

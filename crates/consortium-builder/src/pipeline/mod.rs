@@ -33,6 +33,7 @@
 pub mod application;
 pub mod bitbake;
 pub mod dist;
+pub mod dtc;
 pub mod dts;
 pub mod elf_map;
 pub mod firmware;
@@ -56,7 +57,7 @@ use crate::compile::web::{HmiCompileError, HmiCompiler, HmiConfiguration};
 use crate::progress::{BuildReporter, BuildStep};
 
 use application::ApplicationBuildPlan;
-use bitbake::{BitbakeAction, BitbakeError};
+use bitbake::{BitbakeAction, BitbakeError, RecipeSpec};
 use dist::{DistAssemblyError, DistLayout};
 use firmware::FirmwareBuildPlan;
 use tee::TeeToolchain;
@@ -82,7 +83,7 @@ pub enum PipelineError {
 
     /// Parsing/validating the manifest or lowering it failed.
     #[error(transparent)]
-    Cfg(#[from] consortium_cfg::CfgError),
+    Cfg(#[from] Box<consortium_cfg::CfgError>),
 
     /// Firmware compilation failed.
     #[error(transparent)]
@@ -103,6 +104,9 @@ pub enum PipelineError {
     /// Assembling the `dist/` tree failed.
     #[error(transparent)]
     Dist(#[from] DistAssemblyError),
+
+    #[error(transparent)]
+    Dtc(#[from] dtc::DtcError),
 
     /// The bitbake hand-off failed.
     #[error(transparent)]
@@ -144,6 +148,12 @@ pub enum PipelineError {
     Codegen(String),
 }
 
+impl From<consortium_cfg::CfgError> for PipelineError {
+    fn from(error: consortium_cfg::CfgError) -> Self {
+        Self::Cfg(Box::new(error))
+    }
+}
+
 /// All parameters for a pipeline run.
 pub struct PipelineConfig {
     /// Path to the `Consortium.toml` manifest.
@@ -160,8 +170,11 @@ pub struct PipelineConfig {
     /// Sign the OP-TEE TA after building it. `false` (from `--skip-tee-sign`)
     /// stops at the unsigned ELF, so no signer script or keys are needed.
     pub sign_tee: bool,
-    /// Optional bitbake hand-off after `dist/` is assembled.
-    pub bitbake: Option<BitbakeAction>,
+    /// Bitbake hand-off actions run in order after `dist/` is assembled. Empty
+    /// skips the stage. Multiple actions compose: e.g. stage `dist/` into a
+    /// recipe's `files/` dir *and* record the deferred `bitbake` command
+    /// (dry-run) when the recipe is built later on a separate Yocto host.
+    pub bitbake: Vec<BitbakeAction>,
 }
 
 /// The fully resolved plan for a pipeline run: every stage's inputs threaded
@@ -185,10 +198,20 @@ pub struct PipelinePlan {
     pub ta: Option<OpteeConfiguration>,
     /// The application build plan and its generated AP init module.
     pub application: ApplicationBuildPlan,
-    /// The Linux UIO device-tree overlay(s) to write under `dist/dts/linux/`,
-    /// as `(file_name, contents)`. Empty when the manifest declares no UIO
-    /// devices.
+    /// The Linux device tree to write under `dist/dts/linux/`, as
+    /// `(file_name, contents)`: a merged `.dts` (default) or a `.dtso` overlay.
+    /// Empty when the manifest declares no UIO devices.
     pub dts_files: Vec<(String, String)>,
+    /// The kernel-side files to write under `dist/kernel/`, as
+    /// `(file_name, contents)`: the UIO config fragment and, when `[profile]
+    /// kernel_recipe` is set, the `.bbappend` that merges it. Empty when the
+    /// manifest declares no UIO devices.
+    pub kernel_files: Vec<(String, String)>,
+    /// The boot-args files to write under `dist/boot/`, as
+    /// `(file_name, contents)`: the family-specific bootloader snippet(s) that
+    /// put `uio_pdrv_genirq.of_id=generic-uio` on the kernel command line, plus a
+    /// README. Empty when the manifest declares no UIO devices.
+    pub boot_files: Vec<(String, String)>,
     /// The systemd unit to render.
     pub systemd: SystemdUnitConfig,
 }
@@ -274,10 +297,44 @@ pub async fn plan(
         &ty_crate,
     )?;
 
-    // Stage 6: Linux UIO overlay text (rendered from the lowered IR).
-    let dts_files = dts::render_linux_overlay(&ir)
-        .map(|contents| vec![(dts::LINUX_OVERLAY_NAME.to_string(), contents)])
+    // Stage 6: the Linux device tree (merged `.dts` or overlay `.dtso`, built on
+    // the vendor base for `[profile] chip`/`devkit`) plus the kernel-side files
+    // enabling its drivers, and the boot-args files — all from the lowered IR.
+    let profile = &session.config.profile;
+    let dts_cfg = &session.config.dts;
+    // The coprocessor cores the build targets, so remoteproc fixups stay scoped.
+    let target_cores: Vec<String> = firmware.iter().map(|p| p.core.to_string()).collect();
+    let dts_files = match dts::render_linux_dts(
+        &profile.chip,
+        profile.devkit.as_deref(),
+        dts_cfg.base.as_deref(),
+        dts_cfg.mode,
+        &ir,
+        &target_cores,
+    )? {
+        Some(rendered) => {
+            for warning in &rendered.warnings {
+                eprintln!("warning: {warning}");
+            }
+            vec![(rendered.file_name, rendered.contents)]
+        }
+        None => Vec::new(),
+    };
+
+    // The kernel config fragment plus, when the manifest names a kernel recipe, a
+    // `.bbappend` that merges it into the kernel build. Both land in `dist/kernel/`.
+    let mut kernel_files = dts::render_uio_kconfig(&ir, dts_cfg.mode, dts_cfg.configfs)
+        .map(|contents| vec![(dts::UIO_KCONFIG_NAME.to_string(), contents)])
         .unwrap_or_default();
+    if let Some(kernel_recipe) = &session.config.profile.kernel_recipe {
+        let fragment_names: Vec<String> = kernel_files.iter().map(|(n, _)| n.clone()).collect();
+        if let Some(bbappend) = dts::render_kernel_bbappend(&fragment_names) {
+            kernel_files.push((dts::kernel_bbappend_name(kernel_recipe), bbappend));
+        }
+    }
+
+    // The family-specific boot-args files under `dist/boot/`.
+    let boot_files = dts::render_boot(&profile.chip, &ir);
 
     // Stage 7: systemd unit.
     let systemd = systemd_config(session, &application.config.path).await?;
@@ -293,6 +350,8 @@ pub async fn plan(
         ta,
         application,
         dts_files,
+        kernel_files,
+        boot_files,
         systemd,
     })
 }
@@ -321,7 +380,7 @@ async fn run_inner(
         + usize::from(config.hmi.is_some())
         + usize::from(plan.ta.is_some())
         + 2
-        + usize::from(config.bitbake.is_some());
+        + config.bitbake.len();
     let mut steps = StepRunner::new(reporter, total_steps);
 
     let mut firmware_outputs = HashMap::new();
@@ -393,38 +452,154 @@ async fn run_inner(
     let layout = DistLayout::new(&config.dist_root);
     steps
         .run("Assemble dist", Some(&dist_detail), async {
-            dist::assemble(
-                &layout,
-                &firmware_outputs,
-                &application,
-                ta.as_deref(),
-                hmi_dist.as_deref(),
-                &plan.dts_files,
-                &systemd_units,
-            )
-            .await?;
+            let inputs = dist::DistAssemblyInputs {
+                firmware: &firmware_outputs,
+                application: &application,
+                ta: ta.as_deref(),
+                hmi_dist: hmi_dist.as_deref(),
+                dts_files: &plan.dts_files,
+                kconfig_fragments: &plan.kernel_files,
+                boot_files: &plan.boot_files,
+                systemd_units: &systemd_units,
+            };
+            dist::assemble(&layout, inputs).await?;
             Ok(())
         })
         .await?;
 
-    if let Some(action) = &config.bitbake {
-        let detail = match action {
-            BitbakeAction::CopyIntoRecipe { recipe_files_dir } => {
-                format!("copy to {}", recipe_files_dir.display())
+    // Compile the emitted device tree to a `.dtb`/`.dtbo` when `[dts] linux`
+    // points at a kernel tree (for its GPL-2.0 dt-bindings, never bundled);
+    // otherwise print how to compile it (Yocto kernel build vs. manual).
+    if let Some((dts_name, _)) = plan.dts_files.first() {
+        let arch = dtc::arch_dir(&plan.application.config.target);
+        let dts_dir = layout.dts_linux_dir();
+        match &session.config.dts.linux {
+            Some(linux) => {
+                let linux_dir = plan.manifest_dir.join(linux);
+                let profile = &session.config.profile;
+                let closure = consortium_cfg::dts::base_closure(
+                    &profile.chip,
+                    profile.devkit.as_deref(),
+                    session.config.dts.base.as_deref(),
+                )
+                .map_err(consortium_cfg::CfgError::from)?;
+                let detail = format!("dtc {dts_name}");
+                steps
+                    .run("Compile device tree", Some(&detail), async {
+                        let out = dtc::compile_device_tree(
+                            &dts_dir, dts_name, &closure, &linux_dir, arch,
+                        )
+                        .await?;
+                        Ok(out)
+                    })
+                    .await?;
             }
-            BitbakeAction::InvokeBitbake { build_dir, recipe } => {
-                format!("{recipe} in {}", build_dir.display())
+            None => {
+                let yocto =
+                    !config.bitbake.is_empty() || session.config.profile.kernel_recipe.is_some();
+                eprintln!("note: {}", dtc::compilation_hint(dts_name, arch, yocto));
+            }
+        }
+    }
+
+    for action in &config.bitbake {
+        // A dry-run invoke emits a self-contained `.bb` recipe describing how to
+        // install the assembled `dist/` tree, so a separate Yocto host can build
+        // it without re-running the Consortium pipeline.
+        let recipe_spec = match action {
+            BitbakeAction::InvokeBitbake {
+                recipe, dry_run, ..
+            } if *dry_run => Some(recipe_spec(
+                recipe,
+                &session.config.profile.deploy_root,
+                &application,
+                &firmware_outputs,
+                ta.as_deref(),
+                hmi_dist.as_deref(),
+                &plan.systemd.file_name(),
+                &plan.dts_files,
+                &plan.boot_files,
+            )?),
+            _ => None,
+        };
+
+        let (label, detail) = match action {
+            BitbakeAction::CopyIntoRecipe { recipe_files_dir } => (
+                "Stage into recipe",
+                format!("copy to {}", recipe_files_dir.display()),
+            ),
+            BitbakeAction::InvokeBitbake {
+                build_dir,
+                recipe,
+                dry_run,
+            } => {
+                let dry = if *dry_run {
+                    " (dry-run, recipe only)"
+                } else {
+                    ""
+                };
+                (
+                    "Run bitbake",
+                    format!("{recipe} in {}{dry}", build_dir.display()),
+                )
             }
         };
         steps
-            .run("Run bitbake", Some(&detail), async {
-                bitbake::run_with_reporter(action, &config.dist_root, reporter).await?;
+            .run(label, Some(&detail), async {
+                bitbake::run_with_reporter(
+                    action,
+                    &config.dist_root,
+                    recipe_spec.as_ref(),
+                    reporter,
+                )
+                .await?;
                 Ok(())
             })
             .await?;
     }
 
     Ok(config.dist_root)
+}
+
+/// Builds the install manifest for a generated `.bb` recipe from the pipeline's
+/// resolved outputs. Artifact fields are the bare file names the `dist/` stage
+/// writes under each subdirectory.
+#[allow(clippy::too_many_arguments)]
+fn recipe_spec(
+    recipe_name: &str,
+    deploy_root: &str,
+    application: &Path,
+    firmware_outputs: &HashMap<VisibleCore, PathBuf>,
+    ta: Option<&Path>,
+    hmi_dist: Option<&Path>,
+    systemd_unit: &str,
+    dts_files: &[(String, String)],
+    boot_files: &[(String, String)],
+) -> Result<RecipeSpec, PipelineError> {
+    let file_name = |path: &Path| -> Result<String, PipelineError> {
+        path.file_name()
+            .and_then(|n| n.to_str())
+            .map(str::to_string)
+            .ok_or_else(|| PipelineError::Codegen(format!("no file name for {}", path.display())))
+    };
+
+    // Firmware is staged as `firmware/<core>.elf`, matching the dist layout.
+    let firmware = firmware_outputs
+        .keys()
+        .map(|core| format!("{core}.elf"))
+        .collect();
+
+    Ok(RecipeSpec {
+        recipe_name: recipe_name.to_string(),
+        deploy_root: deploy_root.to_string(),
+        app_bin: file_name(application)?,
+        firmware,
+        ta: ta.map(file_name).transpose()?,
+        has_www: hmi_dist.is_some(),
+        systemd_unit: systemd_unit.to_string(),
+        dts_files: dts_files.iter().map(|(name, _)| name.clone()).collect(),
+        boot_files: boot_files.iter().map(|(name, _)| name.clone()).collect(),
+    })
 }
 
 struct StepRunner<'a> {
@@ -633,7 +808,7 @@ mod tests {
                 linker: None,
             }),
             sign_tee: true,
-            bitbake: None,
+            bitbake: Vec::new(),
         };
 
         let plan = plan(&session, &config).await.expect("plan succeeds");
@@ -681,6 +856,37 @@ mod tests {
 
         // Stage 6: systemd ExecStart uses the app binary under the deploy root.
         assert_eq!(plan.systemd.exec_start, "/opt/consortium/app/melt-pot-app");
+
+        // Stage 6: the UIO manifest yields the merged device tree (default mode,
+        // no devkit, so it builds on the generic `stm32mp257.dtsi`) plus the
+        // kernel config fragment enabling its drivers.
+        assert_eq!(
+            plan.dts_files
+                .iter()
+                .map(|(n, _)| n.as_str())
+                .collect::<Vec<_>>(),
+            vec!["consortium-stm32mp257.dts"]
+        );
+        // A merged `.dts` re-emits the vendor base plus the injected UIO nodes.
+        assert!(plan.dts_files[0].1.contains("compatible = \"generic-uio\""));
+        let kconfig = plan
+            .kernel_files
+            .iter()
+            .find(|(n, _)| n == dts::UIO_KCONFIG_NAME)
+            .expect("uio kconfig fragment planned");
+        assert!(kconfig.1.contains("CONFIG_UIO_PDRV_GENIRQ=y"));
+        assert!(kconfig.1.contains("CONFIG_UIO_DMEM_GENIRQ=y"));
+        // Merge mode needs no overlay support.
+        assert!(!kconfig.1.contains("CONFIG_OF_OVERLAY"));
+        // STM32 → an extlinux boot-args fragment lands under `dist/boot/`.
+        assert!(plan.boot_files.iter().any(|(n, _)| n == "extlinux-uio.cfg"));
+        // No `[profile] kernel_recipe` in the example, so no bbappend is emitted.
+        assert!(
+            !plan
+                .kernel_files
+                .iter()
+                .any(|(n, _)| n.ends_with(".bbappend"))
+        );
 
         let _ = std::fs::remove_dir_all(&root);
     }

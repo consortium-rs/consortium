@@ -26,6 +26,16 @@ pub enum CfgError {
     #[error(transparent)]
     Data(#[from] consortium_data::DataError),
 
+    /// A vendor device-tree source failed to parse while building the merged
+    /// Linux device tree.
+    #[error("failed to parse device-tree source '{file}': {detail}")]
+    DtsParse {
+        /// The offending file name.
+        file: String,
+        /// The parser's diagnostic.
+        detail: String,
+    },
+
     #[error(
         "doorbell '{name}' is not available on chip '{chip}'. Available doorbells: {available}. \
          Refer to the TRM ({trm}). \
