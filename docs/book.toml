@@ -17,6 +17,6 @@
 [book]
 authors      = ["Ethan Wu"]
 language     = "en"
-multilingual = false
+# multilingual = false
 src          = "src"
 title        = "Consortium Book"

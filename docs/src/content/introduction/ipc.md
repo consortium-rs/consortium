@@ -98,3 +98,12 @@ Consortium provides two options for maintaining cache coherency across different
 2. Maintain cache explicitly for cached mappings.
 
    In this mode, `Region` allows custom `flush()` and `invalidate()` actions to be defined. When `send()` and `recv()` are called by the transport, the corresponding cache maintenance actions are invoked automatically and paired with the required memory fence or barrier operations.
+
+#### Boundary Contract
+
+We introduce a proc macros `#[derive(IpcSafe)]` to ensure boundary safety. Rejected field types (checked recursively through generics, arrays, tuples, etc.):
+
+- Raw pointers (`*const T`, `*mut T`) — meaningless across separate address spaces
+- References (`&T`, `&mut T`) — local to one address space
+- Function pointers (`fn(...)`) — addresses are not portable across cores
+- `usize` / `isize` — width is platform-dependent (32-bit M-core vs 64-bit A-core)
