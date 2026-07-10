@@ -21,8 +21,13 @@ name              = "consortium-ipc-transport-memory"
 version.workspace = true
 
 [features]
-alloc = ["consortium-ipc/alloc"]
+alloc   = ["consortium-ipc/alloc"]
 default = ["std"]
+# Route this crate's protocol tracing to `defmt` for firmware-side builds; the
+# `std` path routes the same call sites to `tracing` instead. `defmt`'s macros
+# expand to literal `defmt::` paths, so the crate must depend on `defmt`
+# directly as well as through the facade.
+defmt = ["consortium-log/defmt", "dep:defmt"]
 doorbell-hsem = ["dep:consortium-ipc-doorbell-hsem"]
 doorbell-ipcc = ["dep:consortium-ipc-doorbell-ipcc"]
 doorbell-mu = ["dep:consortium-ipc-doorbell-mu"]
@@ -34,6 +39,7 @@ std = [
   "consortium-ipc-doorbell-hsem?/std",
   "consortium-ipc-doorbell-ipcc?/std",
   "consortium-ipc-doorbell-mu?/std",
+  "consortium-log/tracing",
   "dep:tokio",
   "dep:uio",
 ]
@@ -56,8 +62,10 @@ consortium-ipc               = { default-features = false, path = "../consortium
 consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem" }
 consortium-ipc-doorbell-ipcc = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-ipcc" }
 consortium-ipc-doorbell-mu   = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu" }
+consortium-log               = { default-features = false, path = "../consortium-log" }
 consortium-shared-memory     = { path = "../consortium-shared-memory" }
 crc32fast                    = { default-features = false, version = "1.5.0" }
+defmt                        = { optional = true, version = "1.1.0" }
 num_enum                     = { default-features = false, version = "0.7.3" }
 pin-project                  = { version = "1.1.11" }
 thiserror                    = { default-features = false, version = "2.0" }

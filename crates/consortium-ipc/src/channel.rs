@@ -104,6 +104,8 @@ where
     pub async fn send(&mut self, msg: &T) -> Result<(), ChannelError<C, Tr>> {
         let n = C::encode(msg, self.buf).map_err(ChannelError::Codec)?;
 
+        consortium_log::info!("Channel::send: encoded {n} bytes on {:?}", self.chan);
+
         self.transport
             .send(self.buf[..n].as_ref())
             .await
@@ -132,6 +134,8 @@ where
             .recv(self.buf)
             .await
             .map_err(ChannelError::Transport)?;
+
+        consortium_log::info!("Channel::recv: received {n} bytes on {:?}", self.chan);
 
         let decoded = C::decode(&self.buf[..n]).map_err(ChannelError::Codec)?;
 

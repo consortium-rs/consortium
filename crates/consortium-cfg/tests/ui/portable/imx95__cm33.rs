@@ -196,6 +196,9 @@ impl IpcMemoryEndpoints {
 /// (which never links `cortex-m`) skips it.
 #[cfg(target_arch = "arm")]
 fn init() -> IpcMemoryEndpoints {
+    ::consortium_runtime_mcu::log::trace!(
+        "consortium controller init: mpu/nvic bring-up"
+    );
     // SAFETY: `init` runs once during controller bring-up, in
     // privileged mode, before any other code touches the MPU.
     let mut __core = unsafe { ::cortex_m::Peripherals::steal() };
@@ -225,6 +228,9 @@ fn init() -> IpcMemoryEndpoints {
     unsafe {
         ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::MU1);
     }
+    ::consortium_runtime_mcu::log::trace!(
+        "consortium controller init: endpoints constructed"
+    );
     IpcMemoryEndpoints::new()
 }
 

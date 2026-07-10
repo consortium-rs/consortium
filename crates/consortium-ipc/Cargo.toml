@@ -26,6 +26,7 @@ consortium-codec      = { path = "../consortium-codec" }
 consortium-ipc-macros = { path = "../consortium-ipc-macros" }
 num_enum              = { default-features = false, version = "0.7.3" }
 thiserror             = { default-features = false, version = "2.0" }
+consortium-log        = { path = "../consortium-log" }
 
 [dev-dependencies]
 futures  = "0.3"
@@ -34,4 +35,6 @@ trybuild = "1"
 [features]
 alloc   = []
 futures = []
-std     = ["alloc", "futures"]
+std     = ["alloc", "futures", "tracing"]
+tracing = ["consortium-log/tracing"]
+defmt   = ["consortium-log/defmt"]

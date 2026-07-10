@@ -50,6 +50,10 @@ unsafe fn send_bytes<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable>(
     }
 
     if channel_id == 0xFF {
+        consortium_log::trace!(
+            "send: no consumed tx channel available among {} channels",
+            num_channels
+        );
         return Err(Error::NoChannel);
     }
 
@@ -57,12 +61,25 @@ unsafe fn send_bytes<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable>(
     let channel = unsafe { read_channel(base, channel_id as usize) };
     let capacity = (channel.size as usize)
         .checked_sub(slot::SLOT_HEADER)
-        .ok_or(Error::PayloadTooLarge {
-            payload_len: data.len(),
-            capacity: 0,
+        .ok_or_else(|| {
+            consortium_log::trace!(
+                "send: channel {} slot size {} smaller than slot header",
+                channel_id,
+                channel.size
+            );
+            Error::PayloadTooLarge {
+                payload_len: data.len(),
+                capacity: 0,
+            }
         })?;
 
     if data.len() > capacity {
+        consortium_log::trace!(
+            "send: payload {} exceeds channel {} capacity {}",
+            data.len(),
+            channel_id,
+            capacity
+        );
         return Err(Error::PayloadTooLarge {
             payload_len: data.len(),
             capacity,
@@ -103,6 +120,8 @@ where
     let ch = transport.ch();
     let mut region_invalidated = false;
 
+    consortium_log::trace!("poll_recv: waiting for doorbell on channel {:?}", ch);
+
     // If a wait future is already armed, poll it.  If it is still pending our
     // waker is already registered — park until the doorbell fires.  If it fires,
     // clear it and fall through to re-scan the slot.
@@ -111,6 +130,7 @@ where
         match unsafe { core::pin::Pin::new_unchecked(wf) }.poll(cx) {
             core::task::Poll::Pending => return core::task::Poll::Pending,
             core::task::Poll::Ready(_) => {
+                consortium_log::trace!("poll_recv: doorbell fired on channel {:?}", ch);
                 *wait_fut = None;
                 region.invalidate();
                 region_invalidated = true;
@@ -145,6 +165,13 @@ where
         None
     };
 
+    consortium_log::trace!(
+        "poll_recv: channel_id = {}, channel_num = {}, fast-path channel = {:?}",
+        channel_id,
+        channel_num,
+        channel
+    );
+
     // Fallback: scan all channels.
     if channel.is_none() {
         for chan in 0..channel_num {
@@ -162,10 +189,18 @@ where
         }
     }
 
+    consortium_log::trace!(
+        "poll_recv: channel_id = {}, channel_num = {}, scanned channel = {:?}",
+        channel_id,
+        channel_num,
+        channel
+    );
+
     if channel.is_none() {
         // No data yet — arm the doorbell so the waker stays registered until
         // the remote calls ring().
         // SAFETY: `wait_fut` is the stored wait future for this receive operation.
+        consortium_log::trace!("poll_recv: no data available, arming doorbell wait future");
         return unsafe { arm_wait(doorbell, ch, wait_fut, cx) };
     }
 
@@ -174,10 +209,28 @@ where
     // SAFETY: slot pointer is within the region.
     let slot_base = unsafe { channel.slot_addr(base) };
 
+    consortium_log::trace!(
+        "poll_recv: channel_id = {}, channel_num = {}, slot_base = {:p}",
+        channel_id,
+        channel_num,
+        slot_base
+    );
+
     // SAFETY: `slot_base` is a valid slot; `buf` is exclusively owned by the caller.
     if let Some(n) = unsafe { slot::try_read(slot_base, buf, region) } {
+        consortium_log::trace!(
+            "poll_recv: read {} bytes from channel_id = {}, slot_base = {:p}",
+            n,
+            channel_id,
+            slot_base
+        );
         return core::task::Poll::Ready(Ok(n));
     }
+
+    consortium_log::trace!(
+        "poll_recv: slot_base = {:p} was readable but read failed; invalidating region and re-polling",
+        slot_base
+    );
 
     // The scan saw a readable slot but the read could not complete.  Flushes for
     // integrity-error flags happen inside `try_read`; invalidate and force an
@@ -204,16 +257,22 @@ unsafe fn arm_wait<D: Doorbell + Send + 'static>(
     wait_fut: &mut Option<D::WaitFut<'static>>,
     cx: &mut core::task::Context<'_>,
 ) -> core::task::Poll<Result<usize, Error<D>>> {
+    consortium_log::trace!("poll_recv: arming doorbell wait future on channel {:?}", ch);
     let wf = doorbell.wait(ch);
     // SAFETY: the doorbell is inside the transport that exclusively owns the recv
     // future, and the transport is guaranteed to outlive the future.  Erasing the
     // lifetime to 'static is sound because `wait_fut` is dropped before the
     // transport (enforced by the PhantomData<&'a mut Transport> on the future struct).
     let wf = unsafe { core::mem::transmute::<D::WaitFut<'_>, D::WaitFut<'static>>(wf) };
+    consortium_log::trace!(
+        "poll_recv: storing doorbell wait future on channel {:?}",
+        ch
+    );
     *wait_fut = Some(wf);
     // SAFETY: `wait_fut` is now in a pinned location; we never move it after this poll.
     match unsafe { core::pin::Pin::new_unchecked(wait_fut.as_mut().unwrap()) }.poll(cx) {
         core::task::Poll::Ready(_) => {
+            consortium_log::trace!("poll_recv: doorbell fired immediately on channel {:?}", ch);
             // A notification was already stored (remote rang before we subscribed).
             // Clear the future and ask the executor to re-poll immediately.
             *wait_fut = None;

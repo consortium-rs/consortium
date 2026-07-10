@@ -18,7 +18,7 @@ memory:
   regions:
     - name: SRAM1
       type: sram
-      base: 0x000400000
+      base: 0x00040000
       length: 0x00020000
       visible: [ap, cm33]
     - name: SRAM2

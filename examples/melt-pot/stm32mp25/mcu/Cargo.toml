@@ -43,6 +43,9 @@ consortium-ipc = { default-features = false, path = "../../../../crates/consorti
 consortium-ipc-doorbell-hsem = { default-features = false, features = [
   "stm32mp25",
 ], path = "../../../../crates/consortium-ipc-doorbell-hsem" }
+consortium-ipc-doorbell-ipcc = { default-features = false, features = [
+  "stm32mp25x",
+], path = "../../../../crates/consortium-ipc-doorbell-ipcc" }
 consortium-ipc-transport-memory = { default-features = false, features = [
   "stm32mp25x",
 ], path = "../../../../crates/consortium-ipc-transport-memory" }

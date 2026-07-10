@@ -89,8 +89,12 @@ pub fn plan_application_build(
     // the AP init module that `include_bytes!`es them.
     let mut ir = session.lower()?;
     ir.dbg = std::mem::take(&mut ir.dbg).with_resolved_elf_paths(resolved_dbg_elfs);
-    let generated = consortium_cfg::render(ir.initialize(VisibleCore::Ap, ty_crate))
-        .map_err(|e| PipelineError::Codegen(e.to_string()))?;
+    consortium_log::trace!("rendering AP init module for target {}", target);
+    let generated =
+        consortium_cfg::render(ir.initialize(VisibleCore::Ap, ty_crate)).map_err(|e| {
+            consortium_log::trace!("AP init codegen render failed: {}", e);
+            PipelineError::Codegen(e.to_string())
+        })?;
 
     Ok(ApplicationBuildPlan {
         config: ApplicationConfiguration {

@@ -124,10 +124,17 @@ fn run_ring(base: usize, spec: DbgRingSpec, stop: &AtomicBool) {
     let ctx = match DefmtContext::from_elf_bytes(spec.elf_bytes) {
         Ok(ctx) => ctx,
         Err(err) => {
-            tracing::error!(target: TARGET, core = spec.label, "defmt table parse failed: {err}");
+            consortium_log::error!(target: TARGET, core = spec.label, "defmt table parse failed: {err}");
             return;
         }
     };
+
+    consortium_log::trace!(
+        "entering ring loop for {} (base = {:#x}, len = {:#x})",
+        spec.label,
+        base,
+        spec.len
+    );
 
     // The writer initializes the descriptor on its own boot; retry until the
     // magic/pointers validate rather than aborting the thread.

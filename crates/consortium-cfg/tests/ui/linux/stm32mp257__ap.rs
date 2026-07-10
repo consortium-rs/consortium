@@ -370,7 +370,14 @@ async fn init() -> ::core::result::Result<ConsortiumEndpoints, ConsortiumInitErr
                 uio_id: 3,
                 mmap_id: 0,
                 len: 8192,
-                elf_bytes: include_bytes!("../../fixtures/placeholder.elf"),
+                elf_bytes: {
+                    #[repr(align(16))]
+                    struct Aligned<const N: usize>([u8; N]);
+                    static ELF: Aligned<
+                        { include_bytes!("../../fixtures/placeholder.elf").len() },
+                    > = Aligned(*include_bytes!("../../fixtures/placeholder.elf"));
+                    &ELF.0
+                },
                 label: "cm33",
             },
         ],

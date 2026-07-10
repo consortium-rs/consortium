@@ -317,6 +317,11 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Prim
         doorbell_tx: Chan,
         doorbell_rx: Chan,
     ) -> Result<(), Error<D>> {
+        consortium_log::trace!(
+            "descriptor_init: {} channels, transfer_size {}",
+            num_channels,
+            transfer_size
+        );
         // Write magic and version.
         let header = DescriptorHeader::new(MAGIC, VERSION);
         // SAFETY: caller guarantees `base` covers the descriptor header.
@@ -349,8 +354,10 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Prim
         // SAFETY: caller guarantees the descriptor state field is valid and coherent.
         unsafe { wv_u32(base, STATE_OFFSET, DescState::Ready as u32) };
 
+        consortium_log::trace!("descriptor_init: ready, ringing and awaiting secondary ack");
         doorbell.ring(doorbell_tx).map_err(Error::Doorbell)?;
         doorbell.wait(doorbell_rx).await.map_err(Error::Doorbell)?;
+        consortium_log::trace!("descriptor_init: handshake complete");
         Ok(())
     }
 }
@@ -372,13 +379,24 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Seco
         // SAFETY: caller guarantees the descriptor header is present at `base`.
         let header = unsafe { DescriptorHeader::from_raw_ptr(base) };
 
-        header
-            .check(MAGIC, VERSION)
-            .map_err(|e| Error::Descriptor(DescriptorError::Header(e)))?;
+        consortium_log::trace!(
+            "descriptor_ack: expecting {} channels, transfer_size {}",
+            num_channels,
+            transfer_size
+        );
+        header.check(MAGIC, VERSION).map_err(|e| {
+            consortium_log::trace!("descriptor_ack: header magic/version check failed");
+            Error::Descriptor(DescriptorError::Header(e))
+        })?;
 
         // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
         let num_ch = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
         if num_ch as usize != num_channels || num_ch as usize > CHANNEL_NUM_MAX {
+            consortium_log::trace!(
+                "descriptor_ack: channel count mismatch (expected {}, got {})",
+                num_channels,
+                num_ch
+            );
             return Err(DescriptorError::InvalidChannelCount {
                 expected: num_channels,
                 actual: num_ch as usize,
@@ -399,6 +417,9 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Seco
         let mut state = DescState::from_primitive(unsafe { rv_u32(base, STATE_OFFSET) });
 
         if state != DescState::Ready {
+            consortium_log::trace!(
+                "descriptor_ack: descriptor not ready, awaiting primary doorbell"
+            );
             doorbell
                 .wait(doorbell_rx)
                 .await
@@ -406,6 +427,10 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Seco
             // SAFETY: when the base is valid and coherent, the state read will be consistent with the rx_transfer_size read. The A-core must have set the state to Ready before writing rx_transfer_size, so if we see Ready then rx_transfer_size is valid.
             state = DescState::from_primitive(unsafe { rv_u32(base, STATE_OFFSET) });
             if state != DescState::Ready {
+                consortium_log::trace!(
+                    "descriptor_ack: still not ready after doorbell (state {})",
+                    state as u32
+                );
                 return Err(DescriptorError::NotReady(state).into());
             }
         }
@@ -437,6 +462,10 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Seco
             wv_u32(base, STATE_OFFSET, DescState::Ready as u32);
         }
 
+        consortium_log::trace!(
+            "descriptor_ack: {} channels validated, acking primary",
+            num_ch
+        );
         doorbell.ring(doorbell_tx).map_err(Error::Doorbell)?;
 
         Ok(Descriptor {
@@ -463,6 +492,11 @@ fn validate_channel_layout(
 ) -> Result<(), DescriptorError> {
     let table_end = CHAN_TABLE_BASE + num_channels * CHAN_ENTRY_SIZE;
     if channel.offset as usize <= table_end {
+        consortium_log::trace!(
+            "channel {}: slot offset {} overlaps descriptor header/table",
+            index,
+            channel.offset
+        );
         return Err(DescriptorError::InvalidChannel {
             index,
             reason: "slot overlaps descriptor header or channel table",
@@ -470,6 +504,11 @@ fn validate_channel_layout(
     }
 
     if channel.size < SLOT_HEADER as u32 {
+        consortium_log::trace!(
+            "channel {}: slot size {} smaller than slot header",
+            index,
+            channel.size
+        );
         return Err(DescriptorError::InvalidChannel {
             index,
             reason: "slot is smaller than the slot header",
@@ -477,6 +516,7 @@ fn validate_channel_layout(
     }
 
     if matches!(channel.direction, ChannelDirection::Unrecognized) {
+        consortium_log::trace!("channel {}: unrecognized direction", index);
         return Err(DescriptorError::InvalidChannel {
             index,
             reason: "direction is unrecognized",

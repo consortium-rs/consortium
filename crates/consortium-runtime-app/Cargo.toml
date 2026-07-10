@@ -30,7 +30,7 @@ doctest = false
 
 [features]
 dbg        = ["dep:consortium-dbg"]
-default    = ["dbg", "ipc-shm", "tee"]
+default    = ["dbg", "ipc-shm"]
 ffi        = ["consortium-ffi"]
 hmi        = ["consortium-hmi"]
 imx93      = ["consortium-ipc-transport-memory?/imx93", "imx9x"]
@@ -58,6 +58,7 @@ consortium-ipc = { features = ["std"], optional = true, path = "../consortium-ip
 consortium-ipc-transport-memory = { features = [
   "std",
 ], optional = true, path = "../consortium-ipc-transport-memory" }
+consortium-log = { features = ["tracing"], path = "../consortium-log" }
 consortium-ort = { optional = true, path = "../consortium-ort" }
 consortium-tee = { optional = true, path = "../consortium-tee" }
 libc = "0.2"

@@ -33,7 +33,10 @@ where
         T: 'buf;
 
     fn encode(msg: &T, buf: &mut [u8]) -> Result<usize, postcard::Error> {
-        let written = postcard::to_slice(msg, buf)?;
+        let cap = buf.len();
+        let written = postcard::to_slice(msg, buf).inspect_err(|_| {
+            consortium_log::trace!("postcard encode failed into {}-byte buffer", cap);
+        })?;
         Ok(written.len())
     }
 
@@ -41,7 +44,9 @@ where
     where
         T: 'buf,
     {
-        postcard::from_bytes(buf)
+        postcard::from_bytes(buf).inspect_err(|_| {
+            consortium_log::trace!("postcard decode failed on {} bytes", buf.len());
+        })
     }
 }
 

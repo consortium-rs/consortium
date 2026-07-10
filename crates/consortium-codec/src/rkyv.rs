@@ -128,6 +128,11 @@ where
         let bytes = rkyv::to_bytes::<RkyvError>(msg)?;
         let len = bytes.len();
         if len > buf.len() {
+            consortium_log::trace!(
+                "rkyv encode needs {} bytes but buffer is {}",
+                len,
+                buf.len()
+            );
             return Err(buffer_too_small());
         }
         buf[..len].copy_from_slice(&bytes);
@@ -138,7 +143,9 @@ where
     where
         T: 'buf,
     {
-        rkyv::access::<T::Archived, RkyvError>(buf)
+        rkyv::access::<T::Archived, RkyvError>(buf).inspect_err(|_| {
+            consortium_log::trace!("rkyv access/validation failed on {} bytes", buf.len());
+        })
     }
 }
 
@@ -173,6 +180,11 @@ where
         )?;
         let len = bytes.len();
         if len > buf.len() {
+            consortium_log::trace!(
+                "rkyv encode needs {} bytes but buffer is {}",
+                len,
+                buf.len()
+            );
             return Err(buffer_too_small());
         }
         buf[..len].copy_from_slice(&bytes);

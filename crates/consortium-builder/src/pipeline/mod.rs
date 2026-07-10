@@ -218,11 +218,15 @@ pub struct PipelinePlan {
 
 /// Loads and validates the manifest at `manifest_path`.
 pub async fn load_session(manifest_path: &Path) -> Result<Session, PipelineError> {
+    consortium_log::trace!("loading manifest {}", manifest_path.display());
     let toml = tokio::fs::read_to_string(manifest_path)
         .await
-        .map_err(|source| PipelineError::ManifestRead {
-            path: manifest_path.display().to_string(),
-            source,
+        .map_err(|source| {
+            consortium_log::trace!("manifest read failed: {}", manifest_path.display());
+            PipelineError::ManifestRead {
+                path: manifest_path.display().to_string(),
+                source,
+            }
         })?;
     Ok(Session::from_toml(&toml)?)
 }
@@ -313,12 +317,21 @@ pub async fn plan(
         &target_cores,
     )? {
         Some(rendered) => {
+            consortium_log::trace!(
+                "rendered linux dts {} with {} warnings",
+                rendered.file_name,
+                rendered.warnings.len()
+            );
             for warning in &rendered.warnings {
+                consortium_log::trace!("dts warning: {}", warning);
                 eprintln!("warning: {warning}");
             }
             vec![(rendered.file_name, rendered.contents)]
         }
-        None => Vec::new(),
+        None => {
+            consortium_log::trace!("no UIO devices; no linux dts rendered");
+            Vec::new()
+        }
     };
 
     // The kernel config fragment plus, when the manifest names a kernel recipe, a
@@ -373,8 +386,16 @@ async fn run_inner(
     config: PipelineConfig,
     reporter: Option<&dyn BuildReporter>,
 ) -> Result<PathBuf, PipelineError> {
+    consortium_log::trace!("pipeline run: manifest {}", config.manifest_path.display());
     let session = load_session(&config.manifest_path).await?;
     let plan = plan(&session, &config).await?;
+    consortium_log::trace!(
+        "pipeline plan: {} firmware, ta={}, hmi={}, {} bitbake",
+        plan.firmware.len(),
+        plan.ta.is_some(),
+        config.hmi.is_some(),
+        config.bitbake.len()
+    );
 
     let total_steps = plan.firmware.len()
         + usize::from(config.hmi.is_some())
@@ -743,17 +764,26 @@ async fn write_generated_module(
     let src_dir = project_dir.join("src");
     tokio::fs::create_dir_all(&src_dir)
         .await
-        .map_err(|source| PipelineError::GeneratedWrite {
-            path: src_dir.display().to_string(),
-            source,
+        .map_err(|source| {
+            consortium_log::trace!("failed to create src dir {}", src_dir.display());
+            PipelineError::GeneratedWrite {
+                path: src_dir.display().to_string(),
+                source,
+            }
         })?;
     let path = src_dir.join(GENERATED_MODULE);
-    tokio::fs::write(&path, source)
-        .await
-        .map_err(|source| PipelineError::GeneratedWrite {
+    consortium_log::trace!(
+        "writing {} bytes of generated code to {}",
+        source.len(),
+        path.display()
+    );
+    tokio::fs::write(&path, source).await.map_err(|source| {
+        consortium_log::trace!("failed to write generated module {}", path.display());
+        PipelineError::GeneratedWrite {
             path: path.display().to_string(),
             source,
-        })?;
+        }
+    })?;
     Ok(path)
 }
 

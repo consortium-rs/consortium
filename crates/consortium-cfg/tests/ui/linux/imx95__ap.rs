@@ -344,12 +344,16 @@ struct ConsortiumEndpoints {
     ipc_shm: IpcMemoryEndpointsConnected,
 }
 async fn init() -> ::core::result::Result<ConsortiumEndpoints, ConsortiumInitError> {
+    ::consortium_runtime_app::log::trace!(
+        "consortium init: opening {} uio device(s)", 4usize
+    );
     let uio = ::std::vec![
         ::consortium_runtime_app::uio::UioDevice::open(0usize) ?,
         ::consortium_runtime_app::uio::UioDevice::open(1usize) ?,
         ::consortium_runtime_app::uio::UioDevice::open(2usize) ?,
         ::consortium_runtime_app::uio::UioDevice::open(3usize) ?
     ];
+    ::consortium_runtime_app::log::trace!("consortium init: connecting ipc endpoints");
     let ipc_shm = IpcMemoryEndpoints::new(&uio)?.connect().await?;
     let _consortium_dbg = ::consortium_runtime_app::dbg_console::spawn(
         &uio,
@@ -358,11 +362,19 @@ async fn init() -> ::core::result::Result<ConsortiumEndpoints, ConsortiumInitErr
                 uio_id: 3,
                 mmap_id: 0,
                 len: 8192,
-                elf_bytes: include_bytes!("../../fixtures/placeholder.elf"),
+                elf_bytes: {
+                    #[repr(align(16))]
+                    struct Aligned<const N: usize>([u8; N]);
+                    static ELF: Aligned<
+                        { include_bytes!("../../fixtures/placeholder.elf").len() },
+                    > = Aligned(*include_bytes!("../../fixtures/placeholder.elf"));
+                    &ELF.0
+                },
                 label: "cm33",
             },
         ],
     )?;
+    ::consortium_runtime_app::log::trace!("consortium init: endpoints ready");
     ::core::result::Result::Ok(ConsortiumEndpoints {
         _consortium_dbg,
         uio,

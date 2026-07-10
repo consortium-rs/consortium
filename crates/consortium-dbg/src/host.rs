@@ -70,6 +70,11 @@ impl HostRing {
     /// - No other code may write to `read_ptr` (descriptor offset `0x08`) for the
     ///   lifetime of the returned `HostRing`.
     pub unsafe fn from_raw_parts(base: *mut u8, len: usize) -> Result<Self, HostError> {
+        consortium_log::trace!(
+            "HostRing::from_raw_parts(base = {:#x}, len = {:#x})",
+            base as usize,
+            len
+        );
         if len < DESCRIPTOR_SIZE {
             return Err(HostError::CapacityMismatch {
                 descriptor: 0,
@@ -84,6 +89,13 @@ impl HostRing {
             DescriptorHeaderError::BadVersion(..) => HostError::VersionMismatch,
             _ => HostError::MagicMismatch,
         })?;
+
+        consortium_log::trace!(
+            "HostRing::from_raw_parts: descriptor capacity = {:#x}, read_ptr = {:#x}, write_ptr = {:#x}",
+            desc.capacity,
+            desc.read_ptr,
+            desc.write_ptr
+        );
 
         if desc.capacity as usize > len {
             return Err(HostError::CapacityMismatch {
@@ -155,9 +167,21 @@ impl DefmtContext {
     /// Returns `Err(HostError::ElfParse)` when the bytes are not a valid ELF file or
     /// when the ELF contains no `.defmt` section.
     pub fn from_elf_bytes(bytes: &[u8]) -> Result<Self, HostError> {
+        consortium_log::trace!("parsing defmt table from ELF bytes ({} bytes)", bytes.len());
         let table = defmt_decoder::Table::parse(bytes)
-            .map_err(|_| HostError::ElfParse)?
-            .ok_or(HostError::ElfParse)?;
+            .map_err(|e| {
+                consortium_log::error!("defmt table parse failed: {:?}", e);
+                HostError::ElfParse
+            })?
+            .ok_or_else(|| {
+                consortium_log::error!("defmt table missing from ELF");
+                HostError::ElfParse
+            })?;
+        consortium_log::info!(
+            "defmt table parsed: encoding = {:?}, has_timestamp = {}",
+            table.encoding(),
+            table.has_timestamp()
+        );
         Ok(Self { table })
     }
 }

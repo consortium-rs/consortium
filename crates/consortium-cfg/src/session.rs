@@ -46,8 +46,12 @@ impl Session {
     /// - [`CfgError::UnknownDoorbell`] / [`CfgError::OwnerNotVisible`] from
     ///   [`Self::validate`].
     pub fn from_toml(content: &str) -> Result<Self, CfgError> {
-        let config: Config =
-            toml::from_str(content).map_err(|err| CfgError::Manifest(err.to_string()))?;
+        consortium_log::trace!("parsing Consortium.toml ({} bytes)", content.len());
+        let config: Config = toml::from_str(content).map_err(|err| {
+            consortium_log::trace!("manifest TOML parse failed: {}", err);
+            CfgError::Manifest(err.to_string())
+        })?;
+        consortium_log::trace!("resolving chip database for '{}'", config.profile.chip);
         let database = database::load(&config.profile.chip)?;
 
         let session = Self { config, database };
@@ -60,13 +64,20 @@ impl Session {
     /// the chip's SRAM without overlapping.
     pub fn validate(&self) -> Result<(), CfgError> {
         let chip = &self.config.profile.chip;
+        consortium_log::trace!("validating manifest against chip '{}'", chip);
 
         self.validate_memory()?;
         self.validate_ipc()?;
         self.validate_dbg()?;
 
         for (name, peripheral) in &self.config.peripheral {
+            consortium_log::trace!(
+                "validating peripheral '{}' owned by '{}'",
+                name,
+                peripheral.owner
+            );
             if !self.is_core(peripheral.owner) {
+                consortium_log::trace!("peripheral '{}' owner not visible on chip", name);
                 return Err(CfgError::OwnerNotVisible(
                     name.clone(),
                     peripheral.owner.to_string(),
@@ -86,6 +97,11 @@ impl Session {
                 match crate::chipmap::load(chip, &core) {
                     Ok(map) => {
                         if !map.contains_peripheral(name) {
+                            consortium_log::trace!(
+                                "peripheral '{}' absent from chip map for core '{}'",
+                                name,
+                                core
+                            );
                             return Err(CfgError::PeripheralNotOnCore {
                                 name: name.clone(),
                                 core,
@@ -93,8 +109,16 @@ impl Session {
                             });
                         }
                     }
-                    Err(DataError::ChipMapUnavailable { .. }) => {}
-                    Err(err) => return Err(err.into()),
+                    Err(DataError::ChipMapUnavailable { .. }) => {
+                        consortium_log::trace!(
+                            "no chip map bundled for core '{}'; skipping peripheral accessibility check",
+                            core
+                        );
+                    }
+                    Err(err) => {
+                        consortium_log::trace!("chip map load failed for core '{}': {}", core, err);
+                        return Err(err.into());
+                    }
                 }
             }
         }
@@ -108,12 +132,19 @@ impl Session {
         let mut used_channels: HashMap<(String, u32), Party> = HashMap::new();
 
         for channel in &self.config.ipc.channels {
-            let doorbell = self
-                .doorbell(&channel.doorbell)
-                .ok_or_else(|| self.unknown_doorbell(&channel.doorbell))?;
+            consortium_log::trace!(
+                "validating ipc channel '{}' on doorbell '{}'",
+                channel.name,
+                channel.doorbell
+            );
+            let doorbell = self.doorbell(&channel.doorbell).ok_or_else(|| {
+                consortium_log::trace!("unknown doorbell '{}'", channel.doorbell);
+                self.unknown_doorbell(&channel.doorbell)
+            })?;
 
             for (party, endpoint) in &channel.endpoints {
                 if !self.is_party(*party) {
+                    consortium_log::trace!("ipc endpoint party '{}' not visible on chip", party);
                     return Err(CfgError::IpcEndpointNotVisible(
                         channel.doorbell.clone(),
                         party.to_string(),
@@ -122,10 +153,17 @@ impl Session {
                 }
 
                 if !doorbell.parties.iter().any(|entry| entry.core == *party) {
+                    consortium_log::trace!("doorbell '{}' has no party '{}'", doorbell.name, party);
                     return Err(self.doorbell_party_unavailable(doorbell, *party));
                 }
 
                 if endpoint.chan >= doorbell.channels {
+                    consortium_log::trace!(
+                        "doorbell '{}' channel {} out of bounds ({} channels)",
+                        doorbell.name,
+                        endpoint.chan,
+                        doorbell.channels
+                    );
                     return Err(CfgError::DoorbellChannelUnavailable {
                         doorbell: doorbell.name.clone(),
                         channel: endpoint.chan,
@@ -138,6 +176,13 @@ impl Session {
 
                 let key = (doorbell.name.to_ascii_lowercase(), endpoint.chan);
                 if let Some(first_party) = used_channels.insert(key, *party) {
+                    consortium_log::trace!(
+                        "doorbell '{}' channel {} claimed by both '{}' and '{}'",
+                        doorbell.name,
+                        endpoint.chan,
+                        first_party,
+                        party
+                    );
                     return Err(CfgError::DoorbellChannelDuplicate {
                         doorbell: doorbell.name.clone(),
                         channel: endpoint.chan,
@@ -158,11 +203,14 @@ impl Session {
         let chip = &self.config.profile.chip;
 
         for core in self.config.dbg.cores.keys() {
+            consortium_log::trace!("validating dbg logger on core '{}'", core);
             if *core == VisibleCore::Ap {
+                consortium_log::trace!("dbg core is the AP host, which cannot be a logger");
                 return Err(CfgError::DbgHostNotLoggable);
             }
 
             if !self.is_core(*core) {
+                consortium_log::trace!("dbg core '{}' not visible on chip", core);
                 return Err(CfgError::DbgCoreNotVisible {
                     core: core.to_string(),
                     chip: chip.clone(),
@@ -197,6 +245,11 @@ impl Session {
             for (right_name, right) in regions.iter().skip(left_index + 1) {
                 let right_end = right.base + right.length;
                 if left.base < right_end && right.base < left_end {
+                    consortium_log::trace!(
+                        "shared-memory regions '{}' and '{}' overlap",
+                        left_name,
+                        right_name
+                    );
                     return Err(CfgError::RegionOverlap {
                         a: left_name.clone(),
                         a_base: left.base,
@@ -213,13 +266,21 @@ impl Session {
     }
 
     fn validate_memory_region(&self, name: &str, region: MemoryRegion) -> Result<(), CfgError> {
+        consortium_log::trace!(
+            "validating region '{}' base {:#x} length {:#x}",
+            name,
+            region.base,
+            region.length
+        );
         // Exclusive end address; a region that wraps past u64::MAX cannot
         // fit in any SRAM window, so treat the overflow as out-of-bounds.
         let Some(end) = region.base.checked_add(region.length) else {
+            consortium_log::trace!("region '{}' end address overflows", name);
             return Err(self.region_out_of_bounds(name, region.base, region.base));
         };
 
         if region.length == 0 {
+            consortium_log::trace!("region '{}' has zero length", name);
             return Err(CfgError::RegionEmpty {
                 region: name.to_string(),
             });
@@ -239,6 +300,7 @@ impl Session {
             None
         };
         if let Some(requirement) = mpu_requirement {
+            consortium_log::trace!("region '{}' not MPU-aligned: {}", name, requirement);
             return Err(CfgError::RegionNotMpuAligned {
                 region: name.to_string(),
                 base: region.base,
@@ -253,6 +315,12 @@ impl Session {
             region.base >= sram_base && end <= sram_end
         });
         if !contained {
+            consortium_log::trace!(
+                "region '{}' ({:#x}..{:#x}) not contained in any SRAM window",
+                name,
+                region.base,
+                end
+            );
             return Err(self.region_out_of_bounds(name, region.base, end));
         }
 

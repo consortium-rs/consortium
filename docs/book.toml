@@ -15,8 +15,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [book]
-authors      = ["Ethan Wu"]
-language     = "en"
+authors  = ["Ethan Wu"]
+language = "en"
 # multilingual = false
-src          = "src"
-title        = "Consortium Book"
+src   = "src"
+title = "Consortium Book"

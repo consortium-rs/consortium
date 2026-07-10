@@ -41,10 +41,18 @@ where
     fn encode(msg: &T, buf: &mut [u8]) -> Result<usize, ProstError> {
         let len = msg.encoded_len();
         if len > buf.len() {
+            consortium_log::trace!(
+                "prost encode needs {} bytes but buffer is {}",
+                len,
+                buf.len()
+            );
             return Err(ProstError::BufferTooSmall);
         }
         let mut slice = &mut buf[..len];
-        msg.encode(&mut slice).map_err(ProstError::Encode)?;
+        msg.encode(&mut slice).map_err(|e| {
+            consortium_log::trace!("prost encode failed for {}-byte message", len);
+            ProstError::Encode(e)
+        })?;
         Ok(len)
     }
 
@@ -52,7 +60,10 @@ where
     where
         T: 'buf,
     {
-        T::decode(buf).map_err(ProstError::Decode)
+        T::decode(buf).map_err(|e| {
+            consortium_log::trace!("prost decode failed on {} bytes", buf.len());
+            ProstError::Decode(e)
+        })
     }
 }
 
