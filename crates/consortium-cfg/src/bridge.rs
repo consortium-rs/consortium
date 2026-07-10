@@ -29,10 +29,13 @@
 //! The AP-side address layout is fixed here so the firmware-, NVIC-, and
 //! Linux-DTS outputs agree on UIO ids and mmap indices:
 //!
-//! - `uio0` aggregates every IPC shared-memory region; a region's `mmap_id` is
-//!   its index in channel-declaration order.
-//! - `uio1..=N` is one device per distinct doorbell, in first-appearance order;
-//!   a doorbell always exposes its register window as `mmap_id` 0.
+//! - Every device — the aggregate IPC shared-memory device, one device per
+//!   distinct doorbell, and the aggregate dbg-ring device — is assigned its
+//!   `uioN` id by ascending mapped base, so the ids follow the memory map the
+//!   kernel enumerates.
+//! - Within the IPC device, a region's `mmap_id` is its index in
+//!   channel-declaration order; a doorbell always exposes its register window as
+//!   `mmap_id` 0.
 
 use std::collections::HashMap;
 
@@ -383,8 +386,9 @@ impl Session {
         let mut transceivers = Vec::new();
         let mut regions: Vec<MemoryRegion> = Vec::new();
 
-        // Doorbells in first-appearance order; their position fixes the `uioN`
-        // id (offset by 1 for the shared-memory device at `uio0`).
+        // Doorbells in first-appearance order. This only fixes a provisional
+        // `uioN` layout; the whole device list is re-sorted into memory order
+        // after assembly below, which rewrites every recorded id.
         let mut doorbell_order: Vec<String> = Vec::new();
         let mut bells: Vec<HardwareDoorbell> = Vec::new();
 
@@ -430,7 +434,8 @@ impl Session {
             let region_mmap = regions.len();
             regions.push(memory);
 
-            // Reserve / reuse this doorbell's `uioN` device.
+            // Reserve / reuse this doorbell's provisional `uioN` device (offset
+            // by 1 for the shared-memory device at pre-sort `uio0`).
             let doorbell_key = channel.doorbell.to_ascii_lowercase();
             let doorbell_uio = match doorbell_order.iter().position(|n| *n == doorbell_key) {
                 Some(index) => index + 1,
@@ -521,9 +526,10 @@ impl Session {
             });
         }
 
-        // Assemble the UIO device list in the order the addresses reference it:
-        // shared memory first, then each doorbell. Linux is non-secure, so every
-        // mapped window is offset by the non-secure alias.
+        // Assemble the UIO device list in a provisional order: shared memory
+        // first, then each doorbell. Linux is non-secure, so every mapped window
+        // is offset by the non-secure alias. The final `uioN` ids are fixed by
+        // the memory-order sort after the dbg device is appended.
         let mut uio = Vec::new();
         let region_alias = memory_alias(&self.database, false);
         consortium_log::trace!("lowering {} shared-memory regions to UIO", regions.len());
@@ -588,6 +594,34 @@ impl Session {
                     backing: UioBacking::ReservedMemory,
                 },
             ));
+        }
+
+        // Order every UIO device — shared memory, doorbells, and the aggregate
+        // dbg-ring device alike — by ascending mapped base, so the `uioN` ids
+        // follow the memory map the kernel enumerates rather than the assembly
+        // order above. The provisional ids recorded in the transceiver/doorbell
+        // addresses and dbg rings are then rewritten to their sorted positions.
+        let device_base =
+            |device: &UioDevice| device.mmap.iter().map(|(base, _)| *base).min().unwrap_or(0);
+        let mut remap = vec![0usize; uio.len()];
+        let old_index: HashMap<String, usize> = uio
+            .iter()
+            .enumerate()
+            .map(|(id, (name, _))| (name.clone(), id))
+            .collect();
+        uio.sort_by_key(|(_, device)| device_base(device));
+        for (new_id, (name, _)) in uio.iter().enumerate() {
+            remap[old_index[name]] = new_id;
+        }
+        for transceiver in &mut transceivers {
+            transceiver.region.address.ap.uio_id = remap[transceiver.region.address.ap.uio_id];
+            transceiver.doorbell_address.ap.uio_id = remap[transceiver.doorbell_address.ap.uio_id];
+        }
+        for bell in &mut bells {
+            bell.address.ap.uio_id = remap[bell.address.ap.uio_id];
+        }
+        for ring in dbg_rings.values_mut() {
+            ring.ap_uio_id = remap[ring.ap_uio_id];
         }
 
         let peripherals = self.lower_peripherals()?;
@@ -878,10 +912,13 @@ mod tests {
     }
 
     #[test]
-    fn names_uio_devices_shared_memory_then_doorbells() {
+    fn orders_uio_devices_by_ascending_memory_base() {
         let ir = lowered();
         let names: Vec<_> = ir.uio.iter().map(|(name, _)| name.as_str()).collect();
-        assert_eq!(names, ["ipc-shm", "hsem", "ipcc2", "dbg-shm"]);
+        // Every device is ordered by its mapped base: the SRAM carveouts
+        // (ipc-shm @0x2040_0000, dbg-shm @0x2040_8000) precede the peripheral
+        // doorbells (hsem @0x4624_0000, ipcc2 @0x4625_0000).
+        assert_eq!(names, ["ipc-shm", "dbg-shm", "hsem", "ipcc2"]);
     }
 
     #[test]
@@ -949,17 +986,19 @@ mod tests {
         let sensor = transceiver(&ir, "sensor");
         let lp = transceiver(&ir, "lp");
 
+        // Doorbells sort after both SRAM carveouts, so hsem is uio2 and ipcc2
+        // is uio3 (ipc-shm @uio0, dbg-shm @uio1).
         assert_eq!(
             sensor.doorbell_address.ap,
             ApAddress {
-                uio_id: 1,
+                uio_id: 2,
                 mmap_id: 0
             }
         );
         assert_eq!(
             lp.doorbell_address.ap,
             ApAddress {
-                uio_id: 2,
+                uio_id: 3,
                 mmap_id: 0
             }
         );

@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use thiserror::Error;
 use tokio::process::Command;
 
@@ -37,15 +37,93 @@ pub enum FirmwareCompileError {
     #[error("ELF not found at expected path: {0:?}")]
     ElfNotFound(PathBuf),
 
+    #[error("copying firmware ELF to {0:?}: {1}")]
+    Copy(PathBuf, std::io::Error),
+
+    #[error("objcopy post-processing failed: {0}")]
+    Objcopy(String),
+
     #[error("{0}")]
     UtilityError(String),
+}
+
+/// The two firmware ELF images the build emits from one Rust compilation.
+#[derive(Clone, Debug)]
+pub struct FirmwareArtifacts {
+    /// `<name>_original.elf`: an unmodified copy of the Rust-compiled ELF,
+    /// retaining its `.defmt` section. This is the image the AP embeds with
+    /// `include_bytes!` so it can decode the coprocessor's defmt logs.
+    pub original: PathBuf,
+    /// `<name>.elf`: the remoteproc-loadable image, produced from the original by
+    /// `arm-none-eabi-objcopy` — `.vector_table` renamed to `.isr_vectors` and the
+    /// host-only `.defmt` section stripped. This is the image deployed to the
+    /// target.
+    pub deploy: PathBuf,
+}
+
+/// The `<name>_original.elf` sibling of a firmware crate's raw cargo output.
+///
+/// The raw cargo binary has no extension (e.g. `.../release/melt-pot-mcu`); the
+/// original is written alongside it as `.../release/melt-pot-mcu_original.elf`.
+pub fn original_elf_path(raw: &Path) -> PathBuf {
+    sibling(raw, "_original.elf")
+}
+
+/// The `<name>.elf` sibling of a firmware crate's raw cargo output — the
+/// remoteproc-loadable, objcopy-processed image (see [`FirmwareArtifacts`]).
+pub fn deploy_elf_path(raw: &Path) -> PathBuf {
+    sibling(raw, ".elf")
+}
+
+fn sibling(raw: &Path, suffix: &str) -> PathBuf {
+    let stem = raw
+        .file_name()
+        .and_then(|n| n.to_str())
+        .unwrap_or("firmware");
+    raw.with_file_name(format!("{stem}{suffix}"))
+}
+
+/// Resolves `arm-none-eabi-objcopy`, honouring a `CONSORTIUM_OBJCOPY` override.
+fn resolve_objcopy() -> String {
+    std::env::var("CONSORTIUM_OBJCOPY").unwrap_or_else(|_| "arm-none-eabi-objcopy".to_string())
+}
+
+/// Post-processes the raw firmware ELF into a remoteproc-loadable image.
+///
+/// Renames `.vector_table` to `.isr_vectors` (the section name the remoteproc ELF
+/// loader expects) and strips the host-only `.defmt` section, writing the result
+/// to `dest`.
+async fn objcopy_firmware(
+    src: &Path,
+    dest: &Path,
+    reporter: Option<&dyn BuildReporter>,
+) -> Result<(), FirmwareCompileError> {
+    let objcopy = resolve_objcopy();
+    let mut cmd = Command::new(&objcopy);
+    cmd.arg("--rename-section")
+        .arg(".vector_table=.isr_vectors")
+        .arg("--remove-section")
+        .arg(".defmt")
+        .arg(src)
+        .arg(dest);
+
+    let status = run_command(&mut cmd, reporter)
+        .await
+        .map_err(|e| FirmwareCompileError::Objcopy(format!("{objcopy}: {e}")))?;
+
+    if !status.success() {
+        return Err(FirmwareCompileError::Objcopy(format!(
+            "{objcopy} exited with status: {status}"
+        )));
+    }
+    Ok(())
 }
 
 /// Build parameters for bare-metal coprocessor firmware.
 #[derive(Clone)]
 pub struct FirmwareConfiguration {
     /// Rust target triple to cross-compile for (e.g.
-    /// `thumbv8m.main-none-eabi`). Resolved by the caller from the coprocessor's
+    /// `thumbv8m.main-none-eabihf`). Resolved by the caller from the coprocessor's
     /// core name (`McoreName`/`RcoreName`/`RvCoreName::as_rust_triple`), the
     /// single source of truth for triples.
     pub target: String,
@@ -66,7 +144,7 @@ impl FirmwareCompiler {
     pub async fn build_with_reporter(
         config: FirmwareConfiguration,
         reporter: Option<&dyn BuildReporter>,
-    ) -> Result<PathBuf, FirmwareCompileError> {
+    ) -> Result<FirmwareArtifacts, FirmwareCompileError> {
         let cargo = resolve_cargo()
             .await
             .map_err(FirmwareCompileError::CargoResolveError)?;
@@ -104,14 +182,26 @@ impl FirmwareCompiler {
             .await
             .map_err(FirmwareCompileError::UtilityError)?;
 
-        Ok(elf)
+        // `<name>_original.elf`: the untouched Rust-compiled image (keeps `.defmt`
+        // for host-side decoding), which the AP embeds via `include_bytes!`.
+        let original = original_elf_path(&elf);
+        tokio::fs::copy(&elf, &original)
+            .await
+            .map_err(|e| FirmwareCompileError::Copy(original.clone(), e))?;
+
+        // `<name>.elf`: the remoteproc-loadable image deployed to the target
+        // (`.vector_table` → `.isr_vectors`, `.defmt` stripped).
+        let deploy = deploy_elf_path(&elf);
+        objcopy_firmware(&elf, &deploy, reporter).await?;
+
+        Ok(FirmwareArtifacts { original, deploy })
     }
 }
 
 impl Compiler for FirmwareCompiler {
     type Configuration = FirmwareConfiguration;
     type Error = FirmwareCompileError;
-    type Output = PathBuf;
+    type Output = FirmwareArtifacts;
 
     async fn build(config: Self::Configuration) -> Result<Self::Output, Self::Error> {
         Self::build_with_reporter(config, None).await
@@ -135,7 +225,8 @@ pub struct FirmwareBuilder {
 }
 
 impl FirmwareBuilder {
-    /// Builds the firmware, returning the path to the output ELF.
+    /// Builds the firmware, returning the path to the deployable (objcopy-processed)
+    /// output ELF.
     pub async fn build(&self) -> Result<PathBuf, String> {
         FirmwareCompiler::build(FirmwareConfiguration {
             target: self.target.clone(),
@@ -145,6 +236,7 @@ impl FirmwareBuilder {
             dbg: self.dbg,
         })
         .await
+        .map(|artifacts| artifacts.deploy)
         .map_err(|e| e.to_string())
     }
 
@@ -159,5 +251,41 @@ impl FirmwareBuilder {
         })
         .await
         .map_err(|e| e.to_string())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn artifact_paths_derive_from_raw_cargo_output() {
+        // The raw cargo binary has no extension; the two emitted images sit beside
+        // it as `<name>_original.elf` and `<name>.elf`.
+        let raw = Path::new("/proj/firmware/target/thumbv8m.main-none-eabihf/release/melt-pot-mcu");
+        assert_eq!(
+            original_elf_path(raw),
+            Path::new(
+                "/proj/firmware/target/thumbv8m.main-none-eabihf/release/melt-pot-mcu_original.elf"
+            )
+        );
+        assert_eq!(
+            deploy_elf_path(raw),
+            Path::new("/proj/firmware/target/thumbv8m.main-none-eabihf/release/melt-pot-mcu.elf")
+        );
+    }
+
+    #[test]
+    fn objcopy_resolution_honours_override() {
+        // SAFETY: single-threaded test; restores the prior value after asserting.
+        let prev = std::env::var("CONSORTIUM_OBJCOPY").ok();
+        unsafe { std::env::set_var("CONSORTIUM_OBJCOPY", "riscv64-unknown-elf-objcopy") };
+        assert_eq!(resolve_objcopy(), "riscv64-unknown-elf-objcopy");
+        unsafe { std::env::remove_var("CONSORTIUM_OBJCOPY") };
+        assert_eq!(resolve_objcopy(), "arm-none-eabi-objcopy");
+        match prev {
+            Some(v) => unsafe { std::env::set_var("CONSORTIUM_OBJCOPY", v) },
+            None => unsafe { std::env::remove_var("CONSORTIUM_OBJCOPY") },
+        }
     }
 }

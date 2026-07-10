@@ -220,8 +220,9 @@ impl CortexMcuCore {
     pub fn to_rust_target(&self) -> &'static str {
         match self {
             Self::CortexM0p => "thumbv6m-none-eabi",
-            Self::CortexM33 => "thumbv8m.main-none-eabi",
-            Self::CortexM7 | Self::CortexM4 | Self::CortexM4f => "thumbv7em-none-eabi",
+            Self::CortexM33 => "thumbv8m.main-none-eabihf",
+            Self::CortexM7 | Self::CortexM4f => "thumbv7em-none-eabihf",
+            Self::CortexM4 => "thumbv7em-none-eabi",
         }
     }
 }
@@ -348,11 +349,11 @@ mod tests {
     fn mcu_core_resolves_rust_target_triples() {
         assert_eq!(
             CortexMcuCore::CortexM33.to_rust_target(),
-            "thumbv8m.main-none-eabi"
+            "thumbv8m.main-none-eabihf"
         );
         assert_eq!(
             CortexMcuCore::CortexM7.to_rust_target(),
-            "thumbv7em-none-eabi"
+            "thumbv7em-none-eabihf"
         );
         assert_eq!(
             CortexMcuCore::as_key("cortex-m33"),

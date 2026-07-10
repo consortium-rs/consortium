@@ -9,6 +9,39 @@
 
 #define MAP_SIZE 4096UL
 
+static int is_presentable_ascii(const unsigned char *bytes, unsigned int count) {
+    if (count == 0) {
+        return 0;
+    }
+
+    for (unsigned int i = 0; i < count; i++) {
+        unsigned char b = bytes[i];
+        if (b == '\n' || b == '\r' || b == '\t') {
+            continue;
+        }
+        if (b < 0x20 || b > 0x7e) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+static void print_ascii(const unsigned char *bytes, unsigned int count) {
+    printf("As ASCII:\n  \"");
+    for (unsigned int i = 0; i < count; i++) {
+        switch (bytes[i]) {
+            case '\n': printf("\\n"); break;
+            case '\r': printf("\\r"); break;
+            case '\t': printf("\\t"); break;
+            case '"':  printf("\\\""); break;
+            case '\\': printf("\\\\"); break;
+            default:   putchar(bytes[i]); break;
+        }
+    }
+    printf("\"\n");
+}
+
 static void usage(const char *prog) {
     fprintf(stderr,
         "Usage:\n"
@@ -39,7 +72,7 @@ int main(int argc, char **argv) {
         { NULL, 0, NULL, 0 }
     };
 
-    while ((opt = getopt(argc, argv, "w:n:")) != -1) {
+    while ((opt = getopt_long(argc, argv, "w:n:", long_opts, NULL)) != -1) {
         switch (opt) {
             case 'w':
                 errno = 0;
@@ -129,6 +162,11 @@ int main(int argc, char **argv) {
     volatile unsigned char *byte_ptr = (volatile unsigned char *)((char *)map + offset);
 
     if (mode == 'r') {
+        unsigned char bytes[MAP_SIZE];
+        for (unsigned int i = 0; i < batch_count; i++) {
+            bytes[i] = byte_ptr[i];
+        }
+
         printf("%s [window %u] offset 0x%lx (%u bytes):\n", dev, window, offset, batch_count);
         
         /* Print bytes in rows of 16 */
@@ -136,10 +174,14 @@ int main(int argc, char **argv) {
             if (i % 16 == 0) {
                 printf("  0x%04lx: ", offset + i);
             }
-            printf("%02x ", byte_ptr[i]);
+            printf("%02x ", bytes[i]);
             if ((i + 1) % 16 == 0 || i == batch_count - 1) {
                 printf("\n");
             }
+        }
+
+        if (is_presentable_ascii(bytes, batch_count)) {
+            print_ascii(bytes, batch_count);
         }
 
         /* Also print as 32-bit words if aligned and count >= 4 */

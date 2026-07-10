@@ -20,6 +20,14 @@
 pub use consortium_hal as hal;
 pub use consortium_pac_stm32mp2 as pac;
 
+/// Interrupt lines for the selected chip, re-exported from the PAC for direct
+/// HAL consumers.
+pub use pac::interrupts;
+pub use pac::interrupts::Interrupt;
+/// The `#[interrupt]` attribute macro, available when the `rt` feature is on.
+#[cfg(feature = "rt")]
+pub use pac::interrupts::interrupt;
+
 #[cfg(feature = "dma")]
 pub mod dma;
 

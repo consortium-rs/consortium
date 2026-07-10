@@ -7,11 +7,15 @@ license.workspace = true
 
 [features]
 defmt   = ["dep:defmt"]
+imx93   = []
 imx95   = []
+rt      = ["cortex-m-rt/device", "dep:cortex-m-rt"]
 default = ["imx95"]
 
 [dependencies]
-defmt = { optional = true, version = "1.0.1" }
+cortex-m    = { version = "0.7" }
+cortex-m-rt = { optional = true, version = "0.7" }
+defmt       = { optional = true, version = "1.0.1" }
 
 [lints]
 workspace = true
