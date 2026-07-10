@@ -16,6 +16,15 @@
 // SPDX-License-Identifier: Apache-2.0
 
 pub mod mpu;
+pub mod rsc_table;
+
+/// Logging facade re-export for generated controller code. The pipeline emits
+/// `::consortium_runtime_mcu::log::trace!(...)` in the generated `init`, routed
+/// to `defmt` when this crate's `defmt` feature is on (and the firmware crate
+/// depends on `defmt`), otherwise a no-op.
+pub mod log {
+    pub use consortium_log::{debug, error, info, trace, warn};
+}
 
 #[cfg(feature = "dbg")]
 pub use consortium_dbg as dbg;

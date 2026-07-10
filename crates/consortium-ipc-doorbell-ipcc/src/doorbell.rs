@@ -32,12 +32,9 @@ use core::{
 };
 
 use consortium_ipc::{Chan, Doorbell, Side};
+use consortium_log::{debug, error, trace};
 
-use crate::{
-    abstraction::Ipcc,
-    chan::{IPCC_CHAN_COUNT, IPCC_CHAN_OCCUPIED},
-    error::IpccError,
-};
+use crate::{abstraction::Ipcc, chan::IPCC_CHAN_COUNT, error::IpccError};
 
 /// IPCC-backed doorbell for instance `N` (1-based), processor side `S`.
 pub struct IpccDoorbell<S: Side, const N: usize> {
@@ -63,9 +60,8 @@ impl<S: Side, const N: usize> IpccDoorbell<S, N> {
     #[inline]
     fn channel_of(ch: Chan) -> Result<u8, IpccError> {
         let id = ch.id();
-        if IPCC_CHAN_OCCUPIED.contains(&id) {
-            Err(IpccError::ChanReserved)
-        } else if id >= IPCC_CHAN_COUNT {
+        if id >= IPCC_CHAN_COUNT {
+            error!("channel_of({:?}) failed: out of range", ch);
             Err(IpccError::ChanOutOfRange)
         } else {
             Ok(id)
@@ -81,6 +77,7 @@ impl<S: Side, const N: usize> IpccDoorbell<S, N> {
     /// `base` must be the mapped virtual base of IPCC instance `N`. Passing a
     /// raw physical address is undefined behaviour on Linux.
     pub unsafe fn new(base: usize) -> Self {
+        trace!("IpccDoorbell::new(base = {:#x})", base);
         Self {
             // SAFETY: forwarded obligation; `base` is the mapped IPCC window.
             ipcc: unsafe { Ipcc::<S, N>::new(base) },
@@ -94,6 +91,7 @@ impl<S: Side, const N: usize> IpccDoorbell<S, N> {
     /// [`wait`](Doorbell::wait) futures when IPCC RX-occupied fires.
     #[cfg(feature = "std")]
     pub fn notifier(&self) -> std::sync::Arc<tokio::sync::Notify> {
+        trace!("IpccDoorbell::notifier() -> Arc<Notify>");
         std::sync::Arc::clone(&self.notify)
     }
 }
@@ -106,15 +104,21 @@ impl<S: Side, const N: usize> Doorbell for IpccDoorbell<S, N> {
         Self: 'a;
 
     fn ring(&self, ch: Chan) -> Result<(), IpccError> {
+        trace!("IpccDoorbell::ring(ch = {:?})", ch);
         let id = Self::channel_of(ch)?;
         if self.ipcc.outgoing_occupied(id) {
+            debug!("ring({:?}) failed: outgoing channel occupied", ch);
             return Err(IpccError::ChannelOccupied);
         }
+
+        trace!("ring({:?}) -> set C{}SCR.CH{}S", ch, N, id);
 
         fence(Ordering::Release);
 
         // SAFETY: `id` is validated `< 16`; SCR is this side's bank.
         unsafe { self.ipcc.set_outgoing_occupied(id) };
+        debug!("ring({:?}) -> C{}SCR.CH{}S set", ch, N, id);
+
         Ok(())
     }
 
@@ -122,13 +126,16 @@ impl<S: Side, const N: usize> Doorbell for IpccDoorbell<S, N> {
     where
         Self: 'a,
     {
+        trace!("IpccDoorbell::wait(ch = {:?})", ch);
         IpccWaitFut::new(self, ch)
     }
 
     fn pending(&self, ch: Chan) -> bool {
+        trace!("IpccDoorbell::pending(ch = {:?})", ch);
         match Self::channel_of(ch) {
             Ok(id) => {
                 let pending = self.ipcc.incoming_occupied(id);
+                debug!("pending({:?}) -> result = {}", ch, pending);
                 if pending {
                     fence(Ordering::Acquire);
                 }
@@ -158,6 +165,7 @@ pub struct IpccWaitFut<'a, S: Side, const N: usize> {
 
 impl<'a, S: Side, const N: usize> IpccWaitFut<'a, S, N> {
     fn new(doorbell: &'a IpccDoorbell<S, N>, ch: Chan) -> Self {
+        trace!("IpccWaitFut::new(doorbell, ch = {:?})", ch);
         Self {
             doorbell,
             ch,
@@ -179,13 +187,26 @@ impl<'a, S: Side, const N: usize> core::future::Future for IpccWaitFut<'a, S, N>
             Err(err) => return Poll::Ready(Err(err)),
         };
 
+        trace!(
+            "IpccWaitFut::poll(ch = {:?}) armed = {}",
+            this.ch, this.armed
+        );
+
         if !this.armed {
+            debug!("wait({:?}) -> arm C{}SCR.CH{} interrupt", this.ch, N, id);
             // SAFETY: `id` is validated `< 16`; armed once from this task.
             unsafe { this.doorbell.ipcc.enable_rx_occupied_interrupt(id) };
             this.armed = true;
 
             #[cfg(feature = "std")]
             {
+                debug!(
+                    "wait({:?}) -> register Notify for C{}TOC{}SR.CH{} interrupt",
+                    this.ch,
+                    N,
+                    S::INDEX,
+                    id
+                );
                 let notified = this.doorbell.notify.notified();
                 // SAFETY: `doorbell` is borrowed for `'a`; its Arc-backed
                 // `Notify` outlives this future, so erasing the borrow is sound.
@@ -199,10 +220,26 @@ impl<'a, S: Side, const N: usize> core::future::Future for IpccWaitFut<'a, S, N>
             }
 
             #[cfg(not(feature = "std"))]
-            IPCC_WAKER.register(cx.waker());
+            {
+                debug!(
+                    "wait({:?}) -> register AtomicWaker for C{}TOC{}SR.CH{} interrupt",
+                    this.ch,
+                    N,
+                    S::INDEX,
+                    id
+                );
+                IPCC_WAKER.register(cx.waker());
+            }
         }
 
         if this.doorbell.ipcc.incoming_occupied(id) {
+            debug!(
+                "wait({:?}) -> C{}TOC{}SR.CH{} occupied",
+                this.ch,
+                N,
+                S::INDEX,
+                id
+            );
             fence(Ordering::Acquire);
 
             // SAFETY: `id` is validated `< 16`; the incoming bit is set.
@@ -210,17 +247,35 @@ impl<'a, S: Side, const N: usize> core::future::Future for IpccWaitFut<'a, S, N>
             // SAFETY: `id` is validated `< 16`; re-mask after completion.
             unsafe { this.doorbell.ipcc.mask_rx_occupied_interrupt(id) };
 
+            debug!("wait({:?}) -> C{}SCR.CH{} interrupt masked", this.ch, N, id);
+
             return Poll::Ready(Ok(this.ch));
         }
 
         #[cfg(feature = "std")]
         if let Some(notified) = this.notified.as_mut() {
+            debug!(
+                "wait({:?}) -> poll Notify for C{}TOC{}SR.CH{} interrupt",
+                this.ch,
+                N,
+                S::INDEX,
+                id
+            );
             // SAFETY: `notified` lives inside the pinned future.
             let _ = unsafe { Pin::new_unchecked(notified) }.poll(cx);
         }
 
         #[cfg(not(feature = "std"))]
-        IPCC_WAKER.register(cx.waker());
+        {
+            debug!(
+                "wait({:?}) -> register AtomicWaker for C{}TOC{}SR.CH{} interrupt",
+                this.ch,
+                N,
+                S::INDEX,
+                id
+            );
+            IPCC_WAKER.register(cx.waker());
+        }
 
         Poll::Pending
     }

@@ -1,0 +1,22 @@
+[package]
+description       = "Logging facade over defmt and tracing for the Consortium project."
+edition.workspace = true
+license.workspace = true
+name              = "consortium-log"
+version.workspace = true
+
+[dependencies]
+defmt   = { optional = true, version = "1.1.0" }
+tracing = { default-features = false, optional = true, version = "0.1" }
+
+[features]
+# `alloc` is a marker capability: `tracing` needs it, so enabling `tracing`
+# turns it on. Kept separate so an `alloc`-only firmware crate can advertise the
+# capability without pulling a backend.
+alloc   = []
+default = []
+defmt   = ["dep:defmt"]
+tracing = ["alloc", "dep:tracing"]
+
+[lints]
+workspace = true

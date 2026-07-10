@@ -36,7 +36,15 @@
 /// Returns the [`syn::Error`] from [`syn::parse_file`] if `tokens` is not a
 /// parseable Rust file.
 pub fn render(tokens: proc_macro2::TokenStream) -> Result<String, syn::Error> {
-    let file = syn::parse_file(&tokens.to_string())?;
+    let source = tokens.to_string();
+    consortium_log::trace!(
+        "rendering {} bytes of generated tokens to source",
+        source.len()
+    );
+    let file = syn::parse_file(&source).map_err(|err| {
+        consortium_log::trace!("generated tokens failed to parse as a Rust file: {}", err);
+        err
+    })?;
     Ok(restore_safety_comments(&prettyplease::unparse(&file)))
 }
 

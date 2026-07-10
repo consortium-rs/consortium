@@ -105,8 +105,10 @@ pub async fn compile_device_tree(
     linux_dir: &Path,
     arch: &str,
 ) -> Result<PathBuf, DtcError> {
+    consortium_log::trace!("compiling device tree {} (arch {})", dts_name, arch);
     let include = linux_dir.join("include");
     if !include.is_dir() {
+        consortium_log::trace!("linux include dir missing at {}", include.display());
         return Err(DtcError::LinuxTreeInvalid {
             path: linux_dir.display().to_string(),
         });
@@ -164,6 +166,7 @@ pub async fn compile_device_tree(
             _ => io(&src, e),
         })?;
     if !gcc.status.success() {
+        consortium_log::trace!("gcc preprocess failed for {}", dts_name);
         let _ = tokio::fs::remove_dir_all(&work).await;
         return Err(DtcError::Compile {
             name: dts_name.to_string(),
@@ -188,12 +191,14 @@ pub async fn compile_device_tree(
     let _ = tokio::fs::remove_dir_all(&work).await;
     let dtc = dtc?;
     if !dtc.status.success() {
+        consortium_log::trace!("dtc compile failed for {}", dts_name);
         return Err(DtcError::Compile {
             name: dts_name.to_string(),
             message: String::from_utf8_lossy(&dtc.stderr).into_owned(),
         });
     }
 
+    consortium_log::trace!("device tree compiled to {}", out.display());
     Ok(out)
 }
 

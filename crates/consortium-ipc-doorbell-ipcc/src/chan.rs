@@ -19,18 +19,12 @@
 //! A channel is an IPCC hardware channel id, numbered `0..`[`IPCC_CHAN_COUNT`].
 //! Channels in [`IPCC_CHAN_OCCUPIED`] are reserved for system/firmware use.
 
-use core::ops::Range;
-
 use consortium_ipc::ChanValidate;
 
 use crate::error::IpccError;
 
 /// Number of IPCC channels per processor bank.
 pub const IPCC_CHAN_COUNT: u8 = 16;
-
-/// Channel ids reserved for system/firmware use; not available to user
-/// channels.
-pub const IPCC_CHAN_OCCUPIED: Range<u8> = 0..2;
 
 /// Validates IPCC channel ids.
 pub struct IpccChanValidate;
@@ -39,9 +33,7 @@ impl ChanValidate for IpccChanValidate {
     type Error = IpccError;
 
     fn validate(id: u8) -> Result<consortium_ipc::Chan, Self::Error> {
-        if IPCC_CHAN_OCCUPIED.contains(&id) {
-            Err(IpccError::ChanReserved)
-        } else if id >= IPCC_CHAN_COUNT {
+        if id >= IPCC_CHAN_COUNT {
             Err(IpccError::ChanOutOfRange)
         } else {
             // SAFETY: `id` is outside the reserved range and below the count,
@@ -55,13 +47,6 @@ impl ChanValidate for IpccChanValidate {
 mod tests {
     use super::*;
     use consortium_ipc::Chan;
-
-    #[test]
-    fn accepts_unreserved_channels() {
-        for id in IPCC_CHAN_OCCUPIED.end..IPCC_CHAN_COUNT {
-            assert_eq!(Chan::new::<IpccChanValidate>(id).unwrap().id(), id);
-        }
-    }
 
     #[test]
     fn rejects_reserved_and_out_of_range() {

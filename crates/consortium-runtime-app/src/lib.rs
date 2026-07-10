@@ -19,6 +19,13 @@ pub mod remoteproc;
 #[cfg(feature = "ipc-shm")]
 pub mod uio;
 
+/// Logging facade re-export for generated AP code. The pipeline emits
+/// `::consortium_runtime_app::log::trace!(...)` in the generated `init`, routed
+/// here to `tracing`, so endpoint crates need no direct logging dependency.
+pub mod log {
+    pub use consortium_log::{debug, error, info, trace, warn};
+}
+
 /// Host-side defmt console for coprocessor debug rings. Requires both the
 /// `dbg` decode stack and the `ipc-shm` UIO mapping.
 #[cfg(all(feature = "dbg", feature = "ipc-shm"))]

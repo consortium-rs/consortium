@@ -22,13 +22,19 @@ name              = "consortium-tee"
 version.workspace = true
 
 [features]
-ca      = ["dep:optee-teec", "dep:tokio"]
+ca = ["consortium-log/tracing", "dep:optee-teec", "dep:tokio"]
+# Opt-in `defmt` routing for TA-side builds. Not implied by `ta`: `defmt`
+# requires a linked global logger, which an OP-TEE TA may not provide, and its
+# macros expand to literal `defmt::` paths, hence the direct dep.
+defmt   = ["consortium-log/defmt", "dep:defmt"]
 default = ["ca"]
 ta      = []
 
 [dependencies]
 consortium-codec      = { path = "../consortium-codec" }
+consortium-log        = { default-features = false, path = "../consortium-log" }
 consortium-tee-macros = { path = "../consortium-tee-macros" }
+defmt                 = { optional = true, version = "1.1.0" }
 thiserror             = "2.0.18"
 tokio                 = { default-features = false, features = ["rt"], optional = true, version = "1" }
 

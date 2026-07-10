@@ -146,6 +146,8 @@ impl LoweredIr {
         let opens = (0..self.uio.len()).map(|id| {
             quote! { ::consortium_runtime_app::uio::UioDevice::open(#id)? }
         });
+        // Literal device count for the generated `init` trace line.
+        let uio_count = self.uio.len();
 
         // The AP host console for the coprocessor debug rings, if any. Its field
         // is declared *before* `uio` so its threads/handles drop (and stop
@@ -223,9 +225,16 @@ impl LoweredIr {
             }
 
             async fn init() -> ::core::result::Result<ConsortiumEndpoints, ConsortiumInitError> {
+                ::consortium_runtime_app::log::trace!(
+                    "consortium init: opening {} uio device(s)", #uio_count
+                );
                 let #uio_ident = ::std::vec![ #(#opens),* ];
+                ::consortium_runtime_app::log::trace!(
+                    "consortium init: connecting ipc endpoints"
+                );
                 let ipc_shm = IpcMemoryEndpoints::new(&#uio_ident)?.connect().await?;
                 #dbg_init
+                ::consortium_runtime_app::log::trace!("consortium init: endpoints ready");
                 ::core::result::Result::Ok(ConsortiumEndpoints { #dbg_field_name #uio_ident, ipc_shm })
             }
         }
@@ -320,9 +329,11 @@ impl LoweredIr {
             /// (which never links `cortex-m`) skips it.
             #[cfg(target_arch = "arm")]
             fn init() -> IpcMemoryEndpoints {
+                ::consortium_runtime_mcu::log::trace!("consortium controller init: mpu/nvic bring-up");
                 #steal
                 #(#mpu_stmts)*
                 #nvic
+                ::consortium_runtime_mcu::log::trace!("consortium controller init: endpoints constructed");
                 IpcMemoryEndpoints::new()
             }
 
@@ -364,6 +375,11 @@ impl Session {
     /// party has no declared endpoint, when its doorbell name cannot be typed,
     /// or when a memory-pattern channel has no `config.memory`.
     pub fn lower(&self) -> Result<LoweredIr, CfgError> {
+        consortium_log::trace!(
+            "lowering manifest: {} ipc channels, {} peripherals",
+            self.config.ipc.channels.len(),
+            self.config.peripheral.len()
+        );
         let mut transceivers = Vec::new();
         let mut regions: Vec<MemoryRegion> = Vec::new();
 
@@ -373,6 +389,7 @@ impl Session {
         let mut bells: Vec<HardwareDoorbell> = Vec::new();
 
         for channel in &self.config.ipc.channels {
+            consortium_log::trace!("lowering ipc channel '{}'", channel.name);
             let primary_party = channel.primary;
             let secondary_party = channel.secondary;
             let primary = endpoint(channel, primary_party, "primary")?;
@@ -380,15 +397,29 @@ impl Session {
             let primary_core = primary_party.core();
             let secondary_core = secondary_party.core();
 
-            let meta: DoorbellMeta = channel
-                .doorbell
-                .parse()
-                .map_err(|err: CfgError| CfgError::Manifest(err.to_string()))?;
+            let meta: DoorbellMeta = channel.doorbell.parse().map_err(|err: CfgError| {
+                consortium_log::trace!(
+                    "cannot type doorbell '{}' for channel '{}': {}",
+                    channel.doorbell,
+                    channel.name,
+                    err
+                );
+                CfgError::Manifest(err.to_string())
+            })?;
             let db_doorbell = self.doorbell(&channel.doorbell).ok_or_else(|| {
+                consortium_log::trace!(
+                    "unknown doorbell '{}' for channel '{}'",
+                    channel.doorbell,
+                    channel.name
+                );
                 CfgError::Manifest(format!("unknown doorbell '{}'", channel.doorbell))
             })?;
 
             let memory = channel.memory().ok_or_else(|| {
+                consortium_log::trace!(
+                    "channel '{}' uses memory pattern but sets no config.memory",
+                    channel.name
+                );
                 CfgError::Manifest(format!(
                     "ipc channel '{}' uses the memory pattern but sets no config.memory",
                     channel.name
@@ -495,6 +526,7 @@ impl Session {
         // mapped window is offset by the non-secure alias.
         let mut uio = Vec::new();
         let region_alias = memory_alias(&self.database, false);
+        consortium_log::trace!("lowering {} shared-memory regions to UIO", regions.len());
         if let Some(mut device) = regions.as_slice().to_uio()? {
             for window in &mut device.mmap {
                 window.0 += region_alias;
@@ -503,9 +535,11 @@ impl Session {
         }
         let doorbell_alias = peripheral_alias(&self.database, false);
         for name in &doorbell_order {
-            let db_doorbell = self
-                .doorbell(name)
-                .ok_or_else(|| CfgError::Manifest(format!("unknown doorbell '{name}'")))?;
+            consortium_log::trace!("lowering doorbell '{}' to UIO", name);
+            let db_doorbell = self.doorbell(name).ok_or_else(|| {
+                consortium_log::trace!("unknown doorbell '{}' during UIO assembly", name);
+                CfgError::Manifest(format!("unknown doorbell '{name}'"))
+            })?;
             if let Some(mut device) = db_doorbell.to_uio()? {
                 for window in &mut device.mmap {
                     window.0 += doorbell_alias;
@@ -556,12 +590,19 @@ impl Session {
             ));
         }
 
+        let peripherals = self.lower_peripherals()?;
+        consortium_log::trace!(
+            "lowering complete: {} transceivers, {} uio devices, {} peripheral instances",
+            transceivers.len(),
+            uio.len(),
+            peripherals.instances.len()
+        );
         Ok(LoweredIr {
             shuhan: ShuHan::new(transceivers),
             bella: BellA { bells },
             uio,
             dbg: DebugLogs::new(dbg_rings, self.config.dbg.mode),
-            peripherals: self.lower_peripherals()?,
+            peripherals,
         })
     }
 
@@ -580,12 +621,24 @@ impl Session {
                 continue;
             };
             let core = peripheral.owner.to_string();
+            consortium_log::trace!("lowering peripheral '{}' on core '{}'", name, core);
             let map = match crate::chipmap::load(chip, &core) {
                 Ok(map) => map,
-                Err(DataError::ChipMapUnavailable { .. }) => continue,
-                Err(err) => return Err(err.into()),
+                Err(DataError::ChipMapUnavailable { .. }) => {
+                    consortium_log::trace!(
+                        "no chip map for core '{}'; peripheral '{}' gets no bring-up",
+                        core,
+                        name
+                    );
+                    continue;
+                }
+                Err(err) => {
+                    consortium_log::trace!("chip map load failed for core '{}': {}", core, err);
+                    return Err(err.into());
+                }
             };
             let Some(entry) = map.peripheral(name) else {
+                consortium_log::trace!("peripheral '{}' absent from chip map for '{}'", name, core);
                 continue;
             };
             let base = peripheral_absolute_base(&self.database, entry.base, peripheral.secure);
@@ -593,11 +646,20 @@ impl Session {
             let kind = match entry.kind() {
                 "i2c" | "lpi2c" => {
                     let irq = map.irq(name).ok_or_else(|| {
+                        consortium_log::trace!(
+                            "i2c peripheral '{}' has no interrupt entry in chip map for '{}'",
+                            name,
+                            core
+                        );
                         CfgError::Manifest(format!(
                             "i2c peripheral '{name}' has no interrupt entry in the chip map for '{core}'"
                         ))
                     })?;
                     let clock_hz = peripheral.clock.ok_or_else(|| {
+                        consortium_log::trace!(
+                            "i2c peripheral '{}' missing required `clock` field",
+                            name
+                        );
                         CfgError::Manifest(format!(
                             "i2c peripheral '{name}' needs `clock` (its input clock in Hz) to generate bring-up"
                         ))
@@ -662,6 +724,13 @@ fn endpoint<'c>(
     role: &str,
 ) -> Result<&'c consortium_cfg_common::config::IpcEndpoint, CfgError> {
     channel.endpoints.get(&party).ok_or_else(|| {
+        consortium_log::trace!(
+            "channel '{}' names {} party '{}' with no matching [party.{}]",
+            channel.name,
+            role,
+            party,
+            party
+        );
         CfgError::Manifest(format!(
             "ipc channel '{}' names {role} party '{party}' but has no matching [party.{party}]",
             channel.name

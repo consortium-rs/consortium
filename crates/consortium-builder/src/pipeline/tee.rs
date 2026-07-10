@@ -79,13 +79,20 @@ pub fn plan_ta_build(
         return Ok(None);
     };
 
-    let toolchain = toolchain.ok_or(PipelineError::MissingTeeToolchain)?;
+    consortium_log::trace!("planning TA build for uuid {}", tee.uuid);
+    let toolchain = toolchain.ok_or_else(|| {
+        consortium_log::trace!("TA build requested but no TEE toolchain configured");
+        PipelineError::MissingTeeToolchain
+    })?;
 
     let root = session
         .config
         .endpoints
         .get(&Party::AcoreSecure)
-        .ok_or_else(|| PipelineError::MissingEndpoint(Party::AcoreSecure.to_string()))?;
+        .ok_or_else(|| {
+            consortium_log::trace!("no [endpoints] entry for the secure A-core TA");
+            PipelineError::MissingEndpoint(Party::AcoreSecure.to_string())
+        })?;
 
     Ok(Some(OpteeConfiguration {
         path: manifest_dir.join(root),

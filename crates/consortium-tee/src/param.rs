@@ -101,7 +101,12 @@ macro_rules! impl_tee_param_primitive {
             fn from_tee_param(repr: TeeParamReprRef<'_>) -> Result<Self, TeeParamError> {
                 match repr {
                     TeeParamSlot::Primitive { a, b } => Ok(($from)(a, b)),
-                    TeeParamSlot::Serialized(_) => Err(TeeParamError::DecodeFailed),
+                    TeeParamSlot::Serialized(_) => {
+                        consortium_log::trace!(
+                            "tee param decode: expected primitive slot, got serialized"
+                        );
+                        Err(TeeParamError::DecodeFailed)
+                    }
                 }
             }
         }
@@ -127,7 +132,10 @@ impl<C> TeeParam<C> for u64 {
     fn from_tee_param(repr: TeeParamReprRef<'_>) -> Result<Self, TeeParamError> {
         match repr {
             TeeParamSlot::Primitive { a, b } => Ok((b as u64) << 32 | a as u64),
-            TeeParamSlot::Serialized(_) => Err(TeeParamError::DecodeFailed),
+            TeeParamSlot::Serialized(_) => {
+                consortium_log::trace!("tee param decode: expected primitive slot, got serialized");
+                Err(TeeParamError::DecodeFailed)
+            }
         }
     }
 }
@@ -144,7 +152,10 @@ impl<C> TeeParam<C> for i64 {
     fn from_tee_param(repr: TeeParamReprRef<'_>) -> Result<Self, TeeParamError> {
         match repr {
             TeeParamSlot::Primitive { a, b } => Ok(((b as u64) << 32 | a as u64) as i64),
-            TeeParamSlot::Serialized(_) => Err(TeeParamError::DecodeFailed),
+            TeeParamSlot::Serialized(_) => {
+                consortium_log::trace!("tee param decode: expected primitive slot, got serialized");
+                Err(TeeParamError::DecodeFailed)
+            }
         }
     }
 }
@@ -160,7 +171,10 @@ impl<C> TeeParam<C> for (u32, u32) {
     fn from_tee_param(repr: TeeParamReprRef<'_>) -> Result<Self, TeeParamError> {
         match repr {
             TeeParamSlot::Primitive { a, b } => Ok((a, b)),
-            TeeParamSlot::Serialized(_) => Err(TeeParamError::DecodeFailed),
+            TeeParamSlot::Serialized(_) => {
+                consortium_log::trace!("tee param decode: expected primitive slot, got serialized");
+                Err(TeeParamError::DecodeFailed)
+            }
         }
     }
 }
@@ -173,7 +187,10 @@ impl<C> TeeParam<C> for Vec<u8> {
     fn from_tee_param(repr: TeeParamReprRef<'_>) -> Result<Self, TeeParamError> {
         match repr {
             TeeParamSlot::Serialized(b) => Ok(b.to_vec()),
-            TeeParamSlot::Primitive { .. } => Err(TeeParamError::DecodeFailed),
+            TeeParamSlot::Primitive { .. } => {
+                consortium_log::trace!("tee param decode: expected serialized slot, got primitive");
+                Err(TeeParamError::DecodeFailed)
+            }
         }
     }
 }

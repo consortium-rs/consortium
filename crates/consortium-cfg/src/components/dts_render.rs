@@ -75,17 +75,24 @@ pub fn render_linux_dts(
     target_cores: &[String],
 ) -> Result<Option<RenderedDts>, CfgError> {
     if ir.uio.is_empty() {
+        consortium_log::trace!("no UIO devices in IR; skipping Linux DTS render");
         return Ok(None);
     }
 
+    consortium_log::trace!("resolving base device tree for chip '{}'", chip);
     let base = resolve_base(chip, devkit, base_override)?;
+    consortium_log::trace!("collecting local include closure for '{}'", base.entry);
     let sources = local_include_closure(&base)?;
 
     let mut files = Vec::with_capacity(sources.len());
     for (name, contents) in &sources {
-        let file = parse_dts(contents).map_err(|e| CfgError::DtsParse {
-            file: name.clone(),
-            detail: e.to_string(),
+        consortium_log::trace!("parsing device-tree source '{}'", name);
+        let file = parse_dts(contents).map_err(|e| {
+            consortium_log::trace!("device-tree source '{}' failed to parse: {}", name, e);
+            CfgError::DtsParse {
+                file: name.clone(),
+                detail: e.to_string(),
+            }
         })?;
         files.push(file);
     }

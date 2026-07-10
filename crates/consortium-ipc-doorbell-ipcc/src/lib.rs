@@ -38,7 +38,7 @@ pub mod error;
 pub mod registers;
 
 pub use abstraction::Ipcc;
-pub use chan::{IPCC_CHAN_COUNT, IPCC_CHAN_OCCUPIED, IpccChanValidate};
+pub use chan::{IPCC_CHAN_COUNT, IpccChanValidate};
 pub use consortium_ipc::{Primary, Secondary, Side};
 #[cfg(not(feature = "std"))]
 pub use doorbell::notify_rx_occupied_interrupt;

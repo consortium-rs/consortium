@@ -90,8 +90,11 @@ pub fn plan_firmware_builds(
         // The controller core's generated init module (MPU/NVIC weave plus its
         // disconnected IPC endpoints). This is the existing codegen; the pipeline
         // only writes it and builds.
-        let generated = consortium_cfg::render(ir.initialize(core, ty_crate))
-            .map_err(|e| PipelineError::Codegen(e.to_string()))?;
+        consortium_log::trace!("rendering firmware init module for core {}", core);
+        let generated = consortium_cfg::render(ir.initialize(core, ty_crate)).map_err(|e| {
+            consortium_log::trace!("firmware init codegen render failed for {}: {}", core, e);
+            PipelineError::Codegen(e.to_string())
+        })?;
 
         plans.push(FirmwareBuildPlan {
             core,

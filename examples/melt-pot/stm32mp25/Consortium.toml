@@ -23,8 +23,8 @@ kernel_recipe = "linux-stm32mp"
 # (those dt-bindings headers are GPL-2.0, so they are never bundled); otherwise
 # the pipeline emits the `.dts` and prints how to compile it.
 [dts]
-# mode  = "merge"        # or "overlay"
-# linux = "~/src/linux"
+mode  = "merge"               # or "overlay"
+linux = "/home/ethanwu/linux"
 
 [endpoints]
 # Runtime endpoint name -> crate root. `cm33` is the single remote coprocessor.
@@ -40,7 +40,7 @@ mode = "auto"
 # defmt ring for the CM33, in SRAM2 (see the stm32mp25 chip database), just
 # above the IPC region below.
 [dbg.cm33]
-memory = { base = 0x00064000, length = 0x2000 }
+memory = { base = 0x00062000, length = 0x2000 }
 mtu    = 64
 
 # One shared descriptor + slots for the sensor channel, signalled over HSEM.
@@ -49,13 +49,13 @@ mtu    = 64
 # memory through its UIO device.
 [[ipc.channel]]
 name          = "sensor"
-doorbell      = "hsem"
+doorbell      = "ipcc1"
 pattern       = "memory"
 primary       = "linux"
 secondary     = "cm33"
 party.linux   = { chan = 0, type = "Command" }
 party.cm33    = { chan = 1, type = "SensorReading" }
-config.memory = { base = 0x00060000, length = 0x4000 }
+config.memory = { base = 0x00064000, length = 0x4000 }
 mtu           = 128
 
 [tee]

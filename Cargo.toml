@@ -50,9 +50,10 @@ unnecessary_safety_doc        = "deny"
 embedded-hal = "1.0"
 
 [profile.dev]
-lto       = true
+lto       = false
 opt-level = 1
-panic     = "abort"
+debug     = true  # keep DWARF info
+strip     = false # don't strip the binary
 
 [profile.release]
 lto       = true

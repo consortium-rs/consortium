@@ -4,6 +4,6 @@
  * region at 0x00060000) for the linker to place code and data. */
 MEMORY
 {
-  FLASH : ORIGIN = 0x10000000, LENGTH = 512K
-  RAM   : ORIGIN = 0x10080000, LENGTH = 256K
+  FLASH : ORIGIN = 0x80100000, LENGTH = 8M
+  RAM   : ORIGIN = 0x80A00000, LENGTH = 8M
 }

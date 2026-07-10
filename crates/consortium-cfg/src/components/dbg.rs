@@ -153,12 +153,23 @@ impl DebugLogs {
             // fixture relative to the emitted crate).
             let elf_path_normalized = ring.elf_path.replace('\\', "/");
             let label = core.to_string();
+            // `include_bytes!` yields a byte array with alignment 1, but
+            // `defmt-decoder`'s ELF parser (`object`) requires the image to be
+            // aligned to its natural boundary. Re-home the embedded bytes into a
+            // 16-aligned `static` and hand out a slice into it so the alignment
+            // survives into `DefmtContext::from_elf_bytes`.
             quote! {
                 ::consortium_runtime_app::dbg_console::DbgRingSpec {
                     uio_id: #uio_id,
                     mmap_id: #mmap_id,
                     len: #len,
-                    elf_bytes: include_bytes!(#elf_path_normalized),
+                    elf_bytes: {
+                        #[repr(align(16))]
+                        struct Aligned<const N: usize>([u8; N]);
+                        static ELF: Aligned<{ include_bytes!(#elf_path_normalized).len() }> =
+                            Aligned(*include_bytes!(#elf_path_normalized));
+                        &ELF.0
+                    },
                     label: #label,
                 }
             }
@@ -276,8 +287,9 @@ mod tests {
         assert!(init_str.contains("DbgRingSpec"));
         assert!(init_str.contains("\"cm33\""));
         // The firmware ELF is embedded at compile time, not read from a path, so
-        // the spec carries `elf_bytes: include_bytes!("<path>")`.
-        assert!(init_str.contains("elf_bytes : include_bytes ! (\"./firmware\")"));
+        // the spec carries `include_bytes!("<path>")` (re-homed into a 16-aligned
+        // static for `elf_bytes`).
+        assert!(init_str.contains("include_bytes ! (\"./firmware\")"));
         assert!(!init_str.contains("elf_path"));
         assert!(host.field.to_string().contains("DbgConsole"));
 
@@ -308,7 +320,7 @@ mod tests {
         let host = logs.initialize_host(&uio).expect("rings present");
         let init_str = host.init.to_string();
         assert!(init_str.contains(
-            "elf_bytes : include_bytes ! (\"/build/target/thumbv8m.main-none-eabi/release/firmware\")"
+            "include_bytes ! (\"/build/target/thumbv8m.main-none-eabi/release/firmware\")"
         ));
 
         // The generated spec still parses as valid Rust.
