@@ -110,6 +110,9 @@ pub fn spawn(devices: &[UioDevice], specs: &[DbgRingSpec]) -> Result<DbgConsole,
     let stop = Arc::new(AtomicBool::new(false));
     let mut threads = Vec::with_capacity(specs.len());
     for spec in specs {
+        // The AP only reads the ring; the writing coprocessor initializes the
+        // CDBG descriptor (and clears the carveout) on its own boot, so map
+        // read-only-style here without zeroing to avoid clobbering that state.
         let base = devices[spec.uio_id].mmap(spec.mmap_id)?;
         let spec = *spec;
         let stop = Arc::clone(&stop);
@@ -214,6 +217,8 @@ pub fn open(
 ) -> Result<Vec<DbgRingHandle>, DbgConsoleError> {
     let mut handles = Vec::with_capacity(specs.len());
     for spec in specs {
+        // The AP only reads the ring; the writing coprocessor initializes it. See
+        // `spawn`.
         let base = devices[spec.uio_id].mmap(spec.mmap_id)?;
         let context = DefmtContext::from_elf_bytes(spec.elf_bytes)?;
         handles.push(DbgRingHandle {

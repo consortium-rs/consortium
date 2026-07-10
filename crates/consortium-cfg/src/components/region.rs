@@ -15,7 +15,18 @@ pub struct Region {
 
 impl Region {
     pub fn initialize(&self, core: VisibleCore, uio_ident: &Ident) -> proc_macro2::TokenStream {
-        let address = self.address.memory_lookup(core, uio_ident);
+        // The AP owns the first touch of the shared-memory carveout and clears it
+        // (`mmap_zeroed`) so a warm reboot's stale descriptor/slot bytes never
+        // read as valid; controller cores embed a physical base and leave the
+        // handshake to zero what it needs.
+        let address = match core {
+            VisibleCore::Ap => {
+                let uio_id = self.address.ap.uio_id;
+                let mmap_id = self.address.ap.mmap_id;
+                quote::quote! { #uio_ident[#uio_id].mmap_zeroed(#mmap_id)? }
+            }
+            _ => self.address.memory_lookup(core, uio_ident),
+        };
         let length = proc_macro2::Literal::usize_suffixed(self.length as usize);
         let region_identifier = match self.r#type {
             MemoryRegionType::Sram => {
@@ -60,7 +71,7 @@ mod tests {
         // base is cast to a raw pointer; length is a usize literal.
         assert!(tokens.contains("as * mut u8"));
         assert!(tokens.contains("32768usize"));
-        // address resolves through the AP UIO mmap window.
-        assert!(tokens.contains("uio [0usize] . mmap (1usize) ?"));
+        // address resolves through the AP UIO mmap window, zeroing it first.
+        assert!(tokens.contains("uio [0usize] . mmap_zeroed (1usize) ?"));
     }
 }

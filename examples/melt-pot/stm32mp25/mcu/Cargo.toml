@@ -25,7 +25,7 @@ license     = "Apache-2.0"
 name        = "melt-pot-stm32mp25-mcu"
 version     = "0.1.0"
 
-# Cross-compile target: thumbv8m.main-none-eabi  (Cortex-M33)
+# Cross-compile target: thumbv8m.main-none-eabihf  (Cortex-M33)
 # Built via `consortium build --manifest ../Consortium.toml`.
 
 [[bin]]
@@ -52,6 +52,7 @@ consortium-ipc-transport-memory = { default-features = false, features = [
 consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory" }
 consortium-runtime-mcu = { default-features = false, path = "../../../../crates/consortium-runtime-mcu" }
 consortium-hal-stm32mp2 = { default-features = false, features = [
+  "rt",
   "time-driver-gp-tim",
 ], path = "../../../../crates/consortium-hal-stm32mp2" }
 consortium-dbg = { default-features = false, features = [
@@ -67,11 +68,11 @@ embassy-executor = { default-features = false, features = [
   "platform-cortex-m",
 ], version = "0.10.0" }
 embassy-time = { default-features = false, features = ["tick-hz-1_000_000"], version = "0.5.1" }
-panic-halt = "0.2"
+# panic-halt = "0.2"
 
 [profile.dev]
-panic = "abort"
+# panic = "abort"
 
 [profile.release]
-lto   = true
-panic = "abort"
+lto = true
+# panic = "abort"

@@ -307,20 +307,20 @@ mod tests {
         let logs = DebugLogs::new(HashMap::from([(cm33(), ring())]), DbgMode::Auto);
         let resolved = HashMap::from([(
             cm33(),
-            PathBuf::from("/build/target/thumbv8m.main-none-eabi/release/firmware"),
+            PathBuf::from("/build/target/thumbv8m.main-none-eabihf/release/firmware"),
         )]);
         let logs = logs.with_resolved_elf_paths(&resolved);
 
         assert_eq!(
             logs.ring(cm33()).expect("cm33 ring").elf_path,
-            "/build/target/thumbv8m.main-none-eabi/release/firmware"
+            "/build/target/thumbv8m.main-none-eabihf/release/firmware"
         );
 
         let uio = format_ident!("uio");
         let host = logs.initialize_host(&uio).expect("rings present");
         let init_str = host.init.to_string();
         assert!(init_str.contains(
-            "include_bytes ! (\"/build/target/thumbv8m.main-none-eabi/release/firmware\")"
+            "include_bytes ! (\"/build/target/thumbv8m.main-none-eabihf/release/firmware\")"
         ));
 
         // The generated spec still parses as valid Rust.

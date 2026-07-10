@@ -162,7 +162,7 @@ mod tests {
         assert_eq!(plans.len(), 1);
         let plan = &plans[0];
         assert_eq!(plan.core, VisibleCore::Mcore("cm33".parse().unwrap()));
-        assert_eq!(plan.config.target, "thumbv8m.main-none-eabi");
+        assert_eq!(plan.config.target, "thumbv8m.main-none-eabihf");
         assert_eq!(plan.config.path, Path::new("/proj/firmware"));
         assert!(plan.config.release);
         // cm33 declares `[dbg.cm33]`, so a debug layout is resolved.

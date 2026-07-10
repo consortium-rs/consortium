@@ -7,11 +7,15 @@ license.workspace = true
 
 [features]
 defmt      = ["dep:defmt"]
+rt         = ["cortex-m-rt/device", "dep:cortex-m-rt"]
+stm32mp21  = []
 stm32mp257 = []
 default    = ["stm32mp257"]
 
 [dependencies]
-defmt = { optional = true, version = "1.0.1" }
+cortex-m    = { version = "0.7" }
+cortex-m-rt = { optional = true, version = "0.7" }
+defmt       = { optional = true, version = "1.0.1" }
 
 [lints]
 workspace = true

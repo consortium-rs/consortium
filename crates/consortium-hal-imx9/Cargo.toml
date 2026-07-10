@@ -7,6 +7,8 @@ version.workspace = true
 
 [features]
 default = ["dma", "gpio", "i2c", "time-driver-lpit", "uart"]
+# Forward cortex-m-rt runtime support (vector table, `#[interrupt]`) to the PAC.
+rt = ["consortium-pac-imx9/rt"]
 dma = ["dep:critical-section", "dep:embassy-sync"]
 gpio = ["dep:embassy-sync", "dep:embedded-hal"]
 i2c = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]

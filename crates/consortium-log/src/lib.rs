@@ -109,11 +109,33 @@ macro_rules! __tracing {
     (warn,  $($a:tt)*) => { $crate::__tracing_warn!($($a)*) };
     (error, $($a:tt)*) => { $crate::__tracing_error!($($a)*) };
 }
+
 #[cfg(not(feature = "tracing"))]
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __tracing {
     ($level:ident, $($a:tt)*) => {{}};
+}
+
+// When both backends are disabled, still expand the portable format arguments
+// so variables referenced only by a log call count as used. The false branch
+// ensures argument expressions are never evaluated at runtime.
+#[cfg(not(any(feature = "defmt", feature = "tracing")))]
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __disabled {
+    ($($a:tt)*) => {{
+        #[allow(clippy::all)]
+        if false {
+            let _ = core::format_args!($($a)*);
+        }
+    }};
+}
+#[cfg(any(feature = "defmt", feature = "tracing"))]
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __disabled {
+    ($($a:tt)*) => {{}};
 }
 
 /// Logs at the `trace` level to every enabled backend. See the
@@ -123,6 +145,7 @@ macro_rules! trace {
     ($($arg:tt)*) => {{
         $crate::__defmt!(trace, $($arg)*);
         $crate::__tracing!(trace, $($arg)*);
+        $crate::__disabled!($($arg)*);
     }};
 }
 
@@ -132,6 +155,7 @@ macro_rules! debug {
     ($($arg:tt)*) => {{
         $crate::__defmt!(debug, $($arg)*);
         $crate::__tracing!(debug, $($arg)*);
+        $crate::__disabled!($($arg)*);
     }};
 }
 
@@ -141,6 +165,7 @@ macro_rules! info {
     ($($arg:tt)*) => {{
         $crate::__defmt!(info, $($arg)*);
         $crate::__tracing!(info, $($arg)*);
+        $crate::__disabled!($($arg)*);
     }};
 }
 
@@ -150,6 +175,7 @@ macro_rules! warn {
     ($($arg:tt)*) => {{
         $crate::__defmt!(warn, $($arg)*);
         $crate::__tracing!(warn, $($arg)*);
+        $crate::__disabled!($($arg)*);
     }};
 }
 
@@ -159,6 +185,7 @@ macro_rules! error {
     ($($arg:tt)*) => {{
         $crate::__defmt!(error, $($arg)*);
         $crate::__tracing!(error, $($arg)*);
+        $crate::__disabled!($($arg)*);
     }};
 }
 

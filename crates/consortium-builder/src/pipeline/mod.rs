@@ -274,10 +274,15 @@ pub async fn plan(
         firmware_outputs.insert(plan.core, elf);
     }
 
-    // Stage 2: the defmt ELF map (fails fast if a dbg core was not built).
+    // Stage 2: the defmt ELF map (fails fast if a dbg core was not built). The AP
+    // decodes defmt from the `*_original.elf` image (the objcopy-stripped deploy
+    // ELF has no `.defmt` section), so map each raw output to its original sibling.
     let ir = session.lower()?;
-    let dbg_elfs =
-        elf_map::resolve_dbg_elf_paths(&firmware_outputs, ir.dbg.rings().keys().copied())?;
+    let dbg_sources: HashMap<VisibleCore, PathBuf> = firmware_outputs
+        .iter()
+        .map(|(core, raw)| (*core, crate::compile::firmware::original_elf_path(raw)))
+        .collect();
+    let dbg_elfs = elf_map::resolve_dbg_elf_paths(&dbg_sources, ir.dbg.rings().keys().copied())?;
 
     // Stage 3: HMI dist directory (built later; recorded here).
     let hmi_dist = config.hmi.as_ref().map(|h| h.dist_dir.clone());
@@ -404,18 +409,21 @@ async fn run_inner(
         + config.bitbake.len();
     let mut steps = StepRunner::new(reporter, total_steps);
 
+    // The deploy (objcopy-processed) ELF per core, staged into `dist/firmware/`.
+    // The AP already embedded the `*_original.elf` at plan time (Stage 2/5), so
+    // only the deployable image is needed here.
     let mut firmware_outputs = HashMap::new();
     for fw in &plan.firmware {
         let detail = format!("{} ({})", fw.core, fw.config.target);
-        let elf = steps
+        let deploy = steps
             .run("Build firmware", Some(&detail), async {
                 write_generated_module(&fw.config.path, &fw.generated).await?;
-                let elf =
+                let artifacts =
                     FirmwareCompiler::build_with_reporter(fw.config.clone(), reporter).await?;
-                Ok(elf)
+                Ok(artifacts.deploy)
             })
             .await?;
-        firmware_outputs.insert(fw.core, elf);
+        firmware_outputs.insert(fw.core, deploy);
     }
 
     let hmi_dist = match &config.hmi {
@@ -856,24 +864,25 @@ mod tests {
         let cm33 = VisibleCore::Mcore("cm33".parse().unwrap());
         // The endpoint is `./firmware`, so the resolved path keeps that prefix.
         let expected_elf =
-            root.join("./firmware/target/thumbv8m.main-none-eabi/release/melt-pot-mcu");
+            root.join("./firmware/target/thumbv8m.main-none-eabihf/release/melt-pot-mcu");
         assert_eq!(plan.firmware_outputs[&cm33], expected_elf);
 
-        // Stage 2: the dbg ELF map points cm33's ring at that firmware ELF.
-        assert_eq!(plan.dbg_elfs[&cm33], expected_elf);
+        // Stage 2: the dbg ELF map points cm33's ring at the `*_original.elf`
+        // sibling (the defmt-bearing image), absolutized for `include_bytes!`.
+        let original_elf =
+            std::path::absolute(crate::compile::firmware::original_elf_path(&expected_elf))
+                .unwrap();
+        assert_eq!(plan.dbg_elfs[&cm33], original_elf);
 
-        // Stage 5: the AP module embeds the very path Stage 1 will produce, and
-        // the app targets Linux with the HMI served from the deploy root.
+        // Stage 5: the AP module embeds the `*_original.elf` Stage 1 will produce,
+        // and the app targets Linux with the HMI served from the deploy root.
         // (prettyplease may wrap a long `include_bytes!(...)` across lines, so
         // assert on the embedded path literal rather than the whole call.)
         assert!(plan.application.generated.contains("include_bytes!"));
-        // The builder absolutizes (and lexically normalizes) the ELF path before
-        // codegen, so the embedded literal drops the `./` endpoint prefix.
-        let embedded_elf = std::path::absolute(&expected_elf).unwrap();
         assert!(
             plan.application
                 .generated
-                .contains(&format!("\"{}\"", embedded_elf.display()))
+                .contains(&format!("\"{}\"", original_elf.display()))
         );
         assert_eq!(plan.application.config.target, "aarch64-unknown-linux-gnu");
         assert_eq!(

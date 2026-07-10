@@ -34,7 +34,7 @@ impl McoreName {
         match self {
             Self::Cm0p => "thumbv6m-none-eabi",
             Self::Cm4f | Self::Cm7 => "thumbv7em-none-eabihf",
-            Self::Cm33 => "thumbv8m.main-none-eabi",
+            Self::Cm33 => "thumbv8m.main-none-eabihf",
         }
     }
 
@@ -113,7 +113,7 @@ mod tests {
         assert_eq!(McoreName::from_full_name("cortex-m33"), Ok(McoreName::Cm33));
         assert_eq!(McoreName::Cm33.abbr(), "cm33");
         assert_eq!(McoreName::Cm33.full_name(), "cortex-m33");
-        assert_eq!(McoreName::Cm33.rust_triple(), "thumbv8m.main-none-eabi");
+        assert_eq!(McoreName::Cm33.rust_triple(), "thumbv8m.main-none-eabihf");
         assert!(McoreName::Cm33.has_trustzone());
         assert!(McoreName::Cm33.is_32_bit());
     }

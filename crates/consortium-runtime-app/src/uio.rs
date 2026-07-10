@@ -125,17 +125,30 @@ impl UioDevice {
     /// time `open` runs the index is always real. The mapped address comes from
     /// mmap, not from `CONSORTIUM_IPC_BASE`.
     pub fn open(uio_id: usize) -> Result<Self, UioDeviceError> {
+        consortium_log::trace!("UioDevice::open(uio_id = {uio_id})");
         let uio = uio::UioDevice::blocking_new(uio_id)?;
 
+        consortium_log::trace!(
+            "UioDevice::open: mmap'd descriptor at {:p}, size = {:#x}",
+            uio.map_mapping(0)?,
+            uio.map_size(0)?
+        );
+
         let notifiers: Notifiers = Arc::new(Mutex::new(Vec::new()));
+
+        consortium_log::trace!("UioDevice::open: spawning IRQ listener task");
 
         // Open the device fd a second time for async IRQ listening so we do
         // not disturb the mmap held by `uio`.
         let irq_file = File::open(format!("/dev/uio{uio_id}"))?;
         let async_fd = AsyncFd::new(irq_file)?;
 
+        consortium_log::trace!("UioDevice::open: starting irq_loop");
+
         let irq_notifiers = Arc::clone(&notifiers);
         let irq_task = tokio::spawn(async move { irq_loop(async_fd, irq_notifiers).await });
+
+        consortium_log::trace!("UioDevice::open: returning UioDevice handle");
 
         Ok(Self {
             inner: Arc::new(Inner { notifiers }),
@@ -159,6 +172,49 @@ impl UioDevice {
         Ok(self.uio.map_mapping(index)? as usize)
     }
 
+    /// Map a RAM-backed UIO window by index, zero its entire length, and return
+    /// its virtual base address.
+    ///
+    /// Shared-memory carveouts (the IPC descriptor region and the debug rings)
+    /// keep their contents across a coprocessor reset, so a warm reboot can leave
+    /// stale descriptor magic, slot pointers, or ring state behind. The AP owns
+    /// the first touch of these windows, so it clears them here before the
+    /// descriptor handshake or ring bring-up reads them.
+    ///
+    /// This is only valid for `reserved-memory` (RAM) windows. Never call it on a
+    /// register-backed window (a doorbell block): writing zeros to it would clear
+    /// live MMIO registers. Use [`mmap`](Self::mmap) for those.
+    ///
+    /// [`mmap`]: Self::mmap
+    pub fn mmap_zeroed(&self, index: usize) -> Result<usize, UioDeviceError> {
+        let base = self.uio.map_mapping(index)? as usize;
+        let len = self.uio.map_size(index)?;
+        // The kernel maps UIO memory noncached (ARM Device-nGnRnE). A bulk
+        // `memset`/`write_bytes` is *not* usable here: glibc's AArch64 `memset`
+        // uses `DC ZVA` and unaligned SIMD stores, both illegal on Device memory,
+        // which fault as SIGBUS. Zero with aligned `write_volatile` word stores,
+        // the same access discipline the descriptor/slot protocol uses. UIO
+        // windows are page-aligned, so the `usize` steps stay naturally aligned;
+        // a trailing sub-word remainder (only possible for a non-word-multiple
+        // length) is cleared byte-by-byte.
+        let step = core::mem::size_of::<usize>();
+        let words = len / step;
+        // SAFETY: `base`/`len` describe the freshly mapped UIO RAM window this
+        // device owns; before the coprocessor boots the AP is its sole writer, so
+        // these in-bounds volatile stores have no aliasing hazard.
+        unsafe {
+            let word_ptr = base as *mut usize;
+            for i in 0..words {
+                word_ptr.add(i).write_volatile(0);
+            }
+            let byte_ptr = base as *mut u8;
+            for i in (words * step)..len {
+                byte_ptr.add(i).write_volatile(0);
+            }
+        }
+        Ok(base)
+    }
+
     /// Register a doorbell's [`Notify`] so the IRQ task wakes its `wait()`
     /// futures on every M→A interrupt.
     ///
@@ -175,6 +231,7 @@ impl UioDevice {
     /// let transport = SharedMemoryTransport::<Primary, _, _>::new(mu, desc, slot_pair);
     /// ```
     pub fn bind_notifier(&self, notifier: Arc<Notify>) {
+        consortium_log::trace!("UioDevice::bind_notifier: registering notifier");
         self.inner
             .notifiers
             .lock()

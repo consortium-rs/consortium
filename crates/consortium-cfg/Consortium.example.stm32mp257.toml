@@ -13,10 +13,14 @@ cm33  = "./firmware"
 # decoded defmt frames to `tracing`; "interface" hands back reader handles.
 mode = "auto"
 
+# defmt ring for the CM33, in SRAM2 (base 0x00060000 in the stm32mp25 chip
+# database), just below the sensor IPC region.
 [dbg.cm33]
-memory = { base = 0x000408000, length = 0x2000 }
+memory = { base = 0x00062000, length = 0x2000 }
 mtu    = 64
 
+# The sensor channel lives in SRAM2, visible to both the CA35 (via UIO) and the
+# CM33 (via the raw physical base).
 [[ipc.channel]]
 name          = "sensor"
 doorbell      = "hsem"
@@ -25,9 +29,11 @@ primary       = "linux"
 secondary     = "cm33"
 party.linux   = { chan = 0, type = "SensorData" }
 party.cm33    = { chan = 1, type = "MotionControl" }
-config.memory = { base = 0x000400000, length = 0x4000 }
+config.memory = { base = 0x00064000, length = 0x4000 }
 mtu           = 128
 
+# The low-power channel lives in LPSRAM3 (base 0x000C4000), the only SRAM window
+# the CM0+ can reach.
 [[ipc.channel]]
 name          = "lp"
 doorbell      = "ipcc2"
@@ -36,7 +42,7 @@ primary       = "linux"
 secondary     = "cm0p"
 party.linux   = { chan = 0, type = "PowerStatus" }
 party.cm0p    = { chan = 1, type = "PowerMode" }
-config.memory = { base = 0x000404000, length = 0x4000 }
+config.memory = { base = 0x000C4000, length = 0x4000 }
 mtu           = 128
 codec         = "rkyv"
 
