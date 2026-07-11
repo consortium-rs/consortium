@@ -171,11 +171,13 @@ impl GpTimerTimeDriver {
     }
 
     fn on_interrupt(&self) {
+        consortium_log::trace!("on_timer_interrupt");
         let Some(r) = tim() else {
             return;
         };
 
         critical_section::with(|cs| {
+            consortium_log::trace!("on_timer_interrupt: critical section");
             let sr = r.SR().read();
             let dier = r.DIER().read();
 
@@ -228,12 +230,14 @@ impl Driver for GpTimerTimeDriver {
 /// 16-bit prescaler, or initialization panics. The caller must also route and
 /// enable the instance's interrupt to [`on_timer_interrupt`].
 pub unsafe fn init_timer(base: *mut (), clock_hz: u32) {
+    consortium_log::trace!("init_timer, clock hz={}", clock_hz);
     // SAFETY: Propagates the caller's MMIO validity and exclusivity contract.
     unsafe { DRIVER.init(base, clock_hz) }
 }
 
 /// Handle the selected TIM interrupt.
 pub fn on_timer_interrupt() {
+    consortium_log::trace!("on_timer_interrupt triggered");
     DRIVER.on_interrupt();
 }
 

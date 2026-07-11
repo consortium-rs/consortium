@@ -28,9 +28,9 @@ default = ["ipc-shm"]
 # The firmware crate that includes the generated module must also depend on
 # `defmt` directly, since `defmt`'s macros expand to literal `defmt::` paths.
 defmt      = ["consortium-ipc-transport-memory?/defmt", "consortium-log/defmt"]
-imx93      = ["consortium-ipc-transport-memory?/imx93", "imx9x"]
-imx95      = ["consortium-ipc-transport-memory?/imx95", "imx9x"]
-imx9x      = []
+mimx93     = ["consortium-ipc-transport-memory?/mimx93", "mimx9x"]
+mimx95     = ["consortium-ipc-transport-memory?/mimx95", "mimx9x"]
+mimx9x     = []
 ipc        = ["ipc-shm"]
 ipc-shm    = ["dep:consortium-ipc", "dep:consortium-ipc-transport-memory"]
 stm32mp21x = ["consortium-ipc-transport-memory?/stm32mp21x"]

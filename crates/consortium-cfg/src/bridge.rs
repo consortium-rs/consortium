@@ -295,6 +295,10 @@ impl LoweredIr {
                             #base,
                             #size,
                         );
+                        ::consortium_runtime_mcu::log::trace!(
+                            "consortium controller init: MPU carveout {} base={:#010x} size={:#010x}",
+                            #region, #base, #size
+                        );
                     }
                 });
             }
@@ -332,16 +336,12 @@ impl LoweredIr {
             /// (which never links `cortex-m`) skips it.
             #[cfg(target_arch = "arm")]
             fn init() -> IpcMemoryEndpoints {
-                unsafe { core::ptr::write_volatile(0x20064000 as *mut u32, 0x31) };
                 ::consortium_runtime_mcu::log::trace!("consortium controller init: mpu/nvic bring-up");
-                unsafe { core::ptr::write_volatile(0x20064000 as *mut u32, 0x32) };
                 #steal
-                unsafe { core::ptr::write_volatile(0x20064000 as *mut u32, 0x33) };
+                ::consortium_runtime_mcu::log::trace!("peripherals stolen");
                 #(#mpu_stmts)*
-                unsafe { core::ptr::write_volatile(0x20064000 as *mut u32, 0x34) };
                 #nvic
                 ::consortium_runtime_mcu::log::trace!("consortium controller init: endpoints constructed");
-                unsafe { core::ptr::write_volatile(0x20064000 as *mut u32, 0x35) };
                 IpcMemoryEndpoints::new()
             }
 

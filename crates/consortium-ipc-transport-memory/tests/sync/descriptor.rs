@@ -257,19 +257,25 @@ fn descriptor_ack_rejects_bad_version() {
 }
 
 #[test]
-fn descriptor_ack_rejects_non_ready_state() {
+fn descriptor_ack_waits_then_rejects_unpublished_descriptor() {
     let mut backing = vec![0; DESCRIPTOR_LEN];
     let base = backing.as_mut_ptr();
 
+    // Fully initialize the descriptor, then clear the header magic to simulate a
+    // descriptor whose body is present but whose magic has not been published yet.
+    // The state word is irrelevant to readiness now; the magic is the gate.
     init_descriptor(base, 1, 64);
-    unsafe {
-        set_state(base, DescState::Proposed);
-    }
+    write_u32(base, 0, 0);
 
-    let err = ack_descriptor(base, 1, 64).expect_err("descriptor must be Ready before ack");
+    // The magic does not match, so ack waits on the doorbell. The immediate doorbell
+    // fires without the primary republishing the magic, so the re-check still fails.
+    let err = ack_descriptor(base, 1, 64)
+        .expect_err("unpublished descriptor magic should be rejected after the doorbell wait");
     assert!(matches!(
         err,
-        Error::Descriptor(DescriptorError::NotReady(DescState::Proposed))
+        Error::Descriptor(DescriptorError::Header(
+            DescriptorHeaderError::UnknownMagic { .. }
+        ))
     ));
 }
 

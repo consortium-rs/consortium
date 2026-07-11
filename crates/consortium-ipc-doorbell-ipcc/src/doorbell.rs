@@ -27,7 +27,7 @@
 
 use core::{
     pin::Pin,
-    sync::atomic::{Ordering, fence},
+    sync::atomic::{Ordering, compiler_fence, fence},
     task::{Context, Poll},
 };
 
@@ -35,6 +35,18 @@ use consortium_ipc::{Chan, Doorbell, Side};
 use consortium_log::{debug, error, trace};
 
 use crate::{abstraction::Ipcc, chan::IPCC_CHAN_COUNT, error::IpccError};
+
+#[cfg(not(feature = "std"))]
+#[inline]
+fn with_interrupts_masked<R>(f: impl FnOnce() -> R) -> R {
+    critical_section::with(|_| f())
+}
+
+#[cfg(feature = "std")]
+#[inline]
+fn with_interrupts_masked<R>(f: impl FnOnce() -> R) -> R {
+    f()
+}
 
 /// IPCC-backed doorbell for instance `N` (1-based), processor side `S`.
 pub struct IpccDoorbell<S: Side, const N: usize> {
@@ -176,6 +188,22 @@ impl<'a, S: Side, const N: usize> IpccWaitFut<'a, S, N> {
     }
 }
 
+impl<S: Side, const N: usize> Drop for IpccWaitFut<'_, S, N> {
+    fn drop(&mut self) {
+        if !self.armed {
+            return;
+        }
+
+        let Ok(id) = IpccDoorbell::<S, N>::channel_of(self.ch) else {
+            return;
+        };
+        with_interrupts_masked(|| {
+            // SAFETY: `id` was validated and this future owns the armed wait.
+            unsafe { self.doorbell.ipcc.mask_rx_occupied_interrupt(id) };
+        });
+    }
+}
+
 impl<'a, S: Side, const N: usize> core::future::Future for IpccWaitFut<'a, S, N> {
     type Output = Result<Chan, IpccError>;
 
@@ -192,10 +220,18 @@ impl<'a, S: Side, const N: usize> core::future::Future for IpccWaitFut<'a, S, N>
             this.ch, this.armed
         );
 
+        #[cfg(not(feature = "std"))]
+        channel_waker::<N>(id).register(cx.waker());
+
+        compiler_fence(Ordering::SeqCst);
+
         if !this.armed {
             debug!("wait({:?}) -> arm C{}SCR.CH{} interrupt", this.ch, N, id);
-            // SAFETY: `id` is validated `< 16`; armed once from this task.
-            unsafe { this.doorbell.ipcc.enable_rx_occupied_interrupt(id) };
+            // Serialize the CxCR/CxMR read-modify-write with the ISR.
+            with_interrupts_masked(|| {
+                // SAFETY: `id` is validated `< 16`; armed once from this task.
+                unsafe { this.doorbell.ipcc.enable_rx_occupied_interrupt(id) };
+            });
             this.armed = true;
 
             #[cfg(feature = "std")]
@@ -218,18 +254,6 @@ impl<'a, S: Side, const N: usize> core::future::Future for IpccWaitFut<'a, S, N>
                 };
                 this.notified = Some(notified);
             }
-
-            #[cfg(not(feature = "std"))]
-            {
-                debug!(
-                    "wait({:?}) -> register AtomicWaker for C{}TOC{}SR.CH{} interrupt",
-                    this.ch,
-                    N,
-                    S::INDEX,
-                    id
-                );
-                IPCC_WAKER.register(cx.waker());
-            }
         }
 
         if this.doorbell.ipcc.incoming_occupied(id) {
@@ -245,8 +269,10 @@ impl<'a, S: Side, const N: usize> core::future::Future for IpccWaitFut<'a, S, N>
             // SAFETY: `id` is validated `< 16`; the incoming bit is set.
             unsafe { this.doorbell.ipcc.clear_incoming_occupied(id) };
             consortium_log::trace!("cleared incoming occupied channel {}", id);
-            // SAFETY: `id` is validated `< 16`; re-mask after completion.
-            unsafe { this.doorbell.ipcc.mask_rx_occupied_interrupt(id) };
+            with_interrupts_masked(|| {
+                // SAFETY: `id` is validated `< 16`; re-mask after completion.
+                unsafe { this.doorbell.ipcc.mask_rx_occupied_interrupt(id) };
+            });
             consortium_log::trace!("interrupt masked at channel {}", id);
 
             consortium_log::debug!("wait({:?}) -> C{}SCR.CH{} interrupt masked", this.ch, N, id);
@@ -267,36 +293,54 @@ impl<'a, S: Side, const N: usize> core::future::Future for IpccWaitFut<'a, S, N>
             let _ = unsafe { Pin::new_unchecked(notified) }.poll(cx);
         }
 
-        #[cfg(not(feature = "std"))]
-        {
-            debug!(
-                "wait({:?}) -> register AtomicWaker for C{}TOC{}SR.CH{} interrupt",
-                this.ch,
-                N,
-                S::INDEX,
-                id
-            );
-            IPCC_WAKER.register(cx.waker());
-        }
-
         Poll::Pending
     }
 }
 
 // ── no_std: shared waker and IRQ entry point ─────────────────────────────────
 
-/// Waker shared by all IPCC `wait()` futures on the bare-metal path.
+/// Wakers separated by IPCC instance and channel on the bare-metal path.
 #[cfg(not(feature = "std"))]
-static IPCC_WAKER: atomic_waker::AtomicWaker = atomic_waker::AtomicWaker::new();
+static IPCC_WAKERS: [[atomic_waker::AtomicWaker; IPCC_CHAN_COUNT as usize]; 2] =
+    [const { [const { atomic_waker::AtomicWaker::new() }; IPCC_CHAN_COUNT as usize] }; 2];
 
-/// Wake tasks waiting on an IPCC RX-occupied interrupt. Call from the verified
-/// STM32MP2 IPCC RX-occupied interrupt vector.
-///
-/// The exact NVIC line is intentionally not encoded here because it differs by
-/// family and interrupt-routing configuration.
 #[cfg(not(feature = "std"))]
-pub fn notify_rx_occupied_interrupt() {
-    IPCC_WAKER.wake();
+#[inline]
+fn channel_waker<const N: usize>(id: u8) -> &'static atomic_waker::AtomicWaker {
+    &IPCC_WAKERS[N - 1][id as usize]
+}
+
+/// Service an IPCC RX-occupied interrupt. Call from the corresponding vector.
+///
+/// Asserted, unmasked channels are masked before their waiters are woken. IPCC
+/// RX interrupts are level-sensitive, so this prevents immediate ISR re-entry.
+/// The wait future subsequently acknowledges the occupied flag, and the next
+/// wait unmasks the channel again.
+///
+/// # Safety
+///
+/// `base` must be the mapped base of IPCC instance `N`, accessible from side
+/// `S`. It has the same requirements as [`IpccDoorbell::new`].
+#[cfg(not(feature = "std"))]
+pub unsafe fn notify_rx_occupied_interrupt<S: Side, const N: usize>(base: usize) {
+    // SAFETY: guaranteed by the caller; the temporary handle accesses the same
+    // MMIO window as the doorbell used by the waiting task.
+    let ipcc = unsafe { Ipcc::<S, N>::new(base) };
+    // Like embassy-stm32, use the remote status directly. Do not filter it
+    // through CxMR: an already-masked occupied channel must still be serviced.
+    let occupied = ipcc.incoming_occupied_channels();
+
+    // Mask all asserted channels in one CxMR read-modify-write before waking.
+    with_interrupts_masked(|| {
+        // SAFETY: the bitmap comes directly from the 16-channel status register.
+        unsafe { ipcc.mask_rx_occupied_channels(occupied) };
+    });
+
+    for id in 0..IPCC_CHAN_COUNT {
+        if occupied & (1u16 << id) != 0 {
+            channel_waker::<N>(id).wake();
+        }
+    }
 }
 
 #[cfg(all(test, feature = "std"))]
@@ -398,6 +442,47 @@ mod tests {
         assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(2))));
         assert_eq!(regs[offsets::C1SCR / 4], clear_flag(2));
         assert!(ChannelRegister::from_bits(regs[offsets::C1MR / 4]).channels() & (1 << 2) != 0);
+    }
+
+    #[test]
+    fn occupied_bitmap_is_masked_in_one_update() {
+        let mut regs = [0u32; 8];
+        regs[offsets::C2TOC1SR / 4] = occupied(2) | occupied(5);
+        regs[offsets::C1MR / 4] = 1 << 7;
+        let db = doorbell(&mut regs);
+
+        let occupied = db.ipcc.incoming_occupied_channels();
+        // SAFETY: the bitmap was read from the fake 16-channel status register.
+        unsafe { db.ipcc.mask_rx_occupied_channels(occupied) };
+
+        assert_eq!(occupied, (1 << 2) | (1 << 5));
+        assert_eq!(
+            ChannelRegister::from_bits(regs[offsets::C1MR / 4]).channels(),
+            (1 << 2) | (1 << 5) | (1 << 7)
+        );
+    }
+
+    #[test]
+    fn dropping_pending_wait_masks_its_channel() {
+        let mut regs = [0u32; 8];
+        regs[offsets::C1MR / 4] = u32::MAX;
+        let db = doorbell(&mut regs);
+        let waker = std::task::Waker::noop();
+        let mut cx = Context::from_waker(waker);
+
+        {
+            let mut wait = std::pin::pin!(db.wait(ch(2)));
+            assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+            assert_eq!(
+                ChannelRegister::from_bits(regs[offsets::C1MR / 4]).channels() & (1 << 2),
+                0
+            );
+        }
+
+        assert_ne!(
+            ChannelRegister::from_bits(regs[offsets::C1MR / 4]).channels() & (1 << 2),
+            0
+        );
     }
 
     #[test]

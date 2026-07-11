@@ -168,16 +168,32 @@ Doorbells provide wakeup/signaling and should keep MMIO safety invariants docume
 Use typed register abstractions and validate channel bounds through the local validation
 type where available.
 
-- `consortium-ipc-doorbell-hsem` targets STM32 HSEM. Features are `stm32mp23`,
-  `stm32mp25`, `stm32h7x5`, `stm32h7x7`; default is `stm32mp25`; `std` enables Tokio
-  support.
-- `consortium-ipc-doorbell-ipcc` targets STM32 IPCC. Features are `stm32mp21x`,
+Each hardware doorbell depends on its related chip HAL (`consortium-hal-stm32mp2` or
+`consortium-hal-imx9`) and forwards its chip-selection feature to the HAL, so the shared
+PAC's register/interrupt definitions match the target. A doorbell dep that
+selects a non-default chip must set `default-features = false` so the HAL's default chip
+is not also pulled in (two chips = ambiguous PAC `Interrupt`).
+
+- `consortium-ipc-doorbell-hsem` targets STM32 HSEM. Chip features are `stm32mp23x` and
+  `stm32mp25x` (both map to the PAC's `stm32mp257`); default is `stm32mp25x`; `std`
+  enables Tokio support.
+- `consortium-ipc-doorbell-ipcc` targets STM32 IPCC. Chip features are `stm32mp21x`,
   `stm32mp23x`, `stm32mp25x`; default is `stm32mp25x`; `std` enables Tokio support.
-- `consortium-ipc-doorbell-mu` targets NXP i.MX MU. Features are `imx8mp`, `imx93`,
-  `imx95`; default is `imx95`; channels `0..4` are GI lines and `4..8` are RF lines.
+- `consortium-ipc-doorbell-mu` targets NXP i.MX MU. Chip features are `mimx93` and
+  `mimx95`; default is `mimx95`; channels `0..4` are GI lines and `4..8` are RF lines.
 - `consortium-ipc-doorbell-gpio` is a single-channel GPIO doorbell. The `no_std` path
   uses a software pending flag and IRQ-side `wake`; the `std` path exposes a Tokio
   `Notify` that external interrupt code must trigger.
+
+No hardware doorbell installs `#[interrupt]` handlers. The application owns the vector
+table and forwards each relevant IRQ into the crate's exported waker: HSEM calls
+`hsem::notify()`, IPCC RX lines call `ipcc::notify_rx_occupied_interrupt()`, and each MU
+line calls `mu::notify::<N>()` with its instance number. Enable the _HAL's_ `rt` feature
+(`consortium-hal-*/rt`) so the `#[interrupt]` macro and PAC vector table are available to
+that application code; the doorbell crates themselves no longer expose an `rt` feature.
+The relevant vectors are HSEM (non-secure), IPCC1_RX/IPCC2_RX (non-secure), and the MU
+lines a core drives (i.MX93 `MU1_B`/`MU2_B`; i.MX95 CM7 `MU5_A`/`MU7_B`/`MU8_B`). See the
+melt-pot `mcu/src/main.rs` files for worked examples.
 
 The `std` doorbell paths are host-testable with fake MMIO and Tokio `Notify`. Runtime
 UIO integrations should bind each doorbell notifier to the Linux UIO IRQ fanout before
@@ -189,15 +205,20 @@ receiving.
 `Peripheral`, `ClockControl`, `InterruptSource`, `MonotonicTimer`, and `nvic::Irq`.
 
 `consortium-pac-imx9` and `consortium-pac-stm32mp2` are generated `no_std` PAC crates.
-Their defaults currently select `imx95` and `stm32mp257`, respectively. PAC generation
-uses the `just pac-*` recipes, vendor submodules under `submodules/`, parser scripts under
-`scripts/pac/`, and generated/validated outputs under `output/` and `data/`. Avoid
-hand-editing generated PAC output unless the recipe or patch workflow calls for it.
+Their chip features are `mimx93`/`mimx95` (default `mimx95`) and `stm32mp21`/`stm32mp257`
+(default `stm32mp257`), respectively. PAC generation uses the `just pac-*` recipes, vendor
+submodules under `submodules/`, parser scripts under `scripts/pac/`, and
+generated/validated outputs under `output/` and `data/`. Avoid hand-editing generated PAC
+output unless the recipe or patch workflow calls for it.
 
 `consortium-hal-imx9` and `consortium-hal-stm32mp2` re-export the shared HAL and their
-PAC crates and expose feature-gated DMA, GPIO, I2C, timer-driver, and UART modules. Keep
-these crates firmware-friendly: `no_std`, narrow unsafe blocks, and chip-specific details
-inside the chip HAL rather than the shared HAL traits.
+PAC crates (with `default-features = false`), re-export `interrupts`/`Interrupt` and the
+`rt`-gated `#[interrupt]` macro, and expose feature-gated DMA, GPIO, I2C, timer-driver,
+and UART modules. They also own the chip-selection features forwarded to the PAC:
+`mimx93`/`mimx95` (hal-imx9, default `mimx95`) and `stm32mp21x`/`stm32mp23x`/`stm32mp25x`
+(hal-stm32mp2, default `stm32mp25x`, where `stm32mp23x`/`stm32mp25x` both map to the PAC's
+`stm32mp257`). Keep these crates firmware-friendly: `no_std`, narrow unsafe blocks, and
+chip-specific details inside the chip HAL rather than the shared HAL traits.
 
 ## Configuration
 

@@ -4,7 +4,7 @@ pub use consortium_ipc_doorbell_hsem as hsem;
 #[cfg(any(feature = "stm32mp21x", feature = "stm32mp23x", feature = "stm32mp25x"))]
 pub use consortium_ipc_doorbell_ipcc as ipcc;
 
-#[cfg(feature = "imx9x")]
+#[cfg(feature = "mimx9x")]
 pub use consortium_ipc_doorbell_mu as mu;
 
 pub trait SharedMemoryTransportDoorbell {
@@ -37,7 +37,7 @@ impl<S: consortium_ipc::Side, const N: usize> SharedMemoryTransportDoorbell
     }
 }
 
-#[cfg(feature = "imx9x")]
+#[cfg(feature = "mimx9x")]
 impl<S: consortium_ipc::Side, const N: usize> SharedMemoryTransportDoorbell
     for mu::MuDoorbell<S, N>
 {

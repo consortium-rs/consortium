@@ -5,12 +5,12 @@
 //! attribute, an `interrupt` type alias, and the `__INTERRUPTS` vector table
 //! consumed by `cortex-m-rt`'s `device` feature.
 
-#[cfg(feature = "imx95")]
+#[cfg(feature = "mimx95")]
 mod imx95;
-#[cfg(feature = "imx95")]
+#[cfg(feature = "mimx95")]
 pub use imx95::*;
 
-#[cfg(feature = "imx93")]
+#[cfg(feature = "mimx93")]
 mod imx93;
-#[cfg(feature = "imx93")]
+#[cfg(feature = "mimx93")]
 pub use imx93::*;

@@ -39,4 +39,6 @@ pub use chan::{
 };
 pub use consortium_ipc::{Primary, Secondary, Side};
 pub use doorbell::MuDoorbell;
+#[cfg(not(feature = "std"))]
+pub use doorbell::notify;
 pub use error::MuError;

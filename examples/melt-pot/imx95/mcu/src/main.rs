@@ -31,6 +31,7 @@
 #![no_std]
 #![no_main]
 
+use consortium_hal_imx9::interrupt;
 use embassy_executor::Spawner;
 use embassy_time::Timer;
 use melt_pot_shared::SensorReading;
@@ -129,6 +130,15 @@ fn init_time_driver() {
 #[unsafe(no_mangle)]
 extern "C" fn LPIT1_IRQHandler() {
     consortium_hal_imx9::timer_driver::on_timer_interrupt();
+}
+
+// MU7 general-purpose-interrupt vector (CM7 side B). The doorbell crate no
+// longer installs this; the application owns it and forwards to the MU waker for
+// instance 7 so waiting `MuDoorbell::wait` futures make progress. `init()`
+// unmasks MU7 to match the `sensor` transceiver's route.
+#[interrupt]
+fn MU7_B() {
+    consortium_ipc_doorbell_mu::notify::<7>();
 }
 
 /// Sine-like walk between 20 °C and 30 °C for demo purposes.

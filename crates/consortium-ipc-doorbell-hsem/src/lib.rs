@@ -35,4 +35,6 @@ pub use abstraction::Hsem;
 pub use chan::{HSEM_CHAN_COUNT, HSEM_CHAN_OCCUPIED, HsemChanValidate};
 pub use consortium_ipc::{Primary, Secondary, Side, Tertiary};
 pub use doorbell::HsemDoorbell;
+#[cfg(not(feature = "std"))]
+pub use doorbell::notify;
 pub use error::HsemError;

@@ -36,25 +36,22 @@ use crate::error::MuError;
 
 // ── Chip-feature guard ────────────────────────────────────────────────────────
 
-#[cfg(not(any(feature = "imx93", feature = "imx95", feature = "imx8mp")))]
-compile_error!("no chip feature selected; enable one of: `imx93`, `imx95`, `imx8mp`");
+#[cfg(not(any(feature = "mimx93", feature = "mimx95")))]
+compile_error!("no chip feature selected; enable one of: `mimx93`, `mimx95`");
 
 /// Number of MU peripheral instances on the selected chip.
 ///
 /// | Feature  | Count | Chips         |
 /// |----------|-------|---------------|
-/// | `imx95`  |   8   | i.MX 95       |
-/// | `imx93`  |   2   | i.MX 93       |
-/// | `imx8mp` |   1   | i.MX 8M Plus  |
+/// | `mimx95` |   8   | i.MX 95       |
+/// | `mimx93` |   2   | i.MX 93       |
 ///
 /// Defined with `cfg!` so enabling several chip features triggers the
 /// `compile_error!` above rather than a duplicate-definition error.
-pub const MU_INSTANCE_COUNT: usize = if cfg!(feature = "imx95") {
+pub const MU_INSTANCE_COUNT: usize = if cfg!(feature = "mimx95") {
     8
-} else if cfg!(feature = "imx93") {
+} else if cfg!(feature = "mimx93") {
     2
-} else if cfg!(feature = "imx8mp") {
-    1
 } else {
     0
 };

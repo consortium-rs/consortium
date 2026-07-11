@@ -161,12 +161,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-hal-imx9"
+version = "0.1.0"
+dependencies = [
+ "consortium-hal",
+ "consortium-pac-imx9",
+]
+
+[[package]]
 name = "consortium-hal-stm32mp2"
 version = "0.1.0"
 dependencies = [
  "consortium-hal",
+ "consortium-log",
  "consortium-pac-stm32mp2",
  "critical-section",
+ "defmt",
  "embassy-sync",
  "embassy-time-driver",
  "embassy-time-queue-utils",
@@ -190,6 +200,7 @@ version = "0.1.0"
 dependencies = [
  "atomic-waker",
  "bitfield",
+ "consortium-hal-stm32mp2",
  "consortium-ipc",
  "consortium-log",
  "defmt",
@@ -202,8 +213,10 @@ version = "0.1.0"
 dependencies = [
  "atomic-waker",
  "bitfield",
+ "consortium-hal-stm32mp2",
  "consortium-ipc",
  "consortium-log",
+ "critical-section",
  "defmt",
  "thiserror",
 ]
@@ -214,6 +227,7 @@ version = "0.1.0"
 dependencies = [
  "atomic-waker",
  "bitfield",
+ "consortium-hal-imx9",
  "consortium-ipc",
  "defmt",
  "thiserror",
@@ -266,6 +280,13 @@ name = "consortium-macros-helpers"
 version = "0.1.0"
 dependencies = [
  "syn",
+]
+
+[[package]]
+name = "consortium-pac-imx9"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
 ]
 
 [[package]]

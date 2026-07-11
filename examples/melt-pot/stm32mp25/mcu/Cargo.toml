@@ -41,7 +41,7 @@ consortium-codec = { default-features = false, features = [
 ], path = "../../../../crates/consortium-codec" }
 consortium-ipc = { default-features = false, path = "../../../../crates/consortium-ipc" }
 consortium-ipc-doorbell-hsem = { default-features = false, features = [
-  "stm32mp25",
+  "stm32mp25x",
 ], path = "../../../../crates/consortium-ipc-doorbell-hsem" }
 consortium-ipc-doorbell-ipcc = { default-features = false, features = [
   "stm32mp25x",
@@ -53,6 +53,7 @@ consortium-ipc-transport-memory = { default-features = false, features = [
 consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory" }
 consortium-runtime-mcu = { default-features = false, path = "../../../../crates/consortium-runtime-mcu" }
 consortium-hal-stm32mp2 = { default-features = false, features = [
+  "defmt",
   "rt",
   "time-driver-gp-tim",
 ], path = "../../../../crates/consortium-hal-stm32mp2" }

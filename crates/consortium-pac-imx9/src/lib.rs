@@ -3,5 +3,5 @@
 pub mod common;
 pub mod interrupts;
 pub mod metadata;
-#[cfg(feature = "imx95")]
+#[cfg(feature = "mimx95")]
 pub mod peripherals;
