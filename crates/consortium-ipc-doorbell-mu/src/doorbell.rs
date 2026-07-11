@@ -121,6 +121,40 @@ impl<S: Side, const N: usize> MuDoorbell<S, N> {
     pub fn notifier(&self) -> std::sync::Arc<tokio::sync::Notify> {
         std::sync::Arc::clone(&self.notify)
     }
+
+    /// Service this MU instance's interrupt on the `std`/UIO side.
+    ///
+    /// Prefer this over driving [`notifier`](Self::notifier) directly: it
+    /// *disables* every asserted GI/RF line (masking the level-sensitive MU
+    /// interrupt) before waking, so the line does not immediately re-fire the
+    /// UIO IRQ while the async waiter has yet to acknowledge it. Disabling only
+    /// masks the interrupt — it leaves the `GSR`/`RSR` status set — so the woken
+    /// [`wait`](Doorbell::wait) future still observes the flag, acknowledges it,
+    /// and re-arms the line on the next wait.
+    ///
+    /// The doorbell is [`Clone`], so an integrator can clone it before moving the
+    /// original into a transport and bind this method to the UIO IRQ fanout.
+    #[cfg(feature = "std")]
+    pub fn notify_gi_interrupt(&self) {
+        let mut asserted = false;
+        for gi in 0..MU_GI_CHAN_COUNT {
+            if self.mu.gi_pending(gi) {
+                // SAFETY: `gi` is `< MU_GI_CHAN_COUNT`; masks this line's IRQ.
+                unsafe { self.mu.disable_gi(gi) };
+                asserted = true;
+            }
+        }
+        for rf in 0..crate::chan::MU_RF_CHAN_COUNT {
+            if self.mu.rf_pending(rf) {
+                // SAFETY: `rf` is `< MU_RF_CHAN_COUNT`; masks this line's IRQ.
+                unsafe { self.mu.disable_rf(rf) };
+                asserted = true;
+            }
+        }
+        if asserted {
+            self.notify.notify_waiters();
+        }
+    }
 }
 
 impl<S: Side, const N: usize> Doorbell for MuDoorbell<S, N> {
@@ -377,6 +411,36 @@ mod tests {
         // GIER bit cleared on completion.
         assert!(gier(&regs).gi() & (1 << 2) == 0);
         // GSR acknowledged (W1C).
+        assert_eq!(regs[offsets::GSR as usize / 4], 1 << 2);
+    }
+
+    #[test]
+    fn notify_gi_interrupt_masks_line_before_waking_waiters() {
+        let mut regs = [0u32; 0x300 / 4];
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db =
+            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+        let mut wait = std::pin::pin!(db.wait(ch(2)));
+        let waker = std::task::Waker::noop();
+        let mut cx = Context::from_waker(waker);
+
+        // Arm the wait: enables GIER for line 2, then parks pending.
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+        assert!(gier(&regs).gi() & (1 << 2) != 0);
+
+        // The remote asserts line 2 and the IRQ entry point runs. Unlike a bare
+        // `notify_waiters`, it disables (masks) the asserted line before waking,
+        // so a level-sensitive MU line cannot immediately re-fire the UIO IRQ.
+        regs[offsets::GSR as usize / 4] = 1 << 2;
+        db.notify_gi_interrupt();
+        assert!(
+            gier(&regs).gi() & (1 << 2) == 0,
+            "line 2 must be masked by the IRQ entry point, before the waiter re-checks it"
+        );
+
+        // Disabling only masks the interrupt; the status flag survives, so the
+        // woken future still completes and acknowledges it (W1C of GSR).
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(2))));
         assert_eq!(regs[offsets::GSR as usize / 4], 1 << 2);
     }
 

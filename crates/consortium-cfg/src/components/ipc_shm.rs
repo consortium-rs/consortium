@@ -466,10 +466,33 @@ impl DoorbellMeta {
     ) -> TokenStream {
         let doorbell = self.as_path(side);
 
+        // On the AP the UIO IRQ fanout runs a per-doorbell service on every M→A
+        // interrupt. Masking doorbells (IPCC, MU) bind their own IRQ entry point
+        // — cloned so the original can still move into the transport — which
+        // masks the asserted lines *before* waking, so a level-sensitive line
+        // does not immediately re-fire the UIO IRQ. Doorbells with no masking
+        // fall back to the plain `Notify` fanout.
         let binding_uio_stmt = match core {
-            VisibleCore::Ap => Some(quote::quote! {
-                #uio_ident[#uio_id].bind_notifier(#doorbell_ident.notifier());
-            }),
+            VisibleCore::Ap => {
+                let bind = match self.r#type {
+                    HardwareDoorbellPeripheralType::Ipcc => quote::quote! {
+                        let __service_db = #doorbell_ident.clone();
+                        #uio_ident[#uio_id].bind_service(::std::sync::Arc::new(
+                            move || __service_db.notify_rx_occupied_interrupt(),
+                        ));
+                    },
+                    HardwareDoorbellPeripheralType::Mu => quote::quote! {
+                        let __service_db = #doorbell_ident.clone();
+                        #uio_ident[#uio_id].bind_service(::std::sync::Arc::new(
+                            move || __service_db.notify_gi_interrupt(),
+                        ));
+                    },
+                    HardwareDoorbellPeripheralType::Hsem => quote::quote! {
+                        #uio_ident[#uio_id].bind_notifier(#doorbell_ident.notifier());
+                    },
+                };
+                Some(bind)
+            }
             _ => None,
         };
 
@@ -614,11 +637,18 @@ impl ShuHan {
 
         // The AP endpoint is a Linux/`std` binary that logs via `tracing`
         // (`Debug`), so it must not pull in `defmt`. Coprocessor firmware logs
-        // this error via `defmt`, so derive `defmt::Format` there.
+        // this error via `defmt`, so derive `defmt::Format` there — but only for
+        // real bare-metal firmware builds (`target_os = "none"`). The host
+        // trybuild harness compiles this endpoint module for the host OS and
+        // never links `defmt` (just as it skips the `#[cfg(target_arch = "arm")]`
+        // `init()`), so it falls back to `Debug` and stays buildable.
         let connect_error_derive = if core == VisibleCore::Ap {
             quote::quote! { #[derive(Debug)] }
         } else {
-            quote::quote! { #[derive(Debug, defmt::Format)] }
+            quote::quote! {
+                #[cfg_attr(target_os = "none", derive(Debug, defmt::Format))]
+                #[cfg_attr(not(target_os = "none"), derive(Debug))]
+            }
         };
 
         quote::quote! {

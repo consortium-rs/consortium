@@ -67,4 +67,4 @@ serde              = { features = ["derive"], version = "1" }
 serde_json         = "1"
 tokio              = { features = ["macros", "rt-multi-thread", "sync"], version = "1" }
 tracing            = "0.1.44"
-tracing-subscriber = "0.3.23"
+tracing-subscriber = { features = ["env-filter"], version = "0.3.23" }

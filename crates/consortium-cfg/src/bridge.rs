@@ -142,12 +142,13 @@ impl LoweredIr {
             _ => return endpoints,
         }
 
-        // `UioDevice::open(n)` for each declared device, in `self.uio` order
+        // `UioDevice::open(n, enable_irq)` for each declared device, in `self.uio` order
         // (shared-memory device first, then one per doorbell, then `dbg-shm`).
         // The opened handles are moved into `ConsortiumEndpoints` so the mmap
         // windows `IpcMemoryEndpointsConnected` borrows stay alive.
-        let opens = (0..self.uio.len()).map(|id| {
-            quote! { ::consortium_runtime_app::uio::UioDevice::open(#id)? }
+        let opens = self.uio.iter().enumerate().map(|(id, (_, device))| {
+            let enable_irq = device.irq.is_some();
+            quote! { ::consortium_runtime_app::uio::UioDevice::open(#id, #enable_irq)? }
         });
         // Literal device count for the generated `init` trace line.
         let uio_count = self.uio.len();
@@ -555,6 +556,10 @@ impl Session {
                 for window in &mut device.mmap {
                     window.0 += doorbell_alias;
                 }
+                // The interrupt-parent (GIC) label is a chip-level property; the
+                // STM32MP2 root sets no default, so a root-level doorbell node
+                // needs it explicit or its IRQ never binds.
+                device.interrupt_parent = Some(self.database.interrupt_parent.clone());
                 uio.push((name.clone(), device));
             }
         }
@@ -597,6 +602,8 @@ impl Session {
                     mmap: dbg_windows,
                     irq: None,
                     backing: UioBacking::ReservedMemory,
+                    interrupt_parent: None,
+                    clock: None,
                 },
             ));
         }
@@ -921,9 +928,9 @@ mod tests {
         let ir = lowered();
         let names: Vec<_> = ir.uio.iter().map(|(name, _)| name.as_str()).collect();
         // Every device is ordered by its mapped base: the SRAM carveouts
-        // (ipc-shm @0x2040_0000, dbg-shm @0x2040_8000) precede the peripheral
+        // (dbg-shm @0x2006_2000, ipc-shm @0x2006_4000) precede the peripheral
         // doorbells (hsem @0x4624_0000, ipcc2 @0x4625_0000).
-        assert_eq!(names, ["ipc-shm", "dbg-shm", "hsem", "ipcc2"]);
+        assert_eq!(names, ["dbg-shm", "ipc-shm", "hsem", "ipcc2"]);
     }
 
     #[test]
@@ -932,26 +939,28 @@ mod tests {
         let sensor = transceiver(&ir, "sensor");
         let lp = transceiver(&ir, "lp");
 
-        // Regions share uio0; mmap slot follows declaration order.
+        // Both IPC regions share the ipc-shm device (uio1, after dbg-shm at
+        // uio0); mmap slot follows declaration order.
         assert_eq!(
             sensor.region.address.ap,
             ApAddress {
-                uio_id: 0,
+                uio_id: 1,
                 mmap_id: 0
             }
         );
         assert_eq!(
             lp.region.address.ap,
             ApAddress {
-                uio_id: 0,
+                uio_id: 1,
                 mmap_id: 1
             }
         );
 
         // The controller side resolves to the manifest base plus the non-secure
-        // SRAM alias (cm33 and cm0p are both non-secure here).
-        assert_eq!(sensor.region.address.cp[&cm33()], 0x2040_0000);
-        assert_eq!(lp.region.address.cp[&cm0p()], 0x2040_4000);
+        // SRAM alias (cm33 and cm0p are both non-secure here). Sensor lives in
+        // SRAM2 (0x0006_4000), lp in LPSRAM3 (0x000C_4000).
+        assert_eq!(sensor.region.address.cp[&cm33()], 0x2006_4000);
+        assert_eq!(lp.region.address.cp[&cm0p()], 0x200C_4000);
     }
 
     #[test]
@@ -959,13 +968,13 @@ mod tests {
         let ir = lowered();
 
         // SRAM regions map through the non-secure memory alias (0x2000_0000),
-        // so sensor at canonical 0x0040_0000 is exposed at 0x2040_0000.
+        // so sensor at canonical 0x0006_4000 is exposed at 0x2006_4000.
         let (_, shm) = ir
             .uio
             .iter()
             .find(|(name, _)| name == "ipc-shm")
             .expect("shared-memory uio device");
-        assert_eq!(shm.mmap[0].0, 0x2040_0000);
+        assert_eq!(shm.mmap[0].0, 0x2006_4000);
 
         // The HSEM doorbell window maps through the non-secure peripheral alias
         // (0x4000_0000): canonical 0x0624_0000 becomes 0x4624_0000.
@@ -1047,7 +1056,7 @@ mod tests {
             primary = "linux"
             secondary = "cm33"
             party.linux = { chan = 0, type = "Ping" }
-            config.memory = { base = 0x00400000, length = 0x00008000 }
+            config.memory = { base = 0x00040000, length = 0x00008000 }
             mtu = 128
         "#;
 
@@ -1084,18 +1093,18 @@ mod tests {
     fn lowers_dbg_ring_with_non_secure_alias_and_env() {
         let ir = lowered();
 
-        // The example declares `[dbg.cm33]` at canonical 0x0040_8000; cm33 sees
+        // The example declares `[dbg.cm33]` at canonical 0x0006_2000; cm33 sees
         // SRAM through the non-secure alias (0x2000_0000), so its logger embeds
-        // 0x2040_8000.
+        // 0x2006_2000.
         let ring = ir.dbg.ring(cm33()).expect("cm33 has a debug ring");
-        assert_eq!(ring.base, 0x2040_8000);
+        assert_eq!(ring.base, 0x2006_2000);
         assert_eq!(ring.length, 0x2000);
         assert_eq!(ring.mtu, 64);
         assert!(ir.dbg.ring(cm0p()).is_none());
 
         // The IR resolves the build-time vars the builder injects per core.
         let env: std::collections::HashMap<_, _> = ring.env().into_iter().collect();
-        assert_eq!(env["CONSORTIUM_DBG_BASE"], "541097984");
+        assert_eq!(env["CONSORTIUM_DBG_BASE"], "537272320");
         assert_eq!(env["CONSORTIUM_DBG_LENGTH"], "8192");
     }
 

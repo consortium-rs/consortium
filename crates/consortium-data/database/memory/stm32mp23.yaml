@@ -1,6 +1,7 @@
 name: STM32MP23
 trm: https://www.st.com/resource/en/reference_manual/rm0457-stm32mp2325xx-advanced-armbased-3264bit-mpus-stmicroelectronics.pdf
 ap: ca35
+interrupt_parent: intc
 cp:
   - name: cm33
     count: 1
@@ -48,6 +49,9 @@ peripheral:
     - name: HSEM
       page: 1306
       type: hsem
+      clock:
+        provider: scmi_clk
+        id: CK_SCMI_HSEM
       memory:
         base: 0x06240000
         length: 0x00000400
@@ -74,6 +78,9 @@ peripheral:
     - name: IPCC1
       page: 1341
       type: ipcc
+      clock:
+        provider: scmi_clk
+        id: CK_SCMI_IPCC1
       memory:
         base: 0x00490000
         length: 0x00000400
@@ -100,6 +107,9 @@ peripheral:
     - name: IPCC2
       page: 1341
       type: ipcc
+      clock:
+        provider: scmi_clk
+        id: CK_SCMI_IPCC2
       memory:
         base: 0x06250000
         length: 0x00000400

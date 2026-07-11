@@ -110,7 +110,11 @@ impl IpcMemoryEndpoints {
                         1usize,
                     >::new(uio[3usize].mmap(0usize)?)
                 };
-                uio[1usize].bind_notifier(doorbell.notifier());
+                let __service_db = doorbell.clone();
+                uio[1usize]
+                    .bind_service(
+                        ::std::sync::Arc::new(move || __service_db.notify_gi_interrupt()),
+                    );
                 // SAFETY: doorbell channel is verified to be valid in the config.
                 let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(4u8) };
                 // SAFETY: doorbell channel is verified to be valid in the config.
@@ -147,7 +151,11 @@ impl IpcMemoryEndpoints {
                         7usize,
                     >::new(uio[2usize].mmap(0usize)?)
                 };
-                uio[1usize].bind_notifier(doorbell.notifier());
+                let __service_db = doorbell.clone();
+                uio[1usize]
+                    .bind_service(
+                        ::std::sync::Arc::new(move || __service_db.notify_gi_interrupt()),
+                    );
                 // SAFETY: doorbell channel is verified to be valid in the config.
                 let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(6u8) };
                 // SAFETY: doorbell channel is verified to be valid in the config.
@@ -348,10 +356,10 @@ async fn init() -> ::core::result::Result<ConsortiumEndpoints, ConsortiumInitErr
         "consortium init: opening {} uio device(s)", 4usize
     );
     let uio = ::std::vec![
-        ::consortium_runtime_app::uio::UioDevice::open(0usize) ?,
-        ::consortium_runtime_app::uio::UioDevice::open(1usize) ?,
-        ::consortium_runtime_app::uio::UioDevice::open(2usize) ?,
-        ::consortium_runtime_app::uio::UioDevice::open(3usize) ?
+        ::consortium_runtime_app::uio::UioDevice::open(0usize, false) ?,
+        ::consortium_runtime_app::uio::UioDevice::open(1usize, false) ?,
+        ::consortium_runtime_app::uio::UioDevice::open(2usize, true) ?,
+        ::consortium_runtime_app::uio::UioDevice::open(3usize, true) ?
     ];
     ::consortium_runtime_app::log::trace!("consortium init: connecting ipc endpoints");
     let ipc_shm = IpcMemoryEndpoints::new(&uio)?.connect().await?;

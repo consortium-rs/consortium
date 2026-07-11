@@ -116,7 +116,9 @@ async fn main() {
     // worker threads continue running the IPC receive loop concurrently.
     // glib::MainLoop::new(None, false).run();
 
-    tokio::time::sleep(std::time::Duration::from_millis(5)).await;
+    loop {
+        std::thread::sleep(std::time::Duration::from_secs(1));
+    }
 }
 
 /// Software safe range, mirroring the TA's `TEMP_LIMIT_LO..=TEMP_LIMIT_HI`.

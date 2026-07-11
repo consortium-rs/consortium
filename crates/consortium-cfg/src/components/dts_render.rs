@@ -367,6 +367,8 @@ mod tests {
                 mmap: vec![(base, len)],
                 irq: None,
                 backing: UioBacking::ReservedMemory,
+                interrupt_parent: None,
+                clock: None,
             },
         )
     }
@@ -378,6 +380,8 @@ mod tests {
                 mmap: vec![(base, 0x1000)],
                 irq: None,
                 backing: UioBacking::Registers,
+                interrupt_parent: None,
+                clock: None,
             },
         )
     }

@@ -156,28 +156,49 @@ impl Descriptor {
     /// valid for at least `self.capacity` bytes.
     #[cfg(feature = "host")]
     pub unsafe fn read_one_frame(&mut self, base: *mut u8) -> Option<Vec<u8>> {
-        if self.read_ptr == self.write_ptr {
-            return None;
-        }
-        // SAFETY: caller guarantees the ring buffer covers `self.read_ptr`.
-        let packet_ptr = unsafe { base.add(self.read_ptr as usize) };
-        // SAFETY: `packet_ptr` points into the shared ring buffer.
-        let mut frame_header = (unsafe { Packet::try_from_raw_ptr(packet_ptr) })?;
+        // The writer wraps early when a frame does not fit in the tail before
+        // `capacity`, jumping `write_ptr` back to `DATA_START` and leaving a gap
+        // the reader cannot predict from packet lengths alone. When the reader's
+        // linear advance lands in that gap it finds no fresh packet; it must then
+        // follow the writer's wrap to `DATA_START` rather than stall there. At
+        // most one wrap can occur per call, so a single retry suffices.
+        for _ in 0..2 {
+            if self.read_ptr == self.write_ptr {
+                return None;
+            }
+            // SAFETY: caller guarantees the ring buffer covers `self.read_ptr`.
+            let packet_ptr = unsafe { base.add(self.read_ptr as usize) };
+            // SAFETY: `packet_ptr` points into the shared ring buffer.
+            let frame_header = unsafe { Packet::try_from_raw_ptr(packet_ptr) };
 
-        if !frame_header.is_valid() {
-            return None;
-        }
+            let mut frame_header = match frame_header {
+                Some(header) if header.is_valid() => header,
+                // No fresh frame here. If we are already at `DATA_START` the ring
+                // is genuinely drained (a partially written or stale head); stop.
+                // Otherwise the writer wrapped early — follow it and retry once.
+                _ => {
+                    if self.read_ptr == DATA_START {
+                        return None;
+                    }
+                    self.read_ptr = DATA_START;
+                    // SAFETY: caller guarantees the descriptor fields are valid and coherent.
+                    unsafe { wv_u16(base, READ_PTR_OFFSET, self.read_ptr) };
+                    continue;
+                }
+            };
 
-        let mut buffer = vec![0u8; frame_header.len as usize];
-        // SAFETY: `packet_ptr` points to the valid frame described by `frame_header`.
-        unsafe { frame_header.read_payload(packet_ptr, &mut buffer) };
-        // SAFETY: `packet_ptr` points to the valid frame described by `frame_header`.
-        unsafe { frame_header.mark_as_consumed(packet_ptr) };
-        // SAFETY: `base` points to the descriptor-owned ring buffer.
-        self.read_ptr = unsafe { self.next_read_ptr(base) };
-        // SAFETY: caller guarantees the descriptor fields are valid and coherent.
-        unsafe { wv_u16(base, READ_PTR_OFFSET, self.read_ptr) };
-        Some(buffer)
+            let mut buffer = vec![0u8; frame_header.len as usize];
+            // SAFETY: `packet_ptr` points to the valid frame described by `frame_header`.
+            unsafe { frame_header.read_payload(packet_ptr, &mut buffer) };
+            // SAFETY: `packet_ptr` points to the valid frame described by `frame_header`.
+            unsafe { frame_header.mark_as_consumed(packet_ptr) };
+            // SAFETY: `base` points to the descriptor-owned ring buffer.
+            self.read_ptr = unsafe { self.next_read_ptr(base) };
+            // SAFETY: caller guarantees the descriptor fields are valid and coherent.
+            unsafe { wv_u16(base, READ_PTR_OFFSET, self.read_ptr) };
+            return Some(buffer);
+        }
+        None
     }
 
     /// Drains all available defmt frames from the circular buffer, returning them as a `Vec`.

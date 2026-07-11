@@ -106,6 +106,25 @@ impl<S: Side, const N: usize> IpccDoorbell<S, N> {
         trace!("IpccDoorbell::notifier() -> Arc<Notify>");
         std::sync::Arc::clone(&self.notify)
     }
+
+    /// Service an IPCC RX-occupied interrupt on the `std`/UIO side.
+    ///
+    /// Prefer this over driving [`notifier`](Self::notifier) directly: it masks
+    /// the asserted incoming channels *before* waking, mirroring the `no_std`
+    /// [`notify_rx_occupied_interrupt`] so a level-sensitive line does not
+    /// immediately re-fire the UIO IRQ. Waking then notifies every waiting
+    /// [`wait`](Doorbell::wait) future through the shared `Notify`, each of which
+    /// re-checks and acknowledges its own channel.
+    ///
+    /// The doorbell is [`Clone`], so an integrator can clone it before moving the
+    /// original into a transport and bind this method to the UIO IRQ fanout.
+    #[cfg(feature = "std")]
+    pub fn notify_rx_occupied_interrupt(&self) {
+        // `Notify::notify_waiters` is not per-channel, so every asserted channel
+        // wakes the same shared `Notify`; the calls after the first find no
+        // registered waiters (they re-register only when polled) and are no-ops.
+        service_rx_occupied(&self.ipcc, |_id| self.notify.notify_waiters());
+    }
 }
 
 impl<S: Side, const N: usize> Doorbell for IpccDoorbell<S, N> {
@@ -297,6 +316,38 @@ impl<'a, S: Side, const N: usize> core::future::Future for IpccWaitFut<'a, S, N>
     }
 }
 
+// ── shared IRQ servicing ─────────────────────────────────────────────────────
+
+/// Service an IPCC RX-occupied interrupt: read the asserted incoming channels,
+/// mask them all in one `CxMR` read-modify-write *before* waking any waiter,
+/// then invoke `wake(id)` for each asserted channel.
+///
+/// Masking before the wake is what keeps a level-sensitive IPCC line from
+/// re-asserting immediately (on `no_std`, re-entering the ISR; on `std`,
+/// re-firing the UIO IRQ). The wait future subsequently acknowledges the
+/// occupied flag, and the next wait unmasks the channel again.
+///
+/// This is the common core shared by the `no_std` ISR entry point and the `std`
+/// notifier; only the wake primitive differs (`AtomicWaker::wake` vs
+/// `Notify::notify_waiters`).
+fn service_rx_occupied<S: Side, const N: usize>(ipcc: &Ipcc<S, N>, mut wake: impl FnMut(u8)) {
+    // Like embassy-stm32, use the remote status directly. Do not filter it
+    // through CxMR: an already-masked occupied channel must still be serviced.
+    let occupied = ipcc.incoming_occupied_channels();
+
+    // Mask all asserted channels in one CxMR read-modify-write before waking.
+    with_interrupts_masked(|| {
+        // SAFETY: the bitmap comes directly from the 16-channel status register.
+        unsafe { ipcc.mask_rx_occupied_channels(occupied) };
+    });
+
+    for id in 0..IPCC_CHAN_COUNT {
+        if occupied & (1u16 << id) != 0 {
+            wake(id);
+        }
+    }
+}
+
 // ── no_std: shared waker and IRQ entry point ─────────────────────────────────
 
 /// Wakers separated by IPCC instance and channel on the bare-metal path.
@@ -312,10 +363,8 @@ fn channel_waker<const N: usize>(id: u8) -> &'static atomic_waker::AtomicWaker {
 
 /// Service an IPCC RX-occupied interrupt. Call from the corresponding vector.
 ///
-/// Asserted, unmasked channels are masked before their waiters are woken. IPCC
-/// RX interrupts are level-sensitive, so this prevents immediate ISR re-entry.
-/// The wait future subsequently acknowledges the occupied flag, and the next
-/// wait unmasks the channel again.
+/// Delegates to [`service_rx_occupied`]: asserted channels are masked before
+/// their per-channel [`AtomicWaker`](atomic_waker::AtomicWaker)s are woken.
 ///
 /// # Safety
 ///
@@ -326,21 +375,7 @@ pub unsafe fn notify_rx_occupied_interrupt<S: Side, const N: usize>(base: usize)
     // SAFETY: guaranteed by the caller; the temporary handle accesses the same
     // MMIO window as the doorbell used by the waiting task.
     let ipcc = unsafe { Ipcc::<S, N>::new(base) };
-    // Like embassy-stm32, use the remote status directly. Do not filter it
-    // through CxMR: an already-masked occupied channel must still be serviced.
-    let occupied = ipcc.incoming_occupied_channels();
-
-    // Mask all asserted channels in one CxMR read-modify-write before waking.
-    with_interrupts_masked(|| {
-        // SAFETY: the bitmap comes directly from the 16-channel status register.
-        unsafe { ipcc.mask_rx_occupied_channels(occupied) };
-    });
-
-    for id in 0..IPCC_CHAN_COUNT {
-        if occupied & (1u16 << id) != 0 {
-            channel_waker::<N>(id).wake();
-        }
-    }
+    service_rx_occupied(&ipcc, |id| channel_waker::<N>(id).wake());
 }
 
 #[cfg(all(test, feature = "std"))]
@@ -460,6 +495,34 @@ mod tests {
             ChannelRegister::from_bits(regs[offsets::C1MR / 4]).channels(),
             (1 << 2) | (1 << 5) | (1 << 7)
         );
+    }
+
+    #[test]
+    fn notify_rx_occupied_masks_channels_before_waking_waiters() {
+        let mut regs = [0u32; 8];
+        regs[offsets::C1MR / 4] = u32::MAX;
+        let db = doorbell(&mut regs);
+        let mut wait = std::pin::pin!(db.wait(ch(2)));
+        let waker = std::task::Waker::noop();
+        let mut cx = Context::from_waker(waker);
+
+        // Arm the wait: unmasks channel 2, then parks pending.
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+        assert!(ChannelRegister::from_bits(regs[offsets::C1MR / 4]).channels() & (1 << 2) == 0);
+
+        // The remote asserts channel 2 and the IRQ entry point runs. Unlike a bare
+        // `notify_waiters`, it masks the occupied channel *before* waking, so a
+        // level-sensitive line cannot immediately re-fire.
+        regs[offsets::C2TOC1SR / 4] = occupied(2);
+        db.notify_rx_occupied_interrupt();
+        assert!(
+            ChannelRegister::from_bits(regs[offsets::C1MR / 4]).channels() & (1 << 2) != 0,
+            "channel 2 must be masked by the IRQ entry point, before any waiter re-checks it"
+        );
+
+        // The wake reached the parked future, which completes and acknowledges.
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(2))));
+        assert_eq!(regs[offsets::C1SCR / 4], clear_flag(2));
     }
 
     #[test]

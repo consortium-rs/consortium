@@ -9,7 +9,8 @@ expression: items(tokens)
 /// The `Descriptor` payload is surfaced through `Debug` in the
 /// consuming binary, which dead-code analysis cannot see, so allow
 /// the otherwise-"never read" field.
-#[derive(Debug)]
+#[cfg_attr(target_os = "none", derive(Debug, defmt::Format))]
+#[cfg_attr(not(target_os = "none"), derive(Debug))]
 #[allow(dead_code)]
 enum ConsortiumConnectError {
     /// The descriptor header/channel table was invalid or never reached

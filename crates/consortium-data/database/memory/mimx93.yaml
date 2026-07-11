@@ -1,6 +1,7 @@
 name: MIMX93
 trm: https://www.nxp.com/docs/en/reference-manual/IMX93RM.pdf
 ap: ca55
+interrupt_parent: gic
 cp:
   - name: cm33
     variant: remote

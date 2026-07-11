@@ -51,6 +51,8 @@ impl ToUio for [MemoryRegion] {
             mmap,
             irq: None,
             backing: UioBacking::ReservedMemory,
+            interrupt_parent: None,
+            clock: None,
         }))
     }
 }

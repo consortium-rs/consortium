@@ -6,6 +6,12 @@ pub struct ChipDatabase {
     pub name: String,
     pub trm: String,
     pub ap: String,
+    /// Device-tree label of this chip's primary interrupt controller (the GIC):
+    /// `intc` on STM32MP2, `gic` on i.MX 9. Emitted as `interrupt-parent = <&…>`
+    /// on the register-backed (doorbell) UIO nodes so their GIC SPI resolves —
+    /// the STM32MP2 root sets no default interrupt-parent, so a doorbell node at
+    /// `/` would otherwise bind with no IRQ.
+    pub interrupt_parent: String,
     pub cp: Vec<Coprocessor>,
     pub memory: MemoryDatabase,
     pub peripheral: PeripheralDatabase,

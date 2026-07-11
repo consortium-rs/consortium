@@ -58,14 +58,18 @@ pub enum UioDeviceError {
     MapNotFound(String),
 }
 
-/// Shared list of doorbell wakeups that the IRQ task fans out to.
+/// A doorbell's IRQ service callback: run once per M→A interrupt to wake the
+/// doorbell's pending `wait()` futures. A masking doorbell (IPCC, MU) masks its
+/// asserted lines here *before* waking so a level-sensitive line does not
+/// immediately re-fire the UIO IRQ; a plain doorbell just calls
+/// `notify_waiters()`.
+type Service = Arc<dyn Fn() + Send + Sync>;
+
+/// Shared list of doorbell IRQ services the IRQ task fans out to.
 ///
-/// Each registered [`Notify`] belongs to a doorbell (its [`notifier()`] handle);
-/// `irq_loop` calls `notify_waiters()` on every entry whenever an M→A interrupt
+/// `irq_loop` invokes every registered [`Service`] whenever an M→A interrupt
 /// fires, so all pending `wait()` futures re-check their hardware status.
-///
-/// [`notifier()`]: consortium_ipc::Doorbell
-type Notifiers = Arc<Mutex<Vec<Arc<Notify>>>>;
+type Services = Arc<Mutex<Vec<Service>>>;
 
 impl From<UioError> for UioDeviceError {
     fn from(e: UioError) -> Self {
@@ -76,10 +80,11 @@ impl From<UioError> for UioDeviceError {
 // ── UioDevice ─────────────────────────────────────────────────────────────────
 
 struct Inner {
-    /// Doorbell wakeups fired on every M→A IRQ. All pending `RecvFut`s and
-    /// `SendFut`s wake and re-check their slots. Populated through
-    /// [`UioDevice::register_doorbell`].
-    notifiers: Notifiers,
+    /// Doorbell IRQ services run on every M→A IRQ. Each masks its asserted
+    /// lines (if applicable) and wakes the doorbell's pending `RecvFut`s /
+    /// `SendFut`s. Populated through [`UioDevice::bind_service`] /
+    /// [`UioDevice::bind_notifier`].
+    services: Services,
 }
 
 // SAFETY: region_base points into a DMA-coherent mmap that outlives `Inner`.
@@ -105,18 +110,20 @@ pub struct UioDevice {
     uio: uio::UioDevice,
     /// Background IRQ listener. Aborted on drop so the task does not outlive
     /// the device (and the mmap it wakes waiters against).
-    irq_task: tokio::task::JoinHandle<()>,
+    irq_task: Option<tokio::task::JoinHandle<()>>,
 }
 
 impl Drop for UioDevice {
     fn drop(&mut self) {
-        self.irq_task.abort();
+        if let Some(irq_task) = &self.irq_task {
+            irq_task.abort();
+        }
     }
 }
 
 impl UioDevice {
     /// Open the configured UIO device, mmap `map0`, parse the descriptor, and
-    /// start the IRQ listener task.
+    /// optionally start the IRQ listener task.
     ///
     /// The device index comes from [`config::UIO`] — the `CONSORTIUM_IPC_UIO`
     /// value injected from the `[ipc]` section of `Consortium.toml` — so it is
@@ -124,8 +131,15 @@ impl UioDevice {
     /// that UIO value is a compile error (see the guard in `lib.rs`), so by the
     /// time `open` runs the index is always real. The mapped address comes from
     /// mmap, not from `CONSORTIUM_IPC_BASE`.
-    pub fn open(uio_id: usize) -> Result<Self, UioDeviceError> {
-        consortium_log::trace!("UioDevice::open(uio_id = {uio_id})");
+    ///
+    /// Set `enable_irq` only for UIO devices backed by an interrupt source.
+    /// Memory-only UIO devices may not support the UIO IRQ read/write protocol.
+    pub fn open(uio_id: usize, enable_irq: bool) -> Result<Self, UioDeviceError> {
+        consortium_log::trace!(
+            "UioDevice::open(uio_id = {}, enable_irq = {})",
+            uio_id,
+            enable_irq
+        );
         let uio = uio::UioDevice::blocking_new(uio_id)?;
 
         consortium_log::trace!(
@@ -134,24 +148,38 @@ impl UioDevice {
             uio.map_size(0)?
         );
 
-        let notifiers: Notifiers = Arc::new(Mutex::new(Vec::new()));
+        let services: Services = Arc::new(Mutex::new(Vec::new()));
 
-        consortium_log::trace!("UioDevice::open: spawning IRQ listener task");
+        let irq_task = if enable_irq {
+            consortium_log::trace!("UioDevice::open: spawning IRQ listener task");
 
-        // Open the device fd a second time for async IRQ listening so we do
-        // not disturb the mmap held by `uio`.
-        let irq_file = File::open(format!("/dev/uio{uio_id}"))?;
-        let async_fd = AsyncFd::new(irq_file)?;
+            // Open the device fd a second time for async IRQ listening so we do
+            // not disturb the mmap held by `uio`. It must be read-write: the UIO
+            // re-arm protocol *writes* a u32 to the fd to unmask the interrupt
+            // (see `unmask_irq`), and the VFS rejects a write to an O_RDONLY fd
+            // with EBADF before it reaches the driver — which tears the listener
+            // down after the very first (kernel-armed) interrupt.
+            let irq_file = File::options()
+                .read(true)
+                .write(true)
+                .open(format!("/dev/uio{uio_id}"))?;
+            let async_fd = AsyncFd::new(irq_file)?;
 
-        consortium_log::trace!("UioDevice::open: starting irq_loop");
+            consortium_log::trace!("UioDevice::open: starting irq_loop");
 
-        let irq_notifiers = Arc::clone(&notifiers);
-        let irq_task = tokio::spawn(async move { irq_loop(async_fd, irq_notifiers).await });
+            let irq_services = Arc::clone(&services);
+            Some(tokio::spawn(async move {
+                irq_loop(async_fd, irq_services).await
+            }))
+        } else {
+            consortium_log::trace!("UioDevice::open: IRQ listener disabled");
+            None
+        };
 
         consortium_log::trace!("UioDevice::open: returning UioDevice handle");
 
         Ok(Self {
-            inner: Arc::new(Inner { notifiers }),
+            inner: Arc::new(Inner { services }),
             uio,
             irq_task,
         })
@@ -215,76 +243,121 @@ impl UioDevice {
         Ok(base)
     }
 
+    /// Register a doorbell's IRQ [`Service`] so the IRQ task runs it on every
+    /// M→A interrupt.
+    ///
+    /// A masking doorbell binds its own IRQ entry point here — e.g.
+    /// [`IpccDoorbell::notify_rx_occupied_interrupt`] or
+    /// [`MuDoorbell::notify_gi_interrupt`] — which masks the asserted lines
+    /// before waking, so a level-sensitive line does not immediately re-fire the
+    /// UIO IRQ. The doorbell is `Clone`, so bind a clone before moving the
+    /// original into a transport:
+    ///
+    /// ```ignore
+    /// let mu = unsafe { MuDoorbell::<Primary, 7>::new(dev.mmap(1)?) };
+    /// let db = mu.clone();
+    /// dev.bind_service(::std::sync::Arc::new(move || db.notify_gi_interrupt()));
+    /// let transport = SharedMemoryTransport::<Primary, _, _>::new(mu, desc, slot_pair);
+    /// ```
+    ///
+    /// [`IpccDoorbell::notify_rx_occupied_interrupt`]: https://docs.rs/consortium-ipc-doorbell-ipcc
+    /// [`MuDoorbell::notify_gi_interrupt`]: https://docs.rs/consortium-ipc-doorbell-mu
+    pub fn bind_service(&self, service: Service) {
+        consortium_log::trace!("UioDevice::bind_service: registering IRQ service");
+        self.inner
+            .services
+            .lock()
+            .expect("service list poisoned")
+            .push(service);
+    }
+
     /// Register a doorbell's [`Notify`] so the IRQ task wakes its `wait()`
     /// futures on every M→A interrupt.
     ///
-    /// The std doorbells each own an internal `Notify` and expose it through
-    /// `notifier()`; without this registration their `wait()` futures never
-    /// resolve on the Linux side, because the wakeup arrives as a UIO interrupt
-    /// rather than via polled MMIO. Call this once per doorbell, before the
-    /// first receive:
-    ///
-    /// ```ignore
-    /// let base = dev.mmap(1)?;
-    /// let mu = unsafe { MuDoorbell::<Primary, 7>::new(base) };
-    /// dev.bind_notifier(mu.notifier());
-    /// let transport = SharedMemoryTransport::<Primary, _, _>::new(mu, desc, slot_pair);
-    /// ```
+    /// Convenience wrapper over [`bind_service`](Self::bind_service) for
+    /// doorbells with no line masking (the wakeup just calls `notify_waiters()`).
+    /// Masking doorbells should bind their own service instead so a
+    /// level-sensitive line is masked before the wake.
     pub fn bind_notifier(&self, notifier: Arc<Notify>) {
         consortium_log::trace!("UioDevice::bind_notifier: registering notifier");
-        self.inner
-            .notifiers
-            .lock()
-            .expect("notifier list poisoned")
-            .push(notifier);
+        self.bind_service(Arc::new(move || notifier.notify_waiters()));
     }
 }
 
 // ── IRQ background task ───────────────────────────────────────────────────────
 
-async fn irq_loop(async_fd: AsyncFd<File>, notifiers: Notifiers) {
+async fn irq_loop(async_fd: AsyncFd<File>, services: Services) {
     loop {
+        consortium_log::trace!("irq_loop: waiting for M→A interrupt");
         // UIO protocol: re-arm the interrupt by writing 1, then block until the
         // kernel reports it readable (an IRQ has fired and been masked).
         if unmask_irq(async_fd.get_ref()).is_err() {
+            consortium_log::error!("irq_loop: unmask_irq failed; tearing down IRQ listener");
             break;
         }
         match async_fd.readable().await {
-            Err(_) => break,
+            Err(e) => {
+                consortium_log::error!(
+                    "irq_loop: readable() failed ({}); tearing down IRQ listener",
+                    e
+                );
+                break;
+            }
             Ok(mut guard) => {
                 // Consume the 4-byte interrupt count so the fd is no longer
                 // readable; the value itself is unused (edge, not level).
+                // `&File: Read`, so read through the borrowed fd rather than
+                // duping it every interrupt.
                 let mut count = [0u8; 4];
-                let _ = guard.try_io(|fd| {
+                consortium_log::trace!("irq_loop: draining UIO count");
+                let read = guard.try_io(|fd| {
                     use std::io::Read;
-                    fd.get_ref().try_clone()?.read_exact(&mut count)
+                    (&mut &*fd.get_ref()).read_exact(&mut count)
                 });
+                // `try_io` returns `Err(WouldBlock)` as a spurious-readiness
+                // signal (retry the loop); any inner `Err` is a real read
+                // failure worth logging before we re-arm.
+                if let Ok(Err(e)) = read {
+                    consortium_log::error!("irq_loop: draining UIO count failed: {}", e);
+                }
+                consortium_log::trace!("irq_loop: UIO count = {}", u32::from_ne_bytes(count));
                 guard.clear_ready();
+                consortium_log::trace!("irq_loop: UIO interrupt handled; notifying all doorbells");
             }
         }
         // Fan the interrupt out to every registered doorbell. A poisoned lock
         // means a registering thread panicked; tear the listener down.
-        if !notify_all(&notifiers) {
+        if !run_services(&services) {
             break;
         }
     }
 }
 
-/// Wake every registered doorbell. We do not know which channel fired, so each
-/// doorbell's `wait()` re-checks its own status register; a spurious wake is
-/// harmless. Returns `false` if the notifier list is poisoned.
-fn notify_all(notifiers: &Notifiers) -> bool {
-    let snapshot = match notifiers.lock() {
-        Ok(list) => list.clone(),
-        Err(_) => return false,
+/// Run every registered doorbell IRQ service. We do not know which channel
+/// fired, so each service masks its own asserted lines and re-wakes its `wait()`
+/// futures; a spurious run is harmless. Returns `false` if the service list is
+/// poisoned.
+fn run_services(services: &Services) -> bool {
+    consortium_log::trace!("run_services: servicing all registered doorbells");
+    let snapshot = match services.lock() {
+        Ok(list) => {
+            consortium_log::trace!("run_services: {} doorbells registered", list.len());
+            list.clone()
+        }
+        Err(_) => {
+            consortium_log::error!("run_services: failed to acquire service list lock");
+            return false;
+        }
     };
-    for notify in &snapshot {
-        notify.notify_waiters();
+    for service in &snapshot {
+        consortium_log::trace!("run_services: servicing a doorbell");
+        service();
     }
     true
 }
 
 fn unmask_irq(f: &File) -> std::io::Result<()> {
+    consortium_log::trace!("unmask_irq: writing 1 to UIO fd to re-arm interrupt.");
     f.try_clone()?.write_all(&1u32.to_ne_bytes())
 }
 
@@ -304,17 +377,26 @@ mod tests {
             .expect("build runtime")
     }
 
-    /// `notify_all` wakes every doorbell registered before the interrupt,
-    /// mirroring `RecvFut` arming its waker (via `Notified::enable`) before the
-    /// M→A IRQ arrives.
+    /// `run_services` runs every doorbell service registered before the
+    /// interrupt. Each service here is the `bind_notifier` wrapper's
+    /// `notify_waiters()` closure, mirroring `RecvFut` arming its waker (via
+    /// `Notified::enable`) before the M→A IRQ arrives.
     #[test]
-    fn notify_all_wakes_all_registered_doorbells() {
+    fn run_services_wakes_all_registered_doorbells() {
         runtime().block_on(async {
-            let notifiers: Notifiers = Arc::new(Mutex::new(Vec::new()));
+            let services: Services = Arc::new(Mutex::new(Vec::new()));
             let a = Arc::new(Notify::new());
             let b = Arc::new(Notify::new());
-            notifiers.lock().unwrap().push(Arc::clone(&a));
-            notifiers.lock().unwrap().push(Arc::clone(&b));
+            let a_svc = Arc::clone(&a);
+            let b_svc = Arc::clone(&b);
+            services
+                .lock()
+                .unwrap()
+                .push(Arc::new(move || a_svc.notify_waiters()) as Service);
+            services
+                .lock()
+                .unwrap()
+                .push(Arc::new(move || b_svc.notify_waiters()) as Service);
 
             // Register both wakers before firing, as a pending receiver would.
             let wait_a = a.notified();
@@ -323,7 +405,7 @@ mod tests {
             wait_a.as_mut().enable();
             wait_b.as_mut().enable();
 
-            assert!(notify_all(&notifiers), "healthy list must report success");
+            assert!(run_services(&services), "healthy list must report success");
 
             tokio::time::timeout(Duration::from_secs(1), wait_a)
                 .await
@@ -337,22 +419,22 @@ mod tests {
     /// An empty registry is a no-op success: an IRQ before any channel is set
     /// up must not tear the listener down.
     #[test]
-    fn notify_all_empty_list_is_ok() {
-        let notifiers: Notifiers = Arc::new(Mutex::new(Vec::new()));
-        assert!(notify_all(&notifiers));
+    fn run_services_empty_list_is_ok() {
+        let services: Services = Arc::new(Mutex::new(Vec::new()));
+        assert!(run_services(&services));
     }
 
     /// A poisoned registry reports failure so the IRQ loop can stop.
     #[test]
-    fn notify_all_poisoned_list_fails() {
-        let notifiers: Notifiers = Arc::new(Mutex::new(Vec::new()));
-        let clone = Arc::clone(&notifiers);
+    fn run_services_poisoned_list_fails() {
+        let services: Services = Arc::new(Mutex::new(Vec::new()));
+        let clone = Arc::clone(&services);
         let _ = std::thread::spawn(move || {
             let _guard = clone.lock().unwrap();
             panic!("poison the lock");
         })
         .join();
 
-        assert!(!notify_all(&notifiers));
+        assert!(!run_services(&services));
     }
 }
