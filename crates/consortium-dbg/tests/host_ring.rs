@@ -212,6 +212,43 @@ fn host_ring_snapshot_reflects_descriptor_state() {
     assert_eq!(snap.write_ptr, DESCRIPTOR_SIZE as u16);
 }
 
+#[test]
+fn host_ring_follows_writer_early_wrap_gap() {
+    // Reproduces the reported stuck ring: the writer wrapped early because a frame
+    // did not fit before `capacity`, jumping `write_ptr` back to DATA_START and
+    // leaving a gap in the tail. The reader's linear advance parks `read_ptr` in
+    // that gap while fresh data sits at DATA_START. Before this fix the reader
+    // found no packet at the gap and stalled there forever (read_ptr never caught
+    // up, so the writer eventually lapped it and latched Overflow).
+    //
+    // Set the state up directly: write one fresh frame `d` at DATA_START (so
+    // write_ptr = 16 + 64 = 80), then park read_ptr in a zeroed tail gap at 208.
+    let mut region = init_region();
+    let base = region.as_mut_ptr();
+
+    let d = [0xDDu8; 60];
+    // SAFETY: base is valid for REGION_LEN bytes; descriptor initialized by init_region.
+    unsafe { ConsortiumLogger::write_shared_memory(base, &d) };
+
+    // Simulate the reader having advanced into the tail gap left by the early
+    // wrap. Offset 208 is within [DATA_START, capacity) and holds zeros (no valid
+    // packet magic), exactly like the gap the writer skipped over.
+    let gap = 208u16.to_le_bytes();
+    region[READ_PTR_OFFSET] = gap[0];
+    region[READ_PTR_OFFSET + 1] = gap[1];
+
+    let base = region.as_mut_ptr();
+    // SAFETY: region is exclusively owned; base valid for REGION_LEN bytes.
+    let mut ring = unsafe { HostRing::from_raw_parts(base, REGION_LEN).unwrap() };
+
+    // The read must follow the writer's early wrap back to DATA_START and return
+    // `d` rather than stalling in the gap at 208.
+    assert_eq!(ring.read_packet().unwrap().unwrap(), d);
+
+    // Ring is genuinely empty afterwards.
+    assert!(matches!(ring.read_packet(), Ok(None)));
+}
+
 // ── env-gated decode fixture (ignored by default) ─────────────────────────────
 
 /// Run with:

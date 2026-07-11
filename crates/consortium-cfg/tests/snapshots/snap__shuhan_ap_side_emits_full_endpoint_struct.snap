@@ -142,7 +142,13 @@ impl IpcMemoryEndpoints {
                         2usize,
                     >::new(uio[2usize].mmap(0usize)?)
                 };
-                uio[0usize].bind_notifier(doorbell.notifier());
+                let __service_db = doorbell.clone();
+                uio[0usize]
+                    .bind_service(
+                        ::std::sync::Arc::new(move || {
+                            __service_db.notify_rx_occupied_interrupt()
+                        }),
+                    );
                 // SAFETY: doorbell channel is verified to be valid in the config.
                 let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(2u8) };
                 // SAFETY: doorbell channel is verified to be valid in the config.

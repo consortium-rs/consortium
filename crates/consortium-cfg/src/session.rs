@@ -512,7 +512,7 @@ mod tests {
             secondary = "cm33"
             party.linux = { chan = 0, type = "Ping" }
             party.cm33 = { chan = 1, type = "Pong" }
-            config.memory = { base = 0x00400000, length = 0x00008000 }
+            config.memory = { base = 0x00040000, length = 0x00008000 }
             mtu = 128
         "#;
 
@@ -537,7 +537,7 @@ mod tests {
             primary = "linux"
             secondary = "cm0p"
             party.cm0p = { chan = 0, type = "PowerMode" }
-            config.memory = { base = 0x00400000, length = 0x00008000 }
+            config.memory = { base = 0x00040000, length = 0x00008000 }
             mtu = 128
         "#;
 
@@ -562,7 +562,7 @@ mod tests {
             primary = "linux"
             secondary = "cm33"
             party.linux = { chan = 16, type = "Ping" }
-            config.memory = { base = 0x00400000, length = 0x00008000 }
+            config.memory = { base = 0x00040000, length = 0x00008000 }
             mtu = 128
         "#;
 
@@ -588,7 +588,7 @@ mod tests {
             secondary = "cm33"
             party.linux = { chan = 0, type = "Ping" }
             party.cm33 = { chan = 0, type = "Pong" }
-            config.memory = { base = 0x00400000, length = 0x00008000 }
+            config.memory = { base = 0x00040000, length = 0x00008000 }
             mtu = 128
         "#;
 
@@ -598,8 +598,9 @@ mod tests {
         ));
     }
 
-    /// IPC region `0x40_0000..0x41_0000` sits outside every SRAM window on
-    /// STM32MP25 (SRAM1 starts at `0x400000`), so it must be rejected.
+    /// IPC region `0x40_0000..0x48_0000` sits outside every SRAM window on
+    /// STM32MP25 (SRAM1 starts at `0x04_0000`, and the SRAM windows end at
+    /// `0x08_0000`), so it must be rejected.
     #[test]
     fn rejects_region_outside_sram() {
         let manifest = r#"
@@ -714,7 +715,7 @@ mod tests {
             deploy_root = "/opt/consortium"
 
             [dbg.ap]
-            memory = { base = 0x00404000, length = 0x00002000 }
+            memory = { base = 0x00044000, length = 0x00002000 }
             mtu = 64
         "#;
 
@@ -734,7 +735,7 @@ mod tests {
             deploy_root = "/opt/consortium"
 
             [dbg.cm7]
-            memory = { base = 0x00404000, length = 0x00002000 }
+            memory = { base = 0x00044000, length = 0x00002000 }
             mtu = 64
         "#;
 
@@ -753,7 +754,7 @@ mod tests {
             deploy_root = "/opt/consortium"
 
             [dbg.cm33]
-            memory = { base = 0x00404000, length = 0x00002000 }
+            memory = { base = 0x00044000, length = 0x00002000 }
             mtu = 64
 
             [[ipc.channel]]
@@ -763,7 +764,7 @@ mod tests {
             primary = "linux"
             secondary = "cm33"
             party.linux = { chan = 0, type = "Ping" }
-            config.memory = { base = 0x00400000, length = 0x00008000 }
+            config.memory = { base = 0x00040000, length = 0x00008000 }
             mtu = 128
         "#;
 
@@ -789,7 +790,7 @@ mod tests {
             primary = "linux"
             secondary = "cm33"
             party.linux = { chan = 0, type = "Ping" }
-            config.memory = { base = 0x00400000, length = 0x00002000 }
+            config.memory = { base = 0x00040000, length = 0x00002000 }
             mtu = 128
 
             [peripheral.i2c1]
@@ -818,7 +819,7 @@ mod tests {
             primary = "linux"
             secondary = "cm33"
             party.linux = { chan = 0, type = "Ping" }
-            config.memory = { base = 0x00400000, length = 0x00002000 }
+            config.memory = { base = 0x00040000, length = 0x00002000 }
             mtu = 128
 
             [peripheral.nonexistent99]

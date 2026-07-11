@@ -1,6 +1,7 @@
 name: STM32MP21
 trm: https://www.st.com/resource/en/reference_manual/rm0506-stm32mp21xx-advanced-armbased-3264bit-mpus-stmicroelectronics.pdf
 ap: ca35
+interrupt_parent: intc
 cp:
   - name: cm33
     variant: remote
@@ -27,6 +28,9 @@ peripheral:
     - name: IPCC1
       page: 1170
       type: ipcc
+      clock:
+        provider: scmi_clk
+        id: CK_SCMI_IPCC1
       memory:
         base: 0x00490000
         length: 0x00000400

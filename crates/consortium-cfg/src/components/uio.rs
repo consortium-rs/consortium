@@ -78,10 +78,15 @@ pub enum RegLayout {
 pub struct UioOptions {
     /// `reg` cell width. Defaults to [`RegLayout::Wide`] (AArch64).
     pub layout: RegLayout,
-    /// Explicit `interrupt-parent` (e.g. `&intc`). When `None`, the parent is
-    /// inherited from the surrounding device tree. Only emitted when the device
-    /// has an interrupt.
-    pub interrupt_parent: Option<Reference>,
+}
+
+/// A device-tree clock reference (`<&provider id>`) attached to a UIO node.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct UioClock {
+    /// Device-tree label of the clock provider (e.g. `scmi_clk`).
+    pub provider: String,
+    /// Clock cell, emitted verbatim (a binding macro such as `CK_SCMI_IPCC1`).
+    pub id: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -93,6 +98,14 @@ pub struct UioDevice {
     /// How the windows are described: inline `reg` registers, or a
     /// `reserved-memory`/`memory-region` RAM carveout.
     pub backing: UioBacking,
+    /// Device-tree label of the interrupt controller for [`irq`](Self::irq),
+    /// emitted as `interrupt-parent = <&…>`. Required whenever the node sits
+    /// somewhere the interrupt parent is not inherited (e.g. the STM32MP2 root);
+    /// `None` leaves the parent to be inherited from the surrounding tree.
+    pub interrupt_parent: Option<String>,
+    /// Optional clock kept enabled for this window's register block, emitted as
+    /// `clocks = <&provider id>`.
+    pub clock: Option<UioClock>,
 }
 
 impl UioDevice {
@@ -148,8 +161,14 @@ impl UioDevice {
         }
 
         if let Some((spi, method)) = self.irq {
-            if let Some(parent) = &options.interrupt_parent {
-                node = node.property(Property::reference("interrupt-parent", parent.clone()));
+            if let Some(parent) = &self.interrupt_parent {
+                // `interrupt-parent` is a phandle *cell* (`<&intc>`), not a bare
+                // path reference (`&intc`): the latter encodes as a path string
+                // and makes the kernel's interrupt parsing (and dtc) choke.
+                node = node.property(Property::cells(
+                    "interrupt-parent",
+                    [Cell::reference(Reference::label(parent.as_str()))],
+                ));
             }
             // GIC SPI form: <GIC_SPI <spi> <trigger>>. The `GIC_SPI` macro
             // applies the +32 SPI base, so `spi` is the raw SPI number.
@@ -159,6 +178,19 @@ impl UioDevice {
                     Cell::raw("GIC_SPI"),
                     Cell::number(u64::from(spi)),
                     Cell::raw(irq_trigger_macro(method)),
+                ],
+            ));
+        }
+
+        // Keep the register block clocked from the Linux side. The id is a
+        // binding macro name emitted verbatim; the vendor base tree's `#include`d
+        // clock header resolves it.
+        if let Some(clock) = &self.clock {
+            node = node.property(Property::cells(
+                "clocks",
+                [
+                    Cell::reference(Reference::label(clock.provider.as_str())),
+                    Cell::raw(clock.id.as_str()),
                 ],
             ));
         }
@@ -298,6 +330,8 @@ mod tests {
             mmap,
             irq,
             backing: UioBacking::Registers,
+            interrupt_parent: None,
+            clock: None,
         }
     }
 
@@ -307,6 +341,8 @@ mod tests {
             mmap,
             irq: None,
             backing: UioBacking::ReservedMemory,
+            interrupt_parent: None,
+            clock: None,
         }
     }
 
@@ -345,18 +381,31 @@ mod tests {
 
     #[test]
     fn renders_gic_spi_interrupt() {
-        let device = registers(
+        let mut device = registers(
             vec![(0x0624_0000, 0x400)],
             Some((199, IrqMethod::LevelHigh)),
         );
+        device.interrupt_parent = Some("intc".to_string());
 
-        let options = UioOptions {
-            interrupt_parent: Some(Reference::label("intc")),
-            ..UioOptions::default()
-        };
-        let dts = device.to_node_with_options("hsem", &options).to_dts();
-        assert!(dts.contains("interrupt-parent = &intc;"));
+        let dts = device.to_node("hsem").to_dts();
+        assert!(dts.contains("interrupt-parent = <&intc>;"));
         assert!(dts.contains("interrupts = <GIC_SPI 199 IRQ_TYPE_LEVEL_HIGH>;"));
+    }
+
+    #[test]
+    fn renders_doorbell_clock() {
+        let mut device = registers(
+            vec![(0x0049_0000, 0x400)],
+            Some((171, IrqMethod::LevelHigh)),
+        );
+        device.interrupt_parent = Some("intc".to_string());
+        device.clock = Some(UioClock {
+            provider: "scmi_clk".to_string(),
+            id: "CK_SCMI_IPCC1".to_string(),
+        });
+
+        let dts = device.to_node("ipcc1").to_dts();
+        assert!(dts.contains("clocks = <&scmi_clk CK_SCMI_IPCC1>;"));
     }
 
     #[test]

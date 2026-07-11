@@ -27,7 +27,7 @@ use proc_macro2::{Ident, Span, TokenStream};
 use quote::quote;
 
 use crate::components::address::Address;
-use crate::components::uio::{ToUio, UioBacking, UioDevice};
+use crate::components::uio::{ToUio, UioBacking, UioClock, UioDevice};
 use crate::error::CfgError;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -129,6 +129,15 @@ impl ToUio for HardwareDoorbellPeripheral {
             .find(|party| party.core == Party::AcoreNonSecure)
             .map(|party| (party.irq, IrqMethod::LevelHigh));
 
+        // Carry the doorbell's Linux-side clock (if the chip DB declares one) so
+        // the generic-uio node keeps its register block clocked. The
+        // `interrupt-parent` label is chip-level, not doorbell-level, so the
+        // bridge fills it in from the resolved chip database.
+        let clock = self.clock.as_ref().map(|clock| UioClock {
+            provider: clock.provider.clone(),
+            id: clock.id.clone(),
+        });
+
         // A doorbell always exposes its single register window as `map0`, so
         // there is no `mmap` ordering to violate. These are MMIO peripheral
         // registers, not RAM, so they are described inline with `reg`.
@@ -136,6 +145,8 @@ impl ToUio for HardwareDoorbellPeripheral {
             mmap: vec![(self.memory.base, self.memory.length)],
             irq,
             backing: UioBacking::Registers,
+            interrupt_parent: None,
+            clock,
         }))
     }
 }
@@ -236,6 +247,7 @@ mod tests {
             party_page: 1306,
             channels: 16,
             channel_page: 1306,
+            clock: None,
         }
     }
 

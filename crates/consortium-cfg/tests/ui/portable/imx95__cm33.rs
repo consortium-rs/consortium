@@ -26,7 +26,8 @@ mod shared {
 /// The `Descriptor` payload is surfaced through `Debug` in the
 /// consuming binary, which dead-code analysis cannot see, so allow
 /// the otherwise-"never read" field.
-#[derive(Debug)]
+#[cfg_attr(target_os = "none", derive(Debug, defmt::Format))]
+#[cfg_attr(not(target_os = "none"), derive(Debug))]
 #[allow(dead_code)]
 enum ConsortiumConnectError {
     /// The descriptor header/channel table was invalid or never reached
@@ -202,6 +203,7 @@ fn init() -> IpcMemoryEndpoints {
     // SAFETY: `init` runs once during controller bring-up, in
     // privileged mode, before any other code touches the MPU.
     let mut __core = unsafe { ::cortex_m::Peripherals::steal() };
+    ::consortium_runtime_mcu::log::trace!("peripherals stolen");
     // SAFETY: `init` holds exclusive privileged MPU access during
     // bring-up; `base`/`size` are this core's validated shared
     // region from the Consortium hardware layout.
@@ -211,6 +213,10 @@ fn init() -> IpcMemoryEndpoints {
             0u8,
             541605888u32,
             16384u32,
+        );
+        ::consortium_runtime_mcu::log::trace!(
+            "consortium controller init: MPU carveout {} base={:#010x} size={:#010x}",
+            0u8, 541605888u32, 16384u32
         );
     }
     #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -226,8 +232,29 @@ fn init() -> IpcMemoryEndpoints {
     // SAFETY: interrupt numbers are emitted from the validated
     // Consortium hardware database for this visible core.
     unsafe {
+        ::consortium_hal_stm32mp2::hal::nvic::set_priority(
+            BellaInterrupt::MU1 as u16,
+            0x80,
+        );
+    }
+    ::consortium_runtime_mcu::log::trace!(
+        "consortium controller init: NVIC set priority to 0x80 {} (id={})",
+        stringify!(MU1), BellaInterrupt::MU1 as u32
+    );
+    ::cortex_m::peripheral::NVIC::unpend(BellaInterrupt::MU1);
+    ::consortium_runtime_mcu::log::trace!(
+        "consortium controller init: NVIC unpend {} (id={})", stringify!(MU1),
+        BellaInterrupt::MU1 as u32
+    );
+    // SAFETY: interrupt numbers are emitted from the validated
+    // Consortium hardware database for this visible core.
+    unsafe {
         ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::MU1);
     }
+    ::consortium_runtime_mcu::log::trace!(
+        "consortium controller init: NVIC unmask {} (id={})", stringify!(MU1),
+        BellaInterrupt::MU1 as u32
+    );
     ::consortium_runtime_mcu::log::trace!(
         "consortium controller init: endpoints constructed"
     );
