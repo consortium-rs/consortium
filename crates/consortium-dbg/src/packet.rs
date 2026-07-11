@@ -42,15 +42,24 @@ impl Packet {
         Some(Self { magic, flag, len })
     }
 
-    /// Copies the packet payload from `base` into `payload`.
+    /// Reads the packet payload from `base` into `payload`.
+    ///
+    /// Each byte is read with volatile semantics because host-side UIO commonly
+    /// maps the shared ring as Device-nGnRnE memory. A compiler-generated bulk
+    /// copy may use unaligned or SIMD loads, which are not valid for that memory
+    /// type and can raise `SIGBUS` on AArch64.
     ///
     /// # Safety
     /// `base` must be valid for at least `self.len` bytes past `PACKET_HEADER_SIZE`.
     pub unsafe fn read_payload(&mut self, base: *mut u8, payload: &mut [u8]) {
         // SAFETY: caller guarantees the packet payload begins after the header.
         let src = unsafe { base.add(PACKET_HEADER_SIZE) };
-        // SAFETY: `src` points to `self.len` bytes and does not overlap `payload`.
-        unsafe { core::ptr::copy_nonoverlapping(src, payload.as_mut_ptr(), self.len as usize) };
+        for (offset, byte) in payload.iter_mut().take(self.len as usize).enumerate() {
+            // SAFETY: caller guarantees `src` covers `self.len` bytes; a u8
+            // volatile load has no alignment requirement and is valid for UIO
+            // Device memory.
+            *byte = unsafe { rv_u8(src, offset) };
+        }
     }
 
     /// Writes this packet header to `ptr`.

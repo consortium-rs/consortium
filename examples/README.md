@@ -1,5 +1,10 @@
 # Consortium examples
 
+## Utilities
+
+- [`utils/defmt-host`](utils/defmt-host/) maps a CDBG UIO ring, drains all defmt
+  messages currently available, and exits without polling.
+
 ## melt-pot
 
 A full-stack demo: a real-time coprocessor streams simulated temperature

@@ -76,7 +76,7 @@ impl<S: Side, const N: usize> HsemDoorbell<S, N> {
     /// `base` must be the mapped virtual base of the HSEM window. Passing a raw
     /// physical address is undefined behaviour on Linux.
     pub unsafe fn new(base: usize) -> Self {
-        consortium_log::trace!("HsemDoorbell::new(base = {base:#x})");
+        consortium_log::trace!("HsemDoorbell::new(base = {:#x})", base);
         Self {
             // SAFETY: forwarded obligation; `base` is the mapped HSEM window.
             hsem: unsafe { Hsem::<S, N>::new(base) },
@@ -105,7 +105,7 @@ impl<S: Side, const N: usize> Doorbell for HsemDoorbell<S, N> {
         Self: 'a;
 
     fn ring(&self, ch: Chan) -> Result<(), HsemError> {
-        consortium_log::trace!("HsemDoorbell::ring(ch = {ch:?})");
+        consortium_log::trace!("HsemDoorbell::ring(ch = {:?})", ch);
         let sem = Self::sem_of(ch)?;
 
         // Ensure preceding slot writes are ordered before the semaphore lock
@@ -115,16 +115,18 @@ impl<S: Side, const N: usize> Doorbell for HsemDoorbell<S, N> {
         // 1-step read-lock: atomically lock the semaphore and read it back.
         // SAFETY: `sem` is validated `< 16`.
         let locked = unsafe { self.hsem.read_lock(sem) };
-        consortium_log::trace!("HsemDoorbell::ring: read_lock({sem}) = {locked:?}");
+        consortium_log::trace!("HsemDoorbell::ring: read_lock({}) = {:?}", sem, locked);
         if locked.lock() && locked.lockid() as u8 != Hsem::<S, N>::LOCKID {
             consortium_log::error!(
-                "HsemDoorbell::ring: semaphore {sem} already locked by core {}",
+                "HsemDoorbell::ring: semaphore {} already locked by core {}",
+                sem,
                 locked.procid()
             );
             return Err(HsemError::AlreadyLocked);
         }
         consortium_log::info!(
-            "HsemDoorbell::ring: semaphore {sem} locked by core {}",
+            "HsemDoorbell::ring: semaphore {} locked by core {}",
+            sem,
             locked.procid()
         );
 
@@ -132,15 +134,19 @@ impl<S: Side, const N: usize> Doorbell for HsemDoorbell<S, N> {
         let mut unlock = locked;
         unlock.set_lock(false);
         // SAFETY: `sem` is validated `< 16`.
-        consortium_log::trace!("HsemDoorbell::ring: writing unlock to semaphore {sem}");
+        consortium_log::trace!("HsemDoorbell::ring: writing unlock to semaphore {}", sem);
         unsafe { self.hsem.write_rx(sem, unlock) };
         consortium_log::info!(
-            "HsemDoorbell::ring: semaphore {sem} unlocked by core {}",
+            "HsemDoorbell::ring: semaphore {} unlocked by core {}",
+            sem,
             unlock.procid()
         );
 
         fence(Ordering::Release);
-        consortium_log::info!("HsemDoorbell::ring: signaled remote core on semaphore {sem}");
+        consortium_log::info!(
+            "HsemDoorbell::ring: signaled remote core on semaphore {}",
+            sem
+        );
         Ok(())
     }
 
@@ -154,11 +160,12 @@ impl<S: Side, const N: usize> Doorbell for HsemDoorbell<S, N> {
     fn pending(&self, ch: Chan) -> bool {
         match Self::sem_of(ch) {
             Ok(sem) => {
-                consortium_log::trace!("HsemDoorbell::pending(ch = {ch:?})");
+                consortium_log::trace!("HsemDoorbell::pending(ch = {:?})", ch);
                 let pending = self.hsem.interrupt_pending(sem);
                 if pending {
                     consortium_log::trace!(
-                        "HsemDoorbell::pending: semaphore {sem} interrupt pending"
+                        "HsemDoorbell::pending: semaphore {} interrupt pending",
+                        sem
                     );
                     fence(Ordering::Acquire);
                 }
@@ -211,7 +218,7 @@ impl<'a, S: Side, const N: usize> core::future::Future for HsemWaitFut<'a, S, N>
 
         consortium_log::trace!("HsemWaitFut::poll(ch = {:?})", this.ch);
         if !this.armed {
-            consortium_log::trace!("HsemWaitFut::poll: arming semaphore {sem} interrupt");
+            consortium_log::trace!("HsemWaitFut::poll: arming semaphore {} interrupt", sem);
             // SAFETY: `sem` is validated `< 16`; armed once from this task.
             unsafe {
                 this.doorbell.hsem.clear_interrupt(sem);
@@ -221,7 +228,10 @@ impl<'a, S: Side, const N: usize> core::future::Future for HsemWaitFut<'a, S, N>
 
             #[cfg(feature = "std")]
             {
-                consortium_log::trace!("HsemWaitFut::poll: registering Notify for semaphore {sem}");
+                consortium_log::trace!(
+                    "HsemWaitFut::poll: registering Notify for semaphore {}",
+                    sem
+                );
                 let notified = this.doorbell.notify.notified();
                 // SAFETY: `doorbell` is borrowed for `'a`; its Arc-backed
                 // `Notify` outlives this future, so erasing the borrow is sound.
@@ -241,11 +251,15 @@ impl<'a, S: Side, const N: usize> core::future::Future for HsemWaitFut<'a, S, N>
         #[cfg(feature = "std")]
         {
             if let Some(notified) = this.notified.as_mut() {
-                consortium_log::trace!("HsemWaitFut::poll: waiting for Notify on semaphore {sem}");
+                consortium_log::trace!(
+                    "HsemWaitFut::poll: waiting for Notify on semaphore {}",
+                    sem
+                );
                 // SAFETY: `notified` lives inside the pinned future.
                 if unsafe { Pin::new_unchecked(notified) }.poll(cx).is_ready() {
                     consortium_log::trace!(
-                        "HsemWaitFut::poll: Notify received for semaphore {sem}"
+                        "HsemWaitFut::poll: Notify received for semaphore {}",
+                        sem
                     );
                     fence(Ordering::Acquire);
                     return Poll::Ready(Ok(this.ch));
@@ -257,7 +271,7 @@ impl<'a, S: Side, const N: usize> core::future::Future for HsemWaitFut<'a, S, N>
         #[cfg(not(feature = "std"))]
         {
             if this.doorbell.hsem.interrupt_pending(sem) {
-                consortium_log::trace!("HsemWaitFut::poll: semaphore {sem} interrupt pending");
+                consortium_log::trace!("HsemWaitFut::poll: semaphore {} interrupt pending", sem);
                 fence(Ordering::Acquire);
 
                 // SAFETY: `sem` is validated `< 16`; disarm and acknowledge.
@@ -266,12 +280,13 @@ impl<'a, S: Side, const N: usize> core::future::Future for HsemWaitFut<'a, S, N>
                     this.doorbell.hsem.clear_interrupt(sem);
                 }
 
-                consortium_log::trace!("HsemWaitFut::poll: semaphore {sem} interrupt cleared");
+                consortium_log::trace!("HsemWaitFut::poll: semaphore {} interrupt cleared", sem);
 
                 Poll::Ready(Ok(this.ch))
             } else {
                 consortium_log::trace!(
-                    "HsemWaitFut::poll: semaphore {sem} interrupt not pending; registering waker"
+                    "HsemWaitFut::poll: semaphore {} interrupt not pending; registering waker",
+                    sem
                 );
                 WAKER.register(cx.waker());
                 Poll::Pending

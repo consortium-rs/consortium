@@ -15,12 +15,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /// Errors raised by the MU doorbell.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, thiserror::Error)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum MuError {
     /// Chan id is not a valid GI channel for a MU instance (`>= MU_CHAN_COUNT`).
+    #[error("MU channel id out of range")]
     ChanOutOfRange,
     /// Chan id falls in the reserved channel range and cannot be used for
     /// user channels.
+    #[error("MU channel id is reserved")]
     ChanReserved,
 }

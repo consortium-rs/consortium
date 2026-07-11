@@ -612,6 +612,15 @@ impl ShuHan {
             )
         };
 
+        // The AP endpoint is a Linux/`std` binary that logs via `tracing`
+        // (`Debug`), so it must not pull in `defmt`. Coprocessor firmware logs
+        // this error via `defmt`, so derive `defmt::Format` there.
+        let connect_error_derive = if core == VisibleCore::Ap {
+            quote::quote! { #[derive(Debug)] }
+        } else {
+            quote::quote! { #[derive(Debug, defmt::Format)] }
+        };
+
         quote::quote! {
             /// Descriptor-handshake failure, with the doorbell-specific payload
             /// erased so a single error type spans transceivers that use
@@ -620,7 +629,7 @@ impl ShuHan {
             /// The `Descriptor` payload is surfaced through `Debug` in the
             /// consuming binary, which dead-code analysis cannot see, so allow
             /// the otherwise-"never read" field.
-            #[derive(Debug)]
+            #connect_error_derive
             #[allow(dead_code)]
             enum ConsortiumConnectError {
                 /// The descriptor header/channel table was invalid or never reached

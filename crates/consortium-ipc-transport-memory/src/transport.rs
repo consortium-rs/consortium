@@ -210,26 +210,26 @@ where
     let slot_base = unsafe { channel.slot_addr(base) };
 
     consortium_log::trace!(
-        "poll_recv: channel_id = {}, channel_num = {}, slot_base = {:p}",
+        "poll_recv: channel_id = {}, channel_num = {}, slot_base = {:#x}",
         channel_id,
         channel_num,
-        slot_base
+        slot_base as usize
     );
 
     // SAFETY: `slot_base` is a valid slot; `buf` is exclusively owned by the caller.
     if let Some(n) = unsafe { slot::try_read(slot_base, buf, region) } {
         consortium_log::trace!(
-            "poll_recv: read {} bytes from channel_id = {}, slot_base = {:p}",
+            "poll_recv: read {} bytes from channel_id = {}, slot_base = {:#x}",
             n,
             channel_id,
-            slot_base
+            slot_base as usize
         );
         return core::task::Poll::Ready(Ok(n));
     }
 
     consortium_log::trace!(
-        "poll_recv: slot_base = {:p} was readable but read failed; invalidating region and re-polling",
-        slot_base
+        "poll_recv: slot_base = {:#x} was readable but read failed; invalidating region and re-polling",
+        slot_base as usize
     );
 
     // The scan saw a readable slot but the read could not complete.  Flushes for

@@ -86,6 +86,7 @@ pub struct Descriptor {
 
 /// Channel descriptor written to the descriptor table.
 #[derive(Clone, Copy, Debug, Default)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[repr(C)]
 pub struct ChannelLayout {
     pub offset: u32,
@@ -204,6 +205,7 @@ use crate::slot_internal::SLOT_HEADER;
 
 #[repr(u32)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FromPrimitive, IntoPrimitive)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum DescState {
     KernelInit,
     Proposed,
@@ -238,6 +240,7 @@ impl ChannelLayout {
 /// [`is_rx`]: ChannelDirection::is_rx
 #[repr(u8)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, FromPrimitive, IntoPrimitive, Default)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ChannelDirection {
     /// Slot written by [`Primary`] and read by [`Secondary`].
     PrimaryToSecondary = 0,

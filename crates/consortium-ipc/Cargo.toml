@@ -27,6 +27,7 @@ consortium-ipc-macros = { path = "../consortium-ipc-macros" }
 num_enum              = { default-features = false, version = "0.7.3" }
 thiserror             = { default-features = false, version = "2.0" }
 consortium-log        = { path = "../consortium-log" }
+defmt                 = { optional = true, version = "1" }
 
 [dev-dependencies]
 futures  = "0.3"
@@ -37,4 +38,4 @@ alloc   = []
 futures = []
 std     = ["alloc", "futures", "tracing"]
 tracing = ["consortium-log/tracing"]
-defmt   = ["consortium-log/defmt"]
+defmt   = ["consortium-codec/defmt", "consortium-log/defmt", "dep:defmt"]

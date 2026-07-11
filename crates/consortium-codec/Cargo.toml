@@ -27,7 +27,7 @@ default = []
 # Route codec tracing to `defmt` for firmware-side builds; `defmt`'s macros
 # expand to literal `defmt::` paths, so a direct `defmt` dep is required too.
 # The `std` path routes the same call sites to `tracing`.
-defmt    = ["consortium-log/defmt", "dep:defmt"]
+defmt    = ["consortium-log/defmt", "dep:defmt", "postcard?/use-defmt"]
 postcard = ["dep:postcard", "dep:serde"]
 prost    = ["dep:prost"]
 rkyv     = ["consortium-codec-macros", "dep:rkyv"]
