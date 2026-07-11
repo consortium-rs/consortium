@@ -39,9 +39,9 @@ defmt = [
 doorbell-hsem = ["dep:consortium-ipc-doorbell-hsem"]
 doorbell-ipcc = ["dep:consortium-ipc-doorbell-ipcc"]
 doorbell-mu = ["dep:consortium-ipc-doorbell-mu"]
-imx93 = ["consortium-ipc-doorbell-mu/imx93", "imx9x"]
-imx95 = ["consortium-ipc-doorbell-mu/imx95", "imx9x"]
-imx9x = ["doorbell-mu"]
+mimx93 = ["consortium-ipc-doorbell-mu/mimx93", "mimx9x"]
+mimx95 = ["consortium-ipc-doorbell-mu/mimx95", "mimx9x"]
+mimx9x = ["doorbell-mu"]
 std = [
   "alloc",
   "consortium-ipc-doorbell-hsem?/std",
@@ -53,13 +53,13 @@ std = [
 ]
 stm32mp21x = ["consortium-ipc-doorbell-ipcc/stm32mp21x", "doorbell-ipcc"]
 stm32mp23x = [
-  "consortium-ipc-doorbell-hsem/stm32mp23",
+  "consortium-ipc-doorbell-hsem/stm32mp23x",
   "consortium-ipc-doorbell-ipcc/stm32mp23x",
   "doorbell-hsem",
   "doorbell-ipcc",
 ]
 stm32mp25x = [
-  "consortium-ipc-doorbell-hsem/stm32mp25",
+  "consortium-ipc-doorbell-hsem/stm32mp25x",
   "consortium-ipc-doorbell-ipcc/stm32mp25x",
   "doorbell-hsem",
   "doorbell-ipcc",

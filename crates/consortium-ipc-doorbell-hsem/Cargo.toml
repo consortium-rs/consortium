@@ -22,20 +22,23 @@ name              = "consortium-ipc-doorbell-hsem"
 version.workspace = true
 
 [features]
-defmt     = ["consortium-ipc/defmt", "dep:defmt"]
-std       = ["consortium-ipc/std", "dep:tokio"]
-stm32mp23 = []
-stm32mp25 = []
-stm32h7x5 = []
-stm32h7x7 = []
-default   = ["stm32mp25"]
-tracing   = ["consortium-log/tracing"]
+defmt = ["consortium-ipc/defmt", "dep:defmt"]
+std   = ["consortium-ipc/std", "dep:tokio"]
+# Chip selection — forwarded to `consortium-hal-stm32mp2` so the shared PAC's
+# register/interrupt definitions match the target. The application owns the HSEM
+# `#[interrupt]` handler and forwards it to `notify`. STM32MP23 and STM32MP25
+# share the same HSEM layout.
+stm32mp23x = ["consortium-hal-stm32mp2/stm32mp23x"]
+stm32mp25x = ["consortium-hal-stm32mp2/stm32mp25x"]
+default    = ["stm32mp25x"]
+tracing    = ["consortium-log/tracing"]
 
 [dependencies]
-atomic-waker   = "1.1.2"
-bitfield       = "0.13.2"
-consortium-ipc = { default-features = false, path = "../consortium-ipc" }
-defmt          = { optional = true, version = "1" }
-thiserror      = { default-features = false, version = "2.0" }
-tokio          = { features = ["rt", "sync"], optional = true, version = "1" }
-consortium-log = { path = "../consortium-log" }
+atomic-waker            = "1.1.2"
+bitfield                = "0.13.2"
+consortium-hal-stm32mp2 = { default-features = false, path = "../consortium-hal-stm32mp2" }
+consortium-ipc          = { default-features = false, path = "../consortium-ipc" }
+consortium-log          = { path = "../consortium-log" }
+defmt                   = { optional = true, version = "1" }
+thiserror               = { default-features = false, version = "2.0" }
+tokio                   = { features = ["rt", "sync"], optional = true, version = "1" }

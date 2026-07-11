@@ -6,22 +6,27 @@ name              = "consortium-ipc-doorbell-ipcc"
 version.workspace = true
 
 [features]
-default    = ["stm32mp25x"]
-defmt      = ["consortium-ipc/defmt", "dep:defmt"]
-std        = ["consortium-ipc/std", "dep:tokio"]
-stm32mp21x = []
-stm32mp23x = []
-stm32mp25x = []
+default = ["stm32mp25x"]
+defmt   = ["consortium-ipc/defmt", "dep:defmt"]
+std     = ["consortium-ipc/std", "dep:tokio"]
+# Chip selection — forwarded to `consortium-hal-stm32mp2` so the shared PAC's
+# register/interrupt definitions match the target. The application owns the IPCC
+# RX `#[interrupt]` handlers and forwards them to `notify_rx_occupied_interrupt`.
+stm32mp21x = ["consortium-hal-stm32mp2/stm32mp21x"]
+stm32mp23x = ["consortium-hal-stm32mp2/stm32mp23x"]
+stm32mp25x = ["consortium-hal-stm32mp2/stm32mp25x"]
 tracing    = ["consortium-log/tracing"]
 
 [dependencies]
-atomic-waker   = "1.1.2"
-bitfield       = "0.13.2"
-consortium-ipc = { default-features = false, path = "../consortium-ipc" }
-defmt          = { optional = true, version = "1" }
-thiserror      = { default-features = false, version = "2.0" }
-tokio          = { features = ["rt", "sync"], optional = true, version = "1" }
-consortium-log = { path = "../consortium-log" }
+atomic-waker            = "1.1.2"
+bitfield                = "0.13.2"
+consortium-hal-stm32mp2 = { default-features = false, path = "../consortium-hal-stm32mp2" }
+consortium-ipc          = { default-features = false, path = "../consortium-ipc" }
+consortium-log          = { path = "../consortium-log" }
+defmt                   = { optional = true, version = "1" }
+thiserror               = { default-features = false, version = "2.0" }
+tokio                   = { features = ["rt", "sync"], optional = true, version = "1" }
+critical-section        = { version = "1.2.0" }
 
 [lints]
 workspace = true

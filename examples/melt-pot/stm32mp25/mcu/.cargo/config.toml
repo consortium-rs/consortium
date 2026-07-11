@@ -22,4 +22,4 @@ target = "thumbv8m.main-none-eabihf"
 # would drop the `defmt::info!` sensor stream this firmware exists to emit. Match
 # the embassy examples and enable all levels; the CA35 decodes them from the CDBG
 # ring described by `[dbg.cm33]`.
-DEFMT_LOG = "debug"
+DEFMT_LOG = "trace"

@@ -7,10 +7,10 @@ license.workspace = true
 
 [features]
 defmt   = ["dep:defmt"]
-imx93   = []
-imx95   = []
+mimx93  = []
+mimx95  = []
 rt      = ["cortex-m-rt/device", "dep:cortex-m-rt"]
-default = ["imx95"]
+default = ["mimx95"]
 
 [dependencies]
 cortex-m    = { version = "0.7" }

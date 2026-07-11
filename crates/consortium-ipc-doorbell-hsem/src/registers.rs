@@ -16,7 +16,7 @@
 
 //! Hardware Semaphore (HSEM) hardware description.
 //!
-//! Reference: RM0457 Rev 5, Section 22 (STM32MP23/25); RM0399 (STM32H7x5/7).
+//! Reference: RM0457 Rev 5, Section 22 (STM32MP23/25).
 //! All register offsets are relative to the single HSEM peripheral base. The
 //! per-processor interrupt registers (`CnIER`/`CnICR`/`CnISR`/`CnMISR`) are laid
 //! out one 16-byte block per core, `n = 1..=3`.
@@ -25,15 +25,8 @@
 pub mod base {
     /// HSEM physical base address of each instance. HSEM is a single-instance
     /// peripheral, so this has one entry.
-    #[cfg(any(feature = "stm32mp23", feature = "stm32mp25"))]
+    #[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
     pub const BASE: [usize; 1] = [0x5624_0000]; // RM0457, STM32MP23x/25x.
-
-    /// HSEM physical base address of each instance.
-    #[cfg(all(
-        not(any(feature = "stm32mp23", feature = "stm32mp25")),
-        any(feature = "stm32h7x5", feature = "stm32h7x7")
-    ))]
-    pub const BASE: [usize; 1] = [0x5802_6400]; // RM0399, STM32H7x5/7.
 
     /// HSEM register-window length, in bytes.
     pub const LENGTH: usize = 0x400;

@@ -41,16 +41,17 @@ consortium-codec = { default-features = false, features = [
 ], path = "../../../../crates/consortium-codec" }
 consortium-ipc = { default-features = false, path = "../../../../crates/consortium-ipc" }
 consortium-ipc-doorbell-mu = { default-features = false, features = [
-  "imx95",
+  "mimx95",
 ], path = "../../../../crates/consortium-ipc-doorbell-mu" }
 consortium-ipc-transport-memory = { default-features = false, features = [
-  "imx95",
+  "mimx95",
 ], path = "../../../../crates/consortium-ipc-transport-memory" }
 consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory" }
 consortium-runtime-mcu = { default-features = false, path = "../../../../crates/consortium-runtime-mcu" }
 consortium-hal-imx9 = { default-features = false, features = [
   "gpio",
   "i2c",
+  "rt",
   "time-driver-lpit",
 ], path = "../../../../crates/consortium-hal-imx9" }
 

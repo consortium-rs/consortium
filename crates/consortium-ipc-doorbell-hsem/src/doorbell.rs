@@ -182,7 +182,8 @@ impl<S: Side, const N: usize> Doorbell for HsemDoorbell<S, N> {
 ///
 /// Arms this core's `CnIER` on the first poll, then completes once the
 /// semaphore interrupt is observed. On `no_std` the shared `AtomicWaker` is
-/// woken from [`HSEM_IRQHandler`] and the future disarms `CnIER`/`CnICR`; on
+/// woken from the application's HSEM `#[interrupt]` handler (via [`notify`]) and
+/// the future disarms `CnIER`/`CnICR`; on
 /// `std` the doorbell's `Notify` is driven by the UIO IRQ loop, and the kernel
 /// owns the interrupt registers.
 pub struct HsemWaitFut<'a, S: Side, const N: usize> {
@@ -301,14 +302,13 @@ impl<'a, S: Side, const N: usize> core::future::Future for HsemWaitFut<'a, S, N>
 #[cfg(not(feature = "std"))]
 static WAKER: atomic_waker::AtomicWaker = atomic_waker::AtomicWaker::new();
 
-/// Wake tasks waiting on an HSEM semaphore interrupt. Call from the HSEM IRQ
-/// vector.
+/// Wake tasks waiting on an HSEM semaphore interrupt.
 ///
-/// # Safety
-/// Call only from the correctly registered HSEM interrupt handler.
+/// This crate installs no vector-table entry; the application owns the HSEM
+/// `#[interrupt]` handler and forwards it here (e.g. `#[interrupt] fn HSEM`).
 #[cfg(not(feature = "std"))]
-#[unsafe(no_mangle)]
-pub extern "C" fn HSEM_IRQHandler() {
+#[inline]
+pub fn notify() {
     WAKER.wake();
 }
 

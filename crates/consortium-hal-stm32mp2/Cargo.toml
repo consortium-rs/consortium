@@ -6,7 +6,14 @@ name              = "consortium-hal-stm32mp2"
 version.workspace = true
 
 [features]
-default = ["dma", "gpio", "i2c", "time-driver-gp-tim", "uart"]
+default = ["defmt", "dma", "gpio", "i2c", "stm32mp25x", "time-driver-gp-tim", "uart"]
+# Chip selection — forwarded to the PAC. Choose exactly one. STM32MP23 and
+# STM32MP25 share one interrupt/peripheral layout, so both map to the PAC's
+# `stm32mp257` chip. Dependents that select a different chip must set
+# `default-features = false` so the default `stm32mp25x` is not also pulled in.
+stm32mp21x = ["consortium-pac-stm32mp2/stm32mp21"]
+stm32mp23x = ["consortium-pac-stm32mp2/stm32mp257"]
+stm32mp25x = ["consortium-pac-stm32mp2/stm32mp257"]
 # Forward cortex-m-rt runtime support (vector table, `#[interrupt]`) to the PAC.
 rt = ["consortium-pac-stm32mp2/rt"]
 dma = ["dep:critical-section", "dep:embassy-sync"]
@@ -25,10 +32,12 @@ uart = [
   "dep:embedded-io",
   "dep:embedded-io-async",
 ]
+defmt = ["consortium-log/defmt", "dep:defmt"]
 
 [dependencies]
 consortium-hal           = { path = "../consortium-hal" }
-consortium-pac-stm32mp2  = { path = "../consortium-pac-stm32mp2" }
+consortium-pac-stm32mp2  = { default-features = false, path = "../consortium-pac-stm32mp2" }
+consortium-log           = { path = "../consortium-log" }
 critical-section         = { optional = true, version = "1.2.0" }
 embassy-sync             = { optional = true, version = "0.8.0" }
 embassy-time-driver      = { optional = true, version = "0.2.2" }
@@ -38,6 +47,7 @@ embedded-hal-async       = { optional = true, version = "1.0.0" }
 embedded-hal-nb          = { optional = true, version = "1.0.0" }
 embedded-io              = { optional = true, version = "0.6.1" }
 embedded-io-async        = { optional = true, version = "0.6.1" }
+defmt                    = { optional = true, version = "1" }
 
 [lints]
 workspace = true

@@ -103,8 +103,17 @@ impl BellA {
                 /// SAFETY: interrupt numbers are emitted from the validated
                 /// Consortium hardware database for this visible core.
                 unsafe {
+                    ::consortium_hal_stm32mp2::hal::nvic::set_priority(BellaInterrupt::#variant_names as u16, 0x80);
+                }
+                ::consortium_runtime_mcu::log::trace!("consortium controller init: NVIC set priority to 0x80 {} (id={})", stringify!(#variant_names), BellaInterrupt::#variant_names as u32);
+                ::cortex_m::peripheral::NVIC::unpend(BellaInterrupt::#variant_names);
+                ::consortium_runtime_mcu::log::trace!("consortium controller init: NVIC unpend {} (id={})", stringify!(#variant_names), BellaInterrupt::#variant_names as u32);
+                /// SAFETY: interrupt numbers are emitted from the validated
+                /// Consortium hardware database for this visible core.
+                unsafe {
                     ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::#variant_names);
                 }
+                ::consortium_runtime_mcu::log::trace!("consortium controller init: NVIC unmask {} (id={})", stringify!(#variant_names), BellaInterrupt::#variant_names as u32);
             )*
         })
     }

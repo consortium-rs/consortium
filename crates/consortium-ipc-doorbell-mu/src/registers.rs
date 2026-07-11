@@ -29,7 +29,7 @@ pub mod base {
     /// Side-A (MUA) physical base address of each MU instance, index 0 = MU1.
     ///
     /// The side-B (MUB) base of instance `i` is `BASE[i] + LENGTH`.
-    #[cfg(feature = "imx95")]
+    #[cfg(feature = "mimx95")]
     pub const BASE: [usize; MU_INSTANCE_COUNT] = [
         0x4422_0000, // MU1
         0x445B_0000, // MU2
@@ -42,16 +42,10 @@ pub mod base {
     ];
 
     /// Side-A (MUA) physical base address of each MU instance, index 0 = MU1.
-    #[cfg(all(not(feature = "imx95"), feature = "imx93"))]
+    #[cfg(all(not(feature = "mimx95"), feature = "mimx93"))]
     pub const BASE: [usize; MU_INSTANCE_COUNT] = [
         0x4422_0000, // MU1
         0x4243_0000, // MU2
-    ];
-
-    /// Side-A (MUA) physical base address of each MU instance, index 0 = MU1.
-    #[cfg(all(not(feature = "imx95"), not(feature = "imx93"), feature = "imx8mp"))]
-    pub const BASE: [usize; MU_INSTANCE_COUNT] = [
-        0x3022_0000, // MU
     ];
 
     /// Register-window length of one MU instance, in bytes. Also the offset
@@ -76,7 +70,7 @@ pub mod offsets {
     /// Core sticky status 0 register. Reset `0x0`.
     pub const CSSR0: u32 = 0x018;
     /// Core status 0 register. Reset `0x0`.
-    #[cfg(feature = "imx95")]
+    #[cfg(feature = "mimx95")]
     pub const CSR0: u32 = 0x01C;
 
     /// Flag control register. Reset `0x0`.

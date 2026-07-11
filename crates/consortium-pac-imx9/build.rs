@@ -12,9 +12,9 @@ fn main() {
     }
 
     // Chip features are mutually exclusive; pick the first that is enabled.
-    let device_x = if env::var_os("CARGO_FEATURE_IMX95").is_some() {
+    let device_x = if env::var_os("CARGO_FEATURE_MIMX95").is_some() {
         include_str!("src/interrupts/imx95.x")
-    } else if env::var_os("CARGO_FEATURE_IMX93").is_some() {
+    } else if env::var_os("CARGO_FEATURE_MIMX93").is_some() {
         include_str!("src/interrupts/imx93.x")
     } else {
         return;

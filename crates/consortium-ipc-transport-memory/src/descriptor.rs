@@ -325,10 +325,8 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Prim
             num_channels,
             transfer_size
         );
-        // Write magic and version.
-        let header = DescriptorHeader::new(MAGIC, VERSION);
-        // SAFETY: caller guarantees `base` covers the descriptor header.
-        unsafe { header.write_to_raw_ptr(base) };
+        // Write the descriptor body first; the header magic is published last so a
+        // matching magic on the secondary implies the whole descriptor is ready.
         // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
         unsafe { wv_u8(base, NUM_CHANNELS_OFFSET, num_channels) };
         // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
@@ -357,6 +355,13 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Prim
         // SAFETY: caller guarantees the descriptor state field is valid and coherent.
         unsafe { wv_u32(base, STATE_OFFSET, DescState::Ready as u32) };
 
+        // Publish the magic last: the release fence ensures every body write above is
+        // visible before the secondary can observe a matching magic and read them.
+        compiler_fence(Ordering::Release);
+        let header = DescriptorHeader::new(MAGIC, VERSION);
+        // SAFETY: caller guarantees `base` covers the descriptor header.
+        unsafe { header.write_to_raw_ptr(base) };
+
         consortium_log::trace!("descriptor_init: ready, ringing and awaiting secondary ack");
         doorbell.ring(doorbell_tx).map_err(Error::Doorbell)?;
         doorbell.wait(doorbell_rx).await.map_err(Error::Doorbell)?;
@@ -379,18 +384,38 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Seco
         doorbell_rx: Chan,
         doorbell_tx: Chan,
     ) -> Result<Descriptor, super::Error<D>> {
-        // SAFETY: caller guarantees the descriptor header is present at `base`.
-        let header = unsafe { DescriptorHeader::from_raw_ptr(base) };
-
         consortium_log::trace!(
             "descriptor_ack: expecting {} channels, transfer_size {}",
             num_channels,
             transfer_size
         );
-        header.check(MAGIC, VERSION).map_err(|e| {
-            consortium_log::trace!("descriptor_ack: header magic/version check failed");
-            Error::Descriptor(DescriptorError::Header(e))
-        })?;
+
+        // The header magic is the readiness gate: the primary publishes it last, so a
+        // matching magic implies the descriptor body is fully written and ready. If it
+        // does not match yet, wait for the primary's doorbell and re-check; once it
+        // matches, read and validate the descriptor directly.
+        // SAFETY: caller guarantees the descriptor header is present at `base`.
+        let mut header = unsafe { DescriptorHeader::from_raw_ptr(base) };
+        if header.check(MAGIC, VERSION).is_err() {
+            consortium_log::trace!(
+                "descriptor_ack: descriptor not published, awaiting primary doorbell"
+            );
+            doorbell
+                .wait(doorbell_rx)
+                .await
+                .map_err(super::Error::Doorbell)?;
+            // SAFETY: caller guarantees the descriptor header is present at `base`.
+            header = unsafe { DescriptorHeader::from_raw_ptr(base) };
+            header.check(MAGIC, VERSION).map_err(|e| {
+                consortium_log::trace!(
+                    "descriptor_ack: header magic/version check failed after doorbell"
+                );
+                Error::Descriptor(DescriptorError::Header(e))
+            })?;
+        }
+
+        // Acquire the body writes published before the magic on the primary side.
+        compiler_fence(Ordering::Acquire);
 
         // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
         let num_ch = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
@@ -408,7 +433,10 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Seco
         }
         // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
         let rx_transfer_size = unsafe { rv_u32(base, RX_TRANSFER_SIZE_OFFSET) };
-        // SAFETY: when the base is valid and coherent, the state read will be consistent with the rx_transfer_size read. The A-core must have set the state to Ready before writing rx_transfer_size, so if we see Ready then rx_transfer_size is valid. We write back the (potentially adjusted) transfer size to ensure that both sides agree on the final value.
+        // SAFETY: base is valid and coherent, and the matching magic gate above (with the
+        // acquire fence) guarantees the primary finished writing rx_transfer_size before we
+        // read it here. We write back the (potentially adjusted) transfer size so both sides
+        // agree on the final value.
         unsafe {
             wv_u32(
                 base,
@@ -416,27 +444,6 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Seco
                 rx_transfer_size.max(transfer_size as u32),
             )
         };
-        // SAFETY: caller guarantees the descriptor state field is valid and coherent.
-        let mut state = DescState::from_primitive(unsafe { rv_u32(base, STATE_OFFSET) });
-
-        if state != DescState::Ready {
-            consortium_log::trace!(
-                "descriptor_ack: descriptor not ready, awaiting primary doorbell"
-            );
-            doorbell
-                .wait(doorbell_rx)
-                .await
-                .map_err(super::Error::Doorbell)?;
-            // SAFETY: when the base is valid and coherent, the state read will be consistent with the rx_transfer_size read. The A-core must have set the state to Ready before writing rx_transfer_size, so if we see Ready then rx_transfer_size is valid.
-            state = DescState::from_primitive(unsafe { rv_u32(base, STATE_OFFSET) });
-            if state != DescState::Ready {
-                consortium_log::trace!(
-                    "descriptor_ack: still not ready after doorbell (state {})",
-                    state as u32
-                );
-                return Err(DescriptorError::NotReady(state).into());
-            }
-        }
 
         let mut channels = [ChannelLayout::default(); CHANNEL_NUM_MAX];
 

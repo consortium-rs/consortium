@@ -175,6 +175,28 @@ impl<S: Side, const N: usize> Ipcc<S, N> {
             != 0
     }
 
+    /// Return the bitmap of incoming occupied channels.
+    #[inline]
+    pub fn incoming_occupied_channels(&self) -> u16 {
+        ChannelRegister::from_bits(self.read(Self::incoming_status_offset())).channels() as u16
+    }
+
+    /// Mask RX-occupied interrupts for all channels set in `channels`.
+    ///
+    /// # Safety
+    /// The caller coordinates access to the MR interrupt configuration.
+    #[inline]
+    pub unsafe fn mask_rx_occupied_channels(&self, channels: u16) {
+        // SAFETY: see method contract.
+        unsafe {
+            self.update(Self::mr_offset(), |value| {
+                let mut reg = ChannelRegister::from_bits(value);
+                reg.set_channels(reg.channels() | u32::from(channels));
+                reg.bits()
+            });
+        }
+    }
+
     /// Set this side's outgoing channel `ch` occupied (`CxSCR.CHnS`).
     ///
     /// # Safety

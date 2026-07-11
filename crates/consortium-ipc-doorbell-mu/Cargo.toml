@@ -22,22 +22,24 @@ name              = "consortium-ipc-doorbell-mu"
 version.workspace = true
 
 [features]
-# Chip selection — choose exactly one. Defaults to imx95 for the current
+# Chip selection — choose exactly one. Defaults to mimx95 for the current
 # CA55-side default. Enabling multiple chip features is a compile error.
-# The processor side (MUA/MUB) is selected at the type level via `Side`,
-# not by a feature.
-default = ["imx95"]
-imx8mp  = []        # 1 MU instance (i.MX 8M Plus)
-imx93   = []        # 2 MU instances (i.MX 93)
-imx95   = []        # 8 MU instances (i.MX 95)
+# Each forwards to the matching `consortium-hal-imx9` chip so the shared PAC's
+# register/interrupt definitions match the target. The application owns the MU
+# `#[interrupt]` handlers and forwards them to `notify::<N>()`. The processor
+# side (MUA/MUB) is selected at the type level via `Side`, not by a feature.
+default = ["mimx95"]
+mimx93  = ["consortium-hal-imx9/mimx93"] # 2 MU instances (i.MX 93)
+mimx95  = ["consortium-hal-imx9/mimx95"] # 8 MU instances (i.MX 95)
 
 defmt = ["dep:defmt"]
 std   = ["consortium-ipc/std", "dep:tokio"]
 
 [dependencies]
-atomic-waker   = "1.1.2"
-bitfield       = "0.13.2"
-consortium-ipc = { default-features = false, path = "../consortium-ipc" }
-defmt          = { optional = true, version = "1" }
-thiserror      = { default-features = false, version = "2.0" }
-tokio          = { features = ["rt", "sync"], optional = true, version = "1" }
+atomic-waker        = "1.1.2"
+bitfield            = "0.13.2"
+consortium-hal-imx9 = { default-features = false, path = "../consortium-hal-imx9" }
+consortium-ipc      = { default-features = false, path = "../consortium-ipc" }
+defmt               = { optional = true, version = "1" }
+thiserror           = { default-features = false, version = "2.0" }
+tokio               = { features = ["rt", "sync"], optional = true, version = "1" }

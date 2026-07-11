@@ -6,7 +6,12 @@ name              = "consortium-hal-imx9"
 version.workspace = true
 
 [features]
-default = ["dma", "gpio", "i2c", "time-driver-lpit", "uart"]
+default = ["dma", "gpio", "i2c", "mimx95", "time-driver-lpit", "uart"]
+# Chip selection — forwarded to the PAC. Choose exactly one; enabling several is
+# a PAC compile error. Dependents that select a different chip must set
+# `default-features = false` so the default `mimx95` is not also pulled in.
+mimx93 = ["consortium-pac-imx9/mimx93"]
+mimx95 = ["consortium-pac-imx9/mimx95"]
 # Forward cortex-m-rt runtime support (vector table, `#[interrupt]`) to the PAC.
 rt = ["consortium-pac-imx9/rt"]
 dma = ["dep:critical-section", "dep:embassy-sync"]
@@ -28,7 +33,7 @@ uart = [
 
 [dependencies]
 consortium-hal           = { path = "../consortium-hal" }
-consortium-pac-imx9      = { path = "../consortium-pac-imx9" }
+consortium-pac-imx9      = { default-features = false, path = "../consortium-pac-imx9" }
 critical-section         = { optional = true, version = "1.2.0" }
 embassy-sync             = { optional = true, version = "0.8.0" }
 embassy-time-driver      = { optional = true, version = "0.2.2" }

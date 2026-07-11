@@ -182,9 +182,9 @@ impl<S: Side, const N: usize> Doorbell for MuDoorbell<S, N> {
 /// for a GI channel or `RCR[RIEn]` for an RF channel — then completes once the
 /// matching status flag (`GSR[GIPn]` or `RSR[RFn]`) is observed, acknowledging
 /// it (W1C of `GSR` for GI, or a read of `RRn` for RF) and disarming the
-/// interrupt. On `no_std` the per-instance `AtomicWaker` is woken from
-/// `MUx_IRQHandler`; on `std` the doorbell's `Notify` is driven by the UIO IRQ
-/// loop.
+/// interrupt. On `no_std` the per-instance `AtomicWaker` is woken from the
+/// application's MU `#[interrupt]` handler (via [`notify`]); on `std` the
+/// doorbell's `Notify` is driven by the UIO IRQ loop.
 pub struct MuWaitFut<'a, S: Side, const N: usize> {
     doorbell: &'a MuDoorbell<S, N>,
     ch: Chan,
@@ -295,74 +295,17 @@ fn waker_for<const N: usize>() -> &'static atomic_waker::AtomicWaker {
 static MU_WAKERS: [atomic_waker::AtomicWaker; crate::chan::MU_INSTANCE_COUNT] =
     [const { atomic_waker::AtomicWaker::new() }; crate::chan::MU_INSTANCE_COUNT];
 
-// One IRQ handler per MU instance, chip-gated. Each wakes the futures waiting
-// on that instance's GI interrupt; register them in the interrupt vector table.
-
-/// # Safety
-/// Call only from the MU1 general-purpose IRQ handler.
-#[cfg(all(
-    not(feature = "std"),
-    any(feature = "imx93", feature = "imx95", feature = "imx8mp")
-))]
-#[unsafe(no_mangle)]
-pub extern "C" fn MU1_IRQHandler() {
-    MU_WAKERS[0].wake();
-}
-
-/// # Safety
-/// Call only from the MU2 general-purpose IRQ handler.
-#[cfg(all(not(feature = "std"), any(feature = "imx93", feature = "imx95")))]
-#[unsafe(no_mangle)]
-pub extern "C" fn MU2_IRQHandler() {
-    MU_WAKERS[1].wake();
-}
-
-/// # Safety
-/// Call only from the MU3 general-purpose IRQ handler.
-#[cfg(all(not(feature = "std"), feature = "imx95"))]
-#[unsafe(no_mangle)]
-pub extern "C" fn MU3_IRQHandler() {
-    MU_WAKERS[2].wake();
-}
-
-/// # Safety
-/// Call only from the MU4 general-purpose IRQ handler.
-#[cfg(all(not(feature = "std"), feature = "imx95"))]
-#[unsafe(no_mangle)]
-pub extern "C" fn MU4_IRQHandler() {
-    MU_WAKERS[3].wake();
-}
-
-/// # Safety
-/// Call only from the MU5 general-purpose IRQ handler.
-#[cfg(all(not(feature = "std"), feature = "imx95"))]
-#[unsafe(no_mangle)]
-pub extern "C" fn MU5_IRQHandler() {
-    MU_WAKERS[4].wake();
-}
-
-/// # Safety
-/// Call only from the MU6 general-purpose IRQ handler.
-#[cfg(all(not(feature = "std"), feature = "imx95"))]
-#[unsafe(no_mangle)]
-pub extern "C" fn MU6_IRQHandler() {
-    MU_WAKERS[5].wake();
-}
-
-/// # Safety
-/// Call only from the MU7 general-purpose IRQ handler.
-#[cfg(all(not(feature = "std"), feature = "imx95"))]
-#[unsafe(no_mangle)]
-pub extern "C" fn MU7_IRQHandler() {
-    MU_WAKERS[6].wake();
-}
-
-/// # Safety
-/// Call only from the MU8 general-purpose IRQ handler.
-#[cfg(all(not(feature = "std"), feature = "imx95"))]
-#[unsafe(no_mangle)]
-pub extern "C" fn MU8_IRQHandler() {
-    MU_WAKERS[7].wake();
+/// Wake the futures waiting on MU instance `N`'s general-purpose interrupt.
+///
+/// This crate installs no vector-table entries; the application owns the MU
+/// `#[interrupt]` handlers and forwards each one here with the matching instance
+/// number. i.MX93 routes over the side-B lines of MU1/MU2 (`notify::<1>` /
+/// `notify::<2>`); the i.MX95 CM7 uses MU5 side A plus MU7/MU8 side B
+/// (`notify::<5>` / `notify::<7>` / `notify::<8>`).
+#[cfg(not(feature = "std"))]
+#[inline]
+pub fn notify<const N: usize>() {
+    MU_WAKERS[N - 1].wake();
 }
 
 #[cfg(all(test, feature = "std"))]
@@ -379,7 +322,7 @@ mod tests {
     }
 
     // MU7 on i.MX95 is the CA55 <-> CM7 default route.
-    const N: usize = if cfg!(feature = "imx95") { 7 } else { 1 };
+    const N: usize = if cfg!(feature = "mimx95") { 7 } else { 1 };
 
     fn gier(regs: &[u32]) -> GeneralInterruptRegister {
         GeneralInterruptRegister::from_bits(regs[offsets::GIER as usize / 4])

@@ -43,12 +43,12 @@ consortium-ipc-doorbell-mu = { features = [
   "std",
 ], path = "../../../../crates/consortium-ipc-doorbell-mu" }
 consortium-ipc-transport-memory = { features = [
-  "imx95",
+  "mimx95",
   "std",
 ], path = "../../../../crates/consortium-ipc-transport-memory" }
 consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory" }
 consortium-runtime-app = { features = [
-  "imx95",
+  "mimx95",
 ], path = "../../../../crates/consortium-runtime-app" }
 
 # Application runtime.
