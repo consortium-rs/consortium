@@ -51,6 +51,7 @@ pub struct Descriptor {
 }
 
 bitflags! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
     pub struct Flags: u16 {
         /// Writer is mid-write; readers should not consume the in-flight frame.
         const Writing = 0b0000_0000_0000_0001;

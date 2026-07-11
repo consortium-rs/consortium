@@ -27,7 +27,15 @@ default = ["std"]
 # `std` path routes the same call sites to `tracing` instead. `defmt`'s macros
 # expand to literal `defmt::` paths, so the crate must depend on `defmt`
 # directly as well as through the facade.
-defmt = ["consortium-log/defmt", "dep:defmt"]
+defmt = [
+  "consortium-ipc-doorbell-hsem?/defmt",
+  "consortium-ipc-doorbell-ipcc?/defmt",
+  "consortium-ipc-doorbell-mu?/defmt",
+  "consortium-ipc/defmt",
+  "consortium-log/defmt",
+  "consortium-shared-memory/defmt",
+  "dep:defmt",
+]
 doorbell-hsem = ["dep:consortium-ipc-doorbell-hsem"]
 doorbell-ipcc = ["dep:consortium-ipc-doorbell-ipcc"]
 doorbell-mu = ["dep:consortium-ipc-doorbell-mu"]

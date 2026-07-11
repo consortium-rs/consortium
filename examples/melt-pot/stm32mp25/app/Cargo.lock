@@ -241,6 +241,7 @@ dependencies = [
  "bitfield",
  "consortium-ipc",
  "consortium-log",
+ "thiserror",
  "tokio",
 ]
 
@@ -252,6 +253,7 @@ dependencies = [
  "bitfield",
  "consortium-ipc",
  "consortium-log",
+ "thiserror",
  "tokio",
 ]
 
@@ -262,6 +264,7 @@ dependencies = [
  "atomic-waker",
  "bitfield",
  "consortium-ipc",
+ "thiserror",
  "tokio",
 ]
 

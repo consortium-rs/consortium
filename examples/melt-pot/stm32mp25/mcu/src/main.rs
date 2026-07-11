@@ -85,8 +85,8 @@ async fn main(_spawner: Spawner) {
     // Bring up MPU + HSEM interrupt, then run the descriptor handshake.
     let connected = match init().connect().await {
         Ok(endpoints) => endpoints,
-        Err(_) => {
-            defmt::error!("melt-pot: IPC descriptor handshake failed");
+        Err(e) => {
+            defmt::error!("melt-pot: IPC descriptor handshake failed: {}", e);
             loop {
                 cortex_m::asm::wfi();
             }

@@ -19,12 +19,18 @@
 //! A channel is an IPCC hardware channel id, numbered `0..`[`IPCC_CHAN_COUNT`].
 //! Channels in [`IPCC_CHAN_OCCUPIED`] are reserved for system/firmware use.
 
+use core::ops::Range;
+
 use consortium_ipc::ChanValidate;
 
 use crate::error::IpccError;
 
 /// Number of IPCC channels per processor bank.
 pub const IPCC_CHAN_COUNT: u8 = 16;
+
+/// Channel ids reserved for system/firmware use; not available to user
+/// channels. Channel 0 is held for the system/firmware handshake.
+pub const IPCC_CHAN_OCCUPIED: Range<u8> = 0..1;
 
 /// Validates IPCC channel ids.
 pub struct IpccChanValidate;
@@ -33,7 +39,9 @@ impl ChanValidate for IpccChanValidate {
     type Error = IpccError;
 
     fn validate(id: u8) -> Result<consortium_ipc::Chan, Self::Error> {
-        if id >= IPCC_CHAN_COUNT {
+        if IPCC_CHAN_OCCUPIED.contains(&id) {
+            Err(IpccError::ChanReserved)
+        } else if id >= IPCC_CHAN_COUNT {
             Err(IpccError::ChanOutOfRange)
         } else {
             // SAFETY: `id` is outside the reserved range and below the count,

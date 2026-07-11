@@ -21,6 +21,7 @@ use consortium_shared_memory::descriptor::DescriptorHeaderError;
 use uio::UioError;
 
 #[derive(Debug, thiserror::Error)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum DescriptorError {
     #[error(transparent)]
     Header(#[from] DescriptorHeaderError),
@@ -33,6 +34,7 @@ pub enum DescriptorError {
 }
 
 #[derive(Debug, thiserror::Error, Default)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Error<D: Doorbell> {
     #[error("io: {0}")]
     #[cfg(feature = "std")]

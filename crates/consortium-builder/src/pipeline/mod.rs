@@ -410,20 +410,23 @@ async fn run_inner(
     let mut steps = StepRunner::new(reporter, total_steps);
 
     // The deploy (objcopy-processed) ELF per core, staged into `dist/firmware/`.
-    // The AP already embedded the `*_original.elf` at plan time (Stage 2/5), so
-    // only the deployable image is needed here.
+    // The AP already embedded the `*_original.elf` at plan time (Stage 2/5); the
+    // unstripped original is also staged into `dist/firmware/` so the integrator
+    // keeps its `.defmt` section for host-side defmt table parsing.
     let mut firmware_outputs = HashMap::new();
+    let mut firmware_originals = HashMap::new();
     for fw in &plan.firmware {
         let detail = format!("{} ({})", fw.core, fw.config.target);
-        let deploy = steps
+        let (deploy, original) = steps
             .run("Build firmware", Some(&detail), async {
                 write_generated_module(&fw.config.path, &fw.generated).await?;
                 let artifacts =
                     FirmwareCompiler::build_with_reporter(fw.config.clone(), reporter).await?;
-                Ok(artifacts.deploy)
+                Ok((artifacts.deploy, artifacts.original))
             })
             .await?;
         firmware_outputs.insert(fw.core, deploy);
+        firmware_originals.insert(fw.core, original);
     }
 
     let hmi_dist = match &config.hmi {
@@ -483,6 +486,7 @@ async fn run_inner(
         .run("Assemble dist", Some(&dist_detail), async {
             let inputs = dist::DistAssemblyInputs {
                 firmware: &firmware_outputs,
+                firmware_originals: &firmware_originals,
                 application: &application,
                 ta: ta.as_deref(),
                 hmi_dist: hmi_dist.as_deref(),

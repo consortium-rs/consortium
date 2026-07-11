@@ -16,6 +16,7 @@ pub struct DescriptorHeader {
 pub const DESCRIPTOR_HEADER_SIZE: usize = core::mem::size_of::<DescriptorHeader>();
 
 #[derive(Debug, thiserror::Error)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum DescriptorHeaderError {
     #[error("wrong magic: got {got:?}, expected {expected:?}")]
     BadMagic {
@@ -74,6 +75,7 @@ impl DescriptorHeader {
 
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct DescriptorMagic(u32);
 
 pub const MAGIC_SIZE: usize = core::mem::size_of::<DescriptorMagic>();

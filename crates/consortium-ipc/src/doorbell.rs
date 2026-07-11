@@ -37,7 +37,10 @@ use crate::{chan::Chan, future::MaybeSend};
 /// signal must not be observed by the peer before the shared-memory writes that
 /// the signal publishes are visible.
 pub trait Doorbell {
-    type Error;
+    #[cfg(feature = "defmt")]
+    type Error: defmt::Format + core::error::Error + Send + Sync + 'static;
+    #[cfg(not(feature = "defmt"))]
+    type Error: core::error::Error + Send + Sync + 'static;
     type WaitFut<'a>: Future<Output = Result<Chan, Self::Error>> + MaybeSend
     where
         Self: 'a;

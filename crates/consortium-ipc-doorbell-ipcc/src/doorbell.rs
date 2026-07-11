@@ -244,10 +244,10 @@ impl<'a, S: Side, const N: usize> core::future::Future for IpccWaitFut<'a, S, N>
 
             // SAFETY: `id` is validated `< 16`; the incoming bit is set.
             unsafe { this.doorbell.ipcc.clear_incoming_occupied(id) };
-            consortium_log::trace!("cleared incoming occupied channel {id}");
+            consortium_log::trace!("cleared incoming occupied channel {}", id);
             // SAFETY: `id` is validated `< 16`; re-mask after completion.
             unsafe { this.doorbell.ipcc.mask_rx_occupied_interrupt(id) };
-            consortium_log::trace!("interrupt masked at channel {id}");
+            consortium_log::trace!("interrupt masked at channel {}", id);
 
             consortium_log::debug!("wait({:?}) -> C{}SCR.CH{} interrupt masked", this.ch, N, id);
 

@@ -54,10 +54,13 @@ use core::{
 use consortium_ipc::{Chan, Doorbell};
 use embedded_hal::digital::OutputPin;
 
+mod error;
+pub use error::GpioError;
+
 // ── no_std (M-core / bare-metal) ─────────────────────────────────────────────
 
 #[cfg(not(feature = "std"))]
-use core::cell::RefCell;
+use core::{cell::RefCell, sync::atomic::AtomicBool};
 
 /// Global waker for M-core GPIO IRQ handler.
 #[cfg(not(feature = "std"))]
@@ -100,7 +103,7 @@ impl<P: OutputPin> GpioDoorbell<P> {
 
 #[cfg(not(feature = "std"))]
 impl<P: OutputPin> Doorbell for GpioDoorbell<P> {
-    type Error = P::Error;
+    type Error = GpioError;
     type WaitFut<'a>
         = GpioWaitFut<'a, P>
     where
@@ -152,7 +155,7 @@ impl<'a, P> GpioWaitFut<'a, P> {
 
 #[cfg(not(feature = "std"))]
 impl<'a, P: OutputPin> Future for GpioWaitFut<'a, P> {
-    type Output = Result<Chan, P::Error>;
+    type Output = Result<Chan, GpioError>;
 
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         if !self.armed {
@@ -215,7 +218,7 @@ impl<P: OutputPin> GpioDoorbell<P> {
 
 #[cfg(feature = "std")]
 impl<P: OutputPin + Send> Doorbell for GpioDoorbell<P> {
-    type Error = P::Error;
+    type Error = GpioError;
     type WaitFut<'a>
         = GpioWaitFut<'a, P>
     where
@@ -276,7 +279,7 @@ impl<'a, P> GpioWaitFut<'a, P> {
 
 #[cfg(feature = "std")]
 impl<'a, P: OutputPin + Send> Future for GpioWaitFut<'a, P> {
-    type Output = Result<Chan, P::Error>;
+    type Output = Result<Chan, GpioError>;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         // SAFETY: GpioWaitFut has no self-referential fields before `notified`

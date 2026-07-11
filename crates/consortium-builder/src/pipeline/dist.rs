@@ -139,6 +139,8 @@ fn io(path: impl AsRef<Path>, source: std::io::Error) -> DistAssemblyError {
 /// Assembles the `dist/` tree from the pipeline's build outputs.
 ///
 /// - each firmware ELF → `firmware/<core>.elf`;
+/// - each firmware ELF's unstripped original → `firmware/<core>_original.elf`
+///   (retains the `.defmt` section for host-side defmt table parsing);
 /// - the application binary → `app/<file_name>`;
 /// - the signed TA (when present) → `ta/<file_name>`;
 /// - the HMI dist tree (when present) → `www/` (copied recursively);
@@ -156,6 +158,9 @@ fn io(path: impl AsRef<Path>, source: std::io::Error) -> DistAssemblyError {
 /// the kernel build performs the final `dtc`.
 pub struct DistAssemblyInputs<'a> {
     pub firmware: &'a HashMap<VisibleCore, PathBuf>,
+    /// The unstripped `<core>_original.elf` per core (keeps the `.defmt` section),
+    /// staged alongside the deployable ELF for host-side defmt table parsing.
+    pub firmware_originals: &'a HashMap<VisibleCore, PathBuf>,
     pub application: &'a Path,
     pub ta: Option<&'a Path>,
     pub hmi_dist: Option<&'a Path>,
@@ -171,6 +176,7 @@ pub async fn assemble(
 ) -> Result<(), DistAssemblyError> {
     let DistAssemblyInputs {
         firmware,
+        firmware_originals,
         application,
         ta,
         hmi_dist,
@@ -186,6 +192,11 @@ pub async fn assemble(
         .map_err(|e| io(&firmware_dir, e))?;
     for (core, elf) in firmware {
         let dest = firmware_dir.join(format!("{core}.elf"));
+        copy_file(elf, &dest).await?;
+    }
+    // Unstripped originals (keep `.defmt`) for host-side defmt table parsing.
+    for (core, elf) in firmware_originals {
+        let dest = firmware_dir.join(format!("{core}_original.elf"));
         copy_file(elf, &dest).await?;
     }
 
@@ -404,6 +415,8 @@ mod tests {
         // Fake build outputs: ELF-magic stand-ins, an app binary, a .ta, a www tree.
         let cm33_elf = sources.join("cm33.elf");
         std::fs::write(&cm33_elf, [0x7f, b'E', b'L', b'F']).unwrap();
+        let cm33_original = sources.join("cm33_original.elf");
+        std::fs::write(&cm33_original, [0x7f, b'E', b'L', b'F', b'O']).unwrap();
         let app = sources.join("melt-pot-app");
         std::fs::write(&app, [0x7f, b'E', b'L', b'F']).unwrap();
         let ta = sources.join("uuid.ta");
@@ -418,6 +431,10 @@ mod tests {
             VisibleCore::Mcore("cm33".parse().unwrap()),
             cm33_elf.clone(),
         )]);
+        let firmware_originals = HashMap::from([(
+            VisibleCore::Mcore("cm33".parse().unwrap()),
+            cm33_original.clone(),
+        )]);
         let units = vec![("consortium-app.service".to_string(), "[Unit]\n".to_string())];
         let kconfig = vec![("uio-enable.cfg".to_string(), "CONFIG_UIO=y\n".to_string())];
         let boot = vec![("boot.cmd".to_string(), "setenv bootargs\n".to_string())];
@@ -426,6 +443,7 @@ mod tests {
             &layout,
             DistAssemblyInputs {
                 firmware: &firmware,
+                firmware_originals: &firmware_originals,
                 application: &app,
                 ta: Some(&ta),
                 hmi_dist: Some(&www),
@@ -439,6 +457,7 @@ mod tests {
         .expect("assemble succeeds");
 
         assert!(layout.firmware_dir().join("cm33.elf").exists());
+        assert!(layout.firmware_dir().join("cm33_original.elf").exists());
         assert!(layout.app_dir().join("melt-pot-app").exists());
         assert!(layout.ta_dir().join("uuid.ta").exists());
         assert!(layout.www_dir().join("index.html").exists());
@@ -471,6 +490,7 @@ mod tests {
             &layout,
             DistAssemblyInputs {
                 firmware: &firmware,
+                firmware_originals: &firmware,
                 application: &app,
                 ta: None,
                 hmi_dist: None,
@@ -550,6 +570,7 @@ mod tests {
             &layout,
             DistAssemblyInputs {
                 firmware: &firmware,
+                firmware_originals: &firmware,
                 application: &app,
                 ta: None,
                 hmi_dist: None,
@@ -590,6 +611,7 @@ mod tests {
             &layout,
             DistAssemblyInputs {
                 firmware: &firmware,
+                firmware_originals: &firmware,
                 application: &app,
                 ta: None,
                 hmi_dist: None,

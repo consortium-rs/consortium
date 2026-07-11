@@ -75,6 +75,13 @@ impl From<Chan> for u8 {
     }
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for Chan {
+    fn format(&self, f: defmt::Formatter<'_>) {
+        defmt::write!(f, "Chan({=u8})", self.0)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
