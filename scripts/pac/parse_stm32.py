@@ -4,13 +4,12 @@
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple, Set
+from typing import Dict, List, Any, Tuple, Set
 import argparse
 
 from common import (
     safe_hex_to_int,
     evaluate_expr,
-    popcount,
     calc_bit_size_from_mask,
     write_yaml,
     write_json,
@@ -239,14 +238,8 @@ class STM32HeaderParser:
                         current_offset += type_size
                     continue
 
-                # Determine access
-                if qualifier == "__IO":
-                    access = "read-write"
-                elif qualifier == "__I":
-                    access = "read-only"
-                elif qualifier == "__O":
-                    access = "write-only"
-                else:
+                # Only fields with an access qualifier are real registers.
+                if qualifier not in ("__IO", "__I", "__O"):
                     continue
 
                 # Extract byte offset from comment

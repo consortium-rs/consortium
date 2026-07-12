@@ -44,6 +44,7 @@ consortium-ipc-doorbell-mu = { default-features = false, features = [
   "mimx95",
 ], path = "../../../../crates/consortium-ipc-doorbell-mu" }
 consortium-ipc-transport-memory = { default-features = false, features = [
+  "defmt",
   "mimx95",
 ], path = "../../../../crates/consortium-ipc-transport-memory" }
 consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory" }

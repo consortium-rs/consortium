@@ -42,5 +42,7 @@ ignore:
   - .vscode
   - data
   - dialogs
+  # Patch directories are named after their vendor submodules (kebab-case).
+  - scripts/pac/patches
   - submodules
   - target

@@ -660,7 +660,7 @@ As 32-bit words:
 
 Because `0x0926` was absent at `0x2006_4000`, the `#[interrupt]` handler had not executed.
 
-To identify which path was actually taken, we split the handling logic between `#[interrupt] fn IPCC_RX()` and `#[cortex_m_rt::execption] unsafe fn DefaultHandler(irqn: i16)`.
+To identify which path was actually taken, we split the handling logic between `#[interrupt] fn IPCC_RX()` and `#[cortex_m_rt::exception] unsafe fn DefaultHandler(irqn: i16)`.
 
 ### `IPCC1_RX` Interrupt
 

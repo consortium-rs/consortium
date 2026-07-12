@@ -312,6 +312,10 @@ async fn irq_loop(async_fd: AsyncFd<File>, services: Services) {
                 consortium_log::trace!("irq_loop: draining UIO count");
                 let read = guard.try_io(|fd| {
                     use std::io::Read;
+                    // The reborrow is deliberate: `Read` is implemented for
+                    // `&File`, so read through a fresh `&File` place without
+                    // duping the fd.
+                    #[allow(clippy::borrow_deref_ref)]
                     (&mut &*fd.get_ref()).read_exact(&mut count)
                 });
                 // `try_io` returns `Err(WouldBlock)` as a spurious-readiness

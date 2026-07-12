@@ -222,6 +222,8 @@ mod tests {
                 mmap: vec![(0x2040_0000, 0x8000)],
                 irq: None,
                 backing: UioBacking::ReservedMemory,
+                interrupt_parent: None,
+                clock: None,
             },
         )])
     }

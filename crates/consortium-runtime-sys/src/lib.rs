@@ -38,7 +38,8 @@
 )]
 // The bindgen `__IncompleteArrayField` helper (flexible-array members) defines
 // `unsafe fn`s whose bodies call unsafe slice constructors without an inner
-// `unsafe` block. That is generated code we do not edit.
-#![allow(unsafe_op_in_unsafe_fn)]
+// `unsafe` block and whose docs carry no `# Safety` section. That is generated
+// code we do not edit.
+#![allow(unsafe_op_in_unsafe_fn, clippy::missing_safety_doc)]
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));

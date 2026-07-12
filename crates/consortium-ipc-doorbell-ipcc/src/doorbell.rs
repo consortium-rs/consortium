@@ -549,11 +549,12 @@ mod tests {
     }
 
     #[test]
-    fn validation_rejects_reserved_and_out_of_range_channels() {
+    fn validation_rejects_out_of_range_channels() {
         let mut regs = [0u32; 8];
         let db = doorbell(&mut regs);
 
-        assert_eq!(db.ring(ch(0)), Err(IpccError::ChanReserved));
+        // Reserved-channel policy is enforced at `Chan::new::<IpccChanValidate>`
+        // (covered in `chan.rs`); `ring` itself only bounds-checks the id.
         assert_eq!(db.ring(ch(16)), Err(IpccError::ChanOutOfRange));
     }
 }

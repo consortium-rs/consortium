@@ -232,10 +232,7 @@ fn init() -> IpcMemoryEndpoints {
     // SAFETY: interrupt numbers are emitted from the validated
     // Consortium hardware database for this visible core.
     unsafe {
-        ::consortium_hal_stm32mp2::hal::nvic::set_priority(
-            BellaInterrupt::MU7 as u16,
-            0x80,
-        );
+        ::consortium_hal_imx9::hal::nvic::set_priority(BellaInterrupt::MU7 as u16, 0x80);
     }
     ::consortium_runtime_mcu::log::trace!(
         "consortium controller init: NVIC set priority to 0x80 {} (id={})",

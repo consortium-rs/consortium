@@ -207,7 +207,7 @@ fn bella_nvic_enable_for_controller_core() {
     };
 
     let tokens = bella
-        .nvic_enable(&cm33())
+        .nvic_enable(&cm33(), "::consortium_hal_stm32mp2")
         .expect("controller core has irqs");
     insta::assert_snapshot!(stmts(tokens));
 }
