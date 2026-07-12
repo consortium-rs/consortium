@@ -1,4 +1,4 @@
-# RemoteProc, July 10, 2026
+# RemoteProc, July 10, 2026 (Power on M33)
 
 `remoteproc` executes the Cortex-M33 core in STM32MP257 and the Cortex-M7 core in i.MX 95 (MIMX9596). The conventional experience is:
 
