@@ -1,4 +1,4 @@
-# NVIC, July 11th, 2026
+# NVIC, July 11th, 2026 (Let M33 awake)
 
 In Cortex-M, NVIC serves the task of handling interrupts.
 
