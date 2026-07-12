@@ -1,18 +1,18 @@
-# UIO Jul 9 (Enable and r/w)
+# UIO, July 9, 2026 (Enabling Read/Write Access)
 
-To enable `mmap` via `uio`, we need to handle the node of UIO devices. Executing:
+To use `mmap` through UIO, the application must open and map the appropriate UIO device node. We began by running:
 
 ```sh
 RUST_LOG=trace ./melt-pot-stm32mp25-app
 ```
 
-Then a straight, cold answer:
+The program terminated immediately with an uninformative error:
 
 ```
 Bus error (core dumped)
 ```
 
-No any indications available, so let's try using `gdb` to snapshot the last moment it crashes:
+Because the program provided no further diagnostic information, we used `gdb` to capture the point at which it crashed:
 
 ```sh
 (gdb) run
@@ -28,10 +28,9 @@ core::ptr::read_volatile<u32> (src=0xfffff7fe5080)
 warning: 2095 /home/ethanwu/.rustup/toolchains/stable-aarch64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs: No such file or directory
 ```
 
-We don't know how to use gdb correctly, nor do we have an interest in halting programs. Hence, the only tool we want to use is to view the backtrace. Switch to debug build, and re-run after `Bus error`:
+We did not need an interactive debugging session; the backtrace alone was sufficient for this investigation. We switched to a debug build, reproduced the `Bus error`, and requested the backtrace:
 
 ```sh
-
 (gdb) bt
 #0  core::ptr::read_volatile<u32> (src=0xfffff7fe5080)
     at /home/ethanwu/.rustup/toolchains/stable-aarch64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/mod.rs:2095
@@ -41,38 +40,9 @@ We don't know how to use gdb correctly, nor do we have an interest in halting pr
     at /home/ethanwu/consortium/crates/consortium-ipc-doorbell-hsem/src/abstraction.rs:118
 #3  0x0000aaaaaaace0f4 in consortium_ipc_doorbell_hsem::doorbell::{impl#3}::ring<consortium_ipc::side::Primary, 1> (
     self=0xffffffffe0f8, ch=...) at /home/ethanwu/consortium/crates/consortium-ipc-doorbell-hsem/src/doorbell.rs:115
-#4  0x0000aaaaaaacf18c in consortium_ipc_transport_memory::descriptor::{impl#4}::descriptor_init::{async_fn#0}<consortium_ipc_doorbell_hsem::doorbell::HsemDoorbell<consortium_ipc::side::Primary, 1>, consortium_shared_memory::regions::SramRegion> () at /home/ethanwu/consortium/crates/consortium-ipc-transport-memory/src/descriptor.rs:358
-#5  0x0000aaaaaaac0498 in melt_pot_stm32mp25_app::{impl#0}::connect::{async_fn#0} () at src/consortium.gen.rs:127
-#6  0x0000aaaaaaac165c in melt_pot_stm32mp25_app::init::{async_fn#0} () at src/consortium.gen.rs:219
-#7  0x0000aaaaaaac2694 in melt_pot_stm32mp25_app::main::{async_block#0} () at src/main.rs:65
-#8  0x0000aaaaaaac5c5c in tokio::runtime::park::{impl#4}::block_on::{closure#0}<melt_pot_stm32mp25_app::main::{async_block_env#0}> ()
-    at /home/ethanwu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/park.rs:284
-#9  0x0000aaaaaaac54a0 in tokio::task::coop::with_budget<core::task::poll::Poll<()>, tokio::runtime::park::{impl#4}::block_on::{closure_env#0}<melt_pot_stm32mp25_app::main::{async_block_env#0}>> (budget=..., f=...)
-    at /home/ethanwu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/task/coop/mod.rs:167
-#10 tokio::task::coop::budget<core::task::poll::Poll<()>, tokio::runtime::park::{impl#4}::block_on::{closure_env#0}<melt_pot_stm32mp25_app::main::{async_block_env#0}>> (f=...)
-    at /home/ethanwu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/task/coop/mod.rs:133
-#11 tokio::runtime::park::CachedParkThread::block_on<melt_pot_stm32mp25_app::main::{async_block_env#0}> (
-    self=0xffffffffe2df, f=...)
-    at /home/ethanwu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/park.rs:284
---Type <RET> for more, q to quit, c to continue without paging--
-#12 0x0000aaaaaaacc2a4 in tokio::runtime::context::blocking::BlockingRegionGuard::block_on<melt_pot_stm32mp25_app::main::{async_block_env#0}> (self=0xffffffffe6d0, f=...)
-    at /home/ethanwu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/context/blocking.rs:66
-#13 0x0000aaaaaaacc938 in tokio::runtime::scheduler::multi_thread::{impl#0}::block_on::{closure#0}<melt_pot_stm32mp25_app::main::{async_block_env#0}> (blocking=0xffffffffe6d0)
-    at /home/ethanwu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/multi_thread/mod.rs:92
-#14 0x0000aaaaaaacbb9c in tokio::runtime::context::runtime::enter_runtime<tokio::runtime::scheduler::multi_thread::{impl#0}::block_on::{closure_env#0}<melt_pot_stm32mp25_app::main::{async_block_env#0}>, ()> (handle=0xfffffffff450,
-    allow_block_in_place=true, f=...)
-    at /home/ethanwu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/context/runtime.rs:65
-#15 0x0000aaaaaaacc8e4 in tokio::runtime::scheduler::multi_thread::MultiThread::block_on<melt_pot_stm32mp25_app::main::{async_block_env#0}> (self=0xfffffffff428, handle=0xfffffffff450, future=...)
-    at /home/ethanwu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/multi_thread/mod.rs:91
-#16 0x0000aaaaaaacc598 in tokio::runtime::runtime::Runtime::block_on_inner<melt_pot_stm32mp25_app::main::{async_block_env#0}> (self=0xfffffffff420, future=...)
-    at /home/ethanwu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/runtime.rs:373
-#17 0x0000aaaaaaacc79c in tokio::runtime::runtime::Runtime::block_on<melt_pot_stm32mp25_app::main::{async_block_env#0}>
-    (self=0xfffffffff420, future=...)
-    at /home/ethanwu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/runtime.rs:345
-#18 0x0000aaaaaaac1dc8 in melt_pot_stm32mp25_app::main () at src/main.rs:65
 ```
 
-Now its clear: reading the `hsem` register caused the Bus error. To see other uio devices, we let AI to write a small gadget:
+The backtrace made the failure clear: reading the `hsem` register caused the bus error. To compare behavior across the other UIO devices, we used a small diagnostic utility:
 
 ```c
 #include <sys/mman.h>
@@ -295,25 +265,25 @@ int main(int argc, char **argv) {
 }
 ```
 
-HSEM (memory-mapped i/o) is in `/dev/uio2`, whereas shared memory regions (outer-shareable, non-cacheable) are in `/dev/uio0` and `/dev/uio1`. The result was that only `/dev/uio2` reported `Bus error`, so the answer could only be one of:
+HSEM, a memory-mapped I/O peripheral, was exposed through `/dev/uio2`, while the outer-shareable, non-cacheable shared-memory regions were exposed through `/dev/uio0` and `/dev/uio1`. Only `/dev/uio2` produced a `Bus error`, which narrowed the likely causes to the following:
 
 1. `RIF` blocked the read and issued an _Illegal Access_ event.
-2. The entire peripheral wasn't assigned for a clock.
-3. Read action unaligned.
+2. No clock had been assigned to the peripheral.
+3. The read was unaligned. This fails because all readings are word-by-word.
 
-Actually, the first answer was my first intution: last summer, when I was fine-tuning a LLM on 4090s cluster, the process was blocked and reported `Bus error`, but 3090 worked. Checked the notice and found that this account wasn't assigned the permission of using 4090 — the 4090 was temporarily assigned for new-comers. That's being said, the first time I saw Bus error was related to _permission_ issues, similar to `RIF` here.
+The first possibility was initially the most intuitive. In an earlier, unrelated case, an LLM fine-tuning process produced a `Bus error` on an RTX 4090 cluster while working on RTX 3090 nodes. The account did not have permission to use the 4090 nodes, which had temporarily been reserved for newcomers. That experience associated a bus error with an access-control problem analogous to `RIF` here; it was only a heuristic, not evidence for this specific failure.
 
-Checking the [RM0457](https://www.st.com/resource/en/reference_manual/rm0457-stm32mp2325xx-advanced-armbased-3264bit-mpus-stmicroelectronics.pdf), the answer failed silently:
+Checking [RM0457](https://www.st.com/resource/en/reference_manual/rm0457-stm32mp2325xx-advanced-armbased-3264bit-mpus-stmicroelectronics.pdf) did not support that hypothesis:
 
 ![rif_aware_idx_mp25](/figures/rif_aware_idx_mp25.png)
 
-The official STM32CubeMX example assigned `IPCC1` for all cores and disabled opt-out, meaning that all cores have access to this peripheral among CPU1 (`ca35`) and CPU2 (`cm33`). Hence, the `RIF` supposition failed.
+The official STM32CubeMX example assigned `IPCC1` to all cores and disabled opt-out. Both CPU1 (`ca35`) and CPU2 (`cm33`) therefore had access to the peripheral, ruling out the `RIF` hypothesis.
 
 ```sh
 dtc -I dtb -O dts -o stm32mp257f-dk.dts stm32mp257f-dk.dtb
 ```
 
-Converting the `dtb` to `dts` and investigate what was passed to the device. Check the device source tree of `ipcc1` (official) specifically:
+We converted the `dtb` to `dts` to inspect the configuration passed to the device, focusing on the official `ipcc1` node:
 
 ```dts
 ipcc1: mailbox@40490000 {
@@ -329,7 +299,7 @@ ipcc1: mailbox@40490000 {
 };
 ```
 
-There was a line `clocks = <0x14 0x69>;`. In comparison, our `hsem` was very naive:
+The node contained `clocks = <0x14 0x69>;`. By comparison, our `hsem` node was minimal:
 
 ```dts
 hsem@46240000 {
@@ -341,13 +311,13 @@ hsem@46240000 {
 };
 ```
 
-To find the clock, we could enter linux repo `/include/dt-bindings/clock/st,stm32mp25-rcc.h`, according to the `stm32mp251.dtsi` (`stm32mp257.dtsi` includes `stm32mp255.dsti` that includes `stm342mp253.dsti` that includes `stm32mp251.dtsi` that includes the `st,stm32mp255-rcc.h`):
+To identify the clock, we inspected `/include/dt-bindings/clock/st,stm32mp25-rcc.h` in the Linux repository. This header is reached through the DTS include chain: `stm32mp257.dtsi` includes `stm32mp255.dsti`, which includes `stm342mp253.dsti`, which includes `stm32mp251.dtsi`, which in turn includes `st,stm32mp255-rcc.h`.
 
 ```c
 #include <dt-bindings/clock/st,stm32mp25-rcc.h>
 ```
 
-We can find the data:
+The relevant definitions were:
 
 ```c
 #define CK_SCMI_HSEM		104
@@ -355,7 +325,7 @@ We can find the data:
 #define CK_SCMI_IPCC2		106
 ```
 
-In official `IPCC1` configuration, the `0x69` corresponds to the `CK_SCMI_IPCC1`. Checking `IPCC2`, it was `0x6a`. Hence, we believe that this `0x69` comes from this `CK_SCMI_[peripheral]`. How about `0x14`? We found this:
+In the official `IPCC1` configuration, `0x69` corresponded to `CK_SCMI_IPCC1`; for `IPCC2`, the value was `0x6a`. This indicated that the second cell selected the relevant `CK_SCMI_[peripheral]` clock. We then identified the meaning of `0x14`:
 
 ```dts
 scmi_clk: protocol@14 {
@@ -366,6 +336,6 @@ scmi_clk: protocol@14 {
 };
 ```
 
-Then we can know that we need to add `clocks = <0x14 0x68>;` for HSEM. Add the node and the access was successful.
+From these definitions, we determined that HSEM required `clocks = <0x14 0x68>;`. After adding that property to the node, access succeeded.
 
-Then it worked.
+The UIO mapping then worked as expected.
