@@ -1,6 +1,6 @@
-# RemoteProc, July 10, 2026 (Power on M33)
+# RemoteProc, July 10, 2026 (Powering On the M33)
 
-`remoteproc` executes the Cortex-M33 core in STM32MP257 and the Cortex-M7 core in i.MX 95 (MIMX9596). The conventional experience is:
+`remoteproc` starts the Cortex-M33 core on STM32MP257 and the Cortex-M7 core on i.MX 95 (MIMX9596). The conventional workflow is:
 
 ```sh
 # stop
@@ -12,7 +12,7 @@ echo cm33.elf > /sys/class/remoteproc/remoteproc0/firmware
 echo stop > /sys/class/remoteproc/remoteproc0/state
 ```
 
-## Attempt 1: Resource Table Lacks
+## Attempt 1: Missing Resource Table
 
 ```
 [  158.179437] remoteproc remoteproc1: stopped remote processor m33
@@ -30,11 +30,11 @@ echo stop > /sys/class/remoteproc/remoteproc0/state
 [  224.202025] remoteproc remoteproc1: Boot failed: -22
 ```
 
-### Firmware Anlaysis
+### Firmware Analysis
 
-We dumped two firmware, one pre-installed UCPD firmware, one custom firmware.
+We inspected two firmware images: the preinstalled UCPD firmware and our custom firmware.
 
-#### Official dump
+#### Official Firmware
 
 ```
 Elf file type is EXEC (Executable file)
@@ -54,7 +54,7 @@ Program Headers:
    03     .resource_table
 ```
 
-#### Our dump
+#### Custom Firmware
 
 ```
 Elf file type is EXEC (Executable file)
@@ -78,11 +78,11 @@ Program Headers:
    05
 ```
 
-It's clear that we didn't have `.resource_table` at least, according to the `rproc dmesg`.
+The program headers and `remoteproc` messages showed that our firmware did not contain a `.resource_table` section.
 
-### Add `ResourceTable`
+### Adding `ResourceTable`
 
-It's straightforward to add resource table here because we don't use any OpenAMP- and RemoteProc-compatible vring and rpmsg.
+Adding a resource table was straightforward because this firmware does not use any OpenAMP- or RemoteProc-compatible vrings or RPMsg channels.
 
 ```rust
 #[repr(C, packed)]
@@ -101,7 +101,7 @@ static RESOURCE_TABLE: ResourceTable = ResourceTable {
 };
 ```
 
-Then it worked according to `rproc`.
+After this change, `remoteproc` reported that the remote processor was up.
 
 ```
 [ 8960.582799] remoteproc remoteproc0: stopped remote processor m33
@@ -111,19 +111,19 @@ Then it worked according to `rproc`.
 [ 8965.886106] remoteproc remoteproc0: remote processor m33 is now up
 ```
 
-## Attempt 2: Processor Up without GPIO Flip or Shared Memory Write
+## Attempt 2: Processor Up Without a GPIO Toggle or Shared-Memory Write
 
-To check if M-core is alive, I wrote the logic to flip the GPIO once it enters main loop, and then write shared memory to load which step it entered.
+To determine whether the M-core was running, I added logic to toggle a GPIO upon entering the main loop and to write progress markers into shared memory.
 
-According to [UM3385](https://www.st.com/resource/en/user_manual/um3385-discovery-kit-with-stm32mp257f-mpu-stmicroelectronics.pdf), there are `PH4`, `PH5`, `PH6`, and `PH7` on-board LEDs:
+According to [UM3385](https://www.st.com/resource/en/user_manual/um3385-discovery-kit-with-stm32mp257f-mpu-stmicroelectronics.pdf), the board has LEDs on `PH4`, `PH5`, `PH6`, and `PH7`:
 
 ![led_dk_mp25](/figures/led_dk_mp25.png)
 
-And `PH6` is granted to CM33:
+`PH6` is assigned to the CM33:
 
 ![gpio_pgph_rif_mp25](/figures/gpio_pgph_rif_mp25.png)
 
-According to the `hal`:
+The HAL implements the GPIO writes as follows:
 
 ```rust
     #[inline]
@@ -139,7 +139,7 @@ According to the `hal`:
     }
 ```
 
-It's easy that we write the code to flip the GPIO to indicate the firmware is in panic or HardFault mode.
+We therefore added GPIO toggles to indicate whether the firmware entered its panic or HardFault handler.
 
 ```rust
 
@@ -245,12 +245,12 @@ unsafe fn HardFault(ef: &cortex_m_rt::ExceptionFrame) -> ! {
 }
 ```
 
-But currently, the orange LED is still on, indicating either:
+The orange LED remained on, leaving two possibilities:
 
-1. Running successfully — false because no shared memory touched.
-2. Didn't enter the main at all.
+1. The firmware was running successfully. This was ruled out because shared memory remained untouched.
+2. The firmware never entered `main`.
 
-## Attempt 3: Manual ASM
+## Attempt 3: Manual Assembly
 
 ```asm
 .section .text.entry
@@ -262,11 +262,11 @@ _start:
 b rust_main
 ```
 
-But the LED was off again, indicating NOTHING ran.
+The LED remained off, indicating that even this minimal entry sequence did not run.
 
-## Attempt 4: Is the Power on?
+## Attempt 4: Is the Core Powered On?
 
-Investiaging the `dts` we can find `st,syscfg-cm-state = <0x98 0x204 0x0c>`, which resolves to:
+While investigating the DTS, we found `st,syscfg-cm-state = <0x98 0x204 0x0c>`, which resolves to:
 
 ```
 base  = 0x44210000   (from this PWR syscon node)
@@ -274,12 +274,12 @@ offset = 0x204
 mask   = 0x0c         (bits [3:2])
 ```
 
-This is the register `PWR_CPU2D2SR`, according to the reference manual page 934–935:
+According to pages 934–935 of the reference manual, this is the `PWR_CPU2D2SR` register:
 
 ![pwr_cpu2d2sr_1_mp25](/figures/pwr_cpu2d2sr_1_mp25.png)
 ![pwr_cpu2d2sr_2_mp25](/figures/pwr_cpu2d2sr_2_mp25.png)
 
-And had a script for automatic detection:
+We used the following script to detect the state automatically:
 
 ```sh
 # 1. Before powering up
@@ -298,7 +298,7 @@ echo stop > /sys/class/remoteproc/remoteproc0/state
 devmem 0x44210204 32
 ```
 
-And here's the result:
+The script produced the following result:
 
 ```
 running
@@ -319,9 +319,9 @@ Memory mapped at address 0xffffa01f1000.
 Read at address  0x44210204 (0xffffa01f1204): 0x00000001
 ```
 
-Hence, the started value is `0x00000004` and the stopped value is `0x00000001` — it did power on.
+The running state was therefore `0x00000004`, while the stopped state was `0x00000001`. This confirmed that the core did power on.
 
-## Attempt 5: Enable Dynamic Debug for Rproc
+## Attempt 5: Enabling Dynamic Debug for `remoteproc`
 
 ```sh
 echo 'module stm32_rproc +p' > /sys/kernel/debug/dynamic_debug/control
@@ -329,7 +329,7 @@ echo start > /sys/class/remoteproc/remoteproc0/state
 dmesg | tail -50
 ```
 
-And the output is:
+The resulting output was:
 
 ```
 [ 175.077928] remoteproc remoteproc0: powering up m33
@@ -354,22 +354,22 @@ And the output is:
 [ 175.224106] remoteproc remoteproc0: remote processor m33 is now up
 ```
 
-Look at the line `[175.200692]`:
+The key line was `[175.200692]`:
 
 ```
 [ 175.200692] remoteproc remoteproc0: boot vector address = 0x0
 ```
 
-Should boot vector address be `0x0`? If we read the elf, we can find:
+The boot-vector address appeared as `0x0`. Inspecting the ELF showed:
 
 ```sh
 readelf -h ./dist/firmware/cm33.elf | grep -i entry
   Entry point address:               0x80100e01
 ```
 
-So it was the problem.
+This identified the incorrect boot-vector address as the problem.
 
-## Attempt 6: `.isr_vectors` Section as Hero
+## Attempt 6: Adding the `.isr_vectors` Section
 
 According to an [ST Community Forum](https://community.st.com/stm32-mpus-products-and-hardware-related-39/iac-exceptions-when-launching-m33-core-145981?postid=646273#post646273):
 
@@ -388,13 +388,13 @@ According to an [ST Community Forum](https://community.st.com/stm32-mpus-product
 >  } >NS_VECTOR_TBL
 > ```
 
-Add this to `memory.x`, and then the address is correct:
+After adding this section to `memory.x`, the address was correct:
 
 ```
 [  536.656497] remoteproc remoteproc0: boot vector address = 0x80100000
 ```
 
-But still didn't work: no gpio flip, no volatile write, etc. Hence, we used `loadelf`:
+The firmware still did not run: there was no GPIO toggle or volatile write. We therefore inspected it with `loadelf`:
 
 ```
 Section Headers:
@@ -404,18 +404,18 @@ Section Headers:
   [ 2] .vector_table     PROGBITS        80100600 000134 000800 00   A  0   0  4
 ```
 
-This indicates an **empty** `.isr_vectors`.
+This output indicated that `.isr_vectors` was **empty**.
 
-## Attempt 7: `.isr_vectors` v.s. `.vector_table`
+## Attempt 7: `.isr_vectors` vs. `.vector_table`
 
-First we need to verify the `.vector_table` to be truly populated:
+We first verified that `.vector_table` was populated:
 
 ```sh
 objcopy -O binary --only-section=.vector_table ./dist/firmware/cm33.elf vtor_orig.bin
 xxd vtor_orig.bin | head -2
 ```
 
-Then we dump the binary:
+We then dumped the binary:
 
 ```
 ethanwu@ethanwu:~/consortium/examples/melt-pot/stm32mp25$ xxd vtor_orig.bin | head -2
@@ -423,7 +423,7 @@ ethanwu@ethanwu:~/consortium/examples/melt-pot/stm32mp25$ xxd vtor_orig.bin | he
 00000010: f725 1080 f725 1080 f725 1080 f725 1080  .%...%...%...%..
 ```
 
-The original `.vector_table` was okay; perhaps renaming is enough:
+The original `.vector_table` was valid, suggesting that renaming the section might be sufficient:
 
 ```sh
 arm-none-eabi-objcopy \
@@ -431,4 +431,4 @@ arm-none-eabi-objcopy \
   ./dist/firmware/cm33.elf ./dist/firmware/cm33_fixed.elf
 ```
 
-Then it worked.
+After renaming the section, the firmware ran successfully.

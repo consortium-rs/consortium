@@ -1,13 +1,13 @@
-# UIO, July 6, 2026 (Compile into kernel)
+# UIO, July 6, 2026 (Compiling into the Kernel)
 
-Consortium uses UIO for Cortex-A-side handling, which provides:
+Consortium uses UIO for Cortex-A-side handling. UIO provides two capabilities required by Consortium:
 
-1. Interrupt routing. Through `uio_pdrv_genirq`, interrupt can be handled.
-2. Memory map. Maps a specific physical memory region to an accessible virtual memory region.
+1. Interrupt routing. `uio_pdrv_genirq` allows an interrupt to be handled from user space.
+2. Memory mapping. UIO maps a specific physical memory region into an accessible virtual memory region.
 
-## UIO is not present in kernel
+## UIO Is Not Present in the Kernel
 
-To get started with UIO, we need to view if the kernel had UIO included:
+To get started, we first checked whether UIO support was included in the running kernel:
 
 ```sh
 # Is it built-in? Any of these confirming = built-in, no build needed:
@@ -35,7 +35,7 @@ root@stm32mp2-e3-aa-db:~# ls -d /sys/class/uio/uio* 2>/dev/null
 root@stm32mp2-e3-aa-db:~#
 ```
 
-To enable the UIO, we had to have a Yocto rebuild. Article refer to [Yocto, July 3](jul-3-yocto.md): modify `config.cfg`:
+Enabling UIO required rebuilding the kernel with Yocto. Following [Yocto, July 3](jul-3-yocto.md), we modified `config.cfg`:
 
 ```conf
 CONFIG_UIO=y
@@ -46,11 +46,11 @@ CONFIG_OF_CONFIGFS=y
 CONFIG_CONFIGFS_FS=y
 ```
 
-Then the kernel had the UIO. However, there isn't any UIO device even if the DTS has been added?
+After the rebuild, the kernel included UIO support. However, no UIO device appeared, even though the DTS node had been added.
 
-## UIO in kernel, no device available.
+## UIO Is in the Kernel, but No Device Is Available
 
-In device tree, we can find the node, but we can not find the UIO device:
+The node was present in the device tree, but the corresponding UIO device was not:
 
 ```sh
 root@imx95-15x15-lpddr4x-frdm:~# ls /sys/firmware/devicetree/base/ | grep -E "mu7|ipc-shm|dbg-shm"
@@ -68,7 +68,7 @@ root@imx95-15x15-lpddr4x-frdm:~# dmesg | grep -iE "uio|42430000"
 root@imx95-15x15-lpddr4x-frdm:~#
 ```
 
-No `dmesg` loading, check it again.
+Because `dmesg` contained no indication that the driver had loaded, we checked the kernel configuration again:
 
 ```sh
 root@imx95-15x15-lpddr4x-frdm:~# modprobe uio_pdrv_genirq
@@ -90,13 +90,13 @@ CONFIG_UIO_IVSHMEM=y
 CONFIG_CRYPTO_DEV_FSL_CAAM_JR_UIO=m
 ```
 
-We found the line `CONFIG_UIO_PDRV_GENIRQ is not set`, but we already opened it in linux config? Opening the Yocto build, we saw the following line:
+The output contained `CONFIG_UIO_PDRV_GENIRQ is not set`, even though we thought we had enabled it in the Linux configuration. Inspecting the Yocto build configuration revealed the following line:
 
 ```conf
 CONFIG_UIO_PDRV_GENERIC=y
 ```
 
-Oops, we mistakenly wrote it `GENERIC` — it should be `GENIRQ`. Modifying the config, rebuild the kernel, and re-flash. Try again:
+We had mistakenly written `GENERIC`; the correct suffix is `GENIRQ`. We corrected the configuration, rebuilt the kernel, reflashed the board, and tried again:
 
 ```sh
 root@imx95-15x15-lpddr4x-frdm:~# lsmod | grep uio
@@ -110,7 +110,7 @@ root@imx95-15x15-lpddr4x-frdm:~# cat /proc/iomem | grep -A2 -B2 42430000
 root@imx95-15x15-lpddr4x-frdm:~#
 ```
 
-There _is_ `iomem` loadings in the system boot, but `lsmod` didn't show the `uio` device. That's being said, **`uio_pdrv_genirq` still isn't loaded**.
+The peripheral did appear in the system's `iomem` map, but `lsmod` did not show the relevant UIO driver. In other words, **`uio_pdrv_genirq` still was not loaded**.
 
 ```sh
 root@imx95-15x15-lpddr4x-frdm:~# find /lib/modules/$(uname -r)/ -name "*genirq*"
@@ -121,7 +121,7 @@ root@imx95-15x15-lpddr4x-frdm:~# find /lib/modules/$(uname -r)/ -name "*genirq*"
 root@imx95-15x15-lpddr4x-frdm:~#
 ```
 
-Since we directly marked it `=y`, it's compiled to kernel image and `lsmod` literally couldn't load it. We had to check `dmesg` again:
+Because the option was set to `=y`, the driver was compiled directly into the kernel image and therefore could not appear as a loadable module in `lsmod`. We checked `dmesg` again:
 
 ```sh
 root@imx95-15x15-lpddr4x-frdm:~# find /lib/modules/$(uname -r)/ -name "*genirq*"
@@ -157,7 +157,7 @@ root@imx95-15x15-lpddr4x-frdm:~# cat /sys/firmware/devicetree/base/mu7@42430000/
 okayroot@imx95-15x15-lpddr4x-frdm:~#
 ```
 
-The driver exists (`/sys/bus/platform/drivers/uio_pdrv_genirq/` has `bind/unbind`), the node itself is `status = "okay"`, but there's zero `dmesg` trace of it ever attempting to probe, not even an `EBUSY`.
+The driver existed (`/sys/bus/platform/drivers/uio_pdrv_genirq/` contained `bind` and `unbind`), and the node had `status = "okay"`. However, `dmesg` contained no trace of a probe attempt, not even an `EBUSY` error.
 
 ```sh
 root@imx95-15x15-lpddr4x-frdm:~# find /sys/devices -name "*42430000.mu7*"
@@ -189,7 +189,7 @@ root@imx95-15x15-lpddr4x-frdm:~# ls -la /sys/bus/platform/devices/42430000.mu7/d
 root@imx95-15x15-lpddr4x-frdm:~#
 ```
 
-Further probing this node, we found thie line:
+Further inspection of the node produced the following properties:
 
 ```conf
 OF_NAME=mu7
@@ -199,7 +199,7 @@ OF_COMPATIBLE_N=1
 MODALIAS=of:Nmu7T(null)Cgeneric-uio
 ```
 
-The `MODALIAS` line indicates the device is **fully valid and unbound**, which means that the driver, i.e., `uio_pdrv_genirq` wasn't loaded _entirely_.
+The `MODALIAS` line indicated that the device was **valid but unbound**. This narrowed the problem to `uio_pdrv_genirq`: the driver existed, but it had not bound to this device.
 
 Unlike most platform drivers, mainline Linux's `drivers/uio/uio_pdrv_genirq.c` ships with an empty `of_device_id` match table:
 
@@ -214,13 +214,13 @@ MODULE_PARM_DESC(of_id, "Openfirmware id of the device to be handled by uio");
 #endif
 ```
 
-This is deliberate upstream: `compatible = "generic-uio"` was considered too generic a string to safely auto-bind via normal OF matching (risk of accidentally claiming devices that shouldn't be UIO), so the driver requires you to explicitly tell it which compatible string to match via a module parameter at load time, rather than matching automatically from the DT compatible property alone. To fix this, we need to modify the `U-boot`:
+This upstream behavior is deliberate: `compatible = "generic-uio"` was considered too broad for safe automatic binding through normal OF matching, because the driver could accidentally claim devices that should not be exposed through UIO. The driver therefore requires the compatible string to be supplied explicitly through a module parameter at load time, rather than matching the DT `compatible` property automatically. To provide that parameter, we needed to modify the U-Boot boot arguments:
 
 ```conf
 uio_pdrv_genirq.of_id=generic-uio
 ```
 
-In VCP, when the device is booting, it would have a countdown "press any key to stop autoboot." Press any key in host to the serial, we can enter U-boot command line:
+During boot, the virtual COM port (VCP) displayed a countdown with the prompt "press any key to stop autoboot." Pressing a key from the host serial console opened the U-Boot command line:
 
 ```sh
 u-boot=> setenv mmcargs 'setenv bootargs ${jh_clk} console=${console} root=${mmcroot} uio_pdrv_genirq.of_id=generic-uio'
@@ -228,7 +228,7 @@ u-boot=> saveenv
 u-boot=> boot
 ```
 
-Then check it again, it worked:
+After booting with the updated arguments, we checked again and confirmed that it worked:
 
 ```sh
 imx95-15x15-lpddr4x-frdm login: root
@@ -240,24 +240,24 @@ root@imx95-15x15-lpddr4x-frdm:~# ls /sys/class/uio/
 uio0  uio1  uio2
 ```
 
-## Approach worked in FRDM-IMX95, failed in STM32MP257F-DK
+## The Approach Worked on FRDM-IMX95 but Failed on STM32MP257F-DK
 
-Check the boot arguments specifically, we have:
+We then inspected the boot arguments on the STM32MP257F-DK:
 
 ```conf
 bootargs= uio_pdrv_genirq.of_id=generic-uio (does the space after = matter?)
 bootcmd=run bootcmd_stm32mp
 ```
 
-The `bootcmd_stm32mp` commands is:
+The `bootcmd_stm32mp` command was:
 
 ```sh
 bootcmd_stm32mp=echo "Boot over ${boot_device}${boot_instance}!";if test ${boot_device} = serial || test ${boot_device} = usb;then stm32prog ${boot_device} ${boot_instance}; else run env_check;if test ${boot_device} = mmc;then env set boot_targets "mmc${boot_instance}"; fi;if test ${boot_device} = nand || test ${boot_device} = spi-nand ;then env set boot_targets ubifs0 mmc0; fi;if test ${boot_device} = nor;then env set boot_targets mmc0; fi;run distro_bootcmd;fi;
 ```
 
-It runs `distro_bootcmd`, which is the standard distro-boot script that hunts down `extlinux.conf` on the boot partition and boots using its APPEND line, not manually-set bootargs env.
+It runs `distro_bootcmd`, the standard distro-boot script. That script locates `extlinux.conf` on the boot partition and boots with its `APPEND` line, rather than using a manually set `bootargs` environment variable.
 
-Found the file in `/boot/mmc0_extlinux/extlinux.conf`. File content:
+We found the file at `/boot/mmc0_extlinux/extlinux.conf`; it contained:
 
 ```conf
 MENU BACKGROUND /splash_landscape.bmp
@@ -269,12 +269,12 @@ LABEL OpenSTLinux
     APPEND root=PARTUUID=e91c4e10-16e6-4c0e-bd0e-77becf4a3582 rootwait rw  earlycon console=${console},${baudrate}
 ```
 
-That `APPEND` line is exactly what's landing in `/proc/cmdline` right now — no `uio_pdrv_genirq.of_id=generic-uio` in it, confirming this is where the arg is getting dropped.
+That `APPEND` line exactly matched the contents of `/proc/cmdline`. Because it did not include `uio_pdrv_genirq.of_id=generic-uio`, this confirmed where the argument was being dropped.
 
-Modify it in `vi`:
+We modified the line in `vi`:
 
 ```sh
 APPEND root=PARTUUID=e91c4e10-16e6-4c0e-bd0e-77becf4a3582 rootwait rw earlycon console=${console},${baudrate} uio_pdrv_genirq.of_id=generic-uio
 ```
 
-Then it worked.
+After this change, the device bound successfully.
