@@ -57,8 +57,12 @@ impl BellA {
     /// Generates Cortex-M NVIC enablement code for every doorbell interrupt
     /// visible to `core`.
     ///
+    /// `hal_crate` is the chip HAL crate path the generated code calls into
+    /// (e.g. `::consortium_hal_stm32mp2` or `::consortium_hal_imx9`), as
+    /// selected by the lowering's chip-family split.
+    ///
     /// Returns `None` when no configured doorbell has an IRQ for `core`.
-    pub fn nvic_enable(&self, core: &VisibleCore) -> Option<TokenStream> {
+    pub fn nvic_enable(&self, core: &VisibleCore, hal_crate: &str) -> Option<TokenStream> {
         let mut interrupts = self
             .bells
             .iter()
@@ -86,6 +90,10 @@ impl BellA {
             .map(|(variant, _)| variant)
             .collect::<Vec<_>>();
 
+        let hal_crate: TokenStream = hal_crate
+            .parse()
+            .expect("hal crate path is a valid token stream");
+
         Some(quote! {
             #[derive(Clone, Copy, Debug, Eq, PartialEq)]
             #[repr(u16)]
@@ -103,7 +111,7 @@ impl BellA {
                 /// SAFETY: interrupt numbers are emitted from the validated
                 /// Consortium hardware database for this visible core.
                 unsafe {
-                    ::consortium_hal_stm32mp2::hal::nvic::set_priority(BellaInterrupt::#variant_names as u16, 0x80);
+                    #hal_crate::hal::nvic::set_priority(BellaInterrupt::#variant_names as u16, 0x80);
                 }
                 ::consortium_runtime_mcu::log::trace!("consortium controller init: NVIC set priority to 0x80 {} (id={})", stringify!(#variant_names), BellaInterrupt::#variant_names as u32);
                 ::cortex_m::peripheral::NVIC::unpend(BellaInterrupt::#variant_names);
@@ -199,7 +207,10 @@ mod tests {
             bells: vec![bell("hsem", core, 199), bell("ipcc2", core, 13)],
         };
 
-        let tokens = bella.nvic_enable(&core).unwrap().to_string();
+        let tokens = bella
+            .nvic_enable(&core, "::consortium_hal_stm32mp2")
+            .unwrap()
+            .to_string();
 
         assert!(tokens.contains("enum BellaInterrupt"));
         assert!(tokens.contains("HSEM = 199u16"));
@@ -216,7 +227,11 @@ mod tests {
             bells: vec![bell("hsem", cm33, 199)],
         };
 
-        assert!(bella.nvic_enable(&cm7).is_none());
+        assert!(
+            bella
+                .nvic_enable(&cm7, "::consortium_hal_stm32mp2")
+                .is_none()
+        );
     }
 
     #[test]

@@ -199,8 +199,8 @@ where
     if channel.is_none() {
         // No data yet — arm the doorbell so the waker stays registered until
         // the remote calls ring().
-        // SAFETY: `wait_fut` is the stored wait future for this receive operation.
         consortium_log::trace!("poll_recv: no data available, arming doorbell wait future");
+        // SAFETY: `wait_fut` is the stored wait future for this receive operation.
         return unsafe { arm_wait(doorbell, ch, wait_fut, cx) };
     }
 

@@ -17,6 +17,37 @@ jobs:
       - name: Setup just
         uses: extractions/setup-just@v4
 
+      - name: Install OP-TEE build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            bison build-essential ccache device-tree-compiler expect flex \
+            libcap-dev libssl-dev python3-pycryptodome python3-pyelftools \
+            uuid-dev
+
+      - name: Cache Teaclave TrustZone SDK
+        id: cache-optee
+        uses: actions/cache@v4
+        with:
+          path: ~/teaclave-trustzone-sdk
+          key: teaclave-optee-${{ runner.os }}-v1
+
+      - name: Build OP-TEE libraries (Teaclave TrustZone SDK)
+        if: steps.cache-optee.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 https://github.com/apache/teaclave-trustzone-sdk.git "$HOME/teaclave-trustzone-sdk"
+          cd "$HOME/teaclave-trustzone-sdk"
+          ./setup.sh
+          ./build_optee_libraries.sh optee/
+
+      - name: Export OP-TEE environment
+        run: |
+          {
+            echo "OPTEE_DIR=$HOME/teaclave-trustzone-sdk/optee"
+            echo "TA_DEV_KIT_DIR=$HOME/teaclave-trustzone-sdk/optee/optee_os/out/arm-plat-vexpress/export-ta_arm64"
+            echo "OPTEE_CLIENT_EXPORT=$HOME/teaclave-trustzone-sdk/optee/optee_client/export_arm64"
+          } >> "$GITHUB_ENV"
+
       - name: Debug logging tests
         run: just test dbg host
 
@@ -30,4 +61,6 @@ jobs:
         run: just test ipc host
 
       - name: TEE tests
-        run: just test tee host
+        run: |
+          source "$HOME/teaclave-trustzone-sdk/environment"
+          just test tee host

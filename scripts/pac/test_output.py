@@ -5,7 +5,7 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Tuple, Set
+from typing import Dict, List, Tuple
 
 import yaml
 
@@ -93,7 +93,6 @@ def check_bitfield_widths(data: Dict) -> List[str]:
         # Check for zero or negative bit sizes
         for field in value["fields"]:
             bit_size = field.get("bit_size")
-            bit_offset = field.get("bit_offset", 0)
 
             if not isinstance(bit_size, int):
                 continue

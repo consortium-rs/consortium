@@ -3,9 +3,8 @@
 
 import subprocess
 import sys
-import json
 from pathlib import Path
-from typing import Tuple, List
+from typing import Tuple
 
 OUTPUT_DIR = (
     Path(__file__).resolve().parents[2] / "crates" / "consortium-data" / "database"

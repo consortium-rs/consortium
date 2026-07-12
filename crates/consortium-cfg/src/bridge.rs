@@ -318,7 +318,7 @@ impl LoweredIr {
         };
 
         // The doorbell NVIC enum/impl plus `unmask` statements for this core.
-        let nvic = self.bella.nvic_enable(&core);
+        let nvic = self.bella.nvic_enable(&core, &self.peripherals.hal_crate);
 
         // Peripheral (I2C/GPIO) bring-up: the `Peripherals` struct, per-instance
         // interrupt state/handlers, and a `peripherals()` constructor. Empty for
@@ -1143,7 +1143,7 @@ mod tests {
 
         let bella = ir
             .bella
-            .nvic_enable(&cm33())
+            .nvic_enable(&cm33(), &ir.peripherals.hal_crate)
             .expect("cm33 has doorbell irqs");
         let wrapped = quote::quote! { fn _f() { #bella } };
         syn::parse_file(&wrapped.to_string()).expect("lowered Bella is valid Rust");

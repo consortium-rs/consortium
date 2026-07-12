@@ -32,6 +32,7 @@ fn stage(bytes: &[u8]) {
     // SAFETY: only reached from `acquire()`/`write()`/`release()`, which defmt runs
     // in a single, non-reentrant execution context, so there is no aliasing access
     // to the staging statics.
+    #[allow(clippy::multiple_unsafe_ops_per_block)]
     unsafe {
         let buf = &mut *addr_of_mut!(FRAME);
         for &byte in bytes {
@@ -68,7 +69,10 @@ impl ConsortiumLogger {
             // SAFETY: the caller guarantees `base` is writable for `size` bytes, so
             // every `offset < size` is in bounds; a byte volatile store has no
             // alignment requirement and is valid for the debug SRAM region.
-            unsafe { base.add(offset).write_volatile(0) };
+            #[allow(clippy::multiple_unsafe_ops_per_block)]
+            unsafe {
+                base.add(offset).write_volatile(0)
+            };
         }
         // SAFETY: a fresh descriptor parks both cursors at DATA_START and clears
         // all flags; the caller guarantees `base` is writable for `size` bytes.
@@ -191,6 +195,7 @@ unsafe impl Logger for ConsortiumLogger {
         // region declared in `[dbg]` and injected by the builder. The staging statics
         // are only touched between `acquire()` and `release()`, a single execution
         // context per the `Logger` contract.
+        #[allow(clippy::multiple_unsafe_ops_per_block)]
         unsafe {
             Self::acquire_shared_memory(config::BASE_PTR, config::SIZE);
             FRAME_LEN = 0;
@@ -217,6 +222,7 @@ unsafe impl Logger for ConsortiumLogger {
         // SAFETY: `config::BASE_PTR` describes the debug shared-memory region; the
         // staging statics are exclusively owned by the current execution context
         // between `acquire()` and `release()`.
+        #[allow(clippy::multiple_unsafe_ops_per_block)]
         unsafe {
             // Finish the rzcobs frame, then commit the fully-encoded frame to the ring
             // as one packet so the host decoder receives a valid rzcobs stream.
@@ -242,6 +248,7 @@ unsafe impl Logger for ConsortiumLogger {
         }
         // SAFETY: the staging statics are exclusively owned by the current execution
         // context between `acquire()` and `release()`; `write` runs within that span.
+        #[allow(clippy::multiple_unsafe_ops_per_block)]
         unsafe {
             (*addr_of_mut!(ENCODER)).write(bytes, stage);
         }

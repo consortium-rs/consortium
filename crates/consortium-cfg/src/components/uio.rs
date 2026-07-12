@@ -373,7 +373,6 @@ mod tests {
 
         let options = UioOptions {
             layout: RegLayout::Narrow,
-            ..UioOptions::default()
         };
         let dts = device.to_node_with_options("regs", &options).to_dts();
         assert!(dts.contains("reg = <0x400000 0x8000>;"));

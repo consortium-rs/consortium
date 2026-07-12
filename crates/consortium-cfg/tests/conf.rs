@@ -120,7 +120,7 @@ fn render(ir: &LoweredIr) -> String {
         if core == VisibleCore::Ap {
             continue;
         }
-        if let Some(tokens) = ir.bella.nvic_enable(&core) {
+        if let Some(tokens) = ir.bella.nvic_enable(&core, &ir.peripherals.hal_crate) {
             any_nvic = true;
             writeln!(md, "### {core}\n").unwrap();
             md.push_str("```rust\n");

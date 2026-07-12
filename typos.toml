@@ -2,18 +2,35 @@
 extend-exclude = [
   "crates/cogcore-sys/src/bindings_pregenerated.rs",
   "crates/cogcore-sys/vendor",
+  # Vendored chip databases and upstream Linux device trees.
+  "crates/consortium-data/database",
+  # Generated PAC register/interrupt sources reproduce vendor header names
+  # and descriptions verbatim.
+  "crates/consortium-pac-imx9/src/interrupts",
+  "crates/consortium-pac-imx9/src/peripherals",
+  "crates/consortium-pac-stm32mp2/src/interrupts",
+  "crates/consortium-pac-stm32mp2/src/peripherals",
   "data/stm32mp",
   "dialogs",
+  # Vendor reference sources (STM32Cube drivers, MCUX board files).
+  "references",
   "sim/renode/stm32mp257/firmware.elf",
   "submodules",
   "target",
 ]
 
 [default.extend-words]
-GIPn = "GIPn"
-GIR  = "GIR"
-MIS  = "MIS"
-Pn   = "Pn"
-SISE = "SISE"
-hsi  = "hsi"
-sems = "sems"
+GIPn     = "GIPn"
+GIR      = "GIR"
+Iinclude = "Iinclude"
+MIS      = "MIS"
+Pn       = "Pn"
+PARM     = "PARM"
+SISE     = "SISE"
+Siz      = "Siz"
+UE       = "UE"
+ddress   = "ddress"
+fpr      = "fpr"
+hsi      = "hsi"
+parm     = "parm"
+sems     = "sems"

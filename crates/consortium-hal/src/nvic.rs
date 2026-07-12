@@ -73,6 +73,7 @@ pub fn is_pending(irq: u16) -> bool {
 pub unsafe fn set_priority(irq: u16, priority: u8) {
     // SAFETY: Register access is scoped to the NVIC priority byte; the
     // caller upholds the priority-based critical-section contract.
+    #[allow(clippy::multiple_unsafe_ops_per_block)]
     unsafe {
         cortex_m::Peripherals::steal()
             .NVIC

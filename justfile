@@ -5,7 +5,7 @@ a32_target := "armv7-unknown-linux-gnueabihf"
 rv32imc_target := "riscv32imc-unknown-none-elf"
 rv32imac_target := "riscv32imac-unknown-none-elf"
 rv32imafcp_target := "riscv32imafc-unknown-none-elf"
-lint_crates := "consortium-builder consortium-common consortium-cfg consortium-cfg-meta consortium-cli consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg consortium-dts consortium-ffi consortium-ipc consortium-ipc-doorbell-gpio consortium-ipc-doorbell-hsem consortium-ipc-doorbell-ipcc consortium-ipc-doorbell-mu consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-memory consortium-ort consortium-runtime-mcu consortium-runtime-prt consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
+lint_crates := "consortium-builder consortium-cfg consortium-cli consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg consortium-dts consortium-ffi consortium-ipc consortium-ipc-doorbell-gpio consortium-ipc-doorbell-hsem consortium-ipc-doorbell-ipcc consortium-ipc-doorbell-mu consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-memory consortium-ort consortium-runtime-mcu consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
 rust_tools := "taplo-cli typos-cli cargo-deny cargo-expand cargo-insta cargo-shear"
 ls_lint_version := "2.3.1"
 
@@ -113,7 +113,7 @@ cargo-lint:
     @for crate in {{ lint_crates }}; do \
         cargo clippy -p "$crate" --all-targets -- -D warnings || exit 1; \
     done
-    cargo clippy -p consortium-runtime-app --no-default-features --features imx9x,stm32mp25x --all-targets -- -D warnings
+    cargo clippy -p consortium-runtime-app --no-default-features --features mimx9x,stm32mp25x --all-targets -- -D warnings
     cargo clippy -p consortium-tee --no-default-features --features ta --all-targets -- -D warnings
 
 # Lint JavaScript and TypeScript through Vite+
@@ -132,7 +132,7 @@ cargo-fix:
     @for crate in {{ lint_crates }}; do \
         cargo clippy --fix --allow-dirty --allow-staged -p "$crate" --all-targets || exit 1; \
     done
-    cargo clippy --fix --allow-dirty --allow-staged -p consortium-runtime-app --no-default-features --features imx9x,stm32mp25x --all-targets
+    cargo clippy --fix --allow-dirty --allow-staged -p consortium-runtime-app --no-default-features --features mimx9x,stm32mp25x --all-targets
     cargo clippy --fix --allow-dirty --allow-staged -p consortium-tee --no-default-features --features ta --all-targets
 
 # Apply JavaScript and TypeScript autofixes through Vite+

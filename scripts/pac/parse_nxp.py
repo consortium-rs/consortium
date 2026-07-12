@@ -6,13 +6,11 @@ import sys
 from pathlib import Path
 
 import yaml
-from typing import Dict, List, Any, Optional, Tuple, Set
+from typing import Dict, List, Any, Tuple, Set
 import argparse
 
 from common import (
     safe_hex_to_int,
-    evaluate_expr,
-    popcount,
     calc_bit_size_from_mask,
     write_yaml,
     write_json,
@@ -248,7 +246,7 @@ class NXPPeripheralParser:
     def parse_struct(self):
         """Extract typedef struct definition."""
         # Find struct matching Type suffix
-        pattern = rf"typedef\s+struct\s*\{{(.*?)\}}\s*(\w+_Type)\s*;"
+        pattern = r"typedef\s+struct\s*\{(.*?)\}\s*(\w+_Type)\s*;"
         match = re.search(pattern, self.content, re.DOTALL)
         if not match:
             return
@@ -382,7 +380,6 @@ class NXPPeripheralParser:
                                     qualifier = field_match.group(1) or ""
                                     field_type = field_match.group(2)
                                     field_name = field_match.group(3)
-                                    field_array_name = field_match.group(4)
 
                                     if field_name.startswith("RESERVED"):
                                         continue
@@ -446,7 +443,6 @@ class NXPPeripheralParser:
                                 qualifier = field_match.group(1) or ""
                                 field_type = field_match.group(2)
                                 field_name = field_match.group(3)
-                                field_array_name = field_match.group(4)
 
                                 if field_name.startswith("RESERVED"):
                                     continue
@@ -543,16 +539,7 @@ class NXPPeripheralParser:
 
             # Determine access - allow fields without qualifier if they have explicit offset info
             offset_match_here = re.search(r"offset:\s*0x([0-9a-fA-F]+)", line)
-            if qualifier == "__IO":
-                access = "read-write"
-            elif qualifier == "__I":
-                access = "read-only"
-            elif qualifier == "__O":
-                access = "write-only"
-            elif offset_match_here:
-                # Field has explicit offset, include it even without qualifier
-                access = "read-write"  # Default to read-write for unqualified fields
-            else:
+            if qualifier not in ("__IO", "__I", "__O") and not offset_match_here:
                 continue
 
             # Extract byte offset from comment

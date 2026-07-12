@@ -4,7 +4,7 @@ import re
 import json
 import yaml
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, Any, Optional
 
 
 def safe_hex_to_int(hex_str: str) -> Optional[int]:
