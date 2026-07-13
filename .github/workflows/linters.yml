@@ -18,9 +18,9 @@ jobs:
         uses: extractions/setup-just@v4
 
       - name: Install Rust linters
-        run: |
-          cargo install taplo-cli --locked
-          cargo install typos-cli --locked
+        uses: taiki-e/install-action@v2
+        with:
+          tool: taplo,typos
 
       - name: Install OP-TEE build dependencies
         run: |
@@ -40,6 +40,14 @@ jobs:
       - name: Build OP-TEE libraries (Teaclave TrustZone SDK)
         if: steps.cache-optee.outputs.cache-hit != 'true'
         run: |
+          # teaclave-trustzone-sdk's setup.sh calls bare `apt` (not `apt-get`)
+          # without sudo, which fails on runners where the job user isn't root.
+          # Shim `apt` to auto-elevate, scoped to this step via PATH only.
+          mkdir -p "$HOME/.local/bin"
+          printf '%s\n' '#!/bin/bash' 'exec sudo /usr/bin/apt "$@"' > "$HOME/.local/bin/apt"
+          chmod +x "$HOME/.local/bin/apt"
+          export PATH="$HOME/.local/bin:$PATH"
+
           git clone --depth 1 https://github.com/apache/teaclave-trustzone-sdk.git "$HOME/teaclave-trustzone-sdk"
           cd "$HOME/teaclave-trustzone-sdk"
           ./setup.sh
@@ -64,6 +72,9 @@ jobs:
 
       - name: Install Vite+ dependencies
         run: vp install
+
+      - name: Ensure rustfmt and clippy components
+        run: rustup component add rustfmt clippy
 
       - name: Run linters
         run: |
