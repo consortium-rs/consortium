@@ -1,4 +1,4 @@
-# AGENTS.md - AI Assistant Guide for Consortium
+# Consortium Project Assistance Guide
 
 Consortium is a Rust workspace for heterogeneous multiprocessing systems, especially
 SoCs that pair a Linux-capable A-core with Cortex-M, Cortex-R, or RISC-V real-time
@@ -9,16 +9,18 @@ The current implementation centers on explicit cross-core contracts:
 
 - `consortium-ipc` defines typed channels, transport traits, side markers, doorbells,
   and `IpcSafe`.
+  - `consortium-ipc-transport-memory` owns the descriptor/slot shared-memory transport. Doorbell crates bind hardware signaling to the transport layer.
+  - `consortium-ipc-transport-uart` provides COBS/CRC-framed wired IPC for embedded and Unix
+    serial backends.
 - `consortium-codec` defines codec families used by IPC and TEE parameter conversion.
-- `consortium-shared-memory` owns low-level memory-region abstractions.
-- `consortium-ipc-transport-memory` owns the descriptor/slot shared-memory transport.
-- Doorbell crates bind hardware signaling to the transport layer.
 - `consortium-cfg-common` and `consortium-cfg` own the current `Consortium.toml`
   schema, chip databases, validation, and DTS/UIO-oriented transpilers.
 - `consortium-hal`, chip HAL crates, and generated PAC crates provide early
   firmware-side peripheral access for i.MX9 and STM32MP2 targets.
 - `consortium-dbg` implements shared-memory `defmt` logging and an optional panic
   handler.
+- `consortium-log` is the common `defmt`/`tracing` facade used by generated and
+  cross-platform code.
 - `consortium-tee` handles the trusted execution environment contracts.
 - `consortium-hmi` provides a Cog/WPE WebKit-based human-computer interface.
 
@@ -49,7 +51,7 @@ just lint
 just fix
 
 # Serve documentation locally
-mdbook serve docs/
+mdbook serve docs/book/
 ```
 
 Use `cargo test -p <crate>` for focused validation while iterating. Full-workspace
@@ -68,25 +70,37 @@ A-core, TEE, HMI, UIO, Cog, WebKit, and Yocto/OpenSTLinux flows are Linux/SDK or
 
 ## Workspace Shape
 
-| Area            | Crates                                                                                                                       |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Core IPC        | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                      |
-| Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                |
-| Shared memory   | `consortium-shared-memory`, `consortium-ipc-transport-memory`                                                                |
-| Doorbells       | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-ipcc`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio` |
-| Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`, `consortium-data`                                               |
-| HAL/PAC         | `consortium-hal`, `consortium-hal-imx9`, `consortium-hal-stm32mp2`, `consortium-pac-imx9`, `consortium-pac-stm32mp2`         |
-| Macro helpers   | `consortium-macros-helpers`                                                                                                  |
-| Runtimes/build  | `consortium-runtime-app`, `consortium-runtime-mcu`, `consortium-runtime-spl`, `consortium-builder`, `consortium-cli`         |
-| Debug           | `consortium-dbg`                                                                                                             |
-| TEE             | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`                                                      |
-| HMI/Cog/ORT/FFI | `consortium-hmi`, `cogcore`, `cogcore-sys`, `consortium-ort`, `consortium-ffi`                                               |
-| Examples        | `examples/melt-pot/*` for i.MX95 and STM32MP25 app/MCU/TA/shared message crates                                              |
+| Area            | Crates                                                                                                                                         |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Core IPC        | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                                        |
+| Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                                  |
+| Transports      | `consortium-shared-memory`, `consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`                                                |
+| Doorbells       | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-ipcc`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`                   |
+| Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`, `consortium-data`                                                                 |
+| HAL/PAC         | `consortium-hal`, `consortium-hal-imx9`, `consortium-hal-stm32mp2`, `consortium-pac-imx9`, `consortium-pac-stm32mp2`                           |
+| Macro helpers   | `consortium-macros-helpers`                                                                                                                    |
+| Runtimes/build  | `consortium-runtime-app`, `consortium-runtime-mcu`, `consortium-runtime-spl`, `consortium-runtime-sys`, `consortium-builder`, `consortium-cli` |
+| Logging/debug   | `consortium-log`, `consortium-dbg`                                                                                                             |
+| TEE             | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`                                                                        |
+| HMI/Cog/ORT/FFI | `consortium-hmi`, `cogcore`, `cogcore-sys`, `consortium-ort`, `consortium-ffi`                                                                 |
+| Examples        | `examples/melt-pot/*` for i.MX95 and STM32MP25 app/MCU/TA/shared message crates                                                                |
 
 The root workspace includes `crates/*` and `examples/melt-pot/shared`. Per-endpoint
 example crates under `examples/melt-pot/{imx95,stm32mp25}/{app,mcu,ta}` are excluded
 because the builder pipeline generates `src/consortium.gen.rs` for them and resolves
 their artifacts outside plain workspace `cargo check`.
+
+## Codecs
+
+`consortium-codec` is `no_std` by default and has no default codec feature. Available
+families are feature-gated:
+
+- `postcard` exposes `PostcardCodec`.
+- `prost` exposes `ProstCodec`.
+- `rkyv` exposes `RkyvCodec` and re-exports `TrustedArchive`.
+
+`CodecFor<T>` owns the associated `Decoded<'buf>` type, so channel and TEE code should
+avoid assuming decode always produces an owned `T`.
 
 ## IPC Core
 
@@ -120,19 +134,22 @@ pointers, `usize`, and `isize`. Add reusable `syn`/AST helpers to
 `consortium-macros-helpers`; keep domain-specific derive logic in the owning
 `*-macros-impl` crate.
 
-## Codecs
+### UART IPC
 
-`consortium-codec` is `no_std` by default and has no default codec feature. Available
-families are feature-gated:
+The UART family is the first wired, Type-B transport: byte arrival is the notification,
+so it has no separate `Doorbell` or `Side`. `consortium-ipc-transport-uart` implements
+the shared protocol as `COBS(chan | payload | CRC32-LE) + 0x00`, with one logical
+`Chan` per transport and explicit RX/TX scratch buffers derived with `rx_buf_len()` and
+`tx_buf_len()`.
 
-- `postcard` exposes `PostcardCodec`.
-- `prost` exposes `ProstCodec`.
-- `rkyv` exposes `RkyvCodec` and re-exports `TrustedArchive`.
+The core crate defaults to `std`: Tokio `AsyncRead`/`AsyncWrite` and `Send` futures. Its
+no-std path uses `embedded-io-async`. `consortium-ipc-transport-uart-unix` opens raw 8N1
+`/dev/tty*` devices with `tokio-serial` and provides pseudo-terminal pairs for tests.
+`consortium-ipc-transport-uart-embedded` is currently a firmware re-export; an IRQ-fed
+PAC-level adapter is planned but not implemented. Do not describe it as a complete HAL
+UART driver.
 
-`CodecFor<T>` owns the associated `Decoded<'buf>` type, so channel and TEE code should
-avoid assuming decode always produces an owned `T`.
-
-## Shared Memory IPC
+### Shared Memory IPC
 
 Shared memory is split across two crates:
 
@@ -162,7 +179,7 @@ sync descriptor layout, Tokio futures, split halves, codec-backed channels, atom
 no-std-shaped futures, Embassy-style polling, and end-to-end primary/secondary exchange.
 Prefer extending these heap-backed or fake-doorbell tests before requiring hardware.
 
-## Doorbells
+### Doorbells
 
 Doorbells provide wakeup/signaling and should keep MMIO safety invariants documented.
 Use typed register abstractions and validate channel bounds through the local validation
@@ -228,7 +245,14 @@ and `consortium-cfg/src/session.rs` tests as the best references.
 
 Current top-level schema:
 
-- `[profile]` contains `chip`, `shared`, and `deploy_root`.
+- `[profile]` contains required `chip`, `shared`, and `deploy_root`; optional `devkit`
+  selects a bundled board DTS by full file stem, `sysroot` selects the Linux target
+  sysroot, and `kernel_recipe` enables generation of a kernel `.bbappend`.
+- `[dts]` controls Linux device-tree output: `mode = "merge"` (default) emits a full
+  tree, while `overlay` emits a `.dtso`; `base` overrides the base tree and `linux`
+  points at a kernel source tree for GPL-licensed dt-bindings used during compilation.
+  `configfs` opts into `CONFIG_OF_CONFIGFS` for overlay deployment. Overlay mode cannot
+  delete remoteproc mailbox properties, so use merge mode for those fixups.
 - `[endpoints]` maps runtime endpoint names to artifact roots.
 - `[dbg.<core>]` declares a defmt logger on coprocessor `<core>` (e.g. `[dbg.cm33]`)
   and contains `memory = { base, length }` and `mtu`. The AP is always the host that
@@ -245,18 +269,36 @@ Current top-level schema:
   `clock`, and optional pin declarations.
 
 `Session::from_toml` parses the manifest, resolves `[profile] chip` through embedded
-YAML chip-family databases, and validates doorbell availability, visible parties,
-channel bounds, duplicate doorbell channels, SRAM bounds, memory overlap, and peripheral
-owners. Embedded database prefixes currently cover STM32MP21/23/25 and MIMX93/95, with
-`imx93`/`imx95` accepted as aliases for `mimx93`/`mimx95`.
+hardware databases, and validates doorbell availability, visible parties, channel
+bounds, duplicate doorbell channels, region bounds/overlap/MPU alignment, debug regions,
+and peripheral owners. `consortium-data` now carries generated per-core chip maps,
+peripheral descriptions, memory databases, and a large vendor DTS/include database for
+STM32MP2 and i.MX9. Treat these as generated/imported data; change their generation
+workflow rather than casually editing large database files.
 
-`consortium-cfg` currently includes lowering, DTS/UIO-oriented components, portable and
-Linux codegen, debug-console codegen, peripheral metadata, and Type-A doorbell interrupt
-enablement. Keep config changes centered on the schema types first, then validation and
-lowering, then generated code and transpilers. Update snapshot tests under
+`consortium-cfg` includes lowering, portable/Linux codegen, debug-console and peripheral
+bring-up codegen, UIO/Kconfig generation, vendor-tree DTS merge/overlay rendering,
+remoteproc fixups, and Type-A doorbell interrupt enablement. Keep config changes centered
+on schema types first, then validation and lowering, then generated code and build
+artifacts. Update snapshot tests under
 `crates/consortium-cfg/tests/` when generated output intentionally changes.
 
-## Build-Time Configuration
+### Build and Packaging Pipeline
+
+The user-facing CLI binary is `csti`; `csti build` runs the end-to-end
+`Consortium.toml` pipeline. It compiles the Linux application, controller firmware,
+optional TA and HMI; post-processes firmware for Linux remoteproc; generates endpoint
+modules, DTS/Kconfig/boot integration, and a systemd unit; then assembles a local
+`dist/` staging tree. It does not deploy directly to a live target.
+
+Firmware post-processing renames `.vector_table` to the remoteproc-expected
+`.isr_vectors` section. Outputs include the deployable ELF and debug/original artifacts.
+The staged tree can contain `app/`, `firmware/`, `ta/`, `www/`, `dts/linux/`, `kernel/`,
+`boot/`, and `systemd/`, plus a generated BitBake recipe. CLI flags support staging the
+tree into a recipe `files/` directory and invoking or dry-running BitBake. Keep the
+builder's planning, compilation, staging, and external BitBake hand-off boundaries clear.
+
+### Build-Time Configuration
 
 The builder flow injects compile-time environment variables such as `CONSORTIUM_IPC_*`,
 `CONSORTIUM_DBG_*`, `CONSORTIUM_HMI_*`, and `CONSORTIUM_TEE_UUID`. Consumers read them
@@ -276,7 +318,7 @@ The build pipeline writes `src/consortium.gen.rs` into generated endpoint crates
 example app/MCU crates use `include!("consortium.gen.rs")`; do not expect plain cargo
 commands to work for those crates before the pipeline has generated that file.
 
-## Runtime Layers
+### Runtime Layers
 
 `consortium-runtime-app` is Linux-only. It exposes remoteproc support, optional UIO-backed
 IPC (`ipc-shm`), optional debug (`dbg`), and optional TEE (`tee`). `UioDevice` opens
@@ -285,7 +327,10 @@ doorbell notifiers.
 
 `consortium-runtime-mcu` is `no_std`, re-exports debug and shared-memory IPC pieces
 behind features, and provides small helpers such as `static_buf!` for scratch buffers.
-Its default feature is `ipc-shm`.
+Its default feature is `ipc-shm`. It also exposes `rsc_table`: raw bindings come from
+the generated `consortium-runtime-sys` crate, while `SharedResourceTable` and
+`RSC_TABLE` emit an RPMsg-vdev-plus-trace table in the firmware `.resource_table`
+section. Keep packed-layout access and Linux remoteproc ABI requirements explicit.
 
 `consortium-runtime-spl` currently exposes small domain/peripheral/role traits for
 partitioning-oriented code.
@@ -312,6 +357,12 @@ implementation crate before relying on the proc-macro facade.
 
 ## Debug Logging
 
+`consortium-log` is a `no_std` macro facade with optional `defmt` and `tracing`
+backends. Both may be enabled, or neither (no-op). Use the portable format-string plus
+positional-arguments subset in shared code; backend-specific `defmt` hints and
+`tracing` fields are only safe when that backend is exclusively enabled. Arguments must
+not have side effects because disabled log calls do not evaluate them.
+
 `consortium-dbg` implements defmt-over-shared-memory with `CDBG` descriptors. Its
 default features are `host` and `logger`; `decode` adds `defmt-decoder` and implies
 `host`. Debug configuration comes from `CONSORTIUM_DBG_*`; plain `cargo build` leaves
@@ -324,7 +375,7 @@ overflow/error flags.
 The optional panic handler emits an error packet, latches panic status in the debug
 descriptor, then waits with the target architecture's WFI instruction.
 
-## HMI and Cog/WPE
+## HMI
 
 `consortium-hmi` is Linux-only and currently exposes `KioskApp` and `Bridge`. In debug
 builds it can load `CONSORTIUM_HMI_DEBUG_URL`; otherwise it serves the compiled dist path
@@ -347,6 +398,9 @@ block with the pointer lifetime or ownership invariant.
 - Use `just test ipc host` for the current host IPC bundle.
 - Use `cargo test -p consortium-ipc-transport-memory --no-default-features --test async_atomic_waker_test`
   for the no-std-shaped shared-memory future path.
+- UART protocol changes should run `cargo test -p consortium-ipc-transport-uart`,
+  `cargo test -p consortium-ipc-transport-uart --no-default-features`, and
+  `cargo test -p consortium-ipc-transport-uart-unix` for pseudo-terminal integration.
 - Use trybuild and insta snapshots for proc-macro behavior.
 - Use fake MMIO, heap-backed regions, and mock doorbells for protocol logic.
 - Keep hardware, SDK, UIO, remoteproc, OP-TEE runtime, and Cog/WebKit checks separate
@@ -365,8 +419,10 @@ block with the pointer lifetime or ownership invariant.
 - `.ls-lint.yml` defines crate, test, doc, script, board, and simulator naming rules.
 
 When updating docs, use crate names, features, APIs, and schema fields present in the
-current workspace. Treat `docs/src/dev/**` as useful design history, but verify it
-against current source before making it normative.
+current workspace. The mdBook lives under `docs/book/`. Treat `docs/book/src/dev/**` and
+the dated `docs/book/src/log/**` entries as design/debugging history; introductions are
+useful conceptual context, but verify all of them against current source before making
+them normative.
 
 ## Dependency Policy
 
