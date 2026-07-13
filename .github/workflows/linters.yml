@@ -73,6 +73,9 @@ jobs:
       - name: Install Vite+ dependencies
         run: vp install
 
+      - name: Ensure rustfmt and clippy components
+        run: rustup component add rustfmt clippy
+
       - name: Run linters
         run: |
           source "$HOME/teaclave-trustzone-sdk/environment"
