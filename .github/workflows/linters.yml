@@ -18,9 +18,9 @@ jobs:
         uses: extractions/setup-just@v4
 
       - name: Install Rust linters
-        run: |
-          cargo install taplo-cli --locked
-          cargo install typos-cli --locked
+        uses: taiki-e/install-action@v2
+        with:
+          tool: taplo,typos
 
       - name: Install OP-TEE build dependencies
         run: |
