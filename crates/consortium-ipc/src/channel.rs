@@ -239,7 +239,6 @@ mod tests {
     use super::*;
     use core::fmt;
     use futures::executor::block_on;
-    use futures::future::{Ready, ready};
     use std::boxed::Box;
     use std::vec::Vec;
 
@@ -319,18 +318,13 @@ mod tests {
     }
 
     impl crate::transport::SendTransport for MockTransport {
-        type SendFut<'a>
-            = Ready<Result<(), Self::Error>>
-        where
-            Self: 'a;
-
-        fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a> {
+        async fn send(&mut self, data: &[u8]) -> Result<(), Self::Error> {
             if self.fail_send {
-                return ready(Err(TransportError::Send));
+                return Err(TransportError::Send);
             }
             self.sent.clear();
             self.sent.extend_from_slice(data);
-            ready(Ok(()))
+            Ok(())
         }
 
         fn max_send_size(&self) -> usize {
@@ -339,21 +333,16 @@ mod tests {
     }
 
     impl crate::transport::RecvTransport for MockTransport {
-        type RecvFut<'a>
-            = Ready<Result<usize, Self::Error>>
-        where
-            Self: 'a;
-
-        fn recv<'a>(&mut self, buf: &mut [u8]) -> Self::RecvFut<'a> {
+        async fn recv(&mut self, buf: &mut [u8]) -> Result<usize, Self::Error> {
             if self.fail_recv {
-                return ready(Err(TransportError::Recv));
+                return Err(TransportError::Recv);
             }
             if self.recv_payload.len() > buf.len() {
-                return ready(Err(TransportError::BufferTooSmall));
+                return Err(TransportError::BufferTooSmall);
             }
             let n = self.recv_payload.len();
             buf[..n].copy_from_slice(&self.recv_payload);
-            ready(Ok(n))
+            Ok(n)
         }
 
         fn max_recv_size(&self) -> usize {

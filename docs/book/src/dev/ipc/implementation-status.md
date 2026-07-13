@@ -79,12 +79,15 @@ What remains is **hardware-specific glue** and the **application runtime layer**
 
 ### Hardware Doorbells
 
-- **HSEM (`consortium-ipc-doorbell-hsem`):** STM32MP23/25 hardware semaphore support
-  with no_std and std paths, typed `bitfield` register wrappers, and
-  `HsemChanValidate`.
+- **HSEM (`consortium-ipc-doorbell-hsem`):** stale STM32MP23/25 hardware semaphore
+  support retained for experiments and existing users. Prefer IPCC for new STM32MP2
+  work: IPCC is available on STM32MP21/23/25, while HSEM is limited to STM32MP23/25,
+  and HSEM has produced surprising access failures even when clocks and RIF
+  assignment appeared correct.
 - **IPCC (`consortium-ipc-doorbell-ipcc`):** STM32MP21/23/25 IPCC support with
   no_std and std paths, typed `bitfield` register wrappers, and `IpccChanValidate`.
-  STM32MP21 uses IPCC only. STM32MP23/25 may use IPCC or HSEM. IPCC1 is
+  STM32MP21 uses IPCC only. STM32MP23/25 should prefer IPCC over the stale HSEM
+  path. IPCC1 is
   `0x4049_0000..=0x4049_03FF`; SmartRun IPCC2 is
   `0x4625_0000..=0x4625_03FF` on STM32MP23/25 only.
 - **MU (`consortium-ipc-doorbell-mu`):** NXP i.MX Message Unit support with no_std
@@ -127,9 +130,13 @@ What remains is **hardware-specific glue** and the **application runtime layer**
 
 ## Doorbell Implementations ✅
 
-### ✅ Completed: HSEM (Hardware Semaphore) for STM32MP23/STM32MP25
+### ⚠️ Stale: HSEM (Hardware Semaphore) for STM32MP23/STM32MP25
 
-HSEM is fully implemented in `consortium-ipc-doorbell-hsem` with:
+HSEM is implemented in `consortium-ipc-doorbell-hsem`, but it is stale for new
+STM32MP2 designs. Prefer `consortium-ipc-doorbell-ipcc`: IPCC has formal support
+across STM32MP21/23/25, while HSEM exists only on STM32MP23/25 and has shown
+surprising behavior such as bus errors on reads even after the clock and RIF
+configuration appeared valid. The HSEM crate currently includes:
 
 - Bare-metal M-core support (no_std + AtomicWaker)
 - Linux A-core support (std + tokio::sync::Notify)
@@ -168,7 +175,7 @@ MU is fully implemented in `consortium-ipc-doorbell-mu` with:
 **Status:** Hardware doorbell implementations are available for the current target families.
 
 - STM32MP21: IPCC only ✅
-- STM32MP23/25: HSEM or IPCC ✅
+- STM32MP23/25: IPCC preferred; HSEM stale ⚠️
 - i.MX 9x: MU only ✅
 
 #### Reference: Doorbell Implementation Pattern
@@ -187,7 +194,7 @@ Existing implementations (`HsemDoorbell`, `IpccDoorbell`, and `MuDoorbell`) foll
 3. **Channel validation:** Implement `ChanValidate` trait to enforce valid channel ranges
 
 4. **Constructor patterns:**
-   - HSEM: Const generic `PROC: u8` for processor-specific interrupt lines
+   - HSEM: Stale STM32MP23/25 path with const generic `PROC: u8` for processor-specific interrupt lines
    - IPCC: Const generic `PROC: u8`; no_std `ipcc1()` is available on STM32MP21/23/25 and `ipcc2()` only on STM32MP23/25
    - MU: Flexible base address configuration (no const generic needed)
 
@@ -264,7 +271,7 @@ No current test harness for:
 | `consortium-ipc`                     | ✅ Core traits             | Doorbell, Region, Transport, Channel, Codec                         |
 | `consortium-ipc-transport-memory`    | ✅ Shared-memory transport | Generic over doorbell/region; supports no_std and std feature paths |
 | `consortium-runtime-app` UIO support | 🟡 Linux UIO runtime       | UioDevice integration via Tokio                                     |
-| `consortium-ipc-doorbell-hsem`       | ✅ HSEM doorbell           | Hardware Semaphore for STM32MP23/25                                 |
+| `consortium-ipc-doorbell-hsem`       | ⚠️ Stale HSEM doorbell     | STM32MP23/25 only; prefer IPCC for STM32MP2                         |
 | `consortium-ipc-doorbell-ipcc`       | ✅ IPCC doorbell           | IPCC for STM32MP21/23/25                                            |
 | `consortium-ipc-doorbell-mu`         | ✅ MU doorbell             | Message Unit for i.MX 9x series                                     |
 | `consortium-runtime-app`             | 🟡 A-core runtime          | RemoteProc sysfs wrapper (requires expansion)                       |
@@ -318,31 +325,31 @@ Application (user code)
 
 ## Recommended Implementation Order
 
-### ✅ Phase 0: HSEM Doorbell (COMPLETED)
+### ⚠️ Phase 0: HSEM Doorbell (STALE)
 
 1. **HSEM Doorbell** (`consortium-ipc-driver-hsem`)
    - Register-based implementation with no_std and std variants
    - Tests for async wakeup and channel validation
-   - Platform support for STM32MP2x and STM32MP25x
+   - Platform support for STM32MP23/25 only; prefer IPCC for new STM32MP2 work
 
-### Phase 1: M-Core & A-Core Runtime (using HSEM)
+### Phase 1: M-Core & A-Core Runtime (using IPCC on STM32MP2)
 
 1. **M-core bootstrap** (`consortium-runtime-mcu/src/lib.rs`)
    - Stack/BSS setup
    - Simple polling executor or RTIC integration
-   - MemTransport initialization with HsemDoorbell
+   - MemTransport initialization with IpccDoorbell on STM32MP2
    - Example firmware that sends a value per IRQ
 
 2. **A-core app skeleton** (`consortium-runtime-app/src/lib.rs` expansion)
    - RemoteProc state machine for lifecycle management
-   - UioDevice integration with HSEM notifications
+   - UioDevice integration with IPCC notifications
    - Firmware ELF loading
    - Simple recv loop
 
-3. **Integration test (STM32MP23/25 with HSEM or IPCC)**
+3. **Integration test (STM32MP21/23/25 with IPCC)**
    - Load firmware on M-core
    - Open UioDevice on A-core
-   - Exchange messages via HSEM signaling
+   - Exchange messages via IPCC signaling
    - Verify correctness on real hardware
 
 ### Phase 2: NXP i.MX 9x Port (MU Doorbell)
@@ -400,6 +407,6 @@ Crate names have been updated throughout all docs:
 
 **Progress:** Both primary doorbell implementations are complete. Framework is ready for runtime layer development.
 
-**Total estimated effort for M-core + A-core runtime (STM32MP2 with HSEM/IPCC):** 2–3 weeks (doorbell reference patterns established).
+**Total estimated effort for M-core + A-core runtime (STM32MP2 with IPCC):** 2–3 weeks (doorbell reference patterns established).
 
 **Total estimated effort for NXP i.MX 9x port (M-core + A-core runtimes + build pipeline):** 3–4 weeks (MU doorbell complete; runtimes follow STM32MP2 pattern).

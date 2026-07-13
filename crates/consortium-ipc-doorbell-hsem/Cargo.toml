@@ -15,7 +15,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "HSEM (Hardware Semaphore) Doorbell driver for Consortium IPC"
+description       = "Stale HSEM doorbell driver for Consortium IPC; prefer IPCC on STM32MP2"
 edition.workspace = true
 license.workspace = true
 name              = "consortium-ipc-doorbell-hsem"

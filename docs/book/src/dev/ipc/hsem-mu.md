@@ -1,5 +1,10 @@
 # Doorbell Register Model Comparison
 
+HSEM is stale for new STM32MP2 work. Prefer IPCC where possible: IPCC is present
+across STM32MP21/23/25 and follows ST's better supported inter-processor
+communication path, while HSEM exists only on STM32MP23/25 and has produced
+surprising hardware access failures in practice.
+
 | Aspect             | HSEM                                               | IPCC                                                                                     | MU (GI)                                              |
 | ------------------ | -------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | Platform           | STM32MP23/25                                       | STM32MP21/23/25                                                                          | NXP i.MX 9x                                          |

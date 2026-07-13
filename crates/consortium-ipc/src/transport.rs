@@ -23,27 +23,29 @@ pub trait TransportError {
 }
 
 /// Send half of a transport — moves bytes to the remote side.
+///
+/// The returned future is an opaque `impl Future` (RPITIT), so implementations
+/// may be plain `async fn`s — including ones that await unnameable futures such
+/// as `embedded_io_async::Write::write` — or return hand-rolled named futures.
 pub trait SendTransport: TransportError {
-    type SendFut<'a>: Future<Output = Result<(), Self::Error>> + MaybeSend
-    where
-        Self: 'a;
-
     /// Write `data` to the transport and ring the doorbell.
-    fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a>;
+    fn send(&mut self, data: &[u8]) -> impl Future<Output = Result<(), Self::Error>> + MaybeSend;
 
     /// Maximum bytes transferable in a single send.
     fn max_send_size(&self) -> usize;
 }
 
 /// Receive half of a transport — awaits bytes from the remote side.
+///
+/// The returned future is an opaque `impl Future` (RPITIT); see
+/// [`SendTransport`] for the implementation latitude this allows.
 pub trait RecvTransport: TransportError {
-    type RecvFut<'a>: Future<Output = Result<usize, Self::Error>> + MaybeSend
-    where
-        Self: 'a;
-
     /// Await the doorbell and read bytes into `buf`.
     /// Returns the number of bytes written into `buf`.
-    fn recv<'a>(&mut self, buf: &mut [u8]) -> Self::RecvFut<'a>;
+    fn recv(
+        &mut self,
+        buf: &mut [u8],
+    ) -> impl Future<Output = Result<usize, Self::Error>> + MaybeSend;
 
     /// Maximum bytes transferable in a single recv.
     fn max_recv_size(&self) -> usize;

@@ -162,25 +162,30 @@ fn recv_future_wakes_from_atomic_waker_doorbell() {
         unsafe { SharedMemoryTransport::<Side, _, _>::new(ch1, ch2, app_doorbell, region, base) };
     let mut rx = [0; MTU];
 
-    let recv = transport.recv(&mut rx);
-    pin_mut!(recv);
-    let mut cx = Context::from_waker(noop_waker_ref());
-    assert!(matches!(recv.as_mut().poll(&mut cx), Poll::Pending));
+    // The recv future borrows `rx` until it is dropped; scope it so the
+    // buffer can be inspected afterwards.
+    let n = {
+        let recv = transport.recv(&mut rx);
+        pin_mut!(recv);
+        let mut cx = Context::from_waker(noop_waker_ref());
+        assert!(matches!(recv.as_mut().poll(&mut cx), Poll::Pending));
 
-    unsafe {
-        let rx_layout =
-            ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(RX_CHANNEL)));
-        slot::write(rx_layout.slot_addr(base), b"atomic-waker");
-        base.add(RX_UPDATED_ID_OFFSET)
-            .write_volatile(RX_CHANNEL as u8);
-    }
-    remote_doorbell
-        .ring(ch2)
-        .expect("wake app-side atomic waker doorbell");
+        unsafe {
+            let rx_layout =
+                ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(RX_CHANNEL)));
+            slot::write(rx_layout.slot_addr(base), b"atomic-waker");
+            base.add(RX_UPDATED_ID_OFFSET)
+                .write_volatile(RX_CHANNEL as u8);
+        }
+        remote_doorbell
+            .ring(ch2)
+            .expect("wake app-side atomic waker doorbell");
 
-    match recv.as_mut().poll(&mut cx) {
-        Poll::Ready(Ok(n)) => assert_eq!(&rx[..n], b"atomic-waker"),
-        Poll::Ready(Err(_)) => panic!("recv future should not fail after atomic waker ring"),
-        Poll::Pending => panic!("recv future should be ready after atomic waker ring"),
-    }
+        match recv.as_mut().poll(&mut cx) {
+            Poll::Ready(Ok(n)) => n,
+            Poll::Ready(Err(_)) => panic!("recv future should not fail after atomic waker ring"),
+            Poll::Pending => panic!("recv future should be ready after atomic waker ring"),
+        }
+    };
+    assert_eq!(&rx[..n], b"atomic-waker");
 }
