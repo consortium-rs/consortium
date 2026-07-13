@@ -32,6 +32,7 @@ pub use {
     chan::{Chan, ChanValidate},
     channel::{Channel, ChannelError, Direction, ReceivedMessage, Rx, Tx},
     doorbell::Doorbell,
+    future::MaybeSend,
     side::{Primary, Secondary, Side, Tertiary},
     transceiver::Transceiver,
     transport::{RecvTransport, SendTransport, Transport, TransportError},

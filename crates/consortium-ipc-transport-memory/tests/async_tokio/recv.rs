@@ -178,21 +178,27 @@ fn recv_future_becomes_ready_after_pending_poll_then_doorbell_ring() {
         };
         let mut rx = [0; MTU];
 
-        let recv = transport.recv(&mut rx);
-        pin_mut!(recv);
-        assert!(matches!(poll!(recv.as_mut()), Poll::Pending));
+        // The recv future borrows `rx` until it is dropped; scope it so the
+        // buffer can be inspected afterwards.
+        let n = {
+            let recv = transport.recv(&mut rx);
+            pin_mut!(recv);
+            assert!(matches!(poll!(recv.as_mut()), Poll::Pending));
 
-        unsafe {
-            let rx_layout = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
-            slot::write(rx_layout.slot_addr(base), b"woken");
-            base.add(RX_UPDATED_ID_OFFSET).write_volatile(1);
-        }
-        remote_doorbell.ring(ch2).expect("wake app doorbell");
+            unsafe {
+                let rx_layout =
+                    ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
+                slot::write(rx_layout.slot_addr(base), b"woken");
+                base.add(RX_UPDATED_ID_OFFSET).write_volatile(1);
+            }
+            remote_doorbell.ring(ch2).expect("wake app doorbell");
 
-        match poll!(recv.as_mut()) {
-            Poll::Ready(Ok(n)) => assert_eq!(&rx[..n], b"woken"),
-            other => panic!("recv future should be ready after doorbell ring: {other:?}"),
-        }
+            match poll!(recv.as_mut()) {
+                Poll::Ready(Ok(n)) => n,
+                other => panic!("recv future should be ready after doorbell ring: {other:?}"),
+            }
+        };
+        assert_eq!(&rx[..n], b"woken");
     });
 }
 

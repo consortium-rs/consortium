@@ -4,7 +4,7 @@ use core::{
 };
 
 use consortium_ipc::{
-    Chan, Doorbell, RecvTransport, SendTransport, Side, Transport, TransportError,
+    Chan, Doorbell, MaybeSend, RecvTransport, SendTransport, Side, Transport, TransportError,
 };
 use consortium_shared_memory::{DdrRegion, Region, SramRegion};
 
@@ -492,17 +492,14 @@ impl<S: Side, D: Doorbell + 'static, R: RegionSharedMemoryTransportable> RecvAcc
 /// Future returned by [`SendTransport::send`] on shared-memory transports.
 ///
 /// The send is completed eagerly inside `send()`; this future simply wraps the
-/// pre-computed result and is always `Ready` on the first poll.  The `'a`
-/// lifetime ties the future to the `&mut self` borrow of the transport so the
-/// borrow checker enforces correct ownership at the call site.
+/// pre-computed result and is always `Ready` on the first poll.  The opaque
+/// `impl Future` returned by the trait method captures the `&mut self` borrow,
+/// so the borrow checker still enforces correct ownership at the call site.
 ///
 /// Both [`SharedMemoryTransport`] and [`SharedMemoryTransportTx`] use this same
-/// type; neither `D` nor `R` is referenced at runtime (the result is already
-/// computed), but both must appear as type parameters so the GAT `where Self: 'a`
-/// bound — which implies `D: 'a` and `R: 'a` — can be satisfied.
-pub struct SendFut<'a, D: Doorbell, R: RegionSharedMemoryTransportable> {
+/// type.
+pub struct SendFut<D: Doorbell> {
     result: Result<(), Error<D>>,
-    _ph: PhantomData<(&'a D, &'a R)>,
 }
 
 /// Future returned by [`RecvTransport::recv`] on shared-memory transports.
@@ -521,11 +518,6 @@ pub struct RecvFut<'a, T: RecvAccess> {
     _pin: PhantomPinned,
 }
 
-// SAFETY: the pre-computed result contains no non-Send types; D::Error is Send when D: Send.
-unsafe impl<D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Send
-    for SendFut<'_, D, R>
-{
-}
 // SAFETY: the raw pointer is exclusively owned by this future for its lifetime;
 // all concrete T, T::D, and T::R types used here are Send.
 unsafe impl<T: RecvAccess + Send> Send for RecvFut<'_, T>
@@ -535,7 +527,7 @@ where
 {
 }
 
-impl<D: Doorbell, R: RegionSharedMemoryTransportable> Future for SendFut<'_, D, R> {
+impl<D: Doorbell> Future for SendFut<D> {
     type Output = Result<(), Error<D>>;
 
     fn poll(
@@ -594,20 +586,12 @@ impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> TransportError
 impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> SendTransport
     for SharedMemoryTransport<S, D, R>
 {
-    type SendFut<'a>
-        = SendFut<'a, D, R>
-    where
-        Self: 'a;
-
-    fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a> {
+    fn send(&mut self, data: &[u8]) -> impl Future<Output = Result<(), Self::Error>> + MaybeSend {
         // SAFETY: `self.base` satisfies the descriptor layout invariant established in `new`.
         let result = unsafe {
             send_bytes::<S, D, R>(self.ch_tx, &self.doorbell, &self.region, self.base, data)
         };
-        SendFut {
-            result,
-            _ph: PhantomData,
-        }
+        SendFut { result }
     }
 
     fn max_send_size(&self) -> usize {
@@ -618,20 +602,12 @@ impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Sen
 impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> SendTransport
     for SharedMemoryTransportTx<S, D, R>
 {
-    type SendFut<'a>
-        = SendFut<'a, D, R>
-    where
-        Self: 'a;
-
-    fn send<'a>(&mut self, data: &[u8]) -> Self::SendFut<'a> {
+    fn send(&mut self, data: &[u8]) -> impl Future<Output = Result<(), Self::Error>> + MaybeSend {
         // SAFETY: `self.base` satisfies the descriptor layout invariant established by `split`.
         let result = unsafe {
             send_bytes::<S, D, R>(self.ch, &self.doorbell, &self.region, self.base, data)
         };
-        SendFut {
-            result,
-            _ph: PhantomData,
-        }
+        SendFut { result }
     }
 
     fn max_send_size(&self) -> usize {
@@ -642,13 +618,11 @@ impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Sen
 impl<S: Side, D: Doorbell + Send + 'static, R: RegionSharedMemoryTransportable + Send> RecvTransport
     for SharedMemoryTransport<S, D, R>
 {
-    type RecvFut<'a>
-        = RecvFut<'a, SharedMemoryTransport<S, D, R>>
-    where
-        Self: 'a;
-
-    fn recv<'a>(&mut self, data: &mut [u8]) -> Self::RecvFut<'a> {
-        RecvFut {
+    fn recv<'s>(
+        &'s mut self,
+        data: &mut [u8],
+    ) -> impl Future<Output = Result<usize, Self::Error>> + MaybeSend {
+        RecvFut::<'s, SharedMemoryTransport<S, D, R>> {
             transport: self as *mut _,
             buf_ptr: data.as_mut_ptr(),
             buf_len: data.len(),
@@ -666,13 +640,11 @@ impl<S: Side, D: Doorbell + Send + 'static, R: RegionSharedMemoryTransportable +
 impl<S: Side, D: Doorbell + Send + 'static, R: RegionSharedMemoryTransportable + Send> RecvTransport
     for SharedMemoryTransportRx<S, D, R>
 {
-    type RecvFut<'a>
-        = RecvFut<'a, SharedMemoryTransportRx<S, D, R>>
-    where
-        Self: 'a;
-
-    fn recv<'a>(&mut self, data: &mut [u8]) -> Self::RecvFut<'a> {
-        RecvFut {
+    fn recv<'s>(
+        &'s mut self,
+        data: &mut [u8],
+    ) -> impl Future<Output = Result<usize, Self::Error>> + MaybeSend {
+        RecvFut::<'s, SharedMemoryTransportRx<S, D, R>> {
             transport: self as *mut _,
             buf_ptr: data.as_mut_ptr(),
             buf_len: data.len(),

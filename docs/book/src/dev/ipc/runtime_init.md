@@ -1,8 +1,8 @@
 # Runtime Initialization Guide
 
 This document describes how to initialize and use the `consortium-runtime-mcu` and
-`consortium-runtime-app` crates for STM32MP2 (IPCC on MP21, HSEM or IPCC on
-MP23/25) and i.MX 9x (MU) platforms.
+`consortium-runtime-app` crates for STM32MP2 (IPCC preferred on MP21/23/25; the
+stale HSEM path exists only on MP23/25) and i.MX 9x (MU) platforms.
 
 ## Architecture Overview
 
@@ -21,6 +21,9 @@ M-core                           A-core
 ## M-Core (`consortium-runtime-mcu`)
 
 ### Setup: Interrupt and Descriptor Initialization
+
+The snippet below uses the stale HSEM path. Prefer IPCC for new STM32MP2
+firmware; retain HSEM only for existing STM32MP23/25 experiments.
 
 ```rust
 use consortium_runtime_mcu::{consortium_ipc_transport_memory::descriptor, irq};
@@ -91,14 +94,14 @@ async fn ipc_receiver(ch: Channel<Rx, MyMessage, _>) {
 
 - **`descriptor::descriptor_init()`** — Initializes the shared descriptor header
 - **`descriptor::set_state(base, state)`** — Transitions descriptor state (e.g., `MReady → Ready`)
-- **`irq::enable_doorbell_interrupt()`** — Enables the currently selected HSEM/MU doorbell interrupt when the IRQ number is verified in runtime code. IPCC IRQ numbers/routing remain board/PAC-provided.
+- **`irq::enable_doorbell_interrupt()`** — Enables the currently selected HSEM/MU doorbell interrupt when the IRQ number is verified in runtime code. Prefer IPCC on STM32MP2; IPCC IRQ numbers/routing remain board/PAC-provided.
 - **`slot_pair_ptrs(base, idx, size)`** — Computes raw slot pointers for low-level setup
 - **`static_buf!(NAME, SIZE)`** — Declares properly aligned static buffers
 
 ### Features
 
 - **`stm32mp21x`** — Enables IPCC doorbell support
-- **`stm32mp23x`** / **`stm32mp25x`** — Enables HSEM and IPCC doorbell support
+- **`stm32mp23x`** / **`stm32mp25x`** — Enables IPCC and stale HSEM doorbell support; prefer IPCC
 - **`imx93`** / **`imx95`** — Enables MU doorbell support (i.MX variants)
 - **`imx9x`** — Umbrella feature (requires one of the above)
 
@@ -204,7 +207,10 @@ Slot layout (at each offset):
 0x08    N     payload (up to effective_mtu bytes)
 ```
 
-## Complete Example: STM32MP25 with HSEM
+## Stale Example: STM32MP25 with HSEM
+
+Prefer IPCC for new STM32MP2 integrations. This HSEM example remains as a
+reference for existing STM32MP23/25 experiments only.
 
 ### M-Core Firmware (`consortium-runtime-mcu`)
 

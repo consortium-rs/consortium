@@ -318,7 +318,7 @@ The `effective_mtu` in the descriptor drives `Transport::max_message_size()`, wh
 | Core                    | Transport               | Doorbell                          | Region                     | Async runtime                |
 | ----------------------- | ----------------------- | --------------------------------- | -------------------------- | ---------------------------- |
 | Cortex-M (STM32MP21)    | `SharedMemoryTransport` | IPCC                              | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
-| Cortex-M (STM32MP23/25) | `SharedMemoryTransport` | HSEM or IPCC                      | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
+| Cortex-M (STM32MP23/25) | `SharedMemoryTransport` | IPCC preferred; HSEM stale        | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
 | Cortex-M (i.MX 95)      | `SharedMemoryTransport` | MU                                | `SramRegion` / `DdrRegion` | cooperative executor         |
 | Cortex-A (Linux)        | runtime-app UIO path    | Linux UIO + `tokio::sync::Notify` | mmap'd via UIO driver      | Tokio                        |
 

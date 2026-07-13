@@ -45,7 +45,6 @@ Inspired by RPC, Consortium defines the following abstractions around these esse
 2. `Chan`. Represents the hardware channel ID and is validated before use.
 
 3. `Doorbell`, paired with `Chan`. A `Doorbell` is the mechanism that prompts the receiver. Consortium separates doorbells into three types:
-
    - Type-A (`BellA`): Explicit on-chip inter-processor doorbell. This includes HAMPU hardware mailbox peripherals used to fire interrupts between processors, such as HSEM (Hardware Semaphore), MU (Messaging Unit), and IPCC (Inter-processor Communication Controller).
    - Type-B (`BellB`): Implicit transport-coupled notification. This refers to notification behavior inherent to transport activity, such as UART, SPI, and similar communication interfaces.
    - Type-C (`BellC`): External or board-level notification, especially GPIO-based interrupts.
@@ -53,7 +52,6 @@ Inspired by RPC, Consortium defines the following abstractions around these esse
    A doorbell has a simple role: `ring()` triggers an interrupt to the peer core, `wait()` asynchronously waits for an interrupt from the peer core, and `pending()` performs a non-blocking check for an arrived interrupt. Each operation is paired with a specific `Chan`, which identifies the doorbell channel.
 
 4. `Transport`. A `Transport` may be half-duplex, full-duplex, split-directional, or shared bidirectional. Like `Doorbell`, Consortium defines three transport categories:
-
    - Shared Memory. On-chip RAM-based transport, commonly used in HAMPU systems. In addition to the generic transport abstraction, Consortium introduces `Descriptor` and `Slot`.
    - Wired. Transport over a specific wired protocol, such as UART, SPI, CAN, or EtherCAT.
    - Wireless. Transport over a specific wireless protocol, such as Wi-Fi or Bluetooth Low Energy.
@@ -89,7 +87,6 @@ On Linux, Consortium provides a UIO-based access paradigm. Through UIO, the CA s
 Consortium provides two options for maintaining cache coherency across different deployment scenarios:
 
 1. Declare the shared memory region as non-cacheable.
-
    - On Cortex-A, the shared region is declared as `reserved-memory` and marked `no-map`.
    - On Cortex-M, such as M7 and M33, the MPU is configured to declare the shared memory region as outer-shareable and non-cacheable.
 

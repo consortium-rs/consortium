@@ -34,7 +34,7 @@ M-core                           A-core
 - For HSEM: enable HSEM1 IRQ in NVIC. The `HSEM_IRQHandler` is already `#[no_mangle]` in `doorbell-hsem`.
 - For IPCC: enable the board/PAC-selected RX occupied interrupt line and call
   `notify_rx_occupied_interrupt()` from that ISR. STM32MP21 uses IPCC only; STM32MP23/25
-  can use HSEM or IPCC.
+  should prefer IPCC over the stale HSEM path.
 - For MU: enable the IRQ for the MU instance selected by the SoC route. On current i.MX95
   CA55 <-> CM7 defaults, use MU7 (runtime helper IRQ 207 on CM7) and channels 24/25.
   `doorbell-mu` provides chip-gated `MU1_IRQHandler` through `MU8_IRQHandler` where

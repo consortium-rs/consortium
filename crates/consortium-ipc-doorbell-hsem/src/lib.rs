@@ -15,7 +15,14 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! HSEM (Hardware Semaphore) doorbell driver for Consortium IPC.
+//! Stale HSEM (Hardware Semaphore) doorbell driver for Consortium IPC.
+//!
+//! This crate is retained for experiments and existing STM32MP23/25 users, but
+//! new STM32MP2 integrations should prefer `consortium-ipc-doorbell-ipcc`.
+//! IPCC is present across STM32MP21/23/25 and has the better supported ST
+//! integration path. HSEM is absent on STM32MP21, and field testing has shown
+//! surprising access failures where the peripheral clock and RIF assignment
+//! looked correct but reads still produced a bus error.
 //!
 //! A [`HsemDoorbell`] drives the HSEM peripheral from one processor [`side`],
 //! with the side selected at the type level: [`Primary`] is core C1, [`Secondary`]

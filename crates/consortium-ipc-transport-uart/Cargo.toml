@@ -1,0 +1,54 @@
+# Copyright 2026 Ethan Wu
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+[package]
+description       = "COBS-framed UART IPC transport for Consortium"
+edition.workspace = true
+license.workspace = true
+name              = "consortium-ipc-transport-uart"
+version.workspace = true
+
+[features]
+alloc   = ["consortium-ipc/alloc"]
+default = ["std"]
+# Route this crate's protocol tracing to `defmt` for firmware-side builds; the
+# `std` path routes the same call sites to `tracing` instead.
+defmt = ["consortium-ipc/defmt", "consortium-log/defmt", "dep:defmt"]
+# `std` switches the transport impls from `embedded-io-async` to Tokio
+# `AsyncRead`/`AsyncWrite`: under `std` the transport futures must be `Send`
+# (`MaybeSend`), which `embedded_io_async`'s unnameable `async fn` futures
+# cannot guarantee generically.
+std = ["alloc", "consortium-ipc/std", "consortium-log/tracing", "dep:tokio"]
+
+[dependencies]
+cobs              = { default-features = false, version = "0.4" }
+consortium-ipc    = { default-features = false, path = "../consortium-ipc" }
+consortium-log    = { default-features = false, path = "../consortium-log" }
+crc32fast         = { default-features = false, version = "1.5.0" }
+defmt             = { optional = true, version = "1.1.0" }
+embedded-io-async = { version = "0.7" }
+thiserror         = { default-features = false, version = "2.0" }
+tokio             = { features = ["io-util"], optional = true, version = "1" }
+
+[dev-dependencies]
+consortium-codec  = { features = ["alloc", "postcard"], path = "../consortium-codec" }
+embedded-io-async = { version = "0.7" }
+futures           = "0.3"
+serde             = { default-features = false, features = ["derive"], version = "1.0.228" }
+tokio             = { features = ["io-util", "macros", "rt", "sync", "time"], version = "1" }
+
+[lints]
+workspace = true
