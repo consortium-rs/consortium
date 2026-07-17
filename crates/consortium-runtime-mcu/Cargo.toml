@@ -27,12 +27,18 @@ default = ["ipc-shm"]
 # Route generated-code logging (`::consortium_runtime_mcu::log::*`) to `defmt`.
 # The firmware crate that includes the generated module must also depend on
 # `defmt` directly, since `defmt`'s macros expand to literal `defmt::` paths.
-defmt      = ["consortium-ipc-transport-memory?/defmt", "consortium-log/defmt"]
-mimx93     = ["consortium-ipc-transport-memory?/mimx93", "mimx9x"]
-mimx95     = ["consortium-ipc-transport-memory?/mimx95", "mimx9x"]
-mimx9x     = []
-ipc        = ["ipc-shm"]
-ipc-shm    = ["dep:consortium-ipc", "dep:consortium-ipc-transport-memory"]
+defmt = [
+  "consortium-ipc-transport-memory?/defmt",
+  "consortium-ipc-transport-uart?/defmt",
+  "consortium-log/defmt",
+]
+mimx93 = ["consortium-ipc-transport-memory?/mimx93", "mimx9x"]
+mimx95 = ["consortium-ipc-transport-memory?/mimx95", "mimx9x"]
+mimx9x = []
+ipc = ["ipc-shm"]
+ipc-shm = ["dep:consortium-ipc", "dep:consortium-ipc-transport-memory"]
+# Wired UART transport (COBS/CRC-framed), an alternative to shared memory.
+ipc-uart   = ["dep:consortium-ipc", "dep:consortium-ipc-transport-uart"]
 stm32mp21x = ["consortium-ipc-transport-memory?/stm32mp21x"]
 stm32mp23x = ["consortium-ipc-transport-memory?/stm32mp23x"]
 stm32mp25x = ["consortium-ipc-transport-memory?/stm32mp25x"]
@@ -47,6 +53,7 @@ consortium-dbg = { default-features = false, features = [
   "logger",
 ], optional = true, path = "../consortium-dbg" }
 consortium-ipc-transport-memory = { default-features = false, optional = true, path = "../consortium-ipc-transport-memory" }
+consortium-ipc-transport-uart = { default-features = false, optional = true, path = "../consortium-ipc-transport-uart" }
 consortium-runtime-sys = { path = "../consortium-runtime-sys" }
 cortex-m = { version = "0.7" }
 num-traits = { default-features = false, version = "0.2.19" }

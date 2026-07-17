@@ -218,11 +218,11 @@ mod armv8m {
     pub unsafe fn disable_cache(mpu: &mut MPU, region: u8, base: u32, size: u32) {
         debug_assert!(size >= REGION_GRANULE, "MPU region must be >= 32 bytes");
         debug_assert!(
-            base % REGION_GRANULE == 0,
+            base.is_multiple_of(REGION_GRANULE),
             "MPU base must be 32-byte aligned"
         );
         debug_assert!(
-            size % REGION_GRANULE == 0,
+            size.is_multiple_of(REGION_GRANULE),
             "MPU size must be a 32-byte multiple"
         );
 

@@ -89,6 +89,18 @@ pub struct DmaChannel {
     state: &'static DmaState,
 }
 
+/// Transfer-control-descriptor parameters for one [`DmaChannel::setup`].
+struct Tcd {
+    src: u32,
+    soff: u16,
+    dst: u32,
+    doff: u16,
+    nbytes: u32,
+    major_count: u16,
+    tcd_csr: u16,
+    erq: bool,
+}
+
 impl DmaChannel {
     /// Claim channel `channel` of the eDMA instance at `base`.
     ///
@@ -108,34 +120,24 @@ impl DmaChannel {
         Self { ch, state }
     }
 
-    fn setup(
-        &mut self,
-        src: u32,
-        soff: u16,
-        dst: u32,
-        doff: u16,
-        nbytes: u32,
-        major_count: u16,
-        tcd_csr: u16,
-        erq: bool,
-    ) {
+    fn setup(&mut self, tcd: Tcd) {
         let ch = self.ch;
         ch.CH_CSR().write_value(CH_CSR_DONE);
         ch.CH_ES().write_value(CH_ES_ERR);
         ch.CH_INT().write_value(CH_INT_INT);
-        ch.TCD_SADDR().write_value(src);
-        ch.TCD_SOFF().write_value(soff);
+        ch.TCD_SADDR().write_value(tcd.src);
+        ch.TCD_SOFF().write_value(tcd.soff);
         // 8-bit source and destination elements, no address modulo.
         ch.TCD_ATTR().write_value(0);
-        ch.TCD_NBYTES_MLOFFNO().write_value(nbytes);
+        ch.TCD_NBYTES_MLOFFNO().write_value(tcd.nbytes);
         ch.TCD_SLAST_SDA().write_value(0);
-        ch.TCD_DADDR().write_value(dst);
-        ch.TCD_DOFF().write_value(doff);
-        ch.TCD_CITER_ELINKNO().write_value(major_count);
+        ch.TCD_DADDR().write_value(tcd.dst);
+        ch.TCD_DOFF().write_value(tcd.doff);
+        ch.TCD_CITER_ELINKNO().write_value(tcd.major_count);
         ch.TCD_DLAST_SGA().write_value(0);
-        ch.TCD_BITER_ELINKNO().write_value(major_count);
-        ch.TCD_CSR().write_value(tcd_csr);
-        if erq {
+        ch.TCD_BITER_ELINKNO().write_value(tcd.major_count);
+        ch.TCD_CSR().write_value(tcd.tcd_csr);
+        if tcd.erq {
             ch.CH_CSR().write_value(CH_CSR_ERQ);
         }
     }
@@ -147,16 +149,16 @@ impl DmaChannel {
     pub fn mem_to_mem<'a>(&'a mut self, src: &'a [u8], dst: &'a mut [u8]) -> Transfer<'a> {
         assert!(!src.is_empty() && src.len() == dst.len());
         assert!(src.len() <= MAX_MEM_TRANSFER);
-        self.setup(
-            src.as_ptr() as usize as u32,
-            1,
-            dst.as_mut_ptr() as usize as u32,
-            1,
-            src.len() as u32,
-            1,
-            TCD_CSR_INTMAJOR | TCD_CSR_START,
-            false,
-        );
+        self.setup(Tcd {
+            src: src.as_ptr() as usize as u32,
+            soff: 1,
+            dst: dst.as_mut_ptr() as usize as u32,
+            doff: 1,
+            nbytes: src.len() as u32,
+            major_count: 1,
+            tcd_csr: TCD_CSR_INTMAJOR | TCD_CSR_START,
+            erq: false,
+        });
         Transfer::new(self)
     }
 
@@ -171,16 +173,16 @@ impl DmaChannel {
     /// hardware request is routed to this channel and enabled.
     pub unsafe fn write_peripheral<'a>(&'a mut self, src: &'a [u8], dst: *mut u8) -> Transfer<'a> {
         assert!(!src.is_empty() && src.len() <= MAX_PERIPHERAL_TRANSFER);
-        self.setup(
-            src.as_ptr() as usize as u32,
-            1,
-            dst as usize as u32,
-            0,
-            1,
-            src.len() as u16,
-            TCD_CSR_INTMAJOR | TCD_CSR_DREQ,
-            true,
-        );
+        self.setup(Tcd {
+            src: src.as_ptr() as usize as u32,
+            soff: 1,
+            dst: dst as usize as u32,
+            doff: 0,
+            nbytes: 1,
+            major_count: src.len() as u16,
+            tcd_csr: TCD_CSR_INTMAJOR | TCD_CSR_DREQ,
+            erq: true,
+        });
         Transfer::new(self)
     }
 
@@ -199,16 +201,16 @@ impl DmaChannel {
         dst: &'a mut [u8],
     ) -> Transfer<'a> {
         assert!(!dst.is_empty() && dst.len() <= MAX_PERIPHERAL_TRANSFER);
-        self.setup(
-            src as usize as u32,
-            0,
-            dst.as_mut_ptr() as usize as u32,
-            1,
-            1,
-            dst.len() as u16,
-            TCD_CSR_INTMAJOR | TCD_CSR_DREQ,
-            true,
-        );
+        self.setup(Tcd {
+            src: src as usize as u32,
+            soff: 0,
+            dst: dst.as_mut_ptr() as usize as u32,
+            doff: 1,
+            nbytes: 1,
+            major_count: dst.len() as u16,
+            tcd_csr: TCD_CSR_INTMAJOR | TCD_CSR_DREQ,
+            erq: true,
+        });
         Transfer::new(self)
     }
 }

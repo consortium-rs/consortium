@@ -565,14 +565,15 @@ dependencies = [
  "consortium-hal",
  "consortium-pac-imx9",
  "critical-section",
+ "embassy-hal-internal",
  "embassy-sync",
  "embassy-time-driver",
  "embassy-time-queue-utils",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
  "embedded-hal-nb",
- "embedded-io 0.6.1",
- "embedded-io-async 0.6.1",
+ "embedded-io",
+ "embedded-io-async",
 ]
 
 [[package]]
@@ -584,14 +585,15 @@ dependencies = [
  "consortium-pac-stm32mp2",
  "critical-section",
  "defmt",
+ "embassy-hal-internal",
  "embassy-sync",
  "embassy-time-driver",
  "embassy-time-queue-utils",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
  "embedded-hal-nb",
- "embedded-io 0.6.1",
- "embedded-io-async 0.6.1",
+ "embedded-io",
+ "embedded-io-async",
 ]
 
 [[package]]
@@ -732,7 +734,7 @@ dependencies = [
  "consortium-log",
  "crc32fast",
  "defmt",
- "embedded-io-async 0.7.0",
+ "embedded-io-async",
  "futures",
  "serde",
  "thiserror",
@@ -743,8 +745,10 @@ dependencies = [
 name = "consortium-ipc-transport-uart-embedded"
 version = "0.1.0"
 dependencies = [
+ "consortium-hal-imx9",
+ "consortium-hal-stm32mp2",
  "consortium-ipc-transport-uart",
- "embedded-io-async 0.7.0",
+ "embedded-io-async",
 ]
 
 [[package]]
@@ -828,6 +832,7 @@ dependencies = [
  "consortium-dbg",
  "consortium-ipc",
  "consortium-ipc-transport-memory",
+ "consortium-ipc-transport-uart",
  "consortium-log",
  "consortium-runtime-sys",
  "cortex-m",
@@ -1199,6 +1204,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dc2d050bdc5c21e0862a89256ed8029ae6c290a93aecefc73084b3002cdebb01"
 
 [[package]]
+name = "embassy-hal-internal"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "568659fc53866d3d85c60fa33723fb751aa69e71507634fc2c19e7649432fb75"
+dependencies = [
+ "num-traits",
+]
+
+[[package]]
 name = "embassy-sync"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1206,7 +1220,7 @@ checksum = "7bbd85cf5a5ae56bdf26f618364af642d1d0a4e245cdd75cd9aabda382f65a81"
 dependencies = [
  "cfg-if",
  "critical-section",
- "embedded-io-async 0.7.0",
+ "embedded-io-async",
  "futures-core",
  "futures-sink",
  "heapless 0.9.3",
@@ -1285,24 +1299,9 @@ dependencies = [
 
 [[package]]
 name = "embedded-io"
-version = "0.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "edd0f118536f44f5ccd48bcb8b111bdc3de888b58c74639dfb034a357d0f206d"
-
-[[package]]
-name = "embedded-io"
 version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9eb1aa714776b75c7e67e1da744b81a129b3ff919c8712b5e1b32252c1f07cc7"
-
-[[package]]
-name = "embedded-io-async"
-version = "0.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3ff09972d4073aa8c299395be75161d582e7629cd663171d62af73c8d50dba3f"
-dependencies = [
- "embedded-io 0.6.1",
-]
 
 [[package]]
 name = "embedded-io-async"
@@ -1310,7 +1309,7 @@ version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2564b9f813c544241430e147d8bc454815ef9ac998878d30cc3055449f7fd4c0"
 dependencies = [
- "embedded-io 0.7.1",
+ "embedded-io",
 ]
 
 [[package]]

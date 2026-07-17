@@ -32,6 +32,9 @@ pub use consortium_dbg as dbg;
 #[cfg(feature = "ipc-shm")]
 pub use consortium_ipc_transport_memory;
 
+#[cfg(feature = "ipc-uart")]
+pub use consortium_ipc_transport_uart;
+
 /// Macro for declaring a static scratch buffer with proper alignment.
 ///
 /// # Example

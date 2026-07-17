@@ -27,6 +27,7 @@ time-driver-gp-tim = [
 ]
 uart = [
   "dep:critical-section",
+  "dep:embassy-hal-internal",
   "dep:embassy-sync",
   "dep:embedded-hal-nb",
   "dep:embedded-io",
@@ -39,15 +40,21 @@ consortium-hal           = { path = "../consortium-hal" }
 consortium-pac-stm32mp2  = { default-features = false, path = "../consortium-pac-stm32mp2" }
 consortium-log           = { path = "../consortium-log" }
 critical-section         = { optional = true, version = "1.2.0" }
+embassy-hal-internal     = { optional = true, version = "0.5.0" }
 embassy-sync             = { optional = true, version = "0.8.0" }
 embassy-time-driver      = { optional = true, version = "0.2.2" }
 embassy-time-queue-utils = { optional = true, version = "0.3.2" }
 embedded-hal             = { optional = true, version = "1.0.0" }
 embedded-hal-async       = { optional = true, version = "1.0.0" }
 embedded-hal-nb          = { optional = true, version = "1.0.0" }
-embedded-io              = { optional = true, version = "0.6.1" }
-embedded-io-async        = { optional = true, version = "0.6.1" }
+embedded-io              = { optional = true, version = "0.7" }
+embedded-io-async        = { optional = true, version = "0.7" }
 defmt                    = { optional = true, version = "1" }
+
+[dev-dependencies]
+# Supplies a host `critical_section` implementation so the buffered-UART IRQ
+# path can be exercised in unit tests.
+critical-section = { features = ["std"], version = "1.2.0" }
 
 [lints]
 workspace = true

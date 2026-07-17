@@ -17,32 +17,95 @@
 
 //! Firmware-side entry point for the Consortium UART IPC transport.
 //!
-//! The transport itself lives in `consortium-ipc-transport-uart` and is
-//! generic over [`embedded_io_async::Read`]/[`Write`](embedded_io_async::Write),
-//! which Embassy and modern HAL UART drivers implement directly:
+//! The wire protocol and transport live in `consortium-ipc-transport-uart` and
+//! are generic over [`embedded_io_async::Read`]/[`Write`](embedded_io_async::Write).
+//! This crate wires that transport to the chip HALs' interrupt-buffered UART
+//! drivers (`BufferedUart`), selected by a chip feature:
+//!
+//! - `mimx93` / `mimx95` re-export [`consortium_hal_imx9::uart`] as [`imx9`];
+//! - `stm32mp21x` / `stm32mp23x` / `stm32mp25x` re-export
+//!   [`consortium_hal_stm32mp2::uart`] as [`stm32mp2`].
+//!
+//! With no chip feature the crate is chip-agnostic: use any driver that
+//! implements the `embedded-io-async` traits (Embassy, a custom HAL) directly
+//! with the re-exported transport types.
+//!
+//! The `BufferedUart` receiver is interrupt-driven: its IRQ handler drains the
+//! receive FIFO into a ring so no bytes are lost between the wake and the next
+//! poll of the transport's `recv`. Per repository convention, this crate does
+//! **not** install `#[interrupt]` handlers — the application owns the vector
+//! table and forwards the UART interrupt into `BufferedUartState::on_interrupt`,
+//! the same wake pattern the doorbell crates use.
+//!
+//! # End-to-end (STM32MP2, `stm32mp25x` + the HAL's `rt` feature)
 //!
 //! ```ignore
-//! let (tx_wire, rx_wire) = hal_uart.split();
+//! use consortium_ipc::Chan;
+//! use consortium_ipc_transport_uart_embedded::{
+//!     UartTransport, rx_buf_len, tx_buf_len,
+//!     stm32mp2::{BufferedUart, BufferedUartState, Config},
+//! };
+//! use consortium_runtime_mcu::static_buf;
+//!
+//! const MTU: usize = 256;
+//! static UART_STATE: BufferedUartState = BufferedUartState::new();
+//!
+//! // Ring storage for the IRQ handler, plus the transport scratch buffers.
+//! // `static_buf!(NAME, LEN)` declares a `StaticCell<[u8; LEN]>`; `.init(..)`
+//! // yields the `&'static mut [u8]` each constructor wants.
+//! static_buf!(RX_RING, 512);
+//! static_buf!(RX_SCRATCH, rx_buf_len(MTU));
+//! static_buf!(TX_SCRATCH, tx_buf_len(MTU));
+//!
+//! // SAFETY: `USART2_BASE` is the exclusively owned, clocked, pinned-out
+//! // register block; its interrupt is routed to `UART_STATE` below.
+//! let uart = unsafe {
+//!     BufferedUart::new(
+//!         USART2_BASE,
+//!         KERNEL_HZ,
+//!         Config::default(),
+//!         &UART_STATE,
+//!         RX_RING.init([0; 512]),
+//!     )
+//! };
+//! let (tx_wire, rx_wire) = uart.split();
+//!
 //! let transport = UartTransport::new(
-//!     chan,
+//!     Chan::new(0)?,
 //!     rx_wire,
 //!     tx_wire,
-//!     static_buf!(rx_buf_len(MTU)),
-//!     static_buf!(tx_buf_len(MTU)),
+//!     RX_SCRATCH.init([0; rx_buf_len(MTU)]),
+//!     TX_SCRATCH.init([0; tx_buf_len(MTU)]),
 //!     MTU,
 //! )?;
+//! // `tx` / `rx` are `SendTransport` / `RecvTransport`; wrap them in
+//! // `Channel<Tx, ..>` / `Channel<Rx, ..>` with a codec to send typed messages.
 //! let (tx, rx) = transport.split();
+//!
+//! #[interrupt]
+//! fn USART2() {
+//!     UART_STATE.on_interrupt();
+//! }
 //! ```
 //!
-//! Per repository convention, no crate in this family installs `#[interrupt]`
-//! handlers: the application owns the vector table. For PAC-level UARTs
-//! without an async HAL driver, the planned (not yet implemented) addition
-//! here is an IRQ-fed RX ring implementing [`embedded_io_async::Read`], whose
-//! `notify()`-style feed function the application calls from its UART RX/idle
-//! interrupt handler — the same wake pattern the doorbell crates use.
+//! The i.MX9 flow is identical with [`imx9::BufferedUart`] and an `LPUARTn`
+//! vector. See the melt-pot `mcu/src/main.rs` files for full worked examples of
+//! the vector-table forwarding convention.
 
 pub use consortium_ipc_transport_uart::{
     Error, FRAME_OVERHEAD, UartTransport, UartTransportRx, UartTransportTx, max_frame_len,
     rx_buf_len, tx_buf_len,
 };
 pub use embedded_io_async;
+
+/// i.MX9 LPUART driver, including the interrupt-buffered `BufferedUart`.
+#[cfg(any(feature = "mimx93", feature = "mimx95"))]
+pub mod imx9 {
+    pub use consortium_hal_imx9::uart::*;
+}
+
+/// STM32MP2 USART driver, including the interrupt-buffered `BufferedUart`.
+#[cfg(any(feature = "stm32mp21x", feature = "stm32mp23x", feature = "stm32mp25x"))]
+pub mod stm32mp2 {
+    pub use consortium_hal_stm32mp2::uart::*;
+}
