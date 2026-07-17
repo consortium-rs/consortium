@@ -28,6 +28,9 @@ struct AlarmState {
     timestamp: Cell<u64>,
 }
 
+// SAFETY: the `Cell` is only accessed through the driver's
+// `Mutex<CriticalSectionRawMutex, _>`, which serializes access across threads
+// and interrupts, so moving an `AlarmState` between contexts is sound.
 unsafe impl Send for AlarmState {}
 
 impl AlarmState {
@@ -67,7 +70,7 @@ const fn calc_now(period: u32, counter: u32) -> u64 {
 }
 
 const fn compute_psc(clock_hz: u32, tick_hz: u64) -> u32 {
-    assert!(tick_hz > 0 && clock_hz as u64 % tick_hz == 0);
+    assert!(tick_hz > 0 && (clock_hz as u64).is_multiple_of(tick_hz));
     let div = clock_hz as u64 / tick_hz;
     assert!(div > 0);
     // The PSC register is 16 bits wide even on 32-bit counters.

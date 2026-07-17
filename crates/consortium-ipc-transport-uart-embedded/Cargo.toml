@@ -22,9 +22,32 @@ name              = "consortium-ipc-transport-uart-embedded"
 version.workspace = true
 
 [features]
-defmt = ["consortium-ipc-transport-uart/defmt"]
+default = []
+defmt   = ["consortium-hal-stm32mp2?/defmt", "consortium-ipc-transport-uart/defmt"]
+# Chip selection — pulls in the matching chip HAL (with its `uart` driver) and
+# forwards the chip feature so the shared PAC's register/interrupt definitions
+# match the target. Choose exactly one; the HAL rejects several at once.
+mimx93 = ["consortium-hal-imx9/mimx93", "consortium-hal-imx9/uart", "dep:consortium-hal-imx9"]
+mimx95 = ["consortium-hal-imx9/mimx95", "consortium-hal-imx9/uart", "dep:consortium-hal-imx9"]
+stm32mp21x = [
+  "consortium-hal-stm32mp2/stm32mp21x",
+  "consortium-hal-stm32mp2/uart",
+  "dep:consortium-hal-stm32mp2",
+]
+stm32mp23x = [
+  "consortium-hal-stm32mp2/stm32mp23x",
+  "consortium-hal-stm32mp2/uart",
+  "dep:consortium-hal-stm32mp2",
+]
+stm32mp25x = [
+  "consortium-hal-stm32mp2/stm32mp25x",
+  "consortium-hal-stm32mp2/uart",
+  "dep:consortium-hal-stm32mp2",
+]
 
 [dependencies]
+consortium-hal-imx9           = { default-features = false, optional = true, path = "../consortium-hal-imx9" }
+consortium-hal-stm32mp2       = { default-features = false, optional = true, path = "../consortium-hal-stm32mp2" }
 consortium-ipc-transport-uart = { default-features = false, path = "../consortium-ipc-transport-uart" }
 embedded-io-async             = { version = "0.7" }
 

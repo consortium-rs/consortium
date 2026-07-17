@@ -1,602 +1,1136 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="dark">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Consortium — One workspace for every core in your SoC</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  * { box-sizing: border-box; }
-  body { margin: 0; }
-  a { color: inherit; text-decoration: none; }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Consortium — One workspace for every core in your SoC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
 
-  :root[data-theme="dark"] {
-    --bg: oklch(19% 0.014 250);
-    --bg-elev: oklch(23% 0.016 250);
-    --border: oklch(34% 0.02 250);
-    --text: oklch(95% 0.006 250);
-    --text-muted: oklch(68% 0.02 250);
-    --accent: oklch(72% 0.19 270);
-    --accent-strong: oklch(65% 0.2 270);
-    --accent-soft: oklch(72% 0.19 270 / 0.14);
-    --accent2: oklch(72% 0.19 335);
-    --accent2-soft: oklch(72% 0.19 335 / 0.14);
-    --on-accent: oklch(14% 0.02 288);
-    color-scheme: dark;
-  }
-  :root[data-theme="light"] {
-    --bg: oklch(98% 0.004 250);
-    --bg-elev: oklch(95% 0.006 250);
-    --border: oklch(87% 0.01 250);
-    --text: oklch(22% 0.014 250);
-    --text-muted: oklch(46% 0.02 250);
-    --accent: oklch(56% 0.19 270);
-    --accent-strong: oklch(48% 0.2 270);
-    --accent-soft: oklch(56% 0.19 270 / 0.1);
-    --accent2: oklch(56% 0.19 335);
-    --accent2-soft: oklch(56% 0.19 335 / 0.1);
-    --on-accent: oklch(99% 0 0);
-    color-scheme: light;
-  }
+      :root[data-theme='dark'] {
+        --bg: oklch(19% 0.014 250);
+        --bg-elev: oklch(23% 0.016 250);
+        --border: oklch(34% 0.02 250);
+        --text: oklch(95% 0.006 250);
+        --text-muted: oklch(68% 0.02 250);
+        --accent: oklch(72% 0.19 270);
+        --accent-strong: oklch(65% 0.2 270);
+        --accent-soft: oklch(72% 0.19 270 / 0.14);
+        --accent2: oklch(72% 0.19 335);
+        --accent2-soft: oklch(72% 0.19 335 / 0.14);
+        --on-accent: oklch(14% 0.02 288);
+        color-scheme: dark;
+      }
+      :root[data-theme='light'] {
+        --bg: oklch(98% 0.004 250);
+        --bg-elev: oklch(95% 0.006 250);
+        --border: oklch(87% 0.01 250);
+        --text: oklch(22% 0.014 250);
+        --text-muted: oklch(46% 0.02 250);
+        --accent: oklch(56% 0.19 270);
+        --accent-strong: oklch(48% 0.2 270);
+        --accent-soft: oklch(56% 0.19 270 / 0.1);
+        --accent2: oklch(56% 0.19 335);
+        --accent2-soft: oklch(56% 0.19 335 / 0.1);
+        --on-accent: oklch(99% 0 0);
+        color-scheme: light;
+      }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-family: 'Inter', sans-serif;
-    transition: background 0.2s, color 0.2s;
-  }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        font-family: 'Inter', sans-serif;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
 
-  .mono { font-family: 'JetBrains Mono', monospace; }
+      .mono {
+        font-family: 'JetBrains Mono', monospace;
+      }
 
-  /* Nav */
-  nav {
-    position: sticky; top: 0; z-index: 20;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 72px; padding: 0 48px;
-    background: color-mix(in oklab, var(--bg) 88%, transparent);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
-  }
-  .logo-mark { position: relative; width: 26px; height: 20px; }
-  .logo-mark .a { position: absolute; left: 0; top: 2px; width: 15px; height: 15px; border-radius: 4px; background: var(--accent); }
-  .logo-mark .b { position: absolute; right: 0; bottom: 0; width: 15px; height: 15px; border-radius: 4px; background: var(--accent2); }
-  .nav-links { display: flex; align-items: center; gap: 36px; }
-  .nav-links a { font-size: 14px; color: var(--text-muted); }
-  .nav-links a:hover { color: var(--text); }
-  .theme-toggle {
-    display: flex; align-items: center; gap: 6px;
-    background: transparent; border: 1px solid var(--border);
-    color: var(--text-muted); font-size: 13px;
-    font-family: 'JetBrains Mono', monospace; padding: 6px 10px;
-    border-radius: 7px; cursor: pointer;
-  }
-  .theme-toggle:hover { border-color: var(--accent); color: var(--text); }
-  .nav-github {
-    font-size: 14px; font-weight: 600; background: var(--accent);
-    color: var(--on-accent); padding: 9px 18px; border-radius: 8px;
-  }
-  .nav-github:hover { background: var(--accent-strong); }
+      /* Nav */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+        padding: 0 48px;
+        background: color-mix(in oklab, var(--bg) 88%, transparent);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border);
+      }
+      .logo-mark {
+        position: relative;
+        width: 26px;
+        height: 20px;
+      }
+      .logo-mark .a {
+        position: absolute;
+        left: 0;
+        top: 2px;
+        width: 15px;
+        height: 15px;
+        border-radius: 4px;
+        background: var(--accent);
+      }
+      .logo-mark .b {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 15px;
+        height: 15px;
+        border-radius: 4px;
+        background: var(--accent2);
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 36px;
+      }
+      .nav-links a {
+        font-size: 14px;
+        color: var(--text-muted);
+      }
+      .nav-links a:hover {
+        color: var(--text);
+      }
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: 13px;
+        font-family: 'JetBrains Mono', monospace;
+        padding: 6px 10px;
+        border-radius: 7px;
+        cursor: pointer;
+      }
+      .theme-toggle:hover {
+        border-color: var(--accent);
+        color: var(--text);
+      }
+      .nav-github {
+        font-size: 14px;
+        font-weight: 600;
+        background: var(--accent);
+        color: var(--on-accent);
+        padding: 9px 18px;
+        border-radius: 8px;
+      }
+      .nav-github:hover {
+        background: var(--accent-strong);
+      }
 
-  /* Layout helpers */
-  .wrap { max-width: 1280px; margin: 0 auto; }
-  .pad-sm { padding: 40px 48px 100px; }
-  .pad-lg { padding: 80px 48px; }
+      /* Layout helpers */
+      .wrap {
+        max-width: 1280px;
+        margin: 0 auto;
+      }
+      .pad-sm {
+        padding: 40px 48px 100px;
+      }
+      .pad-lg {
+        padding: 80px 48px;
+      }
 
-  /* Hero */
-  .hero {
-    max-width: 1280px; margin: 0 auto; padding: 96px 48px 80px;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
-  }
-  .eyebrow {
-    font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500;
-    letter-spacing: 0.06em; color: var(--accent); text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  h1 { font-size: 52px; line-height: 1.12; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 24px; }
-  .hero p { font-size: 18px; line-height: 1.6; color: var(--text-muted); margin: 0 0 36px; max-width: 46ch; text-wrap: pretty; }
-  .hero-cta { display: flex; gap: 14px; }
-  .btn-primary {
-    font-size: 15px; font-weight: 600; background: var(--accent);
-    color: var(--on-accent); padding: 13px 24px; border-radius: 9px; text-align: center;
-  }
-  .btn-primary:hover { background: var(--accent-strong); }
-  .btn-ghost {
-    font-size: 15px; font-weight: 600; border: 1px solid var(--border);
-    color: var(--text); padding: 13px 24px; border-radius: 9px; text-align: center;
-  }
-  .btn-ghost:hover { border-color: var(--accent); }
+      /* Hero */
+      .hero {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 96px 48px 80px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+        align-items: center;
+      }
+      .eyebrow {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        color: var(--accent);
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+      h1 {
+        font-size: 52px;
+        line-height: 1.12;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin: 0 0 24px;
+      }
+      .hero p {
+        font-size: 18px;
+        line-height: 1.6;
+        color: var(--text-muted);
+        margin: 0 0 36px;
+        max-width: 46ch;
+        text-wrap: pretty;
+      }
+      .hero-cta {
+        display: flex;
+        gap: 14px;
+      }
+      .btn-primary {
+        font-size: 15px;
+        font-weight: 600;
+        background: var(--accent);
+        color: var(--on-accent);
+        padding: 13px 24px;
+        border-radius: 9px;
+        text-align: center;
+      }
+      .btn-primary:hover {
+        background: var(--accent-strong);
+      }
+      .btn-ghost {
+        font-size: 15px;
+        font-weight: 600;
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 13px 24px;
+        border-radius: 9px;
+        text-align: center;
+      }
+      .btn-ghost:hover {
+        border-color: var(--accent);
+      }
 
-  /* Code panels */
-  .panel {
-    border-radius: 14px; border: 1px solid var(--border);
-    background: var(--bg-elev); overflow: hidden;
-  }
-  .panel.shadow { box-shadow: 0 20px 60px -20px oklch(0% 0 0 / 0.4); }
-  .panel-bar {
-    display: flex; align-items: center; gap: 8px;
-    padding: 12px 16px; border-bottom: 1px solid var(--border);
-  }
-  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border); }
-  .panel-title { margin-left: 6px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-muted); }
-  .code {
-    padding: 24px 22px; font-family: 'JetBrains Mono', monospace;
-    font-size: 14px; line-height: 1.85; white-space: pre; overflow-x: auto;
-  }
-  .kw { color: var(--accent2); }
-  .str { color: var(--accent); }
-  .num { color: var(--accent2); }
-  .cmt { color: var(--text-muted); }
+      /* Code panels */
+      .panel {
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: var(--bg-elev);
+        overflow: hidden;
+      }
+      .panel.shadow {
+        box-shadow: 0 20px 60px -20px oklch(0% 0 0 / 0.4);
+      }
+      .panel-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--border);
+      }
+      .panel-title {
+        margin-left: 6px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      .code {
+        padding: 24px 22px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        line-height: 1.85;
+        white-space: pre;
+        overflow-x: auto;
+      }
+      .kw {
+        color: var(--accent2);
+      }
+      .str {
+        color: var(--accent);
+      }
+      .num {
+        color: var(--accent2);
+      }
+      .cmt {
+        color: var(--text-muted);
+      }
 
-  /* Section headers */
-  .section-head { text-align: center; }
-  h2 { font-size: 30px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 12px; }
-  h2.sm { font-size: 28px; margin: 0 0 16px; }
-  .section-head p { font-size: 16px; color: var(--text-muted); margin: 0; }
+      /* Section headers */
+      .section-head {
+        text-align: center;
+      }
+      h2 {
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin: 0 0 12px;
+      }
+      h2.sm {
+        font-size: 28px;
+        margin: 0 0 16px;
+      }
+      .section-head p {
+        font-size: 16px;
+        color: var(--text-muted);
+        margin: 0;
+      }
 
-  /* Architecture diagram */
-  .diagram-desktop {
-    display: grid;
-    grid-template-columns: 210px 70px 210px 70px 210px;
-    grid-template-rows: 130px 60px 130px 60px 130px 60px 130px;
-    width: fit-content; margin: 0 auto;
-  }
-  .diagram-mobile { display: none; }
-  .node {
-    border: 1px solid var(--border); background: var(--bg-elev);
-    border-radius: 14px; padding: 18px; text-align: center;
-    display: flex; flex-direction: column; justify-content: center;
-  }
-  .node.host { border-color: var(--accent); background: var(--accent-soft); }
-  .node-tag { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
-  .node-tag.a2 { color: var(--accent2); }
-  .node-tag.a { color: var(--accent); }
-  .node-title { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
-  .node-title.big { font-size: 19px; }
-  .node-sub { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
-  .conn-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); background: var(--bg); padding: 0 6px; }
-  .vline { width: 2px; background: var(--border); }
-  .hline { height: 2px; width: 100%; background: var(--border); }
+      /* Architecture diagram */
+      .diagram-desktop {
+        display: grid;
+        grid-template-columns: 210px 70px 210px 70px 210px;
+        grid-template-rows: 130px 60px 130px 60px 130px 60px 130px;
+        width: fit-content;
+        margin: 0 auto;
+      }
+      .diagram-mobile {
+        display: none;
+      }
+      .node {
+        border: 1px solid var(--border);
+        background: var(--bg-elev);
+        border-radius: 14px;
+        padding: 18px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .node.host {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+      }
+      .node-tag {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10.5px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+      }
+      .node-tag.a2 {
+        color: var(--accent2);
+      }
+      .node-tag.a {
+        color: var(--accent);
+      }
+      .node-title {
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .node-title.big {
+        font-size: 19px;
+      }
+      .node-sub {
+        font-size: 12px;
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', monospace;
+      }
+      .conn-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        color: var(--text-muted);
+        background: var(--bg);
+        padding: 0 6px;
+      }
+      .vline {
+        width: 2px;
+        background: var(--border);
+      }
+      .hline {
+        height: 2px;
+        width: 100%;
+        background: var(--border);
+      }
 
-  /* Manifest */
-  .manifest-band { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg-elev); }
-  .manifest {
-    max-width: 1280px; margin: 0 auto; padding: 80px 48px;
-    display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: start;
-  }
-  .manifest p { font-size: 16px; line-height: 1.65; color: var(--text-muted); margin: 0; max-width: 42ch; text-wrap: pretty; }
-  .manifest .inline-code { font-family: 'JetBrains Mono', monospace; color: var(--text); }
-  .tabs { display: flex; border-bottom: 1px solid var(--border); }
-  .tab {
-    flex: 1; padding: 12px 16px; font-family: 'JetBrains Mono', monospace;
-    font-size: 13px; background: transparent; border: none; cursor: pointer;
-    text-align: left; color: var(--text-muted);
-    border-bottom: 2px solid transparent; margin-bottom: -1px;
-  }
-  .tab.active { color: var(--text); border-bottom: 2px solid var(--accent); }
-  .code.wrap-code { font-size: 13.5px; white-space: pre-wrap; }
-  [hidden] { display: none !important; }
+      /* Manifest */
+      .manifest-band {
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        background: var(--bg-elev);
+      }
+      .manifest {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 80px 48px;
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 64px;
+        align-items: start;
+      }
+      .manifest p {
+        font-size: 16px;
+        line-height: 1.65;
+        color: var(--text-muted);
+        margin: 0;
+        max-width: 42ch;
+        text-wrap: pretty;
+      }
+      .manifest .inline-code {
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--text);
+      }
+      .tabs {
+        display: flex;
+        border-bottom: 1px solid var(--border);
+      }
+      .tab {
+        flex: 1;
+        padding: 12px 16px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        color: var(--text-muted);
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+      }
+      .tab.active {
+        color: var(--text);
+        border-bottom: 2px solid var(--accent);
+      }
+      .code.wrap-code {
+        font-size: 13.5px;
+        white-space: pre-wrap;
+      }
+      [hidden] {
+        display: none !important;
+      }
 
-  /* Crates + chips grids */
-  .crates-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-  .crate-card { border: 1px solid var(--border); background: var(--bg-elev); border-radius: 12px; padding: 22px; }
-  .crate-cat { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 10px; }
-  .crate-name { font-family: 'JetBrains Mono', monospace; font-size: 14.5px; font-weight: 600; margin-bottom: 8px; }
-  .crate-desc { font-size: 13.5px; line-height: 1.55; color: var(--text-muted); }
+      /* Crates + chips grids */
+      .crates-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+      .crate-card {
+        border: 1px solid var(--border);
+        background: var(--bg-elev);
+        border-radius: 12px;
+        padding: 22px;
+      }
+      .crate-cat {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .crate-name {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14.5px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .crate-desc {
+        font-size: 13.5px;
+        line-height: 1.55;
+        color: var(--text-muted);
+      }
 
-  .targets-band { border-top: 1px solid var(--border); background: var(--bg-elev); }
-  .chips-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 48px; }
-  .chip-card { border: 1px solid var(--border); background: var(--bg); border-radius: 12px; padding: 20px; }
-  .chip-name { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-  .chip-cores { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
-  .chip-note { font-size: 13px; line-height: 1.5; color: var(--text-muted); }
-  .targets-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-  .target-col-head { font-size: 13px; font-weight: 600; margin-bottom: 14px; }
-  .target-list { display: flex; flex-direction: column; gap: 8px; }
-  .target-list span { font-family: 'JetBrains Mono', monospace; font-size: 13px; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; background: var(--bg); }
+      .targets-band {
+        border-top: 1px solid var(--border);
+        background: var(--bg-elev);
+      }
+      .chips-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 48px;
+      }
+      .chip-card {
+        border: 1px solid var(--border);
+        background: var(--bg);
+        border-radius: 12px;
+        padding: 20px;
+      }
+      .chip-name {
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      .chip-cores {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-bottom: 10px;
+      }
+      .chip-note {
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--text-muted);
+      }
+      .targets-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+      }
+      .target-col-head {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 14px;
+      }
+      .target-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .target-list span {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 12px;
+        background: var(--bg);
+      }
 
-  /* Footer */
-  footer { border-top: 1px solid var(--border); }
-  .footer-inner {
-    max-width: 1280px; margin: 0 auto; padding: 48px;
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 24px;
-  }
-  .footer-inner .logo-mark { width: 22px; height: 17px; }
-  .footer-inner .logo-mark .a { width: 13px; height: 13px; }
-  .footer-inner .logo-mark .b { width: 13px; height: 13px; }
-  .footer-links { display: flex; gap: 28px; }
-  .footer-links a { font-size: 14px; color: var(--text-muted); }
-  .footer-links a:hover { color: var(--text); }
+      /* Footer */
+      footer {
+        border-top: 1px solid var(--border);
+      }
+      .footer-inner {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+      .footer-inner .logo-mark {
+        width: 22px;
+        height: 17px;
+      }
+      .footer-inner .logo-mark .a {
+        width: 13px;
+        height: 13px;
+      }
+      .footer-inner .logo-mark .b {
+        width: 13px;
+        height: 13px;
+      }
+      .footer-links {
+        display: flex;
+        gap: 28px;
+      }
+      .footer-links a {
+        font-size: 14px;
+        color: var(--text-muted);
+      }
+      .footer-links a:hover {
+        color: var(--text);
+      }
 
-  /* Tablet */
-  @media (max-width: 979px) {
-    .hero { grid-template-columns: 1fr; }
-    .manifest { grid-template-columns: 1fr; }
-    .crates-grid { grid-template-columns: repeat(2, 1fr); }
-    .chips-grid { grid-template-columns: repeat(2, 1fr); }
-    h1 { font-size: 42px; }
-  }
+      /* Tablet */
+      @media (max-width: 979px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+        .manifest {
+          grid-template-columns: 1fr;
+        }
+        .crates-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .chips-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        h1 {
+          font-size: 42px;
+        }
+      }
 
-  /* Mobile */
-  @media (max-width: 759px) {
-    nav { padding: 0 20px; }
-    .nav-links { display: none; }
-    .nav-github { padding: 8px 14px; }
-    .hero { padding: 48px 20px; gap: 36px; }
-    .hero-cta { flex-direction: column; gap: 12px; }
-    h1 { font-size: 34px; }
-    .pad-sm { padding: 40px 20px 60px; }
-    .pad-lg { padding: 48px 20px; }
-    .manifest { padding: 48px 20px; gap: 32px; }
-    .crates-grid { grid-template-columns: 1fr; }
-    .chips-grid { grid-template-columns: 1fr; }
-    .targets-grid { grid-template-columns: 1fr; }
-    h2 { font-size: 24px; }
-    h2.sm { font-size: 22px; }
-    .diagram-desktop { display: none; }
-    .diagram-mobile { display: flex; flex-direction: column; align-items: center; gap: 0; max-width: 340px; margin: 0 auto; }
-    .footer-inner { padding: 32px 20px; justify-content: flex-start; flex-direction: column; }
-  }
-</style>
-</head>
-<body>
-
-  <nav>
-    <div style="display: flex; align-items: center; gap: 12px;">
-      <div class="logo-mark"><div class="a"></div><div class="b"></div></div>
-      <span style="font-size: 18px; font-weight: 700; letter-spacing: -0.01em;">Consortium</span>
-    </div>
-    <div style="display: flex; align-items: center; gap: 16px;">
-      <div class="nav-links">
-        <a href="#architecture">Architecture</a>
-        <a href="#crates">Crates</a>
-        <a href="#targets">Targets</a>
-        <a href="#">Docs</a>
-      </div>
-      <button class="theme-toggle" id="theme-toggle"><span id="theme-label">Dark</span></button>
-      <a href="#" class="nav-github">GitHub →</a>
-    </div>
-  </nav>
-
-  <section class="hero">
-    <div>
-      <div class="eyebrow">Rust · HAMPU Systems</div>
-      <h1>One workspace for every core in your SoC.</h1>
-      <p>Consortium pairs a Linux-capable A-core with Cortex-M, Cortex-R, or RISC-V real-time cores — the heterogeneous, asymmetric multiprocessing (HAMPU) pattern behind modern i.MX9 and STM32MP2 SoCs — with typed IPC, explicit cross-core contracts, and codecs built for the boundary.</p>
-      <div class="hero-cta">
-        <a href="#" class="btn-primary">Read the docs</a>
-        <a href="#" class="btn-ghost">View source</a>
-      </div>
-    </div>
-
-    <div class="panel shadow">
-      <div class="panel-bar">
-        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        <span class="panel-title">mcu/src/main.rs · CM33</span>
-      </div>
-      <div class="code"><span class="kw">let</span> connected = init().connect().<span class="kw">await</span>?;
-<span class="kw">let</span> <span class="kw">mut</span> sensor = connected.sensor;
-
-<span class="kw">let</span> reading = SensorReading {
-    temperature_mdc: read_sensor(),
-    seq,
-};
-sensor.send(&amp;reading).<span class="kw">await</span>?;
-<span class="cmt">// -&gt; ipcc1 rings, CA35 wakes, decodes via IpcSafe</span></div>
-    </div>
-  </section>
-
-  <section id="architecture" class="wrap pad-sm">
-    <div class="section-head" style="margin-bottom: 56px;">
-      <h2>Explicit contracts across the core boundary</h2>
-      <p>The Linux host sits at the center — talking down to the real-time controller, up into the secure world, left to the kiosk interface, and right into the broader ecosystem.</p>
-    </div>
-
-    <!-- Mobile diagram -->
-    <div class="diagram-mobile">
-      <div style="width: 100%;" class="node">
-        <div class="node-tag a2">Trustzone</div>
-        <div class="node-title">OP-TEE</div>
-        <div class="node-sub">Teaclave · secure world</div>
-      </div>
-      <div class="vline" style="height: 32px;"></div>
-      <span class="conn-label" style="margin-bottom: 8px;">TeeParam / SMC</span>
-
-      <div style="width: 100%;" class="node host">
-        <div class="node-tag a">Host</div>
-        <div class="node-title big">Linux</div>
-        <div class="node-sub">tokio · aarch64 / armv7</div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; margin: 20px 0;">
-        <div class="node" style="padding: 16px;">
-          <div class="node-tag">Interface</div>
-          <div class="node-title" style="font-size: 15px;">WPE WebKit</div>
-          <div class="node-sub" style="font-size: 11px;">Cog · kiosk</div>
+      /* Mobile */
+      @media (max-width: 759px) {
+        nav {
+          padding: 0 20px;
+        }
+        .nav-links {
+          display: none;
+        }
+        .nav-github {
+          padding: 8px 14px;
+        }
+        .hero {
+          padding: 48px 20px;
+          gap: 36px;
+        }
+        .hero-cta {
+          flex-direction: column;
+          gap: 12px;
+        }
+        h1 {
+          font-size: 34px;
+        }
+        .pad-sm {
+          padding: 40px 20px 60px;
+        }
+        .pad-lg {
+          padding: 48px 20px;
+        }
+        .manifest {
+          padding: 48px 20px;
+          gap: 32px;
+        }
+        .crates-grid {
+          grid-template-columns: 1fr;
+        }
+        .chips-grid {
+          grid-template-columns: 1fr;
+        }
+        .targets-grid {
+          grid-template-columns: 1fr;
+        }
+        h2 {
+          font-size: 24px;
+        }
+        h2.sm {
+          font-size: 22px;
+        }
+        .diagram-desktop {
+          display: none;
+        }
+        .diagram-mobile {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0;
+          max-width: 340px;
+          margin: 0 auto;
+        }
+        .footer-inner {
+          padding: 32px 20px;
+          justify-content: flex-start;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div class="logo-mark">
+          <div class="a"></div>
+          <div class="b"></div>
         </div>
-        <div class="node" style="padding: 16px;">
-          <div class="node-tag">Ecosystem</div>
-          <div class="node-title" style="font-size: 15px;">Integration</div>
-          <div class="node-sub" style="font-size: 11px;">ros · zenoh · onnx</div>
+        <span style="font-size: 18px; font-weight: 700; letter-spacing: -0.01em">Consortium</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 16px">
+        <div class="nav-links">
+          <a href="#architecture">Architecture</a>
+          <a href="#crates">Crates</a>
+          <a href="#targets">Targets</a>
+          <a href="#">Docs</a>
         </div>
+        <button class="theme-toggle" id="theme-toggle"><span id="theme-label">Dark</span></button>
+        <a href="#" class="nav-github">GitHub →</a>
       </div>
+    </nav>
 
-      <span class="conn-label" style="margin-bottom: 8px;">Channel&lt;Tx/Rx&gt; + Doorbell</span>
-      <div class="vline" style="height: 32px;"></div>
-
-      <div style="width: 100%;" class="node">
-        <div class="node-tag a2">Controller</div>
-        <div class="node-title">Bare Metal</div>
-        <div class="node-sub">embassy · arm / riscv</div>
-      </div>
-
-      <div style="display: flex; gap: 5px; height: 32px; margin-top: 20px;">
-        <div class="vline"></div><div class="vline"></div>
-      </div>
-      <span class="conn-label" style="margin-bottom: 8px;">CAN / UART</span>
-
-      <div style="width: 100%;" class="node">
-        <div class="node-tag">Wired</div>
-        <div class="node-title">Remote Controller</div>
-        <div class="node-sub">ESC · RC receiver</div>
-      </div>
-    </div>
-
-    <!-- Desktop diagram -->
-    <div class="diagram-desktop">
-      <div class="node" style="grid-column: 3; grid-row: 1;">
-        <div class="node-tag a2">Trustzone</div>
-        <div class="node-title">OP-TEE</div>
-        <div class="node-sub">Teaclave · secure world</div>
-      </div>
-
-      <div style="grid-column: 3; grid-row: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
-        <span class="conn-label">TeeParam / SMC</span>
-        <div class="vline" style="flex: 1;"></div>
-      </div>
-
-      <div class="node" style="grid-column: 1; grid-row: 3;">
-        <div class="node-tag">Interface</div>
-        <div class="node-title">WPE WebKit</div>
-        <div class="node-sub">Cog · kiosk</div>
-      </div>
-
-      <div style="grid-column: 2; grid-row: 3; display: flex; align-items: center; justify-content: center;">
-        <div class="hline"></div>
-      </div>
-
-      <div class="node host" style="grid-column: 3; grid-row: 3;">
-        <div class="node-tag a">Host</div>
-        <div class="node-title big">Linux</div>
-        <div class="node-sub">tokio · aarch64 / armv7</div>
-      </div>
-
-      <div style="grid-column: 4; grid-row: 3; display: flex; align-items: center; justify-content: center;">
-        <div class="hline"></div>
-      </div>
-
-      <div class="node" style="grid-column: 5; grid-row: 3;">
-        <div class="node-tag">Ecosystem</div>
-        <div class="node-title">Integration Layers</div>
-        <div class="node-sub">ros · zenoh · onnx</div>
-      </div>
-
-      <div style="grid-column: 3; grid-row: 4; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
-        <div class="vline" style="flex: 1;"></div>
-        <span class="conn-label">Channel&lt;Tx/Rx&gt; + Doorbell</span>
-      </div>
-
-      <div class="node" style="grid-column: 3; grid-row: 5;">
-        <div class="node-tag a2">Controller</div>
-        <div class="node-title">Bare Metal</div>
-        <div class="node-sub">embassy · arm / riscv</div>
-      </div>
-
-      <div style="grid-column: 3; grid-row: 6; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
-        <div style="display: flex; gap: 5px; flex: 1;">
-          <div class="vline"></div><div class="vline"></div>
-        </div>
-        <span class="conn-label">CAN / UART</span>
-      </div>
-
-      <div class="node" style="grid-column: 3; grid-row: 7;">
-        <div class="node-tag">Wired</div>
-        <div class="node-title">Remote Controller</div>
-        <div class="node-sub">ESC · RC receiver</div>
-      </div>
-    </div>
-
-    <p style="text-align: center; font-size: 14px; color: var(--text-muted); margin: 28px 0 0;">Some feature are in development stage.</p>
-  </section>
-
-  <section class="manifest-band">
-    <div class="manifest">
+    <section class="hero">
       <div>
-        <h2 class="sm">One manifest drives the whole build.</h2>
-        <p><span class="inline-code">csti build</span> reads <span class="inline-code">Consortium.toml</span>, compiles every endpoint, and stages a deployable tree — app, firmware, TA, DTS, systemd unit.</p>
-      </div>
-
-      <div class="panel" style="background: var(--bg);">
-        <div class="tabs">
-          <button class="tab active" id="tab-toml">Consortium.toml</button>
-          <button class="tab" id="tab-rs">channel.rs</button>
+        <div class="eyebrow">Rust · HAMPU Systems</div>
+        <h1>One workspace for every core in your SoC.</h1>
+        <p>
+          Consortium pairs a Linux-capable A-core with Cortex-M, Cortex-R, or RISC-V real-time cores
+          — the heterogeneous, asymmetric multiprocessing (HAMPU) pattern behind modern i.MX9 and
+          STM32MP2 SoCs — with typed IPC, explicit cross-core contracts, and codecs built for the
+          boundary.
+        </p>
+        <div class="hero-cta">
+          <a href="#" class="btn-primary">Read the docs</a>
+          <a href="#" class="btn-ghost">View source</a>
         </div>
-        <div class="code wrap-code" id="panel-toml"><span class="cmt">[profile]</span>
-chip = <span class="str">"stm32mp257fak3"</span>
-devkit = <span class="str">"stm32mp257f-dk"</span>
-shared = <span class="str">"../shared"</span>
-deploy_root = <span class="str">"/opt/consortium"</span>
-
-<span class="cmt">[[ipc.channel]]</span>
-name = <span class="str">"sensor"</span>
-doorbell = <span class="str">"ipcc1"</span>
-pattern = <span class="str">"memory"</span>
-primary = <span class="str">"linux"</span>
-secondary = <span class="str">"cm33"</span>
-party.linux = { chan = <span class="num">0</span>, type = <span class="str">"Command"</span> }
-party.cm33  = { chan = <span class="num">1</span>, type = <span class="str">"SensorReading"</span> }</div>
-        <div class="code wrap-code" id="panel-rs" hidden><span class="kw">match</span> endpoints.ipc_shm.sensor.recv().<span class="kw">await</span> {
-    Ok(msg) =&gt; {
-        <span class="kw">let</span> reading: SensorReading = msg.into_inner();
-        <span class="kw">let</span> within_limits = tee_check(reading.temperature_mdc);
-        *state.lock().unwrap() = Some(Status { reading, within_limits });
-    }
-    Err(e) =&gt; {
-        <span class="cmt">// bring-up unavailable; HMI runs without live data</span>
-        eprintln!(<span class="str">"ipc recv error: {e}"</span>);
-    }
-}</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="wrap pad-sm">
-    <div class="section-head" style="margin-bottom: 40px;">
-      <h2 class="sm" style="margin-bottom: 12px;">One log stream, both cores</h2>
-      <p><span class="inline-code" style="color: var(--text);">consortium-dbg</span> carries defmt frames off the M-core over shared memory; <span class="inline-code" style="color: var(--text);">consortium-log</span>'s facade decodes them into <span class="inline-code" style="color: var(--text);">tracing</span> spans beside the host's own logs.</p>
-    </div>
-    <div class="panel" style="max-width: 900px; margin: 0 auto;">
-      <div class="panel-bar">
-        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        <span class="panel-title">cargo run -p melt-pot-stm32mp25-app</span>
-      </div>
-      <div class="code" style="padding: 22px; font-size: 12.5px; line-height: 1.9;"><span class="cmt">2026-07-11T13:18:17.601238Z</span> <span class="kw">TRACE</span> <span class="str">consortium_dbg::host</span>: HostRing::from_raw_parts(base = 0xffffb3646000, len = 0x2000)
-<span class="cmt">2026-07-11T13:18:17.601463Z</span> <span class="kw">TRACE</span> <span class="str">consortium_dbg::host</span>: HostRing::from_raw_parts: descriptor capacity = 0x2000, read_ptr = 0x10, write_ptr = 0x552
-<span class="cmt">2026-07-11T13:18:17.601764Z</span> <span class="kw">TRACE</span> <span class="str">consortium::dbg</span>: consortium controller init: time driver bring-up core="cm33"
-<span class="cmt">2026-07-11T13:18:17.601837Z</span> <span class="kw">TRACE</span> <span class="str">consortium::dbg</span>: consortium controller init: RCC register block at 0x44200000 core="cm33"</div>
-    </div>
-  </section>
-
-  <section id="crates" class="wrap pad-sm">
-    <div class="section-head" style="margin-bottom: 56px;">
-      <h2>A crate for every layer</h2>
-      <p>From wire protocol to human interface, each concern is its own crate.</p>
-    </div>
-    <div class="crates-grid" id="crates-grid"></div>
-  </section>
-
-  <section id="targets" class="targets-band">
-    <div class="wrap pad-lg">
-      <div class="section-head" style="margin-bottom: 44px;">
-        <h2 class="sm">Supported chips &amp; targets</h2>
-        <p>Linux A-core, bare-metal M-core, RISC-V — checked and built today.</p>
       </div>
 
-      <div class="chips-grid" id="chips-grid"></div>
+      <div class="panel shadow">
+        <div class="panel-bar">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <span class="panel-title">mcu/src/main.rs · CM33</span>
+        </div>
+        <div class="code">
+          <span class="kw">let</span> connected = init().connect().<span class="kw">await</span>?;
+          <span class="kw">let</span> <span class="kw">mut</span> sensor = connected.sensor;
 
-      <div class="targets-grid">
-        <div>
-          <div class="target-col-head" style="color: var(--accent);">A-core · Linux</div>
-          <div class="target-list">
-            <span>aarch64-unknown-linux-gnu</span>
-            <span>armv7-unknown-linux-gnueabihf</span>
+          <span class="kw">let</span> reading = SensorReading { temperature_mdc: read_sensor(), seq,
+          }; sensor.send(&amp;reading).<span class="kw">await</span>?;
+          <span class="cmt">// -&gt; ipcc1 rings, CA35 wakes, decodes via IpcSafe</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="wrap pad-sm">
+      <div class="section-head" style="margin-bottom: 56px">
+        <h2>Explicit contracts across the core boundary</h2>
+        <p>
+          The Linux host sits at the center — talking down to the real-time controller, up into the
+          secure world, left to the kiosk interface, and right into the broader ecosystem.
+        </p>
+      </div>
+
+      <!-- Mobile diagram -->
+      <div class="diagram-mobile">
+        <div style="width: 100%" class="node">
+          <div class="node-tag a2">Trustzone</div>
+          <div class="node-title">OP-TEE</div>
+          <div class="node-sub">Teaclave · secure world</div>
+        </div>
+        <div class="vline" style="height: 32px"></div>
+        <span class="conn-label" style="margin-bottom: 8px">TeeParam / SMC</span>
+
+        <div style="width: 100%" class="node host">
+          <div class="node-tag a">Host</div>
+          <div class="node-title big">Linux</div>
+          <div class="node-sub">tokio · aarch64 / armv7</div>
+        </div>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 100%;
+            margin: 20px 0;
+          "
+        >
+          <div class="node" style="padding: 16px">
+            <div class="node-tag">Interface</div>
+            <div class="node-title" style="font-size: 15px">WPE WebKit</div>
+            <div class="node-sub" style="font-size: 11px">Cog · kiosk</div>
+          </div>
+          <div class="node" style="padding: 16px">
+            <div class="node-tag">Ecosystem</div>
+            <div class="node-title" style="font-size: 15px">Integration</div>
+            <div class="node-sub" style="font-size: 11px">ros · zenoh · onnx</div>
           </div>
         </div>
+
+        <span class="conn-label" style="margin-bottom: 8px">Channel&lt;Tx/Rx&gt; + Doorbell</span>
+        <div class="vline" style="height: 32px"></div>
+
+        <div style="width: 100%" class="node">
+          <div class="node-tag a2">Controller</div>
+          <div class="node-title">Bare Metal</div>
+          <div class="node-sub">embassy · arm / riscv</div>
+        </div>
+
+        <div style="display: flex; gap: 5px; height: 32px; margin-top: 20px">
+          <div class="vline"></div>
+          <div class="vline"></div>
+        </div>
+        <span class="conn-label" style="margin-bottom: 8px">CAN / UART</span>
+
+        <div style="width: 100%" class="node">
+          <div class="node-tag">Wired</div>
+          <div class="node-title">Remote Controller</div>
+          <div class="node-sub">ESC · RC receiver</div>
+        </div>
+      </div>
+
+      <!-- Desktop diagram -->
+      <div class="diagram-desktop">
+        <div class="node" style="grid-column: 3; grid-row: 1">
+          <div class="node-tag a2">Trustzone</div>
+          <div class="node-title">OP-TEE</div>
+          <div class="node-sub">Teaclave · secure world</div>
+        </div>
+
+        <div
+          style="
+            grid-column: 3;
+            grid-row: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+          "
+        >
+          <span class="conn-label">TeeParam / SMC</span>
+          <div class="vline" style="flex: 1"></div>
+        </div>
+
+        <div class="node" style="grid-column: 1; grid-row: 3">
+          <div class="node-tag">Interface</div>
+          <div class="node-title">WPE WebKit</div>
+          <div class="node-sub">Cog · kiosk</div>
+        </div>
+
+        <div
+          style="
+            grid-column: 2;
+            grid-row: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <div class="hline"></div>
+        </div>
+
+        <div class="node host" style="grid-column: 3; grid-row: 3">
+          <div class="node-tag a">Host</div>
+          <div class="node-title big">Linux</div>
+          <div class="node-sub">tokio · aarch64 / armv7</div>
+        </div>
+
+        <div
+          style="
+            grid-column: 4;
+            grid-row: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <div class="hline"></div>
+        </div>
+
+        <div class="node" style="grid-column: 5; grid-row: 3">
+          <div class="node-tag">Ecosystem</div>
+          <div class="node-title">Integration Layers</div>
+          <div class="node-sub">ros · zenoh · onnx</div>
+        </div>
+
+        <div
+          style="
+            grid-column: 3;
+            grid-row: 4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+          "
+        >
+          <div class="vline" style="flex: 1"></div>
+          <span class="conn-label">Channel&lt;Tx/Rx&gt; + Doorbell</span>
+        </div>
+
+        <div class="node" style="grid-column: 3; grid-row: 5">
+          <div class="node-tag a2">Controller</div>
+          <div class="node-title">Bare Metal</div>
+          <div class="node-sub">embassy · arm / riscv</div>
+        </div>
+
+        <div
+          style="
+            grid-column: 3;
+            grid-row: 6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+          "
+        >
+          <div style="display: flex; gap: 5px; flex: 1">
+            <div class="vline"></div>
+            <div class="vline"></div>
+          </div>
+          <span class="conn-label">CAN / UART</span>
+        </div>
+
+        <div class="node" style="grid-column: 3; grid-row: 7">
+          <div class="node-tag">Wired</div>
+          <div class="node-title">Remote Controller</div>
+          <div class="node-sub">ESC · RC receiver</div>
+        </div>
+      </div>
+
+      <p style="text-align: center; font-size: 14px; color: var(--text-muted); margin: 28px 0 0">
+        Some feature are in development stage.
+      </p>
+    </section>
+
+    <section class="manifest-band">
+      <div class="manifest">
         <div>
-          <div class="target-col-head" style="color: var(--accent2);">M-core · bare metal</div>
-          <div class="target-list">
-            <span>thumbv8m.main-none-eabihf</span>
-            <span>thumbv7em-none-eabihf</span>
+          <h2 class="sm">One manifest drives the whole build.</h2>
+          <p>
+            <span class="inline-code">csti build</span> reads
+            <span class="inline-code">Consortium.toml</span>, compiles every endpoint, and stages a
+            deployable tree — app, firmware, TA, DTS, systemd unit.
+          </p>
+        </div>
+
+        <div class="panel" style="background: var(--bg)">
+          <div class="tabs">
+            <button class="tab active" id="tab-toml">Consortium.toml</button>
+            <button class="tab" id="tab-rs">channel.rs</button>
+          </div>
+          <div class="code wrap-code" id="panel-toml">
+            <span class="cmt">[profile]</span> chip =
+            <span class="str">"stm32mp257fak3"</span> devkit =
+            <span class="str">"stm32mp257f-dk"</span> shared =
+            <span class="str">"../shared"</span> deploy_root =
+            <span class="str">"/opt/consortium"</span>
+
+            <span class="cmt">[[ipc.channel]]</span>
+            name = <span class="str">"sensor"</span> doorbell =
+            <span class="str">"ipcc1"</span> pattern = <span class="str">"memory"</span> primary =
+            <span class="str">"linux"</span> secondary = <span class="str">"cm33"</span> party.linux
+            = { chan = <span class="num">0</span>, type = <span class="str">"Command"</span> }
+            party.cm33 = { chan = <span class="num">1</span>, type =
+            <span class="str">"SensorReading"</span> }
+          </div>
+          <div class="code wrap-code" id="panel-rs" hidden>
+            <span class="kw">match</span> endpoints.ipc_shm.sensor.recv().<span class="kw"
+              >await</span
+            >
+            { Ok(msg) =&gt; { <span class="kw">let</span> reading: SensorReading = msg.into_inner();
+            <span class="kw">let</span> within_limits = tee_check(reading.temperature_mdc);
+            *state.lock().unwrap() = Some(Status { reading, within_limits }); } Err(e) =&gt; {
+            <span class="cmt">// bring-up unavailable; HMI runs without live data</span>
+            eprintln!(<span class="str">"ipc recv error: {e}"</span>); } }
           </div>
         </div>
-        <div>
-          <div class="target-col-head" style="color: var(--text);">RISC-V</div>
-          <div class="target-list">
-            <span>riscv32imc-unknown-none-elf</span>
-            <span>riscv32imac-unknown-none-elf</span>
-            <span>riscv32imafc-unknown-none-elf</span>
+      </div>
+    </section>
+
+    <section class="wrap pad-sm">
+      <div class="section-head" style="margin-bottom: 40px">
+        <h2 class="sm" style="margin-bottom: 12px">One log stream, both cores</h2>
+        <p>
+          <span class="inline-code" style="color: var(--text)">consortium-dbg</span> carries defmt
+          frames off the M-core over shared memory;
+          <span class="inline-code" style="color: var(--text)">consortium-log</span>'s facade
+          decodes them into
+          <span class="inline-code" style="color: var(--text)">tracing</span> spans beside the
+          host's own logs.
+        </p>
+      </div>
+      <div class="panel" style="max-width: 900px; margin: 0 auto">
+        <div class="panel-bar">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <span class="panel-title">cargo run -p melt-pot-stm32mp25-app</span>
+        </div>
+        <div class="code" style="padding: 22px; font-size: 12.5px; line-height: 1.9">
+          <span class="cmt">2026-07-11T13:18:17.601238Z</span> <span class="kw">TRACE</span>
+          <span class="str">consortium_dbg::host</span>: HostRing::from_raw_parts(base =
+          0xffffb3646000, len = 0x2000) <span class="cmt">2026-07-11T13:18:17.601463Z</span>
+          <span class="kw">TRACE</span> <span class="str">consortium_dbg::host</span>:
+          HostRing::from_raw_parts: descriptor capacity = 0x2000, read_ptr = 0x10, write_ptr = 0x552
+          <span class="cmt">2026-07-11T13:18:17.601764Z</span> <span class="kw">TRACE</span>
+          <span class="str">consortium::dbg</span>: consortium controller init: time driver bring-up
+          core="cm33" <span class="cmt">2026-07-11T13:18:17.601837Z</span>
+          <span class="kw">TRACE</span> <span class="str">consortium::dbg</span>: consortium
+          controller init: RCC register block at 0x44200000 core="cm33"
+        </div>
+      </div>
+    </section>
+
+    <section id="crates" class="wrap pad-sm">
+      <div class="section-head" style="margin-bottom: 56px">
+        <h2>A crate for every layer</h2>
+        <p>From wire protocol to human interface, each concern is its own crate.</p>
+      </div>
+      <div class="crates-grid" id="crates-grid"></div>
+    </section>
+
+    <section id="targets" class="targets-band">
+      <div class="wrap pad-lg">
+        <div class="section-head" style="margin-bottom: 44px">
+          <h2 class="sm">Supported chips &amp; targets</h2>
+          <p>Linux A-core, bare-metal M-core, RISC-V — checked and built today.</p>
+        </div>
+
+        <div class="chips-grid" id="chips-grid"></div>
+
+        <div class="targets-grid">
+          <div>
+            <div class="target-col-head" style="color: var(--accent)">A-core · Linux</div>
+            <div class="target-list">
+              <span>aarch64-unknown-linux-gnu</span>
+              <span>armv7-unknown-linux-gnueabihf</span>
+            </div>
+          </div>
+          <div>
+            <div class="target-col-head" style="color: var(--accent2)">M-core · bare metal</div>
+            <div class="target-list">
+              <span>thumbv8m.main-none-eabihf</span>
+              <span>thumbv7em-none-eabihf</span>
+            </div>
+          </div>
+          <div>
+            <div class="target-col-head" style="color: var(--text)">RISC-V</div>
+            <div class="target-list">
+              <span>riscv32imc-unknown-none-elf</span>
+              <span>riscv32imac-unknown-none-elf</span>
+              <span>riscv32imafc-unknown-none-elf</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <footer>
-    <div class="footer-inner">
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <div class="logo-mark"><div class="a"></div><div class="b"></div></div>
-        <span style="font-size: 14px; color: var(--text-muted);">© 2026 Consortium project · Apache-2.0</span>
+    <footer>
+      <div class="footer-inner">
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div class="logo-mark">
+            <div class="a"></div>
+            <div class="b"></div>
+          </div>
+          <span style="font-size: 14px; color: var(--text-muted)"
+            >© 2026 Consortium project · Apache-2.0</span
+          >
+        </div>
+        <div class="footer-links">
+          <a href="#">Docs</a>
+          <a href="#">GitHub</a>
+          <a href="#">Crates.io</a>
+        </div>
       </div>
-      <div class="footer-links">
-        <a href="#">Docs</a>
-        <a href="#">GitHub</a>
-        <a href="#">Crates.io</a>
-      </div>
-    </div>
-  </footer>
+    </footer>
 
-<script>
-  // Theme toggle
-  const root = document.documentElement;
-  const label = document.getElementById('theme-label');
-  document.getElementById('theme-toggle').addEventListener('click', () => {
-    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    label.textContent = next === 'dark' ? 'Dark' : 'Light';
-  });
+    <script>
+      // Theme toggle
+      const root = document.documentElement
+      const label = document.getElementById('theme-label')
+      document.getElementById('theme-toggle').addEventListener('click', () => {
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
+        root.setAttribute('data-theme', next)
+        label.textContent = next === 'dark' ? 'Dark' : 'Light'
+      })
 
-  // Manifest tabs
-  const tabToml = document.getElementById('tab-toml');
-  const tabRs = document.getElementById('tab-rs');
-  const panelToml = document.getElementById('panel-toml');
-  const panelRs = document.getElementById('panel-rs');
-  function setTab(isToml) {
-    tabToml.classList.toggle('active', isToml);
-    tabRs.classList.toggle('active', !isToml);
-    panelToml.hidden = !isToml;
-    panelRs.hidden = isToml;
-  }
-  tabToml.addEventListener('click', () => setTab(true));
-  tabRs.addEventListener('click', () => setTab(false));
+      // Manifest tabs
+      const tabToml = document.getElementById('tab-toml')
+      const tabRs = document.getElementById('tab-rs')
+      const panelToml = document.getElementById('panel-toml')
+      const panelRs = document.getElementById('panel-rs')
+      function setTab(isToml) {
+        tabToml.classList.toggle('active', isToml)
+        tabRs.classList.toggle('active', !isToml)
+        panelToml.hidden = !isToml
+        panelRs.hidden = isToml
+      }
+      tabToml.addEventListener('click', () => setTab(true))
+      tabRs.addEventListener('click', () => setTab(false))
 
-  // Crates
-  const crates = [
-    { category: 'Core IPC', name: 'consortium-ipc', desc: 'Typed channels over shared memory or COBS/CRC-framed UART, plus doorbells and IpcSafe.', tagColor: 'var(--accent)' },
-    { category: 'Codecs', name: 'consortium-codec', desc: 'postcard, prost, and rkyv codec families for IPC and TEE.', tagColor: 'var(--accent2)' },
-    { category: 'Configuration', name: 'consortium-cfg', desc: 'Consortium.toml schema, validation, DTS/UIO transpilers.', tagColor: 'var(--accent)' },
-    { category: 'HAL / PAC', name: 'consortium-hal', desc: 'Peripheral access and drivers for STM32MP2 and i.MX9.', tagColor: 'var(--accent2)' },
-    { category: 'Debug', name: 'consortium-dbg', desc: 'Shared-memory defmt logging with an optional panic handler.', tagColor: 'var(--accent)' },
-    { category: 'Logging', name: 'consortium-log', desc: 'One defmt/tracing facade so generated and cross-platform code share a call site.', tagColor: 'var(--accent2)' },
-    { category: 'TEE', name: 'consortium-tee', desc: 'Write TEE calls as normal Rust functions — no manual OP-TEE boilerplate.', tagColor: 'var(--accent)' },
-    { category: 'HMI', name: 'consortium-hmi', desc: 'Kiosk HMI on WPE WebKit: modern web UI, lighter than Chromium, no Qt licensing.', tagColor: 'var(--accent2)' },
-  ];
-  const cratesGrid = document.getElementById('crates-grid');
-  for (const c of crates) {
-    const card = document.createElement('div');
-    card.className = 'crate-card';
-    card.innerHTML =
-      '<div class="crate-cat" style="color: ' + c.tagColor + ';"></div>' +
-      '<div class="crate-name"></div>' +
-      '<div class="crate-desc"></div>';
-    card.querySelector('.crate-cat').textContent = c.category;
-    card.querySelector('.crate-name').textContent = c.name;
-    card.querySelector('.crate-desc').textContent = c.desc;
-    cratesGrid.appendChild(card);
-  }
+      // Crates
+      const crates = [
+        {
+          category: 'Core IPC',
+          name: 'consortium-ipc',
+          desc: 'Typed channels over shared memory or COBS/CRC-framed UART, plus doorbells and IpcSafe.',
+          tagColor: 'var(--accent)',
+        },
+        {
+          category: 'Codecs',
+          name: 'consortium-codec',
+          desc: 'postcard, prost, and rkyv codec families for IPC and TEE.',
+          tagColor: 'var(--accent2)',
+        },
+        {
+          category: 'Configuration',
+          name: 'consortium-cfg',
+          desc: 'Consortium.toml schema, validation, DTS/UIO transpilers.',
+          tagColor: 'var(--accent)',
+        },
+        {
+          category: 'HAL / PAC',
+          name: 'consortium-hal',
+          desc: 'Peripheral access and drivers for STM32MP2 and i.MX9.',
+          tagColor: 'var(--accent2)',
+        },
+        {
+          category: 'Debug',
+          name: 'consortium-dbg',
+          desc: 'Shared-memory defmt logging with an optional panic handler.',
+          tagColor: 'var(--accent)',
+        },
+        {
+          category: 'Logging',
+          name: 'consortium-log',
+          desc: 'One defmt/tracing facade so generated and cross-platform code share a call site.',
+          tagColor: 'var(--accent2)',
+        },
+        {
+          category: 'TEE',
+          name: 'consortium-tee',
+          desc: 'Write TEE calls as normal Rust functions — no manual OP-TEE boilerplate.',
+          tagColor: 'var(--accent)',
+        },
+        {
+          category: 'HMI',
+          name: 'consortium-hmi',
+          desc: 'Kiosk HMI on WPE WebKit: modern web UI, lighter than Chromium, no Qt licensing.',
+          tagColor: 'var(--accent2)',
+        },
+      ]
+      const cratesGrid = document.getElementById('crates-grid')
+      for (const c of crates) {
+        const card = document.createElement('div')
+        card.className = 'crate-card'
+        card.innerHTML =
+          '<div class="crate-cat" style="color: ' +
+          c.tagColor +
+          ';"></div>' +
+          '<div class="crate-name"></div>' +
+          '<div class="crate-desc"></div>'
+        card.querySelector('.crate-cat').textContent = c.category
+        card.querySelector('.crate-name').textContent = c.name
+        card.querySelector('.crate-desc').textContent = c.desc
+        cratesGrid.appendChild(card)
+      }
 
-  // Chips
-  const chips = [
-    { name: 'i.MX 95', cores: 'A55 + M7 + M33 + NPU/GPU/VPU', note: 'Flagship: AI, multimedia, real-time control.' },
-    { name: 'STM32MP257', cores: 'A35 + M33 + NPU/GPU', note: 'SIL 3, TrustZone partition isolation.' },
-    { name: 'i.MX 93', cores: 'A55 + M33 + NPU/GPU', note: 'Cost-balanced: home, wearables, IoT.' },
-    { name: 'STM32MP215', cores: 'A35 + M33', note: 'No NPU/GPU — industrial and IoT baseline.' },
-  ];
-  const chipsGrid = document.getElementById('chips-grid');
-  for (const c of chips) {
-    const card = document.createElement('div');
-    card.className = 'chip-card';
-    card.innerHTML =
-      '<div class="chip-name"></div>' +
-      '<div class="chip-cores"></div>' +
-      '<div class="chip-note"></div>';
-    card.querySelector('.chip-name').textContent = c.name;
-    card.querySelector('.chip-cores').textContent = c.cores;
-    card.querySelector('.chip-note').textContent = c.note;
-    chipsGrid.appendChild(card);
-  }
-</script>
-</body>
+      // Chips
+      const chips = [
+        {
+          name: 'i.MX 95',
+          cores: 'A55 + M7 + M33 + NPU/GPU/VPU',
+          note: 'Flagship: AI, multimedia, real-time control.',
+        },
+        {
+          name: 'STM32MP257',
+          cores: 'A35 + M33 + NPU/GPU',
+          note: 'SIL 3, TrustZone partition isolation.',
+        },
+        {
+          name: 'i.MX 93',
+          cores: 'A55 + M33 + NPU/GPU',
+          note: 'Cost-balanced: home, wearables, IoT.',
+        },
+        {
+          name: 'STM32MP215',
+          cores: 'A35 + M33',
+          note: 'No NPU/GPU — industrial and IoT baseline.',
+        },
+      ]
+      const chipsGrid = document.getElementById('chips-grid')
+      for (const c of chips) {
+        const card = document.createElement('div')
+        card.className = 'chip-card'
+        card.innerHTML =
+          '<div class="chip-name"></div>' +
+          '<div class="chip-cores"></div>' +
+          '<div class="chip-note"></div>'
+        card.querySelector('.chip-name').textContent = c.name
+        card.querySelector('.chip-cores').textContent = c.cores
+        card.querySelector('.chip-note').textContent = c.note
+        chipsGrid.appendChild(card)
+      }
+    </script>
+  </body>
 </html>

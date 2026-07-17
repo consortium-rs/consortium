@@ -5,7 +5,7 @@ a32_target := "armv7-unknown-linux-gnueabihf"
 rv32imc_target := "riscv32imc-unknown-none-elf"
 rv32imac_target := "riscv32imac-unknown-none-elf"
 rv32imafcp_target := "riscv32imafc-unknown-none-elf"
-lint_crates := "consortium-builder consortium-cfg consortium-cli consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg consortium-dts consortium-ffi consortium-ipc consortium-ipc-doorbell-gpio consortium-ipc-doorbell-hsem consortium-ipc-doorbell-ipcc consortium-ipc-doorbell-mu consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-memory consortium-ort consortium-runtime-mcu consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
+lint_crates := "consortium-builder consortium-cfg consortium-cli consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg consortium-dts consortium-ffi consortium-hal-imx9 consortium-hal-stm32mp2 consortium-ipc consortium-ipc-doorbell-gpio consortium-ipc-doorbell-hsem consortium-ipc-doorbell-ipcc consortium-ipc-doorbell-mu consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-memory consortium-ipc-transport-uart consortium-ipc-transport-uart-embedded consortium-ipc-transport-uart-unix consortium-ort consortium-runtime-mcu consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
 rust_tools := "taplo-cli typos-cli cargo-deny cargo-expand cargo-insta cargo-shear"
 ls_lint_version := "2.3.1"
 
@@ -314,7 +314,10 @@ check-ipc-m8:
     cargo check -p consortium-ipc --target {{ m8_target }}
     cargo check -p consortium-common --target {{ m8_target }}
     cargo check -p consortium-ipc-transport-memory --target {{ m8_target }} --no-default-features
+    cargo check -p consortium-ipc-transport-uart --target {{ m8_target }} --no-default-features
+    cargo check -p consortium-ipc-transport-uart-embedded --target {{ m8_target }} --features stm32mp25x
     cargo check -p consortium-runtime-mcu --target {{ m8_target }}
+    cargo check -p consortium-runtime-mcu --target {{ m8_target }} --no-default-features --features ipc-uart
     cargo check -p consortium-ipc-doorbell-hsem --target {{ m8_target }}
     cargo check -p consortium-ipc-doorbell-ipcc --target {{ m8_target }}
     cargo check -p consortium-ipc-doorbell-mu --target {{ m8_target }}
@@ -323,6 +326,8 @@ build-ipc-m8:
     cargo build -p consortium-common --release --target {{ m8_target }}
     cargo build -p consortium-ipc --release --target {{ m8_target }}
     cargo build -p consortium-ipc-transport-memory --release --target {{ m8_target }} --no-default-features
+    cargo build -p consortium-ipc-transport-uart --release --target {{ m8_target }} --no-default-features
+    cargo build -p consortium-ipc-transport-uart-embedded --release --target {{ m8_target }} --features stm32mp25x
     cargo build -p consortium-runtime-mcu --release --target {{ m8_target }}
     cargo build -p consortium-ipc-doorbell-hsem --release --target {{ m8_target }}
     cargo build -p consortium-ipc-doorbell-ipcc --release --target {{ m8_target }}
@@ -337,7 +342,10 @@ check-ipc-m7:
     cargo check -p consortium-common --target {{ m7_target }}
     cargo check -p consortium-ipc --target {{ m7_target }}
     cargo check -p consortium-ipc-transport-memory --target {{ m7_target }} --no-default-features
+    cargo check -p consortium-ipc-transport-uart --target {{ m7_target }} --no-default-features
+    cargo check -p consortium-ipc-transport-uart-embedded --target {{ m7_target }} --features mimx95
     cargo check -p consortium-runtime-mcu --target {{ m7_target }}
+    cargo check -p consortium-runtime-mcu --target {{ m7_target }} --no-default-features --features ipc-uart
     cargo check -p consortium-ipc-doorbell-hsem --target {{ m7_target }}
     cargo check -p consortium-ipc-doorbell-ipcc --target {{ m7_target }}
     cargo check -p consortium-ipc-doorbell-mu --target {{ m7_target }}
@@ -346,6 +354,8 @@ build-ipc-m7:
     cargo build -p consortium-common --release --target {{ m7_target }}
     cargo build -p consortium-ipc --release --target {{ m7_target }}
     cargo build -p consortium-ipc-transport-memory --release --target {{ m7_target }} --no-default-features
+    cargo build -p consortium-ipc-transport-uart --release --target {{ m7_target }} --no-default-features
+    cargo build -p consortium-ipc-transport-uart-embedded --release --target {{ m7_target }} --features mimx95
     cargo build -p consortium-runtime-mcu --release --target {{ m7_target }}
     cargo build -p consortium-ipc-doorbell-hsem --release --target {{ m7_target }}
     cargo build -p consortium-ipc-doorbell-ipcc --release --target {{ m7_target }}
@@ -365,6 +375,9 @@ test-ipc-host:
     cargo test -p consortium-ipc-doorbell-ipcc --features std
     cargo test -p consortium-ipc-doorbell-mu
     cargo test -p consortium-ipc-doorbell-mu --features std
+    cargo test -p consortium-ipc-transport-uart
+    cargo test -p consortium-ipc-transport-uart --no-default-features --test loopback_embedded
+    cargo test -p consortium-ipc-transport-uart-unix
 
 # ── Configuration (host-only) ───────────────────────────────────────────────
 

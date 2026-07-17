@@ -273,7 +273,7 @@ impl I2c {
             self.check_error()?;
             let rdr = self.regs.MRDR().read();
             if !rdr.RXEMPTY() {
-                return Ok(rdr.DATA() as u8);
+                return Ok(rdr.DATA());
             }
         }
     }
@@ -405,7 +405,7 @@ impl I2c {
                     if rdr.RXEMPTY() {
                         None
                     } else {
-                        byte = rdr.DATA() as u8;
+                        byte = rdr.DATA();
                         Some(Ok(()))
                     }
                 }

@@ -143,11 +143,18 @@ the shared protocol as `COBS(chan | payload | CRC32-LE) + 0x00`, with one logica
 `tx_buf_len()`.
 
 The core crate defaults to `std`: Tokio `AsyncRead`/`AsyncWrite` and `Send` futures. Its
-no-std path uses `embedded-io-async`. `consortium-ipc-transport-uart-unix` opens raw 8N1
-`/dev/tty*` devices with `tokio-serial` and provides pseudo-terminal pairs for tests.
-`consortium-ipc-transport-uart-embedded` is currently a firmware re-export; an IRQ-fed
-PAC-level adapter is planned but not implemented. Do not describe it as a complete HAL
-UART driver.
+no-std path uses `embedded-io-async` (0.7). `consortium-ipc-transport-uart-unix` opens raw
+8N1 `/dev/tty*` devices with `tokio-serial` and provides pseudo-terminal pairs for tests.
+`consortium-ipc-transport-uart-embedded` is the firmware glue: with a chip feature
+(`mimx93`/`mimx95` or `stm32mp21x`/`stm32mp23x`/`stm32mp25x`) it re-exports that chip
+HAL's interrupt-buffered UART driver (`BufferedUart`, in `imx9`/`stm32mp2` submodules);
+with no chip feature it stays chip-agnostic over any `embedded-io-async` driver. The
+`BufferedUart` RX path is IRQ-buffered: the application forwards the UART interrupt into
+`BufferedUartState::on_interrupt`, which drains the FIFO into an
+`embassy_hal_internal::atomic_ring_buffer::RingBuffer` so no bytes are lost before the
+transport polls; TX stays direct interrupt-driven. Per repo convention the crate installs
+no `#[interrupt]` handlers. `consortium-runtime-mcu` re-exports the transport behind its
+`ipc-uart` feature.
 
 ### Shared Memory IPC
 

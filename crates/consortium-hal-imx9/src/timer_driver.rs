@@ -30,6 +30,9 @@ struct AlarmState {
     timestamp: Cell<u64>,
 }
 
+// SAFETY: the `Cell` is only accessed through the driver's
+// `Mutex<CriticalSectionRawMutex, _>`, which serializes access across threads
+// and interrupts, so moving an `AlarmState` between contexts is sound.
 unsafe impl Send for AlarmState {}
 
 impl AlarmState {
