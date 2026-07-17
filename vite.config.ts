@@ -10,7 +10,7 @@ export default defineConfig({
     sortImports: true,
     sortTailwindcss: true,
     sortPackageJson: true,
-    ignorePatterns: ['submodules/**', '**/*.toml', '*.toml'],
+    ignorePatterns: ['submodules/**', 'docs/landing/**', '**/*.toml', '*.toml'],
   },
   lint: {
     jsPlugins: [{ name: 'vite-plus', specifier: 'vite-plus/oxlint-plugin' }],
