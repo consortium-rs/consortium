@@ -1,4 +1,3 @@
-#![cfg(target_os = "linux")]
 // Copyright 2026 Ethan Wu
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,43 +14,58 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+// This crate is Linux-only in production: remoteproc, UIO, TEE, and the entry
+// macros all target the A-core Linux runtime. The exception is [`irq`], the
+// portable user-space half of the UIO interrupt protocol, which is gated
+// `cfg(unix)` so its socketpair-backed tests run on macOS as well as Linux.
+// Every other item below is gated `cfg(target_os = "linux")` individually,
+// replacing the former crate-level `#![cfg(target_os = "linux")]`.
+
+/// Portable UIO interrupt dispatch (`[fd readiness → doorbell fan-out]`). Kept
+/// out from under the Linux gate so its tests build and run on any Unix; the
+/// real `/dev/uioN` device wiring lives in [`uio`] (Linux only).
+#[cfg(unix)]
+pub mod irq;
+
+#[cfg(target_os = "linux")]
 pub mod remoteproc;
-#[cfg(feature = "ipc-shm")]
+#[cfg(all(target_os = "linux", feature = "ipc-shm"))]
 pub mod uio;
 
 /// Logging facade re-export for generated AP code. The pipeline emits
 /// `::consortium_runtime_app::log::trace!(...)` in the generated `init`, routed
 /// here to `tracing`, so endpoint crates need no direct logging dependency.
+#[cfg(target_os = "linux")]
 pub mod log {
     pub use consortium_log::{debug, error, info, trace, warn};
 }
 
 /// Host-side defmt console for coprocessor debug rings. Requires both the
 /// `dbg` decode stack and the `ipc-shm` UIO mapping.
-#[cfg(all(feature = "dbg", feature = "ipc-shm"))]
+#[cfg(all(target_os = "linux", feature = "dbg", feature = "ipc-shm"))]
 pub mod dbg_console;
 
-#[cfg(feature = "ipc")]
+#[cfg(all(target_os = "linux", feature = "ipc"))]
 pub use consortium_ipc as ipc;
-#[cfg(feature = "ipc-shm")]
+#[cfg(all(target_os = "linux", feature = "ipc-shm"))]
 pub use consortium_ipc_transport_memory as ipc_transport;
 
-#[cfg(feature = "dbg")]
+#[cfg(all(target_os = "linux", feature = "dbg"))]
 pub use consortium_dbg as dbg;
 
-#[cfg(feature = "tee")]
+#[cfg(all(target_os = "linux", feature = "tee"))]
 pub use consortium_tee as tee;
 
 /// Entry-point macros. Applications write `#[consortium_runtime_app::main]` on
 /// their `async fn main(context: Context)` and, optionally,
 /// `#[consortium_runtime_app::fail]` on an init-failure handler.
-#[cfg(feature = "macros")]
+#[cfg(all(target_os = "linux", feature = "macros"))]
 pub use consortium_runtime_macros::{app_fail as fail, app_main as main};
 
 /// Runtime glue for the entry macros. Not a stable API — the generated
 /// `#[main]` code glob-imports [`__consortium_init_fail`] from here so a user
 /// `#[fail]` handler can shadow it.
-#[cfg(feature = "macros")]
+#[cfg(all(target_os = "linux", feature = "macros"))]
 #[doc(hidden)]
 pub mod __rt {
     /// Fallback init-failure handler used when no `#[fail]` handler is defined.

@@ -49,6 +49,15 @@ stm32mp25x = ["consortium-ipc-transport-memory?/stm32mp25x"]
 stm32mp2xx = ["stm32mp25x"]
 tee        = ["consortium-tee"]
 
+# Portable pieces of the runtime. The UIO IRQ dispatch loop (`irq` module) is
+# `cfg(unix)` so its socketpair-backed tests run on macOS as well as Linux, so
+# its deps must be available on every Unix — not just under the Linux table
+# below. `net` gates Tokio's `AsyncFd` and the IO-driver `enable_io()`.
+[target.'cfg(unix)'.dependencies]
+consortium-log = { features = ["tracing"], path = "../consortium-log" }
+libc           = "0.2"
+tokio          = { features = ["io-util", "net", "rt", "sync", "time"], version = "1" }
+
 [target.'cfg(target_os = "linux")'.dependencies]
 consortium-cfg-common = { path = "../consortium-cfg-common" }
 consortium-dbg = { default-features = false, features = [
@@ -60,13 +69,10 @@ consortium-ipc = { features = ["std"], optional = true, path = "../consortium-ip
 consortium-ipc-transport-memory = { features = [
   "std",
 ], optional = true, path = "../consortium-ipc-transport-memory" }
-consortium-log = { features = ["tracing"], path = "../consortium-log" }
 consortium-ort = { optional = true, path = "../consortium-ort" }
 consortium-runtime-macros = { optional = true, path = "../consortium-runtime-macros" }
 consortium-tee = { optional = true, path = "../consortium-tee" }
-libc = "0.2"
 thiserror = { version = "2.0" }
-tokio = { features = ["io-util", "rt", "time"], version = "1" }
 tracing = { version = "0.1" }
 uio = { version = "0.5.2" }
 

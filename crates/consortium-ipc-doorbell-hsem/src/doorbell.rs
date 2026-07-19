@@ -89,8 +89,10 @@ impl<S: Side, const N: usize> HsemDoorbell<S, N> {
     /// loop so it can wake waiting [`wait`](Doorbell::wait) futures via
     /// `notify_waiters()` when the HSEM interrupt fires.
     ///
-    /// On Linux the kernel driver owns `CnIER`/`CnICR`; userspace must not
-    /// touch them.
+    /// Userspace owns `CnIER`/`CnICR` through the mapped HSEM window on this
+    /// target: [`wait`](Doorbell::wait) enables a semaphore's interrupt when it
+    /// subscribes and clears+disables it on completion, so the level-sensitive
+    /// line de-asserts before the UIO IRQ is re-armed.
     #[cfg(feature = "std")]
     pub fn notifier(&self) -> std::sync::Arc<tokio::sync::Notify> {
         std::sync::Arc::clone(&self.notify)
@@ -181,11 +183,12 @@ impl<S: Side, const N: usize> Doorbell for HsemDoorbell<S, N> {
 /// Future returned by [`HsemDoorbell::wait`].
 ///
 /// Arms this core's `CnIER` on the first poll, then completes once the
-/// semaphore interrupt is observed. On `no_std` the shared `AtomicWaker` is
-/// woken from the application's HSEM `#[interrupt]` handler (via [`notify`]) and
-/// the future disarms `CnIER`/`CnICR`; on
-/// `std` the doorbell's `Notify` is driven by the UIO IRQ loop, and the kernel
-/// owns the interrupt registers.
+/// semaphore interrupt is observed, disarming `CnIER`/`CnICR` on completion. On
+/// `no_std` the shared `AtomicWaker` is woken from the application's HSEM
+/// `#[interrupt]` handler (via [`notify`]) and the future re-checks
+/// `CnISR`; on `std` the doorbell's `Notify` is driven by the UIO IRQ loop.
+/// Both paths own the interrupt registers through the mapped HSEM window and
+/// clear+disable the line when the wait resolves.
 pub struct HsemWaitFut<'a, S: Side, const N: usize> {
     doorbell: &'a HsemDoorbell<S, N>,
     ch: Chan,
@@ -263,6 +266,20 @@ impl<'a, S: Side, const N: usize> core::future::Future for HsemWaitFut<'a, S, N>
                         sem
                     );
                     fence(Ordering::Acquire);
+                    // Disarm and acknowledge on completion, symmetric with the
+                    // no_std path. HSEM is level-sensitive: `CnISR` stays set
+                    // until cleared via `CnICR`. If we returned `Ready` without
+                    // clearing it, the line would remain asserted and `irq_loop`
+                    // re-arming the UIO IRQ (`unmask_irq`) would immediately
+                    // re-fire it — a spurious-interrupt storm until the next
+                    // `wait()` happened to re-arm. Userspace owns `CnIER`/`CnICR`
+                    // through the mapped HSEM window on this target, so clear the
+                    // status and mask the line here; the next `wait()` re-arms.
+                    // SAFETY: `sem` is validated `< 16`.
+                    unsafe {
+                        this.doorbell.hsem.disable_interrupt(sem);
+                        this.doorbell.hsem.clear_interrupt(sem);
+                    }
                     return Poll::Ready(Ok(this.ch));
                 }
             }
@@ -346,6 +363,39 @@ mod tests {
         db.notifier().notify_waiters();
 
         assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(3))));
+    }
+
+    /// On completion the `std` wait path must disarm (`CnIER`) and acknowledge
+    /// (`CnICR`) the semaphore, symmetric with no_std. Without this the
+    /// level-sensitive line stays asserted and `irq_loop` re-arming the UIO IRQ
+    /// re-fires it in a spurious-interrupt storm.
+    #[test]
+    fn wait_disarms_line_on_completion() {
+        let mut regs = [0u32; 0x140 / 4];
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db = unsafe { HsemDoorbell::<Primary, 1>::new(regs.as_mut_ptr() as usize) };
+        let mut wait = std::pin::pin!(db.wait(ch(3)));
+        let waker = std::task::Waker::noop();
+        let mut cx = Context::from_waker(waker);
+
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+        // Enabled on arm.
+        assert!(
+            InterruptRegister::from_bits(regs[reg_index(offsets::C1IER)]).sems() & (1 << 3) != 0,
+            "semaphore interrupt must be enabled while waiting"
+        );
+
+        db.notifier().notify_waiters();
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(3))));
+
+        // Disarmed on completion: the line no longer asserts the UIO IRQ.
+        assert_eq!(
+            InterruptRegister::from_bits(regs[reg_index(offsets::C1IER)]).sems() & (1 << 3),
+            0,
+            "semaphore interrupt must be masked once the wait resolves"
+        );
+        // Acknowledged on completion (write-1-to-clear of the status bit).
+        assert_eq!(regs[reg_index(offsets::C1ICR)], 1 << 3);
     }
 
     #[test]
