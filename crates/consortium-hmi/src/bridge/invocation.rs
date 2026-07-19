@@ -14,26 +14,19 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use serde::{Deserialize, Serialize, de::DeserializeOwned};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(bound(serialize = "T: Serialize", deserialize = "T: DeserializeOwned"))]
-pub(super) struct Invocation<T>
-where
-    T: Serialize + DeserializeOwned,
-{
+pub(super) struct Invocation {
     #[serde(default)]
     pub(super) id: u64,
     #[serde(default)]
     pub(super) cmd: String,
-    pub(super) payload: T,
+    pub(super) payload: serde_json::Value,
 }
 
-pub(super) fn parse_invocation<T>(msg: &str) -> Option<Invocation<T>>
-where
-    T: Serialize + DeserializeOwned,
-{
-    serde_json::from_str(msg).ok()
+pub(super) fn parse_invocation(msg: &str) -> serde_json::Result<Invocation> {
+    serde_json::from_str(msg)
 }
 
 #[cfg(test)]
@@ -48,7 +41,7 @@ mod tests {
 
     #[test]
     fn parse_invocation_deserializes_typed_payload() {
-        let invocation = parse_invocation::<Payload>(
+        let invocation = serde_json::from_str::<Invocation>(
             r#"{"id":7,"cmd":"echo","payload":{"armed":true,"count":3}}"#,
         )
         .unwrap();
@@ -56,7 +49,7 @@ mod tests {
         assert_eq!(invocation.id, 7);
         assert_eq!(invocation.cmd, "echo");
         assert_eq!(
-            invocation.payload,
+            serde_json::from_value::<Payload>(invocation.payload).unwrap(),
             Payload {
                 armed: true,
                 count: 3
@@ -66,7 +59,7 @@ mod tests {
 
     #[test]
     fn parse_invocation_defaults_missing_metadata() {
-        let invocation = parse_invocation::<serde_json::Value>(r#"{"payload":null}"#).unwrap();
+        let invocation = parse_invocation(r#"{"payload":null}"#).unwrap();
 
         assert_eq!(invocation.id, 0);
         assert_eq!(invocation.cmd, "");
@@ -75,7 +68,7 @@ mod tests {
 
     #[test]
     fn parse_invocation_rejects_invalid_json() {
-        assert_eq!(parse_invocation::<serde_json::Value>("not json"), None);
+        assert!(parse_invocation("not json").is_err());
     }
 
     #[test]
@@ -83,10 +76,7 @@ mod tests {
         let invocation = Invocation {
             id: 9,
             cmd: "status".into(),
-            payload: Payload {
-                armed: false,
-                count: 2,
-            },
+            payload: serde_json::json!({"armed": false, "count": 2}),
         };
 
         assert_eq!(

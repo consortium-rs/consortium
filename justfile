@@ -239,11 +239,13 @@ test-ipc-a32:
 
 # ── HMI (Cog/WPE / Linux) ──────────────────────────────────────────────────
 
-# Run host-side HMI tests, including the raw Cog bindings and safe wrapper.
+# Run host-side HMI tests, including both adapters and the Cog wrapper layers.
 test-hmi-host:
+    cargo test -p consortium-hmi
+    cargo test -p consortium-hmi-pocket
+    cargo test -p consortium-hmi-webkit
     cargo test -p cogcore-sys
     cargo test -p cogcore
-    cargo test -p consortium-hmi
 
 # Run/compile HMI tests for aarch64 Linux.
 test-hmi-a64:
@@ -251,6 +253,8 @@ test-hmi-a64:
     cargo test -p cogcore-sys --target {{ a64_target }}
     cargo test -p cogcore --target {{ a64_target }}
     cargo test -p consortium-hmi --target {{ a64_target }}
+    cargo test -p consortium-hmi-webkit --target {{ a64_target }}
+    cargo test -p consortium-hmi-pocket --target {{ a64_target }}
 
 # Run/compile HMI tests for armv7 Linux.
 test-hmi-a32:
@@ -258,6 +262,8 @@ test-hmi-a32:
     cargo test -p cogcore-sys --target {{ a32_target }}
     cargo test -p cogcore --target {{ a32_target }}
     cargo test -p consortium-hmi --target {{ a32_target }}
+    cargo test -p consortium-hmi-webkit --target {{ a32_target }}
+    cargo test -p consortium-hmi-pocket --target {{ a32_target }}
 
 # ── TEE (Trusted Execution Environment / Linux) ──────────────────────────────
 
@@ -457,6 +463,13 @@ license:
 pac-init:
     git submodule update --init submodules/imx-sm submodules/mcux-devices-imx submodules/STM32CubeMP2
     just pac-patch
+
+# Initialize source submodules used directly by workspace crates
+init:
+    git submodule update --init submodules/embassy submodules/pocketjs
+
+# Compatibility alias for the previous recipe name
+ref-init: init
 
 # Apply all patches to all PAC submodules
 pac-patch:

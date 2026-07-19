@@ -260,6 +260,39 @@ pub fn on_timer_interrupt() {
     DRIVER.on_interrupt();
 }
 
+/// Bring up the conventional i.MX9 Embassy time driver (LPIT1) and route its
+/// interrupt line.
+///
+/// This encodes the reference-board wiring for the CM7: LPIT1 at `0x442f_0000`
+/// clocked from the 24 MHz AON/root timer domain, IRQ 15 at NVIC priority
+/// `0x80`. The LPIT has no prescaler, so the firmware must select the
+/// `embassy-time` `tick-hz-24_000_000` feature and the platform must leave LPIT1
+/// clocked and accessible to the CM7. The caller (the generated `init`) still
+/// owns the `LPIT1_IRQHandler` vector that forwards to [`on_timer_interrupt`].
+/// Firmware that manages its own time base should disable the generated time
+/// driver (`time_driver = false`) and call [`init_timer`] directly instead.
+///
+/// # Safety
+///
+/// Must be called once during controller bring-up, in privileged mode, with
+/// exclusive access to LPIT1 and the NVIC and before any `embassy-time` use.
+pub unsafe fn bringup() {
+    const LPIT1_BASE: *mut () = 0x442f_0000 as *mut ();
+    const LPIT1_IRQ: u16 = 15;
+    const LPIT1_CLOCK_HZ: u32 = 24_000_000;
+
+    // SAFETY: LPIT1 is reserved for the time driver and clocked by the platform;
+    // its IRQ is routed to `on_timer_interrupt` through the generated vector.
+    unsafe { init_timer(LPIT1_BASE, LPIT1_CLOCK_HZ) };
+
+    // SAFETY: `LPIT1_IRQ` is the i.MX95 CM7 LPIT1 vector; the handler forwarding
+    // to the time driver is installed by the generated code.
+    unsafe {
+        crate::hal::nvic::set_priority(LPIT1_IRQ, 0x80);
+        crate::hal::nvic::enable(LPIT1_IRQ);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::{HALF_PERIOD, calc_now, lpit_alarm_ticks};

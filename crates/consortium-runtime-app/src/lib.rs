@@ -41,3 +41,24 @@ pub use consortium_dbg as dbg;
 
 #[cfg(feature = "tee")]
 pub use consortium_tee as tee;
+
+/// Entry-point macros. Applications write `#[consortium_runtime_app::main]` on
+/// their `async fn main(context: Context)` and, optionally,
+/// `#[consortium_runtime_app::fail]` on an init-failure handler.
+#[cfg(feature = "macros")]
+pub use consortium_runtime_macros::{app_fail as fail, app_main as main};
+
+/// Runtime glue for the entry macros. Not a stable API — the generated
+/// `#[main]` code glob-imports [`__consortium_init_fail`] from here so a user
+/// `#[fail]` handler can shadow it.
+#[cfg(feature = "macros")]
+#[doc(hidden)]
+pub mod __rt {
+    /// Fallback init-failure handler used when no `#[fail]` handler is defined.
+    /// Logs and exits non-zero; a `#[fail]` handler shadows this via the glob
+    /// import the `#[main]` expansion emits.
+    pub fn __consortium_init_fail<E>(_err: E) -> ! {
+        crate::log::error!("consortium: init failed; no `#[fail]` handler, exiting");
+        ::std::process::exit(1);
+    }
+}

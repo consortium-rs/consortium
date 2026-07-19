@@ -1,0 +1,14 @@
+---
+source: crates/consortium-runtime-macros-impl/tests/snap.rs
+expression: render(output)
+---
+fn on_fail(err: ConsortiumInitError) -> ! {
+    panic!("init failed: {err:?}");
+}
+/// Consortium init-failure dispatcher. Shadows the runtime crate's
+/// glob-imported fallback so `#[main]` routes `init()` errors here.
+#[allow(unreachable_code)]
+fn __consortium_init_fail(__consortium_err: ConsortiumInitError) -> ! {
+    on_fail(__consortium_err);
+    ::std::process::exit(1);
+}

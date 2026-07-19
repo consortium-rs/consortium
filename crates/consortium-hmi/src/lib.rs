@@ -13,10 +13,13 @@
 // limitations under the License.
 //
 // SPDX-License-Identifier: Apache-2.0
-#![cfg(target_os = "linux")]
+//! Backend-neutral HMI service bridge.
+//!
+//! Rendering backends live in adapter crates such as
+//! `consortium-hmi-webkit` and `consortium-hmi-pocket`. This crate owns only
+//! command registration, invocation parsing, and response futures, so product
+//! services do not depend on a browser or native UI runtime.
 
-pub mod app;
 pub mod bridge;
 
-pub use app::KioskApp;
-pub use bridge::Bridge;
+pub use bridge::{Bridge, Dispatch, DispatchError, ResponseFuture};

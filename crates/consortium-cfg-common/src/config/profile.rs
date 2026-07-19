@@ -55,4 +55,17 @@ pub struct Profile {
     /// generated (the integrator wires it into their kernel recipe manually).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub kernel_recipe: Option<String>,
+    /// Whether the build generates a sealed Embassy time driver for controller
+    /// cores. When `true` (the default), each Cortex-M core's generated `init`
+    /// brings up the chip's conventional time-driver timer (STM32MP2 TIM2 /
+    /// i.MX9 LPIT1), installs its interrupt vector, and — when a `[dbg.<core>]`
+    /// logger is present — a `defmt::timestamp!` source. Set `false` when the
+    /// firmware owns its own time base; the generated code then emits none of
+    /// that and the integrator calls `timer_driver::init_timer` directly.
+    #[serde(default = "default_true")]
+    pub time_driver: bool,
+}
+
+fn default_true() -> bool {
+    true
 }

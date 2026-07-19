@@ -29,6 +29,9 @@ exclude = [
   "examples/melt-pot/stm32mp25/app",
   "examples/melt-pot/stm32mp25/mcu",
   "examples/melt-pot/stm32mp25/ta",
+  # PocketJS contains its own Cargo workspaces; path dependencies from the HMI
+  # adapter must inherit those manifests rather than this outer workspace.
+  "submodules/pocketjs",
 ]
 resolver = "2"
 

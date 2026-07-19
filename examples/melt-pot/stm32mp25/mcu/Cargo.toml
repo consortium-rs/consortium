@@ -51,7 +51,10 @@ consortium-ipc-transport-memory = { default-features = false, features = [
   "stm32mp25x",
 ], path = "../../../../crates/consortium-ipc-transport-memory" }
 consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory" }
-consortium-runtime-mcu = { default-features = false, path = "../../../../crates/consortium-runtime-mcu" }
+consortium-runtime-mcu = { default-features = false, features = [
+  "defmt",
+  "macros",
+], path = "../../../../crates/consortium-runtime-mcu" }
 consortium-hal-stm32mp2 = { default-features = false, features = [
   "defmt",
   "rt",

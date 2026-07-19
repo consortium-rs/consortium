@@ -244,6 +244,50 @@ pub fn on_timer_interrupt() {
     DRIVER.on_interrupt();
 }
 
+/// Bring up the conventional STM32MP2 non-secure Embassy time driver (TIM2) and
+/// route its interrupt line.
+///
+/// This encodes the reference-board wiring for the CM33 non-secure context:
+/// TIM2 at `0x4000_0000` clocked from the 64 MHz kernel clock, IRQ 105 at NVIC
+/// priority `0x80`. The boot/runtime handoff must leave TIM2 clocked at that
+/// rate. The caller (the generated `init`) still owns the `#[interrupt] fn
+/// TIM2()` vector that forwards to [`on_timer_interrupt`]. Firmware that manages
+/// its own time base should disable the generated time driver (`time_driver =
+/// false`) and call [`init_timer`] directly instead.
+///
+/// # Safety
+///
+/// Must be called once during controller bring-up, in privileged mode, with
+/// exclusive access to the RCC, TIM2, and NVIC and before any `embassy-time`
+/// use.
+pub unsafe fn bringup() {
+    const RCC_BASE_NS: *mut () = 0x4420_0000 as *mut ();
+    const TIM2_BASE_NS: *mut () = 0x4000_0000 as *mut ();
+    const TIM2_IRQ: u16 = 105;
+    const TIM2_CLOCK_HZ: u32 = 64_000_000;
+
+    // SAFETY: `RCC_BASE_NS` is the STM32MP257F non-secure RCC register block;
+    // enabling TIM2's kernel/low-power clock is the documented boot handoff for
+    // this board.
+    let rcc = unsafe { crate::pac::peripherals::rcc::RCC::from_ptr(RCC_BASE_NS) };
+    rcc.TIM2CFGR().modify(|w| {
+        w.set_TIM2RST(false);
+        w.set_TIM2EN(true);
+        w.set_TIM2LPEN(true);
+    });
+
+    // SAFETY: TIM2 is reserved for the time driver and clocked above; its IRQ is
+    // routed to `on_timer_interrupt` through the generated vector.
+    unsafe { init_timer(TIM2_BASE_NS, TIM2_CLOCK_HZ) };
+
+    // SAFETY: `TIM2_IRQ` is the STM32MP257F non-secure TIM2 vector; the handler
+    // forwarding to the time driver is installed by the generated code.
+    unsafe {
+        crate::hal::nvic::set_priority(TIM2_IRQ, 0x80);
+        crate::hal::nvic::enable(TIM2_IRQ);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::{HALF_PERIOD, calc_now, compute_psc, tim_alarm_enabled};

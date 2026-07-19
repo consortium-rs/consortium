@@ -113,10 +113,10 @@ impl DbgConfig {
     }
 }
 
-/// HMI build configuration consumed by `consortium-hmi` at compile time.
+/// HMI build configuration consumed by `consortium-hmi-webkit` at compile time.
 ///
 /// Injected as environment variables by `ApplicationCompiler` before invoking
-/// `cargo build`. `consortium-hmi` reads them via `option_env!` at compile
+/// `cargo build`. `consortium-hmi-webkit` reads them via `option_env!` at compile
 /// time; no file I/O occurs on the target device.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields, rename_all = "snake_case")]

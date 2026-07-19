@@ -2,6 +2,22 @@
 
 A Human-Machine Interface (HMI) provides the user-facing control and visualization layer of an embedded system. In HAMPU systems, the HMI commonly runs in the CA domain, where Linux provides graphics, input, windowing, and application framework support.
 
+## PocketJS-first native HMI
+
+Consortium's intended primary HMI is PocketJS: Solid or Vue Vapor JSX compiled
+for a retained Rust UI core and rendered natively, without a browser engine in
+the production path. This gives constrained embedded products a reactive UI
+authoring model while keeping layout, text, animation, focus, and draw-list
+generation in native code.
+
+A headless PocketJS host and Consortium service bridge now exist as a prototype
+in `consortium-hmi-pocket`. A production Linux window/input shell and
+engine-specific builder pipeline are still pending. Cog/WPE WebKit remains the
+current packaged backend and a compatibility option for products that require
+browser APIs or existing web applications. See the [PocketJS repository and
+integration notes](../../dev/hmi/pocketjs.md) for the reviewed components,
+gaps, and proposed bring-up order.
+
 ## Traditional Path: Qt
 
 A common HMI development stack is Qt. In this model, the Linux side runs a Qt application that renders the user interface, handles user input, and communicates with lower-level services or processors.

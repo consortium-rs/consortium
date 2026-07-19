@@ -48,7 +48,7 @@ pub fn inject_dbg(cmd: &mut Command, config: Option<&DbgConfig>) {
 }
 
 /// Injects the HMI build configuration as `CONSORTIUM_HMI_*` env vars onto a
-/// pending `cargo build` command, so `consortium-hmi` can read them at compile
+/// pending `cargo build` command, so `consortium-hmi-webkit` can read them at compile
 /// time with `option_env!`.
 ///
 /// `CONSORTIUM_HMI_DIST` (the compiled frontend dist directory) is always set
@@ -484,7 +484,7 @@ mod tests {
 
     /// End-to-end: a `Consortium.toml` `[hmi]` table parses into an
     /// [`HmiConfig`] and the builder injects exactly the `CONSORTIUM_HMI_*` env
-    /// vars `consortium-hmi` reads at compile time.
+    /// vars `consortium-hmi-webkit` reads at compile time.
     #[test]
     fn toml_hmi_section_round_trips_through_injected_env() {
         #[derive(serde::Deserialize)]

@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-/// `[hmi]` section: web-based human-machine interface configuration.
+/// `[hmi]` section: packaged human-machine interface configuration.
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Hmi {
@@ -34,7 +34,7 @@ pub struct Hmi {
     pub build: String,
 }
 
-/// HMI rendering engine.
+/// HMI rendering engine supported by the current builder pipeline.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum HmiEngine {

@@ -16,44 +16,33 @@
 
 use cogcore::{HostRoutesHandler, Shell, View};
 
-use crate::bridge::Bridge;
+use crate::{Bridge, bridge::attach};
 
-/// Compiled-in dist path. Set by `ApplicationCompiler` via `CONSORTIUM_HMI_DIST`.
-/// Falls back to `"dist"` so the crate compiles outside the Consortium pipeline.
+/// Compiled-in web dist path injected by `consortium-builder`.
 const DIST: &str = match option_env!("CONSORTIUM_HMI_DIST") {
-    Some(d) => d,
+    Some(dist) => dist,
     None => "dist",
 };
 
-/// Compiled-in dev-server URL. Set by `ApplicationCompiler` via `CONSORTIUM_HMI_DEBUG_URL`.
-/// `None` means debug builds also use the `csti://` static handler.
+/// Compiled-in dev-server URL injected by `consortium-builder`.
 const DEBUG_URL: Option<&str> = option_env!("CONSORTIUM_HMI_DEBUG_URL");
 
-/// Minimal kiosk application wrapping a Cog shell and a fullscreen web view.
+/// Minimal kiosk application wrapping a Cog shell and fullscreen web view.
 ///
-/// Call [`KioskApp::attach_bridge`] before [`KioskApp::load`] so the prelude
-/// script is in place before the first navigation.
-///
-/// # URI scheme
-///
-/// In release builds (and debug builds without `CONSORTIUM_HMI_DEBUG_URL`),
-/// [`load`] registers the `csti://` scheme backed by the directory at [`DIST`]
-/// and navigates to `csti://app/index.html`.
-///
-/// In debug builds with `CONSORTIUM_HMI_DEBUG_URL` set, [`load`] navigates
-/// directly to that URL, bypassing the static handler.
-///
-/// # Usage
+/// Register application services in the backend-neutral [`Bridge`], attach it
+/// before loading, and then enter the GLib main loop owned by the application.
 ///
 /// ```no_run
-/// use consortium_hmi::{KioskApp, Bridge};
+/// use consortium_hmi_webkit::{Bridge, KioskApp};
 ///
+/// # async fn run() {
 /// let mut bridge = Bridge::new();
 /// bridge.handle("ping", |_| r#""pong""#.into());
 ///
 /// let app = KioskApp::new("my-kiosk", None, None).unwrap();
 /// app.attach_bridge(bridge).unwrap();
 /// app.load().unwrap();
+/// # }
 /// ```
 pub struct KioskApp {
     shell: Shell,
@@ -61,9 +50,7 @@ pub struct KioskApp {
 }
 
 impl KioskApp {
-    /// Initializes Cog and creates a shell and a fullscreen view.
-    ///
-    /// `platform` and `module_path` are forwarded to [`cogcore::init`].
+    /// Initializes Cog and creates a shell and fullscreen view.
     pub fn new(
         name: &str,
         platform: Option<&str>,
@@ -75,35 +62,41 @@ impl KioskApp {
         Ok(Self { shell, view })
     }
 
-    /// Returns a reference to the underlying view.
+    /// Returns the underlying WebKit view.
     pub fn view(&self) -> &View {
         &self.view
     }
 
-    /// Attaches a [`Bridge`] to the view.
+    /// Attaches services using the current Tokio runtime.
     ///
-    /// Must be called before [`load`] so the prelude script is in place for
-    /// the first page load.
+    /// # Panics
+    ///
+    /// Panics when called outside a Tokio runtime. Use
+    /// [`attach_bridge_with_runtime`](Self::attach_bridge_with_runtime) when
+    /// the GLib setup code does not execute inside one.
     pub fn attach_bridge(&self, bridge: Bridge) -> cogcore::Result<()> {
-        bridge.attach(&self.view)
+        self.attach_bridge_with_runtime(bridge, tokio::runtime::Handle::current())
     }
 
-    /// Navigates the view to the application UI.
-    ///
-    /// In **debug builds** with `CONSORTIUM_HMI_DEBUG_URL` set at compile time,
-    /// loads that URL directly (dev-server hot-reload path).
-    ///
-    /// Otherwise registers the `csti://` URI scheme backed by [`DIST`] and
-    /// loads `csti://app/index.html`.
+    /// Attaches services using an explicit Tokio runtime for handler futures.
+    pub fn attach_bridge_with_runtime(
+        &self,
+        bridge: Bridge,
+        runtime: tokio::runtime::Handle,
+    ) -> cogcore::Result<()> {
+        attach(bridge, runtime, &self.view)
+    }
+
+    /// Loads the debug URL or the packaged `csti://app/index.html` frontend.
     pub fn load(&self) -> cogcore::Result<()> {
         #[cfg(debug_assertions)]
         if let Some(url) = DEBUG_URL {
             return self.view.load_uri(url);
         }
 
-        let sec = self.shell.security_manager()?;
-        sec.register_secure("csti")?;
-        sec.register_cors_enabled("csti")?;
+        let security = self.shell.security_manager()?;
+        security.register_secure("csti")?;
+        security.register_cors_enabled("csti")?;
 
         let routes = HostRoutesHandler::new(None)?;
         routes.add_path("app", DIST)?;

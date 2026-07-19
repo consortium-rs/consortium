@@ -17,16 +17,16 @@
 //! melt-pot CM33 firmware: streams simulated temperature readings to the CA35
 //! over the generated `sensor` IPC transceiver.
 //!
-//! All of the shared-memory / doorbell / MPU / NVIC wiring lives in
-//! `consortium.gen.rs`, which the `consortium` build pipeline generates from
-//! `../Consortium.toml` and this file `include!`s. That module exposes:
-//!
-//! - `init()` — brings up the MPU + doorbell interrupt and constructs the
-//!   (disconnected) `IpcMemoryEndpoints`;
-//! - `IpcMemoryEndpoints::connect().await` — runs the descriptor handshake and
-//!   returns `IpcMemoryEndpointsConnected`, whose `sensor` field is a ready
-//!   `Transceiver<SensorReading, Command>` (this core sends `SensorReading`,
-//!   receives `Command`).
+//! All of the shared-memory / doorbell / MPU / NVIC / time-driver wiring lives
+//! in `consortium.gen.rs`, which the `consortium` build pipeline generates from
+//! `../Consortium.toml` and this file `include!`s. That module exposes an
+//! aggregate `async fn init() -> Result<Context, ConsortiumInitError>` and the
+//! `Context` type. `#[consortium_runtime_mcu::main]` calls `init()` for us and
+//! hands the body a ready `Context`, whose `ipc_shm.sensor` field is a
+//! `Transceiver<SensorReading, Command>` (this core sends `SensorReading`,
+//! receives `Command`). The generated `init` also resets the CDBG ring, brings
+//! up the Embassy time driver, and installs its `TIM2` vector and
+//! `defmt::timestamp!` — none of which this file writes anymore.
 
 #![no_std]
 #![no_main]
@@ -43,41 +43,9 @@ use melt_pot_shared::SensorReading;
 // the `defmt::info!` frames below land in the CDBG ring described by `[dbg.cm33]`.
 include!("consortium.gen.rs");
 
-// defmt requires the application to define a timestamp source. A monotonic
-// counter is enough for the demo; production firmware would read a cycle counter.
-defmt::timestamp!("{=u32}", {
-    use core::sync::atomic::{AtomicU32, Ordering};
-    static COUNT: AtomicU32 = AtomicU32::new(0);
-    COUNT.fetch_add(1, Ordering::Relaxed)
-});
-
-const RCC_BASE_NS: *mut () = 0x4420_0000 as *mut ();
-const TIM2_BASE_NS: *mut () = 0x4000_0000 as *mut ();
-const TIM2_IRQ: u16 = 105;
-const TIM2_CLOCK_HZ: u32 = 64_000_000;
-
-#[embassy_executor::main]
-async fn main(_spawner: Spawner) {
-    // Reset the CDBG ring on every boot so a warm reset does not leave a stale,
-    // valid-looking descriptor behind. No-op when `[dbg.cm33]` is unconfigured.
-    consortium_dbg::logger::ConsortiumLogger::init();
-
-    init_time_driver();
-
-    // Bring up MPU + HSEM interrupt, then run the descriptor handshake.
-    let res = init();
-
-
-    let connected = match res.connect().await {
-        Ok(endpoints) => endpoints,
-        Err(e) => {
-            defmt::error!("melt-pot: IPC descriptor handshake failed: {}", e);
-            loop {
-                cortex_m::asm::wfi();
-            }
-        }
-    };
-    let mut sensor = connected.sensor;
+#[consortium_runtime_mcu::main]
+async fn main(context: Context, _spawner: Spawner) {
+    let mut sensor = context.ipc_shm.sensor;
 
     let mut seq: u32 = 0;
     loop {
@@ -101,49 +69,6 @@ async fn main(_spawner: Spawner) {
 
         Timer::after_secs(1).await;
     }
-}
-
-fn init_time_driver() {
-    consortium_runtime_mcu::log::trace!("consortium controller init: time driver bring-up");
-    // STM32MP257F CM33 non-secure CMSIS names this TIM2_BASE_NS and TIM2_IRQn.
-    // The boot/runtime handoff must leave TIM2's kernel clock at this rate.
-    // SAFETY: RCC_BASE_NS is the STM32MP257F non-secure RCC register block.
-    let rcc = unsafe { consortium_hal_stm32mp2::pac::peripherals::rcc::RCC::from_ptr(RCC_BASE_NS) };
-    consortium_runtime_mcu::log::trace!(
-        "consortium controller init: RCC register block at {:#010x}",
-        RCC_BASE_NS as u32
-    );
-    rcc.TIM2CFGR().modify(|w| {
-        w.set_TIM2RST(false);
-        w.set_TIM2EN(true);
-        w.set_TIM2LPEN(true);
-    });
-    consortium_runtime_mcu::log::trace!("consortium controller init: TIM2 clock enabled");
-
-    // SAFETY: TIM2 is reserved for this demo firmware and clocked above; the
-    // IRQ handler below forwards TIM2_IRQn to the HAL time driver.
-    unsafe {
-        consortium_hal_stm32mp2::timer_driver::init_timer(TIM2_BASE_NS, TIM2_CLOCK_HZ);
-    }
-    consortium_runtime_mcu::log::trace!(
-        "consortium controller init: TIM2 timer driver initialized"
-    );
-    unsafe {
-        consortium_hal_stm32mp2::hal::nvic::set_priority(TIM2_IRQ, 0x80);
-    }
-    consortium_runtime_mcu::log::trace!(
-        "consortium controller init: TIM2 IRQ priority set to 0x80"
-    );
-    unsafe {
-        consortium_hal_stm32mp2::hal::nvic::enable(TIM2_IRQ);
-    }
-    consortium_runtime_mcu::log::trace!("consortium controller init: TIM2 IRQ enabled/unmasked");
-}
-
-#[interrupt]
-fn TIM2() {
-    consortium_runtime_mcu::log::trace!("tim2 interrupt: timer expired");
-    consortium_hal_stm32mp2::timer_driver::on_timer_interrupt();
 }
 
 // IPCC RX-occupied vectors. The doorbell crate no longer installs these; the
