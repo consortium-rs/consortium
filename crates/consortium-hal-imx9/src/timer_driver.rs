@@ -287,10 +287,9 @@ pub unsafe fn bringup() {
 
     // SAFETY: `LPIT1_IRQ` is the i.MX95 CM7 LPIT1 vector; the handler forwarding
     // to the time driver is installed by the generated code.
-    unsafe {
-        crate::hal::nvic::set_priority(LPIT1_IRQ, 0x80);
-        crate::hal::nvic::enable(LPIT1_IRQ);
-    }
+    unsafe { crate::hal::nvic::set_priority(LPIT1_IRQ, 0x80) };
+    // SAFETY: see above; enabling the same reserved LPIT1 vector.
+    unsafe { crate::hal::nvic::enable(LPIT1_IRQ) };
 }
 
 #[cfg(test)]

@@ -785,11 +785,13 @@ dependencies = [
  "embassy-sync",
  "embassy-time-driver",
  "embassy-time-queue-utils",
+ "embedded-can",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
  "embedded-hal-nb",
  "embedded-io",
  "embedded-io-async",
+ "nb 1.1.0",
 ]
 
 [[package]]
@@ -805,11 +807,13 @@ dependencies = [
  "embassy-sync",
  "embassy-time-driver",
  "embassy-time-queue-utils",
+ "embedded-can",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
  "embedded-hal-nb",
  "embedded-io",
  "embedded-io-async",
+ "nb 1.1.0",
 ]
 
 [[package]]
@@ -1590,6 +1594,15 @@ checksum = "168297bf80aaf114b3c9ad589bf38b01b3009b9af7f97cd18086c5bbf96f5693"
 dependencies = [
  "embassy-executor-timer-queue",
  "heapless 0.9.3",
+]
+
+[[package]]
+name = "embedded-can"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e9d2e857f87ac832df68fa498d18ddc679175cf3d2e4aa893988e5601baf9438"
+dependencies = [
+ "nb 1.1.0",
 ]
 
 [[package]]

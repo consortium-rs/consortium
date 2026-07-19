@@ -1321,11 +1321,6 @@
       "block": "ddrperfm/DDRPERFM"
     },
     {
-      "name": "DDRPHYC",
-      "base_address": "0x48c00000",
-      "block": "ddrphyc/DDRPHYC"
-    },
-    {
       "name": "DSI",
       "base_address": "0x48000000",
       "block": "dsi/DSI"
@@ -1379,6 +1374,16 @@
       "name": "EXTI2_C3",
       "base_address": "0x46230100",
       "block": "exti_core/EXTI_Core"
+    },
+    {
+      "name": "FDCAN1",
+      "base_address": "0x402d0000",
+      "block": "fdcan/FDCAN"
+    },
+    {
+      "name": "FDCAN2",
+      "base_address": "0x402e0000",
+      "block": "fdcan/FDCAN"
     },
     {
       "name": "FDCAN_CCU",
