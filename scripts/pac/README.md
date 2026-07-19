@@ -143,7 +143,8 @@ Chip metadata with IRQs and peripheral mappings:
 
 ## Requirements
 
-- Python 3.7+
+- Python 3.14+ (matches the workspace `pyproject.toml` `requires-python`; run via
+  `uv run --with pyyaml python scripts/pac/parse_stm32.py --all`)
 - PyYAML
 - Standard library: re, json, pathlib
 
@@ -164,6 +165,10 @@ Chip metadata with IRQs and peripheral mappings:
 ### Edge Cases
 
 - Registers with no bitfield macros are still emitted (fieldset references omitted)
+- A few structs glue their qualifier onto `TypeDef` without an underscore (e.g.
+  `FDCAN_GlobalTypeDef`); `normalize_block_name` maps the recognized ones to a canonical
+  block name (`FDCAN`) so the block and its `FDCAN1..3` instances are emitted, and skips
+  unrecognized variants
 - Instance names with \_NS suffix normalized to canonical names in chip descriptors
 - Multi-line struct definitions and comments handled via regex DOTALL mode
 - Hex expressions with UL/u suffixes properly stripped and evaluated

@@ -30,6 +30,30 @@ FAMILY_REPRESENTATIVES = {
     "stm32mp25_cm0p": "stm32mp257fxx_cm0.h",
 }
 
+# A few CMSIS structs glue their qualifier straight onto `TypeDef` instead of
+# using the usual `_TypeDef` suffix (e.g. `FDCAN_GlobalTypeDef`,
+# `IPCC_CommonTypeDef`), so the generic `_TypeDef` matcher skips them and their
+# instances never reach the chip descriptor. Map each malformed type name to the
+# canonical block name so it is emitted like every other peripheral. FDCAN's
+# bitfield macros are prefixed `FDCAN_<REG>`, so the block must be `FDCAN` (not
+# `FDCAN_Global`) for register/fieldset linking to resolve. Types absent from
+# this map keep the historical behavior of being skipped.
+CAMEL_TYPEDEF_BLOCKS = {
+    "FDCAN_Global": "FDCAN",
+}
+
+
+def normalize_block_name(type_name: str) -> str | None:
+    """Map a CMSIS `*TypeDef` struct/cast name to its canonical block name.
+
+    Returns the block name for the well-formed `<Block>_TypeDef` spelling and
+    for the malformed CamelCase variants listed in `CAMEL_TYPEDEF_BLOCKS`, or
+    `None` for an unrecognized CamelCase variant that should be skipped.
+    """
+    if type_name.endswith("_TypeDef"):
+        return strip_suffix(type_name, "_TypeDef")
+    return CAMEL_TYPEDEF_BLOCKS.get(strip_suffix(type_name, "TypeDef"))
+
 
 class STM32HeaderParser:
     def __init__(self, header_path: Path):
@@ -178,13 +202,17 @@ class STM32HeaderParser:
 
     def parse_peripheral_structs(self):
         """Extract typedef struct definitions."""
-        # Find all struct blocks
-        pattern = r"typedef\s+struct\s*\{(.*?)\}\s*(\w+_TypeDef)\s*;"
+        # Find all struct blocks. Accept both the usual `<Block>_TypeDef`
+        # spelling and CamelCase variants like `FDCAN_GlobalTypeDef` (see
+        # `normalize_block_name`).
+        pattern = r"typedef\s+struct\s*\{(.*?)\}\s*(\w+TypeDef)\s*;"
 
         for match in re.finditer(pattern, self.content, re.DOTALL):
             struct_body = match.group(1)
             struct_name_with_suffix = match.group(2)
-            struct_name = strip_suffix(struct_name_with_suffix, "_TypeDef")
+            struct_name = normalize_block_name(struct_name_with_suffix)
+            if struct_name is None:
+                continue
 
             items = []
             current_offset = 0
@@ -399,14 +427,14 @@ class STM32HeaderParser:
         instances: Dict[str, Tuple[str, int]] = {}
 
         for match in re.finditer(
-            r"#define\s+(\w+)_NS\s+\(\((\w+)_TypeDef\s*\*\)\s*(\w+_BASE_NS)\)",
+            r"#define\s+(\w+)_NS\s+\(\((\w+TypeDef)\s*\*\)\s*(\w+_BASE_NS)\)",
             self.content,
         ):
             instance_name = match.group(1)
-            block_type = match.group(2)
+            block_type = normalize_block_name(match.group(2))
             base_macro = match.group(3)
 
-            if base_macro in symbols:
+            if block_type is not None and base_macro in symbols:
                 base_addr = symbols[base_macro]
                 instances[instance_name] = (block_type, base_addr)
 

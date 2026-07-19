@@ -79,11 +79,26 @@ def calc_bit_size_from_mask(mask_val: int) -> int:
     return popcount(mask_val)
 
 
+class _IndentDumper(yaml.Dumper):
+    """Dumper that indents block sequences under their parent key.
+
+    PyYAML's default dedents sequence dashes to their parent's column; the
+    committed register YAML instead indents them one level (a 4-space `-`), so
+    force `indentless=False` to reproduce that style and keep regenerated files
+    free of whitespace-only churn.
+    """
+
+    def increase_indent(self, flow: bool = False, indentless: bool = False) -> Any:
+        return super().increase_indent(flow, indentless=False)
+
+
 def write_yaml(data: Dict[str, Any], path: Path) -> None:
     """Write data to YAML file."""
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w") as f:
-        yaml.dump(data, f, default_flow_style=False, sort_keys=False)
+        yaml.dump(
+            data, f, Dumper=_IndentDumper, default_flow_style=False, sort_keys=False
+        )
 
 
 def write_json(data: Dict[str, Any], path: Path) -> None:
@@ -91,6 +106,9 @@ def write_json(data: Dict[str, Any], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
+        # Committed chip descriptors are newline-terminated; match them so
+        # regenerated files don't churn a trailing-newline-only diff.
+        f.write("\n")
 
 
 def extract_description(line: str) -> str:

@@ -28,6 +28,9 @@ pub use pac::interrupts::Interrupt;
 #[cfg(feature = "rt")]
 pub use pac::interrupts::interrupt;
 
+#[cfg(feature = "can")]
+pub mod can;
+
 #[cfg(feature = "dma")]
 pub mod dma;
 
@@ -36,6 +39,9 @@ pub mod gpio;
 
 #[cfg(feature = "i2c")]
 pub mod i2c;
+
+#[cfg(feature = "spi")]
+pub mod spi;
 
 #[cfg(feature = "time-driver-lpit")]
 pub mod timer_driver;

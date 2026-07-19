@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6.0.3
+        with:
+          submodules: recursive
 
       - name: Setup just
         uses: extractions/setup-just@v4

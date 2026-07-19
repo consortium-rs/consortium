@@ -1,0 +1,1413 @@
+block/FDCAN:
+  description: ''
+  items:
+    - name: CREL
+      byte_offset: 0
+      description: FDCAN Core Release register
+      fieldset: FDCAN_CREL
+    - name: ENDN
+      byte_offset: 4
+      description: FDCAN Endian register
+      fieldset: FDCAN_ENDN
+    - name: DBTP
+      byte_offset: 12
+      description: FDCAN Data Bit Timing & Prescaler register
+      fieldset: FDCAN_DBTP
+    - name: TEST
+      byte_offset: 16
+      description: FDCAN Test register
+      fieldset: FDCAN_TEST
+    - name: RWD
+      byte_offset: 20
+      description: FDCAN RAM Watchdog register
+      fieldset: FDCAN_RWD
+    - name: CCCR
+      byte_offset: 24
+      description: FDCAN CC Control register
+      fieldset: FDCAN_CCCR
+    - name: NBTP
+      byte_offset: 28
+      description: FDCAN Nominal Bit Timing & Prescaler register
+      fieldset: FDCAN_NBTP
+    - name: TSCC
+      byte_offset: 32
+      description: FDCAN Timestamp Counter Configuration register
+      fieldset: FDCAN_TSCC
+    - name: TSCV
+      byte_offset: 36
+      description: FDCAN Timestamp Counter Value register
+      fieldset: FDCAN_TSCV
+    - name: TOCC
+      byte_offset: 40
+      description: FDCAN Timeout Counter Configuration register
+      fieldset: FDCAN_TOCC
+    - name: TOCV
+      byte_offset: 44
+      description: FDCAN Timeout Counter Value register
+      fieldset: FDCAN_TOCV
+    - name: ECR
+      byte_offset: 64
+      description: FDCAN Error Counter register
+      fieldset: FDCAN_ECR
+    - name: PSR
+      byte_offset: 68
+      description: FDCAN Protocol Status register
+      fieldset: FDCAN_PSR
+    - name: TDCR
+      byte_offset: 72
+      description: FDCAN Transmitter Delay Compensation register
+      fieldset: FDCAN_TDCR
+    - name: IR
+      byte_offset: 80
+      description: FDCAN Interrupt register
+      fieldset: FDCAN_IR
+    - name: IE
+      byte_offset: 84
+      description: FDCAN Interrupt Enable register
+      fieldset: FDCAN_IE
+    - name: ILS
+      byte_offset: 88
+      description: FDCAN Interrupt Line Select register
+      fieldset: FDCAN_ILS
+    - name: ILE
+      byte_offset: 92
+      description: FDCAN Interrupt Line Enable register
+      fieldset: FDCAN_ILE
+    - name: GFC
+      byte_offset: 128
+      description: FDCAN Global Filter Configuration register
+      fieldset: FDCAN_GFC
+    - name: SIDFC
+      byte_offset: 132
+      description: FDCAN Standard ID Filter Configuration register
+      fieldset: FDCAN_SIDFC
+    - name: XIDFC
+      byte_offset: 136
+      description: FDCAN Extended ID Filter Configuration register
+      fieldset: FDCAN_XIDFC
+    - name: XIDAM
+      byte_offset: 144
+      description: FDCAN Extended ID AND Mask register
+      fieldset: FDCAN_XIDAM
+    - name: HPMS
+      byte_offset: 148
+      description: FDCAN High Priority Message Status register
+      fieldset: FDCAN_HPMS
+    - name: NDAT1
+      byte_offset: 152
+      description: FDCAN New Data 1 register
+      fieldset: FDCAN_NDAT1
+    - name: NDAT2
+      byte_offset: 156
+      description: FDCAN New Data 2 register
+      fieldset: FDCAN_NDAT2
+    - name: RXF0C
+      byte_offset: 160
+      description: FDCAN Rx FIFO 0 Configuration register
+      fieldset: FDCAN_RXF0C
+    - name: RXF0S
+      byte_offset: 164
+      description: FDCAN Rx FIFO 0 Status register
+      fieldset: FDCAN_RXF0S
+    - name: RXF0A
+      byte_offset: 168
+      description: FDCAN Rx FIFO 0 Acknowledge register
+      fieldset: FDCAN_RXF0A
+    - name: RXBC
+      byte_offset: 172
+      description: FDCAN Rx Buffer Configuration register
+      fieldset: FDCAN_RXBC
+    - name: RXF1C
+      byte_offset: 176
+      description: FDCAN Rx FIFO 1 Configuration register
+      fieldset: FDCAN_RXF1C
+    - name: RXF1S
+      byte_offset: 180
+      description: FDCAN Rx FIFO 1 Status register
+      fieldset: FDCAN_RXF1S
+    - name: RXF1A
+      byte_offset: 184
+      description: FDCAN Rx FIFO 1 Acknowledge register
+      fieldset: FDCAN_RXF1A
+    - name: RXESC
+      byte_offset: 188
+      description: FDCAN Rx Buffer/FIFO Element Size Configuration register
+      fieldset: FDCAN_RXESC
+    - name: TXBC
+      byte_offset: 192
+      description: FDCAN Tx Buffer Configuration register
+      fieldset: FDCAN_TXBC
+    - name: TXFQS
+      byte_offset: 196
+      description: FDCAN Tx FIFO/Queue Status register
+      fieldset: FDCAN_TXFQS
+    - name: TXESC
+      byte_offset: 200
+      description: FDCAN Tx Buffer Element Size Configuration register
+      fieldset: FDCAN_TXESC
+    - name: TXBRP
+      byte_offset: 204
+      description: FDCAN Tx Buffer Request Pending register
+      fieldset: FDCAN_TXBRP
+    - name: TXBAR
+      byte_offset: 208
+      description: FDCAN Tx Buffer Add Request register
+      fieldset: FDCAN_TXBAR
+    - name: TXBCR
+      byte_offset: 212
+      description: FDCAN Tx Buffer Cancellation Request register
+      fieldset: FDCAN_TXBCR
+    - name: TXBTO
+      byte_offset: 216
+      description: FDCAN Tx Buffer Transmission Occurred register
+      fieldset: FDCAN_TXBTO
+    - name: TXBCF
+      byte_offset: 220
+      description: FDCAN Tx Buffer Cancellation Finished register
+      fieldset: FDCAN_TXBCF
+    - name: TXBTIE
+      byte_offset: 224
+      description: FDCAN Tx Buffer Transmission Interrupt Enable register
+      fieldset: FDCAN_TXBTIE
+    - name: TXBCIE
+      byte_offset: 228
+      description: FDCAN Tx Buffer Cancellation Finished Interrupt Enable register
+      fieldset: FDCAN_TXBCIE
+    - name: TXEFC
+      byte_offset: 240
+      description: FDCAN Tx Event FIFO Configuration register
+      fieldset: FDCAN_TXEFC
+    - name: TXEFS
+      byte_offset: 244
+      description: FDCAN Tx Event FIFO Status register
+      fieldset: FDCAN_TXEFS
+    - name: TXEFA
+      byte_offset: 248
+      description: FDCAN Tx Event FIFO Acknowledge register
+      fieldset: FDCAN_TXEFA
+fieldset/FDCAN_CREL:
+  description: ''
+  fields:
+    - name: DAY
+      bit_offset: 0
+      bit_size: 8
+      description: Timestamp Day
+    - name: MON
+      bit_offset: 8
+      bit_size: 8
+      description: Timestamp Month
+    - name: YEAR
+      bit_offset: 16
+      bit_size: 4
+      description: Timestamp Year
+    - name: SUBSTEP
+      bit_offset: 20
+      bit_size: 4
+      description: Sub-step of Core release
+    - name: STEP
+      bit_offset: 24
+      bit_size: 4
+      description: Step of Core release
+    - name: REL
+      bit_offset: 28
+      bit_size: 4
+      description: Core release
+fieldset/FDCAN_ENDN:
+  description: ''
+  fields:
+    - name: ETV
+      bit_offset: 0
+      bit_size: 32
+      description: TEndiannes Test Value
+fieldset/FDCAN_DBTP:
+  description: ''
+  fields:
+    - name: DSJW
+      bit_offset: 0
+      bit_size: 4
+      description: Synchronization Jump Width
+    - name: DTSEG2
+      bit_offset: 4
+      bit_size: 4
+      description: Data time segment after sample point
+    - name: DTSEG1
+      bit_offset: 8
+      bit_size: 5
+      description: Data time segment before sample point
+    - name: DBRP
+      bit_offset: 16
+      bit_size: 5
+      description: Data BIt Rate Prescaler
+    - name: TDC
+      bit_offset: 23
+      bit_size: 1
+      description: Transceiver Delay Compensation
+fieldset/FDCAN_TEST:
+  description: ''
+  fields:
+    - name: LBCK
+      bit_offset: 4
+      bit_size: 1
+      description: Loop Back mode
+    - name: TX
+      bit_offset: 5
+      bit_size: 2
+      description: Control of Transmit Pin
+    - name: RX
+      bit_offset: 7
+      bit_size: 1
+      description: Receive Pin
+fieldset/FDCAN_RWD:
+  description: ''
+  fields:
+    - name: WDC
+      bit_offset: 0
+      bit_size: 8
+      description: Watchdog configuration
+    - name: WDV
+      bit_offset: 8
+      bit_size: 8
+      description: Watchdog value
+fieldset/FDCAN_CCCR:
+  description: ''
+  fields:
+    - name: INIT
+      bit_offset: 0
+      bit_size: 1
+      description: Initialization
+    - name: CCE
+      bit_offset: 1
+      bit_size: 1
+      description: Configuration Change Enable
+    - name: ASM
+      bit_offset: 2
+      bit_size: 1
+      description: ASM Restricted Operation Mode
+    - name: CSA
+      bit_offset: 3
+      bit_size: 1
+      description: Clock Stop Acknowledge
+    - name: CSR
+      bit_offset: 4
+      bit_size: 1
+      description: Clock Stop Request
+    - name: MON
+      bit_offset: 5
+      bit_size: 1
+      description: Bus Monitoring Mode
+    - name: DAR
+      bit_offset: 6
+      bit_size: 1
+      description: Disable Automatic Retransmission
+    - name: TEST
+      bit_offset: 7
+      bit_size: 1
+      description: Test Mode Enable
+    - name: FDOE
+      bit_offset: 8
+      bit_size: 1
+      description: FD Operation Enable
+    - name: BRSE
+      bit_offset: 9
+      bit_size: 1
+      description: FDCAN Bit Rate Switching
+    - name: PXHD
+      bit_offset: 12
+      bit_size: 1
+      description: Protocol Exception Handling Disable
+    - name: EFBI
+      bit_offset: 13
+      bit_size: 1
+      description: Edge Filtering during Bus Integration
+    - name: TXP
+      bit_offset: 14
+      bit_size: 1
+      description: Two CAN bit times Pause
+    - name: NISO
+      bit_offset: 15
+      bit_size: 1
+      description: Non ISO Operation
+fieldset/FDCAN_NBTP:
+  description: ''
+  fields:
+    - name: NTSEG2
+      bit_offset: 0
+      bit_size: 7
+      description: Nominal Time segment after sample point
+    - name: NTSEG1
+      bit_offset: 8
+      bit_size: 8
+      description: Nominal Time segment before sample point
+    - name: NBRP
+      bit_offset: 16
+      bit_size: 9
+      description: Bit Rate Prescaler
+    - name: NSJW
+      bit_offset: 25
+      bit_size: 7
+      description: Nominal (Re)Synchronization Jump Width
+fieldset/FDCAN_TSCC:
+  description: ''
+  fields:
+    - name: TSS
+      bit_offset: 0
+      bit_size: 2
+      description: Timestamp Select
+    - name: TCP
+      bit_offset: 16
+      bit_size: 4
+      description: Timestamp Counter Prescaler
+fieldset/FDCAN_TSCV:
+  description: ''
+  fields:
+    - name: TSC
+      bit_offset: 0
+      bit_size: 16
+      description: Timestamp Counter
+fieldset/FDCAN_TOCC:
+  description: ''
+  fields:
+    - name: ETOC
+      bit_offset: 0
+      bit_size: 1
+      description: Enable Timeout Counter
+    - name: TOS
+      bit_offset: 1
+      bit_size: 2
+      description: Timeout Select
+    - name: TOP
+      bit_offset: 16
+      bit_size: 16
+      description: Timeout Period
+fieldset/FDCAN_TOCV:
+  description: ''
+  fields:
+    - name: TOC
+      bit_offset: 0
+      bit_size: 16
+      description: Timeout Counter
+fieldset/FDCAN_ECR:
+  description: ''
+  fields:
+    - name: TEC
+      bit_offset: 0
+      bit_size: 8
+      description: Transmit Error Counter
+    - name: REC
+      bit_offset: 8
+      bit_size: 7
+      description: Receive Error Counter
+    - name: RP
+      bit_offset: 15
+      bit_size: 1
+      description: Receive Error Passive
+    - name: CEL
+      bit_offset: 16
+      bit_size: 8
+      description: CAN Error Logging
+fieldset/FDCAN_PSR:
+  description: ''
+  fields:
+    - name: LEC
+      bit_offset: 0
+      bit_size: 3
+      description: Last Error Code
+    - name: ACT
+      bit_offset: 3
+      bit_size: 2
+      description: Activity
+    - name: EP
+      bit_offset: 5
+      bit_size: 1
+      description: Error Passive
+    - name: EW
+      bit_offset: 6
+      bit_size: 1
+      description: Warning Status
+    - name: BO
+      bit_offset: 7
+      bit_size: 1
+      description: Bus_Off Status
+    - name: DLEC
+      bit_offset: 8
+      bit_size: 3
+      description: Data Last Error Code
+    - name: RESI
+      bit_offset: 11
+      bit_size: 1
+      description: ESI flag of last received FDCAN Message
+    - name: RBRS
+      bit_offset: 12
+      bit_size: 1
+      description: BRS flag of last received FDCAN Message
+    - name: REDL
+      bit_offset: 13
+      bit_size: 1
+      description: Received FDCAN Message
+    - name: PXE
+      bit_offset: 14
+      bit_size: 1
+      description: Protocol Exception Event
+    - name: TDCV
+      bit_offset: 16
+      bit_size: 7
+      description: Transmitter Delay Compensation Value
+fieldset/FDCAN_TDCR:
+  description: ''
+  fields:
+    - name: TDCF
+      bit_offset: 0
+      bit_size: 7
+      description: Transmitter Delay Compensation Filter
+    - name: TDCO
+      bit_offset: 8
+      bit_size: 7
+      description: Transmitter Delay Compensation Offset
+fieldset/FDCAN_IR:
+  description: ''
+  fields:
+    - name: RF0N
+      bit_offset: 0
+      bit_size: 1
+      description: Rx FIFO 0 New Message
+    - name: RF0W
+      bit_offset: 1
+      bit_size: 1
+      description: Rx FIFO 0 Watermark Reached
+    - name: RF0F
+      bit_offset: 2
+      bit_size: 1
+      description: Rx FIFO 0 Full
+    - name: RF0L
+      bit_offset: 3
+      bit_size: 1
+      description: Rx FIFO 0 Message Lost
+    - name: RF1N
+      bit_offset: 4
+      bit_size: 1
+      description: Rx FIFO 1 New Message
+    - name: RF1W
+      bit_offset: 5
+      bit_size: 1
+      description: Rx FIFO 1 Watermark Reached
+    - name: RF1F
+      bit_offset: 6
+      bit_size: 1
+      description: Rx FIFO 1 Full
+    - name: RF1L
+      bit_offset: 7
+      bit_size: 1
+      description: Rx FIFO 1 Message Lost
+    - name: HPM
+      bit_offset: 8
+      bit_size: 1
+      description: High Priority Message
+    - name: TC
+      bit_offset: 9
+      bit_size: 1
+      description: Transmission Completed
+    - name: TCF
+      bit_offset: 10
+      bit_size: 1
+      description: Transmission Cancellation Finished
+    - name: TFE
+      bit_offset: 11
+      bit_size: 1
+      description: Tx FIFO Empty
+    - name: TEFN
+      bit_offset: 12
+      bit_size: 1
+      description: Tx Event FIFO New Entry
+    - name: TEFW
+      bit_offset: 13
+      bit_size: 1
+      description: Tx Event FIFO Watermark Reached
+    - name: TEFF
+      bit_offset: 14
+      bit_size: 1
+      description: Tx Event FIFO Full
+    - name: TEFL
+      bit_offset: 15
+      bit_size: 1
+      description: Tx Event FIFO Element Lost
+    - name: TSW
+      bit_offset: 16
+      bit_size: 1
+      description: Timestamp Wraparound
+    - name: MRAF
+      bit_offset: 17
+      bit_size: 1
+      description: Message RAM Access Failure
+    - name: TOO
+      bit_offset: 18
+      bit_size: 1
+      description: Timeout Occurred
+    - name: DRX
+      bit_offset: 19
+      bit_size: 1
+      description: Message stored to Dedicated Rx Buffer
+    - name: ELO
+      bit_offset: 22
+      bit_size: 1
+      description: Error Logging Overflow
+    - name: EP
+      bit_offset: 23
+      bit_size: 1
+      description: Error Passive
+    - name: EW
+      bit_offset: 24
+      bit_size: 1
+      description: Warning Status
+    - name: BO
+      bit_offset: 25
+      bit_size: 1
+      description: Bus_Off Status
+    - name: WDI
+      bit_offset: 26
+      bit_size: 1
+      description: Watchdog Interrupt
+    - name: PEA
+      bit_offset: 27
+      bit_size: 1
+      description: Protocol Error in Arbitration Phase
+    - name: PED
+      bit_offset: 28
+      bit_size: 1
+      description: Protocol Error in Data Phase
+    - name: ARA
+      bit_offset: 29
+      bit_size: 1
+      description: Access to Reserved Address
+fieldset/FDCAN_IE:
+  description: ''
+  fields:
+    - name: RF0NE
+      bit_offset: 0
+      bit_size: 1
+      description: Rx FIFO 0 New Message Enable
+    - name: RF0WE
+      bit_offset: 1
+      bit_size: 1
+      description: Rx FIFO 0 Watermark Reached Enable
+    - name: RF0FE
+      bit_offset: 2
+      bit_size: 1
+      description: Rx FIFO 0 Full Enable
+    - name: RF0LE
+      bit_offset: 3
+      bit_size: 1
+      description: Rx FIFO 0 Message Lost Enable
+    - name: RF1NE
+      bit_offset: 4
+      bit_size: 1
+      description: Rx FIFO 1 New Message Enable
+    - name: RF1WE
+      bit_offset: 5
+      bit_size: 1
+      description: Rx FIFO 1 Watermark Reached Enable
+    - name: RF1FE
+      bit_offset: 6
+      bit_size: 1
+      description: Rx FIFO 1 Full Enable
+    - name: RF1LE
+      bit_offset: 7
+      bit_size: 1
+      description: Rx FIFO 1 Message Lost Enable
+    - name: HPME
+      bit_offset: 8
+      bit_size: 1
+      description: High Priority Message Enable
+    - name: TCE
+      bit_offset: 9
+      bit_size: 1
+      description: Transmission Completed Enable
+    - name: TCFE
+      bit_offset: 10
+      bit_size: 1
+      description: Transmission Cancellation Finished Enable
+    - name: TFEE
+      bit_offset: 11
+      bit_size: 1
+      description: Tx FIFO Empty Enable
+    - name: TEFNE
+      bit_offset: 12
+      bit_size: 1
+      description: Tx Event FIFO New Entry Enable
+    - name: TEFWE
+      bit_offset: 13
+      bit_size: 1
+      description: Tx Event FIFO Watermark Reached Enable
+    - name: TEFFE
+      bit_offset: 14
+      bit_size: 1
+      description: Tx Event FIFO Full Enable
+    - name: TEFLE
+      bit_offset: 15
+      bit_size: 1
+      description: Tx Event FIFO Element Lost Enable
+    - name: TSWE
+      bit_offset: 16
+      bit_size: 1
+      description: Timestamp Wraparound Enable
+    - name: MRAFE
+      bit_offset: 17
+      bit_size: 1
+      description: Message RAM Access Failure Enable
+    - name: TOOE
+      bit_offset: 18
+      bit_size: 1
+      description: Timeout Occurred Enable
+    - name: DRXE
+      bit_offset: 19
+      bit_size: 1
+      description: Message stored to Dedicated Rx Buffer Enable
+    - name: ELOE
+      bit_offset: 22
+      bit_size: 1
+      description: Error Logging Overflow Enable
+    - name: EPE
+      bit_offset: 23
+      bit_size: 1
+      description: Error Passive Enable
+    - name: EWE
+      bit_offset: 24
+      bit_size: 1
+      description: Warning Status Enable
+    - name: BOE
+      bit_offset: 25
+      bit_size: 1
+      description: Bus_Off Status Enable
+    - name: WDIE
+      bit_offset: 26
+      bit_size: 1
+      description: Watchdog Interrupt Enable
+    - name: PEAE
+      bit_offset: 27
+      bit_size: 1
+      description: Protocol Error in Arbitration Phase Enable
+    - name: PEDE
+      bit_offset: 28
+      bit_size: 1
+      description: Protocol Error in Data Phase Enable
+    - name: ARAE
+      bit_offset: 29
+      bit_size: 1
+      description: Access to Reserved Address Enable
+fieldset/FDCAN_ILS:
+  description: ''
+  fields:
+    - name: RF0NL
+      bit_offset: 0
+      bit_size: 1
+      description: Rx FIFO 0 New Message Line
+    - name: RF0WL
+      bit_offset: 1
+      bit_size: 1
+      description: Rx FIFO 0 Watermark Reached Line
+    - name: RF0FL
+      bit_offset: 2
+      bit_size: 1
+      description: Rx FIFO 0 Full Line
+    - name: RF0LL
+      bit_offset: 3
+      bit_size: 1
+      description: Rx FIFO 0 Message Lost Line
+    - name: RF1NL
+      bit_offset: 4
+      bit_size: 1
+      description: Rx FIFO 1 New Message Line
+    - name: RF1WL
+      bit_offset: 5
+      bit_size: 1
+      description: Rx FIFO 1 Watermark Reached Line
+    - name: RF1FL
+      bit_offset: 6
+      bit_size: 1
+      description: Rx FIFO 1 Full Line
+    - name: RF1LL
+      bit_offset: 7
+      bit_size: 1
+      description: Rx FIFO 1 Message Lost Line
+    - name: HPML
+      bit_offset: 8
+      bit_size: 1
+      description: High Priority Message Line
+    - name: TCL
+      bit_offset: 9
+      bit_size: 1
+      description: Transmission Completed Line
+    - name: TCFL
+      bit_offset: 10
+      bit_size: 1
+      description: Transmission Cancellation Finished Line
+    - name: TFEL
+      bit_offset: 11
+      bit_size: 1
+      description: Tx FIFO Empty Line
+    - name: TEFNL
+      bit_offset: 12
+      bit_size: 1
+      description: Tx Event FIFO New Entry Line
+    - name: TEFWL
+      bit_offset: 13
+      bit_size: 1
+      description: Tx Event FIFO Watermark Reached Line
+    - name: TEFFL
+      bit_offset: 14
+      bit_size: 1
+      description: Tx Event FIFO Full Line
+    - name: TEFLL
+      bit_offset: 15
+      bit_size: 1
+      description: Tx Event FIFO Element Lost Line
+    - name: TSWL
+      bit_offset: 16
+      bit_size: 1
+      description: Timestamp Wraparound Line
+    - name: MRAFL
+      bit_offset: 17
+      bit_size: 1
+      description: Message RAM Access Failure Line
+    - name: TOOL
+      bit_offset: 18
+      bit_size: 1
+      description: Timeout Occurred Line
+    - name: DRXL
+      bit_offset: 19
+      bit_size: 1
+      description: Message stored to Dedicated Rx Buffer Line
+    - name: ELOL
+      bit_offset: 22
+      bit_size: 1
+      description: Error Logging Overflow Line
+    - name: EPL
+      bit_offset: 23
+      bit_size: 1
+      description: Error Passive Line
+    - name: EWL
+      bit_offset: 24
+      bit_size: 1
+      description: Warning Status Line
+    - name: BOL
+      bit_offset: 25
+      bit_size: 1
+      description: Bus_Off Status Line
+    - name: WDIL
+      bit_offset: 26
+      bit_size: 1
+      description: Watchdog Interrupt Line
+    - name: PEAL
+      bit_offset: 27
+      bit_size: 1
+      description: Protocol Error in Arbitration Phase Line
+    - name: PEDL
+      bit_offset: 28
+      bit_size: 1
+      description: Protocol Error in Data Phase Line
+    - name: ARAL
+      bit_offset: 29
+      bit_size: 1
+      description: Access to Reserved Address Line
+fieldset/FDCAN_ILE:
+  description: ''
+  fields:
+    - name: EINT0
+      bit_offset: 0
+      bit_size: 1
+      description: Enable Interrupt Line 0
+    - name: EINT1
+      bit_offset: 1
+      bit_size: 1
+      description: Enable Interrupt Line 1
+fieldset/FDCAN_GFC:
+  description: ''
+  fields:
+    - name: RRFE
+      bit_offset: 0
+      bit_size: 1
+      description: Reject Remote Frames Extended
+    - name: RRFS
+      bit_offset: 1
+      bit_size: 1
+      description: Reject Remote Frames Standard
+    - name: ANFE
+      bit_offset: 2
+      bit_size: 2
+      description: Accept Non-matching Frames Extended
+    - name: ANFS
+      bit_offset: 4
+      bit_size: 2
+      description: Accept Non-matching Frames Standard
+fieldset/FDCAN_SIDFC:
+  description: ''
+  fields:
+    - name: FLSSA
+      bit_offset: 2
+      bit_size: 14
+      description: Filter List Standard Start Address
+    - name: LSS
+      bit_offset: 16
+      bit_size: 8
+      description: List Size Standard
+fieldset/FDCAN_XIDFC:
+  description: ''
+  fields:
+    - name: FLESA
+      bit_offset: 2
+      bit_size: 14
+      description: Filter List Standard Start Address
+    - name: LSE
+      bit_offset: 16
+      bit_size: 8
+      description: List Size Extended
+fieldset/FDCAN_XIDAM:
+  description: ''
+  fields:
+    - name: EIDM
+      bit_offset: 0
+      bit_size: 29
+      description: Extended ID Mask
+fieldset/FDCAN_HPMS:
+  description: ''
+  fields:
+    - name: BIDX
+      bit_offset: 0
+      bit_size: 6
+      description: Buffer Index
+    - name: MSI
+      bit_offset: 6
+      bit_size: 2
+      description: Message Storage Indicator
+    - name: FIDX
+      bit_offset: 8
+      bit_size: 7
+      description: Filter Index
+    - name: FLST
+      bit_offset: 15
+      bit_size: 1
+      description: Filter List
+fieldset/FDCAN_NDAT1:
+  description: ''
+  fields:
+    - name: ND0
+      bit_offset: 0
+      bit_size: 1
+      description: New Data flag of Rx Buffer 0
+    - name: ND1
+      bit_offset: 1
+      bit_size: 1
+      description: New Data flag of Rx Buffer 1
+    - name: ND2
+      bit_offset: 2
+      bit_size: 1
+      description: New Data flag of Rx Buffer 2
+    - name: ND3
+      bit_offset: 3
+      bit_size: 1
+      description: New Data flag of Rx Buffer 3
+    - name: ND4
+      bit_offset: 4
+      bit_size: 1
+      description: New Data flag of Rx Buffer 4
+    - name: ND5
+      bit_offset: 5
+      bit_size: 1
+      description: New Data flag of Rx Buffer 5
+    - name: ND6
+      bit_offset: 6
+      bit_size: 1
+      description: New Data flag of Rx Buffer 6
+    - name: ND7
+      bit_offset: 7
+      bit_size: 1
+      description: New Data flag of Rx Buffer 7
+    - name: ND8
+      bit_offset: 8
+      bit_size: 1
+      description: New Data flag of Rx Buffer 8
+    - name: ND9
+      bit_offset: 9
+      bit_size: 1
+      description: New Data flag of Rx Buffer 9
+    - name: ND10
+      bit_offset: 10
+      bit_size: 1
+      description: New Data flag of Rx Buffer 10
+    - name: ND11
+      bit_offset: 11
+      bit_size: 1
+      description: New Data flag of Rx Buffer 11
+    - name: ND12
+      bit_offset: 12
+      bit_size: 1
+      description: New Data flag of Rx Buffer 12
+    - name: ND13
+      bit_offset: 13
+      bit_size: 1
+      description: New Data flag of Rx Buffer 13
+    - name: ND14
+      bit_offset: 14
+      bit_size: 1
+      description: New Data flag of Rx Buffer 14
+    - name: ND15
+      bit_offset: 15
+      bit_size: 1
+      description: New Data flag of Rx Buffer 15
+    - name: ND16
+      bit_offset: 16
+      bit_size: 1
+      description: New Data flag of Rx Buffer 16
+    - name: ND17
+      bit_offset: 17
+      bit_size: 1
+      description: New Data flag of Rx Buffer 17
+    - name: ND18
+      bit_offset: 18
+      bit_size: 1
+      description: New Data flag of Rx Buffer 18
+    - name: ND19
+      bit_offset: 19
+      bit_size: 1
+      description: New Data flag of Rx Buffer 19
+    - name: ND20
+      bit_offset: 20
+      bit_size: 1
+      description: New Data flag of Rx Buffer 20
+    - name: ND21
+      bit_offset: 21
+      bit_size: 1
+      description: New Data flag of Rx Buffer 21
+    - name: ND22
+      bit_offset: 22
+      bit_size: 1
+      description: New Data flag of Rx Buffer 22
+    - name: ND23
+      bit_offset: 23
+      bit_size: 1
+      description: New Data flag of Rx Buffer 23
+    - name: ND24
+      bit_offset: 24
+      bit_size: 1
+      description: New Data flag of Rx Buffer 24
+    - name: ND25
+      bit_offset: 25
+      bit_size: 1
+      description: New Data flag of Rx Buffer 25
+    - name: ND26
+      bit_offset: 26
+      bit_size: 1
+      description: New Data flag of Rx Buffer 26
+    - name: ND27
+      bit_offset: 27
+      bit_size: 1
+      description: New Data flag of Rx Buffer 27
+    - name: ND28
+      bit_offset: 28
+      bit_size: 1
+      description: New Data flag of Rx Buffer 28
+    - name: ND29
+      bit_offset: 29
+      bit_size: 1
+      description: New Data flag of Rx Buffer 29
+    - name: ND30
+      bit_offset: 30
+      bit_size: 1
+      description: New Data flag of Rx Buffer 30
+    - name: ND31
+      bit_offset: 31
+      bit_size: 1
+      description: New Data flag of Rx Buffer 31
+fieldset/FDCAN_NDAT2:
+  description: ''
+  fields:
+    - name: ND32
+      bit_offset: 0
+      bit_size: 1
+      description: New Data flag of Rx Buffer 32
+    - name: ND33
+      bit_offset: 1
+      bit_size: 1
+      description: New Data flag of Rx Buffer 33
+    - name: ND34
+      bit_offset: 2
+      bit_size: 1
+      description: New Data flag of Rx Buffer 34
+    - name: ND35
+      bit_offset: 3
+      bit_size: 1
+      description: New Data flag of Rx Buffer 35
+    - name: ND36
+      bit_offset: 4
+      bit_size: 1
+      description: New Data flag of Rx Buffer 36
+    - name: ND37
+      bit_offset: 5
+      bit_size: 1
+      description: New Data flag of Rx Buffer 37
+    - name: ND38
+      bit_offset: 6
+      bit_size: 1
+      description: New Data flag of Rx Buffer 38
+    - name: ND39
+      bit_offset: 7
+      bit_size: 1
+      description: New Data flag of Rx Buffer 39
+    - name: ND40
+      bit_offset: 8
+      bit_size: 1
+      description: New Data flag of Rx Buffer 40
+    - name: ND41
+      bit_offset: 9
+      bit_size: 1
+      description: New Data flag of Rx Buffer 41
+    - name: ND42
+      bit_offset: 10
+      bit_size: 1
+      description: New Data flag of Rx Buffer 42
+    - name: ND43
+      bit_offset: 11
+      bit_size: 1
+      description: New Data flag of Rx Buffer 43
+    - name: ND44
+      bit_offset: 12
+      bit_size: 1
+      description: New Data flag of Rx Buffer 44
+    - name: ND45
+      bit_offset: 13
+      bit_size: 1
+      description: New Data flag of Rx Buffer 45
+    - name: ND46
+      bit_offset: 14
+      bit_size: 1
+      description: New Data flag of Rx Buffer 46
+    - name: ND47
+      bit_offset: 15
+      bit_size: 1
+      description: New Data flag of Rx Buffer 47
+    - name: ND48
+      bit_offset: 16
+      bit_size: 1
+      description: New Data flag of Rx Buffer 48
+    - name: ND49
+      bit_offset: 17
+      bit_size: 1
+      description: New Data flag of Rx Buffer 49
+    - name: ND50
+      bit_offset: 18
+      bit_size: 1
+      description: New Data flag of Rx Buffer 50
+    - name: ND51
+      bit_offset: 19
+      bit_size: 1
+      description: New Data flag of Rx Buffer 51
+    - name: ND52
+      bit_offset: 20
+      bit_size: 1
+      description: New Data flag of Rx Buffer 52
+    - name: ND53
+      bit_offset: 21
+      bit_size: 1
+      description: New Data flag of Rx Buffer 53
+    - name: ND54
+      bit_offset: 22
+      bit_size: 1
+      description: New Data flag of Rx Buffer 54
+    - name: ND55
+      bit_offset: 23
+      bit_size: 1
+      description: New Data flag of Rx Buffer 55
+    - name: ND56
+      bit_offset: 24
+      bit_size: 1
+      description: New Data flag of Rx Buffer 56
+    - name: ND57
+      bit_offset: 25
+      bit_size: 1
+      description: New Data flag of Rx Buffer 57
+    - name: ND58
+      bit_offset: 26
+      bit_size: 1
+      description: New Data flag of Rx Buffer 58
+    - name: ND59
+      bit_offset: 27
+      bit_size: 1
+      description: New Data flag of Rx Buffer 59
+    - name: ND60
+      bit_offset: 28
+      bit_size: 1
+      description: New Data flag of Rx Buffer 60
+    - name: ND61
+      bit_offset: 29
+      bit_size: 1
+      description: New Data flag of Rx Buffer 61
+    - name: ND62
+      bit_offset: 30
+      bit_size: 1
+      description: New Data flag of Rx Buffer 62
+    - name: ND63
+      bit_offset: 31
+      bit_size: 1
+      description: New Data flag of Rx Buffer 63
+fieldset/FDCAN_RXF0C:
+  description: ''
+  fields:
+    - name: F0SA
+      bit_offset: 2
+      bit_size: 14
+      description: Rx FIFO 0 Start Address
+    - name: F0S
+      bit_offset: 16
+      bit_size: 7
+      description: Number of Rx FIFO 0 elements
+    - name: F0WM
+      bit_offset: 24
+      bit_size: 7
+      description: FIFO 0 Watermark
+    - name: F0OM
+      bit_offset: 31
+      bit_size: 1
+      description: FIFO 0 Operation Mode
+fieldset/FDCAN_RXF0S:
+  description: ''
+  fields:
+    - name: F0FL
+      bit_offset: 0
+      bit_size: 7
+      description: Rx FIFO 0 Fill Level
+    - name: F0GI
+      bit_offset: 8
+      bit_size: 6
+      description: Rx FIFO 0 Get Index
+    - name: F0PI
+      bit_offset: 16
+      bit_size: 6
+      description: Rx FIFO 0 Put Index
+    - name: F0F
+      bit_offset: 24
+      bit_size: 1
+      description: Rx FIFO 0 Full
+    - name: RF0L
+      bit_offset: 25
+      bit_size: 1
+      description: Rx FIFO 0 Message Lost
+fieldset/FDCAN_RXF0A:
+  description: ''
+  fields:
+    - name: F0AI
+      bit_offset: 0
+      bit_size: 6
+      description: Rx FIFO 0 Acknowledge Index
+fieldset/FDCAN_RXBC:
+  description: ''
+  fields:
+    - name: RBSA
+      bit_offset: 2
+      bit_size: 14
+      description: Rx Buffer Start Address
+fieldset/FDCAN_RXF1C:
+  description: ''
+  fields:
+    - name: F1SA
+      bit_offset: 2
+      bit_size: 14
+      description: Rx FIFO 1 Start Address
+    - name: F1S
+      bit_offset: 16
+      bit_size: 7
+      description: Number of Rx FIFO 1 elements
+    - name: F1WM
+      bit_offset: 24
+      bit_size: 7
+      description: Rx FIFO 1 Watermark
+    - name: F1OM
+      bit_offset: 31
+      bit_size: 1
+      description: FIFO 1 Operation Mode
+fieldset/FDCAN_RXF1S:
+  description: ''
+  fields:
+    - name: F1FL
+      bit_offset: 0
+      bit_size: 7
+      description: Rx FIFO 1 Fill Level
+    - name: F1GI
+      bit_offset: 8
+      bit_size: 6
+      description: Rx FIFO 1 Get Index
+    - name: F1PI
+      bit_offset: 16
+      bit_size: 6
+      description: Rx FIFO 1 Put Index
+    - name: F1F
+      bit_offset: 24
+      bit_size: 1
+      description: Rx FIFO 1 Full
+    - name: RF1L
+      bit_offset: 25
+      bit_size: 1
+      description: Rx FIFO 1 Message Lost
+    - name: DMS
+      bit_offset: 30
+      bit_size: 2
+      description: Debug Message Status
+fieldset/FDCAN_RXF1A:
+  description: ''
+  fields:
+    - name: F1AI
+      bit_offset: 0
+      bit_size: 6
+      description: Rx FIFO 1 Acknowledge Index
+fieldset/FDCAN_RXESC:
+  description: ''
+  fields:
+    - name: F0DS
+      bit_offset: 0
+      bit_size: 3
+      description: Rx FIFO 1 Data Field Size
+    - name: F1DS
+      bit_offset: 4
+      bit_size: 3
+      description: Rx FIFO 0 Data Field Size
+    - name: RBDS
+      bit_offset: 8
+      bit_size: 3
+      description: Rx Buffer Data Field Size
+fieldset/FDCAN_TXBC:
+  description: ''
+  fields:
+    - name: TBSA
+      bit_offset: 2
+      bit_size: 14
+      description: Tx Buffers Start Address
+    - name: NDTB
+      bit_offset: 16
+      bit_size: 6
+      description: Number of Dedicated Transmit Buffers
+    - name: TFQS
+      bit_offset: 24
+      bit_size: 6
+      description: Transmit FIFO/Queue Size
+    - name: TFQM
+      bit_offset: 30
+      bit_size: 1
+      description: Tx FIFO/Queue Mode
+fieldset/FDCAN_TXFQS:
+  description: ''
+  fields:
+    - name: TFFL
+      bit_offset: 0
+      bit_size: 6
+      description: Tx FIFO Free Level
+    - name: TFGI
+      bit_offset: 8
+      bit_size: 5
+      description: Tx FIFO Get Index
+    - name: TFQPI
+      bit_offset: 16
+      bit_size: 5
+      description: Tx FIFO/Queue Put Index
+    - name: TFQF
+      bit_offset: 21
+      bit_size: 1
+      description: Tx FIFO/Queue Full
+fieldset/FDCAN_TXESC:
+  description: ''
+  fields:
+    - name: TBDS
+      bit_offset: 0
+      bit_size: 3
+      description: Tx Buffer Data Field Size
+fieldset/FDCAN_TXBRP:
+  description: ''
+  fields:
+    - name: TRP
+      bit_offset: 0
+      bit_size: 32
+      description: Transmission Request Pending
+fieldset/FDCAN_TXBAR:
+  description: ''
+  fields:
+    - name: AR
+      bit_offset: 0
+      bit_size: 32
+      description: Add Request
+fieldset/FDCAN_TXBCR:
+  description: ''
+  fields:
+    - name: CR
+      bit_offset: 0
+      bit_size: 32
+      description: Cancellation Request
+fieldset/FDCAN_TXBTO:
+  description: ''
+  fields:
+    - name: TO
+      bit_offset: 0
+      bit_size: 32
+      description: Transmission Occurred
+fieldset/FDCAN_TXBCF:
+  description: ''
+  fields:
+    - name: CF
+      bit_offset: 0
+      bit_size: 32
+      description: Cancellation Finished
+fieldset/FDCAN_TXBTIE:
+  description: ''
+  fields:
+    - name: TIE
+      bit_offset: 0
+      bit_size: 32
+      description: Transmission Interrupt Enable
+fieldset/FDCAN_TXBCIE:
+  description: ''
+  fields:
+    - name: CF
+      bit_offset: 0
+      bit_size: 32
+      description: Cancellation Finished Interrupt Enable
+fieldset/FDCAN_TXEFC:
+  description: ''
+  fields:
+    - name: EFSA
+      bit_offset: 2
+      bit_size: 14
+      description: Event FIFO Start Address
+    - name: EFS
+      bit_offset: 16
+      bit_size: 6
+      description: Event FIFO Size
+    - name: EFWM
+      bit_offset: 24
+      bit_size: 6
+      description: Event FIFO Watermark
+fieldset/FDCAN_TXEFS:
+  description: ''
+  fields:
+    - name: EFFL
+      bit_offset: 0
+      bit_size: 6
+      description: Event FIFO Fill Level
+    - name: EFGI
+      bit_offset: 8
+      bit_size: 5
+      description: Event FIFO Get Index
+    - name: EFPI
+      bit_offset: 16
+      bit_size: 5
+      description: Event FIFO Put Index
+    - name: EFF
+      bit_offset: 24
+      bit_size: 1
+      description: Event FIFO Full
+    - name: TEFL
+      bit_offset: 25
+      bit_size: 1
+      description: Tx Event FIFO Element Lost
+fieldset/FDCAN_TXEFA:
+  description: ''
+  fields:
+    - name: EFAI
+      bit_offset: 0
+      bit_size: 5
+      description: Event FIFO Acknowledge Index

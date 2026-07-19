@@ -282,10 +282,9 @@ pub unsafe fn bringup() {
 
     // SAFETY: `TIM2_IRQ` is the STM32MP257F non-secure TIM2 vector; the handler
     // forwarding to the time driver is installed by the generated code.
-    unsafe {
-        crate::hal::nvic::set_priority(TIM2_IRQ, 0x80);
-        crate::hal::nvic::enable(TIM2_IRQ);
-    }
+    unsafe { crate::hal::nvic::set_priority(TIM2_IRQ, 0x80) };
+    // SAFETY: see above; enabling the same reserved TIM2 vector.
+    unsafe { crate::hal::nvic::enable(TIM2_IRQ) };
 }
 
 #[cfg(test)]

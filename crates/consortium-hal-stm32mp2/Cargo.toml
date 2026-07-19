@@ -6,7 +6,7 @@ name              = "consortium-hal-stm32mp2"
 version.workspace = true
 
 [features]
-default = ["defmt", "dma", "gpio", "i2c", "stm32mp25x", "time-driver-gp-tim", "uart"]
+default = ["can", "defmt", "dma", "gpio", "i2c", "spi", "stm32mp25x", "time-driver-gp-tim", "uart"]
 # Chip selection — forwarded to the PAC. Choose exactly one. STM32MP23 and
 # STM32MP25 share one interrupt/peripheral layout, so both map to the PAC's
 # `stm32mp257` chip. Dependents that select a different chip must set
@@ -16,9 +16,11 @@ stm32mp23x = ["consortium-pac-stm32mp2/stm32mp257"]
 stm32mp25x = ["consortium-pac-stm32mp2/stm32mp257"]
 # Forward cortex-m-rt runtime support (vector table, `#[interrupt]`) to the PAC.
 rt = ["consortium-pac-stm32mp2/rt"]
+can = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-can", "dep:nb"]
 dma = ["dep:critical-section", "dep:embassy-sync"]
 gpio = ["dep:embassy-sync", "dep:embedded-hal"]
 i2c = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
+spi = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
 time-driver-gp-tim = [
   "dep:critical-section",
   "dep:embassy-sync",
@@ -44,9 +46,11 @@ embassy-hal-internal     = { optional = true, version = "0.5.0" }
 embassy-sync             = { optional = true, version = "0.8.0" }
 embassy-time-driver      = { optional = true, version = "0.2.2" }
 embassy-time-queue-utils = { optional = true, version = "0.3.2" }
+embedded-can             = { optional = true, version = "0.4.1" }
 embedded-hal             = { optional = true, version = "1.0.0" }
 embedded-hal-async       = { optional = true, version = "1.0.0" }
 embedded-hal-nb          = { optional = true, version = "1.0.0" }
+nb                       = { optional = true, version = "1.1.0" }
 embedded-io              = { optional = true, version = "0.7" }
 embedded-io-async        = { optional = true, version = "0.7" }
 defmt                    = { optional = true, version = "1" }

@@ -1,5 +1,6 @@
 pub mod dma;
 pub mod dma_channel;
+pub mod fdcan;
 pub mod gpio;
 pub mod hsem;
 pub mod i2c;
