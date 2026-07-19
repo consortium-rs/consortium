@@ -23,7 +23,9 @@ version.workspace = true
 
 [features]
 dbg     = ["dep:consortium-dbg"]
-default = ["ipc-shm"]
+default = ["ipc-shm", "macros"]
+# Re-export the `#[consortium_runtime_mcu::main]` / `::fail` entry macros.
+macros = ["dep:consortium-runtime-macros"]
 # Route generated-code logging (`::consortium_runtime_mcu::log::*`) to `defmt`.
 # The firmware crate that includes the generated module must also depend on
 # `defmt` directly, since `defmt`'s macros expand to literal `defmt::` paths.
@@ -31,6 +33,7 @@ defmt = [
   "consortium-ipc-transport-memory?/defmt",
   "consortium-ipc-transport-uart?/defmt",
   "consortium-log/defmt",
+  "dep:defmt",
 ]
 mimx93 = ["consortium-ipc-transport-memory?/mimx93", "mimx9x"]
 mimx95 = ["consortium-ipc-transport-memory?/mimx95", "mimx9x"]
@@ -54,7 +57,12 @@ consortium-dbg = { default-features = false, features = [
 ], optional = true, path = "../consortium-dbg" }
 consortium-ipc-transport-memory = { default-features = false, optional = true, path = "../consortium-ipc-transport-memory" }
 consortium-ipc-transport-uart = { default-features = false, optional = true, path = "../consortium-ipc-transport-uart" }
+consortium-runtime-macros = { optional = true, path = "../consortium-runtime-macros" }
 consortium-runtime-sys = { path = "../consortium-runtime-sys" }
 cortex-m = { version = "0.7" }
-num-traits = { default-features = false, version = "0.2.19" }
+# Only used by the entry-macro fallback fail handler's log line, which is gated
+# behind this crate's `defmt` feature (the `log` re-export otherwise expands to
+# `defmt::` paths this crate could not resolve).
+defmt       = { optional = true, version = "1" }
+num-traits  = { default-features = false, version = "0.2.19" }
 static_cell = { default-features = false, version = "2" }

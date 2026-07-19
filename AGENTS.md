@@ -22,7 +22,9 @@ The current implementation centers on explicit cross-core contracts:
 - `consortium-log` is the common `defmt`/`tracing` facade used by generated and
   cross-platform code.
 - `consortium-tee` handles the trusted execution environment contracts.
-- `consortium-hmi` provides a Cog/WPE WebKit-based human-computer interface.
+- `consortium-hmi` owns the backend-neutral HMI command bridge;
+  `consortium-hmi-webkit` adapts it to Cog/WPE WebKit, and
+  `consortium-hmi-pocket` provides the native PocketJS prototype.
 
 ## Commands
 
@@ -70,20 +72,20 @@ A-core, TEE, HMI, UIO, Cog, WebKit, and Yocto/OpenSTLinux flows are Linux/SDK or
 
 ## Workspace Shape
 
-| Area            | Crates                                                                                                                                         |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| Core IPC        | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                                        |
-| Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                                  |
-| Transports      | `consortium-shared-memory`, `consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`                                                |
-| Doorbells       | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-ipcc`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`                   |
-| Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`, `consortium-data`                                                                 |
-| HAL/PAC         | `consortium-hal`, `consortium-hal-imx9`, `consortium-hal-stm32mp2`, `consortium-pac-imx9`, `consortium-pac-stm32mp2`                           |
-| Macro helpers   | `consortium-macros-helpers`                                                                                                                    |
-| Runtimes/build  | `consortium-runtime-app`, `consortium-runtime-mcu`, `consortium-runtime-spl`, `consortium-runtime-sys`, `consortium-builder`, `consortium-cli` |
-| Logging/debug   | `consortium-log`, `consortium-dbg`                                                                                                             |
-| TEE             | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`                                                                        |
-| HMI/Cog/ORT/FFI | `consortium-hmi`, `cogcore`, `cogcore-sys`, `consortium-ort`, `consortium-ffi`                                                                 |
-| Examples        | `examples/melt-pot/*` for i.MX95 and STM32MP25 app/MCU/TA/shared message crates                                                                |
+| Area            | Crates                                                                                                                                                                                                        |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Core IPC        | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                                                                                                       |
+| Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                                                                                                 |
+| Transports      | `consortium-shared-memory`, `consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`                                                                                                               |
+| Doorbells       | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-ipcc`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`                                                                                  |
+| Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`, `consortium-data`                                                                                                                                |
+| HAL/PAC         | `consortium-hal`, `consortium-hal-imx9`, `consortium-hal-stm32mp2`, `consortium-pac-imx9`, `consortium-pac-stm32mp2`                                                                                          |
+| Macro helpers   | `consortium-macros-helpers`                                                                                                                                                                                   |
+| Runtimes/build  | `consortium-runtime-app`, `consortium-runtime-mcu`, `consortium-runtime-macros`, `consortium-runtime-macros-impl`, `consortium-runtime-spl`, `consortium-runtime-sys`, `consortium-builder`, `consortium-cli` |
+| Logging/debug   | `consortium-log`, `consortium-dbg`                                                                                                                                                                            |
+| TEE             | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`                                                                                                                                       |
+| HMI/Cog/ORT/FFI | `consortium-hmi`, `consortium-hmi-webkit`, `consortium-hmi-pocket`, `cogcore`, `cogcore-sys`, `consortium-ort`, `consortium-ffi`                                                                              |
+| Examples        | `examples/melt-pot/*` for i.MX95 and STM32MP25 app/MCU/TA/shared message crates                                                                                                                               |
 
 The root workspace includes `crates/*` and `examples/melt-pot/shared`. Per-endpoint
 example crates under `examples/melt-pot/{imx95,stm32mp25}/{app,mcu,ta}` are excluded
@@ -254,7 +256,9 @@ Current top-level schema:
 
 - `[profile]` contains required `chip`, `shared`, and `deploy_root`; optional `devkit`
   selects a bundled board DTS by full file stem, `sysroot` selects the Linux target
-  sysroot, and `kernel_recipe` enables generation of a kernel `.bbappend`.
+  sysroot, `kernel_recipe` enables generation of a kernel `.bbappend`, and
+  `time_driver` (default `true`) toggles the sealed controller-core Embassy time driver,
+  timer vector, and `defmt::timestamp!`.
 - `[dts]` controls Linux device-tree output: `mode = "merge"` (default) emits a full
   tree, while `overlay` emits a `.dtso`; `base` overrides the base tree and `linux`
   points at a kernel source tree for GPL-licensed dt-bindings used during compilation.
@@ -317,7 +321,7 @@ Current IPC build-time variables are channel-local metadata such as
 `CONSORTIUM_IPC_LENGTH`, `CONSORTIUM_IPC_UIO`, and `CONSORTIUM_IPC_MTU`; the shared
 memory base comes from generated code and UIO mapping, not `CONSORTIUM_IPC_BASE`.
 `consortium-dbg::config` reads `CONSORTIUM_DBG_BASE` and `CONSORTIUM_DBG_LENGTH`.
-`consortium-hmi` reads `CONSORTIUM_HMI_DIST` and optional
+`consortium-hmi-webkit` reads `CONSORTIUM_HMI_DIST` and optional
 `CONSORTIUM_HMI_DEBUG_URL`. The HMI build command is selected by
 `CONSORTIUM_HMI_BUILD_CMD`, then `vp`, then `npm`.
 
@@ -334,10 +338,41 @@ doorbell notifiers.
 
 `consortium-runtime-mcu` is `no_std`, re-exports debug and shared-memory IPC pieces
 behind features, and provides small helpers such as `static_buf!` for scratch buffers.
-Its default feature is `ipc-shm`. It also exposes `rsc_table`: raw bindings come from
+Its default features are `ipc-shm` and `macros`. It also exposes `rsc_table`: raw bindings come from
 the generated `consortium-runtime-sys` crate, while `SharedResourceTable` and
 `RSC_TABLE` emit an RPMsg-vdev-plus-trace table in the firmware `.resource_table`
 section. Keep packed-layout access and Linux remoteproc ABI requirements explicit.
+
+### Entry Macros and `Context`
+
+`consortium-runtime-macros` (facade) + `consortium-runtime-macros-impl` provide the
+runtime entry-point attribute macros, re-exported by the runtime crates behind their
+`macros` feature (default on). Firmware writes `#[consortium_runtime_mcu::main] async fn
+main(context: Context, spawner: Spawner)`; applications write
+`#[consortium_runtime_app::main] async fn main(context: Context)`. The macro stacks the
+executor attribute (`embassy_executor::main` / `tokio::main`, resolved through the _user_
+crate's own dep — so firmware still needs `embassy-executor` with `executor-thread` +
+`platform-cortex-m`, and apps still need `tokio` with `macros`), calls the generated
+`init()`, and binds its result as `context`.
+
+`Context` is the aggregate the generated `consortium.gen.rs` exposes for the whole
+manifest — connected transceivers at `context.ipc_shm.<name>`, plus `context.peripherals`
+on controller cores that own `[peripheral.*]`. On both sides `init()` is
+`async fn init() -> Result<Context, ConsortiumInitError>`; the two-phase
+`IpcMemoryEndpoints::new`/`connect` API stays available for non-macro callers. On failure
+the macro glue calls `__consortium_init_fail`; define an optional
+`#[consortium_runtime_{mcu,app}::fail] fn on_fail(err: ConsortiumInitError)` to report it
+(its module-scope item shadows the runtime crate's glob-imported fallback, which otherwise
+hard-fails: MCU parks with `wfi`, the app exits non-zero). `#[main]`, `#[fail]`, `init`,
+and `Context` must share the module the generated file is `include!`d into.
+
+On controller cores the generated `init()` also seals what firmware used to hand-write:
+it resets the CDBG ring (`ConsortiumLogger::init`) when a `[dbg.<core>]` logger is present,
+and brings up the chip's Embassy time driver via `timer_driver::bringup` (STM32MP2 TIM2 /
+i.MX9 LPIT1), emitting the matching timer vector and `defmt::timestamp!` into the generated
+module. Disable this with `[profile] time_driver = false` when firmware owns its own time
+base (these defaults are reference-board values). See `consortium-cfg`'s
+`components/time.rs` and the melt-pot `mcu/src/main.rs` files.
 
 `consortium-runtime-spl` currently exposes small domain/peripheral/role traits for
 partitioning-oriented code.
@@ -384,9 +419,14 @@ descriptor, then waits with the target architecture's WFI instruction.
 
 ## HMI
 
-`consortium-hmi` is Linux-only and currently exposes `KioskApp` and `Bridge`. In debug
-builds it can load `CONSORTIUM_HMI_DEBUG_URL`; otherwise it serves the compiled dist path
-from `CONSORTIUM_HMI_DIST`.
+`consortium-hmi` is the portable application-service registry and response-future
+contract. It contains no Cog, GLib, WebKit, PocketJS, or Tokio runtime state.
+`consortium-hmi-webkit` is Linux-only and exposes `KioskApp` plus the shared `Bridge`;
+in debug builds it can load `CONSORTIUM_HMI_DEBUG_URL`, otherwise it serves the compiled
+dist path from `CONSORTIUM_HMI_DIST`. `consortium-hmi-pocket` is the native prototype:
+it hosts a PocketJS JS/pak pair, mounts the bridge into QuickJS, delivers responses at
+frame boundaries, and exposes headless wgpu rendering. It does not yet provide the
+production Wayland/DRM/input shell or builder integration.
 `cogcore-sys` owns raw bindgen output and vendored Cog/WPE/WebKit headers; `cogcore`
 wraps a small safe subset and keeps WebKit/WPE types mostly opaque.
 

@@ -199,12 +199,16 @@ for ConsortiumInitError {
         ConsortiumInitError::Dbg(e)
     }
 }
-struct ConsortiumEndpoints {
+/// The aggregate of everything this manifest brings up for the
+/// application core, handed to the body by
+/// `#[consortium_runtime_app::main]`. `ipc_shm` holds the connected
+/// transceivers; `uio` keeps the mapped devices alive for them.
+struct Context {
     _consortium_dbg: ::consortium_runtime_app::dbg_console::DbgConsole,
     uio: ::std::vec::Vec<::consortium_runtime_app::uio::UioDevice>,
     ipc_shm: IpcMemoryEndpointsConnected,
 }
-async fn init() -> ::core::result::Result<ConsortiumEndpoints, ConsortiumInitError> {
+async fn init() -> ::core::result::Result<Context, ConsortiumInitError> {
     ::consortium_runtime_app::log::trace!(
         "consortium init: opening {} uio device(s)", 3usize
     );
@@ -225,17 +229,8 @@ async fn init() -> ::core::result::Result<ConsortiumEndpoints, ConsortiumInitErr
                 elf_bytes: {
                     #[repr(align(16))]
                     struct Aligned<const N: usize>([u8; N]);
-                    static ELF: Aligned<
-                        {
-                            include_bytes!(
-                                "/home/ethanwu/consortium/examples/melt-pot/imx95/mcu/target/thumbv7em-none-eabihf/debug/melt-pot-imx95-mcu_original.elf"
-                            )
-                                .len()
-                        },
-                    > = Aligned(
-                        *include_bytes!(
-                            "/home/ethanwu/consortium/examples/melt-pot/imx95/mcu/target/thumbv7em-none-eabihf/debug/melt-pot-imx95-mcu_original.elf"
-                        ),
+                    static ELF: Aligned<{ include_bytes!("./mcu").len() }> = Aligned(
+                        *include_bytes!("./mcu"),
                     );
                     &ELF.0
                 },
@@ -243,8 +238,8 @@ async fn init() -> ::core::result::Result<ConsortiumEndpoints, ConsortiumInitErr
             },
         ],
     )?;
-    ::consortium_runtime_app::log::trace!("consortium init: endpoints ready");
-    ::core::result::Result::Ok(ConsortiumEndpoints {
+    ::consortium_runtime_app::log::trace!("consortium init: context ready");
+    ::core::result::Result::Ok(Context {
         _consortium_dbg,
         uio,
         ipc_shm,

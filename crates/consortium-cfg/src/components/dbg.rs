@@ -124,7 +124,7 @@ impl DebugLogs {
     /// Generates the AP-side host console code, or `None` when no coprocessor
     /// declares a debug ring.
     ///
-    /// The returned [`HostCodegen`] carries the `ConsortiumEndpoints` field
+    /// The returned [`HostCodegen`] carries the `Context` field
     /// (declared *before* `uio` so its threads/handles drop before the mappings
     /// they read are unmapped) and the `init()` statement that brings it up. In
     /// [`DbgMode::Auto`] this spawns a forwarding console; in
@@ -220,9 +220,9 @@ impl DebugLogs {
 }
 
 /// The fragments [`DebugLogs::initialize_host`] contributes to the AP's
-/// generated `ConsortiumEndpoints` and `init()`.
+/// generated `Context` and `init()`.
 pub struct HostCodegen {
-    /// `ConsortiumEndpoints` field declaration (`name: Type`).
+    /// `Context` field declaration (`name: Type`).
     pub field: TokenStream,
     /// The field's identifier, for the struct literal in `init()`.
     pub field_name: Ident,

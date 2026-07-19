@@ -72,6 +72,9 @@ pub struct LoweredIr {
     pub dbg: DebugLogs,
     /// Owned peripherals (I2C, GPIO) to bring up per controller core.
     pub peripherals: Peripherals,
+    /// Whether controller cores get the sealed Embassy time driver, timer
+    /// vector, and `defmt::timestamp!` (mirrors `[profile] time_driver`).
+    pub time_driver: bool,
 }
 
 impl LoweredIr {
@@ -98,6 +101,7 @@ impl LoweredIr {
                 hal_crate: String::new(),
                 instances: Vec::new(),
             },
+            time_driver: true,
         }
     }
 
@@ -109,9 +113,9 @@ impl LoweredIr {
     ///
     /// The AP additionally brings up the Linux [`UioDevice`]s this IR declares
     /// and wraps both in an `init` entry point returning
-    /// `ConsortiumEndpoints { uio, ipc_shm }`. The opened devices are kept in
+    /// `Context { uio, ipc_shm }`. The opened devices are kept in
     /// `uio` because `ipc_shm` borrows their mmap windows for the lifetime of
-    /// the endpoints.
+    /// the context.
     ///
     /// [`UioDevice`]: crate::components::uio::UioDevice
     pub fn initialize(&self, core: VisibleCore, ty_crate: &syn::Path) -> proc_macro2::TokenStream {
@@ -144,7 +148,7 @@ impl LoweredIr {
 
         // `UioDevice::open(n, enable_irq)` for each declared device, in `self.uio` order
         // (shared-memory device first, then one per doorbell, then `dbg-shm`).
-        // The opened handles are moved into `ConsortiumEndpoints` so the mmap
+        // The opened handles are moved into `Context` so the mmap
         // windows `IpcMemoryEndpointsConnected` borrows stay alive.
         let opens = self.uio.iter().enumerate().map(|(id, (_, device))| {
             let enable_irq = device.irq.is_some();
@@ -222,13 +226,17 @@ impl LoweredIr {
 
             #dbg_from
 
-            struct ConsortiumEndpoints {
+            /// The aggregate of everything this manifest brings up for the
+            /// application core, handed to the body by
+            /// `#[consortium_runtime_app::main]`. `ipc_shm` holds the connected
+            /// transceivers; `uio` keeps the mapped devices alive for them.
+            struct Context {
                 #dbg_field
                 #uio_ident: ::std::vec::Vec<::consortium_runtime_app::uio::UioDevice>,
                 ipc_shm: IpcMemoryEndpointsConnected,
             }
 
-            async fn init() -> ::core::result::Result<ConsortiumEndpoints, ConsortiumInitError> {
+            async fn init() -> ::core::result::Result<Context, ConsortiumInitError> {
                 ::consortium_runtime_app::log::trace!(
                     "consortium init: opening {} uio device(s)", #uio_count
                 );
@@ -238,30 +246,41 @@ impl LoweredIr {
                 );
                 let ipc_shm = IpcMemoryEndpoints::new(&#uio_ident)?.connect().await?;
                 #dbg_init
-                ::consortium_runtime_app::log::trace!("consortium init: endpoints ready");
-                ::core::result::Result::Ok(ConsortiumEndpoints { #dbg_field_name #uio_ident, ipc_shm })
+                ::consortium_runtime_app::log::trace!("consortium init: context ready");
+                ::core::result::Result::Ok(Context { #dbg_field_name #uio_ident, ipc_shm })
             }
         }
     }
 
-    /// Wraps a Cortex-M controller core's endpoint module with an `init` entry
-    /// point that brings up the core's memory protection and interrupt
-    /// controller before constructing the (disconnected) IPC endpoints.
+    /// Wraps a Cortex-M controller core's endpoint module with the aggregate
+    /// `async init()` entry point that `#[consortium_runtime_mcu::main]` calls,
+    /// plus the [`Context`] it returns.
     ///
     /// The generated `init`:
     ///
+    /// - resets the CDBG ring via `ConsortiumLogger::init()` when a
+    ///   `[dbg.<core>]` logger is present, so the first `defmt` frame lands in a
+    ///   fresh descriptor;
     /// - programs one Normal, shareable, non-cacheable MPU carveout per
     ///   distinct shared IPC region (so this core and its peer observe a
     ///   coherent view without manual cache maintenance), for the cached
     ///   Cortex-M families that ship a [`consortium_runtime_mcu::mpu`] helper
     ///   (ARMv7-M/ARMv8-M). ARMv6-M (`cm0p`) has no data cache and no helper, so
-    ///   it gets NVIC setup only; and
+    ///   it gets NVIC setup only;
     /// - unmasks every doorbell NVIC line visible to this core (via
-    ///   [`BellA::nvic_enable`](crate::components::bella::BellA::nvic_enable)).
+    ///   [`BellA::nvic_enable`](crate::components::bella::BellA::nvic_enable));
+    /// - brings up the sealed Embassy time driver (its timer vector and
+    ///   `defmt::timestamp!` are emitted alongside) unless `[profile]
+    ///   time_driver = false`; and
+    /// - runs the IPC descriptor handshake (`IpcMemoryEndpoints::new().connect()`)
+    ///   and, for cores that own peripherals, `peripherals()`, returning the
+    ///   connected [`Context`].
     ///
-    /// It is gated to `target_arch = "arm"` so the host trybuild harness, which
-    /// never links `cortex-m` or `consortium-runtime-mcu`, skips it while still
-    /// compiling the endpoint module.
+    /// The two-phase `IpcMemoryEndpoints::new`/`connect` API stays public for
+    /// non-macro callers. `init`, `Context`, and `ConsortiumInitError` are gated
+    /// to `target_arch = "arm"` so the host trybuild harness, which never links
+    /// `cortex-m` or `consortium-runtime-mcu`, skips them while still compiling
+    /// the endpoint module.
     fn controller_init(
         &self,
         core: VisibleCore,
@@ -321,29 +340,110 @@ impl LoweredIr {
         let nvic = self.bella.nvic_enable(&core, &self.peripherals.hal_crate);
 
         // Peripheral (I2C/GPIO) bring-up: the `Peripherals` struct, per-instance
-        // interrupt state/handlers, and a `peripherals()` constructor. Empty for
+        // interrupt state/handlers, and a `peripherals()` constructor. `None` for
         // cores that own no codegen-supported peripheral.
         let peripherals = self.peripherals.initialize(core);
+        let has_peripherals = peripherals.is_some();
+        // When the core owns peripherals, the aggregate `Context` carries the
+        // `peripherals()` handle bundle alongside the connected transceivers.
+        let (ctx_peripherals_field, ctx_peripherals_bind, ctx_peripherals_name) = if has_peripherals
+        {
+            (
+                quote! { peripherals: Peripherals, },
+                quote! { let peripherals = peripherals(); },
+                quote! { peripherals, },
+            )
+        } else {
+            (quote! {}, quote! {}, quote! {})
+        };
+
+        // A `[dbg.<core>]` logger means `defmt` is linked: reset the CDBG ring
+        // first thing (before any trace) and emit a `defmt::timestamp!` source.
+        let dbg_present = self.dbg.ring(core).is_some();
+        let logger_init = if dbg_present {
+            quote! {
+                // Reset the CDBG ring on every boot so a warm reset does not
+                // leave a stale, valid-looking descriptor behind. Must run
+                // before the first `defmt` frame below.
+                ::consortium_dbg::logger::ConsortiumLogger::init();
+            }
+        } else {
+            quote! {}
+        };
+
+        // Sealed Embassy time driver: `bringup` statement (into `init`), the
+        // timer vector, and the `defmt::timestamp!` source. Empty when
+        // `[profile] time_driver = false` or the chip family has no driver yet.
+        let time = crate::components::time::time_driver_codegen(
+            &self.peripherals.hal_crate,
+            self.time_driver,
+            dbg_present,
+        );
+        let crate::components::time::TimeDriverCodegen {
+            timestamp,
+            isr: time_isr,
+            bringup: time_bringup,
+        } = time;
 
         quote! {
             #endpoints
 
-            /// Brings up this controller core's memory protection and interrupt
-            /// controller, then constructs its (disconnected) IPC endpoints.
-            /// Call `.connect().await` on the result to run the descriptor
-            /// handshake.
+            #timestamp
+            #time_isr
+
+            /// Aggregate bring-up failure for this controller core's [`init`].
+            /// The payload is surfaced through `Debug`/`defmt` in the consuming
+            /// firmware binary, which dead-code analysis cannot see, so allow the
+            /// otherwise-"never read" field.
+            ///
+            /// Gated to `target_arch = "arm"` alongside `init`/`Context`: the
+            /// host trybuild harness compiles only the endpoint module, never the
+            /// firmware entry surface.
+            #[cfg(target_arch = "arm")]
+            #[cfg_attr(target_os = "none", derive(Debug, defmt::Format))]
+            #[cfg_attr(not(target_os = "none"), derive(Debug))]
+            #[allow(dead_code)]
+            enum ConsortiumInitError {
+                /// An IPC transceiver's descriptor handshake failed.
+                Ipc(ConsortiumConnectError),
+            }
+
+            #[cfg(target_arch = "arm")]
+            impl ::core::convert::From<ConsortiumConnectError> for ConsortiumInitError {
+                fn from(e: ConsortiumConnectError) -> Self {
+                    ConsortiumInitError::Ipc(e)
+                }
+            }
+
+            /// Everything this manifest brings up for the controller core, handed
+            /// to the body by `#[consortium_runtime_mcu::main]`. `ipc_shm` holds
+            /// the connected transceivers. Gated with `init` (references the
+            /// `target_arch = "arm"`-only `Peripherals`).
+            #[cfg(target_arch = "arm")]
+            struct Context {
+                ipc_shm: IpcMemoryEndpointsConnected,
+                #ctx_peripherals_field
+            }
+
+            /// Brings up this controller core's logger, memory protection,
+            /// interrupt controller, and time driver, runs the IPC descriptor
+            /// handshake, and returns the connected [`Context`].
             ///
             /// Compiled only for Cortex-M targets; the host trybuild harness
             /// (which never links `cortex-m`) skips it.
             #[cfg(target_arch = "arm")]
-            fn init() -> IpcMemoryEndpoints {
+            async fn init() -> ::core::result::Result<Context, ConsortiumInitError> {
+                #logger_init
                 ::consortium_runtime_mcu::log::trace!("consortium controller init: mpu/nvic bring-up");
                 #steal
-                ::consortium_runtime_mcu::log::trace!("peripherals stolen");
                 #(#mpu_stmts)*
                 #nvic
-                ::consortium_runtime_mcu::log::trace!("consortium controller init: endpoints constructed");
-                IpcMemoryEndpoints::new()
+                #time_bringup
+                ::consortium_runtime_mcu::log::trace!("consortium controller init: connecting ipc endpoints");
+                let ipc_shm = IpcMemoryEndpoints::new().connect().await?;
+                #ctx_peripherals_bind
+                ::consortium_runtime_mcu::log::trace!("consortium controller init: context ready");
+                ::core::result::Result::Ok(Context { ipc_shm, #ctx_peripherals_name })
             }
 
             #peripherals
@@ -649,6 +749,7 @@ impl Session {
             uio,
             dbg: DebugLogs::new(dbg_rings, self.config.dbg.mode),
             peripherals,
+            time_driver: self.config.profile.time_driver,
         })
     }
 

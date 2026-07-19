@@ -191,22 +191,61 @@ impl IpcMemoryEndpoints {
         })
     }
 }
-/// Brings up this controller core's memory protection and interrupt
-/// controller, then constructs its (disconnected) IPC endpoints.
-/// Call `.connect().await` on the result to run the descriptor
-/// handshake.
+#[cfg(target_arch = "arm")]
+defmt::timestamp!(
+    "{=u32}", { use ::core::sync::atomic:: { AtomicU32, Ordering }; static COUNT :
+    AtomicU32 = AtomicU32::new(0); COUNT.fetch_add(1, Ordering::Relaxed) }
+);
+#[cfg(target_arch = "arm")]
+#[::consortium_hal_stm32mp2::interrupt]
+fn TIM2() {
+    ::consortium_hal_stm32mp2::timer_driver::on_timer_interrupt();
+}
+/// Aggregate bring-up failure for this controller core's [`init`].
+/// The payload is surfaced through `Debug`/`defmt` in the consuming
+/// firmware binary, which dead-code analysis cannot see, so allow the
+/// otherwise-"never read" field.
+///
+/// Gated to `target_arch = "arm"` alongside `init`/`Context`: the
+/// host trybuild harness compiles only the endpoint module, never the
+/// firmware entry surface.
+#[cfg(target_arch = "arm")]
+#[cfg_attr(target_os = "none", derive(Debug, defmt::Format))]
+#[cfg_attr(not(target_os = "none"), derive(Debug))]
+#[allow(dead_code)]
+enum ConsortiumInitError {
+    /// An IPC transceiver's descriptor handshake failed.
+    Ipc(ConsortiumConnectError),
+}
+#[cfg(target_arch = "arm")]
+impl ::core::convert::From<ConsortiumConnectError> for ConsortiumInitError {
+    fn from(e: ConsortiumConnectError) -> Self {
+        ConsortiumInitError::Ipc(e)
+    }
+}
+/// Everything this manifest brings up for the controller core, handed
+/// to the body by `#[consortium_runtime_mcu::main]`. `ipc_shm` holds
+/// the connected transceivers. Gated with `init` (references the
+/// `target_arch = "arm"`-only `Peripherals`).
+#[cfg(target_arch = "arm")]
+struct Context {
+    ipc_shm: IpcMemoryEndpointsConnected,
+}
+/// Brings up this controller core's logger, memory protection,
+/// interrupt controller, and time driver, runs the IPC descriptor
+/// handshake, and returns the connected [`Context`].
 ///
 /// Compiled only for Cortex-M targets; the host trybuild harness
 /// (which never links `cortex-m`) skips it.
 #[cfg(target_arch = "arm")]
-fn init() -> IpcMemoryEndpoints {
+async fn init() -> ::core::result::Result<Context, ConsortiumInitError> {
+    ::consortium_dbg::logger::ConsortiumLogger::init();
     ::consortium_runtime_mcu::log::trace!(
         "consortium controller init: mpu/nvic bring-up"
     );
     // SAFETY: `init` runs once during controller bring-up, in
     // privileged mode, before any other code touches the MPU.
     let mut __core = unsafe { ::cortex_m::Peripherals::steal() };
-    ::consortium_runtime_mcu::log::trace!("peripherals stolen");
     // SAFETY: `init` holds exclusive privileged MPU access during
     // bring-up; `base`/`size` are this core's validated shared
     // region from the Consortium hardware layout.
@@ -258,10 +297,19 @@ fn init() -> IpcMemoryEndpoints {
         "consortium controller init: NVIC unmask {} (id={})", stringify!(HSEM),
         BellaInterrupt::HSEM as u32
     );
+    // SAFETY: `init` runs once during controller bring-up, in privileged
+    // mode, before any `embassy-time` use; `bringup` takes exclusive
+    // ownership of the time-driver timer and its NVIC line.
+    unsafe {
+        ::consortium_hal_stm32mp2::timer_driver::bringup();
+    }
+    ::consortium_runtime_mcu::log::trace!("consortium controller init: time driver up");
     ::consortium_runtime_mcu::log::trace!(
-        "consortium controller init: endpoints constructed"
+        "consortium controller init: connecting ipc endpoints"
     );
-    IpcMemoryEndpoints::new()
+    let ipc_shm = IpcMemoryEndpoints::new().connect().await?;
+    ::consortium_runtime_mcu::log::trace!("consortium controller init: context ready");
+    ::core::result::Result::Ok(Context { ipc_shm })
 }
 
 fn main() {}

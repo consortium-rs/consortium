@@ -1,0 +1,18 @@
+---
+source: crates/consortium-runtime-macros-impl/tests/snap.rs
+expression: render(output)
+---
+#[allow(unused_imports)]
+use ::consortium_runtime_mcu::__rt::*;
+#[::embassy_executor::main]
+async fn main(spawner: Spawner) {
+    let context = match init().await {
+        ::core::result::Result::Ok(__consortium_ctx) => __consortium_ctx,
+        ::core::result::Result::Err(__consortium_err) => {
+            __consortium_init_fail(__consortium_err)
+        }
+    };
+    {
+        context.ipc_shm.sensor.send(&reading).await.ok();
+    }
+}

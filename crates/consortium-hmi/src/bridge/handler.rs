@@ -14,25 +14,33 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use std::{future::Future, pin::Pin};
+use std::{future::Future, sync::Arc};
 
-pub(super) type BoxFuture = Pin<Box<dyn Future<Output = String> + Send + 'static>>;
+use super::ResponseFuture;
 
+#[derive(Clone)]
 pub(super) enum Handler {
-    Sync(Box<dyn Fn(String) -> String + Send + 'static>),
-    Async(Box<dyn Fn(String) -> BoxFuture + Send + 'static>),
+    Sync(Arc<dyn Fn(String) -> String + Send + Sync + 'static>),
+    Async(Arc<dyn Fn(String) -> ResponseFuture + Send + Sync + 'static>),
 }
 
 impl Handler {
-    pub(super) fn sync(f: impl Fn(String) -> String + Send + 'static) -> Self {
-        Self::Sync(Box::new(f))
+    pub(super) fn sync(f: impl Fn(String) -> String + Send + Sync + 'static) -> Self {
+        Self::Sync(Arc::new(f))
     }
 
     pub(super) fn async_handler<F, Fut>(f: F) -> Self
     where
-        F: Fn(String) -> Fut + Send + 'static,
+        F: Fn(String) -> Fut + Send + Sync + 'static,
         Fut: Future<Output = String> + Send + 'static,
     {
-        Self::Async(Box::new(move |payload| Box::pin(f(payload))))
+        Self::Async(Arc::new(move |payload| Box::pin(f(payload))))
+    }
+
+    pub(super) fn call(self, payload: String) -> ResponseFuture {
+        match self {
+            Self::Sync(f) => Box::pin(async move { f(payload) }),
+            Self::Async(f) => Box::pin(async move { f(payload).await }),
+        }
     }
 }

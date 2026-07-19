@@ -35,6 +35,34 @@ pub use consortium_ipc_transport_memory;
 #[cfg(feature = "ipc-uart")]
 pub use consortium_ipc_transport_uart;
 
+/// Entry-point macros. Firmware writes `#[consortium_runtime_mcu::main]` on its
+/// `async fn main(context: Context, spawner: Spawner)` and, optionally,
+/// `#[consortium_runtime_mcu::fail]` on an init-failure handler.
+#[cfg(feature = "macros")]
+pub use consortium_runtime_macros::{mcu_fail as fail, mcu_main as main};
+
+/// Runtime glue for the entry macros. Not a stable API — the generated
+/// `#[main]` code glob-imports [`__consortium_init_fail`] from here so a user
+/// `#[fail]` handler can shadow it.
+#[cfg(feature = "macros")]
+#[doc(hidden)]
+pub mod __rt {
+    /// Fallback init-failure handler used when no `#[fail]` handler is defined.
+    /// Logs and parks the core; a `#[fail]` handler shadows this via the glob
+    /// import the `#[main]` expansion emits.
+    pub fn __consortium_init_fail<E>(_err: E) -> ! {
+        // The `log` re-export expands to `defmt::` paths when `defmt` is linked,
+        // which this crate can only resolve behind its own `defmt` feature; keep
+        // the fallback silent otherwise. Rich reporting belongs in a user
+        // `#[consortium_runtime_mcu::fail]` handler, which owns the error type.
+        #[cfg(feature = "defmt")]
+        crate::log::error!("consortium: init failed; no `#[fail]` handler, parking core");
+        loop {
+            ::cortex_m::asm::wfi();
+        }
+    }
+}
+
 /// Macro for declaring a static scratch buffer with proper alignment.
 ///
 /// # Example

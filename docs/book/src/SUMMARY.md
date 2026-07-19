@@ -32,4 +32,6 @@
   - [TEE Subsystem](dev/tee/index.md)
     - [TEE SDK Design](dev/tee/tee-sdk-design.md)
     - [TEE Advanced Type System](dev/tee/tee-advanced-type-system.md)
+  - [HMI Subsystem](dev/hmi/index.md)
+    - [PocketJS Repository and Integration](dev/hmi/pocketjs.md)
   - [HIL Plans](dev/hil/index.md)

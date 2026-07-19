@@ -17,16 +17,16 @@
 //! melt-pot CM7 firmware: streams simulated temperature readings to the CA55
 //! over the generated `sensor` IPC transceiver.
 //!
-//! All of the shared-memory / doorbell / MPU / NVIC wiring lives in
-//! `consortium.gen.rs`, which the `consortium` build pipeline generates from
-//! `../Consortium.toml` and this file `include!`s. That module exposes:
-//!
-//! - `init()` — brings up the MPU + doorbell interrupt and constructs the
-//!   (disconnected) `IpcMemoryEndpoints`;
-//! - `IpcMemoryEndpoints::connect().await` — runs the descriptor handshake and
-//!   returns `IpcMemoryEndpointsConnected`, whose `sensor` field is a ready
-//!   `Transceiver<SensorReading, Command>` (this core sends `SensorReading`,
-//!   receives `Command`).
+//! All of the shared-memory / doorbell / MPU / NVIC / time-driver / peripheral
+//! wiring lives in `consortium.gen.rs`, which the `consortium` build pipeline
+//! generates from `../Consortium.toml` and this file `include!`s. That module
+//! exposes an aggregate `async fn init() -> Result<Context, ConsortiumInitError>`
+//! and the `Context` type. `#[consortium_runtime_mcu::main]` calls `init()` for
+//! us and hands the body a ready `Context`: `ipc_shm.sensor` is a
+//! `Transceiver<SensorReading, Command>` (this core sends `SensorReading`,
+//! receives `Command`), and `peripherals` holds the `[peripheral.*]` handles.
+//! The generated `init` also resets the CDBG ring, brings up the Embassy time
+//! driver, and installs its `LPIT1_IRQHandler` vector and `defmt::timestamp!`.
 
 #![no_std]
 #![no_main]
@@ -42,51 +42,22 @@ use panic_halt as _;
 // the `defmt::info!` frames below land in the CDBG ring described by `[dbg.cm7]`.
 include!("consortium.gen.rs");
 
-// defmt requires the application to define a timestamp source. A monotonic
-// counter is enough for the demo; production firmware would read a cycle counter.
-defmt::timestamp!("{=u32}", {
-    use core::sync::atomic::{AtomicU32, Ordering};
-    static COUNT: AtomicU32 = AtomicU32::new(0);
-    COUNT.fetch_add(1, Ordering::Relaxed)
-});
+#[consortium_runtime_mcu::main]
+async fn main(context: Context, _spawner: Spawner) {
+    let mut sensor = context.ipc_shm.sensor;
 
-const LPIT1_BASE: *mut () = 0x442f_0000 as *mut ();
-const LPIT1_IRQ: u16 = 15;
-const LPIT1_CLOCK_HZ: u32 = 24_000_000;
-
-#[embassy_executor::main]
-async fn main(_spawner: Spawner) {
-    // Reset the CDBG ring on every boot so a warm reset does not leave a stale,
-    // valid-looking descriptor behind. No-op when `[dbg.cm7]` is unconfigured.
-    consortium_dbg::logger::ConsortiumLogger::init();
-
-    init_time_driver();
-
-    // Bring up MPU + MU7 interrupt, then run the descriptor handshake.
-    let connected = match init().connect().await {
-        Ok(endpoints) => endpoints,
-        Err(_) => {
-            defmt::error!("melt-pot: IPC descriptor handshake failed");
-            loop {
-                cortex_m::asm::wfi();
-            }
-        }
-    };
-    let mut sensor = connected.sensor;
-
-    // Bring up this core's owned peripherals, generated from the `[peripheral.*]`
-    // entries in `../Consortium.toml`. `peripherals()` bakes each base + IRQ in,
-    // enables the I2C interrupt, and returns ready HAL handles. Platform setup
+    // The core's owned peripherals, generated from the `[peripheral.*]` entries
+    // in `../Consortium.toml` and brought up inside `init()`. Platform setup
     // (A-core / system manager) must leave GPIO2 and LPI2C1 clocked for the CM7.
-    let board = peripherals();
-
+    //
     // `gpio2` pin 0 is a status heartbeat toggled once per sample. `lpi2c1` is
     // the sensor bus a real driver would read to replace `simulated_temperature`.
-    let mut heartbeat = board
+    let mut heartbeat = context
+        .peripherals
         .gpio2
         .pin(0)
         .into_output(consortium_hal_imx9::gpio::Level::Low);
-    let mut _sensor_bus = board.lpi2c1;
+    let mut _sensor_bus = context.peripherals.lpi2c1;
 
     let mut seq: u32 = 0;
     loop {
@@ -113,23 +84,6 @@ async fn main(_spawner: Spawner) {
 
         Timer::after_secs(1).await;
     }
-}
-
-fn init_time_driver() {
-    // FRDM i.MX95 clocks LPIT1 from the 24 MHz AON/root timer domain.
-    // Platform setup must leave LPIT1 clocked and accessible to the CM7.
-    // SAFETY: LPIT1 is reserved for this demo firmware; the IRQ handler below
-    // forwards LPIT1_IRQn to the HAL time driver.
-    unsafe {
-        consortium_hal_imx9::timer_driver::init_timer(LPIT1_BASE, LPIT1_CLOCK_HZ);
-        consortium_hal_imx9::hal::nvic::set_priority(LPIT1_IRQ, 0x80);
-        consortium_hal_imx9::hal::nvic::enable(LPIT1_IRQ);
-    }
-}
-
-#[unsafe(no_mangle)]
-extern "C" fn LPIT1_IRQHandler() {
-    consortium_hal_imx9::timer_driver::on_timer_interrupt();
 }
 
 // MU7 general-purpose-interrupt vector (CM7 side B). The doorbell crate no

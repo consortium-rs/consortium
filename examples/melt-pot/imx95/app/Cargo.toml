@@ -55,7 +55,7 @@ consortium-runtime-app = { features = [
 consortium-tee = { default-features = false, features = [
   "ca",
 ], path = "../../../../crates/consortium-tee" }
-consortium-hmi = { path = "../../../../crates/consortium-hmi" }
+consortium-hmi-webkit = { path = "../../../../crates/consortium-hmi-webkit" }
 
 glib       = "0.22"
 optee-teec = "0.9.0"
