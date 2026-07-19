@@ -26,7 +26,6 @@
 
 use std::{
     fs::File,
-    io::Write as _,
     sync::{Arc, Mutex},
 };
 
@@ -34,6 +33,8 @@ use tokio::{io::unix::AsyncFd, sync::Notify};
 use uio::UioError;
 
 use consortium_ipc_transport_memory::DescriptorError;
+
+use crate::irq::{Service, Services, irq_loop};
 
 // ── Error ─────────────────────────────────────────────────────────────────────
 
@@ -57,19 +58,6 @@ pub enum UioDeviceError {
     #[error("no UIO map named {0:?}")]
     MapNotFound(String),
 }
-
-/// A doorbell's IRQ service callback: run once per M→A interrupt to wake the
-/// doorbell's pending `wait()` futures. A masking doorbell (IPCC, MU) masks its
-/// asserted lines here *before* waking so a level-sensitive line does not
-/// immediately re-fire the UIO IRQ; a plain doorbell just calls
-/// `notify_waiters()`.
-type Service = Arc<dyn Fn() + Send + Sync>;
-
-/// Shared list of doorbell IRQ services the IRQ task fans out to.
-///
-/// `irq_loop` invokes every registered [`Service`] whenever an M→A interrupt
-/// fires, so all pending `wait()` futures re-check their hardware status.
-type Services = Arc<Mutex<Vec<Service>>>;
 
 impl From<UioError> for UioDeviceError {
     fn from(e: UioError) -> Self {
@@ -281,164 +269,5 @@ impl UioDevice {
     pub fn bind_notifier(&self, notifier: Arc<Notify>) {
         consortium_log::trace!("UioDevice::bind_notifier: registering notifier");
         self.bind_service(Arc::new(move || notifier.notify_waiters()));
-    }
-}
-
-// ── IRQ background task ───────────────────────────────────────────────────────
-
-async fn irq_loop(async_fd: AsyncFd<File>, services: Services) {
-    loop {
-        consortium_log::trace!("irq_loop: waiting for M→A interrupt");
-        // UIO protocol: re-arm the interrupt by writing 1, then block until the
-        // kernel reports it readable (an IRQ has fired and been masked).
-        if unmask_irq(async_fd.get_ref()).is_err() {
-            consortium_log::error!("irq_loop: unmask_irq failed; tearing down IRQ listener");
-            break;
-        }
-        match async_fd.readable().await {
-            Err(e) => {
-                consortium_log::error!(
-                    "irq_loop: readable() failed ({}); tearing down IRQ listener",
-                    e
-                );
-                break;
-            }
-            Ok(mut guard) => {
-                // Consume the 4-byte interrupt count so the fd is no longer
-                // readable; the value itself is unused (edge, not level).
-                // `&File: Read`, so read through the borrowed fd rather than
-                // duping it every interrupt.
-                let mut count = [0u8; 4];
-                consortium_log::trace!("irq_loop: draining UIO count");
-                let read = guard.try_io(|fd| {
-                    use std::io::Read;
-                    // The reborrow is deliberate: `Read` is implemented for
-                    // `&File`, so read through a fresh `&File` place without
-                    // duping the fd.
-                    #[allow(clippy::borrow_deref_ref)]
-                    (&mut &*fd.get_ref()).read_exact(&mut count)
-                });
-                // `try_io` returns `Err(WouldBlock)` as a spurious-readiness
-                // signal (retry the loop); any inner `Err` is a real read
-                // failure worth logging before we re-arm.
-                if let Ok(Err(e)) = read {
-                    consortium_log::error!("irq_loop: draining UIO count failed: {}", e);
-                }
-                consortium_log::trace!("irq_loop: UIO count = {}", u32::from_ne_bytes(count));
-                guard.clear_ready();
-                consortium_log::trace!("irq_loop: UIO interrupt handled; notifying all doorbells");
-            }
-        }
-        // Fan the interrupt out to every registered doorbell. A poisoned lock
-        // means a registering thread panicked; tear the listener down.
-        if !run_services(&services) {
-            break;
-        }
-    }
-}
-
-/// Run every registered doorbell IRQ service. We do not know which channel
-/// fired, so each service masks its own asserted lines and re-wakes its `wait()`
-/// futures; a spurious run is harmless. Returns `false` if the service list is
-/// poisoned.
-fn run_services(services: &Services) -> bool {
-    consortium_log::trace!("run_services: servicing all registered doorbells");
-    let snapshot = match services.lock() {
-        Ok(list) => {
-            consortium_log::trace!("run_services: {} doorbells registered", list.len());
-            list.clone()
-        }
-        Err(_) => {
-            consortium_log::error!("run_services: failed to acquire service list lock");
-            return false;
-        }
-    };
-    for service in &snapshot {
-        consortium_log::trace!("run_services: servicing a doorbell");
-        service();
-    }
-    true
-}
-
-fn unmask_irq(f: &File) -> std::io::Result<()> {
-    consortium_log::trace!("unmask_irq: writing 1 to UIO fd to re-arm interrupt.");
-    f.try_clone()?.write_all(&1u32.to_ne_bytes())
-}
-
-// ── Tests ─────────────────────────────────────────────────────────────────────
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use std::time::Duration;
-
-    /// Build a single-threaded runtime with timers enabled. Avoids needing the
-    /// tokio `macros` feature for `#[tokio::test]`.
-    fn runtime() -> tokio::runtime::Runtime {
-        tokio::runtime::Builder::new_current_thread()
-            .enable_time()
-            .build()
-            .expect("build runtime")
-    }
-
-    /// `run_services` runs every doorbell service registered before the
-    /// interrupt. Each service here is the `bind_notifier` wrapper's
-    /// `notify_waiters()` closure, mirroring `RecvFut` arming its waker (via
-    /// `Notified::enable`) before the M→A IRQ arrives.
-    #[test]
-    fn run_services_wakes_all_registered_doorbells() {
-        runtime().block_on(async {
-            let services: Services = Arc::new(Mutex::new(Vec::new()));
-            let a = Arc::new(Notify::new());
-            let b = Arc::new(Notify::new());
-            let a_svc = Arc::clone(&a);
-            let b_svc = Arc::clone(&b);
-            services
-                .lock()
-                .unwrap()
-                .push(Arc::new(move || a_svc.notify_waiters()) as Service);
-            services
-                .lock()
-                .unwrap()
-                .push(Arc::new(move || b_svc.notify_waiters()) as Service);
-
-            // Register both wakers before firing, as a pending receiver would.
-            let wait_a = a.notified();
-            let wait_b = b.notified();
-            tokio::pin!(wait_a, wait_b);
-            wait_a.as_mut().enable();
-            wait_b.as_mut().enable();
-
-            assert!(run_services(&services), "healthy list must report success");
-
-            tokio::time::timeout(Duration::from_secs(1), wait_a)
-                .await
-                .expect("doorbell a should wake");
-            tokio::time::timeout(Duration::from_secs(1), wait_b)
-                .await
-                .expect("doorbell b should wake");
-        });
-    }
-
-    /// An empty registry is a no-op success: an IRQ before any channel is set
-    /// up must not tear the listener down.
-    #[test]
-    fn run_services_empty_list_is_ok() {
-        let services: Services = Arc::new(Mutex::new(Vec::new()));
-        assert!(run_services(&services));
-    }
-
-    /// A poisoned registry reports failure so the IRQ loop can stop.
-    #[test]
-    fn run_services_poisoned_list_fails() {
-        let services: Services = Arc::new(Mutex::new(Vec::new()));
-        let clone = Arc::clone(&services);
-        let _ = std::thread::spawn(move || {
-            let _guard = clone.lock().unwrap();
-            panic!("poison the lock");
-        })
-        .join();
-
-        assert!(!run_services(&services));
     }
 }

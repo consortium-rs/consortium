@@ -118,8 +118,6 @@ where
     let region = transport.region();
     let base = transport.base();
     let ch = transport.ch();
-    let mut region_invalidated = false;
-
     consortium_log::trace!("poll_recv: waiting for doorbell on channel {:?}", ch);
 
     // If a wait future is already armed, poll it.  If it is still pending our
@@ -132,112 +130,126 @@ where
             core::task::Poll::Ready(_) => {
                 consortium_log::trace!("poll_recv: doorbell fired on channel {:?}", ch);
                 *wait_fut = None;
-                region.invalidate();
-                region_invalidated = true;
             }
         }
     }
 
-    // Fast path: check the channel indicated by the updated-id field.
-
-    if !region_invalidated {
+    // Scan for a readable RX slot.  If none is found, subscribe for the next
+    // doorbell and then scan the slots **once more** before parking.  That
+    // second scan is load-bearing: an interrupt delivered in the window between
+    // the first scan and the subscribe would otherwise be lost, because the
+    // doorbell fan-out (`Notify::notify_waiters`) wakes only already-registered
+    // waiters and stores no permit.  Re-checking the slots after the waker is
+    // registered turns that race into a guaranteed delivery, independent of the
+    // doorbell's notification semantics.  `subscribed` bounds the loop to the
+    // scan-then-recheck pair (at most two scans per poll).
+    let mut subscribed = false;
+    loop {
         region.invalidate();
-    }
 
-    // SAFETY: caller guarantees `base` covers the descriptor header.
-    let mut channel_id = unsafe { rv_u8(base, RX_UPDATED_ID_OFFSET) };
-    // SAFETY: same `base` validity guarantee.
-    let channel_num = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
+        // Fast path: the channel named by the updated-id field.
+        // SAFETY: caller guarantees `base` covers the descriptor header.
+        let mut channel_id = unsafe { rv_u8(base, RX_UPDATED_ID_OFFSET) };
+        // SAFETY: same `base` validity guarantee.
+        let channel_num = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
 
-    let mut channel: Option<ChannelLayout> = if channel_id < channel_num {
-        // SAFETY: `channel_id` is within the validated channel table range.
-        let layout = unsafe { read_channel(base, channel_id as usize) };
-        // SAFETY: slot pointer is within the region.
-        let slot_addr = unsafe { layout.slot_addr(base) };
-        // SAFETY: `slot_addr` points to a valid slot.
-        let consumed = unsafe { slot::is_consumed(slot_addr) };
-        if layout.direction.is_rx::<T::S>() && !consumed {
-            Some(layout)
-        } else {
-            None
-        }
-    } else {
-        None
-    };
-
-    consortium_log::trace!(
-        "poll_recv: channel_id = {}, channel_num = {}, fast-path channel = {:?}",
-        channel_id,
-        channel_num,
-        channel
-    );
-
-    // Fallback: scan all channels.
-    if channel.is_none() {
-        for chan in 0..channel_num {
-            // SAFETY: `chan` is within the channel table range.
-            let layout = unsafe { read_channel(base, chan as usize) };
+        let mut channel: Option<ChannelLayout> = if channel_id < channel_num {
+            // SAFETY: `channel_id` is within the validated channel table range.
+            let layout = unsafe { read_channel(base, channel_id as usize) };
             // SAFETY: slot pointer is within the region.
             let slot_addr = unsafe { layout.slot_addr(base) };
             // SAFETY: `slot_addr` points to a valid slot.
             let consumed = unsafe { slot::is_consumed(slot_addr) };
             if layout.direction.is_rx::<T::S>() && !consumed {
-                channel_id = chan;
-                channel = Some(layout);
-                break;
+                Some(layout)
+            } else {
+                None
+            }
+        } else {
+            None
+        };
+
+        // Fallback: scan all channels.
+        if channel.is_none() {
+            for chan in 0..channel_num {
+                // SAFETY: `chan` is within the channel table range.
+                let layout = unsafe { read_channel(base, chan as usize) };
+                // SAFETY: slot pointer is within the region.
+                let slot_addr = unsafe { layout.slot_addr(base) };
+                // SAFETY: `slot_addr` points to a valid slot.
+                let consumed = unsafe { slot::is_consumed(slot_addr) };
+                if layout.direction.is_rx::<T::S>() && !consumed {
+                    channel_id = chan;
+                    channel = Some(layout);
+                    break;
+                }
             }
         }
-    }
 
-    consortium_log::trace!(
-        "poll_recv: channel_id = {}, channel_num = {}, scanned channel = {:?}",
-        channel_id,
-        channel_num,
-        channel
-    );
-
-    if channel.is_none() {
-        // No data yet — arm the doorbell so the waker stays registered until
-        // the remote calls ring().
-        consortium_log::trace!("poll_recv: no data available, arming doorbell wait future");
-        // SAFETY: `wait_fut` is the stored wait future for this receive operation.
-        return unsafe { arm_wait(doorbell, ch, wait_fut, cx) };
-    }
-
-    // SAFETY: `channel_id` was verified against `channel_num` during scan.
-    let channel = unsafe { read_channel(base, channel_id as usize) };
-    // SAFETY: slot pointer is within the region.
-    let slot_base = unsafe { channel.slot_addr(base) };
-
-    consortium_log::trace!(
-        "poll_recv: channel_id = {}, channel_num = {}, slot_base = {:#x}",
-        channel_id,
-        channel_num,
-        slot_base as usize
-    );
-
-    // SAFETY: `slot_base` is a valid slot; `buf` is exclusively owned by the caller.
-    if let Some(n) = unsafe { slot::try_read(slot_base, buf, region) } {
         consortium_log::trace!(
-            "poll_recv: read {} bytes from channel_id = {}, slot_base = {:#x}",
-            n,
+            "poll_recv: channel_id = {}, channel_num = {}, channel = {:?}, subscribed = {}",
+            channel_id,
+            channel_num,
+            channel,
+            subscribed
+        );
+
+        let Some(channel) = channel else {
+            if subscribed {
+                // Waker already registered on the first pass; a later doorbell
+                // edge will re-poll us.  Nothing to deliver yet.
+                consortium_log::trace!("poll_recv: no data after subscribe; parking");
+                return core::task::Poll::Pending;
+            }
+            // No data yet — subscribe so the waker stays registered until the
+            // remote rings, then loop once more to re-scan and close the
+            // scan→subscribe race.
+            consortium_log::trace!("poll_recv: no data available, arming doorbell wait future");
+            // SAFETY: `wait_fut` is the stored wait future for this receive
+            // operation.  `arm_wait` registers the waker (and self-wakes if a
+            // notification was already latched); we discard its `Pending` return
+            // deliberately because the re-scan below decides whether to park.
+            let _ = unsafe { arm_wait(doorbell, ch, wait_fut, cx) };
+            subscribed = true;
+            continue;
+        };
+
+        // SAFETY: slot pointer is within the region.
+        let slot_base = unsafe { channel.slot_addr(base) };
+
+        consortium_log::trace!(
+            "poll_recv: delivering channel_id = {}, slot_base = {:#x}",
             channel_id,
             slot_base as usize
         );
-        return core::task::Poll::Ready(Ok(n));
+
+        // SAFETY: `slot_base` is a valid slot; `buf` is exclusively owned by the caller.
+        if let Some(n) = unsafe { slot::try_read(slot_base, buf, region) } {
+            // Data delivered; drop any wait future armed on the first pass so a
+            // later stray doorbell cannot resolve a stale receive.
+            *wait_fut = None;
+            consortium_log::trace!(
+                "poll_recv: read {} bytes from channel_id = {}, slot_base = {:#x}",
+                n,
+                channel_id,
+                slot_base as usize
+            );
+            return core::task::Poll::Ready(Ok(n));
+        }
+
+        consortium_log::trace!(
+            "poll_recv: slot_base = {:#x} was readable but read failed; invalidating region and re-polling",
+            slot_base as usize
+        );
+
+        // The scan saw a readable slot but the read could not complete.  Flushes
+        // for integrity-error flags happen inside `try_read`; invalidate and
+        // force an immediate re-poll so this path does not depend on an
+        // unrelated doorbell.
+        region.invalidate();
+        cx.waker().wake_by_ref();
+        return core::task::Poll::Pending;
     }
-
-    consortium_log::trace!(
-        "poll_recv: slot_base = {:#x} was readable but read failed; invalidating region and re-polling",
-        slot_base as usize
-    );
-
-    // The scan saw a readable slot but the read could not complete.  Flushes for
-    // integrity-error flags happen inside `try_read`; invalidate and force an
-    // immediate re-poll so this path does not depend on an unrelated doorbell.
-    region.invalidate();
-    cx.waker().wake_by_ref();
-    core::task::Poll::Pending
 }
 
 /// Create and store a doorbell wait future, poll it once to register the waker,
