@@ -21,20 +21,26 @@
 //! surface, and provides deterministic headless wgpu rendering. A production
 //! Wayland/DRM event shell can build on the same [`PocketApp`] frame contract.
 
+mod error;
 mod service;
 
 use std::{fs, path::Path};
 
-use anyhow::{Context, Result, bail};
 use pocket_mod::{Guest, qjs::Object};
 
 use consortium_hmi::Bridge;
 use service::PocketService;
 
+pub use error::{PocketError, Result};
 pub use headless::HeadlessRenderer;
 pub use pocket_ui_wgpu::{UiRenderer, UiSurface};
 
 mod headless;
+
+#[cfg(feature = "shell")]
+mod shell;
+#[cfg(feature = "shell")]
+pub use shell::{ShellConfig, run};
 
 /// PocketJS host identity and logical display configuration.
 #[derive(Clone, Debug)]
@@ -69,6 +75,7 @@ pub struct PocketApp {
     guest: Guest,
     ui: UiSurface,
     service: PocketService,
+    logical_size: (u32, u32),
 }
 
 impl PocketApp {
@@ -81,27 +88,34 @@ impl PocketApp {
         config: PocketConfig,
     ) -> Result<Self> {
         if config.logical_size.0 == 0 || config.logical_size.1 == 0 {
-            bail!("PocketJS logical viewport dimensions must be non-zero");
+            return Err(PocketError::ZeroViewport);
         }
         if config.host_target.is_empty() || config.host_abi == 0 {
-            bail!("PocketJS host target and ABI must identify a real contract");
+            return Err(PocketError::InvalidHostContract);
         }
 
-        let guest = Guest::new().context("creating PocketJS QuickJS guest")?;
+        let guest =
+            Guest::new().map_err(|e| PocketError::host("creating PocketJS QuickJS guest", e))?;
         let ui = UiSurface::new((config.logical_size.0 as f32, config.logical_size.1 as f32));
         ui.feed_pak(pak);
-        ui.mount(&guest).context("mounting PocketJS ui surface")?;
+        ui.mount(&guest)
+            .map_err(|e| PocketError::host("mounting PocketJS ui surface", e))?;
         publish_host_contract(&guest, &config)?;
 
         let service = PocketService::mount(&guest, bridge, runtime)?;
         guest
             .eval(&config.app_label, bundle)
-            .context("evaluating PocketJS application bundle")?;
+            .map_err(|e| PocketError::host("evaluating PocketJS application bundle", e))?;
         if !guest.has_frame() {
-            bail!("PocketJS bundle evaluated but did not install globalThis.frame");
+            return Err(PocketError::MissingFrame);
         }
 
-        Ok(Self { guest, ui, service })
+        Ok(Self {
+            guest,
+            ui,
+            service,
+            logical_size: config.logical_size,
+        })
     }
 
     /// Loads a UTF-8 bundle and binary pak from disk.
@@ -114,10 +128,14 @@ impl PocketApp {
     ) -> Result<Self> {
         let bundle_path = bundle.as_ref();
         let pak_path = pak.as_ref();
-        let bundle = fs::read_to_string(bundle_path)
-            .with_context(|| format!("reading PocketJS bundle {}", bundle_path.display()))?;
-        let pak = fs::read(pak_path)
-            .with_context(|| format!("reading PocketJS pak {}", pak_path.display()))?;
+        let bundle = fs::read_to_string(bundle_path).map_err(|source| PocketError::ReadBundle {
+            path: bundle_path.to_path_buf(),
+            source,
+        })?;
+        let pak = fs::read(pak_path).map_err(|source| PocketError::ReadPak {
+            path: pak_path.to_path_buf(),
+            source,
+        })?;
         Self::new(&bundle, &pak, bridge, runtime, config)
     }
 
@@ -129,7 +147,7 @@ impl PocketApp {
         let delivered = self.pump_bridge()?;
         self.guest
             .frame_with_analog(buttons, analog)
-            .context("running PocketJS guest frame")?;
+            .map_err(|e| PocketError::host("running PocketJS guest frame", e))?;
         self.ui.tick();
         Ok(delivered)
     }
@@ -151,12 +169,22 @@ impl PocketApp {
     /// Evaluates an additional global script, useful for diagnostics and hot
     /// reload prototypes.
     pub fn eval(&self, label: &str, source: &str) -> Result<()> {
-        self.guest.eval(label, source)
+        self.guest
+            .eval(label, source)
+            .map_err(|e| PocketError::host("evaluating PocketJS script", e))
     }
 
     /// Returns the native PocketJS UI surface for a window renderer.
     pub fn ui(&self) -> &UiSurface {
         &self.ui
+    }
+
+    /// Logical UI size the guest renders at, in PocketJS units.
+    ///
+    /// A window shell sizes its offscreen render target with this and scales
+    /// the result to the physical surface, so the UI is DPI-independent.
+    pub fn logical_size(&self) -> (u32, u32) {
+        self.logical_size
     }
 }
 
@@ -168,7 +196,7 @@ fn publish_host_contract(guest: &Guest, config: &PocketConfig) -> Result<()> {
             ui.set("__hostAbi", config.host_abi)?;
             Ok(())
         })
-        .map_err(|error| anyhow::anyhow!("publishing PocketJS host contract: {error}"))
+        .map_err(|error| PocketError::host("publishing PocketJS host contract", error.to_string()))
 }
 
 #[cfg(test)]

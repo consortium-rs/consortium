@@ -21,16 +21,27 @@ license.workspace = true
 name              = "consortium-hmi-pocket"
 version.workspace = true
 
+[features]
+default = []
+# Windowed winit shell: opens a native window (Wayland/X11 on Linux, Cocoa on
+# macOS), drives `PocketApp` per frame, and scales the UI to the surface.
+shell = ["dep:winit"]
+
 [dependencies]
-anyhow         = "1"
 consortium-hmi = { path = "../consortium-hmi", version = "^0.1" }
 pocket-mod     = { path = "../../submodules/pocketjs/pocket3d/crates/pocket-mod" }
 pocket-ui-wgpu = { path = "../../submodules/pocketjs/pocket3d/crates/pocket-ui-wgpu" }
 pocket3d       = { default-features = false, path = "../../submodules/pocketjs/pocket3d/crates/pocket3d" }
+thiserror      = "2.0.18"
 tokio          = { features = ["rt", "sync"], version = "1" }
+winit          = { optional = true, version = "0.30" }
 
 [dev-dependencies]
 tokio = { features = ["rt-multi-thread"], version = "1" }
+
+[[example]]
+name              = "kiosk"
+required-features = ["shell"]
 
 [lints]
 workspace = true

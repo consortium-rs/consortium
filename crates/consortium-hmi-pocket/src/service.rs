@@ -14,13 +14,14 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-use anyhow::{Context, Result};
 use consortium_hmi::Bridge;
 use pocket_mod::{
     Guest,
     qjs::{Coerced, Function},
 };
 use tokio::sync::mpsc::{UnboundedReceiver, unbounded_channel};
+
+use crate::error::{PocketError, Result};
 
 /// Installed before the product bundle. The native surface remains a minimal
 /// queueing primitive; this JS adapter owns correlation and integrates with
@@ -71,10 +72,10 @@ impl PocketService {
                 )?;
                 Ok(())
             })
-            .context("mounting Consortium PocketJS service surface")?;
+            .map_err(|e| PocketError::host("mounting Consortium PocketJS service surface", e))?;
         guest
             .eval("consortium-service", SERVICE_PRELUDE)
-            .context("installing Consortium PocketJS service adapter")?;
+            .map_err(|e| PocketError::host("installing Consortium PocketJS service adapter", e))?;
         Ok(Self { completions })
     }
 
@@ -86,7 +87,9 @@ impl PocketService {
                     let callback: Function = ctx.globals().get("__consortiumComplete")?;
                     callback.call((completion.ticket, completion.result.as_str()))
                 })
-                .map_err(|error| anyhow::anyhow!("delivering Consortium response: {error}"))?;
+                .map_err(|error| {
+                    PocketError::host("delivering Consortium response", error.to_string())
+                })?;
             delivered += 1;
         }
         if delivered > 0 {
