@@ -16,12 +16,12 @@
 
 use std::path::Path;
 
-use anyhow::Result;
 use pocket_ui_wgpu::UiRenderer;
 use pocket3d::gpu::{Gpu, OFFSCREEN_FORMAT, OffscreenTarget};
 use pocket3d::wgpu;
 
 use crate::PocketApp;
+use crate::error::{PocketError, Result};
 
 /// Offscreen wgpu target for PocketJS smoke tests and image goldens.
 pub struct HeadlessRenderer {
@@ -33,7 +33,8 @@ pub struct HeadlessRenderer {
 impl HeadlessRenderer {
     /// Selects a headless adapter and creates an RGBA render target.
     pub fn new(width: u32, height: u32) -> Result<Self> {
-        let gpu = Gpu::new_headless()?;
+        let gpu = Gpu::new_headless()
+            .map_err(|e| PocketError::host("creating headless PocketJS GPU", e))?;
         let target = OffscreenTarget::new(&gpu, width, height);
         let renderer = UiRenderer::new(&gpu, OFFSCREEN_FORMAT);
         Ok(Self {
@@ -51,24 +52,29 @@ impl HeadlessRenderer {
             .create_command_encoder(&wgpu::CommandEncoderDescriptor {
                 label: Some("consortium-pocket-headless"),
             });
-        app.ui().with_ui(|ui| {
-            self.renderer.render(
-                &self.gpu,
-                ui,
-                &mut encoder,
-                &self.target.view,
-                self.target.size,
-                wgpu::LoadOp::Clear(wgpu::Color::BLACK),
-            )
-        })?;
+        app.ui()
+            .with_ui(|ui| {
+                self.renderer.render(
+                    &self.gpu,
+                    ui,
+                    &mut encoder,
+                    &self.target.view,
+                    self.target.size,
+                    wgpu::LoadOp::Clear(wgpu::Color::BLACK),
+                )
+            })
+            .map_err(|e| PocketError::host("rendering retained PocketJS UI", e))?;
         self.gpu.queue.submit([encoder.finish()]);
-        self.target.read_rgba(&self.gpu)
+        self.target
+            .read_rgba(&self.gpu)
+            .map_err(|e| PocketError::host("reading back PocketJS RGBA", e))
     }
 
     /// Renders and writes a PNG for a golden or diagnostic artifact.
     pub fn save_png(&mut self, app: &PocketApp, path: impl AsRef<Path>) -> Result<()> {
         let rgba = self.render_rgba(app)?;
         pocket3d::gpu::save_png(path.as_ref(), self.target.size.0, self.target.size.1, &rgba)
+            .map_err(|e| PocketError::host("saving PocketJS PNG", e))
     }
 
     /// Physical size of the offscreen target.

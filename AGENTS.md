@@ -425,8 +425,11 @@ contract. It contains no Cog, GLib, WebKit, PocketJS, or Tokio runtime state.
 in debug builds it can load `CONSORTIUM_HMI_DEBUG_URL`, otherwise it serves the compiled
 dist path from `CONSORTIUM_HMI_DIST`. `consortium-hmi-pocket` is the native prototype:
 it hosts a PocketJS JS/pak pair, mounts the bridge into QuickJS, delivers responses at
-frame boundaries, and exposes headless wgpu rendering. It does not yet provide the
-production Wayland/DRM/input shell or builder integration.
+frame boundaries, and exposes headless wgpu rendering. Its optional `shell` feature adds
+a thin `winit` window host (`run`/`ShellConfig`, Wayland/X11 on Linux and Cocoa on macOS)
+that drives `PocketApp::frame` and blits the logical-size UI to the surface; the `kiosk`
+example runs a built `<app>-main.{js,pak}` in it. It does not yet provide the production
+DRM/KMS + seat/`libinput` shell or builder integration.
 `cogcore-sys` owns raw bindgen output and vendored Cog/WPE/WebKit headers; `cogcore`
 wraps a small safe subset and keeps WebKit/WPE types mostly opaque.
 

@@ -828,12 +828,13 @@ dependencies = [
 name = "consortium-hmi-pocket"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "consortium-hmi",
  "pocket-mod",
  "pocket-ui-wgpu",
  "pocket3d",
+ "thiserror 2.0.18",
  "tokio",
+ "winit",
 ]
 
 [[package]]
