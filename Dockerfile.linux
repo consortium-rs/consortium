@@ -1,0 +1,121 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# Linux build environment for consortium's A-core targets, for use with Apple
+# `container` on Apple Silicon.
+#
+# The VM is *native* arm64, so `aarch64-unknown-linux-gnu` is a native build and
+# the melt-pot manifests' `[profile] sysroot = "/"` resolves to this image's own
+# root. No Yocto SDK and no cross linker are involved for the 64-bit A-core.
+#
+# Stages:
+#   base  Rust toolchains + `dtc`; enough for the `just *-a64` / `*-a32` recipes.
+#   full  + WPE WebKit/Cog and the OP-TEE TA dev kit; enough for a `csti build`
+#         of the melt-pot examples, whose app crates pull `consortium-hmi-webkit`
+#         and `optee-teec`.
+#
+# Build via `just linux-image` / `just linux-image-full`, which stage a minimal
+# build context — the repo root carries `target/`, `node_modules/`, and
+# `submodules/`, and is far too large to send to the builder.
+
+# Ubuntu 24.04, not Debian bookworm: the prebuilt WPE stack needs GLIBC_2.38 and
+# libicu74, neither of which bookworm has.
+FROM docker.io/library/ubuntu:24.04 AS base
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# `device-tree-compiler` backs the `gcc -E` + `dtc` step the build pipeline
+# shells out to; `gcc-arm-linux-gnueabihf` is the cross toolchain for the 32-bit
+# A-core (`armv7-unknown-linux-gnueabihf`) recipes; `binutils-arm-none-eabi`
+# provides the `arm-none-eabi-objcopy` that firmware post-processing uses to
+# rename `.vector_table` to the remoteproc-expected `.isr_vectors` (override
+# with `CONSORTIUM_OBJCOPY`).
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      ca-certificates curl git pkg-config build-essential \
+      libssl-dev device-tree-compiler gcc-arm-linux-gnueabihf \
+      binutils-arm-none-eabi \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo
+ENV PATH=/usr/local/cargo/bin:$PATH
+RUN curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal \
+      --default-toolchain stable \
+      --target aarch64-unknown-linux-gnu \
+      --target armv7-unknown-linux-gnueabihf \
+      --target thumbv8m.main-none-eabihf \
+      --target thumbv7em-none-eabihf \
+    && rustup component add rust-src llvm-tools
+
+# `just` itself, so the container can run this repo's own recipes
+# (`just linux just check-ipc-a64`).
+RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh \
+      | bash -s -- --to /usr/local/bin
+
+WORKDIR /workspace
+
+# ── full: WPE WebKit + OP-TEE ────────────────────────────────────────────────
+FROM base AS full
+
+# WPE WebKit / Cog, from the consortium-rs/wpe-kiosk-stack-prebuilt `.deb`. It
+# declares no `Depends`, so everything it needs is listed explicitly here.
+#
+# The `-dev` packages are not optional: `wpe-1.0.pc` has `Requires: xkbcommon
+# egl`, so `pkg-config --exists wpe-webkit-2.0` fails against runtime-only
+# libraries even though the `.so` files are present. The remaining entries are
+# runtime libraries that would otherwise leave `libWPEWebKit-2.0.so` with
+# unresolved `ldd` links.
+# `clang`/`libclang-dev` back `cogcore-sys`'s bindgen run.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      clang libclang-dev \
+      libglib2.0-dev libsoup-3.0-dev libxkbcommon-dev libegl-dev libgles-dev \
+      libgbm-dev libdrm-dev libepoxy-dev libwayland-dev libmanette-0.2-dev \
+      libgstreamer1.0-0 libgstreamer-plugins-base1.0-0 libgstreamer-plugins-bad1.0-0 \
+      libicu74 libjpeg-turbo8 libxslt1.1 libwoff1 libharfbuzz-icu0 \
+      libwebp7 libwebpdemux2 libwebpmux3 libopenjp2-7 libhyphen0 liblcms2-2 \
+      libatk1.0-0t64 libsecret-1-0 libtasn1-6 libenchant-2-2 libnotify4 \
+      libavif16 libsysprof-capture-4-dev libgcrypt20 libseccomp2 libxml2 \
+      libatomic1 libfontconfig1 \
+    && rm -rf /var/lib/apt/lists/*
+
+ARG WPE_DEB=wpe-kiosk-stack_2.52.4_arm64.deb
+COPY ${WPE_DEB} /tmp/wpe-kiosk-stack.deb
+# The probe list is `cogcore-sys`'s `deps` array, so a broken image fails here
+# rather than part-way through a cargo build.
+RUN dpkg -i /tmp/wpe-kiosk-stack.deb && rm /tmp/wpe-kiosk-stack.deb \
+    && ldconfig \
+    && for pc in wpe-webkit-2.0 wpe-1.0 gio-2.0 gobject-2.0 gmodule-2.0 glib-2.0 libsoup-3.0; do \
+         pkg-config --print-errors --exists "$pc" || exit 1; \
+       done \
+    && [ "$(ldd /usr/lib/aarch64-linux-gnu/libWPEWebKit-2.0.so | grep -c 'not found')" = 0 ]
+
+# OP-TEE. These are the Teaclave TrustZone SDK's own steps, transcribed from its
+# `setup_optee_dependencies.sh`, `setup.sh`, and `build_optee_libraries.sh`
+# rather than executed: the SDK's `setup.sh` calls bare `apt` and re-installs
+# rustup, both of which are wrong inside an image that already has a pinned
+# toolchain. `OPTEE_VERSION` mirrors the SDK's `optee-version.txt`.
+#
+# Only the dev kit and client export are needed here. The consortium pipeline
+# builds the TA with plain stable Rust for `aarch64-unknown-linux-gnu`
+# (`OPTEE_TARGET` in consortium-builder), so the SDK's nightly toolchain and its
+# `*-unknown-optee` JSON targets are not required.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      bison flex expect ccache uuid-dev libcap-dev libfdt-dev libpixman-1-dev \
+      python3 python3-pycryptodome python3-pyelftools python3-cryptography \
+    && rm -rf /var/lib/apt/lists/*
+
+ARG OPTEE_VERSION=4.10.0
+ENV OPTEE_DIR=/opt/optee
+
+# `CFG_TA_FLOAT_SUPPORT=n` is the SDK's workaround for `__aeabi_*` being defined
+# by both compiler_builtins and optee libutils. On this native arm64 image the
+# `aarch64-linux-gnu-` prefix is provided by the distro gcc, so no separate
+# 64-bit cross compiler is installed.
+RUN git clone --depth 1 -b ${OPTEE_VERSION} https://github.com/OP-TEE/optee_os.git ${OPTEE_DIR}/optee_os \
+    && make -C ${OPTEE_DIR}/optee_os PLATFORM=vexpress-qemu_armv8a CFG_TA_FLOAT_SUPPORT=n \
+    && git clone --depth 1 -b ${OPTEE_VERSION} https://github.com/OP-TEE/optee_client.git ${OPTEE_DIR}/optee_client \
+    && make -C ${OPTEE_DIR}/optee_client WITH_TEEACL=0 \
+         DESTDIR=${OPTEE_DIR}/optee_client/export_arm64 CROSS_COMPILE=aarch64-linux-gnu-
+
+ENV TA_DEV_KIT_DIR=${OPTEE_DIR}/optee_os/out/arm-plat-vexpress/export-ta_arm64
+ENV OPTEE_CLIENT_EXPORT=${OPTEE_DIR}/optee_client/export_arm64
+
+WORKDIR /workspace

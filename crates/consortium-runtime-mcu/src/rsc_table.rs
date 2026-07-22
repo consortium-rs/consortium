@@ -150,6 +150,13 @@ unsafe impl Sync for SharedResourceTable {}
 /// The resource table linked into the `.resource_table` ELF section the host
 /// reads when booting this firmware. Replace the trace address/size with the
 /// buffer your firmware actually logs into.
-#[unsafe(link_section = ".resource_table")]
+///
+/// The section is applied only on bare-metal targets (`target_os = "none"`),
+/// which are the ELF firmware targets that remoteproc actually reads it from.
+/// Host builds exist solely for `cargo clippy`/`cargo test`, and a bare
+/// `.resource_table` is not a legal Mach-O section specifier (those need a
+/// `__SEGMENT,__section` pair), so applying it unconditionally fails the macOS
+/// host lint.
+#[cfg_attr(target_os = "none", unsafe(link_section = ".resource_table"))]
 #[used]
 pub static RSC_TABLE: SharedResourceTable = SharedResourceTable::new(0x0000_0000, 0);

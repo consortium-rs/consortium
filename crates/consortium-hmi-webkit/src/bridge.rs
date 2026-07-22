@@ -42,7 +42,7 @@ pub(super) fn attach(
     });
 
     manager.connect_script_message("bridge", move |message| {
-        let Ok(dispatch) = bridge.dispatch(message) else {
+        let Ok(dispatch) = bridge.dispatch(&message) else {
             return;
         };
         let responses = responses.clone();

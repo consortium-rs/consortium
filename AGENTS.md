@@ -489,6 +489,52 @@ block with the pointer lifetime or ownership invariant.
 - Do not assume Linux-only crates or no-std target checks work on every developer
   machine.
 
+## Linux Builds on macOS (Apple `container`)
+
+The `*-a64` / `*-a32` recipes refuse to run on a non-Linux host, and the Linux-only
+crates (`consortium-runtime-app`, `cogcore*`, `consortium-hmi-webkit`) cannot be
+compiled on macOS at all. On Apple Silicon, Apple `container` boots a _native_
+arm64 Linux VM, so `aarch64-unknown-linux-gnu` is a **native** build there and the
+melt-pot manifests' `[profile] sysroot = "/"` resolves to the image root — no Yocto
+SDK and no cross linker are involved for the 64-bit A-core.
+
+`Dockerfile.linux` defines two stages, driven by the `just linux-*` recipes:
+
+- `base` (`just linux-image`) — Rust toolchains, `dtc`, `arm-none-eabi-objcopy`,
+  and `just`. Enough for the `*-a64` / `*-a32` recipes.
+- `full` (`just linux-image-full`) — adds WPE WebKit/Cog from the
+  consortium-rs/wpe-kiosk-stack-prebuilt `.deb` (point `CONSORTIUM_WPE_DEB` at it)
+  and an OP-TEE 4.10.0 TA dev kit. Enough for a full `csti build` of melt-pot.
+
+```bash
+just linux-setup                        # start services + builder with a routable DNS
+just linux-image                        # or: just linux-image-full
+just linux just check-ipc-a64           # run any repo recipe inside the container
+just linux-full 'cargo build -p cogcore'
+```
+
+Things that are easy to get wrong here:
+
+- **DNS.** `--dns` is not cosmetic. On a host whose VPN hands out fake-ip DNS (the
+  198.18.0.0/15 pool), the VM inherits an address it cannot route and every network
+  call _hangs silently_ rather than failing. The recipes pass `--dns` for this;
+  override with `CONSORTIUM_LINUX_DNS`.
+- **Do not set a global `CARGO_TARGET_DIR`.** The melt-pot example crates are
+  excluded from the workspace so they build into per-crate `target/` dirs, and the
+  build pipeline looks for their ELFs at exactly those paths. The recipes instead
+  mount a named volume over `/workspace/target`, which also keeps Linux artifacts
+  out of the macOS `./target` tree — sharing one target dir between host and
+  container makes every switch a full rebuild.
+- **Ubuntu 24.04, not Debian bookworm.** The prebuilt WPE stack needs GLIBC_2.38
+  and libicu74.
+- **The HMI frontend still builds on the host.** `website/` uses pnpm `catalog:`
+  deps and `vp`, and `node_modules/` lives in the mounted repo, so a Linux install
+  would clobber the macOS one. Build the frontend on the host, then set
+  `CONSORTIUM_HMI_BUILD_CMD=/bin/true` so the container consumes the existing dist.
+- Running the pipeline rewrites the committed `src/consortium.gen.rs` with
+  container-absolute `include_bytes!` paths. Revert it afterwards unless the change
+  is intended.
+
 ## Style and Tooling
 
 - Rust edition is 2024 across the workspace.
