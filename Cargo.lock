@@ -825,10 +825,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-hmi-input"
+version = "0.1.0"
+dependencies = [
+ "consortium-ipc",
+ "postcard",
+ "serde",
+]
+
+[[package]]
 name = "consortium-hmi-pocket"
 version = "0.1.0"
 dependencies = [
  "consortium-hmi",
+ "consortium-hmi-input",
  "pocket-mod",
  "pocket-ui-wgpu",
  "pocket3d",

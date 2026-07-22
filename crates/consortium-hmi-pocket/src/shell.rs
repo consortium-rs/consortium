@@ -30,37 +30,21 @@
 
 use std::sync::Arc;
 
+use consortium_hmi_input::{ButtonCode, InputEvent, PointerButton, TouchPhase};
 use pocket_ui_wgpu::{Blit, UiRenderer};
 use pocket3d::gpu::{Gpu, OFFSCREEN_FORMAT, OffscreenTarget};
 use pocket3d::wgpu;
 use winit::application::ApplicationHandler;
-use winit::dpi::LogicalSize;
-use winit::event::{ElementState, KeyEvent, WindowEvent};
+use winit::dpi::{LogicalSize, PhysicalPosition};
+use winit::event::{
+    ElementState, KeyEvent, MouseButton, Touch, TouchPhase as WinitTouchPhase, WindowEvent,
+};
 use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop};
 use winit::keyboard::{KeyCode, PhysicalKey};
 use winit::window::{Window, WindowId};
 
 use crate::PocketApp;
 use crate::error::{PocketError, Result};
-
-/// PSP button bitmask (spec `BTN`), the first argument to `globalThis.frame`.
-mod btn {
-    pub const SELECT: u32 = 0x0001;
-    pub const START: u32 = 0x0008;
-    pub const UP: u32 = 0x0010;
-    pub const RIGHT: u32 = 0x0020;
-    pub const DOWN: u32 = 0x0040;
-    pub const LEFT: u32 = 0x0080;
-    pub const LTRIGGER: u32 = 0x0100;
-    pub const RTRIGGER: u32 = 0x0200;
-    pub const TRIANGLE: u32 = 0x1000;
-    pub const CIRCLE: u32 = 0x2000;
-    pub const CROSS: u32 = 0x4000;
-    pub const SQUARE: u32 = 0x8000;
-}
-
-/// Analog stick packed as `(x << 8) | y`, each axis `0..=255` with 128 center.
-const ANALOG_CENTER: u32 = 0x8080;
 
 /// Window and presentation options for [`run`].
 #[derive(Clone, Debug)]
@@ -107,7 +91,6 @@ pub fn run(app: PocketApp, config: ShellConfig) -> Result<()> {
         app,
         config,
         render: None,
-        buttons: 0,
         error: None,
     };
     event_loop
@@ -135,7 +118,6 @@ struct Shell {
     app: PocketApp,
     config: ShellConfig,
     render: Option<RenderState>,
-    buttons: u32,
     error: Option<PocketError>,
 }
 
@@ -144,6 +126,18 @@ impl Shell {
     fn fail(&mut self, event_loop: &ActiveEventLoop, error: PocketError) {
         self.error = Some(error);
         event_loop.exit();
+    }
+
+    /// Converts a physical window position into logical UI coordinates,
+    /// inverting the letterbox. Returns `None` before the surface exists.
+    fn to_logical(&self, position: PhysicalPosition<f64>) -> Option<(i16, i16)> {
+        let state = self.render.as_ref()?;
+        Some(physical_to_logical(
+            (state.config.width, state.config.height),
+            state.logical,
+            position.x as f32,
+            position.y as f32,
+        ))
     }
 
     fn init(&mut self, event_loop: &ActiveEventLoop) -> Result<RenderState> {
@@ -212,8 +206,8 @@ impl Shell {
         };
 
         // Advance the guest: pumps completed bridge commands, runs one JS frame
-        // with the held buttons, and ticks the retained UI core.
-        self.app.frame(self.buttons, ANALOG_CENTER)?;
+        // with the held input state, and ticks the retained UI core.
+        self.app.frame_pad()?;
 
         let mut encoder =
             state
@@ -323,11 +317,44 @@ impl ApplicationHandler for Shell {
                     event_loop.exit();
                     return;
                 }
-                if let Some(bit) = map_button(code) {
-                    match state {
-                        ElementState::Pressed => self.buttons |= bit,
-                        ElementState::Released => self.buttons &= !bit,
-                    }
+                if let Some(button) = map_button(code) {
+                    self.app.apply_input(&InputEvent::Button {
+                        code: button,
+                        pressed: state == ElementState::Pressed,
+                    });
+                }
+            }
+            WindowEvent::CursorMoved { position, .. } => {
+                // Pointer/touch events are carried by the shared input model
+                // but have no PSP frame equivalent yet, so the pad ignores
+                // them yet; translating them here exercises the source-side
+                // logical-coordinate calibration the model expects and is
+                // ready for the guest's packed-touch entry.
+                if let Some((x, y)) = self.to_logical(position) {
+                    self.app.apply_input(&InputEvent::Pointer { x, y });
+                }
+            }
+            WindowEvent::MouseInput { state, button, .. } => {
+                if let Some(button) = map_pointer_button(button) {
+                    self.app.apply_input(&InputEvent::PointerButton {
+                        button,
+                        pressed: state == ElementState::Pressed,
+                    });
+                }
+            }
+            WindowEvent::Touch(Touch {
+                phase,
+                location,
+                id,
+                ..
+            }) => {
+                if let Some((x, y)) = self.to_logical(location) {
+                    self.app.apply_input(&InputEvent::Touch {
+                        id: id as u8,
+                        phase: map_touch_phase(phase),
+                        x,
+                        y,
+                    });
                 }
             }
             WindowEvent::RedrawRequested => {
@@ -354,23 +381,56 @@ fn letterbox(surface: (u32, u32), logical: (u32, u32)) -> (f32, f32, f32, f32) {
     ((sw - w) * 0.5, (sh - h) * 0.5, w, h)
 }
 
-/// Maps a physical key to a PSP button bit, mirroring the web host's remap.
-fn map_button(code: KeyCode) -> Option<u32> {
+/// Inverts [`letterbox`]: maps a physical surface point to logical UI
+/// coordinates, clamped to the logical bounds. Points outside the letterboxed
+/// viewport clamp to the nearest edge.
+fn physical_to_logical(surface: (u32, u32), logical: (u32, u32), px: f32, py: f32) -> (i16, i16) {
+    let (x_off, y_off, w, h) = letterbox(surface, logical);
+    let (lw, lh) = (logical.0.max(1) as f32, logical.1.max(1) as f32);
+    let lx = ((px - x_off) / w * lw).clamp(0.0, lw - 1.0);
+    let ly = ((py - y_off) / h * lh).clamp(0.0, lh - 1.0);
+    (lx as i16, ly as i16)
+}
+
+/// Maps a physical key to a neutral [`ButtonCode`], mirroring the web host's
+/// remap. Face keys follow the PSP glyph layout (X = Circle/`East`,
+/// Z = Cross/`South`, C = Square/`West`, V = Triangle/`North`).
+fn map_button(code: KeyCode) -> Option<ButtonCode> {
     Some(match code {
-        KeyCode::ArrowUp | KeyCode::KeyW => btn::UP,
-        KeyCode::ArrowDown | KeyCode::KeyS => btn::DOWN,
-        KeyCode::ArrowLeft | KeyCode::KeyA => btn::LEFT,
-        KeyCode::ArrowRight | KeyCode::KeyD => btn::RIGHT,
-        KeyCode::KeyX => btn::CIRCLE,
-        KeyCode::KeyZ => btn::CROSS,
-        KeyCode::KeyC => btn::SQUARE,
-        KeyCode::KeyV => btn::TRIANGLE,
-        KeyCode::KeyQ => btn::LTRIGGER,
-        KeyCode::KeyE => btn::RTRIGGER,
-        KeyCode::Enter => btn::START,
-        KeyCode::ShiftRight => btn::SELECT,
+        KeyCode::ArrowUp | KeyCode::KeyW => ButtonCode::DpadUp,
+        KeyCode::ArrowDown | KeyCode::KeyS => ButtonCode::DpadDown,
+        KeyCode::ArrowLeft | KeyCode::KeyA => ButtonCode::DpadLeft,
+        KeyCode::ArrowRight | KeyCode::KeyD => ButtonCode::DpadRight,
+        KeyCode::KeyX => ButtonCode::East,
+        KeyCode::KeyZ => ButtonCode::South,
+        KeyCode::KeyC => ButtonCode::West,
+        KeyCode::KeyV => ButtonCode::North,
+        KeyCode::KeyQ => ButtonCode::L1,
+        KeyCode::KeyE => ButtonCode::R1,
+        KeyCode::Enter => ButtonCode::Start,
+        KeyCode::ShiftRight => ButtonCode::Select,
         _ => return None,
     })
+}
+
+/// Maps a winit mouse button to the neutral [`PointerButton`] set.
+fn map_pointer_button(button: MouseButton) -> Option<PointerButton> {
+    Some(match button {
+        MouseButton::Left => PointerButton::Left,
+        MouseButton::Right => PointerButton::Right,
+        MouseButton::Middle => PointerButton::Middle,
+        _ => return None,
+    })
+}
+
+/// Maps a winit touch phase to the neutral [`TouchPhase`].
+fn map_touch_phase(phase: WinitTouchPhase) -> TouchPhase {
+    match phase {
+        WinitTouchPhase::Started => TouchPhase::Down,
+        WinitTouchPhase::Moved => TouchPhase::Move,
+        WinitTouchPhase::Ended => TouchPhase::Up,
+        WinitTouchPhase::Cancelled => TouchPhase::Cancel,
+    }
 }
 
 #[cfg(test)]
@@ -387,9 +447,24 @@ mod tests {
 
     #[test]
     fn button_map_covers_face_and_dpad() {
-        assert_eq!(map_button(KeyCode::KeyX), Some(btn::CIRCLE));
-        assert_eq!(map_button(KeyCode::ArrowLeft), Some(btn::LEFT));
-        assert_eq!(map_button(KeyCode::KeyA), Some(btn::LEFT));
+        assert_eq!(map_button(KeyCode::KeyX), Some(ButtonCode::East));
+        assert_eq!(map_button(KeyCode::ArrowLeft), Some(ButtonCode::DpadLeft));
+        assert_eq!(map_button(KeyCode::KeyA), Some(ButtonCode::DpadLeft));
         assert_eq!(map_button(KeyCode::Space), None);
+    }
+
+    #[test]
+    fn physical_to_logical_inverts_the_letterbox() {
+        // 800x200 surface, 480x240 logical -> 400x200 viewport at x=200,y=0.
+        // Viewport center maps to logical center.
+        let (x, y) = physical_to_logical((800, 200), (480, 240), 400.0, 100.0);
+        assert_eq!((x, y), (240, 120));
+        // Top-left of the viewport maps to the logical origin.
+        assert_eq!(
+            physical_to_logical((800, 200), (480, 240), 200.0, 0.0),
+            (0, 0)
+        );
+        // Points left of the pillarbox clamp to the left edge.
+        assert_eq!(physical_to_logical((800, 200), (480, 240), 0.0, 100.0).0, 0);
     }
 }
