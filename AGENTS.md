@@ -239,8 +239,9 @@ output unless the recipe or patch workflow calls for it.
 
 `consortium-hal-imx9` and `consortium-hal-stm32mp2` re-export the shared HAL and their
 PAC crates (with `default-features = false`), re-export `interrupts`/`Interrupt` and the
-`rt`-gated `#[interrupt]` macro, and expose feature-gated DMA, GPIO, I2C, timer-driver,
-and UART modules. They also own the chip-selection features forwarded to the PAC:
+`rt`-gated `#[interrupt]` macro, and expose feature-gated CAN, DMA, GPIO, I2C, SPI,
+timer-driver, and UART modules (all on by default alongside the default chip). They also
+own the chip-selection features forwarded to the PAC:
 `mimx93`/`mimx95` (hal-imx9, default `mimx95`) and `stm32mp21x`/`stm32mp23x`/`stm32mp25x`
 (hal-stm32mp2, default `stm32mp25x`, where `stm32mp23x`/`stm32mp25x` both map to the PAC's
 `stm32mp257`). Keep these crates firmware-friendly: `no_std`, narrow unsafe blocks, and
