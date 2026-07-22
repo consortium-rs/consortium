@@ -221,9 +221,14 @@ The relevant vectors are HSEM (non-secure), IPCC1_RX/IPCC2_RX (non-secure), and 
 lines a core drives (i.MX93 `MU1_B`/`MU2_B`; i.MX95 CM7 `MU5_A`/`MU7_B`/`MU8_B`). See the
 melt-pot `mcu/src/main.rs` files for worked examples.
 
-The `std` doorbell paths are host-testable with fake MMIO and Tokio `Notify`. Runtime
-UIO integrations should bind each doorbell notifier to the Linux UIO IRQ fanout before
-receiving.
+The `std` doorbell paths are host-testable with fake MMIO and Tokio `Notify`. On `std`
+the wait path normally blocks on the doorbell's `Notify`: `wait()` enables the line's
+interrupt while pending and disarms/masks it on completion (for HSEM, enabling `CnIER` and
+acknowledging via `CnICR`/status), so userspace owns the mask and re-arming the UIO IRQ
+does not immediately re-fire a level-sensitive line. Runtime UIO integrations bind each
+doorbell to the Linux UIO IRQ fan-out before receiving — `bind_notifier` for a plain
+doorbell, or `bind_service` for a masking doorbell that must mask its lines before the
+wake.
 
 ## HAL and PAC
 
@@ -332,10 +337,20 @@ commands to work for those crates before the pipeline has generated that file.
 
 ### Runtime Layers
 
-`consortium-runtime-app` is Linux-only. It exposes remoteproc support, optional UIO-backed
-IPC (`ipc-shm`), optional debug (`dbg`), and optional TEE (`tee`). `UioDevice` opens
-`/dev/uioN`, maps the shared region, and runs a Tokio IRQ task that wakes registered
-doorbell notifiers.
+`consortium-runtime-app` is Linux-oriented, but its UIO interrupt dispatch is split out
+into a portable `irq` module gated `cfg(unix)` (not `target_os = "linux"`), so the
+`[fd readiness -> user-space fan-out]` slice is socketpair-testable on macOS as well as
+Linux; the real `/dev/uioN` mapping and device lifecycle stay in the Linux-only `uio`
+module. The crate exposes remoteproc support, optional UIO-backed IPC (`ipc-shm`),
+optional debug (`dbg`), and optional TEE (`tee`). `UioDevice::open(uio_id, enable_irq)`
+opens the device, maps regions (`mmap` for register/doorbell windows, `mmap_zeroed` for
+zero-initialized data windows), and runs `irq::irq_loop`: wait for the fd to become
+readable, drain the 4-byte interrupt count, re-arm the interrupt with a 4-byte write, then
+fan the wakeup out to every registered doorbell service. Bind a doorbell with
+`bind_notifier(Arc<Notify>)` (a non-masking doorbell, wakeup is just `notify_waiters()`)
+or `bind_service(Arc<dyn Fn()>)` (a masking doorbell such as IPCC or MU registers a service
+that masks its asserted lines *before* waking, so a level-sensitive line does not
+immediately re-fire the UIO IRQ when the loop re-arms).
 
 `consortium-runtime-mcu` is `no_std`, re-exports debug and shared-memory IPC pieces
 behind features, and provides small helpers such as `static_buf!` for scratch buffers.
