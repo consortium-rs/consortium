@@ -191,6 +191,50 @@ fn resolve_hmi_build_command_from(
     )
 }
 
+/// Resolves the PocketJS frontend build command for `app`, writing artifacts to
+/// `outdir` (the manifest's resolved `[hmi].build`).
+///
+/// A `CONSORTIUM_HMI_BUILD_CMD` override wins verbatim; otherwise this runs
+/// `bun scripts/build.ts <app> --outdir=<outdir>` from the project directory.
+pub fn resolve_pocket_build_command(app: &str, outdir: &Path) -> Result<HmiBuildCommand, String> {
+    resolve_pocket_build_command_from(
+        std::env::var("CONSORTIUM_HMI_BUILD_CMD").ok(),
+        app,
+        outdir,
+        |tool| resolve_cross_tool(tool).ok(),
+    )
+}
+
+/// Testable core of [`resolve_pocket_build_command`]; see
+/// [`resolve_hmi_build_command_from`] for why resolution is injected.
+fn resolve_pocket_build_command_from(
+    env_cmd: Option<String>,
+    app: &str,
+    outdir: &Path,
+    resolve_tool: impl Fn(&str) -> Option<String>,
+) -> Result<HmiBuildCommand, String> {
+    if let Some(cmd) = env_cmd {
+        let parts: Vec<String> = cmd.split_whitespace().map(String::from).collect();
+        if parts.is_empty() {
+            return Err("CONSORTIUM_HMI_BUILD_CMD is set but empty".to_string());
+        }
+        return Ok(HmiBuildCommand::Custom(parts));
+    }
+    let program = resolve_tool("bun").ok_or_else(|| {
+        "PocketJS build needs `bun`: install it (https://bun.sh) or set \
+         CONSORTIUM_HMI_BUILD_CMD"
+            .to_string()
+    })?;
+    Ok(HmiBuildCommand::Resolved {
+        program,
+        args: vec![
+            "scripts/build.ts".to_string(),
+            app.to_string(),
+            format!("--outdir={}", outdir.display()),
+        ],
+    })
+}
+
 /// Resolves upstream cargo or rustc via `rustup which --toolchain stable`.
 pub async fn resolve_rustup(tool: &str) -> Result<String, String> {
     let output = Command::new("rustup")
@@ -440,7 +484,7 @@ mod tests {
 
     #[test]
     fn inject_hmi_sets_dist_and_debug_url() {
-        let hmi = HmiConfig {
+        let hmi = HmiConfig::Cog {
             dist: "/opt/app/dist".to_string(),
             debug_url: Some("http://localhost:5173".to_string()),
         };
@@ -463,7 +507,7 @@ mod tests {
     fn inject_hmi_omits_debug_url_when_absent() {
         // No dev-server URL: only DIST is injected, so debug builds fall back to
         // the static `csti://` handler rather than a stale URL.
-        let hmi = HmiConfig {
+        let hmi = HmiConfig::Cog {
             dist: "/opt/app/dist".to_string(),
             debug_url: None,
         };
@@ -493,6 +537,7 @@ mod tests {
         }
         let manifest = "\
             [hmi]\n\
+            engine    = \"cog\"\n\
             dist      = \"dist\"\n\
             debug_url = \"http://localhost:5173\"\n";
 
@@ -593,6 +638,53 @@ mod tests {
         let err = resolve_hmi_build_command_from(Some("   ".to_string()), |_| None)
             .expect_err("empty override is an error");
         assert!(err.contains("empty"));
+    }
+
+    #[test]
+    fn pocket_command_runs_bun_build_with_outdir() {
+        let cmd =
+            resolve_pocket_build_command_from(None, "hero-main", Path::new("/proj/dist"), |tool| {
+                (tool == "bun").then(|| "/tools/bun".to_string())
+            })
+            .expect("bun resolves");
+        assert_eq!(
+            cmd,
+            HmiBuildCommand::Resolved {
+                program: "/tools/bun".to_string(),
+                args: vec![
+                    "scripts/build.ts".to_string(),
+                    "hero-main".to_string(),
+                    "--outdir=/proj/dist".to_string(),
+                ],
+            }
+        );
+    }
+
+    #[test]
+    fn pocket_command_override_beats_bun() {
+        let cmd = resolve_pocket_build_command_from(
+            Some("just pocket hero-main".to_string()),
+            "hero-main",
+            Path::new("/proj/dist"),
+            |_| Some("/tools/ignored".to_string()),
+        )
+        .expect("override resolves");
+        assert_eq!(
+            cmd,
+            HmiBuildCommand::Custom(vec![
+                "just".to_string(),
+                "pocket".to_string(),
+                "hero-main".to_string(),
+            ])
+        );
+    }
+
+    #[test]
+    fn pocket_command_errors_without_bun() {
+        let err =
+            resolve_pocket_build_command_from(None, "hero-main", Path::new("/proj/dist"), |_| None)
+                .expect_err("missing bun is an error");
+        assert!(err.contains("bun"));
     }
 
     #[test]

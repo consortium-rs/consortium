@@ -87,7 +87,7 @@ but the interrupt-and-polling path is the default and only path today.
 
 ## Where drivers fit
 
-These drivers cover the mechanics of talking to a peripheral. Deciding *which* core owns a
+These drivers cover the mechanics of talking to a peripheral. Deciding _which_ core owns a
 peripheral, and enforcing that ownership across cores and secure domains, is the job of the
 [Resource Partition Isolation subsystem](../rpi/index.md), which drives peripheral
 ownership from `Consortium.toml` and the generated device tree. A controller core reaches

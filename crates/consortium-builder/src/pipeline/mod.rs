@@ -44,7 +44,7 @@ use std::path::{Path, PathBuf};
 
 use consortium_cfg::Session;
 use consortium_cfg::bridge::LoweredIr;
-use consortium_cfg_common::config::{VisibleCore, XcoreName};
+use consortium_cfg_common::config::{HmiEngine, VisibleCore, XcoreName};
 use consortium_cfg_common::database::Coprocessor;
 use thiserror::Error;
 
@@ -61,9 +61,6 @@ use bitbake::{BitbakeAction, BitbakeError, RecipeSpec};
 use dist::{DistAssemblyError, DistLayout};
 use firmware::FirmwareBuildPlan;
 use tee::TeeToolchain;
-
-/// The `dist/` (and on-target) subdirectory for HMI assets.
-pub(crate) const WWW_SUBDIR: &str = "www";
 
 /// The file name the generated per-core init module is written as inside a crate
 /// (`src/<GENERATED_MODULE>`). The crate is expected to `include!`/`mod` it.
@@ -243,11 +240,26 @@ pub fn derive_hmi_configuration(
     let Some(hmi) = &session.config.hmi else {
         return Ok(None);
     };
-    let command =
-        crate::compile::utils::resolve_hmi_build_command().map_err(PipelineError::Codegen)?;
+    hmi.validate().map_err(PipelineError::Codegen)?;
+
+    let project_dir = manifest_dir.join(&hmi.source);
+    let dist_dir = manifest_dir.join(&hmi.build);
+    let command = match hmi.engine {
+        HmiEngine::Cog => {
+            crate::compile::utils::resolve_hmi_build_command().map_err(PipelineError::Codegen)?
+        }
+        HmiEngine::Pocket => {
+            // `validate` guaranteed `app` is present and non-empty.
+            let app = hmi.app.as_deref().unwrap_or_default();
+            crate::compile::utils::resolve_pocket_build_command(app, &dist_dir)
+                .map_err(PipelineError::Codegen)?
+        }
+    };
     Ok(Some(HmiConfiguration {
-        project_dir: manifest_dir.join(&hmi.source),
-        dist_dir: manifest_dir.join(&hmi.build),
+        engine: hmi.engine,
+        app: hmi.app.clone(),
+        project_dir,
+        dist_dir,
         command,
     }))
 }
@@ -489,7 +501,15 @@ async fn run_inner(
                 firmware_originals: &firmware_originals,
                 application: &application,
                 ta: ta.as_deref(),
-                hmi_dist: hmi_dist.as_deref(),
+                hmi: config
+                    .hmi
+                    .as_ref()
+                    .zip(hmi_dist.as_deref())
+                    .map(|(cfg, dist)| dist::HmiStaging {
+                        engine: cfg.engine,
+                        app: cfg.app.as_deref(),
+                        dist,
+                    }),
                 dts_files: &plan.dts_files,
                 kconfig_fragments: &plan.kernel_files,
                 boot_files: &plan.boot_files,
@@ -840,6 +860,8 @@ mod tests {
             dist_root: root.join("dist"),
             release: true,
             hmi: Some(HmiConfiguration {
+                engine: HmiEngine::Cog,
+                app: None,
                 project_dir: root.join("website"),
                 dist_dir: root.join("website/dist"),
                 command: crate::compile::web::HmiBuildCommand::Custom(vec!["true".into()]),
@@ -890,8 +912,11 @@ mod tests {
         );
         assert_eq!(plan.application.config.target, "aarch64-unknown-linux-gnu");
         assert_eq!(
-            plan.application.config.hmi.as_ref().unwrap().dist,
-            "/opt/consortium/www"
+            plan.application.config.hmi.as_ref().unwrap(),
+            &crate::compile::env::HmiConfig::Cog {
+                dist: "/opt/consortium/www".to_string(),
+                debug_url: Some("http://127.0.0.1:5173/".to_string()),
+            }
         );
 
         // Stage 4: TA resolved from the manifest.

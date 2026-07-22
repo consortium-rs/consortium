@@ -281,7 +281,13 @@ Current top-level schema:
 - `[[ipc.channel]]` contains `name`, `doorbell`, `pattern`, `primary`, `secondary`,
   `party.<name>`, `config.memory`, `mtu`, and optional `codec` (default `postcard`).
 - `[tee]` contains the OP-TEE UUID.
-- `[hmi]` contains `engine`, `backend`, optional `debug`, `source`, and `build`.
+- `[hmi]` contains `engine` (`cog` or `pocket`), `backend`, optional `debug`,
+  `source`, `build`, and optional `app`. `app` names the PocketJS entry to build
+  (the mounted `-main` entry, e.g. `hero-main`) and is required when
+  `engine = "pocket"`; `Hmi::validate` also rejects `pocket` + `backend = "drm"`
+  (no DRM shell yet). `[hmi.logical]` contains `width` and `height` for the
+  logical UI viewport and defaults to `480` × `272`; the builder passes these
+  dimensions to the Pocket runtime.
 - `[peripheral.<name>]` contains `owner`, `secure`, optional `frequency`, optional
   `clock`, and optional pin declarations.
 
@@ -327,9 +333,15 @@ Current IPC build-time variables are channel-local metadata such as
 `CONSORTIUM_IPC_LENGTH`, `CONSORTIUM_IPC_UIO`, and `CONSORTIUM_IPC_MTU`; the shared
 memory base comes from generated code and UIO mapping, not `CONSORTIUM_IPC_BASE`.
 `consortium-dbg::config` reads `CONSORTIUM_DBG_BASE` and `CONSORTIUM_DBG_LENGTH`.
-`consortium-hmi-webkit` reads `CONSORTIUM_HMI_DIST` and optional
-`CONSORTIUM_HMI_DEBUG_URL`. The HMI build command is selected by
-`CONSORTIUM_HMI_BUILD_CMD`, then `vp`, then `npm`.
+`consortium-hmi-webkit` (engine `cog`) reads `CONSORTIUM_HMI_DIST` and optional
+`CONSORTIUM_HMI_DEBUG_URL`; the Cog build command is selected by
+`CONSORTIUM_HMI_BUILD_CMD`, then `vp`, then `npm`. `consortium-hmi-pocket` (engine
+`pocket`) reads `CONSORTIUM_HMI_POCKET_BUNDLE` and `CONSORTIUM_HMI_POCKET_PAK`
+(on-target `{deploy_root}/hmi/<app>.{js,pak}`), plus
+`CONSORTIUM_HMI_LOGICAL_WIDTH` and `CONSORTIUM_HMI_LOGICAL_HEIGHT`, via
+`PocketApp::from_env`; its build
+runs `bun scripts/build.ts <app> --outdir=<build>` (override with
+`CONSORTIUM_HMI_BUILD_CMD`), and the builder stages the bundle+pak into `dist/hmi/`.
 
 The build pipeline writes `src/consortium.gen.rs` into generated endpoint crates. The
 example app/MCU crates use `include!("consortium.gen.rs")`; do not expect plain cargo
@@ -349,7 +361,7 @@ readable, drain the 4-byte interrupt count, re-arm the interrupt with a 4-byte w
 fan the wakeup out to every registered doorbell service. Bind a doorbell with
 `bind_notifier(Arc<Notify>)` (a non-masking doorbell, wakeup is just `notify_waiters()`)
 or `bind_service(Arc<dyn Fn()>)` (a masking doorbell such as IPCC or MU registers a service
-that masks its asserted lines *before* waking, so a level-sensitive line does not
+that masks its asserted lines _before_ waking, so a level-sensitive line does not
 immediately re-fire the UIO IRQ when the loop re-arms).
 
 `consortium-runtime-mcu` is `no_std`, re-exports debug and shared-memory IPC pieces
@@ -444,8 +456,11 @@ it hosts a PocketJS JS/pak pair, mounts the bridge into QuickJS, delivers respon
 frame boundaries, and exposes headless wgpu rendering. Its optional `shell` feature adds
 a thin `winit` window host (`run`/`ShellConfig`, Wayland/X11 on Linux and Cocoa on macOS)
 that drives `PocketApp::frame` and blits the logical-size UI to the surface; the `kiosk`
-example runs a built `<app>-main.{js,pak}` in it. It does not yet provide the production
-DRM/KMS + seat/`libinput` shell or builder integration.
+example runs a built `<app>-main.{js,pak}` in it, and `PocketApp::from_env` loads the
+pair from the builder-injected env vars. The `csti build` pipeline supports
+`engine = "pocket"` end to end (bun build, `<app>.js`/`.pak` verification, `dist/hmi/`
+staging, env injection); it does not yet provide the production DRM/KMS + seat/`libinput`
+shell.
 `cogcore-sys` owns raw bindgen output and vendored Cog/WPE/WebKit headers; `cogcore`
 wraps a small safe subset and keeps WebKit/WPE types mostly opaque.
 

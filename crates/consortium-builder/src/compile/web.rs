@@ -23,7 +23,9 @@
 //! Linux application's [`HmiConfig`](super::env::HmiConfig) so the deployed app
 //! knows where to serve assets from.
 
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
+
+use consortium_cfg_common::config::HmiEngine;
 use thiserror::Error;
 use tokio::process::Command;
 
@@ -95,6 +97,14 @@ pub enum HmiCompileError {
     #[error("HMI dist directory is empty after build: {0:?}")]
     DistEmpty(PathBuf),
 
+    /// A PocketJS build produced no `<app>.js`/`<app>.pak` pair.
+    #[error("PocketJS artifact not found after build: {0:?}")]
+    PocketArtifactNotFound(PathBuf),
+
+    /// A PocketJS build was planned without an `[hmi].app` entry name.
+    #[error("PocketJS build requires `[hmi].app` (the entry name, e.g. \"hero-main\")")]
+    PocketAppMissing,
+
     /// A filesystem error occurred while verifying the dist output.
     #[error("{0}")]
     UtilityError(String),
@@ -103,6 +113,10 @@ pub enum HmiCompileError {
 /// Build parameters for the HMI frontend.
 #[derive(Clone)]
 pub struct HmiConfiguration {
+    /// Rendering engine, selecting how the output is verified.
+    pub engine: HmiEngine,
+    /// PocketJS entry name (`[hmi].app`); `None` for other engines.
+    pub app: Option<String>,
     /// Frontend project root (the manifest's `[hmi].source`, resolved absolute).
     pub project_dir: PathBuf,
     /// Dist output directory the build produces (the manifest's `[hmi].build`,
@@ -147,7 +161,12 @@ impl HmiCompiler {
             )));
         }
 
-        verify_dist(&config.dist_dir).await?;
+        match config.engine {
+            HmiEngine::Cog => verify_dist(&config.dist_dir).await?,
+            HmiEngine::Pocket => {
+                verify_pocket_artifacts(&config.dist_dir, config.app.as_deref()).await?
+            }
+        }
         Ok(config.dist_dir)
     }
 }
@@ -188,6 +207,25 @@ async fn verify_dist(dist: &PathBuf) -> Result<(), HmiCompileError> {
             "reading dist entries {dist:?}: {e}"
         ))),
     }
+}
+
+/// Verifies a PocketJS build produced both `<app>.js` and `<app>.pak`.
+///
+/// PocketJS emits exactly these two artifacts (bundle + packed assets), so
+/// unlike the opaque web dist their names are known and can be checked directly.
+async fn verify_pocket_artifacts(dist: &Path, app: Option<&str>) -> Result<(), HmiCompileError> {
+    let app = app
+        .map(str::trim)
+        .filter(|a| !a.is_empty())
+        .ok_or(HmiCompileError::PocketAppMissing)?;
+    for ext in ["js", "pak"] {
+        let artifact = dist.join(format!("{app}.{ext}"));
+        match tokio::fs::metadata(&artifact).await {
+            Ok(meta) if meta.is_file() => {}
+            _ => return Err(HmiCompileError::PocketArtifactNotFound(artifact)),
+        }
+    }
+    Ok(())
 }
 
 #[cfg(test)]
@@ -237,6 +275,8 @@ mod tests {
         // A tiny "build command" that materializes the dist tree, standing in for
         // the real `vp build`/`npm run build`.
         let cfg = HmiConfiguration {
+            engine: HmiEngine::Cog,
+            app: None,
             project_dir: project.clone(),
             dist_dir: dist.clone(),
             command: HmiBuildCommand::Custom(vec![
@@ -259,6 +299,8 @@ mod tests {
         let project = root.join("website");
 
         let cfg = HmiConfiguration {
+            engine: HmiEngine::Cog,
+            app: None,
             project_dir: project.clone(),
             dist_dir: project.join("dist"),
             command: HmiBuildCommand::Custom(vec!["true".into()]),
@@ -282,6 +324,8 @@ mod tests {
 
         // The command succeeds but never creates the dist directory.
         let cfg = HmiConfiguration {
+            engine: HmiEngine::Cog,
+            app: None,
             project_dir: project.clone(),
             dist_dir: dist.clone(),
             command: HmiBuildCommand::Custom(vec!["true".into()]),
@@ -299,6 +343,8 @@ mod tests {
     async fn build_errors_when_command_fails() {
         let project = tmp_dir("fail");
         let cfg = HmiConfiguration {
+            engine: HmiEngine::Cog,
+            app: None,
             project_dir: project.clone(),
             dist_dir: project.join("dist"),
             command: HmiBuildCommand::Custom(vec!["false".into()]),
@@ -308,6 +354,62 @@ mod tests {
             .await
             .expect_err("failing command is an error");
         assert!(matches!(err, HmiCompileError::BuildFailed(_)));
+
+        let _ = std::fs::remove_dir_all(&project);
+    }
+
+    #[tokio::test]
+    async fn pocket_build_verifies_bundle_and_pak() {
+        let project = tmp_dir("pocket-ok");
+        let dist = project.join("dist");
+
+        // Stand in for `bun scripts/build.ts hero-main --outdir=dist`: emit the
+        // two artifacts PocketJS produces.
+        let cfg = HmiConfiguration {
+            engine: HmiEngine::Pocket,
+            app: Some("hero-main".into()),
+            project_dir: project.clone(),
+            dist_dir: dist.clone(),
+            command: HmiBuildCommand::Custom(vec![
+                "sh".into(),
+                "-c".into(),
+                "mkdir -p dist && : > dist/hero-main.js && : > dist/hero-main.pak".into(),
+            ]),
+        };
+
+        let out = HmiCompiler::build(cfg)
+            .await
+            .expect("pocket build succeeds");
+        assert_eq!(out, dist);
+
+        let _ = std::fs::remove_dir_all(&project);
+    }
+
+    #[tokio::test]
+    async fn pocket_build_errors_when_pak_missing() {
+        let project = tmp_dir("pocket-nopak");
+        let dist = project.join("dist");
+
+        // Only the JS bundle lands; the pak is missing.
+        let cfg = HmiConfiguration {
+            engine: HmiEngine::Pocket,
+            app: Some("hero-main".into()),
+            project_dir: project.clone(),
+            dist_dir: dist.clone(),
+            command: HmiBuildCommand::Custom(vec![
+                "sh".into(),
+                "-c".into(),
+                "mkdir -p dist && : > dist/hero-main.js".into(),
+            ]),
+        };
+
+        let err = HmiCompiler::build(cfg)
+            .await
+            .expect_err("missing pak is an error");
+        assert!(matches!(
+            err,
+            HmiCompileError::PocketArtifactNotFound(path) if path.ends_with("hero-main.pak")
+        ));
 
         let _ = std::fs::remove_dir_all(&project);
     }

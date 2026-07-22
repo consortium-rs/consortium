@@ -22,6 +22,7 @@
 //! Wayland/DRM event shell can build on the same [`PocketApp`] frame contract.
 
 mod error;
+mod pad;
 mod service;
 
 use std::{fs, path::Path};
@@ -31,8 +32,12 @@ use pocket_mod::{Guest, qjs::Object};
 use consortium_hmi::Bridge;
 use service::PocketService;
 
+pub use consortium_hmi_input::{
+    ButtonCode, InputEvent, InputSource, PointerButton, ScrollAxis, SliceSource, TouchPhase,
+};
 pub use error::{PocketError, Result};
 pub use headless::HeadlessRenderer;
+pub use pad::PadState;
 pub use pocket_ui_wgpu::{UiRenderer, UiSurface};
 
 mod headless;
@@ -66,6 +71,25 @@ impl Default for PocketConfig {
     }
 }
 
+impl PocketConfig {
+    /// Creates the runtime configuration injected from `Consortium.toml` by
+    /// `csti build`.
+    pub fn from_env() -> Result<Self> {
+        let width = parse_logical_dimension(
+            "CONSORTIUM_HMI_LOGICAL_WIDTH",
+            option_env!("CONSORTIUM_HMI_LOGICAL_WIDTH"),
+        )?;
+        let height = parse_logical_dimension(
+            "CONSORTIUM_HMI_LOGICAL_HEIGHT",
+            option_env!("CONSORTIUM_HMI_LOGICAL_HEIGHT"),
+        )?;
+        Ok(Self {
+            logical_size: (width, height),
+            ..Self::default()
+        })
+    }
+}
+
 /// A PocketJS guest, retained UI surface, and Consortium service adapter.
 ///
 /// `PocketApp` is intentionally single-threaded. The display/event-loop thread
@@ -76,6 +100,7 @@ pub struct PocketApp {
     ui: UiSurface,
     service: PocketService,
     logical_size: (u32, u32),
+    pad: PadState,
 }
 
 impl PocketApp {
@@ -115,6 +140,7 @@ impl PocketApp {
             ui,
             service,
             logical_size: config.logical_size,
+            pad: PadState::new(),
         })
     }
 
@@ -139,6 +165,23 @@ impl PocketApp {
         Self::new(&bundle, &pak, bridge, runtime, config)
     }
 
+    /// Loads the app from the bundle+pak paths the Consortium builder injected.
+    ///
+    /// Reads the bundle, pak, and logical viewport variables set at the
+    /// application's compile time by `csti build` for a
+    /// `[hmi] engine = "pocket"` manifest. The artifact values are the on-target
+    /// install paths (`{deploy_root}/hmi/<app>.{js,pak}`); the viewport comes
+    /// from `[hmi.logical]`. Returns
+    /// [`PocketError::Unconfigured`] when a variable is absent, e.g. a plain
+    /// `cargo build` outside the pipeline.
+    pub fn from_env(bridge: Bridge, runtime: tokio::runtime::Handle) -> Result<Self> {
+        let bundle = option_env!("CONSORTIUM_HMI_POCKET_BUNDLE")
+            .ok_or(PocketError::Unconfigured("CONSORTIUM_HMI_POCKET_BUNDLE"))?;
+        let pak = option_env!("CONSORTIUM_HMI_POCKET_PAK")
+            .ok_or(PocketError::Unconfigured("CONSORTIUM_HMI_POCKET_PAK"))?;
+        Self::from_files(bundle, pak, bridge, runtime, PocketConfig::from_env()?)
+    }
+
     /// Runs one guest turn and advances the retained UI core once.
     ///
     /// Completed Consortium commands are delivered before `frame()`, so
@@ -154,7 +197,34 @@ impl PocketApp {
 
     /// Runs one frame with a centered analog input.
     pub fn frame_buttons(&mut self, buttons: u32) -> Result<usize> {
-        self.frame(buttons, 0x8080)
+        self.frame(buttons, pad::ANALOG_CENTER)
+    }
+
+    /// Folds one backend-neutral [`InputEvent`] into the pending pad state.
+    ///
+    /// Events accumulate until the next [`frame_pad`](Self::frame_pad) (or
+    /// [`frame_from`](Self::frame_from)) delivers the held state to the guest,
+    /// so callers apply events as they arrive from any [`InputSource`] and let
+    /// the frame boundary do the delivery.
+    pub fn apply_input(&mut self, event: &InputEvent) {
+        self.pad.apply(event);
+    }
+
+    /// Runs one frame using the accumulated input state.
+    pub fn frame_pad(&mut self) -> Result<usize> {
+        self.frame(self.pad.buttons(), self.pad.analog())
+    }
+
+    /// Drains an [`InputSource`] into the pad state, then runs one frame.
+    ///
+    /// This is the source-agnostic driver: a winit shell, a `libinput` reader,
+    /// or an IPC receiver carrying events from a real-time core all present as
+    /// an [`InputSource`], and the guest sees only the folded frame.
+    pub fn frame_from(&mut self, source: &mut impl InputSource) -> Result<usize> {
+        while let Some(event) = source.poll_event() {
+            self.pad.apply(&event);
+        }
+        self.frame_pad()
     }
 
     /// Delivers every currently completed Consortium command to QuickJS.
@@ -186,6 +256,21 @@ impl PocketApp {
     pub fn logical_size(&self) -> (u32, u32) {
         self.logical_size
     }
+}
+
+fn parse_logical_dimension(name: &'static str, value: Option<&str>) -> Result<u32> {
+    let value = value.ok_or(PocketError::Unconfigured(name))?;
+    let dimension = value.parse::<u32>().map_err(|_| {
+        PocketError::InvalidConfiguration(format!(
+            "{name} must be an unsigned integer, got {value:?}"
+        ))
+    })?;
+    if dimension == 0 {
+        return Err(PocketError::InvalidConfiguration(format!(
+            "{name} must be non-zero"
+        )));
+    }
+    Ok(dimension)
 }
 
 fn publish_host_contract(guest: &Guest, config: &PocketConfig) -> Result<()> {
@@ -262,5 +347,13 @@ mod tests {
         .err()
         .unwrap();
         assert!(error.to_string().contains("viewport"));
+    }
+
+    #[test]
+    fn parses_pipeline_logical_dimensions() {
+        assert_eq!(parse_logical_dimension("WIDTH", Some("800")).unwrap(), 800);
+        assert!(parse_logical_dimension("WIDTH", Some("0")).is_err());
+        assert!(parse_logical_dimension("WIDTH", Some("wide")).is_err());
+        assert!(parse_logical_dimension("WIDTH", None).is_err());
     }
 }

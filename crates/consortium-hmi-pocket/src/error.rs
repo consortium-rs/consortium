@@ -38,6 +38,12 @@ pub enum PocketError {
     /// The evaluated bundle never installed `globalThis.frame`.
     #[error("PocketJS bundle evaluated but did not install globalThis.frame")]
     MissingFrame,
+    /// A build-time environment variable the pipeline injects was not set.
+    #[error("{0} is not set; build via the Consortium pipeline or set it manually")]
+    Unconfigured(&'static str),
+    /// A pipeline-injected HMI configuration value was invalid.
+    #[error("invalid PocketJS pipeline configuration: {0}")]
+    InvalidConfiguration(String),
     /// Reading the PocketJS bundle from disk failed.
     #[error("reading PocketJS bundle {path}")]
     ReadBundle {

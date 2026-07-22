@@ -41,7 +41,7 @@ pub use core::{Core, VisibleCore};
 pub use dbg::{Dbg, DbgCore, DbgMode};
 pub use dts::{Dts, DtsMode};
 pub use endpoints::Endpoints;
-pub use hmi::{Hmi, HmiBackend, HmiEngine};
+pub use hmi::{Hmi, HmiBackend, HmiEngine, HmiLogical};
 pub use ipc::{Ipc, IpcChannel, IpcChannelConfig, IpcEndpoint, IpcPattern};
 pub use mcore_name::McoreName;
 pub use memory::MemoryRegion;

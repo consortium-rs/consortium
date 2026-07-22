@@ -26,7 +26,7 @@ use std::path::{Path, PathBuf};
 use consortium_cfg::Session;
 use consortium_cfg_common::config::{AcoreName, Party, VisibleCore};
 
-use super::{PipelineError, WWW_SUBDIR, ipc_config_for};
+use super::{PipelineError, ipc_config_for};
 use crate::compile::application::ApplicationConfiguration;
 use crate::compile::env::HmiConfig;
 
@@ -63,12 +63,12 @@ pub fn plan_application_build(
 
     let target = acore_linux_triple(&session.database.ap)?;
 
-    // The HMI carrier points the deployed app at the on-target install path
-    // (`{deploy_root}/www`), which a packaging recipe populates from `dist/www`.
+    // The HMI carrier points the deployed app at its on-target install path
+    // under `deploy_root` (Cog: `www/`; PocketJS: `hmi/<app>.{js,pak}`), which a
+    // packaging recipe populates from the matching `dist/` subtree.
     let hmi = match (&session.config.hmi, hmi_dist) {
         (Some(hmi), Some(_)) => Some(HmiConfig::from_hmi(
             hmi,
-            PathBuf::from(WWW_SUBDIR),
             &session.config.profile.deploy_root,
         )),
         _ => None,
@@ -174,7 +174,13 @@ mod tests {
 
         // The HMI serve path resolves under the deploy root, not the build dist.
         let hmi = plan.config.hmi.expect("hmi injected");
-        assert_eq!(hmi.dist, "/opt/consortium/www");
+        assert_eq!(
+            hmi,
+            HmiConfig::Cog {
+                dist: "/opt/consortium/www".to_string(),
+                debug_url: Some("http://127.0.0.1:5173/".to_string()),
+            }
+        );
 
         // The generated AP module embeds the resolved firmware ELF.
         assert!(

@@ -25,7 +25,7 @@
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
-use consortium_cfg_common::config::VisibleCore;
+use consortium_cfg_common::config::{HmiEngine, VisibleCore};
 use thiserror::Error;
 use tokio::process::Command;
 
@@ -72,9 +72,14 @@ impl DistLayout {
         self.root.join("ta")
     }
 
-    /// The HMI assets subdirectory (`<root>/www`).
+    /// The Cog HMI assets subdirectory (`<root>/www`).
     pub fn www_dir(&self) -> PathBuf {
         self.root.join("www")
+    }
+
+    /// The PocketJS HMI subdirectory (`<root>/hmi`) holding the bundle + pak.
+    pub fn hmi_dir(&self) -> PathBuf {
+        self.root.join("hmi")
     }
 
     /// The Linux device-tree overlay subdirectory (`<root>/dts/linux`).
@@ -143,7 +148,8 @@ fn io(path: impl AsRef<Path>, source: std::io::Error) -> DistAssemblyError {
 ///   (retains the `.defmt` section for host-side defmt table parsing);
 /// - the application binary → `app/<file_name>`;
 /// - the signed TA (when present) → `ta/<file_name>`;
-/// - the HMI dist tree (when present) → `www/` (copied recursively);
+/// - the HMI assets (when present): a Cog dist tree → `www/` (copied
+///   recursively), or a PocketJS `<app>.js`/`<app>.pak` pair → `hmi/`;
 /// - each `(name, contents)` Linux device tree → `dts/linux/<name>`; a `.dtso`
 ///   overlay is verified with `dtc` (see [`verify_dts`]), a merged `.dts` is
 ///   not (see below);
@@ -163,11 +169,22 @@ pub struct DistAssemblyInputs<'a> {
     pub firmware_originals: &'a HashMap<VisibleCore, PathBuf>,
     pub application: &'a Path,
     pub ta: Option<&'a Path>,
-    pub hmi_dist: Option<&'a Path>,
+    pub hmi: Option<HmiStaging<'a>>,
     pub dts_files: &'a [(String, String)],
     pub kconfig_fragments: &'a [(String, String)],
     pub boot_files: &'a [(String, String)],
     pub systemd_units: &'a [(String, String)],
+}
+
+/// How the built HMI assets are staged, selected by engine.
+#[derive(Clone, Copy)]
+pub struct HmiStaging<'a> {
+    /// Rendering engine, selecting the staging layout.
+    pub engine: HmiEngine,
+    /// PocketJS entry name (`[hmi].app`); `None` for other engines.
+    pub app: Option<&'a str>,
+    /// Build-host dist directory the frontend build produced.
+    pub dist: &'a Path,
 }
 
 pub async fn assemble(
@@ -179,7 +196,7 @@ pub async fn assemble(
         firmware_originals,
         application,
         ta,
-        hmi_dist,
+        hmi,
         dts_files,
         kconfig_fragments,
         boot_files,
@@ -218,10 +235,26 @@ pub async fn assemble(
         copy_file(ta, &ta_dest).await?;
     }
 
-    // HMI assets, copied recursively.
-    if let Some(hmi_dist) = hmi_dist {
-        let www = layout.www_dir();
-        copy_dir_recursive(hmi_dist, &www).await?;
+    // HMI assets. Cog serves a whole dist tree from `www/`; PocketJS installs
+    // just the built `<app>.js`/`<app>.pak` pair under `hmi/`.
+    if let Some(hmi) = hmi {
+        match hmi.engine {
+            HmiEngine::Cog => {
+                let www = layout.www_dir();
+                copy_dir_recursive(hmi.dist, &www).await?;
+            }
+            HmiEngine::Pocket => {
+                let app = hmi.app.unwrap_or_default();
+                let hmi_dir = layout.hmi_dir();
+                tokio::fs::create_dir_all(&hmi_dir)
+                    .await
+                    .map_err(|e| io(&hmi_dir, e))?;
+                for ext in ["js", "pak"] {
+                    let name = format!("{app}.{ext}");
+                    copy_file(&hmi.dist.join(&name), &hmi_dir.join(&name)).await?;
+                }
+            }
+        }
     }
 
     // Linux device tree, written before the systemd units. A `.dtso` overlay is
@@ -446,7 +479,11 @@ mod tests {
                 firmware_originals: &firmware_originals,
                 application: &app,
                 ta: Some(&ta),
-                hmi_dist: Some(&www),
+                hmi: Some(HmiStaging {
+                    engine: HmiEngine::Cog,
+                    app: None,
+                    dist: &www,
+                }),
                 dts_files: &[],
                 kconfig_fragments: &kconfig,
                 boot_files: &boot,
@@ -493,7 +530,7 @@ mod tests {
                 firmware_originals: &firmware,
                 application: &app,
                 ta: None,
-                hmi_dist: None,
+                hmi: None,
                 dts_files: &[],
                 kconfig_fragments: &[],
                 boot_files: &[],
@@ -509,6 +546,55 @@ mod tests {
         assert!(!layout.dts_linux_dir().exists());
         assert!(!layout.kernel_dir().exists());
         assert!(!layout.boot_dir().exists());
+
+        let _ = std::fs::remove_dir_all(&base);
+    }
+
+    #[tokio::test]
+    async fn stages_pocket_bundle_and_pak_into_hmi_dir() {
+        let base = scratch("pocket");
+        let app = base.join("app-bin");
+        std::fs::write(&app, [0x7f, b'E', b'L', b'F']).unwrap();
+
+        // A PocketJS build-host dist with the two artifacts (plus a stray file
+        // that must NOT be staged — only <app>.js/<app>.pak are).
+        let src = base.join("pocket-dist");
+        std::fs::create_dir_all(&src).unwrap();
+        std::fs::write(src.join("hero-main.js"), b"//bundle").unwrap();
+        std::fs::write(src.join("hero-main.pak"), b"PAK").unwrap();
+        std::fs::write(src.join("hero.js"), b"//component-only").unwrap();
+
+        let layout = DistLayout::new(base.join("dist"));
+        let firmware = HashMap::new();
+        assemble(
+            &layout,
+            DistAssemblyInputs {
+                firmware: &firmware,
+                firmware_originals: &firmware,
+                application: &app,
+                ta: None,
+                hmi: Some(HmiStaging {
+                    engine: HmiEngine::Pocket,
+                    app: Some("hero-main"),
+                    dist: &src,
+                }),
+                dts_files: &[],
+                kconfig_fragments: &[],
+                boot_files: &[],
+                systemd_units: &[],
+            },
+        )
+        .await
+        .expect("assemble succeeds");
+
+        // Only the mounted pair lands under `hmi/`; no `www/`, no stray file.
+        assert_eq!(
+            std::fs::read_to_string(layout.hmi_dir().join("hero-main.js")).unwrap(),
+            "//bundle"
+        );
+        assert!(layout.hmi_dir().join("hero-main.pak").exists());
+        assert!(!layout.hmi_dir().join("hero.js").exists());
+        assert!(!layout.www_dir().exists());
 
         let _ = std::fs::remove_dir_all(&base);
     }
@@ -573,7 +659,7 @@ mod tests {
                 firmware_originals: &firmware,
                 application: &app,
                 ta: None,
-                hmi_dist: None,
+                hmi: None,
                 dts_files: &dts,
                 kconfig_fragments: &[],
                 boot_files: &[],
@@ -614,7 +700,7 @@ mod tests {
                 firmware_originals: &firmware,
                 application: &app,
                 ta: None,
-                hmi_dist: None,
+                hmi: None,
                 dts_files: &dts,
                 kconfig_fragments: &[],
                 boot_files: &[],

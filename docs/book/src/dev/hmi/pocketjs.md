@@ -130,6 +130,13 @@ The initial adapter split now exists in the workspace:
   Consortium QuickJS surface, installs `__BRIDGE__` plus PocketJS's host effect
   driver, delivers completed commands at frame boundaries, and exposes an
   offscreen wgpu renderer for smoke tests and goldens.
+- `consortium-hmi-input` is the backend-neutral, `no_std` input layer: an
+  `InputEvent` model in logical UI coordinates plus a pull-based `InputSource`
+  trait. `InputEvent` derives `IpcSafe`/`serde`, so a real-time core can
+  serialize events with a Consortium codec and forward them over IPC to the
+  Linux HMI host. The pocket crate's `PadState` folds events into PocketJS's
+  `frame(buttons, analog)` contract; the winit shell and future
+  `libinput`/`evdev` and IPC readers all present as an `InputSource`.
 
 This is deliberately a headless/native-host prototype. It does not yet make
 `engine = "pocketjs"` valid, build PocketJS artifacts through `csti`, or own a
@@ -137,17 +144,17 @@ Wayland/DRM window and Linux input loop.
 
 ## Fit and current gaps
 
-| Concern               | Reusable now                                                     | Missing for a production Consortium HMI                                                             |
-| --------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| UI core               | `pocketjs-core`, Taffy layout, text, focus, animation, draw list | Product viewport and performance limits must be validated on A-core targets                         |
-| JS runtime            | `pocket-mod` embeds QuickJS and mounts named surfaces            | Lifecycle, error reporting, watchdog policy, and Tokio handoff in Consortium                        |
-| GPU                   | `pocket-ui-wgpu` and headless/windowed examples                  | A lean 2D-only dependency boundary and target GPU/driver validation                                 |
-| Display               | winit window and wgpu surface                                    | Fullscreen Wayland kiosk behavior; direct DRM/KMS presentation is not implemented                   |
-| Input                 | Button/analog frame input; Vita shows packed touch delivery      | Linux evdev/libinput touch, pointer, keyboard, focus, calibration, and hot-plug behavior            |
-| Build                 | Bun compiler produces deterministic JS/pak artifacts             | Linux target profile, builder dispatch, staging layout, cross-build inputs, and BitBake integration |
-| App services          | Portable registry plus Pocket effect/Promise adapter             | Typed errors, cancellation, backpressure, and production IPC/TEE handlers                           |
-| Testing               | Headless wgpu/software rendering, tapes, goldens                 | Consortium fixtures that record/replay IPC and assert both commands and pixels                      |
-| Browser compatibility | Web/WASM development host                                        | Browser-only libraries and arbitrary HTML/CSS cannot be reused unchanged                            |
+| Concern               | Reusable now                                                                                                                                                                                           | Missing for a production Consortium HMI                                                                                                                           |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| UI core               | `pocketjs-core`, Taffy layout, text, focus, animation, draw list                                                                                                                                       | Product viewport and performance limits must be validated on A-core targets                                                                                       |
+| JS runtime            | `pocket-mod` embeds QuickJS and mounts named surfaces                                                                                                                                                  | Lifecycle, error reporting, watchdog policy, and Tokio handoff in Consortium                                                                                      |
+| GPU                   | `pocket-ui-wgpu` and headless/windowed examples                                                                                                                                                        | A lean 2D-only dependency boundary and target GPU/driver validation                                                                                               |
+| Display               | winit window and wgpu surface                                                                                                                                                                          | Fullscreen Wayland kiosk behavior; direct DRM/KMS presentation is not implemented                                                                                 |
+| Input                 | Backend-neutral `consortium-hmi-input` event model + `InputSource` trait, folded to button/analog by the pocket `PadState`; winit shell translates key/pointer/touch; Vita shows packed touch delivery | Concrete `libinput`/`evdev` and IPC `InputSource` backends; delivering pointer/touch to the guest (packed-touch entry); focus, calibration, and hot-plug behavior |
+| Build                 | Bun compiler produces deterministic JS/pak artifacts                                                                                                                                                   | Linux target profile, builder dispatch, staging layout, cross-build inputs, and BitBake integration                                                               |
+| App services          | Portable registry plus Pocket effect/Promise adapter                                                                                                                                                   | Typed errors, cancellation, backpressure, and production IPC/TEE handlers                                                                                         |
+| Testing               | Headless wgpu/software rendering, tapes, goldens                                                                                                                                                       | Consortium fixtures that record/replay IPC and assert both commands and pixels                                                                                    |
+| Browser compatibility | Web/WASM development host                                                                                                                                                                              | Browser-only libraries and arbitrary HTML/CSS cannot be reused unchanged                                                                                          |
 
 There is also a dependency-shape issue worth fixing upstream. The current
 `pocket-ui-wgpu` crate uses the GPU bootstrap from the broader `pocket3d`
@@ -185,6 +192,26 @@ work.
 5. owns the single-threaded guest and frame pump;
 6. drain completed service calls at a frame boundary;
 7. ticks the UI core and can render into a headless wgpu target.
+
+Consortium owns the product viewport configuration. A Pocket HMI declares its
+logical pixel dimensions in the project manifest; `csti build` injects them
+into the compiled application and `PocketApp::from_env()` applies them when it
+creates the retained UI surface:
+
+```toml
+[hmi]
+engine = "pocket"
+backend = "wayland"
+source = "submodules/pocketjs"
+build = "submodules/pocketjs/dist"
+app = "hero-main"
+
+[hmi.logical]
+width = 800
+height = 480
+```
+
+Omitting `[hmi.logical]` preserves the `480` × `272` compatibility default.
 
 A production display/input event loop and presentation shell are still
 pending.
