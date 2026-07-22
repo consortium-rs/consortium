@@ -28,8 +28,9 @@ default = []
 shell = ["dep:winit"]
 
 [dependencies]
-consortium-hmi = { path = "../consortium-hmi", version = "^0.1" }
-pocket-mod     = { path = "../../submodules/pocketjs/pocket3d/crates/pocket-mod" }
+consortium-hmi       = { path = "../consortium-hmi", version = "^0.1" }
+consortium-hmi-input = { path = "../consortium-hmi-input", version = "^0.1" }
+pocket-mod           = { path = "../../submodules/pocketjs/pocket3d/crates/pocket-mod" }
 pocket-ui-wgpu = { path = "../../submodules/pocketjs/pocket3d/crates/pocket-ui-wgpu" }
 pocket3d       = { default-features = false, path = "../../submodules/pocketjs/pocket3d/crates/pocket3d" }
 thiserror      = "2.0.18"

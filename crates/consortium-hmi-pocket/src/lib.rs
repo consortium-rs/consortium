@@ -22,6 +22,7 @@
 //! Wayland/DRM event shell can build on the same [`PocketApp`] frame contract.
 
 mod error;
+mod pad;
 mod service;
 
 use std::{fs, path::Path};
@@ -31,8 +32,12 @@ use pocket_mod::{Guest, qjs::Object};
 use consortium_hmi::Bridge;
 use service::PocketService;
 
+pub use consortium_hmi_input::{
+    ButtonCode, InputEvent, InputSource, PointerButton, ScrollAxis, SliceSource, TouchPhase,
+};
 pub use error::{PocketError, Result};
 pub use headless::HeadlessRenderer;
+pub use pad::PadState;
 pub use pocket_ui_wgpu::{UiRenderer, UiSurface};
 
 mod headless;
@@ -76,6 +81,7 @@ pub struct PocketApp {
     ui: UiSurface,
     service: PocketService,
     logical_size: (u32, u32),
+    pad: PadState,
 }
 
 impl PocketApp {
@@ -115,6 +121,7 @@ impl PocketApp {
             ui,
             service,
             logical_size: config.logical_size,
+            pad: PadState::new(),
         })
     }
 
@@ -154,7 +161,34 @@ impl PocketApp {
 
     /// Runs one frame with a centered analog input.
     pub fn frame_buttons(&mut self, buttons: u32) -> Result<usize> {
-        self.frame(buttons, 0x8080)
+        self.frame(buttons, pad::ANALOG_CENTER)
+    }
+
+    /// Folds one backend-neutral [`InputEvent`] into the pending pad state.
+    ///
+    /// Events accumulate until the next [`frame_pad`](Self::frame_pad) (or
+    /// [`frame_from`](Self::frame_from)) delivers the held state to the guest,
+    /// so callers apply events as they arrive from any [`InputSource`] and let
+    /// the frame boundary do the delivery.
+    pub fn apply_input(&mut self, event: &InputEvent) {
+        self.pad.apply(event);
+    }
+
+    /// Runs one frame using the accumulated input state.
+    pub fn frame_pad(&mut self) -> Result<usize> {
+        self.frame(self.pad.buttons(), self.pad.analog())
+    }
+
+    /// Drains an [`InputSource`] into the pad state, then runs one frame.
+    ///
+    /// This is the source-agnostic driver: a winit shell, a `libinput` reader,
+    /// or an IPC receiver carrying events from a real-time core all present as
+    /// an [`InputSource`], and the guest sees only the folded frame.
+    pub fn frame_from(&mut self, source: &mut impl InputSource) -> Result<usize> {
+        while let Some(event) = source.poll_event() {
+            self.pad.apply(&event);
+        }
+        self.frame_pad()
     }
 
     /// Delivers every currently completed Consortium command to QuickJS.
