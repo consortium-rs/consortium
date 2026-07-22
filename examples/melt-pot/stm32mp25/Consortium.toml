@@ -23,8 +23,8 @@ kernel_recipe = "linux-stm32mp"
 # (those dt-bindings headers are GPL-2.0, so they are never bundled); otherwise
 # the pipeline emits the `.dts` and prints how to compile it.
 [dts]
-mode  = "merge"               # or "overlay"
-linux = "/home/ethanwu/linux"
+mode = "merge" # or "overlay"
+# linux = "~/src/linux"
 
 [endpoints]
 # Runtime endpoint name -> crate root. `cm33` is the single remote coprocessor.

@@ -447,6 +447,92 @@ check-ipc-arm: check-ipc-a check-ipc-m
 
 build-ipc-arm: build-ipc-a build-ipc-m
 
+# ── Linux container (Apple `container` on macOS) ─────────────────────────────
+# The `*-a64` / `*-a32` recipes above refuse to run on a non-Linux host. On
+# Apple Silicon, Apple `container` boots a *native* arm64 Linux VM, so those
+# targets build natively there and `[profile] sysroot = "/"` resolves to the
+# image root — no Yocto SDK required. See `Dockerfile.linux`.
+#
+# `--dns` is not optional on a host whose VPN hands out fake-ip DNS (the
+# 198.18.0.0/15 pool): the VM inherits the mapped address, cannot route it, and
+# every network call hangs silently instead of failing.
+
+# Named volumes keep Linux artifacts out of the macOS ./target tree; sharing one
+# target dir between the two makes every host/container switch a full rebuild.
+linux_image     := "consortium-linux"
+linux_dns       := env_var_or_default("CONSORTIUM_LINUX_DNS", "1.1.1.1")
+linux_cpus      := env_var_or_default("CONSORTIUM_LINUX_CPUS", "6")
+linux_memory    := env_var_or_default("CONSORTIUM_LINUX_MEMORY", "8192M")
+linux_wpe_deb   := env_var_or_default("CONSORTIUM_WPE_DEB", env_var("HOME") + "/Downloads/wpe-kiosk-stack_2.52.4_arm64.deb")
+linux_ctx       := justfile_directory() + "/target/container-context"
+
+# Start the Apple `container` services and builder with a routable resolver
+linux-setup:
+    container system start
+    @container builder status >/dev/null 2>&1 \
+      && echo "builder already running (restart with 'container builder stop' if DNS changed)" \
+      || container builder start --dns {{ linux_dns }} --cpus 4 --memory 4096M
+    @container volume create consortium-target >/dev/null 2>&1 || true
+    @container volume create consortium-cargo >/dev/null 2>&1 || true
+
+# Build the base Linux image (Rust toolchains + dtc)
+linux-image: linux-setup
+    @mkdir -p {{ linux_ctx }}
+    container build --target base -t {{ linux_image }}:base \
+      -f {{ justfile_directory() }}/Dockerfile.linux {{ linux_ctx }}
+
+# Build the full Linux image (+ WPE WebKit/Cog and the OP-TEE TA dev kit)
+linux-image-full: linux-setup
+    @mkdir -p {{ linux_ctx }}
+    @[ -f "{{ linux_wpe_deb }}" ] || { \
+        echo "WPE .deb not found: {{ linux_wpe_deb }}"; \
+        echo "Download it from consortium-rs/wpe-kiosk-stack-prebuilt, or set CONSORTIUM_WPE_DEB."; \
+        exit 1; }
+    cp "{{ linux_wpe_deb }}" {{ linux_ctx }}/$(basename "{{ linux_wpe_deb }}")
+    container build --target full -t {{ linux_image }}:full \
+      --build-arg WPE_DEB=$(basename "{{ linux_wpe_deb }}") \
+      -f {{ justfile_directory() }}/Dockerfile.linux {{ linux_ctx }}
+
+# Run a command in the base Linux image, e.g. `just linux just check-ipc-a64`
+linux +cmd: (linux-run "base" cmd)
+
+# Run a command in the full Linux image (WPE + OP-TEE on PATH/env)
+linux-full +cmd: (linux-run "full" cmd)
+
+# Shared runner for the `linux` / `linux-full` recipes
+#
+# The target volume shadows the repo's own ./target inside the container rather
+# than setting CARGO_TARGET_DIR: the melt-pot example crates are excluded from
+# the workspace so they build into per-crate `target/` dirs, and the build
+# pipeline looks for their ELFs at those exact paths. A global CARGO_TARGET_DIR
+# redirects them and the pipeline fails to find its own output.
+[private]
+linux-run tag +cmd:
+    container run --rm --dns {{ linux_dns }} \
+      --cpus {{ linux_cpus }} --memory {{ linux_memory }} \
+      -v {{ justfile_directory() }}:/workspace \
+      -v consortium-target:/workspace/target \
+      -v consortium-cargo:/cargo-registry \
+      -e CARGO_HOME=/cargo-registry \
+      -w /workspace {{ linux_image }}:{{ tag }} \
+      bash -lc '{{ cmd }}'
+
+# Drop into an interactive shell in the full Linux image
+linux-shell:
+    container run --rm -it --dns {{ linux_dns }} \
+      --cpus {{ linux_cpus }} --memory {{ linux_memory }} \
+      -v {{ justfile_directory() }}:/workspace \
+      -v consortium-target:/workspace/target \
+      -v consortium-cargo:/cargo-registry \
+      -e CARGO_HOME=/cargo-registry \
+      -w /workspace {{ linux_image }}:full bash
+
+# Remove the cached Linux build volumes
+linux-clean:
+    -container volume delete consortium-target
+    -container volume delete consortium-cargo
+    -rm -rf {{ linux_ctx }}
+
 # ── Utilities ────────────────────────────────────────────────────────────────
 
 # Add license headers (requires addlicense)
