@@ -16,5 +16,5 @@
 pub mod common;
 pub mod interrupts;
 pub mod metadata;
-#[cfg(feature = "mimx95")]
+#[cfg(any(feature = "mimx93", feature = "mimx95"))]
 pub mod peripherals;

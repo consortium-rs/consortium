@@ -28,6 +28,16 @@ impl TIM_GP {
     }
 
     #[inline(always)]
+    pub const fn CR2(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x04usize) as _) }
+    }
+
+    #[inline(always)]
+    pub const fn SMCR(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x08usize) as _) }
+    }
+
+    #[inline(always)]
     pub const fn DIER(self) -> crate::common::Reg<TIM_DIER, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0cusize) as _) }
     }
@@ -74,6 +84,11 @@ impl TIM_GP {
     }
 
     #[inline(always)]
+    pub const fn RCR(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x30usize) as _) }
+    }
+
+    #[inline(always)]
     pub const fn CCR(self, n: usize) -> crate::common::Reg<TIM_CCR, crate::common::RW> {
         assert!(n < 4usize);
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x34usize + n * 4usize) as _) }
@@ -83,6 +98,56 @@ impl TIM_GP {
     #[inline(always)]
     pub const fn BDTR(self) -> crate::common::Reg<TIM_BDTR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x44usize) as _) }
+    }
+
+    #[inline(always)]
+    pub const fn CCR5(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x48usize) as _) }
+    }
+
+    #[inline(always)]
+    pub const fn CCR6(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x4cusize) as _) }
+    }
+
+    #[inline(always)]
+    pub const fn CCMR3(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x50usize) as _) }
+    }
+
+    #[inline(always)]
+    pub const fn DTR2(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x54usize) as _) }
+    }
+
+    #[inline(always)]
+    pub const fn ECR(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x58usize) as _) }
+    }
+
+    #[inline(always)]
+    pub const fn TISEL(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5cusize) as _) }
+    }
+
+    #[inline(always)]
+    pub const fn AF1(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x60usize) as _) }
+    }
+
+    #[inline(always)]
+    pub const fn AF2(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x64usize) as _) }
+    }
+
+    #[inline(always)]
+    pub const fn DCR(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03dcusize) as _) }
+    }
+
+    #[inline(always)]
+    pub const fn DMAR(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03e0usize) as _) }
     }
 }
 

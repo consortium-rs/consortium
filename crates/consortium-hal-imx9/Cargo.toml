@@ -6,19 +6,23 @@ name              = "consortium-hal-imx9"
 version.workspace = true
 
 [features]
-default = ["can", "dma", "gpio", "i2c", "mimx95", "spi", "time-driver-lpit", "uart"]
+default = ["adc", "can", "dma", "gpio", "i2c", "mimx95", "spi", "time-driver-lpit", "timer", "uart"]
 # Chip selection — forwarded to the PAC. Choose exactly one; enabling several is
 # a PAC compile error. Dependents that select a different chip must set
 # `default-features = false` so the default `mimx95` is not also pulled in.
 mimx93 = ["consortium-pac-imx9/mimx93"]
 mimx95 = ["consortium-pac-imx9/mimx95"]
 # Forward cortex-m-rt runtime support (vector table, `#[interrupt]`) to the PAC.
-rt = ["consortium-pac-imx9/rt"]
-dma = ["dep:critical-section", "dep:embassy-sync"]
+rt   = ["consortium-pac-imx9/rt"]
+adc  = []
+dma  = ["dep:critical-section", "dep:embassy-sync"]
 gpio = ["dep:embassy-sync", "dep:embedded-hal"]
-can = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-can", "dep:nb"]
-i2c = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
+can  = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-can", "dep:nb"]
+i2c  = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
+# Compatibility alias for the former top-level PWM feature.
+pwm = ["timer"]
 spi = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
+timer = ["dep:embassy-sync", "dep:embedded-hal"]
 time-driver-lpit = [
   "dep:critical-section",
   "dep:embassy-sync",
