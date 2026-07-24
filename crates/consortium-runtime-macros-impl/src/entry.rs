@@ -52,6 +52,23 @@ impl Runtime {
         }
     }
 
+    /// Code run once, *before* the generated `init()`, so bring-up logging is
+    /// captured. The app installs its `tracing` subscriber here — `init()` opens
+    /// the UIO devices and runs the descriptor handshakes, and a failure there is
+    /// reported through the `#[fail]` handler, all before any user `main` body
+    /// runs; without this, those diagnostics (and `RUST_LOG`) would be dropped
+    /// because no subscriber is installed yet. The installer is idempotent, so a
+    /// user `main` may still set up its own subscriber. The MCU flavor logs over
+    /// `defmt` and needs no host subscriber, so this is empty for it.
+    fn pre_init(self) -> TokenStream2 {
+        match self {
+            Runtime::Mcu => quote! {},
+            Runtime::App => quote! {
+                ::consortium_runtime_app::__rt::init_tracing();
+            },
+        }
+    }
+
     /// Number of parameters the user's `main` must declare.
     fn arity(self) -> usize {
         match self {
@@ -98,6 +115,7 @@ fn main_impl(runtime: Runtime, attr: TokenStream2, item: TokenStream2) -> TokenS
     let body = &func.block;
     let rt_crate = runtime.rt_crate();
     let executor_attr = runtime.executor_attr();
+    let pre_init = runtime.pre_init();
 
     // The `init()` failure hop resolves `__consortium_init_fail` through this
     // glob import unless the user defined a `#[fail]` handler, whose local item
@@ -109,6 +127,7 @@ fn main_impl(runtime: Runtime, attr: TokenStream2, item: TokenStream2) -> TokenS
         use #rt_crate::__rt::*;
     };
     let dispatch = quote! {
+        #pre_init
         let #context_pat = match init().await {
             ::core::result::Result::Ok(__consortium_ctx) => __consortium_ctx,
             ::core::result::Result::Err(__consortium_err) => {

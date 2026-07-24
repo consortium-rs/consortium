@@ -266,7 +266,7 @@ fn _generated() {
                         >::new(uio[3usize].mmap(0usize)?)
                     };
                     let __service_db = doorbell.clone();
-                    uio[1usize]
+                    uio[3usize]
                         .bind_service(
                             ::std::sync::Arc::new(move || {
                                 __service_db.notify_gi_interrupt()
@@ -309,7 +309,7 @@ fn _generated() {
                         >::new(uio[2usize].mmap(0usize)?)
                     };
                     let __service_db = doorbell.clone();
-                    uio[1usize]
+                    uio[2usize]
                         .bind_service(
                             ::std::sync::Arc::new(move || {
                                 __service_db.notify_gi_interrupt()

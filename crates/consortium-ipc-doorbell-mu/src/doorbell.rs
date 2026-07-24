@@ -237,6 +237,55 @@ impl<'a, S: Side, const N: usize> MuWaitFut<'a, S, N> {
             notified: None,
         }
     }
+
+    /// Register with the doorbell's `Notify`, replacing a subscription that has
+    /// already completed.
+    ///
+    /// Two properties of `Notify::notify_waiters` make this necessary:
+    ///
+    /// - It stores no permit and wakes only futures that have *already*
+    ///   registered. So the caller must subscribe **before** reading the status
+    ///   flags: a ring landing between the read and the registration would be
+    ///   lost, and the remote cannot ring again while the line stays asserted —
+    ///   the transport deadlocks rather than merely stalling.
+    /// - It fans out to every waiter on the instance's shared `Notify`, not just
+    ///   this line's. A wake caused by another line completes this future's
+    ///   `Notified` even though this line is still idle, and a completed
+    ///   `Notified` never fires again — so it must be replaced, or this future
+    ///   parks forever.
+    #[cfg(feature = "std")]
+    fn subscribe(&mut self, cx: &mut Context<'_>) {
+        if let Some(notified) = self.notified.as_mut() {
+            // SAFETY: the `Notified` lives inside this pinned future and is
+            // only ever replaced after being dropped, never moved while
+            // registered.
+            if unsafe { Pin::new_unchecked(notified) }
+                .poll(cx)
+                .is_pending()
+            {
+                return;
+            }
+            self.notified = None;
+        }
+
+        let notified = self.doorbell.notify.notified();
+        // SAFETY: `doorbell` is borrowed for `'a`; its Arc-backed `Notify`
+        // outlives this future, so erasing the borrow is sound.
+        let notified = unsafe {
+            core::mem::transmute::<
+                tokio::sync::futures::Notified<'_>,
+                tokio::sync::futures::Notified<'static>,
+            >(notified)
+        };
+        let notified = self.notified.insert(notified);
+
+        // A freshly created `Notified` registers on its first poll and always
+        // returns `Pending` (`notify_waiters` leaves no permit behind), so this
+        // single poll is enough — no loop, no spin.
+        // SAFETY: the `Notified` lives inside this pinned future and is not
+        // moved for as long as it stays registered.
+        let _ = unsafe { Pin::new_unchecked(notified) }.poll(cx);
+    }
 }
 
 impl<'a, S: Side, const N: usize> core::future::Future for MuWaitFut<'a, S, N> {
@@ -258,24 +307,17 @@ impl<'a, S: Side, const N: usize> core::future::Future for MuWaitFut<'a, S, N> {
                 MuLine::Rf(rf) => unsafe { this.doorbell.mu.enable_rf(rf) },
             }
             this.armed = true;
-
-            #[cfg(feature = "std")]
-            {
-                let notified = this.doorbell.notify.notified();
-                // SAFETY: `doorbell` is borrowed for `'a`; its Arc-backed
-                // `Notify` outlives this future, so erasing the borrow is sound.
-                let notified = unsafe {
-                    core::mem::transmute::<
-                        tokio::sync::futures::Notified<'_>,
-                        tokio::sync::futures::Notified<'static>,
-                    >(notified)
-                };
-                this.notified = Some(notified);
-            }
-
-            #[cfg(not(feature = "std"))]
-            waker_for::<N>().register(cx.waker());
         }
+
+        // Subscribe *before* reading the status flags below, on every poll. See
+        // `subscribe`: a ring observed after the read must still be able to wake
+        // this future, and a `Notified` consumed by another line's wake has to
+        // be replaced.
+        #[cfg(feature = "std")]
+        this.subscribe(cx);
+
+        #[cfg(not(feature = "std"))]
+        waker_for::<N>().register(cx.waker());
 
         let ready = match line {
             MuLine::Gi(gi) => this.doorbell.mu.gi_pending(gi),
@@ -303,15 +345,6 @@ impl<'a, S: Side, const N: usize> core::future::Future for MuWaitFut<'a, S, N> {
 
             return Poll::Ready(Ok(this.ch));
         }
-
-        #[cfg(feature = "std")]
-        if let Some(notified) = this.notified.as_mut() {
-            // SAFETY: `notified` lives inside the pinned future.
-            let _ = unsafe { Pin::new_unchecked(notified) }.poll(cx);
-        }
-
-        #[cfg(not(feature = "std"))]
-        waker_for::<N>().register(cx.waker());
 
         Poll::Pending
     }

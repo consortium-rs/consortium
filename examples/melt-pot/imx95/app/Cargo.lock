@@ -329,11 +329,18 @@ dependencies = [
 name = "consortium-hmi"
 version = "0.1.0"
 dependencies = [
- "cogcore",
- "futures-channel",
- "futures-util",
  "serde",
  "serde_json",
+]
+
+[[package]]
+name = "consortium-hmi-webkit"
+version = "0.1.0"
+dependencies = [
+ "cogcore",
+ "consortium-hmi",
+ "futures-channel",
+ "futures-util",
  "tokio",
 ]
 
@@ -460,12 +467,30 @@ dependencies = [
  "consortium-ipc",
  "consortium-ipc-transport-memory",
  "consortium-log",
+ "consortium-runtime-macros",
  "libc",
  "memmap2",
  "thiserror",
  "tokio",
  "tracing",
  "uio",
+]
+
+[[package]]
+name = "consortium-runtime-macros"
+version = "0.1.0"
+dependencies = [
+ "consortium-runtime-macros-impl",
+]
+
+[[package]]
+name = "consortium-runtime-macros-impl"
+version = "0.1.0"
+dependencies = [
+ "consortium-macros-helpers",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -1072,7 +1097,7 @@ name = "melt-pot-imx95-app"
 version = "0.1.0"
 dependencies = [
  "consortium-codec",
- "consortium-hmi",
+ "consortium-hmi-webkit",
  "consortium-ipc",
  "consortium-ipc-doorbell-mu",
  "consortium-ipc-transport-memory",

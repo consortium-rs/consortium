@@ -46,12 +46,14 @@ Worker processes expose functions via JSON-RPC or binary protocols. They run ind
 Computer Vision worker: provides OpenCV-based functions.
 Each function runs in response to RPC calls from Rust.
 """
+
 import cv2
 import numpy as np
 import json
 import sys
 from typing import Dict, List, Any
 from dataclasses import dataclass, asdict
+
 
 # Utilities
 @dataclass
@@ -60,19 +62,24 @@ class EdgeDetectionResult:
     width: int
     height: int
 
+
 @dataclass
 class PoseKeypoint:
     x: float
     y: float
     confidence: float
 
+
 @dataclass
 class PoseEstimateResult:
     keypoints: List[PoseKeypoint]
     average_confidence: float
 
+
 # Worker functions
-def detect_edges(image_bytes: bytes, threshold1: int = 100, threshold2: int = 200) -> Dict:
+def detect_edges(
+    image_bytes: bytes, threshold1: int = 100, threshold2: int = 200
+) -> Dict:
     """
     Detect edges in image using Canny algorithm.
 
@@ -96,13 +103,14 @@ def detect_edges(image_bytes: bytes, threshold1: int = 100, threshold2: int = 20
         edges = cv2.Canny(gray, threshold1, threshold2)
 
         # 3. Encode result
-        success, buffer = cv2.imencode('.png', edges)
+        success, buffer = cv2.imencode(".png", edges)
         if not success:
             raise ValueError("Failed to encode result")
 
         # 4. Return as base64 for JSON serialization
         import base64
-        edges_b64 = base64.b64encode(buffer).decode('utf-8')
+
+        edges_b64 = base64.b64encode(buffer).decode("utf-8")
 
         return {
             "status": "ok",
@@ -110,10 +118,11 @@ def detect_edges(image_bytes: bytes, threshold1: int = 100, threshold2: int = 20
                 "edges": edges_b64,
                 "width": int(edges.shape[1]),
                 "height": int(edges.shape[0]),
-            }
+            },
         }
     except Exception as e:
         return {"status": "error", "error": str(e)}
+
 
 def estimate_pose(image_bytes: bytes, model_path: str) -> Dict:
     """
@@ -140,17 +149,22 @@ def estimate_pose(image_bytes: bytes, model_path: str) -> Dict:
             results = pose.process(img_rgb)
 
         if not results.pose_landmarks:
-            return {"status": "ok", "result": {"keypoints": [], "average_confidence": 0.0}}
+            return {
+                "status": "ok",
+                "result": {"keypoints": [], "average_confidence": 0.0},
+            }
 
         # 3. Extract keypoints
         keypoints = []
         confidences = []
         for landmark in results.pose_landmarks.landmark:
-            keypoints.append({
-                "x": float(landmark.x),
-                "y": float(landmark.y),
-                "confidence": float(landmark.visibility),
-            })
+            keypoints.append(
+                {
+                    "x": float(landmark.x),
+                    "y": float(landmark.y),
+                    "confidence": float(landmark.visibility),
+                }
+            )
             confidences.append(float(landmark.visibility))
 
         avg_conf = np.mean(confidences) if confidences else 0.0
@@ -160,10 +174,11 @@ def estimate_pose(image_bytes: bytes, model_path: str) -> Dict:
             "result": {
                 "keypoints": keypoints,
                 "average_confidence": float(avg_conf),
-            }
+            },
         }
     except Exception as e:
         return {"status": "error", "error": str(e)}
+
 
 # Worker server loop
 if __name__ == "__main__":
@@ -186,17 +201,11 @@ if __name__ == "__main__":
             request_id = request.get("id")
 
             if method not in FUNCTIONS:
-                response = {
-                    "id": request_id,
-                    "error": f"Unknown method: {method}"
-                }
+                response = {"id": request_id, "error": f"Unknown method: {method}"}
             else:
                 # Call function
                 result = FUNCTIONS[method](**params)
-                response = {
-                    "id": request_id,
-                    "result": result
-                }
+                response = {"id": request_id, "result": result}
 
             # Send response
             print(json.dumps(response))

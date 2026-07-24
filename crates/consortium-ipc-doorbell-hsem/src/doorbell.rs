@@ -270,7 +270,7 @@ impl<'a, S: Side, const N: usize> core::future::Future for HsemWaitFut<'a, S, N>
                     // no_std path. HSEM is level-sensitive: `CnISR` stays set
                     // until cleared via `CnICR`. If we returned `Ready` without
                     // clearing it, the line would remain asserted and `irq_loop`
-                    // re-arming the UIO IRQ (`unmask_irq`) would immediately
+                    // re-arming the UIO IRQ (`rearm_irq`) would immediately
                     // re-fire it — a spurious-interrupt storm until the next
                     // `wait()` happened to re-arm. Userspace owns `CnIER`/`CnICR`
                     // through the mapped HSEM window on this target, so clear the

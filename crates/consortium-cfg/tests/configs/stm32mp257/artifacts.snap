@@ -279,7 +279,7 @@ fn _generated() {
                             1usize,
                         >::new(uio[2usize].mmap(0usize)?)
                     };
-                    uio[1usize].bind_notifier(doorbell.notifier());
+                    uio[2usize].bind_notifier(doorbell.notifier());
                     // SAFETY: doorbell channel is verified to be valid in the config.
                     let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(0u8) };
                     // SAFETY: doorbell channel is verified to be valid in the config.
@@ -317,7 +317,7 @@ fn _generated() {
                         >::new(uio[3usize].mmap(0usize)?)
                     };
                     let __service_db = doorbell.clone();
-                    uio[1usize]
+                    uio[3usize]
                         .bind_service(
                             ::std::sync::Arc::new(move || {
                                 __service_db.notify_rx_occupied_interrupt()

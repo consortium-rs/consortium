@@ -144,7 +144,7 @@ impl UioDevice {
             // Open the device fd a second time for async IRQ listening so we do
             // not disturb the mmap held by `uio`. It must be read-write: the UIO
             // re-arm protocol *writes* a u32 to the fd to unmask the interrupt
-            // (see `unmask_irq`), and the VFS rejects a write to an O_RDONLY fd
+            // (see `rearm_irq`), and the VFS rejects a write to an O_RDONLY fd
             // with EBADF before it reaches the driver — which tears the listener
             // down after the very first (kernel-armed) interrupt.
             let irq_file = File::options()
