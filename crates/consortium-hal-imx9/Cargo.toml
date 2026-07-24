@@ -6,7 +6,19 @@ name              = "consortium-hal-imx9"
 version.workspace = true
 
 [features]
-default = ["adc", "can", "dma", "gpio", "i2c", "mimx95", "spi", "time-driver-lpit", "timer", "uart"]
+default = [
+  "adc",
+  "can",
+  "dma",
+  "gpio",
+  "i2c",
+  "i3c",
+  "mimx95",
+  "spi",
+  "time-driver-lpit",
+  "timer",
+  "uart",
+]
 # Chip selection — forwarded to the PAC. Choose exactly one; enabling several is
 # a PAC compile error. Dependents that select a different chip must set
 # `default-features = false` so the default `mimx95` is not also pulled in.
@@ -19,6 +31,7 @@ dma  = ["dep:critical-section", "dep:embassy-sync"]
 gpio = ["dep:embassy-sync", "dep:embedded-hal"]
 can  = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-can", "dep:nb"]
 i2c  = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
+i3c  = ["dep:critical-section", "dep:embassy-sync"]
 # Compatibility alias for the former top-level PWM feature.
 pwm = ["timer"]
 spi = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]

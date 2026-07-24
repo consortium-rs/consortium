@@ -7,11 +7,11 @@ STMicroelectronics STM32MP2 family — layered over the generated PAC crates and
 shared `consortium-hal` trait crate.
 
 Each chip HAL exposes a module per peripheral class, and each module is behind a Cargo
-feature so a firmware image only compiles the drivers it uses. The current set is `can`,
-`dma`, `gpio`, `i2c`, `spi`, `uart`, and `timer_driver`; all are enabled by default
-alongside the crate's default chip selection. The crates are `no_std`, keep their unsafe
-blocks narrow, and hold chip-specific detail inside the chip HAL rather than in the
-shared traits.
+feature so a firmware image only compiles the drivers it uses. The current set is `adc`,
+`can`, `dma`, `gpio`, `i2c`, `i3c`, `spi`, `timer`, `uart`, and `timer_driver`; all are
+enabled by default alongside the crate's default chip selection. STM32MP2 also exposes
+`lptim`. The crates are `no_std`, keep their unsafe blocks narrow, and hold chip-specific
+detail inside the chip HAL rather than in the shared traits.
 
 ## A common shape
 
@@ -84,6 +84,20 @@ reflects each IP's model:
 Both drivers are structured so a DMA-backed data path can be layered on later — the byte
 primitives push through the transmit data register and drain the receive data register —
 but the interrupt-and-polling path is the default and only path today.
+
+## I3C
+
+Both chip HALs expose controller-mode I3C through their `i3c` feature. The common public
+shape supports I3C SDR and legacy-I2C private transfers, repeated-start transactions,
+broadcast CCCs, RSTDAA, and ENTDAA. Blocking operations poll the peripheral; async
+operations require the application to forward the selected I3C interrupt to
+`I3cState::on_interrupt`.
+
+The NXP implementation follows Embassy MCXA's controller engine, which uses the same NXP
+I3C IP as i.MX 9. The STM32MP2 implementation follows the STM32CubeMP2 LL/HAL controller
+sequence and uses the same Embassy-style waker contract as the other Consortium drivers.
+Target mode, HDR transfers, IBI handling, and DMA are not part of this first controller
+implementation.
 
 ## Where drivers fit
 

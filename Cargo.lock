@@ -1018,8 +1018,18 @@ dependencies = [
 name = "consortium-log"
 version = "0.1.0"
 dependencies = [
+ "consortium-log-macros",
  "defmt",
  "tracing",
+]
+
+[[package]]
+name = "consortium-log-macros"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]

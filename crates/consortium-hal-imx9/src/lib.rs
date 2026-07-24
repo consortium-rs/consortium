@@ -46,6 +46,9 @@ pub mod gpio;
 #[cfg(feature = "i2c")]
 pub mod i2c;
 
+#[cfg(feature = "i3c")]
+pub mod i3c;
+
 #[cfg(feature = "timer")]
 pub mod lptmr;
 

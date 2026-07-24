@@ -365,13 +365,26 @@ class STM32HeaderParser:
             mask_val = msk_defs[field_name]
             description = descriptions.get(field_name, "")
 
-            # Extract register name from field_name (PERIPH_REG_FIELD → PERIPH_REG)
-            # Split on last underscore before the field name
-            parts = field_name.rsplit("_", 1)
-            if len(parts) == 2:
-                reg_name = parts[0]
+            # Extract the register name from the longest known block/register
+            # prefix. Splitting at the last underscore loses registers whose
+            # fields contain underscores (for example
+            # `I3C_TIMINGR0_SCLL_PP`).
+            known = []
+            for block_name, block_data in self.blocks.items():
+                for item in block_data["items"]:
+                    prefix = f"{block_name}_{item['name']}_"
+                    if field_name.startswith(prefix):
+                        known.append(
+                            (len(prefix), prefix[:-1], field_name[len(prefix) :])
+                        )
+
+            if known:
+                _, reg_name, field_ident = max(known)
             else:
-                continue
+                parts = field_name.rsplit("_", 1)
+                if len(parts) != 2:
+                    continue
+                reg_name, field_ident = parts
 
             if reg_name not in fieldsets_dict:
                 fieldsets_dict[reg_name] = []
@@ -383,7 +396,6 @@ class STM32HeaderParser:
             # bare number (macro `GPIO_ADVCFGRL_0_Pos`), which cannot be a Rust ident.
             # Prefix digit-leading field names with the register's last token so the
             # generated PAC compiles (e.g. `0` -> `ADVCFGRL0`).
-            field_ident = parts[1]
             if field_ident and field_ident[0].isdigit():
                 field_ident = f"{reg_name.rsplit('_', 1)[-1]}{field_ident}"
 
