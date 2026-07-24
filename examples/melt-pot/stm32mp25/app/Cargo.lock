@@ -378,12 +378,31 @@ dependencies = [
  "consortium-ipc",
  "consortium-ipc-transport-memory",
  "consortium-log",
+ "consortium-runtime-macros",
  "libc",
  "memmap2",
  "thiserror",
  "tokio",
  "tracing",
+ "tracing-subscriber",
  "uio",
+]
+
+[[package]]
+name = "consortium-runtime-macros"
+version = "0.1.0"
+dependencies = [
+ "consortium-runtime-macros-impl",
+]
+
+[[package]]
+name = "consortium-runtime-macros-impl"
+version = "0.1.0"
+dependencies = [
+ "consortium-macros-helpers",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -798,7 +817,6 @@ dependencies = [
  "serde_json",
  "tokio",
  "tracing",
- "tracing-subscriber",
 ]
 
 [[package]]

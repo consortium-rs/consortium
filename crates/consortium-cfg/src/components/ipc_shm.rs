@@ -199,11 +199,16 @@ impl Transceiver {
         let region_init = self.region.initialize(core, uio_ident);
 
         let doorbell_ident = format_ident!("doorbell");
+        // The IRQ service binds to the *doorbell's* UIO device, not the
+        // shared-memory region's: only the doorbell device is declared with an
+        // interrupt, so only it is opened with `enable_irq` and runs an
+        // `irq_loop`. Binding the service to the region device registers it on a
+        // handle whose IRQ listener never runs, and the AP never wakes.
         let doorbell_code = self.doorbell.initialize(
             side,
             core,
             uio_ident,
-            self.region.address.ap.uio_id,
+            self.doorbell_address.ap.uio_id,
             self.doorbell_address.memory_lookup(core, uio_ident),
             &doorbell_ident,
         );
@@ -455,12 +460,18 @@ impl DoorbellMeta {
         }
     }
 
+    /// Emit the doorbell construction, and on the AP its UIO IRQ binding.
+    ///
+    /// `doorbell_uio_id` must index the UIO device that *owns the doorbell's
+    /// interrupt* — the same device `doorbell_base` is mapped from. Only devices
+    /// declaring an `irq` are opened with `enable_irq`, so only they run an
+    /// `irq_loop` that can dispatch the bound service.
     pub fn initialize(
         &self,
         side: DoorbellRingerSide,
         core: VisibleCore,
         uio_ident: &Ident,
-        uio_id: usize,
+        doorbell_uio_id: usize,
         doorbell_base: TokenStream,
         doorbell_ident: &Ident,
     ) -> TokenStream {
@@ -477,18 +488,18 @@ impl DoorbellMeta {
                 let bind = match self.r#type {
                     HardwareDoorbellPeripheralType::Ipcc => quote::quote! {
                         let __service_db = #doorbell_ident.clone();
-                        #uio_ident[#uio_id].bind_service(::std::sync::Arc::new(
+                        #uio_ident[#doorbell_uio_id].bind_service(::std::sync::Arc::new(
                             move || __service_db.notify_rx_occupied_interrupt(),
                         ));
                     },
                     HardwareDoorbellPeripheralType::Mu => quote::quote! {
                         let __service_db = #doorbell_ident.clone();
-                        #uio_ident[#uio_id].bind_service(::std::sync::Arc::new(
+                        #uio_ident[#doorbell_uio_id].bind_service(::std::sync::Arc::new(
                             move || __service_db.notify_gi_interrupt(),
                         ));
                     },
                     HardwareDoorbellPeripheralType::Hsem => quote::quote! {
-                        #uio_ident[#uio_id].bind_notifier(#doorbell_ident.notifier());
+                        #uio_ident[#doorbell_uio_id].bind_notifier(#doorbell_ident.notifier());
                     },
                 };
                 Some(bind)
@@ -818,6 +829,56 @@ mod tests {
     fn max_channels_saturates_at_channel_num_max() {
         let max = consortium_ipc_transport_memory::CHANNEL_NUM_MAX as u32;
         assert_eq!(transceiver(u32::MAX, 4).max_channels(), max);
+    }
+
+    /// Only UIO devices declaring an `irq` are opened with `enable_irq` and run
+    /// an `irq_loop`, and that is the doorbell's device — not the shared-memory
+    /// region's. Binding the service to the region device registers it on a
+    /// handle whose IRQ listener never runs, so the AP parks in `wait` forever
+    /// while the controller keeps ringing.
+    #[test]
+    fn ap_binds_doorbell_service_to_the_doorbell_uio_device() {
+        let mut t = transceiver(DESC + 4096, 128);
+        t.region.address.ap = ApAddress {
+            uio_id: 1,
+            mmap_id: 0,
+        };
+        t.doorbell_address.ap = ApAddress {
+            uio_id: 2,
+            mmap_id: 0,
+        };
+        t.doorbell = DoorbellMeta {
+            r#type: HardwareDoorbellPeripheralType::Ipcc,
+            id: Some(1),
+        };
+
+        let uio = format_ident!("uio");
+        let init = t.build_field_init(VisibleCore::Ap, &uio).to_string();
+
+        assert!(init.contains("uio [2usize] . bind_service"), "{init}");
+        assert!(!init.contains("uio [1usize] . bind_service"), "{init}");
+        // The region and the doorbell window still map from their own devices.
+        assert!(init.contains("uio [1usize] . mmap_zeroed"), "{init}");
+        assert!(init.contains("uio [2usize] . mmap"), "{init}");
+    }
+
+    #[test]
+    fn ap_binds_doorbell_notifier_to_the_doorbell_uio_device() {
+        let mut t = transceiver(DESC + 4096, 128);
+        t.region.address.ap = ApAddress {
+            uio_id: 1,
+            mmap_id: 0,
+        };
+        t.doorbell_address.ap = ApAddress {
+            uio_id: 2,
+            mmap_id: 0,
+        };
+        // `transceiver` uses HSEM, which takes the plain `Notify` fanout.
+        let uio = format_ident!("uio");
+        let init = t.build_field_init(VisibleCore::Ap, &uio).to_string();
+
+        assert!(init.contains("uio [2usize] . bind_notifier"), "{init}");
+        assert!(!init.contains("uio [1usize] . bind_notifier"), "{init}");
     }
 
     #[test]

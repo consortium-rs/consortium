@@ -6,6 +6,7 @@ expression: render(output)
 use ::consortium_runtime_app::__rt::*;
 #[::tokio::main]
 async fn main() {
+    ::consortium_runtime_app::__rt::init_tracing();
     let context = match init().await {
         ::core::result::Result::Ok(__consortium_ctx) => __consortium_ctx,
         ::core::result::Result::Err(__consortium_err) => {

@@ -60,13 +60,14 @@ struct Status {
 /// still exit non-zero; this one adds a diagnostic first.
 #[consortium_runtime_app::fail]
 fn on_init_failure(err: ConsortiumInitError) {
-    tracing_subscriber::fmt::init();
+    // The `#[main]` glue installs the tracing subscriber before `init()` runs,
+    // so this handler (reached when `init()` fails) can log straight away.
     tracing::error!("melt-pot: IPC bring-up failed: {err:?}");
 }
 
 #[consortium_runtime_app::main]
 async fn main(mut context: Context) {
-    tracing_subscriber::fmt::init();
+    // Subscriber already installed by the `#[main]` glue before `init()`.
     tracing::info!("melt-pot: CA35 application started; IPC bring-up complete");
 
     // Shared with the (currently disabled) HMI bridge below; the receive loop

@@ -205,6 +205,56 @@ impl<'a, S: Side, const N: usize> IpccWaitFut<'a, S, N> {
             notified: None,
         }
     }
+
+    /// Register with the doorbell's `Notify`, replacing a subscription that has
+    /// already completed.
+    ///
+    /// Two properties of `Notify::notify_waiters` make this necessary:
+    ///
+    /// - It stores no permit and wakes only futures that have *already*
+    ///   registered. So the caller must subscribe **before** reading the status
+    ///   register: a ring landing between the read and the registration would
+    ///   be lost, and the remote cannot ring again while the channel stays
+    ///   occupied — the transport would deadlock rather than merely stall.
+    /// - It fans out to every waiter on the shared `Notify`, not just this
+    ///   channel's. A wake caused by another channel completes this future's
+    ///   `Notified` even though this channel is still idle, and a completed
+    ///   `Notified` never fires again — so it must be replaced, or this future
+    ///   parks forever.
+    #[cfg(feature = "std")]
+    fn subscribe(&mut self, cx: &mut Context<'_>) {
+        if let Some(notified) = self.notified.as_mut() {
+            // SAFETY: the `Notified` lives inside this pinned future and is
+            // only ever replaced after being dropped, never moved while
+            // registered.
+            if unsafe { Pin::new_unchecked(notified) }
+                .poll(cx)
+                .is_pending()
+            {
+                return;
+            }
+            trace!("wait({:?}) -> Notify consumed, re-subscribing", self.ch);
+            self.notified = None;
+        }
+
+        let notified = self.doorbell.notify.notified();
+        // SAFETY: `doorbell` is borrowed for `'a`; its Arc-backed `Notify`
+        // outlives this future, so erasing the borrow is sound.
+        let notified = unsafe {
+            core::mem::transmute::<
+                tokio::sync::futures::Notified<'_>,
+                tokio::sync::futures::Notified<'static>,
+            >(notified)
+        };
+        let notified = self.notified.insert(notified);
+
+        // A freshly created `Notified` registers on its first poll and always
+        // returns `Pending` (`notify_waiters` leaves no permit behind), so this
+        // single poll is enough — no loop, no spin.
+        // SAFETY: the `Notified` lives inside this pinned future and is not
+        // moved for as long as it stays registered.
+        let _ = unsafe { Pin::new_unchecked(notified) }.poll(cx);
+    }
 }
 
 impl<S: Side, const N: usize> Drop for IpccWaitFut<'_, S, N> {
@@ -252,28 +302,25 @@ impl<'a, S: Side, const N: usize> core::future::Future for IpccWaitFut<'a, S, N>
                 unsafe { this.doorbell.ipcc.enable_rx_occupied_interrupt(id) };
             });
             this.armed = true;
-
-            #[cfg(feature = "std")]
-            {
-                debug!(
-                    "wait({:?}) -> register Notify for C{}TOC{}SR.CH{} interrupt",
-                    this.ch,
-                    N,
-                    S::INDEX,
-                    id
-                );
-                let notified = this.doorbell.notify.notified();
-                // SAFETY: `doorbell` is borrowed for `'a`; its Arc-backed
-                // `Notify` outlives this future, so erasing the borrow is sound.
-                let notified = unsafe {
-                    core::mem::transmute::<
-                        tokio::sync::futures::Notified<'_>,
-                        tokio::sync::futures::Notified<'static>,
-                    >(notified)
-                };
-                this.notified = Some(notified);
-            }
         }
+
+        // Subscribe *before* reading the status register below, on every poll.
+        // See `subscribe`: a ring observed after the read must still be able to
+        // wake this future, and a `Notified` consumed by another channel's wake
+        // has to be replaced.
+        #[cfg(feature = "std")]
+        {
+            debug!(
+                "wait({:?}) -> subscribe Notify for C{}TOC{}SR.CH{} interrupt",
+                this.ch,
+                N,
+                S::INDEX,
+                id
+            );
+            this.subscribe(cx);
+        }
+
+        compiler_fence(Ordering::SeqCst);
 
         if this.doorbell.ipcc.incoming_occupied(id) {
             debug!(
@@ -297,19 +344,6 @@ impl<'a, S: Side, const N: usize> core::future::Future for IpccWaitFut<'a, S, N>
             consortium_log::debug!("wait({:?}) -> C{}SCR.CH{} interrupt masked", this.ch, N, id);
 
             return Poll::Ready(Ok(this.ch));
-        }
-
-        #[cfg(feature = "std")]
-        if let Some(notified) = this.notified.as_mut() {
-            debug!(
-                "wait({:?}) -> poll Notify for C{}TOC{}SR.CH{} interrupt",
-                this.ch,
-                N,
-                S::INDEX,
-                id
-            );
-            // SAFETY: `notified` lives inside the pinned future.
-            let _ = unsafe { Pin::new_unchecked(notified) }.poll(cx);
         }
 
         Poll::Pending
@@ -386,6 +420,7 @@ mod tests {
         offsets,
     };
     use consortium_ipc::Primary;
+    use core::sync::atomic::AtomicUsize;
 
     fn ch(id: u8) -> Chan {
         // SAFETY: tests pick ids deliberately to exercise validation paths.
@@ -521,6 +556,80 @@ mod tests {
         );
 
         // The wake reached the parked future, which completes and acknowledges.
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(2))));
+        assert_eq!(regs[offsets::C1SCR / 4], clear_flag(2));
+    }
+
+    /// A waker that counts how many times the task was woken, so a test can
+    /// assert the future is actually *registered* rather than relying on being
+    /// re-polled by hand.
+    fn counting_waker() -> (std::task::Waker, std::sync::Arc<AtomicUsize>) {
+        use std::{
+            sync::Arc,
+            task::{RawWaker, RawWakerVTable, Waker},
+        };
+
+        unsafe fn clone(p: *const ()) -> RawWaker {
+            // SAFETY: `p` came from `Arc::into_raw` below and is still alive.
+            unsafe { Arc::increment_strong_count(p as *const AtomicUsize) };
+            RawWaker::new(p, &VTABLE)
+        }
+        unsafe fn wake(p: *const ()) {
+            // SAFETY: `p` came from `Arc::into_raw`; this consumes one count.
+            let count = unsafe { Arc::from_raw(p as *const AtomicUsize) };
+            count.fetch_add(1, Ordering::SeqCst);
+        }
+        unsafe fn wake_by_ref(p: *const ()) {
+            // SAFETY: `p` came from `Arc::into_raw` and is still alive.
+            unsafe { &*(p as *const AtomicUsize) }.fetch_add(1, Ordering::SeqCst);
+        }
+        unsafe fn drop_fn(p: *const ()) {
+            // SAFETY: `p` came from `Arc::into_raw`; this consumes one count.
+            unsafe { Arc::from_raw(p as *const AtomicUsize) };
+        }
+        static VTABLE: RawWakerVTable = RawWakerVTable::new(clone, wake, wake_by_ref, drop_fn);
+
+        let count = Arc::new(AtomicUsize::new(0));
+        let raw = RawWaker::new(Arc::into_raw(Arc::clone(&count)) as *const (), &VTABLE);
+        // SAFETY: `VTABLE`'s functions uphold the `RawWaker` contract for an
+        // `Arc<AtomicUsize>` payload.
+        (unsafe { Waker::from_raw(raw) }, count)
+    }
+
+    /// The `Notify` is shared by every channel on the instance, so a wake caused
+    /// by a *different* channel completes this future's `Notified` while its own
+    /// channel is still idle. A completed `Notified` never fires again, so the
+    /// future has to re-subscribe on the next poll — otherwise it is registered
+    /// nowhere, its own ring never wakes it, and because the remote cannot ring
+    /// again while the channel stays occupied, the transport deadlocks.
+    #[test]
+    fn wake_for_another_channel_does_not_strand_the_waiter() {
+        let mut regs = [0u32; 8];
+        regs[offsets::C1MR / 4] = u32::MAX;
+        let db = doorbell(&mut regs);
+        let mut wait = std::pin::pin!(db.wait(ch(2)));
+        let (waker, wakes) = counting_waker();
+        let mut cx = Context::from_waker(&waker);
+
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+
+        // Channel 5 is asserted; the shared `Notify` wakes the channel-2 waiter
+        // too. Its own channel is idle, so it parks again.
+        regs[offsets::C2TOC1SR / 4] = occupied(5);
+        db.notify_rx_occupied_interrupt();
+        assert_eq!(wakes.load(Ordering::SeqCst), 1);
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+
+        // Channel 2 now fires for real. The wake only reaches the task if the
+        // poll above replaced the `Notified` consumed by the channel-5 wake.
+        regs[offsets::C2TOC1SR / 4] = occupied(5) | occupied(2);
+        db.notify_rx_occupied_interrupt();
+        assert_eq!(
+            wakes.load(Ordering::SeqCst),
+            2,
+            "waiter was not re-subscribed after a foreign channel consumed its notification"
+        );
+
         assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(2))));
         assert_eq!(regs[offsets::C1SCR / 4], clear_flag(2));
     }

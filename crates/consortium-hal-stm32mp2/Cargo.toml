@@ -6,7 +6,18 @@ name              = "consortium-hal-stm32mp2"
 version.workspace = true
 
 [features]
-default = ["can", "defmt", "dma", "gpio", "i2c", "spi", "stm32mp25x", "time-driver-gp-tim", "uart"]
+default = [
+  "can",
+  "defmt",
+  "dma",
+  "gpio",
+  "i2c",
+  "pwm",
+  "spi",
+  "stm32mp25x",
+  "time-driver-gp-tim",
+  "uart",
+]
 # Chip selection — forwarded to the PAC. Choose exactly one. STM32MP23 and
 # STM32MP25 share one interrupt/peripheral layout, so both map to the PAC's
 # `stm32mp257` chip. Dependents that select a different chip must set
@@ -20,6 +31,7 @@ can = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-can", "dep:nb"]
 dma = ["dep:critical-section", "dep:embassy-sync"]
 gpio = ["dep:embassy-sync", "dep:embedded-hal"]
 i2c = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
+pwm = ["dep:embedded-hal"]
 spi = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
 time-driver-gp-tim = [
   "dep:critical-section",

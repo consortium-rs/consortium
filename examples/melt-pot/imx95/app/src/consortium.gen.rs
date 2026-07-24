@@ -229,8 +229,17 @@ async fn init() -> ::core::result::Result<Context, ConsortiumInitError> {
                 elf_bytes: {
                     #[repr(align(16))]
                     struct Aligned<const N: usize>([u8; N]);
-                    static ELF: Aligned<{ include_bytes!("./mcu").len() }> = Aligned(
-                        *include_bytes!("./mcu"),
+                    static ELF: Aligned<
+                        {
+                            include_bytes!(
+                                "/workspace/examples/melt-pot/imx95/mcu/target/thumbv7em-none-eabihf/debug/melt-pot-imx95-mcu_original.elf"
+                            )
+                                .len()
+                        },
+                    > = Aligned(
+                        *include_bytes!(
+                            "/workspace/examples/melt-pot/imx95/mcu/target/thumbv7em-none-eabihf/debug/melt-pot-imx95-mcu_original.elf"
+                        ),
                     );
                     &ELF.0
                 },

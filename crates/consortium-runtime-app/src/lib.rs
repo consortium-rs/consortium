@@ -75,4 +75,20 @@ pub mod __rt {
         crate::log::error!("consortium: init failed; no `#[fail]` handler, exiting");
         ::std::process::exit(1);
     }
+
+    /// Install the application's `tracing` subscriber. Called by the
+    /// `#[consortium_runtime_app::main]` expansion *before* the generated
+    /// `init()` runs, so UIO/IPC bring-up traces and the `#[fail]` handler's
+    /// diagnostics are actually emitted (respecting `RUST_LOG`) instead of being
+    /// dropped because no subscriber is installed yet.
+    ///
+    /// Idempotent: it installs the global subscriber with `try_init`, which is a
+    /// no-op once one already exists — so a user `main` that sets up its own
+    /// subscriber (or calls this again) will not panic. The filter comes from
+    /// `RUST_LOG` when set, defaulting to `info` otherwise.
+    pub fn init_tracing() {
+        use tracing_subscriber::{EnvFilter, fmt};
+        let filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
+        let _ = fmt().with_env_filter(filter).try_init();
+    }
 }

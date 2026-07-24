@@ -40,6 +40,9 @@ pub mod gpio;
 #[cfg(feature = "i2c")]
 pub mod i2c;
 
+#[cfg(feature = "pwm")]
+pub mod pwm;
+
 #[cfg(feature = "spi")]
 pub mod spi;
 

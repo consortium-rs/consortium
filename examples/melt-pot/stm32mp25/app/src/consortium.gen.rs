@@ -74,7 +74,7 @@ impl IpcMemoryEndpoints {
                     >::new(uio[2usize].mmap(0usize)?)
                 };
                 let __service_db = doorbell.clone();
-                uio[1usize]
+                uio[2usize]
                     .bind_service(
                         ::std::sync::Arc::new(move || {
                             __service_db.notify_rx_occupied_interrupt()
@@ -237,8 +237,17 @@ async fn init() -> ::core::result::Result<Context, ConsortiumInitError> {
                 elf_bytes: {
                     #[repr(align(16))]
                     struct Aligned<const N: usize>([u8; N]);
-                    static ELF: Aligned<{ include_bytes!("./mcu").len() }> = Aligned(
-                        *include_bytes!("./mcu"),
+                    static ELF: Aligned<
+                        {
+                            include_bytes!(
+                                "/workspace/examples/melt-pot/stm32mp25/mcu/target/thumbv8m.main-none-eabihf/debug/melt-pot-stm32mp25-mcu_original.elf"
+                            )
+                                .len()
+                        },
+                    > = Aligned(
+                        *include_bytes!(
+                            "/workspace/examples/melt-pot/stm32mp25/mcu/target/thumbv8m.main-none-eabihf/debug/melt-pot-stm32mp25-mcu_original.elf"
+                        ),
                     );
                     &ELF.0
                 },

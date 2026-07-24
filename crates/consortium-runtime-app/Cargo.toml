@@ -74,6 +74,7 @@ consortium-runtime-macros = { optional = true, path = "../consortium-runtime-mac
 consortium-tee = { optional = true, path = "../consortium-tee" }
 thiserror = { version = "2.0" }
 tracing = { version = "0.1" }
+tracing-subscriber = { features = ["env-filter"], version = "0.3" }
 uio = { version = "0.5.2" }
 
 
