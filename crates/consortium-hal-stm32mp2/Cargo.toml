@@ -13,6 +13,7 @@ default = [
   "dma",
   "gpio",
   "i2c",
+  "i3c",
   "lptim",
   "spi",
   "stm32mp25x",
@@ -34,6 +35,7 @@ can  = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-can", "dep:nb"
 dma  = ["dep:critical-section", "dep:embassy-sync"]
 gpio = ["dep:embassy-sync", "dep:embedded-hal"]
 i2c  = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
+i3c  = ["dep:critical-section", "dep:embassy-sync"]
 # Compatibility alias for the former top-level PWM feature.
 pwm = ["timer"]
 spi = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]

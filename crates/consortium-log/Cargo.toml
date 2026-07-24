@@ -6,8 +6,9 @@ name              = "consortium-log"
 version.workspace = true
 
 [dependencies]
-defmt   = { optional = true, version = "1.1.0" }
-tracing = { default-features = false, optional = true, version = "0.1" }
+consortium-log-macros = { path = "../consortium-log-macros" }
+defmt                 = { optional = true, version = "1.1.0" }
+tracing               = { default-features = false, optional = true, version = "0.1" }
 
 [features]
 # `alloc` is a marker capability: `tracing` needs it, so enabling `tracing`

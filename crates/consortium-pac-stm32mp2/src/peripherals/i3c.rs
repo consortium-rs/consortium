@@ -111,7 +111,7 @@ impl I3C {
     }
     #[doc = "I3C timing register 0"]
     #[inline(always)]
-    pub const fn TIMINGR0(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn TIMINGR0(self) -> crate::common::Reg<I3C_TIMINGR0, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0xa0usize) as _) }
     }
     #[doc = "I3C timing register 1"]
@@ -3235,6 +3235,85 @@ impl defmt::Format for I3C_TGTTDR {
             "I3C_TGTTDR {{ TGTTDCNT: {=u16:?}, PRELOAD: {=bool:?} }}",
             self.TGTTDCNT(),
             self.PRELOAD()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct I3C_TIMINGR0(pub u32);
+impl I3C_TIMINGR0 {
+    #[doc = "SCL low duration in I3C push-pull phases, in kernel clock cycles"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SCLL_PP(&self) -> u8 {
+        ((self.0 >> 0) & 0xff) as u8
+    }
+    #[doc = "SCL low duration in I3C push-pull phases, in kernel clock cycles"]
+    #[inline(always)]
+    pub const fn set_SCLL_PP(&mut self, val: u8) {
+        self.0 = (self.0 & !0xff) | val as u32;
+    }
+    #[doc = "SCL high duration for I3C messages, in kernel clock cycles"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SCLH_I3C(&self) -> u8 {
+        ((self.0 >> 8) & 0xff) as u8
+    }
+    #[doc = "SCL high duration for I3C messages, in kernel clock cycles"]
+    #[inline(always)]
+    pub const fn set_SCLH_I3C(&mut self, val: u8) {
+        self.0 = (self.0 & !(0xff << 8)) | ((val as u32) << 8);
+    }
+    #[doc = "SCL low duration in open-drain phases, in kernel clock cycles"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SCLL_OD(&self) -> u8 {
+        ((self.0 >> 16) & 0xff) as u8
+    }
+    #[doc = "SCL low duration in open-drain phases, in kernel clock cycles"]
+    #[inline(always)]
+    pub const fn set_SCLL_OD(&mut self, val: u8) {
+        self.0 = (self.0 & !(0xff << 16)) | ((val as u32) << 16);
+    }
+    #[doc = "SCL high duration for legacy I2C messages, in kernel clock cycles"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SCLH_I2C(&self) -> u8 {
+        ((self.0 >> 24) & 0xff) as u8
+    }
+    #[doc = "SCL high duration for legacy I2C messages, in kernel clock cycles"]
+    #[inline(always)]
+    pub const fn set_SCLH_I2C(&mut self, val: u8) {
+        self.0 = (self.0 & !(0xff << 24)) | ((val as u32) << 24);
+    }
+}
+impl Default for I3C_TIMINGR0 {
+    #[inline(always)]
+    fn default() -> Self {
+        Self(0)
+    }
+}
+impl core::fmt::Debug for I3C_TIMINGR0 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("I3C_TIMINGR0")
+            .field("SCLL_PP", &self.SCLL_PP())
+            .field("SCLH_I3C", &self.SCLH_I3C())
+            .field("SCLL_OD", &self.SCLL_OD())
+            .field("SCLH_I2C", &self.SCLH_I2C())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for I3C_TIMINGR0 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "I3C_TIMINGR0 {{ SCLL_PP: {=u8:?}, SCLH_I3C: {=u8:?}, SCLL_OD: {=u8:?}, SCLH_I2C: {=u8:?} }}",
+            self.SCLL_PP(),
+            self.SCLH_I3C(),
+            self.SCLL_OD(),
+            self.SCLH_I2C()
         )
     }
 }

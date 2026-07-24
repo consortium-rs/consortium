@@ -31,13 +31,14 @@
 //!
 //! # Format syntax
 //!
-//! The macros forward their token stream verbatim, so use only the syntax the
-//! enabled backend(s) accept. The portable subset is a format string plus
-//! positional arguments — `trace!("channel {} lowered", name)` — where each
-//! argument implements the traits both backends require (`defmt::Format` for
-//! `defmt`, `core::fmt::Display`/`Debug` for `tracing`). Backend-specific
-//! extensions (`defmt`'s `{=u8}` type hints, `tracing`'s structured fields) are
-//! only valid when that backend is the sole one enabled.
+//! The portable subset is a format string plus positional arguments —
+//! `trace!("channel {} lowered", name)` — or Rust-style implicit captures —
+//! `trace!("channel {name} lowered")`. Implicit captures are normalized to
+//! indexed arguments before being forwarded, because `defmt` does not parse
+//! them itself. Each argument must implement the traits both backends require
+//! (`defmt::Format` for `defmt`, `core::fmt::Display`/`Debug` for `tracing`).
+//! Backend-specific extensions (`defmt`'s `{=u8}` type hints, `tracing`'s
+//! structured fields) are only valid when that backend is the sole one enabled.
 //!
 //! Log arguments must be side-effect free: when no backend is enabled the
 //! macros expand to nothing and the arguments are never evaluated.
@@ -55,6 +56,9 @@
 //!   no backend.
 
 #![no_std]
+
+#[doc(hidden)]
+pub use consortium_log_macros::expand_captures as __expand_captures;
 
 // Re-export each backend macro *by name* under a hidden alias. Re-exporting the
 // individual macros (rather than the whole crate via `pub use defmt;`) is the
@@ -143,9 +147,7 @@ macro_rules! __disabled {
 #[macro_export]
 macro_rules! trace {
     ($($arg:tt)*) => {{
-        $crate::__defmt!(trace, $($arg)*);
-        $crate::__tracing!(trace, $($arg)*);
-        $crate::__disabled!($($arg)*);
+        $crate::__expand_captures!(($crate::__log) (trace) ($($arg)*));
     }};
 }
 
@@ -153,9 +155,7 @@ macro_rules! trace {
 #[macro_export]
 macro_rules! debug {
     ($($arg:tt)*) => {{
-        $crate::__defmt!(debug, $($arg)*);
-        $crate::__tracing!(debug, $($arg)*);
-        $crate::__disabled!($($arg)*);
+        $crate::__expand_captures!(($crate::__log) (debug) ($($arg)*));
     }};
 }
 
@@ -163,9 +163,7 @@ macro_rules! debug {
 #[macro_export]
 macro_rules! info {
     ($($arg:tt)*) => {{
-        $crate::__defmt!(info, $($arg)*);
-        $crate::__tracing!(info, $($arg)*);
-        $crate::__disabled!($($arg)*);
+        $crate::__expand_captures!(($crate::__log) (info) ($($arg)*));
     }};
 }
 
@@ -173,9 +171,7 @@ macro_rules! info {
 #[macro_export]
 macro_rules! warn {
     ($($arg:tt)*) => {{
-        $crate::__defmt!(warn, $($arg)*);
-        $crate::__tracing!(warn, $($arg)*);
-        $crate::__disabled!($($arg)*);
+        $crate::__expand_captures!(($crate::__log) (warn) ($($arg)*));
     }};
 }
 
@@ -183,10 +179,28 @@ macro_rules! warn {
 #[macro_export]
 macro_rules! error {
     ($($arg:tt)*) => {{
-        $crate::__defmt!(error, $($arg)*);
-        $crate::__tracing!(error, $($arg)*);
+        $crate::__expand_captures!(($crate::__log) (error) ($($arg)*));
+    }};
+}
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __log {
+    ($level:ident, $($arg:tt)*) => {{
+        $crate::__defmt!($level, $($arg)*);
+        $crate::__tracing!($level, $($arg)*);
         $crate::__disabled!($($arg)*);
     }};
+}
+
+// This function is never run: it keeps implicit-capture expansion type-checked
+// for the no-backend, tracing, defmt, and combined feature configurations
+// without requiring a linked defmt global logger in tests.
+#[cfg(test)]
+#[allow(dead_code)]
+fn implicit_capture_compiles_for_enabled_backends() {
+    let channel = 3u8;
+    crate::info!("captured channel {channel}");
 }
 
 // Exercised with the `tracing` backend only: a `defmt`-enabled test binary would
@@ -206,5 +220,7 @@ mod tests {
         crate::info!("two args {} {}", name, channel);
         crate::warn!("warn {}", channel);
         crate::error!("error {}", name);
+        crate::error!("captured channel {channel} for {name}");
+        crate::error!("captured {name} then positional {}", channel);
     }
 }

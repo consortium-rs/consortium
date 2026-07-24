@@ -79,6 +79,7 @@ block/I3C:
     - name: TIMINGR0
       byte_offset: 160
       description: I3C timing register 0
+      fieldset: I3C_TIMINGR0
     - name: TIMINGR1
       byte_offset: 164
       description: I3C timing register 1
@@ -765,6 +766,25 @@ fieldset/I3C_MAXWLR:
       bit_offset: 0
       bit_size: 16
       description: maximum data write length (when I3C is acting as target)
+fieldset/I3C_TIMINGR0:
+  description: ''
+  fields:
+    - name: SCLL_PP
+      bit_offset: 0
+      bit_size: 8
+      description: SCL low duration in I3C push-pull phases, in kernel clock cycles
+    - name: SCLH_I3C
+      bit_offset: 8
+      bit_size: 8
+      description: SCL high duration for I3C messages, in kernel clock cycles
+    - name: SCLL_OD
+      bit_offset: 16
+      bit_size: 8
+      description: SCL low duration in open-drain phases, in kernel clock cycles
+    - name: SCLH_I2C
+      bit_offset: 24
+      bit_size: 8
+      description: SCL high duration for legacy I2C messages, in kernel clock cycles
 fieldset/I3C_TIMINGR1:
   description: ''
   fields:
