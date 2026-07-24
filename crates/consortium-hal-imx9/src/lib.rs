@@ -17,6 +17,9 @@
 
 //! Consortium HAL for i.MX 9 family devices.
 
+#[cfg(test)]
+extern crate std;
+
 pub use consortium_hal as hal;
 pub use consortium_pac_imx9 as pac;
 
@@ -27,6 +30,9 @@ pub use pac::interrupts::Interrupt;
 /// The `#[interrupt]` attribute macro, available when the `rt` feature is on.
 #[cfg(feature = "rt")]
 pub use pac::interrupts::interrupt;
+
+#[cfg(feature = "adc")]
+pub mod adc;
 
 #[cfg(feature = "can")]
 pub mod can;
@@ -40,11 +46,17 @@ pub mod gpio;
 #[cfg(feature = "i2c")]
 pub mod i2c;
 
+#[cfg(feature = "timer")]
+pub mod lptmr;
+
 #[cfg(feature = "spi")]
 pub mod spi;
 
 #[cfg(feature = "time-driver-lpit")]
 pub mod timer_driver;
+
+#[cfg(feature = "timer")]
+pub mod timer;
 
 #[cfg(feature = "uart")]
 pub mod uart;

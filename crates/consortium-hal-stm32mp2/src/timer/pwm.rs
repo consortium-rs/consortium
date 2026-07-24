@@ -1,12 +1,10 @@
-//! PWM output driver backed by an STM32MP2 timer.
+//! PWM output mode for an STM32MP2 [`Timer`].
 //!
 //! Modeled on `embassy-stm32`'s `simple_pwm`, adapted to this HAL's raw-MMIO
-//! convention: select a timer instance by passing its register base to
-//! [`Pwm::new`] together with the instance kernel-clock frequency and the
-//! desired output frequency. Like [`crate::gpio`] and [`crate::timer_driver`],
-//! this driver does **not** touch the RCC or the GPIO alternate-function mux —
-//! the caller must have enabled the timer's clock and routed each output pin to
-//! the timer's alternate function before driving a channel.
+//! convention. A [`Timer`] owns the register block and kernel-clock frequency;
+//! consume it with [`Timer::into_pwm`] to select this operating mode. Like
+//! `crate::gpio` and `crate::timer_driver`, this driver does **not** touch
+//! the RCC or GPIO alternate-function mux.
 //!
 //! Every channel is configured for edge-aligned PWM mode 1 with output and
 //! auto-reload preload, so [`PwmChannel::set_duty_cycle`] updates are latched
@@ -17,9 +15,8 @@
 
 use core::convert::Infallible;
 
-use pac::peripherals::timer::TIM_GP;
-
-use crate::pac;
+use super::low_level::CountingMode;
+use super::{Channel, Polarity, Timer};
 
 /// Output-compare mode value selecting edge-aligned PWM mode 1.
 const OCM_PWM_MODE1: u8 = 0b110;
@@ -28,49 +25,25 @@ const OCM_PWM_MODE1: u8 = 0b110;
 /// 100%-duty value (`ARR + 1`) inside a `u16` so it fits [`SetDutyCycle`].
 const MAX_ARR: u32 = u16::MAX as u32 - 1;
 
-/// A timer capture/compare channel.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Channel {
-    /// Channel 1.
-    Ch1,
-    /// Channel 2.
-    Ch2,
-    /// Channel 3.
-    Ch3,
-    /// Channel 4.
-    Ch4,
-}
-
-impl Channel {
-    /// Zero-based channel index (`0..4`).
-    const fn index(self) -> usize {
-        match self {
-            Channel::Ch1 => 0,
-            Channel::Ch2 => 1,
-            Channel::Ch3 => 2,
-            Channel::Ch4 => 3,
-        }
-    }
-}
-
-/// Output polarity of a PWM channel.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Polarity {
-    /// Output is high while the channel is active (reset value).
-    ActiveHigh,
-    /// Output is low while the channel is active.
-    ActiveLow,
-}
-
 /// Compute the `(PSC, ARR)` pair that best approximates `freq_hz` from a timer
 /// clocked at `clock_hz`, for edge-aligned counting.
 ///
 /// The prescaler is chosen as small as possible so the auto-reload value — and
 /// therefore the duty-cycle resolution — is as large as the 16-bit `ARR` allows.
-const fn compute_psc_arr(clock_hz: u32, freq_hz: u32) -> (u16, u16) {
+pub(crate) const fn compute_psc_arr_with_mode(
+    clock_hz: u32,
+    freq_hz: u32,
+    mode: CountingMode,
+) -> (u16, u16) {
     assert!(freq_hz > 0, "PWM frequency must be non-zero");
+    let alignment_divider = match mode {
+        CountingMode::EdgeAlignedUp | CountingMode::EdgeAlignedDown => 1,
+        CountingMode::CenterAlignedDownInterrupts
+        | CountingMode::CenterAlignedUpInterrupts
+        | CountingMode::CenterAlignedBothInterrupts => 2,
+    };
     // Total timer ticks per PWM period.
-    let ticks = (clock_hz / freq_hz) as u64;
+    let ticks = (clock_hz / frequency_product(freq_hz, alignment_divider)) as u64;
     assert!(ticks > 0, "PWM frequency exceeds the timer clock");
 
     // Smallest prescaler that brings `ARR + 1` within `MAX_ARR + 1`.
@@ -84,32 +57,36 @@ const fn compute_psc_arr(clock_hz: u32, freq_hz: u32) -> (u16, u16) {
     (psc as u16, arr as u16)
 }
 
+const fn frequency_product(frequency_hz: u32, alignment_divider: u32) -> u32 {
+    match frequency_hz.checked_mul(alignment_divider) {
+        Some(value) => value,
+        None => panic!("PWM frequency calculation overflow"),
+    }
+}
+
 /// PWM driver over one timer instance and its four channels.
 pub struct Pwm {
-    tim: TIM_GP,
-    clock_hz: u32,
+    timer: Timer,
     /// Auto-reload value currently programmed; 100% duty is `arr + 1`.
     arr: u16,
+    counting_mode: CountingMode,
 }
 
 impl Pwm {
-    /// Bind the timer at `base`, configure all four channels for PWM output, and
-    /// start the counter at `freq_hz`.
+    /// Configure all four channels for PWM output and start the counter.
     ///
-    /// `clock_hz` is the timer instance's kernel-clock frequency. Channels start
-    /// disabled at 0% duty; enable one with [`Pwm::channel`] then
+    /// The timer carries its kernel-clock frequency. Channels start disabled at
+    /// 0% duty; enable one with [`Pwm::channel`] then
     /// [`PwmChannel::enable`].
     ///
-    /// # Safety
-    ///
-    /// `base` must point to a valid STM32MP2 timer register block that is
-    /// exclusively owned by this driver. The caller must have enabled the
-    /// instance clock (RCC) and routed the desired output pins to the timer's
-    /// GPIO alternate function.
-    pub unsafe fn new(base: *mut (), clock_hz: u32, freq_hz: u32) -> Self {
-        // SAFETY: the caller guarantees `base` is a valid, exclusively owned TIM
-        // register block.
-        let tim = unsafe { TIM_GP::from_ptr(base) };
+    pub fn new(timer: Timer, freq_hz: u32) -> Self {
+        Self::new_with_mode(timer, freq_hz, CountingMode::EdgeAlignedUp)
+    }
+
+    /// Configure PWM with an explicit edge- or center-aligned counting mode.
+    pub fn new_with_mode(mut timer: Timer, freq_hz: u32, counting_mode: CountingMode) -> Self {
+        timer.set_counting_mode(counting_mode);
+        let tim = timer.regs();
 
         tim.CR1().modify(|w| w.set_CEN(false));
 
@@ -131,13 +108,14 @@ impl Pwm {
         }
 
         let mut pwm = Self {
-            tim,
-            clock_hz,
+            timer,
             arr: 0,
+            counting_mode,
         };
         pwm.set_frequency(freq_hz);
 
         // Enable auto-reload preload and load the shadow registers.
+        let tim = pwm.timer.regs();
         tim.CR1().modify(|w| w.set_ARPE(true));
         tim.EGR().write(|w| w.set_UG(true));
         tim.CR1().modify(|w| w.set_CEN(true));
@@ -148,18 +126,20 @@ impl Pwm {
     /// Reprogram the output frequency, preserving each channel's relative duty
     /// cycle as closely as the new resolution allows.
     pub fn set_frequency(&mut self, freq_hz: u32) {
-        let (psc, arr) = compute_psc_arr(self.clock_hz, freq_hz);
+        let (psc, arr) =
+            compute_psc_arr_with_mode(self.timer.clock_hz(), freq_hz, self.counting_mode);
         let old_arr = self.arr;
+        let tim = self.timer.regs();
 
-        self.tim.PSC().write(|w| w.set_PSC(psc as u32));
-        self.tim.ARR().write(|w| w.set_ARR(arr as u32));
+        tim.PSC().write(|w| w.set_PSC(psc as u32));
+        tim.ARR().write(|w| w.set_ARR(arr as u32));
 
         // Rescale live compare values so duty ratios survive the ARR change.
         if old_arr != 0 {
             for ch in 0..4usize {
-                let old = self.tim.CCR(ch).read().CCR();
+                let old = tim.CCR(ch).read().CCR();
                 let scaled = (old as u64 * (arr as u64 + 1) / (old_arr as u64 + 1)) as u32;
-                self.tim.CCR(ch).write(|w| w.set_CCR(scaled));
+                tim.CCR(ch).write(|w| w.set_CCR(scaled));
             }
         }
 
@@ -182,7 +162,23 @@ impl Pwm {
     /// calling it on a GP timer writes a reserved register and should be
     /// avoided.
     pub fn enable_advanced_outputs(&mut self) {
-        self.tim.BDTR().modify(|w| w.set_MOE(true));
+        self.timer.regs().BDTR().modify(|w| w.set_MOE(true));
+    }
+
+    /// Stop PWM and recover the owned timer.
+    pub fn free(mut self) -> Timer {
+        self.timer.stop();
+        self.timer
+    }
+
+    #[cfg(feature = "dma")]
+    pub(crate) fn into_parts(self) -> (Timer, u16) {
+        (self.timer, self.arr)
+    }
+
+    #[cfg(feature = "dma")]
+    pub(crate) fn timer_mut(&mut self) -> &mut Timer {
+        &mut self.timer
     }
 }
 
@@ -196,7 +192,8 @@ impl PwmChannel<'_> {
     /// Enable the channel output.
     pub fn enable(&mut self) {
         self.pwm
-            .tim
+            .timer
+            .regs()
             .CCER()
             .modify(|w| w.set_CCE(self.channel.index(), true));
     }
@@ -204,14 +201,15 @@ impl PwmChannel<'_> {
     /// Disable the channel output.
     pub fn disable(&mut self) {
         self.pwm
-            .tim
+            .timer
+            .regs()
             .CCER()
             .modify(|w| w.set_CCE(self.channel.index(), false));
     }
 
     /// Set the output polarity.
     pub fn set_polarity(&mut self, polarity: Polarity) {
-        self.pwm.tim.CCER().modify(|w| {
+        self.pwm.timer.regs().CCER().modify(|w| {
             w.set_CCP(
                 self.channel.index(),
                 matches!(polarity, Polarity::ActiveLow),
@@ -229,7 +227,8 @@ impl PwmChannel<'_> {
     pub fn set_duty_cycle(&mut self, duty: u16) {
         let duty = duty.min(self.pwm.max_duty_cycle());
         self.pwm
-            .tim
+            .timer
+            .regs()
             .CCR(self.channel.index())
             .write(|w| w.set_CCR(duty as u32));
     }
@@ -252,7 +251,12 @@ impl embedded_hal::pwm::SetDutyCycle for PwmChannel<'_> {
 
 #[cfg(test)]
 mod tests {
-    use super::{MAX_ARR, compute_psc_arr};
+    use super::{MAX_ARR, compute_psc_arr_with_mode};
+    use crate::timer::low_level::CountingMode;
+
+    const fn compute_psc_arr(clock_hz: u32, freq_hz: u32) -> (u16, u16) {
+        compute_psc_arr_with_mode(clock_hz, freq_hz, CountingMode::EdgeAlignedUp)
+    }
 
     fn realized_freq(clock_hz: u32, psc: u16, arr: u16) -> f64 {
         clock_hz as f64 / ((psc as f64 + 1.0) * (arr as f64 + 1.0))
@@ -275,6 +279,19 @@ mod tests {
         let (psc, arr) = compute_psc_arr(64_000_000, 20_000);
         assert_eq!(psc, 0);
         assert_eq!(arr, 3199);
+    }
+
+    #[test]
+    fn center_aligned_frequency_accounts_for_both_slopes() {
+        let (psc, arr) = compute_psc_arr_with_mode(
+            64_000_000,
+            20_000,
+            CountingMode::CenterAlignedBothInterrupts,
+        );
+        assert_eq!(psc, 0);
+        assert_eq!(arr, 1599);
+        let f = realized_freq(64_000_000, psc, arr) / 2.0;
+        assert_eq!(f, 20_000.0);
     }
 
     #[test]

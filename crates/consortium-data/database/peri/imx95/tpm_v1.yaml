@@ -27,6 +27,13 @@ block/TPM:
       array:
         len: 4
         stride: 8
+      fieldset: TPM_CnSC
+    - name: CONTROLS_CnV
+      byte_offset: 36
+      array:
+        len: 4
+        stride: 8
+      fieldset: TPM_CnV
     - name: COMBINE
       byte_offset: 100
       fieldset: TPM_COMBINE

@@ -7,15 +7,17 @@ version.workspace = true
 
 [features]
 default = [
+  "adc",
   "can",
   "defmt",
   "dma",
   "gpio",
   "i2c",
-  "pwm",
+  "lptim",
   "spi",
   "stm32mp25x",
   "time-driver-gp-tim",
+  "timer",
   "uart",
 ]
 # Chip selection — forwarded to the PAC. Choose exactly one. STM32MP23 and
@@ -26,13 +28,17 @@ stm32mp21x = ["consortium-pac-stm32mp2/stm32mp21"]
 stm32mp23x = ["consortium-pac-stm32mp2/stm32mp257"]
 stm32mp25x = ["consortium-pac-stm32mp2/stm32mp257"]
 # Forward cortex-m-rt runtime support (vector table, `#[interrupt]`) to the PAC.
-rt = ["consortium-pac-stm32mp2/rt"]
-can = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-can", "dep:nb"]
-dma = ["dep:critical-section", "dep:embassy-sync"]
+rt   = ["consortium-pac-stm32mp2/rt"]
+adc  = []
+can  = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-can", "dep:nb"]
+dma  = ["dep:critical-section", "dep:embassy-sync"]
 gpio = ["dep:embassy-sync", "dep:embedded-hal"]
-i2c = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
-pwm = ["dep:embedded-hal"]
+i2c  = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
+# Compatibility alias for the former top-level PWM feature.
+pwm = ["timer"]
 spi = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
+timer = ["dep:embedded-hal"]
+lptim = ["dep:embassy-sync", "timer"]
 time-driver-gp-tim = [
   "dep:critical-section",
   "dep:embassy-sync",

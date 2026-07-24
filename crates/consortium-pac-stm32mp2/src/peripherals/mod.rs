@@ -1,3 +1,4 @@
+pub mod adc;
 pub mod dma;
 pub mod dma_channel;
 pub mod fdcan;
@@ -5,6 +6,7 @@ pub mod gpio;
 pub mod hsem;
 pub mod i2c;
 pub mod i3c;
+pub mod lptim;
 pub mod rcc;
 pub mod spi;
 pub mod timer;

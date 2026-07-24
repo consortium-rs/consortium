@@ -47,9 +47,14 @@ impl TPM {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x1cusize) as _) }
     }
     #[inline(always)]
-    pub const fn CONTROLS_CnSC(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn CONTROLS_CnSC(self, n: usize) -> crate::common::Reg<TPM_CnSC, crate::common::RW> {
         assert!(n < 4usize);
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x20usize + n * 8usize) as _) }
+    }
+    #[inline(always)]
+    pub const fn CONTROLS_CnV(self, n: usize) -> crate::common::Reg<TPM_CnV, crate::common::RW> {
+        assert!(n < 4usize);
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x24usize + n * 8usize) as _) }
     }
     #[inline(always)]
     pub const fn COMBINE(self) -> crate::common::Reg<TPM_COMBINE, crate::common::RW> {

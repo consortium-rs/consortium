@@ -1,3 +1,4 @@
+pub mod adc;
 pub mod can;
 pub mod ccm;
 pub mod dma;
