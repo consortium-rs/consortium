@@ -50,6 +50,42 @@ use core::sync::atomic::Ordering;
 
 pub const CHANNEL_NUM_MAX: usize = 16;
 
+/// The descriptor geometry the two ends of a shared-memory link agree on during
+/// the handshake.
+///
+/// This is [`Connect::Params`] for [`SharedMemoryTransport`]. It carries only
+/// what is *negotiated* — everything identifying the link (channel ids, the
+/// doorbell, the region and its base) is fixed when the transport is
+/// constructed.
+///
+/// `mtu` is a proposal, not a verdict. The primary's value sizes the slots it
+/// publishes; the secondary raises the descriptor's transfer-size field to its
+/// own requirement if that is larger. Once `connect` returns, both sides report
+/// the resulting *slot* capacity through
+/// [`max_send_size`]/[`max_recv_size`] — which is what `send` enforces, and
+/// which a secondary asking for more than the primary published does not
+/// enlarge.
+///
+/// [`Connect::Params`]: consortium_ipc::Connect::Params
+/// [`max_send_size`]: consortium_ipc::SendTransport::max_send_size
+/// [`max_recv_size`]: consortium_ipc::RecvTransport::max_recv_size
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub struct DescriptorLayout {
+    /// Number of channel-table entries; a bidirectional transceiver uses two
+    /// (slot 0 primary→secondary, slot 1 secondary→primary).
+    pub num_channels: u8,
+    /// Payload transfer size this side proposes, in bytes.
+    pub mtu: usize,
+}
+
+impl DescriptorLayout {
+    /// A layout of `num_channels` slots, each proposing an `mtu`-byte payload.
+    pub const fn new(num_channels: u8, mtu: usize) -> Self {
+        Self { num_channels, mtu }
+    }
+}
+
 pub const MAGIC: DescriptorMagic = DescriptorMagic::new(b"CIPC");
 pub const VERSION: u8 = 1;
 
@@ -296,8 +332,171 @@ pub unsafe fn set_state(base: *mut u8, state: DescState) {
     }
 }
 
+/// Write the descriptor header, geometry and channel table into the region.
+///
+/// This is the synchronous half of the primary's handshake: after it returns,
+/// the descriptor is fully published and the secondary may observe it. The
+/// caller still owes the peer a doorbell ring.
+///
+/// # Safety
+///
+/// Caller must ensure:
+/// - `base` is valid for at least `CHAN_TABLE_BASE + num_channels * CHAN_ENTRY_SIZE` bytes
+/// - Memory is DMA-coherent and not accessed concurrently
+/// - `num_channels` and `transfer_size` do not cause out-of-bounds slot offsets
+pub(crate) unsafe fn publish_descriptor(base: *mut u8, num_channels: u8, transfer_size: usize) {
+    // Write the descriptor body first; the header magic is published last so a
+    // matching magic on the secondary implies the whole descriptor is ready.
+    // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
+    unsafe { wv_u8(base, NUM_CHANNELS_OFFSET, num_channels) };
+    // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
+    unsafe { wv_u32(base, RX_TRANSFER_SIZE_OFFSET, transfer_size as u32) };
+
+    for i in 0..num_channels as usize {
+        let off = channel_table_entry_offset(i);
+        // SAFETY: caller guarantees the channel table covers all `channels` entries.
+        unsafe { wv_u32(base, off, slot_offset(i, transfer_size) as u32) };
+        // SAFETY: caller guarantees the channel table covers all `channels` entries.
+        unsafe { wv_u32(base, off + 4, (SLOT_HEADER + transfer_size) as u32) };
+        // SAFETY: caller guarantees the channel table covers all `channels` entries.
+        unsafe {
+            wv_u8(
+                base,
+                off + 8,
+                match i % 2 {
+                    0 => ChannelDirection::PrimaryToSecondary.into(), // TX
+                    1 => ChannelDirection::SecondaryToPrimary.into(), // RX
+                    _ => unreachable!(),
+                },
+            )
+        };
+    }
+
+    // SAFETY: caller guarantees the descriptor state field is valid and coherent.
+    unsafe { wv_u32(base, STATE_OFFSET, DescState::Ready as u32) };
+
+    // Publish the magic last: the release fence ensures every body write above is
+    // visible before the secondary can observe a matching magic and read them.
+    compiler_fence(Ordering::Release);
+    let header = DescriptorHeader::new(MAGIC, VERSION);
+    // SAFETY: caller guarantees `base` covers the descriptor header.
+    unsafe { header.write_to_raw_ptr(base) };
+}
+
+/// Has the primary published a descriptor whose magic and version match?
+///
+/// The readiness gate for the secondary: the primary writes the magic last, so
+/// a match implies the body is complete.
+///
+/// # Safety
+/// `base` must be valid for the descriptor header and DMA-coherent.
+pub(crate) unsafe fn descriptor_published(base: *const u8) -> bool {
+    // SAFETY: caller guarantees the descriptor header is present at `base`.
+    let header = unsafe { DescriptorHeader::from_raw_ptr(base) };
+    header.check(MAGIC, VERSION).is_ok()
+}
+
+/// Validate the published descriptor, agree the transfer size, and mark the
+/// descriptor `Ready`.
+///
+/// This is the synchronous half of the secondary's handshake, run once the
+/// descriptor is known to be published. The caller still owes the peer the ack
+/// doorbell ring.
+///
+/// # Safety
+/// `base` must be valid for at least `CHAN_TABLE_BASE + num_channels * CHAN_ENTRY_SIZE`
+/// bytes. All accesses use `read_volatile`; the region must be DMA-coherent.
+pub(crate) unsafe fn accept_descriptor(
+    base: *mut u8,
+    num_channels: usize,
+    transfer_size: usize,
+) -> Result<Descriptor, DescriptorError> {
+    // SAFETY: caller guarantees the descriptor header is present at `base`.
+    let header = unsafe { DescriptorHeader::from_raw_ptr(base) };
+    header.check(MAGIC, VERSION).map_err(|e| {
+        consortium_log::trace!("accept_descriptor: header magic/version check failed");
+        DescriptorError::Header(e)
+    })?;
+
+    // Acquire the body writes published before the magic on the primary side.
+    compiler_fence(Ordering::Acquire);
+
+    // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
+    let num_ch = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
+    if num_ch as usize != num_channels || num_ch as usize > CHANNEL_NUM_MAX {
+        consortium_log::trace!(
+            "accept_descriptor: channel count mismatch (expected {}, got {})",
+            num_channels,
+            num_ch
+        );
+        return Err(DescriptorError::InvalidChannelCount {
+            expected: num_channels,
+            actual: num_ch as usize,
+        });
+    }
+    // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
+    let rx_transfer_size = unsafe { rv_u32(base, RX_TRANSFER_SIZE_OFFSET) };
+    // SAFETY: base is valid and coherent, and the matching magic gate above (with the
+    // acquire fence) guarantees the primary finished writing rx_transfer_size before we
+    // read it here. We write back the (potentially adjusted) transfer size so both sides
+    // agree on the final value.
+    unsafe {
+        wv_u32(
+            base,
+            RX_TRANSFER_SIZE_OFFSET,
+            rx_transfer_size.max(transfer_size as u32),
+        )
+    };
+
+    let mut channels = [ChannelLayout::default(); CHANNEL_NUM_MAX];
+
+    for (i, channel) in channels.iter_mut().enumerate().take(num_ch as usize) {
+        let off = CHAN_TABLE_BASE + i * CHAN_ENTRY_SIZE;
+        // SAFETY: caller guarantees the channel table covers `num_ch` entries.
+        let offset = unsafe { rv_u32(base, off) };
+        // SAFETY: caller guarantees the channel table covers `num_ch` entries.
+        let size = unsafe { rv_u32(base, off + 4) };
+        // SAFETY: caller guarantees the channel table covers `num_ch` entries.
+        let direction = ChannelDirection::from_primitive(unsafe { rv_u8(base, off + 8) });
+
+        *channel = ChannelLayout {
+            offset,
+            size,
+            direction,
+            _reserved: [0; 3],
+        };
+        validate_channel_layout(i, num_ch as usize, *channel)?;
+    }
+
+    compiler_fence(Ordering::Release);
+
+    // SAFETY: the caller must ensure that `base` is valid for at least 4 bytes and that the memory is DMA-coherent. Setting the state to Ready signals to the A-core that the descriptor is fully initialized and that it can read the rx_transfer_size and channel table entries safely.
+    unsafe {
+        wv_u32(base, STATE_OFFSET, DescState::Ready as u32);
+    }
+
+    Ok(Descriptor {
+        header,
+        _reserved1: [0; 1],
+        _reserved2: [0; 2],
+        _reserved3: [0; 4],
+        state: DescState::Ready,
+        _reserved4: [0; 4],
+        num_channels: num_ch,
+        tx_updated_id: 0xFF,
+        rx_updated_id: 0xFF,
+        tx_mtu: transfer_size as u32,
+        rx_mtu: rx_transfer_size,
+        channels,
+    })
+}
+
 impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Primary, D, R> {
     /// Write the descriptor header and channel table to the shared memory region.
+    ///
+    /// This is the low-level, transport-free form of the primary's handshake.
+    /// Prefer [`Connect::connect`], which runs the same protocol against a
+    /// constructed transport and records the negotiated MTU.
     ///
     /// # Arguments
     ///
@@ -312,6 +511,8 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Prim
     /// - Memory is DMA-coherent and not accessed concurrently
     /// - All values in `channels` do not cause out-of-bounds offsets
     /// - Should set a timeout for the doorbell wait to avoid deadlock if the secondary core fails to respond.
+    ///
+    /// [`Connect::connect`]: consortium_ipc::Connect::connect
     pub async unsafe fn descriptor_init(
         base: *mut u8,
         num_channels: u8,
@@ -325,42 +526,8 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Prim
             num_channels,
             transfer_size
         );
-        // Write the descriptor body first; the header magic is published last so a
-        // matching magic on the secondary implies the whole descriptor is ready.
-        // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
-        unsafe { wv_u8(base, NUM_CHANNELS_OFFSET, num_channels) };
-        // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
-        unsafe { wv_u32(base, RX_TRANSFER_SIZE_OFFSET, transfer_size as u32) };
-
-        for i in 0..num_channels as usize {
-            let off = channel_table_entry_offset(i);
-            // SAFETY: caller guarantees the channel table covers all `channels` entries.
-            unsafe { wv_u32(base, off, slot_offset(i, transfer_size) as u32) };
-            // SAFETY: caller guarantees the channel table covers all `channels` entries.
-            unsafe { wv_u32(base, off + 4, (SLOT_HEADER + transfer_size) as u32) };
-            // SAFETY: caller guarantees the channel table covers all `channels` entries.
-            unsafe {
-                wv_u8(
-                    base,
-                    off + 8,
-                    match i % 2 {
-                        0 => ChannelDirection::PrimaryToSecondary.into(), // TX
-                        1 => ChannelDirection::SecondaryToPrimary.into(), // RX
-                        _ => unreachable!(),
-                    },
-                )
-            };
-        }
-
-        // SAFETY: caller guarantees the descriptor state field is valid and coherent.
-        unsafe { wv_u32(base, STATE_OFFSET, DescState::Ready as u32) };
-
-        // Publish the magic last: the release fence ensures every body write above is
-        // visible before the secondary can observe a matching magic and read them.
-        compiler_fence(Ordering::Release);
-        let header = DescriptorHeader::new(MAGIC, VERSION);
-        // SAFETY: caller guarantees `base` covers the descriptor header.
-        unsafe { header.write_to_raw_ptr(base) };
+        // SAFETY: caller guarantees `base` covers the descriptor and channel table.
+        unsafe { publish_descriptor(base, num_channels, transfer_size) };
 
         consortium_log::trace!("descriptor_init: ready, ringing and awaiting secondary ack");
         doorbell.ring(doorbell_tx).map_err(Error::Doorbell)?;
@@ -373,9 +540,15 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Prim
 impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Secondary, D, R> {
     /// Parse the descriptor from the start of the mmap'd region.
     ///
+    /// This is the low-level, transport-free form of the secondary's handshake.
+    /// Prefer [`Connect::connect`], which runs the same protocol against a
+    /// constructed transport and records the negotiated MTU.
+    ///
     /// # Safety
     /// `base` must be valid for at least `CHAN_TABLE_BASE + num_channels * CHAN_ENTRY_SIZE` bytes.
     /// All accesses use `read_volatile`; the region must be DMA-coherent.
+    ///
+    /// [`Connect::connect`]: consortium_ipc::Connect::connect
     pub async unsafe fn descriptor_ack(
         base: *mut u8,
         num_channels: usize,
@@ -395,8 +568,7 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Seco
         // does not match yet, wait for the primary's doorbell and re-check; once it
         // matches, read and validate the descriptor directly.
         // SAFETY: caller guarantees the descriptor header is present at `base`.
-        let mut header = unsafe { DescriptorHeader::from_raw_ptr(base) };
-        if header.check(MAGIC, VERSION).is_err() {
+        if !unsafe { descriptor_published(base) } {
             consortium_log::trace!(
                 "descriptor_ack: descriptor not published, awaiting primary doorbell"
             );
@@ -404,94 +576,18 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Seco
                 .wait(doorbell_rx)
                 .await
                 .map_err(super::Error::Doorbell)?;
-            // SAFETY: caller guarantees the descriptor header is present at `base`.
-            header = unsafe { DescriptorHeader::from_raw_ptr(base) };
-            header.check(MAGIC, VERSION).map_err(|e| {
-                consortium_log::trace!(
-                    "descriptor_ack: header magic/version check failed after doorbell"
-                );
-                Error::Descriptor(DescriptorError::Header(e))
-            })?;
         }
 
-        // Acquire the body writes published before the magic on the primary side.
-        compiler_fence(Ordering::Acquire);
-
-        // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
-        let num_ch = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
-        if num_ch as usize != num_channels || num_ch as usize > CHANNEL_NUM_MAX {
-            consortium_log::trace!(
-                "descriptor_ack: channel count mismatch (expected {}, got {})",
-                num_channels,
-                num_ch
-            );
-            return Err(DescriptorError::InvalidChannelCount {
-                expected: num_channels,
-                actual: num_ch as usize,
-            }
-            .into());
-        }
-        // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
-        let rx_transfer_size = unsafe { rv_u32(base, RX_TRANSFER_SIZE_OFFSET) };
-        // SAFETY: base is valid and coherent, and the matching magic gate above (with the
-        // acquire fence) guarantees the primary finished writing rx_transfer_size before we
-        // read it here. We write back the (potentially adjusted) transfer size so both sides
-        // agree on the final value.
-        unsafe {
-            wv_u32(
-                base,
-                RX_TRANSFER_SIZE_OFFSET,
-                rx_transfer_size.max(transfer_size as u32),
-            )
-        };
-
-        let mut channels = [ChannelLayout::default(); CHANNEL_NUM_MAX];
-
-        for (i, channel) in channels.iter_mut().enumerate().take(num_ch as usize) {
-            let off = CHAN_TABLE_BASE + i * CHAN_ENTRY_SIZE;
-            // SAFETY: caller guarantees the channel table covers `num_ch` entries.
-            let offset = unsafe { rv_u32(base, off) };
-            // SAFETY: caller guarantees the channel table covers `num_ch` entries.
-            let size = unsafe { rv_u32(base, off + 4) };
-            // SAFETY: caller guarantees the channel table covers `num_ch` entries.
-            let direction = ChannelDirection::from_primitive(unsafe { rv_u8(base, off + 8) });
-
-            *channel = ChannelLayout {
-                offset,
-                size,
-                direction,
-                _reserved: [0; 3],
-            };
-            validate_channel_layout(i, num_ch as usize, *channel)?;
-        }
-
-        compiler_fence(Ordering::Release);
-
-        // SAFETY: the caller must ensure that `base` is valid for at least 4 bytes and that the memory is DMA-coherent. Setting the state to Ready signals to the A-core that the descriptor is fully initialized and that it can read the rx_transfer_size and channel table entries safely.
-        unsafe {
-            wv_u32(base, STATE_OFFSET, DescState::Ready as u32);
-        }
+        // SAFETY: caller guarantees `base` covers the descriptor and channel table.
+        let descriptor = unsafe { accept_descriptor(base, num_channels, transfer_size) }?;
 
         consortium_log::trace!(
             "descriptor_ack: {} channels validated, acking primary",
-            num_ch
+            descriptor.num_channels
         );
         doorbell.ring(doorbell_tx).map_err(Error::Doorbell)?;
 
-        Ok(Descriptor {
-            header,
-            _reserved1: [0; 1],
-            _reserved2: [0; 2],
-            _reserved3: [0; 4],
-            state: DescState::Ready,
-            _reserved4: [0; 4],
-            num_channels: num_ch,
-            tx_updated_id: 0xFF,
-            rx_updated_id: 0xFF,
-            tx_mtu: transfer_size as u32,
-            rx_mtu: rx_transfer_size,
-            channels,
-        })
+        Ok(descriptor)
     }
 }
 

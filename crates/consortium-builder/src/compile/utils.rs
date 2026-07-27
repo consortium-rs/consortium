@@ -195,7 +195,7 @@ fn resolve_hmi_build_command_from(
 /// `outdir` (the manifest's resolved `[hmi].build`).
 ///
 /// A `CONSORTIUM_HMI_BUILD_CMD` override wins verbatim; otherwise this runs
-/// `bun scripts/build.ts <app> --outdir=<outdir>` from the project directory.
+/// `bun tools/build.ts <app> --outdir=<outdir>` from the project directory.
 pub fn resolve_pocket_build_command(app: &str, outdir: &Path) -> Result<HmiBuildCommand, String> {
     resolve_pocket_build_command_from(
         std::env::var("CONSORTIUM_HMI_BUILD_CMD").ok(),
@@ -228,7 +228,7 @@ fn resolve_pocket_build_command_from(
     Ok(HmiBuildCommand::Resolved {
         program,
         args: vec![
-            "scripts/build.ts".to_string(),
+            "tools/build.ts".to_string(),
             app.to_string(),
             format!("--outdir={}", outdir.display()),
         ],
@@ -652,7 +652,7 @@ mod tests {
             HmiBuildCommand::Resolved {
                 program: "/tools/bun".to_string(),
                 args: vec![
-                    "scripts/build.ts".to_string(),
+                    "tools/build.ts".to_string(),
                     "hero-main".to_string(),
                     "--outdir=/proj/dist".to_string(),
                 ],

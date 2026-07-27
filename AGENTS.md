@@ -113,6 +113,7 @@ Doorbell       - hardware/software signal for waking a remote processor
 SendTransport  - byte send half; writes bytes and rings the doorbell
 RecvTransport  - byte receive half; waits for the doorbell and reads bytes
 Transport      - full-duplex transport: SendTransport + RecvTransport
+Connect        - readiness rendezvous with the remote end, run before traffic
 CodecFor<T>    - serialization family for a message type
 Channel<Tx/Rx> - typed directed endpoint over one transport half
 Transceiver    - typed send/receive endpoint built from paired channels
@@ -126,6 +127,18 @@ firmware-side code.
 buffer sized for the transport MTU. `Tx` channels require `SendTransport`; `Rx`
 channels require `RecvTransport`. `ReceivedMessage` is designed to handle owned codecs
 today and zero-copy codecs later.
+
+`Connect` is the standard bring-up entry point for transports that must agree with a
+peer before carrying traffic. It is deliberately narrow: it means "wait until the far
+side is ready", so it is async, it has no timeout (callers own the deadline), and it is
+called once before any send/recv and before `split()`. Its associated `Params` carries
+only what is negotiated; anything identifying the link belongs in the constructor.
+`SharedMemoryTransport` implements it per `Side` (the primary publishes the descriptor
+and waits for the ack, the secondary validates and acks), so generated bring-up code
+emits one call with no side branch; the UART transport implements it as a documented
+no-op. Local bring-up is _not_ `Connect`: peripherals keep constructor + config +
+typestate, and their ordering stays in `consortium-cfg`'s generated `init()`; doorbells
+keep `bind_notifier`/`bind_service`.
 
 `Transceiver<TyTx, TyRx, TrTx, TrRx, C>` is public and wraps paired `Channel<Tx, ...>`
 and `Channel<Rx, ...>` values. If a transport needs separate ownership for Tx/Rx, use
@@ -340,7 +353,7 @@ memory base comes from generated code and UIO mapping, not `CONSORTIUM_IPC_BASE`
 (on-target `{deploy_root}/hmi/<app>.{js,pak}`), plus
 `CONSORTIUM_HMI_LOGICAL_WIDTH` and `CONSORTIUM_HMI_LOGICAL_HEIGHT`, via
 `PocketApp::from_env`; its build
-runs `bun scripts/build.ts <app> --outdir=<build>` (override with
+runs `bun tools/build.ts <app> --outdir=<build>` (override with
 `CONSORTIUM_HMI_BUILD_CMD`), and the builder stages the bundle+pak into `dist/hmi/`.
 
 The build pipeline writes `src/consortium.gen.rs` into generated endpoint crates. The

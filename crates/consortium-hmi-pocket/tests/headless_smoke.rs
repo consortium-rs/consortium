@@ -48,7 +48,7 @@ fn renders_a_headless_frame() {
     assert_eq!(rgba.len(), (w * h * 4) as usize);
 }
 
-/// Full pipeline: a `bun scripts/build.ts <app>` bundle+pak loaded from disk,
+/// Full pipeline: a `bun tools/build.ts <app>` bundle+pak loaded from disk,
 /// driven for a few frames, then rendered to real pixels. Skipped unless the
 /// PocketJS `dist/` artifacts exist (they are produced by the JS toolchain, not
 /// committed), so host CI without bun stays green.
@@ -64,7 +64,7 @@ fn renders_a_built_bundle_to_pixels() {
     let pak = dist.join("hero-main.pak");
     if !bundle.exists() || !pak.exists() {
         eprintln!(
-            "skipping: {} not built (run `bun scripts/build.ts hero-main`)",
+            "skipping: {} not built (run `bun tools/build.ts hero-main`)",
             bundle.display()
         );
         return;

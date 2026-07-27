@@ -20,6 +20,7 @@ extern crate alloc;
 
 pub(crate) mod chan;
 pub(crate) mod channel;
+pub(crate) mod connect;
 pub(crate) mod doorbell;
 pub(crate) mod future;
 pub(crate) mod sealed;
@@ -31,6 +32,7 @@ pub(crate) mod wire;
 pub use {
     chan::{Chan, ChanValidate},
     channel::{Channel, ChannelError, Direction, ReceivedMessage, Rx, Tx},
+    connect::Connect,
     doorbell::Doorbell,
     future::MaybeSend,
     side::{Primary, Secondary, Side, Tertiary},

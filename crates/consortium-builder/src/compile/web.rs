@@ -363,7 +363,7 @@ mod tests {
         let project = tmp_dir("pocket-ok");
         let dist = project.join("dist");
 
-        // Stand in for `bun scripts/build.ts hero-main --outdir=dist`: emit the
+        // Stand in for `bun tools/build.ts hero-main --outdir=dist`: emit the
         // two artifacts PocketJS produces.
         let cfg = HmiConfiguration {
             engine: HmiEngine::Pocket,

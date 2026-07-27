@@ -109,28 +109,16 @@ impl IpcMemoryEndpoints {
     ) -> ::core::result::Result<IpcMemoryEndpointsConnected, ConsortiumConnectError> {
         ::core::result::Result::Ok(IpcMemoryEndpointsConnected {
             ping: {
-                let transport = self.ping;
+                let mut transport = self.ping;
                 let (chan_tx, chan_rx) = transport.channels();
-                // SAFETY: base covers the descriptor; this side is Secondary, so it
-                // validates and acks the primary-written descriptor.
-                unsafe {
-                    <::consortium_ipc_transport_memory::SharedMemoryTransport<
-                        ::consortium_ipc::Secondary,
-                        ::consortium_ipc_doorbell_hsem::HsemDoorbell<
-                            ::consortium_ipc::Secondary,
-                            1usize,
-                        >,
-                        ::consortium_shared_memory::regions::SramRegion,
-                    >>::descriptor_ack(
-                            transport.base(),
-                            2usize,
+                ::consortium_ipc::Connect::connect(
+                        &mut transport,
+                        ::consortium_ipc_transport_memory::DescriptorLayout::new(
+                            2u8,
                             256usize,
-                            transport.doorbell(),
-                            chan_rx,
-                            chan_tx,
-                        )
-                        .await
-                }
+                        ),
+                    )
+                    .await
                     .map_err(|__e| match __e {
                         ::consortium_ipc_transport_memory::Error::Descriptor(__d) => {
                             ConsortiumConnectError::Descriptor(__d)

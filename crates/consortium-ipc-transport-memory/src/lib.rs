@@ -29,8 +29,8 @@ pub(crate) mod utils;
 pub use consortium_ipc::{Primary, Secondary, Side};
 pub use descriptor::{
     CHANNEL_NUM_MAX, ChannelDirection, ChannelLayout, DESCRIPTOR_LENGTH, DescState, Descriptor,
-    MAGIC, RX_UPDATED_ID_OFFSET, VERSION, channel_table_entry_offset, descriptor_complete,
-    get_state, set_state,
+    DescriptorLayout, MAGIC, RX_UPDATED_ID_OFFSET, VERSION, channel_table_entry_offset,
+    descriptor_complete, get_state, set_state,
 };
 
 pub use error::{DescriptorError, Error};
