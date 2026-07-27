@@ -240,7 +240,8 @@ impl<R, W> UartTransport<R, W> {
 #[cfg(not(feature = "std"))]
 mod impl_embedded {
     use consortium_ipc::{
-        MaybeSend, RecvTransport, SendTransport, Transport, TransportError as TransportErrorTrait,
+        Connect, MaybeSend, RecvTransport, SendTransport, Transport,
+        TransportError as TransportErrorTrait,
     };
     use embedded_io_async::{ErrorType, Read, Write};
 
@@ -329,13 +330,29 @@ mod impl_embedded {
     }
 
     impl<R: Read, W: Write + ErrorType<Error = R::Error>> Transport for UartTransport<R, W> {}
+
+    /// UART has nothing to rendezvous over: the link is a pair of wires, byte
+    /// arrival is itself the notification, and neither end publishes state the
+    /// other must validate. `connect` is therefore an immediate no-op, provided
+    /// so bring-up code can drive every transport through the same call.
+    ///
+    /// A future link-level hello (version or MTU negotiation over the wire)
+    /// would slot in here without touching callers.
+    impl<R: Read, W: Write + ErrorType<Error = R::Error>> Connect for UartTransport<R, W> {
+        type Params = ();
+
+        async fn connect(&mut self, _params: ()) -> Result<(), Self::Error> {
+            Ok(())
+        }
+    }
 }
 
 /// Tokio implementation family (Linux/host-side).
 #[cfg(feature = "std")]
 mod impl_tokio {
     use consortium_ipc::{
-        MaybeSend, RecvTransport, SendTransport, Transport, TransportError as TransportErrorTrait,
+        Connect, MaybeSend, RecvTransport, SendTransport, Transport,
+        TransportError as TransportErrorTrait,
     };
     use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 
@@ -430,4 +447,19 @@ mod impl_tokio {
     }
 
     impl<R: AsyncRead + Unpin + Send, W: AsyncWrite + Unpin + Send> Transport for UartTransport<R, W> {}
+
+    /// UART has nothing to rendezvous over: the link is a pair of wires, byte
+    /// arrival is itself the notification, and neither end publishes state the
+    /// other must validate. `connect` is therefore an immediate no-op, provided
+    /// so bring-up code can drive every transport through the same call.
+    ///
+    /// A future link-level hello (version or MTU negotiation over the wire)
+    /// would slot in here without touching callers.
+    impl<R: AsyncRead + Unpin + Send, W: AsyncWrite + Unpin + Send> Connect for UartTransport<R, W> {
+        type Params = ();
+
+        async fn connect(&mut self, _params: ()) -> Result<(), Self::Error> {
+            Ok(())
+        }
+    }
 }

@@ -4,12 +4,16 @@ use core::{
 };
 
 use consortium_ipc::{
-    Chan, Doorbell, MaybeSend, RecvTransport, SendTransport, Side, Transport, TransportError,
+    Chan, Connect, Doorbell, MaybeSend, Primary, RecvTransport, Secondary, SendTransport, Side,
+    Transport, TransportError,
 };
 use consortium_shared_memory::{DdrRegion, Region, SramRegion};
 
 use crate::{
-    descriptor::{ChannelLayout, NUM_CHANNELS_OFFSET, RX_UPDATED_ID_OFFSET, read_channel},
+    descriptor::{
+        ChannelLayout, DescriptorLayout, NUM_CHANNELS_OFFSET, RX_UPDATED_ID_OFFSET,
+        accept_descriptor, descriptor_published, publish_descriptor, read_channel,
+    },
     error::Error,
     slot_internal as slot,
     utils::rv_u8,
@@ -354,6 +358,48 @@ impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTrans
         (self.ch_tx, self.ch_rx)
     }
 
+    /// Record this side's per-direction slot capacities as the transport MTU.
+    ///
+    /// Called at the end of the [`Connect`] handshake, which is the first moment
+    /// the channel table is known to be published and validated; before that
+    /// [`max_send_size`](SendTransport::max_send_size) reports `0`.
+    ///
+    /// The reported size is the smallest usable payload across this side's
+    /// channels in that direction (`size - SLOT_HEADER`) — exactly the bound
+    /// `send` enforces, so a caller that respects `max_send_size` cannot be
+    /// rejected for length. Note this is deliberately *not* the descriptor's
+    /// negotiated transfer-size field: the secondary may raise that field above
+    /// what the published slots can actually hold.
+    fn record_slot_capacities(&mut self) {
+        // The peer wrote to the descriptor before signalling; drop stale lines
+        // first (a no-op on coherent regions).
+        self.region.invalidate();
+
+        // SAFETY: `new` established that `base` covers the descriptor header, and
+        // the handshake has completed, so the channel table is published.
+        let num_channels = unsafe { rv_u8(self.base, NUM_CHANNELS_OFFSET) };
+
+        let (mut tx, mut rx): (Option<u32>, Option<u32>) = (None, None);
+        for chan in 0..num_channels {
+            // SAFETY: `chan` is within the published channel table range.
+            let channel = unsafe { read_channel(self.base, chan as usize) };
+            let capacity = channel.size.saturating_sub(slot::SLOT_HEADER as u32);
+            if channel.direction.is_tx::<S>() {
+                tx = Some(tx.map_or(capacity, |c: u32| c.min(capacity)));
+            } else if channel.direction.is_rx::<S>() {
+                rx = Some(rx.map_or(capacity, |c: u32| c.min(capacity)));
+            }
+        }
+
+        self.tx_mtu = tx.unwrap_or(0);
+        self.rx_mtu = rx.unwrap_or(0);
+        consortium_log::trace!(
+            "connect: slot capacities tx {} rx {}",
+            self.tx_mtu,
+            self.rx_mtu
+        );
+    }
+
     /// Consume this transport and return a `(send, recv)` half-pair.
     ///
     /// A single `SharedMemoryTransport` cannot be held by two [`Channel`]s at once
@@ -674,4 +720,93 @@ impl<S: Side, D: Doorbell + Send + 'static, R: RegionSharedMemoryTransportable +
 impl<S: Side, D: Doorbell + Send + 'static, R: RegionSharedMemoryTransportable + Send> Transport
     for SharedMemoryTransport<S, D, R>
 {
+}
+
+/// The primary end of the descriptor handshake: publish the layout, ring, and
+/// wait for the secondary's ack.
+///
+/// Unlike the raw [`descriptor_init`] form, this owns the region, so it can
+/// perform the cache maintenance the handshake needs on a non-coherent
+/// [`DdrRegion`] and record the negotiated MTU afterwards.
+///
+/// [`descriptor_init`]: SharedMemoryTransport::descriptor_init
+impl<D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Connect
+    for SharedMemoryTransport<Primary, D, R>
+{
+    type Params = DescriptorLayout;
+
+    async fn connect(&mut self, params: DescriptorLayout) -> Result<(), Self::Error> {
+        consortium_log::trace!(
+            "connect(primary): publishing {} channels, transfer_size {}",
+            params.num_channels,
+            params.mtu
+        );
+        // SAFETY: `new` established that `base` covers the descriptor header and a
+        // channel table of `params.num_channels` entries, and that the region is
+        // DMA-coherent or maintained through `R`.
+        unsafe { publish_descriptor(self.base, params.num_channels, params.mtu) };
+        // Publish the descriptor to memory before the doorbell announces it.
+        self.region.flush();
+
+        self.doorbell.ring(self.ch_tx).map_err(Error::Doorbell)?;
+        self.doorbell
+            .wait(self.ch_rx)
+            .await
+            .map_err(Error::Doorbell)?;
+
+        self.record_slot_capacities();
+        consortium_log::trace!("connect(primary): handshake complete");
+        Ok(())
+    }
+}
+
+/// The secondary end of the descriptor handshake: wait for the descriptor to be
+/// published, validate it, and ack.
+///
+/// The counterpart to the [`Primary`] impl above — same trait, same call site,
+/// opposite protocol role, selected by the transport's [`Side`] rather than by a
+/// runtime branch in the caller.
+impl<D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Connect
+    for SharedMemoryTransport<Secondary, D, R>
+{
+    type Params = DescriptorLayout;
+
+    async fn connect(&mut self, params: DescriptorLayout) -> Result<(), Self::Error> {
+        consortium_log::trace!(
+            "connect(secondary): expecting {} channels, transfer_size {}",
+            params.num_channels,
+            params.mtu
+        );
+
+        // The header magic is the readiness gate: the primary publishes it last,
+        // so a match implies the whole descriptor is written.
+        self.region.invalidate();
+        // SAFETY: `new` established that `base` covers the descriptor header.
+        if !unsafe { descriptor_published(self.base) } {
+            consortium_log::trace!(
+                "connect(secondary): descriptor not published, awaiting primary doorbell"
+            );
+            self.doorbell
+                .wait(self.ch_rx)
+                .await
+                .map_err(Error::Doorbell)?;
+            self.region.invalidate();
+        }
+
+        // SAFETY: `new` established that `base` covers the descriptor header and
+        // channel table; the gate above guarantees the primary finished writing it.
+        let descriptor =
+            unsafe { accept_descriptor(self.base, params.num_channels as usize, params.mtu) }?;
+        // Push the validated state and agreed transfer size out before acking.
+        self.region.flush();
+
+        consortium_log::trace!(
+            "connect(secondary): {} channels validated, acking primary",
+            descriptor.num_channels
+        );
+        self.doorbell.ring(self.ch_tx).map_err(Error::Doorbell)?;
+
+        self.record_slot_capacities();
+        Ok(())
+    }
 }

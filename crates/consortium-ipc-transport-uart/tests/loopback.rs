@@ -18,7 +18,7 @@
 //! In-memory loopback tests for the Tokio (`std`) implementation family.
 
 use consortium_codec::PostcardCodec;
-use consortium_ipc::{Chan, Channel, RecvTransport, Rx, SendTransport, Tx};
+use consortium_ipc::{Chan, Channel, Connect, RecvTransport, Rx, SendTransport, Tx};
 use consortium_ipc_transport_uart::{Error, UartTransport, rx_buf_len, tx_buf_len};
 use serde::{Deserialize, Serialize};
 use tokio::io::{AsyncWriteExt, DuplexStream, ReadHalf, WriteHalf};
@@ -55,6 +55,33 @@ fn transport(
         MTU,
     )
     .expect("buffers sized by rx_buf_len/tx_buf_len")
+}
+
+/// Bring-up code that knows only the trait — the same helper shape the
+/// shared-memory tests use, showing UART fits the uniform call.
+async fn bring_up<T: Connect>(transport: &mut T, params: T::Params) -> Result<(), T::Error> {
+    transport.connect(params).await
+}
+
+/// UART has no rendezvous: `connect` resolves immediately and leaves the link
+/// exactly as constructed, so it can sit in generic bring-up without effect.
+#[tokio::test]
+async fn connect_is_an_immediate_no_op() {
+    let (wire_a, wire_b) = wires();
+    let mut a = transport(chan(9), wire_a);
+    let mut b = transport(chan(9), wire_b);
+
+    bring_up(&mut a, ()).await.expect("connect a");
+    bring_up(&mut b, ()).await.expect("connect b");
+
+    // Unlike shared memory, the MTU is fixed at construction, not negotiated.
+    assert_eq!(a.max_send_size(), MTU);
+    assert_eq!(b.max_recv_size(), MTU);
+
+    a.send(b"after connect").await.expect("send a->b");
+    let mut buf = [0u8; MTU];
+    let n = b.recv(&mut buf).await.expect("recv on b");
+    assert_eq!(&buf[..n], b"after connect");
 }
 
 #[tokio::test]

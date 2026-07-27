@@ -253,10 +253,10 @@ impl Transceiver {
     }
 
     /// The connected `IpcMemoryEndpointsConnected` field initializer: runs the
-    /// descriptor handshake on the stored transport (`descriptor_init` when this
-    /// side is Primary, `descriptor_ack` when Secondary), then splits it and
-    /// builds the typed [`Transceiver`]. Evaluates to the transceiver; uses
-    /// `?` against `ConsortiumConnectError` and `.await`.
+    /// readiness handshake on the stored transport via `Connect::connect` (the
+    /// transport's `Side` selects the protocol role), then splits it and builds
+    /// the typed [`Transceiver`]. Evaluates to the transceiver; uses `?` against
+    /// `ConsortiumConnectError` and `.await`.
     ///
     /// Returns `(buffers, expr)`: `buffers` holds the two channels' module-level
     /// scratch-buffer `static`s, which [`ShuHan::initialize`] emits at module
@@ -270,7 +270,6 @@ impl Transceiver {
         let side = self
             .side(core)
             .expect("core must be either primary or secondary for the transceiver");
-        let transport_ty = self.transport_ty(core);
 
         let channel_tx = match side {
             DoorbellRingerSide::Primary => &self.channel_primary.1,
@@ -322,25 +321,14 @@ impl Transceiver {
                 _ => ConsortiumConnectError::Other,
             }
         };
-        let handshake = match side {
-            DoorbellRingerSide::Primary => quote::quote! {
-                /// SAFETY: base covers the descriptor; this side is Primary, so it
-                /// writes the descriptor and waits for the secondary's ack.
-                unsafe {
-                    <#transport_ty>::descriptor_init(
-                        transport.base(), 2u8, #transfer_size, transport.doorbell(), #chan_tx, #chan_rx,
-                    ).await
-                }.map_err(#map_err)?;
-            },
-            DoorbellRingerSide::Secondary => quote::quote! {
-                /// SAFETY: base covers the descriptor; this side is Secondary, so it
-                /// validates and acks the primary-written descriptor.
-                unsafe {
-                    <#transport_ty>::descriptor_ack(
-                        transport.base(), 2usize, #transfer_size, transport.doorbell(), #chan_rx, #chan_tx,
-                    ).await
-                }.map_err(#map_err)?;
-            },
+        // The readiness handshake is the transport's own `Connect` impl: which
+        // protocol role runs (publish-and-wait vs validate-and-ack) follows from
+        // the transport's `Side`, so no side branch survives into generated code.
+        let handshake = quote::quote! {
+            ::consortium_ipc::Connect::connect(
+                &mut transport,
+                ::consortium_ipc_transport_memory::DescriptorLayout::new(2u8, #transfer_size),
+            ).await.map_err(#map_err)?;
         };
 
         let buffers = quote::quote! {
@@ -348,7 +336,7 @@ impl Transceiver {
             #rx_buffer
         };
         let expr = quote::quote! {{
-            let transport = self.#field_ident;
+            let mut transport = self.#field_ident;
             let (#chan_tx, #chan_rx) = transport.channels();
             #handshake
             let (#t_tx, #t_rx) = transport.split();

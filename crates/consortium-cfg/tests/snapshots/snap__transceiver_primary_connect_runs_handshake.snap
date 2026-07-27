@@ -15,28 +15,16 @@ struct S {
 impl S {
     async fn _generated(self) -> ::core::result::Result<(), ConsortiumConnectError> {
         let _ = {
-            let transport = self.sensor;
+            let mut transport = self.sensor;
             let (chan_tx, chan_rx) = transport.channels();
-            // SAFETY: base covers the descriptor; this side is Primary, so it
-            // writes the descriptor and waits for the secondary's ack.
-            unsafe {
-                <::consortium_ipc_transport_memory::SharedMemoryTransport<
-                    ::consortium_ipc::Primary,
-                    ::consortium_ipc_doorbell_hsem::HsemDoorbell<
-                        ::consortium_ipc::Primary,
-                        1usize,
-                    >,
-                    ::consortium_shared_memory::regions::SramRegion,
-                >>::descriptor_init(
-                        transport.base(),
+            ::consortium_ipc::Connect::connect(
+                    &mut transport,
+                    ::consortium_ipc_transport_memory::DescriptorLayout::new(
                         2u8,
                         256usize,
-                        transport.doorbell(),
-                        chan_tx,
-                        chan_rx,
-                    )
-                    .await
-            }
+                    ),
+                )
+                .await
                 .map_err(|__e| match __e {
                     ::consortium_ipc_transport_memory::Error::Descriptor(__d) => {
                         ConsortiumConnectError::Descriptor(__d)

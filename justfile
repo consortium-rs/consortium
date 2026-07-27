@@ -145,17 +145,24 @@ ruff-fix:
 
 # Format code
 fmt:
-    cargo fmt
+    just rustfmt
     vp fmt
     uvx ruff format
     taplo format
 
 # Check code formatting
 fmt-check:
-    cargo fmt --check
+    just rustfmt --check
     vp fmt --check
     uvx ruff format --check
     taplo format --check
+
+# Format only Consortium workspace crates. Running `cargo fmt` from the virtual
+# workspace also discovers local path dependencies, including vendor submodules.
+rustfmt *args:
+    @for manifest in crates/*/Cargo.toml examples/melt-pot/shared/Cargo.toml; do \
+        cargo fmt --manifest-path "$manifest" {{ args }} || exit 1; \
+    done
 
 # Format TOML files
 taplo-fmt:

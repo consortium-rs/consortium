@@ -1227,7 +1227,7 @@ mod tests {
         let ap_src = ap.to_string();
         assert!(ap_src.contains("IpcMemoryEndpointsConnected"));
         assert!(ap_src.contains("async fn connect"));
-        assert!(ap_src.contains("descriptor_init"));
+        assert!(ap_src.contains("Connect :: connect"));
         assert!(ap_src.contains("async fn init"));
         // The example declares `[dbg.cm33]`, so the host console is woven in.
         assert!(ap_src.contains("dbg_console :: spawn"));
@@ -1236,11 +1236,13 @@ mod tests {
         let _ = ap_file;
 
         // A controller core (Secondary) emits an infallible `new` plus the same
-        // `connect` handshake (here via `descriptor_ack`).
+        // `connect` handshake — the identical call, with the Secondary role
+        // selected by the transport's `Side` rather than by the generated code.
         let cm = ir.initialize(cm33(), &ty_crate);
         let cm_src = cm.to_string();
         syn::parse_file(&cm_src).expect("lowered controller init module is valid Rust");
-        assert!(cm_src.contains("descriptor_ack"));
+        assert!(cm_src.contains("Connect :: connect"));
+        assert!(cm_src.contains("Secondary"));
 
         let bella = ir
             .bella

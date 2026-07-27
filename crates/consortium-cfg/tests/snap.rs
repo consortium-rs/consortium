@@ -134,18 +134,20 @@ fn transceiver_secondary_side_uses_controller_addresses() {
 }
 
 #[test]
-fn transceiver_primary_connect_runs_descriptor_init() {
+fn transceiver_primary_connect_runs_handshake() {
     let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
     let field = format_ident!("sensor");
-    // The connect phase runs `descriptor_init` on the primary side, splits, and
+    // The connect phase runs the transport's `Connect` handshake, splits, and
     // builds the typed transceiver. It uses `.await`/`?`, so it is wrapped in an
-    // async, fallible context for pretty-printing.
+    // async, fallible context for pretty-printing. The primary/secondary pair
+    // below emits the *same* call: the protocol role follows from the `Side` in
+    // the transport type.
     let tokens = transceiver().connect_field_init(VisibleCore::Ap, &field, &ty_crate);
     insta::assert_snapshot!(connect_expr(tokens));
 }
 
 #[test]
-fn transceiver_secondary_connect_runs_descriptor_ack() {
+fn transceiver_secondary_connect_runs_handshake() {
     let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
     let field = format_ident!("sensor");
     let tokens = transceiver().connect_field_init(cm33(), &field, &ty_crate);

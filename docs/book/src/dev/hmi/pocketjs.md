@@ -57,29 +57,27 @@ for Consortium services.
 
 ## Repository map
 
-| Path                             | Purpose                                                                                                 | Consortium relevance                                                           |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| `src/`                           | Solid/Vue renderers, components, input, animation, platform checks, virtual clock, and effect shell     | Frontend SDK and the guest-side half of the host contract                      |
-| `compiler/`, `schema/`, `spec/`  | JSX/style/font/asset compiler, manifest schema, target registry, and generated wire constants           | Build integration and a future Consortium Linux target profile                 |
-| `core/`                          | `no_std + alloc` retained UI core using Taffy, with draw-list and deterministic software raster support | Reusable renderer-independent UI state; no Linux or QuickJS dependency         |
-| `wasm/`, `host-web/`             | WASM core mirror and browser development host                                                           | Fast frontend iteration, but not the intended production HMI runtime           |
-| `host-sim/`, `test/`             | Deterministic headless simulation, input tapes, goldens, and contract tests                             | Strong basis for HMI acceptance tests and replaying hardware/IPC traces        |
-| `pocket3d/crates/pocket-mod`     | `rquickjs` guest lifecycle, named surface mounting, and one guest turn per tick                         | Native JS host and the extension point for `consortium.*`                      |
-| `pocket3d/crates/pocket-ui-wgpu` | Pak loading, `ui.*` mounting, and DrawList-to-wgpu rendering                                            | Closest reusable native Linux rendering layer                                  |
-| `pocket3d/examples/uihost`       | winit window and headless example using `pocket-mod` and `pocket-ui-wgpu`                               | Bring-up reference, not yet a production embedded shell                        |
-| `native/`, `native-vita/`        | PSP and Vita QuickJS/render/input hosts                                                                 | Mature examples of native packaging and input delivery; not Linux dependencies |
-| `aot/`                           | Separate ahead-of-time Game Boy Advance experiment                                                      | Outside the Consortium HMI path                                                |
+| Path                                | Purpose                                                                                             | Consortium relevance                                                           |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `framework/`                        | Solid/Vue renderers, components, input, animation, platform checks, virtual clock, and effect shell | Frontend SDK and the guest-side half of the host contract                      |
+| `framework/compiler/`, `contracts/` | JSX/style/font/asset compiler, manifest schema, target registry, and generated wire constants       | Build integration and a future Consortium Linux target profile                 |
+| `engine/core/`                      | `no_std + alloc` retained UI core with draw-list and deterministic software raster support          | Reusable renderer-independent UI state; no Linux or QuickJS dependency         |
+| `engine/wasm/`, `hosts/web/`        | WASM core mirror and browser development host                                                       | Fast frontend iteration, but not the intended production HMI runtime           |
+| `tests/`                            | Deterministic headless simulation, input tapes, goldens, and contract tests                         | Strong basis for HMI acceptance tests and replaying hardware/IPC traces        |
+| `engine/crates/pocket-mod`          | `rquickjs` guest lifecycle, named surface mounting, and one guest turn per tick                     | Native JS host and the extension point for `consortium.*`                      |
+| `engine/crates/pocket-ui-wgpu`      | Pak loading, `ui.*` mounting, and DrawList-to-wgpu rendering                                        | Closest reusable native Linux rendering layer                                  |
+| `engine/pocket3d/examples/uihost`   | winit window and headless example using `pocket-mod` and `pocket-ui-wgpu`                           | Bring-up reference, not yet a production embedded shell                        |
+| `hosts/psp/`, `hosts/vita/`         | PSP and Vita QuickJS/render/input hosts                                                             | Mature examples of native packaging and input delivery; not Linux dependencies |
 
-The main design references are `README.md`, `DESIGN.md`, `RUNTIMES.md`,
-`DETERMINISM.md`, `site/content/docs/native-contract.md`, and
-`site/content/docs/platform-contracts.md` in the submodule.
+The main design references are `README.md`, `docs/DESIGN.md`, `docs/RUNTIMES.md`,
+`docs/DETERMINISM.md`, and `docs/PLATFORM.md` in the submodule.
 
 ## Useful contracts
 
 ### UI and host ABI
 
-`src/host.ts` defines `HostOps`, the synchronous QuickJS-to-native UI surface.
-The operation numbers and shared binary formats are pinned in `spec/spec.ts`
+`framework/src/host.ts` defines `HostOps`, the synchronous QuickJS-to-native UI surface.
+The operation numbers and shared binary formats are pinned in `contracts/spec/spec.ts`
 and generated into the Rust core. Manifest-driven bundles also embed a target
 name and host ABI and refuse to run when the native host reports a different
 contract.

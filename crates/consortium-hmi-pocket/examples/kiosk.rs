@@ -20,7 +20,7 @@
 //! contract), then point this at the outputs:
 //!
 //! ```console
-//! $ cd submodules/pocketjs && bun scripts/build.ts hero-main
+//! $ cd submodules/pocketjs && bun tools/build.ts hero-main
 //! $ cargo run -p consortium-hmi-pocket --features shell --example kiosk -- \
 //!     submodules/pocketjs/dist/hero-main.js submodules/pocketjs/dist/hero-main.pak
 //! ```
