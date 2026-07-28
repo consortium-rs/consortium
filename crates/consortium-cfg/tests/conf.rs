@@ -156,8 +156,16 @@ fn assert_artifact(path: &Path, actual: &str) {
         Ok(expected) if expected == actual => {}
         Ok(_) if update => fs::write(path, &actual).expect("write updated snapshot"),
         Ok(expected) => {
-            let new_path = path.with_extension("snap.new");
-            fs::write(&new_path, &actual).expect("write .new snapshot");
+            // Deliberately *not* `.snap.new`: that is the reject extension insta
+            // claims, and `cargo insta accept`/`review` walks the whole project
+            // accepting every `*.snap.new` it finds. These artifacts are plain
+            // Markdown with no insta metadata header, so insta parses them with its
+            // legacy-format reader, which silently eats leading lines as `key: value`
+            // metadata until the first blank line — swallowing the `# Generated
+            // artifacts` title — and rewrites the file with an empty `---\n{}\n---`
+            // header. Keeping our rejects out of insta's namespace avoids that.
+            let new_path = path.with_extension("snap.actual");
+            fs::write(&new_path, &actual).expect("write .actual snapshot");
             panic!(
                 "snapshot mismatch for {}\nwrote new output to {}\nrerun with UPDATE_SNAPSHOTS=1 to accept\n\n--- expected ---\n{expected}\n--- actual ---\n{actual}",
                 path.display(),

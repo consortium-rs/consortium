@@ -356,28 +356,16 @@ fn _generated() {
         > {
             ::core::result::Result::Ok(IpcMemoryEndpointsConnected {
                 sensor: {
-                    let transport = self.sensor;
+                    let mut transport = self.sensor;
                     let (chan_tx, chan_rx) = transport.channels();
-                    // SAFETY: base covers the descriptor; this side is Primary, so it
-                    // writes the descriptor and waits for the secondary's ack.
-                    unsafe {
-                        <::consortium_ipc_transport_memory::SharedMemoryTransport<
-                            ::consortium_ipc::Primary,
-                            ::consortium_ipc_doorbell_hsem::HsemDoorbell<
-                                ::consortium_ipc::Primary,
-                                1usize,
-                            >,
-                            ::consortium_shared_memory::regions::SramRegion,
-                        >>::descriptor_init(
-                                transport.base(),
+                    ::consortium_ipc::Connect::connect(
+                            &mut transport,
+                            ::consortium_ipc_transport_memory::DescriptorLayout::new(
                                 2u8,
                                 128usize,
-                                transport.doorbell(),
-                                chan_tx,
-                                chan_rx,
-                            )
-                            .await
-                    }
+                            ),
+                        )
+                        .await
                         .map_err(|__e| match __e {
                             ::consortium_ipc_transport_memory::Error::Descriptor(__d) => {
                                 ConsortiumConnectError::Descriptor(__d)
@@ -419,28 +407,16 @@ fn _generated() {
                     ::consortium_ipc::Transceiver::new(channel_tx, channel_rx)
                 },
                 lp: {
-                    let transport = self.lp;
+                    let mut transport = self.lp;
                     let (chan_tx, chan_rx) = transport.channels();
-                    // SAFETY: base covers the descriptor; this side is Primary, so it
-                    // writes the descriptor and waits for the secondary's ack.
-                    unsafe {
-                        <::consortium_ipc_transport_memory::SharedMemoryTransport<
-                            ::consortium_ipc::Primary,
-                            ::consortium_ipc_doorbell_ipcc::IpccDoorbell<
-                                ::consortium_ipc::Primary,
-                                2usize,
-                            >,
-                            ::consortium_shared_memory::regions::SramRegion,
-                        >>::descriptor_init(
-                                transport.base(),
+                    ::consortium_ipc::Connect::connect(
+                            &mut transport,
+                            ::consortium_ipc_transport_memory::DescriptorLayout::new(
                                 2u8,
                                 128usize,
-                                transport.doorbell(),
-                                chan_tx,
-                                chan_rx,
-                            )
-                            .await
-                    }
+                            ),
+                        )
+                        .await
                         .map_err(|__e| match __e {
                             ::consortium_ipc_transport_memory::Error::Descriptor(__d) => {
                                 ConsortiumConnectError::Descriptor(__d)
@@ -682,28 +658,16 @@ fn _generated() {
         > {
             ::core::result::Result::Ok(IpcMemoryEndpointsConnected {
                 lp: {
-                    let transport = self.lp;
+                    let mut transport = self.lp;
                     let (chan_tx, chan_rx) = transport.channels();
-                    // SAFETY: base covers the descriptor; this side is Secondary, so it
-                    // validates and acks the primary-written descriptor.
-                    unsafe {
-                        <::consortium_ipc_transport_memory::SharedMemoryTransport<
-                            ::consortium_ipc::Secondary,
-                            ::consortium_ipc_doorbell_ipcc::IpccDoorbell<
-                                ::consortium_ipc::Secondary,
-                                2usize,
-                            >,
-                            ::consortium_shared_memory::regions::SramRegion,
-                        >>::descriptor_ack(
-                                transport.base(),
-                                2usize,
+                    ::consortium_ipc::Connect::connect(
+                            &mut transport,
+                            ::consortium_ipc_transport_memory::DescriptorLayout::new(
+                                2u8,
                                 128usize,
-                                transport.doorbell(),
-                                chan_rx,
-                                chan_tx,
-                            )
-                            .await
-                    }
+                            ),
+                        )
+                        .await
                         .map_err(|__e| match __e {
                             ::consortium_ipc_transport_memory::Error::Descriptor(__d) => {
                                 ConsortiumConnectError::Descriptor(__d)
@@ -964,28 +928,16 @@ fn _generated() {
         > {
             ::core::result::Result::Ok(IpcMemoryEndpointsConnected {
                 sensor: {
-                    let transport = self.sensor;
+                    let mut transport = self.sensor;
                     let (chan_tx, chan_rx) = transport.channels();
-                    // SAFETY: base covers the descriptor; this side is Secondary, so it
-                    // validates and acks the primary-written descriptor.
-                    unsafe {
-                        <::consortium_ipc_transport_memory::SharedMemoryTransport<
-                            ::consortium_ipc::Secondary,
-                            ::consortium_ipc_doorbell_hsem::HsemDoorbell<
-                                ::consortium_ipc::Secondary,
-                                1usize,
-                            >,
-                            ::consortium_shared_memory::regions::SramRegion,
-                        >>::descriptor_ack(
-                                transport.base(),
-                                2usize,
+                    ::consortium_ipc::Connect::connect(
+                            &mut transport,
+                            ::consortium_ipc_transport_memory::DescriptorLayout::new(
+                                2u8,
                                 128usize,
-                                transport.doorbell(),
-                                chan_rx,
-                                chan_tx,
-                            )
-                            .await
-                    }
+                            ),
+                        )
+                        .await
                         .map_err(|__e| match __e {
                             ::consortium_ipc_transport_memory::Error::Descriptor(__d) => {
                                 ConsortiumConnectError::Descriptor(__d)
