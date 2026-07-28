@@ -469,6 +469,10 @@ mod dma_support {
 
         fn adc(registers: &mut [u32; 128]) -> Adc {
             Adc {
+                // SAFETY: `registers` is a 512-byte, 4-byte-aligned array standing in
+                // for the ADC register block; it covers every offset the driver
+                // touches, and the `&mut` borrow keeps it alive and unaliased for the
+                // returned driver's lifetime.
                 adc: unsafe { ADC::from_ptr(registers.as_mut_ptr().cast()) },
                 active: false,
             }
@@ -535,6 +539,9 @@ mod tests {
     #[test]
     fn sequence_spans_all_four_registers() {
         let mut registers = [0u32; 128];
+        // SAFETY: `registers` is a 512-byte, 4-byte-aligned array standing in for the
+        // ADC register block; it covers every offset `configure_sequence` writes, and
+        // it outlives `driver`, which is the only holder of the pointer.
         let adc = unsafe { ADC::from_ptr(registers.as_mut_ptr().cast()) };
         let mut driver = Adc { adc, active: false };
         let channels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
