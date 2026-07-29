@@ -15,11 +15,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "Consortium microcontroller cpu runtime library"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-runtime-mcu"
-version.workspace = true
+description            = "Consortium microcontroller cpu runtime library"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-runtime-mcu"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [features]
 dbg     = ["dep:consortium-dbg"]
@@ -50,15 +57,15 @@ stm32mp25x = ["consortium-ipc-transport-memory?/stm32mp25x"]
 stm32mp2xx = ["stm32mp25x"]
 
 [dependencies]
-consortium-ipc = { default-features = false, optional = true, path = "../consortium-ipc" }
-consortium-log = { default-features = false, path = "../consortium-log" }
+consortium-ipc = { default-features = false, optional = true, path = "../consortium-ipc", version = "0.1.0" }
+consortium-log = { default-features = false, path = "../consortium-log", version = "0.1.0" }
 consortium-dbg = { default-features = false, features = [
   "logger",
-], optional = true, path = "../consortium-dbg" }
-consortium-ipc-transport-memory = { default-features = false, optional = true, path = "../consortium-ipc-transport-memory" }
-consortium-ipc-transport-uart = { default-features = false, optional = true, path = "../consortium-ipc-transport-uart" }
-consortium-runtime-macros = { optional = true, path = "../consortium-runtime-macros" }
-consortium-runtime-sys = { path = "../consortium-runtime-sys" }
+], optional = true, path = "../consortium-dbg", version = "0.1.0" }
+consortium-ipc-transport-memory = { default-features = false, optional = true, path = "../consortium-ipc-transport-memory", version = "0.1.0" }
+consortium-ipc-transport-uart = { default-features = false, optional = true, path = "../consortium-ipc-transport-uart", version = "0.1.0" }
+consortium-runtime-macros = { optional = true, path = "../consortium-runtime-macros", version = "0.1.0" }
+consortium-runtime-sys = { path = "../consortium-runtime-sys", version = "0.1.0" }
 cortex-m = { version = "0.7" }
 # Only used by the entry-macro fallback fail handler's log line, which is gated
 # behind this crate's `defmt` feature (the `log` re-export otherwise expands to

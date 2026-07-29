@@ -17,10 +17,20 @@
 [package]
 description       = "FFI bindings to the remoteproc resource-table layout (rsc_table.h)"
 edition.workspace = true
-include           = ["Cargo.toml", "build.rs", "include/**/*", "src/**/*", "wrapper.h"]
-license.workspace = true
-name              = "consortium-runtime-sys"
-version.workspace = true
+include           = ["Cargo.toml", "LICENSE", "build.rs", "include/**/*", "src/**/*", "wrapper.h"]
+# Not `license.workspace`: `include/rsc_table.h` is the remoteproc resource
+# table header from Texas Instruments and Google, redistributed under
+# BSD-3-Clause.
+license                = "Apache-2.0 AND BSD-3-Clause"
+name                   = "consortium-runtime-sys"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [build-dependencies]
 bindgen = "0.72"

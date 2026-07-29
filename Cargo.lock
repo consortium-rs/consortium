@@ -679,16 +679,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-cli"
-version = "0.1.0"
-dependencies = [
- "clap",
- "consortium-builder",
- "serde",
- "tokio",
-]
-
-[[package]]
 name = "consortium-codec"
 version = "0.1.0"
 dependencies = [
@@ -1324,6 +1314,16 @@ name = "crunchy"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "460fbee9c2c2f33933d720630a6a0bac33ba7053db5344fac858d4b8952d77d5"
+
+[[package]]
+name = "csti"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "consortium-builder",
+ "serde",
+ "tokio",
+]
 
 [[package]]
 name = "cursor-icon"
@@ -3547,6 +3547,7 @@ dependencies = [
 [[package]]
 name = "pocket-mod"
 version = "0.1.0"
+source = "git+https://github.com/pocket-stack/pocketjs.git?tag=v0.7.0#a5b8ace099e402b70bec079abbef99a6882f1060"
 dependencies = [
  "anyhow",
  "log",
@@ -3555,22 +3556,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "pocket-ui-surface"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "log",
- "pocket-mod",
- "pocketjs-core",
-]
-
-[[package]]
 name = "pocket-ui-wgpu"
 version = "0.1.0"
+source = "git+https://github.com/pocket-stack/pocketjs.git?tag=v0.7.0#a5b8ace099e402b70bec079abbef99a6882f1060"
 dependencies = [
  "anyhow",
  "bytemuck",
- "pocket-ui-surface",
+ "log",
+ "pocket-mod",
  "pocket3d",
  "pocketjs-core",
  "wgpu",
@@ -3579,6 +3572,7 @@ dependencies = [
 [[package]]
 name = "pocket3d"
 version = "0.1.0"
+source = "git+https://github.com/pocket-stack/pocketjs.git?tag=v0.7.0#a5b8ace099e402b70bec079abbef99a6882f1060"
 dependencies = [
  "anyhow",
  "bytemuck",
@@ -3597,6 +3591,7 @@ dependencies = [
 [[package]]
 name = "pocket3d-bsp"
 version = "0.1.0"
+source = "git+https://github.com/pocket-stack/pocketjs.git?tag=v0.7.0#a5b8ace099e402b70bec079abbef99a6882f1060"
 dependencies = [
  "anyhow",
  "glam",
@@ -3606,6 +3601,7 @@ dependencies = [
 [[package]]
 name = "pocketjs-core"
 version = "0.1.0"
+source = "git+https://github.com/pocket-stack/pocketjs.git?tag=v0.7.0#a5b8ace099e402b70bec079abbef99a6882f1060"
 dependencies = [
  "taffy",
 ]

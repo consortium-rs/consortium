@@ -18,8 +18,17 @@
 description       = "Command-line interface for managing Consortium applications and runtimes"
 edition.workspace = true
 license.workspace = true
-name              = "consortium-cli"
-version.workspace = true
+# Published as `csti`, matching the binary: `consortium-cli` is taken on
+# crates.io by an unrelated project. The directory keeps its descriptive name.
+name                   = "csti"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [[bin]]
 name = "csti"
@@ -27,6 +36,6 @@ path = "src/main.rs"
 
 [dependencies]
 clap               = { features = ["derive"], version = "4.5" }
-consortium-builder = { path = "../consortium-builder" }
+consortium-builder = { path = "../consortium-builder", version = "0.1.0" }
 serde              = { features = ["derive"], version = "1.0.228" }
 tokio              = { features = ["macros", "rt-multi-thread"], version = "1.50.0" }

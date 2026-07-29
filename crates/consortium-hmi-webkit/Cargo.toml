@@ -15,11 +15,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "Cog/WPE WebKit adapter for Consortium HMI"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-hmi-webkit"
-version.workspace = true
+description            = "Cog/WPE WebKit adapter for Consortium HMI"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-hmi-webkit"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [dependencies]
 consortium-hmi = { path = "../consortium-hmi", version = "^0.1" }

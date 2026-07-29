@@ -1,15 +1,22 @@
 [package]
-description       = "Implementation crate for Consortium IPC macros"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-ipc-macros-impl"
-version.workspace = true
+description            = "Implementation crate for Consortium IPC macros"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-ipc-macros-impl"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [lints]
 workspace = true
 
 [dependencies]
-consortium-macros-helpers = { path = "../consortium-macros-helpers" }
+consortium-macros-helpers = { path = "../consortium-macros-helpers", version = "0.1.0" }
 heck                      = "0.5.0"
 proc-macro2               = "1.0.106"
 quote                     = "1.0.45"

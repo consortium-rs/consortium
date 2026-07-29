@@ -1,9 +1,16 @@
 [package]
-description       = "Proc-macro wrappers for Consortium IPC"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-ipc-macros"
-version.workspace = true
+description            = "Proc-macro wrappers for Consortium IPC"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-ipc-macros"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [lints]
 workspace = true
@@ -12,4 +19,4 @@ workspace = true
 proc-macro = true
 
 [dependencies]
-consortium-ipc-macros-impl = { path = "../consortium-ipc-macros-impl" }
+consortium-ipc-macros-impl = { path = "../consortium-ipc-macros-impl", version = "0.1.0" }

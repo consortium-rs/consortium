@@ -1,9 +1,16 @@
 [package]
-description       = "Safe wrapper for cogcore-sys"
-edition.workspace = true
-license.workspace = true
-name              = "cogcore"
-version           = "0.1.0"
+description            = "Safe wrapper for cogcore-sys"
+edition.workspace      = true
+license.workspace      = true
+name                   = "cogcore"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme                 = "README.md"
+repository.workspace   = true
+rust-version.workspace = true
 
 [target.'cfg(target_os = "linux")'.dependencies]
 gio         = "0.22"

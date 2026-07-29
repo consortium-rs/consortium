@@ -15,14 +15,21 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "Proc-macro wrappers for Consortium runtime entry points"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-runtime-macros"
-version.workspace = true
+description            = "Proc-macro wrappers for Consortium runtime entry points"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-runtime-macros"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [lib]
 proc-macro = true
 
 [dependencies]
-consortium-runtime-macros-impl = { path = "../consortium-runtime-macros-impl" }
+consortium-runtime-macros-impl = { path = "../consortium-runtime-macros-impl", version = "0.1.0" }

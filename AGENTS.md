@@ -72,20 +72,20 @@ A-core, TEE, HMI, UIO, Cog, WebKit, and Yocto/OpenSTLinux flows are Linux/SDK or
 
 ## Workspace Shape
 
-| Area            | Crates                                                                                                                                                                                                        |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Core IPC        | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                                                                                                       |
-| Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                                                                                                 |
-| Transports      | `consortium-shared-memory`, `consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`                                                                                                               |
-| Doorbells       | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-ipcc`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`                                                                                  |
-| Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`, `consortium-data`                                                                                                                                |
-| HAL/PAC         | `consortium-hal`, `consortium-hal-imx9`, `consortium-hal-stm32mp2`, `consortium-pac-imx9`, `consortium-pac-stm32mp2`                                                                                          |
-| Macro helpers   | `consortium-macros-helpers`                                                                                                                                                                                   |
-| Runtimes/build  | `consortium-runtime-app`, `consortium-runtime-mcu`, `consortium-runtime-macros`, `consortium-runtime-macros-impl`, `consortium-runtime-spl`, `consortium-runtime-sys`, `consortium-builder`, `consortium-cli` |
-| Logging/debug   | `consortium-log`, `consortium-dbg`                                                                                                                                                                            |
-| TEE             | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`                                                                                                                                       |
-| HMI/Cog/ORT/FFI | `consortium-hmi`, `consortium-hmi-webkit`, `consortium-hmi-pocket`, `cogcore`, `cogcore-sys`, `consortium-ort`, `consortium-ffi`                                                                              |
-| Examples        | `examples/melt-pot/*` for i.MX95 and STM32MP25 app/MCU/TA/shared message crates                                                                                                                               |
+| Area            | Crates                                                                                                                                                                                                                            |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Core IPC        | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                                                                                                                           |
+| Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                                                                                                                     |
+| Transports      | `consortium-shared-memory`, `consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`                                                                                                                                   |
+| Doorbells       | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-ipcc`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`                                                                                                      |
+| Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`, `consortium-data`                                                                                                                                                    |
+| HAL/PAC         | `consortium-hal`, `consortium-hal-imx9`, `consortium-hal-stm32mp2`, `consortium-pac-imx9`, `consortium-pac-stm32mp2`                                                                                                              |
+| Macro helpers   | `consortium-macros-helpers`                                                                                                                                                                                                       |
+| Runtimes/build  | `consortium-runtime-app`, `consortium-runtime-mcu`, `consortium-runtime-macros`, `consortium-runtime-macros-impl`, `consortium-runtime-spl`, `consortium-runtime-sys`, `consortium-builder`, `csti` (in `crates/consortium-cli/`) |
+| Logging/debug   | `consortium-log`, `consortium-dbg`                                                                                                                                                                                                |
+| TEE             | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`                                                                                                                                                           |
+| HMI/Cog/ORT/FFI | `consortium-hmi`, `consortium-hmi-webkit`, `consortium-hmi-pocket`, `cogcore`, `cogcore-sys`, `consortium-ort`, `consortium-ffi`                                                                                                  |
+| Examples        | `examples/melt-pot/*` for i.MX95 and STM32MP25 app/MCU/TA/shared message crates                                                                                                                                                   |
 
 The root workspace includes `crates/*` and `examples/melt-pot/shared`. Per-endpoint
 example crates under `examples/melt-pot/{imx95,stm32mp25}/{app,mcu,ta}` are excluded
@@ -516,8 +516,11 @@ SDK and no cross linker are involved for the 64-bit A-core.
 - `base` (`just linux-image`) — Rust toolchains, `dtc`, `arm-none-eabi-objcopy`,
   and `just`. Enough for the `*-a64` / `*-a32` recipes.
 - `full` (`just linux-image-full`) — adds WPE WebKit/Cog from the
-  consortium-rs/wpe-kiosk-stack-prebuilt `.deb` (point `CONSORTIUM_WPE_DEB` at it)
-  and an OP-TEE 4.10.0 TA dev kit. Enough for a full `csti build` of melt-pot.
+  consortium-rs/wpe-kiosk-stack-prebuilt `.deb` and an OP-TEE 4.10.0 TA dev kit.
+  Enough for a full `csti build` of melt-pot. The `.deb` (~45 MB) is fetched on
+  demand by `just setup-wpe-deb` into the gitignored `assets/`; it is not part of
+  `just setup`, since most hosts never build this image. Point
+  `CONSORTIUM_WPE_DEB` at an existing copy to skip the download.
 
 ```bash
 just linux-setup                        # start services + builder with a routable DNS
@@ -569,6 +572,33 @@ them normative.
 Use credible crates for common functionality, especially in tests. Before adding a
 dependency, ensure the crate is compatible with Apache-2.0-friendly licensing and with
 the relevant `no_std`/`alloc`/`std` target constraints.
+
+## Publishing
+
+`docs/PUBLISHING.md` is the release runbook. The constraints worth knowing before
+touching a manifest:
+
+- The CLI publishes as **`csti`**, not `consortium-cli` — that name, and the bare
+  `consortium` name, are taken on crates.io by unrelated projects. Its sources stay
+  in `crates/consortium-cli/`, so cargo invocations use `-p csti`.
+- Every intra-workspace **dependency and build-dependency carries both `path` and
+  `version`**, which is what lets cargo rewrite them to registry requirements.
+  **Dev-dependencies are deliberately path-only**: cargo strips those from the
+  published manifest, which keeps test-only edges (such as `consortium-cfg` →
+  `consortium-runtime-app`) out of the publish graph. Do not add versions to them.
+- `consortium-hmi-pocket` is `publish = false`. Its `pocket-mod`, `pocket-ui-wgpu`,
+  and `pocket3d` deps come from the upstream **`v0.7.0` git tag**, not from
+  `submodules/pocketjs`, because PocketJS is not on crates.io yet and cargo refuses
+  to publish a package with a git dependency. The submodule is still needed for the
+  bun/JS side. `melt-pot-shared` is `publish = false` as an example crate.
+- MSRV is `rust-version = "1.87"` in `[workspace.package]`, enforced by clippy's
+  `incompatible_msrv` on every `just lint`. Raise it rather than `#[allow]`-ing.
+- `consortium-data`, `cogcore-sys`, and `consortium-runtime-sys` redistribute vendor
+  material and carry compound SPDX expressions instead of inheriting `Apache-2.0`.
+  Vendor device trees under `consortium-data/database/dts/` must be dual-licensed;
+  GPL-only files cannot ship (see that directory's `README.md`).
+- `just publish-dry` requires Linux — `cogcore-sys` cannot build on macOS at all.
+  Use `just publish-dry-host` for the partial macOS run.
 
 <!--VITE PLUS START-->
 

@@ -20,6 +20,11 @@ extend-exclude = [
 ]
 
 [default.extend-words]
+# `DAA`/`daa` is the I3C spec term "Dynamic Address Assignment"; `EXTEN` (ADC
+# CFGR external-trigger enable) and `TIMOUT` (LPTIM CFGR timeout enable) are
+# STM32MP2/i.MX9 register field names mirrored from the generated PAC crates.
+DAA      = "DAA"
+EXTEN    = "EXTEN"
 GIPn     = "GIPn"
 GIR      = "GIR"
 Iinclude = "Iinclude"
@@ -28,7 +33,9 @@ Pn       = "Pn"
 PARM     = "PARM"
 SISE     = "SISE"
 Siz      = "Siz"
+TIMOUT   = "TIMOUT"
 UE       = "UE"
+daa      = "daa"
 ddress   = "ddress"
 fpr      = "fpr"
 hsi      = "hsi"

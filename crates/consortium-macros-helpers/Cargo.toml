@@ -1,9 +1,16 @@
 [package]
-description       = "Shared helpers for Consortium macro implementation crates"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-macros-helpers"
-version.workspace = true
+description            = "Shared helpers for Consortium macro implementation crates"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-macros-helpers"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [dependencies]
 syn = { features = ["full"], version = "2.0.117" }

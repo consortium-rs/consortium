@@ -15,11 +15,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "Consortium application (nonsecure) runtime library on Linux side"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-runtime-app"
-version.workspace = true
+description            = "Consortium application (nonsecure) runtime library on Linux side"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-runtime-app"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [lib]
 # Doc examples here are all `ignore`d, and running doctests would force a
@@ -54,24 +61,26 @@ tee        = ["consortium-tee"]
 # its deps must be available on every Unix — not just under the Linux table
 # below. `net` gates Tokio's `AsyncFd` and the IO-driver `enable_io()`.
 [target.'cfg(unix)'.dependencies]
-consortium-log = { features = ["tracing"], path = "../consortium-log" }
+consortium-log = { features = ["tracing"], path = "../consortium-log", version = "0.1.0" }
 libc           = "0.2"
 tokio          = { features = ["io-util", "net", "rt", "sync", "time"], version = "1" }
 
 [target.'cfg(target_os = "linux")'.dependencies]
-consortium-cfg-common = { path = "../consortium-cfg-common" }
+consortium-cfg-common = { path = "../consortium-cfg-common", version = "0.1.0" }
 consortium-dbg = { default-features = false, features = [
   "decode",
-], optional = true, path = "../consortium-dbg" }
-consortium-ffi = { optional = true, path = "../consortium-ffi" }
-consortium-hmi = { optional = true, path = "../consortium-hmi" }
-consortium-ipc = { features = ["std"], optional = true, path = "../consortium-ipc" }
+], optional = true, path = "../consortium-dbg", version = "0.1.0" }
+consortium-ffi = { optional = true, path = "../consortium-ffi", version = "0.1.0" }
+consortium-hmi = { optional = true, path = "../consortium-hmi", version = "0.1.0" }
+consortium-ipc = { features = [
+  "std",
+], optional = true, path = "../consortium-ipc", version = "0.1.0" }
 consortium-ipc-transport-memory = { features = [
   "std",
-], optional = true, path = "../consortium-ipc-transport-memory" }
-consortium-ort = { optional = true, path = "../consortium-ort" }
-consortium-runtime-macros = { optional = true, path = "../consortium-runtime-macros" }
-consortium-tee = { optional = true, path = "../consortium-tee" }
+], optional = true, path = "../consortium-ipc-transport-memory", version = "0.1.0" }
+consortium-ort = { optional = true, path = "../consortium-ort", version = "0.1.0" }
+consortium-runtime-macros = { optional = true, path = "../consortium-runtime-macros", version = "0.1.0" }
+consortium-tee = { optional = true, path = "../consortium-tee", version = "0.1.0" }
 thiserror = { version = "2.0" }
 tracing = { version = "0.1" }
 tracing-subscriber = { features = ["env-filter"], version = "0.3" }

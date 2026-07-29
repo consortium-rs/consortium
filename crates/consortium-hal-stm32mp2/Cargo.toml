@@ -1,9 +1,16 @@
 [package]
-description       = "Consortium HAL for STM32MP2 family devices"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-hal-stm32mp2"
-version.workspace = true
+description            = "Consortium HAL for STM32MP2 family devices"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-hal-stm32mp2"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [features]
 default = [
@@ -58,9 +65,9 @@ uart = [
 defmt = ["consortium-log/defmt", "dep:defmt"]
 
 [dependencies]
-consortium-hal           = { path = "../consortium-hal" }
-consortium-pac-stm32mp2  = { default-features = false, path = "../consortium-pac-stm32mp2" }
-consortium-log           = { path = "../consortium-log" }
+consortium-hal           = { path = "../consortium-hal", version = "0.1.0" }
+consortium-pac-stm32mp2  = { default-features = false, path = "../consortium-pac-stm32mp2", version = "0.1.0" }
+consortium-log           = { path = "../consortium-log", version = "0.1.0" }
 critical-section         = { optional = true, version = "1.2.0" }
 embassy-hal-internal     = { optional = true, version = "0.5.0" }
 embassy-sync             = { optional = true, version = "0.8.0" }

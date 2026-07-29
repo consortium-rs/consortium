@@ -1,9 +1,16 @@
 [package]
-name              = "consortium-pac-imx9"
-description       = "Peripheral Access Crate for the i.MX 9 series of microcontrollers"
-version.workspace = true
-edition.workspace = true
-license.workspace = true
+name                   = "consortium-pac-imx9"
+description            = "Peripheral Access Crate for the i.MX 9 series of microcontrollers"
+version.workspace      = true
+edition.workspace      = true
+license.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme                 = "README.md"
+repository.workspace   = true
+rust-version.workspace = true
 
 [features]
 defmt   = ["dep:defmt"]

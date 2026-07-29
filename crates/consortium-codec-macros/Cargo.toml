@@ -15,11 +15,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "Proc-macro wrappers for Consortium codec"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-codec-macros"
-version.workspace = true
+description            = "Proc-macro wrappers for Consortium codec"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-codec-macros"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [lints]
 workspace = true
@@ -28,4 +35,4 @@ workspace = true
 proc-macro = true
 
 [dependencies]
-consortium-codec-macros-impl = { path = "../consortium-codec-macros-impl" }
+consortium-codec-macros-impl = { path = "../consortium-codec-macros-impl", version = "0.1.0" }

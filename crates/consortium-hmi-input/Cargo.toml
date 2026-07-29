@@ -15,11 +15,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "Backend-neutral, no_std input event model for Consortium HMI"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-hmi-input"
-version.workspace = true
+description            = "Backend-neutral, no_std input event model for Consortium HMI"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-hmi-input"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [dependencies]
 consortium-ipc = { default-features = false, path = "../consortium-ipc", version = "^0.1" }
