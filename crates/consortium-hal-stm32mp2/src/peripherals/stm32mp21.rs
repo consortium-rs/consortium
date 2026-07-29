@@ -4,7 +4,7 @@
 // Mounted by `lib.rs` as the private `chip` module for the selected chip
 // feature, which re-exports `peripherals` and `Peripherals`.
 
-::embassy_hal_internal::peripherals! {
+::consortium_hal::peripherals! {
     ADC1,
     ADC1_COMMON,
     ADC2,

@@ -16,7 +16,11 @@ rust-version.workspace = true
 default = []
 
 [dependencies]
-cortex-m = { version = "0.7" }
+# `peripherals!` expands to `Peri`/`PeripheralType` and a `critical_section`
+# guard, and re-exports both so chip HALs need not name Embassy directly.
+cortex-m             = { version = "0.7" }
+critical-section     = { version = "1.2.0" }
+embassy-hal-internal = { version = "0.5.0" }
 
 [lints]
 workspace = true

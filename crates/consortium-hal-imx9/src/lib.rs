@@ -36,10 +36,10 @@
 extern crate std;
 
 pub use consortium_hal as hal;
-pub use consortium_pac_imx9 as pac;
 /// Ownership handle and marker trait for peripheral singletons, re-exported so
 /// drivers in other crates can name them without depending on Embassy directly.
-pub use embassy_hal_internal::{Peri, PeripheralType};
+pub use consortium_hal::{Peri, PeripheralType};
+pub use consortium_pac_imx9 as pac;
 
 // Peripheral singletons and their driver bindings, generated from the chip
 // databases by `scripts/pac/gen_peripherals.py`. Chip features are mutually

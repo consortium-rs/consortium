@@ -32,30 +32,21 @@ default = [
 mimx93 = ["consortium-pac-imx9/mimx93"]
 mimx95 = ["consortium-pac-imx9/mimx95"]
 # Forward cortex-m-rt runtime support (vector table, `#[interrupt]`) to the PAC.
-rt   = ["consortium-pac-imx9/rt"]
-adc  = []
+rt  = ["consortium-pac-imx9/rt"]
+adc = []
 # Forwarded to the PAC and to the generated peripheral singletons.
 defmt = ["consortium-pac-imx9/defmt"]
-dma  = ["dep:embassy-sync"]
-gpio = ["dep:embassy-sync", "dep:embedded-hal"]
-can  = ["dep:embassy-sync", "dep:embedded-can", "dep:nb"]
-i2c  = ["dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
-i3c  = ["dep:embassy-sync"]
+dma   = ["dep:embassy-sync"]
+gpio  = ["dep:embassy-sync", "dep:embedded-hal"]
+can   = ["dep:embassy-sync", "dep:embedded-can", "dep:nb"]
+i2c   = ["dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
+i3c   = ["dep:embassy-sync"]
 # Compatibility alias for the former top-level PWM feature.
-pwm = ["timer"]
-spi = ["dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
-timer = ["dep:embassy-sync", "dep:embedded-hal"]
-time-driver-lpit = [
-  "dep:embassy-sync",
-  "dep:embassy-time-driver",
-  "dep:embassy-time-queue-utils",
-]
-uart = [
-  "dep:embassy-sync",
-  "dep:embedded-hal-nb",
-  "dep:embedded-io",
-  "dep:embedded-io-async",
-]
+pwm              = ["timer"]
+spi              = ["dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
+timer            = ["dep:embassy-sync", "dep:embedded-hal"]
+time-driver-lpit = ["dep:embassy-sync", "dep:embassy-time-driver", "dep:embassy-time-queue-utils"]
+uart             = ["dep:embassy-sync", "dep:embedded-hal-nb", "dep:embedded-io", "dep:embedded-io-async"]
 
 [dependencies]
 consortium-hal           = { path = "../consortium-hal", version = "0.1.0" }

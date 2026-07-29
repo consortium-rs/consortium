@@ -48,7 +48,7 @@ toml                            = "1.1.0"
 # `trybuild` compiles the generated per-core init code (written to `tests/ui/`)
 # against the real runtime crates, so every crate the codegen names must be a
 # (dev-)dependency here for the UI crates to resolve it.
-consortium-codec             = { features = ["alloc", "postcard", "rkyv"], path = "../consortium-codec" }
+consortium-codec = { features = ["alloc", "postcard", "rkyv"], path = "../consortium-codec" }
 # Generated bring-up names the chip HALs' peripheral singletons (`Peri<'static,
 # peripherals::LPI2C1>`), so the UI crates need both HALs even though each
 # generated file only uses one. Only the modules the codegen names are enabled:
@@ -67,15 +67,15 @@ consortium-hal-stm32mp2 = { default-features = false, features = [
   "stm32mp25x",
   "time-driver-gp-tim",
 ], path = "../consortium-hal-stm32mp2" }
-consortium-ipc               = { path = "../consortium-ipc" }
+consortium-ipc = { path = "../consortium-ipc" }
 consortium-ipc-doorbell-hsem = { features = ["std"], path = "../consortium-ipc-doorbell-hsem" }
 consortium-ipc-doorbell-ipcc = { features = ["std"], path = "../consortium-ipc-doorbell-ipcc" }
-consortium-ipc-doorbell-mu   = { features = ["std"], path = "../consortium-ipc-doorbell-mu" }
-consortium-shared-memory     = { path = "../consortium-shared-memory" }
-insta                        = "1"
-rkyv                         = { default-features = false, features = ["alloc", "bytecheck"], version = "0.8.16" }
-serde                        = { features = ["derive"], version = "1.0.228" }
-trybuild                     = "1"
+consortium-ipc-doorbell-mu = { features = ["std"], path = "../consortium-ipc-doorbell-mu" }
+consortium-shared-memory = { path = "../consortium-shared-memory" }
+insta = "1"
+rkyv = { default-features = false, features = ["alloc", "bytecheck"], version = "0.8.16" }
+serde = { features = ["derive"], version = "1.0.228" }
+trybuild = "1"
 
 # The AP/Linux-side generated code targets `consortium-runtime-app`, which is
 # gated to `target_os = "linux"`; the UI test only emits + compiles those files
