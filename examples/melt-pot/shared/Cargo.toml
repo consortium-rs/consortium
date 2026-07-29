@@ -20,10 +20,19 @@ edition.workspace = true
 license.workspace = true
 name              = "melt-pot-shared"
 version.workspace = true
+# Example support crate: built and checked in-workspace, never published.
+publish                = false
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [dependencies]
 # IpcSafe derive + trait; no_std, no alloc.
-consortium-ipc = { default-features = false, path = "../../../crates/consortium-ipc" }
+consortium-ipc = { default-features = false, path = "../../../crates/consortium-ipc", version = "0.1.0" }
 serde          = { default-features = false, features = ["derive"], version = "1" }
 
 [lints]

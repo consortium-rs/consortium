@@ -15,11 +15,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "GPIO doorbell for Consortium IPC"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-ipc-doorbell-gpio"
-version.workspace = true
+description            = "GPIO doorbell for Consortium IPC"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-ipc-doorbell-gpio"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [features]
 default = ["std"]
@@ -27,7 +34,7 @@ std     = ["consortium-ipc/std", "dep:linux-embedded-hal", "dep:tokio"]
 
 [dependencies]
 atomic-waker   = "1.1.2"
-consortium-ipc = { default-features = false, path = "../consortium-ipc" }
+consortium-ipc = { default-features = false, path = "../consortium-ipc", version = "0.1.0" }
 embedded-hal   = { workspace = true }
 tokio          = { features = ["sync"], optional = true, version = "1" }
 

@@ -1,9 +1,16 @@
 [package]
-description       = "Consortium HAL for i.MX 9 family devices"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-hal-imx9"
-version.workspace = true
+description            = "Consortium HAL for i.MX 9 family devices"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-hal-imx9"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [features]
 default = [
@@ -52,8 +59,8 @@ uart = [
 ]
 
 [dependencies]
-consortium-hal           = { path = "../consortium-hal" }
-consortium-pac-imx9      = { default-features = false, path = "../consortium-pac-imx9" }
+consortium-hal           = { path = "../consortium-hal", version = "0.1.0" }
+consortium-pac-imx9      = { default-features = false, path = "../consortium-pac-imx9", version = "0.1.0" }
 critical-section         = { optional = true, version = "1.2.0" }
 embassy-hal-internal     = { optional = true, version = "0.5.0" }
 embassy-sync             = { optional = true, version = "0.8.0" }

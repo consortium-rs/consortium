@@ -15,11 +15,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "Trusted Execution Environment (TEE) support for Consortium with pluggable codec serialization via consortium_codec::CodecFor"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-tee"
-version.workspace = true
+description            = "Trusted Execution Environment (TEE) support for Consortium with pluggable codec serialization via consortium_codec::CodecFor"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-tee"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [features]
 ca = ["consortium-log/tracing", "dep:optee-teec", "dep:tokio"]
@@ -31,9 +38,9 @@ default = ["ca"]
 ta      = []
 
 [dependencies]
-consortium-codec      = { path = "../consortium-codec" }
-consortium-log        = { default-features = false, path = "../consortium-log" }
-consortium-tee-macros = { path = "../consortium-tee-macros" }
+consortium-codec      = { path = "../consortium-codec", version = "0.1.0" }
+consortium-log        = { default-features = false, path = "../consortium-log", version = "0.1.0" }
+consortium-tee-macros = { path = "../consortium-tee-macros", version = "0.1.0" }
 defmt                 = { optional = true, version = "1.1.0" }
 thiserror             = "2.0.18"
 tokio                 = { default-features = false, features = ["rt"], optional = true, version = "1" }

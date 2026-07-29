@@ -1,9 +1,16 @@
 [package]
-description       = "Shared HAL traits for Consortium chip support crates"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-hal"
-version.workspace = true
+description            = "Shared HAL traits for Consortium chip support crates"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-hal"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [features]
 default = []

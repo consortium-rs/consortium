@@ -1,8 +1,16 @@
 [package]
-edition.workspace = true
-license.workspace = true
-name              = "consortium-runtime-spl"
-version.workspace = true
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-runtime-spl"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
+description            = "Domain, peripheral, and role traits for Consortium partitioning"
 
 [dependencies]
 defmt = "1.1.0"

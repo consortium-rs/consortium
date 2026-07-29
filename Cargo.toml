@@ -36,9 +36,18 @@ exclude = [
 resolver = "2"
 
 [workspace.package]
-edition = "2024"
-license = "Apache-2.0"
-version = "0.1.0"
+authors    = ["Ethan Wu <7086cmd@gmail.com>"]
+categories = ["embedded", "hardware-support", "no-std"]
+edition    = "2024"
+homepage   = "https://github.com/consortium-rs/consortium"
+keywords   = ["amp", "embedded", "heterogeneous", "ipc", "no-std"]
+license    = "Apache-2.0"
+readme     = "README.md"
+repository = "https://github.com/consortium-rs/consortium"
+# Edition 2024 needs 1.85; `u64::is_multiple_of` (consortium-cfg) needs 1.87.
+# clippy's `incompatible_msrv` lint checks this on every `just lint` run.
+rust-version = "1.87"
+version      = "0.1.0"
 
 [workspace.lints.rust]
 unsafe_op_in_unsafe_fn = "deny"

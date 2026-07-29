@@ -1,9 +1,16 @@
 [package]
-description       = "STM32 IPCC doorbell driver for Consortium IPC"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-ipc-doorbell-ipcc"
-version.workspace = true
+description            = "STM32 IPCC doorbell driver for Consortium IPC"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-ipc-doorbell-ipcc"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [features]
 default = ["stm32mp25x"]
@@ -20,9 +27,9 @@ tracing    = ["consortium-log/tracing"]
 [dependencies]
 atomic-waker            = "1.1.2"
 bitfield                = "0.13.2"
-consortium-hal-stm32mp2 = { default-features = false, path = "../consortium-hal-stm32mp2" }
-consortium-ipc          = { default-features = false, path = "../consortium-ipc" }
-consortium-log          = { path = "../consortium-log" }
+consortium-hal-stm32mp2 = { default-features = false, path = "../consortium-hal-stm32mp2", version = "0.1.0" }
+consortium-ipc          = { default-features = false, path = "../consortium-ipc", version = "0.1.0" }
+consortium-log          = { path = "../consortium-log", version = "0.1.0" }
 defmt                   = { optional = true, version = "1" }
 thiserror               = { default-features = false, version = "2.0" }
 tokio                   = { features = ["rt", "sync"], optional = true, version = "1" }

@@ -15,17 +15,24 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "Build system for Consortium applications and runtimes"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-builder"
-version.workspace = true
+description            = "Build system for Consortium applications and runtimes"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-builder"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [dependencies]
-consortium-cfg        = { path = "../consortium-cfg" }
-consortium-cfg-common = { path = "../consortium-cfg-common" }
-consortium-dts        = { path = "../consortium-dts" }
-consortium-log        = { features = ["tracing"], path = "../consortium-log" }
+consortium-cfg        = { path = "../consortium-cfg", version = "0.1.0" }
+consortium-cfg-common = { path = "../consortium-cfg-common", version = "0.1.0" }
+consortium-dts        = { path = "../consortium-dts", version = "0.1.0" }
+consortium-log        = { features = ["tracing"], path = "../consortium-log", version = "0.1.0" }
 rust-ini              = "0.21.3"
 serde                 = { features = ["derive"], version = "1.0.228" }
 syn                   = "2.0.118"

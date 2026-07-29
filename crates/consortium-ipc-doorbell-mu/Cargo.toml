@@ -15,11 +15,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "MU (Messaging Unit) Doorbell driver for Consortium IPC"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-ipc-doorbell-mu"
-version.workspace = true
+description            = "MU (Messaging Unit) Doorbell driver for Consortium IPC"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-ipc-doorbell-mu"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [features]
 # Chip selection — choose exactly one. Defaults to mimx95 for the current
@@ -38,8 +45,8 @@ std   = ["consortium-ipc/std", "dep:tokio"]
 [dependencies]
 atomic-waker        = "1.1.2"
 bitfield            = "0.13.2"
-consortium-hal-imx9 = { default-features = false, path = "../consortium-hal-imx9" }
-consortium-ipc      = { default-features = false, path = "../consortium-ipc" }
+consortium-hal-imx9 = { default-features = false, path = "../consortium-hal-imx9", version = "0.1.0" }
+consortium-ipc      = { default-features = false, path = "../consortium-ipc", version = "0.1.0" }
 defmt               = { optional = true, version = "1" }
 thiserror           = { default-features = false, version = "2.0" }
 tokio               = { features = ["rt", "sync"], optional = true, version = "1" }

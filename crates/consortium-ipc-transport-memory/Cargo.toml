@@ -15,10 +15,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-edition.workspace = true
-license.workspace = true
-name              = "consortium-ipc-transport-memory"
-version.workspace = true
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-ipc-transport-memory"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
+description            = "Shared-memory descriptor/slot transport for Consortium IPC"
 
 [features]
 alloc   = ["consortium-ipc/alloc"]
@@ -66,12 +74,12 @@ stm32mp25x = [
 ]
 
 [dependencies]
-consortium-ipc               = { default-features = false, path = "../consortium-ipc" }
-consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem" }
-consortium-ipc-doorbell-ipcc = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-ipcc" }
-consortium-ipc-doorbell-mu   = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu" }
-consortium-log               = { default-features = false, path = "../consortium-log" }
-consortium-shared-memory     = { path = "../consortium-shared-memory" }
+consortium-ipc               = { default-features = false, path = "../consortium-ipc", version = "0.1.0" }
+consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem", version = "0.1.0" }
+consortium-ipc-doorbell-ipcc = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-ipcc", version = "0.1.0" }
+consortium-ipc-doorbell-mu   = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu", version = "0.1.0" }
+consortium-log               = { default-features = false, path = "../consortium-log", version = "0.1.0" }
+consortium-shared-memory     = { path = "../consortium-shared-memory", version = "0.1.0" }
 crc32fast                    = { default-features = false, version = "1.5.0" }
 defmt                        = { optional = true, version = "1.1.0" }
 num_enum                     = { default-features = false, version = "0.7.3" }

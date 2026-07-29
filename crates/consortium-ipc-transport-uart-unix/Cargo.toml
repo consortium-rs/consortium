@@ -15,17 +15,26 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "/dev/tty backend for the Consortium UART IPC transport"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-ipc-transport-uart-unix"
-version.workspace = true
+description            = "/dev/tty backend for the Consortium UART IPC transport"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-ipc-transport-uart-unix"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [dependencies]
-consortium-ipc-transport-uart = { features = ["std"], path = "../consortium-ipc-transport-uart" }
-thiserror                     = { version = "2.0" }
-tokio                         = { features = ["io-util"], version = "1" }
-tokio-serial                  = { version = "5.4" }
+consortium-ipc-transport-uart = { features = [
+  "std",
+], path = "../consortium-ipc-transport-uart", version = "0.1.0" }
+thiserror = { version = "2.0" }
+tokio = { features = ["io-util"], version = "1" }
+tokio-serial = { version = "5.4" }
 
 [dev-dependencies]
 consortium-codec = { features = ["alloc", "postcard"], path = "../consortium-codec" }

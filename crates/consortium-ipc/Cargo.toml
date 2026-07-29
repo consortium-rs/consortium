@@ -15,18 +15,25 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "Core IPC primitives for Consortium"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-ipc"
-version.workspace = true
+description            = "Core IPC primitives for Consortium"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-ipc"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [dependencies]
-consortium-codec      = { path = "../consortium-codec" }
-consortium-ipc-macros = { path = "../consortium-ipc-macros" }
+consortium-codec      = { path = "../consortium-codec", version = "0.1.0" }
+consortium-ipc-macros = { path = "../consortium-ipc-macros", version = "0.1.0" }
 num_enum              = { default-features = false, version = "0.7.3" }
 thiserror             = { default-features = false, version = "2.0" }
-consortium-log        = { path = "../consortium-log" }
+consortium-log        = { path = "../consortium-log", version = "0.1.0" }
 defmt                 = { optional = true, version = "1" }
 
 [dev-dependencies]

@@ -20,6 +20,19 @@ edition.workspace = true
 license.workspace = true
 name              = "consortium-hmi-pocket"
 version.workspace = true
+# PocketJS is not on crates.io yet, so this crate pins it to the upstream
+# `v0.7.0` release tag. cargo refuses to publish a package with a git
+# dependency, so this stays unpublished until PocketJS lands on the registry;
+# at that point the three `pocket*` deps become plain version requirements and
+# this line goes away.
+publish                = false
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [features]
 default = []
@@ -30,9 +43,9 @@ shell = ["dep:winit"]
 [dependencies]
 consortium-hmi       = { path = "../consortium-hmi", version = "^0.1" }
 consortium-hmi-input = { path = "../consortium-hmi-input", version = "^0.1" }
-pocket-mod           = { path = "../../submodules/pocketjs/engine/crates/pocket-mod" }
-pocket-ui-wgpu       = { path = "../../submodules/pocketjs/engine/crates/pocket-ui-wgpu" }
-pocket3d             = { default-features = false, path = "../../submodules/pocketjs/engine/pocket3d/crates/pocket3d" }
+pocket-mod           = { git = "https://github.com/pocket-stack/pocketjs.git", tag = "v0.7.0" }
+pocket-ui-wgpu       = { git = "https://github.com/pocket-stack/pocketjs.git", tag = "v0.7.0" }
+pocket3d             = { default-features = false, git = "https://github.com/pocket-stack/pocketjs.git", tag = "v0.7.0" }
 thiserror            = "2.0.18"
 tokio                = { features = ["rt", "sync"], version = "1" }
 winit                = { optional = true, version = "0.30" }

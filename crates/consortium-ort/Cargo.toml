@@ -15,11 +15,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "ONNX Runtime (ORT) library for Consortium"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-ort"
-version.workspace = true
+description            = "ONNX Runtime (ORT) library for Consortium"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-ort"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [features]
 tracing = ["ort/tracing"]

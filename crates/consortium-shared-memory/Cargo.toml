@@ -15,11 +15,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "Shared-memory descriptor primitives for Consortium"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-shared-memory"
-version.workspace = true
+description            = "Shared-memory descriptor primitives for Consortium"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-shared-memory"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [dependencies]
 defmt     = { optional = true, version = "1" }

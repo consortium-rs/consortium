@@ -5,7 +5,7 @@ a32_target := "armv7-unknown-linux-gnueabihf"
 rv32imc_target := "riscv32imc-unknown-none-elf"
 rv32imac_target := "riscv32imac-unknown-none-elf"
 rv32imafcp_target := "riscv32imafc-unknown-none-elf"
-lint_crates := "consortium-builder consortium-cfg consortium-cli consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg consortium-dts consortium-ffi consortium-hal-imx9 consortium-hal-stm32mp2 consortium-ipc consortium-ipc-doorbell-gpio consortium-ipc-doorbell-hsem consortium-ipc-doorbell-ipcc consortium-ipc-doorbell-mu consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-memory consortium-ipc-transport-uart consortium-ipc-transport-uart-embedded consortium-ipc-transport-uart-unix consortium-ort consortium-runtime-mcu consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
+lint_crates := "consortium-builder consortium-cfg csti consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg consortium-dts consortium-ffi consortium-hal-imx9 consortium-hal-stm32mp2 consortium-ipc consortium-ipc-doorbell-gpio consortium-ipc-doorbell-hsem consortium-ipc-doorbell-ipcc consortium-ipc-doorbell-mu consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-memory consortium-ipc-transport-uart consortium-ipc-transport-uart-embedded consortium-ipc-transport-uart-unix consortium-ort consortium-runtime-mcu consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
 rust_tools := "taplo-cli typos-cli cargo-deny cargo-expand cargo-insta cargo-shear"
 ls_lint_version := "2.3.1"
 
@@ -185,6 +185,42 @@ ls-lint:
 # Check all crates on the host
 check:
     cargo check --workspace --features consortium-ipc/std
+
+# ── Release (crates.io) ──────────────────────────────────────────────────────
+
+# Crates that cannot build on macOS; excluded from the macOS-only dry run
+nonlinux_excludes := "--exclude cogcore --exclude cogcore-sys --exclude consortium-hmi-webkit --exclude consortium-runtime-app"
+
+# Report which crate names are already claimed on crates.io
+publish-names:
+    @for d in crates/*/; do \
+        n=$(basename "$d"); \
+        curl -sf "https://crates.io/api/v1/crates/$n" >/dev/null \
+            && echo "TAKEN: $n"; \
+    done; \
+    echo "(the CLI publishes as 'csti', not 'consortium-cli' — see docs/PUBLISHING.md)"
+
+# Authoritative publish dry run; must run on Linux to cover Cog/WPE + remoteproc
+publish-dry:
+    @[ "$(uname)" = "Linux" ] || { \
+        echo "Error: a full dry run needs Linux; use 'just publish-dry-host' or 'just linux-full \"just publish-dry\"'"; \
+        exit 1; \
+    }
+    cargo publish --workspace --dry-run
+
+# Partial dry run for macOS: skips the crates that cannot compile there
+publish-dry-host:
+    cargo publish --workspace --dry-run {{ nonlinux_excludes }}
+
+# Publish every publishable crate; cargo resolves the intra-workspace order
+publish:
+    @[ "$(uname)" = "Linux" ] || { \
+        echo "Error: publish from Linux — a macOS run cannot even build cogcore-sys,"; \
+        echo "so the four Linux-only crates would go out unverified."; \
+        echo "Use 'just linux-full \"just publish\"' or a Linux host."; \
+        exit 1; \
+    }
+    cargo publish --workspace
 
 # ── A-core (aarch64 / Linux) ─────────────────────────────────────────────────
 
@@ -470,7 +506,12 @@ linux_image     := "consortium-linux"
 linux_dns       := env_var_or_default("CONSORTIUM_LINUX_DNS", "1.1.1.1")
 linux_cpus      := env_var_or_default("CONSORTIUM_LINUX_CPUS", "6")
 linux_memory    := env_var_or_default("CONSORTIUM_LINUX_MEMORY", "8192M")
-linux_wpe_deb   := env_var_or_default("CONSORTIUM_WPE_DEB", env_var("HOME") + "/Downloads/wpe-kiosk-stack_2.52.4_arm64.deb")
+linux_wpe_ver   := "2.52.4"
+linux_wpe_file  := "wpe-kiosk-stack_" + linux_wpe_ver + "_arm64.deb"
+linux_wpe_url   := "https://github.com/consortium-rs/wpe-kiosk-stack-prebuilt/releases/download/v" + linux_wpe_ver + "/" + linux_wpe_file
+# Defaults into the gitignored `assets/`, which `linux-image-full` fills on
+# demand. Point CONSORTIUM_WPE_DEB at an existing copy to skip the download.
+linux_wpe_deb   := env_var_or_default("CONSORTIUM_WPE_DEB", justfile_directory() + "/assets/" + linux_wpe_file)
 linux_ctx       := justfile_directory() + "/target/container-context"
 
 # Start the Apple `container` services and builder with a routable resolver
@@ -488,13 +529,26 @@ linux-image: linux-setup
     container build --target base -t {{ linux_image }}:base \
       -f {{ justfile_directory() }}/Dockerfile.linux {{ linux_ctx }}
 
+# ~45 MB, so this is on-demand rather than part of `just setup`: only the
+# `linux-image-full` path needs it, and most hosts never build that image.
+#
+# Fetch the prebuilt WPE WebKit/Cog .deb into the gitignored `assets/`
+setup-wpe-deb:
+    @if [ -f "{{ linux_wpe_deb }}" ]; then \
+        echo "WPE .deb already present: {{ linux_wpe_deb }}"; \
+    else \
+        echo "Downloading {{ linux_wpe_file }} to {{ linux_wpe_deb }}"; \
+        mkdir -p "$(dirname "{{ linux_wpe_deb }}")"; \
+        curl -fL --progress-bar -o "{{ linux_wpe_deb }}.part" "{{ linux_wpe_url }}" \
+            && mv "{{ linux_wpe_deb }}.part" "{{ linux_wpe_deb }}" \
+            || { rm -f "{{ linux_wpe_deb }}.part"; \
+                 echo "Download failed; fetch {{ linux_wpe_url }} by hand or set CONSORTIUM_WPE_DEB."; \
+                 exit 1; }; \
+    fi
+
 # Build the full Linux image (+ WPE WebKit/Cog and the OP-TEE TA dev kit)
-linux-image-full: linux-setup
+linux-image-full: linux-setup setup-wpe-deb
     @mkdir -p {{ linux_ctx }}
-    @[ -f "{{ linux_wpe_deb }}" ] || { \
-        echo "WPE .deb not found: {{ linux_wpe_deb }}"; \
-        echo "Download it from consortium-rs/wpe-kiosk-stack-prebuilt, or set CONSORTIUM_WPE_DEB."; \
-        exit 1; }
     cp "{{ linux_wpe_deb }}" {{ linux_ctx }}/$(basename "{{ linux_wpe_deb }}")
     container build --target full -t {{ linux_image }}:full \
       --build-arg WPE_DEB=$(basename "{{ linux_wpe_deb }}") \

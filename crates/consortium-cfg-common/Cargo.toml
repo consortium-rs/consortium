@@ -15,15 +15,22 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "Schema and configuration types for Consortium"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-cfg-common"
-version.workspace = true
+description            = "Schema and configuration types for Consortium"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-cfg-common"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme.workspace       = true
+repository.workspace   = true
+rust-version.workspace = true
 
 [dependencies]
 serde          = { features = ["derive"], version = "1.0.228" }
-consortium-dts = { path = "../consortium-dts" }
+consortium-dts = { path = "../consortium-dts", version = "0.1.0" }
 uuid           = { features = ["serde"], version = "1.23.4" }
 
 [dev-dependencies]
