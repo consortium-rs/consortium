@@ -464,14 +464,15 @@ impl<W: TimerDmaWord> Drop for RingBufferedCapture<'_, W> {
 #[cfg(test)]
 mod tests {
     use super::{Channel, Timer, TimerWidth, compare_pointer, validate_width};
+    use crate::pac::peripherals::timer::TIM_GP;
 
     #[test]
     fn compare_pointer_selects_ccr_channel() {
         let mut registers = [0u32; 256];
         // SAFETY: the fake MMIO array remains alive and exclusively owned.
         let timer = unsafe {
-            Timer::from_raw_with_width(
-                registers.as_mut_ptr().cast(),
+            Timer::over(
+                TIM_GP::from_ptr(registers.as_mut_ptr().cast()),
                 200_000_000,
                 TimerWidth::Bits16,
             )
@@ -488,8 +489,8 @@ mod tests {
         let mut registers = [0u32; 256];
         // SAFETY: the fake MMIO array remains alive and exclusively owned.
         let timer = unsafe {
-            Timer::from_raw_with_width(
-                registers.as_mut_ptr().cast(),
+            Timer::over(
+                TIM_GP::from_ptr(registers.as_mut_ptr().cast()),
                 200_000_000,
                 TimerWidth::Bits16,
             )

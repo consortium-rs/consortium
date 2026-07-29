@@ -91,7 +91,7 @@ impl IpcMemoryEndpoints {
                     ::consortium_ipc_doorbell_mu::MuDoorbell::<
                         ::consortium_ipc::Secondary,
                         1usize,
-                    >::new(1143078912usize)
+                    >::new_mapped(1143078912usize)
                 };
                 // SAFETY: doorbell channel is verified to be valid in the config.
                 let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(5u8) };
@@ -281,12 +281,8 @@ async fn init() -> ::core::result::Result<Context, ConsortiumInitError> {
         "consortium controller init: NVIC unmask {} (id={})", stringify!(MU1),
         BellaInterrupt::MU1 as u32
     );
-    // SAFETY: `init` runs once during controller bring-up, in privileged
-    // mode, before any `embassy-time` use; `bringup` takes exclusive
-    // ownership of the time-driver timer and its NVIC line.
-    unsafe {
-        ::consortium_hal_imx9::timer_driver::bringup();
-    }
+    let __p = ::consortium_hal_imx9::init();
+    ::consortium_hal_imx9::timer_driver::bringup(__p.LPIT1);
     ::consortium_runtime_mcu::log::trace!("consortium controller init: time driver up");
     ::consortium_runtime_mcu::log::trace!(
         "consortium controller init: connecting ipc endpoints"

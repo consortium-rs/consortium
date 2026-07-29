@@ -43,13 +43,59 @@ use core::{
     task::{Context, Poll},
 };
 
+use consortium_hal_imx9::{Peri, PeripheralType};
 use consortium_ipc::{Chan, Doorbell, Side};
 
 use crate::{
     abstraction::Mu,
     chan::{MU_CHAN_COUNT, MU_GI_CHAN_COUNT},
     error::MuError,
+    registers::base,
 };
+
+/// A chip-HAL peripheral singleton naming one MU instance window.
+///
+/// The dump names encode both facts this needs: `MU7_MUB` is instance 7 seen
+/// from side B. The window's address still comes from [`base::BASE`] in this
+/// crate rather than from the singleton, so the security alias the doorbell has
+/// always used does not change underfoot.
+pub trait Instance: PeripheralType {
+    /// Processor side this window belongs to: [`Primary`](consortium_ipc::Primary)
+    /// is MUA, [`Secondary`](consortium_ipc::Secondary) is MUB.
+    type Side: Side;
+    /// 1-based MU instance number.
+    const INSTANCE: usize;
+}
+
+/// Bind a chip-HAL peripheral singleton to this doorbell.
+macro_rules! impl_mu {
+    ($instance:ident, $side:ty, $number:expr) => {
+        impl crate::doorbell::Instance for ::consortium_hal_imx9::peripherals::$instance {
+            type Side = $side;
+            const INSTANCE: usize = $number;
+        }
+    };
+}
+
+// The i.MX95 CM7 reaches MU5 side A and MU7/MU8 side B; the i.MX93 CM33 reaches
+// MU1/MU2 side A. Both lists come from the same per-core dumps that generate the
+// HAL's singletons, so a window this core cannot see has no singleton to pass.
+#[cfg(feature = "mimx95")]
+mod bindings {
+    use consortium_ipc::{Primary, Secondary};
+
+    impl_mu!(MU5_MUA, Primary, 5);
+    impl_mu!(MU7_MUB, Secondary, 7);
+    impl_mu!(MU8_MUB, Secondary, 8);
+}
+
+#[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
+mod bindings {
+    use consortium_ipc::Primary;
+
+    impl_mu!(MU1_MUA, Primary, 1);
+    impl_mu!(MU2_MUA, Primary, 2);
+}
 
 /// MU-backed doorbell for instance `N` (1-based), processor side `S`.
 pub struct MuDoorbell<S: Side, const N: usize> {
@@ -98,14 +144,46 @@ impl<S: Side, const N: usize> MuDoorbell<S, N> {
 }
 
 impl<S: Side, const N: usize> MuDoorbell<S, N> {
+    /// Create a doorbell over MU instance `N`, side `S`, from the chip HAL's
+    /// peripheral singleton.
+    ///
+    /// This is the firmware-side constructor: the singleton proves nothing else
+    /// drives the instance, and the window address comes from this crate's
+    /// [`base::BASE`] table. `S` and `N` must match the singleton, which the
+    /// const assertions below check at compile time.
+    ///
+    /// On Linux the window is an `mmap` of a UIO device rather than a physical
+    /// address, and there is no singleton for it — use
+    /// [`new_mapped`](Self::new_mapped) there.
+    pub fn new<T: Instance<Side = S>>(peri: Peri<'static, T>) -> Self {
+        const {
+            assert!(
+                T::INSTANCE == N,
+                "MuDoorbell instance number does not match the peripheral singleton",
+            );
+        }
+        // Owning the singleton for the doorbell's lifetime is what makes the
+        // MMIO access exclusive; it is consumed here and never reissued.
+        let _ = peri;
+        // Side B sits one window above side A of the same instance.
+        let window = usize::from(S::INDEX) * base::LENGTH;
+        // SAFETY: `base::BASE[N - 1] + window` is instance `N`'s side-`S`
+        // window from this crate's vetted address table, and the consumed
+        // singleton guarantees nothing else drives it.
+        unsafe { Self::new_mapped(base::BASE[N - 1] + window) }
+    }
+
     /// Create a doorbell over MU instance `N`, side `S`, from an `mmap`'d
     /// virtual base address.
+    ///
+    /// This is the Linux/UIO constructor: mapped windows have no peripheral
+    /// singleton, so the caller carries the obligation instead.
     ///
     /// # Safety
     /// `base` must be the mapped virtual base of MU instance `N` for the side
     /// matching `S`. Passing a raw physical address is undefined behaviour on
     /// Linux.
-    pub unsafe fn new(base: usize) -> Self {
+    pub unsafe fn new_mapped(base: usize) -> Self {
         Self {
             // SAFETY: forwarded obligation; `base` is the mapped MU window.
             mu: unsafe { Mu::<S, N>::new(base) },
@@ -403,8 +481,9 @@ mod tests {
     fn ring_sets_gcr_bit() {
         let mut regs = [0u32; 0x300 / 4];
         // SAFETY: `regs` backs a fake MMIO window for the test.
-        let db =
-            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+        let db = unsafe {
+            MuDoorbell::<consortium_ipc::Primary, N>::new_mapped(regs.as_mut_ptr() as usize)
+        };
 
         db.ring(ch(2)).unwrap();
 
@@ -417,8 +496,9 @@ mod tests {
         let mut regs = [0u32; 0x300 / 4];
         regs[offsets::GSR as usize / 4] = 1 << 3;
         // SAFETY: `regs` backs a fake MMIO window for the test.
-        let db =
-            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+        let db = unsafe {
+            MuDoorbell::<consortium_ipc::Primary, N>::new_mapped(regs.as_mut_ptr() as usize)
+        };
 
         assert!(db.pending(ch(3)));
         assert!(!db.pending(ch(2)));
@@ -428,8 +508,9 @@ mod tests {
     fn wait_registers_waker_then_ready_after_notify() {
         let mut regs = [0u32; 0x300 / 4];
         // SAFETY: `regs` backs a fake MMIO window for the test.
-        let db =
-            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+        let db = unsafe {
+            MuDoorbell::<consortium_ipc::Primary, N>::new_mapped(regs.as_mut_ptr() as usize)
+        };
         let mut wait = std::pin::pin!(db.wait(ch(2)));
         let waker = std::task::Waker::noop();
         let mut cx = Context::from_waker(waker);
@@ -451,8 +532,9 @@ mod tests {
     fn notify_gi_interrupt_masks_line_before_waking_waiters() {
         let mut regs = [0u32; 0x300 / 4];
         // SAFETY: `regs` backs a fake MMIO window for the test.
-        let db =
-            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+        let db = unsafe {
+            MuDoorbell::<consortium_ipc::Primary, N>::new_mapped(regs.as_mut_ptr() as usize)
+        };
         let mut wait = std::pin::pin!(db.wait(ch(2)));
         let waker = std::task::Waker::noop();
         let mut cx = Context::from_waker(waker);
@@ -482,7 +564,7 @@ mod tests {
         let regs = Box::leak(Box::new([0u32; 0x300 / 4]));
         let base = regs.as_mut_ptr() as usize;
         // SAFETY: `regs` backs a fake MMIO window leaked for the spawned thread.
-        let db = unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(base) };
+        let db = unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new_mapped(base) };
         let notifier = db.notifier();
         let (armed_tx, armed_rx) = std::sync::mpsc::channel();
 
@@ -528,8 +610,9 @@ mod tests {
         // TSR reset: all transmit registers empty, so ring is allowed.
         regs[offsets::TSR as usize / 4] = reset::TSR;
         // SAFETY: `regs` backs a fake MMIO window for the test.
-        let db =
-            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+        let db = unsafe {
+            MuDoorbell::<consortium_ipc::Primary, N>::new_mapped(regs.as_mut_ptr() as usize)
+        };
 
         // ch(5) -> RF index 1 -> TR1.
         db.ring(ch(5)).unwrap();
@@ -544,8 +627,9 @@ mod tests {
         // TSR with TE1 clear: a prior transmit is still pending, so skip.
         regs[offsets::TSR as usize / 4] = reset::TSR & !(1 << 1);
         // SAFETY: `regs` backs a fake MMIO window for the test.
-        let db =
-            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+        let db = unsafe {
+            MuDoorbell::<consortium_ipc::Primary, N>::new_mapped(regs.as_mut_ptr() as usize)
+        };
 
         db.ring(ch(5)).unwrap();
 
@@ -557,8 +641,9 @@ mod tests {
         let mut regs = [0u32; 0x300 / 4];
         regs[offsets::RSR as usize / 4] = 1 << 2;
         // SAFETY: `regs` backs a fake MMIO window for the test.
-        let db =
-            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+        let db = unsafe {
+            MuDoorbell::<consortium_ipc::Primary, N>::new_mapped(regs.as_mut_ptr() as usize)
+        };
 
         // ch(6) -> RF index 2.
         assert!(db.pending(ch(6)));
@@ -570,8 +655,9 @@ mod tests {
     fn wait_rf_registers_rcr_then_ready_after_notify() {
         let mut regs = [0u32; 0x300 / 4];
         // SAFETY: `regs` backs a fake MMIO window for the test.
-        let db =
-            unsafe { MuDoorbell::<consortium_ipc::Primary, N>::new(regs.as_mut_ptr() as usize) };
+        let db = unsafe {
+            MuDoorbell::<consortium_ipc::Primary, N>::new_mapped(regs.as_mut_ptr() as usize)
+        };
         // ch(5) -> RF index 1.
         let mut wait = std::pin::pin!(db.wait(ch(5)));
         let waker = std::task::Waker::noop();

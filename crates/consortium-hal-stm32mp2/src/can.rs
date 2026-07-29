@@ -2,10 +2,10 @@
 //!
 //! Select an instance by passing its MMIO base to [`Can::new`], along with the
 //! shared CAN message-RAM base, this instance's byte offset within it, and a
-//! `&'static` [`CanState`]. Blocking transfers ([`embedded_can::nb::Can`]) work
+//! `&'static` [`State`]. Blocking transfers ([`embedded_can::nb::Can`]) work
 //! without interrupts. Async [`Can::transmit`]/[`Can::receive`] require the
 //! caller to route one of the instance's interrupt lines to
-//! [`CanState::on_interrupt`] (the driver enables interrupt line 0, `FDCANx_IT0`).
+//! [`State::on_interrupt`] (the driver enables interrupt line 0, `FDCANx_IT0`).
 //!
 //! The message RAM is the SoC's shared `CAN_SRAM` window (`0x4031_0000`, 10 KiB
 //! split across the FDCAN instances). Each instance's start-address registers
@@ -18,9 +18,9 @@
 //! this first cut; the element accessors leave room to add them later.
 
 use core::future::poll_fn;
-use core::sync::atomic::{AtomicPtr, Ordering};
 use core::task::Poll;
 
+use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 use embedded_can::{ErrorKind, Id, StandardId};
 use pac::peripherals::fdcan::{FDCAN, FDCAN_IR, FDCAN_RXF0A, FDCAN_TXBAR};
@@ -150,16 +150,14 @@ const fn nbrp(clock_hz: u32, bitrate: u32) -> u16 {
 }
 
 /// Per-instance interrupt state shared between a [`Can`] and its IRQ handler.
-pub struct CanState {
-    base: AtomicPtr<()>,
+pub struct State {
     waker: AtomicWaker,
 }
 
-impl CanState {
+impl State {
     /// Create an empty state suitable for a `static`.
-    pub const fn new() -> Self {
+    pub(crate) const fn new() -> Self {
         Self {
-            base: AtomicPtr::new(core::ptr::null_mut()),
             waker: AtomicWaker::new(),
         }
     }
@@ -169,14 +167,7 @@ impl CanState {
     /// Masks every enabled interrupt source that is asserted, then wakes the
     /// pending transfer, which re-arms the source it still needs and clears the
     /// underlying flag once it has drained the frame.
-    pub fn on_interrupt(&self) {
-        let ptr = self.base.load(Ordering::Acquire);
-        if ptr.is_null() {
-            return;
-        }
-        // SAFETY: `Can::new` installs the MMIO base for the selected FDCAN
-        // instance before any interrupt is routed here.
-        let r = unsafe { FDCAN::from_ptr(ptr) };
+    fn on_interrupt(&self, r: FDCAN) {
         let ir = r.IR().read();
         let ie = r.IE().read();
         let mut hit = false;
@@ -200,12 +191,6 @@ impl CanState {
     }
 }
 
-impl Default for CanState {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 /// FDCAN configuration.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Config {
@@ -224,10 +209,64 @@ impl Default for Config {
     }
 }
 
+/// Crate-internal half of [`Instance`]: visible to the generated bindings that
+/// implement it, sealed against downstream crates.
+pub(crate) trait SealedInstance {
+    /// This instance's register block, at its database-resolved base.
+    fn regs() -> FDCAN;
+    /// This instance's dedicated interrupt state.
+    fn state() -> &'static State;
+}
+
+/// An FDCAN instance the [`Can`] driver can drive.
+///
+/// Implemented by the generated peripheral singletons; sealed so the base
+/// address and interrupt state stay single-sourced from the chip database.
+#[allow(private_bounds)]
+pub trait Instance: SealedInstance + PeripheralType {
+    /// NVIC line this instance raises, when the chip routes one to this core.
+    const IRQ: Option<u16>;
+}
+
+/// Bind a generated peripheral singleton to this driver. Invoked only by the
+/// generated `peripherals` module.
+macro_rules! impl_can {
+    ($instance:ident, $base:expr, $irq:expr) => {
+        impl crate::can::SealedInstance for crate::peripherals::$instance {
+            #[inline]
+            fn regs() -> crate::pac::peripherals::fdcan::FDCAN {
+                // SAFETY: `$base` is this instance's base as extracted from the
+                // chip database, and the singleton this impl is keyed to can be
+                // held by only one driver at a time.
+                unsafe { crate::pac::peripherals::fdcan::FDCAN::from_ptr($base as *mut ()) }
+            }
+
+            #[inline]
+            fn state() -> &'static crate::can::State {
+                static STATE: crate::can::State = crate::can::State::new();
+                &STATE
+            }
+        }
+
+        impl crate::can::Instance for crate::peripherals::$instance {
+            const IRQ: ::core::option::Option<u16> = $irq;
+        }
+    };
+}
+pub(crate) use impl_can;
+
+/// Handle the interrupt of instance `T`.
+///
+/// Call this from the application's `#[interrupt]` handler for `T`'s vector;
+/// the HAL installs no handlers of its own.
+pub fn on_interrupt<T: Instance>() {
+    T::state().on_interrupt(T::regs());
+}
+
 /// Classic CAN controller over one FDCAN instance.
 pub struct Can {
     regs: FDCAN,
-    state: &'static CanState,
+    state: &'static State,
     msg_ram: *mut u8,
     ram_offset: usize,
 }
@@ -243,21 +282,21 @@ impl Can {
     /// message RAM, and `[msg_ram_offset, msg_ram_offset + 64)` must be a region
     /// within it reserved for this instance and no other. `clock_hz` is the CAN
     /// kernel clock. `state` must be dedicated to this instance; for async use,
-    /// route the instance's interrupt to [`CanState::on_interrupt`].
-    pub unsafe fn new(
-        base: *mut (),
+    /// route the instance's interrupt to [`State::on_interrupt`].
+    pub unsafe fn new<T: Instance>(
+        peri: Peri<'static, T>,
         msg_ram_base: *mut (),
         msg_ram_offset: usize,
         clock_hz: u32,
         config: Config,
-        state: &'static CanState,
     ) -> Self {
-        // SAFETY: Caller guarantees `base` is a valid, exclusively owned FDCAN
-        // register block.
-        let r = unsafe { FDCAN::from_ptr(base) };
+        // Owning the singleton for the driver's lifetime is what makes exclusive
+        // register access safe; it is consumed here and never reissued.
+        let _ = peri;
+        let r = T::regs();
         let this = Self {
             regs: r,
-            state,
+            state: T::state(),
             msg_ram: msg_ram_base as *mut u8,
             ram_offset: msg_ram_offset,
         };
@@ -319,7 +358,6 @@ impl Can {
         });
         while r.CCCR().read().INIT() {}
 
-        state.base.store(base, Ordering::Release);
         this
     }
 

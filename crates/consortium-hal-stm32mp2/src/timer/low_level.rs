@@ -550,14 +550,15 @@ mod tests {
         CaptureEdge, CapturePrescaler, InputCaptureSelection, InputFilter, OutputCompareMode,
         SlaveMode, TriggerSource,
     };
+    use crate::pac::peripherals::timer::TIM_GP;
     use crate::timer::{Channel, Timer, TimerWidth};
 
     fn timer(registers: &mut [u32; 256]) -> Timer {
         // SAFETY: the test buffer is exclusively borrowed and large enough for
         // every register exposed by TIM_GP.
         unsafe {
-            Timer::from_raw_with_width(
-                registers.as_mut_ptr().cast(),
+            Timer::over(
+                TIM_GP::from_ptr(registers.as_mut_ptr().cast()),
                 200_000_000,
                 TimerWidth::Bits16,
             )

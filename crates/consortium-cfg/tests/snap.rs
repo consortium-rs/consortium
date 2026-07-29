@@ -22,7 +22,9 @@ use std::collections::HashMap;
 
 use consortium_cfg::components::address::{Address, ApAddress};
 use consortium_cfg::components::bella::{BellA, HardwareDoorbell};
-use consortium_cfg::components::ipc_shm::{Channel, Direction, DoorbellMeta, ShuHan, Transceiver};
+use consortium_cfg::components::ipc_shm::{
+    Channel, Direction, DoorbellMeta, DoorbellSource, ShuHan, Transceiver,
+};
 use consortium_cfg::components::region::Region;
 use consortium_cfg_common::config::{Codec, McoreName, VisibleCore};
 use consortium_cfg_common::database::{HardwareDoorbellPeripheralType, MemoryRegionType};
@@ -122,14 +124,26 @@ fn transceiver_primary_side_binds_uio_notifier() {
     let uio = format_ident!("uio");
     // The build phase resolves the AP region/doorbell and binds the UIO notifier;
     // it evaluates to the unsplit transport (handshake deferred to `connect`).
-    let tokens = transceiver().build_field_init(VisibleCore::Ap, &uio);
+    let tokens = transceiver().build_field_init(
+        VisibleCore::Ap,
+        &uio,
+        DoorbellSource::Uio,
+        "::consortium_hal_stm32mp2",
+    );
     insta::assert_snapshot!(expr(tokens));
 }
 
 #[test]
 fn transceiver_secondary_side_uses_controller_addresses() {
     let uio = format_ident!("uio");
-    let tokens = transceiver().build_field_init(cm33(), &uio);
+    // A controller core takes the doorbell's peripheral singleton rather than a
+    // mapped base; `__db_hsem` is the parameter `IpcMemoryEndpoints::new` binds.
+    let tokens = transceiver().build_field_init(
+        cm33(),
+        &uio,
+        DoorbellSource::Owned(format_ident!("__db_hsem")),
+        "::consortium_hal_stm32mp2",
+    );
     insta::assert_snapshot!(expr(tokens));
 }
 
@@ -273,7 +287,13 @@ fn shuhan() -> ShuHan {
 fn shuhan_ap_side_emits_full_endpoint_struct() {
     let uio = format_ident!("uio");
     let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
-    let tokens = shuhan().initialize(VisibleCore::Ap, &uio, &ty_crate);
+    let tokens = shuhan().initialize(
+        VisibleCore::Ap,
+        &uio,
+        &ty_crate,
+        "::consortium_hal_stm32mp2",
+        &[],
+    );
     insta::assert_snapshot!(items(tokens));
 }
 
@@ -285,6 +305,13 @@ fn shuhan_controller_side_emits_single_endpoint_struct() {
     // resolvable for this core).
     let uio = format_ident!("uio");
     let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
-    let tokens = ShuHan::new(vec![transceiver()]).initialize(cm33(), &uio, &ty_crate);
+    let tokens = ShuHan::new(vec![transceiver()]).initialize(
+        cm33(),
+        &uio,
+        &ty_crate,
+        "::consortium_hal_stm32mp2",
+        // The cm33 chip map reaches HSEM, so its doorbell takes the singleton.
+        &["HSEM".to_string()],
+    );
     insta::assert_snapshot!(items(tokens));
 }

@@ -2,28 +2,27 @@
 //!
 //! LPTMR is a compare timer or external pulse counter. It has no waveform
 //! output channel, so PWM belongs to TPM rather than this module.
+//!
+//! Select an instance by handing its peripheral singleton to [`Lptmr::new`]:
+//!
+//! ```ignore
+//! let p = consortium_hal_imx9::init();
+//! let timer = Lptmr::new(p.LPTMR1, Config::default());
+//! ```
 
 use core::future::Future;
 use core::pin::Pin;
-use core::sync::atomic::{AtomicBool, AtomicPtr, Ordering};
+use core::sync::atomic::{AtomicBool, Ordering};
 use core::task::{Context, Poll};
 
+use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 use pac::peripherals::lptmr::LPTMR;
 
 use crate::pac;
 
 #[cfg(feature = "dma")]
-use crate::dma::{
-    DmaChannel, DmaRequest, RingError, Transfer, WritableRingBuffer, request as dma_request,
-};
-
-/// LPTMR peripheral instance.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Instance {
-    Lptmr1,
-    Lptmr2,
-}
+use crate::dma::{DmaChannel, DmaRequest, RingError, Transfer, WritableRingBuffer};
 
 /// Prescaler clock source.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -77,31 +76,25 @@ impl Default for Config {
 }
 
 /// IRQ state dedicated to one LPTMR.
-pub struct LptmrState {
-    regs: AtomicPtr<()>,
+///
+/// One `static` per LPTMR is created by [`impl_lptmr`] and reached through the
+/// instance type, so callers never supply or name it.
+pub struct State {
     pending: AtomicBool,
     waker: AtomicWaker,
 }
 
-impl LptmrState {
+impl State {
     /// Create empty state suitable for a `static`.
-    pub const fn new() -> Self {
+    pub(crate) const fn new() -> Self {
         Self {
-            regs: AtomicPtr::new(core::ptr::null_mut()),
             pending: AtomicBool::new(false),
             waker: AtomicWaker::new(),
         }
     }
 
-    /// Forward the LPTMR interrupt here.
-    pub fn on_interrupt(&self) {
-        let ptr = self.regs.load(Ordering::Acquire);
-        if ptr.is_null() {
-            return;
-        }
-        // SAFETY: installed by `Lptmr::new` for the state dedicated to this
-        // exclusively owned peripheral.
-        let regs = unsafe { LPTMR::from_ptr(ptr) };
+    /// Handle the interrupt of the LPTMR at `regs`.
+    fn on_interrupt(&self, regs: LPTMR) {
         if regs.CSR().read().TCF() {
             self.pending.store(true, Ordering::Release);
             regs.CSR().modify(|w| {
@@ -113,68 +106,117 @@ impl LptmrState {
     }
 }
 
-impl Default for LptmrState {
-    fn default() -> Self {
-        Self::new()
-    }
+/// Crate-internal half of [`Instance`]: visible to the generated bindings that
+/// implement it, sealed against downstream crates.
+pub(crate) trait SealedInstance {
+    /// This instance's register block, at its database-resolved base.
+    fn regs() -> LPTMR;
+    /// This instance's dedicated interrupt state.
+    fn state() -> &'static State;
+}
+
+/// An LPTMR the [`Lptmr`] driver can drive.
+///
+/// Implemented by the generated peripheral singletons; sealed so the base
+/// address, DMA request line, and interrupt state stay single-sourced.
+#[allow(private_bounds)]
+pub trait Instance: SealedInstance + PeripheralType {
+    /// NVIC line this instance raises, when the chip routes one to this core.
+    const IRQ: Option<u16>;
+    /// eDMA request line this instance drives on compare events.
+    #[cfg(feature = "dma")]
+    const DMA_REQUEST: DmaRequest;
+}
+
+/// Bind a generated peripheral singleton to this driver. Invoked only by the
+/// generated `peripherals` module.
+macro_rules! impl_lptmr {
+    ($instance:ident, $base:expr, $irq:expr) => {
+        impl crate::lptmr::SealedInstance for crate::peripherals::$instance {
+            #[inline]
+            fn regs() -> crate::pac::peripherals::lptmr::LPTMR {
+                // SAFETY: `$base` is this instance's LPTMR base as extracted
+                // from the chip database, and the singleton this impl is keyed
+                // to can be held by only one driver at a time.
+                unsafe { crate::pac::peripherals::lptmr::LPTMR::from_ptr($base as *mut ()) }
+            }
+
+            #[inline]
+            fn state() -> &'static crate::lptmr::State {
+                static STATE: crate::lptmr::State = crate::lptmr::State::new();
+                &STATE
+            }
+        }
+
+        impl crate::lptmr::Instance for crate::peripherals::$instance {
+            const IRQ: ::core::option::Option<u16> = $irq;
+            // The request constants are named after the instances, so the
+            // singleton's own identifier selects the right line.
+            #[cfg(feature = "dma")]
+            const DMA_REQUEST: crate::dma::DmaRequest = crate::dma::request::$instance;
+        }
+    };
+}
+pub(crate) use impl_lptmr;
+
+/// Handle the LPTMR interrupt of instance `T`.
+///
+/// Call this from the application's `#[interrupt]` handler for `T`'s vector;
+/// the HAL installs no handlers of its own.
+pub fn on_interrupt<T: Instance>() {
+    T::state().on_interrupt(T::regs());
+}
+
+/// Program `regs` from `config`, leaving the timer stopped.
+fn program(regs: LPTMR, config: Config) {
+    assert!(config.prescaler <= 15);
+    regs.CSR().write_value(Default::default());
+    regs.PSR().write(|w| {
+        w.set_PCS(config.clock_source as u8);
+        w.set_PBYP(config.bypass_prescaler);
+        w.set_PRESCALE(config.prescaler);
+    });
+    regs.CSR().modify(|w| w.set_TFC(config.free_running));
 }
 
 /// Exclusive LPTMR driver.
 pub struct Lptmr {
     regs: LPTMR,
     #[cfg(feature = "dma")]
-    instance: Instance,
-    state: &'static LptmrState,
+    dma_request: DmaRequest,
+    state: &'static State,
 }
 
 impl Lptmr {
-    /// Bind and configure an LPTMR.
+    /// Bind and configure an LPTMR from its peripheral singleton.
     ///
-    /// # Safety
-    ///
-    /// `base` must identify a valid, clocked, exclusively owned LPTMR.
-    /// `state` must be dedicated to it and its IRQ must call
-    /// [`LptmrState::on_interrupt`] for asynchronous waits.
-    pub unsafe fn new(
-        base: *mut (),
-        instance: Instance,
-        state: &'static LptmrState,
-        config: Config,
-    ) -> Self {
-        assert!(config.prescaler <= 15);
-        #[cfg(not(feature = "dma"))]
-        let _ = instance;
-        // SAFETY: guaranteed by the caller.
-        let regs = unsafe { LPTMR::from_ptr(base) };
-        state.regs.store(regs.as_ptr(), Ordering::Release);
-        regs.CSR().write_value(Default::default());
-        regs.PSR().write(|w| {
-            w.set_PCS(config.clock_source as u8);
-            w.set_PBYP(config.bypass_prescaler);
-            w.set_PRESCALE(config.prescaler);
-        });
-        regs.CSR().modify(|w| w.set_TFC(config.free_running));
+    /// The platform must leave the instance clocked. For asynchronous waits,
+    /// forward its interrupt to [`on_interrupt::<T>`](on_interrupt).
+    pub fn new<T: Instance>(peri: Peri<'static, T>, config: Config) -> Self {
+        // Owning the singleton for the driver's lifetime is what makes exclusive
+        // register access safe; it is consumed here and never reissued.
+        let _ = peri;
+        let regs = T::regs();
+        program(regs, config);
         Self {
             regs,
             #[cfg(feature = "dma")]
-            instance,
-            state,
+            dma_request: T::DMA_REQUEST,
+            state: T::state(),
         }
     }
 
-    /// Infer the instance from its standard secure/non-secure address.
-    ///
-    /// # Safety
-    ///
-    /// Same requirements as [`Lptmr::new`].
-    pub unsafe fn from_raw(base: *mut (), state: &'static LptmrState, config: Config) -> Self {
-        let instance = match (base as usize) & !0x1000_0000 {
-            0x4430_0000 => Instance::Lptmr1,
-            0x424d_0000 => Instance::Lptmr2,
-            _ => panic!("unknown LPTMR address; use Lptmr::new"),
-        };
-        // SAFETY: forwarded caller contract.
-        unsafe { Self::new(base, instance, state, config) }
+    /// Build a driver over an arbitrary register block, for tests that stand a
+    /// plain array in for the LPTMR.
+    #[cfg(test)]
+    fn over(regs: LPTMR, state: &'static State, config: Config) -> Self {
+        program(regs, config);
+        Self {
+            regs,
+            #[cfg(feature = "dma")]
+            dma_request: crate::dma::request::LPTMR1,
+            state,
+        }
     }
 
     /// Configure time-counter mode.
@@ -261,10 +303,7 @@ impl Lptmr {
 
     #[cfg(feature = "dma")]
     fn dma_request(&self) -> DmaRequest {
-        match self.instance {
-            Instance::Lptmr1 => dma_request::LPTMR1,
-            Instance::Lptmr2 => dma_request::LPTMR2,
-        }
+        self.dma_request
     }
 
     /// Write a finite sequence of future compare values at compare events.
@@ -511,22 +550,21 @@ mod tests {
 
     #[test]
     fn configures_timer_and_pulse_modes() {
-        static STATE: LptmrState = LptmrState::new();
+        static STATE: State = State::new();
         let mut registers = [0u32; 4];
-        // SAFETY: fake MMIO is exclusively owned by the test.
-        let mut timer = unsafe {
-            Lptmr::new(
-                registers.as_mut_ptr().cast(),
-                Instance::Lptmr1,
-                &STATE,
-                Config {
-                    clock_source: ClockSource::Source2,
-                    bypass_prescaler: false,
-                    prescaler: 3,
-                    free_running: true,
-                },
-            )
-        };
+        // SAFETY: `registers` is a word-aligned array covering every offset the
+        // driver touches, and it outlives the driver built over it.
+        let regs = unsafe { LPTMR::from_ptr(registers.as_mut_ptr().cast()) };
+        let mut timer = Lptmr::over(
+            regs,
+            &STATE,
+            Config {
+                clock_source: ClockSource::Source2,
+                bypass_prescaler: false,
+                prescaler: 3,
+                free_running: true,
+            },
+        );
         assert_eq!(registers[1] & 0x7f, 2 | (3 << 3));
         timer.configure_pulse_counter(PulseInput::Input2, PulsePolarity::Falling);
         assert_eq!(
@@ -537,17 +575,12 @@ mod tests {
 
     #[test]
     fn start_stop_and_compare() {
-        static STATE: LptmrState = LptmrState::new();
+        static STATE: State = State::new();
         let mut registers = [0u32; 4];
-        // SAFETY: fake MMIO is exclusively owned by the test.
-        let mut timer = unsafe {
-            Lptmr::new(
-                registers.as_mut_ptr().cast(),
-                Instance::Lptmr1,
-                &STATE,
-                Config::default(),
-            )
-        };
+        // SAFETY: `registers` is a word-aligned array covering every offset the
+        // driver touches, and it outlives the driver built over it.
+        let regs = unsafe { LPTMR::from_ptr(registers.as_mut_ptr().cast()) };
+        let mut timer = Lptmr::over(regs, &STATE, Config::default());
         timer.set_compare(1234);
         timer.start();
         assert_eq!(registers[2], 1234);

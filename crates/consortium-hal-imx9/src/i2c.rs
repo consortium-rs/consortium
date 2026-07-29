@@ -1,10 +1,18 @@
 //! I2C master driver backed by an i.MX9 LPI2C instance.
 //!
-//! Select an instance by passing its MMIO base to [`I2c::new`] together with a
-//! `&'static` [`I2cState`]. Blocking transfers ([`embedded_hal::i2c::I2c`])
-//! work without interrupts. Async transfers ([`embedded_hal_async::i2c::I2c`])
-//! require the caller to route the instance's interrupt to
-//! [`I2cState::on_interrupt`].
+//! Select an instance by handing its peripheral singleton to [`I2c::new`]:
+//!
+//! ```ignore
+//! let p = consortium_hal_imx9::init();
+//! let i2c = I2c::new(p.LPI2C1, 24_000_000, 400_000);
+//! ```
+//!
+//! The singleton carries the instance's MMIO base and its interrupt state, so
+//! construction is safe and cannot address the wrong block. Blocking transfers
+//! ([`embedded_hal::i2c::I2c`]) work without interrupts. Async transfers
+//! ([`embedded_hal_async::i2c::I2c`]) require the application to forward the
+//! instance's interrupt to [`on_interrupt`] parameterized with the same
+//! singleton type.
 //!
 //! DMA readiness: the byte primitives below are factored around the LPI2C FIFO
 //! so a DMA-backed transmit/receive can be layered on top using
@@ -14,9 +22,9 @@
 //! and only path today.
 
 use core::future::poll_fn;
-use core::sync::atomic::{AtomicPtr, Ordering};
 use core::task::Poll;
 
+use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 use embedded_hal::i2c::{ErrorKind, ErrorType, NoAcknowledgeSource, Operation, SevenBitAddress};
 use pac::peripherals::lpi2c::{LPI2C, LPI2C_MTDR};
@@ -108,33 +116,27 @@ const fn clock_config(clock_hz: u32, frequency: u32) -> ClockConfig {
 }
 
 /// Per-instance interrupt state shared between an [`I2c`] and its IRQ handler.
-pub struct I2cState {
-    base: AtomicPtr<()>,
+///
+/// One `static` per LPI2C instance is created by [`impl_i2c`] and reached
+/// through [`Instance::state`], so callers never supply or name it.
+pub struct State {
     waker: AtomicWaker,
 }
 
-impl I2cState {
+impl State {
     /// Create an empty state suitable for a `static`.
-    pub const fn new() -> Self {
+    pub(crate) const fn new() -> Self {
         Self {
-            base: AtomicPtr::new(core::ptr::null_mut()),
             waker: AtomicWaker::new(),
         }
     }
 
-    /// Handle the LPI2C instance's interrupt.
+    /// Handle the interrupt of the LPI2C instance at `r`.
     ///
     /// Disables every enabled interrupt whose flag is asserted and wakes the
     /// pending transfer, which re-enables the ones it still needs on the next
     /// poll.
-    pub fn on_interrupt(&self) {
-        let ptr = self.base.load(Ordering::Acquire);
-        if ptr.is_null() {
-            return;
-        }
-        // SAFETY: `I2c::new` installs the MMIO base for the selected LPI2C
-        // instance before any interrupt is routed here.
-        let r = unsafe { LPI2C::from_ptr(ptr) };
+    fn on_interrupt(&self, r: LPI2C) {
         let msr = r.MSR().read();
         let mier = r.MIER().read();
         // Any enabled-and-asserted source: mask its enable and wake the task.
@@ -158,37 +160,77 @@ impl I2cState {
     }
 }
 
-impl Default for I2cState {
-    fn default() -> Self {
-        Self::new()
-    }
+/// Crate-internal half of [`Instance`]: visible to the generated bindings that
+/// implement it, sealed against downstream crates.
+pub(crate) trait SealedInstance {
+    /// This instance's register block, at its database-resolved base.
+    fn regs() -> LPI2C;
+    /// This instance's dedicated interrupt state.
+    fn state() -> &'static State;
+}
+
+/// An LPI2C instance the [`I2c`] driver can drive.
+///
+/// Implemented by the generated peripheral singletons; sealed so the base
+/// address and interrupt state stay single-sourced from the chip database.
+#[allow(private_bounds)]
+pub trait Instance: SealedInstance + PeripheralType {
+    /// NVIC line this instance raises, when the chip routes one to this core.
+    const IRQ: Option<u16>;
+}
+
+/// Bind a generated peripheral singleton to this driver. Invoked only by the
+/// generated `peripherals` module.
+macro_rules! impl_i2c {
+    ($instance:ident, $base:expr, $irq:expr) => {
+        impl crate::i2c::SealedInstance for crate::peripherals::$instance {
+            #[inline]
+            fn regs() -> crate::pac::peripherals::lpi2c::LPI2C {
+                // SAFETY: `$base` is this instance's LPI2C base as extracted
+                // from the chip database, and the singleton this impl is keyed
+                // to can be held by only one driver at a time.
+                unsafe { crate::pac::peripherals::lpi2c::LPI2C::from_ptr($base as *mut ()) }
+            }
+
+            #[inline]
+            fn state() -> &'static crate::i2c::State {
+                static STATE: crate::i2c::State = crate::i2c::State::new();
+                &STATE
+            }
+        }
+
+        impl crate::i2c::Instance for crate::peripherals::$instance {
+            const IRQ: ::core::option::Option<u16> = $irq;
+        }
+    };
+}
+pub(crate) use impl_i2c;
+
+/// Handle the LPI2C interrupt of instance `T`.
+///
+/// Call this from the application's `#[interrupt]` handler for `T`'s vector;
+/// the HAL installs no handlers of its own.
+pub fn on_interrupt<T: Instance>() {
+    T::state().on_interrupt(T::regs());
 }
 
 /// I2C master over one LPI2C instance.
 pub struct I2c {
     regs: LPI2C,
-    state: &'static I2cState,
+    state: &'static State,
 }
 
 impl I2c {
     /// Initialize an LPI2C instance as a master at `frequency` Hz.
     ///
-    /// # Safety
-    ///
-    /// `base` must point to a valid LPI2C register block, clocked and pinned
-    /// out by the caller, that is exclusively owned by this driver for the
-    /// lifetime of the program. `clock_hz` is the instance's functional clock.
-    /// `state` must be dedicated to this instance; for async use, route the
-    /// instance's interrupt to [`I2cState::on_interrupt`] on the same state.
-    pub unsafe fn new(
-        base: *mut (),
-        clock_hz: u32,
-        frequency: u32,
-        state: &'static I2cState,
-    ) -> Self {
-        // SAFETY: Caller guarantees `base` is a valid, exclusively owned LPI2C
-        // register block.
-        let r = unsafe { LPI2C::from_ptr(base) };
+    /// `clock_hz` is the instance's functional clock; the platform must leave
+    /// the instance clocked and pinned out. For async transfers, forward the
+    /// instance's interrupt to [`on_interrupt::<T>`](on_interrupt).
+    pub fn new<T: Instance>(peri: Peri<'static, T>, clock_hz: u32, frequency: u32) -> Self {
+        // Owning the singleton for the driver's lifetime is what makes exclusive
+        // register access safe; it is consumed here and never reissued.
+        let _ = peri;
+        let r = T::regs();
 
         // Software reset, then configure while disabled.
         r.MCR().write(|w| w.set_RST(true));
@@ -211,9 +253,10 @@ impl I2c {
 
         r.MCR().write(|w| w.set_MEN(true));
 
-        state.base.store(base, Ordering::Release);
-
-        Self { regs: r, state }
+        Self {
+            regs: r,
+            state: T::state(),
+        }
     }
 
     /// Clear the sticky master status flags before a transfer.

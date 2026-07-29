@@ -5,6 +5,13 @@
 //! adjustments (`SLAST`/`DLAST`) and half/major interrupts; no descriptor
 //! allocation is required. Applications own clocks, RIF/TRDC setup, request
 //! routing, interrupt vectors, and DMA-coherent memory placement.
+//!
+//! A channel is a peripheral singleton of its own, named `<CONTROLLER>_CH<n>`:
+//!
+//! ```ignore
+//! let p = consortium_hal_imx9::init();
+//! let channel = DmaChannel::new(p.DMA3_CH7);
+//! ```
 
 use core::future::{Future, poll_fn};
 use core::marker::PhantomData;
@@ -12,6 +19,7 @@ use core::pin::Pin;
 use core::sync::atomic::{AtomicPtr, AtomicU8, AtomicU32, AtomicUsize, Ordering, fence};
 use core::task::{Context, Poll};
 
+use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 
 const CH_CSR_ERQ: u32 = 1 << 0;
@@ -159,6 +167,9 @@ pub enum RingError {
 }
 
 /// Per-channel state shared between a [`DmaChannel`] and its IRQ handler.
+///
+/// One `static` per channel singleton is created by [`impl_dma_channel`] and
+/// reached through the instance type, so callers never supply or name it.
 pub struct DmaState {
     ch: AtomicPtr<()>,
     layout: AtomicU8,
@@ -170,7 +181,7 @@ pub struct DmaState {
 
 impl DmaState {
     /// Create empty state suitable for a `static`.
-    pub const fn new() -> Self {
+    pub(crate) const fn new() -> Self {
         Self {
             ch: AtomicPtr::new(core::ptr::null_mut()),
             layout: AtomicU8::new(LAYOUT_DMA3),
@@ -205,17 +216,65 @@ impl DmaState {
     }
 }
 
-impl Default for DmaState {
-    fn default() -> Self {
-        Self::new()
-    }
+/// Crate-internal half of [`Instance`]: visible to the generated bindings that
+/// implement it, sealed against downstream crates.
+pub(crate) trait SealedInstance {
+    /// Management-page base of the controller this channel belongs to.
+    fn management() -> *mut ();
+    /// This channel's dedicated interrupt state.
+    fn state() -> &'static DmaState;
+}
+
+/// One eDMA channel the [`DmaChannel`] driver can claim.
+///
+/// Implemented by the generated `<CONTROLLER>_CH<n>` singletons; sealed so the
+/// controller base, class, and channel index stay single-sourced from the chip
+/// database.
+#[allow(private_bounds)]
+pub trait Instance: SealedInstance + PeripheralType {
+    /// Controller class, which selects the TCD layout and mux scheme.
+    const CONTROLLER: DmaController;
+    /// Zero-based channel index within the controller.
+    const CHANNEL: usize;
+    /// NVIC line this channel raises, when the chip routes one to this core.
+    const IRQ: Option<u16>;
+}
+
+/// Bind a generated channel singleton to this driver. Invoked only by the
+/// generated `peripherals` module.
+macro_rules! impl_dma_channel {
+    ($instance:ident, $management:expr, $controller:ident, $channel:expr, $irq:expr) => {
+        impl crate::dma::SealedInstance for crate::peripherals::$instance {
+            #[inline]
+            fn management() -> *mut () {
+                $management as *mut ()
+            }
+
+            #[inline]
+            fn state() -> &'static crate::dma::DmaState {
+                static STATE: crate::dma::DmaState = crate::dma::DmaState::new();
+                &STATE
+            }
+        }
+
+        impl crate::dma::Instance for crate::peripherals::$instance {
+            const CONTROLLER: crate::dma::DmaController = crate::dma::DmaController::$controller;
+            const CHANNEL: usize = $channel;
+            const IRQ: ::core::option::Option<u16> = $irq;
+        }
+    };
+}
+pub(crate) use impl_dma_channel;
+
+/// Handle the eDMA interrupt of channel `T`.
+///
+/// Call this from the application's `#[interrupt]` handler for `T`'s vector;
+/// the HAL installs no handlers of its own.
+pub fn on_interrupt<T: Instance>() {
+    T::state().on_interrupt();
 }
 
 /// Exclusive handle to one eDMA channel.
-///
-/// [`DmaChannel::new`] preserves the original eDMA3 constructor.
-/// [`DmaChannel::new_on`] additionally handles the eDMA4 and eDMA5 channel
-/// strides, TCD layouts, and programmable request muxes.
 pub struct DmaChannel {
     ch: RawChannel,
     channel: usize,
@@ -368,24 +427,23 @@ struct Tcd {
 }
 
 impl DmaChannel {
-    /// Claim an eDMA3 channel.
+    /// Claim an eDMA channel from its peripheral singleton.
     ///
-    /// # Safety
-    ///
-    /// `base` must be a valid, clocked eDMA3 management page. The channel and
-    /// state must remain exclusively owned. Route its IRQ to
-    /// [`DmaState::on_interrupt`].
-    pub unsafe fn new(base: *mut (), channel: usize, state: &'static DmaState) -> Self {
-        // SAFETY: guaranteed by the caller.
-        unsafe { Self::new_on(DmaController::Dma3, base, channel, state) }
+    /// The platform must leave the controller clocked and RIF/TRDC-configured.
+    /// Route the channel's IRQ to [`on_interrupt::<T>`](on_interrupt).
+    pub fn new<T: Instance>(peri: Peri<'static, T>) -> Self {
+        // Owning the singleton for the driver's lifetime is what makes exclusive
+        // channel access safe; it is consumed here and never reissued.
+        let _ = peri;
+        Self::claim(T::CONTROLLER, T::management(), T::CHANNEL, T::state())
     }
 
-    /// Claim a channel and record its controller class.
+    /// Derive the channel page, TCD layout, and request mux from the
+    /// controller's management page.
     ///
-    /// # Safety
-    ///
-    /// `base` must identify the management page for `controller`.
-    pub unsafe fn new_on(
+    /// `pub(crate)` so tests, and drivers that stand an array in for a
+    /// controller, can build a channel without a singleton.
+    pub(crate) fn claim(
         controller: DmaController,
         base: *mut (),
         channel: usize,
@@ -1117,8 +1175,9 @@ mod tests {
     use super::*;
 
     fn channel(registers: &mut [u32; 0x4010], state: &'static DmaState) -> DmaChannel {
-        // SAFETY: fake MMIO is exclusively owned by this test.
-        unsafe { DmaChannel::new(registers.as_mut_ptr().cast(), 0, state) }
+        // `registers` stands in for the eDMA3 management page; the `&mut` borrow
+        // keeps it alive and unaliased for the returned channel's lifetime.
+        DmaChannel::claim(DmaController::Dma3, registers.as_mut_ptr().cast(), 0, state)
     }
 
     #[test]
@@ -1200,15 +1259,13 @@ mod tests {
         static STATE: DmaState = DmaState::new();
         let channel_index = 3usize;
         let mut registers = std::vec![0u32; (0x1_0000 + 4 * 0x1000) / 4];
-        // SAFETY: fake eDMA4 pages fit the allocation.
-        let mut dma = unsafe {
-            DmaChannel::new_on(
-                DmaController::Dma4,
-                registers.as_mut_ptr().cast(),
-                channel_index,
-                &STATE,
-            )
-        };
+        // The allocation covers the management page plus every channel page.
+        let mut dma = DmaChannel::claim(
+            DmaController::Dma4,
+            registers.as_mut_ptr().cast(),
+            channel_index,
+            &STATE,
+        );
         let data = [1u16, 2];
         // SAFETY: fake destination is never accessed by hardware.
         let transfer = unsafe {
@@ -1229,15 +1286,13 @@ mod tests {
         static STATE: DmaState = DmaState::new();
         let channel_index = 1usize;
         let mut registers = std::vec![0u32; (0x1_0000 + 2 * 0x8000) / 4];
-        // SAFETY: fake eDMA5 pages fit the allocation.
-        let mut dma = unsafe {
-            DmaChannel::new_on(
-                DmaController::Dma5,
-                registers.as_mut_ptr().cast(),
-                channel_index,
-                &STATE,
-            )
-        };
+        // The allocation covers the management page plus every channel page.
+        let mut dma = DmaChannel::claim(
+            DmaController::Dma5,
+            registers.as_mut_ptr().cast(),
+            channel_index,
+            &STATE,
+        );
         let data = [1u32, 2, 3];
         // SAFETY: fake destination is never accessed by hardware.
         let transfer = unsafe {

@@ -2,14 +2,14 @@
 //!
 //! The register sequencing follows STM32CubeMP2's LL/HAL implementation while
 //! the interrupt contract follows the other Consortium/Embassy-style drivers:
-//! blocking transfers poll, and async transfers wake through [`I3cState`].
+//! blocking transfers poll, and async transfers wake through [`State`].
 //! Controller-mode I3C SDR, legacy I2C, broadcast CCC, repeated starts, and
 //! dynamic address assignment are supported.
 
 use core::future::poll_fn;
-use core::sync::atomic::{AtomicPtr, Ordering};
 use core::task::Poll;
 
+use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 use pac::peripherals::i3c::{I3C, I3C_CR, I3C_DEVRX, I3C_TDR};
 
@@ -144,28 +144,20 @@ fn timing(config: Config) -> Result<Timing, ConfigError> {
 }
 
 /// Per-instance interrupt state.
-pub struct I3cState {
-    base: AtomicPtr<()>,
+pub struct State {
     waker: AtomicWaker,
 }
 
-impl I3cState {
+impl State {
     /// Create state suitable for a `static`.
-    pub const fn new() -> Self {
+    pub(crate) const fn new() -> Self {
         Self {
-            base: AtomicPtr::new(core::ptr::null_mut()),
             waker: AtomicWaker::new(),
         }
     }
 
     /// Mask active transfer interrupts and wake the pending operation.
-    pub fn on_interrupt(&self) {
-        let base = self.base.load(Ordering::Acquire);
-        if base.is_null() {
-            return;
-        }
-        // SAFETY: installed by `I3c::new` before IRQ enable.
-        let r = unsafe { I3C::from_ptr(base) };
+    fn on_interrupt(&self, r: I3C) {
         let events = r.EVR().read();
         let enables = r.IER().read();
         let fire = (enables.TXFNFIE() && events.TXFNFF())
@@ -186,32 +178,77 @@ impl I3cState {
     }
 }
 
-impl Default for I3cState {
-    fn default() -> Self {
-        Self::new()
-    }
+/// Crate-internal half of [`Instance`]: visible to the generated bindings that
+/// implement it, sealed against downstream crates.
+pub(crate) trait SealedInstance {
+    /// This instance's register block, at its database-resolved base.
+    fn regs() -> I3C;
+    /// This instance's dedicated interrupt state.
+    fn state() -> &'static State;
+}
+
+/// An I3C instance the [`I3c`] driver can drive.
+///
+/// Implemented by the generated peripheral singletons; sealed so the base
+/// address and interrupt state stay single-sourced from the chip database.
+#[allow(private_bounds)]
+pub trait Instance: SealedInstance + PeripheralType {
+    /// NVIC line this instance raises, when the chip routes one to this core.
+    const IRQ: Option<u16>;
+}
+
+/// Bind a generated peripheral singleton to this driver. Invoked only by the
+/// generated `peripherals` module.
+macro_rules! impl_i3c {
+    ($instance:ident, $base:expr, $irq:expr) => {
+        impl crate::i3c::SealedInstance for crate::peripherals::$instance {
+            #[inline]
+            fn regs() -> crate::pac::peripherals::i3c::I3C {
+                // SAFETY: `$base` is this instance's base as extracted from the
+                // chip database, and the singleton this impl is keyed to can be
+                // held by only one driver at a time.
+                unsafe { crate::pac::peripherals::i3c::I3C::from_ptr($base as *mut ()) }
+            }
+
+            #[inline]
+            fn state() -> &'static crate::i3c::State {
+                static STATE: crate::i3c::State = crate::i3c::State::new();
+                &STATE
+            }
+        }
+
+        impl crate::i3c::Instance for crate::peripherals::$instance {
+            const IRQ: ::core::option::Option<u16> = $irq;
+        }
+    };
+}
+pub(crate) use impl_i3c;
+
+/// Handle the interrupt of instance `T`.
+///
+/// Call this from the application's `#[interrupt]` handler for `T`'s vector;
+/// the HAL installs no handlers of its own.
+pub fn on_interrupt<T: Instance>() {
+    T::state().on_interrupt(T::regs());
 }
 
 /// Controller over one STM32MP2 I3C instance.
 pub struct I3c {
     regs: I3C,
-    state: &'static I3cState,
+    state: &'static State,
 }
 
 impl I3c {
-    /// Configure an exclusively owned, already clocked and pinned-out instance.
+    /// Configure an instance from its peripheral singleton.
     ///
-    /// # Safety
-    ///
-    /// `base` must point to a valid I3C register block owned by this driver.
-    pub unsafe fn new(
-        base: *mut (),
-        config: Config,
-        state: &'static I3cState,
-    ) -> Result<Self, ConfigError> {
+    /// The platform must leave the instance clocked and pinned out. For async
+    /// transfers, forward its interrupt to [`on_interrupt::<T>`](on_interrupt).
+    pub fn new<T: Instance>(peri: Peri<'static, T>, config: Config) -> Result<Self, ConfigError> {
         let t = timing(config)?;
-        // SAFETY: guaranteed by the caller.
-        let regs = unsafe { I3C::from_ptr(base) };
+        // Owning the singleton for the driver's lifetime is what makes exclusive
+        // register access safe; it is consumed here and never reissued.
+        let _ = peri;
+        let regs = T::regs();
         regs.CFGR().modify(|w| w.set_EN(false));
         regs.TIMINGR0().write(|w| {
             w.set_SCLL_PP(t.pp_low);
@@ -235,8 +272,10 @@ impl I3c {
             w.set_CRINIT(true);
             w.set_EN(true);
         });
-        state.base.store(base, Ordering::Release);
-        Ok(Self { regs, state })
+        Ok(Self {
+            regs,
+            state: T::state(),
+        })
     }
 
     fn clear_events(&self) {

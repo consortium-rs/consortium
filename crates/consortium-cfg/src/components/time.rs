@@ -95,13 +95,14 @@ pub fn time_driver_codegen(hal_crate: &str, enabled: bool, dbg_present: bool) ->
     };
     let hal: syn::Path = parse_str(hal_crate).expect("hal_crate must be a valid path");
 
+    // `bringup` consumes the timer's peripheral singleton, so the reservation
+    // is enforced by the type system: nothing else can build a driver over it.
+    let timer = match family {
+        Family::Stm32mp2 => quote! { TIM2 },
+        Family::Imx9 => quote! { LPIT1 },
+    };
     let bringup = quote! {
-        /// SAFETY: `init` runs once during controller bring-up, in privileged
-        /// mode, before any `embassy-time` use; `bringup` takes exclusive
-        /// ownership of the time-driver timer and its NVIC line.
-        unsafe {
-            #hal::timer_driver::bringup();
-        }
+        #hal::timer_driver::bringup(__p.#timer);
         ::consortium_runtime_mcu::log::trace!("consortium controller init: time driver up");
     };
 

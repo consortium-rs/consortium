@@ -645,6 +645,8 @@ dependencies = [
  "consortium-codec",
  "consortium-data",
  "consortium-dts",
+ "consortium-hal-imx9",
+ "consortium-hal-stm32mp2",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
  "consortium-ipc-doorbell-ipcc",

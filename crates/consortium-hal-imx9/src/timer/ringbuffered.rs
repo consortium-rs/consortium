@@ -8,7 +8,7 @@ use crate::dma::{
     DmaChannel, DmaRequest, ReadableRingBuffer, RingError, Transfer, WritableRingBuffer, request,
 };
 
-use super::{Channel, Instance, Pwm, Timer};
+use super::{Channel, Pwm, Timer, TimerId};
 
 /// Input-capture edge selection.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -70,7 +70,7 @@ impl InputCapture {
         dma: &'a mut DmaChannel,
         values: &'a mut [u32],
     ) -> CaptureTransfer<'a> {
-        let dma_request = channel_request(self.timer.instance(), channel);
+        let dma_request = channel_request(self.timer.id(), channel);
         let register = self
             .timer
             .regs()
@@ -119,7 +119,7 @@ impl Pwm {
         dma: &'a mut DmaChannel,
         values: &'a [u32],
     ) -> PwmTransfer<'a> {
-        let dma_request = channel_request(self.timer.instance(), channel);
+        let dma_request = channel_request(self.timer.id(), channel);
         let register = self
             .timer
             .regs()
@@ -253,7 +253,7 @@ pub struct RingBufferedPwm<'a> {
 
 impl<'a> RingBufferedPwm<'a> {
     fn new(pwm: Pwm, channel: Channel, dma: &'a mut DmaChannel, buffer: &'a mut [u32]) -> Self {
-        let dma_request = channel_request(pwm.timer.instance(), channel);
+        let dma_request = channel_request(pwm.timer.id(), channel);
         let register = pwm
             .timer
             .regs()
@@ -344,7 +344,7 @@ impl<'a> RingBufferedCapture<'a> {
         dma: &'a mut DmaChannel,
         buffer: &'a mut [u32],
     ) -> Self {
-        let dma_request = channel_request(capture.timer.instance(), channel);
+        let dma_request = channel_request(capture.timer.id(), channel);
         let register = capture
             .timer
             .regs()
@@ -424,21 +424,21 @@ impl Drop for RingBufferedCapture<'_> {
     }
 }
 
-fn channel_request(instance: Instance, channel: Channel) -> DmaRequest {
+fn channel_request(id: TimerId, channel: Channel) -> DmaRequest {
     let even = matches!(channel, Channel::Ch0 | Channel::Ch2);
-    match (instance, even) {
-        (Instance::Tpm1, true) => request::TPM1_CH0_CH2,
-        (Instance::Tpm1, false) => request::TPM1_CH1_CH3,
-        (Instance::Tpm2, true) => request::TPM2_CH0_CH2,
-        (Instance::Tpm2, false) => request::TPM2_CH1_CH3,
-        (Instance::Tpm3, true) => request::TPM3_CH0_CH2,
-        (Instance::Tpm3, false) => request::TPM3_CH1_CH3,
-        (Instance::Tpm4, true) => request::TPM4_CH0_CH2,
-        (Instance::Tpm4, false) => request::TPM4_CH1_CH3,
-        (Instance::Tpm5, true) => request::TPM5_CH0_CH2,
-        (Instance::Tpm5, false) => request::TPM5_CH1_CH3,
-        (Instance::Tpm6, true) => request::TPM6_CH0_CH2,
-        (Instance::Tpm6, false) => request::TPM6_CH1_CH3,
+    match (id, even) {
+        (TimerId::Tpm1, true) => request::TPM1_CH0_CH2,
+        (TimerId::Tpm1, false) => request::TPM1_CH1_CH3,
+        (TimerId::Tpm2, true) => request::TPM2_CH0_CH2,
+        (TimerId::Tpm2, false) => request::TPM2_CH1_CH3,
+        (TimerId::Tpm3, true) => request::TPM3_CH0_CH2,
+        (TimerId::Tpm3, false) => request::TPM3_CH1_CH3,
+        (TimerId::Tpm4, true) => request::TPM4_CH0_CH2,
+        (TimerId::Tpm4, false) => request::TPM4_CH1_CH3,
+        (TimerId::Tpm5, true) => request::TPM5_CH0_CH2,
+        (TimerId::Tpm5, false) => request::TPM5_CH1_CH3,
+        (TimerId::Tpm6, true) => request::TPM6_CH0_CH2,
+        (TimerId::Tpm6, false) => request::TPM6_CH1_CH3,
     }
 }
 
@@ -459,18 +459,19 @@ mod tests {
         let words = ((TPM_DMA_CHANNEL + 2) * 0x1_0000) / 4;
         let mut dma_registers = std::vec![0u32; words];
 
-        // SAFETY: fake TPM registers are exclusively owned by this test.
-        let timer = unsafe {
-            Timer::from_raw_instance(
-                tpm_registers.as_mut_ptr().cast(),
-                24_000_000,
-                Instance::Tpm1,
-            )
+        // SAFETY: the fake TPM registers are word-aligned, cover every offset
+        // the driver touches, and outlive the timer built over them.
+        let tpm = unsafe {
+            crate::pac::peripherals::tpm::TPM::from_ptr(tpm_registers.as_mut_ptr().cast())
         };
+        let timer = Timer::over(tpm, 24_000_000, TimerId::Tpm1);
         let mut pwm = timer.into_pwm(20_000);
-        // SAFETY: fake eDMA management and channel pages fit the allocation.
-        let mut dma =
-            unsafe { DmaChannel::new(dma_registers.as_mut_ptr().cast(), TPM_DMA_CHANNEL, &STATE) };
+        let mut dma = DmaChannel::claim(
+            crate::dma::DmaController::Dma3,
+            dma_registers.as_mut_ptr().cast(),
+            TPM_DMA_CHANNEL,
+            &STATE,
+        );
         let values = [100u32, 200, 300];
 
         {
@@ -483,7 +484,7 @@ mod tests {
 
     #[test]
     fn later_tpm_instances_select_the_secondary_edma() {
-        let request = channel_request(Instance::Tpm5, Channel::Ch3);
+        let request = channel_request(TimerId::Tpm5, Channel::Ch3);
         #[cfg(feature = "mimx93")]
         assert_eq!(request.controller(), crate::dma::DmaController::Dma4);
         #[cfg(feature = "mimx95")]

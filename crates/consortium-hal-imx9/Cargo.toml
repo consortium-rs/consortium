@@ -34,24 +34,23 @@ mimx95 = ["consortium-pac-imx9/mimx95"]
 # Forward cortex-m-rt runtime support (vector table, `#[interrupt]`) to the PAC.
 rt   = ["consortium-pac-imx9/rt"]
 adc  = []
-dma  = ["dep:critical-section", "dep:embassy-sync"]
+# Forwarded to the PAC and to the generated peripheral singletons.
+defmt = ["consortium-pac-imx9/defmt"]
+dma  = ["dep:embassy-sync"]
 gpio = ["dep:embassy-sync", "dep:embedded-hal"]
-can  = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-can", "dep:nb"]
-i2c  = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
-i3c  = ["dep:critical-section", "dep:embassy-sync"]
+can  = ["dep:embassy-sync", "dep:embedded-can", "dep:nb"]
+i2c  = ["dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
+i3c  = ["dep:embassy-sync"]
 # Compatibility alias for the former top-level PWM feature.
 pwm = ["timer"]
-spi = ["dep:critical-section", "dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
+spi = ["dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
 timer = ["dep:embassy-sync", "dep:embedded-hal"]
 time-driver-lpit = [
-  "dep:critical-section",
   "dep:embassy-sync",
   "dep:embassy-time-driver",
   "dep:embassy-time-queue-utils",
 ]
 uart = [
-  "dep:critical-section",
-  "dep:embassy-hal-internal",
   "dep:embassy-sync",
   "dep:embedded-hal-nb",
   "dep:embedded-io",
@@ -61,8 +60,8 @@ uart = [
 [dependencies]
 consortium-hal           = { path = "../consortium-hal", version = "0.1.0" }
 consortium-pac-imx9      = { default-features = false, path = "../consortium-pac-imx9", version = "0.1.0" }
-critical-section         = { optional = true, version = "1.2.0" }
-embassy-hal-internal     = { optional = true, version = "0.5.0" }
+critical-section         = { version = "1.2.0" }
+embassy-hal-internal     = { version = "0.5.0" }
 embassy-sync             = { optional = true, version = "0.8.0" }
 embassy-time-driver      = { optional = true, version = "0.2.2" }
 embassy-time-queue-utils = { optional = true, version = "0.3.2" }

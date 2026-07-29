@@ -34,7 +34,8 @@
 //! receive FIFO into a ring so no bytes are lost between the wake and the next
 //! poll of the transport's `recv`. Per repository convention, this crate does
 //! **not** install `#[interrupt]` handlers — the application owns the vector
-//! table and forwards the UART interrupt into `BufferedUartState::on_interrupt`,
+//! table and forwards the UART interrupt into `on_buffered_interrupt::<T>`,
+//! parameterized with the same peripheral singleton the driver took. That is
 //! the same wake pattern the doorbell crates use.
 //!
 //! # End-to-end (STM32MP2, `stm32mp25x` + the HAL's `rt` feature)
@@ -43,12 +44,11 @@
 //! use consortium_ipc::Chan;
 //! use consortium_ipc_transport_uart_embedded::{
 //!     UartTransport, rx_buf_len, tx_buf_len,
-//!     stm32mp2::{BufferedUart, BufferedUartState, Config},
+//!     stm32mp2::{BufferedUart, Config, on_buffered_interrupt},
 //! };
 //! use consortium_runtime_mcu::static_buf;
 //!
 //! const MTU: usize = 256;
-//! static UART_STATE: BufferedUartState = BufferedUartState::new();
 //!
 //! // Ring storage for the IRQ handler, plus the transport scratch buffers.
 //! // `static_buf!(NAME, LEN)` declares a `StaticCell<[u8; LEN]>`; `.init(..)`
@@ -57,17 +57,15 @@
 //! static_buf!(RX_SCRATCH, rx_buf_len(MTU));
 //! static_buf!(TX_SCRATCH, tx_buf_len(MTU));
 //!
-//! // SAFETY: `USART2_BASE` is the exclusively owned, clocked, pinned-out
-//! // register block; its interrupt is routed to `UART_STATE` below.
-//! let uart = unsafe {
-//!     BufferedUart::new(
-//!         USART2_BASE,
-//!         KERNEL_HZ,
-//!         Config::default(),
-//!         &UART_STATE,
-//!         RX_RING.init([0; 512]),
-//!     )
-//! };
+//! // The peripheral singleton carries the register base and the driver's
+//! // interrupt state; the platform must leave USART2 clocked and pinned out.
+//! let p = consortium_hal_stm32mp2::init();
+//! let uart = BufferedUart::new(
+//!     p.USART2,
+//!     KERNEL_HZ,
+//!     Config::default(),
+//!     RX_RING.init([0; 512]),
+//! );
 //! let (tx_wire, rx_wire) = uart.split();
 //!
 //! let transport = UartTransport::new(
@@ -84,7 +82,7 @@
 //!
 //! #[interrupt]
 //! fn USART2() {
-//!     UART_STATE.on_interrupt();
+//!     on_buffered_interrupt::<consortium_hal_stm32mp2::peripherals::USART2>();
 //! }
 //! ```
 //!
