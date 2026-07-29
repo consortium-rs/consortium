@@ -44,22 +44,13 @@ gpio = ["dep:embassy-sync", "dep:embedded-hal"]
 i2c  = ["dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
 i3c  = ["dep:embassy-sync"]
 # Compatibility alias for the former top-level PWM feature.
-pwm = ["timer"]
-spi = ["dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
-timer = ["dep:embedded-hal"]
-lptim = ["dep:embassy-sync", "timer"]
-time-driver-gp-tim = [
-  "dep:embassy-sync",
-  "dep:embassy-time-driver",
-  "dep:embassy-time-queue-utils",
-]
-uart = [
-  "dep:embassy-sync",
-  "dep:embedded-hal-nb",
-  "dep:embedded-io",
-  "dep:embedded-io-async",
-]
-defmt = ["consortium-log/defmt", "dep:defmt"]
+pwm                = ["timer"]
+spi                = ["dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-async"]
+timer              = ["dep:embedded-hal"]
+lptim              = ["dep:embassy-sync", "timer"]
+time-driver-gp-tim = ["dep:embassy-sync", "dep:embassy-time-driver", "dep:embassy-time-queue-utils"]
+uart               = ["dep:embassy-sync", "dep:embedded-hal-nb", "dep:embedded-io", "dep:embedded-io-async"]
+defmt              = ["consortium-log/defmt", "dep:defmt"]
 
 [dependencies]
 consortium-hal           = { path = "../consortium-hal", version = "0.1.0" }

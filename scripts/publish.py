@@ -61,7 +61,11 @@ CRATES = [
     ("consortium-hal-imx9", "crates/consortium-hal-imx9", "0.1.0"),
     ("consortium-ipc-doorbell-mu", "crates/consortium-ipc-doorbell-mu", "0.1.0"),
     ("consortium-shared-memory", "crates/consortium-shared-memory", "0.1.0"),
-    ("consortium-ipc-transport-memory", "crates/consortium-ipc-transport-memory", "0.1.0"),
+    (
+        "consortium-ipc-transport-memory",
+        "crates/consortium-ipc-transport-memory",
+        "0.1.0",
+    ),
     ("consortium-cfg", "crates/consortium-cfg", "0.1.0"),
     ("consortium-builder", "crates/consortium-builder", "0.1.0"),
     ("consortium-dbg", "crates/consortium-dbg", "0.1.0"),
@@ -71,10 +75,22 @@ CRATES = [
     ("consortium-hmi-webkit", "crates/consortium-hmi-webkit", "0.1.0"),
     ("consortium-ipc-doorbell-gpio", "crates/consortium-ipc-doorbell-gpio", "0.1.0"),
     ("consortium-ipc-transport-uart", "crates/consortium-ipc-transport-uart", "0.1.0"),
-    ("consortium-ipc-transport-uart-embedded", "crates/consortium-ipc-transport-uart-embedded", "0.1.0"),
-    ("consortium-ipc-transport-uart-unix", "crates/consortium-ipc-transport-uart-unix", "0.1.0"),
+    (
+        "consortium-ipc-transport-uart-embedded",
+        "crates/consortium-ipc-transport-uart-embedded",
+        "0.1.0",
+    ),
+    (
+        "consortium-ipc-transport-uart-unix",
+        "crates/consortium-ipc-transport-uart-unix",
+        "0.1.0",
+    ),
     ("consortium-ort", "crates/consortium-ort", "0.1.0"),
-    ("consortium-runtime-macros-impl", "crates/consortium-runtime-macros-impl", "0.1.0"),
+    (
+        "consortium-runtime-macros-impl",
+        "crates/consortium-runtime-macros-impl",
+        "0.1.0",
+    ),
     ("consortium-runtime-macros", "crates/consortium-runtime-macros", "0.1.0"),
     ("consortium-tee-macros-impl", "crates/consortium-tee-macros-impl", "0.1.0"),
     ("consortium-tee-macros", "crates/consortium-tee-macros", "0.1.0"),
@@ -87,12 +103,16 @@ CRATES = [
 ]
 
 BURST_GAP_SECONDS = 10 * 60 + 15  # 10 min limit + small safety buffer
-RETRY_PARSE_RE = re.compile(r"try again after ([A-Za-z]{3}, \d{2} [A-Za-z]{3} \d{4} [\d:]{8} GMT)")
+RETRY_PARSE_RE = re.compile(
+    r"try again after ([A-Za-z]{3}, \d{2} [A-Za-z]{3} \d{4} [\d:]{8} GMT)"
+)
 
 
 def already_published(name: str, version: str) -> bool:
     url = f"https://crates.io/api/v1/crates/{name}/{version}"
-    req = urllib.request.Request(url, headers={"User-Agent": "publish_remaining.py (resume script)"})
+    req = urllib.request.Request(
+        url, headers={"User-Agent": "publish_remaining.py (resume script)"}
+    )
     try:
         urllib.request.urlopen(req, timeout=15)
         return True
@@ -101,7 +121,10 @@ def already_published(name: str, version: str) -> bool:
             return False
         raise
     except urllib.error.URLError as e:
-        print(f"  ! could not reach crates.io to check {name} ({e}); assuming NOT published", file=sys.stderr)
+        print(
+            f"  ! could not reach crates.io to check {name} ({e}); assuming NOT published",
+            file=sys.stderr,
+        )
         return False
 
 
@@ -126,15 +149,19 @@ def sleep_until_retry_time(error_text: str) -> bool:
     now = datetime.now(timezone.utc)
     wait = (retry_at - now).total_seconds() + 15  # small buffer
     if wait > 0:
-        print(f"  Rate limited. crates.io says retry after {retry_at.isoformat()}. "
-              f"Sleeping {wait/60:.1f} min...")
+        print(
+            f"  Rate limited. crates.io says retry after {retry_at.isoformat()}. "
+            f"Sleeping {wait / 60:.1f} min..."
+        )
         time.sleep(wait)
     return True
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dry-run", action="store_true", help="Don't actually publish, just show plan")
+    ap.add_argument(
+        "--dry-run", action="store_true", help="Don't actually publish, just show plan"
+    )
     ap.add_argument("--start-at", help="Skip ahead to this crate name in the list")
     ap.add_argument("--workspace-root", default=WORKSPACE_ROOT)
     args = ap.parse_args()
@@ -144,7 +171,7 @@ def main():
         names = [c[0] for c in crates]
         if args.start_at not in names:
             sys.exit(f"--start-at {args.start_at!r} not found in crate list")
-        crates = crates[names.index(args.start_at):]
+        crates = crates[names.index(args.start_at) :]
 
     for name, rel_path, version in crates:
         path = f"{args.workspace_root}/{rel_path}"
@@ -160,11 +187,15 @@ def main():
                 break
             if sleep_until_retry_time(output):
                 continue  # retry the same crate immediately after sleeping
-            print(f"  publish failed for {name} and no rate-limit info found; stopping.")
+            print(
+                f"  publish failed for {name} and no rate-limit info found; stopping."
+            )
             sys.exit(1)
 
         if not args.dry_run:
-            print(f"  published. Waiting {BURST_GAP_SECONDS/60:.1f} min before next new-crate publish...")
+            print(
+                f"  published. Waiting {BURST_GAP_SECONDS / 60:.1f} min before next new-crate publish..."
+            )
             time.sleep(BURST_GAP_SECONDS)
 
     print("All crates processed.")
