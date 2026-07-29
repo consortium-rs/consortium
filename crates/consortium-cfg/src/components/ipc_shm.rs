@@ -190,7 +190,13 @@ impl Transceiver {
     /// region, doorbell, channel ids, and unsplit transport, evaluating to the
     /// transport. The descriptor handshake is deferred to
     /// [`connect`](super::ipc_shm::ShuHan), so this performs no IPC.
-    pub fn build_field_init(&self, core: VisibleCore, uio_ident: &Ident) -> TokenStream {
+    pub fn build_field_init(
+        &self,
+        core: VisibleCore,
+        uio_ident: &Ident,
+        source: DoorbellSource,
+        hal_crate: &str,
+    ) -> TokenStream {
         let side = self
             .side(core)
             .expect("core must be either primary or secondary for the transceiver");
@@ -204,14 +210,16 @@ impl Transceiver {
         // interrupt, so only it is opened with `enable_irq` and runs an
         // `irq_loop`. Binding the service to the region device registers it on a
         // handle whose IRQ listener never runs, and the AP never wakes.
-        let doorbell_code = self.doorbell.initialize(
+        let doorbell_code = self.doorbell.initialize(&DoorbellSite {
             side,
             core,
             uio_ident,
-            self.doorbell_address.ap.uio_id,
-            self.doorbell_address.memory_lookup(core, uio_ident),
-            &doorbell_ident,
-        );
+            uio_id: self.doorbell_address.ap.uio_id,
+            base: self.doorbell_address.memory_lookup(core, uio_ident),
+            ident: &doorbell_ident,
+            source: &source,
+            hal_crate,
+        });
 
         let chan_id_tx = match side {
             DoorbellRingerSide::Primary => &self.channel_primary.1.doorbell_chan,
@@ -407,7 +415,68 @@ pub enum DoorbellRingerSide {
     Secondary,
 }
 
+/// Everything one transceiver's doorbell construction needs at its emit site.
+///
+/// `uio_id` must index the UIO device that *owns the doorbell's interrupt* —
+/// the same device `base` is mapped from. Only devices declaring an `irq` are
+/// opened with `enable_irq`, so only they run an `irq_loop` that can dispatch
+/// the bound service.
+pub struct DoorbellSite<'a> {
+    /// Which side of the doorbell the core being generated drives.
+    pub side: DoorbellRingerSide,
+    /// The core being generated.
+    pub core: VisibleCore,
+    /// Ident of the opened-UIO-device slice in scope (AP only).
+    pub uio_ident: &'a Ident,
+    /// Index of the doorbell's own UIO device (AP only).
+    pub uio_id: usize,
+    /// Expression evaluating to the doorbell's register-window base (AP only).
+    pub base: TokenStream,
+    /// Ident to bind the constructed doorbell to.
+    pub ident: &'a Ident,
+    /// Where the doorbell handle comes from on this core.
+    pub source: &'a DoorbellSource,
+    /// Chip HAL crate path, for the `steal` fallback on a shared block.
+    pub hal_crate: &'a str,
+}
+
+/// Where one transceiver's doorbell handle comes from on the core being
+/// generated.
+#[derive(Debug, Clone)]
+pub enum DoorbellSource {
+    /// Linux/AP: an `mmap` of the doorbell's UIO device, which has no
+    /// peripheral singleton.
+    Uio,
+    /// Controller core, first user of this block: takes the singleton that
+    /// `IpcMemoryEndpoints::new` received, named by this parameter ident.
+    Owned(Ident),
+    /// Controller core, a later transceiver on a block another one already
+    /// owns: steals the singleton, since the two drive disjoint channels.
+    Shared(Ident),
+}
+
 impl DoorbellMeta {
+    /// The chip HAL peripheral singleton naming this doorbell's register window
+    /// on `side`, spelled as the chip database does.
+    ///
+    /// MU windows are per-side (`MU7_MUA` / `MU7_MUB`); HSEM and IPCC expose one
+    /// block with a bank per core, so their singleton is side-independent and
+    /// the side stays a type parameter of the doorbell.
+    pub fn singleton(&self, side: DoorbellRingerSide) -> Ident {
+        let id = self.id.unwrap_or(1);
+        match self.r#type {
+            HardwareDoorbellPeripheralType::Mu => {
+                let window = match side {
+                    DoorbellRingerSide::Primary => "MUA",
+                    DoorbellRingerSide::Secondary => "MUB",
+                };
+                format_ident!("MU{id}_{window}")
+            }
+            HardwareDoorbellPeripheralType::Hsem => format_ident!("HSEM"),
+            HardwareDoorbellPeripheralType::Ipcc => format_ident!("IPCC{id}"),
+        }
+    }
+
     /// The doorbell's crate path, type name, and IPC side marker idents.
     ///
     /// Shared by [`as_path`](Self::as_path) (expression position) and
@@ -449,20 +518,18 @@ impl DoorbellMeta {
     }
 
     /// Emit the doorbell construction, and on the AP its UIO IRQ binding.
-    ///
-    /// `doorbell_uio_id` must index the UIO device that *owns the doorbell's
-    /// interrupt* — the same device `doorbell_base` is mapped from. Only devices
-    /// declaring an `irq` are opened with `enable_irq`, so only they run an
-    /// `irq_loop` that can dispatch the bound service.
-    pub fn initialize(
-        &self,
-        side: DoorbellRingerSide,
-        core: VisibleCore,
-        uio_ident: &Ident,
-        doorbell_uio_id: usize,
-        doorbell_base: TokenStream,
-        doorbell_ident: &Ident,
-    ) -> TokenStream {
+    pub fn initialize(&self, site: &DoorbellSite<'_>) -> TokenStream {
+        let DoorbellSite {
+            side,
+            core,
+            uio_ident,
+            uio_id: doorbell_uio_id,
+            base: doorbell_base,
+            ident: doorbell_ident,
+            source,
+            hal_crate,
+        } = site;
+        let (side, core) = (*side, *core);
         let doorbell = self.as_path(side);
 
         // On the AP the UIO IRQ fanout runs a per-doorbell service on every M→A
@@ -495,10 +562,34 @@ impl DoorbellMeta {
             _ => None,
         };
 
+        // The AP reaches the doorbell through an `mmap` of its UIO device, which
+        // has no peripheral singleton; controller cores own the real peripheral,
+        // so they hand the doorbell its singleton and never name an address.
+        let construct = match source {
+            DoorbellSource::Uio => quote::quote! {
+                /// SAFETY: the base is the UIO-mapped doorbell register window,
+                /// resolved from the validated Consortium hardware database.
+                let #doorbell_ident = unsafe { #doorbell::new_mapped(#doorbell_base) };
+            },
+            DoorbellSource::Owned(param) => quote::quote! {
+                let #doorbell_ident = #doorbell::new(#param);
+            },
+            DoorbellSource::Shared(singleton) => {
+                let hal: syn::Path =
+                    syn::parse_str(hal_crate).expect("hal_crate must be a valid path");
+                quote::quote! {
+                    /// SAFETY: another transceiver on this core already owns this
+                    /// doorbell block; the two address disjoint channels of it, as
+                    /// the manifest's duplicate-channel validation guarantees.
+                    let #doorbell_ident = #doorbell::new(unsafe {
+                        #hal::peripherals::#singleton::steal()
+                    });
+                }
+            }
+        };
+
         quote::quote! {
-            /// SAFETY: the base is the UIO-mapped doorbell register window,
-            /// resolved from the validated Consortium hardware database.
-            let #doorbell_ident = unsafe { #doorbell::new(#doorbell_base) };
+            #construct
             #binding_uio_stmt
         }
     }
@@ -547,6 +638,11 @@ impl fmt::Display for DoorbellMeta {
     }
 }
 
+/// The `IpcMemoryEndpoints::new` parameter that carries `singleton`.
+fn doorbell_param(singleton: &Ident) -> Ident {
+    format_ident!("__db_{}", singleton.to_string().to_lowercase())
+}
+
 /// SHared Memory Unified, Hardware abstraction node.
 #[derive(Debug, Clone)]
 pub struct ShuHan {
@@ -564,6 +660,55 @@ impl ShuHan {
         &self.transceivers
     }
 
+    /// Where each transceiver's doorbell comes from on `core`, plus the distinct
+    /// singletons a controller core's `IpcMemoryEndpoints::new` must be handed.
+    ///
+    /// Two transceivers may share one doorbell block (disjoint channels of the
+    /// same MU or IPCC) and a singleton moves only once, so the first user takes
+    /// the parameter and later ones steal it. The AP has no singletons at all —
+    /// it reaches its doorbells through UIO `mmap`.
+    fn doorbell_sources(
+        &self,
+        core: VisibleCore,
+        available: &[String],
+    ) -> (Vec<Ident>, Vec<DoorbellSource>) {
+        let mut owned: Vec<Ident> = Vec::new();
+        let sources = self
+            .transceivers
+            .iter()
+            .map(|t| {
+                if core == VisibleCore::Ap {
+                    return DoorbellSource::Uio;
+                }
+                let side = t
+                    .side(core)
+                    .expect("core must be either primary or secondary for the transceiver");
+                let singleton = t.doorbell.singleton(side);
+                // A core with no bundled chip map (or one whose map does not
+                // reach this window) has no singleton to hand over, so it keeps
+                // the address-based construction it has always used.
+                if !available
+                    .iter()
+                    .any(|name| name.eq_ignore_ascii_case(&singleton.to_string()))
+                {
+                    return DoorbellSource::Uio;
+                }
+                if owned.contains(&singleton) {
+                    return DoorbellSource::Shared(singleton);
+                }
+                owned.push(singleton.clone());
+                DoorbellSource::Owned(doorbell_param(&singleton))
+            })
+            .collect();
+        (owned, sources)
+    }
+
+    /// The distinct doorbell singletons `core` must hand to
+    /// [`IpcMemoryEndpoints::new`](ShuHan::initialize), in parameter order.
+    pub fn doorbell_singletons(&self, core: VisibleCore, available: &[String]) -> Vec<Ident> {
+        self.doorbell_sources(core, available).0
+    }
+
     /// Generates the per-core IPC endpoint module: a *disconnected*
     /// `IpcMemoryEndpoints` whose `new` only builds the transports, and a
     /// `IpcMemoryEndpointsConnected` produced by an `async fn connect` that runs
@@ -572,7 +717,16 @@ impl ShuHan {
     /// Splitting construction from connection makes "use a transceiver before the
     /// descriptor is initialized" unrepresentable: `send`/`recv` live only on the
     /// connected type, which cannot exist without the handshake having run.
-    pub fn initialize(&self, core: VisibleCore, uio_ident: &Ident, ty_crate: &Path) -> TokenStream {
+    pub fn initialize(
+        &self,
+        core: VisibleCore,
+        uio_ident: &Ident,
+        ty_crate: &Path,
+        hal_crate: &str,
+        available: &[String],
+    ) -> TokenStream {
+        let (doorbell_params, sources) = self.doorbell_sources(core, available);
+
         // Disconnected fields hold the unsplit transport; connected fields hold
         // the typed transceiver.
         let disconnected_def = self.transceivers.iter().map(|t| {
@@ -588,11 +742,16 @@ impl ShuHan {
 
         // `new`-body field inits (build only) and `connect`-body field inits
         // (handshake + split + typed channels).
-        let build_inits = self.transceivers.iter().map(|t| {
-            let ident = Ident::new(t.name.as_str(), Span::call_site());
-            let init = t.build_field_init(core, uio_ident);
-            quote::quote! { #ident: #init }
-        });
+        let build_inits = self
+            .transceivers
+            .iter()
+            .zip(sources.iter())
+            .map(|(t, source)| {
+                let ident = Ident::new(t.name.as_str(), Span::call_site());
+                let init = t.build_field_init(core, uio_ident, source.clone(), hal_crate);
+                quote::quote! { #ident: #init }
+            })
+            .collect::<Vec<_>>();
         // Each transceiver's scratch-buffer statics are hoisted to module scope;
         // the field initializer only borrows them.
         let mut connect_buffers = Vec::new();
@@ -624,8 +783,15 @@ impl ShuHan {
                 },
             )
         } else {
+            let hal: syn::Path = syn::parse_str(hal_crate).expect("hal_crate must be a valid path");
+            let parameters = doorbell_params.iter().map(|singleton| {
+                let param = doorbell_param(singleton);
+                quote::quote! {
+                    #param: #hal::Peri<'static, #hal::peripherals::#singleton>
+                }
+            });
             (
-                quote::quote! { fn new() -> Self },
+                quote::quote! { fn new(#(#parameters),*) -> Self },
                 quote::quote! {
                     Self {
                         #(#build_inits),*
@@ -841,7 +1007,14 @@ mod tests {
         };
 
         let uio = format_ident!("uio");
-        let init = t.build_field_init(VisibleCore::Ap, &uio).to_string();
+        let init = t
+            .build_field_init(
+                VisibleCore::Ap,
+                &uio,
+                DoorbellSource::Uio,
+                "::consortium_hal_stm32mp2",
+            )
+            .to_string();
 
         assert!(init.contains("uio [2usize] . bind_service"), "{init}");
         assert!(!init.contains("uio [1usize] . bind_service"), "{init}");
@@ -863,7 +1036,14 @@ mod tests {
         };
         // `transceiver` uses HSEM, which takes the plain `Notify` fanout.
         let uio = format_ident!("uio");
-        let init = t.build_field_init(VisibleCore::Ap, &uio).to_string();
+        let init = t
+            .build_field_init(
+                VisibleCore::Ap,
+                &uio,
+                DoorbellSource::Uio,
+                "::consortium_hal_stm32mp2",
+            )
+            .to_string();
 
         assert!(init.contains("uio [2usize] . bind_notifier"), "{init}");
         assert!(!init.contains("uio [1usize] . bind_notifier"), "{init}");

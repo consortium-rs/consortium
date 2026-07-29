@@ -1,9 +1,15 @@
 //! i.MX 9 TPM timers and their operating modes.
 //!
-//! A [`Timer`] owns one TPM register block. Consume it with
-//! [`Timer::into_pwm`] to select PWM mode, mirroring Embassy's timer-driver
-//! ownership model.
+//! A [`Timer`] owns one TPM register block, taken from its peripheral
+//! singleton. Consume it with [`Timer::into_pwm`] to select PWM mode,
+//! mirroring Embassy's timer-driver ownership model:
+//!
+//! ```ignore
+//! let p = consortium_hal_imx9::init();
+//! let pwm = Timer::new(p.TPM1, 24_000_000).into_pwm(1_000);
+//! ```
 
+use embassy_hal_internal::{Peri, PeripheralType};
 use pac::peripherals::tpm::TPM;
 
 use crate::pac;
@@ -42,9 +48,12 @@ impl Channel {
     }
 }
 
-/// TPM peripheral instance.
+/// Which TPM a [`Timer`] drives.
+///
+/// Carried by [`Instance::ID`] so the DMA layer can select the instance's
+/// request lines; it names no addresses of its own.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Instance {
+pub enum TimerId {
     Tpm1,
     Tpm2,
     Tpm3,
@@ -52,6 +61,47 @@ pub enum Instance {
     Tpm5,
     Tpm6,
 }
+
+/// Crate-internal half of [`Instance`]: visible to the generated bindings that
+/// implement it, sealed against downstream crates.
+pub(crate) trait SealedInstance {
+    /// This instance's register block, at its database-resolved base.
+    fn regs() -> TPM;
+}
+
+/// A TPM the [`Timer`] driver can drive.
+///
+/// Implemented by the generated peripheral singletons; sealed so the base
+/// address stays single-sourced from the chip database.
+#[allow(private_bounds)]
+pub trait Instance: SealedInstance + PeripheralType {
+    /// NVIC line this instance raises, when the chip routes one to this core.
+    const IRQ: Option<u16>;
+    /// Which TPM this is, for eDMA request selection.
+    const ID: TimerId;
+}
+
+/// Bind a generated peripheral singleton to this driver. Invoked only by the
+/// generated `peripherals` module.
+macro_rules! impl_tpm {
+    ($instance:ident, $base:expr, $id:ident, $irq:expr) => {
+        impl crate::timer::SealedInstance for crate::peripherals::$instance {
+            #[inline]
+            fn regs() -> crate::pac::peripherals::tpm::TPM {
+                // SAFETY: `$base` is this instance's TPM base as extracted from
+                // the chip database, and the singleton this impl is keyed to
+                // can be held by only one driver at a time.
+                unsafe { crate::pac::peripherals::tpm::TPM::from_ptr($base as *mut ()) }
+            }
+        }
+
+        impl crate::timer::Instance for crate::peripherals::$instance {
+            const IRQ: ::core::option::Option<u16> = $irq;
+            const ID: crate::timer::TimerId = crate::timer::TimerId::$id;
+        }
+    };
+}
+pub(crate) use impl_tpm;
 
 /// Output polarity of a timer channel.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -67,48 +117,38 @@ pub struct Timer {
     tpm: TPM,
     clock_hz: u32,
     #[cfg(feature = "dma")]
-    instance: Option<Instance>,
+    id: TimerId,
 }
 
 impl Timer {
-    /// Bind a TPM register block.
+    /// Bind a TPM from its peripheral singleton.
     ///
-    /// # Safety
-    ///
-    /// `base` must point to a valid, exclusively owned i.MX 9 TPM register
-    /// block. The caller must enable its clock root.
-    pub unsafe fn from_raw(base: *mut (), clock_hz: u32) -> Self {
+    /// The platform must leave the instance's clock root enabled; `clock_hz` is
+    /// the frequency it runs at.
+    pub fn new<T: Instance>(peri: Peri<'static, T>, clock_hz: u32) -> Self {
         assert!(clock_hz > 0, "timer clock must be non-zero");
-        // SAFETY: upheld by the caller.
-        let tpm = unsafe { TPM::from_ptr(base) };
+        // Owning the singleton for the driver's lifetime is what makes exclusive
+        // register access safe; it is consumed here and never reissued.
+        let _ = peri;
         Self {
-            tpm,
+            tpm: T::regs(),
             clock_hz,
             #[cfg(feature = "dma")]
-            instance: instance_from_address(base as usize),
+            id: T::ID,
         }
     }
 
-    /// Bind a TPM register block while explicitly identifying its instance.
-    ///
-    /// Use this for remapped/secure aliases whose address is not recognized by
-    /// [`Timer::from_raw`].
-    ///
-    /// # Safety
-    ///
-    /// The same ownership and clocking requirements as [`Timer::from_raw`]
-    /// apply, and `instance` must identify the supplied register block.
-    pub unsafe fn from_raw_instance(base: *mut (), clock_hz: u32, instance: Instance) -> Self {
-        assert!(clock_hz > 0, "timer clock must be non-zero");
+    /// Build a timer over an arbitrary register block, for tests that stand a
+    /// plain array in for the TPM.
+    #[cfg(test)]
+    pub(crate) fn over(tpm: TPM, clock_hz: u32, id: TimerId) -> Self {
         #[cfg(not(feature = "dma"))]
-        let _ = instance;
-        // SAFETY: upheld by the caller.
-        let tpm = unsafe { TPM::from_ptr(base) };
+        let _ = id;
         Self {
             tpm,
             clock_hz,
             #[cfg(feature = "dma")]
-            instance: Some(instance),
+            id,
         }
     }
 
@@ -127,22 +167,7 @@ impl Timer {
     }
 
     #[cfg(feature = "dma")]
-    pub(crate) fn instance(&self) -> Instance {
-        self.instance
-            .expect("TPM instance is required for DMA request selection")
-    }
-}
-
-#[cfg(feature = "dma")]
-const fn instance_from_address(address: usize) -> Option<Instance> {
-    // Secure aliases add 0x1000_0000 to these non-secure CM addresses.
-    match address & !0x1000_0000 {
-        0x4431_0000 => Some(Instance::Tpm1),
-        0x4432_0000 => Some(Instance::Tpm2),
-        0x424e_0000 => Some(Instance::Tpm3),
-        0x424f_0000 => Some(Instance::Tpm4),
-        0x4250_0000 => Some(Instance::Tpm5),
-        0x4251_0000 => Some(Instance::Tpm6),
-        _ => None,
+    pub(crate) fn id(&self) -> TimerId {
+        self.id
     }
 }

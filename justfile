@@ -728,6 +728,14 @@ pac-parse-stm32:
 pac-parse-nxp:
     python scripts/pac/parse_nxp.py --all
 
+# Generate svd2rust-style interrupt tables from the chip databases
+pac-gen-interrupts:
+    python scripts/pac/gen_interrupts.py
+
+# Generate the chip HALs' peripheral singletons from the chip databases
+pac-gen-peripherals:
+    python scripts/pac/gen_peripherals.py
+
 # Parse all CMSIS headers (STM32 + NXP)
 pac-parse-all: pac-parse-stm32 pac-parse-nxp
     @echo "✓ All parsers completed"

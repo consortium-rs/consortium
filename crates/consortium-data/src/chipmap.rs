@@ -98,6 +98,10 @@ struct RawPeripheral {
 /// A resolved peripheral: its MMIO base and register-block reference.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PeripheralEntry {
+    /// Instance name exactly as the dump spells it, e.g. `LPI2C1`. Lookups are
+    /// case-insensitive, so this is what code generation must use when it needs
+    /// to name the matching HAL peripheral singleton.
+    pub name: String,
     /// Physical base address as seen by the owning core.
     pub base: u32,
     /// Register-block reference from the dump, e.g. `lpi2c/LPI2C` or `gpio/GPIO`.
@@ -139,6 +143,14 @@ impl ChipMap {
     /// Whether this core can reach the named peripheral instance.
     pub fn contains_peripheral(&self, name: &str) -> bool {
         self.peripherals.contains_key(&name.to_ascii_lowercase())
+    }
+
+    /// Every peripheral instance name this core can reach, as the dump spells
+    /// them. Order is unspecified; callers that emit code must sort.
+    pub fn peripheral_names(&self) -> Vec<String> {
+        let mut names: Vec<String> = self.peripherals.values().map(|p| p.name.clone()).collect();
+        names.sort();
+        names
     }
 
     /// Look up an interrupt by name (case-insensitive).
@@ -188,6 +200,7 @@ pub fn load(chip: &str, core: &str) -> Result<ChipMap, DataError> {
         peripherals.insert(
             p.name.to_ascii_lowercase(),
             PeripheralEntry {
+                name: p.name,
                 base,
                 block: p.block,
             },

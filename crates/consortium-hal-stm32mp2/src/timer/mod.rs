@@ -1,10 +1,18 @@
 //! STM32MP2 general-purpose timers and their operating modes.
 //!
-//! A [`Timer`] owns one timer register block. Consume it with
-//! one of the mode drivers, following `embassy-stm32`'s low-level timer plus
-//! mode-driver layering. The mode drivers are polling/synchronous; DMA-backed
-//! ring-buffered modes will be added with the HAL's DMA/IRQ ownership layer.
+//! A [`Timer`] owns one timer register block, taken from its peripheral
+//! singleton. Consume it with one of the mode drivers, following
+//! `embassy-stm32`'s low-level timer plus mode-driver layering:
+//!
+//! ```ignore
+//! let p = consortium_hal_stm32mp2::init();
+//! let pwm = Timer::new(p.TIM3, 64_000_000).into_pwm(1_000);
+//! ```
+//!
+//! The mode drivers are polling/synchronous; DMA-backed ring-buffered modes
+//! will be added with the HAL's DMA/IRQ ownership layer.
 
+use embassy_hal_internal::{Peri, PeripheralType};
 use pac::peripherals::timer::TIM_GP;
 
 use crate::pac;
@@ -76,6 +84,47 @@ pub enum TimerWidth {
     Bits32,
 }
 
+/// Crate-internal half of [`Instance`]: visible to the generated bindings that
+/// implement it, sealed against downstream crates.
+pub(crate) trait SealedInstance {
+    /// This instance's register block, at its database-resolved base.
+    fn regs() -> TIM_GP;
+}
+
+/// A timer the [`Timer`] driver can drive.
+///
+/// Implemented by the generated peripheral singletons; sealed so the base
+/// address and counter width stay single-sourced from the chip database.
+#[allow(private_bounds)]
+pub trait Instance: SealedInstance + PeripheralType {
+    /// NVIC line this instance raises, when the chip routes one to this core.
+    const IRQ: Option<u16>;
+    /// Whether this timer's counter and auto-reload register are 32 bits wide.
+    const WIDTH: TimerWidth;
+}
+
+/// Bind a generated peripheral singleton to this driver. Invoked only by the
+/// generated `peripherals` module.
+macro_rules! impl_tim {
+    ($instance:ident, $base:expr, $width:ident, $irq:expr) => {
+        impl crate::timer::SealedInstance for crate::peripherals::$instance {
+            #[inline]
+            fn regs() -> crate::pac::peripherals::timer::TIM_GP {
+                // SAFETY: `$base` is this instance's timer base as extracted
+                // from the chip database, and the singleton this impl is keyed
+                // to can be held by only one driver at a time.
+                unsafe { crate::pac::peripherals::timer::TIM_GP::from_ptr($base as *mut ()) }
+            }
+        }
+
+        impl crate::timer::Instance for crate::peripherals::$instance {
+            const IRQ: ::core::option::Option<u16> = $irq;
+            const WIDTH: crate::timer::TimerWidth = crate::timer::TimerWidth::$width;
+        }
+    };
+}
+pub(crate) use impl_tim;
+
 /// Exclusive ownership of one STM32MP2 timer.
 pub struct Timer {
     tim: TIM_GP,
@@ -84,27 +133,27 @@ pub struct Timer {
 }
 
 impl Timer {
-    /// Bind a general-purpose or advanced-control timer register block.
+    /// Bind a timer from its peripheral singleton.
     ///
-    /// # Safety
-    ///
-    /// `base` must point to a valid, exclusively owned STM32MP2 timer register
-    /// block. The caller must enable its RCC kernel clock.
-    pub unsafe fn from_raw(base: *mut (), clock_hz: u32) -> Self {
-        // SAFETY: forwarded from the caller.
-        unsafe { Self::from_raw_with_width(base, clock_hz, TimerWidth::Bits16) }
+    /// The counter width comes from the chip database, so 32-bit timers such as
+    /// TIM2 and TIM5 are recognized without the caller declaring it. The
+    /// platform must leave the instance's RCC kernel clock enabled.
+    pub fn new<T: Instance>(peri: Peri<'static, T>, clock_hz: u32) -> Self {
+        assert!(clock_hz > 0, "timer clock must be non-zero");
+        // Owning the singleton for the driver's lifetime is what makes exclusive
+        // register access safe; it is consumed here and never reissued.
+        let _ = peri;
+        Self {
+            tim: T::regs(),
+            clock_hz,
+            width: T::WIDTH,
+        }
     }
 
-    /// Bind a timer and specify whether its counter is 16 or 32 bits wide.
-    ///
-    /// # Safety
-    ///
-    /// The requirements are the same as [`Timer::from_raw`], and `width` must
-    /// match the selected hardware timer.
-    pub unsafe fn from_raw_with_width(base: *mut (), clock_hz: u32, width: TimerWidth) -> Self {
-        assert!(clock_hz > 0, "timer clock must be non-zero");
-        // SAFETY: upheld by the caller.
-        let tim = unsafe { TIM_GP::from_ptr(base) };
+    /// Build a timer over an arbitrary register block, for tests that stand a
+    /// plain array in for the timer.
+    #[cfg(test)]
+    pub(crate) fn over(tim: TIM_GP, clock_hz: u32, width: TimerWidth) -> Self {
         Self {
             tim,
             clock_hz,

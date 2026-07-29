@@ -12,6 +12,7 @@ use core::cell::{Cell, RefCell};
 use core::sync::atomic::{AtomicPtr, AtomicU32, Ordering, compiler_fence};
 
 use critical_section::CriticalSection;
+use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::blocking_mutex::Mutex;
 use embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex;
 use embassy_time_driver::{Driver, TICK_HZ};
@@ -222,21 +223,59 @@ impl Driver for GpTimerTimeDriver {
     }
 }
 
-/// Initialize the global Embassy time driver from a TIM register base.
+/// Initialize the global Embassy time driver from a TIM peripheral singleton.
 ///
-/// # Safety
-///
-/// `base` must point to a valid STM32 general-purpose timer register block that
-/// is exclusively owned by the time driver for the lifetime of the program.
 /// `clock_hz` is the timer instance's kernel clock; it must be an integer
 /// multiple of `embassy_time_driver::TICK_HZ` with a divider that fits the
 /// 16-bit prescaler, or initialization panics. The caller must also route and
 /// enable the instance's interrupt to [`on_timer_interrupt`].
-pub unsafe fn init_timer(base: *mut (), clock_hz: u32) {
+pub fn init_timer<T: Instance>(peri: Peri<'static, T>, clock_hz: u32) {
     consortium_log::trace!("init_timer, clock hz={}", clock_hz);
-    // SAFETY: Propagates the caller's MMIO validity and exclusivity contract.
-    unsafe { DRIVER.init(base, clock_hz) }
+    // Owning the singleton for the program's lifetime is what makes the
+    // driver's exclusive register access safe; it is consumed here.
+    let _ = peri;
+    // SAFETY: `T::regs()` is the instance's database-resolved timer block, and
+    // the consumed singleton guarantees nothing else drives it.
+    unsafe { DRIVER.init(T::regs().as_ptr(), clock_hz) }
 }
+
+/// Crate-internal half of [`Instance`]: visible to the generated bindings that
+/// implement it, sealed against downstream crates.
+pub(crate) trait SealedInstance {
+    /// This instance's register block, at its database-resolved base.
+    fn regs() -> TIM_GP;
+}
+
+/// A timer that can back the Embassy time driver.
+///
+/// Implemented by the generated peripheral singletons; sealed so the base
+/// address stays single-sourced from the chip database.
+#[allow(private_bounds)]
+pub trait Instance: SealedInstance + PeripheralType {
+    /// NVIC line this instance raises, when the chip routes one to this core.
+    const IRQ: Option<u16>;
+}
+
+/// Bind a generated peripheral singleton to this driver. Invoked only by the
+/// generated `peripherals` module.
+macro_rules! impl_tim_driver {
+    ($instance:ident, $base:expr, $irq:expr) => {
+        impl crate::timer_driver::SealedInstance for crate::peripherals::$instance {
+            #[inline]
+            fn regs() -> crate::pac::peripherals::timer::TIM_GP {
+                // SAFETY: `$base` is this instance's timer base as extracted
+                // from the chip database, and the singleton this impl is keyed
+                // to can be held by only one driver at a time.
+                unsafe { crate::pac::peripherals::timer::TIM_GP::from_ptr($base as *mut ()) }
+            }
+        }
+
+        impl crate::timer_driver::Instance for crate::peripherals::$instance {
+            const IRQ: ::core::option::Option<u16> = $irq;
+        }
+    };
+}
+pub(crate) use impl_tim_driver;
 
 /// Handle the selected TIM interrupt.
 pub fn on_timer_interrupt() {
@@ -248,23 +287,24 @@ pub fn on_timer_interrupt() {
 /// route its interrupt line.
 ///
 /// This encodes the reference-board wiring for the CM33 non-secure context:
-/// TIM2 at `0x4000_0000` clocked from the 64 MHz kernel clock, IRQ 105 at NVIC
-/// priority `0x80`. The boot/runtime handoff must leave TIM2 clocked at that
-/// rate. The caller (the generated `init`) still owns the `#[interrupt] fn
-/// TIM2()` vector that forwards to [`on_timer_interrupt`]. Firmware that manages
-/// its own time base should disable the generated time driver (`time_driver =
-/// false`) and call [`init_timer`] directly instead.
+/// TIM2 clocked from the 64 MHz kernel clock, at NVIC priority `0x80`. The
+/// boot/runtime handoff must leave TIM2 clocked at that rate. The caller (the
+/// generated `init`) still owns the `#[interrupt] fn TIM2()` vector that
+/// forwards to [`on_timer_interrupt`]. Firmware that manages its own time base
+/// should disable the generated time driver (`time_driver = false`) and call
+/// [`init_timer`] directly instead.
 ///
-/// # Safety
+/// Takes the TIM2 singleton so the reservation is visible in the type system:
+/// nothing else can build a driver over it afterwards.
 ///
-/// Must be called once during controller bring-up, in privileged mode, with
-/// exclusive access to the RCC, TIM2, and NVIC and before any `embassy-time`
-/// use.
-pub unsafe fn bringup() {
+/// # Panics
+///
+/// Panics if TIM2 has no NVIC line on this core.
+pub fn bringup(tim2: Peri<'static, crate::peripherals::TIM2>) {
     const RCC_BASE_NS: *mut () = 0x4420_0000 as *mut ();
-    const TIM2_BASE_NS: *mut () = 0x4000_0000 as *mut ();
-    const TIM2_IRQ: u16 = 105;
     const TIM2_CLOCK_HZ: u32 = 64_000_000;
+    let irq =
+        <crate::peripherals::TIM2 as Instance>::IRQ.expect("TIM2 has no NVIC line on this core");
 
     // SAFETY: `RCC_BASE_NS` is the STM32MP257F non-secure RCC register block;
     // enabling TIM2's kernel/low-power clock is the documented boot handoff for
@@ -276,15 +316,13 @@ pub unsafe fn bringup() {
         w.set_TIM2LPEN(true);
     });
 
-    // SAFETY: TIM2 is reserved for the time driver and clocked above; its IRQ is
-    // routed to `on_timer_interrupt` through the generated vector.
-    unsafe { init_timer(TIM2_BASE_NS, TIM2_CLOCK_HZ) };
+    init_timer(tim2, TIM2_CLOCK_HZ);
 
-    // SAFETY: `TIM2_IRQ` is the STM32MP257F non-secure TIM2 vector; the handler
+    // SAFETY: `irq` is TIM2's vector from the chip database; the handler
     // forwarding to the time driver is installed by the generated code.
-    unsafe { crate::hal::nvic::set_priority(TIM2_IRQ, 0x80) };
+    unsafe { crate::hal::nvic::set_priority(irq, 0x80) };
     // SAFETY: see above; enabling the same reserved TIM2 vector.
-    unsafe { crate::hal::nvic::enable(TIM2_IRQ) };
+    unsafe { crate::hal::nvic::enable(irq) };
 }
 
 #[cfg(test)]

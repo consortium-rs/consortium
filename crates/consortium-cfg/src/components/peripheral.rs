@@ -17,12 +17,16 @@
 //! Peripheral bring-up code generation.
 //!
 //! Emits, for the peripherals a controller core owns, the HAL driver handles
-//! plus their supporting `static` interrupt state, `#[no_mangle]` interrupt
-//! handlers, and NVIC enablement. The bases and interrupt numbers are resolved
-//! from the per-core chip map ([`crate::chipmap`]); this component only shapes
-//! them into Rust. All emitted items are gated to `target_arch = "arm"` because
-//! they reference the chip HAL crate, which the host trybuild harness never
-//! links.
+//! plus their `#[no_mangle]` interrupt handlers and NVIC enablement.
+//!
+//! Drivers take the chip HAL's peripheral singletons rather than MMIO bases, so
+//! the generated `peripherals` constructor is a plain function over `Peri`
+//! arguments that `init` feeds from `hal::init()`. Bases no longer appear here
+//! at all — the HAL's generated bindings own them — but the singleton *names*
+//! and interrupt numbers still come from the per-core chip map
+//! ([`crate::chipmap`]). All emitted items are gated to `target_arch = "arm"`
+//! because they reference the chip HAL crate, which the host trybuild harness
+//! never links.
 
 use consortium_cfg_common::config::VisibleCore;
 use proc_macro2::{Ident, Span, TokenStream};
@@ -49,8 +53,9 @@ pub struct PeripheralInstance {
     pub owner: VisibleCore,
     /// Config key, used verbatim as the handle field/ident (e.g. `lpi2c1`).
     pub key: String,
-    /// Physical base as seen by the owner, with the security alias applied.
-    pub base: u32,
+    /// Chip HAL peripheral singleton for this instance, spelled as the chip
+    /// database does (e.g. `LPI2C1`). Names the type the driver is handed.
+    pub singleton: String,
     /// The resolved driver kind and its parameters.
     pub kind: PeripheralKind,
 }
@@ -80,7 +85,7 @@ impl Peripherals {
             syn::parse_str(&self.hal_crate).expect("hal_crate must be a valid path");
         let mut fields = Vec::new();
         let mut field_names = Vec::new();
-        let mut statics = Vec::new();
+        let mut parameters = Vec::new();
         let mut handlers = Vec::new();
         let mut nvic = Vec::new();
         let mut constructs = Vec::new();
@@ -88,7 +93,10 @@ impl Peripherals {
         for instance in owned {
             let field = ident(&instance.key);
             field_names.push(field.clone());
-            let base = instance.base;
+            let singleton = ident(&instance.singleton);
+            parameters.push(quote! {
+                #field: #hal::Peri<'static, #hal::peripherals::#singleton>
+            });
 
             match &instance.kind {
                 PeripheralKind::I2c {
@@ -97,19 +105,16 @@ impl Peripherals {
                     irq_number,
                     irq_name,
                 } => {
-                    let state = ident(&format!("{}_STATE", instance.key.to_ascii_uppercase()));
                     let handler = ident(&format!("{irq_name}_IRQHandler"));
 
                     fields.push(quote! { pub #field: #hal::i2c::I2c });
-                    statics.push(quote! {
-                        #[cfg(target_arch = "arm")]
-                        static #state: #hal::i2c::I2cState = #hal::i2c::I2cState::new();
-                    });
+                    // The driver keeps one interrupt state per instance behind
+                    // the singleton type, so the vector only names the instance.
                     handlers.push(quote! {
                         #[cfg(target_arch = "arm")]
                         #[unsafe(no_mangle)]
                         extern "C" fn #handler() {
-                            #state.on_interrupt();
+                            #hal::i2c::on_interrupt::<#hal::peripherals::#singleton>();
                         }
                     });
                     nvic.push(quote! {
@@ -122,20 +127,13 @@ impl Peripherals {
                         }
                     });
                     constructs.push(quote! {
-                        /// SAFETY: `base` is this core's validated I2C base from the
-                        /// Consortium chip map, owned exclusively by this driver;
-                        /// its dedicated state's interrupt is routed above.
-                        let #field = unsafe {
-                            #hal::i2c::I2c::new(#base as *mut (), #clock_hz, #frequency, &#state)
-                        };
+                        let #field = #hal::i2c::I2c::new(#field, #clock_hz, #frequency);
                     });
                 }
                 PeripheralKind::Gpio => {
                     fields.push(quote! { pub #field: #hal::gpio::Gpio });
                     constructs.push(quote! {
-                        /// SAFETY: `base` is this core's validated GPIO port base from
-                        /// the Consortium chip map, owned exclusively by this driver.
-                        let #field = unsafe { #hal::gpio::Gpio::new(#base as *mut ()) };
+                        let #field = #hal::gpio::Gpio::new(#field);
                     });
                 }
             }
@@ -148,16 +146,19 @@ impl Peripherals {
                 #(#fields,)*
             }
 
-            #(#statics)*
             #(#handlers)*
 
             /// Brings up this core's owned peripherals: enables their interrupts
-            /// and constructs the HAL drivers with their bases baked in.
+            /// and consumes each singleton into its HAL driver.
+            ///
+            /// Taking the singletons one by one rather than the whole
+            /// `hal::Peripherals` lets `init` also hand fields to the time driver
+            /// and the doorbells without fighting partial moves.
             ///
             /// Compiled only for Cortex-M targets; the host trybuild harness skips
             /// it along with the rest of the peripheral module.
             #[cfg(target_arch = "arm")]
-            fn peripherals() -> Peripherals {
+            fn peripherals(#(#parameters),*) -> Peripherals {
                 #(#nvic)*
                 #(#constructs)*
                 Peripherals {
@@ -165,6 +166,16 @@ impl Peripherals {
                 }
             }
         })
+    }
+
+    /// The singleton idents `peripherals` takes on `core`, in parameter order,
+    /// so `init` can spell the matching `hal::init()` fields.
+    pub fn arguments(&self, core: VisibleCore) -> Vec<Ident> {
+        self.instances
+            .iter()
+            .filter(|p| p.owner == core)
+            .map(|p| ident(&p.singleton))
+            .collect()
     }
 }
 

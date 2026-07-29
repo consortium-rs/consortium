@@ -2,10 +2,10 @@
 //! instance.
 //!
 //! Select an instance by passing its MMIO base to [`Spi::new`] together with a
-//! `&'static` [`SpiState`]. Blocking transfers ([`embedded_hal::spi::SpiBus`])
+//! `&'static` [`State`]. Blocking transfers ([`embedded_hal::spi::SpiBus`])
 //! work without interrupts. Async transfers
 //! ([`embedded_hal_async::spi::SpiBus`]) require the caller to route the
-//! instance's interrupt to [`SpiState::on_interrupt`].
+//! instance's interrupt to [`State::on_interrupt`].
 //!
 //! This is a byte-oriented full-duplex master. Each `SpiBus` method programs
 //! `CR2.TSIZE` with the frame count and issues one `CR1.CSTART`, so it reads as
@@ -22,9 +22,9 @@
 //! public shape. The interrupt/polling path is the default and only path today.
 
 use core::future::poll_fn;
-use core::sync::atomic::{AtomicPtr, Ordering};
 use core::task::Poll;
 
+use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 use embedded_hal::spi::{ErrorKind, ErrorType, MODE_0, Mode, Phase, Polarity};
 use pac::peripherals::spi::SPI;
@@ -95,16 +95,14 @@ const fn mbr(clock_hz: u32, frequency: u32) -> u8 {
 }
 
 /// Per-instance interrupt state shared between a [`Spi`] and its IRQ handler.
-pub struct SpiState {
-    base: AtomicPtr<()>,
+pub struct State {
     waker: AtomicWaker,
 }
 
-impl SpiState {
+impl State {
     /// Create an empty state suitable for a `static`.
-    pub const fn new() -> Self {
+    pub(crate) const fn new() -> Self {
         Self {
-            base: AtomicPtr::new(core::ptr::null_mut()),
             waker: AtomicWaker::new(),
         }
     }
@@ -113,14 +111,7 @@ impl SpiState {
     ///
     /// Masks every enabled interrupt whose flag is asserted and wakes the
     /// pending transfer, which re-arms the ones it still needs on the next poll.
-    pub fn on_interrupt(&self) {
-        let ptr = self.base.load(Ordering::Acquire);
-        if ptr.is_null() {
-            return;
-        }
-        // SAFETY: `Spi::new` installs the MMIO base for the selected SPI
-        // instance before any interrupt is routed here.
-        let r = unsafe { SPI::from_ptr(ptr) };
+    fn on_interrupt(&self, r: SPI) {
         let sr = r.SR().read();
         let ier = r.IER().read();
         let fire = (ier.TXPIE() && sr.TXP())
@@ -143,37 +134,77 @@ impl SpiState {
     }
 }
 
-impl Default for SpiState {
-    fn default() -> Self {
-        Self::new()
-    }
+/// Crate-internal half of [`Instance`]: visible to the generated bindings that
+/// implement it, sealed against downstream crates.
+pub(crate) trait SealedInstance {
+    /// This instance's register block, at its database-resolved base.
+    fn regs() -> SPI;
+    /// This instance's dedicated interrupt state.
+    fn state() -> &'static State;
+}
+
+/// An SPI instance the [`Spi`] driver can drive.
+///
+/// Implemented by the generated peripheral singletons; sealed so the base
+/// address and interrupt state stay single-sourced from the chip database.
+#[allow(private_bounds)]
+pub trait Instance: SealedInstance + PeripheralType {
+    /// NVIC line this instance raises, when the chip routes one to this core.
+    const IRQ: Option<u16>;
+}
+
+/// Bind a generated peripheral singleton to this driver. Invoked only by the
+/// generated `peripherals` module.
+macro_rules! impl_spi {
+    ($instance:ident, $base:expr, $irq:expr) => {
+        impl crate::spi::SealedInstance for crate::peripherals::$instance {
+            #[inline]
+            fn regs() -> crate::pac::peripherals::spi::SPI {
+                // SAFETY: `$base` is this instance's base as extracted from the
+                // chip database, and the singleton this impl is keyed to can be
+                // held by only one driver at a time.
+                unsafe { crate::pac::peripherals::spi::SPI::from_ptr($base as *mut ()) }
+            }
+
+            #[inline]
+            fn state() -> &'static crate::spi::State {
+                static STATE: crate::spi::State = crate::spi::State::new();
+                &STATE
+            }
+        }
+
+        impl crate::spi::Instance for crate::peripherals::$instance {
+            const IRQ: ::core::option::Option<u16> = $irq;
+        }
+    };
+}
+pub(crate) use impl_spi;
+
+/// Handle the interrupt of instance `T`.
+///
+/// Call this from the application's `#[interrupt]` handler for `T`'s vector;
+/// the HAL installs no handlers of its own.
+pub fn on_interrupt<T: Instance>() {
+    T::state().on_interrupt(T::regs());
 }
 
 /// SPI master over one SPI instance.
 pub struct Spi {
     regs: SPI,
-    state: &'static SpiState,
+    state: &'static State,
 }
 
 impl Spi {
     /// Initialize an SPI instance as a master.
     ///
-    /// # Safety
-    ///
-    /// `base` must point to a valid SPI register block, clocked and pinned out
-    /// by the caller, that is exclusively owned by this driver for the lifetime
-    /// of the program. `clock_hz` is the instance's kernel clock. `state` must
-    /// be dedicated to this instance; for async use, route the instance's
-    /// interrupt to [`SpiState::on_interrupt`] on the same state.
-    pub unsafe fn new(
-        base: *mut (),
-        clock_hz: u32,
-        config: Config,
-        state: &'static SpiState,
-    ) -> Self {
-        // SAFETY: Caller guarantees `base` is a valid, exclusively owned SPI
-        // register block.
-        let r = unsafe { SPI::from_ptr(base) };
+    /// `clock_hz` is the instance's kernel clock; the platform must leave the
+    /// instance clocked and pinned out. For async transfers, forward the
+    /// instance's interrupt to [`on_interrupt::<T>`](on_interrupt).
+    pub fn new<T: Instance>(peri: Peri<'static, T>, clock_hz: u32, config: Config) -> Self {
+        // Owning the singleton for the driver's lifetime is what makes exclusive
+        // register access safe; it is consumed here and never reissued.
+        let _ = peri;
+        let r = T::regs();
 
         // Configure only while the peripheral is disabled.
         r.CR1().modify(|w| w.set_SPE(false));
@@ -197,9 +228,10 @@ impl Spi {
         });
         r.CR1().modify(|w| w.set_SSI(true));
 
-        state.base.store(base, Ordering::Release);
-
-        Self { regs: r, state }
+        Self {
+            regs: r,
+            state: T::state(),
+        }
     }
 
     /// Byte-wide view of `TXDR` so each store pushes exactly one 8-bit frame.

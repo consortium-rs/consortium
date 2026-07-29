@@ -1,16 +1,24 @@
 //! UART driver backed by an i.MX9 LPUART instance.
 //!
-//! Any LPUART instance can back a [`Uart`]; select it by passing its MMIO
-//! base to [`Uart::new`] together with a `&'static` [`UartState`] per
-//! instance. Blocking I/O ([`embedded_io`], [`embedded_hal_nb::serial`])
-//! works without interrupts. Async I/O ([`embedded_io_async`]) requires the
-//! caller to route the instance's interrupt to [`UartState::on_interrupt`].
+//! Any LPUART instance can back a [`Uart`]; select it by handing its
+//! peripheral singleton to [`Uart::new`]:
+//!
+//! ```ignore
+//! let p = consortium_hal_imx9::init();
+//! let uart = Uart::new(p.LPUART1, 24_000_000, Config::default());
+//! ```
+//!
+//! Blocking I/O ([`embedded_io`], [`embedded_hal_nb::serial`]) works without
+//! interrupts. Async I/O ([`embedded_io_async`]) requires the application to
+//! forward the instance's interrupt to [`on_interrupt`], or to
+//! [`on_buffered_interrupt`] for a [`BufferedUart`].
 
 use core::future::poll_fn;
-use core::sync::atomic::{AtomicBool, AtomicPtr, Ordering};
+use core::sync::atomic::{AtomicBool, Ordering};
 use core::task::Poll;
 
 use embassy_hal_internal::atomic_ring_buffer::RingBuffer;
+use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 use pac::peripherals::lpuart::{LPUART, LPUART_DATA};
 
@@ -77,36 +85,87 @@ impl Default for Config {
     }
 }
 
-/// Per-instance interrupt state shared between a [`Uart`] and its IRQ handler.
-pub struct UartState {
-    base: AtomicPtr<()>,
+/// Per-instance interrupt state shared between a UART driver and its IRQ
+/// handler.
+///
+/// One `static` per instance is created by [`impl_uart`] and reached through
+/// the instance type, so callers never supply or name it. The receive ring is only initialized by [`BufferedUart::new`]; the plain [`Uart`] leaves it empty.
+pub struct State {
     rx_waker: AtomicWaker,
     tx_waker: AtomicWaker,
+    /// Receive ring, filled by [`on_buffered_interrupt`] and drained by
+    /// [`BufferedUartRx`]. Left uninitialized for the plain [`Uart`].
+    rx_ring: RingBuffer,
+    /// Latched when the ring overflowed or a line error was seen. Corrupt
+    /// bytes are caught by the transport's frame CRC, so reads never fail on
+    /// this; integrators can poll [`BufferedUartRx::take_overrun`].
+    overrun: AtomicBool,
 }
 
-impl UartState {
+impl State {
     /// Create an empty state suitable for a `static`.
-    pub const fn new() -> Self {
+    pub(crate) const fn new() -> Self {
         Self {
-            base: AtomicPtr::new(core::ptr::null_mut()),
             rx_waker: AtomicWaker::new(),
             tx_waker: AtomicWaker::new(),
+            rx_ring: RingBuffer::new(),
+            overrun: AtomicBool::new(false),
         }
     }
 
-    /// Handle the LPUART instance's interrupt.
+    /// Read and clear the latched overrun/line-error flag.
+    fn take_overrun(&self) -> bool {
+        self.overrun.swap(false, Ordering::Relaxed)
+    }
+
+    /// Handle the interrupt of the instance at `r` in buffered mode.
+    ///
+    /// Drains the receive FIFO into the ring and wakes the read future when
+    /// bytes arrived; then services the transmit half exactly as
+    /// [`State::on_interrupt`] does.
+    fn on_buffered_interrupt(&self, r: LPUART) {
+        critical_section::with(|_| {
+            let stat = r.STAT().read();
+            if stat.PF() || stat.FE() || stat.NF() || stat.OR() {
+                // Error flags are write-1-to-clear; `write` zeroes the other
+                // fields, which are no-ops for the read-only status bits.
+                r.STAT().write(|w| {
+                    w.set_PF(true);
+                    w.set_FE(true);
+                    w.set_NF(true);
+                    w.set_OR(true);
+                });
+                self.overrun.store(true, Ordering::Relaxed);
+            }
+
+            // SAFETY: the ring has a single writer, exercised only in this IRQ
+            // path (the reader lives in `BufferedUartRx`).
+            let mut writer = unsafe { self.rx_ring.writer() };
+            let mut pushed = false;
+            while r.STAT().read().RDRF() {
+                let byte = r.DATA().read().0 as u8;
+                if writer.push_one(byte) {
+                    pushed = true;
+                } else {
+                    // Ring full: the byte is dropped. Reading DATA already
+                    // advanced the FIFO, so the loop still makes progress.
+                    self.overrun.store(true, Ordering::Relaxed);
+                    break;
+                }
+            }
+            if pushed {
+                self.rx_waker.wake();
+            }
+
+            service_tx(r, &self.tx_waker);
+        });
+    }
+
+    /// Handle the interrupt of the instance at `r`.
     ///
     /// Disables the interrupt-enable bit that fired and wakes the pending
     /// future; the future re-enables it on the next poll if still waiting.
-    pub fn on_interrupt(&self) {
-        let ptr = self.base.load(Ordering::Acquire);
-        if ptr.is_null() {
-            return;
-        }
-        // SAFETY: `Uart::new` installs the MMIO base for the selected LPUART
-        // instance before any interrupt is routed here.
-        let r = unsafe { LPUART::from_ptr(ptr) };
-
+    fn on_interrupt(&self, r: LPUART) {
         let stat = r.STAT().read();
         critical_section::with(|_| {
             let ctrl = r.CTRL().read();
@@ -119,11 +178,71 @@ impl UartState {
     }
 }
 
+/// Crate-internal half of [`Instance`]: visible to the generated bindings that
+/// implement it, sealed against downstream crates.
+pub(crate) trait SealedInstance {
+    /// This instance's register block, at its database-resolved base.
+    fn regs() -> LPUART;
+    /// This instance's dedicated interrupt state.
+    fn state() -> &'static State;
+}
+
+/// An instance the [`Uart`] and [`BufferedUart`] drivers can drive.
+///
+/// Implemented by the generated peripheral singletons; sealed so the base
+/// address and interrupt state stay single-sourced from the chip database.
+#[allow(private_bounds)]
+pub trait Instance: SealedInstance + PeripheralType {
+    /// NVIC line this instance raises, when the chip routes one to this core.
+    const IRQ: Option<u16>;
+}
+
+/// Bind a generated peripheral singleton to this driver. Invoked only by the
+/// generated `peripherals` module.
+macro_rules! impl_uart {
+    ($instance:ident, $base:expr, $irq:expr) => {
+        impl crate::uart::SealedInstance for crate::peripherals::$instance {
+            #[inline]
+            fn regs() -> crate::pac::peripherals::lpuart::LPUART {
+                // SAFETY: `$base` is this instance's base as extracted from the
+                // chip database, and the singleton this impl is keyed to can be
+                // held by only one driver at a time.
+                unsafe { crate::pac::peripherals::lpuart::LPUART::from_ptr($base as *mut ()) }
+            }
+
+            #[inline]
+            fn state() -> &'static crate::uart::State {
+                static STATE: crate::uart::State = crate::uart::State::new();
+                &STATE
+            }
+        }
+
+        impl crate::uart::Instance for crate::peripherals::$instance {
+            const IRQ: ::core::option::Option<u16> = $irq;
+        }
+    };
+}
+pub(crate) use impl_uart;
+
+/// Handle the interrupt of instance `T` driven by a plain [`Uart`].
+///
+/// Call this from the application's `#[interrupt]` handler for `T`'s vector;
+/// the HAL installs no handlers of its own. Use [`on_buffered_interrupt`]
+/// instead when the instance is driven by a [`BufferedUart`].
+pub fn on_interrupt<T: Instance>() {
+    T::state().on_interrupt(T::regs());
+}
+
+/// Handle the interrupt of instance `T` driven by a [`BufferedUart`].
+pub fn on_buffered_interrupt<T: Instance>() {
+    T::state().on_buffered_interrupt(T::regs());
+}
+
 /// Handle the transmit half of an LPUART interrupt: disable whichever of the
 /// TX interrupt-enable bits fired and wake the TX future so it can refill.
 ///
-/// Shared by [`UartState::on_interrupt`] and
-/// [`BufferedUartState::on_interrupt`]; must run inside a critical section.
+/// Shared by [`on_interrupt`] and [`on_buffered_interrupt`]; must run inside a
+/// critical section.
 fn service_tx(r: LPUART, tx_waker: &AtomicWaker) {
     let stat = r.STAT().read();
     let ctrl = r.CTRL().read();
@@ -134,12 +253,6 @@ fn service_tx(r: LPUART, tx_waker: &AtomicWaker) {
     if ctrl.TCIE() && stat.TC() {
         r.CTRL().modify(|w| w.set_TCIE(false));
         tx_waker.wake();
-    }
-}
-
-impl Default for UartState {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
@@ -169,13 +282,13 @@ fn check_and_clear_errors(r: LPUART) -> Result<(), Error> {
 /// Receive half of a [`Uart`].
 pub struct UartRx {
     regs: LPUART,
-    state: &'static UartState,
+    state: &'static State,
 }
 
 /// Transmit half of a [`Uart`].
 pub struct UartTx {
     regs: LPUART,
-    state: &'static UartState,
+    state: &'static State,
 }
 
 /// Full-duplex UART over one LPUART instance.
@@ -187,23 +300,15 @@ pub struct Uart {
 impl Uart {
     /// Initialize an LPUART instance for 8N1 operation at `config.baudrate`.
     ///
-    /// # Safety
-    ///
-    /// `base` must point to a valid LPUART register block, clocked and pinned
-    /// out by the caller, that is exclusively owned by this driver for the
-    /// lifetime of the program. `clock_hz` is the instance's functional
-    /// clock. `state` must be dedicated to this instance; for async use,
-    /// route the instance's interrupt to [`UartState::on_interrupt`] on the
-    /// same state.
-    pub unsafe fn new(
-        base: *mut (),
-        clock_hz: u32,
-        config: Config,
-        state: &'static UartState,
-    ) -> Self {
-        // SAFETY: Caller guarantees `base` is a valid, exclusively owned
-        // LPUART register block.
-        let r = unsafe { LPUART::from_ptr(base) };
+    /// `clock_hz` is the instance's functional clock; the platform must leave
+    /// the instance clocked and pinned out. For async I/O, forward the
+    /// instance's interrupt to [`on_interrupt::<T>`](on_interrupt).
+    pub fn new<T: Instance>(peri: Peri<'static, T>, clock_hz: u32, config: Config) -> Self {
+        // Owning the singleton for the driver's lifetime is what makes exclusive
+        // register access safe; it is consumed here and never reissued.
+        let _ = peri;
+        let r = T::regs();
+        let state = T::state();
 
         let sbr = sbr_value(clock_hz, config.baudrate);
 
@@ -225,8 +330,6 @@ impl Uart {
             w.set_TE(true);
             w.set_RE(true);
         });
-
-        state.base.store(base, Ordering::Release);
 
         Self {
             rx: UartRx { regs: r, state },
@@ -506,100 +609,10 @@ impl embedded_hal_nb::serial::Write<u8> for Uart {
     }
 }
 
-/// Per-instance state for a [`BufferedUart`], shared between the driver and
-/// its IRQ handler.
-///
-/// Unlike [`UartState`], the receiver is interrupt-driven continuously: the
-/// IRQ handler drains the LPUART receive FIFO into an in-memory ring so no
-/// bytes are lost between the wake and the next poll of the read future. This
-/// is the mode the UART IPC transport needs. The transmit half is unchanged —
-/// it reuses [`UartTx`] and its direct, interrupt-driven writes.
-pub struct BufferedUartState {
-    inner: UartState,
-    rx_ring: RingBuffer,
-    /// Latched when the ring overflowed or a line error was seen. Corrupt
-    /// bytes are caught by the transport's frame CRC, so reads never fail on
-    /// this; integrators can poll [`BufferedUartState::take_overrun`].
-    overrun: AtomicBool,
-}
-
-impl BufferedUartState {
-    /// Create an empty state suitable for a `static`.
-    pub const fn new() -> Self {
-        Self {
-            inner: UartState::new(),
-            rx_ring: RingBuffer::new(),
-            overrun: AtomicBool::new(false),
-        }
-    }
-
-    /// Read and clear the latched overrun/line-error flag.
-    pub fn take_overrun(&self) -> bool {
-        self.overrun.swap(false, Ordering::Relaxed)
-    }
-
-    /// Handle the LPUART instance's interrupt in buffered mode.
-    ///
-    /// Drains the receive FIFO into the ring and wakes the read future when
-    /// bytes arrived; then services the transmit half exactly as
-    /// [`UartState::on_interrupt`] does.
-    pub fn on_interrupt(&self) {
-        let ptr = self.inner.base.load(Ordering::Acquire);
-        if ptr.is_null() {
-            return;
-        }
-        // SAFETY: `BufferedUart::new` installs the MMIO base for the selected
-        // LPUART instance before any interrupt is routed here.
-        let r = unsafe { LPUART::from_ptr(ptr) };
-
-        critical_section::with(|_| {
-            let stat = r.STAT().read();
-            if stat.PF() || stat.FE() || stat.NF() || stat.OR() {
-                // Error flags are write-1-to-clear; `write` zeroes the other
-                // fields, which are no-ops for the read-only status bits.
-                r.STAT().write(|w| {
-                    w.set_PF(true);
-                    w.set_FE(true);
-                    w.set_NF(true);
-                    w.set_OR(true);
-                });
-                self.overrun.store(true, Ordering::Relaxed);
-            }
-
-            // SAFETY: the ring has a single writer, exercised only in this IRQ
-            // path (the reader lives in `BufferedUartRx`).
-            let mut writer = unsafe { self.rx_ring.writer() };
-            let mut pushed = false;
-            while r.STAT().read().RDRF() {
-                let byte = r.DATA().read().0 as u8;
-                if writer.push_one(byte) {
-                    pushed = true;
-                } else {
-                    // Ring full: the byte is dropped. Reading DATA already
-                    // advanced the FIFO, so the loop still makes progress.
-                    self.overrun.store(true, Ordering::Relaxed);
-                    break;
-                }
-            }
-            if pushed {
-                self.inner.rx_waker.wake();
-            }
-
-            service_tx(r, &self.inner.tx_waker);
-        });
-    }
-}
-
-impl Default for BufferedUartState {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 /// Receive half of a [`BufferedUart`]: pops bytes the IRQ handler buffered
 /// into the ring. Pass it to `Channel::<Rx, …>` via the UART transport.
 pub struct BufferedUartRx {
-    state: &'static BufferedUartState,
+    state: &'static State,
 }
 
 /// Full-duplex UART over one LPUART instance with an interrupt-buffered
@@ -613,26 +626,20 @@ impl BufferedUart {
     /// Initialize an LPUART instance for buffered 8N1 operation.
     ///
     /// Like [`Uart::new`] but the receive interrupt is left enabled so the IRQ
-    /// handler can fill `rx_buf`, which backs the receive ring.
-    ///
-    /// # Safety
-    ///
-    /// `base` must point to a valid LPUART register block, clocked and pinned
-    /// out by the caller, exclusively owned by this driver for the lifetime of
-    /// the program. `clock_hz` is the instance's functional clock. `state` and
-    /// `rx_buf` must be dedicated to this instance, and the instance's
-    /// interrupt must be routed to [`BufferedUartState::on_interrupt`] on the
-    /// same `state`.
-    pub unsafe fn new(
-        base: *mut (),
+    /// handler can fill `rx_buf`, which backs the receive ring. `rx_buf` must
+    /// be dedicated to this instance, and its interrupt must be forwarded to
+    /// [`on_buffered_interrupt::<T>`](on_buffered_interrupt).
+    pub fn new<T: Instance>(
+        peri: Peri<'static, T>,
         clock_hz: u32,
         config: Config,
-        state: &'static BufferedUartState,
         rx_buf: &'static mut [u8],
     ) -> Self {
-        // SAFETY: Caller guarantees `base` is a valid, exclusively owned
-        // LPUART register block.
-        let r = unsafe { LPUART::from_ptr(base) };
+        // Owning the singleton for the driver's lifetime is what makes exclusive
+        // register access safe; it is consumed here and never reissued.
+        let _ = peri;
+        let r = T::regs();
+        let state = T::state();
 
         let sbr = sbr_value(clock_hz, config.baudrate);
 
@@ -653,9 +660,8 @@ impl BufferedUart {
         // SAFETY: `rx_buf` is exclusively owned by this instance's ring and
         // initialized exactly once here, before any interrupt is routed.
         unsafe { state.rx_ring.init(rx_buf.as_mut_ptr(), rx_buf.len()) };
-        state.inner.base.store(base, Ordering::Release);
 
-        // Enable the receiver interrupt last, once base and ring are live.
+        // Enable the receiver interrupt last, once the ring is live.
         r.CTRL().write(|w| {
             w.set_TE(true);
             w.set_RE(true);
@@ -664,10 +670,7 @@ impl BufferedUart {
 
         Self {
             rx: BufferedUartRx { state },
-            tx: UartTx {
-                regs: r,
-                state: &state.inner,
-            },
+            tx: UartTx { regs: r, state },
         }
     }
 
@@ -678,6 +681,15 @@ impl BufferedUart {
 }
 
 impl BufferedUartRx {
+    /// Read and clear the latched overrun/line-error flag.
+    ///
+    /// Set when the receive ring filled or the LPUART reported a line error.
+    /// Corrupt bytes are caught by the transport's frame CRC, so reads never
+    /// fail on this; poll it when you want to observe the loss.
+    pub fn take_overrun(&self) -> bool {
+        self.state.take_overrun()
+    }
+
     /// Copy from the ring into `buf`, popping the bytes.
     ///
     /// Returns 0 when the ring is empty.
@@ -703,7 +715,7 @@ impl BufferedUartRx {
             if n > 0 {
                 return Poll::Ready(Ok(n));
             }
-            self.state.inner.rx_waker.register(cx.waker());
+            self.state.rx_waker.register(cx.waker());
             // Re-check after registering so a byte buffered in the gap is not
             // missed until the next interrupt.
             let n = self.drain_ring(buf);
@@ -803,7 +815,7 @@ mod tests {
     use std::sync::atomic::{AtomicUsize, Ordering};
     use std::task::{Wake, Waker};
 
-    use super::{BufferedUartState, sbr_value};
+    use super::{State, sbr_value};
     use crate::pac::peripherals::lpuart::{LPUART, LPUART_DATA};
 
     #[test]
@@ -863,17 +875,16 @@ mod tests {
         r.STAT().write(|w| w.set_RDRF(true));
         r.DATA().write_value(LPUART_DATA(0xab));
 
-        let state = BufferedUartState::new();
+        let state = State::new();
         let mut ring = [0u8; 4];
         // SAFETY: single init, `ring` outlives all ring access below.
         unsafe { state.rx_ring.init(ring.as_mut_ptr(), ring.len()) };
-        state.inner.base.store(r.as_ptr(), Ordering::Release);
 
         let counter = Arc::new(CountingWaker(AtomicUsize::new(0)));
         let waker = Waker::from(counter.clone());
-        state.inner.rx_waker.register(&waker);
+        state.rx_waker.register(&waker);
 
-        state.on_interrupt();
+        state.on_buffered_interrupt(r);
 
         // The ring filled to capacity, so the reader sees four bytes.
         assert_eq!(state.rx_ring.available(), 4);
@@ -889,13 +900,12 @@ mod tests {
         let mut fake = FakeRegs::new();
         let r = fake.regs();
 
-        let state = BufferedUartState::new();
+        let state = State::new();
         let mut ring = [0u8; 4];
         // SAFETY: single init, `ring` outlives all ring access below.
         unsafe { state.rx_ring.init(ring.as_mut_ptr(), ring.len()) };
-        state.inner.base.store(r.as_ptr(), Ordering::Release);
 
-        state.on_interrupt();
+        state.on_buffered_interrupt(r);
 
         assert_eq!(state.rx_ring.available(), 0);
         assert!(!state.take_overrun());

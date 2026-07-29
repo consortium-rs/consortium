@@ -11,6 +11,7 @@ use core::pin::Pin;
 use core::sync::atomic::{AtomicPtr, AtomicU8, AtomicU32, AtomicUsize, Ordering, fence};
 use core::task::{Context, Poll};
 
+use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 use pac::peripherals::dma_channel::DMA_Channel;
 
@@ -43,7 +44,6 @@ const CTR1_DINC: u32 = 1 << 19;
 const CTR1_DAP_AHB: u32 = 1 << 30;
 const CTR2_SWREQ: u32 = 1 << 9;
 const CTR2_DREQ: u32 = 1 << 10;
-const CHANNEL_STRIDE: usize = 0x80;
 
 const CLLR_LA_MASK: u32 = 0x0000_fffc;
 const CLLR_ULL: u32 = 1 << 16;
@@ -182,6 +182,9 @@ pub enum RingError {
 }
 
 /// Per-channel state shared with the channel IRQ.
+///
+/// One `static` per channel singleton is created by [`impl_dma_channel`] and
+/// reached through the instance type, so callers never supply or name it.
 pub struct DmaState {
     ch: AtomicPtr<()>,
     mode: AtomicU8,
@@ -191,6 +194,11 @@ pub struct DmaState {
 }
 
 impl DmaState {
+    /// Create empty state suitable for a `static`.
+    ///
+    /// No `Default` impl: the only states that exist are the per-channel
+    /// `static`s the instance bindings create.
+    #[allow(clippy::new_without_default)]
     pub const fn new() -> Self {
         Self {
             ch: AtomicPtr::new(core::ptr::null_mut()),
@@ -233,12 +241,6 @@ impl DmaState {
     }
 }
 
-impl Default for DmaState {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 /// One stable HPDMA linked-list node supplied by the caller.
 #[repr(C, align(4))]
 #[derive(Debug, Default)]
@@ -265,6 +267,62 @@ impl DmaNode {
     }
 }
 
+/// Crate-internal half of [`Instance`]: visible to the generated bindings that
+/// implement it, sealed against downstream crates.
+pub(crate) trait SealedInstance {
+    /// This channel's register page, at its database-resolved base.
+    fn regs() -> DMA_Channel;
+    /// This channel's dedicated interrupt state.
+    fn state() -> &'static DmaState;
+}
+
+/// One HPDMA/LPDMA channel the [`DmaChannel`] driver can claim.
+///
+/// Implemented by the generated per-channel singletons; sealed so the channel
+/// page stays single-sourced from the chip database.
+#[allow(private_bounds)]
+pub trait Instance: SealedInstance + PeripheralType {
+    /// NVIC line this channel raises, when the chip routes one to this core.
+    const IRQ: Option<u16>;
+}
+
+/// Bind a generated channel singleton to this driver. Invoked only by the
+/// generated `peripherals` module.
+macro_rules! impl_dma_channel {
+    ($instance:ident, $base:expr, $irq:expr) => {
+        impl crate::dma::SealedInstance for crate::peripherals::$instance {
+            #[inline]
+            fn regs() -> crate::pac::peripherals::dma_channel::DMA_Channel {
+                // SAFETY: `$base` is this channel's page as extracted from the
+                // chip database, and the singleton this impl is keyed to can be
+                // held by only one driver at a time.
+                unsafe {
+                    crate::pac::peripherals::dma_channel::DMA_Channel::from_ptr($base as *mut ())
+                }
+            }
+
+            #[inline]
+            fn state() -> &'static crate::dma::DmaState {
+                static STATE: crate::dma::DmaState = crate::dma::DmaState::new();
+                &STATE
+            }
+        }
+
+        impl crate::dma::Instance for crate::peripherals::$instance {
+            const IRQ: ::core::option::Option<u16> = $irq;
+        }
+    };
+}
+pub(crate) use impl_dma_channel;
+
+/// Handle the HPDMA interrupt of channel `T`.
+///
+/// Call this from the application's `#[interrupt]` handler for `T`'s vector;
+/// the HAL installs no handlers of its own.
+pub fn on_interrupt<T: Instance>() {
+    T::state().on_interrupt();
+}
+
 /// Exclusive handle to one HPDMA channel.
 pub struct DmaChannel {
     ch: DMA_Channel,
@@ -272,17 +330,20 @@ pub struct DmaChannel {
 }
 
 impl DmaChannel {
-    /// Claim `channel` at an HPDMA instance base.
+    /// Claim a channel from its peripheral singleton.
     ///
-    /// # Safety
-    ///
-    /// The instance must be clocked/RIF-configured, and the channel and state
-    /// must be exclusively owned for the program lifetime.
-    pub unsafe fn new(base: *mut (), channel: usize, state: &'static DmaState) -> Self {
-        // SAFETY: guaranteed by the caller.
-        let ch = unsafe {
-            DMA_Channel::from_ptr((base as *mut u8).wrapping_add(channel * CHANNEL_STRIDE) as _)
-        };
+    /// The platform must leave the controller clocked and RIF-configured.
+    /// Route the channel's IRQ to [`on_interrupt::<T>`](on_interrupt).
+    pub fn new<T: Instance>(peri: Peri<'static, T>) -> Self {
+        // Owning the singleton for the driver's lifetime is what makes exclusive
+        // channel access safe; it is consumed here and never reissued.
+        let _ = peri;
+        Self::over(T::regs(), T::state())
+    }
+
+    /// Build a channel over an arbitrary register page, for tests and for
+    /// drivers that stand an array in for the controller.
+    pub(crate) fn over(ch: DMA_Channel, state: &'static DmaState) -> Self {
         state.ch.store(ch.as_ptr(), Ordering::Release);
         Self { ch, state }
     }
@@ -879,7 +940,10 @@ mod tests {
 
     fn channel(registers: &mut [u32; 128], state: &'static DmaState) -> DmaChannel {
         // SAFETY: fake MMIO is exclusively owned by this test.
-        unsafe { DmaChannel::new(registers.as_mut_ptr().cast(), 0, state) }
+        // SAFETY: `registers` is word-aligned, covers every offset the driver
+        // touches, and outlives the channel built over it.
+        let ch = unsafe { DMA_Channel::from_ptr(registers.as_mut_ptr().cast()) };
+        DmaChannel::over(ch, state)
     }
 
     #[test]

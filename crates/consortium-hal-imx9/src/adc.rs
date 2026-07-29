@@ -1,7 +1,15 @@
 //! Polling ADC driver for the i.MX 9 SAR ADC.
 //!
+//! Select an instance by handing its peripheral singleton to [`Adc::new`]:
+//!
+//! ```ignore
+//! let p = consortium_hal_imx9::init();
+//! let adc = Adc::new(p.ADC, Config::default());
+//! ```
+//!
 //! Clock-root and pin-mux configuration are intentionally left to the caller.
 
+use embassy_hal_internal::{Peri, PeripheralType};
 use pac::peripherals::adc::{ADC, ADC_NCMR0, ADC_NCMR1};
 
 use crate::pac;
@@ -51,6 +59,44 @@ pub enum DmaTrigger {
     ExternalFalling,
 }
 
+/// Crate-internal half of [`Instance`]: visible to the generated bindings that
+/// implement it, sealed against downstream crates.
+pub(crate) trait SealedInstance {
+    /// This instance's register block, at its database-resolved base.
+    fn regs() -> ADC;
+}
+
+/// An ADC instance the [`Adc`] driver can drive.
+///
+/// Implemented by the generated peripheral singletons; sealed so the base
+/// address stays single-sourced from the chip database.
+#[allow(private_bounds)]
+pub trait Instance: SealedInstance + PeripheralType {
+    /// End-of-conversion NVIC line, when the chip routes one to this core.
+    const IRQ: Option<u16>;
+}
+
+/// Bind a generated peripheral singleton to this driver. Invoked only by the
+/// generated `peripherals` module.
+macro_rules! impl_adc {
+    ($instance:ident, $base:expr, $irq:expr) => {
+        impl crate::adc::SealedInstance for crate::peripherals::$instance {
+            #[inline]
+            fn regs() -> crate::pac::peripherals::adc::ADC {
+                // SAFETY: `$base` is this instance's ADC base as extracted from
+                // the chip database, and the singleton this impl is keyed to
+                // can be held by only one driver at a time.
+                unsafe { crate::pac::peripherals::adc::ADC::from_ptr($base as *mut ()) }
+            }
+        }
+
+        impl crate::adc::Instance for crate::peripherals::$instance {
+            const IRQ: ::core::option::Option<u16> = $irq;
+        }
+    };
+}
+pub(crate) use impl_adc;
+
 /// Polling ADC driver.
 pub struct Adc {
     adc: ADC,
@@ -58,17 +104,26 @@ pub struct Adc {
 }
 
 impl Adc {
-    /// Bind and power up an ADC instance.
+    /// Build a driver over an arbitrary register block, for tests that stand a
+    /// plain array in for the ADC.
+    #[cfg(test)]
+    fn over(adc: ADC) -> Self {
+        Self {
+            adc,
+            active_channel: None,
+        }
+    }
+
+    /// Bind and power up an ADC instance from its peripheral singleton.
     ///
-    /// # Safety
-    ///
-    /// `base` must point to a valid, exclusively owned i.MX 9 ADC register
-    /// block whose clock root has been enabled.
-    pub unsafe fn new(base: *mut (), config: Config) -> Self {
+    /// The platform must leave the instance's clock root enabled.
+    pub fn new<T: Instance>(peri: Peri<'static, T>, config: Config) -> Self {
         assert!(config.sample_time <= 3);
         assert!(config.sample_count <= 3);
-        // SAFETY: upheld by the caller.
-        let adc = unsafe { ADC::from_ptr(base) };
+        // Owning the singleton for the driver's lifetime is what makes exclusive
+        // register access safe; it is consumed here and never reissued.
+        let _ = peri;
+        let adc = T::regs();
         adc.MCR().modify(|w| {
             w.set_PWDN(false);
             w.set_ADCLKSE(config.full_speed_clock);
@@ -427,10 +482,16 @@ mod tests {
         let mut dma_registers = std::vec![0u32; words];
 
         // SAFETY: both fake register blocks are exclusively owned by the test.
-        let mut adc = unsafe { Adc::new(adc_registers.as_mut_ptr().cast(), Config::default()) };
-        // SAFETY: fake eDMA management and channel pages fit the allocation.
-        let mut dma =
-            unsafe { DmaChannel::new(dma_registers.as_mut_ptr().cast(), ADC_DMA_CHANNEL, &STATE) };
+        // SAFETY: the fake ADC registers are word-aligned, cover every offset
+        // the driver touches, and outlive the driver built over them.
+        let mut adc = Adc::over(unsafe { ADC::from_ptr(adc_registers.as_mut_ptr().cast()) });
+        // The allocation covers the management page plus every channel page.
+        let mut dma = DmaChannel::claim(
+            crate::dma::DmaController::Dma3,
+            dma_registers.as_mut_ptr().cast(),
+            ADC_DMA_CHANNEL,
+            &STATE,
+        );
         let mut samples = [0u16; 4];
 
         {

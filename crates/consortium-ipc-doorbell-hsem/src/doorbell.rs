@@ -31,9 +31,27 @@ use core::{
     task::{Context, Poll},
 };
 
+use consortium_hal_stm32mp2::{Peri, PeripheralType};
 use consortium_ipc::{Chan, Doorbell, Side};
 
-use crate::{abstraction::Hsem, chan::HSEM_CHAN_COUNT, error::HsemError};
+use crate::{abstraction::Hsem, chan::HSEM_CHAN_COUNT, error::HsemError, registers::base};
+
+/// A chip-HAL peripheral singleton naming the HSEM peripheral.
+///
+/// The window's address still comes from [`base::BASE`] in this crate rather
+/// than from the singleton, so the security alias the doorbell has always used
+/// does not change underfoot. The processor side stays a type parameter of
+/// [`HsemDoorbell`]: HSEM has one register block with a bank per core, so the
+/// singleton names the block, not the view.
+pub trait Instance: PeripheralType {
+    /// 1-based HSEM instance number. HSEM is single-instance, so this is 1.
+    const INSTANCE: usize;
+}
+
+#[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
+impl Instance for consortium_hal_stm32mp2::peripherals::HSEM {
+    const INSTANCE: usize = 1;
+}
 
 /// HSEM-backed doorbell for the HSEM peripheral (instance `N`, always `1`),
 /// processor side `S`.
@@ -69,14 +87,44 @@ impl<S: Side, const N: usize> HsemDoorbell<S, N> {
 }
 
 impl<S: Side, const N: usize> HsemDoorbell<S, N> {
+    /// Create a doorbell over the HSEM peripheral from the chip HAL's
+    /// peripheral singleton, for processor side `S`.
+    ///
+    /// This is the firmware-side constructor: the singleton proves nothing else
+    /// drives HSEM, and the window address comes from this crate's
+    /// [`base::BASE`] table. `N` must match the singleton, which the const
+    /// assertion below checks at compile time.
+    ///
+    /// On Linux the window is an `mmap` of a UIO device rather than a physical
+    /// address, and there is no singleton for it — use
+    /// [`new_mapped`](Self::new_mapped) there.
+    pub fn new<T: Instance>(peri: Peri<'static, T>) -> Self {
+        const {
+            assert!(
+                T::INSTANCE == N,
+                "HsemDoorbell instance number does not match the peripheral singleton",
+            );
+        }
+        // Owning the singleton for the doorbell's lifetime is what makes the
+        // MMIO access exclusive; it is consumed here and never reissued.
+        let _ = peri;
+        // SAFETY: `base::BASE[N - 1]` is the HSEM window from this crate's
+        // vetted address table, and the consumed singleton guarantees nothing
+        // else drives it.
+        unsafe { Self::new_mapped(base::BASE[N - 1]) }
+    }
+
     /// Create a doorbell over the HSEM peripheral from an `mmap`'d virtual base
     /// address, for processor side `S`.
+    ///
+    /// This is the Linux/UIO constructor: mapped windows have no peripheral
+    /// singleton, so the caller carries the obligation instead.
     ///
     /// # Safety
     /// `base` must be the mapped virtual base of the HSEM window. Passing a raw
     /// physical address is undefined behaviour on Linux.
-    pub unsafe fn new(base: usize) -> Self {
-        consortium_log::trace!("HsemDoorbell::new(base = {:#x})", base);
+    pub unsafe fn new_mapped(base: usize) -> Self {
+        consortium_log::trace!("HsemDoorbell::new_mapped(base = {:#x})", base);
         Self {
             // SAFETY: forwarded obligation; `base` is the mapped HSEM window.
             hsem: unsafe { Hsem::<S, N>::new(base) },
@@ -349,7 +397,7 @@ mod tests {
     fn wait_registers_waker_then_ready_after_notify() {
         let mut regs = [0u32; 0x140 / 4];
         // SAFETY: `regs` backs a fake MMIO window for the test.
-        let db = unsafe { HsemDoorbell::<Primary, 1>::new(regs.as_mut_ptr() as usize) };
+        let db = unsafe { HsemDoorbell::<Primary, 1>::new_mapped(regs.as_mut_ptr() as usize) };
         let mut wait = std::pin::pin!(db.wait(ch(3)));
         let waker = std::task::Waker::noop();
         let mut cx = Context::from_waker(waker);
@@ -373,7 +421,7 @@ mod tests {
     fn wait_disarms_line_on_completion() {
         let mut regs = [0u32; 0x140 / 4];
         // SAFETY: `regs` backs a fake MMIO window for the test.
-        let db = unsafe { HsemDoorbell::<Primary, 1>::new(regs.as_mut_ptr() as usize) };
+        let db = unsafe { HsemDoorbell::<Primary, 1>::new_mapped(regs.as_mut_ptr() as usize) };
         let mut wait = std::pin::pin!(db.wait(ch(3)));
         let waker = std::task::Waker::noop();
         let mut cx = Context::from_waker(waker);
@@ -403,7 +451,7 @@ mod tests {
         let regs = Box::leak(Box::new([0u32; 0x140 / 4]));
         let base = regs.as_mut_ptr() as usize;
         // SAFETY: `regs` backs a fake MMIO window leaked for the spawned thread.
-        let db = unsafe { HsemDoorbell::<Primary, 1>::new(base) };
+        let db = unsafe { HsemDoorbell::<Primary, 1>::new_mapped(base) };
         let notifier = db.notifier();
         let (armed_tx, armed_rx) = std::sync::mpsc::channel();
 

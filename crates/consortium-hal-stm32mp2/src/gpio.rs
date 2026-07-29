@@ -1,17 +1,24 @@
 //! GPIO driver backed by an STM32MP2 GPIO port instance.
 //!
-//! Select a port by passing its MMIO base to [`Gpio::new`], then take
-//! individual [`Pin`]s with [`Gpio::pin`]. Pins implement the standard
-//! [`embedded_hal::digital`] output/input traits. Pin operations are
-//! infallible on this hardware.
+//! Select a port by handing its peripheral singleton to [`Gpio::new`], then
+//! take individual [`Pin`]s with [`Gpio::pin`]:
+//!
+//! ```ignore
+//! let p = consortium_hal_stm32mp2::init();
+//! let heartbeat = Gpio::new(p.GPIOA).pin(0).into_output(Level::Low);
+//! ```
+//!
+//! Pins implement the standard [`embedded_hal::digital`] output/input traits.
+//! Pin operations are infallible on this hardware.
 //!
 //! Edge interrupts (async [`embedded_hal_async::digital::Wait`]) are not wired
-//! yet. The [`GpioState`] scaffold below is the seam a future revision will use:
+//! yet. The [`State`] scaffold below is the seam a future revision will use:
 //! the EXTI line handlers read the pending register and forward the pending-pin
-//! mask to [`GpioState::on_interrupt`].
+//! mask to [`on_interrupt`].
 
 use core::convert::Infallible;
 
+use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 use pac::peripherals::gpio::{GPIO, GPIO_BRR, GPIO_BSRR};
 
@@ -36,23 +43,20 @@ pub enum Level {
 /// pending-pin mask. Nothing routes an interrupt here yet; the EXTI wiring and
 /// the [`embedded_hal_async::digital::Wait`] impl on [`Pin`] are deliberately
 /// left for a later change so this can land without an API break.
-pub struct GpioState {
+pub struct State {
     wakers: [AtomicWaker; PIN_COUNT as usize],
 }
 
-impl GpioState {
+impl State {
     /// Create an empty state suitable for a `static`.
-    pub const fn new() -> Self {
+    pub(crate) const fn new() -> Self {
         Self {
             wakers: [const { AtomicWaker::new() }; PIN_COUNT as usize],
         }
     }
 
     /// Wake the tasks waiting on the pins set in `pending_mask`.
-    ///
-    /// A future EXTI interrupt handler reads the pending register, clears the
-    /// serviced lines, and passes the pending-pin mask here.
-    pub fn on_interrupt(&self, pending_mask: u32) {
+    fn wake(&self, pending_mask: u32) {
         let mut mask = pending_mask;
         while mask != 0 {
             let pin = mask.trailing_zeros() as usize;
@@ -64,31 +68,76 @@ impl GpioState {
     }
 }
 
-impl Default for GpioState {
-    fn default() -> Self {
-        Self::new()
-    }
+/// Crate-internal half of [`Instance`]: visible to the generated bindings that
+/// implement it, sealed against downstream crates.
+pub(crate) trait SealedInstance {
+    /// This port's register block, at its database-resolved base.
+    fn regs() -> GPIO;
+    /// This port's dedicated interrupt state.
+    fn state() -> &'static State;
+}
+
+/// A GPIO port the [`Gpio`] driver can drive.
+///
+/// Implemented by the generated peripheral singletons; sealed so the base
+/// address and interrupt state stay single-sourced from the chip database.
+#[allow(private_bounds)]
+pub trait Instance: SealedInstance + PeripheralType {
+    /// NVIC line, if the chip database names one for this port. GPIO edges
+    /// arrive through EXTI rather than a per-port vector, so this is normally
+    /// `None`.
+    const IRQ: Option<u16>;
+}
+
+/// Bind a generated peripheral singleton to this driver. Invoked only by the
+/// generated `peripherals` module.
+macro_rules! impl_gpio {
+    ($instance:ident, $base:expr, $irq:expr) => {
+        impl crate::gpio::SealedInstance for crate::peripherals::$instance {
+            #[inline]
+            fn regs() -> crate::pac::peripherals::gpio::GPIO {
+                // SAFETY: `$base` is this port's GPIO base as extracted from the
+                // chip database, and the singleton this impl is keyed to can be
+                // held by only one driver at a time.
+                unsafe { crate::pac::peripherals::gpio::GPIO::from_ptr($base as *mut ()) }
+            }
+
+            #[inline]
+            fn state() -> &'static crate::gpio::State {
+                static STATE: crate::gpio::State = crate::gpio::State::new();
+                &STATE
+            }
+        }
+
+        impl crate::gpio::Instance for crate::peripherals::$instance {
+            const IRQ: ::core::option::Option<u16> = $irq;
+        }
+    };
+}
+pub(crate) use impl_gpio;
+
+/// Wake the tasks waiting on the pins set in `pending_mask` of port `T`.
+///
+/// A future EXTI interrupt handler reads the pending register, clears the
+/// serviced lines, and passes the pending-pin mask here.
+pub fn on_interrupt<T: Instance>(pending_mask: u32) {
+    T::state().wake(pending_mask);
 }
 
 /// A GPIO port. Hand out [`Pin`]s with [`Gpio::pin`].
-#[derive(Clone, Copy)]
 pub struct Gpio {
     port: GPIO,
 }
 
 impl Gpio {
-    /// Bind a GPIO port at `base`.
+    /// Bind a GPIO port from its peripheral singleton.
     ///
-    /// # Safety
-    ///
-    /// `base` must point to a valid GPIO register block that is clocked by the
-    /// caller and exclusively owned by this driver for the lifetime of the
-    /// program.
-    pub unsafe fn new(base: *mut ()) -> Self {
-        // SAFETY: Caller guarantees `base` is a valid, exclusively owned GPIO
-        // register block.
-        let port = unsafe { GPIO::from_ptr(base) };
-        Self { port }
+    /// The platform must leave the port clocked and its pads muxed.
+    pub fn new<T: Instance>(peri: Peri<'static, T>) -> Self {
+        // Owning the singleton for the driver's lifetime is what makes exclusive
+        // register access safe; it is consumed here and never reissued.
+        let _ = peri;
+        Self { port: T::regs() }
     }
 
     /// Take the [`Pin`] at index `pin` (`0..16`), unconfigured.

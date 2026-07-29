@@ -4,13 +4,22 @@
 //! continuous counting, external trigger/counter/encoder modes, repetition,
 //! interrupt-driven waits, and HPDMA capture/update streams. RCC, RIF,
 //! low-power clock selection, and pin muxing remain application-owned.
+//!
+//! Select an instance by handing its peripheral singleton to
+//! [`LowPowerTimer::new`]:
+//!
+//! ```ignore
+//! let p = consortium_hal_stm32mp2::init();
+//! let timer = LowPowerTimer::new(p.LPTIM1, 64_000_000);
+//! ```
 
 use core::convert::Infallible;
 use core::future::Future;
 use core::pin::Pin;
-use core::sync::atomic::{AtomicPtr, AtomicU32, Ordering};
+use core::sync::atomic::{AtomicU32, Ordering};
 use core::task::{Context, Poll};
 
+use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 use pac::peripherals::lptim::LPTIM;
 
@@ -37,7 +46,7 @@ const DIER_CC2DE: u32 = 1 << 25;
 
 /// LPTIM peripheral instance.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Instance {
+pub enum LptimId {
     Lptim1,
     Lptim2,
     Lptim3,
@@ -114,31 +123,25 @@ pub enum Error {
 }
 
 /// IRQ state dedicated to one LPTIM.
-pub struct LptimState {
-    regs: AtomicPtr<()>,
+///
+/// One `static` per instance is created by [`impl_lptim`] and reached through
+/// the instance type, so callers never supply or name it.
+pub struct State {
     pending: AtomicU32,
     waker: AtomicWaker,
 }
 
-impl LptimState {
+impl State {
     /// Create empty state suitable for a `static`.
-    pub const fn new() -> Self {
+    pub(crate) const fn new() -> Self {
         Self {
-            regs: AtomicPtr::new(core::ptr::null_mut()),
             pending: AtomicU32::new(0),
             waker: AtomicWaker::new(),
         }
     }
 
-    /// Forward the LPTIM global interrupt here.
-    pub fn on_interrupt(&self) {
-        let ptr = self.regs.load(Ordering::Acquire);
-        if ptr.is_null() {
-            return;
-        }
-        // SAFETY: installed by `LowPowerTimer::new` for the state dedicated to
-        // this exclusively owned peripheral.
-        let regs = unsafe { LPTIM::from_ptr(ptr) };
+    /// Handle the global interrupt of the LPTIM at `regs`.
+    fn on_interrupt(&self, regs: LPTIM) {
         let pending = regs.ISR().read().0 & regs.DIER().read().0 & 0x0000_ffff;
         if pending != 0 {
             self.pending.fetch_or(pending, Ordering::AcqRel);
@@ -149,40 +152,90 @@ impl LptimState {
     }
 }
 
-impl Default for LptimState {
-    fn default() -> Self {
-        Self::new()
-    }
+/// Crate-internal half of [`Instance`]: visible to the generated bindings that
+/// implement it, sealed against downstream crates.
+pub(crate) trait SealedInstance {
+    /// This instance's register block, at its database-resolved base.
+    fn regs() -> LPTIM;
+    /// This instance's dedicated interrupt state.
+    fn state() -> &'static State;
+}
+
+/// An LPTIM the [`LowPowerTimer`] driver can drive.
+///
+/// Implemented by the generated peripheral singletons; sealed so the base
+/// address and interrupt state stay single-sourced from the chip database.
+#[allow(private_bounds)]
+pub trait Instance: SealedInstance + PeripheralType {
+    /// NVIC line this instance raises, when the chip routes one to this core.
+    const IRQ: Option<u16>;
+    /// Which LPTIM this is, for HPDMA request selection.
+    const ID: LptimId;
+}
+
+/// Bind a generated peripheral singleton to this driver. Invoked only by the
+/// generated `peripherals` module.
+macro_rules! impl_lptim {
+    ($instance:ident, $base:expr, $id:ident, $irq:expr) => {
+        impl crate::lptim::SealedInstance for crate::peripherals::$instance {
+            #[inline]
+            fn regs() -> crate::pac::peripherals::lptim::LPTIM {
+                // SAFETY: `$base` is this instance's LPTIM base as extracted
+                // from the chip database, and the singleton this impl is keyed
+                // to can be held by only one driver at a time.
+                unsafe { crate::pac::peripherals::lptim::LPTIM::from_ptr($base as *mut ()) }
+            }
+
+            #[inline]
+            fn state() -> &'static crate::lptim::State {
+                static STATE: crate::lptim::State = crate::lptim::State::new();
+                &STATE
+            }
+        }
+
+        impl crate::lptim::Instance for crate::peripherals::$instance {
+            const IRQ: ::core::option::Option<u16> = $irq;
+            const ID: crate::lptim::LptimId = crate::lptim::LptimId::$id;
+        }
+    };
+}
+pub(crate) use impl_lptim;
+
+/// Handle the LPTIM interrupt of instance `T`.
+///
+/// Call this from the application's `#[interrupt]` handler for `T`'s vector;
+/// the HAL installs no handlers of its own.
+pub fn on_interrupt<T: Instance>() {
+    T::state().on_interrupt(T::regs());
 }
 
 /// Low-level LPTIM driver.
 pub struct LowPowerTimer {
     regs: LPTIM,
     #[cfg(feature = "dma")]
-    instance: Instance,
+    id: LptimId,
     clock_hz: u32,
-    state: &'static LptimState,
+    state: &'static State,
 }
 
 impl LowPowerTimer {
-    /// Bind an LPTIM register block.
+    /// Bind an LPTIM from its peripheral singleton.
     ///
-    /// # Safety
-    ///
-    /// `base` must be a valid, clocked, RIF-configured, exclusively owned
-    /// LPTIM. `instance` must match it. `state` must be dedicated to it.
-    pub unsafe fn new(
-        base: *mut (),
-        instance: Instance,
-        clock_hz: u32,
-        state: &'static LptimState,
-    ) -> Self {
+    /// The platform must leave the instance clocked and RIF-configured. For
+    /// interrupt-driven waits, forward its interrupt to
+    /// [`on_interrupt::<T>`](on_interrupt).
+    pub fn new<T: Instance>(peri: Peri<'static, T>, clock_hz: u32) -> Self {
+        // Owning the singleton for the driver's lifetime is what makes exclusive
+        // register access safe; it is consumed here and never reissued.
+        let _ = peri;
+        Self::over(T::regs(), T::ID, clock_hz, T::state())
+    }
+
+    /// Build a timer over an arbitrary register block, for tests that stand a
+    /// plain array in for the LPTIM.
+    #[allow(unused_variables)]
+    fn over(regs: LPTIM, id: LptimId, clock_hz: u32, state: &'static State) -> Self {
         assert!(clock_hz > 0);
-        #[cfg(not(feature = "dma"))]
-        let _ = instance;
-        // SAFETY: guaranteed by the caller.
-        let regs = unsafe { LPTIM::from_ptr(base) };
-        state.regs.store(regs.as_ptr(), Ordering::Release);
         regs.CR().write(|w| w.0 = 0);
         regs.DIER().write(|w| w.0 = 0);
         regs.ICR().write(|w| w.0 = 0x01ff_ffff);
@@ -192,7 +245,7 @@ impl LowPowerTimer {
         Self {
             regs,
             #[cfg(feature = "dma")]
-            instance,
+            id,
             clock_hz,
             state,
         }
@@ -358,27 +411,27 @@ impl LowPowerTimer {
 
     #[cfg(feature = "dma")]
     fn capture_request(&self, channel: Channel) -> Result<DmaRequest, Error> {
-        match (self.instance, channel) {
-            (Instance::Lptim1, Channel::Ch1) => Ok(dma_request::LPTIM1_IC1),
-            (Instance::Lptim1, Channel::Ch2) => Ok(dma_request::LPTIM1_IC2),
-            (Instance::Lptim2, Channel::Ch1) => Ok(dma_request::LPTIM2_IC1),
-            (Instance::Lptim2, Channel::Ch2) => Ok(dma_request::LPTIM2_IC2),
-            (Instance::Lptim3, Channel::Ch1) => Ok(dma_request::LPTIM3_IC1),
-            (Instance::Lptim3, Channel::Ch2) => Ok(dma_request::LPTIM3_IC2),
-            (Instance::Lptim4, Channel::Ch1) => Ok(dma_request::LPTIM4_IC1),
-            (Instance::Lptim4, Channel::Ch2) => Ok(dma_request::LPTIM4_IC2),
-            (Instance::Lptim5, _) => Err(Error::DmaUnavailable),
+        match (self.id, channel) {
+            (LptimId::Lptim1, Channel::Ch1) => Ok(dma_request::LPTIM1_IC1),
+            (LptimId::Lptim1, Channel::Ch2) => Ok(dma_request::LPTIM1_IC2),
+            (LptimId::Lptim2, Channel::Ch1) => Ok(dma_request::LPTIM2_IC1),
+            (LptimId::Lptim2, Channel::Ch2) => Ok(dma_request::LPTIM2_IC2),
+            (LptimId::Lptim3, Channel::Ch1) => Ok(dma_request::LPTIM3_IC1),
+            (LptimId::Lptim3, Channel::Ch2) => Ok(dma_request::LPTIM3_IC2),
+            (LptimId::Lptim4, Channel::Ch1) => Ok(dma_request::LPTIM4_IC1),
+            (LptimId::Lptim4, Channel::Ch2) => Ok(dma_request::LPTIM4_IC2),
+            (LptimId::Lptim5, _) => Err(Error::DmaUnavailable),
         }
     }
 
     #[cfg(feature = "dma")]
     fn update_request(&self) -> Result<DmaRequest, Error> {
-        match self.instance {
-            Instance::Lptim1 => Ok(dma_request::LPTIM1_UE),
-            Instance::Lptim2 => Ok(dma_request::LPTIM2_UE),
-            Instance::Lptim3 => Ok(dma_request::LPTIM3_UE),
-            Instance::Lptim4 => Ok(dma_request::LPTIM4_UE),
-            Instance::Lptim5 => Err(Error::DmaUnavailable),
+        match self.id {
+            LptimId::Lptim1 => Ok(dma_request::LPTIM1_UE),
+            LptimId::Lptim2 => Ok(dma_request::LPTIM2_UE),
+            LptimId::Lptim3 => Ok(dma_request::LPTIM3_UE),
+            LptimId::Lptim4 => Ok(dma_request::LPTIM4_UE),
+            LptimId::Lptim5 => Err(Error::DmaUnavailable),
         }
     }
 }
@@ -963,13 +1016,13 @@ mod tests {
 
     #[test]
     fn configures_pwm_and_capture_channels() {
-        static STATE: LptimState = LptimState::new();
+        static STATE: State = State::new();
         let mut registers = [0u32; 256];
         // SAFETY: fake MMIO is exclusively owned by the test.
         let timer = unsafe {
-            LowPowerTimer::new(
-                registers.as_mut_ptr().cast(),
-                Instance::Lptim1,
+            LowPowerTimer::over(
+                LPTIM::from_ptr(registers.as_mut_ptr().cast()),
+                LptimId::Lptim1,
                 32_768,
                 &STATE,
             )

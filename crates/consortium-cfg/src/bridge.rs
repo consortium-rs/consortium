@@ -72,6 +72,11 @@ pub struct LoweredIr {
     pub dbg: DebugLogs,
     /// Owned peripherals (I2C, GPIO) to bring up per controller core.
     pub peripherals: Peripherals,
+    /// Peripheral instance names each controller core's chip map lists, keyed by
+    /// core. Code generation can only name a HAL peripheral singleton for an
+    /// instance that appears here; cores with no bundled map have no entry, and
+    /// fall back to address-based construction.
+    pub core_peripherals: HashMap<VisibleCore, Vec<String>>,
     /// Whether controller cores get the sealed Embassy time driver, timer
     /// vector, and `defmt::timestamp!` (mirrors `[profile] time_driver`).
     pub time_driver: bool,
@@ -101,6 +106,7 @@ impl LoweredIr {
                 hal_crate: String::new(),
                 instances: Vec::new(),
             },
+            core_peripherals: HashMap::new(),
             time_driver: true,
         }
     }
@@ -131,7 +137,20 @@ impl LoweredIr {
             .filter(|t| t.channel_primary.0 == core || t.channel_secondary.0 == core)
             .cloned()
             .collect();
-        let endpoints = ShuHan::new(participating.clone()).initialize(core, &uio_ident, ty_crate);
+        // Peripheral singletons only exist for cores with a bundled chip map;
+        // the doorbell falls back to its mapped-base constructor elsewhere.
+        let available = self
+            .core_peripherals
+            .get(&core)
+            .map(Vec::as_slice)
+            .unwrap_or_default();
+        let endpoints = ShuHan::new(participating.clone()).initialize(
+            core,
+            &uio_ident,
+            ty_crate,
+            &self.peripherals.hal_crate,
+            available,
+        );
 
         match core {
             // The AP falls through to its UIO/`init` bring-up below.
@@ -139,7 +158,9 @@ impl LoweredIr {
             // Cortex-M controllers additionally get an `init` entry point that
             // programs the MPU and NVIC before constructing the endpoints.
             VisibleCore::Mcore(name) => {
-                return self.controller_init(core, name, &participating, endpoints);
+                let doorbells =
+                    ShuHan::new(participating.clone()).doorbell_singletons(core, available);
+                return self.controller_init(core, name, &participating, endpoints, doorbells);
             }
             // Other controller families (Cortex-R, RISC-V) have no Cortex-M
             // MPU/NVIC weave yet; emit just the endpoint module.
@@ -287,6 +308,7 @@ impl LoweredIr {
         name: McoreName,
         participating: &[Transceiver],
         endpoints: proc_macro2::TokenStream,
+        doorbell_arguments: Vec<syn::Ident>,
     ) -> proc_macro2::TokenStream {
         use quote::quote;
 
@@ -346,11 +368,14 @@ impl LoweredIr {
         let has_peripherals = peripherals.is_some();
         // When the core owns peripherals, the aggregate `Context` carries the
         // `peripherals()` handle bundle alongside the connected transceivers.
+        // `peripherals()` takes one singleton per instance, moved out of the
+        // `hal::init()` bundle field by field.
         let (ctx_peripherals_field, ctx_peripherals_bind, ctx_peripherals_name) = if has_peripherals
         {
+            let arguments = self.peripherals.arguments(core);
             (
                 quote! { peripherals: Peripherals, },
-                quote! { let peripherals = peripherals(); },
+                quote! { let peripherals = peripherals(#(__p.#arguments),*); },
                 quote! { peripherals, },
             )
         } else {
@@ -384,6 +409,19 @@ impl LoweredIr {
             isr: time_isr,
             bringup: time_bringup,
         } = time;
+
+        // The chip HAL's singletons are taken once and then moved out field by
+        // field: to the doorbells, the time driver, and `peripherals()`. Cores
+        // that need none of them skip the call, so `init` stays free of an
+        // unused binding (and of the HAL's once-only panic).
+        let hal: syn::Path =
+            syn::parse_str(&self.peripherals.hal_crate).expect("hal_crate must be a valid path");
+        let hal_peripherals =
+            if has_peripherals || !doorbell_arguments.is_empty() || !time_bringup.is_empty() {
+                quote! { let __p = #hal::init(); }
+            } else {
+                quote! {}
+            };
 
         quote! {
             #endpoints
@@ -438,9 +476,10 @@ impl LoweredIr {
                 #steal
                 #(#mpu_stmts)*
                 #nvic
+                #hal_peripherals
                 #time_bringup
                 ::consortium_runtime_mcu::log::trace!("consortium controller init: connecting ipc endpoints");
-                let ipc_shm = IpcMemoryEndpoints::new().connect().await?;
+                let ipc_shm = IpcMemoryEndpoints::new(#(__p.#doorbell_arguments),*).connect().await?;
                 #ctx_peripherals_bind
                 ::consortium_runtime_mcu::log::trace!("consortium controller init: context ready");
                 ::core::result::Result::Ok(Context { ipc_shm, #ctx_peripherals_name })
@@ -743,14 +782,46 @@ impl Session {
             uio.len(),
             peripherals.instances.len()
         );
+        let core_peripherals =
+            Self::lower_core_peripherals(&self.config.profile.chip, &transceivers, &peripherals);
         Ok(LoweredIr {
             shuhan: ShuHan::new(transceivers),
             bella: BellA { bells },
             uio,
             dbg: DebugLogs::new(dbg_rings, self.config.dbg.mode),
             peripherals,
+            core_peripherals,
             time_driver: self.config.profile.time_driver,
         })
+    }
+
+    /// The peripheral instance names each controller core's bundled chip map
+    /// lists, which is exactly the set code generation may name as a HAL
+    /// peripheral singleton. Cores with no bundled map get no entry, and their
+    /// generated code keeps the address-based construction.
+    fn lower_core_peripherals(
+        chip: &str,
+        transceivers: &[Transceiver],
+        peripherals: &Peripherals,
+    ) -> HashMap<VisibleCore, Vec<String>> {
+        // Every controller core code generation runs for: a party to some
+        // transceiver, or the owner of some peripheral.
+        let mut cores: Vec<VisibleCore> = transceivers
+            .iter()
+            .flat_map(|t| [t.channel_primary.0, t.channel_secondary.0])
+            .chain(peripherals.instances.iter().map(|p| p.owner))
+            .filter(|core| matches!(core, VisibleCore::Mcore(_)))
+            .collect();
+        cores.sort_by_key(|core| core.to_string());
+        cores.dedup();
+
+        cores
+            .into_iter()
+            .filter_map(|core| {
+                let map = crate::chipmap::load(chip, &core.to_string()).ok()?;
+                Some((core, map.peripheral_names()))
+            })
+            .collect()
     }
 
     /// Resolves the `[peripheral.<name>]` entries owned by controller cores into
@@ -788,7 +859,21 @@ impl Session {
                 consortium_log::trace!("peripheral '{}' absent from chip map for '{}'", name, core);
                 continue;
             };
-            let base = peripheral_absolute_base(&self.database, entry.base, peripheral.secure);
+            // The HAL's peripheral singletons carry the non-secure base the
+            // chip dump lists. A secure owner used to be rebased onto the secure
+            // alias here; refuse rather than hand the driver the wrong window.
+            if peripheral.secure {
+                consortium_log::trace!(
+                    "peripheral '{}' is secure; the singleton path has no secure alias",
+                    name
+                );
+                return Err(CfgError::Manifest(format!(
+                    "peripheral '{name}' sets `secure = true`, but generated bring-up takes the \
+                     chip HAL's peripheral singleton, which names only the non-secure alias; \
+                     drive secure peripherals from firmware instead"
+                )));
+            }
+            let singleton = entry.name.clone();
 
             let kind = match entry.kind() {
                 "i2c" | "lpi2c" => {
@@ -827,7 +912,7 @@ impl Session {
             instances.push(PeripheralInstance {
                 owner: peripheral.owner,
                 key: name.clone(),
-                base,
+                singleton,
                 kind,
             });
         }
@@ -939,24 +1024,6 @@ fn peripheral_alias(database: &ChipDatabase, secure: bool) -> u32 {
         .iter()
         .find(|alias| alias.secure == secure)
         .map_or(0, |alias| alias.address)
-}
-
-/// The absolute peripheral base a controller core sees, given the non-secure
-/// absolute base from the chip map.
-///
-/// The chip dumps carry each peripheral's non-secure CMSIS address, so
-/// a non-secure owner uses it unchanged. A secure owner rebases it from the
-/// non-secure world to the secure world (e.g. STM32MP2 `0x4000_0000` →
-/// `0x5000_0000`); chips without peripheral aliases have no such split and the
-/// base is returned unchanged.
-fn peripheral_absolute_base(database: &ChipDatabase, base: u32, secure: bool) -> u32 {
-    if secure {
-        let non_secure = peripheral_alias(database, false);
-        let secure_world = peripheral_alias(database, true);
-        base.wrapping_sub(non_secure).wrapping_add(secure_world)
-    } else {
-        base
-    }
 }
 
 /// Records a doorbell's participating cores, creating the [`HardwareDoorbell`]
@@ -1215,7 +1282,13 @@ mod tests {
         let uio = quote::format_ident!("uio");
         let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
 
-        let tokens = ir.shuhan.initialize(VisibleCore::Ap, &uio, &ty_crate);
+        let tokens = ir.shuhan.initialize(
+            VisibleCore::Ap,
+            &uio,
+            &ty_crate,
+            &ir.peripherals.hal_crate,
+            &[],
+        );
         syn::parse_file(&tokens.to_string()).expect("lowered ShuHan is valid Rust");
 
         // The full AP entry point (disconnected/connected endpoints, async

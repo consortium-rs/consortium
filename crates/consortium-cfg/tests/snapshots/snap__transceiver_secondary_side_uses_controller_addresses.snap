@@ -11,14 +11,10 @@ fn _generated() {
                 32768usize,
             )
         };
-        // SAFETY: the base is the UIO-mapped doorbell register window,
-        // resolved from the validated Consortium hardware database.
-        let doorbell = unsafe {
-            ::consortium_ipc_doorbell_hsem::HsemDoorbell::<
-                ::consortium_ipc::Secondary,
-                1usize,
-            >::new(1140850688usize)
-        };
+        let doorbell = ::consortium_ipc_doorbell_hsem::HsemDoorbell::<
+            ::consortium_ipc::Secondary,
+            1usize,
+        >::new(__db_hsem);
         // SAFETY: doorbell channel is verified to be valid in the config.
         let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
         // SAFETY: doorbell channel is verified to be valid in the config.

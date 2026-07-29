@@ -31,10 +31,47 @@ use core::{
     task::{Context, Poll},
 };
 
+use consortium_hal_stm32mp2::{Peri, PeripheralType};
 use consortium_ipc::{Chan, Doorbell, Side};
 use consortium_log::{debug, error, trace};
 
-use crate::{abstraction::Ipcc, chan::IPCC_CHAN_COUNT, error::IpccError};
+use crate::{abstraction::Ipcc, chan::IPCC_CHAN_COUNT, error::IpccError, registers::base};
+
+/// A chip-HAL peripheral singleton naming one IPCC instance.
+///
+/// The window's address still comes from [`base::BASE`] in this crate rather
+/// than from the singleton, so the security alias the doorbell has always used
+/// does not change underfoot. The processor side stays a type parameter of
+/// [`IpccDoorbell`]: an IPCC instance has one register block with a bank per
+/// core, so the singleton names the block, not the view.
+pub trait Instance: PeripheralType {
+    /// 1-based IPCC instance number.
+    const INSTANCE: usize;
+}
+
+/// Bind a chip-HAL peripheral singleton to this doorbell.
+macro_rules! impl_ipcc {
+    ($instance:ident, $number:expr) => {
+        impl crate::doorbell::Instance for ::consortium_hal_stm32mp2::peripherals::$instance {
+            const INSTANCE: usize = $number;
+        }
+    };
+}
+
+// STM32MP21 has only IPCC1; STM32MP23/25 add the SmartRun IPCC2.
+#[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
+mod bindings {
+    impl_ipcc!(IPCC1, 1);
+    impl_ipcc!(IPCC2, 2);
+}
+
+#[cfg(all(
+    feature = "stm32mp21x",
+    not(any(feature = "stm32mp23x", feature = "stm32mp25x"))
+))]
+mod bindings {
+    impl_ipcc!(IPCC1, 1);
+}
 
 #[cfg(not(feature = "std"))]
 #[inline]
@@ -82,14 +119,44 @@ impl<S: Side, const N: usize> IpccDoorbell<S, N> {
 }
 
 impl<S: Side, const N: usize> IpccDoorbell<S, N> {
+    /// Create a doorbell over IPCC instance `N`, side `S`, from the chip HAL's
+    /// peripheral singleton.
+    ///
+    /// This is the firmware-side constructor: the singleton proves nothing else
+    /// drives the instance, and the window address comes from this crate's
+    /// [`base::BASE`] table. `N` must match the singleton, which the const
+    /// assertion below checks at compile time.
+    ///
+    /// On Linux the window is an `mmap` of a UIO device rather than a physical
+    /// address, and there is no singleton for it — use
+    /// [`new_mapped`](Self::new_mapped) there.
+    pub fn new<T: Instance>(peri: Peri<'static, T>) -> Self {
+        const {
+            assert!(
+                T::INSTANCE == N,
+                "IpccDoorbell instance number does not match the peripheral singleton",
+            );
+        }
+        // Owning the singleton for the doorbell's lifetime is what makes the
+        // MMIO access exclusive; it is consumed here and never reissued.
+        let _ = peri;
+        // SAFETY: `base::BASE[N - 1]` is instance `N`'s window from this
+        // crate's vetted address table, and the consumed singleton guarantees
+        // nothing else drives it.
+        unsafe { Self::new_mapped(base::BASE[N - 1]) }
+    }
+
     /// Create a doorbell over IPCC instance `N`, side `S`, from an `mmap`'d
     /// virtual base address.
+    ///
+    /// This is the Linux/UIO constructor: mapped windows have no peripheral
+    /// singleton, so the caller carries the obligation instead.
     ///
     /// # Safety
     /// `base` must be the mapped virtual base of IPCC instance `N`. Passing a
     /// raw physical address is undefined behaviour on Linux.
-    pub unsafe fn new(base: usize) -> Self {
-        trace!("IpccDoorbell::new(base = {:#x})", base);
+    pub unsafe fn new_mapped(base: usize) -> Self {
+        trace!("IpccDoorbell::new_mapped(base = {:#x})", base);
         Self {
             // SAFETY: forwarded obligation; `base` is the mapped IPCC window.
             ipcc: unsafe { Ipcc::<S, N>::new(base) },
@@ -446,7 +513,7 @@ mod tests {
     // Primary is processor 1; it writes C1SCR and reads C2TOC1SR.
     fn doorbell(regs: &mut [u32]) -> IpccDoorbell<Primary, 1> {
         // SAFETY: `regs` backs a fake MMIO window for the test.
-        unsafe { IpccDoorbell::<Primary, 1>::new(regs.as_mut_ptr() as usize) }
+        unsafe { IpccDoorbell::<Primary, 1>::new_mapped(regs.as_mut_ptr() as usize) }
     }
 
     #[test]

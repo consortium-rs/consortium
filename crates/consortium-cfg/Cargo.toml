@@ -49,6 +49,24 @@ toml                            = "1.1.0"
 # against the real runtime crates, so every crate the codegen names must be a
 # (dev-)dependency here for the UI crates to resolve it.
 consortium-codec             = { features = ["alloc", "postcard", "rkyv"], path = "../consortium-codec" }
+# Generated bring-up names the chip HALs' peripheral singletons (`Peri<'static,
+# peripherals::LPI2C1>`), so the UI crates need both HALs even though each
+# generated file only uses one. Only the modules the codegen names are enabled:
+# the HALs' default `defmt` would switch `consortium-log` to its `defmt` backend
+# for every crate in this dev-dependency graph, and `consortium-codec` has no
+# `defmt` to link against.
+consortium-hal-imx9 = { default-features = false, features = [
+  "gpio",
+  "i2c",
+  "mimx95",
+  "time-driver-lpit",
+], path = "../consortium-hal-imx9" }
+consortium-hal-stm32mp2 = { default-features = false, features = [
+  "gpio",
+  "i2c",
+  "stm32mp25x",
+  "time-driver-gp-tim",
+], path = "../consortium-hal-stm32mp2" }
 consortium-ipc               = { path = "../consortium-ipc" }
 consortium-ipc-doorbell-hsem = { features = ["std"], path = "../consortium-ipc-doorbell-hsem" }
 consortium-ipc-doorbell-ipcc = { features = ["std"], path = "../consortium-ipc-doorbell-ipcc" }

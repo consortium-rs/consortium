@@ -176,6 +176,7 @@ dependencies = [
  "consortium-hal",
  "consortium-pac-imx9",
  "critical-section",
+ "embassy-hal-internal",
  "embassy-sync",
  "embassy-time-driver",
  "embassy-time-queue-utils",
@@ -190,6 +191,8 @@ dependencies = [
  "consortium-hal",
  "consortium-log",
  "consortium-pac-stm32mp2",
+ "critical-section",
+ "embassy-hal-internal",
 ]
 
 [[package]]
@@ -295,7 +298,17 @@ dependencies = [
 name = "consortium-log"
 version = "0.1.0"
 dependencies = [
+ "consortium-log-macros",
  "defmt",
+]
+
+[[package]]
+name = "consortium-log-macros"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -544,6 +557,15 @@ name = "embassy-executor-timer-queue"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2fc328bf943af66b80b98755db9106bf7e7471b0cf47dc8559cd9a6be504cc9c"
+
+[[package]]
+name = "embassy-hal-internal"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "568659fc53866d3d85c60fa33723fb751aa69e71507634fc2c19e7649432fb75"
+dependencies = [
+ "num-traits",
+]
 
 [[package]]
 name = "embassy-sync"
