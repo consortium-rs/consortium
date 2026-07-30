@@ -14,9 +14,14 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! Portable UIO interrupt dispatch.
+//! Portable UIO interrupt dispatch: the `[fd readiness → doorbell fan-out]` half of
+//! the protocol.
 //!
-//! [`irq_loop`] is the user-space half of the UIO IRQ protocol. The kernel arms
+//! Kept out from under the crate's Linux gate (this module is `cfg(unix)`) so its
+//! socketpair-backed tests build and run on macOS as well as Linux. The real
+//! `/dev/uioN` device wiring lives in `uio`, which is Linux-only.
+//!
+//! `irq_loop` is the user-space half of the UIO IRQ protocol. The kernel arms
 //! the device interrupt when `/dev/uioN` is opened; from then on user space owns
 //! the mask/re-arm handshake. Each M→A interrupt drives one loop iteration in a
 //! fixed order:
@@ -25,7 +30,7 @@
 //!    kernel masks it and bumps a 4-byte counter, which makes the fd readable.
 //! 2. **Drain** the 4-byte count so the fd is no longer readable. The value (an
 //!    interrupt sequence number) is discarded; only the edge matters.
-//! 3. **Fan out** to every registered doorbell [`Service`]. A masking doorbell
+//! 3. **Fan out** to every registered doorbell `Service`. A masking doorbell
 //!    (IPCC, MU) masks its asserted lines here and then wakes its
 //!    [`tokio::sync::Notify`] waiters; a plain doorbell just calls
 //!    `notify_waiters()`.
@@ -39,18 +44,18 @@
 //! armed the line at open and a redundant enable can unbalance a UIO driver's
 //! enable/disable accounting (leaving the interrupt wedged off).
 //!
-//! Wakeups ride entirely on tokio's [`Notify`](tokio::sync::Notify): each
-//! [`Service`] ultimately calls `notify_waiters()` on the doorbell's shared
+//! Wakeups ride entirely on tokio's `tokio::sync::Notify`: each
+//! `Service` ultimately calls `notify_waiters()` on the doorbell's shared
 //! `Notify`, which is the same object the doorbell's `wait()` future subscribes
 //! to. The loop itself holds no per-channel state — it does not know which line
 //! fired, so it services every doorbell and lets each re-check (and acknowledge)
 //! its own hardware. A spurious wake is therefore always safe.
 //!
-//! This module depends only on `std` plus Tokio's [`AsyncFd`] — never the
+//! This module depends only on `std` plus Tokio's `AsyncFd` — never the
 //! Linux-only `uio` crate — so it lives under `cfg(unix)` and its
 //! socketpair-backed tests exercise the `[fd readiness → user-space fan-out]`
 //! slice on both macOS and Linux. The real `/dev/uioN` mapping and device
-//! lifecycle stay in [`crate::uio`] (Linux only), which drives this loop with a
+//! lifecycle stay in the `uio` module (Linux only), which drives this loop with a
 //! `File` opened on the actual UIO character device.
 
 // The only non-test consumer of these items is [`crate::uio`], which is

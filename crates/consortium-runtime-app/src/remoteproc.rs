@@ -14,24 +14,81 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Booting and controlling a coprocessor through Linux remoteproc.
+//!
+//! Linux exposes each coprocessor as `/sys/class/remoteproc/remoteprocN`, and this
+//! module is a thin, typed wrapper over that sysfs interface: write the firmware
+//! filename, write `start`, read back the state. There is no ioctl and no library —
+//! remoteproc's control surface really is a handful of files.
+//!
+//! ```rust,ignore
+//! use consortium_runtime_app::remoteproc::RemoteProc;
+//!
+//! let rproc = RemoteProc::new(0);
+//! rproc.set_firmware("consortium-mcu.elf")?;
+//! rproc.start()?;
+//! ```
+//!
+//! # Where this sits in bring-up
+//!
+//! Starting the coprocessor is what makes the *other* side of every Consortium link
+//! exist, so it comes before IPC bring-up. It also does not have to be raced: the
+//! shared-memory transport's descriptor magic is a readiness gate, so a secondary that
+//! boots late finds the descriptor already published rather than missing a doorbell.
+//!
+//! The firmware the coprocessor loads is the one `csti build` post-processed —
+//! remoteproc expects the vector table in a section named `.isr_vectors`, so the
+//! builder renames `.vector_table` for it.
+//!
+//! # Considerations
+//!
+//! - **Requires privilege.** These are root-owned sysfs files; a non-root process gets
+//!   a permission error from `set_firmware` and `start`.
+//! - **`set_firmware` takes a filename, not a path.** The kernel resolves it relative
+//!   to its own firmware search path (typically `/lib/firmware`).
+//! - **State is read, not watched.** [`RemoteProc::state`] is a point-in-time read;
+//!   there is no notification when a coprocessor crashes. Pair it with the debug ring's
+//!   panic flag (`consortium_dbg`'s `Flags::Panic`) to distinguish a crash from a quiet
+//!   coprocessor.
+//! - **The `From` conversions panic on unrecognized input.** They are written against
+//!   the kernel's fixed vocabulary; a state string this module does not know is treated
+//!   as a bug rather than a recoverable error.
+
 use std::fmt::Display;
 use std::io::Result;
 use std::path::PathBuf;
 use std::time::Duration;
 
+/// A handle to one `/sys/class/remoteproc/remoteprocN` directory.
+///
+/// Construct with [`RemoteProc::new`], which takes the zero-based index.
 #[derive(Debug)]
 pub struct RemoteProc {
+    /// The sysfs directory this handle reads and writes.
     pub path: PathBuf,
 }
 
+/// The coprocessor's lifecycle state, as reported by remoteproc's `state` file.
+///
+/// The discriminants match the kernel's ordering, and `Display`/`From<String>` use the
+/// exact strings sysfs reads and writes.
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RemoteProcState {
+    /// Not running; firmware may be set and `start` written.
     Offline = 0,
+    /// Suspended by runtime power management.
     Suspended = 1,
+    /// Firmware loaded and executing.
     Running = 2,
+    /// The coprocessor faulted. Recovery behaviour depends on
+    /// [`set_recovery`](RemoteProc::set_recovery).
     Crashed = 3,
+    /// The remoteproc instance has been removed.
     Deleted = 4,
+    /// Linux attached to a coprocessor that was already running (booted by a
+    /// bootloader or by the secure world rather than by Linux).
     Attached = 5,
+    /// Detached: still running, but no longer under Linux's control.
     Detached = 6,
 }
 
@@ -79,10 +136,17 @@ impl Display for RemoteProcState {
     }
 }
 
+/// What remoteproc does with coprocessor memory on a crash.
+///
+/// Set through [`RemoteProc::set_coredump`]; matches the `coredump` sysfs vocabulary.
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RemoteProcCoredump {
+    /// Collect a coredump on crash, copying memory into a userspace-readable buffer.
     Enabled,
+    /// Collect nothing.
     Disabled,
+    /// Collect in place, without copying — memory is read directly from the
+    /// coprocessor's regions, so recovery waits for the dump to be consumed.
     Inline,
 }
 
