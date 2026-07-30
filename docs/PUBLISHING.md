@@ -80,9 +80,10 @@ uv run --project scripts --locked python scripts/release.py --dry-run --allow-di
 It runs on the host and, by default, requires a clean checkout. On macOS it
 delegates only Rust compilation, Clippy, and Cargo publish verification to
 `just linux-full`; Git/GitHub, Python, uv, Vite+, manifests, lockfiles, and
-non-Rust linters remain on the host. It asks for confirmation, commits and tags,
-creates the categorized GitHub release, dispatches the five-platform `csti`
-binary workflow, and finally runs the rate-aware publisher.
+non-Rust linters remain on the host. After updating versions and regenerating
+lockfiles, it formats their final state before running the lint bundle. It then
+commits and tags, creates the categorized GitHub release, dispatches the
+five-platform `csti` binary workflow, and finally runs the rate-aware publisher.
 
 Pass `--allow-dirty` when existing changes, such as patched headers, are
 intentional. A real release runs `git add --all`, so every superproject change
