@@ -19,6 +19,9 @@ jobs:
       - name: Setup just
         uses: extractions/setup-just@v4
 
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v8.2.0
+
       - name: Install OP-TEE build dependencies
         run: |
           sudo apt-get update
@@ -69,6 +72,9 @@ jobs:
 
       - name: IPC tests
         run: just test ipc host
+
+      - name: Release script tests
+        run: uv run --project scripts --locked python -m unittest discover -s scripts/tests -v
 
       - name: TEE tests
         run: |

@@ -46,17 +46,43 @@ than relying on the submodule. When PocketJS reaches crates.io, replace the thre
 
 ## Ordering
 
-`cargo publish --workspace` resolves the intra-workspace order itself (Rust 1.90+),
-so a release is one command. It also waits for each crate to appear in the index
-before publishing its dependents.
+`scripts/publish.py` discovers publishable workspace crates with Cargo metadata,
+orders them by their non-dev workspace dependencies, and checks crates.io before
+each run. It reports each package as `new`, `update`, or `skip`; it refuses to
+publish when a workspace version is older than the newest registry version.
 
 ```bash
 just publish-dry    # verify
-just publish        # then, with a crates.io token in place
+python3 scripts/publish.py --dry-run  # inspect the registry-aware plan
+just publish        # publish with a crates.io token in place
 ```
 
 **Both run on Linux only, by design** — see below. Each refuses to run on another
 host rather than silently covering less than it appears to.
+
+The publisher maintains separate allowances for new crate names (burst of 5,
+then one every 10 minutes) and new versions (burst of 30, then one per minute).
+It waits only before the next task that needs an exhausted allowance. A new
+crate therefore does not delay an existing-crate update, and the final publish
+never causes a pointless trailing sleep. If a dependency was just published,
+its dependent checks registry visibility immediately before its own publish.
+
+The complete release flow is:
+
+```bash
+uv run --project scripts --locked python scripts/release.py patch
+# Use major/minor, or omit the component for the SemVer default.
+```
+
+It requires a clean Linux checkout, applies `just fix`, asks for confirmation,
+updates Cargo/uv/Vite+ manifests and lockfiles, runs `just lint`, commits and
+tags, creates the categorized GitHub release, dispatches the five-platform
+`csti` binary workflow, and finally runs the rate-aware publisher.
+
+The workflow uploads cargo-binstall-compatible archives named
+`csti-<target>-v<version>.tgz` on Unix and
+`csti-<target>-v<version>.zip` on Windows. The `csti` Cargo manifest declares
+the matching package URL, archive format, and root-level binary path.
 
 Intra-workspace dependencies carry both `path` and `version = "0.1.0"`, which is
 what makes this work — cargo rewrites `path` to a registry requirement on upload.

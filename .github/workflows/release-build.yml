@@ -1,0 +1,85 @@
+name: release binaries
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag to receive the csti binaries
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: ${{ matrix.target }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: windows-latest
+            target: x86_64-pc-windows-msvc
+            package: zip
+            executable: target/x86_64-pc-windows-msvc/release/csti.exe
+          - runner: windows-11-arm
+            target: aarch64-pc-windows-msvc
+            package: zip
+            executable: target/aarch64-pc-windows-msvc/release/csti.exe
+          - runner: macos-14
+            target: aarch64-apple-darwin
+            package: tgz
+            executable: target/aarch64-apple-darwin/release/csti
+          - runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            package: tgz
+            executable: target/x86_64-unknown-linux-gnu/release/csti
+          - runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+            package: tgz
+            executable: target/aarch64-unknown-linux-gnu/release/csti
+
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+      - name: Check out release tag
+        uses: actions/checkout@v6.0.3
+        with:
+          ref: ${{ inputs.tag }}
+          submodules: recursive
+
+      - name: Install Rust target
+        run: rustup target add ${{ matrix.target }}
+
+      - name: Build csti
+        run: cargo build --locked --release --package csti --target ${{ matrix.target }}
+
+      - name: Package Unix binary
+        if: matrix.package == 'tgz'
+        id: package_unix
+        shell: bash
+        run: |
+          version="${{ inputs.tag }}"
+          version="${version#v}"
+          asset="csti-${{ matrix.target }}-v${version}.tgz"
+          tar -czf "$asset" \
+            -C "$(dirname "${{ matrix.executable }}")" \
+            "$(basename "${{ matrix.executable }}")"
+          echo "asset=$asset" >> "$GITHUB_OUTPUT"
+
+      - name: Package Windows binary
+        if: matrix.package == 'zip'
+        id: package_windows
+        shell: pwsh
+        run: |
+          $version = "${{ inputs.tag }}".TrimStart("v")
+          $asset = "csti-${{ matrix.target }}-v${version}.zip"
+          Compress-Archive -Path "${{ matrix.executable }}" -DestinationPath $asset
+          "asset=$asset" >> $env:GITHUB_OUTPUT
+
+      - name: Upload binary to the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ASSET: ${{ steps.package_unix.outputs.asset || steps.package_windows.outputs.asset }}
+        shell: bash
+        run: gh release upload "${{ inputs.tag }}" "$ASSET" --clobber

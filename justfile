@@ -212,7 +212,7 @@ publish-dry:
 publish-dry-host:
     cargo publish --workspace --dry-run {{ nonlinux_excludes }}
 
-# Publish every publishable crate; cargo resolves the intra-workspace order
+# Publish every publishable crate with registry-aware rate limiting
 publish:
     @[ "$(uname)" = "Linux" ] || { \
         echo "Error: publish from Linux — a macOS run cannot even build cogcore-sys,"; \
@@ -220,7 +220,7 @@ publish:
         echo "Use 'just linux-full \"just publish\"' or a Linux host."; \
         exit 1; \
     }
-    cargo publish --workspace
+    python3 scripts/publish.py
 
 # ── A-core (aarch64 / Linux) ─────────────────────────────────────────────────
 
