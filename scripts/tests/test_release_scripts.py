@@ -142,6 +142,38 @@ class ReleaseTests(unittest.TestCase):
             dry_run=False,
         )
 
+    def test_release_formats_generated_versions_before_linting(self):
+        events = []
+        with (
+            patch.object(
+                release,
+                "apply_release_fixes",
+                side_effect=lambda: events.append("fix"),
+            ),
+            patch.object(
+                release,
+                "update_all_manifests",
+                side_effect=lambda _root, _version: events.append("version") or [],
+            ),
+            patch.object(
+                release,
+                "regenerate_lockfiles",
+                side_effect=lambda _root, dry_run: events.append("locks"),
+            ),
+            patch.object(
+                release,
+                "format_release_files",
+                side_effect=lambda: events.append("format"),
+            ),
+            patch.object(
+                release,
+                "run_release_linters",
+                side_effect=lambda: events.append("lint"),
+            ),
+        ):
+            release.prepare_release("0.2.0")
+        self.assertEqual(events, ["fix", "version", "locks", "format", "lint"])
+
     def test_default_bump_before_and_after_one_point_zero(self):
         zero = release.Version.parse("0.4.2")
         stable = release.Version.parse("1.4.2")
