@@ -30,6 +30,70 @@
 //! `N` is always `1` (e.g. `HsemDoorbell<Primary, 1>`). Its channels are the 16
 //! hardware semaphores.
 //!
+//! # How the semaphore becomes a doorbell
+//!
+//! HSEM is a lock peripheral, not a mailbox, so the signaling is a side effect of
+//! the locking protocol:
+//!
+//! | Operation | HSEM action |
+//! | --------- | ----------- |
+//! | `ring`     | 1-step read-lock, then immediately unlock — the *unlock* raises the remote core's HSEM interrupt |
+//! | `wait`     | arm this core's `CnIER`, resolve when the semaphore appears in `CnMISR`, then clear it |
+//! | `pending` | read `CnMISR` non-destructively                    |
+//!
+//! # Construction
+//!
+//! Two constructors, one per side of the system:
+//!
+//! - **Firmware** — [`HsemDoorbell::new`] consumes the chip HAL's `HSEM` peripheral
+//!   singleton. A const assertion checks the singleton against the doorbell's type
+//!   parameters, and the window address still comes from this crate's own
+//!   [`registers::base`] table so the security alias it has always used does not
+//!   change underfoot.
+//! - **Linux/UIO** — [`HsemDoorbell::new_mapped`] is `unsafe` and takes an `mmap`'d
+//!   virtual base, because a mapped window has no singleton to consume. Passing a
+//!   physical address is undefined behaviour.
+//!
+//! The doorbell is [`Clone`], and clones share one wake source, so
+//! `SharedMemoryTransport::split` can hand a copy to each half and an interrupt
+//! reaches whichever half is waiting.
+//!
+//! # Interrupts are the application's
+//!
+//! Per repository convention this crate installs **no** `#[interrupt]` handlers. The
+//! application owns the vector table and forwards the non-secure HSEM vector into the
+//! crate's exported wake path. Enable the *HAL's* `rt` feature
+//! (`consortium-hal-stm32mp2/rt`) so the `#[interrupt]` macro and PAC vector table
+//! are available to that code.
+//!
+//! ```rust,ignore
+//! // Firmware: forward the vector.
+//! #[interrupt]
+//! fn HSEM() {
+//!     consortium_ipc_doorbell_hsem::notify();
+//! }
+//! ```
+//!
+//! On `std` the wake source is a Tokio `Notify` instead. `wait`
+//! enables the line's `CnIER` while pending and disarms it on completion, so
+//! userspace owns the mask and re-arming the UIO IRQ does not immediately re-fire a
+//! level-sensitive line. Bind it through `consortium-runtime-app`'s UIO fan-out with
+//! `bind_notifier(doorbell.notifier())`.
+//!
+//! # Features
+//!
+//! | Feature      | Effect                                                        |
+//! | ------------ | ------------------------------------------------------------- |
+//! | `stm32mp25x` | Chip selection (default). Forwarded to `consortium-hal-stm32mp2`. |
+//! | `stm32mp23x` | Chip selection; shares the STM32MP25 HSEM layout.              |
+//! | `std`        | Tokio `Notify` wake path, host-testable with fake MMIO.        |
+//! | `defmt`      | Derive `defmt::Format` on [`HsemError`].                       |
+//! | `tracing`    | Route diagnostics to `consortium-log`'s `tracing` backend.      |
+//!
+//! A dependent selecting a non-default chip must set `default-features = false`, or
+//! the HAL's default chip is pulled in too and the PAC's `Interrupt` enum becomes
+//! ambiguous.
+//!
 //! [`side`]: consortium_ipc::Side
 
 pub mod abstraction;

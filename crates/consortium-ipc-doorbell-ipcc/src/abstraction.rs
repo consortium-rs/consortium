@@ -23,11 +23,22 @@
 //! compile time.
 //!
 //! `N` selects the instance (`Ipcc<_, 1>` is IPCC1, `Ipcc<_, 2>` is the SmartRun
-//! IPCC2 on STM32MP23/25). Construction follows the dual-path convention:
-//! [`Ipcc::steal`] (bare-metal, compile-time base) and [`Ipcc::new`] (Linux,
-//! `mmap`'d base).
+//! IPCC2 on STM32MP23/25).
+//!
+//! [`Ipcc::new`] is the only constructor and is `unsafe`: it takes a base address and
+//! trusts it. That is deliberate — this layer is not where the firmware/Linux
+//! distinction belongs. The dual-path convention lives one level up on
+//! [`IpccDoorbell`](crate::doorbell::IpccDoorbell), which either consumes the chip
+//! HAL's `IPCCn` peripheral singleton and resolves the base from
+//! [`registers::base`](crate::registers::base) (firmware), or takes an `mmap`'d
+//! virtual base directly (Linux/UIO).
+//!
+//! Everything here is a thin, checked wrapper over MMIO: set, clear, poll, mask, and
+//! unmask one channel in one bank. Channel validation and the
+//! [`Doorbell`](consortium_ipc::Doorbell) contract are the doorbell layer's job.
 //!
 //! [`Primary`]: consortium_ipc::Primary
+//! [`Secondary`]: consortium_ipc::Secondary
 //! [`Tertiary`]: consortium_ipc::Tertiary
 
 use core::marker::PhantomData;

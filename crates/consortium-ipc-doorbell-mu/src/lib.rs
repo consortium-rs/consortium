@@ -24,6 +24,88 @@
 //! general-purpose interrupt (GI) lines and channels `4..8` are the
 //! receive-full (RF) lines.
 //!
+//! # Two line kinds in one channel space
+//!
+//! An MU instance offers two independent signaling mechanisms, and this crate packs
+//! both into the single flat channel space the [`Doorbell`](consortium_ipc::Doorbell) trait expects:
+//!
+//! | [`Chan`] range | Line kind                     | Registers                  |
+//! | -------------- | ----------------------------- | -------------------------- |
+//! | `0..4`         | general-purpose interrupt (GI) | `GCR` / `GSR` / `GIER`      |
+//! | `4..8`         | receive-full (RF)              | transmit/receive + `RSR` / `RCR` |
+//!
+//! GI lines are pure interrupts. RF lines work by writing a token word to a transmit
+//! register, which sets the peer's receive-full flag — a doorbell that happens to
+//! carry four bytes this crate does not use. Both kinds signal; which to pick is a
+//! board-integration choice, so both are exposed rather than one being hidden.
+//!
+//! Each instance's side-B (MUB) window sits one register-window length above its
+//! side-A (MUA) base, so one base table plus a length describes both processor views
+//! and [`Side`] selects between them at the type level.
+//!
+//! [`Chan`]: consortium_ipc::Chan
+//! [`Side`]: consortium_ipc::Side
+//!
+//! # Construction
+//!
+//! - **Firmware** — [`MuDoorbell::new`] consumes the chip HAL's `MUn_MUx` peripheral
+//!   singleton. A const assertion checks the singleton's side against `S`, so
+//!   `MuDoorbell<Secondary, 7>` cannot be built from the MUA singleton. The window
+//!   address still comes from this crate's [`registers::base`] table so the security
+//!   alias does not change underfoot.
+//! - **Linux/UIO** — [`MuDoorbell::new_mapped`] is `unsafe` and takes an `mmap`'d
+//!   virtual base, because a mapped window has no singleton. Passing a physical
+//!   address is undefined behaviour.
+//!
+//! The doorbell is [`Clone`] and clones share one wake source, so
+//! `SharedMemoryTransport::split` can give a copy to each half.
+//!
+//! # Interrupts, and why MU needs masking
+//!
+//! This crate installs **no** `#[interrupt]` handlers. The application owns the vector
+//! table and forwards each MU vector a core drives into `notify::<N>()`, parameterized
+//! with that instance number — i.MX93 `MU1_B`/`MU2_B`, i.MX95 CM7 `MU5_A`/`MU7_B`/`MU8_B`.
+//! Enable the *HAL's* `rt` feature (`consortium-hal-imx9/rt`) so the `#[interrupt]`
+//! macro and PAC vector table are available there.
+//!
+//! ```rust,ignore
+//! #[interrupt]
+//! fn MU7_B() {
+//!     consortium_ipc_doorbell_mu::notify::<7>();
+//! }
+//! ```
+//!
+//! MU lines are **level-sensitive**, which matters on Linux: re-arming the UIO IRQ
+//! while a status flag is still set fires the line again immediately and the loop
+//! spins. So on `std` the doorbell is bound as a *service* rather than a plain
+//! notifier — `MuDoorbell::notify_gi_interrupt` disables every asserted GI and RF
+//! line **before** waking. Disabling only masks the interrupt and leaves `GSR`/`RSR`
+//! set, so the woken `wait` future still observes its flag,
+//! acknowledges it, and re-arms:
+//!
+//! ```rust,ignore
+//! // Linux: bind the masking service, not the bare notifier.
+//! let db = doorbell.clone();
+//! uio.bind_service(std::sync::Arc::new(move || db.notify_gi_interrupt()));
+//! ```
+//!
+//! `notifier()` is still exposed for integrators who mask
+//! elsewhere, but the service is the correct default.
+//!
+//! # Features
+//!
+//! | Feature  | Effect                                                              |
+//! | -------- | ------------------------------------------------------------------- |
+//! | `mimx95` | Chip selection (default). Eight MU instances.                        |
+//! | `mimx93` | Chip selection. Two MU instances.                                    |
+//! | `std`    | Tokio `Notify` wake path and the masking service; host-testable.      |
+//! | `defmt`  | Derive `defmt::Format` on [`MuError`].                               |
+//!
+//! Enabling both chip features is a compile error — the instance count and base table
+//! differ. A dependent selecting the non-default chip must set
+//! `default-features = false`, or the HAL's default chip is pulled in too and the
+//! PAC's `Interrupt` enum becomes ambiguous.
+//!
 //! [`side`]: consortium_ipc::Side
 
 pub mod abstraction;

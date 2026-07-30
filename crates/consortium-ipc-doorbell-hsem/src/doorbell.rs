@@ -233,7 +233,7 @@ impl<S: Side, const N: usize> Doorbell for HsemDoorbell<S, N> {
 /// Arms this core's `CnIER` on the first poll, then completes once the
 /// semaphore interrupt is observed, disarming `CnIER`/`CnICR` on completion. On
 /// `no_std` the shared `AtomicWaker` is woken from the application's HSEM
-/// `#[interrupt]` handler (via [`notify`]) and the future re-checks
+/// `#[interrupt]` handler (via `notify`) and the future re-checks
 /// `CnISR`; on `std` the doorbell's `Notify` is driven by the UIO IRQ loop.
 /// Both paths own the interrupt registers through the mapped HSEM window and
 /// clear+disable the line when the wait resolves.

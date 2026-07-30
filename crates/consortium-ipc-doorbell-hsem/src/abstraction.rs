@@ -21,9 +21,24 @@
 //! `LOCKID` (bus master id): [`Primary`] is C1 / `LOCKID` 1, [`Secondary`] is
 //! C2 / `LOCKID` 2, [`Tertiary`] is C3 / `LOCKID` 3.
 //!
-//! HSEM is a single-instance peripheral, so `N` is always `1`. Construction
-//! follows the dual-path convention: [`Hsem::steal`] (bare-metal, compile-time
-//! base) and [`Hsem::new`] (Linux, `mmap`'d base).
+//! HSEM is a single-instance peripheral, so `N` is always `1`.
+//!
+//! [`Hsem::new`] is the only constructor and is `unsafe`: it takes a base address
+//! and trusts it. That is deliberate — this layer is not where the firmware/Linux
+//! distinction belongs. The dual-path convention lives one level up on
+//! [`HsemDoorbell`](crate::doorbell::HsemDoorbell), which either consumes the chip
+//! HAL's `HSEM` peripheral singleton and resolves the base from
+//! [`registers::base`](crate::registers::base) (firmware), or takes an `mmap`'d
+//! virtual base directly (Linux/UIO).
+//!
+//! Everything here is a thin, checked wrapper over MMIO: lock, unlock, poll,
+//! enable, and clear one semaphore. The [`Doorbell`](consortium_ipc::Doorbell)
+//! contract — and the fact that an *unlock* is what raises the peer's interrupt —
+//! is the doorbell layer's job.
+//!
+//! [`Primary`]: consortium_ipc::Primary
+//! [`Secondary`]: consortium_ipc::Secondary
+//! [`Tertiary`]: consortium_ipc::Tertiary
 
 use core::marker::PhantomData;
 

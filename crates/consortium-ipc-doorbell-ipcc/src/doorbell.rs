@@ -178,7 +178,7 @@ impl<S: Side, const N: usize> IpccDoorbell<S, N> {
     ///
     /// Prefer this over driving [`notifier`](Self::notifier) directly: it masks
     /// the asserted incoming channels *before* waking, mirroring the `no_std`
-    /// [`notify_rx_occupied_interrupt`] so a level-sensitive line does not
+    /// `notify_rx_occupied_interrupt` so a level-sensitive line does not
     /// immediately re-fire the UIO IRQ. Waking then notifies every waiting
     /// [`wait`](Doorbell::wait) future through the shared `Notify`, each of which
     /// re-checks and acknowledges its own channel.
@@ -251,7 +251,7 @@ impl<S: Side, const N: usize> Doorbell for IpccDoorbell<S, N> {
 /// Arms the RX-occupied interrupt on the first poll, then completes once the
 /// incoming channel is occupied, acknowledging it and re-masking the interrupt.
 /// On `no_std` the shared `AtomicWaker` is woken from
-/// [`notify_rx_occupied_interrupt`]; on `std` the doorbell's `Notify` is driven
+/// `notify_rx_occupied_interrupt`; on `std` the doorbell's `Notify` is driven
 /// by the UIO IRQ loop.
 pub struct IpccWaitFut<'a, S: Side, const N: usize> {
     doorbell: &'a IpccDoorbell<S, N>,
@@ -464,7 +464,7 @@ fn channel_waker<const N: usize>(id: u8) -> &'static atomic_waker::AtomicWaker {
 
 /// Service an IPCC RX-occupied interrupt. Call from the corresponding vector.
 ///
-/// Delegates to [`service_rx_occupied`]: asserted channels are masked before
+/// Delegates to `service_rx_occupied`: asserted channels are masked before
 /// their per-channel [`AtomicWaker`](atomic_waker::AtomicWaker)s are woken.
 ///
 /// # Safety
