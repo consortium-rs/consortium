@@ -17,7 +17,7 @@
 [package]
 description       = "FFI bindings to the remoteproc resource-table layout (rsc_table.h)"
 edition.workspace = true
-include           = ["Cargo.toml", "LICENSE", "build.rs", "include/**/*", "src/**/*", "wrapper.h"]
+include           = ["Cargo.toml", "LICENSE", "README.md", "build.rs", "include/**/*", "src/**/*", "wrapper.h"]
 # Not `license.workspace`: `include/rsc_table.h` is the remoteproc resource
 # table header from Texas Instruments and Google, redistributed under
 # BSD-3-Clause.

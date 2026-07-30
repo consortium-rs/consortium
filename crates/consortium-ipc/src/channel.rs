@@ -61,7 +61,7 @@ impl Direction for Rx {}
 ///
 /// static mut BUF: [u8; 256] = [0u8; 256];
 ///
-/// // SAFETY: this is the only reference taken to BUF.
+/// // Taking the one and only reference to BUF.
 /// let buf = unsafe { &mut *core::ptr::addr_of_mut!(BUF) };
 /// let ch = Channel::<Tx, MyMsg, _, PostcardCodec>::new(chan, transport, buf);
 /// ```

@@ -4,20 +4,39 @@ Safe Rust wrappers for the core Cog/WPE browser API used by Consortium's HMI sub
 
 This crate sits above `cogcore-sys`. The `-sys` crate owns raw bindgen output for Cog, GLib/GObject, WPE, and WebKit. This crate provides the small safe layer callers should normally use: object handles, GObject refcounting, Rust string conversion, `GError` conversion, and a focused browser shell/view API.
 
+The consumer is [`consortium-hmi-webkit`](../consortium-hmi-webkit), which builds a kiosk
+app on top of it:
+
+```text
+consortium-hmi-webkit      KioskApp + bridge mounting
+  └── cogcore                 (this crate) safe subset
+        └── cogcore-sys          raw bindgen output + vendored Cog Core C
+```
+
 ## Scope
 
-The current wrapper covers the core Cog flow:
+| Item                                                                      | Covers                          |
+| ------------------------------------------------------------------------- | ------------------------------- |
+| `init()`                                                                  | Cog initialization               |
+| `Platform`                                                                | The global platform and its setup |
+| `Shell`                                                                   | Construction, request-handler registration, metadata |
+| `View`, `Viewport`                                                        | View creation, visibility, fullscreen, viewport membership |
+| `DirectoryFilesHandler`, `HostRoutesHandler`, `PrefixRoutesHandler`        | Request routing                  |
+| `UserContentManager`, `UserScript`                                        | Injecting scripts, receiving script messages |
+| `SecurityManager`                                                         | Security-policy configuration     |
+| `utils`                                                                   | Cog URI and application-ID conversion |
 
-- `init()` for Cog initialization.
-- `Platform` for the global platform and platform setup.
-- `Shell` for shell construction, request handler registration, and shell metadata.
-- `View` and `Viewport` for view creation, visibility, fullscreen, and viewport
-  membership.
-- `DirectoryFilesHandler`, `HostRoutesHandler`, and `PrefixRoutesHandler` for
-  request routing.
-- Utility helpers for Cog URI and application ID conversion.
+`UserContentManager` and `UserScript` are what `consortium-hmi-webkit` uses to inject its
+bridge prelude as a document-start script and register the `bridge` script-message
+handler.
 
-WebKit and WPE types remain opaque in this crate. When integration code needs to cross into WebKit/WPE directly, use the raw pointer escape hatches such as `View::as_webkit_ptr()` and `Platform::view_backend_ptr()`.
+`gio` and `glib` are re-exported, because public GLib/GIO interop should use those crates'
+types rather than re-wrapped equivalents.
+
+WebKit and WPE types remain opaque in this crate. When integration code needs to cross into
+WebKit/WPE directly, use the raw pointer escape hatches such as `View::as_webkit_ptr()` and
+`Platform::view_backend_ptr()`. Widening the safe surface is preferable to reaching for
+those, but they exist so a gap in coverage is never a blocker.
 
 ## Example
 
@@ -49,9 +68,22 @@ fn main() -> cogcore::Result<()> {
 
 ## Safety Model
 
-Safe wrapper types own one GObject reference and release it on drop. Cloning a wrapper takes another GObject reference. Borrowed pointers returned by Cog are promoted to owned wrapper handles only when the wrapper can safely call `g_object_ref`.
+This is the contract every wrapper keeps, and the thing to preserve when extending the
+crate:
 
-Returned `GError` values are copied into `GlibError` and freed immediately. Returned transfer-full strings are copied into `String` and released with `g_free`. Public APIs accept Rust strings and reject interior NUL bytes before calling C.
+- **One owned GObject reference per wrapper**, released on drop. `Clone` takes another
+  reference, so wrappers are cheap handles rather than deep copies.
+- **A borrowed pointer returned by Cog is promoted to an owned handle only when the wrapper
+  can safely call `g_object_ref`.** One that cannot be reffed is not wrapped.
+- **`GError` values are copied into `GlibError` and freed immediately**, so no GLib-owned
+  error outlives the call that produced it.
+- **Transfer-full strings are copied into `String` and released with `g_free`.**
+- **Public APIs accept Rust strings and reject interior NUL bytes before calling C.**
+
+When adding a wrapper, document each `unsafe` block with the pointer lifetime or ownership
+invariant it relies on — the workspace denies `undocumented_unsafe_blocks`. A unit test
+asserts that every public wrapper type is `Clone`, which is the handle-semantics contract
+made checkable.
 
 ## Platform Notes
 

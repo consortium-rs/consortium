@@ -14,6 +14,17 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! The invocation envelope a guest sends across the bridge.
+//!
+//! `{ "id": u64, "cmd": String, "payload": <any JSON> }`.
+//!
+//! `id` and `cmd` both `#[serde(default)]`, so a malformed or partial envelope parses into
+//! a dispatch that fails on lookup rather than failing to parse at all. That keeps the
+//! failure reportable back to the guest with an id where one was supplied.
+//!
+//! `payload` stays a `serde_json::Value` and is never inspected here — the bridge hands it
+//! to a handler as a string, and the handler owns its own type.
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]

@@ -1,5 +1,4 @@
 #![cfg_attr(not(feature = "std"), no_std)]
-
 // Copyright 2026 Ethan Wu
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -110,12 +109,13 @@
 //!
 //! # Example
 //!
+//! `new` is `unsafe`: the caller guarantees `base` covers the descriptor, channel table,
+//! and every slot, and that nothing else aliases the window.
+//!
 //! ```rust,ignore
 //! use consortium_ipc::{Connect, Secondary};
 //! use consortium_ipc_transport_memory::{DescriptorLayout, SharedMemoryTransport};
 //!
-//! // SAFETY: `base` covers the descriptor, channel table, and slots, and nothing
-//! // else aliases the window.
 //! let mut transport = unsafe {
 //!     SharedMemoryTransport::<Secondary, _, _>::new(ch_tx, ch_rx, doorbell, region, base)
 //! };
