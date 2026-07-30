@@ -59,6 +59,21 @@ mdbook serve docs/book/
 Use `cargo test -p <crate>` for focused validation while iterating. Full-workspace
 commands can hit platform-sensitive crates or code that is mid-migration.
 
+## Host Execution Policy
+
+Run all project commands, checks, builds, tests, linters, and other transactions
+in the environment selected for the host operating system. Formatting commands
+that only rewrite files or check formatting are the exception and may run directly
+on the host:
+
+- On macOS, use the Linux container recipes provided by the `justfile` (for
+  example, `just linux ...` or `just linux-full ...`). Do not run project
+  commands other than formatting and format checks directly on the macOS host.
+- On Linux, use the standard host environment and the normal `just`/`cargo`
+  commands.
+- On Windows, run project commands inside WSL. Do not use native Windows shells
+  for project transactions.
+
 The `justfile` is the command index, but verify recipes against current crates before
 copying them into new docs. Some target and lint recipes still mention crates or type
 names that are not present in the current workspace, such as `consortium-common`,

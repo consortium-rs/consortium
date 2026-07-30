@@ -58,11 +58,12 @@
 //! lifecycle stay in the `uio` module (Linux only), which drives this loop with a
 //! `File` opened on the actual UIO character device.
 
-// The only non-test consumer of these items is [`crate::uio`], which is
-// Linux-only. On other Unix hosts (macOS) a plain `cargo build` therefore sees
-// them as unused; they are still exercised by the test module below, so allow
-// dead code off-Linux rather than gating the logic away from its own tests.
-#![cfg_attr(not(target_os = "linux"), allow(dead_code))]
+// The only non-test consumer of these items is [`crate::uio`], which is built
+// only on Linux with `ipc-shm`. Other builds still compile this module so its
+// socketpair-backed tests can exercise the portable IRQ loop, but a normal
+// library build sees the items as unused. Allow dead code whenever that
+// production consumer is absent rather than gating the logic away from tests.
+#![cfg_attr(not(all(target_os = "linux", feature = "ipc-shm")), allow(dead_code))]
 
 use std::{
     fs::File,
