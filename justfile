@@ -523,7 +523,7 @@ linux-setup:
     @container volume create consortium-target >/dev/null 2>&1 || true
     @container volume create consortium-cargo >/dev/null 2>&1 || true
 
-# Build the base Linux image (Rust toolchains + dtc)
+# Build the base Linux image (Rust toolchains + uv + Vite+ + dtc)
 linux-image: linux-setup
     @mkdir -p {{ linux_ctx }}
     container build --target base -t {{ linux_image }}:base \

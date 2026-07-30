@@ -8,7 +8,8 @@
 # root. No Yocto SDK and no cross linker are involved for the 64-bit A-core.
 #
 # Stages:
-#   base  Rust toolchains + `dtc`; enough for the `just *-a64` / `*-a32` recipes.
+#   base  Rust toolchains, `uv`, Vite+, and `dtc`; enough for the
+#         `just *-a64` / `*-a32` recipes and repository tooling.
 #   full  + WPE WebKit/Cog and the OP-TEE TA dev kit; enough for a `csti build`
 #         of the melt-pot examples, whose app crates pull `consortium-hmi-webkit`
 #         and `optee-teec`.
@@ -19,6 +20,8 @@
 
 # Ubuntu 24.04, not Debian bookworm: the prebuilt WPE stack needs GLIBC_2.38 and
 # libicu74, neither of which bookworm has.
+FROM ghcr.io/astral-sh/uv:0.12.0 AS uv
+FROM ghcr.io/voidzero-dev/vite-plus:0.2.5 AS vite-plus
 FROM docker.io/library/ubuntu:24.04 AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -36,7 +39,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo
-ENV PATH=/usr/local/cargo/bin:$PATH
+ENV VP_HOME=/root/.vite-plus
+ENV PATH=/root/.local/bin:/root/.vite-plus/bin:/usr/local/cargo/bin:$PATH
+
+# Python and frontend repository tooling, copied from the projects' pinned,
+# multi-architecture images. Keep these probes before Rust installation so the
+# tool layer is independently cacheable and fails early if its layout changes.
+COPY --from=uv /uv /uvx /usr/local/bin/
+COPY --from=vite-plus --chown=root:root /home/vp/.vite-plus /root/.vite-plus
+RUN uv --version && vp --version
+
 RUN curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal \
       --default-toolchain stable \
       --target aarch64-unknown-linux-gnu \
@@ -44,6 +56,12 @@ RUN curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal \
       --target thumbv8m.main-none-eabihf \
       --target thumbv7em-none-eabihf \
     && rustup component add rust-src llvm-tools
+
+# `clippy` and `rustfmt` are not in the minimal profile, but `just lint` needs
+# both (`cargo-lint` and `fmt-check`). Kept in their own layer: folding them into
+# the install above would invalidate it and re-download the whole toolchain and
+# every target, which is slow and flaky through the builder VM's network.
+RUN rustup component add clippy rustfmt
 
 # `just` itself, so the container can run this repo's own recipes
 # (`just linux just check-ipc-a64`).

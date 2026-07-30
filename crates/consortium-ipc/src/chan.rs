@@ -75,10 +75,16 @@ impl From<Chan> for u8 {
     }
 }
 
-#[cfg(feature = "defmt")]
-impl defmt::Format for Chan {
-    fn format(&self, f: defmt::Formatter<'_>) {
-        defmt::write!(f, "Chan({=u8})", self.0)
+// Gated on the *backend* rather than this crate's `defmt` feature: the internal
+// log calls that format a `Chan` follow `consortium-log`, which another
+// workspace member can switch on through feature unification.
+consortium_log::when_defmt! {
+    impl consortium_log::defmt::Format for Chan {
+        fn format(&self, f: consortium_log::defmt::Formatter<'_>) {
+            // `defmt::write!` expands to bare `defmt::…` paths.
+            use consortium_log::defmt;
+            defmt::write!(f, "Chan({=u8})", self.0)
+        }
     }
 }
 
