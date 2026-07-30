@@ -575,9 +575,9 @@ SDK and no cross linker are involved for the 64-bit A-core.
 
 `Dockerfile.linux` defines two stages, driven by the `just linux-*` recipes:
 
-- `base` (`just linux-image`) — Rust toolchains, `uv`, Vite+, `dtc`,
-  `arm-none-eabi-objcopy`, and `just`. Enough for the `*-a64` / `*-a32`
-  recipes and repository tooling.
+- `base` (`just linux-image`) — Rust toolchains, `uv`, Vite+, GitHub CLI,
+  `dtc`, `arm-none-eabi-objcopy`, and `just`. Enough for the `*-a64` /
+  `*-a32` recipes and repository tooling.
 - `full` (`just linux-image-full`) — adds WPE WebKit/Cog from the
   consortium-rs/wpe-kiosk-stack-prebuilt `.deb` and an OP-TEE 4.10.0 TA dev kit.
   Enough for a full `csti build` of melt-pot. The `.deb` (~45 MB) is fetched on
