@@ -375,7 +375,6 @@ def regenerate_lockfiles(root: Path, dry_run: bool) -> None:
     run("uv", "lock", cwd=root, dry_run=dry_run)
     run("uv", "lock", cwd=root / "scripts", dry_run=dry_run)
     run("vp", "install", cwd=root, dry_run=dry_run)
-    run("taplo", "format", cwd=root, dry_run=dry_run)
 
 
 def run_rust_recipe(recipe: str, *, dry_run: bool = False) -> None:
@@ -392,14 +391,18 @@ def run_rust_recipe(recipe: str, *, dry_run: bool = False) -> None:
     run(*command, cwd=ROOT, dry_run=dry_run)
 
 
-def apply_release_fixes(*, dry_run: bool = False) -> None:
-    run_rust_recipe("cargo-fix", dry_run=dry_run)
-    run("just", "oxfix", cwd=ROOT, dry_run=dry_run)
-    run("just", "ruff-fix", cwd=ROOT, dry_run=dry_run)
+def format_release_files(*, dry_run: bool = False) -> None:
     run("just", "rustfmt", cwd=ROOT, dry_run=dry_run)
     run("vp", "fmt", cwd=ROOT, dry_run=dry_run)
     run("uvx", "ruff", "format", cwd=ROOT, dry_run=dry_run)
     run("taplo", "format", cwd=ROOT, dry_run=dry_run)
+
+
+def apply_release_fixes(*, dry_run: bool = False) -> None:
+    run_rust_recipe("cargo-fix", dry_run=dry_run)
+    run("just", "oxfix", cwd=ROOT, dry_run=dry_run)
+    run("just", "ruff-fix", cwd=ROOT, dry_run=dry_run)
+    format_release_files(dry_run=dry_run)
 
 
 def run_release_linters(*, dry_run: bool = False) -> None:
@@ -413,6 +416,17 @@ def run_release_linters(*, dry_run: bool = False) -> None:
         "ruff-lint",
     ):
         run("just", recipe, cwd=ROOT, dry_run=dry_run)
+
+
+def prepare_release(version: str) -> None:
+    apply_release_fixes()
+    changed = update_all_manifests(ROOT, version)
+    print(f"Updated {len(changed)} manifests to {version}.")
+    regenerate_lockfiles(ROOT, dry_run=False)
+    # Version and lockfile generation can produce formatting changes. Format
+    # their final state before running format checks as part of the lint bundle.
+    format_release_files()
+    run_release_linters()
 
 
 def last_release_tag(root: Path) -> str | None:
@@ -614,11 +628,7 @@ def main() -> int:
 
     run("gh", "auth", "status", cwd=ROOT)
     require_unused_release(ROOT, tag)
-    apply_release_fixes()
-    changed = update_all_manifests(ROOT, str(target))
-    print(f"Updated {len(changed)} manifests to {target}.")
-    regenerate_lockfiles(ROOT, dry_run=False)
-    run_release_linters()
+    prepare_release(str(target))
 
     # Generate notes before the release commit so it is not listed as a user
     # contribution to its own release.
