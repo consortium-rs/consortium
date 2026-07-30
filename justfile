@@ -200,13 +200,13 @@ publish-names:
     done; \
     echo "(the CLI publishes as 'csti', not 'consortium-cli' — see docs/PUBLISHING.md)"
 
-# Authoritative publish dry run; must run on Linux to cover Cog/WPE + remoteproc
+# Authoritative publish dry run; route Rust verification through Linux on macOS
 publish-dry:
-    @[ "$(uname)" = "Linux" ] || { \
-        echo "Error: a full dry run needs Linux; use 'just publish-dry-host' or 'just linux-full \"just publish-dry\"'"; \
-        exit 1; \
-    }
-    cargo publish --workspace --dry-run
+    @if [ "$(uname)" = "Darwin" ]; then \
+        just linux-full 'cargo publish --workspace --dry-run --allow-dirty'; \
+    else \
+        cargo publish --workspace --dry-run --allow-dirty; \
+    fi
 
 # Partial dry run for macOS: skips the crates that cannot compile there
 publish-dry-host:
@@ -214,13 +214,7 @@ publish-dry-host:
 
 # Publish every publishable crate with registry-aware rate limiting
 publish:
-    @[ "$(uname)" = "Linux" ] || { \
-        echo "Error: publish from Linux — a macOS run cannot even build cogcore-sys,"; \
-        echo "so the four Linux-only crates would go out unverified."; \
-        echo "Use 'just linux-full \"just publish\"' or a Linux host."; \
-        exit 1; \
-    }
-    python3 scripts/publish.py
+    uv run --project scripts --locked python scripts/publish.py
 
 # ── A-core (aarch64 / Linux) ─────────────────────────────────────────────────
 
@@ -523,7 +517,7 @@ linux-setup:
     @container volume create consortium-target >/dev/null 2>&1 || true
     @container volume create consortium-cargo >/dev/null 2>&1 || true
 
-# Build the base Linux image (Rust toolchains + uv + Vite+ + GitHub CLI + dtc)
+# Build the base Linux image (Rust toolchains + uv + Vite+ + dtc)
 linux-image: linux-setup
     @mkdir -p {{ linux_ctx }}
     container build --target base -t {{ linux_image }}:base \

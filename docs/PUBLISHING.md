@@ -77,11 +77,12 @@ uv run --project scripts --locked python scripts/release.py patch
 uv run --project scripts --locked python scripts/release.py --dry-run --allow-dirty
 ```
 
-It requires Linux and, by default, a clean checkout. It applies `just fix`, asks
-for confirmation, updates Cargo/uv/Vite+ manifests and lockfiles, runs
-`just lint`, commits and tags, creates the categorized GitHub release,
-dispatches the five-platform `csti` binary workflow, and finally runs the
-rate-aware publisher.
+It runs on the host and, by default, requires a clean checkout. On macOS it
+delegates only Rust compilation, Clippy, and Cargo publish verification to
+`just linux-full`; Git/GitHub, Python, uv, Vite+, manifests, lockfiles, and
+non-Rust linters remain on the host. It asks for confirmation, commits and tags,
+creates the categorized GitHub release, dispatches the five-platform `csti`
+binary workflow, and finally runs the rate-aware publisher.
 
 Pass `--allow-dirty` when existing changes, such as patched headers, are
 intentional. A real release runs `git add --all`, so every superproject change
@@ -102,20 +103,22 @@ dev-dependency from the published manifest entirely, which keeps test-only edges
 If you add a `version` to a dev-dependency, you pull it back into the ordering
 and risk a cycle.
 
-## Release from Linux
+## Rust verification on macOS
 
 `cogcore`, `cogcore-sys`, `consortium-hmi-webkit`, and `consortium-runtime-app`
 cannot compile on macOS at all — `cogcore-sys`'s build script panics outright with
-"cogcore-sys only supports Linux". A macOS run has to exclude those four, so it
-verifies 42 of the 46 crates while looking like a full pass. `just publish-dry`
-and `just publish` therefore both refuse to run off Linux.
+"cogcore-sys only supports Linux". The release and publish scripts still run on
+the host, but delegate Rust verification for these crates to the Linux
+container. The actual crates.io upload runs on the host with `--no-verify`, so
+it uses the host's Cargo credentials.
 
-On an Apple Silicon Mac, the Apple `container` flow boots a native arm64 Linux VM
-and is the supported path:
+On an Apple Silicon Mac, build the full image once. The recipes and scripts route
+Rust work into it automatically:
 
 ```bash
-just linux-image-full                                          # once; fetches the WPE .deb
-just linux-full 'cargo publish --workspace --dry-run --allow-dirty'
+just linux-image-full # once; fetches the WPE .deb
+just publish-dry      # Linux verification, orchestrated from the host
+just publish          # host script; Linux verify, then host upload
 ```
 
 `just publish-dry-host` still exists for a quick partial check while iterating on

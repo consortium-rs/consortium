@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -78,6 +79,36 @@ class PublishTests(unittest.TestCase):
             ["leaf", "root"],
         )
 
+    def test_macos_publish_verifies_in_linux_then_uploads_on_host(self):
+        package = publish.Package("demo", "1.0.0", Path("Cargo.toml"))
+        completed = subprocess.CompletedProcess([], 0, stdout="", stderr="")
+        with (
+            patch.object(publish.sys, "platform", "darwin"),
+            patch.object(publish.subprocess, "run", return_value=completed) as run,
+        ):
+            ok, _output = publish.cargo_publish(Path("."), package, dry_run=False)
+
+        self.assertTrue(ok)
+        self.assertEqual(
+            run.call_args_list[0].args[0],
+            [
+                "just",
+                "linux-full",
+                "cargo publish --locked --package demo --dry-run",
+            ],
+        )
+        self.assertEqual(
+            run.call_args_list[1].args[0],
+            [
+                "cargo",
+                "publish",
+                "--locked",
+                "--package",
+                "demo",
+                "--no-verify",
+            ],
+        )
+
 
 class ReleaseTests(unittest.TestCase):
     def test_dirty_tree_requires_explicit_permission(self):
@@ -96,6 +127,20 @@ class ReleaseTests(unittest.TestCase):
         with patch.object(release.shutil, "which", return_value=None):
             login = release.github_login(Path("."), "owner/repo", commit, {})
         self.assertEqual(login, "developer")
+
+    def test_macos_rust_recipe_runs_in_linux(self):
+        with (
+            patch.object(release.sys, "platform", "darwin"),
+            patch.object(release, "run") as run,
+        ):
+            release.run_rust_recipe("cargo-lint")
+        run.assert_called_once_with(
+            "just",
+            "linux-full",
+            "just cargo-lint",
+            cwd=release.ROOT,
+            dry_run=False,
+        )
 
     def test_default_bump_before_and_after_one_point_zero(self):
         zero = release.Version.parse("0.4.2")
