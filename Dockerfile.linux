@@ -8,7 +8,7 @@
 # root. No Yocto SDK and no cross linker are involved for the 64-bit A-core.
 #
 # Stages:
-#   base  Rust toolchains, `uv`, Vite+, and `dtc`; enough for the
+#   base  Rust toolchains, `uv`, Vite+, GitHub CLI, and `dtc`; enough for the
 #         `just *-a64` / `*-a32` recipes and repository tooling.
 #   full  + WPE WebKit/Cog and the OP-TEE TA dev kit; enough for a `csti build`
 #         of the melt-pot examples, whose app crates pull `consortium-hmi-webkit`
@@ -33,10 +33,22 @@ ENV DEBIAN_FRONTEND=noninteractive
 # rename `.vector_table` to the remoteproc-expected `.isr_vectors` (override
 # with `CONSORTIUM_OBJCOPY`).
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      ca-certificates curl git pkg-config build-essential \
+      ca-certificates curl git wget pkg-config build-essential \
       libssl-dev device-tree-compiler gcc-arm-linux-gnueabihf \
       binutils-arm-none-eabi \
     && rm -rf /var/lib/apt/lists/*
+
+# GitHub CLI, used to create the release and dispatch its binary workflow.
+RUN mkdir -p -m 755 /etc/apt/keyrings /etc/apt/sources.list.d \
+    && wget -nv -O /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+      https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+    && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+      > /etc/apt/sources.list.d/github-cli.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends gh \
+    && rm -rf /var/lib/apt/lists/* \
+    && gh --version
 
 ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo
 ENV VP_HOME=/root/.vite-plus

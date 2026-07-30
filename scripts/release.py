@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare and publish a Consortium release from a clean Linux checkout."""
+"""Prepare and publish a Consortium release from a Linux checkout."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -131,11 +132,17 @@ def require_linux() -> None:
         )
 
 
-def require_clean_tree(root: Path) -> None:
+def require_clean_tree(root: Path, allow_dirty: bool = False) -> None:
     status = run("git", "status", "--porcelain", cwd=root, capture=True)
-    if status:
+    if status and not allow_dirty:
         raise RuntimeError(
-            "the worktree is not clean; commit or stash existing changes first"
+            "the worktree is not clean; commit or stash existing changes, "
+            "or pass --allow-dirty"
+        )
+    if status:
+        print(
+            "warning: continuing with a dirty worktree; a real release will "
+            "stage all superproject changes"
         )
 
 
@@ -462,6 +469,10 @@ def github_login(
 ) -> str:
     if commit.author_email in cache:
         return cache[commit.author_email]
+    if shutil.which("gh") is None:
+        login = fallback_login(commit)
+        cache[commit.author_email] = login
+        return login
     result = subprocess.run(
         [
             "gh",
@@ -546,13 +557,18 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="show the version and release notes without changing anything",
     )
+    parser.add_argument(
+        "--allow-dirty",
+        action="store_true",
+        help="permit existing changes (a real release stages all of them)",
+    )
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
     require_linux()
-    require_clean_tree(ROOT)
+    require_clean_tree(ROOT, allow_dirty=args.allow_dirty)
     validate_release_workflow(ROOT / ".github" / "workflows" / "release-build.yml")
     validate_binstall_manifest(ROOT / "crates" / "consortium-cli" / "Cargo.toml")
     current = workspace_version(ROOT)

@@ -72,12 +72,22 @@ The complete release flow is:
 ```bash
 uv run --project scripts --locked python scripts/release.py patch
 # Use major/minor, or omit the component for the SemVer default.
+
+# Inspect the proposed version and release notes from an intentionally dirty tree.
+uv run --project scripts --locked python scripts/release.py --dry-run --allow-dirty
 ```
 
-It requires a clean Linux checkout, applies `just fix`, asks for confirmation,
-updates Cargo/uv/Vite+ manifests and lockfiles, runs `just lint`, commits and
-tags, creates the categorized GitHub release, dispatches the five-platform
-`csti` binary workflow, and finally runs the rate-aware publisher.
+It requires Linux and, by default, a clean checkout. It applies `just fix`, asks
+for confirmation, updates Cargo/uv/Vite+ manifests and lockfiles, runs
+`just lint`, commits and tags, creates the categorized GitHub release,
+dispatches the five-platform `csti` binary workflow, and finally runs the
+rate-aware publisher.
+
+Pass `--allow-dirty` when existing changes, such as patched headers, are
+intentional. A real release runs `git add --all`, so every superproject change
+is included in `release: v<version>`. Uncommitted changes inside a Git submodule
+are not captured by the superproject commit; commit the submodule change or
+carry it through the repository's patch workflow.
 
 The workflow uploads cargo-binstall-compatible archives named
 `csti-<target>-v<version>.tgz` on Unix and

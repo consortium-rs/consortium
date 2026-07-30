@@ -80,6 +80,23 @@ class PublishTests(unittest.TestCase):
 
 
 class ReleaseTests(unittest.TestCase):
+    def test_dirty_tree_requires_explicit_permission(self):
+        with patch.object(release, "run", return_value=" M patched-header.h"):
+            with self.assertRaisesRegex(RuntimeError, "--allow-dirty"):
+                release.require_clean_tree(Path("."), allow_dirty=False)
+            release.require_clean_tree(Path("."), allow_dirty=True)
+
+    def test_github_login_falls_back_when_gh_is_unavailable(self):
+        commit = release.Commit(
+            "a" * 40,
+            "Contributor",
+            "123+developer@users.noreply.github.com",
+            "fix: example",
+        )
+        with patch.object(release.shutil, "which", return_value=None):
+            login = release.github_login(Path("."), "owner/repo", commit, {})
+        self.assertEqual(login, "developer")
+
     def test_default_bump_before_and_after_one_point_zero(self):
         zero = release.Version.parse("0.4.2")
         stable = release.Version.parse("1.4.2")
