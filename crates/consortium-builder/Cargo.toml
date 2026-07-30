@@ -29,10 +29,10 @@ repository.workspace   = true
 rust-version.workspace = true
 
 [dependencies]
-consortium-cfg        = { path = "../consortium-cfg", version = "0.1.0" }
-consortium-cfg-common = { path = "../consortium-cfg-common", version = "0.1.0" }
-consortium-dts        = { path = "../consortium-dts", version = "0.1.0" }
-consortium-log        = { features = ["tracing"], path = "../consortium-log", version = "0.1.0" }
+consortium-cfg        = { path = "../consortium-cfg", version = "0.2.0" }
+consortium-cfg-common = { path = "../consortium-cfg-common", version = "0.2.0" }
+consortium-dts        = { path = "../consortium-dts", version = "0.2.0" }
+consortium-log        = { features = ["tracing"], path = "../consortium-log", version = "0.2.0" }
 rust-ini              = "0.21.3"
 serde                 = { features = ["derive"], version = "1.0.228" }
 syn                   = "2.0.118"

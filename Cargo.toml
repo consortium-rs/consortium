@@ -47,7 +47,7 @@ repository = "https://github.com/consortium-rs/consortium"
 # Edition 2024 needs 1.85; `u64::is_multiple_of` (consortium-cfg) needs 1.87.
 # clippy's `incompatible_msrv` lint checks this on every `just lint` run.
 rust-version = "1.87"
-version      = "0.1.0"
+version      = "0.2.0"
 
 [workspace.lints.rust]
 unsafe_op_in_unsafe_fn = "deny"

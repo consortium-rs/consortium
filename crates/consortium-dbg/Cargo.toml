@@ -25,10 +25,10 @@ panic-handler = ["logger"]
 
 [dependencies]
 bitflags                     = "2.11.1"
-consortium-ipc               = { default-features = false, path = "../consortium-ipc", version = "0.1.0" }
-consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem", version = "0.1.0" }
-consortium-ipc-doorbell-mu   = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu", version = "0.1.0" }
-consortium-shared-memory     = { path = "../consortium-shared-memory", version = "0.1.0" }
+consortium-ipc               = { default-features = false, path = "../consortium-ipc", version = "0.2.0" }
+consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem", version = "0.2.0" }
+consortium-ipc-doorbell-mu   = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu", version = "0.2.0" }
+consortium-shared-memory     = { path = "../consortium-shared-memory", version = "0.2.0" }
 const-str                    = { default-features = false, version = "1.1.0" }
 cortex-m                     = { optional = true, version = "0.7" }
 defmt                        = "1.1.0"
@@ -36,7 +36,7 @@ defmt-decoder                = { optional = true, version = "1.1" }
 defmt-parser                 = { optional = true, version = "1" }
 riscv                        = { optional = true, version = "0.16.1" }
 thiserror                    = { default-features = false, version = "2.0" }
-consortium-log               = { path = "../consortium-log", version = "0.1.0" }
+consortium-log               = { path = "../consortium-log", version = "0.2.0" }
 
 [dev-dependencies]
 hex = "0.4"

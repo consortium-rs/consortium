@@ -29,10 +29,10 @@ repository.workspace   = true
 rust-version.workspace = true
 
 [dependencies]
-consortium-hmi = { path = "../consortium-hmi", version = "^0.1" }
+consortium-hmi = { path = "../consortium-hmi", version = "0.2.0" }
 
 [target.'cfg(target_os = "linux")'.dependencies]
-cogcore         = { path = "../cogcore", version = "^0.1" }
+cogcore         = { path = "../cogcore", version = "0.2.0" }
 futures-channel = "0.3"
 futures-util    = "0.3"
 tokio           = { features = ["rt"], version = "1" }

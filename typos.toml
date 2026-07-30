@@ -17,10 +17,10 @@ extend-exclude = [
   "dialogs",
   # Vendor reference sources (STM32Cube drivers, MCUX board files).
   "references",
+  "scripts/.venv",
   "sim/renode/stm32mp257/firmware.elf",
   "submodules",
   "target",
-  "scripts/.venv"
 ]
 
 [default.extend-words]
