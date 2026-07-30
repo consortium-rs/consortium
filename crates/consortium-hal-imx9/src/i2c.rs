@@ -117,8 +117,8 @@ const fn clock_config(clock_hz: u32, frequency: u32) -> ClockConfig {
 
 /// Per-instance interrupt state shared between an [`I2c`] and its IRQ handler.
 ///
-/// One `static` per LPI2C instance is created by [`impl_i2c`] and reached
-/// through [`Instance::state`], so callers never supply or name it.
+/// One `static` per LPI2C instance is created by `impl_i2c` and reached
+/// through `Instance::state`, so callers never supply or name it.
 pub struct State {
     waker: AtomicWaker,
 }

@@ -77,7 +77,7 @@ impl Default for Config {
 
 /// IRQ state dedicated to one LPTMR.
 ///
-/// One `static` per LPTMR is created by [`impl_lptmr`] and reached through the
+/// One `static` per LPTMR is created by `impl_lptmr` and reached through the
 /// instance type, so callers never supply or name it.
 pub struct State {
     pending: AtomicBool,

@@ -4,7 +4,7 @@
 //! `&'static` [`State`]. Blocking transfers ([`embedded_hal::i2c::I2c`])
 //! work without interrupts. Async transfers ([`embedded_hal_async::i2c::I2c`])
 //! require the caller to route the instance's interrupt to
-//! [`State::on_interrupt`].
+//! `State::on_interrupt`.
 //!
 //! DMA readiness: the byte primitives below drive `TXDR`/`RXDR` one byte at a
 //! time. A DMA-backed path can be layered on top by setting `CR1.TXDMAEN` /

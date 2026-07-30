@@ -5,7 +5,7 @@
 //! `&'static` [`State`]. Blocking transfers ([`embedded_can::nb::Can`]) work
 //! without interrupts. Async [`Can::transmit`]/[`Can::receive`] require the
 //! caller to route one of the instance's interrupt lines to
-//! [`State::on_interrupt`] (the driver enables interrupt line 0, `FDCANx_IT0`).
+//! `State::on_interrupt` (the driver enables interrupt line 0, `FDCANx_IT0`).
 //!
 //! The message RAM is the SoC's shared `CAN_SRAM` window (`0x4031_0000`, 10 KiB
 //! split across the FDCAN instances). Each instance's start-address registers
@@ -282,7 +282,7 @@ impl Can {
     /// message RAM, and `[msg_ram_offset, msg_ram_offset + 64)` must be a region
     /// within it reserved for this instance and no other. `clock_hz` is the CAN
     /// kernel clock. `state` must be dedicated to this instance; for async use,
-    /// route the instance's interrupt to [`State::on_interrupt`].
+    /// route the instance's interrupt to `State::on_interrupt`.
     pub unsafe fn new<T: Instance>(
         peri: Peri<'static, T>,
         msg_ram_base: *mut (),

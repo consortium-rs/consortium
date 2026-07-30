@@ -158,7 +158,7 @@ const fn presdiv(clock_hz: u32, bitrate: u32) -> u8 {
 
 /// Per-instance interrupt state shared between a [`Can`] and its IRQ handler.
 ///
-/// One `static` per FlexCAN instance is created by [`impl_can`] and reached
+/// One `static` per FlexCAN instance is created by `impl_can` and reached
 /// through the instance type, so callers never supply or name it.
 pub struct State {
     waker: AtomicWaker,

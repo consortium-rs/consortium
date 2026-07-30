@@ -4,7 +4,7 @@
 //! supports controller-mode I3C SDR and legacy I2C private transfers, repeated
 //! starts, broadcast CCCs, and dynamic address assignment. Blocking calls need
 //! no interrupt. Async calls require the application to route the instance IRQ
-//! to [`State::on_interrupt`].
+//! to `State::on_interrupt`.
 
 use core::future::poll_fn;
 use core::task::Poll;

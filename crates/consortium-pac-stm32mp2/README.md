@@ -1,19 +1,100 @@
-# STM32MP2 Peripheral Access Crate
+# consortium-pac-stm32mp2
 
-The `stm32mp2-pac` crate provides low-level access to the peripherals of the STM32MP2 family of microcontrollers. It is generated using `chiptool` and includes support for various peripherals such as I2C, SPI, and more.
+Peripheral Access Crate for the ST STM32MP2 family: register blocks, interrupt
+definitions, and the `cortex-m-rt` vector table.
 
-## Procedures
+`no_std`. **Generated — not hand-written.**
 
-We parse the STM32CubeMP2 header files to generate chiptool-compatible metadata, which is then used to generate the Rust code for the peripheral access API. The generated code includes structures and methods for accessing the registers of each peripheral.
+## You probably want the HAL instead
 
-## Supported Peripherals
+Depend on [`consortium-hal-stm32mp2`](../consortium-hal-stm32mp2) unless you
+specifically need raw register access. It re-exports this crate as `pac` and adds owned
+peripheral singletons, so drivers take a `Peri<'static, USART2>` rather than an address
+and no constructor is `unsafe`.
 
-- I3C
-- I2C
-- SPI
-- USART
-- RCC
-- HSEM
-- DMA (HPDMA global + channel blocks)
+```text
+consortium-hal-stm32mp2      drivers, owned singletons  ← depend on this
+  └── consortium-pac-stm32mp2   register blocks, Interrupt, vector table
+```
 
-We are actively working on adding support for more peripherals and improving the existing implementations. Contributions are welcome!
+## Contents
+
+| Module        | Contents                                                        |
+| ------------- | --------------------------------------------------------------- |
+| `peripherals` | Register block definitions, one module per peripheral kind.       |
+| `interrupts`  | The chip's `Interrupt` enum; with `rt`, `__INTERRUPTS` too.       |
+| `common`      | Register/field access primitives the generated code builds on.     |
+| `metadata`    | Machine-readable register description, ported from `stm32-data`.   |
+
+Peripheral blocks currently generated: ADC, DMA (HPDMA global plus channel blocks),
+FDCAN, GPIO, HSEM, I2C, I3C, LPTIM, RCC, SPI, TIM, USART.
+
+## Features
+
+| Feature      | Effect                                                              |
+| ------------ | ------------------------------------------------------------------- |
+| `stm32mp257` | Chip selection (default). Covers **both** STM32MP23 and STM32MP25.    |
+| `stm32mp21`  | Chip selection.                                                       |
+| `rt`         | `cortex-m-rt` integration: the `#[interrupt]` macro and `__INTERRUPTS`. |
+| `defmt`      | Derive `defmt::Format` on generated types where applicable.             |
+
+STM32MP23 and STM32MP25 share one interrupt and peripheral layout, so there is no
+separate chip for MP23: `consortium-hal-stm32mp2`'s `stm32mp23x` and `stm32mp25x`
+features both forward to `stm32mp257` here.
+
+Choose **exactly one** chip: the feature selects which generated map is mounted, and
+enabling both is a duplicate-definition error. **A dependent selecting `stm32mp21` must
+set `default-features = false`** so `stm32mp257` is not also pulled in — two chips mean
+an ambiguous `Interrupt` enum.
+
+`rt` should be enabled by the **application**, since it is what owns the vector table.
+The generated `.x` linker fragment adds weak `DefaultHandler` fallbacks so an
+application only needs `#[interrupt]` handlers for the lines it actually services.
+
+## How it is generated
+
+```text
+submodules/               vendor headers (STM32CubeMP2)
+  └── scripts/pac/*.py       parse → chiptool metadata → Rust
+        └── output/, data/      generated + validated artifacts
+              └── src/             this crate
+```
+
+The workflow is driven by the `just pac-*` recipes:
+
+```bash
+just pac-init            # bring up vendor submodules
+just pac-patch           # apply vendor patches
+just pac-parse-stm32     # headers → chiptool metadata
+just pac-gen-interrupts  # chip dumps → interrupts/<chip>.rs and .x
+just pac-ci              # parse + test + validate
+```
+
+Interrupt tables come from `scripts/pac/gen_interrupts.py` reading the
+`consortium-data` chip dumps — the same source that feeds
+`scripts/pac/gen_peripherals.py`, which generates the chip HAL's singleton map. That
+shared source is what keeps the HAL's singletons and the PAC's interrupt numbers in
+agreement.
+
+**Do not hand-edit generated output** unless a recipe or the patch workflow calls for
+it. Change the parser scripts or the vendor patches and re-run.
+
+## Lints
+
+`lib.rs` allows a set of clippy lints (`identity_op`, `unnecessary_cast`,
+`undocumented_unsafe_blocks`, and friends) for the whole crate. That is a deliberate
+exemption for generated code: each generated accessor carries one SAFETY contract, and
+the generator does not emit per-operation safety comments or hand-tuned expressions. It
+is not a licence to relax those lints in hand-written crates.
+
+## Contributing
+
+Add peripheral coverage by extending the parser scripts and vendor patches, not the
+generated files. Contributions welcome.
+
+## License
+
+Apache-2.0. See [LICENSE](../../LICENSE).
+
+The vendor headers this crate is generated *from* live in `submodules/` and are not
+redistributed here; only the generated Rust is.
