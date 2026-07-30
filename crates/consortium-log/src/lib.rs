@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! A tiny logging facade that forwards to [`defmt`], [`tracing`], both, or
+//! A tiny logging facade that forwards to `defmt`, `tracing`, both, or
 //! neither, chosen by Cargo features.
 //!
 //! Consortium spans `no_std` firmware (which logs with `defmt`) and `std`

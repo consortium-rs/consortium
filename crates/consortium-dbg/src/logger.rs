@@ -1,3 +1,41 @@
+//! Firmware-side `defmt` sink: the `#[global_logger]` that appends encoded frames
+//! to the `CDBG` ring.
+//!
+//! [`ConsortiumLogger`] is what makes a plain `defmt::info!` in firmware land in
+//! shared memory. `defmt`'s `Logger` trait hands over raw frame bytes across an
+//! `acquire()` … `write()` … `release()` span; this module encodes them, wraps the
+//! result in a [`Packet`](crate::packet::Packet), and appends it to the ring.
+//!
+//! # Why frames are staged rather than streamed
+//!
+//! Two constraints meet here. `defmt` frames must be rzcobs-encoded before they
+//! reach the wire, because that is what the host decoder expects — so the bytes
+//! `write()` hands over are not yet the bytes to store. And a packet needs its
+//! `len` in a header that precedes the payload, so the length must be known before
+//! the first payload byte is written.
+//!
+//! So one frame is staged in a fixed buffer between `acquire()` and `release()`,
+//! and only appended once complete. The buffer is sized to the packet payload limit
+//! (`len` is a `u8`, so 255 bytes); a frame that overruns it is **dropped with an
+//! overflow flag latched**, never truncated — a partial frame would desynchronize
+//! the decoder for everything after it.
+//!
+//! # Why `static mut` is sound here
+//!
+//! The staging statics are plain `static mut` rather than atomics or a critical
+//! section. That rests on a guarantee `defmt` itself provides: the
+//! `acquire`/`write`/`release` span runs in a single, non-reentrant execution
+//! context. Preserve that assumption when editing — every `unsafe` block below
+//! cites it.
+//!
+//! # Warm resets
+//!
+//! Debug SRAM often survives a reset, so firmware that just starts writing would
+//! resume into a stale ring with cursors pointing at a previous run's frames.
+//! [`ConsortiumLogger::init`] resets the descriptor to an empty ring at startup;
+//! generated `init()` calls it automatically when `[dbg.<core>]` declares a logger
+//! for the core.
+
 #![cfg(feature = "logger")]
 use core::ptr::addr_of_mut;
 

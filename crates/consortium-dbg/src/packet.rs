@@ -1,5 +1,37 @@
+//! Per-frame envelope inside the `CDBG` ring.
+//!
+//! ```text
+//! [0..2]  magic : u16  - 0xC0DE, deliberately not ASCII
+//! [2]     flag  : u8   - FLAG_VALID | FLAG_CONSUMED
+//! [3]     len   : u8   - payload bytes that follow
+//! [4..]   payload      - one rzcobs-encoded defmt frame
+//! ```
+//!
+//! The ring is a byte buffer, but a reader must recover *frame* boundaries: an
+//! encoded defmt frame is not self-delimiting, and a host that attaches partway
+//! through a firmware run starts reading at an arbitrary point. The packet header
+//! supplies both — [`MAGIC`] to confirm a header is really there, `len` to find the
+//! next one.
+//!
+//! Two consequences worth knowing:
+//!
+//! - **`len` is a `u8`,** so one frame carries at most 255 payload bytes. The
+//!   logger's staging buffer is sized to match, and a frame whose encoding does not
+//!   fit is dropped with an overflow flag rather than truncated into something the
+//!   decoder would misparse.
+//! - **`MAGIC` is `0xC0DE`, chosen to be non-ASCII.** Log payloads are encoded
+//!   bytes, but a plausible failure is a region overlapping something text-shaped;
+//!   a non-ASCII magic makes that mistake visible instead of accidentally matching.
+//!
+//! [`FLAG_VALID`] marks a frame the writer has finished; [`FLAG_CONSUMED`] is set by
+//! the reader. As everywhere in this crate, each side only writes what it owns.
+
 use crate::utils::{rv_u8, rv_u16, wv_u8, wv_u16};
 
+/// Header prefixing every log frame in the ring.
+///
+/// Read it with [`Packet::try_from_raw_ptr`], which returns `None` when [`MAGIC`]
+/// does not match — the signal that the cursor is not at a frame boundary.
 pub struct Packet {
     pub magic: u16, // Consortium Debug Packet Magic, shall not be ASCII, [0xC0, 0xDE] = 0xC0DE
     pub flag: u8,

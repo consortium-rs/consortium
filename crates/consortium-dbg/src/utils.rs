@@ -1,3 +1,22 @@
+//! Byte-at-a-time volatile accessors for the shared debug region.
+//!
+//! Every multi-byte read and write here is decomposed into individual volatile
+//! byte accesses and reassembled little-endian, rather than issuing one
+//! `read_volatile::<u16>()`. That is deliberate: the descriptor is
+//! `#[repr(C, packed)]` and its fields sit at unaligned offsets, so a wider
+//! volatile access would be an unaligned access — undefined behaviour in Rust, and
+//! a genuine fault on some of the AArch64 device-memory mappings this region is
+//! reached through on the Linux side.
+//!
+//! `volatile` rather than plain reads because the far side of this memory is
+//! another processor: the compiler must not cache, reorder, or elide these
+//! accesses. Ordering *between* accesses is the descriptor protocol's job (see
+//! [`descriptor`](crate::descriptor)); these helpers only guarantee each access
+//! actually happens.
+//!
+//! All functions are `unsafe` and crate-internal. The caller owes validity of
+//! `base + offset` for the access width, and cache coherency for the region.
+
 #![allow(dead_code)]
 
 unsafe fn byte_ptr(base: *const u8, offset: usize) -> *const u8 {

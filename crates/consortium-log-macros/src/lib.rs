@@ -15,6 +15,43 @@
 // SPDX-License-Identifier: Apache-2.0
 
 //! Internal format-string normalization for `consortium-log`.
+//!
+//! This crate exists to close one gap between the two logging backends
+//! `consortium-log` forwards to. Rust's implicit format captures —
+//! `trace!("channel {name} lowered")` — are understood by `tracing`, which builds
+//! on `core::fmt`, but **not** by `defmt`, which parses format strings itself and
+//! has no notion of pulling `name` out of the enclosing scope.
+//!
+//! Rather than forbid the nicer syntax in shared code,
+//! [`expand_captures`] rewrites it into the indexed form both backends accept:
+//!
+//! ```text
+//! trace!("channel {name} lowered")
+//!   →  __defmt!(trace, "channel {0} lowered", name)
+//! ```
+//!
+//! # Why the callback is an input
+//!
+//! The macro takes three parenthesized groups — callback path, log level, and the
+//! original log arguments — and re-emits an invocation of that callback. Threading
+//! the callback path *through* the macro is what preserves `consortium-log`'s
+//! `$crate` hygiene: the facade passes `$crate::__defmt`, so the expansion names
+//! the facade's own dispatch macro no matter which crate the log call was written
+//! in. A proc-macro cannot synthesize a `$crate` token of its own.
+//!
+//! # What is deliberately left alone
+//!
+//! Two inputs are forwarded byte-for-byte instead of rewritten:
+//!
+//! - **Anything that fails to parse** as a format string plus arguments. Emitting
+//!   the original tokens lets the backend produce the real diagnostic, pointing at
+//!   the user's call site rather than at this rewrite.
+//! - **Named arguments** (`name = expression`). Those already mean something to
+//!   Rust and to `tracing`'s structured fields, so `{name}` there is not an
+//!   implicit capture and must not be treated as one.
+//!
+//! This is an implementation detail of `consortium-log`. Do not depend on it
+//! directly; its API is not stable.
 
 use std::collections::BTreeMap;
 
