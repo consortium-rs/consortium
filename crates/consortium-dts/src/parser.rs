@@ -14,6 +14,35 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! DTS parser: token stream to [`File`].
+//!
+//! [`parse_dts`] is the entry point; [`Parser`] is available for callers that want to
+//! drive it directly.
+//!
+//! # Scope
+//!
+//! This parses the fragment shapes this workspace *generates* and the vendor board and
+//! SoC trees it *merges onto* — which is what `consortium-cfg`'s merge mode needs, since
+//! re-emitting a base tree requires having parsed it. It is not a general `dtc`
+//! replacement:
+//!
+//! - no preprocessor, so `#include` and macros are not expanded — an
+//!   [`Include`] is carried through as a path;
+//! - no include, label, or phandle *resolution*: a
+//!   [`Reference`] stays the label it names;
+//! - hand-written board files using constructs outside this subset may not parse.
+//!
+//! Unmodelled expressions can be represented as
+//! [`PropValue::Raw`], so an unfamiliar construct round-trips
+//! rather than failing the whole file.
+//!
+//! [`Include`]: crate::ast::Include
+//! [`PropValue::Raw`]: crate::ast::PropValue::Raw
+//! [`Reference`]: crate::ast::Reference
+//!
+//! For fragments this crate emits, parsing is the inverse of printing:
+//! `parse_dts(x.to_dts())?.to_dts() == x.to_dts()`.
+
 use crate::ast::{
     Cell, Deletion, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference,
     TopLevelItem,

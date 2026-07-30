@@ -14,6 +14,35 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Owned, syntax-shaped device-tree values.
+//!
+//! The AST mirrors DTS *syntax*, not a resolved device tree. A [`Reference`] is stored
+//! as the label it names, not as a pointer to the node it will eventually reach; an
+//! [`Include`] is a path, not its contents. That keeps every value owned, `Clone`, and
+//! printable in isolation — which is what lets `consortium-cfg` build a fragment
+//! without a resolution pass and lets [`crate::codegen`] guarantee deterministic
+//! output.
+//!
+//! | Type            | DTS construct                                          |
+//! | --------------- | ------------------------------------------------------ |
+//! | [`File`]        | A whole `.dts` / `.dtsi` / `.dtso`, with its version tag |
+//! | [`TopLevelItem`]| One item in a file: a node, overlay, include, or reserve  |
+//! | [`Node`]        | A named node and its children (`uart4 { … }`)             |
+//! | [`NodeOverlay`] | A label override (`&uart4 { … }`)                         |
+//! | [`Property`]    | `name = value;` or a valueless boolean property            |
+//! | [`PropValue`]   | A property's value: string, cells, bytes, reference, raw    |
+//! | [`Cell`]        | One entry inside a `<…>` cell list                          |
+//! | [`Reference`]   | `&label` or `&{/full/path}`                                 |
+//! | [`Deletion`]    | `/delete-node/` or `/delete-property/`                       |
+//! | [`MemReserve`]  | `/memreserve/ base len;`                                     |
+//!
+//! [`PropValue::Raw`] is the deliberate escape hatch: an expression this crate does not
+//! model yet can still be emitted verbatim, so `consortium-cfg` is never blocked on
+//! parser coverage.
+//!
+//! Construct these through [`crate::builder`] rather than struct literals — the
+//! builders are what make codegen read like its output.
+
 /// A DTS, DTSI, or DTSO file.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct File {

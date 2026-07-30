@@ -14,6 +14,20 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Deterministic DTS text output.
+//!
+//! [`ToDts`] renders any AST value to source; [`CodegenOptions`] controls indentation
+//! and similar formatting choices, and [`Codegen`] carries them through a nested render.
+//!
+//! **Ordering is fixed, not incidental.** Generated device trees are committed to the
+//! repository and reviewed as diffs, so a codegen change must produce a reviewable diff
+//! rather than a reshuffle. Properties and children are emitted in declaration order and
+//! nothing is sorted or deduplicated behind the caller's back.
+//!
+//! That determinism is also what makes the round trip hold: for the fragment shapes this
+//! crate emits, `parse_dts(x.to_dts())?.to_dts() == x.to_dts()`. The snapshot tests in
+//! `consortium-cfg` depend on both properties.
+
 use core::fmt::Write;
 
 use crate::ast::{
