@@ -4,14 +4,13 @@
 import subprocess
 import sys
 from pathlib import Path
-from typing import Tuple
 
 OUTPUT_DIR = (
     Path(__file__).resolve().parents[2] / "crates" / "consortium-data" / "database"
 )
 
 
-def run_chiptool_validate(yaml_file: Path) -> Tuple[bool, str]:
+def run_chiptool_validate(yaml_file: Path) -> tuple[bool, str]:
     """Run chiptool check on a YAML file."""
     try:
         result = subprocess.run(
@@ -23,6 +22,7 @@ def run_chiptool_validate(yaml_file: Path) -> Tuple[bool, str]:
                 "--allow-unused-fieldsets",
             ],
             capture_output=True,
+            check=False,
             text=True,
             timeout=10,
         )
@@ -36,7 +36,7 @@ def run_chiptool_validate(yaml_file: Path) -> Tuple[bool, str]:
         return False, "chiptool not found (install with: pip install chiptool)"
     except subprocess.TimeoutExpired:
         return False, "chiptool timeout"
-    except Exception as e:
+    except OSError as e:
         return False, str(e)
 
 

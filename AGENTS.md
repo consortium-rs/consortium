@@ -63,12 +63,14 @@ commands can hit platform-sensitive crates or code that is mid-migration.
 
 Run all project commands, checks, builds, tests, linters, and other transactions
 in the environment selected for the host operating system. Formatting commands
-that only rewrite files or check formatting are the exception and may run directly
-on the host:
+that only rewrite files or check formatting, along with commands driven by `uv`,
+`uvx`, or `vp`, are exceptions and may run directly on the host unless the
+command or task explicitly requires Linux:
 
 - On macOS, use the Linux container recipes provided by the `justfile` (for
   example, `just linux ...` or `just linux-full ...`). Do not run project
-  commands other than formatting and format checks directly on the macOS host.
+  commands other than formatting, format checks, and `uv`/`uvx`/`vp` tooling
+  directly on the macOS host.
 - On Linux, use the standard host environment and the normal `just`/`cargo`
   commands.
 - On Windows, run project commands inside WSL. Do not use native Windows shells

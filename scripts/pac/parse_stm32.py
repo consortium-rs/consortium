@@ -1,22 +1,21 @@
 #!/usr/bin/env python3
 """Parse STM32MP CMSIS headers into chiptool IR YAML and chip JSON."""
 
+import argparse
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Any, Tuple, Set
-import argparse
+from typing import Any
 
 from common import (
-    safe_hex_to_int,
-    evaluate_expr,
     calc_bit_size_from_mask,
-    write_yaml,
-    write_json,
+    evaluate_expr,
     extract_description,
+    safe_hex_to_int,
     strip_suffix,
+    write_json,
+    write_yaml,
 )
-
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 OUTPUT_DIR = (
@@ -70,13 +69,13 @@ class STM32HeaderParser:
         match = re.search(r"stm32(mp\d[a-z]?)xx", header_path.stem)
         self.chip_variant = match.group(1) if match else "unknown"
 
-        self.irqs: List[Dict[str, Any]] = []
-        self.blocks: Dict[str, Dict[str, Any]] = {}
-        self.fieldsets: Dict[str, Dict[str, Any]] = {}
-        self.peripherals: List[Dict[str, Any]] = []
+        self.irqs: list[dict[str, Any]] = []
+        self.blocks: dict[str, dict[str, Any]] = {}
+        self.fieldsets: dict[str, dict[str, Any]] = {}
+        self.peripherals: list[dict[str, Any]] = []
 
     @staticmethod
-    def _is_aggregate_alias(field_name: str, field_names: Set[str]) -> bool:
+    def _is_aggregate_alias(field_name: str, field_names: set[str]) -> bool:
         """Return true for CMSIS aggregate aliases covered by concrete fields."""
         if field_name.endswith("x"):
             return True
@@ -92,11 +91,11 @@ class STM32HeaderParser:
 
     @classmethod
     def _prune_overlapping_fields(
-        cls, fields: List[Dict[str, Any]]
-    ) -> List[Dict[str, Any]]:
+        cls, fields: list[dict[str, Any]]
+    ) -> list[dict[str, Any]]:
         """Drop aggregate/alternate CMSIS aliases that cannot be represented in chiptool IR."""
         field_names = {field["name"] for field in fields}
-        remove: Set[int] = set()
+        remove: set[int] = set()
 
         for i, field in enumerate(fields):
             field_mask = field.get("_mask", 0)
@@ -173,7 +172,7 @@ class STM32HeaderParser:
 
         for line in enum_body.split("\n"):
             line = line.strip()
-            if not line or line.startswith("/*") or line.startswith("//"):
+            if not line or line.startswith(("/*", "//")):
                 continue
 
             # Match: NAME_IRQn = VALUE, /*!< description */
@@ -219,11 +218,7 @@ class STM32HeaderParser:
 
             for line in struct_body.split("\n"):
                 line_stripped = line.strip()
-                if (
-                    not line_stripped
-                    or line_stripped.startswith("/*")
-                    or line_stripped.startswith("//")
-                ):
+                if not line_stripped or line_stripped.startswith(("/*", "//")):
                     continue
 
                 # Parse field declaration
@@ -280,7 +275,7 @@ class STM32HeaderParser:
                 # Get description
                 description = extract_description(line)
 
-                item: Dict[str, Any] = {
+                item: dict[str, Any] = {
                     "name": field_name,
                     "byte_offset": byte_offset,
                 }
@@ -320,9 +315,9 @@ class STM32HeaderParser:
     def parse_bitfield_macros(self):
         """Extract bitfield definitions from _Pos and _Msk macros."""
         # Collect all _Pos defines
-        pos_defs: Dict[str, int] = {}
-        msk_defs: Dict[str, int] = {}
-        descriptions: Dict[str, str] = {}
+        pos_defs: dict[str, int] = {}
+        msk_defs: dict[str, int] = {}
+        descriptions: dict[str, str] = {}
 
         # Find all _Pos and _Msk defines
         for match in re.finditer(r"#define\s+(\w+)_Pos\s+\((\d+)U?\)", self.content):
@@ -338,7 +333,7 @@ class STM32HeaderParser:
                 msk_defs[name] = mask_val
 
         # Extract descriptions from alias macros (e.g., #define FIELD FIELD_Msk /*!< description */)
-        for field_name in msk_defs.keys():
+        for field_name in msk_defs:
             # Look for: #define FIELDNAME FIELDNAME_Msk /*!< description */
             alias_pattern = rf"#define\s+{re.escape(field_name)}\s+{re.escape(field_name)}_Msk\s+(.*?\*/)"
             alias_match = re.search(alias_pattern, self.content)
@@ -356,7 +351,7 @@ class STM32HeaderParser:
                     descriptions[field_name] = extract_description(msk_match.group(1))
 
         # Group by register (PERIPH_REG)
-        fieldsets_dict: Dict[str, List[Dict[str, Any]]] = {}
+        fieldsets_dict: dict[str, list[dict[str, Any]]] = {}
 
         for field_name, bit_offset in pos_defs.items():
             if field_name not in msk_defs:
@@ -399,7 +394,7 @@ class STM32HeaderParser:
             if field_ident and field_ident[0].isdigit():
                 field_ident = f"{reg_name.rsplit('_', 1)[-1]}{field_ident}"
 
-            field: Dict[str, Any] = {
+            field: dict[str, Any] = {
                 "name": field_ident,
                 "bit_offset": bit_offset,
                 "bit_size": bit_size,
@@ -421,7 +416,7 @@ class STM32HeaderParser:
     def parse_base_addresses_and_instances(self):
         """Extract base addresses and instance casts."""
         # Build symbol table for address resolution
-        symbols: Dict[str, int] = {}
+        symbols: dict[str, int] = {}
 
         # Known anchors
         symbols["PERIPH_BASE_NS"] = 0x40000000
@@ -436,7 +431,7 @@ class STM32HeaderParser:
                 symbols[f"{name}_BASE_NS"] = val
 
         # Parse instance casts (NAME_NS -> (TYPE_TypeDef *) NAME_BASE_NS)
-        instances: Dict[str, Tuple[str, int]] = {}
+        instances: dict[str, tuple[str, int]] = {}
 
         for match in re.finditer(
             r"#define\s+(\w+)_NS\s+\(\((\w+TypeDef)\s*\*\)\s*(\w+_BASE_NS)\)",

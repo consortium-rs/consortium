@@ -223,7 +223,9 @@ def update_cargo_manifest(
 def update_cargo_versions(root: Path, version: str) -> list[Path]:
     manifests = cargo_manifests(root)
     package_dirs = {
-        manifest.parent for manifest in manifests if package_name(manifest) is not None
+        manifest.parent.resolve()
+        for manifest in manifests
+        if package_name(manifest) is not None
     }
     root_manifest = root / "Cargo.toml"
     root_original = root_manifest.read_text()

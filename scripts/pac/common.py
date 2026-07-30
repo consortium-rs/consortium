@@ -1,13 +1,14 @@
 """Common utilities for CMSIS header parsing."""
 
-import re
 import json
-import yaml
+import re
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Any
+
+import yaml
 
 
-def safe_hex_to_int(hex_str: str) -> Optional[int]:
+def safe_hex_to_int(hex_str: str) -> int | None:
     """Convert hex string to int, handling UL/u suffixes."""
     if not hex_str:
         return None
@@ -19,7 +20,7 @@ def safe_hex_to_int(hex_str: str) -> Optional[int]:
         return None
 
 
-def evaluate_expr(expr: str, symbols: Dict[str, int]) -> Optional[int]:
+def evaluate_expr(expr: str, symbols: dict[str, int]) -> int | None:
     """Evaluate simple arithmetic expressions like 'BASE + 0x1000'."""
     expr = expr.replace("UL", "").replace("u", "").replace("L", "").strip()
 
@@ -92,7 +93,7 @@ class _IndentDumper(yaml.Dumper):
         return super().increase_indent(flow, indentless=False)
 
 
-def write_yaml(data: Dict[str, Any], path: Path) -> None:
+def write_yaml(data: dict[str, Any], path: Path) -> None:
     """Write data to YAML file."""
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w") as f:
@@ -101,7 +102,7 @@ def write_yaml(data: Dict[str, Any], path: Path) -> None:
         )
 
 
-def write_json(data: Dict[str, Any], path: Path) -> None:
+def write_json(data: dict[str, Any], path: Path) -> None:
     """Write data to JSON file."""
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w") as f:
