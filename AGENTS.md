@@ -61,20 +61,18 @@ commands can hit platform-sensitive crates or code that is mid-migration.
 
 ## Host Execution Policy
 
-Run all project commands, checks, builds, tests, linters, and other transactions
-in the environment selected for the host operating system. Formatting commands
-that only rewrite files or check formatting, along with commands driven by `uv`,
-`uvx`, or `vp`, are exceptions and may run directly on the host unless the
-command or task explicitly requires Linux:
+Run non-Rust-build work on the host by default. This includes Git and GitHub
+operations, Python scripts, `release.py`, `publish.py`, `uv`/`uvx`, Vite+,
+manifest and lockfile updates, formatting, and non-Rust linters.
 
-- On macOS, use the Linux container recipes provided by the `justfile` (for
-  example, `just linux ...` or `just linux-full ...`). Do not run project
-  commands other than formatting, format checks, and `uv`/`uvx`/`vp` tooling
-  directly on the macOS host.
-- On Linux, use the standard host environment and the normal `just`/`cargo`
+- On macOS, route Rust builds, tests, Clippy, and publish verification through
+  the Linux container recipes provided by the `justfile` (for example,
+  `just linux '...'` or `just linux-full '...'`). Run everything else directly
+  on the macOS host unless a task explicitly requires Linux.
+- On Linux, use the standard host environment and normal `just`/`cargo`
   commands.
-- On Windows, run project commands inside WSL. Do not use native Windows shells
-  for project transactions.
+- On Windows, run Rust build transactions inside WSL. Host-capable tooling may
+  run natively.
 
 The `justfile` is the command index, but verify recipes against current crates before
 copying them into new docs. Some target and lint recipes still mention crates or type
@@ -575,9 +573,9 @@ SDK and no cross linker are involved for the 64-bit A-core.
 
 `Dockerfile.linux` defines two stages, driven by the `just linux-*` recipes:
 
-- `base` (`just linux-image`) — Rust toolchains, `uv`, Vite+, GitHub CLI,
-  `dtc`, `arm-none-eabi-objcopy`, and `just`. Enough for the `*-a64` /
-  `*-a32` recipes and repository tooling.
+- `base` (`just linux-image`) — Rust toolchains, `uv`, Vite+, `dtc`,
+  `arm-none-eabi-objcopy`, and `just`. Enough for the `*-a64` / `*-a32`
+  recipes and repository tooling.
 - `full` (`just linux-image-full`) — adds WPE WebKit/Cog from the
   consortium-rs/wpe-kiosk-stack-prebuilt `.deb` and an OP-TEE 4.10.0 TA dev kit.
   Enough for a full `csti build` of melt-pot. The `.deb` (~45 MB) is fetched on

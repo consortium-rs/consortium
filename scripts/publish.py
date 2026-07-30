@@ -19,6 +19,7 @@ import argparse
 import http.client
 import json
 import re
+import shlex
 import subprocess
 import sys
 import time
@@ -282,6 +283,27 @@ def cargo_publish(workspace: Path, package: Package, dry_run: bool) -> tuple[boo
     if dry_run:
         print(f"  [dry-run] {' '.join(command)}")
         return True, ""
+    if sys.platform == "darwin":
+        verify_command = [
+            "just",
+            "linux-full",
+            shlex.join([*command, "--dry-run"]),
+        ]
+        verification = subprocess.run(
+            verify_command,
+            cwd=workspace,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        verification_output = verification.stdout + verification.stderr
+        print(
+            verification_output,
+            end="" if verification_output.endswith("\n") else "\n",
+        )
+        if verification.returncode != 0:
+            return False, verification_output
+        command.append("--no-verify")
     process = subprocess.run(
         command, cwd=workspace, capture_output=True, text=True, check=False
     )

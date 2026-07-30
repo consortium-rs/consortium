@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare and publish a Consortium release from a Linux checkout."""
+"""Prepare and publish a Consortium release from the host checkout."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ import argparse
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -122,14 +123,6 @@ def run(
         env=env,
     )
     return result.stdout.strip() if capture else ""
-
-
-def require_linux() -> None:
-    if not sys.platform.startswith("linux"):
-        raise RuntimeError(
-            "releases must run in a Linux environment with the `just setup` "
-            "toolchain installed"
-        )
 
 
 def require_clean_tree(root: Path, allow_dirty: bool = False) -> None:
@@ -385,6 +378,43 @@ def regenerate_lockfiles(root: Path, dry_run: bool) -> None:
     run("taplo", "format", cwd=root, dry_run=dry_run)
 
 
+def run_rust_recipe(recipe: str, *, dry_run: bool = False) -> None:
+    command = ("just", recipe)
+    if sys.platform == "darwin":
+        run(
+            "just",
+            "linux-full",
+            shlex.join(command),
+            cwd=ROOT,
+            dry_run=dry_run,
+        )
+        return
+    run(*command, cwd=ROOT, dry_run=dry_run)
+
+
+def apply_release_fixes(*, dry_run: bool = False) -> None:
+    run_rust_recipe("cargo-fix", dry_run=dry_run)
+    run("just", "oxfix", cwd=ROOT, dry_run=dry_run)
+    run("just", "ruff-fix", cwd=ROOT, dry_run=dry_run)
+    run("just", "rustfmt", cwd=ROOT, dry_run=dry_run)
+    run("vp", "fmt", cwd=ROOT, dry_run=dry_run)
+    run("uvx", "ruff", "format", cwd=ROOT, dry_run=dry_run)
+    run("taplo", "format", cwd=ROOT, dry_run=dry_run)
+
+
+def run_release_linters(*, dry_run: bool = False) -> None:
+    run_rust_recipe("cargo-lint", dry_run=dry_run)
+    for recipe in (
+        "fmt-check",
+        "taplo-check",
+        "typos",
+        "ls-lint",
+        "oxlint",
+        "ruff-lint",
+    ):
+        run("just", recipe, cwd=ROOT, dry_run=dry_run)
+
+
 def last_release_tag(root: Path) -> str | None:
     result = subprocess.run(
         ["git", "describe", "--tags", "--abbrev=0", "--match", "v[0-9]*"],
@@ -567,7 +597,6 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    require_linux()
     require_clean_tree(ROOT, allow_dirty=args.allow_dirty)
     validate_release_workflow(ROOT / ".github" / "workflows" / "release-build.yml")
     validate_binstall_manifest(ROOT / "crates" / "consortium-cli" / "Cargo.toml")
@@ -585,11 +614,11 @@ def main() -> int:
 
     run("gh", "auth", "status", cwd=ROOT)
     require_unused_release(ROOT, tag)
-    run("just", "fix", cwd=ROOT)
+    apply_release_fixes()
     changed = update_all_manifests(ROOT, str(target))
     print(f"Updated {len(changed)} manifests to {target}.")
     regenerate_lockfiles(ROOT, dry_run=False)
-    run("just", "lint", cwd=ROOT)
+    run_release_linters()
 
     # Generate notes before the release commit so it is not listed as a user
     # contribution to its own release.
