@@ -41,8 +41,8 @@ rkyv     = ["consortium-codec-macros", "dep:rkyv"]
 std      = ["consortium-log/tracing", "rkyv?/bytecheck", "rkyv?/std"]
 
 [dependencies]
-consortium-codec-macros = { optional = true, path = "../consortium-codec-macros", version = "0.1.0" }
-consortium-log          = { default-features = false, path = "../consortium-log", version = "0.1.0" }
+consortium-codec-macros = { optional = true, path = "../consortium-codec-macros", version = "0.2.0" }
+consortium-log          = { default-features = false, path = "../consortium-log", version = "0.2.0" }
 defmt                   = { optional = true, version = "1.1.0" }
 postcard                = { optional = true, version = "1.1.3" }
 prost                   = { default-features = false, optional = true, version = "0.14.3" }
