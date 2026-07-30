@@ -5,7 +5,6 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 import yaml
 
@@ -14,27 +13,27 @@ OUTPUT_DIR = (
 )
 
 
-def validate_yaml_syntax(file_path: Path) -> Tuple[bool, str]:
+def validate_yaml_syntax(file_path: Path) -> tuple[bool, str]:
     """Check if YAML file is valid."""
     try:
         with open(file_path) as f:
             yaml.safe_load(f)
         return True, "OK"
-    except Exception as e:
+    except (OSError, UnicodeError, yaml.YAMLError) as e:
         return False, str(e)
 
 
-def validate_json_syntax(file_path: Path) -> Tuple[bool, str]:
+def validate_json_syntax(file_path: Path) -> tuple[bool, str]:
     """Check if JSON file is valid."""
     try:
         with open(file_path) as f:
             json.load(f)
         return True, "OK"
-    except Exception as e:
+    except (OSError, UnicodeError, json.JSONDecodeError) as e:
         return False, str(e)
 
 
-def check_descriptions(data: Dict) -> List[str]:
+def check_descriptions(data: dict) -> list[str]:
     """Check for common description issues."""
     issues = []
 
@@ -73,16 +72,17 @@ def check_descriptions(data: Dict) -> List[str]:
         if "fields" in value:
             for field in value["fields"]:
                 field_desc = field.get("description", "")
-                if isinstance(field_desc, str):
-                    if "/*!<" in field_desc or "@" in field_desc:
-                        issues.append(
-                            f"  {key}.{field['name']}: bad description: {field_desc[:60]}"
-                        )
+                if isinstance(field_desc, str) and (
+                    "/*!<" in field_desc or "@" in field_desc
+                ):
+                    issues.append(
+                        f"  {key}.{field['name']}: bad description: {field_desc[:60]}"
+                    )
 
     return issues
 
 
-def check_bitfield_widths(data: Dict) -> List[str]:
+def check_bitfield_widths(data: dict) -> list[str]:
     """Check for invalid bitfield widths."""
     issues = []
 
@@ -110,7 +110,7 @@ def check_bitfield_widths(data: Dict) -> List[str]:
     return issues
 
 
-def check_field_overlaps(data: Dict) -> List[str]:
+def check_field_overlaps(data: dict) -> list[str]:
     """Report fields sharing a bit offset.
 
     CMSIS headers legitimately define multiple views at the same offset (e.g.
@@ -124,7 +124,7 @@ def check_field_overlaps(data: Dict) -> List[str]:
         if not isinstance(value, dict) or "fields" not in value:
             continue
 
-        fields_by_offset: Dict[int, List] = {}
+        fields_by_offset: dict[int, list] = {}
         for field in value["fields"]:
             offset = field.get("bit_offset", 0)
             fields_by_offset.setdefault(offset, []).append(field)
@@ -137,7 +137,7 @@ def check_field_overlaps(data: Dict) -> List[str]:
     return warnings
 
 
-def check_chip_json(data: Dict) -> List[str]:
+def check_chip_json(data: dict) -> list[str]:
     """Check chip JSON structure."""
     issues = []
 
@@ -191,7 +191,7 @@ def test_register_yamls():
         try:
             with open(yaml_file) as f:
                 data = yaml.safe_load(f)
-        except Exception as e:
+        except (OSError, UnicodeError, yaml.YAMLError) as e:
             print(f"❌ {rel_path}: Failed to load: {e}")
             failed += 1
             continue
@@ -254,12 +254,12 @@ def test_chip_jsons():
         try:
             with open(json_file) as f:
                 data = json.load(f)
-        except Exception as e:
+        except (OSError, UnicodeError, json.JSONDecodeError) as e:
             print(f"❌ {rel_path}: Failed to load: {e}")
             failed += 1
             continue
 
-        issues = issues = check_chip_json(data)
+        issues = check_chip_json(data)
 
         if issues:
             print(f"⚠️  {rel_path}:")

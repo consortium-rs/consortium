@@ -1,23 +1,21 @@
 #!/usr/bin/env python3
 """Parse NXP MCUX CMSIS headers into chiptool IR YAML and chip JSON."""
 
+import argparse
 import re
 import sys
 from pathlib import Path
+from typing import Any
 
 import yaml
-from typing import Dict, List, Any, Tuple, Set
-import argparse
-
 from common import (
-    safe_hex_to_int,
     calc_bit_size_from_mask,
-    write_yaml,
-    write_json,
     extract_description,
+    safe_hex_to_int,
     strip_suffix,
+    write_json,
+    write_yaml,
 )
-
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 OUTPUT_DIR = (
@@ -59,19 +57,19 @@ def consolidate_identical_imx9_peripherals() -> None:
         print(f"Wrote {shared_path}")
 
 
-def natural_sort_key(path: Path) -> List[Any]:
+def natural_sort_key(path: Path) -> list[Any]:
     parts = re.split(r"(\d+)", path.name)
     return [int(part) if part.isdigit() else part for part in parts]
 
 
-def yaml_block_name(data: Dict[str, Any]) -> str:
+def yaml_block_name(data: dict[str, Any]) -> str:
     blocks = [key.split("/", 1)[1] for key in data if key.startswith("block/")]
     if len(blocks) != 1:
         raise ValueError(f"expected exactly one block in YAML, found {blocks}")
     return blocks[0]
 
 
-def replace_yaml_strings(value: Any, replacements: List[Tuple[Any, str]]) -> Any:
+def replace_yaml_strings(value: Any, replacements: list[tuple[Any, str]]) -> Any:
     if isinstance(value, dict):
         return {
             replace_yaml_strings(key, replacements): replace_yaml_strings(
@@ -101,8 +99,8 @@ def drop_yaml_descriptions(value: Any) -> Any:
     return value
 
 
-def numbered_template_replacements(block: str) -> List[Tuple[Any, str]]:
-    replacements: List[Tuple[Any, str]] = [(block, re.sub(r"\d+", "N", block))]
+def numbered_template_replacements(block: str) -> list[tuple[Any, str]]:
+    replacements: list[tuple[Any, str]] = [(block, re.sub(r"\d+", "N", block))]
 
     # GIC redistributor register names carry the redistributor index in addition
     # to the enclosing block name, e.g. `NOC_GICRLPI5_GICR5_CTLR`.
@@ -116,7 +114,7 @@ def numbered_template_replacements(block: str) -> List[Tuple[Any, str]]:
 
 def consolidate_numbered_imx9_peripherals() -> None:
     """Collapse repeated numbered i.MX9 blocks into _n templates when shaped alike."""
-    groups: Dict[Tuple[str, str], List[Path]] = {}
+    groups: dict[tuple[str, str], list[Path]] = {}
     for path in sorted(IMX9_PERI_OUTPUT_DIR.glob("*.yaml")):
         match = re.match(r"(.+)_(v1|mimx93|mimx95)\.yaml$", path.name)
         if not match:
@@ -165,11 +163,11 @@ class NXPPeripheralParser:
         self.peripheral_name = match.group(1) if match else "UNKNOWN"
 
         self.block_name = self.peripheral_name
-        self.block_data: Dict[str, Any] = {"description": "", "items": []}
-        self.fieldsets: Dict[str, Dict[str, Any]] = {}
+        self.block_data: dict[str, Any] = {"description": "", "items": []}
+        self.fieldsets: dict[str, dict[str, Any]] = {}
 
     @staticmethod
-    def _item_size(item: Dict[str, Any]) -> int:
+    def _item_size(item: dict[str, Any]) -> int:
         """Return the address span occupied by a register item."""
         array = item.get("array")
         if isinstance(array, dict):
@@ -178,11 +176,11 @@ class NXPPeripheralParser:
 
     @classmethod
     def _prune_overlapping_items(
-        cls, items: List[Dict[str, Any]]
-    ) -> List[Dict[str, Any]]:
+        cls, items: list[dict[str, Any]]
+    ) -> list[dict[str, Any]]:
         """Drop alternate register views that overlap in chiptool IR."""
-        by_name_offset: Dict[Tuple[str, int], Dict[str, Any]] = {}
-        order: List[Tuple[str, int]] = []
+        by_name_offset: dict[tuple[str, int], dict[str, Any]] = {}
+        order: list[tuple[str, int]] = []
 
         for item in items:
             key = (item["name"], int(item["byte_offset"]))
@@ -195,7 +193,7 @@ class NXPPeripheralParser:
             if cls._item_size(item) > cls._item_size(existing):
                 by_name_offset[key] = item
 
-        compacted: List[Dict[str, Any]] = []
+        compacted: list[dict[str, Any]] = []
         for key in order:
             item = by_name_offset[key]
             start = int(item["byte_offset"])
@@ -216,10 +214,10 @@ class NXPPeripheralParser:
         return compacted
 
     @staticmethod
-    def _prune_overlapping_fields(fields: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def _prune_overlapping_fields(fields: list[dict[str, Any]]) -> list[dict[str, Any]]:
         """Drop alternate bitfield views that overlap in chiptool IR."""
-        pruned: List[Dict[str, Any]] = []
-        used_bits: Set[int] = set()
+        pruned: list[dict[str, Any]] = []
+        used_bits: set[int] = set()
 
         for field in sorted(fields, key=lambda f: (f["bit_offset"], f["name"])):
             offset = int(field["bit_offset"])
@@ -234,7 +232,7 @@ class NXPPeripheralParser:
 
         return pruned
 
-    def parse_array_counts(self) -> Dict[str, int]:
+    def parse_array_counts(self) -> dict[str, int]:
         """Extract #define FOO_COUNT N declarations."""
         counts = {}
         for match in re.finditer(r"#define\s+(\w+)\s+(\d+)u?", self.content):
@@ -268,11 +266,7 @@ class NXPPeripheralParser:
             line_stripped = line.strip()
             i += 1
 
-            if (
-                not line_stripped
-                or line_stripped.startswith("/*")
-                or line_stripped.startswith("//")
-            ):
+            if not line_stripped or line_stripped.startswith(("/*", "//")):
                 continue
 
             # Check for nested struct declaration: struct { ... } NAME[array];
@@ -291,14 +285,14 @@ class NXPPeripheralParser:
                     current_offset = struct_base_offset
 
                 # Collect all nested structs and top-level fields until the closing brace of the outer struct
-                nested_structs: List[
-                    Tuple[str, List[str], int]
+                nested_structs: list[
+                    tuple[str, list[str], int]
                 ] = []  # (struct_name, body, offset)
-                top_level_fields: List[
+                top_level_fields: list[
                     str
                 ] = []  # Fields at the top level of the array struct
                 outer_brace_depth = 0
-                current_nested_body: List[str] = []
+                current_nested_body: list[str] = []
                 current_nested_name: str = ""
                 current_nested_offset = 0
 
@@ -411,7 +405,7 @@ class NXPPeripheralParser:
                                         else struct_base_offset + field_offset
                                     )
 
-                                    item: Dict[str, Any] = {
+                                    item: dict[str, Any] = {
                                         "name": reg_name,
                                         "byte_offset": reg_offset,
                                     }
@@ -551,7 +545,7 @@ class NXPPeripheralParser:
 
             description = extract_description(line)
 
-            item: Dict[str, Any] = {
+            item: dict[str, Any] = {
                 "name": field_name,
                 "byte_offset": byte_offset,
             }
@@ -585,9 +579,9 @@ class NXPPeripheralParser:
     def parse_bitfield_macros(self):
         """Extract MASK and SHIFT defines for bitfields."""
         # NXP uses _MASK and _SHIFT naming
-        mask_defs: Dict[str, int] = {}
-        shift_defs: Dict[str, int] = {}
-        descriptions: Dict[str, str] = {}
+        mask_defs: dict[str, int] = {}
+        shift_defs: dict[str, int] = {}
+        descriptions: dict[str, str] = {}
 
         # Find all _MASK defines
         for match in re.finditer(
@@ -617,7 +611,7 @@ class NXPPeripheralParser:
             shift_defs[name] = shift_val
 
         # Group by register (PERIPH_REG)
-        fieldsets_dict: Dict[str, List[Dict[str, Any]]] = {}
+        fieldsets_dict: dict[str, list[dict[str, Any]]] = {}
 
         for field_name, mask_val in mask_defs.items():
             if field_name not in shift_defs:
@@ -645,7 +639,7 @@ class NXPPeripheralParser:
             unshifted_mask = mask_val >> bit_offset
             bit_size = calc_bit_size_from_mask(unshifted_mask)
 
-            field: Dict[str, Any] = {
+            field: dict[str, Any] = {
                 "name": field_short,
                 "bit_offset": bit_offset,
                 "bit_size": bit_size,
@@ -705,8 +699,8 @@ class NXPCommonParser:
         with open(common_header_path) as f:
             self.content = f.read()
 
-        self.irqs: List[Dict[str, Any]] = []
-        self.instances: Dict[str, Tuple[str, int]] = {}  # name → (type, address)
+        self.irqs: list[dict[str, Any]] = []
+        self.instances: dict[str, tuple[str, int]] = {}  # name → (type, address)
 
     def parse_irq_enum(self):
         """Extract IRQ enum."""
@@ -757,7 +751,7 @@ class NXPCommonParser:
     def parse_base_addresses(self):
         """Extract base addresses and instance casts."""
         # Find _BASE and _BASE_NS defines
-        bases: Dict[str, int] = {}
+        bases: dict[str, int] = {}
 
         for match in re.finditer(
             r"#define\s+(\w+_BASE(?:_NS)?)\s+\((0x[0-9a-fA-F]+)u?\)", self.content
@@ -823,14 +817,14 @@ class NXPChipParser:
             self.chip_name = "UNKNOWN"
             self.core = "cm33"
 
-    def get_included_peripherals(self) -> List[str]:
+    def get_included_peripherals(self) -> list[str]:
         """Extract list of included PERI_*.h files."""
         peripherals = []
         for match in re.finditer(r'#include\s+"PERI_(\w+)\.h"', self.content):
             peripherals.append(match.group(1))
         return peripherals
 
-    def emit_json(self, peri_blocks: Dict[str, str]):
+    def emit_json(self, peri_blocks: dict[str, str]):
         """Write chip descriptor JSON."""
         # Determine family from chip name
         family = (
