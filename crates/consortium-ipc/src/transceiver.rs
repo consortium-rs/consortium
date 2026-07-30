@@ -24,7 +24,7 @@ use crate::{Channel, ChannelError, ReceivedMessage, Rx, Tx};
 /// A typed, multidirectional endpoint pairing a send half and a receive half.
 ///
 /// The two halves carry independent transport types: the full-duplex
-/// [`SharedMemoryTransport`](consortium_ipc_transport_memory::SharedMemoryTransport)
+/// `consortium_ipc_transport_memory::SharedMemoryTransport`
 /// is `split` into a `…Tx` send half and a `…Rx` receive half, and each is the
 /// transport of its respective [`Channel`].
 ///

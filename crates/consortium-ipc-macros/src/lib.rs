@@ -14,6 +14,17 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Proc-macro facade for `consortium-ipc`.
+//!
+//! This crate exists only because a `proc-macro = true` crate can export nothing
+//! but macros. It is a thin `TokenStream` shim: every entry point converts to
+//! `proc_macro2` and forwards to `consortium-ipc-macros-impl`, where the real
+//! logic lives and can be unit-tested and snapshot-tested without a compiler
+//! driver.
+//!
+//! Depend on `consortium-ipc` instead of this crate directly — it re-exports
+//! [`IpcSafe`] alongside the trait of the same name.
+
 use proc_macro::TokenStream;
 
 /// Derive macro that validates a struct/enum is safe to use as a cross-core IPC message.
