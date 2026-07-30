@@ -73,7 +73,7 @@ pub enum RegLayout {
     Narrow,
 }
 
-/// Rendering options for [`UioDevice::to_node_with`].
+/// Rendering options for [`UioDevice::to_node_with_options`].
 #[derive(Debug, Clone, Default)]
 pub struct UioOptions {
     /// `reg` cell width. Defaults to [`RegLayout::Wide`] (AArch64).

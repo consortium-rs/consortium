@@ -25,9 +25,20 @@
 //! `#[no_mangle]` statics the firmware had to define.
 //!
 //! When the variables are absent (a plain `cargo build`), [`CONFIGURED`] is
-//! `false`, [`BASE`] is `0`, and the [`crate::logger::ConsortiumLogger`] becomes
-//! a no-op. Firmware that needs real logging should guard with
-//! [`assert_configured`].
+//! `false`, [`BASE`] is `0`, and the `logger::ConsortiumLogger` becomes
+//! a no-op. That is what lets firmware crates be `cargo check`ed without running
+//! the build pipeline.
+//!
+//! The trade-off is that a real firmware image built without the pipeline logs
+//! nothing, silently. Firmware that must not ship that way should assert
+//! [`CONFIGURED`] at compile time:
+//!
+//! ```rust,ignore
+//! const _: () = assert!(
+//!     consortium_dbg::config::CONFIGURED,
+//!     "debug logging requires `csti build` to inject CONSORTIUM_DBG_*",
+//! );
+//! ```
 
 const fn env_or_zero(value: Option<&str>) -> &str {
     match value {

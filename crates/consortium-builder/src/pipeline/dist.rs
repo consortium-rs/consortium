@@ -151,7 +151,7 @@ fn io(path: impl AsRef<Path>, source: std::io::Error) -> DistAssemblyError {
 /// - the HMI assets (when present): a Cog dist tree → `www/` (copied
 ///   recursively), or a PocketJS `<app>.js`/`<app>.pak` pair → `hmi/`;
 /// - each `(name, contents)` Linux device tree → `dts/linux/<name>`; a `.dtso`
-///   overlay is verified with `dtc` (see [`verify_dts`]), a merged `.dts` is
+///   overlay is verified with `dtc` (see `verify_dts`), a merged `.dts` is
 ///   not (see below);
 /// - each `(name, contents)` kernel config fragment → `kernel/<name>`;
 /// - each `(name, contents)` boot-args file → `boot/<name>`;

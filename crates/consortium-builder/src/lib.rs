@@ -14,6 +14,73 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Compiles, post-processes, and stages every artifact a `Consortium.toml` describes.
+//!
+//! `consortium-cfg` answers "what does this system look like, and is it valid?" and emits
+//! generated source. This crate answers "now actually build it": four compilers, a
+//! post-processing step remoteproc requires, and a staging tree a packaging recipe can
+//! consume.
+//!
+//! It stops short of deployment. Nothing here writes to a live target filesystem — the
+//! output is a local `dist/` tree plus an optional BitBake hand-off.
+//!
+//! # Layout
+//!
+//! | Module         | Role                                                        |
+//! | -------------- | ----------------------------------------------------------- |
+//! | [`pipeline`]   | The end-to-end `Consortium.toml` → `dist/` flow, stage by stage. |
+//! | `compile`      | One compiler per artifact kind, behind the [`Compiler`] trait. |
+//! | [`progress`]   | Reporting hooks the CLI uses to keep a step prompt visible.    |
+//!
+//! # The `Compiler` trait
+//!
+//! Firmware, the Linux application, the OP-TEE TA, and the HMI frontend are built by
+//! very different toolchains, but callers drive them identically: each implementor owns
+//! a `Configuration` carrying all its parameters, a typed `Error`, and an `Output`
+//! (usually the path to the built artifact). See [`Compiler`].
+//!
+//! # Plan, then run
+//!
+//! [`pipeline::plan`] resolves every stage's inputs — paths, env vars, artifact
+//! locations — **without running any build**, threading the data flow between stages.
+//! [`pipeline::run`] plans, then executes.
+//!
+//! That split is what makes the pipeline debuggable: a wrong sysroot or a missing
+//! firmware ELF surfaces as a planning failure naming the stage, rather than as a cargo
+//! error several minutes into a cross-compile.
+//!
+//! # Compile-time configuration
+//!
+//! Much of what generated code needs is passed as `CONSORTIUM_*` environment variables
+//! read with `option_env!`/`env!`, not as generated source. The carriers in
+//! `compile::env` describe what gets injected: [`SharedMemConfig`], [`DbgConfig`],
+//! [`HmiConfig`].
+//!
+//! Numeric values are emitted as **decimal strings**, so a firmware-side consumer that
+//! needs const parsing can use `const-str` without depending on the std-oriented schema
+//! crates. Note that there is deliberately no `CONSORTIUM_IPC_BASE`: controller firmware
+//! gets its region base baked into generated init code, and the Linux application reaches
+//! the same memory through its UIO device, so neither side needs the physical address
+//! from the environment.
+//!
+//! # Firmware post-processing
+//!
+//! Linux remoteproc expects a coprocessor's vector table in a section named
+//! `.isr_vectors`, but `cortex-m-rt` emits `.vector_table`. The pipeline renames it, and
+//! keeps the debug/original artifacts alongside the deployable ELF.
+//!
+//! # Staging
+//!
+//! The assembled tree can contain `app/`, `firmware/`, `ta/`, `www/`, `dts/linux/`,
+//! `kernel/`, `boot/`, and `systemd/`, plus a generated BitBake recipe. CLI flags can
+//! stage that tree into a recipe's `files/` directory and invoke or dry-run BitBake —
+//! the dry-run path exists for the split-machine flow, where `dist/` is produced on one
+//! host and the Yocto build runs on another.
+//!
+//! Keep the planning, compilation, staging, and external BitBake hand-off boundaries
+//! distinct when extending this crate; and prefer extending `consortium-cfg` lowering
+//! first, then the pipeline.
+
 mod compile;
 pub mod pipeline;
 pub mod progress;

@@ -14,6 +14,25 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! One compiler per artifact kind, behind a single trait.
+//!
+//! A Consortium build produces four very differently-built things:
+//!
+//! | Module          | Artifact                  | Built with                     |
+//! | --------------- | ------------------------- | ------------------------------ |
+//! | `firmware`    | coprocessor ELF            | `cargo` for a bare-metal target |
+//! | `application` | Linux executable           | `cargo`, usually cross-compiled  |
+//! | `optee`       | signed OP-TEE TA           | the OP-TEE TA dev kit            |
+//! | `web`         | HMI frontend bundle        | `vp` / `npm` / `bun`             |
+//!
+//! [`Compiler`] is what makes them uniform: each implementor owns its `Configuration`
+//! (all build parameters), a typed `Error`, and an `Output`. Its methods take the config
+//! rather than `&self`, so every implementor has the same `.build(cfg)` /
+//! `.output_path(&cfg)` shape and the pipeline needs no per-kind special casing.
+//!
+//! `env` holds the carriers for compile-time environment injection; `deploy` renders
+//! the deployment artifacts (currently a systemd unit).
+
 pub mod application;
 pub mod deploy;
 pub mod env;

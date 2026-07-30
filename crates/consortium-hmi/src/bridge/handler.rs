@@ -14,6 +14,16 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Type erasure for registered command handlers.
+//!
+//! A `Bridge` accepts both plain `Fn(String) -> String` handlers and ones returning a
+//! future, but has to store them in one map. `Handler` is that union: two `Arc`'d closure
+//! shapes, collapsed by `call` into the single `ResponseFuture` the bridge returns.
+//!
+//! The sync arm is wrapped in an immediately-ready future rather than being special-cased
+//! downstream, so a caller cannot observe which kind a handler is — which is what lets a
+//! handler become async without the adapter changing.
+
 use std::{future::Future, sync::Arc};
 
 use super::ResponseFuture;

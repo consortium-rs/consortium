@@ -14,6 +14,21 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Derive implementations behind `consortium-ipc-macros`.
+//!
+//! This crate holds the logic for `consortium-ipc`'s derives as ordinary
+//! `proc_macro2::TokenStream` functions. Keeping it out of the `proc-macro = true`
+//! facade means the expansions can be exercised by plain unit tests and `insta`
+//! snapshots instead of only through `trybuild`.
+//!
+//! Reusable `syn`/AST utilities (field-type-tree walking, generic collection)
+//! belong in `consortium-macros-helpers`; what stays here is the IPC-specific
+//! policy — which types are wire-safe and what the generated `unsafe impl` must
+//! assert.
+//!
+//! This is an implementation detail of `consortium-ipc`. Do not depend on it
+//! directly; its API is not stable.
+
 mod ipc_safe;
 
 pub use ipc_safe::derive_ipc_safe;

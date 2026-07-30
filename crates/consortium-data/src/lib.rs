@@ -22,6 +22,51 @@
 //! device-tree sources (`database/dts/`).
 //! It also owns the resolvers that turn a `[profile] chip` part number into a
 //! parsed [`database::ChipDatabase`] or a per-core [`chipmap::ChipMap`].
+//!
+//! # Why it is embedded rather than read from disk
+//!
+//! `csti` is installed as a binary and run from a user's project directory, which
+//! has no `database/` in it. Every datum here is therefore compiled in — YAML and
+//! JSON through `include_str!`, the device-tree tree through `include_dir!` — so
+//! resolution works regardless of the working directory and cannot break because a
+//! data file moved. The cost is binary size and a rebuild on every data change,
+//! which is the right trade for a build tool.
+//!
+//! # What each module resolves
+//!
+//! | Module       | Source                       | Answers                              |
+//! | ------------ | ---------------------------- | ------------------------------------ |
+//! | [`database`] | `database/memory/*.yaml`      | What does this chip *family* offer — coprocessors, memory regions and aliases, peripherals, doorbells? |
+//! | [`chipmap`]  | `database/chip/*.json`        | What can *one core* reach — peripheral MMIO bases and NVIC numbers? |
+//! | [`dts`]      | `database/dts/{imx9,stm32mp2}` | Which vendor board or SoC device tree do we build on top of? |
+//!
+//! The split between the first two matters. A family database says the chip *has* an
+//! LPUART2; a chip map says *this core* can see it. Because there is one JSON file
+//! per core, the set of peripherals in a core's file **is** the set that core can
+//! reach — which is exactly the filter `consortium-cfg` applies when validating
+//! `[peripheral.<name>] owner`.
+//!
+//! The same chip dumps also feed `scripts/pac/gen_interrupts.py` and
+//! `scripts/pac/gen_peripherals.py`, which generate the PAC's interrupt tables and
+//! the chip HAL's singleton map. One source for all three is what keeps a HAL
+//! singleton, a PAC interrupt number, and a validated manifest in agreement.
+//!
+//! # Generated and imported data
+//!
+//! Treat everything under `database/` as **generated or vendored**, not authored.
+//! Change the generation workflow (the `just pac-*` recipes and `scripts/pac/`)
+//! rather than editing a large data file by hand.
+//!
+//! Schema types come from `consortium-cfg-common`, which exists partly so this crate
+//! can deserialize into them without depending on the codegen crate that depends on
+//! it.
+//!
+//! # Licensing
+//!
+//! This crate carries a compound SPDX expression rather than inheriting the
+//! workspace `Apache-2.0`, because it redistributes vendor material. Vendor device
+//! trees under `database/dts/` **must be dual-licensed** — GPL-only files cannot
+//! ship. See that directory's `README.md` before adding one.
 
 pub mod chipmap;
 pub mod database;

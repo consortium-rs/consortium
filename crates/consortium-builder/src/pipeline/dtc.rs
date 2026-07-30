@@ -94,7 +94,7 @@ pub fn arch_dir(app_target: &str) -> &'static str {
 /// `.dts`) or `.dtbo` (for a `.dtso`), returning the output path.
 ///
 /// `closure` is the vendored base-tree include closure (from
-/// [`consortium_data::dts::base_closure`]), materialized into a temp dir so the
+/// `consortium_data::dts::base_closure`), materialized into a temp dir so the
 /// generated tree's quoted `#include`s resolve; `linux_dir` is the user's kernel
 /// tree supplying `dt-bindings`; `arch` selects `arch/<arch>/boot/dts` (see
 /// [`arch_dir`]).

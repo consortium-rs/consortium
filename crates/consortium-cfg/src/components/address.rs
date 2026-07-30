@@ -1,3 +1,20 @@
+//! Where a shared window lives, from each core's point of view.
+//!
+//! The same carveout has two different names depending on who is looking at it, and
+//! [`Address`] holds both so a component does not have to branch on the core in more
+//! than one place:
+//!
+//! - **the AP** reaches it through a UIO device, so its address is an
+//!   [`ApAddress`] — a `(uio_id, mmap_id)` pair resolved at runtime by `mmap`ping
+//!   `/dev/uioN`;
+//! - **a controller core** has no UIO, so its address is a physical base baked into
+//!   the generated source as a literal.
+//!
+//! [`Address::memory_lookup`] emits the right one for a given [`VisibleCore`]. The
+//! `uio_id` and `mmap_id` values themselves are assigned once, in
+//! [`bridge`](crate::bridge), so the firmware, NVIC, and DTS outputs cannot drift
+//! apart.
+
 use std::collections::HashMap;
 
 use consortium_cfg_common::config::VisibleCore;

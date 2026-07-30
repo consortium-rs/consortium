@@ -1,3 +1,17 @@
+//! One shared-memory window's construction expression.
+//!
+//! [`Region`] emits the code that gives a core its handle on a single carveout,
+//! resolving the address through [`Address`].
+//!
+//! The one asymmetry worth knowing: **the AP clears the window on first touch**
+//! (`mmap_zeroed`) while controller cores do not. A carveout is `no-map` reserved
+//! memory that survives a warm reboot, so stale descriptor and slot bytes from a
+//! previous run could otherwise read as valid `CIPC` state. The AP is the primary in
+//! the descriptor handshake, so it is the right side to own that first touch;
+//! controller cores embed a physical base and leave zeroing to the handshake.
+//!
+//! [`Address`]: super::address::Address
+
 use consortium_cfg_common::{config::VisibleCore, database::MemoryRegionType};
 use syn::Ident;
 

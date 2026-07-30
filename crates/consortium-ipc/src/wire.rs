@@ -14,6 +14,20 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Wire-safety marker for cross-core message types.
+//!
+//! A message crosses an address-space boundary as raw bytes, so any field whose
+//! value only means something in the sender's address space — a pointer, a
+//! reference, a function pointer — arrives as garbage. Width-varying integers
+//! (`usize`, `isize`) are the same hazard in slower motion: a 64-bit A-core and a
+//! 32-bit M-core disagree on the size, so the layouts do not match.
+//!
+//! [`IpcSafe`] is the marker that rules those out. Blanket impls cover the
+//! fixed-width primitives, arrays, and small tuples; user types should use
+//! `#[derive(IpcSafe)]` from `consortium-ipc-macros`, which walks the entire field
+//! type tree and so also rejects them when hidden inside a generic. A hand-written
+//! `impl` is `unsafe`, making the ABI contract an explicit choice.
+
 /// Marker trait for types that are safe to transmit as cross-core IPC messages.
 ///
 /// Implementors guarantee all field values are:

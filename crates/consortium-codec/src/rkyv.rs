@@ -14,9 +14,66 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! [`RkyvCodec`] — zero-copy access to an archived message.
+//!
+//! `rkyv` writes a memory layout rather than a byte stream, so decoding is a
+//! pointer cast instead of a deserialization pass. `Decoded<'buf> =
+//! &'buf T::Archived`, and the returned reference borrows the receive buffer for
+//! as long as it is held — the reason `consortium_ipc::ReceivedMessage` carries a
+//! lifetime at all. Choose this codec when messages are large enough that copying
+//! them out dominates, and accept that the buffer stays pinned while a message is
+//! in use.
+//!
+//! # Two paths, one type
+//!
+//! [`RkyvCodec`] is generic over a `SCRATCH` byte budget because its two feature
+//! paths need different machinery:
+//!
+//! | Build              | Serializer              | Decode                          |
+//! | ------------------ | ----------------------- | ------------------------------- |
+//! | `alloc` enabled    | `AlignedVec` arena      | `rkyv::access` — **validated**   |
+//! | `alloc` disabled   | `SubAllocator<SCRATCH>` | `access_unchecked` — **trusted** |
+//!
+//! With `alloc` the serializer grows freely and `bytecheck` validates the archive
+//! before handing out the reference, so any `T: Archive + Serialize` works and a
+//! corrupt frame is an error. Without `alloc` there is nowhere to grow: encoding
+//! runs in two `SCRATCH`-sized `MaybeUninit` buffers on the stack, so `SCRATCH`
+//! must be chosen to fit the largest message *plus* rkyv's scratch overhead, and
+//! an under-sized parameter surfaces as an encode error at runtime, not a compile
+//! error.
+//!
+//! # Why [`TrustedArchive`] exists
+//!
+//! `bytecheck`'s validator needs `alloc`. On the no-`alloc` path decode therefore
+//! calls `rkyv::access_unchecked`, which is unsound on bytes that are not a
+//! correctly aligned archive of `T`. [`TrustedArchive`] is the marker that carries
+//! that obligation: the no-`alloc` `CodecFor` impl is bounded on it, so only types
+//! whose layout has been vetted can be decoded without validation.
+//!
+//! Blanket impls cover the fixed-width primitives, arrays, and tuples up to eight
+//! elements. For user types use `#[derive(TrustedArchive)]`, which checks that the
+//! type declares a stable `repr` and that every field is itself `TrustedArchive`.
+//!
+//! # Limitations
+//!
+//! - The no-`alloc` path decodes **without validating**, so it must only be pointed
+//!   at bytes a peer produced with the same codec and type. A hostile or
+//!   desynchronized sender is out of its threat model; use the `alloc` path where
+//!   the peer is not trusted.
+//! - `rkyv` archives are not a stable wire format across `rkyv` versions. Both ends
+//!   of a link must be built against the same one.
+//! - Archived types are alignment-sensitive; the transport must hand over a buffer
+//!   whose start is suitably aligned.
+
 use crate::{Codec, CodecFor};
 use core::fmt;
 
+/// Zero-copy codec over [rkyv](https://docs.rs/rkyv).
+///
+/// `SCRATCH` is the stack byte budget used for serialization on `no_std` builds
+/// (`alloc` disabled); it must cover the largest message plus rkyv's own scratch
+/// space. With `alloc` enabled the parameter is unused by encoding, which
+/// serializes through a growable `AlignedVec`.
 pub struct RkyvCodec<const SCRATCH: usize>;
 
 /// A marker trait to indicate that the type can be safely archived and deserialized without validation.

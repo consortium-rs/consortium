@@ -14,6 +14,25 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Shared helpers for the compilers: environment injection and tool resolution.
+//!
+//! Two jobs, both of which every compiler needs and none of which belongs to any one of
+//! them.
+//!
+//! **Environment injection** (`inject_shared_mem`, `inject_dbg`, `inject_hmi`) turns the
+//! carriers in `compile::env` into the `CONSORTIUM_*` variables set on a
+//! `cargo`/`bun` invocation. Numeric values are written as decimal strings so a
+//! firmware-side consumer can const-parse them with `const-str` rather than depending on
+//! the std-oriented schema crates.
+//!
+//! **Tool resolution** finds the right binary for a cross build: `resolve_cross_tool`
+//! locates a prefixed toolchain binary, `clean_path` strips host directories that would
+//! otherwise shadow SDK tools, and the HMI resolvers pick a frontend build command —
+//! `CONSORTIUM_HMI_BUILD_CMD` if set, then `vp`, then `npm` for Cog; `bun tools/build.ts`
+//! for Pocket. The override exists because the frontend sometimes has to be built
+//! elsewhere: inside a Linux container the host's `node_modules/` is already populated,
+//! so pointing the command at `/bin/true` lets the pipeline consume the existing dist.
+
 use crate::compile::env::{DbgConfig, HmiConfig, SharedMemConfig};
 use crate::compile::web::HmiBuildCommand;
 use crate::progress::BuildReporter;

@@ -79,11 +79,11 @@ impl syn::parse::Parse for TeeArgs {
 /// Generates two companion functions for a TA command handler.
 ///
 /// **`function_name_dispatched`** (TA side, default, `#[cfg(feature = "ta")]`): unpacks `::optee_utee::Parameters` via the
-/// [`TeeParam`] trait, calls the original function, and flushes any output or inout values
+/// `TeeParam` trait, calls the original function, and flushes any output or inout values
 /// back into their slots.
 ///
 /// **`call_function_name`** (CA side, `#[cfg(feature = "ca")]`): packs arguments via
-/// [`TeeParam`], calls `invoke_command`, then reads output slots back.
+/// `TeeParam`, calls `invoke_command`, then reads output slots back.
 ///
 /// The original function body is emitted unchanged.
 ///

@@ -14,6 +14,16 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Proc-macro facade for `consortium-codec`.
+//!
+//! A `proc-macro = true` crate can export nothing but macros, so this crate is a
+//! thin `TokenStream` shim: each entry point converts to `proc_macro2` and forwards
+//! to `consortium-codec-macros-impl`, where the logic lives and can be
+//! snapshot-tested without a compiler driver.
+//!
+//! Depend on `consortium-codec` with the `rkyv` feature instead of this crate
+//! directly — it re-exports [`TrustedArchive`] next to the trait of the same name.
+
 use proc_macro::TokenStream;
 
 /// Derive macro that validates a struct/enum is safe for unchecked rkyv archive access.

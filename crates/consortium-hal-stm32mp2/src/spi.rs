@@ -5,7 +5,7 @@
 //! `&'static` [`State`]. Blocking transfers ([`embedded_hal::spi::SpiBus`])
 //! work without interrupts. Async transfers
 //! ([`embedded_hal_async::spi::SpiBus`]) require the caller to route the
-//! instance's interrupt to [`State::on_interrupt`].
+//! instance's interrupt to `State::on_interrupt`.
 //!
 //! This is a byte-oriented full-duplex master. Each `SpiBus` method programs
 //! `CR2.TSIZE` with the frame count and issues one `CR1.CSTART`, so it reads as

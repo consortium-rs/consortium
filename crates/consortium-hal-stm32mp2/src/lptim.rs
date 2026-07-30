@@ -124,7 +124,7 @@ pub enum Error {
 
 /// IRQ state dedicated to one LPTIM.
 ///
-/// One `static` per instance is created by [`impl_lptim`] and reached through
+/// One `static` per instance is created by `impl_lptim` and reached through
 /// the instance type, so callers never supply or name it.
 pub struct State {
     pending: AtomicU32,

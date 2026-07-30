@@ -20,10 +20,10 @@
 //!
 //! 1. compile firmware for remote coprocessors ([`firmware`]);
 //! 2. build the defmt "ELF map" the app embeds ([`elf_map`]);
-//! 3. build the HMI frontend ([`crate::compile::web`]);
+//! 3. build the HMI frontend (`compile::web`);
 //! 4. compile + sign the OP-TEE TA ([`tee`]);
 //! 5. compile the Linux application ([`application`]);
-//! 6. render the systemd unit ([`crate::compile::deploy::systemd`]);
+//! 6. render the systemd unit (`compile::deploy::systemd`);
 //! 7. assemble `dist/` ([`dist`]);
 //! 8. optionally hand off to bitbake ([`bitbake`]).
 //!

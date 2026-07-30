@@ -1,7 +1,15 @@
 [package]
-description       = "FFI bindings to cogcore (Cog WPE browser engine)"
+description = "FFI bindings to cogcore (Cog WPE browser engine)"
 edition.workspace = true
-include           = ["Cargo.toml", "LICENSE", "build.rs", "src/**/*", "vendor/include/**/*", "wrapper.h"]
+include = [
+  "Cargo.toml",
+  "LICENSE",
+  "README.md",
+  "build.rs",
+  "src/**/*",
+  "vendor/include/**/*",
+  "wrapper.h",
+]
 # Not `license.workspace`: `vendor/include/` redistributes Cog sources, which
 # are MIT (see `vendor/include/LICENSE-COG`).
 license                = "Apache-2.0 AND MIT"
@@ -12,7 +20,7 @@ authors.workspace      = true
 categories.workspace   = true
 homepage.workspace     = true
 keywords.workspace     = true
-readme.workspace       = true
+readme                 = "README.md"
 repository.workspace   = true
 rust-version.workspace = true
 

@@ -14,14 +14,54 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! [`ProstCodec`] — protobuf encoding via [prost](https://docs.rs/prost).
+//!
+//! Use this when the message schema is not owned by this workspace: a `.proto`
+//! shared with a cloud service, another language's client, or an existing
+//! protobuf-speaking peer. For traffic where both ends are Rust crates in this
+//! repository, `PostcardCodec` is smaller and faster.
+//!
+//! # Considerations
+//!
+//! - **Schema evolution is the point.** Protobuf's field numbering tolerates
+//!   adding and reserving fields, which is what makes it worth the size overhead
+//!   when the two ends ship independently.
+//! - **Length is measured before writing.** `prost` encodes into a `BufMut`, which
+//!   grows rather than failing, so this codec calls `encoded_len()` first and
+//!   returns [`ProstError::BufferTooSmall`] itself. Without that check an
+//!   over-long message would be a panic or a silent partial frame instead of an
+//!   error.
+//! - **`Default` is required.** `prost` decodes by filling a default-constructed
+//!   message, so the bound is `T: prost::Message + Default`.
+//! - **Owned decode.** `Decoded<'buf> = T`; there is no borrow of the receive
+//!   buffer.
+//!
+//! # Limitations
+//!
+//! `prost` is pulled in with `default-features = false` to stay `no_std`-friendly,
+//! but generated protobuf types are typically far heavier than postcard structs —
+//! `String` and `Vec` fields need `alloc`. Check the generated code before
+//! selecting this codec for a bare-metal core.
+
 use crate::{Codec, CodecFor};
 
+/// Protobuf codec over `prost`.
+///
+/// Implements [`CodecFor<T>`] for any `T: prost::Message + Default`, with
+/// `Decoded<'buf> = T`.
 pub struct ProstCodec;
 
+/// Errors produced by [`ProstCodec`].
 #[derive(Debug)]
 pub enum ProstError {
+    /// `prost` rejected the message while serializing.
     Encode(prost::EncodeError),
+    /// The received bytes are not a valid encoding of the expected message.
     Decode(prost::DecodeError),
+    /// The destination slice is smaller than the message's `encoded_len()`.
+    ///
+    /// Raised by this codec rather than by `prost`, whose `BufMut` sink would
+    /// otherwise grow or panic instead of reporting a bounded-buffer failure.
     BufferTooSmall,
 }
 

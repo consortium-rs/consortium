@@ -14,6 +14,25 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Mounting a [`Bridge`](consortium_hmi::Bridge) into the QuickJS guest.
+//!
+//! Two layers, split deliberately.
+//!
+//! The **native surface** stays a minimal queueing primitive: JS calls it to enqueue an
+//! invocation, and completions come back over an unbounded channel keyed by ticket. It
+//! knows nothing about promises or correlation.
+//!
+//! A **JS adapter** (`service_prelude.js`), installed before the product bundle, owns the
+//! rest: it holds the pending map, matches a completion to its caller, and integrates with
+//! PocketJS's host-injected effect driver. Keeping correlation in JS rather than in Rust is
+//! what lets the native side stay a queue — and it is the same division `consortium-hmi`
+//! assumes when it says correlation ids belong to the guest.
+//!
+//! Handler futures are driven on the Tokio handle the caller supplies, while completions
+//! are delivered to the guest at a **frame boundary** rather than whenever they resolve.
+//! That preserves the single-threaded UI rule: QuickJS is only ever entered from the frame
+//! loop, never from a worker thread.
+
 use consortium_hmi::Bridge;
 use pocket_mod::{
     Guest,

@@ -1,3 +1,39 @@
+//! Conversion between Rust values and GlobalPlatform TEE parameter slots.
+//!
+//! The OP-TEE ABI gives a call four untyped slots, each either a *Value* (two `u32`s) or a
+//! *Memref* (a shared buffer). This module is where a Rust type declares which of those it
+//! rides in, and how.
+//!
+//! [`TeeParamSlot`] is the wire shape, generic over its byte buffer so the same enum
+//! serves both directions: [`TeeParamRepr`] owns a `Vec<u8>` on the way out,
+//! [`TeeParamReprRef`] borrows a `&[u8]` on the way in. Nothing is copied to read an
+//! incoming Memref.
+//!
+//! # Why the codec is a type parameter
+//!
+//! [`TeeParam<C>`] threads its codec through the trait rather than fixing one, and that
+//! choice is what makes the two slot kinds cohabit:
+//!
+//! - **Primitives** (`u8`…`i64`, `bool`, `(u32, u32)`) implement `TeeParam<C>` for *any*
+//!   `C`. The codec is never invoked; the value maps straight to
+//!   [`TeeParamSlot::Primitive`], so a command taking two integers allocates nothing.
+//! - **Serialized types** implement it for a specific `C: CodecFor<Self>`, which encodes
+//!   into [`TeeParamSlot::Serialized`] bytes.
+//!
+//! `#[derive(TeeParam)]` therefore does not commit to a codec; `#[tee_command(codec = …)]`
+//! picks one at the call site. [`NoCodec`] is the default marker and implements no
+//! `CodecFor`, so omitting `codec` on a command that needs one is a compile error that
+//! names the missing impl rather than a confusing type mismatch.
+//!
+//! # `MAX_SIZE` is a declaration, not a hint
+//!
+//! A Memref buffer is allocated by the CA *before* the call, so the worst-case serialized
+//! size has to be known statically. [`TeeParam::MAX_SIZE`] is that number: 1024 bytes by
+//! default from the derive, overridable with `#[tee(max_size = N)]`. Too small fails the
+//! call; too large wastes shared memory on every invocation.
+//!
+//! [`TeeParam<C>`]: TeeParam
+
 use alloc::vec::Vec;
 
 /// Error returned by [`TeeParam::into_tee_param`] and [`TeeParam::from_tee_param`].

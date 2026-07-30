@@ -21,11 +21,17 @@
 //! constructed `unsafe` from a base address and exposes the general-purpose
 //! interrupt (GI) operations the doorbell layer builds on.
 //!
-//! Construction follows the dual-path convention:
+//! [`Mu::new`] is the only constructor and is `unsafe`: it takes a base address and
+//! trusts it. That is deliberate — this layer is not where the firmware/Linux
+//! distinction belongs. The dual-path convention lives one level up on
+//! [`MuDoorbell`](crate::doorbell::MuDoorbell), which either consumes a chip-HAL
+//! peripheral singleton and resolves the base from
+//! [`registers::base`](crate::registers::base) (firmware), or takes an `mmap`'d
+//! virtual base directly (Linux/UIO).
 //!
-//! - bare-metal (`no_std`): [`Mu::steal`] derives the base from the compile-time
-//!   [`registers::base`] tables for instance `N` and side `S`.
-//! - Linux (`std`): [`Mu::new`] takes the `mmap`'d virtual base address.
+//! Everything here is a thin, checked wrapper over MMIO: request, poll, clear,
+//! enable, and disable one GI or RF line. Channel-space arithmetic and the
+//! [`Doorbell`](consortium_ipc::Doorbell) contract are the doorbell layer's job.
 
 use core::marker::PhantomData;
 
@@ -48,6 +54,9 @@ const RF_TOKEN: u32 = 0x1;
 /// register window: [`Primary`] is MUA, [`Secondary`] is MUB. The i.MX95
 /// CA55 <-> CM7 default route is MU7, i.e. `Mu<Primary, 7>` on the CA55 side
 /// and `Mu<Secondary, 7>` on the CM7 side.
+///
+/// [`Primary`]: consortium_ipc::Primary
+/// [`Secondary`]: consortium_ipc::Secondary
 pub struct Mu<S: Side, const N: usize> {
     base: usize,
     _side: PhantomData<S>,

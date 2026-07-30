@@ -88,7 +88,7 @@ impl Default for Config {
 /// Per-instance interrupt state shared between a UART driver and its IRQ
 /// handler.
 ///
-/// One `static` per instance is created by [`impl_uart`] and reached through
+/// One `static` per instance is created by `impl_uart` and reached through
 /// the instance type, so callers never supply or name it. The receive ring is only initialized by [`BufferedUart::new`]; the plain [`Uart`] leaves it empty.
 pub struct State {
     rx_waker: AtomicWaker,
@@ -122,7 +122,7 @@ impl State {
     ///
     /// Drains the receive FIFO into the ring and wakes the read future when
     /// bytes arrived; then services the transmit half exactly as
-    /// [`State::on_interrupt`] does.
+    /// `State::on_interrupt` does.
     fn on_buffered_interrupt(&self, r: LPUART) {
         critical_section::with(|_| {
             let stat = r.STAT().read();

@@ -14,6 +14,20 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Offscreen wgpu rendering, for tests without a display.
+//!
+//! [`HeadlessRenderer`] selects a headless wgpu adapter and renders a [`PocketApp`] frame
+//! into an offscreen RGBA target instead of a window surface.
+//!
+//! This exists so the PocketJS host is testable in CI: the whole path — QuickJS
+//! evaluation, bridge dispatch, UI layout, GPU submission — runs with no compositor, no
+//! seat, and no `DISPLAY`. Output can be compared against image goldens, which makes a
+//! rendering regression a diff rather than a bug report.
+//!
+//! The windowed counterpart is the `shell` feature's `winit` host; both drive the same
+//! [`PocketApp::frame`](crate::PocketApp) contract, so a change verified headlessly holds
+//! for the shell too.
+
 use std::path::Path;
 
 use pocket_ui_wgpu::UiRenderer;

@@ -124,7 +124,7 @@ const UIO_BOOTARG: &str = "uio_pdrv_genirq.of_id=generic-uio";
 /// files the integrator wires into their build:
 ///
 /// - **STM32 / OpenSTLinux** (extlinux boot): an `extlinux-uio.cfg` fragment
-///   appending [`UIO_BOOTARG`] through `UBOOT_EXTLINUX_KERNEL_ARGS`, which
+///   appending `UIO_BOOTARG` through `UBOOT_EXTLINUX_KERNEL_ARGS`, which
 ///   regenerates `extlinux.conf` persistently at build time.
 /// - **NXP i.MX** (scripted boot, no extlinux): a `boot.cmd` U-Boot script
 ///   source to compile to `boot.scr` (via `mkimage`) and stage on the FAT boot
