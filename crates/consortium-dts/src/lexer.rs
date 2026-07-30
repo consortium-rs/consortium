@@ -14,6 +14,19 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! DTS tokenizer.
+//!
+//! Turns source text into the token stream [`crate::parser`] consumes, attaching a
+//! [`Span`] to each token so diagnostics can point into the original
+//! file.
+//!
+//! Scope is the same as the parser's: the fragment shapes this workspace generates, plus
+//! the vendor board and SoC trees it merges onto. It is not a general `dtc` front end —
+//! there is no preprocessor, so `#include` and macro expansion are not handled here (an
+//! [`Include`] is carried through as a path).
+//!
+//! [`Include`]: crate::ast::Include
+
 use logos::Logos;
 
 use crate::error::{LexError, Span};

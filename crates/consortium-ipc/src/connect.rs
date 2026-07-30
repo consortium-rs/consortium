@@ -74,8 +74,47 @@ use crate::transport::TransportError;
 /// A transport that must rendezvous with its remote peer before carrying
 /// traffic.
 ///
-/// See the [module documentation](self) for the contract and for what
-/// deliberately stays outside this trait.
+/// The trait covers exactly one thing: **waiting until the far side of a link is
+/// ready.** Implement it when a peer must agree — on a memory layout, a protocol
+/// version, an MTU — before the first message can be sent. The defining property
+/// is that there is *another party*, and that the operation can fail because that
+/// party never showed up or disagreed. That is why `connect` is async: the wait is
+/// genuine, not incidental.
+///
+/// # Contract
+///
+/// - Call [`connect`](Connect::connect) **once**, after construction and before any
+///   [`send`](crate::SendTransport::send) or [`recv`](crate::RecvTransport::recv),
+///   and before splitting a full-duplex transport into halves — the handshake is a
+///   property of the whole link, not of one direction.
+/// - Implementations are side-asymmetric where the protocol is. The two ends of one
+///   link may run different code, selected by the transport's type (typically its
+///   [`Side`](crate::Side)) rather than by a runtime branch in the caller. Generated
+///   bring-up code can then emit one `connect` call for both sides.
+/// - `connect` carries **no timeout**. A peer that never answers parks the caller
+///   forever, so callers needing bounded bring-up impose their own deadline
+///   (`tokio::time::timeout`, `embassy_time::with_timeout`).
+/// - `connect` is safe. A transport whose construction is `unsafe` (raw shared
+///   memory, say) discharges that obligation in its constructor; `connect` relies on
+///   the invariant already established there.
+///
+/// # What does not belong here
+///
+/// Local bring-up is not a rendezvous, and routing it through this trait would make
+/// plain register writes pretend to await something.
+///
+/// - **Peripherals.** Enabling a clock, muxing pins and programming registers has no
+///   peer and no protocol. Its real complexity is the ordering graph between
+///   peripherals, which a per-object method cannot express; in this workspace that
+///   sequencing is emitted by `consortium-cfg` into the generated `init()`.
+///   Peripheral drivers keep the ecosystem convention instead: constructor plus
+///   config struct, with typestate where readiness is worth encoding in the type.
+/// - **Doorbells.** They have local setup (unmasking an interrupt, binding to the
+///   Linux UIO fan-out) but no handshake, which is why that stays plain inherent API
+///   (`bind_notifier` / `bind_service`).
+///
+/// Waiting on *someone else* is `Connect`; configuring *your own* silicon is a
+/// constructor.
 ///
 /// # Example
 ///

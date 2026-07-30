@@ -168,7 +168,7 @@ pub enum RingError {
 
 /// Per-channel state shared between a [`DmaChannel`] and its IRQ handler.
 ///
-/// One `static` per channel singleton is created by [`impl_dma_channel`] and
+/// One `static` per channel singleton is created by `impl_dma_channel` and
 /// reached through the instance type, so callers never supply or name it.
 pub struct DmaState {
     ch: AtomicPtr<()>,

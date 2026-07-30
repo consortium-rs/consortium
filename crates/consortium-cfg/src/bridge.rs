@@ -17,7 +17,7 @@
 //! Lowers a validated [`Session`] into the `components` IR.
 //!
 //! The IR types in [`crate::components`] each own their own code generation
-//! ([`Transceiver::initialize`](crate::components::ipc_shm::Transceiver::initialize),
+//! ([`ShuHan::initialize`](crate::components::ipc_shm::ShuHan::initialize),
 //! [`BellA::nvic_enable`](crate::components::bella::BellA::nvic_enable),
 //! [`ToUio::to_uio`]). This module builds those structs from the parsed
 //! `Consortium.toml` plus its resolved chip database, so the builder can drive

@@ -14,6 +14,112 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! The A-core Linux runtime: remoteproc control, UIO-backed IPC, host-side debug
+//! consoles, and the `#[main]` entry macro.
+//!
+//! This is the Linux half of a Consortium system. Where `consortium-runtime-mcu`
+//! gives firmware its entry point and shared-memory glue, this crate gives the
+//! application the same — plus the pieces only Linux has: `/sys/class/remoteproc`
+//! for booting a coprocessor, `/dev/uioN` for reaching shared memory and doorbells
+//! from userspace, and a `tracing` subscriber to put the resulting logs somewhere.
+//!
+//! # Modules
+//!
+//! | Module                      | Role                                            |
+//! | --------------------------- | ----------------------------------------------- |
+//! | `irq`                     | The portable UIO interrupt dispatch loop.        |
+//! | `uio`                     | `/dev/uioN` open, mmap, and device lifecycle.     |
+//! | `remoteproc`              | Load firmware and start/stop a coprocessor.       |
+//! | `dbg_console`             | Drain and decode coprocessor CDBG debug rings.     |
+//! | `ipc`, `ipc_transport`, `dbg`, `tee` | Feature-gated re-exports for generated code. |
+//!
+//! # Why `irq` is not under the Linux gate
+//!
+//! Almost everything here is `cfg(target_os = "linux")`, but `irq` is
+//! `cfg(unix)`. That is deliberate: the `[fd readiness → user-space fan-out]` slice
+//! of the UIO protocol has no Linux-specific API in it, so gating it at `unix`
+//! lets its socketpair-backed tests run on a macOS developer machine. The real
+//! `/dev/uioN` mapping and device lifecycle stay Linux-only in `uio`.
+//!
+//! # The UIO interrupt handshake
+//!
+//! Once `/dev/uioN` is open, the kernel arms the device interrupt and **user space
+//! owns the mask/re-arm handshake** from then on. `irq::irq_loop` runs one
+//! iteration per M→A interrupt, in an order that is the whole design:
+//!
+//! 1. wait for the fd to become readable;
+//! 2. drain the 4-byte interrupt count so it is not readable again;
+//! 3. fan out to every registered doorbell service;
+//! 4. re-arm the interrupt with a 4-byte write.
+//!
+//! Step 3 before step 4 is what keeps a level-sensitive line from immediately
+//! re-firing the instant it is unmasked — a masking doorbell (IPCC, MU) masks its
+//! asserted lines *during* the fan-out. And the re-arm is deliberately the *last*
+//! act of each iteration, never a first enable: the kernel already armed the line
+//! at open, and a redundant enable can unbalance a UIO driver's enable/disable
+//! accounting and leave the interrupt wedged off.
+//!
+//! Bind a doorbell accordingly:
+//!
+//! | Doorbell kind                | Bind with        | Because                        |
+//! | ---------------------------- | ---------------- | ------------------------------ |
+//! | plain (GPIO, HSEM)           | `bind_notifier`   | edge-driven; nothing to mask    |
+//! | masking (IPCC, MU)           | `bind_service`    | must mask asserted lines first   |
+//!
+//! Windows are mapped by kind, too: `mmap` for register and doorbell windows,
+//! `mmap_zeroed` for data windows — the AP owns first touch of a shared carveout,
+//! so a warm reboot's stale descriptor bytes never read as valid.
+//!
+//! # Entry macro
+//!
+//! ```rust,ignore
+//! #[consortium_runtime_app::main]
+//! async fn main(context: Context) -> Result<(), Box<dyn std::error::Error>> {
+//!     context.ipc_shm.telemetry.send(&Command::Start).await?;
+//!     Ok(())
+//! }
+//!
+//! // Optional: report a bring-up failure yourself.
+//! #[consortium_runtime_app::fail]
+//! fn on_fail(err: ConsortiumInitError) { eprintln!("init failed: {err}"); }
+//! ```
+//!
+//! The macro stacks `tokio::main` (resolved through the *user* crate's own `tokio`
+//! dependency, so it needs `tokio` with `macros`), installs a `tracing` subscriber
+//! **before** the generated `init()` runs — otherwise UIO and IPC bring-up traces
+//! would be dropped for want of a subscriber — then calls `init()` and binds its
+//! result as `context`.
+//!
+//! Without a `#[fail]` handler, a bring-up failure logs and exits non-zero. The
+//! dispatch is a glob-import shadow: `#[main]` glob-imports a fallback from
+//! `__rt`, and a module-scope `#[fail]` item shadows it. `#[main]`, `#[fail]`,
+//! `init`, and `Context` must therefore share the module the generated file is
+//! `include!`d into.
+//!
+//! # Debug consoles
+//!
+//! `[dbg] mode` picks how the AP consumes coprocessor rings: `auto` spawns a task
+//! per ring that decodes frames against the firmware ELF and forwards them to
+//! `tracing`; `interface` hands back reader handles for the integrator. A debug
+//! ring has no doorbell of its own, so the auto task polls on an interval.
+//!
+//! # Features
+//!
+//! Defaults are `dbg`, `ipc-shm`, and `macros`.
+//!
+//! | Feature   | Effect                                                          |
+//! | --------- | --------------------------------------------------------------- |
+//! | `ipc`     | Re-export `consortium-ipc`.                                      |
+//! | `ipc-shm` | UIO-backed shared-memory IPC; implies `ipc`.                      |
+//! | `dbg`     | Debug-ring decoding and `dbg_console`.                          |
+//! | `macros`  | The `#[main]` / `#[fail]` entry macros.                            |
+//! | `tee`     | Re-export `consortium-tee`.                                       |
+//! | `hmi`, `ort`, `ffi` | Re-export the HMI bridge, ONNX Runtime, and C ABI crates. |
+//! | chip features | `mimx93`/`mimx95`, `stm32mp21x`/`23x`/`25x` — forwarded to the shared-memory transport so it can report doorbell window addresses. |
+//!
+//! `stm32mp2xx` is a compatibility alias for `stm32mp25x`; new code should name a
+//! chip family directly so STM32MP21 can select IPCC without HSEM.
+
 // This crate is Linux-only in production: remoteproc, UIO, TEE, and the entry
 // macros all target the A-core Linux runtime. The exception is [`irq`], the
 // portable user-space half of the UIO interrupt protocol, which is gated
@@ -21,9 +127,6 @@
 // Every other item below is gated `cfg(target_os = "linux")` individually,
 // replacing the former crate-level `#![cfg(target_os = "linux")]`.
 
-/// Portable UIO interrupt dispatch (`[fd readiness → doorbell fan-out]`). Kept
-/// out from under the Linux gate so its tests build and run on any Unix; the
-/// real `/dev/uioN` device wiring lives in [`uio`] (Linux only).
 #[cfg(unix)]
 pub mod irq;
 
@@ -40,8 +143,6 @@ pub mod log {
     pub use consortium_log::{debug, error, info, trace, warn};
 }
 
-/// Host-side defmt console for coprocessor debug rings. Requires both the
-/// `dbg` decode stack and the `ipc-shm` UIO mapping.
 #[cfg(all(target_os = "linux", feature = "dbg", feature = "ipc-shm"))]
 pub mod dbg_console;
 
@@ -63,7 +164,7 @@ pub use consortium_tee as tee;
 pub use consortium_runtime_macros::{app_fail as fail, app_main as main};
 
 /// Runtime glue for the entry macros. Not a stable API — the generated
-/// `#[main]` code glob-imports [`__consortium_init_fail`] from here so a user
+/// `#[main]` code glob-imports `__consortium_init_fail` from here so a user
 /// `#[fail]` handler can shadow it.
 #[cfg(all(target_os = "linux", feature = "macros"))]
 #[doc(hidden)]

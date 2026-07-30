@@ -16,13 +16,22 @@
 
 //! UIO device management for the A-core Linux runtime.
 //!
-//! [`UioDevice`] opens `/dev/uioN`, mmaps the DMA-coherent shared region,
-//! parses the consortium descriptor, and spawns a background Tokio task that
-//! waits for M→A hardware interrupts and broadcasts wakeups to all pending
-//! [`SharedMemoryTransport`] receivers via a shared [`Arc<Notify>`].
+//! [`UioDevice::open`] opens `/dev/uioN`, maps its windows, and — when asked to
+//! enable the IRQ — spawns a background Tokio task running the
+//! [`irq_loop`](crate::irq) that fans each M→A interrupt out to every bound doorbell.
 //!
-//! Callers obtain per-channel transports via [`UioDevice::channel_transport`]
-//! and wrap them in [`Channel`](consortium_ipc::Channel).
+//! Windows are mapped by kind: [`mmap`](UioDevice::mmap) for register and doorbell
+//! blocks, [`mmap_zeroed`](UioDevice::mmap_zeroed) for data windows. The
+//! zeroing variant exists because the AP owns first touch of a shared carveout — it
+//! is `no-map` reserved memory that survives a warm reboot, so stale descriptor and
+//! slot bytes from a previous run must not read as valid.
+//!
+//! Doorbells are bound before any receive: [`bind_notifier`](UioDevice::bind_notifier)
+//! for a plain doorbell, [`bind_service`](UioDevice::bind_service) for a masking one
+//! that must mask its asserted lines before the wake.
+//!
+//! Generated bring-up code drives all of this; the addresses and UIO ids come from
+//! `consortium-cfg`.
 
 use std::{
     fs::File,
@@ -82,16 +91,14 @@ unsafe impl Sync for Inner {}
 
 /// Entry point for the consortium UIO device (`/dev/uioN`).
 ///
-/// Parses the shared-memory descriptor (the descriptor must already be in
-/// `Ready` state, i.e. M-core init is complete; see
-/// [`mmap::wait_for_ready`](crate::mmap::wait_for_ready)) and spawns a
-/// background Tokio task that listens for M→A IRQs and broadcasts wakeups to
-/// all waiting [`SharedMemoryTransport`] futures.
-///
-/// Obtain per-channel transports via [`channel_transport`](Self::channel_transport).
+/// Opened with [`open`](Self::open), which maps the device's windows and
+/// optionally starts the IRQ listener task. Callers then map individual windows
+/// with [`mmap`](Self::mmap) or [`mmap_zeroed`](Self::mmap_zeroed) and bind
+/// doorbells with [`bind_notifier`](Self::bind_notifier) or
+/// [`bind_service`](Self::bind_service).
 pub struct UioDevice {
     inner: Arc<Inner>,
-    /// Owns the mmap'd resources; also used by [`map_peripheral`] to map the
+    /// Owns the mmap'd resources; also used to map the
     /// doorbell register block.
     ///
     /// [`map_peripheral`]: Self::map_peripheral
@@ -113,7 +120,7 @@ impl UioDevice {
     /// Open the configured UIO device, mmap `map0`, parse the descriptor, and
     /// optionally start the IRQ listener task.
     ///
-    /// The device index comes from [`config::UIO`] — the `CONSORTIUM_IPC_UIO`
+    /// The device index comes from the `CONSORTIUM_IPC_UIO`
     /// value injected from the `[ipc]` section of `Consortium.toml` — so it is
     /// not passed by the caller. Building this crate with `ipc-shm` but without
     /// that UIO value is a compile error (see the guard in `lib.rs`), so by the
@@ -175,7 +182,9 @@ impl UioDevice {
 
     /// Map a UIO memory mapping by index and return its virtual base address.
     ///
-    /// Prefer [`map_peripheral_by_name`] when map ordering is not guaranteed.
+    /// Map ordering is fixed by `consortium-cfg`: a doorbell's register window is
+    /// always `mmap_id` 0, and a shared region's index is its position in
+    /// channel-declaration order.
     ///
     /// # Safety (caller obligation)
     ///
@@ -231,11 +240,11 @@ impl UioDevice {
         Ok(base)
     }
 
-    /// Register a doorbell's IRQ [`Service`] so the IRQ task runs it on every
+    /// Register a doorbell's IRQ service so the IRQ task runs it on every
     /// M→A interrupt.
     ///
     /// A masking doorbell binds its own IRQ entry point here — e.g.
-    /// [`IpccDoorbell::notify_rx_occupied_interrupt`] or
+    /// `IpccDoorbell::notify_rx_occupied_interrupt` or
     /// [`MuDoorbell::notify_gi_interrupt`] — which masks the asserted lines
     /// before waking, so a level-sensitive line does not immediately re-fire the
     /// UIO IRQ. The doorbell is `Clone`, so bind a clone before moving the

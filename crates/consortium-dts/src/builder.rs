@@ -14,6 +14,31 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Chainable constructors for the [`crate::ast`] types.
+//!
+//! Codegen that assembles device trees by struct literal is unreadable: the nesting of
+//! `Node { children: vec![Node { properties: vec![…] }] }` obscures the tree it
+//! describes. These builders exist so the construction site reads roughly like the DTS
+//! it produces.
+//!
+//! ```rust
+//! use consortium_dts::{File, NodeOverlay, Property, ToDts};
+//!
+//! let file = File::dtsi()
+//!     .item(NodeOverlay::label("uart4").property(Property::string("status", "okay")));
+//!
+//! assert!(file.to_dts().contains("&uart4"));
+//! ```
+//!
+//! Three [`File`] constructors differ only in the preamble they emit:
+//! [`File::new`] none, [`File::dtsi`] a `/dts-v1/;`, and [`File::dtso`] both
+//! `/dts-v1/;` and the `/plugin/;` an overlay needs.
+//!
+//! Every method takes and returns `self`, so a fragment is one expression and no
+//! intermediate is left half-built. Constructors are named for the DTS concept
+//! ([`Property::string`], [`Property::cells`], [`NodeOverlay::label`]) rather than for
+//! the Rust type being filled in.
+
 use crate::ast::{
     Cell, Deletion, File, Include, MemReserve, Node, NodeOverlay, PropValue, Property, Reference,
     TopLevelItem,

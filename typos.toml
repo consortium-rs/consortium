@@ -4,8 +4,11 @@ extend-exclude = [
   "crates/cogcore-sys/vendor",
   # Vendored chip databases and upstream Linux device trees.
   "crates/consortium-data/database",
-  # Generated PAC register/interrupt sources reproduce vendor header names
-  # and descriptions verbatim.
+  # Generated PAC register/interrupt sources, and the chip HAL singleton maps
+  # `scripts/pac/gen_peripherals.py` emits from the same dumps, reproduce vendor
+  # header names and descriptions verbatim.
+  "crates/consortium-hal-imx9/src/peripherals",
+  "crates/consortium-hal-stm32mp2/src/peripherals",
   "crates/consortium-pac-imx9/src/interrupts",
   "crates/consortium-pac-imx9/src/peripherals",
   "crates/consortium-pac-stm32mp2/src/interrupts",

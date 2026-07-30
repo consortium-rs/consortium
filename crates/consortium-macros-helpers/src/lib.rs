@@ -1,4 +1,41 @@
-//! Shared `syn` utilities for Consortium macro implementation crates.
+//! Reusable `syn` predicates shared by Consortium's macro implementation crates.
+//!
+//! Three macro families — `consortium-ipc-macros-impl`, `consortium-codec-macros-impl`,
+//! and `consortium-tee-macros-impl` — keep asking the same questions of an AST. Is this
+//! type a `usize`? Is it a `&mut [u8]`? What are the type arguments inside `Vec<T>`?
+//! What does this function actually return, ignoring `Result` and `()`?
+//!
+//! Those questions have fiddly answers and no natural home in any one derive, so they
+//! live here. The rule the workspace follows: **reusable AST helpers go in this crate;
+//! domain-specific policy stays in the owning `*-macros-impl` crate.** `IpcSafe`
+//! rejecting `usize` is policy; recognizing that a `Type` *is* a `usize` is a helper.
+//!
+//! # What "syntactic" means here, and why it matters
+//!
+//! Every predicate is **purely syntactic**. A proc-macro runs before type resolution, so
+//! it sees tokens, not types. [`is_vec_u8`] matches the *path* `Vec<u8>`; it cannot know
+//! that a `type MyBuf = Vec<u8>;` alias is the same thing, and it will happily match a
+//! user's own unrelated `Vec`.
+//!
+//! That is a real limitation rather than an oversight — no proc-macro can do better — and
+//! it shapes how the derives are written. Where a syntactic check is not enough, the
+//! derives push the question to the compiler instead by emitting a `where`-clause bound,
+//! which is why `#[derive(IpcSafe)]` adds `T: IpcSafe` to generic parameters rather than
+//! inspecting them.
+//!
+//! # Contents
+//!
+//! | Group               | Helpers                                                   |
+//! | ------------------- | --------------------------------------------------------- |
+//! | Field/type walking  | [`collect_field_types`], [`path_type_arguments`]            |
+//! | Return types        | [`get_output_type`], [`is_result_returning`], [`extract_result_inner`] |
+//! | Primitive shapes    | [`is_unit_type`], [`is_primitive`], [`is_vec_u8`], [`is_tuple_u32_u32`] |
+//! | Reference shapes    | [`is_slice_ref`], [`mut_scalar_inner`], [`is_context_ref`]   |
+//! | TEE parameter kinds | [`is_tee_param_path`], [`is_mut_tee_param_ref`]              |
+//!
+//! The last group is TEE-flavoured by name but generic in substance: it distinguishes
+//! "a path type routed through a codec" from "a primitive that fits in a value slot",
+//! which is the classification `tee_command` needs when assigning parameter slots.
 
 use syn::{Data, GenericArgument, PathArguments, ReturnType, Type};
 

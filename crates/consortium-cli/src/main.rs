@@ -14,7 +14,25 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! `csti` command-line interface.
+//! `csti` — the Consortium command-line interface.
+//!
+//! A thin `clap` front end over [`consortium_builder`]. `csti build` drives the whole
+//! `Consortium.toml` pipeline: compile the Linux application and controller firmware
+//! (plus the OP-TEE TA and HMI frontend when the manifest declares them),
+//! post-process the firmware for Linux remoteproc, generate the endpoint modules,
+//! device tree, Kconfig fragment, boot integration, and systemd unit, then assemble a
+//! local `dist/` staging tree with a BitBake recipe.
+//!
+//! It does **not** deploy: nothing is written to a live target filesystem.
+//!
+//! What the CLI adds beyond argument parsing is progress reporting — it passes a
+//! [`BuildReporter`](consortium_builder::BuildReporter) that keeps a persistent step
+//! prompt visible underneath cargo, `vp`, and BitBake output, so a long cross-compile
+//! still says which stage it is in.
+//!
+//! This crate publishes as `csti`, matching the binary: `consortium-cli` and the bare
+//! `consortium` name are both taken on crates.io by unrelated projects. The source
+//! directory keeps its descriptive name, so cargo invocations use `-p csti`.
 
 mod build;
 

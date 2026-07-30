@@ -15,7 +15,60 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! Shared HAL traits for Consortium chip support crates.
+//! Shared HAL vocabulary for Consortium chip support crates: the peripheral
+//! singleton machinery, a handful of narrow traits, and NVIC helpers.
+//!
+//! This crate is deliberately small. It holds only what the chip HALs
+//! (`consortium-hal-imx9`, `consortium-hal-stm32mp2`) and their generated code need
+//! to *agree* on. Every register layout, clock tree, and driver lives in a chip HAL,
+//! because that is where the differences are and a shared trait that tried to
+//! abstract them would either leak or lie.
+//!
+//! # Peripherals are owned, not addressed
+//!
+//! The load-bearing idea here is that a driver takes ownership of a peripheral
+//! rather than an address. [`peripherals!`] declares a chip's zero-sized singleton
+//! markers and the `Peripherals` struct that hands them out **once**; a driver
+//! constructor consumes the one it drives:
+//!
+//! ```rust,ignore
+//! let p = consortium_hal_imx9::init();
+//! let i2c = consortium_hal_imx9::i2c::I2c::new(p.LPI2C1, 24_000_000, 400_000);
+//! ```
+//!
+//! Because the base address and NVIC line travel with the singleton, no driver takes
+//! an MMIO pointer and no constructor is `unsafe` — the aliasing question is settled
+//! by the type system instead of by a comment. `peripherals::<NAME>::steal()` is the
+//! escape hatch for bring-up outside `init()`, and it carries the exclusivity
+//! obligation the safe path discharges.
+//!
+//! Per-instance driver state hangs off the marker rather than a named `static`, so an
+//! application forwards an interrupt as
+//! `<hal>::i2c::on_interrupt::<peripherals::LPI2C1>()`.
+//!
+//! # Traits
+//!
+//! | Trait               | Answers                                              |
+//! | ------------------- | ---------------------------------------------------- |
+//! | [`Peripheral`]      | What is this instance called in generated metadata?    |
+//! | [`ClockControl`]    | Enable and reset the peripheral clock.                 |
+//! | [`InterruptSource`] | Which interrupt line does it raise?                    |
+//! | [`MonotonicTimer`]  | Read ticks and program the next alarm.                 |
+//!
+//! [`MonotonicTimer`] is what a chip HAL's Embassy time driver is built on
+//! (STM32MP2 TIM2, i.MX9 LPIT1); `consortium-cfg` emits its bring-up into the
+//! generated `init()` unless `[profile] time_driver = false`.
+//!
+//! The [`nvic`] module adds interrupt masking for lines known only at runtime, which
+//! typed PAC `Interrupt` enums cannot express.
+//!
+//! # `Peri` and `PeripheralType`
+//!
+//! Both are re-exported from `embassy_hal_internal`, so chip HALs and their
+//! dependents (the doorbell crates, the UART transport glue) can name a singleton
+//! handle without taking an Embassy dependency of their own.
+//!
+//! `no_std`, no features.
 
 pub mod nvic;
 

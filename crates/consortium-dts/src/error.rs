@@ -14,6 +14,19 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Lexing and parsing diagnostics.
+//!
+//! Errors are split by stage — [`LexError`] for a malformed token, [`ParseError`] for a
+//! token stream that does not form valid DTS — and [`DtsError`] unifies them for callers
+//! that only want "this did not parse".
+//!
+//! Each carries a [`Span`] into the source, so `consortium-cfg` can report *which*
+//! vendor device tree failed and where, rather than just that one did. Vendor trees are
+//! large and not written by this project, so a bare "parse error" would be close to
+//! unactionable.
+//!
+//! Span granularity is coarse for now; richer source spans and diagnostics are planned.
+
 use thiserror::Error;
 
 /// Byte span into the parsed source.

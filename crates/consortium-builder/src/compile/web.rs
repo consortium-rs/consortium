@@ -35,7 +35,7 @@ use crate::progress::BuildReporter;
 
 /// How the HMI frontend is built.
 ///
-/// Resolved by [`resolve_hmi_build_command`](super::utils::resolve_hmi_build_command)
+/// Resolved by `resolve_hmi_build_command`
 /// from the `CONSORTIUM_HMI_BUILD_CMD` override, else an available `vp` or `npm`
 /// on PATH.
 #[derive(Debug, Clone, PartialEq, Eq)]

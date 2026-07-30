@@ -26,7 +26,8 @@ use crate::transport::{RecvTransport, SendTransport, TransportError};
 
 /// Channel direction marker ([`Tx`] or [`Rx`]).
 ///
-/// Sealed against external implementations via [`crate::sealed::Sealed`].
+/// Sealed against external implementations by a private supertrait: downstream
+/// crates can use `Direction` as a bound but cannot add directions of their own.
 pub trait Direction: crate::sealed::Sealed {}
 
 /// Marker: this channel can only send.
@@ -45,17 +46,24 @@ impl Direction for Rx {}
 /// - `D`  - direction: [`Tx`] or [`Rx`]
 /// - `T`  - message type
 /// - `Tr` - send half ([`SendTransport`]) for `Tx`, receive half ([`RecvTransport`]) for `Rx`
-/// - `C`  - codec, defaults to [`PostcardCodec`]
+/// - `C`  - codec; any [`CodecFor<T>`] family, e.g. `consortium_codec::PostcardCodec`
 ///
 /// # Buffer ownership
 ///
 /// `Channel` does not allocate. The caller provides a `&'static mut [u8]`
 /// scratch buffer at construction. In `no_std` environments this is
-/// typically a `static mut` array:
+/// typically a `static` array — see `consortium_runtime_mcu::static_buf!` for a
+/// helper that takes the raw `static mut` out of application code:
 ///
-/// ```compile_fail
+/// ```rust,ignore
+/// use consortium_codec::PostcardCodec;
+/// use consortium_ipc::{Channel, Tx};
+///
 /// static mut BUF: [u8; 256] = [0u8; 256];
-/// let ch = Channel::<Tx, MyMsg, _>::new(chan, transport, unsafe { &mut BUF });
+///
+/// // Taking the one and only reference to BUF.
+/// let buf = unsafe { &mut *core::ptr::addr_of_mut!(BUF) };
+/// let ch = Channel::<Tx, MyMsg, _, PostcardCodec>::new(chan, transport, buf);
 /// ```
 ///
 /// The buffer must be at least `transport.max_send_size()` / `max_recv_size()` bytes.
@@ -148,7 +156,8 @@ where
 
 /// A handle to a decoded received message.
 ///
-/// For [`PostcardCodec`] this owns the decoded `T` - the `'a`
+/// For an owning codec such as `consortium_codec::PostcardCodec`
+/// (`Decoded<'buf> = T`) this owns the decoded `T` - the `'a`
 /// lifetime is unused and the value can be moved out freely via
 /// [`into_inner`](ReceivedMessage::into_inner).
 ///

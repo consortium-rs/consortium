@@ -27,7 +27,7 @@
 //!   `Context`. The MCU flavor drives `embassy_executor`; the app flavor drives
 //!   `tokio`.
 //! - `mcu_fail` / `app_fail` mark an optional init-failure handler. See
-//!   [`fail`] for the glob-shadowing dispatch mechanism.
+//!   the `fail` module for the glob-shadowing dispatch mechanism.
 
 mod entry;
 mod fail;

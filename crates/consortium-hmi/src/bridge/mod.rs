@@ -14,6 +14,38 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! The command bridge: register a handler, dispatch an invocation, hand back a future.
+//!
+//! [`Bridge`] is a name-to-handler map and nothing more. A UI runtime hands it a JSON
+//! envelope, it parses out the command name and correlation id, looks up the handler, and
+//! returns a [`Dispatch`] carrying that id plus a [`ResponseFuture`].
+//!
+//! # Why it returns a future instead of a response
+//!
+//! The bridge does not poll. It cannot: a Cog/WebKit adapter runs on a GLib main loop, a
+//! PocketJS adapter delivers responses at frame boundaries, and neither owns a Tokio
+//! runtime this crate could assume. So the bridge produces the future and the **adapter**
+//! decides where to poll it and how to get the JSON back into its guest runtime.
+//!
+//! That is what keeps `consortium-hmi` free of GLib, WebKit, QuickJS, and Tokio, and what
+//! lets one set of product services serve both backends.
+//!
+//! # Sync and async handlers
+//!
+//! [`Bridge::handle`] takes a plain `Fn(String) -> String`; [`Bridge::handle_async`] takes
+//! one returning a future. Both are erased into the same internal handler type and both
+//! produce a [`ResponseFuture`], so a caller cannot tell them apart — a handler can become
+//! async without touching the adapter.
+//!
+//! # Correlation ids are the guest's
+//!
+//! [`Dispatch::id`] is echoed from the invocation envelope, not generated here. The guest
+//! runtime owns request/response matching, because it is the side with concurrent
+//! outstanding calls; the bridge only has to preserve the id it was given.
+//!
+//! Payloads stay as JSON strings end to end. The bridge never deserializes a payload — a
+//! handler does that, with whatever type it wants.
+
 mod handler;
 mod invocation;
 

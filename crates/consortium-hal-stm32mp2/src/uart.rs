@@ -1,10 +1,10 @@
 //! UART driver backed by an STM32MP2 USART instance.
 //!
 //! Any USART/UART instance can back a [`Uart`]; select it by passing its MMIO
-//! base to [`Uart::new`] together with a `&'static` [`UartState`] per
+//! base to [`Uart::new`] together with a `&'static` `UartState` per
 //! instance. Blocking I/O ([`embedded_io`], [`embedded_hal_nb::serial`])
 //! works without interrupts. Async I/O ([`embedded_io_async`]) requires the
-//! caller to route the instance's interrupt to [`UartState::on_interrupt`].
+//! caller to route the instance's interrupt to `UartState::on_interrupt`.
 
 use core::future::poll_fn;
 use core::sync::atomic::{AtomicBool, Ordering};
@@ -77,7 +77,7 @@ impl Default for Config {
 /// Per-instance interrupt state shared between a UART driver and its IRQ
 /// handler.
 ///
-/// One `static` per instance is created by [`impl_uart`] and reached through
+/// One `static` per instance is created by `impl_uart` and reached through
 /// the instance type, so callers never supply or name it. The receive ring is only initialized by [`BufferedUart::new`]; the plain [`Uart`] leaves it empty.
 pub struct State {
     rx_waker: AtomicWaker,
@@ -111,7 +111,7 @@ impl State {
     ///
     /// Drains the receive FIFO into the ring and wakes the read future when
     /// bytes arrived; then services the transmit half exactly as
-    /// [`State::on_interrupt`] does.
+    /// `State::on_interrupt` does.
     fn on_buffered_interrupt(&self, r: USART) {
         critical_section::with(|_| {
             let isr = r.ISR().read();

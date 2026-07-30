@@ -295,7 +295,7 @@ impl<S: Side, const N: usize> Doorbell for MuDoorbell<S, N> {
 /// matching status flag (`GSR[GIPn]` or `RSR[RFn]`) is observed, acknowledging
 /// it (W1C of `GSR` for GI, or a read of `RRn` for RF) and disarming the
 /// interrupt. On `no_std` the per-instance `AtomicWaker` is woken from the
-/// application's MU `#[interrupt]` handler (via [`notify`]); on `std` the
+/// application's MU `#[interrupt]` handler (via `notify`); on `std` the
 /// doorbell's `Notify` is driven by the UIO IRQ loop.
 pub struct MuWaitFut<'a, S: Side, const N: usize> {
     doorbell: &'a MuDoorbell<S, N>,

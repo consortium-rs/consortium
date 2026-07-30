@@ -14,16 +14,44 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Client-Application error types.
+//!
+//! A TEE call can fail at several different distances from the caller, and telling them
+//! apart is most of the diagnostic value. [`TeeError`] separates them by *stage* — context
+//! initialization (is `/dev/tee0` even there?), session opening (is the TA installed, does
+//! the UUID match?), and invocation (did the TA reject the command?) — because each points
+//! at a different thing to go fix.
+//!
+//! [`TeeErrorOrigin`] adds the orthogonal axis for an invocation failure: *who* produced
+//! the error code. A failure originating in the client library, the trusted OS, or the TA
+//! itself mean very different things, and OP-TEE reports that as `TEEC_ORIGIN_*`.
+//!
+//! Both are re-declared here rather than re-exported from `optee-teec`, so raw
+//! `optee-teec` types stay out of the public API. The original error is preserved as a
+//! `#[source]`, so nothing is lost for callers that want it.
+//!
+//! This module is gated to `ca` on Linux non-test builds: `optee-teec` links against a
+//! client library that needs a real TEE device.
+
 use thiserror::Error;
 
-/// The origin of a TA-returned error, mirroring TEEC_Origins
-/// without leaking raw optee-teec types into the public API.
+/// Which component produced a TA-returned error code.
+///
+/// Mirrors OP-TEE's `TEEC_ORIGIN_*` values without leaking raw `optee-teec` types into
+/// the public API. The distinction matters when triaging: a `NotTrustedOs` failure points
+/// at the client library or the device node, while `TrustedApplication` means the TA ran
+/// and refused.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum TeeErrorOrigin {
+    /// The client library or the communication path, not the secure world.
     NotTrustedOs,
+    /// The trusted OS itself (OP-TEE core).
     TrustedOs,
+    /// The Trusted Application returned the error.
     TrustedApplication,
+    /// The TEE Client API implementation.
     Api,
+    /// An origin this crate does not model.
     Unknown,
 }
 
@@ -39,6 +67,10 @@ impl From<optee_teec::ErrorOrigin> for TeeErrorOrigin {
     }
 }
 
+/// A failure somewhere in a Client-Application TEE call.
+///
+/// Variants are separated by the *stage* that failed, because each points at a different
+/// thing to go fix. See the [module documentation](self) for the reasoning.
 #[derive(Debug, Error)]
 pub enum TeeError {
     /// Failed to initialise the TEEC context (e.g. /dev/tee0 not present).
@@ -53,7 +85,9 @@ pub enum TeeError {
     /// Preserves the TA error code and origin for diagnostics.
     #[error("TEE command failed (code={code:#010x}, origin={origin:?})")]
     Invoke {
+        /// Raw `TEEC_Result` code returned for the command.
         code: u32,
+        /// Which component produced `code`.
         origin: TeeErrorOrigin,
         #[source]
         source: optee_teec::Error,
@@ -65,7 +99,12 @@ pub enum TeeError {
 
     /// The TA signalled that an output buffer was too small.
     #[error("TEE output buffer too small: need {need} bytes, have {have}")]
-    BufferTooSmall { need: usize, have: usize },
+    BufferTooSmall {
+        /// Bytes the TA reported it needed.
+        need: usize,
+        /// Bytes the caller had allocated, from `TeeParam::MAX_SIZE`.
+        have: usize,
+    },
 
     /// More than 4 parameters were passed to a single command.
     #[error("TEE commands accept at most 4 parameters, got {0}")]
@@ -103,6 +142,7 @@ impl TeeError {
     }
 }
 
+/// `Result` alias for Client-Application TEE operations.
 pub type TeeResult<T> = Result<T, TeeError>;
 
 impl From<optee_teec::Error> for TeeError {

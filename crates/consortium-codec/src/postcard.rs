@@ -14,9 +14,37 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! [`PostcardCodec`] — the workspace default: serde over the postcard wire format.
+//!
+//! Postcard is the pragmatic choice for cross-core traffic. It is `no_std` and
+//! allocation-free when serializing into a slice, its varint encoding keeps small
+//! messages small, and it reaches any type that already derives serde. The cost is
+//! that decoding is a real deserialization pass producing an owned value, so
+//! `Decoded<'buf> = T` and the receive buffer is free again immediately.
+//!
+//! # Considerations
+//!
+//! - **Not self-describing.** Both ends must agree on the type. In this workspace
+//!   that is arranged by sharing one message crate (see
+//!   `examples/melt-pot/shared`); a field added on one side only will misparse
+//!   rather than error cleanly.
+//! - **Encode fails, never truncates.** `postcard::to_slice` errors when the
+//!   destination is too small, so a channel whose scratch buffer is under-sized
+//!   surfaces a codec error rather than emitting a short frame.
+//! - **Decode wants an exact frame.** The transport reports the true byte count and
+//!   the channel passes `buf[..n]`; handing over the whole buffer would let
+//!   trailing bytes be read as further fields.
+//!
+//! Failure paths log through `consortium-log` at `trace` level, which resolves to
+//! `defmt` on firmware and `tracing` on the host.
+
 use crate::{Codec, CodecFor};
 use core::result::Result;
 
+/// Serde-based codec using the [postcard](https://docs.rs/postcard) wire format.
+///
+/// Implements [`CodecFor<T>`] for any `T: Serialize + DeserializeOwned`, with
+/// `Decoded<'buf> = T`.
 pub struct PostcardCodec;
 
 impl Codec for PostcardCodec {

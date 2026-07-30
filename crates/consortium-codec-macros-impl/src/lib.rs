@@ -14,6 +14,20 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Derive implementations behind `consortium-codec-macros`.
+//!
+//! The logic for `consortium-codec`'s derives lives here as ordinary
+//! `proc_macro2::TokenStream` functions, outside the `proc-macro = true` facade, so
+//! expansions can be asserted with unit tests and `insta` snapshots rather than
+//! only through `trybuild`.
+//!
+//! Reusable `syn`/AST utilities belong in `consortium-macros-helpers`; what stays
+//! here is codec-specific policy — chiefly which `repr` declarations make an rkyv
+//! archive safe to access without validation.
+//!
+//! This is an implementation detail of `consortium-codec`. Do not depend on it
+//! directly; its API is not stable.
+
 mod trusted_archive;
 
 pub use trusted_archive::derive_trusted_archive;

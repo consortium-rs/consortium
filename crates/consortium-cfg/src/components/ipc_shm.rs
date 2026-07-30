@@ -1,3 +1,34 @@
+//! Shared-memory IPC code generation: the largest component, and the one that
+//! removes the most hand-written firmware.
+//!
+//! What a manifest's `[[ipc.channel]]` entries become here:
+//!
+//! - a [`Channel`] per direction, carrying its validated doorbell channel id and the
+//!   message type name;
+//! - a [`Transceiver`] pairing two channels over one shared window;
+//! - a [`ShuHan`] aggregating every transceiver on a core, which emits the
+//!   `IpcMemoryEndpoints` type the generated `init()` constructs and `connect`s.
+//!
+//! # Why the scratch `static` is emitted separately
+//!
+//! `Channel` needs a `&'static mut [u8]` sized for the MTU, and a `static` cannot be
+//! declared inside an expression. So [`ChannelInit`] carries the module-level `static`
+//! and the `Channel::new(..)` expression as two fragments, letting the caller hoist
+//! the former while nesting the latter.
+//!
+//! # Doorbell ownership across transceivers
+//!
+//! On a controller core a doorbell is a *singleton* the driver consumes, so it can
+//! move exactly once — but two transceivers may legitimately share one doorbell block
+//! (disjoint channels of the same MU or IPCC). [`DoorbellSource`] resolves that: the
+//! first user takes the constructor parameter ([`Owned`](DoorbellSource::Owned)) and
+//! later ones borrow from it ([`Shared`](DoorbellSource::Shared)).
+//!
+//! The AP has no singletons at all — it reaches its doorbells through UIO `mmap`, so
+//! every AP-side source is [`Uio`](DoorbellSource::Uio). A controller core with no
+//! bundled chip map, or whose map does not reach the window, falls back to the same
+//! address-based construction it has always used.
+
 use core::fmt;
 use std::str::FromStr;
 

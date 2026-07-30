@@ -1,3 +1,38 @@
+//! The header every Consortium shared-memory structure starts with.
+//!
+//! Two cores agree on a memory window but not on when either of them boots. A
+//! secondary that maps its window and finds arbitrary bytes needs to tell apart
+//! several situations that all look like "not what I expected":
+//!
+//! - the primary has not published anything yet;
+//! - this is a different Consortium structure (a `CDBG` log ring where a `CIPC`
+//!   transport was expected — a plausible outcome of a misconfigured base address);
+//! - this is a structure of the right kind but a version this build cannot parse;
+//! - this is not Consortium memory at all.
+//!
+//! [`DescriptorHeader`] exists to make that distinction cheap: a 4-byte
+//! [`DescriptorMagic`] plus a version byte at a fixed offset, readable before
+//! anything else about the layout is assumed. [`DescriptorMagic::check`] returns
+//! [`DescriptorHeaderError::BadMagic`] for a recognized-but-wrong structure and
+//! [`DescriptorHeaderError::UnknownMagic`] for unrecognized bytes, so bring-up
+//! failures point at the actual mistake.
+//!
+//! The header is `#[repr(C, packed)]` and the magic is stored big-endian, so the
+//! four bytes read as ASCII in a memory dump (`43 49 50 43` = `CIPC`). Field access
+//! goes through raw-pointer helpers ([`DescriptorHeader::from_raw_ptr`],
+//! [`DescriptorHeader::write_to_raw_ptr`]) because a packed struct's fields cannot
+//! be borrowed.
+//!
+//! Owners of the magics currently defined:
+//!
+//! | Magic  | Structure                            | Owner                             |
+//! | ------ | ------------------------------------ | --------------------------------- |
+//! | `CIPC` | descriptor, channel table, slots     | `consortium-ipc-transport-memory` |
+//! | `CDBG` | defmt log ring descriptor            | `consortium-dbg`                  |
+//!
+//! This module owns only the header. The bytes after it belong to whichever crate
+//! claims the magic.
+
 #[repr(C, packed)]
 #[derive(Clone, Copy, Debug)]
 /// Shared descriptor header

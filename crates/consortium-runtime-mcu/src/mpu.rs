@@ -23,7 +23,7 @@
 //! memory and enables the MPU with the default map kept as a privileged
 //! background region.
 //!
-//! [`disable_cache`] has the same signature on both supported families and is
+//! `disable_cache` has the same signature on both supported families and is
 //! selected by the active target's MPU register block (see
 //! [`cortex_m::peripheral::mpu::RegisterBlock`]):
 //!

@@ -43,6 +43,57 @@
 //! The `ch` argument to `ring()` and `wait()` is ignored; all signals use the same pin.
 //! For multi-channel GPIO designs, instantiate multiple `GpioDoorbell<P>` with
 //! different pins.
+//!
+//! # When to reach for this
+//!
+//! GPIO is the fallback, not the default. Prefer a real IPC peripheral —
+//! `consortium-ipc-doorbell-ipcc` on STM32MP2, `consortium-ipc-doorbell-mu` on
+//! i.MX 9 — whenever the two cores share one. GPIO earns its place when they do
+//! not: two separate chips on one board, a core whose IPC peripheral is assigned
+//! to another security domain, or a bring-up spike where a spare pin is faster to
+//! wire than a RIF assignment.
+//!
+//! # Considerations and limitations
+//!
+//! - **No pin ownership beyond `embedded-hal`.** The doorbell is generic over any
+//!   [`OutputPin`], so pinmux, drive strength, pull configuration, and — on the
+//!   receiving side — edge-triggered interrupt setup are all the integrator's. This
+//!   crate only pulses and only waits.
+//! - **Rising-edge signaling, so a pulse can be missed.** `ring`
+//!   sets the pin high then immediately low. If the peer's edge interrupt is masked
+//!   across both transitions, the signal is gone — there is no status flag to
+//!   re-read, unlike IPCC's occupancy bit or MU's `GSR`. Pair it with a transport
+//!   whose payload state is self-describing; the shared-memory transport's
+//!   `FLAG_VALID` makes a missed doorbell a latency problem rather than a lost
+//!   message.
+//! - **`ring` takes `&self` but `OutputPin` needs `&mut self`,** hence the
+//!   `RefCell` (`no_std`) / `Mutex` (`std`) around the pin. On `no_std` that means
+//!   `ring` must not be called re-entrantly from an interrupt while a `ring` is in
+//!   progress, or the `RefCell` panics.
+//! - **The pending flag is global, not per-instance,** on the `no_std` path: `wake()`
+//!   sets one `static` `PENDING` and one `AtomicWaker`. Two GPIO doorbells in one
+//!   firmware image therefore share a wake, and each waiter must tolerate a spurious
+//!   wake from the other. This is a real constraint on multi-pin designs.
+//! - **Non-masking on `std`.** GPIO wakeups are edge-driven, so there is nothing to
+//!   mask before waking — bind it with `bind_notifier(doorbell.notifier())`, not the
+//!   `bind_service` path IPCC and MU need.
+//!
+//! [`OutputPin`]: embedded_hal::digital::OutputPin
+//!
+//! # Interrupts are the application's
+//!
+//! Like every Consortium doorbell, this crate installs no interrupt handler. On
+//! `no_std` the application's GPIO IRQ handler calls `GpioDoorbell::wake`; on `std`
+//! it takes `notifier()` and calls `notify_waiters()` from
+//! whatever watches the line (a `gpiod` event loop, a UIO IRQ, a sysfs edge poll).
+//!
+//! # Features
+//!
+//! | Feature | Effect                                                                 |
+//! | ------- | ---------------------------------------------------------------------- |
+//! | `std`   | Default. Tokio `Notify` wake path plus `linux-embedded-hal` for pins.   |
+//!
+//! Build with `default-features = false` for the bare-metal software-pending path.
 
 use core::{
     future::Future,
