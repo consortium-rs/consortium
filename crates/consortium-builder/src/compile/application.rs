@@ -14,6 +14,22 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Linux application compilation.
+//!
+//! Builds the A-core executable with `cargo`, usually cross-compiled, and injects the
+//! `CONSORTIUM_*` environment variables the application and its generated module read at
+//! compile time.
+//!
+//! The interesting part is the sysroot. Cross-compiling against a Yocto/OpenSTLinux SDK
+//! needs a target sysroot, a cross linker, and a `PATH` that does not leak host tools
+//! into the build. Resolution order is `[profile] sysroot` first, then the
+//! `SDKTARGETSYSROOT` / `OECORE_TARGET_SYSROOT` environment variables — so a manifest can
+//! pin a sysroot without the developer having sourced an SDK environment script.
+//!
+//! On an arm64 Linux host, `aarch64-unknown-linux-gnu` is a *native* build and
+//! `sysroot = "/"` resolves to the image root, which is why the melt-pot manifests can
+//! be built inside an Apple `container` VM with no SDK at all.
+
 use std::path::{Path, PathBuf};
 use thiserror::Error;
 use tokio::process::Command;

@@ -14,6 +14,20 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! OP-TEE Trusted Application compilation and signing.
+//!
+//! A TA is not built like the rest of the system. It targets the OP-TEE TA dev kit
+//! rather than a bare-metal or Linux target, and the deployable artifact is a
+//! **signed** `<uuid>.ta` rather than the ELF the compiler produced — the UUID comes
+//! from `[tee]` in `Consortium.toml`, injected as `CONSORTIUM_TEE_UUID`.
+//!
+//! Signing needs the dev kit's signer script and its keys, which a developer host often
+//! does not have. So the pipeline supports building without signing: the unsigned ELF is
+//! staged instead, and the CLI exposes that as `--no-sign-ta`. That keeps the TA
+//! compiling in CI and on a laptop, with signing deferred to wherever the keys live.
+//!
+//! [`OpteeEnvironment`] carries the dev-kit paths the build needs.
+
 use consortium_cfg_common::config::TEE_UUID_ENV;
 use std::path::PathBuf;
 use thiserror::Error;

@@ -14,6 +14,18 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+//! Coprocessor firmware compilation, plus the remoteproc section rename.
+//!
+//! Builds a bare-metal ELF with `cargo`, injects the `CONSORTIUM_IPC_*` and
+//! `CONSORTIUM_DBG_*` environment variables the firmware reads with `option_env!`, and
+//! verifies the result is really an ELF before handing it on.
+//!
+//! The step that is easy to overlook: **Linux remoteproc expects the vector table in a
+//! section named `.isr_vectors`**, while `cortex-m-rt` emits `.vector_table`. The
+//! deployable artifact is therefore a renamed copy, with the original kept alongside it
+//! for debugging — an ELF that boots and an ELF that a debugger understands are not
+//! quite the same file.
+
 use std::path::{Path, PathBuf};
 use thiserror::Error;
 use tokio::process::Command;
