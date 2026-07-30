@@ -46,3 +46,4 @@ ignore:
   - scripts/pac/patches
   - submodules
   - target
+  - scripts/.venv
