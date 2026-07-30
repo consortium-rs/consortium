@@ -22,9 +22,9 @@
 //! This crate wires that transport to the chip HALs' interrupt-buffered UART
 //! drivers (`BufferedUart`), selected by a chip feature:
 //!
-//! - `mimx93` / `mimx95` re-export [`consortium_hal_imx9::uart`] as [`imx9`];
+//! - `mimx93` / `mimx95` re-export `consortium_hal_imx9::uart` as `imx9`;
 //! - `stm32mp21x` / `stm32mp23x` / `stm32mp25x` re-export
-//!   [`consortium_hal_stm32mp2::uart`] as [`stm32mp2`].
+//!   `consortium_hal_stm32mp2::uart` as `stm32mp2`.
 //!
 //! With no chip feature the crate is chip-agnostic: use any driver that
 //! implements the `embedded-io-async` traits (Embassy, a custom HAL) directly
@@ -86,7 +86,7 @@
 //! }
 //! ```
 //!
-//! The i.MX9 flow is identical with [`imx9::BufferedUart`] and an `LPUARTn`
+//! The i.MX9 flow is identical with `imx9::BufferedUart` and an `LPUARTn`
 //! vector. See the melt-pot `mcu/src/main.rs` files for full worked examples of
 //! the vector-table forwarding convention.
 

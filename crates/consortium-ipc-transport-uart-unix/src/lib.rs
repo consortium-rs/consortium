@@ -18,7 +18,7 @@
 //!
 //! Opens a serial device in raw mode via `tokio-serial` and hands its Tokio
 //! `AsyncRead`/`AsyncWrite` halves to
-//! [`UartTransport`](consortium_ipc_transport_uart::UartTransport)'s `std`
+//! [`UartTransport`]'s `std`
 //! implementation family:
 //!
 //! ```no_run
@@ -40,6 +40,28 @@
 //! let (tx, rx) = transport.split();
 //! # Ok(()) }
 //! ```
+//!
+//! # Considerations
+//!
+//! - **Raw 8N1, no flow control.** [`open`] pins the port to eight data bits, no
+//!   parity, one stop bit, and no RTS/CTS, because that is what the framing layer
+//!   assumes: COBS delimiting plus a CRC does the work that parity and handshaking
+//!   would otherwise do, and a fixed configuration removes a way for the two ends
+//!   to disagree. A link needing anything else should build a [`SerialStream`]
+//!   directly — `tokio_serial` is re-exported for that.
+//! - **A Tokio runtime must already be entered.** `open` registers the stream with
+//!   the current reactor, so calling it outside a runtime fails.
+//! - **Line discipline is bypassed, not configured.** `open_native_async` puts the
+//!   device in raw mode; this crate does not restore prior termios settings on drop.
+//! - **`Error::Eof` is reachable here.** A real UART never reports end-of-stream,
+//!   but a pseudo-terminal whose peer closed does. Host tests should expect it.
+//!
+//! # Testing
+//!
+//! [`pty_pair`] returns two connected pseudo-terminals, each already split into
+//! `(rx, tx)` halves, so bytes written to one side's `tx` arrive on the other's
+//! `rx` — a crossed UART cable with no hardware. That is how
+//! `tests/` exercises the `std` transport family end to end.
 
 use tokio::io::{ReadHalf, WriteHalf};
 use tokio_serial::{SerialPortBuilderExt, SerialStream};
@@ -57,9 +79,16 @@ pub type UartTx = WriteHalf<SerialStream>;
 /// Errors from [`open`].
 #[derive(Debug, thiserror::Error)]
 pub enum OpenError {
+    /// The device could not be opened or configured.
+    ///
+    /// Carries the path so a failure names the device it was looking for — with
+    /// several `/dev/tty*` candidates on a board, the underlying `tokio_serial`
+    /// error alone does not say which one was tried.
     #[error("open {path}: {source}")]
     Open {
+        /// Device path that was passed to [`open`].
         path: String,
+        /// Underlying `tokio_serial` failure (missing device, permissions, busy).
         source: tokio_serial::Error,
     },
 }
