@@ -13,10 +13,14 @@ repository.workspace   = true
 rust-version.workspace = true
 
 [features]
+# `defmt` is deliberately *not* a default. `consortium-log`'s re-export keeps the
+# backend from breaking *name* resolution in crates that lack their own `defmt`,
+# but it cannot conjure `defmt::Format` impls those crates gate on their own
+# feature. A default here would enable the backend for every member of a
+# workspace build and demand those impls everywhere. Firmware opts in.
 default = [
   "adc",
   "can",
-  "defmt",
   "dma",
   "gpio",
   "i2c",

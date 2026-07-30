@@ -45,26 +45,65 @@
 //!
 //! # Features
 //!
-//! - `defmt` — forward to the `defmt` logging macros. `defmt`'s proc-macros
-//!   expand to literal `defmt::…` paths resolved at the call site, so a crate
-//!   that enables this backend **must also depend on `defmt` directly** (the
-//!   facade cannot supply the name). The workspace's firmware crates already do.
+//! - `defmt` — forward to the `defmt` logging macros. No direct `defmt`
+//!   dependency is needed at the call site: this crate re-exports `defmt` (the
+//!   re-export exists only when the feature is on, so it is not linked here)
+//!   and the dispatch macro binds it into scope for the expansion.
 //! - `tracing` — forward to the `tracing` logging macros (implies `alloc`).
 //!   `tracing`'s macros are `$crate`-hygienic, so no direct dependency is
 //!   needed beyond this crate.
 //! - `alloc` — marker capability required by `tracing`; enabling it alone pulls
 //!   no backend.
+//!
+//! Neither backend leaks its *name* into the call site, so enabling one on this
+//! crate alone resolves. That matters under Cargo feature unification: one
+//! workspace member turning on `consortium-log/defmt` switches the facade for
+//! *every* member sharing the build, including ones whose own `defmt` feature
+//! is off and which therefore have no `defmt` in their extern prelude.
+//!
+//! Names are only half of it, though. With the `defmt` backend live, every
+//! logged argument needs a `defmt::Format` impl, and a crate that gates its
+//! impls on its *own* `defmt` feature will not have emitted them — foreign
+//! types such as `anyhow::Error` cannot have them at all. Gate those impls with
+//! [`when_defmt!`](when_defmt) so they track the backend, and, for the types
+//! that can never implement it, keep `consortium-log/defmt` out of any `default`
+//! feature so a host build never switches the backend on by accident.
 
 #![no_std]
 
 #[doc(hidden)]
 pub use consortium_log_macros::expand_captures as __expand_captures;
 
-// Re-export each backend macro *by name* under a hidden alias. Re-exporting the
-// individual macros (rather than the whole crate via `pub use defmt;`) is the
+// Each backend is re-exported twice, because the two re-exports do different
+// jobs and neither substitutes for the other.
+//
+// The macros are aliased *by name* (`__defmt_info`, …) because that is the
 // reliable way to make them resolvable through `$crate::…` from a downstream
 // crate: a bare crate re-export does not reliably expose a `#[macro_export]`
 // macro by path across crates.
+//
+// The crate itself is re-exported because naming the macro is only half of it —
+// the macro's *expansion* also has to resolve. See [`defmt`].
+
+/// Re-export of the `defmt` crate, so the facade can supply the name itself.
+///
+/// Aliasing the level macros is not sufficient on its own. `defmt`'s
+/// proc-macros emit *bare* `defmt::export::…` paths (not `::defmt::…`, and not
+/// `$crate`-relative — a proc-macro cannot synthesize `$crate`), and those
+/// tokens carry call-site hygiene, so they resolve in the module that wrote the
+/// log call. A crate with `consortium-log/defmt` enabled but no `defmt` of its
+/// own has no such name, which is the feature-unification failure this
+/// re-export exists to prevent. [`__defmt`] binds it as `defmt` in the block it
+/// expands into; that `use` shares call-site hygiene with the emitted paths, so
+/// they resolve to it.
+///
+/// Downstream crates should reach `defmt` items through this re-export rather
+/// than through a direct dependency. A crate that writes its own
+/// `defmt::Format` impls still needs a direct `defmt` dependency for the trait
+/// path, gated on its own `defmt` feature, so the impls track the same feature
+/// that selects the backend.
+#[cfg(feature = "defmt")]
+pub use defmt;
 #[cfg(feature = "defmt")]
 #[doc(hidden)]
 pub use defmt::{
@@ -85,21 +124,69 @@ pub use tracing::{
 // its dispatch is the no-op arm. The public level macros carry no `#[cfg]`.
 
 /// Routes a level to the aliased `defmt` macro, or nothing when `defmt` is off.
+///
+/// Each arm expands to a block that first binds the crate's [`defmt`]
+/// re-export as `defmt`,
+/// which is what lets the bare `defmt::export::…` paths in the expansion
+/// resolve without a `defmt` dependency at the call site. The binding is scoped
+/// to the block, so it neither collides with nor shadows a `defmt` the calling
+/// crate already has in scope.
 #[cfg(feature = "defmt")]
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __defmt {
-    (trace, $($a:tt)*) => { $crate::__defmt_trace!($($a)*) };
-    (debug, $($a:tt)*) => { $crate::__defmt_debug!($($a)*) };
-    (info,  $($a:tt)*) => { $crate::__defmt_info!($($a)*) };
-    (warn,  $($a:tt)*) => { $crate::__defmt_warn!($($a)*) };
-    (error, $($a:tt)*) => { $crate::__defmt_error!($($a)*) };
+    (trace, $($a:tt)*) => {{ use $crate::defmt; $crate::__defmt_trace!($($a)*) }};
+    (debug, $($a:tt)*) => {{ use $crate::defmt; $crate::__defmt_debug!($($a)*) }};
+    (info,  $($a:tt)*) => {{ use $crate::defmt; $crate::__defmt_info!($($a)*) }};
+    (warn,  $($a:tt)*) => {{ use $crate::defmt; $crate::__defmt_warn!($($a)*) }};
+    (error, $($a:tt)*) => {{ use $crate::defmt; $crate::__defmt_error!($($a)*) }};
 }
 #[cfg(not(feature = "defmt"))]
 #[doc(hidden)]
 #[macro_export]
 macro_rules! __defmt {
     ($level:ident, $($a:tt)*) => {{}};
+}
+
+/// Emits the items it wraps only when this crate's `defmt` backend is enabled.
+///
+/// The item-position counterpart to the level macros, and gated the same way:
+/// on the *macro definition*, so the items track `consortium-log`'s `defmt`
+/// feature rather than the calling crate's.
+///
+/// That distinction is the point. A `defmt::Format` impl gated on the calling
+/// crate's own `defmt` feature goes missing exactly when feature unification
+/// turns the backend on from elsewhere — the log call sites then expand to
+/// `defmt` code that demands `Format` impls which were never emitted. Gating
+/// the impls on the backend instead keeps the two in step no matter which
+/// member enabled it.
+///
+/// Name `defmt` items through the [`defmt`] re-export, so the block needs no
+/// direct dependency:
+///
+/// ```ignore
+/// consortium_log::when_defmt! {
+///     impl consortium_log::defmt::Format for Chan {
+///         fn format(&self, f: consortium_log::defmt::Formatter<'_>) {
+///             // `defmt::write!` expands to bare `defmt::…` paths, so bind the
+///             // re-export in the body they expand into.
+///             use consortium_log::defmt;
+///             defmt::write!(f, "Chan({=u8})", self.0)
+///         }
+///     }
+/// }
+/// ```
+#[cfg(feature = "defmt")]
+#[macro_export]
+macro_rules! when_defmt {
+    ($($item:tt)*) => { $($item)* };
+}
+
+/// Drops the items it wraps, because this crate's `defmt` backend is disabled.
+#[cfg(not(feature = "defmt"))]
+#[macro_export]
+macro_rules! when_defmt {
+    ($($item:tt)*) => {};
 }
 
 /// Routes a level to the aliased `tracing` macro, or nothing when it is off.
