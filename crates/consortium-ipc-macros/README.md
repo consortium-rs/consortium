@@ -8,10 +8,10 @@ A crate with `proc-macro = true` can export nothing but macros, and its code run
 in the compiler rather than in the target program. That makes it a poor place to
 put logic. So the workspace splits every macro family in two:
 
-| Crate                        | Role                                                             |
-| ---------------------------- | ---------------------------------------------------------------- |
-| `consortium-ipc-macros`      | `proc-macro` facade. Converts `TokenStream` and forwards.         |
-| `consortium-ipc-macros-impl` | Plain library holding the real expansion logic.                   |
+| Crate                        | Role                                                      |
+| ---------------------------- | --------------------------------------------------------- |
+| `consortium-ipc-macros`      | `proc-macro` facade. Converts `TokenStream` and forwards. |
+| `consortium-ipc-macros-impl` | Plain library holding the real expansion logic.           |
 
 Everything here is one line per macro. The benefit lands in the impl crate, whose
 expansions can be exercised with ordinary unit tests and `insta` snapshots rather

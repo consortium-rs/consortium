@@ -8,7 +8,7 @@ parameter marshalling is generated rather than hand-written.
 A TEE call crosses a privilege boundary between a Client Application (CA) in Linux
 userspace and a Trusted Application (TA) in the secure world. The GlobalPlatform ABI
 for that crossing is **four untyped parameter slots**, each either a pair of `u32`s
-(a *Value*) or a shared buffer (a *Memref*).
+(a _Value_) or a shared buffer (a _Memref_).
 
 Both sides must agree, by convention only, on what each slot holds. Nothing checks
 it. And a disagreement is a security-relevant bug in the most sensitive code in the
@@ -31,20 +31,20 @@ generates both ends of the call.
      read output slots back                flush out/inout slots
 ```
 
-| Item                | Role                                                            |
-| ------------------- | --------------------------------------------------------------- |
-| `TeeParamSlot`      | The wire shape of one slot: `Primitive { a, b }` or `Serialized(bytes)`. |
-| `TeeParam<C>`       | "This Rust type can ride in a slot", parameterized by codec.      |
-| `#[derive(TeeParam)]` | Generates the serialized impl for a user struct.                 |
-| `#[tee_command]`    | Generates the CA caller and TA dispatcher for one function.        |
-| `tee_service!`      | Generates the `Command` enum and the TA's `invoke_command` dispatch. |
+| Item                  | Role                                                                     |
+| --------------------- | ------------------------------------------------------------------------ |
+| `TeeParamSlot`        | The wire shape of one slot: `Primitive { a, b }` or `Serialized(bytes)`. |
+| `TeeParam<C>`         | "This Rust type can ride in a slot", parameterized by codec.             |
+| `#[derive(TeeParam)]` | Generates the serialized impl for a user struct.                         |
+| `#[tee_command]`      | Generates the CA caller and TA dispatcher for one function.              |
+| `tee_service!`        | Generates the `Command` enum and the TA's `invoke_command` dispatch.     |
 
 ## Two slot kinds, chosen by the type
 
-| Rust value                        | Slot                         | Cost                 |
-| --------------------------------- | ---------------------------- | -------------------- |
-| `u8`…`i64`, `bool`, `(u32, u32)`   | `Primitive` — a TEE *Value*   | no serialization      |
-| a `#[derive(TeeParam)]` struct     | `Serialized` — a TEE *Memref* | one codec round-trip  |
+| Rust value                       | Slot                          | Cost                 |
+| -------------------------------- | ----------------------------- | -------------------- |
+| `u8`…`i64`, `bool`, `(u32, u32)` | `Primitive` — a TEE _Value_   | no serialization     |
+| a `#[derive(TeeParam)]` struct   | `Serialized` — a TEE _Memref_ | one codec round-trip |
 
 Primitives are **not** forced through a buffer: a `u16` becomes
 `Primitive { a: v as u32, b: 0 }`. A command taking two integers allocates nothing and
@@ -81,15 +81,15 @@ naming the missing impl, rather than a confusing type mismatch.
 
 ## Parameter type support
 
-| Rust type              | TEE slot        | Notes                                 |
-| ---------------------- | --------------- | ------------------------------------- |
-| `&[u8]`                | `MemrefInput`   |                                       |
-| `&mut [u8]`            | `MemrefInout`   |                                       |
-| `&mut u32`             | `ValueInout`    | TA reads initial, writes result back   |
-| `&mut i32`             | `ValueInout`    | bit-cast through `u32`                 |
-| `&mut u64`             | `ValueInout`    | split across `a` (low) / `b` (high)    |
-| `T: TeeParam<C>`       | Value or Memref | dispatched via `into`/`from_tee_param` |
-| `&mut T: TeeParam<C>`  | `MemrefInout`   | inout codec round-trip                 |
+| Rust type             | TEE slot        | Notes                                  |
+| --------------------- | --------------- | -------------------------------------- |
+| `&[u8]`               | `MemrefInput`   |                                        |
+| `&mut [u8]`           | `MemrefInout`   |                                        |
+| `&mut u32`            | `ValueInout`    | TA reads initial, writes result back   |
+| `&mut i32`            | `ValueInout`    | bit-cast through `u32`                 |
+| `&mut u64`            | `ValueInout`    | split across `a` (low) / `b` (high)    |
+| `T: TeeParam<C>`      | Value or Memref | dispatched via `into`/`from_tee_param` |
+| `&mut T: TeeParam<C>` | `MemrefInout`   | inout codec round-trip                 |
 
 `ctx` marks the first parameter as TA context; it must be a mutable reference to a
 named path type and is skipped when assigning slots. Return values use the same
@@ -113,7 +113,7 @@ a `usize` field silently shifts every field after it.
 
 ## Error reporting
 
-`TeeError` separates failures by *stage* — context initialization (is `/dev/tee0` even
+`TeeError` separates failures by _stage_ — context initialization (is `/dev/tee0` even
 there?), session opening (is the TA installed, does the UUID match?), and invocation
 (did the TA reject the command?) — because each points at a different thing to fix.
 `TeeErrorOrigin` adds the orthogonal axis for an invocation failure: whether the code
@@ -126,11 +126,11 @@ types stay out of the public API; the original is preserved as a `#[source]`.
 
 `no_std` with `alloc`. Default is `ca`.
 
-| Feature | Effect                                                                  |
-| ------- | ----------------------------------------------------------------------- |
-| `ca`    | Client-Application side: `optee-teec`, Tokio, and the error types.        |
-| `ta`    | Trusted-Application side dispatchers. Host-agnostic.                     |
-| `defmt` | Route diagnostics to `defmt` on TA builds.                               |
+| Feature | Effect                                                             |
+| ------- | ------------------------------------------------------------------ |
+| `ca`    | Client-Application side: `optee-teec`, Tokio, and the error types. |
+| `ta`    | Trusted-Application side dispatchers. Host-agnostic.               |
+| `defmt` | Route diagnostics to `defmt` on TA builds.                         |
 
 CA error exports are additionally gated to Linux non-test builds, because
 `optee-teec` links a client library needing a real TEE device. `defmt` is deliberately

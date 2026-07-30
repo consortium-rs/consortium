@@ -38,18 +38,18 @@ carries the exclusivity obligation the safe path discharges.
 
 Each behind a feature, all on by default:
 
-| Feature            | Module         | Covers                                |
-| ------------------ | -------------- | ------------------------------------- |
-| `adc`              | `adc`          | ADC                                    |
-| `can`              | `can`          | FlexCAN                                |
-| `dma`              | `dma`          | eDMA                                   |
-| `gpio`             | `gpio`         | GPIO / pin handles                     |
-| `i2c`              | `i2c`          | LPI2C                                  |
-| `i3c`              | `i3c`          | I3C                                    |
-| `spi`              | `spi`          | LPSPI                                  |
-| `timer`            | `timer`, `lptmr` | General timers, LPTMR (also `pwm` alias) |
-| `time-driver-lpit` | `timer_driver` | Embassy time driver over LPIT1          |
-| `uart`             | `uart`         | LPUART, including IRQ-buffered `BufferedUart` |
+| Feature            | Module           | Covers                                        |
+| ------------------ | ---------------- | --------------------------------------------- |
+| `adc`              | `adc`            | ADC                                           |
+| `can`              | `can`            | FlexCAN                                       |
+| `dma`              | `dma`            | eDMA                                          |
+| `gpio`             | `gpio`           | GPIO / pin handles                            |
+| `i2c`              | `i2c`            | LPI2C                                         |
+| `i3c`              | `i3c`            | I3C                                           |
+| `spi`              | `spi`            | LPSPI                                         |
+| `timer`            | `timer`, `lptmr` | General timers, LPTMR (also `pwm` alias)      |
+| `time-driver-lpit` | `timer_driver`   | Embassy time driver over LPIT1                |
+| `uart`             | `uart`           | LPUART, including IRQ-buffered `BufferedUart` |
 
 `timer_driver` is what `consortium-cfg` brings up in the generated `init()` unless
 `[profile] time_driver = false`. `uart`'s `BufferedUart` is what

@@ -4,7 +4,7 @@ Core inter-processor communication primitives for Consortium: the trait stack th
 every transport, doorbell, and codec plugs into, plus the typed endpoints that
 application and firmware code actually calls.
 
-This is the *abstraction* crate. It contains no hardware access, no allocation, and
+This is the _abstraction_ crate. It contains no hardware access, no allocation, and
 no runtime. Concrete links live in sibling crates
 (`consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`), concrete
 signaling lives in the `consortium-ipc-doorbell-*` crates, and concrete
@@ -29,16 +29,16 @@ signals at the bottom, typed messages at the top.
                                                 (wake the peer)
 ```
 
-| Item                     | Responsibility                                                             |
-| ------------------------ | -------------------------------------------------------------------------- |
-| [`Doorbell`]             | Data-free wake signal to a remote core; `ring` / `wait` / `pending`.        |
-| [`SendTransport`]        | Byte send half. Writes bytes, rings the doorbell, reports `max_send_size`.  |
+| Item                     | Responsibility                                                                |
+| ------------------------ | ----------------------------------------------------------------------------- |
+| [`Doorbell`]             | Data-free wake signal to a remote core; `ring` / `wait` / `pending`.          |
+| [`SendTransport`]        | Byte send half. Writes bytes, rings the doorbell, reports `max_send_size`.    |
 | [`RecvTransport`]        | Byte receive half. Awaits the doorbell, reads bytes, reports `max_recv_size`. |
-| [`Transport`]            | Marker for full-duplex links: `SendTransport + RecvTransport`.              |
-| [`Connect`]              | One-shot readiness rendezvous with the peer, run before any traffic.        |
-| `CodecFor<T>`            | Serialization family for a message type (from `consortium-codec`).          |
-| [`Channel<D, T, Tr, C>`] | Typed, single-direction endpoint over one transport half.                   |
-| [`Transceiver`]          | Typed bidirectional endpoint pairing a `Tx` and an `Rx` channel.            |
+| [`Transport`]            | Marker for full-duplex links: `SendTransport + RecvTransport`.                |
+| [`Connect`]              | One-shot readiness rendezvous with the peer, run before any traffic.          |
+| `CodecFor<T>`            | Serialization family for a message type (from `consortium-codec`).            |
+| [`Channel<D, T, Tr, C>`] | Typed, single-direction endpoint over one transport half.                     |
+| [`Transceiver`]          | Typed bidirectional endpoint pairing a `Tx` and an `Rx` channel.              |
 
 Supporting types:
 
@@ -67,13 +67,13 @@ ready", which is why it is async, carries no timeout (the caller owns the
 deadline), and is called once — after construction, before any `send`/`recv`, and
 before splitting a full-duplex transport into halves.
 
-Side asymmetry lives in the *type*, not in a runtime branch: `SharedMemoryTransport`
+Side asymmetry lives in the _type_, not in a runtime branch: `SharedMemoryTransport`
 implements `Connect` per `Side` (the primary publishes the descriptor and waits for
 the ack; the secondary validates and acks), so generated bring-up code emits one
 `connect(..)` call with no `if side == ..`. The UART transport implements it as a
 documented no-op, because byte arrival is its own notification.
 
-Local bring-up is *not* `Connect`. Peripherals keep constructor + config +
+Local bring-up is _not_ `Connect`. Peripherals keep constructor + config +
 typestate, with their ordering emitted into `consortium-cfg`'s generated `init()`;
 doorbells keep `bind_notifier` / `bind_service`.
 
@@ -151,12 +151,12 @@ before the shared-memory writes it publishes.
 
 | Feature   | Effect                                                                |
 | --------- | --------------------------------------------------------------------- |
-| *(none)*  | `no_std`, no allocation. The default firmware shape.                  |
+| _(none)_  | `no_std`, no allocation. The default firmware shape.                  |
 | `alloc`   | Links `alloc` for downstream use.                                     |
 | `futures` | Opts in to futures-oriented helpers.                                  |
-| `tracing` | Routes internal logging through `consortium-log`'s `tracing` backend.  |
-| `defmt`   | Routes internal logging through `defmt` and derives `defmt::Format`.   |
-| `std`     | `alloc + futures + tracing`, and makes `MaybeSend` require `Send`.     |
+| `tracing` | Routes internal logging through `consortium-log`'s `tracing` backend. |
+| `defmt`   | Routes internal logging through `defmt` and derives `defmt::Format`.  |
+| `std`     | `alloc + futures + tracing`, and makes `MaybeSend` require `Send`.    |
 
 Enabling `std` is what makes channel futures `Send`, which Tokio's multi-threaded
 executor requires. Leave it off for Embassy.

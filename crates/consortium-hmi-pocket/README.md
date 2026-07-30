@@ -59,10 +59,10 @@ delivered at a **frame boundary** rather than whenever they resolve.
 
 ## Rendering
 
-| Path                    | Host                                              |
-| ----------------------- | ------------------------------------------------- |
-| `HeadlessRenderer`      | Offscreen wgpu target. No compositor, no `DISPLAY`. |
-| `shell` feature         | A thin `winit` window host (`run` / `ShellConfig`). |
+| Path               | Host                                                |
+| ------------------ | --------------------------------------------------- |
+| `HeadlessRenderer` | Offscreen wgpu target. No compositor, no `DISPLAY`. |
+| `shell` feature    | A thin `winit` window host (`run` / `ShellConfig`). |
 
 The headless path is what makes the whole stack testable in CI: QuickJS evaluation,
 bridge dispatch, UI layout, and GPU submission all run with no display, and output can be
@@ -93,8 +93,8 @@ logical viewport, defaulting to 480 × 272.
 
 ## Features
 
-| Feature | Effect                                                                 |
-| ------- | ---------------------------------------------------------------------- |
+| Feature | Effect                                                                       |
+| ------- | ---------------------------------------------------------------------------- |
 | `shell` | Adds the `winit` window host (`run`, `ShellConfig`) and the `kiosk` example. |
 
 Default is no features — the headless path only.

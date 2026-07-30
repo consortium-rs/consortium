@@ -10,18 +10,18 @@ family in this workspace is therefore split in two:
 
 | Crate                        | Role                                                     |
 | ---------------------------- | -------------------------------------------------------- |
-| `consortium-tee-macros`      | `proc-macro` facade. Converts `TokenStream`, forwards.    |
-| `consortium-tee-macros-impl` | Plain library holding the expansion logic and its tests.   |
+| `consortium-tee-macros`      | `proc-macro` facade. Converts `TokenStream`, forwards.   |
+| `consortium-tee-macros-impl` | Plain library holding the expansion logic and its tests. |
 
 ## Contents
 
 The three macros together turn one Rust function into both halves of a TEE call.
 
-| Macro                 | Generates                                                       |
-| --------------------- | --------------------------------------------------------------- |
+| Macro                 | Generates                                                                        |
+| --------------------- | -------------------------------------------------------------------------------- |
 | `#[derive(TeeParam)]` | `impl<C: CodecFor<Self>> TeeParam<C>` — makes a type carryable in a Memref slot. |
-| `#[tee_command]`      | `call_<name>` (CA side) and `<name>_dispatched` (TA side) for one function. |
-| `tee_service!`        | The `Command` enum and the TA's `invoke_command` dispatch table.  |
+| `#[tee_command]`      | `call_<name>` (CA side) and `<name>_dispatched` (TA side) for one function.      |
+| `tee_service!`        | The `Command` enum and the TA's `invoke_command` dispatch table.                 |
 
 ## Usage
 

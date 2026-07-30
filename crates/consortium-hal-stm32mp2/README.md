@@ -38,18 +38,18 @@ carries the exclusivity obligation the safe path discharges.
 
 Each behind a feature, all on by default:
 
-| Feature              | Module         | Covers                                   |
-| -------------------- | -------------- | ---------------------------------------- |
-| `adc`                | `adc`          | ADC                                       |
-| `can`                | `can`          | FDCAN                                     |
-| `dma`                | `dma`          | DMA (channels come from the chip dump)     |
-| `gpio`               | `gpio`         | GPIO / pin handles                        |
-| `i2c`                | `i2c`          | I2C                                       |
-| `i3c`                | `i3c`          | I3C                                       |
-| `spi`                | `spi`          | SPI                                       |
-| `timer`, `lptim`     | `timer`, `lptim` | General timers, LPTIM (also `pwm` alias) |
-| `time-driver-gp-tim` | `timer_driver` | Embassy time driver over TIM2              |
-| `uart`               | `uart`         | USART, including IRQ-buffered `BufferedUart` |
+| Feature              | Module           | Covers                                       |
+| -------------------- | ---------------- | -------------------------------------------- |
+| `adc`                | `adc`            | ADC                                          |
+| `can`                | `can`            | FDCAN                                        |
+| `dma`                | `dma`            | DMA (channels come from the chip dump)       |
+| `gpio`               | `gpio`           | GPIO / pin handles                           |
+| `i2c`                | `i2c`            | I2C                                          |
+| `i3c`                | `i3c`            | I3C                                          |
+| `spi`                | `spi`            | SPI                                          |
+| `timer`, `lptim`     | `timer`, `lptim` | General timers, LPTIM (also `pwm` alias)     |
+| `time-driver-gp-tim` | `timer_driver`   | Embassy time driver over TIM2                |
+| `uart`               | `uart`           | USART, including IRQ-buffered `BufferedUart` |
 
 `timer_driver` is what `consortium-cfg` brings up in the generated `init()` unless
 `[profile] time_driver = false`. `uart`'s `BufferedUart` is what
@@ -59,11 +59,11 @@ Each behind a feature, all on by default:
 
 `stm32mp21x`, `stm32mp23x`, or `stm32mp25x` — **exactly one**.
 
-| Feature      | Singleton map | PAC chip     | Notes                          |
-| ------------ | ------------- | ------------ | ------------------------------ |
-| `stm32mp21x` | STM32MP21     | `stm32mp21`  | IPCC1 only; no HSEM             |
-| `stm32mp23x` | STM32MP25     | `stm32mp257` | Shares MP25's layout            |
-| `stm32mp25x` | STM32MP25     | `stm32mp257` | Default                         |
+| Feature      | Singleton map | PAC chip     | Notes                |
+| ------------ | ------------- | ------------ | -------------------- |
+| `stm32mp21x` | STM32MP21     | `stm32mp21`  | IPCC1 only; no HSEM  |
+| `stm32mp23x` | STM32MP25     | `stm32mp257` | Shares MP25's layout |
+| `stm32mp25x` | STM32MP25     | `stm32mp257` | Default              |
 
 MP23 and MP25 share one interrupt and peripheral layout, which is why both map to the
 same generated file and the same PAC chip. Enabling several is a duplicate-definition

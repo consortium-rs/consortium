@@ -33,14 +33,14 @@ the host side needs a decoder and the matching binary.
  panic::(handler)  ─ latches Flags::Panic in the descriptor
 ```
 
-| Module       | Role                                                              |
-| ------------ | ----------------------------------------------------------------- |
-| `config`     | Compile-time region base/length from `CONSORTIUM_DBG_*`.            |
-| `descriptor` | The `CDBG` descriptor and the single-writer/single-reader ring rules.|
-| `packet`     | Per-frame envelope inside the ring.                                |
-| `logger`     | Firmware `#[global_logger]`; encodes and appends.                   |
-| `host`       | Host-side validation, draining, and `defmt` decoding.               |
-| `panic`      | Optional `#[panic_handler]` that records a crash in the ring.        |
+| Module       | Role                                                                  |
+| ------------ | --------------------------------------------------------------------- |
+| `config`     | Compile-time region base/length from `CONSORTIUM_DBG_*`.              |
+| `descriptor` | The `CDBG` descriptor and the single-writer/single-reader ring rules. |
+| `packet`     | Per-frame envelope inside the ring.                                   |
+| `logger`     | Firmware `#[global_logger]`; encodes and appends.                     |
+| `host`       | Host-side validation, draining, and `defmt` decoding.                 |
+| `panic`      | Optional `#[panic_handler]` that records a crash in the ring.         |
 
 The descriptor header (`CDBG` magic + version) comes from
 `consortium-shared-memory`, the same header `consortium-ipc-transport-memory` uses
@@ -52,17 +52,17 @@ error rather than garbage.
 The ring has exactly one writer (firmware) and one reader (host), and **there is no
 lock**. What keeps it correct is that each side only mutates the fields it owns:
 
-| Field                       | Owner  |
-| --------------------------- | ------ |
+| Field                            | Owner             |
+| -------------------------------- | ----------------- |
 | `write_ptr`, `capacity`, `flags` | writer (firmware) |
-| `read_ptr`                  | reader (host)      |
+| `read_ptr`                       | reader (host)     |
 
 `write_ptr == read_ptr` means empty. Preserve that split when changing anything
 here — it is the entire synchronization story.
 
 ## Frames, and why they are staged
 
-The ring is a byte buffer, but a reader must recover *frame* boundaries: an encoded
+The ring is a byte buffer, but a reader must recover _frame_ boundaries: an encoded
 `defmt` frame is not self-delimiting, and a host attaching partway through a
 firmware run starts reading at an arbitrary offset. So each frame is wrapped in a
 packet header:
@@ -127,15 +127,15 @@ how a host tells a crash from a clean end-of-stream in retained memory.
 
 Defaults are `host` and `logger`.
 
-| Feature         | Effect                                                          |
-| --------------- | --------------------------------------------------------------- |
-| `logger`        | Firmware `#[global_logger]` writing into the ring.                |
-| `host`          | Host-side `HostRing` reader; implies `std`.                        |
-| `decode`        | Adds `defmt-decoder`/`defmt-parser` for `DefmtSession`; implies `host`. |
-| `panic-handler` | Installs `#[panic_handler]`; implies `logger`.                     |
-| `arch-cortex-m` | Interrupt-disable and halt for Cortex-M.                           |
-| `arch-riscv`    | Interrupt-disable and halt for RISC-V.                             |
-| `doorbell-hsem` / `doorbell-mu` | Optional doorbell integration.                     |
+| Feature                         | Effect                                                                  |
+| ------------------------------- | ----------------------------------------------------------------------- |
+| `logger`                        | Firmware `#[global_logger]` writing into the ring.                      |
+| `host`                          | Host-side `HostRing` reader; implies `std`.                             |
+| `decode`                        | Adds `defmt-decoder`/`defmt-parser` for `DefmtSession`; implies `host`. |
+| `panic-handler`                 | Installs `#[panic_handler]`; implies `logger`.                          |
+| `arch-cortex-m`                 | Interrupt-disable and halt for Cortex-M.                                |
+| `arch-riscv`                    | Interrupt-disable and halt for RISC-V.                                  |
+| `doorbell-hsem` / `doorbell-mu` | Optional doorbell integration.                                          |
 
 `panic-handler` needs **exactly one** arch feature, and the two are mutually
 exclusive. Both conditions are `compile_error!`s rather than link-time surprises.

@@ -9,10 +9,10 @@ services can be written and tested without a browser or native UI runtime presen
 
 Rendering backends are adapter crates:
 
-| Adapter                                            | Runtime                        |
-| -------------------------------------------------- | ------------------------------ |
-| [`consortium-hmi-webkit`](../consortium-hmi-webkit) | Cog / WPE WebKit (Linux)        |
-| [`consortium-hmi-pocket`](../consortium-hmi-pocket) | PocketJS in QuickJS (native)     |
+| Adapter                                             | Runtime                      |
+| --------------------------------------------------- | ---------------------------- |
+| [`consortium-hmi-webkit`](../consortium-hmi-webkit) | Cog / WPE WebKit (Linux)     |
+| [`consortium-hmi-pocket`](../consortium-hmi-pocket) | PocketJS in QuickJS (native) |
 
 Input events travel the other direction and live in
 [`consortium-hmi-input`](../consortium-hmi-input).
@@ -61,7 +61,7 @@ crate dependency-free and lets one set of product services serve both backends u
   handler does, with whatever type it wants. That keeps `serde` schema decisions out of
   the transport.
 - **A malformed envelope still parses.** `id` and `cmd` are both `#[serde(default)]`, so a
-  partial envelope becomes a dispatch that fails on *lookup* rather than failing to parse
+  partial envelope becomes a dispatch that fails on _lookup_ rather than failing to parse
   — which keeps the failure reportable back to the guest with an id where one was
   supplied.
 

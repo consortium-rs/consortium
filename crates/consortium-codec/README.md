@@ -20,14 +20,14 @@ Two traits, split so that a family declares its error type once:
 
 ### `Decoded<'buf>` is the load-bearing detail
 
-`CodecFor::Decoded` is an associated *type constructor*, not `T`. That is what
+`CodecFor::Decoded` is an associated _type constructor_, not `T`. That is what
 lets one trait cover owning and zero-copy codecs at once:
 
-| Codec           | `Decoded<'buf>`      | What a `recv` costs                    |
-| --------------- | -------------------- | -------------------------------------- |
-| `PostcardCodec` | `T`                  | deserializes into an owned value        |
-| `ProstCodec`    | `T`                  | deserializes into an owned value        |
-| `RkyvCodec`     | `&'buf T::Archived`  | casts and borrows the receive buffer    |
+| Codec           | `Decoded<'buf>`     | What a `recv` costs                  |
+| --------------- | ------------------- | ------------------------------------ |
+| `PostcardCodec` | `T`                 | deserializes into an owned value     |
+| `ProstCodec`    | `T`                 | deserializes into an owned value     |
+| `RkyvCodec`     | `&'buf T::Archived` | casts and borrows the receive buffer |
 
 So **do not assume `decode` yields an owned `T`**. `consortium_ipc::ReceivedMessage`
 wraps `Decoded<'buf>` and `Deref`s through to `T` where the codec permits, which
@@ -42,13 +42,13 @@ firmware channel and a Linux one.
 There is **no default codec feature** — a consumer names what it wants, so
 firmware never pays for a family it does not call.
 
-| Feature    | Codec           | Pick it when                                                              |
-| ---------- | --------------- | ------------------------------------------------------------------------- |
+| Feature    | Codec           | Pick it when                                                                |
+| ---------- | --------------- | --------------------------------------------------------------------------- |
 | `postcard` | `PostcardCodec` | Both ends are Rust crates in this workspace. Compact, `no_std`, serde-wide. |
-| `prost`    | `ProstCodec`    | The schema is shared with a non-Rust or independently shipped peer.        |
-| `rkyv`     | `RkyvCodec`     | Messages are large enough that copying them out dominates.                 |
+| `prost`    | `ProstCodec`    | The schema is shared with a non-Rust or independently shipped peer.         |
+| `rkyv`     | `RkyvCodec`     | Messages are large enough that copying them out dominates.                  |
 
-Supporting features: `alloc` enables heap-backed paths (including *validated*
+Supporting features: `alloc` enables heap-backed paths (including _validated_
 rkyv decode); `std` implies `alloc` and routes diagnostics to `tracing`; `defmt`
 routes the same diagnostics to `defmt` for firmware builds.
 
@@ -91,10 +91,10 @@ check the generated code before choosing this on a bare-metal core.
 
 `RkyvCodec<SCRATCH>` has two paths:
 
-| Build             | Serializer              | Decode                          |
-| ----------------- | ----------------------- | ------------------------------- |
-| `alloc` enabled   | `AlignedVec` arena      | `rkyv::access` — **validated**   |
-| `alloc` disabled  | `SubAllocator<SCRATCH>` | `access_unchecked` — **trusted** |
+| Build            | Serializer              | Decode                           |
+| ---------------- | ----------------------- | -------------------------------- |
+| `alloc` enabled  | `AlignedVec` arena      | `rkyv::access` — **validated**   |
+| `alloc` disabled | `SubAllocator<SCRATCH>` | `access_unchecked` — **trusted** |
 
 `bytecheck`'s validator needs `alloc`. Without it, decode calls
 `access_unchecked`, which is unsound on bytes that are not a correctly aligned

@@ -15,7 +15,7 @@ need to **agree** on.
 Every register layout, clock tree, and driver lives in a chip HAL, because that is
 where the differences are — and a shared trait that tried to abstract an i.MX 9 clock
 tree and an STM32MP2 one behind one interface would either leak the difference or
-lie about it. So this crate abstracts the *shape* of a chip HAL, not the chip.
+lie about it. So this crate abstracts the _shape_ of a chip HAL, not the chip.
 
 ## Peripherals are owned, not addressed
 
@@ -50,19 +50,19 @@ application forwards an interrupt as
 `peripherals!` is `embassy_hal_internal::peripherals!` minus two things, and both
 removals are load-bearing:
 
-| Removed                             | Why                                                       |
-| ----------------------------------- | --------------------------------------------------------- |
-| Per-type `defmt::Format` derive      | Consortium chips have hundreds of peripherals, and the derive emits a `.defmt.*` link section per type. On a `defmt`-enabled host build that overruns the Mach-O section limit and the HAL stops compiling on macOS. The markers are zero-sized and never formatted, so nothing is lost. |
-| `#[unsafe(no_mangle)]` on the once-guard | Two chip HALs can land in one binary — the `consortium-cfg` UI tests link both — and an unmangled guard symbol would collide. |
+| Removed                                  | Why                                                                                                                                                                                                                                                                                      |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Per-type `defmt::Format` derive          | Consortium chips have hundreds of peripherals, and the derive emits a `.defmt.*` link section per type. On a `defmt`-enabled host build that overruns the Mach-O section limit and the HAL stops compiling on macOS. The markers are zero-sized and never formatted, so nothing is lost. |
+| `#[unsafe(no_mangle)]` on the once-guard | Two chip HALs can land in one binary — the `consortium-cfg` UI tests link both — and an unmangled guard symbol would collide.                                                                                                                                                            |
 
 ## Traits
 
-| Trait             | Answers                                              |
-| ----------------- | ---------------------------------------------------- |
-| `Peripheral`      | What is this instance called in generated metadata?    |
-| `ClockControl`    | Enable and reset the peripheral clock.                 |
-| `InterruptSource` | Which interrupt line does it raise?                    |
-| `MonotonicTimer`  | Read ticks and program the next alarm.                 |
+| Trait             | Answers                                             |
+| ----------------- | --------------------------------------------------- |
+| `Peripheral`      | What is this instance called in generated metadata? |
+| `ClockControl`    | Enable and reset the peripheral clock.              |
+| `InterruptSource` | Which interrupt line does it raise?                 |
+| `MonotonicTimer`  | Read ticks and program the next alarm.              |
 
 `MonotonicTimer` is what a chip HAL's Embassy time driver is built on (STM32MP2 TIM2,
 i.MX9 LPIT1). `consortium-cfg` emits its bring-up into the generated `init()` unless

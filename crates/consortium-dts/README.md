@@ -8,7 +8,7 @@ Consortium-generated DTS, DTSI, and DTSO fragments.
 This crate owns syntax-shaped AST values, ergonomic builders, a lexer and parser, and
 stable text output.
 
-It owns no *policy*. Which peripheral belongs to which core, what is secure, how RIFSC
+It owns no _policy_. Which peripheral belongs to which core, what is secure, how RIFSC
 and TRDC map, whether a pin assignment is legal — all of that stays in
 [`consortium-cfg`](../consortium-cfg), which uses this crate to construct, parse, and
 print the resulting fragments. Keeping the split means a device-tree question and a
@@ -24,13 +24,13 @@ resource-ownership question never get answered in the same place.
 
 | Module    | Role                                                                    |
 | --------- | ----------------------------------------------------------------------- |
-| `ast`     | Owned, syntax-shaped values: `File`, `Node`, `Property`, `PropValue`, …   |
-| `builder` | Chainable constructors so codegen reads like the output.                  |
-| `codegen` | `ToDts` and `CodegenOptions` — deterministic text output.                  |
-| `lexer`   | Tokenizer, with spans for diagnostics.                                    |
-| `parser`  | `parse_dts` — token stream to `File`.                                     |
-| `error`   | `DtsError`, `LexError`, `ParseError`, `Span`.                               |
-| `utils`   | Read-only analysis over a parsed file, plus `IrqMethod`.                     |
+| `ast`     | Owned, syntax-shaped values: `File`, `Node`, `Property`, `PropValue`, … |
+| `builder` | Chainable constructors so codegen reads like the output.                |
+| `codegen` | `ToDts` and `CodegenOptions` — deterministic text output.               |
+| `lexer`   | Tokenizer, with spans for diagnostics.                                  |
+| `parser`  | `parse_dts` — token stream to `File`.                                   |
+| `error`   | `DtsError`, `LexError`, `ParseError`, `Span`.                           |
+| `utils`   | Read-only analysis over a parsed file, plus `IrqMethod`.                |
 
 ## Current status
 
@@ -74,7 +74,7 @@ both properties.
 `utils::edit` is read-**only**: it locates a node by label, reads its `compatible`
 strings, checks whether a property is present.
 
-To change a vendor base tree you *append* `NodeOverlay` items — a label override
+To change a vendor base tree you _append_ `NodeOverlay` items — a label override
 carrying `/delete-property/`, `status = "disabled"`, and so on — rather than rewriting
 nodes in place. Parsed AST values stay immutable, and the delta stays visible in the
 output, which is what a reviewer of a merged tree needs to see.

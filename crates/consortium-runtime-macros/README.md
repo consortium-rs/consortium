@@ -8,8 +8,8 @@ A crate with `proc-macro = true` can export nothing but macros, and its code run
 compiler rather than in the target program — a poor home for logic. So each macro family
 in this workspace is split in two:
 
-| Crate                            | Role                                                |
-| -------------------------------- | --------------------------------------------------- |
+| Crate                            | Role                                                   |
+| -------------------------------- | ------------------------------------------------------ |
 | `consortium-runtime-macros`      | `proc-macro` facade. Converts `TokenStream`, forwards. |
 | `consortium-runtime-macros-impl` | Plain library holding the expansion logic and tests.   |
 
@@ -18,12 +18,12 @@ in this workspace is split in two:
 Four macros, two per runtime target. The runtime crates re-export them under
 target-neutral names, which is why firmware and applications both write `#[main]`:
 
-| This crate  | Re-exported as                       |
-| ----------- | ------------------------------------ |
-| `mcu_main`  | `#[consortium_runtime_mcu::main]`     |
-| `mcu_fail`  | `#[consortium_runtime_mcu::fail]`     |
-| `app_main`  | `#[consortium_runtime_app::main]`     |
-| `app_fail`  | `#[consortium_runtime_app::fail]`     |
+| This crate | Re-exported as                    |
+| ---------- | --------------------------------- |
+| `mcu_main` | `#[consortium_runtime_mcu::main]` |
+| `mcu_fail` | `#[consortium_runtime_mcu::fail]` |
+| `app_main` | `#[consortium_runtime_app::main]` |
+| `app_fail` | `#[consortium_runtime_app::fail]` |
 
 ## Usage
 

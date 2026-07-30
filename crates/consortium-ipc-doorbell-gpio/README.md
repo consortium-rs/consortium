@@ -29,10 +29,10 @@ release fence before the pulse and an acquire on the pending flag.
 
 ## The two paths
 
-| Build            | Pin guard | Wake source                          | Bind with          |
-| ---------------- | --------- | ------------------------------------ | ------------------ |
-| `no_std` (M-core)| `RefCell` | `static PENDING` + `AtomicWaker`, set by `GpioDoorbell::wake()` from the GPIO IRQ | — (call `wake()`)   |
-| `std` (Linux)    | `Mutex`   | `tokio::sync::Notify`, driven by external interrupt code | `bind_notifier`     |
+| Build             | Pin guard | Wake source                                                                       | Bind with         |
+| ----------------- | --------- | --------------------------------------------------------------------------------- | ----------------- |
+| `no_std` (M-core) | `RefCell` | `static PENDING` + `AtomicWaker`, set by `GpioDoorbell::wake()` from the GPIO IRQ | — (call `wake()`) |
+| `std` (Linux)     | `Mutex`   | `tokio::sync::Notify`, driven by external interrupt code                          | `bind_notifier`   |
 
 `ring()` pulses the pin high then low to raise a rising-edge interrupt on the far
 side. `wait()` resolves when the pending flag or `Notify` fires.
@@ -58,12 +58,12 @@ Read these before choosing GPIO; several are load-bearing.
 
 - **Rising-edge signaling, so a pulse can be missed.** `ring` sets the pin high then
   immediately low. If the peer's edge interrupt is masked across both transitions,
-  the signal is *gone* — there is no status flag to re-read, unlike IPCC's occupancy
+  the signal is _gone_ — there is no status flag to re-read, unlike IPCC's occupancy
   bit or MU's `GSR`. Pair it with a transport whose payload state is
   self-describing: the shared-memory transport's `FLAG_VALID` turns a missed doorbell
   into a latency problem rather than a lost message.
 - **Single channel per instance.** Unlike HSEM (16) or MU (8), the `ch` argument to
-  `ring()` and `wait()` is *ignored* — every signal uses the same pin. Multi-channel
+  `ring()` and `wait()` is _ignored_ — every signal uses the same pin. Multi-channel
   designs instantiate several `GpioDoorbell<P>` with different pins.
 - **The pending flag is global on `no_std`.** `wake()` sets one `static PENDING` and
   one `AtomicWaker`, so two GPIO doorbells in one firmware image share a wake and each
@@ -82,7 +82,7 @@ Read these before choosing GPIO; several are load-bearing.
 
 | Feature | Effect                                                                |
 | ------- | --------------------------------------------------------------------- |
-| `std`   | Default. Tokio `Notify` wake path plus `linux-embedded-hal` for pins.  |
+| `std`   | Default. Tokio `Notify` wake path plus `linux-embedded-hal` for pins. |
 
 Build with `default-features = false` for the bare-metal software-pending path.
 

@@ -32,11 +32,11 @@ forever, and the failure is silent.
 
 `Region` makes the difference explicit rather than assumed:
 
-| Type            | Backing      | `flush` / `invalidate`        | `is_coherent` |
-| --------------- | ------------ | ----------------------------- | ------------- |
-| `SramRegion`    | on-chip SRAM | no-ops                        | `true`        |
-| `DdrRegion`     | DDR          | AArch64 `dc cvac` / `dc ivac` | `false`       |
-| `SerialRegion`  | none         | no-ops                        | `true`        |
+| Type           | Backing      | `flush` / `invalidate`        | `is_coherent` |
+| -------------- | ------------ | ----------------------------- | ------------- |
+| `SramRegion`   | on-chip SRAM | no-ops                        | `true`        |
+| `DdrRegion`    | DDR          | AArch64 `dc cvac` / `dc ivac` | `false`       |
+| `SerialRegion` | none         | no-ops                        | `true`        |
 
 Transports are generic over the region, so `is_coherent` and the no-op cache
 methods resolve at monomorphization: an SRAM-backed link compiles to code with no
@@ -47,7 +47,7 @@ cache maintenance in it at all, rather than branching per operation at runtime.
 - **`DdrRegion` maintenance is AArch64-only.** `flush` sweeps `dc cvac` and
   `invalidate` sweeps `dc ivac` over each 64-byte line, each followed by `dsb sy`.
   On other targets both compile to no-ops — which is what lets the shared-memory
-  protocol tests run on any developer host. It also means a *real* non-coherent
+  protocol tests run on any developer host. It also means a _real_ non-coherent
   link on a non-AArch64 target would get no maintenance; that case does not exist
   in the current chip support and would need its own implementation.
 - **The 64-byte line size is a constant,** correct for the Cortex-A35/A55 parts in
@@ -119,8 +119,8 @@ read_payload(&region);
 
 ## Features
 
-| Feature | Effect                                                                      |
-| ------- | --------------------------------------------------------------------------- |
+| Feature | Effect                                                                                             |
+| ------- | -------------------------------------------------------------------------------------------------- |
 | `defmt` | Derive `defmt::Format` on the descriptor error and magic types, for firmware builds that log them. |
 
 ## License

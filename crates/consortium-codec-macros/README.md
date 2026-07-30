@@ -8,8 +8,8 @@ A crate with `proc-macro = true` can export nothing but macros, and its code run
 in the compiler rather than in the target program — a poor home for logic. Each
 macro family in this workspace is therefore split in two:
 
-| Crate                          | Role                                                    |
-| ------------------------------ | ------------------------------------------------------- |
+| Crate                          | Role                                                     |
+| ------------------------------ | -------------------------------------------------------- |
 | `consortium-codec-macros`      | `proc-macro` facade. Converts `TokenStream`, forwards.   |
 | `consortium-codec-macros-impl` | Plain library holding the expansion logic and its tests. |
 

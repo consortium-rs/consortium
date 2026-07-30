@@ -16,18 +16,18 @@ that has to work from an arbitrary directory, that is the right trade.
 
 ## What each module resolves
 
-| Module     | Source                          | Answers                                    |
-| ---------- | ------------------------------- | ------------------------------------------ |
-| `database` | `database/memory/*.yaml`         | What does this chip *family* offer — coprocessors, memory regions and aliases, peripherals, doorbells? |
-| `chipmap`  | `database/chip/*.json`           | What can *one core* reach — peripheral MMIO bases and NVIC numbers? |
-| `dts`      | `database/dts/{imx9,stm32mp2}/`  | Which vendor board or SoC device tree do we build on top of? |
+| Module     | Source                          | Answers                                                                                                |
+| ---------- | ------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `database` | `database/memory/*.yaml`        | What does this chip _family_ offer — coprocessors, memory regions and aliases, peripherals, doorbells? |
+| `chipmap`  | `database/chip/*.json`          | What can _one core_ reach — peripheral MMIO bases and NVIC numbers?                                    |
+| `dts`      | `database/dts/{imx9,stm32mp2}/` | Which vendor board or SoC device tree do we build on top of?                                           |
 
 ### The database/chipmap split matters
 
 A family database says the chip **has** an LPUART2. A chip map says **this core** can
 see it.
 
-Because there is one JSON file per core, the set of peripherals in a core's file *is*
+Because there is one JSON file per core, the set of peripherals in a core's file _is_
 the set that core can reach — which is exactly the filter `consortium-cfg` applies
 when validating `[peripheral.<name>] owner`. No separate allow-list is maintained.
 
@@ -57,12 +57,12 @@ instead.
 
 ## Layout and size
 
-| Directory           | Size  | Contents                                    |
-| ------------------- | ----- | ------------------------------------------- |
-| `database/memory/`  | ~28 K | Hand-maintained chip-family YAML             |
-| `database/chip/`    | ~280 K| Generated per-core JSON dumps                |
-| `database/dts/`     | ~2 M  | Vendor device trees and includes             |
-| `database/peri/`    | ~14 M | Extracted peripheral register definitions    |
+| Directory          | Size   | Contents                                  |
+| ------------------ | ------ | ----------------------------------------- |
+| `database/memory/` | ~28 K  | Hand-maintained chip-family YAML          |
+| `database/chip/`   | ~280 K | Generated per-core JSON dumps             |
+| `database/dts/`    | ~2 M   | Vendor device trees and includes          |
+| `database/peri/`   | ~14 M  | Extracted peripheral register definitions |
 
 ## Generated and imported data
 
@@ -74,7 +74,7 @@ HAL that read the same file.
 
 Schema types come from [`consortium-cfg-common`](../consortium-cfg-common), which
 exists partly so this crate can deserialize into them without depending on
-`consortium-cfg` — the codegen crate that depends on *this* one.
+`consortium-cfg` — the codegen crate that depends on _this_ one.
 
 ## Licensing
 

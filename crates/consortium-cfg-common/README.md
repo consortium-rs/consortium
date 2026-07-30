@@ -12,7 +12,7 @@ whole reason it is not folded into `consortium-cfg`:
   from a manifest.
 - [`consortium-data`](../consortium-data) embeds the chip-family YAML databases and
   resolves a part number to one, so it needs the `database` types — but must not
-  depend on the codegen crate, which depends on *it*.
+  depend on the codegen crate, which depends on _it_.
 
 Splitting the schema out breaks that cycle:
 
@@ -32,16 +32,16 @@ the current schema.** Prefer it over the older melt-pot example manifests, which
 drift; `crates/consortium-cfg/Consortium.example.*.toml` and
 `consortium-cfg/src/session.rs`'s tests are the best worked references.
 
-| Section               | Type                              |
-| --------------------- | --------------------------------- |
-| `[profile]`           | `Profile`                          |
-| `[dts]`               | `Dts`, `DtsMode`                   |
-| `[endpoints]`         | `Endpoints`                        |
-| `[dbg]`, `[dbg.<core>]` | `Dbg`, `DbgCore`, `DbgMode`       |
-| `[[ipc.channel]]`     | `Ipc`, `IpcChannel`, `IpcPattern`, `IpcChannelConfig` |
-| `[tee]`               | `Tee`                              |
-| `[hmi]`, `[hmi.logical]` | `Hmi`, `HmiEngine`, `HmiBackend`, `HmiLogical` |
-| `[peripheral.<name>]` | `Peripheral`                       |
+| Section                  | Type                                                  |
+| ------------------------ | ----------------------------------------------------- |
+| `[profile]`              | `Profile`                                             |
+| `[dts]`                  | `Dts`, `DtsMode`                                      |
+| `[endpoints]`            | `Endpoints`                                           |
+| `[dbg]`, `[dbg.<core>]`  | `Dbg`, `DbgCore`, `DbgMode`                           |
+| `[[ipc.channel]]`        | `Ipc`, `IpcChannel`, `IpcPattern`, `IpcChannelConfig` |
+| `[tee]`                  | `Tee`                                                 |
+| `[hmi]`, `[hmi.logical]` | `Hmi`, `HmiEngine`, `HmiBackend`, `HmiLogical`        |
+| `[peripheral.<name>]`    | `Peripheral`                                          |
 
 Two schema habits worth knowing:
 
@@ -54,14 +54,14 @@ Two schema habits worth knowing:
 
 ## `database` — the chip-database schema
 
-What a chip *offers*, against which a manifest's requests are checked:
+What a chip _offers_, against which a manifest's requests are checked:
 
-| Type                          | Describes                                        |
-| ----------------------------- | ------------------------------------------------ |
-| `ChipDatabase`                | A chip family: everything below.                  |
-| `Coprocessor`, `CoprocessorVariant` | Which non-AP cores exist.                   |
-| `MemoryDatabase`, `MemoryRegion`, `MemoryAlias`, `MemoryRegionType` | Address windows and their aliases. |
-| `PeripheralDatabase`, `PeripheralAlias` | Peripherals and their alternate names.  |
+| Type                                                                                                     | Describes                                                                                         |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `ChipDatabase`                                                                                           | A chip family: everything below.                                                                  |
+| `Coprocessor`, `CoprocessorVariant`                                                                      | Which non-AP cores exist.                                                                         |
+| `MemoryDatabase`, `MemoryRegion`, `MemoryAlias`, `MemoryRegionType`                                      | Address windows and their aliases.                                                                |
+| `PeripheralDatabase`, `PeripheralAlias`                                                                  | Peripherals and their alternate names.                                                            |
 | `HardwareDoorbellPeripheral`, `HardwareDoorbellPeripheralType`, `HardwareDoorbellParty`, `DoorbellClock` | Doorbell peripherals — their channel counts and parties bound what `[[ipc.channel]]` may ask for. |
 
 The YAML and JSON that populate these types live in `consortium-data`.

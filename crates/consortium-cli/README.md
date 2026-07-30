@@ -31,16 +31,16 @@ local staging directory a downstream packaging recipe consumes.
 
 ### Flags
 
-| Flag                     | Default            | Effect                                |
-| ------------------------ | ------------------ | ------------------------------------- |
-| `--manifest <PATH>`      | `Consortium.toml`   | The manifest to build.                 |
-| `--dist <DIR>`           | `dist`             | Where to assemble the staging tree.     |
-| `--release`              | off                | Build in release mode.                 |
-| `--skip-tee-sign`        | off                | Build the TA but stage the unsigned ELF instead of a signed `<uuid>.ta`. |
-| `--bitbake-files-dir <DIR>` | —               | Stage `dist/` under a recipe's `files/` directory. |
-| `--bitbake-recipe <RECIPE>` | —               | Invoke BitBake on this recipe (needs `--bitbake-build-dir`). |
-| `--bitbake-build-dir <DIR>` | —               | The Yocto build directory to run BitBake in. |
-| `--bitbake-dry-run`      | off                | Resolve and report the BitBake command without running it. |
+| Flag                        | Default           | Effect                                                                   |
+| --------------------------- | ----------------- | ------------------------------------------------------------------------ |
+| `--manifest <PATH>`         | `Consortium.toml` | The manifest to build.                                                   |
+| `--dist <DIR>`              | `dist`            | Where to assemble the staging tree.                                      |
+| `--release`                 | off               | Build in release mode.                                                   |
+| `--skip-tee-sign`           | off               | Build the TA but stage the unsigned ELF instead of a signed `<uuid>.ta`. |
+| `--bitbake-files-dir <DIR>` | —                 | Stage `dist/` under a recipe's `files/` directory.                       |
+| `--bitbake-recipe <RECIPE>` | —                 | Invoke BitBake on this recipe (needs `--bitbake-build-dir`).             |
+| `--bitbake-build-dir <DIR>` | —                 | The Yocto build directory to run BitBake in.                             |
+| `--bitbake-dry-run`         | off               | Resolve and report the BitBake command without running it.               |
 
 ### `--skip-tee-sign`
 

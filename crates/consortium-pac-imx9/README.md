@@ -19,12 +19,12 @@ consortium-hal-imx9      drivers, owned singletons  ← depend on this
 
 ## Contents
 
-| Module        | Contents                                                        |
-| ------------- | --------------------------------------------------------------- |
-| `peripherals` | Register block definitions, one module per peripheral kind.       |
-| `interrupts`  | The chip's `Interrupt` enum; with `rt`, `__INTERRUPTS` too.       |
-| `common`      | Register/field access primitives the generated code builds on.     |
-| `metadata`    | Machine-readable register description, ported from `stm32-data`.   |
+| Module        | Contents                                                         |
+| ------------- | ---------------------------------------------------------------- |
+| `peripherals` | Register block definitions, one module per peripheral kind.      |
+| `interrupts`  | The chip's `Interrupt` enum; with `rt`, `__INTERRUPTS` too.      |
+| `common`      | Register/field access primitives the generated code builds on.   |
+| `metadata`    | Machine-readable register description, ported from `stm32-data`. |
 
 Peripheral blocks currently generated: ADC, CAN (FlexCAN), CCM, DMA (eDMA global plus
 `dma4`/`dma5` channel blocks), FlexIO, FlexSPI, GPC, I3C, INTM, IOMUXC (+ GPR),
@@ -32,12 +32,12 @@ IRQSTEER, LPI2C, LPIT, LPSPI, LPTMR, LPUART, MU, RGPIO, TPM, WDOG.
 
 ## Features
 
-| Feature  | Effect                                                                 |
-| -------- | ---------------------------------------------------------------------- |
-| `mimx95` | Chip selection (default). Eight MU instances.                            |
-| `mimx93` | Chip selection. Two MU instances.                                        |
-| `rt`     | `cortex-m-rt` integration: the `#[interrupt]` macro and `__INTERRUPTS`.    |
-| `defmt`  | Derive `defmt::Format` on generated types where applicable.               |
+| Feature  | Effect                                                                  |
+| -------- | ----------------------------------------------------------------------- |
+| `mimx95` | Chip selection (default). Eight MU instances.                           |
+| `mimx93` | Chip selection. Two MU instances.                                       |
+| `rt`     | `cortex-m-rt` integration: the `#[interrupt]` macro and `__INTERRUPTS`. |
+| `defmt`  | Derive `defmt::Format` on generated types where applicable.             |
 
 Choose **exactly one** chip: the feature selects which generated interrupt and
 peripheral map is mounted, and enabling both is a duplicate-definition error. **A
@@ -93,5 +93,5 @@ generated files. Contributions welcome.
 
 Apache-2.0. See [LICENSE](../../LICENSE).
 
-The vendor CMSIS headers this crate is generated *from* live in `submodules/` and are
+The vendor CMSIS headers this crate is generated _from_ live in `submodules/` and are
 not redistributed here; only the generated Rust is.

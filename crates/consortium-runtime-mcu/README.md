@@ -13,11 +13,11 @@ Most of what firmware needs is **generated** by `consortium-cfg` into
 supply: an entry point, the ELF section Linux remoteproc reads, cache configuration,
 and one dependency edge that pulls in the transports.
 
-| Module      | Role                                                        |
-| ----------- | ----------------------------------------------------------- |
-| `rsc_table` | The `.resource_table` section a Linux host parses at boot.   |
-| `mpu`       | Mark the shared carveout non-cacheable on a cached core.       |
-| `log`       | Logging facade re-export for generated code.                   |
+| Module      | Role                                                       |
+| ----------- | ---------------------------------------------------------- |
+| `rsc_table` | The `.resource_table` section a Linux host parses at boot. |
+| `mpu`       | Mark the shared carveout non-cacheable on a cached core.   |
+| `log`       | Logging facade re-export for generated code.               |
 
 ## Entry macro
 
@@ -70,12 +70,12 @@ Neither this crate nor the doorbell or HAL crates install `#[interrupt]` handler
 application owns the vector table and forwards each relevant IRQ into the exported wake
 path:
 
-| Source          | Forward to                                  |
-| --------------- | ------------------------------------------- |
-| HSEM            | `hsem::notify()`                             |
-| IPCC1_RX / IPCC2_RX | `ipcc::notify_rx_occupied_interrupt()`    |
-| MU line `N`     | `mu::notify::<N>()`                          |
-| Buffered UART   | `uart::on_buffered_interrupt::<P>()`         |
+| Source              | Forward to                             |
+| ------------------- | -------------------------------------- |
+| HSEM                | `hsem::notify()`                       |
+| IPCC1_RX / IPCC2_RX | `ipcc::notify_rx_occupied_interrupt()` |
+| MU line `N`         | `mu::notify::<N>()`                    |
+| Buffered UART       | `uart::on_buffered_interrupt::<P>()`   |
 
 Enable the chip **HAL's** `rt` feature (`consortium-hal-*/rt`) so the `#[interrupt]`
 macro and PAC vector table are available to that code. See the melt-pot
@@ -103,11 +103,11 @@ enables the MPU with the default map kept as a privileged background region.
 
 The register interface differs by architecture and is selected by the active target:
 
-| Architecture              | Block          | Attributes                          |
-| ------------------------- | -------------- | ----------------------------------- |
-| ARMv7-M (`thumbv7em`, M7) | `RBAR`/`RASR`   | power-of-two size, inline `TEX/C/B/S` |
-| ARMv8-M (`thumbv8m`, M33) | `RBAR`/`RLAR`   | base/limit, attributes via `MAIR0`     |
-| ARMv6-M (`thumbv6m`, M0+) | —              | no data cache; nothing to disable      |
+| Architecture              | Block         | Attributes                            |
+| ------------------------- | ------------- | ------------------------------------- |
+| ARMv7-M (`thumbv7em`, M7) | `RBAR`/`RASR` | power-of-two size, inline `TEX/C/B/S` |
+| ARMv8-M (`thumbv8m`, M33) | `RBAR`/`RLAR` | base/limit, attributes via `MAIR0`    |
+| ARMv6-M (`thumbv6m`, M0+) | —             | no data cache; nothing to disable     |
 
 On targets without a cache to manage — ARMv6-M, host builds, RISC-V — the module is
 empty.
@@ -121,7 +121,7 @@ section.
 
 The distinction matters: the bindgen `ResourceTable` and `FwRscVdev` types model the
 kernel **parser** view, and their trailing arrays are flexible array members holding no
-data — so they cannot be statically initialized. To *emit* a table you need a concrete
+data — so they cannot be statically initialized. To _emit_ a table you need a concrete
 struct with a fixed `offset[N]` and the entries laid out inline. That is what
 `SharedResourceTable` is.
 
@@ -129,13 +129,13 @@ struct with a fixed `offset[N]` and the entries laid out inline. That is what
 
 Defaults are `ipc-shm` and `macros`.
 
-| Feature       | Effect                                                        |
-| ------------- | ------------------------------------------------------------- |
-| `ipc-shm`     | Shared-memory IPC (`ipc` is an alias).                          |
-| `ipc-uart`    | The COBS/CRC-framed UART transport, instead or as well.           |
-| `macros`      | The `#[main]` / `#[fail]` entry macros.                          |
-| `dbg`         | Re-export `consortium-dbg` for the CDBG logger.                   |
-| `defmt`       | Route generated-code logging to `defmt`.                          |
+| Feature       | Effect                                                                                  |
+| ------------- | --------------------------------------------------------------------------------------- |
+| `ipc-shm`     | Shared-memory IPC (`ipc` is an alias).                                                  |
+| `ipc-uart`    | The COBS/CRC-framed UART transport, instead or as well.                                 |
+| `macros`      | The `#[main]` / `#[fail]` entry macros.                                                 |
+| `dbg`         | Re-export `consortium-dbg` for the CDBG logger.                                         |
+| `defmt`       | Route generated-code logging to `defmt`.                                                |
 | chip features | `mimx93`/`mimx95`, `stm32mp21x`/`23x`/`25x` — forwarded to the shared-memory transport. |
 
 **Enabling `defmt` here is not sufficient on its own.** `defmt`'s macros expand to

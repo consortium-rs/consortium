@@ -18,10 +18,10 @@ happen-before the peer's `wait` completion, which is why the transport's
 An MU instance offers two independent signaling mechanisms. This crate packs both
 into the single flat channel space the `Doorbell` trait expects:
 
-| `Chan` range | Line kind                      | Registers                          |
-| ------------ | ------------------------------ | ---------------------------------- |
-| `0..4`       | general-purpose interrupt (GI)  | `GCR` / `GSR` / `GIER`              |
-| `4..8`       | receive-full (RF)               | transmit/receive regs + `RSR` / `RCR` |
+| `Chan` range | Line kind                      | Registers                             |
+| ------------ | ------------------------------ | ------------------------------------- |
+| `0..4`       | general-purpose interrupt (GI) | `GCR` / `GSR` / `GIER`                |
+| `4..8`       | receive-full (RF)              | transmit/receive regs + `RSR` / `RCR` |
 
 GI lines are pure interrupts. RF lines work by writing a token word to a transmit
 register, which sets the peer's receive-full flag — a doorbell that happens to carry
@@ -45,10 +45,10 @@ drives the wrong window.
 
 ## Construction
 
-| Side       | Constructor                          | Obligation                          |
-| ---------- | ------------------------------------ | ----------------------------------- |
-| Firmware   | `MuDoorbell::new(p.MU7_MUB)`         | Consumes the chip HAL's peripheral singleton. A const assertion checks the singleton's side against `S`, so `MuDoorbell<Secondary, 7>` cannot be built from the MUA singleton. |
-| Linux/UIO  | `unsafe MuDoorbell::new_mapped(base)`| Caller guarantees `base` is the **mapped virtual** base of instance `N` for side `S`. A physical address here is undefined behaviour. |
+| Side      | Constructor                           | Obligation                                                                                                                                                                     |
+| --------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Firmware  | `MuDoorbell::new(p.MU7_MUB)`          | Consumes the chip HAL's peripheral singleton. A const assertion checks the singleton's side against `S`, so `MuDoorbell<Secondary, 7>` cannot be built from the MUA singleton. |
+| Linux/UIO | `unsafe MuDoorbell::new_mapped(base)` | Caller guarantees `base` is the **mapped virtual** base of instance `N` for side `S`. A physical address here is undefined behaviour.                                          |
 
 Even on the singleton path the window address comes from this crate's own
 `registers::base` table rather than from the singleton, so the security alias the
@@ -63,7 +63,7 @@ reach whichever half is waiting.
 **This crate installs no `#[interrupt]` handlers.** The application owns the vector
 table and forwards each MU vector a core drives into `notify::<N>()`, parameterized
 with that instance number. The relevant vectors are i.MX93 `MU1_B` / `MU2_B` and
-i.MX95 CM7 `MU5_A` / `MU7_B` / `MU8_B`. Enable the *HAL's* `rt` feature
+i.MX95 CM7 `MU5_A` / `MU7_B` / `MU8_B`. Enable the _HAL's_ `rt` feature
 (`consortium-hal-imx9/rt`) so the `#[interrupt]` macro and PAC vector table are
 available to that code.
 
@@ -79,7 +79,7 @@ On Linux the MU line is **level-sensitive**, and that has a consequence worth
 understanding: if the UIO IRQ loop re-arms the interrupt while a status flag is still
 set, the line fires again immediately and the loop spins. So the `std` path binds the
 doorbell as a **service** rather than a plain notifier — `notify_gi_interrupt`
-disables every asserted GI and RF line *before* waking. Disabling only masks the
+disables every asserted GI and RF line _before_ waking. Disabling only masks the
 interrupt and leaves `GSR`/`RSR` set, so the woken `wait` future still observes its
 flag, acknowledges it, and re-arms:
 
@@ -95,12 +95,12 @@ wakeups have nothing to mask and use `bind_notifier`.)
 
 ## Features
 
-| Feature  | Effect                                                            |
-| -------- | ----------------------------------------------------------------- |
-| `mimx95` | Chip selection (default). Eight MU instances.                      |
-| `mimx93` | Chip selection. Two MU instances.                                  |
-| `std`    | Tokio `Notify` wake path and the masking service; host-testable.    |
-| `defmt`  | Derive `defmt::Format` on `MuError`.                               |
+| Feature  | Effect                                                           |
+| -------- | ---------------------------------------------------------------- |
+| `mimx95` | Chip selection (default). Eight MU instances.                    |
+| `mimx93` | Chip selection. Two MU instances.                                |
+| `std`    | Tokio `Notify` wake path and the masking service; host-testable. |
+| `defmt`  | Derive `defmt::Format` on `MuError`.                             |
 
 Enabling both chip features is a **compile error** — the instance count and base
 table differ. Each is forwarded to `consortium-hal-imx9` so the shared PAC's register

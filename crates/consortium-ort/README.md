@@ -28,9 +28,9 @@ toolchain.
 
 ## Features
 
-| Feature   | Effect                                          |
-| --------- | ----------------------------------------------- |
-| `tracing` | Forwards to `ort/tracing`.                       |
+| Feature   | Effect                     |
+| --------- | -------------------------- |
+| `tracing` | Forwards to `ort/tracing`. |
 
 With `tracing` on, ORT diagnostics land in the same subscriber
 `consortium-runtime-app`'s `#[main]` macro installs, rather than in a second logging

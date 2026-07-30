@@ -7,15 +7,15 @@ and for the Linux host, and can travel between them.
 
 ## The problem
 
-HMI backends and the event *sources* that drive them speak entirely different concrete
+HMI backends and the event _sources_ that drive them speak entirely different concrete
 APIs:
 
-| Source                        | API                              |
-| ----------------------------- | -------------------------------- |
-| Desktop window                | `winit`                           |
-| Linux kiosk                   | `libinput` / `evdev`              |
-| Bare-metal core, local        | `embedded-hal` touch/GPIO/encoder  |
-| Bare-metal core, over IPC     | a Consortium channel carrying events |
+| Source                    | API                                  |
+| ------------------------- | ------------------------------------ |
+| Desktop window            | `winit`                              |
+| Linux kiosk               | `libinput` / `evdev`                 |
+| Bare-metal core, local    | `embedded-hal` touch/GPIO/encoder    |
+| Bare-metal core, over IPC | a Consortium channel carrying events |
 
 This crate is the neutral middle: one `InputEvent` type plus one pull-based `InputSource`
 contract that every source implements.
@@ -27,7 +27,7 @@ contract that every source implements.
 `InputEvent` positions are in **logical UI coordinates** — the same units the HMI app
 renders at, from `[hmi.logical]` in `Consortium.toml`.
 
-That puts device-to-logical calibration in the *source*, where the device is, rather than
+That puts device-to-logical calibration in the _source_, where the device is, rather than
 in each backend. A resistive touch panel's calibration, a trackpad's acceleration, and a
 mouse's raw pixels all resolve to the same coordinate space before anything downstream
 sees them, so a backend never asks "which coordinate system is this event in".
@@ -38,7 +38,7 @@ an A-core, which is exactly the class of bug `IpcSafe` exists to reject.
 
 ### Events can cross a core boundary
 
-`InputEvent` derives `consortium_ipc::IpcSafe` *and* `serde`, so a real-time core can
+`InputEvent` derives `consortium_ipc::IpcSafe` _and_ `serde`, so a real-time core can
 serialize events with a Consortium codec and forward them to a Linux HMI host **exactly
 like any other cross-core message** — no separate input transport, no special-casing.
 

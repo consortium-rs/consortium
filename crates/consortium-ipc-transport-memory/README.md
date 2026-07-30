@@ -11,12 +11,12 @@ anybody.
 
 The pieces it does **not** own:
 
-| Concern                                    | Crate                                    |
-| ------------------------------------------ | ---------------------------------------- |
-| Trait stack, typed channels                | `consortium-ipc`                         |
-| `Region`, cache semantics, header magic    | `consortium-shared-memory`               |
-| Hardware wakeups (HSEM, IPCC, MU, GPIO)    | `consortium-ipc-doorbell-*`              |
-| Window addresses, validation, bring-up code| `consortium-cfg`                         |
+| Concern                                     | Crate                       |
+| ------------------------------------------- | --------------------------- |
+| Trait stack, typed channels                 | `consortium-ipc`            |
+| `Region`, cache semantics, header magic     | `consortium-shared-memory`  |
+| Hardware wakeups (HSEM, IPCC, MU, GPIO)     | `consortium-ipc-doorbell-*` |
+| Window addresses, validation, bring-up code | `consortium-cfg`            |
 
 ## Layout
 
@@ -50,8 +50,8 @@ convention.
 
 | Side        | `connect` does                                                   |
 | ----------- | ---------------------------------------------------------------- |
-| `Primary`   | publish the descriptor, `flush`, ring, await the ack              |
-| `Secondary` | await/observe the descriptor, validate it, `flush`, ring the ack   |
+| `Primary`   | publish the descriptor, `flush`, ring, await the ack             |
+| `Secondary` | await/observe the descriptor, validate it, `flush`, ring the ack |
 
 The header magic is the readiness gate: the primary writes it **last**, so a
 secondary that sees `CIPC` knows the whole descriptor landed. That makes the
@@ -64,7 +64,7 @@ Because the asymmetry lives in the type, generated bring-up code emits one
 
 `DescriptorLayout` is the negotiated part, and only that: `num_channels` plus a
 proposed `mtu`. Everything identifying the link — channel ids, doorbell, region,
-base — is fixed at construction. `mtu` is a *proposal*, not a verdict: after
+base — is fixed at construction. `mtu` is a _proposal_, not a verdict: after
 `connect` returns, both sides report the resulting **slot capacity** through
 `max_send_size` / `max_recv_size`, which is what `send` enforces. A secondary
 asking for more than the primary published does not enlarge the slots.
@@ -145,14 +145,14 @@ transceivers at `context.ipc_shm.<name>`.
 
 Defaults to `std`. Firmware builds want `default-features = false`.
 
-| Feature                            | Effect                                            |
-| ---------------------------------- | ------------------------------------------------- |
-| `std`                              | `alloc`, Tokio support, UIO errors, `tracing` logs  |
-| `alloc`                            | link `alloc` through `consortium-ipc`               |
-| `defmt`                            | route protocol tracing to `defmt`; derive `Format`  |
-| `doorbell-hsem` / `-ipcc` / `-mu`  | re-export a doorbell crate under `doorbell`         |
-| `stm32mp21x` / `23x` / `25x`       | select the STM32MP2 chip and its doorbells          |
-| `mimx93` / `mimx95`                | select the i.MX 9 chip and its MU doorbell          |
+| Feature                           | Effect                                             |
+| --------------------------------- | -------------------------------------------------- |
+| `std`                             | `alloc`, Tokio support, UIO errors, `tracing` logs |
+| `alloc`                           | link `alloc` through `consortium-ipc`              |
+| `defmt`                           | route protocol tracing to `defmt`; derive `Format` |
+| `doorbell-hsem` / `-ipcc` / `-mu` | re-export a doorbell crate under `doorbell`        |
+| `stm32mp21x` / `23x` / `25x`      | select the STM32MP2 chip and its doorbells         |
+| `mimx93` / `mimx95`               | select the i.MX 9 chip and its MU doorbell         |
 
 Chip features exist so `doorbell::SharedMemoryTransportDoorbell` can report a
 doorbell peripheral's window address, which generated Linux bring-up needs in order

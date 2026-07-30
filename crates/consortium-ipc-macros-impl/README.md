@@ -25,18 +25,18 @@ consortium-ipc            re-exports the derive next to the trait
 
 Reusable AST work — walking a type's field tree, collecting generic parameters —
 belongs one level down in `consortium-macros-helpers`. What stays here is the
-IPC-specific *policy*.
+IPC-specific _policy_.
 
 ## `derive_ipc_safe`
 
 Rejects, recursively through generics, arrays, and tuples:
 
-| Construct                 | Why it cannot cross a core boundary                          |
-| ------------------------- | ------------------------------------------------------------ |
-| `*const T`, `*mut T`      | Addresses are meaningless in the peer's address space.        |
-| `&T`, `&mut T`            | Same, plus no lifetime survives serialization.                |
-| `fn(..)`                  | Code addresses are not portable across cores.                 |
-| `usize`, `isize`          | Width differs between a 32-bit M-core and a 64-bit A-core.     |
+| Construct            | Why it cannot cross a core boundary                        |
+| -------------------- | ---------------------------------------------------------- |
+| `*const T`, `*mut T` | Addresses are meaningless in the peer's address space.     |
+| `&T`, `&mut T`       | Same, plus no lifetime survives serialization.             |
+| `fn(..)`             | Code addresses are not portable across cores.              |
+| `usize`, `isize`     | Width differs between a 32-bit M-core and a 64-bit A-core. |
 
 Design notes:
 

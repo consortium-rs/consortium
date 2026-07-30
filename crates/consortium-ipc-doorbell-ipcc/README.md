@@ -23,11 +23,11 @@ happen-before the peer's `wait` completion, which is why the transport's
 IPCC exposes directional channel banks with an occupancy flag per channel. This
 crate uses the simplex half of the protocol:
 
-| Operation  | IPCC action                                                       |
-| ---------- | ----------------------------------------------------------------- |
-| `ring`     | set the local transmit channel occupied (`CnSCR.CHnS`)             |
-| `wait`     | await the remote transmit channel becoming occupied, then clear it  |
-| `pending`  | read the incoming status flag non-destructively                    |
+| Operation | IPCC action                                                        |
+| --------- | ------------------------------------------------------------------ |
+| `ring`    | set the local transmit channel occupied (`CnSCR.CHnS`)             |
+| `wait`    | await the remote transmit channel becoming occupied, then clear it |
+| `pending` | read the incoming status flag non-destructively                    |
 
 Because occupancy is a **flag, not a queue**, `ring` returns
 `IpccError::ChannelOccupied` when the previous signal has not been consumed. That
@@ -54,10 +54,10 @@ link that silently listens to the wrong bank.
 
 ## Construction
 
-| Side       | Constructor                       | Obligation                            |
-| ---------- | --------------------------------- | ------------------------------------- |
-| Firmware   | `IpccDoorbell::new(p.IPCC1)`      | Consumes the chip HAL's peripheral singleton; a const assertion checks it against `<S, N>`. |
-| Linux/UIO  | `unsafe IpccDoorbell::new_mapped(base)` | Caller guarantees `base` is the **mapped virtual** base. A physical address here is undefined behaviour. |
+| Side      | Constructor                             | Obligation                                                                                               |
+| --------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Firmware  | `IpccDoorbell::new(p.IPCC1)`            | Consumes the chip HAL's peripheral singleton; a const assertion checks it against `<S, N>`.              |
+| Linux/UIO | `unsafe IpccDoorbell::new_mapped(base)` | Caller guarantees `base` is the **mapped virtual** base. A physical address here is undefined behaviour. |
 
 Even on the singleton path the window address comes from this crate's own
 `registers::base` table rather than from the singleton, so the security alias the
@@ -71,7 +71,7 @@ reach whichever half is waiting.
 
 **This crate installs no `#[interrupt]` handlers.** The application owns the vector
 table and forwards the non-secure `IPCC1_RX` / `IPCC2_RX` vectors. Enable the
-*HAL's* `rt` feature (`consortium-hal-stm32mp2/rt`) so the `#[interrupt]` macro and
+_HAL's_ `rt` feature (`consortium-hal-stm32mp2/rt`) so the `#[interrupt]` macro and
 PAC vector table are available to that code.
 
 ```rust,ignore
@@ -86,7 +86,7 @@ On Linux the same line is **level-sensitive**, and that has a consequence worth
 understanding: if the UIO IRQ loop re-arms the interrupt while a channel is still
 occupied, the line fires again immediately and the loop spins. So the `std` path
 binds the doorbell as a **service** rather than a plain notifier —
-`notify_rx_occupied_interrupt` masks every asserted channel *before* waking, and the
+`notify_rx_occupied_interrupt` masks every asserted channel _before_ waking, and the
 woken `wait` future acknowledges and re-arms its own channel:
 
 ```rust,ignore
@@ -101,14 +101,14 @@ wakeups have nothing to mask and use `bind_notifier`.)
 
 ## Features
 
-| Feature      | Effect                                                          |
-| ------------ | --------------------------------------------------------------- |
-| `stm32mp25x` | Chip selection (default). IPCC1 plus the SmartRun IPCC2.          |
-| `stm32mp23x` | Chip selection. IPCC1 plus the SmartRun IPCC2.                    |
-| `stm32mp21x` | Chip selection. IPCC1 only.                                       |
-| `std`        | Tokio `Notify` wake path and the masking service; host-testable.   |
-| `defmt`      | Derive `defmt::Format` on `IpccError`.                            |
-| `tracing`    | Route diagnostics to `consortium-log`'s `tracing` backend.          |
+| Feature      | Effect                                                           |
+| ------------ | ---------------------------------------------------------------- |
+| `stm32mp25x` | Chip selection (default). IPCC1 plus the SmartRun IPCC2.         |
+| `stm32mp23x` | Chip selection. IPCC1 plus the SmartRun IPCC2.                   |
+| `stm32mp21x` | Chip selection. IPCC1 only.                                      |
+| `std`        | Tokio `Notify` wake path and the masking service; host-testable. |
+| `defmt`      | Derive `defmt::Format` on `IpccError`.                           |
+| `tracing`    | Route diagnostics to `consortium-log`'s `tracing` backend.       |
 
 Each chip feature is forwarded to `consortium-hal-stm32mp2` so the shared PAC's
 register and interrupt definitions match the target. **A dependent selecting a

@@ -5,7 +5,7 @@ COBS-framed, CRC-protected UART transport for
 
 This is the first **wired** Consortium link. Where the shared-memory transport
 needs a separate doorbell peripheral to say "something happened", a UART's byte
-arrival *is* the notification. That makes it the transport of choice for two chips
+arrival _is_ the notification. That makes it the transport of choice for two chips
 on one board, a debug link to a host, or any pairing with no shared address space
 at all.
 
@@ -17,11 +17,11 @@ COBS( chan: u8 | payload[0..=MTU] | crc32: u32 LE )  0x00
 
 Each layer answers a specific way a serial line goes wrong:
 
-| Layer     | Handles                                                                  |
-| --------- | ------------------------------------------------------------------------ |
-| **COBS**  | Removes every `0x00` from the body, reserving it as a delimiter that cannot occur inside a frame. A receiver that lost sync only has to hunt for the next zero byte. |
-| **CRC32** | Flipped bits, a dropped byte, a peer transmitting at the wrong baud rate — corruption that framing alone cannot detect. |
-| **`chan`**| The `Chan` contract for serial links. One transport owns one logical channel and drops frames stamped with anybody else's byte. |
+| Layer      | Handles                                                                                                                                                              |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **COBS**   | Removes every `0x00` from the body, reserving it as a delimiter that cannot occur inside a frame. A receiver that lost sync only has to hunt for the next zero byte. |
+| **CRC32**  | Flipped bits, a dropped byte, a peer transmitting at the wrong baud rate — corruption that framing alone cannot detect.                                              |
+| **`chan`** | The `Chan` contract for serial links. One transport owns one logical channel and drops frames stamped with anybody else's byte.                                      |
 
 COBS is chosen over a length prefix deliberately: a length field read out of sync
 sends the receiver off by an arbitrary number of bytes, whereas a reserved delimiter
@@ -49,10 +49,10 @@ Like every Consortium transport this one does not allocate; the caller supplies
 COBS expansion and the frame accumulator both add overhead. Derive the sizes rather
 than guessing:
 
-| Half                | Size               | Holds                                  |
-| ------------------- | ------------------ | -------------------------------------- |
-| `UartTransportTx`   | `tx_buf_len(mtu)`  | frame body, then the encoded frame      |
-| `UartTransportRx`   | `rx_buf_len(mtu)`  | a read chunk, then a frame accumulator  |
+| Half              | Size              | Holds                                  |
+| ----------------- | ----------------- | -------------------------------------- |
+| `UartTransportTx` | `tx_buf_len(mtu)` | frame body, then the encoded frame     |
+| `UartTransportRx` | `rx_buf_len(mtu)` | a read chunk, then a frame accumulator |
 
 Both are `const fn`, so they work in array lengths. Both constructors verify the
 buffer against the MTU and return `Error::BufferTooSmall` rather than trusting the
@@ -63,10 +63,10 @@ caller.
 The IO bounds are chosen by the `std` feature, and this is the crate's one real
 wrinkle:
 
-| Build           | IO traits                                    | Supplied by                              |
-| --------------- | -------------------------------------------- | ---------------------------------------- |
-| no `std`        | `embedded_io_async::Read` / `Write` (0.7)     | `consortium-ipc-transport-uart-embedded`  |
-| `std`           | Tokio `AsyncRead` / `AsyncWrite`              | `consortium-ipc-transport-uart-unix`      |
+| Build    | IO traits                                 | Supplied by                              |
+| -------- | ----------------------------------------- | ---------------------------------------- |
+| no `std` | `embedded_io_async::Read` / `Write` (0.7) | `consortium-ipc-transport-uart-embedded` |
+| `std`    | Tokio `AsyncRead` / `AsyncWrite`          | `consortium-ipc-transport-uart-unix`     |
 
 The split is not cosmetic. Under `std`, transport futures must be `Send` (see
 `consortium_ipc::MaybeSend`, which Tokio's multi-threaded executor requires), and
@@ -99,18 +99,18 @@ halves or split Tokio halves fit directly.
 - **No flow control and no retransmission.** A dropped frame is dropped. Layer
   acknowledgement into the message protocol if the application needs it.
 - **Raw 8N1 only** in the current backends.
-- **Throughput is the line rate.** For bulk traffic between cores that *do* share
+- **Throughput is the line rate.** For bulk traffic between cores that _do_ share
   memory, use `consortium-ipc-transport-memory` instead.
 
 ## Features
 
 Defaults to `std`. Firmware builds want `default-features = false`.
 
-| Feature  | Effect                                                                |
-| -------- | --------------------------------------------------------------------- |
-| `std`    | `alloc`, Tokio IO bounds, `Send` futures, `tracing` diagnostics.        |
-| `alloc`  | Link `alloc` through `consortium-ipc`.                                  |
-| `defmt`  | Route diagnostics to `defmt`; derive `defmt::Format` on `Error`.        |
+| Feature | Effect                                                           |
+| ------- | ---------------------------------------------------------------- |
+| `std`   | `alloc`, Tokio IO bounds, `Send` futures, `tracing` diagnostics. |
+| `alloc` | Link `alloc` through `consortium-ipc`.                           |
+| `defmt` | Route diagnostics to `defmt`; derive `defmt::Format` on `Error`. |
 
 ## Testing
 

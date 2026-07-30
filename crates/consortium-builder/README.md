@@ -2,8 +2,8 @@
 
 Compiles, post-processes, and stages every artifact a `Consortium.toml` describes.
 
-[`consortium-cfg`](../consortium-cfg) answers *"what does this system look like, and is
-it valid?"* and emits generated source. This crate answers *"now actually build it"*:
+[`consortium-cfg`](../consortium-cfg) answers _"what does this system look like, and is
+it valid?"_ and emits generated source. This crate answers _"now actually build it"_:
 four compilers, a post-processing step remoteproc requires, and a staging tree a
 packaging recipe can consume.
 
@@ -42,12 +42,12 @@ several minutes into a cross-compile.
 Firmware, the Linux application, the OP-TEE TA, and the HMI frontend are built by very
 different toolchains:
 
-| Module        | Artifact              | Built with                        |
-| ------------- | --------------------- | --------------------------------- |
-| `firmware`    | coprocessor ELF        | `cargo`, bare-metal target         |
-| `application` | Linux executable       | `cargo`, usually cross-compiled     |
-| `optee`       | signed OP-TEE TA       | the OP-TEE TA dev kit               |
-| `web`         | HMI frontend bundle    | `vp` / `npm` (Cog) or `bun` (Pocket) |
+| Module        | Artifact            | Built with                           |
+| ------------- | ------------------- | ------------------------------------ |
+| `firmware`    | coprocessor ELF     | `cargo`, bare-metal target           |
+| `application` | Linux executable    | `cargo`, usually cross-compiled      |
+| `optee`       | signed OP-TEE TA    | the OP-TEE TA dev kit                |
+| `web`         | HMI frontend bundle | `vp` / `npm` (Cog) or `bun` (Pocket) |
 
 `Compiler` makes them uniform: each implementor owns a `Configuration` carrying all its
 parameters, a typed `Error`, and an `Output`. Its methods take the config rather than
@@ -82,7 +82,7 @@ same file.
 **Sysroot resolution has an order.** `[profile] sysroot` first, then
 `SDKTARGETSYSROOT` / `OECORE_TARGET_SYSROOT`, so a manifest can pin a sysroot without
 the developer having sourced an SDK script. On an arm64 Linux host,
-`aarch64-unknown-linux-gnu` is a *native* build and `sysroot = "/"` resolves to the
+`aarch64-unknown-linux-gnu` is a _native_ build and `sysroot = "/"` resolves to the
 image root — which is how the melt-pot manifests build inside an Apple `container` VM
 with no SDK at all.
 
@@ -91,7 +91,7 @@ keys, which a laptop or CI runner usually lacks, so the unsigned ELF can be stag
 instead (`--no-sign-ta`). Compiling the TA and signing it are separable steps.
 
 **Device-tree compilation is opt-in, for licensing reasons.** The generated `.dts`
-includes vendor `.dtsi` (BSD/MIT, vendored in `consortium-data`) *and*
+includes vendor `.dtsi` (BSD/MIT, vendored in `consortium-data`) _and_
 `dt-bindings/*.h` (GPL-2.0 kernel headers, **not** vendored). So `dtc` compilation
 requires `[dts] linux` pointing at the user's own kernel checkout. `dtc` verification
 of an overlay works without it, using preprocessor defines that reproduce the

@@ -15,16 +15,16 @@ consortium-hmi-webkit      KioskApp + bridge mounting
 
 ## Scope
 
-| Item                                                                      | Covers                          |
-| ------------------------------------------------------------------------- | ------------------------------- |
-| `init()`                                                                  | Cog initialization               |
-| `Platform`                                                                | The global platform and its setup |
-| `Shell`                                                                   | Construction, request-handler registration, metadata |
-| `View`, `Viewport`                                                        | View creation, visibility, fullscreen, viewport membership |
-| `DirectoryFilesHandler`, `HostRoutesHandler`, `PrefixRoutesHandler`        | Request routing                  |
-| `UserContentManager`, `UserScript`                                        | Injecting scripts, receiving script messages |
-| `SecurityManager`                                                         | Security-policy configuration     |
-| `utils`                                                                   | Cog URI and application-ID conversion |
+| Item                                                                | Covers                                                     |
+| ------------------------------------------------------------------- | ---------------------------------------------------------- |
+| `init()`                                                            | Cog initialization                                         |
+| `Platform`                                                          | The global platform and its setup                          |
+| `Shell`                                                             | Construction, request-handler registration, metadata       |
+| `View`, `Viewport`                                                  | View creation, visibility, fullscreen, viewport membership |
+| `DirectoryFilesHandler`, `HostRoutesHandler`, `PrefixRoutesHandler` | Request routing                                            |
+| `UserContentManager`, `UserScript`                                  | Injecting scripts, receiving script messages               |
+| `SecurityManager`                                                   | Security-policy configuration                              |
+| `utils`                                                             | Cog URI and application-ID conversion                      |
 
 `UserContentManager` and `UserScript` are what `consortium-hmi-webkit` uses to inject its
 bridge prelude as a document-start script and register the `bridge` script-message

@@ -23,11 +23,11 @@ happen-before the peer's `wait` completion, which is why the transport's
 HSEM is a lock peripheral, not a mailbox, so the signaling is a side effect of the
 locking protocol:
 
-| Operation | HSEM action                                                                |
-| --------- | -------------------------------------------------------------------------- |
+| Operation | HSEM action                                                                                        |
+| --------- | -------------------------------------------------------------------------------------------------- |
 | `ring`    | 1-step read-lock, then immediately unlock — the **unlock** raises the remote core's HSEM interrupt |
-| `wait`    | arm this core's `CnIER`, resolve when the semaphore appears in `CnMISR`, then clear it |
-| `pending` | read `CnMISR` non-destructively                                             |
+| `wait`    | arm this core's `CnIER`, resolve when the semaphore appears in `CnMISR`, then clear it             |
+| `pending` | read `CnMISR` non-destructively                                                                    |
 
 The channel space is the 16 hardware semaphores.
 
@@ -46,10 +46,10 @@ Unlike IPCC, HSEM does connect three cores, so `Tertiary` is valid here.
 
 ## Construction
 
-| Side       | Constructor                            | Obligation                        |
-| ---------- | -------------------------------------- | --------------------------------- |
-| Firmware   | `HsemDoorbell::new(p.HSEM)`            | Consumes the chip HAL's `HSEM` peripheral singleton; a const assertion checks it against `<S, N>`. |
-| Linux/UIO  | `unsafe HsemDoorbell::new_mapped(base)`| Caller guarantees `base` is the **mapped virtual** base. A physical address here is undefined behaviour. |
+| Side      | Constructor                             | Obligation                                                                                               |
+| --------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Firmware  | `HsemDoorbell::new(p.HSEM)`             | Consumes the chip HAL's `HSEM` peripheral singleton; a const assertion checks it against `<S, N>`.       |
+| Linux/UIO | `unsafe HsemDoorbell::new_mapped(base)` | Caller guarantees `base` is the **mapped virtual** base. A physical address here is undefined behaviour. |
 
 Even on the singleton path the window address comes from this crate's own
 `registers::base` table rather than from the singleton, so the security alias the
@@ -62,7 +62,7 @@ reach whichever half is waiting.
 ## Interrupts are the application's
 
 **This crate installs no `#[interrupt]` handlers.** The application owns the vector
-table and forwards the non-secure `HSEM` vector. Enable the *HAL's* `rt` feature
+table and forwards the non-secure `HSEM` vector. Enable the _HAL's_ `rt` feature
 (`consortium-hal-stm32mp2/rt`) so the `#[interrupt]` macro and PAC vector table are
 available to that code.
 
@@ -87,11 +87,11 @@ uio.bind_notifier(doorbell.notifier());
 
 | Feature      | Effect                                                            |
 | ------------ | ----------------------------------------------------------------- |
-| `stm32mp25x` | Chip selection (default). Forwarded to `consortium-hal-stm32mp2`.    |
-| `stm32mp23x` | Chip selection; shares the STM32MP25 HSEM layout.                   |
-| `std`        | Tokio `Notify` wake path; host-testable with fake MMIO.              |
-| `defmt`      | Derive `defmt::Format` on `HsemError`.                              |
-| `tracing`    | Route diagnostics to `consortium-log`'s `tracing` backend.            |
+| `stm32mp25x` | Chip selection (default). Forwarded to `consortium-hal-stm32mp2`. |
+| `stm32mp23x` | Chip selection; shares the STM32MP25 HSEM layout.                 |
+| `std`        | Tokio `Notify` wake path; host-testable with fake MMIO.           |
+| `defmt`      | Derive `defmt::Format` on `HsemError`.                            |
+| `tracing`    | Route diagnostics to `consortium-log`'s `tracing` backend.        |
 
 Each chip feature is forwarded to `consortium-hal-stm32mp2` so the shared PAC's
 register and interrupt definitions match the target. **A dependent selecting a

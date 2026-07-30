@@ -8,7 +8,7 @@ Raw FFI bindings to the Linux remoteproc firmware resource-table layout
 ## What a resource table is
 
 When Linux boots a coprocessor through remoteproc, it does not just load an ELF and set
-the reset vector. It first parses a `.resource_table` section *inside* that ELF, which
+the reset vector. It first parses a `.resource_table` section _inside_ that ELF, which
 is how the firmware tells the kernel what it needs: memory carveouts to reserve, device
 memory to map, a trace buffer to expose, virtio devices and their vrings.
 
@@ -21,16 +21,16 @@ this crate exposes it unchanged rather than paraphrasing it in Rust.
 
 Bindings for the structures a resource table is built from:
 
-| Type              | Describes                                             |
-| ----------------- | ----------------------------------------------------- |
-| `ResourceTable`   | The section header: version, entry count, offsets.     |
-| `FwRscHdr`        | Per-entry header — a single `type` word.                |
-| `FwRscCarveout`   | Memory to reserve for the coprocessor.                  |
-| `FwRscDevmem`     | Device memory to map.                                   |
-| `FwRscTrace`      | A trace buffer the kernel exposes to userspace.           |
-| `FwRscVdev`       | A virtio device.                                        |
-| `FwRscVdevVring`  | One vring of a virtio device.                            |
-| `FwResourceType`  | The entry-type discriminants.                            |
+| Type             | Describes                                          |
+| ---------------- | -------------------------------------------------- |
+| `ResourceTable`  | The section header: version, entry count, offsets. |
+| `FwRscHdr`       | Per-entry header — a single `type` word.           |
+| `FwRscCarveout`  | Memory to reserve for the coprocessor.             |
+| `FwRscDevmem`    | Device memory to map.                              |
+| `FwRscTrace`     | A trace buffer the kernel exposes to userspace.    |
+| `FwRscVdev`      | A virtio device.                                   |
+| `FwRscVdevVring` | One vring of a virtio device.                      |
+| `FwResourceType` | The entry-type discriminants.                      |
 
 ## You probably want the runtime instead
 
@@ -41,7 +41,7 @@ statically-initializable table emitting an RPMsg-vdev-plus-trace entry pair.
 That wrapper exists because of a real limitation in the raw types: `ResourceTable` and
 `FwRscVdev` model the kernel **parser** view, and their trailing arrays (`offset[]`,
 `vring[]`) are C flexible array members holding no data. They cannot be statically
-initialized. To *emit* a table you need a struct whose header is followed by a fixed
+initialized. To _emit_ a table you need a struct whose header is followed by a fixed
 `offset[N]` and the entries laid out inline, with each entry's `offset[i]` pointing at
 its `fw_rsc_hdr` word.
 
@@ -55,8 +55,8 @@ belong in the consuming runtime crates.
 bare-metal target — it only parses a header with libclang and never links a native
 library, so there is no cross-toolchain requirement beyond libclang being available.
 
-One post-processing step: bindgen's snake_case C type names (`resource_table`) are
-renamed to PascalCase (`ResourceTable`) so firmware spells them like idiomatic Rust
+One post-processing step: bindgen's `snake_case` C type names (`resource_table`) are
+renamed to `PascalCase` (`ResourceTable`) so firmware spells them like idiomatic Rust
 types. Constants such as `FW_RSC_ADDR_ANY` and the `fw_resource_type_RSC_*` variants
 contain uppercase letters and are left untouched.
 

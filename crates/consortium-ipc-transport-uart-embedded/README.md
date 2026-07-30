@@ -17,11 +17,11 @@ consortium-ipc-transport-uart        protocol, generic over IO
 
 ## Chip selection
 
-| Feature                                 | Re-exports                          | As         |
-| --------------------------------------- | ----------------------------------- | ---------- |
-| `mimx93`, `mimx95`                      | `consortium_hal_imx9::uart`         | `imx9`     |
-| `stm32mp21x`, `stm32mp23x`, `stm32mp25x`| `consortium_hal_stm32mp2::uart`     | `stm32mp2` |
-| *(none)*                                | nothing chip-specific               | —          |
+| Feature                                  | Re-exports                      | As         |
+| ---------------------------------------- | ------------------------------- | ---------- |
+| `mimx93`, `mimx95`                       | `consortium_hal_imx9::uart`     | `imx9`     |
+| `stm32mp21x`, `stm32mp23x`, `stm32mp25x` | `consortium_hal_stm32mp2::uart` | `stm32mp2` |
+| _(none)_                                 | nothing chip-specific           | —          |
 
 Pick exactly one; the HAL rejects several at once, because two chip selections mean
 an ambiguous PAC `Interrupt` enum. Each feature also forwards the chip selection to
@@ -48,7 +48,7 @@ application owns the vector table and forwards the UART interrupt into
 `on_buffered_interrupt::<T>`, parameterized with the same peripheral singleton the
 driver took. This is the same wake pattern the doorbell crates use — the crate
 exports the entry point, the application decides which vector reaches it. Enable the
-*HAL's* `rt` feature so the `#[interrupt]` macro and PAC vector table are available
+_HAL's_ `rt` feature so the `#[interrupt]` macro and PAC vector table are available
 to that code.
 
 ## Example (STM32MP2, `stm32mp25x` + the HAL's `rt`)
@@ -110,11 +110,11 @@ forwarding convention.
 
 ## Features
 
-| Feature                                  | Effect                                          |
-| ---------------------------------------- | ----------------------------------------------- |
-| `mimx93` / `mimx95`                      | Select i.MX 9; re-export its UART driver as `imx9`. |
+| Feature                                    | Effect                                               |
+| ------------------------------------------ | ---------------------------------------------------- |
+| `mimx93` / `mimx95`                        | Select i.MX 9; re-export its UART driver as `imx9`.  |
 | `stm32mp21x` / `stm32mp23x` / `stm32mp25x` | Select STM32MP2; re-export its driver as `stm32mp2`. |
-| `defmt`                                  | Forward `defmt` to the transport and chip HAL.    |
+| `defmt`                                    | Forward `defmt` to the transport and chip HAL.       |
 
 No feature is on by default, which keeps the chip-agnostic build the default.
 

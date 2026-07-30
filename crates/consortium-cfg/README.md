@@ -4,7 +4,7 @@ Turns a `Consortium.toml` manifest into validated configuration, generated Rust,
 Linux integration artifacts.
 
 This is the crate that makes Consortium's "explicit cross-core contracts" idea pay
-off. A manifest declares what the system *is* — which cores exist, which memory
+off. A manifest declares what the system _is_ — which cores exist, which memory
 windows they share, which doorbell rings which — and this crate checks that against
 the chip's real capabilities, then emits the bring-up code and device-tree nodes that
 make it so. Firmware and application authors never write the address arithmetic, the
@@ -22,12 +22,12 @@ Consortium.toml
                  └─ Kconfig / boot / systemd fragments
 ```
 
-| Stage           | Module       | Produces                                          |
-| --------------- | ------------ | ------------------------------------------------- |
-| Parse, validate | `session`    | `Session` — manifest bound to its chip database    |
+| Stage           | Module       | Produces                                            |
+| --------------- | ------------ | --------------------------------------------------- |
+| Parse, validate | `session`    | `Session` — manifest bound to its chip database     |
 | Lower           | `bridge`     | The `components` IR, addresses and UIO ids resolved |
 | Generate        | `components` | Rust tokens, DTS nodes, UIO/Kconfig fragments       |
-| Format          | `render`     | Formatted Rust source                              |
+| Format          | `render`     | Formatted Rust source                               |
 
 Schema types come from [`consortium-cfg-common`](../consortium-cfg-common); chip
 databases, per-core chip maps, and vendor device trees come from
@@ -46,7 +46,7 @@ the interesting part of this crate's contract:
 - two channels claiming the same doorbell channel;
 - memory regions out of bounds, overlapping, or misaligned for the MPU;
 - debug regions colliding with IPC regions;
-- a peripheral owned by a core that cannot reach it — checked against the *per-core*
+- a peripheral owned by a core that cannot reach it — checked against the _per-core_
   chip map, so the filter is the peripherals that core's CMSIS view actually contains;
 - `[peripheral.*]` with `secure = true`, since the chip HAL's singletons carry only the
   non-secure alias.
@@ -74,18 +74,18 @@ Codegen is deliberately **not** centralised. Each IR type emits its own output
 (`ShuHan::initialize`, `BellA::nvic_enable`, `ToUio::to_uio`), so a new component adds
 a module rather than a branch in a shared emitter.
 
-| Module          | Emits                                                          |
-| --------------- | -------------------------------------------------------------- |
+| Module          | Emits                                                                   |
+| --------------- | ----------------------------------------------------------------------- |
 | `ipc_shm`       | Transceiver construction, scratch-buffer statics, `IpcMemoryEndpoints`. |
-| `bella`         | Type-A doorbell interrupt enablement.                           |
-| `peripheral`    | HAL driver handles, interrupt handlers, NVIC enablement.          |
-| `time`          | The sealed Embassy time-driver vector and `defmt::timestamp!`.    |
-| `dbg`           | Nothing — resolves ring layout for the builder's env vars.         |
-| `uio`           | `generic-uio` DTS nodes and their `reserved-memory` carveouts.      |
-| `memory_to_uio` | Groups shared-memory regions onto one UIO device.                  |
-| `dts_render`    | The Linux device tree, merged onto a vendor base or as an overlay.   |
-| `address`       | AP `(uio_id, mmap_id)` vs a controller's physical base.              |
-| `region`        | One shared-memory window's construction expression.                 |
+| `bella`         | Type-A doorbell interrupt enablement.                                   |
+| `peripheral`    | HAL driver handles, interrupt handlers, NVIC enablement.                |
+| `time`          | The sealed Embassy time-driver vector and `defmt::timestamp!`.          |
+| `dbg`           | Nothing — resolves ring layout for the builder's env vars.              |
+| `uio`           | `generic-uio` DTS nodes and their `reserved-memory` carveouts.          |
+| `memory_to_uio` | Groups shared-memory regions onto one UIO device.                       |
+| `dts_render`    | The Linux device tree, merged onto a vendor base or as an overlay.      |
+| `address`       | AP `(uio_id, mmap_id)` vs a controller's physical base.                 |
+| `region`        | One shared-memory window's construction expression.                     |
 
 Two conventions to know before adding a component:
 
@@ -127,10 +127,10 @@ melt-pot endpoint crates are excluded from the workspace.
 
 `[dts] mode` selects between two forms sharing one analysis pass:
 
-| Mode              | Output          | Can delete properties? |
-| ----------------- | --------------- | ---------------------- |
-| `merge` (default) | a full tree     | **yes**                 |
-| `overlay`         | a `.dtso`       | no                      |
+| Mode              | Output      | Can delete properties? |
+| ----------------- | ----------- | ---------------------- |
+| `merge` (default) | a full tree | **yes**                |
+| `overlay`         | a `.dtso`   | no                     |
 
 That difference is not cosmetic: stripping a remoteproc node's `mboxes`/`mbox-names`
 requires deletion, so a manifest needing that fixup must use merge mode. Overlay mode

@@ -12,13 +12,13 @@ the resulting logs somewhere.
 
 ## Modules
 
-| Module                                | Role                                       |
-| ------------------------------------- | ------------------------------------------ |
-| `irq`                                 | The portable UIO interrupt dispatch loop.   |
-| `uio`                                 | `/dev/uioN` open, mmap, device lifecycle.    |
-| `remoteproc`                          | Load firmware, start/stop a coprocessor.     |
-| `dbg_console`                         | Drain and decode coprocessor CDBG rings.      |
-| `ipc`, `ipc_transport`, `dbg`, `tee`  | Feature-gated re-exports for generated code.  |
+| Module                               | Role                                         |
+| ------------------------------------ | -------------------------------------------- |
+| `irq`                                | The portable UIO interrupt dispatch loop.    |
+| `uio`                                | `/dev/uioN` open, mmap, device lifecycle.    |
+| `remoteproc`                         | Load firmware, start/stop a coprocessor.     |
+| `dbg_console`                        | Drain and decode coprocessor CDBG rings.     |
+| `ipc`, `ipc_transport`, `dbg`, `tee` | Feature-gated re-exports for generated code. |
 
 ## Why `irq` is not under the Linux gate
 
@@ -54,10 +54,10 @@ Two orderings carry the correctness:
 
 Bind a doorbell according to which it is:
 
-| Doorbell kind          | Bind with        | Because                         |
-| ---------------------- | ---------------- | ------------------------------- |
-| plain (GPIO, HSEM)     | `bind_notifier`   | edge-driven; nothing to mask     |
-| masking (IPCC, MU)     | `bind_service`    | must mask asserted lines first    |
+| Doorbell kind      | Bind with       | Because                        |
+| ------------------ | --------------- | ------------------------------ |
+| plain (GPIO, HSEM) | `bind_notifier` | edge-driven; nothing to mask   |
+| masking (IPCC, MU) | `bind_service`  | must mask asserted lines first |
 
 Windows are mapped by kind too: `mmap` for register and doorbell windows,
 `mmap_zeroed` for data windows. The zeroing variant exists because the AP owns first
@@ -128,10 +128,10 @@ Points worth knowing:
 
 `[dbg] mode` picks how the AP consumes coprocessor rings:
 
-| Mode          | Function | Behaviour                                              |
-| ------------- | -------- | ------------------------------------------------------ |
-| `auto`        | `spawn`  | One task per ring: drain, decode against the firmware ELF, forward each frame to `tracing`. Turnkey. |
-| `interface`   | `open`   | Return a handle per ring; the integrator drives reading and decoding. |
+| Mode        | Function | Behaviour                                                                                            |
+| ----------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| `auto`      | `spawn`  | One task per ring: drain, decode against the firmware ELF, forward each frame to `tracing`. Turnkey. |
+| `interface` | `open`   | Return a handle per ring; the integrator drives reading and decoding.                                |
 
 A debug ring has **no doorbell of its own**, so the auto task polls on a fixed interval
 rather than waiting on an interrupt.
@@ -140,14 +140,14 @@ rather than waiting on an interrupt.
 
 Defaults are `dbg`, `ipc-shm`, and `macros`.
 
-| Feature             | Effect                                                     |
-| ------------------- | ---------------------------------------------------------- |
-| `ipc`               | Re-export `consortium-ipc`.                                 |
-| `ipc-shm`           | UIO-backed shared-memory IPC; implies `ipc`.                 |
-| `dbg`               | Debug-ring decoding and `dbg_console`.                       |
-| `macros`            | The `#[main]` / `#[fail]` entry macros.                       |
-| `tee`               | Re-export `consortium-tee`.                                  |
-| `hmi`, `ort`, `ffi` | Re-export the HMI bridge, ONNX Runtime, and C ABI crates.     |
+| Feature             | Effect                                                                                                                             |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `ipc`               | Re-export `consortium-ipc`.                                                                                                        |
+| `ipc-shm`           | UIO-backed shared-memory IPC; implies `ipc`.                                                                                       |
+| `dbg`               | Debug-ring decoding and `dbg_console`.                                                                                             |
+| `macros`            | The `#[main]` / `#[fail]` entry macros.                                                                                            |
+| `tee`               | Re-export `consortium-tee`.                                                                                                        |
+| `hmi`, `ort`, `ffi` | Re-export the HMI bridge, ONNX Runtime, and C ABI crates.                                                                          |
 | chip features       | `mimx93`/`mimx95`, `stm32mp21x`/`23x`/`25x` — forwarded to the shared-memory transport so it can report doorbell window addresses. |
 
 `stm32mp2xx` is a compatibility alias for `stm32mp25x`; new code should name a chip

@@ -34,7 +34,7 @@ The source list mirrors `cogcore_sources` in the vendored `meson.build`, minus
 `cog-gamepad-manette.c`, which the checked-in `cog-config.h` disables
 (`COG_ENABLE_GAMEPAD_MANETTE 0`).
 
-Note that the *system* WPE, WebKit, GLib, and libsoup libraries are still linked — only
+Note that the _system_ WPE, WebKit, GLib, and libsoup libraries are still linked — only
 Cog Core itself is vendored.
 
 ## Build requirements

@@ -45,10 +45,10 @@ so concurrent calls are the page's business.
 
 ## Content source
 
-| Build   | Loads                                                            |
-| ------- | ---------------------------------------------------------------- |
-| debug   | `CONSORTIUM_HMI_DEBUG_URL` if injected — a dev server, for live reload |
-| otherwise | the compiled dist at `CONSORTIUM_HMI_DIST` (defaults to `dist`)     |
+| Build     | Loads                                                                  |
+| --------- | ---------------------------------------------------------------------- |
+| debug     | `CONSORTIUM_HMI_DEBUG_URL` if injected — a dev server, for live reload |
+| otherwise | the compiled dist at `CONSORTIUM_HMI_DIST` (defaults to `dist`)        |
 
 Both are injected at compile time by `consortium-builder` from `[hmi]` in
 `Consortium.toml`, and read with `option_env!`. The dev-server path is debug-only on

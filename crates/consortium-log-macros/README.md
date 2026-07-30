@@ -34,7 +34,7 @@ them, and a name used twice reuses one index.
 The macro takes **three parenthesized groups** — callback path, log level, and the
 original log arguments — and re-emits an invocation of that callback.
 
-Threading the callback path *through* the macro is what preserves
+Threading the callback path _through_ the macro is what preserves
 `consortium-log`'s `$crate` hygiene. The facade passes `$crate::__defmt`, so the
 expansion names the facade's own dispatch macro regardless of which crate the log
 call was written in. A proc-macro cannot synthesize a `$crate` token of its own,

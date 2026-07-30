@@ -15,10 +15,10 @@ unit tests and `insta` snapshots.
 
 ## Contents
 
-| Module  | Macros                  | Generates                                      |
-| ------- | ----------------------- | ---------------------------------------------- |
-| `entry` | `mcu_main`, `app_main`   | Executor attribute, `init()` call, `Context` binding. |
-| `fail`  | `mcu_fail`, `app_fail`   | An init-failure handler that shadows the fallback. |
+| Module  | Macros                 | Generates                                             |
+| ------- | ---------------------- | ----------------------------------------------------- |
+| `entry` | `mcu_main`, `app_main` | Executor attribute, `init()` call, `Context` binding. |
+| `fail`  | `mcu_fail`, `app_fail` | An init-failure handler that shadows the fallback.    |
 
 Two families, one per runtime target, differing only where they must:
 
@@ -26,7 +26,7 @@ Two families, one per runtime target, differing only where they must:
   Both resolve the executor through the **user** crate's own dependency rather than
   through this one — a proc-macro cannot supply a runtime, and the user's executor
   configuration (thread mode, platform) has to be theirs.
-- **`app_main`** additionally installs a `tracing` subscriber *before* the generated
+- **`app_main`** additionally installs a `tracing` subscriber _before_ the generated
   `init()` runs, so bring-up diagnostics are not dropped for want of a subscriber.
 - The `fail` tails differ: firmware parks with `cortex_m::asm::wfi()` because it cannot
   proceed without a `Context`; an application calls `std::process::exit(1)` so a
@@ -43,7 +43,7 @@ module. Applying `#[fail]` emits a **module-scope** `fn __consortium_init_fail` 
 shadows the glob-imported one — a stable Rust guarantee: a local item shadows a glob
 import. With no `#[fail]`, the fallback is used unchanged.
 
-The payoff is that the user handler receives the *concrete* generated init-error type
+The payoff is that the user handler receives the _concrete_ generated init-error type
 with no trait object, no registration call, and no runtime dispatch. The cost is the
 constraint:
 

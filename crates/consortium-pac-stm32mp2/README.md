@@ -19,22 +19,22 @@ consortium-hal-stm32mp2      drivers, owned singletons  ← depend on this
 
 ## Contents
 
-| Module        | Contents                                                        |
-| ------------- | --------------------------------------------------------------- |
-| `peripherals` | Register block definitions, one module per peripheral kind.       |
-| `interrupts`  | The chip's `Interrupt` enum; with `rt`, `__INTERRUPTS` too.       |
-| `common`      | Register/field access primitives the generated code builds on.     |
-| `metadata`    | Machine-readable register description, ported from `stm32-data`.   |
+| Module        | Contents                                                         |
+| ------------- | ---------------------------------------------------------------- |
+| `peripherals` | Register block definitions, one module per peripheral kind.      |
+| `interrupts`  | The chip's `Interrupt` enum; with `rt`, `__INTERRUPTS` too.      |
+| `common`      | Register/field access primitives the generated code builds on.   |
+| `metadata`    | Machine-readable register description, ported from `stm32-data`. |
 
 Peripheral blocks currently generated: ADC, DMA (HPDMA global plus channel blocks),
 FDCAN, GPIO, HSEM, I2C, I3C, LPTIM, RCC, SPI, TIM, USART.
 
 ## Features
 
-| Feature      | Effect                                                              |
-| ------------ | ------------------------------------------------------------------- |
-| `stm32mp257` | Chip selection (default). Covers **both** STM32MP23 and STM32MP25.    |
-| `stm32mp21`  | Chip selection.                                                       |
+| Feature      | Effect                                                                  |
+| ------------ | ----------------------------------------------------------------------- |
+| `stm32mp257` | Chip selection (default). Covers **both** STM32MP23 and STM32MP25.      |
+| `stm32mp21`  | Chip selection.                                                         |
 | `rt`         | `cortex-m-rt` integration: the `#[interrupt]` macro and `__INTERRUPTS`. |
 | `defmt`      | Derive `defmt::Format` on generated types where applicable.             |
 
@@ -96,5 +96,5 @@ generated files. Contributions welcome.
 
 Apache-2.0. See [LICENSE](../../LICENSE).
 
-The vendor headers this crate is generated *from* live in `submodules/` and are not
+The vendor headers this crate is generated _from_ live in `submodules/` and are not
 redistributed here; only the generated Rust is.

@@ -26,11 +26,11 @@ consortium-tee                    re-exports the macros next to the traits
 
 ## Contents
 
-| Module        | Generates                                                        |
-| ------------- | ---------------------------------------------------------------- |
+| Module        | Generates                                                         |
+| ------------- | ----------------------------------------------------------------- |
 | `tee_param`   | `impl<C: CodecFor<Self>> TeeParam<C>` for a user type.            |
-| `tee_command` | `call_<name>` (CA) and `<name>_dispatched` (TA) for one function.  |
-| `tee_service` | The `Command` enum and `invoke_command` dispatch for a TA.         |
+| `tee_command` | `call_<name>` (CA) and `<name>_dispatched` (TA) for one function. |
+| `tee_service` | The `Command` enum and `invoke_command` dispatch for a TA.        |
 
 ### `tee_param`
 
