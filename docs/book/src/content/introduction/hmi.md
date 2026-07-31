@@ -1,74 +1,53 @@
-# Human-Machine Interface (HMI)
+# Human-Machine Interface
 
-A Human-Machine Interface (HMI) provides the user-facing control and visualization layer of an embedded system. In HAMPU systems, the HMI commonly runs in the CA domain, where Linux provides graphics, input, windowing, and application framework support.
+An HMI belongs on the Linux-capable side of a heterogeneous system, where display,
+input, graphics, and application services are available. Real-time or safety-critical
+control remains behind typed service and IPC boundaries instead of moving into the UI
+process.
 
-## PocketJS-first native HMI
+Consortium separates the application-service bridge from the rendering engine.
+`consortium-hmi` is a backend-neutral command registry: a UI sends a command and string
+payload, and the bridge returns a response future. It contains no WebKit, GLib, Pocket,
+or Tokio runtime state.
 
-Consortium's intended primary HMI is PocketJS: Solid or Vue Vapor JSX compiled
-for a retained Rust UI core and rendered natively, without a browser engine in
-the production path. This gives constrained embedded products a reactive UI
-authoring model while keeping layout, text, animation, focus, and draw-list
-generation in native code.
+## Cog and WPE WebKit
 
-A headless PocketJS host and Consortium service bridge now exist as a prototype
-in `consortium-hmi-pocket`. A production Linux window/input shell and
-engine-specific builder pipeline are still pending. Cog/WPE WebKit remains the
-current packaged backend and a compatibility option for products that require
-browser APIs or existing web applications. See the [PocketJS repository and
-integration notes](../../dev/hmi/pocketjs.md) for the reviewed components,
-gaps, and proposed bring-up order.
-
-## Traditional Path: Qt
-
-A common HMI development stack is Qt. In this model, the Linux side runs a Qt application that renders the user interface, handles user input, and communicates with lower-level services or processors.
+`consortium-hmi-webkit` adapts the bridge to Cog/WPE WebKit. It is useful for existing
+web applications and products that need browser APIs while retaining a kiosk-focused
+embedded runtime.
 
 ```text
-User input / display
-        |
-        v
-Qt application
-        |
-        |  Qt Widgets / Qt Quick / QML
-        v
-Linux graphics and input stack
-        |
-        |  Wayland / DRM / framebuffer / evdev
-        v
-Display and touch hardware
+web application
+      |
+Consortium command bridge
+      |
+Cog / WPE WebKit
+      |
+Wayland or direct display backend
 ```
 
-Qt applications are typically built using either Qt Widgets or Qt Quick/QML. Qt Widgets is commonly used for conventional desktop-style interfaces. Qt Quick/QML is commonly used for touch-oriented, animated, and embedded HMI designs.
+In development, the application can load the `[hmi].debug` URL from a local frontend
+server. Release builds package the generated assets from `[hmi].build` and stage them
+under `dist/www/`.
 
-The HMI application usually does not directly control safety-critical or real-time functions. Instead, it communicates with backend services, IPC endpoints, device drivers, or MCU-side firmware to display system state and submit user commands.
+## Pocket
 
-## Chromium-based HMI
+`consortium-hmi-pocket` is the native path. PocketJS compiles a reactive Solid or Vue
+Vapor UI into a JavaScript bundle and resource pack consumed by a retained Rust UI
+runtime. Consortium provides windowed and headless shells around the same frame
+contract, plus the common service bridge.
 
-With modern MPUs providing stronger GPU and DSP capability, web-based HMI is becoming common in embedded systems. A typical approach is to run a Chromium-based application stack, including frameworks such as Tauri, for HTML, CSS, and JavaScript-based interfaces.
+The build pipeline accepts `engine = "pocket"`, invokes the Pocket build, and stages
+`<app>.js` with `<app>.pak` under `dist/hmi/`. The manifest also carries the logical
+viewport. Pocket currently supports Wayland and headless modes; a direct DRM/KMS shell
+is not yet available.
 
-However, embedded HMI kiosk deployments usually need only a small subset of the full desktop/web-app feature set. Features such as complex window management, mobile targets, plugin systems, X11 support, and broad host integration are often unnecessary. This can make Chromium-based stacks relatively heavy for constrained embedded platforms.
+## Choosing an engine
 
-## WPE WebKit-based HMI
+Choose Cog when compatibility with browser APIs or an existing web application matters
+most. Choose Pocket when a native retained renderer, smaller browser-free runtime, and
+headless visual testing fit the product better.
 
-WPE WebKit provides a lighter web-based HMI option for embedded kiosk systems. It is built around `libwpe`, `wpebackend-fdo`, and `wpewebkit`. `cog` is a WPE launcher and web application container designed for kiosk-mode use.
-
-```text id="v2t4ne"
-HMI web assets
-        |
-        v
-cog
-        |
-        v
-WPE WebKit
-        |
-        v
-Wayland or direct rendering
-        |
-        v
-GPU / display hardware
-```
-
-Compared with a full Chromium stack, this approach is smaller and more focused. Through Wayland or direct GPU rendering, `cog` can provide a practical embedded web HMI runtime with fewer unnecessary desktop-oriented components.
-
-Consortium provides Rust bindings around `cog`. The `cogcore-sys` crate exposes direct `glib`-based FFI access, while `cogcore` provides a safer Rust wrapper over `cogcore`.
-
-For HMI development, the model is inspired by Tauri but remains kiosk-focused. It supports separation between debug mode using a localhost page and release mode using bundled assets, as well as controlled browser-host communication for interaction between the web UI and the embedded backend.
+Both engines keep product services behind the same bridge, which limits engine-specific
+code and makes it possible to change the renderer without redesigning backend commands.
+See the [Project Manifest](../guide/manifest.md) for the current `[hmi]` fields.

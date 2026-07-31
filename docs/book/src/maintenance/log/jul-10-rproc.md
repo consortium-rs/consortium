@@ -117,11 +117,11 @@ To determine whether the M-core was running, I added logic to toggle a GPIO upon
 
 According to [UM3385](https://www.st.com/resource/en/user_manual/um3385-discovery-kit-with-stm32mp257f-mpu-stmicroelectronics.pdf), the board has LEDs on `PH4`, `PH5`, `PH6`, and `PH7`:
 
-![led_dk_mp25](/figures/led_dk_mp25.png)
+![led_dk_mp25](../figures/led_dk_mp25.png)
 
 `PH6` is assigned to the CM33:
 
-![gpio_pgph_rif_mp25](/figures/gpio_pgph_rif_mp25.png)
+![gpio_pgph_rif_mp25](../figures/gpio_pgph_rif_mp25.png)
 
 The HAL implements the GPIO writes as follows:
 
@@ -276,8 +276,8 @@ mask   = 0x0c         (bits [3:2])
 
 According to pages 934–935 of the reference manual, this is the `PWR_CPU2D2SR` register:
 
-![pwr_cpu2d2sr_1_mp25](/figures/pwr_cpu2d2sr_1_mp25.png)
-![pwr_cpu2d2sr_2_mp25](/figures/pwr_cpu2d2sr_2_mp25.png)
+![pwr_cpu2d2sr_1_mp25](../figures/pwr_cpu2d2sr_1_mp25.png)
+![pwr_cpu2d2sr_2_mp25](../figures/pwr_cpu2d2sr_2_mp25.png)
 
 We used the following script to detect the state automatically:
 

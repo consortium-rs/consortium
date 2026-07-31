@@ -35,7 +35,8 @@ root@stm32mp2-e3-aa-db:~# ls -d /sys/class/uio/uio* 2>/dev/null
 root@stm32mp2-e3-aa-db:~#
 ```
 
-Enabling UIO required rebuilding the kernel with Yocto. Following [Yocto, July 3](jul-3-yocto.md), we modified `config.cfg`:
+Enabling UIO required rebuilding the kernel with Yocto. Following the July 3 Yocto
+investigation, which is not retained in this book, we modified `config.cfg`:
 
 ```conf
 CONFIG_UIO=y

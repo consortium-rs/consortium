@@ -2,7 +2,7 @@
 
 ## Context
 
-Consortium's IPC today has one transport: shared memory (`consortium-ipc-transport-memory`). The docs ([docs/src/content/introduction/ipc.md](docs/src/content/introduction/ipc.md)) already classify UART as a **Wired transport** with a **Type-B doorbell** (notification implicit in transport activity), and `Doorbell`'s docs reserve the `Chan` meaning "Serial: logical channel byte in frame header". This plan adds UART as the second transport candidate, as a proof of concept:
+Consortium's IPC today has one transport: shared memory (`consortium-ipc-transport-memory`). The docs ([IPC introduction](../../content/introduction/ipc.md)) already classify UART as a **Wired transport** with a **Type-B doorbell** (notification implicit in transport activity), and `Doorbell`'s docs reserve the `Chan` meaning "Serial: logical channel byte in frame header". This plan adds UART as the second transport candidate, as a proof of concept:
 
 - embedded side speaks `embedded-io-async`,
 - _nix side speaks `/dev/tty_`,
@@ -14,7 +14,7 @@ Consortium's IPC today has one transport: shared memory (`consortium-ipc-transpo
 
 ## Step 1 — RPITIT refactor in `consortium-ipc`
 
-[crates/consortium-ipc/src/transport.rs](crates/consortium-ipc/src/transport.rs):
+[`crates/consortium-ipc/src/transport.rs`](https://github.com/consortium-rs/consortium/blob/main/crates/consortium-ipc/src/transport.rs):
 
 ```rust
 pub trait SendTransport: TransportError {
@@ -34,9 +34,9 @@ pub trait RecvTransport: TransportError {
 
 Update call sites / impls:
 
-- [crates/consortium-ipc/src/channel.rs](crates/consortium-ipc/src/channel.rs) — `send`/`recv` bodies already just `.await`; only the `MockTransport` test impls change (drop `type SendFut/RecvFut`, return the same `ready(..)` values behind `-> impl Future` or convert to `async fn`).
-- [crates/consortium-ipc/src/transceiver.rs](crates/consortium-ipc/src/transceiver.rs) — delegates through `Channel`; adjust bounds only if it repeats the GAT names.
-- [crates/consortium-ipc-transport-memory/src/transport.rs](crates/consortium-ipc-transport-memory/src/transport.rs) — the six `SendTransport`/`RecvTransport` impl blocks (combined + Tx/Rx halves) drop the `type SendFut/RecvFut` associated types and return the existing hand-rolled `SendFut`/`RecvFut` structs from `-> impl Future + MaybeSend` methods. The future structs themselves are untouched.
+- [`crates/consortium-ipc/src/channel.rs`](https://github.com/consortium-rs/consortium/blob/main/crates/consortium-ipc/src/channel.rs) — `send`/`recv` bodies already just `.await`; only the `MockTransport` test impls change (drop `type SendFut/RecvFut`, return the same `ready(..)` values behind `-> impl Future` or convert to `async fn`).
+- [`crates/consortium-ipc/src/transceiver.rs`](https://github.com/consortium-rs/consortium/blob/main/crates/consortium-ipc/src/transceiver.rs) — delegates through `Channel`; adjust bounds only if it repeats the GAT names.
+- [`crates/consortium-ipc-transport-memory/src/transport.rs`](https://github.com/consortium-rs/consortium/blob/main/crates/consortium-ipc-transport-memory/src/transport.rs) — the six `SendTransport`/`RecvTransport` impl blocks (combined + Tx/Rx halves) drop the `type SendFut/RecvFut` associated types and return the existing hand-rolled `SendFut`/`RecvFut` structs from `-> impl Future + MaybeSend` methods. The future structs themselves are untouched.
 - Transport-memory tests (`tests/async_atomic_waker/`, `tests/async_embassy/`, etc.) implement `Doorbell`, not the transport traits — expected to pass unchanged; fix any stragglers found by `cargo test`.
 
 ## Step 2 — `consortium-ipc-transport-uart` (unified entry, owns the wire protocol)
