@@ -220,11 +220,11 @@ The two paths used the same setup and underlying operation, yet only one appeare
 
 We checked the IRQ table again in [RM0457](https://www.st.com/resource/en/reference_manual/rm0457-stm32mp2325xx-advanced-armbased-3264bit-mpus-stmicroelectronics.pdf), using page 1739 for `TIM2`:
 
-![tim2_irq_stm32mp25](/figures/tim2_irq_mp25.png)
+![tim2_irq_stm32mp25](../figures/tim2_irq_mp25.png)
 
 Page 1741 lists `IPCC1_RX`:
 
-![ipcc_irq_stm32mp25](/figures/ipcc_irq_mp25.png)
+![ipcc_irq_stm32mp25](../figures/ipcc_irq_mp25.png)
 
 The IRQ numbers were correct, so the discrepancy required another explanation.
 
@@ -246,7 +246,7 @@ Unlike `TIM2`, `IPCC1_RX` has an `EXTI1` path. We used `devmem2` to inspect the 
 
    Because `m=1` corresponds to the A35 and the M33's `m=2` register is inaccessible from the A35, we first read `EXTI1_C1IMR2`.
 
-   ![exti_cmimr2_stm32mp25](/figures/exti_cmimr2_mp25.png)
+   ![exti_cmimr2_stm32mp25](../figures/exti_cmimr2_mp25.png)
 
    ```sh
    root@stm32mp2-e3-cb-5f:~# devmem2 0x44220090 w
@@ -266,7 +266,7 @@ Unlike `TIM2`, `IPCC1_RX` has an `EXTI1` path. We used `devmem2` to inspect the 
 
 2. Read `EXTI1_RPR2`.
 
-   ![exti_rpr3_stm32mp25](/figures/exti1_rpr2_mp25.png)
+   ![exti_rpr3_stm32mp25](../figures/exti1_rpr2_mp25.png)
 
    ```
    root@stm32mp2-e3-cb-5f:~# devmem2 0x4422002c w
@@ -279,7 +279,7 @@ Unlike `TIM2`, `IPCC1_RX` has an `EXTI1` path. We used `devmem2` to inspect the 
 
 3. Read `EXTI1_FPR2`.
 
-   ![exti_fpr3_stm32mp25](/figures/exti1_fpr2_mp25.png)
+   ![exti_fpr3_stm32mp25](../figures/exti1_fpr2_mp25.png)
 
    ```
    root@stm32mp2-e3-cb-5f:~# devmem2 0x44220030 w
@@ -338,7 +338,7 @@ ISER5 is selected because `171 / 32 = 5`, with bit `171 % 32 = 11`. This write r
 
 1. The `IPCC_C1MR` word indicates the mask:
 
-   ![ipcc_c1mr_mp25](/figures/ipcc_c1mr_mp25.png)
+   ![ipcc_c1mr_mp25](../figures/ipcc_c1mr_mp25.png)
 
    ```
    /* (IPCC1) IPCC_C1MR */
@@ -350,8 +350,8 @@ ISER5 is selected because `171 / 32 = 5`, with bit `171 % 32 = 11`. This write r
 
 2. The `IPCC_C1TOC2SR` word indicates the state:
 
-   ![ipcc_c1toc2sr_1_mp25](/figures/ipcc_c1toc2sr_1_mp25.png)
-   ![ipcc_c1toc2sr_2_mp25](/figures/ipcc_c1toc2sr_2_mp25.png)
+   ![ipcc_c1toc2sr_1_mp25](../figures/ipcc_c1toc2sr_1_mp25.png)
+   ![ipcc_c1toc2sr_2_mp25](../figures/ipcc_c1toc2sr_2_mp25.png)
 
    ```
    root@stm32mp2-e3-cb-5f:~# devmem2 0x4049000c w
@@ -370,7 +370,7 @@ This hypothesis was weak, however. As described in [the earlier UIO investigatio
 
 To determine whether the M-core could reset the `IPCC1` peripheral, we inspected `RCC_IPCC1CFGR` on page 1172.
 
-![rcc_ipcc1cfgr_mp25](/figures/rcc_ipcc1cfgr_mp25.png)
+![rcc_ipcc1cfgr_mp25](../figures/rcc_ipcc1cfgr_mp25.png)
 
 ```
 root@stm32mp2-e3-cb-5f:~# devmem2 0x44200570 w
@@ -383,13 +383,13 @@ Both `IPCC1LPEN` and `IPCC1EN` were `true`, confirming that the clock was enable
 
 We then identified the register that controls access to `RCC_IPCC1CFGR` on page 1075:
 
-![rcc_r87cidcfgr_mp25](/figures/rcc_r87cidcfgr_mp25.png)
+![rcc_r87cidcfgr_mp25](../figures/rcc_r87cidcfgr_mp25.png)
 
 `RCC_IPCC1CFGR` is managed by `RCC_R87CIDCFGR`.
 
 Page 1088 defines `RCC_R87CIDCFGR` as follows:
 
-![rcc_rxcidcfgr_mp25](/figures/rcc_rxcidcfgr_mp25.png)
+![rcc_rxcidcfgr_mp25](../figures/rcc_rxcidcfgr_mp25.png)
 
 ```
 root@stm32mp2-e3-cb-5f:~# devmem2 0x442002e8 w
@@ -471,7 +471,7 @@ Execution still stopped while unmasking the interrupt.
 
 To determine whether this behavior was specific to IPCC or affected other interrupts, I tested `TIM6`, which is also assigned to the M33:
 
-![tim_risup_mp25](/figures/tim_risup_mp25.png)
+![tim_risup_mp25](../figures/tim_risup_mp25.png)
 
 ### Cold Start: Execution Stops
 

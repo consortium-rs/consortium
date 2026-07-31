@@ -275,7 +275,7 @@ The first possibility was initially the most intuitive. In an earlier, unrelated
 
 Checking [RM0457](https://www.st.com/resource/en/reference_manual/rm0457-stm32mp2325xx-advanced-armbased-3264bit-mpus-stmicroelectronics.pdf) did not support that hypothesis:
 
-![rif_aware_idx_mp25](/figures/rif_aware_idx_mp25.png)
+![rif_aware_idx_mp25](../figures/rif_aware_idx_mp25.png)
 
 The official STM32CubeMX example assigned `IPCC1` to all cores and disabled opt-out. Both CPU1 (`ca35`) and CPU2 (`cm33`) therefore had access to the peripheral, ruling out the `RIF` hypothesis.
 

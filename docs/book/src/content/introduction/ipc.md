@@ -1,106 +1,100 @@
-# Inter-Processor Communication (IPC)
+# Inter-Processor Communication
 
-Inter-Processor Communication (IPC) is a core task in HAMPU development. Unlike MPU + MCU architectures that rely on serial links such as UART or SPI, HAMPU systems commonly use shared memory as the primary IPC transport between the CA and CM domains.
+Inter-processor communication (IPC) lets processors with separate runtimes cooperate
+without pretending they share one address space. A Linux application and a real-time
+firmware image may observe the same SRAM, but they do not share Rust references, heaps,
+executors, or failure handling.
 
-## Traditional Path: RPMsg
+Consortium models that boundary as typed messages over an explicit transport.
 
-A conventional Linux-oriented AMP IPC stack is often built around RPMsg. In this model, the CA side communicates through a Linux RPMsg interface, such as `rpmsg_char`, `rpmsg_tty`, or a custom RPMsg kernel driver. The RPMsg framework packages messages into VirtIO vrings located in a shared memory region, while a mailbox interrupt or IPI is used to notify the remote processor that new data is available. On the CM side, an OpenAMP, RPMsg-Lite, RTOS, or bare-metal endpoint consumes the message and delivers it to the CM application.
+## The conventional path
 
-Conceptually, the traditional RPMsg path can be summarized as follows:
+Linux systems often use RPMsg: VirtIO vrings carry buffers in shared memory and a
+mailbox interrupt notifies the remote processor. RPMsg is a good fit when Linux kernel
+integration and OpenAMP interoperability are the primary requirements.
+
+Consortium offers a smaller userspace-oriented path for systems that want the
+cross-core contract expressed directly in Rust. Linux maps validated memory and
+doorbell windows through UIO; firmware accesses the corresponding physical regions and
+hardware interrupt lines.
+
+## The Consortium model
 
 ```text
-CA Linux user app / kernel driver
-        |
-        |  /dev/rpmsg*, rpmsg_char, rpmsg_tty, or custom rpmsg driver
-        v
-Linux RPMsg framework
-        |
-VirtIO / vring
-        |
-Shared memory region
-        |
-Mailbox interrupt / IPI
-        |
-CM OpenAMP / RPMsg-Lite / RTOS / bare-metal endpoint
-        |
-CM application
+message type
+    |
+CodecFor<T>       typed value <-> bytes
+    |
+Channel<Tx/Rx>    direction, channel id, and fixed scratch buffer
+    |
+Transport         byte movement and MTU
+    |
+Doorbell          peer notification when the transport needs one
 ```
 
-In this architecture, RPMsg provides the logical messaging abstraction, VirtIO/vring manages shared-memory buffer exchange, shared memory carries the actual payload, and the mailbox or IPI acts as a lightweight notification mechanism rather than a data transport.
+A `Transceiver` pairs one Tx channel and one Rx channel. Application code normally sees
+only its generated transceivers and calls `send().await` or `recv().await`; the manifest
+selects the concrete codec, transport, doorbell, and memory region.
 
-## An Alternative Simpler Approach
+`Channel` does not allocate. It encodes or decodes through a fixed scratch buffer sized
+to the transport MTU. This keeps the same API usable under Tokio on Linux and in a
+`no_std` firmware image.
 
-In Consortium, we provide an alternative and simpler approach focused on simplicity and auditability. The design abstracts communication patterns first, then integrates them with concrete communication components, especially shared-memory IPC.
+## Shared-memory IPC
 
-### Generic Abstraction on IPC
+The shared-memory transport owns a `CIPC` descriptor followed by directional message
+slots. Directions are absolute—primary to secondary and secondary to primary—then
+resolved into local Tx and Rx halves for each processor.
 
-An IPC transaction generally requires several components:
+Before traffic begins, both processors run a readiness rendezvous through `Connect`:
 
-- a mechanism that prompts the receiver,
-- a medium that carries the transmission content, and
-- a pattern that converts messages into a communication-friendly format, namely serialization and deserialization.
+1. the primary publishes the descriptor and proposed layout;
+2. the secondary validates the magic, version, channel count, and MTU; and
+3. the secondary acknowledges the descriptor.
 
-Inspired by RPC, Consortium defines the following abstractions around these essential components:
+Generated initialization performs this handshake once, before splitting the transport.
+`Connect` intentionally has no timeout; callers using the lower-level API own their
+deadline policy.
 
-2. `Chan`. Represents the hardware channel ID and is validated before use.
+A doorbell carries no payload. It publishes the fact that transport state changed and
+provides the ordering edge that makes earlier shared-memory writes visible to the peer.
+Current hardware bindings cover STM32 HSEM/IPCC, i.MX MU, and GPIO signaling.
 
-3. `Doorbell`, paired with `Chan`. A `Doorbell` is the mechanism that prompts the receiver. Consortium separates doorbells into three types:
-   - Type-A (`BellA`): Explicit on-chip inter-processor doorbell. This includes HAMPU hardware mailbox peripherals used to fire interrupts between processors, such as HSEM (Hardware Semaphore), MU (Messaging Unit), and IPCC (Inter-processor Communication Controller).
-   - Type-B (`BellB`): Implicit transport-coupled notification. This refers to notification behavior inherent to transport activity, such as UART, SPI, and similar communication interfaces.
-   - Type-C (`BellC`): External or board-level notification, especially GPIO-based interrupts.
+## Memory visibility
 
-   A doorbell has a simple role: `ring()` triggers an interrupt to the peer core, `wait()` asynchronously waits for an interrupt from the peer core, and `pending()` performs a non-blocking check for an arrived interrupt. Each operation is paired with a specific `Chan`, which identifies the doorbell channel.
+`consortium-shared-memory` makes cache behavior part of the region type:
 
-4. `Transport`. A `Transport` may be half-duplex, full-duplex, split-directional, or shared bidirectional. Like `Doorbell`, Consortium defines three transport categories:
-   - Shared Memory. On-chip RAM-based transport, commonly used in HAMPU systems. In addition to the generic transport abstraction, Consortium introduces `Descriptor` and `Slot`.
-   - Wired. Transport over a specific wired protocol, such as UART, SPI, CAN, or EtherCAT.
-   - Wireless. Transport over a specific wireless protocol, such as Wi-Fi or Bluetooth Low Energy.
+- `SramRegion` models coherent on-chip SRAM and uses no-op cache maintenance;
+- `DdrRegion` performs AArch64 data-cache maintenance where required; and
+- `SerialRegion` is a virtual, unbacked region used for framed transports.
 
-   A transport provides `send()` and `recv()` operations for data transmission and reception.
+On Linux, shared and doorbell windows are mapped from `/dev/uioN`. On firmware, the
+generated code uses validated physical addresses and configures the expected memory
+attributes. The same manifest also drives reserved-memory and UIO device-tree output.
 
-5. `Codec`. `Codec` is a project-wide abstraction used across Consortium, including IPC, TEE, and HMI. It defines how typed messages are serialized and deserialized. Refer to the standalone `Codec` section for more information.
+## UART IPC
 
-6. `Channel`. In Consortium, IPC is composed of typed channels. All IPC transactions are strongly typed. A channel uses type generics to define its direction (`Tx` or `Rx`), the selected `Transport`, the selected `Codec`, and the message type.
+UART is a transport-coupled notification path: receiving bytes is itself the wakeup, so
+there is no separate `Doorbell` or processor `Side`. Frames use:
 
-7. `Transceiver`. A `Transceiver` is commonly used during initialization to expose the initialized IPC endpoint to the user. After initialization, the user can directly use `.[ipc name]` to send and receive messages, or split the endpoint into separate transmitter and receiver channels.
+```text
+COBS(logical channel | payload | CRC32 little-endian) + 0x00
+```
 
-### Shared Memory Communication Fit
+The host implementation uses Tokio serial I/O and provides pseudo-terminal test pairs.
+The firmware adapter works with `embedded-io-async`; chip features add interrupt-buffered
+UART drivers for i.MX9 and STM32MP2.
 
-#### Abstraction Extensions
+## Safe message boundaries
 
-Based on the generic IPC abstraction, Consortium minimally extends the model to support shared-memory communication. The following abstractions are introduced:
+`#[derive(IpcSafe)]` recursively rejects values that cannot be meaningful on another
+processor: raw pointers, references, function pointers, `usize`, and `isize`. It is
+designed to catch address-space and word-size mistakes at compile time.
 
-1. `Region`: a memory region described by its base pointer, length, coherency policy, and cache maintenance actions such as flush and invalidate.
+The codec supplies the serialization contract. Postcard and prost produce owned
+decoded values; rkyv can return a validated view borrowing the receive buffer. For this
+reason `recv()` returns `ReceivedMessage` instead of assuming every codec creates an
+owned `T`.
 
-2. `Descriptor`: a shared handshake region that describes the section using fields such as magic, version, and protocol-specific handshake conventions.
-
-3. `Slot`: a message payload region with flags and a defined format, either fixed-length or variable-length, optionally protected by CRC.
-
-#### Memory Access
-
-The Cortex-A side often runs a full operating system, which usually relies on virtual memory. In this scenario, Consortium adopts `mmap` for direct access to the shared physical memory region.
-
-On Linux, Consortium provides a UIO-based access paradigm. Through UIO, the CA side can map the physical memory region into userspace and listen for interrupts through the UIO interrupt interface.
-
-#### Cache Coherency
-
-Consortium provides two options for maintaining cache coherency across different deployment scenarios:
-
-1. Declare the shared memory region as non-cacheable.
-   - On Cortex-A, the shared region is declared as `reserved-memory` and marked `no-map`.
-   - On Cortex-M, such as M7 and M33, the MPU is configured to declare the shared memory region as outer-shareable and non-cacheable.
-
-   In this case, the `flush()` and `invalidate()` actions defined by `Region` may be implemented as no-ops and eliminated by the compiler.
-
-2. Maintain cache explicitly for cached mappings.
-
-   In this mode, `Region` allows custom `flush()` and `invalidate()` actions to be defined. When `send()` and `recv()` are called by the transport, the corresponding cache maintenance actions are invoked automatically and paired with the required memory fence or barrier operations.
-
-#### Boundary Contract
-
-We introduce a proc macros `#[derive(IpcSafe)]` to ensure boundary safety. Rejected field types (checked recursively through generics, arrays, tuples, etc.):
-
-- Raw pointers (`*const T`, `*mut T`) — meaningless across separate address spaces
-- References (`&T`, `&mut T`) — local to one address space
-- Function pointers (`fn(...)`) — addresses are not portable across cores
-- `usize` / `isize` — width is platform-dependent (32-bit M-core vs 64-bit A-core)
+See [System Architecture](../guide/architecture.md) for the crate layout and
+[Generated Runtime](../guide/runtime.md) for endpoint code.
