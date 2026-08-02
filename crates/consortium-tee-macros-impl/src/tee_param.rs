@@ -207,7 +207,7 @@ fn check_tee_type(ty: &Type) -> (Vec<syn::Error>, Vec<TokenStream2>) {
             "bare references are not allowed as TeeParam fields: use owned types instead",
         )),
 
-        Type::BareFn(_) => errors.push(syn::Error::new_spanned(
+        Type::FnPtr(_) => errors.push(syn::Error::new_spanned(
             ty,
             "function pointers are not allowed in TeeParam types: they are not serializable",
         )),

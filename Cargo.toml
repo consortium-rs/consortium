@@ -35,6 +35,13 @@ exclude = [
 ]
 resolver = "2"
 
+# `cargo shear` walks each crate's source tree looking for files no `mod`/`include!`
+# reaches. Every `tests/ui/**` file is a trybuild fixture: trybuild compiles them at
+# test time from a harness that names them by path, so they are unreachable from the
+# module graph by design and are not dead code.
+[workspace.metadata.cargo-shear]
+ignored-paths = ["**/tests/ui/**/*.rs"]
+
 [workspace.package]
 authors    = ["Ethan Wu <7086cmd@gmail.com>"]
 categories = ["embedded", "hardware-support", "no-std"]

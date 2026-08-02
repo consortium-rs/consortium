@@ -34,7 +34,9 @@ use crate::error::{LexError, Span};
 /// DTS token kind.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Logos)]
 #[logos(skip r"[ \t\n\r\f]+")]
-#[logos(skip r"//[^\n]*")]
+// Line comments and preprocessor directives run to end of line by design, so
+// logos' greedy-repetition guard (0.16) is opted out of rather than narrowed.
+#[logos(skip(r"//[^\n]*", allow_greedy = true))]
 #[logos(skip r"/\*([^*]|\*[^/])*\*/")]
 pub enum TokenKind {
     /// `/dts-v1/`
@@ -67,7 +69,8 @@ pub enum TokenKind {
     /// round-tripping. Definitions expanded by these directives are not
     /// evaluated; macro invocations elsewhere are kept as raw cell text.
     #[regex(
-        r"#[ \t]*(define|undef|ifdef|ifndef|if|elif|else|endif|error|warning|pragma|line)[^\n]*"
+        r"#[ \t]*(define|undef|ifdef|ifndef|if|elif|else|endif|error|warning|pragma|line)[^\n]*",
+        allow_greedy = true
     )]
     CppDirective,
     /// `{`

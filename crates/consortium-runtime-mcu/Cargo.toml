@@ -71,5 +71,4 @@ cortex-m = { version = "0.7" }
 # behind this crate's `defmt` feature (the `log` re-export otherwise expands to
 # `defmt::` paths this crate could not resolve).
 defmt       = { optional = true, version = "1" }
-num-traits  = { default-features = false, version = "0.2.19" }
 static_cell = { default-features = false, version = "2" }

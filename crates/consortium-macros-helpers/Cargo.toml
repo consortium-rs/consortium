@@ -13,7 +13,7 @@ repository.workspace   = true
 rust-version.workspace = true
 
 [dependencies]
-syn = { features = ["full"], version = "2.0.117" }
+syn = { features = ["full"], version = "3.0" }
 
 [lints]
 workspace = true

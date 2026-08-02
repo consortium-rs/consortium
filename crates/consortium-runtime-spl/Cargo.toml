@@ -12,8 +12,6 @@ repository.workspace   = true
 rust-version.workspace = true
 description            = "Domain, peripheral, and role traits for Consortium partitioning"
 
-[dependencies]
-defmt = "1.1.0"
 
 [lints]
 workspace = true

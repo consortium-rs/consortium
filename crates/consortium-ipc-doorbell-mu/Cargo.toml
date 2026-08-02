@@ -44,7 +44,7 @@ std   = ["consortium-ipc/std", "dep:tokio"]
 
 [dependencies]
 atomic-waker        = "1.1.2"
-bitfield            = "0.13.2"
+bitfield            = "0.19.5"
 consortium-hal-imx9 = { default-features = false, path = "../consortium-hal-imx9", version = "0.2.0" }
 consortium-ipc      = { default-features = false, path = "../consortium-ipc", version = "0.2.0" }
 defmt               = { optional = true, version = "1" }
