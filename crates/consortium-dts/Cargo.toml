@@ -29,7 +29,7 @@ repository.workspace   = true
 rust-version.workspace = true
 
 [dependencies]
-logos     = "0.15"
+logos     = "0.16"
 thiserror = "2.0.18"
 serde     = { features = ["derive"], version = "1.0.228" }
 

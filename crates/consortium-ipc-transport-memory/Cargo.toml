@@ -86,7 +86,7 @@ num_enum                     = { default-features = false, version = "0.7.3" }
 pin-project                  = { version = "1.1.11" }
 thiserror                    = { default-features = false, version = "2.0" }
 tokio                        = { features = ["net", "rt", "sync"], optional = true, version = "1" }
-uio                          = { optional = true, version = "0.5.2" }
+uio                          = { optional = true, version = "0.6.0" }
 
 [dev-dependencies]
 atomic-waker = "1.1.2"

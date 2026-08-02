@@ -109,7 +109,7 @@ fn check_type(ty: &Type) -> Vec<syn::Error> {
              space; use owned types instead",
         )],
 
-        Type::BareFn(_) => vec![syn::Error::new_spanned(
+        Type::FnPtr(_) => vec![syn::Error::new_spanned(
             ty,
             "function pointers are not allowed in IpcSafe types: code addresses are not \
              portable across processor cores",

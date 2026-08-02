@@ -25,7 +25,6 @@ panic-handler = ["logger"]
 
 [dependencies]
 bitflags                     = "2.11.1"
-consortium-ipc               = { default-features = false, path = "../consortium-ipc", version = "0.2.0" }
 consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem", version = "0.2.0" }
 consortium-ipc-doorbell-mu   = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu", version = "0.2.0" }
 consortium-shared-memory     = { path = "../consortium-shared-memory", version = "0.2.0" }

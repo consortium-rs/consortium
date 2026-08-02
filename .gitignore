@@ -39,3 +39,6 @@ __pycache__/
 
 # Large prebuilt artifacts fetched on demand (see `just setup-wpe-deb`).
 /assets/
+
+# Wrangler's local build/cache state for the docs and landing Pages projects.
+.wrangler/
