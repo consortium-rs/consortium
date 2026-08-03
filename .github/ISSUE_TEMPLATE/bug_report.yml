@@ -1,0 +1,111 @@
+name: Bug report
+description: Something in Consortium does not behave as documented
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Consortium spans a Linux host, a real-time core, and the
+        generated glue between them, so the details below are usually what make a bug
+        reproducible rather than merely plausible.
+
+  - type: dropdown
+    id: subsystem
+    attributes:
+      label: Subsystem
+      description: Where does the problem appear? Pick the closest match.
+      options:
+        - core (runtime-app / runtime-mcu / codec / log / dbg)
+        - ipc (channels, transports, doorbells)
+        - tee (OP-TEE contracts, TeeParam)
+        - hmi (bridge, WebKit/Cog, PocketJS)
+        - pac (generated peripheral access crates)
+        - hal (consortium-hal, chip HALs, drivers)
+        - cfg (Consortium.toml schema, validation, codegen)
+        - builder / csti CLI
+        - docs (book, README, crate docs)
+        - other / not sure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: chip
+    attributes:
+      label: Target chip
+      description: Leave as "not applicable" for host-only or tooling issues.
+      options:
+        - not applicable
+        - i.MX93
+        - i.MX95
+        - STM32MP21
+        - STM32MP23
+        - STM32MP25
+        - other (describe below)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: host
+    attributes:
+      label: Development host
+      options:
+        - Linux
+        - macOS (native)
+        - macOS (Linux container recipes)
+        - Windows / WSL
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you expected, and what you got instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: >
+        The exact commands you ran, in order. If a `Consortium.toml` is involved, paste
+        the relevant sections — the memory map, channels, and doorbells especially.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and output
+      description: >
+        Compiler errors, validation failures, decoded defmt output, `dmesg` for
+        remoteproc/UIO problems. Trim to the relevant part.
+      render: shell
+
+  - type: textarea
+    id: version
+    attributes:
+      label: Version
+      description: >
+        Consortium version or commit SHA, plus `rustc --version`. If a target other than
+        the host is involved, name the target triple.
+      placeholder: |
+        consortium: v0.2.0 (or commit 839edc5)
+        rustc: 1.87.0
+        target: thumbv8m.main-none-eabihf
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues for this problem.
+          required: true
+        - label: >
+            I am reporting against current `main` or a tagged release, not a stale
+            checkout.
+          required: true

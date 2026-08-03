@@ -1,0 +1,69 @@
+name: Feature request
+description: Propose new functionality or a change to an existing contract
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Consortium is early-stage, so breaking changes are possible — but the cross-core
+        contracts (wire formats, descriptor layouts, the manifest schema) are the part
+        everything else is built on. Proposals that touch them need the motivation spelled
+        out.
+
+  - type: dropdown
+    id: subsystem
+    attributes:
+      label: Subsystem
+      options:
+        - core (runtime-app / runtime-mcu / codec / log / dbg)
+        - ipc (channels, transports, doorbells)
+        - tee (OP-TEE contracts, TeeParam)
+        - hmi (bridge, WebKit/Cog, PocketJS)
+        - pac (generated peripheral access crates)
+        - hal (consortium-hal, chip HALs, drivers)
+        - cfg (Consortium.toml schema, validation, codegen)
+        - builder / csti CLI
+        - ort (reserved, not implemented)
+        - ffi (reserved, not implemented)
+        - docs
+        - new subsystem / cross-cutting
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: >
+        What are you trying to do that Consortium makes hard or impossible today? Describe
+        the situation, not the solution.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: >
+        What you would like to see. If it adds a manifest field, a trait, or a generated
+        artifact, sketch how it looks in use.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Including what you do today as a workaround.
+
+  - type: checkboxes
+    id: impact
+    attributes:
+      label: Impact
+      description: Check anything this would touch.
+      options:
+        - label: Changes a wire format, descriptor layout, or memory layout
+        - label: Changes the `Consortium.toml` schema or generated output
+        - label: Changes a public API in a way existing code would notice
+        - label: Requires new hardware, an SDK, or a vendor submodule
+        - label: I am willing to work on this
