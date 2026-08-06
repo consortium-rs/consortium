@@ -6,9 +6,9 @@ use consortium_codec::CodecFor;
 use consortium_ipc::{Chan, Channel, Rx, Tx};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, DescState, MAGIC, Primary, RX_UPDATED_ID_OFFSET, Secondary,
-    SharedMemoryTransport, VERSION, channel_table_entry_offset, slot,
+    SharedMemoryTransport, VERSION, channel_table_entry_offset, slot, slot_offset, slot_stride,
 };
-use consortium_shared_memory::SramRegion;
+use consortium_shared_memory::UncachedRegion;
 use consortium_shared_memory::descriptor::DescriptorHeader;
 use prost::bytes::{Buf, BufMut};
 use prost::encoding::{self, DecodeContext, WireType};
@@ -16,9 +16,9 @@ use serde::{Deserialize, Serialize};
 
 pub const MTU: usize = 128;
 pub const SLOT_SIZE: usize = slot::SLOT_HEADER + MTU;
-pub const A_TO_M_SLOT: usize = 0x100;
-pub const M_TO_A_SLOT: usize = A_TO_M_SLOT + SLOT_SIZE;
-pub const REGION_LEN: usize = M_TO_A_SLOT + SLOT_SIZE;
+pub const A_TO_M_SLOT: usize = slot_offset(0, MTU);
+pub const M_TO_A_SLOT: usize = slot_offset(1, MTU);
+pub const REGION_LEN: usize = M_TO_A_SLOT + slot_stride(MTU);
 
 #[derive(
     Clone, Debug, Default, Deserialize, PartialEq, rkyv::Archive, rkyv::Serialize, Serialize,
@@ -125,7 +125,7 @@ where
                 let base = base_addr as *mut u8;
                 let ch_tx = unsafe { Chan::new_unchecked(0) };
                 let ch_rx = unsafe { Chan::new_unchecked(1) };
-                let region = unsafe { SramRegion::new(base, REGION_LEN) };
+                let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
                 let transport = unsafe {
                     SharedMemoryTransport::<Primary, _, _>::new(
                         ch_tx, ch_rx, a_doorbell, region, base,
@@ -159,7 +159,7 @@ where
                 let base = base_addr as *mut u8;
                 let ch_rx = unsafe { Chan::new_unchecked(0) };
                 let ch_tx = unsafe { Chan::new_unchecked(1) };
-                let region = unsafe { SramRegion::new(base, REGION_LEN) };
+                let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
                 let transport = unsafe {
                     SharedMemoryTransport::<Secondary, _, _>::new(
                         ch_tx, ch_rx, m_doorbell, region, base,

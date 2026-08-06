@@ -62,6 +62,10 @@ impl IpcChannel {
     pub const fn memory(&self) -> Option<MemoryRegion> {
         self.config.memory
     }
+
+    pub const fn cache(&self) -> bool {
+        self.config.cache
+    }
 }
 
 /// IPC channel configuration pattern.
@@ -77,6 +81,9 @@ pub enum IpcPattern {
 pub struct IpcChannelConfig {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub memory: Option<MemoryRegion>,
+    /// Whether the controller-side mapping of this window is cacheable.
+    #[serde(default)]
+    pub cache: bool,
 }
 
 /// One core's endpoint on an IPC channel.

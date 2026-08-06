@@ -34,7 +34,7 @@ use std::str::FromStr;
 
 use consortium_cfg_common::{
     config::{Codec, VisibleCore},
-    database::{HardwareDoorbellPeripheralType, MemoryRegionType},
+    database::HardwareDoorbellPeripheralType,
 };
 use proc_macro2::{Literal, Span, TokenStream};
 use quote::format_ident;
@@ -157,24 +157,19 @@ pub struct Transceiver {
 impl Transceiver {
     pub fn max_channels(&self) -> u32 {
         // Length <= Descriptor + message slot * max channels.
-        let total_len = self.region.length;
-        let desc_len = consortium_ipc_transport_memory::DESCRIPTOR_LENGTH as u32;
-        let header_len = consortium_ipc_transport_memory::slot::SLOT_HEADER as u32;
-
-        let available = total_len.saturating_sub(desc_len);
-
-        let slot_len = header_len.saturating_add(self.mtu);
-
-        let pair_len = slot_len.saturating_mul(2);
-
-        if pair_len == 0 {
+        let total_len = u64::from(self.region.length);
+        let slot_base = consortium_ipc_transport_memory::slot_offset(0, self.mtu as usize) as u64;
+        let slot_size = u64::from(consortium_ipc_transport_memory::slot::SLOT_HEADER as u32)
+            + u64::from(self.mtu);
+        let first_slot_end = slot_base.saturating_add(slot_size);
+        if total_len < first_slot_end {
             return 0;
         }
 
-        let pairs = available / pair_len;
-        pairs
-            .saturating_mul(2)
-            .min(consortium_ipc_transport_memory::CHANNEL_NUM_MAX as u32)
+        let stride = consortium_ipc_transport_memory::slot_stride(self.mtu as usize) as u64;
+        let slots = 1 + (total_len - first_slot_end) / stride;
+        let slots = slots.min(consortium_ipc_transport_memory::CHANNEL_NUM_MAX as u64);
+        (slots / 2 * 2) as u32
     }
 
     /// get the side
@@ -198,7 +193,7 @@ impl Transceiver {
             .side(core)
             .expect("core must be either primary or secondary for the transceiver");
         let doorbell_type = self.doorbell.as_type(side);
-        let region_type = self.region_ty();
+        let region_type = self.region_ty(core);
         let side_type = match side {
             DoorbellRingerSide::Primary => quote::quote! { ::consortium_ipc::Primary },
             DoorbellRingerSide::Secondary => quote::quote! { ::consortium_ipc::Secondary },
@@ -209,11 +204,12 @@ impl Transceiver {
     }
 
     /// The shared-memory region type for this transceiver, in type position.
-    fn region_ty(&self) -> TokenStream {
-        match self.region.r#type {
-            MemoryRegionType::Sram => {
-                quote::quote! { ::consortium_shared_memory::regions::SramRegion }
+    fn region_ty(&self, core: VisibleCore) -> TokenStream {
+        match (core, self.region.cache) {
+            (VisibleCore::Ap, _) | (_, false) => {
+                quote::quote! { ::consortium_shared_memory::regions::UncachedRegion }
             }
+            (_, true) => quote::quote! { ::consortium_shared_memory::regions::CachedRegion },
         }
     }
 
@@ -393,7 +389,7 @@ impl Transceiver {
         // The doorbell type carries its side and 1-based instance id so the
         // transport halves are fully concrete (the field type names no `_`).
         let doorbell_type = self.doorbell.as_type(side);
-        let region_type = self.region_ty();
+        let region_type = self.region_ty(core);
 
         let side_type = match side {
             DoorbellRingerSide::Primary => {
@@ -982,6 +978,7 @@ mod tests {
             codec: Codec::Postcard,
             region: Region {
                 r#type: MemoryRegionType::Sram,
+                cache: false,
                 address,
                 length,
             },
@@ -994,26 +991,55 @@ mod tests {
         }
     }
 
-    const DESC: u32 = consortium_ipc_transport_memory::DESCRIPTOR_LENGTH as u32;
+    const SLOT_BASE: u32 = consortium_ipc_transport_memory::slot_offset(0, 4) as u32;
+    const SLOT_STRIDE: u32 = consortium_ipc_transport_memory::slot_stride(4) as u32;
 
     #[test]
     fn max_channels_is_zero_when_only_descriptor_fits() {
         // No room beyond the descriptor: no message slots can be carved out.
-        assert_eq!(transceiver(DESC, 4).max_channels(), 0);
+        assert_eq!(transceiver(SLOT_BASE, 4).max_channels(), 0);
     }
 
     #[test]
     fn max_channels_counts_slot_pairs() {
-        // slot_len = SLOT_HEADER(12) + mtu(4) = 16; a Tx/Rx pair is 32 bytes.
+        // Each 16-byte logical slot occupies one 64-byte cache-line stride.
         // Three pairs of room => 6 channels.
-        let pair_len = (consortium_ipc_transport_memory::slot::SLOT_HEADER as u32 + 4) * 2;
-        assert_eq!(transceiver(DESC + pair_len * 3, 4).max_channels(), 6);
+        let pair_len = SLOT_STRIDE * 2;
+        assert_eq!(transceiver(SLOT_BASE + pair_len * 3, 4).max_channels(), 6);
+    }
+
+    #[test]
+    fn max_channels_counts_pair_without_trailing_padding() {
+        let exact = consortium_ipc_transport_memory::required_region_len(2, 128) as u32;
+        assert_eq!(exact, 0x24c);
+        assert_eq!(transceiver(exact, 128).max_channels(), 2);
+        assert_eq!(transceiver(exact - 1, 128).max_channels(), 0);
     }
 
     #[test]
     fn max_channels_saturates_at_channel_num_max() {
         let max = consortium_ipc_transport_memory::CHANNEL_NUM_MAX as u32;
         assert_eq!(transceiver(u32::MAX, 4).max_channels(), max);
+    }
+
+    #[test]
+    fn cached_region_type_is_controller_only() {
+        let mut transceiver = transceiver(SLOT_BASE + 4096, 128);
+        transceiver.region.cache = true;
+        let cm33 = VisibleCore::Mcore(consortium_cfg_common::config::McoreName::Cm33);
+
+        assert!(
+            transceiver
+                .region_ty(cm33)
+                .to_string()
+                .contains("CachedRegion")
+        );
+        assert!(
+            transceiver
+                .region_ty(VisibleCore::Ap)
+                .to_string()
+                .contains("UncachedRegion")
+        );
     }
 
     /// Only UIO devices declaring an `irq` are opened with `enable_irq` and run
@@ -1023,7 +1049,7 @@ mod tests {
     /// while the controller keeps ringing.
     #[test]
     fn ap_binds_doorbell_service_to_the_doorbell_uio_device() {
-        let mut t = transceiver(DESC + 4096, 128);
+        let mut t = transceiver(SLOT_BASE + 4096, 128);
         t.region.address.ap = ApAddress {
             uio_id: 1,
             mmap_id: 0,
@@ -1056,7 +1082,7 @@ mod tests {
 
     #[test]
     fn ap_binds_doorbell_notifier_to_the_doorbell_uio_device() {
-        let mut t = transceiver(DESC + 4096, 128);
+        let mut t = transceiver(SLOT_BASE + 4096, 128);
         t.region.address.ap = ApAddress {
             uio_id: 1,
             mmap_id: 0,

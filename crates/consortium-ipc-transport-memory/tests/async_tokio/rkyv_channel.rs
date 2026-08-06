@@ -7,7 +7,7 @@ use consortium_ipc::{Chan, Channel, Primary, Rx, Tx};
 use consortium_ipc_transport_memory::{
     ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport, channel_table_entry_offset, slot,
 };
-use consortium_shared_memory::SramRegion;
+use consortium_shared_memory::UncachedRegion;
 
 #[test]
 fn rkyv_channel_sends_archived_message_over_shared_memory_transport() {
@@ -16,7 +16,7 @@ fn rkyv_channel_sends_archived_message_over_shared_memory_transport() {
     init_two_channel_descriptor(base);
 
     block_on_current_thread(async move {
-        let region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch_tx = unsafe { Chan::new_unchecked(0) };
         let ch_rx = unsafe { Chan::new_unchecked(1) };
@@ -36,7 +36,7 @@ fn rkyv_channel_sends_archived_message_over_shared_memory_transport() {
 
         let tx = unsafe { ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(0))) };
         let mut raw = [0; MTU];
-        let read_region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let read_region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let n = unsafe { slot::try_read(tx.slot_addr(base), &mut raw, &read_region) }
             .expect("remote reads raw rkyv payload");
         let decoded =
@@ -66,7 +66,7 @@ fn rkyv_channel_receives_archived_message_over_shared_memory_transport() {
     }
 
     block_on_current_thread(async move {
-        let region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch_tx = unsafe { Chan::new_unchecked(0) };
         let ch_rx = unsafe { Chan::new_unchecked(1) };

@@ -32,8 +32,11 @@ channel table; each entry points at a slot elsewhere in the same window.
 0x20  ├────────────────────────────────┤
       │ channel table: N × 12 bytes    │  offset, size, direction
       ├────────────────────────────────┤
-      │ slot 0  [len|flags|crc32|data] │  ← one direction
-      │ slot 1  [len|flags|crc32|data] │  ← the other
+      │ cache-line padding             │
+      ├────────────────────────────────┤
+      │ slot 0  [len|flags|crc32|data] │  ← one direction, aligned
+      │ padding to cache-line boundary │
+      │ slot 1  [len|flags|crc32|data] │  ← the other, aligned
       └────────────────────────────────┘
 ```
 
@@ -86,8 +89,11 @@ Two things carry the correctness of this:
   frame or no frame, never a half-written one — with no lock and no atomic beyond
   the flag word itself.
 - **`flush` precedes every `ring`, `invalidate` follows every wake.** That is what
-  makes a `DdrRegion` link work at all; on an `SramRegion` both compile away
+  makes a `CachedRegion` link work at all; on an `UncachedRegion` both compile away
   through monomorphization, so a coherent link pays nothing for the discipline.
+- **Every slot starts on a 64-byte boundary and occupies a cache-line-rounded
+  stride.** Opposite directions never share a maintained line, so cleaning the
+  CM7-owned slot cannot write stale bytes over the AP-owned slot.
 
 A CRC32 over the payload catches what ordering cannot: a truncated DMA, a
 misconfigured MPU window, a peer writing with the wrong cache attributes. A

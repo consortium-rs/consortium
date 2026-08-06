@@ -5,16 +5,18 @@ use std::sync::{
 
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, DescState, MAGIC, RX_UPDATED_ID_OFFSET,
-    RegionSharedMemoryTransportable, VERSION, channel_table_entry_offset, slot,
+    RegionSharedMemoryTransportable, VERSION, channel_table_entry_offset, slot, slot_offset,
+    slot_stride,
 };
 use consortium_shared_memory::descriptor::DescriptorHeader;
-use consortium_shared_memory::{Region, SramRegion};
+use consortium_shared_memory::{Region, UncachedRegion};
 
 pub const MTU: usize = 64;
 pub const SLOT_SIZE: usize = slot::SLOT_HEADER + MTU;
-pub const A_TO_M_SLOT: usize = 0x100;
-pub const M_TO_A_SLOT: usize = A_TO_M_SLOT + SLOT_SIZE;
-pub const REGION_LEN: usize = M_TO_A_SLOT + SLOT_SIZE;
+pub const SLOT_STRIDE: usize = slot_stride(MTU);
+pub const A_TO_M_SLOT: usize = slot_offset(0, MTU);
+pub const M_TO_A_SLOT: usize = slot_offset(1, MTU);
+pub const REGION_LEN: usize = M_TO_A_SLOT + SLOT_STRIDE;
 
 pub fn channel(offset: usize, direction: ChannelDirection) -> ChannelLayout {
     let mut layout = ChannelLayout::default();
@@ -58,7 +60,7 @@ pub struct CountingRegion {
 
 // SAFETY: tests use heap-backed shared memory and synchronize access through the futures under test.
 unsafe impl Send for CountingRegion {}
-// SAFETY: counters are atomic, and the raw memory aliasing discipline matches SramRegion test usage.
+// SAFETY: counters are atomic, and the raw memory aliasing discipline matches UncachedRegion test usage.
 unsafe impl Sync for CountingRegion {}
 
 impl CountingRegion {
@@ -104,13 +106,13 @@ impl Region for CountingRegion {
 
 impl RegionSharedMemoryTransportable for CountingRegion {}
 
-pub type HostSramTransportTx<S> = consortium_ipc_transport_memory::SharedMemoryTransportTx<
+pub type HostUncachedTransportTx<S> = consortium_ipc_transport_memory::SharedMemoryTransportTx<
     S,
     crate::common::doorbell::HostDoorbell,
-    SramRegion,
+    UncachedRegion,
 >;
-pub type HostSramTransportRx<S> = consortium_ipc_transport_memory::SharedMemoryTransportRx<
+pub type HostUncachedTransportRx<S> = consortium_ipc_transport_memory::SharedMemoryTransportRx<
     S,
     crate::common::doorbell::HostDoorbell,
-    SramRegion,
+    UncachedRegion,
 >;

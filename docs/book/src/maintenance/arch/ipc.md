@@ -73,7 +73,7 @@ Hardware Signaling
 // Static buffer for IPC (sized to max message MTU)
 static mut TX_BUF: [u8; 256] = [0u8; 256];
 static mut HSEM_DOORBELL: HsemDoorbell = /* ... */;
-static mut REGION: DdrRegion = /* ... */;
+static mut REGION: CachedRegion = /* ... */;
 
 #[main]
 async fn main() {

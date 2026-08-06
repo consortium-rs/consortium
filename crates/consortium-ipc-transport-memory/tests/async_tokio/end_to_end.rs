@@ -2,7 +2,7 @@ use crate::common::doorbell::HostDoorbell;
 use crate::transport_support::{MTU, REGION_LEN, init_two_channel_descriptor};
 use consortium_ipc::{Chan, RecvTransport, SendTransport};
 use consortium_ipc_transport_memory::{Primary, Secondary, SharedMemoryTransport};
-use consortium_shared_memory::SramRegion;
+use consortium_shared_memory::UncachedRegion;
 
 /// End-to-end ping/pong over the shared-memory transport.
 ///
@@ -30,7 +30,7 @@ fn shared_memory_transport_round_trips_over_one_shared_descriptor() {
                 let base = base_addr as *mut u8;
                 let ch_tx = unsafe { Chan::new_unchecked(0) };
                 let ch_rx = unsafe { Chan::new_unchecked(1) };
-                let region = unsafe { SramRegion::new(base, REGION_LEN) };
+                let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
                 let mut transport = unsafe {
                     SharedMemoryTransport::<Primary, _, _>::new(
                         ch_tx, ch_rx, a_doorbell, region, base,
@@ -54,7 +54,7 @@ fn shared_memory_transport_round_trips_over_one_shared_descriptor() {
                 let base = base_addr as *mut u8;
                 let ch_rx = unsafe { Chan::new_unchecked(0) };
                 let ch_tx = unsafe { Chan::new_unchecked(1) };
-                let region = unsafe { SramRegion::new(base, REGION_LEN) };
+                let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
                 let mut transport = unsafe {
                     SharedMemoryTransport::<Secondary, _, _>::new(
                         ch_tx, ch_rx, m_doorbell, region, base,

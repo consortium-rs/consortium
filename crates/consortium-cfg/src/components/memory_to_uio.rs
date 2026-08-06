@@ -25,7 +25,16 @@ use crate::error::CfgError;
 
 const UIO_MAX_MMAPS: usize = 5;
 
-impl ToUio for [MemoryRegion] {
+/// One channel window and its controller-side cache policy.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct SharedWindow {
+    /// Physical base and length from `config.memory`.
+    pub memory: MemoryRegion,
+    /// Whether the controller maps the window cacheably.
+    pub cache: bool,
+}
+
+impl ToUio for [SharedWindow] {
     fn to_uio(&self) -> Result<Option<UioDevice>, CfgError> {
         // Nothing to expose if neither region is configured.
         if self.is_empty() {
@@ -42,7 +51,7 @@ impl ToUio for [MemoryRegion] {
 
         let mmap = self
             .iter()
-            .map(|region| (region.base, region.length))
+            .map(|window| (window.memory.base, window.memory.length))
             .collect();
 
         // Shared memory carries no interrupt of its own; doorbells signal it.
@@ -51,6 +60,7 @@ impl ToUio for [MemoryRegion] {
             mmap,
             irq: None,
             backing: UioBacking::ReservedMemory,
+            dma_coherent: self.iter().map(|window| window.cache).collect(),
             interrupt_parent: None,
             clock: None,
         }))
@@ -61,8 +71,11 @@ impl ToUio for [MemoryRegion] {
 mod tests {
     use super::*;
 
-    fn region(base: u32, length: u32) -> MemoryRegion {
-        MemoryRegion { base, length }
+    fn region(base: u32, length: u32) -> SharedWindow {
+        SharedWindow {
+            memory: MemoryRegion { base, length },
+            cache: false,
+        }
     }
 
     #[test]
@@ -84,7 +97,7 @@ mod tests {
 
     #[test]
     fn none_when_no_regions() {
-        let memory: [MemoryRegion; 0] = [];
+        let memory: [SharedWindow; 0] = [];
         assert!(memory.as_slice().to_uio().unwrap().is_none());
     }
 
@@ -106,6 +119,21 @@ mod tests {
                 found: 6,
                 max: 5,
             })
+        );
+    }
+
+    #[test]
+    fn dma_coherent_follows_each_window_cache_policy() {
+        let mut memory = [region(0x0040_0000, 0x8000), region(0x0040_8000, 0x2000)];
+        assert_eq!(
+            memory.as_slice().to_uio().unwrap().unwrap().dma_coherent,
+            vec![false, false]
+        );
+
+        memory[1].cache = true;
+        assert_eq!(
+            memory.as_slice().to_uio().unwrap().unwrap().dma_coherent,
+            vec![false, true]
         );
     }
 }

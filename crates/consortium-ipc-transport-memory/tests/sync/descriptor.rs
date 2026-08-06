@@ -7,12 +7,13 @@ use std::{
 
 use consortium_ipc::{Chan, Doorbell, Primary, Secondary};
 use consortium_ipc_transport_memory::{
-    CHANNEL_NUM_MAX, ChannelDirection, ChannelLayout, DescState, Descriptor, DescriptorError,
-    Error, SharedMemoryTransport, VERSION, channel_table_entry_offset, descriptor_complete,
-    get_state, set_state, slot,
+    CHANNEL_NUM_MAX, ChannelDirection, ChannelLayout, DESCRIPTOR_LENGTH, DescState, Descriptor,
+    DescriptorError, Error, SLOT_ALIGNMENT, SharedMemoryTransport, VERSION,
+    channel_table_entry_offset, descriptor_complete, get_state, set_state, slot, slot_offset,
+    slot_stride,
 };
 use consortium_shared_memory::{
-    SramRegion,
+    UncachedRegion,
     descriptor::{DescriptorHeader, DescriptorHeaderError, DescriptorMagic},
 };
 use futures::executor::block_on;
@@ -22,8 +23,8 @@ const NUM_CHANNELS_OFFSET: usize = 0x06;
 const RX_TRANSFER_SIZE_OFFSET: usize = 0x10;
 const STATE_OFFSET: usize = 0x18;
 
-type PrimaryTransport = SharedMemoryTransport<Primary, ImmediateDoorbell, SramRegion>;
-type SecondaryTransport = SharedMemoryTransport<Secondary, ImmediateDoorbell, SramRegion>;
+type PrimaryTransport = SharedMemoryTransport<Primary, ImmediateDoorbell, UncachedRegion>;
+type SecondaryTransport = SharedMemoryTransport<Secondary, ImmediateDoorbell, UncachedRegion>;
 
 #[derive(Clone, Copy, Debug)]
 struct ImmediateDoorbell;
@@ -131,12 +132,30 @@ fn descriptor_init_writes_documented_layout_offsets() {
     );
     assert_eq!(
         descriptor.channels[1].offset,
-        descriptor.channels[0].offset + slot_size
+        descriptor.channels[0].offset + slot_stride(96) as u32
     );
     assert_eq!(descriptor.channels[1].size, slot_size);
     assert_eq!(
         descriptor.channels[1].direction,
         ChannelDirection::SecondaryToPrimary
+    );
+}
+
+#[test]
+fn descriptor_slots_do_not_share_cache_lines() {
+    let mut backing = vec![0; DESCRIPTOR_LEN];
+    let base = backing.as_mut_ptr();
+
+    init_descriptor(base, 2, 128);
+
+    let descriptor = unsafe { Descriptor::from_raw_ptr(base) };
+    let first = descriptor.channels[0];
+    let second = descriptor.channels[1];
+    assert_eq!(first.offset as usize % SLOT_ALIGNMENT, 0);
+    assert_eq!(second.offset as usize % SLOT_ALIGNMENT, 0);
+    assert!(
+        (first.offset as usize + first.size as usize).div_ceil(SLOT_ALIGNMENT) * SLOT_ALIGNMENT
+            <= second.offset as usize
     );
 }
 
@@ -323,6 +342,16 @@ fn descriptor_ack_rejects_invalid_channel_layouts() {
             "slot overlaps descriptor header or channel table",
         ),
         (0x200, 8, "slot is smaller than the slot header"),
+        (
+            DESCRIPTOR_LENGTH as u32,
+            (slot::SLOT_HEADER + 64) as u32,
+            "slot offset does not match aligned layout",
+        ),
+        (
+            slot_offset(0, 64) as u32,
+            (slot::SLOT_HEADER + 32) as u32,
+            "slot size does not match transfer size",
+        ),
     ];
 
     for (offset, size, reason) in cases {

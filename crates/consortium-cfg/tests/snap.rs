@@ -93,6 +93,7 @@ fn transceiver() -> Transceiver {
         codec: Codec::Postcard,
         region: Region {
             r#type: MemoryRegionType::Sram,
+            cache: false,
             address: shared_address(1, 0x3400_0000),
             length: 0x8000,
         },
@@ -169,7 +170,7 @@ fn transceiver_secondary_connect_runs_handshake() {
 }
 
 #[test]
-fn region_initialize_sram_ap() {
+fn region_initialize_uncached_ap() {
     let uio = format_ident!("uio");
     let tokens = transceiver().region.initialize(VisibleCore::Ap, &uio);
     insta::assert_snapshot!(expr(tokens));
@@ -244,6 +245,7 @@ fn pong() -> Transceiver {
         codec: Codec::Rkyv,
         region: Region {
             r#type: MemoryRegionType::Sram,
+            cache: false,
             address: Address {
                 ap: ApAddress {
                     uio_id: 0,

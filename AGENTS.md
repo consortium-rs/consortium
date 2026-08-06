@@ -190,22 +190,26 @@ no `#[interrupt]` handlers. `consortium-runtime-mcu` re-exports the transport be
 
 Shared memory is split across two crates:
 
-- `consortium-shared-memory` defines the `Region` trait and concrete `SramRegion`,
-  `DdrRegion`, and `SerialRegion` types. `SramRegion` is coherent/no-op cache
-  maintenance; `DdrRegion` performs AArch64 data-cache maintenance on AArch64 and
-  compiles to no-ops elsewhere; `SerialRegion` is a virtual no-backing region.
+- `consortium-shared-memory` defines the `Region` trait and concrete `UncachedRegion`,
+  `CachedRegion`, and `SerialRegion` types. `UncachedRegion` represents a
+  non-cacheable mapping; `CachedRegion` performs AArch64 or Cortex-M7 data-cache
+  maintenance; `SerialRegion` is a virtual no-backing region.
 - `consortium-ipc-transport-memory` defines the `CIPC` descriptor layout, channel table,
   slot header protocol, descriptor init/complete helpers, and
   `SharedMemoryTransport<S, D, R>`.
 
 `SharedMemoryTransport` is generic over a `Side`, a `Doorbell`, and a region implementing
-`RegionSharedMemoryTransportable`. Currently `SramRegion` and `DdrRegion` implement that
+`RegionSharedMemoryTransportable`. Currently `UncachedRegion` and `CachedRegion` implement that
 transport marker.
 
 The descriptor uses absolute channel directions (`PrimaryToSecondary` and
 `SecondaryToPrimary`) and resolves them relative to the `Side` type. `Primary` is the
 Linux/A-core convention, and `Secondary` is the firmware/M-core convention in current
-examples and tests.
+examples and tests. Slot starts and strides are 64-byte aligned so independently
+written directions never share a maintained cache line; manifest validation ensures
+each window contains the aligned descriptor and bidirectional slot pair. Generated CM7
+initialization invalidates and enables the data cache when any channel sets
+`config.cache = true`.
 
 `SharedMemoryTransport::split()` returns `SharedMemoryTransportTx` and
 `SharedMemoryTransportRx`. Use these halves when building simultaneous
@@ -352,7 +356,8 @@ Current top-level schema:
   frames to `tracing`; `interface` returns reader handles for the integrator. The
   field flattens alongside the `[dbg.<core>]` tables.
 - `[[ipc.channel]]` contains `name`, `doorbell`, `pattern`, `primary`, `secondary`,
-  `party.<name>`, `config.memory`, `mtu`, and optional `codec` (default `postcard`).
+  `party.<name>`, `config.memory`, optional controller-side `config.cache` (default
+  `false`), `mtu`, and optional `codec` (default `postcard`).
 - `[tee]` contains the OP-TEE UUID.
 - `[hmi]` contains `engine` (`cog` or `pocket`), `backend`, optional `debug`,
   `source`, `build`, and optional `app`. `app` names the PocketJS entry to build

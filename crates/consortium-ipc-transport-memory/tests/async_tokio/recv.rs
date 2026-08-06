@@ -2,7 +2,7 @@ use std::task::Poll;
 
 use crate::common::doorbell::{HostDoorbell, RacyDoorbell};
 use crate::transport_support::{
-    CountingRegion, MTU, REGION_LEN, SLOT_SIZE, channel, init_descriptor_with_channels,
+    CountingRegion, MTU, REGION_LEN, SLOT_STRIDE, channel, init_descriptor_with_channels,
     init_two_channel_descriptor,
 };
 use consortium_ipc::{Chan, Doorbell, Primary, RecvTransport};
@@ -10,15 +10,15 @@ use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
     channel_table_entry_offset, slot,
 };
-use consortium_shared_memory::SramRegion;
+use consortium_shared_memory::UncachedRegion;
 use futures::{pin_mut, poll};
 
 #[test]
 fn recv_prefers_updated_rx_channel_over_fallback_order() {
     const TX_SLOT: usize = 0x100;
-    const RX0_SLOT: usize = TX_SLOT + SLOT_SIZE;
-    const RX1_SLOT: usize = RX0_SLOT + SLOT_SIZE;
-    const MULTI_REGION_LEN: usize = RX1_SLOT + SLOT_SIZE;
+    const RX0_SLOT: usize = TX_SLOT + SLOT_STRIDE;
+    const RX1_SLOT: usize = RX0_SLOT + SLOT_STRIDE;
+    const MULTI_REGION_LEN: usize = RX1_SLOT + SLOT_STRIDE;
 
     let mut backing = vec![0; MULTI_REGION_LEN].into_boxed_slice();
     let base = backing.as_mut_ptr();
@@ -42,7 +42,7 @@ fn recv_prefers_updated_rx_channel_over_fallback_order() {
         .expect("create host runtime");
 
     rt.block_on(async move {
-        let region = unsafe { SramRegion::new(base, MULTI_REGION_LEN) };
+        let region = unsafe { UncachedRegion::new(base, MULTI_REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
@@ -57,7 +57,7 @@ fn recv_prefers_updated_rx_channel_over_fallback_order() {
         let rx0_layout =
             unsafe { ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1))) };
         let mut fallback = [0; MTU];
-        let read_region = unsafe { SramRegion::new(base, MULTI_REGION_LEN) };
+        let read_region = unsafe { UncachedRegion::new(base, MULTI_REGION_LEN) };
         let n = unsafe { slot::try_read(rx0_layout.slot_addr(base), &mut fallback, &read_region) }
             .expect("fallback slot should still be unread");
         assert_eq!(&fallback[..n], b"fallback-first");
@@ -81,7 +81,7 @@ fn recv_falls_back_when_updated_id_is_wrong_direction() {
         .expect("create host runtime");
 
     rt.block_on(async move {
-        let region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
@@ -115,7 +115,7 @@ fn recv_falls_back_when_updated_id_is_out_of_range() {
         .expect("create host runtime");
 
     rt.block_on(async move {
-        let region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
@@ -143,7 +143,7 @@ fn recv_is_pending_when_no_rx_slot_contains_data() {
         .expect("create host runtime");
 
     rt.block_on(async move {
-        let region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
@@ -169,7 +169,7 @@ fn recv_future_becomes_ready_after_pending_poll_then_doorbell_ring() {
         .expect("create host runtime");
 
     rt.block_on(async move {
-        let region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let (app_doorbell, remote_doorbell) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
@@ -223,7 +223,7 @@ fn recv_delivers_when_remote_publishes_during_subscribe_window() {
         .expect("create host runtime");
 
     rt.block_on(async move {
-        let region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
 

@@ -23,8 +23,8 @@
 //! This crate deliberately knows nothing about IPC. It answers two narrow
 //! questions that several subsystems need answered the same way:
 //!
-//! 1. *What is this memory, and what does it cost to make a write visible to
-//!    another core?* — the [`Region`] trait and its implementations.
+//! 1. *How is this window mapped, and what does it cost to make a write visible
+//!    to another core?* — the [`Region`] trait and its implementations.
 //! 2. *Whose structure is this, and what version?* — the [`descriptor`] header.
 //!
 //! Protocol lives one level up: `consortium-ipc-transport-memory` owns the `CIPC`
@@ -33,27 +33,27 @@
 //!
 //! # Regions and coherency
 //!
-//! On a heterogeneous SoC "shared memory" is not one thing. A window in on-chip
-//! SRAM sits inside the coherent interconnect, so a store is visible to the peer
-//! as soon as it retires. A window in DDR is not coherent between a Cortex-A
-//! cluster and a Cortex-M core, so a writer must clean its dirty lines to the
-//! point of coherency and a reader must invalidate stale ones — the difference
-//! between a working link and one that reads its own stale cache forever.
+//! On a heterogeneous SoC, cache maintenance follows the mapping attributes,
+//! not whether SRAM or DDR physically backs a window. A non-cacheable mapping
+//! cannot retain dirty or stale lines. A cacheable mapping needs the writer to
+//! clean dirty lines to the point of coherency and the reader to invalidate
+//! stale ones — the difference between a working link and one that reads its
+//! own stale cache forever.
 //!
 //! [`Region`] makes that difference explicit rather than assumed:
 //!
 //! | Type              | Backing        | `flush` / `invalidate`        | `is_coherent` |
 //! | ----------------- | -------------- | ----------------------------- | ------------- |
-//! | [`SramRegion`]    | on-chip SRAM   | no-ops                        | `true`        |
-//! | [`DdrRegion`]     | DDR            | AArch64 `dc cvac` / `dc ivac` | `false`       |
+//! | [`UncachedRegion`]| non-cacheable  | no-ops                        | `true`        |
+//! | [`CachedRegion`]  | cacheable      | AArch64 / ARMv7-M maintenance | `false`      |
 //! | [`SerialRegion`]  | none           | no-ops                        | `true`        |
 //!
 //! Transports are generic over the region, so `is_coherent` and the no-op cache
-//! methods are resolved at monomorphization: an SRAM-backed link compiles to code
+//! methods are resolved at monomorphization: an uncached link compiles to code
 //! with no cache maintenance in it at all, rather than branching at runtime.
 //!
-//! `DdrRegion`'s maintenance is AArch64-only and compiles to no-ops elsewhere,
-//! which is what lets the protocol tests run on a host. [`SerialRegion`] has no
+//! `CachedRegion` performs maintenance on AArch64 and cache-bearing ARMv7-M
+//! cores, and compiles to no-ops on cacheless and host targets. [`SerialRegion`] has no
 //! backing memory at all — it reports a maximum frame size through [`Region::len`]
 //! so a serial transport can size its frame buffer, and returns a null pointer
 //! that callers must never dereference.
@@ -63,8 +63,8 @@
 //! Every region constructor is `unsafe` and takes a raw pointer and length. This
 //! is the one place the obligation is stated: the caller guarantees the window is
 //! valid for reads and writes for `len` bytes for as long as the region lives, and
-//! that no conflicting Rust alias to it exists. In exchange, `SramRegion` and
-//! `DdrRegion` are `Send + Sync` — genuinely two processors touch these bytes, so
+//! that no conflicting Rust alias to it exists. In exchange, `UncachedRegion` and
+//! `CachedRegion` are `Send + Sync` — genuinely two processors touch these bytes, so
 //! there is no single-owner story to tell — and everything built on top of them can
 //! be safe.
 //!
@@ -92,5 +92,5 @@ pub mod regions;
 
 pub use {
     region::Region,
-    regions::{DdrRegion, SerialRegion, SramRegion},
+    regions::{CachedRegion, SerialRegion, UncachedRegion},
 };

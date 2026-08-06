@@ -137,6 +137,49 @@ impl Session {
                 channel.name,
                 channel.doorbell
             );
+
+            if let Some(memory) = channel.memory() {
+                let required =
+                    consortium_ipc_transport_memory::required_region_len(2, channel.mtu as usize);
+                if (memory.length as usize) < required {
+                    consortium_log::trace!(
+                        "ipc channel '{}' region length {:#x} is smaller than aligned layout {:#x}",
+                        channel.name,
+                        memory.length,
+                        required
+                    );
+                    return Err(CfgError::IpcRegionTooSmall {
+                        channel: channel.name.clone(),
+                        length: memory.length,
+                        mtu: channel.mtu,
+                        required,
+                    });
+                }
+            }
+
+            if channel.cache() {
+                let controller = [channel.secondary, channel.primary]
+                    .into_iter()
+                    .map(Party::core)
+                    .find(|core| *core != VisibleCore::Ap);
+                if controller
+                    != Some(VisibleCore::Mcore(
+                        consortium_cfg_common::config::McoreName::Cm7,
+                    ))
+                {
+                    let core = controller
+                        .map_or_else(|| VisibleCore::Ap.to_string(), |core| core.to_string());
+                    consortium_log::trace!(
+                        "ipc channel '{}' enables caching on unsupported core '{}'",
+                        channel.name,
+                        core
+                    );
+                    return Err(CfgError::IpcCacheUnsupported {
+                        channel: channel.name.clone(),
+                        core,
+                    });
+                }
+            }
             let doorbell = self.doorbell(&channel.doorbell).ok_or_else(|| {
                 consortium_log::trace!("unknown doorbell '{}'", channel.doorbell);
                 self.unknown_doorbell(&channel.doorbell)
@@ -227,22 +270,26 @@ impl Session {
         let mut regions = Vec::new();
 
         for (core, entry) in &self.config.dbg.cores {
-            regions.push((format!("dbg.{core}"), entry.memory));
+            regions.push((format!("dbg.{core}"), entry.memory, false));
         }
 
         for (index, channel) in self.config.ipc.channels.iter().enumerate() {
             if let Some(memory) = channel.memory() {
-                regions.push((format!("ipc.channel[{index}].config.memory"), memory));
+                regions.push((
+                    format!("ipc.channel[{index}].config.memory"),
+                    memory,
+                    channel.cache(),
+                ));
             }
         }
 
-        for (name, region) in &regions {
-            self.validate_memory_region(name, *region)?;
+        for (name, region, cache) in &regions {
+            self.validate_memory_region(name, *region, *cache)?;
         }
 
-        for (left_index, (left_name, left)) in regions.iter().enumerate() {
+        for (left_index, (left_name, left, _)) in regions.iter().enumerate() {
             let left_end = left.base + left.length;
-            for (right_name, right) in regions.iter().skip(left_index + 1) {
+            for (right_name, right, _) in regions.iter().skip(left_index + 1) {
                 let right_end = right.base + right.length;
                 if left.base < right_end && right.base < left_end {
                     consortium_log::trace!(
@@ -265,7 +312,12 @@ impl Session {
         Ok(())
     }
 
-    fn validate_memory_region(&self, name: &str, region: MemoryRegion) -> Result<(), CfgError> {
+    fn validate_memory_region(
+        &self,
+        name: &str,
+        region: MemoryRegion,
+        cache: bool,
+    ) -> Result<(), CfgError> {
         consortium_log::trace!(
             "validating region '{}' base {:#x} length {:#x}",
             name,
@@ -286,27 +338,48 @@ impl Session {
             });
         }
 
-        // MPU constraints (ARMv7-M / ARMv8-M): a region's size must be a
-        // power of two of at least 32 bytes, and its base must be aligned to
-        // that size. Controller cores protect each shared window with an MPU
-        // entry, so a region the MPU cannot express is rejected up front.
-        let mpu_requirement = if !region.length.is_power_of_two() {
-            Some("size must be a power of two")
-        } else if region.length < 32 {
-            Some("size must be at least 32 bytes")
-        } else if !region.base.is_multiple_of(region.length) {
-            Some("base must be aligned to the region size")
+        if cache {
+            // Cache maintenance is destructive at cache-line granularity. Keep
+            // both boundaries on 64-byte lines: this covers AArch64's fixed
+            // sweep size and Cortex-M7's 32-byte SCB helper requirement.
+            let requirement = if !region.base.is_multiple_of(64) {
+                Some("base must be aligned to 64 bytes")
+            } else if !region.length.is_multiple_of(64) {
+                Some("size must be a multiple of 64 bytes")
+            } else {
+                None
+            };
+            if let Some(requirement) = requirement {
+                consortium_log::trace!("region '{}' not cache-line aligned: {}", name, requirement);
+                return Err(CfgError::RegionNotCacheAligned {
+                    region: name.to_string(),
+                    base: region.base,
+                    length: region.length,
+                    requirement,
+                });
+            }
         } else {
-            None
-        };
-        if let Some(requirement) = mpu_requirement {
-            consortium_log::trace!("region '{}' not MPU-aligned: {}", name, requirement);
-            return Err(CfgError::RegionNotMpuAligned {
-                region: name.to_string(),
-                base: region.base,
-                length: region.length,
-                requirement,
-            });
+            // MPU constraints (ARMv7-M / ARMv8-M): a region's size must be a
+            // power of two of at least 32 bytes, and its base must be aligned
+            // to that size. Uncached controller mappings need an MPU entry.
+            let mpu_requirement = if !region.length.is_power_of_two() {
+                Some("size must be a power of two")
+            } else if region.length < 32 {
+                Some("size must be at least 32 bytes")
+            } else if !region.base.is_multiple_of(region.length) {
+                Some("base must be aligned to the region size")
+            } else {
+                None
+            };
+            if let Some(requirement) = mpu_requirement {
+                consortium_log::trace!("region '{}' not MPU-aligned: {}", name, requirement);
+                return Err(CfgError::RegionNotMpuAligned {
+                    region: name.to_string(),
+                    base: region.base,
+                    length: region.length,
+                    requirement,
+                });
+            }
         }
 
         let contained = self.database.memory.regions.iter().any(|sram| {
@@ -441,6 +514,29 @@ mod tests {
     use super::*;
 
     const MANIFEST: &str = include_str!("../Consortium.example.stm32mp257.toml");
+
+    fn imx95_cached_manifest(secondary: &str, doorbell: &str, base: u32, length: u32) -> String {
+        format!(
+            r#"
+                [profile]
+                chip = "mimx9596xvt"
+                shared = "./shared"
+                deploy_root = "/opt/consortium"
+
+                [[ipc.channel]]
+                name = "probe"
+                doorbell = "{doorbell}"
+                pattern = "memory"
+                primary = "linux"
+                secondary = "{secondary}"
+                party.linux = {{ chan = 0, type = "Ping" }}
+                party.{secondary} = {{ chan = 1, type = "Pong" }}
+                config.memory = {{ base = {base}, length = {length} }}
+                config.cache = true
+                mtu = 128
+            "#
+        )
+    }
 
     #[test]
     fn loads_example_manifest() {
@@ -650,6 +746,54 @@ mod tests {
             Session::from_toml(manifest),
             Err(CfgError::RegionNotMpuAligned { .. })
         ));
+    }
+
+    #[test]
+    fn accepts_cached_non_power_of_two_region() {
+        let manifest = imx95_cached_manifest("cm7", "mu7", 0x0048_8000, 0x6000);
+        Session::from_toml(&manifest).expect("cache-line-aligned cached region should be valid");
+    }
+
+    #[test]
+    fn rejects_region_too_small_for_aligned_slot_pair() {
+        let manifest = imx95_cached_manifest("cm7", "mu7", 0x0048_8000, 0x200);
+        let err = Session::from_toml(&manifest).unwrap_err();
+        assert!(matches!(
+            err,
+            CfgError::IpcRegionTooSmall {
+                length: 0x200,
+                mtu: 128,
+                required: 0x24c,
+                ..
+            }
+        ));
+        assert!(err.to_string().contains("bidirectional slot pair"));
+    }
+
+    #[test]
+    fn accepts_smallest_cache_aligned_region_for_slot_pair() {
+        let manifest = imx95_cached_manifest("cm7", "mu7", 0x0048_8000, 0x280);
+        Session::from_toml(&manifest)
+            .expect("0x280 bytes contains both aligned 128-byte-MTU slots");
+    }
+
+    #[test]
+    fn rejects_cached_region_with_partial_cache_line() {
+        for (base, length) in [(0x0048_8000, 0x4020), (0x0048_8020, 0x4000)] {
+            let manifest = imx95_cached_manifest("cm7", "mu7", base, length);
+            assert!(matches!(
+                Session::from_toml(&manifest),
+                Err(CfgError::RegionNotCacheAligned { .. })
+            ));
+        }
+    }
+
+    #[test]
+    fn rejects_cached_region_on_cacheless_controller() {
+        let manifest = imx95_cached_manifest("cm33", "mu1", 0x0048_8000, 0x4000);
+        let err = Session::from_toml(&manifest).unwrap_err();
+        assert!(matches!(err, CfgError::IpcCacheUnsupported { .. }));
+        assert!(err.to_string().contains("cm33"));
     }
 
     /// A region whose base is not aligned to its (power-of-two) size is not

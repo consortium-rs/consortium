@@ -164,4 +164,33 @@ pub enum CfgError {
         /// The specific constraint that failed.
         requirement: &'static str,
     },
+
+    #[error(
+        "[memory.{region}] ({base:#x}, len {length:#x}) is not cache-line aligned: {requirement}. \
+         Cached shared-memory regions must start and end on 64-byte boundaries"
+    )]
+    RegionNotCacheAligned {
+        region: String,
+        base: u32,
+        length: u32,
+        /// The specific constraint that failed.
+        requirement: &'static str,
+    },
+
+    #[error(
+        "ipc channel '{channel}' enables controller-side caching on '{core}', but only Cortex-M7 \
+         cores in the supported chip set have an L1 data cache"
+    )]
+    IpcCacheUnsupported { channel: String, core: String },
+
+    #[error(
+        "ipc channel '{channel}' shared-memory region is {length:#x} bytes, but MTU {mtu} requires \
+         at least {required:#x} bytes for the aligned descriptor and bidirectional slot pair"
+    )]
+    IpcRegionTooSmall {
+        channel: String,
+        length: u32,
+        mtu: u32,
+        required: usize,
+    },
 }
