@@ -1,13 +1,13 @@
 use crate::common::doorbell::HostDoorbell;
 use crate::transport_support::{
-    CountingRegion, MTU, REGION_LEN, SLOT_SIZE, channel, init_descriptor_with_channels,
+    CountingRegion, MTU, REGION_LEN, SLOT_STRIDE, channel, init_descriptor_with_channels,
     init_two_channel_descriptor,
 };
 use consortium_ipc::{Chan, Primary, SendTransport};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, Error, SharedMemoryTransport, channel_table_entry_offset, slot,
 };
-use consortium_shared_memory::SramRegion;
+use consortium_shared_memory::UncachedRegion;
 
 #[test]
 fn send_returns_no_channel_when_all_tx_slots_are_unconsumed() {
@@ -25,7 +25,7 @@ fn send_returns_no_channel_when_all_tx_slots_are_unconsumed() {
         .expect("create host runtime");
 
     rt.block_on(async move {
-        let region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
@@ -53,7 +53,7 @@ fn send_accepts_payload_at_channel_capacity() {
         .expect("create host runtime");
 
     rt.block_on(async move {
-        let region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
@@ -68,7 +68,7 @@ fn send_accepts_payload_at_channel_capacity() {
 
         let tx = unsafe { ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(0))) };
         let mut rx = [0; MTU];
-        let read_region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let read_region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let n = unsafe { slot::try_read(tx.slot_addr(base), &mut rx, &read_region) }
             .expect("remote reads MTU-sized payload");
         assert_eq!(n, MTU);
@@ -88,7 +88,7 @@ fn send_rejects_payload_larger_than_channel_capacity() {
         .expect("create host runtime");
 
     rt.block_on(async move {
-        let region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
@@ -116,9 +116,9 @@ fn send_rejects_payload_larger_than_channel_capacity() {
 #[test]
 fn send_uses_later_tx_channel_when_first_tx_slot_is_pending() {
     const TX0_SLOT: usize = 0x100;
-    const TX1_SLOT: usize = TX0_SLOT + SLOT_SIZE;
-    const RX_SLOT: usize = TX1_SLOT + SLOT_SIZE;
-    const MULTI_REGION_LEN: usize = RX_SLOT + SLOT_SIZE;
+    const TX1_SLOT: usize = TX0_SLOT + SLOT_STRIDE;
+    const RX_SLOT: usize = TX1_SLOT + SLOT_STRIDE;
+    const MULTI_REGION_LEN: usize = RX_SLOT + SLOT_STRIDE;
 
     let mut backing = vec![0; MULTI_REGION_LEN].into_boxed_slice();
     let base = backing.as_mut_ptr();
@@ -139,7 +139,7 @@ fn send_uses_later_tx_channel_when_first_tx_slot_is_pending() {
         .expect("create host runtime");
 
     rt.block_on(async move {
-        let region = unsafe { SramRegion::new(base, MULTI_REGION_LEN) };
+        let region = unsafe { UncachedRegion::new(base, MULTI_REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
@@ -154,7 +154,7 @@ fn send_uses_later_tx_channel_when_first_tx_slot_is_pending() {
 
         let tx1 = unsafe { ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1))) };
         let mut rx = [0; MTU];
-        let read_region = unsafe { SramRegion::new(base, MULTI_REGION_LEN) };
+        let read_region = unsafe { UncachedRegion::new(base, MULTI_REGION_LEN) };
         let n = unsafe { slot::try_read(tx1.slot_addr(base), &mut rx, &read_region) }
             .expect("remote reads second tx slot");
         assert_eq!(&rx[..n], b"second-slot");

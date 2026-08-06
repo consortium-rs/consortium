@@ -11,8 +11,8 @@ begins with.
 This crate answers two narrow questions that several subsystems need answered the
 same way:
 
-1. **What is this memory, and what does it cost to make a write visible to another
-   core?** — the `Region` trait and its implementations.
+1. **How is this window mapped, and what does it cost to make a write visible to
+   another core?** — the `Region` trait and its implementations.
 2. **Whose structure is this, and what version?** — the `descriptor` header.
 
 Protocol lives one level up. `consortium-ipc-transport-memory` owns the `CIPC`
@@ -21,35 +21,35 @@ log rings. Both share what is defined here.
 
 ## Regions and coherency
 
-On a heterogeneous SoC, "shared memory" is not one thing.
-
-A window in on-chip SRAM sits inside the coherent interconnect: a store is visible
-to the peer as soon as it retires. A window in DDR is **not** coherent between a
-Cortex-A cluster and a Cortex-M core — a writer must clean its dirty lines to the
-point of coherency and a reader must invalidate stale ones. Getting this wrong is
-the difference between a working link and one that reads its own stale cache
-forever, and the failure is silent.
+On a heterogeneous SoC, cache behavior follows the mapping attributes, not the
+kind of RAM backing the window. A non-cacheable mapping cannot retain dirty or
+stale lines. A cacheable mapping needs the writer to clean dirty lines and the
+reader to clean-invalidate stale lines. Getting this wrong silently produces stale
+or lost data.
 
 `Region` makes the difference explicit rather than assumed:
 
-| Type           | Backing      | `flush` / `invalidate`        | `is_coherent` |
-| -------------- | ------------ | ----------------------------- | ------------- |
-| `SramRegion`   | on-chip SRAM | no-ops                        | `true`        |
-| `DdrRegion`    | DDR          | AArch64 `dc cvac` / `dc ivac` | `false`       |
-| `SerialRegion` | none         | no-ops                        | `true`        |
+| Type             | Mapping       | `flush` / `invalidate`        | `is_coherent` |
+| ---------------- | ------------- | ----------------------------- | ------------- |
+| `UncachedRegion` | non-cacheable | no-ops                        | `true`        |
+| `CachedRegion`   | cacheable     | AArch64 / ARMv7-M maintenance | `false`       |
+| `SerialRegion`   | none          | no-ops                        | `true`        |
 
 Transports are generic over the region, so `is_coherent` and the no-op cache
-methods resolve at monomorphization: an SRAM-backed link compiles to code with no
+methods resolve at monomorphization: an uncached link compiles to code with no
 cache maintenance in it at all, rather than branching per operation at runtime.
 
 ### Adaptations and limitations
 
-- **`DdrRegion` maintenance is AArch64-only.** `flush` sweeps `dc cvac` and
-  `invalidate` sweeps `dc ivac` over each 64-byte line, each followed by `dsb sy`.
-  On other targets both compile to no-ops — which is what lets the shared-memory
-  protocol tests run on any developer host. It also means a _real_ non-coherent
-  link on a non-AArch64 target would get no maintenance; that case does not exist
-  in the current chip support and would need its own implementation.
+- **AArch64** uses `dc cvac` for `flush` and EL0-legal `dc civac` for
+  `invalidate`, sweeping each 64-byte line and ending with `dsb sy`. Plain `dc
+ivac` is EL1-only and would trap from an AP userspace mapping.
+- **ARMv7-M** uses the Cortex-M `SCB` clean and clean-invalidate-by-address
+  helpers, which derive the Cortex-M7 line size from `CTR.DminLine`.
+- **ARMv8-M is intentionally a no-op.** Although the API compiles there,
+  `CTR.DminLine` is architecturally meaningless on cacheless Cortex-M33/M23
+  parts. No supported Cortex-M33 has a data cache. Host, RISC-V, and ARM Linux
+  builds are also no-ops.
 - **The 64-byte line size is a constant,** correct for the Cortex-A35/A55 parts in
   the supported families, not queried from `CTR_EL0`.
 - **`SerialRegion` has no backing memory.** It reports a maximum frame size
@@ -66,13 +66,14 @@ the one place the obligation is stated:
 > The caller guarantees the window is valid for reads and writes for `len` bytes
 > for as long as the region lives, and that no conflicting Rust alias to it exists.
 
-In exchange, `SramRegion` and `DdrRegion` are `Send + Sync` — two processors
+In exchange, `UncachedRegion` and `CachedRegion` are `Send + Sync` — two processors
 genuinely do touch these bytes, so there is no single-owner story to tell — and
 everything built on top of them can be safe.
 
 In practice the pointer comes from a `mmap` of `/dev/uioN` on Linux or from a
 linker-placed symbol on firmware, and `consortium-cfg` has already validated the
-window's bounds, overlap, and MPU alignment against `Consortium.toml`.
+window's bounds, overlap, and either MPU or cache-line alignment against
+`Consortium.toml`.
 
 ## Descriptor header
 
@@ -102,11 +103,11 @@ borrowed.
 ## Example
 
 ```rust,ignore
-use consortium_shared_memory::{DdrRegion, Region};
+use consortium_shared_memory::{CachedRegion, Region};
 
-// SAFETY: `base` is a 64 KiB window mmap'd from /dev/uio0 and nothing else
-// aliases it for the lifetime of this region.
-let region = unsafe { DdrRegion::new(base, 64 * 1024) };
+// SAFETY: `base` is a 64 KiB controller-side window mapped cacheably, aligned
+// to cache lines, and nothing else aliases it for the lifetime of this region.
+let region = unsafe { CachedRegion::new(base, 64 * 1024) };
 
 // Writer side: publish, then make the bytes visible to the peer.
 write_payload(&region);

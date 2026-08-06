@@ -41,8 +41,8 @@ What remains is **hardware-specific glue** and the **application runtime layer**
 
 ### Memory Region Implementations (`consortium-ipc` sub-modules)
 
-- **`SramRegion`:** Cache-coherent, no-op flush/invalidate
-- **`DdrRegion`:** Non-coherent, AArch64 `dc cvac`/`dc ivac` + `dsb sy`
+- **`UncachedRegion`:** Non-cacheable mapping, no-op flush/invalidate
+- **`CachedRegion`:** Cacheable mapping, AArch64 `dc cvac`/`dc civac` or Cortex-M7 SCB maintenance
 - **`SerialRegion`:** Virtual region for UART/SWD logging
 
 ### Codec

@@ -7,7 +7,7 @@ use consortium_ipc::{
     Chan, Connect, Doorbell, MaybeSend, Primary, RecvTransport, Secondary, SendTransport, Side,
     Transport, TransportError,
 };
-use consortium_shared_memory::{DdrRegion, Region, SramRegion};
+use consortium_shared_memory::{CachedRegion, Region, UncachedRegion};
 
 use crate::{
     descriptor::{
@@ -21,8 +21,8 @@ use crate::{
 
 pub trait RegionSharedMemoryTransportable: consortium_shared_memory::region::Region {}
 
-impl RegionSharedMemoryTransportable for DdrRegion {}
-impl RegionSharedMemoryTransportable for SramRegion {}
+impl RegionSharedMemoryTransportable for CachedRegion {}
+impl RegionSharedMemoryTransportable for UncachedRegion {}
 
 /// # Safety
 /// `base` must be valid for reads/writes covering the full descriptor layout.
@@ -727,7 +727,7 @@ impl<S: Side, D: Doorbell + Send + 'static, R: RegionSharedMemoryTransportable +
 ///
 /// Unlike the raw [`descriptor_init`] form, this owns the region, so it can
 /// perform the cache maintenance the handshake needs on a non-coherent
-/// [`DdrRegion`] and record the negotiated MTU afterwards.
+/// [`CachedRegion`] and record the negotiated MTU afterwards.
 ///
 /// [`descriptor_init`]: SharedMemoryTransport::descriptor_init
 impl<D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Connect

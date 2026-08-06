@@ -32,6 +32,7 @@ secondary     = "cm7"
 party.linux   = { chan = 6, type = "SensorData" }
 party.cm7     = { chan = 7, type = "MotionControl" }
 config.memory = { base = 0x000488000, length = 0x4000 }
+config.cache  = true
 mtu           = 128
 codec         = "rkyv"
 

@@ -20,9 +20,9 @@
 /// Does not imply ownership - just describes what exists.
 ///
 /// Implementations:
-///   SramRegion  - cache ops are noops
-///   DdrRegion   - cache ops are real dcache instructions
-///   SerialRegion- no backing memory, frame buffer only
+///   UncachedRegion - non-cacheable mapping, cache ops are noops
+///   CachedRegion   - cacheable mapping, architecture-specific cache ops
+///   SerialRegion   - no backing memory, frame buffer only
 pub trait Region {
     /// Raw pointer to the start of the region.
     ///
