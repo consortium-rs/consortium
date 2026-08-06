@@ -62,6 +62,15 @@ impl Default for HmiLogical {
     }
 }
 
+/// Largest logical dimension the PocketJS engine can address per axis.
+///
+/// Mirrors `consortium_hmi_pocket::MAX_COORD`, the range of the guest's
+/// packed-contact wire format. Kept here as a literal because the schema crate
+/// must stay free of backend dependencies; the two are pinned together by
+/// `rejects_a_viewport_pocketjs_cannot_address` and the backend's own
+/// construction check.
+const POCKET_MAX_LOGICAL: u32 = 1023;
+
 impl Hmi {
     /// Validates engine-specific field requirements.
     ///
@@ -74,6 +83,21 @@ impl Hmi {
         match self.engine {
             HmiEngine::Cog => Ok(()),
             HmiEngine::Pocket => {
+                // PocketJS addresses pointer and touch through a packed-contact
+                // frame argument with 10 bits per axis. A larger viewport would
+                // render fine and then clamp every contact past 1023 onto the
+                // edge, leaving most of the surface untouchable, so reject it
+                // here rather than at runtime on the target.
+                if self.logical.width > POCKET_MAX_LOGICAL
+                    || self.logical.height > POCKET_MAX_LOGICAL
+                {
+                    return Err(format!(
+                        "[hmi.logical] {}x{} exceeds the {POCKET_MAX_LOGICAL}px per-axis limit \
+                         of the PocketJS packed-contact format; pointer and touch beyond \
+                         {POCKET_MAX_LOGICAL} cannot be addressed",
+                        self.logical.width, self.logical.height,
+                    ));
+                }
                 if self.app.as_deref().unwrap_or_default().trim().is_empty() {
                     return Err(
                         "[hmi] engine = \"pocket\" requires `app` (the PocketJS entry name, \
@@ -155,6 +179,40 @@ mod tests {
                 .validate()
                 .is_ok()
         );
+    }
+
+    #[test]
+    fn rejects_a_viewport_pocketjs_cannot_address() {
+        let mut hmi = pocket(Some("hero-main"), HmiBackend::Headless);
+        hmi.logical.width = 1920;
+        hmi.logical.height = 1080;
+        let error = hmi.validate().unwrap_err();
+        assert!(error.contains("1920x1080"), "{error}");
+        assert!(error.contains("1023"), "{error}");
+
+        // The limit itself is addressable.
+        hmi.logical.width = POCKET_MAX_LOGICAL;
+        hmi.logical.height = POCKET_MAX_LOGICAL;
+        assert!(hmi.validate().is_ok());
+    }
+
+    #[test]
+    fn cog_accepts_a_viewport_larger_than_the_pocket_limit() {
+        // The limit is a property of the PocketJS wire format, not of HMI, so
+        // a Cog kiosk on a 1080p panel must still validate.
+        let hmi = Hmi {
+            engine: HmiEngine::Cog,
+            backend: HmiBackend::Wayland,
+            debug: None,
+            source: "website".to_string(),
+            build: "website/dist".to_string(),
+            app: None,
+            logical: HmiLogical {
+                width: 1920,
+                height: 1080,
+            },
+        };
+        assert!(hmi.validate().is_ok());
     }
 
     #[test]
