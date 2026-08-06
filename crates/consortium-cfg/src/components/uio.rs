@@ -98,6 +98,12 @@ pub struct UioDevice {
     /// How the windows are described: inline `reg` registers, or a
     /// `reserved-memory`/`memory-region` RAM carveout.
     pub backing: UioBacking,
+    /// Whether each `mmap` entry's `reserved-memory` carveout gets
+    /// `dma-coherent`. Missing entries are treated as `false`. This stays
+    /// per-window because one `ipc-shm` device can aggregate cached and
+    /// uncached controller windows. The property does not change the AP's
+    /// uncached UIO mapping.
+    pub dma_coherent: Vec<bool>,
     /// Device-tree label of the interrupt controller for [`irq`](Self::irq),
     /// emitted as `interrupt-parent = <&…>`. Required whenever the node sits
     /// somewhere the interrupt parent is not inherited (e.g. the STM32MP2 root);
@@ -228,12 +234,16 @@ impl UioDevice {
             .iter()
             .enumerate()
             .map(|(index, (base, length))| {
-                Node::with_unit_address(name.clone(), hex(*base))
+                let mut node = Node::with_unit_address(name.clone(), hex(*base))
                     .label(reserved_label(&name, index, count))
                     .property(Property::cells(
                         "reg",
                         reg_cells(*base, *length, options.layout),
-                    ))
+                    ));
+                if self.dma_coherent.get(index).copied().unwrap_or(false) {
+                    node = node.property(Property::boolean("dma-coherent"));
+                }
+                node
                     // `no-map`: keep Linux from mapping the carveout cacheably or
                     // handing it to the allocator; the coprocessor owns it.
                     .property(Property::boolean("no-map"))
@@ -330,6 +340,7 @@ mod tests {
             mmap,
             irq,
             backing: UioBacking::Registers,
+            dma_coherent: Vec::new(),
             interrupt_parent: None,
             clock: None,
         }
@@ -341,6 +352,7 @@ mod tests {
             mmap,
             irq: None,
             backing: UioBacking::ReservedMemory,
+            dma_coherent: Vec::new(),
             interrupt_parent: None,
             clock: None,
         }
@@ -365,6 +377,23 @@ mod tests {
 
         let dts = device.to_node("regs").to_dts();
         assert!(dts.contains("reg = <0x0 0x400000 0x0 0x8000 0x0 0x408000 0x0 0x2000>;"));
+    }
+
+    #[test]
+    fn dma_coherent_is_only_on_reserved_memory_node() {
+        let mut device = reserved(vec![(0x0040_0000, 0x8000), (0x0040_8000, 0x2000)]);
+        device.dma_coherent = vec![false, true];
+
+        let uio = device.to_node("ipc-shm").to_dts();
+        let reserved = device.reserved_memory_nodes("ipc-shm");
+        assert!(!uio.contains("dma-coherent"));
+        assert!(!reserved[0].to_dts().contains("dma-coherent"));
+        assert!(reserved[1].to_dts().contains("dma-coherent;"));
+        assert!(
+            reserved
+                .iter()
+                .all(|node| node.to_dts().contains("no-map;"))
+        );
     }
 
     #[test]

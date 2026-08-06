@@ -30,6 +30,7 @@
 //! 0x18    4     a&m   state           (DescState)
 //! 0x1C    4     N/A   reserved ; alignment padding
 //! 0x20    12*N  N/A   channel table
+//! 0xE0    32    N/A   cache-line padding
 //! ```
 //!
 //! Each channel table entry (12 bytes):
@@ -102,6 +103,11 @@ const RX_TRANSFER_SIZE_OFFSET: usize = 0x10;
 const STATE_OFFSET: usize = 0x18;
 const CHANNEL_TABLE_OFFSET: usize = 0x20;
 pub const DESCRIPTOR_LENGTH: usize = core::mem::size_of::<Descriptor>();
+/// Cache-line boundary used to isolate slots with different writers.
+///
+/// This is 64 bytes because it covers both the Cortex-M7's 32-byte data-cache
+/// lines and the AArch64 maintenance granule used by `CachedRegion`.
+pub const SLOT_ALIGNMENT: usize = 64;
 
 #[derive(Debug)]
 #[repr(C)]
@@ -206,10 +212,40 @@ pub const fn channel_table_entry_offset(index: usize) -> usize {
     CHANNEL_TABLE_OFFSET + index * CHAN_ENTRY_SIZE
 }
 
+const fn align_slot_boundary(value: usize) -> usize {
+    let remainder = value % SLOT_ALIGNMENT;
+    if remainder == 0 {
+        value
+    } else {
+        value + (SLOT_ALIGNMENT - remainder)
+    }
+}
+
+/// Number of bytes reserved for one slot, including cache-line padding.
+pub const fn slot_stride(mtu: usize) -> usize {
+    align_slot_boundary(SLOT_HEADER + mtu)
+}
+
+/// Byte offset of slot `index` in the shared-memory window.
+///
+/// Both the descriptor-to-slot boundary and every inter-slot boundary are
+/// cache-line aligned. This prevents cleaning a dirty line for one direction
+/// from writing back stale bytes belonging to the peer-owned direction.
 pub const fn slot_offset(index: usize, mtu: usize) -> usize {
     assert!(index < CHANNEL_NUM_MAX, "channel index out of range");
 
-    DESCRIPTOR_LENGTH + (SLOT_HEADER + mtu) * index
+    align_slot_boundary(DESCRIPTOR_LENGTH) + slot_stride(mtu) * index
+}
+
+/// Minimum shared-window length containing `num_channels` complete slots.
+pub const fn required_region_len(num_channels: usize, mtu: usize) -> usize {
+    assert!(num_channels > 0, "at least one channel is required");
+    assert!(
+        num_channels <= CHANNEL_NUM_MAX,
+        "channel count out of range"
+    );
+
+    slot_offset(num_channels - 1, mtu) + SLOT_HEADER + mtu
 }
 
 /// # Safety
@@ -465,7 +501,7 @@ pub(crate) unsafe fn accept_descriptor(
             direction,
             _reserved: [0; 3],
         };
-        validate_channel_layout(i, num_ch as usize, *channel)?;
+        validate_channel_layout(i, num_ch as usize, rx_transfer_size as usize, *channel)?;
     }
 
     compiler_fence(Ordering::Release);
@@ -594,6 +630,7 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Seco
 fn validate_channel_layout(
     index: usize,
     num_channels: usize,
+    transfer_size: usize,
     channel: ChannelLayout,
 ) -> Result<(), DescriptorError> {
     let table_end = CHAN_TABLE_BASE + num_channels * CHAN_ENTRY_SIZE;
@@ -618,6 +655,31 @@ fn validate_channel_layout(
         return Err(DescriptorError::InvalidChannel {
             index,
             reason: "slot is smaller than the slot header",
+        });
+    }
+
+    if channel.offset as usize != slot_offset(index, transfer_size) {
+        consortium_log::trace!(
+            "channel {}: slot offset {} does not match aligned layout",
+            index,
+            channel.offset
+        );
+        return Err(DescriptorError::InvalidChannel {
+            index,
+            reason: "slot offset does not match aligned layout",
+        });
+    }
+
+    if channel.size as usize != SLOT_HEADER + transfer_size {
+        consortium_log::trace!(
+            "channel {}: slot size {} does not match transfer size {}",
+            index,
+            channel.size,
+            transfer_size
+        );
+        return Err(DescriptorError::InvalidChannel {
+            index,
+            reason: "slot size does not match transfer size",
         });
     }
 

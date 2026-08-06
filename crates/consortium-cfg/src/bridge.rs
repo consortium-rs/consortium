@@ -39,13 +39,14 @@
 
 use std::collections::HashMap;
 
-use consortium_cfg_common::config::{McoreName, MemoryRegion, Party, VisibleCore};
+use consortium_cfg_common::config::{McoreName, Party, VisibleCore};
 use consortium_cfg_common::database::{ChipDatabase, HardwareDoorbellPeripheral, MemoryRegionType};
 
 use crate::components::address::{Address, ApAddress};
 use crate::components::bella::{BellA, HardwareDoorbell};
 use crate::components::dbg::{DebugLogs, DebugRing};
 use crate::components::ipc_shm::{Channel, DoorbellMeta, ShuHan, Transceiver};
+use crate::components::memory_to_uio::SharedWindow;
 use crate::components::peripheral::{PeripheralInstance, PeripheralKind, Peripherals};
 use crate::components::region::Region;
 use crate::components::uio::{ToUio, UioBacking, UioDevice};
@@ -283,11 +284,13 @@ impl LoweredIr {
     ///   `[dbg.<core>]` logger is present, so the first `defmt` frame lands in a
     ///   fresh descriptor;
     /// - programs one Normal, shareable, non-cacheable MPU carveout per
-    ///   distinct shared IPC region (so this core and its peer observe a
-    ///   coherent view without manual cache maintenance), for the cached
+    ///   distinct uncached shared IPC region (cacheable windows retain the
+    ///   default write-back attributes and use explicit maintenance), for the
     ///   Cortex-M families that ship a [`consortium_runtime_mcu::mpu`] helper
     ///   (ARMv7-M/ARMv8-M). ARMv6-M (`cm0p`) has no data cache and no helper, so
     ///   it gets NVIC setup only;
+    /// - invalidates and enables the Cortex-M7 data cache when at least one IPC
+    ///   window uses `config.cache = true`;
     /// - unmasks every doorbell NVIC line visible to this core (via
     ///   [`BellA::nvic_enable`](crate::components::bella::BellA::nvic_enable));
     /// - brings up the sealed Embassy time driver (its timer vector and
@@ -318,6 +321,12 @@ impl LoweredIr {
         if mcore_has_mpu_helper(name) {
             let mut seen = std::collections::BTreeSet::new();
             for transceiver in participating {
+                // A cached window keeps the core's default write-back attributes;
+                // `CachedRegion` does the maintenance instead. Skipping before the
+                // dedup insert keeps MPU region numbering gap-free.
+                if transceiver.region.cache {
+                    continue;
+                }
                 let Some(base) = transceiver.region.address.cp.get(&core).copied() else {
                     continue;
                 };
@@ -346,14 +355,34 @@ impl LoweredIr {
             }
         }
 
-        // `disable_cache` needs the stolen `MPU` peripheral; NVIC unmasking is a
-        // free function, so cores with no MPU carveout skip the steal entirely.
-        let steal = if mpu_stmts.is_empty() {
+        let enables_dcache = name == McoreName::Cm7
+            && participating
+                .iter()
+                .any(|transceiver| transceiver.region.cache);
+        let enable_dcache = if enables_dcache {
+            quote! {
+                // `enable_dcache` is idempotent and invalidates all cache lines
+                // before setting SCB.CCR.DC, so a reset-started CM7 cannot retain
+                // stale data while switching to cached shared-window access.
+                __core.SCB.enable_dcache(&mut __core.CPUID);
+                ::consortium_runtime_mcu::log::trace!(
+                    "consortium controller init: Cortex-M7 data cache enabled"
+                );
+            }
+        } else {
+            quote! {}
+        };
+
+        // MPU carveouts need `MPU`; D-cache bring-up needs `SCB` and `CPUID`.
+        // NVIC unmasking is a free function, so a core needing neither skips the
+        // steal entirely.
+        let steal = if mpu_stmts.is_empty() && !enables_dcache {
             quote! {}
         } else {
             quote! {
                 /// SAFETY: `init` runs once during controller bring-up, in
-                /// privileged mode, before any other code touches the MPU.
+                /// privileged mode, before any other code touches the MPU or
+                /// cache-control peripherals.
                 let mut __core = unsafe { ::cortex_m::Peripherals::steal() };
             }
         };
@@ -475,6 +504,7 @@ impl LoweredIr {
                 ::consortium_runtime_mcu::log::trace!("consortium controller init: mpu/nvic bring-up");
                 #steal
                 #(#mpu_stmts)*
+                #enable_dcache
                 #nvic
                 #hal_peripherals
                 #time_bringup
@@ -529,7 +559,7 @@ impl Session {
             self.config.peripheral.len()
         );
         let mut transceivers = Vec::new();
-        let mut regions: Vec<MemoryRegion> = Vec::new();
+        let mut regions: Vec<SharedWindow> = Vec::new();
 
         // Doorbells in first-appearance order. This only fixes a provisional
         // `uioN` layout; the whole device list is re-sorted into memory order
@@ -577,7 +607,10 @@ impl Session {
 
             // Region lives in `uio0`; its mmap slot is its declaration order.
             let region_mmap = regions.len();
-            regions.push(memory);
+            regions.push(SharedWindow {
+                memory,
+                cache: channel.cache(),
+            });
 
             // Reserve / reuse this doorbell's provisional `uioN` device (offset
             // by 1 for the shared-memory device at pre-sort `uio0`).
@@ -662,6 +695,7 @@ impl Session {
                 codec: channel.codec,
                 region: Region {
                     r#type: MemoryRegionType::Sram,
+                    cache: channel.cache(),
                     address: region_address,
                     length: memory.length,
                 },
@@ -741,6 +775,7 @@ impl Session {
                     mmap: dbg_windows,
                     irq: None,
                     backing: UioBacking::ReservedMemory,
+                    dma_coherent: Vec::new(),
                     interrupt_parent: None,
                     clock: None,
                 },
@@ -1323,5 +1358,50 @@ mod tests {
             .expect("cm33 has doorbell irqs");
         let wrapped = quote::quote! { fn _f() { #bella } };
         syn::parse_file(&wrapped.to_string()).expect("lowered Bella is valid Rust");
+    }
+
+    #[test]
+    fn cached_window_does_not_leave_gap_in_mpu_region_numbers() {
+        let manifest = r#"
+            [profile]
+            chip = "mimx9596xvt"
+            shared = "./shared"
+            deploy_root = "/opt/consortium"
+
+            [[ipc.channel]]
+            name = "cached"
+            doorbell = "mu7"
+            pattern = "memory"
+            primary = "linux"
+            secondary = "cm7"
+            party.linux = { chan = 0, type = "Ping" }
+            party.cm7 = { chan = 1, type = "Pong" }
+            config.memory = { base = 0x00488000, length = 0x4000 }
+            config.cache = true
+            mtu = 128
+
+            [[ipc.channel]]
+            name = "uncached"
+            doorbell = "mu7"
+            pattern = "memory"
+            primary = "linux"
+            secondary = "cm7"
+            party.linux = { chan = 2, type = "Ping" }
+            party.cm7 = { chan = 3, type = "Pong" }
+            config.memory = { base = 0x0048c000, length = 0x4000 }
+            mtu = 128
+        "#;
+        let ir = Session::from_toml(manifest).unwrap().lower().unwrap();
+        let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
+        let cm7 = VisibleCore::Mcore(McoreName::Cm7);
+        let source = ir.initialize(cm7, &ty_crate).to_string();
+
+        let disable_cache = source
+            .split("disable_cache")
+            .nth(1)
+            .expect("uncached window emits an MPU carveout");
+        assert!(disable_cache.contains("0u8"));
+        assert!(!disable_cache.contains("1u8"));
+        assert_eq!(source.matches("enable_dcache").count(), 1);
     }
 }

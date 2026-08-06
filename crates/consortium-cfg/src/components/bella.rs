@@ -153,6 +153,7 @@ impl ToUio for HardwareDoorbellPeripheral {
             mmap: vec![(self.memory.base, self.memory.length)],
             irq,
             backing: UioBacking::Registers,
+            dma_coherent: Vec::new(),
             interrupt_parent: None,
             clock,
         }))

@@ -3,7 +3,7 @@ use consortium_ipc::{Chan, Connect, RecvTransport, SendTransport};
 use consortium_ipc_transport_memory::{
     DescriptorLayout, Primary, Secondary, SharedMemoryTransport, get_state,
 };
-use consortium_shared_memory::SramRegion;
+use consortium_shared_memory::UncachedRegion;
 
 const MTU: usize = 64;
 const REGION_LEN: usize = 0x800;
@@ -39,7 +39,7 @@ fn connect_builds_a_usable_link_from_both_sides() {
                 let base = base_addr as *mut u8;
                 let ch_tx = unsafe { Chan::new_unchecked(0) };
                 let ch_rx = unsafe { Chan::new_unchecked(1) };
-                let region = unsafe { SramRegion::new(base, REGION_LEN) };
+                let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
                 let mut transport = unsafe {
                     SharedMemoryTransport::<Primary, _, _>::new(
                         ch_tx, ch_rx, a_doorbell, region, base,
@@ -73,7 +73,7 @@ fn connect_builds_a_usable_link_from_both_sides() {
                 let base = base_addr as *mut u8;
                 let ch_rx = unsafe { Chan::new_unchecked(0) };
                 let ch_tx = unsafe { Chan::new_unchecked(1) };
-                let region = unsafe { SramRegion::new(base, REGION_LEN) };
+                let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
                 let mut transport = unsafe {
                     SharedMemoryTransport::<Secondary, _, _>::new(
                         ch_tx, ch_rx, m_doorbell, region, base,
@@ -126,7 +126,7 @@ async fn secondary_rejects_mismatched_channel_count() {
     let (_a_doorbell, m_doorbell) = HostDoorbell::pair();
     let ch_rx = unsafe { Chan::new_unchecked(0) };
     let ch_tx = unsafe { Chan::new_unchecked(1) };
-    let region = unsafe { SramRegion::new(base, REGION_LEN) };
+    let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
     let mut transport = unsafe {
         SharedMemoryTransport::<Secondary, _, _>::new(ch_tx, ch_rx, m_doorbell, region, base)
     };

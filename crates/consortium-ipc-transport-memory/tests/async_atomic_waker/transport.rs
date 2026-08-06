@@ -10,17 +10,17 @@ use atomic_waker::AtomicWaker;
 use consortium_ipc::{Chan, Doorbell, RecvTransport};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, DescState, MAGIC, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
-    VERSION, channel_table_entry_offset, slot,
+    VERSION, channel_table_entry_offset, slot, slot_offset, slot_stride,
 };
-use consortium_shared_memory::SramRegion;
+use consortium_shared_memory::UncachedRegion;
 use consortium_shared_memory::descriptor::DescriptorHeader;
 use futures::{pin_mut, task::noop_waker_ref};
 
 const MTU: usize = 64;
 const SLOT_SIZE: usize = slot::SLOT_HEADER + MTU;
-const A_TO_M_SLOT: usize = 0x100;
-const M_TO_A_SLOT: usize = A_TO_M_SLOT + SLOT_SIZE;
-const REGION_LEN: usize = M_TO_A_SLOT + SLOT_SIZE;
+const A_TO_M_SLOT: usize = slot_offset(0, MTU);
+const M_TO_A_SLOT: usize = slot_offset(1, MTU);
+const REGION_LEN: usize = M_TO_A_SLOT + slot_stride(MTU);
 #[cfg(feature = "std")]
 const RX_CHANNEL: usize = 1;
 #[cfg(not(feature = "std"))]
@@ -154,7 +154,7 @@ fn recv_future_wakes_from_atomic_waker_doorbell() {
     let base = backing.as_mut_ptr();
     init_two_channel_descriptor(base);
 
-    let region = unsafe { SramRegion::new(base, REGION_LEN) };
+    let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
     let (app_doorbell, remote_doorbell) = AtomicDoorbell::pair();
     let ch1 = unsafe { Chan::new_unchecked(0) };
     let ch2 = unsafe { Chan::new_unchecked(2) };

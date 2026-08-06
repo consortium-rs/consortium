@@ -12,9 +12,9 @@ use std::{
 use consortium_ipc::{Chan, Doorbell, RecvTransport};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, DescState, MAGIC, Primary, RX_UPDATED_ID_OFFSET,
-    SharedMemoryTransport, VERSION, channel_table_entry_offset, slot,
+    SharedMemoryTransport, VERSION, channel_table_entry_offset, slot, slot_offset, slot_stride,
 };
-use consortium_shared_memory::SramRegion;
+use consortium_shared_memory::UncachedRegion;
 use consortium_shared_memory::descriptor::DescriptorHeader;
 use embassy_executor::Executor;
 use embassy_futures::yield_now;
@@ -23,9 +23,9 @@ use embassy_time::Duration;
 
 const MTU: usize = 64;
 const SLOT_SIZE: usize = slot::SLOT_HEADER + MTU;
-const A_TO_M_SLOT: usize = 0x100;
-const M_TO_A_SLOT: usize = A_TO_M_SLOT + SLOT_SIZE;
-const REGION_LEN: usize = M_TO_A_SLOT + SLOT_SIZE;
+const A_TO_M_SLOT: usize = slot_offset(0, MTU);
+const M_TO_A_SLOT: usize = slot_offset(1, MTU);
+const REGION_LEN: usize = M_TO_A_SLOT + slot_stride(MTU);
 
 fn channel(offset: usize, direction: ChannelDirection) -> ChannelLayout {
     let mut layout = ChannelLayout::default();
@@ -141,7 +141,7 @@ impl Doorbell for EmbassyDoorbell {
 
 #[embassy_executor::task]
 async fn receive_task(
-    mut transport: SharedMemoryTransport<Primary, EmbassyDoorbell, SramRegion>,
+    mut transport: SharedMemoryTransport<Primary, EmbassyDoorbell, UncachedRegion>,
     done: &'static AtomicBool,
 ) {
     let signal = Signal::<NoopRawMutex, ()>::new();
@@ -183,7 +183,7 @@ fn recv_future_wakes_on_embassy_platform_std_executor() {
     let base_addr = base as usize;
     let ch1 = unsafe { Chan::new_unchecked(0) };
     let ch2 = unsafe { Chan::new_unchecked(1) };
-    let region = unsafe { SramRegion::new(base, REGION_LEN) };
+    let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
     let (app_doorbell, remote_doorbell) = EmbassyDoorbell::pair();
     let transport = unsafe { SharedMemoryTransport::new(ch1, ch2, app_doorbell, region, base) };
     let done = Box::leak(Box::new(AtomicBool::new(false)));

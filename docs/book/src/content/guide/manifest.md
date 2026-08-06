@@ -76,6 +76,7 @@ table yet.
 | `primary`, `secondary` | Endpoints participating in the descriptor handshake          |
 | `party.<name>`         | This party's outgoing doorbell channel and Rust message type |
 | `config.memory`        | Physical shared region containing the descriptor and slots   |
+| `config.cache`         | Cache the controller-side mapping; defaults to `false`       |
 | `mtu`                  | Maximum encoded payload size in bytes                        |
 | `codec`                | `postcard` by default; `prost` and `rkyv` are also supported |
 

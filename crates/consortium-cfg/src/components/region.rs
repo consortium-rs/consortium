@@ -19,8 +19,11 @@ use crate::components::address::Address;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Region {
-    /// the type of the region
+    /// Hardware memory type from the chip database. This remains a physical
+    /// fact for diagnostics, but no longer selects the generated mapping type.
     pub r#type: MemoryRegionType,
+    /// Whether the controller-side mapping retains the core's cacheable default.
+    pub cache: bool,
     /// address of the region
     pub address: Address,
     /// length of the region
@@ -42,10 +45,11 @@ impl Region {
             _ => self.address.memory_lookup(core, uio_ident),
         };
         let length = proc_macro2::Literal::usize_suffixed(self.length as usize);
-        let region_identifier = match self.r#type {
-            MemoryRegionType::Sram => {
-                quote::quote! { ::consortium_shared_memory::regions::SramRegion }
+        let region_identifier = match (core, self.cache) {
+            (VisibleCore::Ap, _) | (_, false) => {
+                quote::quote! { ::consortium_shared_memory::regions::UncachedRegion }
             }
+            (_, true) => quote::quote! { ::consortium_shared_memory::regions::CachedRegion },
         };
         quote::quote! {
             unsafe { #region_identifier::new((#address) as *mut u8, #length) }
@@ -64,6 +68,7 @@ mod tests {
     fn ap_region() -> Region {
         Region {
             r#type: MemoryRegionType::Sram,
+            cache: false,
             address: Address {
                 ap: ApAddress {
                     uio_id: 0,
@@ -76,16 +81,30 @@ mod tests {
     }
 
     #[test]
-    fn sram_region_wraps_ap_lookup_in_unsafe_new() {
+    fn uncached_region_wraps_ap_lookup_in_unsafe_new() {
         let uio = format_ident!("uio");
         let tokens = ap_region().initialize(VisibleCore::Ap, &uio).to_string();
 
         assert!(tokens.contains("unsafe"));
-        assert!(tokens.contains(":: consortium_shared_memory :: regions :: SramRegion :: new"));
+        assert!(tokens.contains(":: consortium_shared_memory :: regions :: UncachedRegion :: new"));
         // base is cast to a raw pointer; length is a usize literal.
         assert!(tokens.contains("as * mut u8"));
         assert!(tokens.contains("32768usize"));
         // address resolves through the AP UIO mmap window, zeroing it first.
         assert!(tokens.contains("uio [0usize] . mmap_zeroed (1usize) ?"));
+    }
+
+    #[test]
+    fn cached_region_is_controller_only() {
+        let uio = format_ident!("uio");
+        let mut region = ap_region();
+        let cm7 = VisibleCore::Mcore(consortium_cfg_common::config::McoreName::Cm7);
+        region.cache = true;
+        region.address.cp.insert(cm7, 0x3400_0000);
+
+        let controller = region.initialize(cm7, &uio).to_string();
+        let ap = region.initialize(VisibleCore::Ap, &uio).to_string();
+        assert!(controller.contains(":: consortium_shared_memory :: regions :: CachedRegion"));
+        assert!(ap.contains(":: consortium_shared_memory :: regions :: UncachedRegion"));
     }
 }

@@ -1,13 +1,13 @@
 use crate::common::doorbell::HostDoorbell;
 use crate::transport_support::{
-    HostSramTransportRx, HostSramTransportTx, MTU, REGION_LEN, init_two_channel_descriptor,
+    HostUncachedTransportRx, HostUncachedTransportTx, MTU, REGION_LEN, init_two_channel_descriptor,
 };
 use consortium_ipc::{Chan, RecvTransport, SendTransport};
 use consortium_ipc_transport_memory::{
     ChannelLayout, Primary, RX_UPDATED_ID_OFFSET, Secondary, SharedMemoryTransport,
     channel_table_entry_offset, slot,
 };
-use consortium_shared_memory::SramRegion;
+use consortium_shared_memory::UncachedRegion;
 
 /// Demonstrate that `split()` produces two independent halves that can coexist
 /// in the same scope. With a combined [`SharedMemoryTransport`] the borrow
@@ -30,14 +30,16 @@ fn split_into_halves_allows_tx_and_rx_to_coexist() {
         .expect("create host runtime");
 
     rt.block_on(async move {
-        let region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch_tx = unsafe { Chan::new_unchecked(0) };
         let ch_rx = unsafe { Chan::new_unchecked(1) };
         let transport = unsafe { SharedMemoryTransport::new(ch_tx, ch_rx, doorbell, region, base) };
 
-        let (mut tx, mut rx): (HostSramTransportTx<Primary>, HostSramTransportRx<Primary>) =
-            transport.split();
+        let (mut tx, mut rx): (
+            HostUncachedTransportTx<Primary>,
+            HostUncachedTransportRx<Primary>,
+        ) = transport.split();
 
         tx.send(b"to-remote").await.expect("tx half sends");
 
@@ -48,7 +50,7 @@ fn split_into_halves_allows_tx_and_rx_to_coexist() {
         let tx_layout =
             unsafe { ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(0))) };
         let mut raw = [0; MTU];
-        let read_region = unsafe { SramRegion::new(base, REGION_LEN) };
+        let read_region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let n = unsafe { slot::try_read(tx_layout.slot_addr(base), &mut raw, &read_region) }
             .expect("tx slot is readable");
         assert_eq!(&raw[..n], b"to-remote");
@@ -79,15 +81,17 @@ fn split_halves_allow_full_duplex_between_two_threads() {
                 let base = base_addr as *mut u8;
                 let ch_tx = unsafe { Chan::new_unchecked(0) };
                 let ch_rx = unsafe { Chan::new_unchecked(1) };
-                let region = unsafe { SramRegion::new(base, REGION_LEN) };
+                let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
                 let transport = unsafe {
                     SharedMemoryTransport::<Primary, _, _>::new(
                         ch_tx, ch_rx, a_doorbell, region, base,
                     )
                 };
 
-                let (mut tx, mut rx): (HostSramTransportTx<Primary>, HostSramTransportRx<Primary>) =
-                    transport.split();
+                let (mut tx, mut rx): (
+                    HostUncachedTransportTx<Primary>,
+                    HostUncachedTransportRx<Primary>,
+                ) = transport.split();
 
                 let mut buf = [0u8; MTU];
                 let (send_res, recv_res) = futures::join!(tx.send(b"ping"), rx.recv(&mut buf));
@@ -107,7 +111,7 @@ fn split_halves_allow_full_duplex_between_two_threads() {
                 let base = base_addr as *mut u8;
                 let ch_rx = unsafe { Chan::new_unchecked(0) };
                 let ch_tx = unsafe { Chan::new_unchecked(1) };
-                let region = unsafe { SramRegion::new(base, REGION_LEN) };
+                let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
                 let transport = unsafe {
                     SharedMemoryTransport::<Secondary, _, _>::new(
                         ch_tx, ch_rx, m_doorbell, region, base,
@@ -115,8 +119,8 @@ fn split_halves_allow_full_duplex_between_two_threads() {
                 };
 
                 let (mut tx, mut rx): (
-                    HostSramTransportTx<Secondary>,
-                    HostSramTransportRx<Secondary>,
+                    HostUncachedTransportTx<Secondary>,
+                    HostUncachedTransportRx<Secondary>,
                 ) = transport.split();
 
                 let mut buf = [0u8; MTU];

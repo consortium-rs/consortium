@@ -47,11 +47,11 @@ Keep `Transport` as the combined marker for backwards compatibility. Any type im
 
 ## Step 3 — Add `Clone` to region types (`crates/consortium-ipc/src/regions.rs`)
 
-`SramRegion` and `DdrRegion` hold a raw pointer + length. Add manual `Clone` impls (both halves intentionally alias the same shared memory region):
+`UncachedRegion` and `CachedRegion` hold a raw pointer + length. Add manual `Clone` impls (both halves intentionally alias the same shared memory region):
 
 ```rust
-impl Clone for SramRegion { fn clone(&self) -> Self { Self { ptr: self.ptr, len: self.len } } }
-impl Clone for DdrRegion  { fn clone(&self) -> Self { Self { ptr: self.ptr, len: self.len } } }
+impl Clone for UncachedRegion { fn clone(&self) -> Self { Self { ptr: self.ptr, len: self.len } } }
+impl Clone for CachedRegion  { fn clone(&self) -> Self { Self { ptr: self.ptr, len: self.len } } }
 ```
 
 ---

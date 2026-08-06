@@ -16,57 +16,60 @@
 
 //! Concrete [`Region`] implementations.
 //!
-//! | Type           | Backing memory | Cache ops            | `is_coherent` |
-//! |----------------|---------------|----------------------|---------------|
-//! | [`SramRegion`] | SRAM slice    | noops                | `true`        |
-//! | [`DdrRegion`]  | DDR slice     | real dcache insns    | `false`       |
-//! | [`SerialRegion`]| none         | noops                | `true`        |
+//! | Type               | Mapping              | Cache ops             | `is_coherent` |
+//! |--------------------|----------------------|-----------------------|---------------|
+//! | [`UncachedRegion`] | non-cacheable memory | noops                 | `true`        |
+//! | [`CachedRegion`]   | cacheable memory     | architecture-specific | `false`       |
+//! | [`SerialRegion`]   | no backing memory    | noops                 | `true`        |
 
 use crate::region::Region;
+
+#[cfg(armv7m)]
+use core::ptr::NonNull;
 
 /// AArch64 data-cache line size (bytes).  Cortex-A35/A55 all use 64 B lines.
 #[cfg(target_arch = "aarch64")]
 const CACHE_LINE_SIZE: usize = 64;
 
 // ---------------------------------------------------------------------------
-// SramRegion
+// UncachedRegion
 // ---------------------------------------------------------------------------
 
-/// A region backed by on-chip SRAM.
+/// A shared-memory region mapped with non-cacheable attributes.
 ///
-/// SRAM is always cache-coherent on STM32MP2 (it lives inside the coherent
-/// interconnect), so [`flush`] and [`invalidate`] are both noops and
+/// CPU caches cannot retain dirty or stale copies of this mapping, so [`flush`]
+/// and [`invalidate`] are both noops and
 /// [`is_coherent`] returns `true`, letting the compiler eliminate dead cache
 /// management code through monomorphization.
 ///
 /// [`flush`]: Region::flush
 /// [`invalidate`]: Region::invalidate
 /// [`is_coherent`]: Region::is_coherent
-pub struct SramRegion {
+pub struct UncachedRegion {
     ptr: *mut u8,
     len: usize,
 }
 
-// SAFETY: SRAM is accessible from multiple cores simultaneously;
+// SAFETY: shared memory is accessible from multiple cores simultaneously;
 // the caller (via `new`) takes responsibility for aliasing.
-unsafe impl Send for SramRegion {}
-// SAFETY: SRAM is accessible from multiple cores simultaneously;
+unsafe impl Send for UncachedRegion {}
+// SAFETY: shared memory is accessible from multiple cores simultaneously;
 // the caller (via `new`) takes responsibility for aliasing.
-unsafe impl Sync for SramRegion {}
+unsafe impl Sync for UncachedRegion {}
 
-impl SramRegion {
-    /// Wrap a raw SRAM slice as a region.
+impl UncachedRegion {
+    /// Wrap a raw non-cacheable memory slice as a region.
     ///
     /// # Safety
     /// `ptr` must be valid for reads and writes for `len` bytes for the
-    /// lifetime of this `SramRegion`.  The caller must ensure no conflicting
+    /// lifetime of this `UncachedRegion`. The caller must ensure no conflicting
     /// aliases exist while any `Transport` is using this region.
     pub unsafe fn new(ptr: *mut u8, len: usize) -> Self {
         Self { ptr, len }
     }
 }
 
-impl Clone for SramRegion {
+impl Clone for UncachedRegion {
     fn clone(&self) -> Self {
         Self {
             ptr: self.ptr,
@@ -75,7 +78,7 @@ impl Clone for SramRegion {
     }
 }
 
-impl Region for SramRegion {
+impl Region for UncachedRegion {
     unsafe fn as_ptr(&self) -> *mut u8 {
         self.ptr
     }
@@ -84,10 +87,10 @@ impl Region for SramRegion {
         self.len
     }
 
-    /// Noop - SRAM is cache-coherent.
+    /// Noop - the mapping is non-cacheable.
     fn flush(&self) {}
 
-    /// Noop - SRAM is cache-coherent.
+    /// Noop - the mapping is non-cacheable.
     fn invalidate(&self) {}
 
     fn is_coherent(&self) -> bool {
@@ -96,44 +99,52 @@ impl Region for SramRegion {
 }
 
 // ---------------------------------------------------------------------------
-// DdrRegion
+// CachedRegion
 // ---------------------------------------------------------------------------
 
-/// A region backed by DDR DRAM.
+/// A shared-memory region mapped with cacheable attributes.
 ///
-/// DDR is *not* coherent between the Cortex-A and Cortex-M cores on
-/// STM32MP2, so [`flush`] performs a `dc cvac` (clean to PoC) sweep and
-/// [`invalidate`] performs a `dc ivac` sweep over every cache line in the
-/// region, each followed by a `dsb sy` barrier.
+/// On AArch64, [`flush`] performs a `dc cvac` (clean to PoC) sweep and
+/// [`invalidate`] performs a `dc civac` (clean and invalidate to PoC) sweep
+/// over every 64-byte cache line, each followed by a `dsb sy` barrier. `dc
+/// civac` is deliberate: unlike EL1-only `dc ivac`, it is one of the data-cache
+/// operations permitted at EL0 by `SCTLR_EL1.UCI`, and AP-side regions are
+/// userspace `/dev/uioN` mappings.
 ///
-/// On non-AArch64 targets the cache operations compile away to noops so
-/// that host-side tests still build without special configuration.
+/// On ARMv7-M, the Cortex-M `SCB` clean and clean-invalidate-by-address helpers
+/// derive the Cortex-M7 line size from `CTR.DminLine`. ARMv8-M is intentionally
+/// a no-op even though `cortex-m` exposes the API there: `CTR.DminLine` is
+/// architecturally meaningless on cacheless Cortex-M33/M23 parts, so the
+/// derived line size and the crate's debug assertions would be garbage. No
+/// Cortex-M33 in Consortium's supported chip set has a data cache.
+///
+/// Host, RISC-V, and ARM Linux builds compile the operations to noops.
 ///
 /// [`flush`]: Region::flush
 /// [`invalidate`]: Region::invalidate
-pub struct DdrRegion {
+pub struct CachedRegion {
     ptr: *mut u8,
     len: usize,
 }
 
-// SAFETY: same as SramRegion - caller manages aliasing.
-unsafe impl Send for DdrRegion {}
-// SAFETY: same as SramRegion - caller manages aliasing.
-unsafe impl Sync for DdrRegion {}
+// SAFETY: same as UncachedRegion - caller manages aliasing.
+unsafe impl Send for CachedRegion {}
+// SAFETY: same as UncachedRegion - caller manages aliasing.
+unsafe impl Sync for CachedRegion {}
 
-impl DdrRegion {
-    /// Wrap a raw DDR slice as a region.
+impl CachedRegion {
+    /// Wrap a raw cacheable memory slice as a region.
     ///
     /// # Safety
     /// `ptr` must be valid for reads and writes for `len` bytes for the
-    /// lifetime of this `DdrRegion`.  The caller must ensure no conflicting
+    /// lifetime of this `CachedRegion`. The caller must ensure no conflicting
     /// aliases exist while any `Transport` is using this region.
     pub unsafe fn new(ptr: *mut u8, len: usize) -> Self {
         Self { ptr, len }
     }
 }
 
-impl Clone for DdrRegion {
+impl Clone for CachedRegion {
     fn clone(&self) -> Self {
         Self {
             ptr: self.ptr,
@@ -142,7 +153,7 @@ impl Clone for DdrRegion {
     }
 }
 
-impl Region for DdrRegion {
+impl Region for CachedRegion {
     unsafe fn as_ptr(&self) -> *mut u8 {
         self.ptr
     }
@@ -151,10 +162,11 @@ impl Region for DdrRegion {
         self.len
     }
 
-    /// Clean (write-back) every dirty cache line in the region to DDR.
+    /// Clean (write-back) every dirty cache line in the region to memory.
     ///
     /// On AArch64 this issues `dc cvac` for each 64-byte line followed by
-    /// `dsb sy`.  On other targets this is a noop.
+    /// `dsb sy`. On ARMv7-M this uses `SCB::clean_dcache_by_address`. On other
+    /// targets this is a noop.
     fn flush(&self) {
         #[cfg(target_arch = "aarch64")]
         {
@@ -175,13 +187,26 @@ impl Region for DdrRegion {
                 core::arch::asm!("dsb sy", options(nostack));
             }
         }
+
+        #[cfg(armv7m)]
+        {
+            // SAFETY: `SCB` is a zero-sized marker; a `&mut` to a ZST is valid at any non-null,
+            // aligned address and never dereferences memory through the reference. The borrow is
+            // confined to this statement. The exclusivity that matters is at the hardware level:
+            // every CBP register the call writes is write-only and stateless.
+            let scb = unsafe { &mut *NonNull::<cortex_m::peripheral::SCB>::dangling().as_ptr() };
+            scb.clean_dcache_by_address(self.ptr as usize, self.len);
+        }
     }
 
     /// Invalidate every cache line in the region so the next read fetches
-    /// fresh data from DDR.
+    /// fresh data from memory.
     ///
-    /// On AArch64 this issues `dc ivac` for each 64-byte line followed by
-    /// `dsb sy`.  On other targets this is a noop.
+    /// On AArch64 this issues `dc civac` for each 64-byte line followed by
+    /// `dsb sy`. On ARMv7-M this uses
+    /// `SCB::clean_invalidate_dcache_by_address`, matching the AArch64
+    /// clean-and-invalidate semantics and avoiding the dirty-line data loss of
+    /// a plain invalidate. On other targets this is a noop.
     fn invalidate(&self) {
         #[cfg(target_arch = "aarch64")]
         {
@@ -190,13 +215,23 @@ impl Region for DdrRegion {
             let mut addr = start & !(CACHE_LINE_SIZE - 1);
             while addr < end {
                 // SAFETY: same as flush.
-                unsafe { core::arch::asm!("dc ivac, {}", in(reg) addr, options(nostack)) };
+                unsafe { core::arch::asm!("dc civac, {}", in(reg) addr, options(nostack)) };
                 addr += CACHE_LINE_SIZE;
             }
             // SAFETY: same as flush.
             unsafe {
                 core::arch::asm!("dsb sy", options(nostack));
             }
+        }
+
+        #[cfg(armv7m)]
+        {
+            // SAFETY: `SCB` is a zero-sized marker; a `&mut` to a ZST is valid at any non-null,
+            // aligned address and never dereferences memory through the reference. The borrow is
+            // confined to this statement. The exclusivity that matters is at the hardware level:
+            // every CBP register the call writes is write-only and stateless.
+            let scb = unsafe { &mut *NonNull::<cortex_m::peripheral::SCB>::dangling().as_ptr() };
+            scb.clean_invalidate_dcache_by_address(self.ptr as usize, self.len);
         }
     }
 
@@ -269,76 +304,102 @@ mod tests {
     use crate::region::Region;
 
     // -----------------------------------------------------------------------
-    // SramRegion
+    // UncachedRegion
     // -----------------------------------------------------------------------
 
     #[test]
-    fn sram_len_and_ptr() {
+    fn uncached_len_and_ptr() {
         let mut buf = [0u8; 64];
         let ptr = buf.as_mut_ptr();
-        let r = unsafe { SramRegion::new(ptr, 64) };
+        // SAFETY: `buf` remains alive and uniquely borrowed for the test.
+        let r = unsafe { UncachedRegion::new(ptr, 64) };
         assert_eq!(r.len(), 64);
+        // SAFETY: the test only compares the pointer and does not dereference it.
         assert_eq!(unsafe { r.as_ptr() }, ptr);
     }
 
     #[test]
-    fn sram_is_not_empty() {
+    fn uncached_is_not_empty() {
         let mut buf = [0u8; 8];
-        let r = unsafe { SramRegion::new(buf.as_mut_ptr(), 8) };
+        // SAFETY: `buf` remains alive and uniquely borrowed for the test.
+        let r = unsafe { UncachedRegion::new(buf.as_mut_ptr(), 8) };
         assert!(!r.is_empty());
     }
 
     #[test]
-    fn sram_zero_len_is_empty() {
-        let r = unsafe { SramRegion::new(core::ptr::null_mut(), 0) };
+    fn uncached_zero_len_is_empty() {
+        // SAFETY: a null pointer is valid for a zero-length region.
+        let r = unsafe { UncachedRegion::new(core::ptr::null_mut(), 0) };
         assert!(r.is_empty());
     }
 
     #[test]
-    fn sram_is_coherent() {
+    fn uncached_is_coherent() {
         let mut buf = [0u8; 8];
-        let r = unsafe { SramRegion::new(buf.as_mut_ptr(), 8) };
+        // SAFETY: `buf` remains alive and uniquely borrowed for the test.
+        let r = unsafe { UncachedRegion::new(buf.as_mut_ptr(), 8) };
         assert!(r.is_coherent());
     }
 
     #[test]
-    fn sram_flush_and_invalidate_do_not_panic() {
+    fn uncached_flush_and_invalidate_do_not_panic() {
         let mut buf = [0u8; 128];
-        let r = unsafe { SramRegion::new(buf.as_mut_ptr(), 128) };
+        // SAFETY: `buf` remains alive and uniquely borrowed for the test.
+        let r = unsafe { UncachedRegion::new(buf.as_mut_ptr(), 128) };
         r.flush();
         r.invalidate();
     }
 
     // -----------------------------------------------------------------------
-    // DdrRegion
+    // CachedRegion
     // -----------------------------------------------------------------------
 
     #[test]
-    fn ddr_len_and_ptr() {
+    fn cached_len_and_ptr() {
         let mut buf = [0u8; 32];
         let ptr = buf.as_mut_ptr();
-        let r = unsafe { DdrRegion::new(ptr, 32) };
+        // SAFETY: `buf` remains alive and uniquely borrowed for the test.
+        let r = unsafe { CachedRegion::new(ptr, 32) };
         assert_eq!(r.len(), 32);
+        // SAFETY: the test only compares the pointer and does not dereference it.
         assert_eq!(unsafe { r.as_ptr() }, ptr);
     }
 
     #[test]
-    fn ddr_is_not_coherent() {
+    fn cached_is_not_coherent() {
         let mut buf = [0u8; 8];
-        let r = unsafe { DdrRegion::new(buf.as_mut_ptr(), 8) };
+        // SAFETY: `buf` remains alive and uniquely borrowed for the test.
+        let r = unsafe { CachedRegion::new(buf.as_mut_ptr(), 8) };
         assert!(!r.is_coherent());
     }
 
-    // dc cvac / dc ivac are privileged on macOS/AArch64 and will SIGILL in
-    // userspace, so only run the cache-ops test on non-AArch64 hosts where the
-    // operations compile to noops.
-    #[cfg(not(target_arch = "aarch64"))]
     #[test]
-    fn ddr_flush_and_invalidate_do_not_panic() {
-        let mut buf = [0u8; 128];
-        let r = unsafe { DdrRegion::new(buf.as_mut_ptr(), 128) };
+    fn cached_flush_and_invalidate_do_not_panic() {
+        #[repr(align(64))]
+        struct Aligned([u8; 128]);
+
+        let mut buf = Aligned([0u8; 128]);
+        // SAFETY: `buf` is cache-line aligned, remains alive, and is uniquely
+        // borrowed for the test.
+        let r = unsafe { CachedRegion::new(buf.0.as_mut_ptr(), 128) };
         r.flush();
         r.invalidate();
+    }
+
+    #[test]
+    fn cached_maintenance_leaves_neighbouring_bytes_intact() {
+        #[repr(align(64))]
+        struct Aligned([u8; 192]);
+
+        let mut buf = Aligned([0x5a; 192]);
+        buf.0[64..128].fill(0xa5);
+        // SAFETY: the selected window is cache-line aligned, remains alive,
+        // and is uniquely borrowed for the test.
+        let r = unsafe { CachedRegion::new(buf.0[64..128].as_mut_ptr(), 64) };
+        r.flush();
+        r.invalidate();
+        assert_eq!(&buf.0[..64], &[0x5a; 64]);
+        assert_eq!(&buf.0[128..], &[0x5a; 64]);
     }
 
     // -----------------------------------------------------------------------
@@ -367,6 +428,7 @@ mod tests {
     #[test]
     fn serial_ptr_is_null() {
         let r = SerialRegion::new(64);
+        // SAFETY: the test only checks the documented null sentinel.
         assert!(unsafe { r.as_ptr() }.is_null());
     }
 

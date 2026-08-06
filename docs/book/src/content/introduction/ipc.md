@@ -64,13 +64,17 @@ Current hardware bindings cover STM32 HSEM/IPCC, i.MX MU, and GPIO signaling.
 
 `consortium-shared-memory` makes cache behavior part of the region type:
 
-- `SramRegion` models coherent on-chip SRAM and uses no-op cache maintenance;
-- `DdrRegion` performs AArch64 data-cache maintenance where required; and
+- `UncachedRegion` models a non-cacheable mapping and uses no-op maintenance;
+- `CachedRegion` performs AArch64 or Cortex-M7 data-cache maintenance; and
 - `SerialRegion` is a virtual, unbacked region used for framed transports.
 
-On Linux, shared and doorbell windows are mapped from `/dev/uioN`. On firmware, the
-generated code uses validated physical addresses and configures the expected memory
-attributes. The same manifest also drives reserved-memory and UIO device-tree output.
+On Linux, shared windows stay uncached `/dev/uioN` mappings. On firmware,
+`config.cache = true` retains the controller's cacheable default and selects
+explicit maintenance; generated Cortex-M7 bring-up invalidates and enables the
+data cache before connecting the endpoints. The default programs a non-cacheable
+MPU carveout. Cached transport slots use cache-line-rounded strides so the two
+directions never share a line. The same manifest also drives reserved-memory and
+UIO device-tree output.
 
 ## UART IPC
 

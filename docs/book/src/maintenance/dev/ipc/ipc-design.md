@@ -59,7 +59,7 @@ The complexity lives in the layers below. The application developer sees none of
 ┌─────────────────────────────────────────────────┐
 │  Region                                         │
 │  as_ptr() / flush() / invalidate()              │
-│  SramRegion | DdrRegion | SerialRegion          │
+│  UncachedRegion | CachedRegion | SerialRegion          │
 └─────────────────────────────────────────────────┘
 ```
 
@@ -85,7 +85,7 @@ let msg = rx.recv().await?;
 | --------- | ----------------------- | -------------------------------------------------------- |
 | `D`       | Direction: `Tx` or `Rx` | Compile-time guard—can't call `recv()` on a `Tx` channel |
 | `T`       | Message type            | `TemperatureSensorData`                                  |
-| `Tr`      | Transport               | `SharedMemoryTransport<HsemDoorbell, DdrRegion>`         |
+| `Tr`      | Transport               | `SharedMemoryTransport<HsemDoorbell, CachedRegion>`      |
 | `C`       | Codec                   | `PostcardCodec` (default)                                |
 
 **Zero-allocation contract:**
@@ -167,15 +167,15 @@ platform-specific mechanism.
 
 **Send path:**
 
-1. Write payload into tx slot via volatile stores.
-2. `region.flush()` — issues `dc cvac` + `dsb sy` for each cache line if DDR; noop if SRAM.
-3. Write `len` then `FLAG_VALID` into slot header (volatile, ordered).
-4. `doorbell.ring(ch)` — notifies A-core.
-5. Return immediately. `SendFut` resolves on the first poll.
+1. Write payload, `len`, CRC32, then `FLAG_VALID` into the tx slot.
+2. `region.flush()` — cleans each cache line for a `CachedRegion`; no-op for an
+   `UncachedRegion`.
+3. `doorbell.ring(ch)` — notifies A-core.
+4. Return immediately. `SendFut` resolves on the first poll.
 
 **Receive path:**
 
-1. `region.invalidate()` — issues `dc ivac` + `dsb sy` to discard stale cache lines.
+1. `region.invalidate()` — clean-invalidates stale cache lines (`dc civac` + `dsb sy` on AArch64).
 2. Check `FLAG_VALID` on rx slot (volatile read).
 3. If present: copy payload, write `FLAG_CONSUMED`, return.
 4. If not: poll `doorbell.wait(ch)` to register waker; return `Pending`.
@@ -279,13 +279,19 @@ pub trait Region {
 }
 ```
 
-| Type           | Backing        | flush / invalidate                     | is_coherent | Use case                  |
-| -------------- | -------------- | -------------------------------------- | ----------- | ------------------------- |
-| `SramRegion`   | On-chip SRAM   | Noops                                  | `true`      | M-core-local buffers      |
-| `DdrRegion`    | DDR DRAM       | AArch64 `dc cvac`/`dc ivac` + `dsb sy` | `false`     | Cross-core shared buffers |
-| `SerialRegion` | None (virtual) | Noops                                  | `true`      | UART/SWD trace channels   |
+| Type             | Mapping       | flush / invalidate               | is_coherent | Use case                  |
+| ---------------- | ------------- | -------------------------------- | ----------- | ------------------------- |
+| `UncachedRegion` | non-cacheable | Noops                            | `true`      | Default shared windows    |
+| `CachedRegion`   | cacheable     | AArch64 or Cortex-M7 maintenance | `false`     | High-throughput CM7 links |
+| `SerialRegion`   | none          | Noops                            | `true`      | UART/SWD trace channels   |
 
-When `SharedMemoryTransport` is monomorphized over `SramRegion`, the cache operations compile away entirely. When monomorphized over `DdrRegion`, they emit the correct data cache maintenance for that region implementation.
+When `SharedMemoryTransport` is monomorphized over `UncachedRegion`, the cache operations compile away entirely. `CachedRegion` emits the maintenance selected for the target architecture. Linux/AP code still uses `UncachedRegion`; `config.cache` controls only the controller mapping.
+
+Every slot starts on a 64-byte boundary and uses a cache-line-rounded stride.
+This keeps the primary-owned and secondary-owned slots on disjoint maintained
+lines during simultaneous full-duplex traffic. Generated Cortex-M7 initialization
+also invalidates and enables the data cache whenever any channel requests a
+cached controller mapping.
 
 ---
 
@@ -315,12 +321,12 @@ The `effective_mtu` in the descriptor drives `Transport::max_message_size()`, wh
 
 ## Platform Targets
 
-| Core                    | Transport               | Doorbell                          | Region                     | Async runtime                |
-| ----------------------- | ----------------------- | --------------------------------- | -------------------------- | ---------------------------- |
-| Cortex-M (STM32MP21)    | `SharedMemoryTransport` | IPCC                              | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
-| Cortex-M (STM32MP23/25) | `SharedMemoryTransport` | IPCC preferred; HSEM stale        | `SramRegion` / `DdrRegion` | cooperative executor or RTIC |
-| Cortex-M (i.MX 95)      | `SharedMemoryTransport` | MU                                | `SramRegion` / `DdrRegion` | cooperative executor         |
-| Cortex-A (Linux)        | runtime-app UIO path    | Linux UIO + `tokio::sync::Notify` | mmap'd via UIO driver      | Tokio                        |
+| Core                    | Transport               | Doorbell                          | Region                            | Async runtime                |
+| ----------------------- | ----------------------- | --------------------------------- | --------------------------------- | ---------------------------- |
+| Cortex-M (STM32MP21)    | `SharedMemoryTransport` | IPCC                              | `UncachedRegion` / `CachedRegion` | cooperative executor or RTIC |
+| Cortex-M (STM32MP23/25) | `SharedMemoryTransport` | IPCC preferred; HSEM stale        | `UncachedRegion` / `CachedRegion` | cooperative executor or RTIC |
+| Cortex-M (i.MX 95)      | `SharedMemoryTransport` | MU                                | `UncachedRegion` / `CachedRegion` | cooperative executor         |
+| Cortex-A (Linux)        | runtime-app UIO path    | Linux UIO + `tokio::sync::Notify` | mmap'd via UIO driver             | Tokio                        |
 
 The same `Channel<D, T, Tr, C>` API compiles for all rows. Only the concrete types in `Tr` differ.
 

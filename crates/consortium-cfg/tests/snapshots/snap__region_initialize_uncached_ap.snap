@@ -4,7 +4,7 @@ expression: expr(tokens)
 ---
 fn _generated() {
     let _ = unsafe {
-        ::consortium_shared_memory::regions::SramRegion::new(
+        ::consortium_shared_memory::regions::UncachedRegion::new(
             (uio[0usize].mmap_zeroed(1usize)?) as *mut u8,
             32768usize,
         )

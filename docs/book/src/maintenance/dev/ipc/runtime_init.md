@@ -58,7 +58,7 @@ unsafe {
 }
 
 // 4. Construct transport and channel
-let region = SramRegion::new(region_base, region_size);
+let region = UncachedRegion::new(region_base, region_size);
 let transport = unsafe {
     SharedMemoryTransport::new(
         chan,
@@ -227,7 +227,7 @@ async fn main(spawner: Spawner) {
     irq::enable_doorbell_interrupt();
 
     let doorbell = HsemDoorbell::<1>::new();
-    let region = SramRegion::new(SHARED_MEMORY_BASE, SHARED_MEMORY_SIZE);
+    let region = UncachedRegion::new(SHARED_MEMORY_BASE, SHARED_MEMORY_SIZE);
 
     unsafe {
         let channels = [descriptor::ChannelLayout {

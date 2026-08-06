@@ -48,8 +48,11 @@
 //! 0x20  ├────────────────────────────────┤
 //!       │ channel table: N × 12 bytes    │  offset, size, direction
 //!       ├────────────────────────────────┤
-//!       │ slot 0  [len|flags|crc32|data] │  ← one direction
-//!       │ slot 1  [len|flags|crc32|data] │  ← the other
+//!       │ cache-line padding             │
+//!       ├────────────────────────────────┤
+//!       │ slot 0  [len|flags|crc32|data] │  ← one direction, aligned
+//!       │ padding to cache-line boundary │
+//!       │ slot 1  [len|flags|crc32|data] │  ← the other, aligned
 //!       └────────────────────────────────┘
 //! ```
 //!
@@ -95,7 +98,7 @@
 //! `FLAG_VALID` is written last on the sending side and read first on the receiving
 //! side, so a peer either sees a complete frame or no frame — never a half-written
 //! one. `flush` precedes every `ring` and `invalidate` follows every wake, which is
-//! what makes a `DdrRegion` link work; on an [`SramRegion`] both compile away.
+//! what makes a `CachedRegion` link work; on an [`UncachedRegion`] both compile away.
 //!
 //! A CRC32 over the payload catches what ordering cannot: a truncated DMA, a
 //! misconfigured MPU window, a peer writing with the wrong cache attributes. A
@@ -105,7 +108,7 @@
 //! [`Primary`]: consortium_ipc::Primary
 //! [`Secondary`]: consortium_ipc::Secondary
 //! [`Side`]: consortium_ipc::Side
-//! [`SramRegion`]: consortium_shared_memory::SramRegion
+//! [`UncachedRegion`]: consortium_shared_memory::UncachedRegion
 //!
 //! # Example
 //!
@@ -203,8 +206,9 @@ pub(crate) mod utils;
 pub use consortium_ipc::{Primary, Secondary, Side};
 pub use descriptor::{
     CHANNEL_NUM_MAX, ChannelDirection, ChannelLayout, DESCRIPTOR_LENGTH, DescState, Descriptor,
-    DescriptorLayout, MAGIC, RX_UPDATED_ID_OFFSET, VERSION, channel_table_entry_offset,
-    descriptor_complete, get_state, set_state,
+    DescriptorLayout, MAGIC, RX_UPDATED_ID_OFFSET, SLOT_ALIGNMENT, VERSION,
+    channel_table_entry_offset, descriptor_complete, get_state, required_region_len, set_state,
+    slot_offset, slot_stride,
 };
 
 pub use error::{DescriptorError, Error};
