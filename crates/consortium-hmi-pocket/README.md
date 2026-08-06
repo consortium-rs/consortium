@@ -8,8 +8,10 @@ renders the UI with wgpu. The alternative to
 smaller dependency footprint — select with `[hmi] engine = "pocket"`.
 
 > **`publish = false`.** Its `pocket-mod`, `pocket-ui-wgpu`, and `pocket3d` dependencies
-> come from the upstream **`v0.7.0` git tag**, and cargo refuses to publish a package with
-> a git dependency. This stays unpublished until PocketJS reaches crates.io. The
+> come from an **upstream commit**, and cargo refuses to publish a package with a git
+> dependency. This stays unpublished until PocketJS reaches crates.io. The pin is a SHA
+> rather than a tag because the host touch entry this crate needs landed after `v0.7.0`
+> and upstream has not cut a release since; it returns to a tag once one includes it. The
 > `submodules/pocketjs` checkout is still needed for the bun/JS side.
 
 ## Usage
@@ -73,6 +75,55 @@ The `shell` feature opens a native window (Wayland/X11 on Linux, Cocoa on macOS)
 `PocketApp::frame`, and blits the logical-size UI to the surface. Both drive the same
 frame contract, so a change verified headlessly holds for the shell too. The `kiosk`
 example runs a built `<app>-main.{js,pak}` in it.
+
+## Input
+
+Buttons fold into the PSP bitmask; touch contacts and the pointer fold into the
+packed-touch third argument of `globalThis.frame`. A **mouse** is presented to the
+guest as a touch contact at the reserved id `POINTER_CONTACT_ID`, present only
+while the primary button is held, plus `CIRCLE` in the button mask for the
+duration of the hold — the same pairing PocketJS's own `macos-widget` reference
+host uses.
+
+That pairing is what makes a click land on the node under the cursor. PocketJS's
+`render()` runs app `onFrame` hooks _before_ input edge detection, so an app that
+focuses the hit node from `touches()` has already moved focus by the time the
+`CIRCLE` edge fires `onPress` in the same frame:
+
+```js
+import { touches, hitFocusable, focusNode } from '@pocketjs/framework/input'
+onFrame(() => {
+  const [c] = touches()
+  if (c) focusNode(hitFocusable(c.x, c.y))
+})
+```
+
+Pass a `null` hit straight through, as above. Guarding the call — `if (node)
+focusNode(node)` — leaves focus wherever it last landed, and since `handleFrame`
+fires `onPress` on whatever is focused, a press on empty space then activates
+the control the pointer merely passed over earlier. The framework's own cursor
+mode clears focus on a miss for the same reason.
+
+Contacts survive the frame boundary: one that opens and closes between two frames
+is held for exactly one frame rather than vanishing, so a tap or click shorter
+than ~16 ms at 60 Hz still reaches the guest exactly once.
+
+Three consequences worth knowing:
+
+- **An app must opt in.** A `focusable`/`onPress` component with no hover-focus
+  hook is only reachable by d-pad; PocketJS starts with nothing focused and never
+  auto-focuses, so a click before any d-pad press activates nothing.
+- **Hover does not reach the guest.** Motion with no button held updates the
+  stored position but emits no contact, because a contact means _contact_. Real
+  hover needs `input.pointer`, a capability PocketJS specifies but does not yet
+  implement in the framework; see the upstream `enableCursor({ source: "pointer" })`
+  work. Once that lands, this crate can move to the 4-argument frame entry and
+  drop the app-side hook.
+- **The logical viewport is capped at 1023 px per axis.** The packed-contact
+  format carries 10 bits per axis, so anything larger would render at full size
+  and then clamp every contact onto the edge. `PocketApp::new` and
+  `[hmi.logical]` validation both reject it instead. This is a PocketJS wire
+  limit, so it does not apply to `engine = "cog"`.
 
 ## Limitations
 

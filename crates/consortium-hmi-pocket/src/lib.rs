@@ -37,7 +37,7 @@ pub use consortium_hmi_input::{
 };
 pub use error::{PocketError, Result};
 pub use headless::HeadlessRenderer;
-pub use pad::PadState;
+pub use pad::{MAX_CONTACTS, MAX_COORD, POINTER_CONTACT_ID, PadState};
 pub use pocket_ui_wgpu::{UiRenderer, UiSurface};
 
 mod headless;
@@ -114,6 +114,17 @@ impl PocketApp {
     ) -> Result<Self> {
         if config.logical_size.0 == 0 || config.logical_size.1 == 0 {
             return Err(PocketError::ZeroViewport);
+        }
+        // The guest's packed-contact wire format carries 10 bits per axis, so a
+        // larger viewport would silently clamp every pointer and touch past
+        // 1023 onto the edge — the UI would render at full size with its right
+        // and bottom unreachable. Refuse it at construction instead.
+        if config.logical_size.0 > pad::MAX_COORD || config.logical_size.1 > pad::MAX_COORD {
+            return Err(PocketError::ViewportTooLarge {
+                width: config.logical_size.0,
+                height: config.logical_size.1,
+                max: pad::MAX_COORD,
+            });
         }
         if config.host_target.is_empty() || config.host_abi == 0 {
             return Err(PocketError::InvalidHostContract);
@@ -195,6 +206,26 @@ impl PocketApp {
         Ok(delivered)
     }
 
+    /// Runs one guest turn carrying touch contacts, and advances the UI once.
+    ///
+    /// `touches` holds packed contacts in the guest's wire format; build it
+    /// with [`PadState::touches`]. This is the 3-argument `globalThis.frame`
+    /// path, so a bundle whose `frame` takes only `(buttons, analog)` ignores
+    /// the extra argument.
+    pub fn frame_with_touches(
+        &mut self,
+        buttons: u32,
+        analog: u32,
+        touches: &[u32],
+    ) -> Result<usize> {
+        let delivered = self.pump_bridge()?;
+        self.guest
+            .frame_with_touches(buttons, analog, touches)
+            .map_err(|e| PocketError::host("running PocketJS guest frame", e))?;
+        self.ui.tick();
+        Ok(delivered)
+    }
+
     /// Runs one frame with a centered analog input.
     pub fn frame_buttons(&mut self, buttons: u32) -> Result<usize> {
         self.frame(buttons, pad::ANALOG_CENTER)
@@ -211,8 +242,19 @@ impl PocketApp {
     }
 
     /// Runs one frame using the accumulated input state.
+    ///
+    /// Delivers held buttons, analog, and any live touch/pointer contacts, then
+    /// retires the edges this frame carried so a click shorter than one frame
+    /// reaches the guest exactly once.
     pub fn frame_pad(&mut self) -> Result<usize> {
-        self.frame(self.pad.buttons(), self.pad.analog())
+        let mut packed = [0u32; pad::MAX_CONTACTS];
+        let n = self.pad.touches(&mut packed);
+        let delivered =
+            self.frame_with_touches(self.pad.buttons(), self.pad.analog(), &packed[..n]);
+        // Retire edges even when the guest frame failed: the input has been
+        // consumed either way, and latching it would replay the click.
+        self.pad.end_frame();
+        delivered
     }
 
     /// Drains an [`InputSource`] into the pad state, then runs one frame.
@@ -347,6 +389,45 @@ mod tests {
         .err()
         .unwrap();
         assert!(error.to_string().contains("viewport"));
+    }
+
+    #[test]
+    fn rejects_a_viewport_the_contact_format_cannot_address() {
+        let runtime = tokio::runtime::Builder::new_multi_thread().build().unwrap();
+        // 1920x1080 is a perfectly ordinary kiosk panel and the UI would render
+        // at that size, but every contact past 1023 would clamp to the edge,
+        // leaving most of the surface unreachable by pointer or touch. Fail
+        // loudly at construction rather than mis-mapping input at runtime.
+        let error = PocketApp::new(
+            "globalThis.frame = () => {};",
+            &[],
+            Bridge::new(),
+            runtime.handle().clone(),
+            PocketConfig {
+                logical_size: (1920, 1080),
+                ..PocketConfig::default()
+            },
+        )
+        .err()
+        .unwrap();
+        let message = error.to_string();
+        assert!(message.contains("1920x1080"), "{message}");
+        assert!(message.contains(&MAX_COORD.to_string()), "{message}");
+
+        // The largest addressable viewport is still accepted.
+        assert!(
+            PocketApp::new(
+                "globalThis.frame = () => {};",
+                &[],
+                Bridge::new(),
+                runtime.handle().clone(),
+                PocketConfig {
+                    logical_size: (MAX_COORD, MAX_COORD),
+                    ..PocketConfig::default()
+                },
+            )
+            .is_ok()
+        );
     }
 
     #[test]

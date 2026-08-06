@@ -19,8 +19,12 @@
 //! Build a mounted app first (its `render()`/`mount()` installs the frame
 //! contract), then point this at the outputs:
 //!
+//! The bundle paths are resolved against the process working directory, and the
+//! ones below are repository-root relative, so run both commands from the
+//! repository root:
+//!
 //! ```console
-//! $ cd submodules/pocketjs && bun tools/build.ts hero-main
+//! $ (cd submodules/pocketjs && bun tools/build.ts hero-main)
 //! $ cargo run -p consortium-hmi-pocket --features shell --example kiosk -- \
 //!     submodules/pocketjs/dist/hero-main.js submodules/pocketjs/dist/hero-main.pak
 //! ```
@@ -28,10 +32,26 @@
 //! Keys: arrows/WASD = d-pad, X = Circle, Z = Cross, C = Square, V = Triangle,
 //! Q/E = triggers, Enter = Start, RShift = Select, Esc = quit.
 
-use std::process::ExitCode;
+use std::{error::Error, process::ExitCode};
 
 use consortium_hmi::Bridge;
 use consortium_hmi_pocket::{PocketApp, PocketConfig, ShellConfig, run};
+
+/// Renders an error together with its source chain.
+///
+/// The backend's errors keep their cause behind `#[source]`, so printing only
+/// the outermost `Display` drops the part that says *why* — an unreadable
+/// bundle would otherwise report just the path it tried.
+fn chain(error: &dyn Error) -> String {
+    let mut out = error.to_string();
+    let mut source = error.source();
+    while let Some(cause) = source {
+        out.push_str(": ");
+        out.push_str(&cause.to_string());
+        source = cause.source();
+    }
+    out
+}
 
 fn main() -> ExitCode {
     let mut args = std::env::args().skip(1);
@@ -62,13 +82,13 @@ fn main() -> ExitCode {
     ) {
         Ok(app) => app,
         Err(error) => {
-            eprintln!("kiosk: loading PocketJS app: {error}");
+            eprintln!("kiosk: loading PocketJS app: {}", chain(&error));
             return ExitCode::FAILURE;
         }
     };
 
     if let Err(error) = run(app, ShellConfig::default()) {
-        eprintln!("kiosk: {error}");
+        eprintln!("kiosk: {}", chain(&error));
         return ExitCode::FAILURE;
     }
     ExitCode::SUCCESS
