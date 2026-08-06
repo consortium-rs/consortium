@@ -32,6 +32,19 @@ pub enum PocketError {
     /// A logical viewport dimension was zero.
     #[error("PocketJS logical viewport dimensions must be non-zero")]
     ZeroViewport,
+    /// A logical viewport dimension exceeded the guest's coordinate range.
+    #[error(
+        "PocketJS logical viewport {width}x{height} exceeds the {max}px per-axis limit of the \
+         guest's packed-contact format; pointer and touch beyond {max} cannot be addressed"
+    )]
+    ViewportTooLarge {
+        /// Configured logical width.
+        width: u32,
+        /// Configured logical height.
+        height: u32,
+        /// Largest coordinate the wire format represents, per axis.
+        max: u32,
+    },
     /// The host target or ABI did not identify a real contract.
     #[error("PocketJS host target and ABI must identify a real contract")]
     InvalidHostContract,
