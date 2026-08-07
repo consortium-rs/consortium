@@ -308,6 +308,8 @@ pub struct SharedMemoryTransport<S: Side, D: Doorbell, R: RegionSharedMemoryTran
     base: *mut u8,
     tx_mtu: u32,
     rx_mtu: u32,
+    #[cfg(feature = "std")]
+    _keep_alive: alloc::vec::Vec<alloc::sync::Arc<dyn Send + Sync>>,
     /// Which core's perspective resolves the absolute channel directions.
     _side: PhantomData<S>,
 }
@@ -331,6 +333,8 @@ impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTrans
             base,
             tx_mtu: 0,
             rx_mtu: 0,
+            #[cfg(feature = "std")]
+            _keep_alive: alloc::vec::Vec::new(),
             _side: PhantomData,
         }
     }
@@ -356,6 +360,16 @@ impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTrans
     /// This side's transmit and receive channel ids, in `(tx, rx)` order.
     pub fn channels(&self) -> (Chan, Chan) {
         (self.ch_tx, self.ch_rx)
+    }
+
+    /// Retain an owner of memory or device resources used by this transport.
+    ///
+    /// Generated Linux bring-up uses this to keep each UIO mapping alive even
+    /// after the aggregate platform resource bundle is partially moved or
+    /// dropped.
+    #[cfg(feature = "std")]
+    pub fn keep_alive(&mut self, owner: alloc::sync::Arc<dyn Send + Sync>) {
+        self._keep_alive.push(owner);
     }
 
     /// Record this side's per-direction slot capacities as the transport MTU.
@@ -430,6 +444,8 @@ impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTrans
     {
         let rx_doorbell = self.doorbell.clone();
         let rx_region = self.region.clone();
+        #[cfg(feature = "std")]
+        let rx_keep_alive = self._keep_alive.clone();
         (
             SharedMemoryTransportTx {
                 ch: self.ch_tx,
@@ -437,6 +453,8 @@ impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTrans
                 region: self.region,
                 base: self.base,
                 tx_mtu: self.tx_mtu,
+                #[cfg(feature = "std")]
+                _keep_alive: self._keep_alive,
                 _side: PhantomData,
             },
             SharedMemoryTransportRx {
@@ -445,6 +463,8 @@ impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTrans
                 region: rx_region,
                 base: self.base,
                 rx_mtu: self.rx_mtu,
+                #[cfg(feature = "std")]
+                _keep_alive: rx_keep_alive,
                 _side: PhantomData,
             },
         )
@@ -458,6 +478,8 @@ pub struct SharedMemoryTransportTx<S: Side, D: Doorbell, R: RegionSharedMemoryTr
     region: R,
     base: *mut u8,
     tx_mtu: u32,
+    #[cfg(feature = "std")]
+    _keep_alive: alloc::vec::Vec<alloc::sync::Arc<dyn Send + Sync>>,
     _side: PhantomData<S>,
 }
 
@@ -468,6 +490,8 @@ pub struct SharedMemoryTransportRx<S: Side, D: Doorbell, R: RegionSharedMemoryTr
     region: R,
     base: *mut u8,
     rx_mtu: u32,
+    #[cfg(feature = "std")]
+    _keep_alive: alloc::vec::Vec<alloc::sync::Arc<dyn Send + Sync>>,
     _side: PhantomData<S>,
 }
 

@@ -182,6 +182,9 @@
 //! codec-backed channels, Embassy-style polling, and an end-to-end
 //! primary/secondary exchange. Prefer extending these before requiring hardware.
 
+#[cfg(feature = "alloc")]
+extern crate alloc;
+
 /// Doorbells commonly paired with the shared-memory transport.
 ///
 /// Each `doorbell-*` or chip feature re-exports one `consortium-ipc-doorbell-*`
@@ -197,6 +200,7 @@
 pub mod doorbell;
 
 mod descriptor;
+mod endpoint;
 mod error;
 #[path = "slot.rs"]
 mod slot_internal;
@@ -211,6 +215,11 @@ pub use descriptor::{
     slot_offset, slot_stride,
 };
 
+pub use embassy_hal_internal::{Peri, PeripheralType};
+pub use endpoint::{
+    ConnectError, Connected, Endpoint, EndpointState, Instance, InstanceTransport, SealedInstance,
+    SingletonGuard, Transceiver, install,
+};
 pub use error::{DescriptorError, Error};
 
 /// Low-level slot layout operations over the DMA-coherent shared region.

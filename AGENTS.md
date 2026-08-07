@@ -323,11 +323,12 @@ still comes from the doorbell crate's own `registers::base` table so its securit
 does not change. Linux/UIO windows are `mmap`s with no singleton, so the AP side keeps
 `unsafe fn new_mapped(base)`.
 
-Generated `init()` calls `<hal>::init()` once and moves fields out of it: to
-`timer_driver::bringup`, to `IpcMemoryEndpoints::new`, and to `peripherals(..)`. A
-controller core with no bundled chip map has no singletons to name and keeps the
-address-based doorbell construction. `[peripheral.*]` entries with `secure = true` are
-rejected: the singletons carry only the non-secure alias.
+Generated `init(Config)` calls `<hal>::init()` once and moves fields out of it: to the
+time driver, to IPC doorbells, or into the generated endpoint-local `Peripherals`
+allowlist. The full HAL bundle never escapes generated init. A controller core with no
+bundled chip map has no singletons to name and keeps address-based doorbell construction.
+`[peripheral.*]` entries with `secure = true` are rejected because the singletons carry
+only the non-secure alias.
 
 ## Configuration
 
@@ -449,36 +450,49 @@ the generated `consortium-runtime-sys` crate, while `SharedResourceTable` and
 `RSC_TABLE` emit an RPMsg-vdev-plus-trace table in the firmware `.resource_table`
 section. Keep packed-layout access and Linux remoteproc ABI requirements explicit.
 
-### Entry Macros and `Context`
+### Entry Macros and Generated Resources
 
 `consortium-runtime-macros` (facade) + `consortium-runtime-macros-impl` provide the
 runtime entry-point attribute macros, re-exported by the runtime crates behind their
 `macros` feature (default on). Firmware writes `#[consortium_runtime_mcu::main] async fn
-main(context: Context, spawner: Spawner)`; applications write
-`#[consortium_runtime_app::main] async fn main(context: Context)`. The macro stacks the
-executor attribute (`embassy_executor::main` / `tokio::main`, resolved through the _user_
-crate's own dep — so firmware still needs `embassy-executor` with `executor-thread` +
-`platform-cortex-m`, and apps still need `tokio` with `macros`), calls the generated
-`init()`, and binds its result as `context`.
+main(spawner: Spawner)`; applications write `#[consortium_runtime_app::main] async fn
+main()`. Either may return `()` or `Result<(), E: core::fmt::Debug>`. The macro only
+stacks the executor attribute (`embassy_executor::main` / `tokio::main`, resolved through
+the user crate's own dependency) and dispatches the outcome through `MainOutcome`. It
+does not call generated initialization. An error is logged, then MCU parks with `wfi` or
+the application exits non-zero. There is no `#[fail]` macro or name-shadow dispatch.
 
-`Context` is the aggregate the generated `consortium.gen.rs` exposes for the whole
-manifest — connected transceivers at `context.ipc_shm.<name>`, plus `context.peripherals`
-on controller cores that own `[peripheral.*]`. On both sides `init()` is
-`async fn init() -> Result<Context, ConsortiumInitError>`; the two-phase
-`IpcMemoryEndpoints::new`/`connect` API stays available for non-macro callers. On failure
-the macro glue calls `__consortium_init_fail`; define an optional
-`#[consortium_runtime_{mcu,app}::fail] fn on_fail(err: ConsortiumInitError)` to report it
-(its module-scope item shadows the runtime crate's glob-imported fallback, which otherwise
-hard-fails: MCU parks with `wfi`, the app exits non-zero). `#[main]`, `#[fail]`, `init`,
-and `Context` must share the module the generated file is `include!`d into.
+Generated `consortium.gen.rs` exposes Embassy-shaped resources. `Config` is
+`#[non_exhaustive]`, has public boolean fields, and has a hand-written `Default` enabling
+every manifest-selected step. MCU `init(Config) -> (Peripherals, Channels)` is
+infallible; AP `init(Config) -> Result<(Peripherals, Channels), ConsortiumInitError>` is
+fallible because UIO opening and debug-console construction can fail. MCU knobs are
+`logger`, `mpu`, `nvic`, and `time_driver`; AP knobs are `tracing`, `uio_irqs`, and
+`dbg_console`. Cache enablement has no knob: a cached manifest window always enables the
+required cache policy.
 
-On controller cores the generated `init()` also seals what firmware used to hand-write:
-it resets the CDBG ring (`ConsortiumLogger::init`) when a `[dbg.<core>]` logger is present,
-and brings up the chip's Embassy time driver via `timer_driver::bringup` (STM32MP2 TIM2 /
-i.MX9 LPIT1), emitting the matching timer vector and `defmt::timestamp!` into the generated
-module. Disable this with `[profile] time_driver = false` when firmware owns its own time
-base (these defaults are reference-board values). See `consortium-cfg`'s
-`components/time.rs` and the melt-pot `mcu/src/main.rs` files.
+`Peripherals` is generated locally rather than re-exporting the HAL's full bundle. On
+firmware it contains exactly the uppercase singleton fields declared in
+`[peripheral.*]`; doorbells and the time-driver timer are consumed internally and never
+exposed. Manifest clock/frequency values become constants such as
+`LPI2C1_CLOCK_HZ`/`LPI2C1_FREQUENCY`, and users construct drivers themselves. On AP it
+contains platform owners (`uio` and the optional debug console), with the debug field
+declared first for safe drop order. Neither `Peripherals` nor `Channels` implements
+`Drop`, because partial moves such as `p.GPIO2` and `c.SENSOR` are intentional.
+
+`Channels` contains one `Peri<'static, channels::NAME>` per uppercase endpoint. Generated
+init installs the unsplit transport and two take-once scratch buffers into that
+instance's `EndpointState`, then returns the singleton bundle. Connect is per endpoint:
+`Transceiver::connect(c.SENSOR).await?` is the concise spelling, while
+`Endpoint::new(c.SENSOR).connect().await?` supports deferred or spawned bring-up. Both
+guarantee `Connect::connect` precedes `SharedMemoryTransport::split()`. A peer that never
+appears therefore stalls only the endpoint being connected. The AP transport halves
+retain `Arc<UioDevice>` owners for every mapping they use.
+
+Controller init still resets a configured CDBG ring, configures MPU/NVIC, enables CM7
+data cache for cached windows, and brings up the Embassy time driver (STM32MP2 TIM2 /
+i.MX9 LPIT1), emitting the matching timer vector and `defmt::timestamp!`. See
+`consortium-cfg`'s `components/time.rs` and the melt-pot MCU examples.
 
 `consortium-runtime-spl` currently exposes small domain/peripheral/role traits for
 partitioning-oriented code.

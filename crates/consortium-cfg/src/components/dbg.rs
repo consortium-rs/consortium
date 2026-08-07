@@ -124,7 +124,7 @@ impl DebugLogs {
     /// Generates the AP-side host console code, or `None` when no coprocessor
     /// declares a debug ring.
     ///
-    /// The returned [`HostCodegen`] carries the `Context` field
+    /// The returned [`HostCodegen`] carries the platform-resource field
     /// (declared *before* `uio` so its threads/handles drop before the mappings
     /// they read are unmapped) and the `init()` statement that brings it up. In
     /// [`DbgMode::Auto`] this spawns a forwarding console; in
@@ -176,26 +176,38 @@ impl DebugLogs {
         });
         let specs = quote! { &[ #(#specs),* ] };
 
-        let field_name = format_ident!("_consortium_dbg");
+        let field_name = format_ident!("dbg_console");
         let (field, init) = match self.mode {
             DbgMode::Auto => (
                 quote! {
-                    #field_name: ::consortium_runtime_app::dbg_console::DbgConsole
+                    pub #field_name: ::core::option::Option<
+                        ::consortium_runtime_app::dbg_console::DbgConsole
+                    >
                 },
                 quote! {
-                    let #field_name =
-                        ::consortium_runtime_app::dbg_console::spawn(&#uio_ident, #specs)?;
+                    let #field_name = if config.dbg_console {
+                        ::core::option::Option::Some(
+                            ::consortium_runtime_app::dbg_console::spawn(&#uio_ident, #specs)?
+                        )
+                    } else {
+                        ::core::option::Option::None
+                    };
                 },
             ),
             DbgMode::Interface => (
                 quote! {
-                    #field_name: ::std::vec::Vec<
-                        ::consortium_runtime_app::dbg_console::DbgRingHandle
+                    pub #field_name: ::core::option::Option<
+                        ::std::vec::Vec<::consortium_runtime_app::dbg_console::DbgRingHandle>
                     >
                 },
                 quote! {
-                    let #field_name =
-                        ::consortium_runtime_app::dbg_console::open(&#uio_ident, #specs)?;
+                    let #field_name = if config.dbg_console {
+                        ::core::option::Option::Some(
+                            ::consortium_runtime_app::dbg_console::open(&#uio_ident, #specs)?
+                        )
+                    } else {
+                        ::core::option::Option::None
+                    };
                 },
             ),
         };
@@ -220,9 +232,9 @@ impl DebugLogs {
 }
 
 /// The fragments [`DebugLogs::initialize_host`] contributes to the AP's
-/// generated `Context` and `init()`.
+/// generated platform `Peripherals` and `init(config)`.
 pub struct HostCodegen {
-    /// `Context` field declaration (`name: Type`).
+    /// Platform `Peripherals` field declaration (`name: Type`).
     pub field: TokenStream,
     /// The field's identifier, for the struct literal in `init()`.
     pub field_name: Ident,

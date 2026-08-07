@@ -287,6 +287,7 @@ dependencies = [
 name = "consortium-ipc-transport-memory"
 version = "0.2.0"
 dependencies = [
+ "consortium-codec",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
  "consortium-ipc-doorbell-ipcc",
@@ -294,7 +295,9 @@ dependencies = [
  "consortium-log",
  "consortium-shared-memory",
  "crc32fast",
+ "critical-section",
  "defmt",
+ "embassy-hal-internal",
  "num_enum",
  "pin-project",
  "thiserror",
@@ -380,6 +383,7 @@ dependencies = [
  "consortium-runtime-sys",
  "cortex-m",
  "defmt",
+ "portable-atomic",
  "static_cell",
 ]
 
@@ -989,6 +993,9 @@ name = "portable-atomic"
 version = "1.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3d20d5497ef88037a52ff98267d066e7f11fcc5e99bbfbd58a42336193aacec3"
+dependencies = [
+ "critical-section",
+]
 
 [[package]]
 name = "postcard"

@@ -74,18 +74,18 @@ Codegen is deliberately **not** centralised. Each IR type emits its own output
 (`ShuHan::initialize`, `BellA::nvic_enable`, `ToUio::to_uio`), so a new component adds
 a module rather than a branch in a shared emitter.
 
-| Module          | Emits                                                                   |
-| --------------- | ----------------------------------------------------------------------- |
-| `ipc_shm`       | Transceiver construction, scratch-buffer statics, `IpcMemoryEndpoints`. |
-| `bella`         | Type-A doorbell interrupt enablement.                                   |
-| `peripheral`    | HAL driver handles, interrupt handlers, NVIC enablement.                |
-| `time`          | The sealed Embassy time-driver vector and `defmt::timestamp!`.          |
-| `dbg`           | Nothing — resolves ring layout for the builder's env vars.              |
-| `uio`           | `generic-uio` DTS nodes and their `reserved-memory` carveouts.          |
-| `memory_to_uio` | Groups shared-memory regions onto one UIO device.                       |
-| `dts_render`    | The Linux device tree, merged onto a vendor base or as an overlay.      |
-| `address`       | AP `(uio_id, mmap_id)` vs a controller's physical base.                 |
-| `region`        | One shared-memory window's construction expression.                     |
+| Module          | Emits                                                                      |
+| --------------- | -------------------------------------------------------------------------- |
+| `ipc_shm`       | Channel markers, instance metadata, and endpoint transport installation.   |
+| `bella`         | Type-A doorbell interrupt enablement.                                      |
+| `peripheral`    | The singleton allowlist, manifest constants, IRQ handlers, and NVIC setup. |
+| `time`          | The sealed Embassy time-driver vector and `defmt::timestamp!`.             |
+| `dbg`           | Ring layout, AP console resources, and the builder's environment values.   |
+| `uio`           | `generic-uio` DTS nodes and their `reserved-memory` carveouts.             |
+| `memory_to_uio` | Groups shared-memory regions onto one UIO device.                          |
+| `dts_render`    | The Linux device tree, merged onto a vendor base or as an overlay.         |
+| `address`       | AP `(uio_id, mmap_id)` vs a controller's physical base.                    |
+| `region`        | One shared-memory window's construction expression.                        |
 
 Two conventions to know before adding a component:
 
@@ -112,13 +112,16 @@ singletons at all — it reaches doorbells through UIO `mmap`.
 ## Generated code
 
 The output is `src/consortium.gen.rs` in each endpoint crate, which the crate
-`include!`s. It defines `Context` and an `async fn init()` that:
+`include!`s. It defines `Config`, `Peripherals`, `Channels`, and a synchronous
+`init(config)` that:
 
 1. resets the CDBG ring when the core has a `[dbg.<core>]` logger;
-2. brings up the chip's Embassy time driver (unless `[profile] time_driver = false`);
-3. constructs, `connect`s, and splits each IPC transport into a transceiver at
-   `context.ipc_shm.<name>`;
-4. hands out `context.peripherals` on cores that own `[peripheral.*]`.
+2. applies the selected MPU, NVIC, tracing, UIO, and time-driver policy;
+3. installs each unsplit IPC transport behind its generated channel singleton;
+4. returns the endpoint's peripheral allowlist and channel bundle.
+
+The user connects channels independently with `Transceiver::connect(c.NAME).await`
+or the deferred `Endpoint::new(c.NAME).connect().await` spelling.
 
 Because a generated crate cannot be `cargo check`ed before the pipeline has run, the
 melt-pot endpoint crates are excluded from the workspace.

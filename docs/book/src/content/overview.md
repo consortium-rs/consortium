@@ -21,7 +21,7 @@ Consortium.toml + shared types + endpoint crates
                         |
                  validate and lower
                         |
-       generated Context, DTS, UIO, and build inputs
+       generated resources, DTS, UIO, and build inputs
                         |
              Linux app + firmware + optional services
                         |

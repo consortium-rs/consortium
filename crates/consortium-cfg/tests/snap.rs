@@ -23,7 +23,7 @@ use std::collections::HashMap;
 use consortium_cfg::components::address::{Address, ApAddress};
 use consortium_cfg::components::bella::{BellA, HardwareDoorbell};
 use consortium_cfg::components::ipc_shm::{
-    Channel, Direction, DoorbellMeta, DoorbellSource, ShuHan, Transceiver,
+    Channel, DoorbellMeta, DoorbellSource, ShuHan, Transceiver, initialize_instances,
 };
 use consortium_cfg::components::region::Region;
 use consortium_cfg_common::config::{Codec, McoreName, VisibleCore};
@@ -41,25 +41,6 @@ fn stmts(tokens: TokenStream) -> String {
 /// Pretty-print a fragment that is a single expression.
 fn expr(tokens: TokenStream) -> String {
     let wrapped: TokenStream = quote::quote! { fn _generated() { let _ = #tokens; } };
-    consortium_cfg::render(wrapped).expect("generated code should parse as Rust")
-}
-
-/// Pretty-print a `connect_field_init` result: the hoisted scratch-buffer
-/// `static`s as module items, followed by the field-initializer expression
-/// (which uses `.await`, `?`, `self.<field>`, and `ConsortiumConnectError`)
-/// wrapped in an async, fallible method on a stub carrying the referenced field.
-fn connect_expr((buffers, expr): (TokenStream, TokenStream)) -> String {
-    let wrapped: TokenStream = quote::quote! {
-        #buffers
-        enum ConsortiumConnectError { Descriptor(()), Doorbell, Other }
-        struct S { sensor: () }
-        impl S {
-            async fn _generated(self) -> ::core::result::Result<(), ConsortiumConnectError> {
-                let _ = #expr;
-                ::core::result::Result::Ok(())
-            }
-        }
-    };
     consortium_cfg::render(wrapped).expect("generated code should parse as Rust")
 }
 
@@ -138,7 +119,7 @@ fn transceiver_primary_side_binds_uio_notifier() {
 fn transceiver_secondary_side_uses_controller_addresses() {
     let uio = format_ident!("uio");
     // A controller core takes the doorbell's peripheral singleton rather than a
-    // mapped base; `__db_hsem` is the parameter `IpcMemoryEndpoints::new` binds.
+    // mapped base; `__db_hsem` is the parameter the endpoint installer binds.
     let tokens = transceiver().build_field_init(
         cm33(),
         &uio,
@@ -149,57 +130,10 @@ fn transceiver_secondary_side_uses_controller_addresses() {
 }
 
 #[test]
-fn transceiver_primary_connect_runs_handshake() {
-    let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
-    let field = format_ident!("sensor");
-    // The connect phase runs the transport's `Connect` handshake, splits, and
-    // builds the typed transceiver. It uses `.await`/`?`, so it is wrapped in an
-    // async, fallible context for pretty-printing. The primary/secondary pair
-    // below emits the *same* call: the protocol role follows from the `Side` in
-    // the transport type.
-    let tokens = transceiver().connect_field_init(VisibleCore::Ap, &field, &ty_crate);
-    insta::assert_snapshot!(connect_expr(tokens));
-}
-
-#[test]
-fn transceiver_secondary_connect_runs_handshake() {
-    let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
-    let field = format_ident!("sensor");
-    let tokens = transceiver().connect_field_init(cm33(), &field, &ty_crate);
-    insta::assert_snapshot!(connect_expr(tokens));
-}
-
-#[test]
 fn region_initialize_uncached_ap() {
     let uio = format_ident!("uio");
     let tokens = transceiver().region.initialize(VisibleCore::Ap, &uio);
     insta::assert_snapshot!(expr(tokens));
-}
-
-#[test]
-fn channel_initialize_tx() {
-    let chan = format_ident!("chan_tx");
-    let transport = format_ident!("transport_tx");
-    let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
-    let init = transceiver().channel_primary.1.initialize(
-        Direction::Tx,
-        &chan,
-        &transport,
-        Codec::Postcard,
-        256,
-        &ty_crate,
-    );
-    // The module-level scratch-buffer `static` and the `Channel::new(...)`
-    // expression that borrows it.
-    let buffer = init.buffer;
-    let channel = init.channel;
-    let tokens = quote::quote! {
-        #buffer
-        fn _generated() {
-            let _ = #channel;
-        }
-    };
-    insta::assert_snapshot!(items(tokens));
 }
 
 #[test]
@@ -279,7 +213,7 @@ fn pong() -> Transceiver {
 }
 
 /// A multi-transceiver node spanning two doorbell families, two codecs, and two
-/// controller cores. The full `IpcMemoryEndpoints` struct + `new` impl is the
+/// controller cores. The full channel definitions + endpoint installers are the
 /// most representative "complicated IR -> code" surface.
 fn shuhan() -> ShuHan {
     ShuHan::new(vec![transceiver(), pong()])
@@ -289,7 +223,8 @@ fn shuhan() -> ShuHan {
 fn shuhan_ap_side_emits_full_endpoint_struct() {
     let uio = format_ident!("uio");
     let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
-    let tokens = shuhan().initialize(
+    let tokens = initialize_instances(
+        &shuhan(),
         VisibleCore::Ap,
         &uio,
         &ty_crate,
@@ -307,7 +242,8 @@ fn shuhan_controller_side_emits_single_endpoint_struct() {
     // resolvable for this core).
     let uio = format_ident!("uio");
     let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
-    let tokens = ShuHan::new(vec![transceiver()]).initialize(
+    let tokens = initialize_instances(
+        &ShuHan::new(vec![transceiver()]),
         cm33(),
         &uio,
         &ty_crate,

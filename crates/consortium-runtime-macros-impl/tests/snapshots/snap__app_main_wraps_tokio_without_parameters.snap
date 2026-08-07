@@ -1,0 +1,13 @@
+---
+source: crates/consortium-runtime-macros-impl/tests/snap.rs
+expression: render(output)
+---
+#[::tokio::main]
+async fn main() {
+    async fn __consortium_main() {
+        let (_p, _c) = init(Config::default()).unwrap();
+    }
+    ::consortium_runtime_app::__rt::MainOutcome::__consortium_report(
+        __consortium_main().await,
+    );
+}
