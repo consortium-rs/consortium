@@ -45,7 +45,7 @@ mimx95  = ["consortium-ipc-transport-memory?/mimx95", "mimx9x"]
 mimx9x  = []
 ipc     = ["dep:consortium-ipc"]
 ipc-shm = ["dep:consortium-ipc-transport-memory", "ipc"]
-# Re-export the `#[consortium_runtime_app::main]` / `::fail` entry macros.
+# Re-export the `#[consortium_runtime_app::main]` entry macro.
 macros     = ["dep:consortium-runtime-macros"]
 ort        = ["consortium-ort"]
 stm32mp21x = ["consortium-ipc-transport-memory?/stm32mp21x"]

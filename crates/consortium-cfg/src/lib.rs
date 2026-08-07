@@ -82,11 +82,10 @@
 //! # Generated code
 //!
 //! The output is `src/consortium.gen.rs` in each endpoint crate, which the crate
-//! `include!`s. It defines `Context` and an `async fn init()` that: resets the CDBG
-//! ring when the core has a `[dbg.<core>]` logger; brings up the chip's Embassy time
-//! driver (unless `[profile] time_driver = false`); constructs, `connect`s, and
-//! splits each IPC transport into a transceiver at `context.ipc_shm.<name>`; and
-//! hands out `context.peripherals` on cores that own `[peripheral.*]`.
+//! `include!`s. It defines `Config`, endpoint-local `Peripherals` and `Channels`,
+//! and synchronous `init(config)`. Init performs local platform bring-up and
+//! installs unsplit transports; application code connects each channel token
+//! independently before use.
 //!
 //! Because a generated crate cannot be `cargo check`ed before the pipeline has run,
 //! the melt-pot endpoint crates are excluded from the workspace.

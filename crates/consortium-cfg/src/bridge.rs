@@ -114,15 +114,11 @@ impl LoweredIr {
 
     /// Generates the per-core IPC initialization module.
     ///
-    /// Every core gets the `IpcMemoryEndpoints` struct and its `new`
-    /// constructor, restricted to the transceivers that core is a party to
-    /// (controller firmware images are per-core).
+    /// Every core gets channel markers, instance bindings, and a transport
+    /// installer restricted to the transceivers it participates in.
     ///
-    /// The AP additionally brings up the Linux [`UioDevice`]s this IR declares
-    /// and wraps both in an `init` entry point returning
-    /// `Context { uio, ipc_shm }`. The opened devices are kept in
-    /// `uio` because `ipc_shm` borrows their mmap windows for the lifetime of
-    /// the context.
+    /// The AP additionally emits `Config`, platform `Peripherals`, and a
+    /// fallible synchronous `init` that opens the declared [`UioDevice`]s.
     ///
     /// [`UioDevice`]: crate::components::uio::UioDevice
     pub fn initialize(&self, core: VisibleCore, ty_crate: &syn::Path) -> proc_macro2::TokenStream {
@@ -145,7 +141,8 @@ impl LoweredIr {
             .get(&core)
             .map(Vec::as_slice)
             .unwrap_or_default();
-        let endpoints = ShuHan::new(participating.clone()).initialize(
+        let endpoints = crate::components::ipc_shm::initialize_instances(
+            &ShuHan::new(participating.clone()),
             core,
             &uio_ident,
             ty_crate,
@@ -170,11 +167,18 @@ impl LoweredIr {
 
         // `UioDevice::open(n, enable_irq)` for each declared device, in `self.uio` order
         // (shared-memory device first, then one per doorbell, then `dbg-shm`).
-        // The opened handles are moved into `Context` so the mmap
-        // windows `IpcMemoryEndpointsConnected` borrows stay alive.
+        // Opened handles are Arc-owned by platform resources and cloned into
+        // each transport that uses one of their mappings.
         let opens = self.uio.iter().enumerate().map(|(id, (_, device))| {
             let enable_irq = device.irq.is_some();
-            quote! { ::consortium_runtime_app::uio::UioDevice::open(#id, #enable_irq)? }
+            quote! {
+                ::std::sync::Arc::new(
+                    ::consortium_runtime_app::uio::UioDevice::open(
+                        #id,
+                        #enable_irq && config.uio_irqs,
+                    )?
+                )
+            }
         });
         // Literal device count for the generated `init` trace line.
         let uio_count = self.uio.len();
@@ -227,8 +231,6 @@ impl LoweredIr {
             enum ConsortiumInitError {
                 /// Opening or mapping a UIO device failed.
                 Uio(::consortium_runtime_app::uio::UioDeviceError),
-                /// An IPC transceiver's descriptor handshake failed.
-                Ipc(ConsortiumConnectError),
                 #dbg_error_arm
             }
 
@@ -240,43 +242,84 @@ impl LoweredIr {
                 }
             }
 
-            impl ::core::convert::From<ConsortiumConnectError> for ConsortiumInitError {
-                fn from(e: ConsortiumConnectError) -> Self {
-                    ConsortiumInitError::Ipc(e)
+            #dbg_from
+
+            /// Runtime bring-up policy. Every enabled manifest step defaults on.
+            #[non_exhaustive]
+            pub struct Config {
+                pub tracing: bool,
+                pub uio_irqs: bool,
+                pub dbg_console: bool,
+            }
+
+            impl ::core::default::Default for Config {
+                fn default() -> Self {
+                    Self { tracing: true, uio_irqs: true, dbg_console: true }
                 }
             }
 
-            #dbg_from
-
-            /// The aggregate of everything this manifest brings up for the
-            /// application core, handed to the body by
-            /// `#[consortium_runtime_app::main]`. `ipc_shm` holds the connected
-            /// transceivers; `uio` keeps the mapped devices alive for them.
-            struct Context {
+            /// Platform resources owned by the application endpoint.
+            ///
+            /// This type deliberately has no `Drop` implementation so fields can
+            /// be moved independently. The debug field is declared first so it
+            /// stops touching mappings before the UIO devices unmap.
+            pub struct Peripherals {
                 #dbg_field
-                #uio_ident: ::std::vec::Vec<::consortium_runtime_app::uio::UioDevice>,
-                ipc_shm: IpcMemoryEndpointsConnected,
+                pub #uio_ident: ::std::vec::Vec<
+                    ::std::sync::Arc<::consortium_runtime_app::uio::UioDevice>
+                >,
             }
 
-            async fn init() -> ::core::result::Result<Context, ConsortiumInitError> {
+            fn init(
+                config: Config,
+            ) -> ::core::result::Result<(Peripherals, Channels), ConsortiumInitError> {
+                if config.tracing {
+                    ::consortium_runtime_app::init_tracing();
+                }
                 ::consortium_runtime_app::log::trace!(
                     "consortium init: opening {} uio device(s)", #uio_count
                 );
                 let #uio_ident = ::std::vec![ #(#opens),* ];
                 ::consortium_runtime_app::log::trace!(
-                    "consortium init: connecting ipc endpoints"
+                    "consortium init: installing ipc endpoints"
                 );
-                let ipc_shm = IpcMemoryEndpoints::new(&#uio_ident)?.connect().await?;
+                __consortium_install_channels(&#uio_ident)?;
+                let channels = Channels::take();
                 #dbg_init
-                ::consortium_runtime_app::log::trace!("consortium init: context ready");
-                ::core::result::Result::Ok(Context { #dbg_field_name #uio_ident, ipc_shm })
+                ::consortium_runtime_app::log::trace!("consortium init: resources ready");
+                ::core::result::Result::Ok((
+                    Peripherals { #dbg_field_name #uio_ident },
+                    channels,
+                ))
+            }
+
+            /// Error union suitable for `#[consortium_runtime_app::main]`.
+            ///
+            /// `MainOutcome` reports the payload through derived `Debug`, which
+            /// dead-code analysis intentionally does not count as a field read.
+            #[derive(Debug)]
+            #[allow(dead_code)]
+            enum ConsortiumError {
+                Init(ConsortiumInitError),
+                Connect(::consortium_ipc_transport_memory::ConnectError),
+            }
+
+            impl ::core::convert::From<ConsortiumInitError> for ConsortiumError {
+                fn from(e: ConsortiumInitError) -> Self { Self::Init(e) }
+            }
+
+            impl ::core::convert::From<::consortium_ipc_transport_memory::ConnectError>
+                for ConsortiumError
+            {
+                fn from(e: ::consortium_ipc_transport_memory::ConnectError) -> Self {
+                    Self::Connect(e)
+                }
             }
         }
     }
 
-    /// Wraps a Cortex-M controller core's endpoint module with the aggregate
-    /// `async init()` entry point that `#[consortium_runtime_mcu::main]` calls,
-    /// plus the [`Context`] it returns.
+    /// Wraps a Cortex-M endpoint module with its Embassy-shaped resource types
+    /// and synchronous `init`.
     ///
     /// The generated `init`:
     ///
@@ -296,15 +339,11 @@ impl LoweredIr {
     /// - brings up the sealed Embassy time driver (its timer vector and
     ///   `defmt::timestamp!` are emitted alongside) unless `[profile]
     ///   time_driver = false`; and
-    /// - runs the IPC descriptor handshake (`IpcMemoryEndpoints::new().connect()`)
-    ///   and, for cores that own peripherals, `peripherals()`, returning the
-    ///   connected [`Context`].
+    /// - installs each unsplit IPC transport behind its channel instance; and
+    /// - returns the peripheral and channel singleton allowlists.
     ///
-    /// The two-phase `IpcMemoryEndpoints::new`/`connect` API stays public for
-    /// non-macro callers. `init`, `Context`, and `ConsortiumInitError` are gated
-    /// to `target_arch = "arm"` so the host trybuild harness, which never links
-    /// `cortex-m` or `consortium-runtime-mcu`, skips them while still compiling
-    /// the endpoint module.
+    /// The platform resource surface is gated to `target_arch = "arm"` so host
+    /// trybuild can compile the portable instance declarations.
     fn controller_init(
         &self,
         core: VisibleCore,
@@ -390,25 +429,15 @@ impl LoweredIr {
         // The doorbell NVIC enum/impl plus `unmask` statements for this core.
         let nvic = self.bella.nvic_enable(&core, &self.peripherals.hal_crate);
 
-        // Peripheral (I2C/GPIO) bring-up: the `Peripherals` struct, per-instance
-        // interrupt state/handlers, and a `peripherals()` constructor. `None` for
-        // cores that own no codegen-supported peripheral.
+        // Peripheral singleton allowlist and interrupt handlers.
         let peripherals = self.peripherals.initialize(core);
-        let has_peripherals = peripherals.is_some();
-        // When the core owns peripherals, the aggregate `Context` carries the
-        // `peripherals()` handle bundle alongside the connected transceivers.
-        // `peripherals()` takes one singleton per instance, moved out of the
-        // `hal::init()` bundle field by field.
-        let (ctx_peripherals_field, ctx_peripherals_bind, ctx_peripherals_name) = if has_peripherals
-        {
-            let arguments = self.peripherals.arguments(core);
-            (
-                quote! { peripherals: Peripherals, },
-                quote! { let peripherals = peripherals(#(__p.#arguments),*); },
-                quote! { peripherals, },
-            )
+        let peripheral_arguments = self.peripherals.arguments(core);
+        let has_peripherals = !peripheral_arguments.is_empty();
+        let peripheral_nvic = self.peripherals.nvic(core);
+        let peripheral_value = if has_peripherals {
+            quote! { Peripherals { #(#peripheral_arguments: __p.#peripheral_arguments),* } }
         } else {
-            (quote! {}, quote! {}, quote! {})
+            quote! { Peripherals {} }
         };
 
         // A `[dbg.<core>]` logger means `defmt` is linked: reset the CDBG ring
@@ -458,61 +487,61 @@ impl LoweredIr {
             #timestamp
             #time_isr
 
-            /// Aggregate bring-up failure for this controller core's [`init`].
-            /// The payload is surfaced through `Debug`/`defmt` in the consuming
-            /// firmware binary, which dead-code analysis cannot see, so allow the
-            /// otherwise-"never read" field.
-            ///
-            /// Gated to `target_arch = "arm"` alongside `init`/`Context`: the
-            /// host trybuild harness compiles only the endpoint module, never the
-            /// firmware entry surface.
+            /// Runtime bring-up policy. Enabled manifest steps default on.
+            #[cfg(target_arch = "arm")]
+            #[non_exhaustive]
+            pub struct Config {
+                pub logger: bool,
+                pub mpu: bool,
+                pub nvic: bool,
+                pub time_driver: bool,
+            }
+
+            #[cfg(target_arch = "arm")]
+            impl ::core::default::Default for Config {
+                fn default() -> Self {
+                    Self { logger: true, mpu: true, nvic: true, time_driver: true }
+                }
+            }
+
+            /// Brings up synchronous platform resources and installs each
+            /// unconnected IPC transport into its generated endpoint state.
+            #[cfg(target_arch = "arm")]
+            fn init(config: Config) -> (Peripherals, Channels) {
+                if config.logger { #logger_init }
+                ::consortium_runtime_mcu::log::trace!("consortium controller init: mpu/nvic bring-up");
+                #steal
+                if config.mpu { #(#mpu_stmts)* }
+                #enable_dcache
+                if config.nvic {
+                    #nvic
+                    #peripheral_nvic
+                }
+                #hal_peripherals
+                if config.time_driver { #time_bringup }
+                __consortium_install_channels(#(__p.#doorbell_arguments),*);
+                let channels = Channels::take();
+                let peripherals = #peripheral_value;
+                ::consortium_runtime_mcu::log::trace!("consortium controller init: resources ready");
+                (peripherals, channels)
+            }
+
+            /// Error union suitable for `#[consortium_runtime_mcu::main]`.
             #[cfg(target_arch = "arm")]
             #[cfg_attr(target_os = "none", derive(Debug, defmt::Format))]
             #[cfg_attr(not(target_os = "none"), derive(Debug))]
             #[allow(dead_code)]
-            enum ConsortiumInitError {
-                /// An IPC transceiver's descriptor handshake failed.
-                Ipc(ConsortiumConnectError),
+            enum ConsortiumError {
+                Connect(::consortium_ipc_transport_memory::ConnectError),
             }
 
             #[cfg(target_arch = "arm")]
-            impl ::core::convert::From<ConsortiumConnectError> for ConsortiumInitError {
-                fn from(e: ConsortiumConnectError) -> Self {
-                    ConsortiumInitError::Ipc(e)
+            impl ::core::convert::From<::consortium_ipc_transport_memory::ConnectError>
+                for ConsortiumError
+            {
+                fn from(e: ::consortium_ipc_transport_memory::ConnectError) -> Self {
+                    Self::Connect(e)
                 }
-            }
-
-            /// Everything this manifest brings up for the controller core, handed
-            /// to the body by `#[consortium_runtime_mcu::main]`. `ipc_shm` holds
-            /// the connected transceivers. Gated with `init` (references the
-            /// `target_arch = "arm"`-only `Peripherals`).
-            #[cfg(target_arch = "arm")]
-            struct Context {
-                ipc_shm: IpcMemoryEndpointsConnected,
-                #ctx_peripherals_field
-            }
-
-            /// Brings up this controller core's logger, memory protection,
-            /// interrupt controller, and time driver, runs the IPC descriptor
-            /// handshake, and returns the connected [`Context`].
-            ///
-            /// Compiled only for Cortex-M targets; the host trybuild harness
-            /// (which never links `cortex-m`) skips it.
-            #[cfg(target_arch = "arm")]
-            async fn init() -> ::core::result::Result<Context, ConsortiumInitError> {
-                #logger_init
-                ::consortium_runtime_mcu::log::trace!("consortium controller init: mpu/nvic bring-up");
-                #steal
-                #(#mpu_stmts)*
-                #enable_dcache
-                #nvic
-                #hal_peripherals
-                #time_bringup
-                ::consortium_runtime_mcu::log::trace!("consortium controller init: connecting ipc endpoints");
-                let ipc_shm = IpcMemoryEndpoints::new(#(__p.#doorbell_arguments),*).connect().await?;
-                #ctx_peripherals_bind
-                ::consortium_runtime_mcu::log::trace!("consortium controller init: context ready");
-                ::core::result::Result::Ok(Context { ipc_shm, #ctx_peripherals_name })
             }
 
             #peripherals
@@ -940,8 +969,7 @@ impl Session {
                     }
                 }
                 "gpio" | "rgpio" => PeripheralKind::Gpio,
-                // Unsupported block: no generated bring-up.
-                _ => continue,
+                _ => PeripheralKind::Other,
             };
 
             instances.push(PeripheralInstance {
@@ -1317,7 +1345,8 @@ mod tests {
         let uio = quote::format_ident!("uio");
         let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
 
-        let tokens = ir.shuhan.initialize(
+        let tokens = crate::components::ipc_shm::initialize_instances(
+            &ir.shuhan,
             VisibleCore::Ap,
             &uio,
             &ty_crate,
@@ -1326,30 +1355,30 @@ mod tests {
         );
         syn::parse_file(&tokens.to_string()).expect("lowered ShuHan is valid Rust");
 
-        // The full AP entry point (disconnected/connected endpoints, async
-        // `connect`, `ConsortiumInitError`, and the dbg host console weave)
-        // must parse as a complete module.
+        // The full AP resource entry point must parse as a complete module.
         let ap = ir.initialize(VisibleCore::Ap, &ty_crate);
         let ap_file =
             syn::parse_file(&ap.to_string()).expect("lowered AP init module is valid Rust");
         let ap_src = ap.to_string();
-        assert!(ap_src.contains("IpcMemoryEndpointsConnected"));
-        assert!(ap_src.contains("async fn connect"));
-        assert!(ap_src.contains("Connect :: connect"));
-        assert!(ap_src.contains("async fn init"));
+        assert!(ap_src.contains("channels !"));
+        assert!(ap_src.contains("impl_channel !"));
+        assert!(ap_src.contains("fn init"));
+        assert!(ap_src.contains("Config"));
+        assert!(ap_src.contains("Peripherals"));
+        assert!(!ap_src.contains("impl Drop for Peripherals"));
+        assert!(!ap_src.contains("impl Drop for Channels"));
         // The example declares `[dbg.cm33]`, so the host console is woven in.
         assert!(ap_src.contains("dbg_console :: spawn"));
-        // `init` is async and returns the aggregate error.
+        // AP platform resource construction remains fallible.
         assert!(ap_src.contains("ConsortiumInitError"));
         let _ = ap_file;
 
-        // A controller core (Secondary) emits an infallible `new` plus the same
-        // `connect` handshake — the identical call, with the Secondary role
-        // selected by the transport's `Side` rather than by the generated code.
+        // A controller core emits a Secondary instance and synchronous init.
         let cm = ir.initialize(cm33(), &ty_crate);
         let cm_src = cm.to_string();
         syn::parse_file(&cm_src).expect("lowered controller init module is valid Rust");
-        assert!(cm_src.contains("Connect :: connect"));
+        assert!(cm_src.contains("fn init"));
+        assert!(!cm_src.contains("async fn init"));
         assert!(cm_src.contains("Secondary"));
 
         let bella = ir

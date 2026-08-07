@@ -23,30 +23,20 @@
 
 use proc_macro::TokenStream;
 
-/// Entry-point macro for `no_std` firmware: wraps `embassy_executor::main`, runs
-/// the generated `init()`, and binds its `Context` for the body.
+/// Entry-point macro for `no_std` firmware.
+///
+/// Accepts `async fn main(spawner: Spawner)` returning either `()` or
+/// `Result<(), E: Debug>` and stacks `embassy_executor::main`.
 #[proc_macro_attribute]
 pub fn mcu_main(attr: TokenStream, item: TokenStream) -> TokenStream {
     consortium_runtime_macros_impl::mcu_main(attr.into(), item.into()).into()
 }
 
-/// Entry-point macro for Linux applications: wraps `tokio::main`, runs the
-/// generated `init()`, and binds its `Context` for the body.
+/// Entry-point macro for Linux applications.
+///
+/// Accepts `async fn main()` returning either `()` or `Result<(), E: Debug>`
+/// and stacks `tokio::main`.
 #[proc_macro_attribute]
 pub fn app_main(attr: TokenStream, item: TokenStream) -> TokenStream {
     consortium_runtime_macros_impl::app_main(attr.into(), item.into()).into()
-}
-
-/// Optional init-failure handler for firmware; see the impl crate for the
-/// glob-shadowing dispatch.
-#[proc_macro_attribute]
-pub fn mcu_fail(attr: TokenStream, item: TokenStream) -> TokenStream {
-    consortium_runtime_macros_impl::mcu_fail(attr.into(), item.into()).into()
-}
-
-/// Optional init-failure handler for applications; see the impl crate for the
-/// glob-shadowing dispatch.
-#[proc_macro_attribute]
-pub fn app_fail(attr: TokenStream, item: TokenStream) -> TokenStream {
-    consortium_runtime_macros_impl::app_fail(attr.into(), item.into()).into()
 }

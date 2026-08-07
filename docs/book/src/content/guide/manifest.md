@@ -71,7 +71,7 @@ table yet.
 
 | Field                  | Meaning                                                      |
 | ---------------------- | ------------------------------------------------------------ |
-| `name`                 | Rust field name under `context.ipc_shm`                      |
+| `name`                 | Uppercase singleton field under the generated `Channels`    |
 | `doorbell`             | Chip database doorbell, such as `ipcc1` or `mu7`             |
 | `primary`, `secondary` | Endpoints participating in the descriptor handshake          |
 | `party.<name>`         | This party's outgoing doorbell channel and Rust message type |
@@ -126,7 +126,8 @@ pin.sda   = "PB0"
 pin.scl   = "PB1"
 ```
 
-Controller-owned peripherals become typed fields under `context.peripherals`. The
+Controller-owned peripherals become uppercase singleton fields under the generated
+`Peripherals` value (`p`). The
 current generated singleton path supports non-secure peripherals; `secure = true` is
 rejected. Required clocks, frequencies, pins, and interrupt metadata depend on the
 driver and chip database.

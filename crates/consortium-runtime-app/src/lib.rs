@@ -74,27 +74,18 @@
 //!
 //! ```rust,ignore
 //! #[consortium_runtime_app::main]
-//! async fn main(context: Context) -> Result<(), Box<dyn std::error::Error>> {
-//!     context.ipc_shm.telemetry.send(&Command::Start).await?;
+//! async fn main() -> Result<(), ConsortiumError> {
+//!     let (_p, c) = init(Config::default())?;
+//!     let mut telemetry =
+//!         consortium_ipc_transport_memory::Transceiver::connect(c.TELEMETRY).await?;
+//!     telemetry.send(&Command::Start).await?;
 //!     Ok(())
 //! }
-//!
-//! // Optional: report a bring-up failure yourself.
-//! #[consortium_runtime_app::fail]
-//! fn on_fail(err: ConsortiumInitError) { eprintln!("init failed: {err}"); }
 //! ```
 //!
 //! The macro stacks `tokio::main` (resolved through the *user* crate's own `tokio`
-//! dependency, so it needs `tokio` with `macros`), installs a `tracing` subscriber
-//! **before** the generated `init()` runs — otherwise UIO and IPC bring-up traces
-//! would be dropped for want of a subscriber — then calls `init()` and binds its
-//! result as `context`.
-//!
-//! Without a `#[fail]` handler, a bring-up failure logs and exits non-zero. The
-//! dispatch is a glob-import shadow: `#[main]` glob-imports a fallback from
-//! `__rt`, and a module-scope `#[fail]` item shadows it. `#[main]`, `#[fail]`,
-//! `init`, and `Context` must therefore share the module the generated file is
-//! `include!`d into.
+//! dependency, so it needs `tokio` with `macros`). It accepts `()` or
+//! `Result<(), E: Debug>`; an error initializes tracing, logs, and exits non-zero.
 //!
 //! # Debug consoles
 //!
@@ -112,7 +103,7 @@
 //! | `ipc`     | Re-export `consortium-ipc`.                                      |
 //! | `ipc-shm` | UIO-backed shared-memory IPC; implies `ipc`.                      |
 //! | `dbg`     | Debug-ring decoding and `dbg_console`.                          |
-//! | `macros`  | The `#[main]` / `#[fail]` entry macros.                            |
+//! | `macros`  | The `#[main]` entry macro.                                         |
 //! | `tee`     | Re-export `consortium-tee`.                                       |
 //! | `hmi`, `ort`, `ffi` | Re-export the HMI bridge, ONNX Runtime, and C ABI crates. |
 //! | chip features | `mimx93`/`mimx95`, `stm32mp21x`/`23x`/`25x` — forwarded to the shared-memory transport so it can report doorbell window addresses. |
@@ -158,38 +149,46 @@ pub use consortium_dbg as dbg;
 pub use consortium_tee as tee;
 
 /// Entry-point macros. Applications write `#[consortium_runtime_app::main]` on
-/// their `async fn main(context: Context)` and, optionally,
-/// `#[consortium_runtime_app::fail]` on an init-failure handler.
+/// their `async fn main()` returning `()` or `Result<(), E: Debug>`.
 #[cfg(all(target_os = "linux", feature = "macros"))]
-pub use consortium_runtime_macros::{app_fail as fail, app_main as main};
+pub use consortium_runtime_macros::app_main as main;
 
-/// Runtime glue for the entry macros. Not a stable API — the generated
-/// `#[main]` code glob-imports `__consortium_init_fail` from here so a user
-/// `#[fail]` handler can shadow it.
+/// Install the application's tracing subscriber.
+///
+/// Idempotent: an already-installed global subscriber is left in place.
+#[cfg(target_os = "linux")]
+pub fn init_tracing() {
+    use tracing_subscriber::{EnvFilter, fmt};
+    let filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
+    let _ = fmt().with_env_filter(filter).try_init();
+}
+
+/// Runtime glue for the entry macro.
 #[cfg(all(target_os = "linux", feature = "macros"))]
 #[doc(hidden)]
 pub mod __rt {
-    /// Fallback init-failure handler used when no `#[fail]` handler is defined.
-    /// Logs and exits non-zero; a `#[fail]` handler shadows this via the glob
-    /// import the `#[main]` expansion emits.
-    pub fn __consortium_init_fail<E>(_err: E) -> ! {
-        crate::log::error!("consortium: init failed; no `#[fail]` handler, exiting");
-        ::std::process::exit(1);
+    /// Outcomes accepted from a Consortium entry body.
+    pub trait MainOutcome {
+        /// Report failure and terminate, or return for a successful unit value.
+        fn __consortium_report(self);
     }
 
-    /// Install the application's `tracing` subscriber. Called by the
-    /// `#[consortium_runtime_app::main]` expansion *before* the generated
-    /// `init()` runs, so UIO/IPC bring-up traces and the `#[fail]` handler's
-    /// diagnostics are actually emitted (respecting `RUST_LOG`) instead of being
-    /// dropped because no subscriber is installed yet.
-    ///
-    /// Idempotent: it installs the global subscriber with `try_init`, which is a
-    /// no-op once one already exists — so a user `main` that sets up its own
-    /// subscriber (or calls this again) will not panic. The filter comes from
-    /// `RUST_LOG` when set, defaulting to `info` otherwise.
-    pub fn init_tracing() {
-        use tracing_subscriber::{EnvFilter, fmt};
-        let filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
-        let _ = fmt().with_env_filter(filter).try_init();
+    impl MainOutcome for () {
+        fn __consortium_report(self) {}
+    }
+
+    impl<E: ::core::fmt::Debug> MainOutcome for ::core::result::Result<(), E> {
+        fn __consortium_report(self) {
+            if let ::core::result::Result::Err(error) = self {
+                __consortium_main_fail(error);
+            }
+        }
+    }
+
+    /// Install tracing, log a failed entry outcome, and exit non-zero.
+    pub fn __consortium_main_fail<E: ::core::fmt::Debug>(error: E) -> ! {
+        crate::init_tracing();
+        crate::log::error!("consortium main failed: {:?}", error);
+        ::std::process::exit(1);
     }
 }

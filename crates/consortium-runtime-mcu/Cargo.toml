@@ -31,7 +31,7 @@ rust-version.workspace = true
 [features]
 dbg     = ["dep:consortium-dbg"]
 default = ["ipc-shm", "macros"]
-# Re-export the `#[consortium_runtime_mcu::main]` / `::fail` entry macros.
+# Re-export the `#[consortium_runtime_mcu::main]` entry macro.
 macros = ["dep:consortium-runtime-macros"]
 # Route generated-code logging (`::consortium_runtime_mcu::log::*`) to `defmt`.
 # The firmware crate that includes the generated module must also depend on
@@ -70,5 +70,9 @@ cortex-m = { version = "0.7" }
 # Only used by the entry-macro fallback fail handler's log line, which is gated
 # behind this crate's `defmt` feature (the `log` re-export otherwise expands to
 # `defmt::` paths this crate could not resolve).
-defmt       = { optional = true, version = "1" }
-static_cell = { default-features = false, version = "2" }
+defmt = { optional = true, version = "1" }
+# `static_cell` uses portable-atomic's compare-exchange guard. Enable its
+# critical-section fallback so `static_buf!` remains usable on ARMv6-M, where
+# the core has no native CAS instruction.
+portable-atomic = { default-features = false, features = ["critical-section"], version = "1" }
+static_cell     = { default-features = false, version = "2" }

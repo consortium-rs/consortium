@@ -53,7 +53,7 @@ const POLL_INTERVAL: Duration = Duration::from_millis(50);
 /// Emitted by the configuration codegen, one per `[dbg.<core>]`.
 #[derive(Clone, Copy, Debug)]
 pub struct DbgRingSpec {
-    /// Index into the `&[UioDevice]` slice (the device aggregating dbg rings).
+    /// Index into the opened UIO owner slice (the device aggregating dbg rings).
     pub uio_id: usize,
     /// mmap window index of this ring within that device.
     pub mmap_id: usize,
@@ -106,7 +106,10 @@ impl Drop for DbgConsole {
 /// Each ring carries its firmware ELF embedded in the binary, so a thread waits
 /// for the writer to publish a valid descriptor, then polls the ring and
 /// forwards frames to `tracing`.
-pub fn spawn(devices: &[UioDevice], specs: &[DbgRingSpec]) -> Result<DbgConsole, DbgConsoleError> {
+pub fn spawn(
+    devices: &[Arc<UioDevice>],
+    specs: &[DbgRingSpec],
+) -> Result<DbgConsole, DbgConsoleError> {
     let stop = Arc::new(AtomicBool::new(false));
     let mut threads = Vec::with_capacity(specs.len());
     for spec in specs {
@@ -212,7 +215,7 @@ impl DbgRingHandle {
 /// mode). Maps each window and parses its firmware ELF; does not require the
 /// descriptor to be initialized yet.
 pub fn open(
-    devices: &[UioDevice],
+    devices: &[Arc<UioDevice>],
     specs: &[DbgRingSpec],
 ) -> Result<Vec<DbgRingHandle>, DbgConsoleError> {
     let mut handles = Vec::with_capacity(specs.len());

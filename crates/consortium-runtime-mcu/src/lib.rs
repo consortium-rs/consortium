@@ -36,26 +36,19 @@
 //!
 //! ```rust,ignore
 //! #[consortium_runtime_mcu::main]
-//! async fn main(context: Context, spawner: Spawner) {
-//!     let telemetry = context.ipc_shm.telemetry;
-//!     // ...
+//! async fn main(spawner: Spawner) -> Result<(), ConsortiumError> {
+//!     let (p, c) = init(Config::default());
+//!     let mut telemetry =
+//!         consortium_ipc_transport_memory::Transceiver::connect(c.TELEMETRY).await?;
+//!     // Construct drivers from p.XXX and use telemetry.
+//!     Ok(())
 //! }
-//!
-//! // Optional: report a bring-up failure yourself.
-//! #[consortium_runtime_mcu::fail]
-//! fn on_fail(err: ConsortiumInitError) { defmt::error!("init failed: {}", err); }
 //! ```
 //!
 //! The macro stacks `embassy_executor::main` — resolved through the *user* crate's own
 //! dependency, so firmware still needs `embassy-executor` with `executor-thread` and
-//! `platform-cortex-m` — then calls the generated `init()` and binds its result as
-//! `context`.
-//!
-//! Without a `#[fail]` handler, a bring-up failure parks the core with `wfi`. The
-//! dispatch is a glob-import shadow: `#[main]` glob-imports a fallback from
-//! [`__rt`], and a module-scope `#[fail]` item shadows it. `#[main]`, `#[fail]`,
-//! `init`, and `Context` must therefore share the module the generated file is
-//! `include!`d into.
+//! `platform-cortex-m`. It accepts `()` or `Result<(), E: Debug>`; an error is
+//! logged and parks the core with `wfi`.
 //!
 //! # What the generated `init()` already does
 //!
@@ -66,12 +59,11 @@
 //! - brings up the chip HAL's Embassy time driver and emits the matching timer
 //!   vector and `defmt::timestamp!` — disable with `[profile] time_driver = false`
 //!   when firmware owns its own time base;
-//! - constructs, `connect`s, and splits each IPC transport into a transceiver at
-//!   `context.ipc_shm.<name>`;
-//! - hands out `context.peripherals` on cores owning `[peripheral.*]`.
+//! - installs each unsplit IPC transport behind its channel singleton; and
+//! - returns only the peripheral singletons allowed by `[peripheral.*]`.
 //!
-//! The two-phase `IpcMemoryEndpoints::new` / `connect` API stays available for
-//! non-macro callers.
+//! Each `Transceiver::connect(c.NAME).await` performs that channel's handshake,
+//! then splits the transport and constructs its typed channels.
 //!
 //! # Interrupts are still yours
 //!
@@ -96,7 +88,7 @@
 //! | ----------- | ------------------------------------------------------------- |
 //! | `ipc-shm`   | Shared-memory IPC (`ipc` is an alias).                         |
 //! | `ipc-uart`  | The COBS/CRC-framed UART transport instead, or as well.         |
-//! | `macros`    | The `#[main]` / `#[fail]` entry macros.                         |
+//! | `macros`    | The `#[main]` entry macro.                                      |
 //! | `dbg`       | Re-export `consortium-dbg` for the CDBG logger.                  |
 //! | `defmt`     | Route generated-code logging to `defmt`.                         |
 //! | chip features | `mimx93`/`mimx95`, `stm32mp21x`/`23x`/`25x` — forwarded to the shared-memory transport. |
@@ -129,27 +121,41 @@ pub use consortium_ipc_transport_memory;
 pub use consortium_ipc_transport_uart;
 
 /// Entry-point macros. Firmware writes `#[consortium_runtime_mcu::main]` on its
-/// `async fn main(context: Context, spawner: Spawner)` and, optionally,
-/// `#[consortium_runtime_mcu::fail]` on an init-failure handler.
+/// `async fn main(spawner: Spawner)` returning `()` or `Result<(), E: Debug>`.
 #[cfg(feature = "macros")]
-pub use consortium_runtime_macros::{mcu_fail as fail, mcu_main as main};
+pub use consortium_runtime_macros::mcu_main as main;
 
-/// Runtime glue for the entry macros. Not a stable API — the generated
-/// `#[main]` code glob-imports `__consortium_init_fail` from here so a user
-/// `#[fail]` handler can shadow it.
+/// Runtime glue for the entry macro.
 #[cfg(feature = "macros")]
 #[doc(hidden)]
 pub mod __rt {
-    /// Fallback init-failure handler used when no `#[fail]` handler is defined.
-    /// Logs and parks the core; a `#[fail]` handler shadows this via the glob
-    /// import the `#[main]` expansion emits.
-    pub fn __consortium_init_fail<E>(_err: E) -> ! {
-        // The `log` re-export expands to `defmt::` paths when `defmt` is linked,
-        // which this crate can only resolve behind its own `defmt` feature; keep
-        // the fallback silent otherwise. Rich reporting belongs in a user
-        // `#[consortium_runtime_mcu::fail]` handler, which owns the error type.
+    /// Outcomes accepted from a Consortium entry body.
+    pub trait MainOutcome {
+        /// Report failure and terminate, or return for a successful unit value.
+        fn __consortium_report(self);
+    }
+
+    impl MainOutcome for () {
+        fn __consortium_report(self) {}
+    }
+
+    impl<E: ::core::fmt::Debug> MainOutcome for ::core::result::Result<(), E> {
+        fn __consortium_report(self) {
+            if let ::core::result::Result::Err(error) = self {
+                __consortium_main_fail(error);
+            }
+        }
+    }
+
+    /// Log a failed entry outcome and park the controller core.
+    pub fn __consortium_main_fail<E: ::core::fmt::Debug>(error: E) -> ! {
         #[cfg(feature = "defmt")]
-        crate::log::error!("consortium: init failed; no `#[fail]` handler, parking core");
+        crate::log::error!(
+            "consortium main failed: {:?}",
+            ::defmt::Debug2Format(&error)
+        );
+        #[cfg(not(feature = "defmt"))]
+        let _ = error;
         loop {
             ::cortex_m::asm::wfi();
         }

@@ -325,6 +325,7 @@ dependencies = [
 name = "consortium-ipc-transport-memory"
 version = "0.2.0"
 dependencies = [
+ "consortium-codec",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
  "consortium-ipc-doorbell-ipcc",
@@ -332,6 +333,8 @@ dependencies = [
  "consortium-log",
  "consortium-shared-memory",
  "crc32fast",
+ "critical-section",
+ "embassy-hal-internal",
  "num_enum",
  "pin-project",
  "thiserror",
@@ -415,6 +418,7 @@ dependencies = [
 name = "consortium-shared-memory"
 version = "0.2.0"
 dependencies = [
+ "cortex-m",
  "thiserror",
 ]
 

@@ -20,11 +20,8 @@
 //! All of the shared-memory / doorbell / MPU / NVIC / time-driver wiring lives
 //! in `consortium.gen.rs`, which the `consortium` build pipeline generates from
 //! `../Consortium.toml` and this file `include!`s. That module exposes an
-//! aggregate `async fn init() -> Result<Context, ConsortiumInitError>` and the
-//! `Context` type. `#[consortium_runtime_mcu::main]` calls `init()` for us and
-//! hands the body a ready `Context`, whose `ipc_shm.sensor` field is a
-//! `Transceiver<SensorReading, Command>` (this core sends `SensorReading`,
-//! receives `Command`). The generated `init` also resets the CDBG ring, brings
+//! synchronous `init(Config) -> (Peripherals, Channels)`. The sensor channel
+//! performs its async descriptor handshake at the call site. Generated init also resets the CDBG ring, brings
 //! up the Embassy time driver, and installs its `TIM2` vector and
 //! `defmt::timestamp!` — none of which this file writes anymore.
 
@@ -44,8 +41,9 @@ use melt_pot_shared::SensorReading;
 include!("consortium.gen.rs");
 
 #[consortium_runtime_mcu::main]
-async fn main(context: Context, _spawner: Spawner) {
-    let mut sensor = context.ipc_shm.sensor;
+async fn main(_spawner: Spawner) -> Result<(), ConsortiumError> {
+    let (_p, c) = init(Config::default());
+    let mut sensor = ::consortium_ipc_transport_memory::Transceiver::connect(c.SENSOR).await?;
 
     let mut seq: u32 = 0;
     loop {
