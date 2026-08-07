@@ -6,15 +6,8 @@
 //! - a [`Channel`] per direction, carrying its validated doorbell channel id and the
 //!   message type name;
 //! - a [`Transceiver`] pairing two channels over one shared window;
-//! - a [`ShuHan`] aggregating every transceiver on a core, which emits the
-//!   `IpcMemoryEndpoints` type the generated `init()` constructs and `connect`s.
-//!
-//! # Why the scratch `static` is emitted separately
-//!
-//! `Channel` needs a `&'static mut [u8]` sized for the MTU, and a `static` cannot be
-//! declared inside an expression. So [`ChannelInit`] carries the module-level `static`
-//! and the `Channel::new(..)` expression as two fragments, letting the caller hoist
-//! the former while nesting the latter.
+//! - a [`ShuHan`] aggregating every transceiver on a core; [`initialize_instances`]
+//!   emits channel markers, instance metadata, and transport installation.
 //!
 //! # Doorbell ownership across transceivers
 //!
@@ -55,63 +48,6 @@ pub struct Channel {
     pub buffer_name: String,
 }
 
-/// The two fragments a channel emits: a module-level scratch-buffer `static`
-/// and the `Channel::new(...)` expression that borrows it.
-///
-/// The `static` is kept separate from the expression so callers can hoist it to
-/// module scope (see [`ShuHan::initialize`]) rather than nesting it inside the
-/// `connect` method body.
-pub struct ChannelInit {
-    /// The module-level `static mut <BUF>: [u8; MTU]` declaration.
-    pub buffer: TokenStream,
-    /// The `::consortium_ipc::Channel::<...>::new(...)` expression, which
-    /// borrows the [`buffer`](Self::buffer) static by name.
-    pub channel: TokenStream,
-}
-
-impl Channel {
-    pub fn initialize(
-        &self,
-        dir: Direction,
-        chan_ident: &Ident,
-        transport_ident: &Ident,
-        codec: Codec,
-        mtu: u32,
-        ty_crate: &Path,
-    ) -> ChannelInit {
-        let direction_ty = match dir {
-            Direction::Tx => quote::quote! { ::consortium_ipc::Tx },
-            Direction::Rx => quote::quote! { ::consortium_ipc::Rx },
-        };
-
-        let type_ident = format_ident!("{}", self.type_name);
-        let codec_token = codec_path(codec, mtu);
-
-        // The MTU-sized scratch buffer the channel encodes/decodes through. A
-        // module-level `static` gives it a `'static` lifetime without a heap or
-        // a caller-provided buffer; it is borrowed exactly once during init.
-        let buf_static = format_ident!("{}", self.buffer_name.to_uppercase());
-        let mtu = Literal::usize_suffixed(mtu as usize);
-        let buffer = quote::quote! {
-            static mut #buf_static: [u8; #mtu] = [0u8; #mtu];
-        };
-
-        let channel = quote::quote! {
-            ::consortium_ipc::Channel::<#direction_ty, #ty_crate::#type_ident, _, #codec_token>::new(
-                #chan_ident,
-                #transport_ident,
-                {
-                    /// SAFETY: module-level static scratch buffer, borrowed once
-                    /// during initialization and never aliased afterwards.
-                    unsafe { &mut *::core::ptr::addr_of_mut!(#buf_static) }
-                },
-            )
-        };
-
-        ChannelInit { buffer, channel }
-    }
-}
-
 /// The codec type path for `codec`, used by both endpoint construction and the
 /// transceiver type signature.
 ///
@@ -129,9 +65,118 @@ fn codec_path(codec: Codec, scratch: u32) -> TokenStream {
     }
 }
 
-pub enum Direction {
-    Tx,
-    Rx,
+/// Generates channel singleton markers, their instance bindings, and the
+/// transport installer called by generated `init`.
+pub fn initialize_instances(
+    shuhan: &ShuHan,
+    core: VisibleCore,
+    uio_ident: &Ident,
+    ty_crate: &Path,
+    hal_crate: &str,
+    available: &[String],
+) -> TokenStream {
+    let (doorbell_params, sources) = shuhan.doorbell_sources(core, available);
+    let markers = shuhan
+        .transceivers
+        .iter()
+        .map(|t| Ident::new(&t.name.to_ascii_uppercase(), Span::call_site()))
+        .collect::<Vec<_>>();
+
+    let instance_impls = shuhan
+        .transceivers
+        .iter()
+        .zip(markers.iter())
+        .map(|(t, marker)| {
+            let side = t
+                .side(core)
+                .expect("core must participate in generated transceiver");
+            let side_ty = match side {
+                DoorbellRingerSide::Primary => quote::quote! { ::consortium_ipc::Primary },
+                DoorbellRingerSide::Secondary => quote::quote! { ::consortium_ipc::Secondary },
+            };
+            let doorbell_ty = t.doorbell.as_type(side);
+            let region_ty = t.region_ty(core);
+            let codec_ty = codec_path(t.codec, t.mtu);
+            let (tx, rx) = match side {
+                DoorbellRingerSide::Primary => (&t.channel_primary.1, &t.channel_secondary.1),
+                DoorbellRingerSide::Secondary => (&t.channel_secondary.1, &t.channel_primary.1),
+            };
+            let tx_ty = Ident::new(&tx.type_name, Span::call_site());
+            let rx_ty = Ident::new(&rx.type_name, Span::call_site());
+            let chan_tx = tx.doorbell_chan;
+            let chan_rx = rx.doorbell_chan;
+            let mtu = Literal::usize_suffixed(t.mtu as usize);
+            quote::quote! {
+                ::consortium_ipc_transport_memory::impl_channel!(
+                    #marker,
+                    #side_ty,
+                    #doorbell_ty,
+                    #region_ty,
+                    #ty_crate::#tx_ty,
+                    #ty_crate::#rx_ty,
+                    #codec_ty,
+                    #chan_tx,
+                    #chan_rx,
+                    #mtu,
+                );
+            }
+        })
+        .collect::<Vec<_>>();
+
+    let installs = shuhan
+        .transceivers
+        .iter()
+        .zip(sources.iter())
+        .zip(markers.iter())
+        .map(|((t, source), marker)| {
+            let transport = t.build_field_init(core, uio_ident, source.clone(), hal_crate);
+            if core == VisibleCore::Ap {
+                let region_uio = t.region.address.ap.uio_id;
+                let doorbell_uio = t.doorbell_address.ap.uio_id;
+                quote::quote! {
+                    let mut transport = #transport;
+                    transport.keep_alive(#uio_ident[#region_uio].clone());
+                    transport.keep_alive(#uio_ident[#doorbell_uio].clone());
+                    ::consortium_ipc_transport_memory::install::<channels::#marker>(transport);
+                }
+            } else {
+                quote::quote! {
+                    ::consortium_ipc_transport_memory::install::<channels::#marker>(#transport);
+                }
+            }
+        })
+        .collect::<Vec<_>>();
+
+    let installer = if core == VisibleCore::Ap {
+        quote::quote! {
+            fn __consortium_install_channels(
+                #uio_ident: &[::std::sync::Arc<::consortium_runtime_app::uio::UioDevice>],
+            ) -> ::core::result::Result<(), ::consortium_runtime_app::uio::UioDeviceError> {
+                #(#installs)*
+                ::core::result::Result::Ok(())
+            }
+        }
+    } else {
+        let hal: syn::Path = syn::parse_str(hal_crate).expect("hal_crate must be a valid path");
+        let parameters = doorbell_params.iter().map(|singleton| {
+            let param = doorbell_param(singleton);
+            quote::quote! {
+                #param: #hal::Peri<'static, #hal::peripherals::#singleton>
+            }
+        });
+        quote::quote! {
+            #[cfg(target_arch = "arm")]
+            fn __consortium_install_channels(#(#parameters),*) {
+                #(#installs)*
+            }
+        }
+    };
+
+    quote::quote! {
+        ::consortium_ipc_transport_memory::channels!(#(#markers),*);
+        #(#instance_impls)*
+        #installer
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -183,26 +228,6 @@ impl Transceiver {
         }
     }
 
-    /// The unsplit transport type for `core`, naming every generic concretely.
-    ///
-    /// This is both the disconnected `IpcMemoryEndpoints` field type and the
-    /// receiver of the descriptor handshake associated functions in
-    /// [`connect_field_init`](Self::connect_field_init).
-    pub fn transport_ty(&self, core: VisibleCore) -> TokenStream {
-        let side = self
-            .side(core)
-            .expect("core must be either primary or secondary for the transceiver");
-        let doorbell_type = self.doorbell.as_type(side);
-        let region_type = self.region_ty(core);
-        let side_type = match side {
-            DoorbellRingerSide::Primary => quote::quote! { ::consortium_ipc::Primary },
-            DoorbellRingerSide::Secondary => quote::quote! { ::consortium_ipc::Secondary },
-        };
-        quote::quote! {
-            ::consortium_ipc_transport_memory::SharedMemoryTransport<#side_type, #doorbell_type, #region_type>
-        }
-    }
-
     /// The shared-memory region type for this transceiver, in type position.
     fn region_ty(&self, core: VisibleCore) -> TokenStream {
         match (core, self.region.cache) {
@@ -213,10 +238,8 @@ impl Transceiver {
         }
     }
 
-    /// The disconnected `IpcMemoryEndpoints` field initializer: builds the
-    /// region, doorbell, channel ids, and unsplit transport, evaluating to the
-    /// transport. The descriptor handshake is deferred to
-    /// [`connect`](super::ipc_shm::ShuHan), so this performs no IPC.
+    /// Build the region, doorbell, channel ids, and unsplit transport installed
+    /// by synchronous generated init. This performs no peer handshake.
     pub fn build_field_init(
         &self,
         core: VisibleCore,
@@ -286,146 +309,6 @@ impl Transceiver {
             }
         }}
     }
-
-    /// The connected `IpcMemoryEndpointsConnected` field initializer: runs the
-    /// readiness handshake on the stored transport via `Connect::connect` (the
-    /// transport's `Side` selects the protocol role), then splits it and builds
-    /// the typed [`Transceiver`]. Evaluates to the transceiver; uses `?` against
-    /// `ConsortiumConnectError` and `.await`.
-    ///
-    /// Returns `(buffers, expr)`: `buffers` holds the two channels' module-level
-    /// scratch-buffer `static`s, which [`ShuHan::initialize`] emits at module
-    /// scope; `expr` is the field-initializer expression that borrows them.
-    pub fn connect_field_init(
-        &self,
-        core: VisibleCore,
-        field_ident: &Ident,
-        ty_crate: &Path,
-    ) -> (TokenStream, TokenStream) {
-        let side = self
-            .side(core)
-            .expect("core must be either primary or secondary for the transceiver");
-
-        let channel_tx = match side {
-            DoorbellRingerSide::Primary => &self.channel_primary.1,
-            DoorbellRingerSide::Secondary => &self.channel_secondary.1,
-        };
-        let channel_rx = match side {
-            DoorbellRingerSide::Primary => &self.channel_secondary.1,
-            DoorbellRingerSide::Secondary => &self.channel_primary.1,
-        };
-
-        let t_tx = format_ident!("t_tx");
-        let t_rx = format_ident!("t_rx");
-        let chan_tx = format_ident!("chan_tx");
-        let chan_rx = format_ident!("chan_rx");
-        let tx = channel_tx.initialize(
-            Direction::Tx,
-            &chan_tx,
-            &t_tx,
-            self.codec,
-            self.mtu,
-            ty_crate,
-        );
-        let rx = channel_rx.initialize(
-            Direction::Rx,
-            &chan_rx,
-            &t_rx,
-            self.codec,
-            self.mtu,
-            ty_crate,
-        );
-        // The two scratch-buffer statics are hoisted to module scope by the
-        // caller; only the `Channel::new(...)` expressions stay in the body.
-        let (tx_buffer, channel_tx_init) = (tx.buffer, tx.channel);
-        let (rx_buffer, channel_rx_init) = (rx.buffer, rx.channel);
-
-        // A bidirectional transceiver carves out two channel-table slots: slot 0
-        // is PrimaryToSecondary (TX), slot 1 is SecondaryToPrimary (RX).
-        let transfer_size = Literal::usize_suffixed(self.mtu as usize);
-        // Map any doorbell-generic transport error into the no_std-safe connect
-        // error, dropping the doorbell payload (whose type varies per channel).
-        let map_err = quote::quote! {
-            |__e| match __e {
-                ::consortium_ipc_transport_memory::Error::Descriptor(__d) => {
-                    ConsortiumConnectError::Descriptor(__d)
-                }
-                ::consortium_ipc_transport_memory::Error::Doorbell(_) => {
-                    ConsortiumConnectError::Doorbell
-                }
-                _ => ConsortiumConnectError::Other,
-            }
-        };
-        // The readiness handshake is the transport's own `Connect` impl: which
-        // protocol role runs (publish-and-wait vs validate-and-ack) follows from
-        // the transport's `Side`, so no side branch survives into generated code.
-        let handshake = quote::quote! {
-            ::consortium_ipc::Connect::connect(
-                &mut transport,
-                ::consortium_ipc_transport_memory::DescriptorLayout::new(2u8, #transfer_size),
-            ).await.map_err(#map_err)?;
-        };
-
-        let buffers = quote::quote! {
-            #tx_buffer
-            #rx_buffer
-        };
-        let expr = quote::quote! {{
-            let mut transport = self.#field_ident;
-            let (#chan_tx, #chan_rx) = transport.channels();
-            #handshake
-            let (#t_tx, #t_rx) = transport.split();
-            let channel_tx = #channel_tx_init;
-            let channel_rx = #channel_rx_init;
-            ::consortium_ipc::Transceiver::new(channel_tx, channel_rx)
-        }};
-        (buffers, expr)
-    }
-
-    pub fn ty_signature(&self, core: VisibleCore, ty_crate: &Path) -> TokenStream {
-        let side = self
-            .side(core)
-            .expect("core must be either primary or secondary for the transceiver");
-        // The doorbell type carries its side and 1-based instance id so the
-        // transport halves are fully concrete (the field type names no `_`).
-        let doorbell_type = self.doorbell.as_type(side);
-        let region_type = self.region_ty(core);
-
-        let side_type = match side {
-            DoorbellRingerSide::Primary => {
-                quote::quote! { ::consortium_ipc_transport_memory::Primary }
-            }
-            DoorbellRingerSide::Secondary => {
-                quote::quote! { ::consortium_ipc_transport_memory::Secondary }
-            }
-        };
-        // `split` yields distinct send/receive half types; the transceiver names
-        // both.
-        let transport_tx_type = quote::quote! {
-            ::consortium_ipc_transport_memory::SharedMemoryTransportTx<#side_type, #doorbell_type, #region_type>
-        };
-        let transport_rx_type = quote::quote! {
-            ::consortium_ipc_transport_memory::SharedMemoryTransportRx<#side_type, #doorbell_type, #region_type>
-        };
-
-        let codec_type = codec_path(self.codec, self.mtu);
-
-        let chan_tx = match side {
-            DoorbellRingerSide::Primary => &self.channel_primary.1,
-            DoorbellRingerSide::Secondary => &self.channel_secondary.1,
-        };
-        let chan_rx = match side {
-            DoorbellRingerSide::Primary => &self.channel_secondary.1,
-            DoorbellRingerSide::Secondary => &self.channel_primary.1,
-        };
-
-        let ty_tx = Ident::new(&chan_tx.type_name, proc_macro2::Span::call_site());
-        let ty_rx = Ident::new(&chan_rx.type_name, proc_macro2::Span::call_site());
-
-        quote::quote! {
-            ::consortium_ipc::Transceiver<#ty_crate::#ty_tx, #ty_crate::#ty_rx, #transport_tx_type, #transport_rx_type, #codec_type>
-        }
-    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -474,8 +357,8 @@ pub enum DoorbellSource {
     /// Linux/AP: an `mmap` of the doorbell's UIO device, which has no
     /// peripheral singleton.
     Uio,
-    /// Controller core, first user of this block: takes the singleton that
-    /// `IpcMemoryEndpoints::new` received, named by this parameter ident.
+    /// Controller core, first user of this block: takes the singleton passed to
+    /// the generated transport installer.
     Owned(Ident),
     /// Controller core, a later transceiver on a block another one already
     /// owns: steals the singleton, since the two drive disjoint channels.
@@ -665,7 +548,7 @@ impl fmt::Display for DoorbellMeta {
     }
 }
 
-/// The `IpcMemoryEndpoints::new` parameter that carries `singleton`.
+/// The transport-installer parameter that carries `singleton`.
 fn doorbell_param(singleton: &Ident) -> Ident {
     format_ident!("__db_{}", singleton.to_string().to_lowercase())
 }
@@ -688,7 +571,7 @@ impl ShuHan {
     }
 
     /// Where each transceiver's doorbell comes from on `core`, plus the distinct
-    /// singletons a controller core's `IpcMemoryEndpoints::new` must be handed.
+    /// singletons a controller core's transport installer must be handed.
     ///
     /// Two transceivers may share one doorbell block (disjoint channels of the
     /// same MU or IPCC) and a singleton moves only once, so the first user takes
@@ -731,172 +614,9 @@ impl ShuHan {
     }
 
     /// The distinct doorbell singletons `core` must hand to
-    /// [`IpcMemoryEndpoints::new`](ShuHan::initialize), in parameter order.
+    /// the generated transport installer, in parameter order.
     pub fn doorbell_singletons(&self, core: VisibleCore, available: &[String]) -> Vec<Ident> {
         self.doorbell_sources(core, available).0
-    }
-
-    /// Generates the per-core IPC endpoint module: a *disconnected*
-    /// `IpcMemoryEndpoints` whose `new` only builds the transports, and a
-    /// `IpcMemoryEndpointsConnected` produced by an `async fn connect` that runs
-    /// the descriptor handshake before exposing the typed transceivers.
-    ///
-    /// Splitting construction from connection makes "use a transceiver before the
-    /// descriptor is initialized" unrepresentable: `send`/`recv` live only on the
-    /// connected type, which cannot exist without the handshake having run.
-    pub fn initialize(
-        &self,
-        core: VisibleCore,
-        uio_ident: &Ident,
-        ty_crate: &Path,
-        hal_crate: &str,
-        available: &[String],
-    ) -> TokenStream {
-        let (doorbell_params, sources) = self.doorbell_sources(core, available);
-
-        // Disconnected fields hold the unsplit transport; connected fields hold
-        // the typed transceiver.
-        let disconnected_def = self.transceivers.iter().map(|t| {
-            let ident = Ident::new(t.name.as_str(), Span::call_site());
-            let ty = t.transport_ty(core);
-            quote::quote! { #ident: #ty }
-        });
-        let connected_def = self.transceivers.iter().map(|t| {
-            let ident = Ident::new(t.name.as_str(), Span::call_site());
-            let ty = t.ty_signature(core, ty_crate);
-            quote::quote! { #ident: #ty }
-        });
-
-        // `new`-body field inits (build only) and `connect`-body field inits
-        // (handshake + split + typed channels).
-        let build_inits = self
-            .transceivers
-            .iter()
-            .zip(sources.iter())
-            .map(|(t, source)| {
-                let ident = Ident::new(t.name.as_str(), Span::call_site());
-                let init = t.build_field_init(core, uio_ident, source.clone(), hal_crate);
-                quote::quote! { #ident: #init }
-            })
-            .collect::<Vec<_>>();
-        // Each transceiver's scratch-buffer statics are hoisted to module scope;
-        // the field initializer only borrows them.
-        let mut connect_buffers = Vec::new();
-        let connect_inits = self
-            .transceivers
-            .iter()
-            .map(|t| {
-                let ident = Ident::new(t.name.as_str(), Span::call_site());
-                let (buffers, init) = t.connect_field_init(core, &ident, ty_crate);
-                connect_buffers.push(buffers);
-                quote::quote! { #ident: #init }
-            })
-            .collect::<Vec<_>>();
-
-        // The AP resolves region/doorbell bases through UIO, so its `new` borrows
-        // the opened devices and is fallible (`mmap` can fail). Controller cores
-        // embed physical bases and never touch UIO, so theirs is infallible.
-        let (new_sig, new_body) = if core == VisibleCore::Ap {
-            (
-                quote::quote! {
-                    fn new(
-                        #uio_ident: &[::consortium_runtime_app::uio::UioDevice],
-                    ) -> ::core::result::Result<Self, ::consortium_runtime_app::uio::UioDeviceError>
-                },
-                quote::quote! {
-                    ::core::result::Result::Ok(Self {
-                        #(#build_inits),*
-                    })
-                },
-            )
-        } else {
-            let hal: syn::Path = syn::parse_str(hal_crate).expect("hal_crate must be a valid path");
-            let parameters = doorbell_params.iter().map(|singleton| {
-                let param = doorbell_param(singleton);
-                quote::quote! {
-                    #param: #hal::Peri<'static, #hal::peripherals::#singleton>
-                }
-            });
-            (
-                quote::quote! { fn new(#(#parameters),*) -> Self },
-                quote::quote! {
-                    Self {
-                        #(#build_inits),*
-                    }
-                },
-            )
-        };
-
-        // The AP endpoint is a Linux/`std` binary that logs via `tracing`
-        // (`Debug`), so it must not pull in `defmt`. Coprocessor firmware logs
-        // this error via `defmt`, so derive `defmt::Format` there — but only for
-        // real bare-metal firmware builds (`target_os = "none"`). The host
-        // trybuild harness compiles this endpoint module for the host OS and
-        // never links `defmt` (just as it skips the `#[cfg(target_arch = "arm")]`
-        // `init()`), so it falls back to `Debug` and stays buildable.
-        let connect_error_derive = if core == VisibleCore::Ap {
-            quote::quote! { #[derive(Debug)] }
-        } else {
-            quote::quote! {
-                #[cfg_attr(target_os = "none", derive(Debug, defmt::Format))]
-                #[cfg_attr(not(target_os = "none"), derive(Debug))]
-            }
-        };
-
-        quote::quote! {
-            /// Descriptor-handshake failure, with the doorbell-specific payload
-            /// erased so a single error type spans transceivers that use
-            /// different doorbells. `no_std`-safe (no `alloc`).
-            ///
-            /// The `Descriptor` payload is surfaced through `Debug` in the
-            /// consuming binary, which dead-code analysis cannot see, so allow
-            /// the otherwise-"never read" field.
-            #connect_error_derive
-            #[allow(dead_code)]
-            enum ConsortiumConnectError {
-                /// The descriptor header/channel table was invalid or never reached
-                /// the ready state.
-                Descriptor(::consortium_ipc_transport_memory::DescriptorError),
-                /// The doorbell signal failed during the handshake.
-                Doorbell,
-                /// Any other transport error during the handshake.
-                Other,
-            }
-
-            /// IPC endpoints that have been *constructed* but not yet connected.
-            /// Call [`connect`](IpcMemoryEndpoints::connect) to run the descriptor
-            /// handshake and obtain usable transceivers.
-            struct IpcMemoryEndpoints {
-                #(#disconnected_def),*
-            }
-
-            // Per-channel scratch buffers the typed channels encode/decode
-            // through. Declared at module scope (not inside `connect`) so each
-            // has a `'static` lifetime and a single, clearly-placed definition.
-            #(#connect_buffers)*
-
-            /// Connected IPC endpoints: each field is a ready-to-use transceiver.
-            struct IpcMemoryEndpointsConnected {
-                #(#connected_def),*
-            }
-
-            impl IpcMemoryEndpoints {
-                #new_sig {
-                    #new_body
-                }
-
-                /// Runs the descriptor handshake for every transceiver and returns
-                /// the connected endpoints. Each transceiver's primary side writes
-                /// and the secondary side acks the descriptor before any traffic.
-                async fn connect(
-                    self,
-                ) -> ::core::result::Result<IpcMemoryEndpointsConnected, ConsortiumConnectError> {
-                    ::core::result::Result::Ok(IpcMemoryEndpointsConnected {
-                        #(#connect_inits),*
-                    })
-                }
-            }
-        }
     }
 }
 
@@ -915,51 +635,6 @@ mod tests {
             type_name: "Ping".to_string(),
             buffer_name: "ping_buf".to_string(),
         }
-    }
-
-    #[test]
-    fn channel_tx_uses_tx_direction_marker() {
-        let chan = format_ident!("chan");
-        let transport = format_ident!("transport");
-        let ty_crate: Path = syn::parse_str("::shared").unwrap();
-        let init = channel(0).initialize(
-            Direction::Tx,
-            &chan,
-            &transport,
-            Codec::Postcard,
-            128,
-            &ty_crate,
-        );
-        let buffer = init.buffer.to_string();
-        let channel = init.channel.to_string();
-
-        assert!(channel.contains(":: consortium_ipc :: Channel"));
-        assert!(channel.contains(":: consortium_ipc :: Tx"));
-        // The scratch buffer is a module-level static sized to the MTU, borrowed
-        // by name from the channel expression.
-        assert!(buffer.contains("static mut PING_BUF : [u8 ; 128usize]"));
-        assert!(channel.contains("addr_of_mut ! (PING_BUF)"));
-    }
-
-    #[test]
-    fn channel_rx_uses_rx_direction_marker() {
-        let chan = format_ident!("chan");
-        let transport = format_ident!("transport");
-        let ty_crate: Path = syn::parse_str("::shared").unwrap();
-        let channel = channel(1)
-            .initialize(
-                Direction::Rx,
-                &chan,
-                &transport,
-                Codec::Postcard,
-                128,
-                &ty_crate,
-            )
-            .channel
-            .to_string();
-
-        assert!(channel.contains(":: consortium_ipc :: Rx"));
-        assert!(!channel.contains(":: consortium_ipc :: Tx"));
     }
 
     fn transceiver(length: u32, mtu: u32) -> Transceiver {

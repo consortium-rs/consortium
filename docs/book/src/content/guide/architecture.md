@@ -18,9 +18,9 @@ and initializes the mechanisms that satisfy those contracts on a particular chip
                                                         v
                          run time
 
-                Linux Context <── typed IPC ──> firmware Context
-                     |                                |
-              UIO / remoteproc                  HAL / interrupts
+          Linux Channels + Peripherals <── typed IPC ──> firmware Channels + Peripherals
+                     |                                            |
+              UIO / remoteproc                              HAL / interrupts
 ```
 
 Validation happens before compilation. A channel with an unavailable doorbell, an
@@ -58,8 +58,9 @@ Transceiver                   paired send and receive channels
 
 For shared memory, the transport owns a `CIPC` descriptor and one slot per direction.
 The primary publishes the descriptor; the secondary validates its version and layout,
-then acknowledges it. Generated `init()` calls `Connect::connect` once before traffic
-and before splitting the transport into its Tx and Rx halves.
+then acknowledges it. Generated `init(config)` installs each unsplit transport; the
+application later consumes one `c.NAME` token and calls `connect().await`, which completes
+the handshake before splitting the transport into its Tx and Rx halves.
 
 The UART transport uses the same byte-transport traits but needs no separate doorbell:
 byte arrival is the notification. Its wire format is a COBS-delimited frame containing
@@ -82,8 +83,9 @@ Consortium makes ownership concrete at every layer:
 
 - a manifest assigns each peripheral and IPC endpoint to a visible processor;
 - a chip HAL's `init()` hands out each peripheral singleton once;
-- a generated `Context` owns the live transports, UIO mappings, and peripherals for
-  one endpoint; and
+- generated `Peripherals` exposes only manifest-owned hardware singletons;
+- generated `Channels` hands out each endpoint token once, while the endpoint state owns
+  the unsplit transport and its scratch buffers; and
 - channels own their fixed scratch buffers, so normal send and receive paths do not
   allocate.
 

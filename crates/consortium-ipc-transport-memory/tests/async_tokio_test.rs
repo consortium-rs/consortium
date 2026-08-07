@@ -16,6 +16,8 @@ mod codec_round_trip;
 mod connect;
 #[path = "async_tokio/end_to_end.rs"]
 mod end_to_end;
+#[path = "async_tokio/endpoint.rs"]
+mod endpoint;
 #[path = "async_tokio/postcard_channel.rs"]
 mod postcard_channel;
 #[path = "async_tokio/recv.rs"]

@@ -1,0 +1,14 @@
+---
+source: crates/consortium-runtime-macros-impl/tests/snap.rs
+expression: render(output)
+---
+#[::embassy_executor::main]
+async fn main(__consortium_spawner: Spawner) {
+    async fn __consortium_main(spawner: Spawner) -> Result<(), ConsortiumError> {
+        let _ = spawner;
+        Ok(())
+    }
+    ::consortium_runtime_mcu::__rt::MainOutcome::__consortium_report(
+        __consortium_main(__consortium_spawner).await,
+    );
+}

@@ -20,11 +20,9 @@
 //! All of the shared-memory / doorbell / MPU / NVIC / time-driver / peripheral
 //! wiring lives in `consortium.gen.rs`, which the `consortium` build pipeline
 //! generates from `../Consortium.toml` and this file `include!`s. That module
-//! exposes an aggregate `async fn init() -> Result<Context, ConsortiumInitError>`
-//! and the `Context` type. `#[consortium_runtime_mcu::main]` calls `init()` for
-//! us and hands the body a ready `Context`: `ipc_shm.sensor` is a
-//! `Transceiver<SensorReading, Command>` (this core sends `SensorReading`,
-//! receives `Command`), and `peripherals` holds the `[peripheral.*]` handles.
+//! exposes synchronous `init(Config) -> (Peripherals, Channels)`. The firmware
+//! constructs drivers from the allowed peripheral singletons and connects each
+//! IPC channel independently.
 //! The generated `init` also resets the CDBG ring, brings up the Embassy time
 //! driver, and installs its `LPIT1_IRQHandler` vector and `defmt::timestamp!`.
 
@@ -43,8 +41,9 @@ use panic_halt as _;
 include!("consortium.gen.rs");
 
 #[consortium_runtime_mcu::main]
-async fn main(context: Context, _spawner: Spawner) {
-    let mut sensor = context.ipc_shm.sensor;
+async fn main(_spawner: Spawner) -> Result<(), ConsortiumError> {
+    let (p, c) = init(Config::default());
+    let mut sensor = ::consortium_ipc_transport_memory::Transceiver::connect(c.SENSOR).await?;
 
     // The core's owned peripherals, generated from the `[peripheral.*]` entries
     // in `../Consortium.toml` and brought up inside `init()`. Platform setup
@@ -52,12 +51,14 @@ async fn main(context: Context, _spawner: Spawner) {
     //
     // `gpio2` pin 0 is a status heartbeat toggled once per sample. `lpi2c1` is
     // the sensor bus a real driver would read to replace `simulated_temperature`.
-    let mut heartbeat = context
-        .peripherals
-        .gpio2
+    let mut heartbeat = consortium_hal_imx9::gpio::Gpio::new(p.GPIO2)
         .pin(0)
         .into_output(consortium_hal_imx9::gpio::Level::Low);
-    let mut _sensor_bus = context.peripherals.lpi2c1;
+    let mut _sensor_bus = consortium_hal_imx9::i2c::I2c::new(
+        p.LPI2C1,
+        LPI2C1_CLOCK_HZ,
+        LPI2C1_FREQUENCY,
+    );
 
     let mut seq: u32 = 0;
     loop {

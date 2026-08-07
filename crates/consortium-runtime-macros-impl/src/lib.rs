@@ -20,17 +20,12 @@
 //! facade in `consortium-runtime-macros` stays trivial and the logic here is
 //! host-testable with `insta` snapshots.
 //!
-//! Two macro families are provided, one per runtime target:
-//!
-//! - `mcu_main` / `app_main` wrap the user's `async fn main`, run the generated
-//!   `init()` from `consortium.gen.rs`, and hand the body the aggregate
-//!   `Context`. The MCU flavor drives `embassy_executor`; the app flavor drives
-//!   `tokio`.
-//! - `mcu_fail` / `app_fail` mark an optional init-failure handler. See
-//!   the `fail` module for the glob-shadowing dispatch mechanism.
+//! `mcu_main` and `app_main` preserve the user's body and return type in an
+//! inner async function, stack the appropriate executor on a unit-returning
+//! outer entry point, and dispatch `()` or `Result<(), E: Debug>` through the
+//! runtime's `MainOutcome` trait. Resource initialization remains explicit in
+//! user code.
 
 mod entry;
-mod fail;
 
 pub use entry::{app_main, mcu_main};
-pub use fail::{app_fail, mcu_fail};

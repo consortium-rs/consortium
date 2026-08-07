@@ -136,7 +136,7 @@ fn render(ir: &LoweredIr) -> String {
     md.push_str("## Initialization code\n\n");
     for core in cores(ir) {
         // The AP renders its UIO bring-up + `init` wrapper; controller cores
-        // render just their per-core `IpcMemoryEndpoints`.
+        // render their per-core singleton resources and endpoint installers.
         writeln!(md, "### {core}\n").unwrap();
         md.push_str("```rust\n");
         md.push_str(pretty(ir.initialize(core, &ty_crate)).trim_end());
@@ -206,6 +206,15 @@ fn config_artifacts_match_snapshots() {
             .lower()
             .unwrap_or_else(|e| panic!("lower {}: {e}", manifest.display()));
 
-        assert_artifact(&config.join("artifacts.snap"), &render(&ir));
+        let artifact = render(&ir);
+        assert!(
+            !artifact.contains("impl Drop for Peripherals"),
+            "generated Peripherals must support partial moves"
+        );
+        assert!(
+            !artifact.contains("impl Drop for Channels"),
+            "generated Channels must support partial moves"
+        );
+        assert_artifact(&config.join("artifacts.snap"), &artifact);
     }
 }

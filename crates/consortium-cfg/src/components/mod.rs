@@ -14,7 +14,7 @@
 //!
 //! | Module            | Emits                                                     |
 //! | ----------------- | --------------------------------------------------------- |
-//! | [`ipc_shm`]       | Transceiver construction, scratch-buffer statics, `IpcMemoryEndpoints`. |
+//! | [`ipc_shm`]       | Channel instances and unsplit transport installation.       |
 //! | [`bella`]         | Type-A doorbell interrupt enablement.                      |
 //! | [`peripheral`]    | HAL driver handles, interrupt handlers, NVIC enablement.     |
 //! | [`time`]          | The sealed Embassy time-driver vector and `defmt::timestamp!`. |
