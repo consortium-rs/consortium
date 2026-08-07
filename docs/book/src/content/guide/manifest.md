@@ -71,7 +71,7 @@ table yet.
 
 | Field                  | Meaning                                                      |
 | ---------------------- | ------------------------------------------------------------ |
-| `name`                 | Uppercase singleton field under the generated `Channels`    |
+| `name`                 | Uppercase singleton field under the generated `Channels`     |
 | `doorbell`             | Chip database doorbell, such as `ipcc1` or `mu7`             |
 | `primary`, `secondary` | Endpoints participating in the descriptor handshake          |
 | `party.<name>`         | This party's outgoing doorbell channel and Rust message type |

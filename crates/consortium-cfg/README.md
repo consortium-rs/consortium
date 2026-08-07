@@ -76,11 +76,11 @@ a module rather than a branch in a shared emitter.
 
 | Module          | Emits                                                                      |
 | --------------- | -------------------------------------------------------------------------- |
-| `ipc_shm`       | Channel markers, instance metadata, and endpoint transport installation.  |
+| `ipc_shm`       | Channel markers, instance metadata, and endpoint transport installation.   |
 | `bella`         | Type-A doorbell interrupt enablement.                                      |
 | `peripheral`    | The singleton allowlist, manifest constants, IRQ handlers, and NVIC setup. |
 | `time`          | The sealed Embassy time-driver vector and `defmt::timestamp!`.             |
-| `dbg`           | Ring layout, AP console resources, and the builder's environment values.  |
+| `dbg`           | Ring layout, AP console resources, and the builder's environment values.   |
 | `uio`           | `generic-uio` DTS nodes and their `reserved-memory` carveouts.             |
 | `memory_to_uio` | Groups shared-memory regions onto one UIO device.                          |
 | `dts_render`    | The Linux device tree, merged onto a vendor base or as an overlay.         |
