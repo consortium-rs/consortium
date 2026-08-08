@@ -946,6 +946,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-ipc-transport-fdcan"
+version = "0.3.0"
+dependencies = [
+ "consortium-codec",
+ "consortium-ipc",
+ "consortium-log",
+ "defmt",
+ "embedded-can",
+ "futures",
+ "serde",
+ "thiserror 2.0.19",
+]
+
+[[package]]
+name = "consortium-ipc-transport-fdcan-embedded"
+version = "0.3.0"
+dependencies = [
+ "consortium-hal-imx9",
+ "consortium-hal-stm32mp2",
+ "consortium-ipc-transport-fdcan",
+]
+
+[[package]]
 name = "consortium-ipc-transport-memory"
 version = "0.3.0"
 dependencies = [
@@ -1112,6 +1135,7 @@ version = "0.3.0"
 dependencies = [
  "consortium-dbg",
  "consortium-ipc",
+ "consortium-ipc-transport-fdcan",
  "consortium-ipc-transport-memory",
  "consortium-ipc-transport-uart",
  "consortium-log",

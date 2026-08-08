@@ -1,0 +1,65 @@
+# Copyright 2026 Ethan Wu
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+[package]
+description            = "Firmware-side glue for the Consortium FDCAN IPC transport"
+edition.workspace      = true
+license.workspace      = true
+name                   = "consortium-ipc-transport-fdcan-embedded"
+version.workspace      = true
+authors.workspace      = true
+categories.workspace   = true
+homepage.workspace     = true
+keywords.workspace     = true
+readme                 = "README.md"
+repository.workspace   = true
+rust-version.workspace = true
+
+[features]
+default = []
+defmt = [
+  "consortium-hal-imx9?/defmt",
+  "consortium-hal-stm32mp2?/defmt",
+  "consortium-ipc-transport-fdcan/defmt",
+]
+# Chip selection — pulls in the matching chip HAL (with its `can` driver) and
+# forwards the chip feature so the shared PAC's register/interrupt definitions
+# match the target. Choose exactly one; the HAL rejects several at once.
+mimx93 = ["consortium-hal-imx9/can", "consortium-hal-imx9/mimx93", "dep:consortium-hal-imx9"]
+mimx95 = ["consortium-hal-imx9/can", "consortium-hal-imx9/mimx95", "dep:consortium-hal-imx9"]
+stm32mp21x = [
+  "consortium-hal-stm32mp2/can",
+  "consortium-hal-stm32mp2/stm32mp21x",
+  "dep:consortium-hal-stm32mp2",
+]
+stm32mp23x = [
+  "consortium-hal-stm32mp2/can",
+  "consortium-hal-stm32mp2/stm32mp23x",
+  "dep:consortium-hal-stm32mp2",
+]
+stm32mp25x = [
+  "consortium-hal-stm32mp2/can",
+  "consortium-hal-stm32mp2/stm32mp25x",
+  "dep:consortium-hal-stm32mp2",
+]
+
+[dependencies]
+consortium-hal-imx9            = { default-features = false, optional = true, path = "../consortium-hal-imx9", version = "0.3.0" }
+consortium-hal-stm32mp2        = { default-features = false, optional = true, path = "../consortium-hal-stm32mp2", version = "0.3.0" }
+consortium-ipc-transport-fdcan = { default-features = false, path = "../consortium-ipc-transport-fdcan", version = "0.3.0" }
+
+[lints]
+workspace = true

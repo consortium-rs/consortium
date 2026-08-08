@@ -7,15 +7,23 @@
 //! caller to route one of the instance's interrupt lines to
 //! `State::on_interrupt` (the driver enables interrupt line 0, `FDCANx_IT0`).
 //!
+//! [`Can::split`] hands out independent [`CanTx`] and [`CanRx`] halves for code
+//! that transmits and receives concurrently, such as a full-duplex IPC
+//! transport. The halves drive disjoint registers and message-RAM regions and
+//! park on separate wakers, so neither starves the other.
+//!
 //! The message RAM is the SoC's shared `CAN_SRAM` window (`0x4031_0000`, 10 KiB
 //! split across the FDCAN instances). Each instance's start-address registers
 //! are programmed relative to that window, so the caller partitions the window
 //! by passing a distinct `msg_ram_offset` per instance. The driver lays out a
-//! minimal region for that offset: a three-element receive FIFO 0 followed by a
-//! single dedicated transmit buffer, both 8-byte (classic) elements, with the
-//! global filter set to accept every identifier into FIFO 0. FD frames, extra
-//! mailboxes, and hardware acceptance filters are intentionally out of scope for
-//! this first cut; the element accessors leave room to add them later.
+//! [`REGION_BYTES`]-byte region for that offset: an eight-element receive FIFO 0
+//! followed by a single dedicated transmit buffer, both 8-byte (classic)
+//! elements, with the global filter set to accept every identifier into FIFO 0.
+//! The FIFO is deep enough that a burst of back-to-back frames — what a
+//! segmenting transport emits for one large message — survives a receiver that
+//! is not already parked in `receive`. FD frames, extra transmit buffers, and
+//! hardware acceptance filters are intentionally out of scope for this first
+//! cut; the element accessors leave room to add them later.
 
 use core::future::poll_fn;
 use core::task::Poll;
@@ -28,7 +36,7 @@ use pac::peripherals::fdcan::{FDCAN, FDCAN_IR, FDCAN_RXF0A, FDCAN_TXBAR};
 use crate::pac;
 
 /// Receive FIFO 0 depth, in elements.
-const RX_FIFO0_ELEMS: usize = 3;
+const RX_FIFO0_ELEMS: usize = 8;
 /// Words per 8-byte-payload element: two header words plus two data words.
 const ELEM_WORDS: usize = 4;
 /// Bytes per element.
@@ -37,6 +45,12 @@ const ELEM_BYTES: usize = ELEM_WORDS * 4;
 const RX_FIFO0_LOCAL: usize = 0;
 /// Local byte offset of the transmit buffer within this instance's region.
 const TX_BUF_LOCAL: usize = RX_FIFO0_ELEMS * ELEM_BYTES;
+
+/// Bytes of message RAM one instance's layout occupies.
+///
+/// Callers partitioning the shared `CAN_SRAM` window must leave at least this
+/// much room between the `msg_ram_offset` values they hand to [`Can::new`].
+pub const REGION_BYTES: usize = TX_BUF_LOCAL + ELEM_BYTES;
 
 /// `RXESC`/`TXESC` data-field-size code for an 8-byte payload.
 const DATA_SIZE_8B: u8 = 0;
@@ -150,43 +164,54 @@ const fn nbrp(clock_hz: u32, bitrate: u32) -> u16 {
 }
 
 /// Per-instance interrupt state shared between a [`Can`] and its IRQ handler.
+///
+/// The transmit and receive paths park on separate wakers so the [`CanTx`] and
+/// [`CanRx`] halves can await concurrently. A single waker would let whichever
+/// half registered last clobber the other's, stranding it forever.
 pub struct State {
-    waker: AtomicWaker,
+    tx_waker: AtomicWaker,
+    rx_waker: AtomicWaker,
 }
 
 impl State {
     /// Create an empty state suitable for a `static`.
     pub(crate) const fn new() -> Self {
         Self {
-            waker: AtomicWaker::new(),
+            tx_waker: AtomicWaker::new(),
+            rx_waker: AtomicWaker::new(),
         }
     }
 
     /// Handle the FDCAN instance's interrupt.
     ///
     /// Masks every enabled interrupt source that is asserted, then wakes the
-    /// pending transfer, which re-arms the source it still needs and clears the
-    /// underlying flag once it has drained the frame.
+    /// transfer waiting on it, which re-arms the source it still needs and
+    /// clears the underlying flag once it has drained the frame. Bus-off is not
+    /// owned by either direction, so it wakes both.
     fn on_interrupt(&self, r: FDCAN) {
         let ir = r.IR().read();
         let ie = r.IE().read();
-        let mut hit = false;
+        let (mut tx, mut rx) = (false, false);
         r.IE().modify(|w| {
             if ie.TCE() && ir.TC() {
                 w.set_TCE(false);
-                hit = true;
+                tx = true;
             }
             if ie.RF0NE() && ir.RF0N() {
                 w.set_RF0NE(false);
-                hit = true;
+                rx = true;
             }
             if ie.BOE() && ir.BO() {
                 w.set_BOE(false);
-                hit = true;
+                tx = true;
+                rx = true;
             }
         });
-        if hit {
-            self.waker.wake();
+        if tx {
+            self.tx_waker.wake();
+        }
+        if rx {
+            self.rx_waker.wake();
         }
     }
 }
@@ -263,12 +288,31 @@ pub fn on_interrupt<T: Instance>() {
     T::state().on_interrupt(T::regs());
 }
 
-/// Classic CAN controller over one FDCAN instance.
-pub struct Can {
+/// Transmit half of an FDCAN instance, produced by [`Can::split`].
+///
+/// Drives the dedicated transmit buffer and parks on the instance's transmit
+/// waker, so it can run concurrently with a [`CanRx`] for the same instance.
+pub struct CanTx {
     regs: FDCAN,
     state: &'static State,
     msg_ram: *mut u8,
     ram_offset: usize,
+}
+
+/// Receive half of an FDCAN instance, produced by [`Can::split`].
+///
+/// Drives receive FIFO 0 and parks on the instance's receive waker.
+pub struct CanRx {
+    regs: FDCAN,
+    state: &'static State,
+    msg_ram: *mut u8,
+    ram_offset: usize,
+}
+
+/// Classic CAN controller over one FDCAN instance.
+pub struct Can {
+    tx: CanTx,
+    rx: CanRx,
 }
 
 impl Can {
@@ -279,10 +323,11 @@ impl Can {
     /// `base` must point to a valid FDCAN register block, clocked and pinned out
     /// by the caller, that is exclusively owned by this driver for the lifetime
     /// of the program. `msg_ram_base` must be the CPU address of the shared CAN
-    /// message RAM, and `[msg_ram_offset, msg_ram_offset + 64)` must be a region
-    /// within it reserved for this instance and no other. `clock_hz` is the CAN
-    /// kernel clock. `state` must be dedicated to this instance; for async use,
-    /// route the instance's interrupt to `State::on_interrupt`.
+    /// message RAM, and `[msg_ram_offset, msg_ram_offset + `[`REGION_BYTES`]`)`
+    /// must be a region within it reserved for this instance and no other.
+    /// `clock_hz` is the CAN kernel clock. `state` must be dedicated to this
+    /// instance; for async use, route the instance's interrupt to
+    /// `State::on_interrupt`.
     pub unsafe fn new<T: Instance>(
         peri: Peri<'static, T>,
         msg_ram_base: *mut (),
@@ -295,10 +340,18 @@ impl Can {
         let _ = peri;
         let r = T::regs();
         let this = Self {
-            regs: r,
-            state: T::state(),
-            msg_ram: msg_ram_base as *mut u8,
-            ram_offset: msg_ram_offset,
+            tx: CanTx {
+                regs: r,
+                state: T::state(),
+                msg_ram: msg_ram_base as *mut u8,
+                ram_offset: msg_ram_offset,
+            },
+            rx: CanRx {
+                regs: r,
+                state: T::state(),
+                msg_ram: msg_ram_base as *mut u8,
+                ram_offset: msg_ram_offset,
+            },
         };
 
         // Request initialization and enable configuration changes.
@@ -361,14 +414,27 @@ impl Can {
         this
     }
 
-    /// Pointer to a 32-bit word at `byte_off` inside this instance's region.
+    /// Split into independent transmit and receive halves.
     ///
-    /// `wrapping_add` keeps this safe; the resulting pointer is only dereferenced
-    /// through the volatile accessors below, which carry their own reasoning.
-    fn ram_word(&self, byte_off: usize) -> *mut u32 {
-        self.msg_ram.wrapping_add(self.ram_offset + byte_off) as *mut u32
+    /// The halves touch disjoint registers and disjoint message-RAM regions —
+    /// the transmit buffer versus receive FIFO 0 — and park on separate wakers,
+    /// so a transport can await a frame and send one at the same time.
+    pub fn split(self) -> (CanTx, CanRx) {
+        (self.tx, self.rx)
     }
 
+    /// Transmit `frame`, awaiting completion of the transfer.
+    pub async fn transmit(&mut self, frame: &Frame) -> Result<(), Error> {
+        self.tx.transmit(frame).await
+    }
+
+    /// Await and return the next received frame.
+    pub async fn receive(&mut self) -> Result<Frame, Error> {
+        self.rx.receive().await
+    }
+}
+
+impl CanTx {
     /// True while the transmit buffer still has a pending request.
     fn tx_busy(&self) -> bool {
         self.regs.TXBRP().read().0 & 1 != 0
@@ -387,7 +453,7 @@ impl Can {
         let t1 = (u32::from(frame.dlc) & elem::DLC_MASK) << elem::DLC_SHIFT;
         let w0 = u32::from_le_bytes([frame.data[0], frame.data[1], frame.data[2], frame.data[3]]);
         let w1 = u32::from_le_bytes([frame.data[4], frame.data[5], frame.data[6], frame.data[7]]);
-        let p = self.ram_word(TX_BUF_LOCAL);
+        let p = ram_word(self.msg_ram, self.ram_offset, TX_BUF_LOCAL);
         // SAFETY: `p` is header word T0 of this instance's transmit buffer
         // element within the reserved message-RAM region.
         unsafe { p.write_volatile(t0) };
@@ -401,6 +467,32 @@ impl Can {
         self.regs.TXBAR().write_value(FDCAN_TXBAR(1));
     }
 
+    /// Transmit `frame`, awaiting completion of the transfer.
+    pub async fn transmit(&mut self, frame: &Frame) -> Result<(), Error> {
+        check_bus(self.regs)?;
+        // Wait for the transmit buffer to be free.
+        wait_flag(
+            &self.state.tx_waker,
+            self.regs,
+            |r| r.IE().modify(|w| w.set_TCE(true)),
+            || (!self.tx_busy()).then_some(Ok(())),
+        )
+        .await?;
+        self.load_tx(frame);
+        // Await transmission completion.
+        wait_flag(
+            &self.state.tx_waker,
+            self.regs,
+            |r| r.IE().modify(|w| w.set_TCE(true)),
+            || (!self.tx_busy()).then_some(Ok(())),
+        )
+        .await?;
+        self.regs.IR().write_value(ir_tc());
+        Ok(())
+    }
+}
+
+impl CanRx {
     /// True while receive FIFO 0 holds at least one frame.
     fn rx_pending(&self) -> bool {
         self.regs.RXF0S().read().F0FL() > 0
@@ -411,7 +503,11 @@ impl Can {
         let status = self.regs.RXF0S().read();
         let overrun = status.RF0L();
         let gi = status.F0GI() as usize;
-        let p = self.ram_word(RX_FIFO0_LOCAL + gi * ELEM_BYTES);
+        let p = ram_word(
+            self.msg_ram,
+            self.ram_offset,
+            RX_FIFO0_LOCAL + gi * ELEM_BYTES,
+        );
         // SAFETY: `p` is header word R0 of FIFO 0 element `gi` within the
         // reserved message-RAM region (`gi < F0S`).
         let r0 = unsafe { p.read_volatile() };
@@ -441,61 +537,13 @@ impl Can {
         })
     }
 
-    /// Surface a bus-off condition as an error.
-    fn check_bus(&self) -> Result<(), Error> {
-        if self.regs.PSR().read().BO() {
-            Err(Error::BusOff)
-        } else {
-            Ok(())
-        }
-    }
-
-    // --- async primitives ---------------------------------------------------
-
-    async fn wait_flag(
-        &self,
-        arm: fn(&FDCAN),
-        ready: impl Fn(&Self) -> Option<Result<(), Error>>,
-    ) -> Result<(), Error> {
-        poll_fn(|cx| {
-            if let Some(res) = ready(self) {
-                return Poll::Ready(res);
-            }
-            self.state.waker.register(cx.waker());
-            critical_section::with(|_| arm(&self.regs));
-            if let Some(res) = ready(self) {
-                return Poll::Ready(res);
-            }
-            Poll::Pending
-        })
-        .await
-    }
-
-    /// Transmit `frame`, awaiting completion of the transfer.
-    pub async fn transmit(&mut self, frame: &Frame) -> Result<(), Error> {
-        self.check_bus()?;
-        // Wait for the transmit buffer to be free.
-        self.wait_flag(
-            |r| r.IE().modify(|w| w.set_TCE(true)),
-            |s| (!s.tx_busy()).then_some(Ok(())),
-        )
-        .await?;
-        self.load_tx(frame);
-        // Await transmission completion.
-        self.wait_flag(
-            |r| r.IE().modify(|w| w.set_TCE(true)),
-            |s| (!s.tx_busy()).then_some(Ok(())),
-        )
-        .await?;
-        self.regs.IR().write_value(ir_tc());
-        Ok(())
-    }
-
     /// Await and return the next received frame.
     pub async fn receive(&mut self) -> Result<Frame, Error> {
-        self.wait_flag(
+        wait_flag(
+            &self.state.rx_waker,
+            self.regs,
             |r| r.IE().modify(|w| w.set_RF0NE(true)),
-            |s| s.rx_pending().then_some(Ok(())),
+            || self.rx_pending().then_some(Ok(())),
         )
         .await?;
         let frame = self.drain_rx();
@@ -504,9 +552,62 @@ impl Can {
     }
 }
 
+/// Pointer to a 32-bit word at `byte_off` inside an instance's message-RAM
+/// region.
+///
+/// `wrapping_add` keeps this safe; the resulting pointer is only dereferenced
+/// through the volatile accessors in the halves, which carry their own
+/// reasoning.
+fn ram_word(msg_ram: *mut u8, ram_offset: usize, byte_off: usize) -> *mut u32 {
+    msg_ram.wrapping_add(ram_offset + byte_off) as *mut u32
+}
+
+/// Surface a bus-off condition as an error.
+fn check_bus(regs: FDCAN) -> Result<(), Error> {
+    if regs.PSR().read().BO() {
+        Err(Error::BusOff)
+    } else {
+        Ok(())
+    }
+}
+
+/// Park on `waker` until `ready` reports a result, arming the interrupt source
+/// `arm` selects each time the future is polled to `Pending`.
+///
+/// `ready` is re-checked after registering the waker: the interrupt can fire in
+/// the window between the first check and the registration, and a level that is
+/// already asserted would otherwise never wake anyone.
+async fn wait_flag(
+    waker: &AtomicWaker,
+    regs: FDCAN,
+    arm: fn(&FDCAN),
+    ready: impl Fn() -> Option<Result<(), Error>>,
+) -> Result<(), Error> {
+    poll_fn(|cx| {
+        if let Some(res) = ready() {
+            return Poll::Ready(res);
+        }
+        waker.register(cx.waker());
+        critical_section::with(|_| arm(&regs));
+        if let Some(res) = ready() {
+            return Poll::Ready(res);
+        }
+        Poll::Pending
+    })
+    .await
+}
+
 // SAFETY: the message-RAM pointer names a fixed MMIO-like region exclusively
-// owned by this instance; `Can` carries no thread-local state, so it is safe to
-// move across execution contexts like the other single-owner peripheral drivers.
+// owned by this instance; `CanTx` carries no thread-local state, so it is safe
+// to move across execution contexts like the other single-owner peripheral
+// drivers.
+unsafe impl Send for CanTx {}
+
+// SAFETY: as `CanTx`, for the disjoint receive-FIFO region.
+unsafe impl Send for CanRx {}
+
+// SAFETY: both halves are `Send` for the reasons above, and `Can` is only their
+// container.
 unsafe impl Send for Can {}
 
 /// `IR` value that clears only the transmission-complete flag (write-1-to-clear).
@@ -549,20 +650,20 @@ impl embedded_can::nb::Can for Can {
     type Error = Error;
 
     fn transmit(&mut self, frame: &Frame) -> nb::Result<Option<Frame>, Error> {
-        self.check_bus()?;
-        if self.tx_busy() {
+        check_bus(self.tx.regs)?;
+        if self.tx.tx_busy() {
             return Err(nb::Error::WouldBlock);
         }
-        self.load_tx(frame);
+        self.tx.load_tx(frame);
         Ok(None)
     }
 
     fn receive(&mut self) -> nb::Result<Frame, Error> {
-        if !self.rx_pending() {
+        if !self.rx.rx_pending() {
             return Err(nb::Error::WouldBlock);
         }
-        let frame = self.drain_rx().map_err(nb::Error::Other)?;
-        self.regs.IR().write_value(ir_rf0n());
+        let frame = self.rx.drain_rx().map_err(nb::Error::Other)?;
+        self.rx.regs.IR().write_value(ir_rf0n());
         Ok(frame)
     }
 }

@@ -89,6 +89,31 @@ The host implementation uses Tokio serial I/O and provides pseudo-terminal test 
 The firmware adapter works with `embedded-io-async`; chip features add interrupt-buffered
 UART drivers for i.MX9 and STM32MP2.
 
+## FDCAN IPC
+
+CAN is transport-coupled in the same way: a frame arriving is the wakeup, so again there
+is no `Doorbell` and no `Side`. What differs from UART is that the controller already
+delimits and CRCs every frame, so there is nothing to frame or checksum — but it cannot
+carry a message longer than one frame's payload. The transport supplies the missing piece,
+segmentation and reassembly, with one header byte per frame:
+
+```text
+byte 0: [ kind:2 | low:6 ]
+  00 Single   : low = payload length; the whole message follows
+  01 First    : low = 0; bytes 1..3 = total length u16 LE, then the head
+  10 Continue : low = sequence number, 1,2,3,… mod 64; then the body
+```
+
+The logical channel does not go on the wire. Each half binds a CAN identifier instead —
+the transmit half stamps it into every frame, the receive half drops anything else — and
+the two directions use different identifiers, since both halves see all bus traffic.
+
+A lost frame costs one message rather than the endpoint: the receiver reports the sequence
+gap, discards the partial message, and resynchronizes on the next one.
+
+Today the transport rides classic 8-byte frames. The seam is written for CAN FD's 64-byte
+frames, so enabling them is a chip-HAL change rather than a protocol one.
+
 ## Safe message boundaries
 
 `#[derive(IpcSafe)]` recursively rejects values that cannot be meaningful on another
