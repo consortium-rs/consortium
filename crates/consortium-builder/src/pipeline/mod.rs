@@ -29,6 +29,10 @@
 //!
 //! [`plan`] resolves every stage's inputs without running any build (a dry run
 //! that threads the data flow); [`run`] plans, then executes.
+//!
+//! [`fetch`] sits beside them rather than inside them: it resolves the same Cargo
+//! projects and downloads their dependencies ahead of time, so a later [`run`]
+//! with [`PipelineConfig::offline`] never reaches the network.
 
 pub mod application;
 pub mod bitbake;
@@ -36,6 +40,7 @@ pub mod dist;
 pub mod dtc;
 pub mod dts;
 pub mod elf_map;
+pub mod fetch;
 pub mod firmware;
 pub mod tee;
 
@@ -143,12 +148,56 @@ pub enum PipelineError {
     /// Code generation produced invalid tokens or a path could not be resolved.
     #[error("codegen error: {0}")]
     Codegen(String),
+
+    /// A `cargo fetch` invocation failed.
+    #[error("fetching dependencies for {label} ({target}): {message}")]
+    Fetch {
+        /// The artifact whose crate was being fetched (a core name, `ta`, `app`).
+        label: String,
+        /// The Rust target triple the fetch was scoped to.
+        target: String,
+        /// The underlying failure.
+        message: String,
+    },
+
+    /// Installing a target's Rust standard library failed.
+    #[error("installing rust target(s) {targets}: {message}")]
+    RustTarget {
+        /// The space-separated triples that were requested.
+        targets: String,
+        /// The underlying failure.
+        message: String,
+    },
+
+    /// Installing the HMI frontend's dependencies failed.
+    #[error("installing HMI dependencies in {dir}: {message}")]
+    HmiFetch {
+        /// The frontend project directory the installer ran in.
+        dir: String,
+        /// The underlying failure.
+        message: String,
+    },
 }
 
 impl From<consortium_cfg::CfgError> for PipelineError {
     fn from(error: consortium_cfg::CfgError) -> Self {
         Self::Cfg(Box::new(error))
     }
+}
+
+/// How cargo is invoked for every Rust artifact the pipeline builds.
+///
+/// The firmware, TA, and application are three separate cargo projects; these are
+/// the flags that must agree across all of them, carried as one value so a caller
+/// cannot set them inconsistently.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct CargoOptions {
+    /// Build in release mode.
+    pub release: bool,
+    /// Pass `--offline`, restricting cargo to its local registry cache. A build
+    /// that has not been preceded by [`fetch`] will fail rather than reach the
+    /// network, which is the point: it makes the missing dependency loud.
+    pub offline: bool,
 }
 
 /// All parameters for a pipeline run.
@@ -159,6 +208,9 @@ pub struct PipelineConfig {
     pub dist_root: PathBuf,
     /// Build in release mode.
     pub release: bool,
+    /// Build from cargo's local registry cache only (`--offline`), never the
+    /// network. Populate the cache first with [`fetch::run_with_reporter`].
+    pub offline: bool,
     /// HMI frontend build parameters, or `None` to skip the HMI stage. Derive
     /// with [`derive_hmi_configuration`].
     pub hmi: Option<HmiConfiguration>,
@@ -172,6 +224,16 @@ pub struct PipelineConfig {
     /// recipe's `files/` dir *and* record the deferred `bitbake` command
     /// (dry-run) when the recipe is built later on a separate Yocto host.
     pub bitbake: Vec<BitbakeAction>,
+}
+
+impl PipelineConfig {
+    /// The cargo flags every Rust stage of this run shares.
+    pub fn cargo(&self) -> CargoOptions {
+        CargoOptions {
+            release: self.release,
+            offline: self.offline,
+        }
+    }
 }
 
 /// The fully resolved plan for a pipeline run: every stage's inputs threaded
@@ -276,10 +338,10 @@ pub async fn plan(
         .unwrap_or_else(|| PathBuf::from("."));
 
     let ty_crate = resolve_ty_crate(session, &manifest_dir).await?;
+    let cargo = config.cargo();
 
     // Stage 1: firmware plans + expected ELF outputs.
-    let firmware =
-        firmware::plan_firmware_builds(session, &manifest_dir, config.release, &ty_crate)?;
+    let firmware = firmware::plan_firmware_builds(session, &manifest_dir, cargo, &ty_crate)?;
     let mut firmware_outputs = HashMap::new();
     for plan in &firmware {
         let elf = firmware::firmware_elf_path(&plan.config).await?;
@@ -304,7 +366,7 @@ pub async fn plan(
         session,
         &manifest_dir,
         config.tee_toolchain.as_ref(),
-        config.release,
+        cargo,
         config.sign_tee,
     )?;
 
@@ -314,7 +376,7 @@ pub async fn plan(
         &manifest_dir,
         hmi_dist.as_deref(),
         &dbg_elfs,
-        config.release,
+        cargo,
         &ty_crate,
     )?;
 
@@ -859,6 +921,7 @@ mod tests {
             manifest_path: root.join("Consortium.toml"),
             dist_root: root.join("dist"),
             release: true,
+            offline: false,
             hmi: Some(HmiConfiguration {
                 engine: HmiEngine::Cog,
                 app: None,

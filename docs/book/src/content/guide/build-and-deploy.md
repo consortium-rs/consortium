@@ -21,6 +21,7 @@ cargo run -p csti -- build --manifest Consortium.toml --dist dist --release
 | `--manifest <PATH>`         | Manifest to build; defaults to `Consortium.toml`              |
 | `--dist <DIR>`              | Local staging root; defaults to `dist`                        |
 | `--release`                 | Build endpoint artifacts in release mode                      |
+| `--offline`                 | Run every cargo invocation with `--offline`                   |
 | `--skip-tee-sign`           | Stage an unsigned TA ELF when signing material is unavailable |
 | `--bitbake-files-dir <DIR>` | Copy the assembled tree into a recipe's `files/` directory    |
 | `--bitbake-recipe <PN>`     | Invoke a BitBake recipe; requires its build directory         |
@@ -44,6 +45,30 @@ boundaries:
 Linux remoteproc expects the firmware vector table as `.isr_vectors`, while
 `cortex-m-rt` emits `.vector_table`. The pipeline performs that rename and retains the
 original/debug artifact alongside the deployable ELF.
+
+## Offline builds
+
+A build spans several independent Cargo projects plus a frontend package manager, so no
+single `cargo fetch` covers the system. `csti fetch` resolves the same project set the
+build plan does and downloads all of it in advance:
+
+```bash
+csti fetch
+csti build --offline
+```
+
+`fetch` installs each cross target's Rust standard library with `rustup target add`,
+runs `cargo fetch --target <triple>` per Cargo project, and installs the HMI frontend's
+packages. `--skip-hmi` and `--skip-rust-targets` narrow it; a host without `rustup`
+skips the target step with a note rather than failing.
+
+`--offline` constrains cargo only. The frontend build command is the project's own and
+runs unchanged, which is why its package install belongs to `fetch`.
+`CONSORTIUM_HMI_FETCH_CMD` overrides that install the way `CONSORTIUM_HMI_BUILD_CMD`
+overrides the build.
+
+Host provisioning stays outside this: the OP-TEE dev kit, a Yocto sysroot, kernel sources
+for `dtc`, and BitBake's own downloads each have their own acquisition path.
 
 ## Staging tree
 

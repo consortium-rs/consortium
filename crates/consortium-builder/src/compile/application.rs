@@ -187,6 +187,9 @@ pub struct ApplicationConfiguration {
     pub target: String,
     /// Build in release mode.
     pub release: bool,
+    /// Pass `--offline` to cargo: resolve and build from the local registry cache
+    /// only. Populate that cache first with `csti fetch`.
+    pub offline: bool,
     /// Optional HMI config. `dist` must be an absolute path (resolved by the
     /// caller from the manifest directory before constructing this struct).
     pub hmi: Option<HmiConfig>,
@@ -257,6 +260,10 @@ impl ApplicationCompiler {
             cmd.arg("--release");
         }
 
+        if config.offline {
+            cmd.arg("--offline");
+        }
+
         let status = run_command(&mut cmd, reporter)
             .await
             .map_err(|e| ApplicationCompileError::BuildFailed(e.to_string()))?;
@@ -301,6 +308,8 @@ impl Compiler for ApplicationCompiler {
 ///
 /// Cross-compiler detection and environment handling is identical to
 /// [`ApplicationCompiler`]. See [`ApplicationConfiguration`] for env var docs.
+/// Always builds online (`offline: false`); use [`ApplicationCompiler`] directly
+/// to build from the local registry cache.
 pub struct ApplicationBuilder {
     /// Path to the Cargo project root.
     pub path: PathBuf,
@@ -319,6 +328,7 @@ impl ApplicationBuilder {
             path: self.path.clone(),
             target: self.target.clone(),
             release: self.release,
+            offline: false,
             hmi: self.hmi.clone(),
             ipc: self.ipc,
             dbg: self.dbg,
@@ -334,6 +344,7 @@ impl ApplicationBuilder {
             path: self.path.clone(),
             target: self.target.clone(),
             release: self.release,
+            offline: false,
             hmi: self.hmi.clone(),
             ipc: self.ipc,
             dbg: self.dbg,

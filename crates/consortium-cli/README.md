@@ -18,6 +18,7 @@ cargo install csti
 
 ```bash
 csti build [--manifest Consortium.toml] [--dist dist] [--release]
+csti fetch [--manifest Consortium.toml]
 ```
 
 One command drives the whole pipeline: it compiles the Linux application and
@@ -29,18 +30,61 @@ tree, Kconfig fragment, boot integration, and a systemd unit; then assembles a l
 **It does not deploy.** Nothing is written to a live target filesystem — `dist/` is a
 local staging directory a downstream packaging recipe consumes.
 
-### Flags
+### `build` flags
 
 | Flag                        | Default           | Effect                                                                   |
 | --------------------------- | ----------------- | ------------------------------------------------------------------------ |
 | `--manifest <PATH>`         | `Consortium.toml` | The manifest to build.                                                   |
 | `--dist <DIR>`              | `dist`            | Where to assemble the staging tree.                                      |
 | `--release`                 | off               | Build in release mode.                                                   |
+| `--offline`                 | off               | Run every cargo invocation with `--offline` (see `fetch` below).         |
 | `--skip-tee-sign`           | off               | Build the TA but stage the unsigned ELF instead of a signed `<uuid>.ta`. |
 | `--bitbake-files-dir <DIR>` | —                 | Stage `dist/` under a recipe's `files/` directory.                       |
 | `--bitbake-recipe <RECIPE>` | —                 | Invoke BitBake on this recipe (needs `--bitbake-build-dir`).             |
 | `--bitbake-build-dir <DIR>` | —                 | The Yocto build directory to run BitBake in.                             |
 | `--bitbake-dry-run`         | off               | Resolve and report the BitBake command without running it.               |
+
+### `csti fetch` and `--offline`
+
+A build spans several independent Cargo projects — one firmware crate per remote
+coprocessor, the TA, the Linux application — plus a frontend with its own package
+manager, so no single `cargo fetch` covers the system. `csti fetch` resolves the same
+project set the build plan does and downloads all of it up front:
+
+```bash
+csti fetch                  # populate every cache
+csti build --offline        # build with no network access
+```
+
+| Flag                  | Default           | Effect                                                                 |
+| --------------------- | ----------------- | ---------------------------------------------------------------------- |
+| `--manifest <PATH>`   | `Consortium.toml` | The manifest to resolve.                                               |
+| `--skip-hmi`          | off               | Fetch only Rust dependencies; skip the frontend's package install.     |
+| `--skip-rust-targets` | off               | Skip `rustup target add` for the cross targets the build compiles for. |
+
+It runs three kinds of download:
+
+1. `rustup target add` for each distinct target triple. A cross build needs that
+   target's prebuilt `std`, which `cargo fetch` does not provide. A host with no
+   `rustup` (an SDK-managed or distro toolchain) skips this step with a note rather
+   than failing.
+2. `cargo fetch --target <triple>` per Cargo project, scoped so a bare-metal firmware
+   crate does not pull a host target's dependency set. No feature selection is needed:
+   `cargo fetch` works from the lock file, which carries optional dependencies whether
+   or not their feature is active.
+3. The frontend's package install — `vp`/`npm install` for Cog, `bun install` for
+   Pocket, overridable with `CONSORTIUM_HMI_FETCH_CMD` (the counterpart to
+   `CONSORTIUM_HMI_BUILD_CMD`; point it at `/bin/true` when `node_modules/` is already
+   populated, as in the Linux container flow).
+
+`--offline` then adds `--offline` to every cargo invocation, so a missing dependency
+fails loudly instead of silently reaching the network. Only cargo is constrained: the
+frontend build command is the project's own and is run unchanged, which is why the
+package install belongs to `fetch`.
+
+Not covered, because these are host provisioning rather than project dependencies with
+their own vendor-specific acquisition paths: the OP-TEE dev kit, a Yocto sysroot, kernel
+sources for `dtc`, and BitBake's own downloads.
 
 ### `--skip-tee-sign`
 
