@@ -64,6 +64,31 @@ impl InterruptLine {
             None => (quote! { #hal::hal::nvic::Irq(#number) }, number.to_string()),
         })
     }
+
+    /// A compile-time check that the PAC variant naming this line really carries
+    /// the number the chip map gave it, for emission beside the generated
+    /// vector. `None` when there is no variant, so nothing to check.
+    ///
+    /// Whether a variant may be named at all is a *data* decision
+    /// ([`ChipMap::has_pac_interrupts`](consortium_data::chipmap::ChipMap::has_pac_interrupts)),
+    /// and getting it wrong fails silently in the worst way: `#[interrupt] fn
+    /// I2C8()` would resolve through the covered core's table (212 on STM32MP2's
+    /// CM33) while the NVIC enable used this core's number (15 on its CM0+), so
+    /// the line is enabled, the handler is linked, and the two never meet. That
+    /// reproduces only on hardware. This turns it into a build failure at the
+    /// point where the mismatch exists.
+    pub fn guard(&self, hal: &TokenStream) -> Option<TokenStream> {
+        let number = u16::try_from(self.number).ok()?;
+        let variant = Ident::new(self.variant.as_ref()?, Span::call_site());
+        let message = format!(
+            "{variant} is interrupt {number} in this core's Consortium chip map but not in \
+             the chip PAC's interrupt table; the generated vector and the NVIC enable would \
+             refer to different lines",
+        );
+        Some(quote! {
+            const _: () = ::core::assert!(#hal::Interrupt::#variant as u16 == #number, #message);
+        })
+    }
 }
 
 #[cfg(test)]

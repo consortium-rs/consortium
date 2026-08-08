@@ -55,6 +55,10 @@ mod __consortium_vectors {
     fn LPIT1() {
         ::consortium_hal_imx9::timer_driver::on_timer_interrupt();
     }
+    const _: () = ::core::assert!(
+        ::consortium_hal_imx9::Interrupt::MU7_B as u16 == 207u16,
+        "MU7_B is interrupt 207 in this core's Consortium chip map but not in the chip PAC's interrupt table; the generated vector and the NVIC enable would refer to different lines"
+    );
     #[::consortium_hal_imx9::interrupt]
     fn MU7_B() {
         ::consortium_ipc_doorbell_mu::notify_gi_interrupt::<
@@ -62,6 +66,10 @@ mod __consortium_vectors {
             7usize,
         >();
     }
+    const _: () = ::core::assert!(
+        ::consortium_hal_imx9::Interrupt::LPI2C1 as u16 == 13u16,
+        "LPI2C1 is interrupt 13 in this core's Consortium chip map but not in the chip PAC's interrupt table; the generated vector and the NVIC enable would refer to different lines"
+    );
     #[::consortium_hal_imx9::interrupt]
     fn LPI2C1() {
         ::consortium_hal_imx9::i2c::on_interrupt::<

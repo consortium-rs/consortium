@@ -1012,8 +1012,19 @@ impl Session {
                         ))
                     })?;
                     let frequency = peripheral.frequency.unwrap_or(100_000);
-                    // `irq_name` always names the vector symbol; the PAC variant
-                    // is only nameable where the shipped table is this core's.
+                    // The PAC variant is only nameable where the shipped table
+                    // is this core's; elsewhere the line stays a raw number and
+                    // no vector is generated for it.
+                    if !map.has_pac_interrupts() {
+                        consortium_log::trace!(
+                            "core '{}' is not described by the chip PAC's interrupt table; \
+                             peripheral '{}' gets its NVIC enable but no generated vector, so \
+                             the firmware must install '{}' itself",
+                            core,
+                            name,
+                            irq.name,
+                        );
+                    }
                     let line = InterruptLine {
                         number: u32::from(irq.number),
                         variant: map.has_pac_interrupts().then(|| irq.name.clone()),
@@ -1021,7 +1032,6 @@ impl Session {
                     PeripheralKind::I2c {
                         clock_hz,
                         frequency,
-                        irq_name: irq.name.clone(),
                         irq: line,
                     }
                 }

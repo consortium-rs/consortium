@@ -118,19 +118,25 @@ impl BellA {
             .bells
             .iter()
             .filter_map(|bell| {
-                let variant = bell.irq.get(core)?.variant.as_ref()?;
+                let irq = bell.irq.get(core)?;
+                let variant = irq.variant.as_ref()?;
                 let side = bell.side.get(core)?;
-                Some((variant.clone(), bell.meta().service_call(*side)))
+                Some((
+                    variant.clone(),
+                    bell.meta().service_call(*side),
+                    irq.guard(&hal),
+                ))
             })
             .collect::<Vec<_>>();
-        lines.sort_by(|(left, _), (right, _)| left.cmp(right));
-        lines.dedup_by(|(left, _), (right, _)| left == right);
+        lines.sort_by(|(left, ..), (right, ..)| left.cmp(right));
+        lines.dedup_by(|(left, ..), (right, ..)| left == right);
 
         lines
             .into_iter()
-            .map(|(variant, service)| {
+            .map(|(variant, service, guard)| {
                 let line = Ident::new(&variant, Span::call_site());
                 quote! {
+                    #guard
                     #[#hal::interrupt]
                     fn #line() {
                         #service

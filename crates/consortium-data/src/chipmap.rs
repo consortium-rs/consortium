@@ -321,4 +321,50 @@ mod tests {
             Err(DataError::ChipMapUnavailable { .. })
         ));
     }
+
+    /// The STM32MP2 CM0+ must never claim PAC interrupt coverage. The PAC ships
+    /// the CM33 table for both, and the two cores number the same line names
+    /// differently — so code generation naming `Interrupt::<NAME>` on the CM0+
+    /// would install a vector in the CM33's slot while enabling the CM0+ line,
+    /// and the interrupt would be enabled but never delivered.
+    #[test]
+    fn cm0p_does_not_claim_pac_interrupts() {
+        let cm0p = load("stm32mp257fak3", "cm0p").expect("stm32mp25 cm0p map should resolve");
+        let cm33 = load("stm32mp257fak3", "cm33").expect("stm32mp25 cm33 map should resolve");
+
+        assert!(!cm0p.has_pac_interrupts());
+        assert!(cm33.has_pac_interrupts());
+
+        // The divergence this guards against, spelled out: same name, different
+        // line. If these ever agree the flag is still correct, but the reason
+        // recorded here would no longer be the reason.
+        let a = cm0p.irq("IPCC2_RX").expect("cm0p declares IPCC2_RX");
+        let b = cm33.irq("IPCC2_RX").expect("cm33 declares IPCC2_RX");
+        assert_ne!(a.number, b.number);
+    }
+
+    /// `stm32mp23x` and `stm32mp25x` both select the PAC's `stm32mp257`
+    /// interrupt table, so both dumps claim coverage. That is only sound while
+    /// they agree on every line name they share — one `Interrupt` enum cannot be
+    /// right for both otherwise.
+    #[test]
+    fn dumps_sharing_a_pac_table_agree_on_interrupt_numbers() {
+        let mp25 = load("stm32mp257fak3", "cm33").expect("stm32mp25 cm33 map should resolve");
+        let mp23 = load("stm32mp235fak3", "cm33").expect("stm32mp23 cm33 map should resolve");
+        assert!(mp25.has_pac_interrupts() && mp23.has_pac_interrupts());
+
+        let mut shared = 0usize;
+        for (name, entry) in &mp23.irqs {
+            if let Some(other) = mp25.irqs.get(name) {
+                assert_eq!(
+                    entry.number, other.number,
+                    "{} is {} on stm32mp23 but {} on stm32mp25, yet both use the PAC's \
+                     stm32mp257 interrupt table",
+                    entry.name, entry.number, other.number,
+                );
+                shared += 1;
+            }
+        }
+        assert!(shared > 100, "expected substantial overlap, saw {shared}");
+    }
 }
