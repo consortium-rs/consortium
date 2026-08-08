@@ -42,8 +42,8 @@ std = ["alloc", "consortium-ipc/std", "consortium-log/tracing", "dep:tokio"]
 
 [dependencies]
 cobs              = { default-features = false, version = "0.5" }
-consortium-ipc    = { default-features = false, path = "../consortium-ipc", version = "0.2.0" }
-consortium-log    = { default-features = false, path = "../consortium-log", version = "0.2.0" }
+consortium-ipc    = { default-features = false, path = "../consortium-ipc", version = "0.3.0" }
+consortium-log    = { default-features = false, path = "../consortium-log", version = "0.3.0" }
 crc32fast         = { default-features = false, version = "1.5.0" }
 defmt             = { optional = true, version = "1.1.0" }
 embedded-io-async = { version = "0.7" }

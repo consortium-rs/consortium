@@ -49,8 +49,8 @@ time-driver-lpit = ["dep:embassy-sync", "dep:embassy-time-driver", "dep:embassy-
 uart             = ["dep:embassy-sync", "dep:embedded-hal-nb", "dep:embedded-io", "dep:embedded-io-async"]
 
 [dependencies]
-consortium-hal           = { path = "../consortium-hal", version = "0.2.0" }
-consortium-pac-imx9      = { default-features = false, path = "../consortium-pac-imx9", version = "0.2.0" }
+consortium-hal           = { path = "../consortium-hal", version = "0.3.0" }
+consortium-pac-imx9      = { default-features = false, path = "../consortium-pac-imx9", version = "0.3.0" }
 critical-section         = { version = "1.2.0" }
 embassy-hal-internal     = { version = "0.5.0" }
 embassy-sync             = { optional = true, version = "0.8.0" }

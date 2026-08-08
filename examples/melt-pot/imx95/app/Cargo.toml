@@ -23,7 +23,7 @@ description = "melt-pot Linux application for i.MX95 Cortex-A55"
 edition     = "2024"
 license     = "Apache-2.0"
 name        = "melt-pot-imx95-app"
-version     = "0.2.0"
+version     = "0.3.0"
 
 # Cross-compile target: aarch64-unknown-linux-gnu  (Cortex-A55, 64-bit Linux)
 # Built via `consortium build --manifest ../Consortium.toml`.
@@ -33,35 +33,35 @@ name = "melt-pot-imx95-app"
 path = "src/main.rs"
 
 [target.'cfg(target_os = "linux")'.dependencies]
-melt-pot-shared = { path = "../../shared", version = "0.2.0" }
+melt-pot-shared = { path = "../../shared", version = "0.3.0" }
 melt-pot-imx95-ta = { default-features = false, features = [
   "ca",
-], path = "../ta", version = "0.2.0" }
+], path = "../ta", version = "0.3.0" }
 
 # Named directly by the generated `consortium.gen.rs`.
 consortium-codec = { features = [
   "postcard",
-], path = "../../../../crates/consortium-codec", version = "0.2.0" }
+], path = "../../../../crates/consortium-codec", version = "0.3.0" }
 consortium-ipc = { features = [
   "std",
-], path = "../../../../crates/consortium-ipc", version = "0.2.0" }
+], path = "../../../../crates/consortium-ipc", version = "0.3.0" }
 consortium-ipc-doorbell-mu = { features = [
   "std",
-], path = "../../../../crates/consortium-ipc-doorbell-mu", version = "0.2.0" }
+], path = "../../../../crates/consortium-ipc-doorbell-mu", version = "0.3.0" }
 consortium-ipc-transport-memory = { features = [
   "mimx95",
   "std",
-], path = "../../../../crates/consortium-ipc-transport-memory", version = "0.2.0" }
-consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory", version = "0.2.0" }
+], path = "../../../../crates/consortium-ipc-transport-memory", version = "0.3.0" }
+consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory", version = "0.3.0" }
 consortium-runtime-app = { features = [
   "mimx95",
-], path = "../../../../crates/consortium-runtime-app", version = "0.2.0" }
+], path = "../../../../crates/consortium-runtime-app", version = "0.3.0" }
 
 # Application runtime.
 consortium-tee = { default-features = false, features = [
   "ca",
-], path = "../../../../crates/consortium-tee", version = "0.2.0" }
-consortium-hmi-webkit = { path = "../../../../crates/consortium-hmi-webkit", version = "0.2.0" }
+], path = "../../../../crates/consortium-tee", version = "0.3.0" }
+consortium-hmi-webkit = { path = "../../../../crates/consortium-hmi-webkit", version = "0.3.0" }
 
 glib       = "0.22"
 optee-teec = "0.9.0"

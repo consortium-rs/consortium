@@ -29,7 +29,7 @@ repository.workspace   = true
 rust-version.workspace = true
 
 [dependencies]
-consortium-ipc = { default-features = false, path = "../consortium-ipc", version = "0.2.0" }
+consortium-ipc = { default-features = false, path = "../consortium-ipc", version = "0.3.0" }
 serde          = { default-features = false, features = ["derive"], version = "1" }
 
 [dev-dependencies]
