@@ -37,6 +37,7 @@ macros = ["dep:consortium-runtime-macros"]
 # The firmware crate that includes the generated module must also depend on
 # `defmt` directly, since `defmt`'s macros expand to literal `defmt::` paths.
 defmt = [
+  "consortium-ipc-transport-fdcan?/defmt",
   "consortium-ipc-transport-memory?/defmt",
   "consortium-ipc-transport-uart?/defmt",
   "consortium-log/defmt",
@@ -46,7 +47,10 @@ mimx93 = ["consortium-ipc-transport-memory?/mimx93", "mimx9x"]
 mimx95 = ["consortium-ipc-transport-memory?/mimx95", "mimx9x"]
 mimx9x = []
 ipc = ["ipc-shm"]
-ipc-shm = ["dep:consortium-ipc", "dep:consortium-ipc-transport-memory"]
+# Wired FDCAN transport (segmented over CAN frames), an alternative to shared
+# memory. Chip glue lives in `consortium-ipc-transport-fdcan-embedded`.
+ipc-fdcan = ["dep:consortium-ipc", "dep:consortium-ipc-transport-fdcan"]
+ipc-shm   = ["dep:consortium-ipc", "dep:consortium-ipc-transport-memory"]
 # Wired UART transport (COBS/CRC-framed), an alternative to shared memory.
 ipc-uart   = ["dep:consortium-ipc", "dep:consortium-ipc-transport-uart"]
 stm32mp21x = ["consortium-ipc-transport-memory?/stm32mp21x"]
@@ -62,6 +66,7 @@ consortium-log = { default-features = false, path = "../consortium-log", version
 consortium-dbg = { default-features = false, features = [
   "logger",
 ], optional = true, path = "../consortium-dbg", version = "0.3.0" }
+consortium-ipc-transport-fdcan = { default-features = false, optional = true, path = "../consortium-ipc-transport-fdcan", version = "0.3.0" }
 consortium-ipc-transport-memory = { default-features = false, optional = true, path = "../consortium-ipc-transport-memory", version = "0.3.0" }
 consortium-ipc-transport-uart = { default-features = false, optional = true, path = "../consortium-ipc-transport-uart", version = "0.3.0" }
 consortium-runtime-macros = { optional = true, path = "../consortium-runtime-macros", version = "0.3.0" }

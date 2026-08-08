@@ -88,6 +88,7 @@
 //! | ----------- | ------------------------------------------------------------- |
 //! | `ipc-shm`   | Shared-memory IPC (`ipc` is an alias).                         |
 //! | `ipc-uart`  | The COBS/CRC-framed UART transport instead, or as well.         |
+//! | `ipc-fdcan` | The segmenting FDCAN transport instead, or as well.             |
 //! | `macros`    | The `#[main]` entry macro.                                      |
 //! | `dbg`       | Re-export `consortium-dbg` for the CDBG logger.                  |
 //! | `defmt`     | Route generated-code logging to `defmt`.                         |
@@ -113,6 +114,9 @@ pub mod log {
 
 #[cfg(feature = "dbg")]
 pub use consortium_dbg as dbg;
+
+#[cfg(feature = "ipc-fdcan")]
+pub use consortium_ipc_transport_fdcan;
 
 #[cfg(feature = "ipc-shm")]
 pub use consortium_ipc_transport_memory;

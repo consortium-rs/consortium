@@ -30,7 +30,11 @@ rust-version.workspace = true
 
 [features]
 default = []
-defmt   = ["consortium-hal-stm32mp2?/defmt", "consortium-ipc-transport-uart/defmt"]
+defmt = [
+  "consortium-hal-imx9?/defmt",
+  "consortium-hal-stm32mp2?/defmt",
+  "consortium-ipc-transport-uart/defmt",
+]
 # Chip selection — pulls in the matching chip HAL (with its `uart` driver) and
 # forwards the chip feature so the shared PAC's register/interrupt definitions
 # match the target. Choose exactly one; the HAL rejects several at once.

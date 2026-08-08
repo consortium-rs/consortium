@@ -12,6 +12,8 @@ The current implementation centers on explicit cross-core contracts:
   - `consortium-ipc-transport-memory` owns the descriptor/slot shared-memory transport. Doorbell crates bind hardware signaling to the transport layer.
   - `consortium-ipc-transport-uart` provides COBS/CRC-framed wired IPC for embedded and Unix
     serial backends.
+  - `consortium-ipc-transport-fdcan` provides segmented wired IPC over CAN frames, with
+    chip glue in `consortium-ipc-transport-fdcan-embedded`.
 - `consortium-codec` defines codec families used by IPC and TEE parameter conversion.
 - `consortium-cfg-common` and `consortium-cfg` own the current `Consortium.toml`
   schema, chip databases, validation, and DTS/UIO-oriented transpilers.
@@ -91,7 +93,7 @@ A-core, TEE, HMI, UIO, Cog, WebKit, and Yocto/OpenSTLinux flows are Linux/SDK or
 | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Core IPC        | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                                                                                                                           |
 | Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                                                                                                                     |
-| Transports      | `consortium-shared-memory`, `consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`                                                                                                                                   |
+| Transports      | `consortium-shared-memory`, `consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`, `consortium-ipc-transport-fdcan*`                                                                                                |
 | Doorbells       | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-ipcc`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`                                                                                                      |
 | Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`, `consortium-data`                                                                                                                                                    |
 | HAL/PAC         | `consortium-hal`, `consortium-hal-imx9`, `consortium-hal-stm32mp2`, `consortium-pac-imx9`, `consortium-pac-stm32mp2`                                                                                                              |
@@ -185,6 +187,57 @@ with no chip feature it stays chip-agnostic over any `embedded-io-async` driver.
 transport polls; TX stays direct interrupt-driven. Per repo convention the crate installs
 no `#[interrupt]` handlers. `consortium-runtime-mcu` re-exports the transport behind its
 `ipc-uart` feature.
+
+### FDCAN IPC
+
+The FDCAN family is the second wired, Type-B transport, and differs from UART in three
+ways worth knowing before touching it.
+
+First, **there is no `embedded-io-async` seam**: `embedded-can` 0.4 is blocking/`nb` only,
+and a bus carries frames rather than bytes. `consortium-ipc-transport-fdcan` therefore
+declares its own `CanTx`/`CanRx`/`CanErrorType` traits, with `CanFrame` blanket-implemented
+for every `embedded_can::Frame` so both chip HAL frame types work unadapted.
+
+Second, **there is one impl family, not two**. UART needs parallel `std`/`no_std` impls only
+because `embedded_io_async`'s futures cannot be proven `Send` generically; because this
+crate owns its seam, the `MaybeSend` bounds live on `CanTx`/`CanRx` and one set of transport
+impls serves both. `tests/loopback.rs` runs unchanged under `--no-default-features`, which
+is the evidence for that claim — keep it that way.
+
+Third, **there is nothing to frame or checksum**: the controller already delimits frames and
+CRCs them, so the framing layer only segments and reassembles. One header byte per frame,
+`[kind:2 | low:6]`, where `low` is a payload length on a `Single` and a wrapping sequence
+number on a `Continue`; a `First` frame spends two more bytes on a `u16` total length. The
+`Single` length is explicit rather than implied by the DLC because CAN FD quantizes the DLC
+above 8 bytes, so a short FD frame arrives padded. For the same reason the transmit path
+pads each segment up to a representable length (`padded_len`) before calling
+`CanFrame::build` — a no-op on classic CAN, required on FD, and invisible to the receiver.
+
+`Chan` does not go on the wire. Each half binds a CAN identifier — the transmit half stamps
+it, the receive half drops anything else — and the two directions must use different ones,
+since both halves see every frame on the bus. `FdcanTransport::new` rejects equality with
+`Error::SameIdentifier`; a controller in loopback/self-reception mode echoes every frame
+back, so a shared identifier would self-reassemble. Filtering is in software because neither HAL
+programs hardware acceptance filters yet.
+
+Corruption is not an error, as in UART: a foreign identifier, remote frame, reserved kind,
+sequence gap, orphan continuation, or over-MTU length is logged, drops the partial message,
+and resynchronizes on the next `Single`/`First`. `Error` has no `Eof` — a CAN bus has no peer
+to close it.
+
+Only the receive half takes a buffer (`rx_buf_len`); frames are fixed-size, so the transmit
+path stages each one on the stack. There is no `tx_buf_len`.
+
+`consortium-ipc-transport-fdcan-embedded` holds the chip glue. Because both the traits and
+the HAL halves are foreign to it, the orphan rule forces local newtypes: `imx9::CanBusTx`/
+`CanBusRx` and `stm32mp2::CanBusTx`/`CanBusRx`, reached through each module's `split()`. Per
+repo convention it installs no `#[interrupt]` handlers — forward the vector to the HAL's
+`on_interrupt::<T>()`. `consortium-runtime-mcu` re-exports the transport behind `ipc-fdcan`.
+
+Both chip HALs' `Can` now split into `CanTx`/`CanRx` halves over separate wakers (a single
+`AtomicWaker` would let one half clobber the other's registration). STM32MP2 receives into
+an eight-element FIFO 0, so partition `CAN_SRAM` by at least `can::REGION_BYTES` per
+instance; i.MX9 still has one receive mailbox, so a burst can overrun it.
 
 ### Shared Memory IPC
 
@@ -593,6 +646,9 @@ block with the pointer lifetime or ownership invariant.
 - UART protocol changes should run `cargo test -p consortium-ipc-transport-uart`,
   `cargo test -p consortium-ipc-transport-uart --no-default-features`, and
   `cargo test -p consortium-ipc-transport-uart-unix` for pseudo-terminal integration.
+- FDCAN protocol changes should run `cargo test -p consortium-ipc-transport-fdcan` and
+  the same with `--no-default-features`. Both must pass: the second is what proves the
+  one-impl-family claim, since it runs the identical `loopback` test as `no_std`.
 - Use trybuild and insta snapshots for proc-macro behavior.
 - Use fake MMIO, heap-backed regions, and mock doorbells for protocol logic.
 - Keep hardware, SDK, UIO, remoteproc, OP-TEE runtime, and Cog/WebKit checks separate
