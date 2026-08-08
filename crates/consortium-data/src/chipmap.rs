@@ -34,6 +34,12 @@ struct Embedded {
     family: &'static str,
     /// Lowercase core name this dump describes (e.g. `cm33`, `cm7`, `cm0p`).
     core: &'static str,
+    /// Whether the chip PAC's shipped `Interrupt` table is generated from *this*
+    /// core's dump (see `scripts/pac/gen_interrupts.py`). A PAC carries one
+    /// table per chip, so only one core per family is covered; code generation
+    /// must not spell `Interrupt::<name>` for any other core, because the
+    /// variant exists but carries the covered core's number.
+    pac: bool,
     /// The raw JSON dump.
     json: &'static str,
 }
@@ -46,31 +52,41 @@ const CHIPS: &[Embedded] = &[
     Embedded {
         family: "stm32mp25",
         core: "cm33",
+        pac: true,
         json: include_str!("../database/chip/stm32mp25_cm33.json"),
     },
     Embedded {
         family: "stm32mp25",
         core: "cm0p",
+        // The CM0+ has its own, differently numbered NVIC table, and the PAC
+        // ships the CM33 one.
+        pac: false,
         json: include_str!("../database/chip/stm32mp25_cm0p.json"),
     },
     Embedded {
         family: "stm32mp23",
         core: "cm33",
+        // `stm32mp23x` selects the PAC's `stm32mp257` table, whose CM33 lines
+        // are numbered identically.
+        pac: true,
         json: include_str!("../database/chip/stm32mp23_cm33.json"),
     },
     Embedded {
         family: "stm32mp21",
         core: "cm33",
+        pac: true,
         json: include_str!("../database/chip/stm32mp21_cm33.json"),
     },
     Embedded {
         family: "mimx95",
         core: "cm7",
+        pac: true,
         json: include_str!("../database/chip/mimx95_cm7.json"),
     },
     Embedded {
         family: "mimx93",
         core: "cm33",
+        pac: true,
         json: include_str!("../database/chip/mimx93_cm33.json"),
     },
 ];
@@ -120,8 +136,9 @@ impl PeripheralEntry {
 pub struct IrqEntry {
     /// External interrupt number (exception number minus 16).
     pub number: u16,
-    /// Canonical interrupt name from the dump (e.g. `LPI2C1`), used to form the
-    /// `<name>_IRQHandler` vector-table symbol.
+    /// Canonical interrupt name from the dump (e.g. `LPI2C1`). The PAC's
+    /// `Interrupt` variants are generated from these same names, so this is what
+    /// a `#[interrupt] fn <name>()` vector is called.
     pub name: String,
 }
 
@@ -132,6 +149,8 @@ pub struct ChipMap {
     peripherals: HashMap<String, PeripheralEntry>,
     /// Interrupt entries keyed by lowercased interrupt name.
     irqs: HashMap<String, IrqEntry>,
+    /// Whether the chip PAC's `Interrupt` enum describes *this* core.
+    pac_interrupts: bool,
 }
 
 impl ChipMap {
@@ -156,6 +175,32 @@ impl ChipMap {
     /// Look up an interrupt by name (case-insensitive).
     pub fn irq(&self, name: &str) -> Option<&IrqEntry> {
         self.irqs.get(&name.to_ascii_lowercase())
+    }
+
+    /// Look up an interrupt by its external interrupt number.
+    ///
+    /// The hardware doorbell database records only the raw NVIC position for a
+    /// party, so this is how code generation recovers the line's canonical name.
+    /// Numbers are unique within a dump; if one ever repeats, the entry with the
+    /// lowest name wins so the result stays deterministic.
+    pub fn irq_by_number(&self, number: u16) -> Option<&IrqEntry> {
+        self.irqs
+            .values()
+            .filter(|entry| entry.number == number)
+            .min_by(|a, b| a.name.cmp(&b.name))
+    }
+
+    /// Whether the chip PAC's `Interrupt` enum is generated from this core's
+    /// dump, and therefore whether generated code may name a line as
+    /// `Interrupt::<name>` instead of by number.
+    ///
+    /// A PAC ships one interrupt table per chip (see
+    /// `scripts/pac/gen_interrupts.py`), taken from the primary controller core.
+    /// On a secondary core such as STM32MP2's CM0+, a shared line name like
+    /// `IPCC2_RX` exists in both tables under *different* numbers, so spelling
+    /// the variant there would enable the wrong vector.
+    pub fn has_pac_interrupts(&self) -> bool {
+        self.pac_interrupts
     }
 }
 
@@ -221,7 +266,11 @@ pub fn load(chip: &str, core: &str) -> Result<ChipMap, DataError> {
         })
         .collect();
 
-    Ok(ChipMap { peripherals, irqs })
+    Ok(ChipMap {
+        peripherals,
+        irqs,
+        pac_interrupts: entry.pac,
+    })
 }
 
 /// Parse a `0x`-prefixed (or bare) hexadecimal address.
@@ -271,5 +320,51 @@ mod tests {
             load("stm32mp257fak3", "cm4"),
             Err(DataError::ChipMapUnavailable { .. })
         ));
+    }
+
+    /// The STM32MP2 CM0+ must never claim PAC interrupt coverage. The PAC ships
+    /// the CM33 table for both, and the two cores number the same line names
+    /// differently — so code generation naming `Interrupt::<NAME>` on the CM0+
+    /// would install a vector in the CM33's slot while enabling the CM0+ line,
+    /// and the interrupt would be enabled but never delivered.
+    #[test]
+    fn cm0p_does_not_claim_pac_interrupts() {
+        let cm0p = load("stm32mp257fak3", "cm0p").expect("stm32mp25 cm0p map should resolve");
+        let cm33 = load("stm32mp257fak3", "cm33").expect("stm32mp25 cm33 map should resolve");
+
+        assert!(!cm0p.has_pac_interrupts());
+        assert!(cm33.has_pac_interrupts());
+
+        // The divergence this guards against, spelled out: same name, different
+        // line. If these ever agree the flag is still correct, but the reason
+        // recorded here would no longer be the reason.
+        let a = cm0p.irq("IPCC2_RX").expect("cm0p declares IPCC2_RX");
+        let b = cm33.irq("IPCC2_RX").expect("cm33 declares IPCC2_RX");
+        assert_ne!(a.number, b.number);
+    }
+
+    /// `stm32mp23x` and `stm32mp25x` both select the PAC's `stm32mp257`
+    /// interrupt table, so both dumps claim coverage. That is only sound while
+    /// they agree on every line name they share — one `Interrupt` enum cannot be
+    /// right for both otherwise.
+    #[test]
+    fn dumps_sharing_a_pac_table_agree_on_interrupt_numbers() {
+        let mp25 = load("stm32mp257fak3", "cm33").expect("stm32mp25 cm33 map should resolve");
+        let mp23 = load("stm32mp235fak3", "cm33").expect("stm32mp23 cm33 map should resolve");
+        assert!(mp25.has_pac_interrupts() && mp23.has_pac_interrupts());
+
+        let mut shared = 0usize;
+        for (name, entry) in &mp23.irqs {
+            if let Some(other) = mp25.irqs.get(name) {
+                assert_eq!(
+                    entry.number, other.number,
+                    "{} is {} on stm32mp23 but {} on stm32mp25, yet both use the PAC's \
+                     stm32mp257 interrupt table",
+                    entry.name, entry.number, other.number,
+                );
+                shared += 1;
+            }
+        }
+        assert!(shared > 100, "expected substantial overlap, saw {shared}");
     }
 }

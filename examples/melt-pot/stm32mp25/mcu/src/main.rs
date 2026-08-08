@@ -30,7 +30,6 @@
 
 use core::{ptr::write_volatile, sync::atomic::compiler_fence};
 
-use consortium_hal_stm32mp2::interrupt;
 use embassy_executor::Spawner;
 use embassy_time::Timer;
 use melt_pot_shared::SensorReading;
@@ -66,34 +65,6 @@ async fn main(_spawner: Spawner) -> Result<(), ConsortiumError> {
         seq = seq.wrapping_add(1);
 
         Timer::after_secs(1).await;
-    }
-}
-
-// IPCC RX-occupied vectors. The doorbell crate no longer installs these; the
-// application owns them and forwards each to the shared IPCC waker so waiting
-// `IpccDoorbell::wait` futures make progress. Only the instances this core
-// receives on need to be enabled in `init()`, but both non-secure RX lines are
-// defined here.
-#[interrupt]
-fn IPCC1_RX() {
-    consortium_runtime_mcu::log::trace!("ipcc1_rx interrupt: doorbell RX occupied");
-    // SAFETY: this is the validated IPCC1 base used by the generated
-    // Secondary-side doorbell.
-    unsafe {
-        consortium_ipc_doorbell_ipcc::notify_rx_occupied_interrupt::<consortium_ipc::Secondary, 1>(
-            0x4049_0000,
-        );
-    }
-}
-
-#[interrupt]
-fn IPCC2_RX() {
-    consortium_runtime_mcu::log::trace!("ipcc2_rx interrupt: doorbell RX occupied");
-    // SAFETY: this is the STM32MP25 IPCC2 register base for Secondary.
-    unsafe {
-        consortium_ipc_doorbell_ipcc::notify_rx_occupied_interrupt::<consortium_ipc::Secondary, 2>(
-            0x4625_0000,
-        );
     }
 }
 

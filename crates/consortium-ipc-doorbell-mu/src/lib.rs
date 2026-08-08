@@ -63,25 +63,34 @@
 //! # Interrupts, and why MU needs masking
 //!
 //! This crate installs **no** `#[interrupt]` handlers. The application owns the vector
-//! table and forwards each MU vector a core drives into `notify::<N>()`, parameterized
-//! with that instance number — i.MX93 `MU1_B`/`MU2_B`, i.MX95 CM7 `MU5_A`/`MU7_B`/`MU8_B`.
-//! Enable the *HAL's* `rt` feature (`consortium-hal-imx9/rt`) so the `#[interrupt]`
-//! macro and PAC vector table are available there.
+//! table and forwards each MU vector a core drives into
+//! [`notify_gi_interrupt::<S, N>()`](notify_gi_interrupt), parameterized with that
+//! instance's side and number — i.MX93 `MU1_B`/`MU2_B`, i.MX95 CM7
+//! `MU5_A`/`MU7_B`/`MU8_B`. Enable the *HAL's* `rt` feature
+//! (`consortium-hal-imx9/rt`) so the `#[interrupt]` macro and PAC vector table are
+//! available there.
 //!
 //! ```rust,ignore
 //! #[interrupt]
 //! fn MU7_B() {
-//!     consortium_ipc_doorbell_mu::notify::<7>();
+//!     consortium_ipc_doorbell_mu::notify_gi_interrupt::<consortium_ipc::Secondary, 7>();
 //! }
 //! ```
 //!
-//! MU lines are **level-sensitive**, which matters on Linux: re-arming the UIO IRQ
-//! while a status flag is still set fires the line again immediately and the loop
-//! spins. So on `std` the doorbell is bound as a *service* rather than a plain
-//! notifier — `MuDoorbell::notify_gi_interrupt` disables every asserted GI and RF
-//! line **before** waking. Disabling only masks the interrupt and leaves `GSR`/`RSR`
-//! set, so the woken `wait` future still observes its flag,
-//! acknowledges it, and re-arms:
+//! In practice firmware does not write that by hand: `consortium-cfg` emits it into
+//! the generated `consortium.gen.rs` vector module from the manifest, which already
+//! names the doorbell, its instance, and each party's side.
+//!
+//! MU lines are **level-sensitive**, so *both* sides mask before waking, through the
+//! same internal `service_gi`: every asserted GI and RF line is disabled **before**
+//! the wake. Disabling only masks the interrupt and leaves `GSR`/`RSR` set, so the
+//! woken `wait` future still observes its flag, acknowledges it, and re-arms.
+//!
+//! On firmware, an ISR that only woke would return with the line still asserted and
+//! re-enter immediately, spinning without ever letting the executor run the waiter.
+//! On Linux, re-arming the UIO IRQ while a status flag is still set fires the line
+//! again and the loop spins — so the doorbell is bound there as a *service* rather
+//! than a plain notifier:
 //!
 //! ```rust,ignore
 //! // Linux: bind the masking service, not the bare notifier.
@@ -122,5 +131,5 @@ pub use chan::{
 pub use consortium_ipc::{Primary, Secondary, Side};
 pub use doorbell::MuDoorbell;
 #[cfg(not(feature = "std"))]
-pub use doorbell::notify;
+pub use doorbell::notify_gi_interrupt;
 pub use error::MuError;

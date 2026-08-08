@@ -17,7 +17,7 @@
 //! Peripheral bring-up code generation.
 //!
 //! Emits the manifest-owned HAL singleton allowlist, configuration constants,
-//! interrupt handlers, and NVIC enablement.
+//! interrupt vectors ([`Peripherals::vectors`]), and NVIC enablement.
 //!
 //! Drivers take the chip HAL's peripheral singletons rather than MMIO bases, so
 //! generated `init` moves only declared fields out of `hal::init()`. Bases no
@@ -31,15 +31,24 @@ use consortium_cfg_common::config::VisibleCore;
 use proc_macro2::{Ident, Span, TokenStream};
 use quote::quote;
 
+use crate::components::irq::InterruptLine;
+
 /// A codegen-supported peripheral kind, resolved for one instance.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PeripheralKind {
-    /// I2C master: functional clock (Hz), bus frequency (Hz), and its interrupt.
+    /// I2C master: functional clock (Hz), bus frequency (Hz), and its interrupt
+    /// line.
+    ///
+    /// The line is the single source for both the generated `#[interrupt]`
+    /// vector's name and the NVIC enable. Keeping a second, ungated copy of the
+    /// name here is what let the two disagree: the vector would be spelled from
+    /// the chip map while the enable came from the PAC-gated
+    /// [`InterruptLine`], so a core the PAC does not describe got a handler in
+    /// the wrong table slot.
     I2c {
         clock_hz: u32,
         frequency: u32,
-        irq_number: u16,
-        irq_name: String,
+        irq: InterruptLine,
     },
     /// GPIO port (no interrupt bring-up yet).
     Gpio,
@@ -81,7 +90,6 @@ impl Peripherals {
         let hal: syn::Path =
             syn::parse_str(&self.hal_crate).expect("hal_crate must be a valid path");
         let mut fields = Vec::new();
-        let mut handlers = Vec::new();
         let mut constants = Vec::new();
 
         for instance in owned {
@@ -94,27 +102,14 @@ impl Peripherals {
                 PeripheralKind::I2c {
                     clock_hz,
                     frequency,
-                    irq_number,
-                    irq_name,
+                    ..
                 } => {
-                    let handler = ident(&format!("{irq_name}_IRQHandler"));
-
                     let clock_const = ident(&format!("{}_CLOCK_HZ", instance.singleton));
                     let frequency_const = ident(&format!("{}_FREQUENCY", instance.singleton));
                     constants.push(quote! {
                         pub const #clock_const: u32 = #clock_hz;
                         pub const #frequency_const: u32 = #frequency;
                     });
-                    // The driver keeps one interrupt state per instance behind
-                    // the singleton type, so the vector only names the instance.
-                    handlers.push(quote! {
-                        #[cfg(target_arch = "arm")]
-                        #[unsafe(no_mangle)]
-                        extern "C" fn #handler() {
-                            #hal::i2c::on_interrupt::<#hal::peripherals::#singleton>();
-                        }
-                    });
-                    let _ = irq_number;
                 }
                 PeripheralKind::Gpio | PeripheralKind::Other => {}
             }
@@ -132,27 +127,77 @@ impl Peripherals {
             }
 
             #(#constants)*
-            #(#handlers)*
         })
     }
 
-    /// NVIC priority and enable statements for generated peripheral handlers.
-    pub fn nvic(&self, core: VisibleCore) -> TokenStream {
+    /// The interrupt vectors `core`'s owned peripherals need, as bare
+    /// `#[interrupt]` items for the generated vector module.
+    ///
+    /// The handler is named for the line's PAC `Interrupt` variant, which is
+    /// what places it in that slot of the vector table. The driver keeps one
+    /// interrupt state per instance behind the singleton type, so the body only
+    /// names the instance.
+    ///
+    /// A core the PAC's shipped interrupt table does not describe is skipped,
+    /// exactly as [`BellA::vectors`](crate::components::bella::BellA::vectors)
+    /// skips its doorbells. Emitting the vector there would be worse than
+    /// emitting nothing: `#[interrupt] fn I2C8()` resolves through the *covered*
+    /// core's table (212 on STM32MP2's CM33) while [`nvic`](Self::nvic) enables
+    /// this core's raw line (15 on its CM0+), so the enabled interrupt would
+    /// dispatch somewhere else entirely and the handler would never run. Such a
+    /// core keeps writing its vectors by hand.
+    pub fn vectors(&self, core: VisibleCore) -> Vec<TokenStream> {
         let hal: syn::Path =
             syn::parse_str(&self.hal_crate).expect("hal_crate must be a valid path");
+        let hal_tokens: TokenStream = self
+            .hal_crate
+            .parse()
+            .expect("hal crate path is a valid token stream");
+        self.instances
+            .iter()
+            .filter(|instance| instance.owner == core)
+            .filter_map(|instance| {
+                let PeripheralKind::I2c { irq, .. } = &instance.kind else {
+                    return None;
+                };
+                let line = ident(irq.variant.as_ref()?);
+                let singleton = ident(&instance.singleton);
+                let guard = irq.guard(&hal_tokens);
+                Some(quote! {
+                    #guard
+                    #[#hal::interrupt]
+                    fn #line() {
+                        #hal::i2c::on_interrupt::<#hal::peripherals::#singleton>();
+                    }
+                })
+            })
+            .collect()
+    }
+
+    /// NVIC priority and enable statements for generated peripheral handlers.
+    ///
+    /// The line is named per [`InterruptLine::tokens`]: the chip HAL's
+    /// re-exported PAC `Interrupt` variant where that describes this core, and
+    /// the HAL's raw-number carrier otherwise.
+    pub fn nvic(&self, core: VisibleCore) -> TokenStream {
+        let hal: TokenStream = self
+            .hal_crate
+            .parse()
+            .expect("hal crate path is a valid token stream");
         let statements = self.instances.iter().filter_map(|instance| {
             if instance.owner != core {
                 return None;
             }
-            let PeripheralKind::I2c { irq_number, .. } = instance.kind else {
+            let PeripheralKind::I2c { irq, .. } = &instance.kind else {
                 return None;
             };
+            let (line, _) = irq.tokens(&hal)?;
             Some(quote! {
-                /// SAFETY: the interrupt number comes from the validated chip
-                /// map and its generated handler is installed above.
+                /// SAFETY: the interrupt comes from the validated chip map and
+                /// its generated handler is installed above.
                 unsafe {
-                    #hal::hal::nvic::set_priority(#irq_number, 0x80u8);
-                    #hal::hal::nvic::enable(#irq_number);
+                    #hal::hal::nvic::set_priority(#line, 0x80u8);
+                    #hal::hal::nvic::enable(#line);
                 }
             })
         });
@@ -185,4 +230,78 @@ fn ident(raw: &str) -> Ident {
         out.insert(0, '_');
     }
     Ident::new(&out, Span::call_site())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use consortium_cfg_common::config::McoreName;
+
+    fn cm33() -> VisibleCore {
+        VisibleCore::Mcore(McoreName::Cm33)
+    }
+
+    fn cm0p() -> VisibleCore {
+        VisibleCore::Mcore(McoreName::Cm0p)
+    }
+
+    /// One owned I2C whose line may or may not be named by the PAC.
+    fn peripherals(owner: VisibleCore, irq: InterruptLine) -> Peripherals {
+        Peripherals {
+            hal_crate: "::consortium_hal_stm32mp2".to_string(),
+            instances: vec![PeripheralInstance {
+                owner,
+                key: "i2c8".to_string(),
+                singleton: "I2C8".to_string(),
+                kind: PeripheralKind::I2c {
+                    clock_hz: 24_000_000,
+                    frequency: 100_000,
+                    irq,
+                },
+            }],
+        }
+    }
+
+    #[test]
+    fn emits_a_guarded_vector_for_a_pac_covered_core() {
+        let line = InterruptLine {
+            number: 212,
+            variant: Some("I2C8".to_string()),
+        };
+        let vectors = peripherals(cm33(), line).vectors(cm33());
+
+        assert_eq!(vectors.len(), 1);
+        let tokens = vectors[0].to_string();
+        assert!(tokens.contains("[:: consortium_hal_stm32mp2 :: interrupt] fn I2C8 ()"));
+        // The guard ties the variant to the number the chip map gave it.
+        assert!(
+            tokens.contains(":: consortium_hal_stm32mp2 :: Interrupt :: I2C8 as u16 == 212u16")
+        );
+    }
+
+    /// STM32MP2's CM0+ is not described by the PAC's interrupt table: `I2C8` is
+    /// line 15 there and 212 on the CM33 the PAC ships. Emitting
+    /// `#[interrupt] fn I2C8()` would install the handler in the CM33's slot
+    /// while `nvic` enabled the CM0+ line, so the interrupt would be enabled and
+    /// never delivered. No vector may be generated; the firmware installs it.
+    #[test]
+    fn emits_no_vector_for_a_core_the_pac_does_not_describe() {
+        let ir = peripherals(cm0p(), InterruptLine::new(15));
+
+        assert!(ir.vectors(cm0p()).is_empty());
+        // The NVIC enable still happens, through the raw-number carrier.
+        let nvic = ir.nvic(cm0p()).to_string();
+        assert!(nvic.contains("hal :: nvic :: enable"), "{nvic}");
+        assert!(nvic.contains("Irq (15u16)"), "{nvic}");
+        assert!(!nvic.contains("Interrupt ::"), "{nvic}");
+    }
+
+    #[test]
+    fn vectors_are_scoped_to_the_owning_core() {
+        let line = InterruptLine {
+            number: 212,
+            variant: Some("I2C8".to_string()),
+        };
+        assert!(peripherals(cm33(), line).vectors(cm0p()).is_empty());
+    }
 }

@@ -462,20 +462,28 @@ fn channel_waker<const N: usize>(id: u8) -> &'static atomic_waker::AtomicWaker {
     &IPCC_WAKERS[N - 1][id as usize]
 }
 
-/// Service an IPCC RX-occupied interrupt. Call from the corresponding vector.
+/// Service IPCC instance `N`'s RX-occupied interrupt from its vector, then wake
+/// the futures waiting on it.
 ///
 /// Delegates to `service_rx_occupied`: asserted channels are masked before
-/// their per-channel [`AtomicWaker`](atomic_waker::AtomicWaker)s are woken.
+/// their per-channel [`AtomicWaker`](atomic_waker::AtomicWaker)s are woken, so
+/// the level-sensitive line does not re-assert on return.
 ///
-/// # Safety
+/// This crate installs no vector-table entries. Generated bring-up emits the
+/// matching `#[interrupt]` and forwards to this with the instance's side and
+/// number.
 ///
-/// `base` must be the mapped base of IPCC instance `N`, accessible from side
-/// `S`. It has the same requirements as [`IpccDoorbell::new`].
+/// Takes no base: the window is [`base::BASE`], the same vetted address
+/// [`IpccDoorbell::new`] gives the waiting doorbell, so the vector cannot be
+/// pointed at the wrong instance.
 #[cfg(not(feature = "std"))]
-pub unsafe fn notify_rx_occupied_interrupt<S: Side, const N: usize>(base: usize) {
-    // SAFETY: guaranteed by the caller; the temporary handle accesses the same
-    // MMIO window as the doorbell used by the waiting task.
-    let ipcc = unsafe { Ipcc::<S, N>::new(base) };
+pub fn notify_rx_occupied_interrupt<S: Side, const N: usize>() {
+    // SAFETY: `base::BASE[N - 1]` is instance `N`'s window from this crate's
+    // address table. This deliberately aliases the window the waiting
+    // `IpccDoorbell` holds — servicing the line it raised is the point — and
+    // the `CxMR` mask write underneath runs in a critical section, so it cannot
+    // tear against task context.
+    let ipcc = unsafe { Ipcc::<S, N>::new(base::BASE[N - 1]) };
     service_rx_occupied(&ipcc, |id| channel_waker::<N>(id).wake());
 }
 

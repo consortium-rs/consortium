@@ -360,13 +360,13 @@ mod tests {
 
     #[test]
     fn renders_single_window_generic_uio() {
-        let device = registers(vec![(0x0624_0000, 0x400)], None);
+        let device = registers(vec![(0x0049_0000, 0x400)], None);
 
         // Default AArch64 layout: 2 address cells + 2 size cells per window.
-        let dts = device.to_node("hsem").to_dts();
-        assert!(dts.contains("hsem@6240000 {"));
+        let dts = device.to_node("ipcc1").to_dts();
+        assert!(dts.contains("ipcc1@490000 {"));
         assert!(dts.contains("compatible = \"generic-uio\";"));
-        assert!(dts.contains("reg = <0x0 0x6240000 0x0 0x400>;"));
+        assert!(dts.contains("reg = <0x0 0x490000 0x0 0x400>;"));
         assert!(dts.contains("status = \"okay\";"));
         assert!(!dts.contains("interrupts"));
     }
@@ -410,14 +410,14 @@ mod tests {
     #[test]
     fn renders_gic_spi_interrupt() {
         let mut device = registers(
-            vec![(0x0624_0000, 0x400)],
-            Some((199, IrqMethod::LevelHigh)),
+            vec![(0x0049_0000, 0x400)],
+            Some((171, IrqMethod::LevelHigh)),
         );
         device.interrupt_parent = Some("intc".to_string());
 
-        let dts = device.to_node("hsem").to_dts();
+        let dts = device.to_node("ipcc1").to_dts();
         assert!(dts.contains("interrupt-parent = <&intc>;"));
-        assert!(dts.contains("interrupts = <GIC_SPI 199 IRQ_TYPE_LEVEL_HIGH>;"));
+        assert!(dts.contains("interrupts = <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>;"));
     }
 
     #[test]
@@ -477,8 +477,8 @@ mod tests {
 
     #[test]
     fn register_device_has_no_reserved_memory_nodes() {
-        let device = registers(vec![(0x0624_0000, 0x400)], None);
-        assert!(device.reserved_memory_nodes("hsem").is_empty());
+        let device = registers(vec![(0x0049_0000, 0x400)], None);
+        assert!(device.reserved_memory_nodes("ipcc1").is_empty());
     }
 
     #[test]

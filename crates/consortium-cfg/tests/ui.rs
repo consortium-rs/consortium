@@ -157,9 +157,11 @@ fn generated_init_code_compiles() {
 
     let portable = tests.join("ui").join("portable");
     reset_dir(&portable);
-    #[cfg(target_os = "linux")]
+    // Emitting the AP file is pure codegen and works on any host; only
+    // *compiling* it needs Linux, because it names `consortium-runtime-app`.
+    // Gating the write too would leave this artifact stale whenever a macOS dev
+    // changed a fixture manifest.
     let linux = tests.join("ui").join("linux");
-    #[cfg(target_os = "linux")]
     reset_dir(&linux);
 
     let mut entries: Vec<_> = fs::read_dir(&configs)
@@ -207,9 +209,8 @@ fn generated_init_code_compiles() {
             let source = ui_file(&ir, core, &types);
             let file_name = format!("{name}__{core}.rs");
             if core == VisibleCore::Ap {
-                // AP code names the Linux-only `consortium-runtime-app`; only
-                // emit (and below, only compile) it on Linux.
-                #[cfg(target_os = "linux")]
+                // AP code names the Linux-only `consortium-runtime-app`, so it
+                // is only *compiled* on Linux (see the `t.pass` below).
                 fs::write(linux.join(&file_name), source).expect("write linux ui file");
             } else {
                 fs::write(portable.join(&file_name), source).expect("write portable ui file");

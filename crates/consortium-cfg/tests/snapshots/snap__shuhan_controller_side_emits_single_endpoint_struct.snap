@@ -4,16 +4,16 @@ expression: items(tokens)
 ---
 ::consortium_ipc_transport_memory::channels!(PING);
 ::consortium_ipc_transport_memory::impl_channel!(
-    PING, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_hsem::HsemDoorbell <
+    PING, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_ipcc::IpccDoorbell <
     ::consortium_ipc::Secondary, 1usize >,
     ::consortium_shared_memory::regions::UncachedRegion, ::shared::Pong, ::shared::Ping,
     ::consortium_codec::PostcardCodec, 1u8, 0u8, 256usize,
 );
 #[cfg(target_arch = "arm")]
 fn __consortium_install_channels(
-    __db_hsem: ::consortium_hal_stm32mp2::Peri<
+    __db_ipcc1: ::consortium_hal_stm32mp2::Peri<
         'static,
-        ::consortium_hal_stm32mp2::peripherals::HSEM,
+        ::consortium_hal_stm32mp2::peripherals::IPCC1,
     >,
 ) {
     ::consortium_ipc_transport_memory::install::<
@@ -26,10 +26,10 @@ fn __consortium_install_channels(
                 32768usize,
             )
         };
-        let doorbell = ::consortium_ipc_doorbell_hsem::HsemDoorbell::<
+        let doorbell = ::consortium_ipc_doorbell_ipcc::IpccDoorbell::<
             ::consortium_ipc::Secondary,
             1usize,
-        >::new(__db_hsem);
+        >::new(__db_ipcc1);
         // SAFETY: doorbell channel is verified to be valid in the config.
         let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
         // SAFETY: doorbell channel is verified to be valid in the config.
