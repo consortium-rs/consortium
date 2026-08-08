@@ -243,15 +243,24 @@ is not also pulled in (two chips = ambiguous PAC `Interrupt`).
   uses a software pending flag and IRQ-side `wake`; the `std` path exposes a Tokio
   `Notify` that external interrupt code must trigger.
 
-No hardware doorbell installs `#[interrupt]` handlers. The application owns the vector
-table and forwards each relevant IRQ into the crate's exported waker: HSEM calls
-`hsem::notify()`, IPCC RX lines call `ipcc::notify_rx_occupied_interrupt()`, and each MU
-line calls `mu::notify::<N>()` with its instance number. Enable the _HAL's_ `rt` feature
-(`consortium-hal-*/rt`) so the `#[interrupt]` macro and PAC vector table are available to
-that application code; the doorbell crates themselves no longer expose an `rt` feature.
-The relevant vectors are HSEM (non-secure), IPCC1_RX/IPCC2_RX (non-secure), and the MU
-lines a core drives (i.MX93 `MU1_B`/`MU2_B`; i.MX95 CM7 `MU5_A`/`MU7_B`/`MU8_B`). See the
-melt-pot `mcu/src/main.rs` files for worked examples.
+No hardware doorbell crate installs `#[interrupt]` handlers, and none exposes an `rt`
+feature. Each exposes one bare-metal service entry point instead, and every one of them
+derives its register window from the crate's own `registers::base` table, so no MMIO
+base ever appears in the caller: HSEM calls `hsem::notify()`, IPCC RX lines call
+`ipcc::notify_rx_occupied_interrupt::<S, N>()`, and MU lines call
+`mu::notify_gi_interrupt::<S, N>()`. IPCC and MU are level-sensitive, so both mask every
+asserted line _before_ waking — an ISR that only woke would return with the line still
+asserted, re-enter, and starve the executor.
+
+`consortium-cfg` **generates** those vectors into `consortium.gen.rs`'s
+`__consortium_vectors` module from the manifest, alongside the time-driver and
+peripheral vectors, so firmware `main.rs` writes none of them (see the melt-pot
+examples). Enable the _HAL's_ `rt` feature (`consortium-hal-*/rt`) so the `#[interrupt]`
+macro and PAC vector table are available to that generated code. A core the chip PAC's
+shipped interrupt table does not describe (STM32MP2's CM0+) has no `Interrupt` variant to
+name and keeps writing its vectors by hand. The relevant vectors are HSEM (non-secure),
+IPCC1_RX/IPCC2_RX (non-secure), and the MU lines a core drives (i.MX93 `MU1_B`/`MU2_B`;
+i.MX95 CM7 `MU5_A`/`MU7_B`/`MU8_B`).
 
 The `std` doorbell paths are host-testable with fake MMIO and Tokio `Notify`. On `std`
 the wait path normally blocks on the doorbell's `Notify`: `wait()` enables the line's

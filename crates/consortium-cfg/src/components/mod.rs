@@ -22,6 +22,7 @@
 //! | [`uio`]           | `generic-uio` DTS nodes and their `reserved-memory` carveouts. |
 //! | [`memory_to_uio`] | Groups shared-memory regions onto one UIO device.            |
 //! | [`dts_render`]    | The Linux device tree, merged onto a vendor base or as an overlay. |
+//! | [`irq`]           | How a line is named: the PAC's `Interrupt` variant, or a raw number. |
 //! | [`address`]       | Shared address resolution: AP `uioN`/`mmap_id` vs a controller's physical base. |
 //! | [`region`]        | One shared-memory window's construction expression.          |
 //!
@@ -34,12 +35,19 @@
 //!   `clippy::undocumented_unsafe_blocks` in the generated crate.
 //! - **Items referencing a chip HAL are gated to `target_arch = "arm"`,** because the
 //!   host trybuild harness never links one.
+//! - **Interrupt vectors are emitted as bare `#[interrupt] fn <LINE>()` items** and
+//!   collected by [`bridge`](crate::bridge) into one `__consortium_vectors` module.
+//!   cortex-m-rt's attribute expands to an `interrupt::<LINE>;` existence check, so
+//!   that module supplies the `use <hal>::interrupt;` the check resolves against —
+//!   keeping the generated file independent of the firmware crate's own imports. It
+//!   does mean generated firmware must enable the chip HAL's `rt` feature.
 
 pub mod address;
 pub mod bella;
 pub mod dbg;
 pub mod dts_render;
 pub mod ipc_shm;
+pub mod irq;
 pub mod memory_to_uio;
 pub mod peripheral;
 pub mod region;

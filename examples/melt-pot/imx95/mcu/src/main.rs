@@ -24,12 +24,12 @@
 //! constructs drivers from the allowed peripheral singletons and connects each
 //! IPC channel independently.
 //! The generated `init` also resets the CDBG ring, brings up the Embassy time
-//! driver, and installs its `LPIT1_IRQHandler` vector and `defmt::timestamp!`.
+//! driver, and installs its `#[interrupt] fn LPIT1()` vector and
+//! `defmt::timestamp!`.
 
 #![no_std]
 #![no_main]
 
-use consortium_hal_imx9::interrupt;
 use embassy_executor::Spawner;
 use embassy_time::Timer;
 use melt_pot_shared::SensorReading;
@@ -85,15 +85,6 @@ async fn main(_spawner: Spawner) -> Result<(), ConsortiumError> {
 
         Timer::after_secs(1).await;
     }
-}
-
-// MU7 general-purpose-interrupt vector (CM7 side B). The doorbell crate no
-// longer installs this; the application owns it and forwards to the MU waker for
-// instance 7 so waiting `MuDoorbell::wait` futures make progress. `init()`
-// unmasks MU7 to match the `sensor` transceiver's route.
-#[interrupt]
-fn MU7_B() {
-    consortium_ipc_doorbell_mu::notify::<7>();
 }
 
 /// Sine-like walk between 20 °C and 30 °C for demo purposes.

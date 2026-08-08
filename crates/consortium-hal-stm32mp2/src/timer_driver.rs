@@ -320,9 +320,9 @@ pub fn bringup(tim2: Peri<'static, crate::peripherals::TIM2>) {
 
     // SAFETY: `irq` is TIM2's vector from the chip database; the handler
     // forwarding to the time driver is installed by the generated code.
-    unsafe { crate::hal::nvic::set_priority(irq, 0x80) };
+    unsafe { crate::hal::nvic::set_priority(crate::hal::nvic::Irq(irq), 0x80) };
     // SAFETY: see above; enabling the same reserved TIM2 vector.
-    unsafe { crate::hal::nvic::enable(irq) };
+    unsafe { crate::hal::nvic::enable(crate::hal::nvic::Irq(irq)) };
 }
 
 #[cfg(test)]

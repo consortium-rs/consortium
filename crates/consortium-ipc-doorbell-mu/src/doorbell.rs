@@ -97,6 +97,67 @@ mod bindings {
     impl_mu!(MU2_MUA, Primary, 2);
 }
 
+/// Instance `N`'s side-`S` register window, from this crate's vetted address
+/// table. Side B sits one window above side A of the same instance.
+///
+/// Single source for the address formula: the singleton constructor and the
+/// interrupt entry point must name the same window or the ISR would mask a
+/// different instance than the one that woke.
+#[inline]
+const fn window_base<S: Side, const N: usize>() -> usize {
+    base::BASE[N - 1] + (S::INDEX as usize) * base::LENGTH
+}
+
+/// Run `f` with interrupts masked, so a read-modify-write of a shared enable
+/// register cannot be torn by the MU vector preempting task context.
+#[cfg(not(feature = "std"))]
+#[inline]
+fn with_interrupts_masked<R>(f: impl FnOnce() -> R) -> R {
+    critical_section::with(|_| f())
+}
+
+#[cfg(feature = "std")]
+#[inline]
+fn with_interrupts_masked<R>(f: impl FnOnce() -> R) -> R {
+    f()
+}
+
+/// Mask every asserted GI/RF line on `mu`, then `wake` if any was.
+///
+/// Shared by the `std`/UIO service method and the bare-metal vector entry so
+/// both mask *before* waking. The MU interrupt is level-sensitive and its
+/// `GSR`/`RSR` status stays set until the woken [`wait`](Doorbell::wait) future
+/// acknowledges it, so an ISR that only woke would re-assert the moment it
+/// returned and spin without ever letting the executor run the waiter.
+/// Disabling only masks the line — the status bit survives, so the future still
+/// observes it, acknowledges it, and re-arms on the next wait.
+fn service_gi<S: Side, const N: usize>(mu: &Mu<S, N>, wake: impl FnOnce()) {
+    let mut asserted = false;
+    with_interrupts_masked(|| {
+        for gi in 0..MU_GI_CHAN_COUNT {
+            if mu.gi_pending(gi) {
+                // SAFETY: `gi` is `< MU_GI_CHAN_COUNT`, and the critical section
+                // makes this `GIER` read-modify-write atomic against task
+                // context.
+                unsafe { mu.disable_gi(gi) };
+                asserted = true;
+            }
+        }
+        for rf in 0..crate::chan::MU_RF_CHAN_COUNT {
+            if mu.rf_pending(rf) {
+                // SAFETY: `rf` is `< MU_RF_CHAN_COUNT`, and the critical section
+                // makes this `RCR` read-modify-write atomic against task
+                // context.
+                unsafe { mu.disable_rf(rf) };
+                asserted = true;
+            }
+        }
+    });
+    if asserted {
+        wake();
+    }
+}
+
 /// MU-backed doorbell for instance `N` (1-based), processor side `S`.
 pub struct MuDoorbell<S: Side, const N: usize> {
     mu: Mu<S, N>,
@@ -165,12 +226,10 @@ impl<S: Side, const N: usize> MuDoorbell<S, N> {
         // Owning the singleton for the doorbell's lifetime is what makes the
         // MMIO access exclusive; it is consumed here and never reissued.
         let _ = peri;
-        // Side B sits one window above side A of the same instance.
-        let window = usize::from(S::INDEX) * base::LENGTH;
-        // SAFETY: `base::BASE[N - 1] + window` is instance `N`'s side-`S`
-        // window from this crate's vetted address table, and the consumed
-        // singleton guarantees nothing else drives it.
-        unsafe { Self::new_mapped(base::BASE[N - 1] + window) }
+        // SAFETY: `window_base` is instance `N`'s side-`S` window from this
+        // crate's vetted address table, and the consumed singleton guarantees
+        // nothing else drives it.
+        unsafe { Self::new_mapped(window_base::<S, N>()) }
     }
 
     /// Create a doorbell over MU instance `N`, side `S`, from an `mmap`'d
@@ -214,24 +273,7 @@ impl<S: Side, const N: usize> MuDoorbell<S, N> {
     /// original into a transport and bind this method to the UIO IRQ fanout.
     #[cfg(feature = "std")]
     pub fn notify_gi_interrupt(&self) {
-        let mut asserted = false;
-        for gi in 0..MU_GI_CHAN_COUNT {
-            if self.mu.gi_pending(gi) {
-                // SAFETY: `gi` is `< MU_GI_CHAN_COUNT`; masks this line's IRQ.
-                unsafe { self.mu.disable_gi(gi) };
-                asserted = true;
-            }
-        }
-        for rf in 0..crate::chan::MU_RF_CHAN_COUNT {
-            if self.mu.rf_pending(rf) {
-                // SAFETY: `rf` is `< MU_RF_CHAN_COUNT`; masks this line's IRQ.
-                unsafe { self.mu.disable_rf(rf) };
-                asserted = true;
-            }
-        }
-        if asserted {
-            self.notify.notify_waiters();
-        }
+        service_gi(&self.mu, || self.notify.notify_waiters());
     }
 }
 
@@ -440,17 +482,30 @@ fn waker_for<const N: usize>() -> &'static atomic_waker::AtomicWaker {
 static MU_WAKERS: [atomic_waker::AtomicWaker; crate::chan::MU_INSTANCE_COUNT] =
     [const { atomic_waker::AtomicWaker::new() }; crate::chan::MU_INSTANCE_COUNT];
 
-/// Wake the futures waiting on MU instance `N`'s general-purpose interrupt.
+/// Service MU instance `N`'s interrupt from its vector, then wake the futures
+/// waiting on it.
 ///
-/// This crate installs no vector-table entries; the application owns the MU
-/// `#[interrupt]` handlers and forwards each one here with the matching instance
-/// number. i.MX93 routes over the side-B lines of MU1/MU2 (`notify::<1>` /
-/// `notify::<2>`); the i.MX95 CM7 uses MU5 side A plus MU7/MU8 side B
-/// (`notify::<5>` / `notify::<7>` / `notify::<8>`).
+/// Delegates to the same `service_gi` the `std`/UIO path uses: asserted GI/RF
+/// lines are masked before the wake, so the level-sensitive MU line does not
+/// re-assert on return and starve the executor before the waiter runs.
+///
+/// This crate installs no vector-table entries. Generated bring-up emits the
+/// matching `#[interrupt]` and forwards to this with the instance's side and
+/// number — i.MX93 routes over the side-B lines of MU1/MU2, and the i.MX95 CM7
+/// uses MU5 side A plus MU7/MU8 side B.
+///
+/// Takes no base: the window is [`window_base`], the same vetted address
+/// [`MuDoorbell::new`] gives the waiting doorbell, so the vector cannot be
+/// pointed at the wrong instance.
 #[cfg(not(feature = "std"))]
-#[inline]
-pub fn notify<const N: usize>() {
-    MU_WAKERS[N - 1].wake();
+pub fn notify_gi_interrupt<S: Side, const N: usize>() {
+    // SAFETY: `window_base::<S, N>()` is instance `N`'s side-`S` window from
+    // this crate's address table. This deliberately aliases the window the
+    // waiting `MuDoorbell` holds — servicing the line it raised is the point —
+    // and the enable-register writes underneath run in a critical section, so
+    // they cannot tear against task context.
+    let mu = unsafe { Mu::<S, N>::new(window_base::<S, N>()) };
+    service_gi(&mu, || waker_for::<N>().wake());
 }
 
 #[cfg(all(test, feature = "std"))]

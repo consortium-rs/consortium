@@ -21,16 +21,16 @@ mod shared {
 
 ::consortium_ipc_transport_memory::channels!(SENSOR);
 ::consortium_ipc_transport_memory::impl_channel!(
-    SENSOR, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_hsem::HsemDoorbell <
+    SENSOR, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_ipcc::IpccDoorbell <
     ::consortium_ipc::Secondary, 1usize >,
     ::consortium_shared_memory::regions::UncachedRegion, crate ::shared::MotionControl,
     crate ::shared::SensorData, ::consortium_codec::PostcardCodec, 1u8, 0u8, 128usize,
 );
 #[cfg(target_arch = "arm")]
 fn __consortium_install_channels(
-    __db_hsem: ::consortium_hal_stm32mp2::Peri<
+    __db_ipcc1: ::consortium_hal_stm32mp2::Peri<
         'static,
-        ::consortium_hal_stm32mp2::peripherals::HSEM,
+        ::consortium_hal_stm32mp2::peripherals::IPCC1,
     >,
 ) {
     ::consortium_ipc_transport_memory::install::<
@@ -43,10 +43,10 @@ fn __consortium_install_channels(
                 16384usize,
             )
         };
-        let doorbell = ::consortium_ipc_doorbell_hsem::HsemDoorbell::<
+        let doorbell = ::consortium_ipc_doorbell_ipcc::IpccDoorbell::<
             ::consortium_ipc::Secondary,
             1usize,
-        >::new(__db_hsem);
+        >::new(__db_ipcc1);
         // SAFETY: doorbell channel is verified to be valid in the config.
         let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
         // SAFETY: doorbell channel is verified to be valid in the config.
@@ -67,10 +67,25 @@ defmt::timestamp!(
     "{=u32}", { use ::core::sync::atomic:: { AtomicU32, Ordering }; static COUNT :
     AtomicU32 = AtomicU32::new(0); COUNT.fetch_add(1, Ordering::Relaxed) }
 );
+/// Interrupt vectors for this endpoint's generated bring-up.
 #[cfg(target_arch = "arm")]
-#[::consortium_hal_stm32mp2::interrupt]
-fn TIM2() {
-    ::consortium_hal_stm32mp2::timer_driver::on_timer_interrupt();
+mod __consortium_vectors {
+    use ::consortium_hal_stm32mp2::interrupt;
+    #[::consortium_hal_stm32mp2::interrupt]
+    fn TIM2() {
+        ::consortium_hal_stm32mp2::timer_driver::on_timer_interrupt();
+    }
+    const _: () = ::core::assert!(
+        ::consortium_hal_stm32mp2::Interrupt::IPCC1_RX as u16 == 171u16,
+        "IPCC1_RX is interrupt 171 in this core's Consortium chip map but not in the chip PAC's interrupt table; the generated vector and the NVIC enable would refer to different lines"
+    );
+    #[::consortium_hal_stm32mp2::interrupt]
+    fn IPCC1_RX() {
+        ::consortium_ipc_doorbell_ipcc::notify_rx_occupied_interrupt::<
+            ::consortium_ipc::Secondary,
+            1usize,
+        >();
+    }
 }
 /// Runtime bring-up policy. Enabled manifest steps default on.
 #[cfg(target_arch = "arm")]
@@ -124,41 +139,24 @@ fn init(config: Config) -> (Peripherals, Channels) {
         }
     }
     if config.nvic {
-        #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-        #[repr(u16)]
-        pub enum BellaInterrupt {
-            HSEM = 199u16,
-        }
-        unsafe impl ::cortex_m::interrupt::InterruptNumber for BellaInterrupt {
-            fn number(self) -> u16 {
-                self as u16
-            }
-        }
-        // SAFETY: interrupt numbers are emitted from the validated
-        // Consortium hardware database for this visible core.
+        ::consortium_hal_stm32mp2::hal::nvic::unpend(
+            ::consortium_hal_stm32mp2::Interrupt::IPCC1_RX,
+        );
+        // SAFETY: the interrupt comes from the validated Consortium
+        // hardware database for this visible core, and the application
+        // owns the matching vector.
         unsafe {
             ::consortium_hal_stm32mp2::hal::nvic::set_priority(
-                BellaInterrupt::HSEM as u16,
-                0x80,
+                ::consortium_hal_stm32mp2::Interrupt::IPCC1_RX,
+                0x80u8,
+            );
+            ::consortium_hal_stm32mp2::hal::nvic::enable(
+                ::consortium_hal_stm32mp2::Interrupt::IPCC1_RX,
             );
         }
         ::consortium_runtime_mcu::log::trace!(
-            "consortium controller init: NVIC set priority to 0x80 {} (id={})",
-            stringify!(HSEM), BellaInterrupt::HSEM as u32
-        );
-        ::cortex_m::peripheral::NVIC::unpend(BellaInterrupt::HSEM);
-        ::consortium_runtime_mcu::log::trace!(
-            "consortium controller init: NVIC unpend {} (id={})", stringify!(HSEM),
-            BellaInterrupt::HSEM as u32
-        );
-        // SAFETY: interrupt numbers are emitted from the validated
-        // Consortium hardware database for this visible core.
-        unsafe {
-            ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::HSEM);
-        }
-        ::consortium_runtime_mcu::log::trace!(
-            "consortium controller init: NVIC unmask {} (id={})", stringify!(HSEM),
-            BellaInterrupt::HSEM as u32
+            "consortium controller init: NVIC enabled {} at priority 0x80 (id={})",
+            "IPCC1_RX", 171u32
         );
     }
     let __p = ::consortium_hal_stm32mp2::init();
@@ -168,7 +166,7 @@ fn init(config: Config) -> (Peripherals, Channels) {
             "consortium controller init: time driver up"
         );
     }
-    __consortium_install_channels(__p.HSEM);
+    __consortium_install_channels(__p.IPCC1);
     let channels = Channels::take();
     let peripherals = Peripherals { SPI1: __p.SPI1 };
     ::consortium_runtime_mcu::log::trace!("consortium controller init: resources ready");

@@ -23,7 +23,7 @@ mtu    = 64
 # CM33 (via the raw physical base).
 [[ipc.channel]]
 name          = "sensor"
-doorbell      = "hsem"
+doorbell      = "ipcc1"
 pattern       = "memory"
 primary       = "linux"
 secondary     = "cm33"

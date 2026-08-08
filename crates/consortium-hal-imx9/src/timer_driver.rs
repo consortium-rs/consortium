@@ -307,7 +307,7 @@ pub fn on_timer_interrupt() {
 /// prescaler, so the firmware must select the `embassy-time`
 /// `tick-hz-24_000_000` feature and the platform must leave LPIT1 clocked and
 /// accessible to the CM7. The caller (the generated `init`) still owns the
-/// `LPIT1_IRQHandler` vector that forwards to [`on_timer_interrupt`]. Firmware
+/// `#[interrupt] fn LPIT1()` vector that forwards to [`on_timer_interrupt`]. Firmware
 /// that manages its own time base should disable the generated time driver
 /// (`time_driver = false`) and call [`init_timer`] directly instead.
 ///
@@ -327,9 +327,9 @@ pub fn bringup(lpit1: Peri<'static, crate::peripherals::LPIT1>) {
 
     // SAFETY: `irq` is LPIT1's vector from the chip database; the handler
     // forwarding to the time driver is installed by the generated code.
-    unsafe { crate::hal::nvic::set_priority(irq, 0x80) };
+    unsafe { crate::hal::nvic::set_priority(crate::hal::nvic::Irq(irq), 0x80) };
     // SAFETY: see above; enabling the same reserved LPIT1 vector.
-    unsafe { crate::hal::nvic::enable(irq) };
+    unsafe { crate::hal::nvic::enable(crate::hal::nvic::Irq(irq)) };
 }
 
 #[cfg(test)]

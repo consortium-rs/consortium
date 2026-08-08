@@ -34,9 +34,9 @@ use syn::parse_str;
 /// The chip family whose time driver we generate, distinguished by HAL crate.
 #[derive(Clone, Copy)]
 enum Family {
-    /// STM32MP2: cortex-m-rt `#[interrupt] fn TIM2()` vector.
+    /// STM32MP2: TIM2.
     Stm32mp2,
-    /// i.MX9: CMSIS-named `LPIT1_IRQHandler` vector.
+    /// i.MX9: LPIT1.
     Imx9,
 }
 
@@ -63,6 +63,10 @@ pub struct TimeDriverCodegen {
     /// `defmt` present on this core.
     pub timestamp: TokenStream,
     /// The timer interrupt vector, forwarding to the HAL's `on_timer_interrupt`.
+    ///
+    /// A bare `#[interrupt]` item: the caller places it in the generated vector
+    /// module, which supplies the `interrupt` import the attribute expands
+    /// against and the `target_arch = "arm"` gate.
     pub isr: TokenStream,
     /// The `init`-body statement that brings the driver up (calls the HAL
     /// `timer_driver::bringup`).
@@ -106,25 +110,15 @@ pub fn time_driver_codegen(hal_crate: &str, enabled: bool, dbg_present: bool) ->
         ::consortium_runtime_mcu::log::trace!("consortium controller init: time driver up");
     };
 
-    // The vector is bare-metal only; the host trybuild harness (which never
-    // links the chip `rt` vector table) skips it, matching the `init` gate.
-    let isr = match family {
-        Family::Stm32mp2 => quote! {
-            #[cfg(target_arch = "arm")]
-            #[#hal::interrupt]
-            fn TIM2() {
-                #hal::timer_driver::on_timer_interrupt();
-            }
-        },
-        Family::Imx9 => quote! {
-            /// SAFETY: installs the CMSIS-named LPIT1 vector the i.MX9 runtime
-            /// dispatches; the handler only forwards to the time driver.
-            #[cfg(target_arch = "arm")]
-            #[unsafe(no_mangle)]
-            extern "C" fn LPIT1_IRQHandler() {
-                #hal::timer_driver::on_timer_interrupt();
-            }
-        },
+    // cortex-m-rt's `#[interrupt]` names the line by its PAC `Interrupt`
+    // variant, which is what puts the handler in that slot of the vector table.
+    // The bare-metal gate and the `interrupt` import come from the vector module
+    // the caller places this in.
+    let isr = quote! {
+        #[#hal::interrupt]
+        fn #timer() {
+            #hal::timer_driver::on_timer_interrupt();
+        }
     };
 
     // `defmt` requires exactly one timestamp source per binary. Emit it only
