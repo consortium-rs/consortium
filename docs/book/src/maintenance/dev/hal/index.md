@@ -50,18 +50,28 @@ The CAN drivers present a classic (non-FD) 2.0A/2.0B controller through the
 layout as a first cut; FD frames, extra mailboxes, and hardware acceptance filtering are
 left as room to grow, and the receive filter accepts every identifier.
 
+`Can::split` hands out independent `CanTx` and `CanRx` halves for code that transmits and
+receives concurrently — `consortium-ipc-transport-fdcan` is the motivating caller. The
+halves drive disjoint registers and storage and park on separate wakers in the shared
+`CanState`; a single waker would let whichever half registered last clobber the other's
+registration and strand it.
+
 The two families differ in how message storage is arranged, reflecting the underlying IP:
 
 - **i.MX 9x (FlexCAN).** `Can::new` takes the instance base and a `&'static CanState`.
   The driver uses a fixed two-mailbox layout: message buffer 0 transmits and message
-  buffer 1 receives every frame.
+  buffer 1 receives every frame. With only one receive mailbox, a frame arriving before
+  the previous one is read is reported as `Error::Overrun` and lost, so a burst needs a
+  task already parked in `receive`. FlexCAN's RX FIFO would remove the constraint.
 - **STM32MP2 (FDCAN / Bosch M_CAN).** `Can::new` additionally takes the shared CAN
   message-RAM base, this instance's byte offset within it, and the `&'static CanState`.
   The SoC gives all FDCAN instances one shared `CAN_SRAM` window, so the caller
-  partitions that window by handing each instance a distinct message-RAM offset. Within
-  its slice, the driver lays out a three-element receive FIFO 0 followed by a single
-  dedicated transmit buffer, using 8-byte classic elements. The async path enables
-  interrupt line 0 (`FDCANx_IT0`).
+  partitions that window by handing each instance a distinct message-RAM offset, leaving
+  at least `can::REGION_BYTES` between them. Within its slice, the driver lays out an
+  eight-element receive FIFO 0 followed by a single dedicated transmit buffer, using
+  8-byte classic elements. The FIFO is deep enough that a back-to-back burst — what a
+  segmenting transport emits for one large message — survives a receiver that is not
+  already parked. The async path enables interrupt line 0 (`FDCANx_IT0`).
 
 ## SPI
 

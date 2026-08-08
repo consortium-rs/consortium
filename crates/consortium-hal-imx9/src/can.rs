@@ -12,6 +12,11 @@
 //! the instance's interrupt to [`on_interrupt`] parameterized with the same
 //! singleton type.
 //!
+//! [`Can::split`] hands out independent [`CanTx`] and [`CanRx`] halves for code
+//! that transmits and receives concurrently, such as a full-duplex IPC
+//! transport. The halves drive disjoint mailboxes and park on separate wakers,
+//! so neither starves the other.
+//!
 //! The driver uses a fixed two-mailbox layout: message buffer 0 transmits and
 //! message buffer 1 receives every frame (the receive global mask is cleared,
 //! so all identifiers are accepted). This covers classic 2.0A/2.0B frames up to
@@ -19,6 +24,14 @@
 //! are intentionally out of scope for this first cut. The primitives read and
 //! write the mailbox words directly, so a larger mailbox pool or an RX FIFO can
 //! be layered on without changing the public shape.
+//!
+//! One consequence of the single receive mailbox is worth knowing before
+//! layering a segmenting protocol on top: a frame that arrives while the
+//! previous one is still unread sets the overrun code and is reported as
+//! [`Error::Overrun`]. A receiver that is not already parked in
+//! [`CanRx::receive`] will therefore lose frames from a back-to-back burst. An
+//! RX FIFO would remove the constraint; until then, keep the bit rate and
+//! message size within what the receiving task can drain.
 
 use core::future::poll_fn;
 use core::task::Poll;
@@ -160,23 +173,28 @@ const fn presdiv(clock_hz: u32, bitrate: u32) -> u8 {
 ///
 /// One `static` per FlexCAN instance is created by `impl_can` and reached
 /// through the instance type, so callers never supply or name it.
+/// The transmit and receive paths park on separate wakers so the [`CanTx`] and
+/// [`CanRx`] halves can await concurrently. A single waker would let whichever
+/// half registered last clobber the other's, stranding it forever.
 pub struct State {
-    waker: AtomicWaker,
+    tx_waker: AtomicWaker,
+    rx_waker: AtomicWaker,
 }
 
 impl State {
     /// Create an empty state suitable for a `static`.
     pub(crate) const fn new() -> Self {
         Self {
-            waker: AtomicWaker::new(),
+            tx_waker: AtomicWaker::new(),
+            rx_waker: AtomicWaker::new(),
         }
     }
 
     /// Handle the interrupt of the FlexCAN instance at `r`.
     ///
     /// Masks every mailbox interrupt that is both enabled and asserted, then
-    /// wakes the pending transfer, which re-arms the mask it still needs and
-    /// clears the mailbox flag once it has drained the frame.
+    /// wakes the transfer owning that mailbox, which re-arms the mask it still
+    /// needs and clears the mailbox flag once it has drained the frame.
     fn on_interrupt(&self, r: CAN) {
         let flag = r.IFLAG1().read().0;
         let mask = r.IMASK1().read().BUF31TO0M();
@@ -185,7 +203,12 @@ impl State {
             let mut next = CAN_IMASK1(0);
             next.set_BUF31TO0M(mask & !pending);
             r.IMASK1().write_value(next);
-            self.waker.wake();
+            if pending & (1 << TX_MB) != 0 {
+                self.tx_waker.wake();
+            }
+            if pending & (1 << RX_MB) != 0 {
+                self.rx_waker.wake();
+            }
         }
     }
 }
@@ -262,10 +285,27 @@ impl Default for Config {
     }
 }
 
-/// Classic CAN controller over one FlexCAN instance.
-pub struct Can {
+/// Transmit half of a FlexCAN instance, produced by [`Can::split`].
+///
+/// Drives the transmit mailbox and parks on the instance's transmit waker, so
+/// it can run concurrently with a [`CanRx`] for the same instance.
+pub struct CanTx {
     regs: CAN,
     state: &'static State,
+}
+
+/// Receive half of a FlexCAN instance, produced by [`Can::split`].
+///
+/// Drives the receive mailbox and parks on the instance's receive waker.
+pub struct CanRx {
+    regs: CAN,
+    state: &'static State,
+}
+
+/// Classic CAN controller over one FlexCAN instance.
+pub struct Can {
+    tx: CanTx,
+    rx: CanRx,
 }
 
 impl Can {
@@ -280,8 +320,14 @@ impl Can {
         let _ = peri;
         let r = T::regs();
         let this = Self {
-            regs: r,
-            state: T::state(),
+            tx: CanTx {
+                regs: r,
+                state: T::state(),
+            },
+            rx: CanRx {
+                regs: r,
+                state: T::state(),
+            },
         };
 
         // Enable the module and wait for it to leave low-power mode.
@@ -320,10 +366,10 @@ impl Can {
             .write_value(pac::peripherals::can::CAN_RXMGMASK(0));
 
         // Park both mailboxes, then arm the receive mailbox as empty.
-        this.write_cs(TX_MB, code::TX_INACTIVE << cs::CODE_SHIFT);
-        this.write_cs(RX_MB, code::RX_INACTIVE << cs::CODE_SHIFT);
-        this.write_id(RX_MB, 0);
-        this.write_cs(RX_MB, code::RX_EMPTY << cs::CODE_SHIFT);
+        write_cs(r, TX_MB, code::TX_INACTIVE << cs::CODE_SHIFT);
+        write_cs(r, RX_MB, code::RX_INACTIVE << cs::CODE_SHIFT);
+        write_id(r, RX_MB, 0);
+        write_cs(r, RX_MB, code::RX_EMPTY << cs::CODE_SHIFT);
 
         // Clear any latched flags for our mailboxes and leave freeze mode.
         r.IFLAG1()
@@ -337,73 +383,42 @@ impl Can {
         this
     }
 
-    /// Base pointer of mailbox `n` (the CS word; ID/data words follow).
-    fn mb_ptr(&self, n: usize) -> *mut u32 {
-        self.regs.MB_8B_CS(n).as_ptr()
+    /// Split into independent transmit and receive halves.
+    ///
+    /// The halves drive disjoint mailboxes — buffer 0 versus buffer 1 — and park
+    /// on separate wakers, so a transport can await a frame and send one at the
+    /// same time.
+    pub fn split(self) -> (CanTx, CanRx) {
+        (self.tx, self.rx)
     }
 
-    fn write_cs(&self, n: usize, value: u32) {
-        self.regs.MB_8B_CS(n).write_value(value);
+    /// Transmit `frame`, awaiting completion of the transfer.
+    pub async fn transmit(&mut self, frame: &Frame) -> Result<(), Error> {
+        self.tx.transmit(frame).await
     }
 
-    fn read_cs(&self, n: usize) -> u32 {
-        self.regs.MB_8B_CS(n).read()
+    /// Await and return the next received frame.
+    pub async fn receive(&mut self) -> Result<Frame, Error> {
+        self.rx.receive().await
     }
+}
 
-    fn write_id(&self, n: usize, value: u32) {
-        let p = self.mb_ptr(n).wrapping_add(1);
-        // SAFETY: the ID word sits one 32-bit word after the CS word of a valid,
-        // exclusively owned mailbox.
-        unsafe { p.write_volatile(value) };
-    }
-
-    fn read_id(&self, n: usize) -> u32 {
-        let p = self.mb_ptr(n).wrapping_add(1);
-        // SAFETY: see `write_id`.
-        unsafe { p.read_volatile() }
-    }
-
-    fn write_data(&self, n: usize, data: &[u8; 8]) {
-        let w0 = u32::from_be_bytes([data[0], data[1], data[2], data[3]]);
-        let w1 = u32::from_be_bytes([data[4], data[5], data[6], data[7]]);
-        let d0 = self.mb_ptr(n).wrapping_add(2);
-        let d1 = self.mb_ptr(n).wrapping_add(3);
-        // SAFETY: `d0` is the first data word, two 32-bit words after the CS word
-        // of a valid, exclusively owned mailbox.
-        unsafe { d0.write_volatile(w0) };
-        // SAFETY: `d1` is the second data word, three words after the CS word.
-        unsafe { d1.write_volatile(w1) };
-    }
-
-    fn read_data(&self, n: usize) -> [u8; 8] {
-        let d0 = self.mb_ptr(n).wrapping_add(2);
-        let d1 = self.mb_ptr(n).wrapping_add(3);
-        // SAFETY: `d0` is the first data word of a valid, exclusively owned
-        // mailbox.
-        let w0 = unsafe { d0.read_volatile() };
-        // SAFETY: `d1` is the second data word of the same mailbox.
-        let w1 = unsafe { d1.read_volatile() };
-        let mut out = [0u8; 8];
-        out[..4].copy_from_slice(&w0.to_be_bytes());
-        out[4..].copy_from_slice(&w1.to_be_bytes());
-        out
-    }
-
+impl CanTx {
     /// True once the transmit mailbox has finished its previous frame (or has
     /// never been loaded).
     fn tx_ready(&self) -> bool {
         (self.regs.IFLAG1().read().0 & (1 << TX_MB)) != 0
-            || (self.read_cs(TX_MB) >> cs::CODE_SHIFT) & 0xF == code::TX_INACTIVE
+            || (read_cs(self.regs, TX_MB) >> cs::CODE_SHIFT) & 0xF == code::TX_INACTIVE
     }
 
     /// Load and start transmission of `frame` on the transmit mailbox.
     fn load_tx(&mut self, frame: &Frame) {
         let (ide, id_word) = encode_id(frame.id);
         // Inactivate first so the engine does not read a half-written mailbox.
-        self.write_cs(TX_MB, code::TX_INACTIVE << cs::CODE_SHIFT);
+        write_cs(self.regs, TX_MB, code::TX_INACTIVE << cs::CODE_SHIFT);
         self.regs.IFLAG1().write_value(CAN_IFLAG1(1 << TX_MB));
-        self.write_id(TX_MB, id_word);
-        self.write_data(TX_MB, &frame.data);
+        write_id(self.regs, TX_MB, id_word);
+        write_data(self.regs, TX_MB, &frame.data);
         let mut word = code::TX_DATA << cs::CODE_SHIFT;
         word |= (u32::from(frame.dlc) & cs::DLC_MASK) << cs::DLC_SHIFT;
         if ide {
@@ -412,19 +427,39 @@ impl Can {
         if frame.remote {
             word |= cs::RTR;
         }
-        self.write_cs(TX_MB, word);
+        write_cs(self.regs, TX_MB, word);
     }
 
+    /// Transmit `frame`, awaiting completion of the transfer.
+    pub async fn transmit(&mut self, frame: &Frame) -> Result<(), Error> {
+        check_bus(self.regs)?;
+        // Wait for the transmit mailbox to be free, then load the frame.
+        wait_flag(&self.state.tx_waker, self.regs, TX_MB, || {
+            self.tx_ready().then_some(Ok(()))
+        })
+        .await?;
+        self.load_tx(frame);
+        // Await the transmit-complete flag.
+        wait_flag(&self.state.tx_waker, self.regs, TX_MB, || {
+            ((self.regs.IFLAG1().read().0 & (1 << TX_MB)) != 0).then_some(Ok(()))
+        })
+        .await?;
+        self.regs.IFLAG1().write_value(CAN_IFLAG1(1 << TX_MB));
+        Ok(())
+    }
+}
+
+impl CanRx {
     /// Read the received frame out of the receive mailbox and re-arm it.
     fn drain_rx(&mut self) -> Result<Frame, Error> {
         // Reading the CS word locks the mailbox against engine updates.
-        let cs = self.read_cs(RX_MB);
+        let cs = read_cs(self.regs, RX_MB);
         let overrun = (cs >> cs::CODE_SHIFT) & 0xF == code::RX_OVERRUN;
         let dlc = ((cs >> cs::DLC_SHIFT) & cs::DLC_MASK).min(8) as u8;
         let ide = cs & cs::IDE != 0;
         let remote = cs & cs::RTR != 0;
-        let id_word = self.read_id(RX_MB);
-        let data = self.read_data(RX_MB);
+        let id_word = read_id(self.regs, RX_MB);
+        let data = read_data(self.regs, RX_MB);
         // Read the free-running timer to unlock the mailbox.
         let _ = self.regs.TIMER().read();
         // Acknowledge the mailbox; it returns to the empty state automatically.
@@ -447,62 +482,105 @@ impl Can {
         (self.regs.IFLAG1().read().0 & (1 << RX_MB)) != 0
     }
 
-    /// Surface a bus-off condition as an error.
-    fn check_bus(&self) -> Result<(), Error> {
-        if self.regs.ESR1().read().FLTCONF() == 0b10 {
-            Err(Error::BusOff)
-        } else {
-            Ok(())
-        }
-    }
-
-    // --- async primitives ---------------------------------------------------
-
-    async fn wait_flag(
-        &self,
-        mb: usize,
-        ready: impl Fn(&Self) -> Option<Result<(), Error>>,
-    ) -> Result<(), Error> {
-        poll_fn(|cx| {
-            if let Some(res) = ready(self) {
-                return Poll::Ready(res);
-            }
-            self.state.waker.register(cx.waker());
-            critical_section::with(|_| {
-                self.regs.IMASK1().modify(|w| {
-                    w.set_BUF31TO0M(w.BUF31TO0M() | (1 << mb));
-                });
-            });
-            if let Some(res) = ready(self) {
-                return Poll::Ready(res);
-            }
-            Poll::Pending
-        })
-        .await
-    }
-
-    /// Transmit `frame`, awaiting completion of the transfer.
-    pub async fn transmit(&mut self, frame: &Frame) -> Result<(), Error> {
-        self.check_bus()?;
-        // Wait for the transmit mailbox to be free, then load the frame.
-        self.wait_flag(TX_MB, |s| s.tx_ready().then_some(Ok(())))
-            .await?;
-        self.load_tx(frame);
-        // Await the transmit-complete flag.
-        self.wait_flag(TX_MB, |s| {
-            ((s.regs.IFLAG1().read().0 & (1 << TX_MB)) != 0).then_some(Ok(()))
-        })
-        .await?;
-        self.regs.IFLAG1().write_value(CAN_IFLAG1(1 << TX_MB));
-        Ok(())
-    }
-
     /// Await and return the next received frame.
     pub async fn receive(&mut self) -> Result<Frame, Error> {
-        self.wait_flag(RX_MB, |s| s.rx_pending().then_some(Ok(())))
-            .await?;
+        wait_flag(&self.state.rx_waker, self.regs, RX_MB, || {
+            self.rx_pending().then_some(Ok(()))
+        })
+        .await?;
         self.drain_rx()
     }
+}
+
+/// Base pointer of mailbox `n` (the CS word; ID/data words follow).
+fn mb_ptr(regs: CAN, n: usize) -> *mut u32 {
+    regs.MB_8B_CS(n).as_ptr()
+}
+
+fn write_cs(regs: CAN, n: usize, value: u32) {
+    regs.MB_8B_CS(n).write_value(value);
+}
+
+fn read_cs(regs: CAN, n: usize) -> u32 {
+    regs.MB_8B_CS(n).read()
+}
+
+fn write_id(regs: CAN, n: usize, value: u32) {
+    let p = mb_ptr(regs, n).wrapping_add(1);
+    // SAFETY: the ID word sits one 32-bit word after the CS word of a valid,
+    // exclusively owned mailbox.
+    unsafe { p.write_volatile(value) };
+}
+
+fn read_id(regs: CAN, n: usize) -> u32 {
+    let p = mb_ptr(regs, n).wrapping_add(1);
+    // SAFETY: see `write_id`.
+    unsafe { p.read_volatile() }
+}
+
+fn write_data(regs: CAN, n: usize, data: &[u8; 8]) {
+    let w0 = u32::from_be_bytes([data[0], data[1], data[2], data[3]]);
+    let w1 = u32::from_be_bytes([data[4], data[5], data[6], data[7]]);
+    let d0 = mb_ptr(regs, n).wrapping_add(2);
+    let d1 = mb_ptr(regs, n).wrapping_add(3);
+    // SAFETY: `d0` is the first data word, two 32-bit words after the CS word
+    // of a valid, exclusively owned mailbox.
+    unsafe { d0.write_volatile(w0) };
+    // SAFETY: `d1` is the second data word, three words after the CS word.
+    unsafe { d1.write_volatile(w1) };
+}
+
+fn read_data(regs: CAN, n: usize) -> [u8; 8] {
+    let d0 = mb_ptr(regs, n).wrapping_add(2);
+    let d1 = mb_ptr(regs, n).wrapping_add(3);
+    // SAFETY: `d0` is the first data word of a valid, exclusively owned
+    // mailbox.
+    let w0 = unsafe { d0.read_volatile() };
+    // SAFETY: `d1` is the second data word of the same mailbox.
+    let w1 = unsafe { d1.read_volatile() };
+    let mut out = [0u8; 8];
+    out[..4].copy_from_slice(&w0.to_be_bytes());
+    out[4..].copy_from_slice(&w1.to_be_bytes());
+    out
+}
+
+/// Surface a bus-off condition as an error.
+fn check_bus(regs: CAN) -> Result<(), Error> {
+    if regs.ESR1().read().FLTCONF() == 0b10 {
+        Err(Error::BusOff)
+    } else {
+        Ok(())
+    }
+}
+
+/// Park on `waker` until `ready` reports a result, unmasking mailbox `mb`'s
+/// interrupt each time the future is polled to `Pending`.
+///
+/// `ready` is re-checked after registering the waker: the interrupt can fire in
+/// the window between the first check and the registration, and an already-set
+/// mailbox flag would otherwise never wake anyone.
+async fn wait_flag(
+    waker: &AtomicWaker,
+    regs: CAN,
+    mb: usize,
+    ready: impl Fn() -> Option<Result<(), Error>>,
+) -> Result<(), Error> {
+    poll_fn(|cx| {
+        if let Some(res) = ready() {
+            return Poll::Ready(res);
+        }
+        waker.register(cx.waker());
+        critical_section::with(|_| {
+            regs.IMASK1().modify(|w| {
+                w.set_BUF31TO0M(w.BUF31TO0M() | (1 << mb));
+            });
+        });
+        if let Some(res) = ready() {
+            return Poll::Ready(res);
+        }
+        Poll::Pending
+    })
+    .await
 }
 
 /// Encode an identifier into `(is_extended, id_word)`.
@@ -533,19 +611,19 @@ impl embedded_can::nb::Can for Can {
     type Error = Error;
 
     fn transmit(&mut self, frame: &Frame) -> nb::Result<Option<Frame>, Error> {
-        self.check_bus()?;
-        if !self.tx_ready() {
+        check_bus(self.tx.regs)?;
+        if !self.tx.tx_ready() {
             return Err(nb::Error::WouldBlock);
         }
-        self.load_tx(frame);
+        self.tx.load_tx(frame);
         Ok(None)
     }
 
     fn receive(&mut self) -> nb::Result<Frame, Error> {
-        if !self.rx_pending() {
+        if !self.rx.rx_pending() {
             return Err(nb::Error::WouldBlock);
         }
-        self.drain_rx().map_err(nb::Error::Other)
+        self.rx.drain_rx().map_err(nb::Error::Other)
     }
 }
 

@@ -62,5 +62,5 @@ directional halves; `Transport` marks a full-duplex implementation.
 
 **Type-A / Type-B IPC**  
 Informal project categories. Type-A uses a separate doorbell, as shared-memory IPC does.
-Type-B is transport-coupled: UART byte arrival is the notification, so no doorbell or
-processor side is required.
+Type-B is transport-coupled: UART byte arrival or CAN frame arrival is the notification,
+so no doorbell or processor side is required.
