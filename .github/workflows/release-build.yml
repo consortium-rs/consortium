@@ -83,3 +83,14 @@ jobs:
           ASSET: ${{ steps.package_unix.outputs.asset || steps.package_windows.outputs.asset }}
         shell: bash
         run: gh release upload "${{ inputs.tag }}" "$ASSET" --clobber
+
+  publish:
+    name: Publish completed release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Publish draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release edit "${{ inputs.tag }}" --draft=false

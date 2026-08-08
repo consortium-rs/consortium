@@ -238,6 +238,24 @@ class ReleaseTests(unittest.TestCase):
         self.assertIn("- [ipc] [aaaaaaa] by @developer: connect", notes)
         self.assertIn("# Other contributions", notes)
 
+    def test_github_release_is_created_as_a_draft(self):
+        notes_path = Path("release-notes.md")
+        with patch.object(release, "run") as run:
+            release.create_draft_release("v0.2.0", "0.2.0", notes_path)
+        run.assert_called_once_with(
+            "gh",
+            "release",
+            "create",
+            "v0.2.0",
+            "--title",
+            "0.2.0",
+            "--notes-file",
+            str(notes_path),
+            "--verify-tag",
+            "--draft",
+            cwd=release.ROOT,
+        )
+
     def test_release_workflow_has_required_matrix(self):
         root = Path(__file__).parents[2]
         workflow = root / ".github" / "workflows" / "release-build.yml"
