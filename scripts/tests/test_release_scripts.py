@@ -264,6 +264,18 @@ class ReleaseTests(unittest.TestCase):
             root / "crates" / "consortium-cli" / "Cargo.toml"
         )
 
+    def test_release_workflow_requires_publish_repository_context(self):
+        root = Path(__file__).parents[2]
+        workflow = root / ".github" / "workflows" / "release-build.yml"
+        without_repository = workflow.read_text().replace(
+            "          GH_REPO: ${{ github.repository }}\n", ""
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            test_workflow = Path(directory) / "release-build.yml"
+            test_workflow.write_text(without_repository)
+            with self.assertRaisesRegex(RuntimeError, "repository context"):
+                release.validate_release_workflow(test_workflow)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -330,6 +330,14 @@ def validate_release_workflow(path: Path) -> None:
     )
     if 'gh release edit "${{ inputs.tag }}" --draft=false' not in publish_scripts:
         raise RuntimeError(f"{path} does not publish the completed draft release")
+    publish_has_repository = any(
+        isinstance(step, dict)
+        and isinstance(step.get("env"), dict)
+        and step["env"].get("GH_REPO") == "${{ github.repository }}"
+        for step in publish_steps
+    )
+    if not publish_has_repository:
+        raise RuntimeError(f"{path} publish step has no GitHub repository context")
 
 
 def validate_binstall_manifest(path: Path) -> None:
