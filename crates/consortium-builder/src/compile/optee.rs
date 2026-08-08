@@ -80,6 +80,9 @@ pub struct OpteeConfiguration {
     pub path: PathBuf,
     /// Build in release mode.
     pub release: bool,
+    /// Pass `--offline` to cargo: resolve and build from the local registry cache
+    /// only. Populate that cache first with `csti fetch`.
+    pub offline: bool,
     /// Optional explicit linker (e.g. the cross-compiler from the OP-TEE SDK).
     pub linker: Option<String>,
     /// Path to the OP-TEE TA dev-kit directory (`TA_DEV_KIT_DIR`).
@@ -135,6 +138,10 @@ impl OpteeCompiler {
 
         if config.release {
             cmd.arg("--release");
+        }
+
+        if config.offline {
+            cmd.arg("--offline");
         }
 
         if let Some(ref linker) = config.linker {
@@ -239,6 +246,9 @@ impl Compiler for OpteeCompiler {
 }
 
 /// Backward-compatible builder; delegates to [`OpteeCompiler`].
+///
+/// Always builds online (`offline: false`); use [`OpteeCompiler`] directly to
+/// build from the local registry cache.
 pub struct OpteeBuilder {
     /// Path to the Cargo project root.
     pub path: PathBuf,
@@ -258,6 +268,7 @@ impl OpteeBuilder {
         OpteeCompiler::build(OpteeConfiguration {
             path: self.path.clone(),
             release: self.release,
+            offline: false,
             linker: self.linker.clone(),
             ta_dev_kit_dir: env.ta_dev_kit_dir.clone(),
             optee_signer: env.optee_signer.clone(),

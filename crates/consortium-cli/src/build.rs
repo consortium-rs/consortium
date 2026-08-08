@@ -16,15 +16,14 @@
 
 //! The `build` subcommand: the end-to-end `Consortium.toml` build pipeline.
 
-use std::io::{self, IsTerminal, Write};
 use std::path::PathBuf;
-use std::sync::Mutex;
 
 use clap::Args;
 use consortium_builder::pipeline::{
     self, PipelineConfig, bitbake::BitbakeAction, tee::TeeToolchain,
 };
-use consortium_builder::{BuildReporter, BuildStep};
+
+use crate::reporter::StickyReporter;
 
 #[derive(Args)]
 pub struct BuildArgs {
@@ -39,6 +38,12 @@ pub struct BuildArgs {
     /// Build in release mode.
     #[arg(long)]
     release: bool,
+
+    /// Build without network access: every cargo invocation runs `--offline`,
+    /// resolving only what is already in the local registry cache. Populate that
+    /// cache first with `csti fetch`.
+    #[arg(long)]
+    offline: bool,
 
     /// Build the OP-TEE TA but skip signing it into a `<uuid>.ta`. The unsigned
     /// ELF is staged instead, so no signer script or signing keys are needed.
@@ -98,215 +103,6 @@ fn resolve_bitbake(args: &BuildArgs) -> Result<Vec<BitbakeAction>, String> {
     Ok(actions)
 }
 
-#[derive(Clone, Copy)]
-enum StepStatus {
-    Running,
-    Done,
-    Failed,
-}
-
-struct CurrentStep {
-    index: usize,
-    total: usize,
-    name: String,
-    detail: Option<String>,
-    status: StepStatus,
-}
-
-struct ReporterState {
-    current: Option<CurrentStep>,
-    pending_output: String,
-}
-
-struct StickyReporter {
-    state: Mutex<ReporterState>,
-    interactive: bool,
-    color: bool,
-}
-
-impl StickyReporter {
-    fn new() -> Self {
-        let interactive = io::stderr().is_terminal();
-        let color = interactive
-            && std::env::var_os("NO_COLOR").is_none()
-            && std::env::var("TERM")
-                .map(|term| term != "dumb")
-                .unwrap_or(true);
-        Self {
-            state: Mutex::new(ReporterState {
-                current: None,
-                pending_output: String::new(),
-            }),
-            interactive,
-            color,
-        }
-    }
-
-    fn finish_success(&self) {
-        self.finish("ok", "Build complete", "32;1");
-    }
-
-    fn finish_failure(&self) {
-        self.finish("x", "Build failed", "31;1");
-    }
-
-    fn finish(&self, mark: &str, message: &str, color: &str) {
-        let Ok(mut state) = self.state.lock() else {
-            return;
-        };
-        let mut stderr = io::stderr().lock();
-        if self.interactive {
-            let _ = write!(stderr, "\r\x1b[2K");
-        }
-        self.flush_pending(&mut state, &mut stderr);
-        state.current = None;
-        let _ = writeln!(stderr, "{} {}", self.paint(color, mark), message);
-        let _ = stderr.flush();
-    }
-
-    fn update_step(&self, step: BuildStep<'_>, status: StepStatus) {
-        let Ok(mut state) = self.state.lock() else {
-            return;
-        };
-        let mut stderr = io::stderr().lock();
-        if self.interactive {
-            let _ = write!(stderr, "\r\x1b[2K");
-        }
-        self.flush_pending(&mut state, &mut stderr);
-
-        state.current = Some(CurrentStep {
-            index: step.index,
-            total: step.total,
-            name: step.name.to_string(),
-            detail: step.detail.map(str::to_string),
-            status,
-        });
-
-        if let Some(current) = state.current.as_ref() {
-            let prompt = self.render_prompt(current);
-            if self.interactive {
-                let _ = write!(stderr, "{prompt}");
-            } else {
-                let _ = writeln!(stderr, "{prompt}");
-            }
-        }
-        let _ = stderr.flush();
-    }
-
-    fn flush_pending(&self, state: &mut ReporterState, stderr: &mut impl Write) {
-        if state.pending_output.is_empty() {
-            return;
-        }
-        let pending = std::mem::take(&mut state.pending_output);
-        let _ = write!(stderr, "{pending}");
-        if !pending.ends_with('\n') && !pending.ends_with('\r') {
-            let _ = writeln!(stderr);
-        }
-    }
-
-    fn drain_complete_output(&self, state: &mut ReporterState) -> String {
-        let Some(end) = state
-            .pending_output
-            .char_indices()
-            .filter_map(|(idx, ch)| (ch == '\n' || ch == '\r').then_some(idx + ch.len_utf8()))
-            .next_back()
-        else {
-            return String::new();
-        };
-
-        let complete = state.pending_output[..end].to_string();
-        state.pending_output.replace_range(..end, "");
-        normalize_line_endings(&complete)
-    }
-
-    fn render_prompt(&self, current: &CurrentStep) -> String {
-        let (status, color) = match current.status {
-            StepStatus::Running => ("running", "36;1"),
-            StepStatus::Done => ("done", "32;1"),
-            StepStatus::Failed => ("failed", "31;1"),
-        };
-        let mut prompt = format!(
-            "{} {} {} {}",
-            self.paint("36;1", "> consortium"),
-            self.paint("33", format!("[{}/{}]", current.index, current.total)),
-            self.paint(color, status),
-            self.paint("1", &current.name),
-        );
-        if let Some(detail) = &current.detail {
-            prompt.push(' ');
-            prompt.push_str(&self.paint("2", detail));
-        }
-        prompt
-    }
-
-    fn paint(&self, color: &str, text: impl AsRef<str>) -> String {
-        let text = text.as_ref();
-        if self.color {
-            format!("\x1b[{color}m{text}\x1b[0m")
-        } else {
-            text.to_string()
-        }
-    }
-}
-
-impl BuildReporter for StickyReporter {
-    fn step_started(&self, step: BuildStep<'_>) {
-        self.update_step(step, StepStatus::Running);
-    }
-
-    fn step_succeeded(&self, step: BuildStep<'_>) {
-        self.update_step(step, StepStatus::Done);
-    }
-
-    fn step_failed(&self, step: BuildStep<'_>) {
-        self.update_step(step, StepStatus::Failed);
-    }
-
-    fn command_output(&self, output: &str) {
-        let Ok(mut state) = self.state.lock() else {
-            return;
-        };
-        state.pending_output.push_str(output);
-        let complete = self.drain_complete_output(&mut state);
-        if complete.is_empty() {
-            return;
-        }
-
-        let mut stderr = io::stderr().lock();
-        if self.interactive {
-            let _ = write!(stderr, "\r\x1b[2K");
-        }
-        let _ = write!(stderr, "{complete}");
-        if self.interactive
-            && let Some(current) = state.current.as_ref()
-        {
-            let _ = write!(stderr, "\r\x1b[2K{}", self.render_prompt(current));
-        }
-        let _ = stderr.flush();
-    }
-}
-
-fn normalize_line_endings(text: &str) -> String {
-    let mut normalized = String::with_capacity(text.len());
-    let mut previous_was_cr = false;
-    for ch in text.chars() {
-        match ch {
-            '\r' => {
-                normalized.push('\n');
-                previous_was_cr = true;
-            }
-            '\n' if previous_was_cr => {
-                previous_was_cr = false;
-            }
-            _ => {
-                normalized.push(ch);
-                previous_was_cr = false;
-            }
-        }
-    }
-    normalized
-}
-
 /// Runs the end-to-end build pipeline for the given `Consortium.toml` manifest.
 pub async fn run(args: BuildArgs) -> Result<(), String> {
     let session = pipeline::load_session(&args.manifest)
@@ -327,6 +123,7 @@ pub async fn run(args: BuildArgs) -> Result<(), String> {
         manifest_path: args.manifest.clone(),
         dist_root: args.dist.clone(),
         release: args.release,
+        offline: args.offline,
         hmi,
         tee_toolchain,
         sign_tee: !args.skip_tee_sign,
@@ -364,15 +161,18 @@ pub async fn run(args: BuildArgs) -> Result<(), String> {
         println!("  tee:      trusted application{signed}");
     }
     println!("  app:      {}", plan.application.config.target);
+    if args.offline {
+        println!("  cargo:    --offline (local registry cache only)");
+    }
 
     let reporter = StickyReporter::new();
     let dist = match pipeline::run_with_reporter(config, &reporter).await {
         Ok(dist) => {
-            reporter.finish_success();
+            reporter.finish_success("Build complete");
             dist
         }
         Err(error) => {
-            reporter.finish_failure();
+            reporter.finish_failure("Build failed");
             return Err(error.to_string());
         }
     };

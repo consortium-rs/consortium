@@ -143,6 +143,9 @@ pub struct FirmwareConfiguration {
     pub path: PathBuf,
     /// Build in release mode.
     pub release: bool,
+    /// Pass `--offline` to cargo: resolve and build from the local registry cache
+    /// only. Populate that cache first with `csti fetch`.
+    pub offline: bool,
     /// IPC shared-memory layout, injected as `CONSORTIUM_IPC_*` env vars.
     pub ipc: Option<SharedMemConfig>,
     /// Debug ring layout, injected as `CONSORTIUM_DBG_*` env vars.
@@ -172,6 +175,10 @@ impl FirmwareCompiler {
 
         if config.release {
             cmd.arg("--release");
+        }
+
+        if config.offline {
+            cmd.arg("--offline");
         }
 
         let status = run_command(&mut cmd, reporter)
@@ -227,6 +234,9 @@ impl Compiler for FirmwareCompiler {
 }
 
 /// Backward-compatible builder; delegates to [`FirmwareCompiler`].
+///
+/// Always builds online (`offline: false`); use [`FirmwareCompiler`] directly to
+/// build from the local registry cache.
 pub struct FirmwareBuilder {
     /// Rust target triple to cross-compile for.
     pub target: String,
@@ -244,6 +254,7 @@ impl FirmwareBuilder {
             target: self.target.clone(),
             path: self.path.clone(),
             release: self.release,
+            offline: false,
             ipc: self.ipc,
             dbg: self.dbg,
         })
@@ -258,6 +269,7 @@ impl FirmwareBuilder {
             target: self.target.clone(),
             path: self.path.clone(),
             release: self.release,
+            offline: false,
             ipc: self.ipc,
             dbg: self.dbg,
         })

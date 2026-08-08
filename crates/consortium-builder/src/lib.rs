@@ -32,6 +32,15 @@
 //! | `compile`      | One compiler per artifact kind, behind the [`Compiler`] trait. |
 //! | [`progress`]   | Reporting hooks the CLI uses to keep a step prompt visible.    |
 //!
+//! # Fetch, then build offline
+//!
+//! [`pipeline::fetch`] resolves the same Cargo projects the build plan does and
+//! downloads their dependencies (plus each target's `std` and the frontend's
+//! packages) up front. A subsequent run with [`PipelineConfig::offline`] passes
+//! `--offline` to every cargo invocation, so the build reads only local caches —
+//! useful for air-gapped hosts, reproducible CI, and container images that should
+//! not re-resolve the registry on each build.
+//!
 //! # The `Compiler` trait
 //!
 //! Firmware, the Linux application, the OP-TEE TA, and the HMI frontend are built by
@@ -96,7 +105,12 @@ pub use compile::deploy::systemd::{
 };
 
 // End-to-end pipeline
-pub use pipeline::{PipelineConfig, PipelineError, PipelinePlan, run as run_pipeline};
+pub use pipeline::{
+    CargoOptions, PipelineConfig, PipelineError, PipelinePlan, run as run_pipeline,
+};
+
+// Pre-build dependency download
+pub use pipeline::fetch::{FetchConfig, FetchPlan, run as run_fetch};
 
 // Compile-time environment-injection carriers
 pub use compile::env::{CortexMcuCore, DbgConfig, HmiConfig, SharedMemConfig};

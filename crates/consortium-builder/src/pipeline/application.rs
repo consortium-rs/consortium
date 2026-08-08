@@ -26,7 +26,7 @@ use std::path::{Path, PathBuf};
 use consortium_cfg::Session;
 use consortium_cfg_common::config::{AcoreName, Party, VisibleCore};
 
-use super::{PipelineError, ipc_config_for};
+use super::{CargoOptions, PipelineError, ipc_config_for};
 use crate::compile::application::ApplicationConfiguration;
 use crate::compile::env::HmiConfig;
 
@@ -51,7 +51,7 @@ pub fn plan_application_build(
     manifest_dir: &Path,
     hmi_dist: Option<&Path>,
     resolved_dbg_elfs: &HashMap<VisibleCore, PathBuf>,
-    release: bool,
+    cargo: CargoOptions,
     ty_crate: &syn::Path,
 ) -> Result<ApplicationBuildPlan, PipelineError> {
     let root = session
@@ -100,7 +100,8 @@ pub fn plan_application_build(
         config: ApplicationConfiguration {
             path,
             target,
-            release,
+            release: cargo.release,
+            offline: cargo.offline,
             hmi,
             ipc,
             // The AP is the debug *host*: it reads rings through the generated UIO
@@ -118,7 +119,7 @@ pub fn plan_application_build(
 /// Derived from the AP core's bitness rather than hardcoded, so a 32-bit A-core
 /// (e.g. Cortex-A7) targets armv7 instead of aarch64. This is the Linux/`gnu`
 /// ABI, distinct from [`AcoreName::as_rust_triple`]'s bare-metal `-none` triples.
-fn acore_linux_triple(ap: &str) -> Result<String, PipelineError> {
+pub(crate) fn acore_linux_triple(ap: &str) -> Result<String, PipelineError> {
     let name: AcoreName = ap
         .parse()
         .map_err(|_| PipelineError::UnknownCore(ap.to_string()))?;
@@ -163,7 +164,10 @@ mod tests {
             Path::new("/proj"),
             Some(Path::new("/build/website/dist")),
             &resolved,
-            true,
+            CargoOptions {
+                release: true,
+                offline: true,
+            },
             &ty_crate,
         )
         .expect("plan succeeds");
@@ -171,6 +175,8 @@ mod tests {
         assert_eq!(plan.config.path, Path::new("/proj/app"));
         assert_eq!(plan.config.target, "aarch64-unknown-linux-gnu");
         assert!(plan.config.release);
+        // The shared cargo flags reach the application plan too.
+        assert!(plan.config.offline);
 
         // The HMI serve path resolves under the deploy root, not the build dist.
         let hmi = plan.config.hmi.expect("hmi injected");
@@ -208,7 +214,7 @@ mod tests {
             Path::new("/proj"),
             None,
             &HashMap::from([(cm33(), PathBuf::from("/build/cm33.elf"))]),
-            false,
+            CargoOptions::default(),
             &ty_crate,
         )
         .expect("plan succeeds");
@@ -233,7 +239,7 @@ mod tests {
             Path::new("/proj"),
             None,
             &HashMap::from([(cm33(), PathBuf::from("/build/cm33.elf"))]),
-            false,
+            CargoOptions::default(),
             &ty_crate,
         )
         .expect("plan succeeds");
@@ -253,7 +259,7 @@ mod tests {
             Path::new("/proj"),
             None,
             &HashMap::from([(cm33(), PathBuf::from("/build/cm33.elf"))]),
-            false,
+            CargoOptions::default(),
             &ty_crate,
         )
         .expect("plan succeeds");

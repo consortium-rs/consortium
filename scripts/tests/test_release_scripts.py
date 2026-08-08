@@ -238,6 +238,24 @@ class ReleaseTests(unittest.TestCase):
         self.assertIn("- [ipc] [aaaaaaa] by @developer: connect", notes)
         self.assertIn("# Other contributions", notes)
 
+    def test_github_release_is_created_as_a_draft(self):
+        notes_path = Path("release-notes.md")
+        with patch.object(release, "run") as run:
+            release.create_draft_release("v0.2.0", "0.2.0", notes_path)
+        run.assert_called_once_with(
+            "gh",
+            "release",
+            "create",
+            "v0.2.0",
+            "--title",
+            "0.2.0",
+            "--notes-file",
+            str(notes_path),
+            "--verify-tag",
+            "--draft",
+            cwd=release.ROOT,
+        )
+
     def test_release_workflow_has_required_matrix(self):
         root = Path(__file__).parents[2]
         workflow = root / ".github" / "workflows" / "release-build.yml"
@@ -245,6 +263,18 @@ class ReleaseTests(unittest.TestCase):
         release.validate_binstall_manifest(
             root / "crates" / "consortium-cli" / "Cargo.toml"
         )
+
+    def test_release_workflow_requires_publish_repository_context(self):
+        root = Path(__file__).parents[2]
+        workflow = root / ".github" / "workflows" / "release-build.yml"
+        without_repository = workflow.read_text().replace(
+            "          GH_REPO: ${{ github.repository }}\n", ""
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            test_workflow = Path(directory) / "release-build.yml"
+            test_workflow.write_text(without_repository)
+            with self.assertRaisesRegex(RuntimeError, "repository context"):
+                release.validate_release_workflow(test_workflow)
 
 
 if __name__ == "__main__":

@@ -293,6 +293,8 @@ def validate_release_workflow(path: Path) -> None:
         build_job = workflow["jobs"]["build"]
         entries = build_job["strategy"]["matrix"]["include"]
         steps = build_job["steps"]
+        publish_job = workflow["jobs"]["publish"]
+        publish_steps = publish_job["steps"]
     except (KeyError, TypeError) as error:
         raise RuntimeError(
             f"{path} is missing required release workflow fields"
@@ -303,6 +305,8 @@ def validate_release_workflow(path: Path) -> None:
         raise RuntimeError(f"{path} must grant contents: write")
     if not isinstance(entries, list):
         raise TypeError(f"{path} release matrix is not a list")
+    if publish_job.get("needs") != "build":
+        raise RuntimeError(f"{path} must publish only after every asset build succeeds")
     packages = {
         (entry.get("runner"), entry.get("target"), entry.get("package"))
         for entry in entries
@@ -321,6 +325,19 @@ def validate_release_workflow(path: Path) -> None:
     }
     if not all(name in run_scripts for name in required_naming):
         raise RuntimeError(f"{path} does not use cargo-binstall-compatible names")
+    publish_scripts = "\n".join(
+        step.get("run", "") for step in publish_steps if isinstance(step, dict)
+    )
+    if 'gh release edit "${{ inputs.tag }}" --draft=false' not in publish_scripts:
+        raise RuntimeError(f"{path} does not publish the completed draft release")
+    publish_has_repository = any(
+        isinstance(step, dict)
+        and isinstance(step.get("env"), dict)
+        and step["env"].get("GH_REPO") == "${{ github.repository }}"
+        for step in publish_steps
+    )
+    if not publish_has_repository:
+        raise RuntimeError(f"{path} publish step has no GitHub repository context")
 
 
 def validate_binstall_manifest(path: Path) -> None:
@@ -590,6 +607,22 @@ def write_notes_file(notes: str) -> Path:
     return Path(name)
 
 
+def create_draft_release(tag: str, title: str, notes_path: Path) -> None:
+    run(
+        "gh",
+        "release",
+        "create",
+        tag,
+        "--title",
+        title,
+        "--notes-file",
+        str(notes_path),
+        "--verify-tag",
+        "--draft",
+        cwd=ROOT,
+    )
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("component", nargs="?", choices=("major", "minor", "patch"))
@@ -640,18 +673,7 @@ def main() -> int:
         run("git", "tag", "-a", tag, "-m", f"Release {target}", cwd=ROOT)
         run("git", "push", "origin", f"HEAD:refs/heads/{branch}", cwd=ROOT)
         run("git", "push", "origin", tag, cwd=ROOT)
-        run(
-            "gh",
-            "release",
-            "create",
-            tag,
-            "--title",
-            str(target),
-            "--notes-file",
-            str(notes_path),
-            "--verify-tag",
-            cwd=ROOT,
-        )
+        create_draft_release(tag, str(target), notes_path)
         run(
             "gh",
             "workflow",
@@ -667,7 +689,10 @@ def main() -> int:
     finally:
         notes_path.unlink(missing_ok=True)
 
-    print(f"Release {target} created; binary builds were dispatched.")
+    print(
+        f"Draft release {target} created; binary builds were dispatched and the "
+        "workflow will publish it after every asset is uploaded."
+    )
     return 0
 
 

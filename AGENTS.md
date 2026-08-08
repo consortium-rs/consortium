@@ -402,6 +402,16 @@ optional TA and HMI; post-processes firmware for Linux remoteproc; generates end
 modules, DTS/Kconfig/boot integration, and a systemd unit; then assembles a local
 `dist/` staging tree. It does not deploy directly to a live target.
 
+`csti fetch` is the pipeline's network half: it resolves the same Cargo projects the
+build plan does (firmware per remote core, TA, application) and runs `rustup target add`
+per distinct triple, `cargo fetch --target <triple>` per project, and the HMI frontend's
+package install (`vp`/`npm install`, or `bun install` for Pocket; override with
+`CONSORTIUM_HMI_FETCH_CMD`). `csti build --offline` then passes `--offline` to every
+cargo invocation. Unlike `pipeline::plan`, `pipeline::fetch` needs no codegen and no
+OP-TEE toolchain. `CargoOptions { release, offline }` is the shared carrier for cargo
+flags across the three Rust stages. Host provisioning — the OP-TEE dev kit, a Yocto
+sysroot, kernel sources for `dtc`, BitBake's downloads — stays outside `fetch`.
+
 Firmware post-processing renames `.vector_table` to the remoteproc-expected
 `.isr_vectors` section. Outputs include the deployable ELF and debug/original artifacts.
 The staged tree can contain `app/`, `firmware/`, `ta/`, `www/`, `dts/linux/`, `kernel/`,
@@ -636,6 +646,7 @@ Things that are easy to get wrong here:
   deps and `vp`, and `node_modules/` lives in the mounted repo, so a Linux install
   would clobber the macOS one. Build the frontend on the host, then set
   `CONSORTIUM_HMI_BUILD_CMD=/bin/true` so the container consumes the existing dist.
+  `CONSORTIUM_HMI_FETCH_CMD=/bin/true` does the same for `csti fetch`'s install step.
 - Running the pipeline rewrites the committed `src/consortium.gen.rs` with
   container-absolute `include_bytes!` paths. Revert it afterwards unless the change
   is intended.

@@ -28,7 +28,7 @@ use consortium_cfg::bridge::LoweredIr;
 use consortium_cfg_common::config::{Party, VisibleCore};
 use consortium_cfg_common::database::{ChipDatabase, Coprocessor, CoprocessorVariant};
 
-use super::{PipelineError, core_rust_triple, ipc_config_for, visible_core_of};
+use super::{CargoOptions, PipelineError, core_rust_triple, ipc_config_for, visible_core_of};
 use crate::compile::env::DbgConfig;
 use crate::compile::firmware::FirmwareConfiguration;
 
@@ -62,7 +62,7 @@ pub fn remote_coprocessors(database: &ChipDatabase) -> impl Iterator<Item = &Cop
 pub fn plan_firmware_builds(
     session: &Session,
     manifest_dir: &Path,
-    release: bool,
+    cargo: CargoOptions,
     ty_crate: &syn::Path,
 ) -> Result<Vec<FirmwareBuildPlan>, PipelineError> {
     let ir = session.lower()?;
@@ -102,7 +102,8 @@ pub fn plan_firmware_builds(
             config: FirmwareConfiguration {
                 target,
                 path,
-                release,
+                release: cargo.release,
+                offline: cargo.offline,
                 ipc,
                 dbg,
             },
@@ -155,8 +156,12 @@ mod tests {
     fn plans_one_build_per_remote_endpoint() {
         let session = session();
         let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
+        let cargo = CargoOptions {
+            release: true,
+            offline: true,
+        };
         let plans =
-            plan_firmware_builds(&session, Path::new("/proj"), true, &ty_crate).expect("plans");
+            plan_firmware_builds(&session, Path::new("/proj"), cargo, &ty_crate).expect("plans");
 
         // Only cm33 (remote, with a `cm33 = "./firmware"` endpoint) is planned.
         assert_eq!(plans.len(), 1);
@@ -165,6 +170,8 @@ mod tests {
         assert_eq!(plan.config.target, "thumbv8m.main-none-eabihf");
         assert_eq!(plan.config.path, Path::new("/proj/firmware"));
         assert!(plan.config.release);
+        // The shared cargo flags reach every firmware plan.
+        assert!(plan.config.offline);
         // cm33 declares `[dbg.cm33]`, so a debug layout is resolved.
         assert!(plan.config.dbg.is_some());
         // The generated module is this core's controller init: the synchronous
