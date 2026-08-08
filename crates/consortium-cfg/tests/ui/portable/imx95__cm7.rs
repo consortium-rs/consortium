@@ -63,12 +63,27 @@ fn __consortium_install_channels(
         }
     });
 }
-// SAFETY: installs the CMSIS-named LPIT1 vector the i.MX9 runtime
-// dispatches; the handler only forwards to the time driver.
+/// Interrupt vectors for this endpoint's generated bring-up.
 #[cfg(target_arch = "arm")]
-#[unsafe(no_mangle)]
-extern "C" fn LPIT1_IRQHandler() {
-    ::consortium_hal_imx9::timer_driver::on_timer_interrupt();
+mod __consortium_vectors {
+    use ::consortium_hal_imx9::interrupt;
+    #[::consortium_hal_imx9::interrupt]
+    fn LPIT1() {
+        ::consortium_hal_imx9::timer_driver::on_timer_interrupt();
+    }
+    #[::consortium_hal_imx9::interrupt]
+    fn MU7_B() {
+        ::consortium_ipc_doorbell_mu::notify_gi_interrupt::<
+            ::consortium_ipc::Secondary,
+            7usize,
+        >();
+    }
+    #[::consortium_hal_imx9::interrupt]
+    fn LPI2C1() {
+        ::consortium_hal_imx9::i2c::on_interrupt::<
+            ::consortium_hal_imx9::peripherals::LPI2C1,
+        >();
+    }
 }
 /// Runtime bring-up policy. Enabled manifest steps default on.
 #[cfg(target_arch = "arm")]
@@ -108,47 +123,35 @@ fn init(config: Config) -> (Peripherals, Channels) {
         "consortium controller init: Cortex-M7 data cache enabled"
     );
     if config.nvic {
-        #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-        #[repr(u16)]
-        pub enum BellaInterrupt {
-            MU7 = 207u16,
-        }
-        unsafe impl ::cortex_m::interrupt::InterruptNumber for BellaInterrupt {
-            fn number(self) -> u16 {
-                self as u16
-            }
-        }
-        // SAFETY: interrupt numbers are emitted from the validated
-        // Consortium hardware database for this visible core.
+        ::consortium_hal_imx9::hal::nvic::unpend(
+            ::consortium_hal_imx9::Interrupt::MU7_B,
+        );
+        // SAFETY: the interrupt comes from the validated Consortium
+        // hardware database for this visible core, and the application
+        // owns the matching vector.
         unsafe {
             ::consortium_hal_imx9::hal::nvic::set_priority(
-                BellaInterrupt::MU7 as u16,
-                0x80,
+                ::consortium_hal_imx9::Interrupt::MU7_B,
+                0x80u8,
+            );
+            ::consortium_hal_imx9::hal::nvic::enable(
+                ::consortium_hal_imx9::Interrupt::MU7_B,
             );
         }
         ::consortium_runtime_mcu::log::trace!(
-            "consortium controller init: NVIC set priority to 0x80 {} (id={})",
-            stringify!(MU7), BellaInterrupt::MU7 as u32
+            "consortium controller init: NVIC enabled {} at priority 0x80 (id={})",
+            "MU7_B", 207u32
         );
-        ::cortex_m::peripheral::NVIC::unpend(BellaInterrupt::MU7);
-        ::consortium_runtime_mcu::log::trace!(
-            "consortium controller init: NVIC unpend {} (id={})", stringify!(MU7),
-            BellaInterrupt::MU7 as u32
-        );
-        // SAFETY: interrupt numbers are emitted from the validated
-        // Consortium hardware database for this visible core.
+        // SAFETY: the interrupt comes from the validated chip map and
+        // its generated handler is installed above.
         unsafe {
-            ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::MU7);
-        }
-        ::consortium_runtime_mcu::log::trace!(
-            "consortium controller init: NVIC unmask {} (id={})", stringify!(MU7),
-            BellaInterrupt::MU7 as u32
-        );
-        // SAFETY: the interrupt number comes from the validated chip
-        // map and its generated handler is installed above.
-        unsafe {
-            ::consortium_hal_imx9::hal::nvic::set_priority(13u16, 0x80u8);
-            ::consortium_hal_imx9::hal::nvic::enable(13u16);
+            ::consortium_hal_imx9::hal::nvic::set_priority(
+                ::consortium_hal_imx9::Interrupt::LPI2C1,
+                0x80u8,
+            );
+            ::consortium_hal_imx9::hal::nvic::enable(
+                ::consortium_hal_imx9::Interrupt::LPI2C1,
+            );
         }
     }
     let __p = ::consortium_hal_imx9::init();
@@ -200,12 +203,5 @@ pub struct Peripherals {
 }
 pub const LPI2C1_CLOCK_HZ: u32 = 24000000u32;
 pub const LPI2C1_FREQUENCY: u32 = 100000u32;
-#[cfg(target_arch = "arm")]
-#[unsafe(no_mangle)]
-extern "C" fn LPI2C1_IRQHandler() {
-    ::consortium_hal_imx9::i2c::on_interrupt::<
-        ::consortium_hal_imx9::peripherals::LPI2C1,
-    >();
-}
 
 fn main() {}

@@ -95,6 +95,10 @@
 //! ambiguous.
 //!
 //! [`side`]: consortium_ipc::Side
+#![deprecated(
+    since = "0.1.0",
+    note = "HSEM is absent on STM32MP21 and has been observed to fail on STM32MP23/25; prefer `consortium-ipc-doorbell-ipcc`"
+)]
 
 pub mod abstraction;
 pub mod chan;

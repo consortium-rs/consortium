@@ -45,7 +45,8 @@ use consortium_cfg_common::database::{ChipDatabase, HardwareDoorbellPeripheral, 
 use crate::components::address::{Address, ApAddress};
 use crate::components::bella::{BellA, HardwareDoorbell};
 use crate::components::dbg::{DebugLogs, DebugRing};
-use crate::components::ipc_shm::{Channel, DoorbellMeta, ShuHan, Transceiver};
+use crate::components::ipc_shm::{Channel, DoorbellMeta, DoorbellRingerSide, ShuHan, Transceiver};
+use crate::components::irq::InterruptLine;
 use crate::components::memory_to_uio::SharedWindow;
 use crate::components::peripheral::{PeripheralInstance, PeripheralKind, Peripherals};
 use crate::components::region::Region;
@@ -426,11 +427,12 @@ impl LoweredIr {
             }
         };
 
-        // The doorbell NVIC enum/impl plus `unmask` statements for this core.
+        // The doorbell NVIC priority/unpend/enable statements for this core.
         let nvic = self.bella.nvic_enable(&core, &self.peripherals.hal_crate);
 
-        // Peripheral singleton allowlist and interrupt handlers.
+        // Peripheral singleton allowlist and interrupt vectors.
         let peripherals = self.peripherals.initialize(core);
+        let peripheral_vectors = self.peripherals.vectors(core);
         let peripheral_arguments = self.peripherals.arguments(core);
         let has_peripherals = !peripheral_arguments.is_empty();
         let peripheral_nvic = self.peripherals.nvic(core);
@@ -481,11 +483,37 @@ impl LoweredIr {
                 quote! {}
             };
 
+        // Every vector this core owns goes in one module. cortex-m-rt's
+        // `#[interrupt]` expands to a `interrupt::<NAME>;` existence check, so
+        // the attribute needs an `interrupt` path in scope — importing it here
+        // rather than at the include site keeps the generated file from
+        // depending on (or colliding with) the firmware crate's own `use`.
+        // Vectors are bare-metal only: the host trybuild harness never links the
+        // chip `rt` vector table, matching the `init` gate.
+        let mut vectors = self.bella.vectors(&core, &self.peripherals.hal_crate);
+        vectors.extend(peripheral_vectors);
+        if !time_isr.is_empty() {
+            vectors.insert(0, time_isr);
+        }
+        let vectors = if vectors.is_empty() {
+            quote! {}
+        } else {
+            quote! {
+                /// Interrupt vectors for this endpoint's generated bring-up.
+                #[cfg(target_arch = "arm")]
+                mod __consortium_vectors {
+                    use #hal::interrupt;
+
+                    #(#vectors)*
+                }
+            }
+        };
+
         quote! {
             #endpoints
 
             #timestamp
-            #time_isr
+            #vectors
 
             /// Runtime bring-up policy. Enabled manifest steps default on.
             #[cfg(target_arch = "arm")]
@@ -702,17 +730,19 @@ impl Session {
                 &mut bells,
                 &doorbell_key,
                 &doorbell_address,
-                db_doorbell.r#type,
+                meta,
                 [
                     (
                         primary_core,
                         party_irq(db_doorbell, primary_party),
                         primary.chan as u8,
+                        DoorbellRingerSide::Primary,
                     ),
                     (
                         secondary_core,
                         party_irq(db_doorbell, secondary_party),
                         secondary.chan as u8,
+                        DoorbellRingerSide::Secondary,
                     ),
                 ],
             );
@@ -839,6 +869,27 @@ impl Session {
             ring.ap_uio_id = remap[ring.ap_uio_id];
         }
 
+        // The doorbell database records only a raw NVIC position, so recover
+        // each controller-core line's name from that core's chip map — the same
+        // dump the PAC's `Interrupt` enum is generated from, making the name the
+        // variant generated bring-up should spell. A core the PAC's shipped
+        // table does not describe (`has_pac_interrupts`) keeps the raw number,
+        // because there the variant of that name carries another core's line.
+        let mut bella = BellA { bells };
+        let mut maps: HashMap<VisibleCore, Option<crate::chipmap::ChipMap>> = HashMap::new();
+        bella.resolve_variants(|core, number| {
+            let map = maps
+                .entry(core)
+                .or_insert_with(|| {
+                    crate::chipmap::load(&self.config.profile.chip, &core.to_string()).ok()
+                })
+                .as_ref()?;
+            if !map.has_pac_interrupts() {
+                return None;
+            }
+            map.irq_by_number(number).map(|entry| entry.name.clone())
+        });
+
         let peripherals = self.lower_peripherals()?;
         consortium_log::trace!(
             "lowering complete: {} transceivers, {} uio devices, {} peripheral instances",
@@ -850,7 +901,7 @@ impl Session {
             Self::lower_core_peripherals(&self.config.profile.chip, &transceivers, &peripherals);
         Ok(LoweredIr {
             shuhan: ShuHan::new(transceivers),
-            bella: BellA { bells },
+            bella,
             uio,
             dbg: DebugLogs::new(dbg_rings, self.config.dbg.mode),
             peripherals,
@@ -961,11 +1012,17 @@ impl Session {
                         ))
                     })?;
                     let frequency = peripheral.frequency.unwrap_or(100_000);
+                    // `irq_name` always names the vector symbol; the PAC variant
+                    // is only nameable where the shipped table is this core's.
+                    let line = InterruptLine {
+                        number: u32::from(irq.number),
+                        variant: map.has_pac_interrupts().then(|| irq.name.clone()),
+                    };
                     PeripheralKind::I2c {
                         clock_hz,
                         frequency,
-                        irq_number: irq.number,
                         irq_name: irq.name.clone(),
+                        irq: line,
                     }
                 }
                 "gpio" | "rgpio" => PeripheralKind::Gpio,
@@ -1091,14 +1148,16 @@ fn peripheral_alias(database: &ChipDatabase, secure: bool) -> u32 {
 
 /// Records a doorbell's participating cores, creating the [`HardwareDoorbell`]
 /// on first sight and merging later hits. Each entry is a
-/// `(core, irq, channel)`: the channel is added to the doorbell's used set, and
-/// the IRQ (when known) is mapped to the core for NVIC enablement.
+/// `(core, irq, channel, side)`: the channel is added to the doorbell's used
+/// set, the IRQ (when known) is mapped to the core for NVIC enablement, and the
+/// side is mapped to the core so the generated vector forwards with the right
+/// marker.
 fn record_bell(
     bells: &mut Vec<HardwareDoorbell>,
     key: &str,
     address: &Address,
-    r#type: consortium_cfg_common::database::HardwareDoorbellPeripheralType,
-    entries: impl IntoIterator<Item = (VisibleCore, Option<u32>, u8)>,
+    meta: DoorbellMeta,
+    entries: impl IntoIterator<Item = (VisibleCore, Option<u32>, u8, DoorbellRingerSide)>,
 ) {
     let bell = match bells.iter_mut().find(|bell| bell.name == key) {
         Some(bell) => bell,
@@ -1106,21 +1165,24 @@ fn record_bell(
             bells.push(HardwareDoorbell {
                 name: key.to_string(),
                 address: address.clone(),
-                r#type,
+                r#type: meta.r#type,
+                id: meta.id,
                 channels: Vec::new(),
                 irq: HashMap::new(),
+                side: HashMap::new(),
             });
             bells.last_mut().expect("just pushed")
         }
     };
 
-    for (core, irq, channel) in entries {
+    for (core, irq, channel, side) in entries {
         if !bell.channels.contains(&channel) {
             bell.channels.push(channel);
         }
         if let Some(irq) = irq {
-            bell.irq.insert(core, irq);
+            bell.irq.insert(core, InterruptLine::new(irq));
         }
+        bell.side.insert(core, side);
     }
 }
 
@@ -1160,8 +1222,8 @@ mod tests {
         let names: Vec<_> = ir.uio.iter().map(|(name, _)| name.as_str()).collect();
         // Every device is ordered by its mapped base: the SRAM carveouts
         // (dbg-shm @0x2006_2000, ipc-shm @0x2006_4000) precede the peripheral
-        // doorbells (hsem @0x4624_0000, ipcc2 @0x4625_0000).
-        assert_eq!(names, ["dbg-shm", "ipc-shm", "hsem", "ipcc2"]);
+        // doorbells (ipcc1 @0x4049_0000, ipcc2 @0x4625_0000).
+        assert_eq!(names, ["dbg-shm", "ipc-shm", "ipcc1", "ipcc2"]);
     }
 
     #[test]
@@ -1207,22 +1269,22 @@ mod tests {
             .expect("shared-memory uio device");
         assert_eq!(shm.mmap[0].0, 0x2006_4000);
 
-        // The HSEM doorbell window maps through the non-secure peripheral alias
-        // (0x4000_0000): canonical 0x0624_0000 becomes 0x4624_0000.
-        let (_, hsem) = ir
+        // The IPCC1 doorbell window maps through the non-secure peripheral alias
+        // (0x4000_0000): canonical 0x0049_0000 becomes 0x4049_0000.
+        let (_, ipcc1) = ir
             .uio
             .iter()
-            .find(|(name, _)| name == "hsem")
-            .expect("hsem uio device");
-        assert_eq!(hsem.mmap[0].0, 0x4624_0000);
+            .find(|(name, _)| name == "ipcc1")
+            .expect("ipcc1 uio device");
+        assert_eq!(ipcc1.mmap[0].0, 0x4049_0000);
     }
 
     #[test]
     fn controller_doorbell_base_applies_security_alias() {
         let ir = lowered();
         let sensor = transceiver(&ir, "sensor");
-        // cm33 is non-secure, so it sees HSEM through the 0x4000_0000 alias.
-        assert_eq!(sensor.doorbell_address.cp[&cm33()], 0x4624_0000);
+        // cm33 is non-secure, so it sees IPCC1 through the 0x4000_0000 alias.
+        assert_eq!(sensor.doorbell_address.cp[&cm33()], 0x4049_0000);
     }
 
     #[test]
@@ -1282,7 +1344,7 @@ mod tests {
 
             [[ipc.channel]]
             name = "solo"
-            doorbell = "hsem"
+            doorbell = "ipcc1"
             pattern = "memory"
             primary = "linux"
             secondary = "cm33"
@@ -1299,17 +1361,20 @@ mod tests {
     fn bella_collects_doorbell_channels_and_core_irqs() {
         let ir = lowered();
 
-        let hsem = ir
+        let ipcc1 = ir
             .bella
             .bells
             .iter()
-            .find(|bell| bell.name == "hsem")
-            .expect("hsem doorbell");
-        // hsem carries the primary (linux, chan 0) and secondary (cm33, chan 1).
-        assert!(hsem.channels.contains(&0));
-        assert!(hsem.channels.contains(&1));
-        // cm33's NVIC line is sourced from the chip database.
-        assert_eq!(hsem.irq[&cm33()], 199);
+            .find(|bell| bell.name == "ipcc1")
+            .expect("ipcc1 doorbell");
+        // ipcc1 carries the primary (linux, chan 0) and secondary (cm33, chan 1).
+        assert!(ipcc1.channels.contains(&0));
+        assert!(ipcc1.channels.contains(&1));
+        assert_eq!(ipcc1.id, Some(1));
+        // cm33's NVIC line is sourced from the chip database, and lowering
+        // resolves its name through the bundled chip map.
+        assert_eq!(ipcc1.irq[&cm33()].number, 171);
+        assert_eq!(ipcc1.irq[&cm33()].variant.as_deref(), Some("IPCC1_RX"));
 
         let ipcc2 = ir
             .bella

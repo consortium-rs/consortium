@@ -27,6 +27,8 @@ use proc_macro2::{Ident, Span, TokenStream};
 use quote::quote;
 
 use crate::components::address::Address;
+use crate::components::ipc_shm::{DoorbellMeta, DoorbellRingerSide};
+use crate::components::irq::InterruptLine;
 use crate::components::uio::{ToUio, UioBacking, UioClock, UioDevice};
 use crate::error::CfgError;
 
@@ -38,10 +40,26 @@ pub struct HardwareDoorbell {
     pub address: Address,
     /// Type of the doorbell peripheral.
     pub r#type: HardwareDoorbellPeripheralType,
+    /// 1-based instance number (`mu7` is 7, `ipcc1` is 1). `None` for a block
+    /// with a single instance, such as HSEM.
+    pub id: Option<u8>,
     /// Doorbell channels used by this configuration.
     pub channels: Vec<u8>,
-    /// Interrupt numbers keyed by visible core.
-    pub irq: HashMap<VisibleCore, u32>,
+    /// Interrupt lines keyed by visible core.
+    pub irq: HashMap<VisibleCore, InterruptLine>,
+    /// Which IPC side each visible core drives this doorbell from. Decides the
+    /// side marker the generated vector forwards with.
+    pub side: HashMap<VisibleCore, DoorbellRingerSide>,
+}
+
+impl HardwareDoorbell {
+    /// This doorbell's type and instance, as the IPC codegen spells them.
+    fn meta(&self) -> DoorbellMeta {
+        DoorbellMeta {
+            r#type: self.r#type,
+            id: self.id,
+        }
+    }
 }
 
 /// A collection of doorbells visible to a given core.
@@ -54,6 +72,74 @@ pub struct BellA {
 }
 
 impl BellA {
+    /// Fills in each controller-core line's PAC `Interrupt` variant, so
+    /// [`nvic_enable`](Self::nvic_enable) can name it rather than pass a bare
+    /// number.
+    ///
+    /// `resolve` is the per-core lookup — in practice the bundled chip map — and
+    /// returns `None` where no variant applies: a core with no bundled dump, or
+    /// one the PAC's shipped interrupt table does not describe.
+    pub fn resolve_variants(
+        &mut self,
+        mut resolve: impl FnMut(VisibleCore, u16) -> Option<String>,
+    ) {
+        for bell in &mut self.bells {
+            for (core, irq) in &mut bell.irq {
+                if !matches!(core, VisibleCore::Mcore(_)) {
+                    continue;
+                }
+                irq.variant = u16::try_from(irq.number)
+                    .ok()
+                    .and_then(|number| resolve(*core, number));
+            }
+        }
+    }
+
+    /// The `#[interrupt]` vectors `core` needs for its doorbells, as bare items
+    /// for the generated vector module.
+    ///
+    /// Each forwards to its doorbell crate's bare-metal service entry point,
+    /// which masks the asserted lines and wakes the waiting futures. Firmware
+    /// used to hand-write these in `main.rs`; every fact they need — the line's
+    /// name, the instance, the side — is already in the manifest, and getting
+    /// one wrong fails silently as a doorbell that never wakes.
+    ///
+    /// A doorbell whose line has no PAC `Interrupt` variant on this core is
+    /// skipped: without a variant there is no name to hang the vector on (see
+    /// [`InterruptLine`]), so that core keeps writing it by hand.
+    pub fn vectors(&self, core: &VisibleCore, hal_crate: &str) -> Vec<TokenStream> {
+        let hal: TokenStream = hal_crate
+            .parse()
+            .expect("hal crate path is a valid token stream");
+
+        // Two channels may share one doorbell, and a shared line gets exactly
+        // one vector; sort so the emitted order does not follow manifest order.
+        let mut lines = self
+            .bells
+            .iter()
+            .filter_map(|bell| {
+                let variant = bell.irq.get(core)?.variant.as_ref()?;
+                let side = bell.side.get(core)?;
+                Some((variant.clone(), bell.meta().service_call(*side)))
+            })
+            .collect::<Vec<_>>();
+        lines.sort_by(|(left, _), (right, _)| left.cmp(right));
+        lines.dedup_by(|(left, _), (right, _)| left == right);
+
+        lines
+            .into_iter()
+            .map(|(variant, service)| {
+                let line = Ident::new(&variant, Span::call_site());
+                quote! {
+                    #[#hal::interrupt]
+                    fn #line() {
+                        #service
+                    }
+                }
+            })
+            .collect()
+    }
+
     /// Generates Cortex-M NVIC enablement code for every doorbell interrupt
     /// visible to `core`.
     ///
@@ -61,69 +147,51 @@ impl BellA {
     /// (e.g. `::consortium_hal_stm32mp2` or `::consortium_hal_imx9`), as
     /// selected by the lowering's chip-family split.
     ///
+    /// Lines are driven through that crate's `nvic` helpers and named per
+    /// [`InterruptLine::tokens`], so generated bring-up declares no interrupt
+    /// enum of its own and never names `cortex_m`.
+    ///
     /// Returns `None` when no configured doorbell has an IRQ for `core`.
     pub fn nvic_enable(&self, core: &VisibleCore, hal_crate: &str) -> Option<TokenStream> {
+        let hal: TokenStream = hal_crate
+            .parse()
+            .expect("hal crate path is a valid token stream");
+
         let mut interrupts = self
             .bells
             .iter()
-            .filter_map(|bell| {
-                bell.irq
-                    .get(core)
-                    .and_then(|irq| u16::try_from(*irq).ok())
-                    .map(|irq| (interrupt_variant(&bell.name), irq))
-            })
+            .filter_map(|bell| bell.irq.get(core))
+            .filter_map(|irq| irq.tokens(&hal).map(|named| (irq.number, named)))
             .collect::<Vec<_>>();
 
         if interrupts.is_empty() {
             return None;
         }
 
-        interrupts.sort_by_key(|(variant, _)| variant.to_string());
-        interrupts.dedup_by_key(|(variant, _)| variant.to_string());
+        interrupts.sort_by_key(|(number, _)| *number);
+        interrupts.dedup_by_key(|(number, _)| *number);
 
-        let variants = interrupts
-            .iter()
-            .map(|(variant, irq)| quote! { #variant = #irq })
-            .collect::<Vec<_>>();
-        let variant_names = interrupts
-            .iter()
-            .map(|(variant, _)| variant)
-            .collect::<Vec<_>>();
-
-        let hal_crate: TokenStream = hal_crate
-            .parse()
-            .expect("hal crate path is a valid token stream");
-
-        Some(quote! {
-            #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-            #[repr(u16)]
-            pub enum BellaInterrupt {
-                #(#variants,)*
-            }
-
-            unsafe impl ::cortex_m::interrupt::InterruptNumber for BellaInterrupt {
-                fn number(self) -> u16 {
-                    self as u16
-                }
-            }
-
-            #(
-                /// SAFETY: interrupt numbers are emitted from the validated
-                /// Consortium hardware database for this visible core.
+        let statements = interrupts.iter().map(|(number, (line, label))| {
+            // The PAC's `Interrupt` is a fieldless enum and `nvic::Irq` is
+            // `Copy`, so the same expression can be spelled once per call.
+            quote! {
+                #hal::hal::nvic::unpend(#line);
+                /// SAFETY: the interrupt comes from the validated Consortium
+                /// hardware database for this visible core, and the application
+                /// owns the matching vector.
                 unsafe {
-                    #hal_crate::hal::nvic::set_priority(BellaInterrupt::#variant_names as u16, 0x80);
+                    #hal::hal::nvic::set_priority(#line, 0x80u8);
+                    #hal::hal::nvic::enable(#line);
                 }
-                ::consortium_runtime_mcu::log::trace!("consortium controller init: NVIC set priority to 0x80 {} (id={})", stringify!(#variant_names), BellaInterrupt::#variant_names as u32);
-                ::cortex_m::peripheral::NVIC::unpend(BellaInterrupt::#variant_names);
-                ::consortium_runtime_mcu::log::trace!("consortium controller init: NVIC unpend {} (id={})", stringify!(#variant_names), BellaInterrupt::#variant_names as u32);
-                /// SAFETY: interrupt numbers are emitted from the validated
-                /// Consortium hardware database for this visible core.
-                unsafe {
-                    ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::#variant_names);
-                }
-                ::consortium_runtime_mcu::log::trace!("consortium controller init: NVIC unmask {} (id={})", stringify!(#variant_names), BellaInterrupt::#variant_names as u32);
-            )*
-        })
+                ::consortium_runtime_mcu::log::trace!(
+                    "consortium controller init: NVIC enabled {} at priority 0x80 (id={})",
+                    #label,
+                    #number
+                );
+            }
+        });
+
+        Some(quote! { #(#statements)* })
     }
 }
 
@@ -160,23 +228,6 @@ impl ToUio for HardwareDoorbellPeripheral {
     }
 }
 
-fn interrupt_variant(name: &str) -> Ident {
-    let mut ident = String::new();
-    for ch in name.chars() {
-        if ch.is_ascii_alphanumeric() {
-            ident.push(ch.to_ascii_uppercase());
-        } else {
-            ident.push('_');
-        }
-    }
-
-    if ident.is_empty() || ident.starts_with(|ch: char| ch.is_ascii_digit()) {
-        ident.insert(0, '_');
-    }
-
-    Ident::new(&ident, Span::call_site())
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -186,6 +237,22 @@ mod tests {
     };
 
     fn bell(name: &str, core: VisibleCore, irq: u32) -> HardwareDoorbell {
+        typed_bell(
+            name,
+            core,
+            irq,
+            HardwareDoorbellPeripheralType::Ipcc,
+            Some(1),
+        )
+    }
+
+    fn typed_bell(
+        name: &str,
+        core: VisibleCore,
+        irq: u32,
+        r#type: HardwareDoorbellPeripheralType,
+        id: Option<u8>,
+    ) -> HardwareDoorbell {
         HardwareDoorbell {
             name: name.to_string(),
             address: Address {
@@ -195,29 +262,191 @@ mod tests {
                 },
                 cp: HashMap::new(),
             },
-            r#type: HardwareDoorbellPeripheralType::Hsem,
+            r#type,
+            id,
             channels: vec![0],
-            irq: HashMap::from([(core, irq)]),
+            irq: HashMap::from([(core, InterruptLine::new(irq))]),
+            side: HashMap::from([(core, DoorbellRingerSide::Secondary)]),
         }
     }
 
     #[test]
     fn generates_nvic_enablement_for_core_irqs() {
         let core = VisibleCore::Mcore(McoreName::Cm33);
-        let bella = BellA {
-            bells: vec![bell("hsem", core, 199), bell("ipcc2", core, 13)],
+        let mut bella = BellA {
+            bells: vec![bell("ipcc1", core, 171), bell("ipcc2", core, 175)],
         };
+        bella.resolve_variants(|_, number| match number {
+            171 => Some("IPCC1_RX".to_string()),
+            175 => Some("IPCC2_RX".to_string()),
+            _ => None,
+        });
 
         let tokens = bella
             .nvic_enable(&core, "::consortium_hal_stm32mp2")
             .unwrap()
             .to_string();
 
-        assert!(tokens.contains("enum BellaInterrupt"));
-        assert!(tokens.contains("HSEM = 199u16"));
-        assert!(tokens.contains("IPCC2 = 13u16"));
-        assert!(tokens.contains("unsafe impl :: cortex_m :: interrupt :: InterruptNumber"));
-        assert!(tokens.contains("NVIC :: unmask"));
+        // The chip HAL re-exports the PAC's `Interrupt`, so generated bring-up
+        // names the same variant as the vector table and declares no enum of
+        // its own.
+        assert!(!tokens.contains("BellaInterrupt"));
+        assert!(!tokens.contains("cortex_m"));
+        assert!(tokens.contains(":: consortium_hal_stm32mp2 :: Interrupt :: IPCC1_RX"));
+        assert!(tokens.contains(":: consortium_hal_stm32mp2 :: Interrupt :: IPCC2_RX"));
+        assert!(tokens.contains(
+            ":: hal :: nvic :: set_priority (:: consortium_hal_stm32mp2 :: Interrupt :: IPCC1_RX , \
+             0x80u8)"
+        ));
+    }
+
+    #[test]
+    fn generates_doorbell_vectors_forwarding_to_each_crate() {
+        let core = VisibleCore::Mcore(McoreName::Cm33);
+        let mut bella = BellA {
+            bells: vec![
+                typed_bell(
+                    "ipcc1",
+                    core,
+                    171,
+                    HardwareDoorbellPeripheralType::Ipcc,
+                    Some(1),
+                ),
+                typed_bell(
+                    "ipcc2",
+                    core,
+                    175,
+                    HardwareDoorbellPeripheralType::Ipcc,
+                    Some(2),
+                ),
+            ],
+        };
+        bella.resolve_variants(|_, number| match number {
+            171 => Some("IPCC1_RX".to_string()),
+            175 => Some("IPCC2_RX".to_string()),
+            _ => None,
+        });
+
+        let tokens = bella
+            .vectors(&core, "::consortium_hal_stm32mp2")
+            .iter()
+            .map(ToString::to_string)
+            .collect::<Vec<_>>();
+
+        assert_eq!(tokens.len(), 2);
+        assert!(tokens[0].contains("[:: consortium_hal_stm32mp2 :: interrupt] fn IPCC1_RX ()"));
+        // Each instance forwards with its own number, and no MMIO base appears
+        // in generated code: the doorbell crate derives the window.
+        assert!(tokens[0].contains(
+            ":: consortium_ipc_doorbell_ipcc :: notify_rx_occupied_interrupt :: < :: \
+             consortium_ipc :: Secondary , 1usize > ()"
+        ));
+        assert!(tokens[1].contains("fn IPCC2_RX ()"));
+        assert!(tokens[1].contains(
+            ":: consortium_ipc_doorbell_ipcc :: notify_rx_occupied_interrupt :: < :: \
+             consortium_ipc :: Secondary , 2usize > ()"
+        ));
+    }
+
+    /// HSEM shares one waker across the block and its `wait` future owns the
+    /// masking, so its vector only wakes — unlike the IPCC/MU service calls.
+    #[test]
+    fn generates_hsem_doorbell_vector_without_an_instance() {
+        let core = VisibleCore::Mcore(McoreName::Cm33);
+        let mut bella = BellA {
+            bells: vec![typed_bell(
+                "hsem",
+                core,
+                199,
+                HardwareDoorbellPeripheralType::Hsem,
+                None,
+            )],
+        };
+        bella.resolve_variants(|_, _| Some("HSEM".to_string()));
+
+        let tokens = bella.vectors(&core, "::consortium_hal_stm32mp2")[0].to_string();
+
+        assert!(tokens.contains("fn HSEM ()"));
+        assert!(tokens.contains(":: consortium_ipc_doorbell_hsem :: notify ()"));
+    }
+
+    #[test]
+    fn generates_mu_doorbell_vector_with_its_instance() {
+        let core = VisibleCore::Mcore(McoreName::Cm7);
+        let mut bella = BellA {
+            bells: vec![typed_bell(
+                "mu7",
+                core,
+                207,
+                HardwareDoorbellPeripheralType::Mu,
+                Some(7),
+            )],
+        };
+        bella.resolve_variants(|_, _| Some("MU7_B".to_string()));
+
+        let tokens = bella.vectors(&core, "::consortium_hal_imx9")[0].to_string();
+
+        assert!(tokens.contains("fn MU7_B ()"));
+        assert!(tokens.contains(
+            ":: consortium_ipc_doorbell_mu :: notify_gi_interrupt :: < :: consortium_ipc :: \
+             Secondary , 7usize > ()"
+        ));
+    }
+
+    /// Two channels over one doorbell share a single line, so it gets one vector.
+    #[test]
+    fn deduplicates_a_shared_doorbell_line() {
+        let core = VisibleCore::Mcore(McoreName::Cm33);
+        let mut bella = BellA {
+            bells: vec![bell("ipcc1", core, 171), bell("ipcc1", core, 171)],
+        };
+        bella.resolve_variants(|_, _| Some("IPCC1_RX".to_string()));
+
+        assert_eq!(bella.vectors(&core, "::consortium_hal_stm32mp2").len(), 1);
+    }
+
+    /// Without a PAC variant there is no name to hang `#[interrupt]` on, so the
+    /// core keeps writing that vector by hand.
+    #[test]
+    fn emits_no_vector_without_a_pac_variant() {
+        let core = VisibleCore::Mcore(McoreName::Cm0p);
+        let bella = BellA {
+            bells: vec![bell("ipcc2", core, 13)],
+        };
+
+        assert!(bella.vectors(&core, "::consortium_hal_stm32mp2").is_empty());
+    }
+
+    /// A core the PAC's shipped interrupt table does not describe (STM32MP2's
+    /// CM0+) must not name an `Interrupt` variant: the same line name carries
+    /// the CM33's number there.
+    #[test]
+    fn falls_back_to_the_raw_line_without_a_pac_variant() {
+        let core = VisibleCore::Mcore(McoreName::Cm0p);
+        let mut bella = BellA {
+            bells: vec![bell("ipcc2", core, 13)],
+        };
+        bella.resolve_variants(|_, _| None);
+
+        let tokens = bella
+            .nvic_enable(&core, "::consortium_hal_stm32mp2")
+            .unwrap()
+            .to_string();
+
+        assert!(!tokens.contains("Interrupt ::"));
+        assert!(tokens.contains(
+            ":: hal :: nvic :: enable (:: consortium_hal_stm32mp2 :: hal :: nvic :: Irq (13u16))"
+        ));
+    }
+
+    #[test]
+    fn resolve_variants_skips_the_ap() {
+        let mut bella = BellA {
+            bells: vec![bell("ipcc1", VisibleCore::Ap, 171)],
+        };
+        bella.resolve_variants(|_, _| Some("IPCC1_RX".to_string()));
+
+        assert!(bella.bells[0].irq[&VisibleCore::Ap].variant.is_none());
     }
 
     #[test]
@@ -225,7 +454,7 @@ mod tests {
         let cm33 = VisibleCore::Mcore(McoreName::Cm33);
         let cm7 = VisibleCore::Mcore(McoreName::Cm7);
         let bella = BellA {
-            bells: vec![bell("hsem", cm33, 199)],
+            bells: vec![bell("ipcc1", cm33, 171)],
         };
 
         assert!(
@@ -233,12 +462,6 @@ mod tests {
                 .nvic_enable(&cm7, "::consortium_hal_stm32mp2")
                 .is_none()
         );
-    }
-
-    #[test]
-    fn sanitizes_interrupt_variant_names() {
-        assert_eq!(interrupt_variant("mu-7").to_string(), "MU_7");
-        assert_eq!(interrupt_variant("1bad").to_string(), "_1BAD");
     }
 
     fn party(core: &str, irq: u32) -> HardwareDoorbellParty {
@@ -252,17 +475,17 @@ mod tests {
 
     fn database_doorbell(parties: Vec<HardwareDoorbellParty>) -> HardwareDoorbellPeripheral {
         HardwareDoorbellPeripheral {
-            name: "HSEM".to_string(),
-            page: 1306,
-            r#type: HardwareDoorbellPeripheralType::Hsem,
+            name: "IPCC1".to_string(),
+            page: 1305,
+            r#type: HardwareDoorbellPeripheralType::Ipcc,
             memory: HardwareMemory {
-                base: 0x0624_0000,
+                base: 0x0049_0000,
                 length: 0x400,
             },
             parties,
-            party_page: 1306,
-            channels: 16,
-            channel_page: 1306,
+            party_page: 1305,
+            channels: 32,
+            channel_page: 1305,
             clock: None,
         }
     }
@@ -278,7 +501,7 @@ mod tests {
         .unwrap()
         .unwrap();
 
-        assert_eq!(uio.mmap, vec![(0x0624_0000, 0x400)]);
+        assert_eq!(uio.mmap, vec![(0x0049_0000, 0x400)]);
         assert_eq!(uio.irq, Some((199, IrqMethod::LevelHigh)));
     }
 
@@ -289,7 +512,7 @@ mod tests {
             .unwrap()
             .unwrap();
 
-        assert_eq!(uio.mmap, vec![(0x0624_0000, 0x400)]);
+        assert_eq!(uio.mmap, vec![(0x0049_0000, 0x400)]);
         assert!(uio.irq.is_none());
     }
 }

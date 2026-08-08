@@ -11,10 +11,10 @@ fn _generated() {
                 32768usize,
             )
         };
-        let doorbell = ::consortium_ipc_doorbell_hsem::HsemDoorbell::<
+        let doorbell = ::consortium_ipc_doorbell_ipcc::IpccDoorbell::<
             ::consortium_ipc::Secondary,
             1usize,
-        >::new(__db_hsem);
+        >::new(__db_ipcc1);
         // SAFETY: doorbell channel is verified to be valid in the config.
         let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
         // SAFETY: doorbell channel is verified to be valid in the config.

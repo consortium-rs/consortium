@@ -545,7 +545,7 @@ mod tests {
         assert_eq!(session.config.profile.chip, "stm32mp257fak3");
         assert_eq!(session.database.name, "STM32MP25");
         assert_eq!(session.config.ipc.channels.len(), 2);
-        assert_eq!(session.config.ipc.channels[0].doorbell, "hsem");
+        assert_eq!(session.config.ipc.channels[0].doorbell, "ipcc1");
         assert_eq!(
             session.config.ipc.channels[0].endpoints[&Party::AcoreNonSecure].chan,
             0
@@ -653,15 +653,16 @@ mod tests {
 
             [[ipc.channel]]
             name = "probe"
-            doorbell = "hsem"
+            doorbell = "ipcc1"
             pattern = "memory"
             primary = "linux"
             secondary = "cm33"
-            party.linux = { chan = 16, type = "Ping" }
+            party.linux = { chan = 32, type = "Ping" }
             config.memory = { base = 0x00040000, length = 0x00008000 }
             mtu = 128
         "#;
 
+        // IPCC1 has 32 channels, so `chan = 32` is one past the last.
         assert!(matches!(
             Session::from_toml(manifest),
             Err(CfgError::DoorbellChannelUnavailable { .. })
@@ -678,7 +679,7 @@ mod tests {
 
             [[ipc.channel]]
             name = "probe"
-            doorbell = "hsem"
+            doorbell = "ipcc1"
             pattern = "memory"
             primary = "linux"
             secondary = "cm33"
@@ -707,7 +708,7 @@ mod tests {
 
             [[ipc.channel]]
             name = "probe"
-            doorbell = "hsem"
+            doorbell = "ipcc1"
             pattern = "memory"
             primary = "linux"
             secondary = "cm33"
@@ -733,7 +734,7 @@ mod tests {
 
             [[ipc.channel]]
             name = "probe"
-            doorbell = "hsem"
+            doorbell = "ipcc1"
             pattern = "memory"
             primary = "linux"
             secondary = "cm33"
@@ -809,7 +810,7 @@ mod tests {
 
             [[ipc.channel]]
             name = "probe"
-            doorbell = "hsem"
+            doorbell = "ipcc1"
             pattern = "memory"
             primary = "linux"
             secondary = "cm33"
@@ -834,7 +835,7 @@ mod tests {
 
             [[ipc.channel]]
             name = "probe"
-            doorbell = "hsem"
+            doorbell = "ipcc1"
             pattern = "memory"
             primary = "linux"
             secondary = "cm33"
@@ -903,7 +904,7 @@ mod tests {
 
             [[ipc.channel]]
             name = "probe"
-            doorbell = "hsem"
+            doorbell = "ipcc1"
             pattern = "memory"
             primary = "linux"
             secondary = "cm33"
@@ -929,7 +930,7 @@ mod tests {
 
             [[ipc.channel]]
             name = "probe"
-            doorbell = "hsem"
+            doorbell = "ipcc1"
             pattern = "memory"
             primary = "linux"
             secondary = "cm33"
@@ -958,7 +959,7 @@ mod tests {
 
             [[ipc.channel]]
             name = "probe"
-            doorbell = "hsem"
+            doorbell = "ipcc1"
             pattern = "memory"
             primary = "linux"
             secondary = "cm33"

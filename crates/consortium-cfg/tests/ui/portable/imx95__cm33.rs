@@ -66,12 +66,14 @@ defmt::timestamp!(
     "{=u32}", { use ::core::sync::atomic:: { AtomicU32, Ordering }; static COUNT :
     AtomicU32 = AtomicU32::new(0); COUNT.fetch_add(1, Ordering::Relaxed) }
 );
-// SAFETY: installs the CMSIS-named LPIT1 vector the i.MX9 runtime
-// dispatches; the handler only forwards to the time driver.
+/// Interrupt vectors for this endpoint's generated bring-up.
 #[cfg(target_arch = "arm")]
-#[unsafe(no_mangle)]
-extern "C" fn LPIT1_IRQHandler() {
-    ::consortium_hal_imx9::timer_driver::on_timer_interrupt();
+mod __consortium_vectors {
+    use ::consortium_hal_imx9::interrupt;
+    #[::consortium_hal_imx9::interrupt]
+    fn LPIT1() {
+        ::consortium_hal_imx9::timer_driver::on_timer_interrupt();
+    }
 }
 /// Runtime bring-up policy. Enabled manifest steps default on.
 #[cfg(target_arch = "arm")]
@@ -125,41 +127,24 @@ fn init(config: Config) -> (Peripherals, Channels) {
         }
     }
     if config.nvic {
-        #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-        #[repr(u16)]
-        pub enum BellaInterrupt {
-            MU1 = 225u16,
-        }
-        unsafe impl ::cortex_m::interrupt::InterruptNumber for BellaInterrupt {
-            fn number(self) -> u16 {
-                self as u16
-            }
-        }
-        // SAFETY: interrupt numbers are emitted from the validated
-        // Consortium hardware database for this visible core.
+        ::consortium_hal_imx9::hal::nvic::unpend(
+            ::consortium_hal_imx9::hal::nvic::Irq(225u16),
+        );
+        // SAFETY: the interrupt comes from the validated Consortium
+        // hardware database for this visible core, and the application
+        // owns the matching vector.
         unsafe {
             ::consortium_hal_imx9::hal::nvic::set_priority(
-                BellaInterrupt::MU1 as u16,
-                0x80,
+                ::consortium_hal_imx9::hal::nvic::Irq(225u16),
+                0x80u8,
+            );
+            ::consortium_hal_imx9::hal::nvic::enable(
+                ::consortium_hal_imx9::hal::nvic::Irq(225u16),
             );
         }
         ::consortium_runtime_mcu::log::trace!(
-            "consortium controller init: NVIC set priority to 0x80 {} (id={})",
-            stringify!(MU1), BellaInterrupt::MU1 as u32
-        );
-        ::cortex_m::peripheral::NVIC::unpend(BellaInterrupt::MU1);
-        ::consortium_runtime_mcu::log::trace!(
-            "consortium controller init: NVIC unpend {} (id={})", stringify!(MU1),
-            BellaInterrupt::MU1 as u32
-        );
-        // SAFETY: interrupt numbers are emitted from the validated
-        // Consortium hardware database for this visible core.
-        unsafe {
-            ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::MU1);
-        }
-        ::consortium_runtime_mcu::log::trace!(
-            "consortium controller init: NVIC unmask {} (id={})", stringify!(MU1),
-            BellaInterrupt::MU1 as u32
+            "consortium controller init: NVIC enabled {} at priority 0x80 (id={})",
+            "225", 225u32
         );
     }
     let __p = ::consortium_hal_imx9::init();

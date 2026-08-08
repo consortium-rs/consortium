@@ -17,7 +17,7 @@
 //! Peripheral bring-up code generation.
 //!
 //! Emits the manifest-owned HAL singleton allowlist, configuration constants,
-//! interrupt handlers, and NVIC enablement.
+//! interrupt vectors ([`Peripherals::vectors`]), and NVIC enablement.
 //!
 //! Drivers take the chip HAL's peripheral singletons rather than MMIO bases, so
 //! generated `init` moves only declared fields out of `hal::init()`. Bases no
@@ -31,15 +31,19 @@ use consortium_cfg_common::config::VisibleCore;
 use proc_macro2::{Ident, Span, TokenStream};
 use quote::quote;
 
+use crate::components::irq::InterruptLine;
+
 /// A codegen-supported peripheral kind, resolved for one instance.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PeripheralKind {
-    /// I2C master: functional clock (Hz), bus frequency (Hz), and its interrupt.
+    /// I2C master: functional clock (Hz), bus frequency (Hz), the canonical name
+    /// of its interrupt line — which names the generated `#[interrupt]` vector —
+    /// and how NVIC bring-up names that same line.
     I2c {
         clock_hz: u32,
         frequency: u32,
-        irq_number: u16,
         irq_name: String,
+        irq: InterruptLine,
     },
     /// GPIO port (no interrupt bring-up yet).
     Gpio,
@@ -81,7 +85,6 @@ impl Peripherals {
         let hal: syn::Path =
             syn::parse_str(&self.hal_crate).expect("hal_crate must be a valid path");
         let mut fields = Vec::new();
-        let mut handlers = Vec::new();
         let mut constants = Vec::new();
 
         for instance in owned {
@@ -94,27 +97,14 @@ impl Peripherals {
                 PeripheralKind::I2c {
                     clock_hz,
                     frequency,
-                    irq_number,
-                    irq_name,
+                    ..
                 } => {
-                    let handler = ident(&format!("{irq_name}_IRQHandler"));
-
                     let clock_const = ident(&format!("{}_CLOCK_HZ", instance.singleton));
                     let frequency_const = ident(&format!("{}_FREQUENCY", instance.singleton));
                     constants.push(quote! {
                         pub const #clock_const: u32 = #clock_hz;
                         pub const #frequency_const: u32 = #frequency;
                     });
-                    // The driver keeps one interrupt state per instance behind
-                    // the singleton type, so the vector only names the instance.
-                    handlers.push(quote! {
-                        #[cfg(target_arch = "arm")]
-                        #[unsafe(no_mangle)]
-                        extern "C" fn #handler() {
-                            #hal::i2c::on_interrupt::<#hal::peripherals::#singleton>();
-                        }
-                    });
-                    let _ = irq_number;
                 }
                 PeripheralKind::Gpio | PeripheralKind::Other => {}
             }
@@ -132,27 +122,62 @@ impl Peripherals {
             }
 
             #(#constants)*
-            #(#handlers)*
         })
     }
 
-    /// NVIC priority and enable statements for generated peripheral handlers.
-    pub fn nvic(&self, core: VisibleCore) -> TokenStream {
+    /// The interrupt vectors `core`'s owned peripherals need, as bare
+    /// `#[interrupt]` items for the generated vector module.
+    ///
+    /// The handler is named for the line's PAC `Interrupt` variant, which is
+    /// what places it in that slot of the vector table. The driver keeps one
+    /// interrupt state per instance behind the singleton type, so the body only
+    /// names the instance.
+    pub fn vectors(&self, core: VisibleCore) -> Vec<TokenStream> {
         let hal: syn::Path =
             syn::parse_str(&self.hal_crate).expect("hal_crate must be a valid path");
+        self.instances
+            .iter()
+            .filter(|instance| instance.owner == core)
+            .filter_map(|instance| {
+                let PeripheralKind::I2c { irq_name, .. } = &instance.kind else {
+                    return None;
+                };
+                let line = ident(irq_name);
+                let singleton = ident(&instance.singleton);
+                Some(quote! {
+                    #[#hal::interrupt]
+                    fn #line() {
+                        #hal::i2c::on_interrupt::<#hal::peripherals::#singleton>();
+                    }
+                })
+            })
+            .collect()
+    }
+
+    /// NVIC priority and enable statements for generated peripheral handlers.
+    ///
+    /// The line is named per [`InterruptLine::tokens`]: the chip HAL's
+    /// re-exported PAC `Interrupt` variant where that describes this core, and
+    /// the HAL's raw-number carrier otherwise.
+    pub fn nvic(&self, core: VisibleCore) -> TokenStream {
+        let hal: TokenStream = self
+            .hal_crate
+            .parse()
+            .expect("hal crate path is a valid token stream");
         let statements = self.instances.iter().filter_map(|instance| {
             if instance.owner != core {
                 return None;
             }
-            let PeripheralKind::I2c { irq_number, .. } = instance.kind else {
+            let PeripheralKind::I2c { irq, .. } = &instance.kind else {
                 return None;
             };
+            let (line, _) = irq.tokens(&hal)?;
             Some(quote! {
-                /// SAFETY: the interrupt number comes from the validated chip
-                /// map and its generated handler is installed above.
+                /// SAFETY: the interrupt comes from the validated chip map and
+                /// its generated handler is installed above.
                 unsafe {
-                    #hal::hal::nvic::set_priority(#irq_number, 0x80u8);
-                    #hal::hal::nvic::enable(#irq_number);
+                    #hal::hal::nvic::set_priority(#line, 0x80u8);
+                    #hal::hal::nvic::enable(#line);
                 }
             })
         });

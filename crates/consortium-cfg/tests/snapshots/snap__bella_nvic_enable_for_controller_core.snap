@@ -3,67 +3,42 @@ source: crates/consortium-cfg/tests/snap.rs
 expression: stmts(tokens)
 ---
 fn _generated() {
-    #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-    #[repr(u16)]
-    pub enum BellaInterrupt {
-        HSEM = 199u16,
-        IPCC2 = 13u16,
-    }
-    unsafe impl ::cortex_m::interrupt::InterruptNumber for BellaInterrupt {
-        fn number(self) -> u16 {
-            self as u16
-        }
-    }
-    // SAFETY: interrupt numbers are emitted from the validated
-    // Consortium hardware database for this visible core.
+    ::consortium_hal_stm32mp2::hal::nvic::unpend(
+        ::consortium_hal_stm32mp2::Interrupt::IPCC1_RX,
+    );
+    // SAFETY: the interrupt comes from the validated Consortium
+    // hardware database for this visible core, and the application
+    // owns the matching vector.
     unsafe {
         ::consortium_hal_stm32mp2::hal::nvic::set_priority(
-            BellaInterrupt::HSEM as u16,
-            0x80,
+            ::consortium_hal_stm32mp2::Interrupt::IPCC1_RX,
+            0x80u8,
+        );
+        ::consortium_hal_stm32mp2::hal::nvic::enable(
+            ::consortium_hal_stm32mp2::Interrupt::IPCC1_RX,
         );
     }
     ::consortium_runtime_mcu::log::trace!(
-        "consortium controller init: NVIC set priority to 0x80 {} (id={})",
-        stringify!(HSEM), BellaInterrupt::HSEM as u32
+        "consortium controller init: NVIC enabled {} at priority 0x80 (id={})",
+        "IPCC1_RX", 171u32
     );
-    ::cortex_m::peripheral::NVIC::unpend(BellaInterrupt::HSEM);
-    ::consortium_runtime_mcu::log::trace!(
-        "consortium controller init: NVIC unpend {} (id={})", stringify!(HSEM),
-        BellaInterrupt::HSEM as u32
+    ::consortium_hal_stm32mp2::hal::nvic::unpend(
+        ::consortium_hal_stm32mp2::Interrupt::IPCC2_RX,
     );
-    // SAFETY: interrupt numbers are emitted from the validated
-    // Consortium hardware database for this visible core.
-    unsafe {
-        ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::HSEM);
-    }
-    ::consortium_runtime_mcu::log::trace!(
-        "consortium controller init: NVIC unmask {} (id={})", stringify!(HSEM),
-        BellaInterrupt::HSEM as u32
-    );
-    // SAFETY: interrupt numbers are emitted from the validated
-    // Consortium hardware database for this visible core.
+    // SAFETY: the interrupt comes from the validated Consortium
+    // hardware database for this visible core, and the application
+    // owns the matching vector.
     unsafe {
         ::consortium_hal_stm32mp2::hal::nvic::set_priority(
-            BellaInterrupt::IPCC2 as u16,
-            0x80,
+            ::consortium_hal_stm32mp2::Interrupt::IPCC2_RX,
+            0x80u8,
+        );
+        ::consortium_hal_stm32mp2::hal::nvic::enable(
+            ::consortium_hal_stm32mp2::Interrupt::IPCC2_RX,
         );
     }
     ::consortium_runtime_mcu::log::trace!(
-        "consortium controller init: NVIC set priority to 0x80 {} (id={})",
-        stringify!(IPCC2), BellaInterrupt::IPCC2 as u32
-    );
-    ::cortex_m::peripheral::NVIC::unpend(BellaInterrupt::IPCC2);
-    ::consortium_runtime_mcu::log::trace!(
-        "consortium controller init: NVIC unpend {} (id={})", stringify!(IPCC2),
-        BellaInterrupt::IPCC2 as u32
-    );
-    // SAFETY: interrupt numbers are emitted from the validated
-    // Consortium hardware database for this visible core.
-    unsafe {
-        ::cortex_m::peripheral::NVIC::unmask(BellaInterrupt::IPCC2);
-    }
-    ::consortium_runtime_mcu::log::trace!(
-        "consortium controller init: NVIC unmask {} (id={})", stringify!(IPCC2),
-        BellaInterrupt::IPCC2 as u32
+        "consortium controller init: NVIC enabled {} at priority 0x80 (id={})",
+        "IPCC2_RX", 175u32
     );
 }

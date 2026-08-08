@@ -311,7 +311,7 @@ impl Transceiver {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct DoorbellMeta {
     /// doorbell type
     pub r#type: HardwareDoorbellPeripheralType,
@@ -319,7 +319,7 @@ pub struct DoorbellMeta {
     pub id: Option<u8>,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DoorbellRingerSide {
     Primary,
     Secondary,
@@ -414,6 +414,35 @@ impl DoorbellMeta {
         let (crate_ident, type_ident, side_ident) = self.idents(side);
         quote::quote! {
             ::#crate_ident::#type_ident::<::consortium_ipc::#side_ident, #id>
+        }
+    }
+
+    /// The vector body that services this doorbell's interrupt from `side`.
+    ///
+    /// Each doorbell crate exposes one bare-metal entry point that masks the
+    /// asserted lines before waking the futures waiting on them. All of them
+    /// derive the register window from the crate's own vetted address table, so
+    /// the call carries only the side and instance — no MMIO base ever appears
+    /// in generated code.
+    pub fn service_call(&self, side: DoorbellRingerSide) -> TokenStream {
+        let id = self.id.unwrap_or(1) as usize;
+        let (crate_ident, _, side_ident) = self.idents(side);
+        match self.r#type {
+            // HSEM shares one waker across the block, and its `wait` future owns
+            // arming and masking the line, so the vector only wakes.
+            HardwareDoorbellPeripheralType::Hsem => quote::quote! {
+                ::#crate_ident::notify();
+            },
+            HardwareDoorbellPeripheralType::Ipcc => quote::quote! {
+                ::#crate_ident::notify_rx_occupied_interrupt::<
+                    ::consortium_ipc::#side_ident, #id
+                >();
+            },
+            HardwareDoorbellPeripheralType::Mu => quote::quote! {
+                ::#crate_ident::notify_gi_interrupt::<
+                    ::consortium_ipc::#side_ident, #id
+                >();
+            },
         }
     }
 
@@ -660,8 +689,8 @@ mod tests {
             channel_primary: (VisibleCore::Ap, channel(0)),
             channel_secondary: (cm33, channel(1)),
             doorbell: DoorbellMeta {
-                r#type: HardwareDoorbellPeripheralType::Hsem,
-                id: None,
+                r#type: HardwareDoorbellPeripheralType::Ipcc,
+                id: Some(1),
             },
         }
     }
@@ -733,11 +762,8 @@ mod tests {
             uio_id: 2,
             mmap_id: 0,
         };
-        t.doorbell = DoorbellMeta {
-            r#type: HardwareDoorbellPeripheralType::Ipcc,
-            id: Some(1),
-        };
-
+        // `transceiver` uses IPCC, a masking doorbell, so the AP binds the
+        // masking service rather than a plain notifier.
         let uio = format_ident!("uio");
         let init = t
             .build_field_init(
@@ -755,18 +781,20 @@ mod tests {
         assert!(init.contains("uio [2usize] . mmap"), "{init}");
     }
 
+    /// HSEM is the non-masking doorbell: its `wait` future owns arming and
+    /// masking the line, so the AP binds a plain notifier instead of a service.
     #[test]
-    fn ap_binds_doorbell_notifier_to_the_doorbell_uio_device() {
+    fn ap_binds_a_plain_notifier_for_hsem() {
         let mut t = transceiver(SLOT_BASE + 4096, 128);
-        t.region.address.ap = ApAddress {
-            uio_id: 1,
-            mmap_id: 0,
-        };
         t.doorbell_address.ap = ApAddress {
             uio_id: 2,
             mmap_id: 0,
         };
-        // `transceiver` uses HSEM, which takes the plain `Notify` fanout.
+        t.doorbell = DoorbellMeta {
+            r#type: HardwareDoorbellPeripheralType::Hsem,
+            id: None,
+        };
+
         let uio = format_ident!("uio");
         let init = t
             .build_field_init(
@@ -778,7 +806,7 @@ mod tests {
             .to_string();
 
         assert!(init.contains("uio [2usize] . bind_notifier"), "{init}");
-        assert!(!init.contains("uio [1usize] . bind_notifier"), "{init}");
+        assert!(!init.contains("bind_service"), "{init}");
     }
 
     #[test]

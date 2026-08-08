@@ -262,6 +262,7 @@ dependencies = [
  "bitfield 0.19.5",
  "consortium-hal-imx9",
  "consortium-ipc",
+ "critical-section",
  "defmt",
  "thiserror",
 ]

@@ -23,8 +23,10 @@ use std::collections::HashMap;
 use consortium_cfg::components::address::{Address, ApAddress};
 use consortium_cfg::components::bella::{BellA, HardwareDoorbell};
 use consortium_cfg::components::ipc_shm::{
-    Channel, DoorbellMeta, DoorbellSource, ShuHan, Transceiver, initialize_instances,
+    Channel, DoorbellMeta, DoorbellRingerSide, DoorbellSource, ShuHan, Transceiver,
+    initialize_instances,
 };
+use consortium_cfg::components::irq::InterruptLine;
 use consortium_cfg::components::region::Region;
 use consortium_cfg_common::config::{Codec, McoreName, VisibleCore};
 use consortium_cfg_common::database::{HardwareDoorbellPeripheralType, MemoryRegionType};
@@ -95,8 +97,8 @@ fn transceiver() -> Transceiver {
             },
         ),
         doorbell: DoorbellMeta {
-            r#type: HardwareDoorbellPeripheralType::Hsem,
-            id: None,
+            r#type: HardwareDoorbellPeripheralType::Ipcc,
+            id: Some(1),
         },
     }
 }
@@ -119,11 +121,11 @@ fn transceiver_primary_side_binds_uio_notifier() {
 fn transceiver_secondary_side_uses_controller_addresses() {
     let uio = format_ident!("uio");
     // A controller core takes the doorbell's peripheral singleton rather than a
-    // mapped base; `__db_hsem` is the parameter the endpoint installer binds.
+    // mapped base; `__db_ipcc1` is the parameter the endpoint installer binds.
     let tokens = transceiver().build_field_init(
         cm33(),
         &uio,
-        DoorbellSource::Owned(format_ident!("__db_hsem")),
+        DoorbellSource::Owned(format_ident!("__db_ipcc1")),
         "::consortium_hal_stm32mp2",
     );
     insta::assert_snapshot!(expr(tokens));
@@ -138,24 +140,33 @@ fn region_initialize_uncached_ap() {
 
 #[test]
 fn bella_nvic_enable_for_controller_core() {
-    let bella = BellA {
+    let mut bella = BellA {
         bells: vec![
             HardwareDoorbell {
-                name: "hsem".to_string(),
+                name: "ipcc1".to_string(),
                 address: shared_address(0, 0),
-                r#type: HardwareDoorbellPeripheralType::Hsem,
+                r#type: HardwareDoorbellPeripheralType::Ipcc,
+                id: Some(1),
                 channels: vec![0],
-                irq: HashMap::from([(cm33(), 199)]),
+                irq: HashMap::from([(cm33(), InterruptLine::new(171))]),
+                side: HashMap::from([(cm33(), DoorbellRingerSide::Secondary)]),
             },
             HardwareDoorbell {
                 name: "ipcc2".to_string(),
                 address: shared_address(0, 0),
                 r#type: HardwareDoorbellPeripheralType::Ipcc,
+                id: Some(2),
                 channels: vec![1],
-                irq: HashMap::from([(cm33(), 13)]),
+                irq: HashMap::from([(cm33(), InterruptLine::new(175))]),
+                side: HashMap::from([(cm33(), DoorbellRingerSide::Secondary)]),
             },
         ],
     };
+    // Same resolution the lowering performs, against the bundled cm33 map —
+    // the core whose interrupt table the STM32MP2 PAC ships.
+    let map = consortium_cfg::chipmap::load("stm32mp257fai3", "cm33").expect("bundled cm33 map");
+    assert!(map.has_pac_interrupts());
+    bella.resolve_variants(|_, number| map.irq_by_number(number).map(|irq| irq.name.clone()));
 
     let tokens = bella
         .nvic_enable(&cm33(), "::consortium_hal_stm32mp2")
@@ -248,8 +259,8 @@ fn shuhan_controller_side_emits_single_endpoint_struct() {
         &uio,
         &ty_crate,
         "::consortium_hal_stm32mp2",
-        // The cm33 chip map reaches HSEM, so its doorbell takes the singleton.
-        &["HSEM".to_string()],
+        // The cm33 chip map reaches IPCC1, so its doorbell takes the singleton.
+        &["IPCC1".to_string()],
     );
     insta::assert_snapshot!(items(tokens));
 }

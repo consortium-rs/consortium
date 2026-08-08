@@ -64,16 +64,21 @@
 //!
 //! This crate installs **no** `#[interrupt]` handlers. The application owns the
 //! vector table and forwards the non-secure `IPCC1_RX` / `IPCC2_RX` vectors into
-//! `notify_rx_occupied_interrupt`. Enable the *HAL's* `rt` feature
-//! (`consortium-hal-stm32mp2/rt`) so the `#[interrupt]` macro and PAC vector table are
-//! available there.
+//! [`notify_rx_occupied_interrupt::<S, N>()`](notify_rx_occupied_interrupt),
+//! parameterized with that instance's side and number. Enable the *HAL's* `rt`
+//! feature (`consortium-hal-stm32mp2/rt`) so the `#[interrupt]` macro and PAC vector
+//! table are available there.
 //!
 //! ```rust,ignore
 //! #[interrupt]
 //! fn IPCC1_RX() {
-//!     consortium_ipc_doorbell_ipcc::notify_rx_occupied_interrupt();
+//!     consortium_ipc_doorbell_ipcc::notify_rx_occupied_interrupt::<consortium_ipc::Secondary, 1>();
 //! }
 //! ```
+//!
+//! In practice firmware does not write that by hand: `consortium-cfg` emits it into
+//! the generated `consortium.gen.rs` vector module from the manifest, which already
+//! names the doorbell, its instance, and each party's side.
 //!
 //! The IPCC line is **level-sensitive**, which matters on Linux: if the UIO IRQ loop
 //! re-arms the interrupt while a channel is still occupied, the line fires again
