@@ -46,6 +46,12 @@ more on the total length:
 frames, which is the number to reach for when budgeting bus time. A 128-byte
 message is 19 classic frames — about 2.5 ms at 500 kbit/s — or 3 FD frames.
 
+Segments are padded up to a length the medium can describe (`padded_len`). On
+classic CAN that is a no-op, since every length `0..=8` is exact. On FD the DLC
+jumps 8, 12, 16, 20, 24, 32, 48, 64, so a 10-byte segment goes out as 12. The
+receiver ignores the difference — a `Single` carries its own length and a
+`Continue` is bounded by the declared total.
+
 Only the receive half takes a buffer, sized by `rx_buf_len`. CAN frames are
 fixed-size, so the transmit path stages each one in a stack array and slices the
 caller's payload directly; there is no `tx_buf_len` to match the UART crate's.
@@ -56,7 +62,12 @@ caller's payload directly; there is no `tx_buf_len` to match the UART crate's.
 half is bound to one: the transmit half stamps it into every frame, and the
 receive half drops anything else. The two directions **must** use different
 identifiers, since both halves see every frame on the bus and an endpoint must
-not reassemble its own traffic.
+not reassemble its own traffic. `FdcanTransport::new` rejects equality with
+`Error::SameIdentifier` rather than leaving it to be discovered at runtime — a
+controller running with loopback or self-reception, as bring-up self-tests use,
+echoes every frame straight back. Halves on genuinely separate buses may share
+an identifier; build them with `FdcanTransportTx::new`/`FdcanTransportRx::new`,
+which do not pair the two directions.
 
 Filtering is currently done in software, because neither chip HAL programs
 hardware acceptance filters yet. Frames for other identifiers therefore cost a

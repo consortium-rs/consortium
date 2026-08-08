@@ -36,8 +36,8 @@ use consortium_codec::PostcardCodec;
 use consortium_ipc::{Chan, Channel, Connect, RecvTransport, Rx, SendTransport, Tx};
 use consortium_ipc_transport_fdcan::embedded_can::{Frame as _, Id, StandardId};
 use consortium_ipc_transport_fdcan::{
-    CanErrorType, CanRx, CanTx, Error, FdcanTransport, FdcanTransportRx, FdcanTransportTx,
-    rx_buf_len,
+    CanErrorType, CanFrame, CanRx, CanTx, Error, FdcanTransport, FdcanTransportRx,
+    FdcanTransportTx, rx_buf_len,
 };
 use futures::executor::block_on;
 use serde::{Deserialize, Serialize};
@@ -104,18 +104,68 @@ impl consortium_ipc_transport_fdcan::embedded_can::Frame for TestFrame {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 struct Drained;
 
-/// One direction of a fake bus: a frame queue shared between a transmit end and
-/// a receive end.
-#[derive(Clone, Default)]
-struct Wire(Arc<Mutex<VecDeque<TestFrame>>>);
+/// A CAN FD frame that enforces the medium's quantized DLC: above eight bytes
+/// only 12, 16, 20, 24, 32, 48 and 64 exist, and `build` rejects anything else.
+///
+/// This is the strict reading of [`CanFrame::build`]'s contract, and it is what
+/// makes the crate's FD-readiness claim testable rather than aspirational: the
+/// transmit path must pad each segment up to a representable length.
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct FdFrame {
+    id: Id,
+    data: Vec<u8>,
+}
 
-impl Wire {
-    fn frames(&self) -> Vec<TestFrame> {
+impl CanFrame for FdFrame {
+    const MAX_PAYLOAD: usize = 64;
+
+    fn build(id: Id, data: &[u8]) -> Option<Self> {
+        const VALID: [usize; 7] = [12, 16, 20, 24, 32, 48, 64];
+        (data.len() <= 8 || VALID.contains(&data.len())).then(|| Self {
+            id,
+            data: data.to_vec(),
+        })
+    }
+
+    fn id(&self) -> Id {
+        self.id
+    }
+
+    fn data(&self) -> &[u8] {
+        &self.data
+    }
+
+    fn is_remote(&self) -> bool {
+        false
+    }
+}
+
+/// One direction of a fake bus: a frame queue shared between a transmit end and
+/// a receive end. Generic over the frame type so the same harness drives both
+/// the classic and the FD medium.
+struct Wire<F = TestFrame>(Arc<Mutex<VecDeque<F>>>);
+
+// Derived `Clone`/`Default` would demand `F: Clone`/`F: Default`, which the
+// `Arc` makes unnecessary.
+impl<F> Clone for Wire<F> {
+    fn clone(&self) -> Self {
+        Self(Arc::clone(&self.0))
+    }
+}
+
+impl<F> Default for Wire<F> {
+    fn default() -> Self {
+        Self(Arc::new(Mutex::new(VecDeque::new())))
+    }
+}
+
+impl<F: Clone> Wire<F> {
+    fn frames(&self) -> Vec<F> {
         self.0.lock().unwrap().iter().cloned().collect()
     }
 
     /// Inject a frame directly, standing in for another node on the bus.
-    fn inject(&self, frame: TestFrame) {
+    fn inject(&self, frame: F) {
         self.0.lock().unwrap().push_back(frame);
     }
 
@@ -125,23 +175,23 @@ impl Wire {
     }
 }
 
-impl CanErrorType for Wire {
+impl<F> CanErrorType for Wire<F> {
     type Error = Drained;
 }
 
-impl CanTx for Wire {
-    type Frame = TestFrame;
+impl<F: CanFrame + Clone + Send + Sync> CanTx for Wire<F> {
+    type Frame = F;
 
-    async fn transmit(&mut self, frame: &TestFrame) -> Result<(), Drained> {
+    async fn transmit(&mut self, frame: &F) -> Result<(), Drained> {
         self.0.lock().unwrap().push_back(frame.clone());
         Ok(())
     }
 }
 
-impl CanRx for Wire {
-    type Frame = TestFrame;
+impl<F: CanFrame + Clone + Send + Sync> CanRx for Wire<F> {
+    type Frame = F;
 
-    async fn receive(&mut self) -> Result<TestFrame, Drained> {
+    async fn receive(&mut self) -> Result<F, Drained> {
         self.0.lock().unwrap().pop_front().ok_or(Drained)
     }
 }
@@ -228,7 +278,7 @@ fn single_frame_message_round_trips() {
         // Short enough to ride in one frame, under A's identifier.
         let frames = wire.frames();
         assert_eq!(frames.len(), 1);
-        assert_eq!(frames[0].id(), id(ID_A));
+        assert_eq!(CanFrame::id(&frames[0]), id(ID_A));
 
         let mut buf = [0u8; MTU];
         let n = b.recv(&mut buf).await.expect("recv on b");
@@ -368,8 +418,13 @@ fn undersized_recv_buffer_is_rejected() {
 fn undersized_reassembly_buffer_is_rejected_at_construction() {
     // The transports hold a controller, which need not be `Debug`, so match
     // rather than `expect_err`.
-    let Err(err) = FdcanTransportRx::new(chan(1), id(ID_A), Wire::default(), scratch(MTU - 1), MTU)
-    else {
+    let Err(err) = FdcanTransportRx::new(
+        chan(1),
+        id(ID_A),
+        Wire::<TestFrame>::default(),
+        scratch(MTU - 1),
+        MTU,
+    ) else {
         panic!("buffer smaller than rx_buf_len should be rejected");
     };
     assert_eq!(
@@ -382,9 +437,82 @@ fn undersized_reassembly_buffer_is_rejected_at_construction() {
 }
 
 #[test]
+fn identical_transmit_and_receive_identifiers_are_rejected() {
+    // Both halves see every frame on the bus, so a shared identifier makes an
+    // endpoint reassemble its own traffic — certain under the loopback /
+    // self-reception mode the chip HALs expose for bring-up self-tests.
+    let Err(err) = FdcanTransport::new(
+        chan(1),
+        id(ID_A),
+        id(ID_A),
+        Wire::<TestFrame>::default(),
+        Wire::<TestFrame>::default(),
+        scratch(rx_buf_len(MTU)),
+        MTU,
+    ) else {
+        panic!("a shared identifier should be rejected");
+    };
+    assert_eq!(err, Error::SameIdentifier);
+}
+
+/// Round-trip over a frame type that enforces CAN FD's quantized DLC.
+///
+/// Without padding on the transmit path these fail at `build`: a 9-byte message
+/// stages a 10-byte `Single`, and FD has no way to describe ten bytes.
+#[test]
+fn fd_frames_round_trip_across_awkward_segment_lengths() {
+    let a_to_b = Wire::<FdFrame>::default();
+    let b_to_a = Wire::<FdFrame>::default();
+    let mut a = FdcanTransport::new(
+        chan(1),
+        id(ID_A),
+        id(ID_B),
+        a_to_b.clone(),
+        b_to_a.clone(),
+        scratch(rx_buf_len(MTU)),
+        MTU,
+    )
+    .expect("buffer sized by rx_buf_len");
+    let mut b = FdcanTransport::new(
+        chan(1),
+        id(ID_B),
+        id(ID_A),
+        b_to_a,
+        a_to_b.clone(),
+        scratch(rx_buf_len(MTU)),
+        MTU,
+    )
+    .expect("buffer sized by rx_buf_len");
+
+    block_on(async {
+        let mut buf = [0u8; MTU];
+        // Sweep every length across the single/segmented boundary and past it,
+        // so both an awkward `Single` and an awkward final `Continue` occur.
+        for len in 0..=MTU {
+            let out = ramp(len, len as u8);
+            a.send(&out).await.expect("send over fd frames");
+            let n = b.recv(&mut buf).await.expect("recv over fd frames");
+            assert_eq!(&buf[..n], &out[..], "round trip failed at {len} bytes");
+        }
+
+        // Every frame that reached the bus carried a representable length.
+        const VALID: [usize; 7] = [12, 16, 20, 24, 32, 48, 64];
+        a.send(&ramp(9, 0)).await.expect("send nine bytes");
+        for f in a_to_b.frames() {
+            let n = f.data().len();
+            assert!(
+                n <= 8 || VALID.contains(&n),
+                "frame of {n} bytes is not a DLC"
+            );
+        }
+    });
+}
+
+#[test]
 fn mtu_beyond_the_length_field_is_rejected() {
     let too_big = u16::MAX as usize + 1;
-    let Err(err) = FdcanTransportTx::new(chan(1), id(ID_A), Wire::default(), too_big) else {
+    let Err(err) = FdcanTransportTx::new(chan(1), id(ID_A), Wire::<TestFrame>::default(), too_big)
+    else {
         panic!("an mtu past the u16 total-length field should be rejected");
     };
     assert!(matches!(err, Error::PayloadTooLarge { .. }));

@@ -98,6 +98,32 @@ pub const fn frames_for(mtu: usize, frame_payload: usize) -> usize {
     1 + rest.div_ceil(cont)
 }
 
+/// Round `len` up to a length a CAN frame can actually describe.
+///
+/// Classic CAN encodes every length `0..=8` exactly, so this is the identity
+/// there. CAN FD's DLC instead jumps 8, 12, 16, 20, 24, 32, 48, 64 — a
+/// controller handed 9 bytes has no way to say "nine". Segments are therefore
+/// padded up to the next representable size before being handed to
+/// [`CanFrame::build`](crate::CanFrame::build).
+///
+/// The padding is free of consequence on the wire: a `Single` carries its
+/// length in the header rather than inferring it from the DLC, and a
+/// `Continue` is bounded by the `First` frame's total, so the receiver stops
+/// at the real end either way.
+pub const fn padded_len(len: usize) -> usize {
+    assert!(len <= FD_PAYLOAD);
+    match len {
+        0..=8 => len,
+        9..=12 => 12,
+        13..=16 => 16,
+        17..=20 => 20,
+        21..=24 => 24,
+        25..=32 => 32,
+        33..=48 => 48,
+        _ => 64,
+    }
+}
+
 /// Reassembly buffer size for an MTU: one full message.
 ///
 /// There is no `tx_buf_len` counterpart. A CAN frame is fixed-size, so the
@@ -509,6 +535,32 @@ mod tests {
         assert_eq!(frames_for(13, P), 3);
         // FD carries the same message in far fewer frames.
         assert_eq!(frames_for(128, FD_PAYLOAD), 3);
+    }
+
+    #[test]
+    fn padded_len_is_the_identity_for_classic_lengths() {
+        // Classic CAN encodes 0..=8 exactly, so segmentation over an 8-byte
+        // frame type must never pad.
+        for len in 0..=CLASSIC_PAYLOAD {
+            assert_eq!(padded_len(len), len);
+        }
+    }
+
+    #[test]
+    fn padded_len_rounds_up_to_representable_fd_lengths() {
+        // The DLC jumps 8, 12, 16, 20, 24, 32, 48, 64 above eight bytes.
+        const VALID: [usize; 7] = [12, 16, 20, 24, 32, 48, 64];
+        assert_eq!(padded_len(9), 12);
+        assert_eq!(padded_len(10), 12);
+        assert_eq!(padded_len(13), 16);
+        assert_eq!(padded_len(33), 48);
+        assert_eq!(padded_len(64), 64);
+        // Never shrinks, and always lands on a length the medium can describe.
+        for len in 9..=FD_PAYLOAD {
+            let p = padded_len(len);
+            assert!(p >= len, "padded_len({len}) shrank to {p}");
+            assert!(VALID.contains(&p), "padded_len({len}) = {p} is not a DLC");
+        }
     }
 
     #[test]

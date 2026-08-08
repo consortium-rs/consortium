@@ -130,8 +130,15 @@ impl<T: CanTx> FdcanTransportTx<T> {
         let mut seg = Segmenter::new(payload, cap);
         let mut frames = 0usize;
         while let Some(len) = seg.next(&mut scratch[..cap]) {
-            let f =
-                T::Frame::build(self.id, &scratch[..len]).ok_or(Error::FrameRejected { len })?;
+            // Pad up to a length the medium can describe. On classic CAN every
+            // length is representable and this is a no-op; on FD the DLC is
+            // quantized above 8 bytes, so a 10-byte segment has to go out as
+            // 12. The receiver ignores the difference — a `Single` carries its
+            // own length and a `Continue` is bounded by the declared total.
+            let padded = frame::padded_len(len).min(cap);
+            scratch[len..padded].fill(0);
+            let f = T::Frame::build(self.id, &scratch[..padded])
+                .ok_or(Error::FrameRejected { len: padded })?;
             self.io.transmit(&f).await.map_err(Error::Can)?;
             frames += 1;
         }
@@ -226,8 +233,15 @@ impl<R: CanRx> FdcanTransportRx<R> {
 impl<T: CanTx, R: CanRx> FdcanTransport<T, R> {
     /// Construct a full-duplex transport.
     ///
-    /// `tx_id` and `rx_id` must differ: both halves sit on the same bus, so a
-    /// shared identifier would make this endpoint reassemble its own frames.
+    /// `tx_id` and `rx_id` must differ, and equality is rejected with
+    /// [`Error::SameIdentifier`]: both halves sit on the same bus, so a shared
+    /// identifier would make this endpoint reassemble its own frames. That is
+    /// not hypothetical — a controller configured for loopback or
+    /// self-reception, as bring-up self-tests use, echoes every frame back.
+    ///
+    /// Two halves on genuinely separate buses may share an identifier; build
+    /// them with [`FdcanTransportTx::new`] and [`FdcanTransportRx::new`]
+    /// directly, which do not pair the two directions.
     pub fn new(
         chan: Chan,
         tx_id: Id,
@@ -237,6 +251,9 @@ impl<T: CanTx, R: CanRx> FdcanTransport<T, R> {
         rx_buf: &'static mut [u8],
         mtu: usize,
     ) -> Result<Self, Error<core::convert::Infallible>> {
+        if tx_id == rx_id {
+            return Err(Error::SameIdentifier);
+        }
         Ok(Self {
             tx: FdcanTransportTx::new(chan, tx_id, tx_io, mtu)?,
             rx: FdcanTransportRx::new(chan, rx_id, rx_io, rx_buf, mtu)?,

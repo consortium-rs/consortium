@@ -209,11 +209,15 @@ CRCs them, so the framing layer only segments and reassembles. One header byte p
 `[kind:2 | low:6]`, where `low` is a payload length on a `Single` and a wrapping sequence
 number on a `Continue`; a `First` frame spends two more bytes on a `u16` total length. The
 `Single` length is explicit rather than implied by the DLC because CAN FD quantizes the DLC
-above 8 bytes, so a short FD frame arrives padded.
+above 8 bytes, so a short FD frame arrives padded. For the same reason the transmit path
+pads each segment up to a representable length (`padded_len`) before calling
+`CanFrame::build` — a no-op on classic CAN, required on FD, and invisible to the receiver.
 
 `Chan` does not go on the wire. Each half binds a CAN identifier — the transmit half stamps
 it, the receive half drops anything else — and the two directions must use different ones,
-since both halves see every frame on the bus. Filtering is in software because neither HAL
+since both halves see every frame on the bus. `FdcanTransport::new` rejects equality with
+`Error::SameIdentifier`; a controller in loopback/self-reception mode echoes every frame
+back, so a shared identifier would self-reassemble. Filtering is in software because neither HAL
 programs hardware acceptance filters yet.
 
 Corruption is not an error, as in UART: a foreign identifier, remote frame, reserved kind,

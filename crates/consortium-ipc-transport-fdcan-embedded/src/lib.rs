@@ -89,5 +89,5 @@ pub mod stm32mp2;
 pub use consortium_ipc_transport_fdcan::{
     CLASSIC_PAYLOAD, CanErrorType, CanFrame, CanRx, CanTx, Error, FD_PAYLOAD, FIRST_EXTRA,
     FdcanTransport, FdcanTransportRx, FdcanTransportTx, HEADER_LEN, MAX_MTU, MIN_FRAME_PAYLOAD,
-    continue_max, embedded_can, first_max, frames_for, rx_buf_len, single_max,
+    continue_max, embedded_can, first_max, frames_for, padded_len, rx_buf_len, single_max,
 };

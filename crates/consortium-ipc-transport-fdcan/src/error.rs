@@ -40,6 +40,13 @@ pub enum Error<E> {
     /// A caller-provided buffer is smaller than the configured MTU requires.
     #[error("buffer of {got} bytes is smaller than the required {needed}")]
     BufferTooSmall { needed: usize, got: usize },
+    /// Both halves of a full-duplex transport were bound to one identifier.
+    ///
+    /// Both halves see every frame on the bus, so this endpoint would receive
+    /// and reassemble its own outbound traffic — guaranteed when the controller
+    /// runs with loopback or self-reception enabled, as it does during bring-up.
+    #[error("transmit and receive halves share one can identifier")]
+    SameIdentifier,
     /// The frame type's payload could not hold a segment the framing layer
     /// produced. Only reachable from a [`CanFrame`](crate::CanFrame) impl whose
     /// `build` rejects a length at or under its own `MAX_PAYLOAD`.
