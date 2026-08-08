@@ -35,4 +35,4 @@ workspace = true
 proc-macro = true
 
 [dependencies]
-consortium-codec-macros-impl = { path = "../consortium-codec-macros-impl", version = "0.2.0" }
+consortium-codec-macros-impl = { path = "../consortium-codec-macros-impl", version = "0.3.0" }

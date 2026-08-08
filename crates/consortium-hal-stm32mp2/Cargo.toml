@@ -57,9 +57,9 @@ uart               = ["dep:embassy-sync", "dep:embedded-hal-nb", "dep:embedded-i
 defmt              = ["consortium-log/defmt", "dep:defmt"]
 
 [dependencies]
-consortium-hal           = { path = "../consortium-hal", version = "0.2.0" }
-consortium-pac-stm32mp2  = { default-features = false, path = "../consortium-pac-stm32mp2", version = "0.2.0" }
-consortium-log           = { path = "../consortium-log", version = "0.2.0" }
+consortium-hal           = { path = "../consortium-hal", version = "0.3.0" }
+consortium-pac-stm32mp2  = { default-features = false, path = "../consortium-pac-stm32mp2", version = "0.3.0" }
+consortium-log           = { path = "../consortium-log", version = "0.3.0" }
 critical-section         = { version = "1.2.0" }
 embassy-hal-internal     = { version = "0.5.0" }
 embassy-sync             = { optional = true, version = "0.8.0" }

@@ -13,7 +13,7 @@ repository.workspace   = true
 rust-version.workspace = true
 
 [dependencies]
-consortium-log-macros = { path = "../consortium-log-macros", version = "0.2.0" }
+consortium-log-macros = { path = "../consortium-log-macros", version = "0.3.0" }
 defmt                 = { optional = true, version = "1.1.0" }
 tracing               = { default-features = false, optional = true, version = "0.1" }
 

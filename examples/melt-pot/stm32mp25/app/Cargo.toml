@@ -23,7 +23,7 @@ description = "melt-pot Linux application for STM32MP25 Cortex-A35"
 edition     = "2024"
 license     = "Apache-2.0"
 name        = "melt-pot-stm32mp25-app"
-version     = "0.2.0"
+version     = "0.3.0"
 
 # Cross-compile target: aarch64-unknown-linux-gnu  (Cortex-A35, 64-bit Linux)
 # Built via `consortium build --manifest ../Consortium.toml`.
@@ -33,33 +33,33 @@ name = "melt-pot-stm32mp25-app"
 path = "src/main.rs"
 
 [target.'cfg(target_os = "linux")'.dependencies]
-melt-pot-shared = { path = "../../shared", version = "0.2.0" }
+melt-pot-shared = { path = "../../shared", version = "0.3.0" }
 # melt-pot-stm32mp25-ta = { default-features = false, features = ["ca"], path = "../ta" }
 
 # Named directly by the generated `consortium.gen.rs`.
 consortium-codec = { features = [
   "postcard",
-], path = "../../../../crates/consortium-codec", version = "0.2.0" }
+], path = "../../../../crates/consortium-codec", version = "0.3.0" }
 consortium-ipc = { features = [
   "std",
-], path = "../../../../crates/consortium-ipc", version = "0.2.0" }
+], path = "../../../../crates/consortium-ipc", version = "0.3.0" }
 consortium-ipc-doorbell-hsem = { features = [
   "std",
-], path = "../../../../crates/consortium-ipc-doorbell-hsem", version = "0.2.0" }
+], path = "../../../../crates/consortium-ipc-doorbell-hsem", version = "0.3.0" }
 consortium-ipc-doorbell-ipcc = { features = [
   "std",
-], path = "../../../../crates/consortium-ipc-doorbell-ipcc", version = "0.2.0" }
+], path = "../../../../crates/consortium-ipc-doorbell-ipcc", version = "0.3.0" }
 consortium-ipc-transport-memory = { features = [
   "std",
   "stm32mp25x",
-], path = "../../../../crates/consortium-ipc-transport-memory", version = "0.2.0" }
-consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory", version = "0.2.0" }
+], path = "../../../../crates/consortium-ipc-transport-memory", version = "0.3.0" }
+consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory", version = "0.3.0" }
 consortium-runtime-app = { features = [
   "stm32mp25x",
-], path = "../../../../crates/consortium-runtime-app", version = "0.2.0" }
+], path = "../../../../crates/consortium-runtime-app", version = "0.3.0" }
 consortium-log = { features = [
   "tracing",
-], path = "../../../../crates/consortium-log", version = "0.2.0" }
+], path = "../../../../crates/consortium-log", version = "0.3.0" }
 
 # Application runtime.
 # consortium-tee = { default-features = false, features = [
