@@ -58,7 +58,7 @@ pub enum HmiBuildCommand {
 
 impl HmiBuildCommand {
     /// The program and arguments this command runs.
-    fn program_args(&self) -> (&str, Vec<&str>) {
+    pub(crate) fn program_args(&self) -> (&str, Vec<&str>) {
         match self {
             Self::VpBuild => ("vp", vec!["build"]),
             Self::NpmRunBuild => ("npm", vec!["run", "build"]),

@@ -32,6 +32,11 @@
 //! for Pocket. The override exists because the frontend sometimes has to be built
 //! elsewhere: inside a Linux container the host's `node_modules/` is already populated,
 //! so pointing the command at `/bin/true` lets the pipeline consume the existing dist.
+//!
+//! Each frontend resolver has a `fetch` twin that runs the package manager's `install`
+//! instead, overridden by `CONSORTIUM_HMI_FETCH_CMD`. Installing is the network half of
+//! the frontend build, so `csti fetch` owns it and `csti build --offline` does not
+//! repeat it.
 
 use crate::compile::env::{DbgConfig, HmiConfig, SharedMemConfig};
 use crate::compile::web::HmiBuildCommand;
@@ -252,6 +257,90 @@ fn resolve_pocket_build_command_from(
             format!("--outdir={}", outdir.display()),
         ],
     })
+}
+
+/// Resolves the command that installs the Cog frontend's dependencies,
+/// preferring the `CONSORTIUM_HMI_FETCH_CMD` override, then `vp`, then `npm`.
+///
+/// This is the network half of the frontend build, which is why it is a separate
+/// command from [`resolve_hmi_build_command`]: `csti fetch` runs the installer so
+/// `csti build --offline` can run the builder against a populated `node_modules/`.
+pub fn resolve_hmi_fetch_command() -> Result<HmiBuildCommand, String> {
+    resolve_hmi_fetch_command_from(std::env::var(HMI_FETCH_CMD_ENV).ok(), |tool| {
+        resolve_cross_tool(tool).ok()
+    })
+}
+
+/// The override variable that replaces the resolved HMI dependency installer.
+///
+/// Mirrors `CONSORTIUM_HMI_BUILD_CMD`, and has the same escape-hatch role: in the
+/// Linux container flow the host already populated `node_modules/`, so setting
+/// this to `/bin/true` skips the install without skipping the stage.
+pub const HMI_FETCH_CMD_ENV: &str = "CONSORTIUM_HMI_FETCH_CMD";
+
+/// Testable core of [`resolve_hmi_fetch_command`]; see
+/// [`resolve_hmi_build_command_from`] for why resolution is injected.
+fn resolve_hmi_fetch_command_from(
+    env_cmd: Option<String>,
+    resolve_tool: impl Fn(&str) -> Option<String>,
+) -> Result<HmiBuildCommand, String> {
+    if let Some(cmd) = custom_command(env_cmd)? {
+        return Ok(cmd);
+    }
+    for tool in ["vp", "npm"] {
+        if let Some(program) = resolve_tool(tool) {
+            return Ok(HmiBuildCommand::Resolved {
+                program,
+                args: vec!["install".to_string()],
+            });
+        }
+    }
+    Err(format!(
+        "no HMI package manager found: set {HMI_FETCH_CMD_ENV}, or install `vp` \
+         or `npm` on PATH"
+    ))
+}
+
+/// Resolves the command that installs the PocketJS frontend's dependencies.
+///
+/// A `CONSORTIUM_HMI_FETCH_CMD` override wins verbatim; otherwise `bun install`.
+pub fn resolve_pocket_fetch_command() -> Result<HmiBuildCommand, String> {
+    resolve_pocket_fetch_command_from(std::env::var(HMI_FETCH_CMD_ENV).ok(), |tool| {
+        resolve_cross_tool(tool).ok()
+    })
+}
+
+/// Testable core of [`resolve_pocket_fetch_command`].
+fn resolve_pocket_fetch_command_from(
+    env_cmd: Option<String>,
+    resolve_tool: impl Fn(&str) -> Option<String>,
+) -> Result<HmiBuildCommand, String> {
+    if let Some(cmd) = custom_command(env_cmd)? {
+        return Ok(cmd);
+    }
+    let program = resolve_tool("bun").ok_or_else(|| {
+        format!(
+            "PocketJS dependency install needs `bun`: install it (https://bun.sh) \
+             or set {HMI_FETCH_CMD_ENV}"
+        )
+    })?;
+    Ok(HmiBuildCommand::Resolved {
+        program,
+        args: vec!["install".to_string()],
+    })
+}
+
+/// Splits an override variable into a [`HmiBuildCommand::Custom`], rejecting a
+/// set-but-blank value rather than launching an empty program.
+fn custom_command(env_cmd: Option<String>) -> Result<Option<HmiBuildCommand>, String> {
+    let Some(cmd) = env_cmd else {
+        return Ok(None);
+    };
+    let parts: Vec<String> = cmd.split_whitespace().map(String::from).collect();
+    if parts.is_empty() {
+        return Err("HMI command override is set but empty".to_string());
+    }
+    Ok(Some(HmiBuildCommand::Custom(parts)))
 }
 
 /// Resolves upstream cargo or rustc via `rustup which --toolchain stable`.
@@ -703,6 +792,76 @@ mod tests {
         let err =
             resolve_pocket_build_command_from(None, "hero-main", Path::new("/proj/dist"), |_| None)
                 .expect_err("missing bun is an error");
+        assert!(err.contains("bun"));
+    }
+
+    // ── HMI dependency-install resolution ────────────────────────────────────
+
+    #[test]
+    fn hmi_fetch_command_prefers_vp_then_npm() {
+        // The installer is the network half of the frontend build, so it resolves
+        // the same tools as the builder but runs their `install` subcommand.
+        let cmd = resolve_hmi_fetch_command_from(None, |tool| Some(format!("/tools/{tool}")))
+            .expect("vp resolves");
+        assert_eq!(
+            cmd,
+            HmiBuildCommand::Resolved {
+                program: "/tools/vp".to_string(),
+                args: vec!["install".to_string()],
+            }
+        );
+
+        let cmd = resolve_hmi_fetch_command_from(None, |tool| {
+            (tool == "npm").then(|| "/tools/npm".to_string())
+        })
+        .expect("npm resolves");
+        assert_eq!(
+            cmd,
+            HmiBuildCommand::Resolved {
+                program: "/tools/npm".to_string(),
+                args: vec!["install".to_string()],
+            }
+        );
+    }
+
+    #[test]
+    fn hmi_fetch_command_override_beats_path_tools() {
+        // The container flow points this at `/bin/true`: the host already
+        // populated `node_modules/`, so the install must not run again.
+        let cmd = resolve_hmi_fetch_command_from(Some("/bin/true".to_string()), |_| {
+            Some("/tools/ignored".to_string())
+        })
+        .expect("override resolves");
+        assert_eq!(cmd, HmiBuildCommand::Custom(vec!["/bin/true".to_string()]));
+    }
+
+    #[test]
+    fn hmi_fetch_command_errors_when_nothing_available() {
+        let err = resolve_hmi_fetch_command_from(None, |_| None)
+            .expect_err("no package manager and no override is an error");
+        assert!(err.contains(HMI_FETCH_CMD_ENV));
+
+        let err = resolve_hmi_fetch_command_from(Some("  ".to_string()), |_| None)
+            .expect_err("empty override is an error");
+        assert!(err.contains("empty"));
+    }
+
+    #[test]
+    fn pocket_fetch_command_runs_bun_install() {
+        let cmd = resolve_pocket_fetch_command_from(None, |tool| {
+            (tool == "bun").then(|| "/tools/bun".to_string())
+        })
+        .expect("bun resolves");
+        assert_eq!(
+            cmd,
+            HmiBuildCommand::Resolved {
+                program: "/tools/bun".to_string(),
+                args: vec!["install".to_string()],
+            }
+        );
+
+        let err =
+            resolve_pocket_fetch_command_from(None, |_| None).expect_err("missing bun is an error");
         assert!(err.contains("bun"));
     }
 

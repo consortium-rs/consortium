@@ -27,7 +27,7 @@ use std::path::{Path, PathBuf};
 use consortium_cfg::Session;
 use consortium_cfg_common::config::Party;
 
-use super::PipelineError;
+use super::{CargoOptions, PipelineError};
 use crate::compile::optee::OpteeConfiguration;
 
 /// The host-side OP-TEE toolchain needed to build and sign a TA.
@@ -72,7 +72,7 @@ pub fn plan_ta_build(
     session: &Session,
     manifest_dir: &Path,
     toolchain: Option<&TeeToolchain>,
-    release: bool,
+    cargo: CargoOptions,
     sign: bool,
 ) -> Result<Option<OpteeConfiguration>, PipelineError> {
     let Some(tee) = &session.config.tee else {
@@ -96,7 +96,8 @@ pub fn plan_ta_build(
 
     Ok(Some(OpteeConfiguration {
         path: manifest_dir.join(root),
-        release,
+        release: cargo.release,
+        offline: cargo.offline,
         linker: toolchain.linker.clone(),
         ta_dev_kit_dir: toolchain.ta_dev_kit_dir.clone(),
         optee_signer: toolchain.optee_signer.clone(),
@@ -122,22 +123,39 @@ mod tests {
     #[test]
     fn plans_ta_from_manifest_uuid_and_endpoint() {
         let session = Session::from_toml(STM32).expect("manifest loads");
-        let cfg = plan_ta_build(&session, Path::new("/proj"), Some(&toolchain()), true, true)
-            .expect("plan succeeds")
-            .expect("manifest has [tee]");
+        let cargo = CargoOptions {
+            release: true,
+            offline: true,
+        };
+        let cfg = plan_ta_build(
+            &session,
+            Path::new("/proj"),
+            Some(&toolchain()),
+            cargo,
+            true,
+        )
+        .expect("plan succeeds")
+        .expect("manifest has [tee]");
         assert_eq!(cfg.path, Path::new("/proj/ta"));
         assert_eq!(
             cfg.ta_uuid.to_string().to_uppercase(),
             "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"
         );
         assert!(cfg.release);
+        assert!(cfg.offline);
         assert!(cfg.sign);
     }
 
     #[test]
     fn errors_when_toolchain_absent_but_tee_declared() {
         let session = Session::from_toml(STM32).expect("manifest loads");
-        let err = match plan_ta_build(&session, Path::new("/proj"), None, false, true) {
+        let err = match plan_ta_build(
+            &session,
+            Path::new("/proj"),
+            None,
+            CargoOptions::default(),
+            true,
+        ) {
             Ok(_) => panic!("no toolchain is an error when [tee] is present"),
             Err(err) => err,
         };
@@ -156,7 +174,7 @@ mod tests {
             &session,
             Path::new("/proj"),
             Some(&toolchain()),
-            false,
+            CargoOptions::default(),
             true,
         )
         .expect("plan succeeds");

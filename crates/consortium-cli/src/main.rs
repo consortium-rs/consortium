@@ -25,6 +25,11 @@
 //!
 //! It does **not** deploy: nothing is written to a live target filesystem.
 //!
+//! `csti fetch` is its network half: it resolves the same Cargo projects the
+//! build plan does and downloads their dependencies (plus each cross target's
+//! `std` and the HMI frontend's packages) ahead of time, so `csti build
+//! --offline` can then run from local caches alone.
+//!
 //! What the CLI adds beyond argument parsing is progress reporting — it passes a
 //! [`BuildReporter`](consortium_builder::BuildReporter) that keeps a persistent step
 //! prompt visible underneath cargo, `vp`, and BitBake output, so a long cross-compile
@@ -35,12 +40,15 @@
 //! directory keeps its descriptive name, so cargo invocations use `-p csti`.
 
 mod build;
+mod fetch;
+mod reporter;
 
 use std::process::ExitCode;
 
 use clap::{Parser, Subcommand};
 
 use crate::build::BuildArgs;
+use crate::fetch::FetchArgs;
 
 /// Build and package Consortium applications and runtimes.
 #[derive(Parser)]
@@ -54,6 +62,10 @@ struct Cli {
 enum Command {
     /// Run the end-to-end build pipeline for a `Consortium.toml` manifest.
     Build(BuildArgs),
+
+    /// Download every dependency that build would need, so it can then run
+    /// with `--offline`.
+    Fetch(FetchArgs),
 }
 
 #[tokio::main]
@@ -61,6 +73,7 @@ async fn main() -> ExitCode {
     let cli = Cli::parse();
     let result = match cli.command {
         Command::Build(args) => build::run(args).await,
+        Command::Fetch(args) => fetch::run(args).await,
     };
 
     match result {
