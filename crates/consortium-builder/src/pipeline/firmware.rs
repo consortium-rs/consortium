@@ -167,7 +167,20 @@ mod tests {
         assert!(plan.config.release);
         // cm33 declares `[dbg.cm33]`, so a debug layout is resolved.
         assert!(plan.config.dbg.is_some());
-        // The generated module is real Rust naming the controller init.
-        assert!(plan.generated.contains("IpcMemoryEndpoints"));
+        // The generated module is this core's controller init: the synchronous
+        // entry point handing back the peripheral and channel bundles, plus the
+        // `sensor` endpoint the manifest declares for cm33. `render` already
+        // fails if the emitted tokens are not valid Rust.
+        assert!(
+            plan.generated
+                .contains("fn init(config: Config) -> (Peripherals, Channels)"),
+            "{}",
+            plan.generated
+        );
+        assert!(
+            plan.generated.contains("channels!(SENSOR)"),
+            "{}",
+            plan.generated
+        );
     }
 }
