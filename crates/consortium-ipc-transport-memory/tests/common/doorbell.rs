@@ -4,7 +4,7 @@ use std::pin::Pin;
 use std::sync::{Arc, Mutex};
 use std::task::{Context, Poll};
 
-use consortium_ipc::{Chan, Doorbell};
+use consortium_ipc::{Chan, Doorbell, MaybeSend};
 use tokio::sync::Notify;
 
 #[derive(Clone, Debug)]
@@ -48,20 +48,13 @@ impl<'a> Future for HostWaitFut<'a> {
 
 impl Doorbell for HostDoorbell {
     type Error = Infallible;
-    type WaitFut<'a>
-        = HostWaitFut<'a>
-    where
-        Self: 'a;
 
     fn ring(&self, _ch: Chan) -> Result<(), Infallible> {
         self.tx.notify_one();
         Ok(())
     }
 
-    fn wait<'a>(&'a self, ch: Chan) -> Self::WaitFut<'a>
-    where
-        Self: 'a,
-    {
+    fn wait(&self, ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend {
         HostWaitFut {
             notified: self.rx.notified(),
             ch,
@@ -79,10 +72,10 @@ impl Doorbell for HostDoorbell {
 /// rings with the **lossy** `notify_waiters()` — wakes only already-registered
 /// waiters, stores no permit — exactly like the `hsem`/`ipcc`/`mu`/`gpio`
 /// doorbells. It also runs a one-shot hook at the moment the receiver
-/// subscribes (`poll_recv` calls `wait()` right before registering its waker),
+/// subscribes (`recv_bytes` calls `wait()` right before registering its waker),
 /// standing in for the remote publishing its slot *in the scan→subscribe
 /// window*: the interrupt the kernel counts but whose wake the fan-out drops.
-/// Only `poll_recv`'s post-subscribe re-scan can then deliver the message.
+/// Only `recv_bytes`'s post-subscribe re-scan can then deliver the message.
 /// One-shot subscribe-time hook, shared so [`RacyDoorbell`] stays `Clone`.
 type SubscribeHook = Arc<Mutex<Option<Box<dyn FnOnce() + Send>>>>;
 
@@ -131,10 +124,6 @@ impl<'a> Future for RacyWaitFut<'a> {
 
 impl Doorbell for RacyDoorbell {
     type Error = Infallible;
-    type WaitFut<'a>
-        = RacyWaitFut<'a>
-    where
-        Self: 'a;
 
     fn ring(&self, _ch: Chan) -> Result<(), Infallible> {
         // Lossy, like the hardware doorbells: no stored permit.
@@ -142,11 +131,8 @@ impl Doorbell for RacyDoorbell {
         Ok(())
     }
 
-    fn wait<'a>(&'a self, ch: Chan) -> Self::WaitFut<'a>
-    where
-        Self: 'a,
-    {
-        // `poll_recv` calls `wait()` at the subscribe point, right before it
+    fn wait(&self, ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend {
+        // `recv_bytes` calls `wait()` at the subscribe point, right before it
         // registers the waker. Fire the one-shot hook here so the "remote
         // publish" lands inside the scan→subscribe window.
         if let Some(hook) = self.on_subscribe.lock().expect("hook lock").take() {

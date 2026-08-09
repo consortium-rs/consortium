@@ -136,4 +136,13 @@ RUN git clone --depth 1 -b ${OPTEE_VERSION} https://github.com/OP-TEE/optee_os.g
 ENV TA_DEV_KIT_DIR=${OPTEE_DIR}/optee_os/out/arm-plat-vexpress/export-ta_arm64
 ENV OPTEE_CLIENT_EXPORT=${OPTEE_DIR}/optee_client/export_arm64
 
+# `optee-teec` links `libteec` out of the export tree above, which is not on the
+# default loader path. Anything that links the CA then builds fine and dies at
+# exec with "libteec.so.2: cannot open shared object file" — `cargo test
+# --workspace` hits this through `consortium-tee`'s trybuild `pass` cases, which
+# run the compiled binary. Register the directory once here instead of making
+# every caller export `LD_LIBRARY_PATH`.
+RUN echo "${OPTEE_CLIENT_EXPORT}/usr/lib" > /etc/ld.so.conf.d/optee-client.conf \
+    && ldconfig
+
 WORKDIR /workspace

@@ -249,6 +249,6 @@ pub mod slot {
 }
 
 pub use transport::{
-    RecvAccess, RecvFut, RegionSharedMemoryTransportable, SendFut, SharedMemoryTransport,
+    RecvAccess, RegionSharedMemoryTransportable, SendFut, SharedMemoryTransport,
     SharedMemoryTransportRx, SharedMemoryTransportTx,
 };

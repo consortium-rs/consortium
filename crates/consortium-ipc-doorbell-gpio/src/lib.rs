@@ -102,7 +102,7 @@ use core::{
     task::{Context, Poll},
 };
 
-use consortium_ipc::{Chan, Doorbell};
+use consortium_ipc::{Chan, Doorbell, MaybeSend};
 use embedded_hal::digital::OutputPin;
 
 mod error;
@@ -155,10 +155,6 @@ impl<P: OutputPin> GpioDoorbell<P> {
 #[cfg(not(feature = "std"))]
 impl<P: OutputPin> Doorbell for GpioDoorbell<P> {
     type Error = GpioError;
-    type WaitFut<'a>
-        = GpioWaitFut<'a, P>
-    where
-        Self: 'a;
 
     fn ring(&self, _ch: Chan) -> Result<(), Self::Error> {
         // Channel argument ignored - single-channel GPIO.
@@ -172,10 +168,7 @@ impl<P: OutputPin> Doorbell for GpioDoorbell<P> {
         Ok(())
     }
 
-    fn wait<'a>(&'a self, _ch: Chan) -> Self::WaitFut<'a>
-    where
-        Self: 'a,
-    {
+    fn wait(&self, _ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend {
         GpioWaitFut::new(self)
     }
 
@@ -270,10 +263,6 @@ impl<P: OutputPin> GpioDoorbell<P> {
 #[cfg(feature = "std")]
 impl<P: OutputPin + Send> Doorbell for GpioDoorbell<P> {
     type Error = GpioError;
-    type WaitFut<'a>
-        = GpioWaitFut<'a, P>
-    where
-        Self: 'a;
 
     fn ring(&self, _ch: Chan) -> Result<(), Self::Error> {
         // Channel argument ignored - single-channel GPIO.
@@ -286,10 +275,7 @@ impl<P: OutputPin + Send> Doorbell for GpioDoorbell<P> {
         Ok(())
     }
 
-    fn wait<'a>(&'a self, _ch: Chan) -> Self::WaitFut<'a>
-    where
-        Self: 'a,
-    {
+    fn wait(&self, _ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend {
         GpioWaitFut::new(self)
     }
 
