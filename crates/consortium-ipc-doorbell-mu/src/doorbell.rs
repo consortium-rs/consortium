@@ -39,7 +39,7 @@
 
 use core::{
     pin::Pin,
-    sync::atomic::{Ordering, fence},
+    sync::atomic::{Ordering, compiler_fence, fence},
     task::{Context, Poll},
 };
 
@@ -439,13 +439,16 @@ impl<'a, S: Side, const N: usize> core::future::Future for MuWaitFut<'a, S, N> {
             Err(err) => return Poll::Ready(Err(err)),
         };
 
+        compiler_fence(Ordering::SeqCst);
+
         if !this.armed {
-            match line {
+            // Serialize the `GIER`/`RCR` read-modify-write with `service_gi`.
+            with_interrupts_masked(|| match line {
                 // SAFETY: `gi` is validated `< 4`; armed once from this task.
                 MuLine::Gi(gi) => unsafe { this.doorbell.mu.enable_gi(gi) },
                 // SAFETY: `rf` is validated `< 4`; armed once from this task.
                 MuLine::Rf(rf) => unsafe { this.doorbell.mu.enable_rf(rf) },
-            }
+            });
             this.armed = true;
         }
 
@@ -459,6 +462,10 @@ impl<'a, S: Side, const N: usize> core::future::Future for MuWaitFut<'a, S, N> {
         #[cfg(not(feature = "std"))]
         waker_for::<N>().register(cx.waker());
 
+        compiler_fence(Ordering::SeqCst);
+
+        // `GSR`/`RSR` are the raw status, independent of `GIER`/`RCR`, so a line
+        // the ISR (or a cancelled wait) masked is still delivered here.
         let ready = match line {
             MuLine::Gi(gi) => this.doorbell.mu.gi_pending(gi),
             MuLine::Rf(rf) => this.doorbell.mu.rf_pending(rf),
@@ -472,14 +479,19 @@ impl<'a, S: Side, const N: usize> core::future::Future for MuWaitFut<'a, S, N> {
                 MuLine::Gi(gi) => {
                     // SAFETY: GSR[GIPn] confirmed set; `gi` is valid.
                     unsafe { this.doorbell.mu.clear_gi(gi) };
-                    // SAFETY: `gi` is valid; disarm after completion.
-                    unsafe { this.doorbell.mu.disable_gi(gi) };
+                    with_interrupts_masked(|| {
+                        // SAFETY: `gi` is valid; the critical section makes this
+                        // `GIER` read-modify-write atomic against `service_gi`.
+                        unsafe { this.doorbell.mu.disable_gi(gi) };
+                    });
                 }
                 MuLine::Rf(rf) => {
                     // SAFETY: RSR[RFn] confirmed set; `rf` is valid.
                     unsafe { this.doorbell.mu.ack_rf(rf) };
-                    // SAFETY: `rf` is valid; disarm after completion.
-                    unsafe { this.doorbell.mu.disable_rf(rf) };
+                    with_interrupts_masked(|| {
+                        // SAFETY: `rf` is valid; likewise for `RCR`.
+                        unsafe { this.doorbell.mu.disable_rf(rf) };
+                    });
                 }
             }
 
