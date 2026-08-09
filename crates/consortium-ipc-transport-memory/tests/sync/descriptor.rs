@@ -5,7 +5,7 @@ use std::{
     task::{Context, Poll},
 };
 
-use consortium_ipc::{Chan, Doorbell, Primary, Secondary};
+use consortium_ipc::{Chan, Doorbell, MaybeSend, Primary, Secondary};
 use consortium_ipc_transport_memory::{
     CHANNEL_NUM_MAX, ChannelDirection, ChannelLayout, DESCRIPTOR_LENGTH, DescState, Descriptor,
     DescriptorError, Error, SLOT_ALIGNMENT, SharedMemoryTransport, VERSION,
@@ -43,16 +43,12 @@ impl Future for ImmediateWaitFut {
 
 impl Doorbell for ImmediateDoorbell {
     type Error = Infallible;
-    type WaitFut<'a> = ImmediateWaitFut;
 
     fn ring(&self, _ch: Chan) -> Result<(), Self::Error> {
         Ok(())
     }
 
-    fn wait<'a>(&'a self, ch: Chan) -> Self::WaitFut<'a>
-    where
-        Self: 'a,
-    {
+    fn wait(&self, ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend {
         ImmediateWaitFut { ch }
     }
 

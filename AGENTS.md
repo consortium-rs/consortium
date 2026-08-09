@@ -279,6 +279,54 @@ Doorbells provide wakeup/signaling and should keep MMIO safety invariants docume
 Use typed register abstractions and validate channel bounds through the local validation
 type where available.
 
+**`consortium-ipc-doorbell-ipcc` is the reference implementation.** It is the one that has
+been brought up on hardware, and HSEM and MU are aligned to it rather than to their own
+history — when changing any of them, read `IpccWaitFut` in full first and match it. The
+shared structure, in poll order:
+
+1. Register the `no_std` waker on **every** poll, before anything else — from a
+   **per-line** table (`IPCC_WAKERS`, `MU_WAKERS`, `HSEM_WAKERS`), never one shared
+   `AtomicWaker`. An `AtomicWaker` holds exactly one waker, so a second task waiting on
+   another line of the same instance overwrites the first registration and that task is
+   never woken again. A duplex endpoint waits on two lines of one instance, so this is
+   the ordinary case, not a corner. The ISR service routine therefore wakes **by line
+   id** (`wake: impl FnMut(u8)`), collecting asserted lines inside the critical section
+   and waking outside it.
+2. `compiler_fence(SeqCst)`, then arm the enable register once, gated on an `armed` flag.
+3. Every enable-register read-modify-write — arm, completion, `Drop`, ISR service — runs
+   inside `with_interrupts_masked` (a `critical_section` on `no_std`, a no-op on `std`),
+   because task context and the vector both write it.
+4. On `std`, `subscribe(cx)` on **every** poll, _before_ the status read. The instance's
+   `Notify` is shared by every line, so a foreign wake consumes this future's `Notified`,
+   and a consumed `Notified` never fires again — it must be replaced or the future parks
+   forever.
+5. `compiler_fence(SeqCst)`, then decide readiness from the **raw** status register
+   (`CnISR`, `GSR`/`RSR`, the incoming-occupied bits) — never from the masked view
+   (`CnMISR`) and never from the `Notify` completing. The status outlives masking, so a
+   line the ISR already masked is still delivered; and the `Notify` says only that
+   _something_ on the instance fired, not that this line did.
+6. Arming never acknowledges. A status bit set before the wait began is an unconsumed
+   notification, and the remote cannot signal again while it waits for a reply.
+7. On readiness: `fence(Acquire)`, acknowledge, then mask.
+
+`Doorbell::wait` is RPITIT (`-> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend`),
+like `SendTransport`/`RecvTransport`, so implementations may be `async` bodies or named
+futures — the four hardware crates keep named ones (`HsemWaitFut`, `IpccWaitFut`,
+`MuWaitFut`, `GpioWaitFut`) because each of the three MMIO ones carries a `Drop` that
+disarms its line on cancel, and an `async` body would need a guard struct to reproduce
+that. A cancelled wait (a `select!` timeout, a dropped `recv`) must leave the line
+masked: nothing is left to clear the level-sensitive status, so `irq_loop` re-arming the
+UIO IRQ would re-fire it forever. Each `Drop` is gated on the `armed` flag and
+**disarms only** — it never acknowledges `CnISR`/`GSR`/`RSR`/the occupied flag, for the
+same reason as step 6. `GpioWaitFut` has no hardware line and needs no guard. The trade is that the
+future type is unnameable through the trait: a consumer cannot store it in a struct field,
+so a receive loop has to hold it as a local across an `.await` rather than as persisted
+poll state. `consortium-ipc-transport-memory`'s `recv_bytes` is the worked example, and
+its ordering is load-bearing — create the wait future, poll it **once** through a
+`poll_fn` to register the waker, re-scan the slots, and only then park on it. Awaiting it
+directly registers and parks in one step, which reopens the lost-wakeup race the
+`RacyDoorbell` test covers (the fan-out `notify_waiters()` stores no permit).
+
 Each hardware doorbell depends on its related chip HAL (`consortium-hal-stm32mp2` or
 `consortium-hal-imx9`) and forwards its chip-selection feature to the HAL, so the shared
 PAC's register/interrupt definitions match the target. A doorbell dep that

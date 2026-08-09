@@ -7,7 +7,7 @@ use std::{
 };
 
 use atomic_waker::AtomicWaker;
-use consortium_ipc::{Chan, Doorbell, RecvTransport};
+use consortium_ipc::{Chan, Doorbell, MaybeSend, RecvTransport};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, DescState, MAGIC, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
     VERSION, channel_table_entry_offset, slot, slot_offset, slot_stride,
@@ -100,7 +100,6 @@ impl Future for AtomicWaitFut {
 
 impl Doorbell for AtomicDoorbell {
     type Error = Infallible;
-    type WaitFut<'a> = AtomicWaitFut;
 
     fn ring(&self, _ch: Chan) -> Result<(), Infallible> {
         self.tx.pending.store(true, Ordering::Release);
@@ -108,10 +107,7 @@ impl Doorbell for AtomicDoorbell {
         Ok(())
     }
 
-    fn wait<'a>(&'a self, ch: Chan) -> Self::WaitFut<'a>
-    where
-        Self: 'a,
-    {
+    fn wait(&self, ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend {
         AtomicWaitFut { state: self.rx, ch }
     }
 

@@ -892,6 +892,7 @@ dependencies = [
  "consortium-hal-stm32mp2",
  "consortium-ipc",
  "consortium-log",
+ "critical-section",
  "defmt",
  "thiserror 2.0.19",
  "tokio",

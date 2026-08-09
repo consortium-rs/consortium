@@ -32,7 +32,7 @@ use core::{
 };
 
 use consortium_hal_stm32mp2::{Peri, PeripheralType};
-use consortium_ipc::{Chan, Doorbell, Side};
+use consortium_ipc::{Chan, Doorbell, MaybeSend, Side};
 use consortium_log::{debug, error, trace};
 
 use crate::{abstraction::Ipcc, chan::IPCC_CHAN_COUNT, error::IpccError, registers::base};
@@ -196,10 +196,6 @@ impl<S: Side, const N: usize> IpccDoorbell<S, N> {
 
 impl<S: Side, const N: usize> Doorbell for IpccDoorbell<S, N> {
     type Error = IpccError;
-    type WaitFut<'a>
-        = IpccWaitFut<'a, S, N>
-    where
-        Self: 'a;
 
     fn ring(&self, ch: Chan) -> Result<(), IpccError> {
         trace!("IpccDoorbell::ring(ch = {:?})", ch);
@@ -220,10 +216,7 @@ impl<S: Side, const N: usize> Doorbell for IpccDoorbell<S, N> {
         Ok(())
     }
 
-    fn wait<'a>(&'a self, ch: Chan) -> Self::WaitFut<'a>
-    where
-        Self: 'a,
-    {
+    fn wait(&self, ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend {
         trace!("IpccDoorbell::wait(ch = {:?})", ch);
         IpccWaitFut::new(self, ch)
     }

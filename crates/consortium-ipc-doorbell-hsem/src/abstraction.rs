@@ -118,6 +118,11 @@ impl<S: Side, const N: usize> Hsem<S, N> {
     }
 
     #[inline]
+    fn isr_addr(&self) -> *const u32 {
+        (self.base + self.cn_block() + 0x08) as *const u32
+    }
+
+    #[inline]
     fn misr_addr(&self) -> *const u32 {
         (self.base + self.cn_block() + 0x0C) as *const u32
     }
@@ -197,11 +202,29 @@ impl<S: Side, const N: usize> Hsem<S, N> {
 
     /// Returns `true` if semaphore `sem` has a masked interrupt pending in this
     /// core's `CnMISR`.
+    ///
+    /// This is `CnISR & CnIER`, so it reports nothing while the line is masked.
+    /// Readiness checks want [`raw_interrupt_pending`](Self::raw_interrupt_pending)
+    /// instead — a release the waiter has not yet acknowledged must stay visible
+    /// even after the ISR or a cancelled wait masked the line.
     #[inline]
     pub fn interrupt_pending(&self, sem: u8) -> bool {
         // SAFETY: `self.base` is a valid HSEM window; volatile read.
         InterruptRegister::from_bits(unsafe { self.misr_addr().read_volatile() }).sems()
             & (1 << sem)
+            != 0
+    }
+
+    /// Returns `true` if semaphore `sem` has an interrupt pending in this core's
+    /// unmasked status register (`CnISR`).
+    ///
+    /// Unlike [`interrupt_pending`](Self::interrupt_pending) this is independent
+    /// of `CnIER`, which is what makes it the right readiness source: the status
+    /// bit is the notification, and it outlives any masking of the line.
+    #[inline]
+    pub fn raw_interrupt_pending(&self, sem: u8) -> bool {
+        // SAFETY: `self.base` is a valid HSEM window; volatile read.
+        InterruptRegister::from_bits(unsafe { self.isr_addr().read_volatile() }).sems() & (1 << sem)
             != 0
     }
 }
