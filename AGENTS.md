@@ -284,7 +284,14 @@ been brought up on hardware, and HSEM and MU are aligned to it rather than to th
 history — when changing any of them, read `IpccWaitFut` in full first and match it. The
 shared structure, in poll order:
 
-1. Register the `no_std` waker on **every** poll, before anything else.
+1. Register the `no_std` waker on **every** poll, before anything else — from a
+   **per-line** table (`IPCC_WAKERS`, `MU_WAKERS`, `HSEM_WAKERS`), never one shared
+   `AtomicWaker`. An `AtomicWaker` holds exactly one waker, so a second task waiting on
+   another line of the same instance overwrites the first registration and that task is
+   never woken again. A duplex endpoint waits on two lines of one instance, so this is
+   the ordinary case, not a corner. The ISR service routine therefore wakes **by line
+   id** (`wake: impl FnMut(u8)`), collecting asserted lines inside the critical section
+   and waking outside it.
 2. `compiler_fence(SeqCst)`, then arm the enable register once, gated on an `armed` flag.
 3. Every enable-register read-modify-write — arm, completion, `Drop`, ISR service — runs
    inside `with_interrupts_masked` (a `critical_section` on `no_std`, a no-op on `std`),

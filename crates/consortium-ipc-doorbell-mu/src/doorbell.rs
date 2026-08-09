@@ -131,8 +131,12 @@ fn with_interrupts_masked<R>(f: impl FnOnce() -> R) -> R {
 /// returned and spin without ever letting the executor run the waiter.
 /// Disabling only masks the line — the status bit survives, so the future still
 /// observes it, acknowledges it, and re-arms on the next wait.
-fn service_gi<S: Side, const N: usize>(mu: &Mu<S, N>, wake: impl FnOnce()) {
-    let mut asserted = false;
+fn service_gi<S: Side, const N: usize>(mu: &Mu<S, N>, mut wake: impl FnMut(u8)) {
+    // Collect while masking, wake afterwards: the wake must not run inside the
+    // critical section, and each asserted line wakes its own waiter by channel
+    // id (GI lines are `0..MU_GI_CHAN_COUNT`, RF lines follow).
+    let mut asserted = [false; MU_CHAN_COUNT as usize];
+
     with_interrupts_masked(|| {
         for gi in 0..MU_GI_CHAN_COUNT {
             if mu.gi_pending(gi) {
@@ -140,7 +144,7 @@ fn service_gi<S: Side, const N: usize>(mu: &Mu<S, N>, wake: impl FnOnce()) {
                 // makes this `GIER` read-modify-write atomic against task
                 // context.
                 unsafe { mu.disable_gi(gi) };
-                asserted = true;
+                asserted[gi as usize] = true;
             }
         }
         for rf in 0..crate::chan::MU_RF_CHAN_COUNT {
@@ -149,12 +153,15 @@ fn service_gi<S: Side, const N: usize>(mu: &Mu<S, N>, wake: impl FnOnce()) {
                 // makes this `RCR` read-modify-write atomic against task
                 // context.
                 unsafe { mu.disable_rf(rf) };
-                asserted = true;
+                asserted[(MU_GI_CHAN_COUNT + rf) as usize] = true;
             }
         }
     });
-    if asserted {
-        wake();
+
+    for (id, fired) in asserted.iter().enumerate() {
+        if *fired {
+            wake(id as u8);
+        }
     }
 }
 
@@ -273,7 +280,10 @@ impl<S: Side, const N: usize> MuDoorbell<S, N> {
     /// original into a transport and bind this method to the UIO IRQ fanout.
     #[cfg(feature = "std")]
     pub fn notify_gi_interrupt(&self) {
-        service_gi(&self.mu, || self.notify.notify_waiters());
+        // `Notify::notify_waiters` is not per-line, so every asserted line wakes
+        // the same shared `Notify`; the calls after the first find no registered
+        // waiters (they re-register only when polled) and are no-ops.
+        service_gi(&self.mu, |_id| self.notify.notify_waiters());
     }
 }
 
@@ -439,6 +449,11 @@ impl<'a, S: Side, const N: usize> core::future::Future for MuWaitFut<'a, S, N> {
             Err(err) => return Poll::Ready(Err(err)),
         };
 
+        // Register on every poll, before arming and before the status read: the
+        // waker this task was polled with may differ from the last one.
+        #[cfg(not(feature = "std"))]
+        line_waker::<N>(this.ch.id()).register(cx.waker());
+
         compiler_fence(Ordering::SeqCst);
 
         if !this.armed {
@@ -458,9 +473,6 @@ impl<'a, S: Side, const N: usize> core::future::Future for MuWaitFut<'a, S, N> {
         // be replaced.
         #[cfg(feature = "std")]
         this.subscribe(cx);
-
-        #[cfg(not(feature = "std"))]
-        waker_for::<N>().register(cx.waker());
 
         compiler_fence(Ordering::SeqCst);
 
@@ -504,15 +516,24 @@ impl<'a, S: Side, const N: usize> core::future::Future for MuWaitFut<'a, S, N> {
 
 // ── no_std: per-instance wakers and IRQ handlers ─────────────────────────────
 
+/// Wakers separated by MU instance **and line** on the bare-metal path.
+///
+/// One `AtomicWaker` per instance would be wrong: it holds a single waker, so a
+/// second task waiting on another line of the same instance overwrites the
+/// first registration and that task is never woken again. A duplex endpoint
+/// waits on two lines of one instance, so this is the ordinary case, not a
+/// corner. Same shape as IPCC's `IPCC_WAKERS`.
 #[cfg(not(feature = "std"))]
-#[inline]
-fn waker_for<const N: usize>() -> &'static atomic_waker::AtomicWaker {
-    &MU_WAKERS[N - 1]
-}
+static MU_WAKERS: [[atomic_waker::AtomicWaker; MU_CHAN_COUNT as usize];
+    crate::chan::MU_INSTANCE_COUNT] =
+    [const { [const { atomic_waker::AtomicWaker::new() }; MU_CHAN_COUNT as usize] };
+        crate::chan::MU_INSTANCE_COUNT];
 
 #[cfg(not(feature = "std"))]
-static MU_WAKERS: [atomic_waker::AtomicWaker; crate::chan::MU_INSTANCE_COUNT] =
-    [const { atomic_waker::AtomicWaker::new() }; crate::chan::MU_INSTANCE_COUNT];
+#[inline]
+fn line_waker<const N: usize>(id: u8) -> &'static atomic_waker::AtomicWaker {
+    &MU_WAKERS[N - 1][id as usize]
+}
 
 /// Service MU instance `N`'s interrupt from its vector, then wake the futures
 /// waiting on it.
@@ -537,7 +558,7 @@ pub fn notify_gi_interrupt<S: Side, const N: usize>() {
     // and the enable-register writes underneath run in a critical section, so
     // they cannot tear against task context.
     let mu = unsafe { Mu::<S, N>::new(window_base::<S, N>()) };
-    service_gi(&mu, || waker_for::<N>().wake());
+    service_gi(&mu, |id| line_waker::<N>(id).wake());
 }
 
 #[cfg(all(test, feature = "std"))]
@@ -558,6 +579,48 @@ mod tests {
 
     fn gier(regs: &[u32]) -> GeneralInterruptRegister {
         GeneralInterruptRegister::from_bits(regs[offsets::GIER as usize / 4])
+    }
+
+    const LIMIT: std::time::Duration = std::time::Duration::from_secs(10);
+
+    /// A waker that counts how many times the task was woken, so a test can
+    /// assert the future is actually *registered* rather than relying on being
+    /// re-polled by hand.
+    fn counting_waker() -> (
+        std::task::Waker,
+        std::sync::Arc<core::sync::atomic::AtomicUsize>,
+    ) {
+        use core::sync::atomic::AtomicUsize;
+        use std::{
+            sync::Arc,
+            task::{RawWaker, RawWakerVTable, Waker},
+        };
+
+        unsafe fn clone(p: *const ()) -> RawWaker {
+            // SAFETY: `p` came from `Arc::into_raw` below and is still alive.
+            unsafe { Arc::increment_strong_count(p as *const AtomicUsize) };
+            RawWaker::new(p, &VTABLE)
+        }
+        unsafe fn wake(p: *const ()) {
+            // SAFETY: `p` came from `Arc::into_raw`; this consumes one count.
+            let count = unsafe { Arc::from_raw(p as *const AtomicUsize) };
+            count.fetch_add(1, Ordering::SeqCst);
+        }
+        unsafe fn wake_by_ref(p: *const ()) {
+            // SAFETY: `p` came from `Arc::into_raw` and is still alive.
+            unsafe { &*(p as *const AtomicUsize) }.fetch_add(1, Ordering::SeqCst);
+        }
+        unsafe fn drop_fn(p: *const ()) {
+            // SAFETY: `p` came from `Arc::into_raw`; this consumes one count.
+            unsafe { Arc::from_raw(p as *const AtomicUsize) };
+        }
+        static VTABLE: RawWakerVTable = RawWakerVTable::new(clone, wake, wake_by_ref, drop_fn);
+
+        let count = Arc::new(AtomicUsize::new(0));
+        let raw = RawWaker::new(Arc::into_raw(Arc::clone(&count)) as *const (), &VTABLE);
+        // SAFETY: `VTABLE`'s functions uphold the `RawWaker` contract for an
+        // `Arc<AtomicUsize>` payload.
+        (unsafe { Waker::from_raw(raw) }, count)
     }
 
     fn rcr(regs: &[u32]) -> FlagRegister {
@@ -655,17 +718,23 @@ mod tests {
         let notifier = db.notifier();
         let (armed_tx, armed_rx) = std::sync::mpsc::channel();
 
+        let (done_tx, done_rx) = std::sync::mpsc::channel();
         let waiter = std::thread::spawn(move || {
             let rt = tokio::runtime::Builder::new_current_thread()
                 .build()
                 .expect("create waiter runtime");
-            rt.block_on(async move {
+            let resolved = rt.block_on(async move {
                 armed_tx.send(()).expect("signal waiter is starting");
                 db.wait(ch(2)).await.expect("wait for MU doorbell")
-            })
+            });
+            let _ = done_tx.send(resolved);
         });
 
-        armed_rx.recv().expect("waiter thread started");
+        armed_rx
+            .recv_timeout(LIMIT)
+            .expect("waiter thread should start");
+
+        let deadline = std::time::Instant::now() + LIMIT;
         while GeneralInterruptRegister::from_bits(unsafe {
             (base as *const u32)
                 .add(offsets::GIER as usize / 4)
@@ -675,6 +744,10 @@ mod tests {
             & (1 << 2)
             == 0
         {
+            assert!(
+                std::time::Instant::now() < deadline,
+                "waiter never armed GIER"
+            );
             std::thread::yield_now();
         }
 
@@ -685,8 +758,60 @@ mod tests {
         }
         notifier.notify_waiters();
 
-        assert_eq!(waiter.join().expect("waiter thread completes"), ch(2));
+        let resolved = done_rx
+            .recv_timeout(LIMIT)
+            .expect("waiter must resolve once GSR is set and the Notify fires");
+        assert_eq!(resolved, ch(2));
+        waiter.join().expect("waiter thread completes");
         assert_eq!(regs[offsets::GSR as usize / 4], 1 << 2);
+    }
+
+    /// The instance's `Notify` is shared by every line, so a wake caused by a
+    /// *different* line completes this future's `Notified` while its own line is
+    /// still idle. A completed `Notified` never fires again, so the future has to
+    /// re-subscribe on the next poll — otherwise it is registered nowhere, its
+    /// own ring never wakes it, and the transport deadlocks. IPCC covers the
+    /// same property in `wake_for_another_channel_does_not_strand_the_waiter`.
+    #[test]
+    fn wake_for_another_line_does_not_strand_the_waiter() {
+        let mut regs = [0u32; 0x300 / 4];
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db = unsafe {
+            MuDoorbell::<consortium_ipc::Primary, N>::new_mapped(regs.as_mut_ptr() as usize)
+        };
+        let mut wait = std::pin::pin!(db.wait(ch(2)));
+        let (waker, wakes) = counting_waker();
+        let mut cx = Context::from_waker(&waker);
+
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+
+        // GI line 3 fires; the shared `Notify` wakes the line-2 waiter too. Its
+        // own status bit is clear, so it parks again.
+        regs[offsets::GSR as usize / 4] = 1 << 3;
+        db.notifier().notify_waiters();
+        assert_eq!(wakes.load(Ordering::SeqCst), 1);
+        assert_eq!(
+            wait.as_mut().poll(&mut cx),
+            Poll::Pending,
+            "another line's wake must not resolve this wait"
+        );
+
+        // Line 2 now fires for real. The wake only reaches the task if the poll
+        // above replaced the `Notified` consumed by the line-3 wake.
+        regs[offsets::GSR as usize / 4] = (1 << 3) | (1 << 2);
+        db.notifier().notify_waiters();
+        assert_eq!(
+            wakes.load(Ordering::SeqCst),
+            2,
+            "waiter was not re-subscribed after a foreign line consumed its notification"
+        );
+
+        assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(2))));
+        assert_eq!(
+            gier(&regs).gi() & (1 << 2),
+            0,
+            "resolving the wait must disarm its own line"
+        );
     }
 
     // ── RF (receive-full) channels: 4..8 map to RF indices 0..4 ────────────────

@@ -362,7 +362,7 @@ impl<'a, S: Side, const N: usize> core::future::Future for HsemWaitFut<'a, S, N>
         // Register on every poll, before the status read: the waker this task
         // was polled with may differ from the last one.
         #[cfg(not(feature = "std"))]
-        WAKER.register(cx.waker());
+        sem_waker(sem).register(cx.waker());
 
         compiler_fence(Ordering::SeqCst);
 
@@ -425,20 +425,41 @@ impl<'a, S: Side, const N: usize> core::future::Future for HsemWaitFut<'a, S, N>
     }
 }
 
-// ── no_std: shared waker and IRQ handler ─────────────────────────────────────
+// ── no_std: per-semaphore wakers and IRQ handler ─────────────────────────────
 
-/// Waker shared by all HSEM `wait()` futures on the bare-metal path.
+/// Wakers separated by semaphore on the bare-metal path.
+///
+/// One shared `AtomicWaker` would be wrong: it holds a single waker, so a second
+/// task waiting on another semaphore overwrites the first registration and that
+/// task is never woken again. A duplex endpoint waits on two semaphores, so this
+/// is the ordinary case, not a corner. Same shape as IPCC's `IPCC_WAKERS`.
 #[cfg(not(feature = "std"))]
-static WAKER: atomic_waker::AtomicWaker = atomic_waker::AtomicWaker::new();
+static HSEM_WAKERS: [atomic_waker::AtomicWaker; HSEM_CHAN_COUNT as usize] =
+    [const { atomic_waker::AtomicWaker::new() }; HSEM_CHAN_COUNT as usize];
+
+#[cfg(not(feature = "std"))]
+#[inline]
+fn sem_waker(sem: u8) -> &'static atomic_waker::AtomicWaker {
+    &HSEM_WAKERS[sem as usize]
+}
 
 /// Wake tasks waiting on an HSEM semaphore interrupt.
 ///
 /// This crate installs no vector-table entry; the application owns the HSEM
 /// `#[interrupt]` handler and forwards it here (e.g. `#[interrupt] fn HSEM`).
+///
+/// Unlike IPCC's and MU's service entry points this takes no side/instance and
+/// does not mask: HSEM's vector carries no way to name the window, so it cannot
+/// read `CnISR` to find which semaphores fired. It therefore wakes every
+/// per-semaphore waiter and lets each one re-check its own `CnISR` bit — a
+/// waiter whose semaphore did not fire simply parks again, which is sound
+/// because readiness is decided by the status register and never by the wake.
 #[cfg(not(feature = "std"))]
 #[inline]
 pub fn notify() {
-    WAKER.wake();
+    for waker in &HSEM_WAKERS {
+        waker.wake();
+    }
 }
 
 #[cfg(all(test, feature = "std"))]
