@@ -282,7 +282,12 @@ type where available.
 `Doorbell::wait` is RPITIT (`-> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend`),
 like `SendTransport`/`RecvTransport`, so implementations may be `async` bodies or named
 futures — the four hardware crates keep named ones (`HsemWaitFut`, `IpccWaitFut`,
-`MuWaitFut`, `GpioWaitFut`) because their `Drop` disarms the line. The trade is that the
+`MuWaitFut`, `GpioWaitFut`) because nothing is gained by rewriting them, and because
+`IpccWaitFut` carries a `Drop` that masks its RX line and an `async` body would need a
+guard struct to reproduce it. Do not read that as a general cancellation contract:
+`IpccWaitFut` is the only one with a `Drop`. `HsemWaitFut` and `MuWaitFut` arm their line
+on the first poll and disarm it _only on the readiness path_, so a future dropped while
+pending leaves the line enabled; `GpioWaitFut` has no line to disarm. The trade is that the
 future type is unnameable through the trait: a consumer cannot store it in a struct field,
 so a receive loop has to hold it as a local across an `.await` rather than as persisted
 poll state. `consortium-ipc-transport-memory`'s `recv_bytes` is the worked example, and

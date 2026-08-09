@@ -254,8 +254,8 @@ async fn recv_bytes<T: RecvAccess>(
 
         // The wait future lives to the end of this iteration and no longer.
         // Dropping it on delivery is what keeps a later stray doorbell from
-        // resolving a stale receive, and runs whatever disarm the doorbell put
-        // in its future's `Drop`.
+        // resolving a stale receive.  It also runs the doorbell's `Drop`, if it
+        // has one — only IPCC does, and only IPCC masks its line on cancel.
         match scan_once(&*transport, &mut *buf) {
             Scan::Delivered(n) => return Ok(n),
             Scan::Retry => {
