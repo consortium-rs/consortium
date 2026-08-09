@@ -41,10 +41,6 @@ pub trait Doorbell {
     type Error: defmt::Format + core::error::Error + Send + Sync + 'static;
     #[cfg(not(feature = "defmt"))]
     type Error: core::error::Error + Send + Sync + 'static;
-    type WaitFut<'a>: Future<Output = Result<Chan, Self::Error>> + MaybeSend
-    where
-        Self: 'a;
-
     /// Signal the remote core on the given channel.
     /// Sync - notification dispatch must never need to await.
     fn ring(&self, ch: Chan) -> Result<(), Self::Error>;
@@ -52,9 +48,16 @@ pub trait Doorbell {
     /// Await a signal from the remote core.
     /// Returns which channel fired - relevant when one
     /// Doorbell covers multiple channels (e.g. MU has 4).
-    fn wait<'a>(&'a self, ch: Chan) -> Self::WaitFut<'a>
-    where
-        Self: 'a;
+    ///
+    /// The returned future is an opaque `impl Future` (RPITIT), matching
+    /// [`SendTransport`](crate::SendTransport) and
+    /// [`RecvTransport`](crate::RecvTransport): implementations may be plain
+    /// `async fn`s or hand-rolled named futures with their own `Drop`-time
+    /// disarming. It borrows `self`, so callers must hold it somewhere that is
+    /// dropped before the doorbell — an `.await` in an `async` body does this
+    /// naturally, whereas a hand-written `poll` needs the future stored in the
+    /// same pinned struct that owns (or outlives) the doorbell.
+    fn wait(&self, ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend;
 
     /// Non-blocking check - has a signal arrived?
     fn pending(&self, ch: Chan) -> bool;

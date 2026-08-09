@@ -44,7 +44,7 @@ use core::{
 };
 
 use consortium_hal_imx9::{Peri, PeripheralType};
-use consortium_ipc::{Chan, Doorbell, Side};
+use consortium_ipc::{Chan, Doorbell, MaybeSend, Side};
 
 use crate::{
     abstraction::Mu,
@@ -279,10 +279,6 @@ impl<S: Side, const N: usize> MuDoorbell<S, N> {
 
 impl<S: Side, const N: usize> Doorbell for MuDoorbell<S, N> {
     type Error = MuError;
-    type WaitFut<'a>
-        = MuWaitFut<'a, S, N>
-    where
-        Self: 'a;
 
     fn ring(&self, ch: Chan) -> Result<(), MuError> {
         let line = Self::line_of(ch)?;
@@ -300,10 +296,7 @@ impl<S: Side, const N: usize> Doorbell for MuDoorbell<S, N> {
         Ok(())
     }
 
-    fn wait<'a>(&'a self, ch: Chan) -> Self::WaitFut<'a>
-    where
-        Self: 'a,
-    {
+    fn wait(&self, ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend {
         MuWaitFut::new(self, ch)
     }
 

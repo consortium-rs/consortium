@@ -1,7 +1,4 @@
-use core::{
-    future::Future,
-    marker::{PhantomData, PhantomPinned},
-};
+use core::{future::Future, marker::PhantomData};
 
 use consortium_ipc::{
     Chan, Connect, Doorbell, MaybeSend, Primary, RecvTransport, Secondary, SendTransport, Side,
@@ -99,204 +96,193 @@ unsafe fn send_bytes<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable>(
     doorbell.ring(ch).map_err(Error::Doorbell)
 }
 
-/// Poll the recv path once.
+/// Outcome of one pass over the channel table.
+enum Scan {
+    /// A readable slot was drained into the caller's buffer.
+    Delivered(usize),
+    /// A slot advertised data but the read did not complete.  The caller must
+    /// yield and scan again rather than park, so this path never waits on an
+    /// unrelated doorbell edge.
+    Retry,
+    /// Nothing readable on this side's channels.
+    Empty,
+}
+
+/// One pass over the channel table, delivering the first readable RX slot.
 ///
-/// `wait_fut` is persistent storage owned by the caller's future struct.  On
-/// the first `Pending` it is populated with a doorbell wait future so the waker
-/// registration survives across executor yields.  On re-poll after a wakeup the
-/// stored future is polled first; only if it fires do we re-scan the slot.
-///
-/// # Safety
-/// `transport.base()` must cover the descriptor header.  The doorbell must
-/// outlive `*wait_fut`.
-unsafe fn poll_recv<T: RecvAccess>(
-    transport: &T,
-    buf: &mut [u8],
-    wait_fut: &mut Option<<T::D as Doorbell>::WaitFut<'static>>,
-    cx: &mut core::task::Context<'_>,
-) -> core::task::Poll<Result<usize, Error<T::D>>>
-where
-    T::D: Send + 'static,
-{
-    let doorbell = transport.doorbell();
+/// Always begins with a region invalidate, so each pass observes what the peer
+/// published rather than a stale cache line.
+fn scan_once<T: RecvAccess>(transport: &T, buf: &mut [u8]) -> Scan {
     let region = transport.region();
     let base = transport.base();
-    let ch = transport.ch();
-    consortium_log::trace!("poll_recv: waiting for doorbell on channel {:?}", ch);
 
-    // If a wait future is already armed, poll it.  If it is still pending our
-    // waker is already registered — park until the doorbell fires.  If it fires,
-    // clear it and fall through to re-scan the slot.
-    if let Some(ref mut wf) = *wait_fut {
-        // SAFETY: `wf` lives in the caller's pinned struct and is never moved.
-        match unsafe { core::pin::Pin::new_unchecked(wf) }.poll(cx) {
-            core::task::Poll::Pending => return core::task::Poll::Pending,
-            core::task::Poll::Ready(_) => {
-                consortium_log::trace!("poll_recv: doorbell fired on channel {:?}", ch);
-                *wait_fut = None;
-            }
+    region.invalidate();
+
+    // Fast path: the channel named by the updated-id field.
+    // SAFETY: `RecvAccess` guarantees `base` covers the descriptor header.
+    let mut channel_id = unsafe { rv_u8(base, RX_UPDATED_ID_OFFSET) };
+    // SAFETY: same `base` validity guarantee.
+    let channel_num = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
+
+    let mut channel: Option<ChannelLayout> = if channel_id < channel_num {
+        // SAFETY: `channel_id` is within the validated channel table range.
+        let layout = unsafe { read_channel(base, channel_id as usize) };
+        // SAFETY: slot pointer is within the region.
+        let slot_addr = unsafe { layout.slot_addr(base) };
+        // SAFETY: `slot_addr` points to a valid slot.
+        let consumed = unsafe { slot::is_consumed(slot_addr) };
+        if layout.direction.is_rx::<T::S>() && !consumed {
+            Some(layout)
+        } else {
+            None
         }
-    }
+    } else {
+        None
+    };
 
-    // Scan for a readable RX slot.  If none is found, subscribe for the next
-    // doorbell and then scan the slots **once more** before parking.  That
-    // second scan is load-bearing: an interrupt delivered in the window between
-    // the first scan and the subscribe would otherwise be lost, because the
-    // doorbell fan-out (`Notify::notify_waiters`) wakes only already-registered
-    // waiters and stores no permit.  Re-checking the slots after the waker is
-    // registered turns that race into a guaranteed delivery, independent of the
-    // doorbell's notification semantics.  `subscribed` bounds the loop to the
-    // scan-then-recheck pair (at most two scans per poll).
-    let mut subscribed = false;
-    loop {
-        region.invalidate();
-
-        // Fast path: the channel named by the updated-id field.
-        // SAFETY: caller guarantees `base` covers the descriptor header.
-        let mut channel_id = unsafe { rv_u8(base, RX_UPDATED_ID_OFFSET) };
-        // SAFETY: same `base` validity guarantee.
-        let channel_num = unsafe { rv_u8(base, NUM_CHANNELS_OFFSET) };
-
-        let mut channel: Option<ChannelLayout> = if channel_id < channel_num {
-            // SAFETY: `channel_id` is within the validated channel table range.
-            let layout = unsafe { read_channel(base, channel_id as usize) };
+    // Fallback: scan all channels.
+    if channel.is_none() {
+        for chan in 0..channel_num {
+            // SAFETY: `chan` is within the channel table range.
+            let layout = unsafe { read_channel(base, chan as usize) };
             // SAFETY: slot pointer is within the region.
             let slot_addr = unsafe { layout.slot_addr(base) };
             // SAFETY: `slot_addr` points to a valid slot.
             let consumed = unsafe { slot::is_consumed(slot_addr) };
             if layout.direction.is_rx::<T::S>() && !consumed {
-                Some(layout)
-            } else {
-                None
-            }
-        } else {
-            None
-        };
-
-        // Fallback: scan all channels.
-        if channel.is_none() {
-            for chan in 0..channel_num {
-                // SAFETY: `chan` is within the channel table range.
-                let layout = unsafe { read_channel(base, chan as usize) };
-                // SAFETY: slot pointer is within the region.
-                let slot_addr = unsafe { layout.slot_addr(base) };
-                // SAFETY: `slot_addr` points to a valid slot.
-                let consumed = unsafe { slot::is_consumed(slot_addr) };
-                if layout.direction.is_rx::<T::S>() && !consumed {
-                    channel_id = chan;
-                    channel = Some(layout);
-                    break;
-                }
+                channel_id = chan;
+                channel = Some(layout);
+                break;
             }
         }
-
-        consortium_log::trace!(
-            "poll_recv: channel_id = {}, channel_num = {}, channel = {:?}, subscribed = {}",
-            channel_id,
-            channel_num,
-            channel,
-            subscribed
-        );
-
-        let Some(channel) = channel else {
-            if subscribed {
-                // Waker already registered on the first pass; a later doorbell
-                // edge will re-poll us.  Nothing to deliver yet.
-                consortium_log::trace!("poll_recv: no data after subscribe; parking");
-                return core::task::Poll::Pending;
-            }
-            // No data yet — subscribe so the waker stays registered until the
-            // remote rings, then loop once more to re-scan and close the
-            // scan→subscribe race.
-            consortium_log::trace!("poll_recv: no data available, arming doorbell wait future");
-            // SAFETY: `wait_fut` is the stored wait future for this receive
-            // operation.  `arm_wait` registers the waker (and self-wakes if a
-            // notification was already latched); we discard its `Pending` return
-            // deliberately because the re-scan below decides whether to park.
-            let _ = unsafe { arm_wait(doorbell, ch, wait_fut, cx) };
-            subscribed = true;
-            continue;
-        };
-
-        // SAFETY: slot pointer is within the region.
-        let slot_base = unsafe { channel.slot_addr(base) };
-
-        consortium_log::trace!(
-            "poll_recv: delivering channel_id = {}, slot_base = {:#x}",
-            channel_id,
-            slot_base as usize
-        );
-
-        // SAFETY: `slot_base` is a valid slot; `buf` is exclusively owned by the caller.
-        if let Some(n) = unsafe { slot::try_read(slot_base, buf, region) } {
-            // Data delivered; drop any wait future armed on the first pass so a
-            // later stray doorbell cannot resolve a stale receive.
-            *wait_fut = None;
-            consortium_log::trace!(
-                "poll_recv: read {} bytes from channel_id = {}, slot_base = {:#x}",
-                n,
-                channel_id,
-                slot_base as usize
-            );
-            return core::task::Poll::Ready(Ok(n));
-        }
-
-        consortium_log::trace!(
-            "poll_recv: slot_base = {:#x} was readable but read failed; invalidating region and re-polling",
-            slot_base as usize
-        );
-
-        // The scan saw a readable slot but the read could not complete.  Flushes
-        // for integrity-error flags happen inside `try_read`; invalidate and
-        // force an immediate re-poll so this path does not depend on an
-        // unrelated doorbell.
-        region.invalidate();
-        cx.waker().wake_by_ref();
-        return core::task::Poll::Pending;
     }
+
+    consortium_log::trace!(
+        "recv: channel_id = {}, channel_num = {}, channel = {:?}",
+        channel_id,
+        channel_num,
+        channel
+    );
+
+    let Some(channel) = channel else {
+        return Scan::Empty;
+    };
+
+    // SAFETY: slot pointer is within the region.
+    let slot_base = unsafe { channel.slot_addr(base) };
+
+    consortium_log::trace!(
+        "recv: delivering channel_id = {}, slot_base = {:#x}",
+        channel_id,
+        slot_base as usize
+    );
+
+    // SAFETY: `slot_base` is a valid slot; `buf` is exclusively owned by the caller.
+    if let Some(n) = unsafe { slot::try_read(slot_base, buf, region) } {
+        consortium_log::trace!(
+            "recv: read {} bytes from channel_id = {}, slot_base = {:#x}",
+            n,
+            channel_id,
+            slot_base as usize
+        );
+        return Scan::Delivered(n);
+    }
+
+    consortium_log::trace!(
+        "recv: slot_base = {:#x} was readable but read failed; invalidating region and retrying",
+        slot_base as usize
+    );
+
+    // Flushes for integrity-error flags happen inside `try_read`; invalidate so
+    // the retry pass does not re-read the same stale line.
+    region.invalidate();
+    Scan::Retry
 }
 
-/// Create and store a doorbell wait future, poll it once to register the waker,
-/// then return `Pending`.
+/// Hand control back to the executor once, then resume.
 ///
-/// If a stored notification is immediately available (the remote rang before we
-/// subscribed), the future fires on the first poll: we clear it and schedule an
-/// immediate re-poll so the slot is re-checked on the very next executor cycle.
-///
-/// # Safety
-/// The doorbell must outlive `*wait_fut`.  `wait_fut` must point to a field in a
-/// pinned struct (i.e. the caller's future is `!Unpin` and pinned by the executor)
-/// so the stored future is never moved after it has been polled.
-unsafe fn arm_wait<D: Doorbell + Send + 'static>(
-    doorbell: &D,
-    ch: Chan,
-    wait_fut: &mut Option<D::WaitFut<'static>>,
-    cx: &mut core::task::Context<'_>,
-) -> core::task::Poll<Result<usize, Error<D>>> {
-    consortium_log::trace!("poll_recv: arming doorbell wait future on channel {:?}", ch);
-    let wf = doorbell.wait(ch);
-    // SAFETY: the doorbell is inside the transport that exclusively owns the recv
-    // future, and the transport is guaranteed to outlive the future.  Erasing the
-    // lifetime to 'static is sound because `wait_fut` is dropped before the
-    // transport (enforced by the PhantomData<&'a mut Transport> on the future struct).
-    let wf = unsafe { core::mem::transmute::<D::WaitFut<'_>, D::WaitFut<'static>>(wf) };
-    consortium_log::trace!(
-        "poll_recv: storing doorbell wait future on channel {:?}",
-        ch
-    );
-    *wait_fut = Some(wf);
-    // SAFETY: `wait_fut` is now in a pinned location; we never move it after this poll.
-    match unsafe { core::pin::Pin::new_unchecked(wait_fut.as_mut().unwrap()) }.poll(cx) {
-        core::task::Poll::Ready(_) => {
-            consortium_log::trace!("poll_recv: doorbell fired immediately on channel {:?}", ch);
-            // A notification was already stored (remote rang before we subscribed).
-            // Clear the future and ask the executor to re-poll immediately.
-            *wait_fut = None;
+/// Used where the recv loop must not park — it has work to redo immediately but
+/// must not starve other tasks by spinning.
+fn yield_now() -> impl Future<Output = ()> {
+    let mut yielded = false;
+    core::future::poll_fn(move |cx| {
+        if yielded {
+            core::task::Poll::Ready(())
+        } else {
+            yielded = true;
             cx.waker().wake_by_ref();
+            core::task::Poll::Pending
         }
-        core::task::Poll::Pending => {}
+    })
+}
+
+/// Receive one message, parking on the doorbell until a slot is readable.
+///
+/// Takes `&mut T` rather than `&T` purely so the returned future is `Send`
+/// whenever `T` is; nothing here mutates the transport.
+async fn recv_bytes<T: RecvAccess>(
+    transport: &mut T,
+    buf: &mut [u8],
+) -> Result<usize, Error<T::D>> {
+    let ch = transport.ch();
+    consortium_log::trace!("recv: waiting for doorbell on channel {:?}", ch);
+
+    loop {
+        match scan_once(&*transport, &mut *buf) {
+            Scan::Delivered(n) => return Ok(n),
+            Scan::Retry => {
+                yield_now().await;
+                continue;
+            }
+            Scan::Empty => {}
+        }
+
+        // Arm the doorbell *before* the second scan.  The fan-out
+        // (`Notify::notify_waiters`) wakes only already-registered waiters and
+        // stores no permit, so an edge delivered between a scan and the waker
+        // registration would be lost.  Registering first and re-scanning turns
+        // that race into a guaranteed delivery, independent of the doorbell's
+        // notification semantics.
+        //
+        // This is why the wait future is created here and awaited below rather
+        // than simply `.await`ed: awaiting it directly would register the waker
+        // and park in one step, leaving no point at which to re-scan.
+        consortium_log::trace!("recv: no data available, arming doorbell wait on {:?}", ch);
+        let mut wait = core::pin::pin!(transport.doorbell().wait(ch));
+        let armed =
+            core::future::poll_fn(|cx| core::task::Poll::Ready(wait.as_mut().poll(cx))).await;
+
+        // The wait future lives to the end of this iteration and no longer.
+        // Dropping it on delivery is what keeps a later stray doorbell from
+        // resolving a stale receive, and runs whatever disarm the doorbell put
+        // in its future's `Drop`.
+        match scan_once(&*transport, &mut *buf) {
+            Scan::Delivered(n) => return Ok(n),
+            Scan::Retry => {
+                yield_now().await;
+                continue;
+            }
+            Scan::Empty => {}
+        }
+
+        match armed {
+            // The remote rang before we subscribed and the re-scan still found
+            // nothing.  The future is spent, so start the iteration over — after
+            // a yield, so a doorbell that keeps firing without publishing data
+            // cannot starve the executor.
+            core::task::Poll::Ready(fired) => {
+                consortium_log::trace!("recv: doorbell had already fired on channel {:?}", ch);
+                fired.map_err(Error::Doorbell)?;
+                yield_now().await;
+            }
+            // Waker is registered; park until the remote rings.
+            core::task::Poll::Pending => {
+                consortium_log::trace!("recv: no data after subscribe; parking on {:?}", ch);
+                wait.as_mut().await.map_err(Error::Doorbell)?;
+                consortium_log::trace!("recv: doorbell fired on channel {:?}", ch);
+            }
+        }
     }
-    core::task::Poll::Pending
 }
 
 pub struct SharedMemoryTransport<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> {
@@ -519,11 +505,18 @@ unsafe impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Se
 {
 }
 
-/// Sealed accessor so `RecvFut` can be generic over both `SharedMemoryTransport`
-/// and `SharedMemoryTransportRx` without duplicating the future type.
-pub trait RecvAccess {
+/// Accessor so the receive path can be written once for both
+/// [`SharedMemoryTransport`] and [`SharedMemoryTransportRx`].
+///
+/// # Safety
+///
+/// [`base`](RecvAccess::base) must return a pointer valid for reads covering
+/// the descriptor header and a channel table of the length the header declares,
+/// for as long as `Self` lives, and [`region`](RecvAccess::region) must be the
+/// region that maps it.  The receive path reads both without further checks.
+pub unsafe trait RecvAccess {
     type S: Side;
-    type D: Doorbell + 'static;
+    type D: Doorbell;
     type R: RegionSharedMemoryTransportable;
     fn doorbell(&self) -> &Self::D;
     fn region(&self) -> &Self::R;
@@ -531,7 +524,9 @@ pub trait RecvAccess {
     fn ch(&self) -> Chan;
 }
 
-impl<S: Side, D: Doorbell + 'static, R: RegionSharedMemoryTransportable> RecvAccess
+// SAFETY: `SharedMemoryTransport::new` requires the caller to establish exactly
+// this invariant for `base`, and the transport owns the region that maps it.
+unsafe impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> RecvAccess
     for SharedMemoryTransport<S, D, R>
 {
     type S = S;
@@ -551,7 +546,9 @@ impl<S: Side, D: Doorbell + 'static, R: RegionSharedMemoryTransportable> RecvAcc
     }
 }
 
-impl<S: Side, D: Doorbell + 'static, R: RegionSharedMemoryTransportable> RecvAccess
+// SAFETY: `split` propagates the `base` and region of a transport that already
+// upheld this invariant.
+unsafe impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> RecvAccess
     for SharedMemoryTransportRx<S, D, R>
 {
     type S = S;
@@ -584,31 +581,6 @@ pub struct SendFut<D: Doorbell> {
     result: Result<(), Error<D>>,
 }
 
-/// Future returned by [`RecvTransport::recv`] on shared-memory transports.
-///
-/// Generic over any transport type `T` that implements [`RecvAccess`], so a
-/// single concrete type covers both [`SharedMemoryTransport`] and
-/// [`SharedMemoryTransportRx`].
-pub struct RecvFut<'a, T: RecvAccess> {
-    transport: *mut T,
-    buf_ptr: *mut u8,
-    buf_len: usize,
-    /// Persisted doorbell wait future. Kept alive between polls so the waker
-    /// registration is not lost when the executor parks this task.
-    wait_fut: Option<<T::D as Doorbell>::WaitFut<'static>>,
-    _ph: PhantomData<&'a mut T>,
-    _pin: PhantomPinned,
-}
-
-// SAFETY: the raw pointer is exclusively owned by this future for its lifetime;
-// all concrete T, T::D, and T::R types used here are Send.
-unsafe impl<T: RecvAccess + Send> Send for RecvFut<'_, T>
-where
-    T::D: Send,
-    T::R: Send,
-{
-}
-
 impl<D: Doorbell> Future for SendFut<D> {
     type Output = Result<(), Error<D>>;
 
@@ -622,28 +594,6 @@ impl<D: Doorbell> Future for SendFut<D> {
             Ok(()) => Ok(()),
             Err(_) => core::mem::replace(&mut this.result, Ok(())),
         })
-    }
-}
-
-impl<T: RecvAccess> Future for RecvFut<'_, T>
-where
-    T::D: Send + 'static,
-    T::R: Send,
-{
-    type Output = Result<usize, Error<T::D>>;
-
-    fn poll(
-        self: core::pin::Pin<&mut Self>,
-        cx: &mut core::task::Context<'_>,
-    ) -> core::task::Poll<Self::Output> {
-        // SAFETY: we never move fields out of `this`; `_pin: PhantomPinned` makes this !Unpin.
-        let this = unsafe { self.get_unchecked_mut() };
-        // SAFETY: `transport` is exclusively owned by this future.
-        let transport = unsafe { &mut *this.transport };
-        // SAFETY: `buf_ptr` and `buf_len` are exclusively owned by this future.
-        let buf = unsafe { core::slice::from_raw_parts_mut(this.buf_ptr, this.buf_len) };
-        // SAFETY: `base` covers the descriptor header; doorbell outlives `this.wait_fut`.
-        unsafe { poll_recv(transport, buf, &mut this.wait_fut, cx) }
     }
 }
 
@@ -697,21 +647,14 @@ impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Sen
     }
 }
 
-impl<S: Side, D: Doorbell + Send + 'static, R: RegionSharedMemoryTransportable + Send> RecvTransport
+impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> RecvTransport
     for SharedMemoryTransport<S, D, R>
 {
-    fn recv<'s>(
-        &'s mut self,
+    fn recv(
+        &mut self,
         data: &mut [u8],
     ) -> impl Future<Output = Result<usize, Self::Error>> + MaybeSend {
-        RecvFut::<'s, SharedMemoryTransport<S, D, R>> {
-            transport: self as *mut _,
-            buf_ptr: data.as_mut_ptr(),
-            buf_len: data.len(),
-            wait_fut: None,
-            _ph: PhantomData,
-            _pin: PhantomPinned,
-        }
+        recv_bytes(self, data)
     }
 
     fn max_recv_size(&self) -> usize {
@@ -719,21 +662,14 @@ impl<S: Side, D: Doorbell + Send + 'static, R: RegionSharedMemoryTransportable +
     }
 }
 
-impl<S: Side, D: Doorbell + Send + 'static, R: RegionSharedMemoryTransportable + Send> RecvTransport
+impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> RecvTransport
     for SharedMemoryTransportRx<S, D, R>
 {
-    fn recv<'s>(
-        &'s mut self,
+    fn recv(
+        &mut self,
         data: &mut [u8],
     ) -> impl Future<Output = Result<usize, Self::Error>> + MaybeSend {
-        RecvFut::<'s, SharedMemoryTransportRx<S, D, R>> {
-            transport: self as *mut _,
-            buf_ptr: data.as_mut_ptr(),
-            buf_len: data.len(),
-            wait_fut: None,
-            _ph: PhantomData,
-            _pin: PhantomPinned,
-        }
+        recv_bytes(self, data)
     }
 
     fn max_recv_size(&self) -> usize {
@@ -741,7 +677,7 @@ impl<S: Side, D: Doorbell + Send + 'static, R: RegionSharedMemoryTransportable +
     }
 }
 
-impl<S: Side, D: Doorbell + Send + 'static, R: RegionSharedMemoryTransportable + Send> Transport
+impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Transport
     for SharedMemoryTransport<S, D, R>
 {
 }

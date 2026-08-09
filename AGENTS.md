@@ -279,6 +279,18 @@ Doorbells provide wakeup/signaling and should keep MMIO safety invariants docume
 Use typed register abstractions and validate channel bounds through the local validation
 type where available.
 
+`Doorbell::wait` is RPITIT (`-> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend`),
+like `SendTransport`/`RecvTransport`, so implementations may be `async` bodies or named
+futures — the four hardware crates keep named ones (`HsemWaitFut`, `IpccWaitFut`,
+`MuWaitFut`, `GpioWaitFut`) because their `Drop` disarms the line. The trade is that the
+future type is unnameable through the trait: a consumer cannot store it in a struct field,
+so a receive loop has to hold it as a local across an `.await` rather than as persisted
+poll state. `consortium-ipc-transport-memory`'s `recv_bytes` is the worked example, and
+its ordering is load-bearing — create the wait future, poll it **once** through a
+`poll_fn` to register the waker, re-scan the slots, and only then park on it. Awaiting it
+directly registers and parks in one step, which reopens the lost-wakeup race the
+`RacyDoorbell` test covers (the fan-out `notify_waiters()` stores no permit).
+
 Each hardware doorbell depends on its related chip HAL (`consortium-hal-stm32mp2` or
 `consortium-hal-imx9`) and forwards its chip-selection feature to the HAL, so the shared
 PAC's register/interrupt definitions match the target. A doorbell dep that

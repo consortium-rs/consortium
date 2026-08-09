@@ -205,7 +205,7 @@ fn recv_future_becomes_ready_after_pending_poll_then_doorbell_ring() {
 /// Regression for the HIL lost-wakeup: the remote publishes its slot in the
 /// window between the receiver's slot scan and its subscribe, and the doorbell
 /// fan-out (`notify_waiters`) drops the wake because no waiter is armed yet.
-/// `poll_recv` must still deliver, via its post-subscribe re-scan, on the *same*
+/// `recv_bytes` must still deliver, via its post-subscribe re-scan, on the *same*
 /// poll — without waiting for a second doorbell edge that will never come.
 ///
 /// [`RacyDoorbell`] fires the publish hook exactly at the subscribe point, so a
@@ -233,7 +233,7 @@ fn recv_delivers_when_remote_publishes_during_subscribe_window() {
         let doorbell = RacyDoorbell::new(move || {
             let base = base_addr as *mut u8;
             // SAFETY: single-threaded runtime; the hook runs synchronously
-            // inside `poll_recv` while nothing else touches the region.
+            // inside `recv_bytes` while nothing else touches the region.
             unsafe {
                 let rx = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
                 slot::write(rx.slot_addr(base), b"published-in-window");

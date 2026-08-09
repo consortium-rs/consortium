@@ -32,7 +32,7 @@ use core::{
 };
 
 use consortium_hal_stm32mp2::{Peri, PeripheralType};
-use consortium_ipc::{Chan, Doorbell, Side};
+use consortium_ipc::{Chan, Doorbell, MaybeSend, Side};
 
 use crate::{abstraction::Hsem, chan::HSEM_CHAN_COUNT, error::HsemError, registers::base};
 
@@ -149,10 +149,6 @@ impl<S: Side, const N: usize> HsemDoorbell<S, N> {
 
 impl<S: Side, const N: usize> Doorbell for HsemDoorbell<S, N> {
     type Error = HsemError;
-    type WaitFut<'a>
-        = HsemWaitFut<'a, S, N>
-    where
-        Self: 'a;
 
     fn ring(&self, ch: Chan) -> Result<(), HsemError> {
         consortium_log::trace!("HsemDoorbell::ring(ch = {:?})", ch);
@@ -200,10 +196,7 @@ impl<S: Side, const N: usize> Doorbell for HsemDoorbell<S, N> {
         Ok(())
     }
 
-    fn wait<'a>(&'a self, ch: Chan) -> Self::WaitFut<'a>
-    where
-        Self: 'a,
-    {
+    fn wait(&self, ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend {
         HsemWaitFut::new(self, ch)
     }
 
