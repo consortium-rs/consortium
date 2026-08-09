@@ -561,6 +561,87 @@ pub fn notify_gi_interrupt<S: Side, const N: usize>() {
     service_gi(&mu, |id| line_waker::<N>(id).wake());
 }
 
+#[cfg(all(test, not(feature = "std")))]
+mod no_std_tests {
+    extern crate std;
+
+    use super::*;
+    use crate::registers::offsets;
+    use consortium_ipc::Primary;
+    use core::sync::atomic::AtomicUsize;
+    use std::{
+        sync::Arc,
+        task::{RawWaker, RawWakerVTable, Waker},
+    };
+
+    const N: usize = if cfg!(feature = "mimx95") { 7 } else { 1 };
+
+    fn ch(id: u8) -> Chan {
+        // SAFETY: the test uses valid MU channel ids.
+        unsafe { Chan::new_unchecked(id) }
+    }
+
+    fn counting_waker() -> (Waker, Arc<AtomicUsize>) {
+        unsafe fn clone(p: *const ()) -> RawWaker {
+            // SAFETY: `p` came from `Arc::into_raw` and remains live.
+            unsafe { Arc::increment_strong_count(p as *const AtomicUsize) };
+            RawWaker::new(p, &VTABLE)
+        }
+        unsafe fn wake(p: *const ()) {
+            // SAFETY: `p` came from `Arc::into_raw`; this consumes one count.
+            let count = unsafe { Arc::from_raw(p as *const AtomicUsize) };
+            count.fetch_add(1, Ordering::SeqCst);
+        }
+        unsafe fn wake_by_ref(p: *const ()) {
+            // SAFETY: `p` came from `Arc::into_raw` and remains live.
+            unsafe { &*(p as *const AtomicUsize) }.fetch_add(1, Ordering::SeqCst);
+        }
+        unsafe fn drop_fn(p: *const ()) {
+            // SAFETY: `p` came from `Arc::into_raw`; this consumes one count.
+            unsafe { drop(Arc::from_raw(p as *const AtomicUsize)) };
+        }
+        static VTABLE: RawWakerVTable = RawWakerVTable::new(clone, wake, wake_by_ref, drop_fn);
+
+        let count = Arc::new(AtomicUsize::new(0));
+        let raw = RawWaker::new(Arc::into_raw(Arc::clone(&count)) as *const (), &VTABLE);
+        // SAFETY: `VTABLE` implements the `RawWaker` contract for the Arc payload.
+        (unsafe { Waker::from_raw(raw) }, count)
+    }
+
+    #[test]
+    fn distinct_lines_keep_distinct_wakers() {
+        let mut regs = [0u32; 0x300 / 4];
+        // SAFETY: `regs` backs the fake MU MMIO window for this test.
+        let db = unsafe { MuDoorbell::<Primary, N>::new_mapped(regs.as_mut_ptr() as usize) };
+        let mut first = core::pin::pin!(db.wait(ch(1)));
+        let mut second = core::pin::pin!(db.wait(ch(2)));
+        let (first_waker, first_wakes) = counting_waker();
+        let (second_waker, second_wakes) = counting_waker();
+
+        assert_eq!(
+            first.as_mut().poll(&mut Context::from_waker(&first_waker)),
+            Poll::Pending
+        );
+        assert_eq!(
+            second
+                .as_mut()
+                .poll(&mut Context::from_waker(&second_waker)),
+            Poll::Pending
+        );
+
+        // SAFETY: the address is the fake window's in-bounds GSR register.
+        unsafe {
+            regs.as_mut_ptr()
+                .add(offsets::GSR as usize / 4)
+                .write_volatile((1 << 1) | (1 << 2));
+        }
+        service_gi(&db.mu, |id| line_waker::<N>(id).wake());
+
+        assert_eq!(first_wakes.load(Ordering::SeqCst), 1);
+        assert_eq!(second_wakes.load(Ordering::SeqCst), 1);
+    }
+}
+
 #[cfg(all(test, feature = "std"))]
 mod tests {
     use super::*;
