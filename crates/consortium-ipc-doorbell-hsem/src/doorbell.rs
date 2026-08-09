@@ -250,6 +250,33 @@ impl<'a, S: Side, const N: usize> HsemWaitFut<'a, S, N> {
     }
 }
 
+impl<S: Side, const N: usize> Drop for HsemWaitFut<'_, S, N> {
+    fn drop(&mut self) {
+        if !self.armed {
+            return;
+        }
+
+        let Ok(sem) = HsemDoorbell::<S, N>::sem_of(self.ch) else {
+            return;
+        };
+
+        // Disarm only; do not touch `CnICR`. The status bit *is* the
+        // notification, so acknowledging it here would discard a ring that the
+        // next `wait()` should observe. Masking is the part that matters on
+        // cancel: `CnIER` stays enabled otherwise, and with no waiter left to
+        // clear the level-sensitive line, `irq_loop` re-arming the UIO IRQ
+        // re-fires it immediately — the spurious-interrupt storm the readiness
+        // path already guards against.
+        //
+        // No critical section: unlike IPCC's `CxMR` and MU's `GIER`/`RCR`, the
+        // HSEM ISR entry point (`hsem::notify`) only wakes and never writes
+        // `CnIER`, so this read-modify-write has no concurrent writer.
+        //
+        // SAFETY: `sem` was validated `< 16` and this future owns the armed wait.
+        unsafe { self.doorbell.hsem.disable_interrupt(sem) };
+    }
+}
+
 impl<'a, S: Side, const N: usize> core::future::Future for HsemWaitFut<'a, S, N> {
     type Output = Result<Chan, HsemError>;
 
@@ -437,6 +464,78 @@ mod tests {
         );
         // Acknowledged on completion (write-1-to-clear of the status bit).
         assert_eq!(regs[reg_index(offsets::C1ICR)], 1 << 3);
+    }
+
+    /// Cancelling a pending wait (a `select!` timeout, a dropped `recv`) must
+    /// disarm the line too, not just the readiness path. Otherwise `CnIER` stays
+    /// enabled with nobody left to clear `CnISR`, and re-arming the UIO IRQ
+    /// re-fires the level-sensitive line forever.
+    #[test]
+    fn dropping_pending_wait_disarms_its_semaphore() {
+        let mut regs = [0u32; 0x140 / 4];
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db = unsafe { HsemDoorbell::<Primary, 1>::new_mapped(regs.as_mut_ptr() as usize) };
+        let waker = std::task::Waker::noop();
+        let mut cx = Context::from_waker(waker);
+
+        {
+            let mut wait = std::pin::pin!(db.wait(ch(3)));
+            assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+            assert_ne!(
+                InterruptRegister::from_bits(regs[reg_index(offsets::C1IER)]).sems() & (1 << 3),
+                0,
+                "semaphore interrupt must be enabled while waiting"
+            );
+        }
+
+        assert_eq!(
+            InterruptRegister::from_bits(regs[reg_index(offsets::C1IER)]).sems() & (1 << 3),
+            0,
+            "cancelled wait must mask the semaphore interrupt"
+        );
+    }
+
+    /// The status bit is the notification, so a cancelled wait must leave it
+    /// latched for the next `wait()` rather than acknowledging it.
+    #[test]
+    fn dropping_pending_wait_does_not_acknowledge_the_status() {
+        let mut regs = [0u32; 0x140 / 4];
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db = unsafe { HsemDoorbell::<Primary, 1>::new_mapped(regs.as_mut_ptr() as usize) };
+        let waker = std::task::Waker::noop();
+        let mut cx = Context::from_waker(waker);
+
+        {
+            let mut wait = std::pin::pin!(db.wait(ch(3)));
+            assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+            // Arming clears the stale status once; record it and check `Drop`
+            // adds no further write-1-to-clear of its own.
+            regs[reg_index(offsets::C1ICR)] = 0;
+        }
+
+        assert_eq!(
+            regs[reg_index(offsets::C1ICR)],
+            0,
+            "cancelled wait must not acknowledge a pending ring"
+        );
+    }
+
+    /// A future that was never polled never armed anything, so its `Drop` must
+    /// not write the interrupt registers at all.
+    #[test]
+    fn dropping_unpolled_wait_touches_nothing() {
+        let mut regs = [0u32; 0x140 / 4];
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db = unsafe { HsemDoorbell::<Primary, 1>::new_mapped(regs.as_mut_ptr() as usize) };
+        regs[reg_index(offsets::C1IER)] = u32::MAX;
+
+        drop(db.wait(ch(3)));
+
+        assert_eq!(
+            regs[reg_index(offsets::C1IER)],
+            u32::MAX,
+            "an unarmed wait must not disturb CnIER"
+        );
     }
 
     #[test]

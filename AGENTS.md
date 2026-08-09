@@ -282,12 +282,14 @@ type where available.
 `Doorbell::wait` is RPITIT (`-> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend`),
 like `SendTransport`/`RecvTransport`, so implementations may be `async` bodies or named
 futures — the four hardware crates keep named ones (`HsemWaitFut`, `IpccWaitFut`,
-`MuWaitFut`, `GpioWaitFut`) because nothing is gained by rewriting them, and because
-`IpccWaitFut` carries a `Drop` that masks its RX line and an `async` body would need a
-guard struct to reproduce it. Do not read that as a general cancellation contract:
-`IpccWaitFut` is the only one with a `Drop`. `HsemWaitFut` and `MuWaitFut` arm their line
-on the first poll and disarm it _only on the readiness path_, so a future dropped while
-pending leaves the line enabled; `GpioWaitFut` has no line to disarm. The trade is that the
+`MuWaitFut`, `GpioWaitFut`) because each of the three MMIO ones carries a `Drop` that
+disarms its line on cancel, and an `async` body would need a guard struct to reproduce
+that. A cancelled wait (a `select!` timeout, a dropped `recv`) must leave the line
+masked: nothing is left to clear the level-sensitive status, so `irq_loop` re-arming the
+UIO IRQ would re-fire it forever. Each `Drop` is gated on the future's `armed` flag, and
+each **disarms only** — it never acknowledges `CnISR`/`GSR`/`RSR`/the occupied flag,
+because that status _is_ the notification and the next `wait()` has to still see it.
+`GpioWaitFut` has no hardware line and needs no guard. The trade is that the
 future type is unnameable through the trait: a consumer cannot store it in a struct field,
 so a receive loop has to hold it as a local across an `.await` rather than as persisted
 poll state. `consortium-ipc-transport-memory`'s `recv_bytes` is the worked example, and

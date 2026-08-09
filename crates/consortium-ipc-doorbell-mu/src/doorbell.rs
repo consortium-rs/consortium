@@ -401,6 +401,33 @@ impl<'a, S: Side, const N: usize> MuWaitFut<'a, S, N> {
     }
 }
 
+impl<S: Side, const N: usize> Drop for MuWaitFut<'_, S, N> {
+    fn drop(&mut self) {
+        if !self.armed {
+            return;
+        }
+
+        let Ok(line) = MuDoorbell::<S, N>::line_of(self.ch) else {
+            return;
+        };
+
+        // Disarm only; do not clear `GSR[GIPn]` or ack `RSR[RFn]`. Those flags
+        // are the notification itself, so acknowledging here would discard a
+        // ring the next `wait()` should observe. Masking is the part that
+        // matters on cancel: the enable bit stays set otherwise, and with no
+        // waiter left to clear the level-sensitive line, `irq_loop` re-arming
+        // the UIO IRQ re-fires it immediately.
+        with_interrupts_masked(|| match line {
+            // SAFETY: `gi` was validated `< MU_GI_CHAN_COUNT`, and the critical
+            // section makes this `GIER` read-modify-write atomic against
+            // `service_gi` running in interrupt context.
+            MuLine::Gi(gi) => unsafe { self.doorbell.mu.disable_gi(gi) },
+            // SAFETY: `rf` was validated `< MU_RF_CHAN_COUNT`; likewise for `RCR`.
+            MuLine::Rf(rf) => unsafe { self.doorbell.mu.disable_rf(rf) },
+        });
+    }
+}
+
 impl<'a, S: Side, const N: usize> core::future::Future for MuWaitFut<'a, S, N> {
     type Output = Result<Chan, MuError>;
 
@@ -721,5 +748,108 @@ mod tests {
         assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(5))));
         // RCR[RIE1] disarmed on completion.
         assert!(rcr(&regs).flags() & (1 << 1) == 0);
+    }
+
+    /// Cancelling a pending wait (a `select!` timeout, a dropped `recv`) must
+    /// disarm the line too, not just the readiness path. Otherwise `GIER` stays
+    /// enabled with nobody left to clear `GSR`, and re-arming the UIO IRQ
+    /// re-fires the level-sensitive line forever.
+    #[test]
+    fn dropping_pending_gi_wait_disarms_its_line() {
+        let mut regs = [0u32; 0x300 / 4];
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db = unsafe {
+            MuDoorbell::<consortium_ipc::Primary, N>::new_mapped(regs.as_mut_ptr() as usize)
+        };
+        let waker = std::task::Waker::noop();
+        let mut cx = Context::from_waker(waker);
+
+        {
+            let mut wait = std::pin::pin!(db.wait(ch(2)));
+            assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+            assert!(
+                gier(&regs).gi() & (1 << 2) != 0,
+                "GI interrupt must be enabled while waiting"
+            );
+        }
+
+        assert!(
+            gier(&regs).gi() & (1 << 2) == 0,
+            "cancelled wait must disarm GIER"
+        );
+    }
+
+    /// Same for the RF half of the channel space, which uses `RCR` rather than
+    /// `GIER`.
+    #[test]
+    fn dropping_pending_rf_wait_disarms_its_line() {
+        let mut regs = [0u32; 0x300 / 4];
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db = unsafe {
+            MuDoorbell::<consortium_ipc::Primary, N>::new_mapped(regs.as_mut_ptr() as usize)
+        };
+        let waker = std::task::Waker::noop();
+        let mut cx = Context::from_waker(waker);
+
+        {
+            // ch(5) -> RF index 1.
+            let mut wait = std::pin::pin!(db.wait(ch(5)));
+            assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+            assert!(
+                rcr(&regs).flags() & (1 << 1) != 0,
+                "RF interrupt must be enabled while waiting"
+            );
+        }
+
+        assert!(
+            rcr(&regs).flags() & (1 << 1) == 0,
+            "cancelled wait must disarm RCR"
+        );
+    }
+
+    /// The status flags are the notification, so a cancelled wait must leave
+    /// them latched for the next `wait()` rather than acknowledging them.
+    #[test]
+    fn dropping_pending_wait_does_not_acknowledge_the_status() {
+        let mut regs = [0u32; 0x300 / 4];
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db = unsafe {
+            MuDoorbell::<consortium_ipc::Primary, N>::new_mapped(regs.as_mut_ptr() as usize)
+        };
+        let waker = std::task::Waker::noop();
+        let mut cx = Context::from_waker(waker);
+
+        {
+            let mut wait = std::pin::pin!(db.wait(ch(2)));
+            assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
+            // The remote rings after the poll parked but before the cancel.
+            regs[offsets::GSR as usize / 4] = 1 << 2;
+        }
+
+        assert_eq!(
+            regs[offsets::GSR as usize / 4],
+            1 << 2,
+            "cancelled wait must leave the pending ring latched for the next wait"
+        );
+    }
+
+    /// A future that was never polled never armed anything, so its `Drop` must
+    /// not write the enable registers at all.
+    #[test]
+    fn dropping_unpolled_wait_touches_nothing() {
+        let mut regs = [0u32; 0x300 / 4];
+        // SAFETY: `regs` backs a fake MMIO window for the test.
+        let db = unsafe {
+            MuDoorbell::<consortium_ipc::Primary, N>::new_mapped(regs.as_mut_ptr() as usize)
+        };
+        regs[offsets::GIER as usize / 4] = u32::MAX;
+
+        drop(db.wait(ch(2)));
+
+        assert_eq!(
+            regs[offsets::GIER as usize / 4],
+            u32::MAX,
+            "an unarmed wait must not disturb GIER"
+        );
     }
 }
