@@ -20,12 +20,12 @@
 //! `CONSORTIUM_DBG_*` environment variables the firmware reads with `option_env!`, and
 //! verifies the result is really an ELF before handing it on.
 //!
-//! The step that is easy to overlook: **Linux remoteproc expects the vector table in a
-//! section named `.isr_vectors`**, while `cortex-m-rt` emits `.vector_table`. The
-//! deployable artifact is therefore a renamed copy, with the original kept alongside it
-//! for debugging — an ELF that boots and an ELF that a debugger understands are not
-//! quite the same file.
+//! Linux remoteproc loaders use a chip-specific vector section name while
+//! `cortex-m-rt` emits `.vector_table`. The deployable artifact is therefore a
+//! renamed copy, with the original kept alongside it for debugging.
 
+use consortium_cfg::components::remoteproc::RemoteprocMemoryLayout;
+use object::{Object, ObjectSection, ObjectSegment};
 use std::path::{Path, PathBuf};
 use thiserror::Error;
 use tokio::process::Command;
@@ -54,6 +54,9 @@ pub enum FirmwareCompileError {
 
     #[error("objcopy post-processing failed: {0}")]
     Objcopy(String),
+
+    #[error("remoteproc ELF validation failed: {0}")]
+    ElfLayout(String),
 
     #[error("{0}")]
     UtilityError(String),
@@ -108,12 +111,17 @@ fn resolve_objcopy() -> String {
 async fn objcopy_firmware(
     src: &Path,
     dest: &Path,
+    layout: Option<&RemoteprocMemoryLayout>,
     reporter: Option<&dyn BuildReporter>,
 ) -> Result<(), FirmwareCompileError> {
+    let vector_section = layout.map_or(".isr_vectors", |layout| layout.vector_section.as_str());
+    if let Some(layout) = layout {
+        validate_firmware_elf(src, ".vector_table", layout).await?;
+    }
     let objcopy = resolve_objcopy();
     let mut cmd = Command::new(&objcopy);
     cmd.arg("--rename-section")
-        .arg(".vector_table=.isr_vectors")
+        .arg(format!(".vector_table={vector_section}"))
         .arg("--remove-section")
         .arg(".defmt")
         .arg(src)
@@ -127,6 +135,85 @@ async fn objcopy_firmware(
         return Err(FirmwareCompileError::Objcopy(format!(
             "{objcopy} exited with status: {status}"
         )));
+    }
+    if let Some(layout) = layout {
+        validate_firmware_elf(dest, vector_section, layout).await?;
+    }
+    Ok(())
+}
+
+async fn validate_firmware_elf(
+    path: &Path,
+    vector_section: &str,
+    layout: &RemoteprocMemoryLayout,
+) -> Result<(), FirmwareCompileError> {
+    let bytes = tokio::fs::read(path)
+        .await
+        .map_err(|error| FirmwareCompileError::ElfLayout(format!("{}: {error}", path.display())))?;
+    let file = object::File::parse(bytes.as_slice())
+        .map_err(|error| FirmwareCompileError::ElfLayout(format!("{}: {error}", path.display())))?;
+    let section = file.section_by_name(vector_section).ok_or_else(|| {
+        FirmwareCompileError::ElfLayout(format!(
+            "{} has no '{vector_section}' section",
+            path.display()
+        ))
+    })?;
+    if section.size() == 0 {
+        return Err(FirmwareCompileError::ElfLayout(format!(
+            "{} section '{vector_section}' is empty",
+            path.display()
+        )));
+    }
+    if section.address() != layout.vector.window.origin {
+        return Err(FirmwareCompileError::ElfLayout(format!(
+            "{} section '{vector_section}' starts at {:#x}, expected vector origin {:#x}",
+            path.display(),
+            section.address(),
+            layout.vector.window.origin
+        )));
+    }
+    if section.size() > layout.vector.window.length {
+        return Err(FirmwareCompileError::ElfLayout(format!(
+            "{} section '{vector_section}' is {:#x} bytes, exceeding vector region '{}' ({:#x} bytes)",
+            path.display(),
+            section.size(),
+            layout.vector.name,
+            layout.vector.window.length
+        )));
+    }
+    let resource_table = file.section_by_name(".resource_table").ok_or_else(|| {
+        FirmwareCompileError::ElfLayout(format!(
+            "{} has no mandatory '.resource_table' section",
+            path.display()
+        ))
+    })?;
+    let resource_window = layout.shmem.window;
+    if resource_table.size() == 0
+        || !resource_window.contains(resource_table.address(), resource_table.size())
+    {
+        return Err(FirmwareCompileError::ElfLayout(format!(
+            "{} '.resource_table' at {:#x}..{:#x} is outside mandatory region '{}'",
+            path.display(),
+            resource_table.address(),
+            resource_table
+                .address()
+                .saturating_add(resource_table.size()),
+            layout.shmem.name
+        )));
+    }
+    for segment in file.segments().filter(|segment| segment.size() != 0) {
+        let address = segment.address();
+        let size = segment.size();
+        if !layout
+            .load_windows()
+            .any(|window| window.contains(address, size))
+        {
+            return Err(FirmwareCompileError::ElfLayout(format!(
+                "{} PT_LOAD segment {address:#x}..{:#x} is outside configured remoteproc memory regions",
+                path.display(),
+                address.saturating_add(size)
+            )));
+        }
     }
     Ok(())
 }
@@ -150,6 +237,9 @@ pub struct FirmwareConfiguration {
     pub ipc: Option<SharedMemConfig>,
     /// Debug ring layout, injected as `CONSORTIUM_DBG_*` env vars.
     pub dbg: Option<DbgConfig>,
+    /// Resolved remoteproc linker/ELF/DTS contract. The pipeline always sets
+    /// this; `None` retains the legacy `.isr_vectors` behavior for direct users.
+    pub remoteproc: Option<RemoteprocMemoryLayout>,
 }
 
 /// Compiler for bare-metal Cortex-M firmware.
@@ -211,7 +301,7 @@ impl FirmwareCompiler {
         // `<name>.elf`: the remoteproc-loadable image deployed to the target
         // (`.vector_table` → `.isr_vectors`, `.defmt` stripped).
         let deploy = deploy_elf_path(&elf);
-        objcopy_firmware(&elf, &deploy, reporter).await?;
+        objcopy_firmware(&elf, &deploy, config.remoteproc.as_ref(), reporter).await?;
 
         Ok(FirmwareArtifacts { original, deploy })
     }
@@ -257,6 +347,7 @@ impl FirmwareBuilder {
             offline: false,
             ipc: self.ipc,
             dbg: self.dbg,
+            remoteproc: None,
         })
         .await
         .map(|artifacts| artifacts.deploy)
@@ -272,6 +363,7 @@ impl FirmwareBuilder {
             offline: false,
             ipc: self.ipc,
             dbg: self.dbg,
+            remoteproc: None,
         })
         .await
         .map_err(|e| e.to_string())

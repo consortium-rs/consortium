@@ -18,13 +18,20 @@ deploy_root = "/opt/consortium"
 sysroot       = "/"
 kernel_recipe = "linux-imx"
 
-# Device-tree generation. Defaults to a merged full `.dts` built on the `devkit`
-# board above. Point `linux` at a kernel checkout to compile the `.dtb` here
-# (those dt-bindings headers are GPL-2.0, so they are never bundled); otherwise
-# the pipeline emits the `.dts` and prints how to compile it.
+# Device-tree generation. The selected board source and all of its includes are
+# read from the kernel checkout passed to `csti build --linux <DIR>`.
 [dts]
 # mode  = "merge"        # or "overlay"
-# linux = "~/src/linux"
+
+# Optional per-field overrides inherit the recommended i.MX95 CM7 DDR defaults.
+# [remoteproc.cm7]
+# vector = { origin = 0x80000000, length = 0x00001000 }
+# flash = { origin = 0x80001000, length = 0x007ff000, reserve = true }
+# shmem = { origin = 0x88220000, length = 0x00004000, reserve = true }
+# ram   = { origin = 0x80800000, length = 0x00800000, reserve = true }
+
+# Mandatory SHMEM follows NXP's `m_rsc_tbl_in_dram` region and owns
+# `.resource_table`.
 
 [endpoints]
 # Runtime endpoint name -> crate root. `cm7` is the single remote coprocessor.

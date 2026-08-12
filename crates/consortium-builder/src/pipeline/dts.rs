@@ -30,13 +30,12 @@ use consortium_cfg_common::config::DtsMode;
 pub use consortium_cfg::components::dts_render::{RenderedDts, render_linux_dts};
 
 /// File name of the generated kernel config fragment under `dist/kernel/`.
-pub const UIO_KCONFIG_NAME: &str = "uio-enable.cfg";
+pub const KCONFIG_NAME: &str = "consortium.cfg";
 
-/// Renders the kernel config fragment that enables the drivers the UIO device
-/// tree relies on, or `None` when the manifest declares no UIO devices.
+/// Renders the single kernel config fragment for every generated Linux device.
 ///
-/// Always enables the userspace-I/O generic-IRQ drivers the `generic-uio` nodes
-/// bind against:
+/// UIO devices enable the userspace-I/O generic-IRQ drivers their device-tree
+/// nodes bind against:
 ///
 /// - `CONFIG_UIO` — the UIO core;
 /// - `CONFIG_UIO_PDRV_GENIRQ` — the platform driver matched by `generic-uio`;
@@ -46,25 +45,43 @@ pub const UIO_KCONFIG_NAME: &str = "uio-enable.cfg";
 /// to apply the overlay) and, when `configfs` is set, `CONFIG_OF_CONFIGFS` (to
 /// apply it at runtime through configfs). A merged `.dts` needs neither.
 ///
-/// The fragment is consumed by the integrator's kernel recipe (a
-/// `SRC_URI += "file://..."` merge), not installed into the rootfs.
-pub fn render_uio_kconfig(ir: &LoweredIr, mode: DtsMode, configfs: bool) -> Option<String> {
-    if ir.uio.is_empty() {
-        return None;
-    }
-
-    let mut out = String::from(
-        "CONFIG_UIO=y\n\
-         CONFIG_UIO_PDRV_GENIRQ=y\n\
-         CONFIG_UIO_DMEM_GENIRQ=y\n",
-    );
-    if mode.is_overlay() {
-        out.push_str("CONFIG_OF_OVERLAY=y\n");
-        if configfs {
-            out.push_str("CONFIG_OF_CONFIGFS=y\n");
+/// Remoteproc devices enable the core framework and the selected SoC driver.
+/// The resulting `consortium.cfg` is consumed by the integrator's kernel recipe,
+/// not installed into the rootfs. Returns `None` when neither class is present.
+pub fn render_kernel_kconfig(
+    chip: &str,
+    ir: &LoweredIr,
+    mode: DtsMode,
+    configfs: bool,
+) -> Option<String> {
+    let mut out = String::new();
+    if !ir.uio.is_empty() {
+        out.push_str(
+            "CONFIG_UIO=y\n\
+             CONFIG_UIO_PDRV_GENIRQ=y\n\
+             CONFIG_UIO_DMEM_GENIRQ=y\n",
+        );
+        if mode.is_overlay() {
+            out.push_str("CONFIG_OF_OVERLAY=y\n");
+            if configfs {
+                out.push_str("CONFIG_OF_CONFIGFS=y\n");
+            }
         }
     }
-    Some(out)
+    if !ir.remoteproc.is_empty() {
+        let driver = if chip.starts_with("mimx9") {
+            Some("CONFIG_IMX_REMOTEPROC=y\n")
+        } else if chip.starts_with("stm32mp2") {
+            Some("CONFIG_STM32_RPROC=y\n")
+        } else {
+            None
+        };
+        if let Some(driver) = driver {
+            out.push_str("CONFIG_REMOTEPROC=y\n");
+            out.push_str(driver);
+        }
+    }
+    (!out.is_empty()).then_some(out)
 }
 
 /// The `.bbappend` file name for `kernel_recipe`, version-wildcarded so it
@@ -231,7 +248,8 @@ mod tests {
 
     #[test]
     fn kconfig_merge_mode_uses_genirq_symbols_without_overlay() {
-        let cfg = render_uio_kconfig(&ir_with_uio(), DtsMode::Merge, false).unwrap();
+        let cfg =
+            render_kernel_kconfig("mimx9596xvt", &ir_with_uio(), DtsMode::Merge, false).unwrap();
         assert!(cfg.contains("CONFIG_UIO=y"));
         assert!(cfg.contains("CONFIG_UIO_PDRV_GENIRQ=y"));
         assert!(cfg.contains("CONFIG_UIO_DMEM_GENIRQ=y"));
@@ -243,18 +261,40 @@ mod tests {
 
     #[test]
     fn kconfig_overlay_mode_enables_of_overlay_and_optional_configfs() {
-        let no_cfgfs = render_uio_kconfig(&ir_with_uio(), DtsMode::Overlay, false).unwrap();
+        let no_cfgfs =
+            render_kernel_kconfig("mimx9596xvt", &ir_with_uio(), DtsMode::Overlay, false).unwrap();
         assert!(no_cfgfs.contains("CONFIG_OF_OVERLAY=y"));
         assert!(!no_cfgfs.contains("CONFIG_OF_CONFIGFS"));
 
-        let with_cfgfs = render_uio_kconfig(&ir_with_uio(), DtsMode::Overlay, true).unwrap();
+        let with_cfgfs =
+            render_kernel_kconfig("mimx9596xvt", &ir_with_uio(), DtsMode::Overlay, true).unwrap();
         assert!(with_cfgfs.contains("CONFIG_OF_CONFIGFS=y"));
     }
 
     #[test]
     fn kconfig_none_without_uio() {
         let empty = LoweredIr::empty_with_uio(vec![]);
-        assert!(render_uio_kconfig(&empty, DtsMode::Merge, false).is_none());
+        assert!(render_kernel_kconfig("mimx9596xvt", &empty, DtsMode::Merge, false).is_none());
+    }
+
+    #[test]
+    fn remoteproc_kconfig_tracks_soc_family_without_uio() {
+        let ir = consortium_cfg::Session::from_toml(
+            r#"
+                [profile]
+                chip = "mimx9596xvt"
+                shared = "./shared"
+                deploy_root = "/opt/consortium"
+
+                [endpoints]
+                cm7 = "./mcu"
+            "#,
+        )
+        .unwrap()
+        .lower()
+        .unwrap();
+        let cfg = render_kernel_kconfig("mimx9596xvt", &ir, DtsMode::Merge, false).unwrap();
+        assert_eq!(cfg, "CONFIG_REMOTEPROC=y\nCONFIG_IMX_REMOTEPROC=y\n");
     }
 
     #[test]
@@ -298,12 +338,12 @@ mod tests {
 
     #[test]
     fn bbappend_merges_fragments_at_build_time() {
-        let bb = render_kernel_bbappend(&["uio-enable.cfg".to_string()])
+        let bb = render_kernel_bbappend(&[KCONFIG_NAME.to_string()])
             .expect("fragment present yields a bbappend");
         assert!(bb.contains("FILESEXTRAPATHS:prepend := \"${THISDIR}:\""));
-        assert!(bb.contains("file://uio-enable.cfg"));
+        assert!(bb.contains("file://consortium.cfg"));
         assert!(bb.contains("KERNEL_CONFIG_FRAGMENTS:append"));
-        assert!(bb.contains("${WORKDIR}/uio-enable.cfg"));
+        assert!(bb.contains("${WORKDIR}/consortium.cfg"));
         // It is a kernel build input, so it must not touch the rootfs.
         assert!(!bb.contains("do_install"));
         assert!(!bb.contains("${D}"));

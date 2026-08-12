@@ -186,6 +186,5 @@ useful information for a reviewer. A silent submission is not.
 
 By contributing, you agree that your contributions are licensed under the Apache License,
 Version 2.0, unless you state otherwise. Note the exceptions for crates that redistribute
-vendor material (`consortium-data`, `consortium-runtime-sys`, `cogcore-sys`) and the
-dual-licensing requirement for vendor device trees under
-`crates/consortium-data/database/dts/` — GPL-only files cannot ship.
+vendor material (`consortium-runtime-sys`, `cogcore-sys`). Linux device-tree sources are
+not bundled; tests use synthetic fixtures or an explicit kernel checkout.

@@ -106,6 +106,7 @@ pub fn plan_firmware_builds(
                 offline: cargo.offline,
                 ipc,
                 dbg,
+                remoteproc: ir.remoteproc.get(&core).cloned(),
             },
             generated,
         });
@@ -174,6 +175,10 @@ mod tests {
         assert!(plan.config.offline);
         // cm33 declares `[dbg.cm33]`, so a debug layout is resolved.
         assert!(plan.config.dbg.is_some());
+        let remoteproc = plan.config.remoteproc.as_ref().expect("remoteproc layout");
+        assert_eq!(remoteproc.flash.origin, 0x8010_1000);
+        assert_eq!(remoteproc.ram.origin, 0x80a0_0000);
+        assert_eq!(remoteproc.vector_section, ".isr_vectors");
         // The generated module is this core's controller init: the synchronous
         // entry point handing back the peripheral and channel bundles, plus the
         // `sensor` endpoint the manifest declares for cm33. `render` already

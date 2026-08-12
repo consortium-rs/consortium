@@ -91,8 +91,9 @@ just check
 just test ipc host
 ```
 
-Running `just` with no arguments lists the recipes. The end-to-end flow is `csti build`,
-which runs the `Consortium.toml` pipeline and assembles a `dist/` staging tree; see
+Running `just` with no arguments lists the recipes. The end-to-end flow is
+`csti build --linux <KERNEL_TREE>`, which runs the `Consortium.toml` pipeline and
+assembles a `dist/` staging tree; see
 `examples/melt-pot/` for worked i.MX95 and STM32MP25 systems, and
 [the book](https://book.csti.dev) for the manifest reference.
 
@@ -119,15 +120,13 @@ A sponsorship page is coming soon.
 
 Consortium is licensed under the [Apache License, Version 2.0](LICENSE).
 
-Three crates redistribute vendor material and carry compound SPDX expressions instead:
+Two crates redistribute vendor material and carry compound SPDX expressions instead:
 
-| Crate                    | SPDX                                  |
-| ------------------------ | ------------------------------------- |
-| `consortium-data`        | `Apache-2.0 AND BSD-3-Clause AND MIT` |
-| `consortium-runtime-sys` | `Apache-2.0 AND BSD-3-Clause`         |
-| `cogcore-sys`            | `Apache-2.0 AND MIT`                  |
+| Crate                    | SPDX                          |
+| ------------------------ | ----------------------------- |
+| `consortium-runtime-sys` | `Apache-2.0 AND BSD-3-Clause` |
+| `cogcore-sys`            | `Apache-2.0 AND MIT`          |
 
-Vendor device trees under `crates/consortium-data/database/dts/` must be dual-licensed;
-GPL-only files cannot ship (see that directory's `README.md`). Unless you state
-otherwise, any contribution you intentionally submit for inclusion shall be licensed as
-above, with no additional terms.
+Linux device trees are not bundled; `csti build --linux` reads them from the user's
+kernel checkout. Unless you state otherwise, any contribution you intentionally submit
+for inclusion shall be licensed as above, with no additional terms.

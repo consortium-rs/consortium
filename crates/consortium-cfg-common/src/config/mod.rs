@@ -30,6 +30,7 @@ pub mod party;
 pub mod peripheral;
 pub mod profile;
 pub mod rcore_name;
+pub mod remoteproc;
 pub mod rvcore_name;
 pub mod ta;
 pub mod tee;
@@ -49,6 +50,9 @@ pub use party::Party;
 pub use peripheral::Peripheral;
 pub use profile::Profile;
 pub use rcore_name::RcoreName;
+pub use remoteproc::{
+    Remoteproc, RemoteprocCore, RemoteprocRegion, RemoteprocSection, RemoteprocWindowOverride,
+};
 pub use rvcore_name::{RvCoreName, RvExtensions, RvXlen};
 pub use ta::Ta;
 pub use tee::{TEE_UUID_ENV, Tee};
@@ -70,6 +74,9 @@ pub struct Config {
     /// Linux device-tree generation configuration.
     #[serde(default)]
     pub dts: Dts,
+    /// Per-core Linux remoteproc memory-layout overrides.
+    #[serde(default)]
+    pub remoteproc: Remoteproc,
     /// Typed IPC channel declarations.
     #[serde(default)]
     pub ipc: Ipc,

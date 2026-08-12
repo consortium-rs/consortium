@@ -22,9 +22,6 @@ pub enum DataError {
     #[error("no chip-family database matches chip '{0}'")]
     UnknownChip(String),
 
-    #[error("no device-tree source matches '{0}'")]
-    UnknownDts(String),
-
     #[error("failed to parse chip database for '{0}': {1}")]
     DatabaseParse(String, String),
 

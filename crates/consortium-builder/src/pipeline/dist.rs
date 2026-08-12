@@ -469,7 +469,7 @@ mod tests {
             cm33_original.clone(),
         )]);
         let units = vec![("consortium-app.service".to_string(), "[Unit]\n".to_string())];
-        let kconfig = vec![("uio-enable.cfg".to_string(), "CONFIG_UIO=y\n".to_string())];
+        let kconfig = vec![("consortium.cfg".to_string(), "CONFIG_UIO=y\n".to_string())];
         let boot = vec![("boot.cmd".to_string(), "setenv bootargs\n".to_string())];
 
         assemble(
@@ -500,7 +500,7 @@ mod tests {
         assert!(layout.www_dir().join("index.html").exists());
         assert!(layout.www_dir().join("assets").join("app.js").exists());
         assert_eq!(
-            std::fs::read_to_string(layout.kernel_dir().join("uio-enable.cfg")).unwrap(),
+            std::fs::read_to_string(layout.kernel_dir().join("consortium.cfg")).unwrap(),
             "CONFIG_UIO=y\n"
         );
         assert_eq!(

@@ -18,13 +18,19 @@ deploy_root = "/opt/consortium"
 sysroot       = "/"
 kernel_recipe = "linux-stm32mp"
 
-# Device-tree generation. Defaults to a merged full `.dts` built on the `devkit`
-# board above. Point `linux` at a kernel checkout to compile the `.dtb` here
-# (those dt-bindings headers are GPL-2.0, so they are never bundled); otherwise
-# the pipeline emits the `.dts` and prints how to compile it.
+# Device-tree generation. The selected board source and all of its includes are
+# read from the kernel checkout passed to `csti build --linux <DIR>`.
 [dts]
 mode = "merge" # or "overlay"
-# linux = "~/src/linux"
+
+# Optional per-field overrides inherit the recommended STM32MP25 CM33 DDR defaults.
+# [remoteproc.cm33]
+# vector = { origin = 0x80100000, length = 0x00001000 }
+# flash = { origin = 0x80101000, length = 0x007ff000, reserve = true }
+# shmem = { origin = 0x812f8000, length = 0x00008000, reserve = true }
+# ram   = { origin = 0x80a00000, length = 0x00100000, reserve = true }
+
+# The mandatory `SHMEM` window is the vendor map's former `VIRTIO_SHMEM` area.
 
 [endpoints]
 # Runtime endpoint name -> crate root. `cm33` is the single remote coprocessor.

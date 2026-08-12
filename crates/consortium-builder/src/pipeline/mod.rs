@@ -70,6 +70,7 @@ use tee::TeeToolchain;
 /// The file name the generated per-core init module is written as inside a crate
 /// (`src/<GENERATED_MODULE>`). The crate is expected to `include!`/`mod` it.
 const GENERATED_MODULE: &str = "consortium.gen.rs";
+const GENERATED_MEMORY_X: &str = "memory.x";
 
 /// Aggregate error for the build pipeline.
 #[derive(Error, Debug)]
@@ -206,6 +207,9 @@ pub struct PipelineConfig {
     pub manifest_path: PathBuf,
     /// Root of the `dist/` staging tree to assemble.
     pub dist_root: PathBuf,
+    /// Authoritative Linux kernel checkout. All BSP DTS/DTSI inputs and
+    /// dt-bindings are read from this tree; Consortium bundles none of them.
+    pub linux: PathBuf,
     /// Build in release mode.
     pub release: bool,
     /// Build from cargo's local registry cache only (`--offline`), never the
@@ -259,12 +263,14 @@ pub struct PipelinePlan {
     pub application: ApplicationBuildPlan,
     /// The Linux device tree to write under `dist/dts/linux/`, as
     /// `(file_name, contents)`: a merged `.dts` (default) or a `.dtso` overlay.
-    /// Empty when the manifest declares no UIO devices.
+    /// Empty when the manifest declares neither UIO nor remoteproc devices.
     pub dts_files: Vec<(String, String)>,
+    /// Exact BSP DTS sources used to produce `dts_files`.
+    pub dts_source_closure: Vec<(String, String)>,
     /// The kernel-side files to write under `dist/kernel/`, as
     /// `(file_name, contents)`: the UIO config fragment and, when `[profile]
-    /// kernel_recipe` is set, the `.bbappend` that merges it. Empty when the
-    /// manifest declares no UIO devices.
+    /// kernel_recipe` is set, the `.bbappend` that merges it. Empty when neither
+    /// UIO nor remoteproc needs kernel configuration.
     pub kernel_files: Vec<(String, String)>,
     /// The boot-args files to write under `dist/boot/`, as
     /// `(file_name, contents)`: the family-specific bootloader snippet(s) that
@@ -387,13 +393,14 @@ pub async fn plan(
     let dts_cfg = &session.config.dts;
     // The coprocessor cores the build targets, so remoteproc fixups stay scoped.
     let target_cores: Vec<String> = firmware.iter().map(|p| p.core.to_string()).collect();
-    let dts_files = match dts::render_linux_dts(
+    let (dts_files, dts_source_closure) = match dts::render_linux_dts(
         &profile.chip,
         profile.devkit.as_deref(),
         dts_cfg.base.as_deref(),
         dts_cfg.mode,
         &ir,
         &target_cores,
+        &config.linux,
     )? {
         Some(rendered) => {
             consortium_log::trace!(
@@ -405,19 +412,23 @@ pub async fn plan(
                 consortium_log::trace!("dts warning: {}", warning);
                 eprintln!("warning: {warning}");
             }
-            vec![(rendered.file_name, rendered.contents)]
+            (
+                vec![(rendered.file_name, rendered.contents)],
+                rendered.source_closure,
+            )
         }
         None => {
-            consortium_log::trace!("no UIO devices; no linux dts rendered");
-            Vec::new()
+            consortium_log::trace!("no UIO or remoteproc devices; no linux dts rendered");
+            (Vec::new(), Vec::new())
         }
     };
 
     // The kernel config fragment plus, when the manifest names a kernel recipe, a
     // `.bbappend` that merges it into the kernel build. Both land in `dist/kernel/`.
-    let mut kernel_files = dts::render_uio_kconfig(&ir, dts_cfg.mode, dts_cfg.configfs)
-        .map(|contents| vec![(dts::UIO_KCONFIG_NAME.to_string(), contents)])
-        .unwrap_or_default();
+    let mut kernel_files =
+        dts::render_kernel_kconfig(&profile.chip, &ir, dts_cfg.mode, dts_cfg.configfs)
+            .map(|contents| vec![(dts::KCONFIG_NAME.to_string(), contents)])
+            .unwrap_or_default();
     if let Some(kernel_recipe) = &session.config.profile.kernel_recipe {
         let fragment_names: Vec<String> = kernel_files.iter().map(|(n, _)| n.clone()).collect();
         if let Some(bbappend) = dts::render_kernel_bbappend(&fragment_names) {
@@ -442,6 +453,7 @@ pub async fn plan(
         ta,
         application,
         dts_files,
+        dts_source_closure,
         kernel_files,
         boot_files,
         systemd,
@@ -494,6 +506,7 @@ async fn run_inner(
         let (deploy, original) = steps
             .run("Build firmware", Some(&detail), async {
                 write_generated_module(&fw.config.path, &fw.generated).await?;
+                write_generated_memory_x(&fw.config).await?;
                 let artifacts =
                     FirmwareCompiler::build_with_reporter(fw.config.clone(), reporter).await?;
                 Ok((artifacts.deploy, artifacts.original))
@@ -582,39 +595,25 @@ async fn run_inner(
         })
         .await?;
 
-    // Compile the emitted device tree to a `.dtb`/`.dtbo` when `[dts] linux`
-    // points at a kernel tree (for its GPL-2.0 dt-bindings, never bundled);
-    // otherwise print how to compile it (Yocto kernel build vs. manual).
+    // Compile the emitted device tree against the same `--linux` checkout from
+    // which its BSP sources were read.
     if let Some((dts_name, _)) = plan.dts_files.first() {
         let arch = dtc::arch_dir(&plan.application.config.target);
         let dts_dir = layout.dts_linux_dir();
-        match &session.config.dts.linux {
-            Some(linux) => {
-                let linux_dir = plan.manifest_dir.join(linux);
-                let profile = &session.config.profile;
-                let closure = consortium_cfg::dts::base_closure(
-                    &profile.chip,
-                    profile.devkit.as_deref(),
-                    session.config.dts.base.as_deref(),
+        let detail = format!("dtc {dts_name}");
+        steps
+            .run("Compile device tree", Some(&detail), async {
+                let out = dtc::compile_device_tree(
+                    &dts_dir,
+                    dts_name,
+                    &plan.dts_source_closure,
+                    &config.linux,
+                    arch,
                 )
-                .map_err(consortium_cfg::CfgError::from)?;
-                let detail = format!("dtc {dts_name}");
-                steps
-                    .run("Compile device tree", Some(&detail), async {
-                        let out = dtc::compile_device_tree(
-                            &dts_dir, dts_name, &closure, &linux_dir, arch,
-                        )
-                        .await?;
-                        Ok(out)
-                    })
-                    .await?;
-            }
-            None => {
-                let yocto =
-                    !config.bitbake.is_empty() || session.config.profile.kernel_recipe.is_some();
-                eprintln!("note: {}", dtc::compilation_hint(dts_name, arch, yocto));
-            }
-        }
+                .await?;
+                Ok(out)
+            })
+            .await?;
     }
 
     for action in &config.bitbake {
@@ -881,6 +880,30 @@ async fn write_generated_module(
     Ok(path)
 }
 
+/// Writes the structured remoteproc linker memory map into the firmware crate.
+async fn write_generated_memory_x(
+    config: &crate::compile::firmware::FirmwareConfiguration,
+) -> Result<PathBuf, PipelineError> {
+    let layout = config.remoteproc.as_ref().ok_or_else(|| {
+        PipelineError::Codegen(format!(
+            "firmware endpoint {} has no remoteproc memory contract",
+            config.path.display()
+        ))
+    })?;
+    let source = layout
+        .linker_memory()
+        .map_err(|error| PipelineError::Codegen(error.to_string()))?
+        .render();
+    let path = config.path.join(GENERATED_MEMORY_X);
+    tokio::fs::write(&path, source)
+        .await
+        .map_err(|source| PipelineError::GeneratedWrite {
+            path: path.display().to_string(),
+            source,
+        })?;
+    Ok(path)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -890,12 +913,12 @@ mod tests {
     /// Fabricates a project tree on disk (manifest + per-endpoint crates with
     /// `Cargo.toml`s, no real sources) so the dry-run [`plan`] can resolve crate
     /// names and expected ELF paths without invoking any build.
-    fn fabricate_project(tag: &str) -> PathBuf {
+    fn fabricate_project(tag: &str, manifest: &str) -> PathBuf {
         let root =
             std::env::temp_dir().join(format!("consortium-pipeline-{tag}-{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&root);
         std::fs::create_dir_all(&root).unwrap();
-        std::fs::write(root.join("Consortium.toml"), STM32).unwrap();
+        std::fs::write(root.join("Consortium.toml"), manifest).unwrap();
         for (dir, pkg) in [
             ("app", "melt-pot-app"),
             ("ta", "melt-pot-ta"),
@@ -915,11 +938,26 @@ mod tests {
 
     #[tokio::test]
     async fn plan_threads_all_stages() {
-        let root = fabricate_project("plan");
-        let session = Session::from_toml(STM32).unwrap();
+        let manifest = format!("{STM32}\n[dts]\nbase = \"test-board\"\nmode = \"merge\"\n");
+        let root = fabricate_project("plan", &manifest);
+        let vendor = root.join("linux/arch/arm64/boot/dts/st");
+        std::fs::create_dir_all(&vendor).unwrap();
+        std::fs::write(
+            vendor.join("test-board.dts"),
+            r#"/dts-v1/;
+            / {
+                model = "Pipeline test board";
+                m33: remoteproc-m33 {
+                    compatible = "st,stm32mp2-m33";
+                };
+            };"#,
+        )
+        .unwrap();
+        let session = Session::from_toml(&manifest).unwrap();
         let config = PipelineConfig {
             manifest_path: root.join("Consortium.toml"),
             dist_root: root.join("dist"),
+            linux: root.join("linux"),
             release: true,
             offline: false,
             hmi: Some(HmiConfiguration {
@@ -988,25 +1026,34 @@ mod tests {
         // Stage 6: systemd ExecStart uses the app binary under the deploy root.
         assert_eq!(plan.systemd.exec_start, "/opt/consortium/app/melt-pot-app");
 
-        // Stage 6: the UIO manifest yields the merged device tree (default mode,
-        // no devkit, so it builds on the generic `stm32mp257.dtsi`) plus the
-        // kernel config fragment enabling its drivers.
+        // Stage 6: the UIO manifest yields a merged device tree from the
+        // configured kernel fixture plus the kernel config fragment enabling
+        // its drivers.
         assert_eq!(
             plan.dts_files
                 .iter()
                 .map(|(n, _)| n.as_str())
                 .collect::<Vec<_>>(),
-            vec!["consortium-stm32mp257.dts"]
+            vec!["consortium-test-board.dts"]
         );
         // A merged `.dts` re-emits the vendor base plus the injected UIO nodes.
         assert!(plan.dts_files[0].1.contains("compatible = \"generic-uio\""));
         let kconfig = plan
             .kernel_files
             .iter()
-            .find(|(n, _)| n == dts::UIO_KCONFIG_NAME)
-            .expect("uio kconfig fragment planned");
+            .find(|(n, _)| n == dts::KCONFIG_NAME)
+            .expect("consolidated kconfig fragment planned");
         assert!(kconfig.1.contains("CONFIG_UIO_PDRV_GENIRQ=y"));
         assert!(kconfig.1.contains("CONFIG_UIO_DMEM_GENIRQ=y"));
+        assert!(kconfig.1.contains("CONFIG_REMOTEPROC=y"));
+        assert!(kconfig.1.contains("CONFIG_STM32_RPROC=y"));
+        assert_eq!(
+            plan.kernel_files
+                .iter()
+                .filter(|(name, _)| name.ends_with(".cfg"))
+                .count(),
+            1
+        );
         // Merge mode needs no overlay support.
         assert!(!kconfig.1.contains("CONFIG_OF_OVERLAY"));
         // STM32 → an extlinux boot-args fragment lands under `dist/boot/`.
