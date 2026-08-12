@@ -15,8 +15,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "Embedded chip-family databases and generated chip dumps for Consortium."
-edition.workspace = true
+description            = "Embedded chip-family databases and generated chip dumps for Consortium."
+edition.workspace      = true
 license.workspace      = true
 name                   = "consortium-data"
 version.workspace      = true
