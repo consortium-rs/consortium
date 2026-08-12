@@ -7,19 +7,20 @@ directory.
 ## Command
 
 ```bash
-csti build --manifest Consortium.toml --dist dist --release
+csti build --linux ~/src/linux --manifest Consortium.toml --dist dist --release
 ```
 
 Inside the Consortium workspace, the equivalent command is:
 
 ```bash
-cargo run -p csti -- build --manifest Consortium.toml --dist dist --release
+cargo run -p csti -- build --linux ~/src/linux --manifest Consortium.toml --dist dist --release
 ```
 
 | Flag                        | Purpose                                                       |
 | --------------------------- | ------------------------------------------------------------- |
 | `--manifest <PATH>`         | Manifest to build; defaults to `Consortium.toml`              |
 | `--dist <DIR>`              | Local staging root; defaults to `dist`                        |
+| `--linux <DIR>`             | Required Linux checkout supplying BSP DTS and dt-bindings     |
 | `--release`                 | Build endpoint artifacts in release mode                      |
 | `--offline`                 | Run every cargo invocation with `--offline`                   |
 | `--skip-tee-sign`           | Stage an unsigned TA ELF when signing material is unavailable |
@@ -54,7 +55,7 @@ build plan does and downloads all of it in advance:
 
 ```bash
 csti fetch
-csti build --offline
+csti build --linux ~/src/linux --offline
 ```
 
 `fetch` installs each cross target's Rust standard library with `rustup target add`,
@@ -100,9 +101,9 @@ The Linux application sysroot is resolved in this order:
 2. `SDKTARGETSYSROOT`; then
 3. `OECORE_TARGET_SYSROOT`.
 
-Device-tree source can be emitted without a kernel checkout. To compile it, set
-`[dts].linux` to a kernel source tree so the build can use its GPL-licensed
-`dt-bindings` headers. Consortium does not vendor those headers.
+Pass a kernel source checkout to `csti build --linux <DIR>`. The build reads the
+selected BSP DTS/DTSI files, their quoted includes, and `dt-bindings` from that
+checkout. Consortium does not bundle Linux device-tree sources.
 
 Cog HMI builds use `vp build` when available, then `npm run build`. Pocket builds use
 `bun tools/build.ts`. `CONSORTIUM_HMI_BUILD_CMD` overrides either command for custom or
@@ -114,6 +115,7 @@ To stage the generated files into an existing layer without running BitBake:
 
 ```bash
 csti build \
+  --linux ~/src/linux \
   --bitbake-files-dir ../meta-product/recipes-apps/consortium/files
 ```
 
@@ -121,6 +123,7 @@ To stage and build in one flow, also provide the recipe and Yocto build director
 
 ```bash
 csti build \
+  --linux ~/src/linux \
   --bitbake-files-dir ../meta-product/recipes-apps/consortium/files \
   --bitbake-recipe consortium-app \
   --bitbake-build-dir ../build

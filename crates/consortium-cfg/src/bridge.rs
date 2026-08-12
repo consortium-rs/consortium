@@ -50,6 +50,10 @@ use crate::components::irq::InterruptLine;
 use crate::components::memory_to_uio::SharedWindow;
 use crate::components::peripheral::{PeripheralInstance, PeripheralKind, Peripherals};
 use crate::components::region::Region;
+use crate::components::remoteproc::{
+    LinkerRegionAttributes, LinkerSectionBinding, RemoteprocMemoryLayout, RemoteprocMemoryWindow,
+    RemoteprocNamedRegion,
+};
 use crate::components::uio::{ToUio, UioBacking, UioDevice};
 use consortium_data::DataError;
 
@@ -79,6 +83,8 @@ pub struct LoweredIr {
     /// instance that appears here; cores with no bundled map have no entry, and
     /// fall back to address-based construction.
     pub core_peripherals: HashMap<VisibleCore, Vec<String>>,
+    /// Per-remote-core linker/ELF/DTS memory contracts.
+    pub remoteproc: HashMap<VisibleCore, RemoteprocMemoryLayout>,
     /// Whether controller cores get the sealed Embassy time driver, timer
     /// vector, and `defmt::timestamp!` (mirrors `[profile] time_driver`).
     pub time_driver: bool,
@@ -109,6 +115,7 @@ impl LoweredIr {
                 instances: Vec::new(),
             },
             core_peripherals: HashMap::new(),
+            remoteproc: HashMap::new(),
             time_driver: true,
         }
     }
@@ -615,6 +622,7 @@ impl Session {
             self.config.ipc.channels.len(),
             self.config.peripheral.len()
         );
+        let remoteproc = self.lower_remoteproc()?;
         let mut transceivers = Vec::new();
         let mut regions: Vec<SharedWindow> = Vec::new();
 
@@ -906,8 +914,138 @@ impl Session {
             dbg: DebugLogs::new(dbg_rings, self.config.dbg.mode),
             peripherals,
             core_peripherals,
+            remoteproc,
             time_driver: self.config.profile.time_driver,
         })
+    }
+
+    /// Applies optional manifest fields to the chip database's remoteproc
+    /// defaults and produces the single layout consumed by every later stage.
+    pub(crate) fn lower_remoteproc(
+        &self,
+    ) -> Result<HashMap<VisibleCore, RemoteprocMemoryLayout>, CfgError> {
+        for core in self.config.remoteproc.keys() {
+            if !self.database.remoteproc.contains_key(core) {
+                return Err(CfgError::Manifest(format!(
+                    "[remoteproc.{core}] has no loader contract for chip '{}'",
+                    self.config.profile.chip
+                )));
+            }
+            let visible: VisibleCore = core.parse().map_err(|_| {
+                CfgError::Manifest(format!("[remoteproc.{core}] is not a visible core name"))
+            })?;
+            if !self
+                .config
+                .endpoints
+                .keys()
+                .any(|party| party.core() == visible)
+            {
+                return Err(CfgError::Manifest(format!(
+                    "[remoteproc.{core}] requires an [endpoints] firmware entry for `{core}`"
+                )));
+            }
+        }
+
+        self.database
+            .remoteproc
+            .iter()
+            .filter_map(|(name, default)| {
+                let core: VisibleCore = match name.parse() {
+                    Ok(core) => core,
+                    Err(_) => {
+                        return Some(Err(CfgError::Manifest(format!(
+                            "chip database remoteproc entry '{name}' is not a visible core"
+                        ))));
+                    }
+                };
+                if !self
+                    .config
+                    .endpoints
+                    .keys()
+                    .any(|party| party.core() == core)
+                {
+                    return None;
+                }
+                let overrides = self.config.remoteproc.get(name);
+                let window = |default: consortium_cfg_common::database::RemoteprocWindow,
+                              override_window: Option<
+                    &consortium_cfg_common::config::RemoteprocWindowOverride,
+                >| {
+                    RemoteprocMemoryWindow {
+                        origin: override_window
+                            .and_then(|value| value.origin)
+                            .unwrap_or(default.origin),
+                        length: override_window
+                            .and_then(|value| value.length)
+                            .unwrap_or(default.length),
+                        reserve: override_window
+                            .and_then(|value| value.reserve)
+                            .unwrap_or(default.reserve),
+                    }
+                };
+                let regions = overrides
+                    .into_iter()
+                    .flat_map(|value| &value.regions)
+                    .map(|(region_name, region)| RemoteprocNamedRegion {
+                        name: region_name.clone(),
+                        attributes: LinkerRegionAttributes::new(
+                            region.read,
+                            region.write,
+                            region.execute,
+                        ),
+                        window: RemoteprocMemoryWindow {
+                            origin: region.origin,
+                            length: region.length,
+                            reserve: region.reserve,
+                        },
+                        sections: region
+                            .sections
+                            .iter()
+                            .map(|section| LinkerSectionBinding {
+                                output: section.output.clone(),
+                                inputs: section.inputs.clone(),
+                                keep: section.keep,
+                                insert_after: section.insert_after.clone(),
+                            })
+                            .collect(),
+                    })
+                    .collect();
+                let layout = RemoteprocMemoryLayout {
+                    core,
+                    compatible: default.compatible.clone(),
+                    vector_section: default.vector_section.clone(),
+                    vector: RemoteprocNamedRegion {
+                        name: default.vector.name.clone(),
+                        attributes: LinkerRegionAttributes::new(
+                            default.vector.read,
+                            default.vector.write,
+                            default.vector.execute,
+                        ),
+                        window: window(default.vector.window, overrides.map(|value| &value.vector)),
+                        sections: Vec::new(),
+                    },
+                    flash: window(default.flash, overrides.map(|value| &value.flash)),
+                    shmem: RemoteprocNamedRegion {
+                        name: default.shmem.name.clone(),
+                        attributes: LinkerRegionAttributes::new(
+                            default.shmem.read,
+                            default.shmem.write,
+                            default.shmem.execute,
+                        ),
+                        window: window(default.shmem.window, overrides.map(|value| &value.shmem)),
+                        sections: Vec::new(),
+                    },
+                    ram: window(default.ram, overrides.map(|value| &value.ram)),
+                    regions,
+                };
+                if let Err(error) = layout.validate() {
+                    return Some(Err(CfgError::Manifest(format!(
+                        "[remoteproc.{name}] is invalid: {error}"
+                    ))));
+                }
+                Some(Ok((core, layout)))
+            })
+            .collect()
     }
 
     /// The peripheral instance names each controller core's bundled chip map
@@ -1341,6 +1479,88 @@ mod tests {
         assert_eq!(transceiver(&ir, "sensor").mtu, 128);
         assert_eq!(transceiver(&ir, "sensor").codec, Codec::Postcard);
         assert_eq!(transceiver(&ir, "lp").codec, Codec::Rkyv);
+    }
+
+    #[test]
+    fn remoteproc_defaults_and_partial_overrides_lower_once() {
+        let manifest = r#"
+            [profile]
+            chip = "mimx9596xvt"
+            shared = "./shared"
+            deploy_root = "/opt/consortium"
+
+            [endpoints]
+            cm7 = "./mcu"
+
+            [remoteproc.cm7]
+            ram = { origin = 0x81000000, length = 0x00400000 }
+        "#;
+        let ir = Session::from_toml(manifest)
+            .expect("manifest validates")
+            .lower()
+            .expect("session lowers");
+        let layout = &ir.remoteproc[&"cm7".parse().unwrap()];
+
+        assert_eq!(layout.flash.origin, 0x8000_1000);
+        assert_eq!(layout.flash.length, 0x007f_f000);
+        assert_eq!(layout.ram.origin, 0x8100_0000);
+        assert_eq!(layout.ram.length, 0x0040_0000);
+        assert_eq!(layout.vector_section, ".interrupts");
+        assert_eq!(layout.vector.name, "m_interrupts");
+        assert_eq!(layout.vector.window.length, 0x1000);
+        assert_eq!(layout.shmem.name, "m_rsc_tbl_in_dram");
+        assert_eq!(layout.shmem.window.origin, 0x8822_0000);
+        let memory = layout.linker_memory().unwrap().render();
+        assert!(memory.contains("m_interrupts (rx) : ORIGIN = 0x80000000, LENGTH = 0x1000"));
+        assert!(memory.contains("FLASH (rx) : ORIGIN = 0x80001000, LENGTH = 0x7ff000"));
+        assert!(memory.contains("RAM (rwx) : ORIGIN = 0x81000000, LENGTH = 0x400000"));
+        assert!(memory.contains("m_rsc_tbl_in_dram (rw) : ORIGIN = 0x88220000"));
+        assert!(memory.contains("} > m_rsc_tbl_in_dram\n} INSERT AFTER .rodata;"));
+
+        let stm = Session::from_toml(
+            r#"
+                [profile]
+                chip = "stm32mp257fak3"
+                shared = "./shared"
+                deploy_root = "/opt/consortium"
+
+                [endpoints]
+                cm33 = "./mcu"
+            "#,
+        )
+        .unwrap()
+        .lower()
+        .unwrap();
+        let stm_layout = &stm.remoteproc[&"cm33".parse().unwrap()];
+        assert_eq!(stm_layout.vector_section, ".isr_vectors");
+        let stm_memory = stm_layout.linker_memory().unwrap().render();
+        assert!(stm_memory.contains("NS_VECTOR_TBL (rwx) : ORIGIN = 0x80100000, LENGTH = 0x1000"));
+        assert!(stm_memory.contains("FLASH (rx) : ORIGIN = 0x80101000, LENGTH = 0x7ff000"));
+        assert!(stm_memory.contains("SHMEM (rwx) : ORIGIN = 0x812f8000, LENGTH = 0x8000"));
+        assert!(stm_memory.contains("RAM (rwx) : ORIGIN = 0x80a00000, LENGTH = 0x100000"));
+        assert!(!stm_memory.contains("VIRTIO_SHMEM"));
+        assert!(stm_memory.contains("} > SHMEM\n} INSERT AFTER .rodata;"));
+    }
+
+    #[test]
+    fn example_memory_x_files_match_structured_layouts() {
+        let cases = [
+            (
+                include_str!("../../../examples/melt-pot/imx95/Consortium.toml"),
+                "cm7",
+                include_str!("../../../examples/melt-pot/imx95/mcu/memory.x"),
+            ),
+            (
+                include_str!("../../../examples/melt-pot/stm32mp25/Consortium.toml"),
+                "cm33",
+                include_str!("../../../examples/melt-pot/stm32mp25/mcu/memory.x"),
+            ),
+        ];
+        for (manifest, core, expected) in cases {
+            let ir = Session::from_toml(manifest).unwrap().lower().unwrap();
+            let layout = &ir.remoteproc[&core.parse().unwrap()];
+            assert_eq!(layout.linker_memory().unwrap().render(), expected);
+        }
     }
 
     #[test]

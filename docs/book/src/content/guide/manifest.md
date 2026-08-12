@@ -48,7 +48,7 @@ the Linux/A-core as primary and the firmware core as secondary.
 | `chip`          | yes      | Full part number resolved through the chip database                                        |
 | `shared`        | yes      | Crate containing IPC and other cross-boundary types                                        |
 | `deploy_root`   | yes      | On-target installation prefix used when generating paths; the builder does not write there |
-| `devkit`        | no       | Full board DTS file stem; falls back to the generic SoC tree                               |
+| `devkit`        | no       | Full board DTS stem in the `--linux` checkout; falls back to the generic SoC tree          |
 | `sysroot`       | no       | Linux target sysroot; overrides SDK environment variables                                  |
 | `kernel_recipe` | no       | Yocto kernel recipe name used to generate a `.bbappend`                                    |
 | `time_driver`   | no       | Generate the firmware Embassy time driver; defaults to `true`                              |
@@ -105,14 +105,13 @@ mtu    = 64
 ```toml
 [dts]
 mode      = "merge"
-linux     = "/path/to/linux"
 configfs  = false
 ```
 
 `merge` is the default and emits a full device tree with reserved memory, UIO nodes,
 and remoteproc fixups. `overlay` emits a `.dtso`; it cannot remove existing remoteproc
-mailbox properties, so use merge mode for those fixups. `linux` points to a kernel tree
-whose `dt-bindings` headers are needed to compile the generated source.
+mailbox properties, so use merge mode for those fixups. Supply the kernel tree with
+`csti build --linux <DIR>`; it is a build input, not a manifest field.
 
 ### `[peripheral.<name>]`
 

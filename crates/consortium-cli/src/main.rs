@@ -28,7 +28,7 @@
 //! `csti fetch` is its network half: it resolves the same Cargo projects the
 //! build plan does and downloads their dependencies (plus each cross target's
 //! `std` and the HMI frontend's packages) ahead of time, so `csti build
-//! --offline` can then run from local caches alone.
+//! --linux <DIR> --offline` can then run from local caches alone.
 //!
 //! What the CLI adds beyond argument parsing is progress reporting — it passes a
 //! [`BuildReporter`](consortium_builder::BuildReporter) that keeps a persistent step
@@ -82,5 +82,16 @@ async fn main() -> ExitCode {
             eprintln!("error: {err}");
             ExitCode::FAILURE
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn build_requires_linux_checkout() {
+        assert!(Cli::try_parse_from(["csti", "build"]).is_err());
+        assert!(Cli::try_parse_from(["csti", "build", "--linux", "/src/linux"]).is_ok());
     }
 }

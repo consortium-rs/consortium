@@ -6,7 +6,7 @@ is deliberately short:
 1. describe the topology and resource ownership in `Consortium.toml`;
 2. define boundary-safe message types in a shared crate;
 3. write application and firmware logic against generated `Peripherals` and `Channels`;
-4. run `csti build`; and
+4. run `csti build --linux <KERNEL_TREE>`; and
 5. integrate the resulting `dist/` tree with the target image.
 
 The chapters follow that sequence:

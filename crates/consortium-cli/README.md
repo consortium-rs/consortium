@@ -17,7 +17,7 @@ cargo install csti
 ## Usage
 
 ```bash
-csti build [--manifest Consortium.toml] [--dist dist] [--release]
+csti build --linux <KERNEL_TREE> [--manifest Consortium.toml] [--dist dist] [--release]
 csti fetch [--manifest Consortium.toml]
 ```
 
@@ -36,6 +36,7 @@ local staging directory a downstream packaging recipe consumes.
 | --------------------------- | ----------------- | ------------------------------------------------------------------------ |
 | `--manifest <PATH>`         | `Consortium.toml` | The manifest to build.                                                   |
 | `--dist <DIR>`              | `dist`            | Where to assemble the staging tree.                                      |
+| `--linux <DIR>`             | required          | Linux checkout supplying BSP DTS/DTSI files and dt-bindings.             |
 | `--release`                 | off               | Build in release mode.                                                   |
 | `--offline`                 | off               | Run every cargo invocation with `--offline` (see `fetch` below).         |
 | `--skip-tee-sign`           | off               | Build the TA but stage the unsigned ELF instead of a signed `<uuid>.ta`. |
@@ -53,7 +54,7 @@ project set the build plan does and downloads all of it up front:
 
 ```bash
 csti fetch                  # populate every cache
-csti build --offline        # build with no network access
+csti build --linux ~/src/linux --offline # build with no network access
 ```
 
 | Flag                  | Default           | Effect                                                                 |
@@ -83,8 +84,8 @@ frontend build command is the project's own and is run unchanged, which is why t
 package install belongs to `fetch`.
 
 Not covered, because these are host provisioning rather than project dependencies with
-their own vendor-specific acquisition paths: the OP-TEE dev kit, a Yocto sysroot, kernel
-sources for `dtc`, and BitBake's own downloads.
+their own vendor-specific acquisition paths: the OP-TEE dev kit, a Yocto sysroot, the
+Linux checkout required by `csti build --linux`, and BitBake's own downloads.
 
 ### `--skip-tee-sign`
 

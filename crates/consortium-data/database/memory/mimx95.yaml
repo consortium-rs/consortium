@@ -7,6 +7,36 @@ cp:
     variant: manager
   - name: cm7
     variant: remote
+remoteproc:
+  cm7:
+    compatible: fsl,imx95-cm7
+    vector_section: .interrupts
+    vector:
+      name: m_interrupts
+      read: true
+      write: false
+      execute: true
+      window:
+        origin: 0x80000000
+        length: 0x00001000
+        reserve: true
+    flash:
+      origin: 0x80001000
+      length: 0x007ff000
+      reserve: true
+    shmem:
+      name: m_rsc_tbl_in_dram
+      read: true
+      write: true
+      execute: false
+      window:
+        origin: 0x88220000
+        length: 0x00004000
+        reserve: true
+    ram:
+      origin: 0x80800000
+      length: 0x00800000
+      reserve: true
 memory:
   trm_page: [65, 77, 88]
   aliases:

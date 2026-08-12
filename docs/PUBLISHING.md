@@ -148,23 +148,16 @@ do not add an `#[allow]`.
 
 ## Third-party content and licenses
 
-Three crates redistribute vendor material and carry compound SPDX expressions
+Two crates redistribute vendor material and carry compound SPDX expressions
 instead of inheriting the workspace `Apache-2.0`:
 
-| Crate                    | License                               | Vendored content                                  |
-| ------------------------ | ------------------------------------- | ------------------------------------------------- |
-| `consortium-data`        | `Apache-2.0 AND BSD-3-Clause AND MIT` | `database/dts/` vendor device trees               |
-| `cogcore-sys`            | `Apache-2.0 AND MIT`                  | `vendor/include/` Cog sources                     |
-| `consortium-runtime-sys` | `Apache-2.0 AND BSD-3-Clause`         | `include/rsc_table.h` (Texas Instruments, Google) |
+| Crate                    | License                       | Vendored content                                  |
+| ------------------------ | ----------------------------- | ------------------------------------------------- |
+| `cogcore-sys`            | `Apache-2.0 AND MIT`          | `vendor/include/` Cog sources                     |
+| `consortium-runtime-sys` | `Apache-2.0 AND BSD-3-Clause` | `include/rsc_table.h` (Texas Instruments, Google) |
 
-The device trees are dual-licensed and are redistributed under the permissive
-half — BSD-3-Clause for STM32MP2, MIT for i.MX 9. **Files offered under GPL alone
-cannot ship.** Two were removed while preparing for publish:
-`imx93-11x11-frdm-pixpaper.dtso` (GPL-2.0) and `fsl,qoriq-clockgen.h`
-(GPL-2.0-only). Neither was referenced by any other file in the database, so no
-board selector or `#include` broke; the pixpaper board is simply no longer an
-available `[profile] devkit`. `crates/consortium-data/database/dts/README.md`
-carries the check to run when importing new vendor sources.
+Linux device-tree sources are not packaged. `csti build --linux` reads the selected
+board sources and includes directly from the user's kernel checkout.
 
 Unreviewed: `consortium-pac-imx9`, `consortium-pac-stm32mp2`, and the
 `database/peri/*.yaml` chiptool metadata are generated from vendor CMSIS headers

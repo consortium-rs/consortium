@@ -69,6 +69,7 @@ impl Session {
         self.validate_memory()?;
         self.validate_ipc()?;
         self.validate_dbg()?;
+        self.validate_remoteproc()?;
 
         for (name, peripheral) in &self.config.peripheral {
             consortium_log::trace!(
@@ -123,6 +124,61 @@ impl Session {
             }
         }
 
+        Ok(())
+    }
+
+    fn validate_remoteproc(&self) -> Result<(), CfgError> {
+        let layouts = self.lower_remoteproc()?;
+        if !layouts.is_empty() && self.config.dts.mode.is_overlay() {
+            return Err(CfgError::Manifest(
+                "remoteproc deployment requires `[dts] mode = \"merge\"`".into(),
+            ));
+        }
+        let shared =
+            self.config
+                .dbg
+                .cores
+                .iter()
+                .map(|(core, entry)| (format!("dbg.{core}"), entry.memory))
+                .chain(self.config.ipc.channels.iter().enumerate().filter_map(
+                    |(index, channel)| {
+                        channel
+                            .memory()
+                            .map(|memory| (format!("ipc.channel[{index}].config.memory"), memory))
+                    },
+                ));
+
+        for layout in layouts.values() {
+            let windows = [
+                ("vector".to_string(), layout.vector.window),
+                ("flash".to_string(), layout.flash),
+                ("shmem".to_string(), layout.shmem.window),
+                ("ram".to_string(), layout.ram),
+            ]
+            .into_iter()
+            .chain(
+                layout
+                    .regions
+                    .iter()
+                    .map(|region| (format!("regions.{}", region.name), region.window)),
+            );
+            for (window_name, window) in windows {
+                if !window.reserve {
+                    continue;
+                }
+                let window_end = window.end().expect("layout is validated");
+                for (name, region) in shared.clone() {
+                    let start = u64::from(region.base);
+                    let end = start + u64::from(region.length);
+                    if window.origin < end && start < window_end {
+                        return Err(CfgError::Manifest(format!(
+                            "[remoteproc.{}].{window_name} overlaps {name} in memory",
+                            layout.core
+                        )));
+                    }
+                }
+            }
+        }
         Ok(())
     }
 

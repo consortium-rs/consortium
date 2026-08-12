@@ -8,5 +8,6 @@ pub use hardware_doorbell_peripheral::{
 };
 pub use schema::{
     ChipDatabase, Coprocessor, CoprocessorVariant, MemoryAlias, MemoryDatabase, MemoryRegion,
-    MemoryRegionType, PeripheralAlias, PeripheralDatabase,
+    MemoryRegionType, PeripheralAlias, PeripheralDatabase, RemoteprocDatabase, RemoteprocRegion,
+    RemoteprocVector, RemoteprocWindow,
 };

@@ -16,7 +16,7 @@
 
 //! The `fetch` subcommand: download every dependency a build needs, up front.
 //!
-//! Pairs with `csti build --offline`. A Consortium build spans several
+//! Pairs with `csti build --linux <DIR> --offline`. A Consortium build spans several
 //! independent Cargo projects plus a frontend package manager, so there is no one
 //! `cargo fetch` that covers the system; this resolves the same project set the
 //! build plan does and fetches each one.
@@ -98,6 +98,8 @@ pub async fn run(args: FetchArgs) -> Result<(), String> {
             return Err(error.to_string());
         }
     }
-    println!("Dependencies cached; `csti build --offline` can now run without network access.");
+    println!(
+        "Dependencies cached; `csti build --linux <DIR> --offline` can now run without network access."
+    );
     Ok(())
 }

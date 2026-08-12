@@ -35,7 +35,7 @@
 //!
 //! Each frontend resolver has a `fetch` twin that runs the package manager's `install`
 //! instead, overridden by `CONSORTIUM_HMI_FETCH_CMD`. Installing is the network half of
-//! the frontend build, so `csti fetch` owns it and `csti build --offline` does not
+//! the frontend build, so `csti fetch` owns it and `csti build --linux <DIR> --offline` does not
 //! repeat it.
 
 use crate::compile::env::{DbgConfig, HmiConfig, SharedMemConfig};
@@ -264,7 +264,7 @@ fn resolve_pocket_build_command_from(
 ///
 /// This is the network half of the frontend build, which is why it is a separate
 /// command from [`resolve_hmi_build_command`]: `csti fetch` runs the installer so
-/// `csti build --offline` can run the builder against a populated `node_modules/`.
+/// `csti build --linux <DIR> --offline` can run against populated `node_modules/`.
 pub fn resolve_hmi_fetch_command() -> Result<HmiBuildCommand, String> {
     resolve_hmi_fetch_command_from(std::env::var(HMI_FETCH_CMD_ENV).ok(), |tool| {
         resolve_cross_tool(tool).ok()
