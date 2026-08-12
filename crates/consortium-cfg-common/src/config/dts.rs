@@ -31,22 +31,11 @@ pub struct Dts {
     /// configfs. Ignored in merge mode.
     #[serde(default)]
     pub configfs: bool,
-    /// Explicit base device-tree file stem override (no extension), matched
-    /// against the vendor DTS database. Wins over `[profile].devkit` and the
-    /// generic SoC `.dtsi` fallback. Useful for a board not otherwise selectable
-    /// through `devkit`.
+    /// Explicit base device-tree file stem override (no extension). Wins over
+    /// `[profile].devkit` and the generic SoC `.dtsi` selection. It is resolved
+    /// inside the Linux checkout passed to `csti build --linux`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub base: Option<String>,
-    /// Path to a Linux kernel source tree, used only for its `dt-bindings`
-    /// headers when compiling the generated device tree to a `.dtb`/`.dtbo`.
-    ///
-    /// Those headers are GPL-2.0 licensed, so Consortium never bundles them: the
-    /// user points at their own kernel checkout (e.g. `~/src/linux`). When set,
-    /// the pipeline preprocesses (`gcc -E`) and compiles (`dtc`) the device tree;
-    /// when unset, it emits only the `.dts`/`.dtso` and prints how to compile it.
-    /// A relative path is resolved against the manifest directory.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub linux: Option<String>,
 }
 
 /// The device-tree output form.

@@ -90,12 +90,9 @@ with no SDK at all.
 keys, which a laptop or CI runner usually lacks, so the unsigned ELF can be staged
 instead (`--no-sign-ta`). Compiling the TA and signing it are separable steps.
 
-**Device-tree compilation is opt-in, for licensing reasons.** The generated `.dts`
-includes vendor `.dtsi` (BSD/MIT, vendored in `consortium-data`) _and_
-`dt-bindings/*.h` (GPL-2.0 kernel headers, **not** vendored). So `dtc` compilation
-requires `[dts] linux` pointing at the user's own kernel checkout. `dtc` verification
-of an overlay works without it, using preprocessor defines that reproduce the
-interrupt macros.
+**Linux device-tree sources are external inputs.** `csti build --linux <DIR>`
+selects the BSP `.dts`/`.dtsi`, follows its local includes, and supplies
+`dt-bindings/*.h` for `dtc`. Consortium bundles none of those Linux sources.
 
 **The HMI build command can be overridden.** `CONSORTIUM_HMI_BUILD_CMD` takes
 precedence over `vp`/`npm`. That exists because the frontend sometimes has to be built

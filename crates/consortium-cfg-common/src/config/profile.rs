@@ -21,10 +21,10 @@ pub struct Profile {
     /// Full chip part number, e.g. `stm32mp257fak3`. Resolved against the chip
     /// database to pick the matching family definition.
     pub chip: String,
-    /// Optional development-board device-tree file stem, matched against the
-    /// vendor DTS database (e.g. `stm32mp257f-dk`, `imx95-15x15-frdm`). When set,
-    /// the Linux device tree is built on top of that board `.dts`; when unset,
-    /// the generic SoC `.dtsi` for the chip family is used instead.
+    /// Optional development-board device-tree file stem, matched in the Linux
+    /// checkout passed to `csti build --linux` (e.g. `stm32mp257f-dk`,
+    /// `imx95-15x15-frdm`). When set, the Linux device tree is built on top of
+    /// that board `.dts`; when unset, the generic SoC `.dtsi` is selected.
     ///
     /// This is the *full file stem* (no `.dts` extension), not a short board
     /// token, so the match is unambiguous.

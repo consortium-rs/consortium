@@ -449,13 +449,14 @@ and `consortium-cfg/src/session.rs` tests as the best references.
 Current top-level schema:
 
 - `[profile]` contains required `chip`, `shared`, and `deploy_root`; optional `devkit`
-  selects a bundled board DTS by full file stem, `sysroot` selects the Linux target
+  selects a board DTS by full file stem in the `csti build --linux` checkout,
+  `sysroot` selects the Linux target
   sysroot, `kernel_recipe` enables generation of a kernel `.bbappend`, and
   `time_driver` (default `true`) toggles the sealed controller-core Embassy time driver,
   timer vector, and `defmt::timestamp!`.
 - `[dts]` controls Linux device-tree output: `mode = "merge"` (default) emits a full
-  tree, while `overlay` emits a `.dtso`; `base` overrides the base tree and `linux`
-  points at a kernel source tree for GPL-licensed dt-bindings used during compilation.
+  tree, while `overlay` emits a `.dtso`; `base` overrides the base tree.
+  `csti build --linux <DIR>` supplies all BSP DTS/DTSI sources and dt-bindings.
   `configfs` opts into `CONFIG_OF_CONFIGFS` for overlay deployment. Overlay mode cannot
   delete remoteproc mailbox properties, so use merge mode for those fixups.
 - `[endpoints]` maps runtime endpoint names to artifact roots.
@@ -483,10 +484,8 @@ Current top-level schema:
 `Session::from_toml` parses the manifest, resolves `[profile] chip` through embedded
 hardware databases, and validates doorbell availability, visible parties, channel
 bounds, duplicate doorbell channels, region bounds/overlap/MPU alignment, debug regions,
-and peripheral owners. `consortium-data` now carries generated per-core chip maps,
-peripheral descriptions, memory databases, and a large vendor DTS/include database for
-STM32MP2 and i.MX9. Treat these as generated/imported data; change their generation
-workflow rather than casually editing large database files.
+and peripheral owners. `consortium-data` carries generated per-core chip maps,
+peripheral descriptions, and memory databases. Linux DTS sources are never bundled.
 
 `consortium-cfg` includes lowering, portable/Linux codegen, debug-console and peripheral
 bring-up codegen, UIO/Kconfig generation, vendor-tree DTS merge/overlay rendering,
@@ -797,10 +796,8 @@ touching a manifest:
   bun/JS side. `melt-pot-shared` is `publish = false` as an example crate.
 - MSRV is `rust-version = "1.87"` in `[workspace.package]`, enforced by clippy's
   `incompatible_msrv` on every `just lint`. Raise it rather than `#[allow]`-ing.
-- `consortium-data`, `cogcore-sys`, and `consortium-runtime-sys` redistribute vendor
-  material and carry compound SPDX expressions instead of inheriting `Apache-2.0`.
-  Vendor device trees under `consortium-data/database/dts/` must be dual-licensed;
-  GPL-only files cannot ship (see that directory's `README.md`).
+- `cogcore-sys` and `consortium-runtime-sys` redistribute vendor material and carry
+  compound SPDX expressions instead of inheriting `Apache-2.0`.
 - `just publish-dry` requires Linux — `cogcore-sys` cannot build on macOS at all.
   Use `just publish-dry-host` for the partial macOS run.
 

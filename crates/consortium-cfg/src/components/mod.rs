@@ -51,5 +51,6 @@ pub mod irq;
 pub mod memory_to_uio;
 pub mod peripheral;
 pub mod region;
+pub mod remoteproc;
 pub mod time;
 pub mod uio;

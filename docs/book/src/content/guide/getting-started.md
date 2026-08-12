@@ -78,7 +78,7 @@ On macOS, the repository's full Linux image supplies the Linux-only dependencies
 
 ```bash
 just linux-image-full
-just linux-full 'cargo run -p csti -- build --manifest examples/melt-pot/imx95/Consortium.toml --dist dist/imx95 --release --skip-tee-sign'
+just linux-full 'cargo run -p csti -- build --linux /path/to/linux --manifest examples/melt-pot/imx95/Consortium.toml --dist dist/imx95 --release --skip-tee-sign'
 ```
 
 `--skip-tee-sign` is useful on development machines without OP-TEE signing keys. It

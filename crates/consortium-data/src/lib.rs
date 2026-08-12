@@ -17,20 +17,17 @@
 //! Static chip data for the Consortium project, embedded at compile time.
 //!
 //! This crate owns the chip-family databases (`database/memory/*.yaml`), the
-//! generated per-core chip dumps (`database/chip/*.json`), the extracted
-//! peripheral register definitions (`database/peri/`), and the vendor
-//! device-tree sources (`database/dts/`).
+//! generated per-core chip dumps (`database/chip/*.json`), and the extracted
+//! peripheral register definitions (`database/peri/`).
 //! It also owns the resolvers that turn a `[profile] chip` part number into a
 //! parsed [`database::ChipDatabase`] or a per-core [`chipmap::ChipMap`].
 //!
 //! # Why it is embedded rather than read from disk
 //!
 //! `csti` is installed as a binary and run from a user's project directory, which
-//! has no `database/` in it. Every datum here is therefore compiled in — YAML and
-//! JSON through `include_str!`, the device-tree tree through `include_dir!` — so
-//! resolution works regardless of the working directory and cannot break because a
-//! data file moved. The cost is binary size and a rebuild on every data change,
-//! which is the right trade for a build tool.
+//! has no `database/` in it. Chip YAML and JSON are therefore compiled in through
+//! `include_str!`. Linux device-tree sources are intentionally not bundled; the
+//! build reads them from the checkout passed to `csti build --linux`.
 //!
 //! # What each module resolves
 //!
@@ -38,7 +35,6 @@
 //! | ------------ | ---------------------------- | ------------------------------------ |
 //! | [`database`] | `database/memory/*.yaml`      | What does this chip *family* offer — coprocessors, memory regions and aliases, peripherals, doorbells? |
 //! | [`chipmap`]  | `database/chip/*.json`        | What can *one core* reach — peripheral MMIO bases and NVIC numbers? |
-//! | [`dts`]      | `database/dts/{imx9,stm32mp2}` | Which vendor board or SoC device tree do we build on top of? |
 //!
 //! The split between the first two matters. A family database says the chip *has* an
 //! LPUART2; a chip map says *this core* can see it. Because there is one JSON file
@@ -61,16 +57,8 @@
 //! can deserialize into them without depending on the codegen crate that depends on
 //! it.
 //!
-//! # Licensing
-//!
-//! This crate carries a compound SPDX expression rather than inheriting the
-//! workspace `Apache-2.0`, because it redistributes vendor material. Vendor device
-//! trees under `database/dts/` **must be dual-licensed** — GPL-only files cannot
-//! ship. See that directory's `README.md` before adding one.
-
 pub mod chipmap;
 pub mod database;
-pub mod dts;
 mod error;
 
 pub use error::DataError;

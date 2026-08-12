@@ -35,6 +35,11 @@ pub struct BuildArgs {
     #[arg(long, default_value = "dist")]
     dist: PathBuf,
 
+    /// Linux kernel source checkout providing the selected BSP DTS/DTSI files,
+    /// their include closure, and dt-bindings headers.
+    #[arg(long, value_name = "DIR")]
+    linux: PathBuf,
+
     /// Build in release mode.
     #[arg(long)]
     release: bool,
@@ -122,6 +127,7 @@ pub async fn run(args: BuildArgs) -> Result<(), String> {
     let config = PipelineConfig {
         manifest_path: args.manifest.clone(),
         dist_root: args.dist.clone(),
+        linux: args.linux.clone(),
         release: args.release,
         offline: args.offline,
         hmi,

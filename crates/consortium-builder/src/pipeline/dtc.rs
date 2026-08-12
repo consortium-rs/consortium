@@ -16,12 +16,9 @@
 
 //! Compiles a generated device tree to a `.dtb`/`.dtbo` with `gcc -E` + `dtc`.
 //!
-//! The generated `.dts`/`.dtso` still `#include`s vendor `.dtsi` (which
-//! Consortium vendors, BSD/MIT) and `dt-bindings/*.h` (which it does **not** —
-//! those are GPL-2.0 kernel headers). So compilation is opt-in via `[dts] linux`
-//! pointing at the user's own kernel checkout: the vendored closure is
-//! materialized into a temp dir, and the kernel's `include/` supplies the
-//! `dt-bindings` macros. Consortium never bundles the GPL-2.0 headers.
+//! The generated `.dts`/`.dtso` still `#include`s vendor `.dtsi` and
+//! `dt-bindings/*.h`. Both come from the kernel checkout passed to
+//! `csti build --linux`; Consortium bundles no Linux device-tree sources.
 //!
 //! The two-step invocation mirrors the kernel's own device-tree build:
 //! `gcc -E -nostdinc -I <tmp> -I <linux>/include -I <linux>/arch/<arch>/boot/dts
@@ -44,10 +41,10 @@ pub enum DtcError {
         source: std::io::Error,
     },
 
-    /// The configured `[dts] linux` kernel tree is missing its `include/`
+    /// The configured `--linux` kernel tree is missing its `include/`
     /// directory (so it cannot supply `dt-bindings` headers).
     #[error(
-        "`[dts] linux` = {path} does not look like a kernel tree (no `include/` directory); \
+        "`--linux` path {path} does not look like a kernel tree (no `include/` directory); \
          point it at a Linux source checkout that provides dt-bindings headers"
     )]
     LinuxTreeInvalid {
@@ -93,11 +90,10 @@ pub fn arch_dir(app_target: &str) -> &'static str {
 /// Compiles the device tree `dts_dir/<dts_name>` to a sibling `.dtb` (for a
 /// `.dts`) or `.dtbo` (for a `.dtso`), returning the output path.
 ///
-/// `closure` is the vendored base-tree include closure (from
-/// `consortium_data::dts::base_closure`), materialized into a temp dir so the
-/// generated tree's quoted `#include`s resolve; `linux_dir` is the user's kernel
-/// tree supplying `dt-bindings`; `arch` selects `arch/<arch>/boot/dts` (see
-/// [`arch_dir`]).
+/// `closure` is the base-tree include closure read from `linux_dir`,
+/// materialized into a temp dir so the generated tree's quoted `#include`s
+/// resolve; `linux_dir` also supplies `dt-bindings`; `arch` selects
+/// `arch/<arch>/boot/dts` (see [`arch_dir`]).
 pub async fn compile_device_tree(
     dts_dir: &Path,
     dts_name: &str,
@@ -124,6 +120,11 @@ pub async fn compile_device_tree(
 
     for (name, contents) in closure {
         let dest = work.join(name);
+        if let Some(parent) = dest.parent() {
+            tokio::fs::create_dir_all(parent)
+                .await
+                .map_err(|e| io(parent, e))?;
+        }
         tokio::fs::write(&dest, contents)
             .await
             .map_err(|e| io(&dest, e))?;
@@ -143,8 +144,8 @@ pub async fn compile_device_tree(
     let is_overlay = dts_name.ends_with(".dtso");
     let out_name = format!("{stem}.{}", if is_overlay { "dtbo" } else { "dtb" });
 
-    // Step 1: preprocess with the C preprocessor, resolving the vendored closure
-    // (temp dir) and the user's kernel dt-bindings (`<linux>/include`).
+    // Step 1: preprocess with the C preprocessor, resolving the BSP closure
+    // (temp dir) and dt-bindings from the supplied Linux tree.
     let preprocessed = work.join(format!("{stem}.pp.dts"));
     let boot_dts = linux_dir.join("arch").join(arch).join("boot").join("dts");
     let gcc = Command::new("gcc")
@@ -202,43 +203,6 @@ pub async fn compile_device_tree(
     Ok(out)
 }
 
-/// The message printed when the device tree is emitted but not compiled (no
-/// `[dts] linux`), telling the user how to produce the `.dtb` themselves.
-///
-/// `yocto` selects the guidance flavor: a Yocto build compiles the tree through
-/// the kernel recipe; otherwise the exact `gcc -E` + `dtc` commands are shown.
-pub fn compilation_hint(dts_name: &str, arch: &str, yocto: bool) -> String {
-    let stem = dts_name
-        .rsplit_once('.')
-        .map(|(s, _)| s)
-        .unwrap_or(dts_name);
-    let is_overlay = dts_name.ends_with(".dtso");
-    let out_ext = if is_overlay { "dtbo" } else { "dtb" };
-
-    let license = "  Note: dt-bindings headers are GPL-2.0; Consortium does not bundle them, \
-                   so supply your own Linux tree.";
-
-    if yocto {
-        format!(
-            "device tree dist/dts/linux/{dts_name} was emitted but not compiled.\n\
-             Set `[dts] linux = \"…\"` to a kernel checkout to compile it here, or let your\n\
-             Yocto kernel build compile it: add the {ext} to your kernel recipe (extend\n\
-             KERNEL_DEVICETREE) and `bitbake virtual/kernel`.\n{license}",
-            ext = if is_overlay { "overlay" } else { ".dts" },
-        )
-    } else {
-        format!(
-            "device tree dist/dts/linux/{dts_name} was emitted but not compiled.\n\
-             Set `[dts] linux = \"…\"` to a kernel checkout to compile it here, or run it\n\
-             yourself (replace ~/src/linux with your kernel tree):\n\
-             \x20 gcc -E -nostdinc -I <vendor-dts-dir> -I ~/src/linux/include \\\n\
-             \x20     -I ~/src/linux/arch/{arch}/boot/dts -undef -D__DTS__ \\\n\
-             \x20     -x assembler-with-cpp -o {stem}.pp.dts {dts_name}\n\
-             \x20 dtc -@ -I dts -O dtb -o {stem}.{out_ext} {stem}.pp.dts\n{license}",
-        )
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -265,22 +229,6 @@ mod tests {
             .unwrap_err();
         assert!(matches!(err, DtcError::LinuxTreeInvalid { .. }));
         let _ = std::fs::remove_dir_all(&dir);
-    }
-
-    #[test]
-    fn hint_manual_shows_commands() {
-        let hint = compilation_hint("consortium-imx95.dts", "arm64", false);
-        assert!(hint.contains("gcc -E -nostdinc"));
-        assert!(hint.contains("dtc -@ -I dts -O dtb"));
-        assert!(hint.contains("consortium-imx95.dtb"));
-        assert!(hint.contains("GPL-2.0"));
-    }
-
-    #[test]
-    fn hint_yocto_points_at_kernel_build() {
-        let hint = compilation_hint("consortium-imx95.dts", "arm64", true);
-        assert!(hint.contains("bitbake virtual/kernel"));
-        assert!(hint.contains("KERNEL_DEVICETREE"));
     }
 
     /// Whether `gcc` and `dtc` both resolve on PATH; the real-compile test is
