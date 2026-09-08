@@ -23,6 +23,9 @@ members = ["crates/*", "examples/melt-pot/shared"]
 # from requiring those generated modules to be present. The `shared` crate has
 # no generated code and stays a member so host checks cover it.
 exclude = [
+  "examples/melt-pot/imx93/app",
+  "examples/melt-pot/imx93/mcu",
+  "examples/melt-pot/imx93/ta",
   "examples/melt-pot/imx95/app",
   "examples/melt-pot/imx95/mcu",
   "examples/melt-pot/imx95/ta",

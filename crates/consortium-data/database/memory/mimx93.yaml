@@ -5,6 +5,56 @@ interrupt_parent: gic
 cp:
   - name: cm33
     variant: remote
+remoteproc:
+  cm33:
+    # From mainline `imx93.dtsi` (`cm33: remoteproc-cm33`), the FRDM board's
+    # `imx93-11x11-frdm.dts`, and the loader's address-translation table
+    # (`imx_rproc_att_imx93` in `drivers/remoteproc/imx_rproc.c`).
+    #
+    # Unlike the i.MX 95 CM7, which is loaded into a DDR carveout, the i.MX 93
+    # CM33 runs from TCM. The addresses below are the *device* (CM33) view that
+    # the firmware links against; the loader translates them:
+    #
+    #   TCM CODE  device 0x1FFC0000 -> system 0x201C0000, 0x40000 (secure alias)
+    #   TCM SYS   device 0x20000000 -> system 0x20200000, 0x40000
+    #
+    # `reserve` is false on all three TCM windows: they are not DRAM, so there
+    # is nothing to carve out of the kernel's memory map. The vendor tree does
+    # declare `rsc-table@2021e000` as `no-map` reserved memory -- that is the
+    # *system* address of the shmem window below (0x20200000 + 0x1E000), and the
+    # board DTS already reserves it, so re-emitting it here would duplicate the
+    # node.
+    compatible: fsl,imx93-cm33
+    vector_section: .interrupts
+    vector:
+      name: m_interrupts
+      read: true
+      write: false
+      execute: true
+      window:
+        origin: 0x1FFC0000
+        length: 0x00001000
+        reserve: false
+    flash:
+      origin: 0x1FFC1000
+      length: 0x0003F000
+      reserve: false
+    shmem:
+      # `.resource_table`, at the device address matching the board's
+      # `rsc-table@2021e000` system carveout.
+      name: m_rsc_tbl_in_tcm
+      read: true
+      write: true
+      execute: false
+      window:
+        origin: 0x2001E000
+        length: 0x00001000
+        reserve: false
+    ram:
+      # TCM SYS below the resource table.
+      origin: 0x20000000
+      length: 0x0001E000
+      reserve: false
 memory:
   trm_page: [43, 54]
   aliases:
@@ -24,29 +74,45 @@ peripheral:
       secure: true
     - address: 0x40000000
       secure: false
+  # MU windows and A-core lines are taken from mainline
+  # `arch/arm64/boot/dts/freescale/imx93.dtsi`:
+  #   mu1: mailbox@44230000  reg = <0x44230000 0x10000>  GIC_SPI 22
+  #   mu2: mailbox@42440000  reg = <0x42440000 0x10000>  GIC_SPI 24
+  # Both are the MUB window (one 0x10000 stride above the MUA base recorded
+  # here), so on i.MX 93 Linux is on side B and the CM33 on side A -- the
+  # mirror of i.MX 95. The clock gates are named `MU<n>_B` for the same reason.
+  # The CM33 side is cross-checked against the chip dump by
+  # `consortium-data/tests/doorbell_windows.rs`.
   doorbells:
     - name: MU1
       page: 585
       type: mu
-      pattern: gi
+      clock:
+        provider: clk
+        id: IMX93_CLK_MU1_B_GATE
       memory:
         base: 0x04220000
         length: 0x00020000
+      window_length: 0x00010000
       parties:
         - core: linux
-          irq: 21
+          window: b
+          irq: 22
           page_memory: 62
           page_irq: 93
         - core: optee
-          irq: 21
+          window: b
+          irq: 22
           page_memory: 62
           page_irq: 93
         - core: cm33
-          irq: 22
+          window: a
+          irq: 21
           page_memory: 62
           page_irq: 93
         - core: cm33-s
-          irq: 22
+          window: a
+          irq: 21
           page_memory: 62
           page_irq: 93
       party_page: 585
@@ -55,24 +121,32 @@ peripheral:
     - name: MU2
       page: 585
       type: mu
+      clock:
+        provider: clk
+        id: IMX93_CLK_MU2_B_GATE
       memory:
         base: 0x02430000
         length: 0x00020000
+      window_length: 0x00010000
       parties:
         - core: linux
-          irq: 23
+          window: b
+          irq: 24
           page_memory: 75
           page_irq: 93
         - core: optee
-          irq: 23
+          window: b
+          irq: 24
           page_memory: 75
           page_irq: 93
         - core: cm33
-          irq: 24
+          window: a
+          irq: 23
           page_memory: 75
           page_irq: 93
         - core: cm33-s
-          irq: 24
+          window: a
+          irq: 23
           page_memory: 75
           page_irq: 93
       party_page: 585

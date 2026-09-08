@@ -89,6 +89,9 @@ mod bindings {
     impl_mu!(MU8_MUB, Secondary, 8);
 }
 
+// `not(mimx95)` suppresses a duplicate-definition cascade when both chip
+// features are on; that combination is already fatal via the `compile_error!`
+// in `chan.rs`, which is the diagnostic that names the mistake.
 #[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
 mod bindings {
     use consortium_ipc::Primary;

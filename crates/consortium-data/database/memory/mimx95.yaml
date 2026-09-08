@@ -1,5 +1,5 @@
-name: MIMX93
-trm: https://www.nxp.com/docs/en/reference-manual/IMX93RM.pdf
+name: MIMX95
+trm: https://www.nxp.com/docs/en/reference-manual/IMX95RM.pdf
 ap: ca55
 interrupt_parent: gic
 cp:
@@ -63,20 +63,25 @@ peripheral:
       memory:
         base: 0x04220000
         length: 0x00020000
+      window_length: 0x00010000
       parties:
         - core: linux
+          window: a
           irq: 224
           page_memory: 99
           page_irq: 127
         - core: optee
+          window: a
           irq: 224
           page_memory: 99
           page_irq: 127
         - core: cm33
+          window: b
           irq: 225
           page_memory: 99
           page_irq: 128
         - core: cm33-s
+          window: b
           irq: 225
           page_memory: 99
           page_irq: 128
@@ -89,20 +94,25 @@ peripheral:
       memory:
         base: 0x045B0000
         length: 0x00020000
+      window_length: 0x00010000
       parties:
         - core: linux
+          window: a
           irq: 226
           page_memory: 101
           page_irq: 128
         - core: optee
+          window: a
           irq: 226
           page_memory: 101
           page_irq: 128
         - core: cm33
+          window: b
           irq: 227
           page_memory: 101
           page_irq: 128
         - core: cm33-s
+          window: b
           irq: 227
           page_memory: 101
           page_irq: 128
@@ -115,20 +125,25 @@ peripheral:
       memory:
         base: 0x045D0000
         length: 0x00020000
+      window_length: 0x00010000
       parties:
         - core: linux
+          window: a
           irq: 228
           page_memory: 101
           page_irq: 128
         - core: optee
+          window: a
           irq: 228
           page_memory: 101
           page_irq: 128
         - core: cm33
+          window: b
           irq: 229
           page_memory: 101
           page_irq: 128
         - core: cm33-s
+          window: b
           irq: 229
           page_memory: 101
           page_irq: 128
@@ -141,20 +156,25 @@ peripheral:
       memory:
         base: 0x045F0000
         length: 0x00020000
+      window_length: 0x00010000
       parties:
         - core: linux
+          window: a
           irq: 230
           page_memory: 101
           page_irq: 128
         - core: optee
+          window: a
           irq: 230
           page_memory: 101
           page_irq: 128
         - core: cm33
+          window: b
           irq: 231
           page_memory: 101
           page_irq: 128
         - core: cm33-s
+          window: b
           irq: 231
           page_memory: 101
           page_irq: 128
@@ -167,16 +187,20 @@ peripheral:
       memory:
         base: 0x04610000
         length: 0x00020000
+      window_length: 0x00010000
       parties:
         - core: cm7
+          window: a
           irq: 205
           page_memory: 102
           page_irq: 127
         - core: cm33
+          window: b
           irq: 232
           page_memory: 101
           page_irq: 128
         - core: cm33-s
+          window: b
           irq: 232
           page_memory: 101
           page_irq: 128
@@ -189,16 +213,20 @@ peripheral:
       memory:
         base: 0x02430000
         length: 0x00020000
+      window_length: 0x00010000
       parties:
         - core: linux
+          window: a
           irq: 234
           page_memory: 106
           page_irq: 128
         - core: optee
+          window: a
           irq: 234
           page_memory: 106
           page_irq: 128
         - core: cm7
+          window: b
           irq: 207
           page_memory: 106
           page_irq: 127
@@ -211,16 +239,20 @@ peripheral:
       memory:
         base: 0x02730000
         length: 0x00020000
+      window_length: 0x00010000
       parties:
         - core: linux
+          window: a
           irq: 235
           page_memory: 107
           page_irq: 128
         - core: optee
+          window: a
           irq: 235
           page_memory: 107
           page_irq: 128
         - core: cm7
+          window: b
           irq: 208
           page_memory: 107
           page_irq: 127

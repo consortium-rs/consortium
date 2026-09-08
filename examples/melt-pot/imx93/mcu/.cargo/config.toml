@@ -1,0 +1,30 @@
+[build]
+target = "thumbv8m.main-none-eabihf"
+
+# The triple contains a dot, so this is three nested TOML tables; cargo rejoins
+# them into the triple, and this bare form is what works. Do *not* "fix" it by
+# quoting the key — `[target.'thumbv8m.main-none-eabihf']` matches nothing, and
+# cargo silently drops every flag below rather than erroring, leaving a firmware
+# ELF linked without `link.x` (no vector table, entry point 0).
+[target.thumbv8m.main-none-eabihf]
+rustflags = [
+  # `--nmagic` disables page-alignment of output segments, keeping the linked
+  # firmware compact (no 64 KiB padding gaps) — matches the embassy examples and
+  # suits a remoteproc TCM image.
+  "-C",
+  "link-arg=--nmagic",
+  # `Tlink.x` is required for embassy-time.
+  "-C",
+  "link-arg=-Tlink.x",
+  # `defmt.x` is required by defmt: it lays out the interned-string table the
+  # decoder relies on. Must come after `link.x`.
+  "-C",
+  "link-arg=-Tdefmt.x",
+]
+
+[env]
+# defmt's compile-time filter defaults to `error` when DEFMT_LOG is unset, which
+# would drop the `defmt::info!` sensor stream this firmware exists to emit. Match
+# the embassy examples and enable all levels; the CA55 decodes them from the CDBG
+# ring described by `[dbg.cm33]`.
+DEFMT_LOG = "trace"

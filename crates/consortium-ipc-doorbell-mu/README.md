@@ -62,7 +62,7 @@ reach whichever half is waiting.
 
 **This crate installs no `#[interrupt]` handlers.** The application owns the vector
 table and forwards each MU vector a core drives into `notify::<N>()`, parameterized
-with that instance number. The relevant vectors are i.MX93 `MU1_B` / `MU2_B` and
+with that instance number. The relevant vectors are i.MX93 `MU1_A` / `MU2_A` and
 i.MX95 CM7 `MU5_A` / `MU7_B` / `MU8_B`. Enable the _HAL's_ `rt` feature
 (`consortium-hal-imx9/rt`) so the `#[interrupt]` macro and PAC vector table are
 available to that code.
@@ -116,7 +116,16 @@ all covered without a board.
 
 ```bash
 cargo test -p consortium-ipc-doorbell-mu
-cargo test -p consortium-ipc-doorbell-mu --no-default-features --features mimx93
+cargo test -p consortium-ipc-doorbell-mu --no-default-features --features mimx93,std
+```
+
+Feature exclusivity has no automated harness; it is a negative check. This must
+**fail** with a single `chip features are mutually exclusive` error — raised by
+whichever of the PAC, the HAL, or `chan.rs` compiles first — and no
+duplicate-definition cascade behind it:
+
+```bash
+cargo check -p consortium-ipc-doorbell-mu --features mimx93,mimx95
 ```
 
 ## License

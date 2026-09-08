@@ -53,7 +53,7 @@ ipc-shm@20484000 {
 ```dts
 mu7@42430000 {
     compatible = "generic-uio";
-    reg = <0x0 0x42430000 0x0 0x20000>;
+    reg = <0x0 0x42430000 0x0 0x10000>;
     interrupt-parent = <&gic>;
     interrupts = <GIC_SPI 234 IRQ_TYPE_LEVEL_HIGH>;
     status = "okay";
@@ -65,7 +65,7 @@ mu7@42430000 {
 ```dts
 mu1@44220000 {
     compatible = "generic-uio";
-    reg = <0x0 0x44220000 0x0 0x20000>;
+    reg = <0x0 0x44220000 0x0 0x10000>;
     interrupt-parent = <&gic>;
     interrupts = <GIC_SPI 224 IRQ_TYPE_LEVEL_HIGH>;
     status = "okay";
@@ -396,7 +396,7 @@ fn _generated() {
                 ::consortium_ipc_doorbell_mu::MuDoorbell::<
                     ::consortium_ipc::Secondary,
                     1usize,
-                >::new_mapped(1143078912usize)
+                >::new_mapped(1143144448usize)
             };
             // SAFETY: doorbell channel is verified to be valid in the config.
             let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(5u8) };

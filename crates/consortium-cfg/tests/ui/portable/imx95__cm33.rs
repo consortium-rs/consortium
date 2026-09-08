@@ -44,7 +44,7 @@ fn __consortium_install_channels() {
             ::consortium_ipc_doorbell_mu::MuDoorbell::<
                 ::consortium_ipc::Secondary,
                 1usize,
-            >::new_mapped(1143078912usize)
+            >::new_mapped(1143144448usize)
         };
         // SAFETY: doorbell channel is verified to be valid in the config.
         let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(5u8) };

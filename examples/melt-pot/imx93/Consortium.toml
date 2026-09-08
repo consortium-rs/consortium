@@ -1,0 +1,94 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# melt-pot on i.MX93: CA55 Linux application + CM33 real-time firmware.
+#
+# The i.MX93 counterpart of `../imx95`. Two things differ beyond the part
+# number, and both come from silicon rather than from taste:
+#
+#  - The coprocessor is a Cortex-M33 (`thumbv8m.main-none-eabihf`), not a CM7,
+#    so it has no L1 data cache and `config.cache` is rejected on its channels.
+#  - The MU windows are mirrored. The CM33 owns side A (its chip dump exposes
+#    `MU1_MUA`/`MU2_MUA`) and Linux owns side B, the reverse of i.MX95. The
+#    channel below still names the roles the documented way — `primary` is the
+#    A-core — because `consortium-cfg` lowers the register window separately
+#    from the descriptor role.
+
+[profile]
+# The Rust compile targets are looked up from the embedded chip database for
+# this chip (CM33 firmware target and CA55 application target).
+chip = "mimx9352"
+# FRDM-i.MX93. Matched against the vendor DTS database by full file stem; see
+# `arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts`.
+devkit        = "imx93-11x11-frdm"
+shared        = "../shared"
+deploy_root   = "/opt/consortium"
+sysroot       = "/"
+kernel_recipe = "linux-imx"
+
+[dts]
+# mode  = "merge"        # or "overlay"
+
+# The CM33 runs from TCM, not a DDR carveout — see `[remoteproc.cm33]` defaults
+# in the mimx93 chip database, derived from `imx_rproc_att_imx93`. Override
+# per-field here if your board partitions TCM differently.
+# [remoteproc.cm33]
+# ram = { origin = 0x20000000, length = 0x1E000 }
+
+[endpoints]
+# Runtime endpoint name -> crate root. `cm33` is the single remote coprocessor.
+linux = "./app"
+optee = "./ta"
+cm33  = "./mcu"
+
+[dbg]
+mode = "auto"
+
+# defmt ring for the CM33, in OCRAM (see the mimx93 chip database: base
+# 0x00480000, length 0x40000), just above the IPC region below.
+[dbg.cm33]
+memory = { base = 0x00484000, length = 0x2000 }
+mtu    = 64
+
+# One shared descriptor + slots for the sensor channel, signalled over MU2.
+# MU1 is left alone: the board DTS wires it to the CM33 remoteproc node as the
+# RPMsg mailbox (`mboxes = <&mu1 0 1>, ...`), so claiming it here would collide
+# with the kernel's own driver.
+#
+# The region lives in OCRAM; the CM33 reaches it through the raw physical base
+# and the CA55 maps the same memory through its UIO device.
+[[ipc.channel]]
+name          = "sensor"
+doorbell      = "mu2"
+pattern       = "memory"
+primary       = "linux"
+secondary     = "cm33"
+party.linux   = { chan = 6, type = "Command" }
+party.cm33    = { chan = 7, type = "SensorReading" }
+config.memory = { base = 0x00480000, length = 0x4000 }
+mtu           = 128
+
+[tee]
+# OP-TEE TA UUID — replace with the real UUID from your TA build.
+uuid = "12345678-1234-1234-1234-123456789012"
+
+[hmi]
+engine  = "cog"
+backend = "wayland"
+debug   = "http://127.0.0.1:5173/"
+source  = "website"
+build   = "website/dist"
+
+# CM33-owned GPIO port for a status heartbeat.
+[peripheral.gpio2]
+owner  = "cm33"
+secure = false
+
+# CM33-owned I2C bus for a real temperature sensor, clocked from the 24 MHz
+# LPI2C root at a 100 kHz standard-mode bus rate.
+[peripheral.lpi2c1]
+owner     = "cm33"
+secure    = false
+clock     = 24000000
+frequency = 100000
+pin.sda   = "PB0"
+pin.scl   = "PB1"

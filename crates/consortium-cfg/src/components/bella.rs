@@ -205,11 +205,11 @@ impl ToUio for HardwareDoorbellPeripheral {
     fn to_uio(&self) -> Result<Option<UioDevice>, CfgError> {
         // The UIO device is driven from Linux, so use that party's GIC SPI.
         // GIC SPI doorbell lines are level-high triggered.
-        let irq = self
+        let linux = self
             .parties
             .iter()
-            .find(|party| party.core == Party::AcoreNonSecure)
-            .map(|party| (party.irq, IrqMethod::LevelHigh));
+            .find(|party| party.core == Party::AcoreNonSecure);
+        let irq = linux.map(|party| (party.irq, IrqMethod::LevelHigh));
 
         // Carry the doorbell's Linux-side clock (if the chip DB declares one) so
         // the generic-uio node keeps its register block clocked. The
@@ -223,8 +223,16 @@ impl ToUio for HardwareDoorbellPeripheral {
         // A doorbell always exposes its single register window as `map0`, so
         // there is no `mmap` ordering to violate. These are MMIO peripheral
         // registers, not RAM, so they are described inline with `reg`.
+        // Map only the window Linux actually drives. An i.MX MU's `memory`
+        // spans both processor views, and mapping the far side into userspace
+        // hands the AP registers belonging to the coprocessor; the vendor tree
+        // maps one window too. Single-window blocks resolve to the whole thing.
+        let window = linux.map_or((self.memory.base, self.memory.length), |party| {
+            (self.party_window_base(party), self.party_window_length())
+        });
+
         Ok(Some(UioDevice {
-            mmap: vec![(self.memory.base, self.memory.length)],
+            mmap: vec![window],
             irq,
             backing: UioBacking::Registers,
             dma_coherent: Vec::new(),
@@ -239,7 +247,7 @@ mod tests {
     use super::*;
     use consortium_cfg_common::config::McoreName;
     use consortium_cfg_common::database::{
-        HardwareDoorbellParty, HardwareDoorbellPeripheralType, HardwareMemory,
+        DoorbellWindow, HardwareDoorbellParty, HardwareDoorbellPeripheralType, HardwareMemory,
     };
 
     fn bell(name: &str, core: VisibleCore, irq: u32) -> HardwareDoorbell {
@@ -474,6 +482,7 @@ mod tests {
         HardwareDoorbellParty {
             core: core.parse().unwrap(),
             irq,
+            window: DoorbellWindow::A,
             page_memory: 0,
             page_irq: 0,
         }
@@ -493,6 +502,7 @@ mod tests {
             channels: 32,
             channel_page: 1305,
             clock: None,
+            window_length: None,
         }
     }
 

@@ -86,7 +86,7 @@ fn LPUART2() {
 
 Enable the `rt` feature so the `#[interrupt]` macro and the PAC vector table are
 available to that code. The same convention governs the MU doorbell
-(`consortium-ipc-doorbell-mu`): the application forwards `MU1_B`/`MU2_B` on i.MX93 or
+(`consortium-ipc-doorbell-mu`): the application forwards `MU1_A`/`MU2_A` on i.MX93 or
 the CM7's `MU5_A`/`MU7_B`/`MU8_B` on i.MX95. See the melt-pot `mcu/src/main.rs` files
 for worked examples.
 

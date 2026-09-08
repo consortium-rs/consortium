@@ -40,7 +40,9 @@
 use std::collections::HashMap;
 
 use consortium_cfg_common::config::{McoreName, Party, VisibleCore};
-use consortium_cfg_common::database::{ChipDatabase, HardwareDoorbellPeripheral, MemoryRegionType};
+use consortium_cfg_common::database::{
+    ChipDatabase, DoorbellWindow, HardwareDoorbellPeripheral, MemoryRegionType,
+};
 
 use crate::components::address::{Address, ApAddress};
 use crate::components::bella::{BellA, HardwareDoorbell};
@@ -698,9 +700,9 @@ impl Session {
                 controller_bases([primary_party, secondary_party], memory.base, |secure| {
                     memory_alias(&self.database, secure)
                 });
-            let doorbell_cp = controller_bases(
+            let doorbell_cp = controller_doorbell_bases(
+                db_doorbell,
                 [primary_party, secondary_party],
-                db_doorbell.memory.base,
                 |secure| peripheral_alias(&self.database, secure),
             );
 
@@ -744,13 +746,13 @@ impl Session {
                         primary_core,
                         party_irq(db_doorbell, primary_party),
                         primary.chan as u8,
-                        DoorbellRingerSide::Primary,
+                        party_window(db_doorbell, primary_party, DoorbellRingerSide::Primary),
                     ),
                     (
                         secondary_core,
                         party_irq(db_doorbell, secondary_party),
                         secondary.chan as u8,
-                        DoorbellRingerSide::Secondary,
+                        party_window(db_doorbell, secondary_party, DoorbellRingerSide::Secondary),
                     ),
                 ],
             );
@@ -769,6 +771,10 @@ impl Session {
                 channel_primary: (primary_core, channel_primary),
                 channel_secondary: (secondary_core, channel_secondary),
                 doorbell: meta,
+                doorbell_window: (
+                    party_window(db_doorbell, primary_party, DoorbellRingerSide::Primary),
+                    party_window(db_doorbell, secondary_party, DoorbellRingerSide::Secondary),
+                ),
             });
         }
 
@@ -1248,6 +1254,55 @@ fn party_irq(doorbell: &HardwareDoorbellPeripheral, party: Party) -> Option<u32>
         .map(|entry| entry.irq)
 }
 
+/// The doorbell register window `party` drives, as the codegen's side marker.
+///
+/// Only a block that declares a `window_length` has per-side windows. For a
+/// single-window doorbell (HSEM, IPCC) the marker means the *core bank* rather
+/// than a window, and the bank is the descriptor role — so those fall back to
+/// `role` and their generated output is unchanged by this mapping.
+fn party_window(
+    doorbell: &HardwareDoorbellPeripheral,
+    party: Party,
+    role: DoorbellRingerSide,
+) -> DoorbellRingerSide {
+    if doorbell.window_length.is_none() {
+        return role;
+    }
+    let window = doorbell
+        .parties
+        .iter()
+        .find(|entry| entry.core == party)
+        .map_or(DoorbellWindow::A, |entry| entry.window);
+    match window {
+        DoorbellWindow::A => DoorbellRingerSide::Primary,
+        DoorbellWindow::B => DoorbellRingerSide::Secondary,
+    }
+}
+
+/// The controller-core physical-base map for a doorbell: like
+/// [`controller_bases`], but each party is offset to *its own* register window
+/// rather than sharing the block base.
+fn controller_doorbell_bases(
+    doorbell: &HardwareDoorbellPeripheral,
+    parties: [Party; 2],
+    alias: impl Fn(bool) -> u32,
+) -> HashMap<VisibleCore, u32> {
+    parties
+        .into_iter()
+        .filter(|party| party.core() != VisibleCore::Ap)
+        .map(|party| {
+            let base = doorbell
+                .parties
+                .iter()
+                .find(|entry| entry.core == party)
+                .map_or(doorbell.memory.base, |entry| {
+                    doorbell.party_window_base(entry)
+                });
+            (party.core(), base + alias(party_secure(party)))
+        })
+        .collect()
+}
+
 /// The controller-core physical-base map for an address: every participant that
 /// is not the AP maps to `base` plus the alias for that party's security world
 /// (the AP resolves through UIO instead).
@@ -1481,6 +1536,187 @@ mod tests {
         assert_eq!(transceiver(&ir, "lp").codec, Codec::Rkyv);
     }
 
+    /// The i.MX 93 CM33 owns MU side A while Linux owns side B, the mirror of
+    /// i.MX 95. A manifest still spells the descriptor roles the documented way
+    /// (`primary = "linux"`), so the two must be lowered independently: getting
+    /// this wrong emits `MuDoorbell::<Secondary, _>::new(p.MU1_MUA)`, which
+    /// fails `MuDoorbell::new`'s `Instance<Side = S>` bound.
+    #[test]
+    fn imx93_doorbell_window_is_mirrored_from_the_descriptor_role() {
+        let manifest = r#"
+            [profile]
+            chip = "mimx9352"
+            shared = "./shared"
+            deploy_root = "/opt/consortium"
+
+            [endpoints]
+            linux = "./app"
+            cm33  = "./firmware"
+
+            [[ipc.channel]]
+            name          = "sensor"
+            doorbell      = "mu1"
+            pattern       = "memory"
+            primary       = "linux"
+            secondary     = "cm33"
+            party.linux   = { chan = 0, type = "SensorData" }
+            party.cm33    = { chan = 1, type = "MotionControl" }
+            config.memory = { base = 0x00480000, length = 0x4000 }
+            mtu           = 128
+        "#;
+        let ir = Session::from_toml(manifest).unwrap().lower().unwrap();
+        let sensor = transceiver(&ir, "sensor");
+
+        // Roles follow the manifest...
+        assert_eq!(sensor.channel_primary.0, VisibleCore::Ap);
+        assert_eq!(sensor.channel_secondary.0, cm33());
+        // ...while the windows are mirrored: Linux on MUB, the CM33 on MUA.
+        assert_eq!(
+            sensor.doorbell_window,
+            (DoorbellRingerSide::Secondary, DoorbellRingerSide::Primary)
+        );
+        // The CM33 is on side A, so its physical base is the block base itself
+        // (0x0422_0000 through the 0x4000_0000 non-secure alias) — the same
+        // window its chip dump exposes as `MU1_MUA`. Linux takes MUB above it.
+        assert_eq!(sensor.doorbell_address.cp[&cm33()], 0x4422_0000);
+    }
+
+    /// i.MX 95 is the unmirrored case, and the CM33 there reaches MU1 through
+    /// MUB even though it is the channel's `secondary` — the window offset must
+    /// apply to it too, or it is handed Linux's half of the block.
+    #[test]
+    fn imx95_controller_doorbell_base_is_its_own_window() {
+        let manifest = r#"
+            [profile]
+            chip = "mimx9596xvt"
+            shared = "./shared"
+            deploy_root = "/opt/consortium"
+
+            [endpoints]
+            linux = "./app"
+            cm33  = "./firmware"
+
+            [[ipc.channel]]
+            name          = "sensor"
+            doorbell      = "mu1"
+            pattern       = "memory"
+            primary       = "linux"
+            secondary     = "cm33"
+            party.linux   = { chan = 0, type = "SensorData" }
+            party.cm33    = { chan = 1, type = "MotionControl" }
+            config.memory = { base = 0x00488000, length = 0x4000 }
+            mtu           = 128
+        "#;
+        let ir = Session::from_toml(manifest).unwrap().lower().unwrap();
+        let sensor = transceiver(&ir, "sensor");
+        assert_eq!(
+            sensor.doorbell_window,
+            (DoorbellRingerSide::Primary, DoorbellRingerSide::Secondary)
+        );
+        assert_eq!(sensor.doorbell_address.cp[&cm33()], 0x4423_0000);
+    }
+
+    /// The generated vector must name the same window it forwards.
+    ///
+    /// The vector's name comes from the chip map (looked up by the party's NVIC
+    /// number) while the side marker comes from the party's declared window, so
+    /// an `MU1_A` handler forwarding `Secondary` would mask the *other* half of
+    /// the block and starve the executor. On i.MX 93 the CM33 is on MUA, so
+    /// this is `MU1_A` forwarding `Primary`.
+    #[test]
+    fn imx93_doorbell_vector_names_the_window_it_forwards() {
+        let manifest = r#"
+            [profile]
+            chip = "mimx9352"
+            shared = "./shared"
+            deploy_root = "/opt/consortium"
+
+            [endpoints]
+            linux = "./app"
+            cm33  = "./firmware"
+
+            [[ipc.channel]]
+            name          = "sensor"
+            doorbell      = "mu1"
+            pattern       = "memory"
+            primary       = "linux"
+            secondary     = "cm33"
+            party.linux   = { chan = 0, type = "SensorData" }
+            party.cm33    = { chan = 1, type = "MotionControl" }
+            config.memory = { base = 0x00480000, length = 0x4000 }
+            mtu           = 128
+        "#;
+        let ir = Session::from_toml(manifest).unwrap().lower().unwrap();
+        let tokens = ir.bella.vectors(&cm33(), "::consortium_hal_imx9")[0].to_string();
+
+        assert!(tokens.contains("fn MU1_A ()"), "{tokens}");
+        assert!(
+            tokens.contains(
+                ":: consortium_ipc_doorbell_mu :: notify_gi_interrupt :: < :: consortium_ipc :: \
+                 Primary , 1usize > ()"
+            ),
+            "{tokens}"
+        );
+    }
+
+    /// A single-window doorbell's side marker names the core *bank*, not a
+    /// register window, so it must keep following the descriptor role. This is
+    /// what keeps the STM32 output identical across the window change.
+    #[test]
+    fn single_window_doorbell_side_still_follows_the_role() {
+        let ir = lowered();
+        let sensor = transceiver(&ir, "sensor");
+        assert_eq!(
+            sensor.doorbell_window,
+            (DoorbellRingerSide::Primary, DoorbellRingerSide::Secondary)
+        );
+    }
+
+    /// The i.MX 93 CM33 runs from TCM rather than a DDR carveout, so its
+    /// windows carry `reserve: false` and the pipeline still gets a complete
+    /// memory contract — without one, `csti build` fails outright at
+    /// `write_generated_memory_x`.
+    #[test]
+    fn imx93_cm33_remoteproc_lowers_to_a_tcm_layout() {
+        let manifest = r#"
+            [profile]
+            chip = "mimx9352"
+            shared = "./shared"
+            deploy_root = "/opt/consortium"
+
+            [endpoints]
+            linux = "./app"
+            cm33  = "./firmware"
+
+            [[ipc.channel]]
+            name          = "sensor"
+            doorbell      = "mu1"
+            pattern       = "memory"
+            primary       = "linux"
+            secondary     = "cm33"
+            party.linux   = { chan = 0, type = "SensorData" }
+            party.cm33    = { chan = 1, type = "MotionControl" }
+            config.memory = { base = 0x00480000, length = 0x4000 }
+            mtu           = 128
+        "#;
+        let ir = Session::from_toml(manifest).unwrap().lower().unwrap();
+        let layout = &ir.remoteproc[&"cm33".parse().unwrap()];
+
+        assert_eq!(layout.compatible, "fsl,imx93-cm33");
+        assert_eq!(layout.vector.window.origin, 0x1FFC_0000);
+        assert_eq!(layout.ram.origin, 0x2000_0000);
+        // TCM is not DRAM, so nothing here is carved out of the kernel map.
+        assert!(!layout.vector.window.reserve);
+        assert!(!layout.flash.reserve);
+        assert!(!layout.shmem.window.reserve);
+        assert!(!layout.ram.reserve);
+
+        // The contract has to render, or the firmware crate gets no `memory.x`.
+        let memory_x = layout.linker_memory().unwrap().render();
+        assert!(memory_x.contains("m_interrupts"), "{memory_x}");
+        assert!(memory_x.contains("m_rsc_tbl_in_tcm"), "{memory_x}");
+    }
+
     #[test]
     fn remoteproc_defaults_and_partial_overrides_lower_once() {
         let manifest = r#"
@@ -1549,6 +1785,11 @@ mod tests {
                 include_str!("../../../examples/melt-pot/imx95/Consortium.toml"),
                 "cm7",
                 include_str!("../../../examples/melt-pot/imx95/mcu/memory.x"),
+            ),
+            (
+                include_str!("../../../examples/melt-pot/imx93/Consortium.toml"),
+                "cm33",
+                include_str!("../../../examples/melt-pot/imx93/mcu/memory.x"),
             ),
             (
                 include_str!("../../../examples/melt-pot/stm32mp25/Consortium.toml"),
