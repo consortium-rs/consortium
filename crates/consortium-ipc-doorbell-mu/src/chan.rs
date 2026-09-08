@@ -39,22 +39,37 @@ use crate::error::MuError;
 #[cfg(not(any(feature = "mimx93", feature = "mimx95")))]
 compile_error!("no chip feature selected; enable one of: `mimx93`, `mimx95`");
 
+// The chip features select different instance counts, base tables and singleton
+// bindings, so they cannot be unified. Cargo unifies features across a build
+// graph, so this fires when *any* dependent forgets `default-features = false`
+// while selecting the non-default chip. Diagnosing it here — rather than through
+// the duplicate `mod chip` in the HAL or the duplicate `Interrupt` enum in the
+// PAC — is what makes the error name the actual mistake.
+#[cfg(all(feature = "mimx93", feature = "mimx95"))]
+compile_error!(
+    "chip features are mutually exclusive; enable exactly one of: `mimx93`, `mimx95`. \
+     A dependency selecting the non-default chip must set `default-features = false`."
+);
+
 /// Number of MU peripheral instances on the selected chip.
 ///
 /// | Feature  | Count | Chips         |
 /// |----------|-------|---------------|
 /// | `mimx95` |   8   | i.MX 95       |
 /// | `mimx93` |   2   | i.MX 93       |
-///
-/// Defined with `cfg!` so enabling several chip features triggers the
-/// `compile_error!` above rather than a duplicate-definition error.
-pub const MU_INSTANCE_COUNT: usize = if cfg!(feature = "mimx95") {
-    8
-} else if cfg!(feature = "mimx93") {
-    2
-} else {
-    0
-};
+#[cfg(feature = "mimx95")]
+pub const MU_INSTANCE_COUNT: usize = 8;
+
+/// Number of MU peripheral instances on the selected chip. See the `mimx95`
+/// definition for the full table.
+#[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
+pub const MU_INSTANCE_COUNT: usize = 2;
+
+/// Number of MU peripheral instances on the selected chip. Placeholder for the
+/// no-chip-feature build, which the guard above already rejects; it exists so
+/// that build fails on the guard rather than on a cascade of missing items.
+#[cfg(not(any(feature = "mimx93", feature = "mimx95")))]
+pub const MU_INSTANCE_COUNT: usize = 0;
 
 /// Number of general-purpose interrupt (GI) channels per MU instance. These
 /// occupy the low end of the channel space, ids `0..MU_GI_CHAN_COUNT`.

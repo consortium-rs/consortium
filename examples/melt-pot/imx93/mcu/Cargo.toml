@@ -1,0 +1,85 @@
+# Copyright 2026 Ethan Wu
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+# This crate is built by the `consortium` build pipeline, which writes the
+# generated `src/consortium.gen.rs` (IPC endpoints + MPU/NVIC bring-up) this
+# firmware `include!`s, then cross-compiles it. It is intentionally excluded
+# from the workspace so it builds into its own per-crate `target/`.
+[package]
+description = "melt-pot MCU firmware for i.MX93 Cortex-M33"
+edition     = "2024"
+license     = "Apache-2.0"
+name        = "melt-pot-imx93-mcu"
+version     = "0.3.0"
+
+# Cross-compile target: thumbv8m.main-none-eabihf  (Cortex-M33)
+# Built via `consortium build --manifest ../Consortium.toml`.
+
+[[bin]]
+name = "melt-pot-imx93-mcu"
+path = "src/main.rs"
+
+[dependencies]
+melt-pot-shared = { path = "../../shared", version = "0.3.0" }
+
+# Named directly by the generated `consortium.gen.rs`.
+consortium-codec = { default-features = false, features = [
+  "postcard",
+], path = "../../../../crates/consortium-codec", version = "0.3.0" }
+consortium-ipc = { default-features = false, path = "../../../../crates/consortium-ipc", version = "0.3.0" }
+consortium-ipc-doorbell-mu = { default-features = false, features = [
+  "mimx93",
+], path = "../../../../crates/consortium-ipc-doorbell-mu", version = "0.3.0" }
+consortium-ipc-transport-memory = { default-features = false, features = [
+  "defmt",
+  "mimx93",
+], path = "../../../../crates/consortium-ipc-transport-memory", version = "0.3.0" }
+consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory", version = "0.3.0" }
+consortium-runtime-mcu = { default-features = false, features = [
+  "defmt",
+  "macros",
+], path = "../../../../crates/consortium-runtime-mcu", version = "0.3.0" }
+# Unlike the i.MX 95 sibling, the chip feature is named here rather than left
+# to arrive transitively: the HAL's default is `mimx95`, and any sibling that
+# forgot `default-features = false` would otherwise select the wrong chip map.
+consortium-hal-imx9 = { default-features = false, features = [
+  "gpio",
+  "i2c",
+  "mimx93",
+  "rt",
+  "time-driver-lpit",
+], path = "../../../../crates/consortium-hal-imx9", version = "0.3.0" }
+
+# Firmware runtime.
+consortium-dbg = { default-features = false, features = [
+  "logger",
+], path = "../../../../crates/consortium-dbg", version = "0.3.0" }
+cortex-m = { features = ["critical-section-single-core"], version = "0.7" }
+cortex-m-rt = "0.7"
+defmt = "1.1.0"
+embassy-executor = { default-features = false, features = [
+  "executor-thread",
+  "platform-cortex-m",
+], version = "0.10.0" }
+embassy-time = { default-features = false, features = ["tick-hz-24_000_000"], version = "0.5.1" }
+panic-halt = "1.0"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+lto   = true
+panic = "abort"

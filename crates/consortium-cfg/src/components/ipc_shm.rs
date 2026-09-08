@@ -94,7 +94,13 @@ pub fn initialize_instances(
                 DoorbellRingerSide::Primary => quote::quote! { ::consortium_ipc::Primary },
                 DoorbellRingerSide::Secondary => quote::quote! { ::consortium_ipc::Secondary },
             };
-            let doorbell_ty = t.doorbell.as_type(side);
+            // `impl_channel!` takes `$side` and `$doorbell` as independent type
+            // parameters: the first is the descriptor role, the second carries
+            // the doorbell's own register window.
+            let window = t
+                .window_side(core)
+                .expect("core must participate in generated transceiver");
+            let doorbell_ty = t.doorbell.as_type(window);
             let region_ty = t.region_ty(core);
             let codec_ty = codec_path(t.codec, t.mtu);
             let (tx, rx) = match side {
@@ -197,6 +203,16 @@ pub struct Transceiver {
     pub channel_secondary: (VisibleCore, Channel),
     /// type-a doorbell metadata
     pub doorbell: DoorbellMeta,
+    /// Which of the doorbell's per-side register windows each party drives,
+    /// primary first.
+    ///
+    /// Distinct from the primary/secondary *role* above: the role is the
+    /// descriptor protocol's, chosen by the manifest, while the window is a
+    /// silicon fact read from the chip database. They coincide on i.MX 95
+    /// (A-core on MUA, CM7 on MUB) and are mirrored on i.MX 93, so conflating
+    /// them makes an otherwise-correct i.MX 93 manifest fail to compile against
+    /// `MuDoorbell::new`'s `Instance<Side = S>` bound.
+    pub doorbell_window: (DoorbellRingerSide, DoorbellRingerSide),
 }
 
 impl Transceiver {
@@ -217,7 +233,8 @@ impl Transceiver {
         (slots / 2 * 2) as u32
     }
 
-    /// get the side
+    /// The descriptor role `core` plays: which end of the shared-memory
+    /// protocol it is, and which channel id it transmits on.
     fn side(&self, core: VisibleCore) -> Option<DoorbellRingerSide> {
         if self.channel_primary.0 == core {
             Some(DoorbellRingerSide::Primary)
@@ -225,6 +242,18 @@ impl Transceiver {
             Some(DoorbellRingerSide::Secondary)
         } else {
             None
+        }
+    }
+
+    /// The doorbell register window `core` drives.
+    ///
+    /// Everything that names the doorbell type, its singleton, or its interrupt
+    /// entry point must use this rather than [`side`](Self::side) — see
+    /// [`doorbell_window`](Self::doorbell_window).
+    fn window_side(&self, core: VisibleCore) -> Option<DoorbellRingerSide> {
+        match self.side(core)? {
+            DoorbellRingerSide::Primary => Some(self.doorbell_window.0),
+            DoorbellRingerSide::Secondary => Some(self.doorbell_window.1),
         }
     }
 
@@ -260,8 +289,11 @@ impl Transceiver {
         // interrupt, so only it is opened with `enable_irq` and runs an
         // `irq_loop`. Binding the service to the region device registers it on a
         // handle whose IRQ listener never runs, and the AP never wakes.
+        let window = self
+            .window_side(core)
+            .expect("core must be either primary or secondary for the transceiver");
         let doorbell_code = self.doorbell.initialize(&DoorbellSite {
-            side,
+            side: window,
             core,
             uio_ident,
             uio_id: self.doorbell_address.ap.uio_id,
@@ -332,7 +364,9 @@ pub enum DoorbellRingerSide {
 /// opened with `enable_irq`, so only they run an `irq_loop` that can dispatch
 /// the bound service.
 pub struct DoorbellSite<'a> {
-    /// Which side of the doorbell the core being generated drives.
+    /// Which of the doorbell's register windows the core being generated
+    /// drives — not its descriptor role. See
+    /// [`Transceiver::doorbell_window`](Transceiver::doorbell_window).
     pub side: DoorbellRingerSide,
     /// The core being generated.
     pub core: VisibleCore,
@@ -619,10 +653,10 @@ impl ShuHan {
                 if core == VisibleCore::Ap {
                     return DoorbellSource::Uio;
                 }
-                let side = t
-                    .side(core)
+                let window = t
+                    .window_side(core)
                     .expect("core must be either primary or secondary for the transceiver");
-                let singleton = t.doorbell.singleton(side);
+                let singleton = t.doorbell.singleton(window);
                 // A core with no bundled chip map (or one whose map does not
                 // reach this window) has no singleton to hand over, so it keeps
                 // the address-based construction it has always used.
@@ -692,6 +726,7 @@ mod tests {
                 r#type: HardwareDoorbellPeripheralType::Ipcc,
                 id: Some(1),
             },
+            doorbell_window: (DoorbellRingerSide::Primary, DoorbellRingerSide::Secondary),
         }
     }
 

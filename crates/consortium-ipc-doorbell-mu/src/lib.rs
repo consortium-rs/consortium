@@ -43,14 +43,26 @@
 //! side-A (MUA) base, so one base table plus a length describes both processor views
 //! and [`Side`] selects between them at the type level.
 //!
+//! **`Side` here is the register window, not the descriptor role.** It says which
+//! half of the block this core drives — [`Primary`](consortium_ipc::Primary) is MUA,
+//! [`Secondary`](consortium_ipc::Secondary) is MUB — and which half a core gets is a
+//! silicon fact. It is unrelated to the primary/secondary role of
+//! `SharedMemoryTransport`, which is the shared-memory protocol's and is chosen by
+//! the manifest. The two coincide on i.MX 95 (the A-core is on MUA, the CM7 on MUB)
+//! and are mirrored on i.MX 93 (the CM33 is on MUA, so Linux takes MUB), so code
+//! that conflates them builds for one chip and fails the `Instance<Side = S>` bound
+//! on the other. `consortium-cfg` lowers the two independently: `impl_channel!`
+//! takes the role and the doorbell type separately.
+//!
 //! [`Chan`]: consortium_ipc::Chan
 //! [`Side`]: consortium_ipc::Side
 //!
 //! # Construction
 //!
 //! - **Firmware** — [`MuDoorbell::new`] consumes the chip HAL's `MUn_MUx` peripheral
-//!   singleton. A const assertion checks the singleton's side against `S`, so
-//!   `MuDoorbell<Secondary, 7>` cannot be built from the MUA singleton. The window
+//!   singleton. Its `T: Instance<Side = S>` bound checks the singleton's side against
+//!   `S`, so `MuDoorbell<Secondary, 7>` cannot be built from the MUA singleton (a
+//!   const assertion checks the instance number alongside it). The window
 //!   address still comes from this crate's [`registers::base`] table so the security
 //!   alias does not change underfoot.
 //! - **Linux/UIO** — [`MuDoorbell::new_mapped`] is `unsafe` and takes an `mmap`'d
@@ -65,7 +77,7 @@
 //! This crate installs **no** `#[interrupt]` handlers. The application owns the vector
 //! table and forwards each MU vector a core drives into
 //! [`notify_gi_interrupt::<S, N>()`](notify_gi_interrupt), parameterized with that
-//! instance's side and number — i.MX93 `MU1_B`/`MU2_B`, i.MX95 CM7
+//! instance's side and number — i.MX93 `MU1_A`/`MU2_A`, i.MX95 CM7
 //! `MU5_A`/`MU7_B`/`MU8_B`. Enable the *HAL's* `rt` feature
 //! (`consortium-hal-imx9/rt`) so the `#[interrupt]` macro and PAC vector table are
 //! available there.

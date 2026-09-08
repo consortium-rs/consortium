@@ -54,6 +54,15 @@
     clippy::unnecessary_cast
 )]
 
+// Chip features select different generated interrupt tables and linker
+// fragments, so they cannot be unified. Diagnosed here so the error names the
+// mistake instead of surfacing as a duplicate `Interrupt` enum.
+#[cfg(all(feature = "mimx93", feature = "mimx95"))]
+compile_error!(
+    "chip features are mutually exclusive; enable exactly one of: `mimx93`, `mimx95`. \
+     A dependency selecting the non-default chip must set `default-features = false`."
+);
+
 pub mod common;
 pub mod interrupts;
 pub mod metadata;

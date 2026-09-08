@@ -353,31 +353,42 @@ test-tee-a32:
 
 # ── M-core (thumbv8 / bare-metal) ───────────────────────────────────────────
 
+# thumbv8m serves two families: the STM32MP2 CM33 and the i.MX 93 CM33. The MU
+# doorbell and the chip-glue transports must name `mimx93` explicitly — their
+# default is `mimx95`, whose CM7 is a thumbv7 part, so a defaulted build here
+# compiles the wrong chip map for this target.
 check-ipc-m8:
     cargo check -p consortium-ipc --target {{ m8_target }}
     cargo check -p consortium-ipc-transport-memory --target {{ m8_target }} --no-default-features
+    cargo check -p consortium-ipc-transport-memory --target {{ m8_target }} --no-default-features --features mimx93
     cargo check -p consortium-ipc-transport-fdcan --target {{ m8_target }} --no-default-features
     cargo check -p consortium-ipc-transport-fdcan-embedded --target {{ m8_target }} --features stm32mp25x
+    cargo check -p consortium-ipc-transport-fdcan-embedded --target {{ m8_target }} --features mimx93
     cargo check -p consortium-ipc-transport-uart --target {{ m8_target }} --no-default-features
     cargo check -p consortium-ipc-transport-uart-embedded --target {{ m8_target }} --features stm32mp25x
+    cargo check -p consortium-ipc-transport-uart-embedded --target {{ m8_target }} --features mimx93
     cargo check -p consortium-runtime-mcu --target {{ m8_target }}
+    cargo check -p consortium-runtime-mcu --target {{ m8_target }} --no-default-features --features ipc-shm,mimx93
     cargo check -p consortium-runtime-mcu --target {{ m8_target }} --no-default-features --features ipc-uart
     cargo check -p consortium-runtime-mcu --target {{ m8_target }} --no-default-features --features ipc-fdcan
     cargo check -p consortium-ipc-doorbell-hsem --target {{ m8_target }}
     cargo check -p consortium-ipc-doorbell-ipcc --target {{ m8_target }}
-    cargo check -p consortium-ipc-doorbell-mu --target {{ m8_target }}
+    cargo check -p consortium-ipc-doorbell-mu --target {{ m8_target }} --no-default-features --features mimx93
 
 build-ipc-m8:
     cargo build -p consortium-ipc --release --target {{ m8_target }}
     cargo build -p consortium-ipc-transport-memory --release --target {{ m8_target }} --no-default-features
+    cargo build -p consortium-ipc-transport-memory --release --target {{ m8_target }} --no-default-features --features mimx93
     cargo build -p consortium-ipc-transport-fdcan --release --target {{ m8_target }} --no-default-features
     cargo build -p consortium-ipc-transport-fdcan-embedded --release --target {{ m8_target }} --features stm32mp25x
+    cargo build -p consortium-ipc-transport-fdcan-embedded --release --target {{ m8_target }} --features mimx93
     cargo build -p consortium-ipc-transport-uart --release --target {{ m8_target }} --no-default-features
     cargo build -p consortium-ipc-transport-uart-embedded --release --target {{ m8_target }} --features stm32mp25x
+    cargo build -p consortium-ipc-transport-uart-embedded --release --target {{ m8_target }} --features mimx93
     cargo build -p consortium-runtime-mcu --release --target {{ m8_target }}
     cargo build -p consortium-ipc-doorbell-hsem --release --target {{ m8_target }}
     cargo build -p consortium-ipc-doorbell-ipcc --release --target {{ m8_target }}
-    cargo build -p consortium-ipc-doorbell-mu --release --target {{ m8_target }}
+    cargo build -p consortium-ipc-doorbell-mu --release --target {{ m8_target }} --no-default-features --features mimx93
 
 # Compile M-core IPC crates for thumbv8. Unit tests are not runnable on the host.
 test-ipc-m8: check-ipc-m8
@@ -424,6 +435,7 @@ test-ipc-host:
     cargo test -p consortium-ipc-doorbell-ipcc --features std
     cargo test -p consortium-ipc-doorbell-mu
     cargo test -p consortium-ipc-doorbell-mu --features std
+    cargo test -p consortium-ipc-doorbell-mu --no-default-features --features mimx93,std
     cargo test -p consortium-ipc-transport-fdcan
     cargo test -p consortium-ipc-transport-fdcan --no-default-features
     cargo test -p consortium-ipc-transport-uart

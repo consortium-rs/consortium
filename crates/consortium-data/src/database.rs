@@ -103,6 +103,35 @@ mod tests {
         assert!(load("imx95").is_ok());
     }
 
+    /// Every bundled database parses, and its `name` identifies the family its
+    /// own lookup prefix selects.
+    ///
+    /// This is the invariant that a copy-pasted header breaks: `mimx95.yaml`
+    /// once carried `name: MIMX93` (and the i.MX 93 TRM link) while holding
+    /// genuine i.MX 95 data, so every consumer that reported the chip family
+    /// reported the wrong one.
+    #[test]
+    fn every_bundled_database_names_its_own_prefix() {
+        for entry in DATABASES {
+            let database: ChipDatabase = serde_yaml::from_str(entry.yaml)
+                .unwrap_or_else(|error| panic!("`{}` should parse: {error}", entry.prefix));
+            assert_eq!(
+                database.name.to_ascii_lowercase(),
+                entry.prefix,
+                "`{}` database is named `{}`",
+                entry.prefix,
+                database.name
+            );
+        }
+    }
+
+    #[test]
+    fn resolves_imx_families_from_full_part_numbers() {
+        assert_eq!(load("mimx9596xvt").unwrap().name, "MIMX95");
+        assert_eq!(load("mimx9352").unwrap().name, "MIMX93");
+        assert_eq!(load("imx93").unwrap().name, "MIMX93");
+    }
+
     #[test]
     fn rejects_unknown_chip() {
         assert!(matches!(load("acme9000"), Err(DataError::UnknownChip(_))));

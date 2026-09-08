@@ -100,6 +100,7 @@ fn transceiver() -> Transceiver {
             r#type: HardwareDoorbellPeripheralType::Ipcc,
             id: Some(1),
         },
+        doorbell_window: (DoorbellRingerSide::Primary, DoorbellRingerSide::Secondary),
     }
 }
 
@@ -220,6 +221,7 @@ fn pong() -> Transceiver {
             r#type: HardwareDoorbellPeripheralType::Ipcc,
             id: Some(2),
         },
+        doorbell_window: (DoorbellRingerSide::Primary, DoorbellRingerSide::Secondary),
     }
 }
 

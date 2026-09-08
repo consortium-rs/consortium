@@ -1,0 +1,57 @@
+# i.MX 93: CA55 Linux application + CM33 real-time firmware.
+#
+# This fixture exists to type-check the *mirrored* i.MX 93 doorbell geometry.
+# The CM33 owns MU side A and Linux side B, the reverse of i.MX 95, while the
+# channel still declares the roles the documented way (`primary = "linux"`), so
+# the generated `MuDoorbell<Primary, 1>` must be built from the `MU1_MUA`
+# singleton the CM33's chip map exposes. Conflating the window with the role
+# emits `MuDoorbell<Secondary, 1>` here and fails `MuDoorbell::new`'s
+# `Instance<Side = S>` bound -- which is exactly what this fixture catches.
+
+[profile]
+chip        = "mimx9352"
+shared      = "./shared"
+deploy_root = "/opt/consortium"
+
+[endpoints]
+linux = "./app"
+cm33  = "./firmware"
+
+[dbg.cm33]
+memory = { base = 0x000484000, length = 0x2000 }
+mtu    = 64
+
+[[ipc.channel]]
+name          = "sensor"
+doorbell      = "mu1"
+pattern       = "memory"
+primary       = "linux"
+secondary     = "cm33"
+party.linux   = { chan = 0, type = "SensorData" }
+party.cm33    = { chan = 1, type = "MotionControl" }
+config.memory = { base = 0x000480000, length = 0x4000 }
+mtu           = 128
+
+# A second channel on the other MU, so the shared-singleton path is exercised
+# with a distinct instance rather than only the first-use path.
+[[ipc.channel]]
+name          = "lp"
+doorbell      = "mu2"
+pattern       = "memory"
+primary       = "linux"
+secondary     = "cm33"
+party.linux   = { chan = 4, type = "LowPowerData" }
+party.cm33    = { chan = 5, type = "PowerControl" }
+config.memory = { base = 0x000488000, length = 0x4000 }
+mtu           = 128
+codec         = "rkyv"
+
+[peripheral.lpi2c1]
+owner     = "cm33"
+secure    = false
+clock     = 24000000
+frequency = 100000
+
+[peripheral.gpio2]
+owner  = "cm33"
+secure = false

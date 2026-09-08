@@ -101,11 +101,19 @@ pub use consortium_pac_imx9 as pac;
 
 // Peripheral singletons and their driver bindings, generated from the chip
 // databases by `scripts/pac/gen_peripherals.py`. Chip features are mutually
-// exclusive; enabling several is a duplicate-definition error, matching the PAC.
+// exclusive: each mounts a different singleton map, so they cannot be unified.
+// Diagnosed here so the error names the mistake rather than surfacing as a
+// duplicate `mod chip`; the `not(mimx95)` below keeps this the only diagnostic.
+#[cfg(all(feature = "mimx93", feature = "mimx95"))]
+compile_error!(
+    "chip features are mutually exclusive; enable exactly one of: `mimx93`, `mimx95`. \
+     A dependency selecting the non-default chip must set `default-features = false`."
+);
+
 #[cfg(feature = "mimx95")]
 #[path = "peripherals/imx95.rs"]
 mod chip;
-#[cfg(feature = "mimx93")]
+#[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
 #[path = "peripherals/imx93.rs"]
 mod chip;
 

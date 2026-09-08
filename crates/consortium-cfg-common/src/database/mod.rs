@@ -2,7 +2,7 @@ pub mod hardware_doorbell_party;
 pub mod hardware_doorbell_peripheral;
 pub mod schema;
 
-pub use hardware_doorbell_party::HardwareDoorbellParty;
+pub use hardware_doorbell_party::{DoorbellWindow, HardwareDoorbellParty};
 pub use hardware_doorbell_peripheral::{
     DoorbellClock, HardwareDoorbellPeripheral, HardwareDoorbellPeripheralType, HardwareMemory,
 };

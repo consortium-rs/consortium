@@ -4,6 +4,7 @@ use super::HardwareDoorbellPeripheral;
 use crate::config::VisibleCore;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct ChipDatabase {
     pub name: String,
     pub trm: String,

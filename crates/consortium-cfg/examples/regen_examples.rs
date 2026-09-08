@@ -13,6 +13,7 @@ fn main() {
     for (manifest_dir, shared_ident) in [
         ("examples/melt-pot/stm32mp25", "melt_pot_shared"),
         ("examples/melt-pot/imx95", "melt_pot_shared"),
+        ("examples/melt-pot/imx93", "melt_pot_shared"),
     ] {
         let dir = Path::new(manifest_dir);
         let toml = std::fs::read_to_string(dir.join("Consortium.toml")).expect("read manifest");
