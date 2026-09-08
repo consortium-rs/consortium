@@ -4,11 +4,14 @@ error[E0277]: the trait bound `NoCodec: CodecFor<Config>` is not satisfied
 50 | fn configure(_config: Config) -> optee_utee::Result<()> {
    |                       ^^^^^^ the trait `CodecFor<Config>` is not implemented for `NoCodec`
    |
-help: the trait `TeeParam<__TeeCodec>` is implemented for `Config`
+help: the trait `TeeParam<__TeeCodec>` is conditionally implemented for `Config`
   --> tests/ui/tee_command/fail/missing_codec.rs:40:10
    |
 40 | #[derive(TeeParam)]
    |          ^^^^^^^^
+   |          |
+   |          unsatisfied requirement introduced here: `NoCodec: CodecFor<Config>`
+   |          unsatisfied requirement introduced here: `for<'__buf> <NoCodec as CodecFor<Config>>::Decoded<'__buf> == Config`
 note: required for `Config` to implement `TeeParam`
   --> tests/ui/tee_command/fail/missing_codec.rs:41:8
    |
