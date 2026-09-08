@@ -1,5 +1,6 @@
 m8_target := "thumbv8m.main-none-eabihf"
 m7_target := "thumbv7em-none-eabihf"
+m6_target := "thumbv6m-none-eabi"
 a64_target := "aarch64-unknown-linux-gnu"
 a32_target := "armv7-unknown-linux-gnueabihf"
 rv32imc_target := "riscv32imc-unknown-none-elf"
