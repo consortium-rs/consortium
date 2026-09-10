@@ -1,19 +1,6 @@
 block/IWDG:
   description: ''
   items:
-    - name: CR
-      byte_offset: 0
-      description: Control register
-    - name: MR
-      byte_offset: 4
-      description: Mask register
-    - name: SCR
-      byte_offset: 8
-      description: Status set clear register
-    - name: SR
-      byte_offset: 12
-      description: Status register
-      fieldset: IWDG_SR
     - name: KR
       byte_offset: 0
       description: IWDG key register
@@ -58,6 +45,27 @@ block/IWDG:
       byte_offset: 1020
       description: IWDG size identification register
       fieldset: IWDG_SIDR
+fieldset/IWDG_KR:
+  description: ''
+  fields:
+    - name: KEY
+      bit_offset: 0
+      bit_size: 16
+      description: Key value (write only, read 0x0000)
+fieldset/IWDG_PR:
+  description: ''
+  fields:
+    - name: PR
+      bit_offset: 0
+      bit_size: 4
+      description: Prescaler divider
+fieldset/IWDG_RLR:
+  description: ''
+  fields:
+    - name: RL
+      bit_offset: 0
+      bit_size: 12
+      description: Watchdog counter reload value
 fieldset/IWDG_SR:
   description: ''
   fields:
@@ -85,27 +93,6 @@ fieldset/IWDG_SR:
       bit_offset: 15
       bit_size: 1
       description: Watchdog Early Interrupt flag
-fieldset/IWDG_KR:
-  description: ''
-  fields:
-    - name: KEY
-      bit_offset: 0
-      bit_size: 16
-      description: Key value (write only, read 0x0000)
-fieldset/IWDG_PR:
-  description: ''
-  fields:
-    - name: PR
-      bit_offset: 0
-      bit_size: 4
-      description: Prescaler divider
-fieldset/IWDG_RLR:
-  description: ''
-  fields:
-    - name: RL
-      bit_offset: 0
-      bit_size: 12
-      description: Watchdog counter reload value
 fieldset/IWDG_WINR:
   description: ''
   fields:
@@ -138,6 +125,10 @@ fieldset/IWDG_HWCFGR:
       bit_offset: 0
       bit_size: 4
       description: Support of Window function
+    - name: PR_DEFAULT
+      bit_offset: 4
+      bit_size: 4
+      description: Prescaler default value
 fieldset/IWDG_VERR:
   description: ''
   fields:

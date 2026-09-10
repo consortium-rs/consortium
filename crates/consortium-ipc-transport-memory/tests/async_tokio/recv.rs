@@ -32,8 +32,8 @@ fn recv_prefers_updated_rx_channel_over_fallback_order() {
     unsafe {
         let rx0 = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
         let rx1 = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(2)));
-        slot::write(rx0.slot_addr(base), b"fallback-first");
-        slot::write(rx1.slot_addr(base), b"updated-id-wins");
+        slot::write(rx0.slot_addr(base), b"fallback-first", false);
+        slot::write(rx1.slot_addr(base), b"updated-id-wins", false);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(2);
     }
 
@@ -59,6 +59,7 @@ fn recv_prefers_updated_rx_channel_over_fallback_order() {
         let mut fallback = [0; MTU];
         let read_region = unsafe { UncachedRegion::new(base, MULTI_REGION_LEN) };
         let n = unsafe { slot::try_read(rx0_layout.slot_addr(base), &mut fallback, &read_region) }
+            .delivered()
             .expect("fallback slot should still be unread");
         assert_eq!(&fallback[..n], b"fallback-first");
     });
@@ -72,7 +73,7 @@ fn recv_falls_back_when_updated_id_is_wrong_direction() {
 
     unsafe {
         let rx = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
-        slot::write(rx.slot_addr(base), b"fallback");
+        slot::write(rx.slot_addr(base), b"fallback", false);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(0);
     }
 
@@ -106,7 +107,7 @@ fn recv_falls_back_when_updated_id_is_out_of_range() {
 
     unsafe {
         let rx = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
-        slot::write(rx.slot_addr(base), b"out-of-range-fallback");
+        slot::write(rx.slot_addr(base), b"out-of-range-fallback", false);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(0xFF);
     }
 
@@ -188,7 +189,7 @@ fn recv_future_becomes_ready_after_pending_poll_then_doorbell_ring() {
             unsafe {
                 let rx_layout =
                     ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
-                slot::write(rx_layout.slot_addr(base), b"woken");
+                slot::write(rx_layout.slot_addr(base), b"woken", false);
                 base.add(RX_UPDATED_ID_OFFSET).write_volatile(1);
             }
             remote_doorbell.ring(ch2).expect("wake app doorbell");
@@ -236,7 +237,7 @@ fn recv_delivers_when_remote_publishes_during_subscribe_window() {
             // inside `recv_bytes` while nothing else touches the region.
             unsafe {
                 let rx = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
-                slot::write(rx.slot_addr(base), b"published-in-window");
+                slot::write(rx.slot_addr(base), b"published-in-window", false);
                 base.add(RX_UPDATED_ID_OFFSET).write_volatile(1);
             }
         });
@@ -272,7 +273,7 @@ fn pending_recv_flushes_integrity_error_and_self_wakes() {
     unsafe {
         let rx = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
         let slot_base = rx.slot_addr(base);
-        slot::write(slot_base, b"corrupted-before-read");
+        slot::write(slot_base, b"corrupted-before-read", false);
         *slot_base.add(slot::SLOT_HEADER) ^= 0xAA;
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(1);
     }
@@ -309,7 +310,7 @@ fn immediate_recv_invalidates_before_read_and_flushes_consumed_flag() {
 
     unsafe {
         let rx = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
-        slot::write(rx.slot_addr(base), b"already-there");
+        slot::write(rx.slot_addr(base), b"already-there", false);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(1);
     }
 

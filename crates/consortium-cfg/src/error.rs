@@ -193,4 +193,14 @@ pub enum CfgError {
         mtu: u32,
         required: usize,
     },
+
+    #[error(
+        "ipc channel '{channel}' sets config.ack, so party '{party}' must declare an ack_chan:          acknowledgement needs a doorbell line of its own, because every line carries exactly          one waiter"
+    )]
+    IpcAckChannelMissing { channel: String, party: String },
+
+    #[error(
+        "ipc channel '{channel}' party '{party}' declares an ack_chan, but the channel does not          set config.ack"
+    )]
+    IpcAckChannelUnexpected { channel: String, party: String },
 }

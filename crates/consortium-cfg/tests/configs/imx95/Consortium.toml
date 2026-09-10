@@ -18,9 +18,10 @@ doorbell      = "mu1"
 pattern       = "memory"
 primary       = "linux"
 secondary     = "cm33"
-party.linux   = { chan = 4, type = "LowPowerData" }
-party.cm33    = { chan = 5, type = "PowerControl" }
+party.linux   = { ack_chan = 0, chan = 4, type = "LowPowerData" }
+party.cm33    = { ack_chan = 1, chan = 5, type = "PowerControl" }
 config.memory = { base = 0x000484000, length = 0x4000 }
+config.ack    = true
 mtu           = 128
 
 [[ipc.channel]]

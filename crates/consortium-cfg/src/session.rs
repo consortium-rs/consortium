@@ -256,38 +256,72 @@ impl Session {
                     return Err(self.doorbell_party_unavailable(doorbell, *party));
                 }
 
-                if endpoint.chan >= doorbell.channels {
-                    consortium_log::trace!(
-                        "doorbell '{}' channel {} out of bounds ({} channels)",
-                        doorbell.name,
-                        endpoint.chan,
-                        doorbell.channels
-                    );
-                    return Err(CfgError::DoorbellChannelUnavailable {
-                        doorbell: doorbell.name.clone(),
-                        channel: endpoint.chan,
-                        channels: doorbell.channels,
-                        chip: chip.clone(),
-                        trm: self.database.trm.clone(),
-                        page: doorbell.channel_page,
-                    });
+                // An acknowledgement line is a doorbell channel like any other, so it goes
+                // through the same bounds and collision checks — that is what stops one
+                // from silently aliasing a data line or another endpoint's.
+                match (channel.ack(), endpoint.ack_chan) {
+                    (true, None) => {
+                        consortium_log::trace!(
+                            "ipc channel '{}' party '{}' sets config.ack without an ack_chan",
+                            channel.name,
+                            party
+                        );
+                        return Err(CfgError::IpcAckChannelMissing {
+                            channel: channel.name.clone(),
+                            party: party.to_string(),
+                        });
+                    }
+                    (false, Some(_)) => {
+                        consortium_log::trace!(
+                            "ipc channel '{}' party '{}' declares ack_chan without config.ack",
+                            channel.name,
+                            party
+                        );
+                        return Err(CfgError::IpcAckChannelUnexpected {
+                            channel: channel.name.clone(),
+                            party: party.to_string(),
+                        });
+                    }
+                    _ => {}
                 }
 
-                let key = (doorbell.name.to_ascii_lowercase(), endpoint.chan);
-                if let Some(first_party) = used_channels.insert(key, *party) {
-                    consortium_log::trace!(
-                        "doorbell '{}' channel {} claimed by both '{}' and '{}'",
-                        doorbell.name,
-                        endpoint.chan,
-                        first_party,
-                        party
-                    );
-                    return Err(CfgError::DoorbellChannelDuplicate {
-                        doorbell: doorbell.name.clone(),
-                        channel: endpoint.chan,
-                        first_party: first_party.to_string(),
-                        second_party: party.to_string(),
-                    });
+                for chan in [Some(endpoint.chan), endpoint.ack_chan]
+                    .into_iter()
+                    .flatten()
+                {
+                    if chan >= doorbell.channels {
+                        consortium_log::trace!(
+                            "doorbell '{}' channel {} out of bounds ({} channels)",
+                            doorbell.name,
+                            chan,
+                            doorbell.channels
+                        );
+                        return Err(CfgError::DoorbellChannelUnavailable {
+                            doorbell: doorbell.name.clone(),
+                            channel: chan,
+                            channels: doorbell.channels,
+                            chip: chip.clone(),
+                            trm: self.database.trm.clone(),
+                            page: doorbell.channel_page,
+                        });
+                    }
+
+                    let key = (doorbell.name.to_ascii_lowercase(), chan);
+                    if let Some(first_party) = used_channels.insert(key, *party) {
+                        consortium_log::trace!(
+                            "doorbell '{}' channel {} claimed by both '{}' and '{}'",
+                            doorbell.name,
+                            chan,
+                            first_party,
+                            party
+                        );
+                        return Err(CfgError::DoorbellChannelDuplicate {
+                            doorbell: doorbell.name.clone(),
+                            channel: chan,
+                            first_party: first_party.to_string(),
+                            second_party: party.to_string(),
+                        });
+                    }
                 }
             }
         }
@@ -802,6 +836,80 @@ mod tests {
         assert!(matches!(
             Session::from_toml(manifest),
             Err(CfgError::RegionNotMpuAligned { .. })
+        ));
+    }
+
+    /// Manifest with one acknowledgement-capable MU channel, parameterised so each test
+    /// can break exactly one thing about it.
+    fn imx95_ack_manifest(linux_ack: &str, cm7_ack: &str, ack: bool) -> String {
+        format!(
+            r#"
+            [profile]
+            chip = "mimx9596xvt"
+            shared = "./shared"
+            deploy_root = "/opt/consortium"
+
+            [[ipc.channel]]
+            name = "sensor"
+            doorbell = "mu7"
+            pattern = "memory"
+            primary = "linux"
+            secondary = "cm7"
+            party.linux = {{ chan = 6, {linux_ack} type = "SensorData" }}
+            party.cm7 = {{ chan = 7, {cm7_ack} type = "MotionControl" }}
+            config.memory = {{ base = 0x00488000, length = 0x4000 }}
+            config.ack = {ack}
+            mtu = 128
+        "#
+        )
+    }
+
+    #[test]
+    fn accepts_ack_channels_alongside_the_data_lines() {
+        let manifest = imx95_ack_manifest("ack_chan = 0,", "ack_chan = 1,", true);
+        Session::from_toml(&manifest).expect("distinct ack lines should be valid");
+    }
+
+    /// Acknowledgement needs a line of its own, so opting in without naming one is a
+    /// configuration error rather than a silent fallback.
+    #[test]
+    fn rejects_ack_without_an_ack_channel() {
+        let manifest = imx95_ack_manifest("", "ack_chan = 1,", true);
+        let err = Session::from_toml(&manifest).unwrap_err();
+        assert!(matches!(err, CfgError::IpcAckChannelMissing { .. }));
+        assert!(err.to_string().contains("ack_chan"));
+    }
+
+    /// The mirror image: a line declared for a capability the channel never enables would
+    /// silently reserve a doorbell channel that nothing rings.
+    #[test]
+    fn rejects_an_ack_channel_without_the_capability() {
+        let manifest = imx95_ack_manifest("ack_chan = 0,", "ack_chan = 1,", false);
+        assert!(matches!(
+            Session::from_toml(&manifest),
+            Err(CfgError::IpcAckChannelUnexpected { .. })
+        ));
+    }
+
+    /// An acknowledgement line is a doorbell channel like any other, so it goes through the
+    /// same collision check — here it aliases the peer's data line, which would make the
+    /// peer's receive half and this side's acknowledgement wait share one line.
+    #[test]
+    fn rejects_an_ack_channel_that_aliases_a_data_line() {
+        let manifest = imx95_ack_manifest("ack_chan = 7,", "ack_chan = 1,", true);
+        assert!(matches!(
+            Session::from_toml(&manifest),
+            Err(CfgError::DoorbellChannelDuplicate { channel: 7, .. })
+        ));
+    }
+
+    /// ...and through the same bounds check: MU exposes eight channels.
+    #[test]
+    fn rejects_an_out_of_range_ack_channel() {
+        let manifest = imx95_ack_manifest("ack_chan = 0,", "ack_chan = 64,", true);
+        assert!(matches!(
+            Session::from_toml(&manifest),
+            Err(CfgError::DoorbellChannelUnavailable { channel: 64, .. })
         ));
     }
 

@@ -8,9 +8,9 @@ use std::{
 use consortium_ipc::{Chan, Doorbell, MaybeSend, Primary, Secondary};
 use consortium_ipc_transport_memory::{
     CHANNEL_NUM_MAX, ChannelDirection, ChannelLayout, DESCRIPTOR_LENGTH, DescState, Descriptor,
-    DescriptorError, Error, SLOT_ALIGNMENT, SharedMemoryTransport, VERSION,
-    channel_table_entry_offset, descriptor_complete, get_state, set_state, slot, slot_offset,
-    slot_stride,
+    DescriptorError, DescriptorLayout, Error, FLAG_CHAN_ACK_CAPABLE, SLOT_ALIGNMENT,
+    SharedMemoryTransport, VERSION, channel_table_entry_offset, descriptor_complete, get_state,
+    set_state, slot, slot_offset, slot_stride,
 };
 use consortium_shared_memory::{
     UncachedRegion,
@@ -58,12 +58,16 @@ impl Doorbell for ImmediateDoorbell {
 }
 
 fn init_descriptor(base: *mut u8, num_channels: u8, transfer_size: usize) {
+    init_descriptor_with(base, DescriptorLayout::new(num_channels, transfer_size));
+}
+
+fn init_descriptor_with(base: *mut u8, layout: DescriptorLayout) {
     let doorbell = ImmediateDoorbell;
     let ch = unsafe { Chan::new_unchecked(0) };
 
     block_on(async {
         unsafe {
-            PrimaryTransport::descriptor_init(base, num_channels, transfer_size, &doorbell, ch, ch)
+            PrimaryTransport::descriptor_init(base, layout, &doorbell, ch, ch)
                 .await
                 .expect("primary descriptor init should complete");
         }
@@ -75,14 +79,21 @@ fn ack_descriptor(
     num_channels: usize,
     transfer_size: usize,
 ) -> Result<Descriptor, Error<ImmediateDoorbell>> {
+    ack_descriptor_with(
+        base,
+        DescriptorLayout::new(num_channels as u8, transfer_size),
+    )
+}
+
+fn ack_descriptor_with(
+    base: *mut u8,
+    layout: DescriptorLayout,
+) -> Result<Descriptor, Error<ImmediateDoorbell>> {
     let doorbell = ImmediateDoorbell;
     let ch = unsafe { Chan::new_unchecked(0) };
 
     block_on(async {
-        unsafe {
-            SecondaryTransport::descriptor_ack(base, num_channels, transfer_size, &doorbell, ch, ch)
-                .await
-        }
+        unsafe { SecondaryTransport::descriptor_ack(base, layout, &doorbell, ch, ch).await }
     })
 }
 
@@ -135,6 +146,74 @@ fn descriptor_init_writes_documented_layout_offsets() {
         descriptor.channels[1].direction,
         ChannelDirection::SecondaryToPrimary
     );
+
+    // A plain link publishes no capability bits, and the two bytes after them stay
+    // reserved.  This is what lets a peer built before acknowledgement existed pair with a
+    // non-acknowledging peer built after it: both read zero and agree.
+    for index in 0..2 {
+        let entry = channel_table_entry_offset(index);
+        assert_eq!(backing[entry + 9], 0, "channel {index} flags");
+        assert_eq!(&backing[entry + 10..entry + 12], &[0, 0]);
+        assert!(!descriptor.channels[index].ack_capable());
+    }
+}
+
+#[test]
+fn descriptor_init_publishes_the_ack_capability_per_channel() {
+    let mut backing = vec![0; DESCRIPTOR_LEN];
+    let base = backing.as_mut_ptr();
+
+    init_descriptor_with(base, DescriptorLayout::new(2, 96).with_ack(true));
+
+    let descriptor = unsafe { Descriptor::from_raw_ptr(base) };
+    for index in 0..2 {
+        let entry = channel_table_entry_offset(index);
+        assert_eq!(backing[entry + 9], FLAG_CHAN_ACK_CAPABLE);
+        assert!(descriptor.channels[index].ack_capable());
+    }
+
+    // The secondary declaring the same capability accepts it.
+    assert!(ack_descriptor_with(base, DescriptorLayout::new(2, 96).with_ack(true)).is_ok());
+}
+
+#[test]
+fn descriptor_ack_rejects_an_ack_capability_mismatch() {
+    // Both ends are generated from one manifest, so a disagreement means one build is
+    // stale.  Catching it during bring-up is the whole point of putting the capability on
+    // the wire: the alternative is a sender that parks forever on a line the peer never
+    // rings.
+    let mut backing = vec![0; DESCRIPTOR_LEN];
+    let base = backing.as_mut_ptr();
+
+    init_descriptor_with(base, DescriptorLayout::new(2, 96).with_ack(true));
+
+    let error = ack_descriptor_with(base, DescriptorLayout::new(2, 96))
+        .expect_err("a secondary without ack lines must reject an ack-capable descriptor");
+    assert!(matches!(
+        error,
+        Error::Descriptor(DescriptorError::AckMismatch {
+            index: 0,
+            expected: false,
+            actual: true,
+        })
+    ));
+
+    // ...and the mirror image, which is the more dangerous direction: here it is the
+    // secondary that would park on an acknowledgement the primary never sends.
+    let mut backing = vec![0; DESCRIPTOR_LEN];
+    let base = backing.as_mut_ptr();
+    init_descriptor(base, 2, 96);
+
+    let error = ack_descriptor_with(base, DescriptorLayout::new(2, 96).with_ack(true))
+        .expect_err("an ack-capable secondary must reject a plain descriptor");
+    assert!(matches!(
+        error,
+        Error::Descriptor(DescriptorError::AckMismatch {
+            index: 0,
+            expected: true,
+            actual: false,
+        })
+    ));
 }
 
 #[test]

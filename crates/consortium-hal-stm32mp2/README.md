@@ -50,6 +50,7 @@ Each behind a feature, all on by default:
 | `timer`, `lptim`     | `timer`, `lptim` | General timers, LPTIM (also `pwm` alias)     |
 | `time-driver-gp-tim` | `timer_driver`   | Embassy time driver over TIM2                |
 | `uart`               | `uart`           | USART, including IRQ-buffered `BufferedUart` |
+| `watchdog`           | `watchdog`       | IWDG1–4 (MP21), IWDG1–5 (MP25)               |
 
 `timer_driver` is what `consortium-cfg` brings up in the generated `init()` unless
 `[profile] time_driver = false`. `uart`'s `BufferedUart` is what
@@ -129,3 +130,32 @@ hardware or aliasing invariant, and chip-specific detail here rather than pushed
 ## License
 
 Apache-2.0. See [LICENSE](../../LICENSE).
+
+## Watchdog
+
+The `watchdog` feature exposes an owned `Watchdog` with `new`, `start`, `feed`,
+and `is_running`. Construction does not modify hardware. Start explicitly after
+setting up the peripheral's access permissions, clocks and reset routing:
+
+```rust,ignore
+use consortium_hal_stm32mp2::watchdog::{Config, Watchdog};
+
+let p = consortium_hal_stm32mp2::init();
+let mut watchdog = Watchdog::new(p.IWDG3);
+watchdog.start(Config { reload: 4095, ..Config::default() }).unwrap();
+// Feed periodically after checking that the application is healthy.
+watchdog.feed();
+```
+
+Timeout values are clock ticks, not milliseconds; select them using the actual
+watchdog clock. Window mode and early-warning interrupts are disabled. Dropping
+an active watchdog does not stop it. A synchronization error leaves the handle
+available, since hardware may already be running and still require feeding.
+Synchronization waits use a bounded status-read budget, not an Embassy timer.
+
+IWDG cannot be disabled after starting until reset. Supported instances are
+IWDG1–4 on MP21 and IWDG1–5 on MP25 (also the MP23 map). The separate WWDG
+peripheral is not covered. Regenerate the register API with `just pac-gen-iwdg`
+after updating the STM32 register YAML through the CMSIS parser.
+
+Register sequencing follows [STM32CubeMP2's IWDG driver](https://github.com/STMicroelectronics/STM32CubeMP2/blob/main/Drivers/STM32MP2xx_HAL_Driver/Src/stm32mp2xx_hal_iwdg.c).

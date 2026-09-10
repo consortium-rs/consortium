@@ -102,6 +102,7 @@ IMX9_BINDINGS = (
     Binding("crate::timer::impl_tpm", "timer", ("tpm",), title_case=True),
     Binding("crate::timer_driver::impl_lpit", "time-driver-lpit", ("lpit",)),
     Binding("crate::uart::impl_uart", "uart", ("lpuart",)),
+    Binding("crate::watchdog::impl_watchdog", "watchdog", ("wdog",)),
 )
 
 STM32MP2_BINDINGS = (
@@ -131,6 +132,7 @@ STM32MP2_BINDINGS = (
         ("", "_UP"),
     ),
     Binding("crate::uart::impl_uart", "uart", ("usart",)),
+    Binding("crate::watchdog::impl_watchdog", "watchdog", ("iwdg",)),
 )
 
 TARGETS = (

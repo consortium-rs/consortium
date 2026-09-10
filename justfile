@@ -751,6 +751,13 @@ pac-gen-interrupts:
 pac-gen-peripherals:
     python scripts/pac/gen_peripherals.py
 
+# Regenerate the IWDG PAC after parsing the STM32 headers.
+pac-gen-iwdg:
+    chiptool gen-block --input crates/consortium-data/database/peri/stm32mp/iwdg_v1.yaml \
+      --output crates/consortium-pac-stm32mp2/src/peripherals/iwdg.rs \
+      --common-module crate::common --skip-no-std
+    rustfmt --edition 2024 crates/consortium-pac-stm32mp2/src/peripherals/iwdg.rs
+
 # Parse all CMSIS headers (STM32 + NXP)
 pac-parse-all: pac-parse-stm32 pac-parse-nxp
     @echo "✓ All parsers completed"

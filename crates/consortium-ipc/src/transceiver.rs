@@ -18,6 +18,7 @@
 
 use consortium_codec::CodecFor;
 
+use crate::ack::AckSendTransport;
 use crate::transport::{RecvTransport, SendTransport};
 use crate::{Channel, ChannelError, ReceivedMessage, Rx, Tx};
 
@@ -72,6 +73,21 @@ where
     /// send message
     pub async fn send(&mut self, msg: &TyTx) -> Result<(), ChannelError<C, TrTx>> {
         self.tx.send(msg).await
+    }
+}
+
+/// Acknowledged sending, mirroring [`Channel::send_acked`].
+impl<TyTx, TyRx, TrTx, TrRx, C> Transceiver<TyTx, TyRx, TrTx, TrRx, C>
+where
+    TrTx: AckSendTransport,
+    C: CodecFor<TyTx> + CodecFor<TyRx>,
+{
+    /// Send `msg`, resolving only once the peer has taken it.
+    ///
+    /// See [`AckSendTransport`] for the contract, including the deadlock this can produce
+    /// when both peers await an acknowledgement with neither draining the other direction.
+    pub async fn send_acked(&mut self, msg: &TyTx) -> Result<(), ChannelError<C, TrTx>> {
+        self.tx.send_acked(msg).await
     }
 }
 

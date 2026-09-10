@@ -31,6 +31,14 @@ pub enum DescriptorError {
     InvalidChannelCount { expected: usize, actual: usize },
     #[error("invalid channel {index}: {reason}")]
     InvalidChannel { index: usize, reason: &'static str },
+    #[error(
+        "channel {index} acknowledgement capability mismatch: this side expected {expected}, peer published {actual}"
+    )]
+    AckMismatch {
+        index: usize,
+        expected: bool,
+        actual: bool,
+    },
 }
 
 #[derive(Debug, thiserror::Error, Default)]
@@ -55,6 +63,12 @@ pub enum Error<D: Doorbell> {
 
     #[error("no available channel")]
     NoChannel,
+
+    #[error("acknowledgement is not wired for this channel")]
+    AckNotEnabled,
+
+    #[error("peer rejected the message: payload failed its integrity check")]
+    PeerIntegrityError,
 
     #[error("payload too large: {payload_len} bytes exceeds channel capacity {capacity}")]
     PayloadTooLarge { payload_len: usize, capacity: usize },

@@ -21,6 +21,7 @@ use consortium_codec::{Codec, CodecFor};
 use core::marker::PhantomData;
 use core::ops::Deref;
 
+use crate::ack::AckSendTransport;
 use crate::chan::Chan;
 use crate::transport::{RecvTransport, SendTransport, TransportError};
 
@@ -116,6 +117,35 @@ where
 
         self.transport
             .send(self.buf[..n].as_ref())
+            .await
+            .map_err(ChannelError::Transport)
+    }
+}
+
+/// Acknowledged sending, for the transports that support it.
+///
+/// A separate `impl` block bounded on [`AckSendTransport`] rather than a method on the
+/// block above, so a channel over a transport that cannot acknowledge simply does not have
+/// this method — no runtime capability check, no `unimplemented!`.
+impl<T, Tr, C> Channel<Tx, T, Tr, C>
+where
+    Tr: AckSendTransport,
+    C: CodecFor<T>,
+{
+    /// Encode and send `msg`, resolving only once the peer has taken it.
+    ///
+    /// See [`AckSendTransport`] for the contract — in particular that this has no timeout,
+    /// that a cancelled send may still be delivered, and that two peers both awaiting an
+    /// acknowledgement with nothing draining the other direction will deadlock.
+    pub async fn send_acked(&mut self, msg: &T) -> Result<(), ChannelError<C, Tr>> {
+        let n = C::encode(msg, self.buf).map_err(ChannelError::Codec)?;
+        consortium_log::info!(
+            "Channel::send_acked: encoded {} bytes on {:?}",
+            n,
+            self.chan
+        );
+        self.transport
+            .send_acked(self.buf[..n].as_ref())
             .await
             .map_err(ChannelError::Transport)
     }

@@ -38,6 +38,7 @@ fn postcard_channel_sends_typed_message_over_shared_memory_transport() {
         let mut raw = [0; MTU];
         let read_region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let n = unsafe { slot::try_read(tx.slot_addr(base), &mut raw, &read_region) }
+            .delivered()
             .expect("remote reads raw postcard payload");
         let decoded = <PostcardCodec as CodecFor<Message>>::decode(&raw[..n])
             .expect("remote decodes postcard payload");
@@ -69,7 +70,7 @@ fn postcard_channel_receives_typed_message_over_shared_memory_transport() {
     .expect("encode remote postcard payload");
     unsafe {
         let rx = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
-        slot::write(rx.slot_addr(base), &encoded[..n]);
+        slot::write(rx.slot_addr(base), &encoded[..n], false);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(1);
     }
 

@@ -387,3 +387,11 @@ mod uart_bindings {
     crate::uart::impl_uart!(USART3, 0x400f_0000, Some(103));
     crate::uart::impl_uart!(USART6, 0x4022_0000, Some(123));
 }
+
+#[cfg(feature = "watchdog")]
+mod watchdog_bindings {
+    crate::watchdog::impl_watchdog!(IWDG1, 0x4401_0000, None);
+    crate::watchdog::impl_watchdog!(IWDG2, 0x4402_0000, None);
+    crate::watchdog::impl_watchdog!(IWDG3, 0x4403_0000, Some(2));
+    crate::watchdog::impl_watchdog!(IWDG4, 0x4404_0000, Some(3));
+}

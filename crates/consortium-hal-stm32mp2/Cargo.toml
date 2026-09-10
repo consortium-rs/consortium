@@ -31,6 +31,7 @@ default = [
   "time-driver-gp-tim",
   "timer",
   "uart",
+  "watchdog",
 ]
 # Chip selection — forwarded to the PAC. Choose exactly one. STM32MP23 and
 # STM32MP25 share one interrupt/peripheral layout, so both map to the PAC's
@@ -55,6 +56,7 @@ lptim              = ["dep:embassy-sync", "timer"]
 time-driver-gp-tim = ["dep:embassy-sync", "dep:embassy-time-driver", "dep:embassy-time-queue-utils"]
 uart               = ["dep:embassy-sync", "dep:embedded-hal-nb", "dep:embedded-io", "dep:embedded-io-async"]
 defmt              = ["consortium-log/defmt", "dep:defmt"]
+watchdog           = []
 
 [dependencies]
 consortium-hal           = { path = "../consortium-hal", version = "0.3.0" }

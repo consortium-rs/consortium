@@ -84,6 +84,7 @@ fn transceiver() -> Transceiver {
             VisibleCore::Ap,
             Channel {
                 doorbell_chan: 0,
+                ack_chan: None,
                 type_name: "Ping".to_string(),
                 buffer_name: "ping_tx_buf".to_string(),
             },
@@ -92,6 +93,7 @@ fn transceiver() -> Transceiver {
             cm33(),
             Channel {
                 doorbell_chan: 1,
+                ack_chan: None,
                 type_name: "Pong".to_string(),
                 buffer_name: "ping_rx_buf".to_string(),
             },
@@ -205,6 +207,7 @@ fn pong() -> Transceiver {
             VisibleCore::Ap,
             Channel {
                 doorbell_chan: 2,
+                ack_chan: None,
                 type_name: "Telemetry".to_string(),
                 buffer_name: "pong_tx_buf".to_string(),
             },
@@ -213,6 +216,7 @@ fn pong() -> Transceiver {
             cm7(),
             Channel {
                 doorbell_chan: 3,
+                ack_chan: None,
                 type_name: "Command".to_string(),
                 buffer_name: "pong_rx_buf".to_string(),
             },
