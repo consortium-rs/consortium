@@ -38,8 +38,16 @@
 //! +0x00  4   offset      the byte offset of the channel's slot
 //! +0x04  4   size        the total size of the channel's slot (must be ≥ SLOT_HEADER + MTU)
 //! +0x08  1   direction   0 for Primary→Secondary, 1 for Secondary→Primary
-//! +0x09  3   reserved
+//! +0x09  1   flags       FLAG_CHAN_ACK_CAPABLE
+//! +0x0A  2   reserved
 //! ```
+//!
+//! The channel `flags` byte carries link *capabilities* agreed once during the handshake,
+//! not per-message state — per-message state lives in the slot header. Today the only bit
+//! is [`FLAG_CHAN_ACK_CAPABLE`], which says the two ends wired up acknowledgement doorbell
+//! lines for this channel. Both sides declare it from their own manifest and
+//! the secondary's half of the handshake rejects a disagreement, so a half-configured pair
+//! fails at `connect` instead of hanging on the first acknowledged send.
 #![allow(dead_code)]
 use crate::transport::RegionSharedMemoryTransportable;
 use crate::utils::{rv_u8, rv_u32, wv_u8, wv_u32};
@@ -50,6 +58,14 @@ use consortium_shared_memory::descriptor::{DescriptorHeader, DescriptorMagic};
 use core::sync::atomic::Ordering;
 
 pub const CHANNEL_NUM_MAX: usize = 16;
+
+/// Channel-entry flag: acknowledgement doorbell lines are wired for this channel.
+///
+/// This is a capability, not a mode. It says `send_acked` is usable on the channel; it
+/// does not make ordinary [`send`](consortium_ipc::SendTransport::send) acknowledge
+/// anything. Whether an individual message wants an acknowledgement is recorded in that
+/// message's slot header instead.
+pub const FLAG_CHAN_ACK_CAPABLE: u8 = 1 << 0;
 
 /// The descriptor geometry the two ends of a shared-memory link agree on during
 /// the handshake.
@@ -78,12 +94,29 @@ pub struct DescriptorLayout {
     pub num_channels: u8,
     /// Payload transfer size this side proposes, in bytes.
     pub mtu: usize,
+    /// Whether this side wired acknowledgement doorbell lines for the link.
+    ///
+    /// Unlike `mtu`, this is not a proposal the peer may adjust: both ends must agree, and
+    /// the secondary's half of the handshake rejects a mismatch rather than picking a
+    /// winner.
+    pub ack: bool,
 }
 
 impl DescriptorLayout {
     /// A layout of `num_channels` slots, each proposing an `mtu`-byte payload.
+    ///
+    /// Acknowledgement lines are off; add them with [`with_ack`](Self::with_ack).
     pub const fn new(num_channels: u8, mtu: usize) -> Self {
-        Self { num_channels, mtu }
+        Self {
+            num_channels,
+            mtu,
+            ack: false,
+        }
+    }
+
+    /// Declare whether this side wired acknowledgement doorbell lines.
+    pub const fn with_ack(self, ack: bool) -> Self {
+        Self { ack, ..self }
     }
 }
 
@@ -134,7 +167,16 @@ pub struct ChannelLayout {
     pub offset: u32,
     pub size: u32,
     pub direction: ChannelDirection,
-    _reserved: [u8; 3],
+    /// Link capabilities for this channel; see [`FLAG_CHAN_ACK_CAPABLE`].
+    pub flags: u8,
+    _reserved: [u8; 2],
+}
+
+impl ChannelLayout {
+    /// Whether both ends wired acknowledgement doorbell lines for this channel.
+    pub const fn ack_capable(&self) -> bool {
+        self.flags & FLAG_CHAN_ACK_CAPABLE != 0
+    }
 }
 
 impl Descriptor {
@@ -196,12 +238,15 @@ impl ChannelLayout {
         let size = unsafe { rv_u32(ptr, 4) };
         // SAFETY: caller guarantees `ptr` covers the channel entry.
         let direction = ChannelDirection::from_primitive(unsafe { rv_u8(ptr, 8) });
+        // SAFETY: caller guarantees `ptr` covers the channel entry.
+        let flags = unsafe { rv_u8(ptr, 9) };
 
         Self {
             offset,
             size,
             direction,
-            _reserved: [0; 3],
+            flags,
+            _reserved: [0; 2],
         }
     }
 }
@@ -259,12 +304,15 @@ pub(crate) unsafe fn read_channel(base: *const u8, index: usize) -> ChannelLayou
     let size = unsafe { rv_u32(base, off + 4) };
     // SAFETY: caller guarantees `base` covers the indexed channel entry.
     let direction = ChannelDirection::from_primitive(unsafe { rv_u8(base, off + 8) });
+    // SAFETY: caller guarantees `base` covers the indexed channel entry.
+    let flags = unsafe { rv_u8(base, off + 9) };
 
     ChannelLayout {
         offset,
         size,
         direction,
-        _reserved: [0; 3],
+        flags,
+        _reserved: [0; 2],
     }
 }
 
@@ -380,7 +428,13 @@ pub unsafe fn set_state(base: *mut u8, state: DescState) {
 /// - `base` is valid for at least `CHAN_TABLE_BASE + num_channels * CHAN_ENTRY_SIZE` bytes
 /// - Memory is DMA-coherent and not accessed concurrently
 /// - `num_channels` and `transfer_size` do not cause out-of-bounds slot offsets
-pub(crate) unsafe fn publish_descriptor(base: *mut u8, num_channels: u8, transfer_size: usize) {
+pub(crate) unsafe fn publish_descriptor(base: *mut u8, layout: DescriptorLayout) {
+    let DescriptorLayout {
+        num_channels,
+        mtu: transfer_size,
+        ack,
+    } = layout;
+    let chan_flags = if ack { FLAG_CHAN_ACK_CAPABLE } else { 0 };
     // Write the descriptor body first; the header magic is published last so a
     // matching magic on the secondary implies the whole descriptor is ready.
     // SAFETY: caller guarantees the fixed descriptor fields are valid and coherent.
@@ -406,6 +460,8 @@ pub(crate) unsafe fn publish_descriptor(base: *mut u8, num_channels: u8, transfe
                 },
             )
         };
+        // SAFETY: caller guarantees the channel table covers all `channels` entries.
+        unsafe { wv_u8(base, off + 9, chan_flags) };
     }
 
     // SAFETY: caller guarantees the descriptor state field is valid and coherent.
@@ -444,9 +500,14 @@ pub(crate) unsafe fn descriptor_published(base: *const u8) -> bool {
 /// bytes. All accesses use `read_volatile`; the region must be DMA-coherent.
 pub(crate) unsafe fn accept_descriptor(
     base: *mut u8,
-    num_channels: usize,
-    transfer_size: usize,
+    layout: DescriptorLayout,
 ) -> Result<Descriptor, DescriptorError> {
+    let DescriptorLayout {
+        num_channels,
+        mtu: transfer_size,
+        ack,
+    } = layout;
+    let num_channels = num_channels as usize;
     // SAFETY: caller guarantees the descriptor header is present at `base`.
     let header = unsafe { DescriptorHeader::from_raw_ptr(base) };
     header.check(MAGIC, VERSION).map_err(|e| {
@@ -494,14 +555,35 @@ pub(crate) unsafe fn accept_descriptor(
         let size = unsafe { rv_u32(base, off + 4) };
         // SAFETY: caller guarantees the channel table covers `num_ch` entries.
         let direction = ChannelDirection::from_primitive(unsafe { rv_u8(base, off + 8) });
+        // SAFETY: caller guarantees the channel table covers `num_ch` entries.
+        let flags = unsafe { rv_u8(base, off + 9) };
 
         *channel = ChannelLayout {
             offset,
             size,
             direction,
-            _reserved: [0; 3],
+            flags,
+            _reserved: [0; 2],
         };
         validate_channel_layout(i, num_ch as usize, rx_transfer_size as usize, *channel)?;
+
+        // The acknowledgement capability is agreed, not negotiated: each side declares what
+        // its own build wired up, and a disagreement means one end would ring a line the
+        // other never listens on. Rejecting here turns that into a bring-up error instead of
+        // a hang on the first acknowledged send.
+        if channel.ack_capable() != ack {
+            consortium_log::trace!(
+                "accept_descriptor: channel {} ack capability mismatch (expected {}, got {})",
+                i,
+                ack,
+                channel.ack_capable()
+            );
+            return Err(DescriptorError::AckMismatch {
+                index: i,
+                expected: ack,
+                actual: channel.ack_capable(),
+            });
+        }
     }
 
     compiler_fence(Ordering::Release);
@@ -551,19 +633,19 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Prim
     /// [`Connect::connect`]: consortium_ipc::Connect::connect
     pub async unsafe fn descriptor_init(
         base: *mut u8,
-        num_channels: u8,
-        transfer_size: usize,
+        layout: DescriptorLayout,
         doorbell: &D,
         doorbell_tx: Chan,
         doorbell_rx: Chan,
     ) -> Result<(), Error<D>> {
         consortium_log::trace!(
-            "descriptor_init: {} channels, transfer_size {}",
-            num_channels,
-            transfer_size
+            "descriptor_init: {} channels, transfer_size {}, ack {}",
+            layout.num_channels,
+            layout.mtu,
+            layout.ack
         );
         // SAFETY: caller guarantees `base` covers the descriptor and channel table.
-        unsafe { publish_descriptor(base, num_channels, transfer_size) };
+        unsafe { publish_descriptor(base, layout) };
 
         consortium_log::trace!("descriptor_init: ready, ringing and awaiting secondary ack");
         doorbell.ring(doorbell_tx).map_err(Error::Doorbell)?;
@@ -587,16 +669,16 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Seco
     /// [`Connect::connect`]: consortium_ipc::Connect::connect
     pub async unsafe fn descriptor_ack(
         base: *mut u8,
-        num_channels: usize,
-        transfer_size: usize,
+        layout: DescriptorLayout,
         doorbell: &D,
         doorbell_rx: Chan,
         doorbell_tx: Chan,
     ) -> Result<Descriptor, super::Error<D>> {
         consortium_log::trace!(
-            "descriptor_ack: expecting {} channels, transfer_size {}",
-            num_channels,
-            transfer_size
+            "descriptor_ack: expecting {} channels, transfer_size {}, ack {}",
+            layout.num_channels,
+            layout.mtu,
+            layout.ack
         );
 
         // The header magic is the readiness gate: the primary publishes it last, so a
@@ -615,7 +697,7 @@ impl<D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTransport<Seco
         }
 
         // SAFETY: caller guarantees `base` covers the descriptor and channel table.
-        let descriptor = unsafe { accept_descriptor(base, num_channels, transfer_size) }?;
+        let descriptor = unsafe { accept_descriptor(base, layout) }?;
 
         consortium_log::trace!(
             "descriptor_ack: {} channels validated, acking primary",

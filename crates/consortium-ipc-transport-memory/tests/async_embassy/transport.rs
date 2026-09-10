@@ -162,7 +162,7 @@ async fn remote_task(base_addr: usize, doorbell: EmbassyDoorbell) {
     let base = base_addr as *mut u8;
     unsafe {
         let rx_layout = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
-        slot::write(rx_layout.slot_addr(base), b"embassy-pong");
+        slot::write(rx_layout.slot_addr(base), b"embassy-pong", false);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(1);
     }
     doorbell.ring(ch).expect("wake app-side Embassy doorbell");

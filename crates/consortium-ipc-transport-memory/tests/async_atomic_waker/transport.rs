@@ -169,7 +169,7 @@ fn recv_future_wakes_from_atomic_waker_doorbell() {
         unsafe {
             let rx_layout =
                 ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(RX_CHANNEL)));
-            slot::write(rx_layout.slot_addr(base), b"atomic-waker");
+            slot::write(rx_layout.slot_addr(base), b"atomic-waker", false);
             base.add(RX_UPDATED_ID_OFFSET)
                 .write_volatile(RX_CHANNEL as u8);
         }
@@ -184,4 +184,148 @@ fn recv_future_wakes_from_atomic_waker_doorbell() {
         }
     };
     assert_eq!(&rx[..n], b"atomic-waker");
+}
+
+/// One `AtomicWaker`-backed line per doorbell channel.
+///
+/// [`AtomicDoorbell`] routes by *side* — whatever the app rings lands in one place — which
+/// is enough while each side waits on exactly one thing. Acknowledgement gives each side a
+/// second line, and collapsing the two would hide the very property the design depends on,
+/// so this bus addresses lines by id the way the hardware doorbells do.
+static LINES: [AtomicDoorbellState; 4] = [
+    AtomicDoorbellState::new(),
+    AtomicDoorbellState::new(),
+    AtomicDoorbellState::new(),
+    AtomicDoorbellState::new(),
+];
+
+#[derive(Clone, Copy, Debug)]
+struct AtomicLinedDoorbell;
+
+impl AtomicLinedDoorbell {
+    fn reset() -> Self {
+        for line in &LINES {
+            line.reset();
+        }
+        Self
+    }
+}
+
+impl Doorbell for AtomicLinedDoorbell {
+    type Error = Infallible;
+
+    fn ring(&self, ch: Chan) -> Result<(), Infallible> {
+        let line = &LINES[ch.id() as usize];
+        line.pending.store(true, Ordering::Release);
+        line.waker.wake();
+        Ok(())
+    }
+
+    fn wait(&self, ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend {
+        AtomicWaitFut {
+            state: &LINES[ch.id() as usize],
+            ch,
+        }
+    }
+
+    fn pending(&self, ch: Chan) -> bool {
+        LINES[ch.id() as usize].pending.load(Ordering::Acquire)
+    }
+}
+
+/// Descriptor channel this side transmits on — the one `RX_CHANNEL` is not.
+const TX_CHANNEL: usize = 1 - RX_CHANNEL;
+
+/// `send_acked` parks on an `AtomicWaker` doorbell and resolves when the peer drains.
+///
+/// The `std` build of this file runs as [`Primary`] and the `no_std` build as
+/// [`Secondary`], so this covers the send-side park on the executor shape firmware
+/// actually uses: hand-rolled polling with a `noop` waker, no Tokio anywhere.
+///
+/// [`Primary`]: consortium_ipc::Primary
+/// [`Secondary`]: consortium_ipc::Secondary
+#[test]
+fn send_acked_future_wakes_from_atomic_waker_doorbell() {
+    use consortium_ipc::{AckSendTransport, Connect};
+    use consortium_ipc_transport_memory::DescriptorLayout;
+
+    let mut backing = vec![0; REGION_LEN].into_boxed_slice();
+    let base = backing.as_mut_ptr();
+    init_ack_capable_descriptor(base);
+
+    let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
+    let doorbell = AtomicLinedDoorbell::reset();
+    let ch_tx = unsafe { Chan::new_unchecked(0) };
+    let ch_rx = unsafe { Chan::new_unchecked(2) };
+    let ch_ack_tx = unsafe { Chan::new_unchecked(1) };
+    let ch_ack_rx = unsafe { Chan::new_unchecked(3) };
+
+    let mut transport = unsafe {
+        SharedMemoryTransport::<Side, _, _>::new_acked(
+            ch_tx, ch_rx, ch_ack_tx, ch_ack_rx, doorbell, region, base,
+        )
+    };
+
+    let mut cx = Context::from_waker(noop_waker_ref());
+
+    // Complete the handshake, which is what latches the acknowledgement capability.  As
+    // `Secondary` the descriptor is already published so this resolves on the first poll;
+    // as `Primary` it waits for the peer's ack ring, which the "remote" supplies here.
+    {
+        let connect = transport.connect(DescriptorLayout::new(2, MTU).with_ack(true));
+        pin_mut!(connect);
+        if connect.as_mut().poll(&mut cx).is_pending() {
+            doorbell.ring(ch_rx).expect("remote acks the descriptor");
+            assert!(
+                connect.as_mut().poll(&mut cx).is_ready(),
+                "handshake should complete once the peer acks"
+            );
+        }
+    }
+
+    let send = transport.send_acked(b"atomic-acked");
+    pin_mut!(send);
+
+    // Published and rung, but not yet drained: the future must hold.
+    assert!(
+        matches!(send.as_mut().poll(&mut cx), Poll::Pending),
+        "send_acked must not resolve before the peer drains the slot"
+    );
+
+    let tx_slot = unsafe {
+        let layout = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(TX_CHANNEL)));
+        layout.slot_addr(base)
+    };
+    assert!(
+        unsafe { slot::ack_requested(tx_slot) },
+        "the published frame must carry the per-message acknowledgement request"
+    );
+
+    // The remote drains it and rings the acknowledgement line.
+    let mut remote_buf = [0; MTU];
+    let outcome = unsafe {
+        let remote_region = UncachedRegion::new(base, REGION_LEN);
+        slot::try_read(tx_slot, &mut remote_buf, &remote_region)
+    };
+    assert_eq!(outcome.delivered(), Some(b"atomic-acked".len()));
+    assert!(outcome.ack_requested());
+    doorbell
+        .ring(ch_ack_rx)
+        .expect("remote acknowledges the drained slot");
+
+    match send.as_mut().poll(&mut cx) {
+        Poll::Ready(Ok(())) => {}
+        Poll::Ready(Err(error)) => panic!("send_acked should succeed, got {error:?}"),
+        Poll::Pending => panic!("send_acked should resolve once the peer acknowledges"),
+    }
+}
+
+fn init_ack_capable_descriptor(base: *mut u8) {
+    init_two_channel_descriptor(base);
+    unsafe {
+        for index in 0..2 {
+            base.add(channel_table_entry_offset(index) + 9)
+                .write_volatile(consortium_ipc_transport_memory::FLAG_CHAN_ACK_CAPABLE);
+        }
+    }
 }

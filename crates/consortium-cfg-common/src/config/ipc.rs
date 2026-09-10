@@ -66,6 +66,11 @@ impl IpcChannel {
     pub const fn cache(&self) -> bool {
         self.config.cache
     }
+
+    /// Whether this channel wires acknowledgement doorbell lines.
+    pub const fn ack(&self) -> bool {
+        self.config.ack
+    }
 }
 
 /// IPC channel configuration pattern.
@@ -84,6 +89,18 @@ pub struct IpcChannelConfig {
     /// Whether the controller-side mapping of this window is cacheable.
     #[serde(default)]
     pub cache: bool,
+    /// Whether to wire acknowledgement doorbell lines for this channel.
+    ///
+    /// This makes `send_acked` — a send that resolves only once the peer has taken the
+    /// message — *available*. It is a capability, not a mode: ordinary `send` stays
+    /// fire-and-forget on the same channel and costs nothing extra, because whether an
+    /// individual message wants acknowledging travels in that message's slot header.
+    ///
+    /// Setting it requires each party to declare an `ack_chan` alongside its `chan`. Those
+    /// are two more doorbell channels per endpoint, which is the price of every line
+    /// carrying exactly one waiter.
+    #[serde(default)]
+    pub ack: bool,
 }
 
 /// One core's endpoint on an IPC channel.
@@ -92,6 +109,12 @@ pub struct IpcChannelConfig {
 pub struct IpcEndpoint {
     /// Transport channel index used by this core.
     pub chan: u32,
+    /// Doorbell channel this core rings to acknowledge the peer's messages.
+    ///
+    /// Required when the channel sets `config.ack`, and rejected otherwise. Must not
+    /// collide with any other doorbell channel on the same peripheral.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ack_chan: Option<u32>,
     /// Rust message type carried by this endpoint.
     #[serde(rename = "type")]
     pub r#type: String,

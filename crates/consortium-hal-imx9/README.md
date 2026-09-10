@@ -50,6 +50,7 @@ Each behind a feature, all on by default:
 | `timer`            | `timer`, `lptmr` | General timers, LPTMR (also `pwm` alias)      |
 | `time-driver-lpit` | `timer_driver`   | Embassy time driver over LPIT1                |
 | `uart`             | `uart`           | LPUART, including IRQ-buffered `BufferedUart` |
+| `watchdog`         | `watchdog`       | WDOG1–5                                       |
 
 `timer_driver` is what `consortium-cfg` brings up in the generated `init()` unless
 `[profile] time_driver = false`. `uart`'s `BufferedUart` is what
@@ -119,3 +120,32 @@ hardware or aliasing invariant, and chip-specific detail here rather than pushed
 ## License
 
 Apache-2.0. See [LICENSE](../../LICENSE).
+
+## Watchdog
+
+The `watchdog` feature exposes an owned `Watchdog` with `new`, `start`, `feed`,
+and `is_running`. Construction does not modify hardware. Start explicitly after
+setting up the peripheral's access permissions, clocks and reset routing:
+
+```rust,ignore
+use consortium_hal_imx9::watchdog::{Config, Watchdog};
+
+let p = consortium_hal_imx9::init();
+let mut watchdog = Watchdog::new(p.WDOG3);
+watchdog.start(Config { timeout_ticks: 32_000, ..Config::default() }).unwrap();
+// Feed periodically after checking that the application is healthy.
+watchdog.feed();
+```
+
+Timeout values are clock ticks, not milliseconds; select them using the actual
+watchdog clock. Window mode and early-warning interrupts are disabled. Dropping
+an active watchdog does not stop it. A synchronization error leaves the handle
+available, since hardware may already be running and still require feeding.
+Synchronization waits use a bounded status-read budget, not an Embassy timer.
+
+The driver supports both 16-bit and 32-bit command modes during takeover and
+masks interrupts around unlock/program/refresh sequences. Supply a critical-section
+implementation that masks local interrupts. A watchdog locked by a previous owner
+rejects reconfiguration with `Error::Locked` but can still be fed.
+
+Register sequencing follows [NXP's RTWDOG driver](https://github.com/nxp-mcuxpresso/mcux-sdk/blob/main/drivers/rtwdog/fsl_rtwdog.c).

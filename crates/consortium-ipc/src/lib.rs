@@ -103,6 +103,7 @@
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
+pub(crate) mod ack;
 pub(crate) mod chan;
 pub(crate) mod channel;
 pub(crate) mod connect;
@@ -115,6 +116,7 @@ pub(crate) mod transport;
 pub(crate) mod wire;
 
 pub use {
+    ack::AckSendTransport,
     chan::{Chan, ChanValidate},
     channel::{Channel, ChannelError, Direction, ReceivedMessage, Rx, Tx},
     connect::Connect,

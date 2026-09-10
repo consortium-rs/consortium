@@ -47,7 +47,7 @@
 //! # Drivers
 //!
 //! Each is behind a feature, all on by default: `adc`, `can`, `dma`, `gpio`,
-//! `i2c`, `i3c`, `lptim`, `spi`, `timer`, `timer_driver`, `uart`.
+//! `i2c`, `i3c`, `lptim`, `spi`, `timer`, `timer_driver`, `uart`, `watchdog`.
 //!
 //! `timer_driver` (`time-driver-gp-tim`) is the Embassy time driver over TIM2;
 //! `consortium-cfg` emits its bring-up into the generated `init()` unless
@@ -172,3 +172,6 @@ pub mod timer;
 
 #[cfg(feature = "uart")]
 pub mod uart;
+
+#[cfg(feature = "watchdog")]
+pub mod watchdog;

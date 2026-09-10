@@ -134,11 +134,53 @@
 //! channel id and a clone of the doorbell and region handles, so a `Tx` and an `Rx`
 //! `Channel` can be driven concurrently over one window.
 //!
+//! # Acknowledged sends
+//!
+//! [`send`] is fire-and-forget: it writes a slot, rings, and returns. That stays the
+//! default on every channel. A channel built with [`new_acked`] also offers
+//! [`send_acked`], which resolves only once the peer has drained *that* slot — and which
+//! reports [`Error::PeerIntegrityError`] when the peer took the message and rejected its
+//! CRC, something a plain send can never tell you.
+//!
+//! Two separate flags carry this, at two levels, because they answer different questions:
+//!
+//! - **Is acknowledgement wired on this link?** A capability, agreed once in the
+//!   descriptor's channel entry ([`FLAG_CHAN_ACK_CAPABLE`]) so a half-configured pair
+//!   fails at [`Connect::connect`] instead of hanging on the first acknowledged send.
+//! - **Does *this message* want acknowledging?** The sender's per-call decision, recorded
+//!   in the message's own slot header ([`slot::FLAG_ACK_REQUESTED`]). `send` never sets it,
+//!   `send_acked` always does, so a capable channel taxes only the messages that ask.
+//!
+//! Acknowledgement gets its **own pair of doorbell lines**, one per core, rather than
+//! reusing the data lines. Each line carries exactly one waiter — the receive half is
+//! already parked on the data line, and the hardware doorbells hold one waker per line,
+//! arm and disarm it unrefcounted, and *consume* the status on the first poll — so an
+//! acknowledgement arriving there would have nowhere to land.
+//!
+//! Three things to know before using it:
+//!
+//! - **Two peers both awaiting an acknowledgement, with neither draining the other
+//!   direction, deadlock.** The acknowledgement is produced by the peer's *receive* path,
+//!   so that path has to be running. `send` reports instead of waiting, which is why it
+//!   remains the default for lockstep single-task designs.
+//! - **Delivery is at-least-once; acknowledgement is not.** Dropping the future after the
+//!   ring loses the confirmation, not the message.
+//! - **A plain `send` in flight blocks an acknowledged one.** An unacknowledged message
+//!   frees its slot silently, so while one is outstanding there is no edge to wait for and
+//!   `send_acked` returns [`Error::NoChannel`] — the same answer `send` would give, with
+//!   the retry left to the caller. Hanging would be the alternative.
+//!
+//! [`send`]: consortium_ipc::SendTransport::send
+//! [`send_acked`]: consortium_ipc::AckSendTransport::send_acked
+//! [`new_acked`]: SharedMemoryTransport::new_acked
+//! [`Connect::connect`]: consortium_ipc::Connect::connect
+//!
 //! # Considerations and limitations
 //!
 //! - **Depth is one frame per direction.** A slot holds a single message, so a
 //!   sender whose peer has not set `FLAG_CONSUMED` gets [`Error::NoChannel`] rather
-//!   than queueing. Backpressure is the caller's to handle.
+//!   than queueing. Backpressure is the caller's to handle, or delegated to
+//!   [`send_acked`] on a channel wired for it.
 //! - **At most [`CHANNEL_NUM_MAX`] channels** per descriptor.
 //! - **`new` is `unsafe`.** The caller guarantees the window covers the descriptor,
 //!   channel table, and every slot, and that nothing else aliases it. On Linux the
@@ -210,7 +252,7 @@ pub(crate) mod utils;
 pub use consortium_ipc::{Primary, Secondary, Side};
 pub use descriptor::{
     CHANNEL_NUM_MAX, ChannelDirection, ChannelLayout, DESCRIPTOR_LENGTH, DescState, Descriptor,
-    DescriptorLayout, MAGIC, RX_UPDATED_ID_OFFSET, SLOT_ALIGNMENT, VERSION,
+    DescriptorLayout, FLAG_CHAN_ACK_CAPABLE, MAGIC, RX_UPDATED_ID_OFFSET, SLOT_ALIGNMENT, VERSION,
     channel_table_entry_offset, descriptor_complete, get_state, required_region_len, set_state,
     slot_offset, slot_stride,
 };
@@ -235,6 +277,12 @@ pub use error::{DescriptorError, Error};
 /// [`FLAG_INTEGRITY_ERROR`](slot::FLAG_INTEGRITY_ERROR) and reports no message rather than surfacing corrupt
 /// bytes.
 ///
+/// [`FLAG_ACK_REQUESTED`](slot::FLAG_ACK_REQUESTED) rides in that same final store. It is the
+/// sender's per-message request to be told when the slot drains, and [`try_read`](slot::try_read)
+/// hands it back through [`ReadOutcome`](slot::ReadOutcome) — including on the integrity-error
+/// path, because a sender parked on an acknowledgement must be woken whether or not its
+/// message survived the CRC.
+///
 /// These functions are `unsafe` and take a raw slot pointer: they perform no bounds
 /// checks and assume the caller resolved the slot from a validated channel-table
 /// entry. Cache maintenance is *not* their job — the transport calls
@@ -244,11 +292,12 @@ pub use error::{DescriptorError, Error};
 /// for tests and for tooling that inspects a live window.
 pub mod slot {
     pub use super::slot_internal::{
-        FLAG_CONSUMED, FLAG_INTEGRITY_ERROR, FLAG_VALID, SLOT_HEADER, is_consumed, try_read, write,
+        FLAG_ACK_REQUESTED, FLAG_CONSUMED, FLAG_INTEGRITY_ERROR, FLAG_VALID, ReadOutcome,
+        SLOT_HEADER, ack_requested, flags, is_consumed, try_read, write,
     };
 }
 
 pub use transport::{
-    RecvAccess, RegionSharedMemoryTransportable, SendFut, SharedMemoryTransport,
+    RecvAccess, RegionSharedMemoryTransportable, SendAccess, SendFut, SharedMemoryTransport,
     SharedMemoryTransportRx, SharedMemoryTransportTx,
 };

@@ -69,16 +69,18 @@ Each entry describes one bidirectional typed channel. The current manifest patte
 `memory`; the UART transport is available as a crate API but is not lowered from this
 table yet.
 
-| Field                  | Meaning                                                      |
-| ---------------------- | ------------------------------------------------------------ |
-| `name`                 | Uppercase singleton field under the generated `Channels`     |
-| `doorbell`             | Chip database doorbell, such as `ipcc1` or `mu7`             |
-| `primary`, `secondary` | Endpoints participating in the descriptor handshake          |
-| `party.<name>`         | This party's outgoing doorbell channel and Rust message type |
-| `config.memory`        | Physical shared region containing the descriptor and slots   |
-| `config.cache`         | Cache the controller-side mapping; defaults to `false`       |
-| `mtu`                  | Maximum encoded payload size in bytes                        |
-| `codec`                | `postcard` by default; `prost` and `rkyv` are also supported |
+| Field                   | Meaning                                                       |
+| ----------------------- | ------------------------------------------------------------- |
+| `name`                  | Uppercase singleton field under the generated `Channels`      |
+| `doorbell`              | Chip database doorbell, such as `ipcc1` or `mu7`              |
+| `primary`, `secondary`  | Endpoints participating in the descriptor handshake           |
+| `party.<name>`          | This party's outgoing doorbell channel and Rust message type  |
+| `config.memory`         | Physical shared region containing the descriptor and slots    |
+| `config.cache`          | Cache the controller-side mapping; defaults to `false`        |
+| `config.ack`            | Wire acknowledgement doorbell lines; defaults to `false`      |
+| `party.<name>.ack_chan` | This party's acknowledgement line; required with `config.ack` |
+| `mtu`                   | Maximum encoded payload size in bytes                         |
+| `codec`                 | `postcard` by default; `prost` and `rkyv` are also supported  |
 
 Message types must exist in the `[profile].shared` crate and satisfy the selected
 codec. The region must be large enough for the descriptor and both directional slots.

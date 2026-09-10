@@ -279,6 +279,17 @@ pub trait Instance: SealedInstance + PeripheralType + 'static {
     const CHAN_RX: u8;
     /// Negotiated payload size and scratch-buffer length.
     const MTU: usize;
+
+    /// Whether this endpoint wired acknowledgement doorbell lines.
+    ///
+    /// Defaulted so an endpoint declared before acknowledgement existed — or one that
+    /// simply does not want it — needs to say nothing. Published in the descriptor during
+    /// the handshake, where a peer that disagrees is rejected.
+    const ACK: bool = false;
+    /// Doorbell channel this endpoint rings to acknowledge the peer's messages.
+    const CHAN_ACK_TX: Option<u8> = None;
+    /// Doorbell channel this endpoint waits on for the peer's acknowledgements.
+    const CHAN_ACK_RX: Option<u8> = None;
 }
 
 /// The unsplit transport stored for instance `T`.
@@ -340,7 +351,7 @@ impl<T: Instance> Endpoint<T> {
         let (chan_tx, chan_rx) = self.resources.transport.channels();
         self.resources
             .transport
-            .connect(DescriptorLayout::new(2, T::MTU))
+            .connect(DescriptorLayout::new(2, T::MTU).with_ack(T::ACK))
             .await
             .map_err(ConnectError::from)?;
         let (transport_tx, transport_rx) = self.resources.transport.split();
@@ -448,8 +459,33 @@ macro_rules! channels {
 /// Bind one generated channel marker to its endpoint types and storage.
 #[macro_export]
 macro_rules! impl_channel {
+    // Without acknowledgement lines — the ordinary form, and what generated code emits for
+    // a channel that does not set `config.ack`.
     ($name:ident, $side:ty, $doorbell:ty, $region:ty, $tx:ty, $rx:ty, $codec:ty,
         $chan_tx:expr, $chan_rx:expr, $mtu:expr $(,)?) => {
+        $crate::impl_channel!(
+            @impl $name, $side, $doorbell, $region, $tx, $rx, $codec,
+            $chan_tx, $chan_rx, $mtu,
+            false, ::core::option::Option::None, ::core::option::Option::None,
+        );
+    };
+    // With acknowledgement lines.  The pair is named rather than passed as two more bare
+    // integers, so it cannot be transposed with `$chan_tx`/`$chan_rx` at a call site.
+    ($name:ident, $side:ty, $doorbell:ty, $region:ty, $tx:ty, $rx:ty, $codec:ty,
+        $chan_tx:expr, $chan_rx:expr, $mtu:expr,
+        ack: ($chan_ack_tx:expr, $chan_ack_rx:expr) $(,)?) => {
+        $crate::impl_channel!(
+            @impl $name, $side, $doorbell, $region, $tx, $rx, $codec,
+            $chan_tx, $chan_rx, $mtu,
+            true,
+            ::core::option::Option::Some($chan_ack_tx),
+            ::core::option::Option::Some($chan_ack_rx),
+        );
+    };
+    // Internal arm carrying the resolved acknowledgement configuration.
+    (@impl $name:ident, $side:ty, $doorbell:ty, $region:ty, $tx:ty, $rx:ty, $codec:ty,
+        $chan_tx:expr, $chan_rx:expr, $mtu:expr,
+        $ack:expr, $chan_ack_tx:expr, $chan_ack_rx:expr $(,)?) => {
         impl $crate::SealedInstance for channels::$name {
             fn state() -> &'static $crate::EndpointState<Self> {
                 static STATE: $crate::EndpointState<channels::$name> = $crate::EndpointState::new();
@@ -482,6 +518,10 @@ macro_rules! impl_channel {
             const CHAN_TX: u8 = $chan_tx;
             const CHAN_RX: u8 = $chan_rx;
             const MTU: usize = $mtu;
+
+            const ACK: bool = $ack;
+            const CHAN_ACK_TX: ::core::option::Option<u8> = $chan_ack_tx;
+            const CHAN_ACK_RX: ::core::option::Option<u8> = $chan_ack_rx;
         }
     };
 }

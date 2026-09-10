@@ -38,6 +38,7 @@ fn rkyv_channel_sends_archived_message_over_shared_memory_transport() {
         let mut raw = [0; MTU];
         let read_region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let n = unsafe { slot::try_read(tx.slot_addr(base), &mut raw, &read_region) }
+            .delivered()
             .expect("remote reads raw rkyv payload");
         let decoded =
             <RkyvCodec<128> as CodecFor<Message>>::decode(&raw[..n]).expect("remote decodes rkyv");
@@ -61,7 +62,7 @@ fn rkyv_channel_receives_archived_message_over_shared_memory_transport() {
     let n = RkyvCodec::<128>::encode(&remote_value, &mut encoded).expect("encode rkyv payload");
     unsafe {
         let rx = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
-        slot::write(rx.slot_addr(base), &encoded[..n]);
+        slot::write(rx.slot_addr(base), &encoded[..n], false);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(1);
     }
 

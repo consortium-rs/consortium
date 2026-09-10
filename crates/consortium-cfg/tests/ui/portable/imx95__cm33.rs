@@ -25,6 +25,7 @@ mod shared {
     ::consortium_ipc::Secondary, 1usize >,
     ::consortium_shared_memory::regions::UncachedRegion, crate ::shared::PowerControl,
     crate ::shared::LowPowerData, ::consortium_codec::PostcardCodec, 5u8, 4u8, 128usize,
+    ack : (1u8, 0u8),
 );
 #[cfg(target_arch = "arm")]
 fn __consortium_install_channels() {
@@ -50,6 +51,10 @@ fn __consortium_install_channels() {
         let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(5u8) };
         // SAFETY: doorbell channel is verified to be valid in the config.
         let chan_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(4u8) };
+        // SAFETY: doorbell channel is verified to be valid in the config.
+        let chan_ack_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
+        // SAFETY: doorbell channel is verified to be valid in the config.
+        let chan_ack_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(0u8) };
         // SAFETY: the base is offset 0x00 of the validated shared-memory
         // region, and the channels/doorbell/region are this side's.
         unsafe {
@@ -57,7 +62,15 @@ fn __consortium_install_channels() {
                 ::consortium_ipc::Secondary,
                 _,
                 _,
-            >::new(chan_tx, chan_rx, doorbell, region, (541605888usize) as *mut u8)
+            >::new_acked(
+                chan_tx,
+                chan_rx,
+                chan_ack_tx,
+                chan_ack_rx,
+                doorbell,
+                region,
+                (541605888usize) as *mut u8,
+            )
         }
     });
 }

@@ -25,6 +25,7 @@ default = [
   "time-driver-lpit",
   "timer",
   "uart",
+  "watchdog",
 ]
 # Chip selection — forwarded to the PAC. Choose exactly one; enabling several is
 # a PAC compile error. Dependents that select a different chip must set
@@ -47,6 +48,7 @@ spi              = ["dep:embassy-sync", "dep:embedded-hal", "dep:embedded-hal-as
 timer            = ["dep:embassy-sync", "dep:embedded-hal"]
 time-driver-lpit = ["dep:embassy-sync", "dep:embassy-time-driver", "dep:embassy-time-queue-utils"]
 uart             = ["dep:embassy-sync", "dep:embedded-hal-nb", "dep:embedded-io", "dep:embedded-io-async"]
+watchdog         = []
 
 [dependencies]
 consortium-hal           = { path = "../consortium-hal", version = "0.3.0" }

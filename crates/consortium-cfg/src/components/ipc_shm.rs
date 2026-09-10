@@ -42,6 +42,13 @@ use crate::{
 pub struct Channel {
     /// doorbell channel id, verified before codegen
     pub doorbell_chan: u8,
+    /// doorbell channel this party rings to acknowledge the peer's messages
+    ///
+    /// `Some` exactly when the manifest sets `config.ack`. Acknowledgement needs a line of
+    /// its own because each doorbell line carries one waiter: the receive half is already
+    /// parked on the data line, so an acknowledgement arriving there would have nowhere to
+    /// land.
+    pub ack_chan: Option<u8>,
     /// type name
     pub type_name: String,
     /// buffer name
@@ -112,6 +119,13 @@ pub fn initialize_instances(
             let chan_tx = tx.doorbell_chan;
             let chan_rx = rx.doorbell_chan;
             let mtu = Literal::usize_suffixed(t.mtu as usize);
+            // `ack:` is emitted only for a channel the manifest opted in; the plain arm of
+            // `impl_channel!` defaults the capability off, so an unchanged manifest keeps
+            // producing byte-identical code.
+            let ack = match (tx.ack_chan, rx.ack_chan) {
+                (Some(ack_tx), Some(ack_rx)) => quote::quote! { ack: (#ack_tx, #ack_rx), },
+                _ => quote::quote! {},
+            };
             quote::quote! {
                 ::consortium_ipc_transport_memory::impl_channel!(
                     #marker,
@@ -124,6 +138,7 @@ pub fn initialize_instances(
                     #chan_tx,
                     #chan_rx,
                     #mtu,
+                    #ack
                 );
             }
         })
@@ -312,6 +327,29 @@ impl Transceiver {
             DoorbellRingerSide::Secondary => &self.channel_primary.1.doorbell_chan,
         };
 
+        // Acknowledgement mirrors the data lines: this core rings its own, and waits on
+        // the peer's.
+        let (own, peer) = match side {
+            DoorbellRingerSide::Primary => (&self.channel_primary.1, &self.channel_secondary.1),
+            DoorbellRingerSide::Secondary => (&self.channel_secondary.1, &self.channel_primary.1),
+        };
+        let (constructor, ack_channels) = match (own.ack_chan, peer.ack_chan) {
+            (Some(ack_tx), Some(ack_rx)) => (
+                format_ident!("new_acked"),
+                quote::quote! {
+                    /// SAFETY: doorbell channel is verified to be valid in the config.
+                    let chan_ack_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(#ack_tx) };
+                    /// SAFETY: doorbell channel is verified to be valid in the config.
+                    let chan_ack_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(#ack_rx) };
+                },
+            ),
+            _ => (format_ident!("new"), quote::quote! {}),
+        };
+        let ack_arguments = match (own.ack_chan, peer.ack_chan) {
+            (Some(_), Some(_)) => quote::quote! { chan_ack_tx, chan_ack_rx, },
+            _ => quote::quote! {},
+        };
+
         let transport_side_ty = match side {
             DoorbellRingerSide::Primary => quote::quote! { ::consortium_ipc::Primary },
             DoorbellRingerSide::Secondary => quote::quote! { ::consortium_ipc::Secondary },
@@ -328,12 +366,14 @@ impl Transceiver {
             let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(#chan_id_tx) };
             /// SAFETY: doorbell channel is verified to be valid in the config.
             let chan_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(#chan_id_rx) };
+            #ack_channels
             /// SAFETY: the base is offset 0x00 of the validated shared-memory
             /// region, and the channels/doorbell/region are this side's.
             unsafe {
-                ::consortium_ipc_transport_memory::SharedMemoryTransport::<#transport_side_ty, _, _>::new(
+                ::consortium_ipc_transport_memory::SharedMemoryTransport::<#transport_side_ty, _, _>::#constructor(
                     chan_tx,
                     chan_rx,
+                    #ack_arguments
                     #doorbell_ident,
                     #region_ident,
                     (#transport_address) as *mut u8,
@@ -695,8 +735,16 @@ mod tests {
     fn channel(doorbell_chan: u8) -> Channel {
         Channel {
             doorbell_chan,
+            ack_chan: None,
             type_name: "Ping".to_string(),
             buffer_name: "ping_buf".to_string(),
+        }
+    }
+
+    fn acked_channel(doorbell_chan: u8, ack_chan: u8) -> Channel {
+        Channel {
+            ack_chan: Some(ack_chan),
+            ..channel(doorbell_chan)
         }
     }
 
@@ -728,6 +776,58 @@ mod tests {
             },
             doorbell_window: (DoorbellRingerSide::Primary, DoorbellRingerSide::Secondary),
         }
+    }
+
+    /// Emitted bring-up must reach for `new_acked` and hand it both extra lines, mirrored
+    /// per side: each core rings its own acknowledgement line and waits on the peer's.
+    /// Getting that mapping backwards produces code that compiles and then never wakes.
+    #[test]
+    fn acked_channels_emit_the_acknowledging_constructor() {
+        let cm33 = VisibleCore::Mcore(consortium_cfg_common::config::McoreName::Cm33);
+        let mut transceiver = transceiver(0x4000, 128);
+        transceiver.channel_primary.1 = acked_channel(0, 2);
+        transceiver.channel_secondary.1 = acked_channel(1, 3);
+
+        let uio = format_ident!("uio");
+        for (core, own, peer) in [(VisibleCore::Ap, 2u8, 3u8), (cm33, 3, 2)] {
+            let source = match core {
+                VisibleCore::Ap => DoorbellSource::Uio,
+                _ => DoorbellSource::Owned(format_ident!("__db_ipcc1")),
+            };
+            let code = transceiver
+                .build_field_init(core, &uio, source, "::consortium_hal_stm32mp2")
+                .to_string();
+
+            assert!(code.contains("new_acked"), "{core}: {code}");
+            assert!(
+                code.contains(&format!(
+                    "chan_ack_tx = unsafe {{ :: consortium_ipc :: Chan :: new_unchecked ({own}u8)"
+                )),
+                "{core} must ring its own line: {code}"
+            );
+            assert!(
+                code.contains(&format!(
+                    "chan_ack_rx = unsafe {{ :: consortium_ipc :: Chan :: new_unchecked ({peer}u8)"
+                )),
+                "{core} must wait on the peer's line: {code}"
+            );
+        }
+    }
+
+    /// The additive half of the same claim: without `config.ack` nothing changes.
+    #[test]
+    fn plain_channels_still_emit_the_plain_constructor() {
+        let code = transceiver(0x4000, 128)
+            .build_field_init(
+                VisibleCore::Ap,
+                &format_ident!("uio"),
+                DoorbellSource::Uio,
+                "::consortium_hal_stm32mp2",
+            )
+            .to_string();
+
+        assert!(!code.contains("new_acked"));
+        assert!(!code.contains("chan_ack"));
     }
 
     const SLOT_BASE: u32 = consortium_ipc_transport_memory::slot_offset(0, 4) as u32;

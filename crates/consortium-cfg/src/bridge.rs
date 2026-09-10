@@ -723,11 +723,13 @@ impl Session {
 
             let channel_primary = Channel {
                 doorbell_chan: primary.chan as u8,
+                ack_chan: primary.ack_chan.map(|chan| chan as u8),
                 type_name: primary.r#type.clone(),
                 buffer_name: format!("{}_tx_buf", channel.name),
             };
             let channel_secondary = Channel {
                 doorbell_chan: secondary.chan as u8,
+                ack_chan: secondary.ack_chan.map(|chan| chan as u8),
                 type_name: secondary.r#type.clone(),
                 buffer_name: format!("{}_rx_buf", channel.name),
             };

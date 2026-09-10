@@ -932,3 +932,12 @@ mod uart_bindings {
     crate::uart::impl_uart!(LPUART7, 0x4269_0000, Some(68));
     crate::uart::impl_uart!(LPUART8, 0x426a_0000, Some(69));
 }
+
+#[cfg(feature = "watchdog")]
+mod watchdog_bindings {
+    crate::watchdog::impl_watchdog!(WDOG1, 0x442d_0000, Some(31));
+    crate::watchdog::impl_watchdog!(WDOG2, 0x442e_0000, Some(32));
+    crate::watchdog::impl_watchdog!(WDOG3, 0x4249_0000, Some(77));
+    crate::watchdog::impl_watchdog!(WDOG4, 0x424a_0000, Some(78));
+    crate::watchdog::impl_watchdog!(WDOG5, 0x424b_0000, Some(79));
+}

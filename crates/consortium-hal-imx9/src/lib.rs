@@ -47,7 +47,7 @@
 //! # Drivers
 //!
 //! Each is behind a feature, all on by default: `adc`, `can`, `dma`, `gpio`,
-//! `i2c`, `i3c`, `lptmr`, `spi`, `timer`, `timer_driver`, `uart`.
+//! `i2c`, `i3c`, `lptmr`, `spi`, `timer`, `timer_driver`, `uart`, `watchdog`.
 //!
 //! `timer_driver` (`time-driver-lpit`) is the Embassy time driver over LPIT1;
 //! `consortium-cfg` emits its bring-up into the generated `init()` unless
@@ -171,3 +171,6 @@ pub mod timer;
 
 #[cfg(feature = "uart")]
 pub mod uart;
+
+#[cfg(feature = "watchdog")]
+pub mod watchdog;

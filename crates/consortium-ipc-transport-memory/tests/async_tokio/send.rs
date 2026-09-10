@@ -17,7 +17,7 @@ fn send_returns_no_channel_when_all_tx_slots_are_unconsumed() {
 
     unsafe {
         let tx = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(0)));
-        slot::write(tx.slot_addr(base), b"still-pending");
+        slot::write(tx.slot_addr(base), b"still-pending", false);
     }
 
     let rt = tokio::runtime::Builder::new_current_thread()
@@ -70,6 +70,7 @@ fn send_accepts_payload_at_channel_capacity() {
         let mut rx = [0; MTU];
         let read_region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let n = unsafe { slot::try_read(tx.slot_addr(base), &mut rx, &read_region) }
+            .delivered()
             .expect("remote reads MTU-sized payload");
         assert_eq!(n, MTU);
         assert_eq!(rx, payload);
@@ -131,7 +132,7 @@ fn send_uses_later_tx_channel_when_first_tx_slot_is_pending() {
     init_descriptor_with_channels(base, MTU, &channels);
     unsafe {
         let tx0 = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(0)));
-        slot::write(tx0.slot_addr(base), b"still-pending");
+        slot::write(tx0.slot_addr(base), b"still-pending", false);
     }
 
     let rt = tokio::runtime::Builder::new_current_thread()
@@ -156,6 +157,7 @@ fn send_uses_later_tx_channel_when_first_tx_slot_is_pending() {
         let mut rx = [0; MTU];
         let read_region = unsafe { UncachedRegion::new(base, MULTI_REGION_LEN) };
         let n = unsafe { slot::try_read(tx1.slot_addr(base), &mut rx, &read_region) }
+            .delivered()
             .expect("remote reads second tx slot");
         assert_eq!(&rx[..n], b"second-slot");
     });

@@ -21,7 +21,7 @@ fn split_into_halves_allows_tx_and_rx_to_coexist() {
 
     unsafe {
         let rx_layout = ChannelLayout::from_raw_ptr(base.add(channel_table_entry_offset(1)));
-        slot::write(rx_layout.slot_addr(base), b"from-remote");
+        slot::write(rx_layout.slot_addr(base), b"from-remote", false);
         base.add(RX_UPDATED_ID_OFFSET).write_volatile(1);
     }
 
@@ -52,6 +52,7 @@ fn split_into_halves_allows_tx_and_rx_to_coexist() {
         let mut raw = [0; MTU];
         let read_region = unsafe { UncachedRegion::new(base, REGION_LEN) };
         let n = unsafe { slot::try_read(tx_layout.slot_addr(base), &mut raw, &read_region) }
+            .delivered()
             .expect("tx slot is readable");
         assert_eq!(&raw[..n], b"to-remote");
     });

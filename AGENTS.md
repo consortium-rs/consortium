@@ -134,6 +134,8 @@ Connect        - readiness rendezvous with the remote end, run before traffic
 CodecFor<T>    - serialization family for a message type
 Channel<Tx/Rx> - typed directed endpoint over one transport half
 Transceiver    - typed send/receive endpoint built from paired channels
+
+AckSendTransport - optional: a send that resolves once the peer has taken the message
 ```
 
 `consortium-ipc` is `no_std` unless `std` is enabled. Its feature shape is small:
@@ -267,6 +269,37 @@ initialization invalidates and enables the data cache when any channel sets
 `SharedMemoryTransport::split()` returns `SharedMemoryTransportTx` and
 `SharedMemoryTransportRx`. Use these halves when building simultaneous
 `Channel<Tx, ...>` and `Channel<Rx, ...>` endpoints from one transport.
+
+**Acknowledged sends are opt-in and additive.** `SendTransport::send` is fire-and-forget
+on every channel and always will be; a channel built with `new_acked` (from
+`config.ack = true`) also implements `consortium-ipc`'s separate `AckSendTransport`, whose
+`send_acked` resolves only once the peer has drained _that_ slot and reports
+`Error::PeerIntegrityError` when the peer took the message and rejected its CRC.
+
+Two flags carry this, at two levels, and conflating them is the mistake to avoid. The
+descriptor channel entry's `FLAG_CHAN_ACK_CAPABLE` is a _capability_ — "both ends wired
+acknowledgement lines" — agreed once in the handshake so a mismatched pair fails at
+`connect` with `DescriptorError::AckMismatch` rather than hanging. Whether an individual
+message wants acknowledging is `FLAG_ACK_REQUESTED` in that message's _slot_ header, set
+by `send_acked` and never by `send`, so a capable channel costs nothing extra for
+fire-and-forget traffic. The receiver rings for exactly the messages that asked —
+including on the integrity-error path, since a corrupt frame still frees the slot and a
+parked sender must be woken either way.
+
+Acknowledgement takes **its own pair of doorbell lines**, one per core, rather than reusing
+the data lines. Every line carries exactly one waiter: the hardware doorbells hold a single
+`AtomicWaker` per line, arm and disarm it unrefcounted, and _consume_ the status on the
+first poll, so one edge reaches one waiter no matter what. The receive half is already
+parked on the data line. Reclaiming those two channels would mean reworking per-line waker
+fan-out, arm/disarm refcounting, and status acknowledgement across `ipcc`/`hsem`/`mu` —
+deliberately not attempted.
+
+Three behaviours worth knowing: two peers both awaiting an acknowledgement with neither
+draining the other direction deadlock (the acknowledgement comes from the peer's receive
+path, so it must be running); a cancelled `send_acked` loses the confirmation, not the
+message; and a plain `send` in flight makes `send_acked` return `Error::NoChannel` rather
+than park, because an unacknowledged message frees its slot silently and there would be no
+edge to wait for.
 
 Shared-memory tests live under `crates/consortium-ipc-transport-memory/tests/` and cover
 sync descriptor layout, Tokio futures, split halves, codec-backed channels, atomic-waker
@@ -482,7 +515,10 @@ Current top-level schema:
   field flattens alongside the `[dbg.<core>]` tables.
 - `[[ipc.channel]]` contains `name`, `doorbell`, `pattern`, `primary`, `secondary`,
   `party.<name>`, `config.memory`, optional controller-side `config.cache` (default
-  `false`), `mtu`, and optional `codec` (default `postcard`).
+  `false`), optional `config.ack` (default `false`), `mtu`, and optional `codec`
+  (default `postcard`). `config.ack` makes `send_acked` available on the channel and
+  requires each party to declare an `ack_chan` beside its `chan`; those extra doorbell
+  channels go through the same bounds and duplicate checks as the data lines.
 - `[tee]` contains the OP-TEE UUID.
 - `[hmi]` contains `engine` (`cog` or `pocket`), `backend`, optional `debug`,
   `source`, `build`, and optional `app`. `app` names the PocketJS entry to build

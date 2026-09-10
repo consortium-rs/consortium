@@ -10,6 +10,8 @@ mod codec_support;
 #[path = "async_tokio/transport_support.rs"]
 mod transport_support;
 
+#[path = "async_tokio/ack.rs"]
+mod ack;
 #[path = "async_tokio/codec_round_trip.rs"]
 mod codec_round_trip;
 #[path = "async_tokio/connect.rs"]
