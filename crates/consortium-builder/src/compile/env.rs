@@ -25,8 +25,50 @@
 
 use std::path::{Path, PathBuf};
 
-use consortium_cfg_common::config::{Hmi, HmiEngine, MemoryRegion};
+use consortium_cfg_common::config::{
+    CSTI_MANIFEST_PATH_ENV, CSTI_MCU_PATH_ENV, Hmi, HmiEngine, MemoryRegion, Workspace,
+};
 use serde::{Deserialize, Serialize};
+
+/// The build-host directories a pipeline run exposes to every endpoint `cargo`
+/// invocation, plus the `[profile] workspace` layout that decides where each
+/// endpoint crate's `target/` lives.
+///
+/// Injected as `CSTI_MANIFEST_PATH` (always) and `CSTI_MCU_PATH` (when the
+/// manifest declares exactly one controller-core firmware crate). The generated
+/// AP module names the embedded debug ELFs relative to one of them, so it carries
+/// no build-host path.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct CstiWorkspace {
+    /// `[profile] workspace`.
+    pub layout: Workspace,
+    /// Absolute directory containing `Consortium.toml`.
+    pub manifest_dir: PathBuf,
+    /// Absolute root of the controller-core firmware crate, when there is
+    /// exactly one.
+    pub mcu_dir: Option<PathBuf>,
+}
+
+impl CstiWorkspace {
+    /// The `CSTI_*` variables injected into every endpoint `cargo` invocation.
+    pub fn env_pairs(&self) -> Vec<(&'static str, &Path)> {
+        let mut pairs = vec![(CSTI_MANIFEST_PATH_ENV, self.manifest_dir.as_path())];
+        if let Some(mcu) = &self.mcu_dir {
+            pairs.push((CSTI_MCU_PATH_ENV, mcu.as_path()));
+        }
+        pairs
+    }
+
+    /// The directory whose `target/` receives the build output of the crate at
+    /// `crate_dir`: the manifest directory in a unified workspace, the crate
+    /// itself when nested.
+    pub fn target_base<'a>(&'a self, crate_dir: &'a Path) -> &'a Path {
+        match self.layout {
+            Workspace::Unified => &self.manifest_dir,
+            Workspace::Nested => crate_dir,
+        }
+    }
+}
 
 /// Shared-memory region layout for an IPC channel.
 ///

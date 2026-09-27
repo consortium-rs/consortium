@@ -22,12 +22,13 @@
 //! signer) is a host concern supplied by the caller (typically from the standard
 //! `TA_DEV_KIT_DIR` environment variable).
 
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use consortium_cfg::Session;
 use consortium_cfg_common::config::Party;
 
 use super::{CargoOptions, PipelineError};
+use crate::compile::env::CstiWorkspace;
 use crate::compile::optee::OpteeConfiguration;
 
 /// The host-side OP-TEE toolchain needed to build and sign a TA.
@@ -70,7 +71,7 @@ impl TeeToolchain {
 /// [`PipelineError::MissingEndpoint`] when no `optee` endpoint is declared.
 pub fn plan_ta_build(
     session: &Session,
-    manifest_dir: &Path,
+    workspace: &CstiWorkspace,
     toolchain: Option<&TeeToolchain>,
     cargo: CargoOptions,
     sign: bool,
@@ -95,7 +96,7 @@ pub fn plan_ta_build(
         })?;
 
     Ok(Some(OpteeConfiguration {
-        path: manifest_dir.join(root),
+        path: workspace.manifest_dir.join(root),
         release: cargo.release,
         offline: cargo.offline,
         linker: toolchain.linker.clone(),
@@ -103,12 +104,15 @@ pub fn plan_ta_build(
         optee_signer: toolchain.optee_signer.clone(),
         ta_uuid: tee.uuid,
         sign,
+        workspace: Some(workspace.clone()),
     }))
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::pipeline::resolve_workspace;
+    use std::path::Path;
 
     const STM32: &str = include_str!("../../../consortium-cfg/Consortium.example.stm32mp257.toml");
 
@@ -129,7 +133,7 @@ mod tests {
         };
         let cfg = plan_ta_build(
             &session,
-            Path::new("/proj"),
+            &resolve_workspace(&session, Path::new("/proj")).unwrap(),
             Some(&toolchain()),
             cargo,
             true,
@@ -151,7 +155,7 @@ mod tests {
         let session = Session::from_toml(STM32).expect("manifest loads");
         let err = match plan_ta_build(
             &session,
-            Path::new("/proj"),
+            &resolve_workspace(&session, Path::new("/proj")).unwrap(),
             None,
             CargoOptions::default(),
             true,
@@ -172,7 +176,7 @@ mod tests {
         let session = Session::from_toml(manifest).expect("manifest loads");
         let plan = plan_ta_build(
             &session,
-            Path::new("/proj"),
+            &resolve_workspace(&session, Path::new("/proj")).unwrap(),
             Some(&toolchain()),
             CargoOptions::default(),
             true,

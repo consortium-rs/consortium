@@ -2,10 +2,12 @@
 MEMORY
 {
   m_interrupts (rx) : ORIGIN = 0x80000000, LENGTH = 0x1000
-  FLASH (rx) : ORIGIN = 0x80001000, LENGTH = 0x7ff000
+  FLASH (rx) : ORIGIN = 0x80000000, LENGTH = 0x800000
   m_rsc_tbl_in_dram (rw) : ORIGIN = 0x88220000, LENGTH = 0x4000
   RAM (rwx) : ORIGIN = 0x80800000, LENGTH = 0x800000
 }
+
+_stext = 0x80001000;
 
 SECTIONS
 {

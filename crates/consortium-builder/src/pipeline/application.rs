@@ -18,7 +18,10 @@
 //!
 //! The AP's generated init module embeds each debug ring's firmware ELF via
 //! `include_bytes!`, so this stage substitutes Stage 1's resolved ELF paths into
-//! the debug IR before generating that module.
+//! the debug IR before generating that module. Each path is emitted relative to
+//! the `CSTI_*` directory the application build is given (see
+//! [`embed_locations`](super::elf_map::embed_locations)), so the generated
+//! module carries no build-host path.
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
@@ -26,9 +29,9 @@ use std::path::{Path, PathBuf};
 use consortium_cfg::Session;
 use consortium_cfg_common::config::{AcoreName, Party, VisibleCore};
 
-use super::{CargoOptions, PipelineError, ipc_config_for};
+use super::{CargoOptions, PipelineError, elf_map, ipc_config_for};
 use crate::compile::application::ApplicationConfiguration;
-use crate::compile::env::HmiConfig;
+use crate::compile::env::{CstiWorkspace, HmiConfig};
 
 /// A resolved application build plus its generated AP init module.
 pub struct ApplicationBuildPlan {
@@ -45,10 +48,10 @@ pub struct ApplicationBuildPlan {
 /// `hmi_dist` is `Some` when Stage 3 built the frontend; it only gates whether an
 /// [`HmiConfig`] is injected — the *on-target* serve path is derived from
 /// `deploy_root`, not the build-host dist. `resolved_dbg_elfs` maps each debug
-/// core to the firmware ELF the AP embeds.
+/// core to the absolute firmware ELF the AP embeds.
 pub fn plan_application_build(
     session: &Session,
-    manifest_dir: &Path,
+    workspace: &CstiWorkspace,
     hmi_dist: Option<&Path>,
     resolved_dbg_elfs: &HashMap<VisibleCore, PathBuf>,
     cargo: CargoOptions,
@@ -59,6 +62,7 @@ pub fn plan_application_build(
         .endpoints
         .get(&Party::AcoreNonSecure)
         .ok_or_else(|| PipelineError::MissingEndpoint(Party::AcoreNonSecure.to_string()))?;
+    let manifest_dir = &workspace.manifest_dir;
     let path = manifest_dir.join(root);
 
     let target = acore_linux_triple(&session.database.ap)?;
@@ -88,7 +92,8 @@ pub fn plan_application_build(
     // Substitute the resolved firmware ELF paths into the debug IR, then generate
     // the AP init module that `include_bytes!`es them.
     let mut ir = session.lower()?;
-    ir.dbg = std::mem::take(&mut ir.dbg).with_resolved_elf_paths(resolved_dbg_elfs);
+    let embedded = elf_map::embed_locations(resolved_dbg_elfs, workspace);
+    ir.dbg = std::mem::take(&mut ir.dbg).with_resolved_elf_paths(&embedded);
     consortium_log::trace!("rendering AP init module for target {}", target);
     let generated =
         consortium_cfg::render(ir.initialize(VisibleCore::Ap, ty_crate)).map_err(|e| {
@@ -109,6 +114,7 @@ pub fn plan_application_build(
             // configure a ring *writer*), so no debug layout is injected here.
             dbg: None,
             sysroot,
+            workspace: Some(workspace.clone()),
         },
         generated,
     })
@@ -133,6 +139,7 @@ pub(crate) fn acore_linux_triple(ap: &str) -> Result<String, PipelineError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::pipeline::resolve_workspace;
 
     const STM32: &str = include_str!("../../../consortium-cfg/Consortium.example.stm32mp257.toml");
 
@@ -161,7 +168,7 @@ mod tests {
 
         let plan = plan_application_build(
             &session,
-            Path::new("/proj"),
+            &resolve_workspace(&session, Path::new("/proj")).unwrap(),
             Some(Path::new("/build/website/dist")),
             &resolved,
             CargoOptions {
@@ -201,6 +208,39 @@ mod tests {
     }
 
     #[test]
+    fn embeds_debug_elf_relative_to_mcu_path() {
+        // The usual shape: the ELF sits under the nested firmware crate's
+        // `target/`, so the module names it through `CSTI_MCU_PATH` and the build
+        // is given that variable.
+        let session = Session::from_toml(STM32).expect("manifest loads");
+        let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
+        let workspace = resolve_workspace(&session, Path::new("/proj")).unwrap();
+        let elf = "/proj/firmware/target/thumbv8m.main-none-eabihf/debug/mcu_original.elf";
+
+        let plan = plan_application_build(
+            &session,
+            &workspace,
+            None,
+            &HashMap::from([(cm33(), PathBuf::from(elf))]),
+            CargoOptions::default(),
+            &ty_crate,
+        )
+        .expect("plan succeeds");
+
+        assert!(!plan.generated.contains("/proj"), "{}", plan.generated);
+        assert!(
+            plan.generated.contains("::core::env!(\"CSTI_MCU_PATH\")"),
+            "{}",
+            plan.generated
+        );
+        assert!(
+            plan.generated
+                .contains("\"/target/thumbv8m.main-none-eabihf/debug/mcu_original.elf\"")
+        );
+        assert_eq!(plan.config.workspace, Some(workspace));
+    }
+
+    #[test]
     fn relative_profile_sysroot_anchors_at_manifest_dir() {
         let toml = STM32.replace(
             "deploy_root = \"/opt/consortium\"",
@@ -211,7 +251,7 @@ mod tests {
 
         let plan = plan_application_build(
             &session,
-            Path::new("/proj"),
+            &resolve_workspace(&session, Path::new("/proj")).unwrap(),
             None,
             &HashMap::from([(cm33(), PathBuf::from("/build/cm33.elf"))]),
             CargoOptions::default(),
@@ -236,7 +276,7 @@ mod tests {
 
         let plan = plan_application_build(
             &session,
-            Path::new("/proj"),
+            &resolve_workspace(&session, Path::new("/proj")).unwrap(),
             None,
             &HashMap::from([(cm33(), PathBuf::from("/build/cm33.elf"))]),
             CargoOptions::default(),
@@ -256,7 +296,7 @@ mod tests {
         let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
         let plan = plan_application_build(
             &session,
-            Path::new("/proj"),
+            &resolve_workspace(&session, Path::new("/proj")).unwrap(),
             None,
             &HashMap::from([(cm33(), PathBuf::from("/build/cm33.elf"))]),
             CargoOptions::default(),

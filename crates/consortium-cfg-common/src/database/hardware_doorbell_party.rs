@@ -28,10 +28,16 @@ pub struct HardwareDoorbellParty {
     /// the CM7 on MUB; on i.MX 93 it is the other way round. STM32 IPCC/HSEM
     /// expose one block with a bank per core, so they leave this at the default.
     ///
-    /// Consumers resolve it through
-    /// [`HardwareDoorbellPeripheral::party_window_base`](super::HardwareDoorbellPeripheral::party_window_base).
+    /// This selects the generated doorbell's side marker; the window's address
+    /// is [`memory`](Self::memory).
     #[serde(default)]
     pub window: DoorbellWindow,
+    /// Base of the register window this party drives, relative to the chip's
+    /// peripheral alias.
+    ///
+    /// Single-window blocks (STM32 IPCC/HSEM) repeat the block base for every
+    /// party; an i.MX MU gives each party the base of its own MUA/MUB window.
+    pub memory: u32,
     /// TRM page documenting the peripheral memory mapping for this core view.
     pub page_memory: u32,
     /// TRM page documenting the interrupt number for this core view.
@@ -40,25 +46,12 @@ pub struct HardwareDoorbellParty {
 
 /// One of a doorbell peripheral's per-side register windows.
 ///
-/// The variants are ordered so the discriminant is the window's index from the
-/// peripheral's base: `A` is at the base itself, `B` one window above it.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum DoorbellWindow {
-    /// The window at the peripheral's own base address (an i.MX MU's MUA), and
-    /// the default for single-window blocks.
+    /// An i.MX MU's MUA window, and the default for single-window blocks.
     #[default]
     A,
-    /// The window one stride above the base (an i.MX MU's MUB).
+    /// An i.MX MU's MUB window.
     B,
-}
-
-impl DoorbellWindow {
-    /// This window's index from the peripheral base, in window strides.
-    pub const fn index(self) -> u32 {
-        match self {
-            Self::A => 0,
-            Self::B => 1,
-        }
-    }
 }

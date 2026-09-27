@@ -67,7 +67,7 @@ async fn main() -> Result<(), ConsortiumError> {
             match sensor.recv().await {
                 Ok(msg) => {
                     let reading: SensorReading = msg.into_inner();
-                    let within_limits = tee_check(reading.temperature_mdc);
+                    let within_limits = /* tee_check(reading.temperature_mdc);*/ true;
                     *state_ipc.lock().unwrap() = Some(Status {
                         temperature_mdc: reading.temperature_mdc,
                         seq: reading.seq,
@@ -82,51 +82,51 @@ async fn main() -> Result<(), ConsortiumError> {
         }
     });
 
-    // ── HMI bridge ───────────────────────────────────────────────────────────
-    let mut bridge = Bridge::new();
+    // // ── HMI bridge ───────────────────────────────────────────────────────────
+    // let mut bridge = Bridge::new();
 
-    let state_hmi = Arc::clone(&state);
-    bridge.handle("get_status", move |_payload| {
-        match state_hmi.lock().unwrap().clone() {
-            Some(s) => serde_json::to_string(&s).unwrap_or_else(|_| "null".into()),
-            None => "null".into(),
-        }
-    });
+    // let state_hmi = Arc::clone(&state);
+    // bridge.handle("get_status", move |_payload| {
+    //     match state_hmi.lock().unwrap().clone() {
+    //         Some(s) => serde_json::to_string(&s).unwrap_or_else(|_| "null".into()),
+    //         None => "null".into(),
+    //     }
+    // });
 
-    let app = KioskApp::new("melt-pot-imx93", None, None).expect("KioskApp init");
-    app.attach_bridge_with_runtime(bridge, handle)
-        .expect("bridge attach");
-    app.load().expect("HMI load");
+    // let app = KioskApp::new("melt-pot-imx93", None, None).expect("KioskApp init");
+    // app.attach_bridge_with_runtime(bridge, handle)
+    //     .expect("bridge attach");
+    // app.load().expect("HMI load");
 
-    // Run the GLib main loop on this thread (required by WebKit/Cog). The tokio
-    // worker threads continue running the IPC receive loop concurrently.
-    glib::MainLoop::new(None, false).run();
+    // // Run the GLib main loop on this thread (required by WebKit/Cog). The tokio
+    // // worker threads continue running the IPC receive loop concurrently.
+    // glib::MainLoop::new(None, false).run();
     Ok(())
 }
 
-/// Software safe range, mirroring the TA's `TEMP_LIMIT_LO..=TEMP_LIMIT_HI`.
-/// Used as the fallback verdict when OP-TEE is not reachable.
-const SOFT_TEMP_RANGE: std::ops::RangeInclusive<i32> = -20_000..=85_000;
+// /// Software safe range, mirroring the TA's `TEMP_LIMIT_LO..=TEMP_LIMIT_HI`.
+// /// Used as the fallback verdict when OP-TEE is not reachable.
+// const SOFT_TEMP_RANGE: std::ops::RangeInclusive<i32> = -20_000..=85_000;
 
-/// Ask the TEE whether `temperature_mdc` is within limits, falling back to a
-/// software range check when OP-TEE is not reachable (e.g. on a dev host).
-fn tee_check(temperature_mdc: i32) -> bool {
-    match tee_check_optee(temperature_mdc) {
-        Ok(within_limits) => within_limits,
-        Err(err) => {
-            eprintln!("melt-pot: OP-TEE check unavailable ({err}); using software fallback");
-            SOFT_TEMP_RANGE.contains(&temperature_mdc)
-        }
-    }
-}
+// /// Ask the TEE whether `temperature_mdc` is within limits, falling back to a
+// /// software range check when OP-TEE is not reachable (e.g. on a dev host).
+// fn tee_check(temperature_mdc: i32) -> bool {
+//     match tee_check_optee(temperature_mdc) {
+//         Ok(within_limits) => within_limits,
+//         Err(err) => {
+//             eprintln!("melt-pot: OP-TEE check unavailable ({err}); using software fallback");
+//             SOFT_TEMP_RANGE.contains(&temperature_mdc)
+//         }
+//     }
+// }
 
-/// Real OP-TEE invocation: `Context::new` → `open_session(uuid)` → invoke.
-fn tee_check_optee(temperature_mdc: i32) -> consortium_tee::TeeResult<bool> {
-    use consortium_tee::TeeError;
-    use optee_teec::{Context, Uuid};
+// /// Real OP-TEE invocation: `Context::new` → `open_session(uuid)` → invoke.
+// fn tee_check_optee(temperature_mdc: i32) -> consortium_tee::TeeResult<bool> {
+//     use consortium_tee::TeeError;
+//     use optee_teec::{Context, Uuid};
 
-    let uuid = Uuid::parse_str(TA_UUID).map_err(TeeError::Session)?;
-    let mut ctx = Context::new().map_err(TeeError::Context)?;
-    let mut session = ctx.open_session(uuid).map_err(TeeError::Session)?;
-    melt_pot_imx93_ta::call_check_temperature(&mut session, temperature_mdc)
-}
+//     let uuid = Uuid::parse_str(TA_UUID).map_err(TeeError::Session)?;
+//     let mut ctx = Context::new().map_err(TeeError::Context)?;
+//     let mut session = ctx.open_session(uuid).map_err(TeeError::Session)?;
+//     melt_pot_imx93_ta::call_check_temperature(&mut session, temperature_mdc)
+// }

@@ -25,7 +25,6 @@
 //! free of filesystem and toolchain concerns (that is [`super::dist`]'s job).
 
 use consortium_cfg::bridge::LoweredIr;
-use consortium_cfg_common::config::DtsMode;
 
 pub use consortium_cfg::components::dts_render::{RenderedDts, render_linux_dts};
 
@@ -41,19 +40,14 @@ pub const KCONFIG_NAME: &str = "consortium.cfg";
 /// - `CONFIG_UIO_PDRV_GENIRQ` — the platform driver matched by `generic-uio`;
 /// - `CONFIG_UIO_DMEM_GENIRQ` — its dynamic-memory variant for RAM carveouts.
 ///
-/// In [`DtsMode::Overlay`] it additionally enables `CONFIG_OF_OVERLAY` (needed
-/// to apply the overlay) and, when `configfs` is set, `CONFIG_OF_CONFIGFS` (to
-/// apply it at runtime through configfs). A merged `.dts` needs neither.
-///
 /// Remoteproc devices enable the core framework and the selected SoC driver.
+///
+/// Every fragment also enables `CONFIG_OF_OVERLAY` and `CONFIG_OF_CONFIGFS`, in
+/// both DTS modes, so overlays can be applied at runtime through configfs.
+///
 /// The resulting `consortium.cfg` is consumed by the integrator's kernel recipe,
 /// not installed into the rootfs. Returns `None` when neither class is present.
-pub fn render_kernel_kconfig(
-    chip: &str,
-    ir: &LoweredIr,
-    mode: DtsMode,
-    configfs: bool,
-) -> Option<String> {
+pub fn render_kernel_kconfig(chip: &str, ir: &LoweredIr) -> Option<String> {
     let mut out = String::new();
     if !ir.uio.is_empty() {
         out.push_str(
@@ -61,12 +55,6 @@ pub fn render_kernel_kconfig(
              CONFIG_UIO_PDRV_GENIRQ=y\n\
              CONFIG_UIO_DMEM_GENIRQ=y\n",
         );
-        if mode.is_overlay() {
-            out.push_str("CONFIG_OF_OVERLAY=y\n");
-            if configfs {
-                out.push_str("CONFIG_OF_CONFIGFS=y\n");
-            }
-        }
     }
     if !ir.remoteproc.is_empty() {
         let driver = if chip.starts_with("mimx9") {
@@ -81,7 +69,14 @@ pub fn render_kernel_kconfig(
             out.push_str(driver);
         }
     }
-    (!out.is_empty()).then_some(out)
+    if out.is_empty() {
+        return None;
+    }
+    out.push_str(
+        "CONFIG_OF_OVERLAY=y\n\
+         CONFIG_OF_CONFIGFS=y\n",
+    );
+    Some(out)
 }
 
 /// The `.bbappend` file name for `kernel_recipe`, version-wildcarded so it
@@ -247,34 +242,20 @@ mod tests {
     }
 
     #[test]
-    fn kconfig_merge_mode_uses_genirq_symbols_without_overlay() {
-        let cfg =
-            render_kernel_kconfig("mimx9596xvt", &ir_with_uio(), DtsMode::Merge, false).unwrap();
+    fn kconfig_enables_genirq_and_overlay_configfs() {
+        let cfg = render_kernel_kconfig("mimx9596xvt", &ir_with_uio()).unwrap();
         assert!(cfg.contains("CONFIG_UIO=y"));
         assert!(cfg.contains("CONFIG_UIO_PDRV_GENIRQ=y"));
         assert!(cfg.contains("CONFIG_UIO_DMEM_GENIRQ=y"));
-        // No stale GENERIC symbols, and no overlay config in merge mode.
         assert!(!cfg.contains("GENERIC"));
-        assert!(!cfg.contains("CONFIG_OF_OVERLAY"));
-        assert!(!cfg.contains("CONFIG_OF_CONFIGFS"));
-    }
-
-    #[test]
-    fn kconfig_overlay_mode_enables_of_overlay_and_optional_configfs() {
-        let no_cfgfs =
-            render_kernel_kconfig("mimx9596xvt", &ir_with_uio(), DtsMode::Overlay, false).unwrap();
-        assert!(no_cfgfs.contains("CONFIG_OF_OVERLAY=y"));
-        assert!(!no_cfgfs.contains("CONFIG_OF_CONFIGFS"));
-
-        let with_cfgfs =
-            render_kernel_kconfig("mimx9596xvt", &ir_with_uio(), DtsMode::Overlay, true).unwrap();
-        assert!(with_cfgfs.contains("CONFIG_OF_CONFIGFS=y"));
+        assert!(cfg.contains("CONFIG_OF_OVERLAY=y"));
+        assert!(cfg.contains("CONFIG_OF_CONFIGFS=y"));
     }
 
     #[test]
     fn kconfig_none_without_uio() {
         let empty = LoweredIr::empty_with_uio(vec![]);
-        assert!(render_kernel_kconfig("mimx9596xvt", &empty, DtsMode::Merge, false).is_none());
+        assert!(render_kernel_kconfig("mimx9596xvt", &empty).is_none());
     }
 
     #[test]
@@ -293,8 +274,11 @@ mod tests {
         .unwrap()
         .lower()
         .unwrap();
-        let cfg = render_kernel_kconfig("mimx9596xvt", &ir, DtsMode::Merge, false).unwrap();
-        assert_eq!(cfg, "CONFIG_REMOTEPROC=y\nCONFIG_IMX_REMOTEPROC=y\n");
+        let cfg = render_kernel_kconfig("mimx9596xvt", &ir).unwrap();
+        assert_eq!(
+            cfg,
+            "CONFIG_REMOTEPROC=y\nCONFIG_IMX_REMOTEPROC=y\nCONFIG_OF_OVERLAY=y\nCONFIG_OF_CONFIGFS=y\n"
+        );
     }
 
     #[test]

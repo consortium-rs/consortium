@@ -137,9 +137,10 @@ persistent step prompt under cargo/vp/bitbake output.
 cargo test -p consortium-builder
 ```
 
-Note that running the full pipeline against the melt-pot examples rewrites their
-committed `src/consortium.gen.rs` with absolute `include_bytes!` paths. Revert that
-afterwards unless the change is intended.
+Running the full pipeline against the melt-pot examples rewrites their committed
+`src/consortium.gen.rs`. The embedded debug ELFs are named relative to the
+`CSTI_MCU_PATH`/`CSTI_MANIFEST_PATH` variables the builder injects into every endpoint
+build, so the file carries no build-host path.
 
 ## License
 

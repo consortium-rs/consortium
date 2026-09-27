@@ -108,7 +108,7 @@ embassy-sync = { features = ["std"], version = "0.8.0" }
 embassy-time = { features = ["std"], version = "0.5.1" }
 futures = "0.3"
 prost = { default-features = false, version = "0.14.3" }
-rkyv = { default-features = false, features = ["bytecheck"], version = "0.8.16" }
+rkyv = { default-features = false, features = ["bytecheck"], version = "0.8.18" }
 serde = { default-features = false, features = ["derive"], version = "1.0.228" }
 # `time` is test-only: the acknowledged-send tests bound every await so a protocol bug
 # fails the suite instead of wedging it.

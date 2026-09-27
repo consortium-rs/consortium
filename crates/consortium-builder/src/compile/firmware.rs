@@ -31,9 +31,9 @@ use thiserror::Error;
 use tokio::process::Command;
 
 use super::Compiler;
-use crate::compile::env::{DbgConfig, SharedMemConfig};
+use crate::compile::env::{CstiWorkspace, DbgConfig, SharedMemConfig};
 use crate::compile::utils::{
-    elf_path, inject_dbg, inject_shared_mem, resolve_cargo, run_command, verify_elf,
+    elf_path, inject_csti, inject_dbg, inject_shared_mem, resolve_cargo, run_command, verify_elf,
 };
 use crate::progress::BuildReporter;
 
@@ -43,7 +43,7 @@ pub enum FirmwareCompileError {
     #[error("Failed to resolve cargo: {0}")]
     CargoResolveError(String),
 
-    #[error("Cargo build failed: {0}")]
+    #[error("Cargo failed: {0}")]
     BuildFailed(String),
 
     #[error("ELF not found at expected path: {0:?}")]
@@ -240,6 +240,10 @@ pub struct FirmwareConfiguration {
     /// Resolved remoteproc linker/ELF/DTS contract. The pipeline always sets
     /// this; `None` retains the legacy `.isr_vectors` behavior for direct users.
     pub remoteproc: Option<RemoteprocMemoryLayout>,
+    /// Build-host directories injected as `CSTI_*` env vars, and the workspace
+    /// layout locating `target/`. `None` injects nothing and uses the crate's
+    /// own `target/`.
+    pub workspace: Option<CstiWorkspace>,
 }
 
 /// Compiler for bare-metal Cortex-M firmware.
@@ -250,36 +254,7 @@ impl FirmwareCompiler {
         config: FirmwareConfiguration,
         reporter: Option<&dyn BuildReporter>,
     ) -> Result<FirmwareArtifacts, FirmwareCompileError> {
-        let cargo = resolve_cargo()
-            .await
-            .map_err(FirmwareCompileError::CargoResolveError)?;
-
-        let mut cmd = Command::new(&cargo);
-        cmd.arg("build")
-            .arg("--target")
-            .arg(&config.target)
-            .current_dir(&config.path);
-
-        inject_shared_mem(&mut cmd, "IPC", config.ipc.as_ref());
-        inject_dbg(&mut cmd, config.dbg.as_ref());
-
-        if config.release {
-            cmd.arg("--release");
-        }
-
-        if config.offline {
-            cmd.arg("--offline");
-        }
-
-        let status = run_command(&mut cmd, reporter)
-            .await
-            .map_err(|e| FirmwareCompileError::BuildFailed(e.to_string()))?;
-
-        if !status.success() {
-            return Err(FirmwareCompileError::BuildFailed(format!(
-                "cargo build failed with status: {status}"
-            )));
-        }
+        Self::cargo(&config, "build", reporter).await?;
 
         let elf = Self::output_path(&config).await?;
 
@@ -305,6 +280,56 @@ impl FirmwareCompiler {
 
         Ok(FirmwareArtifacts { original, deploy })
     }
+
+    /// Type-checks the firmware with `cargo check`, under the same target, flags,
+    /// and injected environment as [`build_with_reporter`](Self::build_with_reporter).
+    /// Produces no ELF and runs no post-processing.
+    pub async fn check_with_reporter(
+        config: &FirmwareConfiguration,
+        reporter: Option<&dyn BuildReporter>,
+    ) -> Result<(), FirmwareCompileError> {
+        Self::cargo(config, "check", reporter).await
+    }
+
+    /// Runs `cargo <subcommand>` for the firmware crate.
+    async fn cargo(
+        config: &FirmwareConfiguration,
+        subcommand: &str,
+        reporter: Option<&dyn BuildReporter>,
+    ) -> Result<(), FirmwareCompileError> {
+        let cargo = resolve_cargo()
+            .await
+            .map_err(FirmwareCompileError::CargoResolveError)?;
+
+        let mut cmd = Command::new(&cargo);
+        cmd.arg(subcommand)
+            .arg("--target")
+            .arg(&config.target)
+            .current_dir(&config.path);
+
+        inject_shared_mem(&mut cmd, "IPC", config.ipc.as_ref());
+        inject_dbg(&mut cmd, config.dbg.as_ref());
+        inject_csti(&mut cmd, config.workspace.as_ref());
+
+        if config.release {
+            cmd.arg("--release");
+        }
+
+        if config.offline {
+            cmd.arg("--offline");
+        }
+
+        let status = run_command(&mut cmd, reporter)
+            .await
+            .map_err(|e| FirmwareCompileError::BuildFailed(e.to_string()))?;
+
+        if !status.success() {
+            return Err(FirmwareCompileError::BuildFailed(format!(
+                "cargo {subcommand} failed with status: {status}"
+            )));
+        }
+        Ok(())
+    }
 }
 
 impl Compiler for FirmwareCompiler {
@@ -317,9 +342,14 @@ impl Compiler for FirmwareCompiler {
     }
 
     async fn output_path(config: &Self::Configuration) -> Result<PathBuf, Self::Error> {
-        elf_path(&config.path, &config.target, config.release)
-            .await
-            .map_err(FirmwareCompileError::UtilityError)
+        elf_path(
+            &config.path,
+            config.workspace.as_ref(),
+            &config.target,
+            config.release,
+        )
+        .await
+        .map_err(FirmwareCompileError::UtilityError)
     }
 }
 
@@ -348,6 +378,7 @@ impl FirmwareBuilder {
             ipc: self.ipc,
             dbg: self.dbg,
             remoteproc: None,
+            workspace: None,
         })
         .await
         .map(|artifacts| artifacts.deploy)
@@ -364,6 +395,7 @@ impl FirmwareBuilder {
             ipc: self.ipc,
             dbg: self.dbg,
             remoteproc: None,
+            workspace: None,
         })
         .await
         .map_err(|e| e.to_string())

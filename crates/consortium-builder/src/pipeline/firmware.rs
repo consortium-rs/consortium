@@ -21,7 +21,7 @@
 //! `cm0p`, MIMX95's `cm33`) are excluded here even though they may still appear
 //! as IPC/dbg peers.
 
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use consortium_cfg::Session;
 use consortium_cfg::bridge::LoweredIr;
@@ -29,7 +29,7 @@ use consortium_cfg_common::config::{Party, VisibleCore};
 use consortium_cfg_common::database::{ChipDatabase, Coprocessor, CoprocessorVariant};
 
 use super::{CargoOptions, PipelineError, core_rust_triple, ipc_config_for, visible_core_of};
-use crate::compile::env::DbgConfig;
+use crate::compile::env::{CstiWorkspace, DbgConfig};
 use crate::compile::firmware::FirmwareConfiguration;
 
 /// A resolved firmware build for one remote coprocessor.
@@ -53,6 +53,31 @@ pub fn remote_coprocessors(database: &ChipDatabase) -> impl Iterator<Item = &Cop
         .filter(|cp| cp.variant == CoprocessorVariant::Remote)
 }
 
+/// Every remote coprocessor that declares an `[endpoints]` entry: its core, the
+/// manifest party projecting to it, and its crate root as written in the
+/// manifest.
+///
+/// A remote coprocessor with no matching entry is skipped: there is no firmware
+/// crate to build for it.
+pub fn firmware_endpoints(
+    session: &Session,
+) -> Result<Vec<(VisibleCore, Party, &str)>, PipelineError> {
+    let mut endpoints = Vec::new();
+    for cp in remote_coprocessors(&session.database) {
+        let core = visible_core_of(cp)?;
+        // The party whose core projects to this coprocessor and has an endpoint.
+        if let Some((party, root)) = session
+            .config
+            .endpoints
+            .iter()
+            .find(|(party, _)| party.core() == core)
+        {
+            endpoints.push((core, *party, root.as_str()));
+        }
+    }
+    Ok(endpoints)
+}
+
 /// Plans one firmware build per remote coprocessor that declares an endpoint.
 ///
 /// A remote coprocessor with no matching `[endpoints]` entry is skipped: there is
@@ -61,27 +86,15 @@ pub fn remote_coprocessors(database: &ChipDatabase) -> impl Iterator<Item = &Cop
 /// IPC/debug shared-memory layouts, and the generated init module.
 pub fn plan_firmware_builds(
     session: &Session,
-    manifest_dir: &Path,
+    workspace: &CstiWorkspace,
     cargo: CargoOptions,
     ty_crate: &syn::Path,
 ) -> Result<Vec<FirmwareBuildPlan>, PipelineError> {
     let ir = session.lower()?;
     let mut plans = Vec::new();
 
-    for cp in remote_coprocessors(&session.database) {
-        let core = visible_core_of(cp)?;
-
-        // The party whose core projects to this coprocessor and has an endpoint.
-        let Some((party, root)) = session
-            .config
-            .endpoints
-            .iter()
-            .find(|(party, _)| party.core() == core)
-        else {
-            continue;
-        };
-
-        let path = manifest_dir.join(root);
+    for (core, party, root) in firmware_endpoints(session)? {
+        let path = workspace.manifest_dir.join(root);
         let target = core_rust_triple(core);
 
         let ipc = ipc_config_for(&ir, core);
@@ -98,7 +111,7 @@ pub fn plan_firmware_builds(
 
         plans.push(FirmwareBuildPlan {
             core,
-            party: *party,
+            party,
             config: FirmwareConfiguration {
                 target,
                 path,
@@ -107,6 +120,7 @@ pub fn plan_firmware_builds(
                 ipc,
                 dbg,
                 remoteproc: ir.remoteproc.get(&core).cloned(),
+                workspace: Some(workspace.clone()),
             },
             generated,
         });
@@ -127,14 +141,20 @@ fn dbg_config_for(ir: &LoweredIr, core: VisibleCore) -> Option<DbgConfig> {
 
 /// The build-host path of a firmware crate's compiled ELF for the given target.
 pub async fn firmware_elf_path(config: &FirmwareConfiguration) -> Result<PathBuf, PipelineError> {
-    crate::compile::utils::elf_path(&config.path, &config.target, config.release)
-        .await
-        .map_err(PipelineError::Codegen)
+    crate::compile::utils::elf_path(
+        &config.path,
+        config.workspace.as_ref(),
+        &config.target,
+        config.release,
+    )
+    .await
+    .map_err(PipelineError::Codegen)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::path::Path;
 
     const STM32: &str = include_str!("../../../consortium-cfg/Consortium.example.stm32mp257.toml");
 
@@ -161,8 +181,9 @@ mod tests {
             release: true,
             offline: true,
         };
-        let plans =
-            plan_firmware_builds(&session, Path::new("/proj"), cargo, &ty_crate).expect("plans");
+        let workspace = crate::pipeline::resolve_workspace(&session, Path::new("/proj"))
+            .expect("nested workspace");
+        let plans = plan_firmware_builds(&session, &workspace, cargo, &ty_crate).expect("plans");
 
         // Only cm33 (remote, with a `cm33 = "./firmware"` endpoint) is planned.
         assert_eq!(plans.len(), 1);
@@ -170,6 +191,11 @@ mod tests {
         assert_eq!(plan.core, VisibleCore::Mcore("cm33".parse().unwrap()));
         assert_eq!(plan.config.target, "thumbv8m.main-none-eabihf");
         assert_eq!(plan.config.path, Path::new("/proj/firmware"));
+        // The lone firmware crate is exposed as `CSTI_MCU_PATH`.
+        assert_eq!(
+            workspace.mcu_dir.as_deref(),
+            Some(Path::new("/proj/firmware"))
+        );
         assert!(plan.config.release);
         // The shared cargo flags reach every firmware plan.
         assert!(plan.config.offline);

@@ -1,7 +1,7 @@
 ::consortium_ipc_transport_memory::channels!(SENSOR);
 ::consortium_ipc_transport_memory::impl_channel!(
     SENSOR, ::consortium_ipc::Primary, ::consortium_ipc_doorbell_mu::MuDoorbell <
-    ::consortium_ipc::Secondary, 2usize >,
+    ::consortium_ipc::Secondary, 1usize >,
     ::consortium_shared_memory::regions::UncachedRegion, ::melt_pot_shared::Command,
     ::melt_pot_shared::SensorReading, ::consortium_codec::PostcardCodec, 6u8, 7u8,
     128usize,
@@ -22,7 +22,7 @@ fn __consortium_install_channels(
         let doorbell = unsafe {
             ::consortium_ipc_doorbell_mu::MuDoorbell::<
                 ::consortium_ipc::Secondary,
-                2usize,
+                1usize,
             >::new_mapped(uio[2usize].mmap(0usize)?)
         };
         let __service_db = doorbell.clone();
@@ -139,12 +139,19 @@ fn init(
                         elf_bytes: {
                             #[repr(align(16))]
                             struct Aligned<const N: usize>([u8; N]);
-                            static ELF: Aligned<{ include_bytes!(
-                                        "../../mcu/target/thumbv8m.main-none-eabihf/debug/melt-pot-imx93-mcu_original.elf"
-                                    ).len() }> = Aligned(
+                            static ELF: Aligned<
+                                {
+                                    include_bytes!(
+                                        ::core::concat!(::core::env!("CSTI_MCU_PATH"),
+                                        "/target/thumbv8m.main-none-eabihf/debug/melt-pot-imx93-mcu_original.elf")
+                                    )
+                                        .len()
+                                },
+                            > = Aligned(
                                 *include_bytes!(
-                                        "../../mcu/target/thumbv8m.main-none-eabihf/debug/melt-pot-imx93-mcu_original.elf"
-                                    ),
+                                    ::core::concat!(::core::env!("CSTI_MCU_PATH"),
+                                    "/target/thumbv8m.main-none-eabihf/debug/melt-pot-imx93-mcu_original.elf")
+                                ),
                             );
                             &ELF.0
                         },

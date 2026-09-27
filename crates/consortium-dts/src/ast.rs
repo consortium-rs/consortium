@@ -78,8 +78,9 @@ pub enum TopLevelItem {
 pub struct Node {
     /// Emit a leading `/omit-if-no-ref/` marker when true.
     pub omit_if_no_ref: bool,
-    /// Optional node label.
-    pub label: Option<String>,
+    /// Node labels, in source order. DTS allows several (`usb3: usb3_dwc3: usb@… {`),
+    /// and each one is a valid reference target.
+    pub labels: Vec<String>,
     /// Node name. The root node uses `/`.
     pub name: String,
     /// Optional unit address, without `@`.

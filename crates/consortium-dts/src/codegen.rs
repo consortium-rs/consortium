@@ -179,7 +179,7 @@ impl Codegen {
         }
 
         self.write_indent();
-        if let Some(label) = &node.label {
+        for label in &node.labels {
             let _ = write!(self.output, "{label}: ");
         }
 

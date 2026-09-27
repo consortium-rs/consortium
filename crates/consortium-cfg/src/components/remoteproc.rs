@@ -14,6 +14,7 @@ use std::collections::HashSet;
 use std::fmt::Write as _;
 
 use consortium_cfg_common::config::VisibleCore;
+pub use consortium_cfg_common::database::VectorPlacement;
 use thiserror::Error;
 
 /// One firmware address window shared by linker, ELF, and DTS generation.
@@ -61,6 +62,8 @@ pub struct RemoteprocMemoryLayout {
     pub core: VisibleCore,
     pub compatible: String,
     pub vector_section: String,
+    /// How `FLASH` relates to the vector window in the generated `memory.x`.
+    pub vector_placement: VectorPlacement,
     /// Mandatory vector-table window immediately before the code window.
     pub vector: RemoteprocNamedRegion,
     pub flash: RemoteprocMemoryWindow,
@@ -109,6 +112,14 @@ impl RemoteprocMemoryLayout {
                 }
             }
         }
+        if self.vector_placement == VectorPlacement::Flash
+            && self.vector.window.end() != Some(self.flash.origin)
+        {
+            return Err(LinkerMemoryError::NotAdjacent {
+                first: self.vector.name.clone(),
+                second: "FLASH".into(),
+            });
+        }
         for region in &self.regions {
             LinkerRegionName::new(&region.name)?;
             if !names.insert(region.name.clone()) {
@@ -138,6 +149,19 @@ impl RemoteprocMemoryLayout {
     pub fn linker_memory(&self) -> Result<LinkerMemory, LinkerMemoryError> {
         self.validate()?;
         let flash = LinkerRegionName::new("FLASH")?;
+        // With `VectorPlacement::Flash`, `cortex-m-rt` places `.vector_table` at
+        // `ORIGIN(FLASH)`, so `FLASH` starts at the vector window and `_stext`
+        // (below) keeps code in the manifest's flash window; `validate`
+        // guarantees the two are adjacent. With `Separate`, `FLASH` is the flash
+        // window as declared.
+        let (flash_origin, flash_length, stext) = match self.vector_placement {
+            VectorPlacement::Flash => (
+                self.vector.window.origin,
+                self.flash.origin - self.vector.window.origin + self.flash.length,
+                Some(self.flash.origin),
+            ),
+            VectorPlacement::Separate => (self.flash.origin, self.flash.length, None),
+        };
         let mut regions = vec![
             LinkerMemoryRegion {
                 name: LinkerRegionName::new(&self.vector.name)?,
@@ -151,8 +175,8 @@ impl RemoteprocMemoryLayout {
                 name: flash,
                 role: LinkerRegionRole::Flash,
                 attributes: LinkerRegionAttributes::new(true, false, true),
-                origin: self.flash.origin,
-                length: self.flash.length,
+                origin: flash_origin,
+                length: flash_length,
                 sections: Vec::new(),
             },
             LinkerMemoryRegion {
@@ -185,7 +209,11 @@ impl RemoteprocMemoryLayout {
             length: self.ram.length,
             sections: Vec::new(),
         });
-        LinkerMemory::new(regions)
+        let memory = LinkerMemory::new(regions)?;
+        Ok(match stext {
+            Some(stext) => memory.with_stext(stext),
+            None => memory,
+        })
     }
 
     /// Every configured window in which an ELF load segment may reside.
@@ -239,6 +267,15 @@ fn overlaps_window(left: RemoteprocMemoryWindow, right: RemoteprocMemoryWindow) 
 
 fn overlaps(a_start: u64, a_end: u64, b_start: u64, b_end: u64) -> bool {
     a_start < b_end && b_start < a_end
+}
+
+/// `FLASH` deliberately spans the vector region: `cortex-m-rt` links
+/// `.vector_table` at `ORIGIN(FLASH)` and offers no way to name another region.
+fn flash_holds_vector(flash: &LinkerMemoryRegion, vector: &LinkerMemoryRegion) -> bool {
+    flash.role == LinkerRegionRole::Flash
+        && vector.role == LinkerRegionRole::Vector
+        && flash.origin <= vector.origin
+        && vector.origin + vector.length <= flash.origin + flash.length
 }
 
 fn validate_attributes(
@@ -302,6 +339,7 @@ fn valid_section_pattern(value: &str, wildcard: bool) -> bool {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LinkerMemory {
     regions: Vec<LinkerMemoryRegion>,
+    stext: Option<u64>,
 }
 
 impl LinkerMemory {
@@ -338,7 +376,10 @@ impl LinkerMemory {
             let left_end = left.origin + left.length;
             for right in regions.iter().skip(index + 1) {
                 let right_end = right.origin + right.length;
-                if overlaps(left.origin, left_end, right.origin, right_end) {
+                if overlaps(left.origin, left_end, right.origin, right_end)
+                    && !flash_holds_vector(left, right)
+                    && !flash_holds_vector(right, left)
+                {
                     return Err(LinkerMemoryError::Overlap {
                         first: left.name.as_str().into(),
                         second: right.name.as_str().into(),
@@ -346,7 +387,17 @@ impl LinkerMemory {
                 }
             }
         }
-        Ok(Self { regions })
+        Ok(Self {
+            regions,
+            stext: None,
+        })
+    }
+
+    /// Pins `cortex-m-rt`'s `_stext`, so `.text` starts at `stext` instead of
+    /// directly after `.vector_table`.
+    pub fn with_stext(mut self, stext: u64) -> Self {
+        self.stext = Some(stext);
+        self
     }
 
     pub fn regions(&self) -> &[LinkerMemoryRegion] {
@@ -370,6 +421,9 @@ impl LinkerMemory {
             .expect("writing a String cannot fail");
         }
         out.push_str("}\n");
+        if let Some(stext) = self.stext {
+            writeln!(out, "\n_stext = {stext:#010x};").expect("String write");
+        }
         for region in &self.regions {
             for section in &region.sections {
                 out.push_str("\nSECTIONS\n{\n");
@@ -482,6 +536,8 @@ pub enum LinkerMemoryError {
     InvalidSection { region: String, section: String },
     #[error("linker memory regions '{first}' and '{second}' overlap")]
     Overlap { first: String, second: String },
+    #[error("remoteproc region '{first}' must end exactly where '{second}' begins")]
+    NotAdjacent { first: String, second: String },
 }
 
 #[cfg(test)]

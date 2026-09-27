@@ -48,7 +48,7 @@ pub use mcore_name::McoreName;
 pub use memory::MemoryRegion;
 pub use party::Party;
 pub use peripheral::Peripheral;
-pub use profile::Profile;
+pub use profile::{CSTI_MANIFEST_PATH_ENV, CSTI_MCU_PATH_ENV, Profile, Workspace};
 pub use rcore_name::RcoreName;
 pub use remoteproc::{
     Remoteproc, RemoteprocCore, RemoteprocRegion, RemoteprocSection, RemoteprocWindowOverride,

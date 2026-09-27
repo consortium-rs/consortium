@@ -38,7 +38,7 @@
 //! the frontend build, so `csti fetch` owns it and `csti build --linux <DIR> --offline` does not
 //! repeat it.
 
-use crate::compile::env::{DbgConfig, HmiConfig, SharedMemConfig};
+use crate::compile::env::{CstiWorkspace, DbgConfig, HmiConfig, SharedMemConfig};
 use crate::compile::web::HmiBuildCommand;
 use crate::progress::BuildReporter;
 use std::path::{Path, PathBuf};
@@ -66,6 +66,16 @@ pub fn inject_shared_mem(cmd: &mut Command, prefix: &str, config: Option<&Shared
 pub fn inject_dbg(cmd: &mut Command, config: Option<&DbgConfig>) {
     if let Some(cfg) = config {
         for (key, value) in cfg.env_pairs() {
+            cmd.env(key, value);
+        }
+    }
+}
+
+/// Injects the `CSTI_*` build-host directories (see [`CstiWorkspace`]) onto a
+/// pending `cargo` command. A `None` workspace injects nothing.
+pub fn inject_csti(cmd: &mut Command, workspace: Option<&CstiWorkspace>) {
+    if let Some(workspace) = workspace {
+        for (key, value) in workspace.env_pairs() {
             cmd.env(key, value);
         }
     }
@@ -430,11 +440,20 @@ pub async fn resolve_rustc() -> Result<String, String> {
 }
 
 /// Returns the expected ELF output path after a successful build.
-pub async fn elf_path(path: &Path, target: &str, release: bool) -> Result<PathBuf, String> {
+///
+/// The output lands under the crate's own `target/`, or under the manifest
+/// directory's when `workspace` is [unified](consortium_cfg_common::config::Workspace::Unified).
+pub async fn elf_path(
+    path: &Path,
+    workspace: Option<&CstiWorkspace>,
+    target: &str,
+    release: bool,
+) -> Result<PathBuf, String> {
     let binary_name = binary_name(path).await?;
     let profile = if release { "release" } else { "debug" };
+    let base = workspace.map_or(path, |w| w.target_base(path));
 
-    Ok(path
+    Ok(base
         .join("target")
         .join(target)
         .join(profile)

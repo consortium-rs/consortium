@@ -48,15 +48,59 @@ pub struct DebugRing {
     pub ap_uio_id: usize,
     /// mmap window index of this ring within that device.
     pub ap_mmap_id: usize,
-    /// Build-host path to this core's compiled firmware ELF, from which the host
-    /// resolves the defmt symbol table.
+    /// Build-host location of this core's compiled firmware ELF, from which the
+    /// host resolves the defmt symbol table.
     ///
     /// [`Session::lower`](crate::Session::lower) seeds this with the manifest's
     /// `[endpoints]` value (a source-directory placeholder). The build pipeline
     /// then overwrites it via [`DebugLogs::with_resolved_elf_paths`] with the
-    /// absolute path of the firmware ELF it just compiled, so the AP codegen can
-    /// `include_bytes!` the real image at compile time.
-    pub elf_path: String,
+    /// firmware ELF it just compiled, so the AP codegen can `include_bytes!` the
+    /// real image at compile time.
+    pub elf: ElfLocation,
+}
+
+/// Where the AP codegen finds a debug core's firmware ELF.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ElfLocation {
+    /// Compile-time environment variable naming the directory [`path`](Self::path)
+    /// is relative to (e.g. `CSTI_MCU_PATH`), or `None` to embed `path` verbatim.
+    pub base_env: Option<String>,
+    /// The ELF path: relative to `base_env` when set, otherwise used as-is.
+    pub path: PathBuf,
+}
+
+impl ElfLocation {
+    /// A path the generated `include_bytes!` names verbatim.
+    pub fn verbatim(path: impl Into<PathBuf>) -> Self {
+        Self {
+            base_env: None,
+            path: path.into(),
+        }
+    }
+
+    /// A path relative to the directory the `base_env` variable holds when the
+    /// generated module is compiled, so the module carries no build-host path.
+    pub fn relative_to(base_env: impl Into<String>, path: impl Into<PathBuf>) -> Self {
+        Self {
+            base_env: Some(base_env.into()),
+            path: path.into(),
+        }
+    }
+
+    /// The `include_bytes!` argument: a string literal, or
+    /// `concat!(env!("<VAR>"), "/<path>")` when relative to a variable.
+    fn to_tokens(&self) -> TokenStream {
+        // Normalize separators: a Windows build host would otherwise emit `\`
+        // escapes that are not portable into the generated source.
+        let path = self.path.to_string_lossy().replace('\\', "/");
+        match &self.base_env {
+            None => quote! { #path },
+            Some(var) => {
+                let suffix = format!("/{}", path.trim_start_matches("./"));
+                quote! { ::core::concat!(::core::env!(#var), #suffix) }
+            }
+        }
+    }
 }
 
 impl DebugRing {
@@ -102,8 +146,8 @@ impl DebugLogs {
         self.rings.get(&core).cloned()
     }
 
-    /// Overwrites each ring's [`elf_path`](DebugRing::elf_path) with the
-    /// build-host path of that core's compiled firmware ELF.
+    /// Overwrites each ring's [`elf`](DebugRing::elf) with the location of that
+    /// core's compiled firmware ELF.
     ///
     /// [`Session::lower`](crate::Session::lower) seeds `elf_path` with the
     /// manifest's `[endpoints]` value (a source directory, not an artifact), so
@@ -112,10 +156,10 @@ impl DebugLogs {
     /// ring whose core is absent from `resolved` keeps its seeded value; the
     /// pipeline's `resolve_dbg_elf_paths` guarantees every `[dbg.<core>]` ring is
     /// present, so a leftover placeholder means a bug upstream.
-    pub fn with_resolved_elf_paths(mut self, resolved: &HashMap<VisibleCore, PathBuf>) -> Self {
+    pub fn with_resolved_elf_paths(mut self, resolved: &HashMap<VisibleCore, ElfLocation>) -> Self {
         for (core, ring) in self.rings.iter_mut() {
-            if let Some(path) = resolved.get(core) {
-                ring.elf_path = path.to_string_lossy().into_owned();
+            if let Some(elf) = resolved.get(core) {
+                ring.elf = elf.clone();
             }
         }
         self
@@ -143,15 +187,15 @@ impl DebugLogs {
             let uio_id = Literal::usize_unsuffixed(ring.ap_uio_id);
             let mmap_id = Literal::usize_unsuffixed(ring.ap_mmap_id);
             let len = Literal::usize_unsuffixed(ring.length as usize);
-            // Emit `elf_path` verbatim (only normalizing backslashes for the
-            // string literal). The builder resolves it to an absolute build-host
-            // path before codegen (see [`DebugLogs::with_resolved_elf_paths`] and
-            // the pipeline's `resolve_dbg_elf_paths`), so `include_bytes!`
-            // resolves the same image regardless of where the generated file
-            // lands. Codegen never touches the filesystem: the ELF need not exist
-            // yet (the builder compiles it in a later stage; tests point at a
-            // fixture relative to the emitted crate).
-            let elf_path_normalized = ring.elf_path.replace('\\', "/");
+            // The builder resolves the ELF relative to a `CSTI_*` directory
+            // variable it injects into the application build (see
+            // [`DebugLogs::with_resolved_elf_paths`] and the pipeline's
+            // `resolve_dbg_elf_paths`), so `include_bytes!` resolves the same
+            // image regardless of where the generated file lands and the module
+            // carries no build-host path. Codegen never touches the filesystem:
+            // the ELF need not exist yet (the builder compiles it in a later
+            // stage; tests point at a fixture relative to the emitted crate).
+            let elf_path = ring.elf.to_tokens();
             let label = core.to_string();
             // `include_bytes!` yields a byte array with alignment 1, but
             // `defmt-decoder`'s ELF parser (`object`) requires the image to be
@@ -166,8 +210,8 @@ impl DebugLogs {
                     elf_bytes: {
                         #[repr(align(16))]
                         struct Aligned<const N: usize>([u8; N]);
-                        static ELF: Aligned<{ include_bytes!(#elf_path_normalized).len() }> =
-                            Aligned(*include_bytes!(#elf_path_normalized));
+                        static ELF: Aligned<{ include_bytes!(#elf_path).len() }> =
+                            Aligned(*include_bytes!(#elf_path));
                         &ELF.0
                     },
                     label: #label,
@@ -258,7 +302,7 @@ mod tests {
             mtu: 64,
             ap_uio_id: 3,
             ap_mmap_id: 0,
-            elf_path: "./firmware".to_string(),
+            elf: ElfLocation::verbatim("./firmware"),
         }
     }
 
@@ -314,19 +358,13 @@ mod tests {
     #[test]
     fn with_resolved_elf_paths_embeds_the_build_host_path() {
         // The pipeline substitutes each ring's seeded `[endpoints]` placeholder
-        // with the absolute build-host path of the firmware ELF it compiled; the
-        // generated `include_bytes!` must then name exactly that path.
+        // with the firmware ELF it compiled; a verbatim location makes the
+        // generated `include_bytes!` name exactly that path.
         let logs = DebugLogs::new(HashMap::from([(cm33(), ring())]), DbgMode::Auto);
-        let resolved = HashMap::from([(
-            cm33(),
-            PathBuf::from("/build/target/thumbv8m.main-none-eabihf/release/firmware"),
-        )]);
-        let logs = logs.with_resolved_elf_paths(&resolved);
+        let elf = ElfLocation::verbatim("/build/target/thumbv8m.main-none-eabihf/release/firmware");
+        let logs = logs.with_resolved_elf_paths(&HashMap::from([(cm33(), elf.clone())]));
 
-        assert_eq!(
-            logs.ring(cm33()).expect("cm33 ring").elf_path,
-            "/build/target/thumbv8m.main-none-eabihf/release/firmware"
-        );
+        assert_eq!(logs.ring(cm33()).expect("cm33 ring").elf, elf);
 
         let uio = format_ident!("uio");
         let host = logs.initialize_host(&uio).expect("rings present");
@@ -336,6 +374,29 @@ mod tests {
         ));
 
         // The generated spec still parses as valid Rust.
+        let init = &host.init;
+        let wrapped = quote! { fn _f(uio: ()) -> ::core::result::Result<(), ()> { #init Ok(()) } };
+        syn::parse_file(&wrapped.to_string()).expect("host init is valid Rust");
+    }
+
+    #[test]
+    fn relative_elf_location_resolves_through_env() {
+        // The builder's usual shape: the ELF path relative to a `CSTI_*` directory
+        // injected into the application build, so no build-host path is emitted.
+        let logs = DebugLogs::new(HashMap::from([(cm33(), ring())]), DbgMode::Auto);
+        let elf = ElfLocation::relative_to(
+            "CSTI_MCU_PATH",
+            "target/thumbv8m.main-none-eabihf/release/firmware_original.elf",
+        );
+        let logs = logs.with_resolved_elf_paths(&HashMap::from([(cm33(), elf)]));
+
+        let uio = format_ident!("uio");
+        let host = logs.initialize_host(&uio).expect("rings present");
+        let init_str = host.init.to_string();
+        assert!(init_str.contains(
+            "include_bytes ! (:: core :: concat ! (:: core :: env ! (\"CSTI_MCU_PATH\") , \"/target/thumbv8m.main-none-eabihf/release/firmware_original.elf\"))"
+        ));
+
         let init = &host.init;
         let wrapped = quote! { fn _f(uio: ()) -> ::core::result::Result<(), ()> { #init Ok(()) } };
         syn::parse_file(&wrapped.to_string()).expect("host init is valid Rust");

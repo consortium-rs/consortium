@@ -223,13 +223,15 @@ impl ToUio for HardwareDoorbellPeripheral {
         // A doorbell always exposes its single register window as `map0`, so
         // there is no `mmap` ordering to violate. These are MMIO peripheral
         // registers, not RAM, so they are described inline with `reg`.
-        // Map only the window Linux actually drives. An i.MX MU's `memory`
-        // spans both processor views, and mapping the far side into userspace
-        // hands the AP registers belonging to the coprocessor; the vendor tree
-        // maps one window too. Single-window blocks resolve to the whole thing.
-        let window = linux.map_or((self.memory.base, self.memory.length), |party| {
-            (self.party_window_base(party), self.party_window_length())
-        });
+        // Map only the window Linux actually drives. An i.MX MU spans both
+        // processor views, and mapping the far side into userspace hands the AP
+        // registers belonging to the coprocessor; the vendor tree maps one
+        // window too. Single-window blocks resolve to the whole thing, and
+        // every party shares that base, so without a Linux party any one will do.
+        let Some(party) = linux.or_else(|| self.parties.first()) else {
+            return Ok(None);
+        };
+        let window = (party.memory, self.party_window_length());
 
         Ok(Some(UioDevice {
             mmap: vec![window],
@@ -247,7 +249,7 @@ mod tests {
     use super::*;
     use consortium_cfg_common::config::McoreName;
     use consortium_cfg_common::database::{
-        DoorbellWindow, HardwareDoorbellParty, HardwareDoorbellPeripheralType, HardwareMemory,
+        DoorbellWindow, HardwareDoorbellParty, HardwareDoorbellPeripheralType,
     };
 
     fn bell(name: &str, core: VisibleCore, irq: u32) -> HardwareDoorbell {
@@ -483,6 +485,7 @@ mod tests {
             core: core.parse().unwrap(),
             irq,
             window: DoorbellWindow::A,
+            memory: 0x0049_0000,
             page_memory: 0,
             page_irq: 0,
         }
@@ -493,10 +496,7 @@ mod tests {
             name: "IPCC1".to_string(),
             page: 1305,
             r#type: HardwareDoorbellPeripheralType::Ipcc,
-            memory: HardwareMemory {
-                base: 0x0049_0000,
-                length: 0x400,
-            },
+            length: 0x400,
             parties,
             party_page: 1305,
             channels: 32,

@@ -35,10 +35,10 @@ use thiserror::Error;
 use tokio::process::Command;
 
 use super::Compiler;
-use crate::compile::env::{DbgConfig, HmiConfig, SharedMemConfig};
+use crate::compile::env::{CstiWorkspace, DbgConfig, HmiConfig, SharedMemConfig};
 use crate::compile::utils::{
-    clean_path, elf_path, inject_dbg, inject_hmi, inject_shared_mem, resolve_cargo, resolve_rustc,
-    run_command, verify_elf,
+    clean_path, elf_path, inject_csti, inject_dbg, inject_hmi, inject_shared_mem, resolve_cargo,
+    resolve_rustc, run_command, verify_elf,
 };
 use crate::progress::BuildReporter;
 
@@ -51,7 +51,7 @@ pub enum ApplicationCompileError {
     #[error("Failed to resolve rustup tool: {0}")]
     RustupError(String),
 
-    #[error("Cargo build failed: {0}")]
+    #[error("Cargo failed: {0}")]
     BuildFailed(String),
 
     #[error("ELF not found at expected path: {0:?}")]
@@ -201,6 +201,10 @@ pub struct ApplicationConfiguration {
     /// Takes priority over the `SDKTARGETSYSROOT` / `OECORE_TARGET_SYSROOT`
     /// environment variables when present.
     pub sysroot: Option<PathBuf>,
+    /// Build-host directories injected as `CSTI_*` env vars, and the workspace
+    /// layout locating `target/`. `None` injects nothing and uses the crate's
+    /// own `target/`.
+    pub workspace: Option<CstiWorkspace>,
 }
 
 /// Compiler for Linux applications targeting Yocto A-cores.
@@ -211,6 +215,38 @@ impl ApplicationCompiler {
         config: ApplicationConfiguration,
         reporter: Option<&dyn BuildReporter>,
     ) -> Result<PathBuf, ApplicationCompileError> {
+        Self::cargo(&config, "build", reporter).await?;
+
+        let elf = Self::output_path(&config).await?;
+
+        if !elf.exists() {
+            return Err(ApplicationCompileError::ElfNotFound(elf));
+        }
+
+        verify_elf(&elf)
+            .await
+            .map_err(ApplicationCompileError::UtilityError)?;
+
+        Ok(elf)
+    }
+
+    /// Type-checks the application with `cargo check`, under the same sysroot,
+    /// linker, flags, and injected environment as
+    /// [`build_with_reporter`](Self::build_with_reporter). Produces no ELF.
+    pub async fn check_with_reporter(
+        config: &ApplicationConfiguration,
+        reporter: Option<&dyn BuildReporter>,
+    ) -> Result<(), ApplicationCompileError> {
+        Self::cargo(config, "check", reporter).await
+    }
+
+    /// Runs `cargo <subcommand>` for the application crate in the resolved SDK
+    /// environment.
+    async fn cargo(
+        config: &ApplicationConfiguration,
+        subcommand: &str,
+        reporter: Option<&dyn BuildReporter>,
+    ) -> Result<(), ApplicationCompileError> {
         let sdk = SdkEnv::resolve(config.sysroot.as_deref())?;
 
         let rustc = resolve_rustc()
@@ -224,7 +260,7 @@ impl ApplicationCompiler {
         let sanitized_path = clean_path(&sdk.native_sysroot);
 
         let mut cmd = Command::new(&cargo);
-        cmd.arg("build")
+        cmd.arg(subcommand)
             .arg("--target")
             .arg(&config.target)
             .current_dir(&config.path)
@@ -255,6 +291,7 @@ impl ApplicationCompiler {
 
         inject_shared_mem(&mut cmd, "IPC", config.ipc.as_ref());
         inject_dbg(&mut cmd, config.dbg.as_ref());
+        inject_csti(&mut cmd, config.workspace.as_ref());
 
         if config.release {
             cmd.arg("--release");
@@ -270,21 +307,10 @@ impl ApplicationCompiler {
 
         if !status.success() {
             return Err(ApplicationCompileError::BuildFailed(format!(
-                "cargo build failed with status: {status}"
+                "cargo {subcommand} failed with status: {status}"
             )));
         }
-
-        let elf = Self::output_path(&config).await?;
-
-        if !elf.exists() {
-            return Err(ApplicationCompileError::ElfNotFound(elf));
-        }
-
-        verify_elf(&elf)
-            .await
-            .map_err(ApplicationCompileError::UtilityError)?;
-
-        Ok(elf)
+        Ok(())
     }
 }
 
@@ -298,9 +324,14 @@ impl Compiler for ApplicationCompiler {
     }
 
     async fn output_path(config: &Self::Configuration) -> Result<PathBuf, Self::Error> {
-        elf_path(&config.path, &config.target, config.release)
-            .await
-            .map_err(ApplicationCompileError::UtilityError)
+        elf_path(
+            &config.path,
+            config.workspace.as_ref(),
+            &config.target,
+            config.release,
+        )
+        .await
+        .map_err(ApplicationCompileError::UtilityError)
     }
 }
 
@@ -333,6 +364,7 @@ impl ApplicationBuilder {
             ipc: self.ipc,
             dbg: self.dbg,
             sysroot: self.sysroot.clone(),
+            workspace: None,
         })
         .await
         .map_err(|e| e.to_string())
@@ -349,6 +381,7 @@ impl ApplicationBuilder {
             ipc: self.ipc,
             dbg: self.dbg,
             sysroot: self.sysroot.clone(),
+            workspace: None,
         })
         .await
         .map_err(|e| e.to_string())

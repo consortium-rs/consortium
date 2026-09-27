@@ -24,6 +24,11 @@ shared        = "../shared"
 deploy_root   = "/opt/consortium"
 sysroot       = "/"
 kernel_recipe = "linux-imx"
+# Each endpoint crate is its own Cargo project with its own `target/` (they are
+# excluded from the repository workspace), so the AP embeds the firmware's debug
+# ELF relative to `CSTI_MCU_PATH`. `unified` would instead expect every endpoint
+# in one Cargo workspace rooted beside this file and read `CSTI_MANIFEST_PATH`.
+workspace = "nested"
 
 [dts]
 # mode  = "merge"        # or "overlay"
@@ -58,7 +63,7 @@ mtu    = 64
 # and the CA55 maps the same memory through its UIO device.
 [[ipc.channel]]
 name          = "sensor"
-doorbell      = "mu2"
+doorbell      = "mu1"
 pattern       = "memory"
 primary       = "linux"
 secondary     = "cm33"

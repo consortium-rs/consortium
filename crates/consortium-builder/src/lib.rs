@@ -41,6 +41,13 @@
 //! useful for air-gapped hosts, reproducible CI, and container images that should
 //! not re-resolve the registry on each build.
 //!
+//! # Check without building
+//!
+//! [`pipeline::check`] is the pipeline's `cargo check`: it validates the manifest,
+//! writes every endpoint's generated module, and runs `cargo check` in each Cargo
+//! project with the same targets and injected environment a build uses — no
+//! linking, objcopy, signing, HMI build, or staging.
+//!
 //! # The `Compiler` trait
 //!
 //! Firmware, the Linux application, the OP-TEE TA, and the HMI frontend are built by
@@ -109,11 +116,14 @@ pub use pipeline::{
     CargoOptions, PipelineConfig, PipelineError, PipelinePlan, run as run_pipeline,
 };
 
+// Type-check without building
+pub use pipeline::check::{CheckConfig, CheckPlan, run as run_check};
+
 // Pre-build dependency download
 pub use pipeline::fetch::{FetchConfig, FetchPlan, run as run_fetch};
 
 // Compile-time environment-injection carriers
-pub use compile::env::{CortexMcuCore, DbgConfig, HmiConfig, SharedMemConfig};
+pub use compile::env::{CortexMcuCore, CstiWorkspace, DbgConfig, HmiConfig, SharedMemConfig};
 
 // Backward-compatible builders (String-error API)
 pub use compile::application::ApplicationBuilder;

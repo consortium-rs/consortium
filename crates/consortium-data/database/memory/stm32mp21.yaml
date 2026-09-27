@@ -31,26 +31,28 @@ peripheral:
       clock:
         provider: scmi_clk
         id: CK_SCMI_IPCC1
-      memory:
-        base: 0x00490000
-        length: 0x00000400
+      length: 0x00000400
       parties:
         - core: linux
           irq: 152
           page_memory: 199
           page_irq: 1444
+          memory: 0x00490000
         - core: optee
           irq: 154
           page_memory: 190
           page_irq: 1444
+          memory: 0x00490000
         - core: cm33
           irq: 152
           page_memory: 199
           page_irq: 1444
+          memory: 0x00490000
         - core: cm33-s
           irq: 154
           page_memory: 190
           page_irq: 1444
+          memory: 0x00490000
       party_page: 1170
       channels: 32
       channel_page: 1170
