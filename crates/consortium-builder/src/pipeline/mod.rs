@@ -30,12 +30,17 @@
 //! [`plan`] resolves every stage's inputs without running any build (a dry run
 //! that threads the data flow); [`run`] plans, then executes.
 //!
+//! [`check`] is the `cargo check` of the pipeline: it plans the same way, writes
+//! the generated modules, and type-checks every Cargo project without building,
+//! linking, or staging anything.
+//!
 //! [`fetch`] sits beside them rather than inside them: it resolves the same Cargo
 //! projects and downloads their dependencies ahead of time, so a later [`run`]
 //! with [`PipelineConfig::offline`] never reaches the network.
 
 pub mod application;
 pub mod bitbake;
+pub mod check;
 pub mod dist;
 pub mod dtc;
 pub mod dts;
@@ -49,13 +54,13 @@ use std::path::{Path, PathBuf};
 
 use consortium_cfg::Session;
 use consortium_cfg::bridge::LoweredIr;
-use consortium_cfg_common::config::{HmiEngine, VisibleCore, XcoreName};
+use consortium_cfg_common::config::{HmiEngine, VisibleCore, Workspace, XcoreName};
 use consortium_cfg_common::database::Coprocessor;
 use thiserror::Error;
 
 use crate::compile::application::{ApplicationCompileError, ApplicationCompiler};
 use crate::compile::deploy::systemd::{self, SystemdRestartPolicy, SystemdUnitConfig};
-use crate::compile::env::SharedMemConfig;
+use crate::compile::env::{CstiWorkspace, SharedMemConfig};
 use crate::compile::firmware::{FirmwareCompileError, FirmwareCompiler};
 use crate::compile::optee::{OpteeCompileError, OpteeCompiler, OpteeConfiguration};
 use crate::compile::web::{HmiCompileError, HmiCompiler, HmiConfiguration};
@@ -83,6 +88,13 @@ pub enum PipelineError {
         /// The underlying error.
         source: std::io::Error,
     },
+
+    /// `[profile] workspace = "unified"`, but the manifest directory holds no
+    /// Cargo workspace root.
+    #[error(
+        "[profile] workspace = \"unified\" requires a workspace root Cargo.toml beside the manifest, but {0} {1}"
+    )]
+    UnifiedWorkspace(String, &'static str),
 
     /// Parsing/validating the manifest or lowering it failed.
     #[error(transparent)]
@@ -223,6 +235,13 @@ pub struct PipelineConfig {
     /// Sign the OP-TEE TA after building it. `false` (from `--skip-tee-sign`)
     /// stops at the unsigned ELF, so no signer script or keys are needed.
     pub sign_tee: bool,
+    /// Require the selected BSP DTS source to declare every manifest remoteproc
+    /// core's node. `false` (from `--skip-remoteproc-check`) downgrades a
+    /// missing node to a warning and skips DTS fixups for that core instead of
+    /// failing the build — useful when the `--linux` checkout does not yet
+    /// carry a vendor's out-of-tree remoteproc binding (the rendered DTS will
+    /// not actually be able to load that firmware until it does).
+    pub strict_remoteproc: bool,
     /// Bitbake hand-off actions run in order after `dist/` is assembled. Empty
     /// skips the stage. Multiple actions compose: e.g. stage `dist/` into a
     /// recipe's `files/` dir *and* record the deferred `bitbake` command
@@ -296,6 +315,50 @@ pub async fn load_session(manifest_path: &Path) -> Result<Session, PipelineError
     Ok(Session::from_toml(&toml)?)
 }
 
+/// Resolves `[profile] workspace` against the manifest directory into the
+/// `CSTI_*` directories every endpoint build is given.
+///
+/// Both directories are made absolute (lexically). `CSTI_MCU_PATH` is set only
+/// when the manifest declares exactly one firmware crate. A unified workspace
+/// requires `<manifest dir>/Cargo.toml` to exist and declare `[workspace]`, since
+/// every endpoint's output then lands in the manifest directory's `target/`.
+pub fn resolve_workspace(
+    session: &Session,
+    manifest_dir: &Path,
+) -> Result<CstiWorkspace, PipelineError> {
+    let absolute = |p: &Path| std::path::absolute(p).unwrap_or_else(|_| p.to_path_buf());
+    let manifest_dir = absolute(manifest_dir);
+    let layout = session.config.profile.workspace;
+
+    if layout == Workspace::Unified {
+        let cargo_toml = manifest_dir.join("Cargo.toml");
+        let shown = cargo_toml.display().to_string();
+        let contents = std::fs::read_to_string(&cargo_toml)
+            .map_err(|_| PipelineError::UnifiedWorkspace(shown.clone(), "does not exist"))?;
+        let is_workspace = contents
+            .parse::<toml::Table>()
+            .is_ok_and(|table| table.contains_key("workspace"));
+        if !is_workspace {
+            return Err(PipelineError::UnifiedWorkspace(
+                shown,
+                "has no [workspace] table",
+            ));
+        }
+    }
+
+    let firmware = firmware::firmware_endpoints(session)?;
+    let mcu_dir = match firmware.as_slice() {
+        [(_, _, root)] => Some(absolute(&manifest_dir.join(root))),
+        _ => None,
+    };
+
+    Ok(CstiWorkspace {
+        layout,
+        manifest_dir,
+        mcu_dir,
+    })
+}
+
 /// Derives HMI build parameters from the manifest's `[hmi]` section, or `None`.
 ///
 /// Resolves the frontend project (`[hmi].source`) and dist (`[hmi].build`)
@@ -345,9 +408,10 @@ pub async fn plan(
 
     let ty_crate = resolve_ty_crate(session, &manifest_dir).await?;
     let cargo = config.cargo();
+    let workspace = resolve_workspace(session, &manifest_dir)?;
 
     // Stage 1: firmware plans + expected ELF outputs.
-    let firmware = firmware::plan_firmware_builds(session, &manifest_dir, cargo, &ty_crate)?;
+    let firmware = firmware::plan_firmware_builds(session, &workspace, cargo, &ty_crate)?;
     let mut firmware_outputs = HashMap::new();
     for plan in &firmware {
         let elf = firmware::firmware_elf_path(&plan.config).await?;
@@ -370,7 +434,7 @@ pub async fn plan(
     // Stage 4: TA plan.
     let ta = tee::plan_ta_build(
         session,
-        &manifest_dir,
+        &workspace,
         config.tee_toolchain.as_ref(),
         cargo,
         config.sign_tee,
@@ -379,7 +443,7 @@ pub async fn plan(
     // Stage 5: application plan (AP module embeds the resolved firmware ELFs).
     let application = application::plan_application_build(
         session,
-        &manifest_dir,
+        &workspace,
         hmi_dist.as_deref(),
         &dbg_elfs,
         cargo,
@@ -401,6 +465,7 @@ pub async fn plan(
         &ir,
         &target_cores,
         &config.linux,
+        config.strict_remoteproc,
     )? {
         Some(rendered) => {
             consortium_log::trace!(
@@ -425,10 +490,9 @@ pub async fn plan(
 
     // The kernel config fragment plus, when the manifest names a kernel recipe, a
     // `.bbappend` that merges it into the kernel build. Both land in `dist/kernel/`.
-    let mut kernel_files =
-        dts::render_kernel_kconfig(&profile.chip, &ir, dts_cfg.mode, dts_cfg.configfs)
-            .map(|contents| vec![(dts::KCONFIG_NAME.to_string(), contents)])
-            .unwrap_or_default();
+    let mut kernel_files = dts::render_kernel_kconfig(&profile.chip, &ir)
+        .map(|contents| vec![(dts::KCONFIG_NAME.to_string(), contents)])
+        .unwrap_or_default();
     if let Some(kernel_recipe) = &session.config.profile.kernel_recipe {
         let fragment_names: Vec<String> = kernel_files.iter().map(|(n, _)| n.clone()).collect();
         if let Some(bbappend) = dts::render_kernel_bbappend(&fragment_names) {
@@ -936,6 +1000,96 @@ mod tests {
         root
     }
 
+    fn unified(manifest: &str) -> String {
+        manifest.replace(
+            "deploy_root = \"/opt/consortium\"",
+            "deploy_root = \"/opt/consortium\"\nworkspace   = \"unified\"",
+        )
+    }
+
+    #[test]
+    fn unified_workspace_requires_a_root_workspace_manifest() {
+        let manifest = unified(STM32);
+        let root = fabricate_project("unified-missing", &manifest);
+        let session = Session::from_toml(&manifest).unwrap();
+
+        let err = resolve_workspace(&session, &root).expect_err("no root Cargo.toml");
+        assert!(matches!(
+            err,
+            PipelineError::UnifiedWorkspace(_, "does not exist")
+        ));
+
+        // A plain package manifest is not a workspace root.
+        std::fs::write(
+            root.join("Cargo.toml"),
+            "[package]\nname = \"x\"\nversion = \"0.0.0\"\n",
+        )
+        .unwrap();
+        let err = resolve_workspace(&session, &root).expect_err("no [workspace]");
+        assert!(matches!(
+            err,
+            PipelineError::UnifiedWorkspace(_, "has no [workspace] table")
+        ));
+
+        let _ = std::fs::remove_dir_all(&root);
+    }
+
+    #[tokio::test]
+    async fn unified_workspace_builds_into_the_manifest_target() {
+        let manifest = unified(STM32);
+        let root = fabricate_project("unified", &manifest);
+        std::fs::write(
+            root.join("Cargo.toml"),
+            "[workspace]\nmembers = [\"app\", \"firmware\"]\n",
+        )
+        .unwrap();
+        let session = Session::from_toml(&manifest).unwrap();
+
+        let workspace = resolve_workspace(&session, &root).expect("workspace root present");
+        assert_eq!(workspace.layout, Workspace::Unified);
+        let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
+        let firmware = firmware::plan_firmware_builds(
+            &session,
+            &workspace,
+            CargoOptions::default(),
+            &ty_crate,
+        )
+        .unwrap();
+        let elf = firmware::firmware_elf_path(&firmware[0].config)
+            .await
+            .unwrap();
+        assert_eq!(
+            elf,
+            root.join("target/thumbv8m.main-none-eabihf/debug/melt-pot-mcu")
+        );
+
+        let dbg_elfs = HashMap::from([(
+            firmware[0].core,
+            crate::compile::firmware::original_elf_path(&elf),
+        )]);
+        let application = application::plan_application_build(
+            &session,
+            &workspace,
+            None,
+            &dbg_elfs,
+            CargoOptions::default(),
+            &ty_crate,
+        )
+        .unwrap();
+        assert!(
+            application
+                .generated
+                .contains("::core::env!(\"CSTI_MANIFEST_PATH\")")
+        );
+        assert!(
+            application
+                .generated
+                .contains("\"/target/thumbv8m.main-none-eabihf/debug/melt-pot-mcu_original.elf\"")
+        );
+
+        let _ = std::fs::remove_dir_all(&root);
+    }
+
     #[tokio::test]
     async fn plan_threads_all_stages() {
         let manifest = format!("{STM32}\n[dts]\nbase = \"test-board\"\nmode = \"merge\"\n");
@@ -973,6 +1127,7 @@ mod tests {
                 linker: None,
             }),
             sign_tee: true,
+            strict_remoteproc: true,
             bitbake: Vec::new(),
         };
 
@@ -1005,11 +1160,24 @@ mod tests {
         // and the app targets Linux with the HMI served from the deploy root.
         // (prettyplease may wrap a long `include_bytes!(...)` across lines, so
         // assert on the embedded path literal rather than the whole call.)
+        // The path is relative to the lone firmware crate, which the application
+        // build receives as `CSTI_MCU_PATH`.
         assert!(plan.application.generated.contains("include_bytes!"));
         assert!(
             plan.application
                 .generated
-                .contains(&format!("\"{}\"", original_elf.display()))
+                .contains("::core::env!(\"CSTI_MCU_PATH\")")
+        );
+        let relative = original_elf.strip_prefix(root.join("firmware")).unwrap();
+        assert!(
+            plan.application
+                .generated
+                .contains(&format!("\"/{}\"", relative.display()))
+        );
+        let workspace = plan.application.config.workspace.as_ref().unwrap();
+        assert_eq!(
+            workspace.mcu_dir.as_deref(),
+            Some(root.join("firmware").as_path())
         );
         assert_eq!(plan.application.config.target, "aarch64-unknown-linux-gnu");
         assert_eq!(
@@ -1054,8 +1222,8 @@ mod tests {
                 .count(),
             1
         );
-        // Merge mode needs no overlay support.
-        assert!(!kconfig.1.contains("CONFIG_OF_OVERLAY"));
+        assert!(kconfig.1.contains("CONFIG_OF_OVERLAY=y"));
+        assert!(kconfig.1.contains("CONFIG_OF_CONFIGFS=y"));
         // STM32 → an extlinux boot-args fragment lands under `dist/boot/`.
         assert!(plan.boot_files.iter().any(|(n, _)| n == "extlinux-uio.cfg"));
         // No `[profile] kernel_recipe` in the example, so no bbappend is emitted.

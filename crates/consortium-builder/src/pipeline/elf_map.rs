@@ -21,13 +21,20 @@
 //! [`DebugLogs::with_resolved_elf_paths`](consortium_cfg::components::dbg::DebugLogs::with_resolved_elf_paths)).
 //! Each `[dbg.<core>]` core must have been compiled in Stage 1; if not, there is
 //! nothing to embed and it is a hard error rather than a silent skip.
+//!
+//! The paths resolved here are absolute, for the filesystem side (check-mode
+//! placeholders). What the AP module actually names comes from
+//! [`embed_locations`], which re-expresses each one relative to a `CSTI_*`
+//! directory so the generated source carries no build-host path.
 
 use std::collections::HashMap;
 use std::path::PathBuf;
 
-use consortium_cfg_common::config::VisibleCore;
+use consortium_cfg::components::dbg::ElfLocation;
+use consortium_cfg_common::config::{VisibleCore, Workspace};
 
 use super::PipelineError;
+use crate::compile::env::CstiWorkspace;
 
 /// Resolves the firmware ELF path for every debug core.
 ///
@@ -56,9 +63,38 @@ pub fn resolve_dbg_elf_paths(
     Ok(resolved)
 }
 
+/// Re-expresses each resolved debug ELF relative to the `CSTI_*` directory whose
+/// `target/` holds it: `CSTI_MANIFEST_PATH` in a [unified](Workspace::Unified)
+/// workspace, `CSTI_MCU_PATH` in a [nested](Workspace::Nested) one.
+///
+/// Falls back to the absolute path when the ELF is not under that directory, or
+/// when a nested manifest declares several firmware crates (so there is no single
+/// `CSTI_MCU_PATH`).
+pub fn embed_locations(
+    dbg_elfs: &HashMap<VisibleCore, PathBuf>,
+    workspace: &CstiWorkspace,
+) -> HashMap<VisibleCore, ElfLocation> {
+    let base = match workspace.layout {
+        Workspace::Unified => Some(workspace.manifest_dir.as_path()),
+        Workspace::Nested => workspace.mcu_dir.as_deref(),
+    };
+    let env = workspace.layout.firmware_target_base_env();
+    dbg_elfs
+        .iter()
+        .map(|(core, path)| {
+            let location = match base.and_then(|base| path.strip_prefix(base).ok()) {
+                Some(relative) => ElfLocation::relative_to(env, relative),
+                None => ElfLocation::verbatim(path.clone()),
+            };
+            (*core, location)
+        })
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::path::Path;
 
     fn cm33() -> VisibleCore {
         VisibleCore::Mcore("cm33".parse().unwrap())
@@ -74,6 +110,54 @@ mod tests {
         let resolved =
             resolve_dbg_elf_paths(&outputs, [cm33()].into_iter()).expect("cm33 was built");
         assert_eq!(resolved[&cm33()], PathBuf::from("/build/cm33.elf"));
+    }
+
+    fn workspace(layout: Workspace, mcu_dir: Option<&str>) -> CstiWorkspace {
+        CstiWorkspace {
+            layout,
+            manifest_dir: PathBuf::from("/proj"),
+            mcu_dir: mcu_dir.map(PathBuf::from),
+        }
+    }
+
+    #[test]
+    fn nested_embeds_relative_to_mcu_path() {
+        let elfs = HashMap::from([(
+            cm33(),
+            PathBuf::from("/proj/mcu/target/thumbv8m.main-none-eabihf/debug/fw_original.elf"),
+        )]);
+        let located = embed_locations(&elfs, &workspace(Workspace::Nested, Some("/proj/mcu")));
+        assert_eq!(
+            located[&cm33()],
+            ElfLocation::relative_to(
+                "CSTI_MCU_PATH",
+                Path::new("target/thumbv8m.main-none-eabihf/debug/fw_original.elf"),
+            )
+        );
+    }
+
+    #[test]
+    fn unified_embeds_relative_to_manifest_path() {
+        let elfs = HashMap::from([(
+            cm33(),
+            PathBuf::from("/proj/target/thumbv8m.main-none-eabihf/debug/fw_original.elf"),
+        )]);
+        let located = embed_locations(&elfs, &workspace(Workspace::Unified, Some("/proj/mcu")));
+        assert_eq!(
+            located[&cm33()],
+            ElfLocation::relative_to(
+                "CSTI_MANIFEST_PATH",
+                Path::new("target/thumbv8m.main-none-eabihf/debug/fw_original.elf"),
+            )
+        );
+    }
+
+    #[test]
+    fn nested_without_a_single_mcu_falls_back_to_absolute() {
+        let elf = PathBuf::from("/proj/mcu/target/thumbv8m.main-none-eabihf/debug/fw_original.elf");
+        let elfs = HashMap::from([(cm33(), elf.clone())]);
+        let located = embed_locations(&elfs, &workspace(Workspace::Nested, None));
+        assert_eq!(located[&cm33()], ElfLocation::verbatim(elf));
     }
 
     #[test]

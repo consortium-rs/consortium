@@ -55,6 +55,16 @@ pub struct BuildArgs {
     #[arg(long)]
     skip_tee_sign: bool,
 
+    /// Downgrade a missing remoteproc DTS node to a warning instead of failing
+    /// the build. Use this when `--linux` points at a kernel checkout that
+    /// does not (yet) carry a vendor's out-of-tree remoteproc binding for a
+    /// manifest core (e.g. mainline Linux instead of a vendor BSP fork); the
+    /// affected core's DTS fixups are skipped, so that firmware will not
+    /// actually be loadable via the rendered device tree until the checkout
+    /// has the real node.
+    #[arg(long)]
+    skip_remoteproc_check: bool,
+
     /// Stage the assembled `dist/` tree under a bitbake recipe's `files/` dir.
     #[arg(long, value_name = "DIR")]
     bitbake_files_dir: Option<PathBuf>,
@@ -133,6 +143,7 @@ pub async fn run(args: BuildArgs) -> Result<(), String> {
         hmi,
         tee_toolchain,
         sign_tee: !args.skip_tee_sign,
+        strict_remoteproc: !args.skip_remoteproc_check,
         bitbake,
     };
 
@@ -169,6 +180,11 @@ pub async fn run(args: BuildArgs) -> Result<(), String> {
     println!("  app:      {}", plan.application.config.target);
     if args.offline {
         println!("  cargo:    --offline (local registry cache only)");
+    }
+    if args.skip_remoteproc_check {
+        println!(
+            "  dts:      --skip-remoteproc-check (missing remoteproc nodes are warnings, not errors)"
+        );
     }
 
     let reporter = StickyReporter::new();

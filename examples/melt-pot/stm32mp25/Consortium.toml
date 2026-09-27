@@ -17,6 +17,11 @@ deploy_root = "/opt/consortium"
 # sysroot     = "/workspace/stm32mp-yocto-bsp/build-openstlinuxweston-stm32mp2/tmp-glibc/sysroots"
 sysroot       = "/"
 kernel_recipe = "linux-stm32mp"
+# Each endpoint crate is its own Cargo project with its own `target/` (they are
+# excluded from the repository workspace), so the AP embeds the firmware's debug
+# ELF relative to `CSTI_MCU_PATH`. `unified` would instead expect every endpoint
+# in one Cargo workspace rooted beside this file and read `CSTI_MANIFEST_PATH`.
+workspace = "nested"
 
 # Device-tree generation. The selected board source and all of its includes are
 # read from the kernel checkout passed to `csti build --linux <DIR>`.

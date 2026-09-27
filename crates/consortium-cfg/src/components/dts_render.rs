@@ -69,10 +69,20 @@ pub struct RenderedDts {
 /// `target_cores` are the coprocessor core names the build targets, used to
 /// scope remoteproc fixups.
 ///
+/// `strict_remoteproc` controls what happens when a manifest-declared
+/// remoteproc core has no matching node in the selected BSP source (for
+/// example, a mainline kernel checkout that lacks a vendor's out-of-tree
+/// remoteproc binding). `true` (the default posture) is a hard error, since
+/// the rendered DTS would not actually be able to load that firmware. `false`
+/// downgrades it to a warning and skips DTS fixups (and memory carveouts) for
+/// that core only — useful for exercising the rest of the build pipeline
+/// against a BSP checkout that does not yet carry the binding.
+///
 /// # Errors
 ///
 /// [`CfgError::Manifest`] if the selected source is absent from the supplied
 /// kernel checkout, or [`CfgError::DtsParse`] if a source fails to parse.
+#[allow(clippy::too_many_arguments)]
 pub fn render_linux_dts(
     chip: &str,
     devkit: Option<&str>,
@@ -81,6 +91,7 @@ pub fn render_linux_dts(
     ir: &LoweredIr,
     target_cores: &[String],
     linux: &Path,
+    strict_remoteproc: bool,
 ) -> Result<Option<RenderedDts>, CfgError> {
     if ir.uio.is_empty() && ir.remoteproc.is_empty() {
         consortium_log::trace!("no UIO or remoteproc devices in IR; skipping Linux DTS render");
@@ -114,10 +125,11 @@ pub fn render_linux_dts(
     let base_file = files.first().cloned().unwrap_or_default();
 
     let mut analysis = analyze(&files, ir, target_cores);
-    analyze_remoteproc(&files, ir, &mut analysis)?;
+    analyze_remoteproc(&files, ir, &mut analysis, strict_remoteproc)?;
 
     let rendered = if mode.is_overlay() {
-        let (contents, warnings) = render_overlay(&analysis, ir);
+        let (contents, mut warnings) = render_overlay(&analysis, ir);
+        warnings.splice(0..0, analysis.warnings.iter().cloned());
         RenderedDts {
             file_name: overlay_file_name(&base),
             contents,
@@ -128,7 +140,7 @@ pub fn render_linux_dts(
         RenderedDts {
             file_name: merge_file_name(&base),
             contents: render_merge(&base_file, &analysis, ir),
-            warnings: Vec::new(),
+            warnings: analysis.warnings.clone(),
             source_closure: sources,
         }
     };
@@ -326,6 +338,9 @@ pub struct Analysis {
     pub rprocs: Vec<RprocFix>,
     /// Firmware carveouts not already supplied by the BSP.
     pub carveouts: Vec<RprocCarveout>,
+    /// Non-fatal issues found while analyzing the base tree (e.g. a remoteproc
+    /// node skipped under `strict = false`).
+    pub warnings: Vec<String>,
 }
 
 /// Analyzes the parsed base tree (`files` = the entry plus its local include
@@ -345,7 +360,7 @@ pub fn analyze(files: &[File], ir: &LoweredIr, target_cores: &[String]) -> Analy
     let mut rprocs: Vec<RprocFix> = Vec::new();
     for file in files {
         edit::for_each_node(file, |node| {
-            let Some(label) = node.label.as_deref() else {
+            let Some(label) = node.labels.first().map(String::as_str) else {
                 return;
             };
             let is_rproc = RPROC_MARKERS.iter().any(|m| node.compatible_contains(m));
@@ -368,6 +383,7 @@ pub fn analyze(files: &[File], ir: &LoweredIr, target_cores: &[String]) -> Analy
         conflicts,
         rprocs,
         carveouts: Vec::new(),
+        warnings: Vec::new(),
     }
 }
 
@@ -375,6 +391,7 @@ fn analyze_remoteproc(
     files: &[File],
     ir: &LoweredIr,
     analysis: &mut Analysis,
+    strict: bool,
 ) -> Result<(), CfgError> {
     if ir.remoteproc.is_empty() {
         return Ok(());
@@ -402,6 +419,13 @@ fn analyze_remoteproc(
                     "STM32MP remoteproc supports only the non-signed `st,stm32mp2-m33` ELF path; the selected DTS composes the TEE-only remoteproc".into(),
                 ));
             }
+            None if !strict => {
+                analysis.warnings.push(format!(
+                    "selected BSP source lacks the required remoteproc node compatible `{}` for core `{}`; skipping its DTS fixups (this firmware will not be loadable via this BSP)",
+                    layout.compatible, layout.core
+                ));
+                continue;
+            }
             None => {
                 return Err(CfgError::Manifest(format!(
                     "selected BSP source lacks the required remoteproc node compatible `{}` for core `{}`",
@@ -410,7 +434,7 @@ fn analyze_remoteproc(
             }
         };
 
-        let desired = desired_reservations(layout)?;
+        let desired = desired_reservations(layout);
         let mut refs = Vec::new();
         for (suffix, base, length) in desired {
             let end = base.checked_add(length).ok_or_else(|| {
@@ -454,7 +478,13 @@ fn analyze_remoteproc(
         analysis.rprocs.push(RprocFix {
             delete_mboxes: label_has_property(files, &label, "mboxes"),
             delete_mbox_names: label_has_property(files, &label, "mbox-names"),
-            delete_memory_region: label_has_property(files, &label, "memory-region"),
+            // Only strip the BSP's carveout list when we have our own to install
+            // in its place. A layout with nothing to reserve (TCM firmware) would
+            // otherwise delete vendor wiring — on i.MX 93 the board's
+            // `memory-region` is what points the loader at `rsc_table` — and put
+            // nothing back.
+            delete_memory_region: !refs.is_empty()
+                && label_has_property(files, &label, "memory-region"),
             label,
             memory_regions: refs,
         });
@@ -467,7 +497,7 @@ fn find_compatible_label(files: &[File], compatible: &str) -> Option<String> {
     for file in files {
         edit::for_each_node(file, |node| {
             if found.is_none() && node.compatible().contains(&compatible) {
-                found = node.label.clone();
+                found = node.labels.first().cloned();
             }
         });
         if found.is_none() {
@@ -483,9 +513,13 @@ fn find_compatible_label(files: &[File], compatible: &str) -> Option<String> {
     found
 }
 
-fn desired_reservations(
-    layout: &RemoteprocMemoryLayout,
-) -> Result<Vec<(String, u64, u64)>, CfgError> {
+/// The firmware windows that need a `reserved-memory` carveout, in DTS order.
+///
+/// May be empty, and that is a real configuration rather than an error: a
+/// coprocessor that runs from TCM (the i.MX 93 CM33) carries `reserve = false`
+/// on every window, because TCM is not DRAM and there is nothing to carve out of
+/// the kernel's memory map.
+fn desired_reservations(layout: &RemoteprocMemoryLayout) -> Vec<(String, u64, u64)> {
     let mut out = Vec::new();
     if layout.vector.window.reserve {
         out.push((
@@ -520,13 +554,7 @@ fn desired_reservations(
                 )
             }),
     );
-    if out.is_empty() {
-        return Err(CfgError::Manifest(format!(
-            "remoteproc `{}` has no reservable firmware memory window",
-            layout.core
-        )));
-    }
-    Ok(out)
+    out
 }
 
 #[derive(Debug)]
@@ -559,8 +587,9 @@ fn existing_reserved_ranges(files: &[File]) -> Vec<ExistingReservation> {
                     };
                     let path = format!("/reserved-memory/{node_name}");
                     let reference = node
-                        .label
-                        .clone()
+                        .labels
+                        .first()
+                        .cloned()
                         .map(Reference::label)
                         .unwrap_or_else(|| Reference::path(path.clone()));
                     out.push(ExistingReservation {
@@ -835,6 +864,7 @@ mod tests {
                 core,
                 compatible: "fsl,imx95-cm7".into(),
                 vector_section: ".interrupts".into(),
+                vector_placement: consortium_cfg_common::database::VectorPlacement::Flash,
                 vector: crate::components::remoteproc::RemoteprocNamedRegion {
                     name: "m_interrupts".into(),
                     attributes: crate::components::remoteproc::LinkerRegionAttributes::new(
@@ -982,6 +1012,7 @@ mod tests {
             &ir,
             &["cm7".to_string()],
             &root,
+            true,
         )
         .expect("render succeeds")
         .expect("uio present");
@@ -1010,6 +1041,7 @@ mod tests {
             &ir,
             &["cm33".to_string()],
             &root,
+            true,
         )
         .expect("render succeeds")
         .expect("uio present");
@@ -1048,7 +1080,7 @@ mod tests {
         .unwrap();
         let ir = remoteproc_ir();
         let mut analysis = analyze(std::slice::from_ref(&base), &ir, &["cm7".into()]);
-        analyze_remoteproc(std::slice::from_ref(&base), &ir, &mut analysis).unwrap();
+        analyze_remoteproc(std::slice::from_ref(&base), &ir, &mut analysis, true).unwrap();
         let dts = render_merge(&base, &analysis, &ir);
 
         assert!(dts.contains("consortium_cm7_vector: cm7-firmware-vector@80000000"));
@@ -1098,7 +1130,7 @@ mod tests {
         )
         .unwrap();
         let mut analysis = Analysis::default();
-        analyze_remoteproc(std::slice::from_ref(&base), &ir, &mut analysis).unwrap();
+        analyze_remoteproc(std::slice::from_ref(&base), &ir, &mut analysis, true).unwrap();
         assert!(
             analysis
                 .carveouts
@@ -1128,7 +1160,7 @@ mod tests {
 
         let covering = source(0x0200_0000);
         let mut analysis = Analysis::default();
-        analyze_remoteproc(std::slice::from_ref(&covering), &ir, &mut analysis).unwrap();
+        analyze_remoteproc(std::slice::from_ref(&covering), &ir, &mut analysis, true).unwrap();
         assert_eq!(analysis.carveouts.len(), 1);
         assert_eq!(analysis.carveouts[0].label, "consortium_cm7_shmem");
         assert_eq!(
@@ -1144,6 +1176,7 @@ mod tests {
             std::slice::from_ref(&partial),
             &ir,
             &mut Analysis::default(),
+            true,
         )
         .unwrap_err();
         assert!(error.to_string().contains("partially overlaps"));
@@ -1160,6 +1193,7 @@ mod tests {
             &ir,
             &["cm7".into()],
             Path::new("/unused"),
+            true,
         )
         .unwrap_err();
         assert!(overlay.to_string().contains("requires `[dts] mode"));
@@ -1169,12 +1203,29 @@ mod tests {
             std::slice::from_ref(&missing),
             &ir,
             &mut Analysis::default(),
+            true,
         )
         .unwrap_err();
         assert!(
             error
                 .to_string()
                 .contains("lacks the required remoteproc node")
+        );
+    }
+
+    #[test]
+    fn remoteproc_missing_bsp_node_can_be_downgraded_to_warning() {
+        let ir = remoteproc_ir();
+        let missing = parse_dts("/dts-v1/; / { model = \"missing\"; };").unwrap();
+        let mut analysis = Analysis::default();
+        analyze_remoteproc(std::slice::from_ref(&missing), &ir, &mut analysis, false).unwrap();
+        assert!(analysis.rprocs.is_empty());
+        assert!(analysis.carveouts.is_empty());
+        assert!(
+            analysis
+                .warnings
+                .iter()
+                .any(|w| w.contains("lacks the required remoteproc node"))
         );
     }
 
@@ -1209,6 +1260,7 @@ mod tests {
             &remoteproc_ir(),
             &["cm7".into()],
             &root,
+            true,
         )
         .unwrap()
         .unwrap();
@@ -1230,8 +1282,13 @@ mod tests {
             / { m33_tee: m33@0 { compatible = "st,stm32mp2-m33-tee"; }; };"#,
         )
         .unwrap();
-        let error = analyze_remoteproc(std::slice::from_ref(&tee), &ir, &mut Analysis::default())
-            .unwrap_err();
+        let error = analyze_remoteproc(
+            std::slice::from_ref(&tee),
+            &ir,
+            &mut Analysis::default(),
+            true,
+        )
+        .unwrap_err();
         assert!(error.to_string().contains("non-signed"));
     }
 
@@ -1246,6 +1303,7 @@ mod tests {
             &remoteproc_ir(),
             &["cm7".into()],
             &root,
+            true,
         )
         .unwrap_err();
         assert!(error.to_string().contains("has no DTS source"));
@@ -1266,7 +1324,7 @@ mod tests {
         )
         .unwrap();
         let mut analysis = Analysis::default();
-        analyze_remoteproc(std::slice::from_ref(&base), &ir, &mut analysis).unwrap();
+        analyze_remoteproc(std::slice::from_ref(&base), &ir, &mut analysis, true).unwrap();
         let labels: Vec<_> = analysis
             .carveouts
             .iter()

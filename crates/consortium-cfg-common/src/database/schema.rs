@@ -30,6 +30,8 @@ pub struct RemoteprocDatabase {
     pub compatible: String,
     /// Section name the deployed ELF loader uses to find the vector table.
     pub vector_section: String,
+    /// How the generated `memory.x` relates `FLASH` to the vector window.
+    pub vector_placement: VectorPlacement,
     /// Mandatory vector-table subregion at the start of the load image.
     pub vector: RemoteprocVector,
     /// Default code/read-only window.
@@ -38,6 +40,21 @@ pub struct RemoteprocDatabase {
     pub shmem: RemoteprocRegion,
     /// Default writable window.
     pub ram: RemoteprocWindow,
+}
+
+/// How a remote core's generated `memory.x` lays out `FLASH` relative to its
+/// vector window.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum VectorPlacement {
+    /// `FLASH` starts at the vector window and spans it plus the flash window,
+    /// so `cortex-m-rt` links `.vector_table` at the vector origin; `_stext`
+    /// then keeps `.text` inside the flash window. The two windows must be
+    /// adjacent. Used by the i.MX 9 cores.
+    Flash,
+    /// `FLASH` is exactly the flash window and the vector window is emitted as
+    /// its own region. Used by STM32MP2.
+    Separate,
 }
 
 /// The mandatory chip-defined remoteproc shared-memory region.

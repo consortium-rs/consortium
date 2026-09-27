@@ -35,7 +35,10 @@ use tokio::process::Command;
 use uuid::Uuid;
 
 use super::Compiler;
-use crate::compile::utils::{binary_name, elf_path, resolve_cargo, run_command, verify_elf};
+use crate::compile::env::CstiWorkspace;
+use crate::compile::utils::{
+    binary_name, elf_path, inject_csti, resolve_cargo, run_command, verify_elf,
+};
 use crate::progress::BuildReporter;
 
 // Only aarch64-unknown-linux-gnu is currently supported for OP-TEE builds.
@@ -58,7 +61,7 @@ pub enum OpteeCompileError {
     #[error("Python interpreter not found on PATH (tried: python, python3)")]
     PythonNotFound,
 
-    #[error("Cargo build failed: {0}")]
+    #[error("Cargo failed: {0}")]
     BuildFailed(String),
 
     #[error("ELF not found at expected path: {0:?}")]
@@ -96,6 +99,10 @@ pub struct OpteeConfiguration {
     /// path — useful when the OP-TEE signer/keys are unavailable and you only
     /// need to check that the TA compiles and links.
     pub sign: bool,
+    /// Build-host directories injected as `CSTI_*` env vars, and the workspace
+    /// layout locating `target/`. `None` injects nothing and uses the crate's
+    /// own `target/`.
+    pub workspace: Option<CstiWorkspace>,
 }
 
 /// Compiler for OP-TEE Trusted Applications: builds the ELF then signs it.
@@ -107,57 +114,7 @@ impl OpteeCompiler {
         reporter: Option<&dyn BuildReporter>,
     ) -> Result<PathBuf, OpteeCompileError> {
         // ── Step 1: build ───────────────────────────────────────────────────
-        if !config.ta_dev_kit_dir.exists() {
-            return Err(OpteeCompileError::TaDevKitNotFound(config.ta_dev_kit_dir));
-        }
-
-        let cargo = resolve_cargo()
-            .await
-            .map_err(OpteeCompileError::UtilityError)?;
-
-        // The TA ELF is the `[[bin]]` target (the `#[ta_*]` entry points + the
-        // generated `user_ta_header.rs`), gated behind the `ta` feature. Build it
-        // explicitly: a plain `cargo build` would compile only the default-feature
-        // `rlib` (the `ca` callers) and skip the feature-gated binary entirely.
-        let bin = binary_name(&config.path)
-            .await
-            .map_err(OpteeCompileError::UtilityError)?;
-
-        let mut cmd = Command::new(&cargo);
-        cmd.arg("build")
-            .arg("--bin")
-            .arg(&bin)
-            .arg("--features")
-            .arg("ta")
-            .arg("--target")
-            .arg(OPTEE_TARGET)
-            .current_dir(&config.path)
-            .env("TA_DEV_KIT_DIR", &config.ta_dev_kit_dir)
-            .env(TEE_UUID_ENV, config.ta_uuid.to_string())
-            .env("RUSTFLAGS", "-C panic=abort");
-
-        if config.release {
-            cmd.arg("--release");
-        }
-
-        if config.offline {
-            cmd.arg("--offline");
-        }
-
-        if let Some(ref linker) = config.linker {
-            cmd.arg("--config")
-                .arg(format!("{OPTEE_TARGET}.linker={linker}"));
-        }
-
-        let status = run_command(&mut cmd, reporter)
-            .await
-            .map_err(|e| OpteeCompileError::BuildFailed(e.to_string()))?;
-
-        if !status.success() {
-            return Err(OpteeCompileError::BuildFailed(format!(
-                "cargo build failed with status: {status}"
-            )));
-        }
+        Self::cargo(&config, "build", reporter).await?;
 
         let elf = Self::output_path(&config).await?;
 
@@ -227,6 +184,79 @@ impl OpteeCompiler {
 
         Ok(ta)
     }
+
+    /// Type-checks the TA binary with `cargo check`, under the same dev kit,
+    /// features, and flags as [`build_with_reporter`](Self::build_with_reporter).
+    /// Produces no ELF and never signs, so no signer or keys are needed.
+    pub async fn check_with_reporter(
+        config: &OpteeConfiguration,
+        reporter: Option<&dyn BuildReporter>,
+    ) -> Result<(), OpteeCompileError> {
+        Self::cargo(config, "check", reporter).await
+    }
+
+    /// Runs `cargo <subcommand>` for the TA's feature-gated binary.
+    async fn cargo(
+        config: &OpteeConfiguration,
+        subcommand: &str,
+        reporter: Option<&dyn BuildReporter>,
+    ) -> Result<(), OpteeCompileError> {
+        if !config.ta_dev_kit_dir.exists() {
+            return Err(OpteeCompileError::TaDevKitNotFound(
+                config.ta_dev_kit_dir.clone(),
+            ));
+        }
+
+        let cargo = resolve_cargo()
+            .await
+            .map_err(OpteeCompileError::UtilityError)?;
+
+        // The TA ELF is the `[[bin]]` target (the `#[ta_*]` entry points + the
+        // generated `user_ta_header.rs`), gated behind the `ta` feature. Build it
+        // explicitly: a plain `cargo build`/`check` would compile only the default-feature
+        // `rlib` (the `ca` callers) and skip the feature-gated binary entirely.
+        let bin = binary_name(&config.path)
+            .await
+            .map_err(OpteeCompileError::UtilityError)?;
+
+        let mut cmd = Command::new(&cargo);
+        cmd.arg(subcommand)
+            .arg("--bin")
+            .arg(&bin)
+            .arg("--features")
+            .arg("ta")
+            .arg("--target")
+            .arg(OPTEE_TARGET)
+            .current_dir(&config.path)
+            .env("TA_DEV_KIT_DIR", &config.ta_dev_kit_dir)
+            .env(TEE_UUID_ENV, config.ta_uuid.to_string())
+            .env("RUSTFLAGS", "-C panic=abort");
+        inject_csti(&mut cmd, config.workspace.as_ref());
+
+        if config.release {
+            cmd.arg("--release");
+        }
+
+        if config.offline {
+            cmd.arg("--offline");
+        }
+
+        if let Some(ref linker) = config.linker {
+            cmd.arg("--config")
+                .arg(format!("{OPTEE_TARGET}.linker={linker}"));
+        }
+
+        let status = run_command(&mut cmd, reporter)
+            .await
+            .map_err(|e| OpteeCompileError::BuildFailed(e.to_string()))?;
+
+        if !status.success() {
+            return Err(OpteeCompileError::BuildFailed(format!(
+                "cargo {subcommand} failed with status: {status}"
+            )));
+        }
+        Ok(())
+    }
 }
 
 impl Compiler for OpteeCompiler {
@@ -239,9 +269,14 @@ impl Compiler for OpteeCompiler {
     }
 
     async fn output_path(config: &Self::Configuration) -> Result<PathBuf, Self::Error> {
-        elf_path(&config.path, OPTEE_TARGET, config.release)
-            .await
-            .map_err(OpteeCompileError::UtilityError)
+        elf_path(
+            &config.path,
+            config.workspace.as_ref(),
+            OPTEE_TARGET,
+            config.release,
+        )
+        .await
+        .map_err(OpteeCompileError::UtilityError)
     }
 }
 
@@ -274,6 +309,7 @@ impl OpteeBuilder {
             optee_signer: env.optee_signer.clone(),
             ta_uuid: env.ta_uuid,
             sign: true,
+            workspace: None,
         })
         .await
         .map_err(|e| e.to_string())

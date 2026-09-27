@@ -46,7 +46,7 @@ use consortium_cfg_common::database::{
 
 use crate::components::address::{Address, ApAddress};
 use crate::components::bella::{BellA, HardwareDoorbell};
-use crate::components::dbg::{DebugLogs, DebugRing};
+use crate::components::dbg::{DebugLogs, DebugRing, ElfLocation};
 use crate::components::ipc_shm::{Channel, DoorbellMeta, DoorbellRingerSide, ShuHan, Transceiver};
 use crate::components::irq::InterruptLine;
 use crate::components::memory_to_uio::SharedWindow;
@@ -839,7 +839,7 @@ impl Session {
                     mtu: entry.mtu,
                     ap_uio_id: dbg_uio_id,
                     ap_mmap_id: mmap_id,
-                    elf_path: self.endpoint_artifact(*core).unwrap_or_default(),
+                    elf: ElfLocation::verbatim(self.endpoint_artifact(*core).unwrap_or_default()),
                 },
             );
         }
@@ -1022,6 +1022,7 @@ impl Session {
                     core,
                     compatible: default.compatible.clone(),
                     vector_section: default.vector_section.clone(),
+                    vector_placement: default.vector_placement,
                     vector: RemoteprocNamedRegion {
                         name: default.vector.name.clone(),
                         attributes: LinkerRegionAttributes::new(
@@ -1203,7 +1204,7 @@ impl Session {
     }
 
     /// The `[endpoints]` artifact root declared for `core`, used to *seed* that
-    /// coprocessor's debug-ring [`elf_path`](crate::components::dbg::DebugRing::elf_path).
+    /// coprocessor's debug-ring [`elf`](crate::components::dbg::DebugRing::elf).
     ///
     /// This is only a placeholder: it names the firmware's source directory, not
     /// its compiled ELF. The build pipeline overwrites it with the real
@@ -1282,8 +1283,9 @@ fn party_window(
 }
 
 /// The controller-core physical-base map for a doorbell: like
-/// [`controller_bases`], but each party is offset to *its own* register window
-/// rather than sharing the block base.
+/// [`controller_bases`], but each party maps to *its own* register window
+/// rather than sharing one base. Session validation has already rejected a
+/// party the doorbell does not list.
 fn controller_doorbell_bases(
     doorbell: &HardwareDoorbellPeripheral,
     parties: [Party; 2],
@@ -1292,15 +1294,9 @@ fn controller_doorbell_bases(
     parties
         .into_iter()
         .filter(|party| party.core() != VisibleCore::Ap)
-        .map(|party| {
-            let base = doorbell
-                .parties
-                .iter()
-                .find(|entry| entry.core == party)
-                .map_or(doorbell.memory.base, |entry| {
-                    doorbell.party_window_base(entry)
-                });
-            (party.core(), base + alias(party_secure(party)))
+        .filter_map(|party| {
+            let entry = doorbell.parties.iter().find(|entry| entry.core == party)?;
+            Some((party.core(), entry.memory + alias(party_secure(party))))
         })
         .collect()
 }
@@ -1395,6 +1391,7 @@ fn record_bell(
 mod tests {
     use super::*;
     use consortium_cfg_common::config::{Codec, McoreName};
+    use consortium_cfg_common::database::VectorPlacement;
 
     const STM32: &str = include_str!("../Consortium.example.stm32mp257.toml");
 
@@ -1705,7 +1702,7 @@ mod tests {
         let layout = &ir.remoteproc[&"cm33".parse().unwrap()];
 
         assert_eq!(layout.compatible, "fsl,imx93-cm33");
-        assert_eq!(layout.vector.window.origin, 0x1FFC_0000);
+        assert_eq!(layout.vector.window.origin, 0x0FFE_0000);
         assert_eq!(layout.ram.origin, 0x2000_0000);
         // TCM is not DRAM, so nothing here is carved out of the kernel map.
         assert!(!layout.vector.window.reserve);
@@ -1744,13 +1741,15 @@ mod tests {
         assert_eq!(layout.ram.origin, 0x8100_0000);
         assert_eq!(layout.ram.length, 0x0040_0000);
         assert_eq!(layout.vector_section, ".interrupts");
+        assert_eq!(layout.vector_placement, VectorPlacement::Flash);
         assert_eq!(layout.vector.name, "m_interrupts");
         assert_eq!(layout.vector.window.length, 0x1000);
         assert_eq!(layout.shmem.name, "m_rsc_tbl_in_dram");
         assert_eq!(layout.shmem.window.origin, 0x8822_0000);
         let memory = layout.linker_memory().unwrap().render();
         assert!(memory.contains("m_interrupts (rx) : ORIGIN = 0x80000000, LENGTH = 0x1000"));
-        assert!(memory.contains("FLASH (rx) : ORIGIN = 0x80001000, LENGTH = 0x7ff000"));
+        assert!(memory.contains("FLASH (rx) : ORIGIN = 0x80000000, LENGTH = 0x800000"));
+        assert!(memory.contains("_stext = 0x80001000;"));
         assert!(memory.contains("RAM (rwx) : ORIGIN = 0x81000000, LENGTH = 0x400000"));
         assert!(memory.contains("m_rsc_tbl_in_dram (rw) : ORIGIN = 0x88220000"));
         assert!(memory.contains("} > m_rsc_tbl_in_dram\n} INSERT AFTER .rodata;"));
@@ -1771,9 +1770,13 @@ mod tests {
         .unwrap();
         let stm_layout = &stm.remoteproc[&"cm33".parse().unwrap()];
         assert_eq!(stm_layout.vector_section, ".isr_vectors");
+        // STM32MP2 keeps the vector window separate: `FLASH` is the flash window
+        // as declared and no `_stext` is pinned.
+        assert_eq!(stm_layout.vector_placement, VectorPlacement::Separate);
         let stm_memory = stm_layout.linker_memory().unwrap().render();
         assert!(stm_memory.contains("NS_VECTOR_TBL (rwx) : ORIGIN = 0x80100000, LENGTH = 0x1000"));
         assert!(stm_memory.contains("FLASH (rx) : ORIGIN = 0x80101000, LENGTH = 0x7ff000"));
+        assert!(!stm_memory.contains("_stext"));
         assert!(stm_memory.contains("SHMEM (rwx) : ORIGIN = 0x812f8000, LENGTH = 0x8000"));
         assert!(stm_memory.contains("RAM (rwx) : ORIGIN = 0x80a00000, LENGTH = 0x100000"));
         assert!(!stm_memory.contains("VIRTIO_SHMEM"));

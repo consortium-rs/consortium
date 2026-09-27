@@ -2,6 +2,10 @@
 chip        = "stm32mp257fak3"
 shared      = "./shared"
 deploy_root = "/opt/consortium"
+# Where endpoint crates put `target/`: "nested" (default, one per crate) or
+# "unified" (one Cargo workspace rooted beside this file, which must hold its
+# root Cargo.toml).
+# workspace = "nested"
 
 [endpoints]
 linux = "./app"

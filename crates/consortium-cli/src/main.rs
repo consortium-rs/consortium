@@ -25,6 +25,10 @@
 //!
 //! It does **not** deploy: nothing is written to a live target filesystem.
 //!
+//! `csti check` is its fast loop, the `cargo check` of a whole system: it validates
+//! the manifest, writes the generated endpoint modules, and type-checks the
+//! firmware, TA, and application crates without linking or staging anything.
+//!
 //! `csti fetch` is its network half: it resolves the same Cargo projects the
 //! build plan does and downloads their dependencies (plus each cross target's
 //! `std` and the HMI frontend's packages) ahead of time, so `csti build
@@ -40,6 +44,7 @@
 //! directory keeps its descriptive name, so cargo invocations use `-p csti`.
 
 mod build;
+mod check;
 mod fetch;
 mod reporter;
 
@@ -48,6 +53,7 @@ use std::process::ExitCode;
 use clap::{Parser, Subcommand};
 
 use crate::build::BuildArgs;
+use crate::check::CheckArgs;
 use crate::fetch::FetchArgs;
 
 /// Build and package Consortium applications and runtimes.
@@ -63,6 +69,10 @@ enum Command {
     /// Run the end-to-end build pipeline for a `Consortium.toml` manifest.
     Build(BuildArgs),
 
+    /// Validate the manifest and type-check every Rust endpoint with
+    /// `cargo check`, without building or packaging anything.
+    Check(CheckArgs),
+
     /// Download every dependency that build would need, so it can then run
     /// with `--offline`.
     Fetch(FetchArgs),
@@ -73,6 +83,7 @@ async fn main() -> ExitCode {
     let cli = Cli::parse();
     let result = match cli.command {
         Command::Build(args) => build::run(args).await,
+        Command::Check(args) => check::run(args).await,
         Command::Fetch(args) => fetch::run(args).await,
     };
 
@@ -93,5 +104,13 @@ mod tests {
     fn build_requires_linux_checkout() {
         assert!(Cli::try_parse_from(["csti", "build"]).is_err());
         assert!(Cli::try_parse_from(["csti", "build", "--linux", "/src/linux"]).is_ok());
+    }
+
+    #[test]
+    fn check_needs_no_linux_checkout() {
+        assert!(Cli::try_parse_from(["csti", "check"]).is_ok());
+        assert!(Cli::try_parse_from(["csti", "check", "--linux", "/src/linux"]).is_ok());
+        // The remoteproc downgrade only means something when a DTS is rendered.
+        assert!(Cli::try_parse_from(["csti", "check", "--skip-remoteproc-check"]).is_err());
     }
 }

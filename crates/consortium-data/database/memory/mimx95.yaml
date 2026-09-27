@@ -11,6 +11,7 @@ remoteproc:
   cm7:
     compatible: fsl,imx95-cm7
     vector_section: .interrupts
+    vector_placement: flash
     vector:
       name: m_interrupts
       read: true
@@ -60,9 +61,7 @@ peripheral:
     - name: MU1
       page: 2740
       type: mu
-      memory:
-        base: 0x04220000
-        length: 0x00020000
+      length: 0x00020000
       window_length: 0x00010000
       parties:
         - core: linux
@@ -70,30 +69,32 @@ peripheral:
           irq: 224
           page_memory: 99
           page_irq: 127
+          memory: 0x04220000
         - core: optee
           window: a
           irq: 224
           page_memory: 99
           page_irq: 127
+          memory: 0x04220000
         - core: cm33
           window: b
           irq: 225
           page_memory: 99
           page_irq: 128
+          memory: 0x04230000
         - core: cm33-s
           window: b
           irq: 225
           page_memory: 99
           page_irq: 128
+          memory: 0x04230000
       party_page: 2740
       channels: 8
       channel_page: 2741
     - name: MU2
       page: 2740
       type: mu
-      memory:
-        base: 0x045B0000
-        length: 0x00020000
+      length: 0x00020000
       window_length: 0x00010000
       parties:
         - core: linux
@@ -101,30 +102,32 @@ peripheral:
           irq: 226
           page_memory: 101
           page_irq: 128
+          memory: 0x045B0000
         - core: optee
           window: a
           irq: 226
           page_memory: 101
           page_irq: 128
+          memory: 0x045B0000
         - core: cm33
           window: b
           irq: 227
           page_memory: 101
           page_irq: 128
+          memory: 0x045C0000
         - core: cm33-s
           window: b
           irq: 227
           page_memory: 101
           page_irq: 128
+          memory: 0x045C0000
       party_page: 2740
       channels: 8
       channel_page: 2741
     - name: MU3
       page: 2740
       type: mu
-      memory:
-        base: 0x045D0000
-        length: 0x00020000
+      length: 0x00020000
       window_length: 0x00010000
       parties:
         - core: linux
@@ -132,30 +135,32 @@ peripheral:
           irq: 228
           page_memory: 101
           page_irq: 128
+          memory: 0x045D0000
         - core: optee
           window: a
           irq: 228
           page_memory: 101
           page_irq: 128
+          memory: 0x045D0000
         - core: cm33
           window: b
           irq: 229
           page_memory: 101
           page_irq: 128
+          memory: 0x045E0000
         - core: cm33-s
           window: b
           irq: 229
           page_memory: 101
           page_irq: 128
+          memory: 0x045E0000
       party_page: 2740
       channels: 8
       channel_page: 2741
     - name: MU4
       page: 2740
       type: mu
-      memory:
-        base: 0x045F0000
-        length: 0x00020000
+      length: 0x00020000
       window_length: 0x00010000
       parties:
         - core: linux
@@ -163,30 +168,32 @@ peripheral:
           irq: 230
           page_memory: 101
           page_irq: 128
+          memory: 0x045F0000
         - core: optee
           window: a
           irq: 230
           page_memory: 101
           page_irq: 128
+          memory: 0x045F0000
         - core: cm33
           window: b
           irq: 231
           page_memory: 101
           page_irq: 128
+          memory: 0x04600000
         - core: cm33-s
           window: b
           irq: 231
           page_memory: 101
           page_irq: 128
+          memory: 0x04600000
       party_page: 2740
       channels: 8
       channel_page: 2741
     - name: MU5
       page: 2740
       type: mu
-      memory:
-        base: 0x04610000
-        length: 0x00020000
+      length: 0x00020000
       window_length: 0x00010000
       parties:
         - core: cm7
@@ -194,25 +201,26 @@ peripheral:
           irq: 205
           page_memory: 102
           page_irq: 127
+          memory: 0x04610000
         - core: cm33
           window: b
           irq: 232
           page_memory: 101
           page_irq: 128
+          memory: 0x04620000
         - core: cm33-s
           window: b
           irq: 232
           page_memory: 101
           page_irq: 128
+          memory: 0x04620000
       party_page: 2740
       channels: 8
       channel_page: 2741
     - name: MU7
       page: 4556
       type: mu
-      memory:
-        base: 0x02430000
-        length: 0x00020000
+      length: 0x00020000
       window_length: 0x00010000
       parties:
         - core: linux
@@ -220,25 +228,26 @@ peripheral:
           irq: 234
           page_memory: 106
           page_irq: 128
+          memory: 0x02430000
         - core: optee
           window: a
           irq: 234
           page_memory: 106
           page_irq: 128
+          memory: 0x02430000
         - core: cm7
           window: b
           irq: 207
           page_memory: 106
           page_irq: 127
+          memory: 0x02440000
       party_page: 4556
       channels: 8
       channel_page: 4557
     - name: MU8
       page: 4556
       type: mu
-      memory:
-        base: 0x02730000
-        length: 0x00020000
+      length: 0x00020000
       window_length: 0x00010000
       parties:
         - core: linux
@@ -246,16 +255,19 @@ peripheral:
           irq: 235
           page_memory: 107
           page_irq: 128
+          memory: 0x02730000
         - core: optee
           window: a
           irq: 235
           page_memory: 107
           page_irq: 128
+          memory: 0x02730000
         - core: cm7
           window: b
           irq: 208
           page_memory: 107
           page_irq: 127
+          memory: 0x02740000
       party_page: 4556
       channels: 8
       channel_page: 4557

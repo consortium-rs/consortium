@@ -13,10 +13,15 @@ remoteproc:
     #
     # Unlike the i.MX 95 CM7, which is loaded into a DDR carveout, the i.MX 93
     # CM33 runs from TCM. The addresses below are the *device* (CM33) view that
-    # the firmware links against; the loader translates them:
+    # the firmware links against, in the non-secure alias the NXP SDK uses:
     #
-    #   TCM CODE  device 0x1FFC0000 -> system 0x201C0000, 0x40000 (secure alias)
-    #   TCM SYS   device 0x20000000 -> system 0x20200000, 0x40000
+    #   TCM CODE  device 0x0FFE0000, 0x20000 (secure alias 0x1FFE0000)
+    #   TCM SYS   device 0x20000000, 0x20000 (secure alias 0x30000000)
+    #
+    # The loader's translation windows are wider (0x0FFC0000/0x1FFC0000 and
+    # 0x20000000/0x30000000, 0x40000 each), but only the top 128 KiB of the
+    # code window is TCM: the SDK reference firmware places `.interrupts` at
+    # 0x0FFE0000, and linking at the window base puts `.text` in no memory.
     #
     # `reserve` is false on all three TCM windows: they are not DRAM, so there
     # is nothing to carve out of the kernel's memory map. The vendor tree does
@@ -26,18 +31,19 @@ remoteproc:
     # node.
     compatible: fsl,imx93-cm33
     vector_section: .interrupts
+    vector_placement: flash
     vector:
       name: m_interrupts
       read: true
       write: false
       execute: true
       window:
-        origin: 0x1FFC0000
+        origin: 0x0FFE0000
         length: 0x00001000
         reserve: false
     flash:
-      origin: 0x1FFC1000
-      length: 0x0003F000
+      origin: 0x0FFE1000
+      length: 0x0001F000
       reserve: false
     shmem:
       # `.resource_table`, at the device address matching the board's
@@ -74,15 +80,6 @@ peripheral:
       secure: true
     - address: 0x40000000
       secure: false
-  # MU windows and A-core lines are taken from mainline
-  # `arch/arm64/boot/dts/freescale/imx93.dtsi`:
-  #   mu1: mailbox@44230000  reg = <0x44230000 0x10000>  GIC_SPI 22
-  #   mu2: mailbox@42440000  reg = <0x42440000 0x10000>  GIC_SPI 24
-  # Both are the MUB window (one 0x10000 stride above the MUA base recorded
-  # here), so on i.MX 93 Linux is on side B and the CM33 on side A -- the
-  # mirror of i.MX 95. The clock gates are named `MU<n>_B` for the same reason.
-  # The CM33 side is cross-checked against the chip dump by
-  # `consortium-data/tests/doorbell_windows.rs`.
   doorbells:
     - name: MU1
       page: 585
@@ -90,9 +87,7 @@ peripheral:
       clock:
         provider: clk
         id: IMX93_CLK_MU1_B_GATE
-      memory:
-        base: 0x04220000
-        length: 0x00020000
+      length: 0x00020000
       window_length: 0x00010000
       parties:
         - core: linux
@@ -100,21 +95,25 @@ peripheral:
           irq: 22
           page_memory: 62
           page_irq: 93
+          memory: 0x04230000
         - core: optee
           window: b
           irq: 22
           page_memory: 62
           page_irq: 93
+          memory: 0x04230000
         - core: cm33
           window: a
           irq: 21
           page_memory: 62
           page_irq: 93
+          memory: 0x04220000
         - core: cm33-s
           window: a
           irq: 21
           page_memory: 62
           page_irq: 93
+          memory: 0x04220000
       party_page: 585
       channels: 8
       channel_page: 586
@@ -124,9 +123,7 @@ peripheral:
       clock:
         provider: clk
         id: IMX93_CLK_MU2_B_GATE
-      memory:
-        base: 0x02430000
-        length: 0x00020000
+      length: 0x00020000
       window_length: 0x00010000
       parties:
         - core: linux
@@ -134,21 +131,25 @@ peripheral:
           irq: 24
           page_memory: 75
           page_irq: 93
+          memory: 0x02440000
         - core: optee
           window: b
           irq: 24
           page_memory: 75
           page_irq: 93
+          memory: 0x02440000
         - core: cm33
           window: a
           irq: 23
           page_memory: 75
           page_irq: 93
+          memory: 0x02430000
         - core: cm33-s
           window: a
           irq: 23
           page_memory: 75
           page_irq: 93
+          memory: 0x02430000
       party_page: 585
       channels: 8
       channel_page: 586

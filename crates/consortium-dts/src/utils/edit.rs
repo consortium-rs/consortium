@@ -124,7 +124,7 @@ pub fn for_each_node<'a>(file: &'a File, mut visitor: impl FnMut(&'a Node)) {
 pub fn find_by_label<'a>(file: &'a File, label: &str) -> Option<&'a Node> {
     let mut found = None;
     for_each_node(file, |node| {
-        if found.is_none() && node.label.as_deref() == Some(label) {
+        if found.is_none() && node.labels.iter().any(|l| l == label) {
             found = Some(node);
         }
     });
@@ -141,7 +141,7 @@ pub fn label_exists(file: &File, label: &str) -> bool {
 pub fn labeled_by_compatible<'a>(file: &'a File, needle: &str) -> Vec<(&'a str, &'a Node)> {
     let mut out = Vec::new();
     for_each_node(file, |node| {
-        if let Some(label) = node.label.as_deref()
+        if let Some(label) = node.labels.first().map(String::as_str)
             && node.compatible_contains(needle)
         {
             out.push((label, node));

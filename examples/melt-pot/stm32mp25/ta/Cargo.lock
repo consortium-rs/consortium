@@ -22,7 +22,7 @@ checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
 
 [[package]]
 name = "consortium-cfg-common"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "serde",
  "uuid",
@@ -30,14 +30,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-codec"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "consortium-log",
 ]
 
 [[package]]
 name = "consortium-log"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "consortium-log-macros",
  "tracing",
@@ -45,7 +45,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-log-macros"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -54,14 +54,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-macros-helpers"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "syn 3.0.3",
 ]
 
 [[package]]
 name = "consortium-tee"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "consortium-codec",
  "consortium-log",
@@ -73,14 +73,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-tee-macros"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "consortium-tee-macros-impl",
 ]
 
 [[package]]
 name = "consortium-tee-macros-impl"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "consortium-macros-helpers",
  "heck",
@@ -187,7 +187,7 @@ checksum = "0ceec5bc11778974d1bcb055b18002eba7f4b3518b6a0081b3af5f21666da9ad"
 
 [[package]]
 name = "melt-pot-stm32mp25-ta"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "consortium-cfg-common",
  "consortium-tee",

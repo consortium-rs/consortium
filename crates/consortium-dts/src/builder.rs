@@ -109,7 +109,7 @@ impl Node {
     pub fn new(name: impl Into<String>) -> Self {
         Self {
             omit_if_no_ref: false,
-            label: None,
+            labels: Vec::new(),
             name: name.into(),
             unit_address: None,
             properties: Vec::new(),
@@ -131,9 +131,9 @@ impl Node {
         Self::new("/")
     }
 
-    /// Set the node label.
+    /// Add a node label.
     pub fn label(mut self, label: impl Into<String>) -> Self {
-        self.label = Some(label.into());
+        self.labels.push(label.into());
         self
     }
 

@@ -85,7 +85,7 @@ fn mu_party_windows_and_irqs_match_the_core_dump() {
                     )
                 });
                 assert_eq!(
-                    bell.party_window_base(party) + alias,
+                    party.memory + alias,
                     entry.base,
                     "{chip} {core}: `{}` window {side} resolves to a different \
                      address than the dump's `{singleton}`",

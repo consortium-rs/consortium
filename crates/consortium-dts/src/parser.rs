@@ -202,15 +202,13 @@ impl<'src> Parser<'src> {
     }
 
     fn parse_node_or_labeled_node(&mut self) -> Result<Node, ParseError> {
-        let first = self.expect(TokenKind::Ident, "node name or label")?;
-        let first_text = self.text(first.span).to_string();
-
-        let (label, name) = if self.eat(TokenKind::Colon).is_some() {
-            let name = self.expect(TokenKind::Ident, "node name after label")?;
-            (Some(first_text), self.text(name.span).to_string())
-        } else {
-            (None, first_text)
-        };
+        let mut labels = Vec::new();
+        let mut name = self.expect(TokenKind::Ident, "node name or label")?;
+        while self.eat(TokenKind::Colon).is_some() {
+            labels.push(self.text(name.span).to_string());
+            name = self.expect(TokenKind::Ident, "node name after label")?;
+        }
+        let name = self.text(name.span).to_string();
 
         let unit_address = if let Some(at) = self.eat(TokenKind::At) {
             Some(self.parse_unit_address(at.span.end)?)
@@ -220,7 +218,7 @@ impl<'src> Parser<'src> {
 
         let node = Node {
             omit_if_no_ref: false,
-            label,
+            labels,
             name,
             unit_address,
             properties: Vec::new(),
@@ -314,7 +312,7 @@ impl<'src> Parser<'src> {
             return false;
         }
         idx += 1;
-        if self.kind_at(idx) == Some(TokenKind::Colon) {
+        while self.kind_at(idx) == Some(TokenKind::Colon) {
             idx += 1;
             if self.kind_at(idx) != Some(TokenKind::Ident) {
                 return false;
@@ -722,6 +720,20 @@ mod tests {
     }
 
     #[test]
+    fn parses_and_reemits_multiple_node_labels() {
+        let source = "/dts-v1/;\n/ {\n\tbus {\n\t\tusb3: usb3_dwc3: usb@4c100000 {\n\t\t\tstatus = \"okay\";\n\t\t};\n\t};\n};\n";
+        let file = parse_dts(source).unwrap();
+        let TopLevelItem::Root(root) = &file.items[0] else {
+            panic!("expected root node");
+        };
+        let usb = &root.children[0].children[0];
+        assert_eq!(usb.labels, ["usb3", "usb3_dwc3"]);
+        assert_eq!(usb.name, "usb");
+        assert!(crate::utils::edit::label_exists(&file, "usb3_dwc3"));
+        assert!(file.to_dts().contains("usb3: usb3_dwc3: usb@4c100000 {"));
+    }
+
+    #[test]
     fn parses_root_labeled_nodes_and_unit_addresses() {
         let file = parse_dts(
             "/dts-v1/;\n\n/ {\n    compatible = \"test,board\", \"simple-bus\";\n\n    uart4: serial@40010000 {\n        status = \"okay\";\n    };\n};\n",
@@ -732,7 +744,7 @@ mod tests {
             panic!("expected root node");
         };
         assert_eq!(root.name, "/");
-        assert_eq!(root.children[0].label.as_deref(), Some("uart4"));
+        assert_eq!(root.children[0].labels, ["uart4"]);
         assert_eq!(root.children[0].name, "serial");
         assert_eq!(root.children[0].unit_address.as_deref(), Some("40010000"));
     }
@@ -881,7 +893,7 @@ mod tests {
             ]
         );
         assert!(overlay.children[0].omit_if_no_ref);
-        assert_eq!(overlay.children[0].label.as_deref(), Some("eth_pins"));
+        assert_eq!(overlay.children[0].labels, ["eth_pins"]);
     }
 
     #[test]

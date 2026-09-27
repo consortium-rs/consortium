@@ -499,7 +499,12 @@ Current top-level schema:
   `sysroot` selects the Linux target
   sysroot, `kernel_recipe` enables generation of a kernel `.bbappend`, and
   `time_driver` (default `true`) toggles the sealed controller-core Embassy time driver,
-  timer vector, and `defmt::timestamp!`.
+  timer vector, and `defmt::timestamp!`. `workspace` (`nested`, the default, or
+  `unified`) says where endpoint crates put `target/`: `nested` means each crate has its
+  own, and `unified` means every endpoint is a member of one Cargo workspace rooted
+  beside `Consortium.toml`, which must then contain a root `Cargo.toml` with a
+  `[workspace]` table (`resolve_workspace` checks this). The melt-pot examples use
+  `nested`.
 - `[dts]` controls Linux device-tree output: `mode = "merge"` (default) emits a full
   tree, while `overlay` emits a `.dtso`; `base` overrides the base tree.
   `csti build --linux <DIR>` supplies all BSP DTS/DTSI sources and dt-bindings.
@@ -558,7 +563,16 @@ package install (`vp`/`npm install`, or `bun install` for Pocket; override with
 `CONSORTIUM_HMI_FETCH_CMD`). `csti build --offline` then passes `--offline` to every
 cargo invocation. Unlike `pipeline::plan`, `pipeline::fetch` needs no codegen and no
 OP-TEE toolchain. `CargoOptions { release, offline }` is the shared carrier for cargo
-flags across the three Rust stages. Host provisioning — the OP-TEE dev kit, a Yocto
+flags across the three Rust stages.
+
+`csti check` (`pipeline::check`) is the pipeline's `cargo check`: it validates the
+manifest, writes each endpoint's `consortium.gen.rs`/`memory.x`, and runs `cargo check`
+per project with the same targets and injected env as a build — no link, objcopy,
+signing, HMI build, `dist/`, or `dtc`. `--linux` is optional (the DTS is only rendered
+when given), and the TA is skipped rather than failing when `TA_DEV_KIT_DIR` is unset.
+Because the AP module `include_bytes!`es each `[dbg.<core>]` firmware's
+`*_original.elf`, an unbuilt one is replaced by an empty `<name>_check.elf` stand-in
+beside the cargo output until the next `csti build` regenerates the module. Host provisioning — the OP-TEE dev kit, a Yocto
 sysroot, kernel sources for `dtc`, BitBake's downloads — stays outside `fetch`.
 
 Firmware post-processing renames `.vector_table` to the remoteproc-expected
@@ -575,6 +589,15 @@ The builder flow injects compile-time environment variables such as `CONSORTIUM_
 with `option_env!`/`env!`. The builder emits numeric env-var values as decimal strings;
 firmware-side consumers that need const parsing can use `const-str` and should not depend
 on the std-oriented schema crates.
+
+Every endpoint `cargo` invocation (application, firmware, TA) also receives two
+build-host directories: `CSTI_MANIFEST_PATH` (the absolute directory holding
+`Consortium.toml`) and `CSTI_MCU_PATH` (the absolute firmware crate root, set only when
+the manifest declares exactly one). The generated AP module `include_bytes!`es each
+`[dbg.<core>]` ELF as `concat!(env!("CSTI_MCU_PATH"), "/target/...")` for a `nested`
+workspace, or relative to `CSTI_MANIFEST_PATH` for a `unified` one, so the committed
+`consortium.gen.rs` carries no build-host path. A nested manifest with several firmware
+crates has no single `CSTI_MCU_PATH` and falls back to absolute paths.
 
 Current IPC build-time variables are channel-local metadata such as
 `CONSORTIUM_IPC_LENGTH`, `CONSORTIUM_IPC_UIO`, and `CONSORTIUM_IPC_MTU`; the shared
@@ -799,9 +822,9 @@ Things that are easy to get wrong here:
   would clobber the macOS one. Build the frontend on the host, then set
   `CONSORTIUM_HMI_BUILD_CMD=/bin/true` so the container consumes the existing dist.
   `CONSORTIUM_HMI_FETCH_CMD=/bin/true` does the same for `csti fetch`'s install step.
-- Running the pipeline rewrites the committed `src/consortium.gen.rs` with
-  container-absolute `include_bytes!` paths. Revert it afterwards unless the change
-  is intended.
+- Running the pipeline rewrites the committed `src/consortium.gen.rs`. Its debug-ELF
+  `include_bytes!` paths are relative to `CSTI_MCU_PATH`, so they no longer differ
+  between host and container, but review other regenerated output before committing.
 
 ## Style and Tooling
 

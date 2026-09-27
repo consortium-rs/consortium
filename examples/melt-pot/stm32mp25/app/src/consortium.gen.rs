@@ -144,13 +144,15 @@ fn init(
                             static ELF: Aligned<
                                 {
                                     include_bytes!(
-                                        "/workspace/examples/melt-pot/stm32mp25/mcu/target/thumbv8m.main-none-eabihf/debug/melt-pot-stm32mp25-mcu_original.elf"
+                                        ::core::concat!(::core::env!("CSTI_MCU_PATH"),
+                                        "/target/thumbv8m.main-none-eabihf/debug/melt-pot-stm32mp25-mcu_original.elf")
                                     )
                                         .len()
                                 },
                             > = Aligned(
                                 *include_bytes!(
-                                    "/workspace/examples/melt-pot/stm32mp25/mcu/target/thumbv8m.main-none-eabihf/debug/melt-pot-stm32mp25-mcu_original.elf"
+                                    ::core::concat!(::core::env!("CSTI_MCU_PATH"),
+                                    "/target/thumbv8m.main-none-eabihf/debug/melt-pot-stm32mp25-mcu_original.elf")
                                 ),
                             );
                             &ELF.0

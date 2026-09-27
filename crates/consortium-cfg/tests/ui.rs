@@ -43,6 +43,7 @@ use std::path::{Path, PathBuf};
 
 use consortium_cfg::Session;
 use consortium_cfg::bridge::LoweredIr;
+use consortium_cfg::components::dbg::ElfLocation;
 use consortium_cfg_common::config::{Codec, VisibleCore};
 use proc_macro2::TokenStream;
 
@@ -195,11 +196,11 @@ fn generated_init_code_compiles() {
         // `include_bytes!` resolves against a file that exists relative to the
         // emitted `tests/ui/linux/*.rs` crate.
         let fixture = PathBuf::from("../../fixtures/placeholder.elf");
-        let resolved: HashMap<VisibleCore, PathBuf> = ir
+        let resolved: HashMap<VisibleCore, ElfLocation> = ir
             .dbg
             .rings()
             .keys()
-            .map(|core| (*core, fixture.clone()))
+            .map(|core| (*core, ElfLocation::verbatim(fixture.clone())))
             .collect();
         ir.dbg = std::mem::take(&mut ir.dbg).with_resolved_elf_paths(&resolved);
 

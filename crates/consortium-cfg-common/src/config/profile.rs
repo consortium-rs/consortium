@@ -64,6 +64,46 @@ pub struct Profile {
     /// that and the integrator calls `timer_driver::init_timer` directly.
     #[serde(default = "default_true")]
     pub time_driver: bool,
+    /// How the endpoint crates are arranged into Cargo workspaces, which decides
+    /// where their `target/` directories live. Defaults to
+    /// [`Workspace::Nested`].
+    #[serde(default)]
+    pub workspace: Workspace,
+}
+
+/// Environment variable the builder sets on every endpoint `cargo` invocation to
+/// the absolute directory containing `Consortium.toml`.
+pub const CSTI_MANIFEST_PATH_ENV: &str = "CSTI_MANIFEST_PATH";
+
+/// Environment variable the builder sets on every endpoint `cargo` invocation to
+/// the absolute root of the controller-core firmware crate, when the manifest
+/// declares exactly one.
+pub const CSTI_MCU_PATH_ENV: &str = "CSTI_MCU_PATH";
+
+/// `[profile] workspace`: the Cargo workspace layout of the endpoint crates.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum Workspace {
+    /// Every endpoint crate is a member of one Cargo workspace rooted beside
+    /// `Consortium.toml`, so all of them share `<manifest dir>/target/`. The
+    /// manifest directory must therefore hold the workspace root `Cargo.toml`.
+    Unified,
+    /// Each endpoint crate is its own Cargo project with its own `target/`
+    /// beside its `Cargo.toml` (the melt-pot examples' layout).
+    #[default]
+    Nested,
+}
+
+impl Workspace {
+    /// The `CSTI_*` variable naming the directory whose `target/` holds the
+    /// controller-core firmware's build output: the manifest directory for
+    /// [`Unified`](Self::Unified), the firmware crate for [`Nested`](Self::Nested).
+    pub fn firmware_target_base_env(self) -> &'static str {
+        match self {
+            Self::Unified => CSTI_MANIFEST_PATH_ENV,
+            Self::Nested => CSTI_MCU_PATH_ENV,
+        }
+    }
 }
 
 fn default_true() -> bool {
