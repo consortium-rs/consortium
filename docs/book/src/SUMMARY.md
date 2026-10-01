@@ -20,6 +20,7 @@
   - [Services and Debugging](content/glossary/services-and-debugging.md)
 - [Maintenance](maintenance/index.md)
   - [Engineering Logs](maintenance/log/index.md)
+    - [i.MX 93 Oct 1 (Bring up the CM33)](maintenance/log/oct-1-imx93.md)
     - [NVIC Jul 11 (Let M33 awake)](maintenance/log/jul-11-nvic.md)
     - [Rproc Jul 10 (Power on M33)](maintenance/log/jul-10-rproc.md)
     - [UIO Jul 9 (Enable and r/w)](maintenance/log/jul-9-uio.md)
