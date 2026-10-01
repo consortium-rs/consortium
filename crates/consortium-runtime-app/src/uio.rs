@@ -34,7 +34,8 @@
 //! `consortium-cfg`.
 
 use std::{
-    fs::File,
+    fs::{self, File},
+    path::Path,
     sync::{Arc, Mutex},
 };
 
@@ -66,6 +67,13 @@ pub enum UioDeviceError {
 
     #[error("no UIO map named {0:?}")]
     MapNotFound(String),
+
+    #[error("no UIO device named {name:?} (nor one mapping {base:#x}) under {root}")]
+    DeviceNotFound {
+        name: String,
+        base: u64,
+        root: String,
+    },
 }
 
 impl From<UioError> for UioDeviceError {
@@ -180,6 +188,18 @@ impl UioDevice {
         })
     }
 
+    /// Open the UIO device named `name`, then proceed as [`open`](Self::open).
+    ///
+    /// `uioN` numbers follow the kernel's probe order, which is not stable
+    /// across device trees, so generated code resolves each device by name
+    /// instead; see [`find`] for the matching rules. `base` is the physical
+    /// address of the device's first window, used only as a fallback.
+    pub fn open_named(name: &str, base: u64, enable_irq: bool) -> Result<Self, UioDeviceError> {
+        let uio_id = find(Path::new(SYSFS_UIO), name, base)?;
+        consortium_log::trace!("UioDevice::open_named: {} resolved to uio{}", name, uio_id);
+        Self::open(uio_id, enable_irq)
+    }
+
     /// Map a UIO memory mapping by index and return its virtual base address.
     ///
     /// Map ordering is fixed by `consortium-cfg`: a doorbell's register window is
@@ -278,5 +298,154 @@ impl UioDevice {
     pub fn bind_notifier(&self, notifier: Arc<Notify>) {
         consortium_log::trace!("UioDevice::bind_notifier: registering notifier");
         self.bind_service(Arc::new(move || notifier.notify_waiters()));
+    }
+}
+
+// ── Lookup ────────────────────────────────────────────────────────────────────
+
+/// Where the kernel lists UIO devices.
+const SYSFS_UIO: &str = "/sys/class/uio";
+
+/// Finds the `uioN` number of the device named `name` under `root` (normally
+/// [`SYSFS_UIO`]).
+///
+/// A device's sysfs `name` is its node's `linux,uio-name` property when set —
+/// `consortium-cfg` sets it to exactly `name` — and otherwise the full node
+/// name, `name@<unit-address>`. Rules, first hit wins:
+///
+/// 1. `name` exactly.
+/// 2. `name@…`, for a device tree rendered without `linux,uio-name`.
+/// 3. No name matched: the device whose map 0 starts at `base`, for a
+///    hand-written node under another name. A physical window has exactly one
+///    owner, so the address is unambiguous even where the name is not.
+fn find(root: &Path, name: &str, base: u64) -> Result<usize, UioDeviceError> {
+    let not_found = || UioDeviceError::DeviceNotFound {
+        name: name.to_string(),
+        base,
+        root: root.display().to_string(),
+    };
+    let entries = match fs::read_dir(root) {
+        Ok(entries) => entries,
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Err(not_found()),
+        Err(e) => return Err(e.into()),
+    };
+
+    let mut devices = Vec::new();
+    for entry in entries {
+        let entry = entry?;
+        let Some(id) = entry
+            .file_name()
+            .to_str()
+            .and_then(|file| file.strip_prefix("uio"))
+            .and_then(|id| id.parse::<usize>().ok())
+        else {
+            continue;
+        };
+        let path = entry.path();
+        let device_name = fs::read_to_string(path.join("name"))?.trim().to_string();
+        let map0 = fs::read_to_string(path.join("maps/map0/addr"))
+            .ok()
+            .and_then(|addr| u64::from_str_radix(addr.trim().trim_start_matches("0x"), 16).ok());
+        devices.push((id, device_name, map0));
+    }
+    devices.sort_by_key(|(id, _, _)| *id);
+
+    let by_unit = |device: &str| device.split_once('@').is_some_and(|(node, _)| node == name);
+    devices
+        .iter()
+        .find(|(_, device, _)| device == name)
+        .or_else(|| devices.iter().find(|(_, device, _)| by_unit(device)))
+        .or_else(|| devices.iter().find(|(_, _, map0)| *map0 == Some(base)))
+        .map(|(id, _, _)| *id)
+        .ok_or_else(not_found)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::path::PathBuf;
+
+    /// A throwaway `/sys/class/uio` with one `uioN/{name,maps/map0/addr}` per
+    /// entry, removed on drop.
+    struct FakeSysfs(PathBuf);
+
+    impl FakeSysfs {
+        fn new(test: &str, devices: &[(usize, &str, u64)]) -> Self {
+            let root =
+                std::env::temp_dir().join(format!("consortium-uio-{test}-{}", std::process::id()));
+            let _ = fs::remove_dir_all(&root);
+            for (id, name, addr) in devices {
+                let dir = root.join(format!("uio{id}"));
+                fs::create_dir_all(dir.join("maps/map0")).unwrap();
+                fs::write(dir.join("name"), format!("{name}\n")).unwrap();
+                fs::write(dir.join("maps/map0/addr"), format!("{addr:#018x}\n")).unwrap();
+            }
+            Self(root)
+        }
+    }
+
+    impl Drop for FakeSysfs {
+        fn drop(&mut self) {
+            let _ = fs::remove_dir_all(&self.0);
+        }
+    }
+
+    #[test]
+    fn exact_name_wins_regardless_of_probe_order() {
+        let sysfs = FakeSysfs::new(
+            "exact",
+            &[
+                (0, "mu1", 0x4422_0000),
+                (1, "ipc-shm", 0x2048_0000),
+                (2, "dbg-shm", 0x2048_4000),
+            ],
+        );
+        assert_eq!(find(&sysfs.0, "ipc-shm", 0x2048_0000).unwrap(), 1);
+        assert_eq!(find(&sysfs.0, "dbg-shm", 0x2048_4000).unwrap(), 2);
+        assert_eq!(find(&sysfs.0, "mu1", 0x4422_0000).unwrap(), 0);
+    }
+
+    #[test]
+    fn node_name_with_unit_address_matches() {
+        let sysfs = FakeSysfs::new(
+            "unit",
+            &[
+                (0, "mu1@44220000", 0x4422_0000),
+                (1, "mu10@44000000", 0x4400_0000),
+            ],
+        );
+        assert_eq!(find(&sysfs.0, "mu1", 0x4422_0000).unwrap(), 0);
+    }
+
+    #[test]
+    fn falls_back_to_the_window_address() {
+        let sysfs = FakeSysfs::new(
+            "addr",
+            &[
+                (0, "mu1@44220000", 0x4422_0000),
+                (1, "ipc-shm-uio@20480000", 0x2048_0000),
+                (2, "dbg-shm-uio@20484000", 0x2048_4000),
+            ],
+        );
+        assert_eq!(find(&sysfs.0, "ipc-shm", 0x2048_0000).unwrap(), 1);
+        assert_eq!(find(&sysfs.0, "dbg-shm", 0x2048_4000).unwrap(), 2);
+    }
+
+    #[test]
+    fn a_name_match_beats_an_address_match() {
+        let sysfs = FakeSysfs::new(
+            "precedence",
+            &[(0, "other", 0x2048_0000), (1, "ipc-shm", 0x2050_0000)],
+        );
+        assert_eq!(find(&sysfs.0, "ipc-shm", 0x2048_0000).unwrap(), 1);
+    }
+
+    #[test]
+    fn missing_device_is_an_error() {
+        let sysfs = FakeSysfs::new("missing", &[(0, "mu1", 0x4422_0000)]);
+        assert!(matches!(
+            find(&sysfs.0, "ipc-shm", 0x2048_0000),
+            Err(UioDeviceError::DeviceNotFound { .. })
+        ));
     }
 }

@@ -28,10 +28,9 @@
 //! `defmt::timestamp!`.
 //!
 //! This is the i.MX93 sibling of `../../imx95/mcu`. The application code is
-//! identical; what differs is generated. The CM33 owns MU side A here, so the
-//! generated bring-up builds `MuDoorbell<Primary, 2>` from the `MU2_MUA`
-//! singleton and installs a `#[interrupt] fn MU2_A()` vector — the mirror of
-//! i.MX95, where the CM7 is on side B.
+//! identical; what differs is generated. The CM33 drives MU side B, so the
+//! generated bring-up builds `MuDoorbell<Secondary, N>` from the `MUn_MUB`
+//! singleton and installs the matching `#[interrupt] fn MUn_B()` vector.
 
 #![no_std]
 #![no_main]

@@ -1,19 +1,22 @@
 # One-shot defmt host reader
 
 This Linux host utility maps map 0 of a UIO device, drains every packet currently
-available in its consortium CDBG ring, decodes the defmt stream using the 16-byte-aligned,
-compile-time embedded MCU release ELF at
-`examples/melt-pot/stm32mp25/mcu/target/thumbv8m.main-none-eabihf/release/melt-pot-stm32mp25-mcu_original.elf`,
-prints the messages, and exits. It does not wait for interrupts or poll for later
-messages.
+available in its consortium CDBG ring, decodes the defmt stream using the firmware ELF
+given on the command line, prints the messages, and exits. It does not wait for
+interrupts or poll for later messages.
 
-The UIO device ID defaults to `0`. An optional argument selects another numeric suffix
-of `/dev/uioN` (pass `N`, not the device path). The process needs permission to open
-that device.
+Pass the firmware's `*_original.elf` (the one carrying the `.defmt` table; `csti build`
+stages it as `dist/firmware/<core>_original.elf`). The optional second argument selects
+the UIO device: a bare number is `/dev/uioN`; anything else is matched against
+`/sys/class/uio/*/name`, exactly or as `<name>@<unit-address>`. It defaults to `dbg-shm`,
+the `linux,uio-name` `consortium-cfg` gives the debug-ring node. The process needs
+permission to open that device.
 
 ```sh
-cargo run --manifest-path examples/utils/defmt-host/Cargo.toml
-cargo run --manifest-path examples/utils/defmt-host/Cargo.toml -- 3
+cargo build --release --manifest-path examples/utils/defmt-host/Cargo.toml
+consortium-example-defmt-host cm33_original.elf            # the `dbg-shm` device
+consortium-example-defmt-host cm33_original.elf 2          # /dev/uio2
+consortium-example-defmt-host cm33_original.elf dbg-shm-uio
 ```
 
 Reading advances the ring's host-owned read pointer. Calling the utility again only

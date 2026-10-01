@@ -125,7 +125,8 @@ impl UioDevice {
     ///
     /// The node is `<name>@<base>` using the first mapping's base address
     /// (no unit address when there are no mappings) and carries the
-    /// `generic-uio` `compatible` string, an optional GIC SPI `interrupts` entry
+    /// `generic-uio` `compatible` string, `linux,uio-name = "<name>"` (the sysfs
+    /// name the application opens it by), an optional GIC SPI `interrupts` entry
     /// (with an optional `interrupt-parent`), and `status = "okay";`.
     ///
     /// The windows are described per [`backing`](UioDevice::backing):
@@ -142,6 +143,10 @@ impl UioDevice {
         };
 
         node = node.property(Property::string("compatible", GENERIC_UIO_COMPATIBLE));
+        // The name `uio_pdrv_genirq` reports in sysfs, which the generated
+        // application looks the device up by (`UioDevice::open_named`).
+        // Without it the kernel reports `<name>@<unit-address>`.
+        node = node.property(Property::string("linux,uio-name", name.clone()));
 
         if !self.mmap.is_empty() {
             match self.backing {

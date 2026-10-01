@@ -1416,8 +1416,18 @@
       "block": "mu/MU"
     },
     {
+      "name": "MU1_MUB",
+      "base_address": "0x44230000",
+      "block": "mu/MU"
+    },
+    {
       "name": "MU2_MUA",
       "base_address": "0x42430000",
+      "block": "mu/MU"
+    },
+    {
+      "name": "MU2_MUB",
+      "base_address": "0x42440000",
       "block": "mu/MU"
     },
     {

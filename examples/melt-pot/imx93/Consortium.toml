@@ -2,16 +2,10 @@
 
 # melt-pot on i.MX93: CA55 Linux application + CM33 real-time firmware.
 #
-# The i.MX93 counterpart of `../imx95`. Two things differ beyond the part
-# number, and both come from silicon rather than from taste:
-#
-#  - The coprocessor is a Cortex-M33 (`thumbv8m.main-none-eabihf`), not a CM7,
-#    so it has no L1 data cache and `config.cache` is rejected on its channels.
-#  - The MU windows are mirrored. The CM33 owns side A (its chip dump exposes
-#    `MU1_MUA`/`MU2_MUA`) and Linux owns side B, the reverse of i.MX95. The
-#    channel below still names the roles the documented way — `primary` is the
-#    A-core — because `consortium-cfg` lowers the register window separately
-#    from the descriptor role.
+# The i.MX93 counterpart of `../imx95`. The coprocessor is a Cortex-M33
+# (`thumbv8m.main-none-eabihf`), not a CM7, so it has no L1 data cache and
+# `config.cache` is rejected on its channels. As on i.MX95, Linux drives MU
+# side A and the coprocessor side B.
 
 [profile]
 # The Rust compile targets are looked up from the embedded chip database for
@@ -37,7 +31,7 @@ workspace = "nested"
 # in the mimx93 chip database, derived from `imx_rproc_att_imx93`. Override
 # per-field here if your board partitions TCM differently.
 # [remoteproc.cm33]
-# ram = { origin = 0x20000000, length = 0x1E000 }
+# ram = { origin = 0x20003000, length = 0x1B000 }
 
 [endpoints]
 # Runtime endpoint name -> crate root. `cm33` is the single remote coprocessor.
@@ -54,10 +48,10 @@ mode = "auto"
 memory = { base = 0x00484000, length = 0x2000 }
 mtu    = 64
 
-# One shared descriptor + slots for the sensor channel, signalled over MU2.
-# MU1 is left alone: the board DTS wires it to the CM33 remoteproc node as the
-# RPMsg mailbox (`mboxes = <&mu1 0 1>, ...`), so claiming it here would collide
-# with the kernel's own driver.
+# One shared descriptor + slots for the sensor channel, signalled over MU1
+# (Linux on side A, the CM33 on side B). The board DTS wires MU1 to the CM33
+# remoteproc node as the RPMsg mailbox; the generated DTS deletes those
+# `mboxes` so the kernel never drives it alongside us.
 #
 # The region lives in OCRAM; the CM33 reaches it through the raw physical base
 # and the CA55 maps the same memory through its UIO device.

@@ -48,11 +48,11 @@
 //! [`Secondary`](consortium_ipc::Secondary) is MUB — and which half a core gets is a
 //! silicon fact. It is unrelated to the primary/secondary role of
 //! `SharedMemoryTransport`, which is the shared-memory protocol's and is chosen by
-//! the manifest. The two coincide on i.MX 95 (the A-core is on MUA, the CM7 on MUB)
-//! and are mirrored on i.MX 93 (the CM33 is on MUA, so Linux takes MUB), so code
-//! that conflates them builds for one chip and fails the `Instance<Side = S>` bound
-//! on the other. `consortium-cfg` lowers the two independently: `impl_channel!`
-//! takes the role and the doorbell type separately.
+//! the manifest. On both i.MX 93 and i.MX 95 the A-core is on MUA and the M-core on
+//! MUB, so the two coincide for the documented `primary = "linux"` — but a manifest
+//! that swaps the roles keeps the windows, so code that conflates them fails the
+//! `Instance<Side = S>` bound. `consortium-cfg` lowers the two independently:
+//! `impl_channel!` takes the role and the doorbell type separately.
 //!
 //! [`Chan`]: consortium_ipc::Chan
 //! [`Side`]: consortium_ipc::Side
@@ -77,7 +77,7 @@
 //! This crate installs **no** `#[interrupt]` handlers. The application owns the vector
 //! table and forwards each MU vector a core drives into
 //! [`notify_gi_interrupt::<S, N>()`](notify_gi_interrupt), parameterized with that
-//! instance's side and number — i.MX93 `MU1_A`/`MU2_A`, i.MX95 CM7
+//! instance's side and number — i.MX93 CM33 `MU1_B`/`MU2_B`, i.MX95 CM7
 //! `MU5_A`/`MU7_B`/`MU8_B`. Enable the *HAL's* `rt` feature
 //! (`consortium-hal-imx9/rt`) so the `#[interrupt]` macro and PAC vector table are
 //! available there.

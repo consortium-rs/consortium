@@ -1,16 +1,16 @@
 ::consortium_ipc_transport_memory::channels!(SENSOR);
 ::consortium_ipc_transport_memory::impl_channel!(
     SENSOR, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_mu::MuDoorbell <
-    ::consortium_ipc::Primary, 1usize >,
+    ::consortium_ipc::Secondary, 1usize >,
     ::consortium_shared_memory::regions::UncachedRegion,
     ::melt_pot_shared::SensorReading, ::melt_pot_shared::Command,
     ::consortium_codec::PostcardCodec, 7u8, 6u8, 128usize,
 );
 #[cfg(target_arch = "arm")]
 fn __consortium_install_channels(
-    __db_mu1_mua: ::consortium_hal_imx9::Peri<
+    __db_mu1_mub: ::consortium_hal_imx9::Peri<
         'static,
-        ::consortium_hal_imx9::peripherals::MU1_MUA,
+        ::consortium_hal_imx9::peripherals::MU1_MUB,
     >,
 ) {
     ::consortium_ipc_transport_memory::install::<
@@ -24,9 +24,9 @@ fn __consortium_install_channels(
             )
         };
         let doorbell = ::consortium_ipc_doorbell_mu::MuDoorbell::<
-            ::consortium_ipc::Primary,
+            ::consortium_ipc::Secondary,
             1usize,
-        >::new(__db_mu1_mua);
+        >::new(__db_mu1_mub);
         // SAFETY: doorbell channel is verified to be valid in the config.
         let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(7u8) };
         // SAFETY: doorbell channel is verified to be valid in the config.
@@ -56,13 +56,13 @@ mod __consortium_vectors {
         ::consortium_hal_imx9::timer_driver::on_timer_interrupt();
     }
     const _: () = ::core::assert!(
-        ::consortium_hal_imx9::Interrupt::MU1_A as u16 == 21u16,
-        "MU1_A is interrupt 21 in this core's Consortium chip map but not in the chip PAC's interrupt table; the generated vector and the NVIC enable would refer to different lines"
+        ::consortium_hal_imx9::Interrupt::MU1_B as u16 == 22u16,
+        "MU1_B is interrupt 22 in this core's Consortium chip map but not in the chip PAC's interrupt table; the generated vector and the NVIC enable would refer to different lines"
     );
     #[::consortium_hal_imx9::interrupt]
-    fn MU1_A() {
+    fn MU1_B() {
         ::consortium_ipc_doorbell_mu::notify_gi_interrupt::<
-            ::consortium_ipc::Primary,
+            ::consortium_ipc::Secondary,
             1usize,
         >();
     }
@@ -130,23 +130,23 @@ fn init(config: Config) -> (Peripherals, Channels) {
     }
     if config.nvic {
         ::consortium_hal_imx9::hal::nvic::unpend(
-            ::consortium_hal_imx9::Interrupt::MU1_A,
+            ::consortium_hal_imx9::Interrupt::MU1_B,
         );
         // SAFETY: the interrupt comes from the validated Consortium
         // hardware database for this visible core, and the application
         // owns the matching vector.
         unsafe {
             ::consortium_hal_imx9::hal::nvic::set_priority(
-                ::consortium_hal_imx9::Interrupt::MU1_A,
+                ::consortium_hal_imx9::Interrupt::MU1_B,
                 0x80u8,
             );
             ::consortium_hal_imx9::hal::nvic::enable(
-                ::consortium_hal_imx9::Interrupt::MU1_A,
+                ::consortium_hal_imx9::Interrupt::MU1_B,
             );
         }
         ::consortium_runtime_mcu::log::trace!(
             "consortium controller init: NVIC enabled {} at priority 0x80 (id={})",
-            "MU1_A", 21u32
+            "MU1_B", 22u32
         );
         // SAFETY: the interrupt comes from the validated chip map and
         // its generated handler is installed above.
@@ -167,7 +167,7 @@ fn init(config: Config) -> (Peripherals, Channels) {
             "consortium controller init: time driver up"
         );
     }
-    __consortium_install_channels(__p.MU1_MUA);
+    __consortium_install_channels(__p.MU1_MUB);
     let channels = Channels::take();
     let peripherals = Peripherals {
         GPIO2: __p.GPIO2,

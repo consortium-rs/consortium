@@ -32,6 +32,7 @@ reserved-memory {
 ```dts
 ipc-shm@20480000 {
     compatible = "generic-uio";
+    linux,uio-name = "ipc-shm";
     memory-region = <&ipc_shm_0 &ipc_shm_1>;
     status = "okay";
 };
@@ -42,6 +43,7 @@ ipc-shm@20480000 {
 ```dts
 dbg-shm@20484000 {
     compatible = "generic-uio";
+    linux,uio-name = "dbg-shm";
     memory-region = <&dbg_shm>;
     status = "okay";
 };
@@ -50,12 +52,13 @@ dbg-shm@20484000 {
 ### mu2
 
 ```dts
-mu2@42440000 {
+mu2@42430000 {
     compatible = "generic-uio";
-    reg = <0x0 0x42440000 0x0 0x10000>;
+    linux,uio-name = "mu2";
+    reg = <0x0 0x42430000 0x0 0x10000>;
     interrupt-parent = <&gic>;
-    interrupts = <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>;
-    clocks = <&clk IMX93_CLK_MU2_B_GATE>;
+    interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
+    clocks = <&clk IMX93_CLK_MU2_A_GATE>;
     status = "okay";
 };
 ```
@@ -63,12 +66,13 @@ mu2@42440000 {
 ### mu1
 
 ```dts
-mu1@44230000 {
+mu1@44220000 {
     compatible = "generic-uio";
-    reg = <0x0 0x44230000 0x0 0x10000>;
+    linux,uio-name = "mu1";
+    reg = <0x0 0x44220000 0x0 0x10000>;
     interrupt-parent = <&gic>;
-    interrupts = <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>;
-    clocks = <&clk IMX93_CLK_MU1_B_GATE>;
+    interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
+    clocks = <&clk IMX93_CLK_MU1_A_GATE>;
     status = "okay";
 };
 ```
@@ -79,39 +83,39 @@ mu1@44230000 {
 
 ```rust
 fn _generated() {
-    ::consortium_hal_imx9::hal::nvic::unpend(::consortium_hal_imx9::Interrupt::MU1_A);
+    ::consortium_hal_imx9::hal::nvic::unpend(::consortium_hal_imx9::Interrupt::MU1_B);
     // SAFETY: the interrupt comes from the validated Consortium
     // hardware database for this visible core, and the application
     // owns the matching vector.
     unsafe {
         ::consortium_hal_imx9::hal::nvic::set_priority(
-            ::consortium_hal_imx9::Interrupt::MU1_A,
+            ::consortium_hal_imx9::Interrupt::MU1_B,
             0x80u8,
         );
         ::consortium_hal_imx9::hal::nvic::enable(
-            ::consortium_hal_imx9::Interrupt::MU1_A,
+            ::consortium_hal_imx9::Interrupt::MU1_B,
         );
     }
     ::consortium_runtime_mcu::log::trace!(
-        "consortium controller init: NVIC enabled {} at priority 0x80 (id={})", "MU1_A",
-        21u32
+        "consortium controller init: NVIC enabled {} at priority 0x80 (id={})", "MU1_B",
+        22u32
     );
-    ::consortium_hal_imx9::hal::nvic::unpend(::consortium_hal_imx9::Interrupt::MU2_A);
+    ::consortium_hal_imx9::hal::nvic::unpend(::consortium_hal_imx9::Interrupt::MU2_B);
     // SAFETY: the interrupt comes from the validated Consortium
     // hardware database for this visible core, and the application
     // owns the matching vector.
     unsafe {
         ::consortium_hal_imx9::hal::nvic::set_priority(
-            ::consortium_hal_imx9::Interrupt::MU2_A,
+            ::consortium_hal_imx9::Interrupt::MU2_B,
             0x80u8,
         );
         ::consortium_hal_imx9::hal::nvic::enable(
-            ::consortium_hal_imx9::Interrupt::MU2_A,
+            ::consortium_hal_imx9::Interrupt::MU2_B,
         );
     }
     ::consortium_runtime_mcu::log::trace!(
-        "consortium controller init: NVIC enabled {} at priority 0x80 (id={})", "MU2_A",
-        23u32
+        "consortium controller init: NVIC enabled {} at priority 0x80 (id={})", "MU2_B",
+        24u32
     );
 }
 ```
@@ -125,13 +129,13 @@ fn _generated() {
     ::consortium_ipc_transport_memory::channels!(SENSOR, LP);
     ::consortium_ipc_transport_memory::impl_channel!(
         SENSOR, ::consortium_ipc::Primary, ::consortium_ipc_doorbell_mu::MuDoorbell <
-        ::consortium_ipc::Secondary, 1usize >,
+        ::consortium_ipc::Primary, 1usize >,
         ::consortium_shared_memory::regions::UncachedRegion, ::shared::SensorData,
         ::shared::MotionControl, ::consortium_codec::PostcardCodec, 0u8, 1u8, 128usize,
     );
     ::consortium_ipc_transport_memory::impl_channel!(
         LP, ::consortium_ipc::Primary, ::consortium_ipc_doorbell_mu::MuDoorbell <
-        ::consortium_ipc::Secondary, 2usize >,
+        ::consortium_ipc::Primary, 2usize >,
         ::consortium_shared_memory::regions::UncachedRegion, ::shared::LowPowerData,
         ::shared::PowerControl, ::consortium_codec::RkyvCodec < 128usize >, 4u8, 5u8,
         128usize,
@@ -151,7 +155,7 @@ fn _generated() {
             // resolved from the validated Consortium hardware database.
             let doorbell = unsafe {
                 ::consortium_ipc_doorbell_mu::MuDoorbell::<
-                    ::consortium_ipc::Secondary,
+                    ::consortium_ipc::Primary,
                     1usize,
                 >::new_mapped(uio[3usize].mmap(0usize)?)
             };
@@ -195,7 +199,7 @@ fn _generated() {
             // resolved from the validated Consortium hardware database.
             let doorbell = unsafe {
                 ::consortium_ipc_doorbell_mu::MuDoorbell::<
-                    ::consortium_ipc::Secondary,
+                    ::consortium_ipc::Primary,
                     2usize,
                 >::new_mapped(uio[2usize].mmap(0usize)?)
             };
@@ -293,14 +297,14 @@ fn _generated() {
             "consortium init: opening {} uio device(s)", 4usize
         );
         let uio = ::std::vec![
-            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open(0usize,
-            false && config.uio_irqs,) ?),
-            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open(1usize,
-            false && config.uio_irqs,) ?),
-            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open(2usize,
-            true && config.uio_irqs,) ?),
-            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open(3usize,
-            true && config.uio_irqs,) ?)
+            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("ipc-shm",
+            541589504u64, false && config.uio_irqs,) ?),
+            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("dbg-shm",
+            541605888u64, false && config.uio_irqs,) ?),
+            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("mu2",
+            1111687168u64, true && config.uio_irqs,) ?),
+            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("mu1",
+            1143078912u64, true && config.uio_irqs,) ?)
         ];
         ::consortium_runtime_app::log::trace!(
             "consortium init: installing ipc endpoints"
@@ -366,26 +370,26 @@ fn _generated() {
     ::consortium_ipc_transport_memory::channels!(SENSOR, LP);
     ::consortium_ipc_transport_memory::impl_channel!(
         SENSOR, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_mu::MuDoorbell <
-        ::consortium_ipc::Primary, 1usize >,
+        ::consortium_ipc::Secondary, 1usize >,
         ::consortium_shared_memory::regions::UncachedRegion, ::shared::MotionControl,
         ::shared::SensorData, ::consortium_codec::PostcardCodec, 1u8, 0u8, 128usize,
     );
     ::consortium_ipc_transport_memory::impl_channel!(
         LP, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_mu::MuDoorbell <
-        ::consortium_ipc::Primary, 2usize >,
+        ::consortium_ipc::Secondary, 2usize >,
         ::consortium_shared_memory::regions::UncachedRegion, ::shared::PowerControl,
         ::shared::LowPowerData, ::consortium_codec::RkyvCodec < 128usize >, 5u8, 4u8,
         128usize,
     );
     #[cfg(target_arch = "arm")]
     fn __consortium_install_channels(
-        __db_mu1_mua: ::consortium_hal_imx9::Peri<
+        __db_mu1_mub: ::consortium_hal_imx9::Peri<
             'static,
-            ::consortium_hal_imx9::peripherals::MU1_MUA,
+            ::consortium_hal_imx9::peripherals::MU1_MUB,
         >,
-        __db_mu2_mua: ::consortium_hal_imx9::Peri<
+        __db_mu2_mub: ::consortium_hal_imx9::Peri<
             'static,
-            ::consortium_hal_imx9::peripherals::MU2_MUA,
+            ::consortium_hal_imx9::peripherals::MU2_MUB,
         >,
     ) {
         ::consortium_ipc_transport_memory::install::<
@@ -399,9 +403,9 @@ fn _generated() {
                 )
             };
             let doorbell = ::consortium_ipc_doorbell_mu::MuDoorbell::<
-                ::consortium_ipc::Primary,
+                ::consortium_ipc::Secondary,
                 1usize,
-            >::new(__db_mu1_mua);
+            >::new(__db_mu1_mub);
             // SAFETY: doorbell channel is verified to be valid in the config.
             let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
             // SAFETY: doorbell channel is verified to be valid in the config.
@@ -427,9 +431,9 @@ fn _generated() {
                 )
             };
             let doorbell = ::consortium_ipc_doorbell_mu::MuDoorbell::<
-                ::consortium_ipc::Primary,
+                ::consortium_ipc::Secondary,
                 2usize,
-            >::new(__db_mu2_mua);
+            >::new(__db_mu2_mub);
             // SAFETY: doorbell channel is verified to be valid in the config.
             let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(5u8) };
             // SAFETY: doorbell channel is verified to be valid in the config.
@@ -459,24 +463,24 @@ fn _generated() {
             ::consortium_hal_imx9::timer_driver::on_timer_interrupt();
         }
         const _: () = ::core::assert!(
-            ::consortium_hal_imx9::Interrupt::MU1_A as u16 == 21u16,
-            "MU1_A is interrupt 21 in this core's Consortium chip map but not in the chip PAC's interrupt table; the generated vector and the NVIC enable would refer to different lines"
+            ::consortium_hal_imx9::Interrupt::MU1_B as u16 == 22u16,
+            "MU1_B is interrupt 22 in this core's Consortium chip map but not in the chip PAC's interrupt table; the generated vector and the NVIC enable would refer to different lines"
         );
         #[::consortium_hal_imx9::interrupt]
-        fn MU1_A() {
+        fn MU1_B() {
             ::consortium_ipc_doorbell_mu::notify_gi_interrupt::<
-                ::consortium_ipc::Primary,
+                ::consortium_ipc::Secondary,
                 1usize,
             >();
         }
         const _: () = ::core::assert!(
-            ::consortium_hal_imx9::Interrupt::MU2_A as u16 == 23u16,
-            "MU2_A is interrupt 23 in this core's Consortium chip map but not in the chip PAC's interrupt table; the generated vector and the NVIC enable would refer to different lines"
+            ::consortium_hal_imx9::Interrupt::MU2_B as u16 == 24u16,
+            "MU2_B is interrupt 24 in this core's Consortium chip map but not in the chip PAC's interrupt table; the generated vector and the NVIC enable would refer to different lines"
         );
         #[::consortium_hal_imx9::interrupt]
-        fn MU2_A() {
+        fn MU2_B() {
             ::consortium_ipc_doorbell_mu::notify_gi_interrupt::<
-                ::consortium_ipc::Primary,
+                ::consortium_ipc::Secondary,
                 2usize,
             >();
         }
@@ -559,42 +563,42 @@ fn _generated() {
         }
         if config.nvic {
             ::consortium_hal_imx9::hal::nvic::unpend(
-                ::consortium_hal_imx9::Interrupt::MU1_A,
+                ::consortium_hal_imx9::Interrupt::MU1_B,
             );
             // SAFETY: the interrupt comes from the validated Consortium
             // hardware database for this visible core, and the application
             // owns the matching vector.
             unsafe {
                 ::consortium_hal_imx9::hal::nvic::set_priority(
-                    ::consortium_hal_imx9::Interrupt::MU1_A,
+                    ::consortium_hal_imx9::Interrupt::MU1_B,
                     0x80u8,
                 );
                 ::consortium_hal_imx9::hal::nvic::enable(
-                    ::consortium_hal_imx9::Interrupt::MU1_A,
+                    ::consortium_hal_imx9::Interrupt::MU1_B,
                 );
             }
             ::consortium_runtime_mcu::log::trace!(
                 "consortium controller init: NVIC enabled {} at priority 0x80 (id={})",
-                "MU1_A", 21u32
+                "MU1_B", 22u32
             );
             ::consortium_hal_imx9::hal::nvic::unpend(
-                ::consortium_hal_imx9::Interrupt::MU2_A,
+                ::consortium_hal_imx9::Interrupt::MU2_B,
             );
             // SAFETY: the interrupt comes from the validated Consortium
             // hardware database for this visible core, and the application
             // owns the matching vector.
             unsafe {
                 ::consortium_hal_imx9::hal::nvic::set_priority(
-                    ::consortium_hal_imx9::Interrupt::MU2_A,
+                    ::consortium_hal_imx9::Interrupt::MU2_B,
                     0x80u8,
                 );
                 ::consortium_hal_imx9::hal::nvic::enable(
-                    ::consortium_hal_imx9::Interrupt::MU2_A,
+                    ::consortium_hal_imx9::Interrupt::MU2_B,
                 );
             }
             ::consortium_runtime_mcu::log::trace!(
                 "consortium controller init: NVIC enabled {} at priority 0x80 (id={})",
-                "MU2_A", 23u32
+                "MU2_B", 24u32
             );
             // SAFETY: the interrupt comes from the validated chip map and
             // its generated handler is installed above.
@@ -615,7 +619,7 @@ fn _generated() {
                 "consortium controller init: time driver up"
             );
         }
-        __consortium_install_channels(__p.MU1_MUA, __p.MU2_MUA);
+        __consortium_install_channels(__p.MU1_MUB, __p.MU2_MUB);
         let channels = Channels::take();
         let peripherals = Peripherals {
             GPIO2: __p.GPIO2,

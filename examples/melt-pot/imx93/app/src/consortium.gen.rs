@@ -1,7 +1,7 @@
 ::consortium_ipc_transport_memory::channels!(SENSOR);
 ::consortium_ipc_transport_memory::impl_channel!(
     SENSOR, ::consortium_ipc::Primary, ::consortium_ipc_doorbell_mu::MuDoorbell <
-    ::consortium_ipc::Secondary, 1usize >,
+    ::consortium_ipc::Primary, 1usize >,
     ::consortium_shared_memory::regions::UncachedRegion, ::melt_pot_shared::Command,
     ::melt_pot_shared::SensorReading, ::consortium_codec::PostcardCodec, 6u8, 7u8,
     128usize,
@@ -21,7 +21,7 @@ fn __consortium_install_channels(
         // resolved from the validated Consortium hardware database.
         let doorbell = unsafe {
             ::consortium_ipc_doorbell_mu::MuDoorbell::<
-                ::consortium_ipc::Secondary,
+                ::consortium_ipc::Primary,
                 1usize,
             >::new_mapped(uio[2usize].mmap(0usize)?)
         };
@@ -117,12 +117,12 @@ fn init(
         "consortium init: opening {} uio device(s)", 3usize
     );
     let uio = ::std::vec![
-        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open(0usize,
-        false && config.uio_irqs,) ?),
-        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open(1usize,
-        false && config.uio_irqs,) ?),
-        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open(2usize, true
-        && config.uio_irqs,) ?)
+        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("ipc-shm",
+        541589504u64, false && config.uio_irqs,) ?),
+        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("dbg-shm",
+        541605888u64, false && config.uio_irqs,) ?),
+        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("mu1",
+        1143078912u64, true && config.uio_irqs,) ?)
     ];
     ::consortium_runtime_app::log::trace!("consortium init: installing ipc endpoints");
     __consortium_install_channels(&uio)?;
