@@ -3,37 +3,22 @@
 
 //! One-shot host reader for a consortium CDBG defmt ring exposed through UIO.
 
-use std::{env, error::Error, io};
+use std::{env, error::Error, fs, io, path::PathBuf};
 
 use consortium_dbg::host::{DefmtContext, DefmtSession, HostRing};
-
-#[repr(align(16))]
-struct Aligned<const N: usize>([u8; N]);
-
-static FIRMWARE_ELF: Aligned<
-    {
-        include_bytes!(
-            "../../../melt-pot/stm32mp25/mcu/target/thumbv8m.main-none-eabihf/release/melt-pot-stm32mp25-mcu_original.elf"
-        )
-        .len()
-    },
-> = Aligned(*include_bytes!(
-    "../../../melt-pot/stm32mp25/mcu/target/thumbv8m.main-none-eabihf/release/melt-pot-stm32mp25-mcu_original.elf"
-));
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut args = env::args_os();
     let program = args.next().unwrap_or_default();
-    let uio_id = args
-        .next()
-        .map(|value| value.to_string_lossy().parse::<usize>())
-        .transpose()?
-        .unwrap_or(0);
-    if args.next().is_some() {
+    let (Some(elf), device, None) = (args.next(), args.next(), args.next()) else {
         return Err(usage(&program).into());
-    }
+    };
+    let device = device.map_or_else(|| "dbg-shm".to_string(), |d| d.to_string_lossy().into_owned());
+    let uio_id = resolve(&device)?;
 
-    let context = DefmtContext::from_elf_bytes(&FIRMWARE_ELF.0)?;
+    // The `_original.elf` carries the `.defmt` table the frames index into.
+    let elf = fs::read(PathBuf::from(elf))?;
+    let context = DefmtContext::from_elf_bytes(&elf)?;
 
     // Do not listen for UIO interrupts or poll: consume only what is available now.
     let device = uio::UioDevice::blocking_new(uio_id)?;
@@ -98,9 +83,42 @@ fn hex(bytes: &[u8]) -> String {
         .join(" ")
 }
 
+/// Resolves a `uioN` number from `device`: a bare number is taken as is,
+/// otherwise the device whose sysfs name is `device` or `device@<unit-address>`.
+fn resolve(device: &str) -> Result<usize, Box<dyn Error>> {
+    if let Ok(id) = device.parse() {
+        return Ok(id);
+    }
+    let mut found = Vec::new();
+    for entry in fs::read_dir("/sys/class/uio")? {
+        let entry = entry?;
+        let Some(id) = entry
+            .file_name()
+            .to_str()
+            .and_then(|file| file.strip_prefix("uio")?.parse::<usize>().ok())
+        else {
+            continue;
+        };
+        let name = fs::read_to_string(entry.path().join("name"))?;
+        let name = name.trim();
+        let exact = name == device;
+        if exact || name.split_once('@').is_some_and(|(node, _)| node == device) {
+            found.push((!exact, id));
+        }
+    }
+    found.sort();
+    found
+        .first()
+        .map(|(_, id)| *id)
+        .ok_or_else(|| format!("no UIO device named {device:?} under /sys/class/uio").into())
+}
+
 fn usage(program: &std::ffi::OsStr) -> io::Error {
     io::Error::new(
         io::ErrorKind::InvalidInput,
-        format!("usage: {} [UIO_DEVICE_ID]", program.to_string_lossy()),
+        format!(
+            "usage: {} <FIRMWARE_ORIGINAL_ELF> [UIO_NAME_OR_ID (default: dbg-shm)]",
+            program.to_string_lossy()
+        ),
     )
 }

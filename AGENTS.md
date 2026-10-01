@@ -315,13 +315,14 @@ type where available.
 **A doorbell's `Side` is its register window, not the transport's descriptor role.**
 For an i.MX MU, `Primary` means MUA and `Secondary` means MUB — which half of the block
 this core drives — while `SharedMemoryTransport`'s `Primary`/`Secondary` is the
-shared-memory protocol's role, chosen by the manifest's `primary`/`secondary`. They
-coincide on i.MX 95 (A-core on MUA, CM7 on MUB) and are **mirrored on i.MX 93** (the
-CM33's chip dump exposes only `MU1_MUA`/`MU2_MUA`, so Linux takes MUB). `impl_channel!`
-takes the two as independent type parameters and `consortium-cfg` lowers them
-separately: the window comes from each party's `window:` field in the chip database
-(`Transceiver::doorbell_window`), the role from the manifest. Conflating them builds for
-one chip and fails `MuDoorbell::new`'s `Instance<Side = S>` bound on the other. A
+shared-memory protocol's role, chosen by the manifest's `primary`/`secondary`. On both
+i.MX 93 and i.MX 95 the A-core is on MUA and the M-core on MUB, so they coincide for the
+documented `primary = "linux"`, but a manifest that swaps the roles keeps the windows.
+`impl_channel!` takes the two as independent type parameters and `consortium-cfg` lowers
+them separately: the window comes from each party's `window:` field in the chip database
+(`Transceiver::doorbell_window`), the role from the manifest. Conflating them fails
+`MuDoorbell::new`'s `Instance<Side = S>` bound. The i.MX 93 CM33's chip map exposes both
+`MU1_MUA`/`MU1_MUB` (and MU2's), so the database, not the dump, picks MUB. A
 single-window doorbell (HSEM, IPCC) has no `window_length` and its marker keeps meaning
 the core bank, so it still follows the role.
 
@@ -406,7 +407,7 @@ examples). Enable the _HAL's_ `rt` feature (`consortium-hal-*/rt`) so the `#[int
 macro and PAC vector table are available to that generated code. A core the chip PAC's
 shipped interrupt table does not describe (STM32MP2's CM0+) has no `Interrupt` variant to
 name and keeps writing its vectors by hand. The relevant vectors are HSEM (non-secure),
-IPCC1_RX/IPCC2_RX (non-secure), and the MU lines a core drives (i.MX93 `MU1_A`/`MU2_A`;
+IPCC1_RX/IPCC2_RX (non-secure), and the MU lines a core drives (i.MX93 CM33 `MU1_B`/`MU2_B`;
 i.MX95 CM7 `MU5_A`/`MU7_B`/`MU8_B`).
 
 The `std` doorbell paths are host-testable with fake MMIO and Tokio `Notify`. On `std`

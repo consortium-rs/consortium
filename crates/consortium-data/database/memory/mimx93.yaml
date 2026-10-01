@@ -18,6 +18,13 @@ remoteproc:
     #   TCM CODE  device 0x0FFE0000, 0x20000 (secure alias 0x1FFE0000)
     #   TCM SYS   device 0x20000000, 0x20000 (secure alias 0x30000000)
     #
+    # Within TCM SYS the layout follows NXP's
+    # `rpmsg_lite_pingpong_rtos_linux_remote` reference ELF:
+    #
+    #   0x20000000  0x3000   SDK-reserved (`.m33_suspend` starts here) -- left alone
+    #   0x20003000  0x1B000  `.data`/`.bss`/stack, top 0x2001E000      -- `ram`
+    #   0x2001E000  0x1000   resource table (`__RscTblStart`)          -- `shmem`
+    #
     # The loader's translation windows are wider (0x0FFC0000/0x1FFC0000 and
     # 0x20000000/0x30000000, 0x40000 each), but only the top 128 KiB of the
     # code window is TCM: the SDK reference firmware places `.interrupts` at
@@ -57,9 +64,9 @@ remoteproc:
         length: 0x00001000
         reserve: false
     ram:
-      # TCM SYS below the resource table.
-      origin: 0x20000000
-      length: 0x0001E000
+      # TCM SYS between the SDK's suspend areas and the resource table.
+      origin: 0x20003000
+      length: 0x0001B000
       reserve: false
 memory:
   trm_page: [43, 54]
@@ -86,34 +93,34 @@ peripheral:
       type: mu
       clock:
         provider: clk
-        id: IMX93_CLK_MU1_B_GATE
+        id: IMX93_CLK_MU1_A_GATE
       length: 0x00020000
       window_length: 0x00010000
       parties:
         - core: linux
-          window: b
-          irq: 22
+          window: a
+          irq: 21
           page_memory: 62
           page_irq: 93
-          memory: 0x04230000
+          memory: 0x04220000
         - core: optee
+          window: a
+          irq: 21
+          page_memory: 62
+          page_irq: 93
+          memory: 0x04220000
+        - core: cm33
           window: b
           irq: 22
           page_memory: 62
           page_irq: 93
           memory: 0x04230000
-        - core: cm33
-          window: a
-          irq: 21
-          page_memory: 62
-          page_irq: 93
-          memory: 0x04220000
         - core: cm33-s
-          window: a
-          irq: 21
+          window: b
+          irq: 22
           page_memory: 62
           page_irq: 93
-          memory: 0x04220000
+          memory: 0x04230000
       party_page: 585
       channels: 8
       channel_page: 586
@@ -122,34 +129,34 @@ peripheral:
       type: mu
       clock:
         provider: clk
-        id: IMX93_CLK_MU2_B_GATE
+        id: IMX93_CLK_MU2_A_GATE
       length: 0x00020000
       window_length: 0x00010000
       parties:
         - core: linux
-          window: b
-          irq: 24
+          window: a
+          irq: 23
           page_memory: 75
           page_irq: 93
-          memory: 0x02440000
+          memory: 0x02430000
         - core: optee
+          window: a
+          irq: 23
+          page_memory: 75
+          page_irq: 93
+          memory: 0x02430000
+        - core: cm33
           window: b
           irq: 24
           page_memory: 75
           page_irq: 93
           memory: 0x02440000
-        - core: cm33
-          window: a
-          irq: 23
-          page_memory: 75
-          page_irq: 93
-          memory: 0x02430000
         - core: cm33-s
-          window: a
-          irq: 23
+          window: b
+          irq: 24
           page_memory: 75
           page_irq: 93
-          memory: 0x02430000
+          memory: 0x02440000
       party_page: 585
       channels: 8
       channel_page: 586

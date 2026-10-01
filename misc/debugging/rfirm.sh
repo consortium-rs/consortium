@@ -22,6 +22,9 @@ case "$name0" in
     m0)
         RPROC="remoteproc1"
         ;;
+    imx-rproc)
+        RPROC="remoteproc0"
+        ;;
     *)
         echo "Unexpected remoteproc0 name: '$name0' (expected 'm33' or 'm0')" >&2
         exit 1

@@ -62,7 +62,7 @@ reach whichever half is waiting.
 
 **This crate installs no `#[interrupt]` handlers.** The application owns the vector
 table and forwards each MU vector a core drives into `notify::<N>()`, parameterized
-with that instance number. The relevant vectors are i.MX93 `MU1_A` / `MU2_A` and
+with that instance number. The relevant vectors are i.MX93 CM33 `MU1_B` / `MU2_B` and
 i.MX95 CM7 `MU5_A` / `MU7_B` / `MU8_B`. Enable the _HAL's_ `rt` feature
 (`consortium-hal-imx9/rt`) so the `#[interrupt]` macro and PAC vector table are
 available to that code.

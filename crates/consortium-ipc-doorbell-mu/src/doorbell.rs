@@ -78,7 +78,8 @@ macro_rules! impl_mu {
 }
 
 // The i.MX95 CM7 reaches MU5 side A and MU7/MU8 side B; the i.MX93 CM33 reaches
-// MU1/MU2 side A. Both lists come from the same per-core dumps that generate the
+// both windows of MU1/MU2 and drives side B, leaving side A to the A-core. Both
+// lists come from the same per-core dumps that generate the
 // HAL's singletons, so a window this core cannot see has no singleton to pass.
 #[cfg(feature = "mimx95")]
 mod bindings {
@@ -94,10 +95,12 @@ mod bindings {
 // in `chan.rs`, which is the diagnostic that names the mistake.
 #[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
 mod bindings {
-    use consortium_ipc::Primary;
+    use consortium_ipc::{Primary, Secondary};
 
     impl_mu!(MU1_MUA, Primary, 1);
+    impl_mu!(MU1_MUB, Secondary, 1);
     impl_mu!(MU2_MUA, Primary, 2);
+    impl_mu!(MU2_MUB, Secondary, 2);
 }
 
 /// Instance `N`'s side-`S` register window, from this crate's vetted address

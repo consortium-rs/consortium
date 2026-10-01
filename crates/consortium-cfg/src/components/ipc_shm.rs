@@ -223,10 +223,10 @@ pub struct Transceiver {
     ///
     /// Distinct from the primary/secondary *role* above: the role is the
     /// descriptor protocol's, chosen by the manifest, while the window is a
-    /// silicon fact read from the chip database. They coincide on i.MX 95
-    /// (A-core on MUA, CM7 on MUB) and are mirrored on i.MX 93, so conflating
-    /// them makes an otherwise-correct i.MX 93 manifest fail to compile against
-    /// `MuDoorbell::new`'s `Instance<Side = S>` bound.
+    /// fact read from the chip database. They coincide on i.MX 93 and i.MX 95
+    /// (A-core on MUA, M-core on MUB) for the documented `primary = "linux"`,
+    /// but a manifest that swaps the roles keeps the windows, so conflating the
+    /// two fails `MuDoorbell::new`'s `Instance<Side = S>` bound.
     pub doorbell_window: (DoorbellRingerSide, DoorbellRingerSide),
 }
 

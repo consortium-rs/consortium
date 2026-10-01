@@ -4,7 +4,7 @@ MEMORY
   m_interrupts (rx) : ORIGIN = 0x0ffe0000, LENGTH = 0x1000
   FLASH (rx) : ORIGIN = 0x0ffe0000, LENGTH = 0x20000
   m_rsc_tbl_in_tcm (rw) : ORIGIN = 0x2001e000, LENGTH = 0x1000
-  RAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x1e000
+  RAM (rwx) : ORIGIN = 0x20003000, LENGTH = 0x1b000
 }
 
 _stext = 0x0ffe1000;

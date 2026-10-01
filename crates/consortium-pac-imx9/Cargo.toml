@@ -13,15 +13,19 @@ repository.workspace   = true
 rust-version.workspace = true
 
 [features]
-defmt   = ["dep:defmt"]
-mimx93  = []
+defmt = ["dep:defmt"]
+# The i.MX 93 CM33 enters the image from ROM with VTOR still on the ROM's
+# table, whose handlers request a system reset (SRC SRSR `CM33_REQUEST`), so
+# the first interrupt reboots the SoC. Point VTOR (and MSP) at our own table on
+# reset, as the NXP SDK's `Reset_Handler` does.
+mimx93  = ["cortex-m-rt?/set-sp", "cortex-m-rt?/set-vtor"]
 mimx95  = []
 rt      = ["cortex-m-rt/device", "dep:cortex-m-rt"]
 default = ["mimx95"]
 
 [dependencies]
 cortex-m    = { version = "0.7" }
-cortex-m-rt = { optional = true, version = "0.7" }
+cortex-m-rt = { optional = true, version = "0.7.4" }
 defmt       = { optional = true, version = "1.0.1" }
 
 [lints]

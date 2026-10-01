@@ -1,12 +1,10 @@
 # i.MX 93: CA55 Linux application + CM33 real-time firmware.
 #
-# This fixture exists to type-check the *mirrored* i.MX 93 doorbell geometry.
-# The CM33 owns MU side A and Linux side B, the reverse of i.MX 95, while the
-# channel still declares the roles the documented way (`primary = "linux"`), so
-# the generated `MuDoorbell<Primary, 1>` must be built from the `MU1_MUA`
-# singleton the CM33's chip map exposes. Conflating the window with the role
-# emits `MuDoorbell<Secondary, 1>` here and fails `MuDoorbell::new`'s
-# `Instance<Side = S>` bound -- which is exactly what this fixture catches.
+# This fixture exists to type-check the i.MX 93 doorbell geometry. Linux drives
+# MU side A and the CM33 side B, so the generated `MuDoorbell<Secondary, 1>` must
+# be built from the `MU1_MUB` singleton. The CM33's chip map also exposes
+# `MU1_MUA`; picking that one emits `MuDoorbell<Primary, 1>`, which would put
+# both cores on the same half of the block.
 
 [profile]
 chip        = "mimx9352"

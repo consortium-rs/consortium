@@ -175,16 +175,22 @@ impl LoweredIr {
             _ => return endpoints,
         }
 
-        // `UioDevice::open(n, enable_irq)` for each declared device, in `self.uio` order
-        // (shared-memory device first, then one per doorbell, then `dbg-shm`).
-        // Opened handles are Arc-owned by platform resources and cloned into
-        // each transport that uses one of their mappings.
-        let opens = self.uio.iter().enumerate().map(|(id, (_, device))| {
+        // `UioDevice::open_named(name, base, enable_irq)` for each declared
+        // device, in `self.uio` order — the order the generated `uio[i]` indices
+        // refer to. The kernel's `uioN` numbering is probe order and differs
+        // between device trees, so each device is looked up by the
+        // `linux,uio-name` its DTS node carries, with its first window's
+        // physical base as the fallback key. Opened handles are Arc-owned by
+        // platform resources and cloned into each transport that uses one of
+        // their mappings.
+        let opens = self.uio.iter().map(|(name, device)| {
             let enable_irq = device.irq.is_some();
+            let base = u64::from(device.mmap.first().map_or(0, |(base, _)| *base));
             quote! {
                 ::std::sync::Arc::new(
-                    ::consortium_runtime_app::uio::UioDevice::open(
-                        #id,
+                    ::consortium_runtime_app::uio::UioDevice::open_named(
+                        #name,
+                        #base,
                         #enable_irq && config.uio_irqs,
                     )?
                 )
@@ -1535,13 +1541,13 @@ mod tests {
         assert_eq!(transceiver(&ir, "lp").codec, Codec::Rkyv);
     }
 
-    /// The i.MX 93 CM33 owns MU side A while Linux owns side B, the mirror of
-    /// i.MX 95. A manifest still spells the descriptor roles the documented way
-    /// (`primary = "linux"`), so the two must be lowered independently: getting
-    /// this wrong emits `MuDoorbell::<Secondary, _>::new(p.MU1_MUA)`, which
-    /// fails `MuDoorbell::new`'s `Instance<Side = S>` bound.
+    /// On i.MX 93 Linux drives MU side A and the CM33 side B. The CM33's chip
+    /// map exposes both `MU1_MUA` and `MU1_MUB`, so the window must come from the
+    /// database rather than from whichever singleton the dump lists first:
+    /// getting this wrong emits `MuDoorbell::<Primary, _>::new(p.MU1_MUA)` and
+    /// leaves both cores on the same half of the block.
     #[test]
-    fn imx93_doorbell_window_is_mirrored_from_the_descriptor_role() {
+    fn imx93_doorbell_puts_the_cm33_on_mub() {
         let manifest = r#"
             [profile]
             chip = "mimx9352"
@@ -1569,20 +1575,19 @@ mod tests {
         // Roles follow the manifest...
         assert_eq!(sensor.channel_primary.0, VisibleCore::Ap);
         assert_eq!(sensor.channel_secondary.0, cm33());
-        // ...while the windows are mirrored: Linux on MUB, the CM33 on MUA.
+        // ...and so do the windows: Linux on MUA, the CM33 on MUB.
         assert_eq!(
             sensor.doorbell_window,
-            (DoorbellRingerSide::Secondary, DoorbellRingerSide::Primary)
+            (DoorbellRingerSide::Primary, DoorbellRingerSide::Secondary)
         );
-        // The CM33 is on side A, so its physical base is the block base itself
-        // (0x0422_0000 through the 0x4000_0000 non-secure alias) — the same
-        // window its chip dump exposes as `MU1_MUA`. Linux takes MUB above it.
-        assert_eq!(sensor.doorbell_address.cp[&cm33()], 0x4422_0000);
+        // The CM33 is on side B, one window above the block base (0x0423_0000
+        // through the 0x4000_0000 non-secure alias) — `MU1_MUB` in its chip
+        // dump. Linux takes MUA at the block base.
+        assert_eq!(sensor.doorbell_address.cp[&cm33()], 0x4423_0000);
     }
 
-    /// i.MX 95 is the unmirrored case, and the CM33 there reaches MU1 through
-    /// MUB even though it is the channel's `secondary` — the window offset must
-    /// apply to it too, or it is handed Linux's half of the block.
+    /// The i.MX 95 CM33 likewise reaches MU1 through MUB — the window offset
+    /// must apply to it, or it is handed Linux's half of the block.
     #[test]
     fn imx95_controller_doorbell_base_is_its_own_window() {
         let manifest = r#"
@@ -1620,8 +1625,8 @@ mod tests {
     /// The vector's name comes from the chip map (looked up by the party's NVIC
     /// number) while the side marker comes from the party's declared window, so
     /// an `MU1_A` handler forwarding `Secondary` would mask the *other* half of
-    /// the block and starve the executor. On i.MX 93 the CM33 is on MUA, so
-    /// this is `MU1_A` forwarding `Primary`.
+    /// the block and starve the executor. On i.MX 93 the CM33 is on MUB, so
+    /// this is `MU1_B` forwarding `Secondary`.
     #[test]
     fn imx93_doorbell_vector_names_the_window_it_forwards() {
         let manifest = r#"
@@ -1648,11 +1653,11 @@ mod tests {
         let ir = Session::from_toml(manifest).unwrap().lower().unwrap();
         let tokens = ir.bella.vectors(&cm33(), "::consortium_hal_imx9")[0].to_string();
 
-        assert!(tokens.contains("fn MU1_A ()"), "{tokens}");
+        assert!(tokens.contains("fn MU1_B ()"), "{tokens}");
         assert!(
             tokens.contains(
                 ":: consortium_ipc_doorbell_mu :: notify_gi_interrupt :: < :: consortium_ipc :: \
-                 Primary , 1usize > ()"
+                 Secondary , 1usize > ()"
             ),
             "{tokens}"
         );
@@ -1703,7 +1708,7 @@ mod tests {
 
         assert_eq!(layout.compatible, "fsl,imx93-cm33");
         assert_eq!(layout.vector.window.origin, 0x0FFE_0000);
-        assert_eq!(layout.ram.origin, 0x2000_0000);
+        assert_eq!(layout.ram.origin, 0x2000_3000);
         // TCM is not DRAM, so nothing here is carved out of the kernel map.
         assert!(!layout.vector.window.reserve);
         assert!(!layout.flash.reserve);

@@ -32,6 +32,7 @@ reserved-memory {
 ```dts
 dbg-shm@20062000 {
     compatible = "generic-uio";
+    linux,uio-name = "dbg-shm";
     memory-region = <&dbg_shm>;
     status = "okay";
 };
@@ -42,6 +43,7 @@ dbg-shm@20062000 {
 ```dts
 ipc-shm@20064000 {
     compatible = "generic-uio";
+    linux,uio-name = "ipc-shm";
     memory-region = <&ipc_shm_0 &ipc_shm_1>;
     status = "okay";
 };
@@ -52,6 +54,7 @@ ipc-shm@20064000 {
 ```dts
 ipcc1@40490000 {
     compatible = "generic-uio";
+    linux,uio-name = "ipcc1";
     reg = <0x0 0x40490000 0x0 0x400>;
     interrupt-parent = <&intc>;
     interrupts = <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>;
@@ -65,6 +68,7 @@ ipcc1@40490000 {
 ```dts
 ipcc2@46250000 {
     compatible = "generic-uio";
+    linux,uio-name = "ipcc2";
     reg = <0x0 0x46250000 0x0 0x400>;
     interrupt-parent = <&intc>;
     interrupts = <GIC_SPI 175 IRQ_TYPE_LEVEL_HIGH>;
@@ -308,14 +312,14 @@ fn _generated() {
             "consortium init: opening {} uio device(s)", 4usize
         );
         let uio = ::std::vec![
-            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open(0usize,
-            false && config.uio_irqs,) ?),
-            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open(1usize,
-            false && config.uio_irqs,) ?),
-            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open(2usize,
-            true && config.uio_irqs,) ?),
-            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open(3usize,
-            true && config.uio_irqs,) ?)
+            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("dbg-shm",
+            537272320u64, false && config.uio_irqs,) ?),
+            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("ipc-shm",
+            537280512u64, false && config.uio_irqs,) ?),
+            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("ipcc1",
+            1078525952u64, true && config.uio_irqs,) ?),
+            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("ipcc2",
+            1176829952u64, true && config.uio_irqs,) ?)
         ];
         ::consortium_runtime_app::log::trace!(
             "consortium init: installing ipc endpoints"
