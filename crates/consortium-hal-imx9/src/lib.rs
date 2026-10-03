@@ -139,6 +139,8 @@ pub use pac::interrupts::Interrupt;
 #[cfg(feature = "rt")]
 pub use pac::interrupts::interrupt;
 
+pub mod clock;
+
 #[cfg(feature = "adc")]
 pub mod adc;
 

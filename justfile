@@ -528,6 +528,10 @@ linux_wpe_url   := "https://github.com/consortium-rs/wpe-kiosk-stack-prebuilt/re
 # demand. Point CONSORTIUM_WPE_DEB at an existing copy to skip the download.
 linux_wpe_deb   := env_var_or_default("CONSORTIUM_WPE_DEB", justfile_directory() + "/assets/" + linux_wpe_file)
 linux_ctx       := justfile_directory() + "/target/container-context"
+# Kernel checkout handed to `csti build --linux` inside the container, mounted
+# at /root/linux. Cloned (shallow) on first use when the host has none.
+linux_kernel     := env_var_or_default("CONSORTIUM_LINUX_KERNEL", home_directory() + "/Developer/linux")
+linux_kernel_url := env_var_or_default("CONSORTIUM_LINUX_KERNEL_URL", "https://github.com/torvalds/linux.git")
 
 # Start the Apple `container` services and builder with a routable resolver
 linux-setup:
@@ -541,6 +545,7 @@ linux-setup:
 # Build the base Linux image (Rust toolchains + uv + Vite+ + dtc)
 linux-image: linux-setup
     @mkdir -p {{ linux_ctx }}
+    cp {{ justfile_directory() }}/rust-toolchain.toml {{ linux_ctx }}/rust-toolchain.toml
     container build --target base -t {{ linux_image }}:base \
       -f {{ justfile_directory() }}/Dockerfile.linux {{ linux_ctx }}
 
@@ -564,6 +569,7 @@ setup-wpe-deb:
 # Build the full Linux image (+ WPE WebKit/Cog and the OP-TEE TA dev kit)
 linux-image-full: linux-setup setup-wpe-deb
     @mkdir -p {{ linux_ctx }}
+    cp {{ justfile_directory() }}/rust-toolchain.toml {{ linux_ctx }}/rust-toolchain.toml
     cp "{{ linux_wpe_deb }}" {{ linux_ctx }}/$(basename "{{ linux_wpe_deb }}")
     container build --target full -t {{ linux_image }}:full \
       --build-arg WPE_DEB=$(basename "{{ linux_wpe_deb }}") \
@@ -583,25 +589,32 @@ linux-full +cmd: (linux-run "full" cmd)
 # pipeline looks for their ELFs at those exact paths. A global CARGO_TARGET_DIR
 # redirects them and the pipeline fails to find its own output.
 [private]
-linux-run tag +cmd:
+linux-run tag +cmd: linux-kernel
     container run --rm --dns {{ linux_dns }} \
       --cpus {{ linux_cpus }} --memory {{ linux_memory }} \
       -v {{ justfile_directory() }}:/workspace \
       -v consortium-target:/workspace/target \
       -v consortium-cargo:/cargo-registry \
+      -v {{ linux_kernel }}:/root/linux \
       -e CARGO_HOME=/cargo-registry \
       -w /workspace {{ linux_image }}:{{ tag }} \
       bash -lc '{{ cmd }}'
 
 # Drop into an interactive shell in the full Linux image
-linux-shell:
+linux-shell: linux-kernel
     container run --rm -it --dns {{ linux_dns }} \
       --cpus {{ linux_cpus }} --memory {{ linux_memory }} \
       -v {{ justfile_directory() }}:/workspace \
       -v consortium-target:/workspace/target \
       -v consortium-cargo:/cargo-registry \
+      -v {{ linux_kernel }}:/root/linux \
       -e CARGO_HOME=/cargo-registry \
       -w /workspace {{ linux_image }}:full bash
+
+# Ensure the kernel checkout mounted at /root/linux exists (shallow clone if not)
+[private]
+linux-kernel:
+    @[ -d "{{ linux_kernel }}" ] || git clone --depth 1 "{{ linux_kernel_url }}" "{{ linux_kernel }}"
 
 # Remove the cached Linux build volumes
 linux-clean:

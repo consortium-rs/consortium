@@ -76,18 +76,3 @@ backend = "wayland"
 debug   = "http://127.0.0.1:5173/"
 source  = "website"
 build   = "website/dist"
-
-# CM33-owned GPIO port for a status heartbeat.
-[peripheral.gpio2]
-owner  = "cm33"
-secure = false
-
-# CM33-owned I2C bus for a real temperature sensor, clocked from the 24 MHz
-# LPI2C root at a 100 kHz standard-mode bus rate.
-[peripheral.lpi2c1]
-owner     = "cm33"
-secure    = false
-clock     = 24000000
-frequency = 100000
-pin.sda   = "PB0"
-pin.scl   = "PB1"

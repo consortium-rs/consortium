@@ -770,6 +770,11 @@ block with the pointer lifetime or ownership invariant.
   the same with `--no-default-features`. Both must pass: the second is what proves the
   one-impl-family claim, since it runs the identical `loopback` test as `no_std`.
 - Use trybuild and insta snapshots for proc-macro behavior.
+- Snapshot changes are accepted automatically outside CI and reviewed in git:
+  `.cargo/config.toml` sets `INSTA_UPDATE=always`, and `consortium-cfg`'s
+  `tests/conf.rs` rewrites `artifacts.snap` whenever `CI` is unset
+  (`UPDATE_SNAPSHOTS=0` forces it to fail instead). CI sets `INSTA_UPDATE=no` and
+  `CI`, so a mismatch fails there.
 - Use fake MMIO, heap-backed regions, and mock doorbells for protocol logic.
 - Keep hardware, SDK, UIO, remoteproc, OP-TEE runtime, and Cog/WebKit checks separate
   from default host checks.
@@ -789,7 +794,9 @@ SDK and no cross linker are involved for the 64-bit A-core.
 
 - `base` (`just linux-image`) — Rust toolchains, `uv`, Vite+, `dtc`,
   `arm-none-eabi-objcopy`, and `just`. Enough for the `*-a64` / `*-a32`
-  recipes and repository tooling.
+  recipes and repository tooling. The Rust toolchain is the channel pinned in
+  `rust-toolchain.toml` (staged into the build context by the recipe), so the
+  `--rm` containers never re-download it; rebuild the image after a toolchain bump.
 - `full` (`just linux-image-full`) — adds WPE WebKit/Cog from the
   consortium-rs/wpe-kiosk-stack-prebuilt `.deb` and an OP-TEE 4.10.0 TA dev kit.
   Enough for a full `csti build` of melt-pot. The `.deb` (~45 MB) is fetched on
@@ -823,6 +830,12 @@ Things that are easy to get wrong here:
   would clobber the macOS one. Build the frontend on the host, then set
   `CONSORTIUM_HMI_BUILD_CMD=/bin/true` so the container consumes the existing dist.
   `CONSORTIUM_HMI_FETCH_CMD=/bin/true` does the same for `csti fetch`'s install step.
+- **The kernel tree is mounted at `/root/linux`.** `linux-run`/`linux-shell` mount
+  host `~/Developer/linux` (override with `CONSORTIUM_LINUX_KERNEL`), shallow-cloning
+  torvalds/linux there first if it is missing, so `csti build` inside the container
+  takes `--linux /root/linux`. Build endpoints with `csti build`, not a raw
+  `cargo build` in the endpoint crate: only the pipeline regenerates
+  `consortium.gen.rs`/`memory.x`, injects the build env, and post-processes firmware.
 - Running the pipeline rewrites the committed `src/consortium.gen.rs`. Its debug-ELF
   `include_bytes!` paths are relative to `CSTI_MCU_PATH`, so they no longer differ
   between host and container, but review other regenerated output before committing.

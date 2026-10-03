@@ -121,7 +121,9 @@ fn init(config: Config) -> (Peripherals, Channels) {
             13u32
         );
     }
+    ::consortium_runtime_mcu::log::trace!("before chip init");
     let __p = ::consortium_hal_stm32mp2::init();
+    ::consortium_runtime_mcu::log::trace!("after chip init");
     if config.time_driver {
         ::consortium_hal_stm32mp2::timer_driver::bringup(__p.TIM2);
         ::consortium_runtime_mcu::log::trace!(
