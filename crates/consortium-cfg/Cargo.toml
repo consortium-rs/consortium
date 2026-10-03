@@ -29,11 +29,11 @@ repository.workspace   = true
 rust-version.workspace = true
 
 [dependencies]
-consortium-cfg-common           = { path = "../consortium-cfg-common", version = "0.3.0" }
-consortium-data                 = { path = "../consortium-data", version = "0.3.0" }
-consortium-dts                  = { path = "../consortium-dts", version = "0.3.0" }
-consortium-log                  = { features = ["tracing"], path = "../consortium-log", version = "0.3.0" }
-consortium-ipc-transport-memory = { path = "../consortium-ipc-transport-memory", version = "0.3.0" }
+consortium-cfg-common           = { path = "../consortium-cfg-common", version = "0.4.0" }
+consortium-data                 = { path = "../consortium-data", version = "0.4.0" }
+consortium-dts                  = { path = "../consortium-dts", version = "0.4.0" }
+consortium-log                  = { features = ["tracing"], path = "../consortium-log", version = "0.4.0" }
+consortium-ipc-transport-memory = { path = "../consortium-ipc-transport-memory", version = "0.4.0" }
 prettyplease                    = "0.3"
 proc-macro2                     = "1.0.106"
 quote                           = "1.0.46"

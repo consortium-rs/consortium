@@ -41,8 +41,8 @@ defmt = ["consortium-ipc/defmt", "consortium-log/defmt", "dep:defmt"]
 std = ["alloc", "consortium-ipc/std", "consortium-log/tracing"]
 
 [dependencies]
-consortium-ipc = { default-features = false, path = "../consortium-ipc", version = "0.3.0" }
-consortium-log = { default-features = false, path = "../consortium-log", version = "0.3.0" }
+consortium-ipc = { default-features = false, path = "../consortium-ipc", version = "0.4.0" }
+consortium-log = { default-features = false, path = "../consortium-log", version = "0.4.0" }
 defmt          = { optional = true, version = "1.1.0" }
 embedded-can   = { version = "0.4.1" }
 thiserror      = { default-features = false, version = "2.0" }

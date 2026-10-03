@@ -23,7 +23,7 @@ description = "melt-pot MCU firmware for STM32MP25 Cortex-M33"
 edition     = "2024"
 license     = "Apache-2.0"
 name        = "melt-pot-stm32mp25-mcu"
-version     = "0.3.0"
+version     = "0.4.0"
 
 # Cross-compile target: thumbv8m.main-none-eabihf  (Cortex-M33)
 # Built via `consortium build --manifest ../Consortium.toml`.
@@ -33,36 +33,36 @@ name = "melt-pot-stm32mp25-mcu"
 path = "src/main.rs"
 
 [dependencies]
-melt-pot-shared = { path = "../../shared", version = "0.3.0" }
+melt-pot-shared = { path = "../../shared", version = "0.4.0" }
 
 # Named directly by the generated `consortium.gen.rs`.
 consortium-codec = { default-features = false, features = [
   "postcard",
-], path = "../../../../crates/consortium-codec", version = "0.3.0" }
-consortium-ipc = { default-features = false, path = "../../../../crates/consortium-ipc", version = "0.3.0" }
+], path = "../../../../crates/consortium-codec", version = "0.4.0" }
+consortium-ipc = { default-features = false, path = "../../../../crates/consortium-ipc", version = "0.4.0" }
 consortium-ipc-doorbell-hsem = { default-features = false, features = [
   "stm32mp25x",
-], path = "../../../../crates/consortium-ipc-doorbell-hsem", version = "0.3.0" }
+], path = "../../../../crates/consortium-ipc-doorbell-hsem", version = "0.4.0" }
 consortium-ipc-doorbell-ipcc = { default-features = false, features = [
   "stm32mp25x",
-], path = "../../../../crates/consortium-ipc-doorbell-ipcc", version = "0.3.0" }
+], path = "../../../../crates/consortium-ipc-doorbell-ipcc", version = "0.4.0" }
 consortium-ipc-transport-memory = { default-features = false, features = [
   "defmt",
   "stm32mp25x",
-], path = "../../../../crates/consortium-ipc-transport-memory", version = "0.3.0" }
-consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory", version = "0.3.0" }
+], path = "../../../../crates/consortium-ipc-transport-memory", version = "0.4.0" }
+consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory", version = "0.4.0" }
 consortium-runtime-mcu = { default-features = false, features = [
   "defmt",
   "macros",
-], path = "../../../../crates/consortium-runtime-mcu", version = "0.3.0" }
+], path = "../../../../crates/consortium-runtime-mcu", version = "0.4.0" }
 consortium-hal-stm32mp2 = { default-features = false, features = [
   "defmt",
   "rt",
   "time-driver-gp-tim",
-], path = "../../../../crates/consortium-hal-stm32mp2", version = "0.3.0" }
+], path = "../../../../crates/consortium-hal-stm32mp2", version = "0.4.0" }
 consortium-dbg = { default-features = false, features = [
   "logger",
-], path = "../../../../crates/consortium-dbg", version = "0.3.0" }
+], path = "../../../../crates/consortium-dbg", version = "0.4.0" }
 
 # Firmware runtime.
 cortex-m = { features = ["critical-section-single-core"], version = "0.7" }

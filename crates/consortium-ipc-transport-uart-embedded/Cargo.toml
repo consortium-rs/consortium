@@ -57,9 +57,9 @@ stm32mp25x = [
 ]
 
 [dependencies]
-consortium-hal-imx9           = { default-features = false, optional = true, path = "../consortium-hal-imx9", version = "0.3.0" }
-consortium-hal-stm32mp2       = { default-features = false, optional = true, path = "../consortium-hal-stm32mp2", version = "0.3.0" }
-consortium-ipc-transport-uart = { default-features = false, path = "../consortium-ipc-transport-uart", version = "0.3.0" }
+consortium-hal-imx9           = { default-features = false, optional = true, path = "../consortium-hal-imx9", version = "0.4.0" }
+consortium-hal-stm32mp2       = { default-features = false, optional = true, path = "../consortium-hal-stm32mp2", version = "0.4.0" }
+consortium-ipc-transport-uart = { default-features = false, path = "../consortium-ipc-transport-uart", version = "0.4.0" }
 embedded-io-async             = { version = "0.7" }
 
 [lints]

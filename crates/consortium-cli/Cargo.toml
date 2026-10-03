@@ -44,5 +44,5 @@ pkg-fmt = "zip"
 
 [dependencies]
 clap               = { features = ["derive"], version = "4.5" }
-consortium-builder = { path = "../consortium-builder", version = "0.3.0" }
+consortium-builder = { path = "../consortium-builder", version = "0.4.0" }
 tokio              = { features = ["macros", "rt-multi-thread"], version = "1.50.0" }
