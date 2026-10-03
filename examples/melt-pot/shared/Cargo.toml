@@ -32,7 +32,7 @@ rust-version.workspace = true
 
 [dependencies]
 # IpcSafe derive + trait; no_std, no alloc.
-consortium-ipc = { default-features = false, path = "../../../crates/consortium-ipc", version = "0.3.0" }
+consortium-ipc = { default-features = false, path = "../../../crates/consortium-ipc", version = "0.4.0" }
 serde          = { default-features = false, features = ["derive"], version = "1" }
 
 [lints]

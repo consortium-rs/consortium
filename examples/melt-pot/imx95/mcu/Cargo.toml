@@ -23,7 +23,7 @@ description = "melt-pot MCU firmware for i.MX95 Cortex-M7"
 edition     = "2024"
 license     = "Apache-2.0"
 name        = "melt-pot-imx95-mcu"
-version     = "0.3.0"
+version     = "0.4.0"
 
 # Cross-compile target: thumbv7em-none-eabihf  (Cortex-M7)
 # Built via `consortium build --manifest ../Consortium.toml`.
@@ -33,36 +33,36 @@ name = "melt-pot-imx95-mcu"
 path = "src/main.rs"
 
 [dependencies]
-melt-pot-shared = { path = "../../shared", version = "0.3.0" }
+melt-pot-shared = { path = "../../shared", version = "0.4.0" }
 
 # Named directly by the generated `consortium.gen.rs`.
 consortium-codec = { default-features = false, features = [
   "postcard",
-], path = "../../../../crates/consortium-codec", version = "0.3.0" }
-consortium-ipc = { default-features = false, path = "../../../../crates/consortium-ipc", version = "0.3.0" }
+], path = "../../../../crates/consortium-codec", version = "0.4.0" }
+consortium-ipc = { default-features = false, path = "../../../../crates/consortium-ipc", version = "0.4.0" }
 consortium-ipc-doorbell-mu = { default-features = false, features = [
   "mimx95",
-], path = "../../../../crates/consortium-ipc-doorbell-mu", version = "0.3.0" }
+], path = "../../../../crates/consortium-ipc-doorbell-mu", version = "0.4.0" }
 consortium-ipc-transport-memory = { default-features = false, features = [
   "defmt",
   "mimx95",
-], path = "../../../../crates/consortium-ipc-transport-memory", version = "0.3.0" }
-consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory", version = "0.3.0" }
+], path = "../../../../crates/consortium-ipc-transport-memory", version = "0.4.0" }
+consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory", version = "0.4.0" }
 consortium-runtime-mcu = { default-features = false, features = [
   "defmt",
   "macros",
-], path = "../../../../crates/consortium-runtime-mcu", version = "0.3.0" }
+], path = "../../../../crates/consortium-runtime-mcu", version = "0.4.0" }
 consortium-hal-imx9 = { default-features = false, features = [
   "gpio",
   "i2c",
   "rt",
   "time-driver-lpit",
-], path = "../../../../crates/consortium-hal-imx9", version = "0.3.0" }
+], path = "../../../../crates/consortium-hal-imx9", version = "0.4.0" }
 
 # Firmware runtime.
 consortium-dbg = { default-features = false, features = [
   "logger",
-], path = "../../../../crates/consortium-dbg", version = "0.3.0" }
+], path = "../../../../crates/consortium-dbg", version = "0.4.0" }
 cortex-m = { features = ["critical-section-single-core"], version = "0.7" }
 cortex-m-rt = "0.7"
 defmt = "1.1.0"

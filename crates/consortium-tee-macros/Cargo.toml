@@ -32,4 +32,4 @@ rust-version.workspace = true
 proc-macro = true
 
 [dependencies]
-consortium-tee-macros-impl = { path = "../consortium-tee-macros-impl", version = "0.3.0" }
+consortium-tee-macros-impl = { path = "../consortium-tee-macros-impl", version = "0.4.0" }

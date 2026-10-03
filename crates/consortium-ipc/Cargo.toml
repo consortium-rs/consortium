@@ -29,9 +29,9 @@ repository.workspace   = true
 rust-version.workspace = true
 
 [dependencies]
-consortium-codec      = { path = "../consortium-codec", version = "0.3.0" }
-consortium-ipc-macros = { path = "../consortium-ipc-macros", version = "0.3.0" }
-consortium-log        = { path = "../consortium-log", version = "0.3.0" }
+consortium-codec      = { path = "../consortium-codec", version = "0.4.0" }
+consortium-ipc-macros = { path = "../consortium-ipc-macros", version = "0.4.0" }
+consortium-log        = { path = "../consortium-log", version = "0.4.0" }
 defmt                 = { optional = true, version = "1" }
 
 [dev-dependencies]
