@@ -34,9 +34,13 @@ esac
 RPROC_PATH="${RPROC_BASE}/${RPROC}"
 echo "Using ${RPROC} (remoteproc0/name = ${name0})"
 
-# --- Stop the coprocessor ---
-echo "Stopping ${RPROC}..."
-echo stop > "${RPROC_PATH}/state"
+# --- Stop the coprocessor (only if running) ---
+if [ "$(cat "${RPROC_PATH}/state")" = "running" ]; then
+    echo "Stopping ${RPROC}..."
+    echo stop > "${RPROC_PATH}/state"
+else
+    echo "${RPROC} is not running, skipping stop."
+fi
 
 # --- Remove the old firmware ---
 if [ -f "${FW_DIR}/${FW_NAME}" ]; then

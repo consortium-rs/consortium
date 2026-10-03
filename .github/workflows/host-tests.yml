@@ -5,6 +5,12 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Snapshot mismatches must fail here. Locally both harnesses accept new output
+# (`.cargo/config.toml` sets `INSTA_UPDATE=always`; `consortium-cfg`'s `conf.rs`
+# accepts whenever `CI` is unset), and the diff is reviewed in git instead.
+env:
+  INSTA_UPDATE: 'no'
+
 jobs:
   host-tests:
     name: host crate tests

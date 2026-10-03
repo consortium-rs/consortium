@@ -1,0 +1,5 @@
+[env]
+# Accept insta snapshot changes locally and review them in git; CI sets
+# `INSTA_UPDATE=no` (see `.github/workflows/host-tests.yml`) so a mismatch fails
+# there. `force = false` lets an exported `INSTA_UPDATE` win.
+INSTA_UPDATE = { force = false, value = "always" }

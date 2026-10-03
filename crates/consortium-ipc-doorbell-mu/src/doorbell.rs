@@ -65,6 +65,9 @@ pub trait Instance: PeripheralType {
     type Side: Side;
     /// 1-based MU instance number.
     const INSTANCE: usize;
+    /// The CCM gate [`MuDoorbell::new`] opens for this window (see
+    /// `consortium_hal_imx9::clock`); `None` where the System Manager owns it.
+    const LPCG: Option<u32>;
 }
 
 /// Bind a chip-HAL peripheral singleton to this doorbell.
@@ -73,6 +76,7 @@ macro_rules! impl_mu {
         impl crate::doorbell::Instance for ::consortium_hal_imx9::peripherals::$instance {
             type Side = $side;
             const INSTANCE: usize = $number;
+            const LPCG: Option<u32> = ::consortium_hal_imx9::clock::lpcg(stringify!($instance));
         }
     };
 }
@@ -239,6 +243,9 @@ impl<S: Side, const N: usize> MuDoorbell<S, N> {
         // Owning the singleton for the doorbell's lifetime is what makes the
         // MMIO access exclusive; it is consumed here and never reissued.
         let _ = peri;
+        // On i.MX 93 Linux has closed this window's gate unless a kernel driver
+        // claims it; every later register access would BusFault without this.
+        ::consortium_hal_imx9::clock::ungate(T::LPCG);
         // SAFETY: `window_base` is instance `N`'s side-`S` window from this
         // crate's vetted address table, and the consumed singleton guarantees
         // nothing else drives it.

@@ -493,7 +493,11 @@ impl LoweredIr {
             syn::parse_str(&self.peripherals.hal_crate).expect("hal_crate must be a valid path");
         let hal_peripherals =
             if has_peripherals || !doorbell_arguments.is_empty() || !time_bringup.is_empty() {
-                quote! { let __p = #hal::init(); }
+                quote! {
+                    ::consortium_runtime_mcu::log::trace!("before chip init");
+                    let __p = #hal::init();
+                    ::consortium_runtime_mcu::log::trace!("after chip init");
+                }
             } else {
                 quote! {}
             };

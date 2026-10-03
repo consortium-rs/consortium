@@ -66,16 +66,6 @@ mod __consortium_vectors {
             1usize,
         >();
     }
-    const _: () = ::core::assert!(
-        ::consortium_hal_imx9::Interrupt::LPI2C1 as u16 == 13u16,
-        "LPI2C1 is interrupt 13 in this core's Consortium chip map but not in the chip PAC's interrupt table; the generated vector and the NVIC enable would refer to different lines"
-    );
-    #[::consortium_hal_imx9::interrupt]
-    fn LPI2C1() {
-        ::consortium_hal_imx9::i2c::on_interrupt::<
-            ::consortium_hal_imx9::peripherals::LPI2C1,
-        >();
-    }
 }
 /// Runtime bring-up policy. Enabled manifest steps default on.
 #[cfg(target_arch = "arm")]
@@ -148,19 +138,10 @@ fn init(config: Config) -> (Peripherals, Channels) {
             "consortium controller init: NVIC enabled {} at priority 0x80 (id={})",
             "MU1_B", 22u32
         );
-        // SAFETY: the interrupt comes from the validated chip map and
-        // its generated handler is installed above.
-        unsafe {
-            ::consortium_hal_imx9::hal::nvic::set_priority(
-                ::consortium_hal_imx9::Interrupt::LPI2C1,
-                0x80u8,
-            );
-            ::consortium_hal_imx9::hal::nvic::enable(
-                ::consortium_hal_imx9::Interrupt::LPI2C1,
-            );
-        }
     }
+    ::consortium_runtime_mcu::log::trace!("before chip init");
     let __p = ::consortium_hal_imx9::init();
+    ::consortium_runtime_mcu::log::trace!("after chip init");
     if config.time_driver {
         ::consortium_hal_imx9::timer_driver::bringup(__p.LPIT1);
         ::consortium_runtime_mcu::log::trace!(
@@ -169,10 +150,7 @@ fn init(config: Config) -> (Peripherals, Channels) {
     }
     __consortium_install_channels(__p.MU1_MUB);
     let channels = Channels::take();
-    let peripherals = Peripherals {
-        GPIO2: __p.GPIO2,
-        LPI2C1: __p.LPI2C1,
-    };
+    let peripherals = Peripherals {};
     ::consortium_runtime_mcu::log::trace!("consortium controller init: resources ready");
     (peripherals, channels)
 }
@@ -197,15 +175,4 @@ for ConsortiumError {
 /// be moved into drivers independently.
 #[cfg(target_arch = "arm")]
 #[allow(non_snake_case)]
-pub struct Peripherals {
-    pub GPIO2: ::consortium_hal_imx9::Peri<
-        'static,
-        ::consortium_hal_imx9::peripherals::GPIO2,
-    >,
-    pub LPI2C1: ::consortium_hal_imx9::Peri<
-        'static,
-        ::consortium_hal_imx9::peripherals::LPI2C1,
-    >,
-}
-pub const LPI2C1_CLOCK_HZ: u32 = 24000000u32;
-pub const LPI2C1_FREQUENCY: u32 = 100000u32;
+pub struct Peripherals {}

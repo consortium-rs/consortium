@@ -264,7 +264,9 @@ fn init(config: Config) -> (Peripherals, Channels) {
             );
         }
     }
+    ::consortium_runtime_mcu::log::trace!("before chip init");
     let __p = ::consortium_hal_imx9::init();
+    ::consortium_runtime_mcu::log::trace!("after chip init");
     if config.time_driver {
         ::consortium_hal_imx9::timer_driver::bringup(__p.LPIT1);
         ::consortium_runtime_mcu::log::trace!(
